@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon 
+    id="script.mbox" 
+    name="MBox" 
+    version="0.0.5" 
+    provider-name="aaa@aaa.com">
+    <requires>
+        <import addon="xbmc.python" version="1.0" />
+        <import addon="script.module.beautifulsoup"/>
+        <import addon="script.module.elementtree"/>
+        <import addon="script.module.simplejson"/>
+    </requires>
+    <extension point="xbmc.python.script" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <platform>all</platform>
+        <summary lang="en">MBox for XBMC</summary>
+        <summary lang="fr">MBox pour XBMC</summary>
+        <description lang="en">[B]MBox is a PVR for XBMC[/B]
+        </description>
+        <description lang="fr">[B]MythBox est un PVR pour XBMC[/B]
+        </description>
+    </extension>
+</addon>

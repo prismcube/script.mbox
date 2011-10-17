@@ -1,0 +1,153 @@
+
+import xbmc
+import threading, time
+from socket import *
+import string
+from pvr.util import run_async
+
+seperator = ':'
+
+class Connection( object ):
+	def __init__(self):
+		print 'lael98 check connection init'
+
+
+	def recv_all(self, sock, bytes):
+		b = ''
+		while len(b) < bytes:
+			left = bytes - len(b)
+			try:
+				new = sock.recv(left)
+			except Exception, e:
+				if str(e) == "(9, 'Bad file descriptor')" or str(e) == "(10054, 'Connection reset by peer')":
+					print 'Lost connection resetting'
+					try:
+						self.close()
+					except Exception, e:
+						print 'noclose'
+					return b
+				raise e
+			if new == '':
+				break # eof
+			b += new
+		return b
+
+
+	def sendMsg(self, sock, msg):
+		msg = self.makeFormat(msg)
+		try:
+			sock.send(msg)
+		except Exception, e:
+			if str(e) == "(10053, 'Software caused connection abort')":
+				print 'Lost connection resetting'
+				try:
+					self.close()
+				except Exception, e:
+					print 'noclose'
+				return
+			raise e    
+
+	def readMsg(self, sock):
+		retMsg = self.recv_all(sock, 8)
+		reply =''
+		if retMsg.upper() == 'OK':
+			return 'OK'
+		
+		n = 0
+		if len(retMsg) > 0:
+			n = int(retMsg)
+
+		i = 0
+		while i < n:
+			r = self.recv_all(sock, n - i)
+			reply += r.decode('utf-8')
+			i +=  len(r)
+
+		return reply.split(seperator)
+
+	def sendRequest(self, sock, msg ):
+		self.sendMsg(sock, msg)
+		reply = self.getReply
+		return reply
+
+	def makeFormat( self, msg ):
+		msg = seperator.join(msg)
+		msg = msg.encode('utf-8')
+		return '%-8%s' %(len(msg), msg)
+
+
+class Server(object):
+	def __init__(self, protocol, addr, port ):
+		print 'lael98 check server init'
+		self.sock = None
+		self.protocol = protocol
+		self.addr = addr
+		self.port = port
+		self.isRunning = False
+		print 'lael98 check server init %s %s:%d' %(self.protocol, self.addr , self.port )
+
+	def prepare(self):
+		if self.sock:
+			print 'Error already socket is created'
+			return False
+
+		try :
+			self.sock = socket(AF_INET, SOCK_STREAM )
+			self.sock.setsockopt( SOL_SOCKET, SO_REUSEADDR, 1 )
+			self.sock.bind((self.addr, self.port ))
+		except Exception, ex:
+			print 'error bind error %s' %ex
+			self.sock.close()
+			return False
+
+		print 'bind success'
+		self.sock.listen(5)
+		print 'listen success'
+		self.isRunning = True
+
+
+	def start(self):
+		self.prepare()
+		self.serverThread()
+
+	def stop(self):
+		self.isRunning = False
+
+	def doLoop(self, conn):
+		print 'server doloop'
+
+	@run_async
+	def serverThread( self ):
+		print 'lael98 check serverThread'
+		cnt = 0
+		while  not xbmc.abortRequested and self.isRunning:
+			print 'serverThread cnt=%d' %cnt
+			cnt += 1
+#			conn = self.sock.accept()
+#			doLoop( conn )
+			time.sleep(1)
+		self.sock.close()
+		print 'lael98 check end server'
+
+
+class Client(object):
+	def __init__(self, protocol, addr, port ):
+		print 'lael98 check ElisMgr init'
+		self.sock = None
+		self.protocol = protocol
+		self.addr = addr
+		self.port = port
+		print 'lael98 check client init %s %s:%d' %(self.protocol, self.addr , self.port )
+
+
+"""
+	def connect(self):
+		self.clisock = socket(AF_INET, SOCK_STREAM )
+		self.clisock.setsockopt( SOL_SOCKET, SO_REUSEADDR, 1 )
+		if cliIp :
+			self.cSock.connect(cliIp, cliPort)
+		else :
+			self.cSock.connect('', cliPort )
+"""
+
+

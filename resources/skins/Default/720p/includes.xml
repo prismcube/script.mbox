@@ -1,0 +1,112 @@
+<includes>
+	<include name="ButtonCommonValues">
+		<height>40</height>
+		<width>250</width>
+		<textoffsetx>10</textoffsetx>
+		<textwidth>235</textwidth>
+		<aligny>center</aligny>
+		<font>font13caps</font>
+		<texturefocus border="5">button-focus.png</texturefocus>
+		<texturenofocus>-</texturenofocus>
+		<pulseonselect>false</pulseonselect>
+	</include>
+	<include name="VisibleFadeEffect">
+		<animation effect="fade" time="300">Visible</animation>
+		<animation effect="fade" time="300">Hidden</animation>
+	</include>
+	<include name="CommonView">
+		<control type="list" id="50">
+			<hitrect x="50" y="50" w="330" h="620" />
+			<posx>-20</posx>
+			<posy>50</posy>
+			<width>400</width>
+			<height>720</height>
+			<onleft>10</onleft>
+			<onright>50</onright>
+			<onup>50</onup>
+			<ondown>50</ondown>
+			<pagecontrol>-</pagecontrol>
+			<scrolltime>300</scrolltime>
+			<focusposition>0</focusposition>
+			<movement>2</movement>
+			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
+			<itemlayout height="70" width="380">
+				<control type="label">
+					<posx>380</posx>
+					<posy>21</posy>
+					<width>380</width>
+					<height>40</height>
+					<font>font35_title</font>
+					<textcolor>grey3</textcolor>
+					<align>right</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label]</label>
+					<animation effect="zoom" start="65" end="65" center="380,51" time="0" condition="true">Conditional</animation>
+				</control>
+			</itemlayout>
+			<focusedlayout height="70" width="380">
+				<control type="label">
+					<posx>380</posx>
+					<posy>21</posy>
+					<width>380</width>
+					<height>40</height>
+					<font>font35_title</font>
+					<textcolor>white</textcolor>
+					<align>right</align>
+					<aligny>center</aligny>
+					<animation effect="zoom" start="65" end="100" center="380,51" time="200">Focus</animation>
+					<animation effect="zoom" start="100" end="65" center="380,51" time="200">UnFocus</animation>
+					<label>$INFO[ListItem.Label]</label>
+
+				</control>
+				<control type="image">
+					<posx>370</posx>
+					<posy>63</posy>
+					<width>18</width>
+					<height>18</height>
+					<texture>HomeHasSub.png</texture>
+					<visible>Container(7000).HasFocus(1) | Container(7000).HasFocus(2) | Container(7000).HasFocus(3) | Container(7000).HasFocus(4) | Container(7000).HasFocus(5) | Container(7000).HasFocus(6) | Container(7000).HasFocus(7)</visible>
+					<animation effect="fade" start="0" end="100" time="200">Focus</animation>
+					<animation effect="fade" start="100" end="0" time="200">UnFocus</animation>
+				</control>
+			</focusedlayout>
+			<content>
+				<item id="1">
+					<label>Installation</label>
+					<onclick>right</onclick>
+					<visible>true</visible>
+				</item>
+				<item id="2">
+					<label>Channels</label>
+					<onclick>right</onclick>
+					<visible>true</visible>
+				</item>
+				<item id="3">
+					<label>User Preference</label>
+					<onclick>right</onclick>
+					<visible>true</visible>
+				</item>
+				<item id="4">
+					<label>Audio/Video</label>
+					<onclick>right</onclick>
+					<visible>true</visible>
+				</item>
+				<item id="5">
+					<label>Receiver Setup</label>
+					<onclick>right</onclick>
+					<visible>true</visible>
+				</item>
+				<item id="6">
+					<label>CAS</label>
+					<onclick>right</onclick>
+					<visible>true</visible>
+				</item>
+				<item id="7">
+					<label>Media Center</label>
+					<onclick>right</onclick>
+					<visible>true</visible>
+				</item>
+			</content>
+		</control>	
+	</include>	
+</includes>
