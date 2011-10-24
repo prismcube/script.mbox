@@ -27,6 +27,7 @@ from inspect import currentframe
 WIN_ID_NULLWINDOW 					= 1
 WIN_ID_MAINMENU 					= 2
 WIN_ID_CHANNEL_LIST_WINDOW			= 3
+WIN_ID_CHANNEL_BANNER				= 4
 
 
 
@@ -55,11 +56,13 @@ class WindowMgr(object):
 		from pvr.gui.windows.nullwindow import NullWindow
 		from pvr.gui.windows.mainmenu import MainMenu
 		from pvr.gui.windows.channellistwindow import ChannelListWindow
+		from pvr.gui.windows.channelbanner import ChannelBanner
 		
 		self.windows = {
 			WIN_ID_NULLWINDOW 					: NullWindow('nullwindow.xml', self.scriptDir ),
 			WIN_ID_MAINMENU						: MainMenu('mainmenu.xml', self.scriptDir ),
-			WIN_ID_CHANNEL_LIST_WINDOW			: ChannelListWindow('channellistwindow.xml', self.scriptDir ),			
+			WIN_ID_CHANNEL_LIST_WINDOW			: ChannelListWindow('channellistwindow.xml', self.scriptDir ),
+			WIN_ID_CHANNEL_BANNER				: ChannelBanner('channelbanner.xml', self.scriptDir ),
 		}
 
 
@@ -77,5 +80,6 @@ class WindowMgr(object):
 		self.windows[WIN_ID_NULLWINDOW].close()
 		self.windows[WIN_ID_MAINMENU].close()
 		self.windows[WIN_ID_CHANNEL_LIST_WINDOW].close()
+		self.windows[WIN_ID_CHANNEL_BANNER].close()
 
 

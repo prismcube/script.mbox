@@ -1,0 +1,146 @@
+<window type="windows" id="3004">
+	<defaultcontrol always="true">602</defaultcontrol>
+	<controls>
+		<control type="group">
+			<animation effect="slide" start="0,345" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+			<animation effect="slide" start="0,0" end="0,345" time="300" delay="150" tween="quadratic" easing="out">WindowClose</animation>
+			<animation effect="slide" start="0,0" end="0,345" time="300" tween="quadratic" easing="out" condition="Window.IsVisible(SliderDialog) | Window.IsVisible(OSDVideoSettings) | Window.IsVisible(OSDAudioSettings) | Window.IsVisible(VideoBookmarks)">Conditional</animation>
+			<control type="image">
+				<description>media info background image</description>
+				<posx>0</posx>
+				<posy>345</posy>
+				<width>1280</width>
+				<height>256</height>
+				<texture>channelBanner\MediaInfoBackUpper.png</texture>
+			</control>
+			
+
+<!-- info section -->			
+			<control type="group" id="200">
+				<posx>50</posx>
+				<posy>600</posy>
+
+				<control type="label" id="600">
+					<include>WindowTitleCommons</include>
+					<label>CH 1004 $INFO[ChannelListWindow.onAction]</label>
+				</control>
+
+				<control type="label" id="601">
+					<posx>120</posx>
+					<align>left</align>
+					<width>100</width>
+					<include>WindowTitleCommons</include>
+					<label>TV[CR]ANIXE HD</label>
+
+				</control>
+
+				<control type="image" id="602">
+					<info>pcm/ac3</info>
+					<posx>700</posx>
+					<posy>-10</posy>
+					<texture>channelBanner\dolbydigital.png</texture>
+				</control>
+
+				<control type="image" id="603">
+					<posx>850</posx>
+					<posy>-10</posy>
+					<texture>OverlayHD.png</texture>
+				</control>
+
+				<include>Clock</include>
+			</control>
+
+<!-- epg section -->			
+			<control type="group" id="100">
+				<posx>50</posx>
+				<posy>640</posy>
+				
+				<control type="label" id="701">
+					<include>WindowTitleCommons</include>
+					<align>center</align>
+					<label>Tout</label>
+				</control>
+				
+				<control type="button" id="702">
+					<posx>120</posx>
+					<posy>0</posy>
+					<width>50</width>
+					<height>50</height>
+					<label>210</label>
+					<font>-</font>
+					<texturefocus>channelBanner\scroll-left-focus.png</texturefocus>
+					<texturenofocus>channelBanner\scroll-left.png</texturenofocus>
+					<onleft>605</onleft>
+					<onright>601</onright>
+					<onup>701</onup>
+					<ondown>701</ondown>
+					<onclick>ProgramList(Previous)</onclick>
+				</control>
+
+				<control type="label" id="703">
+					<posx>180</posx>
+					<posy>10</posy>
+					<description>name</description>
+					<label>'watching name'</label>
+				</control>
+
+				<control type="label" id="704">
+					<posx>710</posx>
+					<posy>10</posy>
+					<description>start time</description>
+					<label>00:00:00</label>
+				</control>
+
+
+				<control type="image" id="11">
+					<description>separator image</description>
+					<posx>800</posx>
+					<posy>20</posy>
+					<width>200</width>
+					<hight>1</hight>
+					<colordiffuse>66FFFFFF</colordiffuse>
+					<texture>channelBanner\separator2.png</texture>
+				</control>
+<!--
+				<control type="label">
+					<posx>1260</posx>
+					<posy>660</posy>
+					<width>460</width>
+					<height>25</height>
+					<label>$INFO[VideoPlayer.Time] - $INFO[VideoPlayer.Duration]</label>				
+					<scroll>true</scroll>
+					<align>right</align>
+					<aligny>center</aligny>
+					<font>font12_title</font>
+					<textcolor>grey</textcolor>
+					<shadowcolor>black</shadowcolor>
+				</control>
+-->
+				<control type="label" id="705">
+					<posx>1000</posx>
+					<posy>10</posy>
+					<description>end time</description>
+					<label>00:00:50</label>
+				</control>
+
+				<control type="button" id="706">
+					<posx>1140</posx>
+					<posy>0</posy>
+					<align>right</align>
+					<width>50</width>
+					<height>50</height>
+					<label>31354</label>
+					<font>-</font>
+					<texturefocus>channelBanner\scroll-right-focus.png</texturefocus>
+					<texturenofocus>channelBanner\scroll-right.png</texturenofocus>
+					<onleft>600</onleft>
+					<onright>602</onright>
+					<onup>702</onup>
+					<ondown>702</ondown>
+					<onclick>ProgramList(Next)</onclick>
+				</control>
+			
+			</control>
+		</control>
+	</controls>
+</window>
