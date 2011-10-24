@@ -82,7 +82,7 @@
 					<textcolor>9f9f9f9b</textcolor>
 					<label>19.2 E ASTR...</label>
 				</control>
-				
+				 
 				<control type="button" id="702">
 					<posx>250</posx>
 					<posy>0</posy>
