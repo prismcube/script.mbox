@@ -1,6 +1,6 @@
 
 class ElisEvent(object):
-	ElisPMTReceived						= 'ElisPMTReceived'
+	ElisPMTReceived						= 'ElisPMTReceived'				#[ElisName, ChannelNumber, EventName, EventDescription, StartTime, Duration, ContentTag, Components, IsSeries, HasTimer, TimerId, AgeRating ]
 	ElisCurrentEITReceived				= 'ElisCurrentEITReceived'
 	ElisVideoIentified					= 'ElisVideoIentified'
 	ElisChannelChanged					= 'ElisChannelChanged'
