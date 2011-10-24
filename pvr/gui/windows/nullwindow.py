@@ -26,6 +26,7 @@ from pvr.gui.basewindow import Action
 from inspect import currentframe
 
 
+
 class NullWindow(BaseWindow):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)

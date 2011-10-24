@@ -13,23 +13,34 @@ class ElisEvent(object):
 
 class ElisAction(object):
 	Tune								= 'Tune'
-	SetChnnelByNumber					= 'SetChnnelByNumber'
-	CheckLock							= 'CheckLock'
-	ChangeTVRadio						= 'ChangeTVRadio'
-	ChangeZappingMode					= 'ChangeZappingMode'
-	AVBank								= 'AVBank'
-	IsAVBank							= 'IsAVBank'
+	ElisReady							= 'ElisReady'
+	SetCurrentChannel					= 'SetCurrentChannel'	
+	GetCurrentChannel					= 'GetCurrentChannel'	
+	GetLocked							= 'GetLocked'
+	SetTVRadio							= 'SetTVRadio'
+	GetTVRadio							= 'GetTVRadio'	
+	SetZappingMode						= 'SetZappingMode'
+	GetZappingMode						= 'GetZappingMode'
+	SetAVBlank							= 'SetAVBlank'
+	GetAVBlank							= 'GetAVBlank'
+	SetChannelStatus					= 'SetChannelStatus'	
 	GetChannelStatus					= 'GetChannelStatus'
-	SetChannelStatus					= 'SetChannelStatus'
+
+
+class ElisEnum(object):
+	E_TYPE_INVALID 				= 0
+	E_TYPE_TV 					= 1
+	E_TYPE_RADIO				= 2
+	E_TYPE_DATA					= 3
 
 
 
 class ElisEventBus(object):
 	def __init__(self):
 		self.listeners = []
-        
-	def register(self, listener, isfirst=False):
-		if isfirst:
+
+	def register(self, listener, addfirst=False):
+		if addfirst:
 			self.listeners.insert(0, listener)
 		else:
 			self.listeners.append(listener)

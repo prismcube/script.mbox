@@ -21,15 +21,18 @@ import xbmcgui
 import sys
 
 import pvr.gui.windowmgr as winmgr
-from pvr.gui.basewindow import BaseWindow
+from pvr.gui.basewindow import BaseWindow, setWindowBusy
 from pvr.gui.basewindow import Action
 from inspect import currentframe
+from pvr.util import catchall
+import pvr.elismgr
 
 
 
 class ChannelListWindow(BaseWindow):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
+		self.commander = pvr.elismgr.getCommander()		
 		print 'lael98 check %d %s' %(currentframe().f_lineno, currentframe().f_code.co_filename)    
 		print 'args=%s' % args[0]
 
@@ -39,7 +42,8 @@ class ChannelListWindow(BaseWindow):
 		
 		self.listcontrol = self.getControl( 50 )
 		self.listItems = []
-		
+
+		print 'ChannelListWindow lael98 before add list'		
 		for i in range(5000):
 			channelNumber = i+1
 			listItem = xbmcgui.ListItem("%04d Chanenl Name(%d)"%(channelNumber, channelNumber),"test", "-", "-", "-")
@@ -52,15 +56,22 @@ class ChannelListWindow(BaseWindow):
 		id = action.getId()
 	
 		if id == Action.ACTION_PREVIOUS_MENU:
-			print 'lael98 check action menu'
+			print 'ChannelListWindow lael98 check action menu'
 		elif id == Action.ACTION_SELECT_ITEM:
-			print 'lael98 check ation select'
+			print 'ChannelListWindow lael98 check ation select %d' %id
 		elif id == Action.ACTION_PARENT_DIR:
-			print 'lael98 check ation back'
+			print 'ChannelListWindow lael98 check ation back'
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )	
 
+
 	def onClick(self, controlId):
-		print "onclick(): control %d" % controlId
+		print "ChannelListWindow onclick(): control %d" % controlId	
+		if controlId == self.listcontrol.getId() :
+			print "ChannelListWindow onclick(): control %d" % controlId
+			print "ChannelListWindow getid=%d" %self.listcontrol.getId()
+			label = self.listcontrol.getSelectedItem().getLabel()
+			print "ChannelListWindow laebel=%s" %label[:4]
+			self.commander.setCurrentChannel( int(label[:4]) )
 
 	def onFocus(self, controlId):
 		print "onFocus(): control %d" % controlId

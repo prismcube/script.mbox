@@ -49,4 +49,31 @@ def run_async(func, *args, **kwargs):
 	worker.start()
 	return worker
 
+@decorator
+def catchall(func, *args, **kw):
+	try:
+		return func(*args, **kw)
+	except Exception, ex:
+		print 'CATCHALL: Caught exception %s on method %s' % (str(ex), func.__name__)
+
+
+@decorator
+def catchall_ui(func, *args, **kw):
+	try:
+		return func(*args, **kw)
+	except Exception, ex:
+		log.error(sys.exc_info())
+		log.exception('CATCHALL_UI: Caught %s exception %s on method %s' % (type(ex), str(ex), func.__name__))
+		msg1 = str(ex)
+		msg2 = ''
+		msg3 = ''
+		n = 45
+		if len(msg1) > n:
+			msg2 = msg1[n:]
+			msg1 = msg1[:n]
+		if len(msg2) > n:
+			msg3 = msg2[n:]
+			msg2 = msg2[:n]
+		xbmcgui.Dialog().ok('Error: %s' % func.__name__, msg1, msg2, msg3)
+
 

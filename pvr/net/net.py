@@ -6,7 +6,7 @@ from socket import *
 import string
 from pvr.net.SocketServer import *
 
-seperator = ':'
+separator = '[]:[]'
 
 
 class EventRequest( object ):
@@ -53,6 +53,10 @@ class EventRequest( object ):
 		reply =''
 		if msg.upper() == 'OK':
 			return 'OK'
+ 
+		if msg.upper() == 'KO':
+			return 'KO'
+			
 		
 		n = 0
 		if len(msg) > 0:
@@ -64,15 +68,18 @@ class EventRequest( object ):
 			reply += r.decode('utf-8')
 			i +=  len(r)
 
-		return reply.split(seperator)
+		return reply.split(separator)
 
 	def sendRequest( self, req ):
+		print 'lael98 check test 2'	
 		self.sendMsg( req )
+		print 'lael98 check test 3'		
 		reply = self.readMsg()
+		print 'lael98 check test 4'	
 		return reply
 
 	def makeFormat( self, req ):
-		msg = seperator.join( req )
+		msg = separator.join( req )
 		msg = msg.encode('utf-8')
 		return '%-8d%s' %( len(msg), msg )
 
@@ -84,6 +91,7 @@ class EventCommander( object ):
 		self.request = EventRequest( self.sock )
 
 	def command( self, cmd ):
+		print 'lael98 check test 1'
 		return self.request.sendRequest( cmd )
 
 	def close( self ):
@@ -92,7 +100,7 @@ class EventCommander( object ):
 
 class EventHandler( StreamRequestHandler ): pass
 
-class EventServer( TCPServer ): pass
+class EventServer( ThreadingTCPServer ): pass
 
 
 

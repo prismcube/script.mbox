@@ -27,6 +27,7 @@ from inspect import currentframe
 from pvr.bus import EventBus
 import pvr.elismgr
 import pvr.gui.windowmgr as windowmgr
+from pvr.util import run_async, hasPendingWorkers, waitForWorkersToDie
 		
 __launcher = None
 
@@ -58,7 +59,7 @@ class Launcher(object):
 					self.failure(ex)
 		finally:
 			print 'lael98 test shutdown'
-			self.shutdown()
+#			self.shutdown()
 
 	def failure(self, cause):
 		msg = 'Status:%s - Error: %s' % (self.status, cause)
@@ -69,10 +70,14 @@ class Launcher(object):
 		self.stage = 'Init ElisMgr'
 		pvr.elismgr.getInstance().run()
 		print 'test lael98'
+		self.commander = pvr.elismgr.getCommander()
+		self.commander.setElisReady()
+		"""
 		cmd = pvr.elismgr.ElisCommander(('localhost', 12345))
 		print 'test lael98----'
 		cmd.command( ['cmd_test 56', 'cmd_test2 57'] )
-		print 'test lael98----endcmd'
+		print 'test lael98----endcmd'
+		"""
 
 	def initWindowMgr(self):
 		pvr.gui.windowmgr.getInstance().showWindow( windowmgr.WIN_ID_NULLWINDOW )
@@ -81,10 +86,15 @@ class Launcher(object):
 		print '------------->shut down %d' %self.shutdowning
 		if not self.shutdowning:
 			self.shutdowning = True
-			print '------------->shut do %d' %self.shutdowning
+			print '------------->shut shutdowning=%d abortRequested=%d' %(self.shutdowning,xbmc.abortRequested)
+			
 			pvr.elismgr.getInstance().shutdown()
 			pvr.gui.windowmgr.getInstance().shutdown()
 			xbmc.executebuiltin('xbmc.ShutDown')
+
+			if hasPendingWorkers():
+				waitForWorkersToDie(10.0) # in seconds
+			
 			print '------------->shut do end'
 		print '<-------------shut down'
 

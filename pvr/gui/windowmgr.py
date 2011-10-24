@@ -23,7 +23,6 @@ import time
 
 from gui.basewindow import BaseWindow
 from inspect import currentframe
-from pvr.util import run_async, hasPendingWorkers, waitForWorkersToDie
 
 WIN_ID_NULLWINDOW 					= 1
 WIN_ID_MAINMENU 					= 2

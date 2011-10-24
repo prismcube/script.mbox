@@ -21,6 +21,7 @@ import xbmcgui
 import time
 import sys
 
+from decorator import decorator
 
 class Action(object):
 	ACTION_NONE					= 0
@@ -55,6 +56,15 @@ class Action(object):
 	ACTION_PLAYER_REWIND		= 78
 	ACTION_PLAYER_PLAY			= 79
 
+@decorator
+def setWindowBusy(func, *args, **kwargs):
+	window = args[0]
+	try:
+		window.setBusy(True)
+		result = func(*args, **kwargs)
+	finally:
+		window.setBusy(False)
+	return result
 
 
 class Property(object):
