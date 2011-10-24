@@ -40,7 +40,7 @@ class ChannelBanner(BaseWindow):
 		print 'args[1]=[%s]' % args[1]
 
 		self.lastFocusId = None
-		#test commit
+		#test commit tt
 
 	def onInit(self):
 		if not self.win:
