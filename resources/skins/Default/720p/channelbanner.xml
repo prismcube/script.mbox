@@ -2,13 +2,13 @@
 	<defaultcontrol always="true">602</defaultcontrol>
 	<controls>
 		<control type="group">
-			<animation effect="slide" start="0,345" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
-			<animation effect="slide" start="0,0" end="0,345" time="300" delay="150" tween="quadratic" easing="out">WindowClose</animation>
-			<animation effect="slide" start="0,0" end="0,345" time="300" tween="quadratic" easing="out" condition="Window.IsVisible(SliderDialog) | Window.IsVisible(OSDVideoSettings) | Window.IsVisible(OSDAudioSettings) | Window.IsVisible(VideoBookmarks)">Conditional</animation>
+			<animation effect="slide" start="0,320" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+			<animation effect="slide" start="0,0" end="0,320" time="300" delay="150" tween="quadratic" easing="out">WindowClose</animation>
+			<animation effect="slide" start="0,0" end="0,320" time="300" tween="quadratic" easing="out" condition="Window.IsVisible(SliderDialog) | Window.IsVisible(OSDVideoSettings) | Window.IsVisible(OSDAudioSettings) | Window.IsVisible(VideoBookmarks)">Conditional</animation>
 			<control type="image">
 				<description>media info background image</description>
 				<posx>0</posx>
-				<posy>345</posy>
+				<posy>320</posy>
 				<width>1280</width>
 				<height>256</height>
 				<texture>channelBanner\MediaInfoBackUpper.png</texture>
@@ -18,32 +18,49 @@
 <!-- info section -->			
 			<control type="group" id="200">
 				<posx>50</posx>
-				<posy>600</posy>
+				<posy>580</posy>
 
 				<control type="label" id="600">
-					<include>WindowTitleCommons</include>
+					<posx>0</posx>
+					<posy>30</posy>
+					<width>150</width>
+					<align>center</align>
+					<font>font30</font>
 					<label>CH 1004 $INFO[ChannelListWindow.onAction]</label>
 				</control>
 
+				<control type="image" id="604">
+					<posx>250</posx>
+					<posy>-10</posy>
+					<align>left</align>
+					<width>80</width>
+					<height>40</height>
+					<texture>channelBanner\tv.png</texture>
+				</control>
+
 				<control type="label" id="601">
-					<posx>120</posx>
+					<posx>250</posx>
+					<posy>30</posy>
 					<align>left</align>
 					<width>100</width>
-					<include>WindowTitleCommons</include>
-					<label>TV[CR]ANIXE HD</label>
-
+					<!--<include>WindowTitleCommons</include>-->
+					<font>font25</font>
+					<textcolor>FFB2D4F5</textcolor>
+					<label>ANIXE HD</label>
 				</control>
 
 				<control type="image" id="602">
 					<info>pcm/ac3</info>
-					<posx>700</posx>
-					<posy>-10</posy>
+					<posx>800</posx>
+					<width>90</width>
+					<height>40</height>
 					<texture>channelBanner\dolbydigital.png</texture>
 				</control>
 
 				<control type="image" id="603">
-					<posx>850</posx>
-					<posy>-10</posy>
+					<posx>900</posx>
+					<width>90</width>
+					<height>40</height>
 					<texture>OverlayHD.png</texture>
 				</control>
 
@@ -53,16 +70,21 @@
 <!-- epg section -->			
 			<control type="group" id="100">
 				<posx>50</posx>
-				<posy>640</posy>
+				<posy>665</posy>
 				
 				<control type="label" id="701">
-					<include>WindowTitleCommons</include>
+					<posx>0</posx>
+					<posy>-20</posy>
+					<width>150></width>
+					<!--<include>WindowTitleCommons</include>-->
+					<font>font20</font>
 					<align>center</align>
-					<label>Tout</label>
+					<textcolor>9f9f9f9b</textcolor>
+					<label>19.2 E ASTR...</label>
 				</control>
 				
 				<control type="button" id="702">
-					<posx>120</posx>
+					<posx>250</posx>
 					<posy>0</posy>
 					<width>50</width>
 					<height>50</height>
@@ -78,25 +100,27 @@
 				</control>
 
 				<control type="label" id="703">
-					<posx>180</posx>
+					<posx>290</posx>
 					<posy>10</posy>
 					<description>name</description>
+					<textcolor>9f9c9f9b</textcolor>
 					<label>'watching name'</label>
 				</control>
 
 				<control type="label" id="704">
-					<posx>710</posx>
+					<posx>810</posx>
 					<posy>10</posy>
 					<description>start time</description>
+					<font>font12</font>
 					<label>00:00:00</label>
 				</control>
 
 
 				<control type="image" id="11">
 					<description>separator image</description>
-					<posx>800</posx>
+					<posx>880</posx>
 					<posy>20</posy>
-					<width>200</width>
+					<width>150</width>
 					<hight>1</hight>
 					<colordiffuse>66FFFFFF</colordiffuse>
 					<texture>channelBanner\separator2.png</texture>
@@ -117,14 +141,15 @@
 				</control>
 -->
 				<control type="label" id="705">
-					<posx>1000</posx>
+					<posx>1030</posx>
 					<posy>10</posy>
 					<description>end time</description>
+					<font>font12</font>
 					<label>00:00:50</label>
 				</control>
 
 				<control type="button" id="706">
-					<posx>1140</posx>
+					<posx>1110</posx>
 					<posy>0</posy>
 					<align>right</align>
 					<width>50</width>
