@@ -49,6 +49,7 @@ class NullWindow(BaseWindow):
 			pvr.launcher.getInstance().shutdown()
 		elif id == Action.ACTION_SELECT_ITEM:
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
+#			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )
 			print 'lael98 check ation select'
 		else:
 			print 'lael98 check ation unknown id=%d' %id

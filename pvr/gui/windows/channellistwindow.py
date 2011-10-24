@@ -25,6 +25,10 @@ from pvr.gui.basewindow import BaseWindow
 from pvr.gui.basewindow import Action
 from inspect import currentframe
 
+import logging
+
+log = logging.getLogger('mythbox.ui')
+mlog = logging.getLogger('mythbox.method')
 
 
 class ChannelListWindow(BaseWindow):
@@ -32,6 +36,7 @@ class ChannelListWindow(BaseWindow):
 		BaseWindow.__init__(self, *args, **kwargs)
 		print 'lael98 check %d %s' %(currentframe().f_lineno, currentframe().f_code.co_filename)    
 		print 'args=%s' % args[0]
+
 
 	def onInit(self):
 		if not self.win:
@@ -49,20 +54,44 @@ class ChannelListWindow(BaseWindow):
 
 
 	def onAction(self, action):
+		ctl = None
+		try:
+			ctl = self.getFocus()
+		except:
+			pass
+
+		actionConsumed = False
+		
 		id = action.getId()
-	
+		
 		if id == Action.ACTION_PREVIOUS_MENU:
 			print 'lael98 check action menu'
 		elif id == Action.ACTION_SELECT_ITEM:
-			print 'lael98 check ation select'
+			print '<<<<< test youn: action ID[%s]' % id
+			log.debug('<<<<< test youn: action ID[%s]' % id)
+			print 'tv_guide_last_selected[%s]' % action.getId()
+			
+			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )	
+
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'lael98 check ation back'
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )	
+			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )				
+
+		else: log.debug('Unconsumed key: %s' % action.getId())
+
+
+        
+		if not actionConsumed and ctl:
+			self.prevFocus = ctl
+        
+
 
 	def onClick(self, controlId):
 		print "onclick(): control %d" % controlId
 
+
 	def onFocus(self, controlId):
 		print "onFocus(): control %d" % controlId
+
 
 
