@@ -22,7 +22,7 @@
 
 				<control type="label" id="600">
 					<include>WindowTitleCommons</include>
-					<label>CH 1004 $INFO[ListItem.channelNumber]</label>
+					<label>CH 1004 $INFO[ChannelListWindow.onAction]</label>
 				</control>
 
 				<control type="label" id="601">
