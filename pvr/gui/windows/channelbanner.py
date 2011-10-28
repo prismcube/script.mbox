@@ -24,7 +24,9 @@ import pvr.gui.windowmgr as winmgr
 from pvr.gui.basewindow import BaseWindow
 from pvr.gui.basewindow import Action
 from inspect import currentframe
+
 import pvr.elismgr
+from pvr.net.net import EventServer, EventHandler, EventRequest
 
 import logging
 
@@ -59,7 +61,8 @@ class ChannelBanner(BaseWindow):
 		self.ctrlChannelName = self.getControl( 601 )
 		self.ctrlEventName = self.getControl( 703 )
 
-		print 'current channel[%s]' % self.currentChannel[0]
+		#EventRequest( self.request )
+		
 		print 'ChannelBanner #1'
 		if( self.currentChannel[0] == 'NULL' ) :
 			print 'has no channel'

@@ -32,15 +32,15 @@
 
 				<control type="label" id="600">
 					<posx>0</posx>
-					<posy>20</posy>
-					<width>150</width>
+					<posy>10</posy>
+					<width>200</width>
 					<height>50</height>
 					<align>center</align>
 					<font>font45caps_title</font>
 					<label>$INFO[Control.GetLabel]</label>
 				</control>
 				<control type="image" id="604">
-					<posx>195</posx>
+					<posx>245</posx>
 					<posy>-15</posy>
 					<align>left</align>
 					<width>70</width>
@@ -48,7 +48,7 @@
 					<texture>channelBanner\tv.png</texture>
 				</control>
 				<control type="label" id="601">
-					<posx>200</posx>
+					<posx>250</posx>
 					<posy>20</posy>
 					<align>left</align>
 					<width>500</width>
@@ -86,16 +86,16 @@
 				<control type="label" id="701">
 					<posx>0</posx>
 					<posy>10</posy>
-					<width>150></width>
+					<width>200></width>
 					<!--<include>WindowTitleCommons</include>-->
 					<font>font20</font>
 					<align>center</align>
 					<textcolor>9f9f9f9b</textcolor>
-					<label>19.2 E ASTR...</label>
+					<label>19.2 E ASTREEE</label>
 				</control>
 				 
 				<control type="button" id="702">
-					<posx>200</posx>
+					<posx>250</posx>
 					<posy>0</posy>
 					<width>40</width>
 					<height>40</height>
@@ -111,7 +111,7 @@
 				</control>
 
 				<control type="label" id="703">
-					<posx>240</posx>
+					<posx>290</posx>
 					<posy>5</posy>
 					<width>400</width>
 					<description>name</description>
