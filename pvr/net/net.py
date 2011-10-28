@@ -65,7 +65,8 @@ class EventRequest( object ):
 		i = 0
 		while i < n:
 			r = self.recvall( n - i)
-			reply += r.decode('utf-8')
+#			reply += r.decode('utf-8')
+			reply += r
 			i +=  len(r)
 
 		return reply.split(separator)
@@ -93,6 +94,13 @@ class EventCommander( object ):
 	def command( self, cmd ):
 		print 'lael98 check test 1'
 		return self.request.sendRequest( cmd )
+
+	def send( self, req ):
+		return self.request.sendMsg( req )
+
+	def read( self ):
+		return self.request.readMsg()	
+		
 
 	def close( self ):
 		self.sock.close()

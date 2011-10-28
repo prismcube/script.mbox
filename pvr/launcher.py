@@ -70,7 +70,7 @@ class Launcher(object):
 		self.stage = 'Init ElisMgr'
 		pvr.elismgr.getInstance().run()
 		print 'test lael98'
-		self.commander = pvr.elismgr.getCommander()
+		self.commander = pvr.elismgr.getInstance().getCommander()
 		self.commander.setElisReady()
 		"""
 		cmd = pvr.elismgr.ElisCommander(('localhost', 12345))

@@ -3,8 +3,10 @@ import datetime
 import socket
 import time
 from pvr.util import run_async
-from pvr.net.net import EventServer, EventHandler, EventCommander, EventRequest
+from pvr.eliscommander import ElisCommander
+from pvr.net.net import EventServer, EventHandler, EventRequest
 from pvr.elisevent import ElisEventBus, ElisAction, ElisEnum
+import pvr.net.netconfig as netconfig
 import threading
 import select
 
@@ -12,8 +14,6 @@ import select
 __elismgr = None
 __commander = None
 
-targetIp	= '192.168.101.67'
-myIp		= '192.168.101.69'
 
 def getInstance():
 	global __elismgr
@@ -25,42 +25,6 @@ def getInstance():
 
 	return __elismgr
 
-
-def getCommander():
-	global __commander
-	if not __commander:
-		print 'lael98 check create instance'
-		__commander = ElisCommander( (targetIp, 12345) )
-	else:
-		print 'lael98 check already windowmgr is created'
-
-	return __commander
-
-
-class ElisCommander( EventCommander ): 
-	"""
-	args ['Command', 'ipAddress']
-	retuns ['OK'] or ['KO']
-	"""
-	def setElisReady( self ) :
-		req = []
-		req.append( ElisAction.ElisReady )
-		req.append( myIp )
-		reply = self.command( req )
-		print reply
-
-	"""
-	args ['Command', 'ChannelNumber', 'ServiceType']
-	retuns ['OK'] or ['KO']
-	"""
-	def setCurrentChannel( self, number ):
-		req = []
-		req.append( ElisAction.SetCurrentChannel )
-		req.append( '%d' %number )
-		req.append( '%d' %ElisEnum.E_TYPE_TV )
-		print req
-		reply = self.command( req )
-		print reply
 
 class ElisEventHandler( EventHandler ):
 	def handle( self ):
@@ -84,7 +48,6 @@ class ElisEventHandler( EventHandler ):
 			event = request.readMsg()
 			self.doEvent( event )
 			print 'handle end --->!!!!!!!!!!!!!!!!!'
-#			request.sendMsg(['OK'])
 	
 
 	def doEvent( self, event ):
@@ -101,7 +64,12 @@ class ElisMgr( object ):
 	def __init__( self ):
 		print 'lael98 check ElisMgr init'
 		self.shutdowning = False
-		self.receiver = ElisEventRecevier(('', 54321), ElisEventHandler )
+		self.receiver = ElisEventRecevier(('', netconfig.receiverPort), ElisEventHandler )
+		self.commander = ElisCommander( (netconfig.targetIp, netconfig.commanderPort) )		
+
+	def getCommander( self ):
+		return self.commander
+	
 
 	@run_async
 	def run( self ):
