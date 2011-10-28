@@ -56,7 +56,7 @@
 					<!--<include>WindowTitleCommons</include>-->
 					<font>font25</font>
 					<textcolor>FFB2D4F5</textcolor>
-					<label>$INFO[Control.GetLabel()]</label>
+					<label>$INFO[Control.GetLabel]</label>
 				</control>
 
 				<control type="image" id="602">
@@ -114,7 +114,7 @@
 					<posy>10</posy>
 					<description>name</description>
 					<textcolor>9f9c9f9b</textcolor>
-					<label>$Control.GetLabel()</label>
+					<label>$INFO[Control.GetLabel]</label>
 				</control>
 
 				<control type="label" id="704">

@@ -55,11 +55,11 @@ class ChannelBanner(BaseWindow):
 
 		self.currentChannel = self.commander.getCurrentChannel()
 
-		print 'current channel[%s]' % self.currentChannel
 		self.ctrlChannelNumber = self.getControl( 600 )
 		self.ctrlChannelName = self.getControl( 601 )
 		self.ctrlEventName = self.getControl( 703 )
 
+		print 'current channel[%s]' % self.currentChannel[0]
 		print 'ChannelBanner #1'
 		if( self.currentChannel[0] == 'NULL' ) :
 			print 'has no channel'
@@ -68,7 +68,7 @@ class ChannelBanner(BaseWindow):
 			# show message box : has no channnel
 		else :
 			print 'ChannelBanner #3'		
-			self.ctrlChannelNumber.setLabel( '%s', int(self.currentChannel[1]) )
+			self.ctrlChannelNumber.setLabel( self.currentChannel[1] )
 			self.ctrlChannelName.setLabel( self.currentChannel[2] )
 			self.ctrlEventName.setLabel('no event')
 		
