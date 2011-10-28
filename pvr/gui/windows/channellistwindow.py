@@ -50,12 +50,13 @@ class ChannelListWindow(BaseWindow):
 		self.listcontrol = self.getControl( 50 )
 		self.listcontrol.addItems( self.listItems )
 
-		self.currentChannel = self.commander.getCurrentChannel()
+		current = self.commander.getCurrentChannel()
+		self.currentChannel = int(current[0])
 
 		chindex = 0;
-		if self.currentChannel[0].upper() != 'NULL' and int(self.currentChannel[0]) > 0 :
+		if self.currentChannel > 0 :
 			for ch in self.channelList:
-				if int(ch[0]) == self.currentChannel[0] :
+				if int(ch[0]) == self.currentChannel :
 					break
 				chindex += 1
 

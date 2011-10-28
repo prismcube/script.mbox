@@ -6,7 +6,7 @@ import pvr.net.netconfig as netconfig
 
 class ElisCommander( EventCommander ): 
 	"""
-	args ['Command', 'ipAddress']
+	request ['Command', 'ipAddress']
 	retuns ['TRUE'] or ['FALSE']
 	"""
 	def setElisReady( self ) :
@@ -17,7 +17,7 @@ class ElisCommander( EventCommander ):
 		return reply
 
 	"""
-	args ['Command', 'ChannelNumber', 'ServiceType']
+	request ['Command', 'ChannelNumber', 'ServiceType']
 	retuns ['TRUE'] or ['FALSE']
 	"""
 	def setCurrentChannel( self, number ):
@@ -29,7 +29,7 @@ class ElisCommander( EventCommander ):
 		return reply
 
 	"""
-	args ['Command']
+	request ['Command']
 	retuns [channel] or ['NULL']
 	"""
 	def getCurrentChannel( self ):
@@ -37,10 +37,29 @@ class ElisCommander( EventCommander ):
 		req.append( ElisAction.GetCurrentChannel )
 		reply = self.command( req )	
 		return reply
-		
 
 	"""
-	args ['Command', 'ServiceType', 'ZappingMode', 'SortingMode']
+	request ['Command']
+	retuns [channel] or ['NULL']
+	"""
+	def GetPrevChannel( self ):
+		req = []
+		req.append( ElisAction.GetPrevChannel )
+		reply = self.command( req )	
+		return reply
+
+	"""
+	request ['Command']
+	retuns [channel] or ['NULL']
+	"""
+	def GetNextChannel( self ):
+		req = []
+		req.append( ElisAction.GetNextChannel )
+		reply = self.command( req )	
+		return reply
+
+	"""
+	request ['Command', 'ServiceType', 'ZappingMode', 'SortingMode']
 	retuns [ChannelList] or ['NULL']
 	channel[Number, PresentationNumber, Name, ServiceType, Locked, IsCA, IsHD ]
 	"""
@@ -58,7 +77,7 @@ class ElisCommander( EventCommander ):
 			channelList.append( reply )
 
 	"""
-	args ['Command']
+	request ['Command']
 	retuns [EPG] or ['NULL']
 	"""
 	def getPresentEvent( self ):
@@ -68,7 +87,7 @@ class ElisCommander( EventCommander ):
 		return reply
 
 	"""
-	args ['Command']
+	request ['Command']
 	retuns [EPG] or ['NULL']
 	"""
 	def getFollowingEvent( self ):
@@ -78,7 +97,7 @@ class ElisCommander( EventCommander ):
 		return reply
 
 	"""
-	args ['Command', 'eventId', 'sid', 'tsid', 'onid', 'startTime]
+	request ['Command', 'eventId', 'sid', 'tsid', 'onid', 'startTime]
 	retuns [EPG] or ['NULL']
 	"""
 	def getGetEvent( self, eventId, sid, tsid, onid, startTime):
@@ -93,7 +112,7 @@ class ElisCommander( EventCommander ):
 		return reply
 
 	"""
-	args ['Command']
+	request ['Command']
 	retuns [EPG] or ['NULL']
 	"""
 	def getGetEventList( self, sid, tsid, onid, gmtForm, gmtUntil, maxCount, epgList):
