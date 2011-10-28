@@ -71,7 +71,7 @@ class ChannelBanner(BaseWindow):
 			self.ctrlChannelNumber.setLabel( self.currentChannel[1] )
 			self.ctrlChannelName.setLabel( self.currentChannel[2] )
 			self.ctrlEventName.setLabel('no event')
-		
+	
 
 	def onAction(self, action):
 		id = action.getId()
@@ -101,5 +101,10 @@ class ChannelBanner(BaseWindow):
 
 	def onEvent(self, event):
 		print 'ChannelBanner =%s' %event
+
+		if not event[2]:		
+			self.ctrlEventName.setLabel('no name')
+		else:
+			self.ctrlEventName.setLabel(event[2])
 
 
