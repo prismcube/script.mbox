@@ -39,10 +39,6 @@ class ChannelListWindow(BaseWindow):
 		self.listItems = []
 		self.commander.getChannelList( ElisEnum.E_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_DEFAULT, self.channelList )
 
-		current = self.commander.getCurrentChannel()
-		if current[0].upper() != 'NULL' :
-			self.currentChannel = int(current[0])
-
 		for ch in self.channelList:
 			listItem = xbmcgui.ListItem("%04d %s"%( int(ch[0]), ch[2]),"-", "-", "-", "-")
 			self.listItems.append(listItem)
@@ -54,10 +50,12 @@ class ChannelListWindow(BaseWindow):
 		self.listcontrol = self.getControl( 50 )
 		self.listcontrol.addItems( self.listItems )
 
+		self.currentChannel = self.commander.getCurrentChannel()
+
 		chindex = 0;
-		if self.currentChannel > 0 :
+		if self.currentChannel[0].upper() != 'NULL' and int(self.currentChannel[0]) > 0 :
 			for ch in self.channelList:
-				if int(ch[0]) == self.currentChannel :
+				if int(ch[0]) == self.currentChannel[0] :
 					break
 				chindex += 1
 
