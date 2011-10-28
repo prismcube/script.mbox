@@ -33,7 +33,7 @@ class ElisEventHandler( EventHandler ):
 		print "lael98 check threadname %s" % cur_thread.getName()
 
 		request = EventRequest( self.request )
-		self.bus = ElisEventBus()
+		self.bus = getInstance().getEventBus()
 		
 		while 1:
 			print 'handle --->!!!!!!!!!!!!!!!!!'
@@ -64,11 +64,15 @@ class ElisMgr( object ):
 	def __init__( self ):
 		print 'lael98 check ElisMgr init'
 		self.shutdowning = False
+		self.eventBus = ElisEventBus()
 		self.receiver = ElisEventRecevier(('', netconfig.receiverPort), ElisEventHandler )
 		self.commander = ElisCommander( (netconfig.targetIp, netconfig.commanderPort) )		
 
 	def getCommander( self ):
 		return self.commander
+
+	def getEventBus( self ):
+		return self.eventBus
 	
 
 	@run_async

@@ -24,7 +24,7 @@ import pvr.gui.windowmgr as winmgr
 from pvr.gui.basewindow import BaseWindow
 from pvr.gui.basewindow import Action
 from inspect import currentframe
-
+import pvr.elismgr
 
 import logging
 
@@ -40,11 +40,37 @@ class ChannelBanner(BaseWindow):
 		print 'args[1]=[%s]' % args[1]
 
 		self.lastFocusId = None
+		self.eventBus = pvr.elismgr.getInstance().getEventBus()
+		self.eventBus.register( self )
+		self.commander = pvr.elismgr.getInstance().getCommander()
+
+		self.currentChannel=[]
+		
 		#push push test test
 
 	def onInit(self):
+		print 'ChannelBanner #0'	
 		if not self.win:
 			self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
+
+		self.currentChannel = self.commander.getCurrentChannel()
+
+		print 'current channel[%s]' % self.currentChannel
+		self.ctrlChannelNumber = self.getControl( 600 )
+		self.ctrlChannelName = self.getControl( 601 )
+		self.ctrlEventName = self.getControl( 703 )
+
+		print 'ChannelBanner #1'
+		if( self.currentChannel[0] == 'NULL' ) :
+			print 'has no channel'
+			print 'ChannelBanner #2'			
+			# todo 
+			# show message box : has no channnel
+		else :
+			print 'ChannelBanner #3'		
+			self.ctrlChannelNumber.setLabel( '%s', int(self.currentChannel[1]) )
+			self.ctrlChannelName.setLabel( self.currentChannel[2] )
+			self.ctrlEventName.setLabel('no event')
 		
 
 	def onAction(self, action):
@@ -72,5 +98,8 @@ class ChannelBanner(BaseWindow):
 
 	def onFocus(self, controlId):
 		print "onFocus(): control %d" % controlId
+
+	def onEvent(self, event):
+		print 'ChannelBanner =%s' %event
 
 
