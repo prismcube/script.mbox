@@ -121,33 +121,19 @@ class ChannelBanner(BaseWindow):
 	
 
 	def fun_timeData(self, startTime, duration):
-#			startTime = int(_startTime)
-#			duration = int(_duration)
-#			startTime = event[6]
-#			duration = event[7]
-
-			i=0
 			print '<<<<<<<< startTime[%s] duration[%s]'% (startTime, duration)
 			timezone_sec = 8 * 3600
 			
-			print 'check point 1'
 			startTime_hh = time.strftime('%H', time.localtime(startTime - timezone_sec))
-			print 'check point 2'
 			startTime_mm = time.strftime('%M', time.localtime(startTime - timezone_sec))
-			print 'check point 3'
 			endTime_hh = time.strftime('%H', time.localtime((startTime+duration) - timezone_sec))
-			print 'check point 4'
 			endTime_mm = time.strftime('%M', time.localtime((startTime+duration) - timezone_sec))
-			print 'check point 5'
 
 			str_startTime = str ('%02s:%02s'% (startTime_hh,startTime_mm) )
-			print 'check point 6'
 			str_endTime = str ('%02s:%02s'% (endTime_hh,endTime_mm) )
-			print 'check point 7'
 
 			self.ctrlEventStartTime.setLabel(str_startTime)
-			print 'check point 8'
 			self.ctrlEventEndTime.setLabel(str_endTime)
-			print 'check point 9'
+
 
 
