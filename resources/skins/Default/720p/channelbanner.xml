@@ -120,11 +120,11 @@
 				</control>
 
 				<control type="label" id="704">
-					<posx>700</posx>
+					<posx>725</posx>
 					<posy>5</posy>
 					<description>start time</description>
 					<font>font20</font>
-					<label>00:00:00</label>
+					<label>$INFO[Control.GetLabel]</label>
 				</control>
 
 
@@ -157,7 +157,7 @@
 					<posy>5</posy>
 					<description>end time</description>
 					<font>font20</font>
-					<label>00:00:50</label>
+					<label>$INFO[Control.GetLabel]</label>
 				</control>
 
 				<control type="button" id="706">

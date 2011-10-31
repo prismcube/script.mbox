@@ -19,6 +19,7 @@
 import xbmc
 import xbmcgui
 import sys
+import time
 
 import pvr.gui.windowmgr as winmgr
 from pvr.gui.basewindow import BaseWindow
@@ -26,7 +27,7 @@ from pvr.gui.basewindow import Action
 from inspect import currentframe
 
 import pvr.elismgr
-from pvr.net.net import EventServer, EventHandler, EventRequest
+#from pvr.net.net import EventServer, EventHandler, EventRequest
 
 import logging
 
@@ -47,7 +48,7 @@ class ChannelBanner(BaseWindow):
 		self.commander = pvr.elismgr.getInstance().getCommander()
 
 		self.currentChannel=[]
-		
+
 		#push push test test
 
 	def onInit(self):
@@ -60,9 +61,9 @@ class ChannelBanner(BaseWindow):
 		self.ctrlChannelNumber = self.getControl( 600 )
 		self.ctrlChannelName = self.getControl( 601 )
 		self.ctrlEventName = self.getControl( 703 )
+		self.ctrlEventStartTime = self.getControl( 704 )
+		self.ctrlEventEndTime = self.getControl( 705 )
 
-		#EventRequest( self.request )
-		
 		print 'ChannelBanner #1'
 		if( self.currentChannel[0] == 'NULL' ) :
 			print 'has no channel'
@@ -73,8 +74,11 @@ class ChannelBanner(BaseWindow):
 			print 'ChannelBanner #3'		
 			self.ctrlChannelNumber.setLabel( self.currentChannel[1] )
 			self.ctrlChannelName.setLabel( self.currentChannel[2] )
-			self.ctrlEventName.setLabel('no event')
-	
+			self.ctrlEventName.setLabel('')
+			self.ctrlEventStartTime.setLabel('00:00')
+			self.ctrlEventEndTime.setLabel('00:00')
+			
+
 
 	def onAction(self, action):
 		id = action.getId()
@@ -109,5 +113,41 @@ class ChannelBanner(BaseWindow):
 			self.ctrlEventName.setLabel('no name')
 		else:
 			self.ctrlEventName.setLabel(event[2])
+
+		if not event[6]: pass
+		else:
+			print 'event6[%s] event7[%s]'% (event[6], event[7])
+			self.fun_timeData(int(event[6]), int(event[7]))
+	
+
+	def fun_timeData(self, startTime, duration):
+#			startTime = int(_startTime)
+#			duration = int(_duration)
+#			startTime = event[6]
+#			duration = event[7]
+
+			i=0
+			print '<<<<<<<< startTime[%s] duration[%s]'% (startTime, duration)
+			timezone_sec = 8 * 3600
+			
+			print 'check point 1'
+			startTime_hh = time.strftime('%H', time.localtime(startTime - timezone_sec))
+			print 'check point 2'
+			startTime_mm = time.strftime('%M', time.localtime(startTime - timezone_sec))
+			print 'check point 3'
+			endTime_hh = time.strftime('%H', time.localtime((startTime+duration) - timezone_sec))
+			print 'check point 4'
+			endTime_mm = time.strftime('%M', time.localtime((startTime+duration) - timezone_sec))
+			print 'check point 5'
+
+			str_startTime = str ('%02s:%02s'% (startTime_hh,startTime_mm) )
+			print 'check point 6'
+			str_endTime = str ('%02s:%02s'% (endTime_hh,endTime_mm) )
+			print 'check point 7'
+
+			self.ctrlEventStartTime.setLabel(str_startTime)
+			print 'check point 8'
+			self.ctrlEventEndTime.setLabel(str_endTime)
+			print 'check point 9'
 
 
