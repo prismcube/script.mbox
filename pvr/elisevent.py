@@ -1,6 +1,6 @@
 
 #Channel :  [Number, PresentationNumber, Name, ServiceType, Locked, IsCA, IsHD]
-#EPG : [ElisName, EventId, EventName, Sid, Tsid, Onid, StartTime, Duration, ContentTag, Components, IsSeries, HasTimer, TimerId, AgeRating ]
+#EPG : [ EventId, EventName, Sid, Tsid, Onid, StartTime, Duration, ContentTag, Components, IsSeries, HasTimer, TimerId, AgeRating ]
 #EPG_Description : [EventId, Description ]
 #Satellite  : [Longitude, Band, Name]
 #Transponder : [Frequency, Symbolrate, Polarization, FECMode, Tsid, Onid, Nid]
