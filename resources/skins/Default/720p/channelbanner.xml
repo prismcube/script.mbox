@@ -32,43 +32,44 @@
 
 				<control type="label" id="600">
 					<posx>0</posx>
-					<posy>30</posy>
-					<width>150</width>
+					<posy>10</posy>
+					<width>200</width>
+					<height>50</height>
 					<align>center</align>
-					<font>font30</font>
-					<label>$INFO[Label]</label>
+					<font>font45caps_title</font>
+					<label>$INFO[Control.GetLabel]</label>
 				</control>
-
 				<control type="image" id="604">
-					<posx>240</posx>
-					<posy>-10</posy>
+					<posx>245</posx>
+					<posy>-15</posy>
 					<align>left</align>
 					<width>70</width>
 					<height>30</height>
 					<texture>channelBanner\tv.png</texture>
 				</control>
-
 				<control type="label" id="601">
 					<posx>250</posx>
-					<posy>30</posy>
+					<posy>20</posy>
 					<align>left</align>
-					<width>100</width>
+					<width>500</width>
 					<!--<include>WindowTitleCommons</include>-->
-					<font>font25</font>
+					<font>font35caps_title</font>
 					<textcolor>FFB2D4F5</textcolor>
 					<label>$INFO[Control.GetLabel]</label>
 				</control>
 
 				<control type="image" id="602">
 					<info>pcm/ac3</info>
-					<posx>800</posx>
+					<posx>700</posx>
+					<posy>-15</posy>
 					<width>90</width>
 					<height>40</height>
 					<texture>channelBanner\dolbydigital.png</texture>
 				</control>
 
 				<control type="image" id="603">
-					<posx>900</posx>
+					<posx>800</posx>
+					<posy>-15</posy>
 					<width>90</width>
 					<height>40</height>
 					<texture>OverlayHD.png</texture>
@@ -84,13 +85,13 @@
 				
 				<control type="label" id="701">
 					<posx>0</posx>
-					<posy>0</posy>
-					<width>150></width>
+					<posy>10</posy>
+					<width>200></width>
 					<!--<include>WindowTitleCommons</include>-->
 					<font>font20</font>
 					<align>center</align>
 					<textcolor>9f9f9f9b</textcolor>
-					<label>19.2 E ASTR...</label>
+					<label>19.2 E ASTREEE</label>
 				</control>
 				 
 				<control type="button" id="702">
@@ -111,26 +112,27 @@
 
 				<control type="label" id="703">
 					<posx>290</posx>
-					<posy>10</posy>
+					<posy>5</posy>
+					<width>400</width>
 					<description>name</description>
 					<textcolor>9f9c9f9b</textcolor>
 					<label>$INFO[Control.GetLabel]</label>
 				</control>
 
 				<control type="label" id="704">
-					<posx>810</posx>
-					<posy>10</posy>
+					<posx>725</posx>
+					<posy>5</posy>
 					<description>start time</description>
-					<font>font12</font>
-					<label>00:00:00</label>
+					<font>font20</font>
+					<label>$INFO[Control.GetLabel]</label>
 				</control>
 
 
 				<control type="image" id="11">
 					<description>separator image</description>
-					<posx>880</posx>
-					<posy>20</posy>
-					<width>150</width>
+					<posx>780</posx>
+					<posy>15</posy>
+					<width>250</width>
 					<hight>1</hight>
 					<colordiffuse>66FFFFFF</colordiffuse>
 					<texture>channelBanner\separator2.png</texture>
@@ -152,10 +154,10 @@
 -->
 				<control type="label" id="705">
 					<posx>1030</posx>
-					<posy>10</posy>
+					<posy>5</posy>
 					<description>end time</description>
-					<font>font12</font>
-					<label>00:00:50</label>
+					<font>font20</font>
+					<label>$INFO[Control.GetLabel]</label>
 				</control>
 
 				<control type="button" id="706">

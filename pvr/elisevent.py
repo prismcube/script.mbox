@@ -97,7 +97,7 @@ class ElisEnum(object):
 	E_HasHDVideo 					= 1 << 0
 	E_Has16_9Video					= 1 << 1
 	E_HasStereoAudio				= 1 << 2
-	E_mHasMultichannelAudio			= 1 << 3	
+	E_mHasMultichannelAudio			= 1 << 3
 	E_mHasDolbyDigital				= 1 << 4
 	E_mHasSubtitles					= 1 << 5
 	E_mHasHardOfHearingAudio		= 1 << 6

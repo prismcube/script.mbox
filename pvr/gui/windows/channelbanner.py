@@ -19,12 +19,15 @@
 import xbmc
 import xbmcgui
 import sys
+import time
 
 import pvr.gui.windowmgr as winmgr
 from pvr.gui.basewindow import BaseWindow
 from pvr.gui.basewindow import Action
 from inspect import currentframe
+
 import pvr.elismgr
+#from pvr.net.net import EventServer, EventHandler, EventRequest
 
 import logging
 
@@ -45,7 +48,7 @@ class ChannelBanner(BaseWindow):
 		self.commander = pvr.elismgr.getInstance().getCommander()
 
 		self.currentChannel=[]
-		
+
 		#push push test test
 
 	def onInit(self):
@@ -58,8 +61,9 @@ class ChannelBanner(BaseWindow):
 		self.ctrlChannelNumber = self.getControl( 600 )
 		self.ctrlChannelName = self.getControl( 601 )
 		self.ctrlEventName = self.getControl( 703 )
+		self.ctrlEventStartTime = self.getControl( 704 )
+		self.ctrlEventEndTime = self.getControl( 705 )
 
-		print 'current channel[%s]' % self.currentChannel[0]
 		print 'ChannelBanner #1'
 		if( self.currentChannel[0] == 'NULL' ) :
 			print 'has no channel'
@@ -70,8 +74,11 @@ class ChannelBanner(BaseWindow):
 			print 'ChannelBanner #3'		
 			self.ctrlChannelNumber.setLabel( self.currentChannel[1] )
 			self.ctrlChannelName.setLabel( self.currentChannel[2] )
-			self.ctrlEventName.setLabel('no event')
-		
+			self.ctrlEventName.setLabel('')
+			self.ctrlEventStartTime.setLabel('00:00')
+			self.ctrlEventEndTime.setLabel('00:00')
+			
+
 
 	def onAction(self, action):
 		id = action.getId()
@@ -101,5 +108,32 @@ class ChannelBanner(BaseWindow):
 
 	def onEvent(self, event):
 		print 'ChannelBanner =%s' %event
+
+		if not event[2]:		
+			self.ctrlEventName.setLabel('no name')
+		else:
+			self.ctrlEventName.setLabel(event[2])
+
+		if not event[6]: pass
+		else:
+			print 'event6[%s] event7[%s]'% (event[6], event[7])
+			self.fun_timeData(int(event[6]), int(event[7]))
+	
+
+	def fun_timeData(self, startTime, duration):
+			print '<<<<<<<< startTime[%s] duration[%s]'% (startTime, duration)
+			timezone_sec = 8 * 3600
+			
+			startTime_hh = time.strftime('%H', time.localtime(startTime - timezone_sec))
+			startTime_mm = time.strftime('%M', time.localtime(startTime - timezone_sec))
+			endTime_hh = time.strftime('%H', time.localtime((startTime+duration) - timezone_sec))
+			endTime_mm = time.strftime('%M', time.localtime((startTime+duration) - timezone_sec))
+
+			str_startTime = str ('%02s:%02s'% (startTime_hh,startTime_mm) )
+			str_endTime = str ('%02s:%02s'% (endTime_hh,endTime_mm) )
+
+			self.ctrlEventStartTime.setLabel(str_startTime)
+			self.ctrlEventEndTime.setLabel(str_endTime)
+
 
 
