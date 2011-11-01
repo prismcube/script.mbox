@@ -53,7 +53,7 @@ class ChannelBanner(BaseWindow):
 		if not self.win:
 			self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
 
-		self.currentChannel = self.commander.getCurrentChannel()
+		self.currentChannel = self.commander.channel_GetCurrent()
 
 		self.ctrlChannelNumber = self.getControl( 600 )
 		self.ctrlChannelName = self.getControl( 601 )
