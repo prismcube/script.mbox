@@ -126,8 +126,7 @@
 					<font>font20</font>
 					<label>$INFO[Control.GetLabel]</label>
 				</control>
-
-
+<!--
 				<control type="image" id="11">
 					<description>separator image</description>
 					<posx>780</posx>
@@ -137,21 +136,15 @@
 					<colordiffuse>66FFFFFF</colordiffuse>
 					<texture>channelBanner\separator2.png</texture>
 				</control>
-<!--
-				<control type="label">
-					<posx>1260</posx>
-					<posy>660</posy>
-					<width>460</width>
-					<height>25</height>
-					<label>$INFO[VideoPlayer.Time] - $INFO[VideoPlayer.Duration]</label>				
-					<scroll>true</scroll>
-					<align>right</align>
-					<aligny>center</aligny>
-					<font>font12_title</font>
-					<textcolor>grey</textcolor>
-					<shadowcolor>black</shadowcolor>
-				</control>
 -->
+				<control type="progress" id="707">
+					<description>progress control</description>
+					<posx>780</posx>
+					<posy>15</posy>
+					<width>250</width>
+					<height>8</height>
+				</control>
+
 				<control type="label" id="705">
 					<posx>1030</posx>
 					<posy>5</posy>
@@ -176,7 +169,6 @@
 					<ondown>702</ondown>
 					<onclick>ProgramList(Next)</onclick>
 				</control>
-			
 			</control>
 		</control>
 	</controls>
