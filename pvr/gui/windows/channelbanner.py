@@ -75,12 +75,12 @@ class ChannelBanner(BaseWindow):
 
 		#get event
 		#request = EventRequest(self)
-
-		self.ctrlChannelNumber = self.getControl( 600 )
-		self.ctrlChannelName = self.getControl( 601 )
-		self.ctrlEventName = self.getControl( 703 )
+		self.ctrlChannelNumber  = self.getControl( 600 )
+		self.ctrlChannelName    = self.getControl( 601 )
+		self.ctrlEventClock     = self.getControl( 605 )
+		self.ctrlEventName      = self.getControl( 703 )
 		self.ctrlEventStartTime = self.getControl( 704 )
-		self.ctrlEventEndTime = self.getControl( 705 )
+		self.ctrlEventEndTime   = self.getControl( 705 )
 
 		self.ctrlProgress = self.getControl(707)
 		#self.ctrlProgress = xbmcgui.ControlProgress(100, 250, 125, 75)
@@ -100,6 +100,7 @@ class ChannelBanner(BaseWindow):
 			print 'ChannelBanner #3'		
 			self.ctrlChannelNumber.setLabel( self.currentChannel[1] )
 			self.ctrlChannelName.setLabel( self.currentChannel[2] )
+			self.ctrlEventClock.setLabel('')
 			self.ctrlEventName.setLabel('')
 			self.ctrlEventStartTime.setLabel('00:00')
 			self.ctrlEventEndTime.setLabel('00:00')
@@ -206,6 +207,10 @@ class ChannelBanner(BaseWindow):
 
 			time.sleep(1)
 			print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+
+			epgClock = self.commander.datetime_GetLocalTime()
+			strClock = time.strftime('%a. %H:%M', time.gmtime(int(epgClock[0])) )
+			self.ctrlEventClock.setLabel(strClock)
 
 		
 
