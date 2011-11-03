@@ -56,13 +56,13 @@ class ChannelBanner(BaseWindow):
 
 		#time track
 		#from threading import Thread
-		self.timeTrack = threading.Thread(target = self.func_Progress)
+		self.timeTrack = threading.Thread(target = self.updateEPGProgress)
 		self.untilThread = True
 
 	def __del__(self):
 		print '[%s():%s] destroyed ChannelBanner'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
-		# end thread func_progress()
+		# end thread updateEPGProgress()
 		self.untilThread = False
 
 	def onInit(self):
@@ -86,8 +86,8 @@ class ChannelBanner(BaseWindow):
 		#self.ctrlProgress = xbmcgui.ControlProgress(100, 250, 125, 75)
 		#self.ctrlProgress(self.Progress)
 		self.ctrlProgress.setPercent(0)
-		self.progress_idx = 0
-		self.progress_max = 0
+		self.progress_idx = 0.0
+		self.progress_max = 0.0
 		
 
 		print 'currentChannel[%s]' % self.currentChannel
@@ -104,7 +104,7 @@ class ChannelBanner(BaseWindow):
 			self.ctrlEventStartTime.setLabel('00:00')
 			self.ctrlEventEndTime.setLabel('00:00')
 
-			print '[%s():%s]start thread, func_progress()'% (currentframe().f_code.co_name, currentframe().f_lineno)
+			print '[%s():%s]start thread, updateEPGProgress()'% (currentframe().f_code.co_name, currentframe().f_lineno)
 			self.timeTrack.start()
 
 		"""
@@ -136,7 +136,7 @@ class ChannelBanner(BaseWindow):
 #			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
 #			winmgr.shutdown()
 
-			# end thread func_progress()
+			# end thread updateEPGProgress()
 			self.untilThread = False
 
 		else:
@@ -161,11 +161,11 @@ class ChannelBanner(BaseWindow):
 		if not event[6]: pass
 		else:
 			print 'event6[%s] event7[%s]'% (event[6], event[7])
-			self.func_timeData(int(event[6]), int(event[7]))
+			self.updateEPGTime(int(event[6]), int(event[7]))
 			self.progress_max = int(event[7])
 	
 
-	def func_timeData(self, startTime, duration):
+	def updateEPGTime(self, startTime, duration):
 		print '<<<<<<<< startTime[%s] duration[%s]'% (startTime, duration)
 
 		# How about slowly time(West) at localoffset...? 
@@ -182,28 +182,29 @@ class ChannelBanner(BaseWindow):
 		self.ctrlEventStartTime.setLabel(str_startTime)
 		self.ctrlEventEndTime.setLabel(str_endTime)
 
-	def func_Progress(self):
+	def updateEPGProgress(self):
 		print '[%s():%s] <<<< begin'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		while self.untilThread:
 			#select.select([self.progress_start], [], [], 0.5 )
-#			if self.progress_max:
+			if self.progress_max > 0:
 
-			print 'progress_max[%s]'% self.progress_max
-
-
-			print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-			print self.ctrlProgress.getPercent()
-			print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-
-			print 'progress_idx[%s]' % self.progress_idx
-			self.ctrlProgress.setPercent(self.progress_idx)
-
-			self.progress_idx += 10  #(self.progress_max / 100)
-			if self.progress_idx > 100:
-				self.progress_idx = 100
+				print 'progress_max[%s]'% self.progress_max
 
 
-			time.sleep(10)
+				print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+				print self.ctrlProgress.getPercent()
+				print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+
+				print 'progress_idx[%s]' % self.progress_idx
+				self.ctrlProgress.setPercent(self.progress_idx)
+
+				print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+				self.progress_idx += 100.0 / self.progress_max
+				if self.progress_idx > 100:
+					self.progress_idx = 100
+
+
+			time.sleep(1)
 			print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 		
