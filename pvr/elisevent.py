@@ -7,6 +7,8 @@
 #ConfiguredSatellite : [TunerIndex, SlotNumber, SatelliteLongitude, BandType, FrequencyLevel, DisEqc11, DisEqcMode, DisEqcRepeat,
 #				   IsConfigUsed, LnbType, MotorizedType, LowLNB, HighLNB, LNBThreshold, MotorizedData,
 #				   IsOneCable, OneCablePin, OneCableMDU, OneCableLoFreq1, OneCableLoFreq2, OneCableUBSlot, OneCableUBFreq]
+#PlayerStatus [ Mode, Key, ServiceType, StartTimeInMs, PlayTimeInMs, EndTimeInMs, Speed, IsTimeshiftPending ]
+#RecordInfo [ RecordKey, FolderNumber, StartTime, Duration, PlayedOffset(longlong), ChannelNo, ServiceType, ChannelName, RecordName, Sid, Vpid, Apid, Locked ]
 
 
 
@@ -70,7 +72,43 @@ class ElisAction(object):
 	Motorized_GotoNull					= 'Motorized_GotoNull'
 	Motorized_SavePosition				= 'Motorized_SavePosition'
 
+	Player_GetStatus					= 'Player_GetStatus'
+	Player_StartTimeshiftPlayback		= 'Player_StartTimeshiftPlayback'
+	Player_StartInternalRecordPlayback	= 'Player_StartInternalRecordPlayback'
+	Player_Stop							= 'Player_Stop'
+	Player_SetSpeed						= 'Player_SetSpeed'
+	Player_JumpTo						= 'Player_JumpTo'
+	Player_JumpToIFrame					= 'Player_JumpToIFrame'
+	Player_Pause						= 'Player_Pause'
+	Player_Resume						= 'Player_Resume'
+	Player_SetVolume					= 'Player_SetVolume'
+	Player_GetVolume					= 'Player_GetVolume'
+	Player_SetMute						= 'Player_SetMute'
+	Player_GetMute						= 'Player_GetMute'
+	Player_AVBlank						= 'Player_AVBlank'
+	Player_VideoBlank					= 'Player_VideoBlank'
+	Player_AVMute						= 'Player_AVMute'
+	Player_StopLivePlayer				= 'Player_StopLivePlayer'
+	Player_SetVIdeoSize					= 'Player_SetVIdeoSize'
+	Player_IsVideoValid					= 'Player_IsVideoValid'
 
+	Record_GetCount						= 'Record_GetCount'
+	Record_GetRecordInfo				= 'Record_GetRecordInfo'
+	Record_GetRecordInfoByKey			= 'Record_GetRecordInfoByKey'
+	Record_StartRecord					= 'Record_StartRecord'
+	Record_StopRecord					= 'Record_StopRecord'
+	Record_GetRunningRecorderCount		= 'Record_GetRunningRecorderCount'
+	Record_GetRunningRecordInfo			= 'Record_GetRunningRecordInfo'
+	Record_GetPartitionSize				= 'Record_GetPartitionSize'
+	Record_GetFreeMBSize				= 'Record_GetFreeMBSize'
+	Record_DeleteRecord					= 'Record_DeleteRecord'
+	Record_SetLock						= 'Record_SetLock'
+	Record_Rename						= 'Record_Rename'
+	Record_IsRecording					= 'Record_IsRecording'
+
+
+
+		
 
 class ElisEnum(object):
 	# ServiceType
@@ -160,6 +198,16 @@ class ElisEnum(object):
 	E_MAX_EPG_REQUEST_COUNT			= 128
 
 
+	#Player Mode
+	E_MODE_LIVE 					= 0
+	E_MODE_TIMESHIFT				= 1
+	E_MODE_PVR						= 2
+
+	# Timeshift Play Mode
+	E_PLAYER_TIMESHIFT_START_PAUSE 	= 0
+	E_PLAYER_TIMESHIFT_START_REWIND = 1
+	E_PLAYER_TIMESHIFT_START_REPLAY = 2
+	
 
 
 class ElisEventBus(object):
