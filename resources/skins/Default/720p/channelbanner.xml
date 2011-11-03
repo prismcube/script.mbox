@@ -60,12 +60,12 @@
 				</control>
 
 				<control type="image" id="602">
-					<info>pcm/ac3</info>
 					<posx>720</posx>
 					<posy>10</posy>
 					<width>90</width>
 					<height>40</height>
 					<texture>channelBanner\dolbydigital.png</texture>
+					<description>audio dolby</description>
 				</control>
 
 				<control type="image" id="603">
@@ -74,6 +74,7 @@
 					<width>90</width>
 					<height>40</height>
 					<texture>OverlayHD.png</texture>
+					<description>video HD</description>
 				</control>
 
 				<control type="group">

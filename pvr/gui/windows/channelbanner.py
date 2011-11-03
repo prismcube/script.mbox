@@ -31,7 +31,7 @@ from pvr.net.net import EventRequest
 #from pvr.net.net import EventServer, EventHandler, EventRequest
 
 #from threading import Thread
-import threading
+from pvr.util import run_async
 import logging
 
 log = logging.getLogger('mythbox.ui')
@@ -56,7 +56,7 @@ class ChannelBanner(BaseWindow):
 
 		#time track
 		#from threading import Thread
-		self.timeTrack = threading.Thread(target = self.updateEPGProgress)
+		#self.timeTrack = threading.Thread(target = self.updateEPGProgress)
 		self.untilThread = True
 
 	def __del__(self):
@@ -106,7 +106,7 @@ class ChannelBanner(BaseWindow):
 			self.ctrlEventEndTime.setLabel('00:00')
 
 			print '[%s():%s]start thread, updateEPGProgress()'% (currentframe().f_code.co_name, currentframe().f_lineno)
-			self.timeTrack.start()
+			self.updateEPGProgress()
 
 		"""
 		stbTime_GMT    = self.commander.datetime_GetGMTTime()
@@ -140,6 +140,15 @@ class ChannelBanner(BaseWindow):
 			# end thread updateEPGProgress()
 			self.untilThread = False
 
+		elif id == Action.ACTION_MOVE_DOWN:
+			print "onAction():ACTION_NEXT_ITEM control %d" % id
+			self.commander.channel_GetNext()
+			
+
+		elif id == Action.ACTION_MOVE_UP:
+			print "onAction():ACTION_PREV_ITEM control %d" % id
+			self.commander.channel_GetPrev()
+
 		else:
 			print 'youn check action unknown id=%d' % id
 
@@ -152,7 +161,8 @@ class ChannelBanner(BaseWindow):
 		print "onFocus(): control %d" % controlId
 
 	def onEvent(self, event):
-		print 'ChannelBanner =%s' %event
+		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print 'event[%s]' %event
 
 		if not event[2]:		
 			self.ctrlEventName.setLabel('no name')
@@ -163,19 +173,26 @@ class ChannelBanner(BaseWindow):
 		else:
 			print 'event6[%s] event7[%s]'% (event[6], event[7])
 			self.updateEPGTime(int(event[6]), int(event[7]))
+			print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 			self.progress_max = int(event[7])
+			print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 	
 
 	def updateEPGTime(self, startTime, duration):
-		print '<<<<<<<< startTime[%s] duration[%s]'% (startTime, duration)
-
+		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		# How about slowly time(West) at localoffset...? 
-		timezone_sec = self.commander.datetime_GetLocalOffset()
+		localOffset = self.commander.datetime_GetLocalOffset()
 
-		startTime_hh = time.strftime('%H', time.gmtime(startTime + int(timezone_sec[0])) )
-		startTime_mm = time.strftime('%M', time.gmtime(startTime + int(timezone_sec[0])) )
-		endTime_hh = time.strftime('%H', time.gmtime((startTime+duration) + int(timezone_sec[0])) )
-		endTime_mm = time.strftime('%M', time.gmtime((startTime+duration) + int(timezone_sec[0])) )
+		print '<<<<<<<< startTime[%s] duration[%s] offset[%s]'% (startTime, duration, localOffset[0])
+
+
+		epgStartTime = startTime + int(localOffset[0]);
+		epgEndTime =  startTime + duration + int(localOffset[0])
+
+		startTime_hh = time.strftime('%H', time.gmtime(epgStartTime) )
+		startTime_mm = time.strftime('%M', time.gmtime(epgStartTime) )
+		endTime_hh = time.strftime('%H', time.gmtime(epgEndTime) )
+		endTime_mm = time.strftime('%M', time.gmtime(epgEndTime) )
 
 		str_startTime = str ('%02s:%02s'% (startTime_hh,startTime_mm) )
 		str_endTime = str ('%02s:%02s'% (endTime_hh,endTime_mm) )
@@ -183,35 +200,37 @@ class ChannelBanner(BaseWindow):
 		self.ctrlEventStartTime.setLabel(str_startTime)
 		self.ctrlEventEndTime.setLabel(str_endTime)
 
+		print 'epgStart[%s] epgEndTime[%s]'% (epgStartTime, epgEndTime)
+		print 'epgStart[%s] epgEndTime[%s]'% (time.strftime('%x %X',time.gmtime(epgStartTime)), time.strftime('%x %X',time.gmtime(epgEndTime)) )
+		print 'start[%s] end[%s]'%(str_startTime, str_endTime)
+		print 'hh[%s] mm[%s] hh[%s] mm[%s]' % (startTime_hh, startTime_mm, endTime_hh, endTime_mm)
+
+	@run_async
 	def updateEPGProgress(self):
 		print '[%s():%s] <<<< begin'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print 'untilThread[%s] self.progress_max[%s]' % (self.untilThread, self.progress_max)
+
 		while self.untilThread:
 			#select.select([self.progress_start], [], [], 0.5 )
 			if self.progress_max > 0:
 
-				print 'progress_max[%s]'% self.progress_max
+				print 'progress_idx[%s] getPercent[%s]' % (self.progress_idx, self.ctrlProgress.getPercent())
 
-
-				print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-				print self.ctrlProgress.getPercent()
-				print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-
-				print 'progress_idx[%s]' % self.progress_idx
 				self.ctrlProgress.setPercent(self.progress_idx)
 
-				print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 				self.progress_idx += 100.0 / self.progress_max
 				if self.progress_idx > 100:
 					self.progress_idx = 100
 
 
-			time.sleep(1)
 			print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
+			time.sleep(1)
+
 			epgClock = self.commander.datetime_GetLocalTime()
-			strClock = time.strftime('%a. %H:%M', time.gmtime(int(epgClock[0])) )
+			strClock = time.strftime('%a. %H:%M', time.gmtime(long(epgClock[0])) )
 			self.ctrlEventClock.setLabel(strClock)
 
-		
+			print 'epgClock[%s]'% strClock
 
 
