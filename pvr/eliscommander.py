@@ -556,4 +556,358 @@ class ElisCommander( EventCommander ):
 		reply = self.command( req )
 		return reply
 
+	"""
+	request ['Command']
+	returns ['PlayerStatus'] or ['NULL']
+	"""
+	def player_GetStatus( self ):
+		req = []
+		req.append( ElisAction.Player_GetStatus )
+		reply = self.command( req )
+		return reply
+
+	"""
+	request ['Command', 'Timeshift Play Mode']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def player_StartTimeshiftPlayback( self, palyMode ):
+		req = []
+		req.append( ElisAction.Player_StartTimeshiftPlayback )
+		req.append( '%d' %palyMode )		
+		reply = self.command( req )
+		return reply
+
+	"""
+	request ['Command', 'recordKey', 'serviceType']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def player_StartInternalRecordPlayback( self, recordKey, serviceType ):
+		req = []
+		req.append( ElisAction.Player_StartInternalRecordPlayback )
+		req.append( '%d' %recordKey )
+		req.append( '%d' %serviceType )		
+		reply = self.command( req )
+		return reply
+
+	"""
+	request ['Command']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def player_Stop( self ):
+		req = []
+		req.append( ElisAction.Player_Stop )
+		reply = self.command( req )
+		return reply
+
+
+	"""
+	request ['Command', 'speed']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def player_SetSpeed( self, speed ):
+		req = []
+		req.append( ElisAction.Player_SetSpeed )
+		req.append( '%d' %speed )		
+		reply = self.command( req )
+		return reply
+
+	"""
+	request ['Command', 'mlisec']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def player_JumpTo( self, miliSec ):
+		req = []
+		req.append( ElisAction.Player_JumpTo )
+		req.append( '%d' %miliSec )		
+		reply = self.command( req )
+		return reply
+
+
+	"""
+	request ['Command', 'mlisec']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def player_JumpToIFrame( self, miliSec ):
+		req = []
+		req.append( ElisAction.Player_JumpToIFrame )
+		req.append( '%d' %miliSec )		
+		reply = self.command( req )
+		return reply
+
+	"""
+	request ['Command', 'mlisec']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def player_Pause( self ):
+		req = []
+		req.append( ElisAction.Player_Pause )
+		reply = self.command( req )
+		return reply
+
+	"""
+	request ['Command', 'mlisec']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def player_Resume( self ):
+		req = []
+		req.append( ElisAction.Player_Resume )
+		reply = self.command( req )
+		return reply
+
+
+	"""
+	request ['Command', 'volume']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def player_SetVolume( self, valume ):
+		req = []
+		req.append( ElisAction.Player_SetVolume )
+		reply = self.command( req )
+		return reply
+
+	"""
+	request ['Command', 'volume']
+	returns ['INTEGER']
+	"""
+	def player_GetVolume( self ):
+		req = []
+		req.append( ElisAction.Player_GetVolume )
+		reply = self.command( req )
+		return reply
+
+
+	"""
+	request ['Command', 'mute']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def player_SetMute( self, mute ):
+		req = []
+		req.append( ElisAction.Player_SetMute )
+		req.append( '%d' %mute )
+		reply = self.command( req )
+		return reply
+
+
+	"""
+	request ['Command']
+	returns ['INTEGER']
+	"""
+	def player_GetMute( self ):
+		req = []
+		req.append( ElisAction.Player_GetMute )
+		reply = self.command( req )
+		return reply
+
+	"""
+	request ['Command', 'blank', 'force']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def player_AVBlank( self, blank, force ):
+		req = []
+		req.append( ElisAction.Player_AVBlank )
+		req.append( '%d' %blank )
+		req.append( '%d' %force )		
+		reply = self.command( req )
+		return reply
+
+
+	"""
+	request ['Command', 'blank', 'force']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def payer_VideoBlank( self, blank, force ):
+		req = []
+		req.append( ElisAction.Player_VideoBlank )
+		req.append( '%d' %blank )
+		req.append( '%d' %force ) 
+		reply = self.command( req )
+		return reply
+
+
+	"""
+	request ['Command', 'blank', 'force']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def payer_AVMute( self, blank, force ):
+		req = []
+		req.append( ElisAction.Player_AVMute )
+		req.append( '%d' %blank )
+		req.append( '%d' %force )
+		reply = self.command( req )
+		return reply
+		
+	"""
+	request ['Command' ]
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def player_StopLivePlayer( self ):
+		req = []
+		req.append( ElisAction.Player_StopLivePlayer )
+ 		reply = self.command( req )
+		return reply
+
+	"""
+	request ['Command', 'posx', 'posy', 'width', 'height' ]
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def player_SetVIdeoSize( self, posx, posy, width, height ):
+		req = []
+		req.append( ElisAction.Player_SetVIdeoSize )
+		req.append( '%d' %posx )
+		req.append( '%d' %posy )
+		req.append( '%d' %width )
+		req.append( '%d' %height )		
+ 		reply = self.command( req )
+		return reply
+
+	"""
+	request ['Command', 'posx', 'posy', 'width', 'height' ]
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def player_IsVideoValid( self ):
+		req = []
+		req.append( ElisAction.Player_IsVideoValid )
+ 		reply = self.command( req )
+		return reply
+
+
+	"""
+	request ['Command']
+	returns ['INTEGER']
+	"""
+	def record_GetCount( self ):
+		req = []
+		req.append( ElisAction.Record_GetCount )
+ 		reply = self.command( req )
+		return reply
+
+
+	"""
+	request ['Command', 'index', 'serviceType']
+	returns ['RecordInfo']
+	"""
+	def record_GetRecordInfo( self, index, serviceType ):
+		req = []
+		req.append( ElisAction.Record_GetRecordInfo )
+		req.append( '%d' %index )
+		req.append( '%d' %serviceType )
+ 		reply = self.command( req )
+		return reply
+
+	"""
+	request ['Command', 'key']
+	returns ['RecordInfo']
+	"""
+	def record_GetRecordInfoByKey( self, key ):
+		req = []
+		req.append( ElisAction.Record_GetRecordInfoByKey )
+		req.append( '%d' %key )
+ 		reply = self.command( req )
+		return reply
+
+	"""
+	request ['Command', 'channelNumber', 'serviceType', 'duration', 'recordName']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def record_StartRecord( self, channelNumber, serviceType, duration, recordName ):
+		req = []
+		req.append( ElisAction.Record_StartRecord )
+		req.append( '%d' %channelNumber )
+		req.append( '%d' %serviceType )
+		req.append( '%d' %duration )
+		req.append( recordName )
+ 		reply = self.command( req )
+		return reply
+
+
+	"""
+	request ['Command', 'channelNumber', 'serviceType', 'key']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def record_StopRecord( self, channelNumber, serviceType, key ):
+		req = []
+		req.append( ElisAction.Record_StopRecord )
+		req.append( '%d' %channelNumber )
+		req.append( '%d' %serviceType )
+		req.append( '%d' %key )
+ 		reply = self.command( req )
+		return reply
+
+
+	"""
+	request ['Command']
+	returns ['INTEGER']
+	"""
+	def record_GetRunningRecorderCount( self ):
+		req = []
+		req.append( ElisAction.Record_GetRunningRecorderCount )
+ 		reply = self.command( req )
+		return reply
+
+	"""
+	request ['Command']
+	returns ['INTEGER']
+	"""
+	def record_GetPartitionSize( self ):
+		req = []
+		req.append( ElisAction.Record_GetPartitionSize )
+ 		reply = self.command( req )
+		return reply
+
+
+	"""
+	request ['Command', 'key', 'serviceType']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def record_DeleteRecord( self, key, serviceType ):
+		req = []
+		req.append( ElisAction.Record_DeleteRecord )
+		req.append( '%d' %key )
+		req.append( '%d' %serviceType )
+ 		reply = self.command( req )
+		return reply
+
+	"""
+	request ['Command', 'key', 'serviceType', 'lock']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def record_SetLock( self, key, serviceType, lock):
+		req = []
+		req.append( ElisAction.Record_SetLock )
+		req.append( '%d' %key )
+		req.append( '%d' %serviceType )
+		req.append( '%d' %lock )		
+ 		reply = self.command( req )
+		return reply
+
+
+	"""
+	request ['Command', 'key', 'serviceType', 'newName']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def record_Rename( self, key, serviceType, newName):
+		req = []
+		req.append( ElisAction.Record_Rename )
+		req.append( '%d' %key )
+		req.append( '%d' %serviceType )
+		req.append( newName )		
+ 		reply = self.command( req )
+		return reply
+
+
+	"""
+	request ['Command', 'key', 'serviceType', 'newName']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def record_IsRecording( self, key, serviceType ):
+		req = []
+		req.append( ElisAction.Record_IsRecording )
+		req.append( '%d' %key )
+		req.append( '%d' %serviceType )
+ 		reply = self.command( req )
+		return reply
+
+
+
+
 
