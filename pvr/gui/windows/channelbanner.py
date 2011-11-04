@@ -86,6 +86,7 @@ class ChannelBanner(BaseWindow):
 		#self.ctrlProgress = xbmcgui.ControlProgress(100, 250, 125, 75)
 		#self.ctrlProgress(self.Progress)
 
+		self.ctrlEventClock.setLabel('')
 		self.updateChannelLabel()
 
 		#run thread
@@ -153,18 +154,31 @@ class ChannelBanner(BaseWindow):
 			next_ch = self.commander.channel_GetNext()
 			print 'next_ch[%s]' % next_ch
 
-			channelNumbr = next_ch[0]
-			ret = self.commander.channel_SetCurrent( int(channelNumbr) )
+			channelNumber = next_ch[0]
+			if channelNumber:
+				ret = self.commander.channel_SetCurrent( int(channelNumber) )
 
-			if ret[0].upper() == 'TRUE' :
-				self.currentChannel = self.commander.channel_GetCurrent()
-				self.updateChannelLabel()
-					
+				if ret[0].upper() == 'TRUE' :
+					self.currentChannel = self.commander.channel_GetCurrent()
+					self.updateChannelLabel()
+			else:
+				print 'No Channel next_ch[%s]'% next_ch			
 
 		elif id == Action.ACTION_MOVE_UP:
 			print "onAction():ACTION_PREV_ITEM control %d" % id
 			priv_ch = self.commander.channel_GetPrev()
 			print 'priv_ch[%s]' % priv_ch
+
+
+			channelNumber = priv_ch[0]
+			if channelNumber:
+				ret = self.commander.channel_SetCurrent( int(channelNumber) )
+
+				if ret[0].upper() == 'TRUE' :
+					self.currentChannel = self.commander.channel_GetCurrent()
+					self.updateChannelLabel()
+			else:
+				print 'No Channel priv_ch[%s]'% priv_ch
 
 
 		else:
@@ -225,7 +239,7 @@ class ChannelBanner(BaseWindow):
 
 	@run_async
 	def updateEPGProgress(self):
-		print '[%s():%s] <<<< begin'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print '[%s():%s]start thread <<<< begin'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'untilThread[%s] self.progress_max[%s]' % (self.untilThread, self.progress_max)
 
 		while self.untilThread:
@@ -267,12 +281,9 @@ class ChannelBanner(BaseWindow):
 
 			self.ctrlChannelNumber.setLabel( self.currentChannel[1] )
 			self.ctrlChannelName.setLabel( self.currentChannel[2] )
-			self.ctrlEventClock.setLabel('')
 			self.ctrlEventName.setLabel('')
 			self.ctrlEventStartTime.setLabel('00:00')
 			self.ctrlEventEndTime.setLabel('00:00')
-
-			print '[%s():%s]start thread, updateEPGProgress()'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 		
 
