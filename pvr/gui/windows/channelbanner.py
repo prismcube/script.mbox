@@ -85,10 +85,18 @@ class ChannelBanner(BaseWindow):
 		self.ctrlProgress = self.getControl(707)
 		#self.ctrlProgress = xbmcgui.ControlProgress(100, 250, 125, 75)
 		#self.ctrlProgress(self.Progress)
+
+		self.updateChannelLabel()
+
+		#run thread
+		self.updateEPGProgress()
+		
+		"""
 		self.ctrlProgress.setPercent(0)
 		self.progress_idx = 0.0
 		self.progress_max = 0.0
 		
+
 
 		print 'currentChannel[%s]' % self.currentChannel
 		if( self.currentChannel[0] == 'NULL' ) :
@@ -106,9 +114,9 @@ class ChannelBanner(BaseWindow):
 			self.ctrlEventEndTime.setLabel('00:00')
 
 			print '[%s():%s]start thread, updateEPGProgress()'% (currentframe().f_code.co_name, currentframe().f_lineno)
-			self.updateEPGProgress()
+			#self.updateEPGProgress()
 
-		"""
+
 		stbTime_GMT    = self.commander.datetime_GetGMTTime()
 		stbTime_offset = self.commander.datetime_GetLocalOffset()
 		stbTime_local  = self.commander.datetime_GetLocalTime()
@@ -142,12 +150,22 @@ class ChannelBanner(BaseWindow):
 
 		elif id == Action.ACTION_MOVE_DOWN:
 			print "onAction():ACTION_NEXT_ITEM control %d" % id
-			self.commander.channel_GetNext()
-			
+			next_ch = self.commander.channel_GetNext()
+			print 'next_ch[%s]' % next_ch
+
+			channelNumbr = next_ch[0]
+			ret = self.commander.channel_SetCurrent( int(channelNumbr) )
+
+			if ret[0].upper() == 'TRUE' :
+				self.currentChannel = self.commander.channel_GetCurrent()
+				self.updateChannelLabel()
+					
 
 		elif id == Action.ACTION_MOVE_UP:
 			print "onAction():ACTION_PREV_ITEM control %d" % id
-			self.commander.channel_GetPrev()
+			priv_ch = self.commander.channel_GetPrev()
+			print 'priv_ch[%s]' % priv_ch
+
 
 		else:
 			print 'youn check action unknown id=%d' % id
@@ -233,4 +251,28 @@ class ChannelBanner(BaseWindow):
 
 			print 'epgClock[%s]'% strClock
 
+	def updateChannelLabel(self):
+		print '[%s():%s] <<<< begin'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print 'currentChannel[%s]' % self.currentChannel
+		if( self.currentChannel[0] == 'NULL' ) :
+			print 'has no channel'
+		
+			# todo 
+			# show message box : has no channnel
+		else :
+
+			self.ctrlProgress.setPercent(0)
+			self.progress_idx = 0.0
+			self.progress_max = 0.0
+
+			self.ctrlChannelNumber.setLabel( self.currentChannel[1] )
+			self.ctrlChannelName.setLabel( self.currentChannel[2] )
+			self.ctrlEventClock.setLabel('')
+			self.ctrlEventName.setLabel('')
+			self.ctrlEventStartTime.setLabel('00:00')
+			self.ctrlEventEndTime.setLabel('00:00')
+
+			print '[%s():%s]start thread, updateEPGProgress()'% (currentframe().f_code.co_name, currentframe().f_lineno)
+
+		
 
