@@ -64,7 +64,7 @@ class EventRequest( object ):
 			if is_digit(msg):
 				n = int(msg)
 			else:
-				print 'No intiger msg[%s]' % msg
+				print 'No integer msg[%s]' % msg
 
 		i = 0
 		while i < n:
