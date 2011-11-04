@@ -31,7 +31,7 @@ from pvr.net.net import EventRequest
 #from pvr.net.net import EventServer, EventHandler, EventRequest
 
 #from threading import Thread
-from pvr.util import run_async
+from pvr.util import run_async, is_digit
 import logging
 
 log = logging.getLogger('mythbox.ui')
@@ -155,7 +155,7 @@ class ChannelBanner(BaseWindow):
 			print 'next_ch[%s]' % next_ch
 
 			channelNumber = next_ch[0]
-			if channelNumber:
+			if is_digit(channelNumber):
 				ret = self.commander.channel_SetCurrent( int(channelNumber) )
 
 				if ret[0].upper() == 'TRUE' :
@@ -171,7 +171,7 @@ class ChannelBanner(BaseWindow):
 
 
 			channelNumber = priv_ch[0]
-			if channelNumber:
+			if is_digit(channelNumber):
 				ret = self.commander.channel_SetCurrent( int(channelNumber) )
 
 				if ret[0].upper() == 'TRUE' :
@@ -204,11 +204,18 @@ class ChannelBanner(BaseWindow):
 		if not event[6]: pass
 		else:
 			print 'event6[%s] event7[%s]'% (event[6], event[7])
-			self.updateEPGTime(int(event[6]), int(event[7]))
-			print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-			self.progress_max = int(event[7])
-			print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-	
+
+			if is_digit(event[7]):
+				self.progress_max = int(event[7])
+				print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+
+				if is_digit(event[6]):
+					self.updateEPGTime(int(event[6]), int(event[7]))
+					print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+				else:
+					print 'value error EPGTime start[%s]' % event[6]
+			else:
+				print 'value error EPGTime duration[%s]' % event[7]
 
 	def updateEPGTime(self, startTime, duration):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
@@ -243,7 +250,7 @@ class ChannelBanner(BaseWindow):
 		print 'untilThread[%s] self.progress_max[%s]' % (self.untilThread, self.progress_max)
 
 		while self.untilThread:
-			#select.select([self.progress_start], [], [], 0.5 )
+			print '[%s():%s]repeat <<<<'% (currentframe().f_code.co_name, currentframe().f_lineno)
 			if self.progress_max > 0:
 
 				print 'progress_idx[%s] getPercent[%s]' % (self.progress_idx, self.ctrlProgress.getPercent())
@@ -253,6 +260,8 @@ class ChannelBanner(BaseWindow):
 				self.progress_idx += 100.0 / self.progress_max
 				if self.progress_idx > 100:
 					self.progress_idx = 100
+			else:
+				print 'value error progress_max[%s]' % self.progress_max
 
 
 			print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
@@ -260,10 +269,13 @@ class ChannelBanner(BaseWindow):
 			time.sleep(1)
 
 			epgClock = self.commander.datetime_GetLocalTime()
-			strClock = time.strftime('%a. %H:%M', time.gmtime(long(epgClock[0])) )
-			self.ctrlEventClock.setLabel(strClock)
+			if is_digit(epgClock[0]):
+				strClock = time.strftime('%a. %H:%M', time.gmtime(long(epgClock[0])) )
+				self.ctrlEventClock.setLabel(strClock)
+				print 'epgClock[%s]'% strClock
+			else:
+				print 'value error epgClock[%s]' % epgClock[0]
 
-			print 'epgClock[%s]'% strClock
 
 	def updateChannelLabel(self):
 		print '[%s():%s] <<<< begin'% (currentframe().f_code.co_name, currentframe().f_lineno)
