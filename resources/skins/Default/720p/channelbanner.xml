@@ -53,7 +53,7 @@
 					<posy>20</posy>
 					<align>left</align>
 					<width>500</width>
-					<font>font35caps_title</font>
+					<font>font35_title</font>
 					<textcolor>FFB2D4F5</textcolor>
 					<label>$INFO[Control.GetLabel]</label>
 					<description>Ch Name</description>
@@ -118,7 +118,7 @@
 					<posy>10</posy>
 					<width>200></width>
 					<!--<include>WindowTitleCommons</include>-->
-					<font>font20</font>
+					<font>font24</font>
 					<align>center</align>
 					<textcolor>9f9f9f9b</textcolor>
 					<label>19.2 E ASTREEE</label>
@@ -154,7 +154,7 @@
 					<posx>725</posx>
 					<posy>6</posy>
 					<description>start time</description>
-					<font>font20</font>
+					<font>font24</font>
 					<label>$INFO[Control.GetLabel]</label>
 					<description>EPG Time</description>
 				</control>
@@ -181,7 +181,7 @@
 					<posx>1030</posx>
 					<posy>6</posy>
 					<description>end time</description>
-					<font>font20</font>
+					<font>font24</font>
 					<label>$INFO[Control.GetLabel]</label>
 					<description>EPG Time</description>
 				</control>

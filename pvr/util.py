@@ -76,4 +76,11 @@ def catchall_ui(func, *args, **kw):
 			msg2 = msg2[:n]
 		xbmcgui.Dialog().ok('Error: %s' % func.__name__, msg1, msg2, msg3)
 
+def is_digit(str):
+	try:
+		tmp = float(str)
+		return True
+	except ValueError:
+		return False
+
 

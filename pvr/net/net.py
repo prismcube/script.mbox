@@ -5,6 +5,7 @@ import time
 from socket import *
 import string
 from pvr.net.SocketServer import *
+from pvr.util import is_digit
 
 separator = '[]:[]'
 
@@ -60,7 +61,10 @@ class EventRequest( object ):
 		
 		n = 0
 		if len(msg) > 0:
-			n = int(msg)
+			if is_digit(msg):
+				n = int(msg)
+			else:
+				print 'No integer msg[%s]' % msg
 
 		i = 0
 		while i < n:
