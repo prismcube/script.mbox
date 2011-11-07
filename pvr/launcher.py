@@ -28,6 +28,8 @@ from pvr.bus import EventBus
 import pvr.elismgr
 import pvr.gui.windowmgr as windowmgr
 from pvr.util import run_async, hasPendingWorkers, waitForWorkersToDie
+from pvr.elistest import ElisTest
+
 		
 __launcher = None
 
@@ -126,18 +128,6 @@ class Launcher(object):
 
 
 	def test(self):
-		print 'lael98 check before test'
-		print 'lael98 check after test'
-		
-		"""
-		seperator = ':'
-		msg = ['AAAA 7','BBB 8']
-		print 'lael98 check test'
-		tt = separator.join(msg)
-		print 'join=%-8d%s' %(len(tt),tt)
-		kkk = tt.split( separator )
-		print 'split=%s' %kkk
-		print 'split=%s' %msg
-		"""
-
+		test = ElisTest()
+		test.testAll()
 

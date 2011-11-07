@@ -557,6 +557,12 @@ class ElisCommander( EventCommander ):
 		return reply
 
 	"""
+	####################################################
+						PLAYER
+	####################################################
+	"""
+
+	"""
 	request ['Command']
 	returns ['PlayerStatus'] or ['NULL']
 	"""
@@ -772,6 +778,12 @@ class ElisCommander( EventCommander ):
 
 
 	"""
+	####################################################
+						RECORD
+	####################################################	
+	"""
+
+	"""
 	request ['Command']
 	returns ['INTEGER']
 	"""
@@ -908,6 +920,57 @@ class ElisCommander( EventCommander ):
 		return reply
 
 
+	"""
+	####################################################
+						RPOPERTY
+	####################################################	
+	"""
+	
+	"""
+	request ['Command', 'name']
+	returns ['INTEGER']
+	"""
+	def enum_GetProp( self, name ):
+		req = []
+		req.append( ElisAction.Enum_GetProp )
+		req.append( name )
+ 		reply = self.command( req )
+		return reply
 
+	"""
+	request ['Command', 'name']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def enum_SetProp( self, name, value ):
+		req = []
+		req.append( ElisAction.Enum_SetProp )
+		req.append( name )
+		req.append( '%d' %value )
+ 		reply = self.command( req )
+		return reply
+
+	"""
+	request ['Command', 'name']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def int_GetProp( self, name ):
+		req = []
+		req.append( ElisAction.Int_GetProp )
+		req.append( name )
+ 		reply = self.command( req )
+		return reply
+
+
+	"""
+	request ['Command', 'name', 'value']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def int_SetProp( self, name, value ):
+		req = []
+		req.append( ElisAction.Int_SetProp )
+		req.append( name )
+		req.append( '%d' %value )
+ 		reply = self.command( req )
+		return reply
 
 

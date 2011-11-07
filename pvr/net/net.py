@@ -72,11 +72,8 @@ class EventRequest( object ):
 		return reply.split(separator)
 
 	def sendRequest( self, req ):
-		print 'lael98 check test 2'	
 		self.sendMsg( req )
-		print 'lael98 check test 3'		
 		reply = self.readMsg()
-		print 'lael98 check test 4'	
 		return reply
 
 	def makeFormat( self, req ):
@@ -92,7 +89,6 @@ class EventCommander( object ):
 		self.request = EventRequest( self.sock )
 
 	def command( self, cmd ):
-		print 'lael98 check test 1'
 		return self.request.sendRequest( cmd )
 
 	def send( self, req ):

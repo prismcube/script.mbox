@@ -106,7 +106,10 @@ class ElisAction(object):
 	Record_Rename						= 'Record_Rename'
 	Record_IsRecording					= 'Record_IsRecording'
 
-
+	Enum_GetProp						= 'Enum_GetProp' 
+	Enum_SetProp						= 'Enum_SetProp'
+	Int_GetProp							= 'Int_GetProp'
+	Int_SetProp							= 'Int_SetProp'
 
 		
 
@@ -207,6 +210,32 @@ class ElisEnum(object):
 	E_PLAYER_TIMESHIFT_START_PAUSE 	= 0
 	E_PLAYER_TIMESHIFT_START_REWIND = 1
 	E_PLAYER_TIMESHIFT_START_REPLAY = 2
+
+
+	# Language
+	UNKNOWN 						= 0
+	E_ENGLISH 						= 1
+	E_FRENCH						= 2
+	E_DEUTSCH						= 3	
+	E_ITALIAN						= 4
+	E_SPANISH						= 5
+	E_ARABIC						= 6
+	E_GREEK							= 7
+	E_TURKISH						= 8
+	E_DANISH						= 9
+	E_SWEDISH						= 10
+	E_NORWEGIAN						= 11
+	E_DUTCH							= 12
+	E_RUSSIAN						= 13
+	E_KOREAN						= 14
+	E_FINNISH						= 15
+	E_CZECH							= 16
+	E_POLISH						= 17
+	E_PORTUGUESE					= 18
+
+	# property
+	E_DEFAULT_STEP					= 1
+	E_DEFAULT_MAX					= 0x7fffffff
 	
 
 
