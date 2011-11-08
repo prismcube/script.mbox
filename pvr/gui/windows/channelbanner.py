@@ -24,18 +24,18 @@ import time
 import pvr.gui.windowmgr as winmgr
 from pvr.gui.basewindow import BaseWindow
 from pvr.gui.basewindow import Action
-from inspect import currentframe
 
 import pvr.elismgr
+from pvr.elisevent import ElisAction, ElisEnum
 from pvr.net.net import EventRequest
-
-#from pvr.net.net import EventServer, EventHandler, EventRequest
 
 #from threading import Thread
 from pvr.util import run_async, is_digit, Mutex #, synchronized, sync_instance
 import thread
 
+#debug log
 import logging
+from inspect import currentframe
 
 log = logging.getLogger('mythbox.ui')
 mlog = logging.getLogger('mythbox.method')
@@ -84,7 +84,10 @@ class ChannelBanner(BaseWindow):
 		#request = EventRequest(self)
 		self.ctrlChannelNumber  = self.getControl( 600 )
 		self.ctrlChannelName    = self.getControl( 601 )
-		self.ctrlEventClock     = self.getControl( 605 )
+		self.ctrlServiceTypeImg1= self.getControl( 603 )
+		self.ctrlServiceTypeImg2= self.getControl( 604 )
+		self.ctrlServiceTypeImg3= self.getControl( 605 )
+		self.ctrlEventClock     = self.getControl( 610 )
 		self.ctrlEventName      = self.getControl( 703 )
 		self.ctrlEventStartTime = self.getControl( 704 )
 		self.ctrlEventEndTime   = self.getControl( 705 )
@@ -99,19 +102,12 @@ class ChannelBanner(BaseWindow):
 	
 		#run thread
 		self.updateEPGProgress()
+
+		self.imgData  = 'channelbanner\data.png'
+		self.imgDolby = 'channelbanner\dolbydigital.png'
+		self.imgHD    = 'channelbanner\OverlayHD.png'
 		
-		
-		"""
-		stbTime_GMT    = self.commander.datetime_GetGMTTime()
-		stbTime_offset = self.commander.datetime_GetLocalOffset()
-		stbTime_local  = self.commander.datetime_GetLocalTime()
-		print 'GMT    time[%s]' % stbTime_GMT
-		print 'offset time[%s]' % stbTime_offset
-		print 'local  time[%s]' % stbTime_local
-		print '%s' % time.strftime('%a, %d.%m.%Y %I:%M', time.gmtime(int(stbTime_GMT[0])) )
-		print '%s' % time.strftime('%a, %d.%m.%Y %I:%M', time.gmtime(int(stbTime_offset[0])) )
-		print '%s' % time.strftime('%a, %d.%m.%Y %I:%M', time.gmtime(int(stbTime_local[0])) )
-		"""
+
 
 	def onAction(self, action):
 		id = action.getId()
@@ -149,6 +145,10 @@ class ChannelBanner(BaseWindow):
 			else:
 				print 'No Channel next_ch[%s]'% next_ch
 
+			if is_digit(next_ch[3]):
+				self.updateServiceType(int(next_ch[3]))
+
+
 
 		elif id == Action.ACTION_MOVE_UP:
 			print 'onAction():ACTION_PREV_ITEM control %d' % id
@@ -164,6 +164,9 @@ class ChannelBanner(BaseWindow):
 					self.updateChannelLabel()
 			else:
 				print 'No Channel priv_ch[%s]'% priv_ch
+
+			if is_digit(priv_ch[3]):
+				self.updateServiceType(int(priv_ch[3]))
 
 
 		else:
@@ -202,10 +205,6 @@ class ChannelBanner(BaseWindow):
 			self.ctrlEventName.setLabel('no name')
 		else:
 			self.ctrlEventName.setLabel(event[2])
-
-
-		if not event[6]: pass
-		else:
 			print 'event6[%s] event7[%s]'% (event[6], event[7])
 
 			if is_digit(event[7]):
@@ -219,7 +218,6 @@ class ChannelBanner(BaseWindow):
 					print 'value error EPGTime start[%s]' % event[6]
 			else:
 				print 'value error EPGTime duration[%s]' % event[7]
-
 
 
 	def updateEPGTime(self, startTime, duration):
@@ -344,7 +342,26 @@ class ChannelBanner(BaseWindow):
 			self.ctrlEventStartTime.setLabel('00:00')
 			self.ctrlEventEndTime.setLabel('00:00')
 
+			self.ctrlServiceTypeImg1.setImage('')
+			self.ctrlServiceTypeImg2.setImage('')
+			self.ctrlServiceTypeImg3.setImage('')
+			
 			print '[%s():%s]Initialize Label'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
+	def updateServiceType(self, Type):
+		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print 'serviceType[%s]' % Type
+
+		if Type == ElisEnum.E_TYPE_DATA:
+			self.ctrlServiceTypeImg1.setImage(self.imgData)
+			
+		elif Type == ElisEnum.E_mHasDolbyDigital:
+			self.ctrlServiceTypeImg2.setImage(self.imgHD)
+
+		elif Type == ElisEnum.E_HasHDVideo:
+			self.ctrlServiceTypeImg3.setImage(self.imgDolby)
+
+		else:
+			print 'unknown ElisEnum Type[%s]'% Type
 		
 
