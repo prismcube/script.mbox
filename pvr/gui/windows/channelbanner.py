@@ -28,10 +28,13 @@ from inspect import currentframe
 
 import pvr.elismgr
 from pvr.net.net import EventRequest
+
 #from pvr.net.net import EventServer, EventHandler, EventRequest
 
 #from threading import Thread
-from pvr.util import run_async, is_digit
+from pvr.util import run_async, is_digit, Mutex #, synchronized, sync_instance
+import thread
+
 import logging
 
 log = logging.getLogger('mythbox.ui')
@@ -51,6 +54,9 @@ class ChannelBanner(BaseWindow):
 		self.commander = pvr.elismgr.getInstance().getCommander()
 
 		self.currentChannel=[]
+
+		self.mutex = thread.allocate_lock()
+
 
 		#push push test test
 
@@ -72,6 +78,7 @@ class ChannelBanner(BaseWindow):
 
 		#get channel
 		self.currentChannel = self.commander.channel_GetCurrent()
+		self.oldCh = self.currentChannel[0]
 
 		#get event
 		#request = EventRequest(self)
@@ -89,35 +96,12 @@ class ChannelBanner(BaseWindow):
 		self.ctrlEventClock.setLabel('')
 		self.updateChannelLabel()
 
+	
 		#run thread
 		self.updateEPGProgress()
 		
+		
 		"""
-		self.ctrlProgress.setPercent(0)
-		self.progress_idx = 0.0
-		self.progress_max = 0.0
-		
-
-
-		print 'currentChannel[%s]' % self.currentChannel
-		if( self.currentChannel[0] == 'NULL' ) :
-			print 'has no channel'
-		
-			# todo 
-			# show message box : has no channnel
-		else :
-			print 'ChannelBanner #3'		
-			self.ctrlChannelNumber.setLabel( self.currentChannel[1] )
-			self.ctrlChannelName.setLabel( self.currentChannel[2] )
-			self.ctrlEventClock.setLabel('')
-			self.ctrlEventName.setLabel('')
-			self.ctrlEventStartTime.setLabel('00:00')
-			self.ctrlEventEndTime.setLabel('00:00')
-
-			print '[%s():%s]start thread, updateEPGProgress()'% (currentframe().f_code.co_name, currentframe().f_lineno)
-			#self.updateEPGProgress()
-
-
 		stbTime_GMT    = self.commander.datetime_GetGMTTime()
 		stbTime_offset = self.commander.datetime_GetLocalOffset()
 		stbTime_local  = self.commander.datetime_GetLocalTime()
@@ -150,7 +134,7 @@ class ChannelBanner(BaseWindow):
 			self.untilThread = False
 
 		elif id == Action.ACTION_MOVE_DOWN:
-			print "onAction():ACTION_NEXT_ITEM control %d" % id
+			print 'onAction():ACTION_NEXT_ITEM control %d' % id
 			next_ch = self.commander.channel_GetNext()
 			print 'next_ch[%s]' % next_ch
 
@@ -161,14 +145,15 @@ class ChannelBanner(BaseWindow):
 				if ret[0].upper() == 'TRUE' :
 					self.currentChannel = self.commander.channel_GetCurrent()
 					self.updateChannelLabel()
+					self.oldCh = channelNumber
 			else:
-				print 'No Channel next_ch[%s]'% next_ch			
+				print 'No Channel next_ch[%s]'% next_ch
+
 
 		elif id == Action.ACTION_MOVE_UP:
-			print "onAction():ACTION_PREV_ITEM control %d" % id
+			print 'onAction():ACTION_PREV_ITEM control %d' % id
 			priv_ch = self.commander.channel_GetPrev()
 			print 'priv_ch[%s]' % priv_ch
-
 
 			channelNumber = priv_ch[0]
 			if is_digit(channelNumber):
@@ -193,13 +178,31 @@ class ChannelBanner(BaseWindow):
 		print "onFocus(): control %d" % controlId
 
 	def onEvent(self, event):
+		eventCopy = event
+
+		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print 'eventCopy[%s]'% eventCopy
+
+		"""
+		while 1:
+			if self.mutex.locked() == True:
+				time.sleep(0.1)
+				continue
+			else:
+				break
+		"""
+		if self.mutex.locked() == False:
+			self.updateONEvent(eventCopy)
+
+	def updateONEvent(self, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'event[%s]' %event
-
+		
 		if not event[2]:		
 			self.ctrlEventName.setLabel('no name')
 		else:
 			self.ctrlEventName.setLabel(event[2])
+
 
 		if not event[6]: pass
 		else:
@@ -217,16 +220,34 @@ class ChannelBanner(BaseWindow):
 			else:
 				print 'value error EPGTime duration[%s]' % event[7]
 
+
+
 	def updateEPGTime(self, startTime, duration):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+
 		# How about slowly time(West) at localoffset...? 
-		localOffset = self.commander.datetime_GetLocalOffset()
+		"""
+		while 1:
+			if self.mutex.locked() == False:
+				self.mutex.acquire()
+				print 'acquire, locked[%s]'% self.mutex.locked()
+				timeZone = self.commander.datetime_GetLocalOffset()
+				self.mutex.release()
+				print 'release, locked[%s]'% self.mutex.locked()
+				break
+			time.sleep(0.5)
+		"""
 
-		print '<<<<<<<< startTime[%s] duration[%s] offset[%s]'% (startTime, duration, localOffset[0])
+		timeZone = self.commander.datetime_GetLocalOffset()
+		
+		print '========= startTime[%s] duration[%s] offset[%s]'% (startTime, duration, timeZone[0])
 
+		localOffset = 0
+		if (is_digit(timeZone[0]) == True):
+			localOffset = int(timeZone[0])
 
-		epgStartTime = startTime + int(localOffset[0]);
-		epgEndTime =  startTime + duration + int(localOffset[0])
+		epgStartTime = startTime + localOffset
+		epgEndTime =  startTime + duration + localOffset
 
 		startTime_hh = time.strftime('%H', time.gmtime(epgStartTime) )
 		startTime_mm = time.strftime('%M', time.gmtime(epgStartTime) )
@@ -247,12 +268,12 @@ class ChannelBanner(BaseWindow):
 	@run_async
 	def updateEPGProgress(self):
 		print '[%s():%s]start thread <<<< begin'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		print 'untilThread[%s] self.progress_max[%s]' % (self.untilThread, self.progress_max)
+		#print 'untilThread[%s] self.progress_max[%s]' % (self.untilThread, self.progress_max)
 
 		while self.untilThread:
 			print '[%s():%s]repeat <<<<'% (currentframe().f_code.co_name, currentframe().f_lineno)
-			if self.progress_max > 0:
 
+			if self.progress_max > 0:
 				print 'progress_idx[%s] getPercent[%s]' % (self.progress_idx, self.ctrlProgress.getPercent())
 
 				self.ctrlProgress.setPercent(self.progress_idx)
@@ -265,10 +286,29 @@ class ChannelBanner(BaseWindow):
 
 
 			print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-
+			
 			time.sleep(1)
 
+			self.updateLocalTime()
+		
+
+	def updateLocalTime(self):
+		#from pvr.util import Mutex
+		#tmux = Mutex()
+		#tmux.lock()
+
+		#self.mutex.acquire()
+		#self.Mutex.acquire()
+
+		print 'locked[%s]'% self.mutex.locked()
+		if self.mutex.locked() == False:
+			self.mutex.acquire()
+
 			epgClock = self.commander.datetime_GetLocalTime()
+			self.mutex.release()
+		#self.Mutex.release()
+
+
 			if is_digit(epgClock[0]):
 				strClock = time.strftime('%a. %H:%M', time.gmtime(long(epgClock[0])) )
 				self.ctrlEventClock.setLabel(strClock)
@@ -277,9 +317,16 @@ class ChannelBanner(BaseWindow):
 				print 'value error epgClock[%s]' % epgClock[0]
 
 
+		#self.mutex.noti()
+		#tmux.unlock()
+		#l.release()
+
+
 	def updateChannelLabel(self):
 		print '[%s():%s] <<<< begin'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'currentChannel[%s]' % self.currentChannel
+
+		
 		if( self.currentChannel[0] == 'NULL' ) :
 			print 'has no channel'
 		
@@ -296,6 +343,8 @@ class ChannelBanner(BaseWindow):
 			self.ctrlEventName.setLabel('')
 			self.ctrlEventStartTime.setLabel('00:00')
 			self.ctrlEventEndTime.setLabel('00:00')
+
+			print '[%s():%s]Initialize Label'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 		
 
