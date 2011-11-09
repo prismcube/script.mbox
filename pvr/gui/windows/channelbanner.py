@@ -82,17 +82,19 @@ class ChannelBanner(BaseWindow):
 
 		#get event
 		#request = EventRequest(self)
-		self.ctrlChannelNumber  = self.getControl( 600 )
-		self.ctrlChannelName    = self.getControl( 601 )
-		self.ctrlServiceTypeImg1= self.getControl( 603 )
-		self.ctrlServiceTypeImg2= self.getControl( 604 )
-		self.ctrlServiceTypeImg3= self.getControl( 605 )
+		self.ctrlChannelNumber  = self.getControl( 601 )
+		self.ctrlChannelName    = self.getControl( 602 )
+		self.ctrlServiceTypeImg1= self.getControl( 604 )
+		self.ctrlServiceTypeImg2= self.getControl( 605 )
+		self.ctrlServiceTypeImg3= self.getControl( 606 )
 		self.ctrlEventClock     = self.getControl( 610 )
 		self.ctrlEventName      = self.getControl( 703 )
 		self.ctrlEventStartTime = self.getControl( 704 )
 		self.ctrlEventEndTime   = self.getControl( 705 )
-
-		self.ctrlProgress = self.getControl(707)
+		self.ctrlProgress       = self.getControl( 707 )
+		self.ctrlEventDescGroup = self.getControl( 800 )
+		self.ctrlEventDescText1 = self.getControl( 801 )
+		self.ctrlEventDescText2 = self.getControl( 802 )
 		#self.ctrlProgress = xbmcgui.ControlProgress(100, 250, 125, 75)
 		#self.ctrlProgress(self.Progress)
 
@@ -106,6 +108,7 @@ class ChannelBanner(BaseWindow):
 		self.imgData  = 'channelbanner\data.png'
 		self.imgDolby = 'channelbanner\dolbydigital.png'
 		self.imgHD    = 'channelbanner\OverlayHD.png'
+		self.toggleFlag=False
 		
 
 
@@ -118,6 +121,7 @@ class ChannelBanner(BaseWindow):
 		elif id == Action.ACTION_SELECT_ITEM:
 			print '<<<<< test youn: ID[%s]' % id
 			log.debug('youn:%s' % id)
+			self.showEPGDescription(self.eventCopy)
 
 	
 		elif id == Action.ACTION_PARENT_DIR:
@@ -181,10 +185,10 @@ class ChannelBanner(BaseWindow):
 		print "onFocus(): control %d" % controlId
 
 	def onEvent(self, event):
-		eventCopy = event
+		self.eventCopy = event
 
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		print 'eventCopy[%s]'% eventCopy
+		print 'eventCopy[%s]'% self.eventCopy
 
 		"""
 		while 1:
@@ -195,11 +199,11 @@ class ChannelBanner(BaseWindow):
 				break
 		"""
 		if self.mutex.locked() == False:
-			self.updateONEvent(eventCopy)
+			self.updateONEvent(self.eventCopy)
 
 	def updateONEvent(self, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		print 'event[%s]' %event
+		#print 'event[%s][%s]'% (self.oldCh, event)
 		
 		if not event[2]:		
 			self.ctrlEventName.setLabel('no name')
@@ -335,6 +339,8 @@ class ChannelBanner(BaseWindow):
 			self.ctrlProgress.setPercent(0)
 			self.progress_idx = 0.0
 			self.progress_max = 0.0
+			self.eventCopy = ''
+			self.toggleFlag= False
 
 			self.ctrlChannelNumber.setLabel( self.currentChannel[1] )
 			self.ctrlChannelName.setLabel( self.currentChannel[2] )
@@ -345,7 +351,10 @@ class ChannelBanner(BaseWindow):
 			self.ctrlServiceTypeImg1.setImage('')
 			self.ctrlServiceTypeImg2.setImage('')
 			self.ctrlServiceTypeImg3.setImage('')
-			
+			self.ctrlEventDescGroup.setVisible(False)
+			self.ctrlEventDescText1.reset()
+			self.ctrlEventDescText2.reset()
+
 			print '[%s():%s]Initialize Label'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 	def updateServiceType(self, Type):
@@ -363,5 +372,33 @@ class ChannelBanner(BaseWindow):
 
 		else:
 			print 'unknown ElisEnum Type[%s]'% Type
+
+	def showEPGDescription(self, event):
+		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+
+		if event != '':
+			print '[%s][%s][%s][%s][%s]' % (event[1], event[3], event[4], event[5], event[6])
+			msgDescription = self.commander.epgevent_GetDescription(
+							int(event[1]), #eventId
+							int(event[3]), #sid
+							int(event[4]), #tsid
+							int(event[5]), #onid
+							int(event[6])) #startTime
+
+			print 'msgDescription[%s]' % msgDescription
+			self.ctrlEventDescText1.setText(event[2])
+			self.ctrlEventDescText2.setText(msgDescription[1])
+		else:
+			print 'event is None'
+			
+		if self.toggleFlag == True:
+			self.ctrlEventDescGroup.setVisible(False)
+			self.toggleFlag = False
+		else:
+			self.ctrlEventDescGroup.setVisible(True)
+			self.toggleFlag = True
+		
+		#self.ctrlEventDescription.setVisibleCondition('[Control.IsVisible(100)]',True)
+		#self.ctrlEventDescription.setEnabled(True)
 		
 
