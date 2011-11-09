@@ -256,7 +256,7 @@ class ChannelBanner(BaseWindow):
 		endTime_hh = time.strftime('%H', time.gmtime(epgEndTime) )
 		endTime_mm = time.strftime('%M', time.gmtime(epgEndTime) )
 
-		str_startTime = str ('%02s:%02s'% (startTime_hh,startTime_mm) )
+		str_startTime = str ('%02s:%02s -'% (startTime_hh,startTime_mm) )
 		str_endTime = str ('%02s:%02s'% (endTime_hh,endTime_mm) )
 
 		self.ctrlEventStartTime.setLabel(str_startTime)
@@ -345,8 +345,8 @@ class ChannelBanner(BaseWindow):
 			self.ctrlChannelNumber.setLabel( self.currentChannel[1] )
 			self.ctrlChannelName.setLabel( self.currentChannel[2] )
 			self.ctrlEventName.setLabel('')
-			self.ctrlEventStartTime.setLabel('00:00')
-			self.ctrlEventEndTime.setLabel('00:00')
+			self.ctrlEventStartTime.setLabel('')
+			self.ctrlEventEndTime.setLabel('')
 
 			self.ctrlServiceTypeImg1.setImage('')
 			self.ctrlServiceTypeImg2.setImage('')
@@ -388,15 +388,21 @@ class ChannelBanner(BaseWindow):
 			print 'msgDescription[%s]' % msgDescription
 			self.ctrlEventDescText1.setText(event[2])
 			self.ctrlEventDescText2.setText(msgDescription[1])
+
 		else:
 			print 'event is None'
-			
+			self.ctrlEventDescText1.setText('')
+			self.ctrlEventDescText2.setText('')
+
 		if self.toggleFlag == True:
+			self.ctrlEventDescText1.reset()
+			self.ctrlEventDescText2.reset()
 			self.ctrlEventDescGroup.setVisible(False)
 			self.toggleFlag = False
 		else:
 			self.ctrlEventDescGroup.setVisible(True)
 			self.toggleFlag = True
+			
 		
 		#self.ctrlEventDescription.setVisibleCondition('[Control.IsVisible(100)]',True)
 		#self.ctrlEventDescription.setEnabled(True)
