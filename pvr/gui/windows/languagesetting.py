@@ -14,50 +14,46 @@ class LanguageSetting(BaseWindow):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
 		self.commander = pvr.elismgr.getInstance().getCommander()
-		print 'dhkim __init__ test'
 
-		self.OsdLanguageList = [1, 2, 3, 4, 5]
+		# Description List
+		self.DescriptionList				= ['Set menu and popup language', 'Set primary audio language', 'Set primary subtitle language', 'Set secondary subtitle language', 'Enable hearing impaired support']
+
+		# OSD Language
+		self.osdlangugelist 				= []
+		self.osdLanguageProperty			= ElisPropertyEnum( 'Language' )
+		self.count							= self.osdLanguageProperty.getIndexCount()
+		
+		for i in range( self.count ):
+			listItem = xbmcgui.ListItem(self.osdLanguageProperty.getName(), self.osdLanguageProperty.getPropStringByIndex( i ),"-", "-", "-")
+			self.osdlangugelist.append(listItem)
+
+		# Primary Audio Language
+		self.primaryAudioLanguagelist 		= []
+		self.primaryAudioLanguageProperty	= ElisPropertyEnum( 'Audio Language' )
+		self.count							= self.primaryAudioLanguageProperty.getIndexCount()
+		
+		for i in range( self.count ):
+			listItem = xbmcgui.ListItem(self.primaryAudioLanguageProperty.getName(), self.primaryAudioLanguageProperty.getPropStringByIndex( i ),"-", "-", "-")
+			self.primaryAudioLanguagelist.append(listItem)
+
 
 	def onInit(self):
 		if not self.win:
 			self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
 
-		self.ctrlOSDLanguagelist					= self.getControl( 9100 )
-		self.ctrlOSDLanguagelist.addItems(self.OsdLanguageList)
-		'''
-		print 'dhkim test for'
-		osdLangProp = ElisPropertyEnum( 'Language' )
-		value = osdLangProp.getProp()
+		# Description Label
+		self.ctrlDescriptionLabel			= self.getControl( 100 )
+		self.ctrlDescriptionLabel.setLabel( 'Set Menu and popup language' )
 
-		count = osdLangProp.getIndexCount()
-		for i in range( count ):
-			self.ctrlOSDLanguagelist.append(osdLangProp.getName() + osdLangProp.getPropString( i ))
-		
-			#strName = osdLangProp.getName() + osdLangProp.getPropString( i )
-			#osdLangProp.addLabel( strName, osdLangProp.getPropByIndex( i ) )
-			#if osdLangProp.getPropByIndex( i ) == value
-			#	osdLangProp.setValue( value )
+		# OSD Language
+		self.ctrlOSDLanguage				= self.getControl( 9100 )
+		self.ctrlOSDLanguage.addItems( self.osdlangugelist )
+		self.ctrlOSDLanguage.selectItem( self.osdLanguageProperty.getProp() )
 
-		
-		self.ctrlOSDLanguagelist.addItems(self.OsdLanguageList)
-		'''
-		'''
-		self.ctrlRootGroup.addItems(testlist)
-		# OSDLanguage
-		print 'dhkim OnInit test'
-		osdLangProp = ElisPropertyEnum( 'Language' )
-		value = osdLangProp.getProp()
-		
-		#count = osdLangProp.getIndexCount()
-		#for i in range( count ):
-		#strName = osdLangProp.getName()
-			# + osdLangProp.getPropString( value )
-		print 'dhkim property test = %s' % strName
-		self.ctrlOSDLanguage.addItem( strName )
-			#if osdLangProp.getPropByIndex( i ) == value
-			#	osdLangProp.setValue( value )
-		'''
-		
+		# Primary Audio Language
+		self.ctrlPrimaryAudioLanguage		= self.getControl( 9101 )
+		self.ctrlPrimaryAudioLanguage.addItems( self.primaryAudioLanguagelist )
+		self.ctrlPrimaryAudioLanguage.selectItem( self.primaryAudioLanguageProperty.getProp() )
 		'''
 		self.ctrlOSDLanguage    			= self.getControl( 101 )
 		self.ctrlPrimaryAudioLanguage    	= self.getControl( 102 )
@@ -89,7 +85,9 @@ class LanguageSetting(BaseWindow):
 			print 'dhkim LanguageSetting check action parent'
 
 	def onClick(self, controlId):
-		print "MenuReceiverSetupNetwork onclick(): control %d" % controlId	
+		if controlId == 304 or controlId == 305:
+			self.osdLanguageProperty.setPropString( self, self.ctrlOSDLanguagelist.getSelectedItem().getLabel() )
+			print "selected Itemnum of OSD Language = %s" % self.ctrlOSDLanguagelist.getSelectedItem().getLabel()
 
 	def onFocus(self, controlId):
 		print "onFocus(): control %d" % controlId
