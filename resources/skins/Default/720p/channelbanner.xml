@@ -57,7 +57,8 @@
 					<align>left</align>
 					<width>70</width>
 					<height>30</height>
-					<texture>channelBanner\tv.png</texture>
+					<texture>$INFO[Control.GetLabel]</texture>
+					<description>service type</description>
 				</control>
 
 				<control type="image" id="604">
@@ -244,7 +245,7 @@
 					  <description>EPG Description</description>
 					  <posx>100</posx>
 					  <posy>30</posy>
-					  <width>1000</width>
+					  <width>950</width>
 					  <height>100</height>
 					  <visible>true</visible>
 					  <colordiffuse>FFFFFFFF</colordiffuse>
@@ -257,7 +258,7 @@
 					  <description>EPG Description</description>
 					  <posx>100</posx>
 					  <posy>120</posy>
-					  <width>1000</width>
+					  <width>950</width>
 					  <height>600</height>
 					  <visible>true</visible>
 					  <colordiffuse>FFFFFFFF</colordiffuse>
