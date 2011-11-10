@@ -3,35 +3,225 @@
 	<allowoverlay>no</allowoverlay>	
 	<controls>
 		<control type="group">
-			<animation effect="slide" end="-620,0" time="500" tween="quadratic" easing="out">WindowClose</animation>
-			<animation effect="slide" start="-400,0" time="500" tween="quadratic" easing="out">WindowOpen</animation>
-			<control type="group">
-				<animation effect="slide" end="-228,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
-				<control type="image">
-					<posx>379</posx>
-					<posy>0</posy>
-					<width>1</width>
-					<height>720</height>
-					<texture>HomeBladeSub_Part1.png</texture>
-					<animation effect="zoom" start="379,0,1,720" end="379,0,229,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(7001).HasFocus">Conditional</animation>
-				</control>
-				<control type="image">
-					<posx>380</posx>
-					<posy>0</posy>
-					<width>12</width>
-					<height>720</height>
-					<texture>HomeBladeSub_Part2.png</texture>
-					<animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(7001).HasFocus">Conditional</animation>
-				</control>
+			<animation effect="slide" end="-400,0" time="500" tween="quadratic" easing="out">WindowClose</animation>
+            <animation effect="slide" start="-400,0" time="500" tween="quadratic" easing="out">WindowOpen</animation>
+            <control type="group">
+                <animation effect="slide" end="-228,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
+                <control type="image">
+                    <posx>379</posx>
+                    <posy>0</posy>
+                    <width>1</width>
+                    <height>720</height>
+                    <texture>HomeBladeSub_Part1.png</texture>
+                    <animation effect="zoom" start="379,0,1,720" end="379,0,229,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(7001).HasFocus">Conditional</animation>
+                </control>
+                <control type="image">
+                    <posx>380</posx>
+                    <posy>0</posy>
+                    <width>12</width>
+                    <height>720</height>
+                    <texture>HomeBladeSub_Part2.png</texture>
+                    <animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(7001).HasFocus">Conditional</animation>
+                </control>
+            </control>
+            <control type="image">
+                <posx>-450</posx>
+                <posy>0</posy>
+                <width>846</width>
+                <height>720</height>
+                <colordiffuse>DAFFFFFF</colordiffuse>
+                <texture>HomeBlade_bottom.png</texture>
+            </control>
+            <control type="list" id="7000">
+				<hitrect x="100" y="100" w="530" h="620"></hitrect>
+				<posx>-20</posx>
+				<posy>80</posy>
+				<width>400</width>
+				<height>720</height>
+				<onleft>10</onleft>
+				<onright>7001</onright>
+				<onup>7000</onup>
+				<ondown>7000</ondown>
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>300</scrolltime>
+				<focusposition>0</focusposition>
+				<movement>10</movement>
+				<animation effect="fade" start="0" end="100" time="200">Visible</animation>
+				<itemlayout height="70" width="380">
+					<control type="label">
+						<posx>380</posx>
+						<posy>21</posy>
+						<width>380</width>
+						<height>40</height>
+						<font>font35_title</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<animation effect="zoom" start="65" end="65" center="380,51" time="0" condition="true">Conditional</animation>
+					</control>
+				</itemlayout>
+				<focusedlayout height="70" width="380">
+					<control type="label">
+						<posx>380</posx>
+						<posy>21</posy>
+						<width>380</width>
+						<height>40</height>
+						<font>font35_title</font>
+						<textcolor>white</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<animation effect="zoom" start="65" end="100" center="380,51" time="200">Focus</animation>
+						<animation effect="zoom" start="100" end="65" center="380,51" time="200">UnFocus</animation>
+						<label>$INFO[ListItem.Label]</label>
+
+					</control>
+					<control type="image">
+						<posx>370</posx>
+						<posy>63</posy>
+						<width>18</width>
+						<height>18</height>
+						<texture>HomeHasSub.png</texture>
+						<visible>Container(7000).HasFocus(1) | Container(7000).HasFocus(2) | Container(7000).HasFocus(3) | Container(7000).HasFocus(4) | Container(7000).HasFocus(5) | Container(7000).HasFocus(6) | Container(7000).HasFocus(7)</visible>
+						<animation effect="fade" start="0" end="100" time="200">Focus</animation>
+						<animation effect="fade" start="100" end="0" time="200">UnFocus</animation>
+					</control>
+				</focusedlayout>
+				<content>
+					<item id="1">
+						<label>Installation</label>
+						<onclick>right</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="2">
+						<label>Channels</label>
+						<onclick>right</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="3">
+						<label>User Preference</label>
+						<onclick>right</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="4">
+						<label>Audio/Video</label>
+						<onclick>right</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="5">
+						<label>Receiver Setup</label>
+						<onclick>right</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="6">
+						<label>CAS</label>
+						<onclick>right</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="7">
+						<label>Media Center</label>
+						<onclick>right</onclick>
+						<visible>true</visible>
+					</item>
+				</content>
 			</control>
+			<control type="image">
+                <posx>-450</posx>
+                <posy>0</posy>
+                <width>846</width>
+                <height>720</height>
+                <texture>HomeBlade_top.png</texture>
+            </control>
+			<control type="image">
+				<description>LOGO</description>
+				<posx>10</posx>
+				<posy>10</posy>
+				<width>140</width>
+				<height>40</height>
+				<texture>XBMC_Logo.png</texture>
+			</control>
+			<control type="image">
+				<description>LOGO Mirror</description>
+				<posx>10</posx>
+				<posy>42</posy>
+				<width>140</width>
+				<height>40</height>
+				<texture diffuse="diffuse_mirror.png" flipy="true">XBMC_Logo.png</texture>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>100r</posy>
+				<width>256</width>
+				<height>100</height>
+				<texture>HomeButtonsBack.png</texture>
+			</control>
+			<!--power button-->
+			<control type="group" id="10">
+	            <posx>15</posx>
+	            <posy>55r</posy>
+	            <control type="button" id="20">
+	                    <description>Power push button</description>
+	                    <posx>90</posx>
+	                    <posy>0</posy>
+	                    <width>43</width>
+	                    <height>43</height>
+	                    <label>31003</label>
+	                    <font>-</font>
+	                    <aligny>-</aligny>
+	                    <onclick>ActivateWindow(ShutdownMenu)</onclick>
+	                    <texturefocus>home-power-FO.png</texturefocus>
+	                    <texturenofocus>home-power.png</texturenofocus>
+	                    <onleft>21</onleft>
+	                    <onright>9000</onright>
+	                    <onup>9000</onup>
+	                    <ondown>9000</ondown>
+	            </control>
+	            <control type="button" id="21">
+	                    <description>Favourites push button</description>
+	                    <posx>45</posx>
+	                    <posy>0</posy>
+	                    <width>43</width>
+	                    <height>43</height>
+	                    <label>1036</label>
+	                    <font>-</font>
+	                    <aligny>-</aligny>
+	                    <onclick>ActivateWindow(Favourites)</onclick>
+	                    <texturefocus>home-favourites-FO.png</texturefocus>
+	                    <texturenofocus>home-favourites.png</texturenofocus>
+	                    <onleft>22</onleft>
+	                    <onright>20</onright>
+	                    <onup>9000</onup>
+	                    <ondown>9000</ondown>
+	            </control>
+	            <control type="button" id="22">
+	                    <description>Play Disc Media push button</description>
+	                    <posx>0</posx>
+	                    <posy>0</posy>
+	                    <width>43</width>
+	                    <height>43</height>
+	                    <label>16004</label>
+	                    <font>-</font>
+	                    <aligny>-</aligny>
+	                    <onclick>ActivateWindow(1113)</onclick>
+	                    <texturefocus>home-playmedia-FO.png</texturefocus>
+	                    <texturenofocus>home-playmedia.png</texturenofocus>
+	                    <onleft>9000</onleft>
+	                    <onright>21</onright>
+	                    <onup>9000</onup>
+	                    <ondown>9000</ondown>
+	            </control>
+        	</control>
 			<control type="group" id="7001">
 				<posx>380</posx>
 				<posy>-720</posy>
 <!--				<animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(7001).HasFocus">conditional</animation> -->
-				<animation effect="fade" start="0" end="100" delay="300" time="200" condition="ControlGroup(7001).HasFocus">conditional</animation>
-				<animation effect="fade" end="0,0" time="100" condition="ControlGroup(7001).HasFocus">WindowClose</animation>
-<!--				<animation effect="fade" start="100" end="0" time="0" condition="ControlGroup(7001).HasFocus">WindowClose</animation> -->
+				<animation effect="fade" start="0" end="100" delay="200" time="300" condition="ControlGroup(7001).HasFocus">conditional</animation>
 				<animation effect="slide" end="0,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(7001).HasFocus">conditional</animation>
+				<animation effect="fade" end="0,0" time="500">WindowClose</animation>
+				<!--<animation effect="fade" start="0" end="100" delay="200" time="300" condition="ControlGroup(7001).HasFocus">conditional</animation>
+					<animation effect="slide" end="0,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(7001).HasFocus">conditional</animation>				
+					<animation effect="fade" end="0,0" time="200" condition="ControlGroup(7001).HasFocus">WindowClose</animation> -->
+<!--				<animation effect="fade" start="100" end="0" time="0" condition="ControlGroup(7001).HasFocus">WindowClose</animation> -->
 <!--				<animation effect="slide" end="0,-204" time="300" condition="Container(7000).Row(0)">conditional</animation> -->
 <!--				<animation effect="slide" end="0,-102" time="300" condition="Container(7000).Row(2)">conditional</animation> -->
 <!--				<animation effect="slide" end="0,102" time="300" condition="Container(7000).Row(4)">conditional</animation> -->
@@ -39,7 +229,7 @@
 				<!-- Installation -->
 				<control type="grouplist" id="7010">
 					<posx>10</posx>
-					<posy>0</posy>
+					<posy>20</posy>
 					<width>240</width>
 					<height>240</height>
 					<align>center</align>
@@ -52,7 +242,7 @@
 						<include>ButtonHomeSubCommonValues</include>
 						<label>First Installation</label>
 						<onclick>-</onclick>
-						<visible>true</visible>		
+						<visible>true</visible>
 					</control>
 					<control type="button" id="70102">
 						<include>ButtonHomeSubCommonValues</include>
@@ -82,7 +272,7 @@
 				<!-- Channels -->
 				<control type="grouplist" id="7020">
 					<posx>10</posx>
-					<posy>50</posy>
+					<posy>70</posy>
 					<width>240</width>
 					<height>240</height>
 					<align>center</align>
@@ -101,7 +291,7 @@
 				<!-- User Preference -->
 				<control type="grouplist" id="7030">
 					<posx>10</posx>
-					<posy>120</posy>
+					<posy>140</posy>
 					<width>240</width>
 					<height>240</height>
 					<align>center</align>
@@ -138,7 +328,7 @@
 				<!-- Audio/Video -->
 				<control type="grouplist" id="7040">
 					<posx>10</posx>
-					<posy>190</posy>
+					<posy>210</posy>
 					<width>240</width>
 					<height>240</height>
 					<align>center</align>
@@ -163,7 +353,7 @@
 				<!-- Receiver Setup -->
 				<control type="grouplist" id="7050">
 					<posx>10</posx>
-					<posy>260</posy>
+					<posy>280</posy>
 					<width>240</width>
 					<height>240</height>
 					<align>center</align>
@@ -206,7 +396,7 @@
 				<!-- CAS -->
 				<control type="grouplist" id="7060">
 					<posx>10</posx>
-					<posy>330</posy>
+					<posy>350</posy>
 					<width>240</width>
 					<height>240</height>
 					<align>center</align>
@@ -288,149 +478,144 @@
 						<onclick>ActivateWindow(SystemInfo)</onclick>
 						<visible>true</visible>
 					</control>
-					
 				</control>
 			</control>
-<!--			<control type="fixedlist" id="7000"> -->
-			<control type="list" id="7000">
-				<hitrect x="50" y="50" w="330" h="620" />
-				<posx>-20</posx>
-				<posy>50</posy>
-				<width>400</width>
-				<height>720</height>
-				<onleft>10</onleft>
-				<onright>7001</onright>
-				<onup>7000</onup>
-				<ondown>7000</ondown>
-				<pagecontrol>-</pagecontrol>
-				<scrolltime>300</scrolltime>
-				<focusposition>0</focusposition>
-				<movement>2</movement>
-				<animation effect="fade" start="0" end="100" time="200">Visible</animation>
-				<itemlayout height="70" width="380">
-					<control type="label">
-						<posx>380</posx>
-						<posy>21</posy>
-						<width>380</width>
-						<height>40</height>
-						<font>font35_title</font>
-						<textcolor>grey3</textcolor>
-						<align>right</align>
-						<aligny>center</aligny>
-						<label>$INFO[ListItem.Label]</label>
-						<animation effect="zoom" start="65" end="65" center="380,51" time="0" condition="true">Conditional</animation>
-					</control>
-				</itemlayout>
-				<focusedlayout height="70" width="380">
-					<control type="label">
-						<posx>380</posx>
-						<posy>21</posy>
-						<width>380</width>
-						<height>40</height>
-						<font>font35_title</font>
-						<textcolor>white</textcolor>
-						<align>right</align>
-						<aligny>center</aligny>
-						<animation effect="zoom" start="65" end="100" center="380,51" time="200">Focus</animation>
-						<animation effect="zoom" start="100" end="65" center="380,51" time="200">UnFocus</animation>
-						<label>$INFO[ListItem.Label]</label>
-
-					</control>
-					<control type="image">
-						<posx>370</posx>
-						<posy>63</posy>
-						<width>18</width>
-						<height>18</height>
-						<texture>HomeHasSub.png</texture>
-						<visible>Container(7000).HasFocus(1) | Container(7000).HasFocus(2) | Container(7000).HasFocus(3) | Container(7000).HasFocus(4) | Container(7000).HasFocus(5) | Container(7000).HasFocus(6) | Container(7000).HasFocus(7)</visible>
-						<animation effect="fade" start="0" end="100" time="200">Focus</animation>
-						<animation effect="fade" start="100" end="0" time="200">UnFocus</animation>
-					</control>
-				</focusedlayout>
-				<content>
-					<item id="1">
-						<label>Installation</label>
-						<onclick>right</onclick>
-						<visible>true</visible>
-					</item>
-					<item id="2">
-						<label>Channels</label>
-						<onclick>right</onclick>
-						<visible>true</visible>
-					</item>
-					<item id="3">
-						<label>User Preference</label>
-						<onclick>right</onclick>
-						<visible>true</visible>
-					</item>
-					<item id="4">
-						<label>Audio/Video</label>
-						<onclick>right</onclick>
-						<visible>true</visible>
-					</item>
-					<item id="5">
-						<label>Receiver Setup</label>
-						<onclick>right</onclick>
-						<visible>true</visible>
-					</item>
-					<item id="6">
-						<label>CAS</label>
-						<onclick>right</onclick>
-						<visible>true</visible>
-					</item>
-					<item id="7">
-						<label>Media Center</label>
-						<onclick>right</onclick>
-						<visible>true</visible>
-					</item>
-				</content>
-				
-			</control>
-<!--
-			<control type="image">
-				<posx>0</posx>
-				<posy>-205</posy>
-				<width>385</width>
-				<height>1130</height>
-				<texture>HomeBlade_middle.png</texture>
-				<animation effect="slide" end="0,-306" time="300" condition="Container(7000).Row(0)">conditional</animation>
-				<animation effect="slide" end="0,-204" time="300" condition="Container(7000).Row(1)">conditional</animation>
-				<animation effect="slide" end="0,-102" time="300" condition="Container(7000).Row(2)">conditional</animation>
-				<animation effect="slide" end="0,102" time="300" condition="Container(7000).Row(4)">conditional</animation>
-				<animation effect="slide" end="0,204" time="300" condition="Container(7000).Row(5)">conditional</animation>
-				<animation effect="slide" end="0,306" time="300" condition="Container(7000).Row(6)">conditional</animation>				
-			</control>
--->
-			<control type="image">
-				<posx>-450</posx>
-				<posy>0</posy>
-				<width>846</width>
-				<height>720</height>
-				<texture>HomeBlade_top.png</texture>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>100r</posy>
-				<width>256</width>
-				<height>100</height>
-				<texture>HomeButtonsBack.png</texture>
-			</control>
-			<control type="image">
-				<description>LOGO</description>
-				<posx>10</posx>
-				<posy>10</posy>
-				<width>140</width>
-				<height>40</height>
-				<texture>XBMC_Logo.png</texture>
-			</control>
-			<control type="image">
-				<description>LOGO Mirror</description>
-				<posx>10</posx>
-				<posy>42</posy>
-				<width>140</width>
-				<height>40</height>
-				<texture diffuse="diffuse_mirror.png" flipy="true">XBMC_Logo.png</texture>
-			</control>
 		</control>
-	</controls>	
+		<!--Sub Script-->
+		<control type="group">
+            <posx>420</posx>
+            <posy>35r</posy>
+            <animation effect="slide" end="0,35" time="500" tween="quadratic" easing="out">WindowClose</animation>
+            <animation effect="slide" start="0,35" time="500" tween="quadratic" easing="out">WindowOpen</animation>
+            <control type="image">
+                <description>RSS background</description>
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>860</width>
+                <height>35</height>
+                <texture border="32,0,0,0">Rss_Back.png</texture>
+                <!--<visible>system.getbool(lookandfeel.enablerssfeeds)</visible>-->
+            </control>
+            <control type="label">
+                <description>MainMenuDescription</description>
+                <posx>100</posx>
+                <posy>6</posy>
+                <width>825</width>
+                <height>35</height>
+                <font>font12</font>
+                <label>First Time Installation & Channels Search</label>	                
+                <align>left</align>
+                <textcolor>white</textcolor>                
+                <shadowcolor>black</shadowcolor>	                
+                <visible>Container(7000).HasFocus(1)</visible>
+            </control>
+            <control type="label">
+                <description>MainMenuDescription</description>
+                <posx>100</posx>
+                <posy>6</posy>
+                <width>825</width>
+                <height>35</height>
+                <font>font12</font>
+                <label>Edit Channels & select favorite network</label>
+                <align>left</align>
+                <textcolor>white</textcolor>                
+                <shadowcolor>black</shadowcolor>
+                <visible>Container(7000).HasFocus(2)</visible>
+            </control>
+            <control type="label">
+                <description>MainMenuDescription</description>
+                <posx>100</posx>
+                <posy>6</posy>
+                <width>825</width>
+                <height>35</height>
+                <font>font12</font>
+                <label>Change various preference Setting</label>
+                <align>left</align>
+                <textcolor>white</textcolor>                
+                <shadowcolor>black</shadowcolor>
+                <visible>Container(7000).HasFocus(3)</visible>
+            </control>
+            <control type="label">
+                <description>MainMenuDescription</description>
+                <posx>100</posx>
+                <posy>6</posy>
+                <width>825</width>
+                <height>35</height>
+                <font>font12</font>
+                <label>Audio & Video Setting</label>
+                <align>left</align>
+                <textcolor>white</textcolor>                
+                <shadowcolor>black</shadowcolor>
+                <visible>Container(7000).HasFocus(4)</visible>
+            </control>
+            <control type="label">
+                <description>MainMenuDescription</description>
+                <posx>100</posx>
+                <posy>6</posy>
+                <width>825</width>
+                <height>35</height>
+                <font>font12</font>
+                <label>Change receiver Setting</label>
+                <align>left</align>
+                <textcolor>white</textcolor>                
+                <shadowcolor>black</shadowcolor>
+                <visible>Container(7000).HasFocus(5)</visible>
+            </control>
+            <control type="label">
+                <description>MainMenuDescription</description>
+                <posx>100</posx>
+                <posy>6</posy>
+                <width>825</width>
+                <height>35</height>
+                <font>font12</font>
+                <label>Conditional access information</label>
+                <align>left</align>
+                <textcolor>white</textcolor>                
+                <shadowcolor>black</shadowcolor>
+                <visible>Container(7000).HasFocus(6)</visible>
+            </control>
+            <control type="label">
+                <description>MainMenuDescription</description>
+                <posx>100</posx>
+                <posy>6</posy>
+                <width>825</width>
+                <height>35</height>
+                <font>font12</font>
+                <label>XBMC Setting</label>
+                <align>left</align>
+                <textcolor>white</textcolor>                
+                <shadowcolor>black</shadowcolor>
+                <visible>Container(7000).HasFocus(7)</visible>
+            </control>
+        </control>
+		<!--Date, Time Info-->
+		<control type="group">
+            <posx>390r</posx>
+            <posy>0</posy>
+            <animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
+            <animation effect="slide" start="0,0" end="420,0" delay="0" time="300">WindowClose</animation>
+            <animation effect="slide" start="420,0" end="0,0" delay="0" time="300">WindowOpen</animation>
+            <control type="image">
+                    <description>time background</description>
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>440</width>
+                    <height>35</height>
+                    <texture flipx="true" border="32,0,0,0">header.png</texture>
+            </control>
+            <control type="label">
+                    <description>time label</description>
+                    <posx>30</posx>
+                    <posy>0</posy>
+                    <width>400</width>
+                    <height>28</height>
+                    <align>left</align>
+                    <aligny>center</aligny>
+                    <font>font12</font>
+                    <textcolor>white</textcolor>
+                    <shadowcolor>black</shadowcolor>
+                    <label>[COLOR=grey]$INFO[System.Date][/COLOR] | $INFO[System.Time]</label>
+            </control>
+        </control>
+	</controls>
 </window>

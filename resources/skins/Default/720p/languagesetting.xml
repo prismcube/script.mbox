@@ -3,7 +3,7 @@
 	<controls>
 		<include>CommonSettingMenuBehind</include>
 		<include>TestLabel</include>
-		<control type="group">
+		<control type="group" id="8000">
 			<include>CommonSettingMenuBackground</include>
 			<control type="label">
 				<description>header label</description>
@@ -18,78 +18,193 @@
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 			</control>
-			<control type="group" id="9000">
-				<control type="grouplist" id="9010">
-					<visible>true</visible>
-					<posx>300</posx>
-					<posy>90</posy>
+			<control type="grouplist" id="9000">
+				<visible>true</visible>
+				<posx>300</posx>
+				<posy>90</posy>
+				<width>750</width>
+				<height>530</height>
+				<itemgap>0</itemgap>
+				<pagecontrol>60</pagecontrol>
+				<onleft>-</onleft>
+				<onright>-</onright>
+				<onup>9000</onup>
+				<ondown>9000</ondown>
+				<control type="label" id="100">
+					<width>750</width>						
+					<height>40</height>
+					<font>font13</font>
+					<label>testlabel</label>
+				</control>
+				<!--
+				<control type="spincontrolex" id="101">
+					<description>Default SpinControlex</description>
+					<posx>400</posx>
+					<width>750</width>						
+					<height>40</height>
+					<font>font13</font>
+					<textcolor>grey2</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+					<aligny>center</aligny>
+					<reverse>yes</reverse>
+					<label>OSD Language</label>
+				</control>
+				-->
+				<!--
+				<control type="button" id="110">
 					<width>750</width>
-					<height>530</height>
-					<itemgap>-1</itemgap>
-					<pagecontrol>60</pagecontrol>
-					<onleft>9000</onleft>
-					<onright>60</onright>
-					<onup>9010</onup>
-					<ondown>9010</ondown>
-					<control type="spincontrolex" id="101">
-						<description>Default SpinControlex</description>
-						<width>750</width>						
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
-						<focusedcolor>white</focusedcolor>
-						<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-						<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-						<aligny>center</aligny>
-						<reverse>yes</reverse>
+					<height>40</height>
+					<font>font13</font>
+					<label>Test Button 1</label>
+					<textcolor>grey2</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+					<align>left</align>
+					<aligny>center</aligny>
+				</control>
+				-->
+				<control type="group" id="9030">
+					<!--
+					<include>testgroup</include>
+					<include>testlist</include>
+					-->
+					<width>750</width>
+					<height>40</height>
+					<defaultcontrol always="true">304</defaultcontrol>
+					<control type="button" id="304">
+						<description>Menu Item Next Button</description>
+						<posx>670</posx>
+						<posy>9</posy>
+						<width>33</width>
+						<height>22</height>
+						<label>-</label>
+						<font>-</font>
+						<texturenofocus>scroll-down-2.png</texturenofocus>
+						<texturefocus>scroll-down-focus-2.png</texturefocus>
+						<onclick>Control.Move(9100,1)</onclick>
+						<onleft>-</onleft>
+						<onright>305</onright>
+						<onup>110</onup>
+						<ondown>101</ondown>
 					</control>
-					<control type="spincontrolex" id="102">
-						<description>Default SpinControlex</description>
-						<width>750</width>						
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
-						<focusedcolor>white</focusedcolor>
-						<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-						<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-						<aligny>center</aligny>
-						<reverse>yes</reverse>
+					<control type="button" id="305">
+						<description>Menu Item Prev Button</description>
+						<posx>703</posx>
+						<posy>9</posy>
+						<width>33</width>
+						<height>22</height>
+						<label>-</label>
+						<font>-</font>
+						<texturenofocus>scroll-up-2.png</texturenofocus>
+						<texturefocus>scroll-up-focus-2.png</texturefocus>
+						<onclick>Control.Move(9100,-1)</onclick>
+						<onleft>304</onleft>
+						<onright>-</onright>
+						<onup>110</onup>
+						<ondown>101</ondown>
 					</control>
-					<control type="spincontrolex" id="103">
-						<description>Default SpinControlex</description>
-						<width>750</width>						
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
-						<focusedcolor>white</focusedcolor>
-						<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-						<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-						<aligny>center</aligny>
-						<reverse>yes</reverse>
-					</control>
-					<control type="spincontrolex" id="104">
-						<description>Default SpinControlex</description>
-						<width>750</width>						
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
-						<focusedcolor>white</focusedcolor>
-						<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-						<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-						<aligny>center</aligny>
-						<reverse>yes</reverse>
-					</control>
-					<control type="spincontrolex" id="105">
-						<description>Default SpinControlex</description>
-						<width>750</width>						
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey2</textcolor>
-						<focusedcolor>white</focusedcolor>
-						<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-						<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-						<aligny>center</aligny>
-						<reverse>yes</reverse>
+					<control type="list" id="9100">
+						<hitrect x="0" y="0" w="0" h="0" />
+						<posx>0</posx>
+						<width>750</width>
+						<height>40</height>						
+						<pagecontrol>-</pagecontrol>
+						<scrolltime>0</scrolltime>
+						<itemlayout height="0" width="750">
+						</itemlayout>
+						<focusedlayout height="40" width="750">
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>750</width>
+								<height>40</height>
+								<texture border="0,2,0,2">MenuItemNF.png</texture>
+								<visible>![Control.HasFocus(304) | Control.HasFocus(305)]</visible>
+							</control>
+							<control type="image">
+								<posx>0</posx>
+								<posy>0</posy>
+								<width>750</width>
+								<height>40</height>
+								<texture border="0,2,0,2">MenuItemFO.png</texture>
+								<visible>[Control.HasFocus(304) | Control.HasFocus(305)]</visible>
+							</control>
+							<control type="label">
+								<posx>10</posx>
+								<posy>0</posy>
+								<width>600</width>
+								<height>40</height>
+								<font>font13</font>
+								<textcolor>grey2</textcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>Test Text Setting</label>
+								<visible>![Control.HasFocus(304) | Control.HasFocus(305)]</visible>
+							</control>
+							<control type="label">
+								<posx>10</posx>
+								<posy>0</posy>
+								<width>600</width>
+								<height>40</height>
+								<font>font13</font>
+								<textcolor>white</textcolor>
+								<align>left</align>
+								<aligny>center</aligny>
+								<label>Test Text Setting</label>
+								<visible>[Control.HasFocus(304) | Control.HasFocus(305)]</visible>
+							</control>
+							<control type="label">
+								<posx>650</posx>
+								<posy>0</posy>
+								<width>640</width>
+								<height>40</height>
+								<font>font13</font>
+								<textcolor>grey2</textcolor>
+								<align>right</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label]</label>
+								<visible>![Control.HasFocus(304) | Control.HasFocus(305)]</visible>
+							</control>
+							<control type="label">
+								<posx>650</posx>
+								<posy>0</posy>
+								<width>640</width>
+								<height>40</height>
+								<font>font13</font>
+								<textcolor>white</textcolor>
+								<align>right</align>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label]</label>
+								<visible>[Control.HasFocus(304) | Control.HasFocus(305)]</visible>
+							</control>
+						</focusedlayout>
+						<!--
+						<content>
+							<item id="1">
+								<label>Test1</label>
+								<onclick>-</onclick>
+							</item>
+							<item id="2">
+								<label>Test2</label>
+								<onclick>-</onclick>
+							</item>
+							<item id="3">
+								<label>Test3</label>
+								<onclick>-</onclick>
+							</item>
+							<item id="4">
+								<label>Test4</label>
+								<onclick>-</onclick>
+							</item>
+							<item id="5">
+								<label>Test5</label>
+								<onclick>-</onclick>
+							</item>
+						</content>
+						-->
 					</control>
 				</control>
 			</control>
