@@ -1,112 +1,109 @@
 <includes>
-	<include name="ButtonCommonValues">
-		<height>40</height>
-		<width>250</width>
-		<textoffsetx>10</textoffsetx>
-		<textwidth>235</textwidth>
-		<aligny>center</aligny>
-		<font>font13caps</font>
-		<texturefocus border="5">button-focus.png</texturefocus>
-		<texturenofocus>-</texturenofocus>
-		<pulseonselect>false</pulseonselect>
-	</include>
-	<include name="VisibleFadeEffect">
-		<animation effect="fade" time="300">Visible</animation>
-		<animation effect="fade" time="300">Hidden</animation>
-	</include>
-	<include name="CommonView">
-		<control type="list" id="50">
-			<hitrect x="50" y="50" w="330" h="620" />
-			<posx>-20</posx>
-			<posy>50</posy>
-			<width>400</width>
+	<include name="BehindDialogFadeOut">
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
 			<height>720</height>
-			<onleft>10</onleft>
-			<onright>50</onright>
-			<onup>50</onup>
-			<ondown>50</ondown>
-			<pagecontrol>-</pagecontrol>
-			<scrolltime>300</scrolltime>
-			<focusposition>0</focusposition>
-			<movement>2</movement>
-			<animation effect="fade" start="0" end="100" time="200">Visible</animation>
-			<itemlayout height="70" width="380">
-				<control type="label">
-					<posx>380</posx>
-					<posy>21</posy>
-					<width>380</width>
-					<height>40</height>
-					<font>font35_title</font>
-					<textcolor>grey3</textcolor>
-					<align>right</align>
-					<aligny>center</aligny>
-					<label>$INFO[ListItem.Label]</label>
-					<animation effect="zoom" start="65" end="65" center="380,51" time="0" condition="true">Conditional</animation>
-				</control>
-			</itemlayout>
-			<focusedlayout height="70" width="380">
-				<control type="label">
-					<posx>380</posx>
-					<posy>21</posy>
-					<width>380</width>
-					<height>40</height>
-					<font>font35_title</font>
-					<textcolor>white</textcolor>
-					<align>right</align>
-					<aligny>center</aligny>
-					<animation effect="zoom" start="65" end="100" center="380,51" time="200">Focus</animation>
-					<animation effect="zoom" start="100" end="65" center="380,51" time="200">UnFocus</animation>
-					<label>$INFO[ListItem.Label]</label>
-
-				</control>
-				<control type="image">
-					<posx>370</posx>
-					<posy>63</posy>
-					<width>18</width>
-					<height>18</height>
-					<texture>HomeHasSub.png</texture>
-					<visible>Container(7000).HasFocus(1) | Container(7000).HasFocus(2) | Container(7000).HasFocus(3) | Container(7000).HasFocus(4) | Container(7000).HasFocus(5) | Container(7000).HasFocus(6) | Container(7000).HasFocus(7)</visible>
-					<animation effect="fade" start="0" end="100" time="200">Focus</animation>
-					<animation effect="fade" start="100" end="0" time="200">UnFocus</animation>
-				</control>
-			</focusedlayout>
-			<content>
-				<item id="1">
-					<label>Installation</label>
-					<onclick>right</onclick>
-					<visible>true</visible>
-				</item>
-				<item id="2">
-					<label>Channels</label>
-					<onclick>right</onclick>
-					<visible>true</visible>
-				</item>
-				<item id="3">
-					<label>User Preference</label>
-					<onclick>right</onclick>
-					<visible>true</visible>
-				</item>
-				<item id="4">
-					<label>Audio/Video</label>
-					<onclick>right</onclick>
-					<visible>true</visible>
-				</item>
-				<item id="5">
-					<label>Receiver Setup</label>
-					<onclick>right</onclick>
-					<visible>true</visible>
-				</item>
-				<item id="6">
-					<label>CAS</label>
-					<onclick>right</onclick>
-					<visible>true</visible>
-				</item>
-				<item id="7">
-					<label>Media Center</label>
-					<onclick>right</onclick>
-					<visible>true</visible>
-				</item>
-			</content>
-		</control>	
-	</include>	
+			<texture>black-back.png</texture>
+			<animation effect="fade" time="400">Visible</animation>
+			<animation effect="fade" time="200">Hidden</animation>
+			<visible>Window.IsActive(MovieInformation) | Window.IsActive(MusicInformation) | Window.IsActive(SongInformation) | Window.IsActive(FileBrowser) | Window.IsActive(TextViewer) | Window.IsActive(AddonSettings) | Window.IsActive(ContentSettings) | Window.IsActive(SelectDialog) | Window.IsActive(FileStackingDialog) | Window.IsActive(MediaSource) | Window.IsActive(PictureInfo) | Window.IsActive(PlayerControls) | Window.IsActive(VirtualKeyboard) | Window.IsActive(NumericInput) | Window.IsActive(ProfileSettings) | Window.IsActive(LockSettings) | Window.IsActive(SmartPlaylistEditor) | Window.IsActive(SmartPlaylistRule) | Window.IsActive(script-Apple_Movie_Trailers-settings.xml) | Window.IsActive(script-Apple_Movie_Trailers-chooser.xml) | Window.IsActive(script-Apple_Movie_Trailers-search.xml) | Window.IsActive(script-Apple_Movie_Trailers-showtimes.xml) | Window.IsActive(script-XBMC_Lyrics-settings.xml) | Window.IsActive(script-RSS_Editor-rssEditor.xml) | Window.IsActive(script-RSS_Editor-setEditor.xml) | Window.IsActive(AddonInformation)</visible>
+		</control>
+	</include>
+	<include name="CommonSettingMenuBackground">
+		<posx>60</posx>
+		<posy>50</posy>
+		<width>1160</width>
+		<height>640</height>
+		<animation type="WindowOpen" reversible="false">
+			<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
+			<effect type="fade" start="0" end="100" time="300" />
+		</animation>
+		<animation type="WindowClose" reversible="false">
+			<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
+			<effect type="fade" start="100" end="0" time="300" />
+		</animation>			
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1160</width>
+			<height>640</height>
+			<texture border="20">DialogBack.png</texture>
+		</control>
+		<control type="image">
+			<description>LOGO</description>
+			<posx>920</posx>
+			<posy>550</posy>
+			<width>220</width>
+			<height>80</height>
+			<aspectratio>keep</aspectratio>
+			<texture>Confluence_Logo.png</texture>
+		</control>
+		<control type="image">
+			<posx>18</posx>
+			<posy>17</posy>
+			<width>750</width>
+			<height>604</height>
+			<texture border="5">black-back2.png</texture>
+		</control>
+		<control type="image">
+			<posx>18</posx>
+			<posy>20</posy>
+			<width>804</width>
+			<height>120</height>
+			<texture>GlassTitleBar.png</texture>
+		</control>
+		<control type="image">
+			<posx>778</posx>
+			<posy>20</posy>
+			<width>365</width>
+			<height>250</height>
+			<texture border="0, 2, 0, 2">black-back2.png</texture>
+		</control>
+	</include>
+	<include name="CommonSettingMenuBehind">
+  	<include>BehindDialogFadeOut</include>
+	  	<control type="group">
+	    <control type="label">
+        <description>time label</description>
+        <posx>30</posx>
+        <posy>0</posy>
+        <width>400</width>
+        <height>28</height>
+        <align>left</align>
+        <aligny>center</aligny>
+        <font>font12</font>
+        <textcolor>white</textcolor>
+        <shadowcolor>black</shadowcolor>
+        <label>[COLOR=grey]$INFO[System.Date][/COLOR] | $INFO[System.Time]</label>
+      </control>
+    </control>
+	</include>
+ 	<include name="ElmoHomeButton">
+	    <control type="group">
+	  		<posx>20</posx>
+	  		<posy>0</posy>
+	  		<animation effect="slide" end="-310,0" time="400" tween="quadratic" easing="out">WindowClose</animation>
+	  		<animation effect="slide" start="-310,0" time="400" tween="quadratic" easing="out">WindowOpen</animation>
+	  		<control type="image">
+	  			<posx>0</posx>
+	  			<posy>0</posy>
+	  			<width>80</width>
+	  			<height>35</height>
+	  			<texture border="0,0,32,0">header.png</texture>
+	  		</control>
+	  		<control type="button" id=99999>
+	  			<hitrect x="0" y="0" w="60" h="30" />
+	  			<posx>20</posx>
+	  			<posy>5</posy>
+	  			<width>25</width>
+	  			<height>20</height>
+	  			<texturenofocus>HomeIcon.png</texturenofocus>
+	  			<texturefocus>HomeIcon-Focus.png</texturefocus>
+	  			<label>-</label>
+	  			<onclick>-</onclick>
+	  		</control>
+	  	</control>
+	</include>
 </includes>
