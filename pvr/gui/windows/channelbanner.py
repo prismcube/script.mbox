@@ -76,37 +76,44 @@ class ChannelBanner(BaseWindow):
 		if not self.win:
 			self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
 
-		#get channel
-		self.currentChannel = self.commander.channel_GetCurrent()
-		self.oldCh = self.currentChannel[0]
-
 		#get event
 		#request = EventRequest(self)
-		self.ctrlChannelNumber  = self.getControl( 600 )
-		self.ctrlChannelName    = self.getControl( 601 )
-		self.ctrlServiceTypeImg1= self.getControl( 603 )
-		self.ctrlServiceTypeImg2= self.getControl( 604 )
-		self.ctrlServiceTypeImg3= self.getControl( 605 )
+		self.ctrlChannelNumber  = self.getControl( 601 )
+		self.ctrlChannelName    = self.getControl( 602 )
+		self.ctrlServiceType    = self.getControl( 603 )
+		self.ctrlServiceTypeImg1= self.getControl( 604 )
+		self.ctrlServiceTypeImg2= self.getControl( 605 )
+		self.ctrlServiceTypeImg3= self.getControl( 606 )
 		self.ctrlEventClock     = self.getControl( 610 )
 		self.ctrlEventName      = self.getControl( 703 )
 		self.ctrlEventStartTime = self.getControl( 704 )
 		self.ctrlEventEndTime   = self.getControl( 705 )
-
-		self.ctrlProgress = self.getControl(707)
+		self.ctrlProgress       = self.getControl( 707 )
+		self.ctrlEventDescGroup = self.getControl( 800 )
+		self.ctrlEventDescText1 = self.getControl( 801 )
+		self.ctrlEventDescText2 = self.getControl( 802 )
 		#self.ctrlProgress = xbmcgui.ControlProgress(100, 250, 125, 75)
 		#self.ctrlProgress(self.Progress)
 
+		self.imgTV    = 'channelbanner/tv.png'
+		self.imgData  = 'channelbanner/data.png'
+		self.imgDolby = 'channelbanner/dolbydigital.png'
+		self.imgHD    = 'channelbanner/OverlayHD.png'
+		self.toggleFlag=False
 		self.ctrlEventClock.setLabel('')
-		self.updateChannelLabel()
 
+		#get channel
+		self.currentChannel = self.commander.channel_GetCurrent()
+
+		self.initLabelInfo()
 	
 		#run thread
 		self.updateEPGProgress()
 
-		self.imgData  = 'channelbanner\data.png'
-		self.imgDolby = 'channelbanner\dolbydigital.png'
-		self.imgHD    = 'channelbanner\OverlayHD.png'
-		
+		self.nowCh = 'NULL'
+		self.nowCh = self.currentChannel[0]
+		if is_digit(self.currentChannel[3]):
+			self.updateServiceType(int(self.currentChannel[3]))
 
 
 	def onAction(self, action):
@@ -118,6 +125,7 @@ class ChannelBanner(BaseWindow):
 		elif id == Action.ACTION_SELECT_ITEM:
 			print '<<<<< test youn: ID[%s]' % id
 			log.debug('youn:%s' % id)
+			self.showEPGDescription(self.eventCopy)
 
 	
 		elif id == Action.ACTION_PARENT_DIR:
@@ -140,8 +148,8 @@ class ChannelBanner(BaseWindow):
 
 				if ret[0].upper() == 'TRUE' :
 					self.currentChannel = self.commander.channel_GetCurrent()
-					self.updateChannelLabel()
-					self.oldCh = channelNumber
+					self.initLabelInfo()
+					self.nowCh = channelNumber
 			else:
 				print 'No Channel next_ch[%s]'% next_ch
 
@@ -161,7 +169,8 @@ class ChannelBanner(BaseWindow):
 
 				if ret[0].upper() == 'TRUE' :
 					self.currentChannel = self.commander.channel_GetCurrent()
-					self.updateChannelLabel()
+					self.initLabelInfo()
+					self.nowCh = channelNumber
 			else:
 				print 'No Channel priv_ch[%s]'% priv_ch
 
@@ -181,10 +190,10 @@ class ChannelBanner(BaseWindow):
 		print "onFocus(): control %d" % controlId
 
 	def onEvent(self, event):
-		eventCopy = event
+		self.eventCopy = event
 
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		print 'eventCopy[%s]'% eventCopy
+		print 'eventCopy[%s]'% self.eventCopy
 
 		"""
 		while 1:
@@ -195,15 +204,14 @@ class ChannelBanner(BaseWindow):
 				break
 		"""
 		if self.mutex.locked() == False:
-			self.updateONEvent(eventCopy)
+			self.updateONEvent(self.eventCopy)
 
 	def updateONEvent(self, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		print 'event[%s]' %event
-		
-		if not event[2]:		
-			self.ctrlEventName.setLabel('no name')
-		else:
+		print 'nowCh[%s] event[%s]'% (self.nowCh, event)
+
+		#epg name
+		if event[2] != '':
 			self.ctrlEventName.setLabel(event[2])
 			print 'event6[%s] event7[%s]'% (event[6], event[7])
 
@@ -219,6 +227,67 @@ class ChannelBanner(BaseWindow):
 			else:
 				print 'value error EPGTime duration[%s]' % event[7]
 
+		else:
+			self.ctrlEventName.setLabel('')
+
+
+		#component
+		tempFile = 0x00
+		if event != []:
+			component = int(event[9])
+			if (component & 0x01) == ElisEnum.E_HasHDVideo:                # 1<<0
+				tempFile |= 0x01
+			if (component & 0x02) == ElisEnum.E_Has16_9Video:              # 1<<1
+				pass
+			if (component & 0x04) == ElisEnum.E_HasStereoAudio:            # 1<<2
+				pass
+			if (component & 0x08) == ElisEnum.E_mHasMultichannelAudio:     # 1<<3
+				pass
+			if (component & 0x10) == ElisEnum.E_mHasDolbyDigital:          # 1<<4
+				tempFile |= 0x02
+			if (component & 0x20) == ElisEnum.E_mHasSubtitles:             # 1<<5
+				tempFile |= 0x04
+			if (component & 0x40) == ElisEnum.E_mHasHardOfHearingAudio:    # 1<<6
+				pass
+			if (component & 0x80) == ElisEnum.E_mHasHardOfHearingSub:      # 1<<7
+				pass
+			if (component & 0x100)== ElisEnum.E_mHasVisuallyImpairedAudio: # 1<<8
+				pass
+
+			print 'component[%s] tempFile[%s]' % (component, tempFile)
+
+		if tempFile == 1:
+			self.ctrlServiceTypeImg1.setImage(self.imgHD)
+			self.ctrlServiceTypeImg2.setImage('')
+			self.ctrlServiceTypeImg3.setImage('')
+		elif tempFile == 2:	
+			self.ctrlServiceTypeImg1.setImage(self.imgDolby)
+			self.ctrlServiceTypeImg2.setImage('')
+			self.ctrlServiceTypeImg3.setImage('')
+		elif tempFile == 3:	
+			self.ctrlServiceTypeImg1.setImage(self.imgDolby)
+			self.ctrlServiceTypeImg2.setImage(self.imgHD)
+			self.ctrlServiceTypeImg3.setImage('')
+		elif tempFile == 4:	
+			self.ctrlServiceTypeImg1.setImage(self.imgData)
+			self.ctrlServiceTypeImg2.setImage('')
+			self.ctrlServiceTypeImg3.setImage('')
+		elif tempFile == 5:	
+			self.ctrlServiceTypeImg1.setImage(self.imgData)
+			self.ctrlServiceTypeImg2.setImage(self.imgHD)
+			self.ctrlServiceTypeImg3.setImage('')
+		elif tempFile == 6:	
+			self.ctrlServiceTypeImg1.setImage(self.imgData)
+			self.ctrlServiceTypeImg2.setImage(self.imgDolby)
+			self.ctrlServiceTypeImg3.setImage('')
+		elif tempFile == 7:	
+			self.ctrlServiceTypeImg1.setImage(self.imgData)
+			self.ctrlServiceTypeImg2.setImage(self.imgDolby)
+			self.ctrlServiceTypeImg3.setImage(self.imgHD)
+		else:
+			self.ctrlServiceTypeImg1.setImage('')
+			self.ctrlServiceTypeImg2.setImage('')
+			self.ctrlServiceTypeImg3.setImage('')
 
 	def updateEPGTime(self, startTime, duration):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
@@ -252,7 +321,7 @@ class ChannelBanner(BaseWindow):
 		endTime_hh = time.strftime('%H', time.gmtime(epgEndTime) )
 		endTime_mm = time.strftime('%M', time.gmtime(epgEndTime) )
 
-		str_startTime = str ('%02s:%02s'% (startTime_hh,startTime_mm) )
+		str_startTime = str ('%02s:%02s -'% (startTime_hh,startTime_mm) )
 		str_endTime = str ('%02s:%02s'% (endTime_hh,endTime_mm) )
 
 		self.ctrlEventStartTime.setLabel(str_startTime)
@@ -320,48 +389,94 @@ class ChannelBanner(BaseWindow):
 		#l.release()
 
 
-	def updateChannelLabel(self):
-		print '[%s():%s] <<<< begin'% (currentframe().f_code.co_name, currentframe().f_lineno)
+	def initLabelInfo(self):
+		print '[%s():%s]Initialize Label'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'currentChannel[%s]' % self.currentChannel
-
 		
-		if( self.currentChannel[0] == 'NULL' ) :
-			print 'has no channel'
-		
-			# todo 
-			# show message box : has no channnel
-		else :
+		if( self.currentChannel != [] ) :
 
 			self.ctrlProgress.setPercent(0)
 			self.progress_idx = 0.0
 			self.progress_max = 0.0
+			self.eventCopy = []
+			self.toggleFlag= False
 
 			self.ctrlChannelNumber.setLabel( self.currentChannel[1] )
 			self.ctrlChannelName.setLabel( self.currentChannel[2] )
 			self.ctrlEventName.setLabel('')
-			self.ctrlEventStartTime.setLabel('00:00')
-			self.ctrlEventEndTime.setLabel('00:00')
+			self.ctrlEventStartTime.setLabel('')
+			self.ctrlEventEndTime.setLabel('')
 
+			self.ctrlServiceType.setImage('')
 			self.ctrlServiceTypeImg1.setImage('')
 			self.ctrlServiceTypeImg2.setImage('')
 			self.ctrlServiceTypeImg3.setImage('')
-			
-			print '[%s():%s]Initialize Label'% (currentframe().f_code.co_name, currentframe().f_lineno)
-
-	def updateServiceType(self, Type):
-		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		print 'serviceType[%s]' % Type
-
-		if Type == ElisEnum.E_TYPE_DATA:
-			self.ctrlServiceTypeImg1.setImage(self.imgData)
-			
-		elif Type == ElisEnum.E_mHasDolbyDigital:
-			self.ctrlServiceTypeImg2.setImage(self.imgHD)
-
-		elif Type == ElisEnum.E_HasHDVideo:
-			self.ctrlServiceTypeImg3.setImage(self.imgDolby)
+			self.ctrlEventDescGroup.setVisible(False)
+			self.ctrlEventDescText1.reset()
+			self.ctrlEventDescText2.reset()
 
 		else:
-			print 'unknown ElisEnum Type[%s]'% Type
+			print 'has no channel'
+		
+			# todo 
+			# show message box : has no channnel
+
+
+	def updateServiceType(self, tvType):
+		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print 'serviceType[%s]' % tvType
+
+
+		if tvType == ElisEnum.E_TYPE_TV:
+			self.ctrlServiceType.setImage(self.imgTV)
+		elif tvType == ElisEnum.E_TYPE_RADIO:pass
+		elif tvType == ElisEnum.E_TYPE_DATA:pass
+		else:
+			self.ctrlServiceType.setImage('')
+			print 'unknown ElisEnum tvType[%s]'% tvType
+
+
+			
+
+	def showEPGDescription(self, event):
+		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+
+		if event != []:
+			print '[%s][%s][%s][%s][%s]' % (event[1], event[3], event[4], event[5], event[6])
+			msgDescription = self.commander.epgevent_GetDescription(
+							int(event[1]), #eventId
+							int(event[3]), #sid
+							int(event[4]), #tsid
+							int(event[5]), #onid
+							int(event[6])) #startTime
+
+			print 'msgDescription[%s]' % msgDescription
+
+			if msgDescription[0] != 'NULL':
+				msg = msgDescription[1]
+			else:
+				print 'No value Description  \'NULL\''
+				msg = ''
+
+			self.ctrlEventDescText1.setText(event[2])
+			self.ctrlEventDescText2.setText(msg)
+
+		else:
+			print 'event is None'
+			self.ctrlEventDescText1.setText('')
+			self.ctrlEventDescText2.setText('')
+
+		if self.toggleFlag == True:
+			self.ctrlEventDescText1.reset()
+			self.ctrlEventDescText2.reset()
+			self.ctrlEventDescGroup.setVisible(False)
+			self.toggleFlag = False
+		else:
+			self.ctrlEventDescGroup.setVisible(True)
+			self.toggleFlag = True
+			
+		
+		#self.ctrlEventDescription.setVisibleCondition('[Control.IsVisible(100)]',True)
+		#self.ctrlEventDescription.setEnabled(True)
 		
 
