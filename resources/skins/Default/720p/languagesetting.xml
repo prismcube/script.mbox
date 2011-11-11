@@ -107,7 +107,7 @@
 						<height>40</height>						
 						<pagecontrol>-</pagecontrol>
 						<scrolltime>0</scrolltime>
-						<itemlayout height="0" width="720">
+						<itemlayout height="1" width="720">
 						</itemlayout>
 						<focusedlayout height="40" width="720">
 							<control type="image">
@@ -220,7 +220,7 @@
 						<height>40</height>						
 						<pagecontrol>-</pagecontrol>
 						<scrolltime>0</scrolltime>
-						<itemlayout height="0" width="720">
+						<itemlayout height="1" width="720">
 						</itemlayout>
 						<focusedlayout height="40" width="720">
 							<control type="image">
@@ -333,7 +333,7 @@
 						<height>40</height>						
 						<pagecontrol>-</pagecontrol>
 						<scrolltime>0</scrolltime>
-						<itemlayout height="0" width="720">
+						<itemlayout height="1" width="720">
 						</itemlayout>
 						<focusedlayout height="40" width="720">
 							<control type="image">
@@ -446,7 +446,7 @@
 						<height>40</height>						
 						<pagecontrol>-</pagecontrol>
 						<scrolltime>0</scrolltime>
-						<itemlayout height="0" width="720">
+						<itemlayout height="1" width="720">
 						</itemlayout>
 						<focusedlayout height="40" width="720">
 							<control type="image">
@@ -517,6 +517,7 @@
 					</control>
 				</control>
 				<control type="group" id="9070">
+					<!--<enable>Container(9103).Content(Disable)</enable>-->
 					<width>720</width>
 					<height>40</height>
 					<defaultcontrol always="true">704</defaultcontrol>
@@ -559,7 +560,7 @@
 						<height>40</height>						
 						<pagecontrol>-</pagecontrol>
 						<scrolltime>0</scrolltime>
-						<itemlayout height="0" width="720">
+						<itemlayout height="1" width="720">
 						</itemlayout>
 						<focusedlayout height="40" width="720">
 							<control type="image">
@@ -585,6 +586,8 @@
 								<height>40</height>
 								<font>font13</font>
 								<textcolor>grey2</textcolor>
+								<!---------------------------->
+								<disabledcolor>grey3</disabledcolor>
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>

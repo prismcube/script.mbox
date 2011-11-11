@@ -58,7 +58,6 @@ class LanguageSetting(BaseWindow):
 			listItem = xbmcgui.ListItem(self.forTheHearingImpairedProperty.getName(), self.forTheHearingImpairedProperty.getPropStringByIndex( i ),"-", "-", "-")
 			self.forTheHearingImpairedlist.append(listItem)
 
-
 	def onInit(self):
 		if not self.win:
 			self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
@@ -73,7 +72,7 @@ class LanguageSetting(BaseWindow):
 		self.ctrlPrimaryAudioLanguage.addItems( self.primaryAudioLanguagelist )
 		self.ctrlPrimaryAudioLanguage.selectItem( self.primaryAudioLanguageProperty.getProp() )
 
-		# Primary Audio Language
+		# Primary Subtitle Language
 		self.ctrlPrimarySubtitleLanguage	= self.getControl( 9102 )
 		self.ctrlPrimarySubtitleLanguage.addItems( self.primarySubtitleLanguagelist )
 		self.ctrlPrimarySubtitleLanguage.selectItem( self.primarySubtitleLanguageProperty.getProp() )
@@ -90,9 +89,25 @@ class LanguageSetting(BaseWindow):
 
 		# Description Label
 		self.ctrlDescriptionLabel			= self.getControl( 100 )
-		self.ctrlDescriptionLabel.setLabel( self.DescriptionList[int((self.getFocusid() / 100) - 3)] )
+		self.ctrlDescriptionLabel.setLabel( self.DescriptionList[0] )
+
+		# Enable Setting
+		self.ctrlGroupSecondarySubtitleLanguage = self.getControl(9060)
+		self.ctrlGroupForTheHearingImpaired		= self.getControl(9070)
+		#self.ctrlGroupSecondarySubtitleLanguage.setEnabled(False)
+		#self.ctrlGroupForTheHearingImpaired.setEnabled(False)
+		if self.primarySubtitleLanguageProperty.getProp() == 0:
+			self.ctrlGroupSecondarySubtitleLanguage.setEnabled(False)
+			self.ctrlGroupForTheHearingImpaired.setEnabled(False)
+		else:
+			self.ctrlGroupSecondarySubtitleLanguage.setEnabled(True)
+			self.ctrlGroupForTheHearingImpaired.setEnabled(True)
 		
-		
+		'''
+		print 'test dhkim ....'
+		self.testgroup.setEnabled(0)
+		print 'test dhkim ....'
+		'''
 		'''
 		self.ctrlOSDLanguage    			= self.getControl( 101 )
 		self.ctrlPrimaryAudioLanguage    	= self.getControl( 102 )
@@ -110,7 +125,6 @@ class LanguageSetting(BaseWindow):
 			if osdLangProp.getPropByIndex( i ) == value
 				osdLangProp.setValue( value )
 		'''
-
 	def onAction(self, action):
  		
 		id = action.getId()
@@ -124,10 +138,31 @@ class LanguageSetting(BaseWindow):
 			print 'dhkim LanguageSetting check action parent'
 
 	def onClick(self, controlId):
+		print 'dhkim test in onClick event'
+		'''
+		if (controlId == 504) or (controlId == 505):
+			if self.primarySubtitleLanguageProperty.getProp() == 0:
+				self.ctrlGroupSecondarySubtitleLanguage.setEnabled(False)
+				self.ctrlGroupForTheHearingImpaired.setEnabled(False)
+			else:
+				self.ctrlGroupSecondarySubtitleLanguage.setEnabled(True)
+				self.ctrlGroupForTheHearingImpaired.setEnabled(True)
+			
+		# setProperty setting here...
 		if controlId == 304 or controlId == 305:
-			self.osdLanguageProperty.setPropString( self, self.ctrlOSDLanguagelist.getSelectedItem().getLabel() )
-		# other setProperty setting here...
-
+			self.osdLanguageProperty.setPropString( self, self.ctrlOSDLanguage.getSelectedItem().getLabel() )
+		if controlId == 404 or controlId == 405:
+			self.primaryAudioLanguageProperty.setPropString( self, self.ctrlPrimaryAudioLanguage.getSelectedItem().getLabel() )
+		if controlId == 504 or controlId == 505:
+			self.primarySubtitleLanguageProperty.setPropString( self, self.ctrlPrimarySubtitleLanguage.getSelectedItem().getLabel() )
+		if controlId == 604 or controlId == 605:
+			self.secondarySubtitleLanguageProperty.setPropString( self, self.ctrlSecondarySubtitleLanguage.getSelectedItem().getLabel() )
+		if controlId == 704 or controlId == 705:
+			self.forTheHearingImpairedProperty.setPropString( self, self.ctrlForTheHearingImpaired.getSelectedItem().getLabel() )
+		'''
+		
 	def onFocus(self, controlId):
+		print 'dhkim test in Focus event'
 		# change description
-		self.ctrlDescriptionLabel.setLabel( self.DescriptionList[int(controlId / 100 - 3)] )
+		self.ctrlDescriptionLabel.setLabel( self.DescriptionList[controlId / 100 - 3] )
+		
