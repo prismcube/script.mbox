@@ -47,6 +47,8 @@ class ChannelListWindow(BaseWindow):
 		if not self.win:
 			self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
 
+		self.ctrlSelectItem = self.getControl(401)
+
 		self.listcontrol = self.getControl( 50 )
 		self.listcontrol.addItems( self.listItems )
 
@@ -62,6 +64,7 @@ class ChannelListWindow(BaseWindow):
 
 			self.listcontrol.selectItem( chindex )
 
+		self.ctrlSelectItem.setLabel(str('%s / %s'% (self.listcontrol.getSelectedPosition() + 1, len(self.listItems))) )
 
 	def onAction(self, action):
  		
@@ -75,7 +78,9 @@ class ChannelListWindow(BaseWindow):
 			
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'lael98 check ation back'
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )				
+			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )	
+
+			self.listcontrol.reset()
 
 		else: print'Unconsumed key: %s' % action.getId()
 
@@ -93,6 +98,7 @@ class ChannelListWindow(BaseWindow):
 
 				self.currentChannel = channelNumbr
 
+			self.ctrlSelectItem.setLabel(str('%s / %s'% (self.listcontrol.getSelectedPosition() + 1, len(self.listItems))) )
 
 	def onFocus(self, controlId):
 		print "onFocus(): control %d" % controlId

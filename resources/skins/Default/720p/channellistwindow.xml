@@ -9,9 +9,122 @@
 	<allowoverlay>yes</allowoverlay>
 	<views>50,51,500,503</views>
 	<controls>
+
+
+<!-------- header --------->
+		<control type="group" id="100">
+			<animation effect="slide" start="0,-50" delay="0" time="300">WindowOpen</animation>
+			<animation effect="slide" end="0,-50" delay="0" time="300">WindowClose</animation>
+
+			<control type="image">
+				<posx>150</posx>
+				<posy>50</posy>
+				<width>100</width>
+				<height>50</height>
+				<texture>channelbanner/tv.png</texture>
+			</control>
+			<control type="label">
+				<posx>240</posx>
+				<posy>60</posy>
+				<font>font24_title</font>
+				<label>-Channel List</label>
+			</control>
+
+			<control type="group">
+				<control type="label" id="103">
+					<posx>300r</posx>
+					<posy>50</posy>
+					<width>400</width>
+					<height>28</height>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>font12</font>
+					<textcolor>white</textcolor>
+					<!--<label>TIME $INFO[Control.GetLabel]</label>-->
+					<label>$INFO[System.time]</label>
+					<description>EPG Clock</description>
+				</control>
+			</control>
+
+		</control>
+
+
+<!-------- title ------>
+		<control type="group" id="200">
+			<control type="group">
+				<onfocus>-</onfocus>
+
+				<control type="image">
+					<posx>150</posx>
+					<posy>110</posy>
+					<width>40</width>
+					<height>30</height>
+					<texture>radiobutton-nofocus.png</texture>
+					<color>0xff00ff00</color>
+				</control>
+				<control type="label">
+					<posx>200</posx>
+					<posy>120</posy>
+					<font>font12_title</font>
+					<label>All Channel</label>
+				</control>
+			</control>
+			<control type="group">
+				<control type="image">
+					<posx>350</posx>
+					<posy>110</posy>
+					<width>40</width>
+					<height>30</height>
+					<texture>radiobutton-nofocus.png</texture>
+					<color>0xff00ff00</color>
+				</control>
+				<control type="label">
+					<posx>400</posx>
+					<posy>120</posy>
+					<font>font12_title</font>
+					<label>Satellite</label>
+				</control>
+			</control>
+			<control type="group">
+				<control type="image">
+					<posx>650</posx>
+					<posy>110</posy>
+					<width>40</width>
+					<height>30</height>
+					<texture>radiobutton-nofocus.png</texture>
+					<color>0xff00ff00</color>
+				</control>
+				<control type="label">
+					<posx>700</posx>
+					<posy>120</posy>
+					<font>font12_title</font>
+					<label>FTA/CAS</label>
+				</control>
+			</control>
+			<control type="group">
+				<control type="image">
+					<posx>850</posx>
+					<posy>110</posy>
+					<width>40</width>
+					<height>30</height>
+					<texture>radiobutton-nofocus.png</texture>
+					<color>0xff00ff00</color>
+				</control>
+				<control type="label">
+					<posx>900</posx>
+					<posy>120</posy>
+					<font>font12_title</font>
+					<label>Favorite</label>
+				</control>
+			</control>
+			
+		</control>
+
+<!--------- middle left ---->
 		<control type="group">
 			<include>VisibleFadeEffect</include>
 			<visible>true</visible>
+<!--
 			<control type="image">
 				<posx>50</posx>
 				<posy>60</posy>
@@ -19,13 +132,15 @@
 				<height>600</height>
 				<texture border="20">ContentPanel.png</texture>
 			</control>
+-->
 		</control>
 		<control type="group">		
 			<control type="list" id="50">
-				<posx>70</posx>
-				<posy>78</posy>
-				<width>690</width>
-				<height>561</height>
+				<posx>150</posx>
+				<posy>180</posy>
+				<width>600</width>
+				<height>321</height>
+
 				<onleft>-</onleft>
 				<onright>-</onright>
 				<onup>50</onup>
@@ -53,7 +168,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
+						<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
 					</control>
 					<control type="label">
 						<posx>660</posx>
@@ -71,7 +186,7 @@
 				<focusedlayout height="40" width="580">
 					<control type="image">
 						<posx>0</posx>
-					<posy>0</posy>
+						<posy>0</posy>
 						<width>690</width>
 						<height>41</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
@@ -120,56 +235,177 @@
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
-						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="true">conditional</animation>
+						<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="true">conditional</animation>
 					</control>
 				</focusedlayout>
-<!--				
-				<content>
-					<item id="1">
-						<label>1001  channelname</label>
-						<label2>aa</label2>						
-						<onclick>right</onclick>
-						<visible>true</visible>
-					</item>
-					<item id="2">
-						<label>1002 channelname</label>
-						<label2>test</label2>												
-						<onclick>right</onclick>
-						<visible>true</visible>
-					</item>
-					<item id="3">
-						<label>1003 channelname</label>
-						<label2>test</label2>												
-						<onclick>right</onclick>
-						<visible>true</visible>
-					</item>
-					<item id="4">
-						<label>Audio/Video</label>
-						<label2>test</label2>												
-						<onclick>right</onclick>
-						<visible>true</visible>
-					</item>
-					<item id="5">
-						<label>Receiver Setup</label>
-						<label2>test</label2>												
-						<onclick>right</onclick>
-						<visible>true</visible>
-					</item>
-					<item id="6">
-						<label>CAS</label>
-						<label2>test</label2>												
-						<onclick>right</onclick>
-						<visible>true</visible>
-					</item>
-					<item id="7">
-						<label>Media Center</label>
-						<label2>test</label2>												
-						<onclick>right</onclick>
-						<visible>true</visible>
-					</item>
-				</content>
--->				
+
 			</control>
 		</control>	
+
+<!--------- middle right ------->
+		<control type="group" id="300">
+			<posx>750</posx>
+			<posy>180</posy>
+			<width>1200</width>
+			<height>321</height>
+			<allowoverlay>true</allowoverlay>
+			<control type="group">
+				<include>backgroundfade</include>
+				<animation type="WindowOpen" reversible="false">
+					<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
+					<effect type="fade" start="0" end="100" time="300" />
+				</animation>
+				<animation type="WindowClose" reversible="false">
+					<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
+					<effect type="fade" start="100" end="0" time="300" />
+				</animation>			
+
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>350</width>
+					<height>200</height>
+					<texture border="20">special://skin/backgrounds/weather.jpg</texture>
+					<description>pre-view</description>
+				</control>
+				<control type="image">
+					<posx>0</posx>
+					<posy>185</posy>
+					<width>350</width>
+					<height>18</height>
+					<visible>!Skin.HasSetting(ShowBackgroundVideo)</visible>
+					<texture border="20">StackNF.png</texture>
+					<!--<texture border="20">media-overlay.png</texture>-->
+				</control>
+				<control type="label">
+					<posx>0</posx>
+					<posy>183</posy>
+					<width>350</width>
+					<height>10</height>
+					<font>font12_title</font>
+					<shadowcolor>ff000000</shadowcolor>
+					<backgroundcolor>ffff0000</backgroundcolor>
+					<label>TV - ANIXE HD</label>
+					<description>epg name</description>
+				</control>
+			</control>
+<!--
+			<control type="image">
+				  <posx>0</posx>
+				  <posy>200</posy>
+				  <width>350</width>
+				  <height>121</height>
+				<texture border="0">channelBanner/DialogBack.png</texture>
+			</control>
+-->
+			<control type="group">
+				<control type="textbox" id="02">
+					<description>EPG Info</description>
+					<posx>0</posx>
+					<posy>200</posy>
+					<width>350</width>
+					<height>121</height>
+					<visible>true</visible>
+					<colordiffuse>FFFFFFFF</colordiffuse>
+					<font>font12</font>
+					<textcolor>grey</textcolor>
+					<wrapmultiline>true</wrapmultiline>
+					<label>channel info</label>
+				</control>
+			</control>
+
+		</control>
+
+<!--------- page --------->
+		<control type="group" id="400">
+			<include>CommonPageCount</include>
+			<control type="label" id="401">
+				<posx>600</posx>
+				<posy>500</posy>
+				<align>center</align>
+				<textcolor>grey</textcolor>
+				<font>font12</font>
+				<!--<label>[COLOR=blue]$INFO[Control.getSelectedItem(50)][/COLOR]</label>-->
+				<label>$INFO[Control.Label] / $INFO[Container(50).NumItems]</label>
+
+			</control>
+		</control>
+
+<!--------- buttom --------->
+		<control type="group" id="500">
+			<animation effect="slide" start="0,320" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+			<animation effect="slide" start="0,0" end="0,320" time="300" delay="150" tween="quadratic" easing="out">WindowClose</animation>
+<!--
+			<animation effect="slide" start="0,0" end="0,320" time="300" tween="quadratic" easing="out" condition="Window.IsVisible(SliderDialog) | Window.IsVisible(OSDVideoSettings) | Window.IsVisible(OSDAudioSettings) | Window.IsVisible(VideoBookmarks)">Conditional</animation>
+
+			<control type="image">
+				<description>media info background image</description>
+				<posx>0</posx>
+				<posy>320</posy>
+				<width>1280</width>
+				<height>256</height>
+				<texture>channelBanner\MediaInfoBackUpper.png</texture>
+			</control>
+			<control type="image">
+				<description>media info background image</description>
+				<posx>0</posx>
+				<posy>320</posy>
+				<width>1280</width>
+				<height>236</height>
+				<texture>black-back.png</texture>
+			</control>
+-->
+			<posx>50</posx>
+			<posy>450</posy>
+			<control type="button" id="501">
+				<posx>200</posx>
+				<posy>150</posy>
+				<width>50</width>
+				<height>50</height>
+				<texturefocus>OSDPauseFO.png</texturefocus>
+				<texturenofocus>OSDPauseNF.png</texturenofocus>
+				<onclick>ProgramList(Previous)</onclick>
+			</control>
+			<control type="label">
+				<posx>250</posx>
+				<posy>150</posy>
+				<font>font15</font>
+				<label>exit</label>
+			</control>
+
+			<control type="button" id="502">
+				<posx>300</posx>
+				<posy>150</posy>
+				<width>50</width>
+				<height>50</height>
+				<texturefocus>OSDPauseFO.png</texturefocus>
+				<texturenofocus>OSDPauseNF.png</texturenofocus>
+				<onclick>ProgramList(Previous)</onclick>
+			</control>
+			<control type="label">
+				<posx>350</posx>
+				<posy>150</posy>
+				<font>font15</font>
+				<label>Go to Live</label>
+			</control>
+
+			<control type="button" id="503">
+				<posx>450</posx>
+				<posy>150</posy>
+				<width>50</width>
+				<height>50</height>
+				<texturefocus>OSDPauseFO.png</texturefocus>
+				<texturenofocus>OSDPauseNF.png</texturenofocus>
+				<onclick>ProgramList(Previous)</onclick>
+			</control>
+			<control type="label">
+				<posx>500</posx>
+				<posy>150</posy>
+				<font>font15</font>
+				<label>Turn in</label>
+			</control>
+
+		</control>
+
 	</controls>
 </window>
