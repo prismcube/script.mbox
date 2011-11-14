@@ -40,8 +40,8 @@
 					<aligny>center</aligny>
 					<font>font12</font>
 					<textcolor>white</textcolor>
-					<!--<label>TIME $INFO[Control.GetLabel]</label>-->
-					<label>$INFO[System.time]</label>
+					<label>$INFO[Control.Label]</label>
+					<!--<label>$INFO[System.time]</label>-->
 					<description>EPG Clock</description>
 				</control>
 			</control>
@@ -277,7 +277,7 @@
 					<texture border="20">StackNF.png</texture>
 					<!--<texture border="20">media-overlay.png</texture>-->
 				</control>
-				<control type="label">
+				<control type="label" id="303">
 					<posx>0</posx>
 					<posy>183</posy>
 					<width>350</width>
@@ -285,7 +285,7 @@
 					<font>font12_title</font>
 					<shadowcolor>ff000000</shadowcolor>
 					<backgroundcolor>ffff0000</backgroundcolor>
-					<label>TV - ANIXE HD</label>
+					<label>$INFO[Control.Label]</label>
 					<description>epg name</description>
 				</control>
 			</control>
@@ -299,26 +299,60 @@
 			</control>
 -->
 			<control type="group">
-				<control type="textbox" id="02">
+				<posx>0</posx>
+				<posy>220</posy>
+				<width>350</width>
+				<control type="label" id="304">
 					<description>EPG Info</description>
 					<posx>0</posx>
-					<posy>200</posy>
-					<width>350</width>
-					<height>121</height>
-					<visible>true</visible>
-					<colordiffuse>FFFFFFFF</colordiffuse>
-					<font>font12</font>
+					<posy>0</posy>
+					<font>font12_title</font>
 					<textcolor>grey</textcolor>
-					<wrapmultiline>true</wrapmultiline>
-					<label>channel info</label>
+					<label>epg name</label>
 				</control>
+
+				<control type="group">
+				<description>EPG Info</description>
+					<control type="label" id="305">
+						<posx>0</posx>
+						<posy>20</posy>
+						<font>font12_title</font>
+						<textcolor>grey</textcolor>
+						<label>00:00-00:00</label>
+					</control>
+					<control type="progress" id="306">
+						<posx>200</posx>
+						<posy>20</posy>
+						<width>150</width>
+						<height>15</height>
+						<color>grey</color>
+						<border>0</border>
+					</control>
+				</control>
+
+				<control type="label" id="307">
+					<description>satellite info</description>
+					<posx>0</posx>
+					<posy>40</posy>
+					<font>font12_title</font>
+					<textcolor>grey</textcolor>
+					<label>19.2 E ASTRA 1</label>
+				</control>
+				<control type="label" id="308">
+					<description>career info</description>
+					<posx>0</posx>
+					<posy>60</posy>
+					<font>font12_title</font>
+					<textcolor>grey</textcolor>
+					<label>11303 MHz, 22000 KS/S, Horz</label>
+				</control>
+
 			</control>
 
 		</control>
 
 <!--------- page --------->
 		<control type="group" id="400">
-			<include>CommonPageCount</include>
 			<control type="label" id="401">
 				<posx>600</posx>
 				<posy>500</posy>

@@ -30,7 +30,7 @@ from pvr.elisevent import ElisAction, ElisEnum
 from pvr.net.net import EventRequest
 
 #from threading import Thread
-from pvr.util import run_async, is_digit, Mutex #, synchronized, sync_instance
+from pvr.util import run_async, is_digit, Mutex, epgInfoTime, epgInfoClock #, synchronized, sync_instance
 import thread
 
 #debug log
@@ -293,50 +293,22 @@ class ChannelBanner(BaseWindow):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 		# How about slowly time(West) at localoffset...? 
-		"""
-		while 1:
-			if self.mutex.locked() == False:
-				self.mutex.acquire()
-				print 'acquire, locked[%s]'% self.mutex.locked()
-				timeZone = self.commander.datetime_GetLocalOffset()
-				self.mutex.release()
-				print 'release, locked[%s]'% self.mutex.locked()
-				break
-			time.sleep(0.5)
-		"""
-
 		timeZone = self.commander.datetime_GetLocalOffset()
-		
 		print '========= startTime[%s] duration[%s] offset[%s]'% (startTime, duration, timeZone[0])
 
-		localOffset = 0
-		if (is_digit(timeZone[0]) == True):
-			localOffset = int(timeZone[0])
+		ret = epgInfoTime(timeZone[0], startTime, duration)
+		if ret != []:
+			self.ctrlEventStartTime.setLabel(ret[0])
+			self.ctrlEventEndTime.setLabel(ret[1])
+				
 
-		epgStartTime = startTime + localOffset
-		epgEndTime =  startTime + duration + localOffset
-
-		startTime_hh = time.strftime('%H', time.gmtime(epgStartTime) )
-		startTime_mm = time.strftime('%M', time.gmtime(epgStartTime) )
-		endTime_hh = time.strftime('%H', time.gmtime(epgEndTime) )
-		endTime_mm = time.strftime('%M', time.gmtime(epgEndTime) )
-
-		str_startTime = str ('%02s:%02s -'% (startTime_hh,startTime_mm) )
-		str_endTime = str ('%02s:%02s'% (endTime_hh,endTime_mm) )
-
-		self.ctrlEventStartTime.setLabel(str_startTime)
-		self.ctrlEventEndTime.setLabel(str_endTime)
-
-		print 'epgStart[%s] epgEndTime[%s]'% (epgStartTime, epgEndTime)
-		print 'epgStart[%s] epgEndTime[%s]'% (time.strftime('%x %X',time.gmtime(epgStartTime)), time.strftime('%x %X',time.gmtime(epgEndTime)) )
-		print 'start[%s] end[%s]'%(str_startTime, str_endTime)
-		print 'hh[%s] mm[%s] hh[%s] mm[%s]' % (startTime_hh, startTime_mm, endTime_hh, endTime_mm)
 
 	@run_async
 	def updateEPGProgress(self):
 		print '[%s():%s]start thread <<<< begin'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		#print 'untilThread[%s] self.progress_max[%s]' % (self.untilThread, self.progress_max)
 
+		nowTime = time.time()
 		while self.untilThread:
 			print '[%s():%s]repeat <<<<'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
@@ -353,40 +325,16 @@ class ChannelBanner(BaseWindow):
 
 
 			print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+
+			#local clock
+			if is_digit(self.epgClock[0]):
+				ret = epgInfoClock(2, nowTime, int(self.epgClock[0]))
+				self.ctrlEventClock.setLabel(ret)
+
+			else:
+				print 'value error epgClock[%s]' % ret
 			
 			time.sleep(1)
-
-			self.updateLocalTime()
-		
-
-	def updateLocalTime(self):
-		#from pvr.util import Mutex
-		#tmux = Mutex()
-		#tmux.lock()
-
-		#self.mutex.acquire()
-		#self.Mutex.acquire()
-
-		print 'locked[%s]'% self.mutex.locked()
-		if self.mutex.locked() == False:
-			self.mutex.acquire()
-
-			epgClock = self.commander.datetime_GetLocalTime()
-			self.mutex.release()
-		#self.Mutex.release()
-
-
-			if is_digit(epgClock[0]):
-				strClock = time.strftime('%a. %H:%M', time.gmtime(long(epgClock[0])) )
-				self.ctrlEventClock.setLabel(strClock)
-				print 'epgClock[%s]'% strClock
-			else:
-				print 'value error epgClock[%s]' % epgClock[0]
-
-
-		#self.mutex.noti()
-		#tmux.unlock()
-		#l.release()
 
 
 	def initLabelInfo(self):
@@ -414,6 +362,8 @@ class ChannelBanner(BaseWindow):
 			self.ctrlEventDescGroup.setVisible(False)
 			self.ctrlEventDescText1.reset()
 			self.ctrlEventDescText2.reset()
+
+			self.epgClock = self.commander.datetime_GetLocalTime()
 
 		else:
 			print 'has no channel'

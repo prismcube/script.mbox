@@ -160,5 +160,49 @@ class Mutex(threading.Thread):
 		#self.notify.release()
 
 
+def epgInfoTime(timeZone, startTime, duration):
+	
+	localOffset = 0
+	if (is_digit(timeZone) == True):
+		localOffset = int(timeZone)
 
+	epgStartTime = startTime + localOffset
+	epgEndTime =  startTime + duration + localOffset
+
+	startTime_hh = time.strftime('%H', time.gmtime(epgStartTime) )
+	startTime_mm = time.strftime('%M', time.gmtime(epgStartTime) )
+	endTime_hh = time.strftime('%H', time.gmtime(epgEndTime) )
+	endTime_mm = time.strftime('%M', time.gmtime(epgEndTime) )
+
+	str_startTime = str ('%02s:%02s -'% (startTime_hh,startTime_mm) )
+	str_endTime = str ('%02s:%02s'% (endTime_hh,endTime_mm) )
+
+	print 'epgStart[%s] epgEndTime[%s]'% (epgStartTime, epgEndTime)
+	print 'epgStart[%s] epgEndTime[%s]'% (time.strftime('%x %X',time.gmtime(epgStartTime)), time.strftime('%x %X',time.gmtime(epgEndTime)) )
+	print 'start[%s] end[%s]'%(str_startTime, str_endTime)
+	print 'hh[%s] mm[%s] hh[%s] mm[%s]' % (startTime_hh, startTime_mm, endTime_hh, endTime_mm)
+
+	ret = []
+	ret.append(str_startTime)
+	ret.append(str_endTime)
+
+	return ret
+
+def epgInfoClock(flag, nowTime, epgClock):
+	pastTime = time.time() - nowTime
+
+	strClock = ''
+	stbClock = int(epgClock) + pastTime
+
+	if flag == 1:
+		if int(pastTime) % 2 == 0:
+			strClock = time.strftime('%a, %d.%m.%Y   %H:%M', time.gmtime(stbClock) )
+		else:
+			strClock = time.strftime('%a, %d.%m.%Y   %H %M', time.gmtime(stbClock) )
+
+	elif flag == 2:
+		strClock = time.strftime('%a. %H:%M', time.gmtime(stbClock) )
+
+	print 'epgClock[%s:%s]'% (strClock, time.strftime('%S', time.gmtime(stbClock)) )
+	return strClock
 
