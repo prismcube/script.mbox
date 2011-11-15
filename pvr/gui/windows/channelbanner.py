@@ -30,7 +30,7 @@ from pvr.elisevent import ElisAction, ElisEnum
 from pvr.net.net import EventRequest
 
 #from threading import Thread
-from pvr.util import run_async, is_digit, Mutex, epgInfoTime, epgInfoClock #, synchronized, sync_instance
+from pvr.util import run_async, is_digit, Mutex, epgInfoTime, epgInfoClock, epgInfoComponentImage #, synchronized, sync_instance
 import thread
 
 #debug log
@@ -55,20 +55,16 @@ class ChannelBanner(BaseWindow):
 
 		self.currentChannel=[]
 
-		self.mutex = thread.allocate_lock()
-
-
 		#push push test test
 
 		#time track
 		#from threading import Thread
-		#self.timeTrack = threading.Thread(target = self.updateEPGProgress)
-		self.untilThread = True
+		#self.timeTrack = threading.Thread(target = self.updateLocalTime)
 
 	def __del__(self):
 		print '[%s():%s] destroyed ChannelBanner'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
-		# end thread updateEPGProgress()
+		# end thread updateLocalTime()
 		self.untilThread = False
 
 	def onInit(self):
@@ -108,10 +104,9 @@ class ChannelBanner(BaseWindow):
 		self.initLabelInfo()
 	
 		#run thread
-		self.updateEPGProgress()
+		self.untilThread = True
+		self.updateLocalTime()
 
-		self.nowCh = 'NULL'
-		self.nowCh = self.currentChannel[0]
 		if is_digit(self.currentChannel[3]):
 			self.updateServiceType(int(self.currentChannel[3]))
 
@@ -134,7 +129,7 @@ class ChannelBanner(BaseWindow):
 #			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
 #			winmgr.shutdown()
 
-			# end thread updateEPGProgress()
+			# end thread updateLocalTime()
 			self.untilThread = False
 
 		elif id == Action.ACTION_MOVE_DOWN:
@@ -149,7 +144,7 @@ class ChannelBanner(BaseWindow):
 				if ret[0].upper() == 'TRUE' :
 					self.currentChannel = self.commander.channel_GetCurrent()
 					self.initLabelInfo()
-					self.nowCh = channelNumber
+
 			else:
 				print 'No Channel next_ch[%s]'% next_ch
 
@@ -170,7 +165,7 @@ class ChannelBanner(BaseWindow):
 				if ret[0].upper() == 'TRUE' :
 					self.currentChannel = self.commander.channel_GetCurrent()
 					self.initLabelInfo()
-					self.nowCh = channelNumber
+
 			else:
 				print 'No Channel priv_ch[%s]'% priv_ch
 
@@ -195,123 +190,75 @@ class ChannelBanner(BaseWindow):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'eventCopy[%s]'% self.eventCopy
 
-		"""
-		while 1:
-			if self.mutex.locked() == True:
-				time.sleep(0.1)
-				continue
-			else:
-				break
-		"""
-		if self.mutex.locked() == False:
+		if xbmcgui.getCurrentWindowId() == 13003 :
 			self.updateONEvent(self.eventCopy)
+		else:
+			print 'show screen is another windows page[%s]'% xbmcgui.getCurrentWindowId()
+
 
 	def updateONEvent(self, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		print 'nowCh[%s] event[%s]'% (self.nowCh, event)
+		print 'event[%s]'% event
 
-		#epg name
-		if event[2] != '':
-			self.ctrlEventName.setLabel(event[2])
-			print 'event6[%s] event7[%s]'% (event[6], event[7])
+		if event != []:
+			#epg name
+			if event[2] != '':
+				print '[%s():%s]%s'% (currentframe().f_code.co_name, currentframe().f_lineno,event[2])
+				try:
+					self.ctrlEventName.setLabel(event[2])
+				except Exception, ex:
+					print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+					print 'CATCHALL_UI: Caught  exception %s' % str(ex)
+			else:
+				self.ctrlEventName.setLabel('')
 
+			#epg time
 			if is_digit(event[7]):
 				self.progress_max = int(event[7])
-				print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 				if is_digit(event[6]):
-					self.updateEPGTime(int(event[6]), int(event[7]))
-					print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+					timeZone = self.commander.datetime_GetLocalOffset()
+					ret = epgInfoTime(timeZone[0], int(event[6]), int(event[7]))
+					if ret != []:
+						print 'ret[%s]'% ret
+						self.ctrlEventStartTime.setLabel(ret[0])
+						self.ctrlEventEndTime.setLabel(ret[1])
+				
+					print 'event6[%s] event7[%s]'% (event[6], event[7])
 				else:
 					print 'value error EPGTime start[%s]' % event[6]
 			else:
 				print 'value error EPGTime duration[%s]' % event[7]
 
+			#component
+			ret = epgInfoComponentImage(int(event[9]))
+			if len(ret) == 1:
+				self.ctrlServiceTypeImg1.setImage(ret[0])
+			elif len(ret) == 2:
+				self.ctrlServiceTypeImg1.setImage(ret[0])
+				self.ctrlServiceTypeImg2.setImage(ret[1])
+			elif len(ret) == 3:
+				self.ctrlServiceTypeImg1.setImage(ret[0])
+				self.ctrlServiceTypeImg2.setImage(ret[1])
+				self.ctrlServiceTypeImg3.setImage(ret[2])
+			else:
+				self.ctrlServiceTypeImg1.setImage('')
+				self.ctrlServiceTypeImg2.setImage('')
+				self.ctrlServiceTypeImg3.setImage('')
+
 		else:
-			self.ctrlEventName.setLabel('')
-
-
-		#component
-		tempFile = 0x00
-		if event != []:
-			component = int(event[9])
-			if (component & 0x01) == ElisEnum.E_HasHDVideo:                # 1<<0
-				tempFile |= 0x01
-			if (component & 0x02) == ElisEnum.E_Has16_9Video:              # 1<<1
-				pass
-			if (component & 0x04) == ElisEnum.E_HasStereoAudio:            # 1<<2
-				pass
-			if (component & 0x08) == ElisEnum.E_mHasMultichannelAudio:     # 1<<3
-				pass
-			if (component & 0x10) == ElisEnum.E_mHasDolbyDigital:          # 1<<4
-				tempFile |= 0x02
-			if (component & 0x20) == ElisEnum.E_mHasSubtitles:             # 1<<5
-				tempFile |= 0x04
-			if (component & 0x40) == ElisEnum.E_mHasHardOfHearingAudio:    # 1<<6
-				pass
-			if (component & 0x80) == ElisEnum.E_mHasHardOfHearingSub:      # 1<<7
-				pass
-			if (component & 0x100)== ElisEnum.E_mHasVisuallyImpairedAudio: # 1<<8
-				pass
-
-			print 'component[%s] tempFile[%s]' % (component, tempFile)
-
-		if tempFile == 1:
-			self.ctrlServiceTypeImg1.setImage(self.imgHD)
-			self.ctrlServiceTypeImg2.setImage('')
-			self.ctrlServiceTypeImg3.setImage('')
-		elif tempFile == 2:	
-			self.ctrlServiceTypeImg1.setImage(self.imgDolby)
-			self.ctrlServiceTypeImg2.setImage('')
-			self.ctrlServiceTypeImg3.setImage('')
-		elif tempFile == 3:	
-			self.ctrlServiceTypeImg1.setImage(self.imgDolby)
-			self.ctrlServiceTypeImg2.setImage(self.imgHD)
-			self.ctrlServiceTypeImg3.setImage('')
-		elif tempFile == 4:	
-			self.ctrlServiceTypeImg1.setImage(self.imgData)
-			self.ctrlServiceTypeImg2.setImage('')
-			self.ctrlServiceTypeImg3.setImage('')
-		elif tempFile == 5:	
-			self.ctrlServiceTypeImg1.setImage(self.imgData)
-			self.ctrlServiceTypeImg2.setImage(self.imgHD)
-			self.ctrlServiceTypeImg3.setImage('')
-		elif tempFile == 6:	
-			self.ctrlServiceTypeImg1.setImage(self.imgData)
-			self.ctrlServiceTypeImg2.setImage(self.imgDolby)
-			self.ctrlServiceTypeImg3.setImage('')
-		elif tempFile == 7:	
-			self.ctrlServiceTypeImg1.setImage(self.imgData)
-			self.ctrlServiceTypeImg2.setImage(self.imgDolby)
-			self.ctrlServiceTypeImg3.setImage(self.imgHD)
-		else:
-			self.ctrlServiceTypeImg1.setImage('')
-			self.ctrlServiceTypeImg2.setImage('')
-			self.ctrlServiceTypeImg3.setImage('')
-
-	def updateEPGTime(self, startTime, duration):
-		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-
-		# How about slowly time(West) at localoffset...? 
-		timeZone = self.commander.datetime_GetLocalOffset()
-		print '========= startTime[%s] duration[%s] offset[%s]'% (startTime, duration, timeZone[0])
-
-		ret = epgInfoTime(timeZone[0], startTime, duration)
-		if ret != []:
-			self.ctrlEventStartTime.setLabel(ret[0])
-			self.ctrlEventEndTime.setLabel(ret[1])
-				
-
+			print 'event null'
 
 	@run_async
-	def updateEPGProgress(self):
+	def updateLocalTime(self):
 		print '[%s():%s]start thread <<<< begin'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		#print 'untilThread[%s] self.progress_max[%s]' % (self.untilThread, self.progress_max)
 
 		nowTime = time.time()
 		while self.untilThread:
-			print '[%s():%s]repeat <<<<'% (currentframe().f_code.co_name, currentframe().f_lineno)
+			print '[%s():%s]repeat'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
+			#progress
 			if self.progress_max > 0:
 				print 'progress_idx[%s] getPercent[%s]' % (self.progress_idx, self.ctrlProgress.getPercent())
 

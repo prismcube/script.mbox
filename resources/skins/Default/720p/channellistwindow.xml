@@ -347,6 +347,36 @@
 					<label>11303 MHz, 22000 KS/S, Horz</label>
 				</control>
 
+				<control type="image" id="310">
+					<posx>0</posx>
+					<posy>80</posy>
+					<width>60</width>
+					<height>30</height>
+					<!--<texture>channelBanner\data.png</texture>-->
+					<texture>$INFO[Control.GetLabel]</texture>
+					<description>data</description>
+				</control>
+
+				<control type="image" id="311">
+					<posx>55</posx>
+					<posy>80</posy>
+					<width>65</width>
+					<height>30</height>
+					<!--<texture>channelBanner\dolbydigital.png</texture>-->
+					<texture>$INFO[Control.GetLabel]</texture>
+					<description>audio dolby</description>
+				</control>
+
+				<control type="image" id="312">
+					<posx>110</posx>
+					<posy>80</posy>
+					<width>65</width>
+					<height>30</height>
+					<!--<texture>channelBanner\OverlayHD.png</texture>-->
+					<texture>$INFO[Control.GetLabel]</texture>
+					<description>video HD</description>
+				</control>
+
 			</control>
 
 		</control>

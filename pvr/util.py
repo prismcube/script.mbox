@@ -206,3 +206,56 @@ def epgInfoClock(flag, nowTime, epgClock):
 	print 'epgClock[%s:%s]'% (strClock, time.strftime('%S', time.gmtime(stbClock)) )
 	return strClock
 
+def epgInfoComponentImage(component):
+	print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+	from pvr.elisevent import ElisEnum
+
+	tempFile = 0x00
+	if (component & 0x01) == ElisEnum.E_HasHDVideo:                # 1<<0
+		tempFile |= 0x01
+	if (component & 0x02) == ElisEnum.E_Has16_9Video:              # 1<<1
+		pass
+	if (component & 0x04) == ElisEnum.E_HasStereoAudio:            # 1<<2
+		pass
+	if (component & 0x08) == ElisEnum.E_mHasMultichannelAudio:     # 1<<3
+		pass
+	if (component & 0x10) == ElisEnum.E_mHasDolbyDigital:          # 1<<4
+		tempFile |= 0x02
+	if (component & 0x20) == ElisEnum.E_mHasSubtitles:             # 1<<5
+		tempFile |= 0x04
+	if (component & 0x40) == ElisEnum.E_mHasHardOfHearingAudio:    # 1<<6
+		pass
+	if (component & 0x80) == ElisEnum.E_mHasHardOfHearingSub:      # 1<<7
+		pass
+	if (component & 0x100)== ElisEnum.E_mHasVisuallyImpairedAudio: # 1<<8
+		pass
+
+	print 'component[%s] tempFile[%s]' % (component, tempFile)
+
+	imgData  = 'channelbanner/data.png'
+	imgDolby = 'channelbanner/dolbydigital.png'
+	imgHD    = 'channelbanner/OverlayHD.png'
+	imagelist = []
+	if tempFile == 1:
+		imagelist.append(imgHD)
+	elif tempFile == 2:	
+		imagelist.append(imgDolby)
+	elif tempFile == 3:	
+		imagelist.append(imgDolby)
+		imagelist.append(imgHD)
+	elif tempFile == 4:	
+		imagelist.append(imgData)
+	elif tempFile == 5:	
+		imagelist.append(imgData)
+		imagelist.append(imgHD)
+	elif tempFile == 6:	
+		imagelist.append(imgData)
+		imagelist.append(imgDolby)
+	elif tempFile == 7:	
+		imagelist.append(imgData)
+		imagelist.append(imgDolby)
+		imagelist.append(imgHD)
+	else:
+		print 'unknown component image'
+
+	return imagelist

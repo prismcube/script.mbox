@@ -25,7 +25,7 @@ from pvr.gui.basewindow import BaseWindow, setWindowBusy
 from pvr.gui.basewindow import Action
 from pvr.elisevent import ElisEnum
 from inspect import currentframe
-from pvr.util import catchall, is_digit, run_async, epgInfoTime, epgInfoClock
+from pvr.util import catchall, is_digit, run_async, epgInfoTime, epgInfoClock, epgInfoComponentImage
 import pvr.elismgr
 
 import thread, time
@@ -69,6 +69,9 @@ class ChannelListWindow(BaseWindow):
 		self.ctrlProgress       = self.getControl( 306 )
 		self.ctrlSateliteInfo   = self.getControl( 307 )
 		self.ctrlCareerInfo     = self.getControl( 308 )
+		self.ctrlServiceTypeImg1= self.getControl( 310 )
+		self.ctrlServiceTypeImg2= self.getControl( 311 )
+		self.ctrlServiceTypeImg3= self.getControl( 312 )
 		
 		self.ctrlSelectItem     = self.getControl( 401 )
 
@@ -88,6 +91,11 @@ class ChannelListWindow(BaseWindow):
 
 			self.listcontrol.selectItem( chindex )
 
+
+		self.imgData  = 'channelbanner/data.png'
+		self.imgDolby = 'channelbanner/dolbydigital.png'
+		self.imgHD    = 'channelbanner/OverlayHD.png'
+		self.ctrlEventClock.setLabel('')
 		self.initLabelInfo()
 
 		#run thread
@@ -130,7 +138,7 @@ class ChannelListWindow(BaseWindow):
 				self.currentChannelInfo = self.commander.channel_GetCurrent()
 
 			self.ctrlSelectItem.setLabel(str('%s / %s'% (self.listcontrol.getSelectedPosition() + 1, len(self.listItems))) )
-			self.updateLabelInfo([])
+			self.initLabelInfo()
 
 	def onFocus(self, controlId):
 		print "onFocus(): control %d" % controlId
@@ -139,10 +147,13 @@ class ChannelListWindow(BaseWindow):
 	def onEvent(self, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno),
 		print 'event[%s]'% event
+		
+		if xbmcgui.getCurrentWindowId() == 13002 :
+			self.updateLabelInfo(event)
+		else:
+			print 'show screen is another windows page[%s]'% xbmcgui.getCurrentWindowId()
+		
 
-		self.updateLabelInfo(event)
-		
-		
 
 	def initLabelInfo(self):
 		print 'currentChannel[%s]' % self.currentChannel
@@ -155,12 +166,14 @@ class ChannelListWindow(BaseWindow):
 			self.progress_max = 0.0
 
 			self.ctrlSelectItem.setLabel(str('%s / %s'% (self.listcontrol.getSelectedPosition() + 1, len(self.listItems))) )
-			self.ctrlEventClock.setLabel('')
 			self.ctrlChannelName.setLabel('')
 			self.ctrlEventName.setLabel('')
 			self.ctrlEventTime.setLabel('')
 			self.ctrlSateliteInfo.setLabel('')
 			self.ctrlCareerInfo.setLabel('')
+			self.ctrlServiceTypeImg1.setImage('')
+			self.ctrlServiceTypeImg2.setImage('')
+			self.ctrlServiceTypeImg3.setImage('')
 
 			self.updateLabelInfo([])
 			#self.currentChannelInfo = []
@@ -223,12 +236,29 @@ class ChannelListWindow(BaseWindow):
 			#visible progress
 			self.ctrlProgress.setVisible(True)
 
+			#component
+			ret = epgInfoComponentImage(int(event[9]))
+			if len(ret) == 1:
+				self.ctrlServiceTypeImg1.setImage(ret[0])
+			elif len(ret) == 2:
+				self.ctrlServiceTypeImg1.setImage(ret[0])
+				self.ctrlServiceTypeImg2.setImage(ret[1])
+			elif len(ret) == 3:
+				self.ctrlServiceTypeImg1.setImage(ret[0])
+				self.ctrlServiceTypeImg2.setImage(ret[1])
+				self.ctrlServiceTypeImg3.setImage(ret[2])
+			else:
+				self.ctrlServiceTypeImg1.setImage('')
+				self.ctrlServiceTypeImg2.setImage('')
+				self.ctrlServiceTypeImg3.setImage('')
+
 		else:
 			print 'event null'
 
 
 		#self.ctrlSateliteInfo.setLabel()
 		#self.ctrlCareerInfo.setLabel()
+
 
 		list_ = []
 		#ret = self.commander.satellite_GetConfiguredList(0, list_)
