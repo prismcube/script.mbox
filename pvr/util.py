@@ -259,3 +259,25 @@ def epgInfoComponentImage(component):
 		print 'unknown component image'
 
 	return imagelist
+
+def GetSelectedLongitudeString(longitude_str):
+	print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+
+	ret = ''
+	if longitude_str != []:
+		longitude = int(longitude_str[0])
+
+		if longitude < 1800 :
+			log1 = longitude / 10
+			log2 = longitude - (log1 * 10)
+			ret = str('%d.%d E %s'% (log1, log2, longitude_str[2]))
+	
+		else:
+			longitude = 3600 - longitude;
+			log1 = longitude / 10
+			log2 = longitude - (log1 * 10)
+			ret = str('%d.%d W %s'% (log1, log2, longitude_str[2]))
+
+	print ret
+	return ret
+

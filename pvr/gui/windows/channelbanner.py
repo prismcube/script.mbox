@@ -30,7 +30,7 @@ from pvr.elisevent import ElisAction, ElisEnum
 from pvr.net.net import EventRequest
 
 #from threading import Thread
-from pvr.util import run_async, is_digit, Mutex, epgInfoTime, epgInfoClock, epgInfoComponentImage #, synchronized, sync_instance
+from pvr.util import run_async, is_digit, Mutex, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString #, synchronized, sync_instance
 import thread
 
 #debug log
@@ -81,6 +81,7 @@ class ChannelBanner(BaseWindow):
 		self.ctrlServiceTypeImg2= self.getControl( 605 )
 		self.ctrlServiceTypeImg3= self.getControl( 606 )
 		self.ctrlEventClock     = self.getControl( 610 )
+		self.ctrlLongitudeInfo  = self.getControl( 701 )
 		self.ctrlEventName      = self.getControl( 703 )
 		self.ctrlEventStartTime = self.getControl( 704 )
 		self.ctrlEventEndTime   = self.getControl( 705 )
@@ -298,6 +299,7 @@ class ChannelBanner(BaseWindow):
 
 			self.ctrlChannelNumber.setLabel( self.currentChannel[1] )
 			self.ctrlChannelName.setLabel( self.currentChannel[2] )
+			self.ctrlLongitudeInfo.setLabel('')
 			self.ctrlEventName.setLabel('')
 			self.ctrlEventStartTime.setLabel('')
 			self.ctrlEventEndTime.setLabel('')
@@ -311,6 +313,11 @@ class ChannelBanner(BaseWindow):
 			self.ctrlEventDescText2.reset()
 
 			self.epgClock = self.commander.datetime_GetLocalTime()
+			
+			longitude = self.commander.satellite_GetByChannelNumber(int(self.currentChannel[0]), int(self.currentChannel[3]))
+			ret = GetSelectedLongitudeString(longitude)
+			self.ctrlLongitudeInfo.setLabel(ret)
+
 
 		else:
 			print 'has no channel'

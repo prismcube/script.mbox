@@ -10,8 +10,9 @@
 	<views>50,51,500,503</views>
 	<controls>
 
+		<onfocus>Control.SetFocus(50)</onfocus>
+<!--  header -->
 
-<!-------- header --------->
 		<control type="group" id="100">
 			<animation effect="slide" start="0,-50" delay="0" time="300">WindowOpen</animation>
 			<animation effect="slide" end="0,-50" delay="0" time="300">WindowClose</animation>
@@ -31,7 +32,7 @@
 			</control>
 
 			<control type="group">
-				<control type="label" id="103">
+				<control type="label" id="102">
 					<posx>300r</posx>
 					<posy>50</posy>
 					<width>400</width>
@@ -45,82 +46,381 @@
 					<description>EPG Clock</description>
 				</control>
 			</control>
-
 		</control>
 
 
-<!-------- title ------>
+<!--  TAB Header -->
+<!--
 		<control type="group" id="200">
-			<control type="group">
-				<onfocus>-</onfocus>
+			<control type="group" id="210">
+				<posx>200</posx>
+				<posy>120</posy>
+<control type="image">
+<posx>0</posx>
+<posy>30</posy>
+<width>250</width>
+<height>150</height>
+<texture>channelbanner/StackNF_red.png</texture>
+</control>
 
-				<control type="image">
-					<posx>150</posx>
-					<posy>110</posy>
-					<width>40</width>
+				<control type="button" id="211">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>150</width>
 					<height>30</height>
-					<texture>radiobutton-nofocus.png</texture>
-					<color>0xff00ff00</color>
-				</control>
-				<control type="label">
-					<posx>200</posx>
-					<posy>120</posy>
+					<textcolor>white</textcolor>
+					<align>center</align>
+					<aligny>-</aligny>
 					<font>font12_title</font>
-					<label>All Channel</label>
+					<label>All Channels</label>
+					<altlabel>All Channel by Number</altlabel>
+					<onclick>SetFocus(212)</onclick>
+					<texturefocus>channelBanner/StackNF_red.png</texturefocus>
+					<texturenofocus>black-back.png</texturenofocus>
 				</control>
+				<control type="list" id="212">
+					<posx>0</posx>
+					<posy>30</posy>
+					<width>250</width>
+					<height>150</height>
+					<align>center</align>
+					<font>font12_title</font>
+					<onleft>-</onleft>
+					<onright>-</onright>
+					<onup>50</onup>
+					<ondown>50</ondown>
+					<pagecontrol>60</pagecontrol>
+					<scrolltime>200</scrolltime>
+					<focusposition>0</focusposition>
+					<visible>true</visible>
+					<animation effect="fade" start="0" end="100" time="200">Visible</animation>
+					<animation effect="fade" start="100" end="30" time="200" condition="Window.IsVisible(3003) | ControlGroup(210).HasFocus">conditional</animation>
+					<itemlayout height="40" width="200">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">MenuItemNF.png</texture>
+						</control>
+						<control type="label">
+							<posx>10</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>40</height>
+							<font>font12</font>
+							<textcolor>grey3</textcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+							<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+						</control>
+					</itemlayout>
+					<focusedlayout height="40" width="200">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">MenuItemNF.png</texture>
+							<visible>!Control.HasFocus(50)</visible>
+							<animation effect="fade" time="300">Visible</animation>
+							<animation effect="fade" time="300">Hidden</animation>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">MenuItemFO.png</texture>
+							<visible>Control.HasFocus(50)</visible>
+							<animation effect="fade" time="300">Visible</animation>
+							<animation effect="fade" time="300">Hidden</animation>
+						</control>
+						<control type="label">
+							<posx>10</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>40</height>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<selectedcolor>selected</selectedcolor>						
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</focusedlayout>
+				</control>
+
 			</control>
-			<control type="group">
-				<control type="image">
-					<posx>350</posx>
-					<posy>110</posy>
-					<width>40</width>
+
+
+			<control type="group" id="220">
+				<posx>400</posx>
+				<posy>120</posy>
+				<control type="button" id="221">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>150</width>
 					<height>30</height>
-					<texture>radiobutton-nofocus.png</texture>
-					<color>0xff00ff00</color>
-				</control>
-				<control type="label">
-					<posx>400</posx>
-					<posy>120</posy>
 					<font>font12_title</font>
+					<textcolor>white</textcolor>
+					<align>center</align>
+					<aligny>-</aligny>
+					<texturefocus>channelBanner/StackNF_green.png</texturefocus>
+					<texturenofocus>black-back.png</texturenofocus>
 					<label>Satellite</label>
 				</control>
-			</control>
-			<control type="group">
-				<control type="image">
-					<posx>650</posx>
-					<posy>110</posy>
-					<width>40</width>
-					<height>30</height>
-					<texture>radiobutton-nofocus.png</texture>
-					<color>0xff00ff00</color>
-				</control>
-				<control type="label">
-					<posx>700</posx>
-					<posy>120</posy>
+				<control type="list" id="222">
+					<posx>0</posx>
+					<posy>30</posy>
+					<width>250</width>
+					<height>150</height>
 					<font>font12_title</font>
+					<onleft>-</onleft>
+					<onright>-</onright>
+					<onup>50</onup>
+					<ondown>50</ondown>
+					<pagecontrol>60</pagecontrol>
+					<scrolltime>200</scrolltime>
+					<focusposition>0</focusposition>
+					<visible>true</visible>
+					<itemlayout height="40" width="200">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">MenuItemNF.png</texture>
+						</control>
+						<control type="label">
+							<posx>10</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>40</height>
+							<font>font12</font>
+							<textcolor>grey3</textcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+							<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+						</control>
+					</itemlayout>
+					<focusedlayout height="40" width="200">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">MenuItemNF.png</texture>
+							<visible>!Control.HasFocus(50)</visible>
+							<animation effect="fade" time="300">Visible</animation>
+							<animation effect="fade" time="300">Hidden</animation>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">MenuItemFO.png</texture>
+							<visible>Control.HasFocus(50)</visible>
+							<animation effect="fade" time="300">Visible</animation>
+							<animation effect="fade" time="300">Hidden</animation>
+						</control>
+						<control type="label">
+							<posx>10</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>40</height>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<selectedcolor>selected</selectedcolor>						
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</focusedlayout>
+				</control>
+			</control>
+
+			<control type="group" id="230">
+				<posx>600</posx>
+				<posy>120</posy>
+				<control type="button" id="231">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>150</width>
+					<height>30</height>
+					<font>font12_title</font>
+					<textcolor>white</textcolor>
+					<align>center</align>
+					<aligny>-</aligny>
+					<texturefocus>channelBanner/StackNF_orange.png</texturefocus>
+					<texturenofocus>black-back.png</texturenofocus>
 					<label>FTA/CAS</label>
 				</control>
-			</control>
-			<control type="group">
-				<control type="image">
-					<posx>850</posx>
-					<posy>110</posy>
-					<width>40</width>
-					<height>30</height>
-					<texture>radiobutton-nofocus.png</texture>
-					<color>0xff00ff00</color>
-				</control>
-				<control type="label">
-					<posx>900</posx>
-					<posy>120</posy>
+				<control type="list" id="232">
+					<posx>0</posx>
+					<posy>30</posy>
+					<width>250</width>
+					<height>150</height>
 					<font>font12_title</font>
+					<onleft>-</onleft>
+					<onright>-</onright>
+					<onup>50</onup>
+					<ondown>50</ondown>
+					<pagecontrol>60</pagecontrol>
+					<scrolltime>200</scrolltime>
+					<focusposition>0</focusposition>
+					<visible>true</visible>
+					<itemlayout height="40" width="200">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">MenuItemNF.png</texture>
+						</control>
+						<control type="label">
+							<posx>10</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>40</height>
+							<font>font12</font>
+							<textcolor>grey3</textcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+							<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+						</control>
+					</itemlayout>
+					<focusedlayout height="40" width="200">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">MenuItemNF.png</texture>
+							<visible>!Control.HasFocus(50)</visible>
+							<animation effect="fade" time="300">Visible</animation>
+							<animation effect="fade" time="300">Hidden</animation>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">MenuItemFO.png</texture>
+							<visible>Control.HasFocus(50)</visible>
+							<animation effect="fade" time="300">Visible</animation>
+							<animation effect="fade" time="300">Hidden</animation>
+						</control>
+						<control type="label">
+							<posx>10</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>40</height>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<selectedcolor>selected</selectedcolor>						
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</focusedlayout>
+				</control>
+			</control>
+			<control type="group" id="240">
+				<posx>800</posx>
+				<posy>120</posy>
+				<control type="button" id="241">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>150</width>
+					<height>30</height>
+					<font>font12_title</font>
+					<textcolor>white</textcolor>
+					<align>center</align>
+					<aligny>-</aligny>
+					<texturefocus>channelBanner/StackNF_blue.png</texturefocus>
+					<texturenofocus>black-back.png</texturenofocus>
 					<label>Favorite</label>
+				</control>
+				<control type="list" id="242">
+					<posx>0</posx>
+					<posy>30</posy>
+					<width>250</width>
+					<height>150</height>
+					<font>font12_title</font>
+					<onleft>-</onleft>
+					<onright>-</onright>
+					<onup>50</onup>
+					<ondown>50</ondown>
+					<pagecontrol>60</pagecontrol>
+					<scrolltime>200</scrolltime>
+					<focusposition>0</focusposition>
+					<visible>true</visible>
+					<itemlayout height="40" width="200">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">MenuItemNF.png</texture>
+						</control>
+						<control type="label">
+							<posx>10</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>40</height>
+							<font>font12</font>
+							<textcolor>grey3</textcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+							<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+						</control>
+					</itemlayout>
+					<focusedlayout height="40" width="200">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">MenuItemNF.png</texture>
+							<visible>!Control.HasFocus(50)</visible>
+							<animation effect="fade" time="300">Visible</animation>
+							<animation effect="fade" time="300">Hidden</animation>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">MenuItemFO.png</texture>
+							<visible>Control.HasFocus(50)</visible>
+							<animation effect="fade" time="300">Visible</animation>
+							<animation effect="fade" time="300">Hidden</animation>
+						</control>
+						<control type="label">
+							<posx>10</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>40</height>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<selectedcolor>selected</selectedcolor>						
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</focusedlayout>
 				</control>
 			</control>
 			
 		</control>
 
-<!--------- middle left ---->
+<!-- middle left -->
 		<control type="group">
 			<include>VisibleFadeEffect</include>
 			<visible>true</visible>
@@ -140,9 +440,8 @@
 				<posy>180</posy>
 				<width>600</width>
 				<height>321</height>
-
-				<onleft>-</onleft>
-				<onright>-</onright>
+				<onleft>211</onleft>
+				<onright>241</onright>
 				<onup>50</onup>
 				<ondown>50</ondown>
 				<pagecontrol>60</pagecontrol>
@@ -150,13 +449,14 @@
 				<focusposition>0</focusposition>
 				<movement>2</movement>
 				<visible>true</visible>
+				<enable>!Control.HasFocus(212) | !Control.HasFocus(222) | !Control.HasFocus(232) | !Control.HasFocus(242)</enable>
 				<itemlayout height="40" width="580">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>690</width>
 						<height>41</height>
-						<texture border="0,2,0,2">MenuItemNF.png</texture>
+						<texture border="0,2,0,2">channelBanner/MenuItemNF.png</texture>
 					</control>
 					<control type="label">
 						<posx>10</posx>
@@ -189,7 +489,7 @@
 						<posy>0</posy>
 						<width>690</width>
 						<height>41</height>
-						<texture border="0,2,0,2">MenuItemNF.png</texture>
+						<texture border="0,2,0,2">channelBanner/MenuItemNF.png</texture>
 						<visible>!Control.HasFocus(50)</visible>
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>
@@ -242,7 +542,7 @@
 			</control>
 		</control>	
 
-<!--------- middle right ------->
+<!-- middle right -->
 		<control type="group" id="300">
 			<posx>750</posx>
 			<posy>180</posy>
@@ -381,7 +681,405 @@
 
 		</control>
 
-<!--------- page --------->
+
+
+
+
+		<control type="group" id="200">
+			<control type="group" id="210">
+				<posx>200</posx>
+				<posy>120</posy>
+<!--
+<control type="image">
+<posx>0</posx>
+<posy>30</posy>
+<width>250</width>
+<height>150</height>
+<texture>channelbanner/StackNF.jpg</texture>
+</control>
+-->
+				<control type="button" id="211">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>150</width>
+					<height>30</height>
+					<textcolor>white</textcolor>
+					<align>center</align>
+					<aligny>-</aligny>
+					<font>font12_title</font>
+					<label>All Channels</label>
+					<altlabel>All Channel by Number</altlabel>
+					<texturefocus>channelBanner/StackNF_red.png</texturefocus>
+					<texturenofocus>black-back.png</texturenofocus>
+					<onup>-</onup>
+					<ondown>Control.SetFocus(50)</ondown>
+					<onleft>241</onleft>
+					<onright>221</onright>
+
+
+				</control>
+				<control type="list" id="212">
+					<posx>0</posx>
+					<posy>30</posy>
+					<width>250</width>
+					<height>150</height>
+					<align>center</align>
+					<font>font12_title</font>
+					<onleft>-</onleft>
+					<onright>-</onright>
+					<onup>50</onup>
+					<ondown>50</ondown>
+					<pagecontrol>60</pagecontrol>
+					<scrolltime>200</scrolltime>
+					<focusposition>0</focusposition>
+					<visible>true</visible>
+					<animation effect="fade" start="0" end="100" time="200">Visible</animation>
+					<animation effect="fade" start="100" end="30" time="200" condition="Window.IsVisible(3003) | ControlGroup(210).HasFocus">conditional</animation>
+					<itemlayout height="40" width="200">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">channelbanner/MenuItemNF.png</texture>
+						</control>
+						<control type="label">
+							<posx>10</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>40</height>
+							<font>font12</font>
+							<textcolor>grey3</textcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+							<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+						</control>
+					</itemlayout>
+					<focusedlayout height="40" width="200">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">channelbanner/MenuItemNF.png</texture>
+							<visible>!Control.HasFocus(50)</visible>
+							<animation effect="fade" time="300">Visible</animation>
+							<animation effect="fade" time="300">Hidden</animation>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">MenuItemFO.png</texture>
+							<visible>Control.HasFocus(50)</visible>
+							<animation effect="fade" time="300">Visible</animation>
+							<animation effect="fade" time="300">Hidden</animation>
+						</control>
+						<control type="label">
+							<posx>10</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>40</height>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<selectedcolor>selected</selectedcolor>						
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</focusedlayout>
+				</control>
+
+			</control>
+
+
+			<control type="group" id="220">
+				<posx>400</posx>
+				<posy>120</posy>
+				<control type="button" id="221">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>150</width>
+					<height>30</height>
+					<font>font12_title</font>
+					<textcolor>white</textcolor>
+					<align>center</align>
+					<aligny>-</aligny>
+					<texturefocus>channelBanner/StackNF_green.png</texturefocus>
+					<texturenofocus>black-back.png</texturenofocus>
+					<label>Satellite</label>
+					<onup>-</onup>
+					<ondown>50</ondown>
+					<onleft>211</onleft>
+					<onright>231</onright>
+				</control>
+				<control type="list" id="222">
+					<posx>0</posx>
+					<posy>30</posy>
+					<width>250</width>
+					<height>150</height>
+					<font>font12_title</font>
+					<onleft>-</onleft>
+					<onright>-</onright>
+					<onup>50</onup>
+					<ondown>50</ondown>
+					<pagecontrol>60</pagecontrol>
+					<scrolltime>200</scrolltime>
+					<focusposition>0</focusposition>
+					<visible>true</visible>
+					<itemlayout height="40" width="200">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">channelBanner/MenuItemNF.png</texture>
+						</control>
+						<control type="label">
+							<posx>10</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>40</height>
+							<font>font12</font>
+							<textcolor>grey3</textcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+							<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+						</control>
+					</itemlayout>
+					<focusedlayout height="40" width="200">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">channelBanner/MenuItemNF.png</texture>
+							<visible>!Control.HasFocus(50)</visible>
+							<animation effect="fade" time="300">Visible</animation>
+							<animation effect="fade" time="300">Hidden</animation>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">MenuItemFO.png</texture>
+							<visible>Control.HasFocus(50)</visible>
+							<animation effect="fade" time="300">Visible</animation>
+							<animation effect="fade" time="300">Hidden</animation>
+						</control>
+						<control type="label">
+							<posx>10</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>40</height>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<selectedcolor>selected</selectedcolor>						
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</focusedlayout>
+				</control>
+			</control>
+
+			<control type="group" id="230">
+				<posx>600</posx>
+				<posy>120</posy>
+				<control type="button" id="231">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>150</width>
+					<height>30</height>
+					<font>font12_title</font>
+					<textcolor>white</textcolor>
+					<align>center</align>
+					<aligny>-</aligny>
+					<texturefocus>channelBanner/StackNF_orange.png</texturefocus>
+					<texturenofocus>black-back.png</texturenofocus>
+					<label>FTA/CAS</label>
+					<onup>-</onup>
+					<ondown>50</ondown>
+					<onleft>221</onleft>
+					<onright>241</onright>
+				</control>
+				<control type="list" id="232">
+					<posx>0</posx>
+					<posy>30</posy>
+					<width>250</width>
+					<height>150</height>
+					<font>font12_title</font>
+					<onleft>-</onleft>
+					<onright>-</onright>
+					<onup>50</onup>
+					<ondown>50</ondown>
+					<pagecontrol>60</pagecontrol>
+					<scrolltime>200</scrolltime>
+					<focusposition>0</focusposition>
+					<visible>true</visible>
+					<itemlayout height="40" width="200">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">channelBanner/MenuItemNF.png</texture>
+						</control>
+						<control type="label">
+							<posx>10</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>40</height>
+							<font>font12</font>
+							<textcolor>grey3</textcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+							<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+						</control>
+					</itemlayout>
+					<focusedlayout height="40" width="200">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">channelBanner/MenuItemNF.png</texture>
+							<visible>!Control.HasFocus(50)</visible>
+							<animation effect="fade" time="300">Visible</animation>
+							<animation effect="fade" time="300">Hidden</animation>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">MenuItemFO.png</texture>
+							<visible>Control.HasFocus(50)</visible>
+							<animation effect="fade" time="300">Visible</animation>
+							<animation effect="fade" time="300">Hidden</animation>
+						</control>
+						<control type="label">
+							<posx>10</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>40</height>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<selectedcolor>selected</selectedcolor>						
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</focusedlayout>
+				</control>
+			</control>
+			<control type="group" id="240">
+				<posx>800</posx>
+				<posy>120</posy>
+				<control type="button" id="241">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>150</width>
+					<height>30</height>
+					<font>font12_title</font>
+					<textcolor>white</textcolor>
+					<align>center</align>
+					<aligny>-</aligny>
+					<texturefocus>channelBanner/StackNF_blue.png</texturefocus>
+					<texturenofocus>black-back.png</texturenofocus>
+					<label>Favorite</label>
+					<onup>-</onup>
+					<ondown>50</ondown>
+					<onleft>231</onleft>
+					<onright>211</onright>
+				</control>
+				<control type="list" id="242">
+					<posx>0</posx>
+					<posy>30</posy>
+					<width>250</width>
+					<height>150</height>
+					<font>font12_title</font>
+					<onleft>-</onleft>
+					<onright>-</onright>
+					<onup>50</onup>
+					<ondown>50</ondown>
+					<pagecontrol>60</pagecontrol>
+					<scrolltime>200</scrolltime>
+					<focusposition>0</focusposition>
+					<visible>true</visible>
+					<itemlayout height="40" width="200">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">channelBanner/MenuItemNF.png</texture>
+						</control>
+						<control type="label">
+							<posx>10</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>40</height>
+							<font>font12</font>
+							<textcolor>grey3</textcolor>
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+							<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+						</control>
+					</itemlayout>
+					<focusedlayout height="40" width="200">
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">channelBanner/MenuItemNF.png</texture>
+							<visible>!Control.HasFocus(50)</visible>
+							<animation effect="fade" time="300">Visible</animation>
+							<animation effect="fade" time="300">Hidden</animation>
+						</control>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>41</height>
+							<texture border="0,2,0,2">MenuItemFO.png</texture>
+							<visible>Control.HasFocus(50)</visible>
+							<animation effect="fade" time="300">Visible</animation>
+							<animation effect="fade" time="300">Hidden</animation>
+						</control>
+						<control type="label">
+							<posx>10</posx>
+							<posy>0</posy>
+							<width>200</width>
+							<height>40</height>
+							<font>font12</font>
+							<textcolor>white</textcolor>
+							<selectedcolor>selected</selectedcolor>						
+							<align>left</align>
+							<aligny>center</aligny>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</focusedlayout>
+				</control>
+			</control>
+			
+		</control>
+
+
+
+
+
+
+
+
+<!--  page -->
 		<control type="group" id="400">
 			<control type="label" id="401">
 				<posx>600</posx>
@@ -395,7 +1093,7 @@
 			</control>
 		</control>
 
-<!--------- buttom --------->
+<!--  buttom -->
 		<control type="group" id="500">
 			<animation effect="slide" start="0,320" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
 			<animation effect="slide" start="0,0" end="0,320" time="300" delay="150" tween="quadratic" easing="out">WindowClose</animation>

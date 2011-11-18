@@ -134,7 +134,7 @@
 					<font>font24</font>
 					<align>center</align>
 					<textcolor>9f9f9f9b</textcolor>
-					<label>19.2 E ASTREEE</label>
+					<label>$INFO[Control.GetLabel]</label>
 				</control>
 				 
 				<control type="button" id="702">
