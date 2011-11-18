@@ -391,7 +391,7 @@ class TCPServer(BaseServer):
 
     request_queue_size = 5
 
-    allow_reuse_address = False
+    allow_reuse_address = True
 
     def __init__(self, server_address, RequestHandlerClass, bind_and_activate=True):
         """Constructor.  May be extended, do not override."""

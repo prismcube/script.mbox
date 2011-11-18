@@ -3,7 +3,7 @@
 #EPG : [ EventId, EventName, Sid, Tsid, Onid, StartTime, Duration, ContentTag, Components, IsSeries, HasTimer, TimerId, AgeRating ]
 #EPG_Description : [EventId, Description ]
 #Satellite  : [Longitude, Band, Name]
-#Transponder : [Frequency, Symbolrate, Polarization, FECMode, Tsid, Onid, Nid]
+#Satellite Carrier : [Frequency, Symbolrate, Polarization, FECMode, Tsid, Onid, Nid]
 #ConfiguredSatellite : [TunerIndex, SlotNumber, SatelliteLongitude, BandType, FrequencyLevel, DisEqc11, DisEqcMode, DisEqcRepeat,
 #				   IsConfigUsed, LnbType, MotorizedType, LowLNB, HighLNB, LNBThreshold, MotorizedData,
 #				   IsOneCable, OneCablePin, OneCableMDU, OneCableLoFreq1, OneCableLoFreq2, OneCableUBSlot, OneCableUBFreq]
@@ -111,6 +111,11 @@ class ElisAction(object):
 	Int_GetProp							= 'Int_GetProp'
 	Int_SetProp							= 'Int_SetProp'
 
+	ChannelScan_ByCarriers				= 'ChannelScan_ByCarriers'
+	ChannelScan_BySatellite				= 'ChannelScan_BySatellite'
+	ChannelScan_Abort					= 'ChannelScan_Abort'
+
+
 		
 
 class ElisEnum(object):
@@ -196,6 +201,12 @@ class ElisEnum(object):
 	E_SORT_LONGITUDE				= 0
 	E_SORT_NAME						= 1
 	E_SORT_INSERTED					= 2
+
+	#Satellite Band
+	E_BAND_UNDEFINED 				= 0
+	E_BAND_KU						= 1
+	E_BAND_C						= 2
+
 	
 	# EPG
 	E_MAX_EPG_REQUEST_COUNT			= 128

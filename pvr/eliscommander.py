@@ -433,8 +433,8 @@ class ElisCommander( EventCommander ):
 		for config in configuredList:
 			for ele in config:
 				req.append( '%d' %ele )
-				
-		reply = self.send( req )
+
+		reply = self.command( req )
 
 		return reply
 
@@ -973,4 +973,58 @@ class ElisCommander( EventCommander ):
  		reply = self.command( req )
 		return reply
 
+
+	"""
+	####################################################
+						ChannelScan
+	####################################################	
+	"""
+
+	# toDo Later
+	"""
+	request ['Command', 'longitude', 'band', carriers']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def channelscan_ByCarriers( self, longitude, band, carriers ):
+		req = []
+		req.append( ElisAction.ChannelScan_ByCarriers )
+		req.append( '%d' %longitude )
+		req.append( '%d' %band )
+
+		#Frequency, Symbolrate, Polarization, FECMode, Tsid, Onid, Nid
+		for carrier in carriers:
+			req.append( '%d' %carrier[0] )
+			req.append( '%d' %carrier[1] )
+			req.append( '%d' %carrier[2] )
+			req.append( '%d' %carrier[3] )
+			req.append( '%d' %carrier[4] )
+			req.append( '%d' %carrier[5] )
+			req.append( '%d' %carrier[6] )
+
+ 		reply = self.command( req )
+		return reply
+
+	"""
+	request ['Command', 'longitude', 'band']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def channelscan_BySatellite( self, longitude, band ):
+		req = []
+		req.append( ElisAction.ChannelScan_BySatellite )
+		req.append( '%d' %longitude )
+		req.append( '%d' %band )
+ 		reply = self.command( req )
+		return reply
+
+	"""
+	request ['Command']
+	returns ['TRUE'] or ['FALSE']
+	"""
+	def channelScan_Abort( self ):
+		req = []
+		req.append( ElisAction.ChannelScan_Abort )
+ 		reply = self.command( req )
+		return reply
+
+		
 
