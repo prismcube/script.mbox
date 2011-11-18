@@ -40,7 +40,14 @@ class ChannelListWindow(BaseWindow):
 		self.eventBus.register( self )
 		self.mutex = thread.allocate_lock()
 
+		#button flag isSelect
+		self.flag11 = False # default, first time create this modal
+		self.flag21 = False
+		self.flag31 = False
+		self.flag41 = False
 
+		self.execute_OnlyOne = True
+		
 	def __del__(self):
 		print '[%s():%s] destroyed ChannelBanner'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
@@ -85,16 +92,28 @@ class ChannelListWindow(BaseWindow):
 		self.ctrltabHeader42        = self.getControl( 242 )
 
 
-		#initialize get channel list
-		self.initTabHeader()
-		#self.getTabHeader()
-		self.initChannelList()
-
 		#epg component image
 		self.imgData  = 'channelbanner/data.png'
 		self.imgDolby = 'channelbanner/dolbydigital.png'
 		self.imgHD    = 'channelbanner/OverlayHD.png'
 		self.ctrlEventClock.setLabel('')
+		#etc
+		self.listEnableFlag = False
+
+
+		#initialize get channel list
+		self.initTabHeader()
+
+		#'All Channel' button click, only one when window open
+		if self.execute_OnlyOne == True:
+			self.execute_OnlyOne = False
+			self.flag11 = True
+			self.onClick(211)
+
+		
+		#self.getTabHeader()
+		self.initChannelList()
+
 		self.initLabelInfo()
 
 		#run thread
@@ -102,8 +121,6 @@ class ChannelListWindow(BaseWindow):
 		self.updateLocalTime()
 
 
-		#etc
-		self.listEnableFlag = False
 
 	def onAction(self, action):
  		
@@ -163,7 +180,15 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader41.setWidth(150)
 
 			#list
-			self.ctrltabHeader12.setVisible(True)
+			if self.flag11 == False:
+				self.flag11 = True
+				self.flag21 = False
+				self.flag31 = False
+				self.flag41 = False
+			else:
+				self.flag11 = False
+
+			self.ctrltabHeader12.setVisible(self.flag11)
 			self.ctrltabHeader22.setVisible(False)
 			self.ctrltabHeader32.setVisible(False)
 			self.ctrltabHeader42.setVisible(False)
@@ -183,8 +208,16 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader31.setWidth(150)
 			self.ctrltabHeader41.setWidth(150)
 
+			if self.flag21 == False:
+				self.flag21 = True
+				self.flag11 = False
+				self.flag31 = False
+				self.flag41 = False
+			else:
+				self.flag21 = False
+
 			self.ctrltabHeader12.setVisible(False)
-			self.ctrltabHeader22.setVisible(True)
+			self.ctrltabHeader22.setVisible(self.flag21)
 			self.ctrltabHeader32.setVisible(False)
 			self.ctrltabHeader42.setVisible(False)
 
@@ -201,9 +234,18 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader21.setWidth(150)
 			self.ctrltabHeader31.setWidth(200)
 			self.ctrltabHeader41.setWidth(150)
+
+			if self.flag31 == False:
+				self.flag31 = True
+				self.flag11 = False
+				self.flag21 = False
+				self.flag41 = False
+			else:
+				self.flag31 = False
+
 			self.ctrltabHeader12.setVisible(False)
 			self.ctrltabHeader22.setVisible(False)
-			self.ctrltabHeader32.setVisible(True)
+			self.ctrltabHeader32.setVisible(self.flag31)
 			self.ctrltabHeader42.setVisible(False)
 
 		elif controlId == self.ctrltabHeader41.getId():
@@ -219,12 +261,20 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader21.setWidth(150)
 			self.ctrltabHeader31.setWidth(150)
 			self.ctrltabHeader41.setWidth(200)
+
+			if self.flag41 == False:
+				self.flag41 = True
+				self.flag11 = False
+				self.flag21 = False
+				self.flag31 = False
+			else:
+				self.flag41 = False
+
 			self.ctrltabHeader12.setVisible(False)
 			self.ctrltabHeader22.setVisible(False)
 			self.ctrltabHeader32.setVisible(False)
-			self.ctrltabHeader42.setVisible(True)
+			self.ctrltabHeader42.setVisible(self.flag41)
 
-		print 'click[%s]'% controlId
 
 	def onFocus(self, controlId):
 		#print "onFocus(): control %d" % controlId
@@ -295,10 +345,10 @@ class ChannelListWindow(BaseWindow):
 	def initTabHeader(self):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
-		self.ctrltabHeader12.setVisible(False)
-		self.ctrltabHeader22.setVisible(False)
-		self.ctrltabHeader32.setVisible(False)
-		self.ctrltabHeader42.setVisible(False)
+		self.ctrltabHeader12.setVisible(self.flag11)
+		self.ctrltabHeader22.setVisible(self.flag21)
+		self.ctrltabHeader32.setVisible(self.flag31)
+		self.ctrltabHeader42.setVisible(self.flag41)
 
 		#sort list, This is fixed
 		testlistItems = []
@@ -307,7 +357,7 @@ class ChannelListWindow(BaseWindow):
 		testlistItems.append(xbmcgui.ListItem('All Channel by HD/SD'))
 		self.ctrltabHeader12.addItems( testlistItems )
 
-		#satellite list
+		#satellite longitude list
 		list_ = []
 		testlistItems = []
 		self.commander.satellite_GetConfiguredList(1, list_)
@@ -436,6 +486,7 @@ class ChannelListWindow(BaseWindow):
 				if ret != None:
 					self.ctrlChannelName.setLabel( str('%s - %s'% (ret, self.currentChannelInfo[2])) )
 
+				#update longitude info
 				longitude = self.commander.satellite_GetByChannelNumber(int(self.currentChannelInfo[0]), int(self.currentChannelInfo[3]))
 				ret = GetSelectedLongitudeString(longitude)
 				self.ctrlLongitudeInfo.setLabel(ret)
@@ -489,13 +540,13 @@ class ChannelListWindow(BaseWindow):
 		#self.ctrlCareerInfo.setLabel()
 
 
-		list_ = []
+		#list_ = []
 		#ret = self.commander.satellite_GetConfiguredList(0, list_)
 		#ret = self.commander.satellite_GetList(0, list_)
 		#ret = self.commander.satellite_GetByChannelNumber(int(self.currentChannelInfo[0]), int(self.currentChannelInfo[3]))
 		#ret = self.commander.satelliteconfig_GetList(0, list_)
-		ret = self.commander.satellite_Get(192, 1)
-		print 'ret[%s] list_[%s]'% (ret, list_)
+		#ret = self.commander.satellite_Get(192, 1)
+		#print 'ret[%s] list_[%s]'% (ret, list_)
 
 
 	@run_async
