@@ -144,7 +144,7 @@ class ChannelListWindow(BaseWindow):
 			self.initLabelInfo()
 
 		elif controlId == self.ctrltabHeader11.getId():
-			print '[%s] [%s]'% (self.ctrltabHeader11.getLabel(),self.ctrltabHeader11.getLabel2())
+			
 			#group
 			self.ctrltabHeader10.setPosition(200,120)
 			self.ctrltabHeader20.setPosition(400+50,120)
@@ -377,6 +377,7 @@ class ChannelListWindow(BaseWindow):
 
 		#select item idx, print GUI of 'current / total'
 		self.ctrlSelectItem.setLabel(str('%s / %s'% (chindex + 1, len(self.listItems))) )
+
 
 
 	def initLabelInfo(self):

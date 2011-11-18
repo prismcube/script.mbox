@@ -5,12 +5,11 @@
 		<posx>0</posx>
 		<posy>0</posy>
 	</coordinates>
-	<defaultcontrol always="true">50</defaultcontrol>
+	<defaultcontrol always="true">49</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
-	<views>50,51,500,503</views>
+
 	<controls>
 
-		<onfocus>Control.SetFocus(50)</onfocus>
 <!--  header -->
 
 		<control type="group" id="100">
@@ -434,7 +433,7 @@
 			</control>
 -->
 		</control>
-		<control type="group">		
+		<control type="group" id="49">		
 			<control type="list" id="50">
 				<posx>150</posx>
 				<posy>180</posy>
@@ -712,9 +711,9 @@
 					<texturefocus>channelBanner/StackNF_red.png</texturefocus>
 					<texturenofocus>black-back.png</texturenofocus>
 					<onup>-</onup>
-					<ondown>Control.SetFocus(50)</ondown>
-					<onleft>241</onleft>
-					<onright>221</onright>
+					<ondown>SetFocus(49)</ondown>
+					<onleft>SetFocus(241)</onleft>
+					<onright>SetFocus(221)</onright>
 
 
 				</control>
@@ -811,9 +810,9 @@
 					<texturenofocus>black-back.png</texturenofocus>
 					<label>Satellite</label>
 					<onup>-</onup>
-					<ondown>50</ondown>
-					<onleft>211</onleft>
-					<onright>231</onright>
+					<ondown>SetFocus(49)</ondown>
+					<onleft>SetFocus(211)</onleft>
+					<onright>SetFocus(231)</onright>
 				</control>
 				<control type="list" id="222">
 					<posx>0</posx>
@@ -903,9 +902,9 @@
 					<texturenofocus>black-back.png</texturenofocus>
 					<label>FTA/CAS</label>
 					<onup>-</onup>
-					<ondown>50</ondown>
-					<onleft>221</onleft>
-					<onright>241</onright>
+					<ondown>SetFocus(49)</ondown>
+					<onleft>SetFocus(221)</onleft>
+					<onright>SetFocus(241)</onright>
 				</control>
 				<control type="list" id="232">
 					<posx>0</posx>
@@ -994,9 +993,9 @@
 					<texturenofocus>black-back.png</texturenofocus>
 					<label>Favorite</label>
 					<onup>-</onup>
-					<ondown>50</ondown>
-					<onleft>231</onleft>
-					<onright>211</onright>
+					<ondown>SetFocus(49)</ondown>
+					<onleft>SetFocus(231)</onleft>
+					<onright>SetFocus(211)</onright>
 				</control>
 				<control type="list" id="242">
 					<posx>0</posx>
