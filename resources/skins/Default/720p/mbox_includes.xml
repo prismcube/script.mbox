@@ -1064,6 +1064,134 @@
 				</focusedlayout>
 			</control>
 		</control>
-	</include>		
-	
+	</include>
+	<include name="MenuHeader">
+		<control type="group">
+			<posy>5</posy>
+			<animation type="WindowOpen" reversible="false">
+				<effect type="slide" start="0,-80" time="400" tween="quadratic" easing="out" />
+				<effect type="fade" start="0" end="100" time="400" />
+			</animation>
+			<animation type="WindowClose" reversible="false">
+				<effect type="slide" end="0,-80" time="400" tween="quadratic" easing="out" /> 
+				<effect type="fade" start="100" end="0" time="400" />
+			</animation>
+			<control type="image">
+				<description>Title Setting Image</description>
+				<posx>80</posx>
+				<posy>21</posy>
+				<width>60</width>
+				<height>55</height>
+				<texture>MenuWindow/Settings.png</texture>
+			</control>
+			<control type="label" id="3000">
+				<description>Title Label</description>
+				<posx>150</posx>
+				<posy>40</posy>
+				<width>650</width>
+				<height>40</height>
+				<font>font24_title</font>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>grey2</shadowcolor>
+				<label>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</label>
+			</control>
+			<control type="image">
+				<description>Separator Image</description>
+				<posx>0</posx>
+				<posy>80</posy>
+				<width>1280</width>
+				<height>4</height>
+				<texture>separator2.png</texture>
+			</control>
+			<control type="label">
+				<description>TIME & DATE Label</description>
+		        <posx>850</posx>
+		        <posy>40</posy>
+		        <width>400</width>
+		        <height>28</height>
+		        <align>left</align>
+		        <aligny>center</aligny>
+		        <font>font12</font>
+		        <textcolor>white</textcolor>
+		        <shadowcolor>black</shadowcolor>
+		        <label>[COLOR=grey]$INFO[System.Date][/COLOR]          $INFO[System.Time]</label>
+			</control>
+			<control type="image">
+				<description>Clock Image</description>
+				<posx>1119</posx>
+				<posy>45</posy>
+				<width>20</width>
+				<height>20</height>
+				<texture>MenuWindow/clock.png</texture>
+			</control>
+		</control>
+	</include>
+	<include name="MenuFooter">
+		<control type="group">
+			<posy>600</posy>
+			<animation type="WindowOpen" reversible="false">
+				<effect type="slide" start="0,80" time="400" tween="quadratic" easing="out" />
+				<effect type="fade" start="0" end="100" time="400" />
+			</animation>
+			<animation type="WindowClose" reversible="false">
+				<effect type="slide" end="0,80" time="400" tween="quadratic" easing="out" /> 
+				<effect type="fade" start="100" end="0" time="400" />
+			</animation>
+			<control type="image">
+				<posx>0</posx>
+				<posy>30</posy>
+				<width>1280</width>
+				<height>6</height>
+				<texture>separator.png</texture>
+			</control>
+			<!-- FOOT TEST BUTTON -->
+			<control type="button" id="3100">
+				<posx>110</posx>
+				<posy>50</posy>
+				<width>60</width>
+				<height>30</height>
+				<font>font12</font>
+				<label>EXIT</label>
+				<textcolor>grey2</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<texturefocus border="2">button-focus.png</texturefocus>
+				<texturenofocus border="2">button-nofocus.png</texturenofocus>
+				
+				<align>center</align>
+				<aligny>center</aligny>
+				<onleft>802</onleft>
+				<onright>802</onright>
+				<onup>704</onup>
+				<ondown>304</ondown>
+			</control>
+			<control type="button" id="3101">
+				<posx>190</posx>
+				<posy>50</posy>
+				<width>60</width>
+				<height>30</height>
+				<font>font12</font>
+				<label>BACK</label>
+				<textcolor>grey2</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<texturefocus border="2">button-focus.png</texturefocus>
+				<texturenofocus border="2">button-nofocus.png</texturenofocus>
+				<align>center</align>
+				<aligny>center</aligny>
+				<onleft>801</onleft>
+				<onright>801</onright>
+				<onup>704</onup>
+				<ondown>304</ondown>
+			</control>
+		</control>
+	</include>
+	<include name="FadeEffect">
+		<animation type="WindowOpen" reversible="false">
+			<effect type="fade" start="0" end="100" time="300" />
+		</animation>
+		<animation type="WindowClose" reversible="false">
+			<effect type="fade" start="100" end="0" time="300" />
+		</animation>
+	</include>
 </includes>
