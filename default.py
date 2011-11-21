@@ -24,6 +24,7 @@ if __name__ == '__main__':
 	import os, sys, xbmcaddon
 	scriptDir = xbmcaddon.Addon('script.mbox').getAddonInfo('path')
 	sys.path.append(os.path.join(scriptDir, 'pvr'))
+	sys.path.append(os.path.join(scriptDir, 'resources'))	
 
 #	import xbmcgui
 #	import xbmc

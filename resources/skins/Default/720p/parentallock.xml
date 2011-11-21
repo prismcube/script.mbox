@@ -1,4 +1,4 @@
-<window id="3005">
+<window id="3006">
 	 <include file="mbox_includes.xml">"mbox_includes.xml"</include>
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<controls>
@@ -6,7 +6,7 @@
 			<include>CommonSettingMenuBackground</include>
 			<control type="label">
 				<description>header label</description>
-				<posx>100</posx>
+				<posx>300</posx>
 				<posy>35</posy>
 				<width>740</width>
 				<height>30</height>
@@ -30,12 +30,8 @@
 				<onup>9000</onup>
 				<ondown>9000</ondown>
 				<include>SpinEx01</include>
-				<include>SpinEx02</include>
-				<include>SpinEx03</include>
-				<include>SpinEx04</include>
-				<include>SpinEx05</include>
+				<include>SpinEx02</include>				
 			</control>			
 		</control>
 	</controls>
 </window>
-
