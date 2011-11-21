@@ -124,7 +124,10 @@ class Platform(object):
         mac    : ~/Library/Application Support/XBMC/UserData/addon_data/script.mbox
         '''
         return xbmc.translatePath(self.addon.getAddonInfo('profile'))
-    
+
+    def getSkinDir(self):
+        return xbmc.translatePath('special://skin')
+
     def getCacheDir(self):
         return os.path.join(self.getScriptDataDir(), 'cache')
     
