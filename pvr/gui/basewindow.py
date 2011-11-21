@@ -128,6 +128,9 @@ class SettingWindow(BaseWindow):
 			listItem = xbmcgui.ListItem(enumProperty.getName(), enumProperty.getPropStringByIndex( i ),"-", "-", "-")
 			enumList.append(listItem)
 
+	def setPropertyEnum(self, enumProperty, index ) :
+		enumProperty.setPropIndex( index )
+
 	def controlUp( self, navigationIds, navId ) :
 		count = len( navigationIds )
 

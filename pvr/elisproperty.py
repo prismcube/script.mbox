@@ -397,7 +397,8 @@ class ElisPropertyEnum(object):
 		self.property = []
 		for prop in _propertyMapEnum :
 			if prop[0] == name :
-				self.property = prop
+				eleCount = len( prop )
+				self.property = prop[1:eleCount]
 				break;
 
 	def getProp(self):
@@ -412,11 +413,8 @@ class ElisPropertyEnum(object):
 		value = self.getProp()
 		index = 0
 		for ele in self.property :
-			if index == 0 :
-				index += 1
-				continue
 			if ele[0] == value :
-				return ele[1]
+				return ele[0]
 
 			index += 1
 
@@ -425,9 +423,6 @@ class ElisPropertyEnum(object):
 	def setPropString(self, stringValue):
 		index = 0
 		for ele in self.property :
-			if index == 0 :
-				index += 1
-				continue
 			if ele[1] == stringValue :
 				self.setProp( ele[0] )
 				break
@@ -436,18 +431,28 @@ class ElisPropertyEnum(object):
 
 
 	def getPropStringByIndex( self, index ):
-		ele = self.property[index+1]
+		ele = self.property[index]
 		return ele[1]
 
+	def getPropIndex( self ) :
+		index = 0
+		value = self.getProp()
+		for ele in self.property :
+			if ele[0] == value :
+				return index;
+			index += 1
+
+		return -1
+
 	def setPropIndex(self, index):
-		ele = self.property[index+1]
+		ele = self.property[index]
 		self.setProp( ele[0] )
 
 	def getName(self):
 		return self.name
 
 	def getIndexCount(self):
-		return len(  self.property ) -1
+		return len(  self.property )
 
 
 
