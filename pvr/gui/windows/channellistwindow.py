@@ -97,6 +97,13 @@ class ChannelListWindow(BaseWindow):
 		self.imgDolby = 'channelbanner/dolbydigital.png'
 		self.imgHD    = 'channelbanner/OverlayHD.png'
 		self.ctrlEventClock.setLabel('')
+
+		#tab header button label
+		self.btnLabel_TabHeader11 = 'All Channel by Number'
+		self.btnLabel_TabHeader21 = 'Satellite'
+		self.btnLabel_TabHeader31 = 'FTA/CAS'
+		self.btnLabel_TabHeader41 = 'Favorite'
+		
 		#etc
 		self.listEnableFlag = False
 
@@ -132,6 +139,7 @@ class ChannelListWindow(BaseWindow):
 			print '<<<<< test youn: action ID[%s]' % id
 			print 'tv_guide_last_selected[%s]' % action.getId()
 			self.getTabHeader()
+
 			
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'lael98 check ation back'
@@ -161,15 +169,14 @@ class ChannelListWindow(BaseWindow):
 			self.initLabelInfo()
 
 		elif controlId == self.ctrltabHeader11.getId():
-			
-			#group
+			#group resize
 			self.ctrltabHeader10.setPosition(200,120)
 			self.ctrltabHeader20.setPosition(400+50,120)
 			self.ctrltabHeader30.setPosition(600+50,120)
 			self.ctrltabHeader40.setPosition(800+50,120)
 
-			#button
-			self.ctrltabHeader11.setLabel('All Channel by Number')
+			#button update label
+			self.ctrltabHeader11.setLabel(self.ctrltabHeader12.getSelectedItem().getLabel())
 			self.ctrltabHeader21.setLabel('Satellite')
 			self.ctrltabHeader31.setLabel('FTA/CAS')
 			self.ctrltabHeader41.setLabel('Favorite')
@@ -179,7 +186,7 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader31.setWidth(150)
 			self.ctrltabHeader41.setWidth(150)
 
-			#list
+			#list select on visible, else list not visible
 			if self.flag11 == False:
 				self.flag11 = True
 				self.flag21 = False
@@ -195,14 +202,15 @@ class ChannelListWindow(BaseWindow):
 			
 
 		elif controlId == self.ctrltabHeader21.getId():
-			self.ctrltabHeader11.setLabel('All Channels')
-			self.ctrltabHeader21.setLabel('19.2 E ASTRA 1')
-			self.ctrltabHeader31.setLabel('FTA/CAS')
-			self.ctrltabHeader41.setLabel('Favorite')
 			self.ctrltabHeader10.setPosition(200,120)
 			self.ctrltabHeader20.setPosition(400,120)
 			self.ctrltabHeader30.setPosition(600+50,120)
 			self.ctrltabHeader40.setPosition(800+50,120)
+
+			self.ctrltabHeader11.setLabel('All Channels')
+			self.ctrltabHeader21.setLabel(self.ctrltabHeader22.getSelectedItem().getLabel())
+			self.ctrltabHeader31.setLabel('FTA/CAS')
+			self.ctrltabHeader41.setLabel('Favorite')
 			self.ctrltabHeader11.setWidth(150)
 			self.ctrltabHeader21.setWidth(200)
 			self.ctrltabHeader31.setWidth(150)
@@ -222,14 +230,15 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader42.setVisible(False)
 
 		elif controlId == self.ctrltabHeader31.getId():
-			self.ctrltabHeader11.setLabel('All Channels')
-			self.ctrltabHeader21.setLabel('Satellite')
-			self.ctrltabHeader31.setLabel('FTA(25)')
-			self.ctrltabHeader41.setLabel('Favorite')
 			self.ctrltabHeader10.setPosition(200,120)
 			self.ctrltabHeader20.setPosition(400,120)
 			self.ctrltabHeader30.setPosition(600,120)
 			self.ctrltabHeader40.setPosition(800+50,120)
+
+			self.ctrltabHeader11.setLabel('All Channels')
+			self.ctrltabHeader21.setLabel('Satellite')
+			self.ctrltabHeader31.setLabel(self.ctrltabHeader32.getSelectedItem().getLabel())
+			self.ctrltabHeader41.setLabel('Favorite')
 			self.ctrltabHeader11.setWidth(150)
 			self.ctrltabHeader21.setWidth(150)
 			self.ctrltabHeader31.setWidth(200)
@@ -249,14 +258,15 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader42.setVisible(False)
 
 		elif controlId == self.ctrltabHeader41.getId():
-			self.ctrltabHeader11.setLabel('All Channels')
-			self.ctrltabHeader21.setLabel('Satellite')
-			self.ctrltabHeader31.setLabel('FTA/CAS')
-			self.ctrltabHeader41.setLabel('Favorite list')
 			self.ctrltabHeader10.setPosition(200,120)
 			self.ctrltabHeader20.setPosition(400,120)
 			self.ctrltabHeader30.setPosition(600,120)
 			self.ctrltabHeader40.setPosition(800,120)
+
+			self.ctrltabHeader11.setLabel('All Channels')
+			self.ctrltabHeader21.setLabel('Satellite')
+			self.ctrltabHeader31.setLabel('FTA/CAS')
+			self.ctrltabHeader41.setLabel(self.ctrltabHeader42.getSelectedItem().getLabel())
 			self.ctrltabHeader11.setWidth(150)
 			self.ctrltabHeader21.setWidth(150)
 			self.ctrltabHeader31.setWidth(150)
@@ -321,6 +331,17 @@ class ChannelListWindow(BaseWindow):
 		
 
 	def getTabHeader(self):
+		"""
+		self.flag11 = False
+		self.flag21 = False
+		self.flag31 = False
+		self.flag41 = False
+		self.ctrltabHeader12.setVisible(False)
+		self.ctrltabHeader22.setVisible(False)
+		self.ctrltabHeader32.setVisible(False)
+		self.ctrltabHeader42.setVisible(False)
+		"""
+
 		idx_Sorting   = self.ctrltabHeader12.getSelectedPosition()
 		idx_Satellite = self.ctrltabHeader22.getSelectedPosition()
 		idx_FtaCas    = self.ctrltabHeader32.getSelectedPosition()
@@ -339,8 +360,28 @@ class ChannelListWindow(BaseWindow):
 		self.listcontrol.reset()
 		self.initChannelList()
 
+		#update button label from selected item at list
+		if self.flag11:
+			self.ctrltabHeader11.setLabel(self.ctrltabHeader12.getSelectedItem().getLabel())
+		if self.flag21:
+			self.ctrltabHeader21.setLabel(self.ctrltabHeader22.getSelectedItem().getLabel())
+		if self.flag31:
+			self.ctrltabHeader31.setLabel(self.ctrltabHeader32.getSelectedItem().getLabel())
+		if self.flag41:
+			self.ctrltabHeader41.setLabel(self.ctrltabHeader42.getSelectedItem().getLabel())
 
-		
+		#select and list hide
+		if self.flag11 or self.flag21 or self.flag31 or self.flag41:
+			#hide list
+			self.flag11 = False
+			self.flag21 = False
+			self.flag31 = False
+			self.flag41 = False
+			self.ctrltabHeader12.setVisible(False)
+			self.ctrltabHeader22.setVisible(False)
+			self.ctrltabHeader32.setVisible(False)
+			self.ctrltabHeader42.setVisible(False)
+				
 
 	def initTabHeader(self):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
