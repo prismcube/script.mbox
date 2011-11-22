@@ -1076,7 +1076,7 @@
 	</include>
 	<include name="MenuHeader">
 		<control type="group">
-			<posy>5</posy>
+			<posy>20</posy>
 			<animation type="WindowOpen" reversible="false">
 				<effect type="slide" start="0,-80" time="400" tween="quadratic" easing="out" />
 				<effect type="fade" start="0" end="100" time="400" />
@@ -1087,7 +1087,7 @@
 			</animation>
 			<control type="image">
 				<description>Title Setting Image</description>
-				<posx>80</posx>
+				<posx>90</posx>
 				<posy>21</posy>
 				<width>60</width>
 				<height>55</height>
@@ -1095,16 +1095,15 @@
 			</control>
 			<control type="label" id="3000">
 				<description>Title Label</description>
-				<posx>150</posx>
-				<posy>40</posy>
+				<posx>180</posx>
+				<posy>27</posy>
 				<width>650</width>
 				<height>40</height>
-				<font>font24_title</font>
+				<font>font28_title</font>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
 				<shadowcolor>grey2</shadowcolor>
-				<label>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</label>
 			</control>
 			<control type="image">
 				<description>Separator Image</description>
@@ -1116,21 +1115,21 @@
 			</control>
 			<control type="label">
 				<description>TIME & DATE Label</description>
-		        <posx>850</posx>
-		        <posy>40</posy>
-		        <width>400</width>
+		        <posx>770</posx>
+		        <posy>35</posy>
+		        <width>420</width>
 		        <height>28</height>
 		        <align>left</align>
 		        <aligny>center</aligny>
-		        <font>font12</font>
+		        <font>font13</font>
 		        <textcolor>white</textcolor>
 		        <shadowcolor>black</shadowcolor>
-		        <label>[COLOR=grey]$INFO[System.Date][/COLOR]          $INFO[System.Time]</label>
+		        <label>[COLOR=grey]$INFO[System.Date][/COLOR]      $INFO[System.Time]</label>
 			</control>
 			<control type="image">
 				<description>Clock Image</description>
-				<posx>1119</posx>
-				<posy>45</posy>
+				<posx>1080</posx>
+				<posy>42</posy>
 				<width>20</width>
 				<height>20</height>
 				<texture>MenuWindow/clock.png</texture>
@@ -1139,7 +1138,7 @@
 	</include>
 	<include name="MenuFooter">
 		<control type="group">
-			<posy>600</posy>
+			<posy>580</posy>
 			<animation type="WindowOpen" reversible="false">
 				<effect type="slide" start="0,80" time="400" tween="quadratic" easing="out" />
 				<effect type="fade" start="0" end="100" time="400" />
