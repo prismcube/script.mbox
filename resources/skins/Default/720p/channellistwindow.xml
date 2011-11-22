@@ -337,7 +337,7 @@
 					<altlabel>All Channel by Number</altlabel>
 					<texturefocus>channelbanner/StackNF_red.png</texturefocus>
 					<texturenofocus>black-back.png</texturenofocus>
-					<onup>-</onup>
+					<onup>SetFocus(215)</onup>
 					<ondown>SetFocus(215)</ondown>
 					<onleft>SetFocus(241)</onleft>
 					<onright>SetFocus(221)</onright>
@@ -433,7 +433,7 @@
 					<texturefocus>channelBanner/StackNF_green.png</texturefocus>
 					<texturenofocus>black-back.png</texturenofocus>
 					<label>Satellite</label>
-					<onup>-</onup>
+					<onup>SetFocus(225)</onup>
 					<ondown>SetFocus(225)</ondown>
 					<onleft>SetFocus(211)</onleft>
 					<onright>SetFocus(231)</onright>
@@ -527,7 +527,7 @@
 					<texturefocus>channelBanner/StackNF_orange.png</texturefocus>
 					<texturenofocus>black-back.png</texturenofocus>
 					<label>FTA/CAS</label>
-					<onup>-</onup>
+					<onup>SetFocus(235)</onup>
 					<ondown>SetFocus(235)</ondown>
 					<onleft>SetFocus(221)</onleft>
 					<onright>SetFocus(241)</onright>
@@ -621,7 +621,7 @@
 					<texturefocus>channelBanner/StackNF_blue.png</texturefocus>
 					<texturenofocus>black-back.png</texturenofocus>
 					<label>Favorite</label>
-					<onup>-</onup>
+					<onup>SetFocus(245)</onup>
 					<ondown>SetFocus(245)</ondown>
 					<onleft>SetFocus(231)</onleft>
 					<onright>SetFocus(211)</onright>

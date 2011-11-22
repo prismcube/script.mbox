@@ -132,6 +132,7 @@ class ChannelListWindow(BaseWindow):
 			print '<<<<< test youn: action ID[%s]' % id
 			print 'tv_guide_last_selected[%s]' % action.getId()
 			self.getTabHeader()
+
 			
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'lael98 check ation back'
@@ -321,6 +322,17 @@ class ChannelListWindow(BaseWindow):
 		
 
 	def getTabHeader(self):
+		"""
+		self.flag11 = False
+		self.flag21 = False
+		self.flag31 = False
+		self.flag41 = False
+		self.ctrltabHeader12.setVisible(False)
+		self.ctrltabHeader22.setVisible(False)
+		self.ctrltabHeader32.setVisible(False)
+		self.ctrltabHeader42.setVisible(False)
+		"""
+
 		idx_Sorting   = self.ctrltabHeader12.getSelectedPosition()
 		idx_Satellite = self.ctrltabHeader22.getSelectedPosition()
 		idx_FtaCas    = self.ctrltabHeader32.getSelectedPosition()
