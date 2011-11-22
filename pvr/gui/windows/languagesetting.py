@@ -54,6 +54,9 @@ class LanguageSetting(SettingWindow):
 		self.forTheHearingImpairedProperty		= ElisPropertyEnum( 'Hearing Impaired' )
 		self.creatPropertyEnum( self.forTheHearingImpairedlist, self.forTheHearingImpairedProperty )
 
+		#TEST
+		self.setProperty('WindowType', 'EPG')
+
 	def onInit(self):
 		#if not self.win:
 		self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())

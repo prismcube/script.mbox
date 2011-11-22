@@ -1115,9 +1115,9 @@
 			</control>
 			<control type="label">
 				<description>TIME & DATE Label</description>
-		        <posx>770</posx>
+		        <posx>750</posx>
 		        <posy>35</posy>
-		        <width>420</width>
+		        <width>450</width>
 		        <height>28</height>
 		        <align>left</align>
 		        <aligny>center</aligny>
@@ -1128,7 +1128,7 @@
 			</control>
 			<control type="image">
 				<description>Clock Image</description>
-				<posx>1080</posx>
+				<posx>1070</posx>
 				<posy>42</posy>
 				<width>20</width>
 				<height>20</height>
@@ -1154,43 +1154,150 @@
 				<height>6</height>
 				<texture>separator.png</texture>
 			</control>
-			<!-- FOOT TEST BUTTON -->
-			<control type="button" id="3100">
-				<posx>110</posx>
-				<posy>50</posy>
-				<width>60</width>
-				<height>30</height>
-				<font>font12</font>
-				<label>EXIT</label>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
-				<texturefocus border="2">button-focus.png</texturefocus>
-				<texturenofocus border="2">button-nofocus.png</texturenofocus>
-				
-				<align>center</align>
-				<aligny>center</aligny>
-				<onleft>802</onleft>
-				<onright>802</onright>
-				<onup>704</onup>
-				<ondown>304</ondown>
-			</control>
-			<control type="button" id="3101">
-				<posx>190</posx>
-				<posy>50</posy>
-				<width>60</width>
-				<height>30</height>
-				<font>font12</font>
-				<label>BACK</label>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
-				<texturefocus border="2">button-focus.png</texturefocus>
-				<texturenofocus border="2">button-nofocus.png</texturenofocus>
-				<align>center</align>
-				<aligny>center</aligny>
-				<onleft>801</onleft>
-				<onright>801</onright>
-				<onup>704</onup>
-				<ondown>304</ondown>
+			<!-- FOOTER BUTTON -->
+			<control type="grouplist">
+				<visible>true</visible>
+				<posx>80</posx>
+				<posy>40</posy>
+				<width>1000</width>
+				<height>50</height>
+				<itemgap>20</itemgap>
+				<onleft>9001</onleft>
+				<onright>9001</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
+				<orientation>horizontal</orientation>
+				<!-- Back Button -->
+				<control type="group">
+					<width>190</width>
+					<height>40</height>
+					<defaultcontrol always="true">2000</defaultcontrol>
+					<control type="button" id="2000">
+						<description>Button Icon</description>
+						<posx>30</posx>
+						<posy>13</posy>
+						<width>40</width>
+						<height>32</height>
+						<texturenofocus>HomeIcon.png</texturenofocus>
+						<texturefocus>HomeIcon-Focus.png</texturefocus>
+						<onleft>2002</onleft>
+						<onright>2001</onright>
+						<onup>-</onup>
+						<ondown>-</ondown>
+					</control>
+					<control type="label">
+						<posx>80</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Back to Menu</label>
+						<visible>![Control.HasFocus(2000) | Control.HasFocus(2000)]</visible>
+					</control>
+					<control type="label">
+						<posx>80</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Back to Menu</label>
+						<visible>[Control.HasFocus(2000) | Control.HasFocus(2000)]</visible>
+					</control>
+				</control>
+				<!-- Tune in Button -->
+				<control type="group">
+					<visible>StringCompare(Container.Property(WindowType),ChannalList) | StringCompare(Container.Property(WindowType),EPG)</visible>
+					<width>130</width>
+					<height>40</height>
+					<defaultcontrol always="true">2001</defaultcontrol>
+					<control type="button" id="2001">
+						<description>Button Icon</description>
+						<posx>30</posx>
+						<posy>10</posy>
+						<width>40</width>
+						<height>40</height>
+						<texturenofocus>OSDRepeatNF.png</texturenofocus>
+						<texturefocus>OSDRepeatFO.png</texturefocus>
+						<onleft>2000</onleft>
+						<onright>2002</onright>
+						<onup>-</onup>
+						<ondown>-</ondown>
+					</control>
+					<control type="label">
+						<posx>80</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Tune in</label>
+						<visible>![Control.HasFocus(2001) | Control.HasFocus(2001)]</visible>
+					</control>
+					<control type="label">
+						<posx>80</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Tune in</label>
+						<visible>[Control.HasFocus(2001) | Control.HasFocus(2001)]</visible>
+					</control>
+				</control>
+				<!-- Rec Button -->
+				<control type="group">
+					<visible>StringCompare(Container.Property(WindowType),EPG)</visible>
+					<width>80</width>
+					<height>40</height>
+					<defaultcontrol always="true">2002</defaultcontrol>
+					<control type="button" id="2002">
+						<description>Button Icon</description>
+						<posx>30</posx>
+						<posy>10</posy>
+						<width>40</width>
+						<height>40</height>
+						<texturenofocus>OSDRecordNF.png</texturenofocus>
+						<texturefocus>OSDRecord2.png</texturefocus>
+						<onleft>2001</onleft>
+						<onright>2000</onright>
+						<onup>-</onup>
+						<ondown>-</ondown>
+					</control>
+					<control type="label">
+						<posx>80</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Record</label>
+						<visible>![Control.HasFocus(2002) | Control.HasFocus(2002)]</visible>
+					</control>
+					<control type="label">
+						<posx>80</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Record</label>
+						<visible>[Control.HasFocus(2002) | Control.HasFocus(2002)]</visible>
+					</control>
+				</control>
 			</control>
 		</control>
 	</include>
