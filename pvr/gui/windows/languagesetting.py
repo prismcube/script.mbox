@@ -10,13 +10,23 @@ import pvr.elismgr
 from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
 
 
+E_OSDLanguage					= 1100
+E_PrimaryAudioLanguage			= 1200
+E_PrimarySubtitleLanguage		= 1300
+E_SecondarySubtitleLanguage		= 1400
+E_ForTheHearingImpaired			= 1500
+
+E_LEFTBUTTON_OFFSET				= 1
+E_RIGHTBUTTON_OFFSET			= 2
+E_SPINCONTROL_OFFSET			= 3
+
 class LanguageSetting(SettingWindow):
 	def __init__(self, *args, **kwargs):
 		SettingWindow.__init__(self, *args, **kwargs)
 		self.commander = pvr.elismgr.getInstance().getCommander()
 
 		# Description List
-		self.navigationIds 						= [1100,1200,1300,1400,1500]
+		self.navigationIds 						= [E_OSDLanguage,E_PrimaryAudioLanguage,E_PrimarySubtitleLanguage,E_SecondarySubtitleLanguage,E_ForTheHearingImpaired]
 		self.descriptionList					= ['Set menu and popup language', 'Set primary audio language', 'Set primary subtitle language', 'Set secondary subtitle language', 'Enable hearing impaired support']
 
 		# OSD Language
@@ -50,59 +60,65 @@ class LanguageSetting(SettingWindow):
 		self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
 
 		# OSD Language
-		self.ctrlOSDLanguage				= self.getControl( 1103 )
+		self.ctrlOSDLanguage				= self.getControl( E_OSDLanguage + E_SPINCONTROL_OFFSET )
 		self.ctrlOSDLanguage.addItems( self.osdlangugelist )
-		self.ctrlOSDLanguage.selectItem( self.osdLanguageProperty.getProp() )
+		self.ctrlOSDLanguage.selectItem( self.osdLanguageProperty.getPropIndex() )
 
 		# Primary Audio Language
-		self.ctrlPrimaryAudioLanguage		= self.getControl( 1203 )
+		self.ctrlPrimaryAudioLanguage		= self.getControl( E_PrimaryAudioLanguage + E_SPINCONTROL_OFFSET  )
 		self.ctrlPrimaryAudioLanguage.addItems( self.primaryAudioLanguagelist )
-		self.ctrlPrimaryAudioLanguage.selectItem( self.primaryAudioLanguageProperty.getProp() )
-
-		self.ctrlPrimaryAudioLanguage.setEnabled( False )
+		self.ctrlPrimaryAudioLanguage.selectItem( self.primaryAudioLanguageProperty.getPropIndex() )
 
 		# Primary Subtitle Language
-		self.ctrlPrimarySubtitleLanguage	= self.getControl( 1303 )
+		self.ctrlPrimarySubtitleLanguage	= self.getControl( E_PrimarySubtitleLanguage + E_SPINCONTROL_OFFSET  )
 		self.ctrlPrimarySubtitleLanguage.addItems( self.primarySubtitleLanguagelist )
-		self.ctrlPrimarySubtitleLanguage.selectItem( self.primarySubtitleLanguageProperty.getProp() )
+		self.ctrlPrimarySubtitleLanguage.selectItem( self.primarySubtitleLanguageProperty.getPropIndex() )
 
 		# Secondary Subtitle Language
-		self.ctrlSecondarySubtitleLanguage	= self.getControl( 1403 )
+		self.ctrlSecondarySubtitleLanguage	= self.getControl( E_SecondarySubtitleLanguage + E_SPINCONTROL_OFFSET )
 		self.ctrlSecondarySubtitleLanguage.addItems( self.secondarySubtitleLanguagelist )
-		self.ctrlSecondarySubtitleLanguage.selectItem( self.secondarySubtitleLanguageProperty.getProp() )
+		self.ctrlSecondarySubtitleLanguage.selectItem( self.secondarySubtitleLanguageProperty.getPropIndex() )
 
 		# For The Hearing Impaired
-		self.ctrlForTheHearingImpaired		= self.getControl( 1503 )
+		self.ctrlForTheHearingImpaired		= self.getControl( E_ForTheHearingImpaired + E_SPINCONTROL_OFFSET )
 		self.ctrlForTheHearingImpaired.addItems( self.forTheHearingImpairedlist )
-		self.ctrlForTheHearingImpaired.selectItem( self.forTheHearingImpairedProperty.getProp() )
+		self.ctrlForTheHearingImpaired.selectItem( self.forTheHearingImpairedProperty.getPropIndex() )
 
 
 	def onAction(self, action):
  		
 		id = action.getId()
+		focusId = self.win.getFocusId( )		
 		print 'LanguagSetting OnAction controlId=%d' %id
 		
 		if id == Action.ACTION_PREVIOUS_MENU:
 			print 'dhkim LanguageSetting check action previous'
 		elif id == Action.ACTION_SELECT_ITEM:
-			print 'dhkim LanguageSetting check action select'
+			if focusId == E_OSDLanguage + E_LEFTBUTTON_OFFSET or focusId == E_OSDLanguage + E_RIGHTBUTTON_OFFSET :
+				self.setPropertyEnum( self.osdLanguageProperty, self.ctrlOSDLanguage.getSelectedPosition() )
+			elif focusId == E_PrimaryAudioLanguage + E_LEFTBUTTON_OFFSET or focusId == E_PrimaryAudioLanguage + E_RIGHTBUTTON_OFFSET :
+				self.setPropertyEnum( self.primaryAudioLanguageProperty, self.ctrlPrimaryAudioLanguage.getSelectedPosition() )
+			elif focusId == E_PrimarySubtitleLanguage + E_LEFTBUTTON_OFFSET or focusId == E_PrimarySubtitleLanguage + E_RIGHTBUTTON_OFFSET :
+				self.setPropertyEnum( self.primarySubtitleLanguageProperty, self.ctrlPrimarySubtitleLanguage.getSelectedPosition() )
+			elif focusId == E_SecondarySubtitleLanguage + E_LEFTBUTTON_OFFSET or focusId == E_SecondarySubtitleLanguage + E_RIGHTBUTTON_OFFSET :
+				self.setPropertyEnum( self.secondarySubtitleLanguageProperty, self.ctrlSecondarySubtitleLanguage.getSelectedPosition() )
+			elif focusId == E_ForTheHearingImpaired + E_LEFTBUTTON_OFFSET or focusId == E_ForTheHearingImpaired + E_RIGHTBUTTON_OFFSET :
+				self.setPropertyEnum( self.forTheHearingImpairedProperty, self.ctrlForTheHearingImpaired.getSelectedPosition() )
+
+
 		elif id == Action.ACTION_PARENT_DIR:
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_MAINMENU )
 			print 'dhkim LanguageSetting check action parent'
 
 		elif id == Action.ACTION_MOVE_UP:
-			focusId = self.win.getFocusId( )
 			print 'LanguagSetting ACTION_MOVE_UP OnAction getFocusId()=%d' %focusId
 			navId = int(focusId/100)*100
 			self.controlUp( self.navigationIds, navId )
 
 
 		elif id == Action.ACTION_MOVE_DOWN:
-			focusId = self.win.getFocusId( )
 			print 'LanguagSetting ACTION_MOVE_DOWN OnAction getFocusId()=%d' %focusId
-
 			navId = int(focusId/100)*100
-
 			self.controlDown( self.navigationIds, navId )
 
 

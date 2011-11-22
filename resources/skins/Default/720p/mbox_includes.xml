@@ -17,6 +17,8 @@
 				<onclick>Control.Move(1103,1)</onclick>
 				<onleft>1102</onleft>
 				<onright>1102</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1102">
 				<description>Menu Item Prev Button</description>
@@ -31,6 +33,8 @@
 				<onclick>Control.Move(1103,-1)</onclick>
 				<onleft>1101</onleft>
 				<onright>1101</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
 			</control>
 			<control type="list" id="1103">
 				<hitrect x="0" y="0" w="0" h="0" />
@@ -129,6 +133,8 @@
 				<onclick>Control.Move(1203,1)</onclick>
 				<onleft>1202</onleft>
 				<onright>1202</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1202">
 				<description>Menu Item Prev Button</description>
@@ -143,6 +149,8 @@
 				<onclick>Control.Move(1203,-1)</onclick>
 				<onleft>1201</onleft>
 				<onright>1201</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
 			</control>
 			<control type="list" id="1203">
 				<hitrect x="0" y="0" w="0" h="0" />
@@ -245,6 +253,8 @@
 				<onclick>Control.Move(1303,1)</onclick>
 				<onleft>1302</onleft>
 				<onright>1302</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1302">
 				<description>Menu Item Prev Button</description>
@@ -259,6 +269,8 @@
 				<onclick>Control.Move(1303,-1)</onclick>
 				<onleft>1301</onleft>
 				<onright>1301</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
 			</control>
 			<control type="list" id="1303">
 				<hitrect x="0" y="0" w="0" h="0" />
@@ -361,6 +373,8 @@
 				<onclick>Control.Move(1403,1)</onclick>
 				<onleft>1402</onleft>
 				<onright>1402</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1402">
 				<description>Menu Item Prev Button</description>
@@ -375,6 +389,8 @@
 				<onclick>Control.Move(1403,-1)</onclick>
 				<onleft>1401</onleft>
 				<onright>1401</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
 			</control>
 			<control type="list" id="1403">
 				<hitrect x="0" y="0" w="0" h="0" />
@@ -477,6 +493,8 @@
 				<onclick>Control.Move(1503,1)</onclick>
 				<onleft>1502</onleft>
 				<onright>1502</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1502">
 				<description>Menu Item Prev Button</description>
@@ -491,6 +509,8 @@
 				<onclick>Control.Move(1503,-1)</onclick>
 				<onleft>1501</onleft>
 				<onright>1501</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
 			</control>
 			<control type="list" id="1503">
 				<hitrect x="0" y="0" w="0" h="0" />
@@ -593,6 +613,8 @@
 				<onclick>Control.Move(1603,1)</onclick>
 				<onleft>1602</onleft>
 				<onright>1602</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1602">
 				<description>Menu Item Prev Button</description>
@@ -607,6 +629,8 @@
 				<onclick>Control.Move(1603,-1)</onclick>
 				<onleft>1601</onleft>
 				<onright>1601</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
 			</control>
 			<control type="list" id="1603">
 				<hitrect x="0" y="0" w="0" h="0" />
@@ -709,6 +733,8 @@
 				<onclick>Control.Move(1703,1)</onclick>
 				<onleft>1702</onleft>
 				<onright>1702</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1702">
 				<description>Menu Item Prev Button</description>
@@ -723,6 +749,8 @@
 				<onclick>Control.Move(1703,-1)</onclick>
 				<onleft>1701</onleft>
 				<onright>1701</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
 			</control>
 			<control type="list" id="1703">
 				<hitrect x="0" y="0" w="0" h="0" />
@@ -825,6 +853,8 @@
 				<onclick>Control.Move(1803,1)</onclick>
 				<onleft>1802</onleft>
 				<onright>1802</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1802">
 				<description>Menu Item Prev Button</description>
@@ -839,6 +869,8 @@
 				<onclick>Control.Move(1803,-1)</onclick>
 				<onleft>1801</onleft>
 				<onright>1801</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
 			</control>
 			<control type="list" id="1803">
 				<hitrect x="0" y="0" w="0" h="0" />
@@ -941,6 +973,8 @@
 				<onclick>Control.Move(1903,1)</onclick>
 				<onleft>1902</onleft>
 				<onright>1902</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1902">
 				<description>Menu Item Prev Button</description>
@@ -955,6 +989,8 @@
 				<onclick>Control.Move(1903,-1)</onclick>
 				<onleft>1901</onleft>
 				<onright>1901</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
 			</control>
 			<control type="list" id="1903">
 				<hitrect x="0" y="0" w="0" h="0" />
