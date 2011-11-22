@@ -52,9 +52,9 @@ class MainMenu(BaseWindow):
 		print "onclick(): control %d" % controlId
 		if controlId == 70301:
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_LANGUAGE_SETTING )
-		elif  controlId == 70101:
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_PARENT_LOCK )
-		elif  controlId == 70102:
+		elif  controlId == 70302:
+			winmgr.getInstance().showWindow( winmgr.WIN_ID_PARENTAL_LOCK )
+		elif  controlId == 70303:
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_RECORDING_OPTIONS )
 		
 

@@ -29,7 +29,7 @@ WIN_ID_MAINMENU 					= 2
 WIN_ID_CHANNEL_LIST_WINDOW			= 3
 WIN_ID_CHANNEL_BANNER				= 4
 WIN_ID_LANGUAGE_SETTING				= 5
-WIN_ID_PARENT_LOCK					= 6
+WIN_ID_PARENTAL_LOCK				= 6
 WIN_ID_RECORDING_OPTIONS			= 7
 
 
@@ -62,6 +62,7 @@ class WindowMgr(object):
 		from pvr.gui.windows.channellistwindow import ChannelListWindow
 		from pvr.gui.windows.channelbanner import ChannelBanner
 		from pvr.gui.windows.languagesetting  import LanguageSetting
+		from pvr.gui.windows.parentallock  import ParentalLock		
 		
 		self.windows = {
 			WIN_ID_NULLWINDOW 					: NullWindow('nullwindow.xml', self.scriptDir ),
@@ -69,6 +70,7 @@ class WindowMgr(object):
 			WIN_ID_CHANNEL_LIST_WINDOW			: ChannelListWindow('channellistwindow.xml', self.scriptDir ),
 			WIN_ID_CHANNEL_BANNER				: ChannelBanner('channelbanner.xml', self.scriptDir ),
 			WIN_ID_LANGUAGE_SETTING				: LanguageSetting('languagesetting.xml', self.scriptDir ),			
+			WIN_ID_PARENTAL_LOCK				: ParentalLock('parentallock.xml', self.scriptDir ),
 		}
 
 
@@ -88,5 +90,6 @@ class WindowMgr(object):
 		self.windows[WIN_ID_CHANNEL_LIST_WINDOW].close()
 		self.windows[WIN_ID_CHANNEL_BANNER].close()
 		self.windows[WIN_ID_LANGUAGE_SETTING].close()		
+		self.windows[WIN_ID_PARENTAL_LOCK].close()		
 
 

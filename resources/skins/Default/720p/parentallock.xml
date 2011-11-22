@@ -1,0 +1,37 @@
+<window id="3006">
+	 <include file="mbox_includes.xml">"mbox_includes.xml"</include>
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<controls>
+		<control type="group">
+			<include>CommonSettingMenuBackground</include>
+			<control type="label">
+				<description>header label</description>
+				<posx>300</posx>
+				<posy>35</posy>
+				<width>740</width>
+				<height>30</height>
+				<font>font24_title</font>
+				<label>Header Label</label>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<control type="grouplist" id="9000">
+				<visible>true</visible>
+				<posx>40</posx>
+				<posy>90</posy>
+				<width>720</width>
+				<height>530</height>
+				<itemgap>0</itemgap>
+				<pagecontrol>60</pagecontrol>
+				<onleft>-</onleft>
+				<onright>-</onright>
+				<onup>9000</onup>
+				<ondown>9000</ondown>
+				<include>SpinEx01</include>
+				<include>SpinEx02</include>				
+			</control>			
+		</control>
+	</controls>
+</window>
