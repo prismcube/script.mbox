@@ -315,26 +315,24 @@
 			<control type="group" id="210">
 				<posx>200</posx>
 				<posy>120</posy>
-<!--
-<control type="image">
-<posx>0</posx>
-<posy>30</posy>
-<width>250</width>
-<height>150</height>
-<texture>StackNF_orange.png</texture>
-</control>
--->
+
+				<control type="image">
+					<posx>-20</posx>
+					<posy>0</posy>
+					<width>28</width>
+					<height>25</height>
+					<texture>channelbanner/StackFF_red.png</texture>
+				</control>
 				<control type="button" id="211">
-					<posx>0</posx>
+					<posx>10</posx>
 					<posy>0</posy>
 					<width>150</width>
 					<height>30</height>
 					<textcolor>white</textcolor>
-					<align>center</align>
+					<align>left</align>
 					<aligny>-</aligny>
 					<font>font12_title</font>
 					<label>All Channels</label>
-					<altlabel>All Channel by Number</altlabel>
 					<texturefocus>channelbanner/StackNF_red.png</texturefocus>
 					<texturenofocus>black-back.png</texturenofocus>
 					<onup>SetFocus(215)</onup>
@@ -421,14 +419,22 @@
 			<control type="group" id="220">
 				<posx>400</posx>
 				<posy>120</posy>
+
+				<control type="image">
+					<posx>-20</posx>
+					<posy>0</posy>
+					<width>28</width>
+					<height>25</height>
+					<texture>channelbanner/StackFF_green.png</texture>
+				</control>
 				<control type="button" id="221">
-					<posx>0</posx>
+					<posx>10</posx>
 					<posy>0</posy>
 					<width>150</width>
 					<height>30</height>
 					<font>font12_title</font>
 					<textcolor>white</textcolor>
-					<align>center</align>
+					<align>left</align>
 					<aligny>-</aligny>
 					<texturefocus>channelBanner/StackNF_green.png</texturefocus>
 					<texturenofocus>black-back.png</texturenofocus>
@@ -515,14 +521,22 @@
 			<control type="group" id="230">
 				<posx>600</posx>
 				<posy>120</posy>
+
+				<control type="image">
+					<posx>-20</posx>
+					<posy>0</posy>
+					<width>28</width>
+					<height>25</height>
+					<texture>channelbanner/StackFF_orange.png</texture>
+				</control>
 				<control type="button" id="231">
-					<posx>0</posx>
+					<posx>10</posx>
 					<posy>0</posy>
 					<width>150</width>
 					<height>30</height>
 					<font>font12_title</font>
 					<textcolor>white</textcolor>
-					<align>center</align>
+					<align>left</align>
 					<aligny>-</aligny>
 					<texturefocus>channelBanner/StackNF_orange.png</texturefocus>
 					<texturenofocus>black-back.png</texturenofocus>
@@ -609,14 +623,22 @@
 			<control type="group" id="240">
 				<posx>800</posx>
 				<posy>120</posy>
+
+				<control type="image">
+					<posx>-20</posx>
+					<posy>0</posy>
+					<width>28</width>
+					<height>25</height>
+					<texture>channelbanner/StackFF_blue.png</texture>
+				</control>
 				<control type="button" id="241">
-					<posx>0</posx>
+					<posx>10</posx>
 					<posy>0</posy>
 					<width>150</width>
 					<height>30</height>
 					<font>font12_title</font>
 					<textcolor>white</textcolor>
-					<align>center</align>
+					<align>left</align>
 					<aligny>-</aligny>
 					<texturefocus>channelBanner/StackNF_blue.png</texturefocus>
 					<texturenofocus>black-back.png</texturenofocus>
