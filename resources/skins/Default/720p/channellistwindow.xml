@@ -19,15 +19,13 @@
 			<control type="image">
 				<posx>150</posx>
 				<posy>50</posy>
-				<width>100</width>
-				<height>50</height>
-				<texture>channelbanner/tv.png</texture>
+				<texture>channelbanner/IconHeaderTitleSmall.png</texture>
 			</control>
 			<control type="label">
 				<posx>240</posx>
 				<posy>60</posy>
 				<font>font24_title</font>
-				<label>-Channel List</label>
+				<label>TV-Channel List</label>
 			</control>
 
 			<control type="group">
@@ -131,13 +129,22 @@
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>
 					</control>
+<!--
 					<control type="image">
-						<posx>490</posx>
+						<posx>390</posx>
 						<posy>5</posy>
 						<width>200</width>
 						<height>31</height>
 						<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
 						<visible>Control.HasFocus(50) + !IsEmpty(ListItem.Label2)</visible>
+					</control>
+-->
+					<control type="image">
+						<posx>520</posx>
+						<posy>5</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>channelbanner/DI_Ok.png</texture>
 					</control>
 					<control type="label">
 						<posx>10</posx>
@@ -321,7 +328,7 @@
 					<posy>0</posy>
 					<width>28</width>
 					<height>25</height>
-					<texture>channelbanner/StackFF_red.png</texture>
+					<texture>channelbanner/TabColorkeyRed.png</texture>
 				</control>
 				<control type="button" id="211">
 					<posx>10</posx>
@@ -425,7 +432,7 @@
 					<posy>0</posy>
 					<width>28</width>
 					<height>25</height>
-					<texture>channelbanner/StackFF_green.png</texture>
+					<texture>channelbanner/TabColorkeyGreen.png</texture>
 				</control>
 				<control type="button" id="221">
 					<posx>10</posx>
@@ -527,7 +534,7 @@
 					<posy>0</posy>
 					<width>28</width>
 					<height>25</height>
-					<texture>channelbanner/StackFF_orange.png</texture>
+					<texture>channelbanner/TabColorkeyYellow.png</texture>
 				</control>
 				<control type="button" id="231">
 					<posx>10</posx>
@@ -629,7 +636,7 @@
 					<posy>0</posy>
 					<width>28</width>
 					<height>25</height>
-					<texture>channelbanner/StackFF_blue.png</texture>
+					<texture>channelbanner/TabColorkeyBlue.png</texture>
 				</control>
 				<control type="button" id="241">
 					<posx>10</posx>

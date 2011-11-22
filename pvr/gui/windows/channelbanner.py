@@ -72,44 +72,50 @@ class ChannelBanner(BaseWindow):
 		if not self.win:
 			self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
 
-		#get event
-		#request = EventRequest(self)
-		self.ctrlChannelNumber  = self.getControl( 601 )
-		self.ctrlChannelName    = self.getControl( 602 )
-		self.ctrlServiceType    = self.getControl( 603 )
-		self.ctrlServiceTypeImg1= self.getControl( 604 )
-		self.ctrlServiceTypeImg2= self.getControl( 605 )
-		self.ctrlServiceTypeImg3= self.getControl( 606 )
-		self.ctrlEventClock     = self.getControl( 610 )
-		self.ctrlLongitudeInfo  = self.getControl( 701 )
-		self.ctrlEventName      = self.getControl( 703 )
-		self.ctrlEventStartTime = self.getControl( 704 )
-		self.ctrlEventEndTime   = self.getControl( 705 )
-		self.ctrlProgress       = self.getControl( 707 )
-		self.ctrlEventDescGroup = self.getControl( 800 )
-		self.ctrlEventDescText1 = self.getControl( 801 )
-		self.ctrlEventDescText2 = self.getControl( 802 )
-		#self.ctrlProgress = xbmcgui.ControlProgress(100, 250, 125, 75)
-		#self.ctrlProgress(self.Progress)
+			#get event
+			#request = EventRequest(self)
+			self.ctrlChannelNumber  = self.getControl( 601 )
+			self.ctrlChannelName    = self.getControl( 602 )
+			self.ctrlServiceType    = self.getControl( 603 )
+			self.ctrlServiceTypeImg1= self.getControl( 604 )
+			self.ctrlServiceTypeImg2= self.getControl( 605 )
+			self.ctrlServiceTypeImg3= self.getControl( 606 )
+			self.ctrlEventClock     = self.getControl( 610 )
+			self.ctrlLongitudeInfo  = self.getControl( 701 )
+			self.ctrlEventName      = self.getControl( 703 )
+			self.ctrlEventStartTime = self.getControl( 704 )
+			self.ctrlEventEndTime   = self.getControl( 705 )
+			self.ctrlProgress       = self.getControl( 707 )
+			self.ctrlEventDescGroup = self.getControl( 800 )
+			self.ctrlEventDescText1 = self.getControl( 801 )
+			self.ctrlEventDescText2 = self.getControl( 802 )
+			#self.ctrlProgress = xbmcgui.ControlProgress(100, 250, 125, 75)
+			#self.ctrlProgress(self.Progress)
 
-		self.imgTV    = 'channelbanner/tv.png'
-		self.imgData  = 'channelbanner/data.png'
-		self.imgDolby = 'channelbanner/dolbydigital.png'
-		self.imgHD    = 'channelbanner/OverlayHD.png'
-		self.toggleFlag=False
-		self.ctrlEventClock.setLabel('')
+			self.imgTV    = 'channelbanner/tv.png'
+			self.toggleFlag=False
+			self.ctrlEventClock.setLabel('')
 
 		#get channel
 		self.currentChannel = self.commander.channel_GetCurrent()
 
 		self.initLabelInfo()
 	
+		if is_digit(self.currentChannel[3]):
+			self.updateServiceType(int(self.currentChannel[3]))
+
+
 		#run thread
 		self.untilThread = True
 		self.updateLocalTime()
 
-		if is_digit(self.currentChannel[3]):
-			self.updateServiceType(int(self.currentChannel[3]))
+		#get epg event right now, as this windows open
+		ret = []
+		ret=self.commander.epgevent_GetPresent()
+		if ret != []:
+			self.eventCopy=['epgevent_GetPresent'] + ret
+			self.updateONEvent(self.eventCopy)
+		print 'epgevent_GetPresent[%s]'% self.eventCopy
 
 
 	def onAction(self, action):
@@ -126,12 +132,15 @@ class ChannelBanner(BaseWindow):
 	
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'youn check ation back'
+
+			# end thread updateLocalTime()
+			self.untilThread = False
+			self.updateLocalTime().join()
+
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
 #			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
 #			winmgr.shutdown()
 
-			# end thread updateLocalTime()
-			self.untilThread = False
 
 		elif id == Action.ACTION_MOVE_DOWN:
 			print 'onAction():ACTION_NEXT_ITEM control %d' % id
@@ -284,6 +293,7 @@ class ChannelBanner(BaseWindow):
 			
 			time.sleep(1)
 
+		print '[%s():%s]end thread <<<< begin'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 	def initLabelInfo(self):
 		print '[%s():%s]Initialize Label'% (currentframe().f_code.co_name, currentframe().f_lineno)

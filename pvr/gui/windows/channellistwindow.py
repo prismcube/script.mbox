@@ -59,53 +59,54 @@ class ChannelListWindow(BaseWindow):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		if not self.win:
 			self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
+			print 'oninit test =============================================='
 
-		self.listcontrol            = self.getControl( 50 )
-		self.ctrlEventClock         = self.getControl( 102 )
-		self.ctrlChannelName        = self.getControl( 303 )
-		self.ctrlEventName          = self.getControl( 304 )
-		self.ctrlEventTime          = self.getControl( 305 )
-		self.ctrlProgress           = self.getControl( 306 )
-		self.ctrlLongitudeInfo      = self.getControl( 307 )
-		self.ctrlCareerInfo         = self.getControl( 308 )
-		self.ctrlServiceTypeImg1    = self.getControl( 310 )
-		self.ctrlServiceTypeImg2    = self.getControl( 311 )
-		self.ctrlServiceTypeImg3    = self.getControl( 312 )
-		self.ctrlSelectItem         = self.getControl( 401 )
+			self.listcontrol            = self.getControl( 50 )
+			self.ctrlEventClock         = self.getControl( 102 )
+			self.ctrlChannelName        = self.getControl( 303 )
+			self.ctrlEventName          = self.getControl( 304 )
+			self.ctrlEventTime          = self.getControl( 305 )
+			self.ctrlProgress           = self.getControl( 306 )
+			self.ctrlLongitudeInfo      = self.getControl( 307 )
+			self.ctrlCareerInfo         = self.getControl( 308 )
+			self.ctrlServiceTypeImg1    = self.getControl( 310 )
+			self.ctrlServiceTypeImg2    = self.getControl( 311 )
+			self.ctrlServiceTypeImg3    = self.getControl( 312 )
+			self.ctrlSelectItem         = self.getControl( 401 )
 
-		#tab header group		
-		self.ctrltabHeader10        = self.getControl( 210 )
-		self.ctrltabHeader20        = self.getControl( 220 )
-		self.ctrltabHeader30        = self.getControl( 230 )
-		self.ctrltabHeader40        = self.getControl( 240 )
-		
-		#tab header button
-		self.ctrltabHeader11        = self.getControl( 211 )
-		self.ctrltabHeader21        = self.getControl( 221 )
-		self.ctrltabHeader31        = self.getControl( 231 )
-		self.ctrltabHeader41        = self.getControl( 241 )
-		
-		#tab header list
-		self.ctrltabHeader12        = self.getControl( 212 )
-		self.ctrltabHeader22        = self.getControl( 222 )
-		self.ctrltabHeader32        = self.getControl( 232 )
-		self.ctrltabHeader42        = self.getControl( 242 )
+			#tab header group		
+			self.ctrltabHeader10        = self.getControl( 210 )
+			self.ctrltabHeader20        = self.getControl( 220 )
+			self.ctrltabHeader30        = self.getControl( 230 )
+			self.ctrltabHeader40        = self.getControl( 240 )
+			
+			#tab header button
+			self.ctrltabHeader11        = self.getControl( 211 )
+			self.ctrltabHeader21        = self.getControl( 221 )
+			self.ctrltabHeader31        = self.getControl( 231 )
+			self.ctrltabHeader41        = self.getControl( 241 )
+			
+			#tab header list
+			self.ctrltabHeader12        = self.getControl( 212 )
+			self.ctrltabHeader22        = self.getControl( 222 )
+			self.ctrltabHeader32        = self.getControl( 232 )
+			self.ctrltabHeader42        = self.getControl( 242 )
 
 
-		#epg component image
-		self.imgData  = 'channelbanner/data.png'
-		self.imgDolby = 'channelbanner/dolbydigital.png'
-		self.imgHD    = 'channelbanner/OverlayHD.png'
-		self.ctrlEventClock.setLabel('')
+			#epg component image
+			self.imgData  = 'channelbanner/data.png'
+			self.imgDolby = 'channelbanner/dolbydigital.png'
+			self.imgHD    = 'channelbanner/OverlayHD.png'
+			self.ctrlEventClock.setLabel('')
 
-		#tab header button label
-		self.btnLabel_TabHeader11 = 'All Channel by Number'
-		self.btnLabel_TabHeader21 = 'Satellite'
-		self.btnLabel_TabHeader31 = 'FTA/CAS'
-		self.btnLabel_TabHeader41 = 'Favorite'
-		
-		#etc
-		self.listEnableFlag = False
+			#tab header button label
+			self.btnLabel_TabHeader11 = 'All Channel by Number'
+			self.btnLabel_TabHeader21 = 'Satellite'
+			self.btnLabel_TabHeader31 = 'FTA/CAS'
+			self.btnLabel_TabHeader41 = 'Favorite'
+			
+			#etc
+			self.listEnableFlag = False
 
 
 		#initialize get channel list
@@ -127,7 +128,13 @@ class ChannelListWindow(BaseWindow):
 		self.untilThread = True
 		self.updateLocalTime()
 
-
+		#get epg event right now
+		ret = []
+		ret=self.commander.epgevent_GetPresent()
+		if ret != []:
+			ret=['epgevent_GetPresent'] + ret
+			self.updateLabelInfo(ret)
+		print 'epgevent_GetPresent[%s]'% ret
 
 	def onAction(self, action):
  		
@@ -143,6 +150,9 @@ class ChannelListWindow(BaseWindow):
 			
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'lael98 check ation back'
+
+			self.untilThread = False
+			self.updateLocalTime().join()
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )	
 
 			self.listcontrol.reset()
@@ -160,6 +170,7 @@ class ChannelListWindow(BaseWindow):
 			if ret[0].upper() == 'TRUE' :
 				if self.currentChannel == channelNumbr :
 					self.untilThread = False
+					self.updateLocalTime().join()
 					winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )
 
 				self.currentChannel = channelNumbr

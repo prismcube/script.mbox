@@ -232,7 +232,7 @@ def epgInfoComponentImage(component):
 
 	print 'component[%s] tempFile[%s]' % (component, tempFile)
 
-	imgData  = 'channelbanner/data.png'
+	imgData  = 'channelbanner/IconTeletext.png'
 	imgDolby = 'channelbanner/dolbydigital.png'
 	imgHD    = 'channelbanner/OverlayHD.png'
 	imagelist = []
