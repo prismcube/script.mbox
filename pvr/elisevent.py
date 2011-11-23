@@ -32,6 +32,13 @@ class ElisAction(object):
 	Channel_GetPrev						= 'Channel_GetPrev'
 	Channel_GetNext						= 'Channel_GetNext'
 	Channel_GetList						= 'Channel_GetList'
+	Channel_GetListBySatellite				= 'Channel_GetListBySatellite'
+	Channel_GetListByFavorite 				= 'Channel_GetListByFavorite'
+	Channel_GetListByFTACas 				= 'Channel_GetListByFTACas'	
+	Channel_GetSatelliteList 				= 'Channel_GetSateliteList'
+	Channel_GetFavoriteList 				= 'Channel_GetFavoriteList'
+	Channel_GetFTACasList 				= 'Channel_GetFTACasList'	
+	
 
 	EPGEvent_GetPresent					= 'EPGEvent_GetPresent'
 	EPGEvent_GetFollowing				= 'EPGEvent_GetFollowing'

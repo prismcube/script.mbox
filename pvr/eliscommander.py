@@ -82,6 +82,112 @@ class ElisCommander( EventCommander ):
 			channelList.append( reply )
 
 	"""
+	request ['Command', 'ServiceType', 'ZappingMode', 'SortingMode', 'longitude', 'band']
+	returns [ChannelList] or ['NULL']
+	channel[Number, PresentationNumber, Name, ServiceType, Locked, IsCA, IsHD, Nid, Sid, Onid, CarrierType ]
+	"""
+	def Channel_GetListBySatellite( self, serviceType, zappimgMode, sortingMode, longitude, band, channelList ):
+		req = []
+		req.append( ElisAction.Channel_GetListBySatellite )
+		req.append( '%d' %serviceType )
+		req.append( '%d' %zappimgMode )
+		req.append( '%d' %sortingMode )
+		req.append( '%d' %longitude )
+		req.append( '%d' %band )		
+		self.send( req )
+		while 1:
+			reply=self.read()
+			if reply[0].upper() == 'NULL':
+				return reply
+			channelList.append( reply )
+
+	"""
+	request ['Command', 'ServiceType', 'ZappingMode', 'SortingMode', 'favoriteName']
+	returns [ChannelList] or ['NULL']
+	channel[Number, PresentationNumber, Name, ServiceType, Locked, IsCA, IsHD, Nid, Sid, Onid, CarrierType ]
+	"""
+	def Channel_GetListByFavorite( self, serviceType, zappimgMode, sortingMode, favoriteName, channelList ):
+		req = []
+		req.append( ElisAction.Channel_GetListByFavorite )
+		req.append( '%d' %serviceType )
+		req.append( '%d' %zappimgMode )
+		req.append( '%d' %sortingMode )
+		req.append( favoriteName )
+		self.send( req )
+		while 1:
+			reply=self.read()
+			if reply[0].upper() == 'NULL':
+				return reply
+			channelList.append( reply )
+
+	"""
+	request ['Command', 'ServiceType', 'ZappingMode', 'SortingMode', 'CAId']
+	returns [ChannelList] or ['NULL']
+	channel[Number, PresentationNumber, Name, ServiceType, Locked, IsCA, IsHD, Nid, Sid, Onid, CarrierType ]
+	"""
+	def Channel_GetListByFTACas( self, serviceType, zappimgMode, sortingMode, CAId, channelList ):
+		req = []
+		req.append( ElisAction.Channel_GetListByFTACas )
+		req.append( '%d' %serviceType )
+		req.append( '%d' %zappimgMode )
+		req.append( '%d' %sortingMode )
+		req.append( '%d' %CAId )
+		self.send( req )
+		while 1:
+			reply=self.read()
+			if reply[0].upper() == 'NULL':
+				return reply
+			channelList.append( reply )
+
+	"""
+	request ['Command', ]
+	returns [SatellitelList] or ['NULL']
+	Satellite[Name]
+	"""
+	def Channel_GetSatelliteList( self, satellitelList ):
+		req = []
+		req.append( ElisAction.Channel_GetSatelliteList )
+		self.send( req )
+		while 1:
+			reply=self.read()
+			if reply[0].upper() == 'NULL':
+				return reply
+			satellitelList.append( reply )
+
+	"""
+	request ['Command', 'ServiceType']
+	returns [FavoriteList] or ['NULL']
+	Favorite[Name]
+	"""
+	def Channel_GetFavoriteList( self, serviceType, favList ):
+		req = []
+		req.append( ElisAction.Channel_GetFavoriteList )
+		req.append( '%d' %serviceType )
+		self.send( req )
+		while 1:
+			reply=self.read()
+			if reply[0].upper() == 'NULL':
+				return reply
+			favList.append( reply )
+
+	"""
+	request ['Command', 'ServiceType']
+	returns [FTACasList] or ['NULL']
+	FTACas[Name, ChannelCount, CAId]
+	"""
+	def Channel_GetFTACasList( self, serviceType, casList ):
+		req = []
+		req.append( ElisAction.Channel_GetFTACasList )
+		req.append( '%d' %serviceType )
+		self.send( req )
+		while 1:
+			reply=self.read()
+			if reply[0].upper() == 'NULL':
+				return reply
+			casList.append( reply )
+
+
+	"""
 	####################################################
 						EPG EVENT
 	####################################################	
