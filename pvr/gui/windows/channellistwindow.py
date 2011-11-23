@@ -60,45 +60,58 @@ class ChannelListWindow(BaseWindow):
 		if not self.win:
 			self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
 
-		self.listcontrol            = self.getControl( 50 )
-		self.ctrlEventClock         = self.getControl( 102 )
-		self.ctrlChannelName        = self.getControl( 303 )
-		self.ctrlEventName          = self.getControl( 304 )
-		self.ctrlEventTime          = self.getControl( 305 )
-		self.ctrlProgress           = self.getControl( 306 )
-		self.ctrlLongitudeInfo      = self.getControl( 307 )
-		self.ctrlCareerInfo         = self.getControl( 308 )
-		self.ctrlServiceTypeImg1    = self.getControl( 310 )
-		self.ctrlServiceTypeImg2    = self.getControl( 311 )
-		self.ctrlServiceTypeImg3    = self.getControl( 312 )
-		self.ctrlSelectItem         = self.getControl( 401 )
+			self.listcontrol            = self.getControl( 50 )
+			#self.ctrlEventClock         = self.getControl( 102 )
+			self.ctrlHeader1            = self.getControl( 3000 )
+			self.ctrlHeader2            = self.getControl( 3001 )
+			self.ctrlEventClock         = self.getControl( 3002 )
+			self.ctrlHeader3            = self.getControl( 3003 )
+			
+			self.ctrlChannelName        = self.getControl( 303 )
+			self.ctrlEventName          = self.getControl( 304 )
+			self.ctrlEventTime          = self.getControl( 305 )
+			self.ctrlProgress           = self.getControl( 306 )
+			self.ctrlLongitudeInfo      = self.getControl( 307 )
+			self.ctrlCareerInfo         = self.getControl( 308 )
+			self.ctrlLockedInfo         = self.getControl( 309 )
+			self.ctrlServiceTypeImg1    = self.getControl( 310 )
+			self.ctrlServiceTypeImg2    = self.getControl( 311 )
+			self.ctrlServiceTypeImg3    = self.getControl( 312 )
+			self.ctrlSelectItem         = self.getControl( 401 )
 
-		#tab header group		
-		self.ctrltabHeader10        = self.getControl( 210 )
-		self.ctrltabHeader20        = self.getControl( 220 )
-		self.ctrltabHeader30        = self.getControl( 230 )
-		self.ctrltabHeader40        = self.getControl( 240 )
-		
-		#tab header button
-		self.ctrltabHeader11        = self.getControl( 211 )
-		self.ctrltabHeader21        = self.getControl( 221 )
-		self.ctrltabHeader31        = self.getControl( 231 )
-		self.ctrltabHeader41        = self.getControl( 241 )
-		
-		#tab header list
-		self.ctrltabHeader12        = self.getControl( 212 )
-		self.ctrltabHeader22        = self.getControl( 222 )
-		self.ctrltabHeader32        = self.getControl( 232 )
-		self.ctrltabHeader42        = self.getControl( 242 )
+			#tab header group		
+			self.ctrltabHeader10        = self.getControl( 210 )
+			self.ctrltabHeader20        = self.getControl( 220 )
+			self.ctrltabHeader30        = self.getControl( 230 )
+			self.ctrltabHeader40        = self.getControl( 240 )
+			
+			#tab header button
+			self.ctrltabHeader11        = self.getControl( 211 )
+			self.ctrltabHeader21        = self.getControl( 221 )
+			self.ctrltabHeader31        = self.getControl( 231 )
+			self.ctrltabHeader41        = self.getControl( 241 )
+			
+			#tab header list
+			self.ctrltabHeader12        = self.getControl( 212 )
+			self.ctrltabHeader22        = self.getControl( 222 )
+			self.ctrltabHeader32        = self.getControl( 232 )
+			self.ctrltabHeader42        = self.getControl( 242 )
 
 
-		#epg component image
-		self.imgData  = 'channelbanner/data.png'
-		self.imgDolby = 'channelbanner/dolbydigital.png'
-		self.imgHD    = 'channelbanner/OverlayHD.png'
-		self.ctrlEventClock.setLabel('')
-		#etc
-		self.listEnableFlag = False
+			#epg component image
+			self.imgData  = 'channelbanner/data.png'
+			self.imgDolby = 'channelbanner/dolbydigital.png'
+			self.imgHD    = 'channelbanner/OverlayHD.png'
+			self.ctrlEventClock.setLabel('')
+
+			#tab header button label
+			self.btnLabel_TabHeader11 = 'All Channel by Number'
+			self.btnLabel_TabHeader21 = 'Satellite'
+			self.btnLabel_TabHeader31 = 'FTA/CAS'
+			self.btnLabel_TabHeader41 = 'Favorite'
+			
+			#etc
+			self.listEnableFlag = False
 
 
 		#initialize get channel list
@@ -120,7 +133,13 @@ class ChannelListWindow(BaseWindow):
 		self.untilThread = True
 		self.updateLocalTime()
 
-
+		#get epg event right now
+		ret = []
+		ret=self.commander.epgevent_GetPresent()
+		if ret != []:
+			ret=['epgevent_GetPresent'] + ret
+			self.updateLabelInfo(ret)
+		print 'epgevent_GetPresent[%s]'% ret
 
 	def onAction(self, action):
  		
@@ -132,9 +151,13 @@ class ChannelListWindow(BaseWindow):
 			print '<<<<< test youn: action ID[%s]' % id
 			print 'tv_guide_last_selected[%s]' % action.getId()
 			self.getTabHeader()
+
 			
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'lael98 check ation back'
+
+			self.untilThread = False
+			self.updateLocalTime().join()
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )	
 
 			self.listcontrol.reset()
@@ -152,6 +175,7 @@ class ChannelListWindow(BaseWindow):
 			if ret[0].upper() == 'TRUE' :
 				if self.currentChannel == channelNumbr :
 					self.untilThread = False
+					self.updateLocalTime().join()
 					winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )
 
 				self.currentChannel = channelNumbr
@@ -161,15 +185,14 @@ class ChannelListWindow(BaseWindow):
 			self.initLabelInfo()
 
 		elif controlId == self.ctrltabHeader11.getId():
-			
-			#group
+			#group resize
 			self.ctrltabHeader10.setPosition(200,120)
 			self.ctrltabHeader20.setPosition(400+50,120)
 			self.ctrltabHeader30.setPosition(600+50,120)
 			self.ctrltabHeader40.setPosition(800+50,120)
 
-			#button
-			self.ctrltabHeader11.setLabel('All Channel by Number')
+			#button update label
+			self.ctrltabHeader11.setLabel(self.ctrltabHeader12.getSelectedItem().getLabel())
 			self.ctrltabHeader21.setLabel('Satellite')
 			self.ctrltabHeader31.setLabel('FTA/CAS')
 			self.ctrltabHeader41.setLabel('Favorite')
@@ -179,7 +202,7 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader31.setWidth(150)
 			self.ctrltabHeader41.setWidth(150)
 
-			#list
+			#list select on visible, else list not visible
 			if self.flag11 == False:
 				self.flag11 = True
 				self.flag21 = False
@@ -195,14 +218,15 @@ class ChannelListWindow(BaseWindow):
 			
 
 		elif controlId == self.ctrltabHeader21.getId():
-			self.ctrltabHeader11.setLabel('All Channels')
-			self.ctrltabHeader21.setLabel('19.2 E ASTRA 1')
-			self.ctrltabHeader31.setLabel('FTA/CAS')
-			self.ctrltabHeader41.setLabel('Favorite')
 			self.ctrltabHeader10.setPosition(200,120)
 			self.ctrltabHeader20.setPosition(400,120)
 			self.ctrltabHeader30.setPosition(600+50,120)
 			self.ctrltabHeader40.setPosition(800+50,120)
+
+			self.ctrltabHeader11.setLabel('All Channels')
+			self.ctrltabHeader21.setLabel(self.ctrltabHeader22.getSelectedItem().getLabel())
+			self.ctrltabHeader31.setLabel('FTA/CAS')
+			self.ctrltabHeader41.setLabel('Favorite')
 			self.ctrltabHeader11.setWidth(150)
 			self.ctrltabHeader21.setWidth(200)
 			self.ctrltabHeader31.setWidth(150)
@@ -222,14 +246,15 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader42.setVisible(False)
 
 		elif controlId == self.ctrltabHeader31.getId():
-			self.ctrltabHeader11.setLabel('All Channels')
-			self.ctrltabHeader21.setLabel('Satellite')
-			self.ctrltabHeader31.setLabel('FTA(25)')
-			self.ctrltabHeader41.setLabel('Favorite')
 			self.ctrltabHeader10.setPosition(200,120)
 			self.ctrltabHeader20.setPosition(400,120)
 			self.ctrltabHeader30.setPosition(600,120)
 			self.ctrltabHeader40.setPosition(800+50,120)
+
+			self.ctrltabHeader11.setLabel('All Channels')
+			self.ctrltabHeader21.setLabel('Satellite')
+			self.ctrltabHeader31.setLabel(self.ctrltabHeader32.getSelectedItem().getLabel())
+			self.ctrltabHeader41.setLabel('Favorite')
 			self.ctrltabHeader11.setWidth(150)
 			self.ctrltabHeader21.setWidth(150)
 			self.ctrltabHeader31.setWidth(200)
@@ -249,14 +274,15 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader42.setVisible(False)
 
 		elif controlId == self.ctrltabHeader41.getId():
-			self.ctrltabHeader11.setLabel('All Channels')
-			self.ctrltabHeader21.setLabel('Satellite')
-			self.ctrltabHeader31.setLabel('FTA/CAS')
-			self.ctrltabHeader41.setLabel('Favorite list')
 			self.ctrltabHeader10.setPosition(200,120)
 			self.ctrltabHeader20.setPosition(400,120)
 			self.ctrltabHeader30.setPosition(600,120)
 			self.ctrltabHeader40.setPosition(800,120)
+
+			self.ctrltabHeader11.setLabel('All Channels')
+			self.ctrltabHeader21.setLabel('Satellite')
+			self.ctrltabHeader31.setLabel('FTA/CAS')
+			self.ctrltabHeader41.setLabel(self.ctrltabHeader42.getSelectedItem().getLabel())
 			self.ctrltabHeader11.setWidth(150)
 			self.ctrltabHeader21.setWidth(150)
 			self.ctrltabHeader31.setWidth(150)
@@ -321,6 +347,17 @@ class ChannelListWindow(BaseWindow):
 		
 
 	def getTabHeader(self):
+		"""
+		self.flag11 = False
+		self.flag21 = False
+		self.flag31 = False
+		self.flag41 = False
+		self.ctrltabHeader12.setVisible(False)
+		self.ctrltabHeader22.setVisible(False)
+		self.ctrltabHeader32.setVisible(False)
+		self.ctrltabHeader42.setVisible(False)
+		"""
+
 		idx_Sorting   = self.ctrltabHeader12.getSelectedPosition()
 		idx_Satellite = self.ctrltabHeader22.getSelectedPosition()
 		idx_FtaCas    = self.ctrltabHeader32.getSelectedPosition()
@@ -339,11 +376,46 @@ class ChannelListWindow(BaseWindow):
 		self.listcontrol.reset()
 		self.initChannelList()
 
+		#update button label from selected item at list
+		if self.flag11:
+			self.ctrltabHeader11.setLabel(self.ctrltabHeader12.getSelectedItem().getLabel())
+		if self.flag21:
+			self.ctrltabHeader21.setLabel(self.ctrltabHeader22.getSelectedItem().getLabel())
+		if self.flag31:
+			self.ctrltabHeader31.setLabel(self.ctrltabHeader32.getSelectedItem().getLabel())
+		if self.flag41:
+			self.ctrltabHeader41.setLabel(self.ctrltabHeader42.getSelectedItem().getLabel())
 
-		
+		#select and list hide
+		if self.flag11 or self.flag21 or self.flag31 or self.flag41:
+			#hide list
+			self.flag11 = False
+			self.flag21 = False
+			self.flag31 = False
+			self.flag41 = False
+			self.ctrltabHeader12.setVisible(False)
+			self.ctrltabHeader22.setVisible(False)
+			self.ctrltabHeader32.setVisible(False)
+			self.ctrltabHeader42.setVisible(False)
+				
 
 	def initTabHeader(self):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+
+		#header, footer init
+		self.ctrlHeader1.setImage('channelbanner/IconHeaderTitleSmall.png')
+		self.ctrlHeader2.setLabel('TV-Channel List')
+		#x = list(self.ctrlEventClock.getPosition())[0]
+		#y = list(self.ctrlEventClock.getPosition())[1]
+		self.ctrlEventClock.setPosition(850,35)
+		#x = list(self.ctrlHeader3.getPosition())[0]
+		#y = list(self.ctrlHeader3.getPosition())[1]
+		self.ctrlHeader3.setPosition(1030,42)
+
+		self.setProperty('WindowType', 'ChannelList')
+		
+
+		
 
 		self.ctrltabHeader12.setVisible(self.flag11)
 		self.ctrltabHeader22.setVisible(self.flag21)
@@ -409,6 +481,13 @@ class ChannelListWindow(BaseWindow):
 
 		for ch in self.channelList:
 			listItem = xbmcgui.ListItem("%04d %s"%( int(ch[0]), ch[2]),"-", "-", "-", "-")
+
+			thum=icas=''
+			if int(ch[4]) == 1 : thum='channelbanner/LI_Locked.png'
+			if int(ch[5]) == 1 : icas='channelbanner/IconCas.png'
+			listItem.setProperty('lock', thum)
+			listItem.setProperty('icas', icas)
+			
 			self.listItems.append(listItem)
 		self.listcontrol.addItems( self.listItems )
 
@@ -446,6 +525,7 @@ class ChannelListWindow(BaseWindow):
 			self.ctrlEventTime.setLabel('')
 			self.ctrlLongitudeInfo.setLabel('')
 			self.ctrlCareerInfo.setLabel('')
+			self.ctrlLockedInfo.setVisible(False)
 			self.ctrlServiceTypeImg1.setImage('')
 			self.ctrlServiceTypeImg2.setImage('')
 			self.ctrlServiceTypeImg3.setImage('')
@@ -490,6 +570,10 @@ class ChannelListWindow(BaseWindow):
 				longitude = self.commander.satellite_GetByChannelNumber(int(self.currentChannelInfo[0]), int(self.currentChannelInfo[3]))
 				ret = GetSelectedLongitudeString(longitude)
 				self.ctrlLongitudeInfo.setLabel(ret)
+
+				#update lock check
+				if int(self.currentChannelInfo[4]) == 1:
+					self.ctrlLockedInfo.setVisible(True)
 
 
 		if event != []:

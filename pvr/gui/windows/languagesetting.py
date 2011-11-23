@@ -52,7 +52,7 @@ class LanguageSetting(SettingWindow):
 
 		actionId = action.getId( )
 		focusId = self.getFocusId( )
-		
+
 		if actionId == Action.ACTION_PREVIOUS_MENU:
 			print 'LanguageSetting check action previous'
 		elif actionId == Action.ACTION_SELECT_ITEM:

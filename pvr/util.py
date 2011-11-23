@@ -196,9 +196,9 @@ def epgInfoClock(flag, nowTime, epgClock):
 
 	if flag == 1:
 		if int(pastTime) % 2 == 0:
-			strClock = time.strftime('%a, %d.%m.%Y   %H:%M', time.gmtime(stbClock) )
+			strClock = time.strftime('%a, %d.%m.%Y        %H:%M', time.gmtime(stbClock) )
 		else:
-			strClock = time.strftime('%a, %d.%m.%Y   %H %M', time.gmtime(stbClock) )
+			strClock = time.strftime('%a, %d.%m.%Y        %H %M', time.gmtime(stbClock) )
 
 	elif flag == 2:
 		strClock = time.strftime('%a. %H:%M', time.gmtime(stbClock) )
@@ -232,7 +232,7 @@ def epgInfoComponentImage(component):
 
 	print 'component[%s] tempFile[%s]' % (component, tempFile)
 
-	imgData  = 'channelbanner/data.png'
+	imgData  = 'channelbanner/IconTeletext.png'
 	imgDolby = 'channelbanner/dolbydigital.png'
 	imgHD    = 'channelbanner/OverlayHD.png'
 	imagelist = []
