@@ -1256,8 +1256,7 @@
 				</control>
 				<!-- Rec Button -->
 				<control type="group">
-					<visible></visible>
-					<!--<visible>StringCompare(Container.Property(WindowType),EPG)</visible>-->
+					<visible>StringCompare(Container.Property(WindowType),EPG)</visible>
 					<width>80</width>
 					<height>40</height>
 					<defaultcontrol always="true">2002</defaultcontrol>
