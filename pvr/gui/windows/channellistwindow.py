@@ -73,6 +73,7 @@ class ChannelListWindow(BaseWindow):
 			self.ctrlProgress           = self.getControl( 306 )
 			self.ctrlLongitudeInfo      = self.getControl( 307 )
 			self.ctrlCareerInfo         = self.getControl( 308 )
+			self.ctrlLockedInfo         = self.getControl( 309 )
 			self.ctrlServiceTypeImg1    = self.getControl( 310 )
 			self.ctrlServiceTypeImg2    = self.getControl( 311 )
 			self.ctrlServiceTypeImg3    = self.getControl( 312 )
@@ -401,13 +402,14 @@ class ChannelListWindow(BaseWindow):
 	def initTabHeader(self):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
+		#header, footer init
 		self.ctrlHeader1.setImage('channelbanner/IconHeaderTitleSmall.png')
 		self.ctrlHeader2.setLabel('TV-Channel List')
-		x = list(self.ctrlEventClock.getPosition())[0]
-		y = list(self.ctrlEventClock.getPosition())[1]
+		#x = list(self.ctrlEventClock.getPosition())[0]
+		#y = list(self.ctrlEventClock.getPosition())[1]
 		self.ctrlEventClock.setPosition(850,35)
-		x = list(self.ctrlHeader3.getPosition())[0]
-		y = list(self.ctrlHeader3.getPosition())[1]
+		#x = list(self.ctrlHeader3.getPosition())[0]
+		#y = list(self.ctrlHeader3.getPosition())[1]
 		self.ctrlHeader3.setPosition(1030,42)
 
 		self.setProperty('WindowType', 'ChannelList')
@@ -479,6 +481,13 @@ class ChannelListWindow(BaseWindow):
 
 		for ch in self.channelList:
 			listItem = xbmcgui.ListItem("%04d %s"%( int(ch[0]), ch[2]),"-", "-", "-", "-")
+
+			thum=icas=''
+			if int(ch[4]) == 1 : thum='channelbanner/LI_Locked.png'
+			if int(ch[5]) == 1 : icas='channelbanner/IconCas.png'
+			listItem.setProperty('lock', thum)
+			listItem.setProperty('icas', icas)
+			
 			self.listItems.append(listItem)
 		self.listcontrol.addItems( self.listItems )
 
@@ -516,6 +525,7 @@ class ChannelListWindow(BaseWindow):
 			self.ctrlEventTime.setLabel('')
 			self.ctrlLongitudeInfo.setLabel('')
 			self.ctrlCareerInfo.setLabel('')
+			self.ctrlLockedInfo.setVisible(False)
 			self.ctrlServiceTypeImg1.setImage('')
 			self.ctrlServiceTypeImg2.setImage('')
 			self.ctrlServiceTypeImg3.setImage('')
@@ -560,6 +570,10 @@ class ChannelListWindow(BaseWindow):
 				longitude = self.commander.satellite_GetByChannelNumber(int(self.currentChannelInfo[0]), int(self.currentChannelInfo[3]))
 				ret = GetSelectedLongitudeString(longitude)
 				self.ctrlLongitudeInfo.setLabel(ret)
+
+				#update lock check
+				if int(self.currentChannelInfo[4]) == 1:
+					self.ctrlLockedInfo.setVisible(True)
 
 
 		if event != []:
