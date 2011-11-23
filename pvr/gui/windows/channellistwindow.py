@@ -162,7 +162,9 @@ class ChannelListWindow(BaseWindow):
 
 			self.listcontrol.reset()
 
-		else: print'Unconsumed key: %s' % action.getId()
+		else:
+			pass
+			#print'Unconsumed key: %s' % action.getId()
 
 
 	def onClick(self, controlId):
@@ -555,7 +557,7 @@ class ChannelListWindow(BaseWindow):
 
 	def updateLabelInfo(self, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		print 'ch info[%s]'% self.currentChannelInfo
+		#print 'ch info[%s]'% self.currentChannelInfo
 
 		if self.currentChannelInfo != []:
 			self.epgClock = self.commander.datetime_GetLocalTime()
