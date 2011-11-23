@@ -95,11 +95,23 @@
 						<width>700</width>
 						<height>40</height>
 						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>!Control.IsEnabled(1100)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>700</width>
+						<height>40</height>
+						<font>font13</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-						<visible>![Control.HasFocus(1101) | Control.HasFocus(1102)]</visible>
+						<visible>Control.IsEnabled(1100) + ![Control.HasFocus(1101) | Control.HasFocus(1102)]</visible>
 					</control>
 					<control type="label">
 						<posx>10</posx>
@@ -111,7 +123,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-						<visible>[Control.HasFocus(1101) | Control.HasFocus(1102)]</visible>
+						<visible>Control.IsEnabled(1100) + [Control.HasFocus(1101) | Control.HasFocus(1102)]</visible>
 					</control>
 					<control type="label">
 						<posx>620</posx>
@@ -123,7 +135,19 @@
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
-						<visible>![Control.HasFocus(1101) | Control.HasFocus(1102)]</visible>
+						<visible>!Control.IsEnabled(1100)</visible>
+					</control>
+					<control type="label">
+						<posx>620</posx>
+						<posy>0</posy>
+						<width>640</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(1100) + ![Control.HasFocus(1101) | Control.HasFocus(1102)]</visible>
 					</control>
 					<control type="label">
 						<posx>620</posx>
@@ -135,7 +159,7 @@
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
-						<visible>[Control.HasFocus(1101) | Control.HasFocus(1102)]</visible>
+						<visible>Control.IsEnabled(1100) + [Control.HasFocus(1101) | Control.HasFocus(1102)]</visible>
 					</control>
 				</focusedlayout>
 			</control>
@@ -211,12 +235,23 @@
 						<width>700</width>
 						<height>40</height>
 						<font>font13</font>
-						<textcolor>grey2</textcolor>
-						<disabledcolor>grey3</disabledcolor>
+						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-						<visible>![Control.HasFocus(1201) | Control.HasFocus(1202)]</visible>
+						<visible>!Control.IsEnabled(1200)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>700</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(1200) + ![Control.HasFocus(1201) | Control.HasFocus(1202)]</visible>
 					</control>
 					<control type="label">
 						<posx>10</posx>
@@ -225,11 +260,22 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-						<visible>[Control.HasFocus(1201) | Control.HasFocus(1202)]</visible>
+						<visible>Control.IsEnabled(1200) + [Control.HasFocus(1201) | Control.HasFocus(1202)]</visible>
+					</control>
+					<control type="label">
+						<posx>620</posx>
+						<posy>0</posy>
+						<width>640</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>!Control.IsEnabled(1200)</visible>
 					</control>
 					<control type="label">
 						<posx>620</posx>
@@ -238,11 +284,10 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
-						<visible>![Control.HasFocus(1201) | Control.HasFocus(1202)]</visible>
+						<visible>Control.IsEnabled(1200) + ![Control.HasFocus(1201) | Control.HasFocus(1202)]</visible>
 					</control>
 					<control type="label">
 						<posx>620</posx>
@@ -251,11 +296,10 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
-						<visible>[Control.HasFocus(1201) | Control.HasFocus(1202)]</visible>
+						<visible>Control.IsEnabled(1200) + [Control.HasFocus(1201) | Control.HasFocus(1202)]</visible>
 					</control>
 				</focusedlayout>
 			</control>
@@ -331,12 +375,23 @@
 						<width>700</width>
 						<height>40</height>
 						<font>font13</font>
-						<textcolor>grey2</textcolor>
-						<disabledcolor>grey3</disabledcolor>
+						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-						<visible>![Control.HasFocus(1301) | Control.HasFocus(1302)]</visible>
+						<visible>!Control.IsEnabled(1300)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>700</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(1300) + ![Control.HasFocus(1301) | Control.HasFocus(1302)]</visible>
 					</control>
 					<control type="label">
 						<posx>10</posx>
@@ -345,11 +400,22 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-						<visible>[Control.HasFocus(1301) | Control.HasFocus(1302)]</visible>
+						<visible>Control.IsEnabled(1300) + [Control.HasFocus(1301) | Control.HasFocus(1302)]</visible>
+					</control>
+					<control type="label">
+						<posx>620</posx>
+						<posy>0</posy>
+						<width>640</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>!Control.IsEnabled(1300)</visible>
 					</control>
 					<control type="label">
 						<posx>620</posx>
@@ -358,11 +424,10 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
-						<visible>![Control.HasFocus(1301) | Control.HasFocus(1302)]</visible>
+						<visible>Control.IsEnabled(1300) + ![Control.HasFocus(1301) | Control.HasFocus(1302)]</visible>
 					</control>
 					<control type="label">
 						<posx>620</posx>
@@ -371,11 +436,10 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
-						<visible>[Control.HasFocus(1301) | Control.HasFocus(1302)]</visible>
+						<visible>Control.IsEnabled(1300) + [Control.HasFocus(1301) | Control.HasFocus(1302)]</visible>
 					</control>
 				</focusedlayout>
 			</control>
@@ -451,12 +515,23 @@
 						<width>700</width>
 						<height>40</height>
 						<font>font13</font>
-						<textcolor>grey2</textcolor>
-						<disabledcolor>grey3</disabledcolor>
+						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-						<visible>![Control.HasFocus(1401) | Control.HasFocus(1402)]</visible>
+						<visible>!Control.IsEnabled(1400)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>700</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(1400) + ![Control.HasFocus(1401) | Control.HasFocus(1402)]</visible>
 					</control>
 					<control type="label">
 						<posx>10</posx>
@@ -465,11 +540,22 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-						<visible>[Control.HasFocus(1401) | Control.HasFocus(1402)]</visible>
+						<visible>Control.IsEnabled(1400) + [Control.HasFocus(1401) | Control.HasFocus(1402)]</visible>
+					</control>
+					<control type="label">
+						<posx>620</posx>
+						<posy>0</posy>
+						<width>640</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>!Control.IsEnabled(1400)</visible>
 					</control>
 					<control type="label">
 						<posx>620</posx>
@@ -478,11 +564,10 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
-						<visible>![Control.HasFocus(1401) | Control.HasFocus(1402)]</visible>
+						<visible>Control.IsEnabled(1400) + ![Control.HasFocus(1401) | Control.HasFocus(1402)]</visible>
 					</control>
 					<control type="label">
 						<posx>620</posx>
@@ -491,11 +576,10 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
-						<visible>[Control.HasFocus(1401) | Control.HasFocus(1402)]</visible>
+						<visible>Control.IsEnabled(1400) + [Control.HasFocus(1401) | Control.HasFocus(1402)]</visible>
 					</control>
 				</focusedlayout>
 			</control>
@@ -571,12 +655,23 @@
 						<width>700</width>
 						<height>40</height>
 						<font>font13</font>
-						<textcolor>grey2</textcolor>
-						<disabledcolor>grey3</disabledcolor>
+						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-						<visible>![Control.HasFocus(1501) | Control.HasFocus(1502)]</visible>
+						<visible>!Control.IsEnabled(1500)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>700</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(1500) + ![Control.HasFocus(1501) | Control.HasFocus(1502)]</visible>
 					</control>
 					<control type="label">
 						<posx>10</posx>
@@ -585,11 +680,22 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-						<visible>[Control.HasFocus(1501) | Control.HasFocus(1502)]</visible>
+						<visible>Control.IsEnabled(1500) + [Control.HasFocus(1501) | Control.HasFocus(1502)]</visible>
+					</control>
+					<control type="label">
+						<posx>620</posx>
+						<posy>0</posy>
+						<width>640</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>!Control.IsEnabled(1500)</visible>
 					</control>
 					<control type="label">
 						<posx>620</posx>
@@ -598,11 +704,10 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
-						<visible>![Control.HasFocus(1501) | Control.HasFocus(1502)]</visible>
+						<visible>Control.IsEnabled(1500) + ![Control.HasFocus(1501) | Control.HasFocus(1502)]</visible>
 					</control>
 					<control type="label">
 						<posx>620</posx>
@@ -611,11 +716,10 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
-						<visible>[Control.HasFocus(1501) | Control.HasFocus(1502)]</visible>
+						<visible>Control.IsEnabled(1500) + [Control.HasFocus(1501) | Control.HasFocus(1502)]</visible>
 					</control>
 				</focusedlayout>
 			</control>
@@ -691,12 +795,23 @@
 						<width>700</width>
 						<height>40</height>
 						<font>font13</font>
-						<textcolor>grey2</textcolor>
-						<disabledcolor>grey3</disabledcolor>
+						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-						<visible>![Control.HasFocus(1601) | Control.HasFocus(1602)]</visible>
+						<visible>!Control.IsEnabled(1600)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>700</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(1600) + ![Control.HasFocus(1601) | Control.HasFocus(1602)]</visible>
 					</control>
 					<control type="label">
 						<posx>10</posx>
@@ -705,11 +820,22 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-						<visible>[Control.HasFocus(1601) | Control.HasFocus(1602)]</visible>
+						<visible>Control.IsEnabled(1600) + [Control.HasFocus(1601) | Control.HasFocus(1602)]</visible>
+					</control>
+					<control type="label">
+						<posx>620</posx>
+						<posy>0</posy>
+						<width>640</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>!Control.IsEnabled(1600)</visible>
 					</control>
 					<control type="label">
 						<posx>620</posx>
@@ -718,11 +844,10 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
-						<visible>![Control.HasFocus(1601) | Control.HasFocus(1602)]</visible>
+						<visible>Control.IsEnabled(1600) + ![Control.HasFocus(1601) | Control.HasFocus(1602)]</visible>
 					</control>
 					<control type="label">
 						<posx>620</posx>
@@ -731,11 +856,10 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
-						<visible>[Control.HasFocus(1601) | Control.HasFocus(1602)]</visible>
+						<visible>Control.IsEnabled(1600) + [Control.HasFocus(1601) | Control.HasFocus(1602)]</visible>
 					</control>
 				</focusedlayout>
 			</control>
@@ -811,12 +935,23 @@
 						<width>700</width>
 						<height>40</height>
 						<font>font13</font>
-						<textcolor>grey2</textcolor>
-						<disabledcolor>grey3</disabledcolor>
+						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-						<visible>![Control.HasFocus(1701) | Control.HasFocus(1702)]</visible>
+						<visible>!Control.IsEnabled(1700)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>700</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(1700) + ![Control.HasFocus(1701) | Control.HasFocus(1702)]</visible>
 					</control>
 					<control type="label">
 						<posx>10</posx>
@@ -825,11 +960,22 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-						<visible>[Control.HasFocus(1701) | Control.HasFocus(1702)]</visible>
+						<visible>Control.IsEnabled(1700) + [Control.HasFocus(1701) | Control.HasFocus(1702)]</visible>
+					</control>
+					<control type="label">
+						<posx>620</posx>
+						<posy>0</posy>
+						<width>640</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>!Control.IsEnabled(1700)</visible>
 					</control>
 					<control type="label">
 						<posx>620</posx>
@@ -838,11 +984,10 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
-						<visible>![Control.HasFocus(1701) | Control.HasFocus(1702)]</visible>
+						<visible>Control.IsEnabled(1700) + ![Control.HasFocus(1701) | Control.HasFocus(1702)]</visible>
 					</control>
 					<control type="label">
 						<posx>620</posx>
@@ -851,11 +996,10 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
-						<visible>[Control.HasFocus(1701) | Control.HasFocus(1702)]</visible>
+						<visible>Control.IsEnabled(1700) + [Control.HasFocus(1701) | Control.HasFocus(1702)]</visible>
 					</control>
 				</focusedlayout>
 			</control>
@@ -931,12 +1075,23 @@
 						<width>700</width>
 						<height>40</height>
 						<font>font13</font>
-						<textcolor>grey2</textcolor>
-						<disabledcolor>grey3</disabledcolor>
+						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-						<visible>![Control.HasFocus(1801) | Control.HasFocus(1802)]</visible>
+						<visible>!Control.IsEnabled(1800)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>700</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(1800) + ![Control.HasFocus(1801) | Control.HasFocus(1802)]</visible>
 					</control>
 					<control type="label">
 						<posx>10</posx>
@@ -945,11 +1100,22 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-						<visible>[Control.HasFocus(1801) | Control.HasFocus(1802)]</visible>
+						<visible>Control.IsEnabled(1800) + [Control.HasFocus(1801) | Control.HasFocus(1802)]</visible>
+					</control>
+					<control type="label">
+						<posx>620</posx>
+						<posy>0</posy>
+						<width>640</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>!Control.IsEnabled(1800)</visible>
 					</control>
 					<control type="label">
 						<posx>620</posx>
@@ -958,11 +1124,10 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
-						<visible>![Control.HasFocus(1801) | Control.HasFocus(1802)]</visible>
+						<visible>Control.IsEnabled(1800) + ![Control.HasFocus(1801) | Control.HasFocus(1802)]</visible>
 					</control>
 					<control type="label">
 						<posx>620</posx>
@@ -971,11 +1136,10 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
-						<visible>[Control.HasFocus(1801) | Control.HasFocus(1802)]</visible>
+						<visible>Control.IsEnabled(1800) + [Control.HasFocus(1801) | Control.HasFocus(1802)]</visible>
 					</control>
 				</focusedlayout>
 			</control>
@@ -1051,8 +1215,7 @@
 						<width>700</width>
 						<height>40</height>
 						<font>font13</font>
-						<textcolor>grey2</textcolor>
-						<disabledcolor>grey3</disabledcolor>
+						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -1064,8 +1227,19 @@
 						<width>700</width>
 						<height>40</height>
 						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>!Control.IsEnabled(1900)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>700</width>
+						<height>40</height>
+						<font>font13</font>
 						<textcolor>white</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
@@ -1077,12 +1251,23 @@
 						<width>640</width>
 						<height>40</height>
 						<font>font13</font>
-						<textcolor>grey2</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
+						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
-						<visible>![Control.HasFocus(1901) | Control.HasFocus(1902)]</visible>
+						<visible>!Control.IsEnabled(1900)</visible>
+					</control>
+					<control type="label">
+						<posx>620</posx>
+						<posy>0</posy>
+						<width>640</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(1900) + ![Control.HasFocus(1901) | Control.HasFocus(1902)]</visible>
 					</control>
 					<control type="label">
 						<posx>620</posx>
@@ -1091,11 +1276,10 @@
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
-						<disabledcolor>grey3</disabledcolor>						
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
-						<visible>[Control.HasFocus(1901) | Control.HasFocus(1902)]</visible>
+						<visible>Control.IsEnabled(1900) + [Control.HasFocus(1901) | Control.HasFocus(1902)]</visible>
 					</control>
 				</focusedlayout>
 			</control>
