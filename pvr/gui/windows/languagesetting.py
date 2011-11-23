@@ -53,11 +53,17 @@ class LanguageSetting(SettingWindow):
 		self.forTheHearingImpairedlist		 	= []
 		self.forTheHearingImpairedProperty		= ElisPropertyEnum( 'Hearing Impaired' )
 		self.creatPropertyEnum( self.forTheHearingImpairedlist, self.forTheHearingImpairedProperty )
-		
+
+		#TEST
+		self.setProperty('WindowType', 'EPG')
 
 	def onInit(self):
 		#if not self.win:
 		self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
+
+		# Header Title
+		self.ctrlHeaderTitle				= self.getControl( 3000 )
+		self.ctrlHeaderTitle.setLabel('Language Preference')
 
 		# OSD Language
 		self.ctrlOSDLanguage				= self.getControl( E_OSDLanguage + E_SPINCONTROL_OFFSET )
@@ -65,12 +71,12 @@ class LanguageSetting(SettingWindow):
 		self.ctrlOSDLanguage.selectItem( self.osdLanguageProperty.getPropIndex() )
 
 		# Primary Audio Language
-		self.ctrlPrimaryAudioLanguage		= self.getControl( E_PrimaryAudioLanguage + E_SPINCONTROL_OFFSET  )
+		self.ctrlPrimaryAudioLanguage		= self.getControl( E_PrimaryAudioLanguage + E_SPINCONTROL_OFFSET )
 		self.ctrlPrimaryAudioLanguage.addItems( self.primaryAudioLanguagelist )
 		self.ctrlPrimaryAudioLanguage.selectItem( self.primaryAudioLanguageProperty.getPropIndex() )
 
 		# Primary Subtitle Language
-		self.ctrlPrimarySubtitleLanguage	= self.getControl( E_PrimarySubtitleLanguage + E_SPINCONTROL_OFFSET  )
+		self.ctrlPrimarySubtitleLanguage	= self.getControl( E_PrimarySubtitleLanguage + E_SPINCONTROL_OFFSET )
 		self.ctrlPrimarySubtitleLanguage.addItems( self.primarySubtitleLanguagelist )
 		self.ctrlPrimarySubtitleLanguage.selectItem( self.primarySubtitleLanguageProperty.getPropIndex() )
 

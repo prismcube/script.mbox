@@ -1,31 +1,4 @@
 <includes>
-	<include name="BehindDialogFadeOut">
-		<control type="image">
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>1280</width>
-			<height>720</height>
-			<texture>black-back.png</texture>
-			<animation effect="fade" time="400">Visible</animation>
-			<animation effect="fade" time="200">Hidden</animation>
-			<visible>Window.IsActive(MovieInformation) | Window.IsActive(MusicInformation) | Window.IsActive(SongInformation) | Window.IsActive(FileBrowser) | Window.IsActive(TextViewer) | Window.IsActive(AddonSettings) | Window.IsActive(ContentSettings) | Window.IsActive(SelectDialog) | Window.IsActive(FileStackingDialog) | Window.IsActive(MediaSource) | Window.IsActive(PictureInfo) | Window.IsActive(PlayerControls) | Window.IsActive(VirtualKeyboard) | Window.IsActive(NumericInput) | Window.IsActive(ProfileSettings) | Window.IsActive(LockSettings) | Window.IsActive(SmartPlaylistEditor) | Window.IsActive(SmartPlaylistRule) | Window.IsActive(script-Apple_Movie_Trailers-settings.xml) | Window.IsActive(script-Apple_Movie_Trailers-chooser.xml) | Window.IsActive(script-Apple_Movie_Trailers-search.xml) | Window.IsActive(script-Apple_Movie_Trailers-showtimes.xml) | Window.IsActive(script-XBMC_Lyrics-settings.xml) | Window.IsActive(script-RSS_Editor-rssEditor.xml) | Window.IsActive(script-RSS_Editor-setEditor.xml) | Window.IsActive(AddonInformation)</visible>
-		</control>
-	</include>
-	<include name="IncludeTest">
-	    <control type="label">
-	        <description>date/time label</description>
-	        <posx>0</posx>
-	        <posy>65</posy>
-	        <width>450</width>
-	        <height>35</height>
-	        <align>right</align>
-	        <aligny>center</aligny>
-	        <font>font12</font>
-	        <textcolor>ffffffff</textcolor>
-	        <label>TestInclude</label>
-	    </control>
-	</include>
-
 	<include name="SpinEx01">
 		<control type="group" id="1100">
 			<width>720</width>
@@ -1103,7 +1076,7 @@
 	</include>
 	<include name="MenuHeader">
 		<control type="group">
-			<posy>5</posy>
+			<posy>20</posy>
 			<animation type="WindowOpen" reversible="false">
 				<effect type="slide" start="0,-80" time="400" tween="quadratic" easing="out" />
 				<effect type="fade" start="0" end="100" time="400" />
@@ -1114,7 +1087,7 @@
 			</animation>
 			<control type="image">
 				<description>Title Setting Image</description>
-				<posx>80</posx>
+				<posx>90</posx>
 				<posy>21</posy>
 				<width>60</width>
 				<height>55</height>
@@ -1122,16 +1095,15 @@
 			</control>
 			<control type="label" id="3000">
 				<description>Title Label</description>
-				<posx>150</posx>
-				<posy>40</posy>
+				<posx>180</posx>
+				<posy>27</posy>
 				<width>650</width>
 				<height>40</height>
-				<font>font24_title</font>
+				<font>font28_title</font>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
 				<shadowcolor>grey2</shadowcolor>
-				<label>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</label>
 			</control>
 			<control type="image">
 				<description>Separator Image</description>
@@ -1143,21 +1115,21 @@
 			</control>
 			<control type="label">
 				<description>TIME & DATE Label</description>
-		        <posx>850</posx>
-		        <posy>40</posy>
-		        <width>400</width>
+		        <posx>750</posx>
+		        <posy>35</posy>
+		        <width>450</width>
 		        <height>28</height>
 		        <align>left</align>
 		        <aligny>center</aligny>
-		        <font>font12</font>
+		        <font>font13</font>
 		        <textcolor>white</textcolor>
 		        <shadowcolor>black</shadowcolor>
-		        <label>[COLOR=grey]$INFO[System.Date][/COLOR]          $INFO[System.Time]</label>
+		        <label>[COLOR=grey]$INFO[System.Date][/COLOR]      $INFO[System.Time]</label>
 			</control>
 			<control type="image">
 				<description>Clock Image</description>
-				<posx>1119</posx>
-				<posy>45</posy>
+				<posx>1070</posx>
+				<posy>42</posy>
 				<width>20</width>
 				<height>20</height>
 				<texture>MenuWindow/clock.png</texture>
@@ -1166,7 +1138,7 @@
 	</include>
 	<include name="MenuFooter">
 		<control type="group">
-			<posy>600</posy>
+			<posy>580</posy>
 			<animation type="WindowOpen" reversible="false">
 				<effect type="slide" start="0,80" time="400" tween="quadratic" easing="out" />
 				<effect type="fade" start="0" end="100" time="400" />
@@ -1182,43 +1154,150 @@
 				<height>6</height>
 				<texture>separator.png</texture>
 			</control>
-			<!-- FOOT TEST BUTTON -->
-			<control type="button" id="3100">
-				<posx>110</posx>
-				<posy>50</posy>
-				<width>60</width>
-				<height>30</height>
-				<font>font12</font>
-				<label>EXIT</label>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
-				<texturefocus border="2">button-focus.png</texturefocus>
-				<texturenofocus border="2">button-nofocus.png</texturenofocus>
-				
-				<align>center</align>
-				<aligny>center</aligny>
-				<onleft>802</onleft>
-				<onright>802</onright>
-				<onup>704</onup>
-				<ondown>304</ondown>
-			</control>
-			<control type="button" id="3101">
-				<posx>190</posx>
-				<posy>50</posy>
-				<width>60</width>
-				<height>30</height>
-				<font>font12</font>
-				<label>BACK</label>
-				<textcolor>grey2</textcolor>
-				<focusedcolor>white</focusedcolor>
-				<texturefocus border="2">button-focus.png</texturefocus>
-				<texturenofocus border="2">button-nofocus.png</texturenofocus>
-				<align>center</align>
-				<aligny>center</aligny>
-				<onleft>801</onleft>
-				<onright>801</onright>
-				<onup>704</onup>
-				<ondown>304</ondown>
+			<!-- FOOTER BUTTON -->
+			<control type="grouplist">
+				<visible>true</visible>
+				<posx>80</posx>
+				<posy>40</posy>
+				<width>1000</width>
+				<height>50</height>
+				<itemgap>20</itemgap>
+				<onleft>9001</onleft>
+				<onright>9001</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
+				<orientation>horizontal</orientation>
+				<!-- Back Button -->
+				<control type="group">
+					<width>190</width>
+					<height>40</height>
+					<defaultcontrol always="true">2000</defaultcontrol>
+					<control type="button" id="2000">
+						<description>Button Icon</description>
+						<posx>30</posx>
+						<posy>13</posy>
+						<width>40</width>
+						<height>32</height>
+						<texturenofocus>HomeIcon.png</texturenofocus>
+						<texturefocus>HomeIcon-Focus.png</texturefocus>
+						<onleft>2002</onleft>
+						<onright>2001</onright>
+						<onup>-</onup>
+						<ondown>-</ondown>
+					</control>
+					<control type="label">
+						<posx>80</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Back to Menu</label>
+						<visible>![Control.HasFocus(2000) | Control.HasFocus(2000)]</visible>
+					</control>
+					<control type="label">
+						<posx>80</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Back to Menu</label>
+						<visible>[Control.HasFocus(2000) | Control.HasFocus(2000)]</visible>
+					</control>
+				</control>
+				<!-- Tune in Button -->
+				<control type="group">
+					<visible>StringCompare(Container.Property(WindowType),ChannalList) | StringCompare(Container.Property(WindowType),EPG)</visible>
+					<width>130</width>
+					<height>40</height>
+					<defaultcontrol always="true">2001</defaultcontrol>
+					<control type="button" id="2001">
+						<description>Button Icon</description>
+						<posx>30</posx>
+						<posy>10</posy>
+						<width>40</width>
+						<height>40</height>
+						<texturenofocus>OSDRepeatNF.png</texturenofocus>
+						<texturefocus>OSDRepeatFO.png</texturefocus>
+						<onleft>2000</onleft>
+						<onright>2002</onright>
+						<onup>-</onup>
+						<ondown>-</ondown>
+					</control>
+					<control type="label">
+						<posx>80</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Tune in</label>
+						<visible>![Control.HasFocus(2001) | Control.HasFocus(2001)]</visible>
+					</control>
+					<control type="label">
+						<posx>80</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Tune in</label>
+						<visible>[Control.HasFocus(2001) | Control.HasFocus(2001)]</visible>
+					</control>
+				</control>
+				<!-- Rec Button -->
+				<control type="group">
+					<visible>StringCompare(Container.Property(WindowType),EPG)</visible>
+					<width>80</width>
+					<height>40</height>
+					<defaultcontrol always="true">2002</defaultcontrol>
+					<control type="button" id="2002">
+						<description>Button Icon</description>
+						<posx>30</posx>
+						<posy>10</posy>
+						<width>40</width>
+						<height>40</height>
+						<texturenofocus>OSDRecordNF.png</texturenofocus>
+						<texturefocus>OSDRecord2.png</texturefocus>
+						<onleft>2001</onleft>
+						<onright>2000</onright>
+						<onup>-</onup>
+						<ondown>-</ondown>
+					</control>
+					<control type="label">
+						<posx>80</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Record</label>
+						<visible>![Control.HasFocus(2002) | Control.HasFocus(2002)]</visible>
+					</control>
+					<control type="label">
+						<posx>80</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Record</label>
+						<visible>[Control.HasFocus(2002) | Control.HasFocus(2002)]</visible>
+					</control>
+				</control>
 			</control>
 		</control>
 	</include>
