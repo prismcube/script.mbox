@@ -5,13 +5,14 @@
 		<posx>0</posx>
 		<posy>0</posy>
 	</coordinates>
+	<include file="mbox_includes.xml">"mbox_includes.xml"</include>
 	<defaultcontrol always="true">49</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
 
 	<controls>
 
 <!--  header -->
-
+<!--
 		<control type="group" id="100">
 			<animation effect="slide" start="0,-50" delay="0" time="300">WindowOpen</animation>
 			<animation effect="slide" end="0,-50" delay="0" time="300">WindowClose</animation>
@@ -39,11 +40,12 @@
 					<font>font12</font>
 					<textcolor>white</textcolor>
 					<label>$INFO[Control.Label]</label>
-					<!--<label>$INFO[System.time]</label>-->
 					<description>EPG Clock</description>
 				</control>
 			</control>
 		</control>
+-->
+		<include>MenuHeader</include>
 
 <!-- middle left -->
 		<control type="group">
@@ -747,29 +749,10 @@
 		</control>
 
 <!--  buttom -->
+<!--
 		<control type="group" id="500">
 			<animation effect="slide" start="0,320" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
 			<animation effect="slide" start="0,0" end="0,320" time="300" delay="150" tween="quadratic" easing="out">WindowClose</animation>
-<!--
-			<animation effect="slide" start="0,0" end="0,320" time="300" tween="quadratic" easing="out" condition="Window.IsVisible(SliderDialog) | Window.IsVisible(OSDVideoSettings) | Window.IsVisible(OSDAudioSettings) | Window.IsVisible(VideoBookmarks)">Conditional</animation>
-
-			<control type="image">
-				<description>media info background image</description>
-				<posx>0</posx>
-				<posy>320</posy>
-				<width>1280</width>
-				<height>256</height>
-				<texture>channelBanner\MediaInfoBackUpper.png</texture>
-			</control>
-			<control type="image">
-				<description>media info background image</description>
-				<posx>0</posx>
-				<posy>320</posy>
-				<width>1280</width>
-				<height>236</height>
-				<texture>black-back.png</texture>
-			</control>
--->
 			<posx>50</posx>
 			<posy>450</posy>
 			<control type="button" id="501">
@@ -821,6 +804,7 @@
 			</control>
 
 		</control>
-
+-->
+		<include>MenuFooter</include>
 	</controls>
 </window>

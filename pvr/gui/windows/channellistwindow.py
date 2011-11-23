@@ -59,10 +59,14 @@ class ChannelListWindow(BaseWindow):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		if not self.win:
 			self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
-			print 'oninit test =============================================='
 
 			self.listcontrol            = self.getControl( 50 )
-			self.ctrlEventClock         = self.getControl( 102 )
+			#self.ctrlEventClock         = self.getControl( 102 )
+			self.ctrlHeader1            = self.getControl( 3000 )
+			self.ctrlHeader2            = self.getControl( 3001 )
+			self.ctrlEventClock         = self.getControl( 3002 )
+			self.ctrlHeader3            = self.getControl( 3003 )
+			
 			self.ctrlChannelName        = self.getControl( 303 )
 			self.ctrlEventName          = self.getControl( 304 )
 			self.ctrlEventTime          = self.getControl( 305 )
@@ -396,6 +400,20 @@ class ChannelListWindow(BaseWindow):
 
 	def initTabHeader(self):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+
+		self.ctrlHeader1.setImage('channelbanner/IconHeaderTitleSmall.png')
+		self.ctrlHeader2.setLabel('TV-Channel List')
+		x = list(self.ctrlEventClock.getPosition())[0]
+		y = list(self.ctrlEventClock.getPosition())[1]
+		self.ctrlEventClock.setPosition(850,35)
+		x = list(self.ctrlHeader3.getPosition())[0]
+		y = list(self.ctrlHeader3.getPosition())[1]
+		self.ctrlHeader3.setPosition(1030,42)
+
+		self.setProperty('WindowType', 'ChannelList')
+		
+
+		
 
 		self.ctrltabHeader12.setVisible(self.flag11)
 		self.ctrltabHeader22.setVisible(self.flag21)
