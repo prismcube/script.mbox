@@ -55,14 +55,14 @@ class LanguageSetting(SettingWindow):
 		self.creatPropertyEnum( self.forTheHearingImpairedlist, self.forTheHearingImpairedProperty )
 
 		#TEST
-		self.setProperty('WindowType', 'EPG')
+		self.setProperty('WindowType', 'ChannalList')
 
 	def onInit(self):
 		#if not self.win:
 		self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
 
 		# Header Title
-		self.ctrlHeaderTitle				= self.getControl( 3000 )
+		self.ctrlHeaderTitle				= self.getControl( 3001 )
 		self.ctrlHeaderTitle.setLabel('Language Preference')
 
 		# OSD Language

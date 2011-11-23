@@ -1085,15 +1085,15 @@
 				<effect type="slide" end="0,-80" time="400" tween="quadratic" easing="out" /> 
 				<effect type="fade" start="100" end="0" time="400" />
 			</animation>
-			<control type="image">
+			<control type="image" id="3000">
 				<description>Title Setting Image</description>
-				<posx>90</posx>
-				<posy>21</posy>
-				<width>60</width>
-				<height>55</height>
-				<texture>MenuWindow/Settings.png</texture>
+				<posx>80</posx>
+				<posy>5</posy>
+				<width>90</width>
+				<height>70</height>
+				<texture>MenuWindow/HeaderTitle.png</texture>
 			</control>
-			<control type="label" id="3000">
+			<control type="label" id="3001">
 				<description>Title Label</description>
 				<posx>180</posx>
 				<posy>27</posy>
@@ -1113,11 +1113,11 @@
 				<height>4</height>
 				<texture>separator2.png</texture>
 			</control>
-			<control type="label">
+			<control type="label" id="3002">
 				<description>TIME & DATE Label</description>
-		        <posx>750</posx>
+		        <posx>720</posx>
 		        <posy>35</posy>
-		        <width>450</width>
+		        <width>500</width>
 		        <height>28</height>
 		        <align>left</align>
 		        <aligny>center</aligny>
@@ -1126,9 +1126,9 @@
 		        <shadowcolor>black</shadowcolor>
 		        <label>[COLOR=grey]$INFO[System.Date][/COLOR]      $INFO[System.Time]</label>
 			</control>
-			<control type="image">
+			<control type="image" id="3003">
 				<description>Clock Image</description>
-				<posx>1070</posx>
+				<posx>1065</posx>
 				<posy>42</posy>
 				<width>20</width>
 				<height>20</height>
@@ -1169,7 +1169,7 @@
 				<orientation>horizontal</orientation>
 				<!-- Back Button -->
 				<control type="group">
-					<width>190</width>
+					<width>90</width>
 					<height>40</height>
 					<defaultcontrol always="true">2000</defaultcontrol>
 					<control type="button" id="2000">
@@ -1194,7 +1194,7 @@
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Back to Menu</label>
+						<label>Back</label>
 						<visible>![Control.HasFocus(2000) | Control.HasFocus(2000)]</visible>
 					</control>
 					<control type="label">
@@ -1206,7 +1206,7 @@
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Back to Menu</label>
+						<label>Back</label>
 						<visible>[Control.HasFocus(2000) | Control.HasFocus(2000)]</visible>
 					</control>
 				</control>
@@ -1256,7 +1256,8 @@
 				</control>
 				<!-- Rec Button -->
 				<control type="group">
-					<visible>StringCompare(Container.Property(WindowType),EPG)</visible>
+					<visible></visible>
+					<!--<visible>StringCompare(Container.Property(WindowType),EPG)</visible>-->
 					<width>80</width>
 					<height>40</height>
 					<defaultcontrol always="true">2002</defaultcontrol>
