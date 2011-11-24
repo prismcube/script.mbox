@@ -23,6 +23,7 @@ import sys
 
 from decorator import decorator
 from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
+from pvr.gui.guiconfig import FooterMask, HeaderDefine
 
 class Action(object):
 	ACTION_NONE					= 0
@@ -110,6 +111,18 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 		xbmcgui.WindowXML.__init__(self, *args, **kwargs)
 		self.win = None        
 		self.closed = False
+
+	def SetFooter( self, wnd, footermask ):
+		self.footerGroupId = FooterMask.G_FOOTER_GROUP_STARTID
+		for i in range( FooterMask.G_NUM_OF_FOOTER_ICON ):
+			if not( footermask & ( 1 << i ) ):
+				self.ctrlfooterGroup = wnd.getControl( self.footerGroupId )
+				self.ctrlfooterGroup.setVisible( False )
+			self.footerGroupId += FooterMask.G_FOOTER_GROUP_IDGAP
+
+	def SetHeaderLabel( self, wnd, label ):
+		self.ctrlheaderlabel = wnd.getControl( HeaderDefine.G_HEADER_LABEL_ID )
+		self.ctrlheaderlabel.setLabel( label )
 
 class BaseDialog(xbmcgui.WindowXMLDialog, Property):
 	def __init__(self, *args, **kwargs):

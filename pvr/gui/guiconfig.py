@@ -11,6 +11,8 @@ class FooterMask(object):
 	G_FOOTER_ICON_SEARCH_MASK			= 1 << 2
 	G_FOOTER_ICON_RECORD_MASK			= 1 << 3
 
+class HeaderDefine(object):
+	G_HEADER_LABEL_ID					= 3001
 	
 '''
 G_FOOTER_ICON_EXIT_MASK			= 1 << 1,

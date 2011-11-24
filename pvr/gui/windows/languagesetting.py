@@ -37,18 +37,12 @@ class LanguageSetting(SettingWindow):
 	def onInit(self):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
 
-		#FOOTER
-		self.footerMask = (FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_SEARCH_MASK)
-		self.footerGroupId = FooterMask.G_FOOTER_GROUP_STARTID
-		for i in range(FooterMask.G_NUM_OF_FOOTER_ICON):
-			if not(self.footerMask & ( 1 << i )):
-				self.ctrlfooterGroup = self.getControl( self.footerGroupId )
-				self.ctrlfooterGroup.setVisible( False )
-			self.footerGroupId += FooterMask.G_FOOTER_GROUP_IDGAP
+		self.SetHeaderLabel( self.win, 'Language Preference' )
+		self.SetFooter( self.win, ( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_SEARCH_MASK ) )
 		
 		self.initControl()
 		selectedIndex = self.getSelectedIndex( E_PrimarySubtitleLanguage )
-		print 'primarySubtitleLanguage selectedIndex=%d' %selectedIndex
+		print 'primarySubtitleLanguage selectedIndex=%d' % selectedIndex
 
 		if selectedIndex == 0 :
 			print 'primarySubtitleLanguage is disabled'		
