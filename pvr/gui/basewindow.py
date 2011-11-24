@@ -112,7 +112,7 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 		self.win = None        
 		self.closed = False
 
-	def SetFooter( self, wnd, footermask ):
+	def setFooter( self, wnd, footermask ):
 		self.footerGroupId = FooterMask.G_FOOTER_GROUP_STARTID
 		for i in range( FooterMask.G_NUM_OF_FOOTER_ICON ):
 			if not( footermask & ( 1 << i ) ):
@@ -120,7 +120,7 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 				self.ctrlfooterGroup.setVisible( False )
 			self.footerGroupId += FooterMask.G_FOOTER_GROUP_IDGAP
 
-	def SetHeaderLabel( self, wnd, label ):
+	def setHeaderLabel( self, wnd, label ):
 		self.ctrlheaderlabel = wnd.getControl( HeaderDefine.G_HEADER_LABEL_ID )
 		self.ctrlheaderlabel.setLabel( label )
 
@@ -309,4 +309,7 @@ class SettingWindow(BaseWindow):
 
 		return False
 
+
+	def controlDescription( self ) :
+		pass
 

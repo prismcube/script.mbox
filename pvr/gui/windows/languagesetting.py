@@ -37,8 +37,8 @@ class LanguageSetting(SettingWindow):
 	def onInit(self):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
 
-		self.SetHeaderLabel( self.win, 'Language Preference' )
-		self.SetFooter( self.win, ( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_SEARCH_MASK ) )
+		self.setHeaderLabel( self.win, 'Language Preference' )
+		self.setFooter( self.win, ( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_SEARCH_MASK ) )
 		
 		self.initControl()
 		selectedIndex = self.getSelectedIndex( E_PrimarySubtitleLanguage )
@@ -51,6 +51,7 @@ class LanguageSetting(SettingWindow):
 		else:
 			self.setEnableControl( E_SecondarySubtitleLanguage, True )
 			self.setEnableControl( E_ForTheHearingImpaired, True )
+
 
 	def onAction( self, action ):
 
@@ -107,5 +108,6 @@ class LanguageSetting(SettingWindow):
 
 		
 	def onFocus( self, controlId ):
+		self.controlDescription( )
 		print 'LanguageSetting test in Focus event id=%d' %controlId
 
