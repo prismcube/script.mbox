@@ -1396,7 +1396,7 @@
 				</control>
 				<!-- Tune in Button -->
 				<control type="group">
-					<visible>StringCompare(Container.Property(WindowType),ChannalList) | StringCompare(Container.Property(WindowType),EPG)</visible>
+					<visible>StringCompare(Container.Property(WindowType),ChannelList) | StringCompare(Container.Property(WindowType),EPG)</visible>
 					<width>130</width>
 					<height>40</height>
 					<defaultcontrol always="true">2001</defaultcontrol>
