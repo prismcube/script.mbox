@@ -1,8 +1,8 @@
 <includes>
 	<include name="MenuDescription">
 		<control type="label" id="1001">
-			<posx>80</posx>
-			<posy>115</posy>
+			<posx>100</posx>
+			<posy>120</posy>
 			<width>400</width>
 			<height>40</height>
 			<font>font13</font>
@@ -14,12 +14,12 @@
 	</include>
 	<include name="SpinEx01">
 		<control type="group" id="1100">
-			<width>720</width>
+			<width>680</width>
 			<height>40</height>
 			<defaultcontrol always="true">1101</defaultcontrol>
 			<control type="button" id="1101">
 				<description>Menu Item Next Button</description>
-				<posx>640</posx>
+				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
@@ -35,7 +35,7 @@
 			</control>
 			<control type="button" id="1102">
 				<description>Menu Item Prev Button</description>
-				<posx>673</posx>
+				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
@@ -52,7 +52,7 @@
 			<control type="list" id="1103">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
-				<width>720</width>
+				<width>680</width>
 				<height>40</height>						
 				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
@@ -62,7 +62,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>680</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1101) | Control.HasFocus(1102)]</visible>
@@ -70,7 +70,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>680</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemFO.png</texture>
 						<visible>[Control.HasFocus(1101) | Control.HasFocus(1102)]</visible>
@@ -78,7 +78,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey3</textcolor>
@@ -90,7 +90,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
@@ -102,7 +102,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
@@ -112,7 +112,7 @@
 						<visible>Control.IsEnabled(1100) + [Control.HasFocus(1101) | Control.HasFocus(1102)]</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -124,7 +124,7 @@
 						<visible>!Control.IsEnabled(1100)</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -136,7 +136,7 @@
 						<visible>Control.IsEnabled(1100) + ![Control.HasFocus(1101) | Control.HasFocus(1102)]</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -154,12 +154,12 @@
 
 	<include name="SpinEx02">
 		<control type="group" id="1200">
-			<width>720</width>
+			<width>680</width>
 			<height>40</height>
 			<defaultcontrol always="true">1201</defaultcontrol>
 			<control type="button" id="1201">
 				<description>Menu Item Next Button</description>
-				<posx>640</posx>
+				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
@@ -175,7 +175,7 @@
 			</control>
 			<control type="button" id="1202">
 				<description>Menu Item Prev Button</description>
-				<posx>673</posx>
+				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
@@ -192,7 +192,7 @@
 			<control type="list" id="1203">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
-				<width>720</width>
+				<width>680</width>
 				<height>40</height>						
 				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
@@ -202,7 +202,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>680</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1201) | Control.HasFocus(1202)]</visible>
@@ -210,7 +210,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>680</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemFO.png</texture>
 						<visible>[Control.HasFocus(1201) | Control.HasFocus(1202)]</visible>
@@ -218,7 +218,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey3</textcolor>
@@ -230,7 +230,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
@@ -242,7 +242,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
@@ -252,7 +252,7 @@
 						<visible>Control.IsEnabled(1200) + [Control.HasFocus(1201) | Control.HasFocus(1202)]</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -264,7 +264,7 @@
 						<visible>!Control.IsEnabled(1200)</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -276,7 +276,7 @@
 						<visible>Control.IsEnabled(1200) + ![Control.HasFocus(1201) | Control.HasFocus(1202)]</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -294,12 +294,12 @@
 
 	<include name="SpinEx03">
 		<control type="group" id="1300">
-			<width>720</width>
+			<width>680</width>
 			<height>40</height>
 			<defaultcontrol always="true">1301</defaultcontrol>
 			<control type="button" id="1301">
 				<description>Menu Item Next Button</description>
-				<posx>640</posx>
+				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
@@ -315,7 +315,7 @@
 			</control>
 			<control type="button" id="1302">
 				<description>Menu Item Prev Button</description>
-				<posx>673</posx>
+				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
@@ -332,7 +332,7 @@
 			<control type="list" id="1303">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
-				<width>720</width>
+				<width>680</width>
 				<height>40</height>						
 				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
@@ -342,7 +342,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>680</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1301) | Control.HasFocus(1302)]</visible>
@@ -358,7 +358,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey3</textcolor>
@@ -370,7 +370,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
@@ -382,7 +382,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
@@ -392,7 +392,7 @@
 						<visible>Control.IsEnabled(1300) + [Control.HasFocus(1301) | Control.HasFocus(1302)]</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -404,7 +404,7 @@
 						<visible>!Control.IsEnabled(1300)</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -416,7 +416,7 @@
 						<visible>Control.IsEnabled(1300) + ![Control.HasFocus(1301) | Control.HasFocus(1302)]</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -434,12 +434,12 @@
 
 	<include name="SpinEx04">
 		<control type="group" id="1400">
-			<width>720</width>
+			<width>680</width>
 			<height>40</height>
 			<defaultcontrol always="true">1401</defaultcontrol>
 			<control type="button" id="1401">
 				<description>Menu Item Next Button</description>
-				<posx>640</posx>
+				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
@@ -455,7 +455,7 @@
 			</control>
 			<control type="button" id="1402">
 				<description>Menu Item Prev Button</description>
-				<posx>673</posx>
+				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
@@ -472,7 +472,7 @@
 			<control type="list" id="1403">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
-				<width>720</width>
+				<width>680</width>
 				<height>40</height>						
 				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
@@ -482,7 +482,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>680</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1401) | Control.HasFocus(1402)]</visible>
@@ -490,7 +490,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>680</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemFO.png</texture>
 						<visible>[Control.HasFocus(1401) | Control.HasFocus(1402)]</visible>
@@ -498,7 +498,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey3</textcolor>
@@ -510,7 +510,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
@@ -522,7 +522,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
@@ -532,7 +532,7 @@
 						<visible>Control.IsEnabled(1400) + [Control.HasFocus(1401) | Control.HasFocus(1402)]</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -544,7 +544,7 @@
 						<visible>!Control.IsEnabled(1400)</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -556,7 +556,7 @@
 						<visible>Control.IsEnabled(1400) + ![Control.HasFocus(1401) | Control.HasFocus(1402)]</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -574,12 +574,12 @@
 
 	<include name="SpinEx05">
 		<control type="group" id="1500">
-			<width>720</width>
+			<width>680</width>
 			<height>40</height>
 			<defaultcontrol always="true">1501</defaultcontrol>
 			<control type="button" id="1501">
 				<description>Menu Item Next Button</description>
-				<posx>640</posx>
+				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
@@ -595,7 +595,7 @@
 			</control>
 			<control type="button" id="1502">
 				<description>Menu Item Prev Button</description>
-				<posx>673</posx>
+				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
@@ -612,7 +612,7 @@
 			<control type="list" id="1503">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
-				<width>720</width>
+				<width>680</width>
 				<height>40</height>						
 				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
@@ -622,7 +622,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>680</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1501) | Control.HasFocus(1502)]</visible>
@@ -630,7 +630,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>680</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemFO.png</texture>
 						<visible>[Control.HasFocus(1501) | Control.HasFocus(1502)]</visible>
@@ -638,7 +638,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey3</textcolor>
@@ -650,7 +650,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
@@ -662,7 +662,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
@@ -672,7 +672,7 @@
 						<visible>Control.IsEnabled(1500) + [Control.HasFocus(1501) | Control.HasFocus(1502)]</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -684,7 +684,7 @@
 						<visible>!Control.IsEnabled(1500)</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -696,7 +696,7 @@
 						<visible>Control.IsEnabled(1500) + ![Control.HasFocus(1501) | Control.HasFocus(1502)]</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -714,12 +714,12 @@
 
 	<include name="SpinEx06">
 		<control type="group" id="1600">
-			<width>720</width>
+			<width>680</width>
 			<height>40</height>
 			<defaultcontrol always="true">1601</defaultcontrol>
 			<control type="button" id="1601">
 				<description>Menu Item Next Button</description>
-				<posx>640</posx>
+				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
@@ -735,7 +735,7 @@
 			</control>
 			<control type="button" id="1602">
 				<description>Menu Item Prev Button</description>
-				<posx>673</posx>
+				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
@@ -752,7 +752,7 @@
 			<control type="list" id="1603">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
-				<width>720</width>
+				<width>680</width>
 				<height>40</height>						
 				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
@@ -762,7 +762,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>680</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1601) | Control.HasFocus(1602)]</visible>
@@ -770,7 +770,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>680</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemFO.png</texture>
 						<visible>[Control.HasFocus(1601) | Control.HasFocus(1602)]</visible>
@@ -778,7 +778,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey3</textcolor>
@@ -790,7 +790,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
@@ -802,7 +802,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
@@ -812,7 +812,7 @@
 						<visible>Control.IsEnabled(1600) + [Control.HasFocus(1601) | Control.HasFocus(1602)]</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -824,7 +824,7 @@
 						<visible>!Control.IsEnabled(1600)</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -836,7 +836,7 @@
 						<visible>Control.IsEnabled(1600) + ![Control.HasFocus(1601) | Control.HasFocus(1602)]</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -854,12 +854,12 @@
 
 	<include name="SpinEx07">
 		<control type="group" id="1700">
-			<width>720</width>
+			<width>680</width>
 			<height>40</height>
 			<defaultcontrol always="true">1701</defaultcontrol>
 			<control type="button" id="1701">
 				<description>Menu Item Next Button</description>
-				<posx>640</posx>
+				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
@@ -875,7 +875,7 @@
 			</control>
 			<control type="button" id="1702">
 				<description>Menu Item Prev Button</description>
-				<posx>673</posx>
+				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
@@ -892,7 +892,7 @@
 			<control type="list" id="1703">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
-				<width>720</width>
+				<width>680</width>
 				<height>40</height>						
 				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
@@ -902,7 +902,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>680</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1701) | Control.HasFocus(1702)]</visible>
@@ -910,7 +910,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>680</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemFO.png</texture>
 						<visible>[Control.HasFocus(1701) | Control.HasFocus(1702)]</visible>
@@ -918,7 +918,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey3</textcolor>
@@ -930,7 +930,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
@@ -942,7 +942,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
@@ -952,7 +952,7 @@
 						<visible>Control.IsEnabled(1700) + [Control.HasFocus(1701) | Control.HasFocus(1702)]</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -964,7 +964,7 @@
 						<visible>!Control.IsEnabled(1700)</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -976,7 +976,7 @@
 						<visible>Control.IsEnabled(1700) + ![Control.HasFocus(1701) | Control.HasFocus(1702)]</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -994,12 +994,12 @@
 
 	<include name="SpinEx08">
 		<control type="group" id="1800">
-			<width>720</width>
+			<width>680</width>
 			<height>40</height>
 			<defaultcontrol always="true">1801</defaultcontrol>
 			<control type="button" id="1801">
 				<description>Menu Item Next Button</description>
-				<posx>640</posx>
+				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
@@ -1015,7 +1015,7 @@
 			</control>
 			<control type="button" id="1802">
 				<description>Menu Item Prev Button</description>
-				<posx>673</posx>
+				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
@@ -1032,7 +1032,7 @@
 			<control type="list" id="1803">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
-				<width>720</width>
+				<width>680</width>
 				<height>40</height>						
 				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
@@ -1042,7 +1042,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>680</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1801) | Control.HasFocus(1802)]</visible>
@@ -1050,7 +1050,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>680</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemFO.png</texture>
 						<visible>[Control.HasFocus(1801) | Control.HasFocus(1802)]</visible>
@@ -1058,7 +1058,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey3</textcolor>
@@ -1070,7 +1070,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
@@ -1082,7 +1082,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
@@ -1092,7 +1092,7 @@
 						<visible>Control.IsEnabled(1800) + [Control.HasFocus(1801) | Control.HasFocus(1802)]</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -1104,7 +1104,7 @@
 						<visible>!Control.IsEnabled(1800)</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -1116,7 +1116,7 @@
 						<visible>Control.IsEnabled(1800) + ![Control.HasFocus(1801) | Control.HasFocus(1802)]</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -1134,12 +1134,12 @@
 
 	<include name="SpinEx09">
 		<control type="group" id="1900">
-			<width>720</width>
+			<width>680</width>
 			<height>40</height>
 			<defaultcontrol always="true">1901</defaultcontrol>
 			<control type="button" id="1901">
 				<description>Menu Item Next Button</description>
-				<posx>640</posx>
+				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
@@ -1155,7 +1155,7 @@
 			</control>
 			<control type="button" id="1902">
 				<description>Menu Item Prev Button</description>
-				<posx>673</posx>
+				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
@@ -1172,7 +1172,7 @@
 			<control type="list" id="1903">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
-				<width>720</width>
+				<width>680</width>
 				<height>40</height>						
 				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
@@ -1182,7 +1182,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>680</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1901) | Control.HasFocus(1902)]</visible>
@@ -1190,7 +1190,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>680</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemFO.png</texture>
 						<visible>[Control.HasFocus(1901) | Control.HasFocus(1902)]</visible>
@@ -1198,7 +1198,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey3</textcolor>
@@ -1210,7 +1210,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
@@ -1222,7 +1222,7 @@
 					<control type="label">
 						<posx>10</posx>
 						<posy>0</posy>
-						<width>700</width>
+						<width>680</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
@@ -1232,7 +1232,7 @@
 						<visible>[Control.HasFocus(1901) | Control.HasFocus(1902)]</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -1244,7 +1244,7 @@
 						<visible>!Control.IsEnabled(1900)</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -1256,7 +1256,7 @@
 						<visible>Control.IsEnabled(1900) + ![Control.HasFocus(1901) | Control.HasFocus(1902)]</visible>
 					</control>
 					<control type="label">
-						<posx>620</posx>
+						<posx>580</posx>
 						<posy>0</posy>
 						<width>640</width>
 						<height>40</height>
@@ -1312,11 +1312,11 @@
 			</control>
 			<control type="label">
 				<description>DATE Label</description>
-		        <posx>720</posx>
+		        <posx>1060</posx>
 		        <posy>35</posy>
 		        <width>350</width>
 		        <height>28</height>
-		        <align>left</align>
+		        <align>right</align>
 		        <aligny>center</aligny>
 		        <font>font13</font>
 		        <textcolor>white</textcolor>
@@ -1325,7 +1325,7 @@
 			</control>
 			<control type="label">
 				<description>TIME Label</description>
-		        <posx>1110</posx>
+		        <posx>1105</posx>
 		        <posy>35</posy>
 		        <width>100</width>
 		        <height>28</height>
@@ -1367,11 +1367,11 @@
 			<!-- FOOTER BUTTON -->
 			<control type="grouplist">
 				<visible>true</visible>
-				<posx>45</posx>
+				<posx>100</posx>
 				<posy>40</posy>
 				<width>1000</width>
 				<height>50</height>
-				<itemgap>20</itemgap>
+				<itemgap>10</itemgap>
 				<onleft>9001</onleft>
 				<onright>9001</onright>
 				<onup>-</onup>
@@ -1386,38 +1386,38 @@
 					<control type="button" id="3101">
 						<description>Button Icon</description>
 						<posx>30</posx>
-						<posy>13</posy>
-						<width>40</width>
-						<height>32</height>
-						<texturenofocus>HomeIcon.png</texturenofocus>
-						<texturefocus>HomeIcon-Focus.png</texturefocus>
+						<posy>10</posy>
+						<width>35</width>
+						<height>35</height>
+						<texturenofocus>OSDRepeatNF.png</texturenofocus>
+						<texturefocus>OSDRepeatFO.png</texturefocus>
 						<onleft>3131</onleft>
 						<onright>3111</onright>
 						<onup>-</onup>
 						<ondown>-</ondown>
 					</control>
 					<control type="label">
-						<posx>75</posx>
+						<posx>72</posx>
 						<posy>7</posy>
 						<width>150</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>font12</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Back</label>
+						<label>[B]Back[/B]</label>
 						<visible>![Control.HasFocus(3101) | Control.HasFocus(3101)]</visible>
 					</control>
 					<control type="label">
-						<posx>75</posx>
+						<posx>72</posx>
 						<posy>7</posy>
 						<width>150</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>font12</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Back</label>
+						<label>[B]Back[/B]</label>
 						<visible>[Control.HasFocus(3101) | Control.HasFocus(3101)]</visible>
 					</control>
 				</control>
@@ -1431,8 +1431,8 @@
 						<description>Button Icon</description>
 						<posx>30</posx>
 						<posy>10</posy>
-						<width>40</width>
-						<height>40</height>
+						<width>35</width>
+						<height>35</height>
 						<hitrect x="30" y="10" w="120" h="40"></hitrect>
 						<texturenofocus>OSDRepeatNF.png</texturenofocus>
 						<texturefocus>OSDRepeatFO.png</texturefocus>
@@ -1442,27 +1442,27 @@
 						<ondown>-</ondown>
 					</control>
 					<control type="label">
-						<posx>75</posx>
+						<posx>72</posx>
 						<posy>7</posy>
 						<width>150</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>font12</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Tune in</label>
+						<label>[B]Tune in[/B]</label>
 						<visible>![Control.HasFocus(3111) | Control.HasFocus(3111)]</visible>
 					</control>
 					<control type="label">
-						<posx>75</posx>
+						<posx>72</posx>
 						<posy>7</posy>
 						<width>150</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>font12</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Tune in</label>
+						<label>[B]Tune in[/B]</label>
 						<visible>[Control.HasFocus(3111) | Control.HasFocus(3111)]</visible>
 					</control>
 				</control>
@@ -1476,8 +1476,8 @@
 						<description>Button Icon</description>
 						<posx>30</posx>
 						<posy>10</posy>
-						<width>40</width>
-						<height>40</height>
+						<width>35</width>
+						<height>35</height>
 						<texturenofocus>OSDRepeatNF.png</texturenofocus>
 						<texturefocus>OSDRepeatFO.png</texturefocus>
 						<onleft>3111</onleft>
@@ -1486,27 +1486,27 @@
 						<ondown>-</ondown>
 					</control>
 					<control type="label">
-						<posx>75</posx>
+						<posx>72</posx>
 						<posy>7</posy>
 						<width>150</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>font12</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Search</label>
+						<label>[B]Search[/B]</label>
 						<visible>![Control.HasFocus(3121) | Control.HasFocus(3121)]</visible>
 					</control>
 					<control type="label">
-						<posx>75</posx>
+						<posx>72</posx>
 						<posy>7</posy>
 						<width>150</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>font12</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Search</label>
+						<label>[B]Search[/B]</label>
 						<visible>[Control.HasFocus(3121) | Control.HasFocus(3121)]</visible>
 					</control>
 				</control>
@@ -1520,8 +1520,8 @@
 						<description>Button Icon</description>
 						<posx>30</posx>
 						<posy>10</posy>
-						<width>40</width>
-						<height>40</height>
+						<width>35</width>
+						<height>35</height>
 						<texturenofocus>OSDRecordNF.png</texturenofocus>
 						<texturefocus>OSDRecord2.png</texturefocus>
 						<onleft>3121</onleft>
@@ -1530,27 +1530,27 @@
 						<ondown>-</ondown>
 					</control>
 					<control type="label">
-						<posx>75</posx>
+						<posx>72</posx>
 						<posy>7</posy>
 						<width>150</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>font12</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Record</label>
+						<label>[B]Record[/B]</label>
 						<visible>![Control.HasFocus(3131) | Control.HasFocus(3131)]</visible>
 					</control>
 					<control type="label">
-						<posx>75</posx>
+						<posx>72</posx>
 						<posy>7</posy>
 						<width>150</width>
 						<height>40</height>
-						<font>font13</font>
+						<font>font12</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Record</label>
+						<label>[B]Record[/B]</label>
 						<visible>[Control.HasFocus(3131) | Control.HasFocus(3131)]</visible>
 					</control>
 				</control>
