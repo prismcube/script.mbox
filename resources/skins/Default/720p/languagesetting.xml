@@ -1,5 +1,4 @@
 <window id="3005">
-	<include file="mbox_includes.xml">"mbox_includes.xml"</include>
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<controls>
 		<include>MenuHeader</include>
