@@ -2,25 +2,27 @@
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<controls>
 		<include>MenuHeader</include>
-		<include>MenuDescription</include>
-		<control type="grouplist" id="9000">
+		<control type="group">
 			<include>FadeEffect</include>
-			<visible>true</visible>
-			<posx>80</posx>
-			<posy>160</posy>
-			<width>720</width>
-			<height>530</height>
-			<itemgap>0</itemgap>
-			<pagecontrol>60</pagecontrol>
-			<onleft>-</onleft>
-			<onright>-</onright>
-			<onup>9000</onup>
-			<ondown>9000</ondown>
-			<include>SpinEx01</include>
-			<include>SpinEx02</include>
-			<include>SpinEx03</include>
-			<include>SpinEx04</include>
-			<include>SpinEx05</include>
+			<include>MenuDescription</include>
+			<control type="grouplist" id="9000">
+				<visible>true</visible>
+				<posx>70</posx>
+				<posy>160</posy>
+				<width>720</width>
+				<height>530</height>
+				<itemgap>0</itemgap>
+				<pagecontrol>60</pagecontrol>
+				<onleft>-</onleft>
+				<onright>-</onright>
+				<onup>9000</onup>
+				<ondown>9000</ondown>
+				<include>SpinEx01</include>
+				<include>SpinEx02</include>
+				<include>SpinEx03</include>
+				<include>SpinEx04</include>
+				<include>SpinEx05</include>
+			</control>
 		</control>
 		<include>MenuFooter</include>
 	</controls>

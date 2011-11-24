@@ -1,7 +1,7 @@
 <includes>
 	<include name="MenuDescription">
 		<control type="label" id="1001">
-			<posx>70</posx>
+			<posx>80</posx>
 			<posy>115</posy>
 			<width>400</width>
 			<height>40</height>
@@ -1284,15 +1284,15 @@
 			</animation>
 			<control type="image" id="3000">
 				<description>Title Setting Image</description>
-				<posx>80</posx>
-				<posy>5</posy>
+				<posx>75</posx>
+				<posy>3</posy>
 				<width>90</width>
 				<height>70</height>
 				<texture>MenuWindow/HeaderTitle.png</texture>
 			</control>
 			<control type="label" id="3001">
 				<description>Title Label</description>
-				<posx>200</posx>
+				<posx>180</posx>
 				<posy>27</posy>
 				<width>650</width>
 				<height>40</height>
@@ -1310,22 +1310,35 @@
 				<height>4</height>
 				<texture>separator2.png</texture>
 			</control>
-			<control type="label" id="3002">
-				<description>TIME & DATE Label</description>
+			<control type="label">
+				<description>DATE Label</description>
 		        <posx>720</posx>
 		        <posy>35</posy>
-		        <width>500</width>
+		        <width>350</width>
 		        <height>28</height>
 		        <align>left</align>
 		        <aligny>center</aligny>
 		        <font>font13</font>
 		        <textcolor>white</textcolor>
 		        <shadowcolor>black</shadowcolor>
-		        <label>[COLOR=grey]$INFO[System.Date][/COLOR]      $INFO[System.Time]</label>
+		        <label>[COLOR=grey]$INFO[System.Date][/COLOR]</label>
 			</control>
-			<control type="image" id="3003">
+			<control type="label">
+				<description>TIME Label</description>
+		        <posx>1110</posx>
+		        <posy>35</posy>
+		        <width>100</width>
+		        <height>28</height>
+		        <align>left</align>
+		        <aligny>center</aligny>
+		        <font>font13</font>
+		        <textcolor>white</textcolor>
+		        <shadowcolor>black</shadowcolor>
+		        <label>$INFO[System.Time]</label>
+			</control>
+			<control type="image">
 				<description>Clock Image</description>
-				<posx>1065</posx>
+				<posx>1080</posx>
 				<posy>42</posy>
 				<width>20</width>
 				<height>20</height>
@@ -1335,7 +1348,7 @@
 	</include>
 	<include name="MenuFooter">
 		<control type="group">
-			<posy>580</posy>
+			<posy>610</posy>
 			<animation type="WindowOpen" reversible="false">
 				<effect type="slide" start="0,80" time="400" tween="quadratic" easing="out" />
 				<effect type="fade" start="0" end="100" time="400" />
@@ -1354,7 +1367,7 @@
 			<!-- FOOTER BUTTON -->
 			<control type="grouplist">
 				<visible>true</visible>
-				<posx>80</posx>
+				<posx>45</posx>
 				<posy>40</posy>
 				<width>1000</width>
 				<height>50</height>
@@ -1546,10 +1559,10 @@
 	</include>
 	<include name="FadeEffect">
 		<animation type="WindowOpen" reversible="false">
-			<effect type="fade" start="0" end="100" time="300" />
+			<effect type="fade" start="0" end="100" time="400" />
 		</animation>
 		<animation type="WindowClose" reversible="false">
-			<effect type="fade" start="100" end="0" time="300" />
+			<effect type="fade" start="100" end="0" time="400" />
 		</animation>
 	</include>
 </includes>
