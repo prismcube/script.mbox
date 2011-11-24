@@ -68,9 +68,9 @@
 				<width>600</width>
 				<height>321</height>
 				<onleft>211</onleft>
-				<onright>241</onright>
-				<onup>50</onup>
-				<ondown>50</ondown>
+				<onright>SetFocus(61)</onright>
+				<onup>SetFocus(50)</onup>
+				<ondown>SetFocus(50)</ondown>
 				<pagecontrol>61</pagecontrol>
 				<scrolltime>200</scrolltime>
 				<focusposition>0</focusposition>
@@ -215,27 +215,27 @@
 
         <!-- Scrollbar -->
 		<control type="scrollbar" id="61">
-			<posx>735</posx>
+			<posx>730</posx>
 			<posy>180</posy>
-			<width>15</width>
+			<width>25</width>
 			<height>321</height>
-<!--
+
 			<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 			<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
 			<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
 			<textureslidernib>ScrollBarNib.png</textureslidernib>
 			<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
--->
+<!--
 			<texturesliderbackground border="2,2,2,2">scrollbar_bar_back2.png</texturesliderbackground> 
             <texturesliderbar border="2,16,2,16">scrollbar_bar.png</texturesliderbar> 
             <texturesliderbarfocus border="2,16,2,16">scrollbar_bar_focus.png</texturesliderbarfocus> 
             <textureslidernib>scrollbar_nib.png</textureslidernib> 
             <textureslidernibfocus>scrollbar_nib.png</textureslidernibfocus> 
-
-			<onleft></onleft>
-			<onright></onright>
-			<ondown>61</ondown>
-			<onup>61</onup>
+-->
+			<onleft>SetFocus(49)</onleft>
+			<onright>SetFocus(241)</onright>
+			<ondown>SetFocus(61)</ondown>
+			<onup>SetFocus(61)</onup>
 			<showonepage>false</showonepage>
 			<orientation>vertical</orientation>
 		</control>
