@@ -1279,7 +1279,7 @@
 			</control>
 			<control type="label" id="3001">
 				<description>Title Label</description>
-				<posx>180</posx>
+				<posx>200</posx>
 				<posy>27</posy>
 				<width>650</width>
 				<height>40</height>
@@ -1352,11 +1352,12 @@
 				<ondown>-</ondown>
 				<orientation>horizontal</orientation>
 				<!-- Back Button -->
-				<control type="group">
+				<control type="group" id="3100">
+					<visible></visible>
 					<width>90</width>
 					<height>40</height>
-					<defaultcontrol always="true">2000</defaultcontrol>
-					<control type="button" id="2000">
+					<defaultcontrol always="true">3101</defaultcontrol>
+					<control type="button" id="3101">
 						<description>Button Icon</description>
 						<posx>30</posx>
 						<posy>13</posy>
@@ -1364,13 +1365,13 @@
 						<height>32</height>
 						<texturenofocus>HomeIcon.png</texturenofocus>
 						<texturefocus>HomeIcon-Focus.png</texturefocus>
-						<onleft>2002</onleft>
-						<onright>2001</onright>
+						<onleft>3131</onleft>
+						<onright>3111</onright>
 						<onup>-</onup>
 						<ondown>-</ondown>
 					</control>
 					<control type="label">
-						<posx>80</posx>
+						<posx>75</posx>
 						<posy>7</posy>
 						<width>150</width>
 						<height>40</height>
@@ -1379,10 +1380,10 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>Back</label>
-						<visible>![Control.HasFocus(2000) | Control.HasFocus(2000)]</visible>
+						<visible>![Control.HasFocus(3101) | Control.HasFocus(3101)]</visible>
 					</control>
 					<control type="label">
-						<posx>80</posx>
+						<posx>75</posx>
 						<posy>7</posy>
 						<width>150</width>
 						<height>40</height>
@@ -1391,16 +1392,61 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>Back</label>
-						<visible>[Control.HasFocus(2000) | Control.HasFocus(2000)]</visible>
+						<visible>[Control.HasFocus(3101) | Control.HasFocus(3101)]</visible>
 					</control>
 				</control>
 				<!-- Tune in Button -->
-				<control type="group">
-					<visible>StringCompare(Container.Property(WindowType),ChannelList) | StringCompare(Container.Property(WindowType),EPG)</visible>
-					<width>130</width>
+				<control type="group" id="3110">
+					<visible></visible>
+					<width>115</width>
 					<height>40</height>
-					<defaultcontrol always="true">2001</defaultcontrol>
-					<control type="button" id="2001">
+					<defaultcontrol always="true">3111</defaultcontrol>
+					<control type="button" id="3111">
+						<description>Button Icon</description>
+						<posx>30</posx>
+						<posy>10</posy>
+						<width>40</width>
+						<height>40</height>
+						<hitrect x="30" y="10" w="120" h="40"></hitrect>
+						<texturenofocus>OSDRepeatNF.png</texturenofocus>
+						<texturefocus>OSDRepeatFO.png</texturefocus>
+						<onleft>3101</onleft>
+						<onright>3121</onright>
+						<onup>-</onup>
+						<ondown>-</ondown>
+					</control>
+					<control type="label">
+						<posx>75</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Tune in</label>
+						<visible>![Control.HasFocus(3111) | Control.HasFocus(3111)]</visible>
+					</control>
+					<control type="label">
+						<posx>75</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Tune in</label>
+						<visible>[Control.HasFocus(3111) | Control.HasFocus(3111)]</visible>
+					</control>
+				</control>
+				<!-- Search Button -->
+				<control type="group" id="3120">
+					<visible></visible>
+					<width>110</width>
+					<height>40</height>
+					<defaultcontrol always="true">3121</defaultcontrol>
+					<control type="button" id="3121">
 						<description>Button Icon</description>
 						<posx>30</posx>
 						<posy>10</posy>
@@ -1408,13 +1454,13 @@
 						<height>40</height>
 						<texturenofocus>OSDRepeatNF.png</texturenofocus>
 						<texturefocus>OSDRepeatFO.png</texturefocus>
-						<onleft>2000</onleft>
-						<onright>2002</onright>
+						<onleft>3111</onleft>
+						<onright>3131</onright>
 						<onup>-</onup>
 						<ondown>-</ondown>
 					</control>
 					<control type="label">
-						<posx>80</posx>
+						<posx>75</posx>
 						<posy>7</posy>
 						<width>150</width>
 						<height>40</height>
@@ -1422,11 +1468,11 @@
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Tune in</label>
-						<visible>![Control.HasFocus(2001) | Control.HasFocus(2001)]</visible>
+						<label>Search</label>
+						<visible>![Control.HasFocus(3121) | Control.HasFocus(3121)]</visible>
 					</control>
 					<control type="label">
-						<posx>80</posx>
+						<posx>75</posx>
 						<posy>7</posy>
 						<width>150</width>
 						<height>40</height>
@@ -1434,17 +1480,17 @@
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Tune in</label>
-						<visible>[Control.HasFocus(2001) | Control.HasFocus(2001)]</visible>
+						<label>Search</label>
+						<visible>[Control.HasFocus(3121) | Control.HasFocus(3121)]</visible>
 					</control>
 				</control>
 				<!-- Rec Button -->
-				<control type="group">
-					<visible>StringCompare(Container.Property(WindowType),EPG)</visible>
-					<width>80</width>
+				<control type="group" id="3130">
+					<visible></visible>
+					<width>110</width>
 					<height>40</height>
-					<defaultcontrol always="true">2002</defaultcontrol>
-					<control type="button" id="2002">
+					<defaultcontrol always="true">3131</defaultcontrol>
+					<control type="button" id="3131">
 						<description>Button Icon</description>
 						<posx>30</posx>
 						<posy>10</posy>
@@ -1452,13 +1498,13 @@
 						<height>40</height>
 						<texturenofocus>OSDRecordNF.png</texturenofocus>
 						<texturefocus>OSDRecord2.png</texturefocus>
-						<onleft>2001</onleft>
-						<onright>2000</onright>
+						<onleft>3121</onleft>
+						<onright>3101</onright>
 						<onup>-</onup>
 						<ondown>-</ondown>
 					</control>
 					<control type="label">
-						<posx>80</posx>
+						<posx>75</posx>
 						<posy>7</posy>
 						<width>150</width>
 						<height>40</height>
@@ -1467,10 +1513,10 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>Record</label>
-						<visible>![Control.HasFocus(2002) | Control.HasFocus(2002)]</visible>
+						<visible>![Control.HasFocus(3131) | Control.HasFocus(3131)]</visible>
 					</control>
 					<control type="label">
-						<posx>80</posx>
+						<posx>75</posx>
 						<posy>7</posy>
 						<width>150</width>
 						<height>40</height>
@@ -1479,7 +1525,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>Record</label>
-						<visible>[Control.HasFocus(2002) | Control.HasFocus(2002)]</visible>
+						<visible>[Control.HasFocus(3131) | Control.HasFocus(3131)]</visible>
 					</control>
 				</control>
 			</control>
