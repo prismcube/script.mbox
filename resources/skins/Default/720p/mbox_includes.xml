@@ -1288,7 +1288,7 @@
 				<posy>3</posy>
 				<width>90</width>
 				<height>70</height>
-				<texture>MenuWindow/HeaderTitle.png</texture>
+				<texture>headertitle.png</texture>
 			</control>
 			<control type="label" id="3001">
 				<description>Title Label</description>
@@ -1342,7 +1342,7 @@
 				<posy>42</posy>
 				<width>20</width>
 				<height>20</height>
-				<texture>MenuWindow/clock.png</texture>
+				<texture>clock.png</texture>
 			</control>
 		</control>
 	</include>
