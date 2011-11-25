@@ -92,7 +92,7 @@ class ChannelBanner(BaseWindow):
 			#self.ctrlProgress = xbmcgui.ControlProgress(100, 250, 125, 75)
 			#self.ctrlProgress(self.Progress)
 
-			self.imgTV    = 'channelbanner/tv.png'
+			self.imgTV    = 'tv.png'
 			self.toggleFlag=False
 			self.ctrlEventClock.setLabel('')
 

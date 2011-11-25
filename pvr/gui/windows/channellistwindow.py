@@ -100,9 +100,6 @@ class ChannelListWindow(BaseWindow):
 
 
 			#epg component image
-			self.imgData  = 'channelbanner/data.png'
-			self.imgDolby = 'channelbanner/dolbydigital.png'
-			self.imgHD    = 'channelbanner/OverlayHD.png'
 			self.ctrlEventClock.setLabel('')
 
 			#tab header button label
@@ -417,7 +414,7 @@ class ChannelListWindow(BaseWindow):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 		#header, footer init
-		self.ctrlHeader1.setImage('channelbanner/IconHeaderTitleSmall.png')
+		self.ctrlHeader1.setImage('IconHeaderTitleSmall.png')
 		#self.ctrlHeader2.setLabel('TV-Channel List')
 		
 		#x = list(self.ctrlEventClock.getPosition())[0]
@@ -498,8 +495,8 @@ class ChannelListWindow(BaseWindow):
 			listItem = xbmcgui.ListItem("%04d %s"%( int(ch[0]), ch[2]),"-", "-", "-", "-")
 
 			thum=icas=''
-			if int(ch[4]) == 1 : thum='channelbanner/LI_Locked.png'
-			if int(ch[5]) == 1 : icas='channelbanner/IconCas.png'
+			if int(ch[4]) == 1 : thum='LI_Locked.png'
+			if int(ch[5]) == 1 : icas='IconCas.png'
 			listItem.setProperty('lock', thum)
 			listItem.setProperty('icas', icas)
 			
