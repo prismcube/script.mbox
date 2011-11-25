@@ -65,8 +65,8 @@ class ChannelListWindow(BaseWindow):
 			#self.ctrlEventClock         = self.getControl( 102 )
 			self.ctrlHeader1            = self.getControl( 3000 )
 			self.ctrlHeader2            = self.getControl( 3001 )
-			self.ctrlEventClock         = self.getControl( 3002 )
-			self.ctrlHeader3            = self.getControl( 3003 )
+			self.ctrlHeader3            = self.getControl( 3002 )
+			self.ctrlHeader4            = self.getControl( 3003 )
 			
 			self.ctrlChannelName        = self.getControl( 303 )
 			self.ctrlEventName          = self.getControl( 304 )
@@ -99,8 +99,8 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader42        = self.getControl( 242 )
 
 
-			#epg component image
-			self.ctrlEventClock.setLabel('')
+			#epg stb time
+			self.ctrlHeader3.setLabel('')
 
 			#tab header button label
 			self.btnLabel_TabHeader11 = 'All Channel by Number'
@@ -126,7 +126,7 @@ class ChannelListWindow(BaseWindow):
 			self.flag11 = True
 			self.onClick(211)
 
-		
+
 		#self.getTabHeader()
 		self.initChannelList()
 
@@ -415,14 +415,14 @@ class ChannelListWindow(BaseWindow):
 
 		#header, footer init
 		self.ctrlHeader1.setImage('IconHeaderTitleSmall.png')
-		#self.ctrlHeader2.setLabel('TV-Channel List')
+		self.ctrlHeader2.setLabel('TV-Channel List')
 		
-		#x = list(self.ctrlEventClock.getPosition())[0]
-		#y = list(self.ctrlEventClock.getPosition())[1]
-		self.ctrlEventClock.setPosition(850,35)
 		#x = list(self.ctrlHeader3.getPosition())[0]
 		#y = list(self.ctrlHeader3.getPosition())[1]
-		self.ctrlHeader3.setPosition(1030,42)
+		#self.ctrlHeader3.setPosition(850,35)
+		#x = list(self.ctrlHeader4.getPosition())[0]
+		#y = list(self.ctrlHeader4.getPosition())[1]
+		#self.ctrlHeader4.setPosition(1030,42)
 
 		self.setProperty('WindowType', 'ChannelList')
 		
@@ -567,7 +567,7 @@ class ChannelListWindow(BaseWindow):
 
 	def updateLabelInfo(self, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		#print 'ch info[%s]'% self.currentChannelInfo
+		print 'ch info[%s]'% self.currentChannelInfo
 
 		if self.currentChannelInfo != []:
 			self.epgClock = self.commander.datetime_GetLocalTime()
@@ -670,7 +670,8 @@ class ChannelListWindow(BaseWindow):
 			#local clock
 			if is_digit(self.epgClock[0]):
 				ret = epgInfoClock(1, nowTime, int(self.epgClock[0]))
-				self.ctrlEventClock.setLabel(ret)
+				self.ctrlHeader3.setLabel(ret[0])
+				self.ctrlHeader4.setLabel(ret[1])
 
 			else:
 				print 'value error epgClock[%s]' % ret

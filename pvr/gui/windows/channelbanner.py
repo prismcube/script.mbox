@@ -286,7 +286,7 @@ class ChannelBanner(BaseWindow):
 			#local clock
 			if is_digit(self.epgClock[0]):
 				ret = epgInfoClock(2, nowTime, int(self.epgClock[0]))
-				self.ctrlEventClock.setLabel(ret)
+				self.ctrlEventClock.setLabel(ret[0])
 
 			else:
 				print 'value error epgClock[%s]' % ret
