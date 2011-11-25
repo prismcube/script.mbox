@@ -168,6 +168,8 @@ class ChannelListWindow(BaseWindow):
 
 			self.untilThread = False
 			self.updateLocalTime().join()
+
+			self.close( )
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )	
 
 			self.listcontrol.reset()
@@ -188,6 +190,8 @@ class ChannelListWindow(BaseWindow):
 				if self.currentChannel == channelNumbr :
 					self.untilThread = False
 					self.updateLocalTime().join()
+
+					self.close( )
 					winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )
 
 				self.currentChannel = channelNumbr
