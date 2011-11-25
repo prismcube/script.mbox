@@ -140,21 +140,6 @@ class ElisCommander( EventCommander ):
 			channelList.append( reply )
 
 	"""
-	request ['Command', ]
-	returns [SatellitelList] or ['NULL']
-	Satellite[Name]
-	"""
-	def Channel_GetSatelliteList( self, satellitelList ):
-		req = []
-		req.append( ElisAction.Channel_GetSatelliteList )
-		self.send( req )
-		while 1:
-			reply=self.read()
-			if reply[0].upper() == 'NULL':
-				return reply
-			satellitelList.append( reply )
-
-	"""
 	request ['Command', 'ServiceType']
 	returns [FavoriteList] or ['NULL']
 	Favorite[Name]

@@ -52,7 +52,6 @@ class LanguageSetting(SettingWindow):
 			self.setEnableControl( E_SecondarySubtitleLanguage, True )
 			self.setEnableControl( E_ForTheHearingImpaired, True )
 
-
 	def onAction( self, action ):
 
 		actionId = action.getId( )
@@ -109,6 +108,6 @@ class LanguageSetting(SettingWindow):
 
 		
 	def onFocus( self, controlId ):
-		self.controlDescription( )
+		#self.controlDescription( self.win, controlId )
 		print 'LanguageSetting test in Focus event id=%d' %controlId
 

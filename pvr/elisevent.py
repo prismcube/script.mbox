@@ -35,7 +35,6 @@ class ElisAction(object):
 	Channel_GetListBySatellite				= 'Channel_GetListBySatellite'
 	Channel_GetListByFavorite 				= 'Channel_GetListByFavorite'
 	Channel_GetListByFTACas 				= 'Channel_GetListByFTACas'	
-	Channel_GetSatelliteList 				= 'Channel_GetSateliteList'
 	Channel_GetFavoriteList 				= 'Channel_GetFavoriteList'
 	Channel_GetFTACasList 				= 'Channel_GetFTACasList'
 	Channel_GetCarrierForDVBS				= 'Channel_GetCarrierForDVBS'
