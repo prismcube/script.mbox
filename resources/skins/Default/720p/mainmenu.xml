@@ -168,45 +168,10 @@
 	                    <label>31003</label>
 	                    <font>-</font>
 	                    <aligny>-</aligny>
-	                    <onclick>ActivateWindow(ShutdownMenu)</onclick>
 	                    <texturefocus>home-power-FO.png</texturefocus>
 	                    <texturenofocus>home-power.png</texturenofocus>
 	                    <onleft>21</onleft>
 	                    <onright>9000</onright>
-	                    <onup>9000</onup>
-	                    <ondown>9000</ondown>
-	            </control>
-	            <control type="button" id="21">
-	                    <description>Favourites push button</description>
-	                    <posx>45</posx>
-	                    <posy>0</posy>
-	                    <width>43</width>
-	                    <height>43</height>
-	                    <label>1036</label>
-	                    <font>-</font>
-	                    <aligny>-</aligny>
-	                    <onclick>ActivateWindow(Favourites)</onclick>
-	                    <texturefocus>home-favourites-FO.png</texturefocus>
-	                    <texturenofocus>home-favourites.png</texturenofocus>
-	                    <onleft>22</onleft>
-	                    <onright>20</onright>
-	                    <onup>9000</onup>
-	                    <ondown>9000</ondown>
-	            </control>
-	            <control type="button" id="22">
-	                    <description>Play Disc Media push button</description>
-	                    <posx>0</posx>
-	                    <posy>0</posy>
-	                    <width>43</width>
-	                    <height>43</height>
-	                    <label>16004</label>
-	                    <font>-</font>
-	                    <aligny>-</aligny>
-	                    <onclick>ActivateWindow(1113)</onclick>
-	                    <texturefocus>home-playmedia-FO.png</texturefocus>
-	                    <texturenofocus>home-playmedia.png</texturenofocus>
-	                    <onleft>9000</onleft>
-	                    <onright>21</onright>
 	                    <onup>9000</onup>
 	                    <ondown>9000</ondown>
 	            </control>

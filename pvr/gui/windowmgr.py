@@ -77,19 +77,11 @@ class WindowMgr(object):
 	def showWindow( self, windowId ):
 		print'lael98 check %d %s winid=%d' %(currentframe().f_lineno, currentframe().f_code.co_filename, windowId)    
 		try:
- 			self.lastId = windowId
 			self.windows[windowId].doModal()
+ 			self.lastId = windowId
 
 		except:
 			print "can not find window"
 
-	def shutdown(self):
-		print 'windowmgr shutdown'
-		self.windows[WIN_ID_NULLWINDOW].close()
-		self.windows[WIN_ID_MAINMENU].close()
-		self.windows[WIN_ID_CHANNEL_LIST_WINDOW].close()
-		self.windows[WIN_ID_CHANNEL_BANNER].close()
-		self.windows[WIN_ID_LANGUAGE_SETTING].close()		
-		self.windows[WIN_ID_PARENTAL_LOCK].close()		
 
 
