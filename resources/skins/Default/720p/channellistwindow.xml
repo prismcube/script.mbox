@@ -348,10 +348,10 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>75</posy>
-						<width>20</width>
-						<height>20</height>
+						<width>30</width>
+						<height>30</height>
 						<!--<texture>flagging/audio/OverlayHD.png</texture>-->
-						<texture>LI_Locked.png</texture>
+						<texture>OverlayLocked.png</texture>
 						<description>lock</description>
 					</control>
 					<control type="label">
