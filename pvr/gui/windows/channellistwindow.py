@@ -27,6 +27,7 @@ from pvr.elisevent import ElisEnum
 from inspect import currentframe
 from pvr.util import catchall, is_digit, run_async, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString
 import pvr.elismgr
+from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
 
 import thread, time
 
@@ -113,6 +114,11 @@ class ChannelListWindow(BaseWindow):
 			#etc
 			self.listEnableFlag = False
 
+		#get setting language
+		#name=''
+		#ret=self.commander.enum_GetProp(name)
+		#print 'language ret[%s] name[%s]'% (ret,name)
+
 
 		#initialize get channel list
 		self.initTabHeader()
@@ -151,6 +157,12 @@ class ChannelListWindow(BaseWindow):
 			print '<<<<< test youn: action ID[%s]' % id
 			print 'tv_guide_last_selected[%s]' % action.getId()
 			self.getTabHeader()
+			#import locale, codecs
+			#lc=locale.normalize("fr")
+			#print 'lc[%s]'% lc
+			#print 'locale [%s]'% locale._setlocale(0, locale._build_localename( ('fr_FR.ISO8859-1') ) )
+			#print 'locale[%s]'% locale.resetlocale()
+			
 
 			
 		elif id == Action.ACTION_PARENT_DIR:
@@ -217,7 +229,7 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader22.setVisible(False)
 			self.ctrltabHeader32.setVisible(False)
 			self.ctrltabHeader42.setVisible(False)
-			
+
 
 		elif controlId == self.ctrltabHeader21.getId():
 			self.ctrltabHeader10.setPosition(200,120)
@@ -406,7 +418,8 @@ class ChannelListWindow(BaseWindow):
 
 		#header, footer init
 		self.ctrlHeader1.setImage('channelbanner/IconHeaderTitleSmall.png')
-		self.ctrlHeader2.setLabel('TV-Channel List')
+		#self.ctrlHeader2.setLabel('TV-Channel List')
+		
 		#x = list(self.ctrlEventClock.getPosition())[0]
 		#y = list(self.ctrlEventClock.getPosition())[1]
 		self.ctrlEventClock.setPosition(850,35)
@@ -578,7 +591,8 @@ class ChannelListWindow(BaseWindow):
 					self.ctrlLockedInfo.setVisible(True)
 
 
-		if event != []:
+		print 'event____[%s]'% event
+		if event != [] and event[1] != 'NULL' and len(event) > 2:
 			#update epgName uiID(304)
 			self.ctrlEventName.setLabel(event[2])
 

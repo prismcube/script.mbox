@@ -1288,6 +1288,7 @@
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
 				<shadowcolor>grey2</shadowcolor>
+				<label>$LOCALIZE[30100]</label>
 			</control>
 			<control type="image">
 				<description>Separator Image</description>

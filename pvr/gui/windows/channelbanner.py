@@ -198,7 +198,7 @@ class ChannelBanner(BaseWindow):
 		self.eventCopy = event
 
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		print 'eventCopy[%s]'% self.eventCopy
+		#print 'eventCopy[%s]'% self.eventCopy
 
 		if xbmcgui.getCurrentWindowId() == 13003 :
 			self.updateONEvent(self.eventCopy)

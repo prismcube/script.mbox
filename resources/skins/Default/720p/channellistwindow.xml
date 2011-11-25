@@ -438,10 +438,10 @@
 						<height>150</height>
 						<align>center</align>
 						<font>font12_title</font>
-						<onleft></onleft>
-						<onright></onright>
-						<onup>50</onup>
-						<ondown>50</ondown>
+						<onleft>SetFocus(241)</onleft>
+						<onright>SetFocus(221)</onright>
+						<onup>SetFocus(215)</onup>
+						<ondown>SetFocus(215)</ondown>
 						<pagecontrol>60</pagecontrol>
 						<scrolltime>200</scrolltime>
 						<focusposition>0</focusposition>
