@@ -188,6 +188,40 @@ class ElisCommander( EventCommander ):
 
 
 	"""
+	request ['Command']
+	returns [CarrierDVBS] or ['NULL']
+	CarrierDVBS[SatelliteLongitude, SatelliteBand, Frequency, SymbolRate, FECValue, Polarization]
+	"""
+	def Channel_GetCarrierForDVBS( self ):
+		req = []
+		req.append( ElisAction.Channel_GetCarrierForDVBS )
+		self.command( req )
+		return reply
+
+	"""
+	request ['Command']
+	returns [CarrierDVBT] or ['NULL']
+	CarrierDVBT[Frequency, Band]
+	"""
+	def Channel_GetCarrierForDVBT( self ):
+		req = []
+		req.append( ElisAction.Channel_GetCarrierForDVBS )
+		self.command( req )
+		return reply
+
+	"""
+	request ['Command']
+	returns [CarrierDVBC] or ['NULL']
+	CarrierDVBC[Frequency, SymbolRate, QAM]
+	"""
+	def Channel_GetCarrierForDVBC( self ):
+		req = []
+		req.append( ElisAction.Channel_GetCarrierForDVBS )
+		self.command( req )
+		return reply
+
+
+	"""
 	####################################################
 						EPG EVENT
 	####################################################	
