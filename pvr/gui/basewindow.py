@@ -154,7 +154,18 @@ class SettingWindow(BaseWindow):
 				control = self.getControl( ctrlItem.controlId + 3 )
 				control.addItems( ctrlItem.listItems )
 				control.selectItem( ctrlItem.property.getPropIndex() )
-				
+
+
+	def removeAllControl(self):
+		#for ctrlItem in self.controlList:
+		#	if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
+		#self.resetControl( self.getControl( ctrlItem.controlId + 3 ) )
+		self.controlList = []
+
+
+	def resetControl( self, control ):
+		control.reset( )
+					
 
 	def addButtonControl( self, controlId ):
 		self.controlList.append( ControlItem( ControlItem.E_BUTTON_CONTROL, controlId,   None, None ) )
@@ -310,6 +321,6 @@ class SettingWindow(BaseWindow):
 		return False
 
 
-	def controlDescription( self ) :
-		pass
+	#def controlDescription( self, wnd, controlId ) :
+	#	pass
 

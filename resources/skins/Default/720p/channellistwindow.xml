@@ -452,7 +452,7 @@
 								<posy>0</posy>
 								<width>200</width>
 								<height>41</height>
-								<texture border="0,2,0,2">MenuItemNF.png</texture>
+								<texture border="0,2,0,2">black-back_noAlpha.png</texture>
 							</control>
 							<control type="label">
 								<posx>10</posx>
@@ -473,7 +473,7 @@
 								<posy>0</posy>
 								<width>200</width>
 								<height>41</height>
-								<texture border="0,2,0,2">MenuItemNF.png</texture>
+								<texture border="0,2,0,2">black-back_noAlpha.png</texture>
 								<visible>!Control.HasFocus(50)</visible>
 								<animation effect="fade" time="300">Visible</animation>
 								<animation effect="fade" time="300">Hidden</animation>
@@ -554,7 +554,7 @@
 								<posy>0</posy>
 								<width>200</width>
 								<height>41</height>
-								<texture border="0,2,0,2">MenuItemNF.png</texture>
+								<texture border="0,2,0,2">black-back_noAlpha.png</texture>
 							</control>
 							<control type="label">
 								<posx>10</posx>
@@ -575,7 +575,7 @@
 								<posy>0</posy>
 								<width>200</width>
 								<height>41</height>
-								<texture border="0,2,0,2">MenuItemNF.png</texture>
+								<texture border="0,2,0,2">black-back_noAlpha.png</texture>
 								<visible>!Control.HasFocus(50)</visible>
 								<animation effect="fade" time="300">Visible</animation>
 								<animation effect="fade" time="300">Hidden</animation>
@@ -656,7 +656,7 @@
 								<posy>0</posy>
 								<width>200</width>
 								<height>41</height>
-								<texture border="0,2,0,2">MenuItemNF.png</texture>
+								<texture border="0,2,0,2">black-back_noAlpha.png</texture>
 							</control>
 							<control type="label">
 								<posx>10</posx>
@@ -677,7 +677,7 @@
 								<posy>0</posy>
 								<width>200</width>
 								<height>41</height>
-								<texture border="0,2,0,2">MenuItemNF.png</texture>
+								<texture border="0,2,0,2">black-back_noAlpha.png</texture>
 								<visible>!Control.HasFocus(50)</visible>
 								<animation effect="fade" time="300">Visible</animation>
 								<animation effect="fade" time="300">Hidden</animation>
@@ -758,7 +758,7 @@
 								<posy>0</posy>
 								<width>200</width>
 								<height>41</height>
-								<texture border="0,2,0,2">MenuItemNF.png</texture>
+								<texture border="0,2,0,2">black-back_noAlpha.png</texture>
 							</control>
 							<control type="label">
 								<posx>10</posx>
@@ -779,7 +779,7 @@
 								<posy>0</posy>
 								<width>200</width>
 								<height>41</height>
-								<texture border="0,2,0,2">MenuItemNF.png</texture>
+								<texture border="0,2,0,2">black-back_noAlpha.png</texture>
 								<visible>!Control.HasFocus(50)</visible>
 								<animation effect="fade" time="300">Visible</animation>
 								<animation effect="fade" time="300">Hidden</animation>
