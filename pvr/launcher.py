@@ -54,7 +54,7 @@ class Launcher(object):
 				self.initElisMgr()
 				self.doElisTest()				
 				self.initWindowMgr()
-				time.sleep(1)
+				self.waitShutdown()
 			except Exception, ex:
 				if not self.isFailed:
 					self.failure(ex)
@@ -96,6 +96,17 @@ class Launcher(object):
 			
 			print '------------->shut do end'
 		print '<-------------shut down'
+
+	def waitShutdown(self):
+		cnt = 0
+		print '<-------------> wait shutdown'		
+		while not xbmc.abortRequested :
+			time.sleep(1)
+			cnt += 1
+
+		print '<-------------> wait before shutdown'
+		self.shutdown()
+		print '<-------------> wait after shutdown'		
 
 	def doElisTest(self):
 		test = ElisTest()
