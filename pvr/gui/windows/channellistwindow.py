@@ -576,8 +576,9 @@ class ChannelListWindow(BaseWindow):
 
 				#update longitude info
 				longitude = self.commander.satellite_GetByChannelNumber(int(self.currentChannelInfo[0]), int(self.currentChannelInfo[3]))
-				ret = GetSelectedLongitudeString(longitude)
-				self.ctrlLongitudeInfo.setLabel(ret)
+				if is_digit(longitude[0]):
+					ret = GetSelectedLongitudeString(longitude)
+					self.ctrlLongitudeInfo.setLabel(ret)
 
 				#update lock check
 				if int(self.currentChannelInfo[4]) == 1:
