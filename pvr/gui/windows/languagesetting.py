@@ -8,6 +8,7 @@ from pvr.gui.basewindow import SettingWindow, setWindowBusy
 from pvr.gui.basewindow import Action
 import pvr.elismgr
 from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
+from pvr.gui.guiconfig import FooterMask
 
 
 E_OSDLanguage					= 1100
@@ -34,18 +35,22 @@ class LanguageSetting(SettingWindow):
 		
 
 	def onInit(self):
-		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )		
+		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
+
+		self.setHeaderLabel( self.win, 'Language Preference' )
+		self.setFooter( self.win, ( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_SEARCH_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_RECORD_MASK ) )
+		
 		self.initControl()
 		selectedIndex = self.getSelectedIndex( E_PrimarySubtitleLanguage )
-		print 'primarySubtitleLanguage selectedIndex=%d' %selectedIndex
+		print 'primarySubtitleLanguage selectedIndex=%d' % selectedIndex
 
 		if selectedIndex == 0 :
 			print 'primarySubtitleLanguage is disabled'		
-			self.setEnableControl(E_SecondarySubtitleLanguage, False )
-			self.setEnableControl(E_ForTheHearingImpaired, False )
+			self.setEnableControl( E_SecondarySubtitleLanguage, False )
+			self.setEnableControl( E_ForTheHearingImpaired, False )
 		else:
-			self.setEnableControl(E_SecondarySubtitleLanguage, True )
-			self.setEnableControl(E_ForTheHearingImpaired, True )
+			self.setEnableControl( E_SecondarySubtitleLanguage, True )
+			self.setEnableControl( E_ForTheHearingImpaired, True )
 
 
 	def onAction( self, action ):
@@ -65,12 +70,12 @@ class LanguageSetting(SettingWindow):
 				selectedIndex = self.getSelectedIndex( E_PrimarySubtitleLanguage )
 
 				if selectedIndex == 0 :
-					self.setEnableControl(E_SecondarySubtitleLanguage, False )
-					self.setEnableControl(E_ForTheHearingImpaired, False )
+					self.setEnableControl( E_SecondarySubtitleLanguage, False )
+					self.setEnableControl( E_ForTheHearingImpaired, False )
 
 				else :
-					self.setEnableControl(E_SecondarySubtitleLanguage, True )
-					self.setEnableControl(E_ForTheHearingImpaired, True )
+					self.setEnableControl( E_SecondarySubtitleLanguage, True )
+					self.setEnableControl( E_ForTheHearingImpaired, True )
 				
 		elif actionId == Action.ACTION_PARENT_DIR:
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_MAINMENU )
@@ -94,14 +99,15 @@ class LanguageSetting(SettingWindow):
 			selectedIndex = self.getSelectedIndex( E_PrimarySubtitleLanguage )
 			
 			if selectedIndex == 0 :
-				self.setEnableControl(E_SecondarySubtitleLanguage, False )
-				self.setEnableControl(E_ForTheHearingImpaired, False )
+				self.setEnableControl( E_SecondarySubtitleLanguage, False )
+				self.setEnableControl( E_ForTheHearingImpaired, False )
 
 			else :
-				self.setEnableControl(E_SecondarySubtitleLanguage, True )
-				self.setEnableControl(E_ForTheHearingImpaired, True )
+				self.setEnableControl( E_SecondarySubtitleLanguage, True )
+				self.setEnableControl( E_ForTheHearingImpaired, True )
 
 		
 	def onFocus( self, controlId ):
+		self.controlDescription( )
 		print 'LanguageSetting test in Focus event id=%d' %controlId
 
