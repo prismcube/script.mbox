@@ -416,14 +416,17 @@ class ChannelListWindow(BaseWindow):
 
 		#header, footer init
 		self.ctrlHeader1.setImage('IconHeaderTitleSmall.png')
-		self.ctrlHeader2.setLabel('TV-Channel List')
+		#self.ctrlHeader2.setLabel('TV-Channel List')
+		from pvr.util import NativeTranslator
+		import pvr.platform
+		self.platform = pvr.platform.getPlatform()
+		self.translator = NativeTranslator(self.platform.getScriptDir())
+		
 		self.ctrlHeader3.setLabel('')		
 		self.ctrlHeader4.setLabel('')
 
 		self.setProperty('WindowType', 'ChannelList')
 		self.setFooter( self.win, ( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_RECORD_MASK ) )
-
-		
 
 		self.ctrltabHeader12.setVisible(self.flag11)
 		self.ctrltabHeader22.setVisible(self.flag21)
