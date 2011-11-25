@@ -128,6 +128,39 @@ def sync_instance(func):
 	return wrapper
 
 
+class NativeTranslator(object):
+    
+    def __init__(self, scriptPath, defaultLanguage=None, *args, **kwargs):
+        import xbmcaddon
+        self.addon = xbmcaddon.Addon('script.mbox')
+        
+    def get(self, id):
+        """
+        Alias for getLocalizedString(...)
+
+        @param id: translation id
+        @type id: int
+        @return: translated text
+        @rtype: unicode
+        """
+        # if id is a string, assume no need to lookup translation
+        if isinstance(id, basestring):
+            return id
+        else:
+            return self.addon.getLocalizedString(id)
+     
+    def toList(self, someMap):
+        """
+        @param someMap: dict with translation ids as values. Keys are ignored
+        @return: list of strings containing translations
+        """
+        result = []
+        for key in someMap.keys():
+            result.append(self.get(someMap[key]))
+        return result
+    
+
+
 import threading
 import thread
 

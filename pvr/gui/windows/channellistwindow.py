@@ -420,14 +420,17 @@ class ChannelListWindow(BaseWindow):
 
 		#header, footer init
 		self.ctrlHeader1.setImage('IconHeaderTitleSmall.png')
-		self.ctrlHeader2.setLabel('TV-Channel List')
+		#self.ctrlHeader2.setLabel('TV-Channel List')
+		from pvr.util import NativeTranslator
+		import pvr.platform
+		self.platform = pvr.platform.getPlatform()
+		self.translator = NativeTranslator(self.platform.getScriptDir())
+		
 		self.ctrlHeader3.setLabel('')		
 		self.ctrlHeader4.setLabel('')
 
 		self.setProperty('WindowType', 'ChannelList')
 		self.setFooter( self.win, ( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_RECORD_MASK ) )
-
-		
 
 		self.ctrltabHeader12.setVisible(self.flag11)
 		self.ctrltabHeader22.setVisible(self.flag21)
@@ -580,8 +583,9 @@ class ChannelListWindow(BaseWindow):
 
 				#update longitude info
 				longitude = self.commander.satellite_GetByChannelNumber(int(self.currentChannelInfo[0]), int(self.currentChannelInfo[3]))
-				ret = GetSelectedLongitudeString(longitude)
-				self.ctrlLongitudeInfo.setLabel(ret)
+				if is_digit(longitude[0]):
+					ret = GetSelectedLongitudeString(longitude)
+					self.ctrlLongitudeInfo.setLabel(ret)
 
 				#update lock check
 				if int(self.currentChannelInfo[4]) == 1:
