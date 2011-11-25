@@ -85,19 +85,14 @@ class ParentalLock(SettingWindow):
 
 	def onClick( self, controlId ):
 		self.controlSelect( )
+
 		
 	def onFocus( self, controlId ):
 		print 'LanguageSetting test in Focus event id=%d' %controlId
-		#if controlId == 9000 :
-			#print 'dhkim test 9000'
-			#self.setListControl( )
-		#self.controlDescription( self.win, controlId )
 		
 
 	def setListControl( self ):
-		print 'dhkim 0setListControlsetListControlsetListControl'
 		self.removeAllControl( )
-		print 'dhkim test contro numm % d' % self.ctrlLeftGroup.getSelectedPosition( )
 		
 		if self.ctrlLeftGroup.getSelectedPosition( ) == 0 :
 			print 'dhkim test Position'
