@@ -11,7 +11,7 @@
 				<posy>320</posy>
 				<width>1280</width>
 				<height>256</height>
-				<texture>channelBanner\MediaInfoBackUpper.png</texture>
+				<texture>MediaInfoBackUpper.png</texture>
 				<!--<texture>black-back.png</texture>-->
 			</control>
 
@@ -66,7 +66,6 @@
 					<posy>10</posy>
 					<width>60</width>
 					<height>40</height>
-					<!--<texture>channelBanner\data.png</texture>-->
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>data</description>
 				</control>
@@ -76,7 +75,7 @@
 					<posy>10</posy>
 					<width>90</width>
 					<height>40</height>
-					<!--<texture>channelBanner\dolbydigital.png</texture>-->
+					<!--<texture>flagging/audio/dolbydigital.png</texture>-->
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>audio dolby</description>
 				</control>
@@ -86,7 +85,7 @@
 					<posy>10</posy>
 					<width>90</width>
 					<height>40</height>
-					<!--<texture>channelBanner\OverlayHD.png</texture>-->
+					<!--<texture>OverlayHD.png</texture>-->
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>video HD</description>
 				</control>
@@ -144,8 +143,8 @@
 					<height>40</height>
 					<label>210</label>
 					<font>-</font>
-					<texturefocus>channelBanner\scroll-left-focus.png</texturefocus>
-					<texturenofocus>channelBanner\scroll-left.png</texturenofocus>
+					<texturefocus>scroll-left-focus.png</texturefocus>
+					<texturenofocus>scroll-left.png</texturenofocus>
 					<onleft>605</onleft>
 					<onright>601</onright>
 					<onup>701</onup>
@@ -180,7 +179,7 @@
 					<width>250</width>
 					<hight>1</hight>
 					<colordiffuse>66FFFFFF</colordiffuse>
-					<texture>channelBanner\separator2.png</texture>
+					<texture>separator2.png</texture>
 				</control>
 -->
 				<control type="progress" id="707">
@@ -208,8 +207,8 @@
 					<height>40</height>
 					<label>31354</label>
 					<font>-</font>
-					<texturefocus>channelBanner\scroll-right-focus.png</texturefocus>
-					<texturenofocus>channelBanner\scroll-right.png</texturenofocus>
+					<texturefocus>scroll-right-focus.png</texturefocus>
+					<texturenofocus>scroll-right.png</texturenofocus>
 					<onleft>600</onleft>
 					<onright>602</onright>
 					<onup>702</onup>
@@ -239,7 +238,7 @@
 					<posy>0</posy>
 					<width>1100</width>
 					<height>500</height>
-					<texture border="20">channelBanner\DialogBack.png</texture>
+					<texture border="20">DialogBack.png</texture>
 				</control>
 				<control type="textbox" id="801">
 					  <description>EPG Description</description>

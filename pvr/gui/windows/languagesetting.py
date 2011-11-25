@@ -77,6 +77,7 @@ class LanguageSetting(SettingWindow):
 					self.setEnableControl( E_ForTheHearingImpaired, True )
 				
 		elif actionId == Action.ACTION_PARENT_DIR:
+			self.close( )
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_MAINMENU )
 
 		elif actionId == Action.ACTION_MOVE_UP:

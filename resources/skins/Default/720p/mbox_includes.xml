@@ -1301,6 +1301,7 @@
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
 				<shadowcolor>grey2</shadowcolor>
+				<label>$LOCALIZE[30100]</label>
 			</control>
 			<control type="image">
 				<description>Separator Image</description>
@@ -1310,7 +1311,7 @@
 				<height>4</height>
 				<texture>separator2.png</texture>
 			</control>
-			<control type="label">
+			<control type="label" id="3002">
 				<description>DATE Label</description>
 		        <posx>1060</posx>
 		        <posy>35</posy>
@@ -1323,7 +1324,7 @@
 		        <shadowcolor>black</shadowcolor>
 		        <label>[COLOR=grey]$INFO[System.Date][/COLOR]</label>
 			</control>
-			<control type="label">
+			<control type="label" id="3003">
 				<description>TIME Label</description>
 		        <posx>1105</posx>
 		        <posy>35</posy>

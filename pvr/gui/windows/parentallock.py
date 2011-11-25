@@ -49,6 +49,7 @@ class ParentalLock(SettingWindow):
 
 		self.setListControl( )
 		
+
 	def onAction( self, action ):
 
 		actionId = action.getId( )
