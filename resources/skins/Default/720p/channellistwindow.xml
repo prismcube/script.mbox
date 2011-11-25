@@ -5,7 +5,6 @@
 		<posx>0</posx>
 		<posy>0</posy>
 	</coordinates>
-	<include file="mbox_includes.xml">mbox_includes.xml</include>
 	<defaultcontrol always="true">49</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
 
@@ -20,7 +19,7 @@
 			<control type="image">
 				<posx>150</posx>
 				<posy>50</posy>
-				<texture>channelbanner/IconHeaderTitleSmall.png</texture>
+				<texture>IconHeaderTitleSmall.png</texture>
 			</control>
 			<control type="label">
 				<posx>240</posx>
@@ -68,22 +67,23 @@
 				<width>600</width>
 				<height>321</height>
 				<onleft>211</onleft>
-				<onright>241</onright>
-				<onup>50</onup>
-				<ondown>50</ondown>
-				<pagecontrol>60</pagecontrol>
+				<onright>SetFocus(61)</onright>
+				<onup>SetFocus(50)</onup>
+				<ondown>SetFocus(50)</ondown>
+				<pagecontrol>61</pagecontrol>
 				<scrolltime>200</scrolltime>
 				<focusposition>0</focusposition>
 				<movement>2</movement>
 				<visible>true</visible>
 				<enable>!Control.HasFocus(212) | !Control.HasFocus(222) | !Control.HasFocus(232) | !Control.HasFocus(242)</enable>
+				<animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(61)">Conditional</animation>
 				<itemlayout height="40" width="580">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>690</width>
 						<height>41</height>
-						<texture border="0,2,0,2">channelBanner/MenuItemNF.png</texture>
+						<texture border="0,2,0,2">MenuItemNF.png</texture>
 					</control>
 					<!-- is cas? -->
 					<control type="image">
@@ -133,7 +133,7 @@
 						<posy>0</posy>
 						<width>690</width>
 						<height>41</height>
-						<texture border="0,2,0,2">channelBanner/MenuItemNF.png</texture>
+						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>!Control.HasFocus(50)</visible>
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>
@@ -163,7 +163,7 @@
 						<posy>5</posy>
 						<width>30</width>
 						<height>30</height>
-						<texture>channelbanner/DI_Ok.png</texture>
+						<texture>DI_Ok.png</texture>
 					</control>
 					<!-- is cas? -->
 					<control type="image">
@@ -211,6 +211,33 @@
 
 			</control>
 		</control>	
+
+        <!-- Scrollbar -->
+		<control type="scrollbar" id="61">
+			<posx>730</posx>
+			<posy>180</posy>
+			<width>25</width>
+			<height>321</height>
+
+			<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+			<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
+			<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
+			<textureslidernib>ScrollBarNib.png</textureslidernib>
+			<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+<!--
+			<texturesliderbackground border="2,2,2,2">scrollbar_bar_back2.png</texturesliderbackground> 
+            <texturesliderbar border="2,16,2,16">scrollbar_bar.png</texturesliderbar> 
+            <texturesliderbarfocus border="2,16,2,16">scrollbar_bar_focus.png</texturesliderbarfocus> 
+            <textureslidernib>scrollbar_nib.png</textureslidernib> 
+            <textureslidernibfocus>scrollbar_nib.png</textureslidernibfocus> 
+-->
+			<onleft>SetFocus(49)</onleft>
+			<onright>SetFocus(241)</onright>
+			<ondown>SetFocus(61)</ondown>
+			<onup>SetFocus(61)</onup>
+			<showonepage>false</showonepage>
+			<orientation>vertical</orientation>
+		</control>
 
 <!-- middle right -->
 		<control type="group" id="300">
@@ -265,7 +292,7 @@
 				  <posy>200</posy>
 				  <width>350</width>
 				  <height>121</height>
-				<texture border="0">channelBanner/DialogBack.png</texture>
+				<texture border="0">DialogBack.png</texture>
 			</control>
 -->
 			<control type="group">
@@ -321,10 +348,10 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>75</posy>
-						<width>20</width>
-						<height>20</height>
-						<!--<texture>channelBanner\OverlayHD.png</texture>-->
-						<texture>channelbanner/LI_Locked.png</texture>
+						<width>30</width>
+						<height>30</height>
+						<!--<texture>flagging/audio/OverlayHD.png</texture>-->
+						<texture>OverlayLocked.png</texture>
 						<description>lock</description>
 					</control>
 					<control type="label">
@@ -342,7 +369,6 @@
 					<posy>100</posy>
 					<width>60</width>
 					<height>30</height>
-					<!--<texture>channelBanner\data.png</texture>-->
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>data</description>
 				</control>
@@ -352,7 +378,7 @@
 					<posy>100</posy>
 					<width>65</width>
 					<height>30</height>
-					<!--<texture>channelBanner\dolbydigital.png</texture>-->
+					<!--<texture>flagging/audio/dolbydigital.png</texture>-->
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>audio dolby</description>
 				</control>
@@ -362,7 +388,7 @@
 					<posy>100</posy>
 					<width>65</width>
 					<height>30</height>
-					<!--<texture>channelBanner\OverlayHD.png</texture>-->
+					<!--<texture>OverlayHD.png</texture>-->
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>video HD</description>
 				</control>
@@ -384,7 +410,7 @@
 					<posy>0</posy>
 					<width>28</width>
 					<height>25</height>
-					<texture>channelbanner/TabColorkeyRed.png</texture>
+					<texture>TabColorkeyRed.png</texture>
 				</control>
 				<control type="button" id="211">
 					<posx>10</posx>
@@ -396,7 +422,7 @@
 					<aligny>-</aligny>
 					<font>font12_title</font>
 					<label>All Channels</label>
-					<texturefocus>channelbanner/StackNF_red.png</texturefocus>
+					<texturefocus>StackNF_red.png</texturefocus>
 					<texturenofocus>black-back.png</texturenofocus>
 					<onup>SetFocus(215)</onup>
 					<ondown>SetFocus(215)</ondown>
@@ -411,10 +437,10 @@
 						<height>150</height>
 						<align>center</align>
 						<font>font12_title</font>
-						<onleft></onleft>
-						<onright></onright>
-						<onup>50</onup>
-						<ondown>50</ondown>
+						<onleft>SetFocus(241)</onleft>
+						<onright>SetFocus(221)</onright>
+						<onup>SetFocus(215)</onup>
+						<ondown>SetFocus(215)</ondown>
 						<pagecontrol>60</pagecontrol>
 						<scrolltime>200</scrolltime>
 						<focusposition>0</focusposition>
@@ -426,7 +452,7 @@
 								<posy>0</posy>
 								<width>200</width>
 								<height>41</height>
-								<texture border="0,2,0,2">channelbanner/MenuItemNF.png</texture>
+								<texture border="0,2,0,2">MenuItemNF.png</texture>
 							</control>
 							<control type="label">
 								<posx>10</posx>
@@ -447,7 +473,7 @@
 								<posy>0</posy>
 								<width>200</width>
 								<height>41</height>
-								<texture border="0,2,0,2">channelbanner/MenuItemNF.png</texture>
+								<texture border="0,2,0,2">MenuItemNF.png</texture>
 								<visible>!Control.HasFocus(50)</visible>
 								<animation effect="fade" time="300">Visible</animation>
 								<animation effect="fade" time="300">Hidden</animation>
@@ -488,7 +514,7 @@
 					<posy>0</posy>
 					<width>28</width>
 					<height>25</height>
-					<texture>channelbanner/TabColorkeyGreen.png</texture>
+					<texture>TabColorkeyGreen.png</texture>
 				</control>
 				<control type="button" id="221">
 					<posx>10</posx>
@@ -499,7 +525,7 @@
 					<textcolor>white</textcolor>
 					<align>left</align>
 					<aligny>-</aligny>
-					<texturefocus>channelBanner/StackNF_green.png</texturefocus>
+					<texturefocus>StackNF_green.png</texturefocus>
 					<texturenofocus>black-back.png</texturenofocus>
 					<label>Satellite</label>
 					<onup>SetFocus(225)</onup>
@@ -528,7 +554,7 @@
 								<posy>0</posy>
 								<width>200</width>
 								<height>41</height>
-								<texture border="0,2,0,2">channelBanner/MenuItemNF.png</texture>
+								<texture border="0,2,0,2">MenuItemNF.png</texture>
 							</control>
 							<control type="label">
 								<posx>10</posx>
@@ -549,7 +575,7 @@
 								<posy>0</posy>
 								<width>200</width>
 								<height>41</height>
-								<texture border="0,2,0,2">channelBanner/MenuItemNF.png</texture>
+								<texture border="0,2,0,2">MenuItemNF.png</texture>
 								<visible>!Control.HasFocus(50)</visible>
 								<animation effect="fade" time="300">Visible</animation>
 								<animation effect="fade" time="300">Hidden</animation>
@@ -590,7 +616,7 @@
 					<posy>0</posy>
 					<width>28</width>
 					<height>25</height>
-					<texture>channelbanner/TabColorkeyYellow.png</texture>
+					<texture>TabColorkeyYellow.png</texture>
 				</control>
 				<control type="button" id="231">
 					<posx>10</posx>
@@ -601,7 +627,7 @@
 					<textcolor>white</textcolor>
 					<align>left</align>
 					<aligny>-</aligny>
-					<texturefocus>channelBanner/StackNF_orange.png</texturefocus>
+					<texturefocus>StackNF_orange.png</texturefocus>
 					<texturenofocus>black-back.png</texturenofocus>
 					<label>FTA/CAS</label>
 					<onup>SetFocus(235)</onup>
@@ -630,7 +656,7 @@
 								<posy>0</posy>
 								<width>200</width>
 								<height>41</height>
-								<texture border="0,2,0,2">channelBanner/MenuItemNF.png</texture>
+								<texture border="0,2,0,2">MenuItemNF.png</texture>
 							</control>
 							<control type="label">
 								<posx>10</posx>
@@ -651,7 +677,7 @@
 								<posy>0</posy>
 								<width>200</width>
 								<height>41</height>
-								<texture border="0,2,0,2">channelBanner/MenuItemNF.png</texture>
+								<texture border="0,2,0,2">MenuItemNF.png</texture>
 								<visible>!Control.HasFocus(50)</visible>
 								<animation effect="fade" time="300">Visible</animation>
 								<animation effect="fade" time="300">Hidden</animation>
@@ -692,7 +718,7 @@
 					<posy>0</posy>
 					<width>28</width>
 					<height>25</height>
-					<texture>channelbanner/TabColorkeyBlue.png</texture>
+					<texture>TabColorkeyBlue.png</texture>
 				</control>
 				<control type="button" id="241">
 					<posx>10</posx>
@@ -703,7 +729,7 @@
 					<textcolor>white</textcolor>
 					<align>left</align>
 					<aligny>-</aligny>
-					<texturefocus>channelBanner/StackNF_blue.png</texturefocus>
+					<texturefocus>StackNF_blue.png</texturefocus>
 					<texturenofocus>black-back.png</texturenofocus>
 					<label>Favorite</label>
 					<onup>SetFocus(245)</onup>
@@ -732,7 +758,7 @@
 								<posy>0</posy>
 								<width>200</width>
 								<height>41</height>
-								<texture border="0,2,0,2">channelBanner/MenuItemNF.png</texture>
+								<texture border="0,2,0,2">MenuItemNF.png</texture>
 							</control>
 							<control type="label">
 								<posx>10</posx>
@@ -753,7 +779,7 @@
 								<posy>0</posy>
 								<width>200</width>
 								<height>41</height>
-								<texture border="0,2,0,2">channelBanner/MenuItemNF.png</texture>
+								<texture border="0,2,0,2">MenuItemNF.png</texture>
 								<visible>!Control.HasFocus(50)</visible>
 								<animation effect="fade" time="300">Visible</animation>
 								<animation effect="fade" time="300">Hidden</animation>

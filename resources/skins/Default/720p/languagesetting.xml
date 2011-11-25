@@ -1,15 +1,23 @@
 <window id="3005">
-	<include file="mbox_includes.xml">"mbox_includes.xml"</include>
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<controls>
 		<include>MenuHeader</include>
 		<control type="group">
+			<include>FadeEffect</include>
+			<include>MenuDescription</include>
+			<control type="image">
+				<posx>830</posx>
+				<posy>170</posy>
+				<width>352</width>
+				<height>198</height>
+				<texture border="20">special://skin/backgrounds/weather.jpg</texture>
+				<description>pre-view</description>
+			</control>
 			<control type="grouplist" id="9000">
-				<include>FadeEffect</include>
 				<visible>true</visible>
-				<posx>80</posx>
-				<posy>160</posy>
-				<width>720</width>
+				<posx>100</posx>
+				<posy>170</posy>
+				<width>680</width>
 				<height>530</height>
 				<itemgap>0</itemgap>
 				<pagecontrol>60</pagecontrol>

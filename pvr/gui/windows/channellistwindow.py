@@ -27,6 +27,8 @@ from pvr.elisevent import ElisEnum
 from inspect import currentframe
 from pvr.util import catchall, is_digit, run_async, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString
 import pvr.elismgr
+from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
+from pvr.gui.guiconfig import FooterMask
 
 import thread, time
 
@@ -64,8 +66,8 @@ class ChannelListWindow(BaseWindow):
 			#self.ctrlEventClock         = self.getControl( 102 )
 			self.ctrlHeader1            = self.getControl( 3000 )
 			self.ctrlHeader2            = self.getControl( 3001 )
-			self.ctrlEventClock         = self.getControl( 3002 )
-			self.ctrlHeader3            = self.getControl( 3003 )
+			self.ctrlHeader3            = self.getControl( 3002 )
+			self.ctrlHeader4            = self.getControl( 3003 )
 			
 			self.ctrlChannelName        = self.getControl( 303 )
 			self.ctrlEventName          = self.getControl( 304 )
@@ -98,11 +100,8 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader42        = self.getControl( 242 )
 
 
-			#epg component image
-			self.imgData  = 'channelbanner/data.png'
-			self.imgDolby = 'channelbanner/dolbydigital.png'
-			self.imgHD    = 'channelbanner/OverlayHD.png'
-			self.ctrlEventClock.setLabel('')
+			#epg stb time
+			self.ctrlHeader3.setLabel('')
 
 			#tab header button label
 			self.btnLabel_TabHeader11 = 'All Channel by Number'
@@ -112,6 +111,11 @@ class ChannelListWindow(BaseWindow):
 			
 			#etc
 			self.listEnableFlag = False
+
+		#get setting language
+		#name=''
+		#ret=self.commander.enum_GetProp(name)
+		#print 'language ret[%s] name[%s]'% (ret,name)
 
 
 		#initialize get channel list
@@ -123,7 +127,7 @@ class ChannelListWindow(BaseWindow):
 			self.flag11 = True
 			self.onClick(211)
 
-		
+
 		#self.getTabHeader()
 		self.initChannelList()
 
@@ -151,6 +155,12 @@ class ChannelListWindow(BaseWindow):
 			print '<<<<< test youn: action ID[%s]' % id
 			print 'tv_guide_last_selected[%s]' % action.getId()
 			self.getTabHeader()
+			#import locale, codecs
+			#lc=locale.normalize("fr")
+			#print 'lc[%s]'% lc
+			#print 'locale [%s]'% locale._setlocale(0, locale._build_localename( ('fr_FR.ISO8859-1') ) )
+			#print 'locale[%s]'% locale.resetlocale()
+			
 
 			
 		elif id == Action.ACTION_PARENT_DIR:
@@ -158,11 +168,15 @@ class ChannelListWindow(BaseWindow):
 
 			self.untilThread = False
 			self.updateLocalTime().join()
+
+			self.close( )
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )	
 
 			self.listcontrol.reset()
 
-		else: print'Unconsumed key: %s' % action.getId()
+		else:
+			pass
+			#print'Unconsumed key: %s' % action.getId()
 
 
 	def onClick(self, controlId):
@@ -176,6 +190,8 @@ class ChannelListWindow(BaseWindow):
 				if self.currentChannel == channelNumbr :
 					self.untilThread = False
 					self.updateLocalTime().join()
+
+					self.close( )
 					winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )
 
 				self.currentChannel = channelNumbr
@@ -215,7 +231,7 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader22.setVisible(False)
 			self.ctrltabHeader32.setVisible(False)
 			self.ctrltabHeader42.setVisible(False)
-			
+
 
 		elif controlId == self.ctrltabHeader21.getId():
 			self.ctrltabHeader10.setPosition(200,120)
@@ -403,17 +419,13 @@ class ChannelListWindow(BaseWindow):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 		#header, footer init
-		self.ctrlHeader1.setImage('channelbanner/IconHeaderTitleSmall.png')
+		self.ctrlHeader1.setImage('IconHeaderTitleSmall.png')
 		self.ctrlHeader2.setLabel('TV-Channel List')
-		#x = list(self.ctrlEventClock.getPosition())[0]
-		#y = list(self.ctrlEventClock.getPosition())[1]
-		self.ctrlEventClock.setPosition(850,35)
-		#x = list(self.ctrlHeader3.getPosition())[0]
-		#y = list(self.ctrlHeader3.getPosition())[1]
-		self.ctrlHeader3.setPosition(1030,42)
+		self.ctrlHeader3.setLabel('')		
+		self.ctrlHeader4.setLabel('')
 
 		self.setProperty('WindowType', 'ChannelList')
-		
+		self.setFooter( self.win, ( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_RECORD_MASK ) )
 
 		
 
@@ -483,8 +495,8 @@ class ChannelListWindow(BaseWindow):
 			listItem = xbmcgui.ListItem("%04d %s"%( int(ch[0]), ch[2]),"-", "-", "-", "-")
 
 			thum=icas=''
-			if int(ch[4]) == 1 : thum='channelbanner/LI_Locked.png'
-			if int(ch[5]) == 1 : icas='channelbanner/IconCas.png'
+			if int(ch[4]) == 1 : thum='OverlayLocked.png'
+			if int(ch[5]) == 1 : icas='IconCas.png'
 			listItem.setProperty('lock', thum)
 			listItem.setProperty('icas', icas)
 			
@@ -576,7 +588,8 @@ class ChannelListWindow(BaseWindow):
 					self.ctrlLockedInfo.setVisible(True)
 
 
-		if event != []:
+		print 'event____[%s]'% event
+		if event != [] and event[1] != 'NULL' and len(event) > 2:
 			#update epgName uiID(304)
 			self.ctrlEventName.setLabel(event[2])
 
@@ -657,7 +670,8 @@ class ChannelListWindow(BaseWindow):
 			#local clock
 			if is_digit(self.epgClock[0]):
 				ret = epgInfoClock(1, nowTime, int(self.epgClock[0]))
-				self.ctrlEventClock.setLabel(ret)
+				self.ctrlHeader3.setLabel(ret[0])
+				self.ctrlHeader4.setLabel(ret[1])
 
 			else:
 				print 'value error epgClock[%s]' % ret

@@ -191,17 +191,18 @@ def epgInfoTime(timeZone, startTime, duration):
 def epgInfoClock(flag, nowTime, epgClock):
 	pastTime = time.time() - nowTime
 
-	strClock = ''
+	strClock = []
 	stbClock = int(epgClock) + pastTime
 
 	if flag == 1:
+		strClock.append( time.strftime('%a, %d.%m.%Y', time.gmtime(stbClock) ) )
 		if int(pastTime) % 2 == 0:
-			strClock = time.strftime('%a, %d.%m.%Y        %H:%M', time.gmtime(stbClock) )
+			strClock.append( time.strftime('%H:%M', time.gmtime(stbClock) ) )
 		else:
-			strClock = time.strftime('%a, %d.%m.%Y        %H %M', time.gmtime(stbClock) )
+			strClock.append( time.strftime('%H %M', time.gmtime(stbClock) ) )
 
 	elif flag == 2:
-		strClock = time.strftime('%a. %H:%M', time.gmtime(stbClock) )
+		strClock.append( time.strftime('%a. %H:%M', time.gmtime(stbClock) ) )
 
 	print 'epgClock[%s:%s]'% (strClock, time.strftime('%S', time.gmtime(stbClock)) )
 	return strClock
@@ -232,9 +233,9 @@ def epgInfoComponentImage(component):
 
 	print 'component[%s] tempFile[%s]' % (component, tempFile)
 
-	imgData  = 'channelbanner/IconTeletext.png'
-	imgDolby = 'channelbanner/dolbydigital.png'
-	imgHD    = 'channelbanner/OverlayHD.png'
+	imgData  = 'IconTeletext.png'
+	imgDolby = 'flagging/audio/dolbydigital.png'
+	imgHD    = 'OverlayHD.png'
 	imagelist = []
 	if tempFile == 1:
 		imagelist.append(imgHD)

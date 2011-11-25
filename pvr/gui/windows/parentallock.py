@@ -56,6 +56,7 @@ class ParentalLock(BaseWindow):
 		elif id == Action.ACTION_SELECT_ITEM:
 			print 'dhkim MenuReceiverSetupNetwork check action select'
 		elif id == Action.ACTION_PARENT_DIR:
+			self.close( )
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_MAINMENU )
 			print 'dhkim MenuReceiverSetupNetwork check action parent'
 

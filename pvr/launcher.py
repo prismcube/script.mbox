@@ -51,17 +51,15 @@ class Launcher(object):
 		try:
 			try:
 				time.sleep(1)
-				self.test()
 				self.initElisMgr()
-#				self.shutdownListener()
+				self.doElisTest()				
 				self.initWindowMgr()
 				time.sleep(1)
 			except Exception, ex:
 				if not self.isFailed:
 					self.failure(ex)
 		finally:
-			print 'lael98 test shutdown'
-#			self.shutdown()
+			print 'Launcher end'
 
 	def failure(self, cause):
 		msg = 'Status:%s - Error: %s' % (self.status, cause)
@@ -74,15 +72,16 @@ class Launcher(object):
 		print 'test lael98'
 		self.commander = pvr.elismgr.getInstance().getCommander()
 		self.commander.setElisReady()
-		"""
-		cmd = pvr.elismgr.ElisCommander(('localhost', 12345))
-		print 'test lael98----'
-		cmd.command( ['cmd_test 56', 'cmd_test2 57'] )
-		print 'test lael98----endcmd'
-		"""
+
 
 	def initWindowMgr(self):
 		pvr.gui.windowmgr.getInstance().showWindow( windowmgr.WIN_ID_NULLWINDOW )
+
+
+	def powerOff( self ) :
+		self.shutdown()
+		xbmc.executebuiltin('xbmc.ShutDown')
+
 
 	def shutdown(self):
 		print '------------->shut down %d' %self.shutdowning
@@ -91,8 +90,6 @@ class Launcher(object):
 			print '------------->shut shutdowning=%d abortRequested=%d' %(self.shutdowning,xbmc.abortRequested)
 			
 			pvr.elismgr.getInstance().shutdown()
-			pvr.gui.windowmgr.getInstance().shutdown()
-			xbmc.executebuiltin('xbmc.ShutDown')
 
 			if hasPendingWorkers():
 				waitForWorkersToDie(10.0) # in seconds
@@ -100,34 +97,7 @@ class Launcher(object):
 			print '------------->shut do end'
 		print '<-------------shut down'
 
-
-	def shutdownListener(self):
-		from threading import Thread
-		class xbmcShutdownListener(Thread):        
-			def __init__(self):
-				Thread.__init__(self)
-				self.shutdownReceived = False
-
-			def run(self):
-				import time
-				xbmc.log('XbmcShutdownListener thread running..')
-				cnt = 1
-				while not xbmc.abortRequested and not self.shutdownReceived:
-					time.sleep(1)
-					cnt += 1
-
-				if xbmc.abortRequested:
-					xbmc.log('XBMC requested shutdown..')
-					getInstance.shutdown()
-					xbmc.log('XBMC requested shutdown complete')
-
-				xbmc.log('XbmcShutdownListener thread terminating')
-
-		self.shutdownListener = xbmcShutdownListener()
-		self.shutdownListener.start()
-
-
-	def test(self):
+	def doElisTest(self):
 		test = ElisTest()
 		test.testAll()
 

@@ -23,6 +23,7 @@ import sys
 
 from decorator import decorator
 from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
+from pvr.gui.guiconfig import FooterMask, HeaderDefine
 
 class Action(object):
 	ACTION_NONE					= 0
@@ -69,12 +70,12 @@ def setWindowBusy(func, *args, **kwargs):
 
 
 class Property(object):
-    
+
 	def getListItemProperty(self, listItem, name):
 		p = listItem.getProperty(name)
 		if p is not None:
 			return p.decode('utf-8')
-        
+
 	def setListItemProperty(self, listItem, name, value):
 		if listItem and name and not value is None:
 			listItem.setProperty(name, value)
@@ -87,7 +88,7 @@ class Property(object):
 
 	def setWindowProperty(self, name, value):
 		if self.win and name and not value is None:
-			self.win.setProperty(name, value)
+			self.setProperty(name, value)
 		else:
 			print 'Setting window property with a None: win=%s name=%s value=%s' % (self.win, name, value)
 
@@ -111,62 +112,204 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 		self.win = None        
 		self.closed = False
 
+	def setFooter( self, wnd, footermask ):
+		self.footerGroupId = FooterMask.G_FOOTER_GROUP_STARTID
+		for i in range( FooterMask.G_NUM_OF_FOOTER_ICON ):
+			if not( footermask & ( 1 << i ) ):
+				self.ctrlfooterGroup = wnd.getControl( self.footerGroupId )
+				self.ctrlfooterGroup.setVisible( False )
+			self.footerGroupId += FooterMask.G_FOOTER_GROUP_IDGAP
+
+	def setHeaderLabel( self, wnd, label ):
+		self.ctrlheaderlabel = wnd.getControl( HeaderDefine.G_HEADER_LABEL_ID )
+		self.ctrlheaderlabel.setLabel( label )
+
 class BaseDialog(xbmcgui.WindowXMLDialog, Property):
 	def __init__(self, *args, **kwargs):
 		xbmcgui.WindowXMLDialog.__init__(self, *args, **kwargs)
 		self.win = None        
 
 
-from gui.basewindow import BaseWindow
+class ControlItem:
+	E_UNDEFINE				= 0
+	E_BUTTON_CONTROL		= 1
+	E_ENUM_CONTROL			= 2
+
+	def __init__( self, controlType, controlId, property, listItems ):	
+		self.controlType = controlType	
+		self.controlId  = controlId
+		self.property = property
+		self.listItems = listItems
+		self.enable	= True
+	
 
 class SettingWindow(BaseWindow):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
+		self.controlList = []
 
-	def creatPropertyEnum(self, enumList, enumProperty ) :
-		for i in range( enumProperty.getIndexCount() ):
-			listItem = xbmcgui.ListItem(enumProperty.getName(), enumProperty.getPropStringByIndex( i ),"-", "-", "-")
-			enumList.append(listItem)
+	def initControl(self):
+		for ctrlItem in self.controlList:
+			if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
+				control = self.getControl( ctrlItem.controlId + 3 )
+				control.addItems( ctrlItem.listItems )
+				control.selectItem( ctrlItem.property.getPropIndex() )
+				
 
-	def setPropertyEnum(self, enumProperty, index ) :
-		enumProperty.setPropIndex( index )
+	def addButtonControl( self, controlId ):
+		self.controlList.append( ControlItem( ControlItem.E_BUTTON_CONTROL, controlId,   None, None ) )
 
-	def controlUp( self, navigationIds, navId ) :
-		count = len( navigationIds )
 
-		if count < 2 :
-			return False
+	def addEnumControl( self, controlId, propName ):
+		property = ElisPropertyEnum( propName )
+		listItems = []
+
+		for i in range( property.getIndexCount() ):
+			listItem = xbmcgui.ListItem(property.getName(), property.getPropStringByIndex( i ),"-", "-", "-")
+			listItems.append(listItem)
+
+		self.controlList.append( ControlItem( ControlItem.E_ENUM_CONTROL, controlId, property, listItems ) )
+
+
+	def hasControlItem( self, ctrlItem, controlId  ) :
+		if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
+			if ctrlItem.controlId == controlId or ctrlItem.controlId + 1 == controlId or ctrlItem.controlId + 2 == controlId or ctrlItem.controlId + 3 == controlId  :
+				return True
+		else :
+			if ctrlItem.controlId == controlId :
+				return True
+
+		return False
+
+	def getPrevId( self, controlId ) :
+		count = len( self.controlList )
+		prevId = -1
+		found = False
 
 		for i in range( count ) :
-			if i == 0 :
-				if navigationIds[0] == navId :
-					self.win.setFocusId( navigationIds[count-1] )					
-					return True
+			ctrlItem = self.controlList[i]
+
+			if ctrlItem.controlId == controlId :
+				found = True
+				if prevId > 0 :
+					return prevId
+				continue
+
+			if ctrlItem.enable :
+				prevId = ctrlItem.controlId
+
+		return prevId
+
+	def getNextId( self, controlId ) :
+		count = len( self.controlList )
+		nextId = -1
+		found = False
+
+		
+		for i in range( count ) :
+			ctrlItem = self.controlList[i]
+
+			if ctrlItem.enable and  nextId <= 0 :
+				nextId = ctrlItem.controlId
+
+			if ctrlItem.enable and  found == True :
+				return ctrlItem.controlId
+
+			if ctrlItem.controlId == controlId :
+				found = True
+				continue
+
+		return nextId
+		
+
+	def getSelectedIndex( self, controlId ) :
+
+		count = len( self.controlList )
+
+		for i in range( count ) :
+
+			ctrlItem = self.controlList[i]		
+			if self.hasControlItem( ctrlItem, controlId ) :
+				if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
+					control = self.getControl( ctrlItem.controlId + 3 )
+					return control.getSelectedPosition()
+
+		return -1
+
+	def getGroupId( self, controlId ) :
+
+		count = len( self.controlList )
+
+		for i in range( count ) :
+
+			ctrlItem = self.controlList[i]
+			if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
+				if ctrlItem.controlId == controlId or ctrlItem.controlId + 1 == controlId or ctrlItem.controlId + 2 == controlId or ctrlItem.controlId + 3 == controlId  :
+					return ctrlItem.controlId
 			else :
-				if navigationIds[i] == navId :
-					self.win.setFocusId( navigationIds[i-1] )
-					return True
-				
-		print 'ERR : can not find next focus control'
+				if ctrlItem.controlId == controlId :
+					return ctrlItem.controlId
+
+		return -1
+		
+
+	def setEnableControl( self, controlId, enable ) :
+
+		count = len( self.controlList )
+
+		for i in range( count ) :
+			ctrlItem = self.controlList[i]
+			if controlId == ctrlItem.controlId :
+				control = self.getControl( controlId )
+				control.setEnabled( enable )
+				ctrlItem.enable = enable
+				return True
+
 		return False
 	
 
-	def controlDown( self, navigationIds, navId ) :
-		count = len( navigationIds )
-
-		if count < 2 :
-			return False
+	def controlSelect	( self ) :
+	
+		focusId = self.getFocusId( )
+		count = len( self.controlList )
 
 		for i in range( count ) :
-			if i == count-1 :
-				if navigationIds[i] == navId :
-					self.win.setFocusId( navigationIds[0] )					
+			ctrlItem = self.controlList[i]		
+			if self.hasControlItem( ctrlItem, focusId ) :
+				if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
+					control = self.getControl( ctrlItem.controlId + 3 )
+					ctrlItem.property.setPropIndex( control.getSelectedPosition() )
 					return True
-			else :
-				if navigationIds[i] == navId :
-					self.win.setFocusId( navigationIds[i+1] )
-					return True
-				
-		print 'ERR : can not find next focus control'
+
 		return False
-	
+
+
+	def controlUp( self ) :
+
+		focusId = self.getFocusId( )
+		groupId = self.getGroupId( focusId )
+		prevId = self.getPrevId( groupId )
+
+		if prevId > 0 and groupId != prevId :
+			self.setFocusId( prevId )
+			return True
+
+		return False
+
+
+	def controlDown( self ) :
+
+		focusId = self.getFocusId( )
+		groupId = self.getGroupId( focusId )
+		nextId = self.getNextId( groupId )
+
+		if nextId > 0 and groupId != nextId :
+			self.setFocusId( nextId )
+			return True
+
+		return False
+
+
+	def controlDescription( self ) :
+		pass
+

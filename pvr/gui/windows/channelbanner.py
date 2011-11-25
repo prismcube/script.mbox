@@ -92,7 +92,7 @@ class ChannelBanner(BaseWindow):
 			#self.ctrlProgress = xbmcgui.ControlProgress(100, 250, 125, 75)
 			#self.ctrlProgress(self.Progress)
 
-			self.imgTV    = 'channelbanner/tv.png'
+			self.imgTV    = 'flagging/video/tv.png'
 			self.toggleFlag=False
 			self.ctrlEventClock.setLabel('')
 
@@ -137,6 +137,7 @@ class ChannelBanner(BaseWindow):
 			self.untilThread = False
 			self.updateLocalTime().join()
 
+			self.close( )
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
 #			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
 #			winmgr.shutdown()
@@ -198,7 +199,7 @@ class ChannelBanner(BaseWindow):
 		self.eventCopy = event
 
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		print 'eventCopy[%s]'% self.eventCopy
+		#print 'eventCopy[%s]'% self.eventCopy
 
 		if xbmcgui.getCurrentWindowId() == 13003 :
 			self.updateONEvent(self.eventCopy)
@@ -210,7 +211,7 @@ class ChannelBanner(BaseWindow):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'event[%s]'% event
 
-		if event != []:
+		if event != [] and event[1] != 'NULL' and len(event) > 2:
 			#epg name
 			if event[2] != '':
 				print '[%s():%s]%s'% (currentframe().f_code.co_name, currentframe().f_lineno,event[2])
@@ -286,7 +287,7 @@ class ChannelBanner(BaseWindow):
 			#local clock
 			if is_digit(self.epgClock[0]):
 				ret = epgInfoClock(2, nowTime, int(self.epgClock[0]))
-				self.ctrlEventClock.setLabel(ret)
+				self.ctrlEventClock.setLabel(ret[0])
 
 			else:
 				print 'value error epgClock[%s]' % ret
@@ -355,7 +356,7 @@ class ChannelBanner(BaseWindow):
 	def showEPGDescription(self, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
-		if event != []:
+		if event != [] and event[1] != 'NULL' and len(event) > 2:
 			print '[%s][%s][%s][%s][%s]' % (event[1], event[3], event[4], event[5], event[6])
 			msgDescription = self.commander.epgevent_GetDescription(
 							int(event[1]), #eventId
