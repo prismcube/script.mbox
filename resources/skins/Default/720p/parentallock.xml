@@ -1,26 +1,164 @@
 <window id="3006">
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<controls>
+		<include>MenuHeader</include>
+		<include>MenuFooter</include>
 		<control type="group">
-			<include>CommonSettingMenuBackground</include>
+			<posx>90</posx>
+			<posy>50</posy>
+			<include>FadeEffect</include>	
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1100</width>
+				<height>640</height>
+				<texture border="20">DialogBack.png</texture>
+			</control>
+			<control type="image">
+				<description>LOGO</description>
+				<posx>30</posx>
+				<posy>15</posy>
+				<width>220</width>
+				<height>80</height>
+				<aspectratio>keep</aspectratio>
+				<texture>Confluence_Logo.png</texture>
+			</control>
+			<control type="list" id="9000">
+				<posx>10</posx>
+				<posy>90</posy>
+				<width>260</width>
+				<height>481</height>
+				<onleft>-</onleft>
+				<onright>9010</onright>
+				<onup>9000</onup>
+				<ondown>9000</ondown>
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>300</scrolltime>
+				<itemlayout height="80" width="260">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>260</width>
+						<height>81</height>
+						<texture border="5">MenuItemNF.png</texture>
+					</control>
+					<control type="label">
+						<posx>250</posx>
+						<posy>15</posy>
+						<width>380</width>
+						<height>25</height>
+						<font>font24_title</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout height="80" width="260">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>260</width>
+						<height>81</height>
+						<texture border="5">MenuItemFO.png</texture>
+						<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(9000)">Conditional</animation>
+					</control>
+					<control type="label">
+						<posx>250</posx>
+						<posy>15</posy>
+						<width>380</width>
+						<height>25</height>
+						<font>font24_title</font>
+						<textcolor>white</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="image">
+				<posx>268</posx>
+				<posy>10</posy>
+				<width>790</width>
+				<height>618</height>
+				<texture border="5">black-back2.png</texture>
+			</control>
+			<control type="image">
+				<posx>268</posx>
+				<posy>10</posy>
+				<width>804</width>
+				<height>100</height>
+				<aspectratio>stretch</aspectratio>
+				<texture>GlassTitleBar.png</texture>
+			</control>
 			<control type="label">
 				<description>header label</description>
 				<posx>300</posx>
-				<posy>35</posy>
+				<posy>20</posy>
 				<width>740</width>
 				<height>30</height>
-				<font>font24_title</font>
-				<label>Header Label</label>
+				<font>font16caps</font>
+				<label>$LOCALIZE[20077] - $INFO[Container(9000).ListItem.Label]</label>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 			</control>
+			<control type="group" id="9010">
+				<control type="grouplist" id="9001">
+				<visible>Container(9000).Hasfocus(1)</visible>
+					<posx>290</posx>
+					<posy>60</posy>
+					<width>750</width>
+					<height>530</height>
+					<itemgap>-1</itemgap>
+					<pagecontrol>60</pagecontrol>
+					<control type="label" id="100">
+						<width>750</width>
+						<height>45</height>
+						<font>font13_title</font>
+						<label>31106</label>
+						<textcolor>blue</textcolor>
+						<shadowcolor>black</shadowcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+					</control>
+					<include>SpinEx01</include>
+					<include>SpinEx02</include>
+					<include>SpinEx03</include>
+					<include>SpinEx04</include>
+					<include>SpinEx05</include>
+				</control>
+				<control type="grouplist" id="9002">
+				<visible>Container(9000).Hasfocus(2)</visible>
+					<posx>290</posx>
+					<posy>60</posy>
+					<width>750</width>
+					<height>530</height>
+					<itemgap>-1</itemgap>
+					<pagecontrol>60</pagecontrol>
+					<control type="label" id="100">
+						<width>750</width>
+						<height>45</height>
+						<font>font13_title</font>
+						<label>31106</label>
+						<textcolor>blue</textcolor>
+						<shadowcolor>black</shadowcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+					</control>
+					<include>SpinEx01</include>
+					<include>SpinEx02</include>
+					<include>SpinEx03</include>
+					<include>SpinEx04</include>
+				</control>
+			</control>
+			<!--
 			<control type="grouplist" id="9000">
 				<visible>true</visible>
-				<posx>40</posx>
-				<posy>90</posy>
-				<width>720</width>
+				<posx>100</posx>
+				<posy>170</posy>
+				<width>680</width>
 				<height>530</height>
 				<itemgap>0</itemgap>
 				<pagecontrol>60</pagecontrol>
@@ -29,8 +167,12 @@
 				<onup>9000</onup>
 				<ondown>9000</ondown>
 				<include>SpinEx01</include>
-				<include>SpinEx02</include>				
-			</control>			
+				<include>SpinEx02</include>
+				<include>SpinEx03</include>
+				<include>SpinEx04</include>
+				<include>SpinEx05</include>
+			</control>
+			-->
 		</control>
 	</controls>
 </window>
