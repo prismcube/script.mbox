@@ -28,6 +28,7 @@ from inspect import currentframe
 from pvr.util import catchall, is_digit, run_async, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString
 import pvr.elismgr
 from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
+from pvr.gui.guiconfig import FooterMask
 
 import thread, time
 
@@ -416,16 +417,11 @@ class ChannelListWindow(BaseWindow):
 		#header, footer init
 		self.ctrlHeader1.setImage('IconHeaderTitleSmall.png')
 		self.ctrlHeader2.setLabel('TV-Channel List')
-		
-		#x = list(self.ctrlHeader3.getPosition())[0]
-		#y = list(self.ctrlHeader3.getPosition())[1]
-		#self.ctrlHeader3.setPosition(850,35)
-		#x = list(self.ctrlHeader4.getPosition())[0]
-		#y = list(self.ctrlHeader4.getPosition())[1]
-		#self.ctrlHeader4.setPosition(1030,42)
+		self.ctrlHeader3.setLabel('')		
+		self.ctrlHeader4.setLabel('')
 
 		self.setProperty('WindowType', 'ChannelList')
-		
+		self.setFooter( self.win, ( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_RECORD_MASK ) )
 
 		
 

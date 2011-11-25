@@ -92,7 +92,7 @@ class ChannelBanner(BaseWindow):
 			#self.ctrlProgress = xbmcgui.ControlProgress(100, 250, 125, 75)
 			#self.ctrlProgress(self.Progress)
 
-			self.imgTV    = 'tv.png'
+			self.imgTV    = 'flagging/video/tv.png'
 			self.toggleFlag=False
 			self.ctrlEventClock.setLabel('')
 
@@ -210,7 +210,7 @@ class ChannelBanner(BaseWindow):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'event[%s]'% event
 
-		if event != []:
+		if event != [] and event[1] != 'NULL' and len(event) > 2:
 			#epg name
 			if event[2] != '':
 				print '[%s():%s]%s'% (currentframe().f_code.co_name, currentframe().f_lineno,event[2])
@@ -355,7 +355,7 @@ class ChannelBanner(BaseWindow):
 	def showEPGDescription(self, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
-		if event != []:
+		if event != [] and event[1] != 'NULL' and len(event) > 2:
 			print '[%s][%s][%s][%s][%s]' % (event[1], event[3], event[4], event[5], event[6])
 			msgDescription = self.commander.epgevent_GetDescription(
 							int(event[1]), #eventId

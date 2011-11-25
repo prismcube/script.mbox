@@ -234,7 +234,7 @@ def epgInfoComponentImage(component):
 	print 'component[%s] tempFile[%s]' % (component, tempFile)
 
 	imgData  = 'IconTeletext.png'
-	imgDolby = 'dolbydigital.png'
+	imgDolby = 'flagging/audio/dolbydigital.png'
 	imgHD    = 'OverlayHD.png'
 	imagelist = []
 	if tempFile == 1:

@@ -350,7 +350,7 @@
 						<posy>75</posy>
 						<width>20</width>
 						<height>20</height>
-						<!--<texture>OverlayHD.png</texture>-->
+						<!--<texture>flagging/audio/OverlayHD.png</texture>-->
 						<texture>LI_Locked.png</texture>
 						<description>lock</description>
 					</control>
@@ -369,7 +369,6 @@
 					<posy>100</posy>
 					<width>60</width>
 					<height>30</height>
-					<!--<texture>data.png</texture>-->
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>data</description>
 				</control>
@@ -379,7 +378,7 @@
 					<posy>100</posy>
 					<width>65</width>
 					<height>30</height>
-					<!--<texture>dolbydigital.png</texture>-->
+					<!--<texture>flagging/audio/dolbydigital.png</texture>-->
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>audio dolby</description>
 				</control>
