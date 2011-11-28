@@ -68,11 +68,11 @@ class ElisCommander( EventCommander ):
 	returns [ChannelList] or ['NULL']
 	channel[Number, PresentationNumber, Name, ServiceType, Locked, IsCA, IsHD ]
 	"""
-	def channel_GetList( self, serviceType, zappimgMode, sortingMode, channelList ):
+	def channel_GetList( self, serviceType, zappingMode, sortingMode, channelList ):
 		req = []
 		req.append( ElisAction.Channel_GetList )
 		req.append( '%d' %serviceType )
-		req.append( '%d' %zappimgMode )
+		req.append( '%d' %zappingMode )
 		req.append( '%d' %sortingMode )
 		self.send( req )
 		while 1:
@@ -86,11 +86,11 @@ class ElisCommander( EventCommander ):
 	returns [ChannelList] or ['NULL']
 	channel[Number, PresentationNumber, Name, ServiceType, Locked, IsCA, IsHD, Nid, Sid, Onid, CarrierType ]
 	"""
-	def Channel_GetListBySatellite( self, serviceType, zappimgMode, sortingMode, longitude, band, channelList ):
+	def Channel_GetListBySatellite( self, serviceType, zappingMode, sortingMode, longitude, band, channelList ):
 		req = []
 		req.append( ElisAction.Channel_GetListBySatellite )
 		req.append( '%d' %serviceType )
-		req.append( '%d' %zappimgMode )
+		req.append( '%d' %zappingMode )
 		req.append( '%d' %sortingMode )
 		req.append( '%d' %longitude )
 		req.append( '%d' %band )		
@@ -106,11 +106,11 @@ class ElisCommander( EventCommander ):
 	returns [ChannelList] or ['NULL']
 	channel[Number, PresentationNumber, Name, ServiceType, Locked, IsCA, IsHD, Nid, Sid, Onid, CarrierType ]
 	"""
-	def Channel_GetListByFavorite( self, serviceType, zappimgMode, sortingMode, favoriteName, channelList ):
+	def Channel_GetListByFavorite( self, serviceType, zappingMode, sortingMode, favoriteName, channelList ):
 		req = []
 		req.append( ElisAction.Channel_GetListByFavorite )
 		req.append( '%d' %serviceType )
-		req.append( '%d' %zappimgMode )
+		req.append( '%d' %zappingMode )
 		req.append( '%d' %sortingMode )
 		req.append( favoriteName )
 		self.send( req )
@@ -125,11 +125,11 @@ class ElisCommander( EventCommander ):
 	returns [ChannelList] or ['NULL']
 	channel[Number, PresentationNumber, Name, ServiceType, Locked, IsCA, IsHD, Nid, Sid, Onid, CarrierType ]
 	"""
-	def Channel_GetListByFTACas( self, serviceType, zappimgMode, sortingMode, CAId, channelList ):
+	def Channel_GetListByFTACas( self, serviceType, zappingMode, sortingMode, CAId, channelList ):
 		req = []
 		req.append( ElisAction.Channel_GetListByFTACas )
 		req.append( '%d' %serviceType )
-		req.append( '%d' %zappimgMode )
+		req.append( '%d' %zappingMode )
 		req.append( '%d' %sortingMode )
 		req.append( '%d' %CAId )
 		self.send( req )

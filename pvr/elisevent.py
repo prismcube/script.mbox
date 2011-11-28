@@ -256,6 +256,17 @@ class ElisEnum(object):
 	# property
 	E_DEFAULT_STEP					= 1
 	E_DEFAULT_MAX					= 0x7fffffff
+
+	E_FTA_CHANNEL 					= 0
+	E_MEDIAGUARD 					= 1 << 0
+	E_VIACCESS  					= 1 << 1
+	E_NAGRA 						= 1 << 2
+	E_IRDETO 						= 1 << 3
+	E_CONAX 						= 1 << 4
+	E_CRYPTOWORKS 					= 1 << 5
+	E_NDS 							= 1 << 6
+	E_BETADIGITAL 					= 1 << 7
+	E_OTHERS 						= 1 << 15	
 	
 
 
