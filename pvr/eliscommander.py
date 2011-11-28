@@ -180,7 +180,7 @@ class ElisCommander( EventCommander ):
 	def Channel_GetCarrierForDVBS( self ):
 		req = []
 		req.append( ElisAction.Channel_GetCarrierForDVBS )
-		self.command( req )
+		reply = self.command( req )
 		return reply
 
 	"""
@@ -191,7 +191,7 @@ class ElisCommander( EventCommander ):
 	def Channel_GetCarrierForDVBT( self ):
 		req = []
 		req.append( ElisAction.Channel_GetCarrierForDVBS )
-		self.command( req )
+		reply = self.command( req )
 		return reply
 
 	"""
@@ -202,7 +202,7 @@ class ElisCommander( EventCommander ):
 	def Channel_GetCarrierForDVBC( self ):
 		req = []
 		req.append( ElisAction.Channel_GetCarrierForDVBS )
-		self.command( req )
+		reply = self.command( req )
 		return reply
 
 
