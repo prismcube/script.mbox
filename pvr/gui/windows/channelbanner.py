@@ -138,7 +138,7 @@ class ChannelBanner(BaseWindow):
 			self.updateLocalTime().join()
 
 			self.close( )
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
+#			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
 #			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
 #			winmgr.shutdown()
 
