@@ -78,7 +78,6 @@ class LanguageSetting(SettingWindow):
 				
 		elif actionId == Action.ACTION_PARENT_DIR:
 			self.close( )
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_MAINMENU )
 
 		elif actionId == Action.ACTION_MOVE_UP:
 			self.controlUp( )

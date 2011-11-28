@@ -47,18 +47,14 @@ class MainMenu(BaseWindow):
 		elif id == Action.ACTION_PARENT_DIR:			
 			print 'lael98 check ation back'
 			self.close()
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
 
 	def onClick(self, controlId):
 		print "onclick(): control %d" % controlId
 		if controlId == 70301:
-			self.close()		
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_LANGUAGE_SETTING )
 		elif  controlId == 70302:
-			self.close()		
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_PARENTAL_LOCK )
 		elif  controlId == 70303:
-			self.close()		
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_RECORDING_OPTIONS )
 		elif controlId == 20 :
 			self.close()
