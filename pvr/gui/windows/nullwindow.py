@@ -43,12 +43,10 @@ class NullWindow(BaseWindow):
 
 		if id == Action.ACTION_PREVIOUS_MENU:
 			print 'lael98 check ation menu'
-			self.close( )
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_MAINMENU )
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'lael98 check ation parentdir'
 		elif id == Action.ACTION_SELECT_ITEM:
-			self.close( )
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
 #			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )
 			print 'lael98 check ation select'

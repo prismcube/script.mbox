@@ -157,9 +157,9 @@ class SettingWindow(BaseWindow):
 
 
 	def removeAllControl(self):
-		for ctrlItem in self.controlList:
-			if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
-				self.resetControl( self.getControl( ctrlItem.controlId + 3 ) )
+		#for ctrlItem in self.controlList:
+		#	if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
+		#self.resetControl( self.getControl( ctrlItem.controlId + 3 ) )
 		self.controlList = []
 
 
