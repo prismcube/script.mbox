@@ -30,10 +30,12 @@ import pvr.elismgr
 from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import FooterMask
 
+import pvr.msg as m
 import thread, time
 
 
 class ChannelListWindow(BaseWindow):
+
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
 		self.commander = pvr.elismgr.getInstance().getCommander()		
@@ -112,12 +114,6 @@ class ChannelListWindow(BaseWindow):
 			#etc
 			self.listEnableFlag = False
 
-		#get setting language
-		#name=''
-		#ret=self.commander.enum_GetProp(name)
-		#print 'language ret[%s] name[%s]'% (ret,name)
-
-
 		#initialize get channel list
 		self.initTabHeader()
 
@@ -155,13 +151,6 @@ class ChannelListWindow(BaseWindow):
 			print '<<<<< test youn: action ID[%s]' % id
 			print 'tv_guide_last_selected[%s]' % action.getId()
 			self.getTabHeader()
-			#import locale, codecs
-			#lc=locale.normalize("fr")
-			#print 'lc[%s]'% lc
-			#print 'locale [%s]'% locale._setlocale(0, locale._build_localename( ('fr_FR.ISO8859-1') ) )
-			#print 'locale[%s]'% locale.resetlocale()
-			
-
 			
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'lael98 check ation back'
@@ -174,8 +163,31 @@ class ChannelListWindow(BaseWindow):
 
 			self.listcontrol.reset()
 
+		elif id == 13: #'x'
+			#pass
+			#get setting language
+			#name=''
+			#ret=self.commander.enum_GetProp(name)
+			#print 'language ret[%s] name[%s]'% (ret,name)
+
+			import locale, codecs
+			lc=locale.normalize("fr")
+			print 'lc[%s]'% lc
+			kc = ('C', lc)
+			#print 'locale [%s]'% locale._setlocale(0, locale._build_localename( kc ) )
+			#self.ctrlHeader2.setLabel(str('[%s]'% lc))
+			import gettext
+			gettext.translation(self,None,None,None,None, lc)
+
+
+			
+			#print 'locale [%s]'% locale._setlocale(0, locale._build_localename( ('fr_FR.ISO8859-1') ) )
+			#print 'locale[%s]'% locale.resetlocale()
+		
+		
 		else:
 			pass
+			#self.ctrlHeader2.setLabel(str('key[%s]'% action.getId()))
 			#print'Unconsumed key: %s' % action.getId()
 
 
@@ -421,11 +433,10 @@ class ChannelListWindow(BaseWindow):
 		#header, footer init
 		self.ctrlHeader1.setImage('IconHeaderTitleSmall.png')
 		#self.ctrlHeader2.setLabel('TV-Channel List')
-		from pvr.util import NativeTranslator
-		import pvr.platform
-		self.platform = pvr.platform.getPlatform()
-		self.translator = NativeTranslator(self.platform.getScriptDir())
-		
+		self.ctrlHeader2.setLabel(m.strings(2001))
+
+
+
 		self.ctrlHeader3.setLabel('')		
 		self.ctrlHeader4.setLabel('')
 
