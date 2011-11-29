@@ -324,8 +324,10 @@ class SettingWindow(BaseWindow):
 	def controlLeft( self ):
 
 		focusId = self.getFocusId( )
+		print 'dhkim test focusid LEFT = %d' % focusId
 		if ( focusId % 10 ) == 2 :
 			focusId -= 1
+			print 'dhkim test focusid LEFT = %d' % focusId
 			self.setFocusId( focusId )
 
 	#def controlDescription( self, wnd, controlId ) :

@@ -77,6 +77,8 @@ class ParentalLock(SettingWindow):
 			print 'dhkim test Action Num = %d' % focusId
 			if ( not(self.getFocusId( ) == 9000) ) and ( ( focusId % 10 ) == 1 ) :
 				self.setFocusId( 9000 )
+			else :
+				self.controlLeft( )
 				
 
 	def onClick( self, controlId ):
