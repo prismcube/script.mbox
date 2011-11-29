@@ -25,28 +25,20 @@ class ParentalLock(SettingWindow):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs)
 		self.commander = pvr.elismgr.getInstance().getCommander( )
-
-		# Description List
+ 
 		self.LeftGroupItems						= ['Language', 'Parental']
-		self.navigationIds 						= [E_OSDLanguage,E_PrimaryAudioLanguage,E_PrimarySubtitleLanguage,E_SecondarySubtitleLanguage,E_ForTheHearingImpaired]
 		self.descriptionList					= ['Set menu and popup language', 'Set primary audio language', 'Set primary subtitle language', 'Set secondary subtitle language', 'Enable hearing impaired support']
 	
 		self.ctrlLeftGroup = 0
 		self.groupItems = []
-		
+
+		for i in range( len( self.LeftGroupItems ) ) :
+			self.groupItems.append( xbmcgui.ListItem( self.LeftGroupItems[i], '%s' % i, '-', '-', '-' ) )
+			
 	def onInit(self):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
 
-		self.setHeaderLabel( self.win, 'Language Preference' )
-		self.setFooter( self.win, ( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_SEARCH_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_RECORD_MASK ) )
-		
 		self.ctrlLeftGroup = self.getControl( 9000 )
-
-		count = len( self.LeftGroupItems )
-			
-		for i in range( count ) :
-			self.groupItems.append( xbmcgui.ListItem( self.LeftGroupItems[i], '-', '-', '-', '-' ) )	
-		
 		self.ctrlLeftGroup.addItems( self.groupItems )
 
 		self.setHeaderLabel( self.win, 'Language Preference' )
@@ -62,27 +54,33 @@ class ParentalLock(SettingWindow):
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			print 'LanguageSetting check action previous'
 		elif actionId == Action.ACTION_SELECT_ITEM :
-			self.controlSelect( )
+			print 'dhkim test Action select item event'
+			#self.controlSelect( )
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.close( )
+			winmgr.getInstance().showWindow( winmgr.WIN_ID_MAINMENU )
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			if not( self.getFocusId( ) == 9000 ) :
+			if self.getFocusId( ) == 9000 :
+				self.setListControl( )
+			else :
 				self.controlUp( )
-
+				
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			print 'dhkim 1'
-			if self.getFocusId( ) == 9000  :
-				print 'dhkim 2'
+			if self.getFocusId( ) == 9000 :
 				self.setListControl( )
 			else :
 				self.controlDown( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
-			self.setFocus( self.ctrlLeftGroup )
+			print 'dhkim test Action Num = %d' % focusId
+			if ( not(self.getFocusId( ) == 9000) ) and ( ( focusId % 10 ) == 1 ) :
+				self.setFocusId( 9000 )
+				
 
 	def onClick( self, controlId ):
+		print 'dhkim test onClieck event'
 		self.controlSelect( )
 
 		
@@ -92,9 +90,7 @@ class ParentalLock(SettingWindow):
 
 	def setListControl( self ):
 		self.removeAllControl( )
-		
 		if self.ctrlLeftGroup.getSelectedPosition( ) == 0 :
-			print 'dhkim test Position'
 			self.addEnumControl( E_OSDLanguage, 'Language' )
 			self.addEnumControl( E_PrimaryAudioLanguage, 'Audio Language' )
 			self.addEnumControl( E_PrimarySubtitleLanguage, 'Subtitle Language' )
