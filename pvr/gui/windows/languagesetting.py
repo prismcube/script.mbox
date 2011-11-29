@@ -26,7 +26,7 @@ class LanguageSetting(SettingWindow):
 		# Description List
 		self.navigationIds 						= [E_OSDLanguage,E_PrimaryAudioLanguage,E_PrimarySubtitleLanguage,E_SecondarySubtitleLanguage,E_ForTheHearingImpaired]
 		self.descriptionList					= ['Set menu and popup language', 'Set primary audio language', 'Set primary subtitle language', 'Set secondary subtitle language', 'Enable hearing impaired support']
-
+		
 		self.addEnumControl( E_OSDLanguage, 'Language' )
 		self.addEnumControl( E_PrimaryAudioLanguage, 'Audio Language' )
 		self.addEnumControl( E_PrimarySubtitleLanguage, 'Subtitle Language' )

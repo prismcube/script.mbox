@@ -19,6 +19,7 @@
 			<defaultcontrol always="true">1101</defaultcontrol>
 			<control type="button" id="1101">
 				<description>Menu Item Next Button</description>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -34,8 +35,7 @@
 				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1102">
-				<description>Menu Item Prev Button</description>
-				<hitrect x="0" y="0" w="680" h="40" />				
+				<description>Menu Item Prev Button</description>		
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -160,6 +160,7 @@
 			<defaultcontrol always="true">1201</defaultcontrol>
 			<control type="button" id="1201">
 				<description>Menu Item Next Button</description>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -175,7 +176,7 @@
 				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1202">
-				<description>Menu Item Prev Button</description>
+				<description>Menu Item Prev Button</description>				
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -300,6 +301,7 @@
 			<defaultcontrol always="true">1301</defaultcontrol>
 			<control type="button" id="1301">
 				<description>Menu Item Next Button</description>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -315,7 +317,7 @@
 				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1302">
-				<description>Menu Item Prev Button</description>
+				<description>Menu Item Prev Button</description>			
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -351,7 +353,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>680</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemFO.png</texture>
 						<visible>[Control.HasFocus(1301) | Control.HasFocus(1302)]</visible>
@@ -440,6 +442,7 @@
 			<defaultcontrol always="true">1401</defaultcontrol>
 			<control type="button" id="1401">
 				<description>Menu Item Next Button</description>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -455,7 +458,7 @@
 				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1402">
-				<description>Menu Item Prev Button</description>
+				<description>Menu Item Prev Button</description>		
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -580,6 +583,7 @@
 			<defaultcontrol always="true">1501</defaultcontrol>
 			<control type="button" id="1501">
 				<description>Menu Item Next Button</description>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -595,7 +599,7 @@
 				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1502">
-				<description>Menu Item Prev Button</description>
+				<description>Menu Item Prev Button</description>				
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -720,6 +724,7 @@
 			<defaultcontrol always="true">1601</defaultcontrol>
 			<control type="button" id="1601">
 				<description>Menu Item Next Button</description>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -735,7 +740,7 @@
 				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1602">
-				<description>Menu Item Prev Button</description>
+				<description>Menu Item Prev Button</description>		
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -860,6 +865,7 @@
 			<defaultcontrol always="true">1701</defaultcontrol>
 			<control type="button" id="1701">
 				<description>Menu Item Next Button</description>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -875,7 +881,7 @@
 				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1702">
-				<description>Menu Item Prev Button</description>
+				<description>Menu Item Prev Button</description>			
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -1000,6 +1006,7 @@
 			<defaultcontrol always="true">1801</defaultcontrol>
 			<control type="button" id="1801">
 				<description>Menu Item Next Button</description>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -1015,7 +1022,7 @@
 				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1802">
-				<description>Menu Item Prev Button</description>
+				<description>Menu Item Prev Button</description>		
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -1140,6 +1147,7 @@
 			<defaultcontrol always="true">1901</defaultcontrol>
 			<control type="button" id="1901">
 				<description>Menu Item Next Button</description>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -1155,7 +1163,7 @@
 				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1902">
-				<description>Menu Item Prev Button</description>
+				<description>Menu Item Prev Button</description>				
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>

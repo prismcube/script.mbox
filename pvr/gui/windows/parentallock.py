@@ -65,7 +65,6 @@ class ParentalLock(SettingWindow):
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.initialized = False
 			self.close( )
-			#inmgr.getInstance().showWindow( winmgr.WIN_ID_MAINMENU )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == 9000 :
@@ -90,7 +89,7 @@ class ParentalLock(SettingWindow):
 				self.setFocusId( 9010 )
 			elif ( focusId != 9000 ) and ( ( focusId % 10 ) == 2 ) :
 				self.setFocusId( 9000 )
-			else :
+			elif ( focusId != 9000 ) and ( ( focusId % 10 ) == 1 ) :
 				self.controlRight( )
 
 	def onClick( self, controlId ):
@@ -106,33 +105,33 @@ class ParentalLock(SettingWindow):
 				self.setListControl( )
 			self.lastFocused = controlId
 			self.prevListItemID = self.ctrlLeftGroup.getSelectedPosition()
-		'''
-		selectedIndex = self.getSelectedIndex( E_PrimarySubtitleLanguage )
-		if ( selectedIndex == 0 ) and ( self.ctrlLeftGroup.getSelectedPosition( ) == 0 ):
-			self.setEnableControl( E_SecondarySubtitleLanguage, False )
-			self.setEnableControl( E_ForTheHearingImpaired, False )
-		else:
-			self.setEnableControl( E_SecondarySubtitleLanguage, True )
-			self.setEnableControl( E_ForTheHearingImpaired, True )
-		'''
+		
 
 	def setListControl( self ):
-		self.removeAllControl( )
+		self.resetAllControl( )
 		ctrlLeftGroup = self.getControl( 9000 )
 		selectedId = ctrlLeftGroup.getSelectedPosition()
-		print 'dhkim test getSelectedPosition( ) #2 = %s' % selectedId
 		
 		if selectedId == 0 :
-			self.addEnumControl( E_OSDLanguage, 'Language' )
-			self.addEnumControl( E_PrimaryAudioLanguage, 'Audio Language' )
-			self.addEnumControl( E_PrimarySubtitleLanguage, 'Subtitle Language' )
-			self.addEnumControl( E_SecondarySubtitleLanguage, 'Secondary Subtitle Language' )
-			self.addEnumControl( E_ForTheHearingImpaired, 'Hearing Impaired' )
+			self.addEnumControl( E_OSDLanguage, 'Language')
+			self.addEnumControl( E_PrimaryAudioLanguage, 'Audio Language')
+			self.addEnumControl( E_PrimarySubtitleLanguage, 'Subtitle Language')
+			self.addEnumControl( E_SecondarySubtitleLanguage, 'Secondary Subtitle Language')
+			self.addEnumControl( E_ForTheHearingImpaired, 'Hearing Impaired')
+
+			selectedIndex = self.getSelectedIndex( E_PrimarySubtitleLanguage )
+			if ( selectedIndex == 0 ) and ( self.ctrlLeftGroup.getSelectedPosition( ) == 0 ):
+				self.setEnableControl( E_SecondarySubtitleLanguage, False )
+				self.setEnableControl( E_ForTheHearingImpaired, False )
+			else:
+				self.setEnableControl( E_SecondarySubtitleLanguage, True )
+				self.setEnableControl( E_ForTheHearingImpaired, True )
+			
 			self.initControl( )
 		elif selectedId == 1 :		
-			self.addEnumControl( E_AutomaticTimeshift, 'Automatic Timeshift' )
-			self.addEnumControl( E_DefaultRecordDuration, 'Default Rec Duration' )
-			self.addEnumControl( E_PreRecordingTime, 'Pre-Rec Time' )
-			self.addEnumControl( E_PostRecordingTime, 'Post-Rec Time' )
+			self.addEnumControl( E_AutomaticTimeshift, 'Automatic Timeshift')
+			self.addEnumControl( E_DefaultRecordDuration, 'Default Rec Duration')
+			self.addEnumControl( E_PreRecordingTime, 'Pre-Rec Time')
+			self.addEnumControl( E_PostRecordingTime, 'Post-Rec Time')
 			self.initControl( )
 		
