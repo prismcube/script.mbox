@@ -35,6 +35,7 @@
 			</control>
 			<control type="button" id="1102">
 				<description>Menu Item Prev Button</description>
+				<hitrect x="0" y="0" w="680" h="40" />				
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>

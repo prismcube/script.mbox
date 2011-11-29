@@ -47,7 +47,8 @@ class ParentalLock(SettingWindow):
 		self.setHeaderLabel( self.win, 'Language Preference' )
 		self.setFooter( self.win, ( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_SEARCH_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_RECORD_MASK ) )
 		self.initialized = True
-		self.ctrlLeftGroup.selectItem( 0 )
+		position = self.ctrlLeftGroup.getSelectedPosition()
+		self.ctrlLeftGroup.selectItem( position )
 		self.setListControl( )
 
 
@@ -62,8 +63,9 @@ class ParentalLock(SettingWindow):
 			print 'dhkim test Action select item event'
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
+			self.initialized = False
 			self.close( )
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_MAINMENU )
+			#inmgr.getInstance().showWindow( winmgr.WIN_ID_MAINMENU )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == 9000 :
