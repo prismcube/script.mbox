@@ -42,7 +42,6 @@
 				<onright>7001</onright>
 				<onup>7000</onup>
 				<ondown>7000</ondown>
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>300</scrolltime>
 				<focusposition>0</focusposition>
 				<movement>10</movement>

@@ -29,7 +29,7 @@
 				<texturefocus>scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1103,1)</onclick>
 				<onleft>-</onleft>
-				<onright>1102</onright>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
@@ -169,7 +169,7 @@
 				<texturefocus>scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1203,1)</onclick>
 				<onleft>-</onleft>
-				<onright>1202</onright>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
@@ -309,7 +309,7 @@
 				<texturefocus>scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1303,1)</onclick>
 				<onleft>-</onleft>
-				<onright>1302</onright>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
@@ -449,7 +449,7 @@
 				<texturefocus>scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1403,1)</onclick>
 				<onleft>-</onleft>
-				<onright>1402</onright>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
@@ -589,7 +589,7 @@
 				<texturefocus>scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1503,1)</onclick>
 				<onleft>-</onleft>
-				<onright>1502</onright>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
@@ -729,7 +729,7 @@
 				<texturefocus>scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1603,1)</onclick>
 				<onleft>-</onleft>
-				<onright>1602</onright>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
@@ -869,7 +869,7 @@
 				<texturefocus>scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1703,1)</onclick>
 				<onleft>-</onleft>
-				<onright>1702</onright>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
@@ -1009,7 +1009,7 @@
 				<texturefocus>scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1803,1)</onclick>
 				<onleft>-</onleft>
-				<onright>1802</onright>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
@@ -1149,7 +1149,7 @@
 				<texturefocus>scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1903,1)</onclick>
 				<onleft>-</onleft>
-				<onright>1902</onright>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>

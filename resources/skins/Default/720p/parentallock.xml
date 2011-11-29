@@ -3,7 +3,7 @@
 	<controls>
 		<include>MenuHeader</include>
 		<include>MenuFooter</include>
-		<control type="group">
+		<control type="group" id="1111">
 			<posx>90</posx>
 			<posy>50</posy>
 			<include>FadeEffect</include>	
@@ -28,13 +28,8 @@
 				<posy>90</posy>
 				<width>260</width>
 				<height>481</height>
-				<onleft>-</onleft>
-				<onright>9010</onright>
 				<onup>9000</onup>
 				<ondown>9000</ondown>
-				<pagecontrol>-</pagecontrol>
-				<scrolltime>300</scrolltime>
-				<focusposition>1</focusposition>
 				<itemlayout height="60" width="260">
 					<control type="image">
 						<posx>0</posx>
@@ -78,12 +73,12 @@
 				</focusedlayout>
 				<!--
 				<content>
-					<item id="0">
+					<item id="1">
 						<label>Language</label>
 						<onclick>-</onclick>
 						<visible>true</visible>
 					</item>
-					<item id="1">
+					<item id="2">
 						<label>Parental</label>
 						<onclick>-</onclick>
 						<visible>true</visible>
@@ -122,7 +117,6 @@
 			<control type="group" id="9010">
 				<control type="grouplist" id="9011">
 					<visible>StringCompare(Container(9000).ListItem.Label2,0)</visible>
-				<!--<visible>Container(9000).Row(0)</visible>-->
 					<posx>290</posx>
 					<posy>60</posy>
 					<width>750</width>
@@ -148,7 +142,6 @@
 				</control>
 				<control type="grouplist" id="9012">
 					<visible>StringCompare(Container(9000).ListItem.Label2,1)</visible>
-				<!--<visible>Container(9000).Row(1)</visible>-->
 					<posx>290</posx>
 					<posy>60</posy>
 					<width>750</width>

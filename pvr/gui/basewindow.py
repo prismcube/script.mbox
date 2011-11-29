@@ -148,15 +148,17 @@ class SettingWindow(BaseWindow):
 		BaseWindow.__init__(self, *args, **kwargs)
 		self.controlList = []
 
-	def initControl(self):
+	def initControl( self ):
+		print 'dhkim test for count = %d' % len( self.controlList )
 		for ctrlItem in self.controlList:
+			selectedItem = ctrlItem.property.getPropIndex()
 			if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
 				control = self.getControl( ctrlItem.controlId + 3 )
 				control.addItems( ctrlItem.listItems )
-				control.selectItem( ctrlItem.property.getPropIndex() )
+				control.selectItem( selectedItem )
 
 
-	def removeAllControl(self):
+	def removeAllControl( self ):
 		#for ctrlItem in self.controlList:
 		#	if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
 		#		self.resetControl( self.getControl( ctrlItem.controlId + 3 ) )
@@ -324,10 +326,16 @@ class SettingWindow(BaseWindow):
 	def controlLeft( self ):
 
 		focusId = self.getFocusId( )
-		print 'dhkim test focusid LEFT = %d' % focusId
 		if ( focusId % 10 ) == 2 :
 			focusId -= 1
-			print 'dhkim test focusid LEFT = %d' % focusId
+			self.setFocusId( focusId )
+
+	
+	def controlRight( self ):
+
+		focusId = self.getFocusId( )
+		if ( focusId % 10 ) == 1 :
+			focusId += 1
 			self.setFocusId( focusId )
 
 	#def controlDescription( self, wnd, controlId ) :
