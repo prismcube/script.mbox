@@ -83,7 +83,6 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader32        = self.getControl( 232 )
 			self.ctrltabHeader42        = self.getControl( 242 )
 
-			self.ctrltest               = self.getControl( 501 )
 
 			#epg stb time
 			self.ctrlHeader3.setLabel('')
@@ -173,6 +172,7 @@ class ChannelListWindow(BaseWindow):
 			#print 'locale [%s]'% locale._setlocale(0, locale._build_localename( ('fr_FR.ISO8859-1') ) )
 			#print 'locale[%s]'% locale.resetlocale()
 
+			"""
 			cwd='C:\Users\SERVER\AppData\Roaming\XBMC\userdata\guisettings.xml'
 			print 'getcwd[%s]'% cwd
 			f = open(cwd, 'r')
@@ -186,9 +186,11 @@ class ChannelListWindow(BaseWindow):
 					rr = retstr.rfind('</language>')
 					retlabel = retstr[10:rr]
 					print 'retstr[%s]'% retlabel
-					self.ctrltest.setLabel('Language : '+retlabel)
+					self.ctrlBtn.setLabel(retlabel)
 			f.close()
-		
+			"""
+			print 'cwd[%s]'% xbmc.getLanguage()
+
 		else:
 			pass
 			#self.ctrlHeader2.setLabel(str('key[%s]'% action.getId()))
