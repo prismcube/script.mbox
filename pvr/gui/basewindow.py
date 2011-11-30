@@ -107,6 +107,7 @@ class Property(object):
 
 
 class BaseWindow(xbmcgui.WindowXML, Property):
+
 	def __init__(self, *args, **kwargs):
 		xbmcgui.WindowXML.__init__(self, *args, **kwargs)
 		self.win = None        
