@@ -101,6 +101,7 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader32        = self.getControl( 232 )
 			self.ctrltabHeader42        = self.getControl( 242 )
 
+			self.ctrltest               = self.getControl( 501 )
 
 			#epg stb time
 			self.ctrlHeader3.setLabel('')
@@ -168,20 +169,43 @@ class ChannelListWindow(BaseWindow):
 			#ret=self.commander.enum_GetProp(name)
 			#print 'language ret[%s] name[%s]'% (ret,name)
 
-			import locale, codecs
-			lc=locale.normalize("fr")
-			print 'lc[%s]'% lc
-			kc = ('C', lc)
-			#print 'locale [%s]'% locale._setlocale(0, locale._build_localename( kc ) )
+			import locale, codecs, os, xbmcaddon, gettext
+			#lc=locale.normalize("fr")
+			#lc = locale._build_localename(locale.getdefaultlocale())
+			
+			#print 'lc[%s]'% gettext.NullTranslations.info()
+			#print 'lc[%s]'% lc
+			#dlc = locale._print_locale()
+			#print 'get[%s]'% dlc
+			
+			#dlc = ('ko_KR', 'cp949')
+			#locale.setlocale(0, 'ISO8859-1')
+			#locale.setlocale(0, locale._build_localename(dlc) )
+			#locale.resetlocale(0)
 			#self.ctrlHeader2.setLabel(str('[%s]'% lc))
-			import gettext
-			gettext.translation(self,None,None,None,None, lc)
-
-
+			#import gettext
+			#LOCALE_DIR = os.path.dirname(__file__)
+			#domain = gettext.bindtextdomain('imdbpy', LOCALE_DIR)			
+			#gettext.translation(domain,None,None,None,None, lc)
 			
 			#print 'locale [%s]'% locale._setlocale(0, locale._build_localename( ('fr_FR.ISO8859-1') ) )
 			#print 'locale[%s]'% locale.resetlocale()
-		
+
+			cwd='C:\Users\SERVER\AppData\Roaming\XBMC\userdata\guisettings.xml'
+			print 'getcwd[%s]'% cwd
+			f = open(cwd, 'r')
+			import re
+			for line in f.readlines():
+				ret = re.search('<language>\w*</language>', line)
+				if ret != None:
+					print 'ret[%s]'% ret.group()
+					retstr = ret.group()
+					ll = retstr.find('<language>')
+					rr = retstr.rfind('</language>')
+					retlabel = retstr[10:rr]
+					print 'retstr[%s]'% retlabel
+					self.ctrltest.setLabel('Language : '+retlabel)
+			f.close()
 		
 		else:
 			pass
