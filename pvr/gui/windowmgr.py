@@ -1,21 +1,3 @@
-#
-#  MythBox for XBMC - http://mythbox.googlecode.com
-#  Copyright (C) 2011 analogue@yahoo.com
-#
-#  This program is free software; you can redistribute it and/or
-#  modify it under the terms of the GNU General Public License
-#  as published by the Free Software Foundation; either version 2
-#  of the License, or (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-#
 import xbmc
 import xbmcgui
 import sys
@@ -30,9 +12,7 @@ WIN_ID_CHANNEL_LIST_WINDOW			= 3
 WIN_ID_CHANNEL_BANNER				= 4
 WIN_ID_LANGUAGE_SETTING				= 5
 WIN_ID_PARENTAL_LOCK				= 6
-WIN_ID_RECORDING_OPTIONS			= 7
-
-
+WIN_ID_CONFIGURE					= 7
 
 
 __windowmgr = None
@@ -48,7 +28,6 @@ def getInstance():
 	return __windowmgr
 
 
-
 class WindowMgr(object):
 	def __init__(self):
 		print 'lael98 check %d %s' %(currentframe().f_lineno, currentframe().f_code.co_filename)
@@ -61,8 +40,9 @@ class WindowMgr(object):
 		from pvr.gui.windows.mainmenu import MainMenu
 		from pvr.gui.windows.channellistwindow import ChannelListWindow
 		from pvr.gui.windows.channelbanner import ChannelBanner
-		from pvr.gui.windows.languagesetting  import LanguageSetting
-		from pvr.gui.windows.parentallock  import ParentalLock		
+		from pvr.gui.windows.languagesetting import LanguageSetting
+		from pvr.gui.windows.parentallock import ParentalLock	
+		from pvr.gui.windows.configure import Configure
 		
 		self.windows = {
 			WIN_ID_NULLWINDOW 					: NullWindow('nullwindow.xml', self.scriptDir ),
@@ -71,6 +51,7 @@ class WindowMgr(object):
 			WIN_ID_CHANNEL_BANNER				: ChannelBanner('channelbanner.xml', self.scriptDir ),
 			WIN_ID_LANGUAGE_SETTING				: LanguageSetting('languagesetting.xml', self.scriptDir ),			
 			WIN_ID_PARENTAL_LOCK				: ParentalLock('parentallock.xml', self.scriptDir ),
+			WIN_ID_CONFIGURE					: Configure('configure.xml', self.scriptDir )
 		}
 
 
