@@ -98,26 +98,16 @@
 						<visible>true</visible>
 					</item>
 					<item id="3">
-						<label>User Preference</label>
+						<label>Configure</label>
 						<onclick>right</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="4">
-						<label>Audio/Video</label>
-						<onclick>right</onclick>
-						<visible>true</visible>
-					</item>
-					<item id="5">
-						<label>Receiver Setup</label>
-						<onclick>right</onclick>
-						<visible>true</visible>
-					</item>
-					<item id="6">
 						<label>CAS</label>
 						<onclick>right</onclick>
 						<visible>true</visible>
 					</item>
-					<item id="7">
+					<item id="5">
 						<label>Media Center</label>
 						<onclick>right</onclick>
 						<visible>true</visible>
@@ -252,10 +242,10 @@
 						<visible>true</visible>
 					</control>
 				</control>
-				<!-- User Preference -->
+				<!-- Configure -->
 				<control type="grouplist" id="7030">
 					<posx>10</posx>
-					<posy>140</posy>
+					<posy>150</posy>
 					<width>240</width>
 					<height>240</height>
 					<align>center</align>
@@ -266,30 +256,12 @@
 					<visible>Container(7000).HasFocus(3)</visible>
 					<control type="button" id="70301">
 						<include>ButtonHomeSubCommonValues</include>
-						<label>Language</label>
-						<onclick>-</onclick>
-						<visible>true</visible>
-					</control>
-					<control type="button" id="70302">
-						<include>ButtonHomeSubCommonValues</include>
-						<label>Parental Lock</label>
-						<onclick>-</onclick>
-						<visible>true</visible>
-					</control>
-					<control type="button" id="70303">
-						<include>ButtonHomeSubCommonValues</include>
-						<label>Recording Options</label>
-						<onclick>-</onclick>
-						<visible>true</visible>
-					</control>
-					<control type="button" id="70304">
-						<include>ButtonHomeSubCommonValues</include>
-						<label>Banner Options</label>
+						<label>Configure</label>
 						<onclick>-</onclick>
 						<visible>true</visible>
 					</control>
 				</control>
-				<!-- Audio/Video -->
+				<!-- CAS -->
 				<control type="grouplist" id="7040">
 					<posx>10</posx>
 					<posy>210</posy>
@@ -303,23 +275,17 @@
 					<visible>Container(7000).HasFocus(4)</visible>
 					<control type="button" id="70401">
 						<include>ButtonHomeSubCommonValues</include>
-						<label>Audio Setting</label>
-						<onclick>-</onclick>
-						<visible>true</visible>
-					</control>
-					<control type="button" id="70402">
-						<include>ButtonHomeSubCommonValues</include>
-						<label>Video Setting</label>
+						<label>Smartcard</label>
 						<onclick>-</onclick>
 						<visible>true</visible>
 					</control>
 				</control>
-				<!-- Receiver Setup -->
+				<!-- Media Center -->
 				<control type="grouplist" id="7050">
 					<posx>10</posx>
-					<posy>280</posy>
+					<posy>250</posy>
 					<width>240</width>
-					<height>240</height>
+					<height>360</height>
 					<align>center</align>
 					<onleft>7000</onleft>
 					<onup>7050</onup>
@@ -328,115 +294,53 @@
 					<visible>Container(7000).HasFocus(5)</visible>
 					<control type="button" id="70501">
 						<include>ButtonHomeSubCommonValues</include>
-						<label>Factory Reset</label>
-						<onclick>-</onclick>
-						<visible>true</visible>
-					</control>
-					<control type="button" id="70502">
-						<include>ButtonHomeSubCommonValues</include>
-						<label>Fan Control</label>
-						<onclick>-</onclick>
-						<visible>true</visible>
-					</control>
-					<control type="button" id="70503">
-						<include>ButtonHomeSubCommonValues</include>
-						<label>Storage</label>
-						<onclick>-</onclick>
-						<visible>true</visible>
-					</control>
-					<control type="button" id="70504">
-						<include>ButtonHomeSubCommonValues</include>
-						<label>Network</label>
-						<onclick>-</onclick>
-						<visible>true</visible>
-					</control>
-					<control type="button" id="70505">
-						<include>ButtonHomeSubCommonValues</include>
-						<label>Front Display</label>
-						<onclick>-</onclick>
-						<visible>true</visible>
-					</control>
-				</control>
-				<!-- CAS -->
-				<control type="grouplist" id="7060">
-					<posx>10</posx>
-					<posy>350</posy>
-					<width>240</width>
-					<height>240</height>
-					<align>center</align>
-					<onleft>7000</onleft>
-					<onup>7060</onup>
-					<ondown>7060</ondown>
-					<itemgap>0</itemgap>
-					<visible>Container(7000).HasFocus(6)</visible>
-					<control type="button" id="70601">
-						<include>ButtonHomeSubCommonValues</include>
-						<label>Smartcard</label>
-						<onclick>-</onclick>
-						<visible>true</visible>
-					</control>
-				</control>
-				<!-- Media Center -->
-				<control type="grouplist" id="7070">
-					<posx>10</posx>
-					<posy>300</posy>
-					<width>240</width>
-					<height>360</height>
-					<align>center</align>
-					<onleft>7000</onleft>
-					<onup>7070</onup>
-					<ondown>7070</ondown>
-					<itemgap>0</itemgap>
-					<visible>Container(7000).HasFocus(7)</visible>
-					<control type="button" id="70701">
-						<include>ButtonHomeSubCommonValues</include>
 						<label>Weather</label>
 						<onclick>ActivateWindow(Weather)</onclick>
 						<visible>true</visible>
 					</control>
-					<control type="button" id="70702">
+					<control type="button" id="70502">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>Pictures</label>
 						<onclick>ActivateWindow(Pictures)</onclick>
 						<visible>true</visible>
 					</control>
-					<control type="button" id="70703">
+					<control type="button" id="70503">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>Music</label>
 						<onclick>ActivateWindow(Music)</onclick>
 						<visible>true</visible>
 					</control>
-					<control type="button" id="70704">
+					<control type="button" id="70504">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>Videos</label>
 						<onclick>ActivateWindow(Videos)</onclick>
 						<visible>true</visible>
 					</control>
-					<control type="button" id="70705">
+					<control type="button" id="70505">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>Programs</label>
 						<onclick>ActivateWindow(Programs,Addons,return)</onclick>
 						<visible>true</visible>
 					</control>
-					<control type="button" id="70706">
+					<control type="button" id="70506">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>Settings</label>
 						<onclick>ActivateWindow(Settings)</onclick>
 						<visible>true</visible>
 					</control>
-					<control type="button" id="70707">
+					<control type="button" id="70507">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>File Manager</label>
 						<onclick>ActivateWindow(FileManager)</onclick>
 						<visible>true</visible>
 					</control>
-					<control type="button" id="70708">
+					<control type="button" id="70508">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>Profiles</label>
 						<onclick>ActivateWindow(Profiles)</onclick>
 						<visible>true</visible>
 					</control>
-					<control type="button" id="70709">
+					<control type="button" id="70509">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>System Info</label>
 						<onclick>ActivateWindow(SystemInfo)</onclick>
