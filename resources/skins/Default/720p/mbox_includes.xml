@@ -19,6 +19,7 @@
 			<defaultcontrol always="true">1101</defaultcontrol>
 			<control type="button" id="1101">
 				<description>Menu Item Next Button</description>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -28,13 +29,13 @@
 				<texturenofocus>scroll-down-2.png</texturenofocus>
 				<texturefocus>scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1103,1)</onclick>
-				<onleft>1102</onleft>
-				<onright>1102</onright>
+				<onleft>-</onleft>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1102">
-				<description>Menu Item Prev Button</description>
+				<description>Menu Item Prev Button</description>		
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -44,8 +45,8 @@
 				<texturenofocus>scroll-up-2.png</texturenofocus>
 				<texturefocus>scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1103,-1)</onclick>
-				<onleft>1101</onleft>
-				<onright>1101</onright>
+				<onleft>-</onleft>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
@@ -159,6 +160,7 @@
 			<defaultcontrol always="true">1201</defaultcontrol>
 			<control type="button" id="1201">
 				<description>Menu Item Next Button</description>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -168,13 +170,13 @@
 				<texturenofocus>scroll-down-2.png</texturenofocus>
 				<texturefocus>scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1203,1)</onclick>
-				<onleft>1202</onleft>
-				<onright>1202</onright>
+				<onleft>-</onleft>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1202">
-				<description>Menu Item Prev Button</description>
+				<description>Menu Item Prev Button</description>				
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -184,8 +186,8 @@
 				<texturenofocus>scroll-up-2.png</texturenofocus>
 				<texturefocus>scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1203,-1)</onclick>
-				<onleft>1201</onleft>
-				<onright>1201</onright>
+				<onleft>-</onleft>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
@@ -299,6 +301,7 @@
 			<defaultcontrol always="true">1301</defaultcontrol>
 			<control type="button" id="1301">
 				<description>Menu Item Next Button</description>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -308,13 +311,13 @@
 				<texturenofocus>scroll-down-2.png</texturenofocus>
 				<texturefocus>scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1303,1)</onclick>
-				<onleft>1302</onleft>
-				<onright>1302</onright>
+				<onleft>-</onleft>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1302">
-				<description>Menu Item Prev Button</description>
+				<description>Menu Item Prev Button</description>			
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -324,8 +327,8 @@
 				<texturenofocus>scroll-up-2.png</texturenofocus>
 				<texturefocus>scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1303,-1)</onclick>
-				<onleft>1301</onleft>
-				<onright>1301</onright>
+				<onleft>-</onleft>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
@@ -350,7 +353,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>680</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemFO.png</texture>
 						<visible>[Control.HasFocus(1301) | Control.HasFocus(1302)]</visible>
@@ -439,6 +442,7 @@
 			<defaultcontrol always="true">1401</defaultcontrol>
 			<control type="button" id="1401">
 				<description>Menu Item Next Button</description>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -448,13 +452,13 @@
 				<texturenofocus>scroll-down-2.png</texturenofocus>
 				<texturefocus>scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1403,1)</onclick>
-				<onleft>1402</onleft>
-				<onright>1402</onright>
+				<onleft>-</onleft>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1402">
-				<description>Menu Item Prev Button</description>
+				<description>Menu Item Prev Button</description>		
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -464,8 +468,8 @@
 				<texturenofocus>scroll-up-2.png</texturenofocus>
 				<texturefocus>scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1403,-1)</onclick>
-				<onleft>1401</onleft>
-				<onright>1401</onright>
+				<onleft>-</onleft>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
@@ -579,6 +583,7 @@
 			<defaultcontrol always="true">1501</defaultcontrol>
 			<control type="button" id="1501">
 				<description>Menu Item Next Button</description>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -588,13 +593,13 @@
 				<texturenofocus>scroll-down-2.png</texturenofocus>
 				<texturefocus>scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1503,1)</onclick>
-				<onleft>1502</onleft>
-				<onright>1502</onright>
+				<onleft>-</onleft>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1502">
-				<description>Menu Item Prev Button</description>
+				<description>Menu Item Prev Button</description>				
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -604,8 +609,8 @@
 				<texturenofocus>scroll-up-2.png</texturenofocus>
 				<texturefocus>scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1503,-1)</onclick>
-				<onleft>1501</onleft>
-				<onright>1501</onright>
+				<onleft>-</onleft>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
@@ -719,6 +724,7 @@
 			<defaultcontrol always="true">1601</defaultcontrol>
 			<control type="button" id="1601">
 				<description>Menu Item Next Button</description>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -728,13 +734,13 @@
 				<texturenofocus>scroll-down-2.png</texturenofocus>
 				<texturefocus>scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1603,1)</onclick>
-				<onleft>1602</onleft>
-				<onright>1602</onright>
+				<onleft>-</onleft>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1602">
-				<description>Menu Item Prev Button</description>
+				<description>Menu Item Prev Button</description>		
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -744,8 +750,8 @@
 				<texturenofocus>scroll-up-2.png</texturenofocus>
 				<texturefocus>scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1603,-1)</onclick>
-				<onleft>1601</onleft>
-				<onright>1601</onright>
+				<onleft>-</onleft>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
@@ -859,6 +865,7 @@
 			<defaultcontrol always="true">1701</defaultcontrol>
 			<control type="button" id="1701">
 				<description>Menu Item Next Button</description>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -868,13 +875,13 @@
 				<texturenofocus>scroll-down-2.png</texturenofocus>
 				<texturefocus>scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1703,1)</onclick>
-				<onleft>1702</onleft>
-				<onright>1702</onright>
+				<onleft>-</onleft>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1702">
-				<description>Menu Item Prev Button</description>
+				<description>Menu Item Prev Button</description>			
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -884,8 +891,8 @@
 				<texturenofocus>scroll-up-2.png</texturenofocus>
 				<texturefocus>scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1703,-1)</onclick>
-				<onleft>1701</onleft>
-				<onright>1701</onright>
+				<onleft>-</onleft>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
@@ -999,6 +1006,7 @@
 			<defaultcontrol always="true">1801</defaultcontrol>
 			<control type="button" id="1801">
 				<description>Menu Item Next Button</description>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -1008,13 +1016,13 @@
 				<texturenofocus>scroll-down-2.png</texturenofocus>
 				<texturefocus>scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1803,1)</onclick>
-				<onleft>1802</onleft>
-				<onright>1802</onright>
+				<onleft>-</onleft>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1802">
-				<description>Menu Item Prev Button</description>
+				<description>Menu Item Prev Button</description>		
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -1024,8 +1032,8 @@
 				<texturenofocus>scroll-up-2.png</texturenofocus>
 				<texturefocus>scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1803,-1)</onclick>
-				<onleft>1801</onleft>
-				<onright>1801</onright>
+				<onleft>-</onleft>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
@@ -1139,6 +1147,7 @@
 			<defaultcontrol always="true">1901</defaultcontrol>
 			<control type="button" id="1901">
 				<description>Menu Item Next Button</description>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -1148,13 +1157,13 @@
 				<texturenofocus>scroll-down-2.png</texturenofocus>
 				<texturefocus>scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1903,1)</onclick>
-				<onleft>1902</onleft>
-				<onright>1902</onright>
+				<onleft>-</onleft>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>
 			<control type="button" id="1902">
-				<description>Menu Item Prev Button</description>
+				<description>Menu Item Prev Button</description>				
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -1164,8 +1173,8 @@
 				<texturenofocus>scroll-up-2.png</texturenofocus>
 				<texturefocus>scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1903,-1)</onclick>
-				<onleft>1901</onleft>
-				<onright>1901</onright>
+				<onleft>-</onleft>
+				<onright>-</onright>
 				<onup>-</onup>
 				<ondown>-</ondown>
 			</control>

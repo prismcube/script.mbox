@@ -149,25 +149,20 @@ class SettingWindow(BaseWindow):
 		BaseWindow.__init__(self, *args, **kwargs)
 		self.controlList = []
 
-	def initControl(self):
+	def initControl( self ):
+		print 'dhkim test for count = %d' % len( self.controlList )
 		for ctrlItem in self.controlList:
+			selectedItem = ctrlItem.property.getPropIndex()
 			if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
 				control = self.getControl( ctrlItem.controlId + 3 )
 				control.addItems( ctrlItem.listItems )
-				control.selectItem( ctrlItem.property.getPropIndex() )
+				control.selectItem( selectedItem )
 
 
-	def removeAllControl(self):
-		#for ctrlItem in self.controlList:
-		#	if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
-		#self.resetControl( self.getControl( ctrlItem.controlId + 3 ) )
-		self.controlList = []
+	def resetAllControl( self ):
+		del self.controlList[:]
 
-
-	def resetControl( self, control ):
-		control.reset( )
 					
-
 	def addButtonControl( self, controlId ):
 		self.controlList.append( ControlItem( ControlItem.E_BUTTON_CONTROL, controlId,   None, None ) )
 
@@ -183,7 +178,7 @@ class SettingWindow(BaseWindow):
 		self.controlList.append( ControlItem( ControlItem.E_ENUM_CONTROL, controlId, property, listItems ) )
 
 
-	def hasControlItem( self, ctrlItem, controlId  ) :
+	def hasControlItem( self, ctrlItem, controlId  ):
 		if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
 			if ctrlItem.controlId == controlId or ctrlItem.controlId + 1 == controlId or ctrlItem.controlId + 2 == controlId or ctrlItem.controlId + 3 == controlId  :
 				return True
@@ -193,7 +188,7 @@ class SettingWindow(BaseWindow):
 
 		return False
 
-	def getPrevId( self, controlId ) :
+	def getPrevId( self, controlId ):
 		count = len( self.controlList )
 		prevId = -1
 		found = False
@@ -212,7 +207,7 @@ class SettingWindow(BaseWindow):
 
 		return prevId
 
-	def getNextId( self, controlId ) :
+	def getNextId( self, controlId ):
 		count = len( self.controlList )
 		nextId = -1
 		found = False
@@ -234,7 +229,7 @@ class SettingWindow(BaseWindow):
 		return nextId
 		
 
-	def getSelectedIndex( self, controlId ) :
+	def getSelectedIndex( self, controlId ):
 
 		count = len( self.controlList )
 
@@ -248,7 +243,7 @@ class SettingWindow(BaseWindow):
 
 		return -1
 
-	def getGroupId( self, controlId ) :
+	def getGroupId( self, controlId ):
 
 		count = len( self.controlList )
 
@@ -265,7 +260,7 @@ class SettingWindow(BaseWindow):
 		return -1
 		
 
-	def setEnableControl( self, controlId, enable ) :
+	def setEnableControl( self, controlId, enable ):
 
 		count = len( self.controlList )
 
@@ -280,7 +275,7 @@ class SettingWindow(BaseWindow):
 		return False
 	
 
-	def controlSelect	( self ) :
+	def controlSelect( self ):
 	
 		focusId = self.getFocusId( )
 		count = len( self.controlList )
@@ -291,12 +286,13 @@ class SettingWindow(BaseWindow):
 				if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
 					control = self.getControl( ctrlItem.controlId + 3 )
 					ctrlItem.property.setPropIndex( control.getSelectedPosition() )
+					print 'dhkim test setPropertyIndex'
 					return True
 
 		return False
 
 
-	def controlUp( self ) :
+	def controlUp( self ):
 
 		focusId = self.getFocusId( )
 		groupId = self.getGroupId( focusId )
@@ -309,7 +305,7 @@ class SettingWindow(BaseWindow):
 		return False
 
 
-	def controlDown( self ) :
+	def controlDown( self ):
 
 		focusId = self.getFocusId( )
 		groupId = self.getGroupId( focusId )
@@ -321,6 +317,20 @@ class SettingWindow(BaseWindow):
 
 		return False
 
+	def controlLeft( self ):
+
+		focusId = self.getFocusId( )
+		if ( focusId % 10 ) == 2 :
+			focusId -= 1
+			self.setFocusId( focusId )
+
+	
+	def controlRight( self ):
+
+		focusId = self.getFocusId( )
+		if ( focusId % 10 ) == 1 :
+			focusId += 1
+			self.setFocusId( focusId )
 
 	#def controlDescription( self, wnd, controlId ) :
 	#	pass
