@@ -63,7 +63,7 @@ class Launcher(object):
 
 	def powerOff( self ) :
 		self.shutdown()
-		xbmc.executebuiltin('xbmc.ShutDown')
+		xbmc.executebuiltin('xbmc.Quit')
 
 
 	def shutdown(self):
