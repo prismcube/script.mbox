@@ -1,12 +1,37 @@
 <window id="3006">
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<controls>
-		<include>MenuHeader</include>
-		<include>MenuFooter</include>
-		<control type="group" id="1111">
+		<include>CommonSettingsBackground</include>
+		<include>BehindDialogFadeOut</include>
+		<include>CommonDateTime</include>
+		<control type="group">
+			<posx>60</posx>
+			<posy>0</posy>
+			<animation effect="slide" end="-310,0" time="400" tween="quadratic" easing="out">WindowClose</animation>
+			<animation effect="slide" start="-310,0" time="400" tween="quadratic" easing="out">WindowOpen</animation>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>250</width>
+				<height>35</height>
+				<texture border="0,0,32,0">header.png</texture>
+			</control>
+			<control type="label">
+				<include>WindowTitleCommons</include>
+				<posx>220</posx>
+				<label>Configure</label>
+			</control>
+		</control>
+		<control type="group">
 			<posx>90</posx>
 			<posy>50</posy>
-			<include>FadeEffect</include>	
+			<animation type="WindowOpen" reversible="false">
+				<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
+				<effect type="fade" start="0" end="100" time="300" />
+			</animation>
+			<animation type="WindowClose" reversible="false">
+				<effect type="fade" start="100" end="0" time="500" />
+			</animation>				
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
@@ -71,20 +96,6 @@
 						<label>$INFO[ListItem.Label]</label>
 					</control>
 				</focusedlayout>
-				<!--
-				<content>
-					<item id="1">
-						<label>Language</label>
-						<onclick>-</onclick>
-						<visible>true</visible>
-					</item>
-					<item id="2">
-						<label>Parental</label>
-						<onclick>-</onclick>
-						<visible>true</visible>
-					</item>
-				</content>
-				-->
 			</control>
 			<control type="image">
 				<posx>268</posx>
@@ -108,7 +119,7 @@
 				<width>740</width>
 				<height>30</height>
 				<font>font16caps</font>
-				<label>$LOCALIZE[20077] - $INFO[Container(9000).ListItem.Label]</label>
+				<label>Configure - $INFO[Container(9000).ListItem.Label]</label>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>

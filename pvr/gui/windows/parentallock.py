@@ -32,7 +32,7 @@ class ParentalLock(SettingWindow):
 		self.prevListItemID = -1
 
 		for i in range( len( self.LeftGroupItems ) ) :
-			self.groupItems.append( xbmcgui.ListItem( self.LeftGroupItems[i], '%s' % i, '-', '-', '-' ) )
+			self.groupItems.append( xbmcgui.ListItem( self.LeftGroupItems[i], self.descriptionList[i], '-', '-', '-' ) )
 			
 	def onInit(self):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
@@ -40,8 +40,6 @@ class ParentalLock(SettingWindow):
 		self.ctrlLeftGroup = self.getControl( 9000 )
 		self.ctrlLeftGroup.addItems( self.groupItems )
 
-		self.setHeaderLabel( self.win, 'Language Preference' )
-		self.setFooter( self.win, ( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_SEARCH_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_RECORD_MASK ) )
 		self.initialized = True
 		position = self.ctrlLeftGroup.getSelectedPosition()
 		self.ctrlLeftGroup.selectItem( position )
@@ -88,6 +86,7 @@ class ParentalLock(SettingWindow):
 			elif ( focusId != 9000 ) and ( ( focusId % 10 ) == 1 ) :
 				self.controlRight( )
 
+
 	def onClick( self, controlId ):
 		self.controlSelect( )
 
@@ -96,7 +95,7 @@ class ParentalLock(SettingWindow):
 		if self.initialized == False :
 			return
 
-		if not( self.lastFocused == controlId ) or not(self.ctrlLeftGroup.getSelectedPosition() == self.prevListItemID):
+		if ( self.lastFocused != controlId ) or (self.ctrlLeftGroup.getSelectedPosition() != self.prevListItemID):
 			if controlId == 9000 :
 				self.setListControl( )
 			self.lastFocused = controlId
