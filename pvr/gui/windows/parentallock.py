@@ -10,16 +10,12 @@ import pvr.elismgr
 from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import FooterMask
 
-E_OSDLanguage					= 1100
-E_PrimaryAudioLanguage			= 1200
-E_PrimarySubtitleLanguage		= 1300
-E_SecondarySubtitleLanguage		= 1400
-E_ForTheHearingImpaired			= 1500
+E_SpinEx01			= 1100
+E_SpinEx02			= 1200
+E_SpinEx03			= 1300
+E_SpinEx04			= 1400
+E_SpinEx05			= 1500
 
-E_AutomaticTimeshift			= 1100
-E_DefaultRecordDuration			= 1200
-E_PreRecordingTime				= 1300
-E_PostRecordingTime				= 1400
 
 class ParentalLock(SettingWindow):
 	def __init__( self, *args, **kwargs ):
@@ -118,21 +114,34 @@ class ParentalLock(SettingWindow):
 
 	def setListControl( self ):
 		self.removeAllControl( )
+		print 'setListControl'
 		ctrlLeftGroup = self.getControl( 9000 )
 		selectedId = ctrlLeftGroup.getSelectedPosition()
 		print 'dhkim test getSelectedPosition( ) #2 = %s' % selectedId
 		
 		if selectedId == 0 :
-			self.addEnumControl( E_OSDLanguage, 'Language' )
-			self.addEnumControl( E_PrimaryAudioLanguage, 'Audio Language' )
-			self.addEnumControl( E_PrimarySubtitleLanguage, 'Subtitle Language' )
-			self.addEnumControl( E_SecondarySubtitleLanguage, 'Secondary Subtitle Language' )
-			self.addEnumControl( E_ForTheHearingImpaired, 'Hearing Impaired' )
+			self.addEnumControl( E_SpinEx01, 'Language' )
+			self.addEnumControl( E_SpinEx02, 'Audio Language' )
+			self.addEnumControl( E_SpinEx03, 'Subtitle Language' )
+			self.addEnumControl( E_SpinEx04, 'Secondary Subtitle Language' )
+			self.addEnumControl( E_SpinEx05, 'Hearing Impaired' )
+
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
+			self.setVisibleControls( visibleControlIds, True )
+
 			self.initControl( )
+
 		elif selectedId == 1 :		
-			self.addEnumControl( E_AutomaticTimeshift, 'Automatic Timeshift' )
-			self.addEnumControl( E_DefaultRecordDuration, 'Default Rec Duration' )
-			self.addEnumControl( E_PreRecordingTime, 'Pre-Rec Time' )
-			self.addEnumControl( E_PostRecordingTime, 'Post-Rec Time' )
+			self.addEnumControl( E_SpinEx01, 'Automatic Timeshift' )
+			self.addEnumControl( E_SpinEx02, 'Default Rec Duration' )
+			self.addEnumControl( E_SpinEx03, 'Pre-Rec Time' )
+			self.addEnumControl( E_SpinEx04, 'Post-Rec Time' )
+
+			visibleControlIds = [ E_SpinEx01, E_SpinEx01, E_SpinEx01, E_SpinEx01 ]
+			self.setVisibleControls( visibleControlIds, True )
+
+			hideControlIds = [ E_SpinEx05 ]
+			self.setVisibleControls( hideControlIds, False )
+
 			self.initControl( )
 		

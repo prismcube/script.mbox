@@ -184,6 +184,8 @@ class SettingWindow(BaseWindow):
 		self.controlList.append( ControlItem( ControlItem.E_ENUM_CONTROL, controlId, property, listItems ) )
 
 
+
+
 	def hasControlItem( self, ctrlItem, controlId  ):
 		if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
 			if ctrlItem.controlId == controlId or ctrlItem.controlId + 1 == controlId or ctrlItem.controlId + 2 == controlId or ctrlItem.controlId + 3 == controlId  :
@@ -279,7 +281,16 @@ class SettingWindow(BaseWindow):
 				return True
 
 		return False
-	
+
+
+	def setVisibleControl( self, controlId, visible ):
+		control = self.getControl( controlId )
+		control.setVisible( visible )
+
+	def setVisibleControls( self, controlIds, visible ) :
+		for controlId in controlIds :
+			self.setVisibleControl( controlId, visible )
+
 
 	def controlSelect( self ):
 	
