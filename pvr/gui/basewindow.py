@@ -107,6 +107,7 @@ class Property(object):
 
 
 class BaseWindow(xbmcgui.WindowXML, Property):
+
 	def __init__(self, *args, **kwargs):
 		xbmcgui.WindowXML.__init__(self, *args, **kwargs)
 		self.win = None        
@@ -158,17 +159,10 @@ class SettingWindow(BaseWindow):
 				control.selectItem( selectedItem )
 
 
-	def removeAllControl( self ):
-		#for ctrlItem in self.controlList:
-		#	if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
-		#		self.resetControl( self.getControl( ctrlItem.controlId + 3 ) )
+	def resetAllControl( self ):
 		del self.controlList[:]
 
-
-	def resetControl( self, control ):
-		control.reset( )
 					
-
 	def addButtonControl( self, controlId ):
 		self.controlList.append( ControlItem( ControlItem.E_BUTTON_CONTROL, controlId,   None, None ) )
 
@@ -281,6 +275,10 @@ class SettingWindow(BaseWindow):
 				return True
 
 		return False
+
+	def setEnableControls( self, controlIds, enable ) :
+		for controlId in controlIds :
+			self.setEnableControl( controlId, enable )
 
 
 	def setVisibleControl( self, controlId, visible ):

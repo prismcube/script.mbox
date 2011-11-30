@@ -61,7 +61,6 @@ class ParentalLock(SettingWindow):
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.initialized = False
 			self.close( )
-			#inmgr.getInstance().showWindow( winmgr.WIN_ID_MAINMENU )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == 9000 :
@@ -86,7 +85,7 @@ class ParentalLock(SettingWindow):
 				self.setFocusId( 9010 )
 			elif ( focusId != 9000 ) and ( ( focusId % 10 ) == 2 ) :
 				self.setFocusId( 9000 )
-			else :
+			elif ( focusId != 9000 ) and ( ( focusId % 10 ) == 1 ) :
 				self.controlRight( )
 
 	def onClick( self, controlId ):
@@ -102,24 +101,15 @@ class ParentalLock(SettingWindow):
 				self.setListControl( )
 			self.lastFocused = controlId
 			self.prevListItemID = self.ctrlLeftGroup.getSelectedPosition()
-		'''
-		selectedIndex = self.getSelectedIndex( E_PrimarySubtitleLanguage )
-		if ( selectedIndex == 0 ) and ( self.ctrlLeftGroup.getSelectedPosition( ) == 0 ):
-			self.setEnableControl( E_SecondarySubtitleLanguage, False )
-			self.setEnableControl( E_ForTheHearingImpaired, False )
-		else:
-			self.setEnableControl( E_SecondarySubtitleLanguage, True )
-			self.setEnableControl( E_ForTheHearingImpaired, True )
-		'''
+		
 
 	def setListControl( self ):
-		self.removeAllControl( )
-		print 'setListControl'
+		self.resetAllControl( )
 		ctrlLeftGroup = self.getControl( 9000 )
 		selectedId = ctrlLeftGroup.getSelectedPosition()
-		print 'dhkim test getSelectedPosition( ) #2 = %s' % selectedId
 		
 		if selectedId == 0 :
+
 			self.addEnumControl( E_SpinEx01, 'Language' )
 			self.addEnumControl( E_SpinEx02, 'Audio Language' )
 			self.addEnumControl( E_SpinEx03, 'Subtitle Language' )
@@ -129,19 +119,29 @@ class ParentalLock(SettingWindow):
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 			self.setVisibleControls( visibleControlIds, True )
 
+
+			selectedIndex = self.getSelectedIndex( E_SpinEx03 )
+			if ( selectedIndex == 0 ) and ( self.ctrlLeftGroup.getSelectedPosition( ) == 0 ):
+				disableControlIds = [E_SpinEx04, E_SpinEx05]
+				self.setEnableControls( disableControlIds, False )
+			else:
+				self.setEnableControls( visibleControlIds, True )			
+
 			self.initControl( )
 
 		elif selectedId == 1 :		
+
 			self.addEnumControl( E_SpinEx01, 'Automatic Timeshift' )
 			self.addEnumControl( E_SpinEx02, 'Default Rec Duration' )
 			self.addEnumControl( E_SpinEx03, 'Pre-Rec Time' )
 			self.addEnumControl( E_SpinEx04, 'Post-Rec Time' )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx01, E_SpinEx01, E_SpinEx01 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
 			self.setVisibleControls( visibleControlIds, True )
 
 			hideControlIds = [ E_SpinEx05 ]
 			self.setVisibleControls( hideControlIds, False )
 
+			self.setEnableControls( visibleControlIds, True )
 			self.initControl( )
 		

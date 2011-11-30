@@ -20,6 +20,7 @@
 			<control type="button" id="1101">
 				<description>Menu Item Next Button</description>
 				<visible>Control(1100).IsVisible()</visible>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -37,7 +38,6 @@
 			<control type="button" id="1102">
 				<description>Menu Item Prev Button</description>
 				<visible>Control(1100).IsVisible()</visible>				
-				<hitrect x="0" y="0" w="680" h="40" />
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -163,6 +163,7 @@
 			<control type="button" id="1201">
 				<description>Menu Item Next Button</description>
 				<visible>Control(1200).IsVisible()</visible>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -180,7 +181,7 @@
 			<control type="button" id="1202">
 				<description>Menu Item Prev Button</description>
 				<visible>Control(1200).IsVisible()</visible>
-				<hitrect x="0" y="0" w="680" h="40" />
+				<description>Menu Item Prev Button</description>				
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -306,6 +307,7 @@
 			<control type="button" id="1301">
 				<description>Menu Item Next Button</description>
 				<visible>Control(1300).IsVisible()</visible>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -323,7 +325,6 @@
 			<control type="button" id="1302">
 				<description>Menu Item Prev Button</description>
 				<visible>Control(1300).IsVisible()</visible>
-				<hitrect x="0" y="0" w="680" h="40" />
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -359,7 +360,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>720</width>
+						<width>680</width>
 						<height>40</height>
 						<texture border="0,2,0,2">MenuItemFO.png</texture>
 						<visible>[Control.HasFocus(1301) | Control.HasFocus(1302)]</visible>
@@ -449,6 +450,7 @@
 			<control type="button" id="1401">
 				<description>Menu Item Next Button</description>
 				<visible>Control(1400).IsVisible()</visible>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -466,7 +468,6 @@
 			<control type="button" id="1402">
 				<description>Menu Item Prev Button</description>
 				<visible>Control(1400).IsVisible()</visible>
-				<hitrect x="0" y="0" w="680" h="40" />				
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -592,6 +593,7 @@
 			<control type="button" id="1501">
 				<description>Menu Item Next Button</description>
 				<visible>Control(1500).IsVisible()</visible>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -609,7 +611,6 @@
 			<control type="button" id="1502">
 				<description>Menu Item Prev Button</description>
 				<visible>Control(1500).IsVisible()</visible>
-				<hitrect x="0" y="0" w="680" h="40" />				
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -735,6 +736,7 @@
 			<control type="button" id="1601">
 				<description>Menu Item Next Button</description>
 				<visible>Control(1600).IsVisible()</visible>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -752,7 +754,6 @@
 			<control type="button" id="1602">
 				<description>Menu Item Prev Button</description>
 				<visible>Control(1600).IsVisible()</visible>
-				<hitrect x="0" y="0" w="680" h="40" />
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -878,6 +879,7 @@
 			<control type="button" id="1701">
 				<description>Menu Item Next Button</description>
 				<visible>Control(1700).IsVisible()</visible>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -895,7 +897,6 @@
 			<control type="button" id="1702">
 				<description>Menu Item Prev Button</description>
 				<visible>Control(1700).IsVisible()</visible>
-				<hitrect x="0" y="0" w="680" h="40" />				
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -1021,6 +1022,7 @@
 			<control type="button" id="1801">
 				<description>Menu Item Next Button</description>
 				<visible>Control(1800).IsVisible()</visible>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -1038,7 +1040,6 @@
 			<control type="button" id="1802">
 				<description>Menu Item Prev Button</description>
 				<visible>Control(1800).IsVisible()</visible>
-				<hitrect x="0" y="0" w="680" h="40" />
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -1164,6 +1165,7 @@
 			<control type="button" id="1901">
 				<description>Menu Item Next Button</description>
 				<visible>Control(1900).IsVisible()</visible>
+				<hitrect x="0" y="0" w="633" h="40" />	
 				<posx>600</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -1181,7 +1183,6 @@
 			<control type="button" id="1902">
 				<description>Menu Item Prev Button</description>
 				<visible>Control(1900).IsVisible()</visible>
-				<hitrect x="0" y="0" w="680" h="40" />				
 				<posx>633</posx>
 				<posy>9</posy>
 				<width>33</width>
@@ -1328,7 +1329,6 @@
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
 				<shadowcolor>grey2</shadowcolor>
-				<label>$LOCALIZE[30100]</label>
 			</control>
 			<control type="image">
 				<description>Separator Image</description>
