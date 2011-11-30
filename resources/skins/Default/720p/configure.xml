@@ -1,4 +1,4 @@
-<window id="3006">
+<window id="3007">
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<controls>
 		<include>CommonSettingsBackground</include>
@@ -154,3 +154,4 @@
 		</control>
 	</controls>
 </window>
+

@@ -1,4 +1,3 @@
-
 import xbmc
 import xbmcgui
 import sys
@@ -17,7 +16,7 @@ E_SpinEx04			= 1400
 E_SpinEx05			= 1500
 
 
-class ParentalLock(SettingWindow):
+class Configure(SettingWindow):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs)
 		self.commander = pvr.elismgr.getInstance().getCommander( )
@@ -144,3 +143,4 @@ class ParentalLock(SettingWindow):
 			self.setEnableControls( visibleControlIds, True )
 			self.initControl( )
 		
+
