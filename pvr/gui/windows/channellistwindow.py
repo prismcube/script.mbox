@@ -443,7 +443,7 @@ class ChannelListWindow(BaseWindow):
 		self.ctrlHeader3.setLabel('')		
 		self.ctrlHeader4.setLabel('')
 
-		self.setProperty('WindowType', 'ChannelList')
+		#self.setProperty('WindowType', 'ChannelList')
 		self.setFooter( self.win, ( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_RECORD_MASK ) )
 
 		self.ctrltabHeader12.setVisible(self.flag11)

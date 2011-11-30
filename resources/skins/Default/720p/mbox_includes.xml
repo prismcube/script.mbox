@@ -1420,7 +1420,7 @@
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>[B]Back[/B]</label>
+						<label>[B]Backkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk[/B]</label>
 						<visible>![Control.HasFocus(3101) | Control.HasFocus(3101)]</visible>
 					</control>
 					<control type="label">
