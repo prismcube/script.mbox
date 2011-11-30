@@ -43,7 +43,7 @@
 						<posy>15</posy>
 						<width>380</width>
 						<height>25</height>
-						<font>font24_title</font>
+						<font>font13_title</font>
 						<textcolor>grey3</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
@@ -64,7 +64,7 @@
 						<posy>15</posy>
 						<width>380</width>
 						<height>25</height>
-						<font>font24_title</font>
+						<font>font13_title</font>
 						<textcolor>white</textcolor>
 						<align>right</align>
 						<aligny>center</aligny>
