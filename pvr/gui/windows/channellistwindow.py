@@ -83,6 +83,8 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader32        = self.getControl( 232 )
 			self.ctrltabHeader42        = self.getControl( 242 )
 
+			self.ctrlLbl                = self.getControl( 9001 )
+			self.ctrlBtn                = self.getControl( 9002 )
 
 			#epg stb time
 			self.ctrlHeader3.setLabel('')
@@ -190,6 +192,22 @@ class ChannelListWindow(BaseWindow):
 			f.close()
 			"""
 			print 'cwd[%s]'% xbmc.getLanguage()
+
+
+			import re
+
+			openFile = 'D:\project\elmo\doc\language tool\Language_Prime.csv'
+			wFile1 = 'strings.xml'
+			print openFile
+			rf = open(openFile, 'r')
+			#wf = open(wFile1, 'w')
+			for line in rf.readlines():
+				ret = re.search(',', line)
+				print ret.group()
+
+
+			rf.close()
+
 
 		else:
 			pass
@@ -438,7 +456,15 @@ class ChannelListWindow(BaseWindow):
 		#header, footer init
 		self.ctrlHeader1.setImage('IconHeaderTitleSmall.png')
 		#self.ctrlHeader2.setLabel('TV-Channel List')
+
+
 		self.ctrlHeader2.setLabel(m.strings(2001))
+
+		self.ctrlLbl.setLabel( m.strings(248) )
+
+		ret = xbmc.getLanguage()
+		print 'getLanguage[%s]'% ret
+		self.ctrlBtn.setLabel(ret)
 
 
 
