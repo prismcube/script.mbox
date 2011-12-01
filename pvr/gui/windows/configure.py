@@ -54,6 +54,7 @@ class Configure(SettingWindow):
 		self.ctrlLeftGroup.selectItem( position )
 		self.setListControl( )
 
+		self.initLang()
 
 	def onAction( self, action ):
 
@@ -250,3 +251,13 @@ class Configure(SettingWindow):
 		else :
 			print 'ERROR : Can not find selected ID'
 
+	def initLang():
+		import pvr.msg as m
+		self.ctrlLbl = getControl( 9001 )
+		self.ctrlBtn = getControl( 9002 )
+
+		self.ctrlLbl.setLabel( m.strings(m.LANGUAGE) )
+
+		ret = xbmc.getLanguage()
+		self.ctrlBtn.setLabel(ret)
+		print 'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT'

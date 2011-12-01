@@ -44,7 +44,34 @@
 			</control>
 		</control>
 -->
+
+			<control type="group">
+				<description>testing</description>
+				<posx>100</posx>
+				<posy>600</posy>
+				<control type="label" id="9001">
+					<posx>10</posx>
+					<posy>0</posy>
+					<width>500</width>
+					<height>20</height>
+					<font>font13</font>
+					<textcolor>grey3</textcolor>
+					<label>$LOCALIZE[248]</label>
+				</control>
+				<control type="button" id="9002">
+					<posx>600</posx>
+					<posy>0</posy>
+					<width min="80" max="150">auto</width>
+					<height>30</height>
+					<font>font13</font>
+					<textcolor>grey3</textcolor>
+					<onclick>ActivateWindow(AppearanceSettings)</onclick>
+				</control>
+			</control>
+
+
 		<include>MenuHeader</include>
+
 
 <!-- middle left -->
 		<control type="group">
