@@ -460,7 +460,7 @@ class ChannelListWindow(BaseWindow):
 
 		self.ctrlHeader2.setLabel(m.strings(2001))
 
-		self.ctrlLbl.setLabel( m.strings(248) )
+		self.ctrlLbl.setLabel( m.strings(m.LANGUAGE) )
 
 		ret = xbmc.getLanguage()
 		print 'getLanguage[%s]'% ret
