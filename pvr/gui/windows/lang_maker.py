@@ -121,11 +121,14 @@ def initFile():
 			strid = re.sub(',', '', ret2[len(ret2)-1])
 
 			strll = ret[0].upper()
+
+			"""
 			strll = re.split(' ', strll, 5)
 			var_=''
 			for i in range(len(strll)):
 				var_ += '_' + strll[i]
-
+			"""
+			var_ = re.sub(' ', '_', strll)
 			var_ = re.findall('[a-zA-Z0-9]\w*', var_)
 			#var = var_[0][:15]
 
