@@ -134,8 +134,8 @@ class SettingWindow(BaseWindow):
 	def initControl( self ):
 		print 'dhkim test for count = %d' % len( self.controlList )
 		for ctrlItem in self.controlList:
-			selectedItem = ctrlItem.property.getPropIndex()
 			if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
+				selectedItem = ctrlItem.property.getPropIndex()			
 				control = self.getControl( ctrlItem.controlId + 3 )
 				control.addItems( ctrlItem.listItems )
 				control.selectItem( selectedItem )
@@ -282,6 +282,7 @@ class SettingWindow(BaseWindow):
 			if self.hasControlItem( ctrlItem, focusId ) :
 				if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
 					control = self.getControl( ctrlItem.controlId + 3 )
+					time.sleep( 0.02 )
 					ctrlItem.property.setPropIndex( control.getSelectedPosition() )
 					print 'dhkim test setPropertyIndex'
 					return True
