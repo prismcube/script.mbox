@@ -7,24 +7,7 @@ from pvr.gui.basewindow import SettingWindow, setWindowBusy
 from pvr.gui.basewindow import Action
 import pvr.elismgr
 from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
-from pvr.gui.guiconfig import FooterMask
-
-E_SpinEx01			= 1100
-E_SpinEx02			= 1200
-E_SpinEx03			= 1300
-E_SpinEx04			= 1400
-E_SpinEx05			= 1500
-
-E_LANGUAGE			= 0
-E_PARENTAL			= 1
-E_RECORDING_OPTION	= 2
-E_AUDIO_SETTING		= 3
-E_SCART_SETTING		= 4
-E_HDMI_SETTING		= 5
-E_IP_SETTING		= 6
-E_FORMAT_HDD		= 7
-E_FACTORY_RESET		= 8
-E_ETC				= 9
+from pvr.gui.guiconfig import *
 
 class Configure(SettingWindow):
 	def __init__( self, *args, **kwargs ):
@@ -46,7 +29,7 @@ class Configure(SettingWindow):
 	def onInit(self):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
 
-		self.ctrlLeftGroup = self.getControl( 9000 )
+		self.ctrlLeftGroup = self.getControl( E_SUBMENU_LIST_ID )
 		self.ctrlLeftGroup.addItems( self.groupItems )
 
 		self.initialized = True
@@ -71,29 +54,29 @@ class Configure(SettingWindow):
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			if focusId == 9000 :
+			if focusId == E_SUBMENU_LIST_ID :
 				self.setListControl( )
 			else :
 				self.controlUp( )
 	
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			if focusId == 9000 :
+			if focusId == E_SUBMENU_LIST_ID :
 				self.setListControl( )
 			else :
 				self.controlDown( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
-			if ( focusId != 9000 ) and ( ( focusId % 10 ) == 1 ) :
-				self.setFocusId( 9000 )
+			if ( focusId != E_SUBMENU_LIST_ID ) and ( ( focusId % 10 ) == 1 ) :
+				self.setFocusId( E_SUBMENU_LIST_ID )
 			else :
 				self.controlLeft( )
 				
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			if focusId == 9000 :
-				self.setFocusId( 9010 )
-			elif ( focusId != 9000 ) and ( ( focusId % 10 ) == 2 ) :
-				self.setFocusId( 9000 )
-			elif ( focusId != 9000 ) and ( ( focusId % 10 ) == 1 ) :
+			if focusId == E_SUBMENU_LIST_ID :
+				self.setFocusId( E_SETUPMENU_GROUP_ID )
+			elif ( focusId != E_SUBMENU_LIST_ID ) and ( ( focusId % 10 ) == 2 ) :
+				self.setFocusId( E_SUBMENU_LIST_ID )
+			elif ( focusId != E_SUBMENU_LIST_ID ) and ( ( focusId % 10 ) == 1 ) :
 				self.controlRight( )
 
 
@@ -106,7 +89,7 @@ class Configure(SettingWindow):
 			return
 
 		if ( self.lastFocused != controlId ) or (self.ctrlLeftGroup.getSelectedPosition() != self.prevListItemID):
-			if controlId == 9000 :
+			if controlId == E_SUBMENU_LIST_ID :
 				self.setListControl( )
 			self.lastFocused = controlId
 			self.prevListItemID = self.ctrlLeftGroup.getSelectedPosition()
@@ -114,7 +97,7 @@ class Configure(SettingWindow):
 
 	def setListControl( self ):
 		self.resetAllControl( )
-		ctrlLeftGroup = self.getControl( 9000 )
+		ctrlLeftGroup = self.getControl( E_SUBMENU_LIST_ID )
 		selectedId = ctrlLeftGroup.getSelectedPosition()
 
 		
@@ -128,8 +111,11 @@ class Configure(SettingWindow):
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 			self.setVisibleControls( visibleControlIds, True )
+			self.setEnableControls( visibleControlIds, True )
 
-
+			hideControlIds = [ E_Input01 ]
+			self.setVisibleControls( hideControlIds, False )
+			
 			selectedIndex = self.getSelectedIndex( E_SpinEx03 )
 			if ( selectedIndex == 0 ) and ( self.ctrlLeftGroup.getSelectedPosition( ) == 0 ):
 				disableControlIds = [E_SpinEx04, E_SpinEx05]
@@ -138,17 +124,26 @@ class Configure(SettingWindow):
 				self.setEnableControls( visibleControlIds, True )			
 
 			self.initControl( )
-
+			return
+			
 		elif selectedId == E_PARENTAL :	
+		
 			self.addEnumControl( E_SpinEx01, 'Lock Mainmenu' )
-			self.addEnumControl( E_SpinEx02, 'Age Restricted' )	#PINCODE CONTROL
-			self.addEnumControl( E_SpinEx03, 'Age Restricted' )	#PINCODE CONTROL			
-			self.addEnumControl( E_SpinEx04, 'Age Restricted' )
+			self.addInputControl( E_Input01, 'test1', 'test2')	#PINCODE CONTROL
+			self.addEnumControl( E_SpinEx02, 'Default Rec Duration' )			#PINCODE CONTROL
+			self.addEnumControl( E_SpinEx03, 'Age Restricted' )
+			
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
-
+			visibleControlIds = [ E_SpinEx01, E_Input01, E_SpinEx02, E_SpinEx03 ]
+			self.setVisibleControls( visibleControlIds, True )
 			self.setEnableControls( visibleControlIds, True )
+
+			hideControlIds = [ E_SpinEx04, E_SpinEx05 ]
+			self.setVisibleControls( hideControlIds, False )
+			
 			self.initControl( )
+			return
+
 
 		elif selectedId == E_RECORDING_OPTION :
 
@@ -159,12 +154,14 @@ class Configure(SettingWindow):
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
 			self.setVisibleControls( visibleControlIds, True )
-
-			hideControlIds = [ E_SpinEx05 ]
-			self.setVisibleControls( hideControlIds, False )
-
 			self.setEnableControls( visibleControlIds, True )
+
+			hideControlIds = [ E_SpinEx05, E_Input01 ]
+			self.setVisibleControls( hideControlIds, False )
+			
 			self.initControl( )
+			return
+
 			
 		elif selectedId == E_AUDIO_SETTING :
 			self.addEnumControl( E_SpinEx01, 'Audio Dolby' )
@@ -172,10 +169,15 @@ class Configure(SettingWindow):
 			self.addEnumControl( E_SpinEx03, 'Audio Delay' )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
+			self.setEnableControls( visibleControlIds, True )
 			self.setVisibleControls( visibleControlIds, True )
 
-			self.setEnableControls( visibleControlIds, True )
+			hideControlIds = [ E_SpinEx04, E_SpinEx05,  E_Input01]
+			self.setVisibleControls( hideControlIds, False )
+
+
 			self.initControl( )
+			return
 
 	
 		elif selectedId == E_SCART_SETTING :
@@ -188,7 +190,9 @@ class Configure(SettingWindow):
 			self.setVisibleControls( visibleControlIds, True )
 
 			self.setEnableControls( visibleControlIds, True )
+
 			self.initControl( )
+			return
 			
 
 		elif selectedId == E_HDMI_SETTING :
@@ -199,9 +203,13 @@ class Configure(SettingWindow):
 			
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
 			self.setVisibleControls( visibleControlIds, True )
-
 			self.setEnableControls( visibleControlIds, True )
+
+			hideControlIds = [ E_SpinEx05 ]
+			self.setVisibleControls( hideControlIds, False )
+
 			self.initControl( )
+			return
 
 		
 		elif selectedId == E_IP_SETTING :	
@@ -213,9 +221,11 @@ class Configure(SettingWindow):
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 			self.setVisibleControls( visibleControlIds, True )
-
 			self.setEnableControls( visibleControlIds, True )
+			
 			self.initControl( )
+			return
+			
 
 		elif selectedId == E_FORMAT_HDD :	
 			self.addEnumControl( E_SpinEx01, 'CurrentVoutResolution' ) # BUTTON
@@ -223,8 +233,13 @@ class Configure(SettingWindow):
 			visibleControlIds = [ E_SpinEx01 ]
 			self.setVisibleControls( visibleControlIds, True )
 
+			hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
+			self.setVisibleControls( hideControlIds, False )
+
 			self.setEnableControls( visibleControlIds, True )
 			self.initControl( )
+			return
+			
 
 		elif selectedId == E_FACTORY_RESET :	
 			self.addEnumControl( E_SpinEx01, 'CurrentVoutResolution' )	#	Erase channel list yes/no
@@ -234,9 +249,11 @@ class Configure(SettingWindow):
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
 			self.setVisibleControls( visibleControlIds, True )
-
 			self.setEnableControls( visibleControlIds, True )
+
 			self.initControl( )
+			return
+			
 
 		elif selectedId == E_ETC :	
 			self.addEnumControl( E_SpinEx01, 'Channel Banner Duration' )	#	Erase channel list yes/no
@@ -244,9 +261,14 @@ class Configure(SettingWindow):
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02 ]
 			self.setVisibleControls( visibleControlIds, True )
-
 			self.setEnableControls( visibleControlIds, True )
+
+			hideControlIds = [ E_SpinEx03, E_SpinEx04 ]
+			self.setVisibleControls( hideControlIds, False )
+			
 			self.initControl( )
+			return
+			
 
 		else :
 			print 'ERROR : Can not find selected ID'
