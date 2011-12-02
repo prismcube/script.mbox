@@ -122,7 +122,7 @@ class ControlItem:
 	def __init__( self, controlType, controlId, property, listItems ):	
 		self.controlType = controlType	
 		self.controlId  = controlId
-		self.property = property
+		self.property = property		# E_BUTTON_CONTROL : propery, E_INPUT_CONTROL : input type
 		self.listItems = listItems
 		self.enable	= True
 	
@@ -142,14 +142,13 @@ class SettingWindow(BaseWindow):
 				control.selectItem( selectedItem )
 			if ctrlItem.controlType == ctrlItem.E_INPUT_CONTROL :
 				control = self.getControl( ctrlItem.controlId + 3 )
-				control.addItems( ctrlItem.listItems )
+				control.addItem( ctrlItem.listItems )
 
 			self.getControl(ctrlItem.controlId).setPosition(0, ( pos * 40 ) + 50 )
 			pos += 1
 			
 
 	def resetAllControl( self ):
-		self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( False )
 		del self.controlList[:]
 
 					
@@ -162,19 +161,59 @@ class SettingWindow(BaseWindow):
 		listItems = []
 
 		for i in range( property.getIndexCount() ):
-			listItem = xbmcgui.ListItem(property.getName(), property.getPropStringByIndex( i ),"-", "-", "-")
-			listItems.append(listItem)
+			listItem = xbmcgui.ListItem( property.getName(), property.getPropStringByIndex( i ), "-", "-", "-" )
+			listItems.append( listItem )
 
 		self.controlList.append( ControlItem( ControlItem.E_ENUM_CONTROL, controlId, property, listItems ) )
 
+	def addInputControl( self, controlId , titleLabel, inputLabel, inputtype ):
+		listItem = xbmcgui.ListItem( titleLabel, inputLabel,"-", "-", "-" )
 
-	def addInputControl( self, controlId , titleLabel, inputLabel):
-		listItems = []
-		listItem = xbmcgui.ListItem(titleLabel, inputLabel,"-", "-", "-")
-		listItems.append(listItem)
+		self.controlList.append( ControlItem( ControlItem.E_INPUT_CONTROL, controlId, inputtype, listItem ) )
 
-		self.controlList.append( ControlItem( ControlItem.E_INPUT_CONTROL, controlId, None, listItems ) )
+
+	# Input Contol Type num (numeric KeyPad)
+	# 0 : ShowAndGetNumber				(default format: #)          
+	# 1 : ShowAndGetDate				(default format: DD/MM/YYYY)
+	# 2 : ShowAndGetTime				(default format: HH:MM)
+	# 3 : ShowAndGetIPAddress			(default format: #.#.#.#) 
+	# 4 : Dhkim Define Normal Keyboard	( xbmc.Keyboard( default, heading, hidden = False) )
+	# 5 : Dhkim Define Normal Keyboard	( xbmc.Keyboard( default, heading, hidden = True) )
+
+	def inputSetup( self, controlId ):
+		for ctrlItem in self.controlList:
+			if( ctrlItem.controlId == controlId - 1 ) :
+				keyType = ctrlItem.property
+				if( keyType == 4 ) :
+					kb = xbmc.Keyboard(ctrlItem.listItems.getLabel2( ), ctrlItem.listItems.getLabel( ), False)
+					kb.doModal()
+ 					if( kb.isConfirmed( ) ) :
+ 						ctrlItem.listItems.setLabel2( kb.getText( ) )
+ 					return True
+
+ 				elif ( keyType == 5 ) :
+ 					kb = xbmc.Keyboard(ctrlItem.listItems.getLabel2( ), ctrlItem.listItems.getLabel( ), True)
+					kb.doModal()
+ 					if( kb.isConfirmed( ) ) :
+ 						ctrlItem.listItems.setLabel2( kb.getText( ) )
+ 					return True
+				
+				else :
+					dialog = xbmcgui.Dialog()
+					value = dialog.numeric( keyType, ctrlItem.listItems.getLabel( ), ctrlItem.listItems.getLabel2( ) )
+					ctrlItem.listItems.setLabel2( value )
+					return True
+
+		return	False
 		
+		'''
+		elif ( ctrlItem.property == 5 )
+		kb = xbmc.Keyboard(ctrlItem.listItems.getLabel2( ), ctrlItem.listItems.getLabel( ), True)
+		kb.doModal()
+			if( kb.isConfirmed( ) ) :
+				ctrlItem.listItems.setLabel2( kb.getText( ) )
+			return True
+		'''
 
 	def hasControlItem( self, ctrlItem, controlId  ):
 		if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
@@ -251,10 +290,14 @@ class SettingWindow(BaseWindow):
 			if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
 				if ctrlItem.controlId == controlId or ctrlItem.controlId + 1 == controlId or ctrlItem.controlId + 2 == controlId or ctrlItem.controlId + 3 == controlId  :
 					return ctrlItem.controlId
+
+			elif ctrlItem.controlType == ctrlItem.E_INPUT_CONTROL :
+				if ctrlItem.controlId == controlId or ctrlItem.controlId + 1 == controlId  or ctrlItem.controlId + 3 == controlId  :	
+					return ctrlItem.controlId
 			else :
 				if ctrlItem.controlId == controlId :
 					return ctrlItem.controlId
-
+				
 		return -1
 		
 
@@ -298,7 +341,6 @@ class SettingWindow(BaseWindow):
 					control = self.getControl( ctrlItem.controlId + 3 )
 					time.sleep( 0.02 )
 					ctrlItem.property.setPropIndex( control.getSelectedPosition() )
-					print 'dhkim test setPropertyIndex'
 					return True
 
 		return False

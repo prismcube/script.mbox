@@ -9,13 +9,13 @@ import pvr.elismgr
 from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import *
 
-class Configure(SettingWindow):
+class Configure( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
-		SettingWindow.__init__( self, *args, **kwargs)
-		self.commander = pvr.elismgr.getInstance().getCommander( )
+		SettingWindow.__init__( self, *args, **kwargs )
+		self.commander = pvr.elismgr.getInstance( ).getCommander( )
  
-		self.LeftGroupItems						= ['Language', 'Parental', 'Recording Option', 'Audio Setting', 'SCART Setting','HDMI Setting', 'IP Setting', 'Format HDD', 'Factory Reset', 'Etc' ]
-		self.descriptionList					= ['DESC Language', 'DESC Parental', 'DESC Recording Option', 'DESC Audio Setting', 'DESC SCART Setting', 'DESC HDMI Setting', 'DESC IP Setting', 'DESC Format HDD', 'DESC Factory Reset', 'DESC Etc' ]
+		self.LeftGroupItems						= [ 'Language', 'Parental', 'Recording Option', 'Audio Setting', 'SCART Setting','HDMI Setting', 'IP Setting', 'Format HDD', 'Factory Reset', 'Etc' ]
+		self.descriptionList					= [ 'DESC Language', 'DESC Parental', 'DESC Recording Option', 'DESC Audio Setting', 'DESC SCART Setting', 'DESC HDMI Setting', 'DESC IP Setting', 'DESC Format HDD', 'DESC Factory Reset', 'DESC Etc' ]
 	
 		self.ctrlLeftGroup = None
 		self.groupItems = []
@@ -33,7 +33,7 @@ class Configure(SettingWindow):
 		self.ctrlLeftGroup.addItems( self.groupItems )
 
 		self.initialized = True
-		position = self.ctrlLeftGroup.getSelectedPosition()
+		position = self.ctrlLeftGroup.getSelectedPosition( )
 		self.ctrlLeftGroup.selectItem( position )
 		self.setListControl( )
 
@@ -52,21 +52,21 @@ class Configure(SettingWindow):
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			if focusId == E_SUBMENU_LIST_ID :
-				self.prevListItemID = self.ctrlLeftGroup.getSelectedPosition()
+			if focusId == E_SUBMENU_LIST_ID and self.ctrlLeftGroup.getSelectedPosition() != self.prevListItemID :
+				self.prevListItemID = self.ctrlLeftGroup.getSelectedPosition( )
 				self.setListControl( )
-			else :
+			elif focusId != E_SUBMENU_LIST_ID:
 				self.controlUp( )
 	
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			if focusId == E_SUBMENU_LIST_ID :
-				self.prevListItemID = self.ctrlLeftGroup.getSelectedPosition()
+			if focusId == E_SUBMENU_LIST_ID and self.ctrlLeftGroup.getSelectedPosition() != self.prevListItemID :
+				self.prevListItemID = self.ctrlLeftGroup.getSelectedPosition( )
 				self.setListControl( )
-			else :
+			elif focusId != E_SUBMENU_LIST_ID:
 				self.controlDown( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
-			if ( focusId != E_SUBMENU_LIST_ID ) and ( ( focusId % 10 ) == 1 ) :
+			if focusId != E_SUBMENU_LIST_ID and ( ( focusId % 10 ) == 1 ) :
 				self.setFocusId( E_SUBMENU_LIST_ID )
 			else :
 				self.controlLeft( )
@@ -78,26 +78,25 @@ class Configure(SettingWindow):
 				self.setFocusId( E_SUBMENU_LIST_ID )
 			elif ( focusId != E_SUBMENU_LIST_ID ) and ( ( focusId % 10 ) == 1 ) :
 				self.controlRight( )
-
+			
 
 	def onClick( self, controlId ):
 		if( self.ctrlLeftGroup.getSelectedPosition() == E_LANGUAGE ) :
 			self.disableControl( E_LANGUAGE )
+		if( (controlId == ( E_Input01 + 1 )) or (controlId == ( E_Input02 + 1 )) or (controlId == ( E_Input03 + 1 )) or (controlId == ( E_Input04 + 1 ))) :
+			self.inputSetup( controlId )
 		self.controlSelect( )
 
 		
 	def onFocus( self, controlId ):
 		if self.initialized == False :
 			return
-
-		if ( self.lastFocused != controlId ) or (self.ctrlLeftGroup.getSelectedPosition() != self.prevListItemID):
+		if ( self.lastFocused != controlId ) or ( self.ctrlLeftGroup.getSelectedPosition() != self.prevListItemID ):
 			if controlId == E_SUBMENU_LIST_ID :
 				self.setListControl( )
 				if self.lastFocused != controlId :
-					print 'dhkim test #1'
 					self.lastFocused = controlId
 				if self.ctrlLeftGroup.getSelectedPosition() != self.prevListItemID:
-					print 'dhkim test #2'
 					self.prevListItemID = self.ctrlLeftGroup.getSelectedPosition()
 		
 
@@ -129,8 +128,8 @@ class Configure(SettingWindow):
 			
 		elif selectedId == E_PARENTAL :	
 			self.addEnumControl( E_SpinEx01, 'Lock Mainmenu' )
-			self.addInputControl( E_Input01, 'New PIN code', '****')
-			self.addInputControl( E_Input02, 'Confirmation PIN code', '****' )
+			self.addInputControl( E_Input01, 'New PIN code', '****', 5)
+			self.addInputControl( E_Input02, 'Confirmation PIN code', '****' , 5)
 			self.addEnumControl( E_SpinEx02, 'Age Restricted' )
 			
 
@@ -220,10 +219,10 @@ class Configure(SettingWindow):
 		
 		elif selectedId == E_IP_SETTING :	
 			self.addEnumControl( E_SpinEx01, 'DHCP' )
-			self.addInputControl( E_Input01, 'test', '123' )
-			self.addInputControl( E_Input02, 'test', '1234')
-			self.addInputControl( E_Input03, 'test', '12345' )
-			self.addInputControl( E_Input04, 'test', '123456' )
+			self.addInputControl( E_Input01, 'IP Address', '192.168.101.160' , 3 )
+			self.addInputControl( E_Input02, 'Subnet Mask', '255.255.252.0', 3 )
+			self.addInputControl( E_Input03, 'Gateway', '192.168.100.1', 3 )
+			self.addInputControl( E_Input04, 'DNS', '192.168.100.1', 3 )
 
 			visibleControlIds = [ E_SpinEx01, E_Input01, E_Input02, E_Input03, E_Input04 ]
 			self.setVisibleControls( visibleControlIds, True )
@@ -238,7 +237,7 @@ class Configure(SettingWindow):
 			
 
 		elif selectedId == E_FORMAT_HDD :	
-			self.addEnumControl( E_Input01, 'CurrentVoutResolution') # BUTTON
+			self.addInputControl( E_Input01, 'CurrentVoutResolution', 'test', 4) # BUTTON
 			
 			visibleControlIds = [ E_Input01 ]
 			self.setVisibleControls( visibleControlIds, True )
@@ -295,7 +294,6 @@ class Configure(SettingWindow):
 			visibleControlIds = [ E_SpinEx04, E_SpinEx05 ]
 			if ( selectedIndex == 0 ) :
 				self.setEnableControls( visibleControlIds, False )
-			else:
+			else :
 				self.setEnableControls( visibleControlIds, True )
 
-		return
