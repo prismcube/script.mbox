@@ -13,6 +13,7 @@ from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import FooterMask
 
 import pvr.msg as m
+import pvr.gui.windows.define_string as mm
 import thread, time
 
 
@@ -458,9 +459,9 @@ class ChannelListWindow(BaseWindow):
 		#self.ctrlHeader2.setLabel('TV-Channel List')
 
 
-		self.ctrlHeader2.setLabel(m.strings(2001))
+		self.ctrlHeader2.setLabel(m.strings(mm.LANG_TV_CHANNEL_LIST))
 
-		self.ctrlLbl.setLabel( m.strings(m.LANGUAGE) )
+		self.ctrlLbl.setLabel( m.strings(mm.LANG_LANGUAGE) )
 
 		ret = xbmc.getLanguage()
 		print 'getLanguage[%s]'% ret

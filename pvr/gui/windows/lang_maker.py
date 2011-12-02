@@ -164,7 +164,10 @@ def initFile():
 			for i in range(len(strll)):
 				var_ += '_' + strll[i]
 			"""
-			var_ = re.sub(' ', '_', strll)
+			var_ = re.sub('-', '', strll)
+			var_ = re.sub(' ', '_', var_)
+			var_ = re.sub('__', '_', var_)
+			var_ = re.sub('__', '_', var_)
 			var_ = re.findall('[a-zA-Z0-9]\w*', var_)
 			#var = var_[0][:15]
 
@@ -204,9 +207,18 @@ def test():
 
 	print len(ret), ret
 
+def test2():
+	line = 'TV - CHANNEL LIST'
+	var_ = re.sub('-', '', line)
+	var_ = re.sub(' ', '_', var_)
+	var_ = re.sub('__', '_', var_)
+	var_ = re.findall('[a-zA-Z0-9]\w*', var_)
+
+	print var_
 
 
 if __name__ == "__main__":
 	initFile()
 	#test()
+	#test2()
 
