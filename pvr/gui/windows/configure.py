@@ -83,8 +83,8 @@ class Configure( SettingWindow ):
 	def onClick( self, controlId ):
 		if( self.ctrlLeftGroup.getSelectedPosition() == E_LANGUAGE or self.ctrlLeftGroup.getSelectedPosition() == E_IP_SETTING ) :
 			self.disableControl( self.ctrlLeftGroup.getSelectedPosition() )
-		if( (controlId == ( E_Input01 + 1 )) or (controlId == ( E_Input02 + 1 )) or (controlId == ( E_Input03 + 1 )) or (controlId == ( E_Input04 + 1 ))) :
-			self.inputSetup( controlId )
+		#if( (controlId == ( E_Input01 + 1 )) or (controlId == ( E_Input02 + 1 )) or (controlId == ( E_Input03 + 1 )) or (controlId == ( E_Input04 + 1 ))) :
+			#self.inputSetup( controlId )
 		self.controlSelect( )
 
 		
@@ -238,13 +238,14 @@ class Configure( SettingWindow ):
 			
 
 		elif selectedId == E_FORMAT_HDD :	
-			self.addInputControl( E_Input01, 'CurrentVoutResolution', 'test', 4) # BUTTON
+			self.addUserEnumControl( E_SpinEx01, 'Format Type', USER_ENUM_CONTROL_FORMAT_TYPE )
+			self.addUserButtonControl( E_Input01, 'Start HDD Format' )
 			
-			visibleControlIds = [ E_Input01 ]
+			visibleControlIds = [ E_SpinEx01, E_Input01 ]
 			self.setVisibleControls( visibleControlIds, True )
 			self.setEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input02, E_Input03, E_Input04 ]
+			hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input02, E_Input03, E_Input04 ]
 			self.setVisibleControls( hideControlIds, False )
 			
 			self.initControl( )
@@ -253,16 +254,16 @@ class Configure( SettingWindow ):
 			
 
 		elif selectedId == E_FACTORY_RESET :	
-			self.addEnumControl( E_SpinEx01, 'CurrentVoutResolution' )	#	Erase channel list yes/no
-			self.addEnumControl( E_SpinEx02, 'CurrentVoutResolution' )	#	Erase custom menu yes/no
-			self.addEnumControl( E_SpinEx03, 'CurrentVoutResolution' )	#	Erase property yes/no
-			self.addEnumControl( E_SpinEx04, 'CurrentVoutResolution' )	#    BUTTON		
+			self.addUserEnumControl( E_SpinEx01, 'Reset Channel List', USER_ENUM_CONTROL_YES_NO )
+			self.addUserEnumControl( E_SpinEx02, 'Reset Favorite Add-ons', USER_ENUM_CONTROL_YES_NO )
+			self.addUserEnumControl( E_SpinEx03, 'Reset Configure Setting', USER_ENUM_CONTROL_YES_NO )
+			self.addUserButtonControl( E_Input01, 'Start Reset' )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01 ]
 			self.setVisibleControls( visibleControlIds, True )
 			self.setEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04 ]
+			hideControlIds = [ E_SpinEx04 , E_SpinEx05, E_Input02, E_Input03, E_Input04 ]
 			self.setVisibleControls( hideControlIds, False )
 
 			self.initControl( )
