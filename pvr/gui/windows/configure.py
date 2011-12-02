@@ -37,8 +37,6 @@ class Configure(SettingWindow):
 		self.ctrlLeftGroup.selectItem( position )
 		self.setListControl( )
 
-		self.initLang()
-
 	def onAction( self, action ):
 
 		actionId = action.getId( )
@@ -86,9 +84,11 @@ class Configure(SettingWindow):
 		
 	def onFocus( self, controlId ):
 		if self.initialized == False :
+			print 'dhkim #1'
 			return
 
 		if ( self.lastFocused != controlId ) or (self.ctrlLeftGroup.getSelectedPosition() != self.prevListItemID):
+			print 'dhkim #2'
 			if controlId == E_SUBMENU_LIST_ID :
 				self.setListControl( )
 			self.lastFocused = controlId
@@ -113,7 +113,7 @@ class Configure(SettingWindow):
 			self.setVisibleControls( visibleControlIds, True )
 			self.setEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_Input01 ]
+			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]
 			self.setVisibleControls( hideControlIds, False )
 			
 			selectedIndex = self.getSelectedIndex( E_SpinEx03 )
@@ -127,18 +127,18 @@ class Configure(SettingWindow):
 			return
 			
 		elif selectedId == E_PARENTAL :	
-		
+			print 'dhkim test E_PARENTAL'
 			self.addEnumControl( E_SpinEx01, 'Lock Mainmenu' )
-			self.addInputControl( E_Input01, 'test1', 'test2')	#PINCODE CONTROL
-			self.addEnumControl( E_SpinEx02, 'Default Rec Duration' )			#PINCODE CONTROL
-			self.addEnumControl( E_SpinEx03, 'Age Restricted' )
+			self.addInputControl( E_Input01, 'New PIN code', '****')
+			self.addInputControl( E_Input02, 'Confirmation PIN code', '****' )
+			self.addEnumControl( E_SpinEx02, 'Age Restricted' )
 			
 
-			visibleControlIds = [ E_SpinEx01, E_Input01, E_SpinEx02, E_SpinEx03 ]
+			visibleControlIds = [ E_SpinEx01, E_Input01, E_Input02, E_SpinEx02 ]
 			self.setVisibleControls( visibleControlIds, True )
 			self.setEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx04, E_SpinEx05 ]
+			hideControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input03, E_Input04 ]
 			self.setVisibleControls( hideControlIds, False )
 			
 			self.initControl( )
@@ -156,7 +156,7 @@ class Configure(SettingWindow):
 			self.setVisibleControls( visibleControlIds, True )
 			self.setEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx05, E_Input01 ]
+			hideControlIds = [ E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04 ]
 			self.setVisibleControls( hideControlIds, False )
 			
 			self.initControl( )
@@ -172,9 +172,8 @@ class Configure(SettingWindow):
 			self.setEnableControls( visibleControlIds, True )
 			self.setVisibleControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx04, E_SpinEx05,  E_Input01]
+			hideControlIds = [ E_SpinEx04, E_SpinEx05,  E_Input01, E_Input02, E_Input03, E_Input04 ]
 			self.setVisibleControls( hideControlIds, False )
-
 
 			self.initControl( )
 			return
@@ -188,8 +187,10 @@ class Configure(SettingWindow):
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
 			self.setVisibleControls( visibleControlIds, True )
-
 			self.setEnableControls( visibleControlIds, True )
+
+			hideControlIds = [ E_SpinEx05,  E_Input01, E_Input02, E_Input03, E_Input04 ]
+			self.setVisibleControls( hideControlIds, False )
 
 			self.initControl( )
 			return
@@ -205,7 +206,7 @@ class Configure(SettingWindow):
 			self.setVisibleControls( visibleControlIds, True )
 			self.setEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx05 ]
+			hideControlIds = [ E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04 ]
 			self.setVisibleControls( hideControlIds, False )
 
 			self.initControl( )
@@ -214,29 +215,32 @@ class Configure(SettingWindow):
 		
 		elif selectedId == E_IP_SETTING :	
 			self.addEnumControl( E_SpinEx01, 'DHCP' )
-			self.addEnumControl( E_SpinEx02, 'CurrentVoutResolution' ) 	#INPUT_CONTROL
-			self.addEnumControl( E_SpinEx03, 'CurrentVoutResolution' ) 	#INPUT_CONTROL	
-			self.addEnumControl( E_SpinEx04, 'CurrentVoutResolution' ) 	#INPUT_CONTROL
-			self.addEnumControl( E_SpinEx05, 'CurrentVoutResolution' )	#INPUT_CONTROL
+			self.addInputControl( E_Input01, 'test', '123' )
+			self.addInputControl( E_Input02, 'test', '1234')
+			self.addInputControl( E_Input03, 'test', '12345' )
+			self.addInputControl( E_Input04, 'test', '123456' )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
+			visibleControlIds = [ E_SpinEx01, E_Input01, E_Input02, E_Input03, E_Input04 ]
 			self.setVisibleControls( visibleControlIds, True )
 			self.setEnableControls( visibleControlIds, True )
+
+			hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
+			self.setVisibleControls( hideControlIds, False )
 			
 			self.initControl( )
 			return
 			
 
 		elif selectedId == E_FORMAT_HDD :	
-			self.addEnumControl( E_SpinEx01, 'CurrentVoutResolution' ) # BUTTON
+			self.addEnumControl( E_Input01, 'CurrentVoutResolution') # BUTTON
 			
-			visibleControlIds = [ E_SpinEx01 ]
+			visibleControlIds = [ E_Input01 ]
 			self.setVisibleControls( visibleControlIds, True )
-
-			hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
-			self.setVisibleControls( hideControlIds, False )
-
 			self.setEnableControls( visibleControlIds, True )
+
+			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input02, E_Input03, E_Input04 ]
+			self.setVisibleControls( hideControlIds, False )
+			
 			self.initControl( )
 			return
 			
@@ -251,6 +255,9 @@ class Configure(SettingWindow):
 			self.setVisibleControls( visibleControlIds, True )
 			self.setEnableControls( visibleControlIds, True )
 
+			hideControlIds = [ E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04 ]
+			self.setVisibleControls( hideControlIds, False )
+
 			self.initControl( )
 			return
 			
@@ -263,7 +270,7 @@ class Configure(SettingWindow):
 			self.setVisibleControls( visibleControlIds, True )
 			self.setEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx03, E_SpinEx04 ]
+			hideControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04 ]
 			self.setVisibleControls( hideControlIds, False )
 			
 			self.initControl( )
@@ -272,14 +279,3 @@ class Configure(SettingWindow):
 
 		else :
 			print 'ERROR : Can not find selected ID'
-
-	def initLang():
-		import pvr.msg as m
-		self.ctrlLbl = getControl( 9001 )
-		self.ctrlBtn = getControl( 9002 )
-
-		self.ctrlLbl.setLabel( m.strings(m.LANGUAGE) )
-
-		ret = xbmc.getLanguage()
-		self.ctrlBtn.setLabel(ret)
-		print 'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT'

@@ -135,7 +135,6 @@ class SettingWindow(BaseWindow):
 	def initControl( self ):
 		pos = 0
 		for ctrlItem in self.controlList:
-			#self.setItemPosition( ctrlItem.controlId , pos )
 			if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
 				selectedItem = ctrlItem.property.getPropIndex()
 				control = self.getControl( ctrlItem.controlId + 3 )
@@ -145,11 +144,14 @@ class SettingWindow(BaseWindow):
 				control = self.getControl( ctrlItem.controlId + 3 )
 				control.addItems( ctrlItem.listItems )
 
-			self.getControl(ctrlItem.controlId).setPosition(0,  ( pos * 40 ) + 50 )
+			self.getControl(ctrlItem.controlId).setPosition(0, ( pos * 40 ) + 50 )
 			pos += 1
-				
+			
+		self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
+			
 
 	def resetAllControl( self ):
+		self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( False )
 		del self.controlList[:]
 
 					

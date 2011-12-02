@@ -22,7 +22,11 @@ E_SpinEx07			= 1700
 E_SpinEx08			= 1800
 E_SpinEx09			= 1900
 
-E_Input01			= 2000
+E_Input01			= 2100
+E_Input02			= 2200
+E_Input03			= 2300
+E_Input04			= 2400
+E_Input05			= 2500
 
 
 # Setting Menu Group Ids
