@@ -147,8 +147,6 @@ class SettingWindow(BaseWindow):
 			self.getControl(ctrlItem.controlId).setPosition(0, ( pos * 40 ) + 50 )
 			pos += 1
 			
-		self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
-			
 
 	def resetAllControl( self ):
 		self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( False )

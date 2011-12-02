@@ -17,16 +17,16 @@ class Configure(SettingWindow):
 		self.LeftGroupItems						= ['Language', 'Parental', 'Recording Option', 'Audio Setting', 'SCART Setting','HDMI Setting', 'IP Setting', 'Format HDD', 'Factory Reset', 'Etc' ]
 		self.descriptionList					= ['DESC Language', 'DESC Parental', 'DESC Recording Option', 'DESC Audio Setting', 'DESC SCART Setting', 'DESC HDMI Setting', 'DESC IP Setting', 'DESC Format HDD', 'DESC Factory Reset', 'DESC Etc' ]
 	
-		self.ctrlLeftGroup = 0
+		self.ctrlLeftGroup = None
 		self.groupItems = []
 		self.initialized = False
-		self.lastFocused = -1
-		self.prevListItemID = -1
+		self.lastFocused = E_SUBMENU_LIST_ID
+		self.prevListItemID = 0
 
 		for i in range( len( self.LeftGroupItems ) ) :
 			self.groupItems.append( xbmcgui.ListItem( self.LeftGroupItems[i], self.descriptionList[i], '-', '-', '-' ) )
 			
-	def onInit(self):
+	def onInit( self ):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
 
 		self.ctrlLeftGroup = self.getControl( E_SUBMENU_LIST_ID )
@@ -53,12 +53,14 @@ class Configure(SettingWindow):
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == E_SUBMENU_LIST_ID :
+				self.prevListItemID = self.ctrlLeftGroup.getSelectedPosition()
 				self.setListControl( )
 			else :
 				self.controlUp( )
 	
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			if focusId == E_SUBMENU_LIST_ID :
+				self.prevListItemID = self.ctrlLeftGroup.getSelectedPosition()
 				self.setListControl( )
 			else :
 				self.controlDown( )
@@ -79,27 +81,30 @@ class Configure(SettingWindow):
 
 
 	def onClick( self, controlId ):
+		if( self.ctrlLeftGroup.getSelectedPosition() == E_LANGUAGE ) :
+			self.disableControl( E_LANGUAGE )
 		self.controlSelect( )
 
 		
 	def onFocus( self, controlId ):
 		if self.initialized == False :
-			print 'dhkim #1'
 			return
 
 		if ( self.lastFocused != controlId ) or (self.ctrlLeftGroup.getSelectedPosition() != self.prevListItemID):
-			print 'dhkim #2'
 			if controlId == E_SUBMENU_LIST_ID :
 				self.setListControl( )
-			self.lastFocused = controlId
-			self.prevListItemID = self.ctrlLeftGroup.getSelectedPosition()
+				if self.lastFocused != controlId :
+					print 'dhkim test #1'
+					self.lastFocused = controlId
+				if self.ctrlLeftGroup.getSelectedPosition() != self.prevListItemID:
+					print 'dhkim test #2'
+					self.prevListItemID = self.ctrlLeftGroup.getSelectedPosition()
 		
 
 	def setListControl( self ):
 		self.resetAllControl( )
-		ctrlLeftGroup = self.getControl( E_SUBMENU_LIST_ID )
-		selectedId = ctrlLeftGroup.getSelectedPosition()
-
+		selectedId = self.ctrlLeftGroup.getSelectedPosition()
+		self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( False )
 		
 		if selectedId == E_LANGUAGE :
 
@@ -116,18 +121,13 @@ class Configure(SettingWindow):
 			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]
 			self.setVisibleControls( hideControlIds, False )
 			
-			selectedIndex = self.getSelectedIndex( E_SpinEx03 )
-			if ( selectedIndex == 0 ) and ( self.ctrlLeftGroup.getSelectedPosition( ) == 0 ):
-				disableControlIds = [E_SpinEx04, E_SpinEx05]
-				self.setEnableControls( disableControlIds, False )
-			else:
-				self.setEnableControls( visibleControlIds, True )			
-
 			self.initControl( )
+			self.disableControl( E_LANGUAGE )
+			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 			
+			
 		elif selectedId == E_PARENTAL :	
-			print 'dhkim test E_PARENTAL'
 			self.addEnumControl( E_SpinEx01, 'Lock Mainmenu' )
 			self.addInputControl( E_Input01, 'New PIN code', '****')
 			self.addInputControl( E_Input02, 'Confirmation PIN code', '****' )
@@ -142,6 +142,7 @@ class Configure(SettingWindow):
 			self.setVisibleControls( hideControlIds, False )
 			
 			self.initControl( )
+			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 
 
@@ -160,6 +161,7 @@ class Configure(SettingWindow):
 			self.setVisibleControls( hideControlIds, False )
 			
 			self.initControl( )
+			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 
 			
@@ -176,6 +178,7 @@ class Configure(SettingWindow):
 			self.setVisibleControls( hideControlIds, False )
 
 			self.initControl( )
+			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 
 	
@@ -193,6 +196,7 @@ class Configure(SettingWindow):
 			self.setVisibleControls( hideControlIds, False )
 
 			self.initControl( )
+			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 			
 
@@ -210,6 +214,7 @@ class Configure(SettingWindow):
 			self.setVisibleControls( hideControlIds, False )
 
 			self.initControl( )
+			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 
 		
@@ -228,6 +233,7 @@ class Configure(SettingWindow):
 			self.setVisibleControls( hideControlIds, False )
 			
 			self.initControl( )
+			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 			
 
@@ -242,6 +248,7 @@ class Configure(SettingWindow):
 			self.setVisibleControls( hideControlIds, False )
 			
 			self.initControl( )
+			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 			
 
@@ -259,6 +266,7 @@ class Configure(SettingWindow):
 			self.setVisibleControls( hideControlIds, False )
 
 			self.initControl( )
+			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 			
 
@@ -274,8 +282,20 @@ class Configure(SettingWindow):
 			self.setVisibleControls( hideControlIds, False )
 			
 			self.initControl( )
+			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 			
 
 		else :
 			print 'ERROR : Can not find selected ID'
+
+	def disableControl( self, selectedItem ):
+		if( selectedItem == E_LANGUAGE ) :
+			selectedIndex = self.getSelectedIndex( E_SpinEx03 )
+			visibleControlIds = [ E_SpinEx04, E_SpinEx05 ]
+			if ( selectedIndex == 0 ) :
+				self.setEnableControls( visibleControlIds, False )
+			else:
+				self.setEnableControls( visibleControlIds, True )
+
+		return
