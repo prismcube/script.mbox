@@ -1,4 +1,37 @@
+# Setting Menu Ids
+E_LANGUAGE			= 0
+E_PARENTAL			= 1
+E_RECORDING_OPTION	= 2
+E_AUDIO_SETTING		= 3
+E_SCART_SETTING		= 4
+E_HDMI_SETTING		= 5
+E_IP_SETTING		= 6
+E_FORMAT_HDD		= 7
+E_FACTORY_RESET		= 8
+E_ETC				= 9
 
+
+# Control Ids
+E_SpinEx01			= 1100
+E_SpinEx02			= 1200
+E_SpinEx03			= 1300
+E_SpinEx04			= 1400
+E_SpinEx05			= 1500
+E_SpinEx06			= 1600
+E_SpinEx07			= 1700
+E_SpinEx08			= 1800
+E_SpinEx09			= 1900
+
+E_Input01			= 2100
+E_Input02			= 2200
+E_Input03			= 2300
+E_Input04			= 2400
+E_Input05			= 2500
+
+
+# Setting Menu Group Ids
+E_SUBMENU_LIST_ID			= 9000
+E_SETUPMENU_GROUP_ID		= 9010
 
 class FooterMask(object):
 	G_FOOTER_GROUP_STARTID				= 3100

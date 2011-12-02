@@ -5,7 +5,7 @@ import sys
 
 from decorator import decorator
 from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
-from pvr.gui.guiconfig import FooterMask, HeaderDefine
+from pvr.gui.guiconfig import *
 
 class Action(object):
 	ACTION_NONE					= 0
@@ -117,6 +117,7 @@ class ControlItem:
 	E_UNDEFINE				= 0
 	E_BUTTON_CONTROL		= 1
 	E_ENUM_CONTROL			= 2
+	E_INPUT_CONTROL			= 3
 
 	def __init__( self, controlType, controlId, property, listItems ):	
 		self.controlType = controlType	
@@ -132,16 +133,23 @@ class SettingWindow(BaseWindow):
 		self.controlList = []
 
 	def initControl( self ):
-		print 'dhkim test for count = %d' % len( self.controlList )
+		pos = 0
 		for ctrlItem in self.controlList:
 			if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
-				selectedItem = ctrlItem.property.getPropIndex()			
+				selectedItem = ctrlItem.property.getPropIndex()
 				control = self.getControl( ctrlItem.controlId + 3 )
 				control.addItems( ctrlItem.listItems )
 				control.selectItem( selectedItem )
+			if ctrlItem.controlType == ctrlItem.E_INPUT_CONTROL :
+				control = self.getControl( ctrlItem.controlId + 3 )
+				control.addItems( ctrlItem.listItems )
 
+			self.getControl(ctrlItem.controlId).setPosition(0, ( pos * 40 ) + 50 )
+			pos += 1
+			
 
 	def resetAllControl( self ):
+		self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( False )
 		del self.controlList[:]
 
 					
@@ -160,7 +168,13 @@ class SettingWindow(BaseWindow):
 		self.controlList.append( ControlItem( ControlItem.E_ENUM_CONTROL, controlId, property, listItems ) )
 
 
+	def addInputControl( self, controlId , titleLabel, inputLabel):
+		listItems = []
+		listItem = xbmcgui.ListItem(titleLabel, inputLabel,"-", "-", "-")
+		listItems.append(listItem)
 
+		self.controlList.append( ControlItem( ControlItem.E_INPUT_CONTROL, controlId, None, listItems ) )
+		
 
 	def hasControlItem( self, ctrlItem, controlId  ):
 		if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
