@@ -142,7 +142,7 @@ class SettingWindow(BaseWindow):
 				control.selectItem( selectedItem )
 			if ctrlItem.controlType == ctrlItem.E_INPUT_CONTROL :
 				control = self.getControl( ctrlItem.controlId + 3 )
-				control.addItem( ctrlItem.listItems )
+				control.addItems( ctrlItem.listItems )
 
 			self.getControl(ctrlItem.controlId).setPosition(0, ( pos * 40 ) + 50 )
 			pos += 1
@@ -166,10 +166,12 @@ class SettingWindow(BaseWindow):
 
 		self.controlList.append( ControlItem( ControlItem.E_ENUM_CONTROL, controlId, property, listItems ) )
 
-	def addInputControl( self, controlId , titleLabel, inputLabel, inputtype ):
-		listItem = xbmcgui.ListItem( titleLabel, inputLabel,"-", "-", "-" )
 
-		self.controlList.append( ControlItem( ControlItem.E_INPUT_CONTROL, controlId, inputtype, listItem ) )
+	def addInputControl( self, controlId , titleLabel, inputLabel, inputtype ):
+		listItems = []
+		listItem = xbmcgui.ListItem( titleLabel, inputLabel, "-", "-", "-" )
+		listItems.append( listItem )
+		self.controlList.append( ControlItem( ControlItem.E_INPUT_CONTROL, controlId, inputtype, listItems ) )
 
 
 	# Input Contol Type num (numeric KeyPad)
@@ -185,35 +187,30 @@ class SettingWindow(BaseWindow):
 			if( ctrlItem.controlId == controlId - 1 ) :
 				keyType = ctrlItem.property
 				if( keyType == 4 ) :
-					kb = xbmc.Keyboard(ctrlItem.listItems.getLabel2( ), ctrlItem.listItems.getLabel( ), False)
-					kb.doModal()
+					kb = xbmc.Keyboard( ctrlItem.listItems[0].getLabel2( ), ctrlItem.listItems[0].getLabel( ), False )
+					kb.doModal( )
  					if( kb.isConfirmed( ) ) :
- 						ctrlItem.listItems.setLabel2( kb.getText( ) )
+ 						ctrlItem.listItems[0].setLabel2( kb.getText( ) )
+ 						#ctrlItem.listItems[0] = xbmcgui.ListItem( ctrlItem.listItems[0].getLabel( ), ctrlItem.listItems[0].getLabel2( ), "-", "-", "-" )
  					return True
 
  				elif ( keyType == 5 ) :
- 					kb = xbmc.Keyboard(ctrlItem.listItems.getLabel2( ), ctrlItem.listItems.getLabel( ), True)
-					kb.doModal()
+ 					kb = xbmc.Keyboard( ctrlItem.listItems[0].getLabel2( ), ctrlItem.listItems[0].getLabel( ), True )
+					kb.doModal( )
  					if( kb.isConfirmed( ) ) :
- 						ctrlItem.listItems.setLabel2( kb.getText( ) )
+ 						ctrlItem.listItems[0].setLabel2( kb.getText( ) )
+ 						#ctrlItem.listItems[0] = xbmcgui.ListItem( ctrlItem.listItems[0].getLabel( ), ctrlItem.listItems[0].getLabel2( ), "-", "-", "-" )
  					return True
 				
 				else :
-					dialog = xbmcgui.Dialog()
-					value = dialog.numeric( keyType, ctrlItem.listItems.getLabel( ), ctrlItem.listItems.getLabel2( ) )
-					ctrlItem.listItems.setLabel2( value )
+					dialog = xbmcgui.Dialog( )
+					value = dialog.numeric( keyType, ctrlItem.listItems[0].getLabel( ), ctrlItem.listItems[0].getLabel2( ) )
+					ctrlItem.listItems[0].setLabel2( value )
+					c#trlItem.listItems[0] = xbmcgui.ListItem( ctrlItem.listItems[0].getLabel( ), ctrlItem.listItems[0].getLabel2( ), "-", "-", "-" )
 					return True
 
 		return	False
-		
-		'''
-		elif ( ctrlItem.property == 5 )
-		kb = xbmc.Keyboard(ctrlItem.listItems.getLabel2( ), ctrlItem.listItems.getLabel( ), True)
-		kb.doModal()
-			if( kb.isConfirmed( ) ) :
-				ctrlItem.listItems.setLabel2( kb.getText( ) )
-			return True
-		'''
+
 
 	def hasControlItem( self, ctrlItem, controlId  ):
 		if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
@@ -288,11 +285,11 @@ class SettingWindow(BaseWindow):
 
 			ctrlItem = self.controlList[i]
 			if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
-				if ctrlItem.controlId == controlId or ctrlItem.controlId + 1 == controlId or ctrlItem.controlId + 2 == controlId or ctrlItem.controlId + 3 == controlId  :
+				if ctrlItem.controlId == controlId or ctrlItem.controlId + 1 == controlId or ctrlItem.controlId + 2 == controlId or ctrlItem.controlId + 3 == controlId :
 					return ctrlItem.controlId
 
 			elif ctrlItem.controlType == ctrlItem.E_INPUT_CONTROL :
-				if ctrlItem.controlId == controlId or ctrlItem.controlId + 1 == controlId  or ctrlItem.controlId + 3 == controlId  :	
+				if ctrlItem.controlId == controlId or ctrlItem.controlId + 1 == controlId  or ctrlItem.controlId + 3 == controlId :	
 					return ctrlItem.controlId
 			else :
 				if ctrlItem.controlId == controlId :
@@ -385,7 +382,4 @@ class SettingWindow(BaseWindow):
 		if ( focusId % 10 ) == 1 :
 			focusId += 1
 			self.setFocusId( focusId )
-
-	#def controlDescription( self, wnd, controlId ) :
-	#	pass
 

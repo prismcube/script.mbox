@@ -81,8 +81,8 @@ class Configure( SettingWindow ):
 			
 
 	def onClick( self, controlId ):
-		if( self.ctrlLeftGroup.getSelectedPosition() == E_LANGUAGE ) :
-			self.disableControl( E_LANGUAGE )
+		if( self.ctrlLeftGroup.getSelectedPosition() == E_LANGUAGE or self.ctrlLeftGroup.getSelectedPosition() == E_IP_SETTING ) :
+			self.disableControl( self.ctrlLeftGroup.getSelectedPosition() )
 		if( (controlId == ( E_Input01 + 1 )) or (controlId == ( E_Input02 + 1 )) or (controlId == ( E_Input03 + 1 )) or (controlId == ( E_Input04 + 1 ))) :
 			self.inputSetup( controlId )
 		self.controlSelect( )
@@ -232,6 +232,7 @@ class Configure( SettingWindow ):
 			self.setVisibleControls( hideControlIds, False )
 			
 			self.initControl( )
+			self.disableControl( E_IP_SETTING )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 			
@@ -296,4 +297,10 @@ class Configure( SettingWindow ):
 				self.setEnableControls( visibleControlIds, False )
 			else :
 				self.setEnableControls( visibleControlIds, True )
-
+		elif( selectedItem == E_IP_SETTING ) :
+			selectedIndex = self.getSelectedIndex( E_SpinEx01 )
+			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]
+			if ( selectedIndex == 1 ) :
+				self.setEnableControls( visibleControlIds, False )
+			else :
+				self.setEnableControls( visibleControlIds, True )
