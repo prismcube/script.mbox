@@ -402,7 +402,6 @@ class ElisPropertyEnum(object):
 				break;
 
 	def getProp(self):
-		return 0
 		ret = self.commander.enum_GetProp( self.name )
 		return int(ret[0])
 
@@ -436,7 +435,6 @@ class ElisPropertyEnum(object):
 		return ele[1]
 
 	def getPropIndex( self ) :
-		return 0
 		index = 0
 		value = self.getProp()
 		for ele in self.property :
