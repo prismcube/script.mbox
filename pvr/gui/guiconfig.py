@@ -28,6 +28,9 @@ E_Input03			= 2300
 E_Input04			= 2400
 E_Input05			= 2500
 
+E_SlideMenuButton01	= 3310
+E_SlideMenuButton02	= 3320
+E_SlideMenuButton03	= 3330
 
 # Setting Menu Group Ids
 E_SUBMENU_LIST_ID			= 9000

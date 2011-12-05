@@ -241,7 +241,7 @@ class Configure( SettingWindow ):
 
 		elif selectedId == E_FORMAT_HDD :	
 			self.addUserEnumControl( E_SpinEx01, 'Format Type', USER_ENUM_LIST_FORMAT_TYPE )
-			self.addUserButtonControl( E_Input01, 'Start HDD Format' )
+			self.addLeftLabelButtonControl( E_Input01, 'Start HDD Format' )
 			
 			visibleControlIds = [ E_SpinEx01, E_Input01 ]
 			self.setVisibleControls( visibleControlIds, True )
@@ -259,7 +259,7 @@ class Configure( SettingWindow ):
 			self.addUserEnumControl( E_SpinEx01, 'Reset Channel List', USER_ENUM_LIST_YES_NO )
 			self.addUserEnumControl( E_SpinEx02, 'Reset Favorite Add-ons', USER_ENUM_LIST_YES_NO )
 			self.addUserEnumControl( E_SpinEx03, 'Reset Configure Setting', USER_ENUM_LIST_YES_NO )
-			self.addUserButtonControl( E_Input01, 'Start Reset' )
+			self.addLeftLabelButtonControl( E_Input01, 'Start Reset' )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01 ]
 			self.setVisibleControls( visibleControlIds, True )
