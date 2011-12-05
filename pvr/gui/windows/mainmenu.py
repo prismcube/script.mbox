@@ -16,8 +16,11 @@ class MainMenu( BaseWindow ):
 
 
 	def onInit( self ):
+		print '--------------- testlael98 -----------------'
 		if not self.win :
 			self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId() )
+
+		winmgr.getInstance().checkSkinChange( )
 
 	
 	def onAction( self, action ):
