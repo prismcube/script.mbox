@@ -88,7 +88,7 @@
 				</focusedlayout>
 				<content>
 					<item id="1">
-						<label>Installation aeon nox</label>
+						<label>Installation</label>
 						<onclick>right</onclick>
 						<visible>true</visible>
 					</item>
