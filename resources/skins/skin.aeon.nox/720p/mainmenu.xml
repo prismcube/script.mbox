@@ -1,5 +1,5 @@
 <window id="3002">
-	<defaultcontrol always="true">7000</defaultcontrol>
+	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>no</allowoverlay>	
 	<controls>
 		<control type="group">
@@ -13,7 +13,7 @@
                     <width>1</width>
                     <height>720</height>
                     <texture>HomeBladeSub_Part1.png</texture>
-                    <animation effect="zoom" start="379,0,1,720" end="379,0,229,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(7001).HasFocus">Conditional</animation>
+                    <animation effect="zoom" start="379,0,1,720" end="379,0,229,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
                 </control>
                 <control type="image">
                     <posx>380</posx>
@@ -21,7 +21,7 @@
                     <width>12</width>
                     <height>720</height>
                     <texture>HomeBladeSub_Part2.png</texture>
-                    <animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(7001).HasFocus">Conditional</animation>
+                    <animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
                 </control>
             </control>
             <control type="image">
@@ -32,16 +32,16 @@
                 <colordiffuse>DAFFFFFF</colordiffuse>
                 <texture>HomeBlade_bottom.png</texture>
             </control>
-            <control type="list" id="7000">
+            <control type="list" id="9000">
 				<hitrect x="100" y="100" w="530" h="620"></hitrect>
 				<posx>-20</posx>
 				<posy>80</posy>
 				<width>400</width>
 				<height>720</height>
 				<onleft>10</onleft>
-				<onright>7001</onright>
-				<onup>7000</onup>
-				<ondown>7000</ondown>
+				<onright>9001</onright>
+				<onup>9000</onup>
+				<ondown>9000</ondown>
 				<scrolltime>300</scrolltime>
 				<focusposition>0</focusposition>
 				<movement>10</movement>
@@ -81,14 +81,14 @@
 						<width>18</width>
 						<height>18</height>
 						<texture>HomeHasSub.png</texture>
-						<visible>Container(7000).HasFocus(1) | Container(7000).HasFocus(2) | Container(7000).HasFocus(3) | Container(7000).HasFocus(4) | Container(7000).HasFocus(5) | Container(7000).HasFocus(6) | Container(7000).HasFocus(7)</visible>
+						<visible>Container(9000).HasFocus(1) | Container(9000).HasFocus(2) | Container(9000).HasFocus(3) | Container(9000).HasFocus(4) | Container(9000).HasFocus(5) | Container(9000).HasFocus(6) | Container(9000).HasFocus(7)</visible>
 						<animation effect="fade" start="0" end="100" time="200">Focus</animation>
 						<animation effect="fade" start="100" end="0" time="200">UnFocus</animation>
 					</control>
 				</focusedlayout>
 				<content>
 					<item id="1">
-						<label>Installation aeon nox</label>
+						<label>Installation</label>
 						<onclick>right</onclick>
 						<visible>true</visible>
 					</item>
@@ -165,58 +165,58 @@
 	                    <ondown>9000</ondown>
 	            </control>
         	</control>
-			<control type="group" id="7001">
+			<control type="group" id="9001">
 				<posx>380</posx>
 				<posy>-720</posy>
-<!--				<animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(7001).HasFocus">conditional</animation> -->
-				<animation effect="fade" start="0" end="100" delay="200" time="300" condition="ControlGroup(7001).HasFocus">conditional</animation>
-				<animation effect="slide" end="0,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(7001).HasFocus">conditional</animation>
+<!--				<animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9001).HasFocus">conditional</animation> -->
+				<animation effect="fade" start="0" end="100" delay="200" time="300" condition="ControlGroup(9001).HasFocus">conditional</animation>
+				<animation effect="slide" end="0,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">conditional</animation>
 				<animation effect="fade" end="0,0" time="500">WindowClose</animation>
-				<!--<animation effect="fade" start="0" end="100" delay="200" time="300" condition="ControlGroup(7001).HasFocus">conditional</animation>
-					<animation effect="slide" end="0,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(7001).HasFocus">conditional</animation>				
-					<animation effect="fade" end="0,0" time="200" condition="ControlGroup(7001).HasFocus">WindowClose</animation> -->
-<!--				<animation effect="fade" start="100" end="0" time="0" condition="ControlGroup(7001).HasFocus">WindowClose</animation> -->
-<!--				<animation effect="slide" end="0,-204" time="300" condition="Container(7000).Row(0)">conditional</animation> -->
-<!--				<animation effect="slide" end="0,-102" time="300" condition="Container(7000).Row(2)">conditional</animation> -->
-<!--				<animation effect="slide" end="0,102" time="300" condition="Container(7000).Row(4)">conditional</animation> -->
-<!--				<animation effect="slide" end="0,204" time="300" condition="Container(7000).Row(5)">conditional</animation> -->
+				<!--<animation effect="fade" start="0" end="100" delay="200" time="300" condition="ControlGroup(9001).HasFocus">conditional</animation>
+					<animation effect="slide" end="0,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">conditional</animation>				
+					<animation effect="fade" end="0,0" time="200" condition="ControlGroup(9001).HasFocus">WindowClose</animation> -->
+<!--				<animation effect="fade" start="100" end="0" time="0" condition="ControlGroup(9001).HasFocus">WindowClose</animation> -->
+<!--				<animation effect="slide" end="0,-204" time="300" condition="Container(9000).Row(0)">conditional</animation> -->
+<!--				<animation effect="slide" end="0,-102" time="300" condition="Container(9000).Row(2)">conditional</animation> -->
+<!--				<animation effect="slide" end="0,102" time="300" condition="Container(9000).Row(4)">conditional</animation> -->
+<!--				<animation effect="slide" end="0,204" time="300" condition="Container(9000).Row(5)">conditional</animation> -->
 				<!-- Installation -->
-				<control type="grouplist" id="7010">
+				<control type="grouplist" id="9010">
 					<posx>10</posx>
 					<posy>20</posy>
 					<width>240</width>
 					<height>240</height>
 					<align>center</align>
-					<onleft>7000</onleft>
-					<onup>7010</onup>
-					<ondown>7010</ondown>
+					<onleft>9000</onleft>
+					<onup>9010</onup>
+					<ondown>9010</ondown>
 					<itemgap>0</itemgap>
-					<visible>Container(7000).HasFocus(1)</visible>
-					<control type="button" id="70101">
+					<visible>Container(9000).HasFocus(1)</visible>
+					<control type="button" id="90101">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>First Installation</label>
 						<onclick>-</onclick>
 						<visible>true</visible>
 					</control>
-					<control type="button" id="70102">
+					<control type="button" id="90102">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>Antenna Setup</label>
 						<onclick>-</onclick>
 						<visible>true</visible>						
 					</control>
-					<control type="button" id="70103">
+					<control type="button" id="90103">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>Channel Search</label>
 						<onclick>-</onclick>
 						<visible>true</visible>
 					</control>
-					<control type="button" id="70104">
+					<control type="button" id="90104">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>Edit Satellite</label>
 						<onclick>-</onclick>
 						<visible>true</visible>
 					</control>
-					<control type="button" id="70105">
+					<control type="button" id="90105">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>Edit Transponder</label>
 						<onclick>-</onclick>
@@ -224,18 +224,18 @@
 					</control>
 				</control>
 				<!-- Channels -->
-				<control type="grouplist" id="7020">
+				<control type="grouplist" id="9020">
 					<posx>10</posx>
 					<posy>70</posy>
 					<width>240</width>
 					<height>240</height>
 					<align>center</align>
-					<onleft>7000</onleft>
-					<onup>7020</onup>
-					<ondown>7020</ondown>
+					<onleft>9000</onleft>
+					<onup>9020</onup>
+					<ondown>9020</ondown>
 					<itemgap>0</itemgap>
-					<visible>Container(7000).HasFocus(2)</visible>
-					<control type="button" id="70201">
+					<visible>Container(9000).HasFocus(2)</visible>
+					<control type="button" id="90201">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>Edit Channels</label>
 						<onclick>-</onclick>
@@ -243,18 +243,18 @@
 					</control>
 				</control>
 				<!-- Configure -->
-				<control type="grouplist" id="7030">
+				<control type="grouplist" id="9030">
 					<posx>10</posx>
 					<posy>150</posy>
 					<width>240</width>
 					<height>240</height>
 					<align>center</align>
-					<onleft>7000</onleft>
-					<onup>7030</onup>
-					<ondown>7030</ondown>
+					<onleft>9000</onleft>
+					<onup>9030</onup>
+					<ondown>9030</ondown>
 					<itemgap>0</itemgap>
-					<visible>Container(7000).HasFocus(3)</visible>
-					<control type="button" id="70301">
+					<visible>Container(9000).HasFocus(3)</visible>
+					<control type="button" id="90301">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>Configure</label>
 						<onclick>-</onclick>
@@ -262,18 +262,18 @@
 					</control>
 				</control>
 				<!-- CAS -->
-				<control type="grouplist" id="7040">
+				<control type="grouplist" id="9040">
 					<posx>10</posx>
 					<posy>210</posy>
 					<width>240</width>
 					<height>240</height>
 					<align>center</align>
-					<onleft>7000</onleft>
-					<onup>7040</onup>
-					<ondown>7040</ondown>
+					<onleft>9000</onleft>
+					<onup>9040</onup>
+					<ondown>9040</ondown>
 					<itemgap>0</itemgap>
-					<visible>Container(7000).HasFocus(4)</visible>
-					<control type="button" id="70401">
+					<visible>Container(9000).HasFocus(4)</visible>
+					<control type="button" id="90401">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>Smartcard</label>
 						<onclick>-</onclick>
@@ -281,66 +281,66 @@
 					</control>
 				</control>
 				<!-- Media Center -->
-				<control type="grouplist" id="7050">
+				<control type="grouplist" id="9050">
 					<posx>10</posx>
 					<posy>250</posy>
 					<width>240</width>
 					<height>360</height>
 					<align>center</align>
-					<onleft>7000</onleft>
-					<onup>7050</onup>
-					<ondown>7050</ondown>
+					<onleft>9000</onleft>
+					<onup>9050</onup>
+					<ondown>9050</ondown>
 					<itemgap>0</itemgap>
-					<visible>Container(7000).HasFocus(5)</visible>
-					<control type="button" id="70501">
+					<visible>Container(9000).HasFocus(5)</visible>
+					<control type="button" id="90501">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>Weather</label>
 						<onclick>ActivateWindow(Weather)</onclick>
 						<visible>true</visible>
 					</control>
-					<control type="button" id="70502">
+					<control type="button" id="90502">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>Pictures</label>
 						<onclick>ActivateWindow(Pictures)</onclick>
 						<visible>true</visible>
 					</control>
-					<control type="button" id="70503">
+					<control type="button" id="90503">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>Music</label>
 						<onclick>ActivateWindow(Music)</onclick>
 						<visible>true</visible>
 					</control>
-					<control type="button" id="70504">
+					<control type="button" id="90504">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>Videos</label>
 						<onclick>ActivateWindow(Videos)</onclick>
 						<visible>true</visible>
 					</control>
-					<control type="button" id="70505">
+					<control type="button" id="90505">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>Programs</label>
 						<onclick>ActivateWindow(Programs,Addons,return)</onclick>
 						<visible>true</visible>
 					</control>
-					<control type="button" id="70506">
+					<control type="button" id="90506">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>Settings</label>
 						<onclick>ActivateWindow(Settings)</onclick>
 						<visible>true</visible>
 					</control>
-					<control type="button" id="70507">
+					<control type="button" id="90507">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>File Manager</label>
 						<onclick>ActivateWindow(FileManager)</onclick>
 						<visible>true</visible>
 					</control>
-					<control type="button" id="70508">
+					<control type="button" id="90508">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>Profiles</label>
 						<onclick>ActivateWindow(Profiles)</onclick>
 						<visible>true</visible>
 					</control>
-					<control type="button" id="70509">
+					<control type="button" id="90509">
 						<include>ButtonHomeSubCommonValues</include>
 						<label>System Info</label>
 						<onclick>ActivateWindow(SystemInfo)</onclick>
@@ -375,7 +375,7 @@
                 <align>left</align>
                 <textcolor>white</textcolor>                
                 <shadowcolor>black</shadowcolor>	                
-                <visible>Container(7000).HasFocus(1)</visible>
+                <visible>Container(9000).HasFocus(1)</visible>
             </control>
             <control type="label">
                 <description>MainMenuDescription</description>
@@ -388,7 +388,7 @@
                 <align>left</align>
                 <textcolor>white</textcolor>                
                 <shadowcolor>black</shadowcolor>
-                <visible>Container(7000).HasFocus(2)</visible>
+                <visible>Container(9000).HasFocus(2)</visible>
             </control>
             <control type="label">
                 <description>MainMenuDescription</description>
@@ -401,7 +401,7 @@
                 <align>left</align>
                 <textcolor>white</textcolor>                
                 <shadowcolor>black</shadowcolor>
-                <visible>Container(7000).HasFocus(3)</visible>
+                <visible>Container(9000).HasFocus(3)</visible>
             </control>
             <control type="label">
                 <description>MainMenuDescription</description>
@@ -414,7 +414,7 @@
                 <align>left</align>
                 <textcolor>white</textcolor>                
                 <shadowcolor>black</shadowcolor>
-                <visible>Container(7000).HasFocus(4)</visible>
+                <visible>Container(9000).HasFocus(4)</visible>
             </control>
             <control type="label">
                 <description>MainMenuDescription</description>
@@ -427,7 +427,7 @@
                 <align>left</align>
                 <textcolor>white</textcolor>                
                 <shadowcolor>black</shadowcolor>
-                <visible>Container(7000).HasFocus(5)</visible>
+                <visible>Container(9000).HasFocus(5)</visible>
             </control>
             <control type="label">
                 <description>MainMenuDescription</description>
@@ -440,7 +440,7 @@
                 <align>left</align>
                 <textcolor>white</textcolor>                
                 <shadowcolor>black</shadowcolor>
-                <visible>Container(7000).HasFocus(6)</visible>
+                <visible>Container(9000).HasFocus(6)</visible>
             </control>
             <control type="label">
                 <description>MainMenuDescription</description>
@@ -453,7 +453,7 @@
                 <align>left</align>
                 <textcolor>white</textcolor>                
                 <shadowcolor>black</shadowcolor>
-                <visible>Container(7000).HasFocus(7)</visible>
+                <visible>Container(9000).HasFocus(7)</visible>
             </control>
         </control>
 		<!--Date, Time Info-->

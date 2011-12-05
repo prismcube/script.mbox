@@ -37,9 +37,9 @@ class MainMenu( BaseWindow ):
 
 	def onClick( self, controlId ):
 		print "onclick(): control %d" % controlId
-		if controlId == 70301 :
+		if controlId == 90301 :
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_CONFIGURE )
-		elif controlId == 70101 :
+		elif controlId == 90101 :
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_LANGUAGE_SETTING )
 		elif controlId == 20 :
 			self.close()
