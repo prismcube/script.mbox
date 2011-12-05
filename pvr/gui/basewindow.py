@@ -114,11 +114,11 @@ class BaseDialog(xbmcgui.WindowXMLDialog, Property):
 
 
 class ControlItem:
-	E_UNDEFINE				= 0
-	E_ENUM_CONTROL			= 1
-	E_USER_ENUM_CONTROL		= 2
-	E_INPUT_CONTROL			= 3
-	E_USER_BUTTON_CONTROL	= 4
+	E_UNDEFINE					= 0
+	E_ENUM_CONTROL				= 1
+	E_USER_ENUM_CONTROL			= 2
+	E_INPUT_CONTROL				= 3
+	E_LEFT_LABEL_BUTTON_CONTROL	= 4
 
 
 	def __init__( self, controlType, controlId, property, listItems ):	
