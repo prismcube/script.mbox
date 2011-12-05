@@ -149,7 +149,7 @@ class SettingWindow(BaseWindow):
 				control = self.getControl( ctrlItem.controlId + 3 )
 				control.addItems( ctrlItem.listItems )
 				control.selectItem( 0 )
-			elif ctrlItem.controlType == ctrlItem.E_USER_BUTTON_CONTROL :
+			elif ctrlItem.controlType == ctrlItem.E_LEFT_LABEL_BUTTON_CONTROL :
 				control = self.getControl( ctrlItem.controlId + 3 )
 				control.addItems( ctrlItem.listItems )
 
@@ -195,7 +195,7 @@ class SettingWindow(BaseWindow):
 		listItems = []
 		listItem = xbmcgui.ListItem( inputString, '', "-", "-", "-" )
 		listItems.append( listItem )
-		self.controlList.append( ControlItem( ControlItem.E_USER_BUTTON_CONTROL, controlId, None, listItems ) )
+		self.controlList.append( ControlItem( ControlItem.E_LEFT_LABEL_BUTTON_CONTROL, controlId, None, listItems ) )
 
 		
 
@@ -239,7 +239,7 @@ class SettingWindow(BaseWindow):
 		if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL or ctrlItem.controlType == ctrlItem.E_USER_ENUM_CONTROL:
 			if ctrlItem.controlId == controlId or ctrlItem.controlId + 1 == controlId or ctrlItem.controlId + 2 == controlId or ctrlItem.controlId + 3 == controlId  :
 				return True
-		elif ctrlItem.controlType == ctrlItem.E_INPUT_CONTROL or ctrlItem.controlType == ctrlItem.E_USER_BUTTON_CONTROL:
+		elif ctrlItem.controlType == ctrlItem.E_INPUT_CONTROL or ctrlItem.controlType == ctrlItem.E_LEFT_LABEL_BUTTON_CONTROL:
 			if ctrlItem.controlId == controlId or ctrlItem.controlId + 1 == controlId  or ctrlItem.controlId + 3 == controlId :	
 				return True
 		else :
@@ -315,7 +315,7 @@ class SettingWindow(BaseWindow):
 				if ctrlItem.controlId == controlId or ctrlItem.controlId + 1 == controlId or ctrlItem.controlId + 2 == controlId or ctrlItem.controlId + 3 == controlId :
 					return ctrlItem.controlId
 
-			elif ctrlItem.controlType == ctrlItem.E_INPUT_CONTROL or ctrlItem.controlType == ctrlItem.E_USER_BUTTON_CONTROL:
+			elif ctrlItem.controlType == ctrlItem.E_INPUT_CONTROL or ctrlItem.controlType == ctrlItem.E_LEFT_LABEL_BUTTON_CONTROL:
 				if ctrlItem.controlId == controlId or ctrlItem.controlId + 1 == controlId  or ctrlItem.controlId + 3 == controlId :	
 					return ctrlItem.controlId
 			else :
@@ -373,7 +373,7 @@ class SettingWindow(BaseWindow):
 					return True
 				elif ctrlItem.controlType == ctrlItem.E_USER_ENUM_CONTROL :
 					return True
-				elif ctrlItem.controlType == ctrlItem.E_USER_BUTTON_CONTROL :
+				elif ctrlItem.controlType == ctrlItem.E_LEFT_LABEL_BUTTON_CONTROL :
 					return True
 
 		return False

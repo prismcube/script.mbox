@@ -35,8 +35,8 @@ E_SETUPMENU_GROUP_ID		= 9010
 
 
 # USER_CONTROL_TYPE_DEFINE
-USER_ENUM_CONTROL_YES_NO 			= [ 'No', 'Yes' ]
-USER_ENUM_CONTROL_FORMAT_TYPE	 	= [ 'FAT', 'EXT3' ]
+USER_ENUM_LIST_YES_NO 			= [ 'No', 'Yes' ]
+USER_ENUM_LIST_FORMAT_TYPE	 	= [ 'FAT', 'EXT3' ]
 
 
 class FooterMask(object):

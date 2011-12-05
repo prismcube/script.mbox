@@ -39,11 +39,11 @@ class LanguageSetting(SettingWindow):
 
 		elif actionId == Action.ACTION_MOVE_LEFT:
 			print '# 1dhkim test focusId = %d' % focusId
-			if focusId == 2 :
+			if focusId != 9002 :
 				print 'dhkim test focusId = %d' % focusId
-				self.setFocusId(9000)
+				self.setFocusId(9002)
 			else :
-				self.setFocusId(9001)
+				self.setFocusId(9000)
 
 		elif actionId == Action.ACTION_MOVE_UP:
 			pass
