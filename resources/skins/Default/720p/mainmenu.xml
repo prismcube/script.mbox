@@ -137,6 +137,7 @@
 				<height>40</height>
 				<texture diffuse="diffuse_mirror.png" flipy="true">XBMC_Logo.png</texture>
 			</control>
+			<!--
 			<control type="image">
 				<posx>0</posx>
 				<posy>100r</posy>
@@ -144,6 +145,7 @@
 				<height>100</height>
 				<texture>HomeButtonsBack.png</texture>
 			</control>
+			-->
 			<!--power button-->
 			<control type="group" id="10">
 	            <posx>15</posx>

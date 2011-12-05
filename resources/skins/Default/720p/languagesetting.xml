@@ -1,10 +1,10 @@
 <window id="3005">
-	<defaultcontrol always="true">9000</defaultcontrol>
+	<defaultcontrol always="true">1101</defaultcontrol>
 	<controls>
 		<include>MenuHeader</include>
 		<control type="group">
 			<include>FadeEffect</include>
-			<include>MenuDescription</include>
+			<!--
 			<control type="image">
 				<posx>830</posx>
 				<posy>170</posy>
@@ -13,11 +13,12 @@
 				<texture border="20">special://skin/backgrounds/weather.jpg</texture>
 				<description>pre-view</description>
 			</control>
+			-->
 			<control type="grouplist" id="9000">
 				<visible>true</visible>
 				<posx>100</posx>
 				<posy>170</posy>
-				<width>680</width>
+				<width>700</width>
 				<height>530</height>
 				<itemgap>0</itemgap>
 				<pagecontrol>60</pagecontrol>
@@ -26,13 +27,10 @@
 				<onup>9000</onup>
 				<ondown>9000</ondown>
 				<include>SpinEx01</include>
-				<include>SpinEx02</include>
-				<include>SpinEx03</include>
-				<include>SpinEx04</include>
-				<include>SpinEx05</include>
 			</control>
 		</control>
 		<include>MenuFooter</include>
+		<include>SlideMenu</include>
 	</controls>
 </window>
 
