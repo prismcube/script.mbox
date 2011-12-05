@@ -37,6 +37,10 @@ class Configure( SettingWindow ):
 		self.ctrlLeftGroup.selectItem( position )
 		self.setListControl( )
 
+		#self.setHeaderLabel( 'Language Preference' )
+		#self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_SEARCH_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_RECORD_MASK )
+
+
 	def onAction( self, action ):
 
 		actionId = action.getId( )
@@ -83,8 +87,6 @@ class Configure( SettingWindow ):
 	def onClick( self, controlId ):
 		if( self.ctrlLeftGroup.getSelectedPosition() == E_LANGUAGE or self.ctrlLeftGroup.getSelectedPosition() == E_IP_SETTING ) :
 			self.disableControl( self.ctrlLeftGroup.getSelectedPosition() )
-		#if( (controlId == ( E_Input01 + 1 )) or (controlId == ( E_Input02 + 1 )) or (controlId == ( E_Input03 + 1 )) or (controlId == ( E_Input04 + 1 ))) :
-			#self.inputSetup( controlId )
 		self.controlSelect( )
 
 		

@@ -37,8 +37,8 @@ class LanguageSetting(SettingWindow):
 	def onInit(self):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
 
-		self.setHeaderLabel( self.win, 'Language Preference' )
-		self.setFooter( self.win, ( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_SEARCH_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_RECORD_MASK ) )
+		self.setHeaderLabel( 'Language Preference' )
+		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_SEARCH_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_RECORD_MASK )
 		
 		self.initControl()
 		selectedIndex = self.getSelectedIndex( E_PrimarySubtitleLanguage )

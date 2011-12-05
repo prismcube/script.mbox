@@ -95,17 +95,17 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 		self.win = None        
 		self.closed = False
 
-	def setFooter( self, wnd, footermask ):
+	def setFooter( self, footermask ):
 		self.footerGroupId = FooterMask.G_FOOTER_GROUP_STARTID
 		for i in range( FooterMask.G_NUM_OF_FOOTER_ICON ):
 			if not( footermask & ( 1 << i ) ):
-				self.ctrlfooterGroup = wnd.getControl( self.footerGroupId )
+				self.ctrlfooterGroup = self.getControl( self.footerGroupId )
 				self.ctrlfooterGroup.setVisible( False )
 			self.footerGroupId += FooterMask.G_FOOTER_GROUP_IDGAP
 
-	def setHeaderLabel( self, wnd, label ):
-		self.ctrlheaderlabel = wnd.getControl( HeaderDefine.G_HEADER_LABEL_ID )
-		self.ctrlheaderlabel.setLabel( label )
+	def setHeaderLabel( self, label ):
+		self.getControl( HeaderDefine.G_HEADER_LABEL_ID ).setLabel( label )
+		
 
 class BaseDialog(xbmcgui.WindowXMLDialog, Property):
 	def __init__(self, *args, **kwargs):
@@ -299,6 +299,7 @@ class SettingWindow(BaseWindow):
 			if self.hasControlItem( ctrlItem, controlId ) :
 				if ctrlItem.controlType == ctrlItem.E_ENUM_CONTROL :
 					control = self.getControl( ctrlItem.controlId + 3 )
+					time.sleep( 0.02 )
 					return control.getSelectedPosition()
 
 		return -1

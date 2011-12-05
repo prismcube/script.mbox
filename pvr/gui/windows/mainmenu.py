@@ -36,6 +36,8 @@ class MainMenu( BaseWindow ):
 		print "onclick(): control %d" % controlId
 		if controlId == 70301 :
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_CONFIGURE )
+		elif controlId == 70101 :
+			winmgr.getInstance().showWindow( winmgr.WIN_ID_LANGUAGE_SETTING )
 		elif controlId == 20 :
 			self.close()
 			import pvr.launcher

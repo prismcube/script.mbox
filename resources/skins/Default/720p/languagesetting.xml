@@ -25,11 +25,13 @@
 				<onright>-</onright>
 				<onup>9000</onup>
 				<ondown>9000</ondown>
+				<!--
 				<include>SpinEx01</include>
 				<include>SpinEx02</include>
 				<include>SpinEx03</include>
 				<include>SpinEx04</include>
 				<include>SpinEx05</include>
+				-->
 			</control>
 		</control>
 		<include>MenuFooter</include>
