@@ -10,7 +10,7 @@ import pvr.elismgr
 from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import *
 
-E_MAIN_GROUP_ID		= 9000
+E_MAIN_GROUP_ID	= 9000
 
 class AntennaSetup(SettingWindow):
 	def __init__( self, *args, **kwargs ):
