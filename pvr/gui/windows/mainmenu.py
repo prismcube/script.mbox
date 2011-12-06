@@ -41,6 +41,8 @@ class MainMenu( BaseWindow ):
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_CONFIGURE )
 		elif controlId == 90101 :
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_LANGUAGE_SETTING )
+		elif controlId == 90102 :
+			winmgr.getInstance().showWindow( winmgr.WIN_ID_ANTENNA_SATELLITE_SETUP )
 		elif controlId == 20 :
 			self.close()
 			import pvr.launcher

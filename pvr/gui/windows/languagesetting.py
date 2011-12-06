@@ -4,16 +4,18 @@ import xbmcgui
 import sys
 
 import pvr.gui.windowmgr as winmgr
-from pvr.gui.basewindow import SettingWindow, setWindowBusy
+from pvr.gui.basewindow import DetailWindow, setWindowBusy
 from pvr.gui.basewindow import Action
 import pvr.elismgr
 from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import *
 
 
-class LanguageSetting(SettingWindow):
+
+
+class LanguageSetting(DetailWindow):
 	def __init__( self, *args, **kwargs ):
-		SettingWindow.__init__( self, *args, **kwargs)
+		DetailWindow.__init__( self, *args, **kwargs)
 		self.commander = pvr.elismgr.getInstance().getCommander( )
 			
 
@@ -22,8 +24,17 @@ class LanguageSetting(SettingWindow):
 
 		self.setHeaderLabel( 'Language Preference' )
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_SEARCH_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_RECORD_MASK )
+
+		self.addNormalButtonControl( E_SlideMenuButton01, 'TEST1' )
+		self.addNormalButtonControl( E_SlideMenuButton02, 'TEST2' )
+		self.addNormalButtonControl( E_SlideMenuButton03, 'TEST3' )
+
+		#visibleControlIds = [ E_SlideMenuButton01, E_SlideMenuButton02, E_SlideMenuButton03 ]
+		#self.setVisibleControls( visibleControlIds, True )
+		#self.setEnableControls( visibleControlIds, True )
 		
-	
+		self.initControl( )
+		
 	def onAction( self, action ):
 
 		actionId = action.getId( )
@@ -35,21 +46,20 @@ class LanguageSetting(SettingWindow):
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR:
+			self.resetAllControl( )
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT:
-			print '# 1dhkim test focusId = %d' % focusId
-			if focusId == 2 :
-				print 'dhkim test focusId = %d' % focusId
-				self.setFocusId(9000)
+			if focusId != 9002 :
+				self.setFocusId(9002)
 			else :
-				self.setFocusId(9001)
+				self.setFocusId(9000)
 
 		elif actionId == Action.ACTION_MOVE_UP:
-			pass
+			self.controlUp( )
 
 		elif actionId == Action.ACTION_MOVE_DOWN:
-			pass
+			self.controlDown( )
 
 
 	def onClick( self, controlId ):

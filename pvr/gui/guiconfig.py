@@ -10,6 +10,9 @@ E_FORMAT_HDD		= 7
 E_FACTORY_RESET		= 8
 E_ETC				= 9
 
+# Description Label Id
+E_SETTING_DESCRIPTION	=	1001
+
 
 # Control Ids
 E_SpinEx01			= 1100
@@ -28,6 +31,9 @@ E_Input03			= 2300
 E_Input04			= 2400
 E_Input05			= 2500
 
+E_SlideMenuButton01	= 3310
+E_SlideMenuButton02	= 3320
+E_SlideMenuButton03	= 3330
 
 # Setting Menu Group Ids
 E_SUBMENU_LIST_ID			= 9000
@@ -35,8 +41,8 @@ E_SETUPMENU_GROUP_ID		= 9010
 
 
 # USER_CONTROL_TYPE_DEFINE
-USER_ENUM_CONTROL_YES_NO 			= [ 'No', 'Yes' ]
-USER_ENUM_CONTROL_FORMAT_TYPE	 	= [ 'FAT', 'EXT3' ]
+USER_ENUM_LIST_YES_NO 			= [ 'No', 'Yes' ]
+USER_ENUM_LIST_FORMAT_TYPE	 	= [ 'FAT', 'EXT3' ]
 
 
 class FooterMask(object):

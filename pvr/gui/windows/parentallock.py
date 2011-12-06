@@ -109,11 +109,11 @@ class ParentalLock(SettingWindow):
 		
 		if selectedId == 0 :
 
-			self.addEnumControl( E_SpinEx01, 'Language' )
-			self.addEnumControl( E_SpinEx02, 'Audio Language' )
-			self.addEnumControl( E_SpinEx03, 'Subtitle Language' )
-			self.addEnumControl( E_SpinEx04, 'Secondary Subtitle Language' )
-			self.addEnumControl( E_SpinEx05, 'Hearing Impaired' )
+			self.addEnumControl( E_SpinEx01, 'Language', None )
+			self.addEnumControl( E_SpinEx02, 'Audio Language', None )
+			self.addEnumControl( E_SpinEx03, 'Subtitle Language', None )
+			self.addEnumControl( E_SpinEx04, 'Secondary Subtitle Language', None )
+			self.addEnumControl( E_SpinEx05, 'Hearing Impaired', None )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 			self.setVisibleControls( visibleControlIds, True )
@@ -130,10 +130,10 @@ class ParentalLock(SettingWindow):
 
 		elif selectedId == 1 :		
 
-			self.addEnumControl( E_SpinEx01, 'Automatic Timeshift' )
-			self.addEnumControl( E_SpinEx02, 'Default Rec Duration' )
-			self.addEnumControl( E_SpinEx03, 'Pre-Rec Time' )
-			self.addEnumControl( E_SpinEx04, 'Post-Rec Time' )
+			self.addEnumControl( E_SpinEx01, 'Automatic Timeshift', None )
+			self.addEnumControl( E_SpinEx02, 'Default Rec Duration', None )
+			self.addEnumControl( E_SpinEx03, 'Pre-Rec Time', None )
+			self.addEnumControl( E_SpinEx04, 'Post-Rec Time', None )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
 			self.setVisibleControls( visibleControlIds, True )
