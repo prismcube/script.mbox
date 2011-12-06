@@ -192,11 +192,11 @@ class SettingWindow(BaseWindow):
 		listItems.append( listItem )
 		self.controlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, controlId, inputType, listItems, None ) )
 
-	def addLeftLabelButtonControl( self, controlId, inputString ):
+	def addLeftLabelButtonControl( self, controlId, inputString, description ):
 		listItems = []
 		listItem = xbmcgui.ListItem( inputString, '', "-", "-", "-" )
 		listItems.append( listItem )
-		self.controlList.append( ControlItem( ControlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL, controlId, None, listItems, None ) )
+		self.controlList.append( ControlItem( ControlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL, controlId, None, listItems, description ) )
 
 	def showDescription( self, controlId ):
 		count = len( self.controlList )
