@@ -10,10 +10,10 @@ WIN_ID_NULLWINDOW 					= 1
 WIN_ID_MAINMENU 					= 2
 WIN_ID_CHANNEL_LIST_WINDOW			= 3
 WIN_ID_CHANNEL_BANNER				= 4
-WIN_ID_LANGUAGE_SETTING				= 5
-WIN_ID_PARENTAL_LOCK				= 6
-WIN_ID_CONFIGURE					= 7
+WIN_ID_CONFIGURE					= 5
+WIN_ID_ANTENNA_SATELLITE_SETUP		= 6
 
+WIN_ID_LANGUAGE_SETTING				= 100	#for test
 
 __windowmgr = None
 
@@ -68,18 +68,18 @@ class WindowMgr(object):
 		from pvr.gui.windows.mainmenu import MainMenu
 		from pvr.gui.windows.channellistwindow import ChannelListWindow
 		from pvr.gui.windows.channelbanner import ChannelBanner
-		from pvr.gui.windows.languagesetting import LanguageSetting
-		from pvr.gui.windows.parentallock import ParentalLock
+		from pvr.gui.windows.languagesetting import LanguageSetting		#for test
 		from pvr.gui.windows.configure import Configure
+		from pvr.gui.windows.antennasetup import AntennaSetup
 
 
 		self.windows[ WIN_ID_MAINMENU ]	= MainMenu('mainmenu.xml', self.scriptDir)
 		self.windows[ WIN_ID_CHANNEL_LIST_WINDOW ] = ChannelListWindow('channellistwindow.xml', self.scriptDir )
 		self.windows[ WIN_ID_CHANNEL_BANNER	] = ChannelBanner('channelbanner.xml', self.scriptDir )
-		self.windows[ WIN_ID_LANGUAGE_SETTING ]= LanguageSetting('languagesetting.xml', self.scriptDir)
-		self.windows[ WIN_ID_PARENTAL_LOCK ] = ParentalLock('parentallock.xml', self.scriptDir )
 		self.windows[ WIN_ID_CONFIGURE ] = Configure('configure.xml', self.scriptDir)
-
+		self.windows[ WIN_ID_ANTENNA_SATELLITE_SETUP ] = AntennaSetup('antennasetup.xml', self.scriptDir)
+		self.windows[ WIN_ID_LANGUAGE_SETTING ]= LanguageSetting('languagesetting.xml', self.scriptDir)		#for test
+		
 
 	def resetAllWindows( self ):
 		self.windows[ WIN_ID_MAINMENU ].close( )

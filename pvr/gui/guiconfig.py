@@ -10,6 +10,9 @@ E_FORMAT_HDD		= 7
 E_FACTORY_RESET		= 8
 E_ETC				= 9
 
+# Description Label Id
+E_SETTING_DESCRIPTION	=	1001
+
 
 # Control Ids
 E_SpinEx01			= 1100

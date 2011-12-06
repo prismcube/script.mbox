@@ -1,4 +1,16 @@
 <includes>
+	<include name="MenuDescription">
+		<control type="label" id="1001">
+			<posx>100</posx>
+			<posy>120</posy>
+			<width>400</width>
+			<height>40</height>
+			<font>font13_title</font>
+			<textcolor>blue</textcolor>
+			<align>left</align>
+			<aligny>center</aligny>
+		</control>
+	</include>
 	<include name="SpinEx01">
 		<control type="group" id="1100">
 			<width>750</width>
