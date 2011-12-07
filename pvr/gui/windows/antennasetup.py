@@ -72,7 +72,12 @@ class AntennaSetup(SettingWindow):
 		self.disableControl( )
 		if ( controlId == E_Input01 + 1 ) :
 			self.resetAllControl( )
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_TUNER_CONFIGURATION )
+			if( self.getSelectedIndex( E_SpinEx03 ) == 4 ) :
+				winmgr.getInstance().showWindow( winmgr.WIN_ID_SATELLITE_CONFIGURATION )
+			elif( self.getSelectedIndex( E_SpinEx03 ) == 3 ) :
+				winmgr.getInstance().showWindow( winmgr.WIN_ID_TUNER_CONFIGURATION )
+			else :
+				winmgr.getInstance().showWindow( winmgr.WIN_ID_TUNER_CONFIGURATION )
 
 		
 	def onFocus( self, controlId ):

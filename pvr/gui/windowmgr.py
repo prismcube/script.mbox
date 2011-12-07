@@ -13,6 +13,7 @@ WIN_ID_CHANNEL_BANNER				= 4
 WIN_ID_CONFIGURE					= 5
 WIN_ID_ANTENNA_SETUP				= 6
 WIN_ID_TUNER_CONFIGURATION			= 7
+WIN_ID_SATELLITE_CONFIGURATION		= 8
 
 WIN_ID_LANGUAGE_SETTING				= 100	#for test
 
@@ -71,7 +72,8 @@ class WindowMgr(object):
 		from pvr.gui.windows.channelbanner import ChannelBanner
 		from pvr.gui.windows.configure import Configure
 		from pvr.gui.windows.antennasetup import AntennaSetup
-		from pvr.gui.windows.tunerconfiguration import TunerConfiguration			
+		from pvr.gui.windows.tunerconfiguration import TunerConfiguration
+		from pvr.gui.windows.satelliteconfiguration import SatelliteConfiguration			
 		from pvr.gui.windows.languagesetting import LanguageSetting		#for test
 
 		self.windows[ WIN_ID_MAINMENU ]	= MainMenu('mainmenu.xml', self.scriptDir)
@@ -80,6 +82,7 @@ class WindowMgr(object):
 		self.windows[ WIN_ID_CONFIGURE ] = Configure('configure.xml', self.scriptDir)
 		self.windows[ WIN_ID_ANTENNA_SETUP ] = AntennaSetup('antennasetup.xml', self.scriptDir)
 		self.windows[ WIN_ID_TUNER_CONFIGURATION ] = TunerConfiguration('tunerconfiguration.xml', self.scriptDir)
+		self.windows[ WIN_ID_SATELLITE_CONFIGURATION ] = SatelliteConfiguration('satelliteconfiguration.xml', self.scriptDir)
 		self.windows[ WIN_ID_LANGUAGE_SETTING ]= LanguageSetting('languagesetting.xml', self.scriptDir)		#for test
 		
 

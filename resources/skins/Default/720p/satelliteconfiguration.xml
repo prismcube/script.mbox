@@ -1,4 +1,4 @@
-<window id="3008">
+<window id="3010">
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<controls>
 		<include>MenuHeader</include>
@@ -19,11 +19,15 @@
 				<posy>115</posy>
 				<width>750</width>
 				<height>530</height>
+				<include>Input01</include>
+				<include>Input02</include>
+				<include>Input03</include>
+				<include>Input04</include>
 				<include>SpinEx01</include>
 				<include>SpinEx02</include>
 				<include>SpinEx03</include>
 				<include>SpinEx04</include>
-				<include>Input01</include>
+				<include>Input05</include>
 			</control>
 		</control>
 		<include>MenuFooter</include>
