@@ -84,8 +84,9 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader32        = self.getControl( 232 )
 			self.ctrltabHeader42        = self.getControl( 242 )
 
-			self.ctrlLbl                = self.getControl( 9001 )
-			self.ctrlBtn                = self.getControl( 9002 )
+			#test ctrl
+			#self.ctrlLbl                = self.getControl( 9001 )
+			#self.ctrlBtn                = self.getControl( 9002 )
 
 			#epg stb time
 			self.ctrlHeader3.setLabel('')
@@ -194,7 +195,7 @@ class ChannelListWindow(BaseWindow):
 			"""
 			print 'cwd[%s]'% xbmc.getLanguage()
 
-
+			"""
 			import re
 
 			openFile = 'D:\project\elmo\doc\language tool\Language_Prime.csv'
@@ -208,6 +209,7 @@ class ChannelListWindow(BaseWindow):
 
 
 			rf.close()
+			"""
 
 
 		else:
@@ -457,15 +459,13 @@ class ChannelListWindow(BaseWindow):
 		#header, footer init
 		self.ctrlHeader1.setImage('IconHeaderTitleSmall.png')
 		#self.ctrlHeader2.setLabel('TV-Channel List')
-
-
 		self.ctrlHeader2.setLabel(m.strings(mm.LANG_TV_CHANNEL_LIST))
 
-		self.ctrlLbl.setLabel( m.strings(mm.LANG_LANGUAGE) )
 
+		#self.ctrlLbl.setLabel( m.strings(mm.LANG_LANGUAGE) )
 		ret = xbmc.getLanguage()
 		print 'getLanguage[%s]'% ret
-		self.ctrlBtn.setLabel(ret)
+		#self.ctrlBtn.setLabel(ret)
 
 
 
@@ -473,7 +473,7 @@ class ChannelListWindow(BaseWindow):
 		self.ctrlHeader4.setLabel('')
 
 		#self.setProperty('WindowType', 'ChannelList')
-		self.setFooter( self.win, ( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_RECORD_MASK ) )
+		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_RECORD_MASK )
 
 		self.ctrltabHeader12.setVisible(self.flag11)
 		self.ctrltabHeader22.setVisible(self.flag21)

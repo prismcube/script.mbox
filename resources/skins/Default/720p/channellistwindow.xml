@@ -43,7 +43,7 @@
 				</control>
 			</control>
 		</control>
--->
+
 
 			<control type="group">
 				<description>testing</description>
@@ -68,7 +68,7 @@
 					<onclick>ActivateWindow(AppearanceSettings)</onclick>
 				</control>
 			</control>
-
+-->
 
 		<include>MenuHeader</include>
 

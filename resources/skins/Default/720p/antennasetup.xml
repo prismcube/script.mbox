@@ -17,12 +17,13 @@
 				<visible>true</visible>
 				<posx>75</posx>
 				<posy>115</posy>
-				<width>700</width>
+				<width>750</width>
 				<height>530</height>
 				<include>SpinEx01</include>
 				<include>SpinEx02</include>
 				<include>SpinEx03</include>
 				<include>SpinEx04</include>
+				<include>Input01</include>
 			</control>
 		</control>
 		<include>MenuFooter</include>
