@@ -427,8 +427,6 @@ class ChannelListWindow(BaseWindow):
 
 		print 'sort_idx[%s]'% self.tabHeader_channelsortMode
 
-		self.listcontrol.reset()
-		self.initChannelList()
 
 		#update button label from selected item at list
 		if self.flag11:
@@ -451,6 +449,10 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader22.setVisible(False)
 			self.ctrltabHeader32.setVisible(False)
 			self.ctrltabHeader42.setVisible(False)
+
+			#channel list update
+			self.listcontrol.reset()
+			self.initChannelList()
 				
 
 	def initTabHeader(self):
