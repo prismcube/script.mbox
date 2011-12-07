@@ -51,25 +51,26 @@ class TunerConfiguration(SettingWindow):
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass
+
+			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-				
+
+
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.getControl( E_MAIN_LIST_ID ).reset( )
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT or actionId == Action.ACTION_MOVE_RIGHT:			
 			pass
+
 			
 		elif actionId == Action.ACTION_MOVE_UP :
 			pass
-			#self.controlUp( )
-			#self.showDescription( focusId )
+
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			pass
-			#self.controlDown( )
-			#self.showDescription( focusId )
 
 
 	def onClick( self, controlId ):
