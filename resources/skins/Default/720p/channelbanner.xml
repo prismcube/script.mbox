@@ -116,8 +116,8 @@
 						<width>45</width>
 						<height>35</height>
 						<textcolor>grey3</textcolor>
-						<texturefocus>OSDRecord2.png</texturefocus>
-						<texturenofocus>OSDRecordNF.png</texturenofocus>
+						<texturefocus>OSDStopFO.png</texturefocus>
+						<texturenofocus>OSDStopNF.png</texturenofocus>
 						<onleft>SetFocus(623)</onleft>
 						<onright>SetFocus(625)</onright>
 						<onup></onup>
