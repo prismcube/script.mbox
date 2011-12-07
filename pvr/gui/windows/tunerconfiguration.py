@@ -19,7 +19,7 @@ class TunerConfiguration(SettingWindow):
 		#self.initialized = False
 		#self.lastFocused = -1
 
-		self.testSatelliteList = [ '19.2 E ASTRA1', 'TEST SATELLITE #1', 'TEST SATELLITE #2', 'TEST SATELLITE #3', 'Add New Satellite' ]
+		self.testSatelliteList = [ '19.2 E ASTRA1', 'TEST SATELLITE #1', 'TEST SATELLITE #2', 'TEST SATELLITE #3' ]
 		self.tunerType = 'DiSEqC 1.0'
 
 	def onInit(self):
@@ -30,6 +30,7 @@ class TunerConfiguration(SettingWindow):
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Tuner Configuration : %s' % self.tunerType )
 
 		self.getControl( E_MAIN_LIST_ID ).addItems( self.testSatelliteList )
+		self.getControl( E_MAIN_LIST_ID ).addItem( 'Add New Satellite' )
 		'''
 		self.addEnumControl( E_SpinEx01, 'Tuner2 Connect Type' , 'Select tuner 2 connection type.' )
 		self.addEnumControl( E_SpinEx02, 'Tuner2 Signal Config', 'Select tuner 2 configuration.' )
