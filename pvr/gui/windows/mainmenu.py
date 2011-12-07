@@ -25,7 +25,9 @@ class MainMenu( BaseWindow ):
 	
 	def onAction( self, action ):
 		id = action.getId()
-	
+		
+		print "MainMenu onAction(): control %d" % id
+		
 		if id == Action.ACTION_PREVIOUS_MENU :
 			print 'lael98 check action menu'
 		elif id == Action.ACTION_SELECT_ITEM :
@@ -36,7 +38,7 @@ class MainMenu( BaseWindow ):
 
 
 	def onClick( self, controlId ):
-		print "onclick(): control %d" % controlId
+		print "MainMenu onclick(): control %d" % controlId
 		if controlId == 90301 :
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_CONFIGURE )
 		elif controlId == 90101 :
