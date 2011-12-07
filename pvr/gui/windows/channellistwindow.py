@@ -543,7 +543,7 @@ class ChannelListWindow(BaseWindow):
 			listItem = xbmcgui.ListItem("%04d %s"%( int(ch[0]), ch[2]),"-", "-", "-", "-")
 
 			thum=icas=''
-			if int(ch[4]) == 1 : thum='OverlayLocked.png'
+			if int(ch[4]) == 1 : thum='IconLockFocus.png'#'OverlayLocked.png'
 			if int(ch[5]) == 1 : icas='IconCas.png'
 			listItem.setProperty('lock', thum)
 			listItem.setProperty('icas', icas)

@@ -1,5 +1,5 @@
 <window type="windows" id="3004">
-	<!--<defaultcontrol always="true">602</defaultcontrol>-->
+	<defaultcontrol always="true">702</defaultcontrol>
 	<controls>
 		<control type="group">
 			<animation effect="slide" start="0,320" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
@@ -59,6 +59,87 @@
 					<height>30</height>
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>service type</description>
+				</control>
+
+				<control type="group">
+					<posx>315</posx>
+					<posy>-15</posy>
+					<control type="button" id="621">
+						<posx>0</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>45</width>
+						<height>35</height>
+						<textcolor>grey3</textcolor>
+						<texturefocus>DefaultIconWarning.png</texturefocus>
+						<texturenofocus>DefaultIconInfo.png</texturenofocus>
+						<onleft>SetFocus(625)</onleft>
+						<onright>SetFocus(622)</onright>
+						<onup></onup>
+						<ondown>SetFocus(702)</ondown>
+						<description>expantion info</description>
+					</control>
+					<control type="button" id="622">
+						<posx>45</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>45</width>
+						<height>35</height>
+						<textcolor>grey3</textcolor>
+						<texturefocus>OSDPlaylistFO.png</texturefocus>
+						<texturenofocus>OSDPlaylistNF.png</texturenofocus>
+						<onleft>SetFocus(621)</onleft>
+						<onright>SetFocus(623)</onright>
+						<onup></onup>
+						<ondown>SetFocus(702)</ondown>
+						<description>teletext</description>
+					</control>
+					<control type="button" id="623">
+						<posx>90</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>45</width>
+						<height>35</height>
+						<textcolor>grey3</textcolor>
+						<texturefocus>OSDSubtitlesFO.png</texturefocus>
+						<texturenofocus>OSDSubtitlesNF.png</texturenofocus>
+						<onleft>SetFocus(622)</onleft>
+						<onright>SetFocus(624)</onright>
+						<onup></onup>
+						<ondown>SetFocus(702)</ondown>
+						<description>subtitle</description>
+					</control>
+					<control type="button" id="624">
+						<posx>135</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>45</width>
+						<height>35</height>
+						<textcolor>grey3</textcolor>
+						<texturefocus>OSDRecord2.png</texturefocus>
+						<texturenofocus>OSDRecordNF.png</texturenofocus>
+						<onleft>SetFocus(623)</onleft>
+						<onright>SetFocus(625)</onright>
+						<onup></onup>
+						<ondown>SetFocus(702)</ondown>
+						<description>stop record</description>
+					</control>
+					<control type="button" id="625">
+						<posx>180</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>45</width>
+						<height>35</height>
+						<textcolor>grey3</textcolor>
+						<texturefocus>icon-mute.png</texturefocus>
+						<texturenofocus>VolumeIcon-Mute.png</texturenofocus>
+						<onleft>SetFocus(624)</onleft>
+						<onright>SetFocus(621)</onright>
+						<onup></onup>
+						<ondown>SetFocus(702)</ondown>
+						<description>mute</description>
+					</control>
+
 				</control>
 
 				<control type="image" id="604">
@@ -145,10 +226,10 @@
 					<font>-</font>
 					<texturefocus>scroll-left-focus.png</texturefocus>
 					<texturenofocus>scroll-left.png</texturenofocus>
-					<onleft>605</onleft>
-					<onright>601</onright>
-					<onup>701</onup>
-					<ondown>701</ondown>
+					<onleft></onleft>
+					<onright>SetFocus(706)</onright>
+					<onup>SetFocus(621)</onup>
+					<ondown></ondown>
 					<onclick>ProgramList(Previous)</onclick>
 				</control>
 
@@ -209,10 +290,10 @@
 					<font>-</font>
 					<texturefocus>scroll-right-focus.png</texturefocus>
 					<texturenofocus>scroll-right.png</texturenofocus>
-					<onleft>600</onleft>
-					<onright>602</onright>
-					<onup>702</onup>
-					<ondown>702</ondown>
+					<onleft>SetFocus(702)</onleft>
+					<onright></onright>
+					<onup>SetFocus(621)</onup>
+					<ondown></ondown>
 					<onclick>ProgramList(Next)</onclick>
 				</control>
 			</control>

@@ -10,10 +10,7 @@ import pvr.elismgr
 from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import *
 
-#E_MAIN_LIST_ID = 9000
 
-USER_ENUM_LIST_DISEQC_1_0_SWITCH = [ '1 of 4', '2 of 4', '3 of 4' ]
-USER_ENUM_LIST_TRANSPONDER = [ '1 11111Mhz / 22000', '1 22222Mhz / 22000', '1 33333Mhz / 22000' ]
 
 class SatelliteConfiguration( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
@@ -21,18 +18,21 @@ class SatelliteConfiguration( SettingWindow ):
 		self.commander = pvr.elismgr.getInstance().getCommander( )
 			
 		self.tunerType = 0
-
+		self.currentSatellite = 0
+		self.longitude = 0
+		self.currentSatellite = []
 
 	def onInit( self ):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
 
-		#self.tunerType = configmgr.getInstance().getCurrentTunerType( )
-		#self.currentLogitude = configmgr.getInstance().getCurrentLongitue( )
-		#self.currentSatellite = configmgr.getInstance().getCurrentConfiguredSatellite( )
-
+		self.tunerIndex = configmgr.getInstance( ).getCurrentTunerIndex( ) + 1
+		self.tunertype = E_LIST_TUNER_TYPE[ configmgr.getInstance( ).getCurrentTunerType( ) ]
+		self.longitude = configmgr.getInstance( ).getCurrentLongitue( )
+		self.currentSatellite = configmgr.getInstance( ).getCurrentConfiguredSatellite( )
+		
 		self.setHeaderLabel( 'Satellite Configuration' )
 		
-		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Select DiSEqC 1.0 switch control' )
+		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %s - %s' % ( self.tunerIndex, self.tunertype ) )
 
 		self.initConfig( )
 		self.initControl( )
@@ -77,11 +77,13 @@ class SatelliteConfiguration( SettingWindow ):
 
 	def initConfig( self ) :
 	
-		self.addInputControl( E_Input01, 'Satellite' , '19.2 E ASTRA1', None )
-		self.addInputControl( E_Input02, 'LNB Setting', 'Universal', None )
-		self.addInputControl( E_Input03, 'LNB Frequency', '9750 / 10600 / 11700 (MHz)', None )
-		self.addInputControl( E_Input04, '22KHz Control', 'Off', None )
+		self.addInputControl( E_Input01, 'Satellite' , configmgr.getInstance( ).getFormattedName( self.longitude ), None )
+		self.addUserEnumControl( E_SpinEx01, 'LNB Setting', self.currentSatellite[9] )
+		self.addInputControl( E_Input02, 'LNB Frequency', '9750 / 10600 / 11700 (MHz)', None )
+		#self.addUserEnumControl( E_SpinEx02, '22KHz Control', self.currentSatellite[] )
+
 	
+		'''
 		self.addUserEnumControl( E_SpinEx01, 'DiSEqC 1.0 Switch', USER_ENUM_LIST_DISEQC_1_0_SWITCH )
 		self.addUserEnumControl( E_SpinEx02, 'DiSEqC Repeat', USER_ENUM_LIST_ON_OFF )
 		self.addUserEnumControl( E_SpinEx03, 'Transponder', USER_ENUM_LIST_TRANSPONDER )
@@ -93,8 +95,8 @@ class SatelliteConfiguration( SettingWindow ):
 
 		hideControlIds = [ E_SpinEx04 ]
 		self.setVisibleControls( hideControlIds, False )
-			
-		disableControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]
-		self.setEnableControls( disableControlIds, False )
-		self.setFocusId( E_SpinEx01 ) 
+		'''	
+		#disableControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]
+
+
 

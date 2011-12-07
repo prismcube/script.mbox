@@ -45,6 +45,10 @@ USER_ENUM_LIST_YES_NO 			= [ 'No', 'Yes' ]
 USER_ENUM_LIST_FORMAT_TYPE	 	= [ 'FAT', 'EXT3' ]
 USER_ENUM_LIST_ON_OFF			= [ 'Off', 'On' ]
 
+# Tuner Config String Define
+E_LIST_TUNER_TYPE				= [ 'Simple LNB', 'DiSEqC 1.0', 'DiSEqC 1.1', 'Motorized, DiSEqC 1.2', 'Motorized, USALS', 'OneCable' ]
+#E_LIST_LNB_SETTING				= [ 'User Define' , Uni
+
 class FooterMask(object):
 	G_FOOTER_GROUP_STARTID				= 3100
 	G_FOOTER_GROUP_IDGAP				= 10
