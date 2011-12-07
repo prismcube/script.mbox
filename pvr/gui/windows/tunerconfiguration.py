@@ -19,7 +19,7 @@ class TunerConfiguration(SettingWindow):
 		#self.initialized = False
 		#self.lastFocused = -1
 
-		self.testSatelliteList = [ '19.2 E ASTRA1', 'TEST SATELLITE #1', 'TEST SATELLITE #2', 'TEST SATELLITE #3' ]
+		self.testSatelliteList = [ '19.2 E ASTRA1', 'TEST SATELLITE #1', 'TEST SATELLITE #2', 'TEST SATELLITE #3', 'Add New Satellite' ]
 		self.tunerType = 'DiSEqC 1.0'
 
 	def onInit(self):
@@ -72,6 +72,7 @@ class TunerConfiguration(SettingWindow):
 
 
 	def onClick( self, controlId ):
+		winmgr.getInstance().showWindow( winmgr.WIN_ID_SATELLITE_CONFIGURATION )
 		pass
 
 		

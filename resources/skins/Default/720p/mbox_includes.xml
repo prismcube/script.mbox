@@ -3,7 +3,7 @@
 		<control type="label" id="1001">
 			<posx>100</posx>
 			<posy>120</posy>
-			<width>400</width>
+			<width>600</width>
 			<height>40</height>
 			<font>font13_title</font>
 			<textcolor>blue</textcolor>

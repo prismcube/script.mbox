@@ -6,7 +6,7 @@
 			<include>FadeEffect</include>
 			<include>MenuDescription</include>
 			<control type="image">
-				<posx>830</posx>
+				<posx>840</posx>
 				<posy>170</posy>
 				<width>352</width>
 				<height>198</height>

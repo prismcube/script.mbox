@@ -5,7 +5,7 @@
 		<control type="group" id="9000">
 			<include>FadeEffect</include>
 			<control type="image">
-				<posx>825</posx>
+				<posx>840</posx>
 				<posy>160</posy>
 				<width>352</width>
 				<height>198</height>

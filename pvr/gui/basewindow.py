@@ -159,8 +159,7 @@ class SettingWindow(BaseWindow):
 				control.addItems( ctrlItem.listItems )
 
 			self.getControl(ctrlItem.controlId).setPosition(0, ( pos * 40 ) + 50 )
-			pos += 1
-			
+			pos += 1	
 
 	def resetAllControl( self ):
 		del self.controlList[:]
