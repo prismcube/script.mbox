@@ -2,7 +2,7 @@
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<controls>
 		<include>CommonSettingsBackground</include>
-		<include>BehindDialogFadeOut</include>
+		<include>DefaultBehindDialogFadeOut</include>
 		<include>DefaultCommonDateTime</include>
 		<control type="group">
 			<posx>60</posx>

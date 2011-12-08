@@ -24,7 +24,21 @@
 		</control>
 	</include>
 
-	<include name="BehindDialogFadeOut">
+	<include name="DefaultSettingsBackground">
+		<control type="multiimage">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<imagepath>confluence/backgrounds/settings.jpg</imagepath>
+			<timeperimage>10000</timeperimage>
+			<randomize>true</randomize>
+			<fadetime>1000</fadetime>
+		</control>
+	</include>
+	
+
+	<include name="DefaultBehindDialogFadeOut">
 		<control type="image">
 			<posx>0</posx>
 			<posy>0</posy>
@@ -33,7 +47,7 @@
 			<texture>black-back.png</texture>
 			<animation effect="fade" time="400">Visible</animation>
 			<animation effect="fade" time="200">Hidden</animation>
-			<visible>Window.IsActive(MovieInformation) | Window.IsActive(MusicInformation) | Window.IsActive(SongInformation) | Window.IsActive(FileBrowser) | Window.IsActive(TextViewer) | Window.IsActive(AddonSettings) | Window.IsActive(ContentSettings) | Window.IsActive(SelectDialog) | Window.IsActive(FileStackingDialog) | Window.IsActive(MediaSource) | Window.IsActive(PictureInfo) | Window.IsActive(PlayerControls) | Window.IsActive(VirtualKeyboard) | Window.IsActive(NumericInput) | Window.IsActive(ProfileSettings) | Window.IsActive(LockSettings) | Window.IsActive(SmartPlaylistEditor) | Window.IsActive(SmartPlaylistRule) | Window.IsActive(script-Apple_Movie_Trailers-settings.xml) | Window.IsActive(script-Apple_Movie_Trailers-chooser.xml) | Window.IsActive(script-Apple_Movie_Trailers-search.xml) | Window.IsActive(script-Apple_Movie_Trailers-showtimes.xml) | Window.IsActive(script-XBMC_Lyrics-settings.xml) | Window.IsActive(script-RSS_Editor-rssEditor.xml) | Window.IsActive(script-RSS_Editor-setEditor.xml) | Window.IsActive(AddonInformation)</visible>
+			<visible>true</visible>
 		</control>
 	</include>
 
@@ -2151,30 +2165,6 @@
 		<animation type="WindowClose" reversible="false">
 			<effect type="fade" start="100" end="0" time="400" />
 		</animation>
-	</include>
-	<include name="CommonSettingSlideMenu">
-		<control type="button" id="3301">
-			<description>Fake button for mouse control</description>
-			<posx>-250</posx>
-			<posy>0</posy>
-			<width>265</width>
-			<height>720</height>
-			<label>-</label>
-			<font>-</font>
-			<texturenofocus>-</texturenofocus>
-			<texturefocus>-</texturefocus>
-			<visible>true</visible>
-		</control>
-		<include>SideBladeLeft</include>
-		<control type="image">
-			<description>LOGO</description>
-			<posx>-230</posx>
-			<posy>50</posy>
-			<width>220</width>
-			<height>80</height>
-			<aspectratio>keep</aspectratio>
-			<texture>confluence/Confluence_Logo.png</texture>
-		</control>
 	</include>
 	<include name="SlideMenuButton01">
 		<control type="group" id="3310">
