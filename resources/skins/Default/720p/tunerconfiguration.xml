@@ -28,7 +28,7 @@
 						<posy>0</posy>
 						<width>750</width>
 						<height>40</height>
-						<texture border="0,2,0,2">MenuItemNF.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemNF.pngtexture>
 					</control>
 					<control type="label">
 						<posx>10</posx>
@@ -48,7 +48,7 @@
 						<posy>0</posy>
 						<width>750</width>
 						<height>40</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
 					</control>
 					<control type="label">
 						<posx>10</posx>

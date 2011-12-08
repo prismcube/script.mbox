@@ -23,7 +23,7 @@ log = logging.getLogger('mythbox.ui')
 mlog = logging.getLogger('mythbox.method')
 
 
-class ChannelBanner(BaseWindow):
+class TimeShiftBanner(BaseWindow):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
 		print 'f_coname[%s] f_lineno[%d] co_filename[%s]' %(currentframe().f_code.co_name, currentframe().f_lineno, currentframe().f_code.co_filename)    
@@ -75,13 +75,6 @@ class ChannelBanner(BaseWindow):
 			#self.ctrlProgress(self.Progress)
 
 			#test
-			self.ctrlBtnExInfo      = self.getControl( 621 )
-			self.ctrlBtnTeletext    = self.getControl( 622 )
-			self.ctrlBtnSubtitle    = self.getControl( 623 )
-			self.ctrlBtnStartRec    = self.getControl( 624 )
-			self.ctrlBtnStopRec     = self.getControl( 625 )
-			self.ctrlBtnMute        = self.getControl( 626 )
-			self.ctrlBtnTSbanner    = self.getControl( 630 )
 			
 			self.ctrlBtnPrevEpg = self.getControl( 702 )
 			self.ctrlBtnNextEpg = self.getControl( 706 )
@@ -127,27 +120,15 @@ class ChannelBanner(BaseWindow):
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'youn check ation back'
 
-			if focusid >= self.ctrlBtnExInfo.getId() and focusid <= self.ctrlBtnMute.getId():
-				self.showEPGDescription(focusid, self.eventCopy)
+			# end thread updateLocalTime()
+			self.untilThread = False
+			self.updateLocalTime().join()
 
-			else:
-				# end thread updateLocalTime()
-				self.untilThread = False
-				self.updateLocalTime().join()
+			self.close( )
+#			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
+#			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
+#			winmgr.shutdown()
 
-				self.close( )
-#				winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
-#				winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
-#				winmgr.shutdown()
-
-		
-		elif id == Action.ACTION_MOVE_LEFT:
-			if focusid == self.ctrlBtnPrevEpg.getId():			
-				self.channelTune(id)
-
-		elif id == Action.ACTION_MOVE_RIGHT:
-			if focusid == self.ctrlBtnNextEpg.getId():
-				self.channelTune(id)
 
 		elif id == Action.ACTION_PAGE_UP:
 			self.channelTune(id)
@@ -163,45 +144,8 @@ class ChannelBanner(BaseWindow):
 
 	def onClick(self, controlId):
 		print "onclick(): control %d" % controlId
-		if controlId == self.ctrlBtnMute.getId():
-			mute = int(self.commander.player_GetMute()[0])
-			print 'mute:current[%s]'% mute
-			if mute == False:
-				ret = self.commander.player_SetMute(True)
 
-			else:
-				ret = self.commander.player_SetMute(False)
-
-
-		elif controlId == self.ctrlBtnExInfo.getId() :
-			print 'click expantion info'
-			self.showEPGDescription(controlId, self.eventCopy)
-
-		elif controlId == self.ctrlBtnTeletext.getId() :
-			print 'click teletext'
-			self.showEPGDescription(controlId, self.eventCopy)
-
-		elif controlId == self.ctrlBtnSubtitle.getId() :
-			print 'click subtitle'
-			self.showEPGDescription(controlId, self.eventCopy)
-
-		elif controlId == self.ctrlBtnStartRec.getId() :
-			print 'click start recording'
-			self.showEPGDescription(controlId, self.eventCopy)
-
-		elif controlId == self.ctrlBtnStopRec.getId() :
-			print 'click stop recording'
-			self.showEPGDescription(controlId, self.eventCopy)
-
-		elif controlId == self.ctrlBtnTSbanner.getId() :
-			print 'click Time Shift banner'
-			self.untilThread = False
-			self.updateLocalTime().join()
-
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_TIMESHIFT_BANNER )
-
-
-		elif controlId == self.ctrlBtnPrevEpg.getId() :
+		if controlId == self.ctrlBtnPrevEpg.getId() :
 			self.channelTune(Action.ACTION_MOVE_LEFT)
 
 		elif controlId == self.ctrlBtnNextEpg.getId() :
@@ -437,57 +381,32 @@ class ChannelBanner(BaseWindow):
 	def showEPGDescription(self, focusid, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
-		if focusid == self.ctrlBtnExInfo.getId():
-			if event != [] and event[1] != 'NULL' and len(event) > 2:
-				print '[%s][%s][%s][%s][%s]' % (event[1], event[3], event[4], event[5], event[6])
-				msgDescription = self.commander.epgevent_GetDescription(
-								int(event[1]), #eventId
-								int(event[3]), #sid
-								int(event[4]), #tsid
-								int(event[5]), #onid
-								int(event[6])) #startTime
+		if event != [] and event[1] != 'NULL' and len(event) > 2:
+			print '[%s][%s][%s][%s][%s]' % (event[1], event[3], event[4], event[5], event[6])
+			msgDescription = self.commander.epgevent_GetDescription(
+							int(event[1]), #eventId
+							int(event[3]), #sid
+							int(event[4]), #tsid
+							int(event[5]), #onid
+							int(event[6])) #startTime
 
-				print 'msgDescription[%s]' % msgDescription
+			print 'msgDescription[%s]' % msgDescription
 
-				if msgDescription[0] != 'NULL':
-					msg = msgDescription[1]
-				else:
-					print 'No value Description  \'NULL\''
-					msg = ''
-
-				self.ctrlEventDescText1.setText(event[2])
-				self.ctrlEventDescText2.setText(msg)
-
+			if msgDescription[0] != 'NULL':
+				msg = msgDescription[1]
 			else:
-				print 'event is None'
-				self.ctrlEventDescText1.setText('')
-				self.ctrlEventDescText2.setText('')
+				print 'No value Description  \'NULL\''
+				msg = ''
 
-		elif focusid == self.ctrlBtnMute.getId():
-			print 'click mute'
-			self.ctrlEventDescText1.setText('Mute')
-			self.ctrlEventDescText2.setText('test')
+			self.ctrlEventDescText1.setText(event[2])
+			self.ctrlEventDescText2.setText(msg)
 
-		elif focusid == self.ctrlBtnTeletext.getId() :
-			print 'click teletext'
-			self.ctrlEventDescText1.setText('Teletext')
-			self.ctrlEventDescText2.setText('test')
+		else:
+			print 'event is None'
+			self.ctrlEventDescText1.setText('')
+			self.ctrlEventDescText2.setText('')
 
 
-		elif focusid == self.ctrlBtnSubtitle.getId() :
-			print 'click subtitle'
-			self.ctrlEventDescText1.setText('Subtitle')
-			self.ctrlEventDescText2.setText('test')
-
-		elif focusid == self.ctrlBtnStartRec.getId() :
-			print 'click stop recording'
-			self.ctrlEventDescText1.setText('Start Recording')
-			self.ctrlEventDescText2.setText('test')
-
-		elif focusid == self.ctrlBtnStopRec.getId() :
-			print 'click stop recording'
-			self.ctrlEventDescText1.setText('Stop Recording')
-			self.ctrlEventDescText2.setText('test')
 
 
 		if self.toggleFlag == True:

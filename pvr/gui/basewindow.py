@@ -217,6 +217,14 @@ class SettingWindow(BaseWindow):
 
 	def inputSetup( self, ctrlItem ):
 		keyType = ctrlItem.property
+
+		"""
+		import pvr.platform 
+		scriptDir = pvr.platform.getPlatform().getScriptDir()
+		from pvr.gui.dialogs.keyboarddialog import KeyboardDialog
+		KeyboardDialog('keyboarddialog.xml', scriptDir).doModal()
+		"""
+
 		if( keyType == 4 ) :
 			kb = xbmc.Keyboard( ctrlItem.listItems[0].getLabel2( ), ctrlItem.listItems[0].getLabel( ), False )
 			kb.doModal( )

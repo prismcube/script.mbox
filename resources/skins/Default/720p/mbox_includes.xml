@@ -11,6 +11,80 @@
 			<aligny>center</aligny>
 		</control>
 	</include>
+
+	<include name="DefaultCommonSettingsBackground">
+		<control type="multiimage">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<imagepath fallback="special://skin/backgrounds/settings.jpg" background="true">$INFO[Skin.String(Home_Custom_Back_Settings_Folder)]</imagepath>
+			<timeperimage>10000</timeperimage>
+			<randomize>true</randomize>
+			<fadetime>1000</fadetime>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<texture background="true">$INFO[ListItem.Property(Fanart_Image)]</texture>
+			<include>backgroundfade</include>
+			<fadetime>FanartCrossfadeTime</fadetime>
+			<visible>!Skin.HasSetting(HideBackGroundFanart) + !IsEmpty(ListItem.Property(Fanart_Image))</visible>
+			<include>Window_OpenClose_Animation</include>
+		</control>
+	</include>
+	<include name="DefaultBehindDialogFadeOut">
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<texture>black-back.png</texture>
+			<animation effect="fade" time="400">Visible</animation>
+			<animation effect="fade" time="200">Hidden</animation>
+			<visible>Window.IsActive(MovieInformation) | Window.IsActive(MusicInformation) | Window.IsActive(SongInformation) | Window.IsActive(FileBrowser) | Window.IsActive(TextViewer) | Window.IsActive(AddonSettings) | Window.IsActive(ContentSettings) | Window.IsActive(SelectDialog) | Window.IsActive(FileStackingDialog) | Window.IsActive(MediaSource) | Window.IsActive(PictureInfo) | Window.IsActive(PlayerControls) | Window.IsActive(VirtualKeyboard) | Window.IsActive(NumericInput) | Window.IsActive(ProfileSettings) | Window.IsActive(LockSettings) | Window.IsActive(SmartPlaylistEditor) | Window.IsActive(SmartPlaylistRule) | Window.IsActive(script-Apple_Movie_Trailers-settings.xml) | Window.IsActive(script-Apple_Movie_Trailers-chooser.xml) | Window.IsActive(script-Apple_Movie_Trailers-search.xml) | Window.IsActive(script-Apple_Movie_Trailers-showtimes.xml) | Window.IsActive(script-XBMC_Lyrics-settings.xml) | Window.IsActive(script-RSS_Editor-rssEditor.xml) | Window.IsActive(script-RSS_Editor-setEditor.xml) | Window.IsActive(AddonInformation)</visible>
+		</control>
+	</include>
+
+	<include name="BehindDialogFadeOut">
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<texture>black-back.png</texture>
+			<animation effect="fade" time="400">Visible</animation>
+			<animation effect="fade" time="200">Hidden</animation>
+			<visible>Window.IsActive(MovieInformation) | Window.IsActive(MusicInformation) | Window.IsActive(SongInformation) | Window.IsActive(FileBrowser) | Window.IsActive(TextViewer) | Window.IsActive(AddonSettings) | Window.IsActive(ContentSettings) | Window.IsActive(SelectDialog) | Window.IsActive(FileStackingDialog) | Window.IsActive(MediaSource) | Window.IsActive(PictureInfo) | Window.IsActive(PlayerControls) | Window.IsActive(VirtualKeyboard) | Window.IsActive(NumericInput) | Window.IsActive(ProfileSettings) | Window.IsActive(LockSettings) | Window.IsActive(SmartPlaylistEditor) | Window.IsActive(SmartPlaylistRule) | Window.IsActive(script-Apple_Movie_Trailers-settings.xml) | Window.IsActive(script-Apple_Movie_Trailers-chooser.xml) | Window.IsActive(script-Apple_Movie_Trailers-search.xml) | Window.IsActive(script-Apple_Movie_Trailers-showtimes.xml) | Window.IsActive(script-XBMC_Lyrics-settings.xml) | Window.IsActive(script-RSS_Editor-rssEditor.xml) | Window.IsActive(script-RSS_Editor-setEditor.xml) | Window.IsActive(AddonInformation)</visible>
+		</control>
+	</include>
+
+	<include name="DefaultWindowTitleCommons">
+		<posy>0</posy>
+		<width>1060</width>
+		<height>28</height>
+		<font>font12caps</font>
+		<textcolor>white</textcolor>
+		<scroll>false</scroll>
+		<align>right</align>
+		<aligny>center</aligny>
+	</include>
+	
+
+	<include name="DefaultButtonHomeSubCommonValues">
+		<height>40</height>
+		<width>220</width>
+		<textoffsetx>20</textoffsetx>
+		<textwidth>195</textwidth>
+		<aligny>center</aligny>
+		<font>font13</font>
+		<texturefocus border="5">confluence/button-focus.png</texturefocus>
+		<texturenofocus border="5">confluence/button-nofocus.png</texturenofocus>
+		<pulseonselect>false</pulseonselect>
+	</include>
+	
 	<include name="SpinEx01">
 		<control type="group" id="1100">
 			<width>750</width>
@@ -26,8 +100,8 @@
 				<height>22</height>
 				<label>-</label>
 				<font>-</font>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1103,1)</onclick>
 				<onleft>-</onleft>
 				<onright>-</onright>
@@ -43,8 +117,8 @@
 				<height>22</height>
 				<label>-</label>
 				<font>-</font>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1103,-1)</onclick>
 				<onleft>-</onleft>
 				<onright>-</onright>
@@ -66,7 +140,7 @@
 						<posy>0</posy>
 						<width>750</width>
 						<height>40</height>
-						<texture border="0,2,0,2">MenuItemNF.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1101) | Control.HasFocus(1102)]</visible>
 					</control>
 					<control type="image">
@@ -74,7 +148,7 @@
 						<posy>0</posy>
 						<width>750</width>
 						<height>40</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
 						<visible>[Control.HasFocus(1101) | Control.HasFocus(1102)]</visible>
 					</control>
 					<control type="label">
@@ -169,8 +243,8 @@
 				<height>22</height>
 				<label>-</label>
 				<font>-</font>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1203,1)</onclick>
 				<onleft>-</onleft>
 				<onright>-</onright>
@@ -187,8 +261,8 @@
 				<height>22</height>
 				<label>-</label>
 				<font>-</font>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1203,-1)</onclick>
 				<onleft>-</onleft>
 				<onright>-</onright>
@@ -210,7 +284,7 @@
 						<posy>0</posy>
 						<width>750</width>
 						<height>40</height>
-						<texture border="0,2,0,2">MenuItemNF.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1201) | Control.HasFocus(1202)]</visible>
 					</control>
 					<control type="image">
@@ -218,7 +292,7 @@
 						<posy>0</posy>
 						<width>750</width>
 						<height>40</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
 						<visible>[Control.HasFocus(1201) | Control.HasFocus(1202)]</visible>
 					</control>
 					<control type="label">
@@ -313,8 +387,8 @@
 				<height>22</height>
 				<label>-</label>
 				<font>-</font>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1303,1)</onclick>
 				<onleft>-</onleft>
 				<onright>-</onright>
@@ -330,8 +404,8 @@
 				<height>22</height>
 				<label>-</label>
 				<font>-</font>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1303,-1)</onclick>
 				<onleft>-</onleft>
 				<onright>-</onright>
@@ -353,7 +427,7 @@
 						<posy>0</posy>
 						<width>750</width>
 						<height>40</height>
-						<texture border="0,2,0,2">MenuItemNF.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1301) | Control.HasFocus(1302)]</visible>
 					</control>
 					<control type="image">
@@ -361,7 +435,7 @@
 						<posy>0</posy>
 						<width>750</width>
 						<height>40</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
 						<visible>[Control.HasFocus(1301) | Control.HasFocus(1302)]</visible>
 					</control>
 					<control type="label">
@@ -456,8 +530,8 @@
 				<height>22</height>
 				<label>-</label>
 				<font>-</font>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1403,1)</onclick>
 				<onleft>-</onleft>
 				<onright>-</onright>
@@ -473,8 +547,8 @@
 				<height>22</height>
 				<label>-</label>
 				<font>-</font>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1403,-1)</onclick>
 				<onleft>-</onleft>
 				<onright>-</onright>
@@ -496,7 +570,7 @@
 						<posy>0</posy>
 						<width>750</width>
 						<height>40</height>
-						<texture border="0,2,0,2">MenuItemNF.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1401) | Control.HasFocus(1402)]</visible>
 					</control>
 					<control type="image">
@@ -504,7 +578,7 @@
 						<posy>0</posy>
 						<width>750</width>
 						<height>40</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
 						<visible>[Control.HasFocus(1401) | Control.HasFocus(1402)]</visible>
 					</control>
 					<control type="label">
@@ -599,8 +673,8 @@
 				<height>22</height>
 				<label>-</label>
 				<font>-</font>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1503,1)</onclick>
 				<onleft>-</onleft>
 				<onright>-</onright>
@@ -616,8 +690,8 @@
 				<height>22</height>
 				<label>-</label>
 				<font>-</font>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1503,-1)</onclick>
 				<onleft>-</onleft>
 				<onright>-</onright>
@@ -639,7 +713,7 @@
 						<posy>0</posy>
 						<width>750</width>
 						<height>40</height>
-						<texture border="0,2,0,2">MenuItemNF.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1501) | Control.HasFocus(1502)]</visible>
 					</control>
 					<control type="image">
@@ -647,7 +721,7 @@
 						<posy>0</posy>
 						<width>750</width>
 						<height>40</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
 						<visible>[Control.HasFocus(1501) | Control.HasFocus(1502)]</visible>
 					</control>
 					<control type="label">
@@ -742,8 +816,8 @@
 				<height>22</height>
 				<label>-</label>
 				<font>-</font>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1603,1)</onclick>
 				<onleft>-</onleft>
 				<onright>-</onright>
@@ -759,8 +833,8 @@
 				<height>22</height>
 				<label>-</label>
 				<font>-</font>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1603,-1)</onclick>
 				<onleft>-</onleft>
 				<onright>-</onright>
@@ -782,7 +856,7 @@
 						<posy>0</posy>
 						<width>750</width>
 						<height>40</height>
-						<texture border="0,2,0,2">MenuItemNF.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1601) | Control.HasFocus(1602)]</visible>
 					</control>
 					<control type="image">
@@ -790,7 +864,7 @@
 						<posy>0</posy>
 						<width>750</width>
 						<height>40</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
 						<visible>[Control.HasFocus(1601) | Control.HasFocus(1602)]</visible>
 					</control>
 					<control type="label">
@@ -885,8 +959,8 @@
 				<height>22</height>
 				<label>-</label>
 				<font>-</font>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1703,1)</onclick>
 				<onleft>-</onleft>
 				<onright>-</onright>
@@ -902,8 +976,8 @@
 				<height>22</height>
 				<label>-</label>
 				<font>-</font>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1703,-1)</onclick>
 				<onleft>-</onleft>
 				<onright>-</onright>
@@ -925,7 +999,7 @@
 						<posy>0</posy>
 						<width>750</width>
 						<height>40</height>
-						<texture border="0,2,0,2">MenuItemNF.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1701) | Control.HasFocus(1702)]</visible>
 					</control>
 					<control type="image">
@@ -933,7 +1007,7 @@
 						<posy>0</posy>
 						<width>750</width>
 						<height>40</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
 						<visible>[Control.HasFocus(1701) | Control.HasFocus(1702)]</visible>
 					</control>
 					<control type="label">
@@ -1028,8 +1102,8 @@
 				<height>22</height>
 				<label>-</label>
 				<font>-</font>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1803,1)</onclick>
 				<onleft>-</onleft>
 				<onright>-</onright>
@@ -1045,8 +1119,8 @@
 				<height>22</height>
 				<label>-</label>
 				<font>-</font>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1803,-1)</onclick>
 				<onleft>-</onleft>
 				<onright>-</onright>
@@ -1068,7 +1142,7 @@
 						<posy>0</posy>
 						<width>750</width>
 						<height>40</height>
-						<texture border="0,2,0,2">MenuItemNF.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1801) | Control.HasFocus(1802)]</visible>
 					</control>
 					<control type="image">
@@ -1076,7 +1150,7 @@
 						<posy>0</posy>
 						<width>750</width>
 						<height>40</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
 						<visible>[Control.HasFocus(1801) | Control.HasFocus(1802)]</visible>
 					</control>
 					<control type="label">
@@ -1171,8 +1245,8 @@
 				<height>22</height>
 				<label>-</label>
 				<font>-</font>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
+				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1903,1)</onclick>
 				<onleft>-</onleft>
 				<onright>-</onright>
@@ -1188,8 +1262,8 @@
 				<height>22</height>
 				<label>-</label>
 				<font>-</font>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
+				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1903,-1)</onclick>
 				<onleft>-</onleft>
 				<onright>-</onright>
@@ -1211,7 +1285,7 @@
 						<posy>0</posy>
 						<width>750</width>
 						<height>40</height>
-						<texture border="0,2,0,2">MenuItemNF.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 						<visible>![Control.HasFocus(1901) | Control.HasFocus(1902)]</visible>
 					</control>
 					<control type="image">
@@ -1219,7 +1293,7 @@
 						<posy>0</posy>
 						<width>750</width>
 						<height>40</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
 						<visible>[Control.HasFocus(1901) | Control.HasFocus(1902)]</visible>
 					</control>
 					<control type="label">
@@ -1311,8 +1385,8 @@
 				<posy>0</posy>
 				<width>750</width>
 				<height>40</height>
-				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
 				<!--<onclick>Control.Move(1103,1)</onclick>-->
 			</control>
 			<control type="list" id="2103">
@@ -1413,8 +1487,8 @@
 				<posy>0</posy>
 				<width>750</width>
 				<height>40</height>
-				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
 				<!--<onclick>Control.Move(1103,1)</onclick>-->
 			</control>
 			<control type="list" id="2203">
@@ -1515,8 +1589,8 @@
 				<posy>0</posy>
 				<width>750</width>
 				<height>40</height>
-				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
 				<!--<onclick>Control.Move(1103,1)</onclick>-->
 			</control>
 			<control type="list" id="2303">
@@ -1617,8 +1691,8 @@
 				<posy>0</posy>
 				<width>750</width>
 				<height>40</height>
-				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
 				<!--<onclick>Control.Move(1103,1)</onclick>-->
 			</control>
 			<control type="list" id="2403">
@@ -1719,8 +1793,8 @@
 				<posy>0</posy>
 				<width>750</width>
 				<height>40</height>
-				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
+				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
 				<!--<onclick>Control.Move(1103,1)</onclick>-->
 			</control>
 			<control type="list" id="2503">
@@ -2123,7 +2197,7 @@
 			<width>220</width>
 			<height>80</height>
 			<aspectratio>keep</aspectratio>
-			<texture>Confluence_Logo.png</texture>
+			<texture>confluence/Confluence_Logo.png</texture>
 		</control>
 	</include>
 	<include name="SlideMenuButton01">
@@ -2172,7 +2246,7 @@
                     <posy>0</posy>
                     <width>440</width>
                     <height>35</height>
-                    <texture flipx="true" border="32,0,0,0">header.png</texture>
+                    <texture flipx="true" border="32,0,0,0">confluence/header.png</texture>
             </control>
             <control type="label">
                     <description>time label</description>
