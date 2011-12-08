@@ -12,7 +12,7 @@
                     <posy>0</posy>
                     <width>1</width>
                     <height>720</height>
-                    <texture>HomeBladeSub_Part1.png</texture>
+                    <texture>confluence/HomeBladeSub_Part1.png</texture>
                     <animation effect="zoom" start="379,0,1,720" end="379,0,229,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
                 </control>
                 <control type="image">
@@ -20,7 +20,7 @@
                     <posy>0</posy>
                     <width>12</width>
                     <height>720</height>
-                    <texture>HomeBladeSub_Part2.png</texture>
+                    <texture>confluence/HomeBladeSub_Part2.png</texture>
                     <animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
                 </control>
             </control>
@@ -30,7 +30,7 @@
                 <width>846</width>
                 <height>720</height>
                 <colordiffuse>DAFFFFFF</colordiffuse>
-                <texture>HomeBlade_bottom.png</texture>
+                <texture>confluence/HomeBlade_bottom.png</texture>
             </control>
             <control type="list" id="9000">
 				<hitrect x="100" y="100" w="530" h="620"></hitrect>
@@ -80,7 +80,7 @@
 						<posy>63</posy>
 						<width>18</width>
 						<height>18</height>
-						<texture>HomeHasSub.png</texture>
+						<texture>confluence/HomeHasSub.png</texture>
 						<visible>Container(9000).HasFocus(1) | Container(9000).HasFocus(2) | Container(9000).HasFocus(3) | Container(9000).HasFocus(4) | Container(9000).HasFocus(5) | Container(9000).HasFocus(6) | Container(9000).HasFocus(7)</visible>
 						<animation effect="fade" start="0" end="100" time="200">Focus</animation>
 						<animation effect="fade" start="100" end="0" time="200">UnFocus</animation>
@@ -119,7 +119,7 @@
                 <posy>0</posy>
                 <width>846</width>
                 <height>720</height>
-                <texture>HomeBlade_top.png</texture>
+                <texture>confluence/HomeBlade_top.png</texture>
             </control>
 			<control type="image">
 				<description>LOGO</description>
@@ -127,7 +127,7 @@
 				<posy>10</posy>
 				<width>140</width>
 				<height>40</height>
-				<texture>XBMC_Logo.png</texture>
+				<texture>confluence/XBMC_Logo.png</texture>
 			</control>
 			<control type="image">
 				<description>LOGO Mirror</description>
@@ -135,7 +135,7 @@
 				<posy>42</posy>
 				<width>140</width>
 				<height>40</height>
-				<texture diffuse="diffuse_mirror.png" flipy="true">XBMC_Logo.png</texture>
+				<texture diffuse="confluence/diffuse_mirror.png" flipy="true">confluence/XBMC_Logo.png</texture>
 			</control>
 			<!--
 			<control type="image">
@@ -195,31 +195,31 @@
 					<itemgap>0</itemgap>
 					<visible>Container(9000).HasFocus(1)</visible>
 					<control type="button" id="90101">
-						<include>ButtonHomeSubCommonValues</include>
+						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>First Installation</label>
 						<onclick>-</onclick>
 						<visible>true</visible>
 					</control>
 					<control type="button" id="90102">
-						<include>ButtonHomeSubCommonValues</include>
+						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Antenna Setup</label>
 						<onclick>-</onclick>
 						<visible>true</visible>						
 					</control>
 					<control type="button" id="90103">
-						<include>ButtonHomeSubCommonValues</include>
+						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Channel Search</label>
 						<onclick>-</onclick>
 						<visible>true</visible>
 					</control>
 					<control type="button" id="90104">
-						<include>ButtonHomeSubCommonValues</include>
+						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Edit Satellite</label>
 						<onclick>-</onclick>
 						<visible>true</visible>
 					</control>
 					<control type="button" id="90105">
-						<include>ButtonHomeSubCommonValues</include>
+						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Edit Transponder</label>
 						<onclick>-</onclick>
 						<visible>true</visible>
@@ -238,7 +238,7 @@
 					<itemgap>0</itemgap>
 					<visible>Container(9000).HasFocus(2)</visible>
 					<control type="button" id="90201">
-						<include>ButtonHomeSubCommonValues</include>
+						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Edit Channels</label>
 						<onclick>-</onclick>
 						<visible>true</visible>
@@ -257,7 +257,7 @@
 					<itemgap>0</itemgap>
 					<visible>Container(9000).HasFocus(3)</visible>
 					<control type="button" id="90301">
-						<include>ButtonHomeSubCommonValues</include>
+						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Configure</label>
 						<onclick>-</onclick>
 						<visible>true</visible>
@@ -276,7 +276,7 @@
 					<itemgap>0</itemgap>
 					<visible>Container(9000).HasFocus(4)</visible>
 					<control type="button" id="90401">
-						<include>ButtonHomeSubCommonValues</include>
+						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Smartcard</label>
 						<onclick>-</onclick>
 						<visible>true</visible>
@@ -295,55 +295,55 @@
 					<itemgap>0</itemgap>
 					<visible>Container(9000).HasFocus(5)</visible>
 					<control type="button" id="90501">
-						<include>ButtonHomeSubCommonValues</include>
+						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Weather</label>
 						<onclick>ActivateWindow(Weather)</onclick>
 						<visible>true</visible>
 					</control>
 					<control type="button" id="90502">
-						<include>ButtonHomeSubCommonValues</include>
+						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Pictures</label>
 						<onclick>ActivateWindow(Pictures)</onclick>
 						<visible>true</visible>
 					</control>
 					<control type="button" id="90503">
-						<include>ButtonHomeSubCommonValues</include>
+						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Music</label>
 						<onclick>ActivateWindow(Music)</onclick>
 						<visible>true</visible>
 					</control>
 					<control type="button" id="90504">
-						<include>ButtonHomeSubCommonValues</include>
+						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Videos</label>
 						<onclick>ActivateWindow(Videos)</onclick>
 						<visible>true</visible>
 					</control>
 					<control type="button" id="90505">
-						<include>ButtonHomeSubCommonValues</include>
+						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Programs</label>
 						<onclick>ActivateWindow(Programs,Addons,return)</onclick>
 						<visible>true</visible>
 					</control>
 					<control type="button" id="90506">
-						<include>ButtonHomeSubCommonValues</include>
+						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Settings</label>
 						<onclick>ActivateWindow(Settings)</onclick>
 						<visible>true</visible>
 					</control>
 					<control type="button" id="90507">
-						<include>ButtonHomeSubCommonValues</include>
+						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>File Manager</label>
 						<onclick>ActivateWindow(FileManager)</onclick>
 						<visible>true</visible>
 					</control>
 					<control type="button" id="90508">
-						<include>ButtonHomeSubCommonValues</include>
+						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Profiles</label>
 						<onclick>ActivateWindow(Profiles)</onclick>
 						<visible>true</visible>
 					</control>
 					<control type="button" id="90509">
-						<include>ButtonHomeSubCommonValues</include>
+						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>System Info</label>
 						<onclick>ActivateWindow(SystemInfo)</onclick>
 						<visible>true</visible>
@@ -363,7 +363,7 @@
                 <posy>0</posy>
                 <width>860</width>
                 <height>35</height>
-                <texture border="32,0,0,0">Rss_Back.png</texture>
+                <texture border="32,0,0,0">confluence/Rss_Back.png</texture>
                 <!--<visible>system.getbool(lookandfeel.enablerssfeeds)</visible>-->
             </control>
             <control type="label">

@@ -1,7 +1,7 @@
 <window id="3006">
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<controls>
-		<include>CommonSettingsBackground</include>
+		<include>DefaultCommonSettingsBackground</include>
 		<include>BehindDialogFadeOut</include>
 		<include>CommonDateTime</include>
 		<control type="group">

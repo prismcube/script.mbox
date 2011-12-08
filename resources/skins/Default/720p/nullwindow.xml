@@ -8,7 +8,7 @@
     </coordinates>
 	<include file="mbox_includes.xml">"mbox_includes.xml"</include>    
 	<controls>
-	    <control type="label">
+	    <control type="label" id="111"  >
 	        <description>date/time label</description>
 	        <posx>300l</posx>
 	        <posy>65</posy>

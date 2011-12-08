@@ -26,30 +26,29 @@ class MainMenu( BaseWindow ):
 	def onAction( self, action ):
 		id = action.getId()
 		
-		print "MainMenu onAction(): control %d" % id
+		print "MainMenu onAction(): action %d" % id
+		focusId = self.getFocusId( )
+		print "MainMenu onAction(): focusId %d" % focusId
 		
 		if id == Action.ACTION_PREVIOUS_MENU :
 			print 'lael98 check action menu'
 		elif id == Action.ACTION_SELECT_ITEM :
-			print 'lael98 check ation select'
+			if focusId == 90301 :
+				winmgr.getInstance().showWindow( winmgr.WIN_ID_CONFIGURE )
+			elif focusId == 90101 :
+				winmgr.getInstance().showWindow( winmgr.WIN_ID_LANGUAGE_SETTING )
+			elif focusId == 90102 :
+				winmgr.getInstance().showWindow( winmgr.WIN_ID_ANTENNA_SETUP )
+			elif focusId == 20 :
+				self.close()
+				import pvr.launcher
+				pvr.launcher.getInstance().powerOff()
 		elif id == Action.ACTION_PARENT_DIR :			
 			print 'lael98 check ation back'
 			self.close()
 
-
 	def onClick( self, controlId ):
 		print "MainMenu onclick(): control %d" % controlId
-		if controlId == 90301 :
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_CONFIGURE )
-		elif controlId == 90101 :
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_LANGUAGE_SETTING )
-		elif controlId == 90102 :
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_ANTENNA_SETUP )
-		elif controlId == 20 :
-			self.close()
-			import pvr.launcher
-			pvr.launcher.getInstance().powerOff()
-
 
 	def onFocus( self, controlId ):
 		print "onFocus(): control %d" % controlId

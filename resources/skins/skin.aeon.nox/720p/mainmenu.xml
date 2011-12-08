@@ -158,7 +158,7 @@
 						</item>
 						<item id="90102">
 							<label>Antenna Setup</label>
-							<onclick>-</onclick>
+							<onclick>ActivateWindow(13008)</onclick>
 							<visible>true</visible>						
 						</item>
 						<item id="90103">
@@ -276,7 +276,7 @@
 					<content>
 						<item id="90301">
 							<label>Configure</label>
-							<onclick>-</onclick>
+							<onclick>ActivateWindow(13007)</onclick>
 							<visible>true</visible>
 						</item>
 					</content>
@@ -327,7 +327,7 @@
 					<content>
 						<item id="90401">
 							<label>Smartcard</label>
-							<onclick>Action(ACTION_SELECT_ITEM)</onclick>
+							<onclick>-</onclick>
 							<visible>true</visible>
 						</item>
 					</content>
