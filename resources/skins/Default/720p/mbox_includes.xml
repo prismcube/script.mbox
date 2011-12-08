@@ -11,30 +11,6 @@
 			<aligny>center</aligny>
 		</control>
 	</include>
-
-	<include name="DefaultCommonSettingsBackground">
-		<control type="multiimage">
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>1280</width>
-			<height>720</height>
-			<imagepath fallback="special://skin/backgrounds/settings.jpg" background="true">$INFO[Skin.String(Home_Custom_Back_Settings_Folder)]</imagepath>
-			<timeperimage>10000</timeperimage>
-			<randomize>true</randomize>
-			<fadetime>1000</fadetime>
-		</control>
-		<control type="image">
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>1280</width>
-			<height>720</height>
-			<texture background="true">$INFO[ListItem.Property(Fanart_Image)]</texture>
-			<include>backgroundfade</include>
-			<fadetime>FanartCrossfadeTime</fadetime>
-			<visible>!Skin.HasSetting(HideBackGroundFanart) + !IsEmpty(ListItem.Property(Fanart_Image))</visible>
-			<include>Window_OpenClose_Animation</include>
-		</control>
-	</include>
 	<include name="DefaultBehindDialogFadeOut">
 		<control type="image">
 			<posx>0</posx>
@@ -71,19 +47,19 @@
 		<align>right</align>
 		<aligny>center</aligny>
 	</include>
-	
 
 	<include name="DefaultButtonHomeSubCommonValues">
 		<height>40</height>
-		<width>220</width>
+		<width>221</width>
 		<textoffsetx>20</textoffsetx>
 		<textwidth>195</textwidth>
 		<aligny>center</aligny>
-		<font>font13</font>
-		<texturefocus border="5">confluence/button-focus.png</texturefocus>
-		<texturenofocus border="5">confluence/button-nofocus.png</texturenofocus>
+		<font>font12_title</font>
+		<texturefocus border="5">button-focus.png</texturefocus>
+		<texturenofocus border="5">button-nofocus.png</texturenofocus>
 		<pulseonselect>false</pulseonselect>
 	</include>
+
 	
 	<include name="SpinEx01">
 		<control type="group" id="1100">
