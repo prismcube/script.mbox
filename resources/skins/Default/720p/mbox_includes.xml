@@ -2233,7 +2233,7 @@
 			</control>
 		</control>
 	</include>
-	<include name="CommonDateTime">
+	<include name="DefaultCommonDateTime">
 		<control type="group">
             <posx>390r</posx>
             <posy>0</posy>
