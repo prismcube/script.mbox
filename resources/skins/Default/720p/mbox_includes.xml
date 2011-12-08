@@ -1325,7 +1325,7 @@
 				</itemlayout>
 				<focusedlayout height="40" width="720">
 					<control type="label">
-						<posx>12</posx>
+						<posx>10</posx>
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
@@ -1337,7 +1337,7 @@
 						<visible>!Control.IsEnabled(2100)</visible>
 					</control>
 					<control type="label">
-						<posx>12</posx>
+						<posx>10</posx>
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
@@ -1349,7 +1349,7 @@
 						<visible>Control.IsEnabled(2100) + ![Control.HasFocus(2101)]</visible>
 					</control>
 					<control type="label">
-						<posx>12</posx>
+						<posx>10</posx>
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
@@ -1427,7 +1427,7 @@
 				</itemlayout>
 				<focusedlayout height="40" width="720">
 					<control type="label">
-						<posx>12</posx>
+						<posx>10</posx>
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
@@ -1439,7 +1439,7 @@
 						<visible>!Control.IsEnabled(2200)</visible>
 					</control>
 					<control type="label">
-						<posx>12</posx>
+						<posx>10</posx>
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
@@ -1451,7 +1451,7 @@
 						<visible>Control.IsEnabled(2200) + ![Control.HasFocus(2201)]</visible>
 					</control>
 					<control type="label">
-						<posx>12</posx>
+						<posx>10</posx>
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
@@ -1529,7 +1529,7 @@
 				</itemlayout>
 				<focusedlayout height="40" width="720">
 					<control type="label">
-						<posx>12</posx>
+						<posx>10</posx>
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
@@ -1541,7 +1541,7 @@
 						<visible>!Control.IsEnabled(2300)</visible>
 					</control>
 					<control type="label">
-						<posx>12</posx>
+						<posx>10</posx>
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
@@ -1553,7 +1553,7 @@
 						<visible>Control.IsEnabled(2300) + ![Control.HasFocus(2301)]</visible>
 					</control>
 					<control type="label">
-						<posx>12</posx>
+						<posx>10</posx>
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
@@ -1631,7 +1631,7 @@
 				</itemlayout>
 				<focusedlayout height="40" width="720">
 					<control type="label">
-						<posx>12</posx>
+						<posx>10</posx>
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
@@ -1643,7 +1643,7 @@
 						<visible>!Control.IsEnabled(2400)</visible>
 					</control>
 					<control type="label">
-						<posx>12</posx>
+						<posx>10</posx>
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
@@ -1655,7 +1655,7 @@
 						<visible>Control.IsEnabled(2400) + ![Control.HasFocus(2401)]</visible>
 					</control>
 					<control type="label">
-						<posx>12</posx>
+						<posx>10</posx>
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
@@ -1733,7 +1733,7 @@
 				</itemlayout>
 				<focusedlayout height="40" width="720">
 					<control type="label">
-						<posx>12</posx>
+						<posx>10</posx>
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
@@ -1745,7 +1745,7 @@
 						<visible>!Control.IsEnabled(2500)</visible>
 					</control>
 					<control type="label">
-						<posx>12</posx>
+						<posx>10</posx>
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>
@@ -1757,7 +1757,7 @@
 						<visible>Control.IsEnabled(2500) + ![Control.HasFocus(2501)]</visible>
 					</control>
 					<control type="label">
-						<posx>12</posx>
+						<posx>10</posx>
 						<posy>0</posy>
 						<width>680</width>
 						<height>40</height>

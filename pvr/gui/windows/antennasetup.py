@@ -76,11 +76,11 @@ class AntennaSetup( SettingWindow ):
 		self.disableControl( )
 		if ( controlId == E_Input01 + 1 ) or ( controlId == E_Input02 + 1 ) :
 			if controlId == E_Input01 + 1 :
-				configmgr.getInstance().setCurrentTunerIndex( 0 )
-				configmgr.getInstance().setCurrentTunerType( self.getControl( E_SpinEx03 + 3 ).getSelectedPosition())
+				configmgr.getInstance().setCurrentTunerIndex( 0 ) 
+				configmgr.getInstance().setCurrentTunerType( self.getSelectedIndex( E_SpinEx03 ) )
 			elif controlId == E_Input02 + 1 :
 				configmgr.getInstance().setCurrentTunerIndex( 1 )
-				configmgr.getInstance().setCurrentTunerType( self.getControl( E_SpinEx04 + 3 ).getSelectedPosition())
+				configmgr.getInstance().setCurrentTunerType( self.getSelectedIndex( E_SpinEx04 ) )
 				
 			self.resetAllControl( )
 			if( self.getSelectedIndex( E_SpinEx03 ) == 4 ) :
