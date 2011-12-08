@@ -32,6 +32,9 @@ class NullWindow(BaseWindow):
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
 #			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )
 			print 'lael98 check ation select'
+		elif id == Action.ACTION_MOVE_LEFT:
+			print 'youn check ation left'
+			winmgr.getInstance().showWindow( winmgr.WIN_ID_TIMESHIFT_BANNER )
 		else:
 			print 'lael98 check ation unknown id=%d' %id
 
