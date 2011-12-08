@@ -2090,6 +2090,47 @@
 			<effect type="fade" start="100" end="0" time="400" />
 		</animation>
 	</include>
+
+	<include name="AeonCommonDateTime">
+		<control type="group">
+			<posx>330r</posx>
+			<posy>316</posy>
+			<animation effect="slide" start="0,0" end="490,0" time="300">WindowClose</animation>
+			<!--
+			<animation effect="slide" start="490,0" end="0,0" delay="WidgetSlideDelay" time="300" condition="!Window.Previous(startup)">WindowOpen</animation>
+			<animation effect="slide" start="490,0" end="0,0" delay="2500" time="600" condition="Window.Previous(startup)">WindowOpen</animation>
+			-->
+
+			<control type="image">
+				<description>time background</description>
+				<posx>-161</posx>
+				<posy>0</posy>
+				<width>490</width>
+				<height>27</height>
+				<texture>home/timepanel_mid.png</texture>
+				<!--
+				<animation effect="slide" start="0,0" end="140,0" delay="0" time="300" condition="Skin.HasSetting(homepageWeatherinfo)">conditional</animation>
+				-->
+			</control>
+
+			<control type="label">
+				<description>time label</description>
+				<posx>320</posx>
+				<posy>-3</posy>
+				<width>400</width>
+				<height>28</height>
+				<align>right</align>
+				<aligny>center</aligny>
+				<font>Font_Reg17_Caps</font>
+				<textcolor>white2</textcolor>
+				<shadowcolor>-</shadowcolor>
+				<label>[UPPERCASE][COLOR white2]$INFO[System.Date,,  |  ][/COLOR][COLOR ffaaaaaa]$INFO[System.Time][/COLOR][/UPPERCASE]</label>
+			</control>
+		</control>
+	</include>
+
+	
+	<!--
 	<include name="CommonDateTime">
 		<control type="group">
             <posx>390r</posx>
@@ -2120,4 +2161,5 @@
             </control>
         </control>
 	</include>
+	-->
 </includes>

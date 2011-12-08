@@ -1,6 +1,7 @@
 <window id="3002">
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>no</allowoverlay>	
+	<include file="mbox_includes.xml">"mbox_includes.xml"</include>	
 	<controls>
 		<control type="group">
 		<include>Animation_CommonFade</include>		
@@ -426,5 +427,8 @@
           		</control>
 			</control>
 		</control>
+		
+	<include>AeonCommonDateTime</include>
+
 	</controls>
 </window>

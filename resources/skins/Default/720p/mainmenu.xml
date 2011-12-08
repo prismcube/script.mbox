@@ -1,6 +1,7 @@
 <window id="3002">
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>no</allowoverlay>	
+	<include file="mbox_includes.xml">"mbox_includes.xml"</include>    	
 	<controls>
 		<control type="group">
 			<animation effect="slide" end="-400,0" time="500" tween="quadratic" easing="out">WindowClose</animation>
@@ -459,6 +460,6 @@
             </control>
         </control>
 		<!--Date, Time Info-->
-		<include>CommonDateTime</include>
+		<include>DefaultCommonDateTime</include>
 	</controls>
 </window>
