@@ -6,6 +6,7 @@ import pvr.gui.windowmgr as winmgr
 from pvr.gui.basewindow import BaseWindow
 from pvr.gui.basewindow import Action
 from inspect import currentframe
+import pvr.elismgr
 
 
 
@@ -14,6 +15,7 @@ class NullWindow(BaseWindow):
 		BaseWindow.__init__(self, *args, **kwargs)
 		print 'lael98 check %d %s' %(currentframe().f_lineno, currentframe().f_code.co_filename)    
 		print 'args=%s' % args[0]
+		self.commander = pvr.elismgr.getInstance().getCommander()				
 		self.lastFocusId = None
 
 	def onInit(self):
@@ -26,20 +28,38 @@ class NullWindow(BaseWindow):
 		if id == Action.ACTION_PREVIOUS_MENU:
 			print 'lael98 check ation menu'
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_MAINMENU )
+
 		elif id == Action.ACTION_PARENT_DIR:
-			print 'lael98 check ation parentdir'
+			try :
+				currentChannelInfo = self.commander.channel_GetCurrent()
+				currentChannel = int( currentChannelInfo[0] )
+				prevChannel = winmgr.getInstance().getWindow(winmgr.WIN_ID_CHANNEL_BANNER).getPrevChannel( )
+				self.commander.channel_SetCurrent( prevChannel )
+				winmgr.getInstance().getWindow(winmgr.WIN_ID_CHANNEL_BANNER).setPrevChannel( currentChannel )
+				
+				winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )
+			except Exception, ex:
+				print 'ERR prev channel'
+
 		elif id == Action.ACTION_SELECT_ITEM:
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
 #			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )
 			print 'lael98 check ation select'
+ 
 		elif id == Action.ACTION_MOVE_LEFT:
 			print 'youn check ation left'
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_TIMESHIFT_BANNER )
+
+		elif id == Action.ACTION_SHOW_INFO	:
+			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )
+
 		else:
 			print 'lael98 check ation unknown id=%d' %id
 
+
 	def onClick(self, controlId):
 		print "onclick(): control %s" % controlId
+
 
 	def onFocus(self, controlId):
 		print "onFocus(): control %s" % controlId
