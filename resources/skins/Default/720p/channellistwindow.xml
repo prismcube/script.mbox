@@ -43,8 +43,35 @@
 				</control>
 			</control>
 		</control>
+
+
+			<control type="group">
+				<description>testing</description>
+				<posx>100</posx>
+				<posy>600</posy>
+				<control type="label" id="9001">
+					<posx>10</posx>
+					<posy>0</posy>
+					<width>500</width>
+					<height>20</height>
+					<font>font13</font>
+					<textcolor>grey3</textcolor>
+					<label>$LOCALIZE[248]</label>
+				</control>
+				<control type="button" id="9002">
+					<posx>600</posx>
+					<posy>0</posy>
+					<width min="80" max="150">auto</width>
+					<height>30</height>
+					<font>font13</font>
+					<textcolor>grey3</textcolor>
+					<onclick>ActivateWindow(AppearanceSettings)</onclick>
+				</control>
+			</control>
 -->
+
 		<include>MenuHeader</include>
+
 
 <!-- middle left -->
 		<control type="group">
@@ -83,7 +110,7 @@
 						<posy>0</posy>
 						<width>690</width>
 						<height>41</height>
-						<texture border="0,2,0,2">MenuItemNF.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 					</control>
 					<!-- is cas? -->
 					<control type="image">
@@ -133,7 +160,7 @@
 						<posy>0</posy>
 						<width>690</width>
 						<height>41</height>
-						<texture border="0,2,0,2">MenuItemNF.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 						<visible>!Control.HasFocus(50)</visible>
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>
@@ -143,7 +170,7 @@
 						<posy>0</posy>
 						<width>690</width>
 						<height>41</height>
-						<texture border="0,2,0,2">MenuItemFO.png</texture>
+						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
 						<visible>Control.HasFocus(50)</visible>
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>
@@ -483,7 +510,7 @@
 								<posy>0</posy>
 								<width>200</width>
 								<height>41</height>
-								<texture border="0,2,0,2">MenuItemFO.png</texture>
+								<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
 								<visible>Control.HasFocus(50)</visible>
 								<animation effect="fade" time="300">Visible</animation>
 								<animation effect="fade" time="300">Hidden</animation>
@@ -585,7 +612,7 @@
 								<posy>0</posy>
 								<width>200</width>
 								<height>41</height>
-								<texture border="0,2,0,2">MenuItemFO.png</texture>
+								<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
 								<visible>Control.HasFocus(50)</visible>
 								<animation effect="fade" time="300">Visible</animation>
 								<animation effect="fade" time="300">Hidden</animation>
@@ -687,7 +714,7 @@
 								<posy>0</posy>
 								<width>200</width>
 								<height>41</height>
-								<texture border="0,2,0,2">MenuItemFO.png</texture>
+								<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
 								<visible>Control.HasFocus(50)</visible>
 								<animation effect="fade" time="300">Visible</animation>
 								<animation effect="fade" time="300">Hidden</animation>
@@ -789,7 +816,7 @@
 								<posy>0</posy>
 								<width>200</width>
 								<height>41</height>
-								<texture border="0,2,0,2">MenuItemFO.png</texture>
+								<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
 								<visible>Control.HasFocus(50)</visible>
 								<animation effect="fade" time="300">Visible</animation>
 								<animation effect="fade" time="300">Hidden</animation>

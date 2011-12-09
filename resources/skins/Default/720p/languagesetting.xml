@@ -2,22 +2,22 @@
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<controls>
 		<include>MenuHeader</include>
-		<control type="group">
+		<control type="group" id="9000">
 			<include>FadeEffect</include>
-			<include>MenuDescription</include>
+			<!--
 			<control type="image">
-				<posx>830</posx>
+				<posx>840</posx>
 				<posy>170</posy>
 				<width>352</width>
 				<height>198</height>
 				<texture border="20">special://skin/backgrounds/weather.jpg</texture>
 				<description>pre-view</description>
 			</control>
-			<control type="grouplist" id="9000">
+			<control type="grouplist" id="9001">
 				<visible>true</visible>
 				<posx>100</posx>
 				<posy>170</posy>
-				<width>680</width>
+				<width>700</width>
 				<height>530</height>
 				<itemgap>0</itemgap>
 				<pagecontrol>60</pagecontrol>
@@ -26,13 +26,25 @@
 				<onup>9000</onup>
 				<ondown>9000</ondown>
 				<include>SpinEx01</include>
-				<include>SpinEx02</include>
-				<include>SpinEx03</include>
-				<include>SpinEx04</include>
-				<include>SpinEx05</include>
 			</control>
+			-->
 		</control>
 		<include>MenuFooter</include>
+		<!-- Slide Menu -->
+		<control type="group">
+			<animation effect="slide" start="0,0" end="250,0" time="400" tween="quadratic" easing="out" condition="Control.HasFocus(3301) | ControlGroup(9002).HasFocus">Conditional</animation> 
+			<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="Control.HasFocus(3301) | ControlGroup(9002).HasFocus">WindowClose</animation>
+			<include>CommonSettingSlideMenu</include>
+			<control type="group" id="9002"> 
+				<posx>-250</posx>
+				<posy>130</posy>
+				<height>400</height>
+				<width>250</width>
+				<include>SlideMenuButton01</include>
+				<include>SlideMenuButton02</include>
+				<include>SlideMenuButton03</include>
+			</control>
+		</control>
 	</controls>
 </window>
 

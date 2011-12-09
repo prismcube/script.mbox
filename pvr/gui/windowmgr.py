@@ -1,21 +1,3 @@
-#
-#  MythBox for XBMC - http://mythbox.googlecode.com
-#  Copyright (C) 2011 analogue@yahoo.com
-#
-#  This program is free software; you can redistribute it and/or
-#  modify it under the terms of the GNU General Public License
-#  as published by the Free Software Foundation; either version 2
-#  of the License, or (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-#
 import xbmc
 import xbmcgui
 import sys
@@ -28,12 +10,13 @@ WIN_ID_NULLWINDOW 					= 1
 WIN_ID_MAINMENU 					= 2
 WIN_ID_CHANNEL_LIST_WINDOW			= 3
 WIN_ID_CHANNEL_BANNER				= 4
-WIN_ID_LANGUAGE_SETTING				= 5
-WIN_ID_PARENTAL_LOCK				= 6
-WIN_ID_RECORDING_OPTIONS			= 7
+WIN_ID_CONFIGURE					= 5
+WIN_ID_ANTENNA_SETUP				= 6
+WIN_ID_TUNER_CONFIGURATION			= 7
+WIN_ID_SATELLITE_CONFIGURATION		= 8
+WIN_ID_TIMESHIFT_BANNER				= 9
 
-
-
+WIN_ID_LANGUAGE_SETTING				= 100	#for test
 
 __windowmgr = None
 
@@ -48,7 +31,6 @@ def getInstance():
 	return __windowmgr
 
 
-
 class WindowMgr(object):
 	def __init__(self):
 		print 'lael98 check %d %s' %(currentframe().f_lineno, currentframe().f_code.co_filename)
@@ -57,31 +39,102 @@ class WindowMgr(object):
 		self.scriptDir = pvr.platform.getPlatform().getScriptDir()
 		print 'lael98 test scriptDir= %s' %self.scriptDir
 
-		from pvr.gui.windows.nullwindow import NullWindow
-		from pvr.gui.windows.mainmenu import MainMenu
-		from pvr.gui.windows.channellistwindow import ChannelListWindow
-		from pvr.gui.windows.channelbanner import ChannelBanner
-		from pvr.gui.windows.languagesetting  import LanguageSetting
-		from pvr.gui.windows.parentallock  import ParentalLock		
-		
-		self.windows = {
-			WIN_ID_NULLWINDOW 					: NullWindow('nullwindow.xml', self.scriptDir ),
-			WIN_ID_MAINMENU						: MainMenu('mainmenu.xml', self.scriptDir ),
-			WIN_ID_CHANNEL_LIST_WINDOW			: ChannelListWindow('channellistwindow.xml', self.scriptDir ),
-			WIN_ID_CHANNEL_BANNER				: ChannelBanner('channelbanner.xml', self.scriptDir ),
-			WIN_ID_LANGUAGE_SETTING				: LanguageSetting('languagesetting.xml', self.scriptDir ),			
-			WIN_ID_PARENTAL_LOCK				: ParentalLock('parentallock.xml', self.scriptDir ),
-		}
+		currentSkinName = xbmc.executehttpapi("GetGUISetting(3, lookandfeel.skin)")
+		self.skinName = currentSkinName[4:]
+
+		self.windows = {}
+
+		from pvr.gui.windows.nullwindow import NullWindow		
+		self.nullWindow =  NullWindow('nullwindow.xml', self.scriptDir )
+
+		self.createAllWindows( )
 
 
 	def showWindow( self, windowId ):
 		print'lael98 check %d %s winid=%d' %(currentframe().f_lineno, currentframe().f_code.co_filename, windowId)    
 		try:
-			self.windows[windowId].doModal()
+			if windowId == WIN_ID_NULLWINDOW :
+				self.nullWindow.doModal()
+			else:
+				self.windows[windowId].doModal()
  			self.lastId = windowId
 
 		except:
 			print "can not find window"
 
 
+	def createAllWindows( self ):
+		import pvr.platform 
+		self.scriptDir = pvr.platform.getPlatform().getScriptDir()
+		print 'lael98 test scriptDir= %s' %self.scriptDir
 
+		from pvr.gui.windows.mainmenu import MainMenu
+		from pvr.gui.windows.channellistwindow import ChannelListWindow
+		from pvr.gui.windows.channelbanner import ChannelBanner
+		from pvr.gui.windows.timeshiftbanner import TimeShiftBanner
+		from pvr.gui.windows.configure import Configure
+		from pvr.gui.windows.antennasetup import AntennaSetup
+		from pvr.gui.windows.tunerconfiguration import TunerConfiguration
+		from pvr.gui.windows.satelliteconfiguration import SatelliteConfiguration			
+		from pvr.gui.windows.languagesetting import LanguageSetting		#for test
+
+		self.copyIncludeFile( )			
+
+		self.windows[ WIN_ID_MAINMENU ]	               = MainMenu('mainmenu.xml', self.scriptDir)
+		self.windows[ WIN_ID_CHANNEL_LIST_WINDOW ]     = ChannelListWindow('channellistwindow.xml', self.scriptDir )
+		self.windows[ WIN_ID_CHANNEL_BANNER	]          = ChannelBanner('channelbanner.xml', self.scriptDir )
+		self.windows[ WIN_ID_TIMESHIFT_BANNER ]        = TimeShiftBanner('timeshiftbanner.xml', self.scriptDir )
+		self.windows[ WIN_ID_CONFIGURE ]               = Configure('configure.xml', self.scriptDir)
+		self.windows[ WIN_ID_ANTENNA_SETUP ]           = AntennaSetup('antennasetup.xml', self.scriptDir)
+		self.windows[ WIN_ID_TUNER_CONFIGURATION ]     = TunerConfiguration('tunerconfiguration.xml', self.scriptDir)
+		self.windows[ WIN_ID_SATELLITE_CONFIGURATION ] = SatelliteConfiguration('satelliteconfiguration.xml', self.scriptDir)
+		self.windows[ WIN_ID_LANGUAGE_SETTING ]        = LanguageSetting('languagesetting.xml', self.scriptDir)		#for test
+		
+
+	def resetAllWindows( self ):
+		self.windows[ WIN_ID_MAINMENU ].close( )
+		self.windows.clear( )
+		self.createAllWindows( )
+		self.showWindow( WIN_ID_MAINMENU )		
+
+
+	def checkSkinChange( self ):
+
+		currentSkinName = xbmc.executehttpapi("GetGUISetting(3, lookandfeel.skin)")
+
+		print 'skin name=%s : %s' %( self.skinName, currentSkinName[4:] )
+
+		if self.skinName != currentSkinName[4:] :
+			print 'change skin name'
+			self.skinName = currentSkinName[4:]			
+			self.resetAllWindows( )
+
+
+	def copyIncludeFile( self ):
+		import os, shutil
+		import pvr.platform 
+
+		skinName = self.skinName
+
+		print 'skinName=%s' %skinName
+
+		import pvr.platform 
+		self.scriptDir = pvr.platform.getPlatform().getScriptDir()
+
+		
+		if skinName.lower() == 'default' or skinName.lower() == 'skin.confluence' :
+			mboxIncludePath = os.path.join( pvr.platform.getPlatform().getScriptDir(), 'resources', 'skins', 'default', '720p', 'mbox_includes.xml')
+
+		else : 
+			mboxIncludePath = os.path.join( pvr.platform.getPlatform().getScriptDir(), 'resources', 'skins', skinName, '720p', 'mbox_includes.xml')
+
+			if not os.path.isfile(mboxIncludePath) :
+				mboxIncludePath = os.path.join( pvr.platform.getPlatform().getScriptDir(), 'resources', 'skins', 'default', '720p', 'mbox_includes.xml')			
+			
+		print 'mboxIncludePath=%s' %mboxIncludePath	
+
+		skinIncludePath = os.path.join( pvr.platform.getPlatform().getSkinDir(), '720p', 'mbox_includes.xml')
+		print 'skinIncludePath=%s' %skinIncludePath	
+		shutil.copyfile( mboxIncludePath, skinIncludePath )
+		
+	

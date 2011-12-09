@@ -1,21 +1,3 @@
-#
-#  MythBox for XBMC - http://mythbox.googlecode.com
-#  Copyright (C) 2011 analogue@yahoo.com
-#
-#  This program is free software; you can redistribute it and/or
-#  modify it under the terms of the GNU General Public License
-#  as published by the Free Software Foundation; either version 2
-#  of the License, or (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-#
 import xbmc
 import xbmcgui
 import sys
@@ -30,10 +12,13 @@ import pvr.elismgr
 from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import FooterMask
 
+import pvr.msg as m
+import pvr.gui.windows.define_string as mm
 import thread, time
 
 
 class ChannelListWindow(BaseWindow):
+
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
 		self.commander = pvr.elismgr.getInstance().getCommander()		
@@ -99,6 +84,9 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader32        = self.getControl( 232 )
 			self.ctrltabHeader42        = self.getControl( 242 )
 
+			#test ctrl
+			#self.ctrlLbl                = self.getControl( 9001 )
+			#self.ctrlBtn                = self.getControl( 9002 )
 
 			#epg stb time
 			self.ctrlHeader3.setLabel('')
@@ -111,12 +99,6 @@ class ChannelListWindow(BaseWindow):
 			
 			#etc
 			self.listEnableFlag = False
-
-		#get setting language
-		#name=''
-		#ret=self.commander.enum_GetProp(name)
-		#print 'language ret[%s] name[%s]'% (ret,name)
-
 
 		#initialize get channel list
 		self.initTabHeader()
@@ -138,12 +120,16 @@ class ChannelListWindow(BaseWindow):
 		self.updateLocalTime()
 
 		#get epg event right now
+		"""
 		ret = []
 		ret=self.commander.epgevent_GetPresent()
 		if ret != []:
 			ret=['epgevent_GetPresent'] + ret
 			self.updateLabelInfo(ret)
 		print 'epgevent_GetPresent[%s]'% ret
+		"""
+
+
 
 	def onAction(self, action):
  		
@@ -155,13 +141,6 @@ class ChannelListWindow(BaseWindow):
 			print '<<<<< test youn: action ID[%s]' % id
 			print 'tv_guide_last_selected[%s]' % action.getId()
 			self.getTabHeader()
-			#import locale, codecs
-			#lc=locale.normalize("fr")
-			#print 'lc[%s]'% lc
-			#print 'locale [%s]'% locale._setlocale(0, locale._build_localename( ('fr_FR.ISO8859-1') ) )
-			#print 'locale[%s]'% locale.resetlocale()
-			
-
 			
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'lael98 check ation back'
@@ -172,8 +151,74 @@ class ChannelListWindow(BaseWindow):
 			self.close( )
 			self.listcontrol.reset()
 
+		elif id == 13: #'x'
+			#pass
+			#get setting language
+			#name=''
+			#ret=self.commander.enum_GetProp(name)
+			#print 'language ret[%s] name[%s]'% (ret,name)
+
+			import locale, codecs, os, xbmcaddon, gettext
+			#lc=locale.normalize("fr")
+			#lc = locale._build_localename(locale.getdefaultlocale())
+			
+			#print 'lc[%s]'% gettext.NullTranslations.info()
+			#print 'lc[%s]'% lc
+			#dlc = locale._print_locale()
+			#print 'get[%s]'% dlc
+			
+			#dlc = ('ko_KR', 'cp949')
+			#locale.setlocale(0, 'ISO8859-1')
+			#locale.setlocale(0, locale._build_localename(dlc) )
+			#locale.resetlocale(0)
+			#self.ctrlHeader2.setLabel(str('[%s]'% lc))
+			#import gettext
+			#LOCALE_DIR = os.path.dirname(__file__)
+			#domain = gettext.bindtextdomain('imdbpy', LOCALE_DIR)			
+			#gettext.translation(domain,None,None,None,None, lc)
+			
+			#print 'locale [%s]'% locale._setlocale(0, locale._build_localename( ('fr_FR.ISO8859-1') ) )
+			#print 'locale[%s]'% locale.resetlocale()
+
+			"""
+			cwd='C:\Users\SERVER\AppData\Roaming\XBMC\userdata\guisettings.xml'
+			print 'getcwd[%s]'% cwd
+			f = open(cwd, 'r')
+			import re
+			for line in f.readlines():
+				ret = re.search('<language>\w*</language>', line)
+				if ret != None:
+					print 'ret[%s]'% ret.group()
+					retstr = ret.group()
+					ll = retstr.find('<language>')
+					rr = retstr.rfind('</language>')
+					retlabel = retstr[10:rr]
+					print 'retstr[%s]'% retlabel
+					self.ctrlBtn.setLabel(retlabel)
+			f.close()
+			"""
+			print 'cwd[%s]'% xbmc.getLanguage()
+
+			"""
+			import re
+
+			openFile = 'D:\project\elmo\doc\language tool\Language_Prime.csv'
+			wFile1 = 'strings.xml'
+			print openFile
+			rf = open(openFile, 'r')
+			#wf = open(wFile1, 'w')
+			for line in rf.readlines():
+				ret = re.search(',', line)
+				print ret.group()
+
+
+			rf.close()
+			"""
+
+
 		else:
 			pass
+			#self.ctrlHeader2.setLabel(str('key[%s]'% action.getId()))
 			#print'Unconsumed key: %s' % action.getId()
 
 
@@ -386,8 +431,6 @@ class ChannelListWindow(BaseWindow):
 
 		print 'sort_idx[%s]'% self.tabHeader_channelsortMode
 
-		self.listcontrol.reset()
-		self.initChannelList()
 
 		#update button label from selected item at list
 		if self.flag11:
@@ -410,6 +453,10 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader22.setVisible(False)
 			self.ctrltabHeader32.setVisible(False)
 			self.ctrltabHeader42.setVisible(False)
+
+			#channel list update
+			self.listcontrol.reset()
+			self.initChannelList()
 				
 
 	def initTabHeader(self):
@@ -418,16 +465,21 @@ class ChannelListWindow(BaseWindow):
 		#header, footer init
 		self.ctrlHeader1.setImage('IconHeaderTitleSmall.png')
 		#self.ctrlHeader2.setLabel('TV-Channel List')
-		from pvr.util import NativeTranslator
-		import pvr.platform
-		self.platform = pvr.platform.getPlatform()
-		self.translator = NativeTranslator(self.platform.getScriptDir())
-		
+		self.ctrlHeader2.setLabel(m.strings(mm.LANG_TV_CHANNEL_LIST))
+
+
+		#self.ctrlLbl.setLabel( m.strings(mm.LANG_LANGUAGE) )
+		ret = xbmc.getLanguage()
+		print 'getLanguage[%s]'% ret
+		#self.ctrlBtn.setLabel(ret)
+
+
+
 		self.ctrlHeader3.setLabel('')		
 		self.ctrlHeader4.setLabel('')
 
-		self.setProperty('WindowType', 'ChannelList')
-		self.setFooter( self.win, ( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_RECORD_MASK ) )
+		#self.setProperty('WindowType', 'ChannelList')
+		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_RECORD_MASK )
 
 		self.ctrltabHeader12.setVisible(self.flag11)
 		self.ctrltabHeader22.setVisible(self.flag21)
@@ -495,7 +547,7 @@ class ChannelListWindow(BaseWindow):
 			listItem = xbmcgui.ListItem("%04d %s"%( int(ch[0]), ch[2]),"-", "-", "-", "-")
 
 			thum=icas=''
-			if int(ch[4]) == 1 : thum='OverlayLocked.png'
+			if int(ch[4]) == 1 : thum='IconLockFocus.png'#'OverlayLocked.png'
 			if int(ch[5]) == 1 : icas='IconCas.png'
 			listItem.setProperty('lock', thum)
 			listItem.setProperty('icas', icas)

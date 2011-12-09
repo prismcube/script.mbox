@@ -1,0 +1,160 @@
+import xbmc
+import xbmcgui
+import sys
+
+import pvr.gui.windowmgr as winmgr
+import pvr.tunerconfigmgr as configmgr
+from pvr.gui.basewindow import SettingWindow, setWindowBusy
+from pvr.gui.basewindow import Action
+import pvr.elismgr
+from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
+from pvr.gui.guiconfig import *
+
+E_CONFIGURE_SATELLITE_TUNER_INDEX 		= 0
+E_CONFIGURE_SATELLITE_SLOT_NUMBER		= 1
+E_CONFIGURE_SATELLITE_LONGITUDE			= 2
+E_CONFIGURE_SATELLITE_BANDTYPE			= 3
+E_CONFIGURE_SATELLITE_FREQUENCY_LEVEL	= 4
+E_CONFIGURE_SATELLITE_DISEQC_11			= 5
+E_CONFIGURE_SATELLITE_DISEQC_MODE		= 6
+E_CONFIGURE_SATELLITE_DISEQC_REPEAT		= 7
+E_CONFIGURE_SATELLITE_IS_CONFIG_USED	= 8
+E_CONFIGURE_SATELLITE_LNB_TYPE			= 9
+E_CONFIGURE_SATELLITE_MOTORIZED_TYPE	= 10
+E_CONFIGURE_SATELLITE_LOW_LNB			= 11
+E_CONFIGURE_SATELLITE_HIGH_LNB			= 12
+E_CONFIGURE_SATELLITE_LNB_THRESHOLD		= 13
+E_CONFIGURE_SATELLITE_MOTORIZED_DATA	= 14
+E_CONFIGURE_SATELLITE_IS_ONECABLE		= 15
+E_CONFIGURE_SATELLITE_ONECABLE_PIN		= 16
+E_CONFIGURE_SATELLITE_ONECABLE_MDU		= 17
+E_CONFIGURE_SATELLITE_ONECABLE_LO_FREQ1 = 18
+E_CONFIGURE_SATELLITE_ONECABLE_LO_FREQ2 = 19
+E_CONFIGURE_SATELLITE_ONECABLE_UBSLOT	= 20
+E_CONFIGURE_SATELLITE_ONECABLE_UBFREQ	= 21
+
+
+class SatelliteConfiguration( SettingWindow ):
+	def __init__( self, *args, **kwargs ):
+		SettingWindow.__init__( self, *args, **kwargs)
+		self.commander = pvr.elismgr.getInstance().getCommander( )
+			
+		self.tunerType = 0
+		self.currentSatellite = 0
+		self.longitude = 0
+		self.currentSatellite = []
+		self.selectedIndexLnbType = 0
+		#self.initialized = False
+
+	def onInit( self ):
+		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
+
+		self.tunerIndex = configmgr.getInstance( ).getCurrentTunerIndex( ) + 1
+		self.tunertype = E_LIST_TUNER_TYPE[ configmgr.getInstance( ).getCurrentTunerType( ) ]
+		self.longitude = configmgr.getInstance( ).getCurrentLongitue( )
+		self.currentSatellite = configmgr.getInstance( ).getCurrentConfiguredSatellite( )
+		print 'dhkim test list %s' % self.currentSatellite 
+		self.setHeaderLabel( 'Satellite Configuration' )
+		
+		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %s - %s' % ( self.tunerIndex, self.tunertype ) )
+		self.selectedIndexLnbType = int( self.currentSatellite[ E_CONFIGURE_SATELLITE_LNB_TYPE ] )
+
+		self.initConfig( )
+		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
+		#self.initialized = True
+		
+	def onAction( self, action ):
+
+		actionId = action.getId( )
+		focusId = self.getFocusId( )
+
+		if actionId == Action.ACTION_PREVIOUS_MENU :
+			pass
+		elif actionId == Action.ACTION_SELECT_ITEM :
+			pass
+				
+		elif actionId == Action.ACTION_PARENT_DIR :
+			self.resetAllControl( )
+			self.close( )
+
+		elif actionId == Action.ACTION_MOVE_LEFT :
+			self.controlLeft( )
+
+		elif actionId == Action.ACTION_MOVE_RIGHT :
+			self.controlRight( )
+			
+		elif actionId == Action.ACTION_MOVE_UP :
+			self.controlUp( )
+			
+		elif actionId == Action.ACTION_MOVE_DOWN :
+			self.controlDown( )
+
+
+	def onClick( self, controlId ):
+		if( controlId == E_SpinEx01 + 1 or controlId == E_SpinEx01 + 2 ) :
+			self.selectedIndexLnbType = self.getSelectedIndex( E_SpinEx01 )
+			#self.disableControl( )
+			self.initConfig( )
+		#winmgr.getInstance().showWindow( winmgr.WIN_ID_TUNER_CONFIGURATION )
+
+		
+	def onFocus( self, controlId ):
+		pass
+
+	def initConfig( self ) :
+		self.resetAllControl( )
+	
+		self.addInputControl( E_Input01, 'Satellite' , configmgr.getInstance( ).getFormattedName( self.longitude ), None )
+		self.addUserEnumControl( E_SpinEx01, 'LNB Setting', E_LIST_LNB_TYPE, self.selectedIndexLnbType )
+
+		if( self.selectedIndexLnbType == 1 ) :
+			self.addUserEnumControl( E_SpinEx02, 'LNB Frequency', USER_ENUM_LIST_SINGLE_FREQUENCY, getSingleFrequenceIndex( self.currentSatellite[ E_CONFIGURE_SATELLITE_LOW_LNB ] ) )
+		else :
+			self.lnbFrequency = self.currentSatellite[E_CONFIGURE_SATELLITE_LOW_LNB] + ' / ' + self.currentSatellite[ E_CONFIGURE_SATELLITE_HIGH_LNB ] + ' / ' + self.currentSatellite[E_CONFIGURE_SATELLITE_LNB_THRESHOLD]
+			self.addInputControl( E_Input02, 'LNB Frequency', self.lnbFrequency, None )
+		
+		self.addUserEnumControl( E_SpinEx03, '22KHz Control', USER_ENUM_LIST_ON_OFF, self.currentSatellite[ E_CONFIGURE_SATELLITE_FREQUENCY_LEVEL ] )
+		self.addUserEnumControl( E_SpinEx04, 'DiSEqC 1.0 Switch', E_LIST_DISEQC_MODE, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_MODE ] )
+		self.addUserEnumControl( E_SpinEx05, 'DiSEqC Repeat', USER_ENUM_LIST_ON_OFF, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_REPEAT ] )
+		self.addUserEnumControl( E_SpinEx06, 'Transponder', ['test','test1','test3'], 0 )
+		self.addLeftLabelButtonControl( E_Input03, 'Save', None )
+
+		if( self.selectedIndexLnbType == 1 ) :
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input03 ]
+			hideControlIds = [ E_Input02, E_Input04 ]
+		else :
+			visibleControlIds = [ E_SpinEx01, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input03 ]
+			hideControlIds = [ E_SpinEx02, E_Input04 ]
+			
+		self.setVisibleControls( visibleControlIds, True )
+		self.setEnableControls( visibleControlIds, True )
+
+		self.setVisibleControls( hideControlIds, False )
+
+		self.initControl( )
+		self.disableControl( )
+		
+
+	def disableControl( self ):
+		#selectedIndex = self.getSelectedIndex( E_SpinEx01 )
+		print 'dhkim test selected Item = %d' % self.selectedIndexLnbType
+		enableControlIds = [ E_Input02, E_SpinEx02, E_SpinEx03 ]
+		if ( self.selectedIndexLnbType == 0 ) :
+			self.setEnableControls( enableControlIds, False )
+			#self.setVisibleControl( E_Input02, False )
+			#self.setVisibleControl( E_SpinEx02, True )
+			
+		else :
+			self.setEnableControls( enableControlIds, True )
+			#self.setVisibleControl( E_SpinEx02, False )
+			#self.setVisibleControl( E_Input02, True )
+		'''
+		selectedIndex2 = self.getSelectedIndex( E_SpinEx02 )	
+		if ( selectedIndex2 == 0 ) :
+			self.setEnableControl( E_SpinEx04, False )
+			self.setEnableControl( E_Input02, False )
+			self.getControl( E_SpinEx04 + 3 ).selectItem( self.getSelectedIndex( E_SpinEx03 ) )
+		else :
+			self.setEnableControl( E_SpinEx04, True)
+			self.setEnableControl( E_Input02, True )
+		'''

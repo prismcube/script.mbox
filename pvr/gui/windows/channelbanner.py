@@ -1,21 +1,3 @@
-#
-#  MythBox for XBMC - http://mythbox.googlecode.com
-#  Copyright (C) 2011 analogue@yahoo.com
-#
-#  This program is free software; you can redistribute it and/or
-#  modify it under the terms of the GNU General Public License
-#  as published by the Free Software Foundation; either version 2
-#  of the License, or (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-#
 import xbmc
 import xbmcgui
 import sys
@@ -92,6 +74,19 @@ class ChannelBanner(BaseWindow):
 			#self.ctrlProgress = xbmcgui.ControlProgress(100, 250, 125, 75)
 			#self.ctrlProgress(self.Progress)
 
+			#test
+			self.ctrlBtnExInfo      = self.getControl( 621 )
+			self.ctrlBtnTeletext    = self.getControl( 622 )
+			self.ctrlBtnSubtitle    = self.getControl( 623 )
+			self.ctrlBtnStartRec    = self.getControl( 624 )
+			self.ctrlBtnStopRec     = self.getControl( 625 )
+			self.ctrlBtnMute        = self.getControl( 626 )
+			self.ctrlBtnTSbanner    = self.getControl( 630 )
+			
+			self.ctrlBtnPrevEpg     = self.getControl( 702 )
+			self.ctrlBtnNextEpg     = self.getControl( 706 )
+			
+
 			self.imgTV    = 'flagging/video/tv.png'
 			self.toggleFlag=False
 			self.ctrlEventClock.setLabel('')
@@ -120,52 +115,122 @@ class ChannelBanner(BaseWindow):
 
 	def onAction(self, action):
 		id = action.getId()
+		focusid = self.getFocusId()
 		
 		if id == Action.ACTION_PREVIOUS_MENU:
 			print 'youn check action menu'
 
 		elif id == Action.ACTION_SELECT_ITEM:
-			print '<<<<< test youn: ID[%s]' % id
+			print '===== test youn: ID[%s]' % id
 			log.debug('youn:%s' % id)
-			self.showEPGDescription(self.eventCopy)
-
 	
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'youn check ation back'
 
-			# end thread updateLocalTime()
+			if focusid >= self.ctrlBtnExInfo.getId() and focusid <= self.ctrlBtnMute.getId():
+				self.showEPGDescription(focusid, self.eventCopy)
+
+			else:
+				# end thread updateLocalTime()
+				self.untilThread = False
+				self.updateLocalTime().join()
+
+				self.close( )
+#				winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
+#				winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
+#				winmgr.shutdown()
+
+		
+		elif id == Action.ACTION_MOVE_LEFT:
+			if focusid == self.ctrlBtnPrevEpg.getId():			
+				self.channelTune(id)
+
+		elif id == Action.ACTION_MOVE_RIGHT:
+			if focusid == self.ctrlBtnNextEpg.getId():
+				self.channelTune(id)
+
+		elif id == Action.ACTION_PAGE_UP:
+			self.channelTune(id)
+
+		elif id == Action.ACTION_PAGE_DOWN:
+			self.channelTune(id)
+		
+		else:
+			#print 'youn check action unknown id=%d' % id
+			#self.channelTune(id)
+			pass
+
+
+	def onClick(self, controlId):
+		print "onclick(): control %d" % controlId
+		if controlId == self.ctrlBtnMute.getId():
+			mute = int(self.commander.player_GetMute()[0])
+			print 'mute:current[%s]'% mute
+			if mute == False:
+				ret = self.commander.player_SetMute(True)
+
+			else:
+				ret = self.commander.player_SetMute(False)
+
+
+		elif controlId == self.ctrlBtnExInfo.getId() :
+			print 'click expantion info'
+			self.showEPGDescription(controlId, self.eventCopy)
+
+		elif controlId == self.ctrlBtnTeletext.getId() :
+			print 'click teletext'
+			self.showEPGDescription(controlId, self.eventCopy)
+
+		elif controlId == self.ctrlBtnSubtitle.getId() :
+			print 'click subtitle'
+			self.showEPGDescription(controlId, self.eventCopy)
+
+		elif controlId == self.ctrlBtnStartRec.getId() :
+			print 'click start recording'
+			self.showEPGDescription(controlId, self.eventCopy)
+
+		elif controlId == self.ctrlBtnStopRec.getId() :
+			print 'click stop recording'
+			self.showEPGDescription(controlId, self.eventCopy)
+
+		elif controlId == self.ctrlBtnTSbanner.getId() :
+			print 'click Time Shift banner'
 			self.untilThread = False
 			self.updateLocalTime().join()
 
-			self.close( )
-#			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
-#			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
-#			winmgr.shutdown()
+			winmgr.getInstance().showWindow( winmgr.WIN_ID_TIMESHIFT_BANNER )
 
 
-		elif id == Action.ACTION_MOVE_DOWN:
-			print 'onAction():ACTION_NEXT_ITEM control %d' % id
-			next_ch = self.commander.channel_GetNext()
-			print 'next_ch[%s]' % next_ch
+		elif controlId == self.ctrlBtnPrevEpg.getId() :
+			self.channelTune(Action.ACTION_MOVE_LEFT)
 
-			channelNumber = next_ch[0]
-			if is_digit(channelNumber):
-				ret = self.commander.channel_SetCurrent( int(channelNumber) )
-
-				if ret[0].upper() == 'TRUE' :
-					self.currentChannel = self.commander.channel_GetCurrent()
-					self.initLabelInfo()
-
-			else:
-				print 'No Channel next_ch[%s]'% next_ch
-
-			if is_digit(next_ch[3]):
-				self.updateServiceType(int(next_ch[3]))
+		elif controlId == self.ctrlBtnNextEpg.getId() :
+			self.channelTune(Action.ACTION_MOVE_RIGHT)
 
 
 
-		elif id == Action.ACTION_MOVE_UP:
-			print 'onAction():ACTION_PREV_ITEM control %d' % id
+	def onFocus(self, controlId):
+		#print "onFocus(): control %d" % controlId
+		pass
+
+
+	def onEvent(self, event):
+		self.eventCopy = event
+
+		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		#print 'eventCopy[%s]'% self.eventCopy
+
+		if xbmcgui.getCurrentWindowId() == 13003 :
+			self.updateONEvent(self.eventCopy)
+		else:
+			print 'show screen is another windows page[%s]'% xbmcgui.getCurrentWindowId()
+
+	def channelTune(self, actionID):
+		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)		
+		print 'tuneActionID[%s]'% actionID
+
+		if actionID == Action.ACTION_PAGE_UP:
+			print 'onAction():ACTION_PREVIOUS_ITEM control %d' % actionID
 			priv_ch = self.commander.channel_GetPrev()
 			print 'priv_ch[%s]' % priv_ch
 
@@ -183,29 +248,45 @@ class ChannelBanner(BaseWindow):
 			if is_digit(priv_ch[3]):
 				self.updateServiceType(int(priv_ch[3]))
 
+		elif actionID == Action.ACTION_PAGE_DOWN:
+			print 'onAction():ACTION_NEXT_ITEM control %d' % actionID
+			next_ch = self.commander.channel_GetNext()
+			print 'next_ch[%s]' % next_ch
+
+			channelNumber = next_ch[0]
+			if is_digit(channelNumber):
+				ret = self.commander.channel_SetCurrent( int(channelNumber) )
+
+				if ret[0].upper() == 'TRUE' :
+					self.currentChannel = self.commander.channel_GetCurrent()
+					self.initLabelInfo()
+
+			else:
+				print 'No Channel next_ch[%s]'% next_ch
+
+			if is_digit(next_ch[3]):
+				self.updateServiceType(int(next_ch[3]))
+
+		elif actionID == Action.ACTION_MOVE_LEFT:
+			#epg priv
+			ret = []
+			ret = self.commander.epgevent_GetPresent()
+			print 'epgevent_GetPresent() ret[%s]'% ret
+			if ret != []:
+				self.eventCopy=['epgevent_GetPresent'] + ret
+				self.updateONEvent(self.eventCopy)
+
+		elif actionID == Action.ACTION_MOVE_RIGHT:
+			#epg next
+			ret = []
+			ret = self.commander.epgevent_GetFollowing()
+			print 'epgevent_GetFollowing() ret[%s]'% ret
+			if ret != []:
+				self.eventCopy=['epgevent_GetFollowing'] + ret
+				self.updateONEvent(self.eventCopy)
 
 		else:
-			print 'youn check action unknown id=%d' % id
-
-
-	def onClick(self, controlId):
-		print "onclick(): control %d" % controlId
-		
-
-	def onFocus(self, controlId):
-		print "onFocus(): control %d" % controlId
-
-	def onEvent(self, event):
-		self.eventCopy = event
-
-		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		#print 'eventCopy[%s]'% self.eventCopy
-
-		if xbmcgui.getCurrentWindowId() == 13003 :
-			self.updateONEvent(self.eventCopy)
-		else:
-			print 'show screen is another windows page[%s]'% xbmcgui.getCurrentWindowId()
-
+			pass
 
 	def updateONEvent(self, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
@@ -323,6 +404,7 @@ class ChannelBanner(BaseWindow):
 			self.ctrlEventDescText1.reset()
 			self.ctrlEventDescText2.reset()
 
+
 			self.epgClock = self.commander.datetime_GetLocalTime()
 			
 			longitude = self.commander.satellite_GetByChannelNumber(int(self.currentChannel[0]), int(self.currentChannel[3]))
@@ -353,33 +435,61 @@ class ChannelBanner(BaseWindow):
 
 			
 
-	def showEPGDescription(self, event):
+	def showEPGDescription(self, focusid, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
-		if event != [] and event[1] != 'NULL' and len(event) > 2:
-			print '[%s][%s][%s][%s][%s]' % (event[1], event[3], event[4], event[5], event[6])
-			msgDescription = self.commander.epgevent_GetDescription(
-							int(event[1]), #eventId
-							int(event[3]), #sid
-							int(event[4]), #tsid
-							int(event[5]), #onid
-							int(event[6])) #startTime
+		if focusid == self.ctrlBtnExInfo.getId():
+			if event != [] and event[1] != 'NULL' and len(event) > 2:
+				print '[%s][%s][%s][%s][%s]' % (event[1], event[3], event[4], event[5], event[6])
+				msgDescription = self.commander.epgevent_GetDescription(
+								int(event[1]), #eventId
+								int(event[3]), #sid
+								int(event[4]), #tsid
+								int(event[5]), #onid
+								int(event[6])) #startTime
 
-			print 'msgDescription[%s]' % msgDescription
+				print 'msgDescription[%s]' % msgDescription
 
-			if msgDescription[0] != 'NULL':
-				msg = msgDescription[1]
+				if msgDescription[0] != 'NULL':
+					msg = msgDescription[1]
+				else:
+					print 'No value Description  \'NULL\''
+					msg = ''
+
+				self.ctrlEventDescText1.setText(event[2])
+				self.ctrlEventDescText2.setText(msg)
+
 			else:
-				print 'No value Description  \'NULL\''
-				msg = ''
+				print 'event is None'
+				self.ctrlEventDescText1.setText('')
+				self.ctrlEventDescText2.setText('')
 
-			self.ctrlEventDescText1.setText(event[2])
-			self.ctrlEventDescText2.setText(msg)
+		elif focusid == self.ctrlBtnMute.getId():
+			print 'click mute'
+			self.ctrlEventDescText1.setText('Mute')
+			self.ctrlEventDescText2.setText('test')
 
-		else:
-			print 'event is None'
-			self.ctrlEventDescText1.setText('')
-			self.ctrlEventDescText2.setText('')
+		elif focusid == self.ctrlBtnTeletext.getId() :
+			print 'click teletext'
+			self.ctrlEventDescText1.setText('Teletext')
+			self.ctrlEventDescText2.setText('test')
+
+
+		elif focusid == self.ctrlBtnSubtitle.getId() :
+			print 'click subtitle'
+			self.ctrlEventDescText1.setText('Subtitle')
+			self.ctrlEventDescText2.setText('test')
+
+		elif focusid == self.ctrlBtnStartRec.getId() :
+			print 'click stop recording'
+			self.ctrlEventDescText1.setText('Start Recording')
+			self.ctrlEventDescText2.setText('test')
+
+		elif focusid == self.ctrlBtnStopRec.getId() :
+			print 'click stop recording'
+			self.ctrlEventDescText1.setText('Stop Recording')
+			self.ctrlEventDescText2.setText('test')
+
 
 		if self.toggleFlag == True:
 			self.ctrlEventDescText1.reset()

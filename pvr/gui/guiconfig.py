@@ -1,4 +1,64 @@
+# Setting Menu Ids
+E_LANGUAGE			= 0
+E_PARENTAL			= 1
+E_RECORDING_OPTION	= 2
+E_AUDIO_SETTING		= 3
+E_SCART_SETTING		= 4
+E_HDMI_SETTING		= 5
+E_IP_SETTING		= 6
+E_FORMAT_HDD		= 7
+E_FACTORY_RESET		= 8
+E_ETC				= 9
 
+# Description Label Id
+E_SETTING_DESCRIPTION	=	1001
+
+
+# Control Ids
+E_SpinEx01			= 1100
+E_SpinEx02			= 1200
+E_SpinEx03			= 1300
+E_SpinEx04			= 1400
+E_SpinEx05			= 1500
+E_SpinEx06			= 1600
+E_SpinEx07			= 1700
+E_SpinEx08			= 1800
+E_SpinEx09			= 1900
+
+E_Input01			= 2100
+E_Input02			= 2200
+E_Input03			= 2300
+E_Input04			= 2400
+E_Input05			= 2500
+
+E_SlideMenuButton01	= 3310
+E_SlideMenuButton02	= 3320
+E_SlideMenuButton03	= 3330
+
+# Setting Menu Group Ids
+E_SUBMENU_LIST_ID			= 9000
+E_SETUPMENU_GROUP_ID		= 9010
+
+
+# USER_CONTROL_TYPE_DEFINE
+USER_ENUM_LIST_YES_NO 			= [ 'No', 'Yes' ]
+USER_ENUM_LIST_FORMAT_TYPE	 	= [ 'FAT', 'EXT3' ]
+USER_ENUM_LIST_ON_OFF			= [ 'Off', 'On' ]
+
+# Tuner Config String Define
+E_LIST_TUNER_TYPE				= [ 'Simple LNB', 'DiSEqC 1.0', 'DiSEqC 1.1', 'Motorized, DiSEqC 1.2', 'Motorized, USALS', 'OneCable' ]
+E_LIST_LNB_TYPE					= [ 'Universal' , 'Single', 'Userdefined' ]
+E_LIST_DISEQC_MODE				= [ 'Disable', '1 of 4', '2 of 4', '3 of 4', '4 of 4', 'Mini A', 'Mini B' ]
+USER_ENUM_LIST_SINGLE_FREQUENCY = [ '5150', '9750', '10600', '10750', '11300' ]
+
+#class GuiConfigmgr( object ):
+
+def getSingleFrequenceIndex( selectedItem ) :
+	for i in range( len ( USER_ENUM_LIST_SINGLE_FREQUENCY )	) :
+		if( selectedItem == USER_ENUM_LIST_SINGLE_FREQUENCY[ i ] ) :
+			return i
+			
+	return -1
 
 class FooterMask(object):
 	G_FOOTER_GROUP_STARTID				= 3100

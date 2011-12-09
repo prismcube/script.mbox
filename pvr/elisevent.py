@@ -191,6 +191,7 @@ class ElisEnum(object):
 	E_SAT_22KHZ_OFF 				= 0
 	E_SAT_22KHZ_ON 					= 1
 
+	#DisEqcMode
 	E_SWITCH_DISABLED 				= 0
 	E_SWITCH_1OF4					= 1
 	E_SWITCH_2OF4					= 2
@@ -199,14 +200,17 @@ class ElisEnum(object):
 	E_SWITCH_MINI_A					= 5
 	E_SWITCH_MINI_B					= 6
 
+	#LNB Type
 	E_LNB_UNIVERSAL					= 0
 	E_LNB_SINGLE					= 1
 	E_LNB_DUAL						= 2
 
+	#MotorizedType
 	E_MOTORIZED_OFF					= 0
 	E_MOTORIZED_ON					= 1
 	E_MOTORIZED_USALS				= 2
 
+	#Xatellite Sort Type
 	E_SORT_LONGITUDE				= 0
 	E_SORT_NAME						= 1
 	E_SORT_INSERTED					= 2
@@ -267,6 +271,18 @@ class ElisEnum(object):
 	E_NDS 							= 1 << 6
 	E_BETADIGITAL 					= 1 << 7
 	E_OTHERS 						= 1 << 15	
+
+	SATELLITE_BY_LONGITUDE 			= 0
+	SATELLITE_BY_NAME				= 1
+	SATELLITE_BY_INSERTED			= 2
+
+	#TUNER TYPE
+	E_SIMPLE_LNB					= 0
+	E_DISEQC_1_0					= 1
+	E_DISEQC_1_1					= 2
+	E_ONE_CABLE						= 3
+	E_MOTORIZED					= 4
+
 	
 
 

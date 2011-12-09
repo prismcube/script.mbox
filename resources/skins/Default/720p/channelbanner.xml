@@ -1,5 +1,5 @@
 <window type="windows" id="3004">
-	<!--<defaultcontrol always="true">602</defaultcontrol>-->
+	<defaultcontrol always="true">620</defaultcontrol>
 	<controls>
 		<control type="group">
 			<animation effect="slide" start="0,320" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
@@ -61,6 +61,270 @@
 					<description>service type</description>
 				</control>
 
+				<control type="group">
+					<posx>-50</posx>
+					<posy>-15</posy>
+					<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(620).HasFocus)">conditional</animation>
+					<animation effect="slide" start="0,0" end="-200,0" delay="0" time="300" condition="!ControlGroup(620).HasFocus)">conditional</animation>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>35</height>
+						<texture border="0,0,32,0">header.png</texture>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<label>Description</label>
+						<visible>Control.HasFocus(621)</visible>
+						<description>info explane</description>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<label>Teletext</label>
+						<visible>Control.HasFocus(622)</visible>
+						<description>info explane</description>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<label>Subtitle</label>
+						<visible>Control.HasFocus(623)</visible>
+						<description>info explane</description>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<label>Start Recording</label>
+						<visible>Control.HasFocus(624)</visible>
+						<description>info explane</description>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<label>Stop Recording</label>
+						<visible>Control.HasFocus(625)</visible>
+						<description>info explane</description>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<label>Audio Mute</label>
+						<visible>Control.HasFocus(626)</visible>
+						<description>info explane</description>
+					</control>
+
+				</control>
+
+<!-- button control -->
+				<control type="group" id="620">
+					<posx>315</posx>
+					<posy>-15</posy>
+					<control type="image">
+						<animation effect="fade" start="0" end="100" delay="0" time="300" condition="Control.HasFocus(621)">conditional</animation>
+						<animation effect="fade" start="100" end="0" delay="0" time="300" condition="!Control.HasFocus(621)">conditional</animation>
+						<posx>-2</posx>
+						<posy>-1</posy>
+						<width>48</width>
+						<height>36</height>
+						<texture>button-focus.png</texture>
+					</control>
+					<control type="button" id="621">
+						<posx>0</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>45</width>
+						<height>35</height>
+						<textcolor>grey3</textcolor>
+						<texturefocus>DefaultIconWarning.png</texturefocus>
+						<texturenofocus>DefaultIconInfo.png</texturenofocus>
+						<onleft>SetFocus(626)</onleft>
+						<onright>SetFocus(622)</onright>
+						<onup></onup>
+						<ondown>SetFocus(702)</ondown>
+						<description>expantion info</description>
+					</control>
+
+					<control type="image">
+						<animation effect="fade" start="0" end="100" delay="0" time="300" condition="Control.HasFocus(622)">conditional</animation>
+						<animation effect="fade" start="100" end="0" delay="0" time="300" condition="!Control.HasFocus(622)">conditional</animation>
+						<posx>45-2</posx>
+						<posy>-1</posy>
+						<width>46</width>
+						<height>36</height>
+						<texture>button-focus.png</texture>
+					</control>
+					<control type="button" id="622">
+						<posx>45</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>45</width>
+						<height>35</height>
+						<textcolor>grey3</textcolor>
+						<texturefocus>OSDPlaylistFO.png</texturefocus>
+						<texturenofocus>OSDPlaylistNF.png</texturenofocus>
+						<onleft>SetFocus(621)</onleft>
+						<onright>SetFocus(623)</onright>
+						<onup></onup>
+						<ondown>SetFocus(702)</ondown>
+						<description>teletext</description>
+					</control>
+
+					<control type="image">
+						<animation effect="fade" start="0" end="100" delay="0" time="300" condition="Control.HasFocus(623)">conditional</animation>
+						<animation effect="fade" start="100" end="0" delay="0" time="300" condition="!Control.HasFocus(623)">conditional</animation>
+						<posx>90-2</posx>
+						<posy>-1</posy>
+						<width>46</width>
+						<height>36</height>
+						<texture>button-focus.png</texture>
+					</control>
+					<control type="button" id="623">
+						<posx>90</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>45</width>
+						<height>35</height>
+						<textcolor>grey3</textcolor>
+						<texturefocus>OSDSubtitlesFO.png</texturefocus>
+						<texturenofocus>OSDSubtitlesNF.png</texturenofocus>
+						<onleft>SetFocus(622)</onleft>
+						<onright>SetFocus(624)</onright>
+						<onup></onup>
+						<ondown>SetFocus(702)</ondown>
+						<description>subtitle</description>
+					</control>
+
+					<control type="image">
+						<animation effect="fade" start="0" end="100" delay="0" time="300" condition="Control.HasFocus(624)">conditional</animation>
+						<animation effect="fade" start="100" end="0" delay="0" time="300" condition="!Control.HasFocus(624)">conditional</animation>
+						<posx>135-2</posx>
+						<posy>-1</posy>
+						<width>46</width>
+						<height>36</height>
+						<texture>button-focus.png</texture>
+					</control>
+					<control type="button" id="624">
+						<posx>135</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>45</width>
+						<height>35</height>
+						<textcolor>grey3</textcolor>
+						<texturefocus>OSDRecord2.png</texturefocus>
+						<texturenofocus>OSDRecordNF.png</texturenofocus>
+						<onleft>SetFocus(623)</onleft>
+						<onright>SetFocus(625)</onright>
+						<onup></onup>
+						<ondown>SetFocus(702)</ondown>
+						<description>start record</description>
+					</control>
+					<control type="image">
+						<animation effect="fade" start="0" end="100" delay="0" time="300" condition="Control.HasFocus(625)">conditional</animation>
+						<animation effect="fade" start="100" end="0" delay="0" time="300" condition="!Control.HasFocus(625)">conditional</animation>
+						<posx>180-2</posx>
+						<posy>-1</posy>
+						<width>46</width>
+						<height>36</height>
+						<texture>button-focus.png</texture>
+					</control>
+					<control type="button" id="625">
+						<posx>180</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>45</width>
+						<height>35</height>
+						<textcolor>grey3</textcolor>
+						<texturefocus>OSDStopFO.png</texturefocus>
+						<texturenofocus>OSDStopNF.png</texturenofocus>
+						<onleft>SetFocus(624)</onleft>
+						<onright>SetFocus(626)</onright>
+						<onup></onup>
+						<ondown>SetFocus(702)</ondown>
+						<description>stop record</description>
+					</control>
+
+					<control type="image">
+						<animation effect="fade" start="0" end="100" delay="0" time="300" condition="Control.HasFocus(626)">conditional</animation>
+						<animation effect="fade" start="100" end="0" delay="0" time="300" condition="!Control.HasFocus(626)">conditional</animation>
+						<posx>225-2</posx>
+						<posy>-1</posy>
+						<width>45</width>
+						<height>36</height>
+						<texture>button-focus.png</texture>
+					</control>
+					<control type="button" id="626">
+						<posx>225</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>45</width>
+						<height>35</height>
+						<textcolor>grey3</textcolor>
+						<texturefocus>icon-mute.png</texturefocus>
+						<texturenofocus>VolumeIcon-Mute.png</texturenofocus>
+						<onleft>SetFocus(625)</onleft>
+						<onright>SetFocus(621)</onright>
+						<onup></onup>
+						<ondown>SetFocus(702)</ondown>
+						<description>mute</description>
+					</control>
+
+
+					<control type="button" id="630">
+						<posx>680</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>45</width>
+						<height>35</height>
+						<textcolor>grey3</textcolor>
+						<texturefocus>OSDRepeatAllFO.png</texturefocus>
+						<texturenofocus>OSDRepeatAllNF.png</texturenofocus>
+						<onleft>SetFocus(625)</onleft>
+						<onright>SetFocus(621)</onright>
+						<onup></onup>
+						<ondown>SetFocus(702)</ondown>
+						<description>time shift banner</description>
+					</control>
+				</control>
+
 				<control type="image" id="604">
 					<posx>720</posx>
 					<posy>10</posy>
@@ -102,7 +366,7 @@
 						<posy>0</posy>
 						<width>200</width>
 						<height>35</height>
-						<texture flipx="true" border="32,0,0,0">header.png</texture>
+						<texture flipx="true" border="32,0,0,0">confluence/header.png</texture>
 					</control>
 					<control type="label" id="610">
 						<description>time label</description>
@@ -145,10 +409,10 @@
 					<font>-</font>
 					<texturefocus>scroll-left-focus.png</texturefocus>
 					<texturenofocus>scroll-left.png</texturenofocus>
-					<onleft>605</onleft>
-					<onright>601</onright>
-					<onup>701</onup>
-					<ondown>701</ondown>
+					<onleft></onleft>
+					<onright>SetFocus(706)</onright>
+					<onup>SetFocus(621)</onup>
+					<ondown></ondown>
 					<onclick>ProgramList(Previous)</onclick>
 				</control>
 
@@ -209,10 +473,10 @@
 					<font>-</font>
 					<texturefocus>scroll-right-focus.png</texturefocus>
 					<texturenofocus>scroll-right.png</texturenofocus>
-					<onleft>600</onleft>
-					<onright>602</onright>
-					<onup>702</onup>
-					<ondown>702</ondown>
+					<onleft>SetFocus(702)</onleft>
+					<onright></onright>
+					<onup>SetFocus(621)</onup>
+					<ondown></ondown>
 					<onclick>ProgramList(Next)</onclick>
 				</control>
 			</control>
@@ -238,7 +502,7 @@
 					<posy>0</posy>
 					<width>1100</width>
 					<height>500</height>
-					<texture border="20">DialogBack.png</texture>
+					<texture border="20">confluence/DialogBack.png</texture>
 				</control>
 				<control type="textbox" id="801">
 					  <description>EPG Description</description>

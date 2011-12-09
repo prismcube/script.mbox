@@ -1,21 +1,3 @@
-#
-#  MythBox for XBMC - http://mythbox.googlecode.com
-#  Copyright (C) 2011 analogue@yahoo.com
-#
-#  This program is free software; you can redistribute it and/or
-#  modify it under the terms of the GNU General Public License
-#  as published by the Free Software Foundation; either version 2
-#  of the License, or (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-#
 import os
 import sys
 import xbmc
@@ -51,6 +33,7 @@ class Launcher(object):
 		try:
 			try:
 				time.sleep(1)
+				#self.bootstrapSettings()
 				self.initElisMgr()
 				self.doElisTest()				
 				self.initWindowMgr()
@@ -80,7 +63,7 @@ class Launcher(object):
 
 	def powerOff( self ) :
 		self.shutdown()
-		xbmc.executebuiltin('xbmc.ShutDown')
+		xbmc.executebuiltin('xbmc.Quit')
 
 
 	def shutdown(self):
@@ -111,4 +94,26 @@ class Launcher(object):
 	def doElisTest(self):
 		test = ElisTest()
 		test.testAll()
+
+	def bootstrapSettings(self):
+		self.stage = 'Initializing Settings'
+		self.platform = None
+		self.bootstrapPlatform()
+
+		from pvr.util import NativeTranslator
+		import pvr.msg as m
+		self.translator = NativeTranslator(self.platform.getScriptDir())
+		print 'translator[%s]'% self.translator.get(m.LOCALIZE_TEST)
+
+	def bootstrapPlatform(self):
+		self.stage = 'Initializing Platform'
+		import pvr.platform
+		self.platform = pvr.platform.getPlatform()
+		self.platform.addLibsToSysPath()
+		sys.setcheckinterval(0)
+		cacheDir = self.platform.getCacheDir()
+		from pvr.util import requireDir
+		requireDir(cacheDir)
+		
+		print 'MBox %s Initialized' % self.platform.addonVersion()
 
