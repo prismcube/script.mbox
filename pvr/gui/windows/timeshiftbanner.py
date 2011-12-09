@@ -53,7 +53,7 @@ class TimeShiftBanner(BaseWindow):
 		if not self.win:
 			self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
 
-			self.imgTV    = 'flagging/video/tv.png'
+			self.imgTV    = 'confluence/tv.png'
 			self.toggleFlag=False
 
 		#get channel
