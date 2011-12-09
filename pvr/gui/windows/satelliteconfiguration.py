@@ -3,12 +3,14 @@ import xbmcgui
 import sys
 
 import pvr.gui.windowmgr as winmgr
+import pvr.gui.dialogmgr as diamgr
 import pvr.tunerconfigmgr as configmgr
 from pvr.gui.basewindow import SettingWindow, setWindowBusy
 from pvr.gui.basewindow import Action
 import pvr.elismgr
 from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import *
+
 
 E_CONFIGURE_SATELLITE_TUNER_INDEX 		= 0
 E_CONFIGURE_SATELLITE_SLOT_NUMBER		= 1
@@ -104,6 +106,9 @@ class SatelliteConfiguration( SettingWindow ):
  		elif( controlId == E_Input03 + 1 ) :
  			dialog = xbmcgui.Dialog()
  			ret = dialog.select('Select Transponder', self.transponderList )
+
+ 		elif( controlId == E_Input02 + 1 ) :
+ 			diamgr.getInstance().showDialog( diamgr.DIALOG_ID_KEYBOARD )
 
 		#winmgr.getInstance().showWindow( winmgr.WIN_ID_TUNER_CONFIGURATION )
 

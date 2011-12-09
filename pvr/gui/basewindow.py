@@ -107,12 +107,6 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 		self.getControl( HeaderDefine.G_HEADER_LABEL_ID ).setLabel( label )
 		
 
-class BaseDialog(xbmcgui.WindowXMLDialog, Property):
-	def __init__(self, *args, **kwargs):
-		xbmcgui.WindowXMLDialog.__init__(self, *args, **kwargs)
-		self.win = None        
-
-
 class ControlItem:
 	# Setting Window
 	E_UNDEFINE								= 0

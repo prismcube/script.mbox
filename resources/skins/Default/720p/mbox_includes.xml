@@ -2229,4 +2229,12 @@
             </control>
         </control>
 	</include>
+	<include name="VisibleFadeEffect">
+		<animation effect="fade" time="300">Visible</animation>
+		<animation effect="fade" time="300">Hidden</animation>
+	</include>
+	<include name="dialogeffect">
+		<animation effect="fade" time="250">WindowOpen</animation>
+		<animation effect="fade" time="250">WindowClose</animation>
+	</include>
 </includes>
