@@ -47,6 +47,7 @@ class SatelliteConfiguration( SettingWindow ):
 		self.currentSatellite = []
 		self.selectedIndexLnbType = 0
 		self.transponderList = []
+		self.lnbFrequency = ''
 		#self.initialized = False
 
 	def onInit( self ):
@@ -108,7 +109,9 @@ class SatelliteConfiguration( SettingWindow ):
  			ret = dialog.select('Select Transponder', self.transponderList )
 
  		elif( controlId == E_Input02 + 1 ) :
+ 			diamgr.getInstance().setDefaultText( self.lnbFrequency )
  			diamgr.getInstance().showDialog( diamgr.DIALOG_ID_KEYBOARD )
+ 			print 'dhkim test getLabel = %s' % diamgr.getInstance().getResultText( )
 
 		#winmgr.getInstance().showWindow( winmgr.WIN_ID_TUNER_CONFIGURATION )
 
@@ -151,18 +154,13 @@ class SatelliteConfiguration( SettingWindow ):
 		
 
 	def disableControl( self ):
-		#selectedIndex = self.getSelectedIndex( E_SpinEx01 )
-		print 'dhkim test selected Item = %d' % self.selectedIndexLnbType
 		enableControlIds = [ E_Input02, E_SpinEx02, E_SpinEx03 ]
 		if ( self.selectedIndexLnbType == 0 ) :
 			self.setEnableControls( enableControlIds, False )
-			#self.setVisibleControl( E_Input02, False )
-			#self.setVisibleControl( E_SpinEx02, True )
 			
 		else :
 			self.setEnableControls( enableControlIds, True )
-			#self.setVisibleControl( E_SpinEx02, False )
-			#self.setVisibleControl( E_Input02, True )
+
 		'''
 		selectedIndex2 = self.getSelectedIndex( E_SpinEx02 )	
 		if ( selectedIndex2 == 0 ) :

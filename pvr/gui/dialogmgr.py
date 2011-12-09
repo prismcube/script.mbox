@@ -24,6 +24,9 @@ class DialogMgr(object):
 		self.dialogs = {}
 
 		self.createAllDialogs( )
+		self.defaultText = ''
+		self.resultText = ''
+
 
 	def showDialog( self, dialogId ):
 		try:
@@ -33,6 +36,7 @@ class DialogMgr(object):
 		except:
 			print "can not find dialog"
 
+
 	def createAllDialogs( self ):
 		import pvr.platform 
 		self.scriptDir = pvr.platform.getPlatform().getScriptDir()
@@ -41,3 +45,18 @@ class DialogMgr(object):
 
 		self.dialogs[ DIALOG_ID_KEYBOARD ]	               = KeyboardDialog('keyboarddialog.xml', self.scriptDir)	
 
+
+	def setDefaultText( self, text ):
+		self.defaultText = text
+
+
+	def getDefaultText( self ):
+		return self.defaultText
+
+
+	def setResultText( self, text ):
+		self.resultText = text
+
+
+	def getResultText( self ):
+		return self.resultText
