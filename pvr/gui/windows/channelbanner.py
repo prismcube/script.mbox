@@ -127,6 +127,10 @@ class ChannelBanner(BaseWindow):
 		
 		if id == Action.ACTION_PREVIOUS_MENU:
 			print 'youn check action menu'
+			self.descboxToggle('close')
+			self.untilThread = False
+			self.updateLocalTime().join()
+			winmgr.getInstance().showWindow( winmgr.WIN_ID_MAINMENU )
 
 		elif id == Action.ACTION_SELECT_ITEM:
 			print '===== test youn: ID[%s]' % id
@@ -135,17 +139,12 @@ class ChannelBanner(BaseWindow):
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'youn check ation back'
 
-			if self.toggleFlag == True:
-				self.ctrlEventDescText1.reset()
-				self.ctrlEventDescText2.reset()
-				self.ctrlEventDescGroup.setVisible(False)
-				self.toggleFlag = False
-			else:
-				self.untilThread = False
-				self.updateLocalTime().join()
-				winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
+			self.descboxToggle('close')
+			self.untilThread = False
+			self.updateLocalTime().join()
+			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
 
-				
+
 			"""
 			if focusid >= self.ctrlBtnExInfo.getId() and focusid <= self.ctrlBtnMute.getId():
 				self.showEPGDescription(focusid, self.eventCopy)
@@ -163,7 +162,7 @@ class ChannelBanner(BaseWindow):
 
 		elif id == Action.ACTION_SHOW_INFO	:
 			self.showEPGDescription( self.ctrlBtnExInfo.getId(), self.eventCopy)
-		
+
 		elif id == Action.ACTION_MOVE_LEFT:
 			if focusid == self.ctrlBtnPrevEpg.getId():			
 				self.channelTune(id)
@@ -177,6 +176,15 @@ class ChannelBanner(BaseWindow):
 
 		elif id == Action.ACTION_PAGE_DOWN:
 			self.channelTune(id)
+
+		elif id == Action.ACTION_MUTE:
+			self.updateVolume(id)
+
+		elif id == Action.ACTION_PAUSE:
+			self.descboxToggle('close')
+			self.untilThread = False
+			self.updateLocalTime().join()
+			winmgr.getInstance().showWindow( winmgr.WIN_ID_TIMESHIFT_BANNER )
 
 		else:
 			#print 'youn check action unknown id=%d' % id
@@ -212,14 +220,7 @@ class ChannelBanner(BaseWindow):
 	def onClick(self, controlId):
 		print "onclick(): control %d" % controlId
 		if controlId == self.ctrlBtnMute.getId():
-			mute = int(self.commander.player_GetMute()[0])
-			print 'mute:current[%s]'% mute
-			if mute == False:
-				ret = self.commander.player_SetMute(True)
-
-			else:
-				ret = self.commander.player_SetMute(False)
-
+			self.updateVolume( Action.ACTION_MUTE )
 
 		elif controlId == self.ctrlBtnExInfo.getId() :
 			print 'click expantion info'
@@ -227,19 +228,19 @@ class ChannelBanner(BaseWindow):
 
 		elif controlId == self.ctrlBtnTeletext.getId() :
 			print 'click teletext'
-			self.showEPGDescription(controlId, self.eventCopy)
+			self.showDialog( controlId )
 
 		elif controlId == self.ctrlBtnSubtitle.getId() :
 			print 'click subtitle'
-			self.showEPGDescription(controlId, self.eventCopy)
+			self.showDialog( controlId )
 
 		elif controlId == self.ctrlBtnStartRec.getId() :
 			print 'click start recording'
-			self.showEPGDescription(controlId, self.eventCopy)
+			self.showDialog( controlId )
 
 		elif controlId == self.ctrlBtnStopRec.getId() :
 			print 'click stop recording'
-			self.showEPGDescription(controlId, self.eventCopy)
+			self.showDialog( controlId )
 
 		elif controlId == self.ctrlBtnTSbanner.getId() :
 			print 'click Time Shift banner'
@@ -482,7 +483,23 @@ class ChannelBanner(BaseWindow):
 			print 'unknown ElisEnum tvType[%s]'% tvType
 
 
-			
+	def updateVolume(self, cmd):
+		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+
+		if cmd == Action.ACTION_MUTE:
+			mute = int(self.commander.player_GetMute()[0])
+			print 'mute:current[%s]'% mute
+			if mute == False:
+				ret = self.commander.player_SetMute(True)
+
+			else:
+				ret = self.commander.player_SetMute(False)
+
+		elif cmd == Action.ACTION_VOLUME_UP:
+			pass
+		elif cmd == Action.ACTION_VOLUME_UP:
+			pass
+
 
 	def showEPGDescription(self, focusid, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
@@ -513,45 +530,62 @@ class ChannelBanner(BaseWindow):
 				self.ctrlEventDescText1.setText('')
 				self.ctrlEventDescText2.setText('')
 
-		elif focusid == self.ctrlBtnMute.getId():
-			print 'click mute'
-			self.ctrlEventDescText1.setText('Mute')
-			self.ctrlEventDescText2.setText('test')
+		self.descboxToggle('toggle')
+
+		#self.ctrlEventDescription.setVisibleCondition('[Control.IsVisible(100)]',True)
+		#self.ctrlEventDescription.setEnabled(True)
+
+	def showDialog( self, focusid ):
+		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+
+		msg1 = ''
+		msg2 = ''
+
+		if focusid == self.ctrlBtnMute.getId():
+			msg1 = 'Mute'
+			msg2 = 'test'
 
 		elif focusid == self.ctrlBtnTeletext.getId() :
-			print 'click teletext'
-			self.ctrlEventDescText1.setText('Teletext')
-			self.ctrlEventDescText2.setText('test')
+			msg1 = 'Teletext'
+			msg2 = 'test'
 
 
 		elif focusid == self.ctrlBtnSubtitle.getId() :
-			print 'click subtitle'
-			self.ctrlEventDescText1.setText('Subtitle')
-			self.ctrlEventDescText2.setText('test')
+			msg1 = 'Subtitle'
+			msg2 = 'test'
 
 		elif focusid == self.ctrlBtnStartRec.getId() :
-			print 'click stop recording'
-			self.ctrlEventDescText1.setText('Start Recording')
-			self.ctrlEventDescText2.setText('test')
+			msg1 = 'Start Recording'
+			msg2 = 'test'
 
 		elif focusid == self.ctrlBtnStopRec.getId() :
-			print 'click stop recording'
-			self.ctrlEventDescText1.setText('Stop Recording')
-			self.ctrlEventDescText2.setText('test')
+			msg1 = 'Stop Recording'
+			msg2 = 'test'
+
+		ret = xbmcgui.Dialog().ok(msg1, msg2)
+		print 'dialog ret[%s]' % ret
 
 
-		if self.toggleFlag == True:
-			self.ctrlEventDescText1.reset()
-			self.ctrlEventDescText2.reset()
-			self.ctrlEventDescGroup.setVisible(False)
-			self.toggleFlag = False
-		else:
-			self.ctrlEventDescGroup.setVisible(True)
-			self.toggleFlag = True
+	def descboxToggle( self, cmd ):
+		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+
+		if cmd == 'toggle':
+			if self.toggleFlag == True:
+				self.ctrlEventDescText1.reset()
+				self.ctrlEventDescText2.reset()
+				self.ctrlEventDescGroup.setVisible(False)
+				self.toggleFlag = False
+			else:
+				self.ctrlEventDescGroup.setVisible(True)
+				self.toggleFlag = True
+
+		elif cmd == 'close':
+			if self.toggleFlag == True:
+				self.ctrlEventDescText1.reset()
+				self.ctrlEventDescText2.reset()
+				self.ctrlEventDescGroup.setVisible(False)
+				self.toggleFlag = False
 			
-		
-		#self.ctrlEventDescription.setVisibleCondition('[Control.IsVisible(100)]',True)
-		#self.ctrlEventDescription.setEnabled(True)
 
 	def getLastChannel( self ):
 		return self.lastChannel

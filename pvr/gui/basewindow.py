@@ -20,7 +20,7 @@ class Action(object):
 	ACTION_PARENT_DIR			= 9		#Back
 	ACTION_PREVIOUS_MENU		= 10 	#ESC
 	ACTION_SHOW_INFO			= 11	# i
-	ACTION_PAUSE				= 12	
+	ACTION_PAUSE				= 12	#space
 	ACTION_STOP					= 13
 	ACTION_NEXT_ITEM			= 14
 	ACTION_PREV_ITEM			= 15
