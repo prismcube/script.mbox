@@ -120,12 +120,16 @@ class ChannelListWindow(BaseWindow):
 		self.updateLocalTime()
 
 		#get epg event right now
+		"""
 		ret = []
 		ret=self.commander.epgevent_GetPresent()
 		if ret != []:
 			ret=['epgevent_GetPresent'] + ret
 			self.updateLabelInfo(ret)
 		print 'epgevent_GetPresent[%s]'% ret
+		"""
+
+
 
 	def onAction(self, action):
  		

@@ -277,7 +277,7 @@
 					<content>
 						<item id="90301">
 							<label>Configure</label>
-							<onclick>ActivateWindow(13007)</onclick>
+							<onclick>ActivateWindow(13005)</onclick>
 							<visible>true</visible>
 						</item>
 					</content>
