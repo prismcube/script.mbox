@@ -1,6 +1,6 @@
 <window id="3300">
 	<defaultcontrol always="true">65</defaultcontrol>
-	<!--<include>dialogeffect</include>-->
+	<include>dialogeffect</include>
 	<coordinates>
 		<system>2</system>
 		<posx>255</posx>
@@ -8,7 +8,7 @@
 	</coordinates>
 	<controls>
 		<control type="group">
-			<include>VisibleFadeEffect</include>
+			<!--<include>VisibleFadeEffect</include>-->
 			<!--<visible>!Window.IsVisible(numericinput)</visible>-->
 			<control type="image">
 				<posx>0</posx>
