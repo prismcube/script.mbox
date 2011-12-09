@@ -243,25 +243,25 @@ def epgInfoClock(flag, nowTime, epgClock):
 def epgInfoComponentImage(component):
 	print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 	from pvr.elisenum import ElisEnum
-
+	tmpcom = component[0]
 	tempFile = 0x00
-	if (component & 0x01) == ElisEnum.E_HasHDVideo:                # 1<<0
+	if (int(tmpcom[0]) == 1): #== ElisEnum.E_HasHDVideo:                # 1<<0
 		tempFile |= 0x01
-	if (component & 0x02) == ElisEnum.E_Has16_9Video:              # 1<<1
+	if (int(tmpcom[1]) == 1): #== ElisEnum.E_Has16_9Video:              # 1<<1
 		pass
-	if (component & 0x04) == ElisEnum.E_HasStereoAudio:            # 1<<2
+	if (int(tmpcom[2]) == 1 ): #== ElisEnum.E_HasStereoAudio:            # 1<<2
 		pass
-	if (component & 0x08) == ElisEnum.E_mHasMultichannelAudio:     # 1<<3
+	if (int(tmpcom[3]) == 1): #== ElisEnum.E_mHasMultichannelAudio:     # 1<<3
 		pass
-	if (component & 0x10) == ElisEnum.E_mHasDolbyDigital:          # 1<<4
+	if (int(tmpcom[4]) == 1): #== ElisEnum.E_mHasDolbyDigital:          # 1<<4
 		tempFile |= 0x02
-	if (component & 0x20) == ElisEnum.E_mHasSubtitles:             # 1<<5
+	if (int(tmpcom[5]) == 1): #== ElisEnum.E_mHasSubtitles:             # 1<<5
 		tempFile |= 0x04
-	if (component & 0x40) == ElisEnum.E_mHasHardOfHearingAudio:    # 1<<6
+	if (int(tmpcom[6]) == 1): #== ElisEnum.E_mHasHardOfHearingAudio:    # 1<<6
 		pass
-	if (component & 0x80) == ElisEnum.E_mHasHardOfHearingSub:      # 1<<7
+	if (int(tmpcom[7]) == 1): #== ElisEnum.E_mHasHardOfHearingSub:      # 1<<7
 		pass
-	if (component & 0x100)== ElisEnum.E_mHasVisuallyImpairedAudio: # 1<<8
+	if (int(tmpcom[8]) == 1):#== ElisEnum.E_mHasVisuallyImpairedAudio: # 1<<8
 		pass
 
 	print 'component[%s] tempFile[%s]' % (component, tempFile)

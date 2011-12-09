@@ -678,7 +678,9 @@ class ChannelListWindow(BaseWindow):
 			self.ctrlProgress.setVisible(True)
 
 			#component
-			ret = epgInfoComponentImage(int(event[9]))
+			component = event[9:18]
+#			ret = epgInfoComponentImage(int(event[9]))
+			ret = epgInfoComponentImage(component)				
 			if len(ret) == 1:
 				self.ctrlServiceTypeImg1.setImage(ret[0])
 			elif len(ret) == 2:

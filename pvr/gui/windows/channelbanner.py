@@ -344,6 +344,7 @@ class ChannelBanner(BaseWindow):
 	def updateONEvent(self, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'event[%s]'% event
+		print 'component [%s]'% event[9:19]
 
 		if event != [] and event[1] != 'NULL' and len(event) > 2:
 			#epg name
@@ -376,7 +377,10 @@ class ChannelBanner(BaseWindow):
 				print 'value error EPGTime duration[%s]' % event[7]
 
 			#component
-			ret = epgInfoComponentImage(int(event[9]))
+			component = []
+			component = event[9:18]
+#			ret = epgInfoComponentImage(int(event[9]))
+			ret = epgInfoComponentImage(component)			
 			if len(ret) == 1:
 				self.ctrlServiceTypeImg1.setImage(ret[0])
 			elif len(ret) == 2:
