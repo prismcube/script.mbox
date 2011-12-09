@@ -1,6 +1,7 @@
 <window id="3002">
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>no</allowoverlay>	
+	<include file="mbox_includes.xml">"mbox_includes.xml"</include>	
 	<controls>
 		<control type="group">
 		<include>Animation_CommonFade</include>		
@@ -21,86 +22,413 @@
 				<texture>osd/fullscreen_bottom.png</texture>
 				<visible>true</visible>
 			</control>
+
+			<!-- Main Menu -->
+			<control type="wraplist" id="9000">
+				<hitrect x="50" y="50" w="330" h="620" />
+				<posx>0</posx>
+				<posy>300</posy>
+				<width>2500</width>
+				<height>150</height>
+				<onleft>9000</onleft>
+				<onright>9000</onright>
+				<onup>9000</onup>
+				<ondown>9001</ondown>
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>300</scrolltime>
+				<focusposition>2</focusposition>
+				<visible>true</visible>
+				<orientation>horizontal</orientation>
+
+				<itemlayout height="150" width="340">
+					<control type="label">
+						<posx>0</posx>
+						<posy>-2</posy>
+						<width>340</width>
+						<height>150</height>
+						<font>Font_OSDTitle2</font>
+						<textcolor>48FFFFFF</textcolor>
+						<shadowcolor>black</shadowcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>[UPPERCASE]$INFO[ListItem.Label][/UPPERCASE]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout height="150" width="340">
+					<control type="label">
+						<posx>0</posx>
+						<posy>-2</posy>
+						<width>340</width>
+						<height>150</height>
+						<font>Font_OSDTitle2</font>
+						<shadowcolor>black</shadowcolor>
+						<textcolor>white</textcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>[UPPERCASE]$INFO[ListItem.Label][/UPPERCASE]</label>
+					</control>
+				</focusedlayout>			
+
+				<content>
+					<item id="1">
+						<label>Installation</label>
+						<onclick>down</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="2">
+						<label>Channels</label>
+						<onclick>down</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="3">
+						<label>Configure</label>
+						<onclick>down</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="4">
+						<label>CAS</label>
+						<onclick>down</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="5">
+						<label>Media Center</label>
+						<onclick>down</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="20">
+						<label>Shutdown</label>
+						<onclick>down</onclick>
+						<visible>true</visible>
+					</item>
+				</content>
+			</control>
+			<control type="group" id="9001">
+				<posx>160</posx>
+				<posy>406</posy>
+				<!--
+				<include>Animation_SubMenu</include>
+				-->
+
+				<!-- Installation -->
+				<control type="wraplist" id="9010">
+					<posx>122</posx>
+					<height>33</height>
+					<width>725</width>
+					<onleft>9010</onleft>
+					<onright>9010</onright>
+					<viewtype>list</viewtype>
+					<orientation>horizontal</orientation>
+					<focusposition>2</focusposition>
+					<scrolltime>200</scrolltime>
+					<onup>9000</onup>
+					<ondown>9001</ondown>
+					<visible>Container(9000).HasFocus(1)</visible>					
+					<itemlayout width="145" height="33">
+						<control type="label">
+						<posx>72</posx>
+						<posy>0</posy>
+						<height>30</height>
+						<width>144</width>
+						<align>center</align>
+						<aligny>center</aligny>
+						<font>Font_Reg19_Caps</font>
+						<label>$INFO[ListItem.Label]</label>
+						<textcolor>5fFFFFFF</textcolor>
+						</control>
+					</itemlayout>
+					<focusedlayout width="145" height="33">
+						<control type="label">
+						<posx>72</posx>
+						<posy>0</posy>
+						<height>30</height>
+						<width>144</width>
+						<align>center</align>
+						<aligny>center</aligny>
+						<font>Font_Reg19_Caps</font>
+						<scroll>true</scroll>
+						<label>$INFO[ListItem.Label]</label>
+						<textcolor>D0FFFFFF</textcolor>
+						<shadowcolor>-</shadowcolor>
+						</control>
+					</focusedlayout>
+					<content>
+						<item id="90101">
+							<label>First Installation</label>
+							<onclick>-</onclick>
+							<visible>true</visible>
+						</item>
+						<item id="90102">
+							<label>Antenna Setup</label>
+							<onclick>ActivateWindow(13008)</onclick>
+							<visible>true</visible>						
+						</item>
+						<item id="90103">
+							<label>Channel Search</label>
+							<onclick>-</onclick>
+							<visible>true</visible>
+						</item>
+						<item id="90104">
+							<label>Edit Satellite</label>
+							<onclick>-</onclick>
+							<visible>true</visible>
+						</item>
+						<item id="90105">
+							<label>Edit Transponder</label>
+							<onclick>-</onclick>
+							<visible>true</visible>
+						</item>
+					</content>
+          		</control>
+
+				<!-- Channels -->
+				<control type="wraplist" id="9020">
+					<posx>122</posx>
+					<height>33</height>
+					<width>725</width>
+					<onleft>9010</onleft>
+					<onright>9010</onright>
+					<viewtype>list</viewtype>
+					<orientation>horizontal</orientation>
+					<focusposition>2</focusposition>
+					<scrolltime>200</scrolltime>
+					<onup>9000</onup>
+					<ondown>9001</ondown>
+					<visible>Container(9000).HasFocus(2)</visible>					
+					<itemlayout width="145" height="33">
+						<control type="label">
+						<posx>72</posx>
+						<posy>0</posy>
+						<height>30</height>
+						<width>144</width>
+						<align>center</align>
+						<aligny>center</aligny>
+						<font>Font_Reg19_Caps</font>
+						<label>$INFO[ListItem.Label]</label>
+						<textcolor>5fFFFFFF</textcolor>
+						</control>
+					</itemlayout>
+					<focusedlayout width="145" height="33">
+						<control type="label">
+						<posx>72</posx>
+						<posy>0</posy>
+						<height>30</height>
+						<width>144</width>
+						<align>center</align>
+						<aligny>center</aligny>
+						<font>Font_Reg19_Caps</font>
+						<scroll>true</scroll>
+						<label>$INFO[ListItem.Label]</label>
+						<textcolor>D0FFFFFF</textcolor>
+						<shadowcolor>-</shadowcolor>
+						</control>
+					</focusedlayout>
+					<content>
+						<item id="90201">
+							<label>Edit Channels</label>
+							<onclick>-</onclick>
+							<visible>true</visible>
+						</item>
+					</content>
+          		</control>
+
+
+				<!-- Configure -->
+				<control type="wraplist" id="9030">
+					<posx>122</posx>
+					<height>33</height>
+					<width>725</width>
+					<onleft>9010</onleft>
+					<onright>9010</onright>
+					<viewtype>list</viewtype>
+					<orientation>horizontal</orientation>
+					<focusposition>2</focusposition>
+					<scrolltime>200</scrolltime>
+					<onup>9000</onup>
+					<ondown>9001</ondown>
+					<visible>Container(9000).HasFocus(3)</visible>					
+					<itemlayout width="145" height="33">
+						<control type="label">
+						<posx>72</posx>
+						<posy>0</posy>
+						<height>30</height>
+						<width>144</width>
+						<align>center</align>
+						<aligny>center</aligny>
+						<font>Font_Reg19_Caps</font>
+						<label>$INFO[ListItem.Label]</label>
+						<textcolor>5fFFFFFF</textcolor>
+						</control>
+					</itemlayout>
+					<focusedlayout width="145" height="33">
+						<control type="label">
+						<posx>72</posx>
+						<posy>0</posy>
+						<height>30</height>
+						<width>144</width>
+						<align>center</align>
+						<aligny>center</aligny>
+						<font>Font_Reg19_Caps</font>
+						<scroll>true</scroll>
+						<label>$INFO[ListItem.Label]</label>
+						<textcolor>D0FFFFFF</textcolor>
+						<shadowcolor>-</shadowcolor>
+						</control>
+					</focusedlayout>
+					<content>
+						<item id="90301">
+							<label>Configure</label>
+							<onclick>ActivateWindow(13007)</onclick>
+							<visible>true</visible>
+						</item>
+					</content>
+          		</control>
+
+				<!-- CAS -->
+				<control type="wraplist" id="9040">
+					<posx>122</posx>
+					<height>33</height>
+					<width>725</width>
+					<onleft>9010</onleft>
+					<onright>9010</onright>
+					<viewtype>list</viewtype>
+					<orientation>horizontal</orientation>
+					<focusposition>1</focusposition>
+					<scrolltime>200</scrolltime>
+					<onup>9000</onup>
+					<ondown>9001</ondown>
+					<visible>Container(9000).HasFocus(4)</visible>					
+					<itemlayout width="300" height="33">
+						<control type="label">
+						<posx>72</posx>
+						<posy>0</posy>
+						<height>30</height>
+						<width>299</width>
+						<align>center</align>
+						<aligny>center</aligny>
+						<font>Font_Reg19_Caps</font>
+						<label>$INFO[ListItem.Label]</label>
+						<textcolor>5fFFFFFF</textcolor>
+						</control>
+					</itemlayout>
+					<focusedlayout width="300" height="33">
+						<control type="label">
+						<posx>72</posx>
+						<posy>0</posy>
+						<height>30</height>
+						<width>299</width>
+						<align>center</align>
+						<aligny>center</aligny>
+						<font>Font_Reg19_Caps</font>
+						<scroll>true</scroll>
+						<label>$INFO[ListItem.Label]</label>
+						<textcolor>D0FFFFFF</textcolor>
+						<shadowcolor>-</shadowcolor>
+						</control>
+					</focusedlayout>
+					<content>
+						<item id="90401">
+							<label>Smartcard</label>
+							<onclick>-</onclick>
+							<visible>true</visible>
+						</item>
+					</content>
+          		</control>
+
+
+				<!-- Media Center -->
+				<control type="wraplist" id="9050">
+					<posx>122</posx>
+					<height>33</height>
+					<width>725</width>
+					<onleft>9010</onleft>
+					<onright>9010</onright>
+					<viewtype>list</viewtype>
+					<orientation>horizontal</orientation>
+					<focusposition>2</focusposition>
+					<scrolltime>200</scrolltime>
+					<onup>9000</onup>
+					<ondown>9001</ondown>
+					<visible>Container(9000).HasFocus(5)</visible>					
+					<itemlayout width="145" height="33">
+						<control type="label">
+						<posx>72</posx>
+						<posy>0</posy>
+						<height>30</height>
+						<width>144</width>
+						<align>center</align>
+						<aligny>center</aligny>
+						<font>Font_Reg19_Caps</font>
+						<label>$INFO[ListItem.Label]</label>
+						<textcolor>5fFFFFFF</textcolor>
+						</control>
+					</itemlayout>
+					<focusedlayout width="145" height="33">
+						<control type="label">
+						<posx>72</posx>
+						<posy>0</posy>
+						<height>30</height>
+						<width>144</width>
+						<align>center</align>
+						<aligny>center</aligny>
+						<font>Font_Reg19_Caps</font>
+						<scroll>true</scroll>
+						<label>$INFO[ListItem.Label]</label>
+						<textcolor>D0FFFFFF</textcolor>
+						<shadowcolor>-</shadowcolor>
+						</control>
+					</focusedlayout>
+					<content>
+						<item id="90501">
+							<label>Weather</label>
+							<onclick>ActivateWindow(Weather)</onclick>
+							<visible>true</visible>
+						</item>
+						<item id="90502">
+							<label>Pictures</label>
+							<onclick>ActivateWindow(Pictures)</onclick>
+							<visible>true</visible>
+						</item>
+						<item id="90503">
+							<label>Music</label>
+							<onclick>ActivateWindow(Music)</onclick>
+							<visible>true</visible>
+						</item>
+						<item id="90504">
+							<label>Videos</label>
+							<onclick>ActivateWindow(Videos)</onclick>
+							<visible>true</visible>
+						</item>
+						<item id="90505">
+							<label>Programs</label>
+							<onclick>ActivateWindow(Programs,Addons,return)</onclick>
+							<visible>true</visible>
+						</item>
+						<item id="90506">
+							<label>Settings</label>
+							<onclick>ActivateWindow(Settings)</onclick>
+							<visible>true</visible>
+						</item>
+						<item id="90507">
+							<label>File Manager</label>
+							<onclick>ActivateWindow(FileManager)</onclick>
+							<visible>true</visible>
+						</item>
+						<item id="90508">
+							<label>Profiles</label>
+							<onclick>ActivateWindow(Profiles)</onclick>
+							<visible>true</visible>
+						</item>
+						<item id="90509">
+							<label>System Info</label>
+							<onclick>ActivateWindow(SystemInfo)</onclick>
+							<visible>true</visible>
+						</item>
+					</content>
+          		</control>
+			</control>
 		</control>
+		
+	<include>AeonCommonDateTime</include>
 
-		<!-- Main Menu -->
-		<control type="wraplist" id="9000">
-			<hitrect x="50" y="50" w="330" h="620" />
-			<posx>0</posx>
-			<posy>300</posy>
-			<width>2500</width>
-			<height>150</height>
-			<onleft>9000</onleft>
-			<onright>9000</onright>
-			<onup>9000</onup>
-			<ondown>330</ondown>
-			<pagecontrol>-</pagecontrol>
-			<scrolltime>300</scrolltime>
-			<focusposition>2</focusposition>
-			<visible>true</visible>
-			<orientation>horizontal</orientation>
-
-			<itemlayout height="150" width="340">
-				<control type="label">
-					<posx>0</posx>
-					<posy>-2</posy>
-					<width>340</width>
-					<height>150</height>
-					<font>Font_OSDTitle2</font>
-					<textcolor>48FFFFFF</textcolor>
-					<shadowcolor>black</shadowcolor>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>[UPPERCASE]$INFO[ListItem.Label][/UPPERCASE]</label>
-				</control>
-			</itemlayout>
-			<focusedlayout height="150" width="340">
-				<control type="label">
-					<posx>0</posx>
-					<posy>-2</posy>
-					<width>340</width>
-					<height>150</height>
-					<font>Font_OSDTitle2</font>
-					<shadowcolor>black</shadowcolor>
-					<textcolor>white</textcolor>
-					<align>center</align>
-					<aligny>center</aligny>
-					<label>[UPPERCASE]$INFO[ListItem.Label][/UPPERCASE]</label>
-				</control>
-			</focusedlayout>			
-
-			<content>
-				<item id="1">
-					<label>Installation</label>
-					<onclick>down</onclick>
-					<visible>true</visible>
-				</item>
-				<item id="2">
-					<label>Channels</label>
-					<onclick>down</onclick>
-					<visible>true</visible>
-				</item>
-				<item id="3">
-					<label>Configure</label>
-					<onclick>down</onclick>
-					<visible>true</visible>
-				</item>
-				<item id="4">
-					<label>CAS</label>
-					<onclick>down</onclick>
-					<visible>true</visible>
-				</item>
-				<item id="5">
-					<label>Media Center</label>
-					<onclick>down</onclick>
-					<visible>true</visible>
-				</item>
-				<item id="20">
-					<label>Shutdown</label>
-					<onclick>down</onclick>
-					<visible>true</visible>
-				</item>
-			</content>
-		</control>
 	</controls>
 </window>

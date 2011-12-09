@@ -366,7 +366,7 @@
 						<posy>0</posy>
 						<width>200</width>
 						<height>35</height>
-						<texture flipx="true" border="32,0,0,0">header.png</texture>
+						<texture flipx="true" border="32,0,0,0">confluence/header.png</texture>
 					</control>
 					<control type="label" id="610">
 						<description>time label</description>
@@ -502,7 +502,7 @@
 					<posy>0</posy>
 					<width>1100</width>
 					<height>500</height>
-					<texture border="20">DialogBack.png</texture>
+					<texture border="20">confluence/DialogBack.png</texture>
 				</control>
 				<control type="textbox" id="801">
 					  <description>EPG Description</description>

@@ -125,13 +125,14 @@ class ControlItem:
 	E_DETAIL_NORMAL_BUTTON_CONTROL			= 5
 
 
-	def __init__( self, controlType, controlId, property, listItems, description ):	
+	def __init__( self, controlType, controlId, property, listItems, selecteItem, description ):	
 		self.controlType = controlType	
 		self.controlId  = controlId
 		self.property = property		# E_SETTING_ENUM_CONTROL : propery, E_SETTING_INPUT_CONTROL : input type, E_DETAIL_NORMAL_BUTTON_CONTROL : Label
 		self.listItems = listItems
 		self.enable	= True
 		self.description = description
+		self.selecteItem = selecteItem
 	
 
 class SettingWindow(BaseWindow):
@@ -153,7 +154,7 @@ class SettingWindow(BaseWindow):
 			elif ctrlItem.controlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 				control = self.getControl( ctrlItem.controlId + 3 )
 				control.addItems( ctrlItem.listItems )
-				control.selectItem( 0 )
+				control.selectItem( ctrlItem.selecteItem )
 			elif ctrlItem.controlType == ctrlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL :
 				control = self.getControl( ctrlItem.controlId + 3 )
 				control.addItems( ctrlItem.listItems )
@@ -173,29 +174,29 @@ class SettingWindow(BaseWindow):
 			listItem = xbmcgui.ListItem( property.getName(), property.getPropStringByIndex( i ), "-", "-", "-" )
 			listItems.append( listItem )
 
-		self.controlList.append( ControlItem( ControlItem.E_SETTING_ENUM_CONTROL, controlId, property, listItems, description ) )
+		self.controlList.append( ControlItem( ControlItem.E_SETTING_ENUM_CONTROL, controlId, property, listItems, None, description ) )
 
-
-	def addUserEnumControl( self, controlId, titleLabel, inputType ):	
+	
+	def addUserEnumControl( self, controlId, titleLabel, inputType, selectItem ):	
 		listItems = []
 
 		for i in range( len( inputType ) ):
 			listItem = xbmcgui.ListItem( titleLabel, inputType[i], "-", "-", "-" )
 			listItems.append( listItem )
-
-		self.controlList.append( ControlItem( ControlItem.E_SETTING_USER_ENUM_CONTROL, controlId, None, listItems, None ) )
+		print 'dhkim test selectItem = %d' % int ( selectItem )
+		self.controlList.append( ControlItem( ControlItem.E_SETTING_USER_ENUM_CONTROL, controlId, None, listItems, int( selectItem ), None ) )
 
 	def addInputControl( self, controlId , titleLabel, inputLabel, inputType ):
 		listItems = []
 		listItem = xbmcgui.ListItem( titleLabel, inputLabel, "-", "-", "-" )
 		listItems.append( listItem )
-		self.controlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, controlId, inputType, listItems, None ) )
+		self.controlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, controlId, inputType, listItems, None, None ) )
 
 	def addLeftLabelButtonControl( self, controlId, inputString, description ):
 		listItems = []
 		listItem = xbmcgui.ListItem( inputString, '', "-", "-", "-" )
 		listItems.append( listItem )
-		self.controlList.append( ControlItem( ControlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL, controlId, None, listItems, description ) )
+		self.controlList.append( ControlItem( ControlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL, controlId, None, listItems, None, description ) )
 
 	def showDescription( self, controlId ):
 		count = len( self.controlList )
@@ -216,6 +217,14 @@ class SettingWindow(BaseWindow):
 
 	def inputSetup( self, ctrlItem ):
 		keyType = ctrlItem.property
+
+		"""
+		import pvr.platform 
+		scriptDir = pvr.platform.getPlatform().getScriptDir()
+		from pvr.gui.dialogs.keyboarddialog import KeyboardDialog
+		KeyboardDialog('keyboarddialog.xml', scriptDir).doModal()
+		"""
+
 		if( keyType == 4 ) :
 			kb = xbmc.Keyboard( ctrlItem.listItems[0].getLabel2( ), ctrlItem.listItems[0].getLabel( ), False )
 			kb.doModal( )
@@ -243,10 +252,10 @@ class SettingWindow(BaseWindow):
 
 
 	def hasControlItem( self, ctrlItem, controlId  ):
-		if ctrlItem.controlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.controlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL:
+		if ctrlItem.controlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.controlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 			if ctrlItem.controlId == controlId or ctrlItem.controlId + 1 == controlId or ctrlItem.controlId + 2 == controlId or ctrlItem.controlId + 3 == controlId  :
 				return True
-		elif ctrlItem.controlType == ctrlItem.E_SETTING_INPUT_CONTROL or ctrlItem.controlType == ctrlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL:
+		elif ctrlItem.controlType == ctrlItem.E_SETTING_INPUT_CONTROL or ctrlItem.controlType == ctrlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL :
 			if ctrlItem.controlId == controlId or ctrlItem.controlId + 1 == controlId  or ctrlItem.controlId + 3 == controlId :	
 				return True
 		else :
@@ -304,8 +313,9 @@ class SettingWindow(BaseWindow):
 
 			ctrlItem = self.controlList[i]		
 			if self.hasControlItem( ctrlItem, controlId ) :
-				if ctrlItem.controlType == ctrlItem.E_SETTING_ENUM_CONTROL :
+				if ctrlItem.controlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.controlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 					control = self.getControl( ctrlItem.controlId + 3 )
+					#print 'dhkim test in getSelectedIndex = %d' % control.getSelectedPosition()
 					time.sleep( 0.02 )
 					return control.getSelectedPosition()
 
@@ -318,11 +328,11 @@ class SettingWindow(BaseWindow):
 		for i in range( count ) :
 
 			ctrlItem = self.controlList[i]
-			if ctrlItem.controlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.controlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL:
+			if ctrlItem.controlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.controlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 				if ctrlItem.controlId == controlId or ctrlItem.controlId + 1 == controlId or ctrlItem.controlId + 2 == controlId or ctrlItem.controlId + 3 == controlId :
 					return ctrlItem.controlId
 
-			elif ctrlItem.controlType == ctrlItem.E_SETTING_INPUT_CONTROL or ctrlItem.controlType == ctrlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL:
+			elif ctrlItem.controlType == ctrlItem.E_SETTING_INPUT_CONTROL or ctrlItem.controlType == ctrlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL :
 				if ctrlItem.controlId == controlId or ctrlItem.controlId + 1 == controlId  or ctrlItem.controlId + 3 == controlId :	
 					return ctrlItem.controlId
 			else :
@@ -382,6 +392,8 @@ class SettingWindow(BaseWindow):
 					return True
 				elif ctrlItem.controlType == ctrlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL :
 					ret =  xbmcgui.Dialog( ).yesno('Configure', 'Are you sure?')	# return yes = 1, no = 0
+
+				elif ctrlItem.controlType == ctrlItem.E_SETTING_NO_PROP_ENUM_CONTROL :
 					return True
 
 		return False
@@ -447,7 +459,7 @@ class DetailWindow(SettingWindow):
 
 
 	def addNormalButtonControl( self, controlId, inputString ):
-		self.controlList.append( ControlItem( ControlItem.E_DETAIL_NORMAL_BUTTON_CONTROL, controlId, inputString, None, None ) )
+		self.controlList.append( ControlItem( ControlItem.E_DETAIL_NORMAL_BUTTON_CONTROL, controlId, inputString, None, None, None ) )
 
 
 	def getGroupId( self, controlId ):

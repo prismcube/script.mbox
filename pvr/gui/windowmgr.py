@@ -78,6 +78,8 @@ class WindowMgr(object):
 		from pvr.gui.windows.satelliteconfiguration import SatelliteConfiguration			
 		from pvr.gui.windows.languagesetting import LanguageSetting		#for test
 
+		self.copyIncludeFile( )			
+
 		self.windows[ WIN_ID_MAINMENU ]	               = MainMenu('mainmenu.xml', self.scriptDir)
 		self.windows[ WIN_ID_CHANNEL_LIST_WINDOW ]     = ChannelListWindow('channellistwindow.xml', self.scriptDir )
 		self.windows[ WIN_ID_CHANNEL_BANNER	]          = ChannelBanner('channelbanner.xml', self.scriptDir )
@@ -107,5 +109,32 @@ class WindowMgr(object):
 			self.skinName = currentSkinName[4:]			
 			self.resetAllWindows( )
 
+
+	def copyIncludeFile( self ):
+		import os, shutil
+		import pvr.platform 
+
+		skinName = self.skinName
+
+		print 'skinName=%s' %skinName
+
+		import pvr.platform 
+		self.scriptDir = pvr.platform.getPlatform().getScriptDir()
+
+		
+		if skinName.lower() == 'default' or skinName.lower() == 'skin.confluence' :
+			mboxIncludePath = os.path.join( pvr.platform.getPlatform().getScriptDir(), 'resources', 'skins', 'default', '720p', 'mbox_includes.xml')
+
+		else : 
+			mboxIncludePath = os.path.join( pvr.platform.getPlatform().getScriptDir(), 'resources', 'skins', skinName, '720p', 'mbox_includes.xml')
+
+			if not os.path.isfile(mboxIncludePath) :
+				mboxIncludePath = os.path.join( pvr.platform.getPlatform().getScriptDir(), 'resources', 'skins', 'default', '720p', 'mbox_includes.xml')			
+			
+		print 'mboxIncludePath=%s' %mboxIncludePath	
+
+		skinIncludePath = os.path.join( pvr.platform.getPlatform().getSkinDir(), '720p', 'mbox_includes.xml')
+		print 'skinIncludePath=%s' %skinIncludePath	
+		shutil.copyfile( mboxIncludePath, skinIncludePath )
 		
 	

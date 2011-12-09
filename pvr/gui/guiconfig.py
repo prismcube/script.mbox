@@ -47,7 +47,18 @@ USER_ENUM_LIST_ON_OFF			= [ 'Off', 'On' ]
 
 # Tuner Config String Define
 E_LIST_TUNER_TYPE				= [ 'Simple LNB', 'DiSEqC 1.0', 'DiSEqC 1.1', 'Motorized, DiSEqC 1.2', 'Motorized, USALS', 'OneCable' ]
-#E_LIST_LNB_SETTING				= [ 'User Define' , Uni
+E_LIST_LNB_TYPE					= [ 'Universal' , 'Single', 'Userdefined' ]
+E_LIST_DISEQC_MODE				= [ 'Disable', '1 of 4', '2 of 4', '3 of 4', '4 of 4', 'Mini A', 'Mini B' ]
+USER_ENUM_LIST_SINGLE_FREQUENCY = [ '5150', '9750', '10600', '10750', '11300' ]
+
+#class GuiConfigmgr( object ):
+
+def getSingleFrequenceIndex( selectedItem ) :
+	for i in range( len ( USER_ENUM_LIST_SINGLE_FREQUENCY )	) :
+		if( selectedItem == USER_ENUM_LIST_SINGLE_FREQUENCY[ i ] ) :
+			return i
+			
+	return -1
 
 class FooterMask(object):
 	G_FOOTER_GROUP_STARTID				= 3100

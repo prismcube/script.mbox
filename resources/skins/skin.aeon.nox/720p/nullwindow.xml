@@ -6,9 +6,6 @@
         <posx>0</posx>
         <posy>0</posy>
     </coordinates>
-    <!--
-	<include file="mbox_includes.xml">"mbox_includes.xml"</include>    
-	-->
 	<controls>
 	    <control type="label">
 	        <description>date/time label</description>

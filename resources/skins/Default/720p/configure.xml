@@ -1,9 +1,9 @@
 <window id="3007">
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<controls>
-		<include>CommonSettingsBackground</include>
-		<include>BehindDialogFadeOut</include>
-		<include>CommonDateTime</include>
+		<include>DefaultSettingsBackground</include>
+		<include>DefaultBehindDialogFadeOut</include>
+		<include>DefaultCommonDateTime</include>
 		<control type="group">
 			<posx>60</posx>
 			<posy>0</posy>
@@ -14,10 +14,10 @@
 				<posy>0</posy>
 				<width>250</width>
 				<height>35</height>
-				<texture border="0,0,32,0">header.png</texture>
+				<texture border="0,0,32,0">confluence/header.png</texture>
 			</control>
 			<control type="label">
-				<include>WindowTitleCommons</include>
+				<include>DefaultWindowTitleCommons</include>
 				<posx>220</posx>
 				<label>Configure</label>
 			</control>
@@ -37,7 +37,7 @@
 				<posy>0</posy>
 				<width>1100</width>
 				<height>640</height>
-				<texture border="20">DialogBack.png</texture>
+				<texture border="20">confluence/DialogBack.png</texture>
 			</control>
 			<control type="image">
 				<description>LOGO</description>
@@ -46,7 +46,7 @@
 				<width>220</width>
 				<height>80</height>
 				<aspectratio>keep</aspectratio>
-				<texture>Confluence_Logo.png</texture>
+				<texture>confluence/Confluence_Logo.png</texture>
 			</control>
 			<control type="list" id="9000">
 				<posx>10</posx>
@@ -61,7 +61,7 @@
 						<posy>0</posy>
 						<width>260</width>
 						<height>60</height>
-						<texture border="5">MenuItemNF.png</texture>
+						<texture border="5">confluence/MenuItemNF.png</texture>
 					</control>
 					<control type="label">
 						<posx>250</posx>
@@ -81,7 +81,7 @@
 						<posy>0</posy>
 						<width>260</width>
 						<height>60</height>
-						<texture border="5">MenuItemFO.png</texture>
+						<texture border="5">confluence/MenuItemFO.png</texture>
 						<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(9000)">Conditional</animation>
 					</control>
 					<control type="label">
@@ -102,7 +102,7 @@
 				<posy>10</posy>
 				<width>790</width>
 				<height>618</height>
-				<texture border="5">black-back2.png</texture>
+				<texture border="5">confluence/black-back2.png</texture>
 			</control>
 			<control type="image">
 				<posx>268</posx>
@@ -110,7 +110,7 @@
 				<width>804</width>
 				<height>100</height>
 				<aspectratio>stretch</aspectratio>
-				<texture>GlassTitleBar.png</texture>
+				<texture>confluence/GlassTitleBar.png</texture>
 			</control>
 			<control type="label">
 				<description>header label</description>
