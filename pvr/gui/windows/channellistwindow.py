@@ -25,7 +25,6 @@ class ChannelListWindow(BaseWindow):
 
 		self.eventBus = pvr.elismgr.getInstance().getEventBus()
 		self.eventBus.register( self )
-		self.mutex = thread.allocate_lock()
 
 		#button flag isSelect
 		self.flag11 = False # default, first time create this modal
@@ -116,8 +115,8 @@ class ChannelListWindow(BaseWindow):
 		self.initLabelInfo()
 
 		#run thread
-		self.untilThread = True
-		self.updateLocalTime()
+		#elf.untilThread = True
+		#self.updateLocalTime()
 
 		#get epg event right now
 		"""
@@ -129,12 +128,14 @@ class ChannelListWindow(BaseWindow):
 		print 'epgevent_GetPresent[%s]'% ret
 		"""
 
+		channelInfo = self.commander.channel_GetCurrent()
+		self.currentChannel = int ( channelInfo[0] )
 
 
 	def onAction(self, action):
- 		
+
 		id = action.getId()
-		
+
 		if id == Action.ACTION_PREVIOUS_MENU:
 			print 'ChannelListWindow lael98 check action menu'
 		elif id == Action.ACTION_SELECT_ITEM:
@@ -227,6 +228,7 @@ class ChannelListWindow(BaseWindow):
 		if controlId == self.listcontrol.getId() :
 			label = self.listcontrol.getSelectedItem().getLabel()
 			channelNumbr = int(label[:4])
+
 			ret = self.commander.channel_SetCurrent( channelNumbr )
 
 			if ret[0].upper() == 'TRUE' :
@@ -235,6 +237,10 @@ class ChannelListWindow(BaseWindow):
 					self.updateLocalTime().join()
 
 					winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )
+
+				else :
+					winmgr.getInstance().getWindow(winmgr.WIN_ID_CHANNEL_BANNER).setLastChannel( self.currentChannel )
+
 
 				self.currentChannel = channelNumbr
 				self.currentChannelInfo = self.commander.channel_GetCurrent()
@@ -398,7 +404,7 @@ class ChannelListWindow(BaseWindow):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'event[%s]'% event
 		
-		if xbmcgui.getCurrentWindowId() == 13002 :
+		if xbmcgui.getCurrentWindowId() == self.win :
 			self.updateLabelInfo(event)
 		else:
 			print 'show screen is another windows page[%s]'% xbmcgui.getCurrentWindowId()

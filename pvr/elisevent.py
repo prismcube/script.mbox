@@ -251,18 +251,15 @@ class ElisEnum(object):
 	# property
 	E_DEFAULT_STEP					= 1
 	E_DEFAULT_MAX					= 0x7fffffff
-
-	SATELLITE_BY_LONGITUDE 			= 0
-	SATELLITE_BY_NAME				= 1
-	SATELLITE_BY_INSERTED			= 2
-
+	
+	'''
 	#TUNER TYPE
 	E_SIMPLE_LNB					= 0
 	E_DISEQC_1_0					= 1
 	E_DISEQC_1_1					= 2
 	E_ONE_CABLE						= 3
 	E_MOTORIZED						= 4
-	
+	'''
 
 
 class ElisEventBus(object):
@@ -283,6 +280,7 @@ class ElisEventBus(object):
 
 	def publish(self, event):
 		print 'Publishing event %s to %d listeners' % (event, len(self.listeners))
+		return
 
 		for i in range( len( event ) ):
 			print 'publish event[%d] ---> %s' %(i,event[i])

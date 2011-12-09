@@ -266,9 +266,9 @@ def epgInfoComponentImage(component):
 
 	print 'component[%s] tempFile[%s]' % (component, tempFile)
 
-	imgData  = 'IconTeletext.png'
-	imgDolby = 'flagging/audio/dolbydigital.png'
-	imgHD    = 'OverlayHD.png'
+	imgData  = 'confluence/IconTeletext.png'
+	imgDolby = 'confluence/dolbydigital.png'
+	imgHD    = 'confluence/OverlayHD.png'
 	imagelist = []
 	if tempFile == 1:
 		imagelist.append(imgHD)
