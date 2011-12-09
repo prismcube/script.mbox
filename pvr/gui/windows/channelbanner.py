@@ -83,8 +83,8 @@ class ChannelBanner(BaseWindow):
 			self.ctrlBtnMute        = self.getControl( 626 )
 			self.ctrlBtnTSbanner    = self.getControl( 630 )
 			
-			self.ctrlBtnPrevEpg = self.getControl( 702 )
-			self.ctrlBtnNextEpg = self.getControl( 706 )
+			self.ctrlBtnPrevEpg     = self.getControl( 702 )
+			self.ctrlBtnNextEpg     = self.getControl( 706 )
 			
 
 			self.imgTV    = 'flagging/video/tv.png'
@@ -212,6 +212,7 @@ class ChannelBanner(BaseWindow):
 	def onFocus(self, controlId):
 		#print "onFocus(): control %d" % controlId
 		pass
+
 
 	def onEvent(self, event):
 		self.eventCopy = event
