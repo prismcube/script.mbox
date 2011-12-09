@@ -84,7 +84,7 @@ class TunerConfigMgr( object ):
 			[Longitude, Band, Name]
 		"""
 		self.configuredSatelliteList = []
-		self.commander.satellite_GetConfiguredList( ElisEnum.SATELLITE_BY_LONGITUDE, self.configuredSatelliteList )		
+		self.commander.satellite_GetConfiguredList( ElisEnum.E_SORT_LONGITUDE, self.configuredSatelliteList )		
 	
 
 	def getFormattedName( self, longitude ) :
@@ -112,7 +112,7 @@ class TunerConfigMgr( object ):
 	def getFormattedNameList( self ) :
 		satellitelist = []
 		formattedlist = []
-		self.commander.satellite_GetList( 0, satellitelist )
+		self.commander.satellite_GetList( ElisEnum.E_SORT_INSERTED, satellitelist )
 		for satellite in satellitelist :
 			dir = 'E'
 
