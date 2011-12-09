@@ -25,7 +25,6 @@ class ChannelListWindow(BaseWindow):
 
 		self.eventBus = pvr.elismgr.getInstance().getEventBus()
 		self.eventBus.register( self )
-		self.mutex = thread.allocate_lock()
 
 		#button flag isSelect
 		self.flag11 = False # default, first time create this modal
@@ -116,7 +115,7 @@ class ChannelListWindow(BaseWindow):
 		self.initLabelInfo()
 
 		#run thread
-		self.untilThread = True
+		#elf.untilThread = True
 		#self.updateLocalTime()
 
 		#get epg event right now
@@ -129,6 +128,8 @@ class ChannelListWindow(BaseWindow):
 		print 'epgevent_GetPresent[%s]'% ret
 		"""
 
+		channelInfo = self.commander.channel_GetCurrent()
+		self.currentChannel = int ( channelInfo[0] )
 
 
 	def onAction(self, action):
@@ -238,7 +239,7 @@ class ChannelListWindow(BaseWindow):
 					winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )
 
 				else :
-					winmgr.getInstance().getWindow(winmgr.WIN_ID_CHANNEL_BANNER).setPrevChannel( self.currentChannel )
+					winmgr.getInstance().getWindow(winmgr.WIN_ID_CHANNEL_BANNER).setLastChannel( self.currentChannel )
 
 
 				self.currentChannel = channelNumbr

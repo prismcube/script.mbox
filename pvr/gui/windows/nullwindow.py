@@ -33,9 +33,9 @@ class NullWindow(BaseWindow):
 			try :
 				currentChannelInfo = self.commander.channel_GetCurrent()
 				currentChannel = int( currentChannelInfo[0] )
-				prevChannel = winmgr.getInstance().getWindow(winmgr.WIN_ID_CHANNEL_BANNER).getPrevChannel( )
-				self.commander.channel_SetCurrent( prevChannel )
-				winmgr.getInstance().getWindow(winmgr.WIN_ID_CHANNEL_BANNER).setPrevChannel( currentChannel )
+				lastChannel = winmgr.getInstance().getWindow(winmgr.WIN_ID_CHANNEL_BANNER).getLastChannel( )
+				self.commander.channel_SetCurrent( lastChannel )
+				winmgr.getInstance().getWindow(winmgr.WIN_ID_CHANNEL_BANNER).setLastChannel( currentChannel )
 				
 				winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )
 			except Exception, ex:
@@ -45,13 +45,36 @@ class NullWindow(BaseWindow):
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
 #			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )
 			print 'lael98 check ation select'
- 
+
 		elif id == Action.ACTION_MOVE_LEFT:
 			print 'youn check ation left'
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_TIMESHIFT_BANNER )
 
 		elif id == Action.ACTION_SHOW_INFO	:
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )
+			
+		elif id == Action.ACTION_PAGE_UP:
+			channelInfo = self.commander.channel_GetCurrent()
+			currentChannel = int( channelInfo[0] )
+		
+			channelInfo = self.commander.channel_GetPrev()
+			prevChannel = int( channelInfo[0] )
+			self.commander.channel_SetCurrent( prevChannel )
+			
+			winmgr.getInstance().getWindow(winmgr.WIN_ID_CHANNEL_BANNER).setLastChannel( currentChannel )
+			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )		
+
+
+		elif id == Action.ACTION_PAGE_DOWN:
+			channelInfo = self.commander.channel_GetCurrent()
+			currentChannel = int( channelInfo[0] )
+		
+			channelInfo = self.commander.channel_GetNext()
+			nextChannel = int( channelInfo[0] )
+			self.commander.channel_SetCurrent( nextChannel )
+			
+			winmgr.getInstance().getWindow(winmgr.WIN_ID_CHANNEL_BANNER).setLastChannel( currentChannel )
+			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )		
 
 		else:
 			print 'lael98 check ation unknown id=%d' %id

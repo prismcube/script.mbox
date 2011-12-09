@@ -34,8 +34,8 @@ class ChannelBanner(BaseWindow):
 
 		self.commander = pvr.elismgr.getInstance().getCommander()
 		self.lastFocusId = None
-		self.prevChannel = 	self.commander.channel_GetCurrent()	
-		self.currentChannel =  self.prevChannel
+		self.lastChannel = 	self.commander.channel_GetCurrent()	
+		self.currentChannel =  self.lastChannel
 		self.eventBus = pvr.elismgr.getInstance().getEventBus()
 		self.eventBus.register( self )
 
@@ -135,9 +135,16 @@ class ChannelBanner(BaseWindow):
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'youn check ation back'
 
-			self.untilThread = False
-			self.updateLocalTime().join()
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
+			if self.toggleFlag == True:
+				self.ctrlEventDescText1.reset()
+				self.ctrlEventDescText2.reset()
+				self.ctrlEventDescGroup.setVisible(False)
+				self.toggleFlag = False
+			else:
+				self.untilThread = False
+				self.updateLocalTime().join()
+				winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
+
 				
 			"""
 			if focusid >= self.ctrlBtnExInfo.getId() and focusid <= self.ctrlBtnMute.getId():
@@ -171,6 +178,13 @@ class ChannelBanner(BaseWindow):
 		elif id == Action.ACTION_PAGE_DOWN:
 			self.channelTune(id)
 
+		else:
+			#print 'youn check action unknown id=%d' % id
+			#self.channelTune(id)
+			pass
+
+
+		"""
 		elif id == Action.ACTION_VOLUME_UP:
 		
 			vol = int ( self.commander.player_GetVolume( )[0] )
@@ -190,12 +204,9 @@ class ChannelBanner(BaseWindow):
 				vol = 0
 				
 			self.commander.player_SetVolume( vol )
+		"""
 
 
-		else:
-			#print 'youn check action unknown id=%d' % id
-			#self.channelTune(id)
-			pass
 
 
 	def onClick(self, controlId):
@@ -274,7 +285,7 @@ class ChannelBanner(BaseWindow):
 			channelNumber = priv_ch[0]
 			if is_digit(channelNumber):
 				ret = self.commander.channel_SetCurrent( int(channelNumber) )
-				self.prevChannel = self.currentChannel
+				self.lastChannel = self.currentChannel
 
 				if ret[0].upper() == 'TRUE' :
 					self.currentChannel = self.commander.channel_GetCurrent()
@@ -294,7 +305,7 @@ class ChannelBanner(BaseWindow):
 			channelNumber = next_ch[0]
 			if is_digit(channelNumber):
 				ret = self.commander.channel_SetCurrent( int(channelNumber) )
-				self.prevChannel = self.currentChannel
+				self.lastChannel = self.currentChannel
 
 				if ret[0].upper() == 'TRUE' :
 					self.currentChannel = self.commander.channel_GetCurrent()
@@ -542,9 +553,9 @@ class ChannelBanner(BaseWindow):
 		#self.ctrlEventDescription.setVisibleCondition('[Control.IsVisible(100)]',True)
 		#self.ctrlEventDescription.setEnabled(True)
 
-	def getPrevChannel( self ):
-		return self.prevChannel
+	def getLastChannel( self ):
+		return self.lastChannel
 		
-	def setPrevChannel( self, prevChannel ):
-		self.prevChannel = prevChannel
+	def setLastChannel( self, lastChannel ):
+		self.lastChannel = lastChannel
 
