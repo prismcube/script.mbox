@@ -115,7 +115,7 @@ class TunerConfigMgr( object ):
 	def getFormattedNameList( self ) :
 		satellitelist = []
 		formattedlist = []
-		self.commander.satellite_GetList( ElisEnum.E_SORT_INSERTED, satellitelist )
+		satellitelist = self.commander.satellite_GetList( ElisEnum.E_SORT_INSERTED)
 		for satellite in satellitelist :
 			dir = 'E'
 
@@ -140,7 +140,7 @@ class TunerConfigMgr( object ):
 				break
 
 		if found == True :
-			self.commander.transponder_GetList( int( satellite[0] ), int( satellite[1] ), tmptransponderList )
+			tmptransponderList = self.commander.transponder_GetList( int( satellite[0] ), int( satellite[1] ) )
 
 		for i in range( len( tmptransponderList ) ) :
 			transponderList.append( '%s' % ( i + 1 ) + ' ' + tmptransponderList[i][0] + ' MHz / ' + tmptransponderList[i][1] + ' KS/s' )
