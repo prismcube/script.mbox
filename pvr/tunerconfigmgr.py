@@ -95,13 +95,11 @@ class TunerConfigMgr( object ):
 		found = False	
 
 		for satellite in self.configuredSatelliteList :
-			print 'satellite name= %s' % satellite[2]
-			if longitude == int( satellite[0] ) :  #satellite[0]=longitue
+			if longitude == int( satellite[0] ) :
 				found = True
 				break
 
 		if found == True :
-
 			dir = 'E'
 
 			tmpLongitude  = longitude
@@ -110,10 +108,41 @@ class TunerConfigMgr( object ):
 				tmpLongitude = 3600 - longitude
 
 			formattedName = '%d.%d %s %s' %( int( tmpLongitude/10 ), tmpLongitude%10, dir, satellite[2] )
-			print 'formattedName = %s' %formattedName
-
 			return formattedName
 
 		return 'UnKnown'
 
+	def getFormattedNameList( self ) :
+		satellitelist = []
+		formattedlist = []
+		self.commander.satellite_GetList( ElisEnum.E_SORT_INSERTED, satellitelist )
+		for satellite in satellitelist :
+			dir = 'E'
 
+			tmpLongitude  = int( satellite[0] )
+			if tmpLongitude > 1800 :
+				dir = 'W'
+				tmpLongitude = 3600 - int( satellite[0] )
+
+			formattedName = '%d.%d %s %s' %( int( tmpLongitude/10 ), tmpLongitude%10, dir, satellite[2] )
+			formattedlist.append( formattedName )
+
+		return formattedlist
+
+	def getTransponderList( self, longitude ) :
+		tmptransponderList = []
+		transponderList = []
+		found = False	
+
+		for satellite in self.configuredSatelliteList :
+			if longitude == int( satellite[0] ) :
+				found = True
+				break
+
+		if found == True :
+			self.commander.transponder_GetList( int( satellite[0] ), int( satellite[1] ), tmptransponderList )
+
+		for i in range( len( tmptransponderList ) ) :
+			transponderList.append( '%s' % ( i + 1 ) + ' ' + tmptransponderList[i][0] + ' MHz / ' + tmptransponderList[i][1] + ' KS/s' )
+		return transponderList
+		

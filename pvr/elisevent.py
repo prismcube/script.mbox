@@ -23,6 +23,7 @@ class ElisEvent(object):
 	ElisPlaybackStopped					= 'ElisPlaybackStopped'
 	ElisTimeshiftEITReceived			= 'ElisTimeshiftEITReceived'
 
+
 class ElisEventBus(object):
 	def __init__(self):
 		self.listeners = []
@@ -41,6 +42,7 @@ class ElisEventBus(object):
 
 	def publish(self, event):
 		print 'Publishing event %s to %d listeners' % (event, len(self.listeners))
+		return
 
 		for i in range( len( event ) ):
 			print 'publish event[%d] ---> %s' %(i,event[i])

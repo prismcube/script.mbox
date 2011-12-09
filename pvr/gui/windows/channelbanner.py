@@ -6,6 +6,8 @@ import time
 import pvr.gui.windowmgr as winmgr
 from pvr.gui.basewindow import BaseWindow
 from pvr.gui.basewindow import Action
+from pvr.gui.guiconfig import *
+
 
 import pvr.elismgr
 '''
@@ -34,10 +36,13 @@ class ChannelBanner(BaseWindow):
 		print 'args[0]=[%s]' % args[0]
 		print 'args[1]=[%s]' % args[1]
 
+		self.commander = pvr.elismgr.getInstance().getCommander()
 		self.lastFocusId = None
+		self.lastChannel = 	self.commander.channel_GetCurrent()	
+		self.currentChannel =  self.lastChannel
 		self.eventBus = pvr.elismgr.getInstance().getEventBus()
 		self.eventBus.register( self )
-		self.commander = pvr.elismgr.getInstance().getCommander()
+
 
 		self.currentChannel=[]
 
@@ -91,10 +96,11 @@ class ChannelBanner(BaseWindow):
 			self.ctrlBtnNextEpg     = self.getControl( 706 )
 			
 
-			self.imgTV    = 'flagging/video/tv.png'
-			self.toggleFlag=False
+			self.imgTV    = 'confluence/tv.png'
 			self.ctrlEventClock.setLabel('')
 
+		self.toggleFlag=False
+		
 		#get channel
 		self.currentChannel = self.commander.channel_GetCurrent()
 
@@ -106,15 +112,17 @@ class ChannelBanner(BaseWindow):
 
 		#run thread
 		self.untilThread = True
-		self.updateLocalTime()
+		#self.updateLocalTime()
 
 		#get epg event right now, as this windows open
+
 		ret = []
 		ret=self.commander.epgevent_GetPresent()
 		if ret != []:
 			self.eventCopy=['epgevent_GetPresent'] + ret
 			self.updateONEvent(self.eventCopy)
 		print 'epgevent_GetPresent[%s]'% self.eventCopy
+
 
 
 	def onAction(self, action):
@@ -131,6 +139,18 @@ class ChannelBanner(BaseWindow):
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'youn check ation back'
 
+			if self.toggleFlag == True:
+				self.ctrlEventDescText1.reset()
+				self.ctrlEventDescText2.reset()
+				self.ctrlEventDescGroup.setVisible(False)
+				self.toggleFlag = False
+			else:
+				self.untilThread = False
+				self.updateLocalTime().join()
+				winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
+
+				
+			"""
 			if focusid >= self.ctrlBtnExInfo.getId() and focusid <= self.ctrlBtnMute.getId():
 				self.showEPGDescription(focusid, self.eventCopy)
 
@@ -143,7 +163,10 @@ class ChannelBanner(BaseWindow):
 #				winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
 #				winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
 #				winmgr.shutdown()
+			"""
 
+		elif id == Action.ACTION_SHOW_INFO	:
+			self.showEPGDescription( self.ctrlBtnExInfo.getId(), self.eventCopy)
 		
 		elif id == Action.ACTION_MOVE_LEFT:
 			if focusid == self.ctrlBtnPrevEpg.getId():			
@@ -158,11 +181,36 @@ class ChannelBanner(BaseWindow):
 
 		elif id == Action.ACTION_PAGE_DOWN:
 			self.channelTune(id)
-		
+
 		else:
 			#print 'youn check action unknown id=%d' % id
 			#self.channelTune(id)
 			pass
+
+
+		"""
+		elif id == Action.ACTION_VOLUME_UP:
+		
+			vol = int ( self.commander.player_GetVolume( )[0] )
+			vol = vol + pvr.gui.guiconfig.VOLUME_STEP
+			
+			if vol > pvr.gui.guiconfig.MAX_VOLUME :
+				vol = pvr.gui.guiconfig.MAX_VOLUME
+
+			self.commander.player_SetVolume( vol )
+
+		elif id == Action.ACTION_VOLUME_DOWN:
+		
+			vol = int ( self.commander.player_GetVolume( )[0] )
+			vol = vol - pvr.gui.guiconfig.VOLUME_STEP
+			
+			if vol < 0 :
+				vol = 0
+				
+			self.commander.player_SetVolume( vol )
+		"""
+
+
 
 
 	def onClick(self, controlId):
@@ -224,7 +272,7 @@ class ChannelBanner(BaseWindow):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		#print 'eventCopy[%s]'% self.eventCopy
 
-		if xbmcgui.getCurrentWindowId() == 13003 :
+		if xbmcgui.getCurrentWindowId() == self.win :
 			self.updateONEvent(self.eventCopy)
 		else:
 			print 'show screen is another windows page[%s]'% xbmcgui.getCurrentWindowId()
@@ -242,6 +290,7 @@ class ChannelBanner(BaseWindow):
 			channelType = priv_ch[3]
 			if is_digit(channelNumber):
 				ret = self.commander.channel_SetCurrent( int(channelNumber) , int(channelType))
+				self.lastChannel = self.currentChannel
 
 				if ret[0].upper() == 'TRUE' :
 					self.currentChannel = self.commander.channel_GetCurrent()
@@ -262,6 +311,7 @@ class ChannelBanner(BaseWindow):
 			channelType = next_ch[3]
 			if is_digit(channelNumber):
 				ret = self.commander.channel_SetCurrent( int(channelNumber), int(channelType) )
+				self.lastChannel = self.currentChannel
 
 				if ret[0].upper() == 'TRUE' :
 					self.currentChannel = self.commander.channel_GetCurrent()
@@ -393,7 +443,6 @@ class ChannelBanner(BaseWindow):
 			self.progress_idx = 0.0
 			self.progress_max = 0.0
 			self.eventCopy = []
-			self.toggleFlag= False
 
 			self.ctrlChannelNumber.setLabel( self.currentChannel[1] )
 			self.ctrlChannelName.setLabel( self.currentChannel[2] )
@@ -509,5 +558,10 @@ class ChannelBanner(BaseWindow):
 		
 		#self.ctrlEventDescription.setVisibleCondition('[Control.IsVisible(100)]',True)
 		#self.ctrlEventDescription.setEnabled(True)
+
+	def getLastChannel( self ):
+		return self.lastChannel
 		
+	def setLastChannel( self, lastChannel ):
+		self.lastChannel = lastChannel
 

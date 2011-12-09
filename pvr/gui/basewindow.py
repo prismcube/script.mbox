@@ -9,36 +9,42 @@ from pvr.gui.guiconfig import *
 
 class Action(object):
 	ACTION_NONE					= 0
-	ACTION_MOVE_LEFT			= 1
-	ACTION_MOVE_RIGHT			= 2
-	ACTION_MOVE_UP				= 3
-	ACTION_MOVE_DOWN			= 4
-	ACTION_PAGE_UP				= 5
-	ACTION_PAGE_DOWN			= 6
-	ACTION_SELECT_ITEM			= 7
-	ACTION_HIGHLIGHT_ITEM		= 8
-	ACTION_PARENT_DIR			= 9
-	ACTION_PREVIOUS_MENU		= 10
-	ACTION_SHOW_INFO			= 11
-	ACTION_PAUSE				= 12
+	ACTION_MOVE_LEFT			= 1		#Left Arrow
+	ACTION_MOVE_RIGHT			= 2		#Right Arrow
+	ACTION_MOVE_UP				= 3		#Up Arrow
+	ACTION_MOVE_DOWN			= 4		#Down Arrow
+	ACTION_PAGE_UP				= 5		#PageUP --> Channel Up
+	ACTION_PAGE_DOWN			= 6		#PageDown --> Channel Down
+	ACTION_SELECT_ITEM			= 7		# OK
+	ACTION_HIGHLIGHT_ITEM		= 8	
+	ACTION_PARENT_DIR			= 9		#Back
+	ACTION_PREVIOUS_MENU		= 10 	#ESC
+	ACTION_SHOW_INFO			= 11	# i
+	ACTION_PAUSE				= 12	
 	ACTION_STOP					= 13
 	ACTION_NEXT_ITEM			= 14
 	ACTION_PREV_ITEM			= 15
 	ACTION_FORWARD				= 16 
 	ACTION_REWIND				= 17 
-	REMOTE_0					= 58
-	REMOTE_1					= 59
-	REMOTE_2					= 60
-	REMOTE_3					= 61
-	REMOTE_4					= 62
-	REMOTE_5					= 63
-	REMOTE_6					= 64
-	REMOTE_7					= 65
-	REMOTE_8					= 66
-	REMOTE_9					= 67
+	REMOTE_0					= 58	#0
+	REMOTE_1					= 59	#1
+	REMOTE_2					= 60	#2
+	REMOTE_3					= 61	#3
+	REMOTE_4					= 62	#4
+	REMOTE_5					= 63	#5
+	REMOTE_6					= 64	#6
+	REMOTE_7					= 65	#7
+	REMOTE_8					= 66	#8
+	REMOTE_9					= 67	#9
 	ACTION_PLAYER_FORWARD		= 77
 	ACTION_PLAYER_REWIND		= 78
 	ACTION_PLAYER_PLAY			= 79
+	
+	ACTION_VOLUME_UP			= 88	#Plus
+	ACTION_VOLUME_DOWN			= 89	#Minus
+	ACTION_MUTE					= 91	#F8
+
+	
 
 @decorator
 def setWindowBusy(func, *args, **kwargs):
@@ -106,12 +112,6 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 	def setHeaderLabel( self, label ):
 		self.getControl( HeaderDefine.G_HEADER_LABEL_ID ).setLabel( label )
 		
-
-class BaseDialog(xbmcgui.WindowXMLDialog, Property):
-	def __init__(self, *args, **kwargs):
-		xbmcgui.WindowXMLDialog.__init__(self, *args, **kwargs)
-		self.win = None        
-
 
 class ControlItem:
 	# Setting Window
@@ -217,7 +217,8 @@ class SettingWindow(BaseWindow):
 
 	def inputSetup( self, ctrlItem ):
 		keyType = ctrlItem.property
-
+		if ( keyType == None ) :
+			return
 		"""
 		import pvr.platform 
 		scriptDir = pvr.platform.getPlatform().getScriptDir()

@@ -136,5 +136,7 @@ class WindowMgr(object):
 		skinIncludePath = os.path.join( pvr.platform.getPlatform().getSkinDir(), '720p', 'mbox_includes.xml')
 		print 'skinIncludePath=%s' %skinIncludePath	
 		shutil.copyfile( mboxIncludePath, skinIncludePath )
-		
-	
+
+
+	def getWindow( self, windowId ) :
+		return self.windows[ windowId ]
