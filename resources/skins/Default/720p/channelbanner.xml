@@ -67,15 +67,13 @@
 					<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(620).HasFocus)">conditional</animation>
 					<animation effect="slide" start="0,0" end="-200,0" delay="0" time="300" condition="!ControlGroup(620).HasFocus)">conditional</animation>
 					<control type="image">
-						<description>info background</description>
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>200</width>
 						<height>35</height>
-						<texture flipx="true" border="32,0,0,0">header.png</texture>
+						<texture border="0,0,32,0">header.png</texture>
 					</control>
-					<control type="label" id="640">
-						<description>time label</description>
+					<control type="label">
 						<posx>30</posx>
 						<posy>0</posy>
 						<width>400</width>
@@ -84,11 +82,79 @@
 						<aligny>center</aligny>
 						<font>font12</font>
 						<textcolor>white</textcolor>
-						<label>INFO $INFO[Control.GetLabel]</label>
+						<label>Description</label>
+						<visible>Control.HasFocus(621)</visible>
 						<description>info explane</description>
 					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<label>Teletext</label>
+						<visible>Control.HasFocus(622)</visible>
+						<description>info explane</description>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<label>Subtitle</label>
+						<visible>Control.HasFocus(623)</visible>
+						<description>info explane</description>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<label>Start Recording</label>
+						<visible>Control.HasFocus(624)</visible>
+						<description>info explane</description>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<label>Stop Recording</label>
+						<visible>Control.HasFocus(625)</visible>
+						<description>info explane</description>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<label>Audio Mute</label>
+						<visible>Control.HasFocus(626)</visible>
+						<description>info explane</description>
+					</control>
+
 				</control>
 
+<!-- button control -->
 				<control type="group" id="620">
 					<posx>315</posx>
 					<posy>-15</posy>
@@ -122,7 +188,7 @@
 						<animation effect="fade" start="100" end="0" delay="0" time="300" condition="!Control.HasFocus(622)">conditional</animation>
 						<posx>45-2</posx>
 						<posy>-1</posy>
-						<width>48</width>
+						<width>46</width>
 						<height>36</height>
 						<texture>button-focus.png</texture>
 					</control>
@@ -147,7 +213,7 @@
 						<animation effect="fade" start="100" end="0" delay="0" time="300" condition="!Control.HasFocus(623)">conditional</animation>
 						<posx>90-2</posx>
 						<posy>-1</posy>
-						<width>48</width>
+						<width>46</width>
 						<height>36</height>
 						<texture>button-focus.png</texture>
 					</control>
@@ -172,7 +238,7 @@
 						<animation effect="fade" start="100" end="0" delay="0" time="300" condition="!Control.HasFocus(624)">conditional</animation>
 						<posx>135-2</posx>
 						<posy>-1</posy>
-						<width>48</width>
+						<width>46</width>
 						<height>36</height>
 						<texture>button-focus.png</texture>
 					</control>
@@ -196,7 +262,7 @@
 						<animation effect="fade" start="100" end="0" delay="0" time="300" condition="!Control.HasFocus(625)">conditional</animation>
 						<posx>180-2</posx>
 						<posy>-1</posy>
-						<width>48</width>
+						<width>46</width>
 						<height>36</height>
 						<texture>button-focus.png</texture>
 					</control>
@@ -221,7 +287,7 @@
 						<animation effect="fade" start="100" end="0" delay="0" time="300" condition="!Control.HasFocus(626)">conditional</animation>
 						<posx>225-2</posx>
 						<posy>-1</posy>
-						<width>48</width>
+						<width>45</width>
 						<height>36</height>
 						<texture>button-focus.png</texture>
 					</control>
