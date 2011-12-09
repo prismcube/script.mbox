@@ -39,10 +39,9 @@ E_SlideMenuButton03	= 3330
 E_SUBMENU_LIST_ID			= 9000
 E_SETUPMENU_GROUP_ID		= 9010
 
-#Volume
+# Volume
 VOLUME_STEP					= 4
 MAX_VOLUME					= 100
-
 
 # USER_CONTROL_TYPE_DEFINE
 USER_ENUM_LIST_YES_NO 			= [ 'No', 'Yes' ]
@@ -55,7 +54,6 @@ E_LIST_LNB_TYPE					= [ 'Universal' , 'Single', 'Userdefined' ]
 E_LIST_DISEQC_MODE				= [ 'Disable', '1 of 4', '2 of 4', '3 of 4', '4 of 4', 'Mini A', 'Mini B' ]
 USER_ENUM_LIST_SINGLE_FREQUENCY = [ '5150', '9750', '10600', '10750', '11300' ]
 
-#class GuiConfigmgr( object ):
 
 def getSingleFrequenceIndex( selectedItem ) :
 	for i in range( len ( USER_ENUM_LIST_SINGLE_FREQUENCY )	) :

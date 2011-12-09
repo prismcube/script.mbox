@@ -44,19 +44,14 @@ class WindowMgr(object):
 
 		self.windows = {}
 
-		from pvr.gui.windows.nullwindow import NullWindow		
-		self.nullWindow =  NullWindow('nullwindow.xml', self.scriptDir )
-
+		self.copyIncludeFile( )
 		self.createAllWindows( )
 
 
 	def showWindow( self, windowId ):
 		print'lael98 check %d %s winid=%d' %(currentframe().f_lineno, currentframe().f_code.co_filename, windowId)    
 		try:
-			if windowId == WIN_ID_NULLWINDOW :
-				self.nullWindow.doModal()
-			else:
-				self.windows[windowId].doModal()
+			self.windows[windowId].doModal()
  			self.lastId = windowId
 
 		except:
@@ -68,6 +63,7 @@ class WindowMgr(object):
 		self.scriptDir = pvr.platform.getPlatform().getScriptDir()
 		print 'lael98 test scriptDir= %s' %self.scriptDir
 
+		from pvr.gui.windows.nullwindow import NullWindow		
 		from pvr.gui.windows.mainmenu import MainMenu
 		from pvr.gui.windows.channellistwindow import ChannelListWindow
 		from pvr.gui.windows.channelbanner import ChannelBanner
@@ -78,8 +74,8 @@ class WindowMgr(object):
 		from pvr.gui.windows.satelliteconfiguration import SatelliteConfiguration			
 		from pvr.gui.windows.languagesetting import LanguageSetting		#for test
 
-		self.copyIncludeFile( )			
 
+		self.windows[ WIN_ID_NULLWINDOW ]             = NullWindow('nullwindow.xml', self.scriptDir )
 		self.windows[ WIN_ID_MAINMENU ]	               = MainMenu('mainmenu.xml', self.scriptDir)
 		self.windows[ WIN_ID_CHANNEL_LIST_WINDOW ]     = ChannelListWindow('channellistwindow.xml', self.scriptDir )
 		self.windows[ WIN_ID_CHANNEL_BANNER	]          = ChannelBanner('channelbanner.xml', self.scriptDir )
@@ -93,9 +89,10 @@ class WindowMgr(object):
 
 	def resetAllWindows( self ):
 		self.windows[ WIN_ID_MAINMENU ].close( )
+		self.copyIncludeFile( )		
 		self.windows.clear( )
 		self.createAllWindows( )
-		self.showWindow( WIN_ID_MAINMENU )		
+		self.showWindow( WIN_ID_MAINMENU )
 
 
 	def checkSkinChange( self ):

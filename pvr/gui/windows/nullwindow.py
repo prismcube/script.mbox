@@ -34,10 +34,11 @@ class NullWindow(BaseWindow):
 				currentChannelInfo = self.commander.channel_GetCurrent()
 				currentChannel = int( currentChannelInfo[0] )
 				lastChannel = winmgr.getInstance().getWindow(winmgr.WIN_ID_CHANNEL_BANNER).getLastChannel( )
-				self.commander.channel_SetCurrent( lastChannel )
-				winmgr.getInstance().getWindow(winmgr.WIN_ID_CHANNEL_BANNER).setLastChannel( currentChannel )
-				
-				winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )
+				if lastChannel > 0 and lastchannel != currentChannel :
+					self.commander.channel_SetCurrent( lastChannel )
+					winmgr.getInstance().getWindow(winmgr.WIN_ID_CHANNEL_BANNER).setLastChannel( currentChannel )
+					winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )
+
 			except Exception, ex:
 				print 'ERR prev channel'
 

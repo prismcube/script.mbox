@@ -183,7 +183,6 @@ class SettingWindow(BaseWindow):
 		for i in range( len( inputType ) ):
 			listItem = xbmcgui.ListItem( titleLabel, inputType[i], "-", "-", "-" )
 			listItems.append( listItem )
-		print 'dhkim test selectItem = %d' % int ( selectItem )
 		self.controlList.append( ControlItem( ControlItem.E_SETTING_USER_ENUM_CONTROL, controlId, None, listItems, int( selectItem ), None ) )
 
 	def addInputControl( self, controlId , titleLabel, inputLabel, inputType ):
