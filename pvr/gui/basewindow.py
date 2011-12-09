@@ -223,7 +223,8 @@ class SettingWindow(BaseWindow):
 
 	def inputSetup( self, ctrlItem ):
 		keyType = ctrlItem.property
-
+		if ( keyType == None ) :
+			return
 		"""
 		import pvr.platform 
 		scriptDir = pvr.platform.getPlatform().getScriptDir()

@@ -44,6 +44,7 @@ class SatelliteConfiguration( SettingWindow ):
 		self.longitude = 0
 		self.currentSatellite = []
 		self.selectedIndexLnbType = 0
+		self.transponderList = []
 		#self.initialized = False
 
 	def onInit( self ):
@@ -53,7 +54,7 @@ class SatelliteConfiguration( SettingWindow ):
 		self.tunertype = E_LIST_TUNER_TYPE[ configmgr.getInstance( ).getCurrentTunerType( ) ]
 		self.longitude = configmgr.getInstance( ).getCurrentLongitue( )
 		self.currentSatellite = configmgr.getInstance( ).getCurrentConfiguredSatellite( )
-		print 'dhkim test list %s' % self.currentSatellite 
+		self.transponderList = configmgr.getInstance( ).getTransponderList( self.longitude )
 		self.setHeaderLabel( 'Satellite Configuration' )
 		
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %s - %s' % ( self.tunerIndex, self.tunertype ) )
@@ -93,8 +94,17 @@ class SatelliteConfiguration( SettingWindow ):
 	def onClick( self, controlId ):
 		if( controlId == E_SpinEx01 + 1 or controlId == E_SpinEx01 + 2 ) :
 			self.selectedIndexLnbType = self.getSelectedIndex( E_SpinEx01 )
-			#self.disableControl( )
 			self.initConfig( )
+			
+		elif( controlId == E_Input01 + 1 ) :
+			satelliteList = configmgr.getInstance( ).getFormattedNameList( )
+			dialog = xbmcgui.Dialog()
+ 			ret = dialog.select('Select satellite', satelliteList )
+
+ 		elif( controlId == E_Input03 + 1 ) :
+ 			dialog = xbmcgui.Dialog()
+ 			ret = dialog.select('Select Transponder', self.transponderList )
+
 		#winmgr.getInstance().showWindow( winmgr.WIN_ID_TUNER_CONFIGURATION )
 
 		
@@ -116,15 +126,15 @@ class SatelliteConfiguration( SettingWindow ):
 		self.addUserEnumControl( E_SpinEx03, '22KHz Control', USER_ENUM_LIST_ON_OFF, self.currentSatellite[ E_CONFIGURE_SATELLITE_FREQUENCY_LEVEL ] )
 		self.addUserEnumControl( E_SpinEx04, 'DiSEqC 1.0 Switch', E_LIST_DISEQC_MODE, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_MODE ] )
 		self.addUserEnumControl( E_SpinEx05, 'DiSEqC Repeat', USER_ENUM_LIST_ON_OFF, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_REPEAT ] )
-		self.addUserEnumControl( E_SpinEx06, 'Transponder', ['test','test1','test3'], 0 )
-		self.addLeftLabelButtonControl( E_Input03, 'Save', None )
+		self.addInputControl( E_Input03, 'Transponder', self.transponderList[0], None )
+		self.addLeftLabelButtonControl( E_Input04, 'Save', None )
 
 		if( self.selectedIndexLnbType == 1 ) :
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input03 ]
-			hideControlIds = [ E_Input02, E_Input04 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input03, E_Input04 ]
+			hideControlIds = [ E_Input02, E_SpinEx06 ]
 		else :
-			visibleControlIds = [ E_SpinEx01, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input03 ]
-			hideControlIds = [ E_SpinEx02, E_Input04 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04 ]
+			hideControlIds = [ E_SpinEx02, E_SpinEx06 ]
 			
 		self.setVisibleControls( visibleControlIds, True )
 		self.setEnableControls( visibleControlIds, True )
