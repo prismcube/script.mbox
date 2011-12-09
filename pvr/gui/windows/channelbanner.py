@@ -10,9 +10,6 @@ from pvr.gui.guiconfig import *
 
 
 import pvr.elismgr
-'''
-from pvr.elisevent import ElisAction, ElisEnum // by shinjh
-'''
 from pvr.net.net import EventRequest
 from pvr.elisaction import ElisAction
 from pvr.elisenum import ElisEnum

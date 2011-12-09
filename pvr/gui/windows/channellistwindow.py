@@ -5,9 +5,6 @@ import sys
 import pvr.gui.windowmgr as winmgr
 from pvr.gui.basewindow import BaseWindow, setWindowBusy
 from pvr.gui.basewindow import Action
-'''
-from pvr.elisevent import ElisEnum //by shinjh 
-'''
 from pvr.elisenum import ElisEnum
 from inspect import currentframe
 from pvr.util import catchall, is_digit, run_async, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString

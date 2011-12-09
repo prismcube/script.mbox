@@ -4,9 +4,6 @@ import sys
 import time
 
 import pvr.elismgr
-'''
-from pvr.elisevent import ElisAction, ElisEnum //by shinjh 
-'''
 from pvr.elisaction import ElisAction
 from pvr.elisenum import ElisEnum
 

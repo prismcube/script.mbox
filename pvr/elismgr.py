@@ -6,9 +6,6 @@ from pvr.util import run_async
 from pvr.eliscommander import ElisCommander
 from pvr.net.net import EventServer, EventHandler, EventRequest
 from pvr.elisevent import ElisEventBus
-'''
-, ElisAction, ElisEnum //by shinjh
-'''
 from pvr.elisaction import ElisAction
 from pvr.elisenum import ElisEnum
 import pvr.net.netconfig as netconfig

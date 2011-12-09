@@ -323,9 +323,7 @@ class ElisCommander( EventCommander ):
 		req.append('%d' %zappingMode)
 		req.append('%d' %sortingMode)
 
-		print	 ' channel_getlist by shinjh '		
 		self.send( req )
-		print	 ' channel_getlist by shinjh '					
 		retValue = []
 		while 1:
 			reply=self.read()

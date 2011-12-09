@@ -8,9 +8,6 @@ from pvr.gui.basewindow import BaseWindow
 from pvr.gui.basewindow import Action
 
 import pvr.elismgr
-'''
-from pvr.elisevent import ElisAction, ElisEnum //by shinjh
-'''
 from pvr.elisaction import ElisAction
 from pvr.elisenum import ElisEnum
 from pvr.net.net import EventRequest

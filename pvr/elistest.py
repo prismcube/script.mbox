@@ -2,9 +2,6 @@
 
 from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.elismgr
-'''
-from pvr.elisevent import ElisAction, ElisEnum //by shinjh
-'''
 from pvr.elisaction import ElisAction
 from pvr.elisenum import ElisEnum
 class ElisTest(object):
