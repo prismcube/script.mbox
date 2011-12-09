@@ -2,8 +2,11 @@
 
 from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.elismgr
-from pvr.elisevent import ElisAction, ElisEnum
-
+'''
+from pvr.elisevent import ElisAction, ElisEnum //by shinjh
+'''
+from pvr.elisaction import ElisAction
+from pvr.elisenum import ElisEnum
 class ElisTest(object):
 	def __init__(self):
 		self.commander = pvr.elismgr.getInstance().getCommander()

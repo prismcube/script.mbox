@@ -8,8 +8,12 @@ from pvr.gui.basewindow import BaseWindow
 from pvr.gui.basewindow import Action
 
 import pvr.elismgr
-from pvr.elisevent import ElisAction, ElisEnum
+'''
+from pvr.elisevent import ElisAction, ElisEnum // by shinjh
+'''
 from pvr.net.net import EventRequest
+from pvr.elisaction import ElisAction
+from pvr.elisenum import ElisEnum
 
 #from threading import Thread
 from pvr.util import run_async, is_digit, Mutex, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString #, synchronized, sync_instance
@@ -235,8 +239,9 @@ class ChannelBanner(BaseWindow):
 			print 'priv_ch[%s]' % priv_ch
 
 			channelNumber = priv_ch[0]
+			channelType = priv_ch[3]
 			if is_digit(channelNumber):
-				ret = self.commander.channel_SetCurrent( int(channelNumber) )
+				ret = self.commander.channel_SetCurrent( int(channelNumber) , int(channelType))
 
 				if ret[0].upper() == 'TRUE' :
 					self.currentChannel = self.commander.channel_GetCurrent()
@@ -254,8 +259,9 @@ class ChannelBanner(BaseWindow):
 			print 'next_ch[%s]' % next_ch
 
 			channelNumber = next_ch[0]
+			channelType = next_ch[3]
 			if is_digit(channelNumber):
-				ret = self.commander.channel_SetCurrent( int(channelNumber) )
+				ret = self.commander.channel_SetCurrent( int(channelNumber), int(channelType) )
 
 				if ret[0].upper() == 'TRUE' :
 					self.currentChannel = self.commander.channel_GetCurrent()

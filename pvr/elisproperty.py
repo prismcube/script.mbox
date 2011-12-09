@@ -1,5 +1,7 @@
-
+'''
 from pvr.elisevent import ElisEnum
+'''
+from pvr.elisenum import ElisEnum
 import pvr.elismgr
 
 _propertyMapEnum =[

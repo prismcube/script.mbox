@@ -6,7 +6,10 @@ import pvr.gui.windowmgr as winmgr
 import pvr.tunerconfigmgr as configmgr
 from pvr.gui.basewindow import SettingWindow, setWindowBusy
 from pvr.gui.basewindow import Action
-from pvr.elisevent import ElisEnum
+'''
+from pvr.elisevent import ElisEnum //by shinjh
+'''
+from pvr.elisenum import ElisEnum
 import pvr.elismgr
 from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import *
