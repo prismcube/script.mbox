@@ -22,12 +22,10 @@ class DialogNumeric( NumericKeyboard ) :
 		
 		self.inputLabel = ''
 		self.ctrlEditLabel = 0
-		#self.cursorPosition = 0
 
 	def onInit( self ) :
 		self.getControl( E_DIALOG_HEADER ).setLabel( diamgr.getInstance().getTitleLabel( ) )
-		#self.inputLabel = diamgr.getInstance().getDefaultText( )
-		self.inputLabel = '1234'
+		self.inputLabel = diamgr.getInstance().getDefaultText( )
 		self.ctrlEditLabel = self.getControl( E_INPUT_LABEL )
 		self.ctrlEditLabel.setLabel( self.inputLabel )
 		self.drawKeyboard( )

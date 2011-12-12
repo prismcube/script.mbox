@@ -5,35 +5,12 @@ import sys
 import pvr.gui.windowmgr as winmgr
 import pvr.gui.dialogmgr as diamgr
 import pvr.tunerconfigmgr as configmgr
+from pvr.tunerconfigmgr import *
 from pvr.gui.basewindow import SettingWindow, setWindowBusy
 from pvr.gui.basewindow import Action
 import pvr.elismgr
 from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import *
-
-
-E_CONFIGURE_SATELLITE_TUNER_INDEX 		= 0
-E_CONFIGURE_SATELLITE_SLOT_NUMBER		= 1
-E_CONFIGURE_SATELLITE_LONGITUDE			= 2
-E_CONFIGURE_SATELLITE_BANDTYPE			= 3
-E_CONFIGURE_SATELLITE_FREQUENCY_LEVEL	= 4
-E_CONFIGURE_SATELLITE_DISEQC_11			= 5
-E_CONFIGURE_SATELLITE_DISEQC_MODE		= 6
-E_CONFIGURE_SATELLITE_DISEQC_REPEAT		= 7
-E_CONFIGURE_SATELLITE_IS_CONFIG_USED	= 8
-E_CONFIGURE_SATELLITE_LNB_TYPE			= 9
-E_CONFIGURE_SATELLITE_MOTORIZED_TYPE	= 10
-E_CONFIGURE_SATELLITE_LOW_LNB			= 11
-E_CONFIGURE_SATELLITE_HIGH_LNB			= 12
-E_CONFIGURE_SATELLITE_LNB_THRESHOLD		= 13
-E_CONFIGURE_SATELLITE_MOTORIZED_DATA	= 14
-E_CONFIGURE_SATELLITE_IS_ONECABLE		= 15
-E_CONFIGURE_SATELLITE_ONECABLE_PIN		= 16
-E_CONFIGURE_SATELLITE_ONECABLE_MDU		= 17
-E_CONFIGURE_SATELLITE_ONECABLE_LO_FREQ1 = 18
-E_CONFIGURE_SATELLITE_ONECABLE_LO_FREQ2 = 19
-E_CONFIGURE_SATELLITE_ONECABLE_UBSLOT	= 20
-E_CONFIGURE_SATELLITE_ONECABLE_UBFREQ	= 21
 
 
 class SatelliteConfiguration( SettingWindow ):
@@ -109,12 +86,8 @@ class SatelliteConfiguration( SettingWindow ):
  			ret = dialog.select('Select Transponder', self.transponderList )
 
  		elif( controlId == E_Input02 + 1 ) :
- 			diamgr.getInstance().setTitleLabel( 'test Title Label' )
- 			diamgr.getInstance().setDefaultText( self.lnbFrequency )
- 			diamgr.getInstance().showDialog( diamgr.DIALOG_ID_NUMERIC )
+ 			diamgr.getInstance().showDialog( diamgr.DIALOG_ID_LNB_FREQUENCY )
  			print 'dhkim test getLabel = %s' % diamgr.getInstance().getResultText( )
-
-		#winmgr.getInstance().showWindow( winmgr.WIN_ID_TUNER_CONFIGURATION )
 
 		
 	def onFocus( self, controlId ):

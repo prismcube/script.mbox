@@ -7,6 +7,8 @@ from gui.basedialog import BaseDialog
 
 DIALOG_ID_KEYBOARD 					= 0
 DIALOG_ID_NUMERIC					= 1
+DIALOG_ID_LNB_FREQUENCY				= 2
+
 
 gDialogmgr = None
 
@@ -45,9 +47,13 @@ class DialogMgr(object):
 
 		from pvr.gui.dialogs.dialogkeyboard import DialogKeyboard
 		from pvr.gui.dialogs.dialognumeric import DialogNumeric
-	
+		from pvr.gui.dialogs.dialoglnbfrequency import DialogLnbFrequency
+
+		
 		self.dialogs[ DIALOG_ID_KEYBOARD ]	               = DialogKeyboard('dialogkeyboard.xml', self.scriptDir)	
 		self.dialogs[ DIALOG_ID_NUMERIC ]	               = DialogNumeric('dialognumeric.xml', self.scriptDir)	
+		self.dialogs[ DIALOG_ID_LNB_FREQUENCY ]	           = DialogLnbFrequency('dialoglnbfrequency.xml', self.scriptDir)	
+
 
 	def setDefaultText( self, text ):
 		self.defaultText = text
