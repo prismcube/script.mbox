@@ -1963,7 +1963,7 @@
 				<posy>30</posy>
 				<width>1280</width>
 				<height>6</height>
-				<texture>separator.png</texture>
+				<texture>confluence/separator.png</texture>
 			</control>
 			<!-- FOOTER BUTTON -->
 			<control type="grouplist">
@@ -1990,8 +1990,8 @@
 						<posy>10</posy>
 						<width>35</width>
 						<height>35</height>
-						<texturenofocus>OSDRepeatNF.png</texturenofocus>
-						<texturefocus>OSDRepeatFO.png</texturefocus>
+						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
+						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
 						<onleft>3131</onleft>
 						<onright>3111</onright>
 						<onup>-</onup>
