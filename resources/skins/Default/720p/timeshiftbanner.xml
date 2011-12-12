@@ -151,10 +151,10 @@
 					<colordiffuse>66FFFFFF</colordiffuse>
 					<texture>confluence/separator2.png</texture>
 				</control>
-				<control type="group" id="201">
+				<!--control type="group" id="201">
 					<posx>718</posx>
 					<posy>4</posy>
-					<!--control type="button" id="703">
+					<control type="button" id="703">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>45</width>
@@ -188,8 +188,8 @@
 						<onclick>XBMC.PlayerControl(record)</onclick>
 						<enable>Player.CanRecord</enable>
 						<animation effect="fade" start="100" end="50" time="100" condition="!Player.CanRecord">Conditional</animation>
-					</control-->
-				</control>
+					</control>
+				</control-->
 				<control type="group" id="100">
 					<posx>490</posx>
 					<posy>40</posy>
@@ -214,7 +214,7 @@
 						<width>50</width>
 						<height>50</height>
 						<label>31354</label>
-						<font>-</font>
+						<font></font>
 						<texturefocus>confluence/OSDRewindFO.png</texturefocus>
 						<texturenofocus>confluence/OSDRewindNF.png</texturenofocus>
 						<onleft>600</onleft>
@@ -250,7 +250,7 @@
 						<height>50</height>
 						<label>31352</label>
 						<font>-</font>
-						<texturefocusconfluence/>OSDStopFO.png</texturefocus>
+						<texturefocus>confluence/OSDStopFO.png</texturefocus>
 						<texturenofocus>confluence/OSDStopNF.png</texturenofocus>
 						<onleft>602</onleft>
 						<onright>604</onright>
