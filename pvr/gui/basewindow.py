@@ -221,7 +221,7 @@ class SettingWindow( BaseWindow ):
 		"""
 		import pvr.platform 
 		scriptDir = pvr.platform.getPlatform().getScriptDir()
-		from pvr.gui.dialogs.keyboarddialog import KeyboardDialog
+		from pvr.gui.dialogs.dialogkeyboard import DialogKeyboard
 		KeyboardDialog('keyboarddialog.xml', scriptDir).doModal()
 		"""
 
