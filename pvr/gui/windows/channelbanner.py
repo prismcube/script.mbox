@@ -102,6 +102,7 @@ class ChannelBanner(BaseWindow):
 		self.currentChannel = self.commander.channel_GetCurrent()
 
 		self.initLabelInfo()
+		self.updateVolume(Action.ACTION_MUTE)
 	
 		if is_digit(self.currentChannel[3]):
 			self.updateServiceType(int(self.currentChannel[3]))
@@ -221,6 +222,9 @@ class ChannelBanner(BaseWindow):
 	def onClick(self, controlId):
 		print "onclick(): control %d" % controlId
 		if controlId == self.ctrlBtnMute.getId():
+			self.updateVolume( Action.ACTION_MUTE )
+
+		elif controlId == self.ctrlBtnMuteToggled.getId():
 			self.updateVolume( Action.ACTION_MUTE )
 
 		elif controlId == self.ctrlBtnExInfo.getId() :

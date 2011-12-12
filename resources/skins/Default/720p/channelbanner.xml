@@ -66,6 +66,7 @@
 					<posy>-15</posy>
 					<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(620).HasFocus)">conditional</animation>
 					<animation effect="slide" start="0,0" end="-200,0" delay="0" time="300" condition="!ControlGroup(620).HasFocus)">conditional</animation>
+					<description>info explane</description>
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -84,7 +85,6 @@
 						<textcolor>white</textcolor>
 						<label>Description</label>
 						<visible>Control.HasFocus(621)</visible>
-						<description>info explane</description>
 					</control>
 					<control type="label">
 						<posx>30</posx>
@@ -97,7 +97,6 @@
 						<textcolor>white</textcolor>
 						<label>Teletext</label>
 						<visible>Control.HasFocus(622)</visible>
-						<description>info explane</description>
 					</control>
 					<control type="label">
 						<posx>30</posx>
@@ -110,7 +109,6 @@
 						<textcolor>white</textcolor>
 						<label>Subtitle</label>
 						<visible>Control.HasFocus(623)</visible>
-						<description>info explane</description>
 					</control>
 					<control type="label">
 						<posx>30</posx>
@@ -123,7 +121,6 @@
 						<textcolor>white</textcolor>
 						<label>Start Recording</label>
 						<visible>Control.HasFocus(624)</visible>
-						<description>info explane</description>
 					</control>
 					<control type="label">
 						<posx>30</posx>
@@ -136,7 +133,6 @@
 						<textcolor>white</textcolor>
 						<label>Stop Recording</label>
 						<visible>Control.HasFocus(625)</visible>
-						<description>info explane</description>
 					</control>
 					<control type="label">
 						<posx>30</posx>
@@ -147,9 +143,20 @@
 						<aligny>center</aligny>
 						<font>font12</font>
 						<textcolor>white</textcolor>
-						<label>Audio Mute</label>
+						<label>Mute Off</label>
 						<visible>Control.HasFocus(626)</visible>
-						<description>info explane</description>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<label>Mute On</label>
+						<visible>Control.HasFocus(627)</visible>
 					</control>
 
 				</control>
@@ -283,8 +290,8 @@
 					</control>
 
 					<control type="image">
-						<animation effect="fade" start="0" end="100" delay="0" time="300" condition="Control.HasFocus(629)">conditional</animation>
-						<animation effect="fade" start="100" end="0" delay="0" time="300" condition="!Control.HasFocus(629)">conditional</animation>
+						<animation effect="fade" start="0" end="100" delay="0" time="300" condition="ControlGroup(629).HasFocus">conditional</animation>
+						<animation effect="fade" start="100" end="0" delay="0" time="300" condition="!ControlGroup(629).HasFocus">conditional</animation>
 						<posx>225-2</posx>
 						<posy>-1</posy>
 						<width>45</width>
@@ -310,7 +317,7 @@
 							<onright>SetFocus(621)</onright>
 							<onup></onup>
 							<ondown>SetFocus(702)</ondown>
-							<description>mute</description>
+							<description>mute,audio off</description>
 						</control>
 						<control type="button" id="627">
 							<posx>225</posx>
@@ -326,7 +333,7 @@
 							<onright>SetFocus(621)</onright>
 							<onup></onup>
 							<ondown>SetFocus(702)</ondown>
-							<description>mute</description>
+							<description>mute, audio on</description>
 							<visible>!Control.IsVisible(626)</visible>
 						</control>
 					</control>
