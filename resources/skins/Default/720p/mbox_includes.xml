@@ -1909,7 +1909,7 @@
 				<posy>80</posy>
 				<width>1280</width>
 				<height>4</height>
-				<texture>separator2.png</texture>
+				<texture>confluence/separator2.png</texture>
 			</control>
 			<control type="label" id="3002">
 				<description>DATE Label</description>
@@ -1963,7 +1963,7 @@
 				<posy>30</posy>
 				<width>1280</width>
 				<height>6</height>
-				<texture>separator.png</texture>
+				<texture>confluence/separator.png</texture>
 			</control>
 			<!-- FOOTER BUTTON -->
 			<control type="grouplist">
@@ -1990,8 +1990,8 @@
 						<posy>10</posy>
 						<width>35</width>
 						<height>35</height>
-						<texturenofocus>OSDRepeatNF.png</texturenofocus>
-						<texturefocus>OSDRepeatFO.png</texturefocus>
+						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
+						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
 						<onleft>3131</onleft>
 						<onright>3111</onright>
 						<onup>-</onup>
@@ -2035,8 +2035,8 @@
 						<width>35</width>
 						<height>35</height>
 						<hitrect x="30" y="10" w="120" h="40"></hitrect>
-						<texturenofocus>OSDRepeatNF.png</texturenofocus>
-						<texturefocus>OSDRepeatFO.png</texturefocus>
+						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
+						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
 						<onleft>3101</onleft>
 						<onright>3121</onright>
 						<onup>-</onup>
@@ -2079,8 +2079,8 @@
 						<posy>10</posy>
 						<width>35</width>
 						<height>35</height>
-						<texturenofocus>OSDRepeatNF.png</texturenofocus>
-						<texturefocus>OSDRepeatFO.png</texturefocus>
+						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
+						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
 						<onleft>3111</onleft>
 						<onright>3131</onright>
 						<onup>-</onup>
@@ -2123,8 +2123,8 @@
 						<posy>10</posy>
 						<width>35</width>
 						<height>35</height>
-						<texturenofocus>OSDRecordNF.png</texturenofocus>
-						<texturefocus>OSDRecord2.png</texturefocus>
+						<texturenofocus>confluence/OSDRecordNF.png</texturenofocus>
+						<texturefocus>confluence/OSDRecord2.png</texturefocus>
 						<onleft>3121</onleft>
 						<onright>3101</onright>
 						<onup>-</onup>

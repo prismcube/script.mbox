@@ -135,7 +135,7 @@ class ControlItem:
 		self.selecteItem = selecteItem
 	
 
-class SettingWindow(BaseWindow):
+class SettingWindow( BaseWindow ):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
 		self.controlList = []
