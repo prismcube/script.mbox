@@ -86,6 +86,7 @@ class ChannelBanner(BaseWindow):
 			self.ctrlBtnStartRec    = self.getControl( 624 )
 			self.ctrlBtnStopRec     = self.getControl( 625 )
 			self.ctrlBtnMute        = self.getControl( 626 )
+			self.ctrlBtnMuteToggled = self.getControl( 627 )
 			self.ctrlBtnTSbanner    = self.getControl( 630 )
 			
 			self.ctrlBtnPrevEpg     = self.getControl( 702 )
@@ -491,9 +492,13 @@ class ChannelBanner(BaseWindow):
 			print 'mute:current[%s]'% mute
 			if mute == False:
 				ret = self.commander.player_SetMute(True)
+				self.ctrlBtnMute.setVisible(True)
+				self.ctrlBtnMuteToggled.setVisible(False)
 
 			else:
 				ret = self.commander.player_SetMute(False)
+				self.ctrlBtnMute.setVisible(False)
+				self.ctrlBtnMuteToggled.setVisible(True)
 
 		elif cmd == Action.ACTION_VOLUME_UP:
 			pass
