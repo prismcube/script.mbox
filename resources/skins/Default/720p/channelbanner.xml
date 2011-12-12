@@ -48,7 +48,7 @@
 					<font>font35_title</font>
 					<textcolor>FFB2D4F5</textcolor>
 					<label>$INFO[Control.GetLabel]</label>
-					<description>Ch Name</description>
+					<description>longitude</description>
 				</control>
 
 				<control type="image" id="603">

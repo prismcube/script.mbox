@@ -1,11 +1,11 @@
 <window type="windows" id="3009">
-	<defaultcontrol always="true">602</defaultcontrol>
+	<defaultcontrol always="true">405</defaultcontrol>
 	<controls>
 		<control type="group">
 			<animation effect="slide" start="0,540" end="0,0" time="300" delay="300" tween="quadratic" easing="out">WindowOpen</animation>
 			<animation effect="slide" start="0,0" end="0,540" time="300" delay="150" tween="quadratic" easing="out" >WindowClose</animation>
-			<!--animation effect="slide" start="0,540" end="0,0" time="300" delay="300" tween="quadratic" easing="out" condition="Control.HasFocus(3301)">Conditional</animation-->
-			<control type="group">
+			<!--animation effect="slide" start="0,156" end="0,0" time="300" delay="300" tween="quadratic" easing="out" condition="ControlGroup(10).HasFocus | ControlGroup(400).HasFocus">conditional</animation-->
+			<control type="group" id="10">
 				<control type="image">
 					<description>media info background image</description>
 					<posx>0</posx>
@@ -14,58 +14,29 @@
 					<height>256</height>
 					<texture>confluence/MediaInfoBackLower.png</texture>
 				</control>
-				<!--control type="button" id="3301">
+				<control type="button">
 					<description>Fake button for mouse control</description>
 					<posx>0</posx>
-					<posy>500</posy>
+					<posy>540</posy>
 					<width>1280</width>
-					<height>280</height>
+					<height>266</height>
 					<label>-</label>
 					<font>-</font>
-					<texturenofocus>confluence/MediaSubSetNF.png</texturenofocus>
+					<texturenofocus>-</texturenofocus>
 					<texturefocus>-</texturefocus>
 					<visible>true</visible>
-				</control-->
+				</control>
 			</control>
 
 <!-- info section -->
 			<control type="group">
 				<posx>0</posx>
 				<posy>590</posy>
-
-				<control type="group">
-					<description>info</description>
-					<posx>200r</posx>
-					<posy>-25</posy>
-					<animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
-					<animation effect="slide" start="0,0" end="210,0" delay="0" time="300" condition="Window.Next(Home) | Window.IsVisible(FullscreenVideo) | Window.IsVisible(Visualisation)">WindowClose</animation>
-					<animation effect="slide" start="210,0" end="0,0" delay="0" time="300" condition="Window.Previous(Home) | Window.IsVisible(FullscreenVideo) | Window.IsVisible(Visualisation)">WindowOpen</animation>
-					<control type="image">
-						<description>time background</description>
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>200</width>
-						<height>35</height>
-						<texture flipx="true" border="32,0,0,0">confluence/header.png</texture>
-					</control>
-					<control type="label" id="101">
-						<posx>30</posx>
-						<posy>0</posy>
-						<width>400</width>
-						<height>28</height>
-						<align>left</align>
-						<aligny>center</aligny>
-						<font>font12</font>
-						<textcolor>white</textcolor>
-						<label>TIME $INFO[Control.GetLabel]</label>
-						<description>EPG Clock</description>
-					</control>
-				</control>
 				<control type="group">
 					<posx>0</posx>
 					<posy>-25</posy>
-					<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(10).HasFocus)">conditional</animation>
-					<animation effect="slide" start="0,0" end="-200,0" delay="0" time="300" condition="!ControlGroup(10).HasFocus)">conditional</animation>
+					<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(400).HasFocus)">conditional</animation>
+					<animation effect="slide" start="0,0" end="-200,0" delay="0" time="300" condition="!ControlGroup(400).HasFocus)">conditional</animation>
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -83,19 +54,193 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>SCRIPT960</label>
+						<label>Subtitle</label>
+						<visible>Control.HasFocus(401)</visible>
+					</control>
+					<control type="label">
+						<posx>50</posx>
+						<posy>0</posy>
+						<width min="150" max="300">auto</width>
+						<height>28</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Volume</label>
+						<visible>Control.HasFocus(402)</visible>
+					</control>
+					<control type="label">
+						<posx>50</posx>
+						<posy>0</posy>
+						<width min="150" max="300">auto</width>
+						<height>28</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Record</label>
+						<visible>Control.HasFocus(403)</visible>
+					</control>
+					<control type="label">
+						<posx>50</posx>
+						<posy>0</posy>
+						<width min="150" max="300">auto</width>
+						<height>28</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Rewind</label>
+						<visible>Control.HasFocus(404)</visible>
+					</control>
+					<control type="label">
+						<posx>50</posx>
+						<posy>0</posy>
+						<width min="150" max="300">auto</width>
+						<height>28</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Play</label>
+						<visible>Control.HasFocus(405)</visible>
+					</control>
+					<control type="label">
+						<posx>50</posx>
+						<posy>0</posy>
+						<width min="150" max="300">auto</width>
+						<height>28</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Stop</label>
+						<visible>Control.HasFocus(406)</visible>
+					</control>
+					<control type="label">
+						<posx>50</posx>
+						<posy>0</posy>
+						<width min="150" max="300">auto</width>
+						<height>28</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Forward</label>
+						<visible>Control.HasFocus(407)</visible>
 					</control>
 				</control>
 			</control>
 
-<!-- play section -->
-			<control type="group" id="10">
+
+<!-- Ch section -->
+			<control type="group">
+				<posx>50</posx>
+				<posy>580</posy>
+
+				<control type="label" id="101">
+					<posx>0</posx>
+					<posy>10</posy>
+					<width>200</width>
+					<height>50</height>
+					<align>center</align>
+					<font>font50caps_title</font>
+					<label>$INFO[Control.GetLabel]</label>
+					<description>Ch Num</description>
+				</control>
+				<control type="label" id="102">
+					<posx>250</posx>
+					<posy>20</posy>
+					<align>left</align>
+					<width>500</width>
+					<font>font35_title</font>
+					<textcolor>FFB2D4F5</textcolor>
+					<label>$INFO[Control.GetLabel]</label>
+					<description>longitude</description>
+				</control>
+			</control>
+
+
+<!-- EPG section -->
+			<control type="group">
 				<posx>0</posx>
 				<posy>590</posy>
 				<control type="group" id="200">
-					<posx>417</posx>
-					<posy>4</posy>
-					<control type="button" id="700">
+					<posx>400</posx>
+					<posy>0</posy>
+					<control type="progress" id="201">
+						<description>progress control</description>
+						<posx>0</posx>
+						<posy>19</posy>
+						<width>450</width>
+						<height>8</height>
+					</control>
+				</control>
+
+				<control type="group">
+					<description>info</description>
+					<posx>200r</posx>
+					<posy>-25</posy>
+					<control type="image">
+						<description>time background</description>
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>35</height>
+						<texture flipx="true" border="32,0,0,0">confluence/header.png</texture>
+					</control>
+					<control type="label" id="211">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<label>TIME $INFO[Control.GetLabel]</label>
+						<description>EPG Clock</description>
+					</control>
+				</control>
+
+				<control type="group">
+					<posx>300</posx>
+					<posy>10</posy>
+					<width>150</width>
+					<control type="label" id="221">
+						<description>start</description>
+						<posx>20</posx>
+						<posy>3</posy>
+						<textcolor>grey</textcolor>
+						<font>font12</font>
+						<label>00:00:00</label>
+					</control>
+					<control type="label" id="222">
+						<description>start</description>
+						<posx>560</posx>
+						<posy>3</posy>
+						<textcolor>grey</textcolor>
+						<font>font12</font>
+						<label>00:00:00</label>
+					</control>
+				</control>
+
+			</control>
+
+<!-- play section -->
+			<control type="group">
+				<posx>0</posx>
+				<posy>590</posy>
+				<control type="group" id="400">
+					<posx>450</posx>
+					<posy>60</posy>
+					<control type="button" id="401">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>45</width>
@@ -104,13 +249,13 @@
 						<font>-</font>
 						<texturefocus>confluence/OSDSubtitlesFO.png</texturefocus>
 						<texturenofocus>confluence/OSDSubtitlesNF.png</texturenofocus>
-						<onleft>705</onleft>
-						<onright>701</onright>
-						<onup>600</onup>
-						<ondown>600</ondown>
-						<onclick>XBMC.RunScript($INFO[Skin.String(SubtitleScript_Path)])</onclick>
+						<onleft>SetFocus(407)</onleft>
+						<onright>SetFocus(402)</onright>
+						<onup></onup>
+						<ondown></ondown>
+						<!--onclick>XBMC.RunScript($INFO[Skin.String(SubtitleScript_Path)])</onclick-->
 					</control>
-					<control type="button" id="701">
+					<control type="button" id="402">
 						<posx>50</posx>
 						<posy>0</posy>
 						<width>45</width>
@@ -119,13 +264,13 @@
 						<font>-</font>
 						<texturefocus>confluence/OSDAudioFO.png</texturefocus>
 						<texturenofocus>confluence/OSDAudioNF.png</texturenofocus>
-						<onleft>700</onleft>
-						<onright>702</onright>
-						<onup>600</onup>
-						<ondown>600</ondown>
-						<onclick>XBMC.RunScript($INFO[Skin.String(SubtitleScript_Path)])</onclick>
+						<onleft>SetFocus(401)</onleft>
+						<onright>SetFocus(403)</onright>
+						<onup></onup>
+						<ondown></ondown>
+						<!--onclick>XBMC.RunScript($INFO[Skin.String(SubtitleScript_Path)])</onclick-->
 					</control>
-					<control type="button" id="702">
+					<control type="button" id="403">
 						<posx>100</posx>
 						<posy>0</posy>
 						<width>45</width>
@@ -134,15 +279,80 @@
 						<font>-</font>
 						<texturefocus>confluence/OSDRecordFO.png</texturefocus>
 						<texturenofocus>confluence/OSDRecordNF.png</texturenofocus>
-						<onleft>701</onleft>
-						<onright>703</onright>
-						<onup>601</onup>
-						<ondown>601</ondown>
+						<onleft>SetFocus(402)</onleft>
+						<onright>SetFocus(404)</onright>
+						<onup></onup>
+						<ondown></ondown>
 						<onclick>XBMC.PlayerControl(record)</onclick>
 					</control>
-
+					<control type="button" id="404">
+						<posx>150</posx>
+						<posy>0</posy>
+						<width>50</width>
+						<height>50</height>
+						<label>31354</label>
+						<font></font>
+						<texturefocus>confluence/OSDRewindFO.png</texturefocus>
+						<texturenofocus>confluence/OSDRewindNF.png</texturenofocus>
+						<onleft>SetFocus(403)</onleft>
+						<onright>SetFocus(405)</onright>
+						<onup></onup>
+						<ondown></ondown>
+						<onclick>PlayerControl(Rewind)</onclick>
+					</control>
+					<control type="togglebutton" id="405">
+						<posx>200</posx>
+						<posy>0</posy>
+						<width>50</width>
+						<height>50</height>
+						<label>31351</label>
+						<altlabel>208</altlabel>
+						<font>-</font>
+						<texturefocus>confluence/OSDPauseFO.png</texturefocus>
+						<texturenofocus>confluence/OSDPauseNF.png</texturenofocus>
+						<!--usealttexture>Player.Paused | Player.Forwarding | Player.Rewinding</usealttexture-->
+						<alttexturefocus>confluence/OSDPlayFO.png</alttexturefocus>
+						<alttexturenofocus>confluence/OSDPlayNF.png</alttexturenofocus>
+						<onleft>SetFocus(404)</onleft>
+						<onright>SetFocus(406)</onright>
+						<onup></onup>
+						<ondown></ondown>
+						<pulseonselect>false</pulseonselect>
+						<!--onclick>PlayerControl(Play)</onclick-->
+					</control>
+					<control type="button" id="406">
+						<posx>250</posx>
+						<posy>0</posy>
+						<width>50</width>
+						<height>50</height>
+						<label>31352</label>
+						<font>-</font>
+						<texturefocus>confluence/OSDStopFO.png</texturefocus>
+						<texturenofocus>confluence/OSDStopNF.png</texturenofocus>
+						<onleft>SetFocus(405)</onleft>
+						<onright>SetFocus(407)</onright>
+						<onup></onup>
+						<ondown></ondown>
+						<onclick>PlayerControl(Stop)</onclick>
+					</control>
+					<control type="button" id="407">
+						<posx>300</posx>
+						<posy>0</posy>
+						<width>50</width>
+						<height>50</height>
+						<label>31353</label>
+						<font>-</font>
+						<texturefocus>confluence/OSDForwardFO.png</texturefocus>
+						<texturenofocus>confluence/OSDForwardNF.png</texturenofocus>
+						<onleft>SetFocus(406)</onleft>
+						<onright>SetFocus(401)</onright>
+						<onup></onup>
+						<ondown></ondown>
+						<onclick>PlayerControl(Forward)</onclick>
+					</control>
 				</control>
-				<control type="image">
+
+				<!--control type="image">
 					<description>separator image</description>
 					<posx>567</posx>
 					<posy>25</posy>
@@ -190,9 +400,6 @@
 						<animation effect="fade" start="100" end="50" time="100" condition="!Player.CanRecord">Conditional</animation>
 					</control>
 				</control-->
-				<control type="group" id="100">
-					<posx>490</posx>
-					<posy>40</posy>
 					<!--control type="button" id="600">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -208,71 +415,7 @@
 						<ondown>701</ondown>
 						<onclick>PlayerControl(Previous)</onclick>
 					</control-->
-					<control type="button" id="601">
-						<posx>50</posx>
-						<posy>0</posy>
-						<width>50</width>
-						<height>50</height>
-						<label>31354</label>
-						<font></font>
-						<texturefocus>confluence/OSDRewindFO.png</texturefocus>
-						<texturenofocus>confluence/OSDRewindNF.png</texturenofocus>
-						<onleft>600</onleft>
-						<onright>602</onright>
-						<onup>702</onup>
-						<ondown>702</ondown>
-						<onclick>PlayerControl(Rewind)</onclick>
-					</control>
-					<control type="togglebutton" id="602">
-						<posx>100</posx>
-						<posy>0</posy>
-						<width>50</width>
-						<height>50</height>
-						<label>31351</label>
-						<altlabel>208</altlabel>
-						<font>-</font>
-						<texturefocus>confluence/OSDPauseFO.png</texturefocus>
-						<texturenofocus>confluence/OSDPauseNF.png</texturenofocus>
-						<!--usealttexture>Player.Paused | Player.Forwarding | Player.Rewinding</usealttexture-->
-						<alttexturefocus>confluence/OSDPlayFO.png</alttexturefocus>
-						<alttexturenofocus>confluence/OSDPlayNF.png</alttexturenofocus>
-						<onleft>601</onleft>
-						<onright>603</onright>
-						<onup>702</onup>
-						<ondown>702</ondown>
-						<pulseonselect>false</pulseonselect>
-						<!--onclick>PlayerControl(Play)</onclick-->
-					</control>
-					<control type="button" id="603">
-						<posx>150</posx>
-						<posy>0</posy>
-						<width>50</width>
-						<height>50</height>
-						<label>31352</label>
-						<font>-</font>
-						<texturefocus>confluence/OSDStopFO.png</texturefocus>
-						<texturenofocus>confluence/OSDStopNF.png</texturenofocus>
-						<onleft>602</onleft>
-						<onright>604</onright>
-						<onup>703</onup>
-						<ondown>703</ondown>
-						<onclick>PlayerControl(Stop)</onclick>
-					</control>
-					<control type="button" id="604">
-						<posx>200</posx>
-						<posy>0</posy>
-						<width>50</width>
-						<height>50</height>
-						<label>31353</label>
-						<font>-</font>
-						<texturefocus>confluence/OSDForwardFO.png</texturefocus>
-						<texturenofocus>confluence/OSDForwardNF.png</texturenofocus>
-						<onleft>603</onleft>
-						<onright>605</onright>
-						<onup>703</onup>
-						<ondown>703</ondown>
-						<onclick>PlayerControl(Forward)</onclick>
-					</control>
+
 					<!--control type="button" id="605">
 						<posx>250</posx>
 						<posy>0</posy>
@@ -288,7 +431,7 @@
 						<ondown>704</ondown>
 						<onclick>PlayerControl(Next)</onclick>
 					</control-->
-				</control>
+
 				<control type="label">
 					<posx>20</posx>
 					<posy>60</posy>
@@ -317,6 +460,7 @@
 					<shadowcolor>black</shadowcolor>
 				</control>
 			</control>
+
 
 		</control>
 	</controls>
