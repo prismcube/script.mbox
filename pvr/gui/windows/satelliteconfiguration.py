@@ -109,8 +109,9 @@ class SatelliteConfiguration( SettingWindow ):
  			ret = dialog.select('Select Transponder', self.transponderList )
 
  		elif( controlId == E_Input02 + 1 ) :
+ 			diamgr.getInstance().setTitleLabel( 'test Title Label' )
  			diamgr.getInstance().setDefaultText( self.lnbFrequency )
- 			diamgr.getInstance().showDialog( diamgr.DIALOG_ID_KEYBOARD )
+ 			diamgr.getInstance().showDialog( diamgr.DIALOG_ID_NUMERIC )
  			print 'dhkim test getLabel = %s' % diamgr.getInstance().getResultText( )
 
 		#winmgr.getInstance().showWindow( winmgr.WIN_ID_TUNER_CONFIGURATION )

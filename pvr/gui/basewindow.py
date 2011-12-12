@@ -135,7 +135,7 @@ class ControlItem:
 		self.selecteItem = selecteItem
 	
 
-class SettingWindow(BaseWindow):
+class SettingWindow( BaseWindow ):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
 		self.controlList = []
@@ -221,7 +221,7 @@ class SettingWindow(BaseWindow):
 		"""
 		import pvr.platform 
 		scriptDir = pvr.platform.getPlatform().getScriptDir()
-		from pvr.gui.dialogs.keyboarddialog import KeyboardDialog
+		from pvr.gui.dialogs.dialogkeyboard import DialogKeyboard
 		KeyboardDialog('keyboarddialog.xml', scriptDir).doModal()
 		"""
 
