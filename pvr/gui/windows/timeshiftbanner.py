@@ -182,12 +182,12 @@ class TimeShiftBanner(BaseWindow):
 		elif focusId == self.ctrlBtnRewind.getId():
 			#get speed
 			#self.initTimeShift()
-			ret = self.commander.player_SetSpeed()
+			#ret = self.commander.player_SetSpeed()
 
 		elif focusId == self.ctrlBtnForward.getId():
 			#get speed
 			#self.initTimeShift()
-			ret = self.commander.player_SetSpeed()
+			#ret = self.commander.player_SetSpeed()
 
 
 	def updateONEvent(self, event):
