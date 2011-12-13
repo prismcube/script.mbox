@@ -24,6 +24,7 @@ class ElisEvent(object):
 	ElisTimeshiftEITReceived			= 'ElisTimeshiftEITReceived'
 
 
+<<<<<<< HEAD
 class ElisAction(object):
 	Tune								= 'Tune'
 	ElisReady							= 'ElisReady'
@@ -250,6 +251,8 @@ class ElisEnum(object):
 	E_DEFAULT_MAX					= 0x7fffffff
 
 
+=======
+>>>>>>> remotes/origin/TB_ELIS_COMMAND
 class ElisEventBus(object):
 	def __init__(self):
 		self.listeners = []

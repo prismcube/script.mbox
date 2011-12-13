@@ -5,7 +5,7 @@ import sys
 import pvr.gui.windowmgr as winmgr
 from pvr.gui.basewindow import BaseWindow, setWindowBusy
 from pvr.gui.basewindow import Action
-from pvr.elisevent import ElisEnum
+from pvr.elisenum import ElisEnum
 from inspect import currentframe
 from pvr.util import catchall, is_digit, run_async, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString
 import pvr.elismgr
@@ -42,6 +42,7 @@ class ChannelListWindow(BaseWindow):
 
 
 	def onInit(self):
+		print ' test init Channel List by shinjh333 '	
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		if not self.win:
 			self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
@@ -100,6 +101,7 @@ class ChannelListWindow(BaseWindow):
 			self.listEnableFlag = False
 
 		#initialize get channel list
+		print ' test init Channel List by shinjh999 '	
 		self.initTabHeader()
 
 		#'All Channel' button click, only one when window open
@@ -228,8 +230,7 @@ class ChannelListWindow(BaseWindow):
 		if controlId == self.listcontrol.getId() :
 			label = self.listcontrol.getSelectedItem().getLabel()
 			channelNumbr = int(label[:4])
-
-			ret = self.commander.channel_SetCurrent( channelNumbr )
+			ret = self.commander.channel_SetCurrent( channelNumbr, self.tabHeader_serviceType)
 
 			if ret[0].upper() == 'TRUE' :
 				if self.currentChannel == channelNumbr :
@@ -466,6 +467,7 @@ class ChannelListWindow(BaseWindow):
 				
 
 	def initTabHeader(self):
+		print ' test init Channel List by shinjh44444'	
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 		#header, footer init
@@ -502,8 +504,10 @@ class ChannelListWindow(BaseWindow):
 		#satellite longitude list
 		list_ = []
 		testlistItems = []
-		self.commander.satellite_GetConfiguredList(1, list_)
-		#print 'satellite_GetConfiguredList[%s]'% list_
+
+		print ' test init Channel List by shinjh2 '
+		list_ = self.commander.satellite_GetConfiguredList(1 )
+		print 'satellite_GetConfiguredList[%s]'% list_
 		for item in list_:
 			ret = GetSelectedLongitudeString(item)
 			testlistItems.append(xbmcgui.ListItem(ret))
@@ -545,7 +549,8 @@ class ChannelListWindow(BaseWindow):
 		self.channelList = []
 		self.listItems = []
 		#self.commander.channel_GetList( ElisEnum.E_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_DEFAULT, self.channelList )
-		self.commander.channel_GetList( self.tabHeader_serviceType, self.tabHeader_zappingMode, self.tabHeader_channelsortMode, self.channelList )
+		print ' test init Channel List by shinjh1 '
+		self.channelList = self.commander.channel_GetList( self.tabHeader_serviceType, self.tabHeader_zappingMode, self.tabHeader_channelsortMode )
 
 		print 'sort[%s] channellist[%s]'% (self.tabHeader_channelsortMode, self.channelList)
 
@@ -673,7 +678,9 @@ class ChannelListWindow(BaseWindow):
 			self.ctrlProgress.setVisible(True)
 
 			#component
-			ret = epgInfoComponentImage(int(event[9]))
+			component = event[9:18]
+#			ret = epgInfoComponentImage(int(event[9]))
+			ret = epgInfoComponentImage(component)				
 			if len(ret) == 1:
 				self.ctrlServiceTypeImg1.setImage(ret[0])
 			elif len(ret) == 2:

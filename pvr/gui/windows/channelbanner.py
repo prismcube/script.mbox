@@ -10,8 +10,9 @@ from pvr.gui.guiconfig import *
 
 
 import pvr.elismgr
-from pvr.elisevent import ElisAction, ElisEnum
 from pvr.net.net import EventRequest
+from pvr.elisaction import ElisAction
+from pvr.elisenum import ElisEnum
 
 #from threading import Thread
 from pvr.util import run_async, is_digit, Mutex, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString #, synchronized, sync_instance
@@ -289,8 +290,9 @@ class ChannelBanner(BaseWindow):
 			print 'priv_ch[%s]' % priv_ch
 
 			channelNumber = priv_ch[0]
+			channelType = priv_ch[3]
 			if is_digit(channelNumber):
-				ret = self.commander.channel_SetCurrent( int(channelNumber) )
+				ret = self.commander.channel_SetCurrent( int(channelNumber) , int(channelType))
 				self.lastChannel = self.currentChannel
 
 				if ret[0].upper() == 'TRUE' :
@@ -309,8 +311,9 @@ class ChannelBanner(BaseWindow):
 			print 'next_ch[%s]' % next_ch
 
 			channelNumber = next_ch[0]
+			channelType = next_ch[3]
 			if is_digit(channelNumber):
-				ret = self.commander.channel_SetCurrent( int(channelNumber) )
+				ret = self.commander.channel_SetCurrent( int(channelNumber), int(channelType) )
 				self.lastChannel = self.currentChannel
 
 				if ret[0].upper() == 'TRUE' :
@@ -347,6 +350,7 @@ class ChannelBanner(BaseWindow):
 	def updateONEvent(self, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'event[%s]'% event
+		print 'component [%s]'% event[9:19]
 
 		if event != [] and event[1] != 'NULL' and len(event) > 2:
 			#epg name
@@ -379,7 +383,10 @@ class ChannelBanner(BaseWindow):
 				print 'value error EPGTime duration[%s]' % event[7]
 
 			#component
-			ret = epgInfoComponentImage(int(event[9]))
+			component = []
+			component = event[9:18]
+#			ret = epgInfoComponentImage(int(event[9]))
+			ret = epgInfoComponentImage(component)			
 			if len(ret) == 1:
 				self.ctrlServiceTypeImg1.setImage(ret[0])
 			elif len(ret) == 2:
