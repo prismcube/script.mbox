@@ -126,8 +126,8 @@ class Configure( SettingWindow ):
 			
 		elif selectedId == E_PARENTAL :	
 			self.addEnumControl( E_SpinEx01, 'Lock Mainmenu', None )
-			self.addInputControl( E_Input01, 'New PIN code', '****', 5)
-			self.addInputControl( E_Input02, 'Confirmation PIN code', '****' , 5)
+			self.addInputControl( E_Input01, 'New PIN code', '****', 5, None)
+			self.addInputControl( E_Input02, 'Confirmation PIN code', '****' , 5, None)
 			self.addEnumControl( E_SpinEx02, 'Age Restricted', None )
 			
 
@@ -217,10 +217,10 @@ class Configure( SettingWindow ):
 		
 		elif selectedId == E_IP_SETTING :	
 			self.addEnumControl( E_SpinEx01, 'DHCP', None )
-			self.addInputControl( E_Input01, 'IP Address', '192.168.101.160' , 3 )
-			self.addInputControl( E_Input02, 'Subnet Mask', '255.255.252.0', 3 )
-			self.addInputControl( E_Input03, 'Gateway', '192.168.100.1', 3 )
-			self.addInputControl( E_Input04, 'DNS', '192.168.100.1', 3 )
+			self.addInputControl( E_Input01, 'IP Address', '192.168.101.160' , 3, None )
+			self.addInputControl( E_Input02, 'Subnet Mask', '255.255.252.0', 3, None )
+			self.addInputControl( E_Input03, 'Gateway', '192.168.100.1', 3, None )
+			self.addInputControl( E_Input04, 'DNS', '192.168.100.1', 3, None )
 
 			visibleControlIds = [ E_SpinEx01, E_Input01, E_Input02, E_Input03, E_Input04 ]
 			self.setVisibleControls( visibleControlIds, True )
@@ -236,7 +236,7 @@ class Configure( SettingWindow ):
 			
 
 		elif selectedId == E_FORMAT_HDD :	
-			self.addUserEnumControl( E_SpinEx01, 'Format Type', USER_ENUM_LIST_FORMAT_TYPE, 0 )
+			self.addUserEnumControl( E_SpinEx01, 'Format Type', USER_ENUM_LIST_FORMAT_TYPE, 0, None )
 			self.addLeftLabelButtonControl( E_Input01, 'Start HDD Format', None )
 			
 			visibleControlIds = [ E_SpinEx01, E_Input01 ]
@@ -252,9 +252,9 @@ class Configure( SettingWindow ):
 			
 
 		elif selectedId == E_FACTORY_RESET :	
-			self.addUserEnumControl( E_SpinEx01, 'Reset Channel List', USER_ENUM_LIST_YES_NO, 0 )
-			self.addUserEnumControl( E_SpinEx02, 'Reset Favorite Add-ons', USER_ENUM_LIST_YES_NO, 0 )
-			self.addUserEnumControl( E_SpinEx03, 'Reset Configure Setting', USER_ENUM_LIST_YES_NO, 0 )
+			self.addUserEnumControl( E_SpinEx01, 'Reset Channel List', USER_ENUM_LIST_YES_NO, 0, None )
+			self.addUserEnumControl( E_SpinEx02, 'Reset Favorite Add-ons', USER_ENUM_LIST_YES_NO, 0, None )
+			self.addUserEnumControl( E_SpinEx03, 'Reset Configure Setting', USER_ENUM_LIST_YES_NO, 0, None )
 			self.addLeftLabelButtonControl( E_Input01, 'Start Reset', None )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01 ]

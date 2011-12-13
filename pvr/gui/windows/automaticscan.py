@@ -3,7 +3,7 @@ import xbmcgui
 import sys
 
 import pvr.gui.windowmgr as winmgr
-import pvr.tunerconfigmgr as configmgr
+#import pvr.tunerconfigmgr as configmgr
 #from  pvr.tunerconfigmgr import *
 from pvr.gui.guiconfig import *
 
@@ -14,24 +14,28 @@ from pvr.gui.basewindow import Action
 #from pvr.elisevent import ElisEnum
 
 
-class MotorizeConfiguration( SettingWindow ):
+class AutomaticScan( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.tunerIndex = 0
+		#self.commander = pvr.elismgr.getInstance( ).getCommander( )
+			
+		self.initialized = False
+		self.lastFocused = -1
 
 	def onInit(self):
-		self.setHeaderLabel( 'Motorize Configuration' )
+		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
+
+		self.setHeaderLabel( 'Channel Scan' )
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
 
-		self.addInputControl( E_Input01, 'My Longitude', '100.0 E', None, None )
-		self.addInputControl( E_Input02, 'My Latitude', '000.0 N', None, None )
-		self.addLeftLabelButtonControl( E_Input03, 'Reference Position to Null ', None )
-		self.addLeftLabelButtonControl( E_Input04, 'Configure Satellites ', None)
+		self.addInputControl( E_Input01, 'Satellite', 'TEST', None, 'Select satellite' )
+		self.addUserEnumControl( E_SpinEx01, 'Network Search', USER_ENUM_LIST_ON_OFF, 0, 'Select Network search' )
+		self.addLeftLabelButtonControl( E_Input02, 'Start Search', 'Start Search' )
 
-		self.tunerIndex = configmgr.getInstance( ).getCurrentTunerIndex( ) + 1
-		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'USALS configuration : Tuner %s' % ( self.tunerIndex ) )
-		
 		self.initControl( )
+		self.showDescription( self.getFocusId( ) )
+		self.initialized = True
+
 		
 	def onAction( self, action ):
 
@@ -48,24 +52,29 @@ class MotorizeConfiguration( SettingWindow ):
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
-			pass
-			
+			self.controlLeft( )
+
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			pass
+			self.controlRight( )				
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.controlUp( )
+			self.showDescription( focusId )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.controlDown( )
+			self.showDescription( focusId )
+			
 
 
 	def onClick( self, controlId ):
-		if controlId == E_Input04 + 1 :
-			self.resetAllControl( )
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_TUNER_CONFIGURATION )
+		pass
 			
 
 	def onFocus( self, controlId ):
-		pass
+		if self.initialized == False :
+			return
+		if ( self.lastFocused != controlId ) :
+			self.showDescription( controlId )
+			self.lastFocused = controlId
 
