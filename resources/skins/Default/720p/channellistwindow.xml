@@ -351,6 +351,11 @@
 						<height>15</height>
 						<color>grey</color>
 						<border>0</border>
+						<texturebg border="6,0,6,0">confluence/OSDProgressBack.png</texturebg>
+						<lefttexture>-</lefttexture>
+						<midtexture border="6,0,6,0">confluence/OSDProgressMid.png</midtexture>
+						<righttexture>-</righttexture>
+						<overlaytexture>-</overlaytexture>
 					</control>
 				</control>
 

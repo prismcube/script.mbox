@@ -48,7 +48,7 @@
 					<font>font35_title</font>
 					<textcolor>FFB2D4F5</textcolor>
 					<label>$INFO[Control.GetLabel]</label>
-					<description>longitude</description>
+					<description>Ch name</description>
 				</control>
 
 				<control type="image" id="603">
@@ -485,6 +485,11 @@
 					<posy>15</posy>
 					<width>250</width>
 					<height>8</height>
+					<texturebg border="6,0,6,0">confluence/OSDProgressBack.png</texturebg>
+					<lefttexture>-</lefttexture>
+					<midtexture border="6,0,6,0">confluence/OSDProgressMid.png</midtexture>
+					<righttexture>-</righttexture>
+					<overlaytexture>-</overlaytexture>
 				</control>
 
 				<control type="label" id="705">

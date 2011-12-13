@@ -237,6 +237,10 @@ def epgInfoClock(flag, nowTime, epgClock):
 	elif flag == 2:
 		strClock.append( time.strftime('%a. %H:%M', time.gmtime(stbClock) ) )
 
+	elif flag == 3:
+		strClock.append( time.strftime('%H:%M:%S', time.gmtime(stbClock) ) )
+
+
 	print 'epgClock[%s:%s]'% (strClock, time.strftime('%S', time.gmtime(stbClock)) )
 	return strClock
 

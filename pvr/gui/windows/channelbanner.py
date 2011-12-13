@@ -79,7 +79,7 @@ class ChannelBanner(BaseWindow):
 			#self.ctrlProgress = xbmcgui.ControlProgress(100, 250, 125, 75)
 			#self.ctrlProgress(self.Progress)
 
-			#test
+			#button icon
 			self.ctrlBtnExInfo      = self.getControl( 621 )
 			self.ctrlBtnTeletext    = self.getControl( 622 )
 			self.ctrlBtnSubtitle    = self.getControl( 623 )
@@ -399,7 +399,7 @@ class ChannelBanner(BaseWindow):
 
 	@run_async
 	def updateLocalTime(self):
-		print '[%s():%s]start thread <<<< begin'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print '[%s():%s]begin_start thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		#print 'untilThread[%s] self.progress_max[%s]' % (self.untilThread, self.progress_max)
 
 		nowTime = time.time()
@@ -431,7 +431,7 @@ class ChannelBanner(BaseWindow):
 			
 			time.sleep(1)
 
-		print '[%s():%s]end thread <<<< begin'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print '[%s():%s]leave_end thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 	def initLabelInfo(self):
 		print '[%s():%s]Initialize Label'% (currentframe().f_code.co_name, currentframe().f_lineno)
