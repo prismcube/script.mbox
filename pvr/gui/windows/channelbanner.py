@@ -79,13 +79,14 @@ class ChannelBanner(BaseWindow):
 			#self.ctrlProgress = xbmcgui.ControlProgress(100, 250, 125, 75)
 			#self.ctrlProgress(self.Progress)
 
-			#test
+			#button icon
 			self.ctrlBtnExInfo      = self.getControl( 621 )
 			self.ctrlBtnTeletext    = self.getControl( 622 )
 			self.ctrlBtnSubtitle    = self.getControl( 623 )
 			self.ctrlBtnStartRec    = self.getControl( 624 )
 			self.ctrlBtnStopRec     = self.getControl( 625 )
 			self.ctrlBtnMute        = self.getControl( 626 )
+			self.ctrlBtnMuteToggled = self.getControl( 627 )
 			self.ctrlBtnTSbanner    = self.getControl( 630 )
 			
 			self.ctrlBtnPrevEpg     = self.getControl( 702 )
@@ -101,6 +102,7 @@ class ChannelBanner(BaseWindow):
 		self.currentChannel = self.commander.channel_GetCurrent()
 
 		self.initLabelInfo()
+		self.updateVolume(Action.ACTION_MUTE)
 	
 		if is_digit(self.currentChannel[3]):
 			self.updateServiceType(int(self.currentChannel[3]))
@@ -220,6 +222,9 @@ class ChannelBanner(BaseWindow):
 	def onClick(self, controlId):
 		print "onclick(): control %d" % controlId
 		if controlId == self.ctrlBtnMute.getId():
+			self.updateVolume( Action.ACTION_MUTE )
+
+		elif controlId == self.ctrlBtnMuteToggled.getId():
 			self.updateVolume( Action.ACTION_MUTE )
 
 		elif controlId == self.ctrlBtnExInfo.getId() :
@@ -394,7 +399,7 @@ class ChannelBanner(BaseWindow):
 
 	@run_async
 	def updateLocalTime(self):
-		print '[%s():%s]start thread <<<< begin'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print '[%s():%s]begin_start thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		#print 'untilThread[%s] self.progress_max[%s]' % (self.untilThread, self.progress_max)
 
 		nowTime = time.time()
@@ -426,7 +431,7 @@ class ChannelBanner(BaseWindow):
 			
 			time.sleep(1)
 
-		print '[%s():%s]end thread <<<< begin'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print '[%s():%s]leave_end thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 	def initLabelInfo(self):
 		print '[%s():%s]Initialize Label'% (currentframe().f_code.co_name, currentframe().f_lineno)
@@ -491,9 +496,13 @@ class ChannelBanner(BaseWindow):
 			print 'mute:current[%s]'% mute
 			if mute == False:
 				ret = self.commander.player_SetMute(True)
+				self.ctrlBtnMute.setVisible(True)
+				self.ctrlBtnMuteToggled.setVisible(False)
 
 			else:
 				ret = self.commander.player_SetMute(False)
+				self.ctrlBtnMute.setVisible(False)
+				self.ctrlBtnMuteToggled.setVisible(True)
 
 		elif cmd == Action.ACTION_VOLUME_UP:
 			pass

@@ -6,6 +6,9 @@ import time
 from gui.basedialog import BaseDialog
 
 DIALOG_ID_KEYBOARD 					= 0
+DIALOG_ID_NUMERIC					= 1
+DIALOG_ID_LNB_FREQUENCY				= 2
+
 
 gDialogmgr = None
 
@@ -24,8 +27,9 @@ class DialogMgr(object):
 		self.dialogs = {}
 
 		self.createAllDialogs( )
-		self.defaultText = ''
-		self.resultText = ''
+		self.titleLabel = None
+		self.defaultText = None
+		self.resultText = None
 
 
 	def showDialog( self, dialogId ):
@@ -41,9 +45,14 @@ class DialogMgr(object):
 		import pvr.platform 
 		self.scriptDir = pvr.platform.getPlatform().getScriptDir()
 
-		from pvr.gui.dialogs.keyboarddialog import KeyboardDialog
+		from pvr.gui.dialogs.dialogkeyboard import DialogKeyboard
+		from pvr.gui.dialogs.dialognumeric import DialogNumeric
+		from pvr.gui.dialogs.dialoglnbfrequency import DialogLnbFrequency
 
-		self.dialogs[ DIALOG_ID_KEYBOARD ]	               = KeyboardDialog('keyboarddialog.xml', self.scriptDir)	
+		
+		self.dialogs[ DIALOG_ID_KEYBOARD ]	               = DialogKeyboard('dialogkeyboard.xml', self.scriptDir)	
+		self.dialogs[ DIALOG_ID_NUMERIC ]	               = DialogNumeric('dialognumeric.xml', self.scriptDir)	
+		self.dialogs[ DIALOG_ID_LNB_FREQUENCY ]	           = DialogLnbFrequency('dialoglnbfrequency.xml', self.scriptDir)	
 
 
 	def setDefaultText( self, text ):
@@ -52,6 +61,14 @@ class DialogMgr(object):
 
 	def getDefaultText( self ):
 		return self.defaultText
+
+
+	def setTitleLabel( self, text ):
+		self.titleLabel = text
+
+
+	def getTitleLabel( self ):
+		return self.titleLabel
 
 
 	def setResultText( self, text ):

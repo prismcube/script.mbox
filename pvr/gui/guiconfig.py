@@ -47,17 +47,23 @@ MAX_VOLUME					= 100
 USER_ENUM_LIST_YES_NO 			= [ 'No', 'Yes' ]
 USER_ENUM_LIST_FORMAT_TYPE	 	= [ 'FAT', 'EXT3' ]
 USER_ENUM_LIST_ON_OFF			= [ 'Off', 'On' ]
+USER_ENUM_LIST_DVB_TYPE			= [ 'DVB-S (SD)', 'DVB-S2 (HD)' ]
+USER_ENUM_LIST_FEC				= [ 'QPSK 1/2', 'QPSK 2/3', 'QPSK 3/4', 'QPSK 3/5', 'QPSK 4/5', 'QPSK 5/6', 'QPSK 8/9', 'QPSK 9/10', '8PSK 2/3', '8PSK 3/4', '8PSK 3/5', '8PSK 5/6', '8PSK 8/9', '8PSK 9/10' ]
+USER_ENUM_LIST_POLARIZATION		= [ 'Horizontal', 'Vertical' ]
+USER_ENUM_LIST_SYMBOL_RATE		= [ '22000 KS/s', '27500 KS/s' ]
 
 # Tuner Config String Define
 E_LIST_TUNER_TYPE				= [ 'Simple LNB', 'DiSEqC 1.0', 'DiSEqC 1.1', 'Motorized, DiSEqC 1.2', 'Motorized, USALS', 'OneCable' ]
 E_LIST_LNB_TYPE					= [ 'Universal' , 'Single', 'Userdefined' ]
 E_LIST_DISEQC_MODE				= [ 'Disable', '1 of 4', '2 of 4', '3 of 4', '4 of 4', 'Mini A', 'Mini B' ]
-USER_ENUM_LIST_SINGLE_FREQUENCY = [ '5150', '9750', '10600', '10750', '11300' ]
-
+E_LIST_COMMITTED_SWITCH			= [ 'Disable', '1', '2', '3', '4', 'Disable', 'Disable' ]
+E_LIST_UNCOMMITTED_SWITCH		= [ 'Disable', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16' ]
+E_LIST_SINGLE_FREQUENCY 		= [ '5150', '9750', '10600', '10750', '11300' ]
+E_LIST_ONE_CABLE_ACTION			= [ 'Reset Limits', 'Set Current Position for East Limit', 'Set Current Position for West Limit' ]
 
 def getSingleFrequenceIndex( selectedItem ) :
-	for i in range( len ( USER_ENUM_LIST_SINGLE_FREQUENCY )	) :
-		if( selectedItem == USER_ENUM_LIST_SINGLE_FREQUENCY[ i ] ) :
+	for i in range( len ( E_LIST_SINGLE_FREQUENCY )	) :
+		if( selectedItem == E_LIST_SINGLE_FREQUENCY[ i ] ) :
 			return i
 			
 	return -1

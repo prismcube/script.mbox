@@ -3,7 +3,7 @@ import xbmcgui
 import time
 import sys
 
-from pvr.gui.basedialog import BaseDialog
+from pvr.gui.basedialog import NormalKeyboard
 from pvr.gui.basewindow import Action
 import pvr.gui.dialogmgr as diamgr
 
@@ -27,18 +27,23 @@ E_START_ID_ALPHABET		= 65
 E_ASCIICODE_LOWER_A		= 0x61
 E_ASCIICODE_UPPER_A		= 0x41
 
-class KeyboardDialog( BaseDialog ) :
+class DialogKeyboard( NormalKeyboard ) :
 	def __init__( self, *args, **kwargs ) :
-		BaseDialog.__init__( self, *args, **kwargs )
+		NormalKeyboard.__init__( self, *args, **kwargs )
 
 		self.inputLabel = ''
 		self.ctrlEditLabel = 0
+		self.cursorPosition = 0
 		
 	def onInit( self ):
 		self.inputLabel = diamgr.getInstance().getDefaultText( )
 		self.ctrlEditLabel = self.getControl( E_INPUT_LABEL )
-		self.ctrlEditLabel.setLabel( self.inputLabel )		
+		#self.ctrlEditLabel.setLabel( self.inputLabel )
+		self.cursorPosition = len( self.inputLabel )
 		self.drawKeyboard( )
+		self.startKeyboardCursor( )
+		self.makelabel( E_INPUT_LABEL, self.inputLabel, self.cursorPosition )
+		self.drawLabel( )
 
 		
 	def onAction( self, action ):
@@ -51,6 +56,7 @@ class KeyboardDialog( BaseDialog ) :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
+			self.stopKeyboardCursor( )
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
@@ -70,26 +76,45 @@ class KeyboardDialog( BaseDialog ) :
 		focusId = self.getFocusId( )
 		
 		if( focusId >= E_START_ID_NUMBER and focusId <= 57 ) or ( focusId >= E_START_ID_ALPHABET and focusId <= 90 ) :
-			self.inputLabel += self.getControl( focusId ).getLabel( )
+			tmpstr1 = self.inputLabel[ : self.cursorPosition ]
+			temstr2 = self.inputLabel[ self.cursorPosition : ]
+			self.inputLabel = tmpstr1 + self.getControl( focusId ).getLabel( ) + temstr2
+			self.cursorPosition = self.cursorPosition + 1
 		
 		elif( focusId == E_RADIO_SHIFT ) :
 			self.drawKeyboard( )
 
 		elif( focusId == E_BUTTON_BACK_SPACE ) :
-			self.inputLabel = self.inputLabel[ : ( len( self.inputLabel ) -1 ) ]
+			if( self.cursorPosition != 0 ) :
+				tmpstr1 = self.inputLabel[ : self.cursorPosition - 1 ]
+				temstr2 = self.inputLabel[ self.cursorPosition : ]
+				self.inputLabel = tmpstr1 + temstr2
+				self.cursorPosition = self.cursorPosition - 1
 
 		elif( focusId == E_RADIO_SYMBOLS ) :
 			self.drawKeyboard( )
 
 		elif( focusId == E_BUTTON_SPACE ) :
-			self.inputLabel += ' '
+			tmpstr1 = self.inputLabel[ : self.cursorPosition ]
+			temstr2 = self.inputLabel[ self.cursorPosition : ]
+			self.inputLabel = tmpstr1 + ' ' + temstr2
+			self.cursorPosition = self.cursorPosition + 1
+
+		elif( focusId == E_BUTTON_PREV ) :
+			if( self.cursorPosition != 0 ) :
+				self.cursorPosition = self.cursorPosition - 1
+
+		elif( focusId == E_BUTTON_NEXT ) :
+			if( self.cursorPosition != len( self.inputLabel ) ) :
+				self.cursorPosition = self.cursorPosition + 1
 
 		elif( focusId == E_BUTTON_DONE ) :
 			diamgr.getInstance().setResultText( self.ctrlEditLabel.getLabel( ) )
+			self.stopKeyboardCursor( )
 			self.close( )
-		self.ctrlEditLabel.setLabel( self.inputLabel )		
+		self.makelabel( E_INPUT_LABEL, self.inputLabel, self.cursorPosition )
 
-		
+
 	def onFocus( self, controlId ):
 		pass
 

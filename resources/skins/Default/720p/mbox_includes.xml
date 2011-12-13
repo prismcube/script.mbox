@@ -1911,7 +1911,7 @@
 				<posy>80</posy>
 				<width>1280</width>
 				<height>4</height>
-				<texture>separator2.png</texture>
+				<texture>confluence/separator2.png</texture>
 			</control>
 			<control type="label" id="3002">
 				<description>DATE Label</description>
@@ -1965,7 +1965,7 @@
 				<posy>30</posy>
 				<width>1280</width>
 				<height>6</height>
-				<texture>separator.png</texture>
+				<texture>confluence/separator.png</texture>
 			</control>
 			<!-- FOOTER BUTTON -->
 			<control type="grouplist">
@@ -1992,8 +1992,8 @@
 						<posy>10</posy>
 						<width>35</width>
 						<height>35</height>
-						<texturenofocus>OSDRepeatNF.png</texturenofocus>
-						<texturefocus>OSDRepeatFO.png</texturefocus>
+						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
+						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
 						<onleft>3131</onleft>
 						<onright>3111</onright>
 						<onup>-</onup>
@@ -2037,8 +2037,8 @@
 						<width>35</width>
 						<height>35</height>
 						<hitrect x="30" y="10" w="120" h="40"></hitrect>
-						<texturenofocus>OSDRepeatNF.png</texturenofocus>
-						<texturefocus>OSDRepeatFO.png</texturefocus>
+						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
+						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
 						<onleft>3101</onleft>
 						<onright>3121</onright>
 						<onup>-</onup>
@@ -2081,8 +2081,8 @@
 						<posy>10</posy>
 						<width>35</width>
 						<height>35</height>
-						<texturenofocus>OSDRepeatNF.png</texturenofocus>
-						<texturefocus>OSDRepeatFO.png</texturefocus>
+						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
+						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
 						<onleft>3111</onleft>
 						<onright>3131</onright>
 						<onup>-</onup>
@@ -2125,8 +2125,8 @@
 						<posy>10</posy>
 						<width>35</width>
 						<height>35</height>
-						<texturenofocus>OSDRecordNF.png</texturenofocus>
-						<texturefocus>OSDRecord2.png</texturefocus>
+						<texturenofocus>confluence/OSDRecordNF.png</texturenofocus>
+						<texturefocus>confluence/OSDRecord2.png</texturefocus>
 						<onleft>3121</onleft>
 						<onright>3101</onright>
 						<onup>-</onup>
@@ -2167,6 +2167,30 @@
 		<animation type="WindowClose" reversible="false">
 			<effect type="fade" start="100" end="0" time="400" />
 		</animation>
+	</include>
+	<include name="CommonSettingSlideMenu">
+		<control type="button" id="3301">
+			<description>Fake button for mouse control</description>
+			<posx>-250</posx>
+			<posy>0</posy>
+			<width>265</width>
+			<height>720</height>
+			<label>-</label>
+			<font>-</font>
+			<texturenofocus>-</texturenofocus>
+			<texturefocus>-</texturefocus>
+			<visible>true</visible>
+		</control>
+		<include>SideBladeLeft</include>
+		<control type="image">
+			<description>LOGO</description>
+			<posx>-230</posx>
+			<posy>50</posy>
+			<width>220</width>
+			<height>80</height>
+			<aspectratio>keep</aspectratio>
+			<texture>confluence/Confluence_Logo.png</texture>
+		</control>
 	</include>
 	<include name="SlideMenuButton01">
 		<control type="group" id="3310">
@@ -2238,5 +2262,27 @@
 	<include name="dialogeffect">
 		<animation effect="fade" time="500">WindowOpen</animation>
 		<animation effect="fade" time="500">WindowClose</animation>
+	</include>
+	<include name="SideBladeLeft">
+		<control type="image">
+			<posx>-820</posx>
+			<posy>0</posy>
+			<width>846</width>
+			<height>720</height>
+			<texture>confluence/HomeBlade.png</texture>
+			<animation effect="slide" start="-26,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+			<animation effect="slide" start="0,0" end="-26,0" time="200" delay="200" tween="quadratic" easing="out">WindowClose</animation>
+		</control>
+	</include>
+	<include name="ButtonCommonValues">
+		<height>40</height>
+		<width>250</width>
+		<textoffsetx>10</textoffsetx>
+		<textwidth>235</textwidth>
+		<aligny>center</aligny>
+		<font>font13caps</font>
+		<texturefocus border="5">confluence/button-focus.png</texturefocus>
+		<texturenofocus>-</texturenofocus>
+		<pulseonselect>false</pulseonselect>
 	</include>
 </includes>
