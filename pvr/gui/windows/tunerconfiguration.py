@@ -69,8 +69,8 @@ class TunerConfiguration( SettingWindow ):
 			configuredList = configmgr.getInstance().getConfiguredSatellite( )
 
 			if ( len( configuredList ) ) == position or len( configuredList ) == 0 :
-				# ToDO : Show add new saatellite Window
-				print 'ToDO : Show add new saatellite Window'
+				configmgr.getInstance( ).setCurrentLongitue( int( configuredList[0][2] ) ) #config[2] == longitude
+				winmgr.getInstance( ).showWindow( winmgr.WIN_ID_SATELLITE_CONFIGURATION )
 
 			else :
 				config = configuredList[ position ]

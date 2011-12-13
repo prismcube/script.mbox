@@ -24,6 +24,7 @@ class AntennaSetup( SettingWindow ):
 		#self.ctrlMainGroup = None
 		self.initialized = False
 		self.lastFocused = -1
+		#self.tunerIndex = 0
 
 	def onInit(self):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
@@ -95,7 +96,7 @@ class AntennaSetup( SettingWindow ):
 			
 			elif self.getSelectedIndex( E_SpinEx03 ) == E_MOTORIZED_1_2  or self.getSelectedIndex( E_SpinEx03 ) == E_MOTORIZED_USALS :
 				self.resetAllControl( )
-				winmgr.getInstance().showWindow( winmgr.WIN_ID_TUNER_CONFIGURATION )
+				winmgr.getInstance().showWindow( winmgr.WIN_ID_MOTORIZE_CONFIGURATION )
 			else :
 				self.resetAllControl( )
 				winmgr.getInstance().showWindow( winmgr.WIN_ID_TUNER_CONFIGURATION )
