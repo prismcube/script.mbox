@@ -52,22 +52,26 @@ class TimeShiftBanner(BaseWindow):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		if not self.win:
 			self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
+			"""
+			self.ctrlProgress       = self.getControl( 201 )
+			self.ctrlEventClock     = self.getControl( 211 )
+			self.ctrlEventStartTime = self.getControl( 221 )
+			self.ctrlEventEndTime   = self.getControl( 222 )
+			self.ctrlBtnPlay        = self.getControl( 405 )
+			"""
 
-			self.imgTV    = 'confluence/tv.png'
-			self.toggleFlag=False
-
+		self.ctrlEventClock.setLabel('')
+		
 		#get channel
 		self.currentChannel = self.commander.channel_GetCurrent()
 
 		self.initLabelInfo()
 	
-		if is_digit(self.currentChannel[3]):
-			self.updateServiceType(int(self.currentChannel[3]))
 
 
 		#run thread
 		self.untilThread = True
-		#self.updateLocalTime()
+		self.updateLocalTime()
 
 
 
@@ -110,6 +114,9 @@ class TimeShiftBanner(BaseWindow):
 	def onClick(self, controlId):
 		print "onclick(): control %d" % controlId
 
+		if controlId == self.ctrlBtnPlay.getId():
+			ret = self.commander.player_GetStatus()
+			print 'player_status[%s]'% ret
 
 
 	def onFocus(self, controlId):
@@ -122,7 +129,7 @@ class TimeShiftBanner(BaseWindow):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		#print 'eventCopy[%s]'% self.eventCopy
 
-		if xbmcgui.getCurrentWindowId() == 13009 :
+		if xbmcgui.getCurrentWindowId() == self.win : #13009
 			self.updateONEvent(self.eventCopy)
 		else:
 			print 'show screen is another windows page[%s]'% xbmcgui.getCurrentWindowId()
@@ -137,22 +144,49 @@ class TimeShiftBanner(BaseWindow):
 		print 'event[%s]'% event
 
 
-	@run_async
-	def updateLocalTime(self):
-		print '[%s():%s]start thread <<<< begin'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		#print 'untilThread[%s] self.progress_max[%s]' % (self.untilThread, self.progress_max)
-
-		while self.untilThread:
-			time.sleep(1)
-
-		print '[%s():%s]end thread <<<< begin'% (currentframe().f_code.co_name, currentframe().f_lineno)
-
 	def initLabelInfo(self):
 		print '[%s():%s]Initialize Label'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'currentChannel[%s]' % self.currentChannel
 		
 		# todo 
-		# show message box : has no channnel
+		if( self.currentChannel != [] ) :
+			"""
+			self.ctrlProgress.setPercent(0)
+			self.progress_idx = 0.0
+			self.progress_max = 0.0
+			self.eventCopy = []
+			#self.ctrlEventStartTime.setLabel('')
+			#self.ctrlEventEndTime.setLabel('')
+
+
+			self.epgClock = self.commander.datetime_GetLocalTime()
+			"""
+			
+
+		else:
+			print 'has no channel'
+
+
+	@run_async
+	def updateLocalTime(self):
+		print '[%s():%s]begin_start thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		#print 'untilThread[%s] self.progress_max[%s]' % (self.untilThread, self.progress_max)
+
+		nowTime = time.time()
+		while self.untilThread:
+			#print '[%s():%s]repeat'% (currentframe().f_code.co_name, currentframe().f_lineno)
+
+			#local clock
+			if is_digit(self.epgClock[0]):
+				ret = epgInfoClock(3, nowTime, int(self.epgClock[0]))
+				#self.ctrlEventClock.setLabel(ret[0])
+
+			else:
+				print 'value error epgClock[%s]' % ret
+			
+			time.sleep(1)
+
+		print '[%s():%s]leave_end thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 
 	def updateServiceType(self, tvType):

@@ -2,14 +2,14 @@
 	<defaultcontrol always="true">405</defaultcontrol>
 	<controls>
 		<control type="group">
-			<animation effect="slide" start="0,540" end="0,0" time="300" delay="300" tween="quadratic" easing="out">WindowOpen</animation>
-			<animation effect="slide" start="0,0" end="0,540" time="300" delay="150" tween="quadratic" easing="out" >WindowClose</animation>
+			<animation effect="slide" start="0,570" end="0,0" time="300" delay="300" tween="quadratic" easing="out">WindowOpen</animation>
+			<animation effect="slide" start="0,0" end="0,570" time="300" delay="150" tween="quadratic" easing="out" >WindowClose</animation>
 			<!--animation effect="slide" start="0,156" end="0,0" time="300" delay="300" tween="quadratic" easing="out" condition="ControlGroup(10).HasFocus | ControlGroup(400).HasFocus">conditional</animation-->
 			<control type="group" id="10">
 				<control type="image">
 					<description>media info background image</description>
 					<posx>0</posx>
-					<posy>540</posy>
+					<posy>570</posy>
 					<width>1280</width>
 					<height>256</height>
 					<texture>confluence/MediaInfoBackLower.png</texture>
@@ -17,7 +17,7 @@
 				<control type="button">
 					<description>Fake button for mouse control</description>
 					<posx>0</posx>
-					<posy>540</posy>
+					<posy>570</posy>
 					<width>1280</width>
 					<height>266</height>
 					<label>-</label>
@@ -31,8 +31,8 @@
 <!-- info section -->
 			<control type="group">
 				<posx>0</posx>
-				<posy>590</posy>
-				<control type="group">
+				<posy>620</posy>
+				<control type="group" id="20">
 					<posx>0</posx>
 					<posy>-25</posy>
 					<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(400).HasFocus)">conditional</animation>
@@ -40,14 +40,14 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>250</width>
+						<width>150</width>
 						<height>35</height>
 						<texture border="0,0,32,0">confluence/header.png</texture>
 					</control>
 					<control type="label">
 						<posx>50</posx>
 						<posy>0</posy>
-						<width min="150" max="300">auto</width>
+						<width min="100" max="150">auto</width>
 						<height>28</height>
 						<font>font12</font>
 						<textcolor>grey</textcolor>
@@ -60,7 +60,7 @@
 					<control type="label">
 						<posx>50</posx>
 						<posy>0</posy>
-						<width min="150" max="300">auto</width>
+						<width min="150" max="150">auto</width>
 						<height>28</height>
 						<font>font12</font>
 						<textcolor>grey</textcolor>
@@ -73,7 +73,7 @@
 					<control type="label">
 						<posx>50</posx>
 						<posy>0</posy>
-						<width min="150" max="300">auto</width>
+						<width min="150" max="150">auto</width>
 						<height>28</height>
 						<font>font12</font>
 						<textcolor>grey</textcolor>
@@ -86,7 +86,7 @@
 					<control type="label">
 						<posx>50</posx>
 						<posy>0</posy>
-						<width min="150" max="300">auto</width>
+						<width min="150" max="150">auto</width>
 						<height>28</height>
 						<font>font12</font>
 						<textcolor>grey</textcolor>
@@ -99,7 +99,7 @@
 					<control type="label">
 						<posx>50</posx>
 						<posy>0</posy>
-						<width min="150" max="300">auto</width>
+						<width min="150" max="150">auto</width>
 						<height>28</height>
 						<font>font12</font>
 						<textcolor>grey</textcolor>
@@ -112,7 +112,7 @@
 					<control type="label">
 						<posx>50</posx>
 						<posy>0</posy>
-						<width min="150" max="300">auto</width>
+						<width min="150" max="150">auto</width>
 						<height>28</height>
 						<font>font12</font>
 						<textcolor>grey</textcolor>
@@ -125,7 +125,7 @@
 					<control type="label">
 						<posx>50</posx>
 						<posy>0</posy>
-						<width min="150" max="300">auto</width>
+						<width min="150" max="150">auto</width>
 						<height>28</height>
 						<font>font12</font>
 						<textcolor>grey</textcolor>
@@ -140,65 +140,81 @@
 
 
 <!-- Ch section -->
-			<control type="group">
+			<!--control type="group">
 				<posx>50</posx>
 				<posy>580</posy>
 
 				<control type="label" id="101">
-					<posx>0</posx>
-					<posy>10</posy>
+					<posx>20</posx>
+					<posy>30</posy>
 					<width>200</width>
 					<height>50</height>
-					<align>center</align>
+					<align>left</align>
 					<font>font50caps_title</font>
 					<label>$INFO[Control.GetLabel]</label>
 					<description>Ch Num</description>
 				</control>
 				<control type="label" id="102">
-					<posx>250</posx>
-					<posy>20</posy>
+					<posx>0</posx>
+					<posy>80</posy>
+					<align>left</align>
+					<width>500</width>
+					<font>font24</font>
+					<textcolor>9f9f9f9b</textcolor>
+					<label>$INFO[Control.GetLabel]</label>
+					<description>longitude</description>
+				</control>
+				<control type="label" id="103">
+					<posx>0</posx>
+					<posy>0</posy>
 					<align>left</align>
 					<width>500</width>
 					<font>font35_title</font>
 					<textcolor>FFB2D4F5</textcolor>
 					<label>$INFO[Control.GetLabel]</label>
-					<description>longitude</description>
+					<visible>!ControlGroup(400).HasFocus)</visible>
+					<description>Ch name</description>
 				</control>
-			</control>
+			</control-->
 
 
 <!-- EPG section -->
 			<control type="group">
 				<posx>0</posx>
-				<posy>590</posy>
+				<posy>620</posy>
 				<control type="group" id="200">
-					<posx>400</posx>
-					<posy>0</posy>
+					<posx>450</posx>
+					<posy>30</posy>
 					<control type="progress" id="201">
 						<description>progress control</description>
 						<posx>0</posx>
 						<posy>19</posy>
-						<width>450</width>
-						<height>8</height>
+						<width>650</width>
+						<height>16</height>
+						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+						<lefttexture>-</lefttexture>
+						<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+						<righttexture>-</righttexture>
+						<overlaytexture>-</overlaytexture>
 					</control>
 				</control>
 
 				<control type="group">
 					<description>info</description>
-					<posx>200r</posx>
+					<posx>150r</posx>
 					<posy>-25</posy>
 					<control type="image">
 						<description>time background</description>
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>200</width>
+						<width>100</width>
 						<height>35</height>
 						<texture flipx="true" border="32,0,0,0">confluence/header.png</texture>
 					</control>
 					<control type="label" id="211">
-						<posx>30</posx>
+						<posx>40</posx>
 						<posy>0</posy>
-						<width>400</width>
+						<width>150</width>
 						<height>28</height>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -210,8 +226,8 @@
 				</control>
 
 				<control type="group">
-					<posx>300</posx>
-					<posy>10</posy>
+					<posx>350</posx>
+					<posy>40</posy>
 					<width>150</width>
 					<control type="label" id="221">
 						<description>start</description>
@@ -223,7 +239,7 @@
 					</control>
 					<control type="label" id="222">
 						<description>start</description>
-						<posx>560</posx>
+						<posx>760</posx>
 						<posy>3</posy>
 						<textcolor>grey</textcolor>
 						<font>font12</font>
@@ -238,8 +254,8 @@
 				<posx>0</posx>
 				<posy>590</posy>
 				<control type="group" id="400">
-					<posx>450</posx>
-					<posy>60</posy>
+					<posx>150</posx>
+					<posy>15</posy>
 					<control type="button" id="401">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -286,8 +302,8 @@
 						<onclick>XBMC.PlayerControl(record)</onclick>
 					</control>
 					<control type="button" id="404">
-						<posx>150</posx>
-						<posy>0</posy>
+						<posx>0</posx>
+						<posy>45</posy>
 						<width>50</width>
 						<height>50</height>
 						<label>31354</label>
@@ -300,9 +316,9 @@
 						<ondown></ondown>
 						<onclick>PlayerControl(Rewind)</onclick>
 					</control>
-					<control type="togglebutton" id="405">
-						<posx>200</posx>
-						<posy>0</posy>
+					<control type="button" id="405">
+						<posx>50</posx>
+						<posy>45</posy>
 						<width>50</width>
 						<height>50</height>
 						<label>31351</label>
@@ -310,9 +326,9 @@
 						<font>-</font>
 						<texturefocus>confluence/OSDPauseFO.png</texturefocus>
 						<texturenofocus>confluence/OSDPauseNF.png</texturenofocus>
-						<!--usealttexture>Player.Paused | Player.Forwarding | Player.Rewinding</usealttexture-->
+						<!--usealttexture>Player.Paused | Player.Forwarding | Player.Rewinding</usealttexture>
 						<alttexturefocus>confluence/OSDPlayFO.png</alttexturefocus>
-						<alttexturenofocus>confluence/OSDPlayNF.png</alttexturenofocus>
+						<alttexturenofocus>confluence/OSDPlayNF.png</alttexturenofocus!-->
 						<onleft>SetFocus(404)</onleft>
 						<onright>SetFocus(406)</onright>
 						<onup></onup>
@@ -321,8 +337,8 @@
 						<!--onclick>PlayerControl(Play)</onclick-->
 					</control>
 					<control type="button" id="406">
-						<posx>250</posx>
-						<posy>0</posy>
+						<posx>100</posx>
+						<posy>45</posy>
 						<width>50</width>
 						<height>50</height>
 						<label>31352</label>
@@ -336,8 +352,8 @@
 						<onclick>PlayerControl(Stop)</onclick>
 					</control>
 					<control type="button" id="407">
-						<posx>300</posx>
-						<posy>0</posy>
+						<posx>150</posx>
+						<posy>45</posy>
 						<width>50</width>
 						<height>50</height>
 						<label>31353</label>
