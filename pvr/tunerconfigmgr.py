@@ -3,9 +3,6 @@ import xbmcgui
 import sys
 import time
 
-import pvr.elismgr
-<<<<<<< HEAD
-from pvr.elisevent import ElisAction, ElisEnum
 
 E_CONFIGURE_SATELLITE_TUNER_INDEX 		= 0
 E_CONFIGURE_SATELLITE_SLOT_NUMBER		= 1
@@ -37,11 +34,10 @@ E_DISEQC_1_1					= 2
 E_MOTORIZED_1_2					= 3
 E_MOTORIZED_USALS				= 4
 E_ONE_CABLE						= 5
-=======
+
 from pvr.elisaction import ElisAction
 from pvr.elisenum import ElisEnum
 
->>>>>>> remotes/origin/TB_ELIS_COMMAND
 
 gTunerConfigMgr = None
 
