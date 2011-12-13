@@ -428,16 +428,14 @@ class SettingWindow( BaseWindow ):
 
 		focusId = self.getFocusId( )
 		if ( focusId % 10 ) == 2 :
-			focusId -= 1
-			self.setFocusId( focusId )
+			self.setFocusId( focusId - 1 )
 
 	
 	def controlRight( self ):
 
 		focusId = self.getFocusId( )
 		if ( focusId % 10 ) == 1 :
-			focusId += 1
-			self.setFocusId( focusId )
+			self.setFocusId( focusId + 1 )
 
 
 

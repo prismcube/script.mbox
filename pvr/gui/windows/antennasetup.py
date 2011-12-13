@@ -5,11 +5,14 @@ import sys
 
 import pvr.gui.windowmgr as winmgr
 import pvr.tunerconfigmgr as configmgr
+from  pvr.tunerconfigmgr import *
+from pvr.gui.guiconfig import *
+
 from pvr.gui.basewindow import SettingWindow, setWindowBusy
 from pvr.gui.basewindow import Action
 import pvr.elismgr
 from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
-from pvr.gui.guiconfig import *
+from pvr.elisevent import ElisEnum
 
 E_MAIN_GROUP_ID	= 9000
 
@@ -21,6 +24,7 @@ class AntennaSetup( SettingWindow ):
 		#self.ctrlMainGroup = None
 		self.initialized = False
 		self.lastFocused = -1
+		#self.tunerIndex = 0
 
 	def onInit(self):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
@@ -56,11 +60,11 @@ class AntennaSetup( SettingWindow ):
 			self.resetAllControl( )
 			self.close( )
 
-		elif actionId == Action.ACTION_MOVE_LEFT or actionId == Action.ACTION_MOVE_RIGHT:			
-			if( ( focusId % 10 ) == 2 ) :
-				self.setFocusId( focusId - 1 )
-			elif( ( focusId % 10 ) == 1 ) :
-				self.setFocusId( focusId + 1 )				
+		elif actionId == Action.ACTION_MOVE_LEFT :
+			self.controlLeft( )
+
+		elif actionId == Action.ACTION_MOVE_RIGHT :
+			self.controlRight( )				
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.controlUp( )
@@ -74,23 +78,30 @@ class AntennaSetup( SettingWindow ):
 
 	def onClick( self, controlId ):
 		self.disableControl( )
-		if ( controlId == E_Input01 + 1 ) or ( controlId == E_Input02 + 1 ) :
+		if controlId == E_Input01 + 1 or controlId == E_Input02 + 1 :
 			if controlId == E_Input01 + 1 :
 				configmgr.getInstance().setCurrentTunerIndex( 0 ) 
 				configmgr.getInstance().setCurrentTunerType( self.getSelectedIndex( E_SpinEx03 ) )
 			elif controlId == E_Input02 + 1 :
 				configmgr.getInstance().setCurrentTunerIndex( 1 )
 				configmgr.getInstance().setCurrentTunerType( self.getSelectedIndex( E_SpinEx04 ) )
-				
-			self.resetAllControl( )
-			if( self.getSelectedIndex( E_SpinEx03 ) == 4 ) :
-				winmgr.getInstance().showWindow( winmgr.WIN_ID_SATELLITE_CONFIGURATION )
-			elif( self.getSelectedIndex( E_SpinEx03 ) == 3 ) :
-				pass
-			else :
-				winmgr.getInstance().showWindow( winmgr.WIN_ID_TUNER_CONFIGURATION )
 
-		
+			
+			if self.getSelectedIndex( E_SpinEx03 ) == E_SIMPLE_LNB :
+				configmgr.getInstance( ).load( )
+				configuredList = configmgr.getInstance( ).getConfiguredSatellite( )
+				configmgr.getInstance( ).setCurrentLongitue( int( configuredList[0][2] ) )
+				self.resetAllControl( )
+				winmgr.getInstance().showWindow( winmgr.WIN_ID_SATELLITE_CONFIGURATION )
+			
+			elif self.getSelectedIndex( E_SpinEx03 ) == E_MOTORIZED_1_2  or self.getSelectedIndex( E_SpinEx03 ) == E_MOTORIZED_USALS :
+				self.resetAllControl( )
+				winmgr.getInstance().showWindow( winmgr.WIN_ID_MOTORIZE_CONFIGURATION )
+			else :
+				self.resetAllControl( )
+				winmgr.getInstance().showWindow( winmgr.WIN_ID_TUNER_CONFIGURATION )
+			
+
 	def onFocus( self, controlId ):
 		if self.initialized == False :
 			return
