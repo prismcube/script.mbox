@@ -52,18 +52,25 @@ class TimeShiftBanner(BaseWindow):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		if not self.win:
 			self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
-			"""
-			self.ctrlProgress       = self.getControl( 201 )
-			self.ctrlEventClock     = self.getControl( 211 )
-			self.ctrlEventStartTime = self.getControl( 221 )
-			self.ctrlEventEndTime   = self.getControl( 222 )
-			self.ctrlBtnPlay        = self.getControl( 405 )
-			"""
+
+			self.ctrlProgress		= self.getControl( 201 )
+			self.ctrlEventClock		= self.getControl( 211 )
+			self.ctrlEventStartTime	= self.getControl( 221 )
+			self.ctrlEventEndTime	= self.getControl( 222 )
+
+			self.ctrlBtnVolume		= self.getControl( 402 )
+			self.ctrlBtnRecord		= self.getControl( 403 )
+			self.ctrlBtnRewind		= self.getControl( 404 )
+			self.ctrlBtnPlay		= self.getControl( 405 )
+			self.ctrlBtnPause		= self.getControl( 406 )
+			self.ctrlBtnStop		= self.getControl( 407 )
+			self.ctrlBtnForward		= self.getControl( 408 )
+
 
 		self.ctrlEventClock.setLabel('')
 		
 		#get channel
-		self.currentChannel = self.commander.channel_GetCurrent()
+		#self.currentChannel = self.commander.channel_GetCurrent()
 
 		self.initLabelInfo()
 	
@@ -91,7 +98,7 @@ class TimeShiftBanner(BaseWindow):
 
 			# end thread updateLocalTime()
 			self.untilThread = False
-			#self.updateLocalTime().join()
+			self.updateLocalTime().join()
 
 			self.close( )
 #			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
@@ -104,6 +111,9 @@ class TimeShiftBanner(BaseWindow):
 
 		elif id == Action.ACTION_PAGE_DOWN:
 			self.channelTune(id)
+
+		elif id == Action.ACTION_MUTE:
+			self.updateVolume(id)
 		
 		else:
 			#print 'youn check action unknown id=%d' % id
@@ -114,9 +124,19 @@ class TimeShiftBanner(BaseWindow):
 	def onClick(self, controlId):
 		print "onclick(): control %d" % controlId
 
-		if controlId == self.ctrlBtnPlay.getId():
+		if controlId >= self.ctrlBtnRewind.getId() and controlId <= self.ctrlBtnForward.getId() :
+			self.timeshiftAction(controlId)
+		
 			ret = self.commander.player_GetStatus()
 			print 'player_status[%s]'% ret
+
+		elif controlId == self.ctrlBtnRecord.getId():
+			self.timeshiftAction(controlId)
+
+		elif controlId == self.ctrlBtnVolume.getId():
+			self.timeshiftAction(controlId)
+
+			
 
 
 	def onFocus(self, controlId):
@@ -134,9 +154,40 @@ class TimeShiftBanner(BaseWindow):
 		else:
 			print 'show screen is another windows page[%s]'% xbmcgui.getCurrentWindowId()
 
-	def channelTune(self, actionID):
+
+	def timeshiftAction(self, focusId):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)		
-		print 'tuneActionID[%s]'% actionID
+
+		if focusId == self.ctrlBtnPlay.getId():
+			ret = self.commander.player_Pause()
+
+			self.ctrlBtnPlay.setVisible(False)
+			self.ctrlBtnPause.setVisible(True)
+
+		elif focusId == self.ctrlBtnPause.getId():
+			ret = self.commander.player_Resume()
+
+			self.ctrlBtnPlay.setVisible(True)
+			self.ctrlBtnPause.setVisible(False)
+
+		elif focusId == self.ctrlBtnStop.getId():
+			ret = self.commander.player_Stop()
+
+			self.untilThread = False
+			self.updateLocalTime().join()
+			self.close( )
+
+			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
+
+		elif focusId == self.ctrlBtnRewind.getId():
+			#get speed
+			#self.initTimeShift()
+			ret = self.commander.player_SetSpeed()
+
+		elif focusId == self.ctrlBtnForward.getId():
+			#get speed
+			#self.initTimeShift()
+			ret = self.commander.player_SetSpeed()
 
 
 	def updateONEvent(self, event):
@@ -149,22 +200,31 @@ class TimeShiftBanner(BaseWindow):
 		print 'currentChannel[%s]' % self.currentChannel
 		
 		# todo 
-		if( self.currentChannel != [] ) :
-			"""
-			self.ctrlProgress.setPercent(0)
-			self.progress_idx = 0.0
-			self.progress_max = 0.0
-			self.eventCopy = []
-			#self.ctrlEventStartTime.setLabel('')
-			#self.ctrlEventEndTime.setLabel('')
+		self.ctrlProgress.setPercent(0)
+		self.progress_idx = 0.0
+		self.progress_max = 0.0
+		self.eventCopy = []
+		#self.ctrlEventStartTime.setLabel('')
+		#self.ctrlEventEndTime.setLabel('')
 
+		self.epgClock = []
+		self.epgClock = self.commander.datetime_GetLocalTime()
+		print 'epgClock[%s]'% self.epgClock
 
-			self.epgClock = self.commander.datetime_GetLocalTime()
-			"""
-			
+		#self.initTimeShift()
+
+	def initTimeShift(self) :
+		ret = self.commander.player_GetStatus()
+		#todo, pending status
+		"""
+		if pendingStatus == True :
+			self.ctrlBtnPlay.setVisible(False)
+			self.ctrlBtnPause.setVisible(True)
 
 		else:
-			print 'has no channel'
+			self.ctrlBtnPlay.setVisible(True)
+			self.ctrlBtnPause.setVisible(False)
+		"""
 
 
 	@run_async
@@ -177,12 +237,13 @@ class TimeShiftBanner(BaseWindow):
 			#print '[%s():%s]repeat'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 			#local clock
-			if is_digit(self.epgClock[0]):
-				ret = epgInfoClock(3, nowTime, int(self.epgClock[0]))
-				#self.ctrlEventClock.setLabel(ret[0])
+			if self.epgClock != [] :
+				if is_digit(self.epgClock[0]):
+					ret = epgInfoClock(3, nowTime, int(self.epgClock[0]))
+					self.ctrlEventClock.setLabel(ret[0])
 
-			else:
-				print 'value error epgClock[%s]' % ret
+				else:
+					print 'value error epgClock[%s]' % ret
 			
 			time.sleep(1)
 

@@ -1,5 +1,5 @@
 <window type="windows" id="3009">
-	<defaultcontrol always="true">405</defaultcontrol>
+	<defaultcontrol always="true">410</defaultcontrol>
 	<controls>
 		<control type="group">
 			<animation effect="slide" start="0,570" end="0,0" time="300" delay="300" tween="quadratic" easing="out">WindowOpen</animation>
@@ -60,7 +60,7 @@
 					<control type="label">
 						<posx>50</posx>
 						<posy>0</posy>
-						<width min="150" max="150">auto</width>
+						<width min="100" max="150">auto</width>
 						<height>28</height>
 						<font>font12</font>
 						<textcolor>grey</textcolor>
@@ -73,7 +73,7 @@
 					<control type="label">
 						<posx>50</posx>
 						<posy>0</posy>
-						<width min="150" max="150">auto</width>
+						<width min="100" max="150">auto</width>
 						<height>28</height>
 						<font>font12</font>
 						<textcolor>grey</textcolor>
@@ -86,7 +86,7 @@
 					<control type="label">
 						<posx>50</posx>
 						<posy>0</posy>
-						<width min="150" max="150">auto</width>
+						<width min="100" max="150">auto</width>
 						<height>28</height>
 						<font>font12</font>
 						<textcolor>grey</textcolor>
@@ -99,7 +99,7 @@
 					<control type="label">
 						<posx>50</posx>
 						<posy>0</posy>
-						<width min="150" max="150">auto</width>
+						<width min="100" max="150">auto</width>
 						<height>28</height>
 						<font>font12</font>
 						<textcolor>grey</textcolor>
@@ -112,7 +112,20 @@
 					<control type="label">
 						<posx>50</posx>
 						<posy>0</posy>
-						<width min="150" max="150">auto</width>
+						<width min="100" max="150">auto</width>
+						<height>28</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Pause</label>
+						<visible>Control.HasFocus(406)</visible>
+					</control>
+					<control type="label">
+						<posx>50</posx>
+						<posy>0</posy>
+						<width min="100" max="150">auto</width>
 						<height>28</height>
 						<font>font12</font>
 						<textcolor>grey</textcolor>
@@ -120,12 +133,12 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>Stop</label>
-						<visible>Control.HasFocus(406)</visible>
+						<visible>Control.HasFocus(407)</visible>
 					</control>
 					<control type="label">
 						<posx>50</posx>
 						<posy>0</posy>
-						<width min="150" max="150">auto</width>
+						<width min="100" max="150">auto</width>
 						<height>28</height>
 						<font>font12</font>
 						<textcolor>grey</textcolor>
@@ -133,7 +146,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>Forward</label>
-						<visible>Control.HasFocus(407)</visible>
+						<visible>Control.HasFocus(408)</visible>
 					</control>
 				</control>
 			</control>
@@ -188,12 +201,12 @@
 					<control type="progress" id="201">
 						<description>progress control</description>
 						<posx>0</posx>
-						<posy>19</posy>
+						<posy>17</posy>
 						<width>650</width>
 						<height>16</height>
-						<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+						<texturebg border="6,0,6,0">confluence/OSDProgressBack.png</texturebg>
 						<lefttexture>-</lefttexture>
-						<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+						<midtexture border="6,0,6,0">confluence/OSDProgressMid.png</midtexture>
 						<righttexture>-</righttexture>
 						<overlaytexture>-</overlaytexture>
 					</control>
@@ -265,7 +278,7 @@
 						<font>-</font>
 						<texturefocus>confluence/OSDSubtitlesFO.png</texturefocus>
 						<texturenofocus>confluence/OSDSubtitlesNF.png</texturenofocus>
-						<onleft>SetFocus(407)</onleft>
+						<onleft>SetFocus(408)</onleft>
 						<onright>SetFocus(402)</onright>
 						<onup></onup>
 						<ondown></ondown>
@@ -311,32 +324,49 @@
 						<texturefocus>confluence/OSDRewindFO.png</texturefocus>
 						<texturenofocus>confluence/OSDRewindNF.png</texturenofocus>
 						<onleft>SetFocus(403)</onleft>
-						<onright>SetFocus(405)</onright>
+						<onright>SetFocus(410)</onright>
 						<onup></onup>
 						<ondown></ondown>
 						<onclick>PlayerControl(Rewind)</onclick>
 					</control>
-					<control type="button" id="405">
-						<posx>50</posx>
-						<posy>45</posy>
-						<width>50</width>
-						<height>50</height>
-						<label>31351</label>
-						<altlabel>208</altlabel>
-						<font>-</font>
-						<texturefocus>confluence/OSDPauseFO.png</texturefocus>
-						<texturenofocus>confluence/OSDPauseNF.png</texturenofocus>
-						<!--usealttexture>Player.Paused | Player.Forwarding | Player.Rewinding</usealttexture>
-						<alttexturefocus>confluence/OSDPlayFO.png</alttexturefocus>
-						<alttexturenofocus>confluence/OSDPlayNF.png</alttexturenofocus!-->
-						<onleft>SetFocus(404)</onleft>
-						<onright>SetFocus(406)</onright>
-						<onup></onup>
-						<ondown></ondown>
-						<pulseonselect>false</pulseonselect>
-						<!--onclick>PlayerControl(Play)</onclick-->
+					<control type="group" id="410">
+						<control type="button" id="405">
+							<posx>50</posx>
+							<posy>45</posy>
+							<width>50</width>
+							<height>50</height>
+							<label>31351</label>
+							<altlabel>208</altlabel>
+							<font>-</font>
+							<texturefocus>confluence/OSDPlayFO.png</texturefocus>
+							<texturenofocus>confluence/OSDPlayNF.png</texturenofocus>
+							<!--usealttexture>Player.Paused | Player.Forwarding | Player.Rewinding</usealttexture>
+							<alttexturefocus>confluence/OSDPlayFO.png</alttexturefocus>
+							<alttexturenofocus>confluence/OSDPlayNF.png</alttexturenofocus-->
+							<onleft>SetFocus(404)</onleft>
+							<onright>SetFocus(407)</onright>
+							<onup></onup>
+							<ondown></ondown>
+							<!--onclick>PlayerControl(Play)</onclick-->
+						</control>
+						<control type="button" id="406">
+							<posx>50</posx>
+							<posy>45</posy>
+							<width>50</width>
+							<height>50</height>
+							<label>31351</label>
+							<altlabel>208</altlabel>
+							<font>-</font>
+							<texturefocus>confluence/OSDPauseFO.png</texturefocus>
+							<texturenofocus>confluence/OSDPauseNF.png</texturenofocus>
+							<onleft>SetFocus(404)</onleft>
+							<onright>SetFocus(407)</onright>
+							<onup></onup>
+							<ondown></ondown>
+							<visible>!Control.IsVisible(405)</visible>
+						</control>
 					</control>
-					<control type="button" id="406">
+					<control type="button" id="407">
 						<posx>100</posx>
 						<posy>45</posy>
 						<width>50</width>
@@ -345,13 +375,13 @@
 						<font>-</font>
 						<texturefocus>confluence/OSDStopFO.png</texturefocus>
 						<texturenofocus>confluence/OSDStopNF.png</texturenofocus>
-						<onleft>SetFocus(405)</onleft>
-						<onright>SetFocus(407)</onright>
+						<onleft>SetFocus(410)</onleft>
+						<onright>SetFocus(408)</onright>
 						<onup></onup>
 						<ondown></ondown>
 						<onclick>PlayerControl(Stop)</onclick>
 					</control>
-					<control type="button" id="407">
+					<control type="button" id="408">
 						<posx>150</posx>
 						<posy>45</posy>
 						<width>50</width>
@@ -360,7 +390,7 @@
 						<font>-</font>
 						<texturefocus>confluence/OSDForwardFO.png</texturefocus>
 						<texturenofocus>confluence/OSDForwardNF.png</texturenofocus>
-						<onleft>SetFocus(406)</onleft>
+						<onleft>SetFocus(407)</onleft>
 						<onright>SetFocus(401)</onright>
 						<onup></onup>
 						<ondown></ondown>
