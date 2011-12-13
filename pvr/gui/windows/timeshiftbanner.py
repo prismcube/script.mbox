@@ -135,6 +135,8 @@ class TimeShiftBanner(BaseWindow):
 
 		elif controlId == self.ctrlBtnVolume.getId():
 			self.timeshiftAction(controlId)
+			ret = self.commander.player_GetStatus()
+			print 'player_status[%s]'% ret
 
 			
 
