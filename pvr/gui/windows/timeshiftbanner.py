@@ -180,11 +180,13 @@ class TimeShiftBanner(BaseWindow):
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
 
 		elif focusId == self.ctrlBtnRewind.getId():
+			pass
 			#get speed
 			#self.initTimeShift()
 			#ret = self.commander.player_SetSpeed()
 
 		elif focusId == self.ctrlBtnForward.getId():
+			pass
 			#get speed
 			#self.initTimeShift()
 			#ret = self.commander.player_SetSpeed()
