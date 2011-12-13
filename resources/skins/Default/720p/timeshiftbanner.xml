@@ -281,7 +281,7 @@
 						<onleft>SetFocus(408)</onleft>
 						<onright>SetFocus(402)</onright>
 						<onup></onup>
-						<ondown></ondown>
+						<ondown>SetFocus(404)</ondown>
 						<!--onclick>XBMC.RunScript($INFO[Skin.String(SubtitleScript_Path)])</onclick-->
 					</control>
 					<control type="button" id="402">
@@ -296,7 +296,7 @@
 						<onleft>SetFocus(401)</onleft>
 						<onright>SetFocus(403)</onright>
 						<onup></onup>
-						<ondown></ondown>
+						<ondown>SetFocus(410)</ondown>
 						<!--onclick>XBMC.RunScript($INFO[Skin.String(SubtitleScript_Path)])</onclick-->
 					</control>
 					<control type="button" id="403">
@@ -311,7 +311,7 @@
 						<onleft>SetFocus(402)</onleft>
 						<onright>SetFocus(404)</onright>
 						<onup></onup>
-						<ondown></ondown>
+						<ondown>SetFocus(407)</ondown>
 						<onclick>XBMC.PlayerControl(record)</onclick>
 					</control>
 					<control type="button" id="404">
@@ -325,7 +325,7 @@
 						<texturenofocus>confluence/OSDRewindNF.png</texturenofocus>
 						<onleft>SetFocus(403)</onleft>
 						<onright>SetFocus(410)</onright>
-						<onup></onup>
+						<onup>SetFocus(401)</onup>
 						<ondown></ondown>
 						<onclick>PlayerControl(Rewind)</onclick>
 					</control>
@@ -345,7 +345,7 @@
 							<alttexturenofocus>confluence/OSDPlayNF.png</alttexturenofocus-->
 							<onleft>SetFocus(404)</onleft>
 							<onright>SetFocus(407)</onright>
-							<onup></onup>
+							<onup>SetFocus(402)</onup>
 							<ondown></ondown>
 							<!--onclick>PlayerControl(Play)</onclick-->
 						</control>
@@ -361,7 +361,7 @@
 							<texturenofocus>confluence/OSDPauseNF.png</texturenofocus>
 							<onleft>SetFocus(404)</onleft>
 							<onright>SetFocus(407)</onright>
-							<onup></onup>
+							<onup>SetFocus(402)</onup>
 							<ondown></ondown>
 							<visible>!Control.IsVisible(405)</visible>
 						</control>
@@ -377,7 +377,7 @@
 						<texturenofocus>confluence/OSDStopNF.png</texturenofocus>
 						<onleft>SetFocus(410)</onleft>
 						<onright>SetFocus(408)</onright>
-						<onup></onup>
+						<onup>SetFocus(403)</onup>
 						<ondown></ondown>
 						<onclick>PlayerControl(Stop)</onclick>
 					</control>
