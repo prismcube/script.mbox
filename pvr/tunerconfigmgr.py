@@ -3,8 +3,6 @@ import xbmcgui
 import sys
 import time
 
-import pvr.elismgr
-from pvr.elisevent import ElisAction, ElisEnum
 
 E_CONFIGURE_SATELLITE_TUNER_INDEX 		= 0
 E_CONFIGURE_SATELLITE_SLOT_NUMBER		= 1
@@ -36,6 +34,10 @@ E_DISEQC_1_1					= 2
 E_MOTORIZED_1_2					= 3
 E_MOTORIZED_USALS				= 4
 E_ONE_CABLE						= 5
+
+from pvr.elisaction import ElisAction
+from pvr.elisenum import ElisEnum
+
 
 gTunerConfigMgr = None
 
@@ -107,13 +109,13 @@ class TunerConfigMgr( object ):
 				IsOneCable, OneCablePin, OneCableMDU, OneCableLoFreq1, OneCableLoFreq2, OneCableUBSlot, OneCableUBFreq]	
 		"""
 		self.configuredList = []
-		self.commander.satelliteconfig_GetList( self.currentTuner, self.configuredList )		
+		self.configuredList = self.commander.satelliteconfig_GetList( self.currentTuner )		
 
 		"""
 			[Longitude, Band, Name]
 		"""
 		self.configuredSatelliteList = []
-		self.commander.satellite_GetConfiguredList( ElisEnum.E_SORT_LONGITUDE, self.configuredSatelliteList )		
+		self.configuredSatelliteList = self.commander.satellite_GetConfiguredList( ElisEnum.SATELLITE_BY_LONGITUDE)		
 	
 
 	def getFormattedName( self, longitude ) :
@@ -141,7 +143,7 @@ class TunerConfigMgr( object ):
 	def getFormattedNameList( self ) :
 		satellitelist = []
 		formattedlist = []
-		self.commander.satellite_GetList( ElisEnum.E_SORT_INSERTED, satellitelist )
+		satellitelist = self.commander.satellite_GetList( ElisEnum.E_SORT_INSERTED)
 		for satellite in satellitelist :
 			dir = 'E'
 
@@ -166,7 +168,7 @@ class TunerConfigMgr( object ):
 				break
 
 		if found == True :
-			self.commander.transponder_GetList( int( satellite[0] ), int( satellite[1] ), tmptransponderList )
+			tmptransponderList = self.commander.transponder_GetList( int( satellite[0] ), int( satellite[1] ) )
 
 		for i in range( len( tmptransponderList ) ) :
 			transponderList.append( '%s' % ( i + 1 ) + ' ' + tmptransponderList[i][0] + ' MHz / ' + tmptransponderList[i][1] + ' KS/s' )

@@ -69,9 +69,11 @@
 		<textwidth>195</textwidth>
 		<aligny>center</aligny>
 		<font>font12_title</font>
-		<texturefocus border="5">button-focus.png</texturefocus>
-		<texturenofocus border="5">button-nofocus.png</texturenofocus>
+		<texturefocus border="5">confluence/button-focus.png</texturefocus>
+		<texturenofocus border="5">confluence/button-nofocus.png</texturenofocus>
 		<pulseonselect>false</pulseonselect>
+		<textcolor>white</textcolor>
+		<focusedcolor>white</focusedcolor>
 	</include>
 
 	

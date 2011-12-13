@@ -16,7 +16,7 @@
 	        <height>35</height>
 	        <align>right</align>
 	        <aligny>center</aligny>
-	        <font>font12</font>
+	        <font>font16caps</font>
 	        <textcolor>ffffffff</textcolor>
 	        <label>nullwindow</label>
 	    </control>
