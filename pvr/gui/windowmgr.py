@@ -2,9 +2,13 @@ import xbmc
 import xbmcgui
 import sys
 import time
+import os
+import shutil
 
 from gui.basewindow import BaseWindow
 from inspect import currentframe
+from elementtree import ElementTree
+
 
 WIN_ID_NULLWINDOW 					= 1
 WIN_ID_MAINMENU 					= 2
@@ -17,6 +21,8 @@ WIN_ID_SATELLITE_CONFIGURATION		= 8
 WIN_ID_TIMESHIFT_BANNER				= 9
 
 WIN_ID_LANGUAGE_SETTING				= 100	#for test
+
+
 
 __windowmgr = None
 
@@ -43,16 +49,20 @@ class WindowMgr(object):
 		self.skinName = currentSkinName[4:]
 
 		self.windows = {}
+		self.skinFontPath = []
+		self.scriptFontPath =[]
+		self.skinDir = []
+		self.listDir = []
+		
 
 		self.copyIncludeFile( )
 		self.createAllWindows( )
-
 
 	def showWindow( self, windowId ):
 		print'lael98 check %d %s winid=%d' %(currentframe().f_lineno, currentframe().f_code.co_filename, windowId)    
 		try:
 			self.windows[windowId].doModal()
- 			self.lastId = windowId
+			self.lastId = windowId
 
 		except:
 			print "can not find window"
@@ -61,7 +71,8 @@ class WindowMgr(object):
 	def createAllWindows( self ):
 		import pvr.platform 
 		self.scriptDir = pvr.platform.getPlatform().getScriptDir()
-		print 'lael98 test scriptDir= %s' %self.scriptDir
+
+		self.addDefaultFont( )
 
 		from pvr.gui.windows.nullwindow import NullWindow		
 		from pvr.gui.windows.mainmenu import MainMenu
@@ -89,7 +100,7 @@ class WindowMgr(object):
 
 	def resetAllWindows( self ):
 		self.windows[ WIN_ID_MAINMENU ].close( )
-		self.copyIncludeFile( )		
+		self.copyIncludeFile( )
 		self.windows.clear( )
 		self.createAllWindows( )
 		self.showWindow( WIN_ID_MAINMENU )
@@ -103,7 +114,7 @@ class WindowMgr(object):
 
 		if self.skinName != currentSkinName[4:] :
 			print 'change skin name'
-			self.skinName = currentSkinName[4:]			
+			self.skinName = currentSkinName[4:]
 			self.resetAllWindows( )
 
 
@@ -137,3 +148,104 @@ class WindowMgr(object):
 
 	def getWindow( self, windowId ) :
 		return self.windows[ windowId ]
+
+
+	def addDefaultFont( self ) :
+		self.skinFontPath = xbmc.translatePath("special://skin/fonts/")
+		self.scriptFontPath = os.path.join(os.getcwd() , "resources" , "fonts")
+		self.skinDir = xbmc.translatePath("special://skin/")
+		self.listDir = os.listdir( self.skinDir )
+
+		self.addFont( "font35_title", "DejaVuSans-Bold.ttf", "35" )
+		self.addFont( "font12_title", "DejaVuSans-Bold.ttf", "16" )
+
+
+	def getFontsXML( self ):
+
+		fontPaths = []
+
+		try:
+			for subDir in self.listDir:
+				subDir = os.path.join( self.skinDir, subDir )
+				
+				if os.path.isdir( subDir ):
+					fontXml = os.path.join( subDir, "Font.xml" )
+					
+					if os.path.exists( fontXml ):
+						fontPaths.append( fontXml )
+
+		except:
+			print 'Err : getFontsXML Error'
+			return []
+
+		return fontPaths
+
+
+	def hasFontInstalled( self, fontXMLPath, fontName ):
+		name = "<name>%s</name>" % fontName
+
+		if not name in file( fontXMLPath, "r" ).read():
+			print '%s font is not installed!' %fontName
+			return False
+			
+		else:
+			print '%s font already installed!' %fontName
+
+		return True
+
+
+	def addFont( self, fontName, fileName, size, style="", aspect="" ):
+
+		try:
+			needReloadSkin = False
+			fontPaths = self.getFontsXML( )
+
+			if fontPaths:
+				for fontXMLPath in fontPaths:
+					if not self.hasFontInstalled( fontXMLPath, fontName ):
+						tree = ElementTree.parse( fontXMLPath )
+						root = tree.getroot( )
+
+						for sets in root.getchildren( ):
+							sets.findall( "font" )[ -1 ].tail = "\n\t\t"
+							new = ElementTree.SubElement( sets, "font" )
+							new.text, new.tail = "\n\t\t\t", "\n\t"
+
+							subNew1=ElementTree.SubElement( new, "name" )
+							subNew1.text = fontName
+							subNew1.tail = "\n\t\t\t"
+							subNew2=ElementTree.SubElement( new, "filename" )
+							subNew2.text = ( fileName, "Arial.ttf" )[ sets.attrib.get( "id" ) == "Arial" ]
+							subNew2.tail = "\n\t\t\t"
+							subNew3=ElementTree.SubElement( new, "size" )
+							subNew3.text = size
+							subNew3.tail = "\n\t\t\t"
+							lastElement = subNew3
+
+							if style in [ "normal", "bold", "italics", "bolditalics" ]:
+								subNew4=ElementTree.SubElement(new ,"style")
+								subNew4.text = style
+								subNew4.tail = "\n\t\t\t"
+								lastElement = subNew4
+							if aspect:    
+								subNew5=ElementTree.SubElement(new ,"aspect")
+								subNew5.text = aspect
+								subNew5.tail = "\n\t\t\t"
+								lastElement = subNew5
+							needReloadSkin = True
+
+							lastElement.tail = "\n\t\t"
+						tree.write(fontXMLPath)
+						needReloadSkin = True
+		except:
+			print 'Error addFontErr'
+
+		if needReloadSkin:
+ 			if not os.path.exists( os.path.join( self.skinFontPath, fileName ) ) and os.path.exists( os.path.join( self.scriptFontPath, fileName ) ):
+				shutil.copyfile( os.path.join( self.scriptFontPath, fileName ), os.path.join( self.skinFontPath, fileName ) )
+
+			xbmc.executebuiltin( "XBMC.ReloadSkin()" )
+			return True
+
+		return False
+
