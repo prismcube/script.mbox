@@ -39,6 +39,8 @@ class MainMenu( BaseWindow ):
 				winmgr.getInstance().showWindow( winmgr.WIN_ID_LANGUAGE_SETTING )
 			elif focusId == 90102 :
 				winmgr.getInstance().showWindow( winmgr.WIN_ID_ANTENNA_SETUP )
+			elif focusId == 90103 :
+				winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_SEARCH )
 			elif focusId == 20 :
 				self.close()
 				import pvr.launcher

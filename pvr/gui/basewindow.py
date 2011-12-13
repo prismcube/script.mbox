@@ -177,19 +177,19 @@ class SettingWindow( BaseWindow ):
 		self.controlList.append( ControlItem( ControlItem.E_SETTING_ENUM_CONTROL, controlId, property, listItems, None, description ) )
 
 	
-	def addUserEnumControl( self, controlId, titleLabel, inputType, selectItem ):	
+	def addUserEnumControl( self, controlId, titleLabel, inputType, selectItem, description ):	
 		listItems = []
 
 		for i in range( len( inputType ) ):
 			listItem = xbmcgui.ListItem( titleLabel, inputType[i], "-", "-", "-" )
 			listItems.append( listItem )
-		self.controlList.append( ControlItem( ControlItem.E_SETTING_USER_ENUM_CONTROL, controlId, None, listItems, int( selectItem ), None ) )
+		self.controlList.append( ControlItem( ControlItem.E_SETTING_USER_ENUM_CONTROL, controlId, None, listItems, int( selectItem ), description ) )
 
-	def addInputControl( self, controlId , titleLabel, inputLabel, inputType ):
+	def addInputControl( self, controlId , titleLabel, inputLabel, inputType, description ):
 		listItems = []
 		listItem = xbmcgui.ListItem( titleLabel, inputLabel, "-", "-", "-" )
 		listItems.append( listItem )
-		self.controlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, controlId, inputType, listItems, None, None ) )
+		self.controlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, controlId, inputType, listItems, None, description ) )
 
 	def addLeftLabelButtonControl( self, controlId, inputString, description ):
 		listItems = []
@@ -427,17 +427,29 @@ class SettingWindow( BaseWindow ):
 	def controlLeft( self ):
 
 		focusId = self.getFocusId( )
-		if ( focusId % 10 ) == 2 :
-			self.setFocusId( focusId - 1 )
+		count = len( self.controlList )
+
+		for i in range( count ) :
+			ctrlItem = self.controlList[i]		
+			if self.hasControlItem( ctrlItem, focusId ) :
+				if ctrlItem.controlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.controlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
+					if focusId % 10 == 2 :
+						self.setFocusId( focusId - 1 )
+						return
 
 	
 	def controlRight( self ):
 
 		focusId = self.getFocusId( )
-		if ( focusId % 10 ) == 1 :
-			self.setFocusId( focusId + 1 )
+		count = len( self.controlList )
 
-
+		for i in range( count ) :
+			ctrlItem = self.controlList[i]		
+			if self.hasControlItem( ctrlItem, focusId ) :
+				if ctrlItem.controlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.controlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
+					if focusId % 10 == 1 :
+						self.setFocusId( focusId + 1 )
+						return
 
 class DetailWindow(SettingWindow):
 

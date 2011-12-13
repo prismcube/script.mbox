@@ -44,8 +44,7 @@ class AntennaSetup( SettingWindow ):
 		self.disableControl( )
 		self.initialized = True
 
-	import pvr.tunerconfigmgr as configmgr
-		
+
 	def onAction( self, action ):
 
 		actionId = action.getId( )
