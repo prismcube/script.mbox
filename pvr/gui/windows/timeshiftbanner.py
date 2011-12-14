@@ -37,6 +37,8 @@ class TimeShiftBanner(BaseWindow):
 		self.commander = pvr.elismgr.getInstance().getCommander()
 
 		self.currentChannel=[]
+		self.progress_idx = 0.0
+		self.progress_max = 0.0
 
 		#push push test test
 
@@ -55,9 +57,10 @@ class TimeShiftBanner(BaseWindow):
 			self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
 
 			self.ctrlProgress		= self.getControl( 201 )
+			self.ctrlBtnCurrent		= self.getControl( 202 )
 			self.ctrlEventClock		= self.getControl( 211 )
-			self.ctrlEventStartTime	= self.getControl( 221 )
-			self.ctrlEventEndTime	= self.getControl( 222 )
+			self.ctrlLblTSStartTime	= self.getControl( 221 )
+			self.ctrlLblTSEndTime	= self.getControl( 222 )
 
 			self.ctrlBtnVolume		= self.getControl( 402 )
 			self.ctrlBtnRecord		= self.getControl( 403 )
@@ -69,6 +72,7 @@ class TimeShiftBanner(BaseWindow):
 
 
 		self.ctrlEventClock.setLabel('')
+		self.ctrlProgress.setPercent(0)
 		
 		#get channel
 		#self.currentChannel = self.commander.channel_GetCurrent()
@@ -78,9 +82,9 @@ class TimeShiftBanner(BaseWindow):
 
 
 		#run thread
+		self.isPlay = False
 		self.untilThread = True
 		self.updateLocalTime()
-
 
 
 	def onAction(self, action):
@@ -139,7 +143,7 @@ class TimeShiftBanner(BaseWindow):
 			ret = self.commander.player_GetStatus()
 			print 'player_status[%s]'% ret
 
-			
+
 
 
 	def onFocus(self, controlId):
@@ -164,16 +168,22 @@ class TimeShiftBanner(BaseWindow):
 		if focusId == self.ctrlBtnPlay.getId():
 			ret = self.commander.player_Pause()
 
+			self.isPlay = True
 			self.ctrlBtnPlay.setVisible(False)
 			self.ctrlBtnPause.setVisible(True)
 
 		elif focusId == self.ctrlBtnPause.getId():
 			ret = self.commander.player_Resume()
 
+			self.isPlay = False
 			self.ctrlBtnPlay.setVisible(True)
 			self.ctrlBtnPause.setVisible(False)
 
 		elif focusId == self.ctrlBtnStop.getId():
+			self.ctrlProgress.setPercent(0)
+			self.progress_idx = 0.0
+			self.progress_max = 0.0
+
 			ret = self.commander.player_Stop()
 
 			self.untilThread = False
@@ -185,15 +195,14 @@ class TimeShiftBanner(BaseWindow):
 		elif focusId == self.ctrlBtnRewind.getId():
 			pass
 			#get speed
-			#self.initTimeShift()
 			#ret = self.commander.player_SetSpeed()
+			#self.initTimeShift()
 
 		elif focusId == self.ctrlBtnForward.getId():
 			pass
 			#get speed
-			#self.initTimeShift()
 			#ret = self.commander.player_SetSpeed()
-
+			#self.initTimeShift()
 
 	def updateONEvent(self, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
@@ -201,26 +210,28 @@ class TimeShiftBanner(BaseWindow):
 
 
 	def initLabelInfo(self):
-		print '[%s():%s]Initialize Label'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'currentChannel[%s]' % self.currentChannel
 		
 		# todo 
-		self.ctrlProgress.setPercent(0)
-		self.progress_idx = 0.0
-		self.progress_max = 0.0
 		self.eventCopy = []
-		#self.ctrlEventStartTime.setLabel('')
-		#self.ctrlEventEndTime.setLabel('')
+		#self.ctrlLblTSStartTime.setLabel('')
+		self.ctrlLblTSEndTime.setLabel('')
 
 		self.epgClock = []
 		self.epgClock = self.commander.datetime_GetLocalTime()
 		print 'epgClock[%s]'% self.epgClock
 
-		#self.initTimeShift()
+		self.initTimeShift()
 
 	def initTimeShift(self) :
+		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		ret = []
 		ret = self.commander.player_GetStatus()
 		#todo, pending status
+		self.curTime = 0
+		self.timeshift_curTime = 0.0
+		self.timeshift_endTime = 0.0
 		"""
 		if pendingStatus == True :
 			self.ctrlBtnPlay.setVisible(False)
@@ -230,7 +241,18 @@ class TimeShiftBanner(BaseWindow):
 			self.ctrlBtnPlay.setVisible(True)
 			self.ctrlBtnPause.setVisible(False)
 		"""
+		if ret != []:
+			self.timeshift_curTime = int(ret[4]) / 1000.0
+			self.timeshift_endTime = int(ret[5]) / 1000.0
+			#self.timeshift_curTime = 0.0
+			#self.timeshift_endTime = 50
+			
 
+		ret = ''
+		ret = epgInfoClock(4, 0, self.timeshift_endTime)
+		self.ctrlLblTSEndTime.setLabel(ret)
+
+		self.progress_max = self.timeshift_endTime
 
 	@run_async
 	def updateLocalTime(self):
@@ -249,7 +271,35 @@ class TimeShiftBanner(BaseWindow):
 
 				else:
 					print 'value error epgClock[%s]' % ret
-			
+
+			#progress
+			if self.isPlay == True:
+				if self.progress_max > 0:
+					print 'progress_idx[%s] getPercent[%s]' % (self.progress_idx, self.ctrlProgress.getPercent())
+
+					self.ctrlProgress.setPercent(self.progress_idx)
+
+					pastTime = self.timeshift_curTime + self.curTime
+
+					self.progress_idx = ( pastTime / self.progress_max * 100)
+					if self.progress_idx > 100:
+						self.progress_idx = 100
+
+					if pastTime > self.progress_max :
+						pastTime = self.progress_max
+					ret = epgInfoClock(4, 0, pastTime)
+					self.ctrlBtnCurrent.setLabel(ret)
+
+					posx = int (self.progress_idx * 650 / 100)
+					self.ctrlBtnCurrent.setPosition( posx, 25 )
+					self.curTime += 1
+
+					print 'posx[%s] [%s] [%s]'% (posx, pastTime, pastTime/self.progress_max)
+				else:
+					print 'value error progress_max[%s]' % self.progress_max
+			else:
+				pass
+
 			time.sleep(1)
 
 		print '[%s():%s]leave_end thread'% (currentframe().f_code.co_name, currentframe().f_lineno)

@@ -240,6 +240,12 @@ def epgInfoClock(flag, nowTime, epgClock):
 	elif flag == 3:
 		strClock.append( time.strftime('%H:%M:%S', time.gmtime(stbClock) ) )
 
+	elif flag == 4:
+		hour =  epgClock / 3600
+		min  = (epgClock % 3600) / 60
+		sec  = (epgClock % 3600) % 60
+		ret = '%d:%02d:%02d' % ( hour, min, sec )
+		return ret
 
 	print 'epgClock[%s:%s]'% (strClock, time.strftime('%S', time.gmtime(stbClock)) )
 	return strClock
