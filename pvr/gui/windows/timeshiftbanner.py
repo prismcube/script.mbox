@@ -56,6 +56,9 @@ class TimeShiftBanner(BaseWindow):
 		if not self.win:
 			self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
 
+			self.ctrlImgRewind		= self.getControl(  31 )
+			self.ctrlImgForward		= self.getControl(  32 )
+			self.ctrlLblSpeed		= self.getControl(  33 )
 			self.ctrlProgress		= self.getControl( 201 )
 			self.ctrlBtnCurrent		= self.getControl( 202 )
 			self.ctrlEventClock		= self.getControl( 211 )
@@ -71,6 +74,7 @@ class TimeShiftBanner(BaseWindow):
 			self.ctrlBtnForward		= self.getControl( 408 )
 
 
+		self.mSpeed = 100	#normal
 		self.ctrlEventClock.setLabel('')
 		self.ctrlProgress.setPercent(0)
 		
@@ -127,13 +131,12 @@ class TimeShiftBanner(BaseWindow):
 
 
 	def onClick(self, controlId):
-		print "onclick(): control %d" % controlId
+		print 'onclick(): control %d' % controlId
 
 		if controlId >= self.ctrlBtnRewind.getId() and controlId <= self.ctrlBtnForward.getId() :
+			self.initTimeShift()
 			self.timeshiftAction(controlId)
 		
-			ret = self.commander.player_GetStatus()
-			print 'player_status[%s]'% ret
 
 		elif controlId == self.ctrlBtnRecord.getId():
 			self.timeshiftAction(controlId)
@@ -193,16 +196,18 @@ class TimeShiftBanner(BaseWindow):
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
 
 		elif focusId == self.ctrlBtnRewind.getId():
-			pass
-			#get speed
-			#ret = self.commander.player_SetSpeed()
-			#self.initTimeShift()
+			nextSpeed = 100
+			nextSpeed = self.getSpeedValue(focusId)
+			ret = self.commander.player_SetSpeed(nextSpeed)
+			print 'player_SetSpeed[%s], cmd[%s]'% (ret, nextSpeed)
+			self.initTimeShift()
 
 		elif focusId == self.ctrlBtnForward.getId():
-			pass
-			#get speed
-			#ret = self.commander.player_SetSpeed()
-			#self.initTimeShift()
+			nextSpeed = 100
+			nextSpeed = self.getSpeedValue(focusId)
+			ret = self.commander.player_SetSpeed(nextSpeed)
+			print 'player_SetSpeed[%s], cmd[%s]'% (ret, nextSpeed)
+			self.initTimeShift()
 
 	def updateONEvent(self, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
@@ -215,7 +220,7 @@ class TimeShiftBanner(BaseWindow):
 		
 		# todo 
 		self.eventCopy = []
-		#self.ctrlLblTSStartTime.setLabel('')
+		self.ctrlLblTSStartTime.setLabel('')
 		self.ctrlLblTSEndTime.setLabel('')
 
 		self.epgClock = []
@@ -226,12 +231,12 @@ class TimeShiftBanner(BaseWindow):
 
 	def initTimeShift(self) :
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		ret = []
-		ret = self.commander.player_GetStatus()
+		status = []
+		status = self.commander.player_GetStatus()
+
+		print 'player_GetStatus[%s]'% status
+		
 		#todo, pending status
-		self.curTime = 0
-		self.timeshift_curTime = 0.0
-		self.timeshift_endTime = 0.0
 		"""
 		if pendingStatus == True :
 			self.ctrlBtnPlay.setVisible(False)
@@ -241,18 +246,156 @@ class TimeShiftBanner(BaseWindow):
 			self.ctrlBtnPlay.setVisible(True)
 			self.ctrlBtnPause.setVisible(False)
 		"""
-		if ret != []:
-			self.timeshift_curTime = int(ret[4]) / 1000.0
-			self.timeshift_endTime = int(ret[5]) / 1000.0
+		if status != []:
+			#progress info
+			self.curTime = 0
+			self.timeshift_staTime = 0.0
+			self.timeshift_curTime = 0.0
+			self.timeshift_endTime = 0.0
+
+			self.timeshift_staTime = int(status[3]) / 1000.0
+			self.timeshift_curTime = int(status[4]) / 1000.0
+			self.timeshift_endTime = int(status[5]) / 1000.0
 			#self.timeshift_curTime = 0.0
 			#self.timeshift_endTime = 50
-			
 
-		ret = ''
-		ret = epgInfoClock(4, 0, self.timeshift_endTime)
-		self.ctrlLblTSEndTime.setLabel(ret)
+			ret = ''
+			ret = epgInfoClock(4, 0, self.timeshift_staTime)
+			self.ctrlLblTSStartTime.setLabel(ret)
+			#print 'staTime[%s] ret[%s]'% (self.timeshift_staTime, ret)
 
-		self.progress_max = self.timeshift_endTime
+			ret = ''
+			ret = epgInfoClock(4, 0, self.timeshift_endTime)
+			self.ctrlLblTSEndTime.setLabel(ret)
+
+			self.progress_max = self.timeshift_endTime
+
+
+			#Speed label
+			self.mSpeed = int(status[6])
+
+			if self.mSpeed == 100 :
+				self.ctrlImgRewind.setVisible(False)
+				self.ctrlImgForward.setVisible(False)
+				self.ctrlLblSpeed.setLabel('')
+
+			elif self.mSpeed >= 200 and self.mSpeed <= 1000:
+				self.ctrlImgRewind.setVisible(False)
+				self.ctrlImgForward.setVisible(True)
+
+				if self.mSpeed == 200 :
+					self.ctrlLblSpeed.setLabel('2x')
+				elif self.mSpeed == 300 :
+					self.ctrlLblSpeed.setLabel('4x')
+				elif self.mSpeed == 400 :
+					self.ctrlLblSpeed.setLabel('8x')
+				elif self.mSpeed == 600 :
+					self.ctrlLblSpeed.setLabel('16x')
+				elif self.mSpeed == 800 :
+					self.ctrlLblSpeed.setLabel('24x')
+				elif self.mSpeed == 1000 :
+					self.ctrlLblSpeed.setLabel('32x')
+
+			elif self.mSpeed <= -200 and self.mSpeed >= -1000:
+				self.ctrlImgRewind.setVisible(True)
+				self.ctrlImgForward.setVisible(False)
+
+				if self.mSpeed == -200 :
+					self.ctrlLblSpeed.setLabel('2x')
+				elif self.mSpeed == -300 :
+					self.ctrlLblSpeed.setLabel('4x')
+				elif self.mSpeed == -400 :
+					self.ctrlLblSpeed.setLabel('8x')
+				elif self.mSpeed == -600 :
+					self.ctrlLblSpeed.setLabel('16x')
+				elif self.mSpeed == -800 :
+					self.ctrlLblSpeed.setLabel('24x')
+				elif self.mSpeed == -1000 :
+					self.ctrlLblSpeed.setLabel('32x')
+
+			""" prime stb is invalid
+			#pending status
+			mIsTimeshiftPending = int(status[7])
+			if mIsTimeshiftPending == True :
+				self.isPlay = True
+				self.ctrlBtnPlay.setVisible(False)
+				self.ctrlBtnPause.setVisible(True)
+
+			elif :
+				self.isPlay = False
+				self.ctrlBtnPlay.setVisible(True)
+				self.ctrlBtnPause.setVisible(False)
+			"""
+
+
+	def getSpeedValue(self, focusId):
+		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+
+		print 'mSpeed[%s]'% self.mSpeed
+		ret = 0
+		if focusId == self.ctrlBtnRewind.getId():
+
+			if self.mSpeed == -1000 :
+				ret = -1000
+			elif self.mSpeed == -800 :
+				ret = -1000
+			elif self.mSpeed == -600 :
+				ret = -800
+			elif self.mSpeed == -400 :
+				ret = -600
+			elif self.mSpeed == -300 :
+				ret = -400
+			elif self.mSpeed == -200 :
+				ret = -300
+			elif self.mSpeed == 100 :
+				ret = -200
+			elif self.mSpeed == 200 :
+				ret = 100
+			elif self.mSpeed == 300 :
+				ret = 200
+			elif self.mSpeed == 400 :
+				ret = 300
+			elif self.mSpeed == 600 :
+				ret = 400
+			elif self.mSpeed == 800 :
+				ret = 600
+			elif self.mSpeed == 1000 :
+				ret = 800
+
+		elif focusId == self.ctrlBtnForward.getId():
+			if self.mSpeed == 100 :
+				ret = 200
+			elif self.mSpeed == 200 :
+				ret = 300
+			elif self.mSpeed == 300 :
+				ret = 400
+			elif self.mSpeed == 400 :
+				ret = 600
+			elif self.mSpeed == 600 :
+				ret = 800
+			elif self.mSpeed == 800 :
+				ret = 1000
+			elif self.mSpeed == 1000 :
+				ret = 1000
+
+			elif self.mSpeed == -200 :
+				ret = 100
+			elif self.mSpeed == -300 :
+				ret = -200
+			elif self.mSpeed == -400 :
+				ret = -300
+			elif self.mSpeed == -600 :
+				ret = -400
+			elif self.mSpeed == -800 :
+				ret = -600
+			elif self.mSpeed == -1000 :
+				ret = -800
+
+		else:
+			ret = 100 #default
+
+		return ret
+		
 
 	@run_async
 	def updateLocalTime(self):

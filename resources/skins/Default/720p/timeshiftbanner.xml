@@ -149,6 +149,34 @@
 						<visible>Control.HasFocus(408)</visible>
 					</control>
 				</control>
+
+				<control type="group" id="30">
+					<control type="image" id="31">
+						<description>Rewind Image</description>
+						<posx>450</posx>
+						<posy>20</posy>
+						<width>20</width>
+						<height>20</height>
+						<texture>TSIconRewind.png</texture>
+					</control>
+					<control type="image" id="32">
+						<description>Forward Image</description>
+						<posx>500</posx>
+						<posy>20</posy>
+						<width>20</width>
+						<height>20</height>
+						<texture>TSIconFastForward.png</texture>
+					</control>
+					<control type="label" id="33">
+						<description>Speed label</description>
+						<posx>475</posx>
+						<posy>20</posy>
+						<font>font24</font>
+						<textcolor>grey</textcolor>
+						<texture>$INFO[Control.GetLabel]</texture>
+					</control>
+				</control>
+
 			</control>
 
 
@@ -488,7 +516,7 @@
 						<onup>704</onup>
 						<ondown>704</ondown>
 						<onclick>PlayerControl(Next)</onclick>
-					</control-->
+					</control>
 
 				<control type="label">
 					<posx>20</posx>
@@ -516,7 +544,7 @@
 					<font>font12_title</font>
 					<textcolor>grey</textcolor>
 					<shadowcolor>black</shadowcolor>
-				</control>
+				</control-->
 			</control>
 
 
