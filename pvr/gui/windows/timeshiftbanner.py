@@ -8,9 +8,9 @@ from pvr.gui.basewindow import BaseWindow
 from pvr.gui.basewindow import Action
 
 import pvr.elismgr
-from pvr.elisaction import ElisAction
-from pvr.elisenum import ElisEnum
-from pvr.net.net import EventRequest
+from elisaction import ElisAction
+from elisenum import ElisEnum
+
 
 #from threading import Thread
 from pvr.util import run_async, is_digit, Mutex, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString #, synchronized, sync_instance

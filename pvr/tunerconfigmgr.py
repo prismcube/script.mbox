@@ -35,8 +35,8 @@ E_MOTORIZED_1_2					= 3
 E_MOTORIZED_USALS				= 4
 E_ONE_CABLE						= 5
 
-from pvr.elisaction import ElisAction
-from pvr.elisenum import ElisEnum
+from elisaction import ElisAction
+from elisenum import ElisEnum
 
 
 gTunerConfigMgr = None

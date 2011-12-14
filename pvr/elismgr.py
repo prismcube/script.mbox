@@ -3,12 +3,12 @@ import datetime
 import socket
 import time
 from pvr.util import run_async
-from pvr.eliscommander import ElisCommander
-from pvr.net.net import EventServer, EventHandler, EventRequest
-from pvr.elisevent import ElisEventBus
-from pvr.elisaction import ElisAction
-from pvr.elisenum import ElisEnum
-import pvr.net.netconfig as netconfig
+from eliscommander import ElisCommander
+from net.net import EventServer, EventHandler, EventRequest
+from elisevent import ElisEventBus
+from elisaction import ElisAction
+from elisenum import ElisEnum
+import pvr.netconfig as netconfig
 import threading
 import select
 
@@ -67,8 +67,12 @@ class ElisMgr( object ):
 		print 'lael98 check ElisMgr init'
 		self.shutdowning = False
 		self.eventBus = ElisEventBus()
+		print 'check test'
+		print 'check test netconfig.receiverPort=%d' %netconfig.receiverPort		
 		self.receiver = ElisEventRecevier(('', netconfig.receiverPort), ElisEventHandler )
+		print 'check test netconfig.targetIp=%s netconfig.commanderPort=%d' %(netconfig.targetIp, netconfig.commanderPort)
 		self.commander = ElisCommander( (netconfig.targetIp, netconfig.commanderPort) )		
+		print 'check test'
 
 	def getCommander( self ):
 		return self.commander

@@ -7,9 +7,9 @@ import pvr.tunerconfigmgr as configmgr
 from pvr.gui.guiconfig import *
 from pvr.gui.basewindow import SettingWindow, setWindowBusy
 from pvr.gui.basewindow import Action
-from pvr.elisenum import ElisEnum
+from elisenum import ElisEnum
 import pvr.elismgr
-from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
+from elisproperty import ElisPropertyEnum, ElisPropertyInt
 
 
 E_MAIN_LIST_ID = 9000
