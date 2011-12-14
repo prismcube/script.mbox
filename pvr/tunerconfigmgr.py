@@ -37,6 +37,7 @@ E_ONE_CABLE						= 5
 
 from elisaction import ElisAction
 from elisenum import ElisEnum
+import pvr.elismgr
 
 
 gTunerConfigMgr = None
@@ -115,7 +116,7 @@ class TunerConfigMgr( object ):
 			[Longitude, Band, Name]
 		"""
 		self.configuredSatelliteList = []
-		self.configuredSatelliteList = self.commander.satellite_GetConfiguredList( ElisEnum.SATELLITE_BY_LONGITUDE)		
+		self.configuredSatelliteList = self.commander.satellite_GetConfiguredList( ElisEnum.E_SORT_LONGITUDE )		
 	
 
 	def getFormattedName( self, longitude ) :
