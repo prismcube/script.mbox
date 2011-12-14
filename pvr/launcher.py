@@ -10,8 +10,8 @@ from pvr.bus import EventBus
 import pvr.elismgr
 import pvr.gui.windowmgr as windowmgr
 from pvr.util import run_async, hasPendingWorkers, waitForWorkersToDie
-from pvr.elistest import ElisTest
-import pvr.net.netconfig as netconfig
+from elistest import ElisTest
+import pvr.netconfig as netconfig
 
 		
 __launcher = None

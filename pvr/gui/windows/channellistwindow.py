@@ -5,11 +5,11 @@ import sys
 import pvr.gui.windowmgr as winmgr
 from pvr.gui.basewindow import BaseWindow, setWindowBusy
 from pvr.gui.basewindow import Action
-from pvr.elisenum import ElisEnum
+from elisenum import ElisEnum
 from inspect import currentframe
 from pvr.util import catchall, is_digit, run_async, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString
 import pvr.elismgr
-from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
+from elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import FooterMask
 
 import pvr.msg as m

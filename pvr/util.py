@@ -246,7 +246,7 @@ def epgInfoClock(flag, nowTime, epgClock):
 
 def epgInfoComponentImage(component):
 	print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-	from pvr.elisenum import ElisEnum
+	from elisenum import ElisEnum
 	tmpcom = component[0]
 	tempFile = 0x00
 	if (int(tmpcom[0]) == 1): #== ElisEnum.E_HasHDVideo:                # 1<<0

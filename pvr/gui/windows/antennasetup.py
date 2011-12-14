@@ -11,8 +11,8 @@ from pvr.gui.guiconfig import *
 from pvr.gui.basewindow import SettingWindow, setWindowBusy
 from pvr.gui.basewindow import Action
 import pvr.elismgr
-from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
-from pvr.elisevent import ElisEnum
+from elisproperty import ElisPropertyEnum, ElisPropertyInt
+from elisenum import ElisEnum
 
 E_MAIN_GROUP_ID	= 9000
 

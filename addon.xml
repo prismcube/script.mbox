@@ -3,12 +3,13 @@
     id="script.mbox" 
     name="MBox" 
     version="0.0.5" 
-    provider-name="aaa@aaa.com">
+    provider-name="www.marusys.com">
     <requires>
         <import addon="xbmc.python" version="1.0" />
         <import addon="script.module.beautifulsoup"/>
         <import addon="script.module.elementtree"/>
         <import addon="script.module.simplejson"/>
+        <import addon="script.module.elisinterface"/>        
     </requires>
     <extension point="xbmc.python.script" library="default.py">
         <provides>video</provides>

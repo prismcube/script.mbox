@@ -4,8 +4,9 @@ import time
 import sys
 
 from decorator import decorator
-from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
+from elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import *
+import pvr.elismgr
 
 class Action(object):
 	ACTION_NONE					= 0
@@ -139,6 +140,7 @@ class SettingWindow( BaseWindow ):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
 		self.controlList = []
+		self.commander = pvr.elismgr.getInstance().getCommander()		
 
 	def initControl( self ):
 		pos = 0
@@ -167,7 +169,7 @@ class SettingWindow( BaseWindow ):
 
 
 	def addEnumControl( self, controlId, propName, description ):
-		property = ElisPropertyEnum( propName )
+		property = ElisPropertyEnum( propName, self.commander )
 		listItems = []
 
 		for i in range( property.getIndexCount() ):

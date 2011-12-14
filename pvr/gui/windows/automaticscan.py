@@ -9,9 +9,6 @@ from pvr.gui.guiconfig import *
 
 from pvr.gui.basewindow import SettingWindow
 from pvr.gui.basewindow import Action
-#import pvr.elismgr
-#from pvr.elisproperty import ElisPropertyEnum, ElisPropertyInt
-#from pvr.elisevent import ElisEnum
 
 
 class AutomaticScan( SettingWindow ):
