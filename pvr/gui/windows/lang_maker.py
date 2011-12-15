@@ -300,11 +300,12 @@ def readToXML(inFile):
 				strid = re.sub(',', '', ret2[len(ret2)-1])
 
 				# string.xml id == csv id
-				if inID[0] == strid :
+				#if inID[0] == strid :
+				if inStr[0] == ret[0] :
 					#print strid, ret
 					searchOn = True
 					csvret = ret
-					csvret2= ret2
+					csvret2= inID #ret2
 
 			if searchOn == False:
 				csvret = ['','','','','','','','','','','']	
@@ -448,7 +449,7 @@ if __name__ == "__main__":
 	cmd = sys.argv[1:]
 
 	if cmd != [] :
-		#print '%s to forign Language/strings.xml, with csv'% cmd[0]
+		print '%s to xml, with csv'% cmd[0]
 		readToXML(cmd[0])
 
 	else:
