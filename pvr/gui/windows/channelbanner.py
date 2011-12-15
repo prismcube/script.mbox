@@ -383,7 +383,7 @@ class ChannelBanner(BaseWindow):
 
 			#component
 			component = []
-			component = event[9:18]
+			component = event[9:18]	#component ~ isSeries
 #			ret = epgInfoComponentImage(int(event[9]))
 			ret = epgInfoComponentImage(component)			
 			if len(ret) == 1:
