@@ -3,7 +3,7 @@
 	<controls>
 		<include>MenuHeader</include>
 		<control type="group" id="9000">
-			<include>FadeEffect</include>
+			<include>DefaultFadeEffect</include>
 			<!--
 			<control type="image">
 				<posx>840</posx>

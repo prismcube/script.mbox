@@ -14,6 +14,8 @@ import pvr.elismgr
 from elisproperty import ElisPropertyEnum, ElisPropertyInt
 from elisenum import ElisEnum
 
+from pvr.gui.windows.satelliteconfigsimple import SatelliteConfigSimple
+
 E_MAIN_GROUP_ID	= 9000
 
 class AntennaSetup( SettingWindow ):
@@ -29,6 +31,12 @@ class AntennaSetup( SettingWindow ):
 	def onInit(self):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
 
+		print '#################### Load Configs ###############################'
+		configmgr.getInstance( ).loadOriginalTunerConfig( )
+		print '#################################################################'
+		
+		configmgr.getInstance( ).load( )
+		
 		self.setHeaderLabel( 'Antenna & Satellite Setup' )
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
 
@@ -78,28 +86,50 @@ class AntennaSetup( SettingWindow ):
 	def onClick( self, controlId ):
 		self.disableControl( )
 		if controlId == E_Input01 + 1 or controlId == E_Input02 + 1 :
+
 			if controlId == E_Input01 + 1 :
-				configmgr.getInstance().setCurrentTunerIndex( 0 ) 
+			
+				configmgr.getInstance().setCurrentTunerIndex( E_TUNER_1  ) 
 				configmgr.getInstance().setCurrentTunerType( self.getSelectedIndex( E_SpinEx03 ) )
+
 			elif controlId == E_Input02 + 1 :
-				configmgr.getInstance().setCurrentTunerIndex( 1 )
+
+				configmgr.getInstance().setCurrentTunerIndex( E_TUNER_2 )
 				configmgr.getInstance().setCurrentTunerType( self.getSelectedIndex( E_SpinEx04 ) )
+
+			configmgr.getInstance().setCurrentTunerConnectionType( self.getSelectedIndex( E_SpinEx01 ) )
+			configmgr.getInstance().setCurrentTunerConfigType( self.getSelectedIndex( E_SpinEx02 ) )
 
 			
 			if self.getSelectedIndex( E_SpinEx03 ) == E_SIMPLE_LNB :
-				configmgr.getInstance( ).load( )
-				configuredList = configmgr.getInstance( ).getConfiguredSatellite( )
-				configmgr.getInstance( ).setCurrentLongitue( int( configuredList[0][2] ) )
+			
+				configuredList = configmgr.getInstance( ).getConfiguredSatelliteList( )
+
+				if len( configuredList ) <= 0 :
+					configmgr.getInstance().addConfiguredSatellite( 0 )
+
+				configmgr.getInstance( ).setCurrentConfigIndex( 0 )
 				self.resetAllControl( )
-				winmgr.getInstance().showWindow( winmgr.WIN_ID_SATELLITE_CONFIGURATION )
+				
+				import pvr.platform 
+				scriptDir = pvr.platform.getPlatform().getScriptDir()
+				SatelliteConfigSimple('satelliteconfiguration.xml', scriptDir).doModal()
 			
 			elif self.getSelectedIndex( E_SpinEx03 ) == E_MOTORIZED_1_2  or self.getSelectedIndex( E_SpinEx03 ) == E_MOTORIZED_USALS :
+
 				self.resetAllControl( )
 				winmgr.getInstance().showWindow( winmgr.WIN_ID_MOTORIZE_CONFIGURATION )
+
 			else :
+
 				self.resetAllControl( )
 				winmgr.getInstance().showWindow( winmgr.WIN_ID_TUNER_CONFIGURATION )
 			
+
+		groupId = self.getGroupId( controlId )
+		
+		if groupId == E_SpinEx01 or groupId == E_SpinEx02 or groupId == E_SpinEx03 or groupId == E_SpinEx04 :
+			self.controlSelect()
 
 	def onFocus( self, controlId ):
 		if self.initialized == False :
@@ -107,6 +137,7 @@ class AntennaSetup( SettingWindow ):
 		if ( self.lastFocused != controlId ) :
 			self.showDescription( controlId )
 			self.lastFocused = controlId
+
 
 	def disableControl( self ):
 		selectedIndex1 = self.getSelectedIndex( E_SpinEx01 )
@@ -124,4 +155,7 @@ class AntennaSetup( SettingWindow ):
 		else :
 			self.setEnableControl( E_SpinEx04, True)
 			self.setEnableControl( E_Input02, True )
+
+
+	
 

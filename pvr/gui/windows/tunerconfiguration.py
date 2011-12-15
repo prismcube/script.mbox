@@ -18,20 +18,17 @@ class TunerConfiguration( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs)
 		self.commander = pvr.elismgr.getInstance( ).getCommander( )
+		self.listItems= []
 			
-		#self.initialized = False
-
 	def onInit( self ):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
 
-		configmgr.getInstance( ).load( );
-		
-		self.tunerIndex = configmgr.getInstance().getCurrentTunerIndex( ) + 1
+		self.tunerIndex = configmgr.getInstance().getCurrentTunerIndex( )
 		self.tunertype = E_LIST_TUNER_TYPE[ configmgr.getInstance( ).getCurrentTunerType( ) ]
-		headerLabel = 'Tuner %d Configuration' % ( self.tunerIndex )
+		headerLabel = 'Tuner %d Configuration' % ( self.tunerIndex + 1 )
 		self.setHeaderLabel( headerLabel )
 		
-		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Tuner %d Configuration : %s' % ( self.tunerIndex, self.tunertype ) )
+		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Tuner %d Configuration : %s' % ( self.tunerIndex + 1, self.tunertype ) )
 		
 		self.initConfig( )
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )		
@@ -66,16 +63,35 @@ class TunerConfiguration( SettingWindow ):
 		if controlId == E_MAIN_LIST_ID : 
 			position = self.getControl( E_MAIN_LIST_ID ).getSelectedPosition( )
 
-			configuredList = configmgr.getInstance().getConfiguredSatellite( )
+			configuredList = configmgr.getInstance().getConfiguredSatelliteList( )
 
+			print ' configuredList=%d' %len( configuredList )
+			print ' configuredList pos=%d' %position
+			
 			if ( len( configuredList ) ) == position or len( configuredList ) == 0 :
+				print ' configuredList #1'
+				dialog = xbmcgui.Dialog()
+				satelliteList = configmgr.getInstance( ).getFormattedNameList( )
+	 			ret = dialog.select('Select satellite', satelliteList )
+
+	 			print 'dialog list return =%d' %ret
+
+	 			if ret >= 0 :
+					configmgr.getInstance().addConfiguredSatellite( ret )
+	 				self.reloadConfigedSatellite()
+			
+				"""
 				configmgr.getInstance( ).setCurrentLongitue( int( configuredList[0][2] ) ) #config[2] == longitude
 				winmgr.getInstance( ).showWindow( winmgr.WIN_ID_SATELLITE_CONFIGURATION )
+				"""
 
 			else :
+				print ' configuredList #2'			
 				config = configuredList[ position ]
 				if config != [] :
+					"""
 					configmgr.getInstance( ).setCurrentLongitue( int( config[ 2 ] ) ) #config[2] == longitude
+					"""
 					winmgr.getInstance( ).showWindow( winmgr.WIN_ID_SATELLITE_CONFIGURATION )
 				else :
 					print 'ERR : Can not find configured satellite'
@@ -84,18 +100,21 @@ class TunerConfiguration( SettingWindow ):
 	def onFocus( self, controlId ):
 		pass
 
+
 	def initConfig( self ):
+		self.reloadConfigedSatellite()
+
+
+	def reloadConfigedSatellite( self ):
 		configuredList = []
-		satelliteList = []
 		self.listItems = []
 
-		configuredList = configmgr.getInstance( ).getConfiguredSatellite( )
+		configuredList = configmgr.getInstance( ).getConfiguredSatelliteList( )
 
 		for config in configuredList :
 			self.listItems.append( xbmcgui.ListItem( '%s' %configmgr.getInstance( ).getFormattedName( int ( config[ 2 ] ) ) ) )
 
 		self.listItems.append( xbmcgui.ListItem( 'Add New Satellite' ) )
 		self.getControl( E_MAIN_LIST_ID ).addItems( self.listItems )
-
 
 		
