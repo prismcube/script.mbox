@@ -4,9 +4,9 @@
 #setdefaultencoding('utf-8')
 
 import os, re, shutil
-
 import sgmllib, string   
-  
+
+"""
 class Stripper(sgmllib.SGMLParser):   
 	def __init__(self):   
 		self.data = []   
@@ -39,14 +39,14 @@ def decodeXML(data):
 		return data[len(headline):].decode(encoding) 
 	else: 
 		return data 
-
+"""
 
 
 
 def csvToXML():
 
 	#openFile = os.getcwd() + '/Language_Prime.csv'
-	openFile = os.getcwd() + '/Language091102.csv'
+	openFile = os.getcwd() + '/Language_Elmo.csv'
 	wFile1 = 'define_string.py'
 
 	langPack = ["ENGLISH","DEUTSCH","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"]
@@ -207,7 +207,7 @@ def readToXML(inFile):
 		return
 
 	#openFile = os.getcwd() + '/Language_Prime.csv'
-	openFile = os.getcwd() + '/Language091102.csv'
+	openFile = os.getcwd() + '/Language_Elmo.csv'
 	wFile1 = 'define_string.py'
 
 	langPack = ["ENGLISH","DEUTSCH","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"]
