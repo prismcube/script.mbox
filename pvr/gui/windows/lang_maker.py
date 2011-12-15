@@ -43,7 +43,7 @@ def decodeXML(data):
 
 
 
-def initFile():
+def csvToXML():
 
 	#openFile = os.getcwd() + '/Language_Prime.csv'
 	openFile = os.getcwd() + '/Language091102.csv'
@@ -63,7 +63,13 @@ def initFile():
 		pass
 
 
-	rf = open(openFile, 'r')
+	try:
+		rf = open(openFile, 'r')
+
+	except Exception, e:
+		print 'can not open file[%s]'% openFile
+		return
+
 	df = open(wFile1, 'w')
 
 	"""
@@ -141,8 +147,8 @@ def initFile():
 		#write string.xml
 		for i in range(len(wFileList)):
 			try:
-				#strid = re.sub(',', '', ret2[len(ret2)-1])
-				strid = sidx
+				strid = re.sub(',', '', ret2[len(ret2)-1])
+				#strid = sidx
 
 				str = '\t' + (tag1 % strid) + ret[i] + tag2 +'\n'
 				wf[i].writelines(str)
@@ -153,8 +159,8 @@ def initFile():
 
 		#write define_string.py in English Name
 		try:
-			#strid = re.sub(',', '', ret2[len(ret2)-1])
-			strid = ('%s'% sidx)
+			strid = re.sub(',', '', ret2[len(ret2)-1])
+			#strid = ('%s'% sidx)
 
 			strll = ret[0].upper()
 
@@ -189,6 +195,226 @@ def initFile():
 	rf.close()
 	df.close()
 
+
+#----read strings.xml to make forign Language with csv
+def readToXML(inFile):
+
+	try:
+		ef = open(inFile, 'r')
+
+	except Exception, e:
+		print 'can not open file[%s]'% inFile
+		return
+
+	#openFile = os.getcwd() + '/Language_Prime.csv'
+	openFile = os.getcwd() + '/Language091102.csv'
+	wFile1 = 'define_string.py'
+
+	langPack = ["ENGLISH","DEUTSCH","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"]
+	tag1 = '<string id=\"%s\">'
+	tag2 = '</string>'
+
+	#init dir
+	try:
+		rmDir = os.getcwd() + '/language'
+		shutil.rmtree(rmDir)
+		os.remove(wFile1)
+	except Exception, e:
+		#print e
+		pass
+
+	try:
+		rf = open(openFile, 'r')
+		df = open(wFile1, 'w')
+	except Exception, e:
+		print 'can not open file[%s]'% openFile
+		return
+
+
+	"""
+	#line = '"Remove, Lock, Set Group, etc.","deplacer, verouiller, grouper, etc.","236",,'
+	line ='"English","French","STRING_INDEX",,"Remark", "1e3"'
+	ret = re.findall('"([^"]*)"', line)
+	print len(ret), ret
+	"""
+
+
+
+	line = rf.readline()
+	ret = re.findall('"([^"]*)"', line)
+
+	wFileList = []
+	wf = []
+	for i in range(len(ret)):
+		#print i, ret[i].upper()
+		for j in range(len(langPack)):
+			if ret[i].upper() == langPack[j]:
+				#mkdir
+				try:
+					wDir = os.getcwd() + ( '/language/%s/'% ret[i].capitalize() )
+					os.mkdir(wDir, 0775)
+				except Exception, e:
+					wDir = os.getcwd() + '/language'
+					os.mkdir(wDir, 0775)
+					wDir = os.getcwd() + ( '/language/%s/'% ret[i].capitalize() )
+					os.mkdir(wDir, 0775)
+
+				#openfile
+				wFileList.append(ret[i])
+				#wFile = wDir + '%s_strings.xml'% ret[i].lower()
+				wFile = wDir + 'strings.xml'
+				wf.append( open( wFile, 'w' ) )
+
+				str = '<?xml version="1.0" encoding="utf-8"?>\n<strings>\n'
+				wf[i].writelines(str)
+	#print wFileList
+
+	sidx = 0
+	csvfile = rf.readlines()
+	for line in ef.readlines():
+		inID = re.findall('id="([^"]*)"', line)
+		inStr= re.findall('>([^"]*)</string>', line)
+		"""
+		if ret != [] :
+			inID = ret
+		if ret2 != []:
+			inStr= ret2
+		"""
+		if inID != [] :
+			#print 'inID[%s] inStr[%s]'% (inID[0], inStr[0])
+			searchOn = False
+			for csvline in csvfile:
+				# string list
+				ret = re.findall('"([^"]*)"', csvline)
+				if len(ret) < len(wFileList):			# if 'english',,,,,,,,digit then
+					ret = re.sub('"', '', csvline)			# copyed english
+					ret = re.split(',', ret)
+					if len(ret) == len(wFileList)+1:
+						for i in range(len(ret)-1):
+							if ret[i+1] == '':
+								ret[i+1] = 'NONE_' + ret[0]
+
+				# str id
+				ret2= re.sub('\n', '', csvline)
+				ret2= ret2.split('",')
+				strid = re.sub(',', '', ret2[len(ret2)-1])
+
+				# string.xml id == csv id
+				if inID[0] == strid :
+					#print strid, ret
+					searchOn = True
+					csvret = ret
+					csvret2= ret2
+
+			if searchOn == False:
+				csvret = ['','','','','','','','','','','']	
+				csvret2= ['','','','','','','','','','',''] # language pack is 0~9, 10'th <-- id
+				csvret2[10]= inID[0]
+				csvret[0] = inStr[0]
+				for i in range(len(wFileList)) :
+					csvret[i+1] = 'NONE_' + inStr[0]
+
+
+			#2. parse '%s', '%d', '%%' in list
+			for i in range(len(csvret)):
+				csvret[i] = re.sub('%s', '', csvret[i])
+				csvret[i] = re.sub('%d', '', csvret[i])
+				csvret[i] = re.sub('%%', '%', csvret[i])
+				#csvret[i] = (csvret[i].decode('utf-8')).encode('utf-8', 'xmlcharrefreplace')
+	
+	
+			#write string.xml
+			for i in range(len(wFileList)):
+				try:
+					strid = re.sub(',', '', csvret2[len(csvret2)-1])
+					#strid = sidx
+	
+					str = '\t' + (tag1 % strid) + csvret[i] + tag2 +'\n'
+					wf[i].writelines(str)
+	
+				except Exception, e:
+					#print 'error string.xml', e
+					pass
+	
+			#write define_string.py in English Name
+			try:
+				strid = re.sub(',', '', csvret2[len(csvret2)-1])
+				#strid = ('%s'% sidx)
+	
+				strll = csvret[0].upper()
+	
+				"""
+				strll = re.split(' ', strll, 5)
+				var_=''
+				for i in range(len(strll)):
+					var_ += '_' + strll[i]
+				"""
+				var_ = re.sub('-', '', strll)
+				var_ = re.sub(' ', '_', var_)
+				var_ = re.sub('__', '_', var_)
+				var_ = re.sub('__', '_', var_)
+				var_ = re.findall('[a-zA-Z0-9]\w*', var_)
+				#var = var_[0][:15]
+	
+				str = 'LANG_' + var_[0] + ' = ' + strid +'\n'
+				#print str
+				df.writelines(str)
+	
+			except Exception, e:
+				#print 'write error[%s], %s'% (e, wFile1)
+				pass
+
+		sidx += 1
+
+
+	for i in range(len(wFileList)):
+		wf[i].writelines('</strings>\n')
+		wf[i].close()
+
+	rf.close()
+	df.close()
+
+
+def verify_defineString():
+	dfile = 'define_string.py'
+	try:
+		ef = open(dfile, 'r')
+
+	except Exception, e:
+		print 'can not open file[%s]'% dfile
+		return
+
+	lines = ef.readlines()
+	ef.close()
+
+
+	ef = open(dfile, 'w')
+
+	idx = 0			#verifying line
+	verified = 0	#verified count
+	for line in lines:
+		ret = re.split('\W+', line)
+		defineStr = ret[0]
+		defineId  = int(ret[1])
+		#print '%s %d'% (defineStr, defineId)
+
+		for iline in lines:
+			ret2 = re.split('\W+', iline)
+
+			if (defineId != int(ret2[1])) and (defineStr == ret2[0]):
+				line = defineStr + '_VERIFYED%s = %d'% (idx, defineId) + '\n'
+				lines[idx] = line
+				verified += 1
+				#print '[%s][%s] equal[%s][%s]'% (defineStr, defineId, ret2[0], ret2[1] )
+
+		ef.writelines(line)
+
+		idx += 1
+
+	ef.close()
+
+	print 're-defined count = %d'% verified
+
 def test():
 	pattern = '"([^"]*)"'
 	wFileList = re.findall(pattern, '"ENGLISH","DEUTSCH","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"')
@@ -217,8 +443,19 @@ def test2():
 	print var_
 
 
+import sys
 if __name__ == "__main__":
-	initFile()
+	cmd = sys.argv[1:]
+
+	if cmd != [] :
+		#print '%s to forign Language/strings.xml, with csv'% cmd[0]
+		readToXML(cmd[0])
+
+	else:
+		print 'csv to xml'
+		csvToXML()
+
+	verify_defineString()
 	#test()
 	#test2()
 
