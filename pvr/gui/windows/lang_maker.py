@@ -174,6 +174,9 @@ def csvToXML():
 			var_ = re.sub(' ', '_', var_)
 			var_ = re.sub('__', '_', var_)
 			var_ = re.sub('__', '_', var_)
+			var_ = re.sub('\(', '', var_)
+			var_ = re.sub('\)', '', var_)
+			var_ = re.sub(':', '', var_)
 			var_ = re.findall('[a-zA-Z0-9]\w*', var_)
 			#var = var_[0][:15]
 
@@ -354,6 +357,9 @@ def readToXML(inFile):
 				var_ = re.sub(' ', '_', var_)
 				var_ = re.sub('__', '_', var_)
 				var_ = re.sub('__', '_', var_)
+				var_ = re.sub('\(', '', var_)
+				var_ = re.sub('\)', '', var_)
+				var_ = re.sub(':', '', var_)
 				var_ = re.findall('[a-zA-Z0-9]\w*', var_)
 				#var = var_[0][:15]
 	
@@ -435,10 +441,13 @@ def test():
 	print len(ret), ret
 
 def test2():
-	line = 'TV - CHANNEL LIST'
+	#line = 'TV - CHANNEL LIST'
+	line = 'Zoom (PanScan)'
 	var_ = re.sub('-', '', line)
 	var_ = re.sub(' ', '_', var_)
 	var_ = re.sub('__', '_', var_)
+	var_ = re.sub('\(', '', var_)
+	var_ = re.sub('\)', '', var_)
 	var_ = re.findall('[a-zA-Z0-9]\w*', var_)
 
 	print var_
@@ -457,6 +466,8 @@ if __name__ == "__main__":
 		csvToXML()
 
 	verify_defineString()
+
+
 	#test()
 	#test2()
 

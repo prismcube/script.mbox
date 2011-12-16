@@ -41,4 +41,18 @@
 	<string id="38">RGB</string>
 	<string id="39">NTSC</string>
 	<string id="40">PAL</string>
+	<string id="541">NONE_All Channels</string>
+	<string id="542">NONE_Satellite</string>
+	<string id="543">NONE_FTA/CAS</string>
+	<string id="544">NONE_Favorite</string>
+	<string id="545">NONE_Radio - Channel List</string>
+	<string id="546">NONE_TV - Channel List</string>
+	<string id="547">NONE_Radio - Edit Channel List</string>
+	<string id="548">NONE_TV - Edit Channel List</string>
+	<string id="549">NONE_Do you want to save channels?</string>
+	<string id="550">NONE_Channel Lock</string>
+	<string id="551">NONE_Invalid lock time.</string>
+	<string id="552">NONE_All Channel by Number</string>
+	<string id="553">NONE_All Channel by Alphabet</string>
+	<string id="554">NONE_No channels</string>
 </strings>
