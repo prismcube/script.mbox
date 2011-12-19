@@ -18,11 +18,10 @@ WIN_ID_CONFIGURE					= 5
 WIN_ID_ANTENNA_SETUP				= 6
 WIN_ID_TUNER_CONFIGURATION			= 7
 WIN_ID_SATELLITE_CONFIGURATION		= 8
-WIN_ID_MOTORIZE_CONFIGURATION		= 9
-WIN_ID_CHANNEL_SEARCH				= 10
-WIN_ID_AUTOMATIC_SCAN				= 11
-WIN_ID_MANUAL_SCAN					= 12
-WIN_ID_TIMESHIFT_BANNER				= 13
+WIN_ID_CHANNEL_SEARCH				= 9
+WIN_ID_AUTOMATIC_SCAN				= 10
+WIN_ID_MANUAL_SCAN					= 11
+WIN_ID_TIMESHIFT_BANNER				= 12
 
 WIN_ID_LANGUAGE_SETTING				= 100	#for test
 
@@ -88,7 +87,6 @@ class WindowMgr(object):
 		from pvr.gui.windows.antennasetup import AntennaSetup
 		from pvr.gui.windows.tunerconfiguration import TunerConfiguration
 		from pvr.gui.windows.satelliteconfiguration import SatelliteConfiguration
-		from pvr.gui.windows.motorizeconfiguration import MotorizeConfiguration
 		from pvr.gui.windows.channelsearch import ChannelSearch
 		from pvr.gui.windows.automaticscan import AutomaticScan
 		from pvr.gui.windows.manualscan import ManualScan
@@ -104,7 +102,6 @@ class WindowMgr(object):
 		self.windows[ WIN_ID_ANTENNA_SETUP ]			= AntennaSetup('antennasetup.xml', self.scriptDir)
 		self.windows[ WIN_ID_TUNER_CONFIGURATION ]		= TunerConfiguration('tunerconfiguration.xml', self.scriptDir)
 		self.windows[ WIN_ID_SATELLITE_CONFIGURATION ]	= SatelliteConfiguration('satelliteconfiguration.xml', self.scriptDir)
-		self.windows[ WIN_ID_MOTORIZE_CONFIGURATION ]	= MotorizeConfiguration('motorizeconfiguration.xml', self.scriptDir)
 		self.windows[ WIN_ID_CHANNEL_SEARCH ]			= ChannelSearch('channelsearch.xml', self.scriptDir)
 		self.windows[ WIN_ID_AUTOMATIC_SCAN ]			= AutomaticScan('automaticscan.xml', self.scriptDir)
 		self.windows[ WIN_ID_MANUAL_SCAN ]				= ManualScan('manualscan.xml', self.scriptDir)

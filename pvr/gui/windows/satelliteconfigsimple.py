@@ -195,6 +195,5 @@ class SatelliteConfigSimple( SettingWindow ):
 			self.setEnableControls( enableControlIds, True )
 
 	def saveConfig( self ) :
-		print 'dhkim test saveconfig  = %s' % self.currentSatellite
 		configmgr.getInstance( ).saveCurrentConfig( self.currentSatellite )
 		
