@@ -20,12 +20,18 @@ class DialogNumeric( NumericKeyboard ) :
 	def __init__( self, *args, **kwargs ) :
 		NumericKeyboard.__init__( self, *args, **kwargs )
 		
-		self.inputLabel = ''
+		self.inputLabel = None
+		self.titleLabel = None
 		self.ctrlEditLabel = 0
+		self.isOk = False
 
 	def onInit( self ) :
+		"""
 		self.getControl( E_DIALOG_HEADER ).setLabel( diamgr.getInstance().getTitleLabel( ) )
 		self.inputLabel = diamgr.getInstance().getDefaultText( )
+		"""
+		self.isOk = False
+		self.getControl( E_DIALOG_HEADER ).setLabel( self.getTitleLabel( ) )
 		self.ctrlEditLabel = self.getControl( E_INPUT_LABEL )
 		self.ctrlEditLabel.setLabel( self.inputLabel )
 		self.drawKeyboard( )
@@ -61,9 +67,13 @@ class DialogNumeric( NumericKeyboard ) :
 			pass
 
 		elif( focusId == E_BUTTON_DONE ) :
-			diamgr.getInstance().setResultText( self.ctrlEditLabel.getLabel( ) )
+			self.isOk = True
 			self.close( )
+
 		self.ctrlEditLabel.setLabel( self.inputLabel )
+
+	def isOK( self ) :
+		return self.isOk
 
 	def onFocus( self, controlId ):
 		pass
@@ -72,3 +82,17 @@ class DialogNumeric( NumericKeyboard ) :
 	def drawKeyboard( self ):
 		for i in range( 10 ) :
 			self.getControl( E_START_ID_NUMBER + i ).setLabel( '%s' % i )
+
+	def getNumber( self ) :
+		return self.inputLabel
+
+
+	def setNumber( self, number ) :
+		self.inputLabel = number
+
+	def getTitleLabel( self ) :
+		return self.titleLabel
+
+	def setTiteLabel( self, titleLabel ) :
+		self.titleLabel = titleLabel
+

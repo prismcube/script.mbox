@@ -33,10 +33,12 @@ class ElisTest(object):
 
 
 	def testPropInt( self ):
+		"""
 		propInt = ElisPropertyInt( 'Audio Volume', self.commander  )
 		print 'propint test =%d' %propInt.getProp()
 		propInt.setProp( 30 )
 		print 'propint test =%d' %propInt.getProp()
+		"""
 
 	def testChannelScanBySatellite( self ):
 		self.commander.channelscan_BySatellite( 192, ElisEnum.E_BAND_KU )

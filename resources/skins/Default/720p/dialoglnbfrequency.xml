@@ -59,8 +59,8 @@
 			<height>300</height>
 			<onup>101</onup>
 			<ondown>101</ondown>
-			<onleft>102</onleft>
-			<onright>103</onright>
+			<onleft>201</onleft>
+			<onright>201</onright>
 			<itemlayout height="40" width="550">
 				<control type="image">
 					<posx>0</posx>
@@ -141,14 +141,14 @@
 				</control>
 			</focusedlayout>
 		</control>
-		<!-- Back Button -->
-		<control type="group" id="102">
+		<!-- OK Button -->
+		<control type="group" id="200">
 			<posx>30</posx>
 			<posy>350</posy>
 			<width>90</width>
 			<height>40</height>
-			<defaultcontrol always="true">3101</defaultcontrol>
-			<control type="button" id="3101">
+			<defaultcontrol always="true">201</defaultcontrol>
+			<control type="button" id="201">
 				<description>Button Icon</description>
 				<posx>30</posx>
 				<posy>10</posy>
@@ -158,8 +158,8 @@
 				<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
 				<onup>101</onup>
 				<ondown>101</ondown>
-				<onleft>103</onleft>
-				<onright>103</onright>
+				<onleft>301</onleft>
+				<onright>301</onright>
 			</control>
 			<control type="label">
 				<posx>72</posx>
@@ -170,8 +170,8 @@
 				<textcolor>grey2</textcolor>
 				<align>left</align>
 				<aligny>center</aligny>
-				<label>[B]Back[/B]</label>
-				<visible>![Control.HasFocus(3101) | Control.HasFocus(3101)]</visible>
+				<label>[B]OK[/B]</label>
+				<visible>!Control.HasFocus(200)</visible>
 			</control>
 			<control type="label">
 				<posx>72</posx>
@@ -182,18 +182,18 @@
 				<textcolor>white</textcolor>
 				<align>left</align>
 				<aligny>center</aligny>
-				<label>[B]Back[/B]</label>
-				<visible>[Control.HasFocus(3101) | Control.HasFocus(3101)]</visible>
+				<label>[B]OK[/B]</label>
+				<visible>Control.HasFocus(200)</visible>
 			</control>
 		</control>
-		<!-- Tune in Button -->
-		<control type="group" id="103">
+		<!-- Cancel Button -->
+		<control type="group" id="300">
 			<posx>170</posx>
 			<posy>350</posy>
 			<width>115</width>
 			<height>40</height>
-			<defaultcontrol always="true">3111</defaultcontrol>
-			<control type="button" id="3111">
+			<defaultcontrol always="true">301</defaultcontrol>
+			<control type="button" id="301">
 				<description>Button Icon</description>
 				<posx>30</posx>
 				<posy>10</posy>
@@ -204,8 +204,8 @@
 				<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
 				<onup>101</onup>
 				<ondown>101</ondown>
-				<onleft>102</onleft>
-				<onright>102</onright>
+				<onleft>201</onleft>
+				<onright>201</onright>
 			</control>
 			<control type="label">
 				<posx>72</posx>
@@ -216,8 +216,8 @@
 				<textcolor>grey2</textcolor>
 				<align>left</align>
 				<aligny>center</aligny>
-				<label>[B]Tune in[/B]</label>
-				<visible>![Control.HasFocus(3111) | Control.HasFocus(3111)]</visible>
+				<label>[B]Cancel[/B]</label>
+				<visible>!Control.HasFocus(300)</visible>
 			</control>
 			<control type="label">
 				<posx>72</posx>
@@ -228,8 +228,8 @@
 				<textcolor>white</textcolor>
 				<align>left</align>
 				<aligny>center</aligny>
-				<label>[B]Tune in[/B]</label>
-				<visible>[Control.HasFocus(3111) | Control.HasFocus(3111)]</visible>
+				<label>[B]Cancel[/B]</label>
+				<visible>Control.HasFocus(300)</visible>
 			</control>
 		</control>
 	</controls>

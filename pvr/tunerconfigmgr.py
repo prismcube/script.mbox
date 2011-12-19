@@ -73,12 +73,12 @@ class TunerConfigMgr( object ):
 		self.commander = pvr.elismgr.getInstance( ).getCommander( )	
 		self.configuredList1 = []
 		self.configuredList2 = []		
-		#self.configuredSatelliteList = []
 		self.currentTuner = 0
 		self.currentConfigIndex = 0
 		self.currentTunerType = 0
 		self.connectionType = 0
 		self.configType = 0
+		self.needLoad = False
 
 		self.orgTuner2ConnectType = 0
 		self.orgTuner2Config = 0
@@ -104,24 +104,6 @@ class TunerConfigMgr( object ):
 		else :
 			print 'ERROR : can not find configured satellite'
 	
-
-
-		"""
-		if self.currentTuner == E_TUNER_1 :	
-			for config in self.configuredList1 :
-				if int( config[0] ) == self.currentTuner and int( config[2] ) == self.currentConfigIndex :
-					return config
-		elif self.currentTuner == E_TUNER_2:	
-			for config in self.configuredList2:
-				if int( config[0] ) == self.currentTuner and int( config[2] ) == self.currentConfigIndex :
-					return config
-		else :
-			print 'ERROR : unknown tuner'
-			for config in self.configuredList1 :
-				if int( config[0] ) == self.currentTuner and int( config[2] ) == self.currentConfigIndex :
-					return config
-		"""
-
 		return None
 
 	def setCurrentTunerType( self, tunerType ) :
@@ -162,43 +144,6 @@ class TunerConfigMgr( object ):
 
 	def addConfiguredSatellite( self, index ) :
 
-		"""
-		if self.currentTuner == E_TUNER_1 :
-			return self.configuredList1
-		elif self.currentTuner == E_TUNER_2 :
-			return self.configuredList2
-		else :
-			print 'ERROR : unknown tuner'
-			return self.configuredList1
-		"""
-
-
-		"""
-			[TunerIndex, SlotNumber, SatelliteLongitude, BandType, FrequencyLevel, DisEqc11, DisEqcMode, DisEqcRepeat,
-				IsConfigUsed, LnbType, MotorizedType, LowLNB, HighLNB, LNBThreshold, MotorizedData,
-				IsOneCable, OneCablePin, OneCableMDU, OneCableLoFreq1, OneCableLoFreq2, OneCableUBSlot, OneCableUBFreq]	
-		"""
-
-		"""
-		config = []		
-		if self.getCurrentTunerType( ) == E_SIMPLE_LNB or self.getCurrentTunerType( ) == E_DISEQC_1_0  or self.getCurrentTunerType( ) == E_DISEQC_1_1 :
-			config = ["0", "0", self.allsatellitelist[index][0], self.allsatellitelist[index][1], "0", "0", "0", "0",
-					  "1", "0", "0", "9750", "10600", "11700", "0", "0", "0", "0", "0", "0", "0", "0" ]
-			
-		if self.getCurrentTunerType( ) == E_MOTORIZED_1_2 :
-			config = ["0", "0", self.allsatellitelist[index][0], self.allsatellitelist[index][1], "0", "0", "0", "0",
-					  "1", "0", "0", "9750", "10600", "11700", "0", "0", "0", "0", "0", "0", "0", "0" ]
-
-		elif self.getCurrentTunerType( ) == E_MOTORIZED_USALS :
-			config = ["0", "0", self.allsatellitelist[index][0], self.allsatellitelist[index][1], "0", "0", "0", "0",
-					  "1", "0", "0", "9750", "10600", "11700", "0", "0", "0", "0", "0", "0", "0", "0" ]
-
-		elif self.getCurrentTunerType( ) == E_ONE_CABLE :
-			config = ["0", "0", self.allsatellitelist[index][0], self.allsatellitelist[index][1], "0", "0", "0", "0",
-					  "1", "0", "0", "9750", "10600", "11700", "0", "0", "0", "0", "0", "0", "0", "0" ]
-		"""
-
-
 		config = ["0", "0", self.allsatellitelist[index][0], self.allsatellitelist[index][1], "0", "0", "0", "0",
 				  "1", "0", "0", "9750", "10600", "11700", "0", "0", "0", "0", "0", "0", "0", "0" ]
 
@@ -227,9 +172,9 @@ class TunerConfigMgr( object ):
 		property.setPropIndex( self.orgTuner2ConnectType )
 		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.commander )
 		property.setPropIndex( self.orgTuner2Config )
-		property = ElisPropertyEnum( 'Tuner1 Type', self.commander )
+		property = ElisPropertyEnum( 'Tuner1 Type' )
 		property.setPropIndex( self.orgTuner1Type )
-		property = ElisPropertyEnum( 'Tuner2 Type', self.commander )		
+		property = ElisPropertyEnum( 'Tuner2 Type' )		
 		property.setPropIndex( self.orgTuner2Type )
 
 
@@ -318,15 +263,18 @@ class TunerConfigMgr( object ):
 		return transponderList
 
 
+	def getSatelliteByIndex( self, index ) :
+		return self.allsatellitelist[index]
+
 	def loadOriginalTunerConfig( self ) :
 
 		property = ElisPropertyEnum( 'Tuner2 Connect Type', self.commander )
 		self.orgTuner2ConnectType = property.getPropIndex()
 		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.commander )
 		self.orgTuner2Config = property.getPropIndex()
-		property = ElisPropertyEnum( 'Tuner1 Type', self.commander )
+		property = ElisPropertyEnum( 'Tuner1 Type' )
 		self.orgTuner1Type = property.getPropIndex()
-		property = ElisPropertyEnum( 'Tuner2 Type', self.commander )		
+		property = ElisPropertyEnum( 'Tuner2 Type' )		
 		self.orgTuner2Type = property.getPropIndex()
 
 
@@ -342,6 +290,22 @@ class TunerConfigMgr( object ):
 				IsConfigUsed, LnbType, MotorizedType, LowLNB, HighLNB, LNBThreshold, MotorizedData,
 				IsOneCable, OneCablePin, OneCableMDU, OneCableLoFreq1, OneCableLoFreq2, OneCableUBSlot, OneCableUBFreq]	
 		"""
+
+	def saveCurrentConfig( self, configuredSatellite ) :
+		if self.currentTuner == E_TUNER_1 :	
+			self.configuredList1[self.currentConfigIndex] = configuredSatellite
+			print 'dhkim test saveCurrentConfig = %s' % self.configuredList1[self.currentConfigIndex]
+		elif self.currentTuner == E_TUNER_2:
+			self.configuredList2[self.currentConfigIndex] = configuredSatellite
+		else :
+			print 'ERROR : can not find configured satellite'
+	
+
+	def setNeedLoad( self, needLoad ) :
+		self.needLoad = needLoad
+
+	def getNeedLoad( self ) :
+		return self.needLoad
 
 	def updateSimpleLNB( self ) :
 		pass
