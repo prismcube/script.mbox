@@ -317,7 +317,6 @@ class SettingWindow( BaseWindow ):
 			if self.hasControlItem( ctrlItem, controlId ) :
 				if ctrlItem.controlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.controlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 					control = self.getControl( ctrlItem.controlId + 3 )
-					#print 'dhkim test in getSelectedIndex = %d' % control.getSelectedPosition()
 					time.sleep( 0.02 )
 					return control.getSelectedPosition()
 

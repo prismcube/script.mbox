@@ -24,11 +24,17 @@ class TunerConfiguration( SettingWindow ):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
 
 		self.tunerIndex = configmgr.getInstance().getCurrentTunerIndex( )
-		self.tunertype = E_LIST_TUNER_TYPE[ configmgr.getInstance( ).getCurrentTunerType( ) ]
+		if configmgr.getInstance().getCurrentTunerIndex( ) == E_TUNER_1 : 
+			property = ElisPropertyEnum( 'Tuner1 Type' )
+		elif configmgr.getInstance().getCurrentTunerIndex( ) == E_TUNER_2 :
+			property = ElisPropertyEnum( 'Tuner2 Type' )
+			
+		self.tunertype = configmgr.getInstance( ).getCurrentTunerType( )
+		
 		headerLabel = 'Tuner %d Configuration' % ( self.tunerIndex + 1 )
 		self.setHeaderLabel( headerLabel )
 		
-		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Tuner %d Configuration : %s' % ( self.tunerIndex + 1, self.tunertype ) )
+		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Tuner %d Configuration : %s' % ( self.tunerIndex + 1, property.getPropStringByIndex( self.tunertype ) ) )
 		
 		self.initConfig( )
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )		
@@ -85,8 +91,7 @@ class TunerConfiguration( SettingWindow ):
 				winmgr.getInstance( ).showWindow( winmgr.WIN_ID_SATELLITE_CONFIGURATION )
 				"""
 
-			else :
-				print ' configuredList #2'			
+			else :		
 				config = configuredList[ position ]
 				if config != [] :
 					"""

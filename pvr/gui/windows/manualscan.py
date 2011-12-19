@@ -27,11 +27,11 @@ class ManualScan( SettingWindow ):
 
 		self.addInputControl( E_Input01, 'Satellite', 'TEST', None, 'Select satellite' )
 		self.addInputControl( E_Input02, 'Transponder Frequency', '11111', None, 'Select Transponder Frequency' )
-		self.addUserEnumControl( E_SpinEx01, 'DVB Type', USER_ENUM_LIST_DVB_TYPE, 0, 'Select DVB type' )
-		self.addUserEnumControl( E_SpinEx02, 'FEC', USER_ENUM_LIST_FEC, 0, 'Select FEC' )
-		self.addUserEnumControl( E_SpinEx03, 'Polarization', USER_ENUM_LIST_POLARIZATION, 0, 'Select Polarization' )
-		self.addUserEnumControl( E_SpinEx04, 'Symbol Rate', USER_ENUM_LIST_SYMBOL_RATE, 0, 'Select Symbol Rate' )
-		self.addUserEnumControl( E_SpinEx05, 'Network Search', USER_ENUM_LIST_ON_OFF, 0, 'Select Network Search' )
+		self.addEnumControl( E_SpinEx01, 'DVB Type', None, 'Select DVB type' )
+		self.addEnumControl( E_SpinEx02, 'FEC', None, 'Select FEC' )
+		self.addEnumControl( E_SpinEx03, 'Polarisation', None, 'Select Polarization' )
+		self.addEnumControl( E_SpinEx04, 'Symbol Rate', None, 'Select Symbol Rate' )
+		self.addEnumControl( E_SpinEx05, 'Network Search', None, 'Select Network Search' )
 		self.addLeftLabelButtonControl( E_Input03, 'Start Search', 'Start Search' )
 
 		self.initControl( )

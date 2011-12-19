@@ -78,6 +78,7 @@ class TunerConfigMgr( object ):
 		self.currentTunerType = 0
 		self.connectionType = 0
 		self.configType = 0
+		self.needLoad = False
 
 		self.orgTuner2ConnectType = 0
 		self.orgTuner2Config = 0
@@ -171,9 +172,9 @@ class TunerConfigMgr( object ):
 		property.setPropIndex( self.orgTuner2ConnectType )
 		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.commander )
 		property.setPropIndex( self.orgTuner2Config )
-		property = ElisPropertyEnum( 'Tuner1 Type', self.commander )
+		property = ElisPropertyEnum( 'Tuner1 Type' )
 		property.setPropIndex( self.orgTuner1Type )
-		property = ElisPropertyEnum( 'Tuner2 Type', self.commander )		
+		property = ElisPropertyEnum( 'Tuner2 Type' )		
 		property.setPropIndex( self.orgTuner2Type )
 
 
@@ -271,9 +272,9 @@ class TunerConfigMgr( object ):
 		self.orgTuner2ConnectType = property.getPropIndex()
 		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.commander )
 		self.orgTuner2Config = property.getPropIndex()
-		property = ElisPropertyEnum( 'Tuner1 Type', self.commander )
+		property = ElisPropertyEnum( 'Tuner1 Type' )
 		self.orgTuner1Type = property.getPropIndex()
-		property = ElisPropertyEnum( 'Tuner2 Type', self.commander )		
+		property = ElisPropertyEnum( 'Tuner2 Type' )		
 		self.orgTuner2Type = property.getPropIndex()
 
 
@@ -289,6 +290,22 @@ class TunerConfigMgr( object ):
 				IsConfigUsed, LnbType, MotorizedType, LowLNB, HighLNB, LNBThreshold, MotorizedData,
 				IsOneCable, OneCablePin, OneCableMDU, OneCableLoFreq1, OneCableLoFreq2, OneCableUBSlot, OneCableUBFreq]	
 		"""
+
+	def saveCurrentConfig( self, configuredSatellite ) :
+		if self.currentTuner == E_TUNER_1 :	
+			self.configuredList1[self.currentConfigIndex] = configuredSatellite
+			print 'dhkim test saveCurrentConfig = %s' % self.configuredList1[self.currentConfigIndex]
+		elif self.currentTuner == E_TUNER_2:
+			self.configuredList2[self.currentConfigIndex] = configuredSatellite
+		else :
+			print 'ERROR : can not find configured satellite'
+	
+
+	def setNeedLoad( self, needLoad ) :
+		self.needLoad = needLoad
+
+	def getNeedLoad( self ) :
+		return self.needLoad
 
 	def updateSimpleLNB( self ) :
 		pass

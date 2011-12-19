@@ -32,10 +32,12 @@ class AntennaSetup( SettingWindow ):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
 
 		print '#################### Load Configs ###############################'
-		configmgr.getInstance( ).loadOriginalTunerConfig( )
-		print '#################################################################'
+		if configmgr.getInstance( ).getNeedLoad( ) == True : 
+			configmgr.getInstance( ).loadOriginalTunerConfig( )
+			print '#################################################################'
 		
-		configmgr.getInstance( ).load( )
+			configmgr.getInstance( ).load( )
+			configmgr.getInstance( ).setNeedLoad( False )
 		
 		self.setHeaderLabel( 'Antenna & Satellite Setup' )
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
