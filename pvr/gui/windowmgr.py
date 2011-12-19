@@ -36,7 +36,8 @@ def getInstance():
 		print 'lael98 check create instance'
 		__windowmgr = WindowMgr()
 	else:
-		print 'lael98 check already windowmgr is created'
+		pass
+		#print 'lael98 check already windowmgr is created'
 
 	return __windowmgr
 

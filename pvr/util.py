@@ -247,7 +247,7 @@ def epgInfoClock(flag, nowTime, epgClock):
 		ret = '%d:%02d:%02d' % ( hour, min, sec )
 		return ret
 
-	print 'epgClock[%s:%s]'% (strClock, time.strftime('%S', time.gmtime(stbClock)) )
+	#print 'epgClock[%s:%s]'% (strClock, time.strftime('%S', time.gmtime(stbClock)) )
 	return strClock
 
 def epgInfoComponentImage(component):
