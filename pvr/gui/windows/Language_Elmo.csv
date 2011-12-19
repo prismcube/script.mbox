@@ -956,7 +956,20 @@
 "Today",,,,,,,,,,954
 "This Week",,,,,,,,,,955
 "This Month",,,,,,,,,,956
-"Favorite",,,,,,,,,,957
-"Network",,,,,,,,,,958
 "Cas",,,,,,,,,,959
-"TV - Channel List",,"TV - Liste des chaines",,,,,,,,960
+"TV - Channel List",,"TV - Liste des chaines",,,,,,,,961
+"All Channels",,"Toutes les chaines",,,,,,,,962
+"Satellite",,"Satellite",,,,,,,,963
+"FTA/CAS",,"FTA/CAS",,,,,,,,964
+"Favorite",,"Favoris",,,,,,,,965
+"Network",,"Reseau",,,,,,,,966
+"Radio - Channel List",,"Radio ? Liste des chaines",,,,,,,,967
+"TV - Channel List",,"TV - Liste des chaines",,,,,,,,968
+"Radio - Edit Channel List",,"Radio ? Editer la liste des chaines",,,,,,,,969
+"TV - Edit Channel List",,"TV - Editer la liste des chaines",,,,,,,,970
+"Do you want to save channels?",,"Voulez-vous enregistrer les chaines?",,,,,,,,971
+"Channel Lock",,"Verrouiller la chaine",,,,,,,,972
+"Invalid lock time.",,"Heure de verouillage invalide",,,,,,,,973
+"All Channel by Number",,"Tous les  chaines par numero",,,,,,,,974
+"All Channel by Alphabet",,"Tous les  chaines par ordre",,,,,,,,975
+"No channels",,"Pas de chaines",,,,,,,,976

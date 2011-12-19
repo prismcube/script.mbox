@@ -144,7 +144,8 @@ class ChannelBanner(BaseWindow):
 			self.descboxToggle('close')
 			self.untilThread = False
 			self.updateLocalTime().join()
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
+			self.close( )
+			#winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
 
 
 			"""

@@ -143,7 +143,7 @@ class ChannelListWindow(BaseWindow):
 		elif id == Action.ACTION_SELECT_ITEM:
 			print '<<<<< test youn: action ID[%s]' % id
 			print 'tv_guide_last_selected[%s]' % action.getId()
-			self.getTabHeader()
+			#self.getTabHeader()
 			
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'lael98 check ation back'
@@ -246,7 +246,7 @@ class ChannelListWindow(BaseWindow):
 				self.currentChannel = channelNumbr
 				self.currentChannelInfo = self.commander.channel_GetCurrent()
 
-			self.ctrlSelectItem.setLabel(str('%s / %s'% (self.listcontrol.getSelectedPosition() + 1, len(self.listItems))) )
+			self.ctrlSelectItem.setLabel(str('%s / %s'% (self.listcontrol.getSelectedPosition()+1, len(self.listItems))) )
 			self.initLabelInfo()
 
 		elif controlId == self.ctrltabHeader11.getId():
@@ -338,6 +338,11 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader32.setVisible(self.flag31)
 			self.ctrltabHeader42.setVisible(False)
 
+			self.channelList = self.commander.channel_GetListBySatellite(ElisEnum.E_TYPE_TV,ElisEnum.E_MODE_SATELLITE,ElisEnum.E_SORT_BY_ALPHABET, 192,1 )
+			print 'channel_GetListBySatellite[%s]'% self.channelList
+
+
+
 		elif controlId == self.ctrltabHeader41.getId():
 			self.ctrltabHeader10.setPosition(200,120)
 			self.ctrltabHeader20.setPosition(400,120)
@@ -366,6 +371,7 @@ class ChannelListWindow(BaseWindow):
 			self.ctrltabHeader32.setVisible(False)
 			self.ctrltabHeader42.setVisible(self.flag41)
 
+		#elif controlId == self.ctrltabHeader41.getId():
 
 	def onFocus(self, controlId):
 		#print "onFocus(): control %d" % controlId
@@ -467,7 +473,6 @@ class ChannelListWindow(BaseWindow):
 				
 
 	def initTabHeader(self):
-		print ' test init Channel List by shinjh44444'	
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 		#header, footer init
@@ -505,7 +510,6 @@ class ChannelListWindow(BaseWindow):
 		list_ = []
 		testlistItems = []
 
-		print ' test init Channel List by shinjh2 '
 		list_ = self.commander.satellite_GetConfiguredList(1 )
 		print 'satellite_GetConfiguredList[%s]'% list_
 		for item in list_:
@@ -541,20 +545,23 @@ class ChannelListWindow(BaseWindow):
 		self.tabHeader_Favorite_idx       = None
 		"""
 
+		self.currentChannel = -1
+		self.channelList = []
+
+		#self.commander.channel_GetList( ElisEnum.E_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_DEFAULT, self.channelList )
+		self.channelList = self.commander.channel_GetList( self.tabHeader_serviceType, self.tabHeader_zappingMode, self.tabHeader_channelsortMode )
+		print 'sort[%s] channellist[%s]'% (self.tabHeader_channelsortMode, self.channelList)
+
 
 	def initChannelList(self):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
-		self.currentChannel = -1
-		self.channelList = []
 		self.listItems = []
-		#self.commander.channel_GetList( ElisEnum.E_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_DEFAULT, self.channelList )
-		print ' test init Channel List by shinjh1 '
-		self.channelList = self.commander.channel_GetList( self.tabHeader_serviceType, self.tabHeader_zappingMode, self.tabHeader_channelsortMode )
-
-		print 'sort[%s] channellist[%s]'% (self.tabHeader_channelsortMode, self.channelList)
-
 		for ch in self.channelList:
+			#skip ch
+			if int(ch[12]) == 1 :
+				continue
+
 			listItem = xbmcgui.ListItem("%04d %s"%( int(ch[0]), ch[2]),"-", "-", "-", "-")
 
 			thum=icas=''
@@ -580,7 +587,7 @@ class ChannelListWindow(BaseWindow):
 			self.listcontrol.selectItem( chindex )
 
 		#select item idx, print GUI of 'current / total'
-		self.ctrlSelectItem.setLabel(str('%s / %s'% (chindex + 1, len(self.listItems))) )
+		self.ctrlSelectItem.setLabel(str('%s / %s'% (self.listcontrol.getSelectedPosition()+1, len(self.listItems))) )
 
 
 
@@ -594,7 +601,7 @@ class ChannelListWindow(BaseWindow):
 			self.progress_idx = 0.0
 			self.progress_max = 0.0
 
-			self.ctrlSelectItem.setLabel(str('%s / %s'% (self.listcontrol.getSelectedPosition() + 1, len(self.listItems))) )
+			self.ctrlSelectItem.setLabel(str('%s / %s'% (self.listcontrol.getSelectedPosition()+1, len(self.listItems))) )
 			self.ctrlChannelName.setLabel('')
 			self.ctrlEventName.setLabel('')
 			self.ctrlEventTime.setLabel('')
