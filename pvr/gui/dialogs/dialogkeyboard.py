@@ -37,7 +37,6 @@ class DialogKeyboard( NormalKeyboard ) :
 		self.cursorPosition = 0
 		
 	def onInit( self ):
-		self.inputLabel = diamgr.getInstance().getDefaultText( )
 		self.ctrlEditLabel = self.getControl( E_INPUT_LABEL )
 		#self.ctrlEditLabel.setLabel( self.inputLabel )
 		self.cursorPosition = len( self.inputLabel )
@@ -110,7 +109,6 @@ class DialogKeyboard( NormalKeyboard ) :
 				self.cursorPosition = self.cursorPosition + 1
 
 		elif( focusId == E_BUTTON_DONE ) :
-			diamgr.getInstance().setResultText( self.ctrlEditLabel.getLabel( ) )
 			self.stopKeyboardCursor( )
 			self.close( )
 		self.makelabel( E_INPUT_LABEL, self.inputLabel, self.cursorPosition )

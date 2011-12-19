@@ -73,7 +73,6 @@ class TunerConfigMgr( object ):
 		self.commander = pvr.elismgr.getInstance( ).getCommander( )	
 		self.configuredList1 = []
 		self.configuredList2 = []		
-		#self.configuredSatelliteList = []
 		self.currentTuner = 0
 		self.currentConfigIndex = 0
 		self.currentTunerType = 0
@@ -104,24 +103,6 @@ class TunerConfigMgr( object ):
 		else :
 			print 'ERROR : can not find configured satellite'
 	
-
-
-		"""
-		if self.currentTuner == E_TUNER_1 :	
-			for config in self.configuredList1 :
-				if int( config[0] ) == self.currentTuner and int( config[2] ) == self.currentConfigIndex :
-					return config
-		elif self.currentTuner == E_TUNER_2:	
-			for config in self.configuredList2:
-				if int( config[0] ) == self.currentTuner and int( config[2] ) == self.currentConfigIndex :
-					return config
-		else :
-			print 'ERROR : unknown tuner'
-			for config in self.configuredList1 :
-				if int( config[0] ) == self.currentTuner and int( config[2] ) == self.currentConfigIndex :
-					return config
-		"""
-
 		return None
 
 	def setCurrentTunerType( self, tunerType ) :
@@ -161,43 +142,6 @@ class TunerConfigMgr( object ):
 			return self.configuredList1
 
 	def addConfiguredSatellite( self, index ) :
-
-		"""
-		if self.currentTuner == E_TUNER_1 :
-			return self.configuredList1
-		elif self.currentTuner == E_TUNER_2 :
-			return self.configuredList2
-		else :
-			print 'ERROR : unknown tuner'
-			return self.configuredList1
-		"""
-
-
-		"""
-			[TunerIndex, SlotNumber, SatelliteLongitude, BandType, FrequencyLevel, DisEqc11, DisEqcMode, DisEqcRepeat,
-				IsConfigUsed, LnbType, MotorizedType, LowLNB, HighLNB, LNBThreshold, MotorizedData,
-				IsOneCable, OneCablePin, OneCableMDU, OneCableLoFreq1, OneCableLoFreq2, OneCableUBSlot, OneCableUBFreq]	
-		"""
-
-		"""
-		config = []		
-		if self.getCurrentTunerType( ) == E_SIMPLE_LNB or self.getCurrentTunerType( ) == E_DISEQC_1_0  or self.getCurrentTunerType( ) == E_DISEQC_1_1 :
-			config = ["0", "0", self.allsatellitelist[index][0], self.allsatellitelist[index][1], "0", "0", "0", "0",
-					  "1", "0", "0", "9750", "10600", "11700", "0", "0", "0", "0", "0", "0", "0", "0" ]
-			
-		if self.getCurrentTunerType( ) == E_MOTORIZED_1_2 :
-			config = ["0", "0", self.allsatellitelist[index][0], self.allsatellitelist[index][1], "0", "0", "0", "0",
-					  "1", "0", "0", "9750", "10600", "11700", "0", "0", "0", "0", "0", "0", "0", "0" ]
-
-		elif self.getCurrentTunerType( ) == E_MOTORIZED_USALS :
-			config = ["0", "0", self.allsatellitelist[index][0], self.allsatellitelist[index][1], "0", "0", "0", "0",
-					  "1", "0", "0", "9750", "10600", "11700", "0", "0", "0", "0", "0", "0", "0", "0" ]
-
-		elif self.getCurrentTunerType( ) == E_ONE_CABLE :
-			config = ["0", "0", self.allsatellitelist[index][0], self.allsatellitelist[index][1], "0", "0", "0", "0",
-					  "1", "0", "0", "9750", "10600", "11700", "0", "0", "0", "0", "0", "0", "0", "0" ]
-		"""
-
 
 		config = ["0", "0", self.allsatellitelist[index][0], self.allsatellitelist[index][1], "0", "0", "0", "0",
 				  "1", "0", "0", "9750", "10600", "11700", "0", "0", "0", "0", "0", "0", "0", "0" ]
@@ -317,6 +261,9 @@ class TunerConfigMgr( object ):
 			transponderList.append( '%s' % ( i + 1 ) + ' ' + tmptransponderList[i][0] + ' MHz / ' + tmptransponderList[i][1] + ' KS/s' )
 		return transponderList
 
+
+	def getSatelliteByIndex( self, index ) :
+		return self.allsatellitelist[index]
 
 	def loadOriginalTunerConfig( self ) :
 

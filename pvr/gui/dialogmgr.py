@@ -26,12 +26,36 @@ class DialogMgr(object):
 	def __init__(self):
 		self.dialogs = {}
 
+		"""
 		self.createAllDialogs( )
 		self.titleLabel = None
 		self.defaultText = None
 		self.resultText = None
+		"""
 
 
+	def getDialog( self, dialogId ) :
+		import pvr.platform 
+		self.scriptDir = pvr.platform.getPlatform().getScriptDir()
+
+		
+		if dialogId == DIALOG_ID_KEYBOARD :
+			from pvr.gui.dialogs.dialogkeyboard import DialogKeyboard		
+			return DialogKeyboard('dialogkeyboard.xml', self.scriptDir)
+			
+		elif dialogId == DIALOG_ID_NUMERIC :
+			from pvr.gui.dialogs.dialognumeric import DialogNumeric		
+			return DialogNumeric('dialognumeric.xml', self.scriptDir)				
+
+		elif dialogId == DIALOG_ID_LNB_FREQUENCY :
+			from pvr.gui.dialogs.dialoglnbfrequency import DialogLnbFrequency		
+			return DialogLnbFrequency('dialoglnbfrequency.xml', self.scriptDir)	
+			
+		else :
+			print "ERROR : can not find dialog"
+
+
+	"""
 	def showDialog( self, dialogId ):
 		try:
 			self.dialogs[dialogId].doModal()
@@ -53,6 +77,7 @@ class DialogMgr(object):
 		self.dialogs[ DIALOG_ID_KEYBOARD ]	               = DialogKeyboard('dialogkeyboard.xml', self.scriptDir)	
 		self.dialogs[ DIALOG_ID_NUMERIC ]	               = DialogNumeric('dialognumeric.xml', self.scriptDir)	
 		self.dialogs[ DIALOG_ID_LNB_FREQUENCY ]	           = DialogLnbFrequency('dialoglnbfrequency.xml', self.scriptDir)	
+
 
 
 	def setDefaultText( self, text ):
@@ -77,3 +102,4 @@ class DialogMgr(object):
 
 	def getResultText( self ):
 		return self.resultText
+	"""
