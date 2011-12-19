@@ -88,7 +88,6 @@ class SatelliteConfiguration( SettingWindow ):
 
  		elif( controlId == E_Input02 + 1 ) :
  			diamgr.getInstance().showDialog( diamgr.DIALOG_ID_LNB_FREQUENCY )
- 			print 'dhkim test getLabel = %s' % diamgr.getInstance().getResultText( )
 
 		
 	def onFocus( self, controlId ):

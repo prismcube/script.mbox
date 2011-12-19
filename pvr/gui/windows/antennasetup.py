@@ -15,7 +15,7 @@ from elisproperty import ElisPropertyEnum, ElisPropertyInt
 from elisenum import ElisEnum
 
 from pvr.gui.windows.satelliteconfigsimple import SatelliteConfigSimple
-
+from pvr.gui.windows.motorizeconfiguration import MotorizeConfiguration
 E_MAIN_GROUP_ID	= 9000
 
 class AntennaSetup( SettingWindow ):
@@ -88,6 +88,10 @@ class AntennaSetup( SettingWindow ):
 	def onClick( self, controlId ):
 		self.disableControl( )
 		if controlId == E_Input01 + 1 or controlId == E_Input02 + 1 :
+		
+			configuredList = configmgr.getInstance( ).getConfiguredSatelliteList( )
+			if len( configuredList ) <= 0 :
+				configmgr.getInstance().addConfiguredSatellite( 0 )
 
 			if controlId == E_Input01 + 1 :
 			
@@ -101,14 +105,8 @@ class AntennaSetup( SettingWindow ):
 
 			configmgr.getInstance().setCurrentTunerConnectionType( self.getSelectedIndex( E_SpinEx01 ) )
 			configmgr.getInstance().setCurrentTunerConfigType( self.getSelectedIndex( E_SpinEx02 ) )
-
 			
 			if self.getSelectedIndex( E_SpinEx03 ) == E_SIMPLE_LNB :
-			
-				configuredList = configmgr.getInstance( ).getConfiguredSatelliteList( )
-
-				if len( configuredList ) <= 0 :
-					configmgr.getInstance().addConfiguredSatellite( 0 )
 
 				configmgr.getInstance( ).setCurrentConfigIndex( 0 )
 				self.resetAllControl( )
@@ -117,10 +115,16 @@ class AntennaSetup( SettingWindow ):
 				scriptDir = pvr.platform.getPlatform().getScriptDir()
 				SatelliteConfigSimple('satelliteconfiguration.xml', scriptDir).doModal()
 			
-			elif self.getSelectedIndex( E_SpinEx03 ) == E_MOTORIZED_1_2  or self.getSelectedIndex( E_SpinEx03 ) == E_MOTORIZED_USALS :
+			elif self.getSelectedIndex( E_SpinEx03 ) == E_MOTORIZED_USALS :
 
 				self.resetAllControl( )
-				winmgr.getInstance().showWindow( winmgr.WIN_ID_MOTORIZE_CONFIGURATION )
+				
+				import pvr.platform 
+				scriptDir = pvr.platform.getPlatform().getScriptDir()
+				MotorizeConfiguration('satelliteconfiguration.xml', scriptDir).doModal()
+
+			elif self.getSelectedIndex( E_SpinEx03 ) == E_MOTORIZED_1_2 :
+				pass
 
 			else :
 

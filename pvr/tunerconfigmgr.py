@@ -294,7 +294,6 @@ class TunerConfigMgr( object ):
 	def saveCurrentConfig( self, configuredSatellite ) :
 		if self.currentTuner == E_TUNER_1 :	
 			self.configuredList1[self.currentConfigIndex] = configuredSatellite
-			print 'dhkim test saveCurrentConfig = %s' % self.configuredList1[self.currentConfigIndex]
 		elif self.currentTuner == E_TUNER_2:
 			self.configuredList2[self.currentConfigIndex] = configuredSatellite
 		else :
