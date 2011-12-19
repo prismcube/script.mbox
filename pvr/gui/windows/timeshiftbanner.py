@@ -36,9 +36,11 @@ class TimeShiftBanner(BaseWindow):
 		self.eventBus.register( self )
 		self.commander = pvr.elismgr.getInstance().getCommander()
 
+		#default
 		self.currentChannel=[]
 		self.progress_idx = 0.0
 		self.progress_max = 0.0
+		self.mMode = ElisEnum.E_MODE_LIVE
 
 		#push push test test
 
@@ -72,6 +74,9 @@ class TimeShiftBanner(BaseWindow):
 			self.ctrlBtnPause		= self.getControl( 406 )
 			self.ctrlBtnStop		= self.getControl( 407 )
 			self.ctrlBtnForward		= self.getControl( 408 )
+
+			#test
+			#self.ctrlBtnTest		= self.getControl( 409 )
 
 
 		self.mSpeed = 100	#normal
@@ -134,7 +139,8 @@ class TimeShiftBanner(BaseWindow):
 		print 'onclick(): control %d' % controlId
 
 		if controlId >= self.ctrlBtnRewind.getId() and controlId <= self.ctrlBtnForward.getId() :
-			self.initTimeShift()
+		#if controlId >= self.ctrlBtnRewind.getId() and controlId <= self.ctrlBtnTest.getId() :
+			#self.initTimeShift()
 			self.timeshiftAction(controlId)
 		
 
@@ -165,49 +171,106 @@ class TimeShiftBanner(BaseWindow):
 			print 'show screen is another windows page[%s]'% xbmcgui.getCurrentWindowId()
 
 
+		
 	def timeshiftAction(self, focusId):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)		
 
-		if focusId == self.ctrlBtnPlay.getId():
-			ret = self.commander.player_Pause()
+		ret = False
 
-			self.isPlay = True
-			self.ctrlBtnPlay.setVisible(False)
-			self.ctrlBtnPause.setVisible(True)
+		if focusId == self.ctrlBtnPlay.getId():
+			if self.mMode == ElisEnum.E_MODE_LIVE:
+				#ret = self.commander.player_StartTimeshiftPlayback(ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE,0)
+				ret = self.commander.player_Resume()
+			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT:
+				ret = self.commander.player_Resume()
+			elif self.mMode == ElisEnum.E_MODE_PVR:
+				ret = self.commander.player_Resume()
+
+			if ret[0] == 'TRUE':
+				print 'play ret[%s]'% ret
+
+				if self.mSpeed != 100:
+					self.commander.player_SetSpeed(100)
+					self.ctrlImgRewind.setVisible(False)
+					self.ctrlImgForward.setVisible(False)
+					self.ctrlLblSpeed.setLabel('')
+
+				self.isPlay = True
+
+				# toggle
+				#self.ctrlBtnPlay.setVisible(False)
+				#self.ctrlBtnPause.setVisible(True)
+
 
 		elif focusId == self.ctrlBtnPause.getId():
-			ret = self.commander.player_Resume()
+		#elif focusId == self.ctrlBtnTest.getId():
+			if self.mMode == ElisEnum.E_MODE_LIVE:
+				ret = self.commander.player_StartTimeshiftPlayback(ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE,0)
+			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT:
+				ret = self.commander.player_Pause()
+			elif self.mMode == ElisEnum.E_MODE_PVR:
+				ret = self.commander.player_Pause()
 
-			self.isPlay = False
-			self.ctrlBtnPlay.setVisible(True)
-			self.ctrlBtnPause.setVisible(False)
+			if ret[0] == 'TRUE':
+				print 'pause ret[%s]'% ret
+				self.isPlay = False
+				# toggle
+				#self.ctrlBtnPlay.setVisible(True)
+				#self.ctrlBtnPause.setVisible(False)
 
 		elif focusId == self.ctrlBtnStop.getId():
-			self.ctrlProgress.setPercent(0)
-			self.progress_idx = 0.0
-			self.progress_max = 0.0
 
-			ret = self.commander.player_Stop()
+			if self.mMode == ElisEnum.E_MODE_LIVE:
+				ret = self.commander.player_Stop()
+			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT:
+				ret = self.commander.player_Stop()
+			elif self.mMode == ElisEnum.E_MODE_PVR:
+				ret = self.commander.player_Stop()
 
-			self.untilThread = False
-			self.updateLocalTime().join()
-			self.close( )
+			if ret[0] == 'TRUE':
+				print 'stop ret[%s]'% ret
+				self.ctrlProgress.setPercent(0)
+				self.progress_idx = 0.0
+				self.progress_max = 0.0
 
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
+				self.untilThread = False
+				self.updateLocalTime().join()
+				self.close( )
+
+				winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
 
 		elif focusId == self.ctrlBtnRewind.getId():
 			nextSpeed = 100
 			nextSpeed = self.getSpeedValue(focusId)
-			ret = self.commander.player_SetSpeed(nextSpeed)
-			print 'player_SetSpeed[%s], cmd[%s]'% (ret, nextSpeed)
-			self.initTimeShift()
+
+			if self.mMode == ElisEnum.E_MODE_LIVE:
+				ret = self.commander.player_StartTimeshiftPlayback(ElisEnum.E_PLAYER_TIMESHIFT_START_REWIND,0)
+				#ret = self.commander.player_SetSpeed(nextSpeed)
+			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT:
+				ret = self.commander.player_SetSpeed(nextSpeed)
+			elif self.mMode == ElisEnum.E_MODE_PVR:
+				ret = self.commander.player_SetSpeed(nextSpeed)
+
+			if ret[0] == 'TRUE':
+				print 'rewind ret[%s], player_SetSpeed[%s]'% (ret, nextSpeed)
 
 		elif focusId == self.ctrlBtnForward.getId():
 			nextSpeed = 100
 			nextSpeed = self.getSpeedValue(focusId)
-			ret = self.commander.player_SetSpeed(nextSpeed)
-			print 'player_SetSpeed[%s], cmd[%s]'% (ret, nextSpeed)
-			self.initTimeShift()
+
+			if self.mMode == ElisEnum.E_MODE_LIVE:
+				#ret = self.commander.player_StartTimeshiftPlayback(ElisEnum.E_PLAYER_TIMESHIFT_START_REWIND,0)
+				ret = self.commander.player_SetSpeed(nextSpeed)
+			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT:
+				ret = self.commander.player_SetSpeed(nextSpeed)
+			elif self.mMode == ElisEnum.E_MODE_PVR:
+				ret = self.commander.player_SetSpeed(nextSpeed)
+
+			if ret[0] == 'TRUE':
+				print 'forward ret[%s] player_SetSpeed[%s]'% (ret, nextSpeed)
+
+		time.sleep(0.5)
+		self.initTimeShift()
 
 	def updateONEvent(self, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
@@ -236,17 +299,10 @@ class TimeShiftBanner(BaseWindow):
 
 		print 'player_GetStatus[%s]'% status
 		
-		#todo, pending status
-		"""
-		if pendingStatus == True :
-			self.ctrlBtnPlay.setVisible(False)
-			self.ctrlBtnPause.setVisible(True)
-
-		else:
-			self.ctrlBtnPlay.setVisible(True)
-			self.ctrlBtnPause.setVisible(False)
-		"""
 		if status != []:
+			#play mode
+			self.mMode = int(status[0])
+
 			#progress info
 			self.curTime = 0
 			self.timeshift_staTime = 0.0
@@ -313,7 +369,7 @@ class TimeShiftBanner(BaseWindow):
 				elif self.mSpeed == -1000 :
 					self.ctrlLblSpeed.setLabel('32x')
 
-			""" prime stb is invalid
+			"""
 			#pending status
 			mIsTimeshiftPending = int(status[7])
 			if mIsTimeshiftPending == True :
@@ -321,11 +377,12 @@ class TimeShiftBanner(BaseWindow):
 				self.ctrlBtnPlay.setVisible(False)
 				self.ctrlBtnPause.setVisible(True)
 
-			elif :
+			else :
 				self.isPlay = False
 				self.ctrlBtnPlay.setVisible(True)
 				self.ctrlBtnPause.setVisible(False)
 			"""
+
 
 
 	def getSpeedValue(self, focusId):
@@ -417,6 +474,8 @@ class TimeShiftBanner(BaseWindow):
 
 			#progress
 			if self.isPlay == True:
+				if self.mSpeed != 100:
+					self.initTimeShift()
 				if self.progress_max > 0:
 					print 'progress_idx[%s] getPercent[%s]' % (self.progress_idx, self.ctrlProgress.getPercent())
 
