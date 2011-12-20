@@ -25,8 +25,8 @@ class AutomaticScan( SettingWindow ):
 		self.setHeaderLabel( 'Channel Scan' )
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
 
-		self.addInputControl( E_Input01, 'Satellite', 'TEST', None, 'Select satellite' )
-		self.addEnumControl( E_SpinEx01, 'Network Search', None )		
+		self.addInputControl( E_Input01, 'Satellite', 'All', None, 'Select satellite' )
+		self.addEnumControl( E_SpinEx01, 'Network Search', 'Network Search' ) # TODO : have to be savable property
 		self.addLeftLabelButtonControl( E_Input02, 'Start Search', 'Start Search' )
 
 		self.initControl( )
@@ -65,7 +65,22 @@ class AutomaticScan( SettingWindow ):
 
 
 	def onClick( self, controlId ):
-		pass
+	
+		groupId = self.getGroupId( controlId )
+		
+		#Configured Satellite
+		if groupId == E_Input01 :
+
+			"""
+			configuredList1 = 
+			configuredList2 =
+
+			configuredList.append( )
+			
+			dialog = xbmcgui.Dialog( )
+ 			ret = dialog.select('Select satellite', configuredList )
+ 			"""
+
 			
 
 	def onFocus( self, controlId ):

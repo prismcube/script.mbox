@@ -23,16 +23,15 @@ class SatelliteConfigSimple( SettingWindow ):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
 		self.lnbFrequency = None
 		self.tunerIndex = configmgr.getInstance( ).getCurrentTunerIndex( )
-		self.tunertype = configmgr.getInstance( ).getCurrentTunerType( )
 		self.currentSatellite = configmgr.getInstance( ).getCurrentConfiguredSatellite( )
 		self.transponderList = configmgr.getInstance( ).getTransponderList( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ) )
 		self.selectedTransponderIndex = 0
  
 		self.setHeaderLabel( 'Satellite Configuration' ) 
 
-		property = ElisPropertyEnum( 'Tuner1 Type' )
+		property = ElisPropertyEnum( 'Tuner1 Type', self.commander )
 
-		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %s - %s' % ( self.tunerIndex + 1, property.getPropStringByIndex( self.tunertype ) ) )
+		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %s - %s' % ( self.tunerIndex + 1, property.getPropString( ) ) )
 		self.selectedIndexLnbType = int( self.currentSatellite[ E_CONFIGURE_SATELLITE_LNB_TYPE ] )
 
 		self.initConfig( )

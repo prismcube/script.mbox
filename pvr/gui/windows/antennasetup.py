@@ -68,8 +68,15 @@ class AntennaSetup( SettingWindow ):
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
+		
+			if xbmcgui.Dialog( ).yesno('Configure', 'Are you sure?') == 1 :
+				configmgr.getInstance( ).satelliteconfigSaveList( )
+			else :
+				configmgr.getInstance( ).restore( )
+
 			self.resetAllControl( )
 			self.close( )
+
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.controlLeft( )
@@ -98,15 +105,21 @@ class AntennaSetup( SettingWindow ):
 			if controlId == E_Input01 + 1 :
 			
 				configmgr.getInstance().setCurrentTunerIndex( E_TUNER_1  ) 
+				"""
 				configmgr.getInstance().setCurrentTunerType( self.getSelectedIndex( E_SpinEx03 ) )
+				"""
 
 			elif controlId == E_Input02 + 1 :
 
 				configmgr.getInstance().setCurrentTunerIndex( E_TUNER_2 )
+				"""
 				configmgr.getInstance().setCurrentTunerType( self.getSelectedIndex( E_SpinEx04 ) )
+				"""
 
+			"""
 			configmgr.getInstance().setCurrentTunerConnectionType( self.getSelectedIndex( E_SpinEx01 ) )
 			configmgr.getInstance().setCurrentTunerConfigType( self.getSelectedIndex( E_SpinEx02 ) )
+			"""
 			
 			if self.getSelectedIndex( E_SpinEx03 ) == E_SIMPLE_LNB :
 

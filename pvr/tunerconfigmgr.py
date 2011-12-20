@@ -2,6 +2,7 @@ import xbmc
 import xbmcgui
 import sys
 import time
+from copy import deepcopy
 
 
 E_CONFIGURE_SATELLITE_TUNER_INDEX 		= 0
@@ -76,8 +77,6 @@ class TunerConfigMgr( object ):
 		self.currentTuner = 0
 		self.currentConfigIndex = 0
 		self.currentTunerType = 0
-		self.connectionType = 0
-		self.configType = 0
 		self.needLoad = False
 
 		self.orgTuner2ConnectType = 0
@@ -106,24 +105,29 @@ class TunerConfigMgr( object ):
 	
 		return None
 
+	"""
 	def setCurrentTunerType( self, tunerType ) :
 		self.currentTunerType = tunerType
+	"""
 
 
 	def getCurrentTunerType( self ) :
-		return self.currentTunerType
-
-	def setCurrentTunerConnectionType( self, connectionType ) :
-		self.connectionType = connectionType
+		if self.currentTuner == E_TUNER_1 :	
+			property = ElisPropertyEnum( 'Tuner1 Type', self.commander )
+			return property.getProp( )
+		elif self.currentTuner == E_TUNER_2:
+			property = ElisPropertyEnum( 'Tuner2 Type', self.commander )
+			return property.getProp( )
 
 	def getCurrentTunerConnectionType( self ) :
-		return self.connectionType
+		property = ElisPropertyEnum( 'Tuner2 Connect Type', self.commander )
+		return property.getProp( )
 
-	def setCurrentTunerConfigType( self, configType ) :
-		self.configType = configType
 
 	def getCurrentTunerConfigType( self ) :
-		return self.configType
+		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.commander )
+		return property.getProp( )
+
 
 	def setCurrentConfigIndex( self, currentConfigIndex ) :
 		self.currentConfigIndex = currentConfigIndex
@@ -145,7 +149,7 @@ class TunerConfigMgr( object ):
 	def addConfiguredSatellite( self, index ) :
 
 		config = ["0", "0", self.allsatellitelist[index][0], self.allsatellitelist[index][1], "0", "0", "0", "0",
-				  "1", "0", "0", "9750", "10600", "11700", "0", "0", "0", "0", "0", "0", "0", "0" ]
+				  "1", "0", "0", "9750", "10600", "11700", "0", "0", "0", "0", "0", "0", "0", "1284" ]
 
 
 		if self.getCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
@@ -169,21 +173,52 @@ class TunerConfigMgr( object ):
 	def restore( self ) :
 
 		property = ElisPropertyEnum( 'Tuner2 Connect Type', self.commander )
-		property.setPropIndex( self.orgTuner2ConnectType )
+		property.setProp( self.orgTuner2ConnectType )
 		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.commander )
-		property.setPropIndex( self.orgTuner2Config )
-		property = ElisPropertyEnum( 'Tuner1 Type' )
-		property.setPropIndex( self.orgTuner1Type )
-		property = ElisPropertyEnum( 'Tuner2 Type' )		
-		property.setPropIndex( self.orgTuner2Type )
+		property.setProp( self.orgTuner2Config )
+		property = ElisPropertyEnum( 'Tuner1 Type', self.commander )
+		property.setProp( self.orgTuner1Type )
+		property = ElisPropertyEnum( 'Tuner2 Type', self.commander )		
+		property.setProp( self.orgTuner2Type )
 
 
 		print '#################### After Retore ###############################'
 		self.loadOriginalTunerConfig()
 		print '###########################################################'
 		
-	def save( self ) :
-		pass
+	def satelliteconfigSaveList( self ) :
+
+		self.commander.satelliteconfig_DeleteAll( )
+
+		if self.getCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
+		
+			self.configuredList2 = deepcopy( self.configuredList1 )
+
+
+			count = len ( self.configuredList2 )
+			for i in range(count) :
+				self.configuredList2[i][0] = '%d' %E_TUNER_2
+
+
+
+		count = len (self.configuredList1 )
+		for i in range(count) :
+			self.configuredList1[i][1] = '%d' %i
+		
+
+		count = len (self.configuredList2 )
+		for i in range(count) :
+			self.configuredList2[i][1] = '%d' %i
+
+
+		print 'satelliteconfig 1 %s' %self.configuredList1
+		print 'satelliteconfig 2 %s' %self.configuredList2
+
+		
+		self.commander.satelliteconfig_SaveList( self.configuredList1 )
+		self.commander.satelliteconfig_SaveList( self.configuredList2 )
+
+
 
 	def load( self ) :
 	
@@ -269,13 +304,13 @@ class TunerConfigMgr( object ):
 	def loadOriginalTunerConfig( self ) :
 
 		property = ElisPropertyEnum( 'Tuner2 Connect Type', self.commander )
-		self.orgTuner2ConnectType = property.getPropIndex()
+		self.orgTuner2ConnectType = property.getProp()
 		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.commander )
-		self.orgTuner2Config = property.getPropIndex()
-		property = ElisPropertyEnum( 'Tuner1 Type' )
-		self.orgTuner1Type = property.getPropIndex()
-		property = ElisPropertyEnum( 'Tuner2 Type' )		
-		self.orgTuner2Type = property.getPropIndex()
+		self.orgTuner2Config = property.getProp()
+		property = ElisPropertyEnum( 'Tuner1 Type', self.commander )
+		self.orgTuner1Type = property.getProp()
+		property = ElisPropertyEnum( 'Tuner2 Type', self.commander )		
+		self.orgTuner2Type = property.getProp()
 
 
 		print 'tuner2ConnectType=%d' %self.orgTuner2ConnectType

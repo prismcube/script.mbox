@@ -29,17 +29,19 @@ class TunerConfiguration( SettingWindow ):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
 
 		self.tunerIndex = configmgr.getInstance().getCurrentTunerIndex( )
-		if configmgr.getInstance().getCurrentTunerIndex( ) == E_TUNER_1 : 
-			property = ElisPropertyEnum( 'Tuner1 Type' )
-		elif configmgr.getInstance().getCurrentTunerIndex( ) == E_TUNER_2 :
-			property = ElisPropertyEnum( 'Tuner2 Type' )
+
+		if self.tunerIndex == E_TUNER_1 :
+			property = ElisPropertyEnum( 'Tuner1 Type', self.commander )
+		elif self.tunerIndex == E_TUNER_2 : 
+			property = ElisPropertyEnum( 'Tuner2 Type', self.commander )
+		else :
+			print 'Error : unknown Tuner'
+			property = ElisPropertyEnum( 'Tuner1 Type', self.commander )
 			
-		self.tunertype = configmgr.getInstance( ).getCurrentTunerType( )
-		
 		headerLabel = 'Tuner %d Configuration' % ( self.tunerIndex + 1 )
 		self.setHeaderLabel( headerLabel )
 		
-		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Tuner %d Configuration : %s' % ( self.tunerIndex + 1, property.getPropStringByIndex( self.tunertype ) ) )
+		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Tuner %d Configuration : %s' % ( self.tunerIndex + 1, property.getPropString( ) ) )
 		
 		self.initConfig( )
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )		
@@ -93,20 +95,22 @@ class TunerConfiguration( SettingWindow ):
 					self.resetAllControl( )
 					import pvr.platform 
 					scriptDir = pvr.platform.getPlatform().getScriptDir()
+
+					tunertype = configmgr.getInstance( ).getCurrentTunerType( )
 					
-					if self.tunertype == E_DISEQC_1_0 :
+					if tunertype == E_DISEQC_1_0 :
 						SatelliteConfigDisEqC10('satelliteconfiguration.xml', scriptDir).doModal()
 
-					elif self.tunertype == E_DISEQC_1_1 :
+					elif tunertype == E_DISEQC_1_1 :
 						SatelliteConfigDisEqC11('satelliteconfiguration.xml', scriptDir).doModal()
 
-					elif self.tunertype == E_ONE_CABLE :
+					elif tunertype == E_ONE_CABLE :
 						pass
 
-					elif self.tunertype == E_MOTORIZED_1_2 :
+					elif tunertype == E_MOTORIZED_1_2 :
 						SatelliteConfigMotorized12('satelliteconfiguration.xml', scriptDir).doModal()
 
-					elif self.tunertype == E_MOTORIZED_USALS :
+					elif tunertype == E_MOTORIZED_USALS :
 						SatelliteConfigMotorizedUsals('satelliteconfiguration.xml', scriptDir).doModal()
 
 				
