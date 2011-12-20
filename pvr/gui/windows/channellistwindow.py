@@ -7,7 +7,7 @@ from pvr.gui.basewindow import BaseWindow, setWindowBusy
 from pvr.gui.basewindow import Action
 from elisenum import ElisEnum
 from inspect import currentframe
-from pvr.util import catchall, is_digit, run_async, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString
+from pvr.util import catchall, is_digit, run_async, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString, enumToString
 import pvr.elismgr
 from elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import FooterMask
@@ -27,6 +27,7 @@ class ChannelListWindow(BaseWindow):
 		self.eventBus.register( self )
 
 		#tabHeader list
+		self.list_AllChannel= []
 		self.list_Satellite = []
 		self.list_CasList   = []
 		self.list_Favorite  = []
@@ -412,41 +413,101 @@ class ChannelListWindow(BaseWindow):
 			self.getTabHeader()
 
 			if focusId == self.ctrltabHeader12.getId():
-				self.channelList = self.commander.channel_GetList( self.tabHeader_serviceType, self.tabHeader_zappingMode, self.tabHeader_channelsortMode )
-				print 'sort[%s] channel_GetList[%s]'% (self.tabHeader_channelsortMode, self.channelList)
+				idx_Sorting   = self.ctrltabHeader12.getSelectedPosition()
+				if idx_Sorting == 0:
+					sortingMode = ElisEnum.E_SORT_BY_NUMBER
+				elif idx_Sorting == 1:
+					sortingMode = ElisEnum.E_SORT_BY_ALPHABET
+				elif idx_Sorting == 2:
+					sortingMode = ElisEnum.E_SORT_BY_HD
+
+				self.tabHeader_zappingMode     = ElisEnum.E_MODE_ALL
+				self.tabHeader_channelsortMode = sortingMode
+
+				item = self.list_Satellite[idx_Sorting]
+				self.getChannelList( self.tabHeader_serviceType, self.tabHeader_zappingMode, sortingMode, 0, 0, 0, '' )
+				print 'cmd[channel_GetList] sort[%s] ch_list[%s]'% (self.tabHeader_channelsortMode, self.channelList)
 
 			elif focusId == self.ctrltabHeader22.getId():
+				self.tabHeader_zappingMode = ElisEnum.E_MODE_SATELLITE
+
 				idx_Satellite = self.ctrltabHeader22.getSelectedPosition()
 				item = self.list_Satellite[idx_Satellite]
-				self.channelList = self.commander.channel_GetListBySatellite( self.tabHeader_serviceType, self.tabHeader_zappingMode, self.tabHeader_channelsortMode, int(item[0]), int(item[1]) )
-				print 'idx_Satellite[%s] mLongitude[%s] band[%s] channel_GetListBySatellite[%s]'% ( idx_Satellite, item[0], item[1], self.channelList )
+				self.getChannelList( self.tabHeader_serviceType, self.tabHeader_zappingMode, self.tabHeader_channelsortMode, int(item[0]), int(item[1]), 0, '' )
+				print 'cmd[channel_GetListBySatellite] idx_Satellite[%s] mLongitude[%s] band[%s] ch_list[%s]'% ( idx_Satellite, item[0], item[1], self.channelList )
 
 			elif focusId == self.ctrltabHeader32.getId():
-				pass
+				self.tabHeader_zappingMode = ElisEnum.E_MODE_CAS
+
+				idx_FtaCas = self.ctrltabHeader32.getSelectedPosition()
+				if idx_FtaCas == 0 :
+					caid = ElisEnum.E_FTA_CHANNEL
+				elif idx_FtaCas == 1 :
+					caid = ElisEnum.E_MEDIAGUARD
+				elif idx_FtaCas == 2 :
+					caid = ElisEnum.E_VIACCESS
+				elif idx_FtaCas == 3 :
+					caid = ElisEnum.E_NAGRA
+				elif idx_FtaCas == 4 :
+					caid = ElisEnum.E_IRDETO
+				elif idx_FtaCas == 5 :
+					caid = ElisEnum.E_CRYPTOWORKS
+				elif idx_FtaCas == 6 :
+					caid = ElisEnum.E_BETADIGITAL
+				elif idx_FtaCas == 7 :
+					caid = ElisEnum.E_NDS
+				elif idx_FtaCas == 8 :
+					caid = ElisEnum.E_CONAX
+				else :
+					caid = ElisEnum.E_OTHERS
+
+				item = self.list_CasList[idx_FtaCas]
+				self.getChannelList( self.tabHeader_serviceType, self.tabHeader_zappingMode, self.tabHeader_channelsortMode, 0, 0, caid, '' )
+				print 'cmd[channel_GetListByFTACas] idx_FtaCas[%s] list_CasList[%s] ch_list[%s]'% ( idx_FtaCas, item, self.channelList )
 
 			elif focusId == self.ctrltabHeader42.getId():
+				self.tabHeader_zappingMode = ElisEnum.E_MODE_FAVORITE
+
+				idx_Favorite = self.ctrltabHeader42.getSelectedPosition()
+				item = self.list_Favorite[idx_Favorite]
+				self.getChannelList( self.tabHeader_serviceType, self.tabHeader_zappingMode, self.tabHeader_channelsortMode, 0, 0, 0, item[0] )
+				print 'cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s] ch_list[%s]'% ( idx_Favorite, item, self.channelList )
+
+
+			if self.channelList != [] :
+				#channel list update
+				self.listcontrol.reset()
+				self.initChannelList()
+
+				#save zapping mode
+				#ret = self.commander.zappingmode_SetCurrent( self.tabHeader_zappingMode, self.tabHeader_channelsortMode, self.tabHeader_serviceType )
+				#print 'set zappingmode_SetCurrent[%s]'% ret
+
+
+	def getChannelList(self, mType, mMode, mSort, mLongitude, mBand, mCAid, favName ):
+		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+
+		try :
+			if mMode == ElisEnum.E_MODE_ALL :
+				self.channelList = self.commander.channel_GetList( mType, mMode, mSort )
+
+			elif mMode == ElisEnum.E_MODE_SATELLITE :
+				self.channelList = self.commander.channel_GetListBySatellite( mType, mMode, mSort, mLongitude, mBand )
+
+			elif mMode == ElisEnum.E_MODE_CAS :
+				self.channelList = self.commander.channel_GetListByFTACas( mType, mMode, mSort, mCAid )
+				
+			elif mMode == ElisEnum.E_MODE_FAVORITE :
+				self.channelList = self.commander.channel_GetListByFavorite( mType, mMode, mSort, favName )
+
+			elif mMode == ElisEnum.E_MODE_NETWORK :
 				pass
-			
-			#channel list update
-			self.listcontrol.reset()
-			self.initChannelList()
+
+		except Exception, e:
+			print 'getChannelList Error[%s]'% e
+
 
 	def getTabHeader(self):
-
-		idx_Sorting   = self.ctrltabHeader12.getSelectedPosition()
-		#idx_Satellite = self.ctrltabHeader22.getSelectedPosition()
-		#idx_FtaCas    = self.ctrltabHeader32.getSelectedPosition()
-		#idx_Favorite  = self.ctrltabHeader42.getSelectedPosition()
-
-
-		if idx_Sorting == 0:
-			self.tabHeader_channelsortMode = ElisEnum.E_SORT_BY_NUMBER
-		elif idx_Sorting == 1:
-			self.tabHeader_channelsortMode = ElisEnum.E_SORT_BY_ALPHABET
-		elif idx_Sorting == 2:
-			self.tabHeader_channelsortMode = ElisEnum.E_SORT_BY_HD
-		print 'sort_idx[%s]'% self.tabHeader_channelsortMode
-
 
 		#update button label from selected item at list
 		if self.flag11:
@@ -475,41 +536,44 @@ class ChannelListWindow(BaseWindow):
 	def initTabHeader(self):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
-		#header, footer init
+		#header init
 		self.ctrlHeader1.setImage('IconHeaderTitleSmall.png')
 		#self.ctrlHeader2.setLabel('TV-Channel List')
 		self.ctrlHeader2.setLabel(m.strings(mm.LANG_TV_CHANNEL_LIST))
-
 
 		#self.ctrlLbl.setLabel( m.strings(mm.LANG_LANGUAGE) )
 		ret = xbmc.getLanguage()
 		print 'getLanguage[%s]'% ret
 		#self.ctrlBtn.setLabel(ret)
 
-
-
 		self.ctrlHeader3.setLabel('')		
 		self.ctrlHeader4.setLabel('')
 
+		#footer init
 		#self.setProperty('WindowType', 'ChannelList')
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_RECORD_MASK )
 
+		#tab header init
 		self.ctrltabHeader12.setVisible(self.flag11)
 		self.ctrltabHeader22.setVisible(self.flag21)
 		self.ctrltabHeader32.setVisible(self.flag31)
 		self.ctrltabHeader42.setVisible(self.flag41)
 
 		#sort list, This is fixed
+		self.list_AllChannel.append( 'All Channel by Number' )
+		self.list_AllChannel.append( 'All Channel by Alphabet' )
+		self.list_AllChannel.append( 'All Channel by HD/SD' )
+		print 'list_AllChannel[%s]'% self.list_AllChannel
 		testlistItems = []
-		testlistItems.append(xbmcgui.ListItem('All Channel by Number'))
-		testlistItems.append(xbmcgui.ListItem('All Channel by Alphabet'))
-		testlistItems.append(xbmcgui.ListItem('All Channel by HD/SD'))
+		for item in range(len(self.list_AllChannel)) :
+			testlistItems.append(xbmcgui.ListItem(self.list_AllChannel[item]))
+
 		self.ctrltabHeader12.addItems( testlistItems )
 
 		#satellite longitude list
-		testlistItems = []
 		self.list_Satellite = self.commander.satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
 		print 'satellite_GetConfiguredList[%s]'% self.list_Satellite
+		testlistItems = []
 		for item in self.list_Satellite:
 			ret = GetSelectedLongitudeString(item)
 			testlistItems.append(xbmcgui.ListItem(ret))
@@ -527,34 +591,47 @@ class ChannelListWindow(BaseWindow):
 		self.ctrltabHeader32.addItems( testlistItems )
 
 		#Favorite list
-		testlistItems = []
 		self.list_Favorite = self.commander.channel_GetFavoriteList( ElisEnum.E_TYPE_TV )
 		print 'channel_GetFavoriteList[%s]'% self.list_Favorite
+		testlistItems = []
 		for item in self.list_Favorite:
 			testlistItems.append(xbmcgui.ListItem( item[0] ))
 		
 		self.ctrltabHeader42.addItems( testlistItems )	
 
 
-		#default init value for channel_GetList()
-		self.tabHeader_serviceType     = ElisEnum.E_TYPE_TV
-		self.tabHeader_zappingMode     = ElisEnum.E_MODE_ALL
-		self.tabHeader_channelsortMode = ElisEnum.E_SORT_BY_DEFAULT
+		#get last zapping mode
+		ret = []
+		ret = self.commander.zappingmode_GetCurrent()
+		if ret != [] :
+			try:
+				self.tabHeader_zappingMode     = int(ret[0])
+				self.tabHeader_channelsortMode = int(ret[1])
+				self.tabHeader_serviceType     = int(ret[2])
+				print 'zappingmode_GetCurrent[True] ret[%s]'% ret
 
-		"""
-		#setting to tabHeader value
-		self.tabHeader_Sorting_idx        = None
-		self.tabHeader_Satellite_idx      = None
-		self.tabHeader_FtaCas_idx         = None
-		self.tabHeader_Favorite_idx       = None
-		"""
+			except Exception, e:
+				print 'zappingmode_GetCurrent Error[%s] = '% e
+				self.tabHeader_serviceType     = ElisEnum.E_TYPE_TV
+				self.tabHeader_zappingMode     = ElisEnum.E_MODE_ALL
+				self.tabHeader_channelsortMode = ElisEnum.E_SORT_BY_DEFAULT
+				print 'zappingmode_GetCurrent[False] default'
+		else :
+			#default init value for channel_GetList()
+			self.tabHeader_serviceType     = ElisEnum.E_TYPE_TV
+			self.tabHeader_zappingMode     = ElisEnum.E_MODE_ALL
+			self.tabHeader_channelsortMode = ElisEnum.E_SORT_BY_DEFAULT
+			print 'zappingmode_GetCurrent[False] default'
 
 		self.currentChannel = -1
 		self.channelList = []
-
-		#self.commander.channel_GetList( ElisEnum.E_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_DEFAULT, self.channelList )
 		self.channelList = self.commander.channel_GetList( self.tabHeader_serviceType, self.tabHeader_zappingMode, self.tabHeader_channelsortMode )
-		print 'sort[%s] channellist[%s]'% (self.tabHeader_channelsortMode, self.channelList)
+		#self.getChannelList(self.tabHeader_serviceType, self.tabHeader_zappingMode, self.tabHeader_channelsortMode, 0, 0, 0, '')
+		print 'zappingMode[%s] sortMode[%s] serviceType[%s] channellist[%s]'% \
+			( enumToString('mode', self.tabHeader_zappingMode), \
+			  enumToString('sort', self.tabHeader_channelsortMode), \
+			  enumToString('type', self.tabHeader_serviceType), \
+			  self.channelList )
 
 
 	def initChannelList(self):
@@ -592,8 +669,6 @@ class ChannelListWindow(BaseWindow):
 
 		#select item idx, print GUI of 'current / total'
 		self.ctrlSelectItem.setLabel(str('%s / %s'% (self.listcontrol.getSelectedPosition()+1, len(self.listItems))) )
-
-
 
 	def initLabelInfo(self):
 		print 'currentChannel[%s]' % self.currentChannel
@@ -646,21 +721,39 @@ class ChannelListWindow(BaseWindow):
 		if self.currentChannelInfo != []:
 			self.epgClock = self.commander.datetime_GetLocalTime()
 
+			#update channel name
 			if is_digit(self.currentChannelInfo[3]):
+				chName      = self.currentChannelInfo[2]
 				serviceType = int(self.currentChannelInfo[3])
 				ret = self.updateServiceType(serviceType)
 				if ret != None:
-					self.ctrlChannelName.setLabel( str('%s - %s'% (ret, self.currentChannelInfo[2])) )
+					self.ctrlChannelName.setLabel( str('%s - %s'% (ret, chName)) )
 
-				#update longitude info
-				longitude = self.commander.satellite_GetByChannelNumber(int(self.currentChannelInfo[0]), int(self.currentChannelInfo[3]))
+			#update longitude info
+			if is_digit(self.currentChannelInfo[3]) and is_digit(self.currentChannelInfo[0]) :
+				chNumber    = int(self.currentChannelInfo[0])
+				serviceType = int(self.currentChannelInfo[3])
+				longitude = self.commander.satellite_GetByChannelNumber(chNumber, serviceType)
 				if is_digit(longitude[0]):
 					ret = GetSelectedLongitudeString(longitude)
 					self.ctrlLongitudeInfo.setLabel(ret)
 
-				#update lock check
-				if int(self.currentChannelInfo[4]) == 1:
+			#update lock-icon visible
+			if is_digit(self.currentChannelInfo[4]) :
+				mlock = int(self.currentChannelInfo[4])
+				if mlock == 1:
 					self.ctrlLockedInfo.setVisible(True)
+
+			#update career info
+			if is_digit(self.currentChannelInfo[11]) :
+				careerType = int(self.currentChannelInfo[11])
+				if careerType == 1: #DVBS
+					ret = self.commander.channel_GetCarrierForDVBS()
+					print 'channel_GetCarrierForDVBS[%s]'% ret
+					if ret != []:
+						polariztion = enumToString( 'Polarization', int(ret[5]) )
+						careerLabel = '%s MHz, %s KS/S, %s'% (ret[2], ret[3], polariztion)
+						self.ctrlCareerInfo.setLabel(careerLabel)
 
 
 		print 'event____[%s]'% event
@@ -711,18 +804,6 @@ class ChannelListWindow(BaseWindow):
 
 
 		
-		#self.ctrlCareerInfo.setLabel()
-
-
-		#list_ = []
-		#ret = self.commander.satellite_GetConfiguredList(0, list_)
-		#ret = self.commander.satellite_GetList(0, list_)
-		#ret = self.commander.satellite_GetByChannelNumber(int(self.currentChannelInfo[0]), int(self.currentChannelInfo[3]))
-		#ret = self.commander.satelliteconfig_GetList(0, list_)
-		#ret = self.commander.satellite_Get(192, 1)
-		#print 'ret[%s] list_[%s]'% (ret, list_)
-
-
 	@run_async
 	def updateLocalTime(self):
 		print '[%s():%s]begin_start thread'% (currentframe().f_code.co_name, currentframe().f_lineno)

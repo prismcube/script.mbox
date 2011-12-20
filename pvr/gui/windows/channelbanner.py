@@ -14,7 +14,7 @@ from elisaction import ElisAction
 from elisenum import ElisEnum
 
 #from threading import Thread
-from pvr.util import run_async, is_digit, Mutex, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString #, synchronized, sync_instance
+from pvr.util import run_async, is_digit, Mutex, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString, enumToString #, synchronized, sync_instance
 import thread
 
 #debug log
@@ -112,8 +112,22 @@ class ChannelBanner(BaseWindow):
 		self.untilThread = True
 		#self.updateLocalTime()
 
-		#get epg event right now, as this windows open
 
+		#get last zapping mode
+		ret = []
+		ret = self.commander.zappingmode_GetCurrent()
+		print 'zappingmode_GetCurrent[%s]'% ret
+		try:
+			print 'zappingMode[%s] sortMode[%s] serviceType[%s]'% \
+				(enumToString('mode', int(ret[0]) ), \
+				 enumToString('sort', int(ret[1]) ), \
+				 enumToString('type', int(ret[2]) ))
+
+		except Exception, e:
+			print 'zappingmode_GetCurrent Error[%s]'% e
+
+		
+		#get epg event right now, as this windows open
 		ret = []
 		ret=self.commander.epgevent_GetPresent()
 		if ret != []:
@@ -289,42 +303,50 @@ class ChannelBanner(BaseWindow):
 			priv_ch = self.commander.channel_GetPrev()
 			print 'priv_ch[%s]' % priv_ch
 
-			channelNumber = priv_ch[0]
-			channelType = priv_ch[3]
-			if is_digit(channelNumber):
-				ret = self.commander.channel_SetCurrent( int(channelNumber) , int(channelType))
-				self.lastChannel = self.currentChannel
+			try:
+				channelNumber = priv_ch[0]
+				channelType = priv_ch[3]
+				if is_digit(channelNumber):
+					ret = self.commander.channel_SetCurrent( int(channelNumber) , int(channelType))
+					self.lastChannel = self.currentChannel
 
-				if ret[0].upper() == 'TRUE' :
-					self.currentChannel = self.commander.channel_GetCurrent()
-					self.initLabelInfo()
+					if ret[0].upper() == 'TRUE' :
+						self.currentChannel = self.commander.channel_GetCurrent()
+						self.initLabelInfo()
 
-			else:
-				print 'No Channel priv_ch[%s]'% priv_ch
+				else:
+					print 'No Channel priv_ch[%s]'% priv_ch
 
-			if is_digit(priv_ch[3]):
-				self.updateServiceType(int(priv_ch[3]))
+				if is_digit(priv_ch[3]):
+					self.updateServiceType(int(priv_ch[3]))
+
+			except Exception, e:
+				print 'channel_GetPrev Error[%s]'% e
 
 		elif actionID == Action.ACTION_PAGE_DOWN:
 			print 'onAction():ACTION_NEXT_ITEM control %d' % actionID
 			next_ch = self.commander.channel_GetNext()
 			print 'next_ch[%s]' % next_ch
 
-			channelNumber = next_ch[0]
-			channelType = next_ch[3]
-			if is_digit(channelNumber):
-				ret = self.commander.channel_SetCurrent( int(channelNumber), int(channelType) )
-				self.lastChannel = self.currentChannel
+			try:
+				channelNumber = next_ch[0]
+				channelType = next_ch[3]
+				if is_digit(channelNumber):
+					ret = self.commander.channel_SetCurrent( int(channelNumber), int(channelType) )
+					self.lastChannel = self.currentChannel
 
-				if ret[0].upper() == 'TRUE' :
-					self.currentChannel = self.commander.channel_GetCurrent()
-					self.initLabelInfo()
+					if ret[0].upper() == 'TRUE' :
+						self.currentChannel = self.commander.channel_GetCurrent()
+						self.initLabelInfo()
 
-			else:
-				print 'No Channel next_ch[%s]'% next_ch
+				else:
+					print 'No Channel next_ch[%s]'% next_ch
 
-			if is_digit(next_ch[3]):
-				self.updateServiceType(int(next_ch[3]))
+				if is_digit(next_ch[3]):
+					self.updateServiceType(int(next_ch[3]))
+
+			except Exception, e:
+				print 'channel_GetNext Error[%s]'% e
 
 		elif actionID == Action.ACTION_MOVE_LEFT:
 			#epg priv

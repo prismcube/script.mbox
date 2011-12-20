@@ -326,3 +326,53 @@ def GetSelectedLongitudeString(longitude_str):
 	print ret
 	return ret
 
+def enumToString(type, value):
+	from elisenum import ElisEnum
+
+	ret = ''
+	if type == 'type' :
+		if value == ElisEnum.E_TYPE_TV :
+			ret = 'tv'
+		elif value == ElisEnum.E_TYPE_RADIO :
+			ret = 'radio'
+		elif value == ElisEnum.E_TYPE_DATA :
+			ret = 'data'
+		elif value == ElisEnum.E_TYPE_INVALID :
+			ret = 'type_invalid'
+
+	elif type == 'mode' :
+		if value == ElisEnum.E_MODE_ALL :
+			ret = 'ALL Channels'
+		elif value == ElisEnum.E_MODE_FAVORITE :
+			ret = 'favorite'
+		elif value == ElisEnum.E_MODE_NETWORK :
+			ret = 'network'
+		elif value == ElisEnum.E_MODE_SATELLITE :
+			ret = 'satellite'
+		elif value == ElisEnum.E_MODE_CAS :
+			ret = 'fta/cas'
+
+	elif type == 'sort' :
+		if value == ElisEnum.E_SORT_BY_DEFAULT :
+			ret = 'default'
+		elif value == ElisEnum.E_SORT_BY_ALPHABET :
+			ret = 'alphabet'
+		elif value == ElisEnum.E_SORT_BY_CARRIER :
+			ret = 'carrier'
+		elif value == ElisEnum.E_SORT_BY_NUMBER :
+			ret = 'number'
+		elif value == ElisEnum.E_SORT_BY_HD :
+			ret = 'hd'
+
+	elif type == 'Polarization' :
+		if value == ElisEnum.E_LNB_HORIZONTAL :
+			ret = 'Horz'
+		elif value == ElisEnum.E_LNB_VERTICAL :
+			ret = 'Vert'
+		elif value == ElisEnum.E_LNB_LEFT :
+			ret = 'Left'
+		elif value == ElisEnum.E_LNB_RIGHT :
+			ret = 'Righ'
+
+	return ret.upper()
+
