@@ -24,8 +24,8 @@ class MotorizeConfiguration( SettingWindow ):
 		self.addLeftLabelButtonControl( E_Input03, 'Reference Position to Null', None )
 		self.addLeftLabelButtonControl( E_Input04, 'Configure Satellites', None)
 
-		self.tunerIndex = configmgr.getInstance( ).getCurrentTunerIndex( ) + 1
-		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'USALS configuration : Tuner %s' % ( self.tunerIndex ) )
+		self.tunerIndex = configmgr.getInstance( ).getCurrentTunerIndex( )
+		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'USALS configuration : Tuner %s' % ( self.tunerIndex + 1 ) )
 
 		visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]
 		hideControlIds = [ E_Input05, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]

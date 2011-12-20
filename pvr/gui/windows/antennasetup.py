@@ -16,6 +16,8 @@ from elisenum import ElisEnum
 
 from pvr.gui.windows.satelliteconfigsimple import SatelliteConfigSimple
 from pvr.gui.windows.motorizeconfiguration import MotorizeConfiguration
+from pvr.gui.windows.onecableconfiguration import OneCableConfiguration
+
 E_MAIN_GROUP_ID	= 9000
 
 class AntennaSetup( SettingWindow ):
@@ -123,8 +125,13 @@ class AntennaSetup( SettingWindow ):
 				scriptDir = pvr.platform.getPlatform().getScriptDir()
 				MotorizeConfiguration('satelliteconfiguration.xml', scriptDir).doModal()
 
-			elif self.getSelectedIndex( E_SpinEx03 ) == E_MOTORIZED_1_2 :
-				pass
+			elif self.getSelectedIndex( E_SpinEx03 ) == E_ONE_CABLE :
+			
+				self.resetAllControl( )
+				
+				import pvr.platform 
+				scriptDir = pvr.platform.getPlatform().getScriptDir()
+				OneCableConfiguration('onecableconfiguration.xml', scriptDir).doModal()
 
 			else :
 

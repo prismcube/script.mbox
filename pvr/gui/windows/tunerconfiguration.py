@@ -13,7 +13,7 @@ import pvr.elismgr
 from elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.windows.satelliteconfigdiseqc10 import SatelliteConfigDisEqC10
 from pvr.gui.windows.satelliteconfigdiseqc11 import SatelliteConfigDisEqC11
-from pvr.gui.windows.satelliteconfigonecable import SatelliteConfigOneCable
+from pvr.gui.windows.satelliteconfigmotorized12 import SatelliteConfigMotorized12
 from pvr.gui.windows.satelliteconfigmotorizedusals import SatelliteConfigMotorizedUsals
 
 
@@ -101,10 +101,10 @@ class TunerConfiguration( SettingWindow ):
 						SatelliteConfigDisEqC11('satelliteconfiguration.xml', scriptDir).doModal()
 
 					elif self.tunertype == E_ONE_CABLE :
-						SatelliteConfigOneCable('satelliteconfiguration.xml', scriptDir).doModal()
+						pass
 
 					elif self.tunertype == E_MOTORIZED_1_2 :
-						pass
+						SatelliteConfigMotorized12('satelliteconfiguration.xml', scriptDir).doModal()
 
 					elif self.tunertype == E_MOTORIZED_USALS :
 						SatelliteConfigMotorizedUsals('satelliteconfiguration.xml', scriptDir).doModal()
