@@ -23,7 +23,8 @@ def getInstance():
 		print 'lael98 check create instance'
 		__elismgr = ElisMgr()
 	else:
-		print 'lael98 check already windowmgr is created'
+		pass
+		#print 'lael98 check already windowmgr is created'
 
 	return __elismgr
 
@@ -38,7 +39,7 @@ class ElisEventHandler( EventHandler ):
 		self.bus = getInstance().getEventBus()
 		
 		while 1:
-			print 'handle --->!!!!!!!!!!!!!!!!!'
+			#print 'handle --->!!!!!!!!!!!!!!!!!'
 
 			fd_sets = select.select([self.request], [], [], 0.5 )
 			if not fd_sets[0]:
