@@ -14,7 +14,7 @@ from pvr.gui.guiconfig import *
 from elisenum import ElisEnum
 
 
-class SatelliteConfigOneCable( SettingWindow ):
+class SatelliteConfigMotorized12( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs)
 		self.commander = pvr.elismgr.getInstance().getCommander( )
