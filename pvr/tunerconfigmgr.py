@@ -161,6 +161,7 @@ class TunerConfigMgr( object ):
 				self.configuredList1.append( config )
 
 			elif self.getCurrentTunerIndex( ) == E_TUNER_2 :
+				config [E_CONFIGURE_SATELLITE_TUNER_INDEX]= "1"
 				self.configuredList2.append( config )
 
 		
