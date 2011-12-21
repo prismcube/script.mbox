@@ -26,7 +26,7 @@ class AutomaticScan( SettingWindow ):
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
 
 		self.addInputControl( E_Input01, 'Satellite', 'All', None, 'Select satellite' )
-		self.addEnumControl( E_SpinEx01, 'Network Search', 'Network Search' ) # TODO : have to be savable property
+		self.addEnumControl( E_SpinEx01, 'Network Search', None, 'Network Search' ) # TODO : have to be savable property
 		self.addLeftLabelButtonControl( E_Input02, 'Start Search', 'Start Search' )
 
 		self.initControl( )

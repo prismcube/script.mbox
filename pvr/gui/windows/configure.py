@@ -105,11 +105,11 @@ class Configure( SettingWindow ):
 		
 		if selectedId == E_LANGUAGE :
 
-			self.addEnumControl( E_SpinEx01, 'Language', None )
-			self.addEnumControl( E_SpinEx02, 'Audio Language', None )
-			self.addEnumControl( E_SpinEx03, 'Subtitle Language', None )
-			self.addEnumControl( E_SpinEx04, 'Secondary Subtitle Language', None )
-			self.addEnumControl( E_SpinEx05, 'Hearing Impaired', None )
+			self.addEnumControl( E_SpinEx01, 'Language' )
+			self.addEnumControl( E_SpinEx02, 'Audio Language' )
+			self.addEnumControl( E_SpinEx03, 'Subtitle Language' )
+			self.addEnumControl( E_SpinEx04, 'Secondary Subtitle Language' )
+			self.addEnumControl( E_SpinEx05, 'Hearing Impaired' )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 			self.setVisibleControls( visibleControlIds, True )
@@ -125,10 +125,10 @@ class Configure( SettingWindow ):
 			
 			
 		elif selectedId == E_PARENTAL :	
-			self.addEnumControl( E_SpinEx01, 'Lock Mainmenu', None )
-			self.addInputControl( E_Input01, 'New PIN code', '****', 5, None)
-			self.addInputControl( E_Input02, 'Confirmation PIN code', '****' , 5, None)
-			self.addEnumControl( E_SpinEx02, 'Age Restricted', None )
+			self.addEnumControl( E_SpinEx01, 'Lock Mainmenu' )
+			self.addInputControl( E_Input01, 'New PIN code', '****', 5 )
+			self.addInputControl( E_Input02, 'Confirmation PIN code', '****' , 5 )
+			self.addEnumControl( E_SpinEx02, 'Age Restricted' )
 			
 
 			visibleControlIds = [ E_SpinEx01, E_Input01, E_Input02, E_SpinEx02 ]
@@ -145,10 +145,10 @@ class Configure( SettingWindow ):
 
 		elif selectedId == E_RECORDING_OPTION :
 
-			self.addEnumControl( E_SpinEx01, 'Automatic Timeshift', None )
-			self.addEnumControl( E_SpinEx02, 'Default Rec Duration', None )
-			self.addEnumControl( E_SpinEx03, 'Pre-Rec Time', None )
-			self.addEnumControl( E_SpinEx04, 'Post-Rec Time', None )
+			self.addEnumControl( E_SpinEx01, 'Automatic Timeshift' )
+			self.addEnumControl( E_SpinEx02, 'Default Rec Duration' )
+			self.addEnumControl( E_SpinEx03, 'Pre-Rec Time' )
+			self.addEnumControl( E_SpinEx04, 'Post-Rec Time' )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
 			self.setVisibleControls( visibleControlIds, True )
@@ -163,9 +163,9 @@ class Configure( SettingWindow ):
 
 			
 		elif selectedId == E_AUDIO_SETTING :
-			self.addEnumControl( E_SpinEx01, 'Audio Dolby', None )
-			self.addEnumControl( E_SpinEx02, 'Audio HDMI', None )
-			self.addEnumControl( E_SpinEx03, 'Audio Delay', None )
+			self.addEnumControl( E_SpinEx01, 'Audio Dolby' )
+			self.addEnumControl( E_SpinEx02, 'Audio HDMI' )
+			self.addEnumControl( E_SpinEx03, 'Audio Delay' )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
 			self.setEnableControls( visibleControlIds, True )
@@ -180,10 +180,10 @@ class Configure( SettingWindow ):
 
 	
 		elif selectedId == E_SCART_SETTING :
-			self.addEnumControl( E_SpinEx01, 'TV Aspect', None )
-			self.addEnumControl( E_SpinEx02, 'Picture 16:9', None )
-			self.addEnumControl( E_SpinEx03, 'Scart TV', None )
-			self.addEnumControl( E_SpinEx04, 'TV System', None )	
+			self.addEnumControl( E_SpinEx01, 'TV Aspect' )
+			self.addEnumControl( E_SpinEx02, 'Picture 16:9' )
+			self.addEnumControl( E_SpinEx03, 'Scart TV' )
+			self.addEnumControl( E_SpinEx04, 'TV System' )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
 			self.setVisibleControls( visibleControlIds, True )
@@ -198,10 +198,10 @@ class Configure( SettingWindow ):
 			
 
 		elif selectedId == E_HDMI_SETTING :
-			self.addEnumControl( E_SpinEx01, 'HDMI Format', None )
-			self.addEnumControl( E_SpinEx02, 'Show 4:3', None )
-			self.addEnumControl( E_SpinEx03, 'HDMI Color Space', None )
-			self.addEnumControl( E_SpinEx04, 'TV System', None )	
+			self.addEnumControl( E_SpinEx01, 'HDMI Format' )
+			self.addEnumControl( E_SpinEx02, 'Show 4:3' )
+			self.addEnumControl( E_SpinEx03, 'HDMI Color Space' )
+			self.addEnumControl( E_SpinEx04, 'TV System' )
 			
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
 			self.setVisibleControls( visibleControlIds, True )
@@ -216,11 +216,11 @@ class Configure( SettingWindow ):
 
 		
 		elif selectedId == E_IP_SETTING :	
-			self.addEnumControl( E_SpinEx01, 'DHCP', None )
-			self.addInputControl( E_Input01, 'IP Address', '192.168.101.160' , 3, None )
-			self.addInputControl( E_Input02, 'Subnet Mask', '255.255.252.0', 3, None )
-			self.addInputControl( E_Input03, 'Gateway', '192.168.100.1', 3, None )
-			self.addInputControl( E_Input04, 'DNS', '192.168.100.1', 3, None )
+			self.addEnumControl( E_SpinEx01, 'DHCP' )
+			self.addInputControl( E_Input01, 'IP Address', '192.168.101.160' , 3 )
+			self.addInputControl( E_Input02, 'Subnet Mask', '255.255.252.0', 3 )
+			self.addInputControl( E_Input03, 'Gateway', '192.168.100.1', 3 )
+			self.addInputControl( E_Input04, 'DNS', '192.168.100.1', 3 )
 
 			visibleControlIds = [ E_SpinEx01, E_Input01, E_Input02, E_Input03, E_Input04 ]
 			self.setVisibleControls( visibleControlIds, True )
@@ -236,8 +236,8 @@ class Configure( SettingWindow ):
 			
 
 		elif selectedId == E_FORMAT_HDD :	
-			self.addEnumControl( E_SpinEx01, 'Disk Format Type', None )
-			self.addLeftLabelButtonControl( E_Input01, 'Start HDD Format', None )
+			self.addEnumControl( E_SpinEx01, 'Disk Format Type' )
+			self.addLeftLabelButtonControl( E_Input01, 'Start HDD Format' )
 			
 			visibleControlIds = [ E_SpinEx01, E_Input01 ]
 			self.setVisibleControls( visibleControlIds, True )
@@ -252,12 +252,12 @@ class Configure( SettingWindow ):
 			
 
 		elif selectedId == E_FACTORY_RESET :	
-			self.addEnumControl( E_SpinEx01, 'Reset Channel List', None )
-			self.addEnumControl( E_SpinEx02, 'Reset Favorite Add-ons', None )
-			self.addEnumControl( E_SpinEx03, 'Reset Configure Setting', None )
+			self.addEnumControl( E_SpinEx01, 'Reset Channel List' )
+			self.addEnumControl( E_SpinEx02, 'Reset Favorite Add-ons' )
+			self.addEnumControl( E_SpinEx03, 'Reset Configure Setting' )
 		
 			
-			self.addLeftLabelButtonControl( E_Input01, 'Start Reset', None )
+			self.addLeftLabelButtonControl( E_Input01, 'Start Reset' )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01 ]
 			self.setVisibleControls( visibleControlIds, True )
@@ -272,8 +272,8 @@ class Configure( SettingWindow ):
 			
 
 		elif selectedId == E_ETC :	
-			self.addEnumControl( E_SpinEx01, 'Channel Banner Duration', None )	#	Erase channel list yes/no
-			self.addEnumControl( E_SpinEx02, 'Playback Banner Duration', None )	#	Erase custom menu yes/no
+			self.addEnumControl( E_SpinEx01, 'Channel Banner Duration' )	#	Erase channel list yes/no
+			self.addEnumControl( E_SpinEx02, 'Playback Banner Duration' )	#	Erase custom menu yes/no
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02 ]
 			self.setVisibleControls( visibleControlIds, True )

@@ -7,6 +7,7 @@ from decorator import decorator
 from elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import *
 import pvr.elismgr
+import pvr.gui.dialogmgr
 
 class Action(object):
 	ACTION_NONE					= 0
@@ -168,18 +169,38 @@ class SettingWindow( BaseWindow ):
 		del self.controlList[:]
 
 
-	def addEnumControl( self, controlId, propName, description ):
+	def getControlIdToListIndex( self, controlId ) :
+		count = len( self.controlList )
+		for i in range( count ) :
+			if controlId == self.controlList[i].controlId :
+				return i
+
+		print 'Unkown ControlId'
+
+
+	def getListIndextoControlId( self, listindex ) :
+		return self.controlList[listindex].controlId
+
+
+	def getControlListSize( self ) :
+		return len( self.controlList )
+
+
+	def addEnumControl( self, controlId, propName, titleLabel=None, description=None ):
 		property = ElisPropertyEnum( propName, self.commander )
 		listItems = []
 
 		for i in range( property.getIndexCount() ):
-			listItem = xbmcgui.ListItem( property.getName(), property.getPropStringByIndex( i ), "-", "-", "-" )
+			if titleLabel == None :
+				listItem = xbmcgui.ListItem( property.getName(), property.getPropStringByIndex( i ), "-", "-", "-" )
+			else :
+				listItem = xbmcgui.ListItem( titleLabel, property.getPropStringByIndex( i ), "-", "-", "-" )
 			listItems.append( listItem )
 
 		self.controlList.append( ControlItem( ControlItem.E_SETTING_ENUM_CONTROL, controlId, property, listItems, None, description ) )
 
 	
-	def addUserEnumControl( self, controlId, titleLabel, inputType, selectItem, description ):	
+	def addUserEnumControl( self, controlId, titleLabel, inputType, selectItem, description=None ):	
 		listItems = []
 
 		for i in range( len( inputType ) ):
@@ -187,13 +208,13 @@ class SettingWindow( BaseWindow ):
 			listItems.append( listItem )
 		self.controlList.append( ControlItem( ControlItem.E_SETTING_USER_ENUM_CONTROL, controlId, None, listItems, int( selectItem ), description ) )
 
-	def addInputControl( self, controlId , titleLabel, inputLabel, inputType, description ):
+	def addInputControl( self, controlId , titleLabel, inputLabel, inputType=None, description=None ):
 		listItems = []
 		listItem = xbmcgui.ListItem( titleLabel, inputLabel, "-", "-", "-" )
 		listItems.append( listItem )
 		self.controlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, controlId, inputType, listItems, None, description ) )
 
-	def addLeftLabelButtonControl( self, controlId, inputString, description ):
+	def addLeftLabelButtonControl( self, controlId, inputString, description=None ):
 		listItems = []
 		listItem = xbmcgui.ListItem( inputString, '', "-", "-", "-" )
 		listItems.append( listItem )
@@ -205,6 +226,8 @@ class SettingWindow( BaseWindow ):
 		for i in range( count ) :
 			ctrlItem = self.controlList[i]		
 			if self.hasControlItem( ctrlItem, controlId ) :
+				if ctrlItem.description == None :
+					return False
 				self.getControl( E_SETTING_DESCRIPTION ).setLabel( ctrlItem.description )
 		return False
 
@@ -235,13 +258,22 @@ class SettingWindow( BaseWindow ):
 				#ctrlItem.listItems[0] = xbmcgui.ListItem( ctrlItem.listItems[0].getLabel( ), ctrlItem.listItems[0].getLabel2( ), "-", "-", "-" )
 			return True
 
-		elif ( keyType == 5 ) :
+		elif( keyType == 5 ) :
 			kb = xbmc.Keyboard( ctrlItem.listItems[0].getLabel2( ), ctrlItem.listItems[0].getLabel( ), True )
 			kb.doModal( )
 			if( kb.isConfirmed( ) ) :
 				ctrlItem.listItems[0].setLabel2( kb.getText( ) )
 				#ctrlItem.listItems[0] = xbmcgui.ListItem( ctrlItem.listItems[0].getLabel( ), ctrlItem.listItems[0].getLabel2( ), "-", "-", "-" )
 			return True
+
+		elif ( keyType == 0 ) :
+			dialog = pvr.gui.dialogmgr.getInstance().getDialog( pvr.gui.dialogmgr.DIALOG_ID_NUMERIC )
+			dialog.setTiteLabel( ctrlItem.listItems[0].getLabel( ) )
+			dialog.setNumber( ctrlItem.listItems[0].getLabel2( ) )
+			dialog.doModal( )
+
+			if dialog.isOK() == True :
+				ctrlItem.listItems[0].setLabel2( dialog.getNumber( ) )
 		
 		else :
 			dialog = xbmcgui.Dialog( )

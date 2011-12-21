@@ -19,10 +19,10 @@ class MotorizeConfiguration( SettingWindow ):
 		self.setHeaderLabel( 'Motorize Configuration' )
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
 
-		self.addInputControl( E_Input01, 'My Longitude', '100.0 E', None, None )
-		self.addInputControl( E_Input02, 'My Latitude', '000.0 N', None, None )
-		self.addLeftLabelButtonControl( E_Input03, 'Reference Position to Null', None )
-		self.addLeftLabelButtonControl( E_Input04, 'Configure Satellites', None)
+		self.addInputControl( E_Input01, 'My Longitude', '100.0 E' )
+		self.addInputControl( E_Input02, 'My Latitude', '000.0 N' )
+		self.addLeftLabelButtonControl( E_Input03, 'Reference Position to Null' )
+		self.addLeftLabelButtonControl( E_Input04, 'Configure Satellites' )
 
 		self.tunerIndex = configmgr.getInstance( ).getCurrentTunerIndex( )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'USALS configuration : Tuner %s' % ( self.tunerIndex + 1 ) )
