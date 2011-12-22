@@ -172,21 +172,21 @@ class SatelliteConfigMotorized12( SettingWindow ):
 	def initConfig( self ) :
 		self.resetAllControl( )
 
-		self.addInputControl( E_Input01, 'Satellite' , configmgr.getInstance( ).getFormattedName( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ) ), None, None )
-		self.addUserEnumControl( E_SpinEx01, 'LNB Type', E_LIST_LNB_TYPE, self.selectedIndexLnbType, None )
+		self.addInputControl( E_Input01, 'Satellite' , configmgr.getInstance( ).getFormattedName( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ) ) )
+		self.addUserEnumControl( E_SpinEx01, 'LNB Type', E_LIST_LNB_TYPE, self.selectedIndexLnbType )
 
 
 		if( self.selectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
-			self.addUserEnumControl( E_SpinEx02, 'LNB Frequency', E_LIST_SINGLE_FREQUENCY, getSingleFrequenceIndex( self.currentSatellite[ E_CONFIGURE_SATELLITE_LOW_LNB ] ), None )
+			self.addUserEnumControl( E_SpinEx02, 'LNB Frequency', E_LIST_SINGLE_FREQUENCY, getSingleFrequenceIndex( self.currentSatellite[ E_CONFIGURE_SATELLITE_LOW_LNB ] ) )
 		else :
 			self.lnbFrequency = self.currentSatellite[E_CONFIGURE_SATELLITE_LOW_LNB] + ' / ' + self.currentSatellite[ E_CONFIGURE_SATELLITE_HIGH_LNB ] + ' / ' + self.currentSatellite[E_CONFIGURE_SATELLITE_LNB_THRESHOLD]
-			self.addInputControl( E_Input02, 'LNB Frequency', self.lnbFrequency, None, None )
+			self.addInputControl( E_Input02, 'LNB Frequency', self.lnbFrequency )
 			
-		self.addUserEnumControl( E_SpinEx03, '22KHz Control', USER_ENUM_LIST_ON_OFF, self.currentSatellite[ E_CONFIGURE_SATELLITE_FREQUENCY_LEVEL ], None )	
-		self.addInputControl( E_Input03, 'Transponder', self.transponderList[self.selectedTransponderIndex], None, None )
-		self.addLeftLabelButtonControl( E_Input04, 'Move Antenna', None )
-		self.addUserEnumControl( E_SpinEx04, 'Action', E_LIST_ONE_CABLE_ACTION, 0, None )
-		self.addLeftLabelButtonControl( E_Input05, 'Store Position and Exit', None )
+		self.addUserEnumControl( E_SpinEx03, '22KHz Control', USER_ENUM_LIST_ON_OFF, self.currentSatellite[ E_CONFIGURE_SATELLITE_FREQUENCY_LEVEL ] )	
+		self.addInputControl( E_Input03, 'Transponder', self.transponderList[self.selectedTransponderIndex] )
+		self.addLeftLabelButtonControl( E_Input04, 'Move Antenna' )
+		self.addUserEnumControl( E_SpinEx04, 'Action', E_LIST_ONE_CABLE_ACTION, 0 )
+		self.addLeftLabelButtonControl( E_Input05, 'Store Position and Exit' )
 
 		if( self.selectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input01, E_Input03, E_Input04, E_Input05 ]

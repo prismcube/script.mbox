@@ -169,21 +169,21 @@ class SatelliteConfigDisEqC10( SettingWindow ):
 	def initConfig( self ) :
 		self.resetAllControl( )
 
-		self.addInputControl( E_Input01, 'Satellite' , configmgr.getInstance( ).getFormattedName( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ) ), None, None )
-		self.addUserEnumControl( E_SpinEx01, 'LNB Type', E_LIST_LNB_TYPE, self.selectedIndexLnbType, None )
+		self.addInputControl( E_Input01, 'Satellite' , configmgr.getInstance( ).getFormattedName( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ) ) )
+		self.addUserEnumControl( E_SpinEx01, 'LNB Type', E_LIST_LNB_TYPE, self.selectedIndexLnbType )
 
 
 		if( self.selectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
-			self.addUserEnumControl( E_SpinEx02, 'LNB Frequency', E_LIST_SINGLE_FREQUENCY, getSingleFrequenceIndex( self.currentSatellite[ E_CONFIGURE_SATELLITE_LOW_LNB ] ), None )
+			self.addUserEnumControl( E_SpinEx02, 'LNB Frequency', E_LIST_SINGLE_FREQUENCY, getSingleFrequenceIndex( self.currentSatellite[ E_CONFIGURE_SATELLITE_LOW_LNB ] ) )
 		else :
 			self.lnbFrequency = self.currentSatellite[E_CONFIGURE_SATELLITE_LOW_LNB] + ' / ' + self.currentSatellite[ E_CONFIGURE_SATELLITE_HIGH_LNB ] + ' / ' + self.currentSatellite[E_CONFIGURE_SATELLITE_LNB_THRESHOLD]
-			self.addInputControl( E_Input02, 'LNB Frequency', self.lnbFrequency, None, None )
+			self.addInputControl( E_Input02, 'LNB Frequency', self.lnbFrequency )
 			
-		self.addUserEnumControl( E_SpinEx03, '22KHz Control', USER_ENUM_LIST_ON_OFF, self.currentSatellite[ E_CONFIGURE_SATELLITE_FREQUENCY_LEVEL ], None )
-		self.addUserEnumControl( E_SpinEx04, 'DiSEqC 1.0 Switch', E_LIST_DISEQC_MODE, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_MODE ], None )
-		self.addUserEnumControl( E_SpinEx05, 'DiSEqC Repeat', USER_ENUM_LIST_ON_OFF, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_REPEAT ], None )
+		self.addUserEnumControl( E_SpinEx03, '22KHz Control', USER_ENUM_LIST_ON_OFF, self.currentSatellite[ E_CONFIGURE_SATELLITE_FREQUENCY_LEVEL ] )
+		self.addUserEnumControl( E_SpinEx04, 'DiSEqC 1.0 Switch', E_LIST_DISEQC_MODE, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_MODE ] )
+		self.addUserEnumControl( E_SpinEx05, 'DiSEqC Repeat', USER_ENUM_LIST_ON_OFF, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_REPEAT ] )
 		
-		self.addInputControl( E_Input03, 'Transponder', self.transponderList[self.selectedTransponderIndex], None, None )
+		self.addInputControl( E_Input03, 'Transponder', self.transponderList[self.selectedTransponderIndex] )
 
 		if( self.selectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input03]

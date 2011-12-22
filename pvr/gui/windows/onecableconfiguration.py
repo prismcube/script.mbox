@@ -8,15 +8,14 @@ from pvr.gui.guiconfig import *
 
 from pvr.gui.basewindow import SettingWindow
 from pvr.gui.basewindow import Action
+from pvr.gui.windows.onecableconfiguration2 import OneCableConfiguration2
 
+MAX_SATELLITE_CNT = 4
 
 class OneCableConfiguration( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.tunerIndex = 0
 		self.satelliteCount = 0
-		self.satelliteDrawCount = 0
-		self.ctrlList = None
 		self.satellitelist = []
 		
 
@@ -26,11 +25,24 @@ class OneCableConfiguration( SettingWindow ):
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'OneCable configuration' )
 		
 		self.loadConfigedSatellite( )
-		self.satelliteDrawCount = self.satelliteCount
-		self.initConfig( )
-		self.getControl( E_SpinEx01 + 3 ).selectItem( self.satelliteDrawCount - 1 )
+
+		self.addLeftLabelButtonControl( E_Input01, 'Configure System' )
 		
+		listitem = []
+		for i in range( self.satelliteCount ) :
+			listitem.append( '%d' % ( i + 1 ) )
+
+		self.addUserEnumControl( E_SpinEx01, 'Number of Satellite', listitem, 0 )
+
+		startId = E_Input02
+		for i in range( MAX_SATELLITE_CNT ) :
+			self.addInputControl( startId, 'Satellite %d' % ( i + 1 ), self.satellitelist[i] )
+			startId += 100
 		
+		self.initControl( )
+		self.getControl( E_SpinEx01 + 3 ).selectItem( self.satelliteCount - 1 )
+		self.disableControl( )
+				
 	def onAction( self, action ):
 
 		actionId = action.getId( )
@@ -61,49 +73,38 @@ class OneCableConfiguration( SettingWindow ):
 	def onClick( self, controlId ):
 		groupId = self.getGroupId( controlId )
 
-		if groupId == E_SpinEx01 :
-			self.satelliteDrawCount = self.getSelectedIndex( E_SpinEx01 ) + 1
+		if groupId == E_Input01 :
 			self.resetAllControl( )
-			#self.initConfig( )
+			import pvr.platform 
+			scriptDir = pvr.platform.getPlatform().getScriptDir()
+			OneCableConfiguration2('onecableconfiguration2.xml', scriptDir).doModal()
+		
+		elif groupId == E_SpinEx01 :
+			self.disableControl( )
 			
 			
 	def onFocus( self, controlId ):
 		pass
 
 
-	def initConfig( self ):
-		self.addLeftLabelButtonControl( E_Input01, 'Configure System', None )
-		
-		listitem = []
-		for i in range( self.satelliteCount ) :
-			listitem.append( '%d' % ( i + 1 ) )
-
-		self.addUserEnumControl( E_SpinEx01, 'Number of Satellite', listitem, 0, None )
-
-		startId = E_Input02
-		for i in range( self.satelliteDrawCount ) :
-			self.addInputControl( startId, 'Satellite %d' % ( i + 1 ), self.satellitelist[i], None, None )
-			startId += 100
-		
-		hideControlIds = []
-		while( startId >= 0 ) :
-			hideControlIds.append( startId )
-			if( startId == E_Input05 ) :
-				break
-			startId += 100
-		self.setVisibleControls( hideControlIds, False )
+	def disableControl( self ): 
+		for i in range( MAX_SATELLITE_CNT ) :
+			if ( self.getSelectedIndex( E_SpinEx01 ) + 1 ) > i :
+				self.setEnableControl( self.getListIndextoControlId( 2 + i ), True )
+				self.setVisibleControl( self.getListIndextoControlId( 2 + i ), True )
+			else :
+				self.setEnableControl( self.getListIndextoControlId( 2 + i ), False )
+				self.setVisibleControl( self.getListIndextoControlId( 2 + i ), False ) 
 		
 		
-		self.initControl( )
-		
-
 	def loadConfigedSatellite( self ):
 		configuredList = []
-		tmp = 0
 
 		configuredList = configmgr.getInstance( ).getConfiguredSatelliteList( )
 		self.satelliteCount = len( configuredList )
 
-		for config in configuredList :
-			tmp += 1
-			self.satellitelist.append( configmgr.getInstance( ).getFormattedName( int ( config[ 2 ] ) ) )
+		for i in range( MAX_SATELLITE_CNT ) :
+			if i < self.satelliteCount :
+				self.satellitelist.append( configmgr.getInstance( ).getFormattedName( int ( configuredList[i][2] ) ) )
+			else :
+				self.satellitelist.append( '' ) # dummy Data

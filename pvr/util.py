@@ -376,3 +376,23 @@ def enumToString(type, value):
 
 	return ret.upper()
 
+def ageLimit(cmd, agerating):
+	from elisproperty import ElisPropertyEnum
+	
+	property = ElisPropertyEnum( 'Age Limit', cmd )
+	print 'TTTTTTTTTTTTTTT[%s][%s][%s]'% ( agerating, property.getProp(), property.getPropString() )
+
+	isWatch = True
+	limit = property.getProp()
+	if limit == 0 :
+		#no limit
+		isLimit = False
+
+	else:
+		if limit <= agerating :
+			#limitted
+			isLimit = True
+		else:
+			isLimit = False
+
+	return isLimit

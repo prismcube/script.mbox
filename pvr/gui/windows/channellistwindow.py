@@ -5,9 +5,11 @@ import sys
 import pvr.gui.windowmgr as winmgr
 from pvr.gui.basewindow import BaseWindow, setWindowBusy
 from pvr.gui.basewindow import Action
+from pvr.gui.basedialog import BaseDialog
 from elisenum import ElisEnum
 from inspect import currentframe
 from pvr.util import catchall, is_digit, run_async, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString, enumToString
+import pvr.util as util
 import pvr.elismgr
 from elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import FooterMask
@@ -39,6 +41,8 @@ class ChannelListWindow(BaseWindow):
 		self.flag41 = False
 
 		self.execute_OnlyOne = True
+
+		self.pincodeEnter = 0x0
 		
 	def __del__(self):
 		print '[%s():%s] destroyed ChannelBanner'% (currentframe().f_code.co_name, currentframe().f_lineno)
@@ -105,6 +109,7 @@ class ChannelListWindow(BaseWindow):
 			#etc
 			self.listEnableFlag = False
 
+
 		#initialize get channel list
 		self.initTabHeader()
 
@@ -120,23 +125,24 @@ class ChannelListWindow(BaseWindow):
 
 		self.initLabelInfo()
 
+
 		#run thread
-		#elf.untilThread = True
-		#self.updateLocalTime()
+		self.untilThread = True
+		self.updateLocalTime()
+
 
 		#get epg event right now
-		"""
 		ret = []
 		ret=self.commander.epgevent_GetPresent()
 		if ret != []:
 			ret=['epgevent_GetPresent'] + ret
 			self.updateLabelInfo(ret)
 		print 'epgevent_GetPresent[%s]'% ret
-		"""
+
+
 
 		channelInfo = self.commander.channel_GetCurrent()
 		self.currentChannel = int ( channelInfo[0] )
-
 
 	def onAction(self, action):
 
@@ -232,27 +238,28 @@ class ChannelListWindow(BaseWindow):
 	def onClick(self, controlId):
 		print "ChannelListWindow onclick(): control %d" % controlId	
 		if controlId == self.listcontrol.getId() :
+
 			label = self.listcontrol.getSelectedItem().getLabel()
 			channelNumbr = int(label[:4])
 			ret = self.commander.channel_SetCurrent( channelNumbr, self.tabHeader_serviceType)
 
 			if ret[0].upper() == 'TRUE' :
-				if self.currentChannel == channelNumbr :
-					self.untilThread = False
-					self.updateLocalTime().join()
+				if self.pincodeEnter == 0x00 :
+					if self.currentChannel == channelNumbr :
+						self.untilThread = False
+						self.updateLocalTime().join()
 
-					winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )
+						winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )
 
-				else :
-					winmgr.getInstance().getWindow(winmgr.WIN_ID_CHANNEL_BANNER).setLastChannel( self.currentChannel )
-
+					else :
+						winmgr.getInstance().getWindow(winmgr.WIN_ID_CHANNEL_BANNER).setLastChannel( self.currentChannel )
 
 				self.currentChannel = channelNumbr
 				self.currentChannelInfo = self.commander.channel_GetCurrent()
 
+
 			self.ctrlSelectItem.setLabel(str('%s / %s'% (self.listcontrol.getSelectedPosition()+1, len(self.listItems))) )
 			self.initLabelInfo()
-
 
 		elif controlId == self.ctrltabHeader11.getId() or \
 			 controlId == self.ctrltabHeader21.getId() or \
@@ -285,7 +292,7 @@ class ChannelListWindow(BaseWindow):
 			self.updateLabelInfo(event)
 		else:
 			print 'show screen is another windows page[%s]'% xbmcgui.getCurrentWindowId()
-		
+
 
 	def tabHeaderAction(self, focusId, action):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
@@ -424,9 +431,11 @@ class ChannelListWindow(BaseWindow):
 				self.tabHeader_zappingMode     = ElisEnum.E_MODE_ALL
 				self.tabHeader_channelsortMode = sortingMode
 
-				item = self.list_Satellite[idx_Sorting]
 				self.getChannelList( self.tabHeader_serviceType, self.tabHeader_zappingMode, sortingMode, 0, 0, 0, '' )
-				print 'cmd[channel_GetList] sort[%s] ch_list[%s]'% (self.tabHeader_channelsortMode, self.channelList)
+
+				idx_AllChannel = self.ctrltabHeader12.getSelectedPosition()
+				item = self.list_AllChannel[idx_AllChannel]
+				print 'cmd[channel_GetList] idx_AllChannel[%s] sort[%s] ch_list[%s]'% (idx_AllChannel, self.tabHeader_channelsortMode, self.channelList)
 
 			elif focusId == self.ctrltabHeader22.getId():
 				self.tabHeader_zappingMode = ElisEnum.E_MODE_SATELLITE
@@ -461,8 +470,9 @@ class ChannelListWindow(BaseWindow):
 				else :
 					caid = ElisEnum.E_OTHERS
 
-				item = self.list_CasList[idx_FtaCas]
 				self.getChannelList( self.tabHeader_serviceType, self.tabHeader_zappingMode, self.tabHeader_channelsortMode, 0, 0, caid, '' )
+
+				item = self.list_CasList[idx_FtaCas]
 				print 'cmd[channel_GetListByFTACas] idx_FtaCas[%s] list_CasList[%s] ch_list[%s]'% ( idx_FtaCas, item, self.channelList )
 
 			elif focusId == self.ctrltabHeader42.getId():
@@ -560,6 +570,7 @@ class ChannelListWindow(BaseWindow):
 		self.ctrltabHeader42.setVisible(self.flag41)
 
 		#sort list, This is fixed
+		self.list_AllChannel = []
 		self.list_AllChannel.append( 'All Channel by Number' )
 		self.list_AllChannel.append( 'All Channel by Alphabet' )
 		self.list_AllChannel.append( 'All Channel by HD/SD' )
@@ -679,6 +690,7 @@ class ChannelListWindow(BaseWindow):
 			self.ctrlProgress.setVisible(False)
 			self.progress_idx = 0.0
 			self.progress_max = 0.0
+			self.pincodeEnter = 0x0
 
 			self.ctrlSelectItem.setLabel(str('%s / %s'% (self.listcontrol.getSelectedPosition()+1, len(self.listItems))) )
 			self.ctrlChannelName.setLabel('')
@@ -743,17 +755,33 @@ class ChannelListWindow(BaseWindow):
 				mlock = int(self.currentChannelInfo[4])
 				if mlock == 1:
 					self.ctrlLockedInfo.setVisible(True)
+					self.pincodeEnter |= 0x01
 
 			#update career info
 			if is_digit(self.currentChannelInfo[11]) :
 				careerType = int(self.currentChannelInfo[11])
-				if careerType == 1: #DVBS
+				if careerType == ElisEnum.E_CARRIER_TYPE_DVBS:
 					ret = self.commander.channel_GetCarrierForDVBS()
 					print 'channel_GetCarrierForDVBS[%s]'% ret
 					if ret != []:
 						polariztion = enumToString( 'Polarization', int(ret[5]) )
 						careerLabel = '%s MHz, %s KS/S, %s'% (ret[2], ret[3], polariztion)
 						self.ctrlCareerInfo.setLabel(careerLabel)
+
+				elif careerType == ElisEnum.E_CARRIER_TYPE_DVBT:
+					pass
+				elif careerType == ElisEnum.E_CARRIER_TYPE_DVBC:
+					pass
+				elif careerType == ElisEnum.E_CARRIER_TYPE_INVALID:
+					pass
+				
+			"""
+			#is cas?
+			if int(self.currentChannelInfo[5]) == 1:
+				#scrambled
+				self.pincodeEnter |= 0x01
+			"""
+
 
 
 		print 'event____[%s]'% event
@@ -799,9 +827,24 @@ class ChannelListWindow(BaseWindow):
 				self.ctrlServiceTypeImg2.setImage('')
 				self.ctrlServiceTypeImg3.setImage('')
 
+
+			#is Age? agerating check
+			if is_digit(event[21]) :
+				agerating = int(event[21])
+				isLimit = util.ageLimit(self.commander, agerating)
+				if isLimit == True :
+					self.pincodeEnter |= 0x01
+					print 'AgeLimit[%s]'% isLimit
+
 		else:
 			print 'event null'
 
+
+		#popup pin-code dialog
+		if self.pincodeEnter > 0 :
+			msg1 = 'Enter PIN Code'
+			msg2 = 'Current PIN Code'
+			xbmcgui.Dialog().ok(msg1, msg2)
 
 		
 	@run_async
@@ -810,11 +853,11 @@ class ChannelListWindow(BaseWindow):
 
 		nowTime = time.time()
 		while self.untilThread:
-			print '[%s():%s]repeat <<<<'% (currentframe().f_code.co_name, currentframe().f_lineno)
+			#print '[%s():%s]repeat <<<<'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 			#progress
 			if self.progress_max > 0:
-				print 'progress_idx[%s] getPercent[%s]' % (self.progress_idx, self.ctrlProgress.getPercent())
+				#print 'progress_idx[%s] getPercent[%s]' % (self.progress_idx, self.ctrlProgress.getPercent())
 
 				self.ctrlProgress.setPercent(self.progress_idx)
 
@@ -822,7 +865,8 @@ class ChannelListWindow(BaseWindow):
 				if self.progress_idx > 100:
 					self.progress_idx = 100
 			else:
-				print 'value error progress_max[%s]' % self.progress_max
+				pass
+				#print 'value error progress_max[%s]' % self.progress_max
 
 
 			#local clock
@@ -832,7 +876,8 @@ class ChannelListWindow(BaseWindow):
 				self.ctrlHeader4.setLabel(ret[1])
 
 			else:
-				print 'value error epgClock[%s]' % ret
+				pass
+				#print 'value error epgClock[%s]' % ret
 
 			time.sleep(1)
 

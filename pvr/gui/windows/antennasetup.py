@@ -44,11 +44,11 @@ class AntennaSetup( SettingWindow ):
 		self.setHeaderLabel( 'Antenna & Satellite Setup' )
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
 
-		self.addEnumControl( E_SpinEx01, 'Tuner2 Connect Type' , 'Select tuner 2 connection type.' )
-		self.addEnumControl( E_SpinEx02, 'Tuner2 Signal Config', 'Select tuner 2 configuration.' )
-		self.addEnumControl( E_SpinEx03, 'Tuner1 Type', 'Setup tuner 1.' )
+		self.addEnumControl( E_SpinEx01, 'Tuner2 Connect Type', None, 'Select tuner 2 connection type.' )
+		self.addEnumControl( E_SpinEx02, 'Tuner2 Signal Config', None, 'Select tuner 2 configuration.' )
+		self.addEnumControl( E_SpinEx03, 'Tuner1 Type', None, 'Setup tuner 1.' )
 		self.addLeftLabelButtonControl( E_Input01, ' - Tuner 1 Configuration', 'Go to Tuner 1 Configure.' )
-		self.addEnumControl( E_SpinEx04, 'Tuner2 Type', 'Setup tuner 2.' )
+		self.addEnumControl( E_SpinEx04, 'Tuner2 Type', None, 'Setup tuner 2.' )
 		self.addLeftLabelButtonControl( E_Input02, ' - Tuner 2 Configuration', 'Go to Tuner 2 Configure.' )
 
 		self.initControl( )
