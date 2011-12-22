@@ -110,9 +110,9 @@ class ChannelBanner(BaseWindow):
 
 		#run thread
 		self.untilThread = True
-		#self.updateLocalTime()
+		self.updateLocalTime()
 
-
+		"""
 		#get last zapping mode
 		ret = []
 		ret = self.commander.zappingmode_GetCurrent()
@@ -125,6 +125,7 @@ class ChannelBanner(BaseWindow):
 
 		except Exception, e:
 			print 'zappingmode_GetCurrent Error[%s]'% e
+		"""
 
 		
 		#get epg event right now, as this windows open
@@ -287,7 +288,7 @@ class ChannelBanner(BaseWindow):
 		self.eventCopy = event
 
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		#print 'eventCopy[%s]'% self.eventCopy
+		print 'eventCopy[%s]'% self.eventCopy
 
 		if xbmcgui.getCurrentWindowId() == self.win :
 			self.updateONEvent(self.eventCopy)
@@ -437,7 +438,7 @@ class ChannelBanner(BaseWindow):
 
 			#progress
 			if self.progress_max > 0:
-				print 'progress_idx[%s] getPercent[%s]' % (self.progress_idx, self.ctrlProgress.getPercent())
+				#print 'progress_idx[%s] getPercent[%s]' % (self.progress_idx, self.ctrlProgress.getPercent())
 
 				self.ctrlProgress.setPercent(self.progress_idx)
 
@@ -445,10 +446,11 @@ class ChannelBanner(BaseWindow):
 				if self.progress_idx > 100:
 					self.progress_idx = 100
 			else:
-				print 'value error progress_max[%s]' % self.progress_max
+				pass
+				#print 'value error progress_max[%s]' % self.progress_max
 
 
-			print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+			#print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 			#local clock
 			if is_digit(self.epgClock[0]):
@@ -456,7 +458,8 @@ class ChannelBanner(BaseWindow):
 				self.ctrlEventClock.setLabel(ret[0])
 
 			else:
-				print 'value error epgClock[%s]' % ret
+				pass
+				#print 'value error epgClock[%s]' % ret
 			
 			time.sleep(1)
 
