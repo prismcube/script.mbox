@@ -28,17 +28,11 @@ class ChannelListWindow(BaseWindow):
 		self.eventBus = pvr.elismgr.getInstance().getEventBus()
 		self.eventBus.register( self )
 
-		#tabHeader list
+		#submenu list
 		self.list_AllChannel= []
 		self.list_Satellite = []
 		self.list_CasList   = []
 		self.list_Favorite  = []
-
-		#button flag isSelect
-		self.flag11 = False # default, first time create this modal
-		self.flag21 = False
-		self.flag31 = False
-		self.flag41 = False
 
 		self.execute_OnlyOne = True
 
@@ -56,13 +50,25 @@ class ChannelListWindow(BaseWindow):
 		if not self.win:
 			self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
 
-			self.listcontrol            = self.getControl( 50 )
-			#self.ctrlEventClock         = self.getControl( 102 )
+			#header
 			self.ctrlHeader1            = self.getControl( 3000 )
 			self.ctrlHeader2            = self.getControl( 3001 )
 			self.ctrlHeader3            = self.getControl( 3002 )
 			self.ctrlHeader4            = self.getControl( 3003 )
+
+			self.ctrlLblPath            = self.getControl( 10 )
+
+			#main menu
+			self.ctrlBtnMenu            = self.getControl( 101 )
+			self.ctrlListMainmenu       = self.getControl( 102 )
 			
+			#sub menu list
+			self.ctrlListSubmenu        = self.getControl( 202 )
+
+			#ch list
+			self.ctrlListCHList         = self.getControl( 50 )
+
+			#info
 			self.ctrlChannelName        = self.getControl( 303 )
 			self.ctrlEventName          = self.getControl( 304 )
 			self.ctrlEventTime          = self.getControl( 305 )
@@ -74,38 +80,15 @@ class ChannelListWindow(BaseWindow):
 			self.ctrlServiceTypeImg2    = self.getControl( 311 )
 			self.ctrlServiceTypeImg3    = self.getControl( 312 )
 			self.ctrlSelectItem         = self.getControl( 401 )
-
-			#tab header group		
-			self.ctrltabHeader10        = self.getControl( 210 )
-			self.ctrltabHeader20        = self.getControl( 220 )
-			self.ctrltabHeader30        = self.getControl( 230 )
-			self.ctrltabHeader40        = self.getControl( 240 )
 			
-			#tab header button
-			self.ctrltabHeader11        = self.getControl( 211 )
-			self.ctrltabHeader21        = self.getControl( 221 )
-			self.ctrltabHeader31        = self.getControl( 231 )
-			self.ctrltabHeader41        = self.getControl( 241 )
-			
-			#tab header list
-			self.ctrltabHeader12        = self.getControl( 212 )
-			self.ctrltabHeader22        = self.getControl( 222 )
-			self.ctrltabHeader32        = self.getControl( 232 )
-			self.ctrltabHeader42        = self.getControl( 242 )
-
 			#test ctrl
 			#self.ctrlLbl                = self.getControl( 9001 )
 			#self.ctrlBtn                = self.getControl( 9002 )
 
+
 			#epg stb time
 			self.ctrlHeader3.setLabel('')
 
-			#tab header button label
-			self.btnLabel_TabHeader11 = 'All Channel by Number'
-			self.btnLabel_TabHeader21 = 'Satellite'
-			self.btnLabel_TabHeader31 = 'FTA/CAS'
-			self.btnLabel_TabHeader41 = 'Favorite'
-			
 			#etc
 			self.listEnableFlag = False
 
@@ -113,11 +96,13 @@ class ChannelListWindow(BaseWindow):
 		#initialize get channel list
 		self.initTabHeader()
 
+		"""
 		#'All Channel' button click, only one when window open
 		if self.execute_OnlyOne == True:
 			self.execute_OnlyOne = False
 			self.flag11 = True
 			self.onClick(211)
+		"""
 
 
 		#self.getTabHeader()
@@ -160,9 +145,9 @@ class ChannelListWindow(BaseWindow):
 
 			self.untilThread = False
 			self.updateLocalTime().join()
+			self.ctrlListCHList.reset()
 
 			self.close( )
-			self.listcontrol.reset()
 
 		elif id == 13: #'x'
 			#pass
@@ -236,12 +221,13 @@ class ChannelListWindow(BaseWindow):
 
 
 	def onClick(self, controlId):
-		print "ChannelListWindow onclick(): control %d" % controlId	
-		if controlId == self.listcontrol.getId() :
+		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno), \
+		      'ChannelListWindow onclick(): control %d' % controlId	
+		if controlId == self.ctrlListCHList.getId() :
 
-			label = self.listcontrol.getSelectedItem().getLabel()
+			label = self.ctrlListCHList.getSelectedItem().getLabel()
 			channelNumbr = int(label[:4])
-			ret = self.commander.channel_SetCurrent( channelNumbr, self.tabHeader_serviceType)
+			ret = self.commander.channel_SetCurrent( channelNumbr, self.chlist_serviceType)
 
 			if ret[0].upper() == 'TRUE' :
 				if self.pincodeEnter == 0x00 :
@@ -258,26 +244,33 @@ class ChannelListWindow(BaseWindow):
 				self.currentChannelInfo = self.commander.channel_GetCurrent()
 
 
-			self.ctrlSelectItem.setLabel(str('%s / %s'% (self.listcontrol.getSelectedPosition()+1, len(self.listItems))) )
+			self.ctrlSelectItem.setLabel(str('%s / %s'% (self.ctrlListCHList.getSelectedPosition()+1, len(self.listItems))) )
 			self.initLabelInfo()
 
-		elif controlId == self.ctrltabHeader11.getId() or \
-			 controlId == self.ctrltabHeader21.getId() or \
-			 controlId == self.ctrltabHeader31.getId() or \
-			 controlId == self.ctrltabHeader41.getId() :
-
+		elif controlId == self.ctrlBtnMenu.getId() :
 			#list view
-			self.tabHeaderAction( controlId, 0 )
 
-		elif controlId == self.ctrltabHeader12.getId() or \
-			 controlId == self.ctrltabHeader22.getId() or \
-			 controlId == self.ctrltabHeader32.getId() or \
-			 controlId == self.ctrltabHeader42.getId() :
+			idx_menu = self.ctrlListMainmenu.getSelectedPosition()
+			print 'focus[%s] idx_main[%s]'% (controlId, idx_menu)
 
+			if idx_menu == 4 :
+				self.untilThread = False
+				self.updateLocalTime().join()
+				self.ctrlListCHList.reset()
+
+				self.close( )
+
+			else :
+				self.subManuAction( 0, idx_menu )
+
+		elif controlId == self.ctrlListSubmenu.getId() :
 			#list action
-			self.tabHeaderAction( controlId, 1 )
 
-		#elif controlId == self.ctrltabHeader41.getId():
+			idx_menu = self.chlist_zappingMode
+			print 'focus[%s] idx_sub[%s]'% (controlId, idx_menu)
+
+			self.subManuAction( 1, self.chlist_zappingMode )
+
 
 	def onFocus(self, controlId):
 		#print "onFocus(): control %d" % controlId
@@ -294,133 +287,48 @@ class ChannelListWindow(BaseWindow):
 			print 'show screen is another windows page[%s]'% xbmcgui.getCurrentWindowId()
 
 
-	def tabHeaderAction(self, focusId, action):
+	def subManuAction(self, action, idx_menu):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 		if action == 0:
-			if focusId == self.ctrltabHeader11.getId():
-				#group resize
-				self.ctrltabHeader10.setPosition(200,120)
-				self.ctrltabHeader20.setPosition(400+50,120)
-				self.ctrltabHeader30.setPosition(600+50,120)
-				self.ctrltabHeader40.setPosition(800+50,120)
+			testlistItems = []
+			if idx_menu == 0 :
+				self.chlist_zappingMode = ElisEnum.E_MODE_ALL
+				for item in range(len(self.list_AllChannel)) :
+					testlistItems.append(xbmcgui.ListItem(self.list_AllChannel[item]))
 
-				#button update label
-				self.ctrltabHeader11.setLabel(self.ctrltabHeader12.getSelectedItem().getLabel())
-				self.ctrltabHeader21.setLabel('Satellite')
-				self.ctrltabHeader31.setLabel('FTA/CAS')
-				self.ctrltabHeader41.setLabel('Favorite')
+			elif idx_menu == 1 :
+				self.chlist_zappingMode = ElisEnum.E_MODE_SATELLITE
+				for item in self.list_Satellite:
+					ret = GetSelectedLongitudeString(item)
+					testlistItems.append(xbmcgui.ListItem(ret))
 
-				self.ctrltabHeader11.setWidth(200)
-				self.ctrltabHeader21.setWidth(150)
-				self.ctrltabHeader31.setWidth(150)
-				self.ctrltabHeader41.setWidth(150)
+			elif idx_menu == 2 :
+				self.chlist_zappingMode = ElisEnum.E_MODE_CAS
+				for item in self.list_CasList:
+					ret = '%s(%s)'% (item[0], item[1])
+					testlistItems.append(xbmcgui.ListItem( ret ))
 
-				#list select on visible, else list not visible
-				if self.flag11 == False:
-					self.flag11 = True
-					self.flag21 = False
-					self.flag31 = False
-					self.flag41 = False
-				else:
-					self.flag11 = False
+			elif idx_menu == 3 :
+				self.chlist_zappingMode = ElisEnum.E_MODE_FAVORITE
+				for item in self.list_Favorite:
+					testlistItems.append(xbmcgui.ListItem( item[0] ))
 
-				self.ctrltabHeader12.setVisible(self.flag11)
-				self.ctrltabHeader22.setVisible(False)
-				self.ctrltabHeader32.setVisible(False)
-				self.ctrltabHeader42.setVisible(False)
+			if testlistItems != [] :
+				#submenu update
+				self.ctrlListSubmenu.reset()
+				self.ctrlListSubmenu.addItems( testlistItems )
 
+				#path tree, Mainmenu/Submanu
+				#label1 = self.ctrlListMainmenu.getSelectedItem().getLabel()
+				label1 = enumToString('mode', self.chlist_zappingMode)
+				self.ctrlLblPath.setLabel( label1.title() )
 
-			elif focusId == self.ctrltabHeader21.getId():
-				self.ctrltabHeader10.setPosition(200,120)
-				self.ctrltabHeader20.setPosition(400,120)
-				self.ctrltabHeader30.setPosition(600+50,120)
-				self.ctrltabHeader40.setPosition(800+50,120)
-
-				self.ctrltabHeader11.setLabel('All Channels')
-				self.ctrltabHeader21.setLabel(self.ctrltabHeader22.getSelectedItem().getLabel())
-				self.ctrltabHeader31.setLabel('FTA/CAS')
-				self.ctrltabHeader41.setLabel('Favorite')
-				self.ctrltabHeader11.setWidth(150)
-				self.ctrltabHeader21.setWidth(200)
-				self.ctrltabHeader31.setWidth(150)
-				self.ctrltabHeader41.setWidth(150)
-
-				if self.flag21 == False:
-					self.flag21 = True
-					self.flag11 = False
-					self.flag31 = False
-					self.flag41 = False
-				else:
-					self.flag21 = False
-
-				self.ctrltabHeader12.setVisible(False)
-				self.ctrltabHeader22.setVisible(self.flag21)
-				self.ctrltabHeader32.setVisible(False)
-				self.ctrltabHeader42.setVisible(False)
-
-			elif focusId == self.ctrltabHeader31.getId():
-				self.ctrltabHeader10.setPosition(200,120)
-				self.ctrltabHeader20.setPosition(400,120)
-				self.ctrltabHeader30.setPosition(600,120)
-				self.ctrltabHeader40.setPosition(800+50,120)
-
-				self.ctrltabHeader11.setLabel('All Channels')
-				self.ctrltabHeader21.setLabel('Satellite')
-				self.ctrltabHeader31.setLabel(self.ctrltabHeader32.getSelectedItem().getLabel())
-				self.ctrltabHeader41.setLabel('Favorite')
-				self.ctrltabHeader11.setWidth(150)
-				self.ctrltabHeader21.setWidth(150)
-				self.ctrltabHeader31.setWidth(200)
-				self.ctrltabHeader41.setWidth(150)
-
-				if self.flag31 == False:
-					self.flag31 = True
-					self.flag11 = False
-					self.flag21 = False
-					self.flag41 = False
-				else:
-					self.flag31 = False
-
-				self.ctrltabHeader12.setVisible(False)
-				self.ctrltabHeader22.setVisible(False)
-				self.ctrltabHeader32.setVisible(self.flag31)
-				self.ctrltabHeader42.setVisible(False)
-
-
-			elif focusId == self.ctrltabHeader41.getId():
-				self.ctrltabHeader10.setPosition(200,120)
-				self.ctrltabHeader20.setPosition(400,120)
-				self.ctrltabHeader30.setPosition(600,120)
-				self.ctrltabHeader40.setPosition(800,120)
-
-				self.ctrltabHeader11.setLabel('All Channels')
-				self.ctrltabHeader21.setLabel('Satellite')
-				self.ctrltabHeader31.setLabel('FTA/CAS')
-				self.ctrltabHeader41.setLabel(self.ctrltabHeader42.getSelectedItem().getLabel())
-				self.ctrltabHeader11.setWidth(150)
-				self.ctrltabHeader21.setWidth(150)
-				self.ctrltabHeader31.setWidth(150)
-				self.ctrltabHeader41.setWidth(200)
-
-				if self.flag41 == False:
-					self.flag41 = True
-					self.flag11 = False
-					self.flag21 = False
-					self.flag31 = False
-				else:
-					self.flag41 = False
-
-				self.ctrltabHeader12.setVisible(False)
-				self.ctrltabHeader22.setVisible(False)
-				self.ctrltabHeader32.setVisible(False)
-				self.ctrltabHeader42.setVisible(self.flag41)
 
 		elif action == 1:
-			self.getTabHeader()
 
-			if focusId == self.ctrltabHeader12.getId():
-				idx_Sorting   = self.ctrltabHeader12.getSelectedPosition()
+			if idx_menu == ElisEnum.E_MODE_ALL :
+				idx_Sorting   = self.ctrlListSubmenu.getSelectedPosition()
 				if idx_Sorting == 0:
 					sortingMode = ElisEnum.E_SORT_BY_NUMBER
 				elif idx_Sorting == 1:
@@ -428,27 +336,21 @@ class ChannelListWindow(BaseWindow):
 				elif idx_Sorting == 2:
 					sortingMode = ElisEnum.E_SORT_BY_HD
 
-				self.tabHeader_zappingMode     = ElisEnum.E_MODE_ALL
-				self.tabHeader_channelsortMode = sortingMode
+				self.chlist_channelsortMode = sortingMode
+				self.getChannelList( self.chlist_serviceType, self.chlist_zappingMode, sortingMode, 0, 0, 0, '' )
 
-				self.getChannelList( self.tabHeader_serviceType, self.tabHeader_zappingMode, sortingMode, 0, 0, 0, '' )
-
-				idx_AllChannel = self.ctrltabHeader12.getSelectedPosition()
+				idx_AllChannel = self.ctrlListSubmenu.getSelectedPosition()
 				item = self.list_AllChannel[idx_AllChannel]
-				print 'cmd[channel_GetList] idx_AllChannel[%s] sort[%s] ch_list[%s]'% (idx_AllChannel, self.tabHeader_channelsortMode, self.channelList)
+				print 'cmd[channel_GetList] idx_AllChannel[%s] sort[%s] ch_list[%s]'% (idx_AllChannel, self.chlist_channelsortMode, self.channelList)
 
-			elif focusId == self.ctrltabHeader22.getId():
-				self.tabHeader_zappingMode = ElisEnum.E_MODE_SATELLITE
-
-				idx_Satellite = self.ctrltabHeader22.getSelectedPosition()
+			elif idx_menu == ElisEnum.E_MODE_SATELLITE:
+				idx_Satellite = self.ctrlListSubmenu.getSelectedPosition()
 				item = self.list_Satellite[idx_Satellite]
-				self.getChannelList( self.tabHeader_serviceType, self.tabHeader_zappingMode, self.tabHeader_channelsortMode, int(item[0]), int(item[1]), 0, '' )
+				self.getChannelList( self.chlist_serviceType, self.chlist_zappingMode, self.chlist_channelsortMode, int(item[0]), int(item[1]), 0, '' )
 				print 'cmd[channel_GetListBySatellite] idx_Satellite[%s] mLongitude[%s] band[%s] ch_list[%s]'% ( idx_Satellite, item[0], item[1], self.channelList )
 
-			elif focusId == self.ctrltabHeader32.getId():
-				self.tabHeader_zappingMode = ElisEnum.E_MODE_CAS
-
-				idx_FtaCas = self.ctrltabHeader32.getSelectedPosition()
+			elif idx_menu == ElisEnum.E_MODE_CAS:
+				idx_FtaCas = self.ctrlListSubmenu.getSelectedPosition()
 				if idx_FtaCas == 0 :
 					caid = ElisEnum.E_FTA_CHANNEL
 				elif idx_FtaCas == 1 :
@@ -470,27 +372,31 @@ class ChannelListWindow(BaseWindow):
 				else :
 					caid = ElisEnum.E_OTHERS
 
-				self.getChannelList( self.tabHeader_serviceType, self.tabHeader_zappingMode, self.tabHeader_channelsortMode, 0, 0, caid, '' )
+				self.getChannelList( self.chlist_serviceType, self.chlist_zappingMode, self.chlist_channelsortMode, 0, 0, caid, '' )
 
 				item = self.list_CasList[idx_FtaCas]
 				print 'cmd[channel_GetListByFTACas] idx_FtaCas[%s] list_CasList[%s] ch_list[%s]'% ( idx_FtaCas, item, self.channelList )
 
-			elif focusId == self.ctrltabHeader42.getId():
-				self.tabHeader_zappingMode = ElisEnum.E_MODE_FAVORITE
-
-				idx_Favorite = self.ctrltabHeader42.getSelectedPosition()
+			elif idx_menu == ElisEnum.E_MODE_FAVORITE:
+				idx_Favorite = self.ctrlListSubmenu.getSelectedPosition()
 				item = self.list_Favorite[idx_Favorite]
-				self.getChannelList( self.tabHeader_serviceType, self.tabHeader_zappingMode, self.tabHeader_channelsortMode, 0, 0, 0, item[0] )
+				self.getChannelList( self.chlist_serviceType, self.chlist_zappingMode, self.chlist_channelsortMode, 0, 0, 0, item[0] )
 				print 'cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s] ch_list[%s]'% ( idx_Favorite, item, self.channelList )
 
 
 			if self.channelList != [] :
 				#channel list update
-				self.listcontrol.reset()
+				self.ctrlListCHList.reset()
 				self.initChannelList()
 
+				#path tree, Mainmenu/Submanu
+				#label1 = self.ctrlListMainmenu.getSelectedItem().getLabel()
+				label1 = enumToString('mode', self.chlist_zappingMode)
+				label2 = self.ctrlListSubmenu.getSelectedItem().getLabel()
+				self.ctrlLblPath.setLabel( '%s/%s'% (label1.title(), label2.title()) )
+
 				#save zapping mode
-				#ret = self.commander.zappingmode_SetCurrent( self.tabHeader_zappingMode, self.tabHeader_channelsortMode, self.tabHeader_serviceType )
+				#ret = self.commander.zappingmode_SetCurrent( self.chlist_zappingMode, self.chlist_channelsortMode, self.chlist_serviceType )
 				#print 'set zappingmode_SetCurrent[%s]'% ret
 
 
@@ -518,28 +424,10 @@ class ChannelListWindow(BaseWindow):
 
 
 	def getTabHeader(self):
+		pass
 
-		#update button label from selected item at list
-		if self.flag11:
-			self.ctrltabHeader11.setLabel(self.ctrltabHeader12.getSelectedItem().getLabel())
-		if self.flag21:
-			self.ctrltabHeader21.setLabel(self.ctrltabHeader22.getSelectedItem().getLabel())
-		if self.flag31:
-			self.ctrltabHeader31.setLabel(self.ctrltabHeader32.getSelectedItem().getLabel())
-		if self.flag41:
-			self.ctrltabHeader41.setLabel(self.ctrltabHeader42.getSelectedItem().getLabel())
-
-		#select and list hide
-		if self.flag11 or self.flag21 or self.flag31 or self.flag41:
-			#hide list
-			self.flag11 = False
-			self.flag21 = False
-			self.flag31 = False
-			self.flag41 = False
-			self.ctrltabHeader12.setVisible(False)
-			self.ctrltabHeader22.setVisible(False)
-			self.ctrltabHeader32.setVisible(False)
-			self.ctrltabHeader42.setVisible(False)
+		#TODO
+		#get zapping last mode
 
 				
 
@@ -563,52 +451,9 @@ class ChannelListWindow(BaseWindow):
 		#self.setProperty('WindowType', 'ChannelList')
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_RECORD_MASK )
 
-		#tab header init
-		self.ctrltabHeader12.setVisible(self.flag11)
-		self.ctrltabHeader22.setVisible(self.flag21)
-		self.ctrltabHeader32.setVisible(self.flag31)
-		self.ctrltabHeader42.setVisible(self.flag41)
-
-		#sort list, This is fixed
-		self.list_AllChannel = []
-		self.list_AllChannel.append( 'All Channel by Number' )
-		self.list_AllChannel.append( 'All Channel by Alphabet' )
-		self.list_AllChannel.append( 'All Channel by HD/SD' )
-		print 'list_AllChannel[%s]'% self.list_AllChannel
-		testlistItems = []
-		for item in range(len(self.list_AllChannel)) :
-			testlistItems.append(xbmcgui.ListItem(self.list_AllChannel[item]))
-
-		self.ctrltabHeader12.addItems( testlistItems )
-
-		#satellite longitude list
-		self.list_Satellite = self.commander.satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
-		print 'satellite_GetConfiguredList[%s]'% self.list_Satellite
-		testlistItems = []
-		for item in self.list_Satellite:
-			ret = GetSelectedLongitudeString(item)
-			testlistItems.append(xbmcgui.ListItem(ret))
-
-		self.ctrltabHeader22.addItems( testlistItems )
-
-		#FTA list
-		testlistItems = []
-		self.list_CasList = self.commander.channel_GetFTACasList( ElisEnum.E_TYPE_TV )
-		print 'channel_GetFTACasList[%s]'% self.list_CasList
-		for item in self.list_CasList:
-			ret = '%s(%s)'% (item[0], item[1])
-			testlistItems.append(xbmcgui.ListItem( ret ))
-
-		self.ctrltabHeader32.addItems( testlistItems )
-
-		#Favorite list
-		self.list_Favorite = self.commander.channel_GetFavoriteList( ElisEnum.E_TYPE_TV )
-		print 'channel_GetFavoriteList[%s]'% self.list_Favorite
-		testlistItems = []
-		for item in self.list_Favorite:
-			testlistItems.append(xbmcgui.ListItem( item[0] ))
-		
-		self.ctrltabHeader42.addItems( testlistItems )	
+		#main/sub menu init
+		self.ctrlListMainmenu.reset()
+		self.ctrlListSubmenu.reset()
 
 
 		#get last zapping mode
@@ -616,32 +461,93 @@ class ChannelListWindow(BaseWindow):
 		ret = self.commander.zappingmode_GetCurrent()
 		if ret != [] :
 			try:
-				self.tabHeader_zappingMode     = int(ret[0])
-				self.tabHeader_channelsortMode = int(ret[1])
-				self.tabHeader_serviceType     = int(ret[2])
+				self.chlist_zappingMode     = int(ret[0])
+				self.chlist_channelsortMode = int(ret[1])
+				self.chlist_serviceType     = int(ret[2])
 				print 'zappingmode_GetCurrent[True] ret[%s]'% ret
 
 			except Exception, e:
 				print 'zappingmode_GetCurrent Error[%s] = '% e
-				self.tabHeader_serviceType     = ElisEnum.E_TYPE_TV
-				self.tabHeader_zappingMode     = ElisEnum.E_MODE_ALL
-				self.tabHeader_channelsortMode = ElisEnum.E_SORT_BY_DEFAULT
+				self.chlist_serviceType     = ElisEnum.E_TYPE_TV
+				self.chlist_zappingMode     = ElisEnum.E_MODE_ALL
+				self.chlist_channelsortMode = ElisEnum.E_SORT_BY_DEFAULT
 				print 'zappingmode_GetCurrent[False] default'
 		else :
 			#default init value for channel_GetList()
-			self.tabHeader_serviceType     = ElisEnum.E_TYPE_TV
-			self.tabHeader_zappingMode     = ElisEnum.E_MODE_ALL
-			self.tabHeader_channelsortMode = ElisEnum.E_SORT_BY_DEFAULT
+			self.chlist_serviceType     = ElisEnum.E_TYPE_TV
+			self.chlist_zappingMode     = ElisEnum.E_MODE_ALL
+			self.chlist_channelsortMode = ElisEnum.E_SORT_BY_DEFAULT
 			print 'zappingmode_GetCurrent[False] default'
 
+
+		list_Mainmenu = []
+		list_Mainmenu.append( m.strings(mm.LANG_ALL_CHANNELS) )
+		list_Mainmenu.append( m.strings(mm.LANG_SATELLITE)    )
+		list_Mainmenu.append( m.strings(mm.LANG_FTA)          )
+		list_Mainmenu.append( m.strings(mm.LANG_FAVORITE)     )
+		testlistItems = []
+		for item in range( len(list_Mainmenu) ) :
+			testlistItems.append( xbmcgui.ListItem(list_Mainmenu[item]) )
+
+		self.ctrlListMainmenu.addItems( testlistItems )
+
+
+		#sort list, This is fixed
+		self.list_AllChannel = []
+		self.list_AllChannel.append( 'All Channel by Number' )
+		self.list_AllChannel.append( 'All Channel by Alphabet' )
+		self.list_AllChannel.append( 'All Channel by HD/SD' )
+		print 'list_AllChannel[%s]'% self.list_AllChannel
+
+		#satellite longitude list
+		self.list_Satellite = self.commander.satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
+		print 'satellite_GetConfiguredList[%s]'% self.list_Satellite
+
+		#FTA list
+		self.list_CasList = self.commander.channel_GetFTACasList( ElisEnum.E_TYPE_TV )
+		print 'channel_GetFTACasList[%s]'% self.list_CasList
+
+		#Favorite list
+		self.list_Favorite = self.commander.channel_GetFavoriteList( ElisEnum.E_TYPE_TV )
+		print 'channel_GetFavoriteList[%s]'% self.list_Favorite
+
+		testlistItems = []
+		if self.chlist_zappingMode == ElisEnum.E_MODE_ALL :
+			for item in range(len(self.list_AllChannel)) :
+				testlistItems.append(xbmcgui.ListItem(self.list_AllChannel[item]))
+
+		elif self.chlist_zappingMode == ElisEnum.E_MODE_SATELLITE :
+			for item in self.list_Satellite:
+				ret = GetSelectedLongitudeString(item)
+				testlistItems.append(xbmcgui.ListItem(ret))
+
+		elif self.chlist_zappingMode == ElisEnum.E_MODE_CAS :
+			for item in self.list_CasList:
+				ret = '%s(%s)'% (item[0], item[1])
+				testlistItems.append(xbmcgui.ListItem( ret ))
+
+		elif self.chlist_zappingMode == ElisEnum.E_MODE_FAVORITE :
+			for item in self.list_Favorite:
+				testlistItems.append(xbmcgui.ListItem( item[0] ))
+
+		self.ctrlListSubmenu.addItems( testlistItems )
+
+		#path tree, Mainmenu/Submanu
+		#label1 = self.ctrlListMainmenu.getSelectedItem().getLabel()
+		label1 = enumToString('mode', self.chlist_zappingMode)
+		label2 = self.ctrlListSubmenu.getSelectedItem().getLabel()
+		self.ctrlLblPath.setLabel( '%s/%s'% (label1.title(), label2.title()) )
+
+
+		#get channel list by last on zapping mode, sorting, service type
 		self.currentChannel = -1
 		self.channelList = []
-		self.channelList = self.commander.channel_GetList( self.tabHeader_serviceType, self.tabHeader_zappingMode, self.tabHeader_channelsortMode )
-		#self.getChannelList(self.tabHeader_serviceType, self.tabHeader_zappingMode, self.tabHeader_channelsortMode, 0, 0, 0, '')
+		self.channelList = self.commander.channel_GetList( self.chlist_serviceType, self.chlist_zappingMode, self.chlist_channelsortMode )
+		#self.getChannelList(self.chlist_serviceType, self.chlist_zappingMode, self.chlist_channelsortMode, 0, 0, 0, '')
 		print 'zappingMode[%s] sortMode[%s] serviceType[%s] channellist[%s]'% \
-			( enumToString('mode', self.tabHeader_zappingMode), \
-			  enumToString('sort', self.tabHeader_channelsortMode), \
-			  enumToString('type', self.tabHeader_serviceType), \
+			( enumToString('mode', self.chlist_zappingMode), \
+			  enumToString('sort', self.chlist_channelsortMode), \
+			  enumToString('type', self.chlist_serviceType), \
 			  self.channelList )
 
 
@@ -661,9 +567,9 @@ class ChannelListWindow(BaseWindow):
 			if int(ch[5]) == 1 : icas='IconCas.png'
 			listItem.setProperty('lock', thum)
 			listItem.setProperty('icas', icas)
-			
 			self.listItems.append(listItem)
-		self.listcontrol.addItems( self.listItems )
+
+		self.ctrlListCHList.addItems( self.listItems )
 
 		#detected to last focus
 		self.currentChannelInfo = self.commander.channel_GetCurrent()
@@ -676,10 +582,11 @@ class ChannelListWindow(BaseWindow):
 					break
 				chindex += 1
 
-			self.listcontrol.selectItem( chindex )
+			self.ctrlListCHList.selectItem( chindex )
 
 		#select item idx, print GUI of 'current / total'
-		self.ctrlSelectItem.setLabel(str('%s / %s'% (self.listcontrol.getSelectedPosition()+1, len(self.listItems))) )
+		self.ctrlSelectItem.setLabel(str('%s / %s'% (self.ctrlListCHList.getSelectedPosition()+1, len(self.listItems))) )
+
 
 	def initLabelInfo(self):
 		print 'currentChannel[%s]' % self.currentChannel
@@ -692,7 +599,7 @@ class ChannelListWindow(BaseWindow):
 			self.progress_max = 0.0
 			self.pincodeEnter = 0x0
 
-			self.ctrlSelectItem.setLabel(str('%s / %s'% (self.listcontrol.getSelectedPosition()+1, len(self.listItems))) )
+			self.ctrlSelectItem.setLabel(str('%s / %s'% (self.ctrlListCHList.getSelectedPosition()+1, len(self.listItems))) )
 			self.ctrlChannelName.setLabel('')
 			self.ctrlEventName.setLabel('')
 			self.ctrlEventTime.setLabel('')
@@ -846,7 +753,7 @@ class ChannelListWindow(BaseWindow):
 			msg2 = 'Current PIN Code'
 			xbmcgui.Dialog().ok(msg1, msg2)
 
-		
+
 	@run_async
 	def updateLocalTime(self):
 		print '[%s():%s]begin_start thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
