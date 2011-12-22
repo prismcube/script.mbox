@@ -222,6 +222,12 @@ class TunerConfigMgr( object ):
 
 
 	def load( self ) :
+
+		"""
+			[Longitude, Band, Name]
+		"""
+		self.allsatellitelist = []
+		self.allsatellitelist = self.commander.satellite_GetList( ElisEnum.E_SORT_INSERTED )
 	
 		"""
 			[TunerIndex, SlotNumber, SatelliteLongitude, BandType, FrequencyLevel, DisEqc11, DisEqcMode, DisEqcRepeat,
@@ -229,19 +235,36 @@ class TunerConfigMgr( object ):
 				IsOneCable, OneCablePin, OneCableMDU, OneCableLoFreq1, OneCableLoFreq2, OneCableUBSlot, OneCableUBFreq]	
 		"""
 		self.configuredList1 = []
-		self.configuredList1 = self.commander.satelliteconfig_GetList( E_TUNER_1 )		
+		self.configuredList1 = self.commander.satelliteconfig_GetList( E_TUNER_1 )
+
+		print 'configuredList1 len=%d' %len( self.configuredList1 )
+
+		if len( self.configuredList1 )== 0 or ( len( self.configuredList1 ) == 1 and len( self.configuredList1[0] ) == 0 ) :
+			print 'has no--'
+			print 'test %s ' %(self.allsatellitelist)
+
+			config = ["0", "0", self.allsatellitelist[0][0], self.allsatellitelist[0][1], "0", "0", "0", "0",
+						"1", "0", "0", "9750", "10600", "11700", "0", "0", "0", "0", "0", "0", "0", "1284" ]
+
+			print 'test 2'
+
+			self.configuredList1.append( config )
+
+		print 'configuredList1 =%s' %self.configuredList1
+
 
 		self.configuredList2 = []
 		self.configuredList2 = self.commander.satelliteconfig_GetList( E_TUNER_2 )		
+		print 'configuredList2 len=%d' %len( self.configuredList2 )		
 
-		"""
-			[Longitude, Band, Name]
-		"""
-		#self.configuredSatelliteList = []
-		#self.configuredSatelliteList = self.commander.satellite_GetConfiguredList( ElisEnum.E_SORT_LONGITUDE )		
+		if len(self.configuredList2 )== 0 or ( len( self.configuredList2 ) == 1 and len( self.configuredList2[0] ) == 0 ) :
+			config = ["1", "0", self.allsatellitelist[0][0], self.allsatellitelist[0][1], "0", "0", "0", "0",
+					  "1", "0", "0", "9750", "10600", "11700", "0", "0", "0", "0", "0", "0", "0", "1284" ]
+		
+			self.configuredList2.append( config )
 
-		self.allsatellitelist = []
-		self.allsatellitelist = self.commander.satellite_GetList( ElisEnum.E_SORT_INSERTED )
+		print 'configuredList2 =%s' %self.configuredList2
+
 	
 
 	def getFormattedName( self, longitude ) :

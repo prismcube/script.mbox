@@ -1,0 +1,98 @@
+<window id="3303">
+	<defaultcontrol always="true">300</defaultcontrol>
+	<coordinates>
+		<system>1</system>
+		<posx>100</posx>
+		<posy>50</posy>
+	</coordinates>
+	<include>dialogeffect</include>
+	<controls>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1100</width>
+			<height>640</height>
+			<texture border="20">confluence/OverlayDialogBackground.png</texture>
+		</control>
+		<control type="label" id="100">
+			<description>Title</description>
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>500</width>
+			<height>40</height>
+			<font>font28_title</font>
+			<label>Channel Search Progress</label>
+			<align>center</align>
+			<aligny>center</aligny>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+		</control>
+		<control type="label" id="101">
+			<description>TV</description>
+			<posx>50</posx>
+			<posy>50</posy>
+			<width>500</width>
+			<height>40</height>
+			<font>font28_title</font>
+			<label>TV</label>
+			<align>left</align>
+			<aligny>center</aligny>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+		</control>
+		<control type="label" id="103">
+			<description>Radio</description>
+			<posx>550</posx>
+			<posy>50</posy>
+			<width>500</width>
+			<height>40</height>
+			<font>font28_title</font>
+			<label>Radio</label>
+			<align>left</align>
+			<aligny>center</aligny>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+		</control>
+		<control type="label" id="104">
+			<description>TransponderInfo</description>
+			<posx>50</posx>
+			<posy>500</posy>
+			<width>1000</width>
+			<height>40</height>
+			<font>font13_title</font>
+			<label>Transponder Info</label>
+			<align>left</align>
+			<aligny>center</aligny>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+		</control>
+		<control type="progress" id="200">
+			<description>Progressbar</description>
+			<posx>50</posx>
+			<posy>540</posy>
+			<width>1000</width>
+			<height>30</height>
+			<!--
+			<info>System.Progressbar</info>
+			-->
+		</control>
+		<control type="button" id="300">
+			<description>Cancel button</description>
+			<posx>50</posx>
+			<posy>580</posy>
+			<width>200</width>
+			<height>40</height>
+			<label>222</label>
+			<font>font12_title</font>
+			<textcolor>white</textcolor>
+			<focusedcolor>white</focusedcolor>
+			<align>center</align>
+			<texturenofocus border="5">confluence/MenuItemNF.png</texturenofocus>
+			<texturefocus border="5">confluence/button-focus.png</texturefocus>
+			<onleft>10</onleft>
+			<onright>10</onright>
+			<onup>10</onup>
+			<ondown>10</ondown>
+		</control>
+	</controls>
+</window>

@@ -4,6 +4,7 @@ import sys
 from copy import deepcopy
 
 import pvr.gui.windowmgr as winmgr
+import pvr.gui.dialogmgr as diamgr
 import pvr.tunerconfigmgr as configmgr
 from  pvr.tunerconfigmgr import *
 from pvr.gui.guiconfig import *
@@ -89,7 +90,13 @@ class AutomaticScan( SettingWindow ):
 			else :
 				config = self.configuredList[self.selectedIndex -1]
 				print 'longitude=%s bandtype=%s' %( config[E_CONFIGURE_SATELLITE_LONGITUDE], config[E_CONFIGURE_SATELLITE_BANDTYPE] )
-				self.commander.channelscan_BySatellite( int(config[E_CONFIGURE_SATELLITE_LONGITUDE]), int(config[E_CONFIGURE_SATELLITE_BANDTYPE]))
+
+	 			dialog = diamgr.getInstance().getDialog( diamgr.DIALOG_ID_CHANNEL_SEARCH )
+	 			print 'teststest'
+	 			dialog.doModal( )
+								
+				#self.commander.channelscan_BySatellite( int(config[E_CONFIGURE_SATELLITE_LONGITUDE]), int(config[E_CONFIGURE_SATELLITE_BANDTYPE]))
+				
 
 
 	def onFocus( self, controlId ):
