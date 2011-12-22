@@ -18,8 +18,13 @@ class ManualScan( SettingWindow ):
 			
 		self.initialized = False
 		self.lastFocused = -1
-		self.selectedIndex = 0
-		self.allsatellitelist = []		
+		self.selectedSatelliteIndex = 0
+		self.selectedTransponderIndex = 0		
+		self.allsatellitelist = []
+		self.transponderList = []
+
+		self.formattedSatelliteList = []
+		self.formattedTransponderList = []
 
 
 	def onInit(self):
@@ -28,12 +33,15 @@ class ManualScan( SettingWindow ):
 		self.setHeaderLabel( 'Manual Scan' )
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
 
-		self.selectedIndex = 0
+		self.selectedSatelliteIndex = 0
+		self.selectedTransponderIndex = 0		
 		self.allsatellitelist = []
 		
 		self.allsatellitelist = self.commander.satellite_GetList( ElisEnum.E_SORT_INSERTED )
-		self.loadFormattedNameList()
-		
+		self.loadFormattedSatelliteNameList()
+
+		self.loadFormattedTransponderNameList( )		
+
 		self.initConfig( )
 		
 		self.showDescription( self.getFocusId( ) )
@@ -71,12 +79,27 @@ class ManualScan( SettingWindow ):
 
 
 	def onClick( self, controlId ):
-		#Satellite
+
+		groupId = self.getGroupId( controlId )
+
+		#Satellite		
 		if groupId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
-			self.selectedIndex = dialog.select('Select satellite', self.formattedList )
-			self.initConfig( )
+			select = dialog.select('Select satellite', self.formattedSatelliteList )
 
+			if self.selectedSatelliteIndex != select :
+				self.selectedSatelliteIndex = select
+				self.selectedTransponderIndex = 0
+				self.loadFormattedTransponderNameList( )
+				self.initConfig( )
+
+		if groupId == E_Input02 :
+			dialog = xbmcgui.Dialog( )
+			select = dialog.select('Select Transponder', self.formattedTransponderList )
+
+			if self.selectedTransponderIndex != select :
+				self.selectedTransponderIndex = select
+				self.initConfig( )
 			
 
 	def onFocus( self, controlId ):
@@ -91,7 +114,7 @@ class ManualScan( SettingWindow ):
 
 		self.resetAllControl( )	
 
-		count = len( self.formattedList )
+		count = len( self.formattedSatelliteList )
 		
 		if count <= 0 :
 			hideControlIds = [ E_Input01, E_Input02, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
@@ -99,12 +122,22 @@ class ManualScan( SettingWindow ):
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Has no configured satellite' )
 
 		else :
-			self.addInputControl( E_Input01, 'Satellite', self.formattedList[self.selectedIndex], None, 'Select satellite' )
-			self.addInputControl( E_Input02, 'Transponder Frequency', '11111', None, 'Select Transponder Frequency' )
+			self.addInputControl( E_Input01, 'Satellite', self.formattedSatelliteList[self.selectedSatelliteIndex], None, 'Select satellite' )
+			self.addInputControl( E_Input02, 'Transponder Frequency', self.formattedTransponderList[self.selectedTransponderIndex], None, 'Select Transponder Frequency' )
+
+			"""
+			transponder  =  self.transponderList [ self.selectedTransponderIndex ]
+			property = ElisPropertyEnum( 'DVB Type', self.commander )
+
+			transponder[]
+			property.prop( )
+			"""
+			
 			self.addEnumControl( E_SpinEx01, 'DVB Type', 'Select DVB type' )
 			self.addEnumControl( E_SpinEx02, 'FEC', 'Select FEC' )
 			self.addEnumControl( E_SpinEx03, 'Polarisation', 'Select Polarization' )
 			self.addEnumControl( E_SpinEx04, 'Symbol Rate', 'Select Symbol Rate' )
+			
 			self.addEnumControl( E_SpinEx05, 'Network Search', 'Select Network Search' )
 			self.addEnumControl( E_SpinEx06, 'Channel Search Mode', 'Network Search' )			
 			self.addLeftLabelButtonControl( E_Input03, 'Start Search', 'Start Search' )
@@ -134,7 +167,7 @@ class ManualScan( SettingWindow ):
 		return 'UnKnown'
 
 
-	def loadFormattedNameList( self ) :
+	def loadFormattedSatelliteNameList( self ) :
 
 		configuredList1 = []
 		configuredList1 = self.commander.satelliteconfig_GetList( E_TUNER_1 )		
@@ -158,7 +191,19 @@ class ManualScan( SettingWindow ):
 					self.configuredList.append( config )
 
 
-		self.formattedList = []
+		self.formattedSatelliteList = []
 		for config in self.configuredList :
-			self.formattedList.append( self.getFormattedName( int(config[E_CONFIGURE_SATELLITE_LONGITUDE]) ) )
+			self.formattedSatelliteList.append( self.getFormattedName( int(config[E_CONFIGURE_SATELLITE_LONGITUDE]) ) )
+
+
+	def loadFormattedTransponderNameList( self ) :
+
+		satellite = self.allsatellitelist[self.selectedSatelliteIndex]
+		self.transponderList = self.commander.transponder_GetList( int( satellite[0] ), int( satellite[1]  ) )
+
+		self.formattedTransponderList = []
+		
+		for i in range( len( self.transponderList ) ) :
+			self.formattedTransponderList.append( '%s' % ( i + 1 ) + ' ' + self.transponderList[i][0] + ' MHz / ' + self.transponderList[i][1] + ' KS/s' )
+
 	

@@ -11,6 +11,7 @@ from pvr.gui.guiconfig import *
 
 from pvr.gui.basewindow import SettingWindow
 from pvr.gui.basewindow import Action
+import pvr.elismgr
 
 
 class AutomaticScan( SettingWindow ):
@@ -21,7 +22,7 @@ class AutomaticScan( SettingWindow ):
 		self.initialized = False
 		self.lastFocused = -1
 		self.allsatellitelist = []
-		self.selectedIndex = 0
+		self.selectedSatelliteIndex = 0
 
 
 	def onInit(self):
@@ -31,11 +32,11 @@ class AutomaticScan( SettingWindow ):
 		self.setHeaderLabel( 'Channel Scan' )
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
 
-		self.selectedIndex = 0
+		self.selectedSatelliteIndex = 0
 		self.allsatellitelist = []
 		
 		self.allsatellitelist = self.commander.satellite_GetList( ElisEnum.E_SORT_INSERTED )
-		self.loadFormattedNameList()
+		self.loadFormattedSatelliteNameList()
 
 		self.initConfig( )
 
@@ -80,19 +81,21 @@ class AutomaticScan( SettingWindow ):
 		#Satellite
 		if groupId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
-			self.selectedIndex = dialog.select('Select satellite', self.formattedList )
+			self.selectedSatelliteIndex = dialog.select('Select satellite', self.formattedList )
 			self.initConfig( )
 
 		#Start Search
 		if groupId == E_Input02 :
-			if self.selectedIndex == 0 : #ToDO : All Chanenl Search
+			if self.selectedSatelliteIndex == 0 : #ToDO : All Channel Search
 				print 'ToDO : All Chanenl Search'
 			else :
-				config = self.configuredList[self.selectedIndex -1]
-				print 'longitude=%s bandtype=%s' %( config[E_CONFIGURE_SATELLITE_LONGITUDE], config[E_CONFIGURE_SATELLITE_BANDTYPE] )
+				satelliteList = []
+				satellite = self.configuredList[self.selectedSatelliteIndex -1]
+				print 'longitude=%s bandtype=%s' %( satellite[E_CONFIGURE_SATELLITE_LONGITUDE], satellite[E_CONFIGURE_SATELLITE_BANDTYPE] )
 
+				satelliteList.append( satellite )
 	 			dialog = diamgr.getInstance().getDialog( diamgr.DIALOG_ID_CHANNEL_SEARCH )
-	 			print 'teststest'
+	 			dialog.scanBySatellite( satelliteList )
 	 			dialog.doModal( )
 								
 				#self.commander.channelscan_BySatellite( int(config[E_CONFIGURE_SATELLITE_LONGITUDE]), int(config[E_CONFIGURE_SATELLITE_BANDTYPE]))
@@ -118,7 +121,7 @@ class AutomaticScan( SettingWindow ):
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Has no configured satellite' )
 
 		else :
-			self.addInputControl( E_Input01, 'Satellite', self.formattedList[self.selectedIndex], None, 'Select satellite' )
+			self.addInputControl( E_Input01, 'Satellite', self.formattedList[self.selectedSatelliteIndex], None, 'Select satellite' )
 			self.addEnumControl( E_SpinEx01, 'Network Search', 'Network Search' )
 			self.addEnumControl( E_SpinEx02, 'Channel Search Mode', 'Channel Search Mode' )
 			self.addLeftLabelButtonControl( E_Input02, 'Start Search', 'Start Search' )
@@ -148,7 +151,7 @@ class AutomaticScan( SettingWindow ):
 		return 'UnKnown'
 
 
-	def loadFormattedNameList( self ) :
+	def loadFormattedSatelliteNameList( self ) :
 
 		configuredList1 = []
 		configuredList1 = self.commander.satelliteconfig_GetList( E_TUNER_1 )		
