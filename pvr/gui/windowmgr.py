@@ -24,6 +24,7 @@ WIN_ID_MANUAL_SCAN					= 11
 WIN_ID_TIMESHIFT_BANNER				= 12
 
 WIN_ID_LANGUAGE_SETTING				= 100	#for test
+WIN_ID_CHANNEL_LIST2_WINDOW			= 103	#for test
 
 
 
@@ -91,6 +92,7 @@ class WindowMgr(object):
 		from pvr.gui.windows.automaticscan import AutomaticScan
 		from pvr.gui.windows.manualscan import ManualScan
 		from pvr.gui.windows.languagesetting import LanguageSetting		#for test
+		from pvr.gui.windows.channellistwindow_b import ChannelListWindow #for test
 
 
 		self.windows[ WIN_ID_NULLWINDOW ]				= NullWindow('nullwindow.xml', self.scriptDir )
@@ -106,6 +108,7 @@ class WindowMgr(object):
 		self.windows[ WIN_ID_AUTOMATIC_SCAN ]			= AutomaticScan('automaticscan.xml', self.scriptDir)
 		self.windows[ WIN_ID_MANUAL_SCAN ]				= ManualScan('manualscan.xml', self.scriptDir)
 		self.windows[ WIN_ID_LANGUAGE_SETTING ]			= LanguageSetting('languagesetting.xml', self.scriptDir)		#for test
+		self.windows[ WIN_ID_CHANNEL_LIST2_WINDOW ]		= ChannelListWindow('channellistwindow_b.xml', self.scriptDir )	#for test
 		
 
 	def resetAllWindows( self ):
