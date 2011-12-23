@@ -19,14 +19,6 @@ class NormalKeyboard( BaseDialog ):
 		self.ctrlCursorId = None
 
 	
-	def drawLabel( self ):
-		while self.untilThread :
-			'''
-			self.getControl( self.ctrlLabelId ).setLabel( self.tempstring2 )
-			time.sleep( 0.5 )
-			self.getControl( self.ctrlLabelId ).setLabel( self.tempstring1 )
-			time.sleep( 0.5 )
-			'''
 	@run_async
 	def drawLabel( self ) :
 		while self.untilThread :
@@ -45,12 +37,15 @@ class NormalKeyboard( BaseDialog ):
 		self.getControl( controlId ).setLabel( labelString )
 		self.getControl( self.ctrlCursorId ).setLabel( cursorString )
 
+
 	def stopKeyboardCursor( self ):
 		self.untilThread = False
 		self.drawLabel().join()
 
+
 	def startKeyboardCursor( self ):
 		self.untilThread = True
+
 	
 class HideNormalKeyboard( NormalKeyboard ):
 
@@ -59,6 +54,7 @@ class HideNormalKeyboard( NormalKeyboard ):
 		preTmpstr = '*' * position
 		postTmpstr = '*' * ( len( string[ position : ] ) )
 		self.string = preTmpstr + ' ' + postTmpstr 
+
 
 class NumericKeyboard( BaseDialog ):
 	def __init__(self, *args, **kwargs):
