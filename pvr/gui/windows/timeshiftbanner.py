@@ -33,7 +33,7 @@ class TimeShiftBanner(BaseWindow):
 
 		self.lastFocusId = None
 		self.eventBus = pvr.elismgr.getInstance().getEventBus()
-		self.eventBus.register( self )
+		#self.eventBus.register( self )
 		self.commander = pvr.elismgr.getInstance().getCommander()
 
 		#default

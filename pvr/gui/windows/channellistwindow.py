@@ -26,7 +26,7 @@ class ChannelListWindow(BaseWindow):
 		self.commander = pvr.elismgr.getInstance().getCommander()		
 
 		self.eventBus = pvr.elismgr.getInstance().getEventBus()
-		self.eventBus.register( self )
+		#self.eventBus.register( self )
 
 		#submenu list
 		self.list_AllChannel= []

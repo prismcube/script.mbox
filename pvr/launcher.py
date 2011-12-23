@@ -6,7 +6,6 @@ import xbmcaddon
 import time
 
 from inspect import currentframe
-from pvr.bus import EventBus
 import pvr.elismgr
 import pvr.gui.windowmgr as windowmgr
 from pvr.util import run_async, hasPendingWorkers, waitForWorkersToDie
