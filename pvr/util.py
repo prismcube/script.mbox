@@ -193,12 +193,8 @@ class Mutex(threading.Thread):
 		#self.notify.release()
 
 
-def epgInfoTime(timeZone, startTime, duration):
+def epgInfoTime(localOffset, startTime, duration):
 	
-	localOffset = 0
-	if (is_digit(timeZone) == True):
-		localOffset = int(timeZone)
-
 	epgStartTime = startTime + localOffset
 	epgEndTime =  startTime + duration + localOffset
 
@@ -222,29 +218,30 @@ def epgInfoTime(timeZone, startTime, duration):
 	return ret
 
 def epgInfoClock(flag, nowTime, epgClock):
-	pastTime = time.time() - nowTime
 
 	strClock = []
-	stbClock = int(epgClock) + pastTime
-
+	
 	if flag == 1:
-		strClock.append( time.strftime('%a, %d.%m.%Y', time.gmtime(stbClock) ) )
-		if int(pastTime) % 2 == 0:
-			strClock.append( time.strftime('%H:%M', time.gmtime(stbClock) ) )
-		else:
-			strClock.append( time.strftime('%H %M', time.gmtime(stbClock) ) )
+		strClock.append( time.strftime('%a, %d.%m.%Y', time.gmtime(nowTime) ) )
+		if epgClock % 2 == 0:
+			strClock.append( time.strftime('%H:%M', time.gmtime(nowTime) ) )
+		else :
+			strClock.append( time.strftime('%H %M', time.gmtime(nowTime) ) )
 
 	elif flag == 2:
-		strClock.append( time.strftime('%a. %H:%M', time.gmtime(stbClock) ) )
+		strClock.append( time.strftime('%a. %H:%M', time.gmtime(nowTime) ) )
 
 	elif flag == 3:
-		strClock.append( time.strftime('%H:%M:%S', time.gmtime(stbClock) ) )
+		strClock.append( time.strftime('%H:%M:%S', time.gmtime(nowTime) ) )
 
 	elif flag == 4:
-		hour =  epgClock / 3600
-		min  = (epgClock % 3600) / 60
-		sec  = (epgClock % 3600) % 60
+		"""
+		hour =  nowTime / 3600
+		min  = (nowTime % 3600) / 60
+		sec  = (nowTime % 3600) % 60
 		ret = '%d:%02d:%02d' % ( hour, min, sec )
+		"""
+		ret = '00:00:00' 
 		return ret
 
 	#print 'epgClock[%s:%s]'% (strClock, time.strftime('%S', time.gmtime(stbClock)) )
