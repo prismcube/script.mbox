@@ -58,7 +58,7 @@
 		</control>
 		<control type="group" id="49">		
 			<control type="list" id="50">
-				<posx>150</posx>
+				<posx>50</posx>
 				<posy>180</posy>
 				<width>590</width>
 				<height>401</height>
@@ -210,7 +210,7 @@
 
         <!-- Scrollbar -->
 		<control type="scrollbar" id="61">
-			<posx>730</posx>
+			<posx>630</posx>
 			<posy>180</posy>
 			<width>25</width>
 			<height>401</height>
@@ -237,7 +237,7 @@
 
 <!-- middle right -->
 		<control type="group" id="300">
-			<posx>750</posx>
+			<posx>850</posx>
 			<posy>180</posy>
 			<width>1200</width>
 			<height>401</height>
@@ -623,7 +623,7 @@
 						</focusedlayout>
 					</control>
 					<!-- Scrollbar -->
-					<control type="scrollbar" id="203">
+					<!--control type="scrollbar" id="203">
 						<posx>230</posx>
 						<posy>0</posy>
 						<width>15</width>
@@ -635,7 +635,7 @@
 						<textureslidernibfocus>confluence/ScrollBarNib.png</textureslidernibfocus>
 						<showonepage>false</showonepage>
 						<orientation>vertical</orientation>
-					</control>
+					</control-->
 
 				
 				</control>
