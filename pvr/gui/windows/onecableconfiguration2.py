@@ -47,6 +47,7 @@ class OneCableConfiguration2( SettingWindow ):
 
 		actionId = action.getId( )
 		focusId = self.getFocusId( )
+		groupId = self.getGroupId( focusId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass
@@ -73,6 +74,9 @@ class OneCableConfiguration2( SettingWindow ):
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.controlDown( )
+
+		if groupId == E_Input01 :
+			self.controlkeypad( groupId, actionId )
 
 
 	def onClick( self, controlId ):

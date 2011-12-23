@@ -267,6 +267,7 @@ class SettingWindow( BaseWindow ):
 			return True
 
 		elif ( keyType == 0 ) :
+			'''
 			dialog = pvr.gui.dialogmgr.getInstance().getDialog( pvr.gui.dialogmgr.DIALOG_ID_NUMERIC )
 			dialog.setTiteLabel( ctrlItem.listItems[0].getLabel( ) )
 			dialog.setNumber( ctrlItem.listItems[0].getLabel2( ) )
@@ -274,6 +275,14 @@ class SettingWindow( BaseWindow ):
 
 			if dialog.isOK() == True :
 				ctrlItem.listItems[0].setLabel2( dialog.getNumber( ) )
+			'''
+			dialog = pvr.gui.dialogmgr.getInstance( ).getDialog( pvr.gui.dialogmgr.DIALOG_ID_KEYBOARD )
+			dialog.setTiteLabel( ctrlItem.listItems[0].getLabel( ) )
+			dialog.setText( ctrlItem.listItems[0].getLabel2( ) )
+			dialog.doModal( )
+
+			if dialog.isOK() == True :
+				ctrlItem.listItems[0].setLabel2( dialog.getText( ) )
 		
 		else :
 			dialog = xbmcgui.Dialog( )
@@ -432,6 +441,13 @@ class SettingWindow( BaseWindow ):
 		return False
 
 
+	def	controlkeypad( self, controlId, actionId ) :
+		print 'dhkim test keypad = %d' % actionId
+		#num start 58->30
+		number = self.getControl( controlId + 3 ).getListItem(0).getLabel2( )
+		self.getControl( controlId + 3 ).getListItem(0).setLabel2( number + chr( actionId - 10 ) )
+
+
 	def controlUp( self ):
 
 		focusId = self.getFocusId( )
@@ -483,6 +499,7 @@ class SettingWindow( BaseWindow ):
 					if focusId % 10 == 1 :
 						self.setFocusId( focusId + 1 )
 						return
+						
 
 class DetailWindow(SettingWindow):
 
