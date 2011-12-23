@@ -120,7 +120,7 @@ class ChannelListWindow(BaseWindow):
 		ret = []
 		ret=self.commander.epgevent_GetPresent()
 		if ret != []:
-			ret=['epgevent_GetPresent'] + ret
+			#ret=['epgevent_GetPresent'] + ret
 			self.updateLabelInfo(ret)
 		print 'epgevent_GetPresent[%s]'% ret
 
@@ -283,7 +283,17 @@ class ChannelListWindow(BaseWindow):
 		print 'event[%s]'% event
 		
 		if xbmcgui.getCurrentWindowId() == self.win :
-			self.updateLabelInfo(event)
+			msg = event[0]
+			
+			if msg == 'Elis-CurrentEITReceived' :
+				if int(event[4]) != self.eventID:
+					self.eventID = int(event[4])
+					self.epgClock = self.commander.datetime_GetLocalTime()
+					ret = self.commander.epgevent_Get(self.eventID, int(event[0]), int(event[1]), int(event[2]), int(self.epgClock[0]) )
+					self.updateLabelInfo(ret)
+
+			else :
+				print 'event unknown[%s]'% event
 		else:
 			print 'show screen is another windows page[%s]'% xbmcgui.getCurrentWindowId()
 
@@ -505,11 +515,11 @@ class ChannelListWindow(BaseWindow):
 		print 'satellite_GetConfiguredList[%s]'% self.list_Satellite
 
 		#FTA list
-		self.list_CasList = self.commander.channel_GetFTACasList( ElisEnum.E_TYPE_TV )
+		self.list_CasList = self.commander.fta_cas_GetList( ElisEnum.E_TYPE_TV )
 		print 'channel_GetFTACasList[%s]'% self.list_CasList
 
 		#Favorite list
-		self.list_Favorite = self.commander.channel_GetFavoriteList( ElisEnum.E_TYPE_TV )
+		self.list_Favorite = self.commander.favorite_GetList( ElisEnum.E_TYPE_TV )
 		print 'channel_GetFavoriteList[%s]'% self.list_Favorite
 
 		testlistItems = []
@@ -532,6 +542,7 @@ class ChannelListWindow(BaseWindow):
 				testlistItems.append(xbmcgui.ListItem( item[0] ))
 
 		self.ctrlListSubmenu.addItems( testlistItems )
+
 
 		#path tree, Mainmenu/Submanu
 		#label1 = self.ctrlListMainmenu.getSelectedItem().getLabel()
@@ -700,30 +711,30 @@ class ChannelListWindow(BaseWindow):
 		print 'event____[%s]'% event
 		if event != [] and event[1] != 'NULL' and len(event) > 2:
 			#update epgName uiID(304)
-			self.ctrlEventName.setLabel(event[2])
+			self.ctrlEventName.setLabel(event[1])
 
 			#update epgTime uiID(305)
-			if is_digit(event[7]):
-				self.progress_max = int(event[7])
+			if is_digit(event[6]):
+				self.progress_max = int(event[6])
 				print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 				if is_digit(event[6]):
 					timeZone = self.commander.datetime_GetLocalOffset()
-					ret = epgInfoTime(timeZone[0], int(event[6]), int(event[7]))
+					ret = epgInfoTime(timeZone[0], int(event[5]), int(event[6]))
 					print 'epgInfoTime[%s]'% ret
 					if ret != []:
 						self.ctrlEventTime.setLabel(str('%s%s'% (ret[0], ret[1])))
 
 				else:
-					print 'value error EPGTime start[%s]' % event[6]
+					print 'value error EPGTime start[%s]' % event[5]
 			else:
-				print 'value error EPGTime duration[%s]' % event[7]
+				print 'value error EPGTime duration[%s]' % event[6]
 
 			#visible progress
 			self.ctrlProgress.setVisible(True)
 
 			#component
-			component = event[9:18]
+			component = event[8:17]
 #			ret = epgInfoComponentImage(int(event[9]))
 			ret = epgInfoComponentImage(component)				
 			if len(ret) == 1:
@@ -742,8 +753,8 @@ class ChannelListWindow(BaseWindow):
 
 
 			#is Age? agerating check
-			if is_digit(event[21]) :
-				agerating = int(event[21])
+			if is_digit(event[20]) :
+				agerating = int(event[20])
 				isLimit = util.ageLimit(self.commander, agerating)
 				if isLimit == True :
 					self.pincodeEnter |= 0x01
