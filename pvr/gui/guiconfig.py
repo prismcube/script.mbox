@@ -55,14 +55,14 @@ USER_ENUM_LIST_SYMBOL_RATE		= [ '22000 KS/s', '27500 KS/s' ]
 """
 
 # Tuner Config String Define
-USER_ENUM_LIST_ON_OFF			= [ 'Off', 'On' ]
-E_LIST_LNB_TYPE					= [ 'Universal' , 'Single', 'Userdefined' ]
-E_LIST_SINGLE_FREQUENCY 		= [ '5150', '9750', '10600', '10750', '11300' ]
-E_LIST_DISEQC_MODE				= [ 'Disable', '1 of 4', '2 of 4', '3 of 4', '4 of 4', 'Mini A', 'Mini B' ]
-E_LIST_COMMITTED_SWITCH			= [ 'Disable', '1', '2', '3', '4', 'Disable', 'Disable' ]
-E_LIST_UNCOMMITTED_SWITCH		= [ 'Disable', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16' ]
-E_LIST_ONE_CABLE_ACTION			= [ 'Reset Limits', 'Set Current Position for East Limit', 'Set Current Position for West Limit' ]
-
+USER_ENUM_LIST_ON_OFF				= [ 'Off', 'On' ]
+E_LIST_LNB_TYPE						= [ 'Universal' , 'Single', 'Userdefined' ]
+E_LIST_SINGLE_FREQUENCY 			= [ '5150', '9750', '10600', '10750', '11300' ]
+E_LIST_DISEQC_MODE					= [ 'Disable', '1 of 4', '2 of 4', '3 of 4', '4 of 4', 'Mini A', 'Mini B' ]
+E_LIST_COMMITTED_SWITCH				= [ 'Disable', '1', '2', '3', '4', 'Disable', 'Disable' ]
+E_LIST_UNCOMMITTED_SWITCH			= [ 'Disable', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16' ]
+E_LIST_ONE_CABLE_ACTION				= [ 'Reset Limits', 'Set Current Position for East Limit', 'Set Current Position for West Limit' ]
+E_LIST_ONE_CABLE_TUNER_FREQUENCY	= [ '1284', '1400', '1516', '1632', '1748', '1864', '1980', '2096' ]
 
 """
 E_LIST_TUNER_TYPE				= [ 'Simple LNB', 'DiSEqC 1.0', 'DiSEqC 1.1', 'Motorized, DiSEqC 1.2', 'Motorized, USALS', 'OneCable' ]
@@ -76,6 +76,14 @@ def getSingleFrequenceIndex( selectedItem ) :
 			return i
 			
 	return -1
+
+def getOneCableTunerFrequencyIndex( selectedItem ) :
+	for i in range( len ( E_LIST_ONE_CABLE_TUNER_FREQUENCY )	) :
+		if( selectedItem == E_LIST_ONE_CABLE_TUNER_FREQUENCY[ i ] ) :
+			return i
+			
+	return -1
+
 
 class FooterMask(object):
 	G_FOOTER_GROUP_STARTID				= 3100

@@ -104,7 +104,7 @@ class AntennaSetup( SettingWindow ):
 
 			if controlId == E_Input01 + 1 :
 			
-				configmgr.getInstance().setCurrentTunerIndex( E_TUNER_1  ) 
+				configmgr.getInstance().setCurrentTunerIndex( E_TUNER_1 ) 
 				"""
 				configmgr.getInstance().setCurrentTunerType( self.getSelectedIndex( E_SpinEx03 ) )
 				"""
@@ -122,7 +122,7 @@ class AntennaSetup( SettingWindow ):
 			"""
 			
 			if self.getSelectedIndex( E_SpinEx03 ) == E_SIMPLE_LNB :
-
+				configmgr.getInstance( ).setCurrentConfigIndex
 				configmgr.getInstance( ).setCurrentConfigIndex( 0 )
 				self.resetAllControl( )
 				
