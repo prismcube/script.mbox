@@ -26,7 +26,7 @@ class ChannelListWindow(BaseWindow):
 		self.commander = pvr.elismgr.getInstance().getCommander()		
 
 		self.eventBus = pvr.elismgr.getInstance().getEventBus()
-		#self.eventBus.register( self )
+		self.eventBus.register( self )
 
 		#submenu list
 		self.list_AllChannel= []
@@ -35,6 +35,8 @@ class ChannelListWindow(BaseWindow):
 		self.list_Favorite  = []
 
 		self.execute_OnlyOne = True
+		self.nowTime = 0
+		self.eventID = 0
 
 		self.pincodeEnter = 0x0
 		
@@ -281,15 +283,18 @@ class ChannelListWindow(BaseWindow):
 	def onEvent(self, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'event[%s]'% event
-		
-		if xbmcgui.getCurrentWindowId() == self.win :
+		#if xbmcgui.getCurrentWindowId() == self.win :
+		if self.win :
 			msg = event[0]
 			
-			if msg == 'Elis-CurrentEITReceived' :
-				if int(event[4]) != self.eventID:
+			if msg == 'Elis-CurrentEITReceived' or msg == 'Elis-ChannelChangeResult' :
+				if int(event[4]) != self.eventID :
 					self.eventID = int(event[4])
-					self.epgClock = self.commander.datetime_GetLocalTime()
-					ret = self.commander.epgevent_Get(self.eventID, int(event[0]), int(event[1]), int(event[2]), int(self.epgClock[0]) )
+					currenttime = int(self.epgClock[0]) + (time.time() - self.nowTime)
+					#currenttime = int(self.commander.datetime_GetLocalOffset()[0])
+					print 'currenttime[%d]'% ( currenttime )
+					
+					ret = self.commander.epgevent_Get(self.eventID, int(event[1]), int(event[2]), int(event[3]), int(self.epgClock[0]) )
 					self.updateLabelInfo(ret)
 
 			else :
@@ -708,8 +713,8 @@ class ChannelListWindow(BaseWindow):
 
 
 
-		print 'event____[%s]'% event
-		if event != [] and event[1] != 'NULL' and len(event) > 2:
+		print 'event____[len:%s][%s]'% ( len(event), event )
+		if len(event) == 21:
 			#update epgName uiID(304)
 			self.ctrlEventName.setLabel(event[1])
 
@@ -775,7 +780,7 @@ class ChannelListWindow(BaseWindow):
 	def updateLocalTime(self):
 		print '[%s():%s]begin_start thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
-		nowTime = time.time()
+		self.nowTime = time.time()
 		while self.untilThread:
 			#print '[%s():%s]repeat <<<<'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
