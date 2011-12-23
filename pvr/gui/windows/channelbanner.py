@@ -37,7 +37,7 @@ class ChannelBanner(BaseWindow):
 		self.lastChannel = 	self.commander.channel_GetCurrent()	
 		self.currentChannel =  self.lastChannel
 		self.eventBus = pvr.elismgr.getInstance().getEventBus()
-		self.eventBus.register( self )
+		#self.eventBus.register( self )
 
 
 		self.currentChannel=[]

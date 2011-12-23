@@ -484,6 +484,32 @@ class SettingWindow( BaseWindow ):
 						self.setFocusId( focusId + 1 )
 						return
 
+	def selectPosition( self, controlId, position ) :
+
+		count = len( self.controlList )
+
+		for i in range( count ) :
+			ctrlItem = self.controlList[i]		
+			if self.hasControlItem( ctrlItem, controlId ) :
+				if ctrlItem.controlType == ctrlItem.E_SETTING_ENUM_CONTROL :
+					control = self.getControl( ctrlItem.controlId + 3 )
+					control.selectItem( position )
+					return True
+
+		return False
+
+	def setProp( self, controlId, value ):
+	
+		count = len( self.controlList )
+
+		for i in range( count ) :
+			ctrlItem = self.controlList[i]		
+			if self.hasControlItem( ctrlItem, controlId ) :
+				if ctrlItem.controlType == ctrlItem.E_SETTING_ENUM_CONTROL :
+					ctrlItem.property.setProp( value )
+					return True
+	
+
 class DetailWindow(SettingWindow):
 
 

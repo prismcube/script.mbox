@@ -90,12 +90,12 @@ class AutomaticScan( SettingWindow ):
 				print 'ToDO : All Chanenl Search'
 			else :
 				satelliteList = []
-				satellite = self.configuredList[self.selectedSatelliteIndex -1]
+				satellite = self.configuredSatelliteList[self.selectedSatelliteIndex -1]
 				print 'longitude=%s bandtype=%s' %( satellite[E_CONFIGURE_SATELLITE_LONGITUDE], satellite[E_CONFIGURE_SATELLITE_BANDTYPE] )
 
 				satelliteList.append( satellite )
 	 			dialog = diamgr.getInstance().getDialog( diamgr.DIALOG_ID_CHANNEL_SEARCH )
-	 			dialog.scanBySatellite( satelliteList )
+	 			dialog.setSatellite( satelliteList )
 	 			dialog.doModal( )
 								
 				#self.commander.channelscan_BySatellite( int(config[E_CONFIGURE_SATELLITE_LONGITUDE]), int(config[E_CONFIGURE_SATELLITE_BANDTYPE]))
@@ -153,32 +153,32 @@ class AutomaticScan( SettingWindow ):
 
 	def loadFormattedSatelliteNameList( self ) :
 
-		configuredList1 = []
-		configuredList1 = self.commander.satelliteconfig_GetList( E_TUNER_1 )		
+		configuredSatelliteList1 = []
+		configuredSatelliteList1 = self.commander.satelliteconfig_GetList( E_TUNER_1 )		
 
-		configuredList2 = []
-		configuredList2 = self.commander.satelliteconfig_GetList( E_TUNER_2 )		
+		configuredSatelliteList2 = []
+		configuredSatelliteList2 = self.commander.satelliteconfig_GetList( E_TUNER_2 )		
 
 		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.commander )
 
-		self.configuredList = deepcopy( configuredList1 )
+		self.configuredSatelliteList = deepcopy( configuredSatelliteList1 )
 		
 		if property.getProp( ) == E_DIFFERENT_TUNER :
-			for config in configuredList2 :
+			for config in configuredSatelliteList2 :
 				find = False
-				for compare in configuredList1 :
+				for compare in configuredSatelliteList1 :
 					if config[E_CONFIGURE_SATELLITE_LONGITUDE] == compare[E_CONFIGURE_SATELLITE_LONGITUDE] :
 						find = True
 						break
 
 				if find == False :
-					self.configuredList.append( config )
+					self.configuredSatelliteList.append( config )
 
 
 		self.formattedList = []
 		self.formattedList.append('All')
 
-		for config in self.configuredList :
+		for config in self.configuredSatelliteList :
 			self.formattedList.append( self.getFormattedName( int(config[E_CONFIGURE_SATELLITE_LONGITUDE]) ) )
 
 

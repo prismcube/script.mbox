@@ -267,7 +267,7 @@
 			<orientation>vertical</orientation>
 		</control>
 
-		<!--  Transponder Inf -->
+		<!--  Transponder Info -->
 		<control type="label" id="104">
 			<description>TransponderInfo</description>
 			<posx>50</posx>
