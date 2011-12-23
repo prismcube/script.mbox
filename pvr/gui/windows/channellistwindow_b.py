@@ -26,7 +26,7 @@ class ChannelListWindow(BaseWindow):
 		self.commander = pvr.elismgr.getInstance().getCommander()		
 
 		self.eventBus = pvr.elismgr.getInstance().getEventBus()
-		#self.eventBus.register( self )
+		self.eventBus.register( self )
 
 		#submenu list
 		self.list_AllChannel= []
@@ -261,8 +261,7 @@ class ChannelListWindow(BaseWindow):
 				self.close( )
 
 			else :
-				pass
-				#self.subManuAction( 0, idx_menu )
+				self.subManuAction( 0, idx_menu )
 
 		elif controlId == self.ctrlListSubmenu.getId() :
 			#list action
@@ -556,14 +555,12 @@ class ChannelListWindow(BaseWindow):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 		self.listItems = []
-		sublist = []
 		for ch in self.channelList:
 			#skip ch
 			if int(ch[12]) == 1 :
 				continue
 
 			listItem = xbmcgui.ListItem("%04d %s"%( int(ch[0]), ch[2]),"-", "-", "-", "-")
-			subItem  = xbmcgui.ListItem("%04d %s"%( int(ch[0]), ch[2]),"-", "-", "-", "-")
 
 			thum=icas=''
 			if int(ch[4]) == 1 : thum='IconLockFocus.png'#'OverlayLocked.png'
@@ -572,10 +569,7 @@ class ChannelListWindow(BaseWindow):
 			listItem.setProperty('icas', icas)
 			self.listItems.append(listItem)
 
-			sublist.append(subItem)
-
 		self.ctrlListCHList.addItems( self.listItems )
-		self.ctrlListSubmenu.addItems( sublist )
 
 		#detected to last focus
 		self.currentChannelInfo = self.commander.channel_GetCurrent()

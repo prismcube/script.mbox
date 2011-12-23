@@ -4,11 +4,13 @@ import sys
 
 import pvr.gui.windowmgr as winmgr
 import pvr.tunerconfigmgr as configmgr
+from pvr.tunerconfigmgr import *
 from pvr.gui.guiconfig import *
 
 from pvr.gui.basewindow import SettingWindow
 from pvr.gui.basewindow import Action
 from pvr.gui.windows.onecableconfiguration2 import OneCableConfiguration2
+from pvr.gui.windows.satelliteconfigsimple import SatelliteConfigSimple
 
 MAX_SATELLITE_CNT = 4
 
@@ -23,7 +25,8 @@ class OneCableConfiguration( SettingWindow ):
 		self.setHeaderLabel( 'OneCable Configuration' )
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'OneCable configuration' )
-		
+
+		self.currentSatellite = configmgr.getInstance( ).getConfiguredSatellitebyIndex( 0 )
 		self.loadConfigedSatellite( )
 
 		self.addLeftLabelButtonControl( E_Input01, 'Configure System' )
@@ -42,6 +45,7 @@ class OneCableConfiguration( SettingWindow ):
 		self.initControl( )
 		self.getControl( E_SpinEx01 + 3 ).selectItem( self.satelliteCount - 1 )
 		self.disableControl( )
+
 				
 	def onAction( self, action ):
 
@@ -54,6 +58,17 @@ class OneCableConfiguration( SettingWindow ):
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
+			if self.satelliteCount > 1 :
+				for i in range( self.satelliteCount - 1 ) :
+					satellite = configmgr.getInstance( ).getConfiguredSatellitebyIndex( i + 1 )
+					satellite[E_CONFIGURE_SATELLITE_IS_ONECABLE] = self.currentSatellite[E_CONFIGURE_SATELLITE_IS_ONECABLE]
+					satellite[E_CONFIGURE_SATELLITE_ONECABLE_PIN] = self.currentSatellite[E_CONFIGURE_SATELLITE_ONECABLE_PIN]
+					satellite[E_CONFIGURE_SATELLITE_ONECABLE_MDU] = self.currentSatellite[E_CONFIGURE_SATELLITE_ONECABLE_MDU]
+					satellite[E_CONFIGURE_SATELLITE_ONECABLE_LO_FREQ1] = self.currentSatellite[E_CONFIGURE_SATELLITE_ONECABLE_LO_FREQ1]
+					satellite[E_CONFIGURE_SATELLITE_ONECABLE_LO_FREQ2] = self.currentSatellite[E_CONFIGURE_SATELLITE_ONECABLE_LO_FREQ2]
+					satellite[E_CONFIGURE_SATELLITE_ONECABLE_UBSLOT] = self.currentSatellite[E_CONFIGURE_SATELLITE_ONECABLE_UBSLOT]
+					satellite[E_CONFIGURE_SATELLITE_ONECABLE_UBFREQ] = self.currentSatellite[E_CONFIGURE_SATELLITE_ONECABLE_UBFREQ]
+
 			self.resetAllControl( )
 			self.close( )
 
@@ -81,7 +96,16 @@ class OneCableConfiguration( SettingWindow ):
 		
 		elif groupId == E_SpinEx01 :
 			self.disableControl( )
-			
+
+		else :
+			position = self.getControlIdToListIndex( groupId ) - 2
+			configmgr.getInstance( ).setCurrentConfigIndex( position )
+
+			self.resetAllControl( )
+				
+			import pvr.platform 
+			scriptDir = pvr.platform.getPlatform().getScriptDir()
+			SatelliteConfigSimple('satelliteconfiguration.xml', scriptDir).doModal()
 			
 	def onFocus( self, controlId ):
 		pass

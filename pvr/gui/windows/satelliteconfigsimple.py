@@ -16,8 +16,8 @@ from elisenum import ElisEnum
 
 class SatelliteConfigSimple( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
-		SettingWindow.__init__( self, *args, **kwargs)
-		self.commander = pvr.elismgr.getInstance().getCommander( )
+		SettingWindow.__init__( self, *args, **kwargs )
+		self.commander = pvr.elismgr.getInstance( ).getCommander( )
 			
 	def onInit( self ):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )

@@ -105,6 +105,17 @@ class TunerConfigMgr( object ):
 	
 		return None
 
+	def getConfiguredSatellitebyIndex( self, satelliteIndex ) :
+
+		if self.currentTuner == E_TUNER_1 :	
+			return self.configuredList1[satelliteIndex]
+		elif self.currentTuner == E_TUNER_2:
+			return self.configuredList2[satelliteIndex]		
+		else :
+			print 'ERROR : can not find configured satellite'
+	
+		return None
+
 	"""
 	def setCurrentTunerType( self, tunerType ) :
 		self.currentTunerType = tunerType
@@ -134,7 +145,6 @@ class TunerConfigMgr( object ):
 		
 	def getCurrentConfigIndex( self ) :
 		return self.currentConfigIndex
-
 
 
 	def getConfiguredSatelliteList( self ) :
@@ -190,7 +200,23 @@ class TunerConfigMgr( object ):
 	def satelliteconfigSaveList( self ) :
 
 		self.commander.satelliteconfig_DeleteAll( )
-
+		
+		tunerType = self.getCurrentTunerType( )
+		configuredList = self.getConfiguredSatelliteList( )
+		for i in range( len( configuredList ) ) :
+			if tunerType == E_SIMPLE_LNB or tunerType == E_DISEQC_1_0 or tunerType == E_DISEQC_1_1 :
+				#configuredList[i][E_CONFIGURE_SATELLITE_MOTORIZED_TYPE] = 0
+				configuredList[i][E_CONFIGURE_SATELLITE_IS_ONECABLE] = 0
+				
+			elif tunerType == E_MOTORIZED_1_2 or tunerType == E_MOTORIZED_USALS :
+				#configuredList[i][E_CONFIGURE_SATELLITE_MOTORIZED_TYPE] = 0
+				configuredList[i][E_CONFIGURE_SATELLITE_IS_ONECABLE] = 0
+				
+			elif tunerType == E_ONE_CABLE :
+				#configuredList[i][E_CONFIGURE_SATELLITE_MOTORIZED_TYPE] = 0
+				configuredList[i][E_CONFIGURE_SATELLITE_IS_ONECABLE] = 1
+		
+		
 		if self.getCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
 		
 			self.configuredList2 = deepcopy( self.configuredList1 )
@@ -199,7 +225,6 @@ class TunerConfigMgr( object ):
 			count = len ( self.configuredList2 )
 			for i in range(count) :
 				self.configuredList2[i][0] = '%d' %E_TUNER_2
-
 
 
 		count = len (self.configuredList1 )
@@ -382,4 +407,3 @@ class TunerConfigMgr( object ):
 
 	def updateOneCable( self ) :
 		pass
-

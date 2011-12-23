@@ -77,6 +77,9 @@ class NullWindow(BaseWindow):
 			winmgr.getInstance().getWindow(winmgr.WIN_ID_CHANNEL_BANNER).setLastChannel( currentChannel )
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )		
 
+		elif id == Action.REMOTE_2:
+			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST2_WINDOW )
+
 		else:
 			print 'lael98 check ation unknown id=%d' %id
 
