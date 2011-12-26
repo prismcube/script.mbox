@@ -19,7 +19,7 @@ import pvr.gui.windows.define_string as mm
 import thread, time
 
 
-class ChannelListWindow(BaseWindow):
+class ChannelListWindow_a(BaseWindow):
 
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
@@ -134,15 +134,15 @@ class ChannelListWindow(BaseWindow):
 
 
 	def onAction(self, action):
+
 		id = action.getId()
-		focusId = self.getFocusId( )
-		#print '[%s():%s]actionID[%d]'% (currentframe().f_code.co_name, currentframe().f_lineno, id) 
 
 		if id == Action.ACTION_PREVIOUS_MENU:
 			print 'ChannelListWindow lael98 check action menu'
 		elif id == Action.ACTION_SELECT_ITEM:
 			print '<<<<< test youn: action ID[%s]' % id
-
+			print 'tv_guide_last_selected[%s]' % action.getId()
+			#self.getTabHeader()
 			
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'lael98 check ation back'
@@ -152,20 +152,6 @@ class ChannelListWindow(BaseWindow):
 			self.ctrlListCHList.reset()
 
 			self.close( )
-
-		elif id == Action.ACTION_MOVE_RIGHT:
-			#print 'getFocusId[%s]'% self.win.getFocusId()
-			if focusId == self.ctrlListSubmenu.getId() :
-
-				idx_menu = self.ctrlListMainmenu.getSelectedPosition()
-				if idx_menu == 4 :
-					#this position's 'Back'
-					pass
-
-				else :
-					self.onClick( self.ctrlBtnMenu.getId() )
-					#self.onClick( self.ctrlListSubmenu.getId() )
-
 
 		elif id == 13: #'x'
 			#pass
@@ -239,8 +225,8 @@ class ChannelListWindow(BaseWindow):
 
 
 	def onClick(self, controlId):
-		print '[%s():%s]focusID[%d]'% (currentframe().f_code.co_name, currentframe().f_lineno, controlId) 
-
+		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno), \
+		      'ChannelListWindow onclick(): control %d' % controlId	
 		if controlId == self.ctrlListCHList.getId() :
 
 			label = self.ctrlListCHList.getSelectedItem().getLabel()
@@ -265,7 +251,7 @@ class ChannelListWindow(BaseWindow):
 			self.ctrlSelectItem.setLabel(str('%s / %s'% (self.ctrlListCHList.getSelectedPosition()+1, len(self.listItems))) )
 			self.initLabelInfo()
 
-		elif controlId == self.ctrlBtnMenu.getId() or controlId == self.ctrlListMainmenu.getId() :
+		elif controlId == self.ctrlBtnMenu.getId() :
 			#list view
 
 			idx_menu = self.ctrlListMainmenu.getSelectedPosition()
@@ -276,11 +262,11 @@ class ChannelListWindow(BaseWindow):
 				self.updateLocalTime().join()
 				self.ctrlListCHList.reset()
 
-				self.close()
-
+				self.close( )
 
 			else :
-				self.subManuAction( 0, idx_menu )
+				pass
+				#self.subManuAction( 0, idx_menu )
 
 		elif controlId == self.ctrlListSubmenu.getId() :
 			#list action
@@ -306,12 +292,12 @@ class ChannelListWindow(BaseWindow):
 			if msg == 'Elis-CurrentEITReceived' :
 
 				if int(event[4]) != self.eventID :			
-					#ret = self.commander.epgevent_Get(self.eventID, int(event[1]), int(event[2]), int(event[3]), int(self.epgClock[0]) )
 					ret = self.commander.epgevent_GetPresent( )
 					if len( ret ) > 0 :
 						self.eventID = int( event[4] )
 						self.updateLabelInfo( ret )
 
+					#ret = self.commander.epgevent_Get(self.eventID, int(event[1]), int(event[2]), int(event[3]), int(self.epgClock[0]) )
 			else :
 				print 'event unknown[%s]'% event
 		else:
@@ -587,12 +573,14 @@ class ChannelListWindow(BaseWindow):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 		self.listItems = []
+		sublist = []
 		for ch in self.channelList:
 			#skip ch
 			if int(ch[12]) == 1 :
 				continue
 
 			listItem = xbmcgui.ListItem("%04d %s"%( int(ch[0]), ch[2]),"-", "-", "-", "-")
+			subItem  = xbmcgui.ListItem("%04d %s"%( int(ch[0]), ch[2]),"-", "-", "-", "-")
 
 			thum=icas=''
 			if int(ch[4]) == 1 : thum='IconLockFocus.png'#'OverlayLocked.png'
@@ -601,7 +589,10 @@ class ChannelListWindow(BaseWindow):
 			listItem.setProperty('icas', icas)
 			self.listItems.append(listItem)
 
+			sublist.append(subItem)
+
 		self.ctrlListCHList.addItems( self.listItems )
+		self.ctrlListSubmenu.addItems( sublist )
 
 		#detected to last focus
 		self.currentChannelInfo = self.commander.channel_GetCurrent()
@@ -797,16 +788,10 @@ class ChannelListWindow(BaseWindow):
 
 			#progress
 			if  ( loop % 10 ) == 0 :
-				try:
-					ret = self.commander.datetime_GetLocalTime( )
-					localTime = int( ret[0] )
+				ret = self.commander.datetime_GetLocalTime( )
+				localTime = int( ret[0] )
 
-				except Exception, e:
-					print 'Error datetime_GetLocalTime(), e[%s]'% e
-					continue
-
-				endTime = self.epgStartTime + self.epgDuration
-				#endTime = self.epgStartTime + self.localOffset + self.epgDuration
+				endTime = self.epgStartTime + self.localOffset + self.epgDuration
 				#print 'localoffset=%d localToime=%d epgStartTime=%d duration=%d' %(self.localOffset, localTime, self.epgStartTime, self.epgDuration )
 				#print 'endtime=%d' %endTime
 

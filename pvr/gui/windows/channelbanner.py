@@ -456,25 +456,29 @@ class ChannelBanner(BaseWindow):
 
 			#progress
 			if  ( loop % 10 ) == 0 :
-				ret = self.commander.datetime_GetLocalTime( )
-				localTime = int( ret[0] )
+				try:
+					ret = self.commander.datetime_GetLocalTime( )
+					localTime = int( ret[0] )
 
-				endTime = self.epgStartTime + self.localOffset + self.epgDuration
-				#print 'localoffset=%d localToime=%d epgStartTime=%d duration=%d' %(self.localOffset, localTime, self.epgStartTime, self.epgDuration )
-				#print 'endtime=%d' %endTime
+				except Exception, e:
+					print 'Error datetime_GetLocalTime(), e[%s]'% e
+					continue
 
-				pastDuration = endTime - localTime
-				if pastDuration < 0 :
-					pastDuration = 0
+					endTime = self.epgStartTime + self.epgDuration
+					#print 'localoffset=%d localToime=%d epgStartTime=%d duration=%d' %(self.localOffset, localTime, self.epgStartTime, self.epgDuration )
+					#print 'endtime=%d' %endTime
 
-				if self.epgDuration > 0 :
-					percent = pastDuration * 100/self.epgDuration
-				else :
-					percent = 0
+					pastDuration = endTime - localTime
+					if pastDuration < 0 :
+						pastDuration = 0
 
-				#print 'percent=%d' %percent
-				self.ctrlProgress.setPercent( percent )
+					if self.epgDuration > 0 :
+						percent = pastDuration * 100/self.epgDuration
+					else :
+						percent = 0
 
+					#print 'percent=%d' %percent
+					self.ctrlProgress.setPercent( percent )
 
 
 			#local clock

@@ -62,10 +62,10 @@
 				<posy>180</posy>
 				<width>590</width>
 				<height>401</height>
-				<onleft>SetFocus(101)</onleft>
+				<onleft>SetFocus(102)</onleft>
 				<onright>SetFocus(61)</onright>
-				<onup>SetFocus(50)</onup>
-				<ondown>SetFocus(50)</ondown>
+				<onup>50</onup>
+				<ondown>50</ondown>
 				<pagecontrol>61</pagecontrol>
 				<scrolltime>200</scrolltime>
 				<focusposition>0</focusposition>
@@ -228,9 +228,9 @@
             <textureslidernibfocus>scrollbar_nib.png</textureslidernibfocus> 
 -->
 			<onleft>SetFocus(49)</onleft>
-			<onright>SetFocus(61)</onright>
-			<ondown>SetFocus(61)</ondown>
-			<onup>SetFocus(61)</onup>
+			<onright>SetFocus(49)</onright>
+			<ondown>61</ondown>
+			<onup>61</onup>
 			<showonepage>false</showonepage>
 			<orientation>vertical</orientation>
 		</control>
@@ -469,10 +469,10 @@
 					<height>535</height>
 					<onleft>SetFocus(49)</onleft>
 					<onright>SetFocus(202)</onright>
-					<onup>SetFocus(102)</onup>
-					<ondown>SetFocus(102)</ondown>
+					<onup>102</onup>
+					<ondown>102</ondown>
 					<scrolltime>300</scrolltime>
-					<focusposition>0</focusposition>
+					<!--focusposition>0</focusposition-->
 					<movement>10</movement>
 					<animation effect="fade" start="0" end="100" time="200">Visible</animation>
 					<itemlayout height="70" width="185">
@@ -554,19 +554,19 @@
 						<posx>5</posx>
 						<posy>0</posy>
 						<width>230</width>
-						<height>530</height>
+						<height>430</height>
 						<align>center</align>
 						<font>font12_title</font>
 						<onleft>SetFocus(102)</onleft>
 						<onright>SetFocus(202)</onright>
-						<onup>SetFocus(202)</onup>
-						<ondown>SetFocus(202)</ondown>
+						<onup>202</onup>
+						<ondown>202</ondown>
 						<pagecontrol>203</pagecontrol>
 						<scrolltime>200</scrolltime>
-						<focusposition>0</focusposition>
-						<visible>true</visible>
+						<!--focusposition>0</focusposition-->
+						<visible>!Container(102).HasFocus(5)</visible>
 						<animation effect="fade" start="0" end="100" time="200">Visible</animation>
-						<itemlayout height="40" width="200">
+						<itemlayout height="40" width="230">
 							<control type="image">
 								<posx>0</posx>
 								<posy>0</posy>
@@ -587,7 +587,7 @@
 								<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
 							</control>
 						</itemlayout>
-						<focusedlayout height="40" width="200">
+						<focusedlayout height="40" width="230">
 							<control type="image">
 								<posx>0</posx>
 								<posy>0</posy>
@@ -643,85 +643,6 @@
 			</control>
 		</control>
 
-
-<!-- sub menu -->
-		<control type="group" id="200">
-			<posx>20</posx>
-			<posy>180</posy>
-			<!--visible>!ControlGroup(100).HasFocus)</visible-->
-			<!--control type="list" id="202">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>230</width>
-				<height>350</height>
-				<align>center</align>
-				<font>font12_title</font>
-				<onleft>SetFocus(100)</onleft>
-				<onright>SetFocus(49)</onright>
-				<onup>SetFocus(202)</onup>
-				<ondown>SetFocus(202)</ondown>
-				<pagecontrol>60</pagecontrol>
-				<scrolltime>200</scrolltime>
-				<focusposition>0</focusposition>
-				<visible>true</visible>
-				<animation effect="fade" start="0" end="100" time="200">Visible</animation>
-				<itemlayout height="40" width="200">
-					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>230</width>
-						<height>41</height>
-						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
-					</control>
-					<control type="label">
-						<posx>10</posx>
-						<posy>0</posy>
-						<width>230</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>grey3</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>$INFO[ListItem.Label]</label>
-						<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
-					</control>
-				</itemlayout>
-				<focusedlayout height="40" width="200">
-					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>230</width>
-						<height>41</height>
-						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
-						<visible>!Control.HasFocus(50)</visible>
-						<animation effect="fade" time="300">Visible</animation>
-						<animation effect="fade" time="300">Hidden</animation>
-					</control>
-					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>230</width>
-						<height>41</height>
-						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
-						<visible>Control.HasFocus(50)</visible>
-						<animation effect="fade" time="300">Visible</animation>
-						<animation effect="fade" time="300">Hidden</animation>
-					</control>
-					<control type="label">
-						<posx>10</posx>
-						<posy>0</posy>
-						<width>230</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>white</textcolor>
-						<selectedcolor>selected</selectedcolor>						
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>$INFO[ListItem.Label]</label>
-					</control>
-				</focusedlayout>
-			</control-->
-		</control>
 
 
 
