@@ -13,6 +13,7 @@ import pvr.util as util
 import pvr.elismgr
 from elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import FooterMask
+import threading
 
 import pvr.msg as m
 import pvr.gui.windows.define_string as mm
@@ -69,6 +70,7 @@ class ChannelListWindow(BaseWindow):
 			self.ctrlListMainmenu       = self.getControl( 102 )
 			
 			#sub menu list
+			self.ctrlGrpSubmenu         = self.getControl( 9001 )
 			self.ctrlListSubmenu        = self.getControl( 202 )
 
 			#ch list
@@ -140,10 +142,20 @@ class ChannelListWindow(BaseWindow):
 
 		if id == Action.ACTION_PREVIOUS_MENU:
 			print 'ChannelListWindow lael98 check action menu'
+
 		elif id == Action.ACTION_SELECT_ITEM:
 			print '<<<<< test youn: action ID[%s]' % id
 
-			
+			if focusId == self.ctrlListCHList.getId() :
+				self.onClick( self.ctrlListCHList.getId() )
+
+			elif focusId == self.ctrlListMainmenu.getId() :
+				self.onClick( self.ctrlListMainmenu.getId() )
+
+			elif focusId == self.ctrlListSubmenu.getId() :
+				self.onClick( self.ctrlListSubmenu.getId() )
+
+
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'lael98 check ation back'
 
@@ -154,17 +166,29 @@ class ChannelListWindow(BaseWindow):
 			self.close( )
 
 		elif id == Action.ACTION_MOVE_RIGHT:
-			#print 'getFocusId[%s]'% self.win.getFocusId()
-			if focusId == self.ctrlListSubmenu.getId() :
+			print 'ACTION_MOVE_RIGHT, getFocusId[%s]'% focusId #self.win.getFocusId()
 
+			if focusId == self.ctrlListMainmenu.getId() :
 				idx_menu = self.ctrlListMainmenu.getSelectedPosition()
+
+				#this position's 'Back'
 				if idx_menu == 4 :
-					#this position's 'Back'
 					pass
+					"""
+					self.untilThread = False
+					self.updateLocalTime().join()
+					self.ctrlListCHList.reset()
+
+					self.close()
+					"""
+
 
 				else :
-					self.onClick( self.ctrlBtnMenu.getId() )
-					#self.onClick( self.ctrlListSubmenu.getId() )
+					self.onClick( self.ctrlListMainmenu.getId() )
+
+			elif focusId == self.ctrlListSubmenu.getId() :
+				self.onClick( self.ctrlListMainmenu.getId() )
+
 
 
 		elif id == 13: #'x'
@@ -278,13 +302,13 @@ class ChannelListWindow(BaseWindow):
 
 				self.close()
 
-
 			else :
 				self.subManuAction( 0, idx_menu )
+				self.setFocusId( self.ctrlListSubmenu.getId() )
+				#self.setFocusId( self.ctrlGrpSubmenu.getId() )
 
 		elif controlId == self.ctrlListSubmenu.getId() :
 			#list action
-
 			idx_menu = self.chlist_zappingMode
 			print 'focus[%s] idx_sub[%s]'% (controlId, idx_menu)
 
@@ -424,7 +448,7 @@ class ChannelListWindow(BaseWindow):
 				#label1 = self.ctrlListMainmenu.getSelectedItem().getLabel()
 				label1 = enumToString('mode', self.chlist_zappingMode)
 				label2 = self.ctrlListSubmenu.getSelectedItem().getLabel()
-				self.ctrlLblPath.setLabel( '%s/%s'% (label1.title(), label2.title()) )
+				self.ctrlLblPath.setLabel( '%s\\%s'% (label1.title(), label2.title()) )
 
 				#save zapping mode
 				#ret = self.commander.zappingmode_SetCurrent( self.chlist_zappingMode, self.chlist_channelsortMode, self.chlist_serviceType )
@@ -451,7 +475,7 @@ class ChannelListWindow(BaseWindow):
 				pass
 
 		except Exception, e:
-			print 'getChannelList Error[%s]'% e
+			print 'Error[%s] getChannelList by zapping mode'% e
 
 
 	def getTabHeader(self):
@@ -516,6 +540,7 @@ class ChannelListWindow(BaseWindow):
 		list_Mainmenu.append( m.strings(mm.LANG_SATELLITE)    )
 		list_Mainmenu.append( m.strings(mm.LANG_FTA)          )
 		list_Mainmenu.append( m.strings(mm.LANG_FAVORITE)     )
+		list_Mainmenu.append( m.strings(mm.LANG_BACK)     )
 		testlistItems = []
 		for item in range( len(list_Mainmenu) ) :
 			testlistItems.append( xbmcgui.ListItem(list_Mainmenu[item]) )
@@ -530,17 +555,23 @@ class ChannelListWindow(BaseWindow):
 		self.list_AllChannel.append( 'All Channel by HD/SD' )
 		print 'list_AllChannel[%s]'% self.list_AllChannel
 
-		#satellite longitude list
-		self.list_Satellite = self.commander.satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
-		print 'satellite_GetConfiguredList[%s]'% self.list_Satellite
+		try :
+			#satellite longitude list
+			self.list_Satellite = self.commander.satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
+			print 'satellite_GetConfiguredList[%s]'% self.list_Satellite
 
-		#FTA list
-		self.list_CasList = self.commander.fta_cas_GetList( ElisEnum.E_TYPE_TV )
-		print 'channel_GetFTACasList[%s]'% self.list_CasList
+			#FTA list
+			self.list_CasList = self.commander.fta_cas_GetList( ElisEnum.E_TYPE_TV )
+			print 'channel_GetFTACasList[%s]'% self.list_CasList
 
-		#Favorite list
-		self.list_Favorite = self.commander.favorite_GetList( ElisEnum.E_TYPE_TV )
-		print 'channel_GetFavoriteList[%s]'% self.list_Favorite
+			#Favorite list
+			self.list_Favorite = self.commander.favorite_GetList( ElisEnum.E_TYPE_TV )
+			print 'channel_GetFavoriteList[%s]'% self.list_Favorite
+
+		except Exception, e:
+			print 'Error[e] get SubMenu'% e
+			#TODO
+			#display dialog
 
 		testlistItems = []
 		if self.chlist_zappingMode == ElisEnum.E_MODE_ALL :
@@ -792,10 +823,12 @@ class ChannelListWindow(BaseWindow):
 		print '[%s():%s]begin_start thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 		loop = 0
+		rLock = threading.RLock()		
 		while self.untilThread:
 			#print '[%s():%s]repeat <<<<'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 			#progress
+			rLock.acquire()
 			if  ( loop % 10 ) == 0 :
 				try:
 					ret = self.commander.datetime_GetLocalTime( )
@@ -803,6 +836,7 @@ class ChannelListWindow(BaseWindow):
 
 				except Exception, e:
 					print 'Error datetime_GetLocalTime(), e[%s]'% e
+					rLock.release( )					
 					continue
 
 				endTime = self.epgStartTime + self.epgDuration
@@ -828,7 +862,7 @@ class ChannelListWindow(BaseWindow):
 			ret = epgInfoClock(1, localTime, loop)
 			self.ctrlHeader3.setLabel(ret[0])
 			self.ctrlHeader4.setLabel(ret[1])
-
+			rLock.release( )
 			#self.nowTime += 1
 			time.sleep(1)
 			loop += 1
