@@ -9,6 +9,7 @@ from pvr.gui.guiconfig import *
 import pvr.elismgr
 import pvr.gui.dialogmgr
 
+
 class Action(object):
 	ACTION_NONE					= 0
 	ACTION_MOVE_LEFT			= 1		#Left Arrow
@@ -135,7 +136,7 @@ class ControlItem:
 		self.enable	= True
 		self.description = description
 		self.selecteItem = selecteItem
-		self.stringType = stringType
+		self.stringType = stringType	# 0 : Number, 1 : String
 		self.maxLength = maxLength
 	
 
@@ -214,7 +215,7 @@ class SettingWindow( BaseWindow ):
 		listItems = []
 		listItem = xbmcgui.ListItem( titleLabel, inputLabel, "-", "-", "-" )
 		listItems.append( listItem )
-		self.controlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, controlId, inputType, listItems, None, None, None, description ) )
+		self.controlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, controlId, inputType, listItems, None, stringType, maxLength, description ) )
 
 	def addLeftLabelButtonControl( self, controlId, inputString, description=None ):
 		listItems = []
@@ -245,12 +246,6 @@ class SettingWindow( BaseWindow ):
 		keyType = ctrlItem.property
 		if ( keyType == None ) :
 			return
-		"""
-		import pvr.platform 
-		scriptDir = pvr.platform.getPlatform().getScriptDir()
-		from pvr.gui.dialogs.dialogkeyboard import DialogKeyboard
-		KeyboardDialog('keyboarddialog.xml', scriptDir).doModal()
-		"""
 
 		if( keyType == 4 ) :
 			kb = xbmc.Keyboard( ctrlItem.listItems[0].getLabel2( ), ctrlItem.listItems[0].getLabel( ), False )
@@ -269,14 +264,14 @@ class SettingWindow( BaseWindow ):
 			return True
 
 		elif ( keyType == 0 ) :
-			'''
+ 
 			dialog = pvr.gui.dialogmgr.getInstance().getDialog( pvr.gui.dialogmgr.DIALOG_ID_NUMERIC )
-			dialog.setTiteLabel( ctrlItem.listItems[0].getLabel( ) )
-			dialog.setNumber( ctrlItem.listItems[0].getLabel2( ) )
+			dialog.setProperty( ctrlItem.listItems[0].getLabel( ), ctrlItem.listItems[0].getLabel2( ), ctrlItem.maxLength )
 			dialog.doModal( )
 
 			if dialog.isOK() == True :
 				ctrlItem.listItems[0].setLabel2( dialog.getNumber( ) )
+ 
 			'''
 			dialog = pvr.gui.dialogmgr.getInstance( ).getDialog( pvr.gui.dialogmgr.DIALOG_ID_KEYBOARD )
 			dialog.setTiteLabel( ctrlItem.listItems[0].getLabel( ) )
@@ -284,8 +279,9 @@ class SettingWindow( BaseWindow ):
 			dialog.doModal( )
 
 			if dialog.isOK() == True :
-				ctrlItem.listItems[0].setLabel2( dialog.getText( ) )
-		
+				trlItem.listItems[0].setLabel2( dialog.getText( ) )
+			'''
+
 		else :
 			dialog = xbmcgui.Dialog( )
 			value = dialog.numeric( keyType, ctrlItem.listItems[0].getLabel( ), ctrlItem.listItems[0].getLabel2( ) )
@@ -449,9 +445,19 @@ class SettingWindow( BaseWindow ):
 
 	def	controlkeypad( self, controlId, actionId ) :
 		print 'dhkim test keypad = %d' % actionId
-		#num start 58->30
-		number = self.getControl( controlId + 3 ).getListItem(0).getLabel2( )
-		self.getControl( controlId + 3 ).getListItem(0).setLabel2( number + chr( actionId - 10 ) )
+
+		if actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
+			number = self.getControl( controlId + 3 ).getListItem(0).getLabel2( )
+
+			for i in range( len( self.controlList ) ) :
+				if self.controlList[i].controlId == controlId :
+					length = self.controlList[i].maxLength
+					break
+
+			if len( number ) >= length :
+				number = ''
+				
+			self.getControl( controlId + 3 ).getListItem(0).setLabel2( number + chr( actionId - 10 ) )
 
 
 	def controlUp( self ):

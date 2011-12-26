@@ -129,6 +129,6 @@ class OneCableConfiguration( SettingWindow ):
 
 		for i in range( MAX_SATELLITE_CNT ) :
 			if i < self.satelliteCount :
-				self.satellitelist.append( configmgr.getInstance( ).getFormattedName( int ( configuredList[i][2] ) ) )
+				self.satellitelist.append( configmgr.getInstance( ).getFormattedName( int( configuredList[i][2] ), int( configuredList[i][3] ) ) )
 			else :
 				self.satellitelist.append( '' ) # dummy Data

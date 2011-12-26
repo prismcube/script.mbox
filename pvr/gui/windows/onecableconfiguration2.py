@@ -33,7 +33,7 @@ class OneCableConfiguration2( SettingWindow ):
 		self.addEnumControl( E_SpinEx01, 'MDU' )
 
 		pinCode = ElisPropertyInt( 'Tuner%d Pin Code' % ( self.tunerIndex + 1 ), self.commander ).getProp( )
-		self.addInputControl( E_Input01, 'Tuner %d PIN-Code' % ( self.tunerIndex + 1 ), '%d' % pinCode, 0 )
+		self.addInputControl( E_Input01, 'Tuner %d PIN-Code' % ( self.tunerIndex + 1 ), '%d' % pinCode, 0, 0, 4 )
 
 		tunerScr = ElisPropertyInt( 'Tuner%d SCR' % ( self.tunerIndex + 1 ), self.commander ).getProp( )
 		self.addUserEnumControl( E_SpinEx02, 'Tuner %d' % ( self.tunerIndex + 1 ), self.scrList, tunerScr )

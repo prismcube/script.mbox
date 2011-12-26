@@ -22,14 +22,11 @@ class DialogNumeric( NumericKeyboard ) :
 		
 		self.inputLabel = None
 		self.titleLabel = None
+		self.maxLength = 20
 		self.ctrlEditLabel = 0
 		self.isOk = False
 
 	def onInit( self ) :
-		"""
-		self.getControl( E_DIALOG_HEADER ).setLabel( diamgr.getInstance().getTitleLabel( ) )
-		self.inputLabel = diamgr.getInstance().getDefaultText( )
-		"""
 		self.isOk = False
 		self.getControl( E_DIALOG_HEADER ).setLabel( self.getTitleLabel( ) )
 		self.ctrlEditLabel = self.getControl( E_INPUT_LABEL )
@@ -55,6 +52,8 @@ class DialogNumeric( NumericKeyboard ) :
 		focusId = self.getFocusId( )
 		
 		if( focusId >= E_START_ID_NUMBER and focusId <= 19 ) :
+			if len( self.inputLabel ) >= self.maxLength :
+				self.inputLabel = ''
 			self.inputLabel += self.getControl( focusId ).getLabel( )
 
 		elif( focusId == E_BUTTON_BACK_SPACE ) :
@@ -87,12 +86,12 @@ class DialogNumeric( NumericKeyboard ) :
 		return self.inputLabel
 
 
-	def setNumber( self, number ) :
-		self.inputLabel = number
-
 	def getTitleLabel( self ) :
 		return self.titleLabel
+		
 
-	def setTiteLabel( self, titleLabel ) :
-		self.titleLabel = titleLabel
-
+	def setProperty( self, title, value, maxLeng ) :
+		self.titleLabel = title
+		self.inputLabel	= value
+		self.maxLength = maxLeng
+	

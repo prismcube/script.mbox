@@ -133,7 +133,7 @@ class TunerConfiguration( SettingWindow ):
 		configuredList = configmgr.getInstance( ).getConfiguredSatelliteList( )
 
 		for config in configuredList :
-			self.listItems.append( xbmcgui.ListItem( '%s' %configmgr.getInstance( ).getFormattedName( int ( config[ 2 ] ) ) ) )
+			self.listItems.append( xbmcgui.ListItem( '%s' %configmgr.getInstance( ).getFormattedName( int( config[ 2 ] ), int( config[ 3 ] ) ) ) )
 
 		self.listItems.append( xbmcgui.ListItem( 'Add New Satellite' ) )
 		self.getControl( E_MAIN_LIST_ID ).addItems( self.listItems )

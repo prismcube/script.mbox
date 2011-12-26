@@ -292,12 +292,12 @@ class TunerConfigMgr( object ):
 
 	
 
-	def getFormattedName( self, longitude ) :
+	def getFormattedName( self, longitude, band ) :
 	
 		found = False	
 
 		for satellite in self.allsatellitelist :
-			if longitude == int( satellite[0] ) :
+			if longitude == int( satellite[0] ) and band == int( satellite[1] ):
 				found = True
 				break
 
@@ -329,13 +329,13 @@ class TunerConfigMgr( object ):
 
 		return formattedlist
 
-	def getTransponderList( self, longitude ) :
+	def getTransponderList( self, longitude, band ) :
 		tmptransponderList = []
 		transponderList = []
 		found = False	
 
 		for satellite in self.allsatellitelist :
-			if longitude == int( satellite[0] ) :
+			if longitude == int( satellite[0] ) and band == int( satellite[1] ):
 				found = True
 				break
 
