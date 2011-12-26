@@ -50,8 +50,17 @@ class DialogChannelSearch( BaseDialog ) :
 		self.win = xbmcgui.getCurrentWindowId()
 		self.isFinished = False	
 
+		self.satelliteFormatedName = 'Unknown'
+		self.allSatelliteList = []
+		
+		self.newTVChannelList = []
+		self.newRadioChannelList = []
+
 		self.tvListItems = []
-		self.radioListItems = []		
+		self.radioListItems =[]
+
+		self.getControl( E_TV_LIST_ID ).reset( )
+		self.getControl( E_RADIO_LIST_ID ).reset( )
 
 		self.ctrlProgress = self.getControl( E_PROGRESS_ID )
 		self.ctrlTransponderInfo = self.getControl( E_TRANSPONDER_INFO_ID )		
@@ -97,22 +106,42 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def drawItem( self ) :
 
-		count = len( self.newTvChannels )
+		#tvListItems = []
+		#radioListItems =[]
+
+		count = len( self.newTVChannelList )
 		for i in range( count ) :
-			listItem = xbmcgui.ListItem( ' ', " ", "-", "-", "-" )
+			listItem = xbmcgui.ListItem( self.newTVChannelList[i], "TV", "-", "-", "-" )
 			self.tvListItems.append( listItem )
 
+		if count > 0 :
+			self.getControl( E_TV_LIST_ID ).addItems( self.tvListItems )
+			lastPosition = len( self.tvListItems ) - 1
+			self.getControl( E_TV_LIST_ID ).selectItem( lastPosition )
 
-		count = len( self.newRadioChannels )
-			
-		self.getControl( E_TV_LIST_ID ).addItems( self.tvListItems )
-		self.getControl( E_RADIO_LIST_ID ).addItems( self.radioListItems )
+		count = len( self.newRadioChannelList )
+		for i in range( count ) :
+			listItem = xbmcgui.ListItem( self.newRadioChannelList[i], "Radio", "-", "-", "-" )
+			self.radioListItems.append( listItem )
+
+		if count > 0 :
+			self.getControl( E_RADIO_LIST_ID ).addItems( self.radioListItems )
+			lastPosition = len( self.radioListItems ) - 1			
+			self.getControl( E_RADIO_LIST_ID ).selectItem( lastPosition  )
+
+
+		self.newTVChannelList = []
+		self.newRadioChannelList = []
 
 
 	def setSatellite( self, satelliteList ) :
-		print 'scanBySatellite=%s' %satellite
+		print 'scanBySatellite=%s' %satelliteList
+		self.satelliteList = satelliteList		
+		satellite = self.satelliteList[0]
+		self.longitude = int( satellite[2] )
+		self.band = int( satellite[3] )
 		self.scanMode = E_SCAN_SATELLITE 
-		self.satelliteList = satelliteList
+
 
 
 	def setTransponder( self, longitude, band, transponderList ) :
@@ -124,10 +153,15 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 	def scanStart( self ) :
+
+		self.allSatelliteList = []
+		self.allSatelliteList = self.commander.satellite_GetList( ElisEnum.E_SORT_INSERTED )
+		self.satelliteFormatedName = self.getFormattedName( self.longitude , self.band  )		
+
 		print 'scanMode=%d' %self.scanMode
 		if self.scanMode == E_SCAN_SATELLITE :
 			satellite = self.satelliteList[0] # ToDO send with satelliteList
-			self.commander.channelscan_BySatellite( int(satellite[0]), int(satellite[1]) )
+			self.commander.channelscan_BySatellite( int(satellite[2]), int(satellite[3]) ) #longitude, band
 		elif self.scanMode == E_SCAN_TRANSPONDER :
 			self.commander.channel_SearchByCarrier( self.longitude, self.band, self.transponderList )
 		else :
@@ -143,15 +177,14 @@ class DialogChannelSearch( BaseDialog ) :
 		if self.isFinished == True :
 			self.eventBus.deregister( self )
 			self.close( )
-			
 
 	def onEvent( self, event ):
 
 		if xbmcgui.getCurrentWindowId() == self.win :
- 
+
 			if event[0] == ElisEvent.ElisScanAddChannel :
 				self.updateAddChannel( event )
- 
+
 			elif event[0] == ElisEvent.ElisScanProgress :
 				self.updateScanProgress( event )
 
@@ -159,7 +192,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def updateScanProgress(self, event ):
 		print 'update progress'
-		allCount = int( event[1] )
+		totalCount = int( event[1] )
 		currentIndex = int( event[2] )
 		finished = int( event[3] )
 		carrierType = int( event[4] )
@@ -172,27 +205,74 @@ class DialogChannelSearch( BaseDialog ) :
 		fecValude = int( event[9] )
 		polarization =  int( event[10] )
 
-		percent = int( currentIndex*100/allCount )
-		self.ctrlProgress.setPercent( percent )	
+		percent = int( currentIndex*100/totalCount )
 
-		strPol = 'V'
+		print 'currentIndex=%d total=%d percent=%d finish=%d' %(currentIndex, totalCount, percent, finished )
+
+		if finished == 0 and ( totalCount < 10 ) and ( currentIndex == totalCount ) :
+			self.ctrlProgress.setPercent( 90 )
+		else:
+			self.ctrlProgress.setPercent( percent )
+
+
+		strPol = 'Vertical'
 		if polarization == ElisEnum.E_LNB_HORIZONTAL or polarization == ElisEnum.E_LNB_LEFT :
-			strPol = 'H'
+			strPol = 'Horizontal'
 
-		strTransponderInfo = '%d Mhz/%d %s' %( frequency, symbolrate, strPol )
+
+		if self.longitude != logitude or self.band != band :
+			self.longitude = logitude
+			self.band = band
+			self.satelliteFormatedName = self.getFormattedName( self.longitude , self.band  )
+		
+		strTransponderInfo = '%s - %d Mhz - %s - %d MS/s ' %( self.satelliteFormatedName, frequency, strPol, symbolrate )
 		self.ctrlTransponderInfo.setLabel( strTransponderInfo )
 
-		if finish :
-			self.isFinished == True
-			xbmcgui.Dialog( ).ok('Confirm', 'Channel Search Finished')
+		if finished and currentIndex >= totalCount :
+			print 'finished'
+			self.isFinished = True
+			self.ctrlProgress.setPercent( 100 )
+
+			tvCount = len( self.tvListItems )
+			radioCount = len( self.radioListItems )
+			searchResult = 'TV Channels : %d \nRadio Channels : %d' %( tvCount, radioCount )
+			xbmcgui.Dialog( ).ok( 'Infomation', searchResult )
 
 
 	def updateAddChannel(self, event ):
-		"""
+
 		print 'update addchnnel'
 		channelName = event[3]
 		serviceType = int( event[4] )
 		print 'update addchnnel channelName=%s serviceType=%d' %( channelName, serviceType )
-		"""
+		if serviceType == ElisEnum.E_TYPE_TV :
+			self.newTVChannelList.append( channelName )
+		else :
+			self.newRadioChannelList.append( channelName )
+
+		self.drawItem( )
+
+
+	def getFormattedName( self, longitude, band ) :
+
+		found = False
+
+		for satellite in self.allSatelliteList :
+			if longitude == int( satellite[0]) and band == int( satellite[1] ) :
+				found = True
+				break
+
+		if found == True :
+			dir = 'E'
+
+			tmpLongitude  = longitude
+			if tmpLongitude > 1800 :
+				dir = 'W'
+				tmpLongitude = 3600 - longitude
+
+			formattedName = '%d.%d %s %s' %( int( tmpLongitude/10 ), tmpLongitude%10, dir, satellite[2] )
+			return formattedName
+
+		return 'UnKnown'
 
 

@@ -81,26 +81,33 @@ class AutomaticScan( SettingWindow ):
 		#Satellite
 		if groupId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
-			self.selectedSatelliteIndex = dialog.select('Select satellite', self.formattedList )
+			select =  dialog.select('Select satellite', self.formattedList )
+
+			if select >= 0 and select != self.selectedSatelliteIndex :
+				self.selectedSatelliteIndex = select
+			
 			self.initConfig( )
 
 		#Start Search
 		if groupId == E_Input02 :
 			if self.selectedSatelliteIndex == 0 : #ToDO : All Channel Search
-				print 'ToDO : All Chanenl Search'
+				dialog = diamgr.getInstance().getDialog( diamgr.DIALOG_ID_CHANNEL_SEARCH )
+				dialog.setSatellite( self.configuredSatelliteList )
+				dialog.doModal( )
+
 			else :
 				satelliteList = []
 				satellite = self.configuredSatelliteList[self.selectedSatelliteIndex -1]
 				print 'longitude=%s bandtype=%s' %( satellite[E_CONFIGURE_SATELLITE_LONGITUDE], satellite[E_CONFIGURE_SATELLITE_BANDTYPE] )
 
 				satelliteList.append( satellite )
-	 			dialog = diamgr.getInstance().getDialog( diamgr.DIALOG_ID_CHANNEL_SEARCH )
-	 			dialog.setSatellite( satelliteList )
-	 			dialog.doModal( )
+				dialog = diamgr.getInstance().getDialog( diamgr.DIALOG_ID_CHANNEL_SEARCH )
+				dialog.setSatellite( satelliteList )
+				dialog.doModal( )
 								
-				#self.commander.channelscan_BySatellite( int(config[E_CONFIGURE_SATELLITE_LONGITUDE]), int(config[E_CONFIGURE_SATELLITE_BANDTYPE]))
-				
 
+		if groupId == E_SpinEx01 or groupId == E_SpinEx02 :
+			self.controlSelect( )
 
 	def onFocus( self, controlId ):
 		if self.initialized == False :
@@ -122,8 +129,8 @@ class AutomaticScan( SettingWindow ):
 
 		else :
 			self.addInputControl( E_Input01, 'Satellite', self.formattedList[self.selectedSatelliteIndex], None, 'Select satellite' )
-			self.addEnumControl( E_SpinEx01, 'Network Search', 'Network Search' )
-			self.addEnumControl( E_SpinEx02, 'Channel Search Mode', 'Channel Search Mode' )
+			self.addEnumControl( E_SpinEx01, 'Network Search', None, 'Network Search' )
+			self.addEnumControl( E_SpinEx02, 'Channel Search Mode', None, 'Channel Search Mode' )
 			self.addLeftLabelButtonControl( E_Input02, 'Start Search', 'Start Search' )
 			self.initControl( )
 
