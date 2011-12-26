@@ -140,10 +140,20 @@ class ChannelListWindow(BaseWindow):
 
 		if id == Action.ACTION_PREVIOUS_MENU:
 			print 'ChannelListWindow lael98 check action menu'
+
 		elif id == Action.ACTION_SELECT_ITEM:
 			print '<<<<< test youn: action ID[%s]' % id
 
-			
+			if focusId == self.ctrlListCHList.getId() :
+				self.onClick( self.ctrlListCHList.getId() )
+
+			elif focusId == self.ctrlListMainmenu.getId() :
+				self.onClick( self.ctrlListMainmenu.getId() )
+
+			elif focusId == self.ctrlListSubmenu.getId() :
+				self.onClick( self.ctrlListSubmenu.getId() )
+
+
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'lael98 check ation back'
 
@@ -154,17 +164,25 @@ class ChannelListWindow(BaseWindow):
 			self.close( )
 
 		elif id == Action.ACTION_MOVE_RIGHT:
-			#print 'getFocusId[%s]'% self.win.getFocusId()
-			if focusId == self.ctrlListSubmenu.getId() :
+			print 'getFocusId[%s]'% self.win.getFocusId()
 
+			if focusId == self.ctrlListMainmenu.getId() :
 				idx_menu = self.ctrlListMainmenu.getSelectedPosition()
+
+				#this position's 'Back'
 				if idx_menu == 4 :
-					#this position's 'Back'
-					pass
+					self.untilThread = False
+					self.updateLocalTime().join()
+					self.ctrlListCHList.reset()
+
+					self.close()
 
 				else :
-					self.onClick( self.ctrlBtnMenu.getId() )
-					#self.onClick( self.ctrlListSubmenu.getId() )
+					self.onClick( self.ctrlListMainmenu.getId() )
+
+			elif focusId == self.ctrlListSubmenu.getId() :
+				self.onClick( self.ctrlListMainmenu.getId() )
+
 
 
 		elif id == 13: #'x'
@@ -278,13 +296,12 @@ class ChannelListWindow(BaseWindow):
 
 				self.close()
 
-
 			else :
 				self.subManuAction( 0, idx_menu )
+				self.setFocusId( self.ctrlListSubmenu.getId() )
 
 		elif controlId == self.ctrlListSubmenu.getId() :
 			#list action
-
 			idx_menu = self.chlist_zappingMode
 			print 'focus[%s] idx_sub[%s]'% (controlId, idx_menu)
 

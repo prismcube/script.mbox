@@ -58,9 +58,9 @@
 		</control>
 		<control type="group" id="49">		
 			<control type="list" id="50">
-				<posx>50</posx>
+				<posx>75</posx>
 				<posy>180</posy>
-				<width>590</width>
+				<width>780</width>
 				<height>401</height>
 				<onleft>SetFocus(102)</onleft>
 				<onright>SetFocus(61)</onright>
@@ -73,17 +73,17 @@
 				<visible>true</visible>
 				<enable>!Control.HasFocus(101) | !Control.HasFocus(102) | !ControlGroup(9001).HasFocus</enable>
 				<animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(61)">Conditional</animation>
-				<itemlayout height="40" width="580">
+				<itemlayout height="40" width="750">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>690</width>
+						<width>750</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 					</control>
 					<!-- is cas? -->
 					<control type="image">
-						<posx>550</posx>
+						<posx>650</posx>
 						<posy>5</posy>
 						<width>30</width>
 						<height>30</height>
@@ -121,13 +121,14 @@
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
+						<visible>false</visible>
 					</control>	
 				</itemlayout>
-				<focusedlayout height="40" width="580">
+				<focusedlayout height="40" width="750">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>690</width>
+						<width>750</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 						<visible>!Control.HasFocus(50)</visible>
@@ -137,7 +138,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>690</width>
+						<width>750</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
 						<visible>Control.HasFocus(50)</visible>
@@ -155,7 +156,7 @@
 					</control>
 -->
 					<control type="image">
-						<posx>520</posx>
+						<posx>620</posx>
 						<posy>5</posy>
 						<width>30</width>
 						<height>30</height>
@@ -163,7 +164,7 @@
 					</control>
 					<!-- is cas? -->
 					<control type="image">
-						<posx>550</posx>
+						<posx>650</posx>
 						<posy>5</posy>
 						<width>30</width>
 						<height>30</height>
@@ -201,6 +202,7 @@
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
+						<visible>false</visible>
 						<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="true">conditional</animation>
 					</control>
 				</focusedlayout>
@@ -210,7 +212,7 @@
 
         <!-- Scrollbar -->
 		<control type="scrollbar" id="61">
-			<posx>630</posx>
+			<posx>820</posx>
 			<posy>180</posy>
 			<width>25</width>
 			<height>401</height>
@@ -467,8 +469,8 @@
 					<posy>0</posy>
 					<width>180</width>
 					<height>535</height>
-					<onleft>SetFocus(49)</onleft>
-					<onright>SetFocus(202)</onright>
+					<onleft>49</onleft>
+					<onright>202</onright>
 					<onup>102</onup>
 					<ondown>102</ondown>
 					<scrolltime>300</scrolltime>
