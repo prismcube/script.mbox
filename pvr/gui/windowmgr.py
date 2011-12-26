@@ -110,7 +110,7 @@ class WindowMgr(object):
 		self.windows[ WIN_ID_AUTOMATIC_SCAN ]			= AutomaticScan('automaticscan.xml', self.scriptDir)
 		self.windows[ WIN_ID_MANUAL_SCAN ]				= ManualScan('manualscan.xml', self.scriptDir)
 		self.windows[ WIN_ID_LANGUAGE_SETTING ]			= LanguageSetting('languagesetting.xml', self.scriptDir)		#for test
-		self.windows[ WIN_ID_CHANNEL_LIST1_WINDOW ]		= ChannelListWindow_b('channellistwindow_a.xml', self.scriptDir )	#for test
+		self.windows[ WIN_ID_CHANNEL_LIST1_WINDOW ]		= ChannelListWindow_a('channellistwindow_a.xml', self.scriptDir )	#for test
 		self.windows[ WIN_ID_CHANNEL_LIST2_WINDOW ]		= ChannelListWindow_b('channellistwindow_b.xml', self.scriptDir )	#for test
 		
 
