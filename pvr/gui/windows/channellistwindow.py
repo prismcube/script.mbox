@@ -13,6 +13,7 @@ import pvr.util as util
 import pvr.elismgr
 from elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import FooterMask
+import threading
 
 import pvr.msg as m
 import pvr.gui.windows.define_string as mm
@@ -809,10 +810,13 @@ class ChannelListWindow(BaseWindow):
 		print '[%s():%s]begin_start thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 		loop = 0
+		rlock = threading.RLock()		
 		while self.untilThread:
 			#print '[%s():%s]repeat <<<<'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 			#progress
+
+			rLock.acquire()
 			if  ( loop % 10 ) == 0 :
 				try:
 					ret = self.commander.datetime_GetLocalTime( )
@@ -820,6 +824,7 @@ class ChannelListWindow(BaseWindow):
 
 				except Exception, e:
 					print 'Error datetime_GetLocalTime(), e[%s]'% e
+					rLock.release( )					
 					continue
 
 				endTime = self.epgStartTime + self.epgDuration
@@ -845,7 +850,7 @@ class ChannelListWindow(BaseWindow):
 			ret = epgInfoClock(1, localTime, loop)
 			self.ctrlHeader3.setLabel(ret[0])
 			self.ctrlHeader4.setLabel(ret[1])
-
+			rLock.release( )
 			#self.nowTime += 1
 			time.sleep(1)
 			loop += 1
