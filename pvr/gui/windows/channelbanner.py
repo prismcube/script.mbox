@@ -372,7 +372,7 @@ class ChannelBanner(BaseWindow):
 			ret = self.commander.epgevent_GetPresent()
 			print 'epgevent_GetPresent() ret[%s]'% ret
 			if ret != []:
-				self.eventCopy=['epgevent_GetPresent'] + ret
+				self.eventCopy = ret
 				self.updateONEvent(self.eventCopy)
 
 		elif actionID == Action.ACTION_MOVE_RIGHT:
@@ -381,7 +381,7 @@ class ChannelBanner(BaseWindow):
 			ret = self.commander.epgevent_GetFollowing()
 			print 'epgevent_GetFollowing() ret[%s]'% ret
 			if ret != []:
-				self.eventCopy=['epgevent_GetFollowing'] + ret
+				self.eventCopy = ret
 				self.updateONEvent(self.eventCopy)
 
 		else:
