@@ -122,6 +122,7 @@
 			</itemlayout>
 			<focusedlayout height="40" width="500">
 				<control type="image">
+					<visible>Control.HasFocus(400)</visible>
 					<posx>0</posx>
 					<posy>0</posy>
 					<width>499</width>
@@ -216,6 +217,7 @@
 			</itemlayout>
 			<focusedlayout height="40" width="500">
 				<control type="image">
+					<visible>Control.HasFocus(402)</visible>
 					<posx>0</posx>
 					<posy>0</posy>
 					<width>499</width>
