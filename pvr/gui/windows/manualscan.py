@@ -103,7 +103,7 @@ class ManualScan( SettingWindow ):
 
 			print 'select = %d %d' %(self.selectedTransponderIndex, select)
 
-			if self.selectedTransponderIndex != select :
+			if select >=0 and self.selectedTransponderIndex != select :
 				self.selectedTransponderIndex = select
 				self.initConfig( )
 
@@ -114,6 +114,7 @@ class ManualScan( SettingWindow ):
 			print 'longitude=%s bandtype=%s' %( satellite[E_CONFIGURE_SATELLITE_LONGITUDE], satellite[E_CONFIGURE_SATELLITE_BANDTYPE] )
 
 			transponder = self.transponderList[self.selectedTransponderIndex]
+			print 'ManualScan #0 index=%d transponder=%s' %(self.selectedTransponderIndex, transponder )
 			transponderList.append( transponder )
 			print 'ManualScan #1'
 			dialog = diamgr.getInstance().getDialog( diamgr.DIALOG_ID_CHANNEL_SEARCH )
@@ -121,7 +122,10 @@ class ManualScan( SettingWindow ):
 			dialog.setTransponder( int( satellite[E_CONFIGURE_SATELLITE_LONGITUDE]), int( satellite[E_CONFIGURE_SATELLITE_BANDTYPE] ), transponderList )
 			print 'ManualScan #3'			
 			dialog.doModal( )
-			
+
+		if groupId == E_SpinEx05 or groupId == E_SpinEx06   :
+			self.controlSelect( )
+
 
 	def onFocus( self, controlId ):
 		if self.initialized == False :
@@ -148,7 +152,6 @@ class ManualScan( SettingWindow ):
 
 
 			#DVB Type
-
 			self.addEnumControl( E_SpinEx01, 'DVB Type', None, 'Select DVB Type' )
 			transponder  =  self.transponderList [ self.selectedTransponderIndex ]
 

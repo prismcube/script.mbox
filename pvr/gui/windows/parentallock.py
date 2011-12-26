@@ -52,13 +52,14 @@ class ParentalLock(SettingWindow):
 		focusId = self.getFocusId( )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			print 'LanguageSetting check action previous'
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			print 'dhkim test Action select item event'
-				
-		elif actionId == Action.ACTION_PARENT_DIR :
 			self.initialized = False
 			self.close( )
+			
+		elif actionId == Action.ACTION_SELECT_ITEM :
+			pass
+				
+		elif actionId == Action.ACTION_PARENT_DIR :
+			pass
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == 9000 :
