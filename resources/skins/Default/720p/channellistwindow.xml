@@ -62,10 +62,10 @@
 				<posy>180</posy>
 				<width>590</width>
 				<height>401</height>
-				<onleft>SetFocus(101)</onleft>
+				<onleft>SetFocus(102)</onleft>
 				<onright>SetFocus(61)</onright>
-				<onup>SetFocus(50)</onup>
-				<ondown>SetFocus(50)</ondown>
+				<onup>50</onup>
+				<ondown>50</ondown>
 				<pagecontrol>61</pagecontrol>
 				<scrolltime>200</scrolltime>
 				<focusposition>0</focusposition>
@@ -228,9 +228,9 @@
             <textureslidernibfocus>scrollbar_nib.png</textureslidernibfocus> 
 -->
 			<onleft>SetFocus(49)</onleft>
-			<onright>SetFocus(61)</onright>
-			<ondown>SetFocus(61)</ondown>
-			<onup>SetFocus(61)</onup>
+			<onright>SetFocus(49)</onright>
+			<ondown>61</ondown>
+			<onup>61</onup>
 			<showonepage>false</showonepage>
 			<orientation>vertical</orientation>
 		</control>
@@ -469,10 +469,10 @@
 					<height>535</height>
 					<onleft>SetFocus(49)</onleft>
 					<onright>SetFocus(202)</onright>
-					<onup>SetFocus(102)</onup>
-					<ondown>SetFocus(102)</ondown>
+					<onup>102</onup>
+					<ondown>102</ondown>
 					<scrolltime>300</scrolltime>
-					<focusposition>0</focusposition>
+					<!--focusposition>0</focusposition-->
 					<movement>10</movement>
 					<animation effect="fade" start="0" end="100" time="200">Visible</animation>
 					<itemlayout height="70" width="185">
@@ -559,12 +559,12 @@
 						<font>font12_title</font>
 						<onleft>SetFocus(102)</onleft>
 						<onright>SetFocus(202)</onright>
-						<onup>SetFocus(202)</onup>
-						<ondown>SetFocus(202)</ondown>
+						<onup>202</onup>
+						<ondown>202</ondown>
 						<pagecontrol>203</pagecontrol>
 						<scrolltime>200</scrolltime>
-						<focusposition>0</focusposition>
-						<visible>true</visible>
+						<!--focusposition>0</focusposition-->
+						<visible>!Container(102).HasFocus(5)</visible>
 						<animation effect="fade" start="0" end="100" time="200">Visible</animation>
 						<itemlayout height="40" width="230">
 							<control type="image">
