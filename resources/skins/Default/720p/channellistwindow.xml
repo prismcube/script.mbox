@@ -517,7 +517,7 @@
 							<animation effect="fade" start="100" end="0" time="200">UnFocus</animation>
 						</control>
 					</focusedlayout>
-					<!--content>
+					<content>
 						<item id="1">
 							<label>SCRIPT541</label>
 							<onclick>right</onclick>
@@ -539,11 +539,11 @@
 							<visible>true</visible>
 						</item>
 						<item id="5">
-							<label>Back</label>
+							<label>SCRIPT555</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
-					</content-->
+					</content>
 				</control>
 
 				<!-- sub main -->

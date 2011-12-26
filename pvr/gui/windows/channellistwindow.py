@@ -540,7 +540,7 @@ class ChannelListWindow(BaseWindow):
 		list_Mainmenu.append( m.strings(mm.LANG_SATELLITE)    )
 		list_Mainmenu.append( m.strings(mm.LANG_FTA)          )
 		list_Mainmenu.append( m.strings(mm.LANG_FAVORITE)     )
-		list_Mainmenu.append( m.strings(mm.LANG_FAVORITE)     )
+		list_Mainmenu.append( m.strings(mm.LANG_BACK)     )
 		testlistItems = []
 		for item in range( len(list_Mainmenu) ) :
 			testlistItems.append( xbmcgui.ListItem(list_Mainmenu[item]) )
@@ -828,7 +828,6 @@ class ChannelListWindow(BaseWindow):
 			#print '[%s():%s]repeat <<<<'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 			#progress
-
 			rLock.acquire()
 			if  ( loop % 10 ) == 0 :
 				try:

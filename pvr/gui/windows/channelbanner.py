@@ -451,17 +451,20 @@ class ChannelBanner(BaseWindow):
 		#print 'untilThread[%s] self.progress_max[%s]' % (self.untilThread, self.progress_max)
 
 		loop = 0
+		rLock.acquire()
 		while self.untilThread:
 			#print '[%s():%s]repeat <<<<'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 			#progress
+			rLock.acquire()
 			if  ( loop % 10 ) == 0 :
 				try:
 					ret = self.commander.datetime_GetLocalTime( )
 					localTime = int( ret[0] )
 
 				except Exception, e:
-					print 'Error datetime_GetLocalTime(), e[%s]'% e
+					print 'Error e[%s] datetime_GetLocalTime()'% e
+					rLock.release()
 					continue
 
 					endTime = self.epgStartTime + self.epgDuration
@@ -484,6 +487,7 @@ class ChannelBanner(BaseWindow):
 			#local clock
 			ret = epgInfoClock(2, localTime, loop)
 			self.ctrlEventClock.setLabel(ret[0])
+			rLock.release()
 
 			#self.nowTime += 1
 			time.sleep(1)
