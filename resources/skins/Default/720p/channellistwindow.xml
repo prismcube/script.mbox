@@ -448,7 +448,7 @@
 				<font>-</font>
 				<texturenofocus>-</texturenofocus>
 				<texturefocus>-</texturefocus>
-				<onclick>SetFocus(202)</onclick>
+				<onclick>202</onclick>
 				<visible>true</visible>
 			</control>
 			<control type="image">
@@ -470,7 +470,7 @@
 					<width>180</width>
 					<height>535</height>
 					<onleft>49</onleft>
-					<onright>202</onright>
+					<onright>9001</onright>
 					<onup>102</onup>
 					<ondown>102</ondown>
 					<scrolltime>300</scrolltime>
@@ -512,12 +512,12 @@
 							<width>10</width>
 							<height>10</height>
 							<texture>confluence/HomeHasSub.png</texture>
-							<visible>Container(102).HasFocus(2) | Container(102).HasFocus(3) | Container(102).HasFocus(4)</visible>
+							<visible>Container(102).HasFocus(1) | Container(102).HasFocus(2) | Container(102).HasFocus(3) | Container(102).HasFocus(4)</visible>
 							<animation effect="fade" start="0" end="100" time="200">Focus</animation>
 							<animation effect="fade" start="100" end="0" time="200">UnFocus</animation>
 						</control>
 					</focusedlayout>
-					<content>
+					<!--content>
 						<item id="1">
 							<label>SCRIPT541</label>
 							<onclick>right</onclick>
@@ -543,7 +543,7 @@
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
-					</content>
+					</content-->
 				</control>
 
 				<!-- sub main -->
@@ -551,7 +551,7 @@
 					<posx>10</posx>
 					<posy>-720</posy>
 					<animation effect="slide" end="180,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">conditional</animation>
-					<animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(203)">Conditional</animation>
+					<!--animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(203)">Conditional</animation-->
 					<control type="list" id="202">
 						<posx>5</posx>
 						<posy>0</posy>
@@ -559,11 +559,11 @@
 						<height>430</height>
 						<align>center</align>
 						<font>font12_title</font>
-						<onleft>SetFocus(102)</onleft>
-						<onright>SetFocus(202)</onright>
+						<onleft>102</onleft>
+						<onright>202</onright>
 						<onup>202</onup>
 						<ondown>202</ondown>
-						<pagecontrol>203</pagecontrol>
+						<!--pagecontrol>203</pagecontrol-->
 						<scrolltime>200</scrolltime>
 						<!--focusposition>0</focusposition-->
 						<visible>!Container(102).HasFocus(5)</visible>
