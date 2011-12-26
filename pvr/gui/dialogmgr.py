@@ -41,8 +41,8 @@ class DialogMgr(object):
 
 		
 		if dialogId == DIALOG_ID_KEYBOARD :
-			from pvr.gui.dialogs.dialogkeyboard import DialogKeyboard		
-			return DialogKeyboard('dialogkeyboard.xml', self.scriptDir)
+			from pvr.gui.dialogs.dialogkeypad import DialogKeyPad		
+			return DialogKeyPad('dialogkeypad.xml', self.scriptDir)
 			
 		elif dialogId == DIALOG_ID_NUMERIC :
 			from pvr.gui.dialogs.dialognumeric import DialogNumeric		

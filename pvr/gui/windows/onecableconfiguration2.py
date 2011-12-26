@@ -47,20 +47,19 @@ class OneCableConfiguration2( SettingWindow ):
 
 		actionId = action.getId( )
 		focusId = self.getFocusId( )
+		groupId = self.getGroupId( focusId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			pass
+			self.onClose( );
+			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			if xbmcgui.Dialog( ).yesno('Configure', 'Are you sure?') == 1 :
-				ElisPropertyInt( 'Tuner%d Pin Code' % ( self.tunerIndex + 1 ), self.commander ).setProp( int( self.getControl( E_Input01 + 3 ).getListItem(0).getLabel2( ) ) )
-				ElisPropertyInt( 'Tuner%d SCR' % ( self.tunerIndex + 1 ), self.commander ).setProp( self.getSelectedIndex( E_SpinEx02 ) ) 
-				ElisPropertyInt( 'Tuner%d SCR Frequency' % ( self.tunerIndex + 1 ), self.commander ).setProp( int( E_LIST_ONE_CABLE_TUNER_FREQUENCY[self.getSelectedIndex( E_SpinEx03 )] ))
-				
-			self.resetAllControl( )
-			self.close( )
+			if groupId == E_Input01 :
+				pass
+			else :
+				self.onClose( );
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.controlLeft( )
@@ -73,6 +72,9 @@ class OneCableConfiguration2( SettingWindow ):
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.controlDown( )
+
+		if groupId == E_Input01 :
+			self.controlkeypad( groupId, actionId )
 
 
 	def onClick( self, controlId ):
@@ -96,3 +98,12 @@ class OneCableConfiguration2( SettingWindow ):
 
 	def onFocus( self, controlId ):
 		pass
+
+	def onClose( self ):
+		if xbmcgui.Dialog( ).yesno('Configure', 'Are you sure?') == 1 :
+			ElisPropertyInt( 'Tuner%d Pin Code' % ( self.tunerIndex + 1 ), self.commander ).setProp( int( self.getControl( E_Input01 + 3 ).getListItem(0).getLabel2( ) ) )
+			ElisPropertyInt( 'Tuner%d SCR' % ( self.tunerIndex + 1 ), self.commander ).setProp( self.getSelectedIndex( E_SpinEx02 ) ) 
+			ElisPropertyInt( 'Tuner%d SCR Frequency' % ( self.tunerIndex + 1 ), self.commander ).setProp( int( E_LIST_ONE_CABLE_TUNER_FREQUENCY[self.getSelectedIndex( E_SpinEx03 )] ) )
+			
+		self.resetAllControl( )
+		self.close( )

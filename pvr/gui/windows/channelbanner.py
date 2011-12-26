@@ -37,10 +37,12 @@ class ChannelBanner(BaseWindow):
 		self.lastChannel = 	self.commander.channel_GetCurrent()	
 		self.currentChannel =  self.lastChannel
 		self.eventBus = pvr.elismgr.getInstance().getEventBus()
-		#self.eventBus.register( self )
+		self.eventBus.register( self )
 
 
 		self.currentChannel=[]
+		self.nowTime = 0
+		self.eventID = 0
 
 		#push push test test
 
@@ -97,7 +99,10 @@ class ChannelBanner(BaseWindow):
 			self.ctrlEventClock.setLabel('')
 
 		self.toggleFlag=False
-		
+		self.epgStartTime = 0
+		self.epgDuration = 0
+		self.localOffset = int( self.commander.datetime_GetLocalOffset()[0] )
+
 		#get channel
 		self.currentChannel = self.commander.channel_GetCurrent()
 
@@ -107,10 +112,6 @@ class ChannelBanner(BaseWindow):
 		if is_digit(self.currentChannel[3]):
 			self.updateServiceType(int(self.currentChannel[3]))
 
-
-		#run thread
-		self.untilThread = True
-		self.updateLocalTime()
 
 		"""
 		#get last zapping mode
@@ -132,10 +133,13 @@ class ChannelBanner(BaseWindow):
 		ret = []
 		ret=self.commander.epgevent_GetPresent()
 		if ret != []:
-			self.eventCopy=['epgevent_GetPresent'] + ret
 			self.updateONEvent(self.eventCopy)
 		print 'epgevent_GetPresent[%s]'% self.eventCopy
 
+
+		#run thread
+		self.untilThread = True
+		self.updateLocalTime()
 
 
 	def onAction(self, action):
@@ -285,15 +289,28 @@ class ChannelBanner(BaseWindow):
 
 
 	def onEvent(self, event):
-		self.eventCopy = event
-
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		print 'eventCopy[%s]'% self.eventCopy
+		print 'event[%s]'% event
 
-		if xbmcgui.getCurrentWindowId() == self.win :
-			self.updateONEvent(self.eventCopy)
+		if self.win :
+			msg = event[0]
+			
+			if msg == 'Elis-CurrentEITReceived' :
+
+				if int(event[4]) != self.eventID :			
+					ret = self.commander.epgevent_GetPresent( )
+					if len( ret ) > 0 :
+						self.eventCopy = event
+						self.eventID = int( event[4] )
+						self.updateONEvent( ret )
+
+					#ret = self.commander.epgevent_Get(self.eventID, int(event[1]), int(event[2]), int(event[3]), int(self.epgClock[0]) )
+			else :
+				print 'event unknown[%s]'% event
 		else:
 			print 'show screen is another windows page[%s]'% xbmcgui.getCurrentWindowId()
+
+
 
 	def channelTune(self, actionID):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)		
@@ -373,14 +390,14 @@ class ChannelBanner(BaseWindow):
 	def updateONEvent(self, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'event[%s]'% event
-		print 'component [%s]'% event[9:19]
+		print 'component [%s]'% event[8:17]
 
-		if event != [] and event[1] != 'NULL' and len(event) > 2:
+		if len(event) == 21:
 			#epg name
-			if event[2] != '':
+			if event[1] != '':
 				print '[%s():%s]%s'% (currentframe().f_code.co_name, currentframe().f_lineno,event[2])
 				try:
-					self.ctrlEventName.setLabel(event[2])
+					self.ctrlEventName.setLabel(event[1])
 				except Exception, ex:
 					print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 					print 'CATCHALL_UI: Caught  exception %s' % str(ex)
@@ -388,26 +405,27 @@ class ChannelBanner(BaseWindow):
 				self.ctrlEventName.setLabel('')
 
 			#epg time
-			if is_digit(event[7]):
-				self.progress_max = int(event[7])
+			if is_digit(event[6]):
+				self.progress_max = int(event[6])
 
-				if is_digit(event[6]):
-					timeZone = self.commander.datetime_GetLocalOffset()
-					ret = epgInfoTime(timeZone[0], int(event[6]), int(event[7]))
+				if is_digit(event[5]):
+					self.epgStartTime = int( event[5] )
+					self.epgDuration = int( event[6] )
+					ret = epgInfoTime( self.localOffset, int(event[5]), int(event[6]))
 					if ret != []:
 						print 'ret[%s]'% ret
 						self.ctrlEventStartTime.setLabel(ret[0])
 						self.ctrlEventEndTime.setLabel(ret[1])
 				
-					print 'event6[%s] event7[%s]'% (event[6], event[7])
+					print 'event6[%s] event7[%s]'% (event[5], event[6])
 				else:
-					print 'value error EPGTime start[%s]' % event[6]
+					print 'value error EPGTime start[%s]' % event[5]
 			else:
-				print 'value error EPGTime duration[%s]' % event[7]
+				print 'value error EPGTime duration[%s]' % event[6]
 
 			#component
 			component = []
-			component = event[9:18]	#component ~ isSeries
+			component = event[8:17]	#component ~ isSeries
 #			ret = epgInfoComponentImage(int(event[9]))
 			ret = epgInfoComponentImage(component)			
 			if len(ret) == 1:
@@ -432,36 +450,44 @@ class ChannelBanner(BaseWindow):
 		print '[%s():%s]begin_start thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		#print 'untilThread[%s] self.progress_max[%s]' % (self.untilThread, self.progress_max)
 
-		nowTime = time.time()
+		loop = 0
 		while self.untilThread:
-			print '[%s():%s]repeat'% (currentframe().f_code.co_name, currentframe().f_lineno)
+			#print '[%s():%s]repeat <<<<'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 			#progress
-			if self.progress_max > 0:
-				#print 'progress_idx[%s] getPercent[%s]' % (self.progress_idx, self.ctrlProgress.getPercent())
+			if  ( loop % 10 ) == 0 :
+				try:
+					ret = self.commander.datetime_GetLocalTime( )
+					localTime = int( ret[0] )
 
-				self.ctrlProgress.setPercent(self.progress_idx)
+				except Exception, e:
+					print 'Error datetime_GetLocalTime(), e[%s]'% e
+					continue
 
-				self.progress_idx += 100.0 / self.progress_max
-				if self.progress_idx > 100:
-					self.progress_idx = 100
-			else:
-				pass
-				#print 'value error progress_max[%s]' % self.progress_max
+					endTime = self.epgStartTime + self.epgDuration
+					#print 'localoffset=%d localToime=%d epgStartTime=%d duration=%d' %(self.localOffset, localTime, self.epgStartTime, self.epgDuration )
+					#print 'endtime=%d' %endTime
 
+					pastDuration = endTime - localTime
+					if pastDuration < 0 :
+						pastDuration = 0
 
-			#print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+					if self.epgDuration > 0 :
+						percent = pastDuration * 100/self.epgDuration
+					else :
+						percent = 0
+
+					#print 'percent=%d' %percent
+					self.ctrlProgress.setPercent( percent )
+
 
 			#local clock
-			if is_digit(self.epgClock[0]):
-				ret = epgInfoClock(2, nowTime, int(self.epgClock[0]))
-				self.ctrlEventClock.setLabel(ret[0])
+			ret = epgInfoClock(2, localTime, loop)
+			self.ctrlEventClock.setLabel(ret[0])
 
-			else:
-				pass
-				#print 'value error epgClock[%s]' % ret
-			
+			#self.nowTime += 1
 			time.sleep(1)
+			loop += 1
 
 		print '[%s():%s]leave_end thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
 

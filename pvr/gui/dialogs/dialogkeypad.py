@@ -9,6 +9,7 @@ from pvr.gui.basewindow import Action
 import pvr.gui.dialogmgr as diamgr
 
 E_INPUT_LABEL			= 310
+E_CURSOR_LABEL			= 400
 E_DIALOG_HEADER			= 311
 E_BUTTON_DONE			= 300
 E_BUTTON_BACK_SPACE		= 8
@@ -28,21 +29,23 @@ E_START_ID_ALPHABET		= 65
 E_ASCIICODE_LOWER_A		= 0x61
 E_ASCIICODE_UPPER_A		= 0x41
 
-class DialogKeyboard( NormalKeyboard ) :
+class DialogKeyPad( NormalKeyboard ) :
 	def __init__( self, *args, **kwargs ) :
 		NormalKeyboard.__init__( self, *args, **kwargs )
 
-		self.inputLabel = ''
+		self.inputLabel = None
+		self.titleLabel = None
 		self.ctrlEditLabel = 0
 		self.cursorPosition = 0
 		
 	def onInit( self ):
+		self.isOk = False
 		self.ctrlEditLabel = self.getControl( E_INPUT_LABEL )
-		#self.ctrlEditLabel.setLabel( self.inputLabel )
+		self.getControl( E_DIALOG_HEADER ).setLabel( self.getTitleLabel( ) )
 		self.cursorPosition = len( self.inputLabel )
 		self.drawKeyboard( )
 		self.startKeyboardCursor( )
-		self.makelabel( E_INPUT_LABEL, self.inputLabel, self.cursorPosition )
+		self.makelabel( E_INPUT_LABEL, E_CURSOR_LABEL, self.inputLabel, self.cursorPosition )
 		self.drawLabel( )
 
 		
@@ -110,8 +113,9 @@ class DialogKeyboard( NormalKeyboard ) :
 
 		elif( focusId == E_BUTTON_DONE ) :
 			self.stopKeyboardCursor( )
+			self.isOk = True
 			self.close( )
-		self.makelabel( E_INPUT_LABEL, self.inputLabel, self.cursorPosition )
+		self.makelabel( E_INPUT_LABEL, E_CURSOR_LABEL, self.inputLabel, self.cursorPosition )
 
 
 	def onFocus( self, controlId ):
@@ -142,5 +146,20 @@ class DialogKeyboard( NormalKeyboard ) :
 				self.getControl( E_START_ID_ALPHABET + i ).setLabel( chr ( E_ASCIICODE_LOWER_A + i ) )
 			else :
 				self.getControl( E_START_ID_ALPHABET + i ).setLabel( chr ( E_ASCIICODE_UPPER_A + i ) )
-	
+
+
+	def isOK( self ) :
+		return self.isOk
+
+	def getText( self ) :
+		return self.inputLabel
+
+	def setText( self, text ) :
+		self.inputLabel = text
+
+	def getTitleLabel( self ) :
+		return self.titleLabel
+
+	def setTiteLabel( self, titleLabel ) :
+		self.titleLabel = titleLabel
  

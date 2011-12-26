@@ -127,7 +127,7 @@ class ControlItem:
 	E_DETAIL_NORMAL_BUTTON_CONTROL			= 5
 
 
-	def __init__( self, controlType, controlId, property, listItems, selecteItem, description ):	
+	def __init__( self, controlType, controlId, property, listItems, selecteItem, stringType, maxLength, description ):	
 		self.controlType = controlType	
 		self.controlId  = controlId
 		self.property = property		# E_SETTING_ENUM_CONTROL : propery, E_SETTING_INPUT_CONTROL : input type, E_DETAIL_NORMAL_BUTTON_CONTROL : Label
@@ -135,6 +135,8 @@ class ControlItem:
 		self.enable	= True
 		self.description = description
 		self.selecteItem = selecteItem
+		self.stringType = stringType
+		self.maxLength = maxLength
 	
 
 class SettingWindow( BaseWindow ):
@@ -197,7 +199,7 @@ class SettingWindow( BaseWindow ):
 				listItem = xbmcgui.ListItem( titleLabel, property.getPropStringByIndex( i ), "-", "-", "-" )
 			listItems.append( listItem )
 
-		self.controlList.append( ControlItem( ControlItem.E_SETTING_ENUM_CONTROL, controlId, property, listItems, None, description ) )
+		self.controlList.append( ControlItem( ControlItem.E_SETTING_ENUM_CONTROL, controlId, property, listItems, None, None, None, description ) )
 
 	
 	def addUserEnumControl( self, controlId, titleLabel, inputType, selectItem, description=None ):	
@@ -206,19 +208,19 @@ class SettingWindow( BaseWindow ):
 		for i in range( len( inputType ) ):
 			listItem = xbmcgui.ListItem( titleLabel, inputType[i], "-", "-", "-" )
 			listItems.append( listItem )
-		self.controlList.append( ControlItem( ControlItem.E_SETTING_USER_ENUM_CONTROL, controlId, None, listItems, int( selectItem ), description ) )
+		self.controlList.append( ControlItem( ControlItem.E_SETTING_USER_ENUM_CONTROL, controlId, None, listItems, int( selectItem ), None, None, description ) )
 
-	def addInputControl( self, controlId , titleLabel, inputLabel, inputType=None, description=None ):
+	def addInputControl( self, controlId , titleLabel, inputLabel, inputType=None, stringType=None, maxLength=None, description=None ):
 		listItems = []
 		listItem = xbmcgui.ListItem( titleLabel, inputLabel, "-", "-", "-" )
 		listItems.append( listItem )
-		self.controlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, controlId, inputType, listItems, None, description ) )
+		self.controlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, controlId, inputType, listItems, None, None, None, description ) )
 
 	def addLeftLabelButtonControl( self, controlId, inputString, description=None ):
 		listItems = []
 		listItem = xbmcgui.ListItem( inputString, '', "-", "-", "-" )
 		listItems.append( listItem )
-		self.controlList.append( ControlItem( ControlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL, controlId, None, listItems, None, description ) )
+		self.controlList.append( ControlItem( ControlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL, controlId, None, listItems, None, None, None, description ) )
 
 	def showDescription( self, controlId ):
 		count = len( self.controlList )
@@ -267,6 +269,7 @@ class SettingWindow( BaseWindow ):
 			return True
 
 		elif ( keyType == 0 ) :
+			'''
 			dialog = pvr.gui.dialogmgr.getInstance().getDialog( pvr.gui.dialogmgr.DIALOG_ID_NUMERIC )
 			dialog.setTiteLabel( ctrlItem.listItems[0].getLabel( ) )
 			dialog.setNumber( ctrlItem.listItems[0].getLabel2( ) )
@@ -274,6 +277,14 @@ class SettingWindow( BaseWindow ):
 
 			if dialog.isOK() == True :
 				ctrlItem.listItems[0].setLabel2( dialog.getNumber( ) )
+			'''
+			dialog = pvr.gui.dialogmgr.getInstance( ).getDialog( pvr.gui.dialogmgr.DIALOG_ID_KEYBOARD )
+			dialog.setTiteLabel( ctrlItem.listItems[0].getLabel( ) )
+			dialog.setText( ctrlItem.listItems[0].getLabel2( ) )
+			dialog.doModal( )
+
+			if dialog.isOK() == True :
+				ctrlItem.listItems[0].setLabel2( dialog.getText( ) )
 		
 		else :
 			dialog = xbmcgui.Dialog( )
@@ -283,6 +294,10 @@ class SettingWindow( BaseWindow ):
 			return True
 
 		return	False
+
+
+	def deleteChar( self, controlId ):
+		pass
 
 
 	def hasControlItem( self, ctrlItem, controlId  ):
@@ -432,6 +447,13 @@ class SettingWindow( BaseWindow ):
 		return False
 
 
+	def	controlkeypad( self, controlId, actionId ) :
+		print 'dhkim test keypad = %d' % actionId
+		#num start 58->30
+		number = self.getControl( controlId + 3 ).getListItem(0).getLabel2( )
+		self.getControl( controlId + 3 ).getListItem(0).setLabel2( number + chr( actionId - 10 ) )
+
+
 	def controlUp( self ):
 
 		focusId = self.getFocusId( )
@@ -483,6 +505,7 @@ class SettingWindow( BaseWindow ):
 					if focusId % 10 == 1 :
 						self.setFocusId( focusId + 1 )
 						return
+						
 
 	def selectPosition( self, controlId, position ) :
 
@@ -528,7 +551,7 @@ class DetailWindow(SettingWindow):
 
 
 	def addNormalButtonControl( self, controlId, inputString ):
-		self.controlList.append( ControlItem( ControlItem.E_DETAIL_NORMAL_BUTTON_CONTROL, controlId, inputString, None, None, None ) )
+		self.controlList.append( ControlItem( ControlItem.E_DETAIL_NORMAL_BUTTON_CONTROL, controlId, inputString, None, None, None, None, None ) )
 
 
 	def getGroupId( self, controlId ):

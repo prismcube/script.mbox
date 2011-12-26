@@ -19,14 +19,14 @@ import pvr.gui.windows.define_string as mm
 import thread, time
 
 
-class ChannelListWindow(BaseWindow):
+class ChannelListWindow_b(BaseWindow):
 
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
 		self.commander = pvr.elismgr.getInstance().getCommander()		
 
 		self.eventBus = pvr.elismgr.getInstance().getEventBus()
-		self.eventBus.register( self )
+		#self.eventBus.register( self )
 
 		#submenu list
 		self.list_AllChannel= []
@@ -504,11 +504,11 @@ class ChannelListWindow(BaseWindow):
 		print 'satellite_GetConfiguredList[%s]'% self.list_Satellite
 
 		#FTA list
-		self.list_CasList = self.commander.channel_GetFTACasList( ElisEnum.E_TYPE_TV )
+		self.list_CasList = self.commander.fta_cas_GetList( ElisEnum.E_TYPE_TV )
 		print 'channel_GetFTACasList[%s]'% self.list_CasList
 
 		#Favorite list
-		self.list_Favorite = self.commander.channel_GetFavoriteList( ElisEnum.E_TYPE_TV )
+		self.list_Favorite = self.commander.favorite_GetList( ElisEnum.E_TYPE_TV )
 		print 'channel_GetFavoriteList[%s]'% self.list_Favorite
 
 		testlistItems = []
