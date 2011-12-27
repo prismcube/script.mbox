@@ -40,7 +40,7 @@ class NormalKeyboard( BaseDialog ):
 
 	def stopKeyboardCursor( self ):
 		self.untilThread = False
-		self.drawLabel().join()
+		self.drawLabel( ).join()
 
 
 	def startKeyboardCursor( self ):

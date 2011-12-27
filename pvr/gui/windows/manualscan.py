@@ -90,7 +90,7 @@ class ManualScan( SettingWindow ):
 			dialog = xbmcgui.Dialog( )
 			select = dialog.select('Select satellite', self.formattedSatelliteList )
 
-			if self.selectedSatelliteIndex != select :
+			if self.selectedSatelliteIndex != select and select >= 0:
 				self.selectedSatelliteIndex = select
 				self.selectedTransponderIndex = 0
 				self.loadFormattedTransponderNameList( )
@@ -184,7 +184,7 @@ class ManualScan( SettingWindow ):
 			
 
 
-	def getFormattedName( self, longitude ) :
+	def getFormattedName( self, longitude , band ) :
 	
 		found = False	
 
@@ -233,7 +233,7 @@ class ManualScan( SettingWindow ):
 
 		self.formattedSatelliteList = []
 		for config in self.configuredSatelliteList :
-			self.formattedSatelliteList.append( self.getFormattedName( int(config[E_CONFIGURE_SATELLITE_LONGITUDE]) ) )
+			self.formattedSatelliteList.append( self.getFormattedName( int(config[E_CONFIGURE_SATELLITE_LONGITUDE]), int(config[E_CONFIGURE_SATELLITE_BANDTYPE]) ) )
 
 
 	def loadFormattedTransponderNameList( self ) :

@@ -24,7 +24,7 @@ class SatelliteConfigMotorized12( SettingWindow ):
 		self.lnbFrequency = None
 		self.tunerIndex = configmgr.getInstance( ).getCurrentTunerIndex( )
 		self.currentSatellite = configmgr.getInstance( ).getCurrentConfiguredSatellite( )
-		self.transponderList = configmgr.getInstance( ).getTransponderList( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ) )
+		self.transponderList = configmgr.getInstance( ).getTransponderList( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ), int( self.currentSatellite[E_CONFIGURE_SATELLITE_BANDTYPE] ) )
 		self.selectedTransponderIndex = 0
  
 		self.setHeaderLabel( 'Satellite Configuration' ) 
@@ -96,7 +96,7 @@ class SatelliteConfigMotorized12( SettingWindow ):
 				self.currentSatellite[ E_CONFIGURE_SATELLITE_HIGH_LNB ] = "10600"		# High
 				self.currentSatellite[ E_CONFIGURE_SATELLITE_LNB_THRESHOLD ] = "11700"	# Threshold
 
-				self.transponderList = configmgr.getInstance( ).getTransponderList( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ) )				
+				self.transponderList = configmgr.getInstance( ).getTransponderList( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ), int( self.currentSatellite[E_CONFIGURE_SATELLITE_BANDTYPE] ) )
 		
 				self.initConfig()
 
@@ -150,7 +150,8 @@ class SatelliteConfigMotorized12( SettingWindow ):
  		elif groupId == E_Input03 :
  			dialog = xbmcgui.Dialog()
  			self.selectedTransponderIndex = dialog.select( 'Select Transponder', self.transponderList )
- 			self.initConfig( )
+ 			if self.selectedTransponderIndex != -1 :
+ 				self.initConfig( )
 
 		# Move Antenna
 		elif groupId == E_Input04 :
@@ -172,7 +173,7 @@ class SatelliteConfigMotorized12( SettingWindow ):
 	def initConfig( self ) :
 		self.resetAllControl( )
 
-		self.addInputControl( E_Input01, 'Satellite' , configmgr.getInstance( ).getFormattedName( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ) ) )
+		self.addInputControl( E_Input01, 'Satellite' , configmgr.getInstance( ).getFormattedName( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ), int( self.currentSatellite[E_CONFIGURE_SATELLITE_BANDTYPE] ) ) )
 		self.addUserEnumControl( E_SpinEx01, 'LNB Type', E_LIST_LNB_TYPE, self.selectedIndexLnbType )
 
 

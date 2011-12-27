@@ -10,6 +10,8 @@ import pvr.elismgr
 import pvr.gui.dialogmgr
 import threading
 
+from pvr.util import run_async
+
 class Action(object):
 	ACTION_NONE					= 0
 	ACTION_MOVE_LEFT			= 1		#Left Arrow
@@ -46,7 +48,6 @@ class Action(object):
 	ACTION_VOLUME_UP			= 88	#Plus
 	ACTION_VOLUME_DOWN			= 89	#Minus
 	ACTION_MUTE					= 91	#F8
-
 	
 
 @decorator
@@ -182,7 +183,7 @@ class ControlItem:
 		self.enable	= True
 		self.description = description
 		self.selecteItem = selecteItem
-		self.stringType = stringType
+		self.stringType = stringType	# 0 : Number, 1 : String
 		self.maxLength = maxLength
 	
 
@@ -190,7 +191,11 @@ class SettingWindow( BaseWindow ):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
 		self.controlList = []
-		self.commander = pvr.elismgr.getInstance().getCommander()		
+		self.commander = pvr.elismgr.getInstance().getCommander()
+		self.cursorPosition = 0
+		self.untilThread = False
+		self.ctrlCursorId = None
+		self.inputLabel = None
 
 
 	def initControl( self ):
@@ -262,7 +267,7 @@ class SettingWindow( BaseWindow ):
 		listItems = []
 		listItem = xbmcgui.ListItem( titleLabel, inputLabel, "-", "-", "-" )
 		listItems.append( listItem )
-		self.controlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, controlId, inputType, listItems, None, None, None, description ) )
+		self.controlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, controlId, inputType, listItems, None, stringType, maxLength, description ) )
 
 	def addLeftLabelButtonControl( self, controlId, inputString, description=None ):
 		listItems = []
@@ -293,12 +298,6 @@ class SettingWindow( BaseWindow ):
 		keyType = ctrlItem.property
 		if ( keyType == None ) :
 			return
-		"""
-		import pvr.platform 
-		scriptDir = pvr.platform.getPlatform().getScriptDir()
-		from pvr.gui.dialogs.dialogkeyboard import DialogKeyboard
-		KeyboardDialog('keyboarddialog.xml', scriptDir).doModal()
-		"""
 
 		if( keyType == 4 ) :
 			kb = xbmc.Keyboard( ctrlItem.listItems[0].getLabel2( ), ctrlItem.listItems[0].getLabel( ), False )
@@ -317,14 +316,17 @@ class SettingWindow( BaseWindow ):
 			return True
 
 		elif ( keyType == 0 ) :
-			'''
+			self.stopKeyboardCursor( ctrlItem.controlId )
+ 
 			dialog = pvr.gui.dialogmgr.getInstance().getDialog( pvr.gui.dialogmgr.DIALOG_ID_NUMERIC )
-			dialog.setTiteLabel( ctrlItem.listItems[0].getLabel( ) )
-			dialog.setNumber( ctrlItem.listItems[0].getLabel2( ) )
+			dialog.setProperty( ctrlItem.listItems[0].getLabel( ), ctrlItem.listItems[0].getLabel2( ), ctrlItem.maxLength )
 			dialog.doModal( )
 
 			if dialog.isOK() == True :
 				ctrlItem.listItems[0].setLabel2( dialog.getNumber( ) )
+
+			self.controlCursor( ctrlItem.controlId )
+ 
 			'''
 			dialog = pvr.gui.dialogmgr.getInstance( ).getDialog( pvr.gui.dialogmgr.DIALOG_ID_KEYBOARD )
 			dialog.setTiteLabel( ctrlItem.listItems[0].getLabel( ) )
@@ -332,8 +334,9 @@ class SettingWindow( BaseWindow ):
 			dialog.doModal( )
 
 			if dialog.isOK() == True :
-				ctrlItem.listItems[0].setLabel2( dialog.getText( ) )
-		
+				trlItem.listItems[0].setLabel2( dialog.getText( ) )
+			'''
+
 		else :
 			dialog = xbmcgui.Dialog( )
 			value = dialog.numeric( keyType, ctrlItem.listItems[0].getLabel( ), ctrlItem.listItems[0].getLabel2( ) )
@@ -342,10 +345,6 @@ class SettingWindow( BaseWindow ):
 			return True
 
 		return	False
-
-
-	def deleteChar( self, controlId ):
-		pass
 
 
 	def hasControlItem( self, ctrlItem, controlId  ):
@@ -497,10 +496,83 @@ class SettingWindow( BaseWindow ):
 
 	def	controlkeypad( self, controlId, actionId ) :
 		print 'dhkim test keypad = %d' % actionId
-		#num start 58->30
-		number = self.getControl( controlId + 3 ).getListItem(0).getLabel2( )
-		self.getControl( controlId + 3 ).getListItem(0).setLabel2( number + chr( actionId - 10 ) )
+			
+		string = self.inputLabel
 
+		for i in range( len( self.controlList ) ) :
+			if self.controlList[i].controlId == controlId :
+				length = self.controlList[i].maxLength
+				break
+
+		if len( string ) >= length :
+			self.cursorPosition = 0
+			string = ''
+
+		tmpstr1 = string[ : self.cursorPosition ]
+		temstr2 = string[ self.cursorPosition : ]
+		
+		if self.controlList[i].stringType == 0 :
+			#if actionId >= Action.KEY_BUTTON_A and actionId <= Action.KEY_BUTTON_C :
+			#	return
+			if actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
+				string = tmpstr1 + chr( actionId - 10 ) + temstr2
+		elif self.controlList[i].stringType == 1 :
+			#if actionId >= Action.KEY_BUTTON_A and actionId <= Action.KEY_BUTTON_C :
+			#	string = tmpstr1 + chr( actionId - 35 ) + temstr2
+			if actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
+				string = tmpstr1 + chr( actionId - 10 ) + temstr2
+			
+		self.cursorPosition = self.cursorPosition + 1
+		self.makelabel( controlId, string, self.cursorPosition )
+
+		if actionId == Action.ACTION_PARENT_DIR :
+			if( self.cursorPosition != 0 ) :
+				print 'dhkim test #1'
+				string = self.inputLabel
+				tmpstr1 = string[ : self.cursorPosition - 1 ]
+				temstr2 = string[ self.cursorPosition : ]
+				string = tmpstr1 + temstr2
+				self.cursorPosition = self.cursorPosition - 1
+				self.makelabel( controlId, string, self.cursorPosition )
+
+
+	def controlCursor( self, controlId ) :
+		self.cursorPosition = 0
+		self.cursorPosition = len( self.getControl( controlId + 3 ).getListItem(0).getLabel2( ) )
+		inputLabel = self.getControl( controlId + 3 ).getListItem(0).getLabel2( )
+		self.startKeyboardCursor( controlId )
+		self.makelabel( controlId, inputLabel, self.cursorPosition )
+		self.drawLabel( controlId )
+
+
+	@run_async
+	def drawLabel( self, controlId ) :
+		while self.untilThread :
+			self.getControl( controlId + 10 ).setVisible( False )
+			time.sleep( 0.3 )
+			self.getControl( controlId + 10 ).setVisible( True )
+			time.sleep( 0.3 )
+
+
+	def makelabel( self, controlId, string, position ):
+		preTmpstr = string[ : position]
+		postTmpstr = string[ position : ]
+		self.inputLabel = string
+		labelString = preTmpstr + ' ' + postTmpstr
+		cursorString = preTmpstr + '|' + postTmpstr
+		self.getControl( controlId + 3 ).getListItem(0).setLabel2( labelString )
+		self.getControl( controlId + 10 ).setLabel( cursorString )
+
+
+	def stopKeyboardCursor( self, controlId ):
+		self.untilThread = False
+		self.drawLabel( controlId ).join()
+		self.getControl( controlId + 3 ).getListItem(0).setLabel2( self.inputLabel )
+		self.getControl( controlId + 10 ).setLabel( '' )
+
+	def startKeyboardCursor( self, controlId ):
+		self.untilThread = True
+		self.inputLabel = self.getControl( controlId + 3 ).getListItem(0).getLabel2( )
 
 	def controlUp( self ):
 
@@ -539,8 +611,12 @@ class SettingWindow( BaseWindow ):
 					if focusId % 10 == 2 :
 						self.setFocusId( focusId - 1 )
 						return
+				if ctrlItem.controlType == ctrlItem.E_SETTING_INPUT_CONTROL :
+					if( self.cursorPosition != 0 ) :
+						self.cursorPosition = self.cursorPosition - 1
+						self.makelabel( ctrlItem.controlId, self.inputLabel, self.cursorPosition )
+						return
 
-	
 	def controlRight( self ):
 
 		focusId = self.getFocusId( )
@@ -553,7 +629,11 @@ class SettingWindow( BaseWindow ):
 					if focusId % 10 == 1 :
 						self.setFocusId( focusId + 1 )
 						return
-						
+				if ctrlItem.controlType == ctrlItem.E_SETTING_INPUT_CONTROL :
+					if( self.cursorPosition != len( self.inputLabel ) ) :
+						self.cursorPosition = self.cursorPosition + 1
+						self.makelabel( ctrlItem.controlId, self.inputLabel, self.cursorPosition )
+						return
 
 	def selectPosition( self, controlId, position ) :
 

@@ -89,6 +89,8 @@ class OneCableConfiguration( SettingWindow ):
 		groupId = self.getGroupId( controlId )
 
 		if groupId == E_Input01 :
+			position = self.getControlIdToListIndex( groupId ) - 2
+			configmgr.getInstance( ).setOneCableSatelliteCount( position + 1 )
 			self.resetAllControl( )
 			import pvr.platform 
 			scriptDir = pvr.platform.getPlatform().getScriptDir()
@@ -129,6 +131,6 @@ class OneCableConfiguration( SettingWindow ):
 
 		for i in range( MAX_SATELLITE_CNT ) :
 			if i < self.satelliteCount :
-				self.satellitelist.append( configmgr.getInstance( ).getFormattedName( int ( configuredList[i][2] ) ) )
+				self.satellitelist.append( configmgr.getInstance( ).getFormattedName( int( configuredList[i][2] ), int( configuredList[i][3] ) ) )
 			else :
 				self.satellitelist.append( '' ) # dummy Data

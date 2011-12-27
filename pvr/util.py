@@ -257,13 +257,10 @@ def epgInfoClock(flag, nowTime, epgClock):
 		strClock.append( time.strftime('%H:%M:%S', time.gmtime(nowTime) ) )
 
 	elif flag == 4:
-		"""
 		hour =  nowTime / 3600
 		min  = (nowTime % 3600) / 60
 		sec  = (nowTime % 3600) % 60
 		ret = '%d:%02d:%02d' % ( hour, min, sec )
-		"""
-		ret = '00:00:00' 
 		return ret
 
 	#print 'epgClock[%s:%s]'% (strClock, time.strftime('%S', time.gmtime(stbClock)) )
@@ -399,7 +396,7 @@ def ageLimit(cmd, agerating):
 	from elisproperty import ElisPropertyEnum
 	
 	property = ElisPropertyEnum( 'Age Limit', cmd )
-	print 'TTTTTTTTTTTTTTT[%s][%s][%s]'% ( agerating, property.getProp(), property.getPropString() )
+	#print 'TTTTTTTTTTTTTTT[%s][%s][%s]'% ( agerating, property.getProp(), property.getPropString() )
 
 	isWatch = True
 	limit = property.getProp()

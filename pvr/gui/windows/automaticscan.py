@@ -135,7 +135,7 @@ class AutomaticScan( SettingWindow ):
 			self.initControl( )
 
 		
-	def getFormattedName( self, longitude ) :
+	def getFormattedName( self, longitude, band ) :
 	
 		found = False	
 
@@ -186,6 +186,6 @@ class AutomaticScan( SettingWindow ):
 		self.formattedList.append('All')
 
 		for config in self.configuredSatelliteList :
-			self.formattedList.append( self.getFormattedName( int(config[E_CONFIGURE_SATELLITE_LONGITUDE]) ) )
+			self.formattedList.append( self.getFormattedName( int(config[E_CONFIGURE_SATELLITE_LONGITUDE]), int(config[E_CONFIGURE_SATELLITE_BANDTYPE]) ) )
 
 
