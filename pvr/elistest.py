@@ -15,6 +15,7 @@ class ElisTest(object):
 		#self.testSatelliteconfigSaveList()
 		#self.testChannelScanBySatellite()
 		#self.testChannelScanByCarriers()
+		#self.testChannellistByZapping()
 		pass
 
 	def testPropEnum( self ):
@@ -64,4 +65,9 @@ class ElisTest(object):
 						0,0,0,0,0,0,0]]
 		print 'config=%s' %configuredList
 		self.commander.satelliteconfig_SaveList( configuredList )
+
+	def testChannellistByZapping( self ) :
+		chlist = self.commander.channel_GetList( ElisEnum.E_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_DEFAULT )
+		print 'chlist[%s]'% chlist
+	
 

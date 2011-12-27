@@ -14,7 +14,7 @@ from elisenum import ElisEnum
 
 #from threading import Thread
 from pvr.util import run_async, is_digit, Mutex, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString #, synchronized, sync_instance
-import thread
+import thread, threading
 
 #debug log
 import logging
@@ -37,9 +37,11 @@ class TimeShiftBanner(BaseWindow):
 		self.commander = pvr.elismgr.getInstance().getCommander()
 
 		#default
+		self.progressbarWidth = 650
 		self.currentChannel=[]
 		self.progress_idx = 0.0
 		self.progress_max = 0.0
+		self.eventID = 0
 		self.mMode = ElisEnum.E_MODE_LIVE
 
 		#push push test test
@@ -78,7 +80,6 @@ class TimeShiftBanner(BaseWindow):
 			#test
 			#self.ctrlBtnTest		= self.getControl( 409 )
 
-
 		self.mSpeed = 100	#normal
 		self.ctrlEventClock.setLabel('')
 		self.ctrlProgress.setPercent(0)
@@ -88,7 +89,6 @@ class TimeShiftBanner(BaseWindow):
 
 		self.initLabelInfo()
 	
-
 
 		#run thread
 		self.isPlay = False
@@ -160,16 +160,25 @@ class TimeShiftBanner(BaseWindow):
 		pass
 
 	def onEvent(self, event):
-		self.eventCopy = event
-
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		#print 'eventCopy[%s]'% self.eventCopy
 
-		if xbmcgui.getCurrentWindowId() == self.win : #13009
-			self.updateONEvent(self.eventCopy)
+		if self.win :
+			msg = event[0]
+			
+			if msg == 'Elis-CurrentEITReceived' :
+
+				if int(event[4]) != self.eventID :			
+					ret = self.commander.epgevent_GetPresent( )
+					if len( ret ) > 0 :
+						self.eventCopy = event
+						self.eventID = int( event[4] )
+						self.updateONEvent( ret )
+
+					#ret = self.commander.epgevent_Get(self.eventID, int(event[1]), int(event[2]), int(event[3]), int(self.epgClock[0]) )
+			else :
+				print 'event unknown[%s]'% event
 		else:
 			print 'show screen is another windows page[%s]'% xbmcgui.getCurrentWindowId()
-
 
 		
 	def timeshiftAction(self, focusId):
@@ -299,7 +308,7 @@ class TimeShiftBanner(BaseWindow):
 
 		print 'player_GetStatus[%s]'% status
 		
-		if status != []:
+		if len(status) == 11:
 			#play mode
 			self.mMode = int(status[0])
 
@@ -312,16 +321,17 @@ class TimeShiftBanner(BaseWindow):
 			self.timeshift_staTime = int(status[3]) / 1000.0
 			self.timeshift_curTime = int(status[4]) / 1000.0
 			self.timeshift_endTime = int(status[5]) / 1000.0
+			#test
 			#self.timeshift_curTime = 0.0
 			#self.timeshift_endTime = 50
 
 			ret = ''
-			ret = epgInfoClock(4, 0, self.timeshift_staTime)
+			ret = epgInfoClock(4, self.timeshift_staTime, 0)
 			self.ctrlLblTSStartTime.setLabel(ret)
 			#print 'staTime[%s] ret[%s]'% (self.timeshift_staTime, ret)
 
 			ret = ''
-			ret = epgInfoClock(4, 0, self.timeshift_endTime)
+			ret = epgInfoClock(4, self.timeshift_endTime, 0)
 			self.ctrlLblTSEndTime.setLabel(ret)
 
 			self.progress_max = self.timeshift_endTime
@@ -459,49 +469,71 @@ class TimeShiftBanner(BaseWindow):
 		print '[%s():%s]begin_start thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		#print 'untilThread[%s] self.progress_max[%s]' % (self.untilThread, self.progress_max)
 
-		nowTime = time.time()
+		loop = 0
+		rLock = threading.RLock()
 		while self.untilThread:
 			#print '[%s():%s]repeat'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 			#local clock
-			if self.epgClock != [] :
-				if is_digit(self.epgClock[0]):
-					ret = epgInfoClock(3, nowTime, int(self.epgClock[0]))
+			rLock.acquire()
+			if  ( loop % 10 ) == 0 :
+
+				isExcept = False
+				try:
+					ret = self.commander.datetime_GetLocalTime( )
+					localTime = int( ret[0] )
+
+				except Exception, e:
+					print 'Error e[%s] datetime_GetLocalTime()'% e
+					isExcept = True
+					rLock.release()
+
+				#local clock
+				if isExcept == False :
+					rLock.release()
+					ret = epgInfoClock(2, localTime, loop)
 					self.ctrlEventClock.setLabel(ret[0])
 
-				else:
-					print 'value error epgClock[%s]' % ret
 
 			#progress
 			if self.isPlay == True:
 				if self.mSpeed != 100:
 					self.initTimeShift()
 				if self.progress_max > 0:
-					print 'progress_idx[%s] getPercent[%s]' % (self.progress_idx, self.ctrlProgress.getPercent())
+					try :
+						print 'progress_idx[%s] getPercent[%s]' % (self.progress_idx, self.ctrlProgress.getPercent())
 
-					self.ctrlProgress.setPercent(self.progress_idx)
+						self.ctrlProgress.setPercent(self.progress_idx)
 
-					pastTime = self.timeshift_curTime + self.curTime
+						pastTime = self.timeshift_curTime + self.curTime
 
-					self.progress_idx = ( pastTime / self.progress_max * 100)
-					if self.progress_idx > 100:
-						self.progress_idx = 100
+						self.progress_idx = ( pastTime / self.progress_max * 100)
+						if self.progress_idx > 100:
+							self.progress_idx = 100
 
-					if pastTime > self.progress_max :
-						pastTime = self.progress_max
-					ret = epgInfoClock(4, 0, pastTime)
-					self.ctrlBtnCurrent.setLabel(ret)
+						if pastTime > self.progress_max :
+							pastTime = self.progress_max
+							self.initTimeShift()
 
-					posx = int (self.progress_idx * 650 / 100)
-					self.ctrlBtnCurrent.setPosition( posx, 25 )
+						ret = epgInfoClock(4, pastTime, 0)
+						self.ctrlBtnCurrent.setLabel(ret)
+
+						posx = int (self.progress_idx * self.progressbarWidth / 100)
+						self.ctrlBtnCurrent.setPosition( posx, 25 )
+
+					except Exception, e :
+						print 'Error Exception[%s] progress'% e
+
 					self.curTime += 1
+					#print 'posx[%s] [%s] [%s]'% (posx, pastTime, pastTime/self.progress_max)
 
-					print 'posx[%s] [%s] [%s]'% (posx, pastTime, pastTime/self.progress_max)
 				else:
 					print 'value error progress_max[%s]' % self.progress_max
+
 			else:
 				pass
 
+			loop += 1
 			time.sleep(1)
 
 		print '[%s():%s]leave_end thread'% (currentframe().f_code.co_name, currentframe().f_lineno)

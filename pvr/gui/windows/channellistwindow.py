@@ -836,7 +836,7 @@ class ChannelListWindow(BaseWindow):
 
 				except Exception, e:
 					print 'Error datetime_GetLocalTime(), e[%s]'% e
-					rLock.release( )					
+					rLock.release( )
 					continue
 
 				endTime = self.epgStartTime + self.epgDuration

@@ -15,7 +15,7 @@ from elisenum import ElisEnum
 
 #from threading import Thread
 from pvr.util import run_async, is_digit, Mutex, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString, enumToString #, synchronized, sync_instance
-import thread
+import threading
 
 #debug log
 import logging
@@ -451,7 +451,7 @@ class ChannelBanner(BaseWindow):
 		#print 'untilThread[%s] self.progress_max[%s]' % (self.untilThread, self.progress_max)
 
 		loop = 0
-		rLock.acquire()
+		rLock = threading.RLock()
 		while self.untilThread:
 			#print '[%s():%s]repeat <<<<'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
