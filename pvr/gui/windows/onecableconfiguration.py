@@ -89,6 +89,8 @@ class OneCableConfiguration( SettingWindow ):
 		groupId = self.getGroupId( controlId )
 
 		if groupId == E_Input01 :
+			position = self.getControlIdToListIndex( groupId ) - 2
+			configmgr.getInstance( ).setOneCableSatelliteCount( position + 1 )
 			self.resetAllControl( )
 			import pvr.platform 
 			scriptDir = pvr.platform.getPlatform().getScriptDir()
