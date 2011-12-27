@@ -28,6 +28,9 @@ class ChannelListWindow(BaseWindow):
 		self.eventBus = pvr.elismgr.getInstance().getEventBus()
 		self.eventBus.register( self )
 
+		#summary
+		self.__file__ = os.path.basename( currentframe().f_code.co_filename )
+
 		#submenu list
 		self.list_AllChannel= []
 		self.list_Satellite = []
@@ -319,9 +322,8 @@ class ChannelListWindow(BaseWindow):
 
 
 	def onEvent(self, event):
-		print '[%s]%s():%s'% (os.path.basename(currentframe().f_code.co_filename), currentframe().f_code.co_name, currentframe().f_lineno)
+		print '[%s]%s():%s'% (self.__file__, currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'event[%s]'% event
-		#if xbmcgui.getCurrentWindowId() == self.win :
 
 		if self.win == xbmcgui.getCurrentWindowId() :
 			msg = event[0]
