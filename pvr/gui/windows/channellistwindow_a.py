@@ -26,7 +26,7 @@ class ChannelListWindow_a(BaseWindow):
 		self.commander = pvr.elismgr.getInstance().getCommander()		
 
 		self.eventBus = pvr.elismgr.getInstance().getEventBus()
-		self.eventBus.register( self )
+		#self.eventBus.register( self )
 
 		#submenu list
 		self.list_AllChannel= []
@@ -48,55 +48,55 @@ class ChannelListWindow_a(BaseWindow):
 
 
 	def onInit(self):
-		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		self.win = xbmcgui.getCurrentWindowId()
+		print '[%s():%s]winID[%d]'% (currentframe().f_code.co_name, currentframe().f_lineno, self.win)
+
 		self.epgStartTime = 0
 		self.epgDuration = 0
 		self.localOffset = int( self.commander.datetime_GetLocalOffset()[0] )
 		
-		if not self.win:
-			self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
 
-			#header
-			self.ctrlHeader1            = self.getControl( 3000 )
-			self.ctrlHeader2            = self.getControl( 3001 )
-			self.ctrlHeader3            = self.getControl( 3002 )
-			self.ctrlHeader4            = self.getControl( 3003 )
+		#header
+		self.ctrlHeader1            = self.getControl( 3000 )
+		self.ctrlHeader2            = self.getControl( 3001 )
+		self.ctrlHeader3            = self.getControl( 3002 )
+		self.ctrlHeader4            = self.getControl( 3003 )
 
-			self.ctrlLblPath            = self.getControl( 10 )
+		self.ctrlLblPath            = self.getControl( 10 )
 
-			#main menu
-			self.ctrlBtnMenu            = self.getControl( 101 )
-			self.ctrlListMainmenu       = self.getControl( 102 )
-			
-			#sub menu list
-			self.ctrlListSubmenu        = self.getControl( 202 )
+		#main menu
+		self.ctrlBtnMenu            = self.getControl( 101 )
+		self.ctrlListMainmenu       = self.getControl( 102 )
+		
+		#sub menu list
+		self.ctrlListSubmenu        = self.getControl( 202 )
 
-			#ch list
-			self.ctrlListCHList         = self.getControl( 50 )
+		#ch list
+		self.ctrlListCHList         = self.getControl( 50 )
 
-			#info
-			self.ctrlChannelName        = self.getControl( 303 )
-			self.ctrlEventName          = self.getControl( 304 )
-			self.ctrlEventTime          = self.getControl( 305 )
-			self.ctrlProgress           = self.getControl( 306 )
-			self.ctrlLongitudeInfo      = self.getControl( 307 )
-			self.ctrlCareerInfo         = self.getControl( 308 )
-			self.ctrlLockedInfo         = self.getControl( 309 )
-			self.ctrlServiceTypeImg1    = self.getControl( 310 )
-			self.ctrlServiceTypeImg2    = self.getControl( 311 )
-			self.ctrlServiceTypeImg3    = self.getControl( 312 )
-			self.ctrlSelectItem         = self.getControl( 401 )
-			
-			#test ctrl
-			#self.ctrlLbl                = self.getControl( 9001 )
-			#self.ctrlBtn                = self.getControl( 9002 )
+		#info
+		self.ctrlChannelName        = self.getControl( 303 )
+		self.ctrlEventName          = self.getControl( 304 )
+		self.ctrlEventTime          = self.getControl( 305 )
+		self.ctrlProgress           = self.getControl( 306 )
+		self.ctrlLongitudeInfo      = self.getControl( 307 )
+		self.ctrlCareerInfo         = self.getControl( 308 )
+		self.ctrlLockedInfo         = self.getControl( 309 )
+		self.ctrlServiceTypeImg1    = self.getControl( 310 )
+		self.ctrlServiceTypeImg2    = self.getControl( 311 )
+		self.ctrlServiceTypeImg3    = self.getControl( 312 )
+		self.ctrlSelectItem         = self.getControl( 401 )
+		
+		#test ctrl
+		#self.ctrlLbl                = self.getControl( 9001 )
+		#self.ctrlBtn                = self.getControl( 9002 )
 
 
-			#epg stb time
-			self.ctrlHeader3.setLabel('')
+		#epg stb time
+		self.ctrlHeader3.setLabel('')
 
-			#etc
-			self.listEnableFlag = False
+		#etc
+		self.listEnableFlag = False
 
 
 		#initialize get channel list
@@ -285,8 +285,8 @@ class ChannelListWindow_a(BaseWindow):
 	def onEvent(self, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'event[%s]'% event
-		#if xbmcgui.getCurrentWindowId() == self.win :
-		if self.win :
+
+		if self.win == xbmcgui.getCurrentWindowId():
 			msg = event[0]
 			
 			if msg == 'Elis-CurrentEITReceived' :
@@ -301,7 +301,7 @@ class ChannelListWindow_a(BaseWindow):
 			else :
 				print 'event unknown[%s]'% event
 		else:
-			print 'show screen is another windows page[%s]'% xbmcgui.getCurrentWindowId()
+			print 'channellist_a winID[%d] this winID[%d]'% (self.win, xbmcgui.getCurrentWindowId())
 
 
 	def subManuAction(self, action, idx_menu):
