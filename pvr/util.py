@@ -41,6 +41,28 @@ def requireDir(dir):
 		os.makedirs(dir)
 	return dir
 
+uilocked = False
+
+
+@decorator
+def ui_locked2(func, *args, **kw):
+	"""
+	Decorator for setting/unsetting the xbmcgui lock on method
+	entry and exit.
+	"""
+	global uilocked
+	if uilocked: # prevent nested locks / double lock
+		return func(*args, **kw)    
+	else:
+		try:
+			uilocked = True
+			xbmcgui.lock()
+			result = func(*args, **kw)
+		finally:
+			xbmcgui.unlock()
+			uilocked = False
+		return result
+
 
 @decorator
 def run_async(func, *args, **kwargs):

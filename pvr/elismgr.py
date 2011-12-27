@@ -39,7 +39,7 @@ class ElisEventHandler( EventHandler ):
 		self.bus = getInstance().getEventBus()
 		
 		while 1:
-			#print 'handle --->!!!!!!!!!!!!!!!!!'
+			print 'handle --->!!!!!!!!!!!!!!!!!'
 
 			fd_sets = select.select([self.request], [], [], 0.5 )
 			if not fd_sets[0]:
@@ -49,15 +49,12 @@ class ElisEventHandler( EventHandler ):
 					continue
 
 			event = request.readMsg()
-			self.doEvent( event )
+			self.addEvent( event )
 			print 'handle end --->!!!!!!!!!!!!!!!!!'
 	
 
-	def doEvent( self, event ):
-		for i in range( len( event ) ):
-			print 'received reply[%d] ---> %s' %(i,event[i])
-
-		self.bus.publish( event )
+	def addEvent( self, event ):
+		self.bus.addEvent( event )
 
 
 class ElisEventRecevier( EventServer ): pass

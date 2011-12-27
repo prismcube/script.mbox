@@ -8,6 +8,7 @@ from elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import *
 import pvr.elismgr
 import pvr.gui.dialogmgr
+import threading
 
 class Action(object):
 	ACTION_NONE					= 0
@@ -51,11 +52,22 @@ class Action(object):
 @decorator
 def setWindowBusy(func, *args, **kwargs):
 	window = args[0]
+	print 'check busy'
 	try:
-		window.setBusy(True)
-		result = func(*args, **kwargs)
-	finally:
+		try :
+			print 'check busy #1'
+			window.setBusy(True)
+			print 'check busy #2'
+			result = func(*args, **kwargs)
+			print 'check busy #3'
+		except Exception, ex:
+			print 'Error publishing event ex=%s' %ex
+
+	finally :
+		print 'check busy #4'	
 		window.setBusy(False)
+		print 'check busy #5'
+
 	return result
 
 
@@ -102,6 +114,8 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 		xbmcgui.WindowXML.__init__(self, *args, **kwargs)
 		self.win = None        
 		self.closed = False
+		self.recBusy = 0
+		self.rLock = threading.RLock()		
 
 	def setFooter( self, footermask ):
 		self.footerGroupId = FooterMask.G_FOOTER_GROUP_STARTID
@@ -113,7 +127,40 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 
 	def setHeaderLabel( self, label ):
 		self.getControl( HeaderDefine.G_HEADER_LABEL_ID ).setLabel( label )
+
+
+	def setBusy(self, busy):
+		self.rLock.acquire()
+		if busy == True:
+			self.recBusy += 1
+		else :
+			self.recBusy -= 1
+		self.rLock.release()
 		
+		print 'recBusy= %d' %self.recBusy
+
+		"""
+		print 'set busy #1'
+		self.setProperty('busy', ('false', 'true')[busy])
+		print 'set busy #2'
+		"""
+		
+	def resetBusy( self ) :
+		self.recBusy = 0
+			
+	def isBusy(self):
+		if self.recBusy > 0 :
+			return True
+		else :
+			return False
+
+		"""
+		busy = self.getProperty('busy')
+		print 'isbusy = %s' %busy
+		ret =  busy and busy == 'true'
+		print 'ret=%d' %ret
+		"""
+
 
 class ControlItem:
 	# Setting Window
@@ -144,6 +191,7 @@ class SettingWindow( BaseWindow ):
 		BaseWindow.__init__(self, *args, **kwargs)
 		self.controlList = []
 		self.commander = pvr.elismgr.getInstance().getCommander()		
+
 
 	def initControl( self ):
 		pos = 0
