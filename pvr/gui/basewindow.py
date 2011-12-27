@@ -47,7 +47,6 @@ class Action(object):
 	ACTION_VOLUME_UP			= 88	#Plus
 	ACTION_VOLUME_DOWN			= 89	#Minus
 	ACTION_MUTE					= 91	#F8
-
 	
 
 @decorator
@@ -300,10 +299,6 @@ class SettingWindow( BaseWindow ):
 		return	False
 
 
-	def deleteChar( self, controlId ):
-		pass
-
-
 	def hasControlItem( self, ctrlItem, controlId  ):
 		if ctrlItem.controlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.controlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 			if ctrlItem.controlId == controlId or ctrlItem.controlId + 1 == controlId or ctrlItem.controlId + 2 == controlId or ctrlItem.controlId + 3 == controlId  :
@@ -453,27 +448,36 @@ class SettingWindow( BaseWindow ):
 
 	def	controlkeypad( self, controlId, actionId ) :
 		print 'dhkim test keypad = %d' % actionId
+			
+		string = self.inputLabel
 
-		if actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
+		for i in range( len( self.controlList ) ) :
+			if self.controlList[i].controlId == controlId :
+				length = self.controlList[i].maxLength
+				break
+
+		if len( string ) >= length :
+			self.cursorPosition = 0
+			string = ''
+
+		tmpstr1 = string[ : self.cursorPosition ]
+		temstr2 = string[ self.cursorPosition : ]
 		
-			number = self.inputLabel
+		if self.controlList[i].stringType == 0 :
+			#if actionId >= Action.KEY_BUTTON_A and actionId <= Action.KEY_BUTTON_C :
+			#	return
+			if actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
+				string = tmpstr1 + chr( actionId - 10 ) + temstr2
+		elif self.controlList[i].stringType == 1 :
+			#if actionId >= Action.KEY_BUTTON_A and actionId <= Action.KEY_BUTTON_C :
+			#	string = tmpstr1 + chr( actionId - 35 ) + temstr2
+			if actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
+				string = tmpstr1 + chr( actionId - 10 ) + temstr2
+			
+		self.cursorPosition = self.cursorPosition + 1
+		self.makelabel( controlId, string, self.cursorPosition )
 
-			for i in range( len( self.controlList ) ) :
-				if self.controlList[i].controlId == controlId :
-					length = self.controlList[i].maxLength
-					break
-
-			if len( number ) >= length :
-				self.cursorPosition = 0
-				number = ''
-
-			tmpstr1 = number[ : self.cursorPosition ]
-			temstr2 = number[ self.cursorPosition : ]
-			number = tmpstr1 + chr( actionId - 10 ) + temstr2
-			self.cursorPosition = self.cursorPosition + 1
-			self.makelabel( controlId, number, self.cursorPosition )
-
-		elif actionId == Action.ACTION_PARENT_DIR :
+		if actionId == Action.ACTION_PARENT_DIR :
 			if( self.cursorPosition != 0 ) :
 				print 'dhkim test #1'
 				string = self.inputLabel

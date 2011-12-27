@@ -42,7 +42,7 @@ class OneCableConfiguration2( SettingWindow ):
 			self.addEnumControl( E_SpinEx01, 'MDU' )
 
 			pinCode = ElisPropertyInt( 'Tuner%d Pin Code' % ( self.tunerIndex + 1 ), self.commander ).getProp( )
-			self.addInputControl( E_Input01, 'Tuner %d PIN-Code' % ( self.tunerIndex + 1 ), '%d' % pinCode, 0, 0, 4 )
+			self.addInputControl( E_Input01, 'Tuner %d PIN-Code' % ( self.tunerIndex + 1 ), '%d' % pinCode, 0, 1, 4 )
 
 			tunerScr = ElisPropertyInt( 'Tuner%d SCR' % ( self.tunerIndex + 1 ), self.commander ).getProp( )
 			self.addUserEnumControl( E_SpinEx02, 'Tuner %d' % ( self.tunerIndex + 1 ), self.scrList, tunerScr )
@@ -58,7 +58,7 @@ class OneCableConfiguration2( SettingWindow ):
 			self.addEnumControl( E_SpinEx01, 'MDU' )
 
 			pinCode = ElisPropertyInt( 'Tuner1 Pin Code', self.commander ).getProp( )
-			self.addInputControl( E_Input01, 'Tuner1 PIN-Code', '%d' % pinCode, 0, 0, 4 )
+			self.addInputControl( E_Input01, 'Tuner1 PIN-Code', '%d' % pinCode, 0, 1, 4 )
 
 			tunerScr = ElisPropertyInt( 'Tuner1 SCR', self.commander ).getProp( )
 			self.addUserEnumControl( E_SpinEx02, 'Tuner 1', self.scrList, tunerScr )
@@ -67,7 +67,7 @@ class OneCableConfiguration2( SettingWindow ):
 			self.addUserEnumControl( E_SpinEx03, 'Tuner 1 Frequency', E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % tunerFrequency ) )
 
 			pinCode = ElisPropertyInt( 'Tuner2 Pin Code', self.commander ).getProp( )
-			self.addInputControl( E_Input02, 'Tuner2 PIN-Code', '%d' % pinCode, 0, 0, 4 )
+			self.addInputControl( E_Input02, 'Tuner2 PIN-Code', '%d' % pinCode, 0, 1, 4 )
 
 			tunerScr = ElisPropertyInt( 'Tuner2 SCR', self.commander ).getProp( )
 			self.addUserEnumControl( E_SpinEx04, 'Tuner 2', self.scrList, tunerScr )
@@ -76,6 +76,7 @@ class OneCableConfiguration2( SettingWindow ):
 			self.addUserEnumControl( E_SpinEx05, 'Tuner 2 Frequency', E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % tunerFrequency ) )
 
 		self.initControl( )
+		self.disableControl( )
 		self.initialized = True
 				
 	def onAction( self, action ):
@@ -83,6 +84,7 @@ class OneCableConfiguration2( SettingWindow ):
 		actionId = action.getId( )
 		focusId = self.getFocusId( )
 		groupId = self.getGroupId( focusId )
+
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.initialized = False
@@ -110,14 +112,20 @@ class OneCableConfiguration2( SettingWindow ):
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.controlDown( )
 
-		elif groupId == E_Input01 or groupId == E_Input02:
-			self.controlkeypad( groupId, actionId )
+		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
+			if groupId == E_Input01 or groupId == E_Input02:
+				self.controlkeypad( groupId, actionId )
+
 
 
 	def onClick( self, controlId ):
 		groupId = self.getGroupId( controlId )
 
-		if groupId == E_SpinEx01 or groupId == E_Input01 or groupId == E_Input02  :
+		if groupId == E_SpinEx01 :
+			self.controlSelect( )
+			self.disableControl( )
+			
+		elif groupId == E_Input01 or groupId == E_Input02 :
 			self.controlSelect( )
 
 		if configmgr.getInstance( ).getCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
@@ -166,7 +174,7 @@ class OneCableConfiguration2( SettingWindow ):
 				self.prevId = groupId
 			self.controlCursor( groupId )
 			
-		elif self.prevId == E_Input01 or self.prevId == E_Input02 :
+		elif ( self.prevId == E_Input01 or self.prevId == E_Input02 ) and self.prevId != groupId :
 			self.stopKeyboardCursor( self.prevId )
 			self.prevId = groupId
 
@@ -200,5 +208,18 @@ class OneCableConfiguration2( SettingWindow ):
 			for i in range( self.oneCablesatelliteCount ) :
 				configmgr.getInstance( ).saveConfigbyIndex( 0, i, self.currentSatellite[i] )
 				configmgr.getInstance( ).saveConfigbyIndex( 1, i, self.currentSatellite2[i] )
+
 		
-	
+	def disableControl( self ):
+		selectedIndex = self.getSelectedIndex( E_SpinEx01 )
+		enableControls = [ E_Input01, E_Input02 ]
+		if ( selectedIndex == 0 ) :
+			if configmgr.getInstance( ).getCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
+				self.setEnableControl( E_Input01, False )
+			elif configmgr.getInstance( ).getCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
+				self.setEnableControls( enableControls, False )
+		else :
+			if configmgr.getInstance( ).getCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
+				self.setEnableControl( E_Input01, True )
+			elif configmgr.getInstance( ).getCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
+				self.setEnableControls( enableControls, True )
