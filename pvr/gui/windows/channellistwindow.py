@@ -13,11 +13,10 @@ import pvr.util as util
 import pvr.elismgr
 from elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import FooterMask
-import threading
+import threading, time, os
 
 import pvr.msg as m
 import pvr.gui.windows.define_string as mm
-import thread, time
 
 
 class ChannelListWindow(BaseWindow):
@@ -320,7 +319,7 @@ class ChannelListWindow(BaseWindow):
 
 
 	def onEvent(self, event):
-		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print '[%s]%s():%s'% (os.path.basename(currentframe().f_code.co_filename), currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'event[%s]'% event
 		#if xbmcgui.getCurrentWindowId() == self.win :
 
@@ -806,6 +805,7 @@ class ChannelListWindow(BaseWindow):
 				if isLimit == True :
 					self.pincodeEnter |= 0x01
 					print 'AgeLimit[%s]'% isLimit
+
 
 		else:
 			print 'event null'

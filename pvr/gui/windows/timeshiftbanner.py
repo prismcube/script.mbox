@@ -159,7 +159,7 @@ class TimeShiftBanner(BaseWindow):
 		pass
 
 	def onEvent(self, event):
-		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print '[%s]%s():%s'% (os.path.basename(currentframe().f_code.co_filename), currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'event[%s]'% event
 
 		if self.win == xbmcgui.getCurrentWindowId() :

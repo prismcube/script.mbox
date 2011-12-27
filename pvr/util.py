@@ -374,7 +374,7 @@ def ageLimit(cmd, agerating):
 	from elisproperty import ElisPropertyEnum
 	
 	property = ElisPropertyEnum( 'Age Limit', cmd )
-	print 'TTTTTTTTTTTTTTT[%s][%s][%s]'% ( agerating, property.getProp(), property.getPropString() )
+	#print 'TTTTTTTTTTTTTTT[%s][%s][%s]'% ( agerating, property.getProp(), property.getPropString() )
 
 	isWatch = True
 	limit = property.getProp()
