@@ -86,6 +86,8 @@ class TunerConfigMgr( object ):
 		
 		self.allsatellitelist = []
 
+		self.oneCableSatelliteCount = 0
+
 	def getCurrentTunerIndex( self ) :
 		return self.currentTuner
 
@@ -156,6 +158,25 @@ class TunerConfigMgr( object ):
 			print 'ERROR : unknown tuner'
 			return self.configuredList1
 
+	def getConfiguredSatellitebyTunerIndex( self, tunerIndex ) :
+		if tunerIndex == E_TUNER_1 :
+			return self.configuredList1
+		elif tunerIndex == E_TUNER_2 :
+			return self.configuredList2
+		else :
+			print 'ERROR : unknown tuner'
+			return self.configuredList1
+			
+
+
+	def setOneCableSatelliteCount( self, count ) :
+		self.oneCableSatelliteCount = count
+
+
+	def getOneCableSatelliteCount( self ) :
+		return self.oneCableSatelliteCount
+			
+
 	def addConfiguredSatellite( self, index ) :
 
 		config = ["0", "0", self.allsatellitelist[index][0], self.allsatellitelist[index][1], "0", "0", "0", "0",
@@ -180,6 +201,7 @@ class TunerConfigMgr( object ):
 		self.currentTuner  = 0
 		self.currentConfigIndex  = 0
 		self.currentTunerType = 0
+		self.oneCableSatelliteCount = 0
 
 	def restore( self ) :
 
@@ -217,7 +239,7 @@ class TunerConfigMgr( object ):
 				configuredList[i][E_CONFIGURE_SATELLITE_IS_ONECABLE] = 1
 		
 		
-		if self.getCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
+		if self.getCurrentTunerConfigType( ) == E_SAMEWITH_TUNER and tunerType != E_ONE_CABLE:
 		
 			self.configuredList2 = deepcopy( self.configuredList1 )
 
@@ -383,6 +405,14 @@ class TunerConfigMgr( object ):
 		else :
 			print 'ERROR : can not find configured satellite'
 	
+	def saveConfigbyIndex( self, tunerIndex, satelliteIndex, configure, configuredSatellite ) :
+		if tunerIndex == E_TUNER_1 :	
+			self.configuredList1[satelliteIndex] = configuredSatellite
+		elif tunerIndex == E_TUNER_2:
+			self.configuredList2[satelliteIndex] = configuredSatellite
+		else :
+			print 'ERROR : can not find configured satellite'
+
 
 	def setNeedLoad( self, needLoad ) :
 		self.needLoad = needLoad

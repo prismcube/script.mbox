@@ -1464,6 +1464,17 @@
 					</control>
 				</focusedlayout>
 			</control>
+			<control type="label" id="2110">
+				<posx>736</posx>
+				<posy>0</posy>
+				<width>640</width>
+				<height>40</height>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<align>right</align>
+				<aligny>center</aligny>
+				<visible>Control.IsEnabled(2100) + Control.HasFocus(2101)</visible>
+			</control>
 		</control>
 	</include>
 	<include name="Input02">
@@ -1565,6 +1576,17 @@
 						<visible>Control.IsEnabled(2200) + Control.HasFocus(2201)</visible>
 					</control>
 				</focusedlayout>
+			</control>
+			<control type="label" id="2210">
+				<posx>736</posx>
+				<posy>0</posy>
+				<width>640</width>
+				<height>40</height>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<align>right</align>
+				<aligny>center</aligny>
+				<visible>Control.IsEnabled(2200) + Control.HasFocus(2201)</visible>
 			</control>
 		</control>
 	</include>
@@ -1668,6 +1690,17 @@
 					</control>
 				</focusedlayout>
 			</control>
+			<control type="label" id="2310">
+				<posx>736</posx>
+				<posy>0</posy>
+				<width>640</width>
+				<height>40</height>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<align>right</align>
+				<aligny>center</aligny>
+				<visible>Control.IsEnabled(2300) + Control.HasFocus(2301)</visible>
+			</control>
 		</control>
 	</include>
 	<include name="Input04">
@@ -1770,6 +1803,17 @@
 					</control>
 				</focusedlayout>
 			</control>
+			<control type="label" id="2410">
+				<posx>736</posx>
+				<posy>0</posy>
+				<width>640</width>
+				<height>40</height>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<align>right</align>
+				<aligny>center</aligny>
+				<visible>Control.IsEnabled(2400) + Control.HasFocus(2401)</visible>
+			</control>
 		</control>
 	</include>
 	<include name="Input05">
@@ -1871,6 +1915,17 @@
 						<visible>Control.IsEnabled(2500) + Control.HasFocus(2501)</visible>
 					</control>
 				</focusedlayout>
+			</control>
+			<control type="label" id="2510">
+				<posx>736</posx>
+				<posy>0</posy>
+				<width>640</width>
+				<height>40</height>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<align>right</align>
+				<aligny>center</aligny>
+				<visible>Control.IsEnabled(2500) + Control.HasFocus(2501)</visible>
 			</control>
 		</control>
 	</include>

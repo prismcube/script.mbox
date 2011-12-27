@@ -9,6 +9,7 @@ from pvr.gui.guiconfig import *
 import pvr.elismgr
 import pvr.gui.dialogmgr
 
+from pvr.util import run_async
 
 class Action(object):
 	ACTION_NONE					= 0
@@ -144,7 +145,11 @@ class SettingWindow( BaseWindow ):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
 		self.controlList = []
-		self.commander = pvr.elismgr.getInstance().getCommander()		
+		self.commander = pvr.elismgr.getInstance().getCommander()
+		self.cursorPosition = 0
+		self.untilThread = False
+		self.ctrlCursorId = None
+		self.inputLabel = None
 
 	def initControl( self ):
 		pos = 0
@@ -264,6 +269,7 @@ class SettingWindow( BaseWindow ):
 			return True
 
 		elif ( keyType == 0 ) :
+			self.stopKeyboardCursor( ctrlItem.controlId )
  
 			dialog = pvr.gui.dialogmgr.getInstance().getDialog( pvr.gui.dialogmgr.DIALOG_ID_NUMERIC )
 			dialog.setProperty( ctrlItem.listItems[0].getLabel( ), ctrlItem.listItems[0].getLabel2( ), ctrlItem.maxLength )
@@ -271,6 +277,8 @@ class SettingWindow( BaseWindow ):
 
 			if dialog.isOK() == True :
 				ctrlItem.listItems[0].setLabel2( dialog.getNumber( ) )
+
+			self.controlCursor( ctrlItem.controlId )
  
 			'''
 			dialog = pvr.gui.dialogmgr.getInstance( ).getDialog( pvr.gui.dialogmgr.DIALOG_ID_KEYBOARD )
@@ -447,7 +455,8 @@ class SettingWindow( BaseWindow ):
 		print 'dhkim test keypad = %d' % actionId
 
 		if actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
-			number = self.getControl( controlId + 3 ).getListItem(0).getLabel2( )
+		
+			number = self.inputLabel
 
 			for i in range( len( self.controlList ) ) :
 				if self.controlList[i].controlId == controlId :
@@ -455,10 +464,63 @@ class SettingWindow( BaseWindow ):
 					break
 
 			if len( number ) >= length :
+				self.cursorPosition = 0
 				number = ''
-				
-			self.getControl( controlId + 3 ).getListItem(0).setLabel2( number + chr( actionId - 10 ) )
 
+			tmpstr1 = number[ : self.cursorPosition ]
+			temstr2 = number[ self.cursorPosition : ]
+			number = tmpstr1 + chr( actionId - 10 ) + temstr2
+			self.cursorPosition = self.cursorPosition + 1
+			self.makelabel( controlId, number, self.cursorPosition )
+
+		elif actionId == Action.ACTION_PARENT_DIR :
+			if( self.cursorPosition != 0 ) :
+				print 'dhkim test #1'
+				string = self.inputLabel
+				tmpstr1 = string[ : self.cursorPosition - 1 ]
+				temstr2 = string[ self.cursorPosition : ]
+				string = tmpstr1 + temstr2
+				self.cursorPosition = self.cursorPosition - 1
+				self.makelabel( controlId, string, self.cursorPosition )
+
+
+	def controlCursor( self, controlId ) :
+		self.cursorPosition = 0
+		self.cursorPosition = len( self.getControl( controlId + 3 ).getListItem(0).getLabel2( ) )
+		inputLabel = self.getControl( controlId + 3 ).getListItem(0).getLabel2( )
+		self.startKeyboardCursor( controlId )
+		self.makelabel( controlId, inputLabel, self.cursorPosition )
+		self.drawLabel( controlId )
+
+
+	@run_async
+	def drawLabel( self, controlId ) :
+		while self.untilThread :
+			self.getControl( controlId + 10 ).setVisible( False )
+			time.sleep( 0.3 )
+			self.getControl( controlId + 10 ).setVisible( True )
+			time.sleep( 0.3 )
+
+
+	def makelabel( self, controlId, string, position ):
+		preTmpstr = string[ : position]
+		postTmpstr = string[ position : ]
+		self.inputLabel = string
+		labelString = preTmpstr + ' ' + postTmpstr
+		cursorString = preTmpstr + '|' + postTmpstr
+		self.getControl( controlId + 3 ).getListItem(0).setLabel2( labelString )
+		self.getControl( controlId + 10 ).setLabel( cursorString )
+
+
+	def stopKeyboardCursor( self, controlId ):
+		self.untilThread = False
+		self.drawLabel( controlId ).join()
+		self.getControl( controlId + 3 ).getListItem(0).setLabel2( self.inputLabel )
+		self.getControl( controlId + 10 ).setLabel( '' )
+
+	def startKeyboardCursor( self, controlId ):
+		self.untilThread = True
+		self.inputLabel = self.getControl( controlId + 3 ).getListItem(0).getLabel2( )
 
 	def controlUp( self ):
 
@@ -497,8 +559,12 @@ class SettingWindow( BaseWindow ):
 					if focusId % 10 == 2 :
 						self.setFocusId( focusId - 1 )
 						return
+				if ctrlItem.controlType == ctrlItem.E_SETTING_INPUT_CONTROL :
+					if( self.cursorPosition != 0 ) :
+						self.cursorPosition = self.cursorPosition - 1
+						self.makelabel( ctrlItem.controlId, self.inputLabel, self.cursorPosition )
+						return
 
-	
 	def controlRight( self ):
 
 		focusId = self.getFocusId( )
@@ -511,7 +577,11 @@ class SettingWindow( BaseWindow ):
 					if focusId % 10 == 1 :
 						self.setFocusId( focusId + 1 )
 						return
-						
+				if ctrlItem.controlType == ctrlItem.E_SETTING_INPUT_CONTROL :
+					if( self.cursorPosition != len( self.inputLabel ) ) :
+						self.cursorPosition = self.cursorPosition + 1
+						self.makelabel( ctrlItem.controlId, self.inputLabel, self.cursorPosition )
+						return
 
 	def selectPosition( self, controlId, position ) :
 
