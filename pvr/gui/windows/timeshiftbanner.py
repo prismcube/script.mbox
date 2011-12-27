@@ -56,29 +56,28 @@ class TimeShiftBanner(BaseWindow):
 		self.untilThread = False
 
 	def onInit(self):
-		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		if not self.win:
-			self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
+		self.win = xbmcgui.getCurrentWindowId()
+		print '[%s():%s]winID[%d]'% (currentframe().f_code.co_name, currentframe().f_lineno, self.win)
 
-			self.ctrlImgRewind		= self.getControl(  31 )
-			self.ctrlImgForward		= self.getControl(  32 )
-			self.ctrlLblSpeed		= self.getControl(  33 )
-			self.ctrlProgress		= self.getControl( 201 )
-			self.ctrlBtnCurrent		= self.getControl( 202 )
-			self.ctrlEventClock		= self.getControl( 211 )
-			self.ctrlLblTSStartTime	= self.getControl( 221 )
-			self.ctrlLblTSEndTime	= self.getControl( 222 )
+		self.ctrlImgRewind		= self.getControl(  31 )
+		self.ctrlImgForward		= self.getControl(  32 )
+		self.ctrlLblSpeed		= self.getControl(  33 )
+		self.ctrlProgress		= self.getControl( 201 )
+		self.ctrlBtnCurrent		= self.getControl( 202 )
+		self.ctrlEventClock		= self.getControl( 211 )
+		self.ctrlLblTSStartTime	= self.getControl( 221 )
+		self.ctrlLblTSEndTime	= self.getControl( 222 )
 
-			self.ctrlBtnVolume		= self.getControl( 402 )
-			self.ctrlBtnRecord		= self.getControl( 403 )
-			self.ctrlBtnRewind		= self.getControl( 404 )
-			self.ctrlBtnPlay		= self.getControl( 405 )
-			self.ctrlBtnPause		= self.getControl( 406 )
-			self.ctrlBtnStop		= self.getControl( 407 )
-			self.ctrlBtnForward		= self.getControl( 408 )
+		self.ctrlBtnVolume		= self.getControl( 402 )
+		self.ctrlBtnRecord		= self.getControl( 403 )
+		self.ctrlBtnRewind		= self.getControl( 404 )
+		self.ctrlBtnPlay		= self.getControl( 405 )
+		self.ctrlBtnPause		= self.getControl( 406 )
+		self.ctrlBtnStop		= self.getControl( 407 )
+		self.ctrlBtnForward		= self.getControl( 408 )
 
-			#test
-			#self.ctrlBtnTest		= self.getControl( 409 )
+		#test
+		#self.ctrlBtnTest		= self.getControl( 409 )
 
 		self.mSpeed = 100	#normal
 		self.ctrlEventClock.setLabel('')
@@ -161,10 +160,11 @@ class TimeShiftBanner(BaseWindow):
 
 	def onEvent(self, event):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print 'event[%s]'% event
 
-		if self.win :
+		if self.win == xbmcgui.getCurrentWindowId() :
+
 			msg = event[0]
-			
 			if msg == 'Elis-CurrentEITReceived' :
 
 				if int(event[4]) != self.eventID :			
@@ -178,7 +178,7 @@ class TimeShiftBanner(BaseWindow):
 			else :
 				print 'event unknown[%s]'% event
 		else:
-			print 'show screen is another windows page[%s]'% xbmcgui.getCurrentWindowId()
+			print 'channelbanner winID[%d] this winID[%d]'% (self.win, xbmcgui.getCurrentWindowId())
 
 		
 	def timeshiftAction(self, focusId):

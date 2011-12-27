@@ -49,56 +49,55 @@ class ChannelListWindow(BaseWindow):
 
 
 	def onInit(self):
-		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		self.win = xbmcgui.getCurrentWindowId()
+		print '[%s():%s]winID[%d]'% (currentframe().f_code.co_name, currentframe().f_lineno, self.win)
+
 		self.epgStartTime = 0
 		self.epgDuration = 0
 		self.localOffset = int( self.commander.datetime_GetLocalOffset()[0] )
+
+		#header
+		self.ctrlHeader1            = self.getControl( 3000 )
+		self.ctrlHeader2            = self.getControl( 3001 )
+		self.ctrlHeader3            = self.getControl( 3002 )
+		self.ctrlHeader4            = self.getControl( 3003 )
+
+		self.ctrlLblPath            = self.getControl( 10 )
+
+		#main menu
+		self.ctrlBtnMenu            = self.getControl( 101 )
+		self.ctrlListMainmenu       = self.getControl( 102 )
 		
-		if not self.win:
-			self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
+		#sub menu list
+		self.ctrlGrpSubmenu         = self.getControl( 9001 )
+		self.ctrlListSubmenu        = self.getControl( 202 )
 
-			#header
-			self.ctrlHeader1            = self.getControl( 3000 )
-			self.ctrlHeader2            = self.getControl( 3001 )
-			self.ctrlHeader3            = self.getControl( 3002 )
-			self.ctrlHeader4            = self.getControl( 3003 )
+		#ch list
+		self.ctrlListCHList         = self.getControl( 50 )
 
-			self.ctrlLblPath            = self.getControl( 10 )
-
-			#main menu
-			self.ctrlBtnMenu            = self.getControl( 101 )
-			self.ctrlListMainmenu       = self.getControl( 102 )
-			
-			#sub menu list
-			self.ctrlGrpSubmenu         = self.getControl( 9001 )
-			self.ctrlListSubmenu        = self.getControl( 202 )
-
-			#ch list
-			self.ctrlListCHList         = self.getControl( 50 )
-
-			#info
-			self.ctrlChannelName        = self.getControl( 303 )
-			self.ctrlEventName          = self.getControl( 304 )
-			self.ctrlEventTime          = self.getControl( 305 )
-			self.ctrlProgress           = self.getControl( 306 )
-			self.ctrlLongitudeInfo      = self.getControl( 307 )
-			self.ctrlCareerInfo         = self.getControl( 308 )
-			self.ctrlLockedInfo         = self.getControl( 309 )
-			self.ctrlServiceTypeImg1    = self.getControl( 310 )
-			self.ctrlServiceTypeImg2    = self.getControl( 311 )
-			self.ctrlServiceTypeImg3    = self.getControl( 312 )
-			self.ctrlSelectItem         = self.getControl( 401 )
-			
-			#test ctrl
-			#self.ctrlLbl                = self.getControl( 9001 )
-			#self.ctrlBtn                = self.getControl( 9002 )
+		#info
+		self.ctrlChannelName        = self.getControl( 303 )
+		self.ctrlEventName          = self.getControl( 304 )
+		self.ctrlEventTime          = self.getControl( 305 )
+		self.ctrlProgress           = self.getControl( 306 )
+		self.ctrlLongitudeInfo      = self.getControl( 307 )
+		self.ctrlCareerInfo         = self.getControl( 308 )
+		self.ctrlLockedInfo         = self.getControl( 309 )
+		self.ctrlServiceTypeImg1    = self.getControl( 310 )
+		self.ctrlServiceTypeImg2    = self.getControl( 311 )
+		self.ctrlServiceTypeImg3    = self.getControl( 312 )
+		self.ctrlSelectItem         = self.getControl( 401 )
+		
+		#test ctrl
+		#self.ctrlLbl                = self.getControl( 9001 )
+		#self.ctrlBtn                = self.getControl( 9002 )
 
 
-			#epg stb time
-			self.ctrlHeader3.setLabel('')
+		#epg stb time
+		self.ctrlHeader3.setLabel('')
 
-			#etc
-			self.listEnableFlag = False
+		#etc
+		self.listEnableFlag = False
 
 
 		#initialize get channel list
@@ -324,7 +323,8 @@ class ChannelListWindow(BaseWindow):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'event[%s]'% event
 		#if xbmcgui.getCurrentWindowId() == self.win :
-		if self.win :
+
+		if self.win == xbmcgui.getCurrentWindowId() :
 			msg = event[0]
 			
 			if msg == 'Elis-CurrentEITReceived' :
@@ -339,7 +339,7 @@ class ChannelListWindow(BaseWindow):
 			else :
 				print 'event unknown[%s]'% event
 		else:
-			print 'show screen is another windows page[%s]'% xbmcgui.getCurrentWindowId()
+			print 'channellist winID[%d] this winID[%d]'% (self.win, xbmcgui.getCurrentWindowId())
 
 
 	def subManuAction(self, action, idx_menu):
@@ -823,7 +823,7 @@ class ChannelListWindow(BaseWindow):
 		print '[%s():%s]begin_start thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 		loop = 0
-		rLock = threading.RLock()		
+		rLock = threading.RLock()
 		while self.untilThread:
 			#print '[%s():%s]repeat <<<<'% (currentframe().f_code.co_name, currentframe().f_lineno)
 

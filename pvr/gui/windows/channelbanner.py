@@ -57,46 +57,45 @@ class ChannelBanner(BaseWindow):
 		self.untilThread = False
 
 	def onInit(self):
-		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		if not self.win:
-			self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
+		self.win = xbmcgui.getCurrentWindowId()
+		print '[%s():%s]winID[%d]'% (currentframe().f_code.co_name, currentframe().f_lineno, self.win)
 
-			#get event
-			#request = EventRequest(self)
-			self.ctrlChannelNumber  = self.getControl( 601 )
-			self.ctrlChannelName    = self.getControl( 602 )
-			self.ctrlServiceType    = self.getControl( 603 )
-			self.ctrlServiceTypeImg1= self.getControl( 604 )
-			self.ctrlServiceTypeImg2= self.getControl( 605 )
-			self.ctrlServiceTypeImg3= self.getControl( 606 )
-			self.ctrlEventClock     = self.getControl( 610 )
-			self.ctrlLongitudeInfo  = self.getControl( 701 )
-			self.ctrlEventName      = self.getControl( 703 )
-			self.ctrlEventStartTime = self.getControl( 704 )
-			self.ctrlEventEndTime   = self.getControl( 705 )
-			self.ctrlProgress       = self.getControl( 707 )
-			self.ctrlEventDescGroup = self.getControl( 800 )
-			self.ctrlEventDescText1 = self.getControl( 801 )
-			self.ctrlEventDescText2 = self.getControl( 802 )
-			#self.ctrlProgress = xbmcgui.ControlProgress(100, 250, 125, 75)
-			#self.ctrlProgress(self.Progress)
+		#get event
+		#request = EventRequest(self)
+		self.ctrlChannelNumber  = self.getControl( 601 )
+		self.ctrlChannelName    = self.getControl( 602 )
+		self.ctrlServiceType    = self.getControl( 603 )
+		self.ctrlServiceTypeImg1= self.getControl( 604 )
+		self.ctrlServiceTypeImg2= self.getControl( 605 )
+		self.ctrlServiceTypeImg3= self.getControl( 606 )
+		self.ctrlEventClock     = self.getControl( 610 )
+		self.ctrlLongitudeInfo  = self.getControl( 701 )
+		self.ctrlEventName      = self.getControl( 703 )
+		self.ctrlEventStartTime = self.getControl( 704 )
+		self.ctrlEventEndTime   = self.getControl( 705 )
+		self.ctrlProgress       = self.getControl( 707 )
+		self.ctrlEventDescGroup = self.getControl( 800 )
+		self.ctrlEventDescText1 = self.getControl( 801 )
+		self.ctrlEventDescText2 = self.getControl( 802 )
+		#self.ctrlProgress = xbmcgui.ControlProgress(100, 250, 125, 75)
+		#self.ctrlProgress(self.Progress)
 
-			#button icon
-			self.ctrlBtnExInfo      = self.getControl( 621 )
-			self.ctrlBtnTeletext    = self.getControl( 622 )
-			self.ctrlBtnSubtitle    = self.getControl( 623 )
-			self.ctrlBtnStartRec    = self.getControl( 624 )
-			self.ctrlBtnStopRec     = self.getControl( 625 )
-			self.ctrlBtnMute        = self.getControl( 626 )
-			self.ctrlBtnMuteToggled = self.getControl( 627 )
-			self.ctrlBtnTSbanner    = self.getControl( 630 )
-			
-			self.ctrlBtnPrevEpg     = self.getControl( 702 )
-			self.ctrlBtnNextEpg     = self.getControl( 706 )
-			
+		#button icon
+		self.ctrlBtnExInfo      = self.getControl( 621 )
+		self.ctrlBtnTeletext    = self.getControl( 622 )
+		self.ctrlBtnSubtitle    = self.getControl( 623 )
+		self.ctrlBtnStartRec    = self.getControl( 624 )
+		self.ctrlBtnStopRec     = self.getControl( 625 )
+		self.ctrlBtnMute        = self.getControl( 626 )
+		self.ctrlBtnMuteToggled = self.getControl( 627 )
+		self.ctrlBtnTSbanner    = self.getControl( 630 )
+		
+		self.ctrlBtnPrevEpg     = self.getControl( 702 )
+		self.ctrlBtnNextEpg     = self.getControl( 706 )
+		
 
-			self.imgTV    = 'confluence/tv.png'
-			self.ctrlEventClock.setLabel('')
+		self.imgTV    = 'confluence/tv.png'
+		self.ctrlEventClock.setLabel('')
 
 		self.toggleFlag=False
 		self.epgStartTime = 0
@@ -292,7 +291,7 @@ class ChannelBanner(BaseWindow):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'event[%s]'% event
 
-		if self.win :
+		if self.win == xbmcgui.getCurrentWindowId():
 			msg = event[0]
 			
 			if msg == 'Elis-CurrentEITReceived' :
@@ -308,7 +307,7 @@ class ChannelBanner(BaseWindow):
 			else :
 				print 'event unknown[%s]'% event
 		else:
-			print 'show screen is another windows page[%s]'% xbmcgui.getCurrentWindowId()
+			print 'channelbanner winID[%d] this winID[%d]'% (self.win, xbmcgui.getCurrentWindowId())
 
 
 
