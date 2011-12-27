@@ -63,8 +63,7 @@ class DialogLnbFrequency( BaseDialog ) :
 		if( focusId == E_MAIN_LIST_ID ) :
 			if self.getControl( E_MAIN_LIST_ID ).getSelectedPosition( ) == 0 :
 				dialog = diamgr.getInstance().getDialog( diamgr.DIALOG_ID_NUMERIC )
-				dialog.setTiteLabel( 'Low Frequency' )
-				dialog.setNumber( self.lowFreq )
+				dialog.setProperty( 'Low Frequency', self.lowFreq, 5 )
  				dialog.doModal( )
 
 				if dialog.isOK() == True :
@@ -73,9 +72,8 @@ class DialogLnbFrequency( BaseDialog ) :
  
 			elif self.getControl( E_MAIN_LIST_ID ).getSelectedPosition( ) == 1 :
 				dialog = diamgr.getInstance().getDialog( diamgr.DIALOG_ID_NUMERIC )
-				dialog.setTiteLabel( 'High Frequency' )
-				dialog.setNumber( self.highFreq )
- 				dialog.doModal( )
+				dialog.setProperty( 'High Frequency', self.highFreq, 5 )
+				dialog.doModal( )
 
 				if dialog.isOK() == True :
 					self.highFreq = dialog.getNumber( )
@@ -83,9 +81,8 @@ class DialogLnbFrequency( BaseDialog ) :
 				
 			elif self.getControl( E_MAIN_LIST_ID ).getSelectedPosition( ) == 2 :
 				dialog = diamgr.getInstance().getDialog( diamgr.DIALOG_ID_NUMERIC )
-				dialog.setTiteLabel( 'Switch Frequency' )
-				dialog.setNumber( self.threshFreq )
- 				dialog.doModal( )
+				dialog.setProperty( 'Switch Frequency', self.threshFreq, 5 )
+				dialog.doModal( )
 
 				if dialog.isOK() == True :
 	 				self.threshFreq = dialog.getNumber( )
