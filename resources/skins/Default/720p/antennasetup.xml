@@ -1,5 +1,5 @@
 <window id="3008">
-	<defaultcontrol always="true">9010</defaultcontrol>
+	<defaultcontrol always="true">9000</defaultcontrol>
 	<controls>
 		<include>MenuHeader</include>
 		<control type="group" id="9000">
