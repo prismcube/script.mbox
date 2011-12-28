@@ -63,6 +63,8 @@ def setWindowBusy(func, *args, **kwargs):
 			print 'check busy #3'
 		except Exception, ex:
 			print 'Error publishing event ex=%s' %ex
+			window.setBusy(False)
+			return None
 
 	finally :
 		print 'check busy #4'	
@@ -136,8 +138,12 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 			self.busyCount += 1
 		else :
 			self.busyCount -= 1
-		self.lock.release()
-		
+			if self.busyCount < 0 :
+				self.resetBusy()
+
+		if self.lock.locked() :
+			self.lock.release()
+
 		print 'busyCount= %d' %self.busyCount
 
 		

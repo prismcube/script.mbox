@@ -355,6 +355,7 @@ class ChannelListWindow(BaseWindow):
 
 	def subManuAction(self, action, idx_menu):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		retPass = False
 
 		if action == 0:
 			testlistItems = []
@@ -403,7 +404,7 @@ class ChannelListWindow(BaseWindow):
 					sortingMode = ElisEnum.E_SORT_BY_HD
 
 				self.chlist_channelsortMode = sortingMode
-				self.getChannelList( self.chlist_serviceType, self.chlist_zappingMode, sortingMode, 0, 0, 0, '' )
+				retPass = self.getChannelList( self.chlist_serviceType, self.chlist_zappingMode, sortingMode, 0, 0, 0, '' )
 
 				#idx_AllChannel = self.ctrlListSubmenu.getSelectedPosition()
 				#item = self.list_AllChannel[idx_AllChannel]
@@ -450,7 +451,10 @@ class ChannelListWindow(BaseWindow):
 				print 'cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s] ch_list[%s]'% ( idx_Favorite, item, self.channelList )
 
 
-			if self.channelList != [] :
+			if retPass == False :
+				return
+
+			if len(self.channelList) > 0 and self.channelList != '' :
 				#channel list update
 				#self.ctrlListCHList.reset()
 				self.initChannelList()
@@ -487,7 +491,10 @@ class ChannelListWindow(BaseWindow):
 
 		except Exception, e:
 			print 'Error[%s] getChannelList by zapping mode'% e
+			return False
 
+
+		return True
 
 	def getTabHeader(self):
 		pass
@@ -629,6 +636,7 @@ class ChannelListWindow(BaseWindow):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 		if len(self.channelList) < 1 :
+			print '-------------------------------> self.channelList[%s]'% self.channelList
 			return 
 
 		self.listItems = []
@@ -864,11 +872,15 @@ class ChannelListWindow(BaseWindow):
 		try:
 			self.lock.acquire( )
 			ret = self.commander.datetime_GetLocalTime( )
-			self.localTime = int( ret[0] )
 			self.lock.release( )
+			if len(ret) > 0 :
+				self.localTime = int( ret[0] )
+			else :
+				self.localTime = 0
 
 		except Exception, e:
-			self.lock.release( )
+			if self.lock.locked() :
+				self.lock.release( )
 			self.localTime = 0
 			print 'Error datetime_GetLocalTime(), e[%s]'% e
 
