@@ -8,7 +8,7 @@ from pvr.gui.basewindow import Action
 from pvr.gui.basedialog import BaseDialog
 from elisenum import ElisEnum
 from inspect import currentframe
-from pvr.util import catchall, is_digit, run_async, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString, enumToString
+from pvr.util import catchall, is_digit, run_async, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString, enumToString, ui_locked2
 import pvr.util as util
 import pvr.elismgr
 from elisproperty import ElisPropertyEnum, ElisPropertyInt
@@ -39,6 +39,7 @@ class ChannelListWindow(BaseWindow):
 		self.execute_OnlyOne = True
 		self.nowTime = 0
 		self.eventID = 0
+		self.win = 0
 
 		self.pincodeEnter = 0x0
 		
@@ -50,14 +51,15 @@ class ChannelListWindow(BaseWindow):
 
 
 	def onInit(self):
-		self.win = xbmcgui.getCurrentWindowId()
-		print '[%s():%s]winID[%d]'% (currentframe().f_code.co_name, currentframe().f_lineno, self.win)
-
-		self.eventBus.register( self )
-
 		self.epgStartTime = 0
 		self.epgDuration = 0
 		self.localOffset = int( self.commander.datetime_GetLocalOffset()[0] )
+
+		self.winId = xbmcgui.getCurrentWindowId()
+		self.win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
+		print '[%s():%s]winID[%d]'% (currentframe().f_code.co_name, currentframe().f_lineno, self.winId)
+
+		self.eventBus.register( self )		
 
 		#header
 		self.ctrlHeader1            = self.getControl( 3000 )
@@ -147,7 +149,7 @@ class ChannelListWindow(BaseWindow):
 
 		elif id == Action.ACTION_SELECT_ITEM:
 			print '<<<<< test youn: action ID[%s]' % id
-
+			"""
 			if focusId == self.ctrlListCHList.getId() :
 				self.onClick( self.ctrlListCHList.getId() )
 
@@ -156,11 +158,12 @@ class ChannelListWindow(BaseWindow):
 
 			elif focusId == self.ctrlListSubmenu.getId() :
 				self.onClick( self.ctrlListSubmenu.getId() )
+			"""
 
 
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'lael98 check ation back'
-			self.eventBus.deregister( self )
+
 			self.untilThread = False
 			self.updateLocalTime().join()
 			self.ctrlListCHList.reset()
@@ -263,7 +266,8 @@ class ChannelListWindow(BaseWindow):
 			#self.ctrlHeader2.setLabel(str('key[%s]'% action.getId()))
 			#print'Unconsumed key: %s' % action.getId()
 
-
+	@setWindowBusy
+	@ui_locked2	
 	def onClick(self, controlId):
 		print '[%s():%s]focusID[%d]'% (currentframe().f_code.co_name, currentframe().f_lineno, controlId) 
 
@@ -298,7 +302,6 @@ class ChannelListWindow(BaseWindow):
 			print 'focus[%s] idx_main[%s]'% (controlId, idx_menu)
 
 			if idx_menu == 4 :
-				self.eventBus.deregister( self )			
 				self.untilThread = False
 				self.updateLocalTime().join()
 				self.ctrlListCHList.reset()
@@ -327,7 +330,10 @@ class ChannelListWindow(BaseWindow):
 		print '[%s]%s():%s'% (self.__file__, currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'event[%s]'% event
 
-		if self.win == xbmcgui.getCurrentWindowId() :
+		if len(event) != 5 :
+			return
+
+		if self.winId == xbmcgui.getCurrentWindowId() :
 			msg = event[0]
 			
 			if msg == 'Elis-CurrentEITReceived' :
@@ -397,9 +403,9 @@ class ChannelListWindow(BaseWindow):
 				self.chlist_channelsortMode = sortingMode
 				self.getChannelList( self.chlist_serviceType, self.chlist_zappingMode, sortingMode, 0, 0, 0, '' )
 
-				idx_AllChannel = self.ctrlListSubmenu.getSelectedPosition()
-				item = self.list_AllChannel[idx_AllChannel]
-				print 'cmd[channel_GetList] idx_AllChannel[%s] sort[%s] ch_list[%s]'% (idx_AllChannel, self.chlist_channelsortMode, self.channelList)
+				#idx_AllChannel = self.ctrlListSubmenu.getSelectedPosition()
+				#item = self.list_AllChannel[idx_AllChannel]
+				#print 'cmd[channel_GetList] idx_AllChannel[%s] sort[%s] ch_list[%s]'% (idx_AllChannel, self.chlist_channelsortMode, self.channelList)
 
 			elif idx_menu == ElisEnum.E_MODE_SATELLITE:
 				idx_Satellite = self.ctrlListSubmenu.getSelectedPosition()
@@ -444,7 +450,7 @@ class ChannelListWindow(BaseWindow):
 
 			if self.channelList != [] :
 				#channel list update
-				self.ctrlListCHList.reset()
+				#self.ctrlListCHList.reset()
 				self.initChannelList()
 
 				#path tree, Mainmenu/Submanu
@@ -656,7 +662,7 @@ class ChannelListWindow(BaseWindow):
 
 	def initLabelInfo(self):
 		print 'currentChannel[%s]' % self.currentChannel
-		
+
 		if( self.currentChannelInfo != [] ) :
 
 			self.ctrlProgress.setPercent(0)
@@ -810,7 +816,6 @@ class ChannelListWindow(BaseWindow):
 					self.pincodeEnter |= 0x01
 					print 'AgeLimit[%s]'% isLimit
 
-
 		else:
 			print 'event null'
 
@@ -827,12 +832,12 @@ class ChannelListWindow(BaseWindow):
 		print '[%s():%s]begin_start thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 		loop = 0
-		rLock = threading.RLock()
+		#rLock = threading.RLock()
 		while self.untilThread:
 			#print '[%s():%s]repeat <<<<'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 			#progress
-			rLock.acquire()
+			#rLock.acquire()
 			if  ( loop % 10 ) == 0 :
 				try:
 					ret = self.commander.datetime_GetLocalTime( )
@@ -840,7 +845,7 @@ class ChannelListWindow(BaseWindow):
 
 				except Exception, e:
 					print 'Error datetime_GetLocalTime(), e[%s]'% e
-					rLock.release( )
+					#rLock.release( )
 					continue
 
 				endTime = self.epgStartTime + self.epgDuration
@@ -866,7 +871,7 @@ class ChannelListWindow(BaseWindow):
 			ret = epgInfoClock(1, localTime, loop)
 			self.ctrlHeader3.setLabel(ret[0])
 			self.ctrlHeader4.setLabel(ret[1])
-			rLock.release( )
+			#rLock.release( )
 			#self.nowTime += 1
 			time.sleep(1)
 			loop += 1
