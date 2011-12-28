@@ -8,21 +8,21 @@
 			<control type="image">
 				<description>media info background image</description>
 				<posx>0</posx>
-				<posy>320</posy>
+				<posy>540</posy>
 				<width>1280</width>
 				<height>256</height>
-				<texture>confluence/MediaInfoBackUpper.png</texture>
-				<!--<texture>black-back.png</texture>-->
+				<texture>confluence/MediaInfoBackLower.png</texture>
+				<!--texture>gray_noAlpha.png</texture-->
 			</control>
 
-			<control type="image">
+			<!--control type="image">
 				<description>media info background image</description>
 				<posx>0</posx>
 				<posy>320</posy>
 				<width>1280</width>
 				<height>236</height>
 				<texture>confluence/black-back.png</texture>
-			</control>
+			</control-->
 			
 
 <!-- info section -->			
