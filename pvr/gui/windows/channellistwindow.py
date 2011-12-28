@@ -325,7 +325,7 @@ class ChannelListWindow(BaseWindow):
 		#print "onFocus(): control %d" % controlId
 		pass
 
-
+	@ui_locked2
 	def onEvent(self, event):
 		print '[%s]%s():%s'% (self.__file__, currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'event[%s]'% event
@@ -837,9 +837,11 @@ class ChannelListWindow(BaseWindow):
 			#print '[%s():%s]repeat <<<<'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 			#progress
-			#rLock.acquire()
+			#self.acquire()
+			xbmcgui.lock()
 			if  ( loop % 10 ) == 0 :
 				try:
+
 					ret = self.commander.datetime_GetLocalTime( )
 					localTime = int( ret[0] )
 
@@ -871,6 +873,7 @@ class ChannelListWindow(BaseWindow):
 			ret = epgInfoClock(1, localTime, loop)
 			self.ctrlHeader3.setLabel(ret[0])
 			self.ctrlHeader4.setLabel(ret[1])
+			xbmcgui.unlock()								
 			#rLock.release( )
 			#self.nowTime += 1
 			time.sleep(1)
