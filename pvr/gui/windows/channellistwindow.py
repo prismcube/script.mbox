@@ -7,6 +7,7 @@ from pvr.gui.basewindow import BaseWindow, setWindowBusy
 from pvr.gui.basewindow import Action
 from pvr.gui.basedialog import BaseDialog
 from elisenum import ElisEnum
+from elisevent import ElisEvent
 from inspect import currentframe
 from pvr.util import catchall, is_digit, run_async, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString, enumToString, ui_locked2
 import pvr.util as util
@@ -40,6 +41,7 @@ class ChannelListWindow(BaseWindow):
 		self.nowTime = 0
 		self.eventID = 0
 		self.win = 0
+		self.localTime = 0
 
 		self.pincodeEnter = 0x0
 		
@@ -136,7 +138,7 @@ class ChannelListWindow(BaseWindow):
 
 		#run thread
 		self.untilThread = True
-		self.updateLocalTime()
+		self.currentTimeThread()
 
 
 	def onAction(self, action):
@@ -165,7 +167,7 @@ class ChannelListWindow(BaseWindow):
 			print 'lael98 check ation back'
 
 			self.untilThread = False
-			self.updateLocalTime().join()
+			self.currentTimeThread().join()
 			self.ctrlListCHList.reset()
 
 			self.close( )
@@ -181,7 +183,7 @@ class ChannelListWindow(BaseWindow):
 					pass
 					"""
 					self.untilThread = False
-					self.updateLocalTime().join()
+					self.currentTimeThread().join()
 					self.ctrlListCHList.reset()
 
 					self.close()
@@ -281,7 +283,7 @@ class ChannelListWindow(BaseWindow):
 				if self.pincodeEnter == 0x00 :
 					if self.currentChannel == channelNumbr :
 						self.untilThread = False
-						self.updateLocalTime().join()
+						self.currentTimeThread().join()
 
 						winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )
 
@@ -303,7 +305,7 @@ class ChannelListWindow(BaseWindow):
 
 			if idx_menu == 4 :
 				self.untilThread = False
-				self.updateLocalTime().join()
+				self.currentTimeThread().join()
 				self.ctrlListCHList.reset()
 
 				self.close()
@@ -336,10 +338,10 @@ class ChannelListWindow(BaseWindow):
 		if self.winId == xbmcgui.getCurrentWindowId() :
 			msg = event[0]
 			
-			if msg == 'Elis-CurrentEITReceived' :
+			if msg == ElisEvent.ElisCurrentEITReceived :
 
 				if int(event[4]) != self.eventID :			
-					#ret = self.commander.epgevent_Get(self.eventID, int(event[1]), int(event[2]), int(event[3]), int(self.epgClock[0]) )
+					#ret = self.commander.epgevent_Get(self.eventID, int(event[1]), int(event[2]), int(event[3]), self.localTime )
 					ret = self.commander.epgevent_GetPresent( )
 					if len( ret ) > 0 :
 						self.eventID = int( event[4] )
@@ -626,6 +628,9 @@ class ChannelListWindow(BaseWindow):
 	def initChannelList(self):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
+		if len(self.channelList) < 1 :
+			return 
+
 		self.listItems = []
 		for ch in self.channelList:
 			#skip ch
@@ -710,7 +715,6 @@ class ChannelListWindow(BaseWindow):
 		print 'ch info[%s]'% self.currentChannelInfo
 
 		if self.currentChannelInfo != []:
-			self.epgClock = self.commander.datetime_GetLocalTime()
 
 			#update channel name
 			if is_digit(self.currentChannelInfo[3]):
@@ -828,7 +832,7 @@ class ChannelListWindow(BaseWindow):
 
 
 	@run_async
-	def updateLocalTime(self):
+	def currentTimeThread(self):
 		print '[%s():%s]begin_start thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 		loop = 0
@@ -837,47 +841,53 @@ class ChannelListWindow(BaseWindow):
 			#print '[%s():%s]repeat <<<<'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 			#progress
-			#self.acquire()
-			xbmcgui.lock()
+
 			if  ( loop % 10 ) == 0 :
-				try:
-
-					ret = self.commander.datetime_GetLocalTime( )
-					localTime = int( ret[0] )
-
-				except Exception, e:
-					print 'Error datetime_GetLocalTime(), e[%s]'% e
-					#rLock.release( )
-					continue
-
-				endTime = self.epgStartTime + self.epgDuration
-				#endTime = self.epgStartTime + self.localOffset + self.epgDuration
-				#print 'localoffset=%d localToime=%d epgStartTime=%d duration=%d' %(self.localOffset, localTime, self.epgStartTime, self.epgDuration )
-				#print 'endtime=%d' %endTime
-
-				pastDuration = endTime - localTime
-				if pastDuration < 0 :
-					pastDuration = 0
-
-				if self.epgDuration > 0 :
-					percent = pastDuration * 100/self.epgDuration
-				else :
-					percent = 0
-
-				#print 'percent=%d' %percent
-				self.ctrlProgress.setPercent( percent )
-
+				print 'loop=%d' %loop
+				self.updateLocalTime( )
 
 
 			#local clock
-			ret = epgInfoClock(1, localTime, loop)
+			ret = epgInfoClock(1, self.localTime, loop)
 			self.ctrlHeader3.setLabel(ret[0])
 			self.ctrlHeader4.setLabel(ret[1])
-			xbmcgui.unlock()								
-			#rLock.release( )
+
 			#self.nowTime += 1
 			time.sleep(1)
 			loop += 1
 
-		print '[%s():%s]leave_end thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
+
+	@setWindowBusy
+	@ui_locked2
+	def updateLocalTime( self ) :
+		
+		try:
+			self.lock.acquire( )
+			ret = self.commander.datetime_GetLocalTime( )
+			self.localTime = int( ret[0] )
+			self.lock.release( )
+
+		except Exception, e:
+			self.lock.release( )
+			self.localTime = 0
+			print 'Error datetime_GetLocalTime(), e[%s]'% e
+
+		endTime = self.epgStartTime + self.epgDuration
+		#endTime = self.epgStartTime + self.localOffset + self.epgDuration
+		#print 'localoffset=%d localToime=%d epgStartTime=%d duration=%d' %(self.localOffset, self.localTime, self.epgStartTime, self.epgDuration )
+		#print 'endtime=%d' %endTime
+
+		pastDuration = endTime - self.localTime
+		if pastDuration < 0 :
+			pastDuration = 0
+
+		if self.epgDuration > 0 :
+			percent = pastDuration * 100/self.epgDuration
+		else :
+			percent = 0
+
+		#print 'percent=%d' %percent
+		self.ctrlProgress.setPercent( percent )
+
+	
 
