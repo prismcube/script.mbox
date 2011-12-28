@@ -5,11 +5,35 @@ import sys
 
 from pvr.gui.basewindow import Property
 from pvr.util import run_async
-
+import thread
 
 class BaseDialog( xbmcgui.WindowXMLDialog, Property ):
 	def __init__( self, *args, **kwargs ):
 		xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
+		self.win = None
+		self.busyCount = 0
+
+	def setBusy(self, busy):
+		self.lock.acquire()
+		if busy == True:
+			self.busyCount += 1
+		else :
+			self.busyCount -= 1
+		self.lock.release()
+		
+		print 'busyCount= %d' %self.busyCount
+
+		
+	def resetBusy( self ) :
+		self.busyCount = 0
+
+
+	def isBusy(self):
+		if self.busyCount > 0 :
+			return True
+		else :
+			return False
+
 		
 
 class NormalKeyboard( BaseDialog ):

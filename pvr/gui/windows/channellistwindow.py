@@ -26,7 +26,6 @@ class ChannelListWindow(BaseWindow):
 		self.commander = pvr.elismgr.getInstance().getCommander()		
 
 		self.eventBus = pvr.elismgr.getInstance().getEventBus()
-		self.eventBus.register( self )
 
 		#summary
 		self.__file__ = os.path.basename( currentframe().f_code.co_filename )
@@ -53,6 +52,8 @@ class ChannelListWindow(BaseWindow):
 	def onInit(self):
 		self.win = xbmcgui.getCurrentWindowId()
 		print '[%s():%s]winID[%d]'% (currentframe().f_code.co_name, currentframe().f_lineno, self.win)
+
+		self.eventBus.register( self )
 
 		self.epgStartTime = 0
 		self.epgDuration = 0
@@ -159,7 +160,7 @@ class ChannelListWindow(BaseWindow):
 
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'lael98 check ation back'
-
+			self.eventBus.deregister( self )
 			self.untilThread = False
 			self.updateLocalTime().join()
 			self.ctrlListCHList.reset()
@@ -297,6 +298,7 @@ class ChannelListWindow(BaseWindow):
 			print 'focus[%s] idx_main[%s]'% (controlId, idx_menu)
 
 			if idx_menu == 4 :
+				self.eventBus.deregister( self )			
 				self.untilThread = False
 				self.updateLocalTime().join()
 				self.ctrlListCHList.reset()
