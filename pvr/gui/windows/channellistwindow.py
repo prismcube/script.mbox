@@ -3,7 +3,7 @@ import xbmcgui
 import sys
 
 import pvr.gui.windowmgr as winmgr
-from pvr.gui.basewindow import BaseWindow, setWindowBusy
+from pvr.gui.basewindow import BaseWindow
 from pvr.gui.basewindow import Action
 from pvr.gui.basedialog import BaseDialog
 from elisenum import ElisEnum
@@ -141,7 +141,7 @@ class ChannelListWindow(BaseWindow):
 		self.untilThread = True
 		self.currentTimeThread()
 
-
+	@ui_locked2	
 	def onAction(self, action):
 		id = action.getId()
 		focusId = self.getFocusId( )
@@ -260,7 +260,6 @@ class ChannelListWindow(BaseWindow):
 			#self.ctrlHeader2.setLabel(str('key[%s]'% action.getId()))
 			#print'Unconsumed key: %s' % action.getId()
 
-	@setWindowBusy
 	@ui_locked2	
 	def onClick(self, controlId):
 		print '[%s():%s]focusID[%d]'% (currentframe().f_code.co_name, currentframe().f_lineno, controlId) 
@@ -861,22 +860,17 @@ class ChannelListWindow(BaseWindow):
 			loop += 1
 
 
-	@setWindowBusy
 	@ui_locked2
 	def updateLocalTime( self ) :
 		
 		try:
-			self.lock.acquire( )
 			ret = self.commander.datetime_GetLocalTime( )
-			self.lock.release( )
 			if len(ret) > 0 :
 				self.localTime = int( ret[0] )
 			else :
 				self.localTime = 0
 
 		except Exception, e:
-			if self.lock.locked() :
-				self.lock.release( )
 			self.localTime = 0
 			print 'Error datetime_GetLocalTime(), e[%s]'% e
 
