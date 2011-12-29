@@ -1,5 +1,6 @@
 <window type="windows" id="3009">
 	<defaultcontrol always="true">405</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
 	<controls>
 		<control type="group">
 			<animation effect="slide" start="0,570" end="0,0" time="300" delay="300" tween="quadratic" easing="out">WindowOpen</animation>
@@ -153,7 +154,7 @@
 				<control type="group" id="30">
 					<control type="image" id="31">
 						<description>Rewind Image</description>
-						<posx>450</posx>
+						<posx>150</posx>
 						<posy>20</posy>
 						<width>20</width>
 						<height>20</height>
@@ -161,7 +162,7 @@
 					</control>
 					<control type="image" id="32">
 						<description>Forward Image</description>
-						<posx>500</posx>
+						<posx>200</posx>
 						<posy>20</posy>
 						<width>20</width>
 						<height>20</height>
@@ -169,7 +170,7 @@
 					</control>
 					<control type="label" id="33">
 						<description>Speed label</description>
-						<posx>475</posx>
+						<posx>175</posx>
 						<posy>20</posy>
 						<font>font24</font>
 						<textcolor>grey</textcolor>
@@ -219,18 +220,198 @@
 			</control-->
 
 
+<!-- play section -->
+			<control type="group" id="400">
+				<posx>450</posx>
+				<posy>605</posy>
+				<control type="button" id="401">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>45</width>
+					<height>45</height>
+					<label>298</label>
+					<font>-</font>
+					<texturefocus>confluence/OSDSubtitlesFO.png</texturefocus>
+					<texturenofocus>confluence/OSDSubtitlesNF.png</texturenofocus>
+					<onleft>SetFocus(408)</onleft>
+					<onright>SetFocus(402)</onright>
+					<onup></onup>
+					<ondown>SetFocus(404)</ondown>
+					<!--onclick>XBMC.RunScript($INFO[Skin.String(SubtitleScript_Path)])</onclick-->
+				</control>
+				<control type="button" id="402">
+					<posx>45</posx>
+					<posy>0</posy>
+					<width>45</width>
+					<height>45</height>
+					<label>13396</label>
+					<font>-</font>
+					<texturefocus>confluence/OSDAudioFO.png</texturefocus>
+					<texturenofocus>confluence/OSDAudioNF.png</texturenofocus>
+					<onleft>SetFocus(401)</onleft>
+					<onright>SetFocus(403)</onright>
+					<onup></onup>
+					<ondown>SetFocus(410)</ondown>
+					<!--onclick>XBMC.RunScript($INFO[Skin.String(SubtitleScript_Path)])</onclick-->
+				</control>
+				<control type="button" id="403">
+					<posx>90</posx>
+					<posy>0</posy>
+					<width>45</width>
+					<height>45</height>
+					<label>13395</label>
+					<font>-</font>
+					<texturefocus>confluence/OSDRecordFO.png</texturefocus>
+					<texturenofocus>confluence/OSDRecordNF.png</texturenofocus>
+					<onleft>SetFocus(402)</onleft>
+					<onright>SetFocus(404)</onright>
+					<onup></onup>
+					<ondown>SetFocus(407)</ondown>
+					<onclick>XBMC.PlayerControl(record)</onclick>
+				</control>
+				<control type="group">
+					<posx>140</posx>
+					<posy>-5</posy>
+					<control type="button" id="404">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>50</width>
+						<height>50</height>
+						<label>31354</label>
+						<font></font>
+						<texturefocus>confluence/OSDRewindFO.png</texturefocus>
+						<texturenofocus>confluence/OSDRewindNF.png</texturenofocus>
+						<onleft>SetFocus(403)</onleft>
+						<onright>SetFocus(405)</onright>
+						<onup>SetFocus(401)</onup>
+						<ondown></ondown>
+					</control>
+					<control type="group" id="410">
+						<control type="button" id="405">
+							<posx>50</posx>
+							<posy>0</posy>
+							<width>50</width>
+							<height>50</height>
+							<label>31351</label>
+							<altlabel>208</altlabel>
+							<font>-</font>
+							<texturefocus>confluence/OSDPlayFO.png</texturefocus>
+							<texturenofocus>confluence/OSDPlayNF.png</texturenofocus>
+							<onleft>SetFocus(404)</onleft>
+							<onright>SetFocus(407)</onright>
+							<onup>SetFocus(402)</onup>
+							<ondown></ondown>
+							<visible>!Control.IsVisible(406)</visible>
+						</control>
+						<control type="button" id="406">
+							<posx>50</posx>
+							<posy>0</posy>
+							<width>50</width>
+							<height>50</height>
+							<label>31351</label>
+							<altlabel>208</altlabel>
+							<font>-</font>
+							<texturefocus>confluence/OSDPauseFO.png</texturefocus>
+							<texturenofocus>confluence/OSDPauseNF.png</texturenofocus>
+							<onleft>SetFocus(404)</onleft>
+							<onright>SetFocus(407)</onright>
+							<onup>SetFocus(402)</onup>
+							<ondown></ondown>
+							<visible>!Control.IsVisible(405)</visible>
+						</control>
+					</control>
+					<!--control type="button" id="405">
+						<posx>50</posx>
+						<posy>0</posy>
+						<width>50</width>
+						<height>50</height>
+						<label>31351</label>
+						<altlabel>208</altlabel>
+						<font>-</font>
+						<texturefocus>confluence/OSDPlayFO.png</texturefocus>
+						<texturenofocus>confluence/OSDPlayNF.png</texturenofocus>
+						<onleft>SetFocus(404)</onleft>
+						<onright>SetFocus(406)</onright>
+						<onup>SetFocus(402)</onup>
+						<ondown></ondown>
+					</control>
+					<control type="button" id="406">
+						<posx>100</posx>
+						<posy>0</posy>
+						<width>50</width>
+						<height>50</height>
+						<label>31351</label>
+						<altlabel>208</altlabel>
+						<font>-</font>
+						<texturefocus>confluence/OSDPauseFO.png</texturefocus>
+						<texturenofocus>confluence/OSDPauseNF.png</texturenofocus>
+						<onleft>SetFocus(404)</onleft>
+						<onright>SetFocus(407)</onright>
+						<onup>SetFocus(402)</onup>
+						<ondown></ondown>
+					</control-->
+					<control type="button" id="407">
+						<posx>100</posx>
+						<posy>0</posy>
+						<width>50</width>
+						<height>50</height>
+						<label>31352</label>
+						<font>-</font>
+						<texturefocus>confluence/OSDStopFO.png</texturefocus>
+						<texturenofocus>confluence/OSDStopNF.png</texturenofocus>
+						<onleft>SetFocus(406)</onleft>
+						<onright>SetFocus(408)</onright>
+						<onup>SetFocus(403)</onup>
+						<ondown></ondown>
+					</control>
+					<control type="button" id="408">
+						<posx>150</posx>
+						<posy>0</posy>
+						<width>50</width>
+						<height>50</height>
+						<label>31353</label>
+						<font>-</font>
+						<texturefocus>confluence/OSDForwardFO.png</texturefocus>
+						<texturenofocus>confluence/OSDForwardNF.png</texturenofocus>
+						<onleft>SetFocus(407)</onleft>
+						<onright>SetFocus(401)</onright>
+						<onup></onup>
+						<ondown></ondown>
+					</control>
+
+					<!--control type="button" id="409">
+						<posx>200</posx>
+						<posy>45</posy>
+						<width>50</width>
+						<height>50</height>
+						<label>31351</label>
+						<altlabel>208</altlabel>
+						<font>-</font>
+						<texturefocus>confluence/OSDPauseFO.png</texturefocus>
+						<texturenofocus>confluence/OSDPauseNF.png</texturenofocus>
+						<onleft>SetFocus(404)</onleft>
+						<onright>SetFocus(407)</onright>
+						<onup>SetFocus(402)</onup>
+						<ondown></ondown>
+					</control-->
+
+				</control>
+
+
+			</control>
+
 <!-- EPG section -->
 			<control type="group">
 				<posx>0</posx>
 				<posy>620</posy>
 				<control type="group" id="200">
-					<posx>400</posx>
+					<posx>100</posx>
 					<posy>30</posy>
 					<control type="progress" id="201">
 						<description>progress control</description>
 						<posx>50</posx>
 						<posy>17</posy>
-						<width>650</width>
+						<width>980</width>
 						<height>16</height>
 						<texturebg border="6,0,6,0">confluence/OSDProgressBack.png</texturebg>
 						<lefttexture>-</lefttexture>
@@ -279,7 +460,7 @@
 				</control>
 
 				<control type="group">
-					<posx>350</posx>
+					<posx>50</posx>
 					<posy>40</posy>
 					<width>150</width>
 					<control type="label" id="221">
@@ -292,7 +473,7 @@
 					</control>
 					<control type="label" id="222">
 						<description>start</description>
-						<posx>760</posx>
+						<posx>1100</posx>
 						<posy>3</posy>
 						<textcolor>grey</textcolor>
 						<font>font12</font>
@@ -302,297 +483,7 @@
 
 			</control>
 
-<!-- play section -->
-			<control type="group">
-				<posx>0</posx>
-				<posy>590</posy>
-				<control type="group" id="400">
-					<posx>150</posx>
-					<posy>15</posy>
-					<control type="button" id="401">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>45</width>
-						<height>45</height>
-						<label>298</label>
-						<font>-</font>
-						<texturefocus>confluence/OSDSubtitlesFO.png</texturefocus>
-						<texturenofocus>confluence/OSDSubtitlesNF.png</texturenofocus>
-						<onleft>SetFocus(408)</onleft>
-						<onright>SetFocus(402)</onright>
-						<onup></onup>
-						<ondown>SetFocus(404)</ondown>
-						<!--onclick>XBMC.RunScript($INFO[Skin.String(SubtitleScript_Path)])</onclick-->
-					</control>
-					<control type="button" id="402">
-						<posx>50</posx>
-						<posy>0</posy>
-						<width>45</width>
-						<height>45</height>
-						<label>13396</label>
-						<font>-</font>
-						<texturefocus>confluence/OSDAudioFO.png</texturefocus>
-						<texturenofocus>confluence/OSDAudioNF.png</texturenofocus>
-						<onleft>SetFocus(401)</onleft>
-						<onright>SetFocus(403)</onright>
-						<onup></onup>
-						<ondown>SetFocus(410)</ondown>
-						<!--onclick>XBMC.RunScript($INFO[Skin.String(SubtitleScript_Path)])</onclick-->
-					</control>
-					<control type="button" id="403">
-						<posx>100</posx>
-						<posy>0</posy>
-						<width>45</width>
-						<height>45</height>
-						<label>13395</label>
-						<font>-</font>
-						<texturefocus>confluence/OSDRecordFO.png</texturefocus>
-						<texturenofocus>confluence/OSDRecordNF.png</texturenofocus>
-						<onleft>SetFocus(402)</onleft>
-						<onright>SetFocus(404)</onright>
-						<onup></onup>
-						<ondown>SetFocus(407)</ondown>
-						<onclick>XBMC.PlayerControl(record)</onclick>
-					</control>
-					<control type="group">
-						<posx>-50</posx>
-						<posy>0</posy>
-						<control type="button" id="404">
-							<posx>0</posx>
-							<posy>45</posy>
-							<width>50</width>
-							<height>50</height>
-							<label>31354</label>
-							<font></font>
-							<texturefocus>confluence/OSDRewindFO.png</texturefocus>
-							<texturenofocus>confluence/OSDRewindNF.png</texturenofocus>
-							<onleft>SetFocus(403)</onleft>
-							<onright>SetFocus(405)</onright>
-							<onup>SetFocus(401)</onup>
-							<ondown></ondown>
-							<onclick>PlayerControl(Rewind)</onclick>
-						</control>
-						<!--control type="group" id="410">
-							<control type="button" id="405">
-								<posx>50</posx>
-								<posy>45</posy>
-								<width>50</width>
-								<height>50</height>
-								<label>31351</label>
-								<altlabel>208</altlabel>
-								<font>-</font>
-								<texturefocus>confluence/OSDPlayFO.png</texturefocus>
-								<texturenofocus>confluence/OSDPlayNF.png</texturenofocus>
-								<onleft>SetFocus(404)</onleft>
-								<onright>SetFocus(407)</onright>
-								<onup>SetFocus(402)</onup>
-								<ondown></ondown>
-							</control>
-							<control type="button" id="406">
-								<posx>50</posx>
-								<posy>45</posy>
-								<width>50</width>
-								<height>50</height>
-								<label>31351</label>
-								<altlabel>208</altlabel>
-								<font>-</font>
-								<texturefocus>confluence/OSDPauseFO.png</texturefocus>
-								<texturenofocus>confluence/OSDPauseNF.png</texturenofocus>
-								<onleft>SetFocus(404)</onleft>
-								<onright>SetFocus(407)</onright>
-								<onup>SetFocus(402)</onup>
-								<ondown></ondown>
-								<visible>!Control.IsVisible(405)</visible>
-							</control>
-						</control-->
-						<control type="button" id="405">
-							<posx>50</posx>
-							<posy>45</posy>
-							<width>50</width>
-							<height>50</height>
-							<label>31351</label>
-							<altlabel>208</altlabel>
-							<font>-</font>
-							<texturefocus>confluence/OSDPlayFO.png</texturefocus>
-							<texturenofocus>confluence/OSDPlayNF.png</texturenofocus>
-							<onleft>SetFocus(404)</onleft>
-							<onright>SetFocus(406)</onright>
-							<onup>SetFocus(402)</onup>
-							<ondown></ondown>
-						</control>
-						<control type="button" id="406">
-							<posx>100</posx>
-							<posy>45</posy>
-							<width>50</width>
-							<height>50</height>
-							<label>31351</label>
-							<altlabel>208</altlabel>
-							<font>-</font>
-							<texturefocus>confluence/OSDPauseFO.png</texturefocus>
-							<texturenofocus>confluence/OSDPauseNF.png</texturenofocus>
-							<onleft>SetFocus(404)</onleft>
-							<onright>SetFocus(407)</onright>
-							<onup>SetFocus(402)</onup>
-							<ondown></ondown>
-						</control>
-						<control type="button" id="407">
-							<posx>150</posx>
-							<posy>45</posy>
-							<width>50</width>
-							<height>50</height>
-							<label>31352</label>
-							<font>-</font>
-							<texturefocus>confluence/OSDStopFO.png</texturefocus>
-							<texturenofocus>confluence/OSDStopNF.png</texturenofocus>
-							<onleft>SetFocus(406)</onleft>
-							<onright>SetFocus(408)</onright>
-							<onup>SetFocus(403)</onup>
-							<ondown></ondown>
-							<onclick>PlayerControl(Stop)</onclick>
-						</control>
-						<control type="button" id="408">
-							<posx>200</posx>
-							<posy>45</posy>
-							<width>50</width>
-							<height>50</height>
-							<label>31353</label>
-							<font>-</font>
-							<texturefocus>confluence/OSDForwardFO.png</texturefocus>
-							<texturenofocus>confluence/OSDForwardNF.png</texturenofocus>
-							<onleft>SetFocus(407)</onleft>
-							<onright>SetFocus(401)</onright>
-							<onup></onup>
-							<ondown></ondown>
-							<onclick>PlayerControl(Forward)</onclick>
-						</control>
 
-						<!--control type="button" id="409">
-							<posx>200</posx>
-							<posy>45</posy>
-							<width>50</width>
-							<height>50</height>
-							<label>31351</label>
-							<altlabel>208</altlabel>
-							<font>-</font>
-							<texturefocus>confluence/OSDPauseFO.png</texturefocus>
-							<texturenofocus>confluence/OSDPauseNF.png</texturenofocus>
-							<onleft>SetFocus(404)</onleft>
-							<onright>SetFocus(407)</onright>
-							<onup>SetFocus(402)</onup>
-							<ondown></ondown>
-						</control-->
-
-					</control>
-				</control>
-
-				<!--control type="image">
-					<description>separator image</description>
-					<posx>567</posx>
-					<posy>25</posy>
-					<width>150</width>
-					<height>1</height>
-					<colordiffuse>66FFFFFF</colordiffuse>
-					<texture>confluence/separator2.png</texture>
-				</control>
-				<!--control type="group" id="201">
-					<posx>718</posx>
-					<posy>4</posy>
-					<control type="button" id="703">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>45</width>
-						<height>45</height>
-						<label>31356</label>
-						<font>-</font>
-						<texturefocus>confluence/OSDSubtitlesFO.png</texturefocus>
-						<texturenofocus>confluence/OSDSubtitlesNF.png</texturenofocus>
-						<onleft>702</onleft>
-						<onright>704</onright>
-						<onup>604</onup>
-						<ondown>604</ondown>
-						<onclick>Close</onclick>
-						<onclick>XBMC.RunScript($INFO[Skin.String(SubtitleScript_Path)])</onclick>
-						<enable>Skin.HasSetting(SubtitleDownload_Enable) + !IsEmpty(Skin.String(SubtitleScript_Path))</enable>
-						<animation effect="fade" start="100" end="50" time="100" condition="![Skin.HasSetting(SubtitleDownload_Enable) + !IsEmpty(Skin.String(SubtitleScript_Path))]">Conditional</animation>
-					</control>
-					<control type="button" id="705">
-						<posx>100</posx>
-						<posy>0</posy>
-						<width>45</width>
-						<height>45</height>
-						<label>264</label>
-						<font>-</font>
-						<texturefocus>confluence/OSDRecordFO.png</texturefocus>
-						<texturenofocus>confluence/OSDRecordNF.png</texturenofocus>
-						<onleft>704</onleft>
-						<onright>700</onright>
-						<onup>605</onup>
-						<ondown>605</ondown>
-						<onclick>XBMC.PlayerControl(record)</onclick>
-						<enable>Player.CanRecord</enable>
-						<animation effect="fade" start="100" end="50" time="100" condition="!Player.CanRecord">Conditional</animation>
-					</control>
-				</control-->
-					<!--control type="button" id="600">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>50</width>
-						<height>50</height>
-						<label>210</label>
-						<font>-</font>
-						<texturefocus>OSDPrevTrackFO.png</texturefocus>
-						<texturenofocus>OSDPrevTrackNF.png</texturenofocus>
-						<onleft>605</onleft>
-						<onright>601</onright>
-						<onup>701</onup>
-						<ondown>701</ondown>
-						<onclick>PlayerControl(Previous)</onclick>
-					</control-->
-
-					<!--control type="button" id="605">
-						<posx>250</posx>
-						<posy>0</posy>
-						<width>50</width>
-						<height>50</height>
-						<label>209</label>
-						<font>-</font>
-						<texturefocus>OSDNextTrackFO.png</texturefocus>
-						<texturenofocus>OSDNextTrackNF.png</texturenofocus>
-						<onleft>604</onleft>
-						<onright>600</onright>
-						<onup>704</onup>
-						<ondown>704</ondown>
-						<onclick>PlayerControl(Next)</onclick>
-					</control>
-
-				<control type="label">
-					<posx>20</posx>
-					<posy>60</posy>
-					<width>460</width>
-					<height>25</height>
-					<label>$INFO[System.CurrentControl]</label>
-					<scroll>true</scroll>
-					<align>left</align>
-					<aligny>center</aligny>
-					<font>font12_title</font>
-					<textcolor>grey</textcolor>
-					<shadowcolor>black</shadowcolor>
-					<visible>Window.IsTopmost(VideoOSD)</visible>
-				</control>
-				<control type="label">
-					<posx>1260</posx>
-					<posy>60</posy>
-					<width>460</width>
-					<height>25</height>
-					<label>$INFO[VideoPlayer.Time] - $INFO[VideoPlayer.Duration]</label>
-					<scroll>true</scroll>
-					<align>right</align>
-					<aligny>center</aligny>
-					<font>font12_title</font>
-					<textcolor>grey</textcolor>
-					<shadowcolor>black</shadowcolor>
-				</control-->
-			</control>
 
 
 		</control>

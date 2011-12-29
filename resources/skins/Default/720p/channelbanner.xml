@@ -1,5 +1,6 @@
 <window type="windows" id="3004">
 	<defaultcontrol always="true">620</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
 	<controls>
 		<control type="group">
 			<animation effect="slide" start="0,320" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
