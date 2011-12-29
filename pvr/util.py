@@ -51,16 +51,44 @@ def ui_locked2(func, *args, **kw):
 	entry and exit.
 	"""
 	global uilocked
+	lock = thread.allocate_lock()
 	if uilocked: # prevent nested locks / double lock
 		return func(*args, **kw)    
 	else:
 		try:
 			uilocked = True
-			xbmcgui.lock()
+			#ret = xbmcgui.lock()
+			lock.acquire()
+			ret = lock.locked()
+			print '----------------------------------- xbmcgui.locked[%s]'% ret
 			result = func(*args, **kw)
-		finally:
-			xbmcgui.unlock()
+
+		except Exception, e :
+			#ret = xbmcgui.unlock()
+			if lock.locked() :
+				lock.release()
+				ret = lock.locked()
+				print '----------------------------------- except locked[%s]'% ret
+			print '----------------------------------- xbmcgui except[%s]'% e
+
+			ret = lock.locked()
+			print 'locked[%s]'% ret
+			print '----------------------------------- except locked[%s]'% ret
+
 			uilocked = False
+			return None
+		
+		
+		#ret = xbmcgui.unlock()
+		if lock.locked() :
+			ret = lock.release()
+			print '----------------------------------- xbmcgui.unlock[%s]'% ret
+
+		ret = lock.locked()
+		print 'locked[%s]'% ret
+
+		uilocked = False
+
 		return result
 
 
@@ -239,13 +267,13 @@ def epgInfoTime(localOffset, startTime, duration):
 
 	return ret
 
-def epgInfoClock(flag, nowTime, epgClock):
+def epgInfoClock(flag, nowTime, strTime):
 
 	strClock = []
 	
 	if flag == 1:
 		strClock.append( time.strftime('%a, %d.%m.%Y', time.gmtime(nowTime) ) )
-		if epgClock % 2 == 0:
+		if strTime % 2 == 0:
 			strClock.append( time.strftime('%H:%M', time.gmtime(nowTime) ) )
 		else :
 			strClock.append( time.strftime('%H %M', time.gmtime(nowTime) ) )
@@ -262,6 +290,12 @@ def epgInfoClock(flag, nowTime, epgClock):
 		sec  = (nowTime % 3600) % 60
 		ret = '%d:%02d:%02d' % ( hour, min, sec )
 		return ret
+
+	elif flag == 5:
+		import re
+		ret = re.split(':', strTime)
+		timeT = int(ret[0]) * 3600 + int(ret[1]) * 60 + int(ret[2])
+		return timeT
 
 	#print 'epgClock[%s:%s]'% (strClock, time.strftime('%S', time.gmtime(stbClock)) )
 	return strClock
