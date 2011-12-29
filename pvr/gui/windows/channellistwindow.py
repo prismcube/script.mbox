@@ -72,6 +72,7 @@ class ChannelListWindow(BaseWindow):
 		self.ctrlLblPath            = self.getControl( 10 )
 
 		#main menu
+		self.ctrlGrpMainmenu        = self.getControl( 100 )
 		self.ctrlBtnMenu            = self.getControl( 101 )
 		self.ctrlListMainmenu       = self.getControl( 102 )
 		
@@ -151,16 +152,6 @@ class ChannelListWindow(BaseWindow):
 
 		elif id == Action.ACTION_SELECT_ITEM:
 			print '<<<<< test youn: action ID[%s]' % id
-			"""
-			if focusId == self.ctrlListCHList.getId() :
-				self.onClick( self.ctrlListCHList.getId() )
-
-			elif focusId == self.ctrlListMainmenu.getId() :
-				self.onClick( self.ctrlListMainmenu.getId() )
-
-			elif focusId == self.ctrlListSubmenu.getId() :
-				self.onClick( self.ctrlListSubmenu.getId() )
-			"""
 
 
 		elif id == Action.ACTION_PARENT_DIR:
@@ -180,7 +171,8 @@ class ChannelListWindow(BaseWindow):
 
 				#this position's 'Back'
 				if idx_menu == 4 :
-					pass
+					self.ctrlListCHList.setEnabled(True)
+					self.setFocusId( 49 )
 					"""
 					self.untilThread = False
 					self.currentTimeThread().join()
@@ -304,11 +296,15 @@ class ChannelListWindow(BaseWindow):
 			print 'focus[%s] idx_main[%s]'% (controlId, idx_menu)
 
 			if idx_menu == 4 :
+				self.ctrlListCHList.setEnabled(True)
+				self.setFocusId( 49 )
+				"""
 				self.untilThread = False
 				self.currentTimeThread().join()
 				self.ctrlListCHList.reset()
 
 				self.close()
+				"""
 
 			else :
 				self.subManuAction( 0, idx_menu )
