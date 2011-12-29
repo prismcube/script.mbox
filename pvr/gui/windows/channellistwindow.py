@@ -140,7 +140,7 @@ class ChannelListWindow(BaseWindow):
 		self.untilThread = True
 		self.currentTimeThread()
 
-
+	@ui_locked2	
 	def onAction(self, action):
 		id = action.getId()
 		focusId = self.getFocusId( )
