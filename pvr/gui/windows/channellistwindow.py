@@ -44,6 +44,8 @@ class ChannelListWindow(BaseWindow):
 		self.localTime = 0
 
 		self.pincodeEnter = 0x0
+		self.chInfoArgument = 14
+		self.epgArgument = 21
 		
 	def __del__(self):
 		print '[%s():%s] destroyed ChannelBanner'% (currentframe().f_code.co_name, currentframe().f_lineno)
@@ -53,6 +55,7 @@ class ChannelListWindow(BaseWindow):
 
 
 	def onInit(self):
+		self.epgRecvPermission = True
 		self.epgStartTime = 0
 		self.epgDuration = 0
 		self.localOffset = int( self.commander.datetime_GetLocalOffset()[0] )
@@ -103,39 +106,33 @@ class ChannelListWindow(BaseWindow):
 
 		#epg stb time
 		self.ctrlHeader3.setLabel('')
-
 		#etc
 		self.listEnableFlag = False
 
-
+		#self.getTabHeader()
 		#initialize get channel list
 		self.initTabHeader()
 
-		"""
-		#'All Channel' button click, only one when window open
-		if self.execute_OnlyOne == True:
-			self.execute_OnlyOne = False
-			self.flag11 = True
-			self.onClick(211)
-		"""
+		try :
+			channelInfo = self.commander.channel_GetCurrent()
+			self.currentChannel = int ( channelInfo[0] )
+
+		except Exception, e :
+			print '[%s]%s():%s Error exception[%s]'% (	\
+				self.__file__,							\
+				currentframe().f_code.co_name,			\
+				currentframe().f_lineno,				\
+				e )
 
 
-		#self.getTabHeader()
 		self.initChannelList()
 
+		#clear label
 		self.initLabelInfo()
 
-
-		#get epg event right now
-		ret = []
-		ret=self.commander.epgevent_GetPresent()
-		if ret != []:
-			#ret=['epgevent_GetPresent'] + ret
-			self.updateLabelInfo(ret)
-		print 'epgevent_GetPresent[%s]'% ret
-
-		channelInfo = self.commander.channel_GetCurrent()
-		self.currentChannel = int ( channelInfo[0] )
+		#initialize get epg event
+		ret = self.initEPGEvent()
+		self.updateLabelInfo(ret, self.currentChannelInfo)
 
 		#run thread
 		self.untilThread = True
@@ -148,14 +145,14 @@ class ChannelListWindow(BaseWindow):
 		#print '[%s():%s]actionID[%d]'% (currentframe().f_code.co_name, currentframe().f_lineno, id) 
 
 		if id == Action.ACTION_PREVIOUS_MENU:
-			print 'ChannelListWindow lael98 check action menu'
+			print 'goto previous menu'
 
 		elif id == Action.ACTION_SELECT_ITEM:
-			print '<<<<< test youn: action ID[%s]' % id
+			print 'item select, action ID[%s]' % id
 
 
 		elif id == Action.ACTION_PARENT_DIR:
-			print 'lael98 check ation back'
+			print 'goto action back'
 
 			self.untilThread = False
 			self.currentTimeThread().join()
@@ -164,7 +161,7 @@ class ChannelListWindow(BaseWindow):
 			self.close( )
 
 		elif id == Action.ACTION_MOVE_RIGHT:
-			print 'ACTION_MOVE_RIGHT, getFocusId[%s]'% focusId #self.win.getFocusId()
+			#print 'ACTION_MOVE_RIGHT, getFocusId[%s]'% focusId
 
 			if focusId == self.ctrlListMainmenu.getId() :
 				idx_menu = self.ctrlListMainmenu.getSelectedPosition()
@@ -173,14 +170,6 @@ class ChannelListWindow(BaseWindow):
 				if idx_menu == 4 :
 					self.ctrlListCHList.setEnabled(True)
 					self.setFocusId( 49 )
-					"""
-					self.untilThread = False
-					self.currentTimeThread().join()
-					self.ctrlListCHList.reset()
-
-					self.close()
-					"""
-
 
 				else :
 					self.onClick( self.ctrlListMainmenu.getId() )
@@ -188,7 +177,16 @@ class ChannelListWindow(BaseWindow):
 			elif focusId == self.ctrlListSubmenu.getId() :
 				self.onClick( self.ctrlListMainmenu.getId() )
 
+		elif id == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN:
+			print '------------------------->up/down'
+			if focusId == self.ctrlListCHList.getId() :
+				self.epgRecvPermission = False
+				ret = self.initEPGEvent()
 
+				self.initLabelInfo()
+				self.updateLabelInfo( ret[0], ret[1] )
+
+				
 
 		elif id == 13: #'x'
 			#pass
@@ -284,9 +282,10 @@ class ChannelListWindow(BaseWindow):
 				self.currentChannel = channelNumbr
 				self.currentChannelInfo = self.commander.channel_GetCurrent()
 
-
+			self.epgRecvPermission = True
 			self.ctrlSelectItem.setLabel(str('%s / %s'% (self.ctrlListCHList.getSelectedPosition()+1, len(self.listItems))) )
 			self.initLabelInfo()
+			self.updateLabelInfo([], self.currentChannelInfo)
 
 		elif controlId == self.ctrlBtnMenu.getId() or controlId == self.ctrlListMainmenu.getId() :
 			#list view
@@ -297,13 +296,6 @@ class ChannelListWindow(BaseWindow):
 			if idx_menu == 4 :
 				self.ctrlListCHList.setEnabled(True)
 				self.setFocusId( 49 )
-				"""
-				self.untilThread = False
-				self.currentTimeThread().join()
-				self.ctrlListCHList.reset()
-
-				self.close()
-				"""
 
 			else :
 				self.subManuAction( 0, idx_menu )
@@ -327,6 +319,7 @@ class ChannelListWindow(BaseWindow):
 		print '[%s]%s():%s'% (self.__file__, currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'event[%s]'% event
 
+
 		if len(event) != 5 :
 			return
 
@@ -335,12 +328,23 @@ class ChannelListWindow(BaseWindow):
 			
 			if msg == ElisEvent.ElisCurrentEITReceived :
 
-				if int(event[4]) != self.eventID :			
-					#ret = self.commander.epgevent_Get(self.eventID, int(event[1]), int(event[2]), int(event[3]), self.localTime )
-					ret = self.commander.epgevent_GetPresent( )
-					if len( ret ) > 0 :
-						self.eventID = int( event[4] )
-						self.updateLabelInfo( ret )
+				if int(event[4]) != self.eventID :
+					if self.epgRecvPermission == True :
+						#on select, clicked
+
+						#ret = self.commander.epgevent_Get(self.eventID, int(event[1]), int(event[2]), int(event[3]), self.localTime )
+						ret = self.commander.epgevent_GetPresent( )
+						if len( ret ) > 0 :
+							self.eventID = int( event[4] )
+							self.initLabelInfo()
+							self.updateLabelInfo( ret, self.currentChannelInfo )
+
+						#not select, key up/down,
+					else :
+						ret = self.initEPGEvent()
+						self.initLabelInfo()
+						self.updateLabelInfo( ret[0], ret[1] )
+
 
 			else :
 				print 'event unknown[%s]'% event
@@ -408,7 +412,7 @@ class ChannelListWindow(BaseWindow):
 			elif idx_menu == ElisEnum.E_MODE_SATELLITE:
 				idx_Satellite = self.ctrlListSubmenu.getSelectedPosition()
 				item = self.list_Satellite[idx_Satellite]
-				self.getChannelList( self.chlist_serviceType, self.chlist_zappingMode, self.chlist_channelsortMode, int(item[0]), int(item[1]), 0, '' )
+				retPass = self.getChannelList( self.chlist_serviceType, self.chlist_zappingMode, self.chlist_channelsortMode, int(item[0]), int(item[1]), 0, '' )
 				print 'cmd[channel_GetListBySatellite] idx_Satellite[%s] mLongitude[%s] band[%s] ch_list[%s]'% ( idx_Satellite, item[0], item[1], self.channelList )
 
 			elif idx_menu == ElisEnum.E_MODE_CAS:
@@ -434,7 +438,7 @@ class ChannelListWindow(BaseWindow):
 				else :
 					caid = ElisEnum.E_OTHERS
 
-				self.getChannelList( self.chlist_serviceType, self.chlist_zappingMode, self.chlist_channelsortMode, 0, 0, caid, '' )
+				retPass = self.getChannelList( self.chlist_serviceType, self.chlist_zappingMode, self.chlist_channelsortMode, 0, 0, caid, '' )
 
 				item = self.list_CasList[idx_FtaCas]
 				print 'cmd[channel_GetListByFTACas] idx_FtaCas[%s] list_CasList[%s] ch_list[%s]'% ( idx_FtaCas, item, self.channelList )
@@ -442,7 +446,7 @@ class ChannelListWindow(BaseWindow):
 			elif idx_menu == ElisEnum.E_MODE_FAVORITE:
 				idx_Favorite = self.ctrlListSubmenu.getSelectedPosition()
 				item = self.list_Favorite[idx_Favorite]
-				self.getChannelList( self.chlist_serviceType, self.chlist_zappingMode, self.chlist_channelsortMode, 0, 0, 0, item[0] )
+				retPass = self.getChannelList( self.chlist_serviceType, self.chlist_zappingMode, self.chlist_channelsortMode, 0, 0, 0, item[0] )
 				print 'cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s] ch_list[%s]'% ( idx_Favorite, item, self.channelList )
 
 
@@ -631,7 +635,7 @@ class ChannelListWindow(BaseWindow):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 		if len(self.channelList) < 1 :
-			print '-------------------------------> self.channelList[%s]'% self.channelList
+			print 'no data, self.channelList[%s]'% self.channelList
 			return 
 
 		self.listItems = []
@@ -680,7 +684,7 @@ class ChannelListWindow(BaseWindow):
 			self.pincodeEnter = 0x0
 
 			self.ctrlSelectItem.setLabel(str('%s / %s'% (self.ctrlListCHList.getSelectedPosition()+1, len(self.listItems))) )
-			self.ctrlChannelName.setLabel('')
+			#self.ctrlChannelName.setLabel('')
 			self.ctrlEventName.setLabel('')
 			self.ctrlEventTime.setLabel('')
 			self.ctrlLongitudeInfo.setLabel('')
@@ -690,7 +694,7 @@ class ChannelListWindow(BaseWindow):
 			self.ctrlServiceTypeImg2.setImage('')
 			self.ctrlServiceTypeImg3.setImage('')
 
-			self.updateLabelInfo([])
+			#self.updateLabelInfo([], self.currentChannelInfo)
 			#self.currentChannelInfo = []
 
 		else:
@@ -698,6 +702,47 @@ class ChannelListWindow(BaseWindow):
 		
 			# todo 
 			# show message box : has no channnel
+
+
+	def initEPGEvent( self ) :
+		ret = []
+
+		try :
+			if self.epgRecvPermission == True :
+				ret = self.commander.epgevent_GetPresent()
+				#ret=['epgevent_GetPresent'] + ret
+
+				print 'epgevent_GetPresent[%s]'% ret
+
+			else :
+				label = self.ctrlListCHList.getSelectedItem().getLabel()
+				channelNumbr = int(label[:4])
+
+				for ch in self.channelList:
+					if int(ch[0]) == channelNumbr :
+						print 'found ch: getlabel[%s] ch[%s]'% (channelNumbr, ch[0])
+
+						sid = int( ch[8] )
+						tsid= int( ch[9] )
+						onid= int( ch[10] )
+						gmtFrom = self.localTime
+						gmtUntil= 0
+						maxCount= 1
+						ret = self.commander.epgevent_GetList( sid, tsid, onid, gmtFrom, gmtUntil, maxCount )
+						time.sleep(0.5)
+						ret.append ( ch )
+						#print 'ret[%s] len[%s]'% (ret[0], len(ret[0]) )
+						print 'epgevent_GetList[%s]'% ret
+
+
+		except Exception, e :
+				print '[%s]%s():%s Error exception[%s]'% (	\
+					self.__file__,							\
+					currentframe().f_code.co_name,			\
+					currentframe().f_lineno,				\
+					e )
+
+		return ret
 
 
 	def updateServiceType(self, tvType):
@@ -713,39 +758,41 @@ class ChannelListWindow(BaseWindow):
 			return 'etc'
 			print 'unknown ElisEnum tvType[%s]'% tvType
 
-	def updateLabelInfo(self, event):
+	def updateLabelInfo(self, event, ch):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		print 'ch info[%s]'% self.currentChannelInfo
+		print 'ch info[%s]'% ch
 
-		if self.currentChannelInfo != []:
+		if len(ch) == self.chInfoArgument:
 
-			#update channel name
-			if is_digit(self.currentChannelInfo[3]):
-				chName      = self.currentChannelInfo[2]
-				serviceType = int(self.currentChannelInfo[3])
-				ret = self.updateServiceType(serviceType)
-				if ret != None:
-					self.ctrlChannelName.setLabel( str('%s - %s'% (ret, chName)) )
+			if self.epgRecvPermission == True :
+				#update channel name
+				if is_digit(ch[3]):
+					chName      = ch[2]
+					serviceType = int(ch[3])
+					ret = self.updateServiceType(serviceType)
+					if ret != None:
+						self.ctrlChannelName.setLabel( str('%s - %s'% (ret, chName)) )
 
 			#update longitude info
-			if is_digit(self.currentChannelInfo[3]) and is_digit(self.currentChannelInfo[0]) :
-				chNumber    = int(self.currentChannelInfo[0])
-				serviceType = int(self.currentChannelInfo[3])
+			if is_digit(ch[3]) and is_digit(ch[0]) :
+				chNumber    = int(ch[0])
+				serviceType = int(ch[3])
 				longitude = self.commander.satellite_GetByChannelNumber(chNumber, serviceType)
 				if is_digit(longitude[0]):
 					ret = GetSelectedLongitudeString(longitude)
 					self.ctrlLongitudeInfo.setLabel(ret)
 
 			#update lock-icon visible
-			if is_digit(self.currentChannelInfo[4]) :
-				mlock = int(self.currentChannelInfo[4])
+			if is_digit(ch[4]) :
+				mlock = int(ch[4])
 				if mlock == 1:
 					self.ctrlLockedInfo.setVisible(True)
 					self.pincodeEnter |= 0x01
 
+				
 			#update career info
-			if is_digit(self.currentChannelInfo[11]) :
-				careerType = int(self.currentChannelInfo[11])
+			if is_digit(ch[11]) :
+				careerType = int(ch[11])
 				if careerType == ElisEnum.E_CARRIER_TYPE_DVBS:
 					ret = self.commander.channel_GetCarrierForDVBS()
 					print 'channel_GetCarrierForDVBS[%s]'% ret
@@ -771,7 +818,7 @@ class ChannelListWindow(BaseWindow):
 
 
 		print 'event____[len:%s][%s]'% ( len(event), event )
-		if len(event) == 21:
+		if len(event) == self.epgArgument:
 			#update epgName uiID(304)
 			self.ctrlEventName.setLabel(event[1])
 

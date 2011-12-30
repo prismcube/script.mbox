@@ -60,7 +60,7 @@ def ui_locked2(func, *args, **kw):
 			#ret = xbmcgui.lock()
 			lock.acquire()
 			ret = lock.locked()
-			print '----------------------------------- xbmcgui.locked[%s]'% ret
+			#print '----------------------------------- xbmcgui.locked[%s]'% ret
 			result = func(*args, **kw)
 
 		except Exception, e :
@@ -68,12 +68,12 @@ def ui_locked2(func, *args, **kw):
 			if lock.locked() :
 				lock.release()
 				ret = lock.locked()
-				print '----------------------------------- except locked[%s]'% ret
-			print '----------------------------------- xbmcgui except[%s]'% e
+				#print '----------------------------------- except locked[%s]'% ret
+			#print '----------------------------------- xbmcgui except[%s]'% e
 
 			ret = lock.locked()
-			print 'locked[%s]'% ret
-			print '----------------------------------- except locked[%s]'% ret
+			#print 'locked[%s]'% ret
+			#print '----------------------------------- except locked[%s]'% ret
 
 			uilocked = False
 			return None
@@ -82,10 +82,10 @@ def ui_locked2(func, *args, **kw):
 		#ret = xbmcgui.unlock()
 		if lock.locked() :
 			ret = lock.release()
-			print '----------------------------------- xbmcgui.unlock[%s]'% ret
+			#print '----------------------------------- xbmcgui.unlock[%s]'% ret
 
 		ret = lock.locked()
-		print 'locked[%s]'% ret
+		#print 'locked[%s]'% ret
 
 		uilocked = False
 
