@@ -313,8 +313,8 @@ class SettingWindow( BaseWindow ):
 
 			if value != None :
 				if len( value ) > ctrlItem.maxLength :
-					value = value[  len ( str( value ) ) - 4 :]
-					ctrlItem.listItems[0].setLabel2( value )
+					value = value[ len ( value ) - ctrlItem.maxLength :]
+				ctrlItem.listItems[0].setLabel2( value )
 
 
 	def hasControlItem( self, ctrlItem, controlId  ):
@@ -371,7 +371,7 @@ class SettingWindow( BaseWindow ):
 		return nextId
 		
 
-	def getSelectedIndex( self, controlId ):
+	def getSelectedIndex( self, controlId ) :
 
 		count = len( self.controlList )
 
@@ -386,7 +386,7 @@ class SettingWindow( BaseWindow ):
 
 		return -1
 
-	def getGroupId( self, controlId ):
+	def getGroupId( self, controlId ) :
 
 		count = len( self.controlList )
 
@@ -407,7 +407,7 @@ class SettingWindow( BaseWindow ):
 		return -1
 		
 
-	def setEnableControl( self, controlId, enable ):
+	def setEnableControl( self, controlId, enable ) :
 
 		count = len( self.controlList )
 
@@ -426,7 +426,7 @@ class SettingWindow( BaseWindow ):
 			self.setEnableControl( controlId, enable )
 
 
-	def setVisibleControl( self, controlId, visible ):
+	def setVisibleControl( self, controlId, visible ) :
 		control = self.getControl( controlId )
 		control.setVisible( visible )
 
@@ -436,7 +436,7 @@ class SettingWindow( BaseWindow ):
 			self.setVisibleControl( controlId, visible )
 
 
-	def controlSelect( self ):
+	def controlSelect( self ) :
 	
 		focusId = self.getFocusId( )
 		count = len( self.controlList )

@@ -40,7 +40,7 @@ class OneCableConfiguration2( SettingWindow ):
 			self.addEnumControl( E_SpinEx01, 'MDU' )
 
 			pinCode = ElisPropertyInt( 'Tuner%d Pin Code' % ( self.tunerIndex + 1 ), self.commander ).getProp( )
-			self.addInputControl( E_Input01, 'Tuner %d PIN-Code' % ( self.tunerIndex + 1 ), '%d' % pinCode, 0, 1, 4 )
+			self.addInputControl( E_Input01, 'Tuner %d PIN-Code' % ( self.tunerIndex + 1 ), '%d' % pinCode, 0, 1, 3 )
 
 			tunerScr = ElisPropertyInt( 'Tuner%d SCR' % ( self.tunerIndex + 1 ), self.commander ).getProp( )
 			self.addUserEnumControl( E_SpinEx02, 'Tuner %d' % ( self.tunerIndex + 1 ), self.scrList, tunerScr )
@@ -82,13 +82,13 @@ class OneCableConfiguration2( SettingWindow ):
 		groupId = self.getGroupId( focusId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			self.onClose( );
+			pass
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			pass
+			self.onClose( );
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.controlLeft( )
