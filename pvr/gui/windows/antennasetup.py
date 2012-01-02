@@ -25,10 +25,8 @@ class AntennaSetup( SettingWindow ):
 		SettingWindow.__init__( self, *args, **kwargs )
 		self.commander = pvr.elismgr.getInstance( ).getCommander( )
 			
-		#self.ctrlMainGroup = None
 		self.initialized = False
 		self.lastFocused = -1
-		#self.tunerIndex = 0
 
 	def onInit(self):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
@@ -36,7 +34,6 @@ class AntennaSetup( SettingWindow ):
 		print '#################### Load Configs ###############################'
 		if configmgr.getInstance( ).getNeedLoad( ) == True : 
 			configmgr.getInstance( ).loadOriginalTunerConfig( )
-			print '#################################################################'
 		
 			configmgr.getInstance( ).load( )
 			configmgr.getInstance( ).setNeedLoad( False )
@@ -61,6 +58,7 @@ class AntennaSetup( SettingWindow ):
 
 		actionId = action.getId( )
 		focusId = self.getFocusId( )
+		print 'dhkim test onAction Button Id = %s' % actionId
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass
@@ -105,22 +103,11 @@ class AntennaSetup( SettingWindow ):
 			if controlId == E_Input01 + 1 :
 			
 				configmgr.getInstance().setCurrentTunerIndex( E_TUNER_1 ) 
-				"""
-				configmgr.getInstance().setCurrentTunerType( self.getSelectedIndex( E_SpinEx03 ) )
-				"""
 
 			elif controlId == E_Input02 + 1 :
 
 				configmgr.getInstance().setCurrentTunerIndex( E_TUNER_2 )
-				"""
-				configmgr.getInstance().setCurrentTunerType( self.getSelectedIndex( E_SpinEx04 ) )
-				"""
 
-			"""
-			configmgr.getInstance().setCurrentTunerConnectionType( self.getSelectedIndex( E_SpinEx01 ) )
-			configmgr.getInstance().setCurrentTunerConfigType( self.getSelectedIndex( E_SpinEx02 ) )
-			"""
-			
 			if self.getSelectedIndex( E_SpinEx03 ) == E_SIMPLE_LNB :
 				configmgr.getInstance( ).setCurrentConfigIndex
 				configmgr.getInstance( ).setCurrentConfigIndex( 0 )
@@ -181,7 +168,3 @@ class AntennaSetup( SettingWindow ):
 		else :
 			self.setEnableControl( E_SpinEx04, True)
 			self.setEnableControl( E_Input02, True )
-
-
-	
-
