@@ -162,6 +162,8 @@ class ChannelListWindow(BaseWindow):
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'goto action back'
 
+			self.saveSlideMenuHeader()
+			
 			self.untilThread = False
 			self.currentTimeThread().join()
 			self.ctrlListCHList.reset()
@@ -178,7 +180,6 @@ class ChannelListWindow(BaseWindow):
 				if idx_menu == 4 :
 					self.ctrlListCHList.setEnabled( True )
 					self.setFocusId( self.ctrlGrpCHList.getId() )
-					self.saveSlideMenuHeader()
 
 				else :
 					self.onClick( self.ctrlListMainmenu.getId() )
@@ -284,6 +285,7 @@ class ChannelListWindow(BaseWindow):
 			if ret[0].upper() == 'TRUE' :
 				if self.pincodeEnter == 0x00 :
 					if self.currentChannel == channelNumbr :
+						self.saveSlideMenuHeader()
 						self.untilThread = False
 						self.currentTimeThread().join()
 
@@ -324,6 +326,8 @@ class ChannelListWindow(BaseWindow):
 
 		elif controlId == self.ctrlFooter1.getId() :
 			print 'footer back'
+			self.saveSlideMenuHeader()
+
 			self.untilThread = False
 			self.currentTimeThread().join()
 			self.ctrlListCHList.reset()
@@ -336,6 +340,8 @@ class ChannelListWindow(BaseWindow):
 
 		elif controlId == self.ctrlFooter3.getId() :
 			print 'footer edit'
+			self.saveSlideMenuHeader()
+
 			self.untilThread = False
 			self.currentTimeThread().join()
 
@@ -523,9 +529,15 @@ class ChannelListWindow(BaseWindow):
 			elif mMode == ElisEnum.E_MODE_NETWORK :
 				pass
 
-		except Exception, e:
-			print 'Error[%s] getChannelList by zapping mode'% e
+
+		except Exception, e :
+			print '[%s]%s():%s Error exception[%s]'% (	\
+				self.__file__,							\
+				currentframe().f_code.co_name,			\
+				currentframe().f_lineno,				\
+				e )
 			return False
+
 
 
 		return True
@@ -546,11 +558,36 @@ class ChannelListWindow(BaseWindow):
 		self.setFocusId( self.ctrlListSubmenu.getId() )
 		
 	def saveSlideMenuHeader(self) :
+		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
-		msg1 = 'zapping mode'
-		msg2 = 'save ?'
-		ret = xbmcgui.Dialog().yesno(msg1, msg2)
-		print 'dialog ret[%s]' % ret
+		return
+
+		#is change?
+		ret = False
+		try :
+			label1 = enumToString('mode', self.chlist_zappingMode)
+			label2 = self.ctrlListSubmenu.getSelectedItem().getLabel()
+
+			head = m.strings(mm.LANG_TO_CHANGE_ZAPPING_MODE)
+			line1 = '%s / %s'% (label1.title(), label2.title())
+			line2 = m.strings(mm.LANG_DO_YOU_WANT_TO_SAVE_CHANNELS)
+
+			ret = xbmcgui.Dialog().yesno(head, line1, '', line2)
+			#print 'dialog ret[%s]' % ret
+
+		except Exception, e :
+			print '[%s]%s():%s Error exception[%s]'% (	\
+				self.__file__,							\
+				currentframe().f_code.co_name,			\
+				currentframe().f_lineno,				\
+				e )
+		
+
+		if ret == True :
+			#save zapping mode
+			ret = self.commander.zappingmode_SetCurrent( self.chlist_zappingMode, self.chlist_channelsortMode, self.chlist_serviceType )
+			print 'set zappingmode_SetCurrent[%s]'% ret
+
 
 
 	def initSlideMenuHeader(self) :
@@ -635,8 +672,13 @@ class ChannelListWindow(BaseWindow):
 			self.list_Favorite = self.commander.favorite_GetList( ElisEnum.E_TYPE_TV )
 			print 'channel_GetFavoriteList[%s]'% self.list_Favorite
 
-		except Exception, e:
-			print 'Error[e] get SubMenu'% e
+		except Exception, e :
+			print '[%s]%s():%s Error exception[%s] get SubMenu'% (	\
+				self.__file__,							\
+				currentframe().f_code.co_name,			\
+				currentframe().f_lineno,				\
+				e )
+
 			#TODO
 			#display dialog
 
@@ -787,11 +829,11 @@ class ChannelListWindow(BaseWindow):
 
 
 		except Exception, e :
-				print '[%s]%s():%s Error exception[%s]'% (	\
-					self.__file__,							\
-					currentframe().f_code.co_name,			\
-					currentframe().f_lineno,				\
-					e )
+			print '[%s]%s():%s Error exception[%s]'% (	\
+				self.__file__,							\
+				currentframe().f_code.co_name,			\
+				currentframe().f_lineno,				\
+				e )
 
 		return ret
 
@@ -970,9 +1012,14 @@ class ChannelListWindow(BaseWindow):
 			else :
 				self.localTime = 0
 
-		except Exception, e:
+		except Exception, e :
+			print '[%s]%s():%s Error exception[%s]'% (	\
+				self.__file__,							\
+				currentframe().f_code.co_name,			\
+				currentframe().f_lineno,				\
+				e )
+
 			self.localTime = 0
-			print 'Error datetime_GetLocalTime(), e[%s]'% e
 
 		endTime = self.epgStartTime + self.epgDuration
 		#endTime = self.epgStartTime + self.localOffset + self.epgDuration

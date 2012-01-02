@@ -543,7 +543,7 @@ class ChannelEditWindow(BaseWindow):
 		
 	def saveSlideMenuHeader(self) :
 
-		msg1 = 'zapping mode'
+		msg1 = 'zapping changed'
 		msg2 = 'save ?'
 		ret = xbmcgui.Dialog().yesno(msg1, msg2)
 		print 'dialog ret[%s]' % ret
