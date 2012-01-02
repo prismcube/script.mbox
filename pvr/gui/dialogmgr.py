@@ -9,6 +9,7 @@ DIALOG_ID_KEYBOARD 					= 0
 DIALOG_ID_NUMERIC					= 1
 DIALOG_ID_LNB_FREQUENCY				= 2
 DIALOG_ID_CHANNEL_SEARCH			= 3
+DIALOG_ID_RECORD					= 4
 
 
 gDialogmgr = None
@@ -39,26 +40,32 @@ class DialogMgr(object):
 		import pvr.platform 
 		self.scriptDir = pvr.platform.getPlatform().getScriptDir()
 
-		
-		if dialogId == DIALOG_ID_KEYBOARD :
-			from pvr.gui.dialogs.dialogkeypad import DialogKeyPad		
-			return DialogKeyPad('dialogkeypad.xml', self.scriptDir)
-			
-		elif dialogId == DIALOG_ID_NUMERIC :
-			from pvr.gui.dialogs.dialognumeric import DialogNumeric		
-			return DialogNumeric('dialognumeric.xml', self.scriptDir)				
+		try :		
+			if dialogId == DIALOG_ID_KEYBOARD :
+				from pvr.gui.dialogs.dialogkeypad import DialogKeyPad		
+				return DialogKeyPad('dialogkeypad.xml', self.scriptDir)
+				
+			elif dialogId == DIALOG_ID_NUMERIC :
+				from pvr.gui.dialogs.dialognumeric import DialogNumeric		
+				return DialogNumeric('dialognumeric.xml', self.scriptDir)				
 
-		elif dialogId == DIALOG_ID_LNB_FREQUENCY :
-			from pvr.gui.dialogs.dialoglnbfrequency import DialogLnbFrequency		
-			return DialogLnbFrequency('dialoglnbfrequency.xml', self.scriptDir)	
+			elif dialogId == DIALOG_ID_LNB_FREQUENCY :
+				from pvr.gui.dialogs.dialoglnbfrequency import DialogLnbFrequency		
+				return DialogLnbFrequency('dialoglnbfrequency.xml', self.scriptDir)	
 
-		elif dialogId == DIALOG_ID_CHANNEL_SEARCH :
-			from pvr.gui.dialogs.dialogchannelsearch import DialogChannelSearch
-			return DialogChannelSearch('dialogchannelsearch.xml', self.scriptDir)	
-			
-		else :
-			print "ERROR : can not find dialog"
+			elif dialogId == DIALOG_ID_CHANNEL_SEARCH :
+				from pvr.gui.dialogs.dialogchannelsearch import DialogChannelSearch
+				return DialogChannelSearch('dialogchannelsearch.xml', self.scriptDir)	
 
+			elif dialogId == DIALOG_ID_RECORD :
+				from pvr.gui.dialogs.DialogRecord import DialogRecord
+				return DialogRecord('DialogRecord.xml', self.scriptDir)	
+				
+			else :
+				print "ERROR : can not find dialog"
+
+		except Exception, e :
+			print '-----------------------> except[%s]'% e
 
 	"""
 	def showDialog( self, dialogId ):

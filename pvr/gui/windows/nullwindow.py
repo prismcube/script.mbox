@@ -60,7 +60,8 @@ class NullWindow(BaseWindow):
 		
 			channelInfo = self.commander.channel_GetPrev()
 			prevChannel = int( channelInfo[0] )
-			self.commander.channel_SetCurrent( prevChannel )
+			serviceType = int( channelInfo[3] )			
+			self.commander.channel_SetCurrent( prevChannel, serviceType )
 			
 			winmgr.getInstance().getWindow(winmgr.WIN_ID_CHANNEL_BANNER).setLastChannel( currentChannel )
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )		
@@ -72,7 +73,8 @@ class NullWindow(BaseWindow):
 		
 			channelInfo = self.commander.channel_GetNext()
 			nextChannel = int( channelInfo[0] )
-			self.commander.channel_SetCurrent( nextChannel )
+			serviceType = int( channelInfo[3] )
+			self.commander.channel_SetCurrent( nextChannel, serviceType )
 			
 			winmgr.getInstance().getWindow(winmgr.WIN_ID_CHANNEL_BANNER).setLastChannel( currentChannel )
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_BANNER )		
@@ -81,6 +83,12 @@ class NullWindow(BaseWindow):
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST1_WINDOW )
 		elif id == Action.REMOTE_2:
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST2_WINDOW )
+
+		elif id == Action.ACTION_PAGE_UP:
+			pass
+
+		elif id == Action.ACTION_PAGE_DOWN:
+			pass
 
 		else:
 			print 'lael98 check ation unknown id=%d' %id

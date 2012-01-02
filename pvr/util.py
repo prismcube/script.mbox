@@ -51,44 +51,17 @@ def ui_locked2(func, *args, **kw):
 	entry and exit.
 	"""
 	global uilocked
-	lock = thread.allocate_lock()
 	if uilocked: # prevent nested locks / double lock
 		return func(*args, **kw)    
 	else:
 		try:
 			uilocked = True
-			#ret = xbmcgui.lock()
-			lock.acquire()
-			ret = lock.locked()
-			print '----------------------------------- xbmcgui.locked[%s]'% ret
+			xbmcgui.lock()
 			result = func(*args, **kw)
 
-		except Exception, e :
-			#ret = xbmcgui.unlock()
-			if lock.locked() :
-				lock.release()
-				ret = lock.locked()
-				print '----------------------------------- except locked[%s]'% ret
-			print '----------------------------------- xbmcgui except[%s]'% e
-
-			ret = lock.locked()
-			print 'locked[%s]'% ret
-			print '----------------------------------- except locked[%s]'% ret
-
+		finally:
+			xbmcgui.unlock()
 			uilocked = False
-			return None
-		
-		
-		#ret = xbmcgui.unlock()
-		if lock.locked() :
-			ret = lock.release()
-			print '----------------------------------- xbmcgui.unlock[%s]'% ret
-
-		ret = lock.locked()
-		print 'locked[%s]'% ret
-
-		uilocked = False
-
 		return result
 
 
