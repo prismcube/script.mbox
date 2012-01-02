@@ -78,6 +78,7 @@ class ChannelListWindow(BaseWindow):
 
 		self.ctrlLblPath1           = self.getControl( 10 )
 		self.ctrlLblPath2           = self.getControl( 11 )
+		self.ctrlLblPath3           = self.getControl( 12 )
 
 		#main menu
 		self.ctrlGrpMainmenu        = self.getControl( 100 )
@@ -502,8 +503,10 @@ class ChannelListWindow(BaseWindow):
 				#label1 = self.ctrlListMainmenu.getSelectedItem().getLabel()
 				label1 = enumToString('mode', self.chlist_zappingMode)
 				label2 = self.ctrlListSubmenu.getSelectedItem().getLabel()
+				label3 = enumToString('sort', self.chlist_channelsortMode)
 				self.ctrlLblPath1.setLabel( '%s'% label1.upper() )
 				self.ctrlLblPath2.setLabel( '%s'% label2.title() ) 
+				self.ctrlLblPath3.setLabel( 'sort by %s'% label3.title() ) 
 
 				#save zapping mode
 				#ret = self.commander.zappingmode_SetCurrent( self.chlist_zappingMode, self.chlist_channelsortMode, self.chlist_serviceType )
@@ -708,8 +711,10 @@ class ChannelListWindow(BaseWindow):
 		#label1 = self.ctrlListMainmenu.getSelectedItem().getLabel()
 		label1 = enumToString('mode', self.chlist_zappingMode)
 		label2 = self.ctrlListSubmenu.getSelectedItem().getLabel()
+		label3 = enumToString('sort', self.chlist_channelsortMode)
 		self.ctrlLblPath1.setLabel( '%s'% label1.upper() )
 		self.ctrlLblPath2.setLabel( '%s'% label2.title() ) 
+		self.ctrlLblPath3.setLabel( 'sort by %s'% label3.title() ) 
 
 
 		#get channel list by last on zapping mode, sorting, service type

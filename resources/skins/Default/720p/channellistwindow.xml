@@ -20,14 +20,14 @@
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>250</width>
+				<width>220</width>
 				<height>45</height>
 				<texture border="0,0,32,0">confluence/header.png</texture>
 			</control>
 			<control type="image">
-				<posx>250</posx>
+				<posx>220</posx>
 				<posy>0</posy>
-				<width>300</width>
+				<width>270</width>
 				<height>45</height>
 				<texture border="0,0,32,0">confluence/header.png</texture>
 			</control>
@@ -36,7 +36,7 @@
 				<posy>0</posy>
 				<width>200</width>
 				<height>40</height>
-				<font>font13_title</font>
+				<font>font13</font>
 				<textcolor>grey</textcolor>
 				<align>left</align>
 				<aligny>center</aligny>
@@ -44,17 +44,30 @@
 				<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
 			</control>
 			<control type="label" id="11">
-				<posx>260</posx>
+				<posx>230</posx>
 				<posy>0</posy>
-				<width>300</width>
+				<width>250</width>
 				<height>40</height>
-				<font>font13_title</font>
+				<font>font13</font>
 				<textcolor>grey</textcolor>
 				<align>left</align>
 				<aligny>center</aligny>
 				<label>$INFO[ListItem.Label]</label>
 				<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
 			</control>
+			<control type="label" id="12">
+				<posx>490</posx>
+				<posy>0</posy>
+				<width>250</width>
+				<height>40</height>
+				<font>font13</font>
+				<textcolor>grey</textcolor>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>$INFO[ListItem.Label]</label>
+				<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+			</control>
+
 		</control>
 
 
@@ -670,7 +683,7 @@
 <!--  page -->
 		<control type="group" id="400">
 			<control type="label" id="401">
-				<posx>600</posx>
+				<posx>400</posx>
 				<posy>600</posy>
 				<align>center</align>
 				<textcolor>grey</textcolor>
