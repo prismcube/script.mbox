@@ -4,6 +4,7 @@ import sys
 import time
 
 import pvr.gui.windowmgr as winmgr
+import pvr.gui.dialogmgr as diamgr
 from pvr.gui.basewindow import BaseWindow
 from pvr.gui.basewindow import Action
 from pvr.gui.guiconfig import *
@@ -625,15 +626,15 @@ class ChannelBanner(BaseWindow):
 			msg2 = 'test'
 
 		elif focusid == self.ctrlBtnStartRec.getId() :
-			msg1 = 'Start Recording'
-			msg2 = 'test'
+			dialog = diamgr.getInstance().getDialog( diamgr.DIALOG_ID_RECORD )
+			dialog.doModal( )
 
 		elif focusid == self.ctrlBtnStopRec.getId() :
 			msg1 = 'Stop Recording'
 			msg2 = 'test'
 
-		ret = xbmcgui.Dialog().ok(msg1, msg2)
-		print 'dialog ret[%s]' % ret
+		#ret = xbmcgui.Dialog().ok(msg1, msg2)
+		#print 'dialog ret[%s]' % ret
 
 
 	def descboxToggle( self, cmd ):

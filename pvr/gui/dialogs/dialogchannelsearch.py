@@ -46,8 +46,8 @@ class DialogChannelSearch( BaseDialog ) :
 		self.band = 0
 
 	def onInit( self ):
-		self.eventBus.register( self )
-		self.win = xbmcgui.getCurrentWindowId()
+		self.winId = xbmcgui.getCurrentWindowId()
+		self.eventBus.register( self )		
 		self.isFinished = False	
 
 		self.satelliteFormatedName = 'Unknown'
@@ -180,7 +180,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def onEvent( self, event ):
 
-		if xbmcgui.getCurrentWindowId() == self.win :
+		if xbmcgui.getCurrentWindowId() == self.winId :
 
 			if event[0] == ElisEvent.ElisScanAddChannel :
 				self.updateAddChannel( event )

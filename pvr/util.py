@@ -58,6 +58,7 @@ def ui_locked2(func, *args, **kw):
 			uilocked = True
 			xbmcgui.lock()
 			result = func(*args, **kw)
+
 		finally:
 			xbmcgui.unlock()
 			uilocked = False
@@ -239,13 +240,13 @@ def epgInfoTime(localOffset, startTime, duration):
 
 	return ret
 
-def epgInfoClock(flag, nowTime, epgClock):
+def epgInfoClock(flag, nowTime, strTime):
 
 	strClock = []
 	
 	if flag == 1:
 		strClock.append( time.strftime('%a, %d.%m.%Y', time.gmtime(nowTime) ) )
-		if epgClock % 2 == 0:
+		if strTime % 2 == 0:
 			strClock.append( time.strftime('%H:%M', time.gmtime(nowTime) ) )
 		else :
 			strClock.append( time.strftime('%H %M', time.gmtime(nowTime) ) )
@@ -262,6 +263,12 @@ def epgInfoClock(flag, nowTime, epgClock):
 		sec  = (nowTime % 3600) % 60
 		ret = '%d:%02d:%02d' % ( hour, min, sec )
 		return ret
+
+	elif flag == 5:
+		import re
+		ret = re.split(':', strTime)
+		timeT = int(ret[0]) * 3600 + int(ret[1]) * 60 + int(ret[2])
+		return timeT
 
 	#print 'epgClock[%s:%s]'% (strClock, time.strftime('%S', time.gmtime(stbClock)) )
 	return strClock

@@ -8,7 +8,7 @@ from elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import *
 import pvr.elismgr
 import pvr.gui.dialogmgr
-import threading
+import thread
 
 from pvr.util import run_async
 
@@ -63,6 +63,8 @@ def setWindowBusy(func, *args, **kwargs):
 			print 'check busy #3'
 		except Exception, ex:
 			print 'Error publishing event ex=%s' %ex
+			window.setBusy(False)
+			return None
 
 	finally :
 		print 'check busy #4'	
@@ -115,8 +117,8 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 		xbmcgui.WindowXML.__init__(self, *args, **kwargs)
 		self.win = None        
 		self.closed = False
-		self.recBusy = 0
-		self.rLock = threading.RLock()		
+		self.busyCount = 0
+		self.lock = thread.allocate_lock()
 
 	def setFooter( self, footermask ):
 		self.footerGroupId = FooterMask.G_FOOTER_GROUP_STARTID
@@ -131,36 +133,29 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 
 
 	def setBusy(self, busy):
-		self.rLock.acquire()
+		self.lock.acquire()
 		if busy == True:
-			self.recBusy += 1
+			self.busyCount += 1
 		else :
-			self.recBusy -= 1
-		self.rLock.release()
-		
-		print 'recBusy= %d' %self.recBusy
+			self.busyCount -= 1
+			if self.busyCount < 0 :
+				self.resetBusy()
 
-		"""
-		print 'set busy #1'
-		self.setProperty('busy', ('false', 'true')[busy])
-		print 'set busy #2'
-		"""
+		if self.lock.locked() :
+			self.lock.release()
+
+		print 'busyCount= %d' %self.busyCount
+
 		
 	def resetBusy( self ) :
-		self.recBusy = 0
-			
+		self.busyCount = 0
+
+
 	def isBusy(self):
-		if self.recBusy > 0 :
+		if self.busyCount > 0 :
 			return True
 		else :
 			return False
-
-		"""
-		busy = self.getProperty('busy')
-		print 'isbusy = %s' %busy
-		ret =  busy and busy == 'true'
-		print 'ret=%d' %ret
-		"""
 
 
 class ControlItem:
