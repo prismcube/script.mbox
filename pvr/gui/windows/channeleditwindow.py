@@ -19,7 +19,7 @@ import pvr.msg as m
 import pvr.gui.windows.define_string as mm
 
 
-class ChannelListWindow(BaseWindow):
+class ChannelEditWindow(BaseWindow):
 
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
@@ -336,11 +336,7 @@ class ChannelListWindow(BaseWindow):
 
 		elif controlId == self.ctrlFooter3.getId() :
 			print 'footer edit'
-			self.untilThread = False
-			self.currentTimeThread().join()
-
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_EDIT_WINDOW )
-
+			pass
 
 
 
@@ -559,7 +555,7 @@ class ChannelListWindow(BaseWindow):
 		#header init
 		self.ctrlHeader1.setImage('IconHeaderTitleSmall.png')
 		#self.ctrlHeader2.setLabel('TV-Channel List')
-		self.ctrlHeader2.setLabel(m.strings(mm.LANG_TV_CHANNEL_LIST))
+		self.ctrlHeader2.setLabel(m.strings(mm.LANG_TV_EDIT_CHANNEL_LIST))
 
 		#self.ctrlLbl.setLabel( m.strings(mm.LANG_LANGUAGE) )
 		ret = xbmc.getLanguage()

@@ -22,6 +22,7 @@ WIN_ID_CHANNEL_SEARCH				= 9
 WIN_ID_AUTOMATIC_SCAN				= 10
 WIN_ID_MANUAL_SCAN					= 11
 WIN_ID_TIMESHIFT_BANNER				= 12
+WIN_ID_CHANNEL_EDIT_WINDOW			= 13
 
 WIN_ID_LANGUAGE_SETTING				= 100	#for test
 WIN_ID_CHANNEL_LIST1_WINDOW			= 102	#for test
@@ -92,6 +93,7 @@ class WindowMgr(object):
 		from pvr.gui.windows.channelsearch import ChannelSearch
 		from pvr.gui.windows.automaticscan import AutomaticScan
 		from pvr.gui.windows.manualscan import ManualScan
+		from pvr.gui.windows.channeleditwindow import ChannelEditWindow
 		from pvr.gui.windows.languagesetting import LanguageSetting		#for test
 		from pvr.gui.windows.channellistwindow_a import ChannelListWindow_a #for test
 		from pvr.gui.windows.channellistwindow_b import ChannelListWindow_b #for test
@@ -109,6 +111,7 @@ class WindowMgr(object):
 		self.windows[ WIN_ID_CHANNEL_SEARCH ]			= ChannelSearch('channelsearch.xml', self.scriptDir)
 		self.windows[ WIN_ID_AUTOMATIC_SCAN ]			= AutomaticScan('automaticscan.xml', self.scriptDir)
 		self.windows[ WIN_ID_MANUAL_SCAN ]				= ManualScan('manualscan.xml', self.scriptDir)
+		self.windows[ WIN_ID_CHANNEL_EDIT_WINDOW ]		= ChannelEditWindow('channeleditwindow.xml', self.scriptDir )
 		self.windows[ WIN_ID_LANGUAGE_SETTING ]			= LanguageSetting('languagesetting.xml', self.scriptDir)		#for test
 		self.windows[ WIN_ID_CHANNEL_LIST1_WINDOW ]		= ChannelListWindow_a('channellistwindow_a.xml', self.scriptDir )	#for test
 		self.windows[ WIN_ID_CHANNEL_LIST2_WINDOW ]		= ChannelListWindow_b('channellistwindow_b.xml', self.scriptDir )	#for test
