@@ -5,7 +5,6 @@ import sys
 import pvr.gui.windowmgr as winmgr
 from pvr.gui.basewindow import BaseWindow
 from pvr.gui.basewindow import Action
-from pvr.gui.basedialog import BaseDialog
 from elisenum import ElisEnum
 from elisevent import ElisEvent
 from inspect import currentframe
@@ -72,7 +71,13 @@ class ChannelListWindow(BaseWindow):
 		self.ctrlHeader3            = self.getControl( 3002 )
 		self.ctrlHeader4            = self.getControl( 3003 )
 
-		self.ctrlLblPath            = self.getControl( 10 )
+		#footer
+		self.ctrlFooter1            = self.getControl( 3101 )
+		self.ctrlFooter2            = self.getControl( 3111 )
+		self.ctrlFooter3            = self.getControl( 3141 )
+
+		self.ctrlLblPath1           = self.getControl( 10 )
+		self.ctrlLblPath2           = self.getControl( 11 )
 
 		#main menu
 		self.ctrlGrpMainmenu        = self.getControl( 100 )
@@ -84,6 +89,7 @@ class ChannelListWindow(BaseWindow):
 		self.ctrlListSubmenu        = self.getControl( 202 )
 
 		#ch list
+		self.ctrlGrpCHList          = self.getControl( 49 )
 		self.ctrlListCHList         = self.getControl( 50 )
 
 		#info
@@ -109,9 +115,11 @@ class ChannelListWindow(BaseWindow):
 		#etc
 		self.listEnableFlag = False
 
-		#self.getTabHeader()
 		#initialize get channel list
-		self.initTabHeader()
+		self.initSlideMenuHeader()
+
+		
+		#self.getSlideMenuHeader()
 
 		try :
 			channelInfo = self.commander.channel_GetCurrent()
@@ -168,8 +176,9 @@ class ChannelListWindow(BaseWindow):
 
 				#this position's 'Back'
 				if idx_menu == 4 :
-					self.ctrlListCHList.setEnabled(True)
-					self.setFocusId( 49 )
+					self.ctrlListCHList.setEnabled( True )
+					self.setFocusId( self.ctrlGrpCHList.getId() )
+					self.saveSlideMenuHeader()
 
 				else :
 					self.onClick( self.ctrlListMainmenu.getId() )
@@ -178,13 +187,17 @@ class ChannelListWindow(BaseWindow):
 				self.onClick( self.ctrlListMainmenu.getId() )
 
 		elif id == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN:
-			print '------------------------->up/down'
 			if focusId == self.ctrlListCHList.getId() :
 				self.epgRecvPermission = False
 				ret = self.initEPGEvent()
 
 				self.initLabelInfo()
 				self.updateLabelInfo( ret[0], ret[1] )
+
+			elif focusId >= self.ctrlFooter1.getId() and focusId <= self.ctrlFooter3.getId() :
+				self.ctrlListCHList.setEnabled( True )
+				self.setFocusId( self.ctrlGrpCHList.getId() )
+				
 
 				
 
@@ -295,10 +308,10 @@ class ChannelListWindow(BaseWindow):
 
 			if idx_menu == 4 :
 				self.ctrlListCHList.setEnabled(True)
-				self.setFocusId( 49 )
+				self.setFocusId( self.ctrlGrpCHList.getId() )
 
 			else :
-				self.subManuAction( 0, idx_menu )
+				self.subMenuAction( 0, idx_menu )
 				self.setFocusId( self.ctrlListSubmenu.getId() )
 				#self.setFocusId( self.ctrlGrpSubmenu.getId() )
 
@@ -307,7 +320,24 @@ class ChannelListWindow(BaseWindow):
 			idx_menu = self.chlist_zappingMode
 			print 'focus[%s] idx_sub[%s]'% (controlId, idx_menu)
 
-			self.subManuAction( 1, self.chlist_zappingMode )
+			self.subMenuAction( 1, self.chlist_zappingMode )
+
+		elif controlId == self.ctrlFooter1.getId() :
+			print 'footer back'
+			self.untilThread = False
+			self.currentTimeThread().join()
+			self.ctrlListCHList.reset()
+
+			self.close( )
+
+		elif controlId == self.ctrlFooter2.getId() :
+			print 'footer ok'
+			self.onClick( self.ctrlListCHList.getId() )
+
+		elif controlId == self.ctrlFooter3.getId() :
+			print 'footer edit'
+			pass
+
 
 
 	def onFocus(self, controlId):
@@ -352,7 +382,7 @@ class ChannelListWindow(BaseWindow):
 			print 'channellist winID[%d] this winID[%d]'% (self.win, xbmcgui.getCurrentWindowId())
 
 
-	def subManuAction(self, action, idx_menu):
+	def subMenuAction(self, action, idx_menu):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		retPass = False
 
@@ -387,8 +417,8 @@ class ChannelListWindow(BaseWindow):
 
 				#path tree, Mainmenu/Submanu
 				#label1 = self.ctrlListMainmenu.getSelectedItem().getLabel()
-				label1 = enumToString('mode', self.chlist_zappingMode)
-				self.ctrlLblPath.setLabel( label1.title() )
+				#label1 = enumToString('mode', self.chlist_zappingMode)
+				#self.ctrlLblPath1.setLabel( label1.title() )
 
 
 		elif action == 1:
@@ -462,7 +492,8 @@ class ChannelListWindow(BaseWindow):
 				#label1 = self.ctrlListMainmenu.getSelectedItem().getLabel()
 				label1 = enumToString('mode', self.chlist_zappingMode)
 				label2 = self.ctrlListSubmenu.getSelectedItem().getLabel()
-				self.ctrlLblPath.setLabel( '%s\\%s'% (label1.title(), label2.title()) )
+				self.ctrlLblPath1.setLabel( '%s'% label1.upper() )
+				self.ctrlLblPath2.setLabel( '%s'% label2.title() ) 
 
 				#save zapping mode
 				#ret = self.commander.zappingmode_SetCurrent( self.chlist_zappingMode, self.chlist_channelsortMode, self.chlist_serviceType )
@@ -495,15 +526,30 @@ class ChannelListWindow(BaseWindow):
 
 		return True
 
-	def getTabHeader(self):
-		pass
+	def getSlideMenuHeader(self) :
+		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
-		#TODO
 		#get zapping last mode
+		lastMainMenu= 0
+		lastSubMenu = 1
 
-				
 
-	def initTabHeader(self):
+		self.ctrlListMainmenu.selectItem( lastMainMenu )
+		#self.chlist_zappingMode = lastMainMenu
+		#self.setFocusId( 102 )
+		self.subMenuAction(0, lastMainMenu)
+		self.ctrlListSubmenu.selectItem( lastSubMenu )
+		self.setFocusId( self.ctrlListSubmenu.getId() )
+		
+	def saveSlideMenuHeader(self) :
+
+		msg1 = 'zapping mode'
+		msg2 = 'save ?'
+		ret = xbmcgui.Dialog().yesno(msg1, msg2)
+		print 'dialog ret[%s]' % ret
+
+
+	def initSlideMenuHeader(self) :
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 		#header init
@@ -521,7 +567,7 @@ class ChannelListWindow(BaseWindow):
 
 		#footer init
 		#self.setProperty('WindowType', 'ChannelList')
-		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_RECORD_MASK )
+		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_EDIT_MASK )
 
 		#main/sub menu init
 		self.ctrlListMainmenu.reset()
@@ -616,7 +662,8 @@ class ChannelListWindow(BaseWindow):
 		#label1 = self.ctrlListMainmenu.getSelectedItem().getLabel()
 		label1 = enumToString('mode', self.chlist_zappingMode)
 		label2 = self.ctrlListSubmenu.getSelectedItem().getLabel()
-		self.ctrlLblPath.setLabel( '%s/%s'% (label1.title(), label2.title()) )
+		self.ctrlLblPath1.setLabel( '%s'% label1.upper() )
+		self.ctrlLblPath2.setLabel( '%s'% label2.title() ) 
 
 
 		#get channel list by last on zapping mode, sorting, service type
@@ -905,6 +952,8 @@ class ChannelListWindow(BaseWindow):
 			#self.nowTime += 1
 			time.sleep(1)
 			loop += 1
+
+		print '[%s():%s]leave_end thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 
 	@ui_locked2

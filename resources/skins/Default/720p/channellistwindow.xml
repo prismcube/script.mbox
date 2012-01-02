@@ -20,14 +20,33 @@
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>450</width>
+				<width>250</width>
+				<height>45</height>
+				<texture border="0,0,32,0">confluence/header.png</texture>
+			</control>
+			<control type="image">
+				<posx>250</posx>
+				<posy>0</posy>
+				<width>300</width>
 				<height>45</height>
 				<texture border="0,0,32,0">confluence/header.png</texture>
 			</control>
 			<control type="label" id="10">
 				<posx>50</posx>
 				<posy>0</posy>
-				<width>400</width>
+				<width>200</width>
+				<height>40</height>
+				<font>font13_title</font>
+				<textcolor>grey</textcolor>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>$INFO[ListItem.Label]</label>
+				<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+			</control>
+			<control type="label" id="11">
+				<posx>260</posx>
+				<posy>0</posy>
+				<width>300</width>
 				<height>40</height>
 				<font>font13_title</font>
 				<textcolor>grey</textcolor>
@@ -64,8 +83,8 @@
 				<height>401</height>
 				<onleft>SetFocus(102)</onleft>
 				<onright>SetFocus(61)</onright>
-				<onup>50</onup>
-				<ondown>50</ondown>
+				<onup>49</onup>
+				<ondown>49</ondown>
 				<pagecontrol>61</pagecontrol>
 				<scrolltime>200</scrolltime>
 				<focusposition>0</focusposition>
@@ -131,7 +150,7 @@
 						<width>750</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
-						<visible>!Control.HasFocus(50)</visible>
+						<!--visible>!ControlGroup(49).HasFocus(50)</visible-->
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>
 					</control>
@@ -141,7 +160,7 @@
 						<width>750</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
-						<visible>Control.HasFocus(50)</visible>
+						<!--visible>ControlGroup(49).HasFocus(50)</visible-->
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>
 					</control>
@@ -412,7 +431,7 @@
                 <animation effect="slide" end="-361,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
 				<control type="image">
                     <posx>0</posx>
-                    <posy>102</posy>
+                    <posy>152</posy>
                     <width>1</width>
                     <height>535</height>
                     <texture>black-back_noAlpha.png</texture>
@@ -420,7 +439,7 @@
                 </control>
                 <control type="image">
                     <posx>0</posx>
-                    <posy>102</posy>
+                    <posy>152</posy>
                     <width>12</width>
                     <height>535</height>
                     <texture>confluence/HomeBladeSub_Part2.png</texture>
@@ -431,7 +450,7 @@
 
             <control type="image">
                 <posx>-180</posx>
-                <posy>102</posy>
+                <posy>152</posy>
                 <width>180</width>
                 <height>535</height>
                 <colordiffuse>DAFFFFFF</colordiffuse>
@@ -441,7 +460,7 @@
 			<control type="button" id="101">
 				<description>Fake button for mouse control</description>
 				<posx>-180</posx>
-				<posy>102</posy>
+				<posy>152</posy>
 				<width>195</width>
 				<height>535</height>
 				<label>-</label>
@@ -453,7 +472,7 @@
 			</control>
 			<control type="image">
 				<posx>-180</posx>
-				<posy>102</posy>
+				<posy>152</posy>
 				<width>195</width>
 				<height>535</height>
 				<texture>HomeBlade.png</texture>
