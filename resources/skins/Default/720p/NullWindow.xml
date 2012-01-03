@@ -1,0 +1,24 @@
+<window>
+	<id>3001</id>
+    <type>window</type>
+    <coordinates>
+        <system>1</system>
+        <posx>0</posx>
+        <posy>0</posy>
+    </coordinates>
+	<include file="mbox_includes.xml">"mbox_includes.xml"</include>    	    
+	<controls>
+	    <control type="label" >
+	        <description>date/time label</description>
+	        <posx>300l</posx>
+	        <posy>65</posy>
+	        <width>450</width>
+	        <height>35</height>
+	        <align>right</align>
+	        <aligny>center</aligny>
+	        <font>font16caps</font>
+	        <textcolor>ffffffff</textcolor>
+	        <label>nullwindow</label>
+	    </control>
+	</controls>
+</window>
