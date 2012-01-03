@@ -20,8 +20,6 @@ class OneCableConfiguration2( SettingWindow ):
 		self.satelliteCount = 0
 		self.satellitelist = []
 		self.scrList = [ 'SCR(0)', 'SCR(1)', 'SCR(2)', 'SCR(3)', 'SCR(4)', 'SCR(5)', 'SCR(6)', 'SCR(7)' ]
-		self.initialized = False
-		self.prevId = None
 		self.satelliteCount = 0
 		self.tunerIndex = 0
 		self.currentSatellite = []
@@ -42,7 +40,7 @@ class OneCableConfiguration2( SettingWindow ):
 			self.addEnumControl( E_SpinEx01, 'MDU' )
 
 			pinCode = ElisPropertyInt( 'Tuner%d Pin Code' % ( self.tunerIndex + 1 ), self.commander ).getProp( )
-			self.addInputControl( E_Input01, 'Tuner %d PIN-Code' % ( self.tunerIndex + 1 ), '%d' % pinCode, 0, 1, 4 )
+			self.addInputControl( E_Input01, 'Tuner %d PIN-Code' % ( self.tunerIndex + 1 ), '%d' % pinCode, 0, 1, 3 )
 
 			tunerScr = ElisPropertyInt( 'Tuner%d SCR' % ( self.tunerIndex + 1 ), self.commander ).getProp( )
 			self.addUserEnumControl( E_SpinEx02, 'Tuner %d' % ( self.tunerIndex + 1 ), self.scrList, tunerScr )
@@ -77,28 +75,20 @@ class OneCableConfiguration2( SettingWindow ):
 
 		self.initControl( )
 		self.disableControl( )
-		self.initialized = True
 				
 	def onAction( self, action ):
-		print 'dhkim test onAction id = %d' % action.getId( )
 		actionId = action.getId( )
 		focusId = self.getFocusId( )
 		groupId = self.getGroupId( focusId )
 
-
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			self.initialized = False
-			self.onClose( );
+			pass
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			if groupId == E_Input01 or groupId == E_Input02 :
-				self.controlkeypad( groupId, actionId )
-			else :
-				self.initialized = False
-				self.onClose( );
+			self.onClose( );
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.controlLeft( )
@@ -111,11 +101,6 @@ class OneCableConfiguration2( SettingWindow ):
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.controlDown( )
-
-		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
-			if groupId == E_Input01 or groupId == E_Input02:
-				self.controlkeypad( groupId, actionId )
-
 
 
 	def onClick( self, controlId ):
@@ -165,21 +150,7 @@ class OneCableConfiguration2( SettingWindow ):
 
 			
 	def onFocus( self, controlId ):
-		if self.initialized == False :
-			return
-			
-		groupId = self.getGroupId( controlId )
-		if ( groupId == E_Input01 or groupId == E_Input02 ) and self.prevId != groupId :
-			if groupId != self.prevId :
-				self.prevId = groupId
-			self.controlCursor( groupId )
-			
-		elif ( self.prevId == E_Input01 or self.prevId == E_Input02 ) and self.prevId != groupId :
-			self.stopKeyboardCursor( self.prevId )
-			self.prevId = groupId
-
-		else :
-			self.prevId = groupId
+		pass
 
 	def onClose( self ):
 		if xbmcgui.Dialog( ).yesno('Configure', 'Are you sure?') == 1 :

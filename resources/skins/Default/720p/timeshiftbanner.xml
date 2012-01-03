@@ -1,5 +1,5 @@
 <window type="windows" id="3009">
-	<defaultcontrol always="true">405</defaultcontrol>
+	<defaultcontrol always="true">410</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
 	<controls>
 		<control type="group">

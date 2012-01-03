@@ -2212,6 +2212,50 @@
 						<visible>[Control.HasFocus(3131) | Control.HasFocus(3131)]</visible>
 					</control>
 				</control>
+				<!-- Edit Channel Button -->
+				<control type="group" id="3140">
+					<visible></visible>
+					<width>110</width>
+					<height>40</height>
+					<defaultcontrol always="true">3141</defaultcontrol>
+					<control type="button" id="3141">
+						<description>Button Icon</description>
+						<posx>30</posx>
+						<posy>10</posy>
+						<width>35</width>
+						<height>35</height>
+						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
+						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
+						<onleft>3121</onleft>
+						<onright>3101</onright>
+						<onup>-</onup>
+						<ondown>-</ondown>
+					</control>
+					<control type="label">
+						<posx>72</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[B]Edit Channel[/B]</label>
+						<visible>![Control.HasFocus(3141) | Control.HasFocus(3141)]</visible>
+					</control>
+					<control type="label">
+						<posx>72</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[B]Edit Channel[/B]</label>
+						<visible>[Control.HasFocus(3141) | Control.HasFocus(3141)]</visible>
+					</control>
+				</control>
 			</control>
 		</control>
 	</include>
