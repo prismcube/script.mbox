@@ -74,7 +74,7 @@ class WindowMgr(object):
 
 			elif aWindowId ==  WIN_ID_MAINMENU:
 				from pvr.gui.windows.MainMenu import MainMenu
-				MainMenu('mainmenu.xml', self.mScriptDir).doModal()
+				MainMenu('MainMenu.xml', self.mScriptDir).doModal()
 
 			elif aWindowId ==  WIN_ID_CHANNEL_LIST_WINDOW:
 				from pvr.gui.windows.ChannelListWindow import ChannelListWindow
@@ -82,39 +82,39 @@ class WindowMgr(object):
 
 			elif aWindowId ==  WIN_ID_CHANNEL_BANNER:
 				from pvr.gui.windows.ChannelBanner import ChannelBanner
-				ChannelBanner('channelbanner.xml', self.mScriptDir ).doModal()
+				ChannelBanner('ChannelBanner.xml', self.mScriptDir ).doModal()
 
 			elif aWindowId == WIN_ID_TIMESHIFT_BANNER:
 				from pvr.gui.windows.TimeShiftBanner import TimeShiftBanner
-				TimeShiftBanner('timeshiftbanner.xml', self.mScriptDir ).doModal()
+				TimeShiftBanner('TimeshiftBanner.xml', self.mScriptDir ).doModal()
 
 			elif aWindowId ==  WIN_ID_CONFIGURE:
 				from pvr.gui.windows.Configure import Configure	
-				Configure('configure.xml', self.mScriptDir).doModal()
+				Configure('Configure.xml', self.mScriptDir).doModal()
 
 			elif aWindowId ==  WIN_ID_ANTENNA_SETUP:
 				from pvr.gui.windows.AntennaSetup import AntennaSetup
-				AntennaSetup('antennasetup.xml', self.mScriptDir).doModal()
+				AntennaSetup('AntennaSetup.xml', self.mScriptDir).doModal()
 
 			elif aWindowId ==  WIN_ID_TUNER_CONFIGURATION:
 				from pvr.gui.windows.TunerConfiguration import TunerConfiguration
-				TunerConfiguration('tunerconfiguration.xml', self.mScriptDir).doModal()
+				TunerConfiguration('TunerConfiguration.xml', self.mScriptDir).doModal()
 
 			elif aWindowId ==  WIN_ID_SATELLITE_CONFIGURATION:
 				from pvr.gui.windows.SatelliteConfiguration import SatelliteConfiguration
-				SatelliteConfiguration('satelliteconfiguration.xml', self.mScriptDir).doModal()
+				SatelliteConfiguration('SatelliteConfiguration.xml', self.mScriptDir).doModal()
 
 			elif aWindowId ==  WIN_ID_CHANNEL_SEARCH:
 				from pvr.gui.windows.ChannelSearch import ChannelSearch
-				ChannelSearch('channelsearch.xml', self.mScriptDir).doModal()
+				ChannelSearch('ChannelSearch.xml', self.mScriptDir).doModal()
 
 			elif aWindowId ==  WIN_ID_AUTOMATIC_SCAN:
 				from pvr.gui.windows.AutomaticScan import AutomaticScan	
-				AutomaticScan('automaticscan.xml', self.mScriptDir).doModal()
+				AutomaticScan('AutomaticScan.xml', self.mScriptDir).doModal()
 
 			elif aWindowId ==  WIN_ID_MANUAL_SCAN:
 				from pvr.gui.windows.ManualScan import ManualScan
-				ManualScan('manualscan.xml', self.mScriptDir).doModal()
+				ManualScan('ManualScan.xml', self.mScriptDir).doModal()
 
 			elif aWindowId ==  WIN_ID_CHANNEL_EDIT_WINDOW:
 				#from pvr.gui.windows.channeleditwindow import ChannelEditWindow
@@ -127,11 +127,11 @@ class WindowMgr(object):
 			
 			elif aWindowId ==  WIN_ID_CHANNEL_LIST1_WINDOW:
 				from pvr.gui.windows.ChannelListWindow_a import ChannelListWindow_a #for test			
-				ChannelListWindow_a('channellistwindow_a.xml', self.mScriptDir ).doModal()
+				ChannelListWindow_a('ChannelListWindow_a.xml', self.mScriptDir ).doModal()
 
 			elif aWindowId ==  WIN_ID_CHANNEL_LIST2_WINDOW:
 				from pvr.gui.windows.ChannelListWindow_b import ChannelListWindow_b #for test		
-				ChannelListWindow_b('channellistwindow_b.xml', self.mScriptDir ).doModal()
+				ChannelListWindow_b('ChannelListWindow_b.xml', self.mScriptDir ).doModal()
 
 			else :
 				print 'Unknown widnowId=%d' %aWindowId
