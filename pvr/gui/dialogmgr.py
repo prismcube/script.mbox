@@ -9,7 +9,8 @@ DIALOG_ID_KEYBOARD 					= 0
 DIALOG_ID_NUMERIC					= 1
 DIALOG_ID_LNB_FREQUENCY				= 2
 DIALOG_ID_CHANNEL_SEARCH			= 3
-DIALOG_ID_RECORD					= 4
+DIALOG_ID_START_RECORD				= 4
+DIALOG_ID_STOP_RECORD				= 5
 
 
 gDialogmgr = None
@@ -57,10 +58,14 @@ class DialogMgr(object):
 				from pvr.gui.dialogs.dialogchannelsearch import DialogChannelSearch
 				return DialogChannelSearch('dialogchannelsearch.xml', self.scriptDir)	
 
-			elif dialogId == DIALOG_ID_RECORD :
-				from pvr.gui.dialogs.DialogRecord import DialogRecord
-				return DialogRecord('DialogRecord.xml', self.scriptDir)	
+			elif dialogId == DIALOG_ID_START_RECORD :
+				from pvr.gui.dialogs.DialogStartRecord import DialogStartRecord
+				return DialogStartRecord('DialogStartRecord.xml', self.scriptDir)	
 				
+			elif dialogId == DIALOG_ID_STOP_RECORD :
+				from pvr.gui.dialogs.DialogStopRecord import DialogStopRecord
+				return DialogStopRecord('DialogStopRecord.xml', self.scriptDir)	
+
 			else :
 				print "ERROR : can not find dialog"
 

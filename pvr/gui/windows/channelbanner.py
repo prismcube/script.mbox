@@ -626,12 +626,24 @@ class ChannelBanner(BaseWindow):
 			msg2 = 'test'
 
 		elif focusid == self.ctrlBtnStartRec.getId() :
-			dialog = diamgr.getInstance().getDialog( diamgr.DIALOG_ID_RECORD )
-			dialog.doModal( )
+			runningCount = int( self.commander.record_GetRunningRecorderCount()[0] )
+			print 'runningCount=%d' %runningCount
+
+			if  runningCount < 2 :
+				dialog = diamgr.getInstance().getDialog( diamgr.DIALOG_ID_START_RECORD )
+				dialog.doModal( )
+			else:
+				msg = 'Already %d recording(s) running' %runningCount
+				xbmcgui.Dialog().ok('Infomation', msg )
 
 		elif focusid == self.ctrlBtnStopRec.getId() :
-			msg1 = 'Stop Recording'
-			msg2 = 'test'
+			runningCount = int( self.commander.record_GetRunningRecorderCount()[0] )
+			print 'runningCount=%d' %runningCount
+
+			if  runningCount > 0 :
+				dialog = diamgr.getInstance().getDialog( diamgr.DIALOG_ID_STOP_RECORD )
+				dialog.doModal( )
+			
 
 		#ret = xbmcgui.Dialog().ok(msg1, msg2)
 		#print 'dialog ret[%s]' % ret

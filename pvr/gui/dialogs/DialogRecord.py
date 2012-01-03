@@ -146,7 +146,11 @@ class DialogRecord( BaseDialog ) :
 
 	def StartRecord( self ):
 		print 'Start Record'
-		pass
+		current = self.mCommander.channel_GetCurrent( )
+		ret = self.mCommander.record_StartRecord( int( current[0] ),  int( current[3] ),  self.mEPGDuration,  self.mRecordName )
+		print 'Record Result=%s' %ret
+
+		self.Close( )
 
 
 	@run_async
@@ -194,7 +198,7 @@ class DialogRecord( BaseDialog ) :
 			recordDuration = endTime - self.mLocalTime
 			if recordDuration < 0 :
 				recordDuration = 0
-			self.getControl( E_LABEL_DURATION ).setLabel( '%d' %recordDuration/(60) )
+			self.getControl( E_LABEL_DURATION ).setLabel( '%d' %int( recordDuration/(60) )  )
 		else :
 			self.getControl( E_LABEL_DURATION ).setLabel( '%d' % int( self.mEPGDuration/(60) ) )			
 
