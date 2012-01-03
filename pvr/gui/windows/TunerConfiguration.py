@@ -22,7 +22,7 @@ E_MAIN_LIST_ID = 9000
 class TunerConfiguration( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs)
-		self.commander = pvr.ElisMgr.getInstance( ).getCommander( )
+		self.mCommander = pvr.ElisMgr.getInstance( ).getCommander( )
 		self.listItems= []
 			
 	def onInit( self ):
@@ -31,12 +31,12 @@ class TunerConfiguration( SettingWindow ):
 		self.tunerIndex = configmgr.getInstance().getCurrentTunerIndex( )
 
 		if self.tunerIndex == E_TUNER_1 :
-			property = ElisPropertyEnum( 'Tuner1 Type', self.commander )
+			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
 		elif self.tunerIndex == E_TUNER_2 : 
-			property = ElisPropertyEnum( 'Tuner2 Type', self.commander )
+			property = ElisPropertyEnum( 'Tuner2 Type', self.mCommander )
 		else :
 			print 'Error : unknown Tuner'
-			property = ElisPropertyEnum( 'Tuner1 Type', self.commander )
+			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
 			
 		headerLabel = 'Tuner %d Configuration' % ( self.tunerIndex + 1 )
 		self.setHeaderLabel( headerLabel )

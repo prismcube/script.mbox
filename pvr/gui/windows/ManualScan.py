@@ -17,7 +17,7 @@ from pvr.gui.basewindow import Action
 class ManualScan( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.commander = pvr.ElisMgr.getInstance( ).getCommander( )
+		self.mCommander = pvr.ElisMgr.getInstance( ).getCommander( )
 			
 		self.initialized = False
 		self.lastFocused = -1
@@ -40,7 +40,7 @@ class ManualScan( SettingWindow ):
 		self.selectedTransponderIndex = 0		
 		self.allsatellitelist = []
 		
-		self.allsatellitelist = self.commander.satellite_GetList( ElisEnum.E_SORT_INSERTED )
+		self.allsatellitelist = self.mCommander.satellite_GetList( ElisEnum.E_SORT_INSERTED )
 		self.loadFormattedSatelliteNameList()
 
 		self.loadFormattedTransponderNameList( )		
@@ -210,12 +210,12 @@ class ManualScan( SettingWindow ):
 	def loadFormattedSatelliteNameList( self ) :
 
 		configuredSatelliteList1 = []
-		configuredSatelliteList1 = self.commander.satelliteconfig_GetList( E_TUNER_1 )		
+		configuredSatelliteList1 = self.mCommander.satelliteconfig_GetList( E_TUNER_1 )		
 
 		configuredSatelliteList2 = []
-		configuredSatelliteList2 = self.commander.satelliteconfig_GetList( E_TUNER_2 )		
+		configuredSatelliteList2 = self.mCommander.satelliteconfig_GetList( E_TUNER_2 )		
 
-		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.commander )
+		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander )
 
 		self.configuredSatelliteList = deepcopy( configuredSatelliteList1 )
 		
@@ -241,7 +241,7 @@ class ManualScan( SettingWindow ):
 		satellite = self.allsatellitelist[self.selectedSatelliteIndex]
 
 		self.transponderList = []
-		self.transponderList = self.commander.transponder_GetList( int( satellite[0] ), int( satellite[1]  ) )
+		self.transponderList = self.mCommander.transponder_GetList( int( satellite[0] ), int( satellite[1]  ) )
 
 		self.formattedTransponderList = []
 		

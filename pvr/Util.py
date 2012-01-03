@@ -41,7 +41,7 @@ def MakeDir(dir):
 		os.makedirs(dir)
 	return dir
 
-uilocked = False
+gGuiLock = False
 
 
 @decorator
@@ -50,18 +50,18 @@ def GuiLock(func, *args, **kw):
 	Decorator for setting/unsetting the xbmcgui lock on method
 	entry and exit.
 	"""
-	global uilocked
-	if uilocked: # prevent nested locks / double lock
+	global gGuiLock
+	if gGuiLock: # prevent nested locks / double lock
 		return func(*args, **kw)    
 	else:
 		try:
-			uilocked = True
+			gGuiLock = True
 			xbmcgui.lock()
 			result = func(*args, **kw)
 
 		finally:
 			xbmcgui.unlock()
-			uilocked = False
+			gGuiLock = False
 		return result
 
 

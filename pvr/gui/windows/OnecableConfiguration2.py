@@ -16,7 +16,7 @@ from elisproperty import ElisPropertyInt
 class OneCableConfiguration2( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.commander = pvr.ElisMgr.getInstance().getCommander()
+		self.mCommander = pvr.ElisMgr.getInstance().getCommander()
 		self.satelliteCount = 0
 		self.satellitelist = []
 		self.scrList = [ 'SCR(0)', 'SCR(1)', 'SCR(2)', 'SCR(3)', 'SCR(4)', 'SCR(5)', 'SCR(6)', 'SCR(7)' ]
@@ -39,13 +39,13 @@ class OneCableConfiguration2( SettingWindow ):
 
 			self.AddEnumControl( E_SpinEx01, 'MDU' )
 
-			pinCode = ElisPropertyInt( 'Tuner%d Pin Code' % ( self.tunerIndex + 1 ), self.commander ).getProp( )
+			pinCode = ElisPropertyInt( 'Tuner%d Pin Code' % ( self.tunerIndex + 1 ), self.mCommander ).getProp( )
 			self.AddInputControl( E_Input01, 'Tuner %d PIN-Code' % ( self.tunerIndex + 1 ), '%d' % pinCode, 0, 1, 3 )
 
-			tunerScr = ElisPropertyInt( 'Tuner%d SCR' % ( self.tunerIndex + 1 ), self.commander ).getProp( )
+			tunerScr = ElisPropertyInt( 'Tuner%d SCR' % ( self.tunerIndex + 1 ), self.mCommander ).getProp( )
 			self.AddUserEnumControl( E_SpinEx02, 'Tuner %d' % ( self.tunerIndex + 1 ), self.scrList, tunerScr )
 
-			tunerFrequency = ElisPropertyInt( 'Tuner%d SCR Frequency' % ( self.tunerIndex + 1 ), self.commander ).getProp( )
+			tunerFrequency = ElisPropertyInt( 'Tuner%d SCR Frequency' % ( self.tunerIndex + 1 ), self.mCommander ).getProp( )
 			self.AddUserEnumControl( E_SpinEx03, 'Tuner %d Frequency' % ( self.tunerIndex + 1 ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % tunerFrequency ) )
 
 			disableControls = [ E_Input02, E_SpinEx04, E_SpinEx05 ]
@@ -55,22 +55,22 @@ class OneCableConfiguration2( SettingWindow ):
 		elif configmgr.getInstance( ).getCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
 			self.AddEnumControl( E_SpinEx01, 'MDU' )
 
-			pinCode = ElisPropertyInt( 'Tuner1 Pin Code', self.commander ).getProp( )
+			pinCode = ElisPropertyInt( 'Tuner1 Pin Code', self.mCommander ).getProp( )
 			self.AddInputControl( E_Input01, 'Tuner1 PIN-Code', '%d' % pinCode, 0, 1, 4 )
 
-			tunerScr = ElisPropertyInt( 'Tuner1 SCR', self.commander ).getProp( )
+			tunerScr = ElisPropertyInt( 'Tuner1 SCR', self.mCommander ).getProp( )
 			self.AddUserEnumControl( E_SpinEx02, 'Tuner 1', self.scrList, tunerScr )
 
-			tunerFrequency = ElisPropertyInt( 'Tuner1 SCR Frequency', self.commander ).getProp( )
+			tunerFrequency = ElisPropertyInt( 'Tuner1 SCR Frequency', self.mCommander ).getProp( )
 			self.AddUserEnumControl( E_SpinEx03, 'Tuner 1 Frequency', E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % tunerFrequency ) )
 
-			pinCode = ElisPropertyInt( 'Tuner2 Pin Code', self.commander ).getProp( )
+			pinCode = ElisPropertyInt( 'Tuner2 Pin Code', self.mCommander ).getProp( )
 			self.AddInputControl( E_Input02, 'Tuner2 PIN-Code', '%d' % pinCode, 0, 1, 4 )
 
-			tunerScr = ElisPropertyInt( 'Tuner2 SCR', self.commander ).getProp( )
+			tunerScr = ElisPropertyInt( 'Tuner2 SCR', self.mCommander ).getProp( )
 			self.AddUserEnumControl( E_SpinEx04, 'Tuner 2', self.scrList, tunerScr )
 
-			tunerFrequency = ElisPropertyInt( 'Tuner2 SCR Frequency', self.commander ).getProp( )
+			tunerFrequency = ElisPropertyInt( 'Tuner2 SCR Frequency', self.mCommander ).getProp( )
 			self.AddUserEnumControl( E_SpinEx05, 'Tuner 2 Frequency', E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % tunerFrequency ) )
 
 		self.InitControl( )
@@ -155,16 +155,16 @@ class OneCableConfiguration2( SettingWindow ):
 	def onClose( self ):
 		if xbmcgui.Dialog( ).yesno('Configure', 'Are you sure?') == 1 :
 			if configmgr.getInstance( ).getCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
-				ElisPropertyInt( 'Tuner%d Pin Code' % ( self.tunerIndex + 1 ), self.commander ).SetProp( int( self.getControl( E_Input01 + 3 ).getListItem(0).getLabel2( ) ) )
-				ElisPropertyInt( 'Tuner%d SCR' % ( self.tunerIndex + 1 ), self.commander ).SetProp( self.GetSelectedIndex( E_SpinEx02 ) ) 
-				ElisPropertyInt( 'Tuner%d SCR Frequency' % ( self.tunerIndex + 1 ), self.commander ).SetProp( int( E_LIST_ONE_CABLE_TUNER_FREQUENCY[self.GetSelectedIndex( E_SpinEx03 )] ) )
+				ElisPropertyInt( 'Tuner%d Pin Code' % ( self.tunerIndex + 1 ), self.mCommander ).SetProp( int( self.getControl( E_Input01 + 3 ).getListItem(0).getLabel2( ) ) )
+				ElisPropertyInt( 'Tuner%d SCR' % ( self.tunerIndex + 1 ), self.mCommander ).SetProp( self.GetSelectedIndex( E_SpinEx02 ) ) 
+				ElisPropertyInt( 'Tuner%d SCR Frequency' % ( self.tunerIndex + 1 ), self.mCommander ).SetProp( int( E_LIST_ONE_CABLE_TUNER_FREQUENCY[self.GetSelectedIndex( E_SpinEx03 )] ) )
 			elif configmgr.getInstance( ).getCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
-				ElisPropertyInt( 'Tuner1 Pin Code', self.commander ).SetProp( int( self.getControl( E_Input01 + 3 ).getListItem(0).getLabel2( ) ) )
-				ElisPropertyInt( 'Tuner1 SCR', self.commander ).SetProp( self.GetSelectedIndex( E_SpinEx02 ) ) 
-				ElisPropertyInt( 'Tuner1 SCR Frequency', self.commander ).SetProp( int( E_LIST_ONE_CABLE_TUNER_FREQUENCY[self.GetSelectedIndex( E_SpinEx03 )] ) )
-				ElisPropertyInt( 'Tuner2 Pin Code', self.commander ).SetProp( int( self.getControl( E_Input02 + 3 ).getListItem(0).getLabel2( ) ) )
-				ElisPropertyInt( 'Tuner2 SCR', self.commander ).SetProp( self.GetSelectedIndex( E_SpinEx04 ) ) 
-				ElisPropertyInt( 'Tuner2 SCR Frequency', self.commander ).SetProp( int( E_LIST_ONE_CABLE_TUNER_FREQUENCY[self.GetSelectedIndex( E_SpinEx05 )] ) )	
+				ElisPropertyInt( 'Tuner1 Pin Code', self.mCommander ).SetProp( int( self.getControl( E_Input01 + 3 ).getListItem(0).getLabel2( ) ) )
+				ElisPropertyInt( 'Tuner1 SCR', self.mCommander ).SetProp( self.GetSelectedIndex( E_SpinEx02 ) ) 
+				ElisPropertyInt( 'Tuner1 SCR Frequency', self.mCommander ).SetProp( int( E_LIST_ONE_CABLE_TUNER_FREQUENCY[self.GetSelectedIndex( E_SpinEx03 )] ) )
+				ElisPropertyInt( 'Tuner2 Pin Code', self.mCommander ).SetProp( int( self.getControl( E_Input02 + 3 ).getListItem(0).getLabel2( ) ) )
+				ElisPropertyInt( 'Tuner2 SCR', self.mCommander ).SetProp( self.GetSelectedIndex( E_SpinEx04 ) ) 
+				ElisPropertyInt( 'Tuner2 SCR Frequency', self.mCommander ).SetProp( int( E_LIST_ONE_CABLE_TUNER_FREQUENCY[self.GetSelectedIndex( E_SpinEx05 )] ) )	
 			
 		self.ResetAllControl( )
 		self.close( )

@@ -36,10 +36,10 @@ E_SCAN_TRANSPONDER			= 2
 class DialogChannelSearch( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
-		self.commander = pvr.ElisMgr.getInstance( ).getCommander( )
+		self.mCommander = pvr.ElisMgr.getInstance( ).getCommander( )
 		self.scanMode = E_SCAN_NONE
 		self.isFinished = True
-		self.eventBus = pvr.ElisMgr.getInstance().getEventBus()
+		self.mEventBus = pvr.ElisMgr.getInstance().getEventBus()
 		self.transponderList = []
 		self.satelliteList = []
 		self.longitude = 0
@@ -47,7 +47,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def onInit( self ):
 		self.winId = xbmcgui.getCurrentWindowId()
-		self.eventBus.register( self )		
+		self.mEventBus.register( self )		
 		self.isFinished = False	
 
 		self.satelliteFormatedName = 'Unknown'
@@ -155,15 +155,15 @@ class DialogChannelSearch( BaseDialog ) :
 	def scanStart( self ) :
 
 		self.allSatelliteList = []
-		self.allSatelliteList = self.commander.satellite_GetList( ElisEnum.E_SORT_INSERTED )
+		self.allSatelliteList = self.mCommander.satellite_GetList( ElisEnum.E_SORT_INSERTED )
 		self.satelliteFormatedName = self.getFormattedName( self.longitude , self.band  )		
 
 		print 'scanMode=%d' %self.scanMode
 		if self.scanMode == E_SCAN_SATELLITE :
 			satellite = self.satelliteList[0] # ToDO send with satelliteList
-			self.commander.channelscan_BySatellite( int(satellite[2]), int(satellite[3]) ) #longitude, band
+			self.mCommander.channelscan_BySatellite( int(satellite[2]), int(satellite[3]) ) #longitude, band
 		elif self.scanMode == E_SCAN_TRANSPONDER :
-			self.commander.channel_SearchByCarrier( self.longitude, self.band, self.transponderList )
+			self.mCommander.channel_SearchByCarrier( self.longitude, self.band, self.transponderList )
 		else :
 			self.isFinished == True
 
@@ -171,11 +171,11 @@ class DialogChannelSearch( BaseDialog ) :
 	def scanAbort( self ) :
 		if self.isFinished == False :
 			if xbmcgui.Dialog( ).yesno('Confirm', 'Do you want abort channel scan?') == 1 :
-				self.commander.channelscan_Abort( )
+				self.mCommander.channelscan_Abort( )
 				self.isFinished == True
 
 		if self.isFinished == True :
-			self.eventBus.deregister( self )
+			self.mEventBus.deregister( self )
 			self.close( )
 
 	def onEvent( self, event ):

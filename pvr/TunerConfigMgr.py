@@ -71,7 +71,7 @@ def getInstance():
 
 class TunerConfigMgr( object ):
 	def __init__( self ):
-		self.commander = pvr.ElisMgr.getInstance( ).getCommander( )	
+		self.mCommander = pvr.ElisMgr.getInstance( ).getCommander( )	
 		self.configuredList1 = []
 		self.configuredList2 = []		
 		self.currentTuner = 0
@@ -126,19 +126,19 @@ class TunerConfigMgr( object ):
 
 	def getCurrentTunerType( self ) :
 		if self.currentTuner == E_TUNER_1 :	
-			property = ElisPropertyEnum( 'Tuner1 Type', self.commander )
+			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
 			return property.getProp( )
 		elif self.currentTuner == E_TUNER_2:
-			property = ElisPropertyEnum( 'Tuner2 Type', self.commander )
+			property = ElisPropertyEnum( 'Tuner2 Type', self.mCommander )
 			return property.getProp( )
 
 	def getCurrentTunerConnectionType( self ) :
-		property = ElisPropertyEnum( 'Tuner2 Connect Type', self.commander )
+		property = ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander )
 		return property.getProp( )
 
 
 	def getCurrentTunerConfigType( self ) :
-		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.commander )
+		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander )
 		return property.getProp( )
 
 
@@ -205,13 +205,13 @@ class TunerConfigMgr( object ):
 
 	def restore( self ) :
 
-		property = ElisPropertyEnum( 'Tuner2 Connect Type', self.commander )
+		property = ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander )
 		property.SetProp( self.orgTuner2ConnectType )
-		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.commander )
+		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander )
 		property.SetProp( self.orgTuner2Config )
-		property = ElisPropertyEnum( 'Tuner1 Type', self.commander )
+		property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
 		property.SetProp( self.orgTuner1Type )
-		property = ElisPropertyEnum( 'Tuner2 Type', self.commander )		
+		property = ElisPropertyEnum( 'Tuner2 Type', self.mCommander )		
 		property.SetProp( self.orgTuner2Type )
 
 
@@ -221,7 +221,7 @@ class TunerConfigMgr( object ):
 		
 	def satelliteconfigSaveList( self ) :
 
-		self.commander.satelliteconfig_DeleteAll( )
+		self.mCommander.satelliteconfig_DeleteAll( )
 		
 		tunerType = self.getCurrentTunerType( )
 		configuredList = self.getConfiguredSatelliteList( )
@@ -263,8 +263,8 @@ class TunerConfigMgr( object ):
 		print 'satelliteconfig 2 %s' %self.configuredList2
 
 		
-		self.commander.satelliteconfig_SaveList( self.configuredList1 )
-		self.commander.satelliteconfig_SaveList( self.configuredList2 )
+		self.mCommander.satelliteconfig_SaveList( self.configuredList1 )
+		self.mCommander.satelliteconfig_SaveList( self.configuredList2 )
 
 
 
@@ -274,7 +274,7 @@ class TunerConfigMgr( object ):
 			[Longitude, Band, Name]
 		"""
 		self.allsatellitelist = []
-		self.allsatellitelist = self.commander.satellite_GetList( ElisEnum.E_SORT_INSERTED )
+		self.allsatellitelist = self.mCommander.satellite_GetList( ElisEnum.E_SORT_INSERTED )
 	
 		"""
 			[TunerIndex, SlotNumber, SatelliteLongitude, BandType, FrequencyLevel, DisEqc11, DisEqcMode, DisEqcRepeat,
@@ -282,7 +282,7 @@ class TunerConfigMgr( object ):
 				IsOneCable, OneCablePin, OneCableMDU, OneCableLoFreq1, OneCableLoFreq2, OneCableUBSlot, OneCableUBFreq]	
 		"""
 		self.configuredList1 = []
-		self.configuredList1 = self.commander.satelliteconfig_GetList( E_TUNER_1 )
+		self.configuredList1 = self.mCommander.satelliteconfig_GetList( E_TUNER_1 )
 
 		print 'configuredList1 len=%d' %len( self.configuredList1 )
 
@@ -301,7 +301,7 @@ class TunerConfigMgr( object ):
 
 
 		self.configuredList2 = []
-		self.configuredList2 = self.commander.satelliteconfig_GetList( E_TUNER_2 )		
+		self.configuredList2 = self.mCommander.satelliteconfig_GetList( E_TUNER_2 )		
 		print 'configuredList2 len=%d' %len( self.configuredList2 )		
 
 		if len(self.configuredList2 )== 0 or ( len( self.configuredList2 ) == 1 and len( self.configuredList2[0] ) == 0 ) :
@@ -362,7 +362,7 @@ class TunerConfigMgr( object ):
 				break
 
 		if found == True :
-			tmptransponderList = self.commander.transponder_GetList( int( satellite[0] ), int( satellite[1] ) )
+			tmptransponderList = self.mCommander.transponder_GetList( int( satellite[0] ), int( satellite[1] ) )
 
 		for i in range( len( tmptransponderList ) ) :
 			transponderList.append( '%s' % ( i + 1 ) + ' ' + tmptransponderList[i][0] + ' MHz / ' + tmptransponderList[i][1] + ' KS/s' )
@@ -374,13 +374,13 @@ class TunerConfigMgr( object ):
 
 	def loadOriginalTunerConfig( self ) :
 
-		property = ElisPropertyEnum( 'Tuner2 Connect Type', self.commander )
+		property = ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander )
 		self.orgTuner2ConnectType = property.getProp()
-		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.commander )
+		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander )
 		self.orgTuner2Config = property.getProp()
-		property = ElisPropertyEnum( 'Tuner1 Type', self.commander )
+		property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
 		self.orgTuner1Type = property.getProp()
-		property = ElisPropertyEnum( 'Tuner2 Type', self.commander )		
+		property = ElisPropertyEnum( 'Tuner2 Type', self.mCommander )		
 		self.orgTuner2Type = property.getProp()
 
 

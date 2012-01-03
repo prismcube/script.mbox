@@ -17,7 +17,7 @@ from elisenum import ElisEnum
 class SatelliteConfiguration( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs)
-		self.commander = pvr.ElisMgr.getInstance().getCommander( )
+		self.mCommander = pvr.ElisMgr.getInstance().getCommander( )
 			
 		self.tunerType = 0
 		self.currentSatellite = 0

@@ -32,9 +32,9 @@ class TimeShiftBanner(BaseWindow):
 		print 'args[1]=[%s]' % args[1]
 
 		self.lastFocusId = None
-		self.eventBus = pvr.ElisMgr.getInstance().getEventBus()
-		#self.eventBus.register( self )
-		self.commander = pvr.ElisMgr.getInstance().getCommander()
+		self.mEventBus = pvr.ElisMgr.getInstance().getEventBus()
+		#self.mEventBus.register( self )
+		self.mCommander = pvr.ElisMgr.getInstance().getCommander()
 
 		#default
 		self.progressbarWidth = 980
@@ -88,10 +88,10 @@ class TimeShiftBanner(BaseWindow):
 		self.ctrlProgress.setPercent(0)
 		
 		#get channel
-		#self.currentChannel = self.commander.channel_GetCurrent()
+		#self.currentChannel = self.mCommander.channel_GetCurrent()
 
 		try :
-			ret = self.commander.datetime_GetLocalTime()
+			ret = self.mCommander.datetime_GetLocalTime()
 			self.timeShiftExcuteTime = int(ret[0])
 		except Exception, e :
 			print '[%s]%s():%s except[%s]'% ( os.path.basename(currentframe().f_code.co_filename), currentframe().f_code.co_name, currentframe().f_lineno, e)
@@ -158,7 +158,7 @@ class TimeShiftBanner(BaseWindow):
 
 		elif controlId == self.ctrlBtnVolume.getId():
 			self.timeshiftAction(controlId)
-			ret = self.commander.player_GetStatus()
+			ret = self.mCommander.player_GetStatus()
 			print 'player_status[%s]'% ret
 
 
@@ -176,13 +176,13 @@ class TimeShiftBanner(BaseWindow):
 			if msg == 'Elis-CurrentEITReceived' :
 
 				if int(event[4]) != self.eventID :			
-					ret = self.commander.epgevent_GetPresent( )
+					ret = self.mCommander.epgevent_GetPresent( )
 					if len( ret ) > 0 :
 						self.eventCopy = event
 						self.eventID = int( event[4] )
 						self.updateONEvent( ret )
 
-					#ret = self.commander.epgevent_Get(self.eventID, int(event[1]), int(event[2]), int(event[3]), int(self.epgClock[0]) )
+					#ret = self.mCommander.epgevent_Get(self.eventID, int(event[1]), int(event[2]), int(event[3]), int(self.epgClock[0]) )
 			else :
 				print 'event unknown[%s]'% event
 		else:
@@ -196,18 +196,18 @@ class TimeShiftBanner(BaseWindow):
 
 		if focusId == self.ctrlBtnPlay.getId():
 			if self.mMode == ElisEnum.E_MODE_LIVE:
-				#ret = self.commander.player_StartTimeshiftPlayback(ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE,0)
-				ret = self.commander.player_Resume()
+				#ret = self.mCommander.player_StartTimeshiftPlayback(ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE,0)
+				ret = self.mCommander.player_Resume()
 			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT:
-				ret = self.commander.player_Resume()
+				ret = self.mCommander.player_Resume()
 			elif self.mMode == ElisEnum.E_MODE_PVR:
-				ret = self.commander.player_Resume()
+				ret = self.mCommander.player_Resume()
 
 			if ret[0] == 'TRUE':
 				print 'play ret[%s]'% ret
 
 				if self.mSpeed != 100:
-					self.commander.player_SetSpeed(100)
+					self.mCommander.player_SetSpeed(100)
 					self.ctrlImgRewind.setVisible(False)
 					self.ctrlImgForward.setVisible(False)
 					self.ctrlLblSpeed.setLabel('')
@@ -222,11 +222,11 @@ class TimeShiftBanner(BaseWindow):
 		elif focusId == self.ctrlBtnPause.getId():
 		#elif focusId == self.ctrlBtnTest.getId():
 			if self.mMode == ElisEnum.E_MODE_LIVE:
-				ret = self.commander.player_StartTimeshiftPlayback(ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE,0)
+				ret = self.mCommander.player_StartTimeshiftPlayback(ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE,0)
 			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT:
-				ret = self.commander.player_Pause()
+				ret = self.mCommander.player_Pause()
 			elif self.mMode == ElisEnum.E_MODE_PVR:
-				ret = self.commander.player_Pause()
+				ret = self.mCommander.player_Pause()
 
 			if ret[0] == 'TRUE':
 				print 'pause ret[%s]'% ret
@@ -239,11 +239,11 @@ class TimeShiftBanner(BaseWindow):
 		elif focusId == self.ctrlBtnStop.getId():
 
 			if self.mMode == ElisEnum.E_MODE_LIVE:
-				ret = self.commander.player_Stop()
+				ret = self.mCommander.player_Stop()
 			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT:
-				ret = self.commander.player_Stop()
+				ret = self.mCommander.player_Stop()
 			elif self.mMode == ElisEnum.E_MODE_PVR:
-				ret = self.commander.player_Stop()
+				ret = self.mCommander.player_Stop()
 
 			if ret[0] == 'TRUE':
 				print 'stop ret[%s]'% ret
@@ -262,12 +262,12 @@ class TimeShiftBanner(BaseWindow):
 			nextSpeed = self.getSpeedValue(focusId)
 
 			if self.mMode == ElisEnum.E_MODE_LIVE:
-				ret = self.commander.player_StartTimeshiftPlayback(ElisEnum.E_PLAYER_TIMESHIFT_START_REWIND,0)
-				#ret = self.commander.player_SetSpeed(nextSpeed)
+				ret = self.mCommander.player_StartTimeshiftPlayback(ElisEnum.E_PLAYER_TIMESHIFT_START_REWIND,0)
+				#ret = self.mCommander.player_SetSpeed(nextSpeed)
 			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT:
-				ret = self.commander.player_SetSpeed(nextSpeed)
+				ret = self.mCommander.player_SetSpeed(nextSpeed)
 			elif self.mMode == ElisEnum.E_MODE_PVR:
-				ret = self.commander.player_SetSpeed(nextSpeed)
+				ret = self.mCommander.player_SetSpeed(nextSpeed)
 
 			if ret[0] == 'TRUE':
 				print 'rewind ret[%s], player_SetSpeed[%s]'% (ret, nextSpeed)
@@ -277,12 +277,12 @@ class TimeShiftBanner(BaseWindow):
 			nextSpeed = self.getSpeedValue(focusId)
 
 			if self.mMode == ElisEnum.E_MODE_LIVE:
-				#ret = self.commander.player_StartTimeshiftPlayback(ElisEnum.E_PLAYER_TIMESHIFT_START_REWIND,0)
-				ret = self.commander.player_SetSpeed(nextSpeed)
+				#ret = self.mCommander.player_StartTimeshiftPlayback(ElisEnum.E_PLAYER_TIMESHIFT_START_REWIND,0)
+				ret = self.mCommander.player_SetSpeed(nextSpeed)
 			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT:
-				ret = self.commander.player_SetSpeed(nextSpeed)
+				ret = self.mCommander.player_SetSpeed(nextSpeed)
 			elif self.mMode == ElisEnum.E_MODE_PVR:
-				ret = self.commander.player_SetSpeed(nextSpeed)
+				ret = self.mCommander.player_SetSpeed(nextSpeed)
 
 			if ret[0] == 'TRUE':
 				print 'forward ret[%s] player_SetSpeed[%s]'% (ret, nextSpeed)
@@ -305,7 +305,7 @@ class TimeShiftBanner(BaseWindow):
 		self.ctrlLblTSEndTime.setLabel('')
 
 		try :
-			ret = self.commander.datetime_GetLocalTime()
+			ret = self.mCommander.datetime_GetLocalTime()
 			self.localTime = int(ret[0])
 		except Exception, e :
 			print '[%s]%s():%s except[%s]'% ( os.path.basename(currentframe().f_code.co_filename), currentframe().f_code.co_name, currentframe().f_lineno, e)
@@ -317,7 +317,7 @@ class TimeShiftBanner(BaseWindow):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 		status = []
-		status = self.commander.player_GetStatus()
+		status = self.mCommander.player_GetStatus()
 
 		print 'player_GetStatus[%s]'% status
 		
@@ -521,7 +521,7 @@ class TimeShiftBanner(BaseWindow):
 
 				isExcept = False
 				try:
-					ret = self.commander.datetime_GetLocalTime( )
+					ret = self.mCommander.datetime_GetLocalTime( )
 					self.localTime = int( ret[0] )
 
 				except Exception, e:

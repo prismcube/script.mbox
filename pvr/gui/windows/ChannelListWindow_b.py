@@ -23,10 +23,10 @@ class ChannelListWindow_b(BaseWindow):
 
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
-		self.commander = pvr.ElisMgr.getInstance().getCommander()		
+		self.mCommander = pvr.ElisMgr.getInstance().getCommander()		
 
-		self.eventBus = pvr.ElisMgr.getInstance().getEventBus()
-		#self.eventBus.register( self )
+		self.mEventBus = pvr.ElisMgr.getInstance().getEventBus()
+		#self.mEventBus.register( self )
 
 		#submenu list
 		self.list_AllChannel= []
@@ -117,7 +117,7 @@ class ChannelListWindow_b(BaseWindow):
 
 		#get epg event right now
 		ret = []
-		ret=self.commander.epgevent_GetPresent()
+		ret=self.mCommander.epgevent_GetPresent()
 		if ret != []:
 			ret=['epgevent_GetPresent'] + ret
 			self.updateLabelInfo(ret)
@@ -125,7 +125,7 @@ class ChannelListWindow_b(BaseWindow):
 
 
 
-		channelInfo = self.commander.channel_GetCurrent()
+		channelInfo = self.mCommander.channel_GetCurrent()
 		self.currentChannel = int ( channelInfo[0] )
 
 	def onAction(self, action):
@@ -152,7 +152,7 @@ class ChannelListWindow_b(BaseWindow):
 			#pass
 			#get setting language
 			#name=''
-			#ret=self.commander.enum_GetProp(name)
+			#ret=self.mCommander.enum_GetProp(name)
 			#print 'language ret[%s] name[%s]'% (ret,name)
 
 			import locale, codecs, os, xbmcaddon, gettext
@@ -226,7 +226,7 @@ class ChannelListWindow_b(BaseWindow):
 
 			label = self.ctrlListCHList.getSelectedItem().getLabel()
 			channelNumbr = int(label[:4])
-			ret = self.commander.channel_SetCurrent( channelNumbr, self.chlist_serviceType)
+			ret = self.mCommander.channel_SetCurrent( channelNumbr, self.chlist_serviceType)
 
 			if ret[0].upper() == 'TRUE' :
 				if self.pincodeEnter == 0x00 :
@@ -240,7 +240,7 @@ class ChannelListWindow_b(BaseWindow):
 						winmgr.getInstance().getWindow(winmgr.WIN_ID_CHANNEL_BANNER).setLastChannel( self.currentChannel )
 
 				self.currentChannel = channelNumbr
-				self.currentChannelInfo = self.commander.channel_GetCurrent()
+				self.currentChannelInfo = self.mCommander.channel_GetCurrent()
 
 
 			self.ctrlSelectItem.setLabel(str('%s / %s'% (self.ctrlListCHList.getSelectedPosition()+1, len(self.listItems))) )
@@ -286,13 +286,13 @@ class ChannelListWindow_b(BaseWindow):
 			if msg == 'Elis-CurrentEITReceived' :
 
 				if int(event[4]) != self.eventID :			
-					ret = self.commander.epgevent_GetPresent( )
+					ret = self.mCommander.epgevent_GetPresent( )
 					if len( ret ) > 0 :
 						self.eventCopy = event
 						self.eventID = int( event[4] )
 						self.updateONEvent( ret )
 
-					#ret = self.commander.epgevent_Get(self.eventID, int(event[1]), int(event[2]), int(event[3]), int(self.epgClock[0]) )
+					#ret = self.mCommander.epgevent_Get(self.eventID, int(event[1]), int(event[2]), int(event[3]), int(self.epgClock[0]) )
 			else :
 				print 'event unknown[%s]'% event
 		else:
@@ -408,7 +408,7 @@ class ChannelListWindow_b(BaseWindow):
 				self.ctrlLblPath.setLabel( '%s/%s'% (label1.title(), label2.title()) )
 
 				#save zapping mode
-				#ret = self.commander.zappingmode_SetCurrent( self.chlist_zappingMode, self.chlist_channelsortMode, self.chlist_serviceType )
+				#ret = self.mCommander.zappingmode_SetCurrent( self.chlist_zappingMode, self.chlist_channelsortMode, self.chlist_serviceType )
 				#print 'set zappingmode_SetCurrent[%s]'% ret
 
 
@@ -417,16 +417,16 @@ class ChannelListWindow_b(BaseWindow):
 
 		try :
 			if mMode == ElisEnum.E_MODE_ALL :
-				self.channelList = self.commander.channel_GetList( mType, mMode, mSort )
+				self.channelList = self.mCommander.channel_GetList( mType, mMode, mSort )
 
 			elif mMode == ElisEnum.E_MODE_SATELLITE :
-				self.channelList = self.commander.channel_GetListBySatellite( mType, mMode, mSort, mLongitude, mBand )
+				self.channelList = self.mCommander.channel_GetListBySatellite( mType, mMode, mSort, mLongitude, mBand )
 
 			elif mMode == ElisEnum.E_MODE_CAS :
-				self.channelList = self.commander.channel_GetListByFTACas( mType, mMode, mSort, mCAid )
+				self.channelList = self.mCommander.channel_GetListByFTACas( mType, mMode, mSort, mCAid )
 				
 			elif mMode == ElisEnum.E_MODE_FAVORITE :
-				self.channelList = self.commander.channel_GetListByFavorite( mType, mMode, mSort, favName )
+				self.channelList = self.mCommander.channel_GetListByFavorite( mType, mMode, mSort, favName )
 
 			elif mMode == ElisEnum.E_MODE_NETWORK :
 				pass
@@ -470,7 +470,7 @@ class ChannelListWindow_b(BaseWindow):
 
 		#get last zapping mode
 		ret = []
-		ret = self.commander.zappingmode_GetCurrent()
+		ret = self.mCommander.zappingmode_GetCurrent()
 		if ret != [] :
 			try:
 				self.chlist_zappingMode     = int(ret[0])
@@ -512,15 +512,15 @@ class ChannelListWindow_b(BaseWindow):
 		print 'list_AllChannel[%s]'% self.list_AllChannel
 
 		#satellite longitude list
-		self.list_Satellite = self.commander.satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
+		self.list_Satellite = self.mCommander.satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
 		print 'satellite_GetConfiguredList[%s]'% self.list_Satellite
 
 		#FTA list
-		self.list_CasList = self.commander.fta_cas_GetList( ElisEnum.E_TYPE_TV )
+		self.list_CasList = self.mCommander.fta_cas_GetList( ElisEnum.E_TYPE_TV )
 		print 'channel_GetFTACasList[%s]'% self.list_CasList
 
 		#Favorite list
-		self.list_Favorite = self.commander.favorite_GetList( ElisEnum.E_TYPE_TV )
+		self.list_Favorite = self.mCommander.favorite_GetList( ElisEnum.E_TYPE_TV )
 		print 'channel_GetFavoriteList[%s]'% self.list_Favorite
 
 		testlistItems = []
@@ -554,7 +554,7 @@ class ChannelListWindow_b(BaseWindow):
 		#get channel list by last on zapping mode, sorting, service type
 		self.currentChannel = -1
 		self.channelList = []
-		self.channelList = self.commander.channel_GetList( self.chlist_serviceType, self.chlist_zappingMode, self.chlist_channelsortMode )
+		self.channelList = self.mCommander.channel_GetList( self.chlist_serviceType, self.chlist_zappingMode, self.chlist_channelsortMode )
 		#self.getChannelList(self.chlist_serviceType, self.chlist_zappingMode, self.chlist_channelsortMode, 0, 0, 0, '')
 		print 'zappingMode[%s] sortMode[%s] serviceType[%s] channellist[%s]'% \
 			( enumToString('mode', self.chlist_zappingMode), \
@@ -584,7 +584,7 @@ class ChannelListWindow_b(BaseWindow):
 		self.ctrlListCHList.addItems( self.listItems )
 
 		#detected to last focus
-		self.currentChannelInfo = self.commander.channel_GetCurrent()
+		self.currentChannelInfo = self.mCommander.channel_GetCurrent()
 		self.currentChannel = int(self.currentChannelInfo[0])
 
 		chindex = 0;
@@ -650,7 +650,7 @@ class ChannelListWindow_b(BaseWindow):
 		print 'ch info[%s]'% self.currentChannelInfo
 
 		if self.currentChannelInfo != []:
-			self.epgClock = self.commander.datetime_GetLocalTime()
+			self.epgClock = self.mCommander.datetime_GetLocalTime()
 
 			#update channel name
 			if is_digit(self.currentChannelInfo[3]):
@@ -664,7 +664,7 @@ class ChannelListWindow_b(BaseWindow):
 			if is_digit(self.currentChannelInfo[3]) and is_digit(self.currentChannelInfo[0]) :
 				chNumber    = int(self.currentChannelInfo[0])
 				serviceType = int(self.currentChannelInfo[3])
-				longitude = self.commander.satellite_GetByChannelNumber(chNumber, serviceType)
+				longitude = self.mCommander.satellite_GetByChannelNumber(chNumber, serviceType)
 				if is_digit(longitude[0]):
 					ret = GetSelectedLongitudeString(longitude)
 					self.ctrlLongitudeInfo.setLabel(ret)
@@ -680,7 +680,7 @@ class ChannelListWindow_b(BaseWindow):
 			if is_digit(self.currentChannelInfo[11]) :
 				careerType = int(self.currentChannelInfo[11])
 				if careerType == ElisEnum.E_CARRIER_TYPE_DVBS:
-					ret = self.commander.channel_GetCarrierForDVBS()
+					ret = self.mCommander.channel_GetCarrierForDVBS()
 					print 'channel_GetCarrierForDVBS[%s]'% ret
 					if ret != []:
 						polariztion = enumToString( 'Polarization', int(ret[5]) )
@@ -714,7 +714,7 @@ class ChannelListWindow_b(BaseWindow):
 				print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 				if is_digit(event[6]):
-					timeZone = self.commander.datetime_GetLocalOffset()
+					timeZone = self.mCommander.datetime_GetLocalOffset()
 					ret = epgInfoTime(timeZone[0], int(event[6]), int(event[7]))
 					print 'epgInfoTime[%s]'% ret
 					if ret != []:
@@ -750,7 +750,7 @@ class ChannelListWindow_b(BaseWindow):
 			#is Age? agerating check
 			if is_digit(event[21]) :
 				agerating = int(event[21])
-				isLimit = util.ageLimit(self.commander, agerating)
+				isLimit = util.ageLimit(self.mCommander, agerating)
 				if isLimit == True :
 					self.pincodeEnter |= 0x01
 					print 'AgeLimit[%s]'% isLimit

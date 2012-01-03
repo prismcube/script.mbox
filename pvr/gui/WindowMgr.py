@@ -78,7 +78,7 @@ class WindowMgr(object):
 
 			elif aWindowId ==  WIN_ID_CHANNEL_LIST_WINDOW:
 				from pvr.gui.windows.ChannelListWindow import ChannelListWindow
-				ChannelListWindow('channellistwindow.xml', self.mScriptDir ).doModal()
+				ChannelListWindow('ChannelListWindow.xml', self.mScriptDir ).doModal()
 
 			elif aWindowId ==  WIN_ID_CHANNEL_BANNER:
 				from pvr.gui.windows.ChannelBanner import ChannelBanner
@@ -138,8 +138,9 @@ class WindowMgr(object):
 
 			self.mLastId = aWindowId
 
-		except:
-			print "can not find window"
+		except Exception, ex:
+			print "Exception %s" %ex
+			
 
 
 

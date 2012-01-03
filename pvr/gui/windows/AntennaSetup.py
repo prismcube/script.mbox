@@ -23,7 +23,7 @@ E_MAIN_GROUP_ID	= 9000
 class AntennaSetup( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.commander = pvr.ElisMgr.getInstance( ).getCommander( )
+		self.mCommander = pvr.ElisMgr.getInstance( ).getCommander( )
 			
 		self.initialized = False
 		self.lastFocused = -1

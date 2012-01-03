@@ -33,12 +33,12 @@ class ChannelBanner(BaseWindow):
 		print 'args[0]=[%s]' % args[0]
 		print 'args[1]=[%s]' % args[1]
 
-		self.commander = pvr.ElisMgr.getInstance().getCommander()
+		self.mCommander = pvr.ElisMgr.getInstance().getCommander()
 		self.lastFocusId = None
-		self.lastChannel = 	self.commander.channel_GetCurrent()	
+		self.lastChannel = 	self.mCommander.channel_GetCurrent()	
 		self.currentChannel =  self.lastChannel
-		self.eventBus = pvr.ElisMgr.getInstance().getEventBus()
-		#self.eventBus.register( self )
+		self.mEventBus = pvr.ElisMgr.getInstance().getEventBus()
+		#self.mEventBus.register( self )
 
 
 		self.currentChannel=[]
@@ -101,10 +101,10 @@ class ChannelBanner(BaseWindow):
 		self.toggleFlag=False
 		self.epgStartTime = 0
 		self.epgDuration = 0
-		self.localOffset = int( self.commander.datetime_GetLocalOffset()[0] )
+		self.localOffset = int( self.mCommander.datetime_GetLocalOffset()[0] )
 
 		#get channel
-		self.currentChannel = self.commander.channel_GetCurrent()
+		self.currentChannel = self.mCommander.channel_GetCurrent()
 
 		self.initLabelInfo()
 		self.updateVolume(Action.ACTION_MUTE)
@@ -116,7 +116,7 @@ class ChannelBanner(BaseWindow):
 		"""
 		#get last zapping mode
 		ret = []
-		ret = self.commander.zappingmode_GetCurrent()
+		ret = self.mCommander.zappingmode_GetCurrent()
 		print 'zappingmode_GetCurrent[%s]'% ret
 		try:
 			print 'zappingMode[%s] sortMode[%s] serviceType[%s]'% \
@@ -131,7 +131,7 @@ class ChannelBanner(BaseWindow):
 		
 		#get epg event right now, as this windows open
 		ret = []
-		ret=self.commander.epgevent_GetPresent()
+		ret=self.mCommander.epgevent_GetPresent()
 		if ret != []:
 			self.updateONEvent(self.eventCopy)
 		print 'epgevent_GetPresent[%s]'% self.eventCopy
@@ -217,23 +217,23 @@ class ChannelBanner(BaseWindow):
 		"""
 		elif id == Action.ACTION_VOLUME_UP:
 		
-			vol = int ( self.commander.player_GetVolume( )[0] )
+			vol = int ( self.mCommander.player_GetVolume( )[0] )
 			vol = vol + pvr.gui.guiconfig.VOLUME_STEP
 			
 			if vol > pvr.gui.guiconfig.MAX_VOLUME :
 				vol = pvr.gui.guiconfig.MAX_VOLUME
 
-			self.commander.player_SetVolume( vol )
+			self.mCommander.player_SetVolume( vol )
 
 		elif id == Action.ACTION_VOLUME_DOWN:
 		
-			vol = int ( self.commander.player_GetVolume( )[0] )
+			vol = int ( self.mCommander.player_GetVolume( )[0] )
 			vol = vol - pvr.gui.guiconfig.VOLUME_STEP
 			
 			if vol < 0 :
 				vol = 0
 				
-			self.commander.player_SetVolume( vol )
+			self.mCommander.player_SetVolume( vol )
 		"""
 
 
@@ -298,13 +298,13 @@ class ChannelBanner(BaseWindow):
 			if msg == 'Elis-CurrentEITReceived' :
 
 				if int(event[4]) != self.eventID :			
-					ret = self.commander.epgevent_GetPresent( )
+					ret = self.mCommander.epgevent_GetPresent( )
 					if len( ret ) > 0 :
 						self.eventCopy = event
 						self.eventID = int( event[4] )
 						self.updateONEvent( ret )
 
-					#ret = self.commander.epgevent_Get(self.eventID, int(event[1]), int(event[2]), int(event[3]), int(self.epgClock[0]) )
+					#ret = self.mCommander.epgevent_Get(self.eventID, int(event[1]), int(event[2]), int(event[3]), int(self.epgClock[0]) )
 			else :
 				print 'event unknown[%s]'% event
 		else:
@@ -318,18 +318,18 @@ class ChannelBanner(BaseWindow):
 
 		if actionID == Action.ACTION_PAGE_UP:
 			print 'onAction():ACTION_PREVIOUS_ITEM control %d' % actionID
-			priv_ch = self.commander.channel_GetPrev()
+			priv_ch = self.mCommander.channel_GetPrev()
 			print 'priv_ch[%s]' % priv_ch
 
 			try:
 				channelNumber = priv_ch[0]
 				channelType = priv_ch[3]
 				if is_digit(channelNumber):
-					ret = self.commander.channel_SetCurrent( int(channelNumber) , int(channelType))
+					ret = self.mCommander.channel_SetCurrent( int(channelNumber) , int(channelType))
 					self.lastChannel = self.currentChannel
 
 					if ret[0].upper() == 'TRUE' :
-						self.currentChannel = self.commander.channel_GetCurrent()
+						self.currentChannel = self.mCommander.channel_GetCurrent()
 						self.initLabelInfo()
 
 				else:
@@ -343,18 +343,18 @@ class ChannelBanner(BaseWindow):
 
 		elif actionID == Action.ACTION_PAGE_DOWN:
 			print 'onAction():ACTION_NEXT_ITEM control %d' % actionID
-			next_ch = self.commander.channel_GetNext()
+			next_ch = self.mCommander.channel_GetNext()
 			print 'next_ch[%s]' % next_ch
 
 			try:
 				channelNumber = next_ch[0]
 				channelType = next_ch[3]
 				if is_digit(channelNumber):
-					ret = self.commander.channel_SetCurrent( int(channelNumber), int(channelType) )
+					ret = self.mCommander.channel_SetCurrent( int(channelNumber), int(channelType) )
 					self.lastChannel = self.currentChannel
 
 					if ret[0].upper() == 'TRUE' :
-						self.currentChannel = self.commander.channel_GetCurrent()
+						self.currentChannel = self.mCommander.channel_GetCurrent()
 						self.initLabelInfo()
 
 				else:
@@ -369,7 +369,7 @@ class ChannelBanner(BaseWindow):
 		elif actionID == Action.ACTION_MOVE_LEFT:
 			#epg priv
 			ret = []
-			ret = self.commander.epgevent_GetPresent()
+			ret = self.mCommander.epgevent_GetPresent()
 			print 'epgevent_GetPresent() ret[%s]'% ret
 			if ret != []:
 				self.eventCopy = ret
@@ -378,7 +378,7 @@ class ChannelBanner(BaseWindow):
 		elif actionID == Action.ACTION_MOVE_RIGHT:
 			#epg next
 			ret = []
-			ret = self.commander.epgevent_GetFollowing()
+			ret = self.mCommander.epgevent_GetFollowing()
 			print 'epgevent_GetFollowing() ret[%s]'% ret
 			if ret != []:
 				self.eventCopy = ret
@@ -459,7 +459,7 @@ class ChannelBanner(BaseWindow):
 			rLock.acquire()
 			if  ( loop % 10 ) == 0 :
 				try:
-					ret = self.commander.datetime_GetLocalTime( )
+					ret = self.mCommander.datetime_GetLocalTime( )
 					localTime = int( ret[0] )
 
 				except Exception, e:
@@ -522,9 +522,9 @@ class ChannelBanner(BaseWindow):
 			self.ctrlEventDescText2.reset()
 
 
-			self.epgClock = self.commander.datetime_GetLocalTime()
+			self.epgClock = self.mCommander.datetime_GetLocalTime()
 			
-			longitude = self.commander.satellite_GetByChannelNumber(int(self.currentChannel[0]), int(self.currentChannel[3]))
+			longitude = self.mCommander.satellite_GetByChannelNumber(int(self.currentChannel[0]), int(self.currentChannel[3]))
 			ret = GetSelectedLongitudeString(longitude)
 			self.ctrlLongitudeInfo.setLabel(ret)
 
@@ -554,15 +554,15 @@ class ChannelBanner(BaseWindow):
 		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 		if cmd == Action.ACTION_MUTE:
-			mute = int(self.commander.player_GetMute()[0])
+			mute = int(self.mCommander.player_GetMute()[0])
 			print 'mute:current[%s]'% mute
 			if mute == False:
-				ret = self.commander.player_SetMute(True)
+				ret = self.mCommander.player_SetMute(True)
 				self.ctrlBtnMute.setVisible(True)
 				self.ctrlBtnMuteToggled.setVisible(False)
 
 			else:
-				ret = self.commander.player_SetMute(False)
+				ret = self.mCommander.player_SetMute(False)
 				self.ctrlBtnMute.setVisible(False)
 				self.ctrlBtnMuteToggled.setVisible(True)
 
@@ -578,7 +578,7 @@ class ChannelBanner(BaseWindow):
 		if focusid == self.ctrlBtnExInfo.getId():
 			if event != [] and event[1] != 'NULL' and len(event) > 2:
 				print '[%s][%s][%s][%s][%s]' % (event[1], event[3], event[4], event[5], event[6])
-				msgDescription = self.commander.epgevent_GetDescription(
+				msgDescription = self.mCommander.epgevent_GetDescription(
 								int(event[1]), #eventId
 								int(event[3]), #sid
 								int(event[4]), #tsid
@@ -626,7 +626,7 @@ class ChannelBanner(BaseWindow):
 			msg2 = 'test'
 
 		elif focusid == self.ctrlBtnStartRec.getId() :
-			runningCount = int( self.commander.record_GetRunningRecorderCount()[0] )
+			runningCount = int( self.mCommander.record_GetRunningRecorderCount()[0] )
 			print 'runningCount=%d' %runningCount
 
 			if  runningCount < 2 :
@@ -637,7 +637,7 @@ class ChannelBanner(BaseWindow):
 				xbmcgui.Dialog().ok('Infomation', msg )
 
 		elif focusid == self.ctrlBtnStopRec.getId() :
-			runningCount = int( self.commander.record_GetRunningRecorderCount()[0] )
+			runningCount = int( self.mCommander.record_GetRunningRecorderCount()[0] )
 			print 'runningCount=%d' %runningCount
 
 			if  runningCount > 0 :

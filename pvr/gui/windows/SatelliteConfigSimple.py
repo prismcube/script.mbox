@@ -17,7 +17,7 @@ from elisenum import ElisEnum
 class SatelliteConfigSimple( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.commander = pvr.ElisMgr.getInstance( ).getCommander( )
+		self.mCommander = pvr.ElisMgr.getInstance( ).getCommander( )
 			
 	def onInit( self ):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
@@ -29,7 +29,7 @@ class SatelliteConfigSimple( SettingWindow ):
  
 		self.setHeaderLabel( 'Satellite Configuration' ) 
 
-		property = ElisPropertyEnum( 'Tuner1 Type', self.commander )
+		property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
 
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %s - %s' % ( self.tunerIndex + 1, property.getPropString( ) ) )
 		self.selectedIndexLnbType = int( self.currentSatellite[ E_CONFIGURE_SATELLITE_LNB_TYPE ] )

@@ -6,7 +6,7 @@ from elisaction import ElisAction
 from elisenum import ElisEnum
 class ElisTest(object):
 	def __init__(self):
-		self.commander = pvr.ElisMgr.getInstance().getCommander()
+		self.mCommander = pvr.ElisMgr.getInstance().getCommander()
 
 	def testAll( self ):
 		#self.testPropEnum()
@@ -19,7 +19,7 @@ class ElisTest(object):
 		pass
 
 	def testPropEnum( self ):
-		prop = ElisPropertyEnum( 'Last ServiceType', self.commander )
+		prop = ElisPropertyEnum( 'Last ServiceType', self.mCommander )
 		print 'prop test %s' %prop.getProp()
 		print 'prop test (TV): %s' %prop.getPropStringByIndex( 0 )
 		print 'prop test (Radio): %s' %prop.getPropStringByIndex( 1 )		
@@ -35,23 +35,23 @@ class ElisTest(object):
 
 	def testPropInt( self ):
 		"""
-		propInt = ElisPropertyInt( 'Audio Volume', self.commander  )
+		propInt = ElisPropertyInt( 'Audio Volume', self.mCommander  )
 		print 'propint test =%d' %propInt.getProp()
 		propInt.SetProp( 30 )
 		print 'propint test =%d' %propInt.getProp()
 		"""
 
 	def testChannelScanBySatellite( self ):
-		self.commander.channelscan_BySatellite( 192, ElisEnum.E_BAND_KU )
+		self.mCommander.channelscan_BySatellite( 192, ElisEnum.E_BAND_KU )
 
 	def testChannelScanByCarriers( self ):
-		prop = ElisPropertyEnum( 'Channel Search Mode', self.commander )
+		prop = ElisPropertyEnum( 'Channel Search Mode', self.mCommander )
 		prop.SetProp( 0 )
 		carriers = [[11303,22000,ElisEnum.E_LNB_HORIZONTAL,ElisEnum.E_DVBS2_8PSK_2_3, 0, 0, 0 ] ]
-		self.commander.channelscan_ByCarriers( 192, ElisEnum.E_BAND_KU, carriers )
+		self.mCommander.channelscan_ByCarriers( 192, ElisEnum.E_BAND_KU, carriers )
 
 	def testSatelliteconfig_DeleteAll( self ):
-		self.commander.satelliteconfig_DeleteAll()
+		self.mCommander.satelliteconfig_DeleteAll()
 
 	#ConfiguredSatellite : [TunerIndex, SlotNumber, SatelliteLongitude, BandType, FrequencyLevel, DisEqc11, DisEqcMode, DisEqcRepeat,
 	#				   IsConfigUsed, LnbType, MotorizedType, LowLNB, HighLNB, LNBThreshold, MotorizedData,
@@ -64,10 +64,10 @@ class ElisTest(object):
 						1, ElisEnum.E_LNB_UNIVERSAL,0,9750,10600,11700,0,
 						0,0,0,0,0,0,0]]
 		print 'config=%s' %configuredList
-		self.commander.satelliteconfig_SaveList( configuredList )
+		self.mCommander.satelliteconfig_SaveList( configuredList )
 
 	def testChannellistByZapping( self ) :
-		chlist = self.commander.channel_GetList( ElisEnum.E_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_DEFAULT )
+		chlist = self.mCommander.channel_GetList( ElisEnum.E_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_DEFAULT )
 		print 'chlist[%s]'% chlist
 	
 

@@ -17,7 +17,7 @@ from elisenum import ElisEnum
 class SatelliteConfigDisEqC11( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs)
-		self.commander = pvr.ElisMgr.getInstance().getCommander( )
+		self.mCommander = pvr.ElisMgr.getInstance().getCommander( )
 			
 	def onInit( self ):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
@@ -30,12 +30,12 @@ class SatelliteConfigDisEqC11( SettingWindow ):
 		self.setHeaderLabel( 'Satellite Configuration' ) 
 
 		if self.tunerIndex == E_TUNER_1 :
-			property = ElisPropertyEnum( 'Tuner1 Type', self.commander )
+			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
 		elif self.tunerIndex == E_TUNER_2 : 
-			property = ElisPropertyEnum( 'Tuner2 Type', self.commander )
+			property = ElisPropertyEnum( 'Tuner2 Type', self.mCommander )
 		else :
 			print 'Error : unknown Tuner'
-			property = ElisPropertyEnum( 'Tuner1 Type', self.commander )
+			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
  
 		
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %s - %s' % ( self.tunerIndex + 1, property.getPropString( ) ) )
