@@ -4,7 +4,7 @@ import time
 import sys
 
 from pvr.gui.basewindow import Property
-from pvr.util import run_async
+from pvr.util import RunThread
 import thread
 
 class BaseDialog( xbmcgui.WindowXMLDialog, Property ):

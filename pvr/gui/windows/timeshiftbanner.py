@@ -13,7 +13,7 @@ from elisenum import ElisEnum
 
 
 #from threading import Thread
-from pvr.util import run_async, is_digit, Mutex, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString #, synchronized, sync_instance
+from pvr.util import RunThread, is_digit, Mutex, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString #, synchronized, sync_instance
 import thread, threading
 
 #debug log
@@ -504,7 +504,7 @@ class TimeShiftBanner(BaseWindow):
 		return ret
 		
 
-	@run_async
+	@RunThread
 	def updateLocalTime(self):
 		print '[%s():%s]begin_start thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		#print 'untilThread[%s] self.progress_max[%s]' % (self.untilThread, self.progress_max)

@@ -30,7 +30,7 @@ def getPlatform():
     return __platform
 
 
-def requireDir(dir):
+def MakeDir(dir):
     '''Create dir with missing path segments and return for chaining'''
     if not os.path.exists(dir):
         os.makedirs(dir)
@@ -41,8 +41,8 @@ class Platform(object):
 
     def __init__(self, *args, **kwargs):
         self.addon = xbmcaddon.Addon('script.mbox')
-        requireDir(self.getScriptDataDir())
-        requireDir(self.getCacheDir())
+        MakeDir(self.getScriptDataDir())
+        MakeDir(self.getCacheDir())
 
     def xbmcVersion(self):
         version = 0.0

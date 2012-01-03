@@ -14,7 +14,7 @@ from elisenum import ElisEnum
 
 import pvr.elismgr
 
-from pvr.util import run_async, ui_locked2, epgInfoClock
+from pvr.util import RunThread, GuiLock, epgInfoClock
 
 
 
@@ -86,7 +86,7 @@ class DialogRecord( BaseDialog ) :
 		self.CurrentTimeThread( )
 
 
-	@ui_locked2
+	@GuiLock
 	def onAction( self, action ):
 		actionId = action.getId( )
 		focusId = self.getFocusId( )
@@ -114,7 +114,7 @@ class DialogRecord( BaseDialog ) :
 			print 'Unknown Action'
 
 
-	@ui_locked2	
+	@GuiLock	
 	def onClick( self, controlId ):
 		focusId = self.getFocusId( )
 
@@ -126,12 +126,12 @@ class DialogRecord( BaseDialog ) :
 			self.Close( )
 
 
-	@ui_locked2
+	@GuiLock
 	def onFocus( self, controlId ):
 		pass
 
 
-	@ui_locked2	
+	@GuiLock	
 	def onEvent( self, event ):
 		if xbmcgui.getCurrentWindowId() == self.winId :
 			print 'Do Event'
@@ -153,7 +153,7 @@ class DialogRecord( BaseDialog ) :
 		self.Close( )
 
 
-	@run_async
+	@RunThread
 	def CurrentTimeThread(self):
 		loop = 0
 
@@ -170,7 +170,7 @@ class DialogRecord( BaseDialog ) :
 			loop += 1
 
 
-	@ui_locked2	
+	@GuiLock	
 	def UpdateEPGTime( self ):
 		self.UpdateProgress( )
 

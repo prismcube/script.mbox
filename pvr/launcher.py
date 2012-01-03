@@ -8,7 +8,7 @@ import time
 from inspect import currentframe
 import pvr.elismgr
 import pvr.gui.windowmgr as windowmgr
-from pvr.util import run_async, hasPendingWorkers, waitForWorkersToDie
+from pvr.util import RunThread, HasPendingThreads, WaitUtileThreadsJoin
 from elistest import ElisTest
 import pvr.netconfig as netconfig
 
@@ -74,8 +74,8 @@ class Launcher(object):
 			
 			pvr.elismgr.getInstance().shutdown()
 
-			if hasPendingWorkers():
-				waitForWorkersToDie(10.0) # in seconds
+			if HasPendingThreads():
+				WaitUtileThreadsJoin(10.0) # in seconds
 			
 			print '------------->shut do end'
 		print '<-------------shut down'
@@ -95,25 +95,4 @@ class Launcher(object):
 		test = ElisTest()
 		test.testAll()
 
-	def bootstrapSettings(self):
-		self.stage = 'Initializing Settings'
-		self.platform = None
-		self.bootstrapPlatform()
-
-		from pvr.util import NativeTranslator
-		import pvr.msg as m
-		self.translator = NativeTranslator(self.platform.getScriptDir())
-		print 'translator[%s]'% self.translator.get(m.LOCALIZE_TEST)
-
-	def bootstrapPlatform(self):
-		self.stage = 'Initializing Platform'
-		import pvr.platform
-		self.platform = pvr.platform.getPlatform()
-		self.platform.addLibsToSysPath()
-		sys.setcheckinterval(0)
-		cacheDir = self.platform.getCacheDir()
-		from pvr.util import requireDir
-		requireDir(cacheDir)
-		
-		print 'MBox %s Initialized' % self.platform.addonVersion()
 

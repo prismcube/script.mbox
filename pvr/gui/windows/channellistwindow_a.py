@@ -8,7 +8,7 @@ from pvr.gui.basewindow import Action
 from pvr.gui.basedialog import BaseDialog
 from elisenum import ElisEnum
 from inspect import currentframe
-from pvr.util import catchall, is_digit, run_async, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString, enumToString
+from pvr.util import is_digit, RunThread, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString, enumToString
 import pvr.util as util
 import pvr.elismgr
 from elisproperty import ElisPropertyEnum, ElisPropertyInt
@@ -778,7 +778,7 @@ class ChannelListWindow_a(BaseWindow):
 			xbmcgui.Dialog().ok(msg1, msg2)
 
 
-	@run_async
+	@RunThread
 	def updateLocalTime(self):
 		print '[%s():%s]begin_start thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
 

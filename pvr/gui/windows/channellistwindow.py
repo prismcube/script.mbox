@@ -8,7 +8,7 @@ from pvr.gui.basewindow import Action
 from elisenum import ElisEnum
 from elisevent import ElisEvent
 from inspect import currentframe
-from pvr.util import catchall, is_digit, run_async, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString, enumToString, ui_locked2
+from pvr.util import is_digit, RunThread, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString, enumToString, GuiLock
 import pvr.util as util
 import pvr.elismgr
 from elisproperty import ElisPropertyEnum, ElisPropertyInt
@@ -147,7 +147,7 @@ class ChannelListWindow(BaseWindow):
 		self.untilThread = True
 		self.currentTimeThread()
 
-	@ui_locked2	
+	@GuiLock	
 	def onAction(self, action):
 		id = action.getId()
 		focusId = self.getFocusId( )
@@ -273,7 +273,7 @@ class ChannelListWindow(BaseWindow):
 			#self.ctrlHeader2.setLabel(str('key[%s]'% action.getId()))
 			#print'Unconsumed key: %s' % action.getId()
 
-	@ui_locked2	
+	@GuiLock	
 	def onClick(self, controlId):
 		print '[%s():%s]focusID[%d]'% (currentframe().f_code.co_name, currentframe().f_lineno, controlId) 
 
@@ -355,7 +355,7 @@ class ChannelListWindow(BaseWindow):
 		#print "onFocus(): control %d" % controlId
 		pass
 
-	@ui_locked2
+	@GuiLock
 	def onEvent(self, event):
 		print '[%s]%s():%s'% (self.__file__, currentframe().f_code.co_name, currentframe().f_lineno)
 		print 'event[%s]'% event
@@ -979,7 +979,7 @@ class ChannelListWindow(BaseWindow):
 			xbmcgui.Dialog().ok(msg1, msg2)
 
 
-	@run_async
+	@RunThread
 	def currentTimeThread(self):
 		print '[%s():%s]begin_start thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
@@ -1007,7 +1007,7 @@ class ChannelListWindow(BaseWindow):
 		print '[%s():%s]leave_end thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
 
 
-	@ui_locked2
+	@GuiLock
 	def updateLocalTime( self ) :
 		
 		try:

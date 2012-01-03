@@ -10,7 +10,7 @@ import pvr.elismgr
 import pvr.gui.dialogmgr
 import thread
 
-from pvr.util import run_async
+from pvr.util import RunThread
 
 class Action(object):
 	ACTION_NONE					= 0

@@ -22,8 +22,8 @@ if __name__ == '__main__':
 	platform.addLibsToSysPath()
 	cacheDir = platform.getCacheDir()
 
-	from pvr.util import requireDir
-	requireDir( cacheDir )
+	from pvr.util import MakeDir
+	MakeDir( cacheDir )
 
 	import launcher
 	launcher.getInstance().run()

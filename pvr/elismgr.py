@@ -2,7 +2,7 @@
 import datetime
 import socket
 import time
-from pvr.util import run_async
+from pvr.util import RunThread
 from eliscommander import ElisCommander
 from net.net import EventServer, EventHandler, EventRequest
 from elisevent import ElisEventBus
@@ -79,7 +79,7 @@ class ElisMgr( object ):
 		return self.eventBus
 	
 
-	@run_async
+	@RunThread
 	def run( self ):
 		print 'lael98 check ElisMgr run...'
 		self.receiver.serve_forever()

@@ -14,7 +14,7 @@ from elisenum import ElisEnum
 
 import pvr.elismgr
 
-#from pvr.util import run_async
+#from pvr.util import RunThread
 
 
 
