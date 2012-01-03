@@ -3,7 +3,7 @@ import xbmcgui
 import sys
 from copy import deepcopy
 
-import pvr.gui.windowmgr as winmgr
+import pvr.gui.WindowMgr as winmgr
 import pvr.gui.dialogmgr as diamgr
 import pvr.tunerconfigmgr as configmgr
 from  pvr.tunerconfigmgr import *
@@ -11,13 +11,13 @@ from pvr.gui.guiconfig import *
 
 from pvr.gui.basewindow import SettingWindow
 from pvr.gui.basewindow import Action
-import pvr.elismgr
+import pvr.ElisMgr
 
 
 class AutomaticScan( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.commander = pvr.elismgr.getInstance( ).getCommander( )
+		self.commander = pvr.ElisMgr.getInstance( ).getCommander( )
 			
 		self.initialized = False
 		self.lastFocused = -1
@@ -40,7 +40,7 @@ class AutomaticScan( SettingWindow ):
 
 		self.initConfig( )
 
-		self.showDescription( self.getFocusId( ) )
+		self.ShowDescription( self.getFocusId( ) )
 		self.initialized = True
 
 		
@@ -55,28 +55,28 @@ class AutomaticScan( SettingWindow ):
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			self.resetAllControl( )
+			self.ResetAllControl( )
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
-			self.controlLeft( )
+			self.ControlLeft( )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			self.controlRight( )				
+			self.ControlRight( )				
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			self.controlUp( )
-			self.showDescription( focusId )
+			self.ControlUp( )
+			self.ShowDescription( focusId )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			self.controlDown( )
-			self.showDescription( focusId )
+			self.ControlDown( )
+			self.ShowDescription( focusId )
 			
 
 
 	def onClick( self, controlId ):
 	
-		groupId = self.getGroupId( controlId )
+		groupId = self.GetGroupId( controlId )
 		
 		#Satellite
 		if groupId == E_Input01 :
@@ -107,32 +107,32 @@ class AutomaticScan( SettingWindow ):
 								
 
 		if groupId == E_SpinEx01 or groupId == E_SpinEx02 :
-			self.controlSelect( )
+			self.ControlSelect( )
 
 	def onFocus( self, controlId ):
 		if self.initialized == False :
 			return
 		if ( self.lastFocused != controlId ) :
-			self.showDescription( controlId )
+			self.ShowDescription( controlId )
 			self.lastFocused = controlId
 
 
 	def initConfig( self ) :
 
-		self.resetAllControl( )
+		self.ResetAllControl( )
 		count = len( self.formattedList )
 		
 		if count <= 1 :
 			hideControlIds = [ E_Input01, E_SpinEx01, E_SpinEx02, E_Input02 ]
-			self.setVisibleControls( hideControlIds, False )
+			self.SetVisibleControls( hideControlIds, False )
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Has no configured satellite' )
 
 		else :
-			self.addInputControl( E_Input01, 'Satellite', self.formattedList[self.selectedSatelliteIndex], None, 'Select satellite' )
-			self.addEnumControl( E_SpinEx01, 'Network Search', None, 'Network Search' )
-			self.addEnumControl( E_SpinEx02, 'Channel Search Mode', None, 'Channel Search Mode' )
-			self.addLeftLabelButtonControl( E_Input02, 'Start Search', 'Start Search' )
-			self.initControl( )
+			self.AddInputControl( E_Input01, 'Satellite', self.formattedList[self.selectedSatelliteIndex], None, 'Select satellite' )
+			self.AddEnumControl( E_SpinEx01, 'Network Search', None, 'Network Search' )
+			self.AddEnumControl( E_SpinEx02, 'Channel Search Mode', None, 'Channel Search Mode' )
+			self.AddLeftLabelButtonControl( E_Input02, 'Start Search', 'Start Search' )
+			self.InitControl( )
 
 		
 	def getFormattedName( self, longitude, band ) :

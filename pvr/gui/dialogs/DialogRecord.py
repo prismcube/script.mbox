@@ -12,9 +12,9 @@ import pvr.gui.dialogmgr as diamgr
 from elisevent import ElisEvent
 from elisenum import ElisEnum
 
-import pvr.elismgr
+import pvr.ElisMgr
 
-from pvr.util import RunThread, GuiLock, epgInfoClock
+from pvr.Util import RunThread, GuiLock, epgInfoClock
 
 
 
@@ -34,8 +34,8 @@ E_BUTTON_CANCEL				= 301
 class DialogRecord( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.elismgr.getInstance( ).getCommander( )
-		self.mEventBus = pvr.elismgr.getInstance().getEventBus()
+		self.mCommander = pvr.ElisMgr.getInstance( ).getCommander( )
+		self.mEventBus = pvr.ElisMgr.getInstance().getEventBus()
 
 	def onInit( self ):
 		self.winId = xbmcgui.getCurrentWindowId()

@@ -52,7 +52,7 @@ E_TUNER_MAX						= 2
 
 from elisaction import ElisAction
 from elisenum import ElisEnum
-import pvr.elismgr
+import pvr.ElisMgr
 from elisproperty import ElisPropertyEnum
 
 
@@ -71,7 +71,7 @@ def getInstance():
 
 class TunerConfigMgr( object ):
 	def __init__( self ):
-		self.commander = pvr.elismgr.getInstance( ).getCommander( )	
+		self.commander = pvr.ElisMgr.getInstance( ).getCommander( )	
 		self.configuredList1 = []
 		self.configuredList2 = []		
 		self.currentTuner = 0
@@ -206,13 +206,13 @@ class TunerConfigMgr( object ):
 	def restore( self ) :
 
 		property = ElisPropertyEnum( 'Tuner2 Connect Type', self.commander )
-		property.setProp( self.orgTuner2ConnectType )
+		property.SetProp( self.orgTuner2ConnectType )
 		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.commander )
-		property.setProp( self.orgTuner2Config )
+		property.SetProp( self.orgTuner2Config )
 		property = ElisPropertyEnum( 'Tuner1 Type', self.commander )
-		property.setProp( self.orgTuner1Type )
+		property.SetProp( self.orgTuner1Type )
 		property = ElisPropertyEnum( 'Tuner2 Type', self.commander )		
-		property.setProp( self.orgTuner2Type )
+		property.SetProp( self.orgTuner2Type )
 
 
 		print '#################### After Retore ###############################'

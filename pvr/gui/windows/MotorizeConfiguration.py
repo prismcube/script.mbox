@@ -2,7 +2,7 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.windowmgr as winmgr
+import pvr.gui.WindowMgr as winmgr
 import pvr.tunerconfigmgr as configmgr
 from pvr.gui.guiconfig import *
 
@@ -19,10 +19,10 @@ class MotorizeConfiguration( SettingWindow ):
 		self.setHeaderLabel( 'Motorize Configuration' )
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
 
-		self.addInputControl( E_Input01, 'My Longitude', '100.0 E' )
-		self.addInputControl( E_Input02, 'My Latitude', '000.0 N' )
-		self.addLeftLabelButtonControl( E_Input03, 'Reference Position to Null' )
-		self.addLeftLabelButtonControl( E_Input04, 'Configure Satellites' )
+		self.AddInputControl( E_Input01, 'My Longitude', '100.0 E' )
+		self.AddInputControl( E_Input02, 'My Latitude', '000.0 N' )
+		self.AddLeftLabelButtonControl( E_Input03, 'Reference Position to Null' )
+		self.AddLeftLabelButtonControl( E_Input04, 'Configure Satellites' )
 
 		self.tunerIndex = configmgr.getInstance( ).getCurrentTunerIndex( )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'USALS configuration : Tuner %s' % ( self.tunerIndex + 1 ) )
@@ -30,12 +30,12 @@ class MotorizeConfiguration( SettingWindow ):
 		visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]
 		hideControlIds = [ E_Input05, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
 			
-		self.setVisibleControls( visibleControlIds, True )
-		self.setEnableControls( visibleControlIds, True )
+		self.SetVisibleControls( visibleControlIds, True )
+		self.SetEnableControls( visibleControlIds, True )
 
-		self.setVisibleControls( hideControlIds, False )
+		self.SetVisibleControls( hideControlIds, False )
 		
-		self.initControl( )
+		self.InitControl( )
 		
 	def onAction( self, action ):
 
@@ -48,7 +48,7 @@ class MotorizeConfiguration( SettingWindow ):
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			self.resetAllControl( )
+			self.ResetAllControl( )
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
@@ -58,14 +58,14 @@ class MotorizeConfiguration( SettingWindow ):
 			pass
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			self.controlUp( )
+			self.ControlUp( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			self.controlDown( )
+			self.ControlDown( )
 
 
 	def onClick( self, controlId ):
-		groupId = self.getGroupId( controlId )
+		groupId = self.GetGroupId( controlId )
 
 		# My Longitude
 		if groupId == E_Input01 :
@@ -81,7 +81,7 @@ class MotorizeConfiguration( SettingWindow ):
 			
 		# Configure Satellites
 		elif groupId == E_Input04 :
-			self.resetAllControl( )
+			self.ResetAllControl( )
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_TUNER_CONFIGURATION )
 			
 	def onFocus( self, controlId ):

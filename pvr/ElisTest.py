@@ -1,12 +1,12 @@
 
 
 from elisproperty import ElisPropertyEnum, ElisPropertyInt
-import pvr.elismgr
+import pvr.ElisMgr
 from elisaction import ElisAction
 from elisenum import ElisEnum
 class ElisTest(object):
 	def __init__(self):
-		self.commander = pvr.elismgr.getInstance().getCommander()
+		self.commander = pvr.ElisMgr.getInstance().getCommander()
 
 	def testAll( self ):
 		#self.testPropEnum()
@@ -25,11 +25,11 @@ class ElisTest(object):
 		print 'prop test (Radio): %s' %prop.getPropStringByIndex( 1 )		
 		print 'prop test (Last ServiceType): %s' %prop.getName()
 		print 'prop test (TV or Radio): %s' %prop.getPropString()
-		prop.setProp( 2 )
+		prop.SetProp( 2 )
 		print 'prop test 2 Radio : %d %s' %( prop.getProp(), prop.getPropString())
-		prop.setPropIndex( 0 )
+		prop.SetPropIndex( 0 )
 		print 'prop test 1 TV : %d %s' %( prop.getProp(), prop.getPropString())
-		prop.setPropString( 'Radio' )
+		prop.SetPropString( 'Radio' )
 		print 'prop test 2 Radio : %d %s' %( prop.getProp(), prop.getPropString())
 
 
@@ -37,7 +37,7 @@ class ElisTest(object):
 		"""
 		propInt = ElisPropertyInt( 'Audio Volume', self.commander  )
 		print 'propint test =%d' %propInt.getProp()
-		propInt.setProp( 30 )
+		propInt.SetProp( 30 )
 		print 'propint test =%d' %propInt.getProp()
 		"""
 
@@ -46,7 +46,7 @@ class ElisTest(object):
 
 	def testChannelScanByCarriers( self ):
 		prop = ElisPropertyEnum( 'Channel Search Mode', self.commander )
-		prop.setProp( 0 )
+		prop.SetProp( 0 )
 		carriers = [[11303,22000,ElisEnum.E_LNB_HORIZONTAL,ElisEnum.E_DVBS2_8PSK_2_3, 0, 0, 0 ] ]
 		self.commander.channelscan_ByCarriers( 192, ElisEnum.E_BAND_KU, carriers )
 

@@ -2,15 +2,15 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.windowmgr as winmgr
-from pvr.gui.basewindow import BaseWindow, setWindowBusy
+import pvr.gui.WindowMgr as winmgr
+from pvr.gui.basewindow import BaseWindow
 from pvr.gui.basewindow import Action
 from pvr.gui.basedialog import BaseDialog
 from elisenum import ElisEnum
 from inspect import currentframe
-from pvr.util import is_digit, RunThread, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString, enumToString, GuiLock
-import pvr.util as util
-import pvr.elismgr
+from pvr.Util import is_digit, RunThread, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString, enumToString, GuiLock
+import pvr.Util as util
+import pvr.ElisMgr
 from elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import FooterMask
 import threading
@@ -24,9 +24,9 @@ class ChannelListWindow(BaseWindow):
 
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
-		self.commander = pvr.elismgr.getInstance().getCommander()		
+		self.commander = pvr.ElisMgr.getInstance().getCommander()		
 
-		self.eventBus = pvr.elismgr.getInstance().getEventBus()
+		self.eventBus = pvr.ElisMgr.getInstance().getEventBus()
 
 		#submenu list
 		self.list_AllChannel= []
@@ -262,7 +262,6 @@ class ChannelListWindow(BaseWindow):
 			#print'Unconsumed key: %s' % action.getId()
 		'''
 		
-	@setWindowBusy
 	@GuiLock	
 	def onClick(self, controlId):
 		print '[%s():%s]focusID[%d]'% (currentframe().f_code.co_name, currentframe().f_lineno, controlId) 

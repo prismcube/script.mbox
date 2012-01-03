@@ -2,13 +2,13 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.windowmgr as winmgr
+import pvr.gui.WindowMgr as winmgr
 import pvr.gui.dialogmgr as diamgr
 import pvr.tunerconfigmgr as configmgr
 from pvr.tunerconfigmgr import *
-from pvr.gui.basewindow import SettingWindow, setWindowBusy
+from pvr.gui.basewindow import SettingWindow
 from pvr.gui.basewindow import Action
-import pvr.elismgr
+import pvr.ElisMgr
 from elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import *
 from elisenum import ElisEnum
@@ -17,7 +17,7 @@ from elisenum import ElisEnum
 class SatelliteConfigDisEqC11( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs)
-		self.commander = pvr.elismgr.getInstance().getCommander( )
+		self.commander = pvr.ElisMgr.getInstance().getCommander( )
 			
 	def onInit( self ):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
@@ -57,25 +57,25 @@ class SatelliteConfigDisEqC11( SettingWindow ):
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.saveConfig( )
-			self.resetAllControl( )
+			self.ResetAllControl( )
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
-			self.controlLeft( )
+			self.ControlLeft( )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			self.controlRight( )
+			self.ControlRight( )
 			
 		elif actionId == Action.ACTION_MOVE_UP :
-			self.controlUp( )
+			self.ControlUp( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			self.controlDown( )
+			self.ControlDown( )
 
 
 	def onClick( self, controlId ):
 
-		groupId = self.getGroupId( controlId )
+		groupId = self.GetGroupId( controlId )
 		
 		#Satellite
 		if groupId == E_Input01 :
@@ -102,7 +102,7 @@ class SatelliteConfigDisEqC11( SettingWindow ):
 
 		# LNB Setting
 		elif groupId == E_SpinEx01 :
-			self.selectedIndexLnbType = self.getSelectedIndex( E_SpinEx01 )
+			self.selectedIndexLnbType = self.GetSelectedIndex( E_SpinEx01 )
 			indexString = '%d' % self.selectedIndexLnbType
 			self.currentSatellite[ E_CONFIGURE_SATELLITE_LNB_TYPE ] = indexString
 			self.currentSatellite[ E_CONFIGURE_SATELLITE_FREQUENCY_LEVEL ] = "0"			
@@ -120,7 +120,7 @@ class SatelliteConfigDisEqC11( SettingWindow ):
 
 		# LNB Frequency - Spincontrol
  		elif groupId == E_SpinEx02 :
- 			position = self.getSelectedIndex( E_SpinEx02 )
+ 			position = self.GetSelectedIndex( E_SpinEx02 )
 			self.currentSatellite[ E_CONFIGURE_SATELLITE_LOW_LNB ] = E_LIST_SINGLE_FREQUENCY[ position ]
 
 
@@ -143,23 +143,23 @@ class SatelliteConfigDisEqC11( SettingWindow ):
 
 		# 22Khz
  		elif groupId == E_SpinEx03 :
- 			indexString = '%d' % self.getSelectedIndex( E_SpinEx03 )
+ 			indexString = '%d' % self.GetSelectedIndex( E_SpinEx03 )
 			self.currentSatellite[ E_CONFIGURE_SATELLITE_FREQUENCY_LEVEL ] = indexString
 
 		# Committed Switch
 		elif groupId == E_SpinEx04 :
-			indexString = '%d' % self.getSelectedIndex( E_SpinEx04 )
+			indexString = '%d' % self.GetSelectedIndex( E_SpinEx04 )
 			self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_MODE ] = indexString
 
 		# Uncommitted Switch
 		elif groupId == E_SpinEx05 :
-			indexString = '%d' % self.getSelectedIndex( E_SpinEx05 )
+			indexString = '%d' % self.GetSelectedIndex( E_SpinEx05 )
 			self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_11 ] = indexString
 		
 
 		# DiSEqC Repeat
 		elif groupId == E_SpinEx06 :
-			indexString = '%d' % self.getSelectedIndex( E_SpinEx06 )
+			indexString = '%d' % self.GetSelectedIndex( E_SpinEx06 )
 			self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_REPEAT ] = indexString
 
 		# Transponer
@@ -174,23 +174,23 @@ class SatelliteConfigDisEqC11( SettingWindow ):
 
 
 	def initConfig( self ) :
-		self.resetAllControl( )
+		self.ResetAllControl( )
 
-		self.addInputControl( E_Input01, 'Satellite' , configmgr.getInstance( ).getFormattedName( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ), int( self.currentSatellite[E_CONFIGURE_SATELLITE_BANDTYPE] ) ) )
-		self.addUserEnumControl( E_SpinEx01, 'LNB Type', E_LIST_LNB_TYPE, self.selectedIndexLnbType )
+		self.AddInputControl( E_Input01, 'Satellite' , configmgr.getInstance( ).getFormattedName( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ), int( self.currentSatellite[E_CONFIGURE_SATELLITE_BANDTYPE] ) ) )
+		self.AddUserEnumControl( E_SpinEx01, 'LNB Type', E_LIST_LNB_TYPE, self.selectedIndexLnbType )
 
 
 		if( self.selectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
-			self.addUserEnumControl( E_SpinEx02, 'LNB Frequency', E_LIST_SINGLE_FREQUENCY, getSingleFrequenceIndex( self.currentSatellite[ E_CONFIGURE_SATELLITE_LOW_LNB ] ) )
+			self.AddUserEnumControl( E_SpinEx02, 'LNB Frequency', E_LIST_SINGLE_FREQUENCY, getSingleFrequenceIndex( self.currentSatellite[ E_CONFIGURE_SATELLITE_LOW_LNB ] ) )
 		else :
 			self.lnbFrequency = self.currentSatellite[E_CONFIGURE_SATELLITE_LOW_LNB] + ' / ' + self.currentSatellite[ E_CONFIGURE_SATELLITE_HIGH_LNB ] + ' / ' + self.currentSatellite[E_CONFIGURE_SATELLITE_LNB_THRESHOLD]
-			self.addInputControl( E_Input02, 'LNB Frequency', self.lnbFrequency )
+			self.AddInputControl( E_Input02, 'LNB Frequency', self.lnbFrequency )
 			
-		self.addUserEnumControl( E_SpinEx03, '22KHz Control', USER_ENUM_LIST_ON_OFF, self.currentSatellite[ E_CONFIGURE_SATELLITE_FREQUENCY_LEVEL ] )
-		self.addUserEnumControl( E_SpinEx04, 'Committed Switch', E_LIST_COMMITTED_SWITCH, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_MODE ] )
-		self.addUserEnumControl( E_SpinEx05, 'Uncommitted Switch', E_LIST_UNCOMMITTED_SWITCH, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_11 ] )
-		self.addUserEnumControl( E_SpinEx06, 'DiSEqC Repeat', USER_ENUM_LIST_ON_OFF, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_REPEAT ] )
-		self.addInputControl( E_Input03, 'Transponder', self.transponderList[self.selectedTransponderIndex] )
+		self.AddUserEnumControl( E_SpinEx03, '22KHz Control', USER_ENUM_LIST_ON_OFF, self.currentSatellite[ E_CONFIGURE_SATELLITE_FREQUENCY_LEVEL ] )
+		self.AddUserEnumControl( E_SpinEx04, 'Committed Switch', E_LIST_COMMITTED_SWITCH, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_MODE ] )
+		self.AddUserEnumControl( E_SpinEx05, 'Uncommitted Switch', E_LIST_UNCOMMITTED_SWITCH, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_11 ] )
+		self.AddUserEnumControl( E_SpinEx06, 'DiSEqC Repeat', USER_ENUM_LIST_ON_OFF, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_REPEAT ] )
+		self.AddInputControl( E_Input03, 'Transponder', self.transponderList[self.selectedTransponderIndex] )
 
 		if( self.selectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input03]
@@ -199,23 +199,23 @@ class SatelliteConfigDisEqC11( SettingWindow ):
 			visibleControlIds = [ E_SpinEx01, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input03 ]
 			hideControlIds = [ E_SpinEx02, E_Input04, E_Input05 ]
 			
-		self.setVisibleControls( visibleControlIds, True )
-		self.setEnableControls( visibleControlIds, True )
+		self.SetVisibleControls( visibleControlIds, True )
+		self.SetEnableControls( visibleControlIds, True )
 
-		self.setVisibleControls( hideControlIds, False )
+		self.SetVisibleControls( hideControlIds, False )
 
-		self.initControl( )
+		self.InitControl( )
 		self.disableControl( )
 		
 
 	def disableControl( self ):
 		enableControlIds = [ E_Input02, E_SpinEx02, E_SpinEx03 ]
 		if ( self.selectedIndexLnbType == ElisEnum.E_LNB_UNIVERSAL ) :
-			self.setEnableControls( enableControlIds, False )
+			self.SetEnableControls( enableControlIds, False )
 			self.getControl( E_SpinEx03 + 3 ).selectItem( 1 )	# Always On
 			
 		else :
-			self.setEnableControls( enableControlIds, True )
+			self.SetEnableControls( enableControlIds, True )
 
 	def saveConfig( self ) :
 		configmgr.getInstance( ).saveCurrentConfig( self.currentSatellite )

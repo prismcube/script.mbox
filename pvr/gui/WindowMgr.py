@@ -5,7 +5,7 @@ import time
 import os
 import shutil
 
-from gui.basewindow import BaseWindow
+from gui.BaseWindow import BaseWindow
 from inspect import currentframe
 from elementtree import ElementTree
 
@@ -30,162 +30,189 @@ WIN_ID_CHANNEL_LIST2_WINDOW			= 103	#for test
 
 
 
-__windowmgr = None
+gWindowMgr = None
 
-def getInstance():
-	global __windowmgr
-	if not __windowmgr:
+def GetInstance():
+	global gWindowMgr
+	if not gWindowMgr:
 		print 'lael98 check create instance'
-		__windowmgr = WindowMgr()
+		gWindowMgr = WindowMgr()
 	else:
 		pass
 		#print 'lael98 check already windowmgr is created'
 
-	return __windowmgr
+	return gWindowMgr
 
 
 class WindowMgr(object):
 	def __init__(self):
 		print 'lael98 check %d %s' %(currentframe().f_lineno, currentframe().f_code.co_filename)
 
-		import pvr.platform 
-		self.scriptDir = pvr.platform.getPlatform().getScriptDir()
-		print 'lael98 test scriptDir= %s' %self.scriptDir
+		import pvr.Platform 
+		self.mScriptDir = pvr.Platform.GetPlatform().GetScriptDir()
+		print 'lael98 test scriptDir= %s' %self.mScriptDir
 
 		currentSkinName = xbmc.executehttpapi("GetGUISetting(3, lookandfeel.skin)")
-		self.skinName = currentSkinName[4:]
+		self.mSkinName = currentSkinName[4:]
 
-		self.windows = {}
-		self.skinFontPath = []
-		self.scriptFontPath =[]
-		self.skinDir = []
-		self.listDir = []
-		
+		self.mSkinFontPath = []
+		self.mScriptFontPath =[]
+		self.mSkinDir = []
+		self.mListDir = []
 
-		self.copyIncludeFile( )
-		self.createAllWindows( )
+		self.AddDefaultFont( )		
+		self.CopyIncludeFile( )
 
-	def showWindow( self, windowId ):
-		print'lael98 check %d %s winid=%d' %(currentframe().f_lineno, currentframe().f_code.co_filename, windowId)    
+
+	def ShowWindow( self, aWindowId ):
+		print'lael98 check %d %s winid=%d WIN_ID_NULLWINDOW=%d' %(currentframe().f_lineno, currentframe().f_code.co_filename, aWindowId, WIN_ID_NULLWINDOW)    
 		try:
-			self.windows[windowId].doModal()
-			self.lastId = windowId
+			if aWindowId ==  WIN_ID_NULLWINDOW:
+				from pvr.gui.windows.NullWindow import NullWindow
+				print 'self.mScriptDir=%s' %self.mScriptDir
+				NullWindow('NullWindow.xml', self.mScriptDir ).doModal()
+
+			elif aWindowId ==  WIN_ID_MAINMENU:
+				from pvr.gui.windows.MainMenu import MainMenu
+				MainMenu('mainmenu.xml', self.mScriptDir).doModal()
+
+			elif aWindowId ==  WIN_ID_CHANNEL_LIST_WINDOW:
+				from pvr.gui.windows.ChannelListWindow import ChannelListWindow
+				ChannelListWindow('channellistwindow.xml', self.mScriptDir ).doModal()
+
+			elif aWindowId ==  WIN_ID_CHANNEL_BANNER:
+				from pvr.gui.windows.ChannelBanner import ChannelBanner
+				ChannelBanner('channelbanner.xml', self.mScriptDir ).doModal()
+
+			elif aWindowId == WIN_ID_TIMESHIFT_BANNER:
+				from pvr.gui.windows.TimeShiftBanner import TimeShiftBanner
+				TimeShiftBanner('timeshiftbanner.xml', self.mScriptDir ).doModal()
+
+			elif aWindowId ==  WIN_ID_CONFIGURE:
+				from pvr.gui.windows.Configure import Configure	
+				Configure('configure.xml', self.mScriptDir).doModal()
+
+			elif aWindowId ==  WIN_ID_ANTENNA_SETUP:
+				from pvr.gui.windows.AntennaSetup import AntennaSetup
+				AntennaSetup('antennasetup.xml', self.mScriptDir).doModal()
+
+			elif aWindowId ==  WIN_ID_TUNER_CONFIGURATION:
+				from pvr.gui.windows.TunerConfiguration import TunerConfiguration
+				TunerConfiguration('tunerconfiguration.xml', self.mScriptDir).doModal()
+
+			elif aWindowId ==  WIN_ID_SATELLITE_CONFIGURATION:
+				from pvr.gui.windows.SatelliteConfiguration import SatelliteConfiguration
+				SatelliteConfiguration('satelliteconfiguration.xml', self.mScriptDir).doModal()
+
+			elif aWindowId ==  WIN_ID_CHANNEL_SEARCH:
+				from pvr.gui.windows.ChannelSearch import ChannelSearch
+				ChannelSearch('channelsearch.xml', self.mScriptDir).doModal()
+
+			elif aWindowId ==  WIN_ID_AUTOMATIC_SCAN:
+				from pvr.gui.windows.AutomaticScan import AutomaticScan	
+				AutomaticScan('automaticscan.xml', self.mScriptDir).doModal()
+
+			elif aWindowId ==  WIN_ID_MANUAL_SCAN:
+				from pvr.gui.windows.ManualScan import ManualScan
+				ManualScan('manualscan.xml', self.mScriptDir).doModal()
+
+			elif aWindowId ==  WIN_ID_CHANNEL_EDIT_WINDOW:
+				#from pvr.gui.windows.channeleditwindow import ChannelEditWindow
+				#ChannelEditWindow('channeleditwindow.xml', self.mScriptDir )
+				pass
+			
+			elif aWindowId ==  WIN_ID_LANGUAGE_SETTING:
+				from pvr.gui.windows.LanguageSetting import LanguageSetting		#for test			
+				LanguageSetting('languagesetting.xml', self.mScriptDir).doModal()
+			
+			elif aWindowId ==  WIN_ID_CHANNEL_LIST1_WINDOW:
+				from pvr.gui.windows.ChannelListWindow_a import ChannelListWindow_a #for test			
+				ChannelListWindow_a('channellistwindow_a.xml', self.mScriptDir ).doModal()
+
+			elif aWindowId ==  WIN_ID_CHANNEL_LIST2_WINDOW:
+				from pvr.gui.windows.ChannelListWindow_b import ChannelListWindow_b #for test		
+				ChannelListWindow_b('channellistwindow_b.xml', self.mScriptDir ).doModal()
+
+			else :
+				print 'Unknown widnowId=%d' %aWindowId
+
+			self.mLastId = aWindowId
 
 		except:
 			print "can not find window"
 
 
-	def createAllWindows( self ):
-		import pvr.platform 
-		self.scriptDir = pvr.platform.getPlatform().getScriptDir()
 
-		self.addDefaultFont( )
-
-		from pvr.gui.windows.nullwindow import NullWindow		
-		from pvr.gui.windows.mainmenu import MainMenu
-		from pvr.gui.windows.channellistwindow import ChannelListWindow
-		from pvr.gui.windows.channelbanner import ChannelBanner
-		from pvr.gui.windows.timeshiftbanner import TimeShiftBanner
-		from pvr.gui.windows.configure import Configure
-		from pvr.gui.windows.antennasetup import AntennaSetup
-		from pvr.gui.windows.tunerconfiguration import TunerConfiguration
-		from pvr.gui.windows.satelliteconfiguration import SatelliteConfiguration
-		from pvr.gui.windows.channelsearch import ChannelSearch
-		from pvr.gui.windows.automaticscan import AutomaticScan
-		from pvr.gui.windows.manualscan import ManualScan
-		from pvr.gui.windows.channeleditwindow import ChannelEditWindow
-		from pvr.gui.windows.languagesetting import LanguageSetting		#for test
-		from pvr.gui.windows.channellistwindow_a import ChannelListWindow_a #for test
-		from pvr.gui.windows.channellistwindow_b import ChannelListWindow_b #for test
-
-
-		self.windows[ WIN_ID_NULLWINDOW ]				= NullWindow('nullwindow.xml', self.scriptDir )
-		self.windows[ WIN_ID_MAINMENU ]					= MainMenu('mainmenu.xml', self.scriptDir)
-		self.windows[ WIN_ID_CHANNEL_LIST_WINDOW ]		= ChannelListWindow('channellistwindow.xml', self.scriptDir )
-		self.windows[ WIN_ID_CHANNEL_BANNER	]			= ChannelBanner('channelbanner.xml', self.scriptDir )
-		self.windows[ WIN_ID_TIMESHIFT_BANNER ]			= TimeShiftBanner('timeshiftbanner.xml', self.scriptDir )
-		self.windows[ WIN_ID_CONFIGURE ]				= Configure('configure.xml', self.scriptDir)
-		self.windows[ WIN_ID_ANTENNA_SETUP ]			= AntennaSetup('antennasetup.xml', self.scriptDir)
-		self.windows[ WIN_ID_TUNER_CONFIGURATION ]		= TunerConfiguration('tunerconfiguration.xml', self.scriptDir)
-		self.windows[ WIN_ID_SATELLITE_CONFIGURATION ]	= SatelliteConfiguration('satelliteconfiguration.xml', self.scriptDir)
-		self.windows[ WIN_ID_CHANNEL_SEARCH ]			= ChannelSearch('channelsearch.xml', self.scriptDir)
-		self.windows[ WIN_ID_AUTOMATIC_SCAN ]			= AutomaticScan('automaticscan.xml', self.scriptDir)
-		self.windows[ WIN_ID_MANUAL_SCAN ]				= ManualScan('manualscan.xml', self.scriptDir)
-		self.windows[ WIN_ID_CHANNEL_EDIT_WINDOW ]		= ChannelEditWindow('channeleditwindow.xml', self.scriptDir )
-		self.windows[ WIN_ID_LANGUAGE_SETTING ]			= LanguageSetting('languagesetting.xml', self.scriptDir)		#for test
-		self.windows[ WIN_ID_CHANNEL_LIST1_WINDOW ]		= ChannelListWindow_a('channellistwindow_a.xml', self.scriptDir )	#for test
-		self.windows[ WIN_ID_CHANNEL_LIST2_WINDOW ]		= ChannelListWindow_b('channellistwindow_b.xml', self.scriptDir )	#for test
-		
-
-	def resetAllWindows( self ):
-		self.windows[ WIN_ID_MAINMENU ].close( )
-		self.copyIncludeFile( )
-		self.windows.clear( )
-		self.createAllWindows( )
+	def Reset( self ):
+		import pvr.Platform 
+		self.mScriptDir = pvr.Platform.GetPlatform().GetScriptDir()
+	
+		self.CopyIncludeFile( )
 		self.showWindow( WIN_ID_MAINMENU )
 
 
-	def checkSkinChange( self ):
+	def CheckSkinChange( self ):
 
 		currentSkinName = xbmc.executehttpapi("GetGUISetting(3, lookandfeel.skin)")
 
-		print 'skin name=%s : %s' %( self.skinName, currentSkinName[4:] )
+		print 'skin name=%s : %s' %( self.mSkinName, currentSkinName[4:] )
 
-		if self.skinName != currentSkinName[4:] :
+		if self.mSkinName != currentSkinName[4:] :
 			print 'change skin name'
-			self.skinName = currentSkinName[4:]
-			self.resetAllWindows( )
+			self.mSkinName = currentSkinName[4:]
+			self.Reset( )
 
 
-	def copyIncludeFile( self ):
+	def CopyIncludeFile( self ):
 		import os, shutil
-		import pvr.platform 
+		import pvr.Platform 
 
-		skinName = self.skinName
+		skinName = self.mSkinName
 
 		print 'skinName=%s' %skinName
 
-		import pvr.platform 
-		self.scriptDir = pvr.platform.getPlatform().getScriptDir()
+		import pvr.Platform 
+		self.mScriptDir = pvr.Platform.GetPlatform().GetScriptDir()
 
 		
 		if skinName.lower() == 'default' or skinName.lower() == 'skin.confluence' :
-			mboxIncludePath = os.path.join( pvr.platform.getPlatform().getScriptDir(), 'resources', 'skins', 'default', '720p', 'mbox_includes.xml')
+			mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir(), 'resources', 'skins', 'default', '720p', 'mbox_includes.xml')
 
 		else : 
-			mboxIncludePath = os.path.join( pvr.platform.getPlatform().getScriptDir(), 'resources', 'skins', skinName, '720p', 'mbox_includes.xml')
+			mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir(), 'resources', 'skins', skinName, '720p', 'mbox_includes.xml')
 
 			if not os.path.isfile(mboxIncludePath) :
-				mboxIncludePath = os.path.join( pvr.platform.getPlatform().getScriptDir(), 'resources', 'skins', 'default', '720p', 'mbox_includes.xml')			
+				mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir(), 'resources', 'skins', 'default', '720p', 'mbox_includes.xml')			
 			
 		print 'mboxIncludePath=%s' %mboxIncludePath	
 
-		skinIncludePath = os.path.join( pvr.platform.getPlatform().getSkinDir(), '720p', 'mbox_includes.xml')
+		skinIncludePath = os.path.join( pvr.Platform.GetPlatform().GetSkinDir(), '720p', 'mbox_includes.xml')
 		print 'skinIncludePath=%s' %skinIncludePath	
 		shutil.copyfile( mboxIncludePath, skinIncludePath )
 
 
-	def getWindow( self, windowId ) :
-		return self.windows[ windowId ]
+	def GetWindow( self, aWindowId ) :
+		pass
 
 
-	def addDefaultFont( self ) :
-		self.skinFontPath = xbmc.translatePath("special://skin/fonts/")
-		self.scriptFontPath = os.path.join(os.getcwd() , "resources" , "fonts")
-		self.skinDir = xbmc.translatePath("special://skin/")
-		self.listDir = os.listdir( self.skinDir )
 
-		self.addFont( "font35_title", "DejaVuSans-Bold.ttf", "35" )
-		self.addFont( "font12_title", "DejaVuSans-Bold.ttf", "16" )
+	def AddDefaultFont( self ) :
+		self.mSkinFontPath = xbmc.translatePath("special://skin/fonts/")
+		self.mScriptFontPath = os.path.join(os.getcwd() , "resources" , "fonts")
+		self.mSkinDir = xbmc.translatePath("special://skin/")
+		self.mListDir = os.listdir( self.mSkinDir )
+
+		self.AddFont( "font35_title", "DejaVuSans-Bold.ttf", "35" )
+		self.AddFont( "font12_title", "DejaVuSans-Bold.ttf", "16" )
 
 
-	def getFontsXML( self ):
+	def GetFontsXML( self ):
 
 		fontPaths = []
 
 		try:
-			for subDir in self.listDir:
-				subDir = os.path.join( self.skinDir, subDir )
+			for subDir in self.mListDir:
+				subDir = os.path.join( self.mSkinDir, subDir )
 				
 				if os.path.isdir( subDir ):
 					fontXml = os.path.join( subDir, "Font.xml" )
@@ -194,34 +221,34 @@ class WindowMgr(object):
 						fontPaths.append( fontXml )
 
 		except:
-			print 'Err : getFontsXML Error'
+			print 'Err : GetFontsXML Error'
 			return []
 
 		return fontPaths
 
 
-	def hasFontInstalled( self, fontXMLPath, fontName ):
-		name = "<name>%s</name>" % fontName
+	def HasFontInstalled( self, aFontXMLPath, aFontName ):
+		name = "<name>%s</name>" % aFontName
 
-		if not name in file( fontXMLPath, "r" ).read():
-			print '%s font is not installed!' %fontName
+		if not name in file( aFontXMLPath, "r" ).read():
+			print '%s font is not installed!' %aFontName
 			return False
 			
 		else:
-			print '%s font already installed!' %fontName
+			print '%s font already installed!' %aFontName
 
 		return True
 
 
-	def addFont( self, fontName, fileName, size, style="", aspect="" ):
+	def AddFont( self, aFontName, aFileName, aSize, aStyle="", aAspect="" ):
 
 		try:
 			needReloadSkin = False
-			fontPaths = self.getFontsXML( )
+			fontPaths = self.GetFontsXML( )
 
 			if fontPaths:
 				for fontXMLPath in fontPaths:
-					if not self.hasFontInstalled( fontXMLPath, fontName ):
+					if not self.HasFontInstalled( fontXMLPath, aFontName ):
 						tree = ElementTree.parse( fontXMLPath )
 						root = tree.getroot( )
 
@@ -231,24 +258,24 @@ class WindowMgr(object):
 							new.text, new.tail = "\n\t\t\t", "\n\t"
 
 							subNew1=ElementTree.SubElement( new, "name" )
-							subNew1.text = fontName
+							subNew1.text = aFontName
 							subNew1.tail = "\n\t\t\t"
-							subNew2=ElementTree.SubElement( new, "filename" )
-							subNew2.text = ( fileName, "Arial.ttf" )[ sets.attrib.get( "id" ) == "Arial" ]
+							subNew2=ElementTree.SubElement( new, "aFileName" )
+							subNew2.text = ( aFileName, "Arial.ttf" )[ sets.attrib.get( "id" ) == "Arial" ]
 							subNew2.tail = "\n\t\t\t"
 							subNew3=ElementTree.SubElement( new, "size" )
-							subNew3.text = size
+							subNew3.text = aSize
 							subNew3.tail = "\n\t\t\t"
 							lastElement = subNew3
 
-							if style in [ "normal", "bold", "italics", "bolditalics" ]:
+							if aStyle in [ "normal", "bold", "italics", "bolditalics" ]:
 								subNew4=ElementTree.SubElement(new ,"style")
-								subNew4.text = style
+								subNew4.text = aStyle
 								subNew4.tail = "\n\t\t\t"
 								lastElement = subNew4
-							if aspect:    
+							if aAspect:    
 								subNew5=ElementTree.SubElement(new ,"aspect")
-								subNew5.text = aspect
+								subNew5.text = aAspect
 								subNew5.tail = "\n\t\t\t"
 								lastElement = subNew5
 							needReloadSkin = True
@@ -257,11 +284,11 @@ class WindowMgr(object):
 						tree.write(fontXMLPath)
 						needReloadSkin = True
 		except:
-			print 'Error addFontErr'
+			print 'Error AddFontErr'
 
 		if needReloadSkin:
- 			if not os.path.exists( os.path.join( self.skinFontPath, fileName ) ) and os.path.exists( os.path.join( self.scriptFontPath, fileName ) ):
-				shutil.copyfile( os.path.join( self.scriptFontPath, fileName ), os.path.join( self.skinFontPath, fileName ) )
+ 			if not os.path.exists( os.path.join( self.mSkinFontPath, aFileName ) ) and os.path.exists( os.path.join( self.mScriptFontPath, aFileName ) ):
+				shutil.copyfile( os.path.join( self.mScriptFontPath, aFileName ), os.path.join( self.mSkinFontPath, aFileName ) )
 
 			xbmc.executebuiltin( "XBMC.ReloadSkin()" )
 			return True

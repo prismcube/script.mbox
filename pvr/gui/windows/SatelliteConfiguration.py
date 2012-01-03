@@ -2,13 +2,13 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.windowmgr as winmgr
+import pvr.gui.WindowMgr as winmgr
 import pvr.gui.dialogmgr as diamgr
 import pvr.tunerconfigmgr as configmgr
 from pvr.tunerconfigmgr import *
-from pvr.gui.basewindow import SettingWindow, setWindowBusy
+from pvr.gui.basewindow import SettingWindow
 from pvr.gui.basewindow import Action
-import pvr.elismgr
+import pvr.ElisMgr
 from elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import *
 from elisenum import ElisEnum
@@ -17,7 +17,7 @@ from elisenum import ElisEnum
 class SatelliteConfiguration( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs)
-		self.commander = pvr.elismgr.getInstance().getCommander( )
+		self.commander = pvr.ElisMgr.getInstance().getCommander( )
 			
 		self.tunerType = 0
 		self.currentSatellite = 0
@@ -56,25 +56,25 @@ class SatelliteConfiguration( SettingWindow ):
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			self.resetAllControl( )
+			self.ResetAllControl( )
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
-			self.controlLeft( )
+			self.ControlLeft( )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			self.controlRight( )
+			self.ControlRight( )
 			
 		elif actionId == Action.ACTION_MOVE_UP :
-			self.controlUp( )
+			self.ControlUp( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			self.controlDown( )
+			self.ControlDown( )
 
 
 	def onClick( self, controlId ):
 		if( controlId == E_SpinEx01 + 1 or controlId == E_SpinEx01 + 2 ) :
-			self.selectedIndexLnbType = self.getSelectedIndex( E_SpinEx01 )
+			self.selectedIndexLnbType = self.GetSelectedIndex( E_SpinEx01 )
 			self.initConfig( )
 			
 		elif( controlId == E_Input01 + 1 ) :
@@ -94,21 +94,21 @@ class SatelliteConfiguration( SettingWindow ):
 		pass
 
 	def initConfig( self ) :
-		self.resetAllControl( )
+		self.ResetAllControl( )
 
 		# Common	
-		self.addInputControl( E_Input01, 'Satellite' , configmgr.getInstance( ).getFormattedName( self.longitude ) )
-		self.addUserEnumControl( E_SpinEx01, 'LNB Setting', E_LIST_LNB_TYPE, self.selectedIndexLnbType )
+		self.AddInputControl( E_Input01, 'Satellite' , configmgr.getInstance( ).getFormattedName( self.longitude ) )
+		self.AddUserEnumControl( E_SpinEx01, 'LNB Setting', E_LIST_LNB_TYPE, self.selectedIndexLnbType )
 		if( self.selectedIndexLnbType == 1 ) :
-			self.addUserEnumControl( E_SpinEx02, 'LNB Frequency', E_LIST_SINGLE_FREQUENCY, getSingleFrequenceIndex( self.currentSatellite[ E_CONFIGURE_SATELLITE_LOW_LNB ] ) )
+			self.AddUserEnumControl( E_SpinEx02, 'LNB Frequency', E_LIST_SINGLE_FREQUENCY, getSingleFrequenceIndex( self.currentSatellite[ E_CONFIGURE_SATELLITE_LOW_LNB ] ) )
 		else :
 			self.lnbFrequency = self.currentSatellite[E_CONFIGURE_SATELLITE_LOW_LNB] + ' / ' + self.currentSatellite[ E_CONFIGURE_SATELLITE_HIGH_LNB ] + ' / ' + self.currentSatellite[E_CONFIGURE_SATELLITE_LNB_THRESHOLD]
-			self.addInputControl( E_Input02, 'LNB Frequency', self.lnbFrequency )
-		self.addUserEnumControl( E_SpinEx03, '22KHz Control', USER_ENUM_LIST_ON_OFF, self.currentSatellite[ E_CONFIGURE_SATELLITE_FREQUENCY_LEVEL ] )
+			self.AddInputControl( E_Input02, 'LNB Frequency', self.lnbFrequency )
+		self.AddUserEnumControl( E_SpinEx03, '22KHz Control', USER_ENUM_LIST_ON_OFF, self.currentSatellite[ E_CONFIGURE_SATELLITE_FREQUENCY_LEVEL ] )
 
 		if( self.tunertype == E_SIMPLE_LNB ) :
-			self.addInputControl( E_Input03, 'Transponder', self.transponderList[0] )
-			self.addLeftLabelButtonControl( E_Input04, 'Save' )
+			self.AddInputControl( E_Input03, 'Transponder', self.transponderList[0] )
+			self.AddLeftLabelButtonControl( E_Input04, 'Save' )
 
 			if( self.selectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input03, E_Input04 ]
@@ -118,10 +118,10 @@ class SatelliteConfiguration( SettingWindow ):
 				hideControlIds = [ E_SpinEx02, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input05 ]
 
 		elif( self.tunertype == E_DISEQC_1_0 ) :
-			self.addUserEnumControl( E_SpinEx04, 'DiSEqC 1.0 Switch', E_LIST_DISEQC_MODE, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_MODE ] )
-			self.addUserEnumControl( E_SpinEx05, 'DiSEqC Repeat', USER_ENUM_LIST_ON_OFF, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_REPEAT ] )
-			self.addInputControl( E_Input03, 'Transponder', self.transponderList[0] )
-			self.addLeftLabelButtonControl( E_Input04, 'Save' )
+			self.AddUserEnumControl( E_SpinEx04, 'DiSEqC 1.0 Switch', E_LIST_DISEQC_MODE, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_MODE ] )
+			self.AddUserEnumControl( E_SpinEx05, 'DiSEqC Repeat', USER_ENUM_LIST_ON_OFF, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_REPEAT ] )
+			self.AddInputControl( E_Input03, 'Transponder', self.transponderList[0] )
+			self.AddLeftLabelButtonControl( E_Input04, 'Save' )
 
 			if( self.selectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input03, E_Input04 ]
@@ -131,11 +131,11 @@ class SatelliteConfiguration( SettingWindow ):
 				hideControlIds = [ E_SpinEx02, E_SpinEx06, E_Input05 ]
 
 		elif( self.tunertype == E_DISEQC_1_1 ) :
-			self.addUserEnumControl( E_SpinEx04, 'Committed Switch', E_LIST_COMMITTED_SWITCH, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_MODE ] )
-			self.addUserEnumControl( E_SpinEx05, 'Uncommitted Switch', E_LIST_UNCOMMITTED_SWITCH, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_11 ] )
-			self.addUserEnumControl( E_SpinEx06, 'DiSEqC Repeat', USER_ENUM_LIST_ON_OFF, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_REPEAT ] )
-			self.addInputControl( E_Input03, 'Transponder', self.transponderList[0] )
-			self.addLeftLabelButtonControl( E_Input04, 'Save', None )
+			self.AddUserEnumControl( E_SpinEx04, 'Committed Switch', E_LIST_COMMITTED_SWITCH, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_MODE ] )
+			self.AddUserEnumControl( E_SpinEx05, 'Uncommitted Switch', E_LIST_UNCOMMITTED_SWITCH, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_11 ] )
+			self.AddUserEnumControl( E_SpinEx06, 'DiSEqC Repeat', USER_ENUM_LIST_ON_OFF, self.currentSatellite[ E_CONFIGURE_SATELLITE_DISEQC_REPEAT ] )
+			self.AddInputControl( E_Input03, 'Transponder', self.transponderList[0] )
+			self.AddLeftLabelButtonControl( E_Input04, 'Save', None )
 
 			if( self.selectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input03, E_Input04, E_SpinEx06 ]
@@ -145,10 +145,10 @@ class SatelliteConfiguration( SettingWindow ):
 				hideControlIds = [ E_SpinEx02, E_Input05 ]
 
 		elif( self.tunertype == E_ONE_CABLE ) :
-			self.addInputControl( E_Input03, 'Transponder', self.transponderList[0], None, None )
-			self.addLeftLabelButtonControl( E_Input04, 'Move Antenna', None )
-			self.addUserEnumControl( E_SpinEx04, 'Action', E_LIST_ONE_CABLE_ACTION, 0 )
-			self.addLeftLabelButtonControl( E_Input05, 'Store Position and Exit', None )
+			self.AddInputControl( E_Input03, 'Transponder', self.transponderList[0], None, None )
+			self.AddLeftLabelButtonControl( E_Input04, 'Move Antenna', None )
+			self.AddUserEnumControl( E_SpinEx04, 'Action', E_LIST_ONE_CABLE_ACTION, 0 )
+			self.AddLeftLabelButtonControl( E_Input05, 'Store Position and Exit', None )
 
 			if( self.selectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input01, E_Input03, E_Input04, E_Input05 ]
@@ -158,9 +158,9 @@ class SatelliteConfiguration( SettingWindow ):
 				hideControlIds = [ E_SpinEx02, E_SpinEx05, E_SpinEx06 ]
 
 		elif( self.tunertype == E_MOTORIZED_1_2 ) :
-			self.addInputControl( E_Input03, 'Transponder', self.transponderList[0], None, None )
-			self.addLeftLabelButtonControl( E_Input04, 'Go to the Position', None )
-			self.addLeftLabelButtonControl( E_Input05, 'Save', None )
+			self.AddInputControl( E_Input03, 'Transponder', self.transponderList[0], None, None )
+			self.AddLeftLabelButtonControl( E_Input04, 'Go to the Position', None )
+			self.AddLeftLabelButtonControl( E_Input05, 'Save', None )
 
 			if( self.selectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input03, E_Input04, E_Input05 ]
@@ -170,9 +170,9 @@ class SatelliteConfiguration( SettingWindow ):
 				hideControlIds = [ E_SpinEx02, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
 			
 		elif( self.tunertype == E_MOTORIZED_USALS ) :
-			self.addInputControl( E_Input03, 'Transponder', self.transponderList[0], None, None )
-			self.addLeftLabelButtonControl( E_Input04, 'Go to the Position', None )
-			self.addLeftLabelButtonControl( E_Input05, 'Save', None )
+			self.AddInputControl( E_Input03, 'Transponder', self.transponderList[0], None, None )
+			self.AddLeftLabelButtonControl( E_Input04, 'Go to the Position', None )
+			self.AddLeftLabelButtonControl( E_Input05, 'Save', None )
 
 			if( self.selectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input03, E_Input04, E_Input05 ]
@@ -182,31 +182,31 @@ class SatelliteConfiguration( SettingWindow ):
 				hideControlIds = [ E_SpinEx02, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
 		
 			
-		self.setVisibleControls( visibleControlIds, True )
-		self.setEnableControls( visibleControlIds, True )
+		self.SetVisibleControls( visibleControlIds, True )
+		self.SetEnableControls( visibleControlIds, True )
 
-		self.setVisibleControls( hideControlIds, False )
+		self.SetVisibleControls( hideControlIds, False )
 
-		self.initControl( )
+		self.InitControl( )
 		self.disableControl( )
 		
 
 	def disableControl( self ):
 		enableControlIds = [ E_Input02, E_SpinEx02, E_SpinEx03 ]
 		if ( self.selectedIndexLnbType == ElisEnum.E_LNB_UNIVERSAL ) :
-			self.setEnableControls( enableControlIds, False )
+			self.SetEnableControls( enableControlIds, False )
 			self.getControl( E_SpinEx03 + 3 ).selectItem( 1 )	# Always On
 			
 		else :
-			self.setEnableControls( enableControlIds, True )
+			self.SetEnableControls( enableControlIds, True )
 
 		'''
-		selectedIndex2 = self.getSelectedIndex( E_SpinEx02 )	
+		selectedIndex2 = self.GetSelectedIndex( E_SpinEx02 )	
 		if ( selectedIndex2 == 0 ) :
-			self.setEnableControl( E_SpinEx04, False )
-			self.setEnableControl( E_Input02, False )
-			self.getControl( E_SpinEx04 + 3 ).selectItem( self.getSelectedIndex( E_SpinEx03 ) )
+			self.SetEnableControl( E_SpinEx04, False )
+			self.SetEnableControl( E_Input02, False )
+			self.getControl( E_SpinEx04 + 3 ).selectItem( self.GetSelectedIndex( E_SpinEx03 ) )
 		else :
-			self.setEnableControl( E_SpinEx04, True)
-			self.setEnableControl( E_Input02, True )
+			self.SetEnableControl( E_SpinEx04, True)
+			self.SetEnableControl( E_Input02, True )
 		'''

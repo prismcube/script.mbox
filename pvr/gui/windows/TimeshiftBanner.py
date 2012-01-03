@@ -3,17 +3,17 @@ import xbmcgui
 import sys
 import time
 
-import pvr.gui.windowmgr as winmgr
+import pvr.gui.WindowMgr as winmgr
 from pvr.gui.basewindow import BaseWindow
 from pvr.gui.basewindow import Action
 
-import pvr.elismgr
+import pvr.ElisMgr
 from elisaction import ElisAction
 from elisenum import ElisEnum
 
 
 #from threading import Thread
-from pvr.util import RunThread, is_digit, Mutex, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString #, synchronized, sync_instance
+from pvr.Util import RunThread, is_digit, Mutex, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString #, synchronized, sync_instance
 import thread, threading
 
 #debug log
@@ -32,9 +32,9 @@ class TimeShiftBanner(BaseWindow):
 		print 'args[1]=[%s]' % args[1]
 
 		self.lastFocusId = None
-		self.eventBus = pvr.elismgr.getInstance().getEventBus()
+		self.eventBus = pvr.ElisMgr.getInstance().getEventBus()
 		#self.eventBus.register( self )
-		self.commander = pvr.elismgr.getInstance().getCommander()
+		self.commander = pvr.ElisMgr.getInstance().getCommander()
 
 		#default
 		self.progressbarWidth = 980

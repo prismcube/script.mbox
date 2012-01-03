@@ -12,9 +12,9 @@ import pvr.gui.dialogmgr as diamgr
 from elisevent import ElisEvent
 from elisenum import ElisEnum
 
-import pvr.elismgr
+import pvr.ElisMgr
 
-#from pvr.util import RunThread
+#from pvr.Util import RunThread
 
 
 
@@ -36,10 +36,10 @@ E_SCAN_TRANSPONDER			= 2
 class DialogChannelSearch( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
-		self.commander = pvr.elismgr.getInstance( ).getCommander( )
+		self.commander = pvr.ElisMgr.getInstance( ).getCommander( )
 		self.scanMode = E_SCAN_NONE
 		self.isFinished = True
-		self.eventBus = pvr.elismgr.getInstance().getEventBus()
+		self.eventBus = pvr.ElisMgr.getInstance().getEventBus()
 		self.transponderList = []
 		self.satelliteList = []
 		self.longitude = 0

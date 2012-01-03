@@ -6,73 +6,64 @@ import xbmcaddon
 import time
 
 from inspect import currentframe
-import pvr.elismgr
-import pvr.gui.windowmgr as windowmgr
-from pvr.util import RunThread, HasPendingThreads, WaitUtileThreadsJoin
-from elistest import ElisTest
-import pvr.netconfig as netconfig
+import pvr.ElisMgr
+import pvr.gui.WindowMgr as WindowMgr
+from pvr.Util import RunThread, HasPendingThreads, WaitUtileThreadsJoin
+import pvr.NetConfig as NetConfig
 
 		
-__launcher = None
+gLauncher = None
 
-def getInstance():
-	global __launcher
-	if not __launcher:
-		__launcher = Launcher()
-	return __launcher
+def GetInstance():
+	global gLauncher
+	if not gLauncher:
+		gLauncher = Launcher()
+	return gLauncher
 
 class Launcher(object):
 
 	def __init__(self):
-		self.isFailed = False
-		self.status = 'Init'
-		self.shutdownReceived = False
-		self.shutdowning = False		
+		self.mShutdownReceived = False
+		self.mShutdowning = False		
 
-	def run(self):
+	def Run(self):
 		try:
 			try:
 				time.sleep(1)
-				#self.bootstrapSettings()
-				self.initElisMgr()
-				self.doElisTest()				
-				self.initWindowMgr()
-				self.waitShutdown()
+				self.InitElisMgr()
+				self.DoElisTest()				
+				self.InitWindowMgr()
+				self.WaitShutdown()
 			except Exception, ex:
-				if not self.isFailed:
-					self.failure(ex)
+				xbmcgui.Dialog().ok('Error', 'Exception: %s' % str(ex))
 		finally:
 			print 'Launcher end'
 
-	def failure(self, cause):
-		msg = 'Status:%s - Error: %s' % (self.status, cause)
-		print 'lael98 log %s' %msg
-		xbmcgui.Dialog().ok('Error', 'Status: %s' % self.status, 'Exception: %s' % str(cause))
 
-	def initElisMgr(self):
-		self.stage = 'Init ElisMgr'
-		pvr.elismgr.getInstance().run()
+	def InitElisMgr(self):
+		pvr.ElisMgr.GetInstance().Run()
 		print 'test lael98'
-		self.commander = pvr.elismgr.getInstance().getCommander()
-		self.commander.setElisReady(netconfig.myIp)
+		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
+		self.mCommander.SetElisReady( NetConfig.myIp)
 
 
-	def initWindowMgr(self):
-		pvr.gui.windowmgr.getInstance().showWindow( windowmgr.WIN_ID_NULLWINDOW )
+
+	def InitWindowMgr(self):
+		pvr.gui.WindowMgr.GetInstance().ShowWindow( WindowMgr.WIN_ID_NULLWINDOW )
 
 
-	def powerOff( self ) :
-		self.shutdown()
+	def PowerOff( self ) :
+		self.Shutdown()
 		xbmc.executebuiltin('xbmc.Quit')
 
 
-	def shutdown(self):
-		print '------------->shut down %d' %self.shutdowning
-		if not self.shutdowning:
-			self.shutdowning = True
-			print '------------->shut shutdowning=%d abortRequested=%d' %(self.shutdowning,xbmc.abortRequested)
+	def Shutdown(self):
+		print '------------->shut down %d' %self.mShutdowning
+		if not self.mShutdowning:
+			self.mShutdowning = True
+			print '------------->shut mShutdowning=%d abortRequested=%d' %(self.mShutdowning,xbmc.abortRequested)
 			
-			pvr.elismgr.getInstance().shutdown()
+			pvr.ElisMgr.GetInstance().Shutdown()
 
 			if HasPendingThreads():
 				WaitUtileThreadsJoin(10.0) # in seconds
@@ -80,7 +71,7 @@ class Launcher(object):
 			print '------------->shut do end'
 		print '<-------------shut down'
 
-	def waitShutdown(self):
+	def WaitShutdown(self):
 		cnt = 0
 		print '<-------------> wait shutdown'		
 		while not xbmc.abortRequested :
@@ -88,11 +79,14 @@ class Launcher(object):
 			cnt += 1
 
 		print '<-------------> wait before shutdown'
-		self.shutdown()
+		self.Shutdown()
 		print '<-------------> wait after shutdown'		
 
-	def doElisTest(self):
+	def DoElisTest(self):
+		pass
+		"""
 		test = ElisTest()
 		test.testAll()
+		"""
 
 

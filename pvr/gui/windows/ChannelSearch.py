@@ -3,7 +3,7 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.windowmgr as winmgr
+import pvr.gui.WindowMgr as winmgr
 from pvr.gui.guiconfig import *
 
 from pvr.gui.basewindow import SettingWindow
@@ -23,11 +23,11 @@ class ChannelSearch( SettingWindow ):
 		self.setHeaderLabel( 'Channel Scan' )
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
 
-		self.addLeftLabelButtonControl( E_Input01, 'Automatic Scan', 'Running automatic scan.' )
-		self.addLeftLabelButtonControl( E_Input02, 'Manual Scan', 'Running manual scan.' )
+		self.AddLeftLabelButtonControl( E_Input01, 'Automatic Scan', 'Running automatic scan.' )
+		self.AddLeftLabelButtonControl( E_Input02, 'Manual Scan', 'Running manual scan.' )
 
-		self.initControl( )
-		self.showDescription( self.getFocusId( ) )
+		self.InitControl( )
+		self.ShowDescription( self.getFocusId( ) )
 		self.initialized = True
 
 		
@@ -42,32 +42,32 @@ class ChannelSearch( SettingWindow ):
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			self.resetAllControl( )
+			self.ResetAllControl( )
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
-			self.controlLeft( )
+			self.ControlLeft( )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			self.controlRight( )				
+			self.ControlRight( )				
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			self.controlUp( )
-			self.showDescription( focusId )
+			self.ControlUp( )
+			self.ShowDescription( focusId )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			self.controlDown( )
-			self.showDescription( focusId )
+			self.ControlDown( )
+			self.ShowDescription( focusId )
 			
 
 
 	def onClick( self, controlId ):
 		if controlId == E_Input01 + 1 :
-			self.resetAllControl( )
+			self.ResetAllControl( )
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_AUTOMATIC_SCAN )
 			
 		elif controlId == E_Input02 + 1 :
-			self.resetAllControl( )
+			self.ResetAllControl( )
 			winmgr.getInstance().showWindow( winmgr.WIN_ID_MANUAL_SCAN )
 			
 
@@ -75,5 +75,5 @@ class ChannelSearch( SettingWindow ):
 		if self.initialized == False :
 			return
 		if ( self.lastFocused != controlId ) :
-			self.showDescription( controlId )
+			self.ShowDescription( controlId )
 			self.lastFocused = controlId

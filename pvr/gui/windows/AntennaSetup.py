@@ -3,14 +3,14 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.windowmgr as winmgr
+import pvr.gui.WindowMgr as winmgr
 import pvr.tunerconfigmgr as configmgr
 from  pvr.tunerconfigmgr import *
 from pvr.gui.guiconfig import *
 
-from pvr.gui.basewindow import SettingWindow, setWindowBusy
+from pvr.gui.basewindow import SettingWindow
 from pvr.gui.basewindow import Action
-import pvr.elismgr
+import pvr.ElisMgr
 from elisproperty import ElisPropertyEnum, ElisPropertyInt
 from elisenum import ElisEnum
 
@@ -23,7 +23,7 @@ E_MAIN_GROUP_ID	= 9000
 class AntennaSetup( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.commander = pvr.elismgr.getInstance( ).getCommander( )
+		self.commander = pvr.ElisMgr.getInstance( ).getCommander( )
 			
 		self.initialized = False
 		self.lastFocused = -1
@@ -41,15 +41,15 @@ class AntennaSetup( SettingWindow ):
 		self.setHeaderLabel( 'Antenna & Satellite Setup' )
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
 
-		self.addEnumControl( E_SpinEx01, 'Tuner2 Connect Type', None, 'Select tuner 2 connection type.' )
-		self.addEnumControl( E_SpinEx02, 'Tuner2 Signal Config', None, 'Select tuner 2 configuration.' )
-		self.addEnumControl( E_SpinEx03, 'Tuner1 Type', None, 'Setup tuner 1.' )
-		self.addLeftLabelButtonControl( E_Input01, ' - Tuner 1 Configuration', 'Go to Tuner 1 Configure.' )
-		self.addEnumControl( E_SpinEx04, 'Tuner2 Type', None, 'Setup tuner 2.' )
-		self.addLeftLabelButtonControl( E_Input02, ' - Tuner 2 Configuration', 'Go to Tuner 2 Configure.' )
+		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', None, 'Select tuner 2 connection type.' )
+		self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', None, 'Select tuner 2 configuration.' )
+		self.AddEnumControl( E_SpinEx03, 'Tuner1 Type', None, 'Setup tuner 1.' )
+		self.AddLeftLabelButtonControl( E_Input01, ' - Tuner 1 Configuration', 'Go to Tuner 1 Configure.' )
+		self.AddEnumControl( E_SpinEx04, 'Tuner2 Type', None, 'Setup tuner 2.' )
+		self.AddLeftLabelButtonControl( E_Input02, ' - Tuner 2 Configuration', 'Go to Tuner 2 Configure.' )
 
-		self.initControl( )
-		self.showDescription( self.getFocusId( ) )
+		self.InitControl( )
+		self.ShowDescription( self.getFocusId( ) )
 		self.disableControl( )
 		self.initialized = True
 
@@ -72,23 +72,23 @@ class AntennaSetup( SettingWindow ):
 			else :
 				configmgr.getInstance( ).restore( )
 
-			self.resetAllControl( )
+			self.ResetAllControl( )
 			self.close( )
 
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
-			self.controlLeft( )
+			self.ControlLeft( )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			self.controlRight( )				
+			self.ControlRight( )				
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			self.controlUp( )
-			self.showDescription( focusId )
+			self.ControlUp( )
+			self.ShowDescription( focusId )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			self.controlDown( )
-			self.showDescription( focusId )
+			self.ControlDown( )
+			self.ShowDescription( focusId )
 			
 
 
@@ -108,63 +108,63 @@ class AntennaSetup( SettingWindow ):
 
 				configmgr.getInstance().setCurrentTunerIndex( E_TUNER_2 )
 
-			if self.getSelectedIndex( E_SpinEx03 ) == E_SIMPLE_LNB :
+			if self.GetSelectedIndex( E_SpinEx03 ) == E_SIMPLE_LNB :
 				configmgr.getInstance( ).setCurrentConfigIndex
 				configmgr.getInstance( ).setCurrentConfigIndex( 0 )
-				self.resetAllControl( )
+				self.ResetAllControl( )
 				
-				import pvr.platform 
-				scriptDir = pvr.platform.getPlatform().getScriptDir()
+				import pvr.Platform 
+				scriptDir = pvr.Platform.getPlatform().GetScriptDir()
 				SatelliteConfigSimple('satelliteconfiguration.xml', scriptDir).doModal()
 			
-			elif self.getSelectedIndex( E_SpinEx03 ) == E_MOTORIZED_USALS :
+			elif self.GetSelectedIndex( E_SpinEx03 ) == E_MOTORIZED_USALS :
 
-				self.resetAllControl( )
+				self.ResetAllControl( )
 				
-				import pvr.platform 
-				scriptDir = pvr.platform.getPlatform().getScriptDir()
+				import pvr.Platform 
+				scriptDir = pvr.Platform.getPlatform().GetScriptDir()
 				MotorizeConfiguration('satelliteconfiguration.xml', scriptDir).doModal()
 
-			elif self.getSelectedIndex( E_SpinEx03 ) == E_ONE_CABLE :
+			elif self.GetSelectedIndex( E_SpinEx03 ) == E_ONE_CABLE :
 			
-				self.resetAllControl( )
+				self.ResetAllControl( )
 				
-				import pvr.platform 
-				scriptDir = pvr.platform.getPlatform().getScriptDir()
+				import pvr.Platform 
+				scriptDir = pvr.Platform.getPlatform().GetScriptDir()
 				OneCableConfiguration('onecableconfiguration.xml', scriptDir).doModal()
 
 			else :
 
-				self.resetAllControl( )
+				self.ResetAllControl( )
 				winmgr.getInstance().showWindow( winmgr.WIN_ID_TUNER_CONFIGURATION )
 			
 
-		groupId = self.getGroupId( controlId )
+		groupId = self.GetGroupId( controlId )
 		
 		if groupId == E_SpinEx01 or groupId == E_SpinEx02 or groupId == E_SpinEx03 or groupId == E_SpinEx04 :
-			self.controlSelect()
+			self.ControlSelect()
 
 	def onFocus( self, controlId ):
 		if self.initialized == False :
 			return
 		if ( self.lastFocused != controlId ) :
-			self.showDescription( controlId )
+			self.ShowDescription( controlId )
 			self.lastFocused = controlId
 
 
 	def disableControl( self ):
-		selectedIndex1 = self.getSelectedIndex( E_SpinEx01 )
+		selectedIndex1 = self.GetSelectedIndex( E_SpinEx01 )
 		if ( selectedIndex1 == 1 ) :
-			self.setEnableControl( E_SpinEx02, False )
+			self.SetEnableControl( E_SpinEx02, False )
 			self.getControl( E_SpinEx02 + 3 ).selectItem( 0 )
 		else :
-			self.setEnableControl( E_SpinEx02, True )
+			self.SetEnableControl( E_SpinEx02, True )
 
-		selectedIndex2 = self.getSelectedIndex( E_SpinEx02 )	
+		selectedIndex2 = self.GetSelectedIndex( E_SpinEx02 )	
 		if ( selectedIndex2 == 0 ) :
-			self.setEnableControl( E_SpinEx04, False )
-			self.setEnableControl( E_Input02, False )
-			self.getControl( E_SpinEx04 + 3 ).selectItem( self.getSelectedIndex( E_SpinEx03 ) )
+			self.SetEnableControl( E_SpinEx04, False )
+			self.SetEnableControl( E_Input02, False )
+			self.getControl( E_SpinEx04 + 3 ).selectItem( self.GetSelectedIndex( E_SpinEx03 ) )
 		else :
-			self.setEnableControl( E_SpinEx04, True)
-			self.setEnableControl( E_Input02, True )
+			self.SetEnableControl( E_SpinEx04, True)
+			self.SetEnableControl( E_Input02, True )

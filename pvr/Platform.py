@@ -9,25 +9,25 @@ import urllib
 import stat
 
 
-__platform = None
+gPlatform = None
 
 
-def getPlatform():
-    global __platform
-    if not __platform:
+def GetPlatform():
+    global gPlatform
+    if not gPlatform:
         if 'win32' in sys.platform:
-            __platform = WindowsPlatform()
+            gPlatform = WindowsPlatform()
         elif 'linux' in sys.platform:
-            __platform = LinuxPlatform()
+            gPlatform = LinuxPlatform()
         elif 'darwin' in sys.platform:
             # gotta be a better way to detect ipad/iphone/atv2
             if 'USER' in os.environ and os.environ['USER'] in ('mobile','frontrow',):
-                __platform = IOSPlatform()
+                gPlatform = IOSPlatform()
             else: 
-                __platform = MacPlatform()
+                gPlatform = MacPlatform()
         else:
-            __platform = LinuxPlatform()
-    return __platform
+            gPlatform = LinuxPlatform()
+    return gPlatform
 
 
 def MakeDir(dir):
@@ -41,10 +41,10 @@ class Platform(object):
 
     def __init__(self, *args, **kwargs):
         self.addon = xbmcaddon.Addon('script.mbox')
-        MakeDir(self.getScriptDataDir())
-        MakeDir(self.getCacheDir())
+        MakeDir(self.GetScriptDataDir())
+        MakeDir(self.GetCacheDir())
 
-    def xbmcVersion(self):
+    def GetMediaPath(self):
         version = 0.0
         vs = xbmc.getInfoLabel('System.BuildVersion')
         try: 
@@ -58,7 +58,7 @@ class Platform(object):
                 print('Cannot determine version of XBMC from build version: %s. Returning %s' % (vs, version))
         return version
     
-    def addLibsToSysPath(self):
+    def AddLibsToSysPath(self):
         '''Add 3rd party libs in ${scriptdir}/resources/lib to the PYTHONPATH'''
         libs = [
             'decorator', 
@@ -79,15 +79,15 @@ class Platform(object):
             'unittest']
         
         for lib in libs:
-            sys.path.append(os.path.join(self.getScriptDir(), 'libs', lib))
+            sys.path.append(os.path.join(self.GetScriptDir(), 'libs', lib))
         
         for i, path in enumerate(sys.path):    
             print 'lael98 check syspath[%d] = %s' % (i, path)
     
-    def getName(self):
+    def GetName(self):
         return "N/A"
     
-    def getScriptDir(self):
+    def GetScriptDir(self):
         '''
         @return: directory that this xbmc script resides in.
         
@@ -97,7 +97,7 @@ class Platform(object):
         '''
         return self.addon.getAddonInfo('path')
     
-    def getScriptDataDir(self):
+    def GetScriptDataDir(self):
         '''
         @return: directory for storing user settings for this xbmc script.
         
@@ -107,63 +107,38 @@ class Platform(object):
         '''
         return xbmc.translatePath(self.addon.getAddonInfo('profile'))
 
-    def getSkinDir(self):
+    def GetSkinDir(self):
         return xbmc.translatePath('special://skin')
 
-    def getCacheDir(self):
-        return os.path.join(self.getScriptDataDir(), 'cache')
+    def GetCacheDir(self):
+        return os.path.join(self.GetScriptDataDir(), 'cache')
     
-    def getUserDataDir(self):
+    def GetUserDataDir(self):
         return xbmc.translatePath('special://userdata')
     
-    def getHostname(self):
+    def GetHostname(self):
         try:
-            return socket.gethostname()
+            return socket.GetHostname()
         except:
             return xbmc.getIPAddress()
      
-    def isLinux(self):
+    def IsLinux(self):
         return False
-    
-    def addonVersion(self):
-        return self.addon.getAddonInfo('version')
-            
-    def __repr__(self):
-        bar = "=" * 80
-        s = bar + \
-"""
-hostname        = %s
-platform        = %s 
-script dir      = %s
-script data dir = %s
-""" % (self.getHostname(), type(self).__name__, self.getScriptDir(), self.getScriptDataDir())
-        s += bar
-        return s
-    
-    def getDefaultRecordingsDir(self):
-        return ''
 
-    def getMediaPath(self, mediaFile):
+    def GetMediaPath(self, aMediaFile):
         # TODO: Fix when we support multiple skins
-        return os.path.join(self.getScriptDir(), 'resources', 'skins', 'Default', 'media', mediaFile)
+        return os.path.join(self.GetScriptDir(), 'resources', 'skins', 'Default', 'media', aMediaFile)
         
-    def showPopup(self, title, text, millis=10000):
-        # filter all commas out of text since they delimit args
-        title = title.replace(',', ';')
-        text = text.replace(',', ';')
-        s = u'XBMC.Notification(%s,%s,%s)' % (title, text, millis)
-        xbmc.executebuiltin(s)
-
 
 class LinuxPlatform(Platform):
 
     def __init__(self, *args, **kwargs):
         Platform.__init__(self, *args, **kwargs)
         
-    def getName(self):
+    def GetName(self):
         return "linux"
     
-    def isLinux(self):
+    def IsLinux(self):
         return True
 
 
@@ -172,7 +147,7 @@ class WindowsPlatform(Platform):
     def __init__(self, *args, **kwargs):
         Platform.__init__(self, *args, **kwargs)
     
-    def getName(self):
+    def GetName(self):
         return "windows"
 
         
@@ -181,7 +156,7 @@ class MacPlatform(Platform):
     def __init__(self, *args, **kwargs):
         Platform.__init__(self, *args, **kwargs)
         
-    def getName(self):
+    def GetName(self):
         return 'mac'
 
     
@@ -190,6 +165,6 @@ class IOSPlatform(Platform):
     def __init__(self, *args, **kwargs):
         Platform.__init__(self, *args, **kwargs)
         
-    def getName(self):
+    def GetName(self):
         return 'ios'
 

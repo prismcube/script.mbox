@@ -17,14 +17,14 @@ if __name__ == '__main__':
 #	import xbmc
 #	loading = xbmcgui.WindowXML('loading.xml', scriptDir)
 #	loading.show()
-	import pvr.platform 
-	platform = pvr.platform.getPlatform()
-	platform.addLibsToSysPath()
-	cacheDir = platform.getCacheDir()
+	import pvr.Platform 
+	platform = pvr.Platform.GetPlatform()
+	platform.AddLibsToSysPath()
+	cacheDir = platform.GetCacheDir()
 
-	from pvr.util import MakeDir
+	from pvr.Util import MakeDir
 	MakeDir( cacheDir )
 
-	import launcher
-	launcher.getInstance().run()
+	import Launcher
+	Launcher.GetInstance().Run()
 

@@ -3,19 +3,19 @@ import xbmcgui
 import sys
 import time
 
-import pvr.gui.windowmgr as winmgr
+import pvr.gui.WindowMgr as winmgr
 import pvr.gui.dialogmgr as diamgr
 from pvr.gui.basewindow import BaseWindow
 from pvr.gui.basewindow import Action
 from pvr.gui.guiconfig import *
 
 
-import pvr.elismgr
+import pvr.ElisMgr
 from elisaction import ElisAction
 from elisenum import ElisEnum
 
 #from threading import Thread
-from pvr.util import RunThread, is_digit, Mutex, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString, enumToString #, synchronized, sync_instance
+from pvr.Util import RunThread, is_digit, Mutex, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString, enumToString #, synchronized, sync_instance
 import threading
 
 #debug log
@@ -33,11 +33,11 @@ class ChannelBanner(BaseWindow):
 		print 'args[0]=[%s]' % args[0]
 		print 'args[1]=[%s]' % args[1]
 
-		self.commander = pvr.elismgr.getInstance().getCommander()
+		self.commander = pvr.ElisMgr.getInstance().getCommander()
 		self.lastFocusId = None
 		self.lastChannel = 	self.commander.channel_GetCurrent()	
 		self.currentChannel =  self.lastChannel
-		self.eventBus = pvr.elismgr.getInstance().getEventBus()
+		self.eventBus = pvr.ElisMgr.getInstance().getEventBus()
 		#self.eventBus.register( self )
 
 

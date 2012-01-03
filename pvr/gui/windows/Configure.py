@@ -2,17 +2,17 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.windowmgr as winmgr
-from pvr.gui.basewindow import SettingWindow, setWindowBusy
+import pvr.gui.WindowMgr as winmgr
+from pvr.gui.basewindow import SettingWindow
 from pvr.gui.basewindow import Action
-import pvr.elismgr
+import pvr.ElisMgr
 from elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import *
 
 class Configure( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.commander = pvr.elismgr.getInstance( ).getCommander( )
+		self.commander = pvr.ElisMgr.getInstance( ).getCommander( )
  
 		self.LeftGroupItems						= [ 'Language', 'Parental', 'Recording Option', 'Audio Setting', 'SCART Setting','HDMI Setting', 'IP Setting', 'Format HDD', 'Factory Reset', 'Etc' ]
 		self.descriptionList					= [ 'DESC Language', 'DESC Parental', 'DESC Recording Option', 'DESC Audio Setting', 'DESC SCART Setting', 'DESC HDMI Setting', 'DESC IP Setting', 'DESC Format HDD', 'DESC Factory Reset', 'DESC Etc' ]
@@ -56,20 +56,20 @@ class Configure( SettingWindow ):
 				self.prevListItemID = self.ctrlLeftGroup.getSelectedPosition( )
 				self.setListControl( )
 			elif focusId != E_SUBMENU_LIST_ID:
-				self.controlUp( )
+				self.ControlUp( )
 	
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			if focusId == E_SUBMENU_LIST_ID and self.ctrlLeftGroup.getSelectedPosition() != self.prevListItemID :
 				self.prevListItemID = self.ctrlLeftGroup.getSelectedPosition( )
 				self.setListControl( )
 			elif focusId != E_SUBMENU_LIST_ID:
-				self.controlDown( )
+				self.ControlDown( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			if focusId != E_SUBMENU_LIST_ID and ( ( focusId % 10 ) == 1 ) :
 				self.setFocusId( E_SUBMENU_LIST_ID )
 			else :
-				self.controlLeft( )
+				self.ControlLeft( )
 				
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			if focusId == E_SUBMENU_LIST_ID :
@@ -77,13 +77,13 @@ class Configure( SettingWindow ):
 			elif ( focusId != E_SUBMENU_LIST_ID ) and ( ( focusId % 10 ) == 2 ) :
 				self.setFocusId( E_SUBMENU_LIST_ID )
 			elif ( focusId != E_SUBMENU_LIST_ID ) and ( ( focusId % 10 ) == 1 ) :
-				self.controlRight( )
+				self.ControlRight( )
 			
 
 	def onClick( self, controlId ):
 		if( self.ctrlLeftGroup.getSelectedPosition() == E_LANGUAGE or self.ctrlLeftGroup.getSelectedPosition() == E_IP_SETTING ) :
 			self.disableControl( self.ctrlLeftGroup.getSelectedPosition() )
-		self.controlSelect( )
+		self.ControlSelect( )
 
 		
 	def onFocus( self, controlId ):
@@ -99,190 +99,190 @@ class Configure( SettingWindow ):
 		
 
 	def setListControl( self ):
-		self.resetAllControl( )
+		self.ResetAllControl( )
 		selectedId = self.ctrlLeftGroup.getSelectedPosition()
 		self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( False )
 		
 		if selectedId == E_LANGUAGE :
 
-			self.addEnumControl( E_SpinEx01, 'Language' )
-			self.addEnumControl( E_SpinEx02, 'Audio Language' )
-			self.addEnumControl( E_SpinEx03, 'Subtitle Language' )
-			self.addEnumControl( E_SpinEx04, 'Secondary Subtitle Language' )
-			self.addEnumControl( E_SpinEx05, 'Hearing Impaired' )
+			self.AddEnumControl( E_SpinEx01, 'Language' )
+			self.AddEnumControl( E_SpinEx02, 'Audio Language' )
+			self.AddEnumControl( E_SpinEx03, 'Subtitle Language' )
+			self.AddEnumControl( E_SpinEx04, 'Secondary Subtitle Language' )
+			self.AddEnumControl( E_SpinEx05, 'Hearing Impaired' )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
-			self.setVisibleControls( visibleControlIds, True )
-			self.setEnableControls( visibleControlIds, True )
+			self.SetVisibleControls( visibleControlIds, True )
+			self.SetEnableControls( visibleControlIds, True )
 
 			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]
-			self.setVisibleControls( hideControlIds, False )
+			self.SetVisibleControls( hideControlIds, False )
 			
-			self.initControl( )
+			self.InitControl( )
 			self.disableControl( E_LANGUAGE )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 			
 			
 		elif selectedId == E_PARENTAL :	
-			self.addEnumControl( E_SpinEx01, 'Lock Mainmenu' )
-			self.addInputControl( E_Input01, 'New PIN code', '****', 5 )
-			self.addInputControl( E_Input02, 'Confirmation PIN code', '****' , 5 )
-			self.addEnumControl( E_SpinEx02, 'Age Restricted' )
+			self.AddEnumControl( E_SpinEx01, 'Lock Mainmenu' )
+			self.AddInputControl( E_Input01, 'New PIN code', '****', 5 )
+			self.AddInputControl( E_Input02, 'Confirmation PIN code', '****' , 5 )
+			self.AddEnumControl( E_SpinEx02, 'Age Restricted' )
 			
 
 			visibleControlIds = [ E_SpinEx01, E_Input01, E_Input02, E_SpinEx02 ]
-			self.setVisibleControls( visibleControlIds, True )
-			self.setEnableControls( visibleControlIds, True )
+			self.SetVisibleControls( visibleControlIds, True )
+			self.SetEnableControls( visibleControlIds, True )
 
 			hideControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input03, E_Input04 ]
-			self.setVisibleControls( hideControlIds, False )
+			self.SetVisibleControls( hideControlIds, False )
 			
-			self.initControl( )
+			self.InitControl( )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 
 
 		elif selectedId == E_RECORDING_OPTION :
 
-			self.addEnumControl( E_SpinEx01, 'Automatic Timeshift' )
-			self.addEnumControl( E_SpinEx02, 'Default Rec Duration' )
-			self.addEnumControl( E_SpinEx03, 'Pre-Rec Time' )
-			self.addEnumControl( E_SpinEx04, 'Post-Rec Time' )
+			self.AddEnumControl( E_SpinEx01, 'Automatic Timeshift' )
+			self.AddEnumControl( E_SpinEx02, 'Default Rec Duration' )
+			self.AddEnumControl( E_SpinEx03, 'Pre-Rec Time' )
+			self.AddEnumControl( E_SpinEx04, 'Post-Rec Time' )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
-			self.setVisibleControls( visibleControlIds, True )
-			self.setEnableControls( visibleControlIds, True )
+			self.SetVisibleControls( visibleControlIds, True )
+			self.SetEnableControls( visibleControlIds, True )
 
 			hideControlIds = [ E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04 ]
-			self.setVisibleControls( hideControlIds, False )
+			self.SetVisibleControls( hideControlIds, False )
 			
-			self.initControl( )
+			self.InitControl( )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 
 			
 		elif selectedId == E_AUDIO_SETTING :
-			self.addEnumControl( E_SpinEx01, 'Audio Dolby' )
-			self.addEnumControl( E_SpinEx02, 'Audio HDMI' )
-			self.addEnumControl( E_SpinEx03, 'Audio Delay' )
+			self.AddEnumControl( E_SpinEx01, 'Audio Dolby' )
+			self.AddEnumControl( E_SpinEx02, 'Audio HDMI' )
+			self.AddEnumControl( E_SpinEx03, 'Audio Delay' )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
-			self.setEnableControls( visibleControlIds, True )
-			self.setVisibleControls( visibleControlIds, True )
+			self.SetEnableControls( visibleControlIds, True )
+			self.SetVisibleControls( visibleControlIds, True )
 
 			hideControlIds = [ E_SpinEx04, E_SpinEx05,  E_Input01, E_Input02, E_Input03, E_Input04 ]
-			self.setVisibleControls( hideControlIds, False )
+			self.SetVisibleControls( hideControlIds, False )
 
-			self.initControl( )
+			self.InitControl( )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 
 	
 		elif selectedId == E_SCART_SETTING :
-			self.addEnumControl( E_SpinEx01, 'TV Aspect' )
-			self.addEnumControl( E_SpinEx02, 'Picture 16:9' )
-			self.addEnumControl( E_SpinEx03, 'Scart TV' )
-			self.addEnumControl( E_SpinEx04, 'TV System' )
+			self.AddEnumControl( E_SpinEx01, 'TV Aspect' )
+			self.AddEnumControl( E_SpinEx02, 'Picture 16:9' )
+			self.AddEnumControl( E_SpinEx03, 'Scart TV' )
+			self.AddEnumControl( E_SpinEx04, 'TV System' )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
-			self.setVisibleControls( visibleControlIds, True )
-			self.setEnableControls( visibleControlIds, True )
+			self.SetVisibleControls( visibleControlIds, True )
+			self.SetEnableControls( visibleControlIds, True )
 
 			hideControlIds = [ E_SpinEx05,  E_Input01, E_Input02, E_Input03, E_Input04 ]
-			self.setVisibleControls( hideControlIds, False )
+			self.SetVisibleControls( hideControlIds, False )
 
-			self.initControl( )
+			self.InitControl( )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 			
 
 		elif selectedId == E_HDMI_SETTING :
-			self.addEnumControl( E_SpinEx01, 'HDMI Format' )
-			self.addEnumControl( E_SpinEx02, 'Show 4:3' )
-			self.addEnumControl( E_SpinEx03, 'HDMI Color Space' )
-			self.addEnumControl( E_SpinEx04, 'TV System' )
+			self.AddEnumControl( E_SpinEx01, 'HDMI Format' )
+			self.AddEnumControl( E_SpinEx02, 'Show 4:3' )
+			self.AddEnumControl( E_SpinEx03, 'HDMI Color Space' )
+			self.AddEnumControl( E_SpinEx04, 'TV System' )
 			
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
-			self.setVisibleControls( visibleControlIds, True )
-			self.setEnableControls( visibleControlIds, True )
+			self.SetVisibleControls( visibleControlIds, True )
+			self.SetEnableControls( visibleControlIds, True )
 
 			hideControlIds = [ E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04 ]
-			self.setVisibleControls( hideControlIds, False )
+			self.SetVisibleControls( hideControlIds, False )
 
-			self.initControl( )
+			self.InitControl( )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 
 		
 		elif selectedId == E_IP_SETTING :	
-			self.addEnumControl( E_SpinEx01, 'DHCP' )
-			self.addInputControl( E_Input01, 'IP Address', '192.168.101.160' , 3 )
-			self.addInputControl( E_Input02, 'Subnet Mask', '255.255.252.0', 3 )
-			self.addInputControl( E_Input03, 'Gateway', '192.168.100.1', 3 )
-			self.addInputControl( E_Input04, 'DNS', '192.168.100.1', 3 )
+			self.AddEnumControl( E_SpinEx01, 'DHCP' )
+			self.AddInputControl( E_Input01, 'IP Address', '192.168.101.160' , 3 )
+			self.AddInputControl( E_Input02, 'Subnet Mask', '255.255.252.0', 3 )
+			self.AddInputControl( E_Input03, 'Gateway', '192.168.100.1', 3 )
+			self.AddInputControl( E_Input04, 'DNS', '192.168.100.1', 3 )
 
 			visibleControlIds = [ E_SpinEx01, E_Input01, E_Input02, E_Input03, E_Input04 ]
-			self.setVisibleControls( visibleControlIds, True )
-			self.setEnableControls( visibleControlIds, True )
+			self.SetVisibleControls( visibleControlIds, True )
+			self.SetEnableControls( visibleControlIds, True )
 
 			hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
-			self.setVisibleControls( hideControlIds, False )
+			self.SetVisibleControls( hideControlIds, False )
 			
-			self.initControl( )
+			self.InitControl( )
 			self.disableControl( E_IP_SETTING )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 			
 
 		elif selectedId == E_FORMAT_HDD :	
-			self.addEnumControl( E_SpinEx01, 'Disk Format Type' )
-			self.addLeftLabelButtonControl( E_Input01, 'Start HDD Format' )
+			self.AddEnumControl( E_SpinEx01, 'Disk Format Type' )
+			self.AddLeftLabelButtonControl( E_Input01, 'Start HDD Format' )
 			
 			visibleControlIds = [ E_SpinEx01, E_Input01 ]
-			self.setVisibleControls( visibleControlIds, True )
-			self.setEnableControls( visibleControlIds, True )
+			self.SetVisibleControls( visibleControlIds, True )
+			self.SetEnableControls( visibleControlIds, True )
 
 			hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input02, E_Input03, E_Input04 ]
-			self.setVisibleControls( hideControlIds, False )
+			self.SetVisibleControls( hideControlIds, False )
 			
-			self.initControl( )
+			self.InitControl( )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 			
 
 		elif selectedId == E_FACTORY_RESET :	
-			self.addEnumControl( E_SpinEx01, 'Reset Channel List' )
-			self.addEnumControl( E_SpinEx02, 'Reset Favorite Add-ons' )
-			self.addEnumControl( E_SpinEx03, 'Reset Configure Setting' )
+			self.AddEnumControl( E_SpinEx01, 'Reset Channel List' )
+			self.AddEnumControl( E_SpinEx02, 'Reset Favorite Add-ons' )
+			self.AddEnumControl( E_SpinEx03, 'Reset Configure Setting' )
 		
 			
-			self.addLeftLabelButtonControl( E_Input01, 'Start Reset' )
+			self.AddLeftLabelButtonControl( E_Input01, 'Start Reset' )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01 ]
-			self.setVisibleControls( visibleControlIds, True )
-			self.setEnableControls( visibleControlIds, True )
+			self.SetVisibleControls( visibleControlIds, True )
+			self.SetEnableControls( visibleControlIds, True )
 
 			hideControlIds = [ E_SpinEx04 , E_SpinEx05, E_Input02, E_Input03, E_Input04 ]
-			self.setVisibleControls( hideControlIds, False )
+			self.SetVisibleControls( hideControlIds, False )
 
-			self.initControl( )
+			self.InitControl( )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 			
 
 		elif selectedId == E_ETC :	
-			self.addEnumControl( E_SpinEx01, 'Channel Banner Duration' )	#	Erase channel list yes/no
-			self.addEnumControl( E_SpinEx02, 'Playback Banner Duration' )	#	Erase custom menu yes/no
+			self.AddEnumControl( E_SpinEx01, 'Channel Banner Duration' )	#	Erase channel list yes/no
+			self.AddEnumControl( E_SpinEx02, 'Playback Banner Duration' )	#	Erase custom menu yes/no
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02 ]
-			self.setVisibleControls( visibleControlIds, True )
-			self.setEnableControls( visibleControlIds, True )
+			self.SetVisibleControls( visibleControlIds, True )
+			self.SetEnableControls( visibleControlIds, True )
 
 			hideControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04 ]
-			self.setVisibleControls( hideControlIds, False )
+			self.SetVisibleControls( hideControlIds, False )
 			
-			self.initControl( )
+			self.InitControl( )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 			
@@ -292,16 +292,16 @@ class Configure( SettingWindow ):
 
 	def disableControl( self, selectedItem ):
 		if( selectedItem == E_LANGUAGE ) :
-			selectedIndex = self.getSelectedIndex( E_SpinEx03 )
+			selectedIndex = self.GetSelectedIndex( E_SpinEx03 )
 			visibleControlIds = [ E_SpinEx04, E_SpinEx05 ]
 			if ( selectedIndex == 0 ) :
-				self.setEnableControls( visibleControlIds, False )
+				self.SetEnableControls( visibleControlIds, False )
 			else :
-				self.setEnableControls( visibleControlIds, True )
+				self.SetEnableControls( visibleControlIds, True )
 		elif( selectedItem == E_IP_SETTING ) :
-			selectedIndex = self.getSelectedIndex( E_SpinEx01 )
+			selectedIndex = self.GetSelectedIndex( E_SpinEx01 )
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]
 			if ( selectedIndex == 1 ) :
-				self.setEnableControls( visibleControlIds, False )
+				self.SetEnableControls( visibleControlIds, False )
 			else :
-				self.setEnableControls( visibleControlIds, True )
+				self.SetEnableControls( visibleControlIds, True )

@@ -2,7 +2,7 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.windowmgr as winmgr
+import pvr.gui.WindowMgr as winmgr
 import pvr.tunerconfigmgr as configmgr
 from pvr.tunerconfigmgr import *
 from pvr.gui.guiconfig import *
@@ -29,20 +29,20 @@ class OneCableConfiguration( SettingWindow ):
 		self.currentSatellite = configmgr.getInstance( ).getConfiguredSatellitebyIndex( 0 )
 		self.loadConfigedSatellite( )
 
-		self.addLeftLabelButtonControl( E_Input01, 'Configure System' )
+		self.AddLeftLabelButtonControl( E_Input01, 'Configure System' )
 		
 		listitem = []
 		for i in range( self.satelliteCount ) :
 			listitem.append( '%d' % ( i + 1 ) )
 
-		self.addUserEnumControl( E_SpinEx01, 'Number of Satellite', listitem, 0 )
+		self.AddUserEnumControl( E_SpinEx01, 'Number of Satellite', listitem, 0 )
 
 		startId = E_Input02
 		for i in range( MAX_SATELLITE_CNT ) :
-			self.addInputControl( startId, 'Satellite %d' % ( i + 1 ), self.satellitelist[i] )
+			self.AddInputControl( startId, 'Satellite %d' % ( i + 1 ), self.satellitelist[i] )
 			startId += 100
 		
-		self.initControl( )
+		self.InitControl( )
 		self.getControl( E_SpinEx01 + 3 ).selectItem( self.satelliteCount - 1 )
 		self.disableControl( )
 
@@ -69,44 +69,44 @@ class OneCableConfiguration( SettingWindow ):
 					satellite[E_CONFIGURE_SATELLITE_ONECABLE_UBSLOT] = self.currentSatellite[E_CONFIGURE_SATELLITE_ONECABLE_UBSLOT]
 					satellite[E_CONFIGURE_SATELLITE_ONECABLE_UBFREQ] = self.currentSatellite[E_CONFIGURE_SATELLITE_ONECABLE_UBFREQ]
 
-			self.resetAllControl( )
+			self.ResetAllControl( )
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
-			self.controlLeft( )
+			self.ControlLeft( )
 			
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			self.controlRight( )
+			self.ControlRight( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			self.controlUp( )
+			self.ControlUp( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			self.controlDown( )
+			self.ControlDown( )
 
 
 	def onClick( self, controlId ):
-		groupId = self.getGroupId( controlId )
+		groupId = self.GetGroupId( controlId )
 
 		if groupId == E_Input01 :
-			position = self.getControlIdToListIndex( groupId ) - 2
+			position = self.GetControlIdToListIndex( groupId ) - 2
 			configmgr.getInstance( ).setOneCableSatelliteCount( position + 1 )
-			self.resetAllControl( )
-			import pvr.platform 
-			scriptDir = pvr.platform.getPlatform().getScriptDir()
+			self.ResetAllControl( )
+			import pvr.Platform 
+			scriptDir = pvr.Platform.getPlatform().GetScriptDir()
 			OneCableConfiguration2('onecableconfiguration2.xml', scriptDir).doModal()
 		
 		elif groupId == E_SpinEx01 :
 			self.disableControl( )
 
 		else :
-			position = self.getControlIdToListIndex( groupId ) - 2
+			position = self.GetControlIdToListIndex( groupId ) - 2
 			configmgr.getInstance( ).setCurrentConfigIndex( position )
 
-			self.resetAllControl( )
+			self.ResetAllControl( )
 				
-			import pvr.platform 
-			scriptDir = pvr.platform.getPlatform().getScriptDir()
+			import pvr.Platform 
+			scriptDir = pvr.Platform.getPlatform().GetScriptDir()
 			SatelliteConfigSimple('satelliteconfiguration.xml', scriptDir).doModal()
 			
 	def onFocus( self, controlId ):
@@ -115,12 +115,12 @@ class OneCableConfiguration( SettingWindow ):
 
 	def disableControl( self ): 
 		for i in range( MAX_SATELLITE_CNT ) :
-			if ( self.getSelectedIndex( E_SpinEx01 ) + 1 ) > i :
-				self.setEnableControl( self.getListIndextoControlId( 2 + i ), True )
-				self.setVisibleControl( self.getListIndextoControlId( 2 + i ), True )
+			if ( self.GetSelectedIndex( E_SpinEx01 ) + 1 ) > i :
+				self.SetEnableControl( self.GetListIndextoControlId( 2 + i ), True )
+				self.SetVisibleControl( self.GetListIndextoControlId( 2 + i ), True )
 			else :
-				self.setEnableControl( self.getListIndextoControlId( 2 + i ), False )
-				self.setVisibleControl( self.getListIndextoControlId( 2 + i ), False ) 
+				self.SetEnableControl( self.GetListIndextoControlId( 2 + i ), False )
+				self.SetVisibleControl( self.GetListIndextoControlId( 2 + i ), False ) 
 		
 		
 	def loadConfigedSatellite( self ):

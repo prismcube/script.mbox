@@ -3,10 +3,9 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.windowmgr as winmgr
-from pvr.gui.basewindow import DetailWindow, setWindowBusy
+import pvr.gui.WindowMgr as winmgr
 from pvr.gui.basewindow import Action
-import pvr.elismgr
+import pvr.ElisMgr
 from elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import *
 
@@ -16,7 +15,7 @@ from pvr.gui.guiconfig import *
 class LanguageSetting(DetailWindow):
 	def __init__( self, *args, **kwargs ):
 		DetailWindow.__init__( self, *args, **kwargs)
-		self.commander = pvr.elismgr.getInstance().getCommander( )
+		self.commander = pvr.ElisMgr.getInstance().getCommander( )
 			
 
 	def onInit(self):
@@ -25,15 +24,15 @@ class LanguageSetting(DetailWindow):
 		self.setHeaderLabel( 'Language Preference' )
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_SEARCH_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_RECORD_MASK )
 
-		self.addNormalButtonControl( E_SlideMenuButton01, 'TEST1' )
-		self.addNormalButtonControl( E_SlideMenuButton02, 'TEST2' )
-		self.addNormalButtonControl( E_SlideMenuButton03, 'TEST3' )
+		self.AddNormalButtonControl( E_SlideMenuButton01, 'TEST1' )
+		self.AddNormalButtonControl( E_SlideMenuButton02, 'TEST2' )
+		self.AddNormalButtonControl( E_SlideMenuButton03, 'TEST3' )
 
 		#visibleControlIds = [ E_SlideMenuButton01, E_SlideMenuButton02, E_SlideMenuButton03 ]
-		#self.setVisibleControls( visibleControlIds, True )
-		#self.setEnableControls( visibleControlIds, True )
+		#self.SetVisibleControls( visibleControlIds, True )
+		#self.SetEnableControls( visibleControlIds, True )
 		
-		self.initControl( )
+		self.InitControl( )
 		
 	def onAction( self, action ):
 
@@ -46,7 +45,7 @@ class LanguageSetting(DetailWindow):
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR:
-			self.resetAllControl( )
+			self.ResetAllControl( )
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT:
@@ -56,10 +55,10 @@ class LanguageSetting(DetailWindow):
 				self.setFocusId(9000)
 
 		elif actionId == Action.ACTION_MOVE_UP:
-			self.controlUp( )
+			self.ControlUp( )
 
 		elif actionId == Action.ACTION_MOVE_DOWN:
-			self.controlDown( )
+			self.ControlDown( )
 
 
 	def onClick( self, controlId ):

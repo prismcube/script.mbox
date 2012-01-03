@@ -3,7 +3,7 @@ import xbmcgui
 import sys
 import time
 
-from gui.basedialog import BaseDialog
+from gui.BaseDialog import BaseDialog
 
 DIALOG_ID_LNB_FREQUENCY				= 1
 DIALOG_ID_CHANNEL_SEARCH			= 2
@@ -28,8 +28,9 @@ class DialogMgr(object):
 
 
 	def getDialog( self, dialogId ) :
-		import pvr.platform 
-		self.scriptDir = pvr.platform.getPlatform().getScriptDir()
+		import pvr.Platform 
+		"""
+		self.scriptDir = pvr.Platform.getPlatform().GetScriptDir()
 
 		try :	
 			if dialogId == DIALOG_ID_LNB_FREQUENCY :
@@ -49,3 +50,4 @@ class DialogMgr(object):
 
 		except Exception, e :
 			print '-----------------------> except[%s]'% e
+		"""

@@ -2,14 +2,14 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.windowmgr as winmgr
+import pvr.gui.WindowMgr as winmgr
 import pvr.tunerconfigmgr as configmgr
 from  pvr.tunerconfigmgr import *
 from pvr.gui.guiconfig import *
-from pvr.gui.basewindow import SettingWindow, setWindowBusy
+from pvr.gui.basewindow import SettingWindow
 from pvr.gui.basewindow import Action
 from elisenum import ElisEnum
-import pvr.elismgr
+import pvr.ElisMgr
 from elisproperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.windows.satelliteconfigdiseqc10 import SatelliteConfigDisEqC10
 from pvr.gui.windows.satelliteconfigdiseqc11 import SatelliteConfigDisEqC11
@@ -22,7 +22,7 @@ E_MAIN_LIST_ID = 9000
 class TunerConfiguration( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs)
-		self.commander = pvr.elismgr.getInstance( ).getCommander( )
+		self.commander = pvr.ElisMgr.getInstance( ).getCommander( )
 		self.listItems= []
 			
 	def onInit( self ):
@@ -92,9 +92,9 @@ class TunerConfiguration( SettingWindow ):
 				config = configuredList[ position ]
 				if config != [] :
 					configmgr.getInstance( ).setCurrentConfigIndex( position )
-					self.resetAllControl( )
-					import pvr.platform 
-					scriptDir = pvr.platform.getPlatform().getScriptDir()
+					self.ResetAllControl( )
+					import pvr.Platform 
+					scriptDir = pvr.Platform.getPlatform().GetScriptDir()
 
 					tunertype = configmgr.getInstance( ).getCurrentTunerType( )
 					
