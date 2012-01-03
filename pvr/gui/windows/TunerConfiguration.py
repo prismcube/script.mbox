@@ -6,11 +6,11 @@ import pvr.gui.WindowMgr as winmgr
 import pvr.tunerconfigmgr as configmgr
 from  pvr.tunerconfigmgr import *
 from pvr.gui.guiconfig import *
-from pvr.gui.basewindow import SettingWindow
-from pvr.gui.basewindow import Action
-from elisenum import ElisEnum
+from pvr.gui.BaseWindow import SettingWindow
+from pvr.gui.BaseWindow import Action
+from ElisEnum import ElisEnum
 import pvr.ElisMgr
-from elisproperty import ElisPropertyEnum, ElisPropertyInt
+from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.windows.satelliteconfigdiseqc10 import SatelliteConfigDisEqC10
 from pvr.gui.windows.satelliteconfigdiseqc11 import SatelliteConfigDisEqC11
 from pvr.gui.windows.satelliteconfigmotorized12 import SatelliteConfigMotorized12

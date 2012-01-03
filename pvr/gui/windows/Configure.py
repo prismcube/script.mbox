@@ -3,10 +3,10 @@ import xbmcgui
 import sys
 
 import pvr.gui.WindowMgr as winmgr
-from pvr.gui.basewindow import SettingWindow
-from pvr.gui.basewindow import Action
+from pvr.gui.BaseWindow import SettingWindow
+from pvr.gui.BaseWindow import Action
 import pvr.ElisMgr
-from elisproperty import ElisPropertyEnum, ElisPropertyInt
+from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import *
 
 class Configure( SettingWindow ):

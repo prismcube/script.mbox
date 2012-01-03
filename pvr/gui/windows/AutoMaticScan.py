@@ -9,8 +9,8 @@ import pvr.tunerconfigmgr as configmgr
 from  pvr.tunerconfigmgr import *
 from pvr.gui.guiconfig import *
 
-from pvr.gui.basewindow import SettingWindow
-from pvr.gui.basewindow import Action
+from pvr.gui.BaseWindow import SettingWindow
+from pvr.gui.BaseWindow import Action
 import pvr.ElisMgr
 
 

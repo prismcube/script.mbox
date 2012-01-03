@@ -7,11 +7,11 @@ import pvr.gui.dialogmgr as diamgr
 import pvr.tunerconfigmgr as configmgr
 from  pvr.tunerconfigmgr import *
 from pvr.gui.guiconfig import *
-from elisenum import ElisEnum
+from ElisEnum import ElisEnum
 
 
-from pvr.gui.basewindow import SettingWindow
-from pvr.gui.basewindow import Action
+from pvr.gui.BaseWindow import SettingWindow
+from pvr.gui.BaseWindow import Action
 
 
 class ManualScan( SettingWindow ):

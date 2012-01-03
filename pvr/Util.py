@@ -164,7 +164,7 @@ def epgInfoClock(flag, nowTime, strTime):
 
 def epgInfoComponentImage(component):
 	print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-	from elisenum import ElisEnum
+	from ElisEnum import ElisEnum
 	tmpcom = []
 	tmpcom = component
 	tempFile = 0x00
@@ -239,7 +239,7 @@ def GetSelectedLongitudeString(longitude_str):
 	return ret
 
 def enumToString(type, value):
-	from elisenum import ElisEnum
+	from ElisEnum import ElisEnum
 
 	ret = ''
 	if type == 'type' :
@@ -289,7 +289,7 @@ def enumToString(type, value):
 	return ret.upper()
 
 def ageLimit(cmd, agerating):
-	from elisproperty import ElisPropertyEnum
+	from ElisProperty import ElisPropertyEnum
 	
 	property = ElisPropertyEnum( 'Age Limit', cmd )
 	#print 'TTTTTTTTTTTTTTT[%s][%s][%s]'% ( agerating, property.getProp(), property.getPropString() )

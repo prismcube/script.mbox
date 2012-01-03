@@ -4,12 +4,12 @@ import sys
 import time
 
 import pvr.gui.WindowMgr as winmgr
-from pvr.gui.basewindow import BaseWindow
-from pvr.gui.basewindow import Action
+from pvr.gui.BaseWindow import BaseWindow
+from pvr.gui.BaseWindow import Action
 
 import pvr.ElisMgr
-from elisaction import ElisAction
-from elisenum import ElisEnum
+from ElisAction import ElisAction
+from ElisEnum import ElisEnum
 
 
 #from threading import Thread

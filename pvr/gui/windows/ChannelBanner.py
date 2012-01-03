@@ -5,14 +5,14 @@ import time
 
 import pvr.gui.WindowMgr as winmgr
 import pvr.gui.dialogmgr as diamgr
-from pvr.gui.basewindow import BaseWindow
-from pvr.gui.basewindow import Action
+from pvr.gui.BaseWindow import BaseWindow
+from pvr.gui.BaseWindow import Action
 from pvr.gui.guiconfig import *
 
 
 import pvr.ElisMgr
-from elisaction import ElisAction
-from elisenum import ElisEnum
+from ElisAction import ElisAction
+from ElisEnum import ElisEnum
 
 #from threading import Thread
 from pvr.Util import RunThread, is_digit, Mutex, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString, enumToString #, synchronized, sync_instance

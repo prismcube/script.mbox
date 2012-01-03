@@ -3,15 +3,15 @@ import xbmcgui
 import sys
 
 import pvr.gui.WindowMgr as winmgr
-from pvr.gui.basewindow import BaseWindow
-from pvr.gui.basewindow import Action
-from pvr.gui.basedialog import BaseDialog
-from elisenum import ElisEnum
+from pvr.gui.BaseWindow import BaseWindow
+from pvr.gui.BaseWindow import Action
+from pvr.gui.BaseDialog import BaseDialog
+from ElisEnum import ElisEnum
 from inspect import currentframe
 from pvr.Util import is_digit, RunThread, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString, enumToString
 import pvr.Util as util
 import pvr.ElisMgr
-from elisproperty import ElisPropertyEnum, ElisPropertyInt
+from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.guiconfig import FooterMask
 
 import pvr.msg as m

@@ -3,8 +3,8 @@ import xbmcgui
 import time
 import sys
 
-from pvr.gui.basedialog import BaseDialog
-from pvr.gui.basewindow import Action
+from pvr.gui.BaseDialog import BaseDialog
+from pvr.gui.BaseWindow import Action
 import pvr.gui.dialogmgr as diamgr
 import pvr.tunerconfigmgr as configmgr
 from pvr.tunerconfigmgr import *

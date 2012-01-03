@@ -50,10 +50,10 @@ E_TUNER_1						= 0
 E_TUNER_2						= 1
 E_TUNER_MAX						= 2
 
-from elisaction import ElisAction
-from elisenum import ElisEnum
+from ElisAction import ElisAction
+from ElisEnum import ElisEnum
 import pvr.ElisMgr
-from elisproperty import ElisPropertyEnum
+from ElisProperty import ElisPropertyEnum
 
 
 gTunerConfigMgr = None

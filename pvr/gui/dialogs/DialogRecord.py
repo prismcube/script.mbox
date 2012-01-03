@@ -5,12 +5,12 @@ import time
 import sys
 
 
-from pvr.gui.basewindow import Action
-from pvr.gui.basedialog import BaseDialog
+from pvr.gui.BaseWindow import Action
+from pvr.gui.BaseDialog import BaseDialog
 from  pvr.tunerconfigmgr import *
 import pvr.gui.dialogmgr as diamgr
 from elisevent import ElisEvent
-from elisenum import ElisEnum
+from ElisEnum import ElisEnum
 
 import pvr.ElisMgr
 

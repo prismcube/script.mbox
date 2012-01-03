@@ -6,8 +6,8 @@ import pvr.gui.WindowMgr as winmgr
 import pvr.tunerconfigmgr as configmgr
 from pvr.gui.guiconfig import *
 
-from pvr.gui.basewindow import SettingWindow
-from pvr.gui.basewindow import Action
+from pvr.gui.BaseWindow import SettingWindow
+from pvr.gui.BaseWindow import Action
 
 
 class MotorizeConfiguration( SettingWindow ):

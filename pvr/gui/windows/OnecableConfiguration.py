@@ -7,8 +7,8 @@ import pvr.tunerconfigmgr as configmgr
 from pvr.tunerconfigmgr import *
 from pvr.gui.guiconfig import *
 
-from pvr.gui.basewindow import SettingWindow
-from pvr.gui.basewindow import Action
+from pvr.gui.BaseWindow import SettingWindow
+from pvr.gui.BaseWindow import Action
 from pvr.gui.windows.onecableconfiguration2 import OneCableConfiguration2
 from pvr.gui.windows.satelliteconfigsimple import SatelliteConfigSimple
 

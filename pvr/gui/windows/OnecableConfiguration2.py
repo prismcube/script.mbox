@@ -8,9 +8,9 @@ from pvr.tunerconfigmgr import *
 from pvr.gui.guiconfig import *
 import pvr.ElisMgr
 
-from pvr.gui.basewindow import SettingWindow
-from pvr.gui.basewindow import Action
-from elisproperty import ElisPropertyInt
+from pvr.gui.BaseWindow import SettingWindow
+from pvr.gui.BaseWindow import Action
+from ElisProperty import ElisPropertyInt
 
 
 class OneCableConfiguration2( SettingWindow ):

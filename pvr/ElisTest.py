@@ -1,9 +1,9 @@
 
 
-from elisproperty import ElisPropertyEnum, ElisPropertyInt
+from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
-from elisaction import ElisAction
-from elisenum import ElisEnum
+from ElisAction import ElisAction
+from ElisEnum import ElisEnum
 class ElisTest(object):
 	def __init__(self):
 		self.mCommander = pvr.ElisMgr.getInstance().getCommander()
