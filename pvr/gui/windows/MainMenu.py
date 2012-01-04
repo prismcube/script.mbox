@@ -9,6 +9,12 @@ from inspect import currentframe
 from pvr.Util import GuiLock
 
 LIST_ID_MAIN_MENU				= 9000
+BUTTON_ID_INSTALLATION			= 90100
+BUTTON_ID_ARCHIVE				= 90200
+BUTTON_ID_EPG					= 90300
+BUTTON_ID_CHANNEL_LIST			= 90400
+BUTTON_ID_SYSTEM_INFO			= 90600
+
 BUTTON_ID_FIRSTINSTALLATION		= 90101
 BUTTON_ID_ANTENNA_SETUP			= 90102
 BUTTON_ID_CHANNEL_SEARCH		= 90103
@@ -34,8 +40,7 @@ class MainMenu( BaseWindow ):
 	@GuiLock
 	def onAction( self, aAction ):
 		id = aAction.getId()
-		
-		print "MainMenu onAction(): aAction %d" % id
+
 		focusId = self.getFocusId( )
 		print "MainMenu onAction(): focusId %d" % focusId
 		if id == Action.ACTION_PREVIOUS_MENU :
