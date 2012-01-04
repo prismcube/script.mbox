@@ -28,11 +28,10 @@ class AntennaSetup( SettingWindow ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId  )
-
+		
 		if ConfigMgr.GetInstance( ).GetNeedLoad( ) == True : 
 			ConfigMgr.GetInstance( ).LoadOriginalTunerConfig( )
-		
-			ConfigMgr.GetInstance( ).Load( )
+			ConfigMgr.GetInstance( ).Load( )		
 			ConfigMgr.GetInstance( ).SetNeedLoad( False )
 		
 		self.SetHeaderLabel( 'Antenna & Satellite Setup' )
@@ -49,7 +48,6 @@ class AntennaSetup( SettingWindow ) :
 		self.ShowDescription( self.getFocusId( ) )
 		self.DisableControl( )
 		self.mInitialized = True
-
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )

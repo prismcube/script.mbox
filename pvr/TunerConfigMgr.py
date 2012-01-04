@@ -267,43 +267,28 @@ class TunerConfigMgr( object ) :
 
 
 	def Load( self ) :
-
-		"""
-			[Longitude, Band, Name]
-		"""
 		self.mAllSatelliteList = []
 		self.mAllSatelliteList = self.mCommander.Satellite_GetList( ElisEnum.E_SORT_INSERTED )
-
-		print 'dhkim test Tuner Load = %s' % self.mAllSatelliteList.printdebug()
 	
 		self.mConfiguredList1 = []
 		self.mConfiguredList1 = self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )
 
-		print 'configuredList1 len=%d' % len( self.mConfiguredList1 )
-
-		if len( self.mConfiguredList1 ) == 0 or ( len( self.mConfiguredList1 ) == 1 and len( self.mConfiguredList1[0] ) == 0 ) :
+		if len( self.mConfiguredList1 ) == 0 :
 
 			config = ["0", "0", self.mAllSatelliteList[0][0], self.mAllSatelliteList[0][1], "0", "0", "0", "0",
 						"1", "0", "0", "9750", "10600", "11700", "0", "0", "0", "0", "0", "0", "0", "1284" ]
 
 			self.mConfiguredList1.append( config )
 
-		print 'configuredList1 =%s' % self.mConfiguredList1
-
-
 		self.mConfiguredList2 = []
-		self.mConfiguredList2 = self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )		
-		print 'configuredList2 len=%d' %len( self.mConfiguredList2 )		
+		self.mConfiguredList2 = self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )			
 
-		if len( self.mConfiguredList2 ) == 0 or ( len( self.mConfiguredList2 ) == 1 and len( self.mConfiguredList2[0] ) == 0 ) :
+		if len( self.mConfiguredList2 ) == 0 :
 			config = ["1", "0", self.mAllSatelliteList[0][0], self.mAllSatelliteList[0][1], "0", "0", "0", "0",
 					  "1", "0", "0", "9750", "10600", "11700", "0", "0", "0", "0", "0", "0", "0", "1284" ]
 		
 			self.mConfiguredList2.append( config )
-
-		print 'configuredList2 =%s' % self.mConfiguredList2
-
-	
+			
 
 	def GetFormattedName( self, aLongitude, aBand ) :
 	
