@@ -104,7 +104,7 @@
 					</item>
 					<item id="4">
 						<label>Channel List</label>
-						<onclick>-</onclick>
+						<onclick>SendClick(90400)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="5">
@@ -114,7 +114,7 @@
 					</item>
 					<item id="6">
 						<label>System Info</label>
-						<onclick>SendClick(90400)</onclick>
+						<onclick>SendClick(90600)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="7">

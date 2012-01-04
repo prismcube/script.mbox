@@ -62,6 +62,7 @@ class MainMenu( BaseWindow ):
 			pass
 
 		elif aControlId == BUTTON_ID_ANTENNA_SETUP : # Antenna Setup
+			self.close( )
 			ConfigMgr.GetInstance( ).SetNeedLoad( True )		
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
 
@@ -82,7 +83,9 @@ class MainMenu( BaseWindow ):
 		elif aControlId == BUTTON_ID_CAS : # CAS
 			#ToDO
 			pass
-			
+		elif aControlId == BUTTON_ID_CHANNEL_LIST : #Channel List
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
+
 		elif aControlId == 20 :
 			self.close()
 			import pvr.Launcher
