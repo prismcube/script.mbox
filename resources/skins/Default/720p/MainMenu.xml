@@ -109,7 +109,7 @@
 					</item>
 					<item id="5">
 						<label>Media Center</label>
-						<onclick>0</onclick>
+						<onclick>ActivateWindow(Videos)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="6">
@@ -180,7 +180,7 @@
 					<posx>10</posx>
 					<posy>20</posy>
 					<width>240</width>
-					<height>240</height>
+					<height>280</height>
 					<align>center</align>
 					<onleft>9000</onleft>
 					<onup>9010</onup>
