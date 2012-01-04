@@ -8,8 +8,6 @@ import sys
 from pvr.gui.BaseWindow import Action
 from pvr.gui.BaseDialog import BaseDialog
 from  pvr.TunerConfigMgr import *
-import pvr.gui.DialogMgr as diamgr
-from elisevent import ElisEvent
 from ElisEnum import ElisEnum
 
 import pvr.ElisMgr
@@ -19,11 +17,11 @@ import pvr.ElisMgr
 
 
 # Control IDs
-E_TRANSPONDER_INFO_ID		= 104
-E_PROGRESS_ID				= 200
-E_TV_LIST_ID				= 400
-E_RADIO_LIST_ID				= 402
-E_CANCEL_ID					= 300
+LABEL_ID_TRANSPONDER_INFO		= 104
+PROGRESS_ID_SCAN				= 200
+LIST_ID_TV						= 400
+LIST_ID_RADIO					= 402
+BUTTON_ID_CANCEL				= 300
 
 
 # Scan MODE
@@ -36,41 +34,42 @@ E_SCAN_TRANSPONDER			= 2
 class DialogChannelSearch( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.getInstance( ).getCommander( )
-		self.scanMode = E_SCAN_NONE
-		self.isFinished = True
-		self.mEventBus = pvr.ElisMgr.getInstance().getEventBus()
-		self.transponderList = []
-		self.satelliteList = []
-		self.longitude = 0
-		self.band = 0
+		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
+		self.mScanMode = E_SCAN_NONE
+		self.mIsFinished = True
+		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
+		self.mTransponderList = []
+		self.mConfiguredSatelliteList = []
+		self.mLongitude = 0
+		self.mBand = 0
 
 	def onInit( self ):
-		self.winId = xbmcgui.getCurrentWindowId()
-		self.mEventBus.register( self )		
-		self.isFinished = False	
+		self.mWinId = xbmcgui.getCurrentWindowId()
+		self.mWin = xbmcgui.Window( self.mWinId  )
+		self.mIsFinished = False	
 
-		self.satelliteFormatedName = 'Unknown'
-		self.allSatelliteList = []
+		self.mSatelliteFormatedName = 'Unknown'
+		self.mAllSatelliteList = []
 		
-		self.newTVChannelList = []
-		self.newRadioChannelList = []
+		self.mNewTVChannelList = []
+		self.mNewRadioChannelList = []
 
-		self.tvListItems = []
-		self.radioListItems =[]
+		self.mTvListItems = []
+		self.mRadioListItems =[]
 
-		self.getControl( E_TV_LIST_ID ).reset( )
-		self.getControl( E_RADIO_LIST_ID ).reset( )
+		self.getControl( LIST_ID_TV ).reset( )
+		self.getControl( LIST_ID_RADIO ).reset( )
 
-		self.ctrlProgress = self.getControl( E_PROGRESS_ID )
-		self.ctrlTransponderInfo = self.getControl( E_TRANSPONDER_INFO_ID )		
+		self.mCtrlProgress = self.getControl( PROGRESS_ID_SCAN )
+		self.mCtrlTransponderInfo = self.getControl( LABEL_ID_TRANSPONDER_INFO )		
 
-		self.scanStart( )
-		self.drawItem( )
+		self.ScanStart( )
+		self.DrawItem( )
 
+		self.mEventBus.Register( self )		
 
-	def onAction( self, action ):
-		actionId = action.getId( )
+	def onAction( self, aAction ):
+		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 	
 		if actionId == Action.ACTION_PREVIOUS_MENU :
@@ -79,7 +78,7 @@ class DialogChannelSearch( BaseDialog ) :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			self.scanAbort( )
+			self.ScanAbort( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			pass
@@ -94,183 +93,175 @@ class DialogChannelSearch( BaseDialog ) :
 			pass
 
 
-	def onClick( self, controlId ):
+	def onClick( self, aControlId ):
 		focusId = self.getFocusId( )
 
-		if focusId == E_CANCEL_ID :
-			self.scanAbort( )
+		if focusId == BUTTON_ID_CANCEL :
+			self.ScanAbort( )
 
 	def onFocus( self, controlId ):
 		pass
 
 
-	def drawItem( self ) :
+	def DrawItem( self ) :
 
-		#tvListItems = []
-		#radioListItems =[]
-
-		count = len( self.newTVChannelList )
+		count = len( self.mNewTVChannelList )
 		for i in range( count ) :
-			listItem = xbmcgui.ListItem( self.newTVChannelList[i], "TV", "-", "-", "-" )
-			self.tvListItems.append( listItem )
+			listItem = xbmcgui.ListItem( self.mNewTVChannelList[i], "TV", "-", "-", "-" )
+			self.mTvListItems.append( listItem )
 
 		if count > 0 :
-			self.getControl( E_TV_LIST_ID ).addItems( self.tvListItems )
-			lastPosition = len( self.tvListItems ) - 1
-			self.getControl( E_TV_LIST_ID ).selectItem( lastPosition )
+			self.getControl( LIST_ID_TV ).addItems( self.mTvListItems )
+			lastPosition = len( self.mTvListItems ) - 1
+			self.getControl( LIST_ID_TV ).selectItem( lastPosition )
 
-		count = len( self.newRadioChannelList )
+		count = len( self.mNewRadioChannelList )
 		for i in range( count ) :
-			listItem = xbmcgui.ListItem( self.newRadioChannelList[i], "Radio", "-", "-", "-" )
-			self.radioListItems.append( listItem )
+			listItem = xbmcgui.ListItem( self.mNewRadioChannelList[i], "Radio", "-", "-", "-" )
+			self.mRadioListItems.append( listItem )
 
 		if count > 0 :
-			self.getControl( E_RADIO_LIST_ID ).addItems( self.radioListItems )
-			lastPosition = len( self.radioListItems ) - 1			
-			self.getControl( E_RADIO_LIST_ID ).selectItem( lastPosition  )
+			self.getControl( LIST_ID_RADIO ).addItems( self.mRadioListItems )
+			lastPosition = len( self.mRadioListItems ) - 1			
+			self.getControl( LIST_ID_RADIO ).selectItem( lastPosition  )
 
 
-		self.newTVChannelList = []
-		self.newRadioChannelList = []
+		self.mNewTVChannelList = []
+		self.mNewRadioChannelList = []
 
 
-	def setSatellite( self, satelliteList ) :
-		print 'scanBySatellite=%s' %satelliteList
-		self.satelliteList = satelliteList		
-		satellite = self.satelliteList[0]
-		self.longitude = int( satellite[2] )
-		self.band = int( satellite[3] )
-		self.scanMode = E_SCAN_SATELLITE 
+	def SetConfiguredSatellite( self, aSatelliteList ) :
+		print 'scanBySatellite=%s' %aSatelliteList
+		self.mConfiguredSatelliteList = aSatelliteList		
+		satellite = self.mConfiguredSatelliteList[0]
+		self.mLongitude = satellite.mSatelliteLongitude
+		self.mBand = satellite.mBandType
+		self.mScanMode = E_SCAN_SATELLITE 
 
 
 
-	def setTransponder( self, longitude, band, transponderList ) :
-		print 'scanByTransponder=%s' %transponderList
-		self.scanMode = E_SCAN_TRANSPONDER	
-		self.longitude = longitude
-		self.band = band		
-		self.transponderList = transponderList
+	def SetTransponder( self, aLongitude, aBand, aTransponderList ) :
+		print 'scanByTransponder=%s' %aTransponderList
+		self.mScanMode = E_SCAN_TRANSPONDER	
+		self.mLongitude = aLongitude
+		self.mBand = aBand		
+		self.mTransponderList = aTransponderList
 
 
-	def scanStart( self ) :
+	def ScanStart( self ) :
 
-		self.allSatelliteList = []
-		self.allSatelliteList = self.mCommander.satellite_GetList( ElisEnum.E_SORT_INSERTED )
-		self.satelliteFormatedName = self.GetFormattedName( self.longitude , self.band  )		
+		self.mAllSatelliteList = []
+		self.mAllSatelliteList = self.mCommander.Satellite_GetList( ElisEnum.E_SORT_INSERTED )
+		self.mSatelliteFormatedName = self.GetFormattedName( self.mLongitude , self.mBand  )		
 
-		print 'scanMode=%d' %self.scanMode
-		if self.scanMode == E_SCAN_SATELLITE :
-			satellite = self.satelliteList[0] # ToDO send with satelliteList
-			self.mCommander.channelscan_BySatellite( int(satellite[2]), int(satellite[3]) ) #longitude, band
-		elif self.scanMode == E_SCAN_TRANSPONDER :
-			self.mCommander.channel_SearchByCarrier( self.longitude, self.band, self.transponderList )
+		print 'scanMode=%d' %self.mScanMode
+		if self.mScanMode == E_SCAN_SATELLITE :
+			config = self.mConfiguredSatelliteList[0] # ToDO send with satelliteList
+			self.mCommander.Channelscan_BySatellite( config.mSatelliteLongitude, config.mBandType ) #longitude, band
+		elif self.mScanMode == E_SCAN_TRANSPONDER :
+			self.mCommander.Channel_SearchByCarrier( self.mLongitude, self.mBand, self.mTransponderList )
 		else :
-			self.isFinished == True
+			self.mIsFinished == True
 
 
-	def scanAbort( self ) :
-		if self.isFinished == False :
+	def ScanAbort( self ) :
+		if self.mIsFinished == False :
 			if xbmcgui.Dialog( ).yesno('Confirm', 'Do you want abort channel scan?') == 1 :
-				self.mCommander.channelscan_Abort( )
-				self.isFinished == True
+				self.mCommander.Channelscan_Abort( )
+				self.mIsFinished == True
 
-		if self.isFinished == True :
-			self.mEventBus.deregister( self )
+		if self.mIsFinished == True :
+			self.mEventBus.Deregister( self )
 			self.close( )
 
-	def onEvent( self, event ):
+	def onEvent( self, aEvent ):
 
-		if xbmcgui.getCurrentWindowId() == self.winId :
+		if xbmcgui.getCurrentWindowId() == self.mWinId :
 
-			if event[0] == ElisEvent.ElisScanAddChannel :
-				self.updateAddChannel( event )
+			if aEvent.getName() == ElisEventScanAddChannel.getName():
+				self.UpdateAddChannel( aEvent )
 
-			elif event[0] == ElisEvent.ElisScanProgress :
-				self.updateScanProgress( event )
+			elif aEvent.getName() == ElisEventScanProgress.getName():
+				self.UpdateScanProgress( aEvent )
 
 
 
-	def updateScanProgress(self, event ):
-		print 'update progress'
-		totalCount = int( event[1] )
-		currentIndex = int( event[2] )
-		finished = int( event[3] )
-		carrierType = int( event[4] )
+	def UpdateScanProgress(self, aEvent ):
 
-		logitude = int( event[5] )
-		band = int( event[6] )		
+		percent = 0
 		
-		frequency = int( event[7] )
-		symbolrate = int( event[8] )
-		fecValude = int( event[9] )
-		polarization =  int( event[10] )
+		if aEvent.mAllCount > 0 :
+			percent = int( aEvent.mCurrentIndex*100/aEvent.mAllCount )
+		
 
-		percent = int( currentIndex*100/totalCount )
+		print 'currentIndex=%d total=%d percent=%d finish=%d' %(aEvent.mCurrentIndex, aEvent.mAllCount, percent, aEvent.mFinished )
 
-		print 'currentIndex=%d total=%d percent=%d finish=%d' %(currentIndex, totalCount, percent, finished )
-
-		if finished == 0 and ( totalCount < 10 ) and ( currentIndex == totalCount ) :
-			self.ctrlProgress.setPercent( 90 )
+		if aEvent.mFinished == 0 and ( aEvent.mAllCount < 10 ) and ( aEvent.mCurrentIndex == aEvent.mAllCount ) :
+			self.mCtrlProgress.setPercent( 90 )
 		else:
-			self.ctrlProgress.setPercent( percent )
+			self.mCtrlProgress.setPercent( percent )
 
 
-		strPol = 'Vertical'
-		if polarization == ElisEnum.E_LNB_HORIZONTAL or polarization == ElisEnum.E_LNB_LEFT :
-			strPol = 'Horizontal'
+		if aEvent.mCarrier.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBS :
+			strPol = 'Vertical'
+			if aEvent.mCarrier.mDVBS.mPolarization == ElisEnum.E_LNB_HORIZONTAL or aEvent.mCarrier.mDVBS.mPolarization == ElisEnum.E_LNB_LEFT :
+				strPol = 'Horizontal'
+
+			if self.mLongitude != aEvent.mCarrier.mDVBS.mSatelliteLongitude or self.mBand != aEvent.mCarrier.mDVBS.mSatelliteBand :
+				self.mLongitude = aEvent.mCarrier.mDVBS.mSatelliteLongitude
+				self.mBand = aEvent.mCarrier.mDVBS.mSatelliteBand
+				self.mSatelliteFormatedName = self.GetFormattedName( self.mLongitude , self.mBand  )
+			
+			strTransponderInfo = '%s - %d Mhz - %s - %d MS/s ' %( self.mSatelliteFormatedName, aEvent.mCarrier.mDVBS.mFrequency, strPol, aEvent.mCarrier.mDVBS.mSymbolRate )
+			self.mCtrlTransponderInfo.setLabel( strTransponderInfo )
+
+		elif aEvent.mCarrier.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBT :
+			pass
+
+		elif aEvent.mCarrier.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBC :
+			pass
 
 
-		if self.longitude != logitude or self.band != band :
-			self.longitude = logitude
-			self.band = band
-			self.satelliteFormatedName = self.GetFormattedName( self.longitude , self.band  )
-		
-		strTransponderInfo = '%s - %d Mhz - %s - %d MS/s ' %( self.satelliteFormatedName, frequency, strPol, symbolrate )
-		self.ctrlTransponderInfo.setLabel( strTransponderInfo )
-
-		if finished and currentIndex >= totalCount :
+		if aEvent.mFinished and aEvent.mCurrentIndex >= aEvent.mAllCount :
 			print 'finished'
-			self.isFinished = True
-			self.ctrlProgress.setPercent( 100 )
+			self.mIsFinished = True
+			self.mCtrlProgress.setPercent( 100 )
 
-			tvCount = len( self.tvListItems )
-			radioCount = len( self.radioListItems )
+			tvCount = len( self.mTvListItems )
+			radioCount = len( self.mRadioListItems )
 			searchResult = 'TV Channels : %d \nRadio Channels : %d' %( tvCount, radioCount )
 			xbmcgui.Dialog( ).ok( 'Infomation', searchResult )
 
 
-	def updateAddChannel(self, event ):
+	def UpdateAddChannel(self, aEvent ):
 
-		print 'update addchnnel'
-		channelName = event[3]
-		serviceType = int( event[4] )
-		print 'update addchnnel channelName=%s serviceType=%d' %( channelName, serviceType )
+		print 'update addchnnel channelName=%s serviceType=%d' %( aEvent.mIChannel.mName, aEvent.mIChannel.mServiceType )
 		if serviceType == ElisEnum.E_TYPE_TV :
-			self.newTVChannelList.append( channelName )
+			self.mNewTVChannelList.append( aEvent.mIChannel.mName )
 		else :
-			self.newRadioChannelList.append( channelName )
+			self.mNewRadioChannelList.append( aEvent.mIChannel.mName )
 
-		self.drawItem( )
+		self.DrawItem( )
 
 
-	def GetFormattedName( self, longitude, band ) :
+	def GetFormattedName( self, aLongitude, aBand ) :
 
 		found = False
 
-		for satellite in self.allSatelliteList :
-			if longitude == int( satellite[0]) and band == int( satellite[1] ) :
+		for satellite in self.mAllSatelliteList :
+			if aLongitude == satellite.mLongitude and aBand == satellite.mBand :
 				found = True
 				break
 
 		if found == True :
 			dir = 'E'
 
-			tmpLongitude  = longitude
+			tmpLongitude  = aLongitude
 			if tmpLongitude > 1800 :
 				dir = 'W'
-				tmpLongitude = 3600 - longitude
+				tmpLongitude = 3600 - aLongitude
 
-			formattedName = '%d.%d %s %s' %( int( tmpLongitude/10 ), tmpLongitude%10, dir, satellite[2] )
+			formattedName = '%d.%d %s %s' %( int( tmpLongitude/10 ), tmpLongitude%10, dir, satellite.mName )
 			return formattedName
 
 		return 'UnKnown'

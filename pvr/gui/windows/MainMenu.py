@@ -33,7 +33,6 @@ class MainMenu( BaseWindow ):
 
 	def onInit( self ):
 		self.mWinId = xbmcgui.getCurrentWindowId()
-		print 'main window id=%d' %self.mWinId
 		self.mWin = xbmcgui.Window( self.mWinId  )
 		self.mCtrlMainMenu = self.getControl( LIST_ID_MAIN_MENU )
 		WinMgr.GetInstance().CheckSkinChange( )

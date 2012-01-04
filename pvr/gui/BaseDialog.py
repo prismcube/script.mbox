@@ -11,7 +11,7 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ):
 	def __init__( self, *args, **kwargs ):
 		xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
 		self.mWin = None
-		self.mWinId
+		self.mWinId = 0
 
 
 	def NumericKeyboard( self, aKeyType, aTitle, aString, aMaxLength ) :
