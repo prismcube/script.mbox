@@ -57,4 +57,11 @@
 	<string id="554">NONE_No channels</string>
 	<string id="555">Terug</string>
 	<string id="556">NONE_to change zapping mode</string>
+	<string id="557">Pincode</string>
+	<string id="558">Pincode invoeren</string>
+	<string id="559">Huidige pincode</string>
+	<string id="560">Pincode bevestigen</string>
+	<string id="561">nieuwe pincode vastleggen</string>
+	<string id="562">voor het vastleggen van een nieuwe pincode</string>
+	<string id="563">De ingevoerde pincodes komen niet overeen!</string>
 </strings>

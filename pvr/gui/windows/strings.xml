@@ -57,4 +57,11 @@
 	<string id="554">No channels</string>
 	<string id="555">Back</string>
 	<string id="556">Setting - to change zapping mode</string>
+	<string id="557">PIN Code</string>
+	<string id="558">Input PIN Code</string>
+	<string id="559">Current PIN Code</string>
+	<string id="560">Confirm PIN Code</string>
+	<string id="561">Define new PIN Code</string>
+	<string id="562">to make new PIN code</string>
+	<string id="563">The entered PINs do not match!</string>
 </strings>
