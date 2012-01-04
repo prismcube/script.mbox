@@ -16,11 +16,8 @@ import pvr.ElisMgr
 class AutomaticScan( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs )
-<<<<<<< HEAD
+
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
-=======
-		self.mCommander = pvr.ElisMgr.GetInstance( ).getCommander( )
->>>>>>> efd2bc0b204f422d9b5acd1aa3a4921b3d2bb999
 			
 		self.mInitialized = False
 		self.mLastFocused = -1
@@ -96,7 +93,6 @@ class AutomaticScan( SettingWindow ):
 
 		#Start Search
 		if groupId == E_Input02 :
-<<<<<<< HEAD
 			if self.mSelectedSatelliteIndex == 0 : #ToDO : All Channel Search
 				dialog = DlgMgr.GetInstance().getDialog( DlgMgr.DIALOG_ID_CHANNEL_SEARCH )
 				dialog.SetSatellite( self.mConfiguredSatelliteList )
@@ -111,31 +107,9 @@ class AutomaticScan( SettingWindow ):
 				dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_CHANNEL_SEARCH )
 				print 'dialog=%s' %dialog
 				dialog.SetConfiguredSatellite( configuredSatelliteList )
-=======
-			if self.selectedSatelliteIndex == 0 : #ToDO : All Channel Search
-<<<<<<< HEAD:pvr/gui/windows/AutoMaticScan.py
 				dialog = diamgr.GetInstance().getDialog( diamgr.DIALOG_ID_CHANNEL_SEARCH )
-=======
-				dialog = DlgMgr.getInstance().getDialog( DlgMgr.DIALOG_ID_CHANNEL_SEARCH )
->>>>>>> aa19f8bf1edb9be4e7acf2bdd41b4bac5ad92193:pvr/gui/windows/AutomaticScan.py
-				dialog.setSatellite( self.configuredSatelliteList )
 				dialog.doModal( )
-
-			else :
-				satelliteList = []
-				satellite = self.configuredSatelliteList[self.selectedSatelliteIndex -1]
-				print 'longitude=%s bandtype=%s' %( satellite[E_CONFIGURE_SATELLITE_LONGITUDE], satellite[E_CONFIGURE_SATELLITE_BANDTYPE] )
-
-				satelliteList.append( satellite )
-<<<<<<< HEAD:pvr/gui/windows/AutoMaticScan.py
-				dialog = diamgr.GetInstance().getDialog( diamgr.DIALOG_ID_CHANNEL_SEARCH )
-=======
-				dialog = DlgMgr.getInstance().getDialog( DlgMgr.DIALOG_ID_CHANNEL_SEARCH )
->>>>>>> aa19f8bf1edb9be4e7acf2bdd41b4bac5ad92193:pvr/gui/windows/AutomaticScan.py
-				dialog.setSatellite( satelliteList )
->>>>>>> efd2bc0b204f422d9b5acd1aa3a4921b3d2bb999
-				dialog.doModal( )
-								
+					
 
 		if groupId == E_SpinEx01 or groupId == E_SpinEx02 :
 			self.ControlSelect( )
