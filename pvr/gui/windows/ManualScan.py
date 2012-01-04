@@ -17,7 +17,7 @@ from pvr.gui.BaseWindow import Action
 class ManualScan( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.getInstance( ).getCommander( )
+		self.mCommander = pvr.ElisMgr.GetInstance( ).getCommander( )
 			
 		self.initialized = False
 		self.lastFocused = -1
@@ -117,7 +117,7 @@ class ManualScan( SettingWindow ):
 			print 'ManualScan #0 index=%d transponder=%s' %(self.selectedTransponderIndex, transponder )
 			transponderList.append( transponder )
 			print 'ManualScan #1'
-			dialog = diamgr.getInstance().getDialog( diamgr.DIALOG_ID_CHANNEL_SEARCH )
+			dialog = diamgr.GetInstance().getDialog( diamgr.DIALOG_ID_CHANNEL_SEARCH )
 			print 'ManualScan #2'			
 			dialog.setTransponder( int( satellite[E_CONFIGURE_SATELLITE_LONGITUDE]), int( satellite[E_CONFIGURE_SATELLITE_BANDTYPE] ), transponderList )
 			print 'ManualScan #3'			

@@ -24,7 +24,7 @@ class MotorizeConfiguration( SettingWindow ):
 		self.AddLeftLabelButtonControl( E_Input03, 'Reference Position to Null' )
 		self.AddLeftLabelButtonControl( E_Input04, 'Configure Satellites' )
 
-		self.tunerIndex = configmgr.getInstance( ).GetCurrentTunerIndex( )
+		self.tunerIndex = configmgr.GetInstance( ).GetCurrentTunerIndex( )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'USALS configuration : Tuner %s' % ( self.tunerIndex + 1 ) )
 
 		visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]
@@ -82,7 +82,7 @@ class MotorizeConfiguration( SettingWindow ):
 		# Configure Satellites
 		elif groupId == E_Input04 :
 			self.ResetAllControl( )
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_TUNER_CONFIGURATION )
+			winmgr.GetInstance().showWindow( winmgr.WIN_ID_TUNER_CONFIGURATION )
 			
 	def onFocus( self, controlId ):
 		pass

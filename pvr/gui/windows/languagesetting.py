@@ -15,7 +15,7 @@ from pvr.gui.GuiConfig import *
 class LanguageSetting(DetailWindow):
 	def __init__( self, *args, **kwargs ):
 		DetailWindow.__init__( self, *args, **kwargs)
-		self.mCommander = pvr.ElisMgr.getInstance().getCommander( )
+		self.mCommander = pvr.ElisMgr.GetInstance().getCommander( )
 			
 
 	def onInit(self):

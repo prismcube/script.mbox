@@ -668,10 +668,10 @@
 				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1503,1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onleft></onleft>
+				<onright></onright>
+				<onup></onup>
+				<ondown></ondown>
 			</control>
 			<control type="button" id="1502">
 				<description>Menu Item Prev Button</description>
@@ -685,10 +685,10 @@
 				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1503,-1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onleft></onleft>
+				<onright></onright>
+				<onup></onup>
+				<ondown></ondown>
 			</control>
 			<control type="list" id="1503">
 				<hitrect x="0" y="0" w="0" h="0" />
@@ -811,10 +811,10 @@
 				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1603,1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onleft></onleft>
+				<onright></onright>
+				<onup></onup>
+				<ondown></ondown>
 			</control>
 			<control type="button" id="1602">
 				<description>Menu Item Prev Button</description>
@@ -828,10 +828,10 @@
 				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1603,-1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onleft></onleft>
+				<onright></onright>
+				<onup></onup>
+				<ondown></ondown>
 			</control>
 			<control type="list" id="1603">
 				<hitrect x="0" y="0" w="0" h="0" />
@@ -954,10 +954,10 @@
 				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1703,1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onleft></onleft>
+				<onright></onright>
+				<onup></onup>
+				<ondown></ondown>
 			</control>
 			<control type="button" id="1702">
 				<description>Menu Item Prev Button</description>
@@ -971,10 +971,10 @@
 				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1703,-1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onleft></onleft>
+				<onright></onright>
+				<onup></onup>
+				<ondown></ondown>
 			</control>
 			<control type="list" id="1703">
 				<hitrect x="0" y="0" w="0" h="0" />
@@ -1097,10 +1097,10 @@
 				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1803,1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onleft></onleft>
+				<onright></onright>
+				<onup></onup>
+				<ondown></ondown>
 			</control>
 			<control type="button" id="1802">
 				<description>Menu Item Prev Button</description>
@@ -1114,10 +1114,10 @@
 				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1803,-1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onleft></onleft>
+				<onright></onright>
+				<onup></onup>
+				<ondown></ondown>
 			</control>
 			<control type="list" id="1803">
 				<hitrect x="0" y="0" w="0" h="0" />
@@ -1240,10 +1240,10 @@
 				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1903,1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onleft></onleft>
+				<onright></onright>
+				<onup></onup>
+				<ondown></ondown>
 			</control>
 			<control type="button" id="1902">
 				<description>Menu Item Prev Button</description>
@@ -1257,10 +1257,10 @@
 				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1903,-1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onleft></onleft>
+				<onright></onright>
+				<onup></onup>
+				<ondown></ondown>
 			</control>
 			<control type="list" id="1903">
 				<hitrect x="0" y="0" w="0" h="0" />

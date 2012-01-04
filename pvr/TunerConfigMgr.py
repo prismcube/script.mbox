@@ -190,16 +190,19 @@ class TunerConfigMgr( object ) :
 			
 
 	def AddConfiguredSatellite( self, aIndex ) :
+		config = self.GetDefaultConfig( )
+		config.mSatelliteLongitude = self.mAllSatelliteList[ aIndex ].mLongitude
+		config.mBandType = self.mAllSatelliteList[ aIndex ].mBand
+		
 		if self.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
-			self.mConfiguredList1.append( self.GetDefaultConfig( ) )
+			self.mConfiguredList1.append( config )
 		
 		elif self.GetCurrentTunerConfigType( ) == E_DIFFERENT_TUNER :
 		
 			if self.GetCurrentTunerIndex( ) == E_TUNER_1 :
-				self.mConfiguredList1.append( self.GetDefaultConfig( ) )
+				self.mConfiguredList1.append( config )
 				
 			elif self.GetCurrentTunerIndex( ) == E_TUNER_2 :
-				config = self.GetDefaultConfig( )
 				config.mTunerIndex = 1
 				self.mConfiguredList2.append( config )
 
