@@ -12,7 +12,7 @@ DIALOG_ID_RECORD					= 3
 
 gDialogMgr = None
 
-def getInstance():
+def GetInstance():
 	global gDialogMgr
 	if not gDialogMgr:
 		gDialogMgr = DialogMgr()
@@ -24,14 +24,10 @@ def getInstance():
 
 class DialogMgr(object):
 	def __init__(self):
-		self.dialogs = {}
-
-
-	def getDialog( self, dialogId ) :
 		import pvr.Platform 
-		"""
-		self.scriptDir = pvr.Platform.getPlatform().GetScriptDir()
+		self.mScriptDir = pvr.Platform.GetPlatform().GetScriptDir()
 
+	def GetDialog( self, dialogId ) :
 		try :	
 			if dialogId == DIALOG_ID_LNB_FREQUENCY :
 				from pvr.gui.dialogs.dialoglnbfrequency import DialogLnbFrequency		
@@ -50,4 +46,4 @@ class DialogMgr(object):
 
 		except Exception, e :
 			print '-----------------------> except[%s]'% e
-		"""
+

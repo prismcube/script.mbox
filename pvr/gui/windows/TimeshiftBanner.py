@@ -32,9 +32,9 @@ class TimeShiftBanner(BaseWindow):
 		print 'args[1]=[%s]' % args[1]
 
 		self.lastFocusId = None
-		self.mEventBus = pvr.ElisMgr.getInstance().getEventBus()
+		self.mEventBus = pvr.ElisMgr.GetInstance().getEventBus()
 		#self.mEventBus.register( self )
-		self.mCommander = pvr.ElisMgr.getInstance().getCommander()
+		self.mCommander = pvr.ElisMgr.GetInstance().getCommander()
 
 		#default
 		self.progressbarWidth = 980
@@ -124,8 +124,8 @@ class TimeShiftBanner(BaseWindow):
 			self.updateLocalTime().join()
 
 			self.close( )
-#			winmgr.getInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
-#			winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
+#			winmgr.GetInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
+#			winmgr.GetInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
 #			winmgr.shutdown()
 
 
@@ -255,7 +255,7 @@ class TimeShiftBanner(BaseWindow):
 				self.updateLocalTime().join()
 				self.close( )
 
-				winmgr.getInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
+				winmgr.GetInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
 
 		elif focusId == self.ctrlBtnRewind.getId():
 			nextSpeed = 100

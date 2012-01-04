@@ -36,10 +36,10 @@ E_SCAN_TRANSPONDER			= 2
 class DialogChannelSearch( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.getInstance( ).getCommander( )
+		self.mCommander = pvr.ElisMgr.GetInstance( ).getCommander( )
 		self.scanMode = E_SCAN_NONE
 		self.isFinished = True
-		self.mEventBus = pvr.ElisMgr.getInstance().getEventBus()
+		self.mEventBus = pvr.ElisMgr.GetInstance().getEventBus()
 		self.transponderList = []
 		self.satelliteList = []
 		self.longitude = 0

@@ -26,7 +26,7 @@ class OnecableConfiguration( SettingWindow ):
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'OneCable configuration' )
 
-		self.currentSatellite = configmgr.getInstance( ).GetConfiguredSatellitebyIndex( 0 )
+		self.currentSatellite = configmgr.GetInstance( ).GetConfiguredSatellitebyIndex( 0 )
 		self.loadConfigedSatellite( )
 
 		self.AddLeftLabelButtonControl( E_Input01, 'Configure System' )
@@ -60,7 +60,7 @@ class OnecableConfiguration( SettingWindow ):
 		elif actionId == Action.ACTION_PARENT_DIR :
 			if self.satelliteCount > 1 :
 				for i in range( self.satelliteCount - 1 ) :
-					satellite = configmgr.getInstance( ).GetConfiguredSatellitebyIndex( i + 1 )
+					satellite = configmgr.GetInstance( ).GetConfiguredSatellitebyIndex( i + 1 )
 					satellite[E_CONFIGURE_SATELLITE_IS_ONECABLE] = self.currentSatellite[E_CONFIGURE_SATELLITE_IS_ONECABLE]
 					satellite[E_CONFIGURE_SATELLITE_ONECABLE_PIN] = self.currentSatellite[E_CONFIGURE_SATELLITE_ONECABLE_PIN]
 					satellite[E_CONFIGURE_SATELLITE_ONECABLE_MDU] = self.currentSatellite[E_CONFIGURE_SATELLITE_ONECABLE_MDU]
@@ -90,10 +90,10 @@ class OnecableConfiguration( SettingWindow ):
 
 		if groupId == E_Input01 :
 			position = self.GetControlIdToListIndex( groupId ) - 2
-			configmgr.getInstance( ).SetOnecableSatelliteCount( position + 1 )
+			configmgr.GetInstance( ).SetOnecableSatelliteCount( position + 1 )
 			self.ResetAllControl( )
 			import pvr.Platform 
-			scriptDir = pvr.Platform.getPlatform().GetScriptDir()
+			scriptDir = pvr.Platform.GetPlatform().GetScriptDir()
 			OnecableConfiguration2('OnecableConfiguration2.xml', scriptDir).doModal()
 		
 		elif groupId == E_SpinEx01 :
@@ -101,13 +101,13 @@ class OnecableConfiguration( SettingWindow ):
 
 		else :
 			position = self.GetControlIdToListIndex( groupId ) - 2
-			configmgr.getInstance( ).SetCurrentConfigIndex( position )
+			configmgr.GetInstance( ).SetCurrentConfigIndex( position )
 
 			self.ResetAllControl( )
 				
 			import pvr.Platform 
-			scriptDir = pvr.Platform.getPlatform().GetScriptDir()
-			SatelliteConfigSimple('satelliteconfiguration.xml', scriptDir).doModal()
+			scriptDir = pvr.Platform.GetPlatform().GetScriptDir()
+			SatelliteConfigSimple('SatelliteConfiguration.xml', scriptDir).doModal()
 			
 	def onFocus( self, controlId ):
 		pass
@@ -126,11 +126,11 @@ class OnecableConfiguration( SettingWindow ):
 	def loadConfigedSatellite( self ):
 		configuredList = []
 
-		configuredList = configmgr.getInstance( ).GetConfiguredSatelliteList( )
+		configuredList = configmgr.GetInstance( ).GetConfiguredSatelliteList( )
 		self.satelliteCount = len( configuredList )
 
 		for i in range( MAX_SATELLITE_CNT ) :
 			if i < self.satelliteCount :
-				self.satellitelist.append( configmgr.getInstance( ).GetFormattedName( int( configuredList[i][2] ), int( configuredList[i][3] ) ) )
+				self.satellitelist.append( configmgr.GetInstance( ).GetFormattedName( int( configuredList[i][2] ), int( configuredList[i][3] ) ) )
 			else :
 				self.satellitelist.append( '' ) # dummy Data

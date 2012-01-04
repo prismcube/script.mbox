@@ -3,7 +3,7 @@ import xbmcgui
 import sys
 from copy import deepcopy
 
-import pvr.gui.WindowMgr as winmgr
+import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as diamgr
 import pvr.TunerConfigMgr as configmgr
 from  pvr.TunerConfigMgr import *
@@ -17,7 +17,7 @@ import pvr.ElisMgr
 class AutomaticScan( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.getInstance( ).getCommander( )
+		self.mCommander = pvr.ElisMgr.GetInstance( ).getCommander( )
 			
 		self.initialized = False
 		self.lastFocused = -1
@@ -91,7 +91,7 @@ class AutomaticScan( SettingWindow ):
 		#Start Search
 		if groupId == E_Input02 :
 			if self.selectedSatelliteIndex == 0 : #ToDO : All Channel Search
-				dialog = diamgr.getInstance().getDialog( diamgr.DIALOG_ID_CHANNEL_SEARCH )
+				dialog = diamgr.GetInstance().getDialog( diamgr.DIALOG_ID_CHANNEL_SEARCH )
 				dialog.setSatellite( self.configuredSatelliteList )
 				dialog.doModal( )
 
@@ -101,7 +101,7 @@ class AutomaticScan( SettingWindow ):
 				print 'longitude=%s bandtype=%s' %( satellite[E_CONFIGURE_SATELLITE_LONGITUDE], satellite[E_CONFIGURE_SATELLITE_BANDTYPE] )
 
 				satelliteList.append( satellite )
-				dialog = diamgr.getInstance().getDialog( diamgr.DIALOG_ID_CHANNEL_SEARCH )
+				dialog = diamgr.GetInstance().getDialog( diamgr.DIALOG_ID_CHANNEL_SEARCH )
 				dialog.setSatellite( satelliteList )
 				dialog.doModal( )
 								

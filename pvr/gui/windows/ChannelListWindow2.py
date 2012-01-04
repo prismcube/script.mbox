@@ -2,7 +2,7 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.WindowMgr as winmgr
+import pvr.gui.WindowMgr as WinMgr
 from pvr.gui.BaseWindow import BaseWindow
 from pvr.gui.BaseWindow import Action
 from pvr.gui.BaseDialog import BaseDialog
