@@ -89,17 +89,17 @@
 				<content>
 					<item id="1">
 						<label>Installation</label>
-						<onclick>-</onclick>
+						<onclick>SendClick(90100)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="2">
 						<label>Archive</label>
-						<onclick>-</onclick>
+						<onclick>SendClick(90200)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="3">
 						<label>EPG</label>
-						<onclick>-</onclick>
+						<onclick>SendClick(90300)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="4">
@@ -114,12 +114,12 @@
 					</item>
 					<item id="6">
 						<label>System Info</label>
-						<onclick>-</onclick>
+						<onclick>SendClick(90400)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="7">
 						<label>Back</label>
-						<onclick>-</onclick>
+						<onclick>ParentDir</onclick>
 						<visible>true</visible>
 					</item>
 				</content>
@@ -187,6 +187,12 @@
 					<ondown>9010</ondown>
 					<itemgap>0</itemgap>
 					<visible>Container(9000).HasFocus(1)</visible>
+					<control type="button" id="90100">
+						<include>DefaultButtonHomeSubCommonValues</include>
+						<label>Installation</label>
+						<onclick>-</onclick>
+						<visible>false</visible>
+					</control>
 					<control type="button" id="90101">
 						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>First Installation</label>
@@ -230,6 +236,67 @@
 						<visible>true</visible>
 					</control>
 				</control>
+
+				<!-- Archive -->
+				<control type="grouplist" id="9020">
+					<posx>10</posx>
+					<posy>20</posy>
+					<width>240</width>
+					<height>360</height>
+					<align>center</align>
+					<onleft>9000</onleft>
+					<onup>9020</onup>
+					<ondown>9020</ondown>
+					<itemgap>0</itemgap>
+					<visible>Container(9000).HasFocus(2)</visible>
+					<control type="button" id="90200">
+						<include>DefaultButtonHomeSubCommonValues</include>
+						<label>Archive</label>
+						<onclick>-</onclick>
+						<visible>false</visible>
+					</control>
+				</control>
+
+				<!-- EPG -->
+				<control type="grouplist" id="9030">
+					<posx>10</posx>
+					<posy>80</posy>
+					<width>240</width>
+					<height>360</height>
+					<align>center</align>
+					<onleft>9000</onleft>
+					<onup>9030</onup>
+					<ondown>9030</ondown>
+					<itemgap>0</itemgap>
+					<visible>Container(9000).HasFocus(3)</visible>
+					<control type="button" id="90300">
+						<include>DefaultButtonHomeSubCommonValues</include>
+						<label>EPG</label>
+						<onclick>-</onclick>
+						<visible>false</visible>
+					</control>
+				</control>
+				
+				<!-- Channel List-->
+				<control type="grouplist" id="9040">
+					<posx>10</posx>
+					<posy>160</posy>
+					<width>240</width>
+					<height>360</height>
+					<align>center</align>
+					<onleft>9000</onleft>
+					<onup>9040</onup>
+					<ondown>9040</ondown>
+					<itemgap>0</itemgap>
+					<visible>Container(9000).HasFocus(4)</visible>
+					<control type="button" id="90400">
+						<include>DefaultButtonHomeSubCommonValues</include>
+						<label>Channel List</label>
+						<onclick>-</onclick>
+						<visible>false</visible>
+					</control>
+				</control>
+
 
 				<!-- Media Center -->
 				<control type="grouplist" id="9050">
@@ -298,7 +365,28 @@
 						<visible>true</visible>
 					</control>
 				</control>
+				
+				<!-- System Info-->
+				<control type="grouplist" id="9060">
+					<posx>10</posx>
+					<posy>300</posy>
+					<width>240</width>
+					<height>360</height>
+					<align>center</align>
+					<onleft>9000</onleft>
+					<onup>9060</onup>
+					<ondown>9060</ondown>
+					<itemgap>0</itemgap>
+					<visible>Container(9000).HasFocus(6)</visible>
+					<control type="button" id="90600">
+						<include>DefaultButtonHomeSubCommonValues</include>
+						<label>System Info</label>
+						<onclick>-</onclick>
+						<visible>false</visible>
+					</control>
+				</control>
 			</control>
+			
 		</control>
 		<!--Sub Script-->
 		<control type="group">
