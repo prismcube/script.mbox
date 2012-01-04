@@ -5,19 +5,20 @@ import sys
 import pvr.gui.WindowMgr as WinMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
 from ElisEnum import ElisEnum
-from ElisEvent import ElisEventBus
+from ElisEventBus import ElisEventBus
 from ElisEventClass import *
-from inspect import currentframe
 from pvr.Util import RunThread, GuiLock
 import pvr.Util as Util
 from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
+
+from inspect import currentframe
 from pvr.gui.GuiConfig import FooterMask
 import threading, time, os
 
 import pvr.Msg as Msg
-import pvr.gui.windows.define_string as MsgId
+import pvr.gui.windows.Define_string as MsgId
 
 FLAG_MASK_ADD  = 0x01
 FLAG_MASK_NONE = 0x00
@@ -591,7 +592,7 @@ class ChannelListWindow(BaseWindow):
 		#header init
 		self.mCtrlHeader1.setImage('IconHeaderTitleSmall.png')
 		#self.mCtrlHeader2.setLabel('TV-Channel List')
-		self.mCtrlHeader2.setLabel(Msg.strings(MsgId.LANG_TV_CHANNEL_LIST))
+		self.mCtrlHeader2.setLabel(Msg.Strings(MsgId.LANG_TV_CHANNEL_LIST))
 
 		#self.mCtrlLbl.setLabel( m.strings(mm.LANG_LANGUAGE) )
 		ret = xbmc.getLanguage()
@@ -630,11 +631,11 @@ class ChannelListWindow(BaseWindow):
 
 
 		list_Mainmenu = []
-		list_Mainmenu.append( Msg.strings(MsgId.LANG_ALL_CHANNELS) )
-		list_Mainmenu.append( Msg.strings(MsgId.LANG_SATELLITE)    )
-		list_Mainmenu.append( Msg.strings(MsgId.LANG_FTA)          )
-		list_Mainmenu.append( Msg.strings(MsgId.LANG_FAVORITE)     )
-		list_Mainmenu.append( Msg.strings(MsgId.LANG_BACK)     )
+		list_Mainmenu.append( Msg.Strings(MsgId.LANG_ALL_CHANNELS) )
+		list_Mainmenu.append( Msg.Strings(MsgId.LANG_SATELLITE)    )
+		list_Mainmenu.append( Msg.Strings(MsgId.LANG_FTA)          )
+		list_Mainmenu.append( Msg.Strings(MsgId.LANG_FAVORITE)     )
+		list_Mainmenu.append( Msg.Strings(MsgId.LANG_BACK)     )
 		testlistItems = []
 		for item in range( len(list_Mainmenu) ) :
 			testlistItems.append( xbmcgui.ListItem(list_Mainmenu[item]) )
@@ -787,7 +788,6 @@ class ChannelListWindow(BaseWindow):
 		ret = []
 
 		self.mNavEpg = None
-		self.mNavChannel = None		
 
 		try :
 			if self.mEpgRecvPermission == True :
@@ -800,6 +800,7 @@ class ChannelListWindow(BaseWindow):
 
 				for ch in self.mChannelList:
 					if ch.mNumber == channelNumbr :
+						self.mNavChannel = None
 						self.mNavChannel = ch
 						print 'found ch: getlabel[%s] ch[%s]'% (channelNumbr, ch.mNumber )
 
@@ -837,14 +838,10 @@ class ChannelListWindow(BaseWindow):
 	def UpdateLabelInfo( self ):
 		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 
-
 		#update channel name
 		if self.mEpgRecvPermission == True :
-			print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 			label = self.UpdateServiceType( self.mNavChannel.mServiceType )
-			print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 			self.mCtrlChannelName.setLabel( str('%s - %s'% (label, self.mNavChannel.mName )) )
-			print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 
 		#update longitude info
 		satellite = self.mCommander.Satellite_GetByChannelNumber( self.mNavChannel.mNumber, self.mNavChannel.mServiceType )
@@ -921,8 +918,8 @@ class ChannelListWindow(BaseWindow):
 
 		#popup pin-code dialog
 		if self.mPincodeEnter > 0 :
-			msg1 = Msg.strings(MsgId.LANG_INPUT_PIN_CODE)
-			msg2 = Msg.strings(MsgId.LANG_CURRENT_PIN_CODE)
+			msg1 = Msg.Strings(MsgId.LANG_INPUT_PIN_CODE)
+			msg2 = Msg.Strings(MsgId.LANG_CURRENT_PIN_CODE)
 			kb = xbmc.Keyboard( msg1, '1111', False )
 			kb.doModal()
 			if( kb.isConfirmed() ) :
@@ -948,7 +945,7 @@ class ChannelListWindow(BaseWindow):
 
 
 			#local clock
-			ret = epgInfoClock(1, self.mLocalTime, loop)
+			ret = EpgInfoClock(1, self.mLocalTime, loop)
 			self.mCtrlHeader3.setLabel(ret[0])
 			self.mCtrlHeader4.setLabel(ret[1])
 

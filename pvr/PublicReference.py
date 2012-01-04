@@ -194,7 +194,7 @@ def AgeLimit(aCmd, aAgerating):
 	#print 'TTTTTTTTTTTTTTT[%s][%s][%s]'% ( agerating, property.getProp(), property.getPropString() )
 
 	isWatch = True
-	limit = property.getProp()
+	limit = property.GetProp()
 	if limit == 0 :
 		#no limit
 		isLimit = False
