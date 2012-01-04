@@ -23,6 +23,7 @@ BUTTON_ID_EDIT_TRANSPONDER		= 90105
 BUTTION_ID_CONFIGURE			= 90106
 BUTTON_ID_CAS					= 90107
 
+
 class MainMenu( BaseWindow ):
 	def __init__( self, *args, **kwargs ):
 		BaseWindow.__init__( self, *args, **kwargs )

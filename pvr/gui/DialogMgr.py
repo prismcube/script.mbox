@@ -24,21 +24,23 @@ def getInstance():
 
 class DialogMgr(object):
 	def __init__(self):
-		self.dialogs = {}
+		self.mDialogs = {}
 
 
-	def getDialog( self, dialogId ) :
+	def GetDialog( self, aDialogId ) :
 		import pvr.Platform 
-		"""
-		self.scriptDir = pvr.Platform.getPlatform().GetScriptDir()
 
+		self.scriptDir = pvr.Platform.getPlatform().GetScriptDir()
+		pass
+
+		"""
 		try :	
 			if dialogId == DIALOG_ID_LNB_FREQUENCY :
-				from pvr.gui.dialogs.dialoglnbfrequency import DialogLnbFrequency		
+				from pvr.gui.dialogs.DialogLnbFrequency import DialogLnbFrequency		
 				return DialogLnbFrequency('dialoglnbfrequency.xml', self.scriptDir)	
 
 			elif dialogId == DIALOG_ID_CHANNEL_SEARCH :
-				from pvr.gui.dialogs.dialogchannelsearch import DialogChannelSearch
+				from pvr.gui.dialogs.DialogChannelSearch import DialogChannelSearch
 				return DialogChannelSearch('dialogchannelsearch.xml', self.scriptDir)	
 
 			elif dialogId == DIALOG_ID_RECORD :
@@ -51,3 +53,4 @@ class DialogMgr(object):
 		except Exception, e :
 			print '-----------------------> except[%s]'% e
 		"""
+
