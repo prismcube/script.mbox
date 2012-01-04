@@ -163,7 +163,6 @@ class SettingWindow( BaseWindow ):
 	def AddEnumControl( self, aControlId, aPropName, aTitleLabel=None, aDescription=None ):
 		property = ElisPropertyEnum( aPropName, self.mCommander )
 		listItems = []
-		print 'dhkim test AddEnumControl #1'
 		for i in range( property.GetIndexCount() ):
 			if aTitleLabel == None :
 				listItem = xbmcgui.ListItem( property.GetName(), property.GetPropStringByIndex( i ), "-", "-", "-" )
