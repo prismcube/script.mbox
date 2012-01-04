@@ -19,7 +19,8 @@ import threading, time, os
 import pvr.Msg as Msg
 import pvr.gui.windows.define_string as MsgId
 
-FLAG_MASK = 0x01
+FLAG_MASK_ADD  = 0x01
+FLAG_MASK_NONE = 0x00
 
 class ChannelListWindow(BaseWindow):
 
@@ -41,10 +42,10 @@ class ChannelListWindow(BaseWindow):
 		self.mEventId = 0
 		self.mLocalTime = 0
 
-		self.mPincodeEnter = 0x0
+		self.mPincodeEnter = FLAG_MASK_NONE
 		
 	def __del__(self):
-		print '[%s():%s] destroyed ChannelBanner'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print '[%s:%s]destroyed ChannelBanner'% (self.__file__, currentframe().f_lineno)
 
 		# end thread updateEPGProgress()
 		self.mEnableThread = False
@@ -53,7 +54,7 @@ class ChannelListWindow(BaseWindow):
 	def onInit(self):
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
-		print '[%s():%s]winID[%d]'% (currentframe().f_code.co_name, currentframe().f_lineno, self.mWinId)
+		print '[%s:%s]winID[%d]'% (self.__file__, currentframe().f_lineno, self.mWinId)
 
 		#header
 		self.mCtrlHeader1            = self.getControl( 3000 )
@@ -98,7 +99,6 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlSelectItem         = self.getControl( 401 )
 		
 		self.mCtrlHeader3.setLabel('')
-		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 
 		self.mEpgRecvPermission = True
 		self.mLocalOffset = self.mCommander.Datetime_GetLocalOffset( )
@@ -110,12 +110,10 @@ class ChannelListWindow(BaseWindow):
 		self.mNavEpg = None
 		self.mNavChannel = None
 		self.listEnableFlag = False
-		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 
 		#initialize get channel list
 		self.InitSlideMenuHeader()
 		#self.getSlideMenuHeader()
-		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 
 
 		try :
@@ -144,13 +142,12 @@ class ChannelListWindow(BaseWindow):
 		#run thread
 		self.mEnableThread = True
 		self.CurrentTimeThread()
-		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 
 	@GuiLock	
 	def onAction(self, aAction):
 		id = aAction.getId()
 		focusId = self.getFocusId( )
-		#print '[%s():%s]aActionID[%d]'% (currentframe().f_code.co_name, currentframe().f_lineno, id) 
+		#print '[%s:%s]aActionID[%d]'% (self.__file__, currentframe().f_lineno, id) 
 
 		if id == Action.ACTION_PREVIOUS_MENU:
 			print 'goto previous menu'
@@ -264,14 +261,10 @@ class ChannelListWindow(BaseWindow):
 			"""
 
 
-		else:
-			pass
-			#self.mCtrlHeader2.setLabel(str('key[%s]'% action.getId()))
-			#print'Unconsumed key: %s' % action.getId()
 
 	@GuiLock	
 	def onClick(self, aControlId):
-		print '[%s():%s]focusID[%d]'% (currentframe().f_code.co_name, currentframe().f_lineno, aControlId) 
+		print '[%s:%s]focusID[%d]'% (self.__file__, currentframe().f_lineno, aControlId) 
 
 		if aControlId == self.mCtrlListCHList.getId() :
 
@@ -280,7 +273,7 @@ class ChannelListWindow(BaseWindow):
 			ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
 
 			if ret == True :
-				if self.mPincodeEnter == 0x00 :
+				if self.mPincodeEnter == FLAG_MASK_NONE :
 					if self.mCurrentChannel.mNumber == channelNumbr :
 						self.SaveSlideMenuHeader()
 						self.mEnableThread = False
@@ -352,7 +345,7 @@ class ChannelListWindow(BaseWindow):
 
 	@GuiLock
 	def onEvent(self, aEvent):
-		print '[%s]%s():%s'% (self.__file__, currentframe().f_code.co_name, currentframe().f_lineno)
+		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 		print 'aEvent[%s]'% aEvent
 
 
@@ -388,7 +381,7 @@ class ChannelListWindow(BaseWindow):
 
 
 	def SubMenuAction(self, aAction, aMenuIndex):
-		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 		retPass = False
 
 		if aAction == 0:
@@ -508,7 +501,7 @@ class ChannelListWindow(BaseWindow):
 
 
 	def GetChannelList(self, aType, aMode, aSort, aLongitude, aBand, aCAid, aFavName ):
-		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 
 		try :
 			if aMode == ElisEnum.E_MODE_ALL :
@@ -539,7 +532,7 @@ class ChannelListWindow(BaseWindow):
 		return True
 
 	def GetSlideMenuHeader(self) :
-		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 
 		#get zapping last mode
 		lastMainMenu= 0
@@ -555,7 +548,7 @@ class ChannelListWindow(BaseWindow):
 
 		
 	def SaveSlideMenuHeader(self) :
-		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print '[%s :%s]'% (self.__file__, currentframe().f_lineno)
 
 		return
 
@@ -616,7 +609,9 @@ class ChannelListWindow(BaseWindow):
 			self.mZappingMode           = zappingMode.mMode
 			self.mChannelListSortMode   = zappingMode.mSortingMode
 			self.mChannelListServieType = zappingMode.mServiceType
-			print 'zappingmode_GetCurrent[True] ret[%s]'% ret
+			#print 'zappingmode_GetCurrent len[%s]'% len(zappingMode)
+			#ClassToList( 'print', zappingMode )
+			#zappingMode.printdebug()
 
 		except Exception, e:
 			self.mZappingMode           = ElisEnum.E_MODE_ALL
@@ -670,6 +665,7 @@ class ChannelListWindow(BaseWindow):
 			#TODO
 			#display dialog
 
+
 		testlistItems = []
 		if self.mZappingMode == ElisEnum.E_MODE_ALL :
 			for item in range(len(self.mListAllChannel)) :
@@ -704,23 +700,22 @@ class ChannelListWindow(BaseWindow):
 
 		#get channel list by last on zapping mode, sorting, service type
 		self.mCurrentChannel = None
-		self.mChannelList = []
+		self.mChannelList = None
 		self.mChannelList = self.mCommander.Channel_GetList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode )
 		#self.GetChannelList(self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, 0, 0, 0, '')
 
-		print 'zappingMode[%s] sortMode[%s] serviceType[%s] channellist_len[%s]'% \
-			( enumToString('mode', self.mZappingMode), \
-			  enumToString('sort', self.mChannelListSortMode), \
-			  enumToString('type', self.mChannelListServieType), \
-			  len(self.mChannelList) )
+		print 'zappingMode[%s] sortMode[%s] serviceType[%s]'%  \
+			( EnumToString('mode', self.mZappingMode),         \
+			  EnumToString('sort', self.mChannelListSortMode), \
+			  EnumToString('type', self.mChannelListServieType) )
 		ClassToList( 'print', self.mChannelList )
 
 
 	def InitChannelList(self):
-		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print '[%s :%s]'% (self.__file__, currentframe().f_lineno)
 
-		chListLen = ClassToList( 'convert', self.mChannelList )
-		if chListLen < 1 :
+		chList = ClassToList( 'convert', self.mChannelList )
+		if len(chList) < 1 :
 			print 'no data, self.mChannelList len[%s]'% ( len(self.mChannelList) )
 			ClassToList( 'print', self.mChannelList )
 			return 
@@ -759,12 +754,14 @@ class ChannelListWindow(BaseWindow):
 
 
 	def ResetLabel(self):
-		print 'currentChannel[%s]' % self.mCurrentChannel
+		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
+		#chListInfo = ClassToList( 'convert', self.mCurrentChannel )
+		#print 'currentChannel[%s]'% chListInfo
 
 
 		self.mCtrlProgress.setPercent(0)
 		self.mCtrlProgress.setVisible(False)
-		self.mPincodeEnter = 0x0
+		self.mPincodeEnter = FLAG_MASK_NONE
 
 		self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
 		#self.mCtrlChannelName.setLabel('')
@@ -814,7 +811,7 @@ class ChannelListWindow(BaseWindow):
 
 
 	def UpdateServiceType( self, aTvType ):
-		print '[%s():%s]'% (self.__file__, currentframe().f_lineno)
+		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 		print 'serviceType[%s]' % aTvType
 
 
@@ -827,7 +824,7 @@ class ChannelListWindow(BaseWindow):
 			print 'unknown ElisEnum tvType[%s]'% aTvType
 
 	def UpdateLabelInfo( self ):
-		print '[%s():%s]'% (self.__file__, currentframe().f_lineno)
+		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 
 
 		if self.mEpgRecvPermission == True :
@@ -844,7 +841,7 @@ class ChannelListWindow(BaseWindow):
 		#update lock-icon visible
 		if self.mNavChannel.mLocked :
 				self.mCtrlLockedInfo.setVisible(True)
-				self.mPincodeEnter |= FLAG_MASK
+				self.mPincodeEnter |= FLAG_MASK_ADD
 
 
 		#update career info
@@ -868,7 +865,7 @@ class ChannelListWindow(BaseWindow):
 		#is cas?
 		if self.mNavChannel.mIsCA == True:
 			#scrambled
-			self.mPincodeEnter |= FLAG_MASK
+			self.mPincodeEnter |= FLAG_MASK_ADD
 		"""
 
 
@@ -901,7 +898,7 @@ class ChannelListWindow(BaseWindow):
 			#is Age? agerating check
 			isLimit = AgeLimit(self.mCommander, self.mNavEpg.mAgeRating)
 			if isLimit == True :
-				self.mPincodeEnter |= FLAG_MASK
+				self.mPincodeEnter |= FLAG_MASK_ADD
 				print 'AgeLimit[%s]'% isLimit
 
 		else:
@@ -911,24 +908,24 @@ class ChannelListWindow(BaseWindow):
 
 		#popup pin-code dialog
 		if self.mPincodeEnter > 0 :
-			msg1 = 'Enter PIN Code'
-			msg2 = 'Current PIN Code'
+			msg1 = Msg.strings(MsgId.LANG_INPUT_PIN_CODE)
+			msg2 = Msg.strings(MsgId.LANG_CURRENT_PIN_CODE)
 			kb = xbmc.Keyboard( msg1, '1111', False )
 			kb.doModal()
 			if( kb.isConfirmed() ) :
 				inputPass = kb.getText()
-				#self.mPincodeEnter = 0
+				#self.mPincodeEnter = FLAG_MASK_NONE
 				print 'password[%s]'% inputPass
 
 
 	@RunThread
 	def CurrentTimeThread(self):
-		print '[%s():%s]begin_start thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print '[%s():%s]begin_start thread'% (self.__file__, currentframe().f_lineno)
 
 		loop = 0
 		#rLock = threading.RLock()
 		while self.mEnableThread:
-			#print '[%s():%s]repeat <<<<'% (currentframe().f_code.co_name, currentframe().f_lineno)
+			#print '[%s:%s]repeat <<<<'% (self.__file__, currentframe().f_lineno)
 
 			#progress
 
@@ -946,7 +943,7 @@ class ChannelListWindow(BaseWindow):
 			time.sleep(1)
 			loop += 1
 
-		print '[%s():%s]leave_end thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		print '[%s:%s]leave_end thread'% (self.__file__, currentframe().f_lineno)
 
 
 	@GuiLock

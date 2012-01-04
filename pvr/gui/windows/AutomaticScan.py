@@ -4,13 +4,12 @@ import sys
 from copy import deepcopy
 
 import pvr.gui.WindowMgr as WinMgr
-import pvr.gui.DialogMgr as diamgr
-import pvr.TunerConfigMgr as configmgr
+import pvr.gui.DialogMgr as DlgMgr
+import pvr.TunerConfigMgr as ConfigMgr
 from  pvr.TunerConfigMgr import *
 from pvr.gui.GuiConfig import *
 
-from pvr.gui.BaseWindow import SettingWindow
-from pvr.gui.BaseWindow import Action
+from pvr.gui.BaseWindow import SettingWindow, Action
 import pvr.ElisMgr
 
 
@@ -29,13 +28,13 @@ class AutomaticScan( SettingWindow ):
 
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
 
-		self.setHeaderLabel( 'Channel Scan' )
-		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
+		self.SetHeaderLabel( 'Channel Scan' )
+		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
 
 		self.selectedSatelliteIndex = 0
 		self.allsatellitelist = []
 		
-		self.allsatellitelist = self.mCommander.satellite_GetList( ElisEnum.E_SORT_INSERTED )
+		self.allsatellitelist = self.mCommander.Satellite_GetList( ElisEnum.E_SORT_INSERTED )
 		self.loadFormattedSatelliteNameList()
 
 		self.initConfig( )
@@ -91,7 +90,11 @@ class AutomaticScan( SettingWindow ):
 		#Start Search
 		if groupId == E_Input02 :
 			if self.selectedSatelliteIndex == 0 : #ToDO : All Channel Search
+<<<<<<< HEAD:pvr/gui/windows/AutoMaticScan.py
 				dialog = diamgr.GetInstance().getDialog( diamgr.DIALOG_ID_CHANNEL_SEARCH )
+=======
+				dialog = DlgMgr.getInstance().getDialog( DlgMgr.DIALOG_ID_CHANNEL_SEARCH )
+>>>>>>> aa19f8bf1edb9be4e7acf2bdd41b4bac5ad92193:pvr/gui/windows/AutomaticScan.py
 				dialog.setSatellite( self.configuredSatelliteList )
 				dialog.doModal( )
 
@@ -101,7 +104,11 @@ class AutomaticScan( SettingWindow ):
 				print 'longitude=%s bandtype=%s' %( satellite[E_CONFIGURE_SATELLITE_LONGITUDE], satellite[E_CONFIGURE_SATELLITE_BANDTYPE] )
 
 				satelliteList.append( satellite )
+<<<<<<< HEAD:pvr/gui/windows/AutoMaticScan.py
 				dialog = diamgr.GetInstance().getDialog( diamgr.DIALOG_ID_CHANNEL_SEARCH )
+=======
+				dialog = DlgMgr.getInstance().getDialog( DlgMgr.DIALOG_ID_CHANNEL_SEARCH )
+>>>>>>> aa19f8bf1edb9be4e7acf2bdd41b4bac5ad92193:pvr/gui/windows/AutomaticScan.py
 				dialog.setSatellite( satelliteList )
 				dialog.doModal( )
 								

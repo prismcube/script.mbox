@@ -3,37 +3,37 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.WindowMgr as winmgr
+import pvr.gui.WindowMgr as WinMgr
 from pvr.gui.GuiConfig import *
 
-from pvr.gui.BaseWindow import SettingWindow
-from pvr.gui.BaseWindow import Action
+from pvr.gui.BaseWindow import SettingWindow, Action
 
 
 class ChannelSearch( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs )
 			
-		self.initialized = False
-		self.lastFocused = -1
+		self.mInitialized = False
+		self.mLastFocused = -1
 
 	def onInit(self):
-		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
+		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWin = xbmcgui.Window( self.mWinId  )
 
-		self.setHeaderLabel( 'Channel Scan' )
-		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
+		self.SetHeaderLabel( 'Channel Scan' )
+		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
 
 		self.AddLeftLabelButtonControl( E_Input01, 'Automatic Scan', 'Running automatic scan.' )
 		self.AddLeftLabelButtonControl( E_Input02, 'Manual Scan', 'Running manual scan.' )
 
 		self.InitControl( )
 		self.ShowDescription( self.getFocusId( ) )
-		self.initialized = True
+		self.mInitialized = True
 
 		
-	def onAction( self, action ):
+	def onAction( self, aAction ):
 
-		actionId = action.getId( )
+		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
@@ -61,19 +61,20 @@ class ChannelSearch( SettingWindow ):
 			
 
 
-	def onClick( self, controlId ):
-		if controlId == E_Input01 + 1 :
+	def onClick( self, aControlId ):
+		if aControlId == E_Input01 + 1 :
 			self.ResetAllControl( )
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_AUTOMATIC_SCAN )
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_AUTOMATIC_SCAN )
 			
-		elif controlId == E_Input02 + 1 :
+		elif aControlId == E_Input02 + 1 :
 			self.ResetAllControl( )
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_MANUAL_SCAN )
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MANUAL_SCAN )
 			
 
-	def onFocus( self, controlId ):
-		if self.initialized == False :
+	def onFocus( self, aControlId ):
+		if self.mInitialized == False :
 			return
-		if ( self.lastFocused != controlId ) :
-			self.ShowDescription( controlId )
-			self.lastFocused = controlId
+
+		if ( self.mLastFocused != aControlId ) :
+			self.ShowDescription( aControlId )
+			self.mLastFocused = aControlId
