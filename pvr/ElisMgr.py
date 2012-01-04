@@ -5,7 +5,8 @@ import time
 from pvr.Util import RunThread
 from ElisCommander import ElisCommander
 from net.Net import EventServer, EventHandler, EventRequest
-from ElisEvent import ElisEventBus
+from ElisEventClass import *
+from ElisEventBus import ElisEventBus
 from ElisAction import ElisAction
 from ElisEnum import ElisEnum
 import pvr.NetConfig as NetConfig
@@ -47,7 +48,8 @@ class ElisEventHandler( EventHandler ):
 				else :
 					continue
 
-			event = request.readMsg()
+			read = request.ReadMsg()
+			event  = ElisEvent.ParseElisEvent( read )
 			self.AddEvent( event )
 			print 'handle end --->!!!!!!!!!!!!!!!!!'
 	

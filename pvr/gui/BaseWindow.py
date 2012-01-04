@@ -75,8 +75,8 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 		self.mClosed = False
 
 	def SetFooter( self, aFooterMask ):
-		self.mFooterGroupId = aFooterMask.G_FOOTER_GROUP_STARTID
-		for i in range( aFooterMask.G_NUM_OF_FOOTER_ICON ):
+		self.mFooterGroupId = FooterMask.G_FOOTER_GROUP_STARTID
+		for i in range( FooterMask.G_NUM_OF_FOOTER_ICON ):
 			if not( aFooterMask & ( 1 << i ) ):
 				self.mCtrlFooterGroup = self.getControl( self.mFooterGroupId )
 				self.mCtrlFooterGroup.setVisible( False )
