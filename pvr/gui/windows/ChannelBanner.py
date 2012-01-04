@@ -5,10 +5,10 @@ import time
 
 import pvr.gui.WindowMgr as winmgr
 import pvr.gui.dialogmgr as diamgr
-from pvr.gui.BaseWindow import BaseWindow
-from pvr.gui.BaseWindow import Action
+from pvr.gui.BaseWindow import BaseWindow, Action
+from pvr.gui.BaseWindow import 
 from pvr.gui.guiconfig import *
-
+from pvr.Util import GuiLock
 
 import pvr.ElisMgr
 from ElisAction import ElisAction
