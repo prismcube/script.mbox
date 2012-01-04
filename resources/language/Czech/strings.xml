@@ -57,4 +57,11 @@
 	<string id="554">NONE_No channels</string>
 	<string id="555">Zp?t</string>
 	<string id="556">NONE_to change zapping mode</string>
+	<string id="557">Heslo</string>
+	<string id="558">Zadat heslo</string>
+	<string id="559">Aktualni heslo</string>
+	<string id="560">Potvrzeni hesla</string>
+	<string id="561">stanovit nove heslo</string>
+	<string id="562">aby se stanovilo nove heslo</string>
+	<string id="563">Zadane heslo nesouhlasi!</string>
 </strings>

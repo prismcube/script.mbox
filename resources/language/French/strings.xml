@@ -57,4 +57,11 @@
 	<string id="554">Pas de chaines</string>
 	<string id="555">Retour</string>
 	<string id="556">NONE_to change zapping mode</string>
+	<string id="557">Mot de passe</string>
+	<string id="558">Entrer le mot de passe</string>
+	<string id="559">Mot de passe actuel</string>
+	<string id="560">Confirmer le mot de passe</string>
+	<string id="561">Definir un nouveau mot de passe</string>
+	<string id="562">pour definir un nouveau mot de passe</string>
+	<string id="563">Le mot de passe entre ne correspond pas !</string>
 </strings>

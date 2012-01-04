@@ -57,4 +57,11 @@
 	<string id="554">NONE_No channels</string>
 	<string id="555">Indietro</string>
 	<string id="556">NONE_to change zapping mode</string>
+	<string id="557">Password</string>
+	<string id="558">Immetti password</string>
+	<string id="559">Password corrente</string>
+	<string id="560">Conferma password</string>
+	<string id="561">stabilisci nuova password</string>
+	<string id="562">per definire una nuova password</string>
+	<string id="563">La password immessa non e corretta!</string>
 </strings>

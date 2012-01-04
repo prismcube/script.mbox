@@ -47,7 +47,7 @@ def csvToXML():
 
 	#openFile = os.getcwd() + '/Language_Prime.csv'
 	openFile = os.getcwd() + '/Language_Elmo.csv'
-	wFile1 = 'define_string.py'
+	wFile1 = 'Define_string.py'
 
 	langPack = ["ENGLISH","DEUTSCH","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"]
 	tag1 = '<string id=\"%s\">'
@@ -157,7 +157,7 @@ def csvToXML():
 				#print 'error string.xml', e
 				pass
 
-		#write define_string.py in English Name
+		#write Define_string.py in English Name
 		try:
 			strid = re.sub(',', '', ret2[len(ret2)-1])
 			#strid = ('%s'% sidx)
@@ -211,7 +211,7 @@ def readToXML(inFile):
 
 	#openFile = os.getcwd() + '/Language_Prime.csv'
 	openFile = os.getcwd() + '/Language_Elmo.csv'
-	wFile1 = 'define_string.py'
+	wFile1 = 'Define_string.py'
 
 	langPack = ["ENGLISH","DEUTSCH","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"]
 	tag1 = '<string id=\"%s\">'
@@ -340,7 +340,7 @@ def readToXML(inFile):
 					#print 'error string.xml', e
 					pass
 	
-			#write define_string.py in English Name
+			#write Define_string.py in English Name
 			try:
 				strid = re.sub(',', '', csvret2[len(csvret2)-1])
 				#strid = ('%s'% sidx)
@@ -383,7 +383,7 @@ def readToXML(inFile):
 
 
 def verify_defineString():
-	dfile = 'define_string.py'
+	dfile = 'Define_string.py'
 	try:
 		ef = open(dfile, 'r')
 

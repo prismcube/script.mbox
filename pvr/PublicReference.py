@@ -5,11 +5,12 @@ import xbmcgui
 
 
 from inspect import currentframe
+__file__ = os.path.basename( currentframe().f_code.co_filename )
 
-def epgInfoTime(localOffset, startTime, duration):
-	
-	epgStartTime = startTime + localOffset
-	epgEndTime =  startTime + duration + localOffset
+def EpgInfoTime(aLocalOffset, aStartTime, aDuration):
+
+	epgStartTime = aStartTime + aLocalOffset
+	epgEndTime =  aStartTime + aDuration + aLocalOffset
 
 	startTime_hh = time.strftime('%H', time.gmtime(epgStartTime) )
 	startTime_mm = time.strftime('%M', time.gmtime(epgStartTime) )
@@ -30,65 +31,64 @@ def epgInfoTime(localOffset, startTime, duration):
 
 	return ret
 
-def epgInfoClock(flag, nowTime, strTime):
+def EpgInfoClock(aFlag, aNowTime, aStrTime):
 
 	strClock = []
 	
-	if flag == 1:
-		strClock.append( time.strftime('%a, %d.%m.%Y', time.gmtime(nowTime) ) )
-		if strTime % 2 == 0:
-			strClock.append( time.strftime('%H:%M', time.gmtime(nowTime) ) )
+	if aFlag == 1:
+		strClock.append( time.strftime('%a, %d.%m.%Y', time.gmtime(aNowTime) ) )
+		if aStrTime % 2 == 0:
+			strClock.append( time.strftime('%H:%M', time.gmtime(aNowTime) ) )
 		else :
-			strClock.append( time.strftime('%H %M', time.gmtime(nowTime) ) )
+			strClock.append( time.strftime('%H %M', time.gmtime(aNowTime) ) )
 
-	elif flag == 2:
-		strClock.append( time.strftime('%a. %H:%M', time.gmtime(nowTime) ) )
+	elif aFlag == 2:
+		strClock.append( time.strftime('%a. %H:%M', time.gmtime(aNowTime) ) )
 
-	elif flag == 3:
-		strClock.append( time.strftime('%H:%M:%S', time.gmtime(nowTime) ) )
+	elif aFlag == 3:
+		strClock.append( time.strftime('%H:%M:%S', time.gmtime(aNowTime) ) )
 
-	elif flag == 4:
-		hour =  nowTime / 3600
-		min  = (nowTime % 3600) / 60
-		sec  = (nowTime % 3600) % 60
+	elif aFlag == 4:
+		hour =  aNowTime / 3600
+		min  = (aNowTime % 3600) / 60
+		sec  = (aNowTime % 3600) % 60
 		ret = '%d:%02d:%02d' % ( hour, min, sec )
 		return ret
 
-	elif flag == 5:
+	elif aFlag == 5:
 		import re
-		ret = re.split(':', strTime)
+		ret = re.split(':', aStrTime)
 		timeT = int(ret[0]) * 3600 + int(ret[1]) * 60 + int(ret[2])
 		return timeT
 
 	#print 'epgClock[%s:%s]'% (strClock, time.strftime('%S', time.gmtime(stbClock)) )
 	return strClock
 
-def epgInfoComponentImage(component):
-	print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+def EpgInfoComponentImage(aEpg):
+	print '[%s():%s]'% (__file__, currentframe().f_lineno)
 	from ElisEnum import ElisEnum
-	tmpcom = []
-	tmpcom = component
+
 	tempFile = 0x00
-	if (int(tmpcom[0]) == 1): #== ElisEnum.E_HasHDVideo:                # 1<<0
+	if aEpg.mHasHDVideo :              #== ElisEnum.E_HasHDVideo:                # 1<<0
 		tempFile |= 0x01
-	if (int(tmpcom[1]) == 1): #== ElisEnum.E_Has16_9Video:              # 1<<1
+	if aEpg.mHas16_9Video :            #== ElisEnum.E_Has16_9Video:              # 1<<1
 		pass
-	if (int(tmpcom[2]) == 1 ): #== ElisEnum.E_HasStereoAudio:            # 1<<2
+	if aEpg.mHasStereoAudio :          #== ElisEnum.E_HasStereoAudio:            # 1<<2
 		pass
-	if (int(tmpcom[3]) == 1): #== ElisEnum.E_mHasMultichannelAudio:     # 1<<3
+	if aEpg.mHasMultichannelAudio :    #== ElisEnum.E_mHasMultichannelAudio:     # 1<<3
 		pass
-	if (int(tmpcom[4]) == 1): #== ElisEnum.E_mHasDolbyDigital:          # 1<<4
+	if aEpg.mHasDolbyDigital :         #== ElisEnum.E_mHasDolbyDigital:          # 1<<4
 		tempFile |= 0x02
-	if (int(tmpcom[5]) == 1): #== ElisEnum.E_mHasSubtitles:             # 1<<5
+	if aEpg.mHasSubtitles :            #== ElisEnum.E_mHasSubtitles:             # 1<<5
 		tempFile |= 0x04
-	if (int(tmpcom[6]) == 1): #== ElisEnum.E_mHasHardOfHearingAudio:    # 1<<6
+	if aEpg.mHasHardOfHearingAudio :   #== ElisEnum.E_mHasHardOfHearingAudio:    # 1<<6
 		pass
-	if (int(tmpcom[7]) == 1): #== ElisEnum.E_mHasHardOfHearingSub:      # 1<<7
+	if aEpg.mHasHardOfHearingSub :     #== ElisEnum.E_mHasHardOfHearingSub:      # 1<<7
 		pass
-	if (int(tmpcom[8]) == 1):#== ElisEnum.E_mHasVisuallyImpairedAudio: # 1<<8
+	if aEpg.mHasVisuallyImpairedAudio :#== ElisEnum.E_mHasVisuallyImpairedAudio: # 1<<8
 		pass
 
-	print 'component[%s] tempFile[%s]' % (component, tempFile)
+	print '[%s():%s]component flag[%s]'% (__file__, currentframe().f_lineno, tempFile)
 
 	imgData  = 'confluence/IconTeletext.png'
 	imgDolby = 'confluence/dolbydigital.png'
@@ -114,85 +114,83 @@ def epgInfoComponentImage(component):
 		imagelist.append(imgDolby)
 		imagelist.append(imgHD)
 	else:
-		print 'unknown component image'
+		print '[%s():%s]unknown component image'% (__file__, currentframe().f_lineno)
 
 	return imagelist
 
-def GetSelectedLongitudeString(longitude_str):
-	print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+def GetSelectedLongitudeString(aLongitude, aName):
+	print '[%s():%s]'% (__file__, currentframe().f_lineno)
 
 	ret = ''
-	if longitude_str != []:
-		longitude = int(longitude_str[0])
 
-		if longitude < 1800 :
-			log1 = longitude / 10
-			log2 = longitude - (log1 * 10)
-			ret = str('%d.%d E %s'% (log1, log2, longitude_str[2]))
-	
-		else:
-			longitude = 3600 - longitude;
-			log1 = longitude / 10
-			log2 = longitude - (log1 * 10)
-			ret = str('%d.%d W %s'% (log1, log2, longitude_str[2]))
+	if aLongitude < 1800 :
+		log1 = aLongitude / 10
+		log2 = aLongitude - (log1 * 10)
+		ret = str( '%d.%d E %s'% (log1, log2, aName) )
+
+	else:
+		aLongitude = 3600 - aLongitude
+		log1 = aLongitude / 10
+		log2 = aLongitude - (log1 * 10)
+		ret = str('%d.%d W %s'% (log1, log2, aName) )
 
 	print ret
 	return ret
 
-def enumToString(type, value):
+def EnumToString(aType, aValue):
 	from ElisEnum import ElisEnum
 
 	ret = ''
-	if type == 'type' :
-		if value == ElisEnum.E_SERVICE_TYPE_TV :
+	if aType == 'type' :
+		if aValue == ElisEnum.E_SERVICE_TYPE_TV :
 			ret = 'tv'
-		elif value == ElisEnum.E_SERVICE_TYPE_RADIO :
+		elif aValue == ElisEnum.E_SERVICE_TYPE_RADIO :
 			ret = 'radio'
-		elif value == ElisEnum.E_SERVICE_TYPE_DATA :
+		elif aValue == ElisEnum.E_SERVICE_TYPE_DATA :
 			ret = 'data'
-		elif value == ElisEnum.E_SERVICE_TYPE_INVALID :
+		elif aValue == ElisEnum.E_SERVICE_TYPE_INVALID :
 			ret = 'type_invalid'
 
-	elif type == 'mode' :
-		if value == ElisEnum.E_MODE_ALL :
+	elif aType == 'mode' :
+		if aValue == ElisEnum.E_MODE_ALL :
 			ret = 'ALL Channels'
-		elif value == ElisEnum.E_MODE_FAVORITE :
+		elif aValue == ElisEnum.E_MODE_FAVORITE :
 			ret = 'favorite'
-		elif value == ElisEnum.E_MODE_NETWORK :
+		elif aValue == ElisEnum.E_MODE_NETWORK :
 			ret = 'network'
-		elif value == ElisEnum.E_MODE_SATELLITE :
+		elif aValue == ElisEnum.E_MODE_SATELLITE :
 			ret = 'satellite'
-		elif value == ElisEnum.E_MODE_CAS :
+		elif aValue == ElisEnum.E_MODE_CAS :
 			ret = 'fta/cas'
 
-	elif type == 'sort' :
-		if value == ElisEnum.E_SORT_BY_DEFAULT :
+	elif aType == 'sort' :
+		if aValue == ElisEnum.E_SORT_BY_DEFAULT :
 			ret = 'default'
-		elif value == ElisEnum.E_SORT_BY_ALPHABET :
+		elif aValue == ElisEnum.E_SORT_BY_ALPHABET :
 			ret = 'alphabet'
-		elif value == ElisEnum.E_SORT_BY_CARRIER :
+		elif aValue == ElisEnum.E_SORT_BY_CARRIER :
 			ret = 'carrier'
-		elif value == ElisEnum.E_SORT_BY_NUMBER :
+		elif aValue == ElisEnum.E_SORT_BY_NUMBER :
 			ret = 'number'
-		elif value == ElisEnum.E_SORT_BY_HD :
+		elif aValue == ElisEnum.E_SORT_BY_HD :
 			ret = 'hd'
 
-	elif type == 'Polarization' :
-		if value == ElisEnum.E_LNB_HORIZONTAL :
+	elif aType == 'Polarization' :
+		if aValue == ElisEnum.E_LNB_HORIZONTAL :
 			ret = 'Horz'
-		elif value == ElisEnum.E_LNB_VERTICAL :
+		elif aValue == ElisEnum.E_LNB_VERTICAL :
 			ret = 'Vert'
-		elif value == ElisEnum.E_LNB_LEFT :
+		elif aValue == ElisEnum.E_LNB_LEFT :
 			ret = 'Left'
-		elif value == ElisEnum.E_LNB_RIGHT :
+		elif aValue == ElisEnum.E_LNB_RIGHT :
 			ret = 'Righ'
 
 	return ret.upper()
 
-def ageLimit(cmd, agerating):
+def AgeLimit(aCmd, aAgerating):
 	from ElisProperty import ElisPropertyEnum
-	
-	property = ElisPropertyEnum( 'Age Limit', cmd )
+
+	property = ElisPropertyEnum( 'Age Limit', aCmd )
 	#print 'TTTTTTTTTTTTTTT[%s][%s][%s]'% ( agerating, property.getProp(), property.getPropString() )
 
 	isWatch = True
@@ -202,10 +200,24 @@ def ageLimit(cmd, agerating):
 		isLimit = False
 
 	else:
-		if limit <= agerating :
+		if limit <= aAgerating :
 			#limitted
 			isLimit = True
 		else:
 			isLimit = False
 
 	return isLimit
+
+def ClassToList( aMode, aClass ) :
+
+	list = []
+	for item in aClass :
+		req = []
+		item.appendReqBuffer( req )
+		list.append( req )
+
+	if aMode == 'print' :
+		print '[%s():%s]%s'% (__file__, currentframe().f_lineno, list)
+	elif aMode == 'convert' :
+		return list
+
