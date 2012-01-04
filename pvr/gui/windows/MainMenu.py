@@ -57,7 +57,7 @@ class MainMenu( BaseWindow ):
 			pass
 
 		elif aControlId == BUTTON_ID_ANTENNA_SETUP : # Antenna Setup
-			ConfigMgr.GetInstance( ).setNeedLoad( True )		
+			ConfigMgr.GetInstance( ).SetNeedLoad( True )		
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
 
 		elif aControlId == BUTTON_ID_CHANNEL_SEARCH : # Channel Search
