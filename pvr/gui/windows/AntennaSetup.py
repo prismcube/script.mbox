@@ -28,7 +28,7 @@ class AntennaSetup( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 		print 'dhkim test win id = %d' % self.mWinId
-		"""
+ 
 		if ConfigMgr.GetInstance( ).GetNeedLoad( ) == True : 
 			ConfigMgr.GetInstance( ).LoadOriginalTunerConfig( )
 			ConfigMgr.GetInstance( ).Load( )		
@@ -48,7 +48,7 @@ class AntennaSetup( SettingWindow ) :
 		self.ShowDescription( self.getFocusId( ) )
 		self.DisableControl( )
 		self.mInitialized = True
-		"""
+ 
 		print 'dhkim test end oninit'
 		
 	def onAction( self, aAction ) :

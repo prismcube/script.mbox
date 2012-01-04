@@ -32,12 +32,12 @@ class MainMenu( BaseWindow ):
 
 	def onInit( self ):
 		self.mWinId = xbmcgui.getCurrentWindowId()
+		print 'main window id=%d' %self.mWinId
 		self.mWin = xbmcgui.Window( self.mWinId  )
 		self.mCtrlMainMenu = self.getControl( LIST_ID_MAIN_MENU )
 		WinMgr.GetInstance().CheckSkinChange( )
 
 
-	@GuiLock
 	def onAction( self, aAction ):
 		id = aAction.getId()
 
@@ -52,7 +52,7 @@ class MainMenu( BaseWindow ):
 			print 'lael98 check ation back'
 			self.close()
 
-	@GuiLock			
+
 	def onClick( self, aControlId ):
 		print "MainMenu onclick(): control %d" % aControlId
 		if aControlId == LIST_ID_MAIN_MENU :
@@ -62,7 +62,6 @@ class MainMenu( BaseWindow ):
 			pass
 
 		elif aControlId == BUTTON_ID_ANTENNA_SETUP : # Antenna Setup
-			self.close( )
 			ConfigMgr.GetInstance( ).SetNeedLoad( True )		
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
 
@@ -91,7 +90,7 @@ class MainMenu( BaseWindow ):
 			import pvr.Launcher
 			pvr.Launcher.GetInstance().PowerOff()
 
-	@GuiLock
+ 
 	def onFocus( self, aControlId ):
 		pass
 
