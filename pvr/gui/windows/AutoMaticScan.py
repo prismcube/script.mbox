@@ -4,10 +4,10 @@ import sys
 from copy import deepcopy
 
 import pvr.gui.WindowMgr as winmgr
-import pvr.gui.dialogmgr as diamgr
-import pvr.tunerconfigmgr as configmgr
-from  pvr.tunerconfigmgr import *
-from pvr.gui.guiconfig import *
+import pvr.gui.DialogMgr as diamgr
+import pvr.TunerConfigMgr as configmgr
+from  pvr.TunerConfigMgr import *
+from pvr.gui.GuiConfig import *
 
 from pvr.gui.BaseWindow import SettingWindow
 from pvr.gui.BaseWindow import Action
@@ -135,7 +135,7 @@ class AutomaticScan( SettingWindow ):
 			self.InitControl( )
 
 		
-	def getFormattedName( self, longitude, band ) :
+	def GetFormattedName( self, longitude, band ) :
 	
 		found = False	
 
@@ -186,6 +186,6 @@ class AutomaticScan( SettingWindow ):
 		self.formattedList.append('All')
 
 		for config in self.configuredSatelliteList :
-			self.formattedList.append( self.getFormattedName( int(config[E_CONFIGURE_SATELLITE_LONGITUDE]), int(config[E_CONFIGURE_SATELLITE_BANDTYPE]) ) )
+			self.formattedList.append( self.GetFormattedName( int(config[E_CONFIGURE_SATELLITE_LONGITUDE]), int(config[E_CONFIGURE_SATELLITE_BANDTYPE]) ) )
 
 

@@ -12,7 +12,7 @@ from pvr.util import catchall, is_digit, run_async, epgInfoTime, epgInfoClock, e
 import pvr.util as util
 import pvr.elismgr
 from elisproperty import ElisPropertyEnum, ElisPropertyInt
-from pvr.gui.guiconfig import FooterMask
+from pvr.gui.GuiConfig import FooterMask
 import threading, time, os
 
 import pvr.msg as m

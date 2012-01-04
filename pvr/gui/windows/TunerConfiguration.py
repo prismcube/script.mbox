@@ -3,9 +3,9 @@ import xbmcgui
 import sys
 
 import pvr.gui.WindowMgr as winmgr
-import pvr.tunerconfigmgr as configmgr
-from  pvr.tunerconfigmgr import *
-from pvr.gui.guiconfig import *
+import pvr.TunerConfigMgr as configmgr
+from  pvr.TunerConfigMgr import *
+from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow
 from pvr.gui.BaseWindow import Action
 from ElisEnum import ElisEnum
@@ -28,7 +28,7 @@ class TunerConfiguration( SettingWindow ):
 	def onInit( self ):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
 
-		self.tunerIndex = configmgr.getInstance().getCurrentTunerIndex( )
+		self.tunerIndex = configmgr.getInstance().GetCurrentTunerIndex( )
 
 		if self.tunerIndex == E_TUNER_1 :
 			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
@@ -76,27 +76,27 @@ class TunerConfiguration( SettingWindow ):
 		if controlId == E_MAIN_LIST_ID : 
 			position = self.getControl( E_MAIN_LIST_ID ).getSelectedPosition( )
 
-			configuredList = configmgr.getInstance().getConfiguredSatelliteList( )
+			configuredList = configmgr.getInstance().GetConfiguredSatelliteList( )
 			
 			if ( len( configuredList ) ) == position or len( configuredList ) == 0 :
 				dialog = xbmcgui.Dialog()
-				satelliteList = configmgr.getInstance( ).getFormattedNameList( )
+				satelliteList = configmgr.getInstance( ).GetFormattedNameList( )
 	 			ret = dialog.select('Select satellite', satelliteList )
 
 	 			if ret >= 0 :
-					configmgr.getInstance().addConfiguredSatellite( ret )
+					configmgr.getInstance().AddConfiguredSatellite( ret )
 	 				self.reloadConfigedSatellite()
 	 				
 
 			else :		
 				config = configuredList[ position ]
 				if config != [] :
-					configmgr.getInstance( ).setCurrentConfigIndex( position )
+					configmgr.getInstance( ).SetCurrentConfigIndex( position )
 					self.ResetAllControl( )
 					import pvr.Platform 
 					scriptDir = pvr.Platform.getPlatform().GetScriptDir()
 
-					tunertype = configmgr.getInstance( ).getCurrentTunerType( )
+					tunertype = configmgr.getInstance( ).GetCurrentTunerType( )
 					
 					if tunertype == E_DISEQC_1_0 :
 						SatelliteConfigDisEqC10('satelliteconfiguration.xml', scriptDir).doModal()
@@ -130,10 +130,10 @@ class TunerConfiguration( SettingWindow ):
 		configuredList = []
 		self.listItems = []
 
-		configuredList = configmgr.getInstance( ).getConfiguredSatelliteList( )
+		configuredList = configmgr.getInstance( ).GetConfiguredSatelliteList( )
 
 		for config in configuredList :
-			self.listItems.append( xbmcgui.ListItem( '%s' %configmgr.getInstance( ).getFormattedName( int( config[ 2 ] ), int( config[ 3 ] ) ) ) )
+			self.listItems.append( xbmcgui.ListItem( '%s' %configmgr.getInstance( ).GetFormattedName( int( config[ 2 ] ), int( config[ 3 ] ) ) ) )
 
 		self.listItems.append( xbmcgui.ListItem( 'Add New Satellite' ) )
 		self.getControl( E_MAIN_LIST_ID ).addItems( self.listItems )

@@ -10,16 +10,16 @@ DIALOG_ID_CHANNEL_SEARCH			= 2
 DIALOG_ID_RECORD					= 3
 
 
-gDialogmgr = None
+gDialogMgr = None
 
 def getInstance():
-	global gDialogmgr
-	if not gDialogmgr:
-		gDialogmgr = DialogMgr()
+	global gDialogMgr
+	if not gDialogMgr:
+		gDialogMgr = DialogMgr()
 	else:
-		print 'lael98 check already dialogmgr is created'
+		print 'lael98 check already DialogMgr is created'
 
-	return gDialogmgr
+	return gDialogMgr
 
 
 class DialogMgr(object):

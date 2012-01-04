@@ -3,8 +3,8 @@ import xbmcgui
 import sys
 
 import pvr.gui.WindowMgr as winmgr
-import pvr.tunerconfigmgr as configmgr
-from pvr.gui.guiconfig import *
+import pvr.TunerConfigMgr as configmgr
+from pvr.gui.GuiConfig import *
 
 from pvr.gui.BaseWindow import SettingWindow
 from pvr.gui.BaseWindow import Action
@@ -24,7 +24,7 @@ class MotorizeConfiguration( SettingWindow ):
 		self.AddLeftLabelButtonControl( E_Input03, 'Reference Position to Null' )
 		self.AddLeftLabelButtonControl( E_Input04, 'Configure Satellites' )
 
-		self.tunerIndex = configmgr.getInstance( ).getCurrentTunerIndex( )
+		self.tunerIndex = configmgr.getInstance( ).GetCurrentTunerIndex( )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'USALS configuration : Tuner %s' % ( self.tunerIndex + 1 ) )
 
 		visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]

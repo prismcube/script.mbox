@@ -3,18 +3,18 @@ import xbmcgui
 import sys
 
 import pvr.gui.WindowMgr as winmgr
-import pvr.tunerconfigmgr as configmgr
-from pvr.tunerconfigmgr import *
-from pvr.gui.guiconfig import *
+import pvr.TunerConfigMgr as configmgr
+from pvr.TunerConfigMgr import *
+from pvr.gui.GuiConfig import *
 
 from pvr.gui.BaseWindow import SettingWindow
 from pvr.gui.BaseWindow import Action
-from pvr.gui.windows.onecableconfiguration2 import OneCableConfiguration2
-from pvr.gui.windows.satelliteconfigsimple import SatelliteConfigSimple
+from pvr.gui.windows.OnecableConfiguration2 import OnecableConfiguration2
+from pvr.gui.windows.SatelliteConfigSimple import SatelliteConfigSimple
 
 MAX_SATELLITE_CNT = 4
 
-class OneCableConfiguration( SettingWindow ):
+class OnecableConfiguration( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs )
 		self.satelliteCount = 0
@@ -26,7 +26,7 @@ class OneCableConfiguration( SettingWindow ):
 		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'OneCable configuration' )
 
-		self.currentSatellite = configmgr.getInstance( ).getConfiguredSatellitebyIndex( 0 )
+		self.currentSatellite = configmgr.getInstance( ).GetConfiguredSatellitebyIndex( 0 )
 		self.loadConfigedSatellite( )
 
 		self.AddLeftLabelButtonControl( E_Input01, 'Configure System' )
@@ -60,7 +60,7 @@ class OneCableConfiguration( SettingWindow ):
 		elif actionId == Action.ACTION_PARENT_DIR :
 			if self.satelliteCount > 1 :
 				for i in range( self.satelliteCount - 1 ) :
-					satellite = configmgr.getInstance( ).getConfiguredSatellitebyIndex( i + 1 )
+					satellite = configmgr.getInstance( ).GetConfiguredSatellitebyIndex( i + 1 )
 					satellite[E_CONFIGURE_SATELLITE_IS_ONECABLE] = self.currentSatellite[E_CONFIGURE_SATELLITE_IS_ONECABLE]
 					satellite[E_CONFIGURE_SATELLITE_ONECABLE_PIN] = self.currentSatellite[E_CONFIGURE_SATELLITE_ONECABLE_PIN]
 					satellite[E_CONFIGURE_SATELLITE_ONECABLE_MDU] = self.currentSatellite[E_CONFIGURE_SATELLITE_ONECABLE_MDU]
@@ -90,18 +90,18 @@ class OneCableConfiguration( SettingWindow ):
 
 		if groupId == E_Input01 :
 			position = self.GetControlIdToListIndex( groupId ) - 2
-			configmgr.getInstance( ).setOneCableSatelliteCount( position + 1 )
+			configmgr.getInstance( ).SetOnecableSatelliteCount( position + 1 )
 			self.ResetAllControl( )
 			import pvr.Platform 
 			scriptDir = pvr.Platform.getPlatform().GetScriptDir()
-			OneCableConfiguration2('onecableconfiguration2.xml', scriptDir).doModal()
+			OnecableConfiguration2('OnecableConfiguration2.xml', scriptDir).doModal()
 		
 		elif groupId == E_SpinEx01 :
 			self.disableControl( )
 
 		else :
 			position = self.GetControlIdToListIndex( groupId ) - 2
-			configmgr.getInstance( ).setCurrentConfigIndex( position )
+			configmgr.getInstance( ).SetCurrentConfigIndex( position )
 
 			self.ResetAllControl( )
 				
@@ -126,11 +126,11 @@ class OneCableConfiguration( SettingWindow ):
 	def loadConfigedSatellite( self ):
 		configuredList = []
 
-		configuredList = configmgr.getInstance( ).getConfiguredSatelliteList( )
+		configuredList = configmgr.getInstance( ).GetConfiguredSatelliteList( )
 		self.satelliteCount = len( configuredList )
 
 		for i in range( MAX_SATELLITE_CNT ) :
 			if i < self.satelliteCount :
-				self.satellitelist.append( configmgr.getInstance( ).getFormattedName( int( configuredList[i][2] ), int( configuredList[i][3] ) ) )
+				self.satellitelist.append( configmgr.getInstance( ).GetFormattedName( int( configuredList[i][2] ), int( configuredList[i][3] ) ) )
 			else :
 				self.satellitelist.append( '' ) # dummy Data

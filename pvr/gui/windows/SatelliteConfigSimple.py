@@ -3,14 +3,14 @@ import xbmcgui
 import sys
 
 import pvr.gui.WindowMgr as winmgr
-import pvr.gui.dialogmgr as diamgr
-import pvr.tunerconfigmgr as configmgr
-from pvr.tunerconfigmgr import *
+import pvr.gui.DialogMgr as diamgr
+import pvr.TunerConfigMgr as configmgr
+from pvr.TunerConfigMgr import *
 from pvr.gui.BaseWindow import SettingWindow
 from pvr.gui.BaseWindow import Action
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-from pvr.gui.guiconfig import *
+from pvr.gui.GuiConfig import *
 from ElisEnum import ElisEnum
 
 
@@ -22,9 +22,9 @@ class SatelliteConfigSimple( SettingWindow ):
 	def onInit( self ):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
 		self.lnbFrequency = None
-		self.tunerIndex = configmgr.getInstance( ).getCurrentTunerIndex( )
-		self.currentSatellite = configmgr.getInstance( ).getCurrentConfiguredSatellite( )
-		self.transponderList = configmgr.getInstance( ).getTransponderList( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ), int( self.currentSatellite[E_CONFIGURE_SATELLITE_BANDTYPE] ) )
+		self.tunerIndex = configmgr.getInstance( ).GetCurrentTunerIndex( )
+		self.currentSatellite = configmgr.getInstance( ).GetCurrentConfiguredSatellite( )
+		self.transponderList = configmgr.getInstance( ).GetTransponderList( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ), int( self.currentSatellite[E_CONFIGURE_SATELLITE_BANDTYPE] ) )
 		self.selectedTransponderIndex = 0
  
 		self.setHeaderLabel( 'Satellite Configuration' ) 
@@ -72,12 +72,12 @@ class SatelliteConfigSimple( SettingWindow ):
 		
 		#Satellite
 		if groupId == E_Input01 :
-			satelliteList = configmgr.getInstance( ).getFormattedNameList( )
+			satelliteList = configmgr.getInstance( ).GetFormattedNameList( )
 			dialog = xbmcgui.Dialog()
  			ret = dialog.select('Select satellite', satelliteList )
 
 			if ret >= 0 :
-	 			satellite = configmgr.getInstance( ).getSatelliteByIndex( ret )
+	 			satellite = configmgr.getInstance( ).GetSatelliteByIndex( ret )
 
 	 			for i in range( 22 ) :
 					self.currentSatellite[ i ] = "0"
@@ -89,7 +89,7 @@ class SatelliteConfigSimple( SettingWindow ):
 				self.currentSatellite[ E_CONFIGURE_SATELLITE_HIGH_LNB ] = "10600"		# High
 				self.currentSatellite[ E_CONFIGURE_SATELLITE_LNB_THRESHOLD ] = "11700"	# Threshold
 
-				self.transponderList = configmgr.getInstance( ).getTransponderList( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ), int( self.currentSatellite[E_CONFIGURE_SATELLITE_BANDTYPE] ) )				
+				self.transponderList = configmgr.getInstance( ).GetTransponderList( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ), int( self.currentSatellite[E_CONFIGURE_SATELLITE_BANDTYPE] ) )				
 		
 				self.initConfig()
 
@@ -153,7 +153,7 @@ class SatelliteConfigSimple( SettingWindow ):
 	def initConfig( self ) :
 		self.ResetAllControl( )
 
-		self.AddInputControl( E_Input01, 'Satellite' , configmgr.getInstance( ).getFormattedName( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ), int( self.currentSatellite[E_CONFIGURE_SATELLITE_BANDTYPE] ) ) )
+		self.AddInputControl( E_Input01, 'Satellite' , configmgr.getInstance( ).GetFormattedName( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ), int( self.currentSatellite[E_CONFIGURE_SATELLITE_BANDTYPE] ) ) )
 		self.AddUserEnumControl( E_SpinEx01, 'LNB Type', E_LIST_LNB_TYPE, self.selectedIndexLnbType )
 
 
@@ -195,5 +195,5 @@ class SatelliteConfigSimple( SettingWindow ):
 			self.SetEnableControls( enableControlIds, True )
 
 	def saveConfig( self ) :
-		configmgr.getInstance( ).saveCurrentConfig( self.currentSatellite )
+		configmgr.getInstance( ).SaveCurrentConfig( self.currentSatellite )
 		

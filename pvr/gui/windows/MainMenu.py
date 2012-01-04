@@ -36,7 +36,7 @@ class MainMenu( BaseWindow ):
 			elif focusId == 90101 :
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LANGUAGE_SETTING )
 			elif focusId == 90102 :
-				ConfigMgr.GetInstance( ).setNeedLoad( True )
+				ConfigMgr.GetInstance( ).SetNeedLoad( True )
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
 			elif focusId == 90103 :
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )

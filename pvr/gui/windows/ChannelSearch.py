@@ -4,7 +4,7 @@ import xbmcgui
 import sys
 
 import pvr.gui.WindowMgr as winmgr
-from pvr.gui.guiconfig import *
+from pvr.gui.GuiConfig import *
 
 from pvr.gui.BaseWindow import SettingWindow
 from pvr.gui.BaseWindow import Action

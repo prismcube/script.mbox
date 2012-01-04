@@ -3,10 +3,10 @@ import xbmcgui
 import sys
 
 import pvr.gui.WindowMgr as winmgr
-import pvr.gui.dialogmgr as diamgr
-import pvr.tunerconfigmgr as configmgr
-from  pvr.tunerconfigmgr import *
-from pvr.gui.guiconfig import *
+import pvr.gui.DialogMgr as diamgr
+import pvr.TunerConfigMgr as configmgr
+from  pvr.TunerConfigMgr import *
+from pvr.gui.GuiConfig import *
 from ElisEnum import ElisEnum
 
 
@@ -184,7 +184,7 @@ class ManualScan( SettingWindow ):
 			
 
 
-	def getFormattedName( self, longitude , band ) :
+	def GetFormattedName( self, longitude , band ) :
 	
 		found = False	
 
@@ -233,7 +233,7 @@ class ManualScan( SettingWindow ):
 
 		self.formattedSatelliteList = []
 		for config in self.configuredSatelliteList :
-			self.formattedSatelliteList.append( self.getFormattedName( int(config[E_CONFIGURE_SATELLITE_LONGITUDE]), int(config[E_CONFIGURE_SATELLITE_BANDTYPE]) ) )
+			self.formattedSatelliteList.append( self.GetFormattedName( int(config[E_CONFIGURE_SATELLITE_LONGITUDE]), int(config[E_CONFIGURE_SATELLITE_BANDTYPE]) ) )
 
 
 	def loadFormattedTransponderNameList( self ) :

@@ -7,7 +7,7 @@ from pvr.gui.BaseWindow import SettingWindow
 from pvr.gui.BaseWindow import Action
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-from pvr.gui.guiconfig import *
+from pvr.gui.GuiConfig import *
 
 class Configure( SettingWindow ):
 	def __init__( self, *args, **kwargs ):

@@ -7,8 +7,8 @@ import sys
 
 from pvr.gui.BaseWindow import Action
 from pvr.gui.BaseDialog import BaseDialog
-from  pvr.tunerconfigmgr import *
-import pvr.gui.dialogmgr as diamgr
+from  pvr.TunerConfigMgr import *
+import pvr.gui.DialogMgr as diamgr
 from elisevent import ElisEvent
 from ElisEnum import ElisEnum
 
@@ -156,7 +156,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 		self.allSatelliteList = []
 		self.allSatelliteList = self.mCommander.satellite_GetList( ElisEnum.E_SORT_INSERTED )
-		self.satelliteFormatedName = self.getFormattedName( self.longitude , self.band  )		
+		self.satelliteFormatedName = self.GetFormattedName( self.longitude , self.band  )		
 
 		print 'scanMode=%d' %self.scanMode
 		if self.scanMode == E_SCAN_SATELLITE :
@@ -223,7 +223,7 @@ class DialogChannelSearch( BaseDialog ) :
 		if self.longitude != logitude or self.band != band :
 			self.longitude = logitude
 			self.band = band
-			self.satelliteFormatedName = self.getFormattedName( self.longitude , self.band  )
+			self.satelliteFormatedName = self.GetFormattedName( self.longitude , self.band  )
 		
 		strTransponderInfo = '%s - %d Mhz - %s - %d MS/s ' %( self.satelliteFormatedName, frequency, strPol, symbolrate )
 		self.ctrlTransponderInfo.setLabel( strTransponderInfo )
@@ -253,7 +253,7 @@ class DialogChannelSearch( BaseDialog ) :
 		self.drawItem( )
 
 
-	def getFormattedName( self, longitude, band ) :
+	def GetFormattedName( self, longitude, band ) :
 
 		found = False
 
