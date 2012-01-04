@@ -7,11 +7,8 @@ import pvr.gui.WindowMgr as WinMgr
 import pvr.TunerConfigMgr as ConfigMgr
 from  pvr.TunerConfigMgr import *
 from pvr.gui.GuiConfig import *
-
 from pvr.gui.BaseWindow import SettingWindow, Action
 import pvr.ElisMgr
-from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-from ElisEnum import ElisEnum
 
 from pvr.gui.windows.SatelliteConfigSimple import SatelliteConfigSimple
 from pvr.gui.windows.MotorizeConfiguration import MotorizeConfiguration
@@ -28,11 +25,10 @@ class AntennaSetup( SettingWindow ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId  )
-
+		
 		if ConfigMgr.GetInstance( ).GetNeedLoad( ) == True : 
 			ConfigMgr.GetInstance( ).LoadOriginalTunerConfig( )
-		
-			ConfigMgr.GetInstance( ).Load( )
+			ConfigMgr.GetInstance( ).Load( )		
 			ConfigMgr.GetInstance( ).SetNeedLoad( False )
 		
 		self.SetHeaderLabel( 'Antenna & Satellite Setup' )
@@ -49,7 +45,7 @@ class AntennaSetup( SettingWindow ) :
 		self.ShowDescription( self.getFocusId( ) )
 		self.DisableControl( )
 		self.mInitialized = True
-
+		
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )

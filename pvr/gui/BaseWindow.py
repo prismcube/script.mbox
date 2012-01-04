@@ -102,7 +102,7 @@ class ControlItem:
 		self.mControlType = aControlType	
 		self.mControlId  = aControlId
 		self.mProperty = aProperty		# E_SETTING_ENUM_CONTROL : propery, E_SETTING_INPUT_CONTROL : input type, E_DETAIL_NORMAL_BUTTON_CONTROL : Label
-		self.mListItems = aLlistItems
+		self.mListItems = aListItems
 		self.mEnable	= True
 		self.mDescription = aDescription
 		self.mSelecteItem = aSelecteItem
@@ -120,21 +120,21 @@ class SettingWindow( BaseWindow ):
 	def InitControl( self ):
 		pos = 0
 		for ctrlItem in self.mControlList:
-			if ctrlItem.controlType == ctrlItem.E_SETTING_ENUM_CONTROL :
+			if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL :
 				selectedItem = ctrlItem.mProperty.GetPropIndex()
 				control = self.getControl( ctrlItem.mControlId + 3 )
-				control.addItems( ctrlItem.listItems )
+				control.addItems( ctrlItem.mListItems )
 				control.selectItem( selectedItem )
-			elif ctrlItem.controlType == ctrlItem.E_SETTING_INPUT_CONTROL :
+			elif ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
 				control = self.getControl( ctrlItem.mControlId + 3 )
-				control.addItems( ctrlItem.listItems )
-			elif ctrlItem.controlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
+				control.addItems( ctrlItem.mListItems )
+			elif ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 				control = self.getControl( ctrlItem.mControlId + 3 )
-				control.addItems( ctrlItem.listItems )
+				control.addItems( ctrlItem.mListItems )
 				control.selectItem( ctrlItem.selecteItem )
-			elif ctrlItem.controlType == ctrlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL :
+			elif ctrlItem.mControlType == ctrlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL :
 				control = self.getControl( ctrlItem.mControlId + 3 )
-				control.addItems( ctrlItem.listItems )
+				control.addItems( ctrlItem.mListItems )
 
 			self.getControl(ctrlItem.mControlId).setPosition(0, ( pos * 40 ) + 50 )
 			pos += 1	
@@ -163,14 +163,12 @@ class SettingWindow( BaseWindow ):
 	def AddEnumControl( self, aControlId, aPropName, aTitleLabel=None, aDescription=None ):
 		property = ElisPropertyEnum( aPropName, self.mCommander )
 		listItems = []
-
 		for i in range( property.GetIndexCount() ):
 			if aTitleLabel == None :
 				listItem = xbmcgui.ListItem( property.GetName(), property.GetPropStringByIndex( i ), "-", "-", "-" )
 			else :
 				listItem = xbmcgui.ListItem( aTitleLabel, property.GetPropStringByIndex( i ), "-", "-", "-" )
 			listItems.append( listItem )
-
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_ENUM_CONTROL, aControlId, property, listItems, None, None, None, aDescription ) )
 
 	
@@ -182,11 +180,11 @@ class SettingWindow( BaseWindow ):
 			listItems.append( listItem )
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_USER_ENUM_CONTROL, aControlId, None, listItems, int( aSelectItem ), None, None, aDescription ) )
 
-	def AddInputControl( self, controlId , titleLabel, inputLabel, inputType=None, stringType=None, maxLength=None, description=None ):
+	def AddInputControl( self, aControlId , aTitleLabel, aInputLabel, aInputType=None, aStringType=None, aMaxLength=None, aDescription=None ):
 		listItems = []
-		listItem = xbmcgui.ListItem( titleLabel, inputLabel, "-", "-", "-" )
+		listItem = xbmcgui.ListItem( aTitleLabel, aInputLabel, "-", "-", "-" )
 		listItems.append( listItem )
-		self.mControlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, controlId, inputType, listItems, None, stringType, maxLength, description ) )
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, aControlId, aInputType, listItems, None, aStringType, aMaxLength, aDescription ) )
 
 	def AddLeftLabelButtonControl( self, aControlId, aInputString, aDescription=None ):
 		listItems = []
@@ -246,10 +244,10 @@ class SettingWindow( BaseWindow ):
 
 
 	def HasControlItem( self, aCtrlItem, aContgrolId  ):
-		if aCtrlItem.controlType == aCtrlItem.E_SETTING_ENUM_CONTROL or aCtrlItem.controlType == aCtrlItem.E_SETTING_USER_ENUM_CONTROL :
+		if aCtrlItem.mControlType == aCtrlItem.E_SETTING_ENUM_CONTROL or aCtrlItem.mControlType == aCtrlItem.E_SETTING_USER_ENUM_CONTROL :
 			if aCtrlItem.mControlId == aContgrolId or aCtrlItem.mControlId + 1 == aContgrolId or aCtrlItem.mControlId + 2 == aContgrolId or aCtrlItem.mControlId + 3 == aContgrolId  :
 				return True
-		elif aCtrlItem.controlType == aCtrlItem.E_SETTING_INPUT_CONTROL or aCtrlItem.controlType == aCtrlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL :
+		elif aCtrlItem.mControlType == aCtrlItem.E_SETTING_INPUT_CONTROL or aCtrlItem.mControlType == aCtrlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL :
 			if aCtrlItem.mControlId == aContgrolId or aCtrlItem.mControlId + 1 == aContgrolId  or aCtrlItem.mControlId + 3 == aContgrolId :	
 				return True
 		else :
@@ -321,7 +319,7 @@ class SettingWindow( BaseWindow ):
 		for i in range( count ) :
 
 			ctrlItem = self.mControlList[i]
-			if ctrlItem.controlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
+			if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 				if ctrlItem.mControlId == aContgrolId or ctrlItem.mControlId + 1 == aContgrolId or ctrlItem.mControlId + 2 == aContgrolId or ctrlItem.mControlId + 3 == aContgrolId :
 					return ctrlItem.mControlId
 
@@ -439,7 +437,7 @@ class SettingWindow( BaseWindow ):
 		for i in range( count ) :
 			ctrlItem = self.mControlList[i]		
 			if self.HasControlItem( ctrlItem, focusId ) :
-				if ctrlItem.controlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.controlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
+				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 					if focusId % 10 == 1 :
 						self.setFocusId( focusId + 1 )
 						return
