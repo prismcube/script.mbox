@@ -6,7 +6,7 @@ from ElisAction import ElisAction
 from ElisEnum import ElisEnum
 class ElisTest(object):
 	def __init__(self):
-		self.mCommander = pvr.ElisMgr.getInstance().getCommander()
+		self.mCommander = pvr.ElisMgr.GetInstance().getCommander()
 
 	def testAll( self ):
 		#self.testPropEnum()

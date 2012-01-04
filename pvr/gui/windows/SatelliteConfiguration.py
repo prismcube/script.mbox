@@ -17,7 +17,7 @@ from ElisEnum import ElisEnum
 class SatelliteConfiguration( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs)
-		self.mCommander = pvr.ElisMgr.getInstance().getCommander( )
+		self.mCommander = pvr.ElisMgr.GetInstance().getCommander( )
 			
 		self.tunerType = 0
 		self.currentSatellite = 0
@@ -31,11 +31,11 @@ class SatelliteConfiguration( SettingWindow ):
 	def onInit( self ):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
 
-		self.tunerIndex = configmgr.getInstance( ).GetCurrentTunerIndex( ) + 1
-		self.tunertype = configmgr.getInstance( ).GetCurrentTunerType( )
-		self.longitude = configmgr.getInstance( ).getCurrentLongitue( )
-		self.currentSatellite = configmgr.getInstance( ).GetCurrentConfiguredSatellite( )
-		self.transponderList = configmgr.getInstance( ).GetTransponderList( self.longitude )
+		self.tunerIndex = configmgr.GetInstance( ).GetCurrentTunerIndex( ) + 1
+		self.tunertype = configmgr.GetInstance( ).GetCurrentTunerType( )
+		self.longitude = configmgr.GetInstance( ).getCurrentLongitue( )
+		self.currentSatellite = configmgr.GetInstance( ).GetCurrentConfiguredSatellite( )
+		self.transponderList = configmgr.GetInstance( ).GetTransponderList( self.longitude )
 		self.setHeaderLabel( 'Satellite Configuration' ) 
 		
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %s - %s' % ( self.tunerIndex, E_LIST_TUNER_TYPE[ self.tunertype ] ) )
@@ -78,7 +78,7 @@ class SatelliteConfiguration( SettingWindow ):
 			self.initConfig( )
 			
 		elif( controlId == E_Input01 + 1 ) :
-			satelliteList = configmgr.getInstance( ).GetFormattedNameList( )
+			satelliteList = configmgr.GetInstance( ).GetFormattedNameList( )
 			dialog = xbmcgui.Dialog()
  			ret = dialog.select('Select satellite', satelliteList )
 
@@ -87,7 +87,7 @@ class SatelliteConfiguration( SettingWindow ):
  			ret = dialog.select('Select Transponder', self.transponderList )
 
  		elif( controlId == E_Input02 + 1 ) :
- 			diamgr.getInstance().showDialog( diamgr.DIALOG_ID_LNB_FREQUENCY )
+ 			diamgr.GetInstance().showDialog( diamgr.DIALOG_ID_LNB_FREQUENCY )
 
 		
 	def onFocus( self, controlId ):
@@ -97,7 +97,7 @@ class SatelliteConfiguration( SettingWindow ):
 		self.ResetAllControl( )
 
 		# Common	
-		self.AddInputControl( E_Input01, 'Satellite' , configmgr.getInstance( ).GetFormattedName( self.longitude ) )
+		self.AddInputControl( E_Input01, 'Satellite' , configmgr.GetInstance( ).GetFormattedName( self.longitude ) )
 		self.AddUserEnumControl( E_SpinEx01, 'LNB Setting', E_LIST_LNB_TYPE, self.selectedIndexLnbType )
 		if( self.selectedIndexLnbType == 1 ) :
 			self.AddUserEnumControl( E_SpinEx02, 'LNB Frequency', E_LIST_SINGLE_FREQUENCY, getSingleFrequenceIndex( self.currentSatellite[ E_CONFIGURE_SATELLITE_LOW_LNB ] ) )

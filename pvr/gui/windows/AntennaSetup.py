@@ -1,33 +1,28 @@
-
 import xbmc
 import xbmcgui
 import sys
 
-#import pvr.gui.WindowMgr as WinMgr
-#import pvr.TunerConfigMgr as ConfigMgr
-#from  pvr.TunerConfigMgr import *
-#from pvr.gui.GuiConfig import *
+import pvr.gui.WindowMgr as WinMgr
+import pvr.TunerConfigMgr as ConfigMgr
+from  pvr.TunerConfigMgr import *
+from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
-#import pvr.ElisMgr
+import pvr.ElisMgr
 
-#from pvr.gui.windows.SatelliteConfigSimple import SatelliteConfigSimple
-#from pvr.gui.windows.MotorizeConfiguration import MotorizeConfiguration
-#from pvr.gui.windows.OnecableConfiguration import OnecableConfiguration
+from pvr.gui.windows.SatelliteConfigSimple import SatelliteConfigSimple
+from pvr.gui.windows.MotorizeConfiguration import MotorizeConfiguration
+from pvr.gui.windows.OnecableConfiguration import OnecableConfiguration
 
-from inspect import currentframe
+
 class AntennaSetup( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
-		SettingWindow.__init__( self, *args, **kwargs )
-		print 'lael98 check %d %s' %( currentframe().f_lineno, currentframe().f_code.co_filename )    
-		print 'args=%s' % args[0]
-			
+		SettingWindow.__init__( self, *args, **kwargs )			
 		self.mInitialized = False
 		self.mLastFocused = -1
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
-		print 'dhkim test win id = %d' % self.mWinId
  
 		if ConfigMgr.GetInstance( ).GetNeedLoad( ) == True : 
 			ConfigMgr.GetInstance( ).LoadOriginalTunerConfig( )
@@ -48,8 +43,7 @@ class AntennaSetup( SettingWindow ) :
 		self.ShowDescription( self.getFocusId( ) )
 		self.DisableControl( )
 		self.mInitialized = True
- 
-		print 'dhkim test end oninit'
+		
 		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )

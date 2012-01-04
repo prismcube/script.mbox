@@ -72,7 +72,7 @@ E_LIST_SINGLE_FREQUENCY 		= [ '5150', '9750', '10600', '10750', '11300' ]
 
 def getSingleFrequenceIndex( selectedItem ) :
 	for i in range( len ( E_LIST_SINGLE_FREQUENCY )	) :
-		if( selectedItem == E_LIST_SINGLE_FREQUENCY[ i ] ) :
+		if( selectedItem == int( E_LIST_SINGLE_FREQUENCY[ i ] ) ) :
 			return i
 			
 	return -1

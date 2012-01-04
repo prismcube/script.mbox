@@ -5,43 +5,34 @@ import sys
 
 from pvr.gui.BaseDialog import BaseDialog
 from pvr.gui.BaseWindow import Action
-import pvr.gui.DialogMgr as diamgr
-import pvr.TunerConfigMgr as configmgr
+import pvr.gui.DialogMgr as DiaMgr
+import pvr.TunerConfigMgr as ConfigMgr
 from pvr.TunerConfigMgr import *
 
-
-E__DIALOG_HEADER		= 100
+E_DIALOG_HEADER		= 100
 E_MAIN_LIST_ID			= 101
 
 E_BUTTON_OK_ID			= 201
 E_BUTTON_CANCEL_ID		= 301
 
-'''
-E_BUTTON_DONE			= 21
-E_BUTTON_BACK_SPACE		= 23
-E_BUTTON_PREV			= 20
-E_BUTTON_NEXT			= 22
-
-E_START_ID_NUMBER		= 10
-'''
 class DialogLnbFrequency( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 
-		self.lowFreq = None
-		self.highFreq = None
-		self.threshFreq = None
-		self.isOk = False
+		self.mLowFreq = None
+		self.mHighFreq = None
+		self.mThreshFreq = None
+		self.mIsOk = False
 
 		
 	def onInit( self ) :
-		self.getControl( E__DIALOG_HEADER ).setLabel( 'LNB Frequency' )
-		self.drawItem( )
-		self.isOk = False		
+		self.getControl( E_DIALOG_HEADER ).setLabel( 'LNB Frequency' )
+		self.DrawItem( )
+		self.mIsOk = False		
 
 		
-	def onAction( self, action ) :
-		actionId = action.getId( )
+	def onAction( self, aAction ) :
+		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 
 
@@ -51,60 +42,57 @@ class DialogLnbFrequency( BaseDialog ) :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			self.listItems = []
 			self.close( )
 
 
-	def onClick( self, controlId ):
+	def onClick( self, aControlId ):
 		focusId = self.getFocusId( )
 
-		print 'dialoglnb frequency focus id=%d' %focusId
-
-		if( focusId == E_MAIN_LIST_ID ) :
+		if focusId == E_MAIN_LIST_ID :
 			if self.getControl( E_MAIN_LIST_ID ).getSelectedPosition( ) == 0 :
-				self.lowFreq = self.NumericKeyboard( 0, 'Low Frequency', self.lowFreq, 5 )
-				self.drawItem( )
+				self.mLowFreq = self.NumericKeyboard( 0, 'Low Frequency', self.mLowFreq, 5 )
+				self.DrawItem( )
 
 			elif self.getControl( E_MAIN_LIST_ID ).getSelectedPosition( ) == 1 :
-				self.highFreq = self.NumericKeyboard( 0, 'High Frequency', self.highFreq, 5 )
-				self.drawItem( )
+				self.mHighFreq = self.NumericKeyboard( 0, 'High Frequency', self.mHighFreq, 5 )
+				self.DrawItem( )
 			
 			elif self.getControl( E_MAIN_LIST_ID ).getSelectedPosition( ) == 2 :
-				self.threshFreq = self.NumericKeyboard( 0, 'Switch Frequency', self.threshFreq, 5 )
-				self.drawItem( )
+				self.mThreshFreq = self.NumericKeyboard( 0, 'Switch Frequency', self.mThreshFreq, 5 )
+				self.DrawItem( )
 			
 		elif focusId ==  E_BUTTON_OK_ID :
-			self.isOk = True
+			self.mIsOk = True
 			self.close( )
 		
 		elif focusId == E_BUTTON_CANCEL_ID :
-			self.isOk = False
+			self.mIsOk = False
 			self.close( )				
  				
-	def isOK( self ) :
-		return self.isOk
+	def IsOK( self ) :
+		return self.mIsOk
 		
-	def onFocus( self, controlId ):
+	def onFocus( self, aControlId ):
 		pass
 
-	def setFrequency( self, lowFreq, highFreq, threshFreq ) :
-		self.lowFreq = lowFreq
-		self.highFreq = highFreq
-		self.threshFreq = threshFreq
+	def SetFrequency( self, aLowFreq, aHighFreq, aThreshFreq ) :
+		self.mLowFreq = aLowFreq
+		self.mHighFreq = aHighFreq
+		self.mThreshFreq = aThreshFreq
 
 
-	def getFrequency( self ) :
-		return self.lowFreq, self.highFreq, self.threshFreq
+	def GetFrequency( self ) :
+		return self.mLowFreq, self.mHighFreq, self.mThreshFreq
 
-	def drawItem( self ) :
+	def DrawItem( self ) :
 		listItems = []
-		listItem = xbmcgui.ListItem( 'Low Frequency', self.lowFreq, "-", "-", "-" )
+		listItem = xbmcgui.ListItem( 'Low Frequency', self.mLowFreq, "-", "-", "-" )
 		listItems.append( listItem )
 		
-		listItem = xbmcgui.ListItem( 'High Frequency', self.highFreq, "-", "-", "-" )
+		listItem = xbmcgui.ListItem( 'High Frequency', self.mHighFreq, "-", "-", "-" )
 		listItems.append( listItem )
 		
-		listItem = xbmcgui.ListItem( 'Switch Frequency', self.threshFreq, "-", "-", "-" )
+		listItem = xbmcgui.ListItem( 'Switch Frequency', self.mThreshFreq, "-", "-", "-" )
 		listItems.append( listItem )
 
 		self.getControl( E_MAIN_LIST_ID ).addItems( listItems )

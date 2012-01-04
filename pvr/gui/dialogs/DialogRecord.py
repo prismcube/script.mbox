@@ -34,8 +34,8 @@ E_BUTTON_CANCEL				= 301
 class DialogRecord( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.getInstance( ).getCommander( )
-		self.mEventBus = pvr.ElisMgr.getInstance().getEventBus()
+		self.mCommander = pvr.ElisMgr.GetInstance( ).getCommander( )
+		self.mEventBus = pvr.ElisMgr.GetInstance().getEventBus()
 
 	def onInit( self ):
 		self.winId = xbmcgui.getCurrentWindowId()
