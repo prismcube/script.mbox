@@ -57,4 +57,11 @@
 	<string id="554">NONE_No channels</string>
 	<string id="555">Zuruck</string>
 	<string id="556">NONE_to change zapping mode</string>
+	<string id="557">Kennwort</string>
+	<string id="558">Kennwort eingeben</string>
+	<string id="559">Aktuelles Kennwort</string>
+	<string id="560">Kennwort bestatigen</string>
+	<string id="561">Neues Kennwort festlegen</string>
+	<string id="562">um ein neues Kennwort festzulegen</string>
+	<string id="563">Das eingegebene Kennwort stimmt nicht uberein!</string>
 </strings>

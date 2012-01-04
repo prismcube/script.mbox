@@ -3,29 +3,32 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.WindowMgr as WinMgr
-import pvr.TunerConfigMgr as ConfigMgr
-from  pvr.TunerConfigMgr import *
-from pvr.gui.GuiConfig import *
+#import pvr.gui.WindowMgr as WinMgr
+#import pvr.TunerConfigMgr as ConfigMgr
+#from  pvr.TunerConfigMgr import *
+#from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
-import pvr.ElisMgr
+#import pvr.ElisMgr
 
-from pvr.gui.windows.SatelliteConfigSimple import SatelliteConfigSimple
-from pvr.gui.windows.MotorizeConfiguration import MotorizeConfiguration
-from pvr.gui.windows.OnecableConfiguration import OnecableConfiguration
+#from pvr.gui.windows.SatelliteConfigSimple import SatelliteConfigSimple
+#from pvr.gui.windows.MotorizeConfiguration import MotorizeConfiguration
+#from pvr.gui.windows.OnecableConfiguration import OnecableConfiguration
 
-
+from inspect import currentframe
 class AntennaSetup( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
+		print 'lael98 check %d %s' %( currentframe().f_lineno, currentframe().f_code.co_filename )    
+		print 'args=%s' % args[0]
 			
 		self.mInitialized = False
 		self.mLastFocused = -1
 
 	def onInit( self ) :
-		self.mWinId = xbmcgui.getCurrentWindowId()
+		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
-		
+		print 'dhkim test win id = %d' % self.mWinId
+		"""
 		if ConfigMgr.GetInstance( ).GetNeedLoad( ) == True : 
 			ConfigMgr.GetInstance( ).LoadOriginalTunerConfig( )
 			ConfigMgr.GetInstance( ).Load( )		
@@ -33,20 +36,21 @@ class AntennaSetup( SettingWindow ) :
 		
 		self.SetHeaderLabel( 'Antenna & Satellite Setup' )
 		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
-
+		
 		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', None, 'Select tuner 2 connection type.' )
 		self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', None, 'Select tuner 2 configuration.' )
 		self.AddEnumControl( E_SpinEx03, 'Tuner1 Type', None, 'Setup tuner 1.' )
 		self.AddLeftLabelButtonControl( E_Input01, ' - Tuner 1 Configuration', 'Go to Tuner 1 Configure.' )
 		self.AddEnumControl( E_SpinEx04, 'Tuner2 Type', None, 'Setup tuner 2.' )
 		self.AddLeftLabelButtonControl( E_Input02, ' - Tuner 2 Configuration', 'Go to Tuner 2 Configure.' )
-
+	
 		self.InitControl( )
 		self.ShowDescription( self.getFocusId( ) )
 		self.DisableControl( )
 		self.mInitialized = True
+		"""
+		print 'dhkim test end oninit'
 		
-
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
@@ -67,7 +71,6 @@ class AntennaSetup( SettingWindow ) :
 			self.ResetAllControl( )
 			self.close( )
 
-
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )
 
@@ -82,7 +85,6 @@ class AntennaSetup( SettingWindow ) :
 			self.ControlDown( )
 			self.ShowDescription( focusId )
 			
-
 
 	def onClick( self, aControlId ) :
 		self.DisableControl( )
