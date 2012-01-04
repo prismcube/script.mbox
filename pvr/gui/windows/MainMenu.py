@@ -41,10 +41,8 @@ class MainMenu( BaseWindow ):
 		if id == Action.ACTION_PREVIOUS_MENU :
 			print 'lael98 check action menu'
 		elif id == Action.ACTION_SELECT_ITEM :
-			if focusId == LIST_ID_MAIN_MENU :
-				position = self.mCtrlMainMenu.getSelectedPosition()
-				print 'MainMenu position=%d' %position
-		
+			pass
+
 		elif id == Action.ACTION_PARENT_DIR :			
 			print 'lael98 check ation back'
 			self.close()
@@ -59,7 +57,7 @@ class MainMenu( BaseWindow ):
 			pass
 
 		elif aControlId == BUTTON_ID_ANTENNA_SETUP : # Antenna Setup
-			ConfigMgr.GetInstance( ).setNeedLoad( True )		
+			ConfigMgr.GetInstance( ).SetNeedLoad( True )		
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
 
 		elif aControlId == BUTTON_ID_CHANNEL_SEARCH : # Channel Search

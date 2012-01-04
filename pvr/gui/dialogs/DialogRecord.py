@@ -7,8 +7,8 @@ import sys
 
 from pvr.gui.BaseWindow import Action
 from pvr.gui.BaseDialog import BaseDialog
-from  pvr.tunerconfigmgr import *
-import pvr.gui.dialogmgr as diamgr
+from  pvr.TunerConfigMgr import *
+import pvr.gui.DialogMgr as diamgr
 from elisevent import ElisEvent
 from ElisEnum import ElisEnum
 

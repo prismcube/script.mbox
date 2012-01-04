@@ -4,11 +4,11 @@ import sys
 import time
 
 import pvr.gui.WindowMgr as winmgr
-import pvr.gui.dialogmgr as diamgr
+
+import pvr.gui.DialogMgr as diamgr
 from pvr.gui.BaseWindow import BaseWindow, Action
-from pvr.gui.BaseWindow import 
-from pvr.gui.guiconfig import *
-from pvr.Util import GuiLock
+
+from pvr.gui.GuiConfig import *
 
 import pvr.ElisMgr
 from ElisAction import ElisAction
@@ -218,17 +218,17 @@ class ChannelBanner(BaseWindow):
 		elif id == Action.ACTION_VOLUME_UP:
 		
 			vol = int ( self.mCommander.player_GetVolume( )[0] )
-			vol = vol + pvr.gui.guiconfig.VOLUME_STEP
+			vol = vol + pvr.gui.GuiConfig.VOLUME_STEP
 			
-			if vol > pvr.gui.guiconfig.MAX_VOLUME :
-				vol = pvr.gui.guiconfig.MAX_VOLUME
+			if vol > pvr.gui.GuiConfig.MAX_VOLUME :
+				vol = pvr.gui.GuiConfig.MAX_VOLUME
 
 			self.mCommander.player_SetVolume( vol )
 
 		elif id == Action.ACTION_VOLUME_DOWN:
 		
 			vol = int ( self.mCommander.player_GetVolume( )[0] )
-			vol = vol - pvr.gui.guiconfig.VOLUME_STEP
+			vol = vol - pvr.gui.GuiConfig.VOLUME_STEP
 			
 			if vol < 0 :
 				vol = 0

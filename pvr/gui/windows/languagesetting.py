@@ -7,7 +7,7 @@ import pvr.gui.WindowMgr as winmgr
 from pvr.gui.BaseWindow import Action
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-from pvr.gui.guiconfig import *
+from pvr.gui.GuiConfig import *
 
 
 

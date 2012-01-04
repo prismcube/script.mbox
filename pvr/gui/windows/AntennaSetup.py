@@ -3,43 +3,40 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.WindowMgr as winmgr
-import pvr.tunerconfigmgr as configmgr
-from  pvr.tunerconfigmgr import *
-from pvr.gui.guiconfig import *
+import pvr.gui.WindowMgr as WinMgr
+import pvr.TunerConfigMgr as ConfigMgr
+from  pvr.TunerConfigMgr import *
+from pvr.gui.GuiConfig import *
 
-from pvr.gui.BaseWindow import SettingWindow
-from pvr.gui.BaseWindow import Action
+from pvr.gui.BaseWindow import SettingWindow, Action
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from ElisEnum import ElisEnum
 
-from pvr.gui.windows.satelliteconfigsimple import SatelliteConfigSimple
-from pvr.gui.windows.motorizeconfiguration import MotorizeConfiguration
-from pvr.gui.windows.onecableconfiguration import OneCableConfiguration
+from pvr.gui.windows.SatelliteConfigSimple import SatelliteConfigSimple
+from pvr.gui.windows.MotorizeConfiguration import MotorizeConfiguration
+from pvr.gui.windows.OnecableConfiguration import OnecableConfiguration
 
-E_MAIN_GROUP_ID	= 9000
 
-class AntennaSetup( SettingWindow ):
-	def __init__( self, *args, **kwargs ):
+class AntennaSetup( SettingWindow ) :
+	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.getInstance( ).getCommander( )
 			
-		self.initialized = False
-		self.lastFocused = -1
+		self.mInitialized = False
+		self.mLastFocused = -1
 
-	def onInit(self):
-		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
+	def onInit( self ) :
+		self.mWinId = xbmcgui.getCurrentWindowId()
+		self.mWin = xbmcgui.Window( self.mWinId  )
 
-		print '#################### Load Configs ###############################'
-		if configmgr.getInstance( ).getNeedLoad( ) == True : 
-			configmgr.getInstance( ).loadOriginalTunerConfig( )
+		if ConfigMgr.GetInstance( ).GetNeedLoad( ) == True : 
+			ConfigMgr.GetInstance( ).LoadOriginalTunerConfig( )
 		
-			configmgr.getInstance( ).load( )
-			configmgr.getInstance( ).setNeedLoad( False )
+			ConfigMgr.GetInstance( ).Load( )
+			ConfigMgr.GetInstance( ).SetNeedLoad( False )
 		
-		self.setHeaderLabel( 'Antenna & Satellite Setup' )
-		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
+		self.SetHeaderLabel( 'Antenna & Satellite Setup' )
+		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
 
 		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', None, 'Select tuner 2 connection type.' )
 		self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', None, 'Select tuner 2 configuration.' )
@@ -50,27 +47,26 @@ class AntennaSetup( SettingWindow ):
 
 		self.InitControl( )
 		self.ShowDescription( self.getFocusId( ) )
-		self.disableControl( )
-		self.initialized = True
+		self.DisableControl( )
+		self.mInitialized = True
 
 
-	def onAction( self, action ):
-
-		actionId = action.getId( )
+	def onAction( self, aAction ) :
+		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
-		print 'dhkim test onAction Button Id = %s' % actionId
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass
+			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 		
 			if xbmcgui.Dialog( ).yesno('Configure', 'Are you sure?') == 1 :
-				configmgr.getInstance( ).satelliteconfigSaveList( )
+				ConfigMgr.GetInstance( ).SatelliteConfigSaveList( )
 			else :
-				configmgr.getInstance( ).restore( )
+				ConfigMgr.GetInstance( ).Restore( )
 
 			self.ResetAllControl( )
 			self.close( )
@@ -92,67 +88,64 @@ class AntennaSetup( SettingWindow ):
 			
 
 
-	def onClick( self, controlId ):
-		self.disableControl( )
-		if controlId == E_Input01 + 1 or controlId == E_Input02 + 1 :
+	def onClick( self, aControlId ) :
+		self.DisableControl( )
+		groupId = self.GetGroupId( aControlId )
+		if groupId == E_Input01 or groupId == E_Input02 :
 		
-			configuredList = configmgr.getInstance( ).getConfiguredSatelliteList( )
+			configuredList = ConfigMgr.GetInstance( ).GetConfiguredSatelliteList( )
 			if len( configuredList ) <= 0 :
-				configmgr.getInstance().addConfiguredSatellite( 0 )
+				ConfigMgr.GetInstance().AddConfiguredSatellite( 0 )
 
-			if controlId == E_Input01 + 1 :
+			if groupId == E_Input01 + 1 :
 			
-				configmgr.getInstance().setCurrentTunerIndex( E_TUNER_1 ) 
+				ConfigMgr.GetInstance().SetCurrentTunerIndex( E_TUNER_1 ) 
 
-			elif controlId == E_Input02 + 1 :
+			elif groupId == E_Input02 + 1 :
 
-				configmgr.getInstance().setCurrentTunerIndex( E_TUNER_2 )
+				ConfigMgr.GetInstance().SetCurrentTunerIndex( E_TUNER_2 )
 
 			if self.GetSelectedIndex( E_SpinEx03 ) == E_SIMPLE_LNB :
-				configmgr.getInstance( ).setCurrentConfigIndex
-				configmgr.getInstance( ).setCurrentConfigIndex( 0 )
+				ConfigMgr.GetInstance( ).SetCurrentConfigIndex( 0 )
 				self.ResetAllControl( )
 				
 				import pvr.Platform 
-				scriptDir = pvr.Platform.getPlatform().GetScriptDir()
-				SatelliteConfigSimple('satelliteconfiguration.xml', scriptDir).doModal()
+				scriptDir = pvr.Platform.GetPlatform().GetScriptDir()
+				SatelliteConfigSimple('SatelliteConfiguration.xml', scriptDir).doModal()
 			
 			elif self.GetSelectedIndex( E_SpinEx03 ) == E_MOTORIZED_USALS :
 
 				self.ResetAllControl( )
 				
 				import pvr.Platform 
-				scriptDir = pvr.Platform.getPlatform().GetScriptDir()
-				MotorizeConfiguration('satelliteconfiguration.xml', scriptDir).doModal()
+				scriptDir = pvr.Platform.GetPlatform().GetScriptDir()
+				MotorizeConfiguration('SatelliteConfiguration.xml', scriptDir).doModal()
 
 			elif self.GetSelectedIndex( E_SpinEx03 ) == E_ONE_CABLE :
 			
 				self.ResetAllControl( )
 				
 				import pvr.Platform 
-				scriptDir = pvr.Platform.getPlatform().GetScriptDir()
-				OneCableConfiguration('onecableconfiguration.xml', scriptDir).doModal()
+				scriptDir = pvr.Platform.GetPlatform().GetScriptDir()
+				OnecableConfiguration('OnecableConfiguration.xml', scriptDir).doModal()
 
 			else :
 
 				self.ResetAllControl( )
-				winmgr.getInstance().showWindow( winmgr.WIN_ID_TUNER_CONFIGURATION )
-			
-
-		groupId = self.GetGroupId( controlId )
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_TUNER_CONFIGURATION )
 		
 		if groupId == E_SpinEx01 or groupId == E_SpinEx02 or groupId == E_SpinEx03 or groupId == E_SpinEx04 :
 			self.ControlSelect()
 
-	def onFocus( self, controlId ):
-		if self.initialized == False :
+	def onFocus( self, aControlId ):
+		if self.mInitialized == False :
 			return
-		if ( self.lastFocused != controlId ) :
-			self.ShowDescription( controlId )
-			self.lastFocused = controlId
+		if ( self.mLastFocused != aControlId ) :
+			self.ShowDescription( aControlId )
+			self.mLastFocused = aControlId
 
 
-	def disableControl( self ):
+	def DisableControl( self ):
 		selectedIndex1 = self.GetSelectedIndex( E_SpinEx01 )
 		if ( selectedIndex1 == 1 ) :
 			self.SetEnableControl( E_SpinEx02, False )

@@ -12,7 +12,7 @@ class ElisTest(object):
 		#self.testPropEnum()
 		#self.testPropInt()
 		#self.testSatelliteconfig_DeleteAll()
-		#self.testSatelliteconfigSaveList()
+		#self.testSatelliteConfigSaveList()
 		#self.testChannelScanBySatellite()
 		#self.testChannelScanByCarriers()
 		#self.testChannellistByZapping()
@@ -56,7 +56,7 @@ class ElisTest(object):
 	#ConfiguredSatellite : [TunerIndex, SlotNumber, SatelliteLongitude, BandType, FrequencyLevel, DisEqc11, DisEqcMode, DisEqcRepeat,
 	#				   IsConfigUsed, LnbType, MotorizedType, LowLNB, HighLNB, LNBThreshold, MotorizedData,
 	#				   IsOneCable, OneCablePin, OneCableMDU, OneCableLoFreq1, OneCableLoFreq2, OneCableUBSlot, OneCableUBFreq]
-	def testSatelliteconfigSaveList( self ) :
+	def testSatelliteConfigSaveList( self ) :
 		configuredList = [[0,1,130,ElisEnum.E_BAND_KU,0,ElisEnum.E_SWITCH_DISABLED,ElisEnum.E_SWITCH_2OF4,0,
 						1, ElisEnum.E_LNB_UNIVERSAL,0,9750,10600,11700,0,
 						0,0,0,0,0,0,0],

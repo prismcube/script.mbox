@@ -164,11 +164,11 @@ class SettingWindow( BaseWindow ):
 		property = ElisPropertyEnum( aPropName, self.mCommander )
 		listItems = []
 
-		for i in range( property.getIndexCount() ):
+		for i in range( property.GetIndexCount() ):
 			if aTitleLabel == None :
-				listItem = xbmcgui.ListItem( property.getName(), property.getPropStringByIndex( i ), "-", "-", "-" )
+				listItem = xbmcgui.ListItem( property.GetName(), property.GetPropStringByIndex( i ), "-", "-", "-" )
 			else :
-				listItem = xbmcgui.ListItem( aTitleLabel, property.getPropStringByIndex( i ), "-", "-", "-" )
+				listItem = xbmcgui.ListItem( aTitleLabel, property.GetPropStringByIndex( i ), "-", "-", "-" )
 			listItems.append( listItem )
 
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_ENUM_CONTROL, aControlId, property, listItems, None, None, None, aDescription ) )
