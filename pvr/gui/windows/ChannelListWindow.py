@@ -61,7 +61,7 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlHeader2            = self.getControl( 3001 )
 		self.mCtrlHeader3            = self.getControl( 3002 )
 		self.mCtrlHeader4            = self.getControl( 3003 )
-		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
+
 		#footer
 		self.mCtrlFooter1            = self.getControl( 3101 )
 		self.mCtrlFooter2            = self.getControl( 3111 )
@@ -75,7 +75,6 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlGropMainmenu       = self.getControl( 100 )
 		self.mCtrlBtnMenu            = self.getControl( 101 )
 		self.mCtrlListMainmenu       = self.getControl( 102 )
-		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 		
 		#sub menu list
 		self.mCtrlGropSubmenu        = self.getControl( 9001 )
@@ -101,7 +100,7 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlHeader3.setLabel('')
 
 		self.mEpgRecvPermission = True
-		self.mLocalOffset = self.mCommander.Datetime_GetLocalOffset( )
+		self.mLocalOffset = self.mCommander.Datetime_GetLocalOffset()
 		self.mChannelListServieType = ElisEnum.E_SERVICE_TYPE_INVALID
 		self.mListItems = []
 		self.mZappingMode = ElisEnum.E_MODE_ALL
@@ -117,15 +116,14 @@ class ChannelListWindow(BaseWindow):
 
 
 		try :
-			self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
+			#self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
+			self.mNavChannel = self.mCommander.Channel_GetCurrent()
 			
 		except Exception, e :
 			print '[%s:%s] Error exception[%s]'% (	\
 				self.__file__,						\
 				currentframe().f_lineno,			\
 				e )
-
-		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 
 		self.InitChannelList()
 
@@ -134,7 +132,7 @@ class ChannelListWindow(BaseWindow):
 
 		#initialize get epg event
 		self.InitEPGEvent()
-		self.UpdateLabelInfo( )
+		self.UpdateLabelInfo()
 
 		#Event Register
 		self.mEventBus.Register( self )		
@@ -146,7 +144,7 @@ class ChannelListWindow(BaseWindow):
 	@GuiLock	
 	def onAction(self, aAction):
 		id = aAction.getId()
-		focusId = self.getFocusId( )
+		focusId = self.getFocusId()
 		#print '[%s:%s]aActionID[%d]'% (self.__file__, currentframe().f_lineno, id) 
 
 		if id == Action.ACTION_PREVIOUS_MENU:
@@ -156,7 +154,7 @@ class ChannelListWindow(BaseWindow):
 			print 'item select, action ID[%s]'% id
 
 
-		elif id == Action.ACTION_PARENT_DIR:
+		elif id == Action.ACTION_PARENT_DIR :
 			print 'goto action back'
 
 			self.SaveSlideMenuHeader()
@@ -166,7 +164,7 @@ class ChannelListWindow(BaseWindow):
 			self.mCtrlListCHList.reset()
 			self.close()
 
-		elif id == aAction.ACTION_MOVE_RIGHT:
+		elif id == Action.ACTION_MOVE_RIGHT :
 			if focusId == self.mCtrlListMainmenu.getId() :
 				position = self.mCtrlListMainmenu.getSelectedPosition()
 
@@ -181,13 +179,13 @@ class ChannelListWindow(BaseWindow):
 			elif focusId == self.mCtrlListSubmenu.getId() :
 				self.onClick( self.mCtrlListMainmenu.getId() )
 
-		elif id == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN:
+		elif id == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN :
 			if focusId == self.mCtrlListCHList.getId() :
 				self.mEpgRecvPermission = False
 				self.InitEPGEvent()
 
 				self.ResetLabel()
-				self.UpdateLabelInfo( )
+				self.UpdateLabelInfo()
 
 			elif focusId >= self.mCtrlFooter1.getId() and focusId <= self.mCtrlFooter3.getId() :
 				self.mCtrlListCHList.setEnabled( True )
@@ -274,7 +272,8 @@ class ChannelListWindow(BaseWindow):
 
 			if ret == True :
 				if self.mPincodeEnter == FLAG_MASK_NONE :
-					if self.mCurrentChannel.mNumber == channelNumbr :
+					#if self.mCurrentChannel.mNumber == channelNumbr :
+					if self.mNavChannel.mNumber == channelNumbr :
 						self.SaveSlideMenuHeader()
 						self.mEnableThread = False
 						self.CurrentTimeThread().join()
@@ -285,12 +284,13 @@ class ChannelListWindow(BaseWindow):
 						pass
 						#ToDO : WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_CHANNEL_BANNER).setLastChannel( self.mCurrentChannel )
 
-				self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
+				#self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
+				self.mNavChannel = self.mCommander.Channel_GetCurrent()
 
 			self.mEpgRecvPermission = True
 			self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
 			self.ResetLabel()
-			self.UpdateLabelInfo( [], self.mCurrentChannel )
+			self.UpdateLabelInfo()
 
 		elif aControlId == self.mCtrlBtnMenu.getId() or aControlId == self.mCtrlListMainmenu.getId() :
 			#list view
@@ -349,7 +349,7 @@ class ChannelListWindow(BaseWindow):
 		print 'aEvent[%s]'% aEvent
 
 
-		"""
+
 		if self.mWinId == xbmcgui.getCurrentWindowId() :
 			msg = aEvent[0]
 			
@@ -360,24 +360,25 @@ class ChannelListWindow(BaseWindow):
 						#on select, clicked
 
 						#ret = self.mCommander.epgevent_Get(self.mEventId, int(event[1]), int(event[2]), int(event[3]), self.mLocalTime )
-						ret = self.mCommander.epgevent_GetPresent( )
-						if len( ret ) > 0 :
+						ret = self.mCommander.Epgevent_GetPresent()
+						if ret :
+							self.mNavEpg = ret
 							self.mEventId = int( event[4] )
-							self.ResetLabel()
-							self.UpdateLabelInfo( ret, self.mCurrentChannelInfo )
 
 						#not select, key up/down,
 					else :
 						ret = self.InitEPGEvent()
-						self.ResetLabel()
-						self.UpdateLabelInfo( ret[0], ret[1] )
+
+					#update label
+					self.ResetLabel()
+					self.UpdateLabelInfo()
 
 
 			else :
 				print 'event unknown[%s]'% event
 		else:
 			print 'channellist winID[%d] this winID[%d]'% (self.mWin, xbmcgui.getCurrentWindowId())
-		"""
+
 
 
 	def SubMenuAction(self, aAction, aMenuIndex):
@@ -388,25 +389,25 @@ class ChannelListWindow(BaseWindow):
 			testlistItems = []
 			if aMenuIndex == 0 :
 				self.mZappingMode = ElisEnum.E_MODE_ALL
-				for item in range(len(self.mListAllChannel)) :
-					testlistItems.append(xbmcgui.ListItem(self.mListAllChannel[item]))
+				for itemList in range( len(self.mListAllChannel) ) :
+					testlistItems.append( xbmcgui.ListItem(self.mListAllChannel[itemList]) )
 
 			elif aMenuIndex == 1 :
 				self.mZappingMode = ElisEnum.E_MODE_SATELLITE
-				for item in self.mListSatellite:
-					ret = GetSelectedLongitudeString(item)
-					testlistItems.append(xbmcgui.ListItem(ret))
+				for itemClass in self.mListSatellite:
+					ret = GetSelectedLongitudeString( itemClass.mLongitude, itemClass.mName )
+					testlistItems.append( xbmcgui.ListItem(ret) )
 
 			elif aMenuIndex == 2 :
 				self.mZappingMode = ElisEnum.E_MODE_CAS
-				for item in self.mListCasList:
-					ret = '%s(%s)'% (item[0], item[1])
-					testlistItems.append(xbmcgui.ListItem( ret ))
+				for itemClass in self.mListCasList:
+					ret = '%s(%s)'% ( itemClass.mName, itemClass.mChannelCount )
+					testlistItems.append( xbmcgui.ListItem(ret) )
 
 			elif aMenuIndex == 3 :
 				self.mZappingMode = ElisEnum.E_MODE_FAVORITE
-				for item in self.mListFavorite:
-					testlistItems.append(xbmcgui.ListItem( item[0] ))
+				for itemClass in self.mListFavorite:
+					testlistItems.append( xbmcgui.ListItem(itemClass.mGroupName) )
 
 			if testlistItems != [] :
 				#submenu update
@@ -440,8 +441,10 @@ class ChannelListWindow(BaseWindow):
 			elif aMenuIndex == ElisEnum.E_MODE_SATELLITE:
 				idx_Satellite = self.mCtrlListSubmenu.getSelectedPosition()
 				item = self.mListSatellite[idx_Satellite]
-				retPass = self.GetChannelList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, int(item[0]), int(item[1]), 0, '' )
-				print 'cmd[channel_GetListBySatellite] idx_Satellite[%s] mLongitude[%s] band[%s] ch_list[%s]'% ( idx_Satellite, item[0], item[1], self.mChannelList )
+				retPass = self.GetChannelList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, item.mLongitude, item.mBand, 0, '' )
+
+				print 'cmd[channel_GetListBySatellite] idx_Satellite[%s] mLongitude[%s] band[%s]'% ( idx_Satellite, item.mLongitude, item.mBand )
+				ClassToList( 'print', self.mChannelList )
 
 			elif aMenuIndex == ElisEnum.E_MODE_CAS:
 				idxFtaCas = self.mCtrlListSubmenu.getSelectedPosition()
@@ -468,14 +471,17 @@ class ChannelListWindow(BaseWindow):
 
 				retPass = self.GetChannelList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, 0, 0, caid, '' )
 
-				item = self.mListCasList[idxFtaCas]
-				print 'cmd[channel_GetListByFTACas] idxFtaCas[%s] list_CasList[%s] ch_list[%s]'% ( idxFtaCas, item, self.mChannelList )
+				print 'cmd[channel_GetListByFTACas] idxFtaCas[%s]'% ( idxFtaCas )
+				ClassToList( 'print', self.mChannelList )
+
 
 			elif aMenuIndex == ElisEnum.E_MODE_FAVORITE:
 				idx_Favorite = self.mCtrlListSubmenu.getSelectedPosition()
 				item = self.mListFavorite[idx_Favorite]
-				retPass = self.GetChannelList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, 0, 0, 0, item[0] )
-				print 'cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s] ch_list[%s]'% ( idx_Favorite, item, self.mChannelList )
+				retPass = self.GetChannelList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, 0, 0, 0, item.mGroupName )
+
+				print 'cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s]'% ( idx_Favorite, item.mGroupName )
+				ClassToList( 'print', self.mChannelList )
 
 
 			if retPass == False :
@@ -488,9 +494,9 @@ class ChannelListWindow(BaseWindow):
 
 				#path tree, Mainmenu/Submanu
 				#label1 = self.mCtrlListMainmenu.getSelectedItem().getLabel()
-				label1 = enumToString('mode', self.mZappingMode)
+				label1 = EnumToString('mode', self.mZappingMode)
 				label2 = self.mCtrlListSubmenu.getSelectedItem().getLabel()
-				label3 = enumToString('sort', self.mChannelListSortMode)
+				label3 = EnumToString('sort', self.mChannelListSortMode)
 				self.mCtrlLblPath1.setLabel( '%s'% label1.upper() )
 				self.mCtrlLblPath2.setLabel( '%s'% label2.title() ) 
 				self.mCtrlLblPath3.setLabel( 'sort by %s'% label3.title() ) 
@@ -555,7 +561,7 @@ class ChannelListWindow(BaseWindow):
 		#is change?
 		ret = False
 		try :
-			label1 = enumToString('mode', self.mZappingMode)
+			label1 = EnumToString('mode', self.mZappingMode)
 			label2 = self.mCtrlListSubmenu.getSelectedItem().getLabel()
 
 			head = m.strings(mm.LANG_TO_CHANGE_ZAPPING_MODE)
@@ -566,7 +572,7 @@ class ChannelListWindow(BaseWindow):
 			#print 'dialog ret[%s]' % ret
 
 		except Exception, e :
-			print '[%s:%s] Error exception[%s]'% (	\
+			print '[%s:%s]Error exception[%s]'% (	\
 				self.__file__,						\
 				currentframe().f_lineno,			\
 				e )
@@ -574,7 +580,7 @@ class ChannelListWindow(BaseWindow):
 
 		if ret == True :
 			#save zapping mode
-			ret = self.mCommander.zappingmode_SetCurrent( self.mZappingMode, self.mChannelListSortMode, self.mChannelListServieType )
+			ret = self.mCommander.Zappingmode_SetCurrent( self.mZappingMode, self.mChannelListSortMode, self.mChannelListServieType )
 			print 'set zappingmode_SetCurrent[%s]'% ret
 
 
@@ -617,7 +623,7 @@ class ChannelListWindow(BaseWindow):
 			self.mZappingMode           = ElisEnum.E_MODE_ALL
 			self.mChannelListSortMode   = ElisEnum.E_SORT_BY_DEFAULT
 			self.mChannelListServieType = ElisEnum.E_SERVICE_TYPE_TV
-			print '[%s:%s] Error exception[%s] zappingmode defaulted'% (	\
+			print '[%s:%s]Error exception[%s] zappingmode defaulted'% (	\
 				self.__file__,							\
 				currentframe().f_lineno,				\
 				e )
@@ -657,7 +663,7 @@ class ChannelListWindow(BaseWindow):
 			ClassToList( 'print', self.mListFavorite )
 
 		except Exception, e :
-			print '[%s:%s] Error exception[%s]'% (	\
+			print '[%s:%s]Error exception[%s]'% (	\
 				self.__file__,						\
 				currentframe().f_lineno,			\
 				e )
@@ -699,7 +705,7 @@ class ChannelListWindow(BaseWindow):
 
 
 		#get channel list by last on zapping mode, sorting, service type
-		self.mCurrentChannel = None
+		self.mNavChannel = None
 		self.mChannelList = None
 		self.mChannelList = self.mCommander.Channel_GetList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode )
 		#self.GetChannelList(self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, 0, 0, 0, '')
@@ -738,12 +744,13 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlListCHList.addItems( self.mListItems )
 
 		#detected to last focus
-		self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
+		#self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
+		self.mNavChannel = self.mCommander.Channel_GetCurrent()
 
 		chindex = 0;
 
 		for ch in self.mChannelList:
-			if ch.mNumber == self.mCurrentChannel.mNumber :
+			if ch.mNumber == self.mNavChannel.mNumber :
 				break
 			chindex += 1
 
@@ -755,7 +762,7 @@ class ChannelListWindow(BaseWindow):
 
 	def ResetLabel(self):
 		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
-		#chListInfo = ClassToList( 'convert', self.mCurrentChannel )
+		#chListInfo = ClassToList( 'convert', self.mNavChannel )
 		#print 'currentChannel[%s]'% chListInfo
 
 
@@ -814,33 +821,39 @@ class ChannelListWindow(BaseWindow):
 		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 		print 'serviceType[%s]' % aTvType
 
-
+		label = ''
 		if aTvType == ElisEnum.E_SERVICE_TYPE_TV:
-			return 'TV'
-		elif aTvType == ElisEnum.E_SERVICE_TYPE_RADIO:pass
-		elif aTvType == ElisEnum.E_SERVICE_TYPE_DATA:pass
+			label = 'TV'
+		elif aTvType == ElisEnum.E_SERVICE_TYPE_RADIO:
+			label = 'RADIO'
+		elif aTvType == ElisEnum.E_SERVICE_TYPE_DATA:
+			label = 'DATA'
 		else:
-			return 'etc'
+			label = 'etc'
 			print 'unknown ElisEnum tvType[%s]'% aTvType
+
+		return label
 
 	def UpdateLabelInfo( self ):
 		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 
 
+		#update channel name
 		if self.mEpgRecvPermission == True :
-			#update channel name
-			ret = self.UpdateServiceType( self.mNavChannel.mServiceType )
-			self.mCtrlChannelName.setLabel( str('%s - %s'% (ret, self.mNavChannel.mName )) )
+			print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
+			label = self.UpdateServiceType( self.mNavChannel.mServiceType )
+			print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
+			self.mCtrlChannelName.setLabel( str('%s - %s'% (label, self.mNavChannel.mName )) )
+			print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 
 		#update longitude info
-
-		satellite = self.mCommander.Satellite_GetByChannelNumber( self.mNavChannel.mNumber , self.mNavChannel.mServiceType )
+		satellite = self.mCommander.Satellite_GetByChannelNumber( self.mNavChannel.mNumber, self.mNavChannel.mServiceType )
 		ret = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
 		self.mCtrlLongitudeInfo.setLabel( ret )
 
 		#update lock-icon visible
 		if self.mNavChannel.mLocked :
-				self.mCtrlLockedInfo.setVisible(True)
+				self.mCtrlLockedInfo.setVisible( True )
 				self.mPincodeEnter |= FLAG_MASK_ADD
 
 
@@ -871,15 +884,15 @@ class ChannelListWindow(BaseWindow):
 
 		#update epgName uiID(304)
 		if self.mNavEpg :
-			self.mCtrlEventName.setLabel(self.mNavEpg.mEventName)
+			self.mCtrlEventName.setLabel( self.mNavEpg.mEventName )
 			ret = EpgInfoTime( self.mLocalOffset, self.mNavEpg.mStartTime, self.mNavEpg.mDuration )
-			self.mCtrlEventTime.setLabel(str('%s%s'% (ret[0], ret[1])))
+			self.mCtrlEventTime.setLabel( str('%s%s'% (ret[0], ret[1])) )
 
 			#visible progress
-			self.mCtrlProgress.setVisible(True)
+			self.mCtrlProgress.setVisible( True )
 
 			#component
-			imagelist = EpgInfoComponentImage(self.mNavEpg)				
+			imagelist = EpgInfoComponentImage( self.mNavEpg )				
 			if len(imagelist) == 1:
 				self.mCtrlServiceTypeImg1.setImage(imagelist[0])
 			elif len(imagelist) == 2:
@@ -896,7 +909,7 @@ class ChannelListWindow(BaseWindow):
 
 
 			#is Age? agerating check
-			isLimit = AgeLimit(self.mCommander, self.mNavEpg.mAgeRating)
+			isLimit = AgeLimit( self.mCommander, self.mNavEpg.mAgeRating )
 			if isLimit == True :
 				self.mPincodeEnter |= FLAG_MASK_ADD
 				print 'AgeLimit[%s]'% isLimit
