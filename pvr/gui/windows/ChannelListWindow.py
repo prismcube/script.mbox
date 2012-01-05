@@ -508,8 +508,6 @@ class ChannelListWindow(BaseWindow):
 				self.mCtrlLblPath2.setLabel( '%s'% label2.title() ) 
 				self.mCtrlLblPath3.setLabel( 'sort by %s'% label3.title() ) 
 
-				self.SaveSlideMenuHeader()
-
 
 	def GetChannelList(self, aType, aMode, aSort, aLongitude, aBand, aCAid, aFavName ):
 		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
@@ -562,9 +560,6 @@ class ChannelListWindow(BaseWindow):
 				currentframe().f_lineno,			\
 				e )
 
-
-
-
 		_mode = self.mElisZappingModeInfo.mMode
 		_sort = self.mElisZappingModeInfo.mSortingMode
 		_type = self.mElisZappingModeInfo.mServiceType
@@ -607,7 +602,7 @@ class ChannelListWindow(BaseWindow):
 			_name = self.mElisZappingModeInfo.mFavoriteGroup.mGroupName
 
 			for item in self.mListFavorite :
-				if _name == item.mName :
+				if _name == item.mGroupName :
 					break
 				idx2 += 1
 
@@ -636,13 +631,18 @@ class ChannelListWindow(BaseWindow):
 		self.mListSatellite[self.mSelectSubSlidePosition].printdebug()
 		self.mListCasList[self.mSelectSubSlidePosition].printdebug()
 		self.mListFavorite[self.mSelectSubSlidePosition].printdebug()
-		"""
-		array=[]
-		self.mListSatellite[self.mSelectSubSlidePosition].appendReqBuffer( array )
-		self.mListCasList[self.mSelectSubSlidePosition].appendReqBuffer( array )
-		self.mListFavorite[self.mSelectSubSlidePosition].appendReqBuffer( array )
-		print 'array[%s]'% array
 
+		array=[]
+		self.mElisSetZappingModeInfo.reset()
+		self.mElisSetZappingModeInfo.mMode = self.mZappingMode
+		self.mElisSetZappingModeInfo.mSortingMode = self.mChannelListSortMode
+		self.mElisSetZappingModeInfo.mServiceType = self.mChannelListServieType
+
+		self.mElisSetZappingModeInfo.printdebug()
+
+		array.append( self.mElisSetZappingModeInfo )
+		ret = self.mCommander.Zappingmode_SetCurrent( array )
+		"""
 
 		changed = False
 		ret = False
@@ -670,12 +670,12 @@ class ChannelListWindow(BaseWindow):
 				#anser is yes
 				if ret == True :
 					#re-configuration class
-					array2=[]
+					array=[]
 					self.mElisSetZappingModeInfo.reset()
 					self.mElisSetZappingModeInfo.mMode = self.mZappingMode
 					self.mElisSetZappingModeInfo.mSortingMode = self.mChannelListSortMode
 					self.mElisSetZappingModeInfo.mServiceType = self.mChannelListServieType
-					
+
 					if self.mSelectMainSlidePosition == 1 :
 						groupInfo = self.mListSatellite[self.mSelectSubSlidePosition]
 						self.mElisSetZappingModeInfo.mSatelliteInfo = groupInfo
@@ -688,13 +688,12 @@ class ChannelListWindow(BaseWindow):
 						groupInfo = self.mListFavorite[self.mSelectSubSlidePosition]
 						self.mElisSetZappingModeInfo.mFavoriteGroup = groupInfo
 
-					array2 = self.mElisSetZappingModeInfo.appendReqBuffer( array2 )
-					print 'array2[%s]'% array2
+					array.append( self.mElisSetZappingModeInfo )
+					#print 'array[%s]'% ClassToList( 'convert', array )
 
 					#save zapping mode
-					#ret = self.mCommander.Zappingmode_SetCurrent( self.mElisSetZappingModeInfo )
-					#ret = self.mCommander.Zappingmode_SetCurrent( array )
-					#print 'set zappingmode_SetCurrent[%s]'% ret
+					ret = self.mCommander.Zappingmode_SetCurrent( array )
+					print 'set zappingmode_SetCurrent[%s]'% ret
 
 			except Exception, e :
 				print '[%s:%s]Error exception[%s]'% (	\
