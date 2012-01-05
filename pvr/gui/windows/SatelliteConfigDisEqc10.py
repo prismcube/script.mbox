@@ -13,6 +13,7 @@ import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum
 from ElisEnum import ElisEnum
 
+
 class SatelliteConfigDisEqC10( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
@@ -32,6 +33,7 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 		self.mTransponderList = ConfigMgr.GetInstance( ).GetTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 		self.SetHeaderLabel( 'Satellite Configuration' )
 		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
+		
 		if tunerIndex == E_TUNER_1 :
 			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
 		elif tunerIndex == E_TUNER_2 : 
@@ -185,11 +187,9 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 		self.SetEnableControls( visibleaControlIds, True )
 
 		self.SetVisibleControls( hideaControlIds, False )
-		print 'dhkim test InitConfig #1'
 		self.InitControl( )
-		print 'dhkim test InitConfig #2'
 		self.DisableControl( )
-		print 'dhkim test InitConfig #3'		
+
 
 	def DisableControl( self ) :
 		enableaControlIds = [ E_Input02, E_SpinEx02, E_SpinEx03 ]
