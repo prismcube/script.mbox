@@ -9,11 +9,6 @@ from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
 import pvr.ElisMgr
 
-from pvr.gui.windows.SatelliteConfigDisEqc10 import SatelliteConfigDisEqC10
-from pvr.gui.windows.SatelliteConfigDisEqc11 import SatelliteConfigDisEqC11
-from pvr.gui.windows.SatelliteConfigMotorized12 import SatelliteConfigMotorized12
-from pvr.gui.windows.SatelliteConfigMotorizedUsals import SatelliteConfigMotorizedUsals
-
 E_MAIN_LIST_ID = 9000
 
 class TunerConfiguration( SettingWindow ) :
@@ -90,25 +85,21 @@ class TunerConfiguration( SettingWindow ) :
 					self.ResetAllControl( )
 					tunertype = ConfigMgr.GetInstance( ).GetCurrentTunerType( )
 					
-					import pvr.Platform 
-					scriptDir = pvr.Platform.GetPlatform().GetScriptDir()
-					
 					if tunertype == E_DISEQC_1_0 :
-						SatelliteConfigDisEqC10('SatelliteConfiguration.xml', scriptDir).doModal()
+						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_DISEQC_10 )
 
 					elif tunertype == E_DISEQC_1_1 :
-						SatelliteConfigDisEqC11('SatelliteConfiguration.xml', scriptDir).doModal()
-
+						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_DISEQC_11 )
+					
 					elif tunertype == E_ONE_CABLE :
 						pass
 
 					elif tunertype == E_MOTORIZED_1_2 :
-						SatelliteConfigMotorized12('SatelliteConfiguration.xml', scriptDir).doModal()
+						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED_12 )
 
 					elif tunertype == E_MOTORIZED_USALS :
-						SatelliteConfigMotorizedUsals('SatelliteConfiguration.xml', scriptDir).doModal()
+						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED_USALS )
 
-				
 				else :
 					print 'ERR : Can not find configured satellite'
 

@@ -305,7 +305,7 @@ class TunerConfigMgr( object ) :
 		found = False	
 
 		for satellite in self.mAllSatelliteList :
-			if aLongitude == int( satellite.mLongitude ) and aBand == int( satellite.mBand ) :
+			if aLongitude == satellite.mLongitude and aBand == satellite.mBand :
 				found = True
 				break
 
@@ -327,10 +327,10 @@ class TunerConfigMgr( object ) :
 		for satellite in self.mAllSatelliteList :
 			dir = 'E'
 
-			tmpLongitude  = int( satellite.mLongitude )
+			tmpLongitude  = satellite.mLongitude
 			if tmpLongitude > 1800 :
 				dir = 'W'
-				tmpLongitude = 3600 - int( satellite.mLongitude )
+				tmpLongitude = 3600 - satellite.mLongitude
 
 			formattedName = '%d.%d %s %s' %( int( tmpLongitude / 10 ), tmpLongitude % 10, dir, satellite.mName )
 			formattedlist.append( formattedName )
@@ -341,17 +341,16 @@ class TunerConfigMgr( object ) :
 		tmptransponderList = []
 		transponderList = []
 		found = False	
-
 		for satellite in self.mAllSatelliteList :
-			if aLongitude == int( satellite.mLongitude ) and aBand == int( satellite.mBand ) :
+			if aLongitude == satellite.mLongitude and aBand == satellite.mBand :
 				found = True
 				break
 
 		if found == True :
-			tmptransponderList = self.mCommander.Transponder_GetList( int( satellite.mLongitude ), int( satellite.mBand ) )
+			tmptransponderList = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
 
 		for i in range( len( tmptransponderList ) ) :
-			transponderList.append( '%s' % ( i + 1 ) + ' ' + tmptransponderList[i].mFrequency + ' MHz / ' + tmptransponderList[i].mSymbolRate + ' KS/s' )
+			transponderList.append( '%d %d MHz %d KS/s' % ( ( i + 1 ), tmptransponderList[i].mFrequency, tmptransponderList[i].mSymbolRate ) )
 		return transponderList
 
 

@@ -17,14 +17,19 @@ WIN_ID_CHANNEL_BANNER				= 4
 WIN_ID_CONFIGURE					= 5
 WIN_ID_ANTENNA_SETUP				= 6
 WIN_ID_TUNER_CONFIGURATION			= 7
-WIN_ID_SATELLITE_CONFIGURATION		= 8
-WIN_ID_CHANNEL_SEARCH				= 9
-WIN_ID_AUTOMATIC_SCAN				= 10
-WIN_ID_MANUAL_SCAN					= 11
-WIN_ID_TIMESHIFT_BANNER				= 12
-WIN_ID_CHANNEL_EDIT_WINDOW			= 13
+WIN_ID_CONFIG_SIMPLE				= 8
+WIN_ID_CONFIG_MOTORIZED				= 9
+WIN_ID_CONFIG_MOTORIZED_12			= 10
+WIN_ID_CONFIG_MOTORIZED_USALS		= 11
+WIN_ID_CONFIG_ONECABLE				= 12
+WIN_ID_CONFIG_DISEQC_10				= 13
+WIN_ID_CONFIG_DISEQC_11				= 14
+WIN_ID_CHANNEL_SEARCH				= 15
+WIN_ID_AUTOMATIC_SCAN				= 16
+WIN_ID_MANUAL_SCAN					= 17
+WIN_ID_TIMESHIFT_BANNER				= 18
+WIN_ID_CHANNEL_EDIT_WINDOW			= 19
 
-WIN_ID_LANGUAGE_SETTING				= 100	#for test
 WIN_ID_CHANNEL_LIST1_WINDOW			= 102	#for test
 WIN_ID_CHANNEL_LIST2_WINDOW			= 103	#for test
 
@@ -99,10 +104,34 @@ class WindowMgr(object):
 			elif aWindowId ==  WIN_ID_TUNER_CONFIGURATION:
 				from pvr.gui.windows.TunerConfiguration import TunerConfiguration
 				TunerConfiguration('TunerConfiguration.xml', self.mScriptDir).doModal()
+				
+			elif aWindowId ==  WIN_ID_CONFIG_SIMPLE:
+				from pvr.gui.windows.SatelliteConfigSimple import SatelliteConfigSimple
+				SatelliteConfigSimple('SatelliteConfiguration.xml', self.mScriptDir).doModal()
 
-			elif aWindowId ==  WIN_ID_SATELLITE_CONFIGURATION:
-				from pvr.gui.windows.SatelliteConfiguration import SatelliteConfiguration
-				SatelliteConfiguration('SatelliteConfiguration.xml', self.mScriptDir).doModal()
+			elif aWindowId ==  WIN_ID_CONFIG_MOTORIZED:
+				from pvr.gui.windows.MotorizeConfiguration import MotorizeConfiguration
+				MotorizeConfiguration('SatelliteConfiguration.xml', self.mScriptDir).doModal()
+
+			elif aWindowId ==  WIN_ID_CONFIG_MOTORIZED_12:
+				from pvr.gui.windows.SatelliteConfigMotorized12 import SatelliteConfigMotorized12
+				SatelliteConfigMotorized12('SatelliteConfiguration.xml', self.mScriptDir).doModal()
+
+			elif aWindowId ==  WIN_ID_CONFIG_MOTORIZED_USALS:
+				from pvr.gui.windows.SatelliteConfigMotorizedUsals import SatelliteConfigMotorizedUsals
+				SatelliteConfigMotorizedUsals('SatelliteConfiguration.xml', self.mScriptDir).doModal()
+
+			elif aWindowId ==  WIN_ID_CONFIG_ONECABLE:
+				from pvr.gui.windows.OnecableConfiguration import OnecableConfiguration
+				OnecableConfiguration('OnecableConfiguration.xml', self.mScriptDir).doModal()
+
+			elif aWindowId ==  WIN_ID_CONFIG_DISEQC_10:
+				from pvr.gui.windows.SatelliteConfigDisEqc10 import SatelliteConfigDisEqC10
+				SatelliteConfigDisEqC10('SatelliteConfiguration.xml', self.mScriptDir).doModal()
+
+			elif aWindowId ==  WIN_ID_CONFIG_DISEQC_11:
+				from pvr.gui.windows.SatelliteConfigDisEqc11 import SatelliteConfigDisEqC11
+				SatelliteConfigDisEqC11('SatelliteConfiguration.xml', self.mScriptDir).doModal()
 
 			elif aWindowId ==  WIN_ID_CHANNEL_SEARCH:
 				from pvr.gui.windows.ChannelSearch import ChannelSearch
@@ -120,10 +149,6 @@ class WindowMgr(object):
 				#from pvr.gui.windows.channeleditwindow import ChannelEditWindow
 				#ChannelEditWindow('channeleditwindow.xml', self.mScriptDir )
 				pass
-			
-			elif aWindowId ==  WIN_ID_LANGUAGE_SETTING:
-				from pvr.gui.windows.LanguageSetting import LanguageSetting		#for test			
-				LanguageSetting('languagesetting.xml', self.mScriptDir).doModal()
 			
 			elif aWindowId ==  WIN_ID_CHANNEL_LIST1_WINDOW:
 				from pvr.gui.windows.ChannelListWindow_a import ChannelListWindow_a #for test			

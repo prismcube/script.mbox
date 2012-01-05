@@ -131,12 +131,12 @@ class SettingWindow( BaseWindow ):
 			elif ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 				control = self.getControl( ctrlItem.mControlId + 3 )
 				control.addItems( ctrlItem.mListItems )
-				control.selectItem( ctrlItem.selecteItem )
+				control.selectItem( ctrlItem.mSelecteItem )
 			elif ctrlItem.mControlType == ctrlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL :
 				control = self.getControl( ctrlItem.mControlId + 3 )
 				control.addItems( ctrlItem.mListItems )
 
-			self.getControl(ctrlItem.mControlId).setPosition(0, ( pos * 40 ) + 50 )
+			self.getControl( ctrlItem.mControlId ).setPosition( 0, ( pos * 40 ) + 50 )
 			pos += 1	
 
 	def ResetAllControl( self ):

@@ -9,7 +9,7 @@ import pvr.gui.DialogMgr as DiaMgr
 import pvr.TunerConfigMgr as ConfigMgr
 from pvr.TunerConfigMgr import *
 
-E_DIALOG_HEADER		= 100
+E_DIALOG_HEADER			= 100
 E_MAIN_LIST_ID			= 101
 
 E_BUTTON_OK_ID			= 201
@@ -45,10 +45,10 @@ class DialogLnbFrequency( BaseDialog ) :
 			self.close( )
 
 
-	def onClick( self, aControlId ):
-		focusId = self.getFocusId( )
+	def onClick( self, aControlId ) :
+		#focusId = self.getFocusId( )
 
-		if focusId == E_MAIN_LIST_ID :
+		if aControlId == E_MAIN_LIST_ID :
 			if self.getControl( E_MAIN_LIST_ID ).getSelectedPosition( ) == 0 :
 				self.mLowFreq = self.NumericKeyboard( 0, 'Low Frequency', self.mLowFreq, 5 )
 				self.DrawItem( )
@@ -61,11 +61,11 @@ class DialogLnbFrequency( BaseDialog ) :
 				self.mThreshFreq = self.NumericKeyboard( 0, 'Switch Frequency', self.mThreshFreq, 5 )
 				self.DrawItem( )
 			
-		elif focusId ==  E_BUTTON_OK_ID :
+		elif aControlId ==  E_BUTTON_OK_ID :
 			self.mIsOk = True
 			self.close( )
 		
-		elif focusId == E_BUTTON_CANCEL_ID :
+		elif aControlId == E_BUTTON_CANCEL_ID :
 			self.mIsOk = False
 			self.close( )				
  				
@@ -76,9 +76,9 @@ class DialogLnbFrequency( BaseDialog ) :
 		pass
 
 	def SetFrequency( self, aLowFreq, aHighFreq, aThreshFreq ) :
-		self.mLowFreq = aLowFreq
-		self.mHighFreq = aHighFreq
-		self.mThreshFreq = aThreshFreq
+		self.mLowFreq = '%d' % aLowFreq
+		self.mHighFreq = '%d' % aHighFreq
+		self.mThreshFreq = '%d' % aThreshFreq
 
 
 	def GetFrequency( self ) :
