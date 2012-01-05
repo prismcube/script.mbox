@@ -16,7 +16,7 @@ from ElisProperty import ElisPropertyInt
 class OnecableConfiguration2( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.GetInstance().getCommander()
+		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
 		self.satelliteCount = 0
 		self.satellitelist = []
 		self.scrList = [ 'SCR(0)', 'SCR(1)', 'SCR(2)', 'SCR(3)', 'SCR(4)', 'SCR(5)', 'SCR(6)', 'SCR(7)' ]

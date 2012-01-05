@@ -11,8 +11,7 @@ from  pvr.TunerConfigMgr import *
 from ElisEnum import ElisEnum
 
 import pvr.ElisMgr
-
-#from pvr.Util import RunThread
+from pvr.Util import RunThread, GuiLock
 
 
 
@@ -174,6 +173,7 @@ class DialogChannelSearch( BaseDialog ) :
 			self.mEventBus.Deregister( self )
 			self.close( )
 
+	@GuiLock
 	def onEvent( self, aEvent ):
 
 		if xbmcgui.getCurrentWindowId() == self.mWinId :

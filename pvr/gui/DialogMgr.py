@@ -7,8 +7,8 @@ from gui.BaseDialog import BaseDialog
 
 DIALOG_ID_LNB_FREQUENCY				= 1
 DIALOG_ID_CHANNEL_SEARCH			= 2
-DIALOG_ID_RECORD					= 3
-
+DIALOG_ID_START_RECORD				= 3
+DIALOG_ID_STOP_RECORD				= 4
 
 gDialogMgr = None
 
@@ -32,7 +32,7 @@ class DialogMgr(object):
 
 		self.scriptDir = pvr.Platform.GetPlatform().GetScriptDir()
 
-		try :	
+		try :	#
 			if aDialogId == DIALOG_ID_LNB_FREQUENCY :
 				from pvr.gui.dialogs.DialogLnbFrequency import DialogLnbFrequency		
 				return DialogLnbFrequency('DialogLnbFrequency.xml', self.scriptDir)	
@@ -41,9 +41,15 @@ class DialogMgr(object):
 				from pvr.gui.dialogs.DialogChannelSearch import DialogChannelSearch
 				return DialogChannelSearch('DialogChannelSearch.xml', self.scriptDir)	
 
-			elif aDialogId == DIALOG_ID_RECORD :
-				from pvr.gui.dialogs.DialogRecord import DialogRecord
-				return DialogRecord('DialogRecord.xml', self.scriptDir)	
+			elif aDialogId == DIALOG_ID_START_RECORD :
+				print '---------------- create start record'
+				from pvr.gui.dialogs.DialogStartRecord import DialogStartRecord
+				return DialogStartRecord('DialogStartRecord.xml', self.scriptDir)	
+
+			elif aDialogId == DIALOG_ID_STOP_RECORD :
+				print '---------------- create start record'
+				from pvr.gui.dialogs.DialogStopRecord import DialogStopRecord
+				return DialogStopRecord('DialogStopRecord.xml', self.scriptDir)	
 				
 			else :
 				print "ERROR : can not find dialog"

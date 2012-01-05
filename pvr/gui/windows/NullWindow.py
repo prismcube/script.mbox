@@ -3,10 +3,11 @@ import xbmcgui
 import sys
 
 import pvr.gui.WindowMgr as WinMgr
+import pvr.gui.DialogMgr as DlgMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
 from inspect import currentframe
 import pvr.ElisMgr
-
+from pvr.Util import LOG_TRACE
 
 
 class NullWindow(BaseWindow):
@@ -20,6 +21,7 @@ class NullWindow(BaseWindow):
 	def onInit(self):
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
+		LOG_TRACE('ttttttttttttttttttttttttttttttttttttttt')
 
 	def onAction(self, aAction):
 		id = aAction.getId()
@@ -71,6 +73,17 @@ class NullWindow(BaseWindow):
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST1_WINDOW )
 		elif id == Action.REMOTE_2:
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST2_WINDOW )
+
+		elif id == Action.REMOTE_3:  #TEST : start Record
+			print 'open record dialog'
+			dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_START_RECORD )
+			dialog.doModal( )
+		
+		elif id == Action.REMOTE_4:  #TEST : stop Record
+			print 'open record dialog'
+			dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_STOP_RECORD )
+			dialog.doModal( )
+
 
 		elif id == Action.ACTION_PAGE_UP:
 			pass

@@ -12,7 +12,7 @@ from pvr.gui.GuiConfig import *
 class Configure( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.GetInstance( ).getCommander( )
+		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
  
 		self.LeftGroupItems						= [ 'Language', 'Parental', 'Recording Option', 'Audio Setting', 'SCART Setting','HDMI Setting', 'IP Setting', 'Format HDD', 'Factory Reset', 'Etc' ]
 		self.descriptionList					= [ 'DESC Language', 'DESC Parental', 'DESC Recording Option', 'DESC Audio Setting', 'DESC SCART Setting', 'DESC HDMI Setting', 'DESC IP Setting', 'DESC Format HDD', 'DESC Factory Reset', 'DESC Etc' ]

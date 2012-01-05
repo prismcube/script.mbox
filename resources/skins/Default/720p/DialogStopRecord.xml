@@ -1,0 +1,155 @@
+<window>
+	<defaultcontrol always="true">200</defaultcontrol>
+	<coordinates>
+		<system>1</system>
+		<posx>335</posx>
+		<posy>35</posy>
+	</coordinates>
+	<include>dialogeffect</include>
+	<controls>
+		<control type="image">
+			<description>background image</description>
+			<posx>0</posx>
+			<posy>100</posy>
+			<width>610</width>
+			<height>320</height>
+			<texture border="40">confluence/DialogBack.png</texture>
+		</control>
+		<control type="image">
+			<posx>40</posx>
+			<posy>110</posy>
+			<width>530</width>
+			<height>90</height>
+			<aspectratio>stretch</aspectratio>
+			<texture>confluence/GlassTitleBar.png</texture>
+		</control>
+
+		
+		<!-- Header -->
+		<control type="label" id="100">
+			<description>header label</description>
+			<posx>20</posx>
+			<posy>118</posy>
+			<width>570</width>
+			<height>30</height>
+			<font>font13_title</font>
+			<align>center</align>
+			<aligny>center</aligny>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+			<label>Stop</label>
+		</control>
+
+		<control type="group" id="200">		
+			<control type="list" id="201">
+				<posx>30</posx>
+				<posy>250</posy>
+				<width>550</width>
+				<height>80</height>
+				<onleft>-</onleft>
+				<onright>-</onright>
+				<onup>201</onup>
+				<ondown>201</ondown>
+				<pagecontrol>61</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<focusposition>0</focusposition>
+				<movement>2</movement>
+				<visible>true</visible>
+				<enable>true</enable>
+				<animation effect="slide" start="0,0" end="10,0" time="0" condition="true">Conditional</animation>
+				<itemlayout height="40" width="550">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>750</width>
+						<height>41</height>
+						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>550</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+					</control>
+					<control type="label">
+						<posx>660</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>false</visible>
+					</control>	
+				</itemlayout>
+				<focusedlayout height="40" width="750">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>750</width>
+						<height>41</height>
+						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
+						<visible>!Control.HasFocus(50)</visible>
+						<animation effect="fade" time="300">Visible</animation>
+						<animation effect="fade" time="300">Hidden</animation>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>750</width>
+						<height>41</height>
+						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
+						<visible>Control.HasFocus(50)</visible>
+						<animation effect="fade" time="300">Visible</animation>
+						<animation effect="fade" time="300">Hidden</animation>
+					</control>
+					<control type="image">
+						<posx>620</posx>
+						<posy>5</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>DI_Ok.png</texture>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>660</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<selectedcolor>selected</selectedcolor>						
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<control type="label">
+						<posx>550</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>false</visible>
+						<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="true">conditional</animation>
+					</control>
+				</focusedlayout>
+
+			</control>
+		</control>	
+
+	</controls>
+</window>
+

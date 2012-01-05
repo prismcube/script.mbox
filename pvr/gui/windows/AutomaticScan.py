@@ -106,8 +106,6 @@ class AutomaticScan( SettingWindow ):
 				configuredSatelliteList.append( config )
 				dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_CHANNEL_SEARCH )
 				print 'dialog=%s' %dialog
-				dialog.SetConfiguredSatellite( configuredSatelliteList )
-				dialog = diamgr.GetInstance().getDialog( diamgr.DIALOG_ID_CHANNEL_SEARCH )
 				dialog.doModal( )
 					
 
