@@ -17,12 +17,11 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ):
 	def NumericKeyboard( self, aKeyType, aTitle, aString, aMaxLength ) :
 		dialog = xbmcgui.Dialog( )
 		value = dialog.numeric( aKeyType, aTitle, aString )
-		if value != None :
+		if value != '' :
 			if len( value ) > aMaxLength :
 				value = value[ len ( value ) - aMaxLength :]
 			return value
 		else :
-			print 'ERROR : Numeric Dialog Value is : %s' % value
-			return value
+			return '0'
 			
 	
