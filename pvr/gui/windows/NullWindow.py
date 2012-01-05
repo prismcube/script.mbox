@@ -7,7 +7,7 @@ import pvr.gui.DialogMgr as DlgMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
 from inspect import currentframe
 import pvr.ElisMgr
-
+from pvr.Util import LOG_TRACE
 
 
 class NullWindow(BaseWindow):
@@ -21,6 +21,7 @@ class NullWindow(BaseWindow):
 	def onInit(self):
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
+		LOG_TRACE('ttttttttttttttttttttttttttttttttttttttt')
 
 	def onAction(self, aAction):
 		id = aAction.getId()

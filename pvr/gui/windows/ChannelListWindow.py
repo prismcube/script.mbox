@@ -39,6 +39,12 @@ class ChannelListWindow(BaseWindow):
 		self.mListSatellite = []
 		self.mListCasList   = []
 		self.mListFavorite  = []
+		self.mElisZappingModeInfo = None
+		self.mElisSetZappingModeInfo = None
+		self.mLastMainSlidePosition = 0
+		self.mLastSubSlidePosition = 0
+		self.mSelectMainSlidePosition = 0
+		self.mSelectSubSlidePosition = 0
 
 		self.mEventId = 0
 		self.mLocalTime = 0
@@ -113,7 +119,7 @@ class ChannelListWindow(BaseWindow):
 
 		#initialize get channel list
 		self.InitSlideMenuHeader()
-		#self.getSlideMenuHeader()
+		self.GetSlideMenuHeader()
 
 
 		try :
@@ -142,7 +148,6 @@ class ChannelListWindow(BaseWindow):
 		self.mEnableThread = True
 		self.CurrentTimeThread()
 
-	@GuiLock	
 	def onAction(self, aAction):
 		id = aAction.getId()
 		focusId = self.getFocusId()
@@ -261,7 +266,6 @@ class ChannelListWindow(BaseWindow):
 
 
 
-	@GuiLock	
 	def onClick(self, aControlId):
 		print '[%s:%s]focusID[%d]'% (self.__file__, currentframe().f_lineno, aControlId) 
 
@@ -347,10 +351,11 @@ class ChannelListWindow(BaseWindow):
 	@GuiLock
 	def onEvent(self, aEvent):
 		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
-		print 'aEvent[%s]'% aEvent
+		#print 'aEvent len[%s]'% len(aEvent)
+		#ClassToList( 'print', aEvent )
 
-
-
+		return
+		"""
 		if self.mWinId == xbmcgui.getCurrentWindowId() :
 			msg = aEvent[0]
 			
@@ -379,7 +384,7 @@ class ChannelListWindow(BaseWindow):
 				print 'event unknown[%s]'% event
 		else:
 			print 'channellist winID[%d] this winID[%d]'% (self.mWin, xbmcgui.getCurrentWindowId())
-
+		"""
 
 
 	def SubMenuAction(self, aAction, aMenuIndex):
@@ -419,7 +424,6 @@ class ChannelListWindow(BaseWindow):
 				#label1 = self.mCtrlListMainmenu.getSelectedItem().getLabel()
 				#label1 = enumToString('mode', self.mZappingMode)
 				#self.mCtrlLblPath1.setLabel( label1.title() )
-
 
 		elif aAction == 1:
 
@@ -494,17 +498,15 @@ class ChannelListWindow(BaseWindow):
 				self.InitChannelList()
 
 				#path tree, Mainmenu/Submanu
-				#label1 = self.mCtrlListMainmenu.getSelectedItem().getLabel()
+				self.mSelectMainSlidePosition = self.mCtrlListMainmenu.getSelectedPosition()
+				self.mSelectSubSlidePosition = self.mCtrlListSubmenu.getSelectedPosition()
+
 				label1 = EnumToString('mode', self.mZappingMode)
 				label2 = self.mCtrlListSubmenu.getSelectedItem().getLabel()
 				label3 = EnumToString('sort', self.mChannelListSortMode)
 				self.mCtrlLblPath1.setLabel( '%s'% label1.upper() )
 				self.mCtrlLblPath2.setLabel( '%s'% label2.title() ) 
 				self.mCtrlLblPath3.setLabel( 'sort by %s'% label3.title() ) 
-
-				#save zapping mode
-				#ret = self.mCommander.zappingmode_SetCurrent( self.mZappingMode, self.mChannelListSortMode, self.mChannelListServieType )
-				#print 'set zappingmode_SetCurrent[%s]'% ret
 
 
 	def GetChannelList(self, aType, aMode, aSort, aLongitude, aBand, aCAid, aFavName ):
@@ -541,49 +543,163 @@ class ChannelListWindow(BaseWindow):
 	def GetSlideMenuHeader(self) :
 		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 
-		#get zapping last mode
-		lastMainMenu= 0
-		lastSubMenu = 1
 
-
-		self.mCtrlListMainmenu.selectItem( lastMainMenu )
-		#self.mZappingMode = lastMainMenu
-		#self.setFocusId( 102 )
-		self.SubMenuAction(0, lastMainMenu)
-		self.mCtrlListSubmenu.selectItem( lastSubMenu )
-		self.setFocusId( self.mCtrlListSubmenu.getId() )
-
-		
-	def SaveSlideMenuHeader(self) :
-		print '[%s :%s]'% (self.__file__, currentframe().f_lineno)
-
-		return
-
-		#is change?
-		ret = False
 		try :
-			label1 = EnumToString('mode', self.mZappingMode)
-			label2 = self.mCtrlListSubmenu.getSelectedItem().getLabel()
+			#print 'len[%s]'% len(self.mElisZappingModeInfo)
+			self.mElisZappingModeInfo.printdebug()
+			Satellite = ClassToList( 'convert', self.mListSatellite )
+			ftacas = ClassToList( 'convert', self.mListCasList )
+			favorite = ClassToList( 'convert', self.mListFavorite )
+			print 'satellite[%s]'% Satellite
+			print 'ftacas[%s]'% ftacas
+			print 'favorite[%s]'% favorite
 
-			head = m.strings(mm.LANG_TO_CHANGE_ZAPPING_MODE)
-			line1 = '%s / %s'% (label1.title(), label2.title())
-			line2 = m.strings(mm.LANG_DO_YOU_WANT_TO_SAVE_CHANNELS)
-
-			ret = xbmcgui.Dialog().yesno(head, line1, '', line2)
-			#print 'dialog ret[%s]' % ret
-
-		except Exception, e :
+		except Exception, e:
 			print '[%s:%s]Error exception[%s]'% (	\
 				self.__file__,						\
 				currentframe().f_lineno,			\
 				e )
-		
 
-		if ret == True :
-			#save zapping mode
-			ret = self.mCommander.Zappingmode_SetCurrent( self.mZappingMode, self.mChannelListSortMode, self.mChannelListServieType )
-			print 'set zappingmode_SetCurrent[%s]'% ret
+		_mode = self.mElisZappingModeInfo.mMode
+		_sort = self.mElisZappingModeInfo.mSortingMode
+		_type = self.mElisZappingModeInfo.mServiceType
+		_name = ''
+		idx1 = 0
+		idx2 = 0
 
+
+		if _mode == ElisEnum.E_MODE_ALL :
+			idx1 = 0
+			if _sort == ElisEnum.E_SORT_BY_NUMBER :
+				idx2 = 0
+			elif _sort == ElisEnum.E_SORT_BY_ALPHABET :
+				idx2 = 1
+			elif _sort == ElisEnum.E_SORT_BY_HD :
+				idx2 = 2
+			else :
+				idx2 = 0
+
+		elif _mode == ElisEnum.E_MODE_SATELLITE :
+			idx1 = 1
+			_name = self.mElisZappingModeInfo.mSatelliteInfo.mName
+
+			for item in self.mListSatellite :
+				if _name == item.mName :
+					break
+				idx2 += 1
+
+		elif _mode == ElisEnum.E_MODE_CAS :
+			idx1 = 2
+			_name = self.mElisZappingModeInfo.mCasInfo.mName
+
+			for item in self.mListCasList :
+				if _name == item.mName :
+					break
+				idx2 += 1
+
+		elif _mode == ElisEnum.E_MODE_FAVORITE :
+			idx1 = 3
+			_name = self.mElisZappingModeInfo.mFavoriteGroup.mGroupName
+
+			for item in self.mListFavorite :
+				if _name == item.mGroupName :
+					break
+				idx2 += 1
+
+
+		self.mLastMainSlidePosition = idx1
+		self.mLastSubSlidePosition  = idx2
+
+
+		self.mCtrlListMainmenu.selectItem( idx1 )
+		self.SubMenuAction(0, idx1)
+		self.mCtrlListSubmenu.selectItem( idx2 )
+		self.setFocusId( self.mCtrlListSubmenu.getId() )
+
+
+	def SaveSlideMenuHeader(self) :
+		print '[%s :%s]'% (self.__file__, currentframe().f_lineno)
+
+		"""
+		print 'mode[%s] sort[%s] type[%s] mpos[%s] spos[%s]'% ( \
+			self.mZappingMode,                \
+			self.mChannelListSortMode,        \
+			self.mChannelListServieType,      \
+			self.mSelectMainSlidePosition,    \
+			self.mSelectSubSlidePosition      \
+		)
+		self.mListSatellite[self.mSelectSubSlidePosition].printdebug()
+		self.mListCasList[self.mSelectSubSlidePosition].printdebug()
+		self.mListFavorite[self.mSelectSubSlidePosition].printdebug()
+
+		array=[]
+		self.mElisSetZappingModeInfo.reset()
+		self.mElisSetZappingModeInfo.mMode = self.mZappingMode
+		self.mElisSetZappingModeInfo.mSortingMode = self.mChannelListSortMode
+		self.mElisSetZappingModeInfo.mServiceType = self.mChannelListServieType
+
+		self.mElisSetZappingModeInfo.printdebug()
+
+		array.append( self.mElisSetZappingModeInfo )
+		ret = self.mCommander.Zappingmode_SetCurrent( array )
+		"""
+
+		changed = False
+		ret = False
+
+		if self.mSelectMainSlidePosition == self.mLastMainSlidePosition and \
+		   self.mSelectSubSlidePosition == self.mLastSubSlidePosition :
+			changed = False
+		else :
+			changed = True
+
+		#is change?
+		if changed :
+			try :
+				#ask save question
+				label1 = EnumToString( 'mode', self.mZappingMode )
+				label2 = self.mCtrlListSubmenu.getSelectedItem().getLabel()
+
+				head =  Msg.Strings( MsgId.LANG_TO_CHANGE_ZAPPING_MODE )
+				line1 = '%s / %s'% ( label1.title(), label2.title() )
+				line2 = Msg.Strings( MsgId.LANG_DO_YOU_WANT_TO_SAVE_CHANNELS )
+
+				ret = xbmcgui.Dialog().yesno(head, line1, '', line2)
+				#print 'dialog ret[%s]' % ret
+
+				#anser is yes
+				if ret == True :
+					#re-configuration class
+					array=[]
+					self.mElisSetZappingModeInfo.reset()
+					self.mElisSetZappingModeInfo.mMode = self.mZappingMode
+					self.mElisSetZappingModeInfo.mSortingMode = self.mChannelListSortMode
+					self.mElisSetZappingModeInfo.mServiceType = self.mChannelListServieType
+
+					if self.mSelectMainSlidePosition == 1 :
+						groupInfo = self.mListSatellite[self.mSelectSubSlidePosition]
+						self.mElisSetZappingModeInfo.mSatelliteInfo = groupInfo
+						
+					elif self.mSelectMainSlidePosition == 2 :
+						groupInfo = self.mListCasList[self.mSelectSubSlidePosition]
+						self.mElisSetZappingModeInfo.mCasInfo = groupInfo
+					
+					elif self.mSelectMainSlidePosition == 3 :
+						groupInfo = self.mListFavorite[self.mSelectSubSlidePosition]
+						self.mElisSetZappingModeInfo.mFavoriteGroup = groupInfo
+
+					array.append( self.mElisSetZappingModeInfo )
+					#print 'array[%s]'% ClassToList( 'convert', array )
+
+					#save zapping mode
+					ret = self.mCommander.Zappingmode_SetCurrent( array )
+					print 'set zappingmode_SetCurrent[%s]'% ret
+
+			except Exception, e :
+				print '[%s:%s]Error exception[%s]'% (	\
+					self.__file__,						\
+					currentframe().f_lineno,			\
+					e )
 
 
 	def InitSlideMenuHeader(self) :
@@ -616,6 +732,8 @@ class ChannelListWindow(BaseWindow):
 			self.mZappingMode           = zappingMode.mMode
 			self.mChannelListSortMode   = zappingMode.mSortingMode
 			self.mChannelListServieType = zappingMode.mServiceType
+			self.mElisZappingModeInfo   = zappingMode
+			self.mElisSetZappingModeInfo= zappingMode
 			#print 'zappingmode_GetCurrent len[%s]'% len(zappingMode)
 			#ClassToList( 'print', zappingMode )
 			#zappingMode.printdebug()

@@ -8,6 +8,8 @@ from odict import odict
 from threading import RLock
 
 from inspect import currentframe
+import inspect
+
 
 gThreads = odict()
 
@@ -103,4 +105,66 @@ class Mutex(threading.Thread):
 	def Unlock(self):
 		print '[%s():%s]mutex_unlock'% (currentframe().f_code.co_name, currentframe().f_lineno)
 		self.mutex.release()
+
+
+
+
+def LOG_TRACE( msg ):
+	curframe = inspect.currentframe()
+	calframe = inspect.getouterframes(curframe, 2)
+	print 'calframe=%s' %calframe
+	filePath = calframe[1][1]
+	loc = filePath.rfind('\\')
+
+	if loc < 0 :
+		loc = filePath.rfind('/')
+
+	if loc < 0 :
+		loc= 0
+	else :
+		loc += 1
+
+	fileName = filePath[loc:]
+		
+	print 'DEBUG %8d : %s( %s ) -> %s ' %( calframe[1][2], fileName, calframe[1][3], msg )
+
+
+
+def LOG_ERR( msg ):
+	curframe = inspect.currentframe()
+	calframe = inspect.getouterframes(curframe, 2)
+	print 'calframe=%s' %calframe
+	filePath = calframe[1][1]
+	loc = filePath.rfind('\\')
+
+	if loc < 0 :
+		loc = filePath.rfind('/')
+
+	if loc < 0 :
+		loc= 0
+	else :
+		loc += 1
+
+	fileName = filePath[loc:]
+		
+	print 'DEBUG %8d : %s( %s ) -> %s ' %( calframe[1][2], fileName, calframe[1][3], msg )
+
+def LOG_WARN( msg ):
+	curframe = inspect.currentframe()
+	calframe = inspect.getouterframes(curframe, 2)
+	print 'calframe=%s' %calframe
+	filePath = calframe[1][1]
+	loc = filePath.rfind('\\')
+
+	if loc < 0 :
+		loc = filePath.rfind('/')
+
+	if loc < 0 :
+		loc= 0
+	else :
+		loc += 1
+
+	fileName = filePath[loc:]
+		
+	print 'DEBUG %8d : %s( %s ) -> %s ' %( calframe[1][2], fileName, calframe[1][3], msg )
 
