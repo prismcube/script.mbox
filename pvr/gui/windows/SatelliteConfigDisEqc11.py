@@ -2,10 +2,9 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DiaMgr
 import pvr.TunerConfigMgr as ConfigMgr
-from  pvr.TunerConfigMgr import *
+from pvr.TunerConfigMgr import *
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
 import pvr.ElisMgr
@@ -18,7 +17,6 @@ class SatelliteConfigDisEqC11( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs)
 		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander( )
-		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander( )
 		self.mCurrentSatellite = None
 		self.mTransponderList = None
 		self.mSelectedTransponderIndex = 0
@@ -26,11 +24,12 @@ class SatelliteConfigDisEqC11( SettingWindow ):
 		
 	def onInit( self ):
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId  )
+		self.mWin = xbmcgui.Window( self.mWinId )
 
 		tunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerIndex( )
 		self.mCurrentSatellite = ConfigMgr.GetInstance( ).GetCurrentConfiguredSatellite( )
 		self.mTransponderList = ConfigMgr.GetInstance( ).GetTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
+		self.mSelectedTransponderIndex = 0
 		self.SetHeaderLabel( 'Satellite Configuration' )
 		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
 		
@@ -56,7 +55,6 @@ class SatelliteConfigDisEqC11( SettingWindow ):
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			self.SaveConfig( )
 			self.ResetAllControl( )
 			self.close( )
 
@@ -204,9 +202,4 @@ class SatelliteConfigDisEqC11( SettingWindow ):
 			self.getControl( E_SpinEx03 + 3 ).selectItem( 1 )	# Always On
 			
 		else :
-			self.SetEnableControls( enableControlIds, True )
-
-	def SaveConfig( self ) :
-		ConfigMgr.GetInstance( ).SaveCurrentConfig( self.mCurrentSatellite )
-		
-
+			self.SetEnableControls( enableControlIds, True )	

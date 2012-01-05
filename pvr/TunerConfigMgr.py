@@ -125,10 +125,6 @@ class TunerConfigMgr( object ) :
 		return None
 
 
-	def SetCurrentTunerType( self, tunerType ) :
-		self.mCurrentTunerType = tunerType
-
-
 	def GetCurrentTunerType( self ) :
 		if self.mCurrentTuner == E_TUNER_1 :	
 			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
@@ -152,11 +148,7 @@ class TunerConfigMgr( object ) :
 	def SetCurrentConfigIndex( self, aCurrentConfigIndex ) :
 		self.mCurrentConfigIndex = aCurrentConfigIndex
 
-		
-	def GetCurrentConfigIndex( self ) :
-		return self.mCurrentConfigIndex
-
-
+	
 	def GetConfiguredSatelliteList( self ) :
 		if self.mCurrentTuner == E_TUNER_1 :
 			return self.mConfiguredList1
@@ -257,17 +249,17 @@ class TunerConfigMgr( object ) :
 
 			count = len ( self.mConfiguredList2 )
 			for i in range( count ) :
-				self.mConfiguredList2[i].mTunerIndex = '%d' % E_TUNER_2
+				self.mConfiguredList2[i].mTunerIndex = E_TUNER_2
 
 
 		count = len ( self.mConfiguredList1 )
 		for i in range( count ) :
-			self.mConfiguredList1[i].mSlotNumber = '%d' % i
+			self.mConfiguredList1[i].mSlotNumber = i
 		
 
 		count = len ( self.mConfiguredList2 )
 		for i in range( count ) :
-			self.mConfiguredList2[i].mSlotNumber = '%d' % i
+			self.mConfiguredList2[i].mSlotNumber = i
 
 		""" FOR TEST """
 		for satellite in self.mConfiguredList1 :
@@ -367,28 +359,6 @@ class TunerConfigMgr( object ) :
 		self.mOrgTuner1Type = property.GetProp()
 		property = ElisPropertyEnum( 'Tuner2 Type', self.mCommander )		
 		self.mOrgTuner2Type = property.GetProp()
-
-
-	def SaveCurrentConfig( self, aConfiguredSatellite ) :
-		if self.mCurrentTuner == E_TUNER_1 :	
-			self.mConfiguredList1[ self.mCurrentConfigIndex ] = aConfiguredSatellite
-			
-		elif self.mCurrentTuner == E_TUNER_2:
-			self.mConfiguredList2[ self.mCurrentConfigIndex ] = aConfiguredSatellite
-			
-		else :
-			print 'ERROR : can not find configured satellite'
-
-
-	def SaveConfigbyIndex( self, aTunerIndex, aSatelliteIndex, aConfiguredSatellite ) :
-		if aTunerIndex == E_TUNER_1 :	
-			self.mConfiguredList1[ aSatelliteIndex ] = aConfiguredSatellite
-			
-		elif aTunerIndex == E_TUNER_2:
-			self.mConfiguredList2[ aSatelliteIndex ] = aConfiguredSatellite
-			
-		else :
-			print 'ERROR : can not find configured satellite'
 
 
 	def GetDefaultConfig( self ) :

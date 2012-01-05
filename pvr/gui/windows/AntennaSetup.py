@@ -4,7 +4,7 @@ import sys
 
 import pvr.gui.WindowMgr as WinMgr
 import pvr.TunerConfigMgr as ConfigMgr
-from  pvr.TunerConfigMgr import *
+from pvr.TunerConfigMgr import *
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
 import pvr.ElisMgr
@@ -17,7 +17,7 @@ class AntennaSetup( SettingWindow ) :
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId  )
+		self.mWin = xbmcgui.Window( self.mWinId )
  
 		if ConfigMgr.GetInstance( ).GetNeedLoad( ) == True : 
 			ConfigMgr.GetInstance( ).LoadOriginalTunerConfig( )
@@ -52,7 +52,7 @@ class AntennaSetup( SettingWindow ) :
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 		
-			if xbmcgui.Dialog( ).yesno('Configure', 'Are you sure?') == 1 :
+			if xbmcgui.Dialog( ).yesno('Configure', 'Save Configuration?') == 1 :
 				ConfigMgr.GetInstance( ).SatelliteConfigSaveList( )
 			else :
 				ConfigMgr.GetInstance( ).Restore( )
@@ -99,7 +99,7 @@ class AntennaSetup( SettingWindow ) :
 			
 			elif self.GetSelectedIndex( E_SpinEx03 ) == E_MOTORIZED_USALS :
 				self.ResetAllControl( )
-				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED )
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED_USALS )
 				
 			elif self.GetSelectedIndex( E_SpinEx03 ) == E_ONE_CABLE :
 				self.ResetAllControl( )

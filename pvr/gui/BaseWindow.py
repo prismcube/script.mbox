@@ -233,13 +233,14 @@ class SettingWindow( BaseWindow ):
 			return True
 
 		else :
-		
 			dialog = xbmcgui.Dialog( )
 			value = dialog.numeric( keyType, aCtrlItem.mListItems[0].getLabel( ), aCtrlItem.mListItems[0].getLabel2( ) )
 
-			if value != None :
-				if len( value ) > aCtrlItem.mMaxLength :
-					value = value[ len ( value ) - aCtrlItem.mMaxLength :]
+			if value == None or value == '' :
+				return
+
+			if len( value ) > aCtrlItem.mMaxLength :
+				value = value[ len ( value ) - aCtrlItem.mMaxLength :]
 				aCtrlItem.mListItems[0].setLabel2( value )
 
 
@@ -309,6 +310,18 @@ class SettingWindow( BaseWindow ):
 					control = self.getControl( ctrlItem.mControlId + 3 )
 					time.sleep( 0.02 )
 					return control.getSelectedPosition()
+
+		return -1
+
+	def GetControlLabelString( self, aControlId ) :
+		count = len( self.mControlList )
+
+		for i in range( count ) :
+
+			ctrlItem = self.mControlList[i]		
+			if self.HasControlItem( ctrlItem, aControlId ) :
+				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
+					return self.getControl( ctrlItem.mControlId + 3 ).getListItem( 0 ).getLabel2( )
 
 		return -1
 

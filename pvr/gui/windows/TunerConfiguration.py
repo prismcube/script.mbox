@@ -4,7 +4,7 @@ import sys
 
 import pvr.gui.WindowMgr as WinMgr
 import pvr.TunerConfigMgr as ConfigMgr
-from  pvr.TunerConfigMgr import *
+from pvr.TunerConfigMgr import *
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
 import pvr.ElisMgr
@@ -19,7 +19,7 @@ class TunerConfiguration( SettingWindow ) :
 			
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId  )
+		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.tunerIndex = ConfigMgr.GetInstance().GetCurrentTunerIndex( )
 
@@ -91,14 +91,11 @@ class TunerConfiguration( SettingWindow ) :
 					elif tunertype == E_DISEQC_1_1 :
 						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_DISEQC_11 )
 					
-					elif tunertype == E_ONE_CABLE :
-						pass
-
 					elif tunertype == E_MOTORIZED_1_2 :
 						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED_12 )
 
 					elif tunertype == E_MOTORIZED_USALS :
-						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED_USALS )
+						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED_USALS2 )
 
 				else :
 					print 'ERR : Can not find configured satellite'
