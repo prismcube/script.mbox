@@ -9,11 +9,6 @@ from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
 import pvr.ElisMgr
 
-from pvr.gui.windows.SatelliteConfigSimple import SatelliteConfigSimple
-from pvr.gui.windows.MotorizeConfiguration import MotorizeConfiguration
-from pvr.gui.windows.OnecableConfiguration import OnecableConfiguration
-
-
 class AntennaSetup( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )			
@@ -100,29 +95,17 @@ class AntennaSetup( SettingWindow ) :
 			if self.GetSelectedIndex( E_SpinEx03 ) == E_SIMPLE_LNB :
 				ConfigMgr.GetInstance( ).SetCurrentConfigIndex( 0 )
 				self.ResetAllControl( )
-				
-				import pvr.Platform 
-				scriptDir = pvr.Platform.GetPlatform().GetScriptDir()
-				SatelliteConfigSimple('SatelliteConfiguration.xml', scriptDir).doModal()
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_SIMPLE )
 			
 			elif self.GetSelectedIndex( E_SpinEx03 ) == E_MOTORIZED_USALS :
-
 				self.ResetAllControl( )
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED )
 				
-				import pvr.Platform 
-				scriptDir = pvr.Platform.GetPlatform().GetScriptDir()
-				MotorizeConfiguration('SatelliteConfiguration.xml', scriptDir).doModal()
-
 			elif self.GetSelectedIndex( E_SpinEx03 ) == E_ONE_CABLE :
-			
 				self.ResetAllControl( )
-				
-				import pvr.Platform 
-				scriptDir = pvr.Platform.GetPlatform().GetScriptDir()
-				OnecableConfiguration('OnecableConfiguration.xml', scriptDir).doModal()
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_ONECABLE )
 
 			else :
-
 				self.ResetAllControl( )
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_TUNER_CONFIGURATION )
 		

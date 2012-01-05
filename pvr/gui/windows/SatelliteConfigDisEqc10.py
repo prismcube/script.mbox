@@ -16,8 +16,7 @@ from ElisEnum import ElisEnum
 class SatelliteConfigDisEqC10( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.GetInstance().getCommander( )
-		self.mLnbFrequency = None
+		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander( )
 		self.mCurrentSatellite = None
 		self.mTransponderList = None
 		self.mSelectedTransponderIndex = 0
@@ -25,16 +24,14 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 
 			
 	def onInit( self ) :
-		print 'dhkim test Diseq #1'
-		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
-		
+		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWin = xbmcgui.Window( self.mWinId  )
+
 		tunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerIndex( )
 		self.mCurrentSatellite = ConfigMgr.GetInstance( ).GetCurrentConfiguredSatellite( )
 		self.mTransponderList = ConfigMgr.GetInstance( ).GetTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
-		print 'dhkim test Diseq #2'
 		self.SetHeaderLabel( 'Satellite Configuration' )
 		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
-		print 'dhkim test Diseq #3'
 		if tunerIndex == E_TUNER_1 :
 			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
 		elif tunerIndex == E_TUNER_2 : 
@@ -42,17 +39,13 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 		else :
 			print 'Error : unknown Tuner'
 			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
- 		print 'dhkim test Diseq #4'
-		
-		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %s - %s' % ( tunerIndex + 1, property.GetPropString( ) ) )
+ 				
+		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %d - %s' % ( tunerIndex + 1, property.GetPropString( ) ) )
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.InitConfig( )
-		print 'dhkim test Diseq #5'
 		
 	def onAction( self, aAction ) :
-
 		actionId = aAction.getId( )
-		focusId = self.getFocusId( )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass
@@ -79,7 +72,6 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 
 
 	def onClick( self, aControlId ) :
-
 		groupId = self.GetGroupId( aControlId )
 		
 		#Satellite
@@ -136,12 +128,11 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 			if dialog.IsOK() == True :
 	 			lowFreq, highFreq, threshFreq  = dialog.GetFrequency( )
 
-				self.mCurrentSatellite.mLowLNB = lowFreq
-				self.mCurrentSatellite.mHighLNB = highFreq
-				self.mCurrentSatellite.mLNBThreshold = threshFreq
+				self.mCurrentSatellite.mLowLNB = int ( lowFreq )
+				self.mCurrentSatellite.mHighLNB = int ( highFreq )
+				self.mCurrentSatellite.mLNBThreshold = int ( threshFreq )
 
 				self.InitConfig( )
-
 
 		# 22Khz
  		elif groupId == E_SpinEx03 :
@@ -172,21 +163,19 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 		self.AddInputControl( E_Input01, 'Satellite' , ConfigMgr.GetInstance( ).GetFormattedName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ) )
 		self.AddUserEnumControl( E_SpinEx01, 'LNB Type', E_LIST_LNB_TYPE, self.mSelectedIndexLnbType )
 
-
-		if( self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
+		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
 			self.AddUserEnumControl( E_SpinEx02, 'LNB Frequency', E_LIST_SINGLE_FREQUENCY, getSingleFrequenceIndex( self.mCurrentSatellite.mLowLNB ) )
 		else :
-			self.mLnbFrequency = chr( self.mCurrentSatellite.mLowLNB ) + ' / ' + chr( self.mCurrentSatellite.mHighLNB ) + ' / ' + chr( self.mCurrentSatellite.threshFreq )
-			self.AddInputControl( E_Input02, 'LNB Frequency', self.mLnbFrequency )
-			
+			lnbFrequency = '%d / %d / %d' % ( self.mCurrentSatellite.mLowLNB, self.mCurrentSatellite.mHighLNB, self.mCurrentSatellite.mLNBThreshold )
+			self.AddInputControl( E_Input02, 'LNB Frequency', lnbFrequency )
+
 		self.AddUserEnumControl( E_SpinEx03, '22KHz Control', USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mFrequencyLevel )
 		self.AddUserEnumControl( E_SpinEx04, 'DiSEqC 1.0 Switch', E_LIST_DISEQC_MODE, self.mCurrentSatellite.mDisEqcMode )
 		self.AddUserEnumControl( E_SpinEx05, 'DiSEqC Repeat', USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mDisEqcRepeat )
-		
 		self.AddInputControl( E_Input03, 'Transponder', self.mTransponderList[ self.mSelectedTransponderIndex ] )
 
-		if( self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
-			visibleaControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input03]
+		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
+			visibleaControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input03 ]
 			hideaControlIds = [ E_Input02, E_SpinEx06, E_Input04, E_Input05 ]
 		else :
 			visibleaControlIds = [ E_SpinEx01, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input02, E_Input03 ]
@@ -196,14 +185,15 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 		self.SetEnableControls( visibleaControlIds, True )
 
 		self.SetVisibleControls( hideaControlIds, False )
-
+		print 'dhkim test InitConfig #1'
 		self.InitControl( )
+		print 'dhkim test InitConfig #2'
 		self.DisableControl( )
-		
+		print 'dhkim test InitConfig #3'		
 
 	def DisableControl( self ) :
 		enableaControlIds = [ E_Input02, E_SpinEx02, E_SpinEx03 ]
-		if ( self.mSelectedIndexLnbType == ElisEnum.E_LNB_UNIVERSAL ) :
+		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_UNIVERSAL :
 			self.SetEnableControls( enableaControlIds, False )
 			self.getControl( E_SpinEx03 + 3 ).selectItem( 1 )	# Always On
 			

@@ -17,7 +17,7 @@ from ElisEnum import ElisEnum
 class SatelliteConfigDisEqC11( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs)
-		self.mCommander = pvr.ElisMgr.GetInstance().getCommander( )
+		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander( )
 			
 	def onInit( self ):
 		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
