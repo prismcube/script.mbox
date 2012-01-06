@@ -4,57 +4,12 @@ import sys
 import time
 from copy import deepcopy
 
-
-E_CONFIGURE_SATELLITE_TUNER_INDEX 		= 0
-E_CONFIGURE_SATELLITE_SLOT_NUMBER		= 1
-E_CONFIGURE_SATELLITE_LONGITUDE			= 2
-E_CONFIGURE_SATELLITE_BANDTYPE			= 3
-E_CONFIGURE_SATELLITE_FREQUENCY_LEVEL	= 4
-E_CONFIGURE_SATELLITE_DISEQC_11			= 5
-E_CONFIGURE_SATELLITE_DISEQC_MODE		= 6
-E_CONFIGURE_SATELLITE_DISEQC_REPEAT		= 7
-E_CONFIGURE_SATELLITE_IS_CONFIG_USED	= 8
-E_CONFIGURE_SATELLITE_LNB_TYPE			= 9
-E_CONFIGURE_SATELLITE_MOTORIZED_TYPE	= 10
-E_CONFIGURE_SATELLITE_LOW_LNB			= 11
-E_CONFIGURE_SATELLITE_HIGH_LNB			= 12
-E_CONFIGURE_SATELLITE_LNB_THRESHOLD		= 13
-E_CONFIGURE_SATELLITE_MOTORIZED_DATA	= 14
-E_CONFIGURE_SATELLITE_IS_ONECABLE		= 15
-E_CONFIGURE_SATELLITE_ONECABLE_PIN		= 16
-E_CONFIGURE_SATELLITE_ONECABLE_MDU		= 17
-E_CONFIGURE_SATELLITE_ONECABLE_LO_FREQ1 = 18
-E_CONFIGURE_SATELLITE_ONECABLE_LO_FREQ2 = 19
-E_CONFIGURE_SATELLITE_ONECABLE_UBSLOT	= 20
-E_CONFIGURE_SATELLITE_ONECABLE_UBFREQ	= 21
-
-#TUNER TYPE
-E_SIMPLE_LNB					= 0
-E_DISEQC_1_0					= 1
-E_DISEQC_1_1					= 2
-E_MOTORIZED_1_2					= 3
-E_MOTORIZED_USALS				= 4
-E_ONE_CABLE						= 5
-
-#TUNER CONNECTION TYPE
-E_TUNER_SEPARATED				= 0
-E_TUNER_LOOPTHROUGH				= 1
-
-#TUNER CONFIG TYPE
-E_SAMEWITH_TUNER				= 0
-E_DIFFERENT_TUNER				= 1
-
-
-#TUNER
-E_TUNER_1						= 0
-E_TUNER_2						= 1
-E_TUNER_MAX						= 2
-
 from ElisAction import ElisAction
 from ElisEnum import ElisEnum
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum
 from ElisClass import *
+from pvr.gui.GuiConfig import *
 
 gTunerConfigMgr = None
 
@@ -125,10 +80,6 @@ class TunerConfigMgr( object ) :
 		return None
 
 
-	def SetCurrentTunerType( self, tunerType ) :
-		self.mCurrentTunerType = tunerType
-
-
 	def GetCurrentTunerType( self ) :
 		if self.mCurrentTuner == E_TUNER_1 :	
 			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
@@ -152,11 +103,7 @@ class TunerConfigMgr( object ) :
 	def SetCurrentConfigIndex( self, aCurrentConfigIndex ) :
 		self.mCurrentConfigIndex = aCurrentConfigIndex
 
-		
-	def GetCurrentConfigIndex( self ) :
-		return self.mCurrentConfigIndex
-
-
+	
 	def GetConfiguredSatelliteList( self ) :
 		if self.mCurrentTuner == E_TUNER_1 :
 			return self.mConfiguredList1
@@ -257,17 +204,17 @@ class TunerConfigMgr( object ) :
 
 			count = len ( self.mConfiguredList2 )
 			for i in range( count ) :
-				self.mConfiguredList2[i].mTunerIndex = '%d' % E_TUNER_2
+				self.mConfiguredList2[i].mTunerIndex = E_TUNER_2
 
 
 		count = len ( self.mConfiguredList1 )
 		for i in range( count ) :
-			self.mConfiguredList1[i].mSlotNumber = '%d' % i
+			self.mConfiguredList1[i].mSlotNumber = i
 		
 
 		count = len ( self.mConfiguredList2 )
 		for i in range( count ) :
-			self.mConfiguredList2[i].mSlotNumber = '%d' % i
+			self.mConfiguredList2[i].mSlotNumber = i
 
 		""" FOR TEST """
 		for satellite in self.mConfiguredList1 :
@@ -367,28 +314,6 @@ class TunerConfigMgr( object ) :
 		self.mOrgTuner1Type = property.GetProp()
 		property = ElisPropertyEnum( 'Tuner2 Type', self.mCommander )		
 		self.mOrgTuner2Type = property.GetProp()
-
-
-	def SaveCurrentConfig( self, aConfiguredSatellite ) :
-		if self.mCurrentTuner == E_TUNER_1 :	
-			self.mConfiguredList1[ self.mCurrentConfigIndex ] = aConfiguredSatellite
-			
-		elif self.mCurrentTuner == E_TUNER_2:
-			self.mConfiguredList2[ self.mCurrentConfigIndex ] = aConfiguredSatellite
-			
-		else :
-			print 'ERROR : can not find configured satellite'
-
-
-	def SaveConfigbyIndex( self, aTunerIndex, aSatelliteIndex, aConfiguredSatellite ) :
-		if aTunerIndex == E_TUNER_1 :	
-			self.mConfiguredList1[ aSatelliteIndex ] = aConfiguredSatellite
-			
-		elif aTunerIndex == E_TUNER_2:
-			self.mConfiguredList2[ aSatelliteIndex ] = aConfiguredSatellite
-			
-		else :
-			print 'ERROR : can not find configured satellite'
 
 
 	def GetDefaultConfig( self ) :
