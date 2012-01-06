@@ -108,60 +108,16 @@ class Mutex(threading.Thread):
 
 
 def LOG_TRACE( msg ):
-	curframe = inspect.currentframe()
-	calframe = inspect.getouterframes(curframe, 2)
-	filePath = calframe[1][1]
-	loc = filePath.rfind('\\')
-
-	if loc < 0 :
-		loc = filePath.rfind('/')
-
-	if loc < 0 :
-		loc= 0
-	else :
-		loc += 1
-
-	fileName = filePath[loc:]
-		
-	print 'DEBUG %8d : %s( %s ) -> %s ' %( calframe[1][2], fileName, calframe[1][3], msg )
-
+	MLOG( E_DEGUG, msg )
 
 
 def LOG_ERR( msg ):
-	curframe = inspect.currentframe()
-	calframe = inspect.getouterframes(curframe, 2)
-	filePath = calframe[1][1]
-	loc = filePath.rfind('\\')
+	MLOG( E_ERR, msg )
 
-	if loc < 0 :
-		loc = filePath.rfind('/')
-
-	if loc < 0 :
-		loc= 0
-	else :
-		loc += 1
-
-	fileName = filePath[loc:]
-
-	print 'DEBUG %8d : %s( %s ) -> %s ' %( calframe[1][2], fileName, calframe[1][3], msg )
 
 def LOG_WARN( msg ):
-	curframe = inspect.currentframe()
-	calframe = inspect.getouterframes(curframe, 2)
-	filePath = calframe[1][1]
-	loc = filePath.rfind('\\')
+	MLOG( E_WARN, msg )
 
-	if loc < 0 :
-		loc = filePath.rfind('/')
-
-	if loc < 0 :
-		loc= 0
-	else :
-		loc += 1
-
-	fileName = filePath[loc:]
-		
-	print 'DEBUG %8d : %s( %s ) -> %s ' %( calframe[1][2], fileName, calframe[1][3], msg )
 
 def MLOG( level=0, msg=None ) :
 	curframe = inspect.currentframe()
