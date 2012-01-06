@@ -53,7 +53,7 @@ class ChannelListWindow(BaseWindow):
 		self.mPincodeEnter = FLAG_MASK_NONE
 		
 	def __del__(self):
-		print '[%s:%s]destroyed ChannelBanner'% (self.__file__, currentframe().f_lineno)
+		print '[%s:%s]destroyed ChannelList'% (self.__file__, currentframe().f_lineno)
 
 		# end thread updateEPGProgress()
 		self.mEnableThread = False
@@ -389,7 +389,7 @@ class ChannelListWindow(BaseWindow):
 				if aEvent.mEventId != self.mEventId :
 					if self.mEpgRecvPermission == True :
 						#on select, clicked
-
+						ret = None
 						ret = self.mCommander.Epgevent_GetPresent()
 						if ret :
 							self.mNavEpg = ret
@@ -407,7 +407,7 @@ class ChannelListWindow(BaseWindow):
 			else :
 				print 'unknown event[%s]'% aEvent.getName()
 		else:
-			print 'channellist winID[%d] this winID[%d]'% (self.mWin, xbmcgui.getCurrentWindowId())
+			print 'channellist winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId())
 
 
 

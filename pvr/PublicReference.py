@@ -210,14 +210,15 @@ def AgeLimit(aCmd, aAgerating):
 
 def ClassToList( aMode, aClass ) :
 
-	list = []
-	for item in aClass :
-		req = []
-		item.appendReqBuffer( req )
-		list.append( req )
-
-	if aMode == 'print' :
-		print '[%s():%s]%s'% (__file__, currentframe().f_lineno, list)
-	elif aMode == 'convert' :
-		return list
+	if aClass :
+		list = []
+		for item in aClass :
+			req = []
+			item.appendReqBuffer( req )
+			list.append( req )
+	
+		if aMode == 'print' :
+			print '[%s():%s]%s'% (__file__, currentframe().f_lineno, list)
+		elif aMode == 'convert' :
+			return list
 
