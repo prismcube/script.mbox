@@ -4,8 +4,6 @@ import time
 import sys
 
 from pvr.gui.BaseWindow import Property
-from pvr.Util import RunThread
-import thread
 
 class BaseDialog( xbmcgui.WindowXMLDialog, Property ):
 	def __init__( self, *args, **kwargs ):
@@ -15,12 +13,13 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ):
 
 
 	def NumericKeyboard( self, aKeyType, aTitle, aString, aMaxLength ) :
+		print 'dhkim test aKeyType = %d, aTitle = %s, aString = %s, aMaxLength = %d' % ( aKeyType, aTitle, aString, aMaxLength )
 		dialog = xbmcgui.Dialog( )
 		value = dialog.numeric( aKeyType, aTitle, aString )
-
+		print 'dhkim test value = %s' % value
 		if value == None or value == '' :
 			return aString
 
 		if len( value ) > aMaxLength :
 			value = value[ len ( value ) - aMaxLength :]
-			return value
+		return value
