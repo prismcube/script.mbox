@@ -18,17 +18,18 @@ WIN_ID_CONFIGURE					= 5
 WIN_ID_ANTENNA_SETUP				= 6
 WIN_ID_TUNER_CONFIGURATION			= 7
 WIN_ID_CONFIG_SIMPLE				= 8
-WIN_ID_CONFIG_MOTORIZED				= 9
-WIN_ID_CONFIG_MOTORIZED_12			= 10
-WIN_ID_CONFIG_MOTORIZED_USALS		= 11
+WIN_ID_CONFIG_MOTORIZED_12			= 9
+WIN_ID_CONFIG_MOTORIZED_USALS		= 10
+WIN_ID_CONFIG_MOTORIZED_USALS2		= 11
 WIN_ID_CONFIG_ONECABLE				= 12
-WIN_ID_CONFIG_DISEQC_10				= 13
-WIN_ID_CONFIG_DISEQC_11				= 14
-WIN_ID_CHANNEL_SEARCH				= 15
-WIN_ID_AUTOMATIC_SCAN				= 16
-WIN_ID_MANUAL_SCAN					= 17
-WIN_ID_TIMESHIFT_BANNER				= 18
-WIN_ID_CHANNEL_EDIT_WINDOW			= 19
+WIN_ID_CONFIG_ONECABLE_2			= 13
+WIN_ID_CONFIG_DISEQC_10				= 14
+WIN_ID_CONFIG_DISEQC_11				= 15
+WIN_ID_CHANNEL_SEARCH				= 16
+WIN_ID_AUTOMATIC_SCAN				= 17
+WIN_ID_MANUAL_SCAN					= 18
+WIN_ID_TIMESHIFT_BANNER				= 19
+WIN_ID_CHANNEL_EDIT_WINDOW			= 20
 
 WIN_ID_CHANNEL_LIST1_WINDOW			= 102	#for test
 WIN_ID_CHANNEL_LIST2_WINDOW			= 103	#for test
@@ -109,21 +110,25 @@ class WindowMgr(object):
 				from pvr.gui.windows.SatelliteConfigSimple import SatelliteConfigSimple
 				SatelliteConfigSimple('SatelliteConfiguration.xml', self.mScriptDir).doModal()
 
-			elif aWindowId ==  WIN_ID_CONFIG_MOTORIZED:
-				from pvr.gui.windows.MotorizeConfiguration import MotorizeConfiguration
-				MotorizeConfiguration('SatelliteConfiguration.xml', self.mScriptDir).doModal()
+			elif aWindowId ==  WIN_ID_CONFIG_MOTORIZED_USALS:
+				from pvr.gui.windows.SatelliteConfigMotorizedUsals import SatelliteConfigMotorizedUsals
+				SatelliteConfigMotorizedUsals('SatelliteConfiguration.xml', self.mScriptDir).doModal()
+
+			elif aWindowId ==  WIN_ID_CONFIG_MOTORIZED_USALS2:
+				from pvr.gui.windows.SatelliteConfigMotorizedUsals2 import SatelliteConfigMotorizedUsals2
+				SatelliteConfigMotorizedUsals2('SatelliteConfiguration.xml', self.mScriptDir).doModal()
 
 			elif aWindowId ==  WIN_ID_CONFIG_MOTORIZED_12:
 				from pvr.gui.windows.SatelliteConfigMotorized12 import SatelliteConfigMotorized12
 				SatelliteConfigMotorized12('SatelliteConfiguration.xml', self.mScriptDir).doModal()
 
-			elif aWindowId ==  WIN_ID_CONFIG_MOTORIZED_USALS:
-				from pvr.gui.windows.SatelliteConfigMotorizedUsals import SatelliteConfigMotorizedUsals
-				SatelliteConfigMotorizedUsals('SatelliteConfiguration.xml', self.mScriptDir).doModal()
-
 			elif aWindowId ==  WIN_ID_CONFIG_ONECABLE:
-				from pvr.gui.windows.OnecableConfiguration import OnecableConfiguration
-				OnecableConfiguration('OnecableConfiguration.xml', self.mScriptDir).doModal()
+				from pvr.gui.windows.SatelliteConfigOnecable import SatelliteConfigOnecable
+				SatelliteConfigOnecable('SatelliteConfigOnecable.xml', self.mScriptDir).doModal()
+
+			elif aWindowId ==  WIN_ID_CONFIG_ONECABLE_2:
+				from pvr.gui.windows.SatelliteConfigOnecable2 import SatelliteConfigOnecable2
+				SatelliteConfigOnecable2('SatelliteConfigOnecable2.xml', self.mScriptDir).doModal()
 
 			elif aWindowId ==  WIN_ID_CONFIG_DISEQC_10:
 				from pvr.gui.windows.SatelliteConfigDisEqc10 import SatelliteConfigDisEqC10

@@ -5,9 +5,6 @@ import sys
 
 from pvr.gui.BaseDialog import BaseDialog
 from pvr.gui.BaseWindow import Action
-import pvr.gui.DialogMgr as DiaMgr
-import pvr.TunerConfigMgr as ConfigMgr
-from pvr.TunerConfigMgr import *
 
 E_DIALOG_HEADER			= 100
 E_MAIN_LIST_ID			= 101

@@ -2,15 +2,13 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.WindowMgr as winmgr
-import pvr.gui.DialogMgr as diamgr
-import pvr.TunerConfigMgr as configmgr
-from pvr.TunerConfigMgr import *
-from pvr.gui.BaseWindow import SettingWindow
-from pvr.gui.BaseWindow import Action
-import pvr.ElisMgr
-from ElisProperty import ElisPropertyEnum, ElisPropertyInt
+import pvr.gui.DialogMgr as DiaMgr
+import pvr.TunerConfigMgr as ConfigMgr
 from pvr.gui.GuiConfig import *
+from pvr.gui.BaseWindow import SettingWindow, Action
+import pvr.ElisMgr
+
+from ElisProperty import ElisPropertyEnum
 from ElisEnum import ElisEnum
 
 
@@ -18,45 +16,48 @@ class SatelliteConfigMotorized12( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs)
 		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander( )
+		self.mCurrentSatellite = None
+		self.mTransponderList = None
+		self.mSelectedIndexLnbType = None
+		self.mSelectedTransponderIndex = 0
+		
 			
 	def onInit( self ):
-		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
-		self.lnbFrequency = None
-		self.tunerIndex = configmgr.GetInstance( ).GetCurrentTunerIndex( )
-		self.currentSatellite = configmgr.GetInstance( ).GetCurrentConfiguredSatellite( )
-		self.transponderList = configmgr.GetInstance( ).GetTransponderList( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ), int( self.currentSatellite[E_CONFIGURE_SATELLITE_BANDTYPE] ) )
-		self.selectedTransponderIndex = 0
- 
-		self.setHeaderLabel( 'Satellite Configuration' ) 
+		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWin = xbmcgui.Window( self.mWinId )
+		
+		tunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerIndex( )
+		self.mCurrentSatellite = ConfigMgr.GetInstance( ).GetCurrentConfiguredSatellite( )
+		self.mTransponderList = ConfigMgr.GetInstance( ).GetTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
+		self.mSelectedTransponderIndex = 0
 
-		if self.tunerIndex == E_TUNER_1 :
+		self.SetHeaderLabel( 'Satellite Configuration' ) 
+		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
+		
+		if tunerIndex == E_TUNER_1 :
 			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
-		elif self.tunerIndex == E_TUNER_2 : 
+		elif tunerIndex == E_TUNER_2 : 
 			property = ElisPropertyEnum( 'Tuner2 Type', self.mCommander )
 		else :
 			print 'Error : unknown Tuner'
 			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
  
 		
-		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %s - %s' % ( self.tunerIndex + 1, property.getPropString( ) ) )
-		self.selectedIndexLnbType = int( self.currentSatellite[ E_CONFIGURE_SATELLITE_LNB_TYPE ] )
-
-		self.initConfig( )
-		self.setFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
+		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %d - %s' % ( tunerIndex + 1, property.GetPropString( ) ) )
+		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
+		self.InitConfig( )
 
 		
-	def onAction( self, action ):
-
-		actionId = action.getId( )
-		focusId = self.getFocusId( )
+	def onAction( self, aAction ) :
+		actionId = aAction.getId( )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass
+			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			self.saveConfig( )
 			self.ResetAllControl( )
 			self.close( )
 
@@ -73,85 +74,79 @@ class SatelliteConfigMotorized12( SettingWindow ):
 			self.ControlDown( )
 
 
-	def onClick( self, controlId ):
-
-		groupId = self.GetGroupId( controlId )
+	def onClick( self, aControlId ) :
+		groupId = self.GetGroupId( aControlId )
 		
 		#Satellite
 		if groupId == E_Input01 :
-			satelliteList = configmgr.GetInstance( ).GetFormattedNameList( )
+			satelliteList = ConfigMgr.GetInstance( ).GetFormattedNameList( )
 			dialog = xbmcgui.Dialog()
  			ret = dialog.select('Select satellite', satelliteList )
 
 			if ret >= 0 :
-	 			satellite = configmgr.GetInstance( ).GetSatelliteByIndex( ret )
+	 			satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( ret )
 
 	 			for i in range( 22 ) :
-					self.currentSatellite[ i ] = "0"
+					self.mCurrentSatellite.reset( )
 
-				self.currentSatellite[ E_CONFIGURE_SATELLITE_LONGITUDE ] = satellite[0] # Longitude
-				self.currentSatellite[ E_CONFIGURE_SATELLITE_BANDTYPE ] = satellite[1]	# Band
-				self.currentSatellite[ E_CONFIGURE_SATELLITE_IS_CONFIG_USED ] = "1"		# IsUsed
-				self.currentSatellite[ E_CONFIGURE_SATELLITE_LOW_LNB ] = "9750"			# Low
-				self.currentSatellite[ E_CONFIGURE_SATELLITE_HIGH_LNB ] = "10600"		# High
-				self.currentSatellite[ E_CONFIGURE_SATELLITE_LNB_THRESHOLD ] = "11700"	# Threshold
+				self.mCurrentSatellite.mSatelliteLongitude 	= satellite.mLongitude		# Longitude
+				self.mCurrentSatellite.mBandType 			= satellite.mBand			# Band
+				self.mCurrentSatellite.mIsConfigUsed 		= 1							# IsUsed
+				self.mCurrentSatellite.mLowLNB 				= 9750						# Low
+				self.mCurrentSatellite.mHighLNB 			= 10600						# High
+				self.mCurrentSatellite.mLNBThreshold		= 11700						# Threshold
 
-				self.transponderList = configmgr.GetInstance( ).GetTransponderList( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ), int( self.currentSatellite[E_CONFIGURE_SATELLITE_BANDTYPE] ) )
+				self.mTransponderList = ConfigMgr.GetInstance( ).GetTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )				
 		
-				self.initConfig()
+				self.InitConfig()
 
 		# LNB Setting
 		elif groupId == E_SpinEx01 :
-			self.selectedIndexLnbType = self.GetSelectedIndex( E_SpinEx01 )
-			indexString = '%d' % self.selectedIndexLnbType
-			self.currentSatellite[ E_CONFIGURE_SATELLITE_LNB_TYPE ] = indexString
-			self.currentSatellite[ E_CONFIGURE_SATELLITE_FREQUENCY_LEVEL ] = "0"			
+			self.mSelectedIndexLnbType = self.GetSelectedIndex( E_SpinEx01 )
+			self.mCurrentSatellite.mLnbType = self.mSelectedIndexLnbType
+			self.mCurrentSatellite.mFrequencyLevel = 0
 			
-			if self.selectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
-				self.currentSatellite[ E_CONFIGURE_SATELLITE_LOW_LNB ] = "5150"	
+			if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
+				self.mCurrentSatellite.mLowLNB = 5150
 
-				
 			else :
-				self.currentSatellite[ E_CONFIGURE_SATELLITE_LOW_LNB ] = "9750"	
-				self.currentSatellite[ E_CONFIGURE_SATELLITE_HIGH_LNB ] = "10600"	
-				self.currentSatellite[ E_CONFIGURE_SATELLITE_LNB_THRESHOLD ] = "11700"
+				self.mCurrentSatellite.mLowLNB = 9750	
+				self.mCurrentSatellite.mHighLNB = 10600	
+				self.mCurrentSatellite.mLNBThreshold = 11700
 
-			self.initConfig( )
+			self.InitConfig( )
 
 		# LNB Frequency - Spincontrol
  		elif groupId == E_SpinEx02 :
  			position = self.GetSelectedIndex( E_SpinEx02 )
-			self.currentSatellite[ E_CONFIGURE_SATELLITE_LOW_LNB ] = E_LIST_SINGLE_FREQUENCY[ position ]
-
+			self.mCurrentSatellite.mLowLNB = int( E_LIST_SINGLE_FREQUENCY[ position ] )
 
 		# LNB Frequency - Inputcontrol
  		elif groupId == E_Input02 :
 
- 			dialog = diamgr.GetInstance().getDialog( diamgr.DIALOG_ID_LNB_FREQUENCY )
- 			dialog.setFrequency( self.currentSatellite[E_CONFIGURE_SATELLITE_LOW_LNB], self.currentSatellite[E_CONFIGURE_SATELLITE_HIGH_LNB], self.currentSatellite[E_CONFIGURE_SATELLITE_LNB_THRESHOLD] )
+ 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_LNB_FREQUENCY )
+ 			dialog.SetFrequency( self.mCurrentSatellite.mLowLNB, self.mCurrentSatellite.mHighLNB, self.mCurrentSatellite.mLNBThreshold )
  			dialog.doModal( )
 
-			if dialog.isOK() == True :
-	 			lowFreq, highFreq, threshFreq  = dialog.getFrequency( )
+			if dialog.IsOK() == True :
+	 			lowFreq, highFreq, threshFreq  = dialog.GetFrequency( )
 
-				self.currentSatellite[E_CONFIGURE_SATELLITE_LOW_LNB] = lowFreq
-				self.currentSatellite[E_CONFIGURE_SATELLITE_HIGH_LNB] = highFreq
-				self.currentSatellite[E_CONFIGURE_SATELLITE_LNB_THRESHOLD] = threshFreq
+				self.mCurrentSatellite.mLowLNB = int ( lowFreq )
+				self.mCurrentSatellite.mHighLNB = int ( highFreq )
+				self.mCurrentSatellite.mLNBThreshold = int ( threshFreq )
 
-				self.initConfig( )
-
+				self.InitConfig( )
 
 		# 22Khz
  		elif groupId == E_SpinEx03 :
- 			indexString = '%d' % self.GetSelectedIndex( E_SpinEx03 )
-			self.currentSatellite[ E_CONFIGURE_SATELLITE_FREQUENCY_LEVEL ] = indexString
+			self.mCurrentSatellite.mFrequencyLevel = self.GetSelectedIndex( E_SpinEx03 )
 
 		# Transponer
  		elif groupId == E_Input03 :
  			dialog = xbmcgui.Dialog()
- 			self.selectedTransponderIndex = dialog.select( 'Select Transponder', self.transponderList )
- 			if self.selectedTransponderIndex != -1 :
- 				self.initConfig( )
+ 			self.mSelectedTransponderIndex = dialog.select( 'Select Transponder', self.mTransponderList )
+ 			if self.mSelectedTransponderIndex != -1 :
+ 				self.InitConfig( )
 
 		# Move Antenna
 		elif groupId == E_Input04 :
@@ -166,30 +161,29 @@ class SatelliteConfigMotorized12( SettingWindow ):
 			pass
 
 
-	def onFocus( self, controlId ):
+	def onFocus( self, aControlId ):
 		pass
 
 
-	def initConfig( self ) :
+	def InitConfig( self ) :
 		self.ResetAllControl( )
 
-		self.AddInputControl( E_Input01, 'Satellite' , configmgr.GetInstance( ).GetFormattedName( int( self.currentSatellite[E_CONFIGURE_SATELLITE_LONGITUDE] ), int( self.currentSatellite[E_CONFIGURE_SATELLITE_BANDTYPE] ) ) )
-		self.AddUserEnumControl( E_SpinEx01, 'LNB Type', E_LIST_LNB_TYPE, self.selectedIndexLnbType )
+		self.AddInputControl( E_Input01, 'Satellite' , ConfigMgr.GetInstance( ).GetFormattedName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ) )
+		self.AddUserEnumControl( E_SpinEx01, 'LNB Type', E_LIST_LNB_TYPE, self.mSelectedIndexLnbType )
 
-
-		if( self.selectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
-			self.AddUserEnumControl( E_SpinEx02, 'LNB Frequency', E_LIST_SINGLE_FREQUENCY, getSingleFrequenceIndex( self.currentSatellite[ E_CONFIGURE_SATELLITE_LOW_LNB ] ) )
+		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
+			self.AddUserEnumControl( E_SpinEx02, 'LNB Frequency', E_LIST_SINGLE_FREQUENCY, getSingleFrequenceIndex( self.mCurrentSatellite.mLowLNB ) )
 		else :
-			self.lnbFrequency = self.currentSatellite[E_CONFIGURE_SATELLITE_LOW_LNB] + ' / ' + self.currentSatellite[ E_CONFIGURE_SATELLITE_HIGH_LNB ] + ' / ' + self.currentSatellite[E_CONFIGURE_SATELLITE_LNB_THRESHOLD]
-			self.AddInputControl( E_Input02, 'LNB Frequency', self.lnbFrequency )
-			
-		self.AddUserEnumControl( E_SpinEx03, '22KHz Control', USER_ENUM_LIST_ON_OFF, self.currentSatellite[ E_CONFIGURE_SATELLITE_FREQUENCY_LEVEL ] )	
-		self.AddInputControl( E_Input03, 'Transponder', self.transponderList[self.selectedTransponderIndex] )
+			lnbFrequency = '%d / %d / %d' % ( self.mCurrentSatellite.mLowLNB, self.mCurrentSatellite.mHighLNB, self.mCurrentSatellite.mLNBThreshold )
+			self.AddInputControl( E_Input02, 'LNB Frequency', lnbFrequency )
+
+		self.AddUserEnumControl( E_SpinEx03, '22KHz Control', USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mFrequencyLevel )	
+		self.AddInputControl( E_Input03, 'Transponder', self.mTransponderList[ self.mSelectedTransponderIndex ] )
 		self.AddLeftLabelButtonControl( E_Input04, 'Move Antenna' )
 		self.AddUserEnumControl( E_SpinEx04, 'Action', E_LIST_ONE_CABLE_ACTION, 0 )
 		self.AddLeftLabelButtonControl( E_Input05, 'Store Position and Exit' )
 
-		if( self.selectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
+		if( self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input01, E_Input03, E_Input04, E_Input05 ]
 			hideControlIds = [ E_SpinEx05, E_SpinEx06, E_Input02 ]
 		else :
@@ -202,20 +196,14 @@ class SatelliteConfigMotorized12( SettingWindow ):
 		self.SetVisibleControls( hideControlIds, False )
 
 		self.InitControl( )
-		self.disableControl( )
+		self.DisableControl( )
 		
 
-	def disableControl( self ):
+	def DisableControl( self ):
 		enableControlIds = [ E_Input02, E_SpinEx02, E_SpinEx03 ]
-		if ( self.selectedIndexLnbType == ElisEnum.E_LNB_UNIVERSAL ) :
+		if ( self.mSelectedIndexLnbType == ElisEnum.E_LNB_UNIVERSAL ) :
 			self.SetEnableControls( enableControlIds, False )
 			self.getControl( E_SpinEx03 + 3 ).selectItem( 1 )	# Always On
 			
 		else :
 			self.SetEnableControls( enableControlIds, True )
-
-	def saveConfig( self ) :
-		configmgr.GetInstance( ).SaveCurrentConfig( self.currentSatellite )
-		
-
-
