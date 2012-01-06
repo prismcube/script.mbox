@@ -110,7 +110,6 @@ class Mutex(threading.Thread):
 def LOG_TRACE( msg ):
 	curframe = inspect.currentframe()
 	calframe = inspect.getouterframes(curframe, 2)
-	print 'calframe=%s' %calframe
 	filePath = calframe[1][1]
 	loc = filePath.rfind('\\')
 
@@ -131,7 +130,6 @@ def LOG_TRACE( msg ):
 def LOG_ERR( msg ):
 	curframe = inspect.currentframe()
 	calframe = inspect.getouterframes(curframe, 2)
-	print 'calframe=%s' %calframe
 	filePath = calframe[1][1]
 	loc = filePath.rfind('\\')
 
@@ -150,7 +148,6 @@ def LOG_ERR( msg ):
 def LOG_WARN( msg ):
 	curframe = inspect.currentframe()
 	calframe = inspect.getouterframes(curframe, 2)
-	print 'calframe=%s' %calframe
 	filePath = calframe[1][1]
 	loc = filePath.rfind('\\')
 

@@ -2263,9 +2263,6 @@
 		<animation type="WindowOpen" reversible="false">
 			<effect type="fade" start="0" end="100" time="400" />
 		</animation>
-		<animation type="WindowClose" reversible="false">
-			<effect type="fade" start="100" end="0" time="400" />
-		</animation>
 	</include>
 	<include name="CommonSettingSlideMenu">
 		<control type="button" id="3301">
@@ -2359,8 +2356,10 @@
 		<animation effect="fade" time="300">Hidden</animation>
 	</include>
 	<include name="dialogeffect">
-		<animation effect="fade" time="500">WindowOpen</animation>
-		<animation effect="fade" time="500">WindowClose</animation>
+		<animation effect="fade" time="5000">WindowOpen</animation>
+		<animation type="WindowClose" reversible="false">
+			<effect type="fade" start="100" end="0" time="5000" />
+		</animation>
 	</include>
 	<include name="SideBladeLeft">
 		<control type="image">

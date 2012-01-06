@@ -11,8 +11,8 @@ from  pvr.TunerConfigMgr import *
 from ElisEnum import ElisEnum
 
 import pvr.ElisMgr
-from pvr.Util import RunThread, GuiLock
-
+from pvr.Util import RunThread, GuiLock, LOG_TRACE
+from ElisEventClass import *
 
 
 # Control IDs
@@ -62,10 +62,11 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mCtrlProgress = self.getControl( PROGRESS_ID_SCAN )
 		self.mCtrlTransponderInfo = self.getControl( LABEL_ID_TRANSPONDER_INFO )		
 
+		self.mEventBus.Register( self )	
+		
 		self.ScanStart( )
 		self.DrawItem( )
 
-		self.mEventBus.Register( self )		
 
 	def onAction( self, aAction ):
 		actionId = aAction.getId( )
@@ -158,6 +159,11 @@ class DialogChannelSearch( BaseDialog ) :
 			config = self.mConfiguredSatelliteList[0] # ToDO send with satelliteList
 			self.mCommander.Channelscan_BySatellite( config.mSatelliteLongitude, config.mBandType ) #longitude, band
 		elif self.mScanMode == E_SCAN_TRANSPONDER :
+			LOG_TRACE(('long = %d' %self.mLongitude))
+			LOG_TRACE(('band = %d' %self.mBand))
+			for tp in self.mTransponderList :
+				tp.printdebug()
+
 			self.mCommander.Channel_SearchByCarrier( self.mLongitude, self.mBand, self.mTransponderList )
 		else :
 			self.mIsFinished == True
@@ -236,10 +242,12 @@ class DialogChannelSearch( BaseDialog ) :
 	def UpdateAddChannel(self, aEvent ):
 
 		print 'update addchnnel channelName=%s serviceType=%d' %( aEvent.mIChannel.mName, aEvent.mIChannel.mServiceType )
-		if serviceType == ElisEnum.E_TYPE_TV :
+		if aEvent.mIChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
 			self.mNewTVChannelList.append( aEvent.mIChannel.mName )
-		else :
+		elif aEvent.mIChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			self.mNewRadioChannelList.append( aEvent.mIChannel.mName )
+		else : 
+			LOG_ERR('Unknown service type')
 
 		self.DrawItem( )
 

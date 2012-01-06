@@ -18,7 +18,7 @@ from pvr.gui.GuiConfig import FooterMask
 import threading, time, os
 
 import pvr.Msg as Msg
-import pvr.gui.windows.Define_string as MsgId
+import pvr.gui.windows.define_string as MsgId
 
 FLAG_MASK_ADD  = 0x01
 FLAG_MASK_NONE = 0x00
