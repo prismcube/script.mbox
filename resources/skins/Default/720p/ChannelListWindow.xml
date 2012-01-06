@@ -94,7 +94,7 @@
 				<posy>180</posy>
 				<width>780</width>
 				<height>401</height>
-				<onleft>SetFocus(102)</onleft>
+				<onleft>102</onleft>
 				<onright>SetFocus(61)</onright>
 				<onup>49</onup>
 				<ondown>49</ondown>

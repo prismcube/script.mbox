@@ -28,6 +28,11 @@ mlog = logging.getLogger('mythbox.method')
 
 FLAG_MASK_ADD  = 0x01
 FLAG_MASK_NONE = 0x00
+FLAG_CLOCKMODE_ADMYHM = 1
+FLAG_CLOCKMODE_AHM    = 2
+FLAG_CLOCKMODE_HMS    = 3
+FLAG_CLOCKMODE_HHMM   = 4
+
 
 class ChannelBanner(BaseWindow):
 	def __init__(self, *args, **kwargs):
@@ -44,8 +49,8 @@ class ChannelBanner(BaseWindow):
 		self.mLocalTime = 0
 		self.mEventID = 0
 		self.mPincodeEnter = FLAG_MASK_NONE
-		#self.mLastChannel = 	self.mCommander.Channel_GetCurrent()	
-		#self.mCurrentChannel =  self.mLastChannel
+		self.mLastChannel = 	self.mCommander.Channel_GetCurrent()	
+		self.mCurrentChannel =  self.mLastChannel
 		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
 		#self.mEventBus.register( self )
 
@@ -54,49 +59,47 @@ class ChannelBanner(BaseWindow):
 		print '[%s:%s] destroyed ChannelBanner'% (self.__file__, currentframe().f_lineno)
 
 		# end thread CurrentTimeThread()
-		self.mUntilThread = False
+		self.mEnableThread = False
 
 	def onInit(self):
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
 		print '[%s:%s]winID[%d]'% (self.__file__, currentframe().f_lineno, self.mWinId)
 
-		#get event
-		#request = EventRequest(self)
-		self.mCtrlChannelNumber  = self.getControl( 601 )
-		self.mCtrlChannelName    = self.getControl( 602 )
-		self.mCtrlImgServiceType    = self.getControl( 603 )
-		self.mCtrlImgServiceTypeImg1= self.getControl( 604 )
-		self.mCtrlImgServiceTypeImg2= self.getControl( 605 )
-		self.mCtrlImgServiceTypeImg3= self.getControl( 606 )
-		self.mCtrlEventClock     = self.getControl( 610 )
-		self.mCtrlLongitudeInfo  = self.getControl( 701 )
-		self.mCtrlEventName      = self.getControl( 703 )
-		self.mCtrlEventStartTime = self.getControl( 704 )
-		self.mCtrlEventEndTime   = self.getControl( 705 )
-		self.mCtrlProgress       = self.getControl( 707 )
-		self.mCtrlEventDescGroup = self.getControl( 800 )
-		self.mCtrlEventDescText1 = self.getControl( 801 )
-		self.mCtrlEventDescText2 = self.getControl( 802 )
+		self.mCtrlLblChannelNumber     = self.getControl( 601 )
+		self.mCtrlLblChannelName       = self.getControl( 602 )
+		self.mCtrlImgServiceType       = self.getControl( 603 )
+		self.mCtrlImgServiceTypeImg1   = self.getControl( 604 )
+		self.mCtrlImgServiceTypeImg2   = self.getControl( 605 )
+		self.mCtrlImgServiceTypeImg3   = self.getControl( 606 )
+		self.mCtrlLblEventClock        = self.getControl( 610 )
+		self.mCtrlLblLongitudeInfo     = self.getControl( 701 )
+		self.mCtrlLblEventName         = self.getControl( 703 )
+		self.mCtrlLblEventStartTime    = self.getControl( 704 )
+		self.mCtrlLblEventEndTime      = self.getControl( 705 )
+		self.mCtrlProgress             = self.getControl( 707 )
+		self.mCtrlGropEventDescGroup   = self.getControl( 800 )
+		self.mCtrlTxtBoxEventDescText1 = self.getControl( 801 )
+		self.mCtrlTxtBoxEventDescText2 = self.getControl( 802 )
 		#self.mCtrlProgress = xbmcgui.ControlProgress(100, 250, 125, 75)
 		#self.mCtrlProgress(self.Progress)
 
 		#button icon
-		self.mCtrlBtnExInfo      = self.getControl( 621 )
-		self.mCtrlBtnTeletext    = self.getControl( 622 )
-		self.mCtrlBtnSubtitle    = self.getControl( 623 )
-		self.mCtrlBtnStartRec    = self.getControl( 624 )
-		self.mCtrlBtnStopRec     = self.getControl( 625 )
-		self.mCtrlBtnMute        = self.getControl( 626 )
-		self.mCtrlBtnMuteToggled = self.getControl( 627 )
-		self.mCtrlBtnTSbanner    = self.getControl( 630 )
-		
-		self.mCtrlBtnPrevEpg     = self.getControl( 702 )
-		self.mCtrlBtnNextEpg     = self.getControl( 706 )
-		
+		self.mCtrlBtnExInfo            = self.getControl( 621 )
+		self.mCtrlBtnTeletext          = self.getControl( 622 )
+		self.mCtrlBtnSubtitle          = self.getControl( 623 )
+		self.mCtrlBtnStartRec          = self.getControl( 624 )
+		self.mCtrlBtnStopRec           = self.getControl( 625 )
+		self.mCtrlBtnMute              = self.getControl( 626 )
+		self.mCtrlBtnMuteToggled       = self.getControl( 627 )
+		self.mCtrlBtnTSbanner          = self.getControl( 630 )
+
+		self.mCtrlBtnPrevEpg           = self.getControl( 702 )
+		self.mCtrlBtnNextEpg           = self.getControl( 706 )
+
 
 		self.mImgTV    = 'confluence/tv.png'
-		self.mCtrlEventClock.setLabel('')
+		self.mCtrlLblEventClock.setLabel('')
 
 		self.mToggleFlag=False
 		self.mEpgStartTime = 0
@@ -105,7 +108,7 @@ class ChannelBanner(BaseWindow):
 
 		#get channel
 		self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
-		self.mCurrentChannel.printdebug()
+		#self.mCurrentChannel.printdebug()
 
 		self.InitLabelInfo()
 		self.UpdateVolume(Action.ACTION_MUTE)
@@ -138,11 +141,14 @@ class ChannelBanner(BaseWindow):
 		if ret :
 			self.mEventCopy = ret
 			self.UpdateONEvent(self.mEventCopy)
-		print 'epgevent_GetPresent[%s]'% ClassToList( 'convert', self.mEventCopy )
+
+		retList = []
+		retList.append( self.mEventCopy )
+		print 'epgevent_GetPresent[%s]'% ClassToList( 'convert', retList )
 
 
 		#run thread
-		self.mUntilThread = True
+		self.mEnableThread = True
 		self.CurrentTimeThread()
 
 
@@ -153,19 +159,18 @@ class ChannelBanner(BaseWindow):
 		if id == Action.ACTION_PREVIOUS_MENU:
 			print 'youn check action menu'
 			self.DescboxToggle('close')
-			self.mUntilThread = False
+			self.mEnableThread = False
 			self.CurrentTimeThread().join()
 			winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_MAINMENU )
 
 		elif id == Action.ACTION_SELECT_ITEM:
-			print '===== test youn: ID[%s]' % id
 			log.debug('youn:%s' % id)
 	
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'youn check ation back'
 
 			self.DescboxToggle('close')
-			self.mUntilThread = False
+			self.mEnableThread = False
 			self.CurrentTimeThread().join()
 			self.close( )
 			#winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_NULLWINDOW )
@@ -177,7 +182,7 @@ class ChannelBanner(BaseWindow):
 
 			else:
 				# end thread CurrentTimeThread()
-				self.mUntilThread = False
+				self.mEnableThread = False
 				self.CurrentTimeThread().join()
 
 				self.close( )
@@ -208,7 +213,7 @@ class ChannelBanner(BaseWindow):
 
 		elif id == Action.ACTION_PAUSE:
 			self.DescboxToggle('close')
-			self.mUntilThread = False
+			self.mEnableThread = False
 			self.CurrentTimeThread().join()
 			winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_TIMESHIFT_BANNER )
 
@@ -273,7 +278,7 @@ class ChannelBanner(BaseWindow):
 
 		elif aControlId == self.mCtrlBtnTSbanner.getId() :
 			print 'click Time Shift banner'
-			self.mUntilThread = False
+			self.mEnableThread = False
 			self.CurrentTimeThread().join()
 
 			winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_TIMESHIFT_BANNER )
@@ -291,7 +296,7 @@ class ChannelBanner(BaseWindow):
 		#print "onFocus(): control %d" % controlId
 		pass
 
-
+	@GuiLock
 	def onEvent(self, aEvent):
 		print '[%s]%s():%s'% (os.path.basename(currentframe().f_code.co_filename), currentframe().f_code.co_name, currentframe().f_lineno)
 		#print 'aEvent len[%s]'% len(aEvent)
@@ -323,17 +328,22 @@ class ChannelBanner(BaseWindow):
 			print 'onAction():ACTION_PREVIOUS_ITEM control %d' % aActionID
 			priv_ch = None
 			priv_ch = self.mCommander.Channel_GetPrev()
-			print 'priv_ch[%s]' % ClassToList( 'convert', priv_ch )
+
+			if priv_ch :
+				retList = []
+				retList.append( priv_ch )
+				print 'priv_ch[%s]' % ClassToList( 'convert', retList )
 
 			if priv_ch :
 				try:
 					self.mLastChannel = self.mCurrentChannel
 					ret = self.mCommander.Channel_SetCurrent( priv_ch.mNumber , priv_ch.mServiceType )
 
-					if ret[0].upper() == 'TRUE' :
+					if ret == True :
 						self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
-						self.InitLabelInfo()
-						self.UpdateServiceType( priv_ch.mServiceType )
+						if self.mCurrentChannel :
+							self.InitLabelInfo()
+							self.UpdateServiceType( priv_ch.mServiceType )
 
 				except Exception, e :
 					print '[%s:%s] Error exception[%s]'% (	\
@@ -345,16 +355,21 @@ class ChannelBanner(BaseWindow):
 			print 'onAction():ACTION_NEXT_ITEM control %d' % aActionID
 			next_ch = None
 			next_ch = self.mCommander.Channel_GetNext()
-			print 'next_ch[%s]' % ClassToList( 'convert', next_ch )
+
+			if next_ch :
+				retList = []
+				retList.append( next_ch )
+				print 'next_ch[%s]' % ClassToList( 'convert', retList )
 
 			try:
 				self.mLastChannel = self.mCurrentChannel
-				ret = self.mCommander.channel_SetCurrent( next_ch.mNumber, next_ch.mServiceType )
+				ret = self.mCommander.Channel_SetCurrent( next_ch.mNumber, next_ch.mServiceType )
 
-				if ret[0].upper() == 'TRUE' :
+				if ret == True :
 					self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
-					self.InitLabelInfo()
-					self.UpdateServiceType( next_ch.mServiceType )
+					if self.mCurrentChannel :
+						self.InitLabelInfo()
+						self.UpdateServiceType( next_ch.mServiceType )
 
 			except Exception, e :
 				print '[%s:%s] Error exception[%s]'% (	\
@@ -366,7 +381,9 @@ class ChannelBanner(BaseWindow):
 			#epg priv
 			ret = None
 			ret = self.mCommander.Epgevent_GetPresent()
-			print 'epgevent_GetPresent() ret[%s]'% ClassToList( 'convert', ret )
+			retList = []
+			retList.append( ret )
+			print 'epgevent_GetPresent() ret[%s]'% ClassToList( 'convert', retList )
 			if ret :
 				self.mEventCopy = ret
 				self.UpdateONEvent( ret )
@@ -375,7 +392,10 @@ class ChannelBanner(BaseWindow):
 			#epg next
 			ret = None
 			ret = self.mCommander.Epgevent_GetFollowing()
-			print 'epgevent_GetFollowing() ret[%s]'% ClassToList( 'convert', ret )
+
+			retList = []
+			retList.append( ret )
+			print 'epgevent_GetFollowing() ret[%s]'% ClassToList( 'convert', retList )
 			if ret :
 				self.mEventCopy = ret
 				self.UpdateONEvent( ret )
@@ -390,16 +410,13 @@ class ChannelBanner(BaseWindow):
 		if aEvent :
 			try :
 				#epg name
-				self.mCtrlEventName.setLabel(aEvent.mEventName)
-
-				#epg time
-				self.mProgress_max = int(aEvent[6])
+				self.mCtrlLblEventName.setLabel(aEvent.mEventName)
 
 				ret = None
-				ret = EpgInfoTime( self.mLocalOffset, aEvent.mStartTime, aEvent.mDuration)
+				ret = EpgInfoTime( self.mLocalOffset, aEvent.mStartTime, aEvent.mDuration )
 				if ret :
-					self.mCtrlEventStartTime.setLabel( ret[0] )
-					self.mCtrlEventEndTime.setLabel( ret[1] )
+					self.mCtrlLblEventStartTime.setLabel( ret[0] )
+					self.mCtrlLblEventEndTime.setLabel( ret[1] )
 
 				print 'aEvent6[%s] aEvent7[%s]'% (aEvent.mStartTime, aEvent.mDuration)
 
@@ -432,9 +449,20 @@ class ChannelBanner(BaseWindow):
 					currentframe().f_lineno,			\
 					e )
 
-
 		else:
 			print 'aEvent null'
+
+
+		#popup pin-code dialog
+		if self.mPincodeEnter > FLAG_MASK_NONE :
+			msg1 = Msg.Strings(MsgId.LANG_INPUT_PIN_CODE)
+			msg2 = Msg.Strings(MsgId.LANG_CURRENT_PIN_CODE)
+			kb = xbmc.Keyboard( msg1, '1111', False )
+			kb.doModal()
+			if( kb.isConfirmed() ) :
+				inputPass = kb.getText()
+				#self.mPincodeEnter = FLAG_MASK_NONE
+				print 'password[%s]'% inputPass
 
 
 	@RunThread
@@ -454,9 +482,8 @@ class ChannelBanner(BaseWindow):
 
 
 			#local clock
-			ret = EpgInfoClock(1, self.mLocalTime, loop)
-			self.mCtrlHeader3.setLabel(ret[0])
-			self.mCtrlHeader4.setLabel(ret[1])
+			ret = EpgInfoClock( FLAG_CLOCKMODE_AHM, self.mLocalTime, loop )
+			self.mCtrlLblEventClock.setLabel( ret[0] )
 
 			time.sleep(1)
 			loop += 1
@@ -499,34 +526,39 @@ class ChannelBanner(BaseWindow):
 		if self.mCurrentChannel :
 
 			self.mCtrlProgress.setPercent(0)
-			self.mProgress_idx = 0.0
-			self.mProgress_max = 0.0
 			self.mEventCopy = []
 
-			self.mCtrlChannelNumber.setLabel( str(self.mCurrentChannel.mNumber) )
-			self.mCtrlChannelName.setLabel( self.mCurrentChannel.mName )
-			self.mCtrlLongitudeInfo.setLabel('')
-			self.mCtrlEventName.setLabel('')
-			self.mCtrlEventStartTime.setLabel('')
-			self.mCtrlEventEndTime.setLabel('')
+			self.mCtrlLblChannelNumber.setLabel( str('%s'% self.mCurrentChannel.mNumber) )
+			self.mCtrlLblChannelName.setLabel( self.mCurrentChannel.mName )
+			self.mCtrlLblLongitudeInfo.setLabel('')
+			self.mCtrlLblEventName.setLabel('')
+			self.mCtrlLblEventStartTime.setLabel('')
+			self.mCtrlLblEventEndTime.setLabel('')
 
 			self.mCtrlImgServiceType.setImage('')
 			self.mCtrlImgServiceTypeImg1.setImage('')
 			self.mCtrlImgServiceTypeImg2.setImage('')
 			self.mCtrlImgServiceTypeImg3.setImage('')
-			self.mCtrlEventDescGroup.setVisible( False )
-			self.mCtrlEventDescText1.reset()
-			self.mCtrlEventDescText2.reset()
+			self.mCtrlGropEventDescGroup.setVisible( False )
+			self.mCtrlTxtBoxEventDescText1.reset()
+			self.mCtrlTxtBoxEventDescText2.reset()
 
+			try :
+				self.mLocalTime = self.mCommander.Datetime_GetLocalTime()
+				longitude = None
+				longitude = self.mCommander.Satellite_GetByChannelNumber( self.mCurrentChannel.mNumber, self.mCurrentChannel.mServiceType )
+				if longitude :
+					ret = GetSelectedLongitudeString( longitude.mLongitude, self.mCurrentChannel.mName )
+					self.mCtrlLblLongitudeInfo.setLabel( ret )
+				else:
+					self.mCtrlLblLongitudeInfo.setLabel( '' )
 
-			self.mLocalTime = self.mCommander.Datetime_GetLocalTime()
-			longitude = None
-			longitude = self.mCommander.Satellite_GetByChannelNumber( self.mCurrentChannel.mNumber, self.mCurrentChannel.mServiceType )
-			if longitude :
-				ret = GetSelectedLongitudeString( longitude.mLongitude, self.mCurrentChannel.mName )
-				self.mCtrlLongitudeInfo.setLabel( ret )
-			else:
-				self.mCtrlLongitudeInfo.setLabel( '' )
+			except Exception, e :
+				print '[%s:%s] Error exception[%s]'% (	\
+					self.__file__,						\
+					currentframe().f_lineno,			\
+					e )
+				self.mCtrlLblLongitudeInfo.setLabel( '' )
 
 		else:
 			print 'has no channel'
@@ -539,11 +571,11 @@ class ChannelBanner(BaseWindow):
 		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 		print 'serviceType[%s]' % aTvType
 
-		if aTvType == ElisEnum.E_TYPE_TV:
+		if aTvType == ElisEnum.E_SERVICE_TYPE_TV:
 			self.mCtrlImgServiceType.setImage(self.mImgTV)
-		elif aTvType == ElisEnum.E_TYPE_RADIO:
+		elif aTvType == ElisEnum.E_SERVICE_TYPE_RADIO:
 			pass
-		elif aTvType == ElisEnum.E_TYPE_DATA:
+		elif aTvType == ElisEnum.E_SERVICE_TYPE_DATA:
 			pass
 		else:
 			self.mCtrlImgServiceType.setImage('')
@@ -578,13 +610,13 @@ class ChannelBanner(BaseWindow):
 		if aFocusid == self.mCtrlBtnExInfo.getId():
 			if aEvent :
 				print 'epgDescription[%s]' % (aEvent.mEventDescription)
-				self.mCtrlEventDescText1.setText( aEvent.mEventName )
-				self.mCtrlEventDescText2.setText( aEvent.mEventDescription )
+				self.mCtrlTxtBoxEventDescText1.setText( aEvent.mEventName )
+				self.mCtrlTxtBoxEventDescText2.setText( aEvent.mEventDescription )
 
 			else:
 				print 'event is None'
-				self.mCtrlEventDescText1.setText('')
-				self.mCtrlEventDescText2.setText('')
+				self.mCtrlTxtBoxEventDescText1.setText('')
+				self.mCtrlTxtBoxEventDescText2.setText('')
 
 		self.DescboxToggle('toggle')
 
@@ -639,25 +671,26 @@ class ChannelBanner(BaseWindow):
 
 		if aCmd == 'toggle':
 			if self.mToggleFlag == True:
-				self.mCtrlEventDescText1.reset()
-				self.mCtrlEventDescText2.reset()
-				self.mCtrlEventDescGroup.setVisible( False )
+				self.mCtrlTxtBoxEventDescText1.reset()
+				self.mCtrlTxtBoxEventDescText2.reset()
+				self.mCtrlGropEventDescGroup.setVisible( False )
 				self.mToggleFlag = False
 			else:
-				self.mCtrlEventDescGroup.setVisible( True )
+				self.mCtrlGropEventDescGroup.setVisible( True )
 				self.mToggleFlag = True
 
 		elif aCmd == 'close':
 			if self.mToggleFlag == True:
-				self.mCtrlEventDescText1.reset()
-				self.mCtrlEventDescText2.reset()
-				self.mCtrlEventDescGroup.setVisible( False )
+				self.mCtrlTxtBoxEventDescText1.reset()
+				self.mCtrlTxtBoxEventDescText2.reset()
+				self.mCtrlGropEventDescGroup.setVisible( False )
 				self.mToggleFlag = False
 
-
+	"""
 	def GetLastChannel( self ):
 		return self.mLastChannel
 		
 	def SetLastChannel( self, lastChannel ):
 		self.mLastChannel = lastChannel
+	"""
 
