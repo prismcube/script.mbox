@@ -39,12 +39,12 @@ class DialogLnbFrequency( BaseDialog ) :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
+			self.clearProperty( 'AnimationWaitingDialogOnClose' )
+			time.sleep( 0.3 )
 			self.close( )
 
 
 	def onClick( self, aControlId ) :
-		#focusId = self.getFocusId( )
-
 		if aControlId == E_MAIN_LIST_ID :
 			if self.getControl( E_MAIN_LIST_ID ).getSelectedPosition( ) == 0 :
 				self.mLowFreq = self.NumericKeyboard( 0, 'Low Frequency', self.mLowFreq, 5 )

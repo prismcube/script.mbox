@@ -448,7 +448,9 @@
                     <width>1</width>
                     <height>535</height>
                     <texture>black-back_noAlpha.png</texture>
-                    <animation effect="zoom" start="0,0,0,535" end="0,0,300,535" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
+                    <!--animation effect="zoom" start="0,0,0,535" end="0,0,300,535" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation-->
+                    <animation effect="zoom" start="0,0,0,535" end="0,0,300,535" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
+					<animation effect="slide" start="0,0" end="-300,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(5)">Conditional</animation>
                 </control>
                 <control type="image">
                     <posx>0</posx>
@@ -456,10 +458,11 @@
                     <width>12</width>
                     <height>535</height>
                     <texture>confluence/HomeBladeSub_Part2.png</texture>
-                    <animation effect="slide" end="300,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
+                    <!--animation effect="slide" end="300,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation-->
+                    <animation effect="slide" end="300,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
+					<animation effect="slide" start="0,0" end="-300,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(5)">Conditional</animation>
                 </control>
 			</control>
-
 
             <control type="image">
                 <posx>-180</posx>
@@ -582,8 +585,9 @@
 				<control type="group" id="9001">
 					<posx>10</posx>
 					<posy>-720</posy>
-					<animation effect="slide" end="180,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">conditional</animation>
-					<!--animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(203)">Conditional</animation-->
+					<!--animation effect="slide" end="180,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">conditional</animation-->
+					<animation effect="slide" end="180,720" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">conditional</animation>
+					<animation effect="slide" start="0,0" end="-300,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus">Conditional</animation>
 					<control type="list" id="202">
 						<posx>5</posx>
 						<posy>0</posy>
@@ -618,7 +622,7 @@
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>
-								<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+								<!--animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation-->
 							</control>
 						</itemlayout>
 						<focusedlayout height="40" width="230">
@@ -628,7 +632,7 @@
 								<width>230</width>
 								<height>41</height>
 								<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
-								<visible>!Control.HasFocus(202)</visible>
+								<!--visible>!Control.HasFocus(202)</visible-->
 								<animation effect="fade" time="300">Visible</animation>
 								<animation effect="fade" time="300">Hidden</animation>
 							</control>
@@ -638,7 +642,7 @@
 								<width>230</width>
 								<height>41</height>
 								<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
-								<visible>Control.HasFocus(202)</visible>
+								<!--visible>Control.HasFocus(202)</visible-->
 								<animation effect="fade" time="300">Visible</animation>
 								<animation effect="fade" time="300">Hidden</animation>
 							</control>

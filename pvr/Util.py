@@ -142,7 +142,7 @@ def LOG_ERR( msg ):
 		loc += 1
 
 	fileName = filePath[loc:]
-		
+
 	print 'DEBUG %8d : %s( %s ) -> %s ' %( calframe[1][2], fileName, calframe[1][3], msg )
 
 def LOG_WARN( msg ):
@@ -162,4 +162,79 @@ def LOG_WARN( msg ):
 	fileName = filePath[loc:]
 		
 	print 'DEBUG %8d : %s( %s ) -> %s ' %( calframe[1][2], fileName, calframe[1][3], msg )
+
+def MLOG( level=0, msg=None ) :
+	curframe = inspect.currentframe()
+	calframe = inspect.getouterframes(curframe, 2)
+	filePath = calframe[1][1]
+
+
+	filename = os.path.basename( filePath )
+	lineno   = calframe[1][2]
+	filefunc = calframe[1][3]
+
+	#if level >= 0 and level <= 18 :
+	if level == 0 :
+		print '[%s:%s]%s'% (filename, lineno, msg)
+
+	else :
+		print '\033[1;%sm[%s:%s]%s\033[1;m'% (level, filename, lineno, msg)
+
+
+def LOG_INIT( ):
+	#mbox.ini -- path : xbmc_root / script.mbox / mbox.ini
+	import re, xbmcaddon, shutil
+	rd=0
+	#self.fd=0
+	#inifile = 'mbox.ini'
+	logpath = ''
+	logfile = ''
+	logmode = ''
+	inifile = ''
+	scriptDir = xbmcaddon.Addon('script.mbox').getAddonInfo('path')
+
+	try:
+		inifile = os.path.join(scriptDir, 'mbox.ini')
+
+		rd = open( inifile, 'r' )
+		for line in rd.readlines() :
+			ret   = re.sub( '\n', '', line )
+			value = re.split( '=', ret )
+			if value[0] == 'log_path' :
+				logpath = value[1]
+			elif value[0] == 'log_file' :
+				logfile = value[1]
+			elif value[0] == 'log_mode' :
+				logmode = value[1]
+
+		print 'inifile[%s] logmod[%s] logfile[%s] rd[%s]'% (inifile, logmode, logfile, rd )
+
+	except Exception, e:
+		print 'exception[%s]'% e
+		logmode = 'stdout'
+		logfile = os.path.join(scriptDir, 'default.log')
+		print 'inifile[%s] logmod[%s] logfile[%s] rd[%s]'% (inifile, logmode, logfile, rd )
+
+
+	"""
+	TODO : make logfile for user
+	if log_mode == 'stdout' :
+		#default : redirect to standard out
+
+		#sys.stdout = self.f = StringIO.StringIO()
+		pass
+
+	else :
+
+		#backup
+		if os.path.isfile(logfile) :
+			backup = logfile + '.bak'
+			shutil.copyfile(logfile, backup)
+
+		#log open
+		try :
+			self.fd = open( logfile, 'w+' )
+		except Exception, e :
+			print 'Err[%s] logfile[%s]'% ( e, logfile )
+	"""
 
