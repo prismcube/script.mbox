@@ -9,6 +9,7 @@ from ElisEnum import ElisEnum
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum
 from ElisClass import *
+from pvr.gui.GuiConfig import *
 
 gTunerConfigMgr = None
 

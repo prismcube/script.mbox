@@ -4,8 +4,10 @@ import sys
 
 import pvr.gui.WindowMgr as WinMgr
 import pvr.TunerConfigMgr as ConfigMgr
+from pvr.TunerConfigMgr import *
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
+from ElisProperty import ElisPropertyEnum
 import pvr.ElisMgr
 
 E_MAIN_LIST_ID = 9000
