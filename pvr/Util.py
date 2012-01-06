@@ -107,8 +107,6 @@ class Mutex(threading.Thread):
 		self.mutex.release()
 
 
-
-
 def LOG_TRACE( msg ):
 	curframe = inspect.currentframe()
 	calframe = inspect.getouterframes(curframe, 2)
