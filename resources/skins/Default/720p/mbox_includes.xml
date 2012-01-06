@@ -2359,8 +2359,7 @@
 		<animation effect="fade" time="300">Hidden</animation>
 	</include>
 	<include name="dialogeffect">
-		<animation effect="fade" time="500">WindowOpen</animation>
-		<animation effect="fade" time="500">WindowClose</animation>
+		<animation effect="fade" time="300">WindowOpen</animation>
 	</include>
 	<include name="SideBladeLeft">
 		<control type="image">
