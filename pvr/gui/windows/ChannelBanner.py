@@ -10,9 +10,9 @@ from pvr.gui.GuiConfig import *
 import pvr.ElisMgr
 from ElisAction import ElisAction
 from ElisEnum import ElisEnum
-
-#from threading import Thread
+from ElisEventBus import ElisEventBus
 from ElisEventClass import *
+
 from pvr.Util import RunThread, GuiLock, MLOG, LOG_WARN
 from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit
 
@@ -44,6 +44,8 @@ class ChannelBanner(BaseWindow):
 		self.__file__ = os.path.basename( currentframe().f_code.co_filename )
 
 		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
+		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
+
 		self.mLastFocusId = None
 		self.mCurrentChannel=None
 		self.mLocalTime = 0
@@ -51,8 +53,7 @@ class ChannelBanner(BaseWindow):
 		self.mPincodeEnter = FLAG_MASK_NONE
 		self.mLastChannel = 	self.mCommander.Channel_GetCurrent()	
 		self.mCurrentChannel =  self.mLastChannel
-		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
-		#self.mEventBus.register( self )
+
 
 
 	def __del__(self):
@@ -136,16 +137,25 @@ class ChannelBanner(BaseWindow):
 
 
 		#get epg event right now, as this windows open
-		ret = None
-		ret=self.mCommander.Epgevent_GetPresent()
-		if ret :
-			self.mEventCopy = ret
-			self.UpdateONEvent(self.mEventCopy)
+		try :
+			ret = None
+			ret=self.mCommander.Epgevent_GetPresent()
+			if ret :
+				self.mEventCopy = ret
+				self.UpdateONEvent(self.mEventCopy)
 
-		retList = []
-		retList.append( self.mEventCopy )
-		print 'epgevent_GetPresent[%s]'% ClassToList( 'convert', retList )
+				retList = []
+				retList.append( self.mEventCopy )
+				print 'epgevent_GetPresent[%s]'% ClassToList( 'convert', retList )
 
+		except Exception, e :
+			print '[%s:%s] Error exception[%s]'% (	\
+				self.__file__,						\
+				currentframe().f_lineno,			\
+				e )
+
+
+		self.mEventBus.Register( self )
 
 		#run thread
 		self.mEnableThread = True
@@ -381,10 +391,11 @@ class ChannelBanner(BaseWindow):
 			#epg priv
 			ret = None
 			ret = self.mCommander.Epgevent_GetPresent()
-			retList = []
-			retList.append( ret )
-			print 'epgevent_GetPresent() ret[%s]'% ClassToList( 'convert', retList )
+
 			if ret :
+				retList = []
+				retList.append( ret )
+				print 'epgevent_GetPresent() ret[%s]'% ClassToList( 'convert', retList )
 				self.mEventCopy = ret
 				self.UpdateONEvent( ret )
 
@@ -393,10 +404,10 @@ class ChannelBanner(BaseWindow):
 			ret = None
 			ret = self.mCommander.Epgevent_GetFollowing()
 
-			retList = []
-			retList.append( ret )
-			print 'epgevent_GetFollowing() ret[%s]'% ClassToList( 'convert', retList )
 			if ret :
+				retList = []
+				retList.append( ret )
+				print 'epgevent_GetFollowing() ret[%s]'% ClassToList( 'convert', retList )
 				self.mEventCopy = ret
 				self.UpdateONEvent( ret )
 
@@ -418,7 +429,7 @@ class ChannelBanner(BaseWindow):
 					self.mCtrlLblEventStartTime.setLabel( ret[0] )
 					self.mCtrlLblEventEndTime.setLabel( ret[1] )
 
-				print 'aEvent6[%s] aEvent7[%s]'% (aEvent.mStartTime, aEvent.mDuration)
+				print 'mStartTime[%s] mDuration[%s]'% (aEvent.mStartTime, aEvent.mDuration)
 
 
 				#component

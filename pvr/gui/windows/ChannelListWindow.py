@@ -147,7 +147,7 @@ class ChannelListWindow(BaseWindow):
 
 		#Event Register
 		self.mEventBus.Register( self )		
-		
+
 		#run thread
 		self.mEnableThread = True
 		self.CurrentTimeThread()
