@@ -7,8 +7,7 @@ from pvr.gui.BaseWindow import BaseWindow, Action
 from ElisEnum import ElisEnum
 from ElisEventBus import ElisEventBus
 from ElisEventClass import *
-from pvr.Util import RunThread, GuiLock
-import pvr.Util as Util
+from pvr.Util import RunThread, GuiLock, MLOG, LOG_WARN
 from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
@@ -62,6 +61,7 @@ class ChannelListWindow(BaseWindow):
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
 		print '[%s:%s]winID[%d]'% (self.__file__, currentframe().f_lineno, self.mWinId)
+		MLOG(
 
 		#header
 		self.mCtrlHeader1            = self.getControl( 3000 )
@@ -120,7 +120,6 @@ class ChannelListWindow(BaseWindow):
 		#initialize get channel list
 		self.InitSlideMenuHeader()
 		self.GetSlideMenuHeader()
-
 
 		try :
 			#self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
