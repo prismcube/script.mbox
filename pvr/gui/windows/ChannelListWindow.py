@@ -61,6 +61,7 @@ class ChannelListWindow(BaseWindow):
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
 		print '[%s:%s]winID[%d]'% (self.__file__, currentframe().f_lineno, self.mWinId)
+		MLOG(
 
 		#header
 		self.mCtrlHeader1            = self.getControl( 3000 )
