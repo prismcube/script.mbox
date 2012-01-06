@@ -54,19 +54,23 @@ class NullWindow(BaseWindow):
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_BANNER )
 			
 		elif id == Action.ACTION_PAGE_UP:
+			prevChannel = None
 			prevChannel = self.mCommander.Channel_GetPrev()
-			self.mCommander.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )
+			if prevChannel :
+				self.mCommander.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )
 			
-			#WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_CHANNEL_BANNER).setLastChannel( currentChannel )
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_BANNER )		
+				#WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_CHANNEL_BANNER).setLastChannel( currentChannel )
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_BANNER )		
 
 
 		elif id == Action.ACTION_PAGE_DOWN:
-			netxChannel = self.mCommander.Channel_GetNext()
-			self.mCommander.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
+			nextChannel = None
+			nextChannel = self.mCommander.Channel_GetNext()
+			if nextChannel :
+				self.mCommander.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
 			
-			#WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_CHANNEL_BANNER).setLastChannel( currentChannel )
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_BANNER )		
+				#WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_CHANNEL_BANNER).setLastChannel( currentChannel )
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_BANNER )		
 
 		elif id == Action.REMOTE_1:
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST1_WINDOW )

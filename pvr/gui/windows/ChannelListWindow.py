@@ -23,13 +23,16 @@ FLAG_MASK_ADD  = 0x01
 FLAG_MASK_NONE = 0x00
 FLAG_SLIDE_OPEN= 0
 FLAG_SLIDE_INIT= 1
+FLAG_CLOCKMODE_ADMYHM = 1
+FLAG_CLOCKMODE_AHM    = 2
+FLAG_CLOCKMODE_HMS    = 3
+FLAG_CLOCKMODE_HHMM   = 4
 
 class ChannelListWindow(BaseWindow):
 
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
 		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()		
-
 		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
 
 		#summary
@@ -53,7 +56,7 @@ class ChannelListWindow(BaseWindow):
 		self.mPincodeEnter = FLAG_MASK_NONE
 		
 	def __del__(self):
-		print '[%s:%s]destroyed ChannelBanner'% (self.__file__, currentframe().f_lineno)
+		print '[%s:%s]destroyed ChannelList'% (self.__file__, currentframe().f_lineno)
 
 		# end thread updateEPGProgress()
 		self.mEnableThread = False
@@ -116,7 +119,8 @@ class ChannelListWindow(BaseWindow):
 		self.mChannelList = []
 		self.mNavEpg = None
 		self.mNavChannel = None
-		self.listEnableFlag = False
+		self.mSlideOpenFlag = False
+
 
 		#initialize get channel list
 		self.InitSlideMenuHeader()
@@ -143,10 +147,11 @@ class ChannelListWindow(BaseWindow):
 
 		#Event Register
 		self.mEventBus.Register( self )		
-		
+
 		#run thread
 		self.mEnableThread = True
 		self.CurrentTimeThread()
+
 
 	def onAction(self, aAction):
 		id = aAction.getId()
@@ -161,7 +166,7 @@ class ChannelListWindow(BaseWindow):
 
 			if focusId == self.mCtrlListMainmenu.getId() :
 				position = self.mCtrlListMainmenu.getSelectedPosition()
-				print 'focus[%s] idx_main[%s]'% (focusId, position)
+				print 'onAction focus[%s] idx_main[%s]'% (focusId, position)
 
 				if position == 4 :
 					self.mCtrlListCHList.setEnabled(True)
@@ -169,19 +174,20 @@ class ChannelListWindow(BaseWindow):
 
 				else :
 					self.SubMenuAction( 0, position )
-					self.setFocusId( self.mCtrlListSubmenu.getId() )
+					#self.setFocusId( self.mCtrlListSubmenu.getId() )
 					#self.setFocusId( self.mCtrlGropSubmenu.getId() )
 
 
 		elif id == Action.ACTION_PARENT_DIR :
-			print 'goto action back'
+			print 'goto action back focusid[%s]'% focusId
 
 			self.SaveSlideMenuHeader()
-			
+
 			self.mEnableThread = False
 			self.CurrentTimeThread().join()
 			self.mCtrlListCHList.reset()
 			self.close()
+
 
 		elif id == Action.ACTION_MOVE_RIGHT :
 			"""
@@ -203,6 +209,7 @@ class ChannelListWindow(BaseWindow):
 		elif id == Action.ACTION_MOVE_LEFT :
 			if focusId == self.mCtrlListCHList.getId() :
 				self.GetSlideMenuHeader( FLAG_SLIDE_OPEN )
+				self.mSlideOpenFlag = True
 
 
 		elif id == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN :
@@ -298,7 +305,6 @@ class ChannelListWindow(BaseWindow):
 		print '[%s:%s]onclick focusID[%d]'% (self.__file__, currentframe().f_lineno, aControlId) 
 
 		if aControlId == self.mCtrlListCHList.getId() :
-
 			label = self.mCtrlListCHList.getSelectedItem().getLabel()
 			channelNumbr = int(label[:4])
 			ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
@@ -310,6 +316,7 @@ class ChannelListWindow(BaseWindow):
 						self.SaveSlideMenuHeader()
 						self.mEnableThread = False
 						self.CurrentTimeThread().join()
+						self.close()
 
 						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_BANNER )
 
@@ -324,6 +331,7 @@ class ChannelListWindow(BaseWindow):
 			self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
 			self.ResetLabel()
 			self.UpdateLabelInfo()
+
 
 		elif aControlId == self.mCtrlBtnMenu.getId() or aControlId == self.mCtrlListMainmenu.getId() :
 			#list view
@@ -389,7 +397,7 @@ class ChannelListWindow(BaseWindow):
 				if aEvent.mEventId != self.mEventId :
 					if self.mEpgRecvPermission == True :
 						#on select, clicked
-
+						ret = None
 						ret = self.mCommander.Epgevent_GetPresent()
 						if ret :
 							self.mNavEpg = ret
@@ -407,10 +415,11 @@ class ChannelListWindow(BaseWindow):
 			else :
 				print 'unknown event[%s]'% aEvent.getName()
 		else:
-			print 'channellist winID[%d] this winID[%d]'% (self.mWin, xbmcgui.getCurrentWindowId())
+			print 'channellist winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId())
 
 
 
+	@GuiLock
 	def SubMenuAction(self, aAction, aMenuIndex):
 		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 		retPass = False
@@ -853,6 +862,8 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlLblPath2.setLabel( '%s'% label2.title() ) 
 		self.mCtrlLblPath3.setLabel( 'sort by %s'% label3.title() ) 
 		self.GetSlideMenuHeader( FLAG_SLIDE_INIT )
+		self.mLastMainSlidePosition = self.mSelectMainSlidePosition
+		self.mLastSubSlidePosition = self.mSelectSubSlidePosition
 
 
 		#get channel list by last on zapping mode, sorting, service type
@@ -861,11 +872,12 @@ class ChannelListWindow(BaseWindow):
 		self.mChannelList = self.mCommander.Channel_GetList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode )
 		#self.GetChannelList(self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, 0, 0, 0, '')
 
-		print 'zappingMode[%s] sortMode[%s] serviceType[%s]'%  \
-			( EnumToString('mode', self.mZappingMode),         \
-			  EnumToString('sort', self.mChannelListSortMode), \
-			  EnumToString('type', self.mChannelListServieType) )
-		ClassToList( 'print', self.mChannelList )
+		if self.mChannelList :
+			print 'zappingMode[%s] sortMode[%s] serviceType[%s]'%  \
+				( EnumToString('mode', self.mZappingMode),         \
+				  EnumToString('sort', self.mChannelListSortMode), \
+				  EnumToString('type', self.mChannelListServieType) )
+			ClassToList( 'print', self.mChannelList )
 
 
 	def InitChannelList(self):
@@ -1076,7 +1088,7 @@ class ChannelListWindow(BaseWindow):
 
 
 		#popup pin-code dialog
-		if self.mPincodeEnter > 0 :
+		if self.mPincodeEnter > FLAG_MASK_NONE :
 			msg1 = Msg.Strings(MsgId.LANG_INPUT_PIN_CODE)
 			msg2 = Msg.Strings(MsgId.LANG_CURRENT_PIN_CODE)
 			kb = xbmc.Keyboard( msg1, '1111', False )
@@ -1104,7 +1116,7 @@ class ChannelListWindow(BaseWindow):
 
 
 			#local clock
-			ret = EpgInfoClock(1, self.mLocalTime, loop)
+			ret = EpgInfoClock(FLAG_CLOCKMODE_ADMYHM, self.mLocalTime, loop)
 			self.mCtrlHeader3.setLabel(ret[0])
 			self.mCtrlHeader4.setLabel(ret[1])
 
@@ -1121,6 +1133,22 @@ class ChannelListWindow(BaseWindow):
 		try:
 			self.mLocalTime = self.mCommander.Datetime_GetLocalTime( )
 
+
+			if self.mNavEpg :
+				endTime = self.mNavEpg.mStartTime + self.mNavEpg.mDuration
+		
+				pastDuration = endTime - self.mLocalTime
+				if pastDuration < 0 :
+					pastDuration = 0
+
+				if self.mNavEpg.mDuration > 0 :
+					percent = pastDuration * 100/self.mNavEpg.mDuration
+				else :
+					percent = 0
+
+				#print 'percent=%d' %percent
+				self.mCtrlProgress.setPercent( percent )
+
 		except Exception, e :
 			print '[%s:%s] Error exception[%s]'% (	\
 				self.__file__,						\
@@ -1128,21 +1156,5 @@ class ChannelListWindow(BaseWindow):
 				e )
 
 			self.mLocalTime = 0
-
-		if self.mNavEpg :
-			endTime = self.mNavEpg.mStartTime + self.mNavEpg.mDuration
-	
-			pastDuration = endTime - self.mLocalTime
-			if pastDuration < 0 :
-				pastDuration = 0
-
-			if self.mNavEpg.mDuration > 0 :
-				percent = pastDuration * 100/self.mNavEpg.mDuration
-			else :
-				percent = 0
-
-			#print 'percent=%d' %percent
-			self.mCtrlProgress.setPercent( percent )
-
 	
 

@@ -39,7 +39,7 @@ class ElisEventHandler( EventHandler ):
 		self.mEventBus = GetInstance().GetEventBus()
 		
 		while 1:
-			print 'handle --->!!!!!!!!!!!!!!!!!'
+			#print 'handle --->!!!!!!!!!!!!!!!!!'
 
 			fd_sets = select.select([self.request], [], [], 0.5 )
 			if not fd_sets[0]:
@@ -51,7 +51,7 @@ class ElisEventHandler( EventHandler ):
 			read = request.ReadMsg()
 			event  = ElisEvent.ParseElisEvent( read )
 			self.AddEvent( event )
-			print 'handle end --->!!!!!!!!!!!!!!!!!'
+			#print 'handle end --->!!!!!!!!!!!!!!!!!'
 	
 
 	def AddEvent( self, aEvent ):
