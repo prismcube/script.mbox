@@ -53,6 +53,27 @@ USER_ENUM_LIST_FEC				= [ 'QPSK 1/2', 'QPSK 2/3', 'QPSK 3/4', 'QPSK 3/5', 'QPSK 
 USER_ENUM_LIST_POLARIZATION		= [ 'Horizontal', 'Vertical' ]
 USER_ENUM_LIST_SYMBOL_RATE		= [ '22000 KS/s', '27500 KS/s' ]
 """
+#TUNER TYPE
+E_SIMPLE_LNB					= 0
+E_DISEQC_1_0					= 1
+E_DISEQC_1_1					= 2
+E_MOTORIZED_1_2					= 3
+E_MOTORIZED_USALS				= 4
+E_ONE_CABLE						= 5
+
+#TUNER CONNECTION TYPE
+E_TUNER_SEPARATED				= 0
+E_TUNER_LOOPTHROUGH				= 1
+
+#TUNER CONFIG TYPE
+E_SAMEWITH_TUNER				= 0
+E_DIFFERENT_TUNER				= 1
+
+
+#TUNER
+E_TUNER_1						= 0
+E_TUNER_2						= 1
+E_TUNER_MAX						= 2
 
 # Tuner Config String Define
 USER_ENUM_LIST_ON_OFF				= [ 'Off', 'On' ]
@@ -65,6 +86,9 @@ E_LIST_UNCOMMITTED_SWITCH			= [ 'Disable', '1', '2', '3', '4', '5', '6', '7', '8
 E_LIST_ONE_CABLE_ACTION				= [ 'Reset Limits', 'Set Current Position for East Limit', 'Set Current Position for West Limit' ]
 E_LIST_ONE_CABLE_TUNER_FREQUENCY	= [ '1284', '1400', '1516', '1632', '1748', '1864', '1980', '2096' ]
 E_LIST_ONE_CABLE_SCR				= [ 'SCR(0)', 'SCR(1)', 'SCR(2)', 'SCR(3)', 'SCR(4)', 'SCR(5)', 'SCR(6)', 'SCR(7)' ]
+
+
+
 """
 E_LIST_TUNER_TYPE				= [ 'Simple LNB', 'DiSEqC 1.0', 'DiSEqC 1.1', 'Motorized, DiSEqC 1.2', 'Motorized, USALS', 'OneCable' ]
 E_LIST_LNB_TYPE					= [ 'Universal' , 'Single', 'Userdefined' ]

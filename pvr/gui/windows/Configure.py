@@ -2,44 +2,45 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.WindowMgr as winmgr
-from pvr.gui.BaseWindow import SettingWindow
-from pvr.gui.BaseWindow import Action
+import pvr.gui.WindowMgr as WinMgr
+from pvr.gui.BaseWindow import SettingWindow, Action
 import pvr.ElisMgr
-from ElisProperty import ElisPropertyEnum, ElisPropertyInt
+from ElisProperty import ElisPropertyEnum
 from pvr.gui.GuiConfig import *
 
-class Configure( SettingWindow ):
-	def __init__( self, *args, **kwargs ):
+
+class Configure( SettingWindow ) :
+	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
  
-		self.LeftGroupItems						= [ 'Language', 'Parental', 'Recording Option', 'Audio Setting', 'SCART Setting','HDMI Setting', 'IP Setting', 'Format HDD', 'Factory Reset', 'Etc' ]
-		self.descriptionList					= [ 'DESC Language', 'DESC Parental', 'DESC Recording Option', 'DESC Audio Setting', 'DESC SCART Setting', 'DESC HDMI Setting', 'DESC IP Setting', 'DESC Format HDD', 'DESC Factory Reset', 'DESC Etc' ]
+		leftGroupItems			= [ 'Language', 'Parental', 'Recording Option', 'Audio Setting', 'SCART Setting','HDMI Setting', 'IP Setting', 'Format HDD', 'Factory Reset', 'Etc' ]
+		descriptionList			= [ 'DESC Language', 'DESC Parental', 'DESC Recording Option', 'DESC Audio Setting', 'DESC SCART Setting', 'DESC HDMI Setting', 'DESC IP Setting', 'DESC Format HDD', 'DESC Factory Reset', 'DESC Etc' ]
 	
-		self.ctrlLeftGroup = None
-		self.groupItems = []
-		self.initialized = False
-		self.lastFocused = E_SUBMENU_LIST_ID
-		self.prevListItemID = 0
+		self.mCtrlLeftGroup 	= None
+		self.mGroupItems 		= []
+		self.mInitialized 		= False
+		self.mLastFocused 		= E_SUBMENU_LIST_ID
+		self.mPrevListItemID 	= 0
 
-		for i in range( len( self.LeftGroupItems ) ) :
-			self.groupItems.append( xbmcgui.ListItem( self.LeftGroupItems[i], self.descriptionList[i], '-', '-', '-' ) )
+		for i in range( len( leftGroupItems ) ) :
+			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i], descriptionList[i], '-', '-', '-' ) )
 			
-	def onInit( self ):
-		self.win = xbmcgui.Window( xbmcgui.getCurrentWindowId( ) )
+	def onInit( self ) :
+		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.ctrlLeftGroup = self.getControl( E_SUBMENU_LIST_ID )
-		self.ctrlLeftGroup.addItems( self.groupItems )
+		self.mCtrlLeftGroup = self.getControl( E_SUBMENU_LIST_ID )
+		self.mCtrlLeftGroup.addItems( self.mGroupItems )
 
-		position = self.ctrlLeftGroup.getSelectedPosition( )
-		self.ctrlLeftGroup.selectItem( position )
-		self.setListControl( )
-		self.initialized = True
+		position = self.mCtrlLeftGroup.getSelectedPosition( )
+		self.mCtrlLeftGroup.selectItem( position )
+		self.SetListControl( )
+		self.mInitialized = True
 
-	def onAction( self, action ):
+	def onAction( self, aAction ) :
 
-		actionId = action.getId( )
+		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
@@ -48,21 +49,21 @@ class Configure( SettingWindow ):
 			print 'dhkim test Action select item event'
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			self.initialized = False
+			self.mInitialized = False
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			if focusId == E_SUBMENU_LIST_ID and self.ctrlLeftGroup.getSelectedPosition() != self.prevListItemID :
-				self.prevListItemID = self.ctrlLeftGroup.getSelectedPosition( )
-				self.setListControl( )
-			elif focusId != E_SUBMENU_LIST_ID:
+			if focusId == E_SUBMENU_LIST_ID and self.mCtrlLeftGroup.getSelectedPosition() != self.mPrevListItemID :
+				self.mPrevListItemID = self.mCtrlLeftGroup.getSelectedPosition( )
+				self.SetListControl( )
+			elif focusId != E_SUBMENU_LIST_ID :
 				self.ControlUp( )
 	
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			if focusId == E_SUBMENU_LIST_ID and self.ctrlLeftGroup.getSelectedPosition() != self.prevListItemID :
-				self.prevListItemID = self.ctrlLeftGroup.getSelectedPosition( )
-				self.setListControl( )
-			elif focusId != E_SUBMENU_LIST_ID:
+			if focusId == E_SUBMENU_LIST_ID and self.mCtrlLeftGroup.getSelectedPosition() != self.mPrevListItemID :
+				self.mPrevListItemID = self.mCtrlLeftGroup.getSelectedPosition( )
+				self.SetListControl( )
+			elif focusId != E_SUBMENU_LIST_ID :
 				self.ControlDown( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
@@ -74,33 +75,33 @@ class Configure( SettingWindow ):
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			if focusId == E_SUBMENU_LIST_ID :
 				self.setFocusId( E_SETUPMENU_GROUP_ID )
-			elif ( focusId != E_SUBMENU_LIST_ID ) and ( ( focusId % 10 ) == 2 ) :
+			elif focusId != E_SUBMENU_LIST_ID and ( focusId % 10 ) == 2 :
 				self.setFocusId( E_SUBMENU_LIST_ID )
-			elif ( focusId != E_SUBMENU_LIST_ID ) and ( ( focusId % 10 ) == 1 ) :
+			elif focusId != E_SUBMENU_LIST_ID and ( focusId % 10 ) == 1 :
 				self.ControlRight( )
 			
 
-	def onClick( self, controlId ):
-		if( self.ctrlLeftGroup.getSelectedPosition() == E_LANGUAGE or self.ctrlLeftGroup.getSelectedPosition() == E_IP_SETTING ) :
-			self.disableControl( self.ctrlLeftGroup.getSelectedPosition() )
+	def onClick( self, aControlId ) :
+		if( self.mCtrlLeftGroup.getSelectedPosition( ) == E_LANGUAGE or self.mCtrlLeftGroup.getSelectedPosition( ) == E_IP_SETTING ) :
+			self.DisableControl( self.mCtrlLeftGroup.getSelectedPosition( ) )
 		self.ControlSelect( )
 
 		
-	def onFocus( self, controlId ):
-		if self.initialized == False :
+	def onFocus( self, aControlId ) :
+		if self.mInitialized == False :
 			return
-		if ( self.lastFocused != controlId ) or ( self.ctrlLeftGroup.getSelectedPosition() != self.prevListItemID ):
-			if controlId == E_SUBMENU_LIST_ID :
-				self.setListControl( )
-				if self.lastFocused != controlId :
-					self.lastFocused = controlId
-				if self.ctrlLeftGroup.getSelectedPosition() != self.prevListItemID:
-					self.prevListItemID = self.ctrlLeftGroup.getSelectedPosition()
+		if ( self.mLastFocused != aControlId ) or ( self.mCtrlLeftGroup.getSelectedPosition( ) != self.mPrevListItemID ) :
+			if aControlId == E_SUBMENU_LIST_ID :
+				self.SetListControl( )
+				if self.mLastFocused != aControlId :
+					self.mLastFocused = aControlId
+				if self.mCtrlLeftGroup.getSelectedPosition( ) != self.mPrevListItemID :
+					self.mPrevListItemID = self.mCtrlLeftGroup.getSelectedPosition( )
 		
 
-	def setListControl( self ):
+	def SetListControl( self ) :
 		self.ResetAllControl( )
-		selectedId = self.ctrlLeftGroup.getSelectedPosition()
+		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( False )
 		
 		if selectedId == E_LANGUAGE :
@@ -119,7 +120,7 @@ class Configure( SettingWindow ):
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
-			self.disableControl( E_LANGUAGE )
+			self.DisableControl( E_LANGUAGE )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 			
@@ -230,7 +231,7 @@ class Configure( SettingWindow ):
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
-			self.disableControl( E_IP_SETTING )
+			self.DisableControl( E_IP_SETTING )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 			
@@ -290,15 +291,15 @@ class Configure( SettingWindow ):
 		else :
 			print 'ERROR : Can not find selected ID'
 
-	def disableControl( self, selectedItem ):
-		if( selectedItem == E_LANGUAGE ) :
+	def DisableControl( self, aSelectedItem ):
+		if( aSelectedItem == E_LANGUAGE ) :
 			selectedIndex = self.GetSelectedIndex( E_SpinEx03 )
 			visibleControlIds = [ E_SpinEx04, E_SpinEx05 ]
 			if ( selectedIndex == 0 ) :
 				self.SetEnableControls( visibleControlIds, False )
 			else :
 				self.SetEnableControls( visibleControlIds, True )
-		elif( selectedItem == E_IP_SETTING ) :
+		elif( aSelectedItem == E_IP_SETTING ) :
 			selectedIndex = self.GetSelectedIndex( E_SpinEx01 )
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]
 			if ( selectedIndex == 1 ) :

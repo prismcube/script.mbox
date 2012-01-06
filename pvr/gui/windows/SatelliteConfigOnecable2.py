@@ -3,7 +3,6 @@ import xbmcgui
 import sys
 
 import pvr.TunerConfigMgr as ConfigMgr
-from pvr.TunerConfigMgr import *
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
 import pvr.ElisMgr
