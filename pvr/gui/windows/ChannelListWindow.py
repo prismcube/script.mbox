@@ -327,10 +327,11 @@ class ChannelListWindow(BaseWindow):
 
 		elif aControlId == self.mCtrlBtnMenu.getId() or aControlId == self.mCtrlListMainmenu.getId() :
 			#list view
-
+			print '#############################'
+			"""
 			position = self.mCtrlListMainmenu.getSelectedPosition()
 			print 'onclick focus[%s] idx_main[%s]'% (aControlId, position)
-			"""
+			
 			if position == 4 :
 				self.mCtrlListCHList.setEnabled(True)
 				self.setFocusId( self.mCtrlGropCHList.getId() )
@@ -372,7 +373,6 @@ class ChannelListWindow(BaseWindow):
 
 
 
-
 	def onFocus(self, controlId):
 		#print "onFocus(): control %d" % controlId
 		pass
@@ -383,22 +383,17 @@ class ChannelListWindow(BaseWindow):
 		#print 'aEvent len[%s]'% len(aEvent)
 		#ClassToList( 'print', aEvent )
 
-		return
-		"""
 		if self.mWinId == xbmcgui.getCurrentWindowId() :
-			msg = aEvent[0]
-			
-			if msg == ElisEvent.ElisCurrentEITReceived :
+			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
 
-				if int(event[4]) != self.mEventId :
+				if aEvent.mEventId != self.mEventId :
 					if self.mEpgRecvPermission == True :
 						#on select, clicked
 
-						#ret = self.mCommander.epgevent_Get(self.mEventId, int(event[1]), int(event[2]), int(event[3]), self.mLocalTime )
 						ret = self.mCommander.Epgevent_GetPresent()
 						if ret :
 							self.mNavEpg = ret
-							self.mEventId = int( event[4] )
+							self.mEventId = aEvent.mEventId
 
 						#not select, key up/down,
 					else :
@@ -410,10 +405,10 @@ class ChannelListWindow(BaseWindow):
 
 
 			else :
-				print 'event unknown[%s]'% event
+				print 'unknown event[%s]'% aEvent.getName()
 		else:
 			print 'channellist winID[%d] this winID[%d]'% (self.mWin, xbmcgui.getCurrentWindowId())
-		"""
+
 
 
 	def SubMenuAction(self, aAction, aMenuIndex):
@@ -1036,39 +1031,45 @@ class ChannelListWindow(BaseWindow):
 
 		#update epgName uiID(304)
 		if self.mNavEpg :
+			try :
+				#self.mNavEpg.printdebug()
+				self.mCtrlEventName.setLabel( self.mNavEpg.mEventName )
+				ret = EpgInfoTime( self.mLocalOffset, self.mNavEpg.mStartTime, self.mNavEpg.mDuration )
+				self.mCtrlEventTime.setLabel( str('%s%s'% (ret[0], ret[1])) )
 
-			pass
-			"""
-			self.mCtrlEventName.setLabel( self.mNavEpg.mEventName )
-			ret = EpgInfoTime( self.mLocalOffset, self.mNavEpg.mStartTime, self.mNavEpg.mDuration )
-			self.mCtrlEventTime.setLabel( str('%s%s'% (ret[0], ret[1])) )
+				#visible progress
+				self.mCtrlProgress.setVisible( True )
 
-			#visible progress
-			self.mCtrlProgress.setVisible( True )
-
-			#component
-			imagelist = EpgInfoComponentImage( self.mNavEpg )				
-			if len(imagelist) == 1:
-				self.mCtrlServiceTypeImg1.setImage(imagelist[0])
-			elif len(imagelist) == 2:
-				self.mCtrlServiceTypeImg1.setImage(imagelist[0])
-				self.mCtrlServiceTypeImg2.setImage(imagelist[1])
-			elif len(imagelist) == 3:
-				self.mCtrlServiceTypeImg1.setImage(imagelist[0])
-				self.mCtrlServiceTypeImg2.setImage(imagelist[1])
-				self.mCtrlServiceTypeImg3.setImage(imagelist[2])
-			else:
-				self.mCtrlServiceTypeImg1.setImage('')
-				self.mCtrlServiceTypeImg2.setImage('')
-				self.mCtrlServiceTypeImg3.setImage('')
+				#component
+				imagelist = EpgInfoComponentImage( self.mNavEpg )				
+				if len(imagelist) == 1:
+					self.mCtrlServiceTypeImg1.setImage(imagelist[0])
+				elif len(imagelist) == 2:
+					self.mCtrlServiceTypeImg1.setImage(imagelist[0])
+					self.mCtrlServiceTypeImg2.setImage(imagelist[1])
+				elif len(imagelist) == 3:
+					self.mCtrlServiceTypeImg1.setImage(imagelist[0])
+					self.mCtrlServiceTypeImg2.setImage(imagelist[1])
+					self.mCtrlServiceTypeImg3.setImage(imagelist[2])
+				else:
+					self.mCtrlServiceTypeImg1.setImage('')
+					self.mCtrlServiceTypeImg2.setImage('')
+					self.mCtrlServiceTypeImg3.setImage('')
 
 
-			#is Age? agerating check
-			isLimit = AgeLimit( self.mCommander, self.mNavEpg.mAgeRating )
-			if isLimit == True :
-				self.mPincodeEnter |= FLAG_MASK_ADD
-				print 'AgeLimit[%s]'% isLimit
-			"""
+				#is Age? agerating check
+				isLimit = AgeLimit( self.mCommander, self.mNavEpg.mAgeRating )
+				if isLimit == True :
+					self.mPincodeEnter |= FLAG_MASK_ADD
+					print 'AgeLimit[%s]'% isLimit
+
+			except Exception, e:
+				print '[%s:%s] Error exception[%s]'% (	\
+					self.__file__,						\
+					currentframe().f_lineno,			\
+					e )
+
+
 		else:
 			print 'event null'
 
