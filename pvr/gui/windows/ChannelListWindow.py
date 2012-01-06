@@ -7,8 +7,7 @@ from pvr.gui.BaseWindow import BaseWindow, Action
 from ElisEnum import ElisEnum
 from ElisEventBus import ElisEventBus
 from ElisEventClass import *
-from pvr.Util import RunThread, GuiLock
-import pvr.Util as Util
+from pvr.Util import RunThread, GuiLock, MLOG, LOG_WARN
 from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
@@ -120,7 +119,6 @@ class ChannelListWindow(BaseWindow):
 		#initialize get channel list
 		self.InitSlideMenuHeader()
 		self.GetSlideMenuHeader()
-
 
 		try :
 			#self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
