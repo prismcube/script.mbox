@@ -23,13 +23,16 @@ FLAG_MASK_ADD  = 0x01
 FLAG_MASK_NONE = 0x00
 FLAG_SLIDE_OPEN= 0
 FLAG_SLIDE_INIT= 1
+FLAG_CLOCKMODE_ADMYHM = 1
+FLAG_CLOCKMODE_AHM    = 2
+FLAG_CLOCKMODE_HMS    = 3
+FLAG_CLOCKMODE_HHMM   = 4
 
 class ChannelListWindow(BaseWindow):
 
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
 		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()		
-
 		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
 
 		#summary
@@ -1076,7 +1079,7 @@ class ChannelListWindow(BaseWindow):
 
 
 		#popup pin-code dialog
-		if self.mPincodeEnter > 0 :
+		if self.mPincodeEnter > FLAG_MASK_NONE :
 			msg1 = Msg.Strings(MsgId.LANG_INPUT_PIN_CODE)
 			msg2 = Msg.Strings(MsgId.LANG_CURRENT_PIN_CODE)
 			kb = xbmc.Keyboard( msg1, '1111', False )
@@ -1104,7 +1107,7 @@ class ChannelListWindow(BaseWindow):
 
 
 			#local clock
-			ret = EpgInfoClock(1, self.mLocalTime, loop)
+			ret = EpgInfoClock(FLAG_CLOCKMODE_ADMYHM, self.mLocalTime, loop)
 			self.mCtrlHeader3.setLabel(ret[0])
 			self.mCtrlHeader4.setLabel(ret[1])
 

@@ -211,8 +211,12 @@ def AgeLimit(aCmd, aAgerating):
 def ClassToList( aMode, aClass ) :
 
 	if aClass :
+		#classList = []
+		#classList.append( aClass )
+		classList = aClass
+
 		list = []
-		for item in aClass :
+		for item in classList :
 			req = []
 			item.appendReqBuffer( req )
 			list.append( req )

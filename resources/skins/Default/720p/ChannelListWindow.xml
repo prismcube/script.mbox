@@ -632,7 +632,7 @@
 								<width>230</width>
 								<height>41</height>
 								<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
-								<!--visible>!Control.HasFocus(202)</visible-->
+								<visible>!Control.HasFocus(202)</visible>
 								<animation effect="fade" time="300">Visible</animation>
 								<animation effect="fade" time="300">Hidden</animation>
 							</control>
@@ -642,7 +642,7 @@
 								<width>230</width>
 								<height>41</height>
 								<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
-								<!--visible>Control.HasFocus(202)</visible-->
+								<visible>Control.HasFocus(202)</visible>
 								<animation effect="fade" time="300">Visible</animation>
 								<animation effect="fade" time="300">Hidden</animation>
 							</control>
