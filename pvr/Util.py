@@ -9,8 +9,9 @@ from threading import RLock
 
 from inspect import currentframe
 import inspect
+from ElisEnum import ElisEnum
 
-
+gLogOut = 0
 gThreads = odict()
 
 def ClearThreads( ):
@@ -108,15 +109,15 @@ class Mutex(threading.Thread):
 
 
 def LOG_TRACE( msg ):
-	MLOG( E_DEGUG, msg )
+	MLOG( ElisEnum.E_LOG_DEBUG, msg )
 
 
 def LOG_ERR( msg ):
-	MLOG( E_ERR, msg )
+	MLOG( ElisEnum.E_LOG_ERR, msg )
 
 
 def LOG_WARN( msg ):
-	MLOG( E_WARN, msg )
+	MLOG( ElisEnum.E_LOG_WARN, msg )
 
 
 def MLOG( level=0, msg=None ) :
@@ -130,14 +131,16 @@ def MLOG( level=0, msg=None ) :
 	filefunc = calframe[1][3]
 
 	#if level >= 0 and level <= 18 :
-	if level == 0 :
+	if level == 0 or level == ElisEnum.E_LOG_DEBUG or gLogOut == 0 :
 		print '[%s:%s]%s'% (filename, lineno, msg)
 
 	else :
 		print '\033[1;%sm[%s:%s]%s\033[1;m'% (level, filename, lineno, msg)
 
 
+
 def LOG_INIT( ):
+	
 	#mbox.ini -- path : xbmc_root / script.mbox / mbox.ini
 	import re, xbmcaddon, shutil
 	rd=0

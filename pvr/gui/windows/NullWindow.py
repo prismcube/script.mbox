@@ -7,7 +7,7 @@ import pvr.gui.DialogMgr as DlgMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
 from inspect import currentframe
 import pvr.ElisMgr
-from pvr.Util import LOG_TRACE
+from pvr.Util import LOG_TRACE, LOG_ERR, LOG_WARN
 
 
 class NullWindow(BaseWindow):
@@ -54,6 +54,9 @@ class NullWindow(BaseWindow):
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_BANNER )
 			
 		elif id == Action.ACTION_PAGE_UP:
+			LOG_TRACE('TRACE')
+			LOG_WARN('WARN')
+			LOG_ERR('ERR')
 			prevChannel = None
 			prevChannel = self.mCommander.Channel_GetPrev()
 			if prevChannel :
