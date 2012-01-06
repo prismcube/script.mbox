@@ -130,12 +130,11 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mNewRadioChannelList = []
 
 
-	def SetConfiguredSatellite( self, aSatelliteList ) :
-		print 'scanBySatellite=%s' %aSatelliteList
-		self.mConfiguredSatelliteList = aSatelliteList		
-		satellite = self.mConfiguredSatelliteList[0]
-		self.mLongitude = satellite.mSatelliteLongitude
-		self.mBand = satellite.mBandType
+	def SetConfiguredSatellite( self, aConfiguredSatelliteList ) :
+		self.mConfiguredSatelliteList = aConfiguredSatelliteList
+		config = self.mConfiguredSatelliteList[0]
+		self.mLongitude = config.mSatelliteLongitude
+		self.mBand = config.mBandType
 		self.mScanMode = E_SCAN_SATELLITE 
 
 
@@ -157,6 +156,8 @@ class DialogChannelSearch( BaseDialog ) :
 		print 'scanMode=%d' %self.mScanMode
 		if self.mScanMode == E_SCAN_SATELLITE :
 			config = self.mConfiguredSatelliteList[0] # ToDO send with satelliteList
+			config.printdebug()
+			
 			self.mCommander.Channelscan_BySatellite( config.mSatelliteLongitude, config.mBandType ) #longitude, band
 		elif self.mScanMode == E_SCAN_TRANSPONDER :
 			LOG_TRACE(('long = %d' %self.mLongitude))
@@ -172,9 +173,12 @@ class DialogChannelSearch( BaseDialog ) :
 	def ScanAbort( self ) :
 		if self.mIsFinished == False :
 			if xbmcgui.Dialog( ).yesno('Confirm', 'Do you want abort channel scan?') == 1 :
-				self.mCommander.Channelscan_Abort( )
-				self.mIsFinished == True
+				LOG_TRACE('before cmd scan abort' )
+				self.mCommander.Channelscan_Abort( ) #ToDO : Check this command has reply
+				LOG_TRACE('after cmd scan abort' )				
+				self.mIsFinished = True
 
+		LOG_TRACE('isFinished=%d' %self.mIsFinished )
 		if self.mIsFinished == True :
 			self.mEventBus.Deregister( self )
 			self.close( )

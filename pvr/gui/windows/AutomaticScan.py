@@ -94,8 +94,8 @@ class AutomaticScan( SettingWindow ):
 		#Start Search
 		if groupId == E_Input02 :
 			if self.mSelectedSatelliteIndex == 0 : #ToDO : All Channel Search
-				dialog = DlgMgr.GetInstance().getDialog( DlgMgr.DIALOG_ID_CHANNEL_SEARCH )
-				dialog.SetSatellite( self.mConfiguredSatelliteList )
+				dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_CHANNEL_SEARCH )
+				dialog.SetConfiguredSatellite( self.mConfiguredSatelliteList )
 				dialog.doModal( )
 
 			else :
@@ -105,7 +105,7 @@ class AutomaticScan( SettingWindow ):
 
 				configuredSatelliteList.append( config )
 				dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_CHANNEL_SEARCH )
-				print 'dialog=%s' %dialog
+				dialog.SetConfiguredSatellite( self.mConfiguredSatelliteList )				
 				dialog.doModal( )
 					
 

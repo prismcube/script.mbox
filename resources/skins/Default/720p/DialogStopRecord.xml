@@ -1,5 +1,5 @@
 <window>
-	<defaultcontrol always="true">200</defaultcontrol>
+	<defaultcontrol always="true">201</defaultcontrol>
 	<coordinates>
 		<system>1</system>
 		<posx>335</posx>
@@ -12,7 +12,7 @@
 			<posx>0</posx>
 			<posy>100</posy>
 			<width>610</width>
-			<height>320</height>
+			<height>200</height>
 			<texture border="40">confluence/DialogBack.png</texture>
 		</control>
 		<control type="image">
@@ -43,7 +43,7 @@
 		<control type="group" id="200">		
 			<control type="list" id="201">
 				<posx>30</posx>
-				<posy>250</posy>
+				<posy>150</posy>
 				<width>550</width>
 				<height>80</height>
 				<onleft>-</onleft>
@@ -98,7 +98,7 @@
 						<width>750</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
-						<visible>!Control.HasFocus(50)</visible>
+						<visible>!Control.HasFocus(201)</visible>
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>
 					</control>
@@ -108,7 +108,7 @@
 						<width>750</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
-						<visible>Control.HasFocus(50)</visible>
+						<visible>Control.HasFocus(201)</visible>
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>
 					</control>

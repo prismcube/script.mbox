@@ -21,7 +21,6 @@ class NullWindow(BaseWindow):
 	def onInit(self):
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
-		LOG_TRACE('ttttttttttttttttttttttttttttttttttttttt')
 
 	def onAction(self, aAction):
 		id = aAction.getId()
