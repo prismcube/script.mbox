@@ -13,7 +13,7 @@ from pvr.PublicReference import EpgInfoClock
 
 import pvr.ElisMgr
 
-from pvr.Util import RunThread, GuiLock
+from pvr.Util import RunThread, GuiLock, LOG_TRACE, LOG_WARN, LOG_ERR
 
 
 
@@ -70,7 +70,7 @@ class DialogStartRecord( BaseDialog ) :
 			channel = self.mCommander.Channel_GetCurrent( )
 			self.mRecordName = channel.mName
 		
-		print 'RecordName=%s Duration=%d' %(self.mRecordName, self.mEPGDuration )
+		LOG_TRACE( 'RecordName=%s Duration=%d' %(self.mRecordName, self.mEPGDuration ) )
 
 		self.getControl( E_LABEL_RECORD_NAME ).setLabel( self.mRecordName )
 
@@ -85,7 +85,9 @@ class DialogStartRecord( BaseDialog ) :
 	def onAction( self, aAction ):
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
-	
+
+		LOG_TRACE( 'actionId=%d' %actionId )
+			
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -106,13 +108,13 @@ class DialogStartRecord( BaseDialog ) :
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			pass
 		else :
-			print 'Unknown Action'
+			LOG_WARN( 'Unknown Action' )
 
 
 	def onClick( self, aControlId ):
 		focusId = self.getFocusId( )
 
-		print 'DialogRecord focusId=%d' %focusId
+		LOG_TRACE( 'DialogRecord focusId=%d' %focusId )
 		if focusId == E_BUTTON_START :
 			self.StartRecord( )			
 
@@ -141,7 +143,7 @@ class DialogStartRecord( BaseDialog ) :
 
 
 	def StartRecord( self ):
-		print 'Start Record'
+		LOG_TRACE('')
 		current = self.mCommander.Channel_GetCurrent( )
 		"""
 		ret = self.mCommander.record_StartRecord( int( current[0] ),  int( current[3] ),  self.mEPGDuration,  self.mRecordName )
@@ -157,7 +159,7 @@ class DialogStartRecord( BaseDialog ) :
 
 		while self.mEnableThread:
 			if  ( loop % 10 ) == 0 :
-				print 'loop=%d' %loop
+				LOG_TRACE( 'loop=%d' %loop )
 				self.mLocalTime = self.mCommander.Datetime_GetLocalTime( )
 
 				
@@ -179,12 +181,12 @@ class DialogStartRecord( BaseDialog ) :
 
 		passDuration = self.mLocalTime - startTime
 
-		print 'mLocalOffset=%d' % int( self.mLocalOffset/60 )
-		print 'start=%s' % EpgInfoClock( 1, startTime, 0 )
-		print 'current=%s' % EpgInfoClock( 1,self.mLocalTime, 0 )
-		print 'end=%s' % EpgInfoClock( 1, endTime, 0 )		
+		LOG_TRACE( 'mLocalOffset=%d' % int( self.mLocalOffset/60 ) )
+		LOG_TRACE( 'start=%s' % EpgInfoClock( 1, startTime, 0 ) )
+		LOG_TRACE( 'current=%s' % EpgInfoClock( 1,self.mLocalTime, 0 ) )
+		LOG_TRACE( 'end=%s' % EpgInfoClock( 1, endTime, 0 ) )
 
-		print 'UpdateProgress=%d' %passDuration 
+		LOG_TRACE( 'UpdateProgress=%d' %passDuration )
 
 		startTimeString = EpgInfoClock( 1, startTime, 0 )
 		endTimeString = EpgInfoClock( 1, endTime, 0 )		
@@ -214,7 +216,7 @@ class DialogStartRecord( BaseDialog ) :
 		else :
 			percent = 0
 
-		print 'percent=%d' %percent
+		LOG_TRACE( 'percent=%d' %percent )
 		
 		self.mCtrlProgress.setPercent( percent )
 
