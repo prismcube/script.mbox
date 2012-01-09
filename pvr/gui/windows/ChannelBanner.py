@@ -13,7 +13,7 @@ from ElisEnum import ElisEnum
 from ElisEventBus import ElisEventBus
 from ElisEventClass import *
 
-from pvr.Util import RunThread, GuiLock, MLOG, LOG_WARN
+from pvr.Util import RunThread, GuiLock, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
 from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit
 
 import threading, time, os
@@ -53,7 +53,6 @@ class ChannelBanner(BaseWindow):
 		self.mPincodeEnter = FLAG_MASK_NONE
 		self.mLastChannel = 	self.mCommander.Channel_GetCurrent()	
 		self.mCurrentChannel =  self.mLastChannel
-
 
 
 	def __del__(self):
@@ -259,7 +258,7 @@ class ChannelBanner(BaseWindow):
 
 
 	def onClick(self, aControlId):
-		print "onclick(): control %d" % aControlId
+		print 'onclick(): control %d' % aControlId
 		if aControlId == self.mCtrlBtnMute.getId():
 			self.UpdateVolume( Action.ACTION_MUTE )
 
@@ -308,12 +307,12 @@ class ChannelBanner(BaseWindow):
 
 	@GuiLock
 	def onEvent(self, aEvent):
-		print '[%s]%s():%s'% (os.path.basename(currentframe().f_code.co_filename), currentframe().f_code.co_name, currentframe().f_lineno)
+		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 		#print 'aEvent len[%s]'% len(aEvent)
 		#ClassToList( 'print', aEvent )
 
 		if self.mWinId == xbmcgui.getCurrentWindowId():
-			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :			
+			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
 				if aEvent.mEventId != self.mEventID :
 					ret = None
 					ret = self.mCommander.Epgevent_GetPresent()
@@ -414,6 +413,7 @@ class ChannelBanner(BaseWindow):
 		else:
 			pass
 
+	@GuiLock
 	def UpdateONEvent(self, aEvent):
 		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 		#print 'component [%s]'% EpgInfoComponentImage ( aEvent )
@@ -531,6 +531,7 @@ class ChannelBanner(BaseWindow):
 		self.mCtrlProgress.setPercent( percent )
 
 
+	@GuiLock
 	def InitLabelInfo(self):
 		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 		
