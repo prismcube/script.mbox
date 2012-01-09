@@ -27,7 +27,7 @@ FLAG_CLOCKMODE_HMS    = 3
 FLAG_CLOCKMODE_HHMM   = 4
 FLAG_CLOCKMODE_INTTIME= 5
 
-class TimeShiftBanner(BaseWindow):
+class TimeShiftPlate(BaseWindow):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
 		LOG_TRACE('')

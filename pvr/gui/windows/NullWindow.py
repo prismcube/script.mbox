@@ -48,7 +48,7 @@ class NullWindow(BaseWindow):
 
 		elif id == Action.ACTION_MOVE_LEFT:
 			print 'youn check ation left'
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_TIMESHIFT_BANNER )
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
 		elif id == Action.ACTION_SHOW_INFO	:
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_BANNER )
