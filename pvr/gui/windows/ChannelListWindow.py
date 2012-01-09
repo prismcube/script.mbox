@@ -343,19 +343,6 @@ class ChannelListWindow(BaseWindow):
 		elif aControlId == self.mCtrlBtnMenu.getId() or aControlId == self.mCtrlListMainmenu.getId() :
 			#list view
 			LOG_TRACE( '#############################' )
-			"""
-			position = self.mCtrlListMainmenu.getSelectedPosition()
-			LOG_TRACE( 'onclick focus[%s] idx_main[%s]'% (aControlId, position) )
-			
-			if position == E_SLIDE_MENU_BACK :
-				self.mCtrlListCHList.setEnabled(True)
-				self.setFocusId( self.mCtrlGropCHList.getId() )
-
-			else :
-				self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
-				self.setFocusId( self.mCtrlListSubmenu.getId() )
-				#self.setFocusId( self.mCtrlGropSubmenu.getId() )
-			"""
 
 		elif aControlId == self.mCtrlListSubmenu.getId() :
 			#list action
@@ -555,6 +542,10 @@ class ChannelListWindow(BaseWindow):
 				self.mCtrlLblPath1.setLabel( '%s'% label1.upper() )
 				self.mCtrlLblPath2.setLabel( '%s'% label2.title() ) 
 				self.mCtrlLblPath3.setLabel( 'sort by %s'% label3.title() ) 
+
+				#close slide : move to focus channel list
+				self.mCtrlListCHList.setEnabled(True)
+				self.setFocusId( self.mCtrlGropCHList.getId() )
 
 		LOG_TRACE( 'Leave' )
 
