@@ -75,11 +75,6 @@ class NullWindow(BaseWindow):
 				#WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_CHANNEL_BANNER).setLastChannel( currentChannel )
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_BANNER )		
 
-		elif id == Action.REMOTE_1:
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST1_WINDOW )
-		elif id == Action.REMOTE_2:
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST2_WINDOW )
-
 		elif id == Action.REMOTE_3:  #TEST : start Record
 			print 'open record dialog'
 			dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_START_RECORD )
