@@ -22,8 +22,8 @@ import threading, time, os
 import logging
 from inspect import currentframe
 
-log = logging.getLogger('mythbox.ui')
-mlog = logging.getLogger('mythbox.method')
+#log = logging.getLogger('mythbox.ui')
+#mlog = logging.getLogger('mythbox.method')
 
 
 FLAG_MASK_ADD  = 0x01
@@ -32,6 +32,8 @@ FLAG_CLOCKMODE_ADMYHM = 1
 FLAG_CLOCKMODE_AHM    = 2
 FLAG_CLOCKMODE_HMS    = 3
 FLAG_CLOCKMODE_HHMM   = 4
+FLAG_CLOCKMODE_INTTIME= 5
+
 
 
 class ChannelBanner(BaseWindow):
@@ -172,7 +174,7 @@ class ChannelBanner(BaseWindow):
 			winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_MAINMENU )
 
 		elif id == Action.ACTION_SELECT_ITEM:
-			log.debug('youn:%s' % id)
+			LOG_TRACE( 'youn:%s' % id )
 	
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'youn check ation back'

@@ -91,7 +91,7 @@ class WindowMgr(object):
 				ChannelBanner('ChannelBanner.xml', self.mScriptDir ).doModal()
 
 			elif aWindowId == WIN_ID_TIMESHIFT_BANNER:
-				from pvr.gui.windows.TimeShiftBanner import TimeShiftBanner
+				from pvr.gui.windows.TimeshiftBanner import TimeShiftBanner
 				TimeShiftBanner('TimeshiftBanner.xml', self.mScriptDir ).doModal()
 
 			elif aWindowId ==  WIN_ID_CONFIGURE:
