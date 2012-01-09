@@ -9,6 +9,7 @@ DIALOG_ID_LNB_FREQUENCY				= 1
 DIALOG_ID_CHANNEL_SEARCH			= 2
 DIALOG_ID_START_RECORD				= 3
 DIALOG_ID_STOP_RECORD				= 4
+DIALOG_ID_SATELLITE_NUMERIC			= 5
 
 gDialogMgr = None
 
@@ -50,6 +51,10 @@ class DialogMgr(object):
 				print '---------------- create start record'
 				from pvr.gui.dialogs.DialogStopRecord import DialogStopRecord
 				return DialogStopRecord('DialogStopRecord.xml', self.scriptDir)	
+
+			elif aDialogId == DIALOG_ID_SATELLITE_NUMERIC :
+				from pvr.gui.dialogs.DialogSatelliteNumeric import DialogSatelliteNumeric
+				return DialogSatelliteNumeric('DialogSatelliteNumeric.xml', self.scriptDir)
 				
 			else :
 				print "ERROR : can not find dialog"

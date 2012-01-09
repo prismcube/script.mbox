@@ -112,7 +112,7 @@ class WindowMgr(object):
 
 			elif aWindowId ==  WIN_ID_CONFIG_MOTORIZED_USALS:
 				from pvr.gui.windows.SatelliteConfigMotorizedUsals import SatelliteConfigMotorizedUsals
-				SatelliteConfigMotorizedUsals('SatelliteConfiguration.xml', self.mScriptDir).doModal()
+				SatelliteConfigMotorizedUsals('SatelliteConfigMotorizedUsals.xml', self.mScriptDir).doModal()
 
 			elif aWindowId ==  WIN_ID_CONFIG_MOTORIZED_USALS2:
 				from pvr.gui.windows.SatelliteConfigMotorizedUsals2 import SatelliteConfigMotorizedUsals2

@@ -39,9 +39,7 @@ class DialogLnbFrequency( BaseDialog ) :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			self.clearProperty( 'AnimationWaitingDialogOnClose' )
-			time.sleep( 0.3 )
-			self.close( )
+			self.CloseDialog( )
 
 
 	def onClick( self, aControlId ) :
@@ -60,11 +58,11 @@ class DialogLnbFrequency( BaseDialog ) :
 			
 		elif aControlId ==  E_BUTTON_OK_ID :
 			self.mIsOk = True
-			self.close( )
+			self.CloseDialog( )
 		
 		elif aControlId == E_BUTTON_CANCEL_ID :
 			self.mIsOk = False
-			self.close( )				
+			self.CloseDialog( )		
  				
 	def IsOK( self ) :
 		return self.mIsOk
