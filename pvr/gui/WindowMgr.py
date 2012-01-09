@@ -81,7 +81,8 @@ class WindowMgr(object):
 
 			elif aWindowId ==  WIN_ID_CHANNEL_LIST_WINDOW:
 				from pvr.gui.windows.ChannelListWindow import ChannelListWindow
-				ChannelListWindow('ChannelListWindow_b.xml', self.mScriptDir ).doModal()
+				ChannelListWindow('ChannelListWindow.xml', self.mScriptDir ).doModal()
+				#ChannelListWindow('ChannelListWindow_b.xml', self.mScriptDir ).doModal()
 
 			elif aWindowId ==  WIN_ID_CHANNEL_BANNER:
 				from pvr.gui.windows.ChannelBanner import ChannelBanner
