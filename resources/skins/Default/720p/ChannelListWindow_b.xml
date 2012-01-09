@@ -73,26 +73,27 @@
 
 <!-- Main Menu -->
 		<control type="group" id="100">
-			<animation effect="slide" start="0,0" end="180,0" time="400" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9020).HasFocus">Conditional</animation> 
+			<animation effect="slide" start="0,0" end="180,0" time="400" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102)">Conditional</animation> 
+			<animation effect="slide" start="0,0" end="-180,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus">Conditional</animation>
 			<animation effect="slide" start="0,0" end="-180,0" time="400" tween="quadratic" easing="out" condition="Control.HasFocus(101)">WindowClose</animation>
 			<control type="button" id="101">
 				<description>Fake button for mouse control</description>
 				<posx>-180</posx>
-				<posy>102</posy>
+				<posy>152</posy>
 				<width>195</width>
-				<height>520</height>
+				<height>535</height>
 				<label>-</label>
 				<font>-</font>
 				<texturenofocus>-</texturenofocus>
 				<texturefocus>-</texturefocus>
-				<onclick>SetFocus(200)</onclick>
+				<onclick>202</onclick>
 				<visible>true</visible>
 			</control>
 			<control type="image">
 				<posx>-180</posx>
-				<posy>102</posy>
+				<posy>152</posy>
 				<width>195</width>
-				<height>520</height>
+				<height>535</height>
 				<texture>HomeBlade.png</texture>
 				<animation effect="slide" start="-26,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
 				<animation effect="slide" start="0,0" end="-26,0" time="200" delay="200" tween="quadratic" easing="out">WindowClose</animation>
@@ -105,12 +106,11 @@
 					<posx>0</posx>
 					<posy>0</posy>
 					<width>180</width>
-					<height>520</height>
-					<onleft>SetFocus(102)</onleft>
-					<!--onright>SetFocus(202)</onright-->
-					<onright>SetFocus(9020)</onright>
-					<onup>SetFocus(102)</onup>
-					<ondown>SetFocus(102)</ondown>
+					<height>535</height>
+					<onleft>49</onleft>
+					<onright>49</onright>
+					<onup>102</onup>
+					<ondown>102</ondown>
 					<scrolltime>300</scrolltime>
 					<focusposition>0</focusposition>
 					<movement>10</movement>
@@ -177,53 +177,12 @@
 							<visible>true</visible>
 						</item>
 						<item id="5">
-							<label>Back</label>
+							<label>SCRIPT555</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 					</content>
 				</control>
-
-                <!--control type="image">
-                    <posx>181</posx>
-                    <posy>0</posy>
-                    <width>1</width>
-                    <height>520</height>
-                    <texture>confluence/HomeBladeSub_Part1.png</texture>
-                    <animation effect="zoom" start="181,0,1,520" end="181,0,229,520" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
-                </control>
-                <control type="image">
-                    <posx>180</posx>
-                    <posy>0</posy>
-                    <width>12</width>
-                    <height>520</height>
-                    <texture>confluence/HomeBladeSub_Part2.png</texture>
-                    <animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(102).HasFocus">Conditional</animation>
-                </control>
-				<control type="group">
-					<posx>180</posx>
-					<posy>0</posy>
-					<animation effect="slide" end="360,520" time="300" tween="quadratic" easing="out" condition="ControlGroup(102).HasFocus">conditional</animation>
-					<control type="grouplist" id="9020">
-						<posx>10</posx>
-						<posy>70</posy>
-						<width>180</width>
-						<height>180</height>
-						<align>center</align>
-						<onleft>9000</onleft>
-						<onup>9020</onup>
-						<ondown>9020</ondown>
-						<itemgap>0</itemgap>
-						<visible>Container(102).HasFocus(2)</visible>
-						<control type="button" id="90201">
-							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Edit Channels</label>
-							<onclick>-</onclick>
-							<visible>true</visible>
-						</control>
-					</control>
-				</control-->
-
 			</control>
 		</control>
 
@@ -249,14 +208,14 @@
 				<height>350</height>
 				<align>center</align>
 				<font>font12_title</font>
-				<onleft>SetFocus(100)</onleft>
-				<onright>SetFocus(49)</onright>
-				<onup>SetFocus(202)</onup>
-				<ondown>SetFocus(202)</ondown>
-				<pagecontrol>60</pagecontrol>
+				<onleft>102</onleft>
+				<onright>49</onright>
+				<onup>202</onup>
+				<ondown>202</ondown>
+				<!--pagecontrol>203</pagecontrol-->
 				<scrolltime>200</scrolltime>
-				<focusposition>0</focusposition>
-				<visible>true</visible>
+				<!--focusposition>0</focusposition-->
+				<!--visible>Control.IsEnabled(102)</visible-->
 				<animation effect="fade" start="0" end="100" time="200">Visible</animation>
 				<itemlayout height="40" width="200">
 					<control type="image">
@@ -265,6 +224,7 @@
 						<width>230</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
+						<visible>!Control.HasFocus(202)</visible>
 					</control>
 					<control type="label">
 						<posx>10</posx>
@@ -276,7 +236,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-						<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+						<!--animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation-->
 					</control>
 				</itemlayout>
 				<focusedlayout height="40" width="200">
@@ -286,7 +246,7 @@
 						<width>230</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
-						<visible>!Control.HasFocus(50)</visible>
+						<visible>!Control.HasFocus(202)</visible>
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>
 					</control>
@@ -296,7 +256,8 @@
 						<width>230</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
-						<visible>Control.HasFocus(50)</visible>
+						<!--visible>Control.HasFocus(202)</visible-->
+						<visible>ControlGroup(9001).HasFocus</visible>
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>
 					</control>
@@ -314,6 +275,20 @@
 					</control>
 				</focusedlayout>
 			</control>
+			<!-- Scrollbar -->
+			<!--control type="scrollbar" id="203">
+				<posx>230</posx>
+				<posy>0</posy>
+				<width>15</width>
+				<height>401</height>
+				<texturesliderbackground border="0,14,0,14">confluence/ScrollBarV.png</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">confluence/ScrollBarV_bar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">confluence/ScrollBarV_bar_focus.png</texturesliderbarfocus>
+				<textureslidernib>confluence/ScrollBarNib.png</textureslidernib>
+				<textureslidernibfocus>confluence/ScrollBarNib.png</textureslidernibfocus>
+				<showonepage>false</showonepage>
+				<orientation>vertical</orientation>
+			</control-->
 		</control>
 
 
@@ -337,10 +312,10 @@
 				<posy>180</posy>
 				<width>600</width>
 				<height>401</height>
-				<onleft>SetFocus(202)</onleft>
+				<onleft>202</onleft>
 				<onright>SetFocus(61)</onright>
-				<onup>SetFocus(50)</onup>
-				<ondown>SetFocus(50)</ondown>
+				<onup>49</onup>
+				<ondown>49</ondown>
 				<pagecontrol>61</pagecontrol>
 				<scrolltime>200</scrolltime>
 				<focusposition>0</focusposition>
@@ -352,7 +327,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>690</width>
+						<width>580</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 					</control>
@@ -376,7 +351,7 @@
 					<control type="label">
 						<posx>30</posx>
 						<posy>0</posy>
-						<width>660</width>
+						<width>580</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey3</textcolor>
@@ -385,37 +360,25 @@
 						<label>$INFO[ListItem.Label]</label>
 						<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
 					</control>
-					<control type="label">
-						<posx>660</posx>
-						<posy>0</posy>
-						<width>400</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
-						<align>right</align>
-						<aligny>center</aligny>
-						<label>$INFO[ListItem.Label2]</label>
-					</control>	
 				</itemlayout>
 				<focusedlayout height="40" width="580">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>690</width>
+						<width>580</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
-						<visible>!Control.HasFocus(50)</visible>
+						<!--visible>!Control.HasFocus(50)</visible-->
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>
 					</control>
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>690</width>
+						<width>580</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
-						<visible>Control.HasFocus(50)</visible>
+						<!--visible>Control.HasFocus(50)</visible-->
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>
 					</control>
