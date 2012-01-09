@@ -23,10 +23,18 @@ FLAG_MASK_ADD  = 0x01
 FLAG_MASK_NONE = 0x00
 FLAG_SLIDE_OPEN= 0
 FLAG_SLIDE_INIT= 1
-FLAG_CLOCKMODE_ADMYHM = 1
-FLAG_CLOCKMODE_AHM    = 2
-FLAG_CLOCKMODE_HMS    = 3
-FLAG_CLOCKMODE_HHMM   = 4
+FLAG_CLOCKMODE_ADMYHM   = 1
+FLAG_CLOCKMODE_AHM      = 2
+FLAG_CLOCKMODE_HMS      = 3
+FLAG_CLOCKMODE_HHMM     = 4
+
+E_SLIDE_ACTION_MAIN     = 0
+E_SLIDE_ACTION_SUB      = 1
+E_SLIDE_ALLCHANNEL      = 0
+E_SLIDE_MENU_SATELLITE  = 1
+E_SLIDE_MENU_FTACAS     = 2
+E_SLIDE_MENU_FAVORITE   = 3
+E_SLIDE_MENU_BACK       = 4
 
 class ChannelListWindow(BaseWindow):
 
@@ -167,12 +175,12 @@ class ChannelListWindow(BaseWindow):
 				position = self.mCtrlListMainmenu.getSelectedPosition()
 				LOG_TRACE( 'focus[%s] idx_main[%s]'% (focusId, position) )
 
-				if position == 4 :
+				if position == E_SLIDE_MENU_BACK :
 					self.mCtrlListCHList.setEnabled(True)
 					self.setFocusId( self.mCtrlGropCHList.getId() )
 
 				else :
-					self.SubMenuAction( 0, position )
+					self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
 					#self.setFocusId( self.mCtrlListSubmenu.getId() )
 					#self.setFocusId( self.mCtrlGropSubmenu.getId() )
 
@@ -194,7 +202,7 @@ class ChannelListWindow(BaseWindow):
 				position = self.mCtrlListMainmenu.getSelectedPosition()
 
 				#this position's 'Back'
-				if position == 4 :
+				if position == E_SLIDE_MENU_BACK :
 					self.mCtrlListCHList.setEnabled( True )
 					self.setFocusId( self.mCtrlGropCHList.getId() )
 
@@ -222,7 +230,7 @@ class ChannelListWindow(BaseWindow):
 			if focusId == self.mCtrlListMainmenu.getId() :
 				#self.onClick( self.mCtrlListMainmenu.getId() )
 				position = self.mCtrlListMainmenu.getSelectedPosition()
-				self.SubMenuAction( 0, position )
+				self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
 
 				#self.setFocusId( self.mCtrlListSubmenu.getId() )
 				#self.mCtrlListMainmenu.selectItem( self.mSelectMainSlidePosition )
@@ -335,26 +343,13 @@ class ChannelListWindow(BaseWindow):
 		elif aControlId == self.mCtrlBtnMenu.getId() or aControlId == self.mCtrlListMainmenu.getId() :
 			#list view
 			LOG_TRACE( '#############################' )
-			"""
-			position = self.mCtrlListMainmenu.getSelectedPosition()
-			LOG_TRACE( 'onclick focus[%s] idx_main[%s]'% (aControlId, position) )
-			
-			if position == 4 :
-				self.mCtrlListCHList.setEnabled(True)
-				self.setFocusId( self.mCtrlGropCHList.getId() )
-
-			else :
-				self.SubMenuAction( 0, position )
-				self.setFocusId( self.mCtrlListSubmenu.getId() )
-				#self.setFocusId( self.mCtrlGropSubmenu.getId() )
-			"""
 
 		elif aControlId == self.mCtrlListSubmenu.getId() :
 			#list action
 			position = self.mZappingMode
 			LOG_TRACE( 'onclick focus[%s] idx_sub[%s]'% (aControlId, position) )
 
-			self.SubMenuAction( 1, self.mZappingMode )
+			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 
 		elif aControlId == self.mCtrlFooter1.getId() :
 			LOG_TRACE( 'onclick footer back' )
@@ -424,7 +419,7 @@ class ChannelListWindow(BaseWindow):
 		LOG_TRACE( 'Enter' )
 		retPass = False
 
-		if aAction == 0:
+		if aAction == E_SLIDE_ACTION_MAIN:
 			testlistItems = []
 			if aMenuIndex == 0 :
 				self.mZappingMode = ElisEnum.E_MODE_ALL
@@ -461,7 +456,11 @@ class ChannelListWindow(BaseWindow):
 				#label1 = enumToString('mode', self.mZappingMode)
 				#self.mCtrlLblPath1.setLabel( label1.title() )
 
-		elif aAction == 1:
+		elif aAction == E_SLIDE_ACTION_SUB:
+			if self.mSelectMainSlidePosition == self.mCtrlListMainmenu.getSelectedPosition() and \
+			   self.mSelectSubSlidePosition == self.mCtrlListSubmenu.getSelectedPosition() :
+			   LOG_TRACE( 'aready select!!!' )
+			   return
 
 			if aMenuIndex == ElisEnum.E_MODE_ALL :
 				position   = self.mCtrlListSubmenu.getSelectedPosition()
@@ -543,6 +542,10 @@ class ChannelListWindow(BaseWindow):
 				self.mCtrlLblPath1.setLabel( '%s'% label1.upper() )
 				self.mCtrlLblPath2.setLabel( '%s'% label2.title() ) 
 				self.mCtrlLblPath3.setLabel( 'sort by %s'% label3.title() ) 
+
+				#close slide : move to focus channel list
+				self.mCtrlListCHList.setEnabled(True)
+				self.setFocusId( self.mCtrlGropCHList.getId() )
 
 		LOG_TRACE( 'Leave' )
 
@@ -644,7 +647,7 @@ class ChannelListWindow(BaseWindow):
 
 
 		self.mCtrlListMainmenu.selectItem( idx1 )
-		self.SubMenuAction(0, idx1)
+		self.SubMenuAction(E_SLIDE_ACTION_MAIN, idx1)
 		self.mCtrlListSubmenu.selectItem( idx2 )
 		#self.setFocusId( self.mCtrlListSubmenu.getId() )
 
