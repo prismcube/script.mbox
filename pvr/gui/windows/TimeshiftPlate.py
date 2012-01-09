@@ -13,7 +13,7 @@ from ElisEventBus import ElisEventBus
 from ElisEventClass import *
 
 from pvr.Util import RunThread, RunThread, GuiLock, LOG_TRACE, LOG_WARN, LOG_ERR
-from pvr.PublicReference import EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, GetSelectedLongitudeString
+from pvr.PublicReference import EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, GetSelectedLongitudeString, ClassToList
 
 import thread, threading, time, os
 
@@ -105,7 +105,6 @@ class TimeShiftPlate(BaseWindow):
 		self.mUntilThread = True
 		self.UpdateLocalTime()
 
-
 	def onAction(self, aAction):
 		id = aAction.getId()
 		focusid = self.getFocusId()
@@ -172,7 +171,7 @@ class TimeShiftPlate(BaseWindow):
 						self.mEventID = aEvent.mEventId
 						self.UpdateONEvent( ret )
 
-					#ret = self.mCommander.epgevent_Get(self.mEventID, int(event[1]), int(event[2]), int(event[3]), int(self.epgClock[0]) )
+					#ret = self.mCommander.Epgevent_Get(self.mEventID, aEvent.mSid, aEvent.mTsid, aEvent.mOnid, self.mLocalTime )
 			else :
 				LOG_TRACE( 'event unknown[%s]'% aEvent.getName() )
 		else:
@@ -302,7 +301,7 @@ class TimeShiftPlate(BaseWindow):
 		self.mCtrlLblTSStartTime.setLabel('')
 		self.mCtrlLblTSEndTime.setLabel('')
 
-		self.mLocalTime = self.mCommander.datetime_GetLocalTime()
+		self.mLocalTime = self.mCommander.Datetime_GetLocalTime()
 		self.InitTimeShift()
 
 	def InitTimeShift(self, loop = 0) :
@@ -311,9 +310,10 @@ class TimeShiftPlate(BaseWindow):
 		status = None
 		status = self.mCommander.Player_GetStatus()
 		if status :
-			ret = []
-			ret.append( status )
-			LOG_TRACE( 'player_GetStatus[%s]'% ClassToList( 'convert', ret ) )
+			retList = []
+			retList.append( status )
+			LOG_TRACE( 'player_GetStatus[%s]'% ClassToList( 'convert', retList ) )
+			#status.printdebug()
 		
 			#play mode
 			self.mMode = status.mMode
@@ -406,10 +406,11 @@ class TimeShiftPlate(BaseWindow):
 				elif self.mSpeed == -1000 :
 					self.mCtrlLblSpeed.setLabel('32x')
 
+
 			"""
 			#pending status
-			mIsTimeshiftPending = status.mIsTimeshiftPending
-			if mIsTimeshiftPending == True :
+			isPending = status.mIsTimeshiftPending
+			if isPending == True :
 				self.mIsPlay = True
 				self.mCtrlBtnPlay.setVisible(False)
 				self.mCtrlBtnPause.setVisible(True)
@@ -419,6 +420,7 @@ class TimeShiftPlate(BaseWindow):
 				self.mCtrlBtnPlay.setVisible(True)
 				self.mCtrlBtnPause.setVisible(False)
 			"""
+
 
 		if self.mIsPlay == True :
 			self.mCtrlBtnPlay.setVisible(False)
@@ -536,7 +538,7 @@ class TimeShiftPlate(BaseWindow):
 				
 				self.mProgress_max = endtime
 
-				ret = epgInfoClock(FLAG_CLOCKMODE_HMS, endtime, 0)
+				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, endtime, 0)
 				self.mCtrlLblTSEndTime.setLabel(ret[0])
 
 				#calculate current position
