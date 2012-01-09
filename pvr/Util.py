@@ -14,6 +14,11 @@ from ElisEnum import ElisEnum
 gLogOut = 0
 gThreads = odict()
 
+E_LOG_NORMAL = 0
+E_LOG_WARN = 37
+E_LOG_ERR = 31
+E_LOG_DEBUG = 33
+
 def ClearThreads( ):
 	gThreads.clear()
 
@@ -109,15 +114,15 @@ class Mutex(threading.Thread):
 
 
 def LOG_TRACE( msg ):
-	MLOG( ElisEnum.E_LOG_DEBUG, msg )
+	MLOG( E_LOG_DEBUG, msg )
 
 
 def LOG_ERR( msg ):
-	MLOG( ElisEnum.E_LOG_ERR, msg )
+	MLOG( E_LOG_ERR, msg )
 
 
 def LOG_WARN( msg ):
-	MLOG( ElisEnum.E_LOG_WARN, msg )
+	MLOG( E_LOG_WARN, msg )
 
 
 def MLOG( level=0, msg=None ) :
@@ -131,7 +136,7 @@ def MLOG( level=0, msg=None ) :
 	filefunc = calframe[1][3]
 
 	#if level >= 0 and level <= 18 :
-	if level == 0 or level == ElisEnum.E_LOG_DEBUG or gLogOut == 0 :
+	if level == 0 or level == E_LOG_DEBUG or gLogOut == 0 :
 		print '[%s:%s]%s'% (filename, lineno, msg)
 
 	else :
