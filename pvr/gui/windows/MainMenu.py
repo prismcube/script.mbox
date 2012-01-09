@@ -6,7 +6,7 @@ import pvr.gui.WindowMgr as WinMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
 import pvr.TunerConfigMgr as ConfigMgr
 from inspect import currentframe
-from pvr.Util import GuiLock
+from pvr.Util import GuiLock, LOG_TRACE
 
 LIST_ID_MAIN_MENU				= 9000
 BUTTON_ID_INSTALLATION			= 90100
@@ -27,11 +27,11 @@ BUTTON_ID_CAS					= 90107
 class MainMenu( BaseWindow ):
 	def __init__( self, *args, **kwargs ):
 		BaseWindow.__init__( self, *args, **kwargs )
-		print 'lael98 check %d %s' %( currentframe().f_lineno, currentframe().f_code.co_filename )    
-		print 'args=%s' % args[0]
+		LOG_TRACE('')
 
 
 	def onInit( self ):
+		LOG_TRACE('')
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
 		self.mCtrlMainMenu = self.getControl( LIST_ID_MAIN_MENU )
@@ -39,22 +39,23 @@ class MainMenu( BaseWindow ):
 
 
 	def onAction( self, aAction ):
+		LOG_TRACE('')
 		id = aAction.getId()
 
 		focusId = self.getFocusId( )
-		print "MainMenu onAction(): focusId %d" % focusId
+		LOG_TRACE( "MainMenu onAction(): focusId %d" % focusId )
 		if id == Action.ACTION_PREVIOUS_MENU :
-			print 'lael98 check action menu'
+			pass
 		elif id == Action.ACTION_SELECT_ITEM :
 			pass
 
 		elif id == Action.ACTION_PARENT_DIR :			
-			print 'lael98 check ation back'
+			LOG_TRACE('action = ACTION_PARENT_DIR' )
 			self.close()
 
 
 	def onClick( self, aControlId ):
-		print "MainMenu onclick(): control %d" % aControlId
+		LOG_TRACE("MainMenu onclick(): control %d" % aControlId )
 		if aControlId == LIST_ID_MAIN_MENU :
 			pass
 
@@ -92,5 +93,6 @@ class MainMenu( BaseWindow ):
 
  
 	def onFocus( self, aControlId ):
+		LOG_TRACE('')
 		pass
 
