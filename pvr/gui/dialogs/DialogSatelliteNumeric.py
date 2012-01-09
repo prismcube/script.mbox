@@ -19,7 +19,6 @@ class DialogSatelliteNumeric( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 		
-		self.mInputLabel = ''
 		self.mTitleLabel = ''
 		self.mCursor = 0
 		self.mCtrlEditLabel = 0
@@ -35,7 +34,6 @@ class DialogSatelliteNumeric( BaseDialog ) :
 		self.mCursor = 0
 		self.getControl( E_DIALOG_HEADER ).setLabel( self.GetTitleLabel( ) )
 		self.mCtrlEditLabel = self.getControl( E_INPUT_LABEL )
-		#self.mCtrlEditLabel.setLabel( self.mInputLabel )
 		self.SetInputLabel( )
 		self.DrawKeyboard( )
 		
@@ -52,7 +50,7 @@ class DialogSatelliteNumeric( BaseDialog ) :
 			self.InputControl( actionId, 1 )
 			self.SetInputLabel( )
 			
-		elif actionId == Action.ACTION_PARENT_DIR : 			# back space
+		elif actionId == Action.ACTION_PARENT_DIR : 							# back space
 			self.DeleteValue( )
 			self.SetInputLabel( )
 
@@ -90,14 +88,13 @@ class DialogSatelliteNumeric( BaseDialog ) :
 
 	def GetNumber( self ) :
 		value = self.mInput1 * 1000 + self.mInput2 * 100 + self.mInput3 * 10 + self.mInput4
-		return 
+		return value
 
 	def GetTitleLabel( self ) :
 		return self.mTitleLabel
 		
 	def SetProperty( self, title, value ) :
 		self.mTitleLabel = title
-		self.mInputLabel = value
 		
 		self.mInput4 = value % 10
 		value = value / 10
@@ -132,11 +129,8 @@ class DialogSatelliteNumeric( BaseDialog ) :
 			value = int( self.getControl( aControlId ).getLabel( ) )
 			
 		elif aInputtype == 1 :
-			print 'dhkim test #1'
 			tmp = chr( aControlId - 10 )
-			print 'dhkim test #2 = %s' % tmp
 			value = int( tmp )
-			print 'dhkim test #3 = %d' % value
 
 		else :
 			return
