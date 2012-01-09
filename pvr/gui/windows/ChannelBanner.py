@@ -22,8 +22,8 @@ import threading, time, os
 import logging
 from inspect import currentframe
 
-log = logging.getLogger('mythbox.ui')
-mlog = logging.getLogger('mythbox.method')
+#log = logging.getLogger('mythbox.ui')
+#mlog = logging.getLogger('mythbox.method')
 
 
 FLAG_MASK_ADD  = 0x01
@@ -32,6 +32,8 @@ FLAG_CLOCKMODE_ADMYHM = 1
 FLAG_CLOCKMODE_AHM    = 2
 FLAG_CLOCKMODE_HMS    = 3
 FLAG_CLOCKMODE_HHMM   = 4
+FLAG_CLOCKMODE_INTTIME= 5
+
 
 
 class ChannelBanner(BaseWindow):
@@ -110,10 +112,9 @@ class ChannelBanner(BaseWindow):
 		self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
 		#self.mCurrentChannel.printdebug()
 
+		self.UpdateServiceType( self.mCurrentChannel.mServiceType )
 		self.InitLabelInfo()
 		self.UpdateVolume(Action.ACTION_MUTE)
-	
-		self.UpdateServiceType( self.mCurrentChannel.mServiceType )
 
 
 		"""
@@ -173,7 +174,7 @@ class ChannelBanner(BaseWindow):
 			winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_MAINMENU )
 
 		elif id == Action.ACTION_SELECT_ITEM:
-			log.debug('youn:%s' % id)
+			LOG_TRACE( 'youn:%s' % id )
 	
 		elif id == Action.ACTION_PARENT_DIR:
 			print 'youn check ation back'
@@ -224,7 +225,7 @@ class ChannelBanner(BaseWindow):
 			self.DescboxToggle('close')
 			self.mEnableThread = False
 			self.CurrentTimeThread().join()
-			winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_TIMESHIFT_BANNER )
+			winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_TIMESHIFT_PLATE )
 
 		else:
 			#print 'youn check action unknown id=%d' % id
@@ -290,7 +291,7 @@ class ChannelBanner(BaseWindow):
 			self.mEnableThread = False
 			self.CurrentTimeThread().join()
 
-			winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_TIMESHIFT_BANNER )
+			winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_TIMESHIFT_PLATE )
 
 
 		elif aControlId == self.mCtrlBtnPrevEpg.getId() :
@@ -351,8 +352,8 @@ class ChannelBanner(BaseWindow):
 					if ret == True :
 						self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
 						if self.mCurrentChannel :
-							self.InitLabelInfo()
 							self.UpdateServiceType( priv_ch.mServiceType )
+							self.InitLabelInfo()
 
 				except Exception, e :
 					print '[%s:%s] Error exception[%s]'% (	\
@@ -377,8 +378,8 @@ class ChannelBanner(BaseWindow):
 				if ret == True :
 					self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
 					if self.mCurrentChannel :
-						self.InitLabelInfo()
 						self.UpdateServiceType( next_ch.mServiceType )
+						self.InitLabelInfo()
 
 			except Exception, e :
 				print '[%s:%s] Error exception[%s]'% (	\
@@ -547,30 +548,17 @@ class ChannelBanner(BaseWindow):
 			self.mCtrlLblEventStartTime.setLabel('')
 			self.mCtrlLblEventEndTime.setLabel('')
 
-			self.mCtrlImgServiceType.setImage('')
+			#self.mCtrlImgServiceType.setImage('')
+			self.mCtrlImgServiceType.setImage(self.mImgTV)
 			self.mCtrlImgServiceTypeImg1.setImage('')
 			self.mCtrlImgServiceTypeImg2.setImage('')
 			self.mCtrlImgServiceTypeImg3.setImage('')
 			self.mCtrlGropEventDescGroup.setVisible( False )
 			self.mCtrlTxtBoxEventDescText1.reset()
 			self.mCtrlTxtBoxEventDescText2.reset()
+			ret = self.InitLongitudeInfo()
+			self.mCtrlLblLongitudeInfo.setLabel( ret )
 
-			try :
-				self.mLocalTime = self.mCommander.Datetime_GetLocalTime()
-				longitude = None
-				longitude = self.mCommander.Satellite_GetByChannelNumber( self.mCurrentChannel.mNumber, self.mCurrentChannel.mServiceType )
-				if longitude :
-					ret = GetSelectedLongitudeString( longitude.mLongitude, self.mCurrentChannel.mName )
-					self.mCtrlLblLongitudeInfo.setLabel( ret )
-				else:
-					self.mCtrlLblLongitudeInfo.setLabel( '' )
-
-			except Exception, e :
-				print '[%s:%s] Error exception[%s]'% (	\
-					self.__file__,						\
-					currentframe().f_lineno,			\
-					e )
-				self.mCtrlLblLongitudeInfo.setLabel( '' )
 
 		else:
 			print 'has no channel'
@@ -579,18 +567,38 @@ class ChannelBanner(BaseWindow):
 			# show message box : has no channnel
 
 
+	def InitLongitudeInfo( self ) :
+		ret = ''
+		try :
+			self.mLocalTime = self.mCommander.Datetime_GetLocalTime()
+			longitude = None
+			longitude = self.mCommander.Satellite_GetByChannelNumber( self.mCurrentChannel.mNumber, self.mCurrentChannel.mServiceType )
+			if longitude :
+				ret = GetSelectedLongitudeString( longitude.mLongitude, self.mCurrentChannel.mName )
+
+		except Exception, e :
+			print '[%s:%s] Error exception[%s]'% (	\
+				self.__file__,						\
+				currentframe().f_lineno,			\
+				e )
+
+		return ret
+
+
 	def UpdateServiceType(self, aTvType):
 		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
 		print 'serviceType[%s]' % aTvType
 
 		if aTvType == ElisEnum.E_SERVICE_TYPE_TV:
-			self.mCtrlImgServiceType.setImage(self.mImgTV)
+			#self.mCtrlImgServiceType.setImage(self.mImgTV)
+			self.mImgTV = 'confluence/tv.png'
 		elif aTvType == ElisEnum.E_SERVICE_TYPE_RADIO:
 			pass
 		elif aTvType == ElisEnum.E_SERVICE_TYPE_DATA:
 			pass
 		else:
-			self.mCtrlImgServiceType.setImage('')
+			#self.mCtrlImgServiceType.setImage('')
+			self.mImgTV = ''
 			print 'unknown ElisEnum tvType[%s]'% aTvType
 
 

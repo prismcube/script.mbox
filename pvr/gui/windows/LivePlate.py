@@ -206,7 +206,7 @@ class ChannelBanner(BaseWindow):
 			self.descboxToggle('close')
 			self.untilThread = False
 			self.updateLocalTime().join()
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_TIMESHIFT_BANNER )
+			winmgr.getInstance().showWindow( winmgr.WIN_ID_TIMESHIFT_PLATE )
 
 		else:
 			#print 'youn check action unknown id=%d' % id
@@ -272,7 +272,7 @@ class ChannelBanner(BaseWindow):
 			self.untilThread = False
 			self.updateLocalTime().join()
 
-			winmgr.getInstance().showWindow( winmgr.WIN_ID_TIMESHIFT_BANNER )
+			winmgr.getInstance().showWindow( winmgr.WIN_ID_TIMESHIFT_PLATE )
 
 
 		elif controlId == self.ctrlBtnPrevEpg.getId() :
