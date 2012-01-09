@@ -1,49 +1,51 @@
 import xbmc
 import xbmcgui
 import sys
-import time
 
-import pvr.gui.windowmgr as winmgr
-from pvr.gui.basewindow import BaseWindow
-from pvr.gui.basewindow import Action
+import pvr.gui.WindowMgr as winmgr
+from pvr.gui.BaseWindow import BaseWindow, Action
+from pvr.gui.GuiConfig import *
 
-import pvr.elismgr
-from elisaction import ElisAction
-from elisenum import ElisEnum
+import pvr.ElisMgr
+from ElisAction import ElisAction
+from ElisEnum import ElisEnum
+from ElisEventBus import ElisEventBus
+from ElisEventClass import *
 
+from pvr.Util import RunThread, RunThread, GuiLock, LOG_TRACE, LOG_WARN, LOG_ERR
+from pvr.PublicReference import EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, GetSelectedLongitudeString, ClassToList
 
-#from threading import Thread
-from pvr.util import RunThread, is_digit, Mutex, epgInfoTime, epgInfoClock, epgInfoComponentImage, GetSelectedLongitudeString #, synchronized, sync_instance
-import thread, threading
+import thread, threading, time, os
 
 #debug log
 import logging
 from inspect import currentframe
 
-log = logging.getLogger('mythbox.ui')
-mlog = logging.getLogger('mythbox.method')
+FLAG_CLOCKMODE_ADMYHM = 1
+FLAG_CLOCKMODE_AHM    = 2
+FLAG_CLOCKMODE_HMS    = 3
+FLAG_CLOCKMODE_HHMM   = 4
+FLAG_CLOCKMODE_INTTIME= 5
 
-
-class TimeShiftBanner(BaseWindow):
+class TimeShiftPlate(BaseWindow):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
-		print 'f_coname[%s] f_lineno[%d] co_filename[%s]' %(currentframe().f_code.co_name, currentframe().f_lineno, currentframe().f_code.co_filename)    
-		print 'args[0]=[%s]' % args[0]
-		print 'args[1]=[%s]' % args[1]
+		LOG_TRACE('')
+		LOG_TRACE( 'args[0]=[%s]' % args[0] )
+		LOG_TRACE( 'args[1]=[%s]' % args[1] )
 
-		self.lastFocusId = None
-		self.eventBus = pvr.elismgr.GetInstance().getEventBus()
-		#self.eventBus.register( self )
-		self.commander = pvr.elismgr.GetInstance().getCommander()
+		self.mLastFocusId = None
+		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
+		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
 
 		#default
-		self.progressbarWidth = 980
-		self.currentChannel=[]
-		self.progress_idx = 0.0
-		self.progress_max = 0.0
-		self.eventID = 0
+		self.mProgressbarWidth = 980
+		self.mCurrentChannel=[]
+		self.mProgress_idx = 0.0
+		self.mProgress_max = 0.0
+		self.mEventID = 0
 		self.mMode = ElisEnum.E_MODE_LIVE
-		self.isPlay = False
+		self.mIsPlay = False
 
 		#push push test test
 
@@ -51,396 +53,387 @@ class TimeShiftBanner(BaseWindow):
 
 
 	def __del__(self):
-		print '[%s():%s] destroyed ChannelBanner'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		LOG_TRACE( 'destroyed ChannelBanner' )
 
-		# end thread updateLocalTime()
-		self.untilThread = False
+		# end thread UpdateLocalTime()
+		self.mUntilThread = False
 
 	def onInit(self):
-		self.win = xbmcgui.getCurrentWindowId()
-		print '[%s():%s]winID[%d]'% (currentframe().f_code.co_name, currentframe().f_lineno, self.win)
+		self.mWinId = xbmcgui.getCurrentWindowId()
+		self.mWin = xbmcgui.Window( self.mWinId )
+		LOG_TRACE( 'winID[%d]'% self.mWinId )
 
-		self.ctrlImgRewind		= self.getControl(  31 )
-		self.ctrlImgForward		= self.getControl(  32 )
-		self.ctrlLblSpeed		= self.getControl(  33 )
-		self.ctrlProgress		= self.getControl( 201 )
-		self.ctrlBtnCurrent		= self.getControl( 202 )
-		self.ctrlEventClock		= self.getControl( 211 )
-		self.ctrlLblTSStartTime	= self.getControl( 221 )
-		self.ctrlLblTSEndTime	= self.getControl( 222 )
 
-		self.ctrlBtnVolume		= self.getControl( 402 )
-		self.ctrlBtnRecord		= self.getControl( 403 )
-		self.ctrlBtnRewind		= self.getControl( 404 )
-		self.ctrlBtnPlay		= self.getControl( 405 )
-		self.ctrlBtnPause		= self.getControl( 406 )
-		self.ctrlBtnStop		= self.getControl( 407 )
-		self.ctrlBtnForward		= self.getControl( 408 )
+		self.mCtrlImgRewind	        = self.getControl(  31 )
+		self.mCtrlImgForward        = self.getControl(  32 )
+		self.mCtrlLblSpeed          = self.getControl(  33 )
+		self.mCtrlProgress          = self.getControl( 201 )
+		self.mCtrlBtnCurrent        = self.getControl( 202 )
+		self.mCtrlEventClock        = self.getControl( 211 )
+		self.mCtrlLblTSStartTime    = self.getControl( 221 )
+		self.mCtrlLblTSEndTime      = self.getControl( 222 )
+
+		self.mCtrlBtnVolume         = self.getControl( 402 )
+		self.mCtrlBtnRecord         = self.getControl( 403 )
+		self.mCtrlBtnRewind         = self.getControl( 404 )
+		self.mCtrlBtnPlay           = self.getControl( 405 )
+		self.mCtrlBtnPause          = self.getControl( 406 )
+		self.mCtrlBtnStop           = self.getControl( 407 )
+		self.mCtrlBtnForward        = self.getControl( 408 )
 
 		#test
-		#self.ctrlBtnTest		= self.getControl( 409 )
+		#self.mCtrlBtnTest          = self.getControl( 409 )
 
 		self.mSpeed = 100	#normal
-		self.playTime = 0
-		self.localTime = 0
-		self.timeShiftExcuteTime = 0
-		self.ctrlEventClock.setLabel('')
-		self.ctrlProgress.setPercent(0)
+		self.mPlayTime = 0
+		self.mLocalTime = 0
+		self.mTimeShiftExcuteTime = 0
+		self.mCtrlEventClock.setLabel('')
+		self.mCtrlProgress.setPercent(0)
 		
 		#get channel
-		#self.currentChannel = self.commander.channel_GetCurrent()
+		#self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
 
-		try :
-			ret = self.commander.datetime_GetLocalTime()
-			self.timeShiftExcuteTime = int(ret[0])
-		except Exception, e :
-			print '[%s]%s():%s except[%s]'% ( os.path.basename(currentframe().f_code.co_filename), currentframe().f_code.co_name, currentframe().f_lineno, e)
+		self.mTimeShiftExcuteTime = self.mCommander.Datetime_GetLocalTime()
 
-		self.initLabelInfo()
-		self.timeshiftAction( self.ctrlBtnPause.getId() )
+		self.InitLabelInfo()
+		self.TimeshiftAction( self.mCtrlBtnPause.getId() )
+
+		#self.mEventBus.Register( self )
 
 		#run thread
-		self.untilThread = True
-		self.updateLocalTime()
+		self.mUntilThread = True
+		self.UpdateLocalTime()
 
-
-	def onAction(self, action):
-		id = action.getId()
+	def onAction(self, aAction):
+		id = aAction.getId()
 		focusid = self.getFocusId()
 		
 		if id == Action.ACTION_PREVIOUS_MENU:
-			print 'youn check action menu'
+			LOG_TRACE( 'youn check action menu' )
 
 		elif id == Action.ACTION_SELECT_ITEM:
-			print '===== test youn: ID[%s]' % id
-			log.debug('youn:%s' % id)
-
+			LOG_TRACE( '===== test youn: ID[%s]' % id )
 	
 		elif id == Action.ACTION_PARENT_DIR:
-			print 'youn check ation back'
+			LOG_TRACE( 'youn check ation back' )
 
-			# end thread updateLocalTime()
-			self.untilThread = False
-			self.updateLocalTime().join()
+			# end thread UpdateLocalTime()
+			self.mUntilThread = False
+			self.UpdateLocalTime().join()
 
 			self.close( )
 #			winmgr.GetInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
 #			winmgr.GetInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
 #			winmgr.shutdown()
-
-
-		elif id == Action.ACTION_PAGE_UP:
-			self.channelTune(id)
-
-		elif id == Action.ACTION_PAGE_DOWN:
-			self.channelTune(id)
-
-		elif id == Action.ACTION_MUTE:
-			self.updateVolume(id)
 		
 		else:
-			#print 'youn check action unknown id=%d' % id
-			#self.channelTune(id)
+			#LOG_TRACE( 'youn check action unknown id=%d' % id )
+			#self.ChannelTune(id)
 			pass
 
 
-	def onClick(self, controlId):
-		print 'onclick(): control %d' % controlId
+	def onClick(self, aControlId):
+		LOG_TRACE( 'control %d' % aControlId )
 
-		if controlId >= self.ctrlBtnRewind.getId() and controlId <= self.ctrlBtnForward.getId() :
-		#if controlId >= self.ctrlBtnRewind.getId() and controlId <= self.ctrlBtnTest.getId() :
-			#self.initTimeShift()
-			self.timeshiftAction(controlId)
+		if aControlId >= self.mCtrlBtnRewind.getId() and aControlId <= self.mCtrlBtnForward.getId() :
+		#if aControlId >= self.mCtrlBtnRewind.getId() and aControlId <= self.mCtrlBtnTest.getId() :
+			#self.InitTimeShift()
+			self.TimeshiftAction( aControlId )
 		
 
-		elif controlId == self.ctrlBtnRecord.getId():
-			self.timeshiftAction(controlId)
+		elif aControlId == self.mCtrlBtnRecord.getId():
+			self.TimeshiftAction( aControlId )
 
-		elif controlId == self.ctrlBtnVolume.getId():
-			self.timeshiftAction(controlId)
-			ret = self.commander.player_GetStatus()
-			print 'player_status[%s]'% ret
+		elif aControlId == self.mCtrlBtnVolume.getId():
+			self.TimeshiftAction( aControlId )
+			#ret = self.mCommander.Player_GetStatus()
+			#ret.printdebug()
 
 
-	def onFocus(self, controlId):
-		#print "onFocus(): control %d" % controlId
+	def onFocus(self, aControlId):
+		#LOG_TRACE( 'control %d' % controlId )
 		pass
 
-	def onEvent(self, event):
-		print '[%s]%s():%s'% (os.path.basename(currentframe().f_code.co_filename), currentframe().f_code.co_name, currentframe().f_lineno)
-		print 'event[%s]'% event
+	@GuiLock
+	def onEvent(self, aEvent):
+		LOG_TRACE( '' )
+		aEvent.printdebug()
 
-		if self.win == xbmcgui.getCurrentWindowId() :
+		if self.mWinId == xbmcgui.getCurrentWindowId():
 
-			msg = event[0]
-			if msg == 'Elis-CurrentEITReceived' :
+			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
+				if aEvent.mEventId != self.mEventID :
+					ret = None
+					ret = self.mCommander.Epgevent_GetPresent( )
+					if ret :
+						self.mEventCopy = event
+						self.mEventID = aEvent.mEventId
+						self.UpdateONEvent( ret )
 
-				if int(event[4]) != self.eventID :			
-					ret = self.commander.epgevent_GetPresent( )
-					if len( ret ) > 0 :
-						self.eventCopy = event
-						self.eventID = int( event[4] )
-						self.updateONEvent( ret )
-
-					#ret = self.commander.epgevent_Get(self.eventID, int(event[1]), int(event[2]), int(event[3]), int(self.epgClock[0]) )
+					#ret = self.mCommander.Epgevent_Get(self.mEventID, aEvent.mSid, aEvent.mTsid, aEvent.mOnid, self.mLocalTime )
 			else :
-				print 'event unknown[%s]'% event
+				LOG_TRACE( 'event unknown[%s]'% aEvent.getName() )
 		else:
-			print 'channelbanner winID[%d] this winID[%d]'% (self.win, xbmcgui.getCurrentWindowId())
+			LOG_TRACE( 'channelbanner winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
 
 		
-	def timeshiftAction(self, focusId):
-		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)		
+	def TimeshiftAction(self, aFocusId):
+		LOG_TRACE( '' )
 
 		ret = False
 
-		if focusId == self.ctrlBtnPlay.getId():
-			if self.mMode == ElisEnum.E_MODE_LIVE:
-				#ret = self.commander.player_StartTimeshiftPlayback(ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE,0)
-				ret = self.commander.player_Resume()
-			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT:
-				ret = self.commander.player_Resume()
-			elif self.mMode == ElisEnum.E_MODE_PVR:
-				ret = self.commander.player_Resume()
+		if aFocusId == self.mCtrlBtnPlay.getId() :
+			if self.mMode == ElisEnum.E_MODE_LIVE :
+				#ret = self.mCommander.Player_StartTimeshiftPlayback( ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE, 0 )
+				ret = self.mCommander.Player_Resume()
 
-			if ret[0] == 'TRUE':
-				print 'play ret[%s]'% ret
+			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
+				ret = self.mCommander.Player_Resume()
+
+			elif self.mMode == ElisEnum.E_MODE_PVR:
+				ret = self.mCommander.Player_Resume()
+
+			if ret :
+				LOG_TRACE( 'play_resume() ret[%s]'% ret )
 
 				if self.mSpeed != 100:
-					self.commander.player_SetSpeed(100)
-					self.ctrlImgRewind.setVisible(False)
-					self.ctrlImgForward.setVisible(False)
-					self.ctrlLblSpeed.setLabel('')
+					self.mCommander.Player_SetSpeed( 100 )
+					self.mCtrlImgRewind.setVisible( False )
+					self.mCtrlImgForward.setVisible( False )
+					self.mCtrlLblSpeed.setLabel( '' )
 
-				self.isPlay = True
-
-				# toggle
-				#self.ctrlBtnPlay.setVisible(False)
-				#self.ctrlBtnPause.setVisible(True)
-
-
-		elif focusId == self.ctrlBtnPause.getId():
-		#elif focusId == self.ctrlBtnTest.getId():
-			if self.mMode == ElisEnum.E_MODE_LIVE:
-				ret = self.commander.player_StartTimeshiftPlayback(ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE,0)
-			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT:
-				ret = self.commander.player_Pause()
-			elif self.mMode == ElisEnum.E_MODE_PVR:
-				ret = self.commander.player_Pause()
-
-			if ret[0] == 'TRUE':
-				print 'pause ret[%s]'% ret
-				self.isPlay = False
+				self.mIsPlay = True
 
 				# toggle
-				#self.ctrlBtnPlay.setVisible(True)
-				#self.ctrlBtnPause.setVisible(False)
+				#self.mCtrlBtnPlay.setVisible( False )
+				#self.mCtrlBtnPause.setVisible( True )
 
-		elif focusId == self.ctrlBtnStop.getId():
 
-			if self.mMode == ElisEnum.E_MODE_LIVE:
-				ret = self.commander.player_Stop()
-			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT:
-				ret = self.commander.player_Stop()
+		elif aFocusId == self.mCtrlBtnPause.getId() :
+		#elif aFocusId == self.mCtrlBtnTest.getId() :
+			if self.mMode == ElisEnum.E_MODE_LIVE :
+				ret = self.mCommander.Player_StartTimeshiftPlayback( ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE, 0 )
+
+			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
+				ret = self.mCommander.Player_Pause()
 			elif self.mMode == ElisEnum.E_MODE_PVR:
-				ret = self.commander.player_Stop()
+				ret = self.mCommander.Player_Pause()
 
-			if ret[0] == 'TRUE':
-				print 'stop ret[%s]'% ret
-				self.ctrlProgress.setPercent(0)
-				self.progress_idx = 0.0
-				self.progress_max = 0.0
+			if ret :
+				LOG_TRACE( 'play_pause() ret[%s]'% ret )
+				self.mIsPlay = False
 
-				self.untilThread = False
-				self.updateLocalTime().join()
+				# toggle
+				#self.mCtrlBtnPlay.setVisible( True )
+				#self.mCtrlBtnPause.setVisible( False )
+
+		elif aFocusId == self.mCtrlBtnStop.getId() :
+
+			if self.mMode == ElisEnum.E_MODE_LIVE :
+				ret = self.mCommander.Player_Stop()
+
+			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
+				ret = self.mCommander.Player_Stop()
+
+			elif self.mMode == ElisEnum.E_MODE_PVR :
+				ret = self.mCommander.Player_Stop()
+
+			if ret :
+				LOG_TRACE( 'play_stop() ret[%s]'% ret )
+				self.mCtrlProgress.setPercent( 0 )
+				self.mProgress_idx = 0.0
+				self.mProgress_max = 0.0
+
+				self.mUntilThread = False
+				self.UpdateLocalTime().join()
 				self.close( )
 
-				winmgr.GetInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
+				winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_NULLWINDOW )
 
-		elif focusId == self.ctrlBtnRewind.getId():
+		elif aFocusId == self.mCtrlBtnRewind.getId() :
 			nextSpeed = 100
-			nextSpeed = self.getSpeedValue(focusId)
+			nextSpeed = self.GetSpeedValue( aFocusId )
 
-			if self.mMode == ElisEnum.E_MODE_LIVE:
-				ret = self.commander.player_StartTimeshiftPlayback(ElisEnum.E_PLAYER_TIMESHIFT_START_REWIND,0)
-				#ret = self.commander.player_SetSpeed(nextSpeed)
-			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT:
-				ret = self.commander.player_SetSpeed(nextSpeed)
-			elif self.mMode == ElisEnum.E_MODE_PVR:
-				ret = self.commander.player_SetSpeed(nextSpeed)
+			if self.mMode == ElisEnum.E_MODE_LIVE :
+				ret = self.mCommander.Player_StartTimeshiftPlayback( ElisEnum.E_PLAYER_TIMESHIFT_START_REWIND, 0 )
+				#ret = self.mCommander.Player_SetSpeed( nextSpeed )
 
-			if ret[0] == 'TRUE':
-				print 'rewind ret[%s], player_SetSpeed[%s]'% (ret, nextSpeed)
+			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
+				ret = self.mCommander.Player_SetSpeed( nextSpeed )
 
-		elif focusId == self.ctrlBtnForward.getId():
+			elif self.mMode == ElisEnum.E_MODE_PVR :
+				ret = self.mCommander.Player_SetSpeed( nextSpeed )
+
+			if ret :
+				LOG_TRACE( 'play_rewind() ret[%s], player_SetSpeed[%s]'% (ret, nextSpeed) )
+
+		elif aFocusId == self.mCtrlBtnForward.getId() :
 			nextSpeed = 100
-			nextSpeed = self.getSpeedValue(focusId)
+			nextSpeed = self.GetSpeedValue( aFocusId )
 
-			if self.mMode == ElisEnum.E_MODE_LIVE:
-				#ret = self.commander.player_StartTimeshiftPlayback(ElisEnum.E_PLAYER_TIMESHIFT_START_REWIND,0)
-				ret = self.commander.player_SetSpeed(nextSpeed)
-			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT:
-				ret = self.commander.player_SetSpeed(nextSpeed)
-			elif self.mMode == ElisEnum.E_MODE_PVR:
-				ret = self.commander.player_SetSpeed(nextSpeed)
+			if self.mMode == ElisEnum.E_MODE_LIVE :
+				#ret = self.mCommander.Player_StartTimeshiftPlayback( ElisEnum.E_PLAYER_TIMESHIFT_START_REWIND, 0 )
+				ret = self.mCommander.Player_SetSpeed( nextSpeed )
 
-			if ret[0] == 'TRUE':
-				print 'forward ret[%s] player_SetSpeed[%s]'% (ret, nextSpeed)
+			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
+				ret = self.mCommander.Player_SetSpeed( nextSpeed )
+
+			elif self.mMode == ElisEnum.E_MODE_PVR :
+				ret = self.mCommander.Player_SetSpeed( nextSpeed )
+
+			if ret :
+				LOG_TRACE( 'play_forward() ret[%s] player_SetSpeed[%s]'% (ret, nextSpeed) )
 
 		time.sleep(0.5)
-		self.initTimeShift()
+		self.InitTimeShift()
 
-	def updateONEvent(self, event):
-		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		print 'event[%s]'% event
+	def UpdateONEvent(self, aEvent) :
+		LOG_TRACE( '' )
+		aEvent.printdebug()
 
 
-	def initLabelInfo(self):
-		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		print 'currentChannel[%s]' % self.currentChannel
+	def InitLabelInfo(self) :
+		#LOG_TRACE( 'currentChannel[%s]' % self.mCurrentChannel )
 		
 		# todo 
-		self.eventCopy = []
-		self.ctrlLblTSStartTime.setLabel('')
-		self.ctrlLblTSEndTime.setLabel('')
+		self.mEventCopy = []
+		self.mCtrlLblTSStartTime.setLabel('')
+		self.mCtrlLblTSEndTime.setLabel('')
 
-		try :
-			ret = self.commander.datetime_GetLocalTime()
-			self.localTime = int(ret[0])
-		except Exception, e :
-			print '[%s]%s():%s except[%s]'% ( os.path.basename(currentframe().f_code.co_filename), currentframe().f_code.co_name, currentframe().f_lineno, e)
-				
+		self.mLocalTime = self.mCommander.Datetime_GetLocalTime()
+		self.InitTimeShift()
 
-		self.initTimeShift()
+	def InitTimeShift(self, loop = 0) :
+		LOG_TRACE( '' )
 
-	def initTimeShift(self, loop = 0) :
-		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-
-		status = []
-		status = self.commander.player_GetStatus()
-
-		print 'player_GetStatus[%s]'% status
+		status = None
+		status = self.mCommander.Player_GetStatus()
+		if status :
+			retList = []
+			retList.append( status )
+			LOG_TRACE( 'player_GetStatus[%s]'% ClassToList( 'convert', retList ) )
+			#status.printdebug()
 		
-		if len(status) == 11:
 			#play mode
-			self.mMode = int(status[0])
+			self.mMode = status.mMode
 
 			#progress info
-			self.timeshift_staTime = 0.0
-			self.timeshift_curTime = 0.0
-			self.timeshift_endTime = 0.0
+			self.mTimeshift_staTime = 0.0
+			self.mTimeshift_curTime = 0.0
+			self.mTimeshift_endTime = 0.0
 
 			#start,endtime when timeshift
 			if self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				#strTime to timeT
-				ret = epgInfoClock(3, self.timeShiftExcuteTime, 0)
-				self.timeshift_staTime = epgInfoClock(5, 0, ret[0])
-				self.timeshift_curTime = self.timeshift_staTime
+				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, self.mTimeShiftExcuteTime, 0)
+				self.mTimeshift_staTime = EpgInfoClock(FLAG_CLOCKMODE_INTTIME, 0, ret[0])
+				self.mTimeshift_curTime = self.mTimeshift_staTime
 
-				ret = epgInfoClock(3, self.localTime, 0)
-				endtime = epgInfoClock(5, 0, ret[0]) + loop
+				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, self.mLocalTime, 0)
+				endtime = EpgInfoClock(FLAG_CLOCKMODE_INTTIME, 0, ret[0]) + loop
 				
-				#self.timeshift_staTime = self.timeShiftExcuteTime
-				#self.timeshift_curTime = self.timeShiftExcuteTime
-				#endtime = self.localTime + loop
-				self.progress_max = endtime
+				#self.mTimeshift_staTime = self.mTimeShiftExcuteTime
+				#self.mTimeshift_curTime = self.mTimeShiftExcuteTime
+				#endtime = self.mLocalTime + loop
+				self.mProgress_max = endtime
 
-				ret = epgInfoClock(3, self.timeshift_staTime, 0)
+				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, self.mTimeshift_staTime, 0)
 				label1 = ret[0]
 
-				ret = epgInfoClock(3, endtime, 0)
+				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, endtime, 0)
 				label2 = ret[0]
 
 
 			else :
-				self.playTime = 0
-				self.timeshift_staTime = int(status[3]) / 1000.0
-				self.timeshift_curTime = int(status[4]) / 1000.0
-				self.timeshift_endTime = int(status[5]) / 1000.0
-				self.progress_max = self.timeshift_endTime
+				self.mPlayTime = 0
+				self.mTimeshift_staTime = status.mStartTimeInMs / 1000.0
+				self.mTimeshift_curTime = status.mPlayTimeInMs  / 1000.0
+				self.mTimeshift_endTime = status.mEndTimeInMs   / 1000.0
+				self.mProgress_max = self.mTimeshift_endTime
 				#test
-				#self.timeshift_curTime = 0.0
-				#self.timeshift_endTime = 50
-				label1 = epgInfoClock(4, self.timeshift_staTime, 0)
-				label2 = epgInfoClock(4, self.timeshift_endTime, 0)
+				#self.mTimeshift_curTime = 0.0
+				#self.mTimeshift_endTime = 50
+				label1 = EpgInfoClock(FLAG_CLOCKMODE_HHMM, self.mTimeshift_staTime, 0)
+				label2 = EpgInfoClock(FLAG_CLOCKMODE_HHMM, self.mTimeshift_endTime, 0)
 				
 
-			self.ctrlLblTSStartTime.setLabel(label1)
-			self.ctrlLblTSEndTime.setLabel(label2)
-			#print 'staTime[%s] ret[%s]'% (self.timeshift_staTime, ret)
+			self.mCtrlLblTSStartTime.setLabel(label1)
+			self.mCtrlLblTSEndTime.setLabel(label2)
+			#LOG_TRACE( 'staTime[%s] ret[%s]'% (self.mTimeshift_staTime, ret) )
 
 			
 
 			#Speed label
-			self.mSpeed = int(status[6])
+			self.mSpeed = status.mSpeed
 
 			if self.mSpeed == 100 :
-				self.ctrlImgRewind.setVisible(False)
-				self.ctrlImgForward.setVisible(False)
-				self.ctrlLblSpeed.setLabel('')
+				self.mCtrlImgRewind.setVisible(False)
+				self.mCtrlImgForward.setVisible(False)
+				self.mCtrlLblSpeed.setLabel('')
 
 			elif self.mSpeed >= 200 and self.mSpeed <= 1000:
-				self.ctrlImgRewind.setVisible(False)
-				self.ctrlImgForward.setVisible(True)
+				self.mCtrlImgRewind.setVisible(False)
+				self.mCtrlImgForward.setVisible(True)
 
 				if self.mSpeed == 200 :
-					self.ctrlLblSpeed.setLabel('2x')
+					self.mCtrlLblSpeed.setLabel('2x')
 				elif self.mSpeed == 300 :
-					self.ctrlLblSpeed.setLabel('4x')
+					self.mCtrlLblSpeed.setLabel('4x')
 				elif self.mSpeed == 400 :
-					self.ctrlLblSpeed.setLabel('8x')
+					self.mCtrlLblSpeed.setLabel('8x')
 				elif self.mSpeed == 600 :
-					self.ctrlLblSpeed.setLabel('16x')
+					self.mCtrlLblSpeed.setLabel('16x')
 				elif self.mSpeed == 800 :
-					self.ctrlLblSpeed.setLabel('24x')
+					self.mCtrlLblSpeed.setLabel('24x')
 				elif self.mSpeed == 1000 :
-					self.ctrlLblSpeed.setLabel('32x')
+					self.mCtrlLblSpeed.setLabel('32x')
 
 			elif self.mSpeed <= -200 and self.mSpeed >= -1000:
-				self.ctrlImgRewind.setVisible(True)
-				self.ctrlImgForward.setVisible(False)
+				self.mCtrlImgRewind.setVisible(True)
+				self.mCtrlImgForward.setVisible(False)
 
 				if self.mSpeed == -200 :
-					self.ctrlLblSpeed.setLabel('2x')
+					self.mCtrlLblSpeed.setLabel('2x')
 				elif self.mSpeed == -300 :
-					self.ctrlLblSpeed.setLabel('4x')
+					self.mCtrlLblSpeed.setLabel('4x')
 				elif self.mSpeed == -400 :
-					self.ctrlLblSpeed.setLabel('8x')
+					self.mCtrlLblSpeed.setLabel('8x')
 				elif self.mSpeed == -600 :
-					self.ctrlLblSpeed.setLabel('16x')
+					self.mCtrlLblSpeed.setLabel('16x')
 				elif self.mSpeed == -800 :
-					self.ctrlLblSpeed.setLabel('24x')
+					self.mCtrlLblSpeed.setLabel('24x')
 				elif self.mSpeed == -1000 :
-					self.ctrlLblSpeed.setLabel('32x')
+					self.mCtrlLblSpeed.setLabel('32x')
+
 
 			"""
 			#pending status
-			mIsTimeshiftPending = int(status[7])
-			if mIsTimeshiftPending == True :
-				self.isPlay = True
-				self.ctrlBtnPlay.setVisible(False)
-				self.ctrlBtnPause.setVisible(True)
+			isPending = status.mIsTimeshiftPending
+			if isPending == True :
+				self.mIsPlay = True
+				self.mCtrlBtnPlay.setVisible(False)
+				self.mCtrlBtnPause.setVisible(True)
 
 			else :
-				self.isPlay = False
-				self.ctrlBtnPlay.setVisible(True)
-				self.ctrlBtnPause.setVisible(False)
+				self.mIsPlay = False
+				self.mCtrlBtnPlay.setVisible(True)
+				self.mCtrlBtnPause.setVisible(False)
 			"""
 
-		if self.isPlay == True :
-			self.ctrlBtnPlay.setVisible(False)
-			self.ctrlBtnPause.setVisible(True)
+
+		if self.mIsPlay == True :
+			self.mCtrlBtnPlay.setVisible(False)
+			self.mCtrlBtnPause.setVisible(True)
 		else :
-			self.ctrlBtnPlay.setVisible(True)
-			self.ctrlBtnPause.setVisible(False)
+			self.mCtrlBtnPlay.setVisible(True)
+			self.mCtrlBtnPause.setVisible(False)
 
 
-	def getSpeedValue(self, focusId):
-		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-
-		print 'mSpeed[%s]'% self.mSpeed
+	def GetSpeedValue(self, aFocusId):
+		LOG_TRACE( 'mSpeed[%s]'% self.mSpeed )
 		ret = 0
-		if focusId == self.ctrlBtnRewind.getId():
+		if aFocusId == self.mCtrlBtnRewind.getId():
 
 			if self.mSpeed == -1000 :
 				ret = -1000
@@ -469,7 +462,7 @@ class TimeShiftBanner(BaseWindow):
 			elif self.mSpeed == 1000 :
 				ret = 800
 
-		elif focusId == self.ctrlBtnForward.getId():
+		elif aFocusId == self.mCtrlBtnForward.getId():
 			if self.mSpeed == 100 :
 				ret = 200
 			elif self.mSpeed == 200 :
@@ -505,14 +498,14 @@ class TimeShiftBanner(BaseWindow):
 		
 
 	@RunThread
-	def updateLocalTime(self):
-		print '[%s():%s]begin_start thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		#print 'untilThread[%s] self.progress_max[%s]' % (self.untilThread, self.progress_max)
+	def UpdateLocalTime(self):
+		LOG_TRACE( 'begin_start thread' )
+		#LOG_TRACE( 'untilThread[%s] self.mProgress_max[%s]' % (self.mUntilThread, self.mProgress_max) )
 
 		loop = 0
 		rLock = threading.RLock()
-		while self.untilThread:
-			#print '[%s():%s]repeat'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		while self.mUntilThread:
+			#LOG_TRACE( 'repeat' )
 
 
 			#local clock
@@ -521,11 +514,10 @@ class TimeShiftBanner(BaseWindow):
 
 				isExcept = False
 				try:
-					ret = self.commander.datetime_GetLocalTime( )
-					self.localTime = int( ret[0] )
+					self.mLocalTime = self.mCommander.Datetime_GetLocalTime()
 
 				except Exception, e:
-					print '[%s]%s():%s except[%s]'% ( os.path.basename(currentframe().f_code.co_filename), currentframe().f_code.co_name, currentframe().f_lineno, e )
+					LOG_TRACE( 'except[%s]'% e )
 					isExcept = True
 					rLock.release()
 
@@ -533,96 +525,91 @@ class TimeShiftBanner(BaseWindow):
 				if isExcept == False :
 					rLock.release()
 					loop = 0
-					ret = epgInfoClock(2, self.localTime, 0)
-					self.ctrlEventClock.setLabel(ret[0])
-
+					ret = EpgInfoClock(FLAG_CLOCKMODE_AHM, self.mLocalTime, 0)
+					self.mCtrlEventClock.setLabel(ret[0])
 
 
 
 			#start,endtime when timeshift
 			if self.mMode == ElisEnum.E_MODE_TIMESHIFT :
-				#endtime = self.localTime + loop
-				ret = epgInfoClock(3, self.localTime, 0)
-				endtime = epgInfoClock(5, 0, ret[0]) + loop
+				#endtime = self.mLocalTime + loop
+				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, self.mLocalTime, 0)
+				endtime = EpgInfoClock(FLAG_CLOCKMODE_INTTIME, 0, ret[0]) + loop
 				
-				self.progress_max = endtime
+				self.mProgress_max = endtime
 
-				ret = epgInfoClock(3, endtime, 0)
-				self.ctrlLblTSEndTime.setLabel(ret[0])
+				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, endtime, 0)
+				self.mCtrlLblTSEndTime.setLabel(ret[0])
 
 				#calculate current position
-				pastTime = self.timeshift_curTime + self.playTime
-				#idxmax = self.progress_max - self.timeshift_staTime
-				#self.progress_idx = ( float(self.playTime) / idxmax ) * 100
-				#print 'pastTime[%s] idx[%s] max[%s]'% ( self.playTime, self.progress_idx, idxmax )
+				pastTime = self.mTimeshift_curTime + self.mPlayTime
+				#idxmax = self.mProgress_max - self.mTimeshift_staTime
+				#self.mProgress_idx = ( float(self.mPlayTime) / idxmax ) * 100
+				#LOG_TRACE( 'pastTime[%s] idx[%s] max[%s]'% ( self.mPlayTime, self.mProgress_idx, idxmax ) )
 
-				self.progress_idx = ( float(pastTime) / self.progress_max * 100 )
-				print 'pastTime[%s] idx[%s] max[%s]'% ( pastTime, self.progress_idx, self.progress_max )
+				self.mProgress_idx = ( float(pastTime) / self.mProgress_max * 100 )
+				LOG_TRACE( 'pastTime[%s] idx[%s] max[%s]'% ( pastTime, self.mProgress_idx, self.mProgress_max ) )
 
-				ret = epgInfoClock(3, pastTime, 0)
+				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, pastTime, 0)
 				label = ret[0]
 
 			else:
 				#calculate current position
-				pastTime = self.timeshift_curTime + self.playTime
-				self.progress_idx = ( pastTime / self.progress_max * 100 )
-				print 'pastTime[%s] idx[%s] max[%s]'% ( pastTime, self.progress_idx, self.progress_max )
+				pastTime = self.mTimeshift_curTime + self.mPlayTime
+				self.mProgress_idx = ( pastTime / self.mProgress_max * 100 )
+				LOG_TRACE( 'pastTime[%s] idx[%s] max[%s]'% ( pastTime, self.mProgress_idx, self.mProgress_max ) )
 
 				label = ''
-				label = epgInfoClock(4, pastTime, 0)
+				label = EpgInfoClock(FLAG_CLOCKMODE_HHMM, pastTime, 0)
 
 
-			if self.progress_idx > 100:
-				self.progress_idx = 100
+			if self.mProgress_idx > 100:
+				self.mProgress_idx = 100
 
-			if pastTime > self.progress_max :
-				pastTime = self.progress_max
-				self.initTimeShift( loop )
+			if pastTime > self.mProgress_max :
+				pastTime = self.mProgress_max
+				self.InitTimeShift( loop )
 
 
 			#increase play time
-			if self.isPlay == True:
+			if self.mIsPlay == True:
 				if self.mSpeed != 100:
-					self.initTimeShift( loop )
+					self.InitTimeShift( loop )
 
-				self.playTime += 1
-				#print 'posx[%s] [%s] [%s]'% (posx, pastTime, pastTime/self.progress_max)
+				self.mPlayTime += 1
+				#LOG_TRACE( 'posx[%s] [%s] [%s]'% (posx, pastTime, pastTime/self.mProgress_max) )
 
 
 			#progress drawing
-			if self.progress_max > 0:
+			if self.mProgress_max > 0:
 				try :
-					print 'progress_idx[%s] getPercent[%s]' % (self.progress_idx, self.ctrlProgress.getPercent())
+					LOG_TRACE( 'progress_idx[%s] getPercent[%s]' % (self.mProgress_idx, self.mCtrlProgress.getPercent()) )
 
-					self.ctrlProgress.setPercent(self.progress_idx)
+					self.mCtrlProgress.setPercent( self.mProgress_idx )
 
-					posx = int (self.progress_idx * self.progressbarWidth / 100)
-					self.ctrlBtnCurrent.setPosition( posx, 25 )
-					self.ctrlBtnCurrent.setLabel(label)
+					posx = int( self.mProgress_idx * self.mProgressbarWidth / 100 )
+					self.mCtrlBtnCurrent.setPosition( posx, 25 )
+					self.mCtrlBtnCurrent.setLabel( label )
 
 				except Exception, e :
-					print 'Error Exception[%s] progress'% e
+					LOG_TRACE( 'Error Exception[%s] progress'% e )
 
 			else:
-				print 'value error progress_max[%s]' % self.progress_max
+				LOG_TRACE( 'value error progress_max[%s]' % self.mProgress_max )
 
 
 
 			loop += 1
 			time.sleep(1)
 
-		print '[%s():%s]leave_end thread'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		LOG_TRACE( 'leave_end thread' )
 
 
 	def updateServiceType(self, tvType):
-		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
-		print 'serviceType[%s]' % tvType
-
-
-			
+		LOG_TRACE( 'serviceType[%s]' % tvType )
 
 	def showEPGDescription(self, focusid, event):
-		print '[%s():%s]'% (currentframe().f_code.co_name, currentframe().f_lineno)
+		LOG_TRACE( '' )
 
 		
 		

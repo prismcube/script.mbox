@@ -28,7 +28,7 @@ WIN_ID_CONFIG_DISEQC_11				= 15
 WIN_ID_CHANNEL_SEARCH				= 16
 WIN_ID_AUTOMATIC_SCAN				= 17
 WIN_ID_MANUAL_SCAN					= 18
-WIN_ID_TIMESHIFT_BANNER				= 19
+WIN_ID_TIMESHIFT_PLATE				= 19
 WIN_ID_CHANNEL_EDIT_WINDOW			= 20
 
 WIN_ID_CHANNEL_LIST1_WINDOW			= 102	#for test
@@ -90,9 +90,9 @@ class WindowMgr(object):
 				from pvr.gui.windows.ChannelBanner import ChannelBanner
 				ChannelBanner('ChannelBanner.xml', self.mScriptDir ).doModal()
 
-			elif aWindowId == WIN_ID_TIMESHIFT_BANNER:
-				from pvr.gui.windows.TimeShiftBanner import TimeShiftBanner
-				TimeShiftBanner('TimeshiftBanner.xml', self.mScriptDir ).doModal()
+			elif aWindowId == WIN_ID_TIMESHIFT_PLATE:
+				from pvr.gui.windows.TimeshiftPlate import TimeShiftPlate
+				TimeShiftPlate('TimeshiftPlate.xml', self.mScriptDir ).doModal()
 
 			elif aWindowId ==  WIN_ID_CONFIGURE:
 				from pvr.gui.windows.Configure import Configure	

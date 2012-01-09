@@ -12,7 +12,7 @@
 			<posx>0</posx>
 			<posy>100</posy>
 			<width>610</width>
-			<height>200</height>
+			<height>220</height>
 			<texture border="40">confluence/DialogBack.png</texture>
 		</control>
 		<control type="image">
@@ -40,14 +40,33 @@
 			<label>Stop</label>
 		</control>
 
+		<!-- Close button -->
+		<control type="button">
+			<description>Close Window button</description>
+			<posx>520</posx>
+			<posy>109</posy>
+			<width>64</width>
+			<height>32</height>
+			<label>-</label>
+			<font>-</font>
+			<texturefocus>confluence/DialogCloseButton-focus.png</texturefocus>
+			<texturenofocus>confluence/DialogCloseButton.png</texturenofocus>
+			<onleft>10</onleft>
+			<onright>10</onright>
+			<onup>10</onup>
+			<ondown>10</ondown>
+			<onclick>ParentDir</onclick>
+			<visible>system.getbool(input.enablemouse)</visible>
+		</control>
+
 		<control type="group" id="200">		
 			<control type="list" id="201">
 				<posx>30</posx>
-				<posy>150</posy>
+				<posy>160</posy>
 				<width>550</width>
 				<height>80</height>
-				<onleft>-</onleft>
-				<onright>-</onright>
+				<onleft>300</onleft>
+				<onright>300</onright>
 				<onup>201</onup>
 				<ondown>201</ondown>
 				<pagecontrol>61</pagecontrol>
@@ -61,14 +80,14 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>750</width>
+						<width>550</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 					</control>
 					<control type="label">
 						<posx>30</posx>
 						<posy>0</posy>
-						<width>550</width>
+						<width>520</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>grey3</textcolor>
@@ -78,7 +97,7 @@
 						<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
 					</control>
 					<control type="label">
-						<posx>660</posx>
+						<posx>550</posx>
 						<posy>0</posy>
 						<width>400</width>
 						<height>40</height>
@@ -91,11 +110,11 @@
 						<visible>false</visible>
 					</control>	
 				</itemlayout>
-				<focusedlayout height="40" width="750">
+				<focusedlayout height="40" width="550">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>750</width>
+						<width>550</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 						<visible>!Control.HasFocus(201)</visible>
@@ -105,7 +124,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>750</width>
+						<width>550</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
 						<visible>Control.HasFocus(201)</visible>
@@ -113,7 +132,7 @@
 						<animation effect="fade" time="300">Hidden</animation>
 					</control>
 					<control type="image">
-						<posx>620</posx>
+						<posx>490</posx>
 						<posy>5</posy>
 						<width>30</width>
 						<height>30</height>
@@ -122,7 +141,7 @@
 					<control type="label">
 						<posx>30</posx>
 						<posy>0</posy>
-						<width>660</width>
+						<width>520</width>
 						<height>40</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
@@ -132,7 +151,7 @@
 						<label>$INFO[ListItem.Label]</label>
 					</control>
 					<control type="label">
-						<posx>550</posx>
+						<posx>500</posx>
 						<posy>0</posy>
 						<width>400</width>
 						<height>40</height>
@@ -149,6 +168,54 @@
 
 			</control>
 		</control>	
+
+		<!-- Cancel Button -->
+		<control type="group" id="300">
+			<posx>30</posx>
+			<posy>240</posy>
+			<width>115</width>
+			<height>40</height>
+			<defaultcontrol always="true">301</defaultcontrol>
+			<control type="button" id="301">
+				<description>Button Icon</description>
+				<posx>30</posx>
+				<posy>20</posy>
+				<width>35</width>
+				<height>35</height>
+				<hitrect x="30" y="10" w="120" h="40"></hitrect>
+				<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
+				<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
+				<onup>500</onup>
+				<ondown>500</ondown>
+				<onleft>200</onleft>
+				<onright>200</onright>
+				<onclick>ParentDir</onclick>
+			</control>
+			<control type="label">
+				<posx>72</posx>
+				<posy>17</posy>
+				<width>150</width>
+				<height>40</height>
+				<font>font12</font>
+				<textcolor>grey2</textcolor>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>[B]Cancel[/B]</label>
+				<visible>!Control.HasFocus(300)</visible>
+			</control>
+			<control type="label">
+				<posx>72</posx>
+				<posy>17</posy>
+				<width>150</width>
+				<height>40</height>
+				<font>font12</font>
+				<textcolor>white</textcolor>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>[B]Cancel[/B]</label>
+				<visible>Control.HasFocus(300)</visible>
+			</control>
+		</control>
 
 	</controls>
 </window>
