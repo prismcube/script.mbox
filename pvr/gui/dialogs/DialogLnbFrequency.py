@@ -30,8 +30,6 @@ class DialogLnbFrequency( BaseDialog ) :
 		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-		focusId = self.getFocusId( )
-
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass
