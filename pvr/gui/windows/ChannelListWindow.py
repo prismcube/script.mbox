@@ -117,7 +117,7 @@ class ChannelListWindow(BaseWindow):
 		
 		self.mCtrlHeader3.setLabel('')
 
-		self.mEpgRecvPermission = True
+		self.mIsSelect = False
 		self.mLocalOffset = self.mCommander.Datetime_GetLocalOffset()
 		self.mChannelListServieType = ElisEnum.E_SERVICE_TYPE_INVALID
 		self.mListItems = []
@@ -126,6 +126,7 @@ class ChannelListWindow(BaseWindow):
 		self.mChannelList = []
 		self.mNavEpg = None
 		self.mNavChannel = None
+		self.mCurrentChannel = 0
 		self.mSlideOpenFlag = False
 
 
@@ -134,8 +135,8 @@ class ChannelListWindow(BaseWindow):
 		#self.GetSlideMenuHeader( FLAG_SLIDE_INIT )
 
 		try :
-			#self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
 			self.mNavChannel = self.mCommander.Channel_GetCurrent()
+			self.mCurrentChannel = self.mNavChannel.mNumber
 			
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -209,7 +210,7 @@ class ChannelListWindow(BaseWindow):
 		elif id == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN :
 			self.GetFocusId()
 			if self.mFocusId == self.mCtrlListCHList.getId() :
-				self.mEpgRecvPermission = False
+				self.mIsSelect = False
 				self.InitEPGEvent()
 
 				self.ResetLabel()
@@ -301,33 +302,37 @@ class ChannelListWindow(BaseWindow):
 		LOG_TRACE( 'onclick focusID[%d]'% aControlId )
 
 		if aControlId == self.mCtrlListCHList.getId() :
+			self.mIsSelect = True
+
 			label = self.mCtrlListCHList.getSelectedItem().getLabel()
 			channelNumbr = int(label[:4])
-			ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
 
+			ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
+			#LOG_TRACE( 'MASK[%s] ret[%s]'% (self.mPincodeEnter, ret) )
 			if ret == True :
-				self.PincodeDialogLimit()
 				if self.mPincodeEnter == FLAG_MASK_NONE :
-					#if self.mCurrentChannel.mNumber == channelNumbr :
-					if self.mNavChannel.mNumber == channelNumbr :
+					if self.mCurrentChannel == channelNumbr :
 						self.SaveSlideMenuHeader()
 						self.mEnableThread = False
 						self.CurrentTimeThread().join()
 						self.close()
 
 						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_BANNER )
+						return
 
 					else :
 						pass
 						#ToDO : WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_CHANNEL_BANNER).setLastChannel( self.mCurrentChannel )
 
-				#self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
-				self.mNavChannel = self.mCommander.Channel_GetCurrent()
-
-			self.mEpgRecvPermission = True
-			self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
-			self.ResetLabel()
-			self.UpdateLabelInfo()
+			ch = None
+			ch = self.mCommander.Channel_GetCurrent()
+			if ch :
+				self.mNavChannel = ch
+				self.mCurrentChannel = self.mNavChannel.mNumber
+				self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
+				self.ResetLabel()
+				self.UpdateLabelInfo()
+				self.PincodeDialogLimit()
 
 		elif aControlId == self.mCtrlBtnMenu.getId() or aControlId == self.mCtrlListMainmenu.getId() :
 			#list view
@@ -347,7 +352,7 @@ class ChannelListWindow(BaseWindow):
 			self.mEnableThread = False
 			self.CurrentTimeThread().join()
 			self.mCtrlListCHList.reset()
-			self.close( )
+			self.close()
 
 		elif aControlId == self.mCtrlFooter2.getId() :
 			LOG_TRACE( 'onclick footer ok' )
@@ -378,7 +383,7 @@ class ChannelListWindow(BaseWindow):
 			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
 
 				if aEvent.mEventId != self.mEventId :
-					if self.mEpgRecvPermission == True :
+					if self.mIsSelect == True :
 						#on select, clicked
 						ret = None
 						ret = self.mCommander.Epgevent_GetPresent()
@@ -901,12 +906,16 @@ class ChannelListWindow(BaseWindow):
 
 		self.mCtrlListCHList.addItems( self.mListItems )
 
+
+		#get last channel
+		ret = None
+		ret = self.mCommander.Channel_GetCurrent()
+		if ret :
+			self.mNavChannel = ret
+			self.mCurrentChannel = self.mNavChannel.mNumber
+
 		#detected to last focus
-		#self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
-		self.mNavChannel = self.mCommander.Channel_GetCurrent()
-
 		chindex = 0;
-
 		for ch in self.mChannelList:
 			if ch.mNumber == self.mNavChannel.mNumber :
 				break
@@ -950,7 +959,7 @@ class ChannelListWindow(BaseWindow):
 		ret = None
 
 		try :
-			if self.mEpgRecvPermission == True :
+			if self.mIsSelect == True :
 				ret = self.mCommander.Epgevent_GetPresent()
 				xbmc.sleep(500)
 				if ret :
@@ -1006,7 +1015,7 @@ class ChannelListWindow(BaseWindow):
 		LOG_TRACE( 'Enter' )
 
 		#update channel name
-		if self.mEpgRecvPermission == True :
+		if self.mIsSelect == True :
 			label = self.UpdateServiceType( self.mNavChannel.mServiceType )
 			self.mCtrlChannelName.setLabel( str('%s - %s'% (label, self.mNavChannel.mName )) )
 
@@ -1091,21 +1100,31 @@ class ChannelListWindow(BaseWindow):
 		LOG_TRACE( 'Leave' )
 
 
+
 	def PincodeDialogLimit( self ) :
 		LOG_TRACE( 'Enter' )
 
-		LOG_TRACE( 'MASK[%s]'% self.mPincodeEnter )
 		#popup pin-code dialog
 		if self.mPincodeEnter > FLAG_MASK_NONE :
+			try :
+				msg1 = Msg.Strings(MsgId.LANG_INPUT_PIN_CODE)
+				#msg2 = Msg.Strings(MsgId.LANG_CURRENT_PIN_CODE)
 
-			msg1 = Msg.Strings(MsgId.LANG_INPUT_PIN_CODE)
-			#msg2 = Msg.Strings(MsgId.LANG_CURRENT_PIN_CODE)
+				inputPin = ''
+				inputPin = xbmcgui.Dialog().numeric( 0, msg1 )
+				stbPin = PincodeLimit( self.mCommander, inputPin )
+				if inputPin == None or inputPin == '' :
+					inputPin = ''
 
-			inputPin = xbmcgui.Dialog().numeric( 0, msg1 )
-			pincode = PincodeLimit(self.mCommander, inputPin)
+				#LOG_TRACE( 'mask[%s] inputPin[%s] stbPin[%s]'% (self.mPincodeEnter, inputPin, stbPin) )
 
-			if int(inputPin) == pincode :
-				self.mPincodeEnter = FLAG_MASK_NONE
+				if inputPin == str('%s'% stbPin) :
+					self.mPincodeEnter = FLAG_MASK_NONE
+					LOG_TRACE( 'Pincode success' )
+
+			except Exception, e:
+				LOG_TRACE( 'Error exception[%s]'% e )
+
 
 		LOG_TRACE( 'Leave' )
 		
