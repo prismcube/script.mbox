@@ -191,7 +191,7 @@ def AgeLimit(aCmd, aAgerating):
 	from ElisProperty import ElisPropertyEnum
 
 	property = ElisPropertyEnum( 'Age Limit', aCmd )
-	#LOG_TRACE( 'TTTTTTTTTTTTTTT[%s][%s][%s]'% ( agerating, property.getProp(), property.getPropString() ) )
+	#LOG_TRACE( 'TTTTTTTTTTTTTTT[%s][%s][%s]'% ( agerating, property.GetProp(), property.GetPropString() ) )
 
 	isWatch = True
 	limit = property.GetProp()
@@ -207,6 +207,16 @@ def AgeLimit(aCmd, aAgerating):
 			isLimit = False
 
 	return isLimit
+
+def PincodeLimit(aCmd, aInput):
+	from ElisProperty import ElisPropertyInt
+
+	property = ElisPropertyInt( 'PinCode', aCmd )
+	#LOG_TRACE( 'TTTTTTTTTTTTTTT[%s][%s]'% ( aInput, property.GetProp() ) )
+
+	pincode = property.GetProp()
+
+	return pincode
 
 def ClassToList( aMode, aClassList ) :
 

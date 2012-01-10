@@ -7,8 +7,8 @@ from pvr.gui.BaseWindow import BaseWindow, Action
 from ElisEnum import ElisEnum
 from ElisEventBus import ElisEventBus
 from ElisEventClass import *
-from pvr.Util import RunThread, GuiLock, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
-from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit
+from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
+from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit, PincodeLimit
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 
@@ -160,20 +160,18 @@ class ChannelListWindow(BaseWindow):
 
 	def onAction(self, aAction):
 		#LOG_TRACE( 'Enter' )
-
 		id = aAction.getId()
-		focusId = self.getFocusId()
-		#print '[%s:%s]aActionID[%d]'% (self.__file__, currentframe().f_lineno, id) 
 
 		if id == Action.ACTION_PREVIOUS_MENU:
 			LOG_TRACE( 'goto previous menu' )
 
 		elif id == Action.ACTION_SELECT_ITEM:
+			self.GetFocusId()
 			LOG_TRACE( 'item select, action ID[%s]'% id )
 
-			if focusId == self.mCtrlListMainmenu.getId() :
+			if self.mFocusId == self.mCtrlListMainmenu.getId() :
 				position = self.mCtrlListMainmenu.getSelectedPosition()
-				LOG_TRACE( 'focus[%s] idx_main[%s]'% (focusId, position) )
+				LOG_TRACE( 'focus[%s] idx_main[%s]'% (self.mFocusId, position) )
 
 				if position == E_SLIDE_MENU_BACK :
 					self.mCtrlListCHList.setEnabled(True)
@@ -188,6 +186,8 @@ class ChannelListWindow(BaseWindow):
 		elif id == Action.ACTION_PARENT_DIR :
 			LOG_TRACE( 'goto action back' )
 
+			self.GetFocusId()
+
 			self.SaveSlideMenuHeader()
 
 			self.mEnableThread = False
@@ -197,37 +197,25 @@ class ChannelListWindow(BaseWindow):
 
 
 		elif id == Action.ACTION_MOVE_RIGHT :
-			"""
-			if focusId == self.mCtrlListMainmenu.getId() :
-				position = self.mCtrlListMainmenu.getSelectedPosition()
-
-				#this position's 'Back'
-				if position == E_SLIDE_MENU_BACK :
-					self.mCtrlListCHList.setEnabled( True )
-					self.setFocusId( self.mCtrlGropCHList.getId() )
-
-				else :
-					self.onClick( self.mCtrlListMainmenu.getId() )
-
-			elif focusId == self.mCtrlListSubmenu.getId() :
-				self.onClick( self.mCtrlListMainmenu.getId() )
-			"""
 			pass
+
 		elif id == Action.ACTION_MOVE_LEFT :
-			if focusId == self.mCtrlListCHList.getId() :
+			self.GetFocusId()
+			if self.mFocusId == self.mCtrlListCHList.getId() :
 				self.GetSlideMenuHeader( FLAG_SLIDE_OPEN )
 				self.mSlideOpenFlag = True
 
 
 		elif id == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN :
-			if focusId == self.mCtrlListCHList.getId() :
+			self.GetFocusId()
+			if self.mFocusId == self.mCtrlListCHList.getId() :
 				self.mEpgRecvPermission = False
 				self.InitEPGEvent()
 
 				self.ResetLabel()
 				self.UpdateLabelInfo()
 
-			if focusId == self.mCtrlListMainmenu.getId() :
+			if self.mFocusId == self.mCtrlListMainmenu.getId() :
 				#self.onClick( self.mCtrlListMainmenu.getId() )
 				position = self.mCtrlListMainmenu.getSelectedPosition()
 				self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
@@ -237,7 +225,7 @@ class ChannelListWindow(BaseWindow):
 				#self.mCtrlListSubmenu.selectItem( self.mSelectSubSlidePosition )
 				#self.setFocusId( self.mCtrlGropSubmenu.getId() )
 
-			elif focusId >= self.mCtrlFooter1.getId() and focusId <= self.mCtrlFooter3.getId() :
+			elif self.mFocusId >= self.mCtrlFooter1.getId() and self.mFocusId <= self.mCtrlFooter3.getId() :
 				self.mCtrlListCHList.setEnabled( True )
 				self.setFocusId( self.mCtrlGropCHList.getId() )
 				
@@ -318,6 +306,7 @@ class ChannelListWindow(BaseWindow):
 			ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
 
 			if ret == True :
+				self.PincodeDialogLimit()
 				if self.mPincodeEnter == FLAG_MASK_NONE :
 					#if self.mCurrentChannel.mNumber == channelNumbr :
 					if self.mNavChannel.mNumber == channelNumbr :
@@ -963,7 +952,7 @@ class ChannelListWindow(BaseWindow):
 		try :
 			if self.mEpgRecvPermission == True :
 				ret = self.mCommander.Epgevent_GetPresent()
-				time.sleep(0.5)
+				xbmc.sleep(500)
 				if ret :
 					self.mNavEpg = ret
 					ret.printdebug()
@@ -982,7 +971,7 @@ class ChannelListWindow(BaseWindow):
 						gmtUntil= 0
 						maxCount= 1
 						ret = self.mCommander.Epgevent_GetList( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount )
-						time.sleep(0.5)
+						xbmc.sleep(500)
 						if ret :
 							self.mNavEpg = ret
 							ret.printdebug()
@@ -1099,20 +1088,27 @@ class ChannelListWindow(BaseWindow):
 			LOG_TRACE( 'event null' )
 
 
-
-		#popup pin-code dialog
-		if self.mPincodeEnter > FLAG_MASK_NONE :
-			msg1 = Msg.Strings(MsgId.LANG_INPUT_PIN_CODE)
-			msg2 = Msg.Strings(MsgId.LANG_CURRENT_PIN_CODE)
-			kb = xbmc.Keyboard( msg1, '1111', False )
-			kb.doModal()
-			if( kb.isConfirmed() ) :
-				inputPass = kb.getText()
-				#self.mPincodeEnter = FLAG_MASK_NONE
-				LOG_TRACE( 'password[%s]'% inputPass )
-
 		LOG_TRACE( 'Leave' )
 
+
+	def PincodeDialogLimit( self ) :
+		LOG_TRACE( 'Enter' )
+
+		LOG_TRACE( 'MASK[%s]'% self.mPincodeEnter )
+		#popup pin-code dialog
+		if self.mPincodeEnter > FLAG_MASK_NONE :
+
+			msg1 = Msg.Strings(MsgId.LANG_INPUT_PIN_CODE)
+			#msg2 = Msg.Strings(MsgId.LANG_CURRENT_PIN_CODE)
+
+			inputPin = xbmcgui.Dialog().numeric( 0, msg1 )
+			pincode = PincodeLimit(self.mCommander, inputPin)
+
+			if int(inputPin) == pincode :
+				self.mPincodeEnter = FLAG_MASK_NONE
+
+		LOG_TRACE( 'Leave' )
+		
 
 	@RunThread
 	def CurrentTimeThread(self):
@@ -1136,7 +1132,7 @@ class ChannelListWindow(BaseWindow):
 			self.mCtrlHeader4.setLabel(ret[1])
 
 			#self.nowTime += 1
-			time.sleep(1)
+			xbmc.sleep(1000)
 			loop += 1
 
 		LOG_TRACE( 'leave_end thread' )

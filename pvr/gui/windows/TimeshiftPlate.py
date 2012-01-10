@@ -107,7 +107,6 @@ class TimeShiftPlate(BaseWindow):
 
 	def onAction(self, aAction):
 		id = aAction.getId()
-		focusid = self.getFocusId()
 		
 		if id == Action.ACTION_PREVIOUS_MENU:
 			LOG_TRACE( 'youn check action menu' )
@@ -154,6 +153,7 @@ class TimeShiftPlate(BaseWindow):
 	def onFocus(self, aControlId):
 		#LOG_TRACE( 'control %d' % controlId )
 		pass
+
 
 	@GuiLock
 	def onEvent(self, aEvent):
@@ -605,10 +605,10 @@ class TimeShiftPlate(BaseWindow):
 		LOG_TRACE( 'leave_end thread' )
 
 
-	def updateServiceType(self, tvType):
-		LOG_TRACE( 'serviceType[%s]' % tvType )
+	def updateServiceType(self, aTvType):
+		LOG_TRACE( 'serviceType[%s]' % aTvType )
 
-	def showEPGDescription(self, focusid, event):
+	def showEPGDescription(self, aFocusid, aEvent):
 		LOG_TRACE( '' )
 
 		
