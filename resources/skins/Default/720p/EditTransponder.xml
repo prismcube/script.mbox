@@ -1,0 +1,33 @@
+<window id="3018">
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<controls>
+		<include>MenuHeader</include>
+		<control type="group" id="9000">
+			<include>FadeEffect</include>
+			<control type="image">
+				<posx>840</posx>
+				<posy>160</posy>
+				<width>352</width>
+				<height>198</height>
+				<texture border="20">special://skin/backgrounds/weather.jpg</texture>
+				<description>pre-view</description>
+			</control>
+			<include>MenuDescription</include>
+			<control type="group" id="9010">
+				<visible>true</visible>
+				<posx>75</posx>
+				<posy>115</posy>
+				<width>750</width>
+				<height>530</height>
+				<include>Input01</include>
+				<include>Input02</include>
+				<include>Input03</include>
+				<include>Input04</include>
+				<include>Input05</include>
+				<include>Input06</include>
+				<include>Input07</include>
+			</control>
+		</control>
+		<include>MenuFooter</include>
+	</controls>
+</window>

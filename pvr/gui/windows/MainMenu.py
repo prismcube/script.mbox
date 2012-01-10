@@ -71,8 +71,7 @@ class MainMenu( BaseWindow ):
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_EDIT_SATELLITE )
 			
 		elif aControlId == BUTTON_ID_EDIT_TRANSPONDER : # Edit TransPonder
-			#ToDO
-			pass
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_EDIT_TRANSPONDER )
 
 		elif aControlId == BUTTION_ID_CONFIGURE : # Config
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIGURE )
