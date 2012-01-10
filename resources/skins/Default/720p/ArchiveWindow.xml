@@ -5,498 +5,336 @@
 		<posx>0</posx>
 		<posy>0</posy>
 	</coordinates>
-	<defaultcontrol always="true">9000</defaultcontrol>
+	<defaultcontrol always="true">50</defaultcontrol>
 	<allowoverlay>no</allowoverlay>
 
 	<controls>
-		<!--  header -->
-		<include>MenuHeader</include>
-		<control type="group">		
-			<control type="list" id="9000">
-				<posx>75</posx>
-				<posy>180</posy>
-				<width>780</width>
-				<height>401</height>
-				<onleft>102</onleft>
-				<onright>SetFocus(61)</onright>
-				<onup>49</onup>
-				<ondown>49</ondown>
-				<pagecontrol>61</pagecontrol>
-				<scrolltime>200</scrolltime>
-				<focusposition>0</focusposition>
-				<movement>2</movement>
-				<visible>true</visible>
-				<enable>!Control.HasFocus(101) | !Control.HasFocus(102) | !ControlGroup(9001).HasFocus</enable>
-				<animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(61)">Conditional</animation>
-				<itemlayout height="40" width="750">
-					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>750</width>
-						<height>41</height>
-						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
-					</control>
-					<!-- is cas? -->
-					<control type="image">
-						<posx>650</posx>
-						<posy>5</posy>
-						<width>30</width>
-						<height>30</height>
-						<texture>$INFO[ListItem.Property(icas)]</texture>
-					</control>
-					<!-- is lock? -->
-					<control type="image">
-						<posx>0</posx>
-						<posy>5</posy>
-						<width>30</width>
-						<height>30</height>
-						<texture>$INFO[ListItem.Property(lock)]</texture>
-					</control>
-
-					<control type="label">
-						<posx>30</posx>
-						<posy>0</posy>
-						<width>660</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>$INFO[ListItem.Label]</label>
-						<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
-					</control>
-					<control type="label">
-						<posx>660</posx>
-						<posy>0</posy>
-						<width>400</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
-						<align>right</align>
-						<aligny>center</aligny>
-						<label>$INFO[ListItem.Label2]</label>
-						<visible>false</visible>
-					</control>	
-				</itemlayout>
-				<focusedlayout height="40" width="750">
-					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>750</width>
-						<height>41</height>
-						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
-						<!--visible>!ControlGroup(49).HasFocus(50)</visible-->
-						<animation effect="fade" time="300">Visible</animation>
-						<animation effect="fade" time="300">Hidden</animation>
-					</control>
-					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>750</width>
-						<height>41</height>
-						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
-						<!--visible>ControlGroup(49).HasFocus(50)</visible-->
-						<animation effect="fade" time="300">Visible</animation>
-						<animation effect="fade" time="300">Hidden</animation>
-					</control>
-					<control type="image">
-						<posx>620</posx>
-						<posy>5</posy>
-						<width>30</width>
-						<height>30</height>
-						<texture>DI_Ok.png</texture>
-					</control>
-					<!-- is cas? -->
-					<control type="image">
-						<posx>650</posx>
-						<posy>5</posy>
-						<width>30</width>
-						<height>30</height>
-						<texture>$INFO[ListItem.Property(icas)]</texture>
-					</control>
-					<!-- is lock? -->
-					<control type="image">
-						<posx>0</posx>
-						<posy>5</posy>
-						<width>30</width>
-						<height>30</height>
-						<texture>$INFO[ListItem.Property(lock)]</texture>
-					</control>
-
-					<control type="label">
-						<posx>30</posx>
-						<posy>0</posy>
-						<width>660</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>white</textcolor>
-						<selectedcolor>selected</selectedcolor>						
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>$INFO[ListItem.Label]</label>
-					</control>
-					<control type="label">
-						<posx>660</posx>
-						<posy>0</posy>
-						<width>400</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
-						<align>right</align>
-						<aligny>center</aligny>
-						<label>$INFO[ListItem.Label2]</label>
-						<visible>false</visible>
-						<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="true">conditional</animation>
-					</control>
-				</focusedlayout>
-
-			</control>
-		</control>	
-
-        <!-- Scrollbar -->
-		<control type="scrollbar" id="61">
-			<posx>820</posx>
-			<posy>180</posy>
-			<width>25</width>
-			<height>401</height>
-
-			<texturesliderbackground border="0,14,0,14">confluence/ScrollBarV.png</texturesliderbackground>
-			<texturesliderbar border="0,14,0,14">confluence/ScrollBarV_bar.png</texturesliderbar>
-			<texturesliderbarfocus border="0,14,0,14">confluence/ScrollBarV_bar_focus.png</texturesliderbarfocus>
-			<textureslidernib>confluence/ScrollBarNib.png</textureslidernib>
-			<textureslidernibfocus>confluence/ScrollBarNib.png</textureslidernibfocus>
-			<onleft>SetFocus(49)</onleft>
-			<onright>SetFocus(49)</onright>
-			<ondown>61</ondown>
-			<onup>61</onup>
-			<showonepage>false</showonepage>
-			<orientation>vertical</orientation>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<texture background="true">confluence/backgrounds/videos.jpg</texture>
+			<include>DefaultBackgroundFade</include>
+			<fadetime>FanartCrossfadeTime</fadetime>
+			<visible>true</visible>
+			<!--
+			<visible>!Skin.HasSetting(VideoFilesFanart) | Control.IsVisible(508)</visible>
+			-->
 		</control>
-
-		<!-- middle right -->
-		<control type="group" id="300">
-			<posx>850</posx>
-			<posy>180</posy>
-			<width>1200</width>
-			<height>401</height>
-			<allowoverlay>true</allowoverlay>
-			<control type="group">
-				<include>backgroundfade</include>
-				<animation type="WindowOpen" reversible="false">
-					<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
-					<effect type="fade" start="0" end="100" time="300" />
-				</animation>
-				<animation type="WindowClose" reversible="false">
-					<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
-					<effect type="fade" start="100" end="0" time="300" />
-				</animation>			
-
-				<control type="image">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>350</width>
-					<height>200</height>
-					<texture border="20">confluence/backgrounds/weather.jpg</texture>
-					<description>pre-view</description>
-				</control>
-				<control type="image">
-					<posx>0</posx>
-					<posy>185</posy>
-					<width>350</width>
-					<height>18</height>
-					<visible>!Skin.HasSetting(ShowBackgroundVideo)</visible>
-					<texture border="20">confluence/StackNF.png</texture>
-					<!--<texture border="20">media-overlay.png</texture>-->
-				</control>
-				<control type="label" id="303">
-					<posx>0</posx>
-					<posy>183</posy>
-					<width>350</width>
-					<height>10</height>
-					<font>font12_title</font>
-					<shadowcolor>ff000000</shadowcolor>
-					<backgroundcolor>ffff0000</backgroundcolor>
-					<label>$INFO[Control.Label]</label>
-					<description>epg name</description>
-				</control>
-			</control>
-			<control type="group">
+		<!--
+		<include>CommonMediaPlayingBackground</include>
+		-->
+		<control type="group">
+			<include>Window_OpenClose_Animation</include>		
+			<control type="image">
 				<posx>0</posx>
-				<posy>220</posy>
-				<width>350</width>
-				<control type="label" id="304">
-					<description>EPG Info</description>
+				<posy>0</posy>
+				<width>1280</width>
+				<height>720</height>
+				<texture border="20">confluence/black-back.png</texture>
+				<include>VisibleFadeEffect</include>
+				<visible>true</visible>				
+				<visible>Control.IsVisible(50)</visible>				
+				<!--
+				<visible>Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(500) | Control.IsVisible(505)</visible>
+				-->
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>128r</posy>
+				<width>1280</width>
+				<height>128</height>
+				<texture>confluence/floor.png</texture>
+				<include>VisibleFadeEffect</include>
+				<visible>Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(500) | Control.IsVisible(505) | Control.IsVisible(508)</visible>
+			</control>
+			<control type="group">
+				<include>VisibleFadeEffect</include>
+				<visible>Control.IsVisible(50)</visible>
+				<control type="image">
+					<posx>50</posx>
+					<posy>60</posy>
+					<width>750</width>
+					<height>600</height>
+					<texture border="20">ContentPanel.png</texture>
+				</control>
+				<control type="image">
+					<posx>50</posx>
+					<posy>645</posy>
+					<width>750</width>
+					<height>600</height>
+					<aspectratio aligny="top">keep</aspectratio>
+					<texture diffuse="diffuse_mirror3.png" flipy="true" border="20">ContentPanel.png</texture>
+				</control>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1280</width>
+				<height>720</height>
+				<texture border="20">ContentPanel2.png</texture>
+				<include>VisibleFadeEffect</include>
+				<visible>Control.IsVisible(501)</visible>
+			</control>
+			<control type="group">
+				<include>VisibleFadeEffect</include>
+				<visible>Control.IsVisible(51) | Control.IsVisible(500) | Control.IsVisible(505)</visible>
+				<control type="image">
+					<posx>75</posx>
+					<posy>60</posy>
+					<width>1130</width>
+					<height>600</height>
+					<texture border="20">ContentPanel.png</texture>
+				</control>
+				<control type="image">
+					<posx>75</posx>
+					<posy>645</posy>
+					<width>1130</width>
+					<height>600</height>
+					<aspectratio aligny="top">keep</aspectratio>
+					<texture diffuse="diffuse_mirror3.png" flipy="true" border="20">ContentPanel.png</texture>
+				</control>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>-5</posy>
+				<width>1280</width>
+				<height>725</height>
+				<texture border="0,5,0,0">ContentPanel4.png</texture>
+				<include>VisibleFadeEffect</include>
+				<visible>Control.IsVisible(550) | Control.IsVisible(560)</visible>
+			</control>
+		</control>
+		<control type="group">
+			<include>Window_OpenClose_Animation</include>		
+			<include>CommonRootView</include> <!-- view id = 50 -->
+			<include>FullWidthList</include> <!-- view id = 51 -->
+			<include>ThumbnailView</include> <!-- view id = 500 -->
+			<include>PosterWrapView</include> <!-- view id = 501 -->
+			<include>PosterWrapView2_Fanart</include> <!-- view id = 508 -->
+			<include>WideIconView</include> <!-- view id = 505 -->
+			<include>AddonInfoListView1</include> <!-- view id = 550 -->
+			<include>LiveTVView1</include> <!-- view id = 560 -->
+		</control>
+		<include>CommonPageCount</include>
+		<include>BehindDialogFadeOut</include>
+		<include>ScrollOffsetLabel</include>
+		<control type="group">
+			<animation effect="slide" start="0,0" end="250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(9000).HasFocus | ControlGroup(9001).HasFocus | Control.HasFocus(8999)">Conditional</animation>
+			<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(9000).HasFocus | ControlGroup(9001).HasFocus">WindowClose</animation>
+			<control type="group">
+				<animation effect="slide" end="-240,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
+				<animation effect="slide" start="-15,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
-					<font>font12_title</font>
-					<textcolor>grey</textcolor>
-					<label>epg name</label>
+					<width>1</width>
+					<height>720</height>
+					<texture>MediaBladeSub_Part1.png</texture>
+					<animation effect="zoom" start="0,0,1,720" end="0,0,229,720" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(98) | ControlGroup(9001).HasFocus">Conditional</animation>
 				</control>
-
-				<control type="group">
-				<description>EPG Info</description>
-					<control type="label" id="305">
-						<posx>0</posx>
-						<posy>20</posy>
-						<font>font12_title</font>
-						<textcolor>grey</textcolor>
-						<label>00:00-00:00</label>
-					</control>
-					<control type="progress" id="306">
-						<posx>200</posx>
-						<posy>20</posy>
-						<width>150</width>
-						<height>15</height>
-						<color>grey</color>
-						<border>0</border>
-						<texturebg border="6,0,6,0">confluence/OSDProgressBack.png</texturebg>
-						<lefttexture>-</lefttexture>
-						<midtexture border="6,0,6,0">confluence/OSDProgressMid.png</midtexture>
-						<righttexture>-</righttexture>
-						<overlaytexture>-</overlaytexture>
-					</control>
-				</control>
-
-				<control type="label" id="307">
-					<description>satellite info</description>
-					<posx>0</posx>
-					<posy>40</posy>
-					<font>font12_title</font>
-					<textcolor>grey</textcolor>
-					<label>19.2 E ASTRA 1</label>
-				</control>
-				<control type="label" id="308">
-					<description>career info</description>
-					<posx>0</posx>
-					<posy>60</posy>
-					<font>font12_title</font>
-					<textcolor>grey</textcolor>
-					<label>11303 MHz, 22000 KS/S, Horz</label>
-				</control>
-
-				<control type="group" id="309">
-					<control type="image">
-						<posx>0</posx>
-						<posy>75</posy>
-						<width>30</width>
-						<height>30</height>
-						<!--<texture>confluence/OverlayHD.png</texture>-->
-						<texture>confluence/OverlayLocked.png</texture>
-						<description>lock</description>
-					</control>
-					<control type="label">
-						<posx>30</posx>
-						<posy>75</posy>
-						<font>font12_title</font>
-						<textcolor>grey</textcolor>
-						<label>Locked</label>
-					</control>
-				</control>
-
-
-				<control type="image" id="310">
-					<posx>0</posx>
-					<posy>100</posy>
-					<width>60</width>
-					<height>30</height>
-					<texture>$INFO[Control.GetLabel]</texture>
-					<description>data</description>
-				</control>
-
-				<control type="image" id="311">
-					<posx>55</posx>
-					<posy>100</posy>
-					<width>65</width>
-					<height>30</height>
-					<!--<texture>confluence/dolbydigital.png</texture>-->
-					<texture>$INFO[Control.GetLabel]</texture>
-					<description>audio dolby</description>
-				</control>
-
-				<control type="image" id="312">
-					<posx>110</posx>
-					<posy>100</posy>
-					<width>65</width>
-					<height>30</height>
-					<!--<texture>confluence/OverlayHD.png</texture>-->
-					<texture>$INFO[Control.GetLabel]</texture>
-					<description>video HD</description>
-				</control>
-
-			</control>
-
-		</control>
-
-
-		<!-- Main Menu -->
-		<control type="group" id="100">
-			<animation effect="slide" start="0,0" end="180,0" time="400" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation> 
-			<animation effect="slide" start="0,0" end="-180,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus">Conditional</animation>
-			<animation effect="slide" start="0,0" end="-180,0" time="400" tween="quadratic" easing="out" condition="Control.HasFocus(101)">WindowClose</animation>
-			<control type="group">
-                <animation effect="slide" end="-361,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
 				<control type="image">
-                    <posx>0</posx>
-                    <posy>152</posy>
-                    <width>1</width>
-                    <height>535</height>
-                    <texture>black-back_noAlpha.png</texture>
-                    <!--animation effect="zoom" start="0,0,0,535" end="0,0,300,535" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation-->
-                    <animation effect="zoom" start="0,0,0,535" end="0,0,300,535" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
-					<animation effect="slide" start="0,0" end="-300,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(5)">Conditional</animation>
-                </control>
-                <control type="image">
-                    <posx>0</posx>
-                    <posy>152</posy>
-                    <width>12</width>
-                    <height>535</height>
-                    <texture>confluence/HomeBladeSub_Part2.png</texture>
-                    <!--animation effect="slide" end="300,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation-->
-                    <animation effect="slide" end="300,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
-					<animation effect="slide" start="0,0" end="-300,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(5)">Conditional</animation>
-                </control>
+					<posx>1</posx>
+					<posy>0</posy>
+					<width>12</width>
+					<height>720</height>
+					<texture>MediaBladeSub_Part2.png</texture>
+					<animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(98) | ControlGroup(9001).HasFocus">Conditional</animation>
+				</control>
 			</control>
-
-            <control type="image">
-                <posx>-180</posx>
-                <posy>152</posy>
-                <width>180</width>
-                <height>535</height>
-                <colordiffuse>DAFFFFFF</colordiffuse>
-                <texture>confluence/HomeBlade_bottom.png</texture>
-            </control>
-
-			<control type="button" id="101">
+			<control type="group" id="9001">
+				<posx>-220</posx>
+				<posy>0</posy>
+				<animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9001).HasFocus + !Control.HasFocus(98)">conditional</animation>
+				<animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(98) | ControlGroup(9001).HasFocus">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(98) | ControlGroup(9001).HasFocus">WindowClose</animation>
+				<animation effect="slide" end="220,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(98) | ControlGroup(9001).HasFocus">conditional</animation>
+				<control type="button">
+					<description>Fake button for mouse control</description>
+					<posx>-15</posx>
+					<posy>0</posy>
+					<width>245</width>
+					<height>720</height>
+					<label>-</label>
+					<font>-</font>
+					<texturenofocus>-</texturenofocus>
+					<texturefocus>-</texturefocus>
+					<visible>true</visible>
+				</control>
+				<control type="image">
+					<posx>185</posx>
+					<posy>200</posy>
+					<width>40</width>
+					<height>40</height>
+					<texture>MediaSubSet.png</texture>
+				</control>
+				<control type="grouplist" id="9010">
+					<posx>10</posx>
+					<posy>250</posy>
+					<width>240</width>
+					<height>550</height>
+					<onleft>9000</onleft>
+					<onright>50</onright>
+					<onup>9010</onup>
+					<ondown>9010</ondown>
+					<itemgap>0</itemgap>
+					<control type="radiobutton" id="7">
+						<description>Stack Toggle</description>
+						<textwidth>170</textwidth>
+						<include>ButtonMediaSubCommonValues</include>
+						<label>346</label>
+					</control>
+					<control type="label" id="200">
+						<width>220</width>
+						<height>45</height>
+						<font>font12caps</font>
+						<label>14018</label>
+						<textcolor>dialogheader</textcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+					</control>
+					<control type="radiobutton" id="201">
+						<description>Toggle Fanart</description>
+						<textwidth>170</textwidth>
+						<include>ButtonMediaSubCommonValues</include>
+						<label>31307</label>
+						<onclick>Skin.ToggleSetting(VideoFilesFanart)</onclick>
+						<selected>Skin.HasSetting(VideoFilesFanart)</selected>
+						<visible>!Control.IsVisible(508)</visible>
+					</control>
+				</control>
+			</control>
+			<control type="button" id="8999">
 				<description>Fake button for mouse control</description>
-				<posx>-180</posx>
-				<posy>152</posy>
-				<width>195</width>
-				<height>535</height>
+				<posx>-250</posx>
+				<posy>0</posy>
+				<width>265</width>
+				<height>720</height>
 				<label>-</label>
 				<font>-</font>
 				<texturenofocus>-</texturenofocus>
 				<texturefocus>-</texturefocus>
-				<onclick>202</onclick>
 				<visible>true</visible>
 			</control>
+			<include>SideBladeLeft</include>
 			<control type="image">
-				<posx>-180</posx>
-				<posy>152</posy>
-				<width>195</width>
-				<height>535</height>
-				<texture>HomeBlade.png</texture>
-				<animation effect="slide" start="-26,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
-				<animation effect="slide" start="0,0" end="-26,0" time="200" delay="200" tween="quadratic" easing="out">WindowClose</animation>
+				<description>LOGO</description>
+				<posx>-230</posx>
+				<posy>50</posy>
+				<width>220</width>
+				<height>80</height>
+				<aspectratio>keep</aspectratio>
+				<texture>Confluence_Logo.png</texture>
 			</control>
-
-			<control type="group" id="110">
-				<posx>-180</posx>
-				<posy>180</posy>
-				<control type="list" id="102">
+			<control type="group" id="9000">
+				<posx>-250</posx>
+				<posy>130</posy>
+				<include>CommonNowPlaying</include>
+				<control type="button" id="2">
+					<description>View As button</description>
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>180</width>
-					<height>535</height>
-					<onleft>49</onleft>
-					<onright>9001</onright>
-					<onup>102</onup>
-					<ondown>102</ondown>
-					<scrolltime>300</scrolltime>
-					<!--focusposition>0</focusposition-->
-					<movement>10</movement>
-					<animation effect="fade" start="0" end="100" time="200">Visible</animation>
-					<itemlayout height="70" width="185">
-						<control type="label">
-							<posx>20r</posx>
-							<posy>21</posy>
-							<width>180</width>
-							<height>40</height>
-							<font>font35</font>
-							<textcolor>grey3</textcolor>
-							<align>right</align>
-							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label]</label>
-							<animation effect="zoom" start="85" end="85" center="185,51" time="0" condition="true">Conditional</animation>
-						</control>
-					</itemlayout>
-					<focusedlayout height="70" width="185">
-						<control type="label">
-							<posx>20r</posx>
-							<posy>21</posy>
-							<width>180</width>
-							<height>40</height>
-							<font>font35</font>
-							<textcolor>white</textcolor>
-							<align>right</align>
-							<aligny>center</aligny>
-							<animation effect="zoom" start="85" end="100" center="185,51" time="200">Focus</animation>
-							<animation effect="zoom" start="100" end="85" center="185,51" time="200">UnFocus</animation>
-							<label>$INFO[ListItem.Label]</label>
-
-						</control>
-						<control type="image">
-							<posx>20r</posx>
-							<posy>63</posy>
-							<width>10</width>
-							<height>10</height>
-							<texture>confluence/HomeHasSub.png</texture>
-							<visible>Container(102).HasFocus(1) | Container(102).HasFocus(2) | Container(102).HasFocus(3) | Container(102).HasFocus(4)</visible>
-							<animation effect="fade" start="0" end="100" time="200">Focus</animation>
-							<animation effect="fade" start="100" end="0" time="200">UnFocus</animation>
-						</control>
-					</focusedlayout>
-					<content>
-						<item id="1">
-							<label>SCRIPT541</label>
-							<onclick>right</onclick>
-							<visible>true</visible>
-						</item>
-						<item id="2">
-							<label>SCRIPT542</label>
-							<onclick>right</onclick>
-							<visible>true</visible>
-						</item>
-						<item id="3">
-							<label>SCRIPT543</label>
-							<onclick>right</onclick>
-							<visible>true</visible>
-						</item>
-						<item id="4">
-							<label>SCRIPT544</label>
-							<onclick>right</onclick>
-							<visible>true</visible>
-						</item>
-						<item id="5">
-							<label>SCRIPT555</label>
-							<onclick>right</onclick>
-							<visible>true</visible>
-						</item>
-					</content>
+					<include>ButtonCommonValues</include>
+					<label>-</label>
+					<onleft>50</onleft>
+					<onright>50</onright>
+					<onup>611</onup>
+					<ondown>3</ondown>
 				</control>
-			</control>	
-		</control>
-
-		<!--  page -->
-		<control type="group" id="400">
-			<control type="label" id="401">
-				<posx>400</posx>
-				<posy>600</posy>
-				<align>center</align>
-				<textcolor>grey</textcolor>
-				<font>font12</font>
-				<!--<label>[COLOR=blue]$INFO[Control.getSelectedItem(50)][/COLOR]</label>-->
-				<label>$INFO[Control.Label] / $INFO[Container(50).NumItems]</label>
-
+				<control type="button" id="3">
+					<description>Sort by button</description>
+					<posx>0</posx>
+					<posy>40</posy>
+					<include>ButtonCommonValues</include>
+					<label>103</label>
+					<onleft>50</onleft>
+					<onright>4</onright>
+					<onup>2</onup>
+					<ondown>99</ondown>
+				</control>
+				<control type="togglebutton" id="4">
+					<description>Sort asc</description>
+					<posx>220</posx>
+					<posy>53</posy>
+					<label>-</label>
+					<onleft>3</onleft>
+					<onright>50</onright>
+					<onup>2</onup>
+					<ondown>99</ondown>
+				</control>
+				<control type="radiobutton" id="99">
+					<description>Library button</description>
+					<posx>0</posx>
+					<posy>80</posy>
+					<label>$LOCALIZE[29800]</label>
+					<onclick>ReplaceWindow(VideoLibrary)</onclick>
+					<selected>Window.IsVisible(VideoLibrary)</selected>
+					<include>ButtonCommonValues</include>
+					<onleft>50</onleft>
+					<onright>50</onright>
+					<onup>3</onup>
+					<ondown>98</ondown>
+					<enable>Library.HasContent(Video)</enable>
+				</control>
+				<control type="radiobutton" id="98">
+					<description>Extra Options</description>
+					<hitrect x="0" y="120" w="265" h="40" />
+					<posx>0</posx>
+					<posy>120</posy>
+					<include>ButtonCommonValues</include>
+					<radiowidth>18</radiowidth>
+					<radioheight>18</radioheight>
+					<radioposx>222</radioposx>
+					<radioposy>12</radioposy>
+					<textureradiofocus>HomeHasSub.png</textureradiofocus>
+					<textureradionofocus>HomeHasSub.png</textureradionofocus>
+					<label>31026</label>
+					<onleft>50</onleft>
+					<onright>9010</onright>
+					<onup>99</onup>
+					<ondown>610</ondown>
+				</control>
+				<control type="button" id="610">
+					<description>Fake Button to fix Player Controls Navigation</description>
+					<onup>98</onup>
+					<ondown>603</ondown>
+					<visible>false</visible>
+				</control>
+				<control type="group">
+					<posx>0</posx>
+					<posy>260</posy>
+					<include>CommonNowPlaying_Controls</include>
+				</control>
+				<control type="button" id="611">
+					<description>Fake Button to fix Player Controls Navigation</description>
+					<onup>608</onup>
+					<ondown>2</ondown>
+					<visible>false</visible>
+				</control>
 			</control>
 		</control>
-
-
-		<!-- footer -->
-		<control type="group" id="500">
-			<onup>SetFocus(49)</onup>
-			<include>MenuFooter</include>
+		<control type="group">
+			<posx>60</posx>
+			<posy>0</posy>
+			<animation effect="slide" end="-310,0" time="400" tween="quadratic" easing="out">WindowClose</animation>
+			<animation effect="slide" start="-310,0" time="400" tween="quadratic" easing="out">WindowOpen</animation>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>250</width>
+				<height>35</height>
+				<texture border="0,0,32,0">header.png</texture>
+			</control>
+			<control type="label">
+				<include>WindowTitleCommons</include>
+				<posx>220</posx>
+				<label>$LOCALIZE[31021]</label>
+			</control>
 		</control>
+		<!--
+		<include>WindowTitleHomeButton</include>
+		-->
+		<include>Clock</include>
 	</controls>
 </window>

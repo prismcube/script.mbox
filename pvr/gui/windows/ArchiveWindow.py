@@ -7,12 +7,11 @@ from pvr.gui.BaseWindow import BaseWindow, Action
 from ElisEnum import ElisEnum
 from ElisEventBus import ElisEventBus
 from ElisEventClass import *
-from pvr.Util import RunThread, GuiLock, MLOG, LOG_WARN
+from pvr.Util import RunThread, GuiLock, LOG_TRACE, LOG_WARN, LOG_ERR
 from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 
-from inspect import currentframe
 from pvr.gui.GuiConfig import FooterMask
 import threading, time, os
 
@@ -28,30 +27,33 @@ class ArchiveWindow(BaseWindow):
 	def onInit(self):
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
-		self.SetHeaderLabel( 'Archive' )		
+		#self.SetHeaderLabel( 'Archive' )		
 
 
 	def onAction(self, aAction):
 		actionId = aAction.getId()
 		focusId = self.getFocusId()
 
-		if id == Action.ACTION_PREVIOUS_MENU:
+		LOG_TRACE('onAction=%d' %actionId )
+
+		if actionId == Action.ACTION_PREVIOUS_MENU:
 			self.close( )
 
-		elif id == Action.ACTION_SELECT_ITEM:
+		elif actionId == Action.ACTION_SELECT_ITEM:
 			pass
 
-		elif id == Action.ACTION_PARENT_DIR :
+		elif actionId == Action.ACTION_PARENT_DIR :
 			self.close( )
 
-		elif id == Action.ACTION_MOVE_RIGHT :
+		elif actionId == Action.ACTION_MOVE_RIGHT :
 			pass
 
-		elif id == Action.ACTION_MOVE_LEFT :
+		elif actionId == Action.ACTION_MOVE_LEFT :
 			pass
 
-		elif id == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN :
+		elif actionId == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN :
 			pass
+
 		
 	def onClick(self, aControlId):
 		pass
@@ -59,6 +61,7 @@ class ArchiveWindow(BaseWindow):
 
 	def onFocus(self, controlId):
 		pass
+
 
 	@GuiLock
 	def onEvent(self, aEvent):
