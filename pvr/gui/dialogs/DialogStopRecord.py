@@ -58,7 +58,8 @@ class DialogStopRecord( BaseDialog ) :
 		LOG_TRACE('action=%d' %actionId )
 	
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			pass
+			self.Close()
+			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				

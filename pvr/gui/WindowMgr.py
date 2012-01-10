@@ -30,6 +30,7 @@ WIN_ID_AUTOMATIC_SCAN				= 17
 WIN_ID_MANUAL_SCAN					= 18
 WIN_ID_TIMESHIFT_PLATE				= 19
 WIN_ID_CHANNEL_EDIT_WINDOW			= 20
+WIN_ID_ARCHIVE_WINDOW				= 21
 
 WIN_ID_CHANNEL_LIST1_WINDOW			= 102	#for test
 WIN_ID_CHANNEL_LIST2_WINDOW			= 103	#for test
@@ -162,6 +163,10 @@ class WindowMgr(object):
 			elif aWindowId ==  WIN_ID_CHANNEL_LIST2_WINDOW:
 				from pvr.gui.windows.ChannelListWindow_b import ChannelListWindow_b #for test		
 				ChannelListWindow_b('ChannelListWindow_b.xml', self.mScriptDir ).doModal()
+
+			elif aWindowId ==  WIN_ID_ARCHIVE_WINDOW:
+				from pvr.gui.windows.ArchiveWindow import ArchiveWindow
+				ArchiveWindow('ArchiveWindow.xml', self.mScriptDir ).doModal()
 
 			else :
 				print 'Unknown widnowId=%d' %aWindowId
