@@ -13,7 +13,7 @@ from ElisEnum import ElisEnum
 from ElisEventBus import ElisEventBus
 from ElisEventClass import *
 
-from pvr.Util import RunThread, GuiLock, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
+from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
 from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit
 
 import threading, time, os
@@ -156,11 +156,9 @@ class ChannelBanner(BaseWindow):
 
 
 	def onAction(self, aAction):
-		LOG_TRACE( 'Enter' )
-
+		#LOG_TRACE( 'Enter' )
 		id = aAction.getId()
-		focusid = self.getFocusId()
-		
+
 		if id == Action.ACTION_PREVIOUS_MENU:
 			LOG_TRACE( 'action menu' )
 			self.DescboxToggle('close')
@@ -180,10 +178,10 @@ class ChannelBanner(BaseWindow):
 			self.close( )
 			#winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_NULLWINDOW )
 
-
 			"""
-			if focusid >= self.mCtrlBtnExInfo.getId() and focusid <= self.mCtrlBtnMute.getId():
-				self.ShowEPGDescription(focusid, self.mEventCopy)
+			self.GetFocusId()
+			if self.mFocusId >= self.mCtrlBtnExInfo.getId() and self.mFocusId <= self.mCtrlBtnMute.getId():
+				self.ShowEPGDescription(self.mFocusId, self.mEventCopy)
 
 			else:
 				# end thread CurrentTimeThread()
@@ -200,11 +198,13 @@ class ChannelBanner(BaseWindow):
 			self.ShowEPGDescription( self.mCtrlBtnExInfo.getId(), self.mEventCopy)
 
 		elif id == Action.ACTION_MOVE_LEFT:
-			if focusid == self.mCtrlBtnPrevEpg.getId():			
+			self.GetFocusId()
+			if self.mFocusId == self.mCtrlBtnPrevEpg.getId():			
 				self.ChannelTune(id)
 
 		elif id == Action.ACTION_MOVE_RIGHT:
-			if focusid == self.mCtrlBtnNextEpg.getId():
+			self.GetFocusId()
+			if self.mFocusId == self.mCtrlBtnNextEpg.getId():
 				self.ChannelTune(id)
 
 		elif id == Action.ACTION_PAGE_UP:
@@ -301,7 +301,7 @@ class ChannelBanner(BaseWindow):
 		#LOG_TRACE( 'control %d' % controlId )
 		pass
 
-	@GuiLock
+
 	def onEvent(self, aEvent):
 		LOG_TRACE( 'Enter' )
 		#LOG_TRACE( 'aEvent len[%s]'% len(aEvent) )
@@ -488,7 +488,7 @@ class ChannelBanner(BaseWindow):
 
 			#local clock
 			ret = EpgInfoClock( FLAG_CLOCKMODE_AHM, self.mLocalTime, loop )
-			self.mCtrlLblEventClock.setLabel( ret[0] )
+			#self.mCtrlLblEventClock.setLabel( ret[0] )
 
 			time.sleep(1)
 			loop += 1

@@ -10,7 +10,7 @@ import pvr.ElisMgr
 import pvr.gui.DialogMgr
 import thread
 
-from pvr.Util import RunThread
+from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
 
 class Action(object):
 	ACTION_NONE					= 0
@@ -73,6 +73,7 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 		self.mWin = None
 		self.mWinId = 0
 		self.mClosed = False
+		self.mFocusId = 0
 
 	def SetFooter( self, aFooterMask ):
 		self.mFooterGroupId = FooterMask.G_FOOTER_GROUP_STARTID
@@ -85,6 +86,10 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 	def SetHeaderLabel( self, aLabel ):
 		self.getControl( HeaderDefine.G_HEADER_LABEL_ID ).setLabel( aLabel )
 
+	def GetFocusId( self ):
+		GuiLock2( True )
+		self.mFocusId = self.getFocusId()
+		GuiLock2( False )
 
 class ControlItem:
 	# Setting Window
