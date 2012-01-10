@@ -4,15 +4,27 @@ import sys
 
 import pvr.gui.WindowMgr as WinMgr
 import pvr.TunerConfigMgr as ConfigMgr
+import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
+from ElisProperty import ElisPropertyInt
+
+from pvr.Util import *
+
+E_LIST_MY_LONGITUDE = [ 'E', 'W' ]
+E_LIST_MY_LATITUDE  = [ 'N', 'S' ]
 
 
-class SatelliteConfigMotorizedUsals( SettingWindow ):
-	def __init__( self, *args, **kwargs ):
+class SatelliteConfigMotorizedUsals( SettingWindow ) :
+	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
+		self.mIsWest = 0
+		self.mIsSouth = 0
+		self.mLongitude	= 0
+		self.mLatitude	= 0
 
-	def onInit(self):
+
+	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
@@ -21,39 +33,34 @@ class SatelliteConfigMotorizedUsals( SettingWindow ):
 	
 		self.SetHeaderLabel( 'Motorize Configuration' )
 		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
+		self.GetLongitude( )
+		self.GetLatitude( )
+		self.InitConfig( )
 
-		self.AddInputControl( E_Input01, 'My Longitude', '100.0 E' )
-		self.AddInputControl( E_Input02, 'My Latitude', '000.0 N' )
-		self.AddLeftLabelButtonControl( E_Input03, 'Reference Position to Null' )
-		self.AddLeftLabelButtonControl( E_Input04, 'Configure Satellites' )
-
-		visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]
-		hideControlIds = [ E_Input05, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
-			
-		self.SetVisibleControls( visibleControlIds, True )
-		self.SetEnableControls( visibleControlIds, True )
-
-		self.SetVisibleControls( hideControlIds, False )
 		
-		self.InitControl( )
-		
-	def onAction( self, aAction ):
+	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			pass
+			self.SetLongitude( )
+			self.SetLatitude( )
+			self.ResetAllControl( )
+			self.close( )
+			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-				
+
 		elif actionId == Action.ACTION_PARENT_DIR :
+			self.SetLongitude( )
+			self.SetLatitude( )
 			self.ResetAllControl( )
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
-			pass
+			self.ControlLeft( )
 			
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			pass
+			self.ControlRight( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
@@ -62,16 +69,39 @@ class SatelliteConfigMotorizedUsals( SettingWindow ):
 			self.ControlDown( )
 
 
-	def onClick( self, aControlId ):
+	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
 
+
 		# My Longitude
-		if groupId == E_Input01 :
-			pass
+		if groupId == E_SpinEx01 :
+			self.mIsWest = self.GetSelectedIndex( E_SpinEx01 )
 
 		# My Latitude
+		elif groupId == E_SpinEx02 :
+			self.mIsSouth = self.GetSelectedIndex( E_SpinEx02 ) 
+
+		
+		# Set Longitude
+		if groupId == E_Input01 :
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
+ 			dialog.SetProperty( 'My Longitude', self.mLongitude )
+ 			dialog.doModal( )
+
+ 			if dialog.IsOK() == True :
+	 			self.mLongitude  = dialog.GetNumber( )
+	 			LOG_TRACE( 'dhkim test value = %d' % self.mLongitude )
+	 			self.InitConfig( )
+
+		# Set Latitude
 		elif groupId == E_Input02 :
-			pass
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
+ 			dialog.SetProperty( 'My Longitude', self.mLatitude )
+ 			dialog.doModal( )
+
+ 			if dialog.IsOK() == True :
+	 			self.mLatitude  = dialog.GetNumber( )
+	 			self.InitConfig( )
 			
 		# Reference Position to Null
 		elif groupId == E_Input03 :
@@ -82,6 +112,64 @@ class SatelliteConfigMotorizedUsals( SettingWindow ):
 			self.ResetAllControl( )
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_TUNER_CONFIGURATION )
 			
-	def onFocus( self, controlId ):
+	def onFocus( self, controlId ) :
 		pass
 
+
+	def InitConfig( self ) :
+		self.ResetAllControl( )
+
+		#self.GetLongitude( )
+		tmplongitude1 = '%d.%d %s' % ( self.mLongitude / 10, self.mLongitude % 10, E_LIST_MY_LONGITUDE[ 0 ] )
+		tmplongitude2 = '%d.%d %s' % ( self.mLongitude / 10, self.mLongitude % 10, E_LIST_MY_LONGITUDE[ 1 ] )
+		tmpListLongitude = [ tmplongitude1, tmplongitude2 ]
+		self.AddUserEnumControl( E_SpinEx01, 'My Longitude', tmpListLongitude, self.mIsWest )
+		self.AddLeftLabelButtonControl( E_Input01, ' - Set Longitude' )
+		
+		#self.GetLatitude( )
+		tmplatitude1 = '%d.%d %s' % ( self.mLatitude / 10, self.mLatitude % 10, E_LIST_MY_LATITUDE[ 0 ] )
+		tmplatitude2 = '%d.%d %s' % ( self.mLatitude / 10, self.mLatitude % 10, E_LIST_MY_LATITUDE[ 1 ] )
+		tmpListLatitude = [ tmplatitude1, tmplatitude2 ]
+		self.AddUserEnumControl( E_SpinEx02, 'My Latitude', tmpListLatitude, self.mIsSouth )
+		self.AddLeftLabelButtonControl( E_Input02, ' - Set Latitude' )
+		
+		self.AddLeftLabelButtonControl( E_Input03, 'Reference Position to Null' )
+		self.AddLeftLabelButtonControl( E_Input04, 'Configure Satellites' )
+
+		self.InitControl( )
+
+	def GetLongitude( self ) :
+		self.mLongitude = ElisPropertyInt( 'MyLongitude', self.mCommander ).GetProp( )
+
+		if self.mLongitude < 1800 :
+			self.mIsWest = 0
+		else :
+			self.mIsWest = 1
+		
+		if self.mLongitude >= 1800 :
+			self.mLongitude = self.mLongitude - 1800
+		
+
+	def GetLatitude( self ) :
+		self.mLatitude = ElisPropertyInt( 'MyLatitude', self.mCommander ).GetProp( )
+
+		if self.mLatitude < 1800 :
+			self.mIsSouth = 0
+		else : 
+			self.mIsSouth = 1
+
+		if self.mLatitude >= 1800 :
+			self.mLatitude = self.mLatitude - 1800
+
+
+	def SetLongitude( self ) :
+		if self.mIsWest == 1 :
+			self.mLongitude = self.mLongitude + 1800
+		ElisPropertyInt( 'MyLongitude', self.mCommander ).SetProp( self.mLongitude )
+
+
+	def SetLatitude( self ) :
+		if self.mIsSouth == 1 :
+			self.mLatitude = self.mLatitude + 1800
+		ElisPropertyInt( 'MyLatitude', self.mCommander ).SetProp( self.mLatitude )
+			

@@ -10,7 +10,7 @@ import pvr.ElisMgr
 import pvr.gui.DialogMgr
 import thread
 
-from pvr.Util import RunThread
+from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
 
 class Action(object):
 	ACTION_NONE					= 0
@@ -73,6 +73,7 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 		self.mWin = None
 		self.mWinId = 0
 		self.mClosed = False
+		self.mFocusId = 0
 
 	def SetFooter( self, aFooterMask ):
 		self.mFooterGroupId = FooterMask.G_FOOTER_GROUP_STARTID
@@ -85,6 +86,10 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 	def SetHeaderLabel( self, aLabel ):
 		self.getControl( HeaderDefine.G_HEADER_LABEL_ID ).setLabel( aLabel )
 
+	def GetFocusId( self ):
+		GuiLock2( True )
+		self.mFocusId = self.getFocusId()
+		GuiLock2( False )
 
 class ControlItem:
 	# Setting Window
@@ -101,7 +106,7 @@ class ControlItem:
 	def __init__( self, aControlType, aControlId, aProperty, aListItems, aSelecteItem, aStringType, aMaxLength, aDescription ):	
 		self.mControlType = aControlType	
 		self.mControlId  = aControlId
-		self.mProperty = aProperty		# E_SETTING_ENUM_CONTROL : propery, E_SETTING_INPUT_CONTROL : input type, E_DETAIL_NORMAL_BUTTON_CONTROL : Label
+		self.mProperty = aProperty		# E_SETTING_ENUM_CONTROL : propery, E_SETTING_INPUT_CONTROL : input type
 		self.mListItems = aListItems
 		self.mEnable	= True
 		self.mDescription = aDescription
@@ -241,7 +246,7 @@ class SettingWindow( BaseWindow ):
 
 			if len( value ) > aCtrlItem.mMaxLength :
 				value = value[ len ( value ) - aCtrlItem.mMaxLength :]
-				aCtrlItem.mListItems[0].setLabel2( value )
+			aCtrlItem.mListItems[0].setLabel2( value )
 
 
 	def HasControlItem( self, aCtrlItem, aContgrolId  ):
@@ -313,7 +318,7 @@ class SettingWindow( BaseWindow ):
 
 		return -1
 
-	def GetControlLabelString( self, aControlId ) :
+	def GetControlLabel2String( self, aControlId ) :
 		count = len( self.mControlList )
 
 		for i in range( count ) :
@@ -321,9 +326,15 @@ class SettingWindow( BaseWindow ):
 			ctrlItem = self.mControlList[i]		
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
-					return self.getControl( ctrlItem.mControlId + 3 ).getListItem( 0 ).getLabel2( )
+					return self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).getLabel2( )
+
+				if ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
+					print 'dhkim test Label2 value = %s' % self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).getLabel( )
+					return self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).getLabel2( )
+					
 
 		return -1
+		
 
 	def GetGroupId( self, aContgrolId ) :
 

@@ -3,7 +3,7 @@ import sys
 import time
 import xbmcgui
 
-
+from pvr.Util import LOG_WARN, LOG_TRACE, LOG_ERR
 from inspect import currentframe
 __file__ = os.path.basename( currentframe().f_code.co_filename )
 
@@ -20,10 +20,10 @@ def EpgInfoTime(aLocalOffset, aStartTime, aDuration):
 	str_startTime = str ('%02s:%02s -'% (startTime_hh,startTime_mm) )
 	str_endTime = str ('%02s:%02s'% (endTime_hh,endTime_mm) )
 
-	print 'epgStart[%s] epgEndTime[%s]'% (epgStartTime, epgEndTime)
-	print 'epgStart[%s] epgEndTime[%s]'% (time.strftime('%x %X',time.gmtime(epgStartTime)), time.strftime('%x %X',time.gmtime(epgEndTime)) )
-	print 'start[%s] end[%s]'%(str_startTime, str_endTime)
-	print 'hh[%s] mm[%s] hh[%s] mm[%s]' % (startTime_hh, startTime_mm, endTime_hh, endTime_mm)
+	LOG_TRACE( 'epgStart[%s] epgEndTime[%s]'% (epgStartTime, epgEndTime) )
+	LOG_TRACE( 'epgStart[%s] epgEndTime[%s]'% (time.strftime('%x %X',time.gmtime(epgStartTime)), time.strftime('%x %X',time.gmtime(epgEndTime)) ) )
+	LOG_TRACE( 'start[%s] end[%s]'%(str_startTime, str_endTime) )
+	LOG_TRACE( 'hh[%s] mm[%s] hh[%s] mm[%s]' % (startTime_hh, startTime_mm, endTime_hh, endTime_mm) )
 
 	ret = []
 	ret.append(str_startTime)
@@ -61,11 +61,11 @@ def EpgInfoClock(aFlag, aNowTime, aStrTime):
 		timeT = int(ret[0]) * 3600 + int(ret[1]) * 60 + int(ret[2])
 		return timeT
 
-	#print 'epgClock[%s:%s]'% (strClock, time.strftime('%S', time.gmtime(stbClock)) )
+	#LOG_TRACE( 'epgClock[%s:%s]'% (strClock, time.strftime('%S', time.gmtime(stbClock)) ) )
 	return strClock
 
 def EpgInfoComponentImage(aEpg):
-	print '[%s():%s]'% (__file__, currentframe().f_lineno)
+	LOG_TRACE( 'Enter' )
 	from ElisEnum import ElisEnum
 
 	tempFile = 0x00
@@ -88,7 +88,7 @@ def EpgInfoComponentImage(aEpg):
 	if aEpg.mHasVisuallyImpairedAudio :#== ElisEnum.E_mHasVisuallyImpairedAudio: # 1<<8
 		pass
 
-	print '[%s():%s]component flag[%s]'% (__file__, currentframe().f_lineno, tempFile)
+	LOG_TRACE( 'component flag[%s]'% tempFile )
 
 	imgData  = 'confluence/IconTeletext.png'
 	imgDolby = 'confluence/dolbydigital.png'
@@ -114,12 +114,12 @@ def EpgInfoComponentImage(aEpg):
 		imagelist.append(imgDolby)
 		imagelist.append(imgHD)
 	else:
-		print '[%s():%s]unknown component image'% (__file__, currentframe().f_lineno)
+		LOG_TRACE( 'unknown component image' )
 
 	return imagelist
 
 def GetSelectedLongitudeString(aLongitude, aName):
-	print '[%s():%s]'% (__file__, currentframe().f_lineno)
+	LOG_TRACE( 'Enter' )
 
 	ret = ''
 
@@ -134,7 +134,7 @@ def GetSelectedLongitudeString(aLongitude, aName):
 		log2 = aLongitude - (log1 * 10)
 		ret = str('%d.%d W %s'% (log1, log2, aName) )
 
-	print ret
+	LOG_TRACE( 'Leave[%s]'% ret )
 	return ret
 
 def EnumToString(aType, aValue):
@@ -191,7 +191,7 @@ def AgeLimit(aCmd, aAgerating):
 	from ElisProperty import ElisPropertyEnum
 
 	property = ElisPropertyEnum( 'Age Limit', aCmd )
-	#print 'TTTTTTTTTTTTTTT[%s][%s][%s]'% ( agerating, property.getProp(), property.getPropString() )
+	#LOG_TRACE( 'TTTTTTTTTTTTTTT[%s][%s][%s]'% ( agerating, property.GetProp(), property.GetPropString() ) )
 
 	isWatch = True
 	limit = property.GetProp()
@@ -208,6 +208,16 @@ def AgeLimit(aCmd, aAgerating):
 
 	return isLimit
 
+def PincodeLimit(aCmd, aInput):
+	from ElisProperty import ElisPropertyInt
+
+	property = ElisPropertyInt( 'PinCode', aCmd )
+	#LOG_TRACE( 'TTTTTTTTTTTTTTT[%s][%s]'% ( aInput, property.GetProp() ) )
+
+	pincode = property.GetProp()
+
+	return pincode
+
 def ClassToList( aMode, aClassList ) :
 
 	if aClassList :
@@ -218,7 +228,7 @@ def ClassToList( aMode, aClassList ) :
 			list.append( req )
 	
 		if aMode == 'print' :
-			print '[%s():%s]%s'% (__file__, currentframe().f_lineno, list)
+			LOG_TRACE( '%s'% list)
 		elif aMode == 'convert' :
 			return list
 

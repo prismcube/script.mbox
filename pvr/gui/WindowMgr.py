@@ -32,9 +32,6 @@ WIN_ID_TIMESHIFT_PLATE				= 19
 WIN_ID_CHANNEL_EDIT_WINDOW			= 20
 WIN_ID_ARCHIVE_WINDOW				= 21
 
-WIN_ID_CHANNEL_LIST1_WINDOW			= 102	#for test
-WIN_ID_CHANNEL_LIST2_WINDOW			= 103	#for test
-
 
 
 gWindowMgr = None
@@ -86,6 +83,7 @@ class WindowMgr(object):
 			elif aWindowId ==  WIN_ID_CHANNEL_LIST_WINDOW:
 				from pvr.gui.windows.ChannelListWindow import ChannelListWindow
 				ChannelListWindow('ChannelListWindow.xml', self.mScriptDir ).doModal()
+				#ChannelListWindow('ChannelListWindow_b.xml', self.mScriptDir ).doModal()
 
 			elif aWindowId ==  WIN_ID_CHANNEL_BANNER:
 				from pvr.gui.windows.ChannelBanner import ChannelBanner
@@ -113,7 +111,7 @@ class WindowMgr(object):
 
 			elif aWindowId ==  WIN_ID_CONFIG_MOTORIZED_USALS:
 				from pvr.gui.windows.SatelliteConfigMotorizedUsals import SatelliteConfigMotorizedUsals
-				SatelliteConfigMotorizedUsals('SatelliteConfiguration.xml', self.mScriptDir).doModal()
+				SatelliteConfigMotorizedUsals('SatelliteConfigMotorizedUsals.xml', self.mScriptDir).doModal()
 
 			elif aWindowId ==  WIN_ID_CONFIG_MOTORIZED_USALS2:
 				from pvr.gui.windows.SatelliteConfigMotorizedUsals2 import SatelliteConfigMotorizedUsals2
@@ -156,13 +154,6 @@ class WindowMgr(object):
 				#ChannelEditWindow('channeleditwindow.xml', self.mScriptDir )
 				pass
 			
-			elif aWindowId ==  WIN_ID_CHANNEL_LIST1_WINDOW:
-				from pvr.gui.windows.ChannelListWindow_a import ChannelListWindow_a #for test			
-				ChannelListWindow_a('ChannelListWindow_a.xml', self.mScriptDir ).doModal()
-
-			elif aWindowId ==  WIN_ID_CHANNEL_LIST2_WINDOW:
-				from pvr.gui.windows.ChannelListWindow_b import ChannelListWindow_b #for test		
-				ChannelListWindow_b('ChannelListWindow_b.xml', self.mScriptDir ).doModal()
 
 			elif aWindowId ==  WIN_ID_ARCHIVE_WINDOW:
 				from pvr.gui.windows.ArchiveWindow import ArchiveWindow

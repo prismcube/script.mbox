@@ -1,0 +1,297 @@
+<window id="3305">
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<coordinates>
+		<system>1</system>
+		<posx>285</posx>
+		<posy>55</posy>
+	</coordinates>
+	<onload>SetProperty(AnimationWaitingDialogOnClose,true)</onload>
+	<include>dialogeffect</include>
+	<controls>
+		<control type="group">
+            <animation condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional" reversible="false">
+                <effect type="fade" start="100" end="0" time="300" />
+            </animation>
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>100</posy>
+				<width>720</width>
+				<height>220</height>
+				<texture border="40">confluence/DialogBack.png</texture>
+			</control>
+			<control type="image">
+				<posx>100</posx>
+				<posy>110</posy>
+				<width>530</width>
+				<height>90</height>
+				<aspectratio>stretch</aspectratio>
+				<texture>confluence/GlassTitleBar.png</texture>
+			</control>
+			<control type="button" id="101">
+				<description>Close Window button</description>
+				<posx>630</posx>
+				<posy>109</posy>
+				<width>64</width>
+				<height>32</height>
+				<label>-</label>
+				<font>-</font>
+				<onclick>PreviousMenu</onclick>
+				<texturefocus>confluence/DialogCloseButton-focus.png</texturefocus>
+				<texturenofocus>confluence/DialogCloseButton.png</texturenofocus>
+				<onleft>9101</onleft>
+				<onright>9101</onright>
+				<onup>9101</onup>
+				<ondown>9101</ondown>
+				<visible>system.getbool(input.enablemouse)</visible>
+			</control>
+			<control type="label" id="100">
+				<description>header label</description>
+				<posx>80</posx>
+				<posy>118</posy>
+				<width>570</width>
+				<height>30</height>
+				<font>font13_title</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<label>Move Antenna</label>
+			</control>
+			<control type="grouplist" id="9000">
+				<visible>true</visible>
+				<posx>50</posx>
+				<posy>140</posy>
+				<width>700</width>
+				<height>120</height>
+				<itemgap>10</itemgap>
+				<onleft></onleft>
+				<onright></onright>
+				<onup></onup>
+				<ondown></ondown>
+				<orientation>horizontal</orientation>
+				<!-- Button 1 -->
+				<control type="group" id="9100">
+					<visible></visible>
+					<width>120</width>
+					<height>40</height>
+					<defaultcontrol always="true">9101</defaultcontrol>
+					<control type="button" id="9101">
+						<description>Button Icon</description>
+						<posx>35</posx>
+						<posy>75</posy>
+						<width>35</width>
+						<height>35</height>
+						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
+						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
+						<onleft>9501</onleft>
+						<onright>9201</onright>
+						<onup>101</onup>
+						<ondown>101</ondown>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>40</posy>
+						<width>120</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[B]Move West[/B]</label>
+						<visible>![Control.HasFocus(9101)]</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>40</posy>
+						<width>120</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[B]Move West[/B]</label>
+						<visible>[Control.HasFocus(9101)]</visible>
+					</control>
+				</control>
+				<!-- Button 2 -->
+				<control type="group" id="9200">
+					<visible></visible>
+					<width>120</width>
+					<height>40</height>
+					<defaultcontrol always="true">9201</defaultcontrol>
+					<control type="button" id="9201">
+						<description>Button Icon</description>
+						<posx>35</posx>
+						<posy>75</posy>
+						<width>35</width>
+						<height>35</height>
+						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
+						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
+						<onleft>9101</onleft>
+						<onright>9301</onright>
+						<onup>101</onup>
+						<ondown>101</ondown>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>40</posy>
+						<width>120</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[B]Step West[/B]</label>
+						<visible>![Control.HasFocus(9201)]</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>40</posy>
+						<width>120</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[B]Step West[/B]</label>
+						<visible>[Control.HasFocus(9201)]</visible>
+					</control>
+				</control>
+				<!-- Button 3 -->
+				<control type="group" id="9300">
+					<visible></visible>
+					<width>120</width>
+					<height>40</height>
+					<defaultcontrol always="true">9301</defaultcontrol>
+					<control type="button" id="9301">
+						<description>Button Icon</description>
+						<posx>35</posx>
+						<posy>75</posy>
+						<width>35</width>
+						<height>35</height>
+						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
+						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
+						<onleft>9201</onleft>
+						<onright>9401</onright>
+						<onup>101</onup>
+						<ondown>101</ondown>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>40</posy>
+						<width>120</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[B]Stop Move[/B]</label>
+						<visible>![Control.HasFocus(9301)]</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>40</posy>
+						<width>120</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[B]Stop Move[/B]</label>
+						<visible>[Control.HasFocus(9301)]</visible>
+					</control>
+				</control>
+				<!-- Button 4 -->
+				<control type="group" id="9400">
+					<visible></visible>
+					<width>120</width>
+					<height>40</height>
+					<defaultcontrol always="true">9401</defaultcontrol>
+					<control type="button" id="9401">
+						<description>Button Icon</description>
+						<posx>35</posx>
+						<posy>75</posy>
+						<width>35</width>
+						<height>35</height>
+						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
+						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
+						<onleft>9301</onleft>
+						<onright>9501</onright>
+						<onup>101</onup>
+						<ondown>101</ondown>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>40</posy>
+						<width>120</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[B]Step East[/B]</label>
+						<visible>![Control.HasFocus(9401)]</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>40</posy>
+						<width>120</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[B]Step East[/B]</label>
+						<visible>[Control.HasFocus(9401)]</visible>
+					</control>
+				</control>
+				<!-- Button 5 -->
+				<control type="group" id="9500">
+					<visible></visible>
+					<width>120</width>
+					<height>40</height>
+					<defaultcontrol always="true">9501</defaultcontrol>
+					<control type="button" id="9501">
+						<description>Button Icon</description>
+						<posx>35</posx>
+						<posy>75</posy>
+						<width>35</width>
+						<height>35</height>
+						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
+						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
+						<onleft>9401</onleft>
+						<onright>9101</onright>
+						<onup>101</onup>
+						<ondown>101</ondown>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>40</posy>
+						<width>120</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[B]Step East[/B]</label>
+						<visible>![Control.HasFocus(9501)]</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>40</posy>
+						<width>120</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[B]Step East[/B]</label>
+						<visible>[Control.HasFocus(9501)]</visible>
+					</control>
+				</control>
+			</control>
+		</control>
+	</controls>
+</window>
+

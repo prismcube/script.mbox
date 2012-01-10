@@ -23,3 +23,8 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ):
 		if len( value ) > aMaxLength :
 			value = value[ len ( value ) - aMaxLength :]
 		return value
+
+	def CloseDialog( self ) :
+		self.clearProperty( 'AnimationWaitingDialogOnClose' )
+		time.sleep( 0.3 )
+		self.close( )

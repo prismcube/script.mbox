@@ -13,7 +13,7 @@ from ElisEnum import ElisEnum
 from ElisEventBus import ElisEventBus
 from ElisEventClass import *
 
-from pvr.Util import RunThread, GuiLock, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
+from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
 from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit
 
 import threading, time, os
@@ -39,11 +39,8 @@ FLAG_CLOCKMODE_INTTIME= 5
 class ChannelBanner(BaseWindow):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
-		print 'args[0]=[%s]' % args[0]
-		print 'args[1]=[%s]' % args[1]
-
-		#summary
-		self.__file__ = os.path.basename( currentframe().f_code.co_filename )
+		LOG_TRACE( 'args[0]=[%s]' % args[0] )
+		LOG_TRACE( 'args[1]=[%s]' % args[1] )
 
 		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
 		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
@@ -58,7 +55,7 @@ class ChannelBanner(BaseWindow):
 
 
 	def __del__(self):
-		print '[%s:%s] destroyed ChannelBanner'% (self.__file__, currentframe().f_lineno)
+		LOG_TRACE( 'destroyed ChannelBanner' )
 
 		# end thread CurrentTimeThread()
 		self.mEnableThread = False
@@ -66,7 +63,7 @@ class ChannelBanner(BaseWindow):
 	def onInit(self):
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
-		print '[%s:%s]winID[%d]'% (self.__file__, currentframe().f_lineno, self.mWinId)
+		LOG_TRACE( 'winID[%d]'% self.mWinId)
 
 		self.mCtrlLblChannelNumber     = self.getControl( 601 )
 		self.mCtrlLblChannelName       = self.getControl( 602 )
@@ -123,16 +120,13 @@ class ChannelBanner(BaseWindow):
 		ret = self.mCommander.Zappingmode_GetCurrent()
 		ret.printdebug()
 		try:
-			print 'zappingMode[%s] sortMode[%s] serviceType[%s]'% \
-				(enumToString('mode', ret.mMode ), \
-				 enumToString('sort', ret.mSortingMode ), \
-				 enumToString('type', ret.mServiceType ))
+			LOG_TRACE( 'zappingMode[%s] sortMode[%s] serviceType[%s]'% \
+				(EnumToString('mode', ret.mMode ), \
+				 EnumToString('sort', ret.mSortingMode ), \
+				 EnumToString('type', ret.mServiceType )) )
 
 		except Exception, e :
-			print '[%s:%s] Error exception[%s]'% (	\
-				self.__file__,						\
-				currentframe().f_lineno,			\
-				e )
+			LOG_TRACE( 'Error exception[%s]'% e )
 		"""
 
 
@@ -146,13 +140,10 @@ class ChannelBanner(BaseWindow):
 
 				retList = []
 				retList.append( self.mEventCopy )
-				print 'epgevent_GetPresent[%s]'% ClassToList( 'convert', retList )
+				LOG_TRACE( 'epgevent_GetPresent[%s]'% ClassToList( 'convert', retList ) )
 
 		except Exception, e :
-			print '[%s:%s] Error exception[%s]'% (	\
-				self.__file__,						\
-				currentframe().f_lineno,			\
-				e )
+			LOG_TRACE( 'Error exception[%s]'% e )
 
 
 		self.mEventBus.Register( self )
@@ -161,13 +152,15 @@ class ChannelBanner(BaseWindow):
 		self.mEnableThread = True
 		self.CurrentTimeThread()
 
+		LOG_TRACE( 'Leave' )
+
 
 	def onAction(self, aAction):
+		#LOG_TRACE( 'Enter' )
 		id = aAction.getId()
-		focusid = self.getFocusId()
-		
+
 		if id == Action.ACTION_PREVIOUS_MENU:
-			print 'youn check action menu'
+			LOG_TRACE( 'action menu' )
 			self.DescboxToggle('close')
 			self.mEnableThread = False
 			self.CurrentTimeThread().join()
@@ -177,7 +170,7 @@ class ChannelBanner(BaseWindow):
 			LOG_TRACE( 'youn:%s' % id )
 	
 		elif id == Action.ACTION_PARENT_DIR:
-			print 'youn check ation back'
+			LOG_TRACE( 'ation back' )
 
 			self.DescboxToggle('close')
 			self.mEnableThread = False
@@ -185,10 +178,10 @@ class ChannelBanner(BaseWindow):
 			self.close( )
 			#winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_NULLWINDOW )
 
-
 			"""
-			if focusid >= self.mCtrlBtnExInfo.getId() and focusid <= self.mCtrlBtnMute.getId():
-				self.ShowEPGDescription(focusid, self.mEventCopy)
+			self.GetFocusId()
+			if self.mFocusId >= self.mCtrlBtnExInfo.getId() and self.mFocusId <= self.mCtrlBtnMute.getId():
+				self.ShowEPGDescription(self.mFocusId, self.mEventCopy)
 
 			else:
 				# end thread CurrentTimeThread()
@@ -205,11 +198,13 @@ class ChannelBanner(BaseWindow):
 			self.ShowEPGDescription( self.mCtrlBtnExInfo.getId(), self.mEventCopy)
 
 		elif id == Action.ACTION_MOVE_LEFT:
-			if focusid == self.mCtrlBtnPrevEpg.getId():			
+			self.GetFocusId()
+			if self.mFocusId == self.mCtrlBtnPrevEpg.getId():			
 				self.ChannelTune(id)
 
 		elif id == Action.ACTION_MOVE_RIGHT:
-			if focusid == self.mCtrlBtnNextEpg.getId():
+			self.GetFocusId()
+			if self.mFocusId == self.mCtrlBtnNextEpg.getId():
 				self.ChannelTune(id)
 
 		elif id == Action.ACTION_PAGE_UP:
@@ -227,39 +222,37 @@ class ChannelBanner(BaseWindow):
 			self.CurrentTimeThread().join()
 			winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_TIMESHIFT_PLATE )
 
-		else:
-			#print 'youn check action unknown id=%d' % id
-			#self.ChannelTune(id)
-			pass
-
 
 		"""
 		elif id == Action.ACTION_VOLUME_UP:
 		
-			vol = int ( self.mCommander.player_GetVolume( )[0] )
+			vol = self.mCommander.Player_GetVolume()
 			vol = vol + pvr.gui.GuiConfig.VOLUME_STEP
 			
 			if vol > pvr.gui.GuiConfig.MAX_VOLUME :
 				vol = pvr.gui.GuiConfig.MAX_VOLUME
 
-			self.mCommander.player_SetVolume( vol )
+			self.mCommander.Player_SetVolume( vol )
 
 		elif id == Action.ACTION_VOLUME_DOWN:
 		
-			vol = int ( self.mCommander.player_GetVolume( )[0] )
+			vol = self.mCommander.player_GetVolume()
 			vol = vol - pvr.gui.GuiConfig.VOLUME_STEP
 			
 			if vol < 0 :
 				vol = 0
 				
-			self.mCommander.player_SetVolume( vol )
+			self.mCommander.Player_SetVolume( vol )
 		"""
+
+		LOG_TRACE( 'Leave' )
 
 
 
 
 	def onClick(self, aControlId):
-		print 'onclick(): control %d' % aControlId
+		LOG_TRACE( 'control %d' % aControlId )
+
 		if aControlId == self.mCtrlBtnMute.getId():
 			self.UpdateVolume( Action.ACTION_MUTE )
 
@@ -267,27 +260,27 @@ class ChannelBanner(BaseWindow):
 			self.UpdateVolume( Action.ACTION_MUTE )
 
 		elif aControlId == self.mCtrlBtnExInfo.getId() :
-			print 'click expantion info'
+			LOG_TRACE( 'click expantion info' )
 			self.ShowEPGDescription(aControlId, self.mEventCopy)
 
 		elif aControlId == self.mCtrlBtnTeletext.getId() :
-			print 'click teletext'
+			LOG_TRACE( 'click teletext' )
 			self.ShowDialog( aControlId )
 
 		elif aControlId == self.mCtrlBtnSubtitle.getId() :
-			print 'click subtitle'
+			LOG_TRACE( 'click subtitle' )
 			self.ShowDialog( aControlId )
 
 		elif aControlId == self.mCtrlBtnStartRec.getId() :
-			print 'click start recording'
+			LOG_TRACE( 'click start recording' )
 			self.ShowDialog( aControlId )
 
 		elif aControlId == self.mCtrlBtnStopRec.getId() :
-			print 'click stop recording'
+			LOG_TRACE( 'click stop recording' )
 			self.ShowDialog( aControlId )
 
 		elif aControlId == self.mCtrlBtnTSbanner.getId() :
-			print 'click Time Shift banner'
+			LOG_TRACE( 'click Time Shift banner' )
 			self.mEnableThread = False
 			self.CurrentTimeThread().join()
 
@@ -301,15 +294,17 @@ class ChannelBanner(BaseWindow):
 			self.ChannelTune(Action.ACTION_MOVE_RIGHT)
 
 
+		LOG_TRACE( 'Leave' )
+
 
 	def onFocus(self, aControlId):
-		#print "onFocus(): control %d" % controlId
+		#LOG_TRACE( 'control %d' % controlId )
 		pass
 
-	@GuiLock
+
 	def onEvent(self, aEvent):
-		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
-		#print 'aEvent len[%s]'% len(aEvent)
+		LOG_TRACE( 'Enter' )
+		#LOG_TRACE( 'aEvent len[%s]'% len(aEvent) )
 		#ClassToList( 'print', aEvent )
 
 		if self.mWinId == xbmcgui.getCurrentWindowId():
@@ -324,25 +319,27 @@ class ChannelBanner(BaseWindow):
 
 					#ret = self.mCommander.Epgevent_Get(self.mEventID, aEvent.mSid, aEvent.mTsid, aEvent.mOnid, self.mLocalTime )
 			else :
-				print 'event unknown[%s]'% aEvent.getName()
+				LOG_TRACE( 'event unknown[%s]'% aEvent.getName() )
 		else:
-			print 'channelbanner winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId())
+			LOG_TRACE( 'channelbanner winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
 
+
+		LOG_TRACE( 'Leave' )
 
 
 	def ChannelTune(self, aActionID):
-		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
-		print 'tuneActionID[%s]'% aActionID
+		LOG_TRACE( 'Enter' )
+		LOG_TRACE( 'tuneActionID[%s]'% aActionID )
 
 		if aActionID == Action.ACTION_PAGE_UP:
-			print 'onAction():ACTION_PREVIOUS_ITEM control %d' % aActionID
+			LOG_TRACE( 'ACTION_PREVIOUS_ITEM control %d' % aActionID )
 			priv_ch = None
 			priv_ch = self.mCommander.Channel_GetPrev()
 
 			if priv_ch :
 				retList = []
 				retList.append( priv_ch )
-				print 'priv_ch[%s]' % ClassToList( 'convert', retList )
+				LOG_TRACE( 'priv_ch[%s]' % ClassToList( 'convert', retList ) )
 
 			if priv_ch :
 				try:
@@ -356,20 +353,17 @@ class ChannelBanner(BaseWindow):
 							self.InitLabelInfo()
 
 				except Exception, e :
-					print '[%s:%s] Error exception[%s]'% (	\
-						self.__file__,						\
-						currentframe().f_lineno,			\
-						e )
+					LOG_TRACE( 'Error exception[%s]'% e )
 
 		elif aActionID == Action.ACTION_PAGE_DOWN:
-			print 'onAction():ACTION_NEXT_ITEM control %d' % aActionID
+			LOG_TRACE( 'ACTION_NEXT_ITEM control %d' % aActionID )
 			next_ch = None
 			next_ch = self.mCommander.Channel_GetNext()
 
 			if next_ch :
 				retList = []
 				retList.append( next_ch )
-				print 'next_ch[%s]' % ClassToList( 'convert', retList )
+				LOG_TRACE( 'next_ch[%s]' % ClassToList( 'convert', retList ) )
 
 			try:
 				self.mLastChannel = self.mCurrentChannel
@@ -382,10 +376,7 @@ class ChannelBanner(BaseWindow):
 						self.InitLabelInfo()
 
 			except Exception, e :
-				print '[%s:%s] Error exception[%s]'% (	\
-					self.__file__,						\
-					currentframe().f_lineno,			\
-					e )
+				LOG_TRACE( 'Error exception[%s]'% e )
 
 		elif aActionID == Action.ACTION_MOVE_LEFT:
 			#epg priv
@@ -395,7 +386,7 @@ class ChannelBanner(BaseWindow):
 			if ret :
 				retList = []
 				retList.append( ret )
-				print 'epgevent_GetPresent() ret[%s]'% ClassToList( 'convert', retList )
+				LOG_TRACE( 'epgevent_GetPresent() ret[%s]'% ClassToList( 'convert', retList ) )
 				self.mEventCopy = ret
 				self.UpdateONEvent( ret )
 
@@ -407,17 +398,20 @@ class ChannelBanner(BaseWindow):
 			if ret :
 				retList = []
 				retList.append( ret )
-				print 'epgevent_GetFollowing() ret[%s]'% ClassToList( 'convert', retList )
+				LOG_TRACE( 'epgevent_GetFollowing() ret[%s]'% ClassToList( 'convert', retList ) )
 				self.mEventCopy = ret
 				self.UpdateONEvent( ret )
 
 		else:
 			pass
 
+		LOG_TRACE( 'Leave' )
+
+
 	@GuiLock
 	def UpdateONEvent(self, aEvent):
-		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
-		#print 'component [%s]'% EpgInfoComponentImage ( aEvent )
+		LOG_TRACE( 'Enter' )
+		#LOG_TRACE( 'component [%s]'% EpgInfoComponentImage ( aEvent ))
 
 		if aEvent :
 			try :
@@ -430,7 +424,7 @@ class ChannelBanner(BaseWindow):
 					self.mCtrlLblEventStartTime.setLabel( ret[0] )
 					self.mCtrlLblEventEndTime.setLabel( ret[1] )
 
-				print 'mStartTime[%s] mDuration[%s]'% (aEvent.mStartTime, aEvent.mDuration)
+				LOG_TRACE( 'mStartTime[%s] mDuration[%s]'% (aEvent.mStartTime, aEvent.mDuration) )
 
 
 				#component
@@ -453,16 +447,13 @@ class ChannelBanner(BaseWindow):
 				isLimit = AgeLimit( self.mCommander, aEvent.mAgeRating )
 				if isLimit == True :
 					self.mPincodeEnter |= FLAG_MASK_ADD
-					print 'AgeLimit[%s]'% isLimit
+					LOG_TRACE( 'AgeLimit[%s]'% isLimit )
 
 			except Exception, e:
-				print '[%s:%s] Error exception[%s]'% (	\
-					self.__file__,						\
-					currentframe().f_lineno,			\
-					e )
+				LOG_TRACE( 'Error exception[%s]'% e )
 
 		else:
-			print 'aEvent null'
+			LOG_TRACE( 'aEvent null' )
 
 
 		#popup pin-code dialog
@@ -474,33 +465,35 @@ class ChannelBanner(BaseWindow):
 			if( kb.isConfirmed() ) :
 				inputPass = kb.getText()
 				#self.mPincodeEnter = FLAG_MASK_NONE
-				print 'password[%s]'% inputPass
+				LOG_TRACE( 'password[%s]'% inputPass )
+
+		LOG_TRACE( 'Leave' )
 
 
 	@RunThread
 	def CurrentTimeThread(self):
-		print '[%s():%s]begin_start thread'% (self.__file__, currentframe().f_lineno)
+		LOG_TRACE( 'begin_start thread' )
 
 		loop = 0
 		#rLock = threading.RLock()
 		while self.mEnableThread:
-			#print '[%s:%s]repeat <<<<'% (self.__file__, currentframe().f_lineno)
+			#LOG_TRACE( 'repeat <<<<' )
 
 			#progress
 
 			if  ( loop % 10 ) == 0 :
-				print 'loop=%d' %loop
+				LOG_TRACE( 'loop=%d' %loop )
 				self.UpdateLocalTime( )
 
 
 			#local clock
 			ret = EpgInfoClock( FLAG_CLOCKMODE_AHM, self.mLocalTime, loop )
-			self.mCtrlLblEventClock.setLabel( ret[0] )
+			#self.mCtrlLblEventClock.setLabel( ret[0] )
 
 			time.sleep(1)
 			loop += 1
 
-		print '[%s:%s]leave_end thread'% (self.__file__, currentframe().f_lineno)
+		LOG_TRACE( 'leave_end thread' )
 
 
 	@GuiLock
@@ -510,10 +503,7 @@ class ChannelBanner(BaseWindow):
 			self.mLocalTime = self.mCommander.Datetime_GetLocalTime( )
 
 		except Exception, e :
-			print '[%s:%s] Error exception[%s]'% (	\
-				self.__file__,						\
-				currentframe().f_lineno,			\
-				e )
+			LOG_TRACE( 'Error exception[%s]'% e )
 
 			self.mLocalTime = 0
 
@@ -528,13 +518,15 @@ class ChannelBanner(BaseWindow):
 		else :
 			percent = 0
 
-		#print 'percent=%d' %percent
+		#LOG_TRACE( 'percent=%d' %percent )
 		self.mCtrlProgress.setPercent( percent )
+
+		LOG_TRACE( 'Leave' )
 
 
 	@GuiLock
 	def InitLabelInfo(self):
-		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
+		LOG_TRACE( 'Enter' )
 		
 		if self.mCurrentChannel :
 
@@ -561,10 +553,12 @@ class ChannelBanner(BaseWindow):
 
 
 		else:
-			print 'has no channel'
+			LOG_TRACE( 'has no channel' )
 		
 			# todo 
 			# show message box : has no channnel
+
+		LOG_TRACE( 'Leave' )
 
 
 	def InitLongitudeInfo( self ) :
@@ -577,17 +571,15 @@ class ChannelBanner(BaseWindow):
 				ret = GetSelectedLongitudeString( longitude.mLongitude, self.mCurrentChannel.mName )
 
 		except Exception, e :
-			print '[%s:%s] Error exception[%s]'% (	\
-				self.__file__,						\
-				currentframe().f_lineno,			\
-				e )
+			LOG_TRACE( 'Error exception[%s]'% e )
 
+		LOG_TRACE( 'Leave' )
 		return ret
 
 
 	def UpdateServiceType(self, aTvType):
-		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
-		print 'serviceType[%s]' % aTvType
+		LOG_TRACE( 'Enter' )
+		LOG_TRACE( 'serviceType[%s]' % aTvType )
 
 		if aTvType == ElisEnum.E_SERVICE_TYPE_TV:
 			#self.mCtrlImgServiceType.setImage(self.mImgTV)
@@ -599,15 +591,17 @@ class ChannelBanner(BaseWindow):
 		else:
 			#self.mCtrlImgServiceType.setImage('')
 			self.mImgTV = ''
-			print 'unknown ElisEnum tvType[%s]'% aTvType
+			LOG_TRACE( 'unknown ElisEnum tvType[%s]'% aTvType )
+
+		LOG_TRACE( 'Leave' )
 
 
 	def UpdateVolume(self, aCmd):
-		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
+		LOG_TRACE( 'Enter' )
 
 		if aCmd == Action.ACTION_MUTE:
 			mute = self.mCommander.Player_GetMute()
-			print 'mute:current[%s]'% mute
+			LOG_TRACE( 'mute:current[%s]'% mute )
 			if mute == False:
 				ret = self.mCommander.Player_SetMute( True )
 				self.mCtrlBtnMute.setVisible(True)
@@ -623,18 +617,20 @@ class ChannelBanner(BaseWindow):
 		elif aCmd == Action.ACTION_VOLUME_UP:
 			pass
 
+		LOG_TRACE( 'Leave' )
+
 
 	def ShowEPGDescription(self, aFocusid, aEvent):
-		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
+		LOG_TRACE( 'Enter' )
 
 		if aFocusid == self.mCtrlBtnExInfo.getId():
 			if aEvent :
-				print 'epgDescription[%s]' % (aEvent.mEventDescription)
+				LOG_TRACE( 'epgDescription[%s]' % aEvent.mEventDescription )
 				self.mCtrlTxtBoxEventDescText1.setText( aEvent.mEventName )
 				self.mCtrlTxtBoxEventDescText2.setText( aEvent.mEventDescription )
 
 			else:
-				print 'event is None'
+				LOG_TRACE( 'event is None' )
 				self.mCtrlTxtBoxEventDescText1.setText('')
 				self.mCtrlTxtBoxEventDescText2.setText('')
 
@@ -642,9 +638,10 @@ class ChannelBanner(BaseWindow):
 
 		#self.mCtrlEventDescription.setVisibleCondition('[Control.IsVisible(100)]',True)
 		#self.mCtrlEventDescription.setEnabled(True)
+		LOG_TRACE( 'Leave' )
 
 	def ShowDialog( self, aFocusid ):
-		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
+		LOG_TRACE( 'Enter' )
 
 		msg1 = ''
 		msg2 = ''
@@ -664,7 +661,7 @@ class ChannelBanner(BaseWindow):
 
 		elif aFocusid == self.mCtrlBtnStartRec.getId() :
 			runningCount = self.mCommander.Record_GetRunningRecorderCount()
-			print 'runningCount=%d' %runningCount
+			LOG_TRACE( 'runningCount=%d' %runningCount)
 
 			if  runningCount < 2 :
 				dialog = diamgr.GetInstance().GetDialog( diamgr.DIALOG_ID_START_RECORD )
@@ -675,7 +672,7 @@ class ChannelBanner(BaseWindow):
 
 		elif aFocusid == self.mCtrlBtnStopRec.getId() :
 			runningCount = self.mCommander.Record_GetRunningRecorderCount()
-			print 'runningCount=%d' %runningCount
+			LOG_TRACE( 'runningCount=%d' %runningCount )
 
 			if  runningCount > 0 :
 				dialog = diamgr.GetInstance().GetDialog( diamgr.DIALOG_ID_STOP_RECORD )
@@ -683,11 +680,13 @@ class ChannelBanner(BaseWindow):
 			
 
 		#ret = xbmcgui.Dialog().ok(msg1, msg2)
-		#print 'dialog ret[%s]' % ret
+		#LOG_TRACE( 'dialog ret[%s]' % ret )
+
+		LOG_TRACE( 'Leave' )
 
 
 	def DescboxToggle( self, aCmd ):
-		print '[%s:%s]'% (self.__file__, currentframe().f_lineno)
+		LOG_TRACE( 'Enter' )
 
 		if aCmd == 'toggle':
 			if self.mToggleFlag == True:
@@ -706,6 +705,7 @@ class ChannelBanner(BaseWindow):
 				self.mCtrlGropEventDescGroup.setVisible( False )
 				self.mToggleFlag = False
 
+		LOG_TRACE( 'Leave' )
 	"""
 	def GetLastChannel( self ):
 		return self.mLastChannel

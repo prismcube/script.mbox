@@ -150,7 +150,9 @@ class SatelliteConfigMotorized12( SettingWindow ):
 
 		# Move Antenna
 		elif groupId == E_Input04 :
-			pass
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_MOVE_ANTENNA )
+ 			dialog.doModal( )
+
 			
 		# Action
 		elif groupId == E_SpinEx04 :

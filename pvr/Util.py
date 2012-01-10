@@ -54,11 +54,6 @@ gGuiLock = False
 
 @decorator
 def GuiLock(func, *args, **kw):
-	"""
-	Decorator for setting/unsetting the xbmcgui lock on method
-	entry and exit.
-	"""
-
 	global gGuiLock
 	if gGuiLock: # prevent nested locks / double lock
 		return func(*args, **kw)    
@@ -72,6 +67,20 @@ def GuiLock(func, *args, **kw):
 			xbmcgui.unlock()
 			gGuiLock = False
 		return result
+
+
+def GuiLock2( aEnable ):
+	global gGuiLock
+	if gGuiLock: # prevent nested locks / double lock
+		return
+	else:
+		try:
+			gGuiLock = aEnable
+			xbmcgui.lock()
+		finally:
+			xbmcgui.unlock()
+			gGuiLock = aEnable
+		return
 
 
 @decorator
@@ -137,10 +146,10 @@ def MLOG( level=0, msg=None ) :
 
 	#if level >= 0 and level <= 18 :
 	if level == 0 or level == E_LOG_DEBUG or gLogOut == 0 :
-		print '[%s %s:%s]%s'% (filefunc, filename, lineno, msg)
+		print '[%s() %s:%s]%s'% (filefunc, filename, lineno, msg)
 
 	else :
-		print '\033[1;%sm[%s %s:%s]%s\033[1;m'% (level, filefunc, filename, lineno, msg)
+		print '\033[1;%sm[%s() %s:%s]%s\033[1;m'% (level, filefunc, filename, lineno, msg)
 
 
 
