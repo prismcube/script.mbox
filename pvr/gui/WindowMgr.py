@@ -32,7 +32,7 @@ WIN_ID_TIMESHIFT_PLATE				= 19
 WIN_ID_CHANNEL_EDIT_WINDOW			= 20
 WIN_ID_EDIT_SATELLITE				= 21
 WIN_ID_EDIT_TRANSPONDER				= 22
-
+WIN_ID_ARCHIVE_WINDOW				= 23
 
 
 gWindowMgr = None
@@ -163,6 +163,10 @@ class WindowMgr(object):
 				#ChannelEditWindow('channeleditwindow.xml', self.mScriptDir )
 				pass
 			
+
+			elif aWindowId ==  WIN_ID_ARCHIVE_WINDOW:
+				from pvr.gui.windows.ArchiveWindow import ArchiveWindow
+				ArchiveWindow('ArchiveWindow.xml', self.mScriptDir ).doModal()
 
 			else :
 				print 'Unknown widnowId=%d' %aWindowId

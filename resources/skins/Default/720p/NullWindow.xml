@@ -1,6 +1,7 @@
 <window>
 	<id>3001</id>
     <type>window</type>
+	<allowoverlay>yes</allowoverlay>    
     <coordinates>
         <system>1</system>
         <posx>0</posx>

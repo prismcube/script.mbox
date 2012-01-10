@@ -82,6 +82,10 @@ class MainMenu( BaseWindow ):
 		elif aControlId == BUTTON_ID_CHANNEL_LIST : #Channel List
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
+		elif aControlId == BUTTON_ID_ARCHIVE :
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+
+		
 		elif aControlId == 20 :
 			self.close()
 			import pvr.Launcher
