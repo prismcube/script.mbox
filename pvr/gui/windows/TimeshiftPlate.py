@@ -53,7 +53,7 @@ class TimeShiftPlate(BaseWindow):
 
 
 	def __del__(self):
-		LOG_TRACE( 'destroyed ChannelBanner' )
+		LOG_TRACE( 'destroyed TimeshiftPlate' )
 
 		# end thread UpdateLocalTime()
 		self.mUntilThread = False
@@ -175,7 +175,7 @@ class TimeShiftPlate(BaseWindow):
 			else :
 				LOG_TRACE( 'event unknown[%s]'% aEvent.getName() )
 		else:
-			LOG_TRACE( 'channelbanner winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
+			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
 
 		
 	def TimeshiftAction(self, aFocusId):

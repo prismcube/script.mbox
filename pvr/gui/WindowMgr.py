@@ -13,7 +13,7 @@ from elementtree import ElementTree
 WIN_ID_NULLWINDOW 					= 1
 WIN_ID_MAINMENU 					= 2
 WIN_ID_CHANNEL_LIST_WINDOW			= 3
-WIN_ID_CHANNEL_BANNER				= 4
+WIN_ID_LIVE_PLATE					= 4
 WIN_ID_CONFIGURE					= 5
 WIN_ID_ANTENNA_SETUP				= 6
 WIN_ID_TUNER_CONFIGURATION			= 7
@@ -86,9 +86,9 @@ class WindowMgr(object):
 				ChannelListWindow('ChannelListWindow.xml', self.mScriptDir ).doModal()
 				#ChannelListWindow('ChannelListWindow_b.xml', self.mScriptDir ).doModal()
 
-			elif aWindowId ==  WIN_ID_CHANNEL_BANNER:
-				from pvr.gui.windows.ChannelBanner import ChannelBanner
-				ChannelBanner('ChannelBanner.xml', self.mScriptDir ).doModal()
+			elif aWindowId ==  WIN_ID_LIVE_PLATE:
+				from pvr.gui.windows.LivePlate import LivePlate
+				LivePlate('LivePlate.xml', self.mScriptDir ).doModal()
 
 			elif aWindowId == WIN_ID_TIMESHIFT_PLATE:
 				from pvr.gui.windows.TimeshiftPlate import TimeShiftPlate

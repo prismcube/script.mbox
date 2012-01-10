@@ -326,11 +326,11 @@ class ChannelListWindow(BaseWindow):
 						self.CurrentTimeThread().join()
 						self.close()
 
-						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_BANNER )
+						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 					else :
 						pass
-						#ToDO : WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_CHANNEL_BANNER).setLastChannel( self.mCurrentChannel )
+						#ToDO : WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_LIVE_PLATE).setLastChannel( self.mCurrentChannel )
 
 				#self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
 				self.mNavChannel = self.mCommander.Channel_GetCurrent()
