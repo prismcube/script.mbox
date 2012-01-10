@@ -183,14 +183,36 @@
 				<posy>220</posy>
 				<width>550</width>
 				<height>40</height>
-				<font>font13</font>
-				<label> - Set Longitude</label>
 				<onleft></onleft>
 				<onright></onright>
 				<onup>201</onup>
 				<ondown>401</ondown>
 				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
 				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
+			</control>
+			<control type="label" id="301">
+				<posx>60</posx>
+				<posy>220</posy>
+				<width>400</width>
+				<height>40</height>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label> - Set Longitude</label>
+				<visible>[Control.HasFocus(300)]</visible>
+			</control>
+			<control type="label" id="301">
+				<posx>60</posx>
+				<posy>220</posy>
+				<width>400</width>
+				<height>40</height>
+				<font>font13</font>
+				<textcolor>grey2</textcolor>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label> - Set Longitude</label>
+				<visible>![Control.HasFocus(300)]</visible>
 			</control>
 			<!-- Control Band -->
 			<control type="group" id="400">
