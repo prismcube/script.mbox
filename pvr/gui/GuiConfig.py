@@ -139,7 +139,7 @@ class FooterMask(object):
 class HeaderDefine(object):
 	G_HEADER_LABEL_ID					= 3001
 	
-'''
+"""
 G_FOOTER_ICON_EXIT_MASK			= 1 << 1,
 G_FOOTER_ICON_RED_MASK			= 1 << 4,
 G_FOOTER_ICON_GREEN_MASK		= 1 << 5,
@@ -158,4 +158,4 @@ G_FOOTER_ICON_FF_MASK			= 1 << 19,
 G_FOOTER_ICON_REW_MASK			= 1 << 20,
 G_FOOTER_ICON_REWFF_MASK		= 1 << 21,
 G_FOOTER_ICON_NUMBER_MASK		= 1 << 22,
-'''
+"""

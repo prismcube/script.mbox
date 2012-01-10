@@ -389,24 +389,27 @@ class ChannelListWindow(BaseWindow):
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 				self.mViewMode = WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW
 
-				#Event UnRegister
-				self.mEventBus.Deregister( self )
+				try :
+					#Event UnRegister
+					self.mEventBus.Deregister( self )
 
-				self.mCtrlListCHList.reset()
+					self.InitSlideMenuHeader()
+					self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
+					#self.SubMenuAction(E_SLIDE_ACTION_MAIN, E_SLIDE_ALLCHANNEL)
+					self.mCtrlListSubmenu.selectItem( 0 )
+					xbmc.sleep(500)
 
-				self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
-				self.SubMenuAction(E_SLIDE_ACTION_MAIN, E_SLIDE_ALLCHANNEL)
+					self.SubMenuAction(E_SLIDE_ACTION_SUB, ElisEnum.E_MODE_ALL)
 
-				self.mCtrlListSubmenu.selectItem( 0 )
-				self.SubMenuAction(E_SLIDE_ACTION_SUB, ElisEnum.E_MODE_ALL)
+					self.mCtrlListCHList.reset()
+					self.InitChannelList()
 
+					#clear label
+					self.ResetLabel()
+					self.UpdateLabelInfo()
 
-				self.InitSlideMenuHeader()
-				self.InitChannelList()
-
-				#clear label
-				self.ResetLabel()
-				self.UpdateLabelInfo()
+				except Exception, e :
+					LOG_TRACE( '==================== Error except[%s]'% e )
 
 		elif aControlId == self.mCtrlFooter4.getId() :
 			LOG_TRACE( 'onclick footer Opt' )
@@ -565,7 +568,6 @@ class ChannelListWindow(BaseWindow):
 				LOG_TRACE( 'cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s]'% ( idx_Favorite, item.mGroupName ) )
 				ClassToList( 'print', self.mChannelList )
 
-
 			if retPass == False :
 				return
 
@@ -583,7 +585,7 @@ class ChannelListWindow(BaseWindow):
 				label3 = EnumToString('sort', self.mChannelListSortMode)
 				self.mCtrlLblPath1.setLabel( '%s'% label1.upper() )
 				self.mCtrlLblPath2.setLabel( '%s'% label2.title() ) 
-				self.mCtrlLblPath3.setLabel( 'sort by %s'% label3.title() ) 
+				self.mCtrlLblPath3.setLabel( 'sort by %s'% label3.title() )
 
 				#close slide : move to focus channel list
 				#self.mCtrlListCHList.setEnabled(True)
@@ -792,20 +794,19 @@ class ChannelListWindow(BaseWindow):
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 		
 			self.mCtrlHeader2.setLabel(Msg.Strings(MsgId.LANG_TV_CHANNEL_LIST))
-			self.mCtrlHeader3.setLabel('')		
+			self.mCtrlHeader3.setLabel('')
 			self.mCtrlHeader4.setLabel('')
 
 			#footer init
-			#self.setProperty('WindowType', 'ChannelList')
 			self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_EDIT_MASK )
 		else :
 			self.mCtrlHeader2.setLabel(Msg.Strings(MsgId.LANG_TV_EDIT_CHANNEL_LIST))
-			self.mCtrlHeader3.setLabel('')		
+			self.mCtrlHeader3.setLabel('')
 			self.mCtrlHeader4.setLabel('')
 
 			#footer init
-			#self.setProperty('WindowType', 'ChannelList')
 			self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_OPT_MASK | FooterMask.G_FOOTER_ICON_MARK_MASK )
+			return
 
 
 		#main/sub menu init
