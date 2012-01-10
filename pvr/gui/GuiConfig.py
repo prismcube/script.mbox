@@ -123,13 +123,15 @@ class FooterMask(object):
 	G_FOOTER_GROUP_STARTID				= 3100
 	G_FOOTER_GROUP_IDGAP				= 10
 	
-	G_NUM_OF_FOOTER_ICON				= 5
+	G_NUM_OF_FOOTER_ICON				= 7
 
 	G_FOOTER_ICON_BACK_MASK				= 1 << 0
 	G_FOOTER_ICON_OK_MASK				= 1 << 1
 	G_FOOTER_ICON_SEARCH_MASK			= 1 << 2
 	G_FOOTER_ICON_RECORD_MASK			= 1 << 3
 	G_FOOTER_ICON_EDIT_MASK			    = 1 << 4
+	G_FOOTER_ICON_OPT_MASK			    = 1 << 5
+	G_FOOTER_ICON_MARK_MASK			    = 1 << 6
 
 class HeaderDefine(object):
 	G_HEADER_LABEL_ID					= 3001

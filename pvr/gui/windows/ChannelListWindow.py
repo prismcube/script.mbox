@@ -59,6 +59,7 @@ class ChannelListWindow(BaseWindow):
 		self.mLocalTime = 0
 
 		self.mPincodeEnter = FLAG_MASK_NONE
+		self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
 		
 	def __del__(self):
 		LOG_TRACE( 'destroyed ChannelList' )
@@ -84,6 +85,8 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlFooter1            = self.getControl( 3101 )
 		self.mCtrlFooter2            = self.getControl( 3111 )
 		self.mCtrlFooter3            = self.getControl( 3141 )
+		self.mCtrlFooter4            = self.getControl( 3151 )
+		self.mCtrlFooter5            = self.getControl( 3161 )
 
 		self.mCtrlLblPath1           = self.getControl( 10 )
 		self.mCtrlLblPath2           = self.getControl( 11 )
@@ -151,7 +154,7 @@ class ChannelListWindow(BaseWindow):
 		self.UpdateLabelInfo()
 
 		#Event Register
-		self.mEventBus.Register( self )		
+		self.mEventBus.Register( self )
 
 		#run thread
 		self.mEnableThread = True
@@ -347,12 +350,30 @@ class ChannelListWindow(BaseWindow):
 
 		elif aControlId == self.mCtrlFooter1.getId() :
 			LOG_TRACE( 'onclick footer back' )
-			self.SaveSlideMenuHeader()
 
-			self.mEnableThread = False
-			self.CurrentTimeThread().join()
-			self.mCtrlListCHList.reset()
-			self.close()
+			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+				self.SaveSlideMenuHeader()
+
+				self.mEnableThread = False
+				self.CurrentTimeThread().join()
+				self.mCtrlListCHList.reset()
+				self.close()
+
+			else :
+				self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
+				self.mCtrlListCHList.reset()
+				self.InitSlideMenuHeader()
+				self.InitChannelList()
+
+				#clear label
+				self.ResetLabel()
+
+				#initialize get epg event
+				self.InitEPGEvent()
+				self.UpdateLabelInfo()
+
+				#Event Register
+				self.mEventBus.Register( self )
 
 		elif aControlId == self.mCtrlFooter2.getId() :
 			LOG_TRACE( 'onclick footer ok' )
@@ -360,12 +381,39 @@ class ChannelListWindow(BaseWindow):
 
 		elif aControlId == self.mCtrlFooter3.getId() :
 			LOG_TRACE( 'onclick footer edit' )
-			self.SaveSlideMenuHeader()
+			#self.SaveSlideMenuHeader()
 
-			self.mEnableThread = False
-			self.CurrentTimeThread().join()
+			#self.mEnableThread = False
+			#self.CurrentTimeThread().join()
 
-			#ToDO: WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW )
+			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+				self.mViewMode = WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW
+
+				#Event UnRegister
+				self.mEventBus.Deregister( self )
+
+				self.mCtrlListCHList.reset()
+
+				self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
+				self.SubMenuAction(E_SLIDE_ACTION_MAIN, E_SLIDE_ALLCHANNEL)
+
+				self.mCtrlListSubmenu.selectItem( 0 )
+				self.SubMenuAction(E_SLIDE_ACTION_SUB, ElisEnum.E_MODE_ALL)
+
+
+				self.InitSlideMenuHeader()
+				self.InitChannelList()
+
+				#clear label
+				self.ResetLabel()
+				self.UpdateLabelInfo()
+
+		elif aControlId == self.mCtrlFooter4.getId() :
+			LOG_TRACE( 'onclick footer Opt' )
+
+		elif aControlId == self.mCtrlFooter5.getId() :
+			LOG_TRACE( 'onclick footer Mark' )
+
 
 		LOG_TRACE( 'Leave' )
 
@@ -735,22 +783,30 @@ class ChannelListWindow(BaseWindow):
 	def InitSlideMenuHeader(self) :
 		LOG_TRACE( 'Enter' )
 
-		#header init
-		self.mCtrlHeader1.setImage('IconHeaderTitleSmall.png')
-		#self.mCtrlHeader2.setLabel('TV-Channel List')
-		self.mCtrlHeader2.setLabel(Msg.Strings(MsgId.LANG_TV_CHANNEL_LIST))
-
-		#self.mCtrlLbl.setLabel( m.strings(mm.LANG_LANGUAGE) )
 		ret = xbmc.getLanguage()
 		LOG_TRACE( 'getLanguage[%s]'% ret )
-		#self.mCtrlBtn.setLabel(ret)
 
-		self.mCtrlHeader3.setLabel('')		
-		self.mCtrlHeader4.setLabel('')
+		#header init
+		self.mCtrlHeader1.setImage('IconHeaderTitleSmall.png')
 
-		#footer init
-		#self.setProperty('WindowType', 'ChannelList')
-		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_EDIT_MASK )
+		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+		
+			self.mCtrlHeader2.setLabel(Msg.Strings(MsgId.LANG_TV_CHANNEL_LIST))
+			self.mCtrlHeader3.setLabel('')		
+			self.mCtrlHeader4.setLabel('')
+
+			#footer init
+			#self.setProperty('WindowType', 'ChannelList')
+			self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_EDIT_MASK )
+		else :
+			self.mCtrlHeader2.setLabel(Msg.Strings(MsgId.LANG_TV_EDIT_CHANNEL_LIST))
+			self.mCtrlHeader3.setLabel('')		
+			self.mCtrlHeader4.setLabel('')
+
+			#footer init
+			#self.setProperty('WindowType', 'ChannelList')
+			self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_OPT_MASK | FooterMask.G_FOOTER_ICON_MARK_MASK )
+
 
 		#main/sub menu init
 		self.mCtrlListMainmenu.reset()
