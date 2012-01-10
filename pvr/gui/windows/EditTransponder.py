@@ -7,15 +7,20 @@ import pvr.TunerConfigMgr as ConfigMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
 from ElisEnum import ElisEnum
+from ElisProperty import ElisPropertyEnum
+import pvr.ElisMgr
 
 
-class EditSatellite( SettingWindow ) :
+class EditTransponder( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
+		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 
 		self.mInitialized = False
 		self.mSatelliteIndex = 0
+		self.mTransponderIndex = 0
 		self.mLastFocused = -1
+		self.mTransponderList = []
 			
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -26,7 +31,7 @@ class EditSatellite( SettingWindow ) :
 			ConfigMgr.GetInstance( ).Load( )		
 			ConfigMgr.GetInstance( ).SetNeedLoad( False )
 
-		self.SetHeaderLabel( 'Edit Satellite' )
+		self.SetHeaderLabel( 'Edit Transponder' )
 		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
 
 		self.InitConfig( )
@@ -76,8 +81,34 @@ class EditSatellite( SettingWindow ) :
 	 			self.mSatelliteIndex = ret
 	 			self.InitConfig( )
 
+	 	# Select frequency
+	 	elif groupId == E_Input02 :
+	 		frequencylist = []
+	 		for i in range( len( self.mTransponderList ) ) :
+	 			frequencylist.append( '%d MHz' % self.mTransponderList[i].mFrequency )
+
+	 		dialog = xbmcgui.Dialog()
+ 			ret = dialog.select( 'Select Transponder', frequencylist )
+
+ 			if ret >= 0 :
+	 			self.mTransponderIndex = ret
+	 			self.InitConfig( )
+
+
+
+
+	 	# Delete Transponder
+	 	elif groupId == E_Input06 :
+	 		if xbmcgui.Dialog( ).yesno('Confirm', 'Do you want to delete transponder?') == 1 :
+		 		satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
+		 		self.mCommander.Transponder_Delete( satellite.mLongitude,  satellite.mBand,  self.mTransponderList )
+		 		self.mTransponderIndex = 0
+				self.InitConfig( )
+			else :
+				return
+		"""
 	 	# Edit Satellite Name
-		elif groupId == E_Input03 :
+		if groupId == E_Input03 :
 			satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
 			kb = xbmc.Keyboard( satellite.mName, 'Satellite Name', False )
 			kb.doModal( )
@@ -86,7 +117,7 @@ class EditSatellite( SettingWindow ) :
 				self.InitConfig( )
 
 		# Add New Satellite
-		elif groupId == E_Input04 :
+		if groupId == E_Input04 :
 			kb = xbmc.Keyboard( '', 'Satellite Name', False )
 			kb.doModal( )
 			if( kb.isConfirmed( ) ) :
@@ -103,15 +134,12 @@ class EditSatellite( SettingWindow ) :
 					return
 				 
 		# Delete Satellite
-		elif groupId == E_Input05 :
-			if xbmcgui.Dialog( ).yesno('Confirm', 'Do you want to delete satellite?') == 1 :
-				satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
-				ConfigMgr.GetInstance( ).DeleteSatellite( satellite.mLongitude, satellite.mBand )
-				self.mSatelliteIndex = 0
-				self.InitConfig( )
-			else :
-				return
-		
+		if groupId == E_Input05 :
+			satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
+			ConfigMgr.GetInstance( ).DeleteSatellite( satellite.mLongitude, satellite.mBand )
+			self.mSatelliteIndex = 0
+			self.InitConfig( )
+		"""
 	def onFocus( self, aControlId ):
 		if self.mInitialized == False :
 			return
@@ -123,26 +151,22 @@ class EditSatellite( SettingWindow ) :
 	def InitConfig( self ) :
 		self.ResetAllControl( )
 
-		ConfigMgr.GetInstance( ).ReloadAllSatelliteList( )
 		satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
 		satellitename = ConfigMgr.GetInstance( ).GetFormattedName( satellite.mLongitude , satellite.mBand )
 		self.AddInputControl( E_Input01, 'Satellite', satellitename, None, None, None, 'Select satellite.' )
-		longitude = ConfigMgr.GetInstance( ).GetFormattedLongitude( satellite.mLongitude , satellite.mBand )
-		self.AddInputControl( E_Input02, 'Longitude', longitude )
-		self.AddLeftLabelButtonControl( E_Input03, 'Edit Satellite Name', 'Edit satellite name.' )
-		self.AddLeftLabelButtonControl( E_Input04, 'Add New Satellite', 'Add new satellite.' )
-		self.AddLeftLabelButtonControl( E_Input05, 'Delete Satellite', 'Delete satellite.' )
+
+		self.mTransponderList = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
+		self.AddInputControl( E_Input02, 'Frequency', '%d MHz' % self.mTransponderList[self.mTransponderIndex].mFrequency, None, None, None, 'Select Frequency.' )
+		self.AddInputControl( E_Input03, 'Symbol Rate', '%d KS/s' % self.mTransponderList[self.mTransponderIndex].mSymbolRate )
+
+		property = ElisPropertyEnum( 'Polarisation', self.mCommander )
+		self.AddInputControl( E_Input04, 'Polarization', property.GetPropStringByIndex( self.mTransponderList[self.mTransponderIndex].mPolarization ) )
+		self.AddLeftLabelButtonControl( E_Input05, 'Add New Transponder', 'Add new transponder.' )
+		self.AddLeftLabelButtonControl( E_Input06, 'Delete Transponder', 'Delete transponder.' )
+		self.AddLeftLabelButtonControl( E_Input07, 'Edit Transponder', 'Edit transponder.' )
 		
 		self.InitControl( )
 		self.ShowDescription( self.getFocusId( ) )
-		self.SetEnableControl( E_Input02, False )
-		self.DisableControl( )
-		
-	def DisableControl( self ) :
-		
-		if self.mSatelliteIndex == 0 :
-			self.SetEnableControl( E_Input05, False )
-			
-		else :
-			self.SetEnableControl( E_Input05, True )
+		self.SetEnableControl( E_Input03, False )
+		self.SetEnableControl( E_Input04, False )
 

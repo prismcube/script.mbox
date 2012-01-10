@@ -31,6 +31,7 @@ WIN_ID_MANUAL_SCAN					= 18
 WIN_ID_TIMESHIFT_PLATE				= 19
 WIN_ID_CHANNEL_EDIT_WINDOW			= 20
 WIN_ID_EDIT_SATELLITE				= 21
+WIN_ID_EDIT_TRANSPONDER				= 22
 
 
 
@@ -152,6 +153,10 @@ class WindowMgr(object):
 			elif aWindowId ==  WIN_ID_EDIT_SATELLITE:
 				from pvr.gui.windows.EditSatellite import EditSatellite
 				EditSatellite('EditSatellite.xml', self.mScriptDir).doModal()
+
+			elif aWindowId ==  WIN_ID_EDIT_TRANSPONDER:
+				from pvr.gui.windows.EditTransponder import EditTransponder
+				EditTransponder('EditTransponder.xml', self.mScriptDir).doModal()
 
 			elif aWindowId ==  WIN_ID_CHANNEL_EDIT_WINDOW:
 				#from pvr.gui.windows.channeleditwindow import ChannelEditWindow
