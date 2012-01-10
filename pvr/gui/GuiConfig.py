@@ -57,8 +57,8 @@ USER_ENUM_LIST_SYMBOL_RATE		= [ '22000 KS/s', '27500 KS/s' ]
 E_SIMPLE_LNB					= 0
 E_DISEQC_1_0					= 1
 E_DISEQC_1_1					= 2
-E_MOTORIZED_1_2					= 3
-E_MOTORIZED_USALS				= 4
+E_MOTORIZE_1_2					= 3
+E_MOTORIZE_USALS				= 4
 E_ONE_CABLE						= 5
 
 #TUNER CONNECTION TYPE
@@ -87,6 +87,8 @@ E_LIST_ONE_CABLE_ACTION				= [ 'Reset Limits', 'Set Current Position for East Li
 E_LIST_ONE_CABLE_TUNER_FREQUENCY	= [ '1284', '1400', '1516', '1632', '1748', '1864', '1980', '2096' ]
 E_LIST_ONE_CABLE_SCR				= [ 'SCR(0)', 'SCR(1)', 'SCR(2)', 'SCR(3)', 'SCR(4)', 'SCR(5)', 'SCR(6)', 'SCR(7)' ]
 
+E_LIST_MY_LONGITUDE = [ 'E', 'W' ]
+E_LIST_MY_LATITUDE  = [ 'N', 'S' ]
 
 
 """

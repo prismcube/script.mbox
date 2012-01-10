@@ -7,7 +7,7 @@ from copy import deepcopy
 from ElisAction import ElisAction
 from ElisEnum import ElisEnum
 import pvr.ElisMgr
-from ElisProperty import ElisPropertyEnum
+from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from ElisClass import *
 from pvr.gui.GuiConfig import *
 
@@ -39,6 +39,14 @@ class TunerConfigMgr( object ) :
 		self.mOrgTuner2Config = 0
 		self.mOrgTuner1Type = 0
 		self.mOrgTuner2Type = 0
+		self.mOrgTuner1PinCode = 0
+		self.mOrgTuner2PinCode = 0
+		self.mOrgTuner1SCR = 0
+		self.mOrgTuner2SCR = 0
+		self.mOrgTuner1SCRFreq = 0
+		self.mOrgTuner2SCRFreq = 0
+		self.mOrgMyLongitude = 0
+		self.mOrgMyLatitude = 0
 		
 		self.mAllSatelliteList = []
 
@@ -153,6 +161,18 @@ class TunerConfigMgr( object ) :
 				config.mTunerIndex = 1
 				self.mConfiguredList2.append( config )
 
+
+	def DeleteSatellite( self, aLongitude, aBand ) :
+		self.mCommander.Satellite_Delete( aLongitude, aBand )
+
+
+	def EditSatellite( self, aLongitude, aBand, aName ) :
+		self.mCommander.Satellite_ChangeName( aLongitude, aBand, aName )
+
+
+	def AddSatellite( self, aLongitude, aBand, aName ) :
+		self.mCommander.Satellite_Add( aLongitude, aBand, aName )
+
 		
 	def Reset( self ) :
 		self.mCurrentTuner  = 0
@@ -161,14 +181,23 @@ class TunerConfigMgr( object ) :
 		self.mOnecableSatelliteCount = 0
 
 	def Restore( self ) :
-		property = ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander )
-		property.SetProp( self.mOrgTuner2ConnectType )
-		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander )
-		property.SetProp( self.mOrgTuner2Config )
-		property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
-		property.SetProp( self.mOrgTuner1Type )
-		property = ElisPropertyEnum( 'Tuner2 Type', self.mCommander )		
-		property.SetProp( self.mOrgTuner2Type )
+		# Tuner
+		ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).SetProp( self.mOrgTuner2ConnectType )
+		ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander ).SetProp( self.mOrgTuner2Config )
+		ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).SetProp( self.mOrgTuner1Type )
+		ElisPropertyEnum( 'Tuner2 Type', self.mCommander ).SetProp( self.mOrgTuner2Type )	
+
+		# Onecable
+		ElisPropertyInt( 'Tuner1 Pin Code', self.mCommander ).SetProp( self.mOrgTuner1PinCode )
+		ElisPropertyInt( 'Tuner2 Pin Code', self.mCommander ).SetProp( self.mOrgTuner2PinCode )
+		ElisPropertyInt( 'Tuner1 SCR', self.mCommander ).SetProp( self.mOrgTuner1SCR )
+		ElisPropertyInt( 'Tuner2 SCR', self.mCommander ).SetProp( self.mOrgTuner2SCR )
+		ElisPropertyInt( 'Tuner1 SCR Frequency', self.mCommander ).SetProp( self.mOrgTuner1SCRFreq )
+		ElisPropertyInt( 'Tuner2 SCR Frequency', self.mCommander ).SetProp( self.mOrgTuner2SCRFreq )
+
+		# Motorized
+		ElisPropertyInt( 'MyLongitude', self.mCommander ).SetProp( self.mOrgMyLongitude )
+		ElisPropertyInt( 'MyLatitude', self.mCommander ).SetProp( self.mOrgMyLatitude )
 
 		# After Retore
 		self.LoadOriginalTunerConfig()
@@ -181,19 +210,19 @@ class TunerConfigMgr( object ) :
 		configuredList = self.GetConfiguredSatelliteList( )
 		for i in range( len( configuredList ) ) :
 			if tunerType == E_SIMPLE_LNB or tunerType == E_DISEQC_1_0 or tunerType == E_DISEQC_1_1 :
-				configuredList[i].mMotorizedType = 0
+				configuredList[i].mMotorizedType = ElisEnum.E_MOTORIZED_OFF
 				configuredList[i].mIsOneCable = 0
 				
-			elif tunerType == E_MOTORIZED_1_2 :
-				configuredList[i].mMotorizedType = 1
+			elif tunerType == E_MOTORIZE_1_2 :
+				configuredList[i].mMotorizedType = ElisEnum.E_MOTORIZED_ON
 				configuredList[i].mIsOneCable = 0
 
-			elif tunerType == E_MOTORIZED_USALS :
-				configuredList[i].mMotorizedType = 2
+			elif tunerType == E_MOTORIZE_USALS :
+				configuredList[i].mMotorizedType = ElisEnum.E_MOTORIZED_USALS
 				configuredList[i].mIsOneCable = 0
 				
 			elif tunerType == E_ONE_CABLE :
-				configuredList[i].mMotorizedType = 0
+				configuredList[i].mMotorizedType = ElisEnum.E_MOTORIZED_OFF
 				configuredList[i].mIsOneCable = 1
 		
 		
@@ -245,10 +274,13 @@ class TunerConfigMgr( object ) :
 
 		if len( self.mConfiguredList2 ) == 0 :		# If empty list to return, add one default satellite
 			self.mConfiguredList2.append( self.GetDefaultConfig( ) )
+
+
+	def ReloadAllSatelliteList( self ) :
+		self.mAllSatelliteList = self.mCommander.Satellite_GetList( ElisEnum.E_SORT_INSERTED )
 			
 
 	def GetFormattedName( self, aLongitude, aBand ) :
-	
 		found = False	
 
 		for satellite in self.mAllSatelliteList :
@@ -265,6 +297,28 @@ class TunerConfigMgr( object ) :
 				tmpLongitude = 3600 - aLongitude
 
 			formattedName = '%d.%d %s %s' % ( int( tmpLongitude / 10 ), tmpLongitude % 10, dir, satellite.mName )
+			return formattedName
+
+		return 'UnKnown'
+
+
+	def GetFormattedLongitude( self, aLongitude, aBand ) :
+		found = False	
+
+		for satellite in self.mAllSatelliteList :
+			if aLongitude == satellite.mLongitude and aBand == satellite.mBand :
+				found = True
+				break
+
+		if found == True :
+			dir = 'E'
+
+			tmpLongitude  = aLongitude
+			if tmpLongitude > 1800 :
+				dir = 'W'
+				tmpLongitude = 3600 - aLongitude
+
+			formattedName = '%d.%d %s' % ( int( tmpLongitude / 10 ), tmpLongitude % 10, dir )
 			return formattedName
 
 		return 'UnKnown'
@@ -306,15 +360,24 @@ class TunerConfigMgr( object ) :
 
 
 	def LoadOriginalTunerConfig( self ) :
-		property = ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander )
-		self.mOrgTuner2ConnectType = property.GetProp()
-		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander )
-		self.mOrgTuner2Config = property.GetProp()
-		property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
-		self.mOrgTuner1Type = property.GetProp()
-		property = ElisPropertyEnum( 'Tuner2 Type', self.mCommander )		
-		self.mOrgTuner2Type = property.GetProp()
+		# Tuner
+		self.mOrgTuner2ConnectType = ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).GetProp()
+		self.mOrgTuner2Config = ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander ).GetProp()
+		self.mOrgTuner1Type = ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp()
+		self.mOrgTuner2Type = ElisPropertyEnum( 'Tuner2 Type', self.mCommander ).GetProp()
 
+		# Onecable
+		self.mOrgTuner1PinCode	= ElisPropertyInt( 'Tuner1 Pin Code', self.mCommander ).GetProp( )
+		self.mOrgTuner2PinCode	= ElisPropertyInt( 'Tuner2 Pin Code', self.mCommander ).GetProp( )
+		self.mOrgTuner1SCR		= ElisPropertyInt( 'Tuner1 SCR', self.mCommander ).GetProp( )
+		self.mOrgTuner2SCR		= ElisPropertyInt( 'Tuner2 SCR', self.mCommander ).GetProp( )
+		self.mOrgTuner1SCRFreq	= ElisPropertyInt( 'Tuner1 SCR Frequency', self.mCommander ).GetProp( )
+		self.mOrgTuner2SCRFreq	= ElisPropertyInt( 'Tuner2 SCR Frequency', self.mCommander ).GetProp( )
+
+		# Motorized
+		self.mOrgMyLongitude	= ElisPropertyInt( 'MyLongitude', self.mCommander ).GetProp( )
+		self.mOrgMyLatitude		= ElisPropertyInt( 'MyLatitude', self.mCommander ).GetProp( )
+		
 
 	def GetDefaultConfig( self ) :
 		config = ElisISatelliteConfig( )

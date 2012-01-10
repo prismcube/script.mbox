@@ -4,6 +4,7 @@ import sys
 
 import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DlgMgr
+import pvr.TunerConfigMgr as ConfigMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
 from inspect import currentframe
 import pvr.ElisMgr
@@ -27,6 +28,7 @@ class NullWindow(BaseWindow):
 
 		if id == Action.ACTION_PREVIOUS_MENU:
 			print 'lael98 check ation menu'
+			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 		elif id == Action.ACTION_PARENT_DIR:
