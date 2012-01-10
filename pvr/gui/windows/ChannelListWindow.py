@@ -538,8 +538,8 @@ class ChannelListWindow(BaseWindow):
 				self.mCtrlLblPath3.setLabel( 'sort by %s'% label3.title() ) 
 
 				#close slide : move to focus channel list
-				self.mCtrlListCHList.setEnabled(True)
-				self.setFocusId( self.mCtrlGropCHList.getId() )
+				#self.mCtrlListCHList.setEnabled(True)
+				#self.setFocusId( self.mCtrlGropCHList.getId() )
 
 		LOG_TRACE( 'Leave' )
 
