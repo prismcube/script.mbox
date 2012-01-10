@@ -92,10 +92,10 @@ class TunerConfiguration( SettingWindow ) :
 					elif tunertype == E_DISEQC_1_1 :
 						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_DISEQC_11 )
 					
-					elif tunertype == E_MOTORIZED_1_2 :
+					elif tunertype == E_MOTORIZE_1_2 :
 						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED_12 )
 
-					elif tunertype == E_MOTORIZED_USALS :
+					elif tunertype == E_MOTORIZE_USALS :
 						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED_USALS2 )
 
 				else :

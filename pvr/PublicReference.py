@@ -214,6 +214,7 @@ def PincodeLimit(aCmd, aInput):
 	property = ElisPropertyInt( 'PinCode', aCmd )
 	#LOG_TRACE( 'TTTTTTTTTTTTTTT[%s][%s]'% ( aInput, property.GetProp() ) )
 
+	pincode = -1
 	pincode = property.GetProp()
 
 	return pincode

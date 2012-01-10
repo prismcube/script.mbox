@@ -10,7 +10,8 @@ import pvr.ElisMgr
 
 class AntennaSetup( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
-		SettingWindow.__init__( self, *args, **kwargs )			
+		SettingWindow.__init__( self, *args, **kwargs )
+		
 		self.mInitialized = False
 		self.mLastFocused = -1
 
@@ -53,6 +54,7 @@ class AntennaSetup( SettingWindow ) :
 		
 			if xbmcgui.Dialog( ).yesno('Configure', 'Save Configuration?') == 1 :
 				ConfigMgr.GetInstance( ).SatelliteConfigSaveList( )
+				ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			else :
 				ConfigMgr.GetInstance( ).Restore( )
 
@@ -96,7 +98,7 @@ class AntennaSetup( SettingWindow ) :
 				self.ResetAllControl( )
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_SIMPLE )
 			
-			elif self.GetSelectedIndex( E_SpinEx03 ) == E_MOTORIZED_USALS :
+			elif self.GetSelectedIndex( E_SpinEx03 ) == E_MOTORIZE_USALS :
 				self.ResetAllControl( )
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED_USALS )
 				

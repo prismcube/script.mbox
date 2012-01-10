@@ -11,9 +11,6 @@ from ElisProperty import ElisPropertyInt
 
 from pvr.Util import *
 
-E_LIST_MY_LONGITUDE = [ 'E', 'W' ]
-E_LIST_MY_LATITUDE  = [ 'N', 'S' ]
-
 
 class SatelliteConfigMotorizedUsals( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -90,7 +87,6 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 
  			if dialog.IsOK() == True :
 	 			self.mLongitude  = dialog.GetNumber( )
-	 			LOG_TRACE( 'dhkim test value = %d' % self.mLongitude )
 	 			self.InitConfig( )
 
 		# Set Latitude

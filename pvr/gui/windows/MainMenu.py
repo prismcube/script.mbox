@@ -4,7 +4,6 @@ import sys
 
 import pvr.gui.WindowMgr as WinMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
-import pvr.TunerConfigMgr as ConfigMgr
 from inspect import currentframe
 from pvr.Util import GuiLock, LOG_TRACE
 
@@ -38,7 +37,7 @@ class MainMenu( BaseWindow ):
 		WinMgr.GetInstance().CheckSkinChange( )
 
 
-	def onAction( self, aAction ):
+	def onAction( self, aAction ) :
 		LOG_TRACE('')
 		id = aAction.getId()
 
@@ -63,19 +62,16 @@ class MainMenu( BaseWindow ):
 			pass
 
 		elif aControlId == BUTTON_ID_ANTENNA_SETUP : # Antenna Setup
-			ConfigMgr.GetInstance( ).SetNeedLoad( True )		
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
 
 		elif aControlId == BUTTON_ID_CHANNEL_SEARCH : # Channel Search
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )
 
 		elif aControlId == BUTTON_ID_EDIT_SATELLITE : # Edit Satellite
-			#ToDO
-			pass
-
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_EDIT_SATELLITE )
+			
 		elif aControlId == BUTTON_ID_EDIT_TRANSPONDER : # Edit TransPonder
-			#ToDO
-			pass
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_EDIT_TRANSPONDER )
 
 		elif aControlId == BUTTION_ID_CONFIGURE : # Config
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIGURE )

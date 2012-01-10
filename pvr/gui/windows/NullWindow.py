@@ -4,6 +4,7 @@ import sys
 
 import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DlgMgr
+import pvr.TunerConfigMgr as ConfigMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
 from inspect import currentframe
 import pvr.ElisMgr
@@ -27,23 +28,24 @@ class NullWindow(BaseWindow):
 
 		if id == Action.ACTION_PREVIOUS_MENU:
 			print 'lael98 check ation menu'
+			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 		elif id == Action.ACTION_PARENT_DIR:
 			try :
 				currentChannel = self.mCommander.Channel_GetCurrent()
-				#lastChannel = WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_CHANNEL_BANNER).getLastChannel( )
+				#lastChannel = WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_LIVE_PLATE).getLastChannel( )
 				#if lastChannel > 0 and lastchannel != currentChannel :
 				#	self.mCommander.channel_SetCurrent( lastChannel )
-				#	WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_CHANNEL_BANNER).setLastChannel( currentChannel )
-				#	WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_BANNER )
+				#	WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_LIVE_PLATE).setLastChannel( currentChannel )
+				#	WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 			except Exception, ex:
 				print 'ERR prev channel'
 
 		elif id == Action.ACTION_SELECT_ITEM:
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
-#			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_BANNER )
+#			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 			print 'lael98 check ation select'
 
 		elif id == Action.ACTION_MOVE_LEFT:
@@ -51,7 +53,7 @@ class NullWindow(BaseWindow):
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
 		elif id == Action.ACTION_SHOW_INFO	:
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_BANNER )
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 			
 		elif id == Action.ACTION_PAGE_UP:
 			LOG_TRACE('TRACE')
@@ -62,8 +64,8 @@ class NullWindow(BaseWindow):
 			if prevChannel :
 				self.mCommander.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )
 			
-				#WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_CHANNEL_BANNER).setLastChannel( currentChannel )
-				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_BANNER )		
+				#WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_LIVE_PLATE).setLastChannel( currentChannel )
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )		
 
 
 		elif id == Action.ACTION_PAGE_DOWN:
@@ -72,8 +74,8 @@ class NullWindow(BaseWindow):
 			if nextChannel :
 				self.mCommander.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
 			
-				#WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_CHANNEL_BANNER).setLastChannel( currentChannel )
-				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_BANNER )		
+				#WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_LIVE_PLATE).setLastChannel( currentChannel )
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )		
 
 		elif id == Action.REMOTE_3:  #TEST : start Record
 			print 'open record dialog'

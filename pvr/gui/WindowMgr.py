@@ -13,7 +13,7 @@ from elementtree import ElementTree
 WIN_ID_NULLWINDOW 					= 1
 WIN_ID_MAINMENU 					= 2
 WIN_ID_CHANNEL_LIST_WINDOW			= 3
-WIN_ID_CHANNEL_BANNER				= 4
+WIN_ID_LIVE_PLATE					= 4
 WIN_ID_CONFIGURE					= 5
 WIN_ID_ANTENNA_SETUP				= 6
 WIN_ID_TUNER_CONFIGURATION			= 7
@@ -31,6 +31,8 @@ WIN_ID_MANUAL_SCAN					= 18
 WIN_ID_TIMESHIFT_PLATE				= 19
 WIN_ID_CHANNEL_EDIT_WINDOW			= 20
 WIN_ID_ARCHIVE_WINDOW				= 21
+WIN_ID_EDIT_SATELLITE				= 21
+WIN_ID_EDIT_TRANSPONDER				= 22
 
 
 
@@ -85,9 +87,9 @@ class WindowMgr(object):
 				ChannelListWindow('ChannelListWindow.xml', self.mScriptDir ).doModal()
 				#ChannelListWindow('ChannelListWindow_b.xml', self.mScriptDir ).doModal()
 
-			elif aWindowId ==  WIN_ID_CHANNEL_BANNER:
-				from pvr.gui.windows.ChannelBanner import ChannelBanner
-				ChannelBanner('ChannelBanner.xml', self.mScriptDir ).doModal()
+			elif aWindowId ==  WIN_ID_LIVE_PLATE:
+				from pvr.gui.windows.LivePlate import LivePlate
+				LivePlate('LivePlate.xml', self.mScriptDir ).doModal()
 
 			elif aWindowId == WIN_ID_TIMESHIFT_PLATE:
 				from pvr.gui.windows.TimeshiftPlate import TimeShiftPlate
@@ -148,6 +150,14 @@ class WindowMgr(object):
 			elif aWindowId ==  WIN_ID_MANUAL_SCAN:
 				from pvr.gui.windows.ManualScan import ManualScan
 				ManualScan('ManualScan.xml', self.mScriptDir).doModal()
+
+			elif aWindowId ==  WIN_ID_EDIT_SATELLITE:
+				from pvr.gui.windows.EditSatellite import EditSatellite
+				EditSatellite('EditSatellite.xml', self.mScriptDir).doModal()
+
+			elif aWindowId ==  WIN_ID_EDIT_TRANSPONDER:
+				from pvr.gui.windows.EditTransponder import EditTransponder
+				EditTransponder('EditTransponder.xml', self.mScriptDir).doModal()
 
 			elif aWindowId ==  WIN_ID_CHANNEL_EDIT_WINDOW:
 				#from pvr.gui.windows.channeleditwindow import ChannelEditWindow
