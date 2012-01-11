@@ -86,6 +86,10 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 	def SetHeaderLabel( self, aLabel ):
 		self.getControl( HeaderDefine.G_HEADER_LABEL_ID ).setLabel( aLabel )
 
+	def SetSettingWindowLabel( self, aLabel ) :
+		self.getControl( E_SETTING_MINI_TITLE ).setLabel( aLabel )
+		self.getControl( E_SETTING_HEADER_TITLE ).setLabel( aLabel )
+
 	def GetFocusId( self ):
 		GuiLock2( True )
 		self.mFocusId = self.getFocusId()

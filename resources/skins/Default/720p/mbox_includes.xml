@@ -1,14 +1,101 @@
 <includes>
-	<include name="MenuDescription">
-		<control type="label" id="1001">
-			<posx>100</posx>
-			<posy>120</posy>
-			<width>600</width>
-			<height>40</height>
-			<font>font13_title</font>
-			<textcolor>blue</textcolor>
-			<align>left</align>
-			<aligny>center</aligny>
+	<include name="DefaultSettingHeaderWindow">
+		<include>DefaultSettingsBackground</include>
+		<include>DefaultBehindDialogFadeOut</include>
+		<include>DefaultCommonDateTime</include>
+		<control type="group">
+			<posx>60</posx>
+			<posy>0</posy>
+			<animation effect="slide" end="-310,0" time="400" tween="quadratic" easing="out">WindowClose</animation>
+			<animation effect="slide" start="-310,0" time="400" tween="quadratic" easing="out">WindowOpen</animation>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>250</width>
+				<height>35</height>
+				<texture border="0,0,32,0">confluence/header.png</texture>
+			</control>
+			<control type="label" id="1001">
+				<include>DefaultWindowTitleCommons</include>
+				<posx>220</posx>
+				<label>Edit Transponder</label>
+			</control>
+		</control>
+	</include>
+	<include name="DefaultSettingMainWindow">
+		<control type="group">
+			<posx>-40</posx>
+			<posy>-50</posy>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1200</width>
+				<height>640</height>
+				<texture border="20">confluence/DialogBack.png</texture>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>10</posy>
+				<width>804</width>
+				<height>100</height>
+				<aspectratio>stretch</aspectratio>
+				<texture>confluence/GlassTitleBar.png</texture>
+			</control>
+			<control type="image">
+				<description>LOGO</description>
+				<posx>880</posx>
+				<posy>15</posy>
+				<width>220</width>
+				<height>80</height>
+				<aspectratio>keep</aspectratio>
+				<texture>confluence/Confluence_Logo.png</texture>
+			</control>
+			<control type="label" id="1002">
+				<description>header label</description>
+				<posx>50</posx>
+				<posy>20</posy>
+				<width>740</width>
+				<height>30</height>
+				<font>font16caps</font>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+				<control type="label" id="1003">
+				<posx>60</posx>
+				<posy>62</posy>
+				<width>600</width>
+				<height>40</height>
+				<font>font13_title</font>
+				<textcolor>blue</textcolor>
+				<align>left</align>
+				<aligny>center</aligny>
+			</control>
+			<control type="image">
+				<posx>805</posx>
+				<posy>110</posy>
+				<width>352</width>
+				<height>198</height>
+				<texture border="20">special://skin/backgrounds/weather.jpg</texture>
+				<description>pre-view</description>
+			</control>
+			<control type="label" id="307">
+				<description>satellite info</description>
+				<posx>805</posx>
+				<posy>350</posy>
+				<font>font12_title</font>
+				<textcolor>grey</textcolor>
+				<label>19.2 E ASTRA 1</label>
+			</control>
+			<control type="label" id="308">
+				<description>career info</description>
+				<posx>805</posx>
+				<posy>380</posy>
+				<font>font12_title</font>
+				<textcolor>grey</textcolor>
+				<label>11303 MHz, 22000 KS/S, Horz</label>
+			</control>
 		</control>
 	</include>
 	<include name="DefaultBehindDialogFadeOut">
@@ -75,7 +162,6 @@
 		<textcolor>white</textcolor>
 		<focusedcolor>white</focusedcolor>
 	</include>
-
 	
 	<include name="SpinEx01">
 		<control type="group" id="1100">

@@ -25,10 +25,9 @@ class EditSatellite( SettingWindow ) :
 			ConfigMgr.GetInstance( ).Load( )		
 			ConfigMgr.GetInstance( ).SetNeedLoad( False )
 
-		self.SetHeaderLabel( 'Edit Satellite' )
-		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
-
+	
 		self.InitConfig( )
+		self.SetSettingWindowLabel( 'Edit Satellite' )
 		self.mInitialized = True
 		
 		

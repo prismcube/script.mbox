@@ -27,9 +27,9 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 
 		tunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerIndex( )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'USALS configuration : Tuner %s' % ( tunerIndex + 1 ) )
-	
-		self.SetHeaderLabel( 'Motorize Configuration' )
-		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
+
+		self.SetSettingWindowLabel( 'Motorize Configuration' )
+		
 		self.GetLongitude( )
 		self.GetLatitude( )
 		self.InitConfig( )

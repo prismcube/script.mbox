@@ -22,8 +22,7 @@ class SatelliteConfigOnecable( SettingWindow ):
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		
-		self.SetHeaderLabel( 'OneCable Configuration' )
-		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
+		self.SetSettingWindowLabel( 'OneCable Configuration' )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'OneCable configuration' )
 
 		self.mCurrentSatellite = ConfigMgr.GetInstance( ).GetConfiguredSatellitebyIndex( 0 )

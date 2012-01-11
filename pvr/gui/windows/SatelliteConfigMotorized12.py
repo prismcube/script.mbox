@@ -31,8 +31,7 @@ class SatelliteConfigMotorized12( SettingWindow ):
 		self.mTransponderList = ConfigMgr.GetInstance( ).GetTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 		self.mSelectedTransponderIndex = 0
 
-		self.SetHeaderLabel( 'Satellite Configuration' ) 
-		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
+		self.SetSettingWindowLabel( 'Satellite Configuration' )
 		
 		if tunerIndex == E_TUNER_1 :
 			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )

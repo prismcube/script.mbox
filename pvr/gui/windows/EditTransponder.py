@@ -33,6 +33,7 @@ class EditTransponder( SettingWindow ) :
 			ConfigMgr.GetInstance( ).SetNeedLoad( False )
 
 		self.InitConfig( )
+		self.SetSettingWindowLabel( 'Edit Transponder' )
 		self.mInitialized = True
 
 
@@ -132,6 +133,8 @@ class EditTransponder( SettingWindow ) :
 		"""
 		for trans in self.mTransponderList :
 			trans.printdebug()
+		"""
+		"""
 		self.AddInputControl( E_Input02, 'Frequency', '%d MHz' % self.mTransponderList[self.mTransponderIndex].mFrequency, None, None, None, 'Select Frequency.' )
 		self.AddInputControl( E_Input03, 'Symbol Rate', '%d KS/s' % self.mTransponderList[self.mTransponderIndex].mSymbolRate )
 
