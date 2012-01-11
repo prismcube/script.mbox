@@ -21,8 +21,7 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 		
 
 	def onInit( self ) :
-		self.SetHeaderLabel( 'OneCable Configuration' )
-		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
+		self.SetSettingWindowLabel( 'OneCable Configuration' )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'OneCable configuration' )
 		self.mOneCablesatelliteCount = ConfigMgr.GetInstance( ).GetOneCableSatelliteCount( )
 		self.mCurrentSatellite = []

@@ -27,9 +27,9 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 
 		tunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerIndex( )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'USALS configuration : Tuner %s' % ( tunerIndex + 1 ) )
-	
-		self.SetHeaderLabel( 'Motorize Configuration' )
-		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
+
+		self.SetSettingWindowLabel( 'Motorize Configuration' )
+		
 		self.GetLongitude( )
 		self.GetLatitude( )
 		self.InitConfig( )
@@ -121,6 +121,10 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 		tmpListLongitude = [ tmplongitude1, tmplongitude2 ]
 		self.AddUserEnumControl( E_SpinEx01, 'My Longitude', tmpListLongitude, self.mIsWest )
 		self.AddLeftLabelButtonControl( E_Input01, ' - Set Longitude' )
+
+		#self.AddUserEnumControl( E_SpinEx01, 'My Longitude Direction', E_LIST_MY_LONGITUDE, self.mIsWest )
+		#tmplongitude = '%3d.%d' % ( self.mLongitude / 10, self.mLongitude % 10 )
+		#self.AddInputControl( E_Input01, 'My Longitude Angle',  tmplongitude )
 		
 		#self.GetLatitude( )
 		tmplatitude1 = '%d.%d %s' % ( self.mLatitude / 10, self.mLatitude % 10, E_LIST_MY_LATITUDE[ 0 ] )

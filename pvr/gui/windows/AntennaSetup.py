@@ -24,8 +24,7 @@ class AntennaSetup( SettingWindow ) :
 			ConfigMgr.GetInstance( ).Load( )		
 			ConfigMgr.GetInstance( ).SetNeedLoad( False )
 		
-		self.SetHeaderLabel( 'Antenna & Satellite Setup' )
-		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
+		self.SetSettingWindowLabel( 'Antenna & Satellite Setup' )
 		
 		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', None, 'Select tuner 2 connection type.' )
 		self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', None, 'Select tuner 2 configuration.' )

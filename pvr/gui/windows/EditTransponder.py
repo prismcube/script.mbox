@@ -2,25 +2,26 @@ import xbmc
 import xbmcgui
 import sys
 
+import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DiaMgr
 import pvr.TunerConfigMgr as ConfigMgr
-from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
-from ElisEnum import ElisEnum
-from ElisProperty import ElisPropertyEnum
 import pvr.ElisMgr
+from ElisProperty import ElisPropertyEnum
+from pvr.gui.GuiConfig import *
 
 
 class EditTransponder( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
-
-		self.mInitialized = False
-		self.mSatelliteIndex = 0
-		self.mTransponderIndex = 0
-		self.mLastFocused = -1
+ 
 		self.mTransponderList = []
+		self.mInitialized 		= False
+		self.mSatelliteIndex 	= 0
+		self.mTransponderIndex = 0
+		self.mLastFocused 		= -1
+
 			
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -31,14 +32,13 @@ class EditTransponder( SettingWindow ) :
 			ConfigMgr.GetInstance( ).Load( )		
 			ConfigMgr.GetInstance( ).SetNeedLoad( False )
 
-		self.SetHeaderLabel( 'Edit Transponder' )
-		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
-
 		self.InitConfig( )
+		self.SetSettingWindowLabel( 'Edit Transponder' )
 		self.mInitialized = True
-		
-		
+
+
 	def onAction( self, aAction ) :
+
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 
@@ -66,7 +66,7 @@ class EditTransponder( SettingWindow ) :
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
 			self.ShowDescription( focusId )
-
+			
 
 	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
@@ -101,52 +101,22 @@ class EditTransponder( SettingWindow ) :
 	 	elif groupId == E_Input06 :
 	 		if xbmcgui.Dialog( ).yesno('Confirm', 'Do you want to delete transponder?') == 1 :
 		 		satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
-		 		self.mCommander.Transponder_Delete( satellite.mLongitude,  satellite.mBand,  self.mTransponderList )
+		 		tmplist = []
+		 		tmplist.append( self.mTransponderList[self.mTransponderIndex] )
+		 		self.mCommander.Transponder_Delete( satellite.mLongitude,  satellite.mBand,  tmplist )
+		 		xbmc.sleep(2)
 		 		self.mTransponderIndex = 0
 				self.InitConfig( )
 			else :
 				return
-		"""
-	 	# Edit Satellite Name
-		if groupId == E_Input03 :
-			satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
-			kb = xbmc.Keyboard( satellite.mName, 'Satellite Name', False )
-			kb.doModal( )
-			if( kb.isConfirmed( ) ) :
-				ConfigMgr.GetInstance( ).EditSatellite( satellite.mLongitude, satellite.mBand, kb.getText( ) )
-				self.InitConfig( )
-
-		# Add New Satellite
-		if groupId == E_Input04 :
-			kb = xbmc.Keyboard( '', 'Satellite Name', False )
-			kb.doModal( )
-			if( kb.isConfirmed( ) ) :
-				satelliteName = kb.getText( )
-				
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_NEW_SATELLITE )
- 				dialog.doModal( )
-
-				if dialog.IsOK() == True :
-					longitude, band = dialog.GetValue( )
-					ConfigMgr.GetInstance( ).AddSatellite( longitude, band, satelliteName )
-					self.InitConfig( )
-				else :
-					return
-				 
-		# Delete Satellite
-		if groupId == E_Input05 :
-			satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
-			ConfigMgr.GetInstance( ).DeleteSatellite( satellite.mLongitude, satellite.mBand )
-			self.mSatelliteIndex = 0
-			self.InitConfig( )
-		"""
+		
 	def onFocus( self, aControlId ):
 		if self.mInitialized == False :
 			return
-		if ( self.mLastFocused != aControlId ) :
+		if self.mLastFocused != aControlId :
 			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId
-
+	
 
 	def InitConfig( self ) :
 		self.ResetAllControl( )
@@ -156,6 +126,15 @@ class EditTransponder( SettingWindow ) :
 		self.AddInputControl( E_Input01, 'Satellite', satellitename, None, None, None, 'Select satellite.' )
 
 		self.mTransponderList = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
+		print 'dhkim test list transponder = %s' % self.mTransponderList
+		print 'dhkim test len transponder = %d' % len( self.mTransponderList )
+		"""
+		for test
+		"""
+		for trans in self.mTransponderList :
+			trans.printdebug()
+		"""
+		"""
 		self.AddInputControl( E_Input02, 'Frequency', '%d MHz' % self.mTransponderList[self.mTransponderIndex].mFrequency, None, None, None, 'Select Frequency.' )
 		self.AddInputControl( E_Input03, 'Symbol Rate', '%d KS/s' % self.mTransponderList[self.mTransponderIndex].mSymbolRate )
 
@@ -169,4 +148,3 @@ class EditTransponder( SettingWindow ) :
 		self.ShowDescription( self.getFocusId( ) )
 		self.SetEnableControl( E_Input03, False )
 		self.SetEnableControl( E_Input04, False )
-
