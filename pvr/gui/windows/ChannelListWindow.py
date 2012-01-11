@@ -320,25 +320,8 @@ class ChannelListWindow(BaseWindow):
 		LOG_TRACE( 'onclick focusID[%d]'% aControlId )
 
 		if aControlId == self.mCtrlListCHList.getId() :
-
-			#Mark
-			if self.mIsMark == True :
-				try :
-					idx = self.mCtrlListCHList.getSelectedPosition()
-					listItem = self.mCtrlListCHList.getListItem(idx)
-					if listItem.getProperty('mark') == E_IMG_ICON_MARK :
-						listItem.setProperty('mark', '')
-					else :
-						listItem.setProperty('mark', E_IMG_ICON_MARK)
-
-					self.setFocusId( self.mCtrlGropCHList.getId() )
-
-				except Exception, e:
-					LOG_TRACE( '========except[%s]'% e )
-
-
-			#Turn in
-			else :
+			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+				#Turn in
 
 				self.mIsSelect = True
 
@@ -371,6 +354,21 @@ class ChannelListWindow(BaseWindow):
 					self.ResetLabel()
 					self.UpdateLabelInfo()
 					self.PincodeDialogLimit()
+
+
+			else :
+				#Mark
+				if self.mIsMark == True :
+					#mark image show
+					idx = self.mCtrlListCHList.getSelectedPosition()
+					listItem = self.mCtrlListCHList.getListItem(idx)
+					if listItem.getProperty('mark') == E_IMG_ICON_MARK :
+						listItem.setProperty('mark', '')
+					else :
+						listItem.setProperty('mark', E_IMG_ICON_MARK)
+
+					self.setFocusId( self.mCtrlGropCHList.getId() )
+
 
 		elif aControlId == self.mCtrlBtnMenu.getId() or aControlId == self.mCtrlListMainmenu.getId() :
 			#list view
