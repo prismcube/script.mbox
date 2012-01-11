@@ -2198,10 +2198,10 @@
 						<height>35</height>
 						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
 						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
-						<onleft>3131</onleft>
+						<onleft>3161</onleft>
 						<onright>3111</onright>
-						<onup>-</onup>
-						<ondown>-</ondown>
+						<onup></onup>
+						<ondown></ondown>
 					</control>
 					<control type="label">
 						<posx>72</posx>
@@ -2245,8 +2245,8 @@
 						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
 						<onleft>3101</onleft>
 						<onright>3121</onright>
-						<onup>-</onup>
-						<ondown>-</ondown>
+						<onup></onup>
+						<ondown></ondown>
 					</control>
 					<control type="label">
 						<posx>72</posx>
@@ -2289,8 +2289,8 @@
 						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
 						<onleft>3111</onleft>
 						<onright>3131</onright>
-						<onup>-</onup>
-						<ondown>-</ondown>
+						<onup></onup>
+						<ondown></ondown>
 					</control>
 					<control type="label">
 						<posx>72</posx>
@@ -2332,9 +2332,9 @@
 						<texturenofocus>confluence/OSDRecordNF.png</texturenofocus>
 						<texturefocus>confluence/OSDRecord2.png</texturefocus>
 						<onleft>3121</onleft>
-						<onright>3101</onright>
-						<onup>-</onup>
-						<ondown>-</ondown>
+						<onright>3141</onright>
+						<onup></onup>
+						<ondown></ondown>
 					</control>
 					<control type="label">
 						<posx>72</posx>
@@ -2375,10 +2375,10 @@
 						<height>35</height>
 						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
 						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
-						<onleft>3121</onleft>
-						<onright>3101</onright>
-						<onup>-</onup>
-						<ondown>-</ondown>
+						<onleft>3131</onleft>
+						<onright>3151</onright>
+						<onup></onup>
+						<ondown></ondown>
 					</control>
 					<control type="label">
 						<posx>72</posx>
@@ -2403,6 +2403,94 @@
 						<aligny>center</aligny>
 						<label>[B]Edit Channel[/B]</label>
 						<visible>[Control.HasFocus(3141) | Control.HasFocus(3141)]</visible>
+					</control>
+				</control>
+				<!-- Opt Edit Button -->
+				<control type="group" id="3150">
+					<visible></visible>
+					<width>110</width>
+					<height>40</height>
+					<defaultcontrol always="true">3151</defaultcontrol>
+					<control type="button" id="3151">
+						<description>Button Icon</description>
+						<posx>30</posx>
+						<posy>10</posy>
+						<width>35</width>
+						<height>35</height>
+						<texturenofocus>confluence/OSDVizNF.png</texturenofocus>
+						<texturefocus>confluence/OSDVizFO.png</texturefocus>
+						<onleft>3141</onleft>
+						<onright>3161</onright>
+						<onup></onup>
+						<ondown></ondown>
+					</control>
+					<control type="label">
+						<posx>72</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[B]Opt Edit[/B]</label>
+						<visible>![Control.HasFocus(3151) | Control.HasFocus(3151)]</visible>
+					</control>
+					<control type="label">
+						<posx>72</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[B]Opt Edit[/B]</label>
+						<visible>[Control.HasFocus(3151) | Control.HasFocus(3151)]</visible>
+					</control>
+				</control>
+				<!-- Mark Button -->
+				<control type="group" id="3160">
+					<visible></visible>
+					<width>110</width>
+					<height>40</height>
+					<defaultcontrol always="true">3161</defaultcontrol>
+					<control type="button" id="3161">
+						<description>Button Icon</description>
+						<posx>30</posx>
+						<posy>10</posy>
+						<width>35</width>
+						<height>35</height>
+						<texturenofocus>confluence/OSDLyricsNF.png</texturenofocus>
+						<texturefocus>confluence/OSDLyricsFO.png</texturefocus>
+						<onleft>3151</onleft>
+						<onright>3101</onright>
+						<onup></onup>
+						<ondown></ondown>
+					</control>
+					<control type="label">
+						<posx>72</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[B]Mark[/B]</label>
+						<visible>![Control.HasFocus(3161) | Control.HasFocus(3161)]</visible>
+					</control>
+					<control type="label">
+						<posx>72</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[B]Mark[/B]</label>
+						<visible>[Control.HasFocus(3161) | Control.HasFocus(3161)]</visible>
 					</control>
 				</control>
 			</control>

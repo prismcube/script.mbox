@@ -701,7 +701,7 @@
 
 <!-- footer -->
 		<control type="group" id="500">
-			<onup>SetFocus(49)</onup>
+			<onup>49</onup>
 			<include>MenuFooter</include>
 		</control>
 	</controls>
