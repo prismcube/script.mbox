@@ -16,62 +16,52 @@
 <!--  Path Info -->
 		<control type="group" id="20">
 			<posx>0</posx>
-			<posy>110</posy>
+			<posy>102</posy>
+			<animation effect="slide" start="-650,0" end="0,0" delay="0" time="100" condition="ControlGroup(49).HasFocus | Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">conditional</animation>
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>220</width>
-				<height>45</height>
-				<texture border="0,0,32,0">confluence/header.png</texture>
-			</control>
-			<control type="image">
-				<posx>220</posx>
-				<posy>0</posy>
-				<width>270</width>
+				<width>620</width>
 				<height>45</height>
 				<texture border="0,0,32,0">confluence/header.png</texture>
 			</control>
 			<control type="label" id="10">
-				<posx>50</posx>
+				<posx>100</posx>
+				<posy>0</posy>
+				<width>600</width>
+				<height>40</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>$INFO[ListItem.Label]</label>
+				<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+			</control>
+		</control>
+		<control type="group">
+			<posx>200r</posx>
+			<posy>102</posy>
+			<animation effect="slide" start="0,0" end="200,0" delay="0" time="300" condition="Control.IsVisible(100)">conditional</animation>
+			<control type="image">
+				<posx>0</posx>
 				<posy>0</posy>
 				<width>200</width>
-				<height>40</height>
-				<font>font13</font>
-				<textcolor>grey</textcolor>
-				<align>left</align>
-				<aligny>center</aligny>
-				<label>$INFO[ListItem.Label]</label>
-				<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+				<height>35</height>
+				<texture flipx="true" border="32,0,0,0">confluence/header.png</texture>
 			</control>
-			<control type="label" id="11">
-				<posx>230</posx>
+			<control type="label" id="21">
+				<description>mark</description>
+				<posx>30</posx>
 				<posy>0</posy>
-				<width>250</width>
-				<height>40</height>
-				<font>font13</font>
-				<textcolor>grey</textcolor>
+				<width>400</width>
+				<height>28</height>
 				<align>left</align>
 				<aligny>center</aligny>
-				<label>$INFO[ListItem.Label]</label>
-				<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
-			</control>
-			<control type="label" id="12">
-				<posx>490</posx>
-				<posy>0</posy>
-				<width>250</width>
-				<height>40</height>
-				<font>font13</font>
+				<font>font12</font>
 				<textcolor>grey</textcolor>
-				<align>left</align>
-				<aligny>center</aligny>
-				<label>$INFO[ListItem.Label]</label>
-				<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+				<label>Mark ON</label>
 			</control>
-
 		</control>
-
-
-
 
 
 <!-- middle left -->
@@ -128,6 +118,14 @@
 						<width>30</width>
 						<height>30</height>
 						<texture>$INFO[ListItem.Property(lock)]</texture>
+					</control>
+					<!-- is mark? -->
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>$INFO[ListItem.Property(mark)]</texture>
 					</control>
 
 					<control type="label">
@@ -210,6 +208,14 @@
 						<height>30</height>
 						<texture>$INFO[ListItem.Property(lock)]</texture>
 					</control>
+					<!-- is mark? -->
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>$INFO[ListItem.Property(mark)]</texture>
+					</control>
 
 					<control type="label">
 						<posx>30</posx>
@@ -238,9 +244,8 @@
 						<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="true">conditional</animation>
 					</control>
 				</focusedlayout>
-
 			</control>
-		</control>	
+		</control>
 
         <!-- Scrollbar -->
 		<control type="scrollbar" id="61">
@@ -444,7 +449,7 @@
                 <animation effect="slide" end="-361,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
 				<control type="image">
                     <posx>0</posx>
-                    <posy>152</posy>
+                    <posy>145</posy>
                     <width>1</width>
                     <height>535</height>
                     <texture>black-back_noAlpha.png</texture>
@@ -454,7 +459,7 @@
                 </control>
                 <control type="image">
                     <posx>0</posx>
-                    <posy>152</posy>
+                    <posy>145</posy>
                     <width>12</width>
                     <height>535</height>
                     <texture>confluence/HomeBladeSub_Part2.png</texture>
@@ -466,7 +471,7 @@
 
             <control type="image">
                 <posx>-180</posx>
-                <posy>152</posy>
+                <posy>145</posy>
                 <width>180</width>
                 <height>535</height>
                 <colordiffuse>DAFFFFFF</colordiffuse>
@@ -476,7 +481,7 @@
 			<control type="button" id="101">
 				<description>Fake button for mouse control</description>
 				<posx>-180</posx>
-				<posy>152</posy>
+				<posy>145</posy>
 				<width>195</width>
 				<height>535</height>
 				<label>-</label>
@@ -488,7 +493,7 @@
 			</control>
 			<control type="image">
 				<posx>-180</posx>
-				<posy>152</posy>
+				<posy>145</posy>
 				<width>195</width>
 				<height>535</height>
 				<texture>HomeBlade.png</texture>

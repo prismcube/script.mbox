@@ -2196,6 +2196,7 @@
 						<posy>10</posy>
 						<width>35</width>
 						<height>35</height>
+						<hitrect x="30" y="10" w="100" h="40"></hitrect>
 						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
 						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
 						<onleft>3161</onleft>
@@ -2285,6 +2286,7 @@
 						<posy>10</posy>
 						<width>35</width>
 						<height>35</height>
+						<hitrect x="30" y="10" w="120" h="40"></hitrect>
 						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
 						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
 						<onleft>3111</onleft>
@@ -2329,6 +2331,7 @@
 						<posy>10</posy>
 						<width>35</width>
 						<height>35</height>
+						<hitrect x="30" y="10" w="110" h="40"></hitrect>
 						<texturenofocus>confluence/OSDRecordNF.png</texturenofocus>
 						<texturefocus>confluence/OSDRecord2.png</texturefocus>
 						<onleft>3121</onleft>
@@ -2373,6 +2376,7 @@
 						<posy>10</posy>
 						<width>35</width>
 						<height>35</height>
+						<hitrect x="30" y="10" w="150" h="40"></hitrect>
 						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
 						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
 						<onleft>3131</onleft>
@@ -2417,6 +2421,7 @@
 						<posy>10</posy>
 						<width>35</width>
 						<height>35</height>
+						<hitrect x="30" y="10" w="120" h="40"></hitrect>
 						<texturenofocus>confluence/OSDVizNF.png</texturenofocus>
 						<texturefocus>confluence/OSDVizFO.png</texturefocus>
 						<onleft>3141</onleft>
@@ -2461,8 +2466,9 @@
 						<posy>10</posy>
 						<width>35</width>
 						<height>35</height>
-						<texturenofocus>confluence/OSDLyricsNF.png</texturenofocus>
-						<texturefocus>confluence/OSDLyricsFO.png</texturefocus>
+						<hitrect x="30" y="10" w="100" h="40"></hitrect>
+						<texturenofocus>confluence/OverlayWatched.png</texturenofocus>
+						<texturefocus>confluence/amt-overlay-watched.png</texturefocus>
 						<onleft>3151</onleft>
 						<onright>3101</onright>
 						<onup></onup>

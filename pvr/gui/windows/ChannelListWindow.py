@@ -39,7 +39,7 @@ E_SLIDE_MENU_BACK       = 4
 
 E_IMG_ICON_LOCK   = 'IconLockFocus.png'
 E_IMG_ICON_ICAS   = 'IconCas.png'
-E_IMG_ICON_MARK   = 'amt-overlay-watche.png'
+E_IMG_ICON_MARK   = 'confluence/OverlayWatched.png'
 E_IMG_ICON_TITLE1 = 'IconHeaderTitleSmall.png'
 E_IMG_ICON_TITLE2 = 'icon_setting_focus.png'
 
@@ -101,8 +101,9 @@ class ChannelListWindow(BaseWindow):
 
 
 		self.mCtrlLblPath1           = self.getControl( 10 )
-		self.mCtrlLblPath2           = self.getControl( 11 )
-		self.mCtrlLblPath3           = self.getControl( 12 )
+		#self.mCtrlLblPath2           = self.getControl( 11 )
+		#self.mCtrlLblPath3           = self.getControl( 12 )
+		self.mCtrlLblMark            = self.getControl( 21 )
 
 		#main menu
 		self.mCtrlGropMainmenu       = self.getControl( 100 )
@@ -134,6 +135,7 @@ class ChannelListWindow(BaseWindow):
 		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_EDIT_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_OPT_MASK | FooterMask.G_FOOTER_ICON_MARK_MASK )
 
 		self.mIsSelect = False
+		self.mIsMark = True
 		self.mLocalOffset = self.mCommander.Datetime_GetLocalOffset()
 		self.mChannelListServieType = ElisEnum.E_SERVICE_TYPE_INVALID
 		self.mListItems = []
@@ -318,37 +320,57 @@ class ChannelListWindow(BaseWindow):
 		LOG_TRACE( 'onclick focusID[%d]'% aControlId )
 
 		if aControlId == self.mCtrlListCHList.getId() :
-			self.mIsSelect = True
 
-			label = self.mCtrlListCHList.getSelectedItem().getLabel()
-			channelNumbr = int(label[:4])
-
-			ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
-			#LOG_TRACE( 'MASK[%s] ret[%s]'% (self.mPincodeEnter, ret) )
-			if ret == True :
-				if self.mPincodeEnter == FLAG_MASK_NONE :
-					if self.mCurrentChannel == channelNumbr :
-						self.SaveSlideMenuHeader()
-						self.mEnableThread = False
-						self.CurrentTimeThread().join()
-						self.close()
-
-						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-						return
-
+			#Mark
+			if self.mIsMark == True :
+				try :
+					idx = self.mCtrlListCHList.getSelectedPosition()
+					listItem = self.mCtrlListCHList.getListItem(idx)
+					if listItem.getProperty('mark') == E_IMG_ICON_MARK :
+						listItem.setProperty('mark', '')
 					else :
-						pass
-						#ToDO : WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_LIVE_PLATE).setLastChannel( self.mCurrentChannel )
+						listItem.setProperty('mark', E_IMG_ICON_MARK)
 
-			ch = None
-			ch = self.mCommander.Channel_GetCurrent()
-			if ch :
-				self.mNavChannel = ch
-				self.mCurrentChannel = self.mNavChannel.mNumber
-				self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
-				self.ResetLabel()
-				self.UpdateLabelInfo()
-				self.PincodeDialogLimit()
+					self.setFocusId( self.mCtrlGropCHList.getId() )
+
+				except Exception, e:
+					LOG_TRACE( '========except[%s]'% e )
+
+
+			#Turn in
+			else :
+
+				self.mIsSelect = True
+
+				label = self.mCtrlListCHList.getSelectedItem().getLabel()
+				channelNumbr = int(label[:4])
+
+				ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
+				#LOG_TRACE( 'MASK[%s] ret[%s]'% (self.mPincodeEnter, ret) )
+				if ret == True :
+					if self.mPincodeEnter == FLAG_MASK_NONE :
+						if self.mCurrentChannel == channelNumbr :
+							self.SaveSlideMenuHeader()
+							self.mEnableThread = False
+							self.CurrentTimeThread().join()
+							self.close()
+
+							WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+							return
+
+						else :
+							pass
+							#ToDO : WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_LIVE_PLATE).setLastChannel( self.mCurrentChannel )
+
+				ch = None
+				ch = self.mCommander.Channel_GetCurrent()
+				if ch :
+					self.mNavChannel = ch
+					self.mCurrentChannel = self.mNavChannel.mNumber
+					self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
+					self.ResetLabel()
+					self.UpdateLabelInfo()
+					self.PincodeDialogLimit()
 
 		elif aControlId == self.mCtrlBtnMenu.getId() or aControlId == self.mCtrlListMainmenu.getId() :
 			#list view
@@ -361,7 +383,7 @@ class ChannelListWindow(BaseWindow):
 
 			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 
-		elif aControlId == E_CTRL_BTN_FOOTER01:#self.mCtrlFooter1.getId() :
+		elif aControlId == E_CTRL_BTN_FOOTER01 :
 			LOG_TRACE( 'onclick footer back' )
 
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
@@ -388,11 +410,25 @@ class ChannelListWindow(BaseWindow):
 				#Event Register
 				#self.mEventBus.Register( self )
 
-		elif aControlId == E_CTRL_BTN_FOOTER02:#self.mCtrlFooter2.getId() :
+		elif aControlId == E_CTRL_BTN_FOOTER02 :
 			LOG_TRACE( 'onclick footer ok' )
-			self.onClick( self.mCtrlListCHList.getId() )
+			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+				self.onClick( self.mCtrlListCHList.getId() )
 
-		elif aControlId == E_CTRL_BTN_FOOTER05:#self.mCtrlFooter3.getId() :
+			else :
+				if self.mIsMark == True :
+					self.mIsMark = False
+					self.mCtrlLblMark.setLabel( 'Turn in' )
+					self.mCtrlFooter2.setVisible( False )
+					self.mCtrlFooter5.setVisible( True )
+				else :
+					self.mIsMark = True
+					self.mCtrlLblMark.setLabel( 'Mark ON' )
+					self.mCtrlFooter2.setVisible( True )
+					self.mCtrlFooter5.setVisible( False )
+
+
+		elif aControlId == E_CTRL_BTN_FOOTER05 :
 			LOG_TRACE( 'onclick footer edit' )
 			#self.SaveSlideMenuHeader()
 
@@ -424,11 +460,21 @@ class ChannelListWindow(BaseWindow):
 				except Exception, e :
 					LOG_TRACE( '==================== Error except[%s]'% e )
 
-		elif aControlId == E_CTRL_BTN_FOOTER06:#self.mCtrlFooter4.getId() :
+		elif aControlId == E_CTRL_BTN_FOOTER06:
 			LOG_TRACE( 'onclick footer Opt' )
 
-		elif aControlId == E_CTRL_BTN_FOOTER07:#self.mCtrlFooter5.getId() :
+		elif aControlId == E_CTRL_BTN_FOOTER07:
 			LOG_TRACE( 'onclick footer Mark' )
+			if self.mIsMark == True :
+				self.mIsMark = False
+				self.mCtrlLblMark.setLabel( 'Turn in' )
+				self.mCtrlFooter2.setVisible( False )
+				self.mCtrlFooter5.setVisible( True )
+			else :
+				self.mIsMark = True
+				self.mCtrlLblMark.setLabel( 'Mark ON' )
+				self.mCtrlFooter2.setVisible( True )
+				self.mCtrlFooter5.setVisible( False )
 
 
 		LOG_TRACE( 'Leave' )
@@ -596,9 +642,11 @@ class ChannelListWindow(BaseWindow):
 				label1 = EnumToString('mode', self.mZappingMode)
 				label2 = self.mCtrlListSubmenu.getSelectedItem().getLabel()
 				label3 = EnumToString('sort', self.mChannelListSortMode)
-				self.mCtrlLblPath1.setLabel( '%s'% label1.upper() )
-				self.mCtrlLblPath2.setLabel( '%s'% label2.title() ) 
-				self.mCtrlLblPath3.setLabel( 'sort by %s'% label3.title() )
+				#self.mCtrlLblPath1.setLabel( '%s'% label1.upper() )
+				#self.mCtrlLblPath2.setLabel( '%s'% label2.title() ) 
+				#self.mCtrlLblPath3.setLabel( 'sort by %s'% label3.title() )
+				self.mCtrlLblPath1.setLabel( '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% (label1.upper(),label2.title(),label3.title()) )
+
 
 				#close slide : move to focus channel list
 				#self.mCtrlListCHList.setEnabled(True)
@@ -814,6 +862,7 @@ class ChannelListWindow(BaseWindow):
 			self.mCtrlHeader4.setLabel( '' )
 
 			#footer init
+			self.mCtrlFooter2.setVisible( True )
 			self.mCtrlFooter3.setVisible( True  )
 			self.mCtrlFooter4.setVisible( False )
 			self.mCtrlFooter5.setVisible( False )
@@ -829,9 +878,10 @@ class ChannelListWindow(BaseWindow):
 			self.mCtrlHeader4.setLabel( '' )
 
 			#footer init
+			self.mCtrlFooter2.setVisible( True )
 			self.mCtrlFooter3.setVisible( False )
 			self.mCtrlFooter4.setVisible( True  )
-			self.mCtrlFooter5.setVisible( True  )
+			self.mCtrlFooter5.setVisible( False  )
 
 			return
 
@@ -940,9 +990,11 @@ class ChannelListWindow(BaseWindow):
 		label1 = EnumToString('mode', self.mZappingMode)
 		label2 = self.mCtrlListSubmenu.getSelectedItem().getLabel()
 		label3 = EnumToString('sort', self.mChannelListSortMode)
-		self.mCtrlLblPath1.setLabel( '%s'% label1.upper() )
-		self.mCtrlLblPath2.setLabel( '%s'% label2.title() ) 
-		self.mCtrlLblPath3.setLabel( 'sort by %s'% label3.title() ) 
+		#self.mCtrlLblPath1.setLabel( '%s'% label1.upper() )
+		#self.mCtrlLblPath2.setLabel( '%s'% label2.title() ) 
+		#self.mCtrlLblPath3.setLabel( 'sort by %s'% label3.title() )
+		self.mCtrlLblPath1.setLabel( '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% (label1.upper(),label2.title(),label3.title()) )
+		
 		self.GetSlideMenuHeader( FLAG_SLIDE_INIT )
 		self.mLastMainSlidePosition = self.mSelectMainSlidePosition
 		self.mLastSubSlidePosition = self.mSelectSubSlidePosition
@@ -991,16 +1043,15 @@ class ChannelListWindow(BaseWindow):
 						lblColorS = E_TAG_COLOR_GREY3
 					else:
 						lblColorS = E_TAG_COLOR_GREY
+
 					listItem = xbmcgui.ListItem( "%s%04d %s%s"%( lblColorS, ch.mNumber, ch.mName, lblColorE ), "-", "-", "-", "-" )
 
 			except Exception, e:
 				LOG_TRACE( '=========== except[%s]'% e )
 
-			thum=icas=''
-			if ch.mLocked  : thum = E_IMG_ICON_LOCK
-			if ch.mIsCA    : icas = E_IMG_ICON_ICAS
-			listItem.setProperty('lock', thum)
-			listItem.setProperty('icas', icas)
+
+			if ch.mLocked  : listItem.setProperty('lock', E_IMG_ICON_LOCK)
+			if ch.mIsCA    : listItem.setProperty('icas', E_IMG_ICON_ICAS)
 
 			self.mListItems.append(listItem)
 
