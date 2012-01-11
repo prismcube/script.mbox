@@ -101,7 +101,10 @@ class EditTransponder( SettingWindow ) :
 	 	elif groupId == E_Input06 :
 	 		if xbmcgui.Dialog( ).yesno('Confirm', 'Do you want to delete transponder?') == 1 :
 		 		satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
-		 		self.mCommander.Transponder_Delete( satellite.mLongitude,  satellite.mBand,  self.mTransponderList )
+		 		tmplist = []
+		 		tmplist.append( self.mTransponderList[self.mTransponderIndex] )
+		 		self.mCommander.Transponder_Delete( satellite.mLongitude,  satellite.mBand,  tmplist )
+		 		xbmc.sleep(2)
 		 		self.mTransponderIndex = 0
 				self.InitConfig( )
 			else :
@@ -156,6 +159,13 @@ class EditTransponder( SettingWindow ) :
 		self.AddInputControl( E_Input01, 'Satellite', satellitename, None, None, None, 'Select satellite.' )
 
 		self.mTransponderList = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
+		print 'dhkim test list transponder = %s' % self.mTransponderList
+		print 'dhkim test len transponder = %d' % len( self.mTransponderList )
+		"""
+		for test
+		"""
+		for trans in self.mTransponderList :
+			trans.printdebug()
 		self.AddInputControl( E_Input02, 'Frequency', '%d MHz' % self.mTransponderList[self.mTransponderIndex].mFrequency, None, None, None, 'Select Frequency.' )
 		self.AddInputControl( E_Input03, 'Symbol Rate', '%d KS/s' % self.mTransponderList[self.mTransponderIndex].mSymbolRate )
 
