@@ -14,6 +14,7 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 
 from inspect import currentframe
 from pvr.gui.GuiConfig import FooterMask
+from pvr.gui.GuiConfig import *
 import threading, time, os
 
 import pvr.Msg as Msg
@@ -35,6 +36,16 @@ E_SLIDE_MENU_SATELLITE  = 1
 E_SLIDE_MENU_FTACAS     = 2
 E_SLIDE_MENU_FAVORITE   = 3
 E_SLIDE_MENU_BACK       = 4
+
+E_IMG_ICON_LOCK   = 'IconLockFocus.png'
+E_IMG_ICON_ICAS   = 'IconCas.png'
+E_IMG_ICON_MARK   = 'amt-overlay-watche.png'
+E_IMG_ICON_TITLE1 = 'IconHeaderTitleSmall.png'
+E_IMG_ICON_TITLE2 = 'icon_setting_focus.png'
+
+E_TAG_COLOR_GREY  = '[COLOR grey]'
+E_TAG_COLOR_GREY3 = '[COLOR grey3]'
+E_TAG_COLOR_END   = '[/COLOR]'
 
 class ChannelListWindow(BaseWindow):
 
@@ -82,11 +93,12 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlHeader4            = self.getControl( 3003 )
 
 		#footer
-		self.mCtrlFooter1            = self.getControl( 3101 )
-		self.mCtrlFooter2            = self.getControl( 3111 )
-		self.mCtrlFooter3            = self.getControl( 3141 )
-		self.mCtrlFooter4            = self.getControl( 3151 )
-		self.mCtrlFooter5            = self.getControl( 3161 )
+		self.mCtrlFooter1            = self.getControl( E_CTRL_GROP_FOOTER01 )
+		self.mCtrlFooter2            = self.getControl( E_CTRL_GROP_FOOTER02 )
+		self.mCtrlFooter3            = self.getControl( E_CTRL_GROP_FOOTER05 )
+		self.mCtrlFooter4            = self.getControl( E_CTRL_GROP_FOOTER06 )
+		self.mCtrlFooter5            = self.getControl( E_CTRL_GROP_FOOTER07 )
+
 
 		self.mCtrlLblPath1           = self.getControl( 10 )
 		self.mCtrlLblPath2           = self.getControl( 11 )
@@ -119,6 +131,7 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlSelectItem         = self.getControl( 401 )
 		
 		self.mCtrlHeader3.setLabel('')
+		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_EDIT_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_OPT_MASK | FooterMask.G_FOOTER_ICON_MARK_MASK )
 
 		self.mIsSelect = False
 		self.mLocalOffset = self.mCommander.Datetime_GetLocalOffset()
@@ -229,7 +242,7 @@ class ChannelListWindow(BaseWindow):
 				#self.mCtrlListSubmenu.selectItem( self.mSelectSubSlidePosition )
 				#self.setFocusId( self.mCtrlGropSubmenu.getId() )
 
-			elif self.mFocusId >= self.mCtrlFooter1.getId() and self.mFocusId <= self.mCtrlFooter3.getId() :
+			elif self.mFocusId >= E_CTRL_BTN_FOOTER01 and self.mFocusId <= E_CTRL_BTN_FOOTER07 :
 				self.mCtrlListCHList.setEnabled( True )
 				self.setFocusId( self.mCtrlGropCHList.getId() )
 				
@@ -348,7 +361,7 @@ class ChannelListWindow(BaseWindow):
 
 			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 
-		elif aControlId == self.mCtrlFooter1.getId() :
+		elif aControlId == E_CTRL_BTN_FOOTER01:#self.mCtrlFooter1.getId() :
 			LOG_TRACE( 'onclick footer back' )
 
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
@@ -373,13 +386,13 @@ class ChannelListWindow(BaseWindow):
 				self.UpdateLabelInfo()
 
 				#Event Register
-				self.mEventBus.Register( self )
+				#self.mEventBus.Register( self )
 
-		elif aControlId == self.mCtrlFooter2.getId() :
+		elif aControlId == E_CTRL_BTN_FOOTER02:#self.mCtrlFooter2.getId() :
 			LOG_TRACE( 'onclick footer ok' )
 			self.onClick( self.mCtrlListCHList.getId() )
 
-		elif aControlId == self.mCtrlFooter3.getId() :
+		elif aControlId == E_CTRL_BTN_FOOTER05:#self.mCtrlFooter3.getId() :
 			LOG_TRACE( 'onclick footer edit' )
 			#self.SaveSlideMenuHeader()
 
@@ -391,7 +404,7 @@ class ChannelListWindow(BaseWindow):
 
 				try :
 					#Event UnRegister
-					self.mEventBus.Deregister( self )
+					#self.mEventBus.Deregister( self )
 
 					self.InitSlideMenuHeader()
 					self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
@@ -411,10 +424,10 @@ class ChannelListWindow(BaseWindow):
 				except Exception, e :
 					LOG_TRACE( '==================== Error except[%s]'% e )
 
-		elif aControlId == self.mCtrlFooter4.getId() :
+		elif aControlId == E_CTRL_BTN_FOOTER06:#self.mCtrlFooter4.getId() :
 			LOG_TRACE( 'onclick footer Opt' )
 
-		elif aControlId == self.mCtrlFooter5.getId() :
+		elif aControlId == E_CTRL_BTN_FOOTER07:#self.mCtrlFooter5.getId() :
 			LOG_TRACE( 'onclick footer Mark' )
 
 
@@ -788,24 +801,38 @@ class ChannelListWindow(BaseWindow):
 		ret = xbmc.getLanguage()
 		LOG_TRACE( 'getLanguage[%s]'% ret )
 
-		#header init
-		self.mCtrlHeader1.setImage('IconHeaderTitleSmall.png')
 
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
-		
-			self.mCtrlHeader2.setLabel(Msg.Strings(MsgId.LANG_TV_CHANNEL_LIST))
-			self.mCtrlHeader3.setLabel('')
-			self.mCtrlHeader4.setLabel('')
+
+			#slide menu disable
+			self.mCtrlGropMainmenu.setVisible( True )
+
+			#header init		
+			self.mCtrlHeader1.setImage( E_IMG_ICON_TITLE1 )
+			self.mCtrlHeader2.setLabel( Msg.Strings(MsgId.LANG_TV_CHANNEL_LIST) )
+			self.mCtrlHeader3.setLabel( '' )
+			self.mCtrlHeader4.setLabel( '' )
 
 			#footer init
-			self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_EDIT_MASK )
+			self.mCtrlFooter3.setVisible( True  )
+			self.mCtrlFooter4.setVisible( False )
+			self.mCtrlFooter5.setVisible( False )
+
 		else :
-			self.mCtrlHeader2.setLabel(Msg.Strings(MsgId.LANG_TV_EDIT_CHANNEL_LIST))
-			self.mCtrlHeader3.setLabel('')
-			self.mCtrlHeader4.setLabel('')
+			#slide menu disable
+			self.mCtrlGropMainmenu.setVisible( False )
+
+			#header init
+			self.mCtrlHeader1.setImage( E_IMG_ICON_TITLE2 )
+			self.mCtrlHeader2.setLabel( Msg.Strings(MsgId.LANG_TV_EDIT_CHANNEL_LIST) )
+			self.mCtrlHeader3.setLabel( '' )
+			self.mCtrlHeader4.setLabel( '' )
 
 			#footer init
-			self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_OPT_MASK | FooterMask.G_FOOTER_ICON_MARK_MASK )
+			self.mCtrlFooter3.setVisible( False )
+			self.mCtrlFooter4.setVisible( True  )
+			self.mCtrlFooter5.setVisible( True  )
+
 			return
 
 
@@ -946,19 +973,35 @@ class ChannelListWindow(BaseWindow):
 			ClassToList( 'print', self.mChannelList )
 			return 
 
+		lblColorS = E_TAG_COLOR_GREY
+		lblColorE = E_TAG_COLOR_END
 		self.mListItems = []
 		for ch in self.mChannelList:
-			#skip ch
-			if ch.mSkipped == True :
-				continue
 
-			listItem = xbmcgui.ListItem( "%04d %s"%( ch.mNumber, ch.mName ), "-", "-", "-", "-" )
+			try:
+				if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+					#skip ch
+					if ch.mSkipped == True :
+						continue
+					listItem = xbmcgui.ListItem( "%04d %s"%( ch.mNumber, ch.mName ), "-", "-", "-", "-" )
+
+				else :
+					#skip ch
+					if ch.mSkipped == True :
+						lblColorS = E_TAG_COLOR_GREY3
+					else:
+						lblColorS = E_TAG_COLOR_GREY
+					listItem = xbmcgui.ListItem( "%s%04d %s%s"%( lblColorS, ch.mNumber, ch.mName, lblColorE ), "-", "-", "-", "-" )
+
+			except Exception, e:
+				LOG_TRACE( '=========== except[%s]'% e )
 
 			thum=icas=''
-			if ch.mLocked  : thum='IconLockFocus.png'#'OverlayLocked.png'
-			if ch.mIsCA    : icas='IconCas.png'
+			if ch.mLocked  : thum = E_IMG_ICON_LOCK
+			if ch.mIsCA    : icas = E_IMG_ICON_ICAS
 			listItem.setProperty('lock', thum)
 			listItem.setProperty('icas', icas)
+
 			self.mListItems.append(listItem)
 
 		self.mCtrlListCHList.addItems( self.mListItems )
@@ -1239,8 +1282,7 @@ class ChannelListWindow(BaseWindow):
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
-
-			self.mLocalTime = 0
+			#self.mLocalTime = 0
 
 		LOG_TRACE( 'Leave' )
 

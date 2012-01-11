@@ -16,6 +16,13 @@ from pvr.gui.GuiConfig import FooterMask
 import threading, time, os
 
 
+BUTTON_ID_VIEW_MODE				= 100
+BUTTON_ID_SORT_MODE				= 101
+TOGGLEBUTTON_ID_ASC				= 102
+RADIIOBUTTON_ID_EXTRA			= 103
+
+
+
 class ArchiveWindow(BaseWindow):
 
 	def __init__(self, *args, **kwargs):
@@ -27,7 +34,7 @@ class ArchiveWindow(BaseWindow):
 	def onInit(self):
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
-		#self.SetHeaderLabel( 'Archive' )		
+		
 
 
 	def onAction(self, aAction):
@@ -77,6 +84,7 @@ class ArchiveWindow(BaseWindow):
 	@GuiLock
 	def UpdateLocalTime( self ) :
 		pass
+
 
 		"""
 		try:
