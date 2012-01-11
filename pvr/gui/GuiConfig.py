@@ -90,8 +90,8 @@ E_LIST_ONE_CABLE_TUNER_FREQUENCY	= [ '1284', '1400', '1516', '1632', '1748', '18
 E_LIST_ONE_CABLE_SCR				= [ 'SCR(0)', 'SCR(1)', 'SCR(2)', 'SCR(3)', 'SCR(4)', 'SCR(5)', 'SCR(6)', 'SCR(7)' ]
 
 
-E_LIST_MY_LONGITUDE = [ 'E', 'W' ]
-E_LIST_MY_LATITUDE  = [ 'N', 'S' ]
+E_LIST_MY_LONGITUDE = [ 'East', 'West' ]
+E_LIST_MY_LATITUDE  = [ 'North', 'South' ]
 
 
 """
