@@ -18,6 +18,7 @@
 			<posx>0</posx>
 			<posy>102</posy>
 			<animation effect="slide" start="-650,0" end="0,0" delay="0" time="100" condition="ControlGroup(49).HasFocus | Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">conditional</animation>
+			<animation effect="slide" start="-650,0" end="0,0" delay="0" time="100" condition="Control.IsVisible(100)">conditional</animation>
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
