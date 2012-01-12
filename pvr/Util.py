@@ -2,6 +2,8 @@ import os
 import sys
 import time
 import xbmcgui
+import xbmc
+import xbmcaddon
 
 from decorator import decorator
 from odict import odict
@@ -10,6 +12,8 @@ from threading import RLock
 from inspect import currentframe
 import inspect
 from ElisEnum import ElisEnum
+
+gSettings = xbmcaddon.Addon(id="script.mbox")
 
 gLogOut = 0
 gThreads = odict()
@@ -210,4 +214,15 @@ def LOG_INIT( ):
 		except Exception, e :
 			print 'Err[%s] logfile[%s]'% ( e, logfile )
 	"""
+
+def GetSetting( aID ) :
+	global gSettings
+	LOG_TRACE('')
+	return gSettings.getSetting( aID )
+
+
+def SetSetting( aID, aValue ) :
+	global gSettings	
+	gSettings.setSetting( aID, aValue )
+
 

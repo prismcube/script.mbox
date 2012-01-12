@@ -113,7 +113,7 @@
 		</control>
 		<control type="group">
 			<include>Window_OpenClose_Animation</include>		
-			<include>DefaultCommonView</include> <!-- Default View id = 3400 -->
+			<include>DefaultCommonLargeView</include> <!-- Default View id = 3400 -->
 			<!--
 			<include>FullWidthList</include> -- view id = 51 
 			<include>ThumbnailView</include> -- view id = 500 
@@ -311,7 +311,7 @@
 					<label>31026</label>
 					<onleft>3400</onleft>
 					<onright>9010</onright>
-					<onup>102</onup>
+					<onup>101</onup>
 					<ondown>100</ondown>
 				</control>
 				<!--
