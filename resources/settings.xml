@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+
+	<!-- Archive -->
+	<setting id="VIEW_MODE" type="enum" label="ViewMode" values="0|1|2|3" default="0" />
+	<setting id="SORT_MODE" type="enum" label="ViewMode" values="0|1|2|3|4" default="0" />
+	
+	<!--
+	<setting id="Username" type="text" label="config" default="default" />
+	<setting id="testbool" type="bool" label="config" default="true" />
+	<setting id="testenum" type="enum" label="config" values="25|75" default="1" />
+	-->
+</settings>
