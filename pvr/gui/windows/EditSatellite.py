@@ -6,7 +6,6 @@ import pvr.gui.DialogMgr as DiaMgr
 import pvr.TunerConfigMgr as ConfigMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
-from ElisEnum import ElisEnum
 
 
 class EditSatellite( SettingWindow ) :
@@ -26,10 +25,9 @@ class EditSatellite( SettingWindow ) :
 			ConfigMgr.GetInstance( ).Load( )		
 			ConfigMgr.GetInstance( ).SetNeedLoad( False )
 
-		self.SetHeaderLabel( 'Edit Satellite' )
-		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
-
+	
 		self.InitConfig( )
+		self.SetSettingWindowLabel( 'Edit Satellite' )
 		self.mInitialized = True
 		
 		

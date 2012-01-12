@@ -33,8 +33,8 @@ class TunerConfiguration( SettingWindow ) :
 			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
 			
 		headerLabel = 'Tuner %d Configuration' % ( self.tunerIndex + 1 )
-		self.SetHeaderLabel( headerLabel )
-		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
+
+		self.SetSettingWindowLabel( headerLabel )
 		
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Tuner %d Configuration : %s' % ( self.tunerIndex + 1, property.GetPropString( ) ) )
 		self.InitConfig( )
