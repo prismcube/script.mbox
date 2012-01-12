@@ -8,14 +8,14 @@ from ElisEnum import ElisEnum
 from ElisEventBus import ElisEventBus
 from ElisEventClass import *
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
-from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit, PincodeLimit
+from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit, PincodeLimit, ParseLabelToCh
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 
 from inspect import currentframe
 from pvr.gui.GuiConfig import FooterMask
 from pvr.gui.GuiConfig import *
-import threading, time, os
+import threading, time, os, re
 
 import pvr.Msg as Msg
 import pvr.gui.windows.Define_string as MsgId
@@ -320,54 +320,33 @@ class ChannelListWindow(BaseWindow):
 		LOG_TRACE( 'onclick focusID[%d]'% aControlId )
 
 		if aControlId == self.mCtrlListCHList.getId() :
-			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
-				#Turn in
 
-				self.mIsSelect = True
-
-				label = self.mCtrlListCHList.getSelectedItem().getLabel()
-				channelNumbr = int(label[:4])
-
-				ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
-				#LOG_TRACE( 'MASK[%s] ret[%s]'% (self.mPincodeEnter, ret) )
-				if ret == True :
-					if self.mPincodeEnter == FLAG_MASK_NONE :
-						if self.mCurrentChannel == channelNumbr :
-							self.SaveSlideMenuHeader()
-							self.mEnableThread = False
-							self.CurrentTimeThread().join()
-							self.close()
-
-							WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-							return
-
+			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
+				try:
+					#Mark
+					if self.mIsMark == True :
+						#mark image show
+						idx = self.mCtrlListCHList.getSelectedPosition()
+						listItem = self.mCtrlListCHList.getListItem(idx)
+						if listItem.getProperty('mark') == E_IMG_ICON_MARK :
+							listItem.setProperty('mark', '')
 						else :
-							pass
-							#ToDO : WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_LIVE_PLATE).setLastChannel( self.mCurrentChannel )
+							listItem.setProperty('mark', E_IMG_ICON_MARK)
 
-				ch = None
-				ch = self.mCommander.Channel_GetCurrent()
-				if ch :
-					self.mNavChannel = ch
-					self.mCurrentChannel = self.mNavChannel.mNumber
-					self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
-					self.ResetLabel()
-					self.UpdateLabelInfo()
-					self.PincodeDialogLimit()
+						GuiLock2( True )
+						self.setFocusId( self.mCtrlGropCHList.getId() )
+						GuiLock2( False )
 
+					else :
+						self.SetChannelTune()
+
+				except Exception, e:
+					LOG_TRACE( '============except[%s]'% e )
 
 			else :
-				#Mark
-				if self.mIsMark == True :
-					#mark image show
-					idx = self.mCtrlListCHList.getSelectedPosition()
-					listItem = self.mCtrlListCHList.getListItem(idx)
-					if listItem.getProperty('mark') == E_IMG_ICON_MARK :
-						listItem.setProperty('mark', '')
-					else :
-						listItem.setProperty('mark', E_IMG_ICON_MARK)
+				self.SetChannelTune()
 
-					self.setFocusId( self.mCtrlGropCHList.getId() )
+
 
 
 		elif aControlId == self.mCtrlBtnMenu.getId() or aControlId == self.mCtrlListMainmenu.getId() :
@@ -411,7 +390,8 @@ class ChannelListWindow(BaseWindow):
 		elif aControlId == E_CTRL_BTN_FOOTER02 :
 			LOG_TRACE( 'onclick footer ok' )
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
-				self.onClick( self.mCtrlListCHList.getId() )
+				#self.onClick( self.mCtrlListCHList.getId() )
+				self.SetChannelTune()
 
 			else :
 				if self.mIsMark == True :
@@ -512,6 +492,48 @@ class ChannelListWindow(BaseWindow):
 				LOG_TRACE( 'unknown event[%s]'% aEvent.getName() )
 		else:
 			LOG_TRACE( 'channellist winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
+
+		LOG_TRACE( 'Leave' )
+
+
+
+	def SetChannelTune( self ) :
+		LOG_TRACE( 'Enter' )
+
+		#Turn in
+		self.mIsSelect = True
+
+		label = self.mCtrlListCHList.getSelectedItem().getLabel()
+		channelNumbr = ParseLabelToCh( self.mViewMode, label )
+		LOG_TRACE( 'label[%s] ch[%d]'% (label, channelNumbr) )
+
+		ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
+		#LOG_TRACE( 'MASK[%s] ret[%s]'% (self.mPincodeEnter, ret) )
+		if ret == True :
+			if self.mPincodeEnter == FLAG_MASK_NONE :
+				if self.mCurrentChannel == channelNumbr :
+					self.SaveSlideMenuHeader()
+					self.mEnableThread = False
+					self.CurrentTimeThread().join()
+					self.close()
+
+					WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+					return
+
+				else :
+					pass
+					#ToDO : WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_LIVE_PLATE).setLastChannel( self.mCurrentChannel )
+
+		ch = None
+		ch = self.mCommander.Channel_GetCurrent()
+		if ch :
+			self.mNavChannel = ch
+			self.mCurrentChannel = self.mNavChannel.mNumber
+			self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
+			self.ResetLabel()
+			self.UpdateLabelInfo()
+			self.PincodeDialogLimit()
+
 
 		LOG_TRACE( 'Leave' )
 
@@ -1117,7 +1139,8 @@ class ChannelListWindow(BaseWindow):
 
 			else :
 				label = self.mCtrlListCHList.getSelectedItem().getLabel()
-				channelNumbr = int(label[:4])
+				channelNumbr = ParseLabelToCh( self.mViewMode, label )
+				LOG_TRACE( 'label[%s] ch[%d]'% (label, channelNumbr) )
 
 				for ch in self.mChannelList:
 					if ch.mNumber == channelNumbr :
