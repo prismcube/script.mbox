@@ -3,6 +3,7 @@ import xbmcgui
 import sys
 
 import pvr.gui.WindowMgr as WinMgr
+import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
 from ElisEnum import ElisEnum
 from ElisEventBus import ElisEventBus
@@ -322,196 +323,6 @@ class ChannelListWindow(BaseWindow):
 
 		#LOG_TRACE( 'Leave' )
 
-	def SetMarkDeleteCh( self, aMode ) :
-		LOG_TRACE( 'Enter' )
-
-		lastPos = self.mCtrlListCHList.getSelectedPosition()
-
-		try:
-			#----------------> 1.set current position item <-------------
-
-			#icon toggle
-			if aMode.lower() == 'lock' :
-				listItem = self.mCtrlListCHList.getListItem(lastPos)
-
-				#lock toggle: disable
-				if listItem.getProperty('lock') == E_IMG_ICON_LOCK :
-					listItem.setProperty('lock', '')
-
-				#lock toggle: enable
-				else :
-					listItem.setProperty('lock', E_IMG_ICON_LOCK)
-
-				#mark toggle: disable
-				if listItem.getProperty('mark') == E_IMG_ICON_MARK :
-					listItem.setProperty('mark', '')
-
-
-			#label color
-			else :
-				#remove tag [COLOR ...]label[/COLOR]
-				label1 = self.mCtrlListCHList.getSelectedItem().getLabel()
-				label2 = re.findall('\](.*)\[', label1)
-
-				if aMode.lower() == 'delete' :
-					label3= str('%s%s%s'%( E_TAG_COLOR_RED, label2[0], E_TAG_COLOR_END ) )
-				elif aMode.lower() == 'skip' :
-					label3= str('%s%s%s'%( E_TAG_COLOR_GREY3, label2[0], E_TAG_COLOR_END ) )
-				elif aMode.lower() == 'recovery' :
-					label3= str('%s%s%s'%( E_TAG_COLOR_GREY, label2[0], E_TAG_COLOR_END ) )
-
-				self.mCtrlListCHList.getSelectedItem().setLabel(label3)
-
-
-
-
-			#----------------> 2.set mark list all <-------------
-			for idx in self.mMarkList :
-				self.mCtrlListCHList.selectItem(idx)
-				xbmc.sleep(50)
-
-				#icon toggle
-				if aMode.lower() == 'lock' :
-					listItem = self.mCtrlListCHList.getListItem(idx)
-
-					#lock toggle: disable
-					if listItem.getProperty('lock') == E_IMG_ICON_LOCK :
-						listItem.setProperty('lock', '')
-
-					#lock toggle: enable
-					else :
-						listItem.setProperty('lock', E_IMG_ICON_LOCK)
-
-					#mark toggle: disable
-					if listItem.getProperty('mark') == E_IMG_ICON_MARK :
-						listItem.setProperty('mark', '')
-
-				#label color
-				else :
-					#remove tag [COLOR ...]label[/COLOR]
-					label1 = self.mCtrlListCHList.getSelectedItem().getLabel()
-					label2 = re.findall('\](.*)\[', label1)
-
-					if aMode.lower() == 'delete' :
-						label3= str('%s%s%s'%( E_TAG_COLOR_RED, label2[0], E_TAG_COLOR_END ) )
-					elif aMode.lower() == 'skip' :
-						label3= str('%s%s%s'%( E_TAG_COLOR_GREY3, label2[0], E_TAG_COLOR_END ) )
-					elif aMode.lower() == 'recovery' :
-						label3= str('%s%s%s'%( E_TAG_COLOR_GREY, label2[0], E_TAG_COLOR_END ) )
-
-
-					self.mCtrlListCHList.getSelectedItem().setLabel(label3)
-					LOG_TRACE( 'idx[%s] 1%s 2%s 3%s'% (idx, label1,label2,label3) )
-
-					self.mCtrlListCHList.selectItem(lastPos)
-
-
-		except Exception, e:
-			LOG_TRACE( '============except[%s]'% e )
-
-		LOG_TRACE( 'Leave' )
-
-	def MarkAddDelete( self, aMode, aPos ) :
-		LOG_TRACE( 'Enter' )
-
-
-		if aMode.lower() == 'mark' :
-
-			idx = 0
-			isExist = False
-
-			#aready mark is mark delete
-			for i in self.mMarkList :
-				if i == aPos :
-					self.mMarkList.pop(idx)
-					isExist = True
-				idx += 1
-
-			#do not exist is append mark
-			if isExist == False : 
-				self.mMarkList.append( aPos )
-
-
-			listItem = self.mCtrlListCHList.getListItem(aPos)
-
-			#mark toggle: disable
-			if listItem.getProperty('mark') == E_IMG_ICON_MARK :
-				listItem.setProperty('mark', '')
-
-			#mark toggle: enable
-			else :
-				listItem.setProperty('mark', E_IMG_ICON_MARK)
-
-
-
-
-		elif aMode.lower() == 'delete' :
-			idx = 0
-			isExist = False
-
-			#aready mark is mark delete
-			for i in self.mDeleteList :
-				if i == aPos :
-					self.mDeleteList.pop(idx)
-					isExist = True
-				idx += 1
-
-			#do not exist is append mark
-			if isExist == False : 
-				self.mDeleteList.append( aPos )		
-
-		elif aMode.lower() == 'skip' :
-			idx = 0
-			isExist = False
-
-			#aready mark is mark delete
-			for i in self.mSkipList :
-				if i == aPos :
-					self.mSkipList.pop(idx)
-					isExist = True
-				idx += 1
-
-			#do not exist is append mark
-			if isExist == False : 
-				self.mSkipList.append( aPos )		
-
-		elif aMode.lower() == 'lock' :
-			idx = 0
-			isExist = False
-
-			#aready mark is mark delete
-			for i in self.mLockList :
-				if i == aPos :
-					self.mLockList.pop(idx)
-					isExist = True
-				idx += 1
-
-			#do not exist is append mark
-			if isExist == False : 
-				self.mLockList.append( aPos )		
-
-
-			"""
-			listItem = self.mCtrlListCHList.getListItem(aPos)
-
-			#lock toggle: disable
-			if listItem.getProperty('lock') == E_IMG_ICON_LOCK :
-				listItem.setProperty('lock', '')
-
-			#lock toggle: enable
-			else :
-				listItem.setProperty('lock', E_IMG_ICON_LOCK)
-			"""
-
-
-		LOG_TRACE( '=======MarkList[%s]'% self.mMarkList )
-		LOG_TRACE( '=======mDeleteList[%s]'% self.mDeleteList )
-		LOG_TRACE( '=======mSkipList[%s]'% self.mSkipList )
-		LOG_TRACE( '=======mLockList[%s]'% self.mLockList )
-
-		LOG_TRACE( 'Leave' )
-	
-
 	def onClick(self, aControlId):
 		LOG_TRACE( 'onclick focusID[%d]'% aControlId )
 
@@ -644,11 +455,27 @@ class ChannelListWindow(BaseWindow):
 			self.setFocusId( self.mCtrlGropCHList.getId() )
 			GuiLock2( False )
 			"""
+			try:
+				label1 = self.mCtrlListCHList.getSelectedItem().getLabel()
+				label2 = re.findall('\](.*)\[', label1)
+				label3 = re.split(' ', label2[0])
 
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_EDIT_CHANNEL_LIST )
+				dialog.SetValue( label3[1], self.mListFavorite )
+	 			dialog.doModal()
+
+				idxDialog, idxFavorite, isOkDialog = dialog.GetValue()
+
+				LOG_TRACE( '======= idxDialog[%s] idxFavorite[%s] isOkDialog[%s]'% (idxDialog, idxFavorite, isOkDialog) )
+
+			except Exception, e:
+				LOG_TRACE( 'Error except[%s]'% e )
 
 			#delete test
-			self.SetMarkDeleteCh('delete')
-			self.mMarkList=[]
+			#self.SetMarkDeleteCh('delete')
+			#self.mMarkList=[]
+
+
 
 
 		elif aControlId == E_CTRL_BTN_FOOTER07:
@@ -1510,6 +1337,7 @@ class ChannelListWindow(BaseWindow):
 
 		LOG_TRACE( 'Leave' )
 
+	"""
 	def OptDialogLimit( self ) :
 		LOG_TRACE( 'Enter' )
 
@@ -1533,7 +1361,7 @@ class ChannelListWindow(BaseWindow):
 
 
 		LOG_TRACE( 'Leave' )
-	
+	"""
 
 	@RunThread
 	def CurrentTimeThread(self):
@@ -1589,6 +1417,196 @@ class ChannelListWindow(BaseWindow):
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 			#self.mLocalTime = 0
+
+		LOG_TRACE( 'Leave' )
+
+
+
+	def SetMarkDeleteCh( self, aMode ) :
+		LOG_TRACE( 'Enter' )
+
+		lastPos = self.mCtrlListCHList.getSelectedPosition()
+
+		try:
+			#----------------> 1.set current position item <-------------
+
+			#icon toggle
+			if aMode.lower() == 'lock' :
+				listItem = self.mCtrlListCHList.getListItem(lastPos)
+
+				#lock toggle: disable
+				if listItem.getProperty('lock') == E_IMG_ICON_LOCK :
+					listItem.setProperty('lock', '')
+
+				#lock toggle: enable
+				else :
+					listItem.setProperty('lock', E_IMG_ICON_LOCK)
+
+				#mark toggle: disable
+				if listItem.getProperty('mark') == E_IMG_ICON_MARK :
+					listItem.setProperty('mark', '')
+
+
+			#label color
+			else :
+				#remove tag [COLOR ...]label[/COLOR]
+				label1 = self.mCtrlListCHList.getSelectedItem().getLabel()
+				label2 = re.findall('\](.*)\[', label1)
+
+				if aMode.lower() == 'delete' :
+					label3= str('%s%s%s'%( E_TAG_COLOR_RED, label2[0], E_TAG_COLOR_END ) )
+				elif aMode.lower() == 'skip' :
+					label3= str('%s%s%s'%( E_TAG_COLOR_GREY3, label2[0], E_TAG_COLOR_END ) )
+				elif aMode.lower() == 'recovery' :
+					label3= str('%s%s%s'%( E_TAG_COLOR_GREY, label2[0], E_TAG_COLOR_END ) )
+
+				self.mCtrlListCHList.getSelectedItem().setLabel(label3)
+
+
+
+
+			#----------------> 2.set mark list all <-------------
+			for idx in self.mMarkList :
+				self.mCtrlListCHList.selectItem(idx)
+				xbmc.sleep(50)
+
+				#icon toggle
+				if aMode.lower() == 'lock' :
+					listItem = self.mCtrlListCHList.getListItem(idx)
+
+					#lock toggle: disable
+					if listItem.getProperty('lock') == E_IMG_ICON_LOCK :
+						listItem.setProperty('lock', '')
+
+					#lock toggle: enable
+					else :
+						listItem.setProperty('lock', E_IMG_ICON_LOCK)
+
+					#mark toggle: disable
+					if listItem.getProperty('mark') == E_IMG_ICON_MARK :
+						listItem.setProperty('mark', '')
+
+				#label color
+				else :
+					#remove tag [COLOR ...]label[/COLOR]
+					label1 = self.mCtrlListCHList.getSelectedItem().getLabel()
+					label2 = re.findall('\](.*)\[', label1)
+
+					if aMode.lower() == 'delete' :
+						label3= str('%s%s%s'%( E_TAG_COLOR_RED, label2[0], E_TAG_COLOR_END ) )
+					elif aMode.lower() == 'skip' :
+						label3= str('%s%s%s'%( E_TAG_COLOR_GREY3, label2[0], E_TAG_COLOR_END ) )
+					elif aMode.lower() == 'recovery' :
+						label3= str('%s%s%s'%( E_TAG_COLOR_GREY, label2[0], E_TAG_COLOR_END ) )
+
+
+					self.mCtrlListCHList.getSelectedItem().setLabel(label3)
+					LOG_TRACE( 'idx[%s] 1%s 2%s 3%s'% (idx, label1,label2,label3) )
+
+					self.mCtrlListCHList.selectItem(lastPos)
+
+
+		except Exception, e:
+			LOG_TRACE( '============except[%s]'% e )
+
+		LOG_TRACE( 'Leave' )
+
+	def MarkAddDelete( self, aMode, aPos ) :
+		LOG_TRACE( 'Enter' )
+
+
+		if aMode.lower() == 'mark' :
+
+			idx = 0
+			isExist = False
+
+			#aready mark is mark delete
+			for i in self.mMarkList :
+				if i == aPos :
+					self.mMarkList.pop(idx)
+					isExist = True
+				idx += 1
+
+			#do not exist is append mark
+			if isExist == False : 
+				self.mMarkList.append( aPos )
+
+
+			listItem = self.mCtrlListCHList.getListItem(aPos)
+
+			#mark toggle: disable
+			if listItem.getProperty('mark') == E_IMG_ICON_MARK :
+				listItem.setProperty('mark', '')
+
+			#mark toggle: enable
+			else :
+				listItem.setProperty('mark', E_IMG_ICON_MARK)
+
+
+
+		elif aMode.lower() == 'delete' :
+			idx = 0
+			isExist = False
+
+			#aready mark is mark delete
+			for i in self.mDeleteList :
+				if i == aPos :
+					self.mDeleteList.pop(idx)
+					isExist = True
+				idx += 1
+
+			#do not exist is append mark
+			if isExist == False : 
+				self.mDeleteList.append( aPos )		
+
+		elif aMode.lower() == 'skip' :
+			idx = 0
+			isExist = False
+
+			#aready mark is mark delete
+			for i in self.mSkipList :
+				if i == aPos :
+					self.mSkipList.pop(idx)
+					isExist = True
+				idx += 1
+
+			#do not exist is append mark
+			if isExist == False : 
+				self.mSkipList.append( aPos )		
+
+		elif aMode.lower() == 'lock' :
+			idx = 0
+			isExist = False
+
+			#aready mark is mark delete
+			for i in self.mLockList :
+				if i == aPos :
+					self.mLockList.pop(idx)
+					isExist = True
+				idx += 1
+
+			#do not exist is append mark
+			if isExist == False : 
+				self.mLockList.append( aPos )		
+
+
+			"""
+			listItem = self.mCtrlListCHList.getListItem(aPos)
+
+			#lock toggle: disable
+			if listItem.getProperty('lock') == E_IMG_ICON_LOCK :
+				listItem.setProperty('lock', '')
+
+			#lock toggle: enable
+			else :
+				listItem.setProperty('lock', E_IMG_ICON_LOCK)
+			"""
+
+
+		LOG_TRACE( '=======MarkList[%s]'% self.mMarkList )
+		LOG_TRACE( '=======mDeleteList[%s]'% self.mDeleteList )
+		LOG_TRACE( '=======mSkipList[%s]'% self.mSkipList )
+		LOG_TRACE( '=======mLockList[%s]'% self.mLockList )
 
 		LOG_TRACE( 'Leave' )
 

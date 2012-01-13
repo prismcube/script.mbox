@@ -12,6 +12,7 @@ DIALOG_ID_STOP_RECORD				= 4
 DIALOG_ID_SATELLITE_NUMERIC			= 5
 DIALOG_ID_MOVE_ANTENNA				= 6
 DIALOG_ID_ADD_NEW_SATELLITE			= 7
+DIALOG_ID_EDIT_CHANNEL_LIST			= 8
 
 gDialogMgr = None
 
@@ -65,6 +66,10 @@ class DialogMgr(object):
 			elif aDialogId == DIALOG_ID_ADD_NEW_SATELLITE :
 				from pvr.gui.dialogs.DialogAddNewSatellite import DialogAddNewSatellite
 				return DialogAddNewSatellite('DialogAddNewSatellite.xml', self.scriptDir)
+
+			elif aDialogId == DIALOG_ID_EDIT_CHANNEL_LIST :
+				from pvr.gui.dialogs.DialogEditChannelList import DialogEditChannelList
+				return DialogEditChannelList('DialogEditChannelList.xml', self.scriptDir)
 				
 			else :
 				print "ERROR : can not find dialog"
