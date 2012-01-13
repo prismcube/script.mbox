@@ -137,3 +137,4 @@ class DialogAddNewSatellite( SettingDialog ) :
 		self.AddOkCanelButton( )
 
 		self.InitControl( )
+		
