@@ -4,6 +4,7 @@ import time
 import xbmcgui
 import xbmc
 import xbmcaddon
+import time
 
 from decorator import decorator
 from odict import odict
@@ -22,6 +23,8 @@ E_LOG_NORMAL = 0
 E_LOG_WARN   = 37
 E_LOG_ERR    = 31
 E_LOG_DEBUG  = 33
+
+E_AW_DD_MM_YYYY			= 0
 
 def ClearThreads( ):
 	gThreads.clear()
@@ -225,4 +228,12 @@ def SetSetting( aID, aValue ) :
 	global gSettings	
 	gSettings.setSetting( aID, aValue )
 
+
+def TimeToString( aTime, aFlag=0 ) :
+	if aFlag == E_AW_DD_MM_YYYY :
+		return time.strftime("%a, %d.%m.%Y", time.gmtime( aTime ) )
+	else :
+		strTime = time.strftime('%a, %d.%m.%Y', aTime )
+		LOG_TRACE('strTime=%s' %strTime )
+		return strTime
 

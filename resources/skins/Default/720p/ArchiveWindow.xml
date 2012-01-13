@@ -5,7 +5,7 @@
 		<posx>0</posx>
 		<posy>0</posy>
 	</coordinates>
-	<defaultcontrol always="true">3400</defaultcontrol>
+	<defaultcontrol always="true">3410</defaultcontrol>
 	<allowoverlay>no</allowoverlay>
 
 	<controls>
@@ -52,20 +52,29 @@
 				<visible>Control.IsVisible(50) | Control.IsVisible(51) | Control.IsVisible(500) | Control.IsVisible(505) | Control.IsVisible(508)</visible>
 				-->
 			</control>
+			<control type="image">
+				<posx>845</posx>
+				<posy>110</posy>
+				<width>352</width>
+				<height>198</height>
+				<texture border="20">special://skin/backgrounds/weather.jpg</texture>
+				<description>pre-view</description>
+			</control>
 			<control type="group">
 				<include>VisibleFadeEffect</include>
 				<visible>Control.IsVisible(3400)</visible>
 				<control type="image">
-					<posx>50</posx>
-					<posy>60</posy>
-					<width>750</width>
-					<height>600</height>
+					<posx>40</posx>
+					<posy>40</posy>
+					<width>1200</width>
+					<height>620</height>
+					
 					<texture border="20">confluence/ContentPanel.png</texture>
 				</control>
 				<control type="image">
-					<posx>50</posx>
+					<posx>40</posx>
 					<posy>645</posy>
-					<width>750</width>
+					<width>1200</width>
 					<height>600</height>
 					<aspectratio aligny="top">keep</aspectratio>
 					<texture diffuse="confluence/diffuse_mirror3.png" flipy="true" border="20">confluence/ContentPanel.png</texture>
@@ -113,7 +122,9 @@
 		</control>
 		<control type="group">
 			<include>Window_OpenClose_Animation</include>		
-			<include>DefaultCommonLargeView</include> <!-- Default View id = 3400 -->
+			<include>DefaultCommonArchiveView</include> <!-- Default common View id = 3400 -->
+			<include>DefaultThumbnailArchiveView</include> <!-- Default common View id = 3410 -->			
+			
 			<!--
 			<include>FullWidthList</include> -- view id = 51 
 			<include>ThumbnailView</include> -- view id = 500 
@@ -182,7 +193,7 @@
 				</control>
 				<control type="grouplist" id="9010">
 					<posx>10</posx>
-					<posy>250</posy>
+					<posy>210</posy>
 					<width>240</width>
 					<height>550</height>
 					<onleft>9000</onleft>
@@ -196,14 +207,20 @@
 						<include>DefaultButtonMediaSubCommonValues</include>
 						<label>Hide Watched</label>
 					</control>
-					<control type="label" id="201">
+					<control type="button" id="201">
+						<textwidth>170</textwidth>
+						<include>DefaultButtonMediaSubCommonValues</include>
+						<label>Search</label>
+						<!--				
+						<description>Search Button</description>
 						<width>220</width>
 						<height>45</height>
 						<font>font12caps</font>
-						<label>TTT</label>
-						<textcolor>dialogheader</textcolor>
-						<align>center</align>
+						<include>ButtonCommonValues</include>
+						<label>Search</label>
+						<align>lef</align>
 						<aligny>center</aligny>
+						-->
 					</control>
 					<!--
 					<control type="radiobutton" id="201">
@@ -269,7 +286,11 @@
 					<onright>102</onright>
 					<onup>100</onup>
 					<ondown>104</ondown>
+					<!--
+					<enable>substring(Window.Property(ascending),true)</enable>
+					-->
 				</control>
+				
 				<control type="togglebutton" id="102">
 					<description>Sort asc</description>
 					<posx>220</posx>
@@ -279,7 +300,14 @@
 					<onright>3400</onright>
 					<onup>101</onup>
 					<ondown>104</ondown>
+					<!--
+					<usealttexture>false</usealttexture>
+					-->
+
+					<usealttexture>substring(Window.Property(ascending),true)</usealttexture>
+
 				</control>
+
 				<!--
 				<control type="radiobutton" id="103">
 					<description>Library button</description>
