@@ -8,14 +8,14 @@ from ElisEnum import ElisEnum
 from ElisEventBus import ElisEventBus
 from ElisEventClass import *
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
-from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit, PincodeLimit
+from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit, PincodeLimit, ParseLabelToCh
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 
 from inspect import currentframe
 from pvr.gui.GuiConfig import FooterMask
 from pvr.gui.GuiConfig import *
-import threading, time, os
+import threading, time, os, re
 
 import pvr.Msg as Msg
 import pvr.gui.windows.Define_string as MsgId
@@ -43,6 +43,7 @@ E_IMG_ICON_MARK   = 'confluence/OverlayWatched.png'
 E_IMG_ICON_TITLE1 = 'IconHeaderTitleSmall.png'
 E_IMG_ICON_TITLE2 = 'icon_setting_focus.png'
 
+E_TAG_COLOR_RED   = '[COLOR red]'
 E_TAG_COLOR_GREY  = '[COLOR grey]'
 E_TAG_COLOR_GREY3 = '[COLOR grey3]'
 E_TAG_COLOR_END   = '[/COLOR]'
@@ -103,7 +104,7 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlLblPath1           = self.getControl( 10 )
 		#self.mCtrlLblPath2           = self.getControl( 11 )
 		#self.mCtrlLblPath3           = self.getControl( 12 )
-		self.mCtrlLblMark            = self.getControl( 21 )
+		self.mCtrlLblPath2            = self.getControl( 21 )
 
 		#main menu
 		self.mCtrlGropMainmenu       = self.getControl( 100 )
@@ -146,6 +147,12 @@ class ChannelListWindow(BaseWindow):
 		self.mNavChannel = None
 		self.mCurrentChannel = 0
 		self.mSlideOpenFlag = False
+
+		#edit mode
+		self.mMarkList = []
+		self.mDeleteList = []
+		self.mSkipList = []
+		self.mLockList = []
 
 
 		#initialize get channel list
@@ -315,60 +322,222 @@ class ChannelListWindow(BaseWindow):
 
 		#LOG_TRACE( 'Leave' )
 
+	def SetMarkDeleteCh( self, aMode ) :
+		LOG_TRACE( 'Enter' )
+
+		lastPos = self.mCtrlListCHList.getSelectedPosition()
+
+		try:
+			#----------------> 1.set current position item <-------------
+
+			#icon toggle
+			if aMode.lower() == 'lock' :
+				listItem = self.mCtrlListCHList.getListItem(lastPos)
+
+				#lock toggle: disable
+				if listItem.getProperty('lock') == E_IMG_ICON_LOCK :
+					listItem.setProperty('lock', '')
+
+				#lock toggle: enable
+				else :
+					listItem.setProperty('lock', E_IMG_ICON_LOCK)
+
+				#mark toggle: disable
+				if listItem.getProperty('mark') == E_IMG_ICON_MARK :
+					listItem.setProperty('mark', '')
+
+
+			#label color
+			else :
+				#remove tag [COLOR ...]label[/COLOR]
+				label1 = self.mCtrlListCHList.getSelectedItem().getLabel()
+				label2 = re.findall('\](.*)\[', label1)
+
+				if aMode.lower() == 'delete' :
+					label3= str('%s%s%s'%( E_TAG_COLOR_RED, label2[0], E_TAG_COLOR_END ) )
+				elif aMode.lower() == 'skip' :
+					label3= str('%s%s%s'%( E_TAG_COLOR_GREY3, label2[0], E_TAG_COLOR_END ) )
+				elif aMode.lower() == 'recovery' :
+					label3= str('%s%s%s'%( E_TAG_COLOR_GREY, label2[0], E_TAG_COLOR_END ) )
+
+				self.mCtrlListCHList.getSelectedItem().setLabel(label3)
+
+
+
+
+			#----------------> 2.set mark list all <-------------
+			for idx in self.mMarkList :
+				self.mCtrlListCHList.selectItem(idx)
+				xbmc.sleep(50)
+
+				#icon toggle
+				if aMode.lower() == 'lock' :
+					listItem = self.mCtrlListCHList.getListItem(idx)
+
+					#lock toggle: disable
+					if listItem.getProperty('lock') == E_IMG_ICON_LOCK :
+						listItem.setProperty('lock', '')
+
+					#lock toggle: enable
+					else :
+						listItem.setProperty('lock', E_IMG_ICON_LOCK)
+
+					#mark toggle: disable
+					if listItem.getProperty('mark') == E_IMG_ICON_MARK :
+						listItem.setProperty('mark', '')
+
+				#label color
+				else :
+					#remove tag [COLOR ...]label[/COLOR]
+					label1 = self.mCtrlListCHList.getSelectedItem().getLabel()
+					label2 = re.findall('\](.*)\[', label1)
+
+					if aMode.lower() == 'delete' :
+						label3= str('%s%s%s'%( E_TAG_COLOR_RED, label2[0], E_TAG_COLOR_END ) )
+					elif aMode.lower() == 'skip' :
+						label3= str('%s%s%s'%( E_TAG_COLOR_GREY3, label2[0], E_TAG_COLOR_END ) )
+					elif aMode.lower() == 'recovery' :
+						label3= str('%s%s%s'%( E_TAG_COLOR_GREY, label2[0], E_TAG_COLOR_END ) )
+
+
+					self.mCtrlListCHList.getSelectedItem().setLabel(label3)
+					LOG_TRACE( 'idx[%s] 1%s 2%s 3%s'% (idx, label1,label2,label3) )
+
+					self.mCtrlListCHList.selectItem(lastPos)
+
+
+		except Exception, e:
+			LOG_TRACE( '============except[%s]'% e )
+
+		LOG_TRACE( 'Leave' )
+
+	def MarkAddDelete( self, aMode, aPos ) :
+		LOG_TRACE( 'Enter' )
+
+
+		if aMode.lower() == 'mark' :
+
+			idx = 0
+			isExist = False
+
+			#aready mark is mark delete
+			for i in self.mMarkList :
+				if i == aPos :
+					self.mMarkList.pop(idx)
+					isExist = True
+				idx += 1
+
+			#do not exist is append mark
+			if isExist == False : 
+				self.mMarkList.append( aPos )
+
+
+			listItem = self.mCtrlListCHList.getListItem(aPos)
+
+			#mark toggle: disable
+			if listItem.getProperty('mark') == E_IMG_ICON_MARK :
+				listItem.setProperty('mark', '')
+
+			#mark toggle: enable
+			else :
+				listItem.setProperty('mark', E_IMG_ICON_MARK)
+
+
+
+
+		elif aMode.lower() == 'delete' :
+			idx = 0
+			isExist = False
+
+			#aready mark is mark delete
+			for i in self.mDeleteList :
+				if i == aPos :
+					self.mDeleteList.pop(idx)
+					isExist = True
+				idx += 1
+
+			#do not exist is append mark
+			if isExist == False : 
+				self.mDeleteList.append( aPos )		
+
+		elif aMode.lower() == 'skip' :
+			idx = 0
+			isExist = False
+
+			#aready mark is mark delete
+			for i in self.mSkipList :
+				if i == aPos :
+					self.mSkipList.pop(idx)
+					isExist = True
+				idx += 1
+
+			#do not exist is append mark
+			if isExist == False : 
+				self.mSkipList.append( aPos )		
+
+		elif aMode.lower() == 'lock' :
+			idx = 0
+			isExist = False
+
+			#aready mark is mark delete
+			for i in self.mLockList :
+				if i == aPos :
+					self.mLockList.pop(idx)
+					isExist = True
+				idx += 1
+
+			#do not exist is append mark
+			if isExist == False : 
+				self.mLockList.append( aPos )		
+
+
+			"""
+			listItem = self.mCtrlListCHList.getListItem(aPos)
+
+			#lock toggle: disable
+			if listItem.getProperty('lock') == E_IMG_ICON_LOCK :
+				listItem.setProperty('lock', '')
+
+			#lock toggle: enable
+			else :
+				listItem.setProperty('lock', E_IMG_ICON_LOCK)
+			"""
+
+
+		LOG_TRACE( '=======MarkList[%s]'% self.mMarkList )
+		LOG_TRACE( '=======mDeleteList[%s]'% self.mDeleteList )
+		LOG_TRACE( '=======mSkipList[%s]'% self.mSkipList )
+		LOG_TRACE( '=======mLockList[%s]'% self.mLockList )
+
+		LOG_TRACE( 'Leave' )
+	
 
 	def onClick(self, aControlId):
 		LOG_TRACE( 'onclick focusID[%d]'% aControlId )
 
 		if aControlId == self.mCtrlListCHList.getId() :
-			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
-				#Turn in
 
-				self.mIsSelect = True
+			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
+				try:
+					#Mark mode
+					if self.mIsMark == True :
+						idx = self.mCtrlListCHList.getSelectedPosition()
+						self.MarkAddDelete('mark', idx )
 
-				label = self.mCtrlListCHList.getSelectedItem().getLabel()
-				channelNumbr = int(label[:4])
+						GuiLock2( True )
+						self.setFocusId( self.mCtrlGropCHList.getId() )
+						self.mCtrlListCHList.selectItem( idx+1 )
+						GuiLock2( False )
 
-				ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
-				#LOG_TRACE( 'MASK[%s] ret[%s]'% (self.mPincodeEnter, ret) )
-				if ret == True :
-					if self.mPincodeEnter == FLAG_MASK_NONE :
-						if self.mCurrentChannel == channelNumbr :
-							self.SaveSlideMenuHeader()
-							self.mEnableThread = False
-							self.CurrentTimeThread().join()
-							self.close()
+					#Turn mode
+					else :
+						self.SetChannelTune()
 
-							WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-							return
-
-						else :
-							pass
-							#ToDO : WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_LIVE_PLATE).setLastChannel( self.mCurrentChannel )
-
-				ch = None
-				ch = self.mCommander.Channel_GetCurrent()
-				if ch :
-					self.mNavChannel = ch
-					self.mCurrentChannel = self.mNavChannel.mNumber
-					self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
-					self.ResetLabel()
-					self.UpdateLabelInfo()
-					self.PincodeDialogLimit()
-
+				except Exception, e:
+					LOG_TRACE( '============except[%s]'% e )
 
 			else :
-				#Mark
-				if self.mIsMark == True :
-					#mark image show
-					idx = self.mCtrlListCHList.getSelectedPosition()
-					listItem = self.mCtrlListCHList.getListItem(idx)
-					if listItem.getProperty('mark') == E_IMG_ICON_MARK :
-						listItem.setProperty('mark', '')
-					else :
-						listItem.setProperty('mark', E_IMG_ICON_MARK)
-
-					self.setFocusId( self.mCtrlGropCHList.getId() )
-
+				self.SetChannelTune()
 
 		elif aControlId == self.mCtrlBtnMenu.getId() or aControlId == self.mCtrlListMainmenu.getId() :
 			#list view
@@ -411,17 +580,17 @@ class ChannelListWindow(BaseWindow):
 		elif aControlId == E_CTRL_BTN_FOOTER02 :
 			LOG_TRACE( 'onclick footer ok' )
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
-				self.onClick( self.mCtrlListCHList.getId() )
+				self.SetChannelTune()
 
 			else :
 				if self.mIsMark == True :
 					self.mIsMark = False
-					self.mCtrlLblMark.setLabel( 'Turn in' )
+					self.mCtrlLblPath2.setLabel( 'Turn in' )
 					self.mCtrlFooter2.setVisible( False )
 					self.mCtrlFooter5.setVisible( True )
 				else :
 					self.mIsMark = True
-					self.mCtrlLblMark.setLabel( 'Mark ON' )
+					self.mCtrlLblPath2.setLabel( 'Mark ON' )
 					self.mCtrlFooter2.setVisible( True )
 					self.mCtrlFooter5.setVisible( False )
 
@@ -456,21 +625,42 @@ class ChannelListWindow(BaseWindow):
 					self.UpdateLabelInfo()
 
 				except Exception, e :
-					LOG_TRACE( '==================== Error except[%s]'% e )
+					LOG_TRACE( 'Error except[%s]'% e )
+
 
 		elif aControlId == E_CTRL_BTN_FOOTER06:
 			LOG_TRACE( 'onclick footer Opt' )
+
+			#idx = self.mCtrlListCHList.getSelectedPosition()
+
+
+			"""
+			#lock test
+			#self.MarkAddDelete('lock', idx)
+			self.SetMarkDeleteCh('lock')
+			self.mMarkList=[]
+
+			GuiLock2( True )
+			self.setFocusId( self.mCtrlGropCHList.getId() )
+			GuiLock2( False )
+			"""
+
+
+			#delete test
+			self.SetMarkDeleteCh('delete')
+			self.mMarkList=[]
+
 
 		elif aControlId == E_CTRL_BTN_FOOTER07:
 			LOG_TRACE( 'onclick footer Mark' )
 			if self.mIsMark == True :
 				self.mIsMark = False
-				self.mCtrlLblMark.setLabel( 'Turn in' )
+				self.mCtrlLblPath2.setLabel( 'Turn in' )
 				self.mCtrlFooter2.setVisible( False )
 				self.mCtrlFooter5.setVisible( True )
 			else :
 				self.mIsMark = True
-				self.mCtrlLblMark.setLabel( 'Mark ON' )
+				self.mCtrlLblPath2.setLabel( 'Mark ON' )
 				self.mCtrlFooter2.setVisible( True )
 				self.mCtrlFooter5.setVisible( False )
 
@@ -512,6 +702,48 @@ class ChannelListWindow(BaseWindow):
 				LOG_TRACE( 'unknown event[%s]'% aEvent.getName() )
 		else:
 			LOG_TRACE( 'channellist winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
+
+		LOG_TRACE( 'Leave' )
+
+
+
+	def SetChannelTune( self ) :
+		LOG_TRACE( 'Enter' )
+
+		#Turn in
+		self.mIsSelect = True
+
+		label = self.mCtrlListCHList.getSelectedItem().getLabel()
+		channelNumbr = ParseLabelToCh( self.mViewMode, label )
+		LOG_TRACE( 'label[%s] ch[%d]'% (label, channelNumbr) )
+
+		ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
+		#LOG_TRACE( 'MASK[%s] ret[%s]'% (self.mPincodeEnter, ret) )
+		if ret == True :
+			if self.mPincodeEnter == FLAG_MASK_NONE :
+				if self.mCurrentChannel == channelNumbr :
+					self.SaveSlideMenuHeader()
+					self.mEnableThread = False
+					self.CurrentTimeThread().join()
+					self.close()
+
+					WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+					return
+
+				else :
+					pass
+					#ToDO : WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_LIVE_PLATE).setLastChannel( self.mCurrentChannel )
+
+		ch = None
+		ch = self.mCommander.Channel_GetCurrent()
+		if ch :
+			self.mNavChannel = ch
+			self.mCurrentChannel = self.mNavChannel.mNumber
+			self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
+			self.ResetLabel()
+			self.UpdateLabelInfo()
+			self.PincodeDialogLimit()
+
 
 		LOG_TRACE( 'Leave' )
 
@@ -1117,7 +1349,8 @@ class ChannelListWindow(BaseWindow):
 
 			else :
 				label = self.mCtrlListCHList.getSelectedItem().getLabel()
-				channelNumbr = int(label[:4])
+				channelNumbr = ParseLabelToCh( self.mViewMode, label )
+				LOG_TRACE( 'label[%s] ch[%d]'% (label, channelNumbr) )
 
 				for ch in self.mChannelList:
 					if ch.mNumber == channelNumbr :
@@ -1276,7 +1509,31 @@ class ChannelListWindow(BaseWindow):
 
 
 		LOG_TRACE( 'Leave' )
+
+	def OptDialogLimit( self ) :
+		LOG_TRACE( 'Enter' )
+
+		try :
+			msg1 = 'OPT CH number'
+			msgList=[]
+			msgList.append('Lock')
+			msgList.append('Skip')
+			msgList.append('Move')
+			msgList.append('Delete')
+			#msgList.append('Add to Fav.Group')
+			msgList.append(self.mListFavorite)
+			msgList.append('Start Block Selection')
+
+			ret = xbmcgui.Dialog().select(msg1, msgList)
+
+			LOG_TRACE('======== ret[%s]'% ret)
 		
+		except Exception, e:
+			LOG_TRACE( 'Error exception[%s]'% e )
+
+
+		LOG_TRACE( 'Leave' )
+	
 
 	@RunThread
 	def CurrentTimeThread(self):

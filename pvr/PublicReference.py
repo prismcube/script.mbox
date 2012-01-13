@@ -233,3 +233,21 @@ def ClassToList( aMode, aClassList ) :
 		elif aMode == 'convert' :
 			return list
 
+def ParseLabelToCh( aMode, aLabel ) :
+	import re
+	import pvr.gui.WindowMgr as WinMgr
+	#aLabel = '[COLOR grey]1065 NGC2[/COLOR]'
+
+	parse2 = 0
+
+	if aMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+		parse2 = re.findall('[0-9]\w*', aLabel)
+
+	else :
+		parse1 = re.split(' ', aLabel)
+		parse2 = re.findall('[0-9]\w*', parse1[1])
+
+	#LOG_TRACE('===========aLabel[%s] parse2[%s]'% (aLabel,parse2[0]) )
+
+	return int(parse2[0])
+
