@@ -156,8 +156,7 @@ class EditTransponder( SettingWindow ) :
 		self.AddInputControl( E_Input01, 'Satellite', satellitename, None, None, None, 'Select satellite.' )
 
 		self.mTransponderList = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
-		print 'dhkim test list transponder = %s' % self.mTransponderList
-		print 'dhkim test len transponder = %d' % len( self.mTransponderList )
+
 		"""
 		for test
 		"""

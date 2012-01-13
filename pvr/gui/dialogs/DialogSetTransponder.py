@@ -24,21 +24,21 @@ class DialogSetTransponder( SettingDialog ) :
 		self.mPolarization	= 0
 		self.mSimbolicRate	= 0
 
-		self.mListDvbType		= []
-		self.mListFec			= []
-		self.mListPolarization	= []
+		#self.mListDvbType		= []
+		#self.mListFec			= []
+		#self.mListPolarization	= []
 
-		property = ElisPropertyEnum( 'DVB Type', self.mCommander )
-		self.mListDvbType.append( property.GetPropStringByIndex( 0 ) )
-		self.mListDvbType.append( property.GetPropStringByIndex( 1 ) )
+		#property = ElisPropertyEnum( 'DVB Type', self.mCommander )
+		#self.mListDvbType.append( property.GetPropStringByIndex( 0 ) )
+		#self.mListDvbType.append( property.GetPropStringByIndex( 1 ) )
 
-		property = ElisPropertyEnum( 'FEC', self.mCommander )
-		for i in range( property.GetIndexCount() ) :
-				self.mListFec.append( property.GetPropStringByIndex( i ) )
+		#property = ElisPropertyEnum( 'FEC', self.mCommander )
+		#for i in range( property.GetIndexCount() ) :
+		#		self.mListFec.append( property.GetPropStringByIndex( i ) )
 
-		property = ElisPropertyEnum( 'Polarisation', self.mCommander )
-		self.mListPolarization.append( property.GetPropStringByIndex( 0 ) )
-		self.mListPolarization.append( property.GetPropStringByIndex( 1 ) )
+		#property = ElisPropertyEnum( 'Polarisation', self.mCommander )
+		#self.mListPolarization.append( property.GetPropStringByIndex( 0 ) )
+		#self.mListPolarization.append( property.GetPropStringByIndex( 1 ) )
 		
 		
 	def onInit( self ) :
@@ -80,6 +80,7 @@ class DialogSetTransponder( SettingDialog ) :
 
 
 	def onClick( self, aControlId ) :
+		pass
 		groupId = self.GetGroupId( aControlId )
 
 		# Frequency
@@ -161,9 +162,17 @@ class DialogSetTransponder( SettingDialog ) :
 		self.ResetAllControl( )
 		
 		self.AddInputControl( E_DialogInput01, 'Frequency', '%d MHz' % self.mFrequency )
-		self.AddUserEnumControl( E_DialogSpinEx01, 'DVB Type', self.mListDvbType, self.mDvbType )
-		self.AddUserEnumControl( E_DialogSpinEx02, 'FEC', self.mListFec, self.mFec )
-		self.AddUserEnumControl( E_DialogSpinEx03, 'Polarization', self.mListPolarization, self.mPolarization )
+		
+		self.AddEnumControl( E_DialogSpinEx01, 'DVB Type' )
+		self.SetProp( E_DialogSpinEx01,  self.mDvbType )
+		
+		self.AddEnumControl( E_DialogSpinEx02, 'FEC' )
+		self.SetProp( E_DialogSpinEx02, self.mFec )
+		
+		self.AddEnumControl( E_DialogSpinEx03, 'Polarisation' )
+		self.SetProp( E_DialogSpinEx03, self.mPolarization )
+
+		
 		self.AddInputControl( E_DialogInput02, 'Symbol Rate', '%d KS/s' % self.mSimbolicRate )
 		self.AddOkCanelButton( )
 
@@ -172,7 +181,7 @@ class DialogSetTransponder( SettingDialog ) :
 
 
 	def DisableControl( self ) :
-		if self.GetSelectedIndex( E_DialogSpinEx01 ) == 0 :
+		if self.mDvbType == 0 :
 			self.SetEnableControl( E_DialogSpinEx02, False )
 			self.getControl( E_DialogSpinEx02 + 3 ).getListItem( 0 ).setLabel2( 'Automatic' )
 		else :
