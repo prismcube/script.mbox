@@ -20,8 +20,7 @@ class ChannelSearch( SettingWindow ):
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
-		self.SetHeaderLabel( 'Channel Scan' )
-		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
+		self.SetSettingWindowLabel( 'Channel Scan' )
 
 		self.AddLeftLabelButtonControl( E_Input01, 'Automatic Scan', 'Running automatic scan.' )
 		self.AddLeftLabelButtonControl( E_Input02, 'Manual Scan', 'Running manual scan.' )

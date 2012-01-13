@@ -181,7 +181,7 @@ class DialogChannelSearch( BaseDialog ) :
 		LOG_TRACE('isFinished=%d' %self.mIsFinished )
 		if self.mIsFinished == True :
 			self.mEventBus.Deregister( self )
-			self.close( )
+			self.CloseDialog( )
 
 	@GuiLock
 	def onEvent( self, aEvent ):

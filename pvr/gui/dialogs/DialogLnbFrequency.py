@@ -3,27 +3,23 @@ import xbmcgui
 import time
 import sys
 
-from pvr.gui.BaseDialog import BaseDialog
+from pvr.gui.BaseDialog import SettingDialog
 from pvr.gui.BaseWindow import Action
+from pvr.gui.GuiConfig import *
 
-E_DIALOG_HEADER			= 100
-E_MAIN_LIST_ID			= 101
 
-E_BUTTON_OK_ID			= 201
-E_BUTTON_CANCEL_ID		= 301
-
-class DialogLnbFrequency( BaseDialog ) :
+class DialogLnbFrequency( SettingDialog ) :
 	def __init__( self, *args, **kwargs ) :
-		BaseDialog.__init__( self, *args, **kwargs )
+		SettingDialog.__init__( self, *args, **kwargs )
 
-		self.mLowFreq = None
-		self.mHighFreq = None
-		self.mThreshFreq = None
+		self.mLowFreq = 0
+		self.mHighFreq = 0
+		self.mThreshFreq = 0
 		self.mIsOk = False
 
 		
 	def onInit( self ) :
-		self.getControl( E_DIALOG_HEADER ).setLabel( 'LNB Frequency' )
+		self.SetHeaderLabel( 'LNB Frequency' )
 		self.DrawItem( )
 		self.mIsOk = False		
 
@@ -32,41 +28,65 @@ class DialogLnbFrequency( BaseDialog ) :
 		actionId = aAction.getId( )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			pass
+			self.ResetAllControl( )
+			self.CloseDialog( )
+			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
+			self.ResetAllControl( )
 			self.CloseDialog( )
 
+		elif actionId == Action.ACTION_MOVE_LEFT :
+			self.ControlLeft( )
+
+		elif actionId == Action.ACTION_MOVE_RIGHT :
+			self.ControlRight( )
+			
+		elif actionId == Action.ACTION_MOVE_UP :
+			self.ControlUp( )
+			
+		elif actionId == Action.ACTION_MOVE_DOWN :
+			self.ControlDown( )
+			
 
 	def onClick( self, aControlId ) :
-		if aControlId == E_MAIN_LIST_ID :
-			if self.getControl( E_MAIN_LIST_ID ).getSelectedPosition( ) == 0 :
-				self.mLowFreq = self.NumericKeyboard( 0, 'Low Frequency', self.mLowFreq, 5 )
-				self.DrawItem( )
+		groupId = self.GetGroupId( aControlId )
 
-			elif self.getControl( E_MAIN_LIST_ID ).getSelectedPosition( ) == 1 :
-				self.mHighFreq = self.NumericKeyboard( 0, 'High Frequency', self.mHighFreq, 5 )
-				self.DrawItem( )
-			
-			elif self.getControl( E_MAIN_LIST_ID ).getSelectedPosition( ) == 2 :
-				self.mThreshFreq = self.NumericKeyboard( 0, 'Switch Frequency', self.mThreshFreq, 5 )
-				self.DrawItem( )
-			
-		elif aControlId ==  E_BUTTON_OK_ID :
+		if groupId == E_SettingDialogOk :
 			self.mIsOk = True
+			self.ResetAllControl( )
 			self.CloseDialog( )
-		
-		elif aControlId == E_BUTTON_CANCEL_ID :
+			
+		elif groupId == E_SettingDialogCancel :
 			self.mIsOk = False
-			self.CloseDialog( )		
+			self.ResetAllControl( )
+			self.CloseDialog( )
+			
+		elif groupId == E_DialogInput01 :
+			tempval = self.NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input Low Frequncy', self.mLowFreq, 5 )
+			self.mLowFreq = '%d' % int( tempval )
+			self.DrawItem( )
+
+		elif groupId == E_DialogInput02 :
+			tempval = self.NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input High Frequncy', self.mHighFreq, 5 )
+			self.mHighFreq = '%d' % int( tempval )
+			self.DrawItem( )
+
+		elif groupId == E_DialogInput03 :
+			tempval = self.NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input Switch Frequncy', self.mThreshFreq, 5 )
+			self.mThreshFreq = '%d' % int( tempval )
+			self.DrawItem( )
+
  				
 	def IsOK( self ) :
 		return self.mIsOk
+
 		
 	def onFocus( self, aControlId ):
 		pass
+
 
 	def SetFrequency( self, aLowFreq, aHighFreq, aThreshFreq ) :
 		self.mLowFreq = '%d' % aLowFreq
@@ -77,15 +97,13 @@ class DialogLnbFrequency( BaseDialog ) :
 	def GetFrequency( self ) :
 		return self.mLowFreq, self.mHighFreq, self.mThreshFreq
 
-	def DrawItem( self ) :
-		listItems = []
-		listItem = xbmcgui.ListItem( 'Low Frequency', self.mLowFreq, "-", "-", "-" )
-		listItems.append( listItem )
-		
-		listItem = xbmcgui.ListItem( 'High Frequency', self.mHighFreq, "-", "-", "-" )
-		listItems.append( listItem )
-		
-		listItem = xbmcgui.ListItem( 'Switch Frequency', self.mThreshFreq, "-", "-", "-" )
-		listItems.append( listItem )
 
-		self.getControl( E_MAIN_LIST_ID ).addItems( listItems )
+	def DrawItem( self ) :
+		self.ResetAllControl( )
+	
+		self.AddInputControl( E_DialogInput01, 'Low Frequency' , self.mLowFreq )
+		self.AddInputControl( E_DialogInput02, 'High Frequency' , self.mHighFreq )
+		self.AddInputControl( E_DialogInput03, 'Switch Frequency' , self.mThreshFreq )
+		self.AddOkCanelButton( )
+		
+		self.InitControl( )

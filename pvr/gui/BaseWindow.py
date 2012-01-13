@@ -7,9 +7,7 @@ from decorator import decorator
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.GuiConfig import *
 import pvr.ElisMgr
-import pvr.gui.DialogMgr
 import thread
-
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
 
 class Action(object):
@@ -84,7 +82,7 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 			self.mFooterGroupId += FooterMask.G_FOOTER_GROUP_IDGAP
 
 	def SetHeaderLabel( self, aLabel ):
-		self.getControl( HeaderDefine.G_HEADER_LABEL_ID ).setLabel( aLabel )
+		self.getControl( HeaderDefine.G_WINDOW_HEADER_LABEL_ID ).setLabel( aLabel )
 
 	def SetSettingWindowLabel( self, aLabel ) :
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( aLabel )
@@ -102,9 +100,6 @@ class ControlItem:
 	E_SETTING_USER_ENUM_CONTROL				= 2
 	E_SETTING_INPUT_CONTROL					= 3
 	E_SETTING_LEFT_LABEL_BUTTON_CONTROL		= 4
-
-	# Detail Window
-	E_DETAIL_NORMAL_BUTTON_CONTROL			= 5
 
 
 	def __init__( self, aControlType, aControlId, aProperty, aListItems, aSelecteItem, aStringType, aMaxLength, aDescription ):	
@@ -229,16 +224,28 @@ class SettingWindow( BaseWindow ):
 			kb = xbmc.Keyboard( aCtrlItem.mListItems[0].getLabel2( ), aCtrlItem.mListItems[0].getLabel( ), False )
 			kb.doModal( )
 			if( kb.isConfirmed( ) ) :
-				aCtrlItem.mListItems[0].setLabel2( kb.getText( ) )
-				#aCtrlItem.mListItems[0] = xbmcgui.ListItem( aCtrlItem.mListItems[0].getLabel( ), aCtrlItem.mListItems[0].getLabel2( ), "-", "-", "-" )
+				value =  kb.getText( )
+				if value == None or value == '' :
+					return
+
+				if len( value ) > aCtrlItem.mMaxLength :
+					value = value[ len ( value ) - aCtrlItem.mMaxLength :]
+				aCtrlItem.mListItems[0].setLabel2( value )
+				
 			return True
 
 		elif keyType == 5 :
 			kb = xbmc.Keyboard( aCtrlItem.mListItems[0].getLabel2( ), aCtrlItem.mListItems[0].getLabel( ), True )
 			kb.doModal( )
 			if( kb.isConfirmed( ) ) :
-				aCtrlItem.mListItems[0].setLabel2( kb.getText( ) )
-				#aCtrlItem.mListItems[0] = xbmcgui.ListItem( aCtrlItem.mListItems[0].getLabel( ), aCtrlItem.mListItems[0].getLabel2( ), "-", "-", "-" )
+				value =  kb.getText( )
+				if value == None or value == '' :
+					return
+
+				if len( value ) > aCtrlItem.mMaxLength :
+					value = value[ len ( value ) - aCtrlItem.mMaxLength :]
+				aCtrlItem.mListItems[0].setLabel2( value )
+				
 			return True
 
 		else :
@@ -331,11 +338,6 @@ class SettingWindow( BaseWindow ):
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
 					return self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).getLabel2( )
-
-				if ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
-					print 'dhkim test Label2 value = %s' % self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).getLabel( )
-					return self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).getLabel2( )
-					
 
 		return -1
 		

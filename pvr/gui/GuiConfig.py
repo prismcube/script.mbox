@@ -29,6 +29,19 @@ E_Input05			= 2500
 E_Input06			= 2600
 E_Input07			= 2700
 
+E_DialogSpinEx01	= 6110
+E_DialogSpinEx02	= 6120
+E_DialogSpinEx03	= 6130
+
+E_DialogInput01		= 6210
+E_DialogInput02		= 6220
+E_DialogInput03		= 6230
+E_DialogInput04		= 6240
+E_DialogInput05		= 6250
+
+E_SettingDialogOk		= 6997
+E_SettingDialogCancel	= 6999
+
 E_SlideMenuButton01	= 3310
 E_SlideMenuButton02	= 3320
 E_SlideMenuButton03	= 3330
@@ -112,12 +125,17 @@ E_LIST_ONE_CABLE_SCR				= [ 'SCR(0)', 'SCR(1)', 'SCR(2)', 'SCR(3)', 'SCR(4)', 'S
 E_LIST_MY_LONGITUDE = [ 'East', 'West' ]
 E_LIST_MY_LATITUDE  = [ 'North', 'South' ]
 
-
 """
 E_LIST_TUNER_TYPE				= [ 'Simple LNB', 'DiSEqC 1.0', 'DiSEqC 1.1', 'Motorized, DiSEqC 1.2', 'Motorized, USALS', 'OneCable' ]
 E_LIST_LNB_TYPE					= [ 'Universal' , 'Single', 'Userdefined' ]
 E_LIST_SINGLE_FREQUENCY 		= [ '5150', '9750', '10600', '10750', '11300' ]
 """
+
+# Nermeric Keyboard Type
+E_NUMERIC_KEYBOARD_TYPE_NUMBER	= 0
+E_NUMERIC_KEYBOARD_TYPE_DATE	= 1
+E_NUMERIC_KEYBOARD_TYPE_TIME	= 2
+E_NUMERIC_KEYBOARD_TYPE_IP		= 3
 
 def getSingleFrequenceIndex( selectedItem ) :
 	for i in range( len ( E_LIST_SINGLE_FREQUENCY )	) :
@@ -156,7 +174,8 @@ class FooterMask(object):
 	G_FOOTER_ICON_MARK_MASK			    = 1 << 6
 
 class HeaderDefine(object):
-	G_HEADER_LABEL_ID					= 3001
+	G_WINDOW_HEADER_LABEL_ID			= 3001
+	G_DIALOG_HEADER_LABEL_ID			= 3005
 	
 """
 G_FOOTER_ICON_EXIT_MASK			= 1 << 1,

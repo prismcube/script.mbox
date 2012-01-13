@@ -85,6 +85,16 @@ class EditSatellite( SettingWindow ) :
 
 		# Add New Satellite
 		elif groupId == E_Input04 :
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_NEW_SATELLITE )
+ 			dialog.doModal( )
+
+			if dialog.IsOK() == True :
+				longitude, band, satelliteName = dialog.GetValue( )
+				ConfigMgr.GetInstance( ).AddSatellite( longitude, band, satelliteName )
+				self.InitConfig( )
+			else :
+				return
+			"""
 			kb = xbmc.Keyboard( '', 'Satellite Name', False )
 			kb.doModal( )
 			if( kb.isConfirmed( ) ) :
@@ -99,6 +109,7 @@ class EditSatellite( SettingWindow ) :
 					self.InitConfig( )
 				else :
 					return
+			"""
 				 
 		# Delete Satellite
 		elif groupId == E_Input05 :
