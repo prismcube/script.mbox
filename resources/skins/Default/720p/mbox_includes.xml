@@ -34,6 +34,13 @@
 				<texture border="20">confluence/DialogBack.png</texture>
 			</control>
 			<control type="image">
+				<posx>30</posx>
+				<posy>10</posy>
+				<width>765</width>
+				<height>618</height>
+				<texture border="5">confluence/black-back2.png</texture>
+			</control>
+			<control type="image">
 				<posx>0</posx>
 				<posy>10</posy>
 				<width>804</width>
@@ -43,7 +50,7 @@
 			</control>
 			<control type="image">
 				<description>LOGO</description>
-				<posx>880</posx>
+				<posx>887</posx>
 				<posy>15</posy>
 				<width>220</width>
 				<height>80</height>
@@ -73,7 +80,7 @@
 				<aligny>center</aligny>
 			</control>
 			<control type="image">
-				<posx>805</posx>
+				<posx>818</posx>
 				<posy>110</posy>
 				<width>352</width>
 				<height>198</height>
@@ -82,7 +89,7 @@
 			</control>
 			<control type="label" id="307">
 				<description>satellite info</description>
-				<posx>805</posx>
+				<posx>818</posx>
 				<posy>350</posy>
 				<font>font12_title</font>
 				<textcolor>grey</textcolor>
@@ -90,7 +97,7 @@
 			</control>
 			<control type="label" id="308">
 				<description>career info</description>
-				<posx>805</posx>
+				<posx>818</posx>
 				<posy>380</posy>
 				<font>font12_title</font>
 				<textcolor>grey</textcolor>
@@ -98,6 +105,47 @@
 			</control>
 		</control>
 	</include>
+
+	<include name="DefaultDialogCommonSetting">
+		<control type="image">
+			<posx>40</posx>
+			<posy>110</posy>
+			<width>530</width>
+			<height>90</height>
+			<aspectratio>stretch</aspectratio>
+			<texture>confluence/GlassTitleBar.png</texture>
+		</control>
+		<control type="button">
+			<description>Close Window button</description>
+			<posx>520</posx>
+			<posy>109</posy>
+			<width>64</width>
+			<height>32</height>
+			<label>-</label>
+			<font>-</font>
+			<onclick>PreviousMenu</onclick>
+			<texturefocus>confluence/DialogCloseButton-focus.png</texturefocus>
+			<texturenofocus>confluence/DialogCloseButton.png</texturenofocus>
+			<onleft>10</onleft>
+			<onright>10</onright>
+			<onup>10</onup>
+			<ondown>10</ondown>
+			<visible>system.getbool(input.enablemouse)</visible>
+		</control>
+		<control type="label" id="3005">
+			<description>header label</description>
+			<posx>20</posx>
+			<posy>118</posy>
+			<width>570</width>
+			<height>30</height>
+			<font>font13_title</font>
+			<align>center</align>
+			<aligny>center</aligny>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+		</control>
+	</include>
+
 	<include name="DefaultBehindDialogFadeOut">
 		<control type="image">
 			<posx>0</posx>
@@ -1450,6 +1498,7 @@
 			</control>
 		</control>
 	</include>
+	
 	<include name="Input01">
 		<control type="group" id="2100">
 			<width>750</width>
@@ -1552,6 +1601,7 @@
 			</control>
 		</control>
 	</include>
+	
 	<include name="Input02">
 		<control type="group" id="2200">
 			<width>750</width>
@@ -2164,6 +2214,1392 @@
 			</control>
 		</control>
 	</include>
+
+	<include name="DialogSpinEx01">
+		<control type="group" id="6110">
+			<width>550</width>
+			<height>40</height>
+			<defaultcontrol always="true">6111</defaultcontrol>
+			<control type="button" id="6111">
+				<description>Menu Item Next Button</description>
+				<visible>Control(6110).IsVisible()</visible>
+				<hitrect x="0" y="0" w="503" h="40" />	
+				<posx>470</posx>
+				<posy>9</posy>
+				<width>33</width>
+				<height>22</height>
+				<label>-</label>
+				<font>-</font>
+				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
+				<onclick>Control.Move(6113,1)</onclick>
+				<onleft>-</onleft>
+				<onright>-</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
+			</control>
+			<control type="button" id="6112">
+				<description>Menu Item Prev Button</description>
+				<visible>Control(6110).IsVisible()</visible>				
+				<posx>503</posx>
+				<posy>9</posy>
+				<width>33</width>
+				<height>22</height>
+				<label>-</label>
+				<font>-</font>
+				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
+				<onclick>Control.Move(6113,-1)</onclick>
+				<onleft>-</onleft>
+				<onright>-</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
+			</control>
+			<control type="list" id="6113">
+				<hitrect x="0" y="0" w="0" h="0" />
+				<posx>0</posx>
+				<width>550</width>
+				<height>40</height>						
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>0</scrolltime>
+				<itemlayout height="1" width="550">
+				</itemlayout>
+				<focusedlayout height="40" width="550">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>550</width>
+						<height>40</height>
+						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
+						<visible>![Control.HasFocus(6111) | Control.HasFocus(6112)]</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>550</width>
+						<height>40</height>
+						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
+						<visible>[Control.HasFocus(6111) | Control.HasFocus(6112)]</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>480</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>!Control.IsEnabled(6110)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>480</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6110) + ![Control.HasFocus(6111) | Control.HasFocus(6112)]</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>480</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6110) + [Control.HasFocus(6111) | Control.HasFocus(6112)]</visible>
+					</control>
+					<control type="label">
+						<posx>450</posx>
+						<posy>0</posy>
+						<width>440</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>!Control.IsEnabled(6110)</visible>
+					</control>
+					<control type="label">
+						<posx>450</posx>
+						<posy>0</posy>
+						<width>440</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6110) + ![Control.HasFocus(6111) | Control.HasFocus(6112)]</visible>
+					</control>
+					<control type="label">
+						<posx>450</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6110) + [Control.HasFocus(6111) | Control.HasFocus(6112)]</visible>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+	</include>
+
+	<include name="DialogSpinEx02">
+		<control type="group" id="6120">
+			<width>550</width>
+			<height>40</height>
+			<defaultcontrol always="true">6121</defaultcontrol>
+			<control type="button" id="6121">
+				<description>Menu Item Next Button</description>
+				<visible>Control(6120).IsVisible()</visible>
+				<hitrect x="0" y="0" w="503" h="40" />	
+				<posx>470</posx>
+				<posy>9</posy>
+				<width>33</width>
+				<height>22</height>
+				<label>-</label>
+				<font>-</font>
+				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
+				<onclick>Control.Move(6123,1)</onclick>
+				<onleft>-</onleft>
+				<onright>-</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
+			</control>
+			<control type="button" id="6122">
+				<description>Menu Item Prev Button</description>
+				<visible>Control(6120).IsVisible()</visible>				
+				<posx>503</posx>
+				<posy>9</posy>
+				<width>33</width>
+				<height>22</height>
+				<label>-</label>
+				<font>-</font>
+				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
+				<onclick>Control.Move(6123,-1)</onclick>
+				<onleft>-</onleft>
+				<onright>-</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
+			</control>
+			<control type="list" id="6123">
+				<hitrect x="0" y="0" w="0" h="0" />
+				<posx>0</posx>
+				<width>550</width>
+				<height>40</height>						
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>0</scrolltime>
+				<itemlayout height="1" width="550">
+				</itemlayout>
+				<focusedlayout height="40" width="550">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>550</width>
+						<height>40</height>
+						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
+						<visible>![Control.HasFocus(6121) | Control.HasFocus(6122)]</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>550</width>
+						<height>40</height>
+						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
+						<visible>[Control.HasFocus(6121) | Control.HasFocus(6122)]</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>480</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>!Control.IsEnabled(6120)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>480</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6120) + ![Control.HasFocus(6121) | Control.HasFocus(6122)]</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>480</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6120) + [Control.HasFocus(6121) | Control.HasFocus(6122)]</visible>
+					</control>
+					<control type="label">
+						<posx>450</posx>
+						<posy>0</posy>
+						<width>440</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>!Control.IsEnabled(6120)</visible>
+					</control>
+					<control type="label">
+						<posx>450</posx>
+						<posy>0</posy>
+						<width>440</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6120) + ![Control.HasFocus(6121) | Control.HasFocus(6122)]</visible>
+					</control>
+					<control type="label">
+						<posx>450</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6120) + [Control.HasFocus(6121) | Control.HasFocus(6122)]</visible>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+	</include>
+
+	<include name="DialogSpinEx03">
+		<control type="group" id="6130">
+			<width>550</width>
+			<height>40</height>
+			<defaultcontrol always="true">6131</defaultcontrol>
+			<control type="button" id="6131">
+				<description>Menu Item Next Button</description>
+				<visible>Control(6130).IsVisible()</visible>
+				<hitrect x="0" y="0" w="503" h="40" />	
+				<posx>470</posx>
+				<posy>9</posy>
+				<width>33</width>
+				<height>22</height>
+				<label>-</label>
+				<font>-</font>
+				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
+				<onclick>Control.Move(6133,1)</onclick>
+				<onleft>-</onleft>
+				<onright>-</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
+			</control>
+			<control type="button" id="6132">
+				<description>Menu Item Prev Button</description>
+				<visible>Control(6130).IsVisible()</visible>				
+				<posx>503</posx>
+				<posy>9</posy>
+				<width>33</width>
+				<height>22</height>
+				<label>-</label>
+				<font>-</font>
+				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
+				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
+				<onclick>Control.Move(6133,-1)</onclick>
+				<onleft>-</onleft>
+				<onright>-</onright>
+				<onup>-</onup>
+				<ondown>-</ondown>
+			</control>
+			<control type="list" id="6133">
+				<hitrect x="0" y="0" w="0" h="0" />
+				<posx>0</posx>
+				<width>550</width>
+				<height>40</height>						
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>0</scrolltime>
+				<itemlayout height="1" width="550">
+				</itemlayout>
+				<focusedlayout height="40" width="550">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>550</width>
+						<height>40</height>
+						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
+						<visible>![Control.HasFocus(6131) | Control.HasFocus(6132)]</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>550</width>
+						<height>40</height>
+						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
+						<visible>[Control.HasFocus(6131) | Control.HasFocus(6132)]</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>480</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>!Control.IsEnabled(6130)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>480</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6130) + ![Control.HasFocus(6131) | Control.HasFocus(6132)]</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>480</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6130) + [Control.HasFocus(6131) | Control.HasFocus(6132)]</visible>
+					</control>
+					<control type="label">
+						<posx>450</posx>
+						<posy>0</posy>
+						<width>440</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>!Control.IsEnabled(6130)</visible>
+					</control>
+					<control type="label">
+						<posx>450</posx>
+						<posy>0</posy>
+						<width>440</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6130) + ![Control.HasFocus(6131) | Control.HasFocus(6132)]</visible>
+					</control>
+					<control type="label">
+						<posx>450</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6130) + [Control.HasFocus(6131) | Control.HasFocus(6132)]</visible>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+	</include>
+
+	<include name="DialogInput01">
+		<control type="group" id="6210">
+			<width>550</width>
+			<height>40</height>
+			<defaultcontrol always="true">6211</defaultcontrol>
+			<control type="button" id="6211">
+				<description>INPUT CONTROL BUTTON</description>
+				<visible>Control(6210).IsVisible()</visible>
+				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>550</width>
+				<height>40</height>
+				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
+				<!--<onclick>Control.Move(1103,1)</onclick>-->
+			</control>
+			<control type="list" id="6213">
+				<hitrect x="0" y="0" w="0" h="0" />
+				<width>550</width>
+				<height>40</height>						
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>0</scrolltime>
+				<itemlayout height="1" width="550">
+				</itemlayout>
+				<focusedlayout height="40" width="550">
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>!Control.IsEnabled(6210)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6210) + ![Control.HasFocus(6211)]</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6210) + Control.HasFocus(6211)</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>!Control.IsEnabled(6210)</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6210) + ![Control.HasFocus(6211)]</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6210) + Control.HasFocus(6211)</visible>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+	</include>
+
+	<include name="DialogInput02">
+		<control type="group" id="6220">
+			<width>550</width>
+			<height>40</height>
+			<defaultcontrol always="true">6221</defaultcontrol>
+			<control type="button" id="6221">
+				<description>INPUT CONTROL BUTTON</description>
+				<visible>Control(6220).IsVisible()</visible>
+				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>550</width>
+				<height>40</height>
+				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
+				<!--<onclick>Control.Move(1103,1)</onclick>-->
+			</control>
+			<control type="list" id="6223">
+				<hitrect x="0" y="0" w="0" h="0" />
+				<width>550</width>
+				<height>40</height>						
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>0</scrolltime>
+				<itemlayout height="1" width="550">
+				</itemlayout>
+				<focusedlayout height="40" width="550">
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>!Control.IsEnabled(6220)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6220) + ![Control.HasFocus(6221)]</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6220) + Control.HasFocus(6221)</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>!Control.IsEnabled(6220)</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6220) + ![Control.HasFocus(6221)]</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6220) + Control.HasFocus(6221)</visible>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+	</include>
+
+	<include name="DialogInput03">
+		<control type="group" id="6230">
+			<width>550</width>
+			<height>40</height>
+			<defaultcontrol always="true">6231</defaultcontrol>
+			<control type="button" id="6231">
+				<description>INPUT CONTROL BUTTON</description>
+				<visible>Control(6230).IsVisible()</visible>
+				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>550</width>
+				<height>40</height>
+				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
+				<!--<onclick>Control.Move(1103,1)</onclick>-->
+			</control>
+			<control type="list" id="6233">
+				<hitrect x="0" y="0" w="0" h="0" />
+				<width>550</width>
+				<height>40</height>						
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>0</scrolltime>
+				<itemlayout height="1" width="550">
+				</itemlayout>
+				<focusedlayout height="40" width="550">
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>!Control.IsEnabled(6230)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6230) + ![Control.HasFocus(6231)]</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6230) + Control.HasFocus(6231)</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>!Control.IsEnabled(6230)</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6230) + ![Control.HasFocus(6231)]</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6230) + Control.HasFocus(6231)</visible>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+	</include>
+
+	<include name="DialogInput04">
+		<control type="group" id="6240">
+			<width>550</width>
+			<height>40</height>
+			<defaultcontrol always="true">6241</defaultcontrol>
+			<control type="button" id="6241">
+				<description>INPUT CONTROL BUTTON</description>
+				<visible>Control(6240).IsVisible()</visible>
+				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>550</width>
+				<height>40</height>
+				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
+				<!--<onclick>Control.Move(1103,1)</onclick>-->
+			</control>
+			<control type="list" id="6243">
+				<hitrect x="0" y="0" w="0" h="0" />
+				<width>550</width>
+				<height>40</height>						
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>0</scrolltime>
+				<itemlayout height="1" width="550">
+				</itemlayout>
+				<focusedlayout height="40" width="550">
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>!Control.IsEnabled(6240)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6240) + ![Control.HasFocus(6241)]</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6240) + Control.HasFocus(6241)</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>!Control.IsEnabled(6240)</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6240) + ![Control.HasFocus(6241)]</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6240) + Control.HasFocus(6240)</visible>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+	</include>
+
+	<include name="DialogInput05">
+		<control type="group" id="6250">
+			<width>550</width>
+			<height>40</height>
+			<defaultcontrol always="true">6251</defaultcontrol>
+			<control type="button" id="6251">
+				<description>INPUT CONTROL BUTTON</description>
+				<visible>Control(6250).IsVisible()</visible>
+				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>550</width>
+				<height>40</height>
+				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
+				<!--<onclick>Control.Move(1103,1)</onclick>-->
+			</control>
+			<control type="list" id="6253">
+				<hitrect x="0" y="0" w="0" h="0" />
+				<width>550</width>
+				<height>40</height>						
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>0</scrolltime>
+				<itemlayout height="1" width="550">
+				</itemlayout>
+				<focusedlayout height="40" width="550">
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>!Control.IsEnabled(6250)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6250) + ![Control.HasFocus(6251)]</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6250) + Control.HasFocus(6251)</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>!Control.IsEnabled(6250)</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6250) + ![Control.HasFocus(6251)]</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6250) + Control.HasFocus(6251)</visible>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+	</include>
+
+	<include name="DialogInput06">
+		<control type="group" id="6260">
+			<width>550</width>
+			<height>40</height>
+			<defaultcontrol always="true">6261</defaultcontrol>
+			<control type="button" id="6261">
+				<description>INPUT CONTROL BUTTON</description>
+				<visible>Control(6260).IsVisible()</visible>
+				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>550</width>
+				<height>40</height>
+				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
+				<!--<onclick>Control.Move(1103,1)</onclick>-->
+			</control>
+			<control type="list" id="6263">
+				<hitrect x="0" y="0" w="0" h="0" />
+				<width>550</width>
+				<height>40</height>						
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>0</scrolltime>
+				<itemlayout height="1" width="550">
+				</itemlayout>
+				<focusedlayout height="40" width="550">
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>!Control.IsEnabled(6260)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6260) + ![Control.HasFocus(6261)]</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6260) + Control.HasFocus(6261)</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>!Control.IsEnabled(6260)</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6260) + ![Control.HasFocus(6261)]</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6260) + Control.HasFocus(6261)</visible>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+	</include>
+
+	<include name="DialogInput07">
+		<control type="group" id="6270">
+			<width>550</width>
+			<height>40</height>
+			<defaultcontrol always="true">6271</defaultcontrol>
+			<control type="button" id="6271">
+				<description>INPUT CONTROL BUTTON</description>
+				<visible>Control(6270).IsVisible()</visible>
+				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>550</width>
+				<height>40</height>
+				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
+				<!--<onclick>Control.Move(1103,1)</onclick>-->
+			</control>
+			<control type="list" id="6273">
+				<hitrect x="0" y="0" w="0" h="0" />
+				<width>550</width>
+				<height>40</height>						
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>0</scrolltime>
+				<itemlayout height="1" width="550">
+				</itemlayout>
+				<focusedlayout height="40" width="550">
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>!Control.IsEnabled(6270)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6270) + ![Control.HasFocus(6271)]</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6270) + Control.HasFocus(6271)</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>!Control.IsEnabled(6270)</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6270) + ![Control.HasFocus(6271)]</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6270) + Control.HasFocus(6271)</visible>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+	</include>
+
+	<include name="DialogInput08">
+		<control type="group" id="6280">
+			<width>550</width>
+			<height>40</height>
+			<defaultcontrol always="true">6281</defaultcontrol>
+			<control type="button" id="6281">
+				<description>INPUT CONTROL BUTTON</description>
+				<visible>Control(6280).IsVisible()</visible>
+				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>550</width>
+				<height>40</height>
+				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
+				<!--<onclick>Control.Move(1103,1)</onclick>-->
+			</control>
+			<control type="list" id="6283">
+				<hitrect x="0" y="0" w="0" h="0" />
+				<width>550</width>
+				<height>40</height>						
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>0</scrolltime>
+				<itemlayout height="1" width="550">
+				</itemlayout>
+				<focusedlayout height="40" width="550">
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>!Control.IsEnabled(6280)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6280) + ![Control.HasFocus(6281)]</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6280) + Control.HasFocus(6281)</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>!Control.IsEnabled(6280)</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6280) + ![Control.HasFocus(6281)]</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6280) + Control.HasFocus(6281)</visible>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+	</include>
+
+	<include name="DialogInput09">
+		<control type="group" id="6290">
+			<width>550</width>
+			<height>40</height>
+			<defaultcontrol always="true">6291</defaultcontrol>
+			<control type="button" id="6291">
+				<description>INPUT CONTROL BUTTON</description>
+				<visible>Control(6290).IsVisible()</visible>
+				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>550</width>
+				<height>40</height>
+				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
+				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
+				<!--<onclick>Control.Move(1103,1)</onclick>-->
+			</control>
+			<control type="list" id="6293">
+				<hitrect x="0" y="0" w="0" h="0" />
+				<width>550</width>
+				<height>40</height>						
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>0</scrolltime>
+				<itemlayout height="1" width="550">
+				</itemlayout>
+				<focusedlayout height="40" width="550">
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>!Control.IsEnabled(6290)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6290) + ![Control.HasFocus(6291)]</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>Control.IsEnabled(6290) + Control.HasFocus(6291)</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey3</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>!Control.IsEnabled(6290)</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6290) + ![Control.HasFocus(6291)]</visible>
+					</control>
+					<control type="label">
+						<posx>530</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<visible>Control.IsEnabled(6290) + Control.HasFocus(6291)</visible>
+					</control>
+				</focusedlayout>
+			</control>
+		</control>
+	</include>
+
+	<include name="SettingDialogButtonOKCancel">
+		<control type="button" id="6997">
+			<description>Yes button</description>
+			<width>200</width>
+			<height>40</height>
+			<font>font12_title</font>
+			<textcolor>white</textcolor>
+			<focusedcolor>white</focusedcolor>
+			<align>center</align>
+			<texturenofocus border="5">confluence/MenuItemNF.png</texturenofocus>
+			<texturefocus border="5">confluence/button-focus.png</texturefocus>
+			<onleft>6999</onleft>
+			<onright>6999</onright>
+		</control>
+		<control type="button" id="6999">
+			<description>Cancel button</description>
+			<width>200</width>
+			<height>40</height>
+			<font>font12_title</font>
+			<textcolor>white</textcolor>
+			<focusedcolor>white</focusedcolor>
+			<align>center</align>
+			<texturenofocus border="5">confluence/MenuItemNF.png</texturenofocus>
+			<texturefocus border="5">confluence/button-focus.png</texturefocus>
+			<onleft>6997</onleft>
+			<onright>6997</onright>
+		</control>
+	</include>
+	
 	<include name="MenuHeader">
 		<control type="group">
 			<posy>20</posy>
@@ -2285,7 +3721,7 @@
 						<hitrect x="30" y="10" w="100" h="40"></hitrect>
 						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
 						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
-						<onleft>3161</onleft>
+						<onleft>3171</onleft>
 						<onright>3111</onright>
 						<onup></onup>
 						<ondown></ondown>
@@ -2556,7 +3992,7 @@
 						<texturenofocus>confluence/OverlayWatched.png</texturenofocus>
 						<texturefocus>confluence/amt-overlay-watched.png</texturefocus>
 						<onleft>3151</onleft>
-						<onright>3101</onright>
+						<onright>3171</onright>
 						<onup></onup>
 						<ondown></ondown>
 					</control>
@@ -2583,6 +4019,51 @@
 						<aligny>center</aligny>
 						<label>[B]Mark[/B]</label>
 						<visible>[Control.HasFocus(3161) | Control.HasFocus(3161)]</visible>
+					</control>
+				</control>
+				<!-- OPT Group Button -->
+				<control type="group" id="3170">
+					<visible></visible>
+					<width>110</width>
+					<height>40</height>
+					<defaultcontrol always="true">3171</defaultcontrol>
+					<control type="button" id="3171">
+						<description>Button Icon</description>
+						<posx>30</posx>
+						<posy>10</posy>
+						<width>35</width>
+						<height>35</height>
+						<hitrect x="30" y="10" w="120" h="40"></hitrect>
+						<texturenofocus>confluence/OSDSubtitlesNF.png</texturenofocus>
+						<texturefocus>confluence/OSDSubtitlesFO.png</texturefocus>
+						<onleft>3161</onleft>
+						<onright>3101</onright>
+						<onup></onup>
+						<ondown></ondown>
+					</control>
+					<control type="label">
+						<posx>72</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[B]Opt Group[/B]</label>
+						<visible>![Control.HasFocus(3171) | Control.HasFocus(3171)]</visible>
+					</control>
+					<control type="label">
+						<posx>72</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[B]Opt Group[/B]</label>
+						<visible>[Control.HasFocus(3171) | Control.HasFocus(3171)]</visible>
 					</control>
 				</control>
 			</control>

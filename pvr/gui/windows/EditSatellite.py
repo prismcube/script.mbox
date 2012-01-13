@@ -85,20 +85,15 @@ class EditSatellite( SettingWindow ) :
 
 		# Add New Satellite
 		elif groupId == E_Input04 :
-			kb = xbmc.Keyboard( '', 'Satellite Name', False )
-			kb.doModal( )
-			if( kb.isConfirmed( ) ) :
-				satelliteName = kb.getText( )
-				
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_NEW_SATELLITE )
- 				dialog.doModal( )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_NEW_SATELLITE )
+ 			dialog.doModal( )
 
-				if dialog.IsOK() == True :
-					longitude, band = dialog.GetValue( )
-					ConfigMgr.GetInstance( ).AddSatellite( longitude, band, satelliteName )
-					self.InitConfig( )
-				else :
-					return
+			if dialog.IsOK() == True :
+				longitude, band, satelliteName = dialog.GetValue( )
+				ConfigMgr.GetInstance( ).AddSatellite( longitude, band, satelliteName )
+				self.InitConfig( )
+			else :
+				return
 				 
 		# Delete Satellite
 		elif groupId == E_Input05 :
@@ -124,7 +119,7 @@ class EditSatellite( SettingWindow ) :
 		ConfigMgr.GetInstance( ).ReloadAllSatelliteList( )
 		satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
 		satellitename = ConfigMgr.GetInstance( ).GetFormattedName( satellite.mLongitude , satellite.mBand )
-		self.AddInputControl( E_Input01, 'Satellite', satellitename, None, None, None, 'Select satellite.' )
+		self.AddInputControl( E_Input01, 'Satellite', satellitename, 'Select satellite.' )
 		longitude = ConfigMgr.GetInstance( ).GetFormattedLongitude( satellite.mLongitude , satellite.mBand )
 		self.AddInputControl( E_Input02, 'Longitude', longitude )
 		self.AddLeftLabelButtonControl( E_Input03, 'Edit Satellite Name', 'Edit satellite name.' )

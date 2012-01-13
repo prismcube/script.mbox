@@ -337,7 +337,7 @@
 	<string id="334">Transponder Frequency</string>
 	<string id="335">DVB Type</string>
 	<string id="336">FEC</string>
-	<string id="337">Polarisation</string>
+	<string id="337">Polarization</string>
 	<string id="338">Manual Channel Search</string>
 	<string id="339">to change transponder frequency</string>
 	<string id="340">to change DVB Type</string>

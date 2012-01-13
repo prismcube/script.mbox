@@ -17,7 +17,7 @@
 				<posx>0</posx>
 				<posy>100</posy>
 				<width>610</width>
-				<height>340</height>
+				<height>380</height>
 				<texture border="40">confluence/DialogBack.png</texture>
 			</control>
 			<include>DefaultDialogCommonSetting</include>
@@ -25,8 +25,9 @@
 				<posx>40</posx>
 				<include>DialogInput01</include>
 				<include>DialogSpinEx01</include>
-				<include>DialogInput02</include>
 				<include>DialogSpinEx02</include>
+				<include>DialogSpinEx03</include>
+				<include>DialogInput02</include>
 				<include>SettingDialogButtonOKCancel</include>
 			</control>
 		</control>

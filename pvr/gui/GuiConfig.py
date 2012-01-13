@@ -1,3 +1,6 @@
+import xbmc
+import xbmcgui
+
 # Setting Menu Ids
 E_LANGUAGE			= 0
 E_PARENTAL			= 1
@@ -10,7 +13,7 @@ E_FORMAT_HDD		= 7
 E_FACTORY_RESET		= 8
 E_ETC				= 9
 
-# Control Ids
+# Setting Window Control Ids
 E_SpinEx01			= 1100
 E_SpinEx02			= 1200
 E_SpinEx03			= 1300
@@ -29,9 +32,25 @@ E_Input05			= 2500
 E_Input06			= 2600
 E_Input07			= 2700
 
-E_SlideMenuButton01	= 3310
-E_SlideMenuButton02	= 3320
-E_SlideMenuButton03	= 3330
+# Settinf Dialog Control Ids
+E_DialogSpinEx01	= 6110
+E_DialogSpinEx02	= 6120
+E_DialogSpinEx03	= 6130
+
+E_DialogInput01		= 6210
+E_DialogInput02		= 6220
+E_DialogInput03		= 6230
+E_DialogInput04		= 6240
+E_DialogInput05		= 6250
+E_DialogInput06		= 6260
+E_DialogInput07		= 6270
+E_DialogInput08		= 6280
+E_DialogInput09		= 6290
+
+E_SETTING_DIALOG_OK		= 6997
+E_SETTING_DIALOG_CANCEL	= 6999
+
+E_SETTING_DIALOG_BACKGROUND_IMAGE = 9001
 
 #footer group
 E_CTRL_GROP_FOOTER01 = 3100
@@ -41,6 +60,7 @@ E_CTRL_GROP_FOOTER04 = 3130
 E_CTRL_GROP_FOOTER05 = 3140
 E_CTRL_GROP_FOOTER06 = 3150
 E_CTRL_GROP_FOOTER07 = 3160
+E_CTRL_GROP_FOOTER08 = 3170
 
 #footer button
 E_CTRL_BTN_FOOTER01 = 3101
@@ -50,6 +70,7 @@ E_CTRL_BTN_FOOTER04 = 3131
 E_CTRL_BTN_FOOTER05 = 3141
 E_CTRL_BTN_FOOTER06 = 3151
 E_CTRL_BTN_FOOTER07 = 3161
+E_CTRL_BTN_FOOTER08 = 3171
 
 # Setting Menu Group Ids
 E_SUBMENU_LIST_ID			= 9000
@@ -112,12 +133,25 @@ E_LIST_ONE_CABLE_SCR				= [ 'SCR(0)', 'SCR(1)', 'SCR(2)', 'SCR(3)', 'SCR(4)', 'S
 E_LIST_MY_LONGITUDE = [ 'East', 'West' ]
 E_LIST_MY_LATITUDE  = [ 'North', 'South' ]
 
+# Transponder dialog type
+E_MODE_ADD_NEW_TRANSPODER	= 0
+E_MODE_EDIT_TRANSPODER		= 1
 
 """
 E_LIST_TUNER_TYPE				= [ 'Simple LNB', 'DiSEqC 1.0', 'DiSEqC 1.1', 'Motorized, DiSEqC 1.2', 'Motorized, USALS', 'OneCable' ]
 E_LIST_LNB_TYPE					= [ 'Universal' , 'Single', 'Userdefined' ]
 E_LIST_SINGLE_FREQUENCY 		= [ '5150', '9750', '10600', '10750', '11300' ]
 """
+
+# Nermeric Keyboard Type
+E_NUMERIC_KEYBOARD_TYPE_NUMBER	= 0
+E_NUMERIC_KEYBOARD_TYPE_DATE	= 1
+E_NUMERIC_KEYBOARD_TYPE_TIME	= 2
+E_NUMERIC_KEYBOARD_TYPE_IP		= 3
+
+# Input Keyboard Type
+E_INPUT_KEYBOARD_TYPE_NO_HIDE	= False
+E_INPUT_KEYBOARD_TYPE_HIDE		= True
 
 def getSingleFrequenceIndex( selectedItem ) :
 	for i in range( len ( E_LIST_SINGLE_FREQUENCY )	) :
@@ -140,12 +174,38 @@ def getOneCableTunerFrequencyIndex( selectedItem ) :
 			
 	return -1
 
+def NumericKeyboard( aKeyType, aTitle, aString, aMaxLength ) :
+	dialog = xbmcgui.Dialog( )
+	value = dialog.numeric( aKeyType, aTitle, aString )
+	if value == None or value == '' :
+		return aString
+
+	if len( value ) > aMaxLength :
+		value = value[ len ( value ) - aMaxLength :]
+	return value
+		
+
+def InputKeyboard( aType, aTitle, aString, aMaxLength ) :
+	dialog = xbmc.Keyboard( aString, aTitle, aType )
+	dialog.doModal( )
+	if( dialog.isConfirmed( ) ) :
+		value = dialog.getText( )
+		if value == None or value == '' :
+			return aString
+
+		if len( value ) > aMaxLength :
+			value = value[ len ( value ) - aMaxLength :]
+		return value
+		
+	else :
+		return aString
+		
 
 class FooterMask(object):
 	G_FOOTER_GROUP_STARTID				= 3100
 	G_FOOTER_GROUP_IDGAP				= 10
 	
-	G_NUM_OF_FOOTER_ICON				= 7
+	G_NUM_OF_FOOTER_ICON				= 8
 
 	G_FOOTER_ICON_BACK_MASK				= 1 << 0
 	G_FOOTER_ICON_OK_MASK				= 1 << 1
@@ -154,9 +214,14 @@ class FooterMask(object):
 	G_FOOTER_ICON_EDIT_MASK			    = 1 << 4
 	G_FOOTER_ICON_OPT_MASK			    = 1 << 5
 	G_FOOTER_ICON_MARK_MASK			    = 1 << 6
+	G_FOOTER_ICON_OPTGROUP_MASK		    = 1 << 7
 
 class HeaderDefine(object):
-	G_HEADER_LABEL_ID					= 3001
+	G_WINDOW_HEADER_LABEL_ID			= 3001
+	G_DIALOG_HEADER_LABEL_ID			= 3005
+
+
+
 	
 """
 G_FOOTER_ICON_EXIT_MASK			= 1 << 1,

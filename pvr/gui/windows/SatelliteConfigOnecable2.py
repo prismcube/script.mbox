@@ -33,7 +33,7 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx01, 'MDU' )
 
 			pinCode = ElisPropertyInt( 'Tuner%d Pin Code' % ( self.mTunerIndex + 1 ), self.mCommander ).GetProp( )
-			self.AddInputControl( E_Input01, 'Tuner %d PIN-Code' % ( self.mTunerIndex + 1 ), '%d' % pinCode, 0, 1, 3 )
+			self.AddInputControl( E_Input01, 'Tuner %d PIN-Code' % ( self.mTunerIndex + 1 ), '%d' % pinCode )
 
 			tunerScr = ElisPropertyInt( 'Tuner%d SCR' % ( self.mTunerIndex + 1 ), self.mCommander ).GetProp( )
 			self.AddUserEnumControl( E_SpinEx02, 'Tuner %d' % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_SCR, tunerScr )
@@ -49,7 +49,7 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx01, 'MDU' )
 
 			pinCode = ElisPropertyInt( 'Tuner1 Pin Code', self.mCommander ).GetProp( )
-			self.AddInputControl( E_Input01, 'Tuner1 PIN-Code', '%d' % pinCode, 0, 1, 3 )
+			self.AddInputControl( E_Input01, 'Tuner1 PIN-Code', '%d' % pinCode )
 
 			tunerScr = ElisPropertyInt( 'Tuner1 SCR', self.mCommander ).GetProp( )
 			self.AddUserEnumControl( E_SpinEx02, 'Tuner 1', E_LIST_ONE_CABLE_SCR, tunerScr )
@@ -58,7 +58,7 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 			self.AddUserEnumControl( E_SpinEx03, 'Tuner 1 Frequency', E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % tunerFrequency ) )
 
 			pinCode = ElisPropertyInt( 'Tuner2 Pin Code', self.mCommander ).GetProp( )
-			self.AddInputControl( E_Input02, 'Tuner2 PIN-Code', '%d' % pinCode, 0, 1, 3 )
+			self.AddInputControl( E_Input02, 'Tuner2 PIN-Code', '%d' % pinCode )
 
 			tunerScr = ElisPropertyInt( 'Tuner2 SCR', self.mCommander ).GetProp( )
 			self.AddUserEnumControl( E_SpinEx04, 'Tuner 2', E_LIST_ONE_CABLE_SCR, tunerScr )
@@ -102,7 +102,18 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 			self.DisableControl( )
 			
 		elif groupId == E_Input01 or groupId == E_Input02 :
-			self.ControlSelect( )
+			if ConfigMgr.GetInstance( ).GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
+				pinCode = ElisPropertyInt( 'Tuner%d Pin Code' % ( self.mTunerIndex + 1 ), self.mCommander ).GetProp( )
+				self.SetControlLabel2String( E_Input01, NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Tuner%d Pin Code' % ( self.mTunerIndex + 1 ), '%d' % pinCode, 3 ) )
+
+			elif ConfigMgr.GetInstance( ).GetCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
+				if groupId == E_Input01 :
+					pinCode = ElisPropertyInt( 'Tuner1 Pin Code', self.mCommander ).GetProp( )
+					self.SetControlLabel2String( E_Input01, NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Tuner1 Pin Code', '%d' % pinCode, 3 ) )
+
+				elif groupId == E_Input02 :					
+					pinCode = ElisPropertyInt( 'Tuner2 Pin Code', self.mCommander ).GetProp( )
+					self.SetControlLabel2String( E_Input02, NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Tuner2 Pin Code', '%d' % pinCode, 3 ) )
 
 		if ConfigMgr.GetInstance( ).GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
 			for i in range( self.mOneCablesatelliteCount ) :

@@ -32,9 +32,8 @@ class ManualScan( SettingWindow ):
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
-		self.SetHeaderLabel( 'Manual Scan' )
-		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK )
-
+		self.SetSettingWindowLabel( 'Manual Scan' )
+		
 		self.mSelectedSatelliteIndex = 0
 		self.mSelectedTransponderIndex = 0		
 		self.mAllSatellitelist = []
@@ -148,8 +147,8 @@ class ManualScan( SettingWindow ):
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Has no configured satellite' )
 
 		else :
-			self.AddInputControl( E_Input01, 'Satellite', self.mFormattedSatelliteList[self.mSelectedSatelliteIndex], None, 'Select satellite' )
-			self.AddInputControl( E_Input02, 'Transponder Frequency', self.mFormattedTransponderList[self.mSelectedTransponderIndex], None, 'Select Transponder Frequency' )
+			self.AddInputControl( E_Input01, 'Satellite', self.mFormattedSatelliteList[self.mSelectedSatelliteIndex], 'Select satellite' )
+			self.AddInputControl( E_Input02, 'Transponder Frequency', self.mFormattedTransponderList[self.mSelectedTransponderIndex], 'Select Transponder Frequency' )
 
 
 			#DVB Type

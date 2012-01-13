@@ -4,54 +4,34 @@ import time
 import sys
 
 import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.BaseDialog import BaseDialog
+from pvr.gui.BaseDialog import SettingDialog
 from pvr.gui.BaseWindow import Action
 from ElisEnum import ElisEnum
+from ElisProperty import ElisPropertyEnum
 from pvr.gui.GuiConfig import *
 
 from pvr.Util import LOG_WARN, LOG_TRACE, LOG_ERR
 
 
-E_DIALOG_HEADER			= 100
-
-E_LONGITUDE_NEXT		= 201
-E_LONGITUDE_PREV		= 202
-E_LONGITUDE_LIST		= 203
-
-E_EDIT_LONGITUDE_BUTTON = 300
-E_EDIT_LONGITUDE_LABEL1 = 301
-E_EDIT_LONGITUDE_LABEL2 = 302
-
-E_BAND_NEXT				= 401
-E_BAND_PREV				= 402
-E_BAND_LIST				= 403
-
-E_BUTTON_OK_ID			= 501
-E_BUTTON_CANCEL_ID		= 601
-
-class DialogAddNewSatellite( BaseDialog ) :
+class DialogAddNewSatellite( SettingDialog ) :
 	def __init__( self, *args, **kwargs ) :
-		BaseDialog.__init__( self, *args, **kwargs )
-
-		self.mLongitude = None
-		self.mBand = None
+		SettingDialog.__init__( self, *args, **kwargs )
 		self.mIsOk = False
-		self.mCtrlLongitudeList = None
-		self.mCtrlBandList = None
+		self.mSatelliteName = None
 		self.mLongitude = 0
-		self.mBand = 0
 		self.mIsWest = 0
 		self.mIsCBand = 0
+		self.mListBand = []
 
+		property = ElisPropertyEnum( 'Band', self.mCommander )
+		self.mListBand.append( property.GetPropStringByIndex( 0 ) )
+		self.mListBand.append( property.GetPropStringByIndex( 1 ) )
 		
 	def onInit( self ) :
-		
-		self.getControl( E_DIALOG_HEADER ).setLabel( 'New Satellite' )
-		
-		self.mCtrlLongitudeList = self.getControl( E_LONGITUDE_LIST )
-		self.mCtrlBandList		= self.getControl( E_BAND_LIST )
-
 		self.mLongitude = 0
+		self.SetHeaderLabel( 'Add New Satellite' )
+		self.SetButtonLabel( E_SETTING_DIALOG_OK, 'Confirm' )
+		self.SetButtonLabel( E_SETTING_DIALOG_CANCEL, 'Cancel' )
 		self.DrawItem( )
 		self.mIsOk = False
 
@@ -60,37 +40,36 @@ class DialogAddNewSatellite( BaseDialog ) :
 		actionId = aAction.getId( )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
+			self.ResetAllControl( )
 			self.CloseDialog( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
+			self.ResetAllControl( )
 			self.CloseDialog( )
+
+		elif actionId == Action.ACTION_MOVE_LEFT :
+			self.ControlLeft( )
+
+		elif actionId == Action.ACTION_MOVE_RIGHT :
+			self.ControlRight( )
+			
+		elif actionId == Action.ACTION_MOVE_UP :
+			self.ControlUp( )
+			
+		elif actionId == Action.ACTION_MOVE_DOWN :
+			self.ControlDown( )
 
 
 	def onClick( self, aControlId ) :
-		if aControlId ==  E_BUTTON_OK_ID :
-			self.mIsOk = True
-			self.CloseDialog( )
-		
-		elif aControlId == E_BUTTON_CANCEL_ID :
-			self.mIsOk = False
-			self.CloseDialog( )
+		groupId = self.GetGroupId( aControlId )
 
-		elif aControlId == E_BAND_NEXT or aControlId == E_BAND_PREV :
-			if self.mIsCBand == 0 :
-				self.mIsCBand = 1
-			else :
-				self.mIsCBand = 0
+		if groupId == E_DialogSpinEx01 :
+			self.mIsWest = self.GetSelectedIndex( E_DialogSpinEx01 )
 
-		elif aControlId == E_LONGITUDE_NEXT or aControlId == E_LONGITUDE_PREV :
-			if self.mIsWest == 0 :
-				self.mIsWest = 1
-			else :
-				self.mIsWest = 0
-				
-		elif aControlId == E_EDIT_LONGITUDE_BUTTON :
+		elif groupId == E_DialogInput02 :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
  			dialog.SetProperty( 'Set Longitude', self.mLongitude )
  			dialog.doModal( )
@@ -98,6 +77,23 @@ class DialogAddNewSatellite( BaseDialog ) :
  			if dialog.IsOK() == True :
 	 			self.mLongitude  = dialog.GetNumber( )
 	 			self.DrawItem( )
+
+		elif groupId == E_DialogSpinEx02 :
+			self.mIsCBand = self.GetSelectedIndex( E_DialogSpinEx02 )
+
+		elif groupId == E_DialogInput01 :
+			self.mSatelliteName = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, 'Satellite Name', self.mSatelliteName, 15 )
+			self.DrawItem( )
+
+		elif groupId == E_SETTING_DIALOG_OK :
+			self.mIsOk = True
+			self.ResetAllControl( )
+			self.CloseDialog( )
+
+		elif groupId == E_SETTING_DIALOG_CANCEL :
+			self.mIsOk = False
+			self.ResetAllControl( )
+			self.CloseDialog( )
 
  				
 	def IsOK( self ) :
@@ -118,21 +114,21 @@ class DialogAddNewSatellite( BaseDialog ) :
 			self.mBand = ElisEnum.E_BAND_C
 
 		LOG_TRACE('Add New Satellite Longitude = %d Band = %d' % ( self.mLongitude, self.mBand ) )
-		return self.mLongitude, self.mBand
+		return self.mLongitude, self.mBand, self.mSatelliteName
 
 
 	def DrawItem( self ) :
+		self.ResetAllControl( )
+	
+		if self.mSatelliteName == None :
+			self.mSatelliteName = 'No Name'
+		self.AddInputControl( E_DialogInput01, 'Satellite Name', self.mSatelliteName )
+		self.AddUserEnumControl( E_DialogSpinEx01, 'Longitude Direction', E_LIST_MY_LONGITUDE, self.mIsWest )
 
-		tmpList = []
-		tmplongitude1 = '%d.%d %s' % ( self.mLongitude / 10, self.mLongitude % 10, E_LIST_MY_LONGITUDE[ 0 ] )
-		tmplongitude2 = '%d.%d %s' % ( self.mLongitude / 10, self.mLongitude % 10, E_LIST_MY_LONGITUDE[ 1 ] )
-		tmpList.append( xbmcgui.ListItem( 'Longitude', tmplongitude1, "-", "-", "-" ) )
-		tmpList.append( xbmcgui.ListItem( 'Longitude', tmplongitude2, "-", "-", "-" ) )
-		self.mCtrlLongitudeList.addItems( tmpList )
-		self.mCtrlLongitudeList.selectItem( self.mIsWest )
+		tmplongitude = '%03d.%d' % ( ( self.mLongitude / 10 ), self.mLongitude % 10 )
+		self.AddInputControl( E_DialogInput02, 'Longitude Angle',  tmplongitude )
+		self.AddUserEnumControl( E_DialogSpinEx02, 'Band Type', self.mListBand, self.mIsCBand )
+		self.AddOkCanelButton( )
 
-		tmpList = []
-		tmpList.append( xbmcgui.ListItem( 'Band Type', 'KU Band', "-", "-", "-" ) )
-		tmpList.append( xbmcgui.ListItem( 'Band Type', 'C Band', "-", "-", "-" ) )
-		self.mCtrlBandList.addItems( tmpList )
-		self.mCtrlBandList.selectItem( self.mIsCBand )
+		self.InitControl( )
+		

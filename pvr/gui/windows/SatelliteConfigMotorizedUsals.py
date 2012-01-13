@@ -69,7 +69,6 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
 
-
 		# My Longitude
 		if groupId == E_SpinEx01 :
 			self.mIsWest = self.GetSelectedIndex( E_SpinEx01 )
@@ -78,7 +77,6 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 		elif groupId == E_SpinEx02 :
 			self.mIsSouth = self.GetSelectedIndex( E_SpinEx02 ) 
 
-		
 		# Set Longitude
 		if groupId == E_Input01 :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
@@ -92,7 +90,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 		# Set Latitude
 		elif groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
- 			dialog.SetProperty( 'My Longitude', self.mLatitude )
+ 			dialog.SetProperty( 'My Latitude', self.mLatitude )
  			dialog.doModal( )
 
  			if dialog.IsOK() == True :
@@ -115,23 +113,13 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 	def InitConfig( self ) :
 		self.ResetAllControl( )
 
-		#self.GetLongitude( )
-		tmplongitude1 = '%d.%d %s' % ( self.mLongitude / 10, self.mLongitude % 10, E_LIST_MY_LONGITUDE[ 0 ] )
-		tmplongitude2 = '%d.%d %s' % ( self.mLongitude / 10, self.mLongitude % 10, E_LIST_MY_LONGITUDE[ 1 ] )
-		tmpListLongitude = [ tmplongitude1, tmplongitude2 ]
-		self.AddUserEnumControl( E_SpinEx01, 'My Longitude', tmpListLongitude, self.mIsWest )
-		self.AddLeftLabelButtonControl( E_Input01, ' - Set Longitude' )
-
-		#self.AddUserEnumControl( E_SpinEx01, 'My Longitude Direction', E_LIST_MY_LONGITUDE, self.mIsWest )
-		#tmplongitude = '%3d.%d' % ( self.mLongitude / 10, self.mLongitude % 10 )
-		#self.AddInputControl( E_Input01, 'My Longitude Angle',  tmplongitude )
+		self.AddUserEnumControl( E_SpinEx01, 'My Longitude Direction', E_LIST_MY_LONGITUDE, self.mIsWest )
+		tmplongitude = '%03d.%d' % ( ( self.mLongitude / 10 ), self.mLongitude % 10 )
+		self.AddInputControl( E_Input01, 'My Longitude Angle',  tmplongitude)
 		
-		#self.GetLatitude( )
-		tmplatitude1 = '%d.%d %s' % ( self.mLatitude / 10, self.mLatitude % 10, E_LIST_MY_LATITUDE[ 0 ] )
-		tmplatitude2 = '%d.%d %s' % ( self.mLatitude / 10, self.mLatitude % 10, E_LIST_MY_LATITUDE[ 1 ] )
-		tmpListLatitude = [ tmplatitude1, tmplatitude2 ]
-		self.AddUserEnumControl( E_SpinEx02, 'My Latitude', tmpListLatitude, self.mIsSouth )
-		self.AddLeftLabelButtonControl( E_Input02, ' - Set Latitude' )
+		self.AddUserEnumControl( E_SpinEx02, 'My Latitude Direction', E_LIST_MY_LATITUDE, self.mIsSouth )
+		tmplatitude = '%03d.%d' % ( ( self.mLatitude / 10 ), self.mLatitude % 10 )
+		self.AddInputControl( E_Input02, 'My Latitude Angle',  tmplatitude)
 		
 		self.AddLeftLabelButtonControl( E_Input03, 'Reference Position to Null' )
 		self.AddLeftLabelButtonControl( E_Input04, 'Configure Satellites' )
