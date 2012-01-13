@@ -20,6 +20,8 @@ class DialogLnbFrequency( SettingDialog ) :
 		
 	def onInit( self ) :
 		self.SetHeaderLabel( 'LNB Frequency' )
+		self.SetButtonLabel( E_SETTING_DIALOG_OK, 'Confirm' )
+		self.SetButtonLabel( E_SETTING_DIALOG_CANCEL, 'Cancel' )
 		self.DrawItem( )
 		self.mIsOk = False		
 
@@ -54,28 +56,28 @@ class DialogLnbFrequency( SettingDialog ) :
 	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
 
-		if groupId == E_SettingDialogOk :
+		if groupId == E_SETTING_DIALOG_OK :
 			self.mIsOk = True
 			self.ResetAllControl( )
 			self.CloseDialog( )
 			
-		elif groupId == E_SettingDialogCancel :
+		elif groupId == E_SETTING_DIALOG_CANCEL :
 			self.mIsOk = False
 			self.ResetAllControl( )
 			self.CloseDialog( )
 			
 		elif groupId == E_DialogInput01 :
-			tempval = self.NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input Low Frequncy', self.mLowFreq, 5 )
+			tempval = self.NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input Low Frequency', self.mLowFreq, 5 )
 			self.mLowFreq = '%d' % int( tempval )
 			self.DrawItem( )
 
 		elif groupId == E_DialogInput02 :
-			tempval = self.NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input High Frequncy', self.mHighFreq, 5 )
+			tempval = self.NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input High Frequency', self.mHighFreq, 5 )
 			self.mHighFreq = '%d' % int( tempval )
 			self.DrawItem( )
 
 		elif groupId == E_DialogInput03 :
-			tempval = self.NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input Switch Frequncy', self.mThreshFreq, 5 )
+			tempval = self.NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input Switch Frequency', self.mThreshFreq, 5 )
 			self.mThreshFreq = '%d' % int( tempval )
 			self.DrawItem( )
 

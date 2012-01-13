@@ -94,8 +94,38 @@ class EditTransponder( SettingWindow ) :
 	 			self.mTransponderIndex = ret
 	 			self.InitConfig( )
 
+		# Add Transponder
+		elif groupId == E_Input05 :
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_SET_TRANSPONDER )
+			dialog.SetMode( E_MODE_ADD_NEW_TRANSPODER )
+ 			dialog.SetDefaultValue( 0, 0, 0, 0, 0 )
+ 			dialog.doModal( )
 
+ 			if dialog.IsOK() == True :
+ 				"""
+	 			lowFreq, highFreq, threshFreq  = dialog.GetFrequency( )
 
+				self.mCurrentSatellite.mLowLNB = int ( lowFreq )
+				self.mCurrentSatellite.mHighLNB = int ( highFreq )
+				self.mCurrentSatellite.mLNBThreshold = int ( threshFreq )
+				"""
+				self.InitConfig( )
+		# Edit Transponder
+		elif groupId == E_Input07 :
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_SET_TRANSPONDER )
+			dialog.SetMode( E_MODE_EDIT_TRANSPODER )
+ 			#dialog.SetDefaultValue( 0, 0, 0, 0, 0 )
+ 			dialog.doModal( )
+
+ 			if dialog.IsOK() == True :
+ 				"""
+	 			lowFreq, highFreq, threshFreq  = dialog.GetFrequency( )
+
+				self.mCurrentSatellite.mLowLNB = int ( lowFreq )
+				self.mCurrentSatellite.mHighLNB = int ( highFreq )
+				self.mCurrentSatellite.mLNBThreshold = int ( threshFreq )
+				"""
+				self.InitConfig( )
 
 	 	# Delete Transponder
 	 	elif groupId == E_Input06 :
