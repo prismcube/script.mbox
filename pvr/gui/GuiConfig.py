@@ -38,6 +38,11 @@ E_DialogInput02		= 6220
 E_DialogInput03		= 6230
 E_DialogInput04		= 6240
 E_DialogInput05		= 6250
+E_DialogInput06		= 6260
+E_DialogInput07		= 6270
+E_DialogInput08		= 6280
+E_DialogInput09		= 6290
+
 
 E_SettingDialogOk		= 6997
 E_SettingDialogCancel	= 6999

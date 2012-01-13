@@ -12,24 +12,6 @@ from pvr.gui.GuiConfig import *
 
 from pvr.Util import LOG_WARN, LOG_TRACE, LOG_ERR
 
-"""
-E_DIALOG_HEADER			= 100
-
-E_LONGITUDE_NEXT		= 201
-E_LONGITUDE_PREV		= 202
-E_LONGITUDE_LIST		= 203
-
-E_EDIT_LONGITUDE_BUTTON = 300
-E_EDIT_LONGITUDE_LABEL1 = 301
-E_EDIT_LONGITUDE_LABEL2 = 302
-
-E_BAND_NEXT				= 401
-E_BAND_PREV				= 402
-E_BAND_LIST				= 403
-
-E_BUTTON_OK_ID			= 501
-E_BUTTON_CANCEL_ID		= 601
-"""
 
 class DialogAddNewSatellite( SettingDialog ) :
 	def __init__( self, *args, **kwargs ) :
