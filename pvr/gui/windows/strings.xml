@@ -64,4 +64,20 @@
 	<string id="561">Define new PIN Code</string>
 	<string id="562">to make new PIN code</string>
 	<string id="563">The entered PINs do not match!</string>
+	<string id="564">Confirm</string>
+	<string id="566">Lock</string>
+	<string id="567">Unlock</string>
+	<string id="568">Skip</string>
+	<string id="569">Unskip</string>
+	<string id="570">Delete</string>
+	<string id="571">Undelete</string>
+	<string id="572">Move</string>
+	<string id="573">Create New Group</string>
+	<string id="574">Rename Fav. Group</string>
+	<string id="575">Delete Fav. Group</string>
+	<string id="576">Add to Fav. Group</string>
+	<string id="577">Add OK</string>
+	<string id="578">Rename OK</string>
+	<string id="579">Delete OK</string>
+	<string id="580">None</string>
 </strings>

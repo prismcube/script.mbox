@@ -44,7 +44,7 @@ class DialogStopRecord( BaseDialog ) :
 			recordInfo = self.mCommander.Record_GetRunningRecordInfo( i )
 			if recordInfo :
 				recordInfo.printdebug()
-				listItem = xbmcgui.ListItem( recordInfo.RecordName, "_" , "-", "-", "-" )
+				listItem = xbmcgui.ListItem( recordInfo.mRecordName, "_" , "-", "-", "-" )
 				self.mRecordListItems.append( listItem )
 				self.mRunnigRecordInfoList.append( recordInfo )
 				

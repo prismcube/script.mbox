@@ -11,6 +11,8 @@ from ElisProperty import ElisPropertyEnum
 from pvr.gui.GuiConfig import *
 
 from pvr.Util import LOG_WARN, LOG_TRACE, LOG_ERR
+import pvr.Msg as Msg
+import pvr.gui.windows.Define_string as MsgId
 
 """
 E_DIALOG_HEADER			= 100
@@ -113,29 +115,29 @@ class DialogEditChannelList( SettingDialog ) :
 		if self.mMode == FLAG_OPT_LIST :
 			#not visible group
 
-			self.AddLeftLabelButtonControl( E_DialogInput01, 'Lock' )
-			self.AddLeftLabelButtonControl( E_DialogInput02, 'UnLock' )
-			self.AddLeftLabelButtonControl( E_DialogInput03, 'Skip' )
-			self.AddLeftLabelButtonControl( E_DialogInput04, 'UnSkip' )
-			self.AddLeftLabelButtonControl( E_DialogInput05, 'Delete' )
-			self.AddLeftLabelButtonControl( E_DialogInput06, 'UnDelete' )
-			self.AddLeftLabelButtonControl( E_DialogInput07, 'Move' )
+			self.AddLeftLabelButtonControl( E_DialogInput01, Msg.Strings( MsgId.LANG_LOCK )     )
+			self.AddLeftLabelButtonControl( E_DialogInput02, Msg.Strings( MsgId.LANG_UNLOCK )   )
+			self.AddLeftLabelButtonControl( E_DialogInput03, Msg.Strings( MsgId.LANG_SKIP )     )
+			self.AddLeftLabelButtonControl( E_DialogInput04, Msg.Strings( MsgId.LANG_UNSKIP )   )
+			self.AddLeftLabelButtonControl( E_DialogInput05, Msg.Strings( MsgId.LANG_DELETE )   )
+			self.AddLeftLabelButtonControl( E_DialogInput06, Msg.Strings( MsgId.LANG_UNDELETE ) )
+			self.AddLeftLabelButtonControl( E_DialogInput07, Msg.Strings( MsgId.LANG_MOVE )     )
 
 			if len(self.mFavoriteList) > 0 :
-				self.AddUserEnumControl( E_DialogSpinEx01, 'Add to Fav.Group', self.mFavoriteList, 0)
-				self.AddInputControl( E_DialogInput08, '', 'Add OK' )
+				self.AddUserEnumControl( E_DialogSpinEx01, Msg.Strings( MsgId.LANG_ADD_TO_FAV ), self.mFavoriteList, 0)
+				self.AddInputControl( E_DialogInput08, '', Msg.Strings( MsgId.LANG_ADD_OK ) )
 			else :
-				self.AddInputControl( E_DialogInput08, 'Add to Fav.Group', 'None' )
+				self.AddInputControl( E_DialogInput08, Msg.Strings( MsgId.LANG_ADD_TO_FAV ), Msg.Strings( MsgId.LANG_NONE ) )
 
 
 		elif self.mMode == FLAG_OPT_GROUP :
 			#visible group only
 
-			self.AddLeftLabelButtonControl( E_DialogInput01, 'Create New Group' )
-			self.AddUserEnumControl( E_DialogSpinEx01, 'Rename Fav.Group', self.mFavoriteList, 0)
-			self.AddInputControl( E_DialogInput02, '', 'Rename OK' )
-			self.AddUserEnumControl( E_DialogSpinEx02, 'Delete Fav.Group', self.mFavoriteList, 0)
-			self.AddInputControl( E_DialogInput03, '', 'Delete OK' )
+			self.AddLeftLabelButtonControl( E_DialogInput01, Msg.Strings( MsgId.LANG_CREATE_NEW_GROUP ) )
+			self.AddUserEnumControl( E_DialogSpinEx01, Msg.Strings( MsgId.LANG_RENAME_FAV ), self.mFavoriteList, 0)
+			self.AddInputControl( E_DialogInput02, '', Msg.Strings( MsgId.LANG_RENAME_OK ) )
+			self.AddUserEnumControl( E_DialogSpinEx02, Msg.Strings( MsgId.LANG_DELETE_FAV ), self.mFavoriteList, 0)
+			self.AddInputControl( E_DialogInput03, '', Msg.Strings( MsgId.LANG_DELETE_OK ) )
 
 
 		#self.AddOkCanelButton( )
