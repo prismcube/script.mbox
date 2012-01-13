@@ -360,20 +360,7 @@ class SettingDialog( BaseDialog ):
 					time.sleep( 0.02 )
 					ctrlItem.mProperty.SetPropIndex( control.getSelectedPosition() )
 					return True
-
-				elif ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
-					self.InputSetup( ctrlItem )
-					return True
 					
-				elif ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
-					return True
-					
-				elif ctrlItem.mControlType == ctrlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL :
-					return True
-
-				elif ctrlItem.mControlType == ctrlItem.E_SETTING_NO_PROP_ENUM_CONTROL :
-					return True
-
 		return False
 
 

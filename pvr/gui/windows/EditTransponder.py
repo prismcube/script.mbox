@@ -7,6 +7,7 @@ import pvr.gui.DialogMgr as DiaMgr
 import pvr.TunerConfigMgr as ConfigMgr
 from pvr.gui.BaseWindow import SettingWindow, Action
 import pvr.ElisMgr
+from ElisClass import *
 from ElisProperty import ElisPropertyEnum
 from pvr.gui.GuiConfig import *
 
@@ -97,35 +98,60 @@ class EditTransponder( SettingWindow ) :
 		# Add Transponder
 		elif groupId == E_Input05 :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_SET_TRANSPONDER )
-			dialog.SetMode( E_MODE_ADD_NEW_TRANSPODER )
- 			dialog.SetDefaultValue( 0, 0, 0, 0, 0 )
+ 			dialog.SetDefaultValue( 0, 0, 0, 0 )
  			dialog.doModal( )
 
  			if dialog.IsOK() == True :
- 				"""
-	 			lowFreq, highFreq, threshFreq  = dialog.GetFrequency( )
-
-				self.mCurrentSatellite.mLowLNB = int ( lowFreq )
-				self.mCurrentSatellite.mHighLNB = int ( highFreq )
-				self.mCurrentSatellite.mLNBThreshold = int ( threshFreq )
-				"""
+				frequency, fec, polarization, simbolrate = dialog.GetValue( )
+ 			
+ 				newTransponder = ElisITransponderInfo( )
+ 				newTransponder.reset( )
+ 				newTransponder.mFrequency = frequency
+				newTransponder.mSymbolRate = simbolrate
+				newTransponder.mPolarization = polarization
+				newTransponder.mFECMode = fec
+ 				
+ 				tmplist = []
+		 		tmplist.append( newTransponder )
+		 		satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
+ 				self.mCommander.Transponder_Add( satellite.mLongitude,  satellite.mBand,  tmplist )
+ 				self.mTransponderIndex = 0
 				self.InitConfig( )
+			else :
+				return
+
 		# Edit Transponder
 		elif groupId == E_Input07 :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_SET_TRANSPONDER )
-			dialog.SetMode( E_MODE_EDIT_TRANSPODER )
- 			#dialog.SetDefaultValue( 0, 0, 0, 0, 0 )
+ 			dialog.SetDefaultValue( self.mTransponderList[self.mTransponderIndex].mFrequency, self.mTransponderList[self.mTransponderIndex].mFECMode, self.mTransponderList[self.mTransponderIndex].mPolarization, self.mTransponderList[self.mTransponderIndex].mSymbolRate)
  			dialog.doModal( )
 
  			if dialog.IsOK() == True :
- 				"""
-	 			lowFreq, highFreq, threshFreq  = dialog.GetFrequency( )
-
-				self.mCurrentSatellite.mLowLNB = int ( lowFreq )
-				self.mCurrentSatellite.mHighLNB = int ( highFreq )
-				self.mCurrentSatellite.mLNBThreshold = int ( threshFreq )
-				"""
+ 				satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
+ 				
+				# Delete
+				tmplist = []
+		 		tmplist.append( self.mTransponderList[self.mTransponderIndex] )
+		 		self.mCommander.Transponder_Delete( satellite.mLongitude,  satellite.mBand,  tmplist )
+				
+ 				# ADD
+				frequency, fec, polarization, simbolrate = dialog.GetValue( )
+ 			
+ 				newTransponder = ElisITransponderInfo( )
+ 				newTransponder.reset( )
+ 				newTransponder.mFrequency = frequency
+				newTransponder.mSymbolRate = simbolrate
+				newTransponder.mPolarization = polarization
+				newTransponder.mFECMode = fec
+ 				
+ 				tmplist = []
+		 		tmplist.append( newTransponder )
+		 		
+ 				self.mCommander.Transponder_Add( satellite.mLongitude,  satellite.mBand,  tmplist )
+ 				self.mTransponderIndex = 0
 				self.InitConfig( )
+			else :
+				return
 
 	 	# Delete Transponder
 	 	elif groupId == E_Input06 :
@@ -134,7 +160,6 @@ class EditTransponder( SettingWindow ) :
 		 		tmplist = []
 		 		tmplist.append( self.mTransponderList[self.mTransponderIndex] )
 		 		self.mCommander.Transponder_Delete( satellite.mLongitude,  satellite.mBand,  tmplist )
-		 		xbmc.sleep(2)
 		 		self.mTransponderIndex = 0
 				self.InitConfig( )
 			else :
@@ -157,13 +182,9 @@ class EditTransponder( SettingWindow ) :
 
 		self.mTransponderList = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
 
-		"""
-		for test
-		"""
 		for trans in self.mTransponderList :
 			trans.printdebug()
-		"""
-		"""
+			
 		self.AddInputControl( E_Input02, 'Frequency', '%d MHz' % self.mTransponderList[self.mTransponderIndex].mFrequency, None, None, None, 'Select Frequency.' )
 		self.AddInputControl( E_Input03, 'Symbol Rate', '%d KS/s' % self.mTransponderList[self.mTransponderIndex].mSymbolRate )
 
