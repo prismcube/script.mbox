@@ -245,8 +245,7 @@ class LivePlate(BaseWindow):
 			self.mCommander.Player_SetVolume( vol )
 		"""
 
-		LOG_TRACE( 'Leave' )
-
+		#LOG_TRACE( 'Leave' )
 
 
 
@@ -505,7 +504,7 @@ class LivePlate(BaseWindow):
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
-			self.mLocalTime = 0
+			#self.mLocalTime = 0
 
 
 		endTime = self.mEpgStartTime + self.mEpgDuration

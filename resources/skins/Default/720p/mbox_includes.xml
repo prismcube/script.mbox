@@ -3721,7 +3721,7 @@
 						<hitrect x="30" y="10" w="100" h="40"></hitrect>
 						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
 						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
-						<onleft>3161</onleft>
+						<onleft>3171</onleft>
 						<onright>3111</onright>
 						<onup></onup>
 						<ondown></ondown>
@@ -3992,7 +3992,7 @@
 						<texturenofocus>confluence/OverlayWatched.png</texturenofocus>
 						<texturefocus>confluence/amt-overlay-watched.png</texturefocus>
 						<onleft>3151</onleft>
-						<onright>3101</onright>
+						<onright>3171</onright>
 						<onup></onup>
 						<ondown></ondown>
 					</control>
@@ -4019,6 +4019,51 @@
 						<aligny>center</aligny>
 						<label>[B]Mark[/B]</label>
 						<visible>[Control.HasFocus(3161) | Control.HasFocus(3161)]</visible>
+					</control>
+				</control>
+				<!-- OPT Group Button -->
+				<control type="group" id="3170">
+					<visible></visible>
+					<width>110</width>
+					<height>40</height>
+					<defaultcontrol always="true">3171</defaultcontrol>
+					<control type="button" id="3171">
+						<description>Button Icon</description>
+						<posx>30</posx>
+						<posy>10</posy>
+						<width>35</width>
+						<height>35</height>
+						<hitrect x="30" y="10" w="120" h="40"></hitrect>
+						<texturenofocus>confluence/OSDSubtitlesNF.png</texturenofocus>
+						<texturefocus>confluence/OSDSubtitlesFO.png</texturefocus>
+						<onleft>3161</onleft>
+						<onright>3101</onright>
+						<onup></onup>
+						<ondown></ondown>
+					</control>
+					<control type="label">
+						<posx>72</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[B]Opt Group[/B]</label>
+						<visible>![Control.HasFocus(3171) | Control.HasFocus(3171)]</visible>
+					</control>
+					<control type="label">
+						<posx>72</posx>
+						<posy>7</posy>
+						<width>150</width>
+						<height>40</height>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>[B]Opt Group[/B]</label>
+						<visible>[Control.HasFocus(3171) | Control.HasFocus(3171)]</visible>
 					</control>
 				</control>
 			</control>
