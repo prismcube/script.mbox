@@ -28,6 +28,10 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ):
 
 	def SetHeaderLabel( self, aLabel ):
 		self.getControl( HeaderDefine.G_DIALOG_HEADER_LABEL_ID ).setLabel( aLabel )
+
+
+	def SetButtonLabel( self, aControlId, aLabel ) :
+		self.getControl( aControlId ).setLabel( aLabel )
 	
 
 	def CloseDialog( self ) :
@@ -89,10 +93,10 @@ class SettingDialog( BaseDialog ):
 				control = self.getControl( ctrlItem.mControlId + 3 )
 				control.addItems( ctrlItem.mListItems )
 
-			if ctrlItem.mControlId == E_SettingDialogOk :
+			if ctrlItem.mControlId == E_SETTING_DIALOG_OK :
 				self.getControl( ctrlItem.mControlId ).setPosition( 57, ( ( pos + 1 ) * 40 ) + 160 )
 
-			elif ctrlItem.mControlId == E_SettingDialogCancel :
+			elif ctrlItem.mControlId == E_SETTING_DIALOG_CANCEL :
 				self.getControl( ctrlItem.mControlId ).setPosition( 277, ( pos * 40 ) + 160 )
 				
 			else :
@@ -157,8 +161,8 @@ class SettingDialog( BaseDialog ):
 
 
 	def AddOkCanelButton( self ) :
-		self.mControlList.append( ControlItem( ControlItem.E_SETTING_OK_CANCEL_BUTTON, E_SettingDialogOk, None, None, None, None ) ) 
-		self.mControlList.append( ControlItem( ControlItem.E_SETTING_OK_CANCEL_BUTTON, E_SettingDialogCancel, None, None, None, None ) )
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_OK_CANCEL_BUTTON, E_SETTING_DIALOG_OK, None, None, None, None ) ) 
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_OK_CANCEL_BUTTON, E_SETTING_DIALOG_CANCEL, None, None, None, None ) )
 
 
 	def HasControlItem( self, aCtrlItem, aContgrolId  ):
@@ -241,6 +245,48 @@ class SettingDialog( BaseDialog ):
 					return self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).getLabel2( )
 
 		return -1
+
+
+	def GetControlLabelString( self, aControlId ) :
+		count = len( self.mControlList )
+
+		for i in range( count ) :
+
+			ctrlItem = self.mControlList[i]		
+			if self.HasControlItem( ctrlItem, aControlId ) :
+				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
+					return self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).getLabel( )
+
+		return -1
+
+
+	def SetControlLabel2String( self, aControlId, aLabel ) :
+		count = len( self.mControlList )
+
+		for i in range( count ) :
+
+			ctrlItem = self.mControlList[i]		
+			if self.HasControlItem( ctrlItem, aControlId ) :
+				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
+					return self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).setLabel2( aLabel )
+
+		return -1
+
+
+	def SetControlLabelString( self, aControlId, aLabel ) :
+		count = len( self.mControlList )
+
+		for i in range( count ) :
+
+			ctrlItem = self.mControlList[i]		
+			if self.HasControlItem( ctrlItem, aControlId ) :
+				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
+					return self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).setLabel( aLabel )
+
+		return -1
+
+
+	
 		
 
 	def GetGroupId( self, aContgrolId ) :
@@ -325,7 +371,7 @@ class SettingDialog( BaseDialog ):
 
 	def ControlUp( self ) :	
 		self.GetFocusId( )
-		#if self.mFocusId == E_SettingDialogCancel :
+		#if self.mFocusId == E_SETTING_DIALOG_CANCEL :
 		#	self.mFocusId = self.mFocusId - 1
 
 		groupId = self.GetGroupId( self.mFocusId )
@@ -340,7 +386,7 @@ class SettingDialog( BaseDialog ):
 
 	def ControlDown( self ):
 		self.GetFocusId( )
-		#if self.mFocusId == E_SettingDialogOk :
+		#if self.mFocusId == E_SETTING_DIALOG_OK :
 		#	self.mFocusId = self.mFocusId + 1
 
 		groupId = self.GetGroupId( self.mFocusId )
@@ -385,7 +431,7 @@ class SettingDialog( BaseDialog ):
 		for i in range( count ) :
 			ctrlItem = self.mControlList[i]		
 			if self.HasControlItem( ctrlItem, aControlId ) :
-				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL :
+				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 					control = self.getControl( ctrlItem.mControlId + 3 )
 					control.selectItem( aPosition )
 					return True

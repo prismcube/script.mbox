@@ -10,7 +10,7 @@ E_FORMAT_HDD		= 7
 E_FACTORY_RESET		= 8
 E_ETC				= 9
 
-# Control Ids
+# Setting Window Control Ids
 E_SpinEx01			= 1100
 E_SpinEx02			= 1200
 E_SpinEx03			= 1300
@@ -29,6 +29,7 @@ E_Input05			= 2500
 E_Input06			= 2600
 E_Input07			= 2700
 
+# Settinf Dialog Control Ids
 E_DialogSpinEx01	= 6110
 E_DialogSpinEx02	= 6120
 E_DialogSpinEx03	= 6130
@@ -43,13 +44,10 @@ E_DialogInput07		= 6270
 E_DialogInput08		= 6280
 E_DialogInput09		= 6290
 
+E_SETTING_DIALOG_OK		= 6997
+E_SETTING_DIALOG_CANCEL	= 6999
 
-E_SettingDialogOk		= 6997
-E_SettingDialogCancel	= 6999
-
-E_SlideMenuButton01	= 3310
-E_SlideMenuButton02	= 3320
-E_SlideMenuButton03	= 3330
+E_SETTING_DIALOG_BACKGROUND_IMAGE = 9001
 
 #footer group
 E_CTRL_GROP_FOOTER01 = 3100
@@ -129,6 +127,10 @@ E_LIST_ONE_CABLE_SCR				= [ 'SCR(0)', 'SCR(1)', 'SCR(2)', 'SCR(3)', 'SCR(4)', 'S
 
 E_LIST_MY_LONGITUDE = [ 'East', 'West' ]
 E_LIST_MY_LATITUDE  = [ 'North', 'South' ]
+
+# Transponder dialog type
+E_MODE_ADD_NEW_TRANSPODER	= 0
+E_MODE_EDIT_TRANSPODER		= 1
 
 """
 E_LIST_TUNER_TYPE				= [ 'Simple LNB', 'DiSEqC 1.0', 'DiSEqC 1.1', 'Motorized, DiSEqC 1.2', 'Motorized, USALS', 'OneCable' ]

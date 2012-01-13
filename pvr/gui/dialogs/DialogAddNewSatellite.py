@@ -17,19 +17,21 @@ class DialogAddNewSatellite( SettingDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingDialog.__init__( self, *args, **kwargs )
 		self.mIsOk = False
-		self.satelliteName = None
+		self.mSatelliteName = None
 		self.mLongitude = 0
 		self.mIsWest = 0
 		self.mIsCBand = 0
-		self.bandList = []
+		self.mListBand = []
 
 		property = ElisPropertyEnum( 'Band', self.mCommander )
-		self.bandList.append( property.GetPropStringByIndex( 0 ) )
-		self.bandList.append( property.GetPropStringByIndex( 1 ) )
+		self.mListBand.append( property.GetPropStringByIndex( 0 ) )
+		self.mListBand.append( property.GetPropStringByIndex( 1 ) )
 		
 	def onInit( self ) :
 		self.mLongitude = 0
 		self.SetHeaderLabel( 'Add New Satellite' )
+		self.SetButtonLabel( E_SETTING_DIALOG_OK, 'Confirm' )
+		self.SetButtonLabel( E_SETTING_DIALOG_CANCEL, 'Cancel' )
 		self.DrawItem( )
 		self.mIsOk = False
 
@@ -80,21 +82,21 @@ class DialogAddNewSatellite( SettingDialog ) :
 			self.mIsCBand = self.GetSelectedIndex( E_DialogSpinEx02 )
 
 		elif groupId == E_DialogInput01 :
-			kb = xbmc.Keyboard( self.satelliteName, 'Input Satellite Name', False )
+			kb = xbmc.Keyboard( self.mSatelliteName, 'Input Satellite Name', False )
 			kb.doModal( )
 			if( kb.isConfirmed( ) ) :
 				value =  kb.getText( )
 				if value == None or value == '' :
 					return
-				self.satelliteName = value
+				self.mSatelliteName = value
 				self.DrawItem( )
 
-		elif groupId == E_SettingDialogOk :
+		elif groupId == E_SETTING_DIALOG_OK :
 			self.mIsOk = True
 			self.ResetAllControl( )
 			self.CloseDialog( )
 
-		elif groupId == E_SettingDialogCancel :
+		elif groupId == E_SETTING_DIALOG_CANCEL :
 			self.mIsOk = False
 			self.ResetAllControl( )
 			self.CloseDialog( )
@@ -118,20 +120,20 @@ class DialogAddNewSatellite( SettingDialog ) :
 			self.mBand = ElisEnum.E_BAND_C
 
 		LOG_TRACE('Add New Satellite Longitude = %d Band = %d' % ( self.mLongitude, self.mBand ) )
-		return self.mLongitude, self.mBand, self.satelliteName
+		return self.mLongitude, self.mBand, self.mSatelliteName
 
 
 	def DrawItem( self ) :
 		self.ResetAllControl( )
 	
-		if self.satelliteName == None :
-			self.satelliteName = 'No Name'
-		self.AddInputControl( E_DialogInput01, 'Satellite Name', self.satelliteName, 4, 15 )
+		if self.mSatelliteName == None :
+			self.mSatelliteName = 'No Name'
+		self.AddInputControl( E_DialogInput01, 'Satellite Name', self.mSatelliteName, 4, 15 )
 		self.AddUserEnumControl( E_DialogSpinEx01, 'Longitude Direction', E_LIST_MY_LONGITUDE, self.mIsWest )
 
 		tmplongitude = '%03d.%d' % ( ( self.mLongitude / 10 ), self.mLongitude % 10 )
 		self.AddInputControl( E_DialogInput02, 'Longitude Angle',  tmplongitude, 6 )
-		self.AddUserEnumControl( E_DialogSpinEx02, 'Band Type', self.bandList, self.mIsCBand )
+		self.AddUserEnumControl( E_DialogSpinEx02, 'Band Type', self.mListBand, self.mIsCBand )
 		self.AddOkCanelButton( )
 
 		self.InitControl( )

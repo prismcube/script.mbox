@@ -3576,7 +3576,6 @@
 			<description>Yes button</description>
 			<width>200</width>
 			<height>40</height>
-			<label>Yes</label>
 			<font>font12_title</font>
 			<textcolor>white</textcolor>
 			<focusedcolor>white</focusedcolor>
@@ -3590,7 +3589,6 @@
 			<description>Cancel button</description>
 			<width>200</width>
 			<height>40</height>
-			<label>Cancel</label>
 			<font>font12_title</font>
 			<textcolor>white</textcolor>
 			<focusedcolor>white</focusedcolor>
