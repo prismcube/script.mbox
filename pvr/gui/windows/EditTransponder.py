@@ -178,14 +178,14 @@ class EditTransponder( SettingWindow ) :
 
 		satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
 		satellitename = ConfigMgr.GetInstance( ).GetFormattedName( satellite.mLongitude , satellite.mBand )
-		self.AddInputControl( E_Input01, 'Satellite', satellitename, None, None, None, 'Select satellite.' )
+		self.AddInputControl( E_Input01, 'Satellite', satellitename, 'Select satellite.' )
 
 		self.mTransponderList = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
 
 		for trans in self.mTransponderList :
 			trans.printdebug()
 			
-		self.AddInputControl( E_Input02, 'Frequency', '%d MHz' % self.mTransponderList[self.mTransponderIndex].mFrequency, None, None, None, 'Select Frequency.' )
+		self.AddInputControl( E_Input02, 'Frequency', '%d MHz' % self.mTransponderList[self.mTransponderIndex].mFrequency, 'Select Frequency.' )
 		self.AddInputControl( E_Input03, 'Symbol Rate', '%d KS/s' % self.mTransponderList[self.mTransponderIndex].mSymbolRate )
 
 		property = ElisPropertyEnum( 'Polarisation', self.mCommander )

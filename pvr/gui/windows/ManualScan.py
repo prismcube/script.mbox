@@ -147,8 +147,8 @@ class ManualScan( SettingWindow ):
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Has no configured satellite' )
 
 		else :
-			self.AddInputControl( E_Input01, 'Satellite', self.mFormattedSatelliteList[self.mSelectedSatelliteIndex], None, None, None, 'Select satellite' )
-			self.AddInputControl( E_Input02, 'Transponder Frequency', self.mFormattedTransponderList[self.mSelectedTransponderIndex], None, None, None, 'Select Transponder Frequency' )
+			self.AddInputControl( E_Input01, 'Satellite', self.mFormattedSatelliteList[self.mSelectedSatelliteIndex], 'Select satellite' )
+			self.AddInputControl( E_Input02, 'Transponder Frequency', self.mFormattedTransponderList[self.mSelectedTransponderIndex], 'Select Transponder Frequency' )
 
 
 			#DVB Type

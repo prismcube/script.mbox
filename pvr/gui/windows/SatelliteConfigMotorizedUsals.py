@@ -115,11 +115,11 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 
 		self.AddUserEnumControl( E_SpinEx01, 'My Longitude Direction', E_LIST_MY_LONGITUDE, self.mIsWest )
 		tmplongitude = '%03d.%d' % ( ( self.mLongitude / 10 ), self.mLongitude % 10 )
-		self.AddInputControl( E_Input01, 'My Longitude Angle',  tmplongitude, 6 )
+		self.AddInputControl( E_Input01, 'My Longitude Angle',  tmplongitude)
 		
 		self.AddUserEnumControl( E_SpinEx02, 'My Latitude Direction', E_LIST_MY_LATITUDE, self.mIsSouth )
 		tmplatitude = '%03d.%d' % ( ( self.mLatitude / 10 ), self.mLatitude % 10 )
-		self.AddInputControl( E_Input02, 'My Latitude Angle',  tmplatitude, 6 )
+		self.AddInputControl( E_Input02, 'My Latitude Angle',  tmplatitude)
 		
 		self.AddLeftLabelButtonControl( E_Input03, 'Reference Position to Null' )
 		self.AddLeftLabelButtonControl( E_Input04, 'Configure Satellites' )

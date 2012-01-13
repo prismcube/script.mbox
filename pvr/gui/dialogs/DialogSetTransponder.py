@@ -61,7 +61,7 @@ class DialogSetTransponder( SettingDialog ) :
 
 		# Frequency
 		if groupId == E_DialogInput01 :
-			tempval = self.NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input Frequency', '%d' % self.mFrequency, 5 )
+			tempval = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input Frequency', '%d' % self.mFrequency, 5 )
 			if int( tempval ) > 13000 :
 				self.mFrequency = 13000
 			elif int( tempval ) < 3000 :
@@ -92,7 +92,7 @@ class DialogSetTransponder( SettingDialog ) :
 
 		# Symbol Rate
 		elif groupId == E_DialogInput02 :
-			tempval = self.NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input Symbol Rate', '%d' % self.mSimbolicRate, 5 )
+			tempval = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input Symbol Rate', '%d' % self.mSimbolicRate, 5 )
 			if int( tempval ) > 60000 :
 				self.mSimbolicRate = 60000
 			else :

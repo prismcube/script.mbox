@@ -127,8 +127,8 @@ class Configure( SettingWindow ) :
 			
 		elif selectedId == E_PARENTAL :	
 			self.AddEnumControl( E_SpinEx01, 'Lock Mainmenu' )
-			self.AddInputControl( E_Input01, 'New PIN code', '****', 5 )
-			self.AddInputControl( E_Input02, 'Confirmation PIN code', '****' , 5 )
+			self.AddInputControl( E_Input01, 'New PIN code', '****' )
+			self.AddInputControl( E_Input02, 'Confirmation PIN code', '****' )
 			self.AddEnumControl( E_SpinEx02, 'Age Restricted' )
 			
 
@@ -218,10 +218,10 @@ class Configure( SettingWindow ) :
 		
 		elif selectedId == E_IP_SETTING :	
 			self.AddEnumControl( E_SpinEx01, 'DHCP' )
-			self.AddInputControl( E_Input01, 'IP Address', '192.168.101.160' , 3 )
-			self.AddInputControl( E_Input02, 'Subnet Mask', '255.255.252.0', 3 )
-			self.AddInputControl( E_Input03, 'Gateway', '192.168.100.1', 3 )
-			self.AddInputControl( E_Input04, 'DNS', '192.168.100.1', 3 )
+			self.AddInputControl( E_Input01, 'IP Address', '192.168.101.160' )
+			self.AddInputControl( E_Input02, 'Subnet Mask', '255.255.252.0' )
+			self.AddInputControl( E_Input03, 'Gateway', '192.168.100.1' )
+			self.AddInputControl( E_Input04, 'DNS', '192.168.100.1' )
 
 			visibleControlIds = [ E_SpinEx01, E_Input01, E_Input02, E_Input03, E_Input04 ]
 			self.SetVisibleControls( visibleControlIds, True )

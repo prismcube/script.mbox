@@ -135,7 +135,7 @@ class AutomaticScan( SettingWindow ):
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Has no configured satellite' )
 
 		else :
-			self.AddInputControl( E_Input01, 'Satellite', self.mFormattedList[self.mSelectedSatelliteIndex], None, None, None, 'Select satellite' )
+			self.AddInputControl( E_Input01, 'Satellite', self.mFormattedList[self.mSelectedSatelliteIndex], 'Select satellite' )
 			self.AddEnumControl( E_SpinEx01, 'Network Search', None, 'Network Search' )
 			self.AddEnumControl( E_SpinEx02, 'Channel Search Mode', None, 'Channel Search Mode' )
 			self.AddLeftLabelButtonControl( E_Input02, 'Start Search', 'Start Search' )

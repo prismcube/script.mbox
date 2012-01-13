@@ -13,7 +13,6 @@ class DialogMoveAntenna( BaseDialog ) :
 		
 		
 	def onInit( self ) :
-		#self.DrawItem( )
 		self.mIsOk = False		
 
 		
@@ -30,49 +29,12 @@ class DialogMoveAntenna( BaseDialog ) :
 
 
 	def onClick( self, aControlId ) :
-		"""
-		if aControlId == E_MAIN_LIST_ID :
-			if self.getControl( E_MAIN_LIST_ID ).getSelectedPosition( ) == 0 :
-				self.mLowFreq = self.NumericKeyboard( 0, 'Low Frequency', self.mLowFreq, 5 )
-				self.DrawItem( )
-
-			elif self.getControl( E_MAIN_LIST_ID ).getSelectedPosition( ) == 1 :
-				self.mHighFreq = self.NumericKeyboard( 0, 'High Frequency', self.mHighFreq, 5 )
-				self.DrawItem( )
-			
-			elif self.getControl( E_MAIN_LIST_ID ).getSelectedPosition( ) == 2 :
-				self.mThreshFreq = self.NumericKeyboard( 0, 'Switch Frequency', self.mThreshFreq, 5 )
-				self.DrawItem( )
-			
-		elif aControlId ==  E_BUTTON_OK_ID :
-			self.mIsOk = True
-			self.CloseDialog( )
-		
-		elif aControlId == E_BUTTON_CANCEL_ID :
-			self.mIsOk = False
-			self.CloseDialog( )		
- 		"""
  		pass
- 		
+
+
 	def IsOK( self ) :
 		return self.mIsOk
 
 		
 	def onFocus( self, aControlId ):
 		pass
-
-	"""
-	def DrawItem( self ) :
-		listItems = []
-		listItem = xbmcgui.ListItem( 'Low Frequency', self.mLowFreq, "-", "-", "-" )
-		listItems.append( listItem )
-		
-		listItem = xbmcgui.ListItem( 'High Frequency', self.mHighFreq, "-", "-", "-" )
-		listItems.append( listItem )
-		
-		listItem = xbmcgui.ListItem( 'Switch Frequency', self.mThreshFreq, "-", "-", "-" )
-		listItems.append( listItem )
-
-		self.getControl( E_MAIN_LIST_ID ).addItems( listItems )
-	"""
-
