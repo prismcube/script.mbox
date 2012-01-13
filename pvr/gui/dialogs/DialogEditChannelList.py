@@ -18,6 +18,9 @@ E_DIALOG_HEADER			= 100
 E_BUTTON_OK_ID			= 501
 E_BUTTON_CANCEL_ID		= 601
 """
+FLAG_OPT_LIST  = 0
+FLAG_OPT_GROUP = 1
+
 
 class DialogEditChannelList( SettingDialog ) :
 	def __init__( self, *args, **kwargs ) :
@@ -30,8 +33,11 @@ class DialogEditChannelList( SettingDialog ) :
 		self.mIdxFavoriteGroup = 0
 		self.mFavoriteList = []
 		self.mDialogTitle = ''
+		self.mMode = FLAG_OPT_LIST
 
 	def onInit( self ) :
+
+		self.mCtrlImgBox            = self.getControl( 9001 )
 
 		self.SetHeaderLabel( self.mDialogTitle )
 		self.DrawItem()
@@ -104,58 +110,46 @@ class DialogEditChannelList( SettingDialog ) :
 	def DrawItem( self ) :
 		self.ResetAllControl( )
 
-
-		self.AddLeftLabelButtonControl( E_DialogInput01, 'Lock' )
-		self.AddLeftLabelButtonControl( E_DialogInput02, 'UnLock' )
-		self.AddLeftLabelButtonControl( E_DialogInput03, 'Skip' )
-		self.AddLeftLabelButtonControl( E_DialogInput04, 'UnSkip' )
-		self.AddLeftLabelButtonControl( E_DialogInput05, 'Delete' )
-		self.AddLeftLabelButtonControl( E_DialogInput06, 'UnDelete' )
-		self.AddLeftLabelButtonControl( E_DialogInput07, 'Move' )
-		self.AddLeftLabelButtonControl( E_DialogInput08, 'Create New Group' )
-		self.AddUserEnumControl( E_DialogSpinEx01, 'Rename Fav.Group', self.mFavoriteList, 0)
-		self.AddUserEnumControl( E_DialogSpinEx02, 'Delete Fav.Group', self.mFavoriteList, 0)
-		self.AddUserEnumControl( E_DialogSpinEx03, 'Add to Fav.Group', self.mFavoriteList, 0)
-		self.AddLeftLabelButtonControl( E_DialogInput09, 'Select Add to Fav.Group' )
-
-		if len(self.mFavoriteList) < 1 :
-			self.SetVisibleControl( E_DialogSpinEx03, False )
-			self.AddLeftLabelButtonControl( E_DialogInput09, 'None' )
-
-
-		if aMode == FLAG_OPT_LIST :
+		if self.mMode == FLAG_OPT_LIST :
 			#not visible group
-			self.SetVisibleControl( E_DialogInput08, False )
-			self.SetVisibleControl( E_DialogSpinEx01, False )
-			self.SetVisibleControl( E_DialogSpinEx02, False )
 
-		elif aMode == FLAG_OPT_GROUP :
+			self.AddLeftLabelButtonControl( E_DialogInput01, 'Lock' )
+			self.AddLeftLabelButtonControl( E_DialogInput02, 'UnLock' )
+			self.AddLeftLabelButtonControl( E_DialogInput03, 'Skip' )
+			self.AddLeftLabelButtonControl( E_DialogInput04, 'UnSkip' )
+			self.AddLeftLabelButtonControl( E_DialogInput05, 'Delete' )
+			self.AddLeftLabelButtonControl( E_DialogInput06, 'UnDelete' )
+			self.AddLeftLabelButtonControl( E_DialogInput07, 'Move' )
+
+			if len(self.mFavoriteList) > 0 :
+				self.AddUserEnumControl( E_DialogSpinEx01, 'Add to Fav.Group', self.mFavoriteList, 0)
+				self.AddInputControl( E_DialogInput08, '', 'Add OK' )
+			else :
+				self.AddInputControl( E_DialogInput08, 'Add to Fav.Group', 'None' )
+
+
+		elif self.mMode == FLAG_OPT_GROUP :
 			#visible group only
-			self.SetVisibleControl( E_DialogInput01, False )
-			self.SetVisibleControl( E_DialogInput02, False )
-			self.SetVisibleControl( E_DialogInput03, False )
-			self.SetVisibleControl( E_DialogInput04, False )
-			self.SetVisibleControl( E_DialogInput05, False )
-			self.SetVisibleControl( E_DialogInput06, False )
-			self.SetVisibleControl( E_DialogInput07, False )
-			self.SetVisibleControl( E_DialogInput08, True )
-			self.SetVisibleControl( E_DialogSpinEx01, True )
-			self.SetVisibleControl( E_DialogSpinEx02, True )
-			self.SetVisibleControl( E_DialogSpinEx03, False )
-			self.SetVisibleControl( E_DialogInput09, False )
+
+			self.AddLeftLabelButtonControl( E_DialogInput01, 'Create New Group' )
+			self.AddUserEnumControl( E_DialogSpinEx01, 'Rename Fav.Group', self.mFavoriteList, 0)
+			self.AddInputControl( E_DialogInput02, '', 'Rename OK' )
+			self.AddUserEnumControl( E_DialogSpinEx02, 'Delete Fav.Group', self.mFavoriteList, 0)
+			self.AddInputControl( E_DialogInput03, '', 'Delete OK' )
 
 
 		#self.AddOkCanelButton( )
-
-		self.InitControl( )
+		self.SetAutoHeight( True )
+		self.InitControl()
 
 
 	def SetValue( self, aMode, aTitle, aClassListFavorite ) :
+		self.mMode = aMode
 		self.mDialogTitle = aTitle
 
 		self.mFavoriteList = []
 		for item in aClassListFavorite:
 			self.mFavoriteList.append( item.mGroupName )
 
-		LOG_TRACE( '======================title[%s] favoriteList[%s]'% (self.mDialogTitle, self.mFavoriteList) )
+		LOG_TRACE( '======================title[%s] favoriteList[%s] len[%s]'% (self.mDialogTitle, self.mFavoriteList, len(self.mFavoriteList)) )
 		

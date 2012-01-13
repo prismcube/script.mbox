@@ -12,7 +12,7 @@
             <animation condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional" reversible="false">
                 <effect type="fade" start="100" end="0" time="300" />
             </animation>
-			<control type="image">
+			<control type="image" id="9001">
 				<description>background image</description>
 				<posx>0</posx>
 				<posy>100</posy>
@@ -30,8 +30,11 @@
 				<include>DialogInput05</include>
 				<include>DialogInput06</include>
 				<include>DialogInput07</include>
-				<include>DialogSpinEx01</include>
 				<include>DialogInput08</include>
+				<include>DialogSpinEx01</include>
+				<include>DialogSpinEx02</include>
+				<include>DialogSpinEx03</include>
+				<include>DialogInput09</include>
 				<!--include>SettingDialogButtonOKCancel</include-->
 			</control>
 		</control>

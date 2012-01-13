@@ -25,6 +25,8 @@ FLAG_MASK_ADD  = 0x01
 FLAG_MASK_NONE = 0x00
 FLAG_SLIDE_OPEN= 0
 FLAG_SLIDE_INIT= 1
+FLAG_OPT_LIST  = 0
+FLAG_OPT_GROUP = 1
 FLAG_CLOCKMODE_ADMYHM   = 1
 FLAG_CLOCKMODE_AHM      = 2
 FLAG_CLOCKMODE_HMS      = 3
@@ -100,6 +102,7 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlFooter3            = self.getControl( E_CTRL_GROP_FOOTER05 )
 		self.mCtrlFooter4            = self.getControl( E_CTRL_GROP_FOOTER06 )
 		self.mCtrlFooter5            = self.getControl( E_CTRL_GROP_FOOTER07 )
+		self.mCtrlFooter6            = self.getControl( E_CTRL_GROP_FOOTER08 )
 
 
 		self.mCtrlLblPath1           = self.getControl( 10 )
@@ -134,7 +137,7 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlSelectItem         = self.getControl( 401 )
 		
 		self.mCtrlHeader3.setLabel('')
-		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_EDIT_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_OPT_MASK | FooterMask.G_FOOTER_ICON_MARK_MASK )
+		self.SetFooter( FooterMask.G_FOOTER_ICON_BACK_MASK | FooterMask.G_FOOTER_ICON_EDIT_MASK | FooterMask.G_FOOTER_ICON_OK_MASK | FooterMask.G_FOOTER_ICON_OPT_MASK | FooterMask.G_FOOTER_ICON_MARK_MASK | FooterMask.G_FOOTER_ICON_OPTGROUP_MASK )
 
 		self.mIsSelect = False
 		self.mIsMark = True
@@ -461,7 +464,7 @@ class ChannelListWindow(BaseWindow):
 				label3 = re.split(' ', label2[0])
 
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_EDIT_CHANNEL_LIST )
-				dialog.SetValue( label3[1], self.mListFavorite )
+				dialog.SetValue( FLAG_OPT_LIST, label3[1], self.mListFavorite )
 	 			dialog.doModal()
 
 				idxDialog, idxFavorite, isOkDialog = dialog.GetValue()
@@ -475,6 +478,23 @@ class ChannelListWindow(BaseWindow):
 			#self.SetMarkDeleteCh('delete')
 			#self.mMarkList=[]
 
+		elif aControlId == E_CTRL_BTN_FOOTER08:
+			LOG_TRACE( 'onclick footer OptGroup' )
+			try:
+				label1 = self.mCtrlListCHList.getSelectedItem().getLabel()
+				label2 = re.findall('\](.*)\[', label1)
+				label3 = re.split(' ', label2[0])
+
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_EDIT_CHANNEL_LIST )
+				dialog.SetValue( FLAG_OPT_GROUP, label3[1], self.mListFavorite )
+	 			dialog.doModal()
+
+				idxDialog, idxFavorite, isOkDialog = dialog.GetValue()
+
+				LOG_TRACE( '======= idxDialog[%s] idxFavorite[%s] isOkDialog[%s]'% (idxDialog, idxFavorite, isOkDialog) )
+
+			except Exception, e:
+				LOG_TRACE( 'Error except[%s]'% e )
 
 
 
@@ -923,6 +943,7 @@ class ChannelListWindow(BaseWindow):
 			self.mCtrlFooter3.setVisible( True  )
 			self.mCtrlFooter4.setVisible( False )
 			self.mCtrlFooter5.setVisible( False )
+			self.mCtrlFooter6.setVisible( False )
 
 		else :
 			#slide menu disable
@@ -939,6 +960,7 @@ class ChannelListWindow(BaseWindow):
 			self.mCtrlFooter3.setVisible( False )
 			self.mCtrlFooter4.setVisible( True  )
 			self.mCtrlFooter5.setVisible( False  )
+			self.mCtrlFooter6.setVisible( True )
 
 			return
 
