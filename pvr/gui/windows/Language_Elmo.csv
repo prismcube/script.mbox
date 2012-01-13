@@ -870,7 +870,7 @@
 "No Limit",,,,,,,,,,868
 "Channel Number",,,,,,,,,,869
 "Favorites",,,,,,,,,,870
-"None",,,,,,,,,,871
+"None",,"Aucun",,,,,,,,871
 "AT",,,,,,,,,,872
 "SI",,,,,,,,,,873
 "2 Hour",,,,,,,,,,874
@@ -973,3 +973,13 @@
 "All Channel by Number",,"Tous les  chaines par numero",,,,,,,,974
 "All Channel by Alphabet",,"Tous les  chaines par ordre",,,,,,,,975
 "No channels",,"Pas de chaines",,,,,,,,976
+"Add to Fav. Group",,"Ajouter au groupe de favoris",,,,,,,,976
+"Rename Fav. Group",,"Renommer un groupe de favoris",,,,,,,,977
+"Delete Fav. Group",,"Supprimer un groupe de favoris",,,,,,,,978
+"Create New Group",,"Creer un nouveau groupe",,,,,,,,979
+"Skip",,"Passer",,,,,,,,980
+"Unskip",,"Ne pas sauter",,,,,,,,981
+"Lock",,"Verrouiller",,,,,,,,982
+"Unlock",,"Deverrouiller",,,,,,,,983
+"Delete",,"Supprimer",,,,,,,,984
+

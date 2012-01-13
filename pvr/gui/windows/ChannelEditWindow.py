@@ -697,7 +697,7 @@ class ChannelListWindow(BaseWindow):
 				label1 = EnumToString( 'mode', self.mZappingMode )
 				label2 = self.mCtrlListSubmenu.getSelectedItem().getLabel()
 
-				head =  Msg.Strings( MsgId.LANG_TO_CHANGE_ZAPPING_MODE )
+				head =  Msg.Strings( MsgId.LANG_SETTING_TO_CHANGE_ZAPPING_MODE )
 				line1 = '%s / %s'% ( label1.title(), label2.title() )
 				line2 = Msg.Strings( MsgId.LANG_DO_YOU_WANT_TO_SAVE_CHANNELS )
 
