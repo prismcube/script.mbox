@@ -72,6 +72,7 @@ class SettingDialog( BaseDialog ):
 		self.mControlList = []
 		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
 		self.mFocusId = -1
+		self.mIsAutomaicHeight = False
 
 
 	def InitControl( self ):
@@ -102,7 +103,14 @@ class SettingDialog( BaseDialog ):
 			else :
 				self.getControl( ctrlItem.mControlId ).setPosition( 0, ( pos * 40 ) + 175 )
 			pos += 1
-				
+
+		if self.mIsAutomaicHeight == True :
+			self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE ).setHeight( ( pos * 40 ) + 120 )
+
+
+	def SetAutoHeight( self, mMode ) :
+		self.mIsAutomaicHeight = mMode
+
 
 	def ResetAllControl( self ):
 		del self.mControlList[:]
