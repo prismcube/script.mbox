@@ -67,17 +67,17 @@ class DialogLnbFrequency( SettingDialog ) :
 			self.CloseDialog( )
 			
 		elif groupId == E_DialogInput01 :
-			tempval = self.NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input Low Frequency', self.mLowFreq, 5 )
+			tempval = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input Low Frequency', self.mLowFreq, 5 )
 			self.mLowFreq = '%d' % int( tempval )
 			self.DrawItem( )
 
 		elif groupId == E_DialogInput02 :
-			tempval = self.NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input High Frequency', self.mHighFreq, 5 )
+			tempval = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input High Frequency', self.mHighFreq, 5 )
 			self.mHighFreq = '%d' % int( tempval )
 			self.DrawItem( )
 
 		elif groupId == E_DialogInput03 :
-			tempval = self.NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input Switch Frequency', self.mThreshFreq, 5 )
+			tempval = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input Switch Frequency', self.mThreshFreq, 5 )
 			self.mThreshFreq = '%d' % int( tempval )
 			self.DrawItem( )
 

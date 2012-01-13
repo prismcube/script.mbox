@@ -82,14 +82,8 @@ class DialogAddNewSatellite( SettingDialog ) :
 			self.mIsCBand = self.GetSelectedIndex( E_DialogSpinEx02 )
 
 		elif groupId == E_DialogInput01 :
-			kb = xbmc.Keyboard( self.mSatelliteName, 'Input Satellite Name', False )
-			kb.doModal( )
-			if( kb.isConfirmed( ) ) :
-				value =  kb.getText( )
-				if value == None or value == '' :
-					return
-				self.mSatelliteName = value
-				self.DrawItem( )
+			self.mSatelliteName = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, 'Satellite Name', self.mSatelliteName, 15 )
+			self.DrawItem( )
 
 		elif groupId == E_SETTING_DIALOG_OK :
 			self.mIsOk = True
@@ -128,11 +122,11 @@ class DialogAddNewSatellite( SettingDialog ) :
 	
 		if self.mSatelliteName == None :
 			self.mSatelliteName = 'No Name'
-		self.AddInputControl( E_DialogInput01, 'Satellite Name', self.mSatelliteName, 4, 15 )
+		self.AddInputControl( E_DialogInput01, 'Satellite Name', self.mSatelliteName )
 		self.AddUserEnumControl( E_DialogSpinEx01, 'Longitude Direction', E_LIST_MY_LONGITUDE, self.mIsWest )
 
 		tmplongitude = '%03d.%d' % ( ( self.mLongitude / 10 ), self.mLongitude % 10 )
-		self.AddInputControl( E_DialogInput02, 'Longitude Angle',  tmplongitude, 6 )
+		self.AddInputControl( E_DialogInput02, 'Longitude Angle',  tmplongitude )
 		self.AddUserEnumControl( E_DialogSpinEx02, 'Band Type', self.mListBand, self.mIsCBand )
 		self.AddOkCanelButton( )
 

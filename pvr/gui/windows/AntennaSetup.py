@@ -84,11 +84,11 @@ class AntennaSetup( SettingWindow ) :
 			if len( configuredList ) <= 0 :
 				ConfigMgr.GetInstance().AddConfiguredSatellite( 0 )
 
-			if groupId == E_Input01 + 1 :
+			if groupId == E_Input01 :
 			
 				ConfigMgr.GetInstance().SetCurrentTunerIndex( E_TUNER_1 ) 
 
-			elif groupId == E_Input02 + 1 :
+			elif groupId == E_Input02 :
 
 				ConfigMgr.GetInstance().SetCurrentTunerIndex( E_TUNER_2 )
 
@@ -110,7 +110,7 @@ class AntennaSetup( SettingWindow ) :
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_TUNER_CONFIGURATION )
 		
 		if groupId == E_SpinEx01 or groupId == E_SpinEx02 or groupId == E_SpinEx03 or groupId == E_SpinEx04 :
-			self.ControlSelect()
+			self.ControlSelect( )
 
 	def onFocus( self, aControlId ):
 		if self.mInitialized == False :

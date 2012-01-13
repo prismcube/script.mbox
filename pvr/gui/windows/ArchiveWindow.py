@@ -7,7 +7,7 @@ from pvr.gui.BaseWindow import BaseWindow, Action
 from ElisEnum import ElisEnum
 from ElisEventBus import ElisEventBus
 from ElisEventClass import *
-from pvr.Util import RunThread, GuiLock, LOG_TRACE, LOG_WARN, LOG_ERR, GetSetting, SetSetting
+from pvr.Util import RunThread, GuiLock, LOG_TRACE, LOG_WARN, LOG_ERR, GetSetting, SetSetting, TimeToString
 from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
@@ -36,6 +36,7 @@ E_SORT_FOLDER					= 4
 E_SORT_END						= 5
 
 
+
 class ArchiveWindow(BaseWindow):
 
 	def __init__(self, *args, **kwargs):
@@ -43,7 +44,7 @@ class ArchiveWindow(BaseWindow):
 		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()		
 		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
 		self.mInitialized = False
-		
+	
 	def onInit(self):
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
@@ -63,19 +64,37 @@ class ArchiveWindow(BaseWindow):
 		self.mViewMode = int( GetSetting( 'VIEW_MODE' ) )
 		self.mCtrlViewMode = self.getControl( BUTTON_ID_VIEW_MODE )
 
-		LOG_TRACE('')		
+		LOG_TRACE('')
 		self.mSortMode = int( GetSetting( 'SORT_MODE' ) )		
 		self.mCtrlSortMode = self.getControl( BUTTON_ID_SORT_MODE )
 
-		self.mCtrlRecordList = self.getControl( LIST_ID_RECORD )
+		self.mAscending = []
+		self.mAscending = [False,False,False,False,False]
+		LOG_TRACE('self.mAscending=%s' %self.mAscending )		
+		self.mAscending[E_SORT_DATE] = False
+		self.mAscending[E_SORT_CHANNEL] = True
+		self.mAscending[E_SORT_TITLE] = True
+		self.mAscending[E_SORT_DURATION] = False
+		self.mAscending[E_SORT_FOLDER] = True
+		LOG_TRACE('self.mAscending2=%s' %self.mAscending )				
 
+		self.mCtrlRecordList = self.getControl( LIST_ID_RECORD )
+		self.UpdateAscending()
 
 		LOG_TRACE('')
 		self.InitControl()
 		LOG_TRACE('')
 
 		self.Load( )
-		self.UpdateList( )
+		LOG_TRACE('')
+		try :
+			self.UpdateList( )
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex )
+			
+		LOG_TRACE('')
+
+		
 		self.mInitialized = True
 
 	def onAction(self, aAction):
@@ -122,10 +141,19 @@ class ArchiveWindow(BaseWindow):
 				
 			SetSetting( 'SORT_MODE','%d' %self.mSortMode ) 								
 			self.UpdateSortMode( )
-			self.UpdateList( )			
+			self.UpdateAscending( )
+			self.UpdateList( )
 
 		elif aControlId == TOGGLEBUTTON_ID_ASC :
-			pass
+			LOG_TRACE('Mode=%d' % self.mSortMode )
+			LOG_TRACE('mAscending=%d' %self.mAscending[self.mSortMode] )
+			if self.mAscending[self.mSortMode] == True :
+				self.mAscending[self.mSortMode] = False
+			else :
+				self.mAscending[self.mSortMode] = True
+
+			self.UpdateAscending( )
+			self.UpdateList( )
 
 		elif aControlId == RADIIOBUTTON_ID_EXTRA :
 			pass
@@ -175,11 +203,17 @@ class ArchiveWindow(BaseWindow):
 		self.InitControl()
 
 
-
 	def UpdateSortMode( self ) :
 		LOG_TRACE('---------------------')
 		self.InitControl()		
 
+	def UpdateAscending( self ) :
+		LOG_TRACE('--------------------- %d ' %self.mAscending[self.mSortMode])	
+		if self.mAscending[self.mSortMode] == True :
+			self.mWin.setProperty( 'ascending', 'true' )
+		else :
+			self.mWin.setProperty( 'ascending', 'false' )
+	
 
 	def Flush( self ) :
 		self.mRecordCount = 0
@@ -203,10 +237,11 @@ class ArchiveWindow(BaseWindow):
 
 
 	def UpdateList( self ) :
+		LOG_TRACE('')
 		if self.mSortMode == E_SORT_DATE :
 			self.mRecordList.sort( self.ByDate )
 		elif self.mSortMode == E_SORT_CHANNEL :
-			self.mRecordList.sort( self.Channel )
+			self.mRecordList.sort( self.ByChannel )
 
 		elif self.mSortMode == E_SORT_TITLE :
 			self.mRecordList.sort( self.ByTitle )
@@ -215,20 +250,33 @@ class ArchiveWindow(BaseWindow):
 			self.mRecordList.sort( self.ByDuration )
 
 		elif self.mSortMode == E_SORT_FOLDER :
-			self.mRecordList.ByFolder( )
+			self.ByFolder( )
 		else :
 			LOG_WARN('Unknown sort mode')		
 			self.mSortMode = 0
-			self.mRecordList.sort( self.ByDate )			
+			self.mRecordList.sort( self.ByDate )
 
+		LOG_TRACE('')			
+		if self.mAscending[self.mSortMode] == False :
+			self.mRecordList.reverse()
+
+		LOG_TRACE('')
+		
 		self.mRecordListItems = []
 		for i in range( len( self.mRecordList ) ) :
 			LOG_TRACE('---------->i=%d' %i)		
 			recInfo = self.mRecordList[i]
 			recInfo.printdebug()
-			recItem = xbmcgui.ListItem( recInfo.ChannelName, recInfo.RecordName, 'IconLockFocus.png' )
+			channelName = 'P%04d.%s' %(recInfo.mChannelNo, recInfo.mChannelName)
+			#recItem = xbmcgui.ListItem( '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz', '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz' )
+			recItem = xbmcgui.ListItem( channelName, recInfo.mRecordName )			
+			recItem.setProperty('RecIcon', 'RecIconSample.jpg')
+
+			recItem.setProperty('RecDate', TimeToString( recInfo.mStartTime ))
+			recItem.setProperty('RecDuration', '%dm' %( recInfo.mDuration/60 ) )
 			self.mRecordListItems.append( recItem )
 
+		LOG_TRACE('')
 		self.mCtrlRecordList.addItems( self.mRecordListItems )
 
 
@@ -249,7 +297,7 @@ class ArchiveWindow(BaseWindow):
 
 
 	def ByFolder( self ): #ToDO : 
-		self.mRecordList.sort( self.ByDate )
+		pass
 
 
 	@RunThread

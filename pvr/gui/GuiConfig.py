@@ -1,3 +1,6 @@
+import xbmc
+import xbmcgui
+
 # Setting Menu Ids
 E_LANGUAGE			= 0
 E_PARENTAL			= 1
@@ -146,6 +149,10 @@ E_NUMERIC_KEYBOARD_TYPE_DATE	= 1
 E_NUMERIC_KEYBOARD_TYPE_TIME	= 2
 E_NUMERIC_KEYBOARD_TYPE_IP		= 3
 
+# Input Keyboard Type
+E_INPUT_KEYBOARD_TYPE_NO_HIDE	= False
+E_INPUT_KEYBOARD_TYPE_HIDE		= True
+
 def getSingleFrequenceIndex( selectedItem ) :
 	for i in range( len ( E_LIST_SINGLE_FREQUENCY )	) :
 		if( selectedItem == int( E_LIST_SINGLE_FREQUENCY[ i ] ) ) :
@@ -167,6 +174,32 @@ def getOneCableTunerFrequencyIndex( selectedItem ) :
 			
 	return -1
 
+def NumericKeyboard( aKeyType, aTitle, aString, aMaxLength ) :
+	dialog = xbmcgui.Dialog( )
+	value = dialog.numeric( aKeyType, aTitle, aString )
+	if value == None or value == '' :
+		return aString
+
+	if len( value ) > aMaxLength :
+		value = value[ len ( value ) - aMaxLength :]
+	return value
+		
+
+def InputKeyboard( aType, aTitle, aString, aMaxLength ) :
+	dialog = xbmc.Keyboard( aString, aTitle, aType )
+	dialog.doModal( )
+	if( dialog.isConfirmed( ) ) :
+		value = dialog.getText( )
+		if value == None or value == '' :
+			return aString
+
+		if len( value ) > aMaxLength :
+			value = value[ len ( value ) - aMaxLength :]
+		return value
+		
+	else :
+		return aString
+		
 
 class FooterMask(object):
 	G_FOOTER_GROUP_STARTID				= 3100
@@ -186,6 +219,9 @@ class FooterMask(object):
 class HeaderDefine(object):
 	G_WINDOW_HEADER_LABEL_ID			= 3001
 	G_DIALOG_HEADER_LABEL_ID			= 3005
+
+
+
 	
 """
 G_FOOTER_ICON_EXIT_MASK			= 1 << 1,
