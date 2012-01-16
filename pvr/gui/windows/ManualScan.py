@@ -175,7 +175,7 @@ class ManualScan( SettingWindow ):
 			
 			self.AddEnumControl( E_SpinEx05, 'Network Search', None, 'Select Network Search' )
 			self.AddEnumControl( E_SpinEx06, 'Channel Search Mode',None, 'Select Channel Search Mode' )
-			self.AddLeftLabelButtonControl( E_Input03, 'Start Search', 'Start Search' )
+			self.AddInputControl( E_Input03, 'Start Search', '', 'Start Search' )
 
 			self.InitControl( )
 			

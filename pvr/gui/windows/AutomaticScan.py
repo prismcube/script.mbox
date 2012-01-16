@@ -138,7 +138,7 @@ class AutomaticScan( SettingWindow ):
 			self.AddInputControl( E_Input01, 'Satellite', self.mFormattedList[self.mSelectedSatelliteIndex], 'Select satellite' )
 			self.AddEnumControl( E_SpinEx01, 'Network Search', None, 'Network Search' )
 			self.AddEnumControl( E_SpinEx02, 'Channel Search Mode', None, 'Channel Search Mode' )
-			self.AddLeftLabelButtonControl( E_Input02, 'Start Search', 'Start Search' )
+			self.AddInputControl( E_Input02, 'Start Search', '','Start Search' )
 			self.InitControl( )
 
 		

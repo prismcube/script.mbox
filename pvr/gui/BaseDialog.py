@@ -42,8 +42,7 @@ class ControlItem:
 	E_SETTING_ENUM_CONTROL					= 1
 	E_SETTING_USER_ENUM_CONTROL				= 2
 	E_SETTING_INPUT_CONTROL					= 3
-	E_SETTING_LEFT_LABEL_BUTTON_CONTROL		= 4
-	E_SETTING_OK_CANCEL_BUTTON				= 5
+	E_SETTING_OK_CANCEL_BUTTON				= 4
 	
 
 	def __init__( self, aControlType, aControlId, aProperty, aListItems, aSelecteItem, aDescription ):	
@@ -80,9 +79,6 @@ class SettingDialog( BaseDialog ):
 				control = self.getControl( ctrlItem.mControlId + 3 )
 				control.addItems( ctrlItem.mListItems )
 				control.selectItem( ctrlItem.mSelecteItem )
-			elif ctrlItem.mControlType == ctrlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL :
-				control = self.getControl( ctrlItem.mControlId + 3 )
-				control.addItems( ctrlItem.mListItems )
 
 			if ctrlItem.mControlId == E_SETTING_DIALOG_OK :
 				self.getControl( ctrlItem.mControlId ).setPosition( 57, ( ( pos + 1 ) * 40 ) + 160 )
@@ -120,9 +116,9 @@ class SettingDialog( BaseDialog ):
 		listItems = []
 		for i in range( property.GetIndexCount() ):
 			if aTitleLabel == None :
-				listItem = xbmcgui.ListItem( property.GetName(), property.GetPropStringByIndex( i ), "-", "-", "-" )
+				listItem = xbmcgui.ListItem( property.GetName(), property.GetPropStringByIndex( i ) )
 			else :
-				listItem = xbmcgui.ListItem( aTitleLabel, property.GetPropStringByIndex( i ), "-", "-", "-" )
+				listItem = xbmcgui.ListItem( aTitleLabel, property.GetPropStringByIndex( i ) )
 			listItems.append( listItem )
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_ENUM_CONTROL, aControlId, property, listItems, None, aDescription ) )
 
@@ -131,23 +127,16 @@ class SettingDialog( BaseDialog ):
 		listItems = []
 
 		for i in range( len( aInputType ) ):
-			listItem = xbmcgui.ListItem( aTitleLabel, aInputType[i], "-", "-", "-" )
+			listItem = xbmcgui.ListItem( aTitleLabel, aInputType[i] )
 			listItems.append( listItem )
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_USER_ENUM_CONTROL, aControlId, None, listItems, int( aSelectItem ), aDescription ) )
 
 
 	def AddInputControl( self, aControlId , aTitleLabel, aInputLabel, aDescription=None ):
 		listItems = []
-		listItem = xbmcgui.ListItem( aTitleLabel, aInputLabel, "-", "-", "-" )
+		listItem = xbmcgui.ListItem( aTitleLabel, aInputLabel )
 		listItems.append( listItem )
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, aControlId, None, listItems, None, aDescription ) )
-
-
-	def AddLeftLabelButtonControl( self, aControlId, aInputString, aDescription=None ):
-		listItems = []
-		listItem = xbmcgui.ListItem( aInputString, '', "-", "-", "-" )
-		listItems.append( listItem )
-		self.mControlList.append( ControlItem( ControlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL, aControlId, None, listItems, None, aDescription ) )
 
 
 	def AddOkCanelButton( self ) :
@@ -159,7 +148,7 @@ class SettingDialog( BaseDialog ):
 		if aCtrlItem.mControlType == aCtrlItem.E_SETTING_ENUM_CONTROL or aCtrlItem.mControlType == aCtrlItem.E_SETTING_USER_ENUM_CONTROL :
 			if aCtrlItem.mControlId == aContgrolId or aCtrlItem.mControlId + 1 == aContgrolId or aCtrlItem.mControlId + 2 == aContgrolId or aCtrlItem.mControlId + 3 == aContgrolId  :
 				return True
-		elif aCtrlItem.mControlType == aCtrlItem.E_SETTING_INPUT_CONTROL or aCtrlItem.mControlType == aCtrlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL :
+		elif aCtrlItem.mControlType == aCtrlItem.E_SETTING_INPUT_CONTROL :
 			if aCtrlItem.mControlId == aContgrolId or aCtrlItem.mControlId + 1 == aContgrolId  or aCtrlItem.mControlId + 3 == aContgrolId :	
 				return True
 		else :
@@ -258,7 +247,7 @@ class SettingDialog( BaseDialog ):
 			ctrlItem = self.mControlList[i]		
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
-					return self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).setLabel2( aLabel )
+					self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).setLabel2( aLabel )
 
 		return -1
 
@@ -271,7 +260,7 @@ class SettingDialog( BaseDialog ):
 			ctrlItem = self.mControlList[i]		
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
-					return self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).setLabel( aLabel )
+					self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).setLabel( aLabel )
 
 		return -1
 
@@ -287,7 +276,7 @@ class SettingDialog( BaseDialog ):
 				if ctrlItem.mControlId == aContgrolId or ctrlItem.mControlId + 1 == aContgrolId or ctrlItem.mControlId + 2 == aContgrolId or ctrlItem.mControlId + 3 == aContgrolId :
 					return ctrlItem.mControlId
 
-			elif ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL or ctrlItem.mControlType == ctrlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL :
+			elif ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
 				if ctrlItem.mControlId == aContgrolId or ctrlItem.mControlId + 1 == aContgrolId  or ctrlItem.mControlId + 3 == aContgrolId :	
 					return ctrlItem.mControlId
 			else :
