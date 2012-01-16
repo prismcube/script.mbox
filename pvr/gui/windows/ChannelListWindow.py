@@ -157,6 +157,7 @@ class ChannelListWindow(BaseWindow):
 		self.mDeleteList = []
 		self.mSkipList = []
 		self.mLockList = []
+		self.mEditChannelList = []
 
 
 		#initialize get channel list
@@ -348,7 +349,7 @@ class ChannelListWindow(BaseWindow):
 						self.SetChannelTune()
 
 				except Exception, e:
-					LOG_TRACE( '============except[%s]'% e )
+					LOG_TRACE( 'Error except[%s]'% e )
 
 			else :
 				self.SetChannelTune()
@@ -376,6 +377,7 @@ class ChannelListWindow(BaseWindow):
 				self.close()
 
 			else :
+				self.SaveEditList()
 				self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
 				self.mCtrlListCHList.reset()
 				self.InitSlideMenuHeader()
@@ -434,6 +436,9 @@ class ChannelListWindow(BaseWindow):
 					self.mCtrlListCHList.reset()
 					self.InitChannelList()
 
+					#copy channel list, use to edit
+					self.mEditChannelList = self.mChannelList
+
 					#clear label
 					self.ResetLabel()
 					self.UpdateLabelInfo()
@@ -445,31 +450,61 @@ class ChannelListWindow(BaseWindow):
 		elif aControlId == E_CTRL_BTN_FOOTER06:
 			LOG_TRACE( 'onclick footer Opt' )
 
-			#idx = self.mCtrlListCHList.getSelectedPosition()
-
-
-			"""
-			#lock test
-			#self.MarkAddDelete('lock', idx)
-			self.SetMarkDeleteCh('lock')
-			self.mMarkList=[]
-
-			GuiLock2( True )
-			self.setFocusId( self.mCtrlGropCHList.getId() )
-			GuiLock2( False )
-			"""
 			try:
-				label1 = self.mCtrlListCHList.getSelectedItem().getLabel()
-				label2 = re.findall('\](.*)\[', label1)
-				label3 = re.split(' ', label2[0])
+				#dialog title
+				#select one or one marked : title = channel name
+				#select two more : title = 'Edit Channel'
+				if len(self.mMarkList) > 1 :
+					label3 = 'Edit Channel'
 
+				else :
+					if len(self.mMarkList) == 1 :
+						idx = self.mMarkList[0]
+						self.mCtrlListCHList.selectItem(idx)
+						xbmc.sleep(20)
+
+					label1 = self.mCtrlListCHList.getSelectedItem().getLabel()
+					label2 = re.findall('\](.*)\[', label1)
+					label3 = label2[0][5:]
+
+				self.mListFavorite = []
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_EDIT_CHANNEL_LIST )
-				dialog.SetValue( FLAG_OPT_LIST, label3[1], self.mListFavorite )
+				dialog.SetValue( FLAG_OPT_LIST, label3, self.mListFavorite )
 	 			dialog.doModal()
 
 				idxDialog, idxFavorite, isOkDialog = dialog.GetValue()
-
 				LOG_TRACE( '======= idxDialog[%s] idxFavorite[%s] isOkDialog[%s]'% (idxDialog, idxFavorite, isOkDialog) )
+
+
+				if idxDialog == E_DialogInput01 :
+					self.SetMarkDeleteCh( 'lock', True )
+					self.mMarkList = []
+
+				elif idxDialog == E_DialogInput02 :
+					self.SetMarkDeleteCh( 'lock', False )
+					self.mMarkList = []
+
+				elif idxDialog == E_DialogInput03 :
+					self.SetMarkDeleteCh('skip', True)
+
+				elif idxDialog == E_DialogInput04 :
+					self.SetMarkDeleteCh('skip', False)
+
+				elif idxDialog == E_DialogInput05 :
+					self.SetMarkDeleteCh('delete', True)
+
+				elif idxDialog == E_DialogInput06 :
+					self.SetMarkDeleteCh('delete', False)
+
+				GuiLock2( True )
+				self.setFocusId( self.mCtrlGropCHList.getId() )
+				GuiLock2( False )
+
+				LOG_TRACE( 'ret=======MarkList[%s]'% self.mMarkList )
+				LOG_TRACE( 'ret=======mDeleteList[%s]'% self.mDeleteList )
+				LOG_TRACE( 'ret=======mSkipList[%s]'% self.mSkipList )
+				LOG_TRACE( 'ret=======mLockList[%s]'% self.mLockList )
+
 
 			except Exception, e:
 				LOG_TRACE( 'Error except[%s]'% e )
@@ -490,6 +525,17 @@ class ChannelListWindow(BaseWindow):
 	 			dialog.doModal()
 
 				idxDialog, idxFavorite, isOkDialog = dialog.GetValue()
+
+				if idxDialog == E_DialogInput01 :
+					#create new group
+					pass
+				elif idxDialog == E_DialogInput02 :
+					#rename group
+					pass
+				elif idxDialog == E_DialogInput03 :
+					#delete group
+					pass
+
 
 				LOG_TRACE( '======= idxDialog[%s] idxFavorite[%s] isOkDialog[%s]'% (idxDialog, idxFavorite, isOkDialog) )
 
@@ -621,8 +667,11 @@ class ChannelListWindow(BaseWindow):
 
 			elif aMenuIndex == 3 :
 				self.mZappingMode = ElisEnum.E_MODE_FAVORITE
-				for itemClass in self.mListFavorite:
-					testlistItems.append( xbmcgui.ListItem(itemClass.mGroupName) )
+				if self.mListFavorite :
+					for itemClass in self.mListFavorite:
+						testlistItems.append( xbmcgui.ListItem(itemClass.mGroupName) )
+				else:
+					testlistItems.append( xbmcgui.ListItem( Msg.Strings(MsgId.LANG_NONE) ) )
 
 			if testlistItems != [] :
 				#submenu update
@@ -697,12 +746,14 @@ class ChannelListWindow(BaseWindow):
 
 
 			elif aMenuIndex == ElisEnum.E_MODE_FAVORITE:
-				idx_Favorite = self.mCtrlListSubmenu.getSelectedPosition()
-				item = self.mListFavorite[idx_Favorite]
-				retPass = self.GetChannelList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, 0, 0, 0, item.mGroupName )
-
-				LOG_TRACE( 'cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s]'% ( idx_Favorite, item.mGroupName ) )
-				ClassToList( 'print', self.mChannelList )
+				if self.mListFavorite : 
+					idx_Favorite = self.mCtrlListSubmenu.getSelectedPosition()
+					item = self.mListFavorite[idx_Favorite]
+					retPass = self.GetChannelList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, 0, 0, 0, item.mGroupName )
+					LOG_TRACE( 'cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s]'% ( idx_Favorite, item.mGroupName ) )
+					ClassToList( 'print', self.mChannelList )
+				else:
+					LOG_TRACE( 'cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s]'% ( idx_Favorite, self.mListFavorite ) )
 
 			if retPass == False :
 				return
@@ -879,7 +930,7 @@ class ChannelListWindow(BaseWindow):
 				label1 = EnumToString( 'mode', self.mZappingMode )
 				label2 = self.mCtrlListSubmenu.getSelectedItem().getLabel()
 
-				head =  Msg.Strings( MsgId.LANG_TO_CHANGE_ZAPPING_MODE )
+				head =  Msg.Strings( MsgId.LANG_SETTING_TO_CHANGE_ZAPPING_MODE )
 				line1 = '%s / %s'% ( label1.title(), label2.title() )
 				line2 = Msg.Strings( MsgId.LANG_DO_YOU_WANT_TO_SAVE_CHANNELS )
 
@@ -920,7 +971,43 @@ class ChannelListWindow(BaseWindow):
 		LOG_TRACE( 'Leave' )
 
 
-	def InitSlideMenuHeader(self) :
+	def SaveEditList( self ) :
+		LOG_TRACE( 'Enter' )
+
+		#is change?
+		isSetted = len(self.mLockList) + len(self.mSkipList) + len(self.mDeleteList)
+		if isSetted > 0 :
+
+			#ask save question
+			head =  Msg.Strings( MsgId.LANG_CONFIRM )
+			line1 = Msg.Strings( MsgId.LANG_DO_YOU_WANT_TO_SAVE_CHANNELS )
+
+			ret = xbmcgui.Dialog().yesno(head, line1)
+
+			#answer is yes
+			if ret :
+				for idx in self.mLockList :
+					retList = []
+					retList.append( self.mEditChannelList[idx] )
+					ret = self.mCommander.Channel_Lock( True, retList )
+					LOG_TRACE( '======= setLock idx[%s] ret[%s]'% (idx,ret) )
+
+				for idx in self.mSkipList :
+					retList = []
+					retList.append( self.mEditChannelList[idx] )
+					ret = self.mCommander.Channel_Skip( True, retList )
+					LOG_TRACE( '======= setSkip idx[%s] ret[%s]'% (idx,ret) )
+
+				for idx in self.mDeleteList :
+					retList = []
+					retList.append( self.mEditChannelList[idx] )
+					ret = self.mCommander.Channel_Delete( retList )
+					LOG_TRACE( '======= setDelete idx[%s] ret[%s]'% (idx,ret) )
+
+
+		LOG_TRACE( 'Leave' )
+
+	def InitSlideMenuHeader( self ) :
 		LOG_TRACE( 'Enter' )
 
 		ret = xbmc.getLanguage()
@@ -958,8 +1045,8 @@ class ChannelListWindow(BaseWindow):
 			#footer init
 			self.mCtrlFooter2.setVisible( True )
 			self.mCtrlFooter3.setVisible( False )
-			self.mCtrlFooter4.setVisible( True  )
-			self.mCtrlFooter5.setVisible( False  )
+			self.mCtrlFooter4.setVisible( True )
+			self.mCtrlFooter5.setVisible( False )
 			self.mCtrlFooter6.setVisible( True )
 
 			return
@@ -1004,8 +1091,8 @@ class ChannelListWindow(BaseWindow):
 
 		#sort list, This is fixed
 		self.mListAllChannel = []
-		self.mListAllChannel.append( 'All Channel by Number' )
-		self.mListAllChannel.append( 'All Channel by Alphabet' )
+		self.mListAllChannel.append( Msg.Strings(MsgId.LANG_ALL_CHANNEL_BY_NUMBER) )
+		self.mListAllChannel.append( Msg.Strings(MsgId.LANG_ALL_CHANNEL_BY_ALPHABET) )
 		self.mListAllChannel.append( 'All Channel by HD/SD' )
 		LOG_TRACE( 'mListAllChannel[%s]'% self.mListAllChannel )
 
@@ -1443,70 +1530,31 @@ class ChannelListWindow(BaseWindow):
 		LOG_TRACE( 'Leave' )
 
 
-
-	def SetMarkDeleteCh( self, aMode ) :
+	@GuiLock
+	def SetMarkDeleteCh( self, aMode, aEnabled=True ) :
 		LOG_TRACE( 'Enter' )
 
 		lastPos = self.mCtrlListCHList.getSelectedPosition()
 
 		try:
 			#----------------> 1.set current position item <-------------
-
-			#icon toggle
-			if aMode.lower() == 'lock' :
-				listItem = self.mCtrlListCHList.getListItem(lastPos)
-
-				#lock toggle: disable
-				if listItem.getProperty('lock') == E_IMG_ICON_LOCK :
-					listItem.setProperty('lock', '')
-
-				#lock toggle: enable
-				else :
-					listItem.setProperty('lock', E_IMG_ICON_LOCK)
-
-				#mark toggle: disable
-				if listItem.getProperty('mark') == E_IMG_ICON_MARK :
-					listItem.setProperty('mark', '')
-
-
-			#label color
-			else :
-				#remove tag [COLOR ...]label[/COLOR]
-				label1 = self.mCtrlListCHList.getSelectedItem().getLabel()
-				label2 = re.findall('\](.*)\[', label1)
-
-				if aMode.lower() == 'delete' :
-					label3= str('%s%s%s'%( E_TAG_COLOR_RED, label2[0], E_TAG_COLOR_END ) )
-				elif aMode.lower() == 'skip' :
-					label3= str('%s%s%s'%( E_TAG_COLOR_GREY3, label2[0], E_TAG_COLOR_END ) )
-				elif aMode.lower() == 'recovery' :
-					label3= str('%s%s%s'%( E_TAG_COLOR_GREY, label2[0], E_TAG_COLOR_END ) )
-
-				self.mCtrlListCHList.getSelectedItem().setLabel(label3)
-
-
-
-
-			#----------------> 2.set mark list all <-------------
-			for idx in self.mMarkList :
-				self.mCtrlListCHList.selectItem(idx)
-				xbmc.sleep(50)
-
+			if len(self.mMarkList) < 1 :
 				#icon toggle
 				if aMode.lower() == 'lock' :
-					listItem = self.mCtrlListCHList.getListItem(idx)
+					listItem = self.mCtrlListCHList.getListItem(lastPos)
 
-					#lock toggle: disable
-					if listItem.getProperty('lock') == E_IMG_ICON_LOCK :
+					if aEnabled :
+						#enable lock
+						listItem.setProperty('lock', E_IMG_ICON_LOCK)
+					else :
+						#disible lock
 						listItem.setProperty('lock', '')
 
-					#lock toggle: enable
-					else :
-						listItem.setProperty('lock', E_IMG_ICON_LOCK)
+					self.MarkAddDelete( 'lock', lastPos, aEnabled )
 
-					#mark toggle: disable
-					if listItem.getProperty('mark') == E_IMG_ICON_MARK :
-						listItem.setProperty('mark', '')
+					#mark remove
+					listItem.setProperty('mark', '')
+
 
 				#label color
 				else :
@@ -1515,17 +1563,71 @@ class ChannelListWindow(BaseWindow):
 					label2 = re.findall('\](.*)\[', label1)
 
 					if aMode.lower() == 'delete' :
-						label3= str('%s%s%s'%( E_TAG_COLOR_RED, label2[0], E_TAG_COLOR_END ) )
+						if aEnabled :
+							label3= str('%s%s%s'%( E_TAG_COLOR_RED, label2[0], E_TAG_COLOR_END ) )
+						else :
+							label3= str('%s%s%s'%( E_TAG_COLOR_GREY, label2[0], E_TAG_COLOR_END ) )
+						self.mCtrlListCHList.getSelectedItem().setLabel(label3)
+						self.MarkAddDelete( 'delete', lastPos, aEnabled )
+
 					elif aMode.lower() == 'skip' :
-						label3= str('%s%s%s'%( E_TAG_COLOR_GREY3, label2[0], E_TAG_COLOR_END ) )
-					elif aMode.lower() == 'recovery' :
-						label3= str('%s%s%s'%( E_TAG_COLOR_GREY, label2[0], E_TAG_COLOR_END ) )
+						if aEnabled :
+							label3= str('%s%s%s'%( E_TAG_COLOR_GREY3, label2[0], E_TAG_COLOR_END ) )
+						else :
+							label3= str('%s%s%s'%( E_TAG_COLOR_GREY, label2[0], E_TAG_COLOR_END ) )
+						self.mCtrlListCHList.getSelectedItem().setLabel(label3)
+						self.MarkAddDelete( 'skip', lastPos, aEnabled )
+
+			else :
+				#----------------> 2.set mark list all <-------------
+				for idx in self.mMarkList :
+					self.mCtrlListCHList.selectItem(idx)
+					xbmc.sleep(50)
+
+					#icon toggle
+					if aMode.lower() == 'lock' :
+						listItem = self.mCtrlListCHList.getListItem(idx)
+
+						#lock toggle: disable
+						if aEnabled :
+							listItem.setProperty('lock', E_IMG_ICON_LOCK)
+						else :
+							listItem.setProperty('lock', '')
+
+						self.MarkAddDelete( 'lock', idx, aEnabled )
+
+						#mark remove
+						listItem.setProperty('mark', '')
+
+					#label color
+					else :
+						#strip tag [COLOR ...]label[/COLOR]
+						label1 = self.mCtrlListCHList.getSelectedItem().getLabel()
+						label2 = re.findall('\](.*)\[', label1)
+
+						if aMode.lower() == 'delete' :
+							if aEnabled :
+								label3= str('%s%s%s'%( E_TAG_COLOR_RED, label2[0], E_TAG_COLOR_END ) )
+							else :
+								label3= str('%s%s%s'%( E_TAG_COLOR_GREY, label2[0], E_TAG_COLOR_END ) )
+							self.mCtrlListCHList.getSelectedItem().setLabel(label3)
+							self.MarkAddDelete( 'delete', idx, aEnabled )
+
+							LOG_TRACE( 'idx[%s] 1%s 2%s 3%s'% (idx, label1,label2,label3) )
+
+						elif aMode.lower() == 'skip' :
+							if aEnabled :
+								label3= str('%s%s%s'%( E_TAG_COLOR_GREY3, label2[0], E_TAG_COLOR_END ) )
+							else :
+								label3= str('%s%s%s'%( E_TAG_COLOR_GREY, label2[0], E_TAG_COLOR_END ) )
+							self.mCtrlListCHList.getSelectedItem().setLabel(label3)
+							self.MarkAddDelete( 'skip', idx, aEnabled )
+
+							LOG_TRACE( 'idx[%s] 1%s 2%s 3%s'% (idx, label1,label2,label3) )
 
 
-					self.mCtrlListCHList.getSelectedItem().setLabel(label3)
-					LOG_TRACE( 'idx[%s] 1%s 2%s 3%s'% (idx, label1,label2,label3) )
-
-					self.mCtrlListCHList.selectItem(lastPos)
+				#recovery last focus
+				self.mCtrlListCHList.selectItem(lastPos)
 
 
 		except Exception, e:
@@ -1533,7 +1635,7 @@ class ChannelListWindow(BaseWindow):
 
 		LOG_TRACE( 'Leave' )
 
-	def MarkAddDelete( self, aMode, aPos ) :
+	def MarkAddDelete( self, aMode, aPos, aEnabled=True ) :
 		LOG_TRACE( 'Enter' )
 
 
@@ -1570,16 +1672,20 @@ class ChannelListWindow(BaseWindow):
 			idx = 0
 			isExist = False
 
-			#aready mark is mark delete
+			#aready exist check, do not append
 			for i in self.mDeleteList :
 				if i == aPos :
-					self.mDeleteList.pop(idx)
 					isExist = True
+					break
 				idx += 1
 
-			#do not exist is append mark
-			if isExist == False : 
-				self.mDeleteList.append( aPos )		
+			if aEnabled :
+				#delete, append item when not exist
+				if isExist == False : 
+					self.mDeleteList.append( aPos )
+			else :
+				#undelete, remove item
+				self.mDeleteList.pop(idx)
 
 		elif aMode.lower() == 'skip' :
 			idx = 0
@@ -1588,13 +1694,17 @@ class ChannelListWindow(BaseWindow):
 			#aready mark is mark delete
 			for i in self.mSkipList :
 				if i == aPos :
-					self.mSkipList.pop(idx)
 					isExist = True
+					break
 				idx += 1
 
-			#do not exist is append mark
-			if isExist == False : 
-				self.mSkipList.append( aPos )		
+			if aEnabled :
+				#skip, append item when not exist
+				if isExist == False : 
+					self.mSkipList.append( aPos )
+			else :
+				#unskip, remove item
+				self.mSkipList.pop(idx)
 
 		elif aMode.lower() == 'lock' :
 			idx = 0
@@ -1603,32 +1713,23 @@ class ChannelListWindow(BaseWindow):
 			#aready mark is mark delete
 			for i in self.mLockList :
 				if i == aPos :
-					self.mLockList.pop(idx)
 					isExist = True
+					break
 				idx += 1
 
-			#do not exist is append mark
-			if isExist == False : 
-				self.mLockList.append( aPos )		
-
-
-			"""
-			listItem = self.mCtrlListCHList.getListItem(aPos)
-
-			#lock toggle: disable
-			if listItem.getProperty('lock') == E_IMG_ICON_LOCK :
-				listItem.setProperty('lock', '')
-
-			#lock toggle: enable
+			if aEnabled :
+				#Lock, append item when not exist
+				if isExist == False : 
+					self.mLockList.append( aPos )		
 			else :
-				listItem.setProperty('lock', E_IMG_ICON_LOCK)
-			"""
+				#unLock, remove item
+				self.mLockList.pop(idx)
 
 
-		LOG_TRACE( '=======MarkList[%s]'% self.mMarkList )
-		LOG_TRACE( '=======mDeleteList[%s]'% self.mDeleteList )
-		LOG_TRACE( '=======mSkipList[%s]'% self.mSkipList )
-		LOG_TRACE( '=======mLockList[%s]'% self.mLockList )
+		LOG_TRACE( 'MarkList[%s]'% self.mMarkList )
+		LOG_TRACE( 'mDeleteList[%s]'% self.mDeleteList )
+		LOG_TRACE( 'mSkipList[%s]'% self.mSkipList )
+		LOG_TRACE( 'mLockList[%s]'% self.mLockList )
 
 		LOG_TRACE( 'Leave' )
 

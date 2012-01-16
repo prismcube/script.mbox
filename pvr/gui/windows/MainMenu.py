@@ -19,7 +19,7 @@ BUTTON_ID_ANTENNA_SETUP			= 90102
 BUTTON_ID_CHANNEL_SEARCH		= 90103
 BUTTON_ID_EDIT_SATELLITE		= 90104
 BUTTON_ID_EDIT_TRANSPONDER		= 90105
-BUTTION_ID_CONFIGURE			= 90106
+BUTTON_ID_CONFIGURE				= 90106
 BUTTON_ID_CAS					= 90107
 
 
@@ -61,6 +61,9 @@ class MainMenu( BaseWindow ):
 		elif aControlId == BUTTON_ID_FIRSTINSTALLATION : # First Installation
 			pass
 
+		elif aControlId == BUTTON_ID_INSTALLATION :
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_INSTALLATION )
+
 		elif aControlId == BUTTON_ID_ANTENNA_SETUP : # Antenna Setup
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
 
@@ -73,17 +76,21 @@ class MainMenu( BaseWindow ):
 		elif aControlId == BUTTON_ID_EDIT_TRANSPONDER : # Edit TransPonder
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_EDIT_TRANSPONDER )
 
-		elif aControlId == BUTTION_ID_CONFIGURE : # Config
+		elif aControlId == BUTTON_ID_CONFIGURE : # Config
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIGURE )
 
 		elif aControlId == BUTTON_ID_CAS : # CAS
 			#ToDO
 			pass
+
 		elif aControlId == BUTTON_ID_CHANNEL_LIST : #Channel List
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
 		elif aControlId == BUTTON_ID_ARCHIVE :
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+
+		elif aControlId == BUTTON_ID_SYSTEM_INFO :
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_SYSTEM_INFO )
 
 		
 		elif aControlId == 20 :

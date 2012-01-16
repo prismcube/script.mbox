@@ -56,7 +56,7 @@
 	<string id="553">NONE_All Channel by Alphabet</string>
 	<string id="554">NONE_No channels</string>
 	<string id="555">Zp?t</string>
-	<string id="556">NONE_to change zapping mode</string>
+	<string id="556">NONE_Setting - to change zapping mode</string>
 	<string id="557">Heslo</string>
 	<string id="558">Zadat heslo</string>
 	<string id="559">Aktualni heslo</string>
@@ -64,4 +64,20 @@
 	<string id="561">stanovit nove heslo</string>
 	<string id="562">aby se stanovilo nove heslo</string>
 	<string id="563">Zadane heslo nesouhlasi!</string>
+	<string id="564">Potvrdit</string>
+	<string id="566">NONE_Lock</string>
+	<string id="567">NONE_Unlock</string>
+	<string id="568">NONE_Skip</string>
+	<string id="569">NONE_Unskip</string>
+	<string id="570">NONE_Delete</string>
+	<string id="571">NONE_Undelete</string>
+	<string id="572">NONE_Move</string>
+	<string id="573">NONE_Create New Group</string>
+	<string id="574">NONE_Rename Fav. Group</string>
+	<string id="575">NONE_Delete Fav. Group</string>
+	<string id="576">NONE_Add to Fav. Group</string>
+	<string id="577">NONE_Add OK</string>
+	<string id="578">NONE_Rename OK</string>
+	<string id="579">NONE_Delete OK</string>
+	<string id="580">NONE_None</string>
 </strings>

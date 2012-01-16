@@ -56,7 +56,7 @@
 	<string id="553">Tous les  chaines par ordre</string>
 	<string id="554">Pas de chaines</string>
 	<string id="555">Retour</string>
-	<string id="556">NONE_to change zapping mode</string>
+	<string id="556">NONE_Setting - to change zapping mode</string>
 	<string id="557">Mot de passe</string>
 	<string id="558">Entrer le mot de passe</string>
 	<string id="559">Mot de passe actuel</string>
@@ -64,4 +64,20 @@
 	<string id="561">Definir un nouveau mot de passe</string>
 	<string id="562">pour definir un nouveau mot de passe</string>
 	<string id="563">Le mot de passe entre ne correspond pas !</string>
+	<string id="564">Confirmer</string>
+	<string id="566">Verrouiller</string>
+	<string id="567">Deverrouiller</string>
+	<string id="568">Passer</string>
+	<string id="569">Ne pas sauter</string>
+	<string id="570">Supprimer</string>
+	<string id="571">NONE_Undelete</string>
+	<string id="572">NONE_Move</string>
+	<string id="573">Creer un nouveau groupe</string>
+	<string id="574">Renommer un groupe de favoris</string>
+	<string id="575">Supprimer un groupe de favoris</string>
+	<string id="576">Ajouter au groupe de favoris</string>
+	<string id="577">NONE_Add OK</string>
+	<string id="578">NONE_Rename OK</string>
+	<string id="579">NONE_Delete OK</string>
+	<string id="580">Aucun</string>
 </strings>

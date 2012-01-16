@@ -33,6 +33,8 @@ WIN_ID_CHANNEL_EDIT_WINDOW			= 20
 WIN_ID_EDIT_SATELLITE				= 21
 WIN_ID_EDIT_TRANSPONDER				= 22
 WIN_ID_ARCHIVE_WINDOW				= 23
+WIN_ID_SYSTEM_INFO					= 24
+WIN_ID_INSTALLATION					= 25
 
 
 gWindowMgr = None
@@ -98,6 +100,10 @@ class WindowMgr(object):
 				from pvr.gui.windows.Configure import Configure	
 				Configure('Configure.xml', self.mScriptDir).doModal()
 
+			elif aWindowId ==  WIN_ID_INSTALLATION:
+				from pvr.gui.windows.Installation import Installation	
+				Installation('Installation.xml', self.mScriptDir).doModal()
+
 			elif aWindowId ==  WIN_ID_ANTENNA_SETUP:
 				from pvr.gui.windows.AntennaSetup import AntennaSetup
 				AntennaSetup('AntennaSetup.xml', self.mScriptDir).doModal()
@@ -162,7 +168,10 @@ class WindowMgr(object):
 				#from pvr.gui.windows.channeleditwindow import ChannelEditWindow
 				#ChannelEditWindow('channeleditwindow.xml', self.mScriptDir )
 				pass
-			
+
+			elif aWindowId ==  WIN_ID_SYSTEM_INFO:
+				from pvr.gui.windows.SystemInfo import SystemInfo
+				SystemInfo('SystemInfo.xml', self.mScriptDir ).doModal()
 
 			elif aWindowId ==  WIN_ID_ARCHIVE_WINDOW:
 				from pvr.gui.windows.ArchiveWindow import ArchiveWindow
