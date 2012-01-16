@@ -450,20 +450,10 @@ class ChannelListWindow(BaseWindow):
 		elif aControlId == E_CTRL_BTN_FOOTER06:
 			LOG_TRACE( 'onclick footer Opt' )
 
-			#idx = self.mCtrlListCHList.getSelectedPosition()
-
-
-			"""
-			#lock test
-			#self.MarkAddDelete('lock', idx)
-			self.SetMarkDeleteCh('lock')
-			self.mMarkList=[]
-
-			GuiLock2( True )
-			self.setFocusId( self.mCtrlGropCHList.getId() )
-			GuiLock2( False )
-			"""
 			try:
+				#dialog title
+				#select one or one marked : title = channel name
+				#select two more : title = 'Edit Channel'
 				if len(self.mMarkList) > 1 :
 					label3 = 'Edit Channel'
 
@@ -477,7 +467,7 @@ class ChannelListWindow(BaseWindow):
 					label2 = re.findall('\](.*)\[', label1)
 					label3 = label2[0][5:]
 
-
+				self.mListFavorite = []
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_EDIT_CHANNEL_LIST )
 				dialog.SetValue( FLAG_OPT_LIST, label3, self.mListFavorite )
 	 			dialog.doModal()
@@ -535,6 +525,17 @@ class ChannelListWindow(BaseWindow):
 	 			dialog.doModal()
 
 				idxDialog, idxFavorite, isOkDialog = dialog.GetValue()
+
+				if idxDialog == E_DialogInput01 :
+					#create new group
+					pass
+				elif idxDialog == E_DialogInput02 :
+					#rename group
+					pass
+				elif idxDialog == E_DialogInput03 :
+					#delete group
+					pass
+
 
 				LOG_TRACE( '======= idxDialog[%s] idxFavorite[%s] isOkDialog[%s]'% (idxDialog, idxFavorite, isOkDialog) )
 
@@ -666,8 +667,11 @@ class ChannelListWindow(BaseWindow):
 
 			elif aMenuIndex == 3 :
 				self.mZappingMode = ElisEnum.E_MODE_FAVORITE
-				for itemClass in self.mListFavorite:
-					testlistItems.append( xbmcgui.ListItem(itemClass.mGroupName) )
+				if self.mListFavorite :
+					for itemClass in self.mListFavorite:
+						testlistItems.append( xbmcgui.ListItem(itemClass.mGroupName) )
+				else:
+					testlistItems.append( xbmcgui.ListItem( Msg.Strings(MsgId.LANG_NONE) ) )
 
 			if testlistItems != [] :
 				#submenu update
@@ -742,12 +746,14 @@ class ChannelListWindow(BaseWindow):
 
 
 			elif aMenuIndex == ElisEnum.E_MODE_FAVORITE:
-				idx_Favorite = self.mCtrlListSubmenu.getSelectedPosition()
-				item = self.mListFavorite[idx_Favorite]
-				retPass = self.GetChannelList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, 0, 0, 0, item.mGroupName )
-
-				LOG_TRACE( 'cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s]'% ( idx_Favorite, item.mGroupName ) )
-				ClassToList( 'print', self.mChannelList )
+				if self.mListFavorite : 
+					idx_Favorite = self.mCtrlListSubmenu.getSelectedPosition()
+					item = self.mListFavorite[idx_Favorite]
+					retPass = self.GetChannelList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, 0, 0, 0, item.mGroupName )
+					LOG_TRACE( 'cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s]'% ( idx_Favorite, item.mGroupName ) )
+					ClassToList( 'print', self.mChannelList )
+				else:
+					LOG_TRACE( 'cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s]'% ( idx_Favorite, self.mListFavorite ) )
 
 			if retPass == False :
 				return

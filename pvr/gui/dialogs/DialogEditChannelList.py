@@ -128,6 +128,7 @@ class DialogEditChannelList( SettingDialog ) :
 				self.AddInputControl( E_DialogInput08, '', Msg.Strings( MsgId.LANG_ADD_OK ) )
 			else :
 				self.AddInputControl( E_DialogInput08, Msg.Strings( MsgId.LANG_ADD_TO_FAV ), Msg.Strings( MsgId.LANG_NONE ) )
+				self.SetEnableControl( E_DialogInput08, False )
 
 
 		elif self.mMode == FLAG_OPT_GROUP :
