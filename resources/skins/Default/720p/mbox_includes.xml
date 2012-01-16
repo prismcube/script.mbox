@@ -4234,10 +4234,7 @@
 
 	<include name="DefaultCommonArchiveView">
 		<control type="group">
-			<!--
-			<visible>Control.IsVisible(3400)</visible>
-			-->
-			<visible>false</visible>			
+			<visible>substring(Window.Property(ViewMode),common)</visible>
 			<include>VisibleFadeEffect</include>
 			<control type="list" id="3400">
 				<posx>75</posx>
@@ -4251,7 +4248,7 @@
 				<viewtype label="535">list</viewtype>
 				<pagecontrol>3401</pagecontrol>
 				<scrolltime>200</scrolltime>
-				<visible>true</visible>
+				<visible>substring(Window.Property(ViewMode),common)</visible>
 				<itemlayout height="70" width="610">
 					<control type="image">
 						<posx>0</posx>
@@ -4337,7 +4334,7 @@
 						<width>720</width>
 						<height>71</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
-						<visible>!Control.HasFocus(3400)</visible>
+						<visible>!Control.HasFocus(3400)+substring(Window.Property(ViewMode),common)</visible>
 						<include>VisibleFadeEffect</include>
 					</control>
 					<control type="image">
@@ -4346,7 +4343,9 @@
 						<width>730</width>
 						<height>71</height>
 						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
-						<visible>Control.HasFocus(3400)</visible>
+						<!--
+						<visible>Control.HasFocus(3400)+substring(Window.Property(ViewMode),common)</visible>
+						-->
 						<include>VisibleFadeEffect</include>
 					</control>
 
@@ -4356,9 +4355,8 @@
 						<width>200</width>
 						<height>61</height>
 						<texture border="0,0,14,0">confluence/MediaItemDetailBG.png</texture>
-						<visible>Control.HasFocus(3400)</visible>
 						<!--
-						<visible>Control.HasFocus(3400) + !IsEmpty(ListItem.Label2)</visible>
+						<visible>Control.HasFocus(3400)+substring(Window.Property(ViewMode),common)</visible>
 						-->
 					</control>
 
@@ -4431,7 +4429,7 @@
 						<height>16</height>
 						<texture>$INFO[ListItem.Overlay]</texture>
 						<!--
-						<visible>Window.IsVisible(VideoLibrary) | Window.IsVisible(VideoFiles)</visible>
+						<visible>substring(Window.Property(ViewMode),common)</visible>
 						-->
 					</control>
 				</focusedlayout>
@@ -4450,12 +4448,12 @@
 				<onright>100</onright>
 				<showonepage>false</showonepage>
 				<orientation>vertical</orientation>
-				<visible>Control.IsVisible(3400)</visible>
+				<visible>Control.IsVisible(3400) + substring(Window.Property(ViewMode),common)</visible>
 			</control>
 			<control type="group">
 				<posx>850</posx>
 				<posy>100</posy>
-				<visible>Control.IsVisible(3400)</visible>
+				<visible>Control.IsVisible(3400)+substring(Window.Property(ViewMode),common)</visible>
 				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
@@ -4480,25 +4478,24 @@
 		</control>
 	</include>
 
-
 	<include name="DefaultThumbnailArchiveView">
 		<control type="group">
-			<visible>Control.IsVisible(3400)</visible>
+			<visible>substring(Window.Property(ViewMode),thumbnail)</visible>
 			<include>VisibleFadeEffect</include>
 			<control type="panel" id="3400">
 				<posx>90</posx>
 				<posy>80</posy>
 				<width>1080</width>
 				<height>550</height>
-				<onleft>2</onleft>
-				<onright>60</onright>
+				<onleft>100</onleft>
+				<onright>3401</onright>
 				<onup>3400</onup>
 				<ondown>3400</ondown>
 				<viewtype label="21371">list</viewtype>
 				<pagecontrol>60</pagecontrol>
 				<scrolltime>200</scrolltime>
 				<preloaditems>2</preloaditems>
-				<visible>true</visible>
+				<visible>substring(Window.Property(ViewMode),thumbnail)</visible>
 				<itemlayout height="275" width="270">
 					<control type="image">
 						<posx>1</posx>
@@ -4508,7 +4505,7 @@
 						<bordertexture border="5">button-nofocus.png</bordertexture>
 						<bordersize>5</bordersize>
 						<fadetime>100</fadetime>
-						<texture background="true">$INFO[Listitem.Icon]</texture>
+						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
 					<control type="label">
 						<posx>135</posx>
@@ -4540,7 +4537,7 @@
 						<bordertexture border="5">folder-focus.png</bordertexture>
 						<bordersize>5</bordersize>
 						<fadetime>100</fadetime>
-						<texture background="true">$INFO[Listitem.Icon]</texture>
+						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
 					<control type="label">
 						<posx>135</posx>
@@ -4564,7 +4561,7 @@
 					</control>
 				</focusedlayout>
 			</control>
-			<control type="scrollbar" id="3402">
+			<control type="scrollbar" id="3401">
 				<posx>1170</posx>
 				<posy>80</posy>
 				<width>25</width>
@@ -4578,10 +4575,9 @@
 				<onright>2</onright>
 				<showonepage>false</showonepage>
 				<orientation>vertical</orientation>
-				<visible>Control.IsVisible(500)</visible>
+				<visible>Control.IsVisible(3400)+substring(Window.Property(ViewMode),thumbnail)</visible>
 			</control>
 		</control>
 	</include>
 
-	
 </includes>
