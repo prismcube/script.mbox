@@ -4750,7 +4750,7 @@
 				<scroll>true</scroll>
 				<align>center</align>
 				<aligny>center</aligny>
-				<label>$INFO[Container(3400).ListItem(3).Property(RecDate)]($INFO[Container(3400).ListItem(3).Property(RecDuration)])</label>				
+				<label>$INFO[Container(3400).ListItem(0).Property(RecDate)]($INFO[Container(3400).ListItem(0).Property(RecDuration)])</label>
 			</control>
 			<control type="label">
 				<posx>30</posx>
