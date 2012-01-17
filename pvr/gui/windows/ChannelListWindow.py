@@ -158,6 +158,10 @@ class ChannelListWindow(BaseWindow):
 		self.mSkipList = []
 		self.mLockList = []
 		self.mEditChannelList = []
+		self.mEditFavorite = []
+		self.mAddGroupFavorite = []
+		self.mDelGroupFavorite = []
+		self.mRenGroupFavorite = []
 
 
 		#initialize get channel list
@@ -216,15 +220,7 @@ class ChannelListWindow(BaseWindow):
 
 		elif id == Action.ACTION_PARENT_DIR :
 			LOG_TRACE( 'goto action back' )
-
-			self.GetFocusId()
-
-			self.SaveSlideMenuHeader()
-
-			self.mEnableThread = False
-			self.CurrentTimeThread().join()
-			self.mCtrlListCHList.reset()
-			self.close()
+			self.onClick( E_CTRL_BTN_FOOTER01 )
 
 
 		elif id == Action.ACTION_MOVE_RIGHT :
@@ -413,10 +409,17 @@ class ChannelListWindow(BaseWindow):
 
 		elif aControlId == E_CTRL_BTN_FOOTER05 :
 			LOG_TRACE( 'onclick footer edit' )
-			#self.SaveSlideMenuHeader()
+			"""
+			if self.mIsMark :
+				self.mIsMark = False
+				self.mEditFavorite = []
+				if self.mListFavorite :
+					for item in self.mListFavorite:
+						self.mEditFavorite.append( item.mGroupName )
 
-			#self.mEnableThread = False
-			#self.CurrentTimeThread().join()
+			self.onClick(E_CTRL_BTN_FOOTER08)
+			return
+			"""
 
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 				self.mViewMode = WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW
@@ -438,6 +441,11 @@ class ChannelListWindow(BaseWindow):
 
 					#copy channel list, use to edit
 					self.mEditChannelList = self.mChannelList
+					self.mEditFavorite = []
+					if self.mListFavorite :
+						for item in self.mListFavorite:
+							self.mEditFavorite.append( item.mGroupName )
+
 
 					#clear label
 					self.ResetLabel()
@@ -467,43 +475,45 @@ class ChannelListWindow(BaseWindow):
 					label2 = re.findall('\](.*)\[', label1)
 					label3 = label2[0][5:]
 
-				self.mListFavorite = []
+				GuiLock2(True)
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_EDIT_CHANNEL_LIST )
-				dialog.SetValue( FLAG_OPT_LIST, label3, self.mListFavorite )
+				dialog.SetValue( FLAG_OPT_LIST, label3, self.mEditFavorite )
 	 			dialog.doModal()
+	 			GuiLock2(False)
 
-				idxDialog, idxFavorite, isOkDialog = dialog.GetValue()
-				LOG_TRACE( '======= idxDialog[%s] idxFavorite[%s] isOkDialog[%s]'% (idxDialog, idxFavorite, isOkDialog) )
-
+				idxDialog, idxFavorite, isOkDialog = dialog.GetValue( FLAG_OPT_LIST )
 
 				if idxDialog == E_DialogInput01 :
 					self.SetMarkDeleteCh( 'lock', True )
 					self.mMarkList = []
+					label = 'lock'
 
 				elif idxDialog == E_DialogInput02 :
 					self.SetMarkDeleteCh( 'lock', False )
 					self.mMarkList = []
+					label = 'unlock'
 
 				elif idxDialog == E_DialogInput03 :
 					self.SetMarkDeleteCh('skip', True)
+					label = 'skip'
 
 				elif idxDialog == E_DialogInput04 :
 					self.SetMarkDeleteCh('skip', False)
+					label = 'unskip'
 
 				elif idxDialog == E_DialogInput05 :
 					self.SetMarkDeleteCh('delete', True)
+					label = 'delete'
 
 				elif idxDialog == E_DialogInput06 :
 					self.SetMarkDeleteCh('delete', False)
+					label = 'undelete'
 
 				GuiLock2( True )
 				self.setFocusId( self.mCtrlGropCHList.getId() )
 				GuiLock2( False )
 
-				LOG_TRACE( 'ret=======MarkList[%s]'% self.mMarkList )
-				LOG_TRACE( 'ret=======mDeleteList[%s]'% self.mDeleteList )
-				LOG_TRACE( 'ret=======mSkipList[%s]'% self.mSkipList )
-				LOG_TRACE( 'ret=======mLockList[%s]'% self.mLockList )
+				LOG_TRACE( 'ret=======cmd[%s] Mark[%s] Delete[%s] Skip[%s] Lock[%s]'% (label,self.mMarkList,self.mDeleteList,self.mSkipList,self.mLockList) )
 
 
 			except Exception, e:
@@ -516,32 +526,17 @@ class ChannelListWindow(BaseWindow):
 		elif aControlId == E_CTRL_BTN_FOOTER08:
 			LOG_TRACE( 'onclick footer OptGroup' )
 			try:
-				label1 = self.mCtrlListCHList.getSelectedItem().getLabel()
-				label2 = re.findall('\](.*)\[', label1)
-				label3 = re.split(' ', label2[0])
-
+				GuiLock2(True)
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_EDIT_CHANNEL_LIST )
-				dialog.SetValue( FLAG_OPT_GROUP, label3[1], self.mListFavorite )
+				dialog.SetValue( FLAG_OPT_GROUP, Msg.Strings( MsgId.LANG_GROUP_NAME ), self.mEditFavorite )
 	 			dialog.doModal()
+	 			GuiLock2(False)
 
-				idxDialog, idxFavorite, isOkDialog = dialog.GetValue()
-
-				if idxDialog == E_DialogInput01 :
-					#create new group
-					pass
-				elif idxDialog == E_DialogInput02 :
-					#rename group
-					pass
-				elif idxDialog == E_DialogInput03 :
-					#delete group
-					pass
-
-
-				LOG_TRACE( '======= idxDialog[%s] idxFavorite[%s] isOkDialog[%s]'% (idxDialog, idxFavorite, isOkDialog) )
+				idxDialog, groupName, isOkDialog = dialog.GetValue( FLAG_OPT_GROUP )
+				self.GroupAddDelete( idxDialog, groupName )
 
 			except Exception, e:
 				LOG_TRACE( 'Error except[%s]'% e )
-
 
 
 		elif aControlId == E_CTRL_BTN_FOOTER07:
@@ -1732,4 +1727,172 @@ class ChannelListWindow(BaseWindow):
 		LOG_TRACE( 'mLockList[%s]'% self.mLockList )
 
 		LOG_TRACE( 'Leave' )
+
+
+	def GroupAddDelete( self, aBtn, aGroupName ) :
+		LOG_TRACE( 'Enter' )
+		if aBtn == E_DialogInput01 :
+			#create new group
+
+			#find, edit list
+			if self.mEditFavorite :
+				isExist = False
+				for idx in range(len(self.mEditFavorite)) :
+					if aGroupName == self.mEditFavorite[idx] :
+						isExist = True
+						break
+
+				#new group add ?
+				if isExist == False :
+					self.mEditFavorite.append( aGroupName )
+
+					#find, orignal favorite group
+					if self.mListFavorite :
+						isExist = False
+						for item in self.mListFavorite :
+							if aGroupName == item.mGroupName :
+								isExist = True
+								break
+
+						#new group add ?
+						if isExist == False :
+							self.mAddGroupFavorite.append( aGroupName )
+
+
+					#find, add list
+					if self.mAddGroupFavorite :
+						isExist = False
+						for idx in range(len(self.mAddGroupFavorite)) :
+							if aGroupName == self.mAddGroupFavorite[idx] :
+								isExist = True
+								break
+
+						#new group add ?
+						if isExist == False :
+							self.mAddGroupFavorite.append( aGroupName )
+
+				else :
+					LOG_TRACE ( 'Exist Group[%s], no append!!'% aGroupName )
+			else :
+				self.mEditFavorite.append( aGroupName )
+				self.mAddGroupFavorite.append( aGroupName )
+
+
+		elif aBtn == E_DialogInput02 :
+			#rename group
+
+			#parse idx, source name, rename
+			name = re.split(':', aGroupName)
+
+			#find, edit list
+			if self.mEditFavorite :
+				isExist = False
+				for idx in range(len(self.mEditFavorite)) :
+					if name[1] == self.mEditFavorite[idx] :
+						isExist = True
+						break
+
+				#find yes? rename
+				if isExist == True :
+					self.mEditFavorite[idx] = name[2]
+
+			#find, add list
+			if self.mAddGroupFavorite :
+				isExist = False	
+				for idx in range(len(self.mAddGroupFavorite)) :
+					if name[1] == self.mAddGroupFavorite[idx] :
+						isExist = True
+						break
+
+				#find yes? rename
+				if isExist == True :
+					self.mAddGroupFavorite[idx] = name[2]
+
+
+			#find, orignal favorite group
+			if self.mListFavorite :
+				isExist = False
+				idx = 0
+				for item in self.mListFavorite :
+					if name[1] == item.mGroupName :
+						isExist = True
+						break
+					idx += 1
+
+				#find yes? add rename list
+				if isExist == True :
+					#find, del list
+					if self.mDelGroupFavorite :
+						isExist = False	
+						for idx in range(len(self.mDelGroupFavorite)) :
+							if name[1] == self.mDelGroupFavorite[idx] :
+								isExist = True
+								break
+
+						#find yes? rename
+						if isExist == False :
+							self.mRenGroupFavorite.append( aGroupName )
+
+					else :
+						self.mRenGroupFavorite.append( aGroupName )
+
+
+		elif aBtn == E_DialogInput03 :
+			#delete group
+
+			#find, edit list
+			if self.mEditFavorite :
+				isExist = False
+				for idx in range(len(self.mEditFavorite)) :
+					if aGroupName == self.mEditFavorite[idx] :
+						isExist = True
+						break
+
+				#find yes? delete
+				if isExist == True :
+					self.mEditFavorite.pop(idx)
+
+			#find, add list
+			if self.mAddGroupFavorite :
+				isExist = False	
+				for idx in range(len(self.mAddGroupFavorite)) :
+					if aGroupName == self.mAddGroupFavorite[idx] :
+						isExist = True
+						break
+
+				#find yes? delete
+				if isExist == True :
+					self.mAddGroupFavorite.pop(idx)
+
+			#find, ren list
+			if self.mRenGroupFavorite :
+				isExist = False
+				for idx in range(len(self.mRenGroupFavorite)) :
+					#parse idx, source name, rename
+					name = re.split(':', self.mRenGroupFavorite[idx])
+
+					if aGroupName == name[2] :
+						isExist = True
+						break
+
+				#find yes? add delete list
+				if isExist == True :
+					self.mRenGroupFavorite.pop(idx)
+					self.mDelGroupFavorite.append( name[1] )
+
+			#find, orignal favorite group
+			if self.mListFavorite :
+				isExist = False
+				for item in self.mListFavorite :
+					if aGroupName == item.mGroupName :
+						isExist = True
+						break
+
+				#find yes? add delete list
+				if isExist == True :
+					self.mDelGroupFavorite.append( aGroupName )
+
+		LOG_TRACE( '=======result: edit[%s] add[%s] ren[%s] del[%s]'% (self.mEditFavorite, self.mAddGroupFavorite, self.mRenGroupFavorite, self.mDelGroupFavorite) )
+		LOG_TRACE( 'Leave' )
+
 
