@@ -2,18 +2,11 @@
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>no</allowoverlay>
 	<controls>
-		<include>DefaultSettingsBackground</include>
+		<include>DefaultSettingHeaderWindow</include>
 		<control type="group">
 			<posx>90</posx>
 			<posy>50</posy>
-			<animation type="WindowOpen" reversible="false">
-				<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
-				<effect type="fade" start="0" end="100" time="300" />
-			</animation>
-			<animation type="WindowClose" reversible="false">
-				<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
-				<effect type="fade" start="100" end="0" time="300" />
-			</animation>			
+			<include>DefaultSettingWindowEffect</include>		
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
@@ -31,12 +24,13 @@
 				<texture>Confluence_Logo.png</texture>
 			</control>
 			<control type="list" id="9000">
+				<hitrect x="10" y="82" w="260" h="541"></hitrect>
 				<posx>10</posx>
 				<posy>82</posy>
 				<width>260</width>
 				<height>541</height>
 				<onleft>9000</onleft>
-				<onright>9001</onright>
+				<onright>9000</onright>
 				<onup>9000</onup>
 				<ondown>9000</ondown>
 				<pagecontrol>-</pagecontrol>
@@ -148,7 +142,7 @@
 				<width>740</width>
 				<height>30</height>
 				<font>font16caps</font>
-				<label>Installation</label>
+				<label>Installation - $INFO[Control(9000).ListItem.Label]</label>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
@@ -198,27 +192,36 @@
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 			</control>
-		</control>
-		<include>BehindDialogFadeOut</include>
-		<control type="group">
-			<posx>60</posx>
-			<posy>0</posy>
-			<animation effect="slide" end="-310,0" time="400" tween="quadratic" easing="out" condition="Window.Next(Home) | Window.Next(1111) | Window.Next(AddonBrowser)">WindowClose</animation>
-			<animation effect="slide" start="-310,0" time="400" tween="quadratic" easing="out" condition="Window.Previous(Home) | Window.Previous(1111) | Window.Previous(AddonBrowser)">WindowOpen</animation>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>250</width>
-				<height>35</height>
-				<texture border="0,0,32,0">header.png</texture>
+
+			<!-- Fake Button For Click Event -->
+			<control type="button" id="90101">
+				<include>DefaultButtonHomeSubCommonValues</include>
+				<visible>false</visible>
 			</control>
-			<control type="label">
-				<include>WindowTitleCommons</include>
-				<posx>220</posx>
-				<label>$LOCALIZE[5]</label>
+			<control type="button" id="90102">
+				<include>DefaultButtonHomeSubCommonValues</include>
+				<visible>false</visible>
+			</control>
+			<control type="button" id="90103">
+				<include>DefaultButtonHomeSubCommonValues</include>
+				<visible>false</visible>
+			</control>
+			<control type="button" id="90104">
+				<include>DefaultButtonHomeSubCommonValues</include>
+				<visible>false</visible>
+			</control>
+			<control type="button" id="90105">
+				<include>DefaultButtonHomeSubCommonValues</include>
+				<visible>false</visible>
+			</control>
+			<control type="button" id="90106">
+				<include>DefaultButtonHomeSubCommonValues</include>
+				<visible>false</visible>
+			</control>
+			<control type="button" id="90107">
+				<include>DefaultButtonHomeSubCommonValues</include>
+				<visible>false</visible>
 			</control>
 		</control>
-		<include>WindowTitleHomeButton</include>
-		<include>Clock</include>
 	</controls>
 </window>

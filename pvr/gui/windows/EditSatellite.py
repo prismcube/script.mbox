@@ -122,9 +122,9 @@ class EditSatellite( SettingWindow ) :
 		self.AddInputControl( E_Input01, 'Satellite', satellitename, 'Select satellite.' )
 		longitude = ConfigMgr.GetInstance( ).GetFormattedLongitude( satellite.mLongitude , satellite.mBand )
 		self.AddInputControl( E_Input02, 'Longitude', longitude )
-		self.AddLeftLabelButtonControl( E_Input03, 'Edit Satellite Name', 'Edit satellite name.' )
-		self.AddLeftLabelButtonControl( E_Input04, 'Add New Satellite', 'Add new satellite.' )
-		self.AddLeftLabelButtonControl( E_Input05, 'Delete Satellite', 'Delete satellite.' )
+		self.AddInputControl( E_Input03, 'Edit Satellite Name', '', 'Edit satellite name.' )
+		self.AddInputControl( E_Input04, 'Add New Satellite', '', 'Add new satellite.' )
+		self.AddInputControl( E_Input05, 'Delete Satellite', '', 'Delete satellite.' )
 		
 		self.InitControl( )
 		self.ShowDescription( self.getFocusId( ) )

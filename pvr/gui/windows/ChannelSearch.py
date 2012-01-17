@@ -22,8 +22,8 @@ class ChannelSearch( SettingWindow ):
 
 		self.SetSettingWindowLabel( 'Channel Scan' )
 
-		self.AddLeftLabelButtonControl( E_Input01, 'Automatic Scan', 'Running automatic scan.' )
-		self.AddLeftLabelButtonControl( E_Input02, 'Manual Scan', 'Running manual scan.' )
+		self.AddInputControl( E_Input01, 'Automatic Scan', '', 'Running automatic scan.' )
+		self.AddInputControl( E_Input02, 'Manual Scan', '', 'Running manual scan.' )
 
 		self.InitControl( )
 		self.ShowDescription( self.getFocusId( ) )
