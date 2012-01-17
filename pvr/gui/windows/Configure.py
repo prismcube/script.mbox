@@ -26,17 +26,18 @@ class Configure( SettingWindow ) :
 		self.mLastFocused 		= E_SUBMENU_LIST_ID
 		self.mPrevListItemID 	= 0
 
-		self.mSavedIpAddr	= 0
-		self.mSavedSubNet	= 0
-		self.mSavedGateway	= 0
-		self.mSavedDns		= 0
+		self.mSavedIpAddr		= 0
+		self.mSavedSubNet		= 0
+		self.mSavedGateway		= 0
+		self.mSavedDns			= 0
 
-		self.mTempIpAddr	= 0
-		self.mTempSubNet	= 0
-		self.mTempGateway	= 0
-		self.mTempDns		= 0
+		self.mTempIpAddr		= 0
+		self.mTempSubNet		= 0
+		self.mTempGateway		= 0
+		self.mTempDns			= 0
 
-		self.mReLoad		= False
+		self.mReLoadIp			= False
+		self.mVisibleParental	= False
 
 		for i in range( len( leftGroupItems ) ) :
 			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i], descriptionList[i] ) )
@@ -56,6 +57,8 @@ class Configure( SettingWindow ) :
 		self.SetListControl( )
 		self.LoadIp( )
 		self.mInitialized = True
+		self.mVisibleParental = False
+		self.mReLoadIp = False
 
 	def onAction( self, aAction ) :
 
@@ -77,7 +80,8 @@ class Configure( SettingWindow ) :
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == E_SUBMENU_LIST_ID and selectedId != self.mPrevListItemID :
 				self.mPrevListItemID = selectedId
-				self.mReLoad = True
+				self.mReLoadIp = True
+				self.mVisibleParental = False
 				self.SetListControl( )
 			elif focusId != E_SUBMENU_LIST_ID :
 				self.ControlUp( )
@@ -85,7 +89,8 @@ class Configure( SettingWindow ) :
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			if focusId == E_SUBMENU_LIST_ID and selectedId != self.mPrevListItemID :
 				self.mPrevListItemID = selectedId
-				self.mReLoad = True
+				self.mReLoadIp = True
+				self.mVisibleParental = False
 				self.SetListControl( )
 			elif focusId != E_SUBMENU_LIST_ID :
 				self.ControlDown( )
@@ -99,6 +104,7 @@ class Configure( SettingWindow ) :
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			if focusId == E_SUBMENU_LIST_ID :
 				self.setFocusId( E_SETUPMENU_GROUP_ID )
+					
 			elif focusId != E_SUBMENU_LIST_ID and ( focusId % 10 ) == 2 :
 				self.setFocusId( E_SUBMENU_LIST_ID )
 			elif focusId != E_SUBMENU_LIST_ID and ( focusId % 10 ) == 1 :
@@ -118,11 +124,30 @@ class Configure( SettingWindow ) :
 			self.IpSetting( groupId )
 			return
 
+		elif selectedId == E_PARENTAL and self.mVisibleParental == False and groupId == E_Input01 :
+			tempval = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input PIN Code', '', 4 )
+			if int( tempval ) == ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( ) :
+				self.mVisibleParental = True
+				self.DisableControl( E_PARENTAL )
+			else :
+				xbmcgui.Dialog( ).ok( 'ERROR', 'ERROR PIN Code' )
+			return
+
+		elif selectedId == E_PARENTAL and groupId == E_Input02 :
+			newpin = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'New PIN Code', '', 4 )
+			if newpin == None or newpin == '' or len( newpin ) != 4:
+				xbmcgui.Dialog( ).ok( 'ERROR', 'Input 4 digit' )
+				return
+			confirm = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Confirm PIN Code', '', 4 )
+			if int( newpin ) != int( confirm ) :
+				xbmcgui.Dialog( ).ok( 'ERROR', 'New PIN codes do not match' )
+				return
+			ElisPropertyInt( 'PinCode', self.mCommander ).SetProp( int( newpin ) )
+
 		else :
 			self.ControlSelect( )
 
-		#elif ctrlItem.mControlType == ctrlItem.E_SETTING_LEFT_LABEL_BUTTON_CONTROL :
-		#	ret =  xbmcgui.Dialog( ).yesno('Configure', 'Are you sure?')	# return yes = 1, no = 0
+
 	def onFocus( self, aControlId ) :
 		if self.mInitialized == False :
 			return
@@ -134,7 +159,8 @@ class Configure( SettingWindow ) :
 					self.mLastFocused = aControlId
 				if selectedId != self.mPrevListItemID :
 					self.mPrevListItemID =selectedId
-					self.mReLoad = True
+					self.mReLoadIp = True
+					self.mVisibleParental = False
 				self.SetListControl( )
 
 	def SetListControl( self ) :
@@ -164,15 +190,12 @@ class Configure( SettingWindow ) :
 			
 			
 		elif selectedId == E_PARENTAL :	
-			self.AddEnumControl( E_SpinEx01, 'Lock Mainmenu' )
+			self.AddInputControl( E_Input01, 'Enable Setting Menu', '' )
+			self.AddEnumControl( E_SpinEx01, 'Lock Mainmenu', ' - Lock Mainmenu' )
+			self.AddEnumControl( E_SpinEx02, 'Age Restricted', ' - Age Restricted' )
+			self.AddInputControl( E_Input02, ' - Change PIn Code', '' )
 
-			pinCode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
-			self.AddInputControl( E_Input01, 'New PIN code', '%d' % pinCode )
-			self.AddInputControl( E_Input02, 'Confirmation PIN code', '****' )
-			self.AddEnumControl( E_SpinEx02, 'Age Restricted' )
-			
-
-			visibleControlIds = [ E_SpinEx01, E_Input01, E_Input02, E_SpinEx02 ]
+			visibleControlIds = [ E_SpinEx01, E_Input01, E_SpinEx02, E_Input02 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
@@ -180,6 +203,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
+			self.DisableControl( E_PARENTAL )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 
@@ -239,9 +263,9 @@ class Configure( SettingWindow ) :
 
 		
 		elif selectedId == E_IP_SETTING :
-			if self.mReLoad == True :
+			if self.mReLoadIp == True :
 				self.ReLoadIp( )
-				self.mReLoad = False
+				self.mReLoadIp = False
 				
 			self.AddEnumControl( E_SpinEx01, 'DHCP' )
 			self.AddInputControl( E_Input01, 'IP Address', '%d.%d.%d.%d' % MakeHexToIpAddr( self.mTempIpAddr ) )
@@ -339,6 +363,13 @@ class Configure( SettingWindow ) :
 				self.SetEnableControls( visibleControlIds, False )
 			elif dhcp == E_DHCP_OFF :
 				self.SetEnableControls( visibleControlIds, True )
+
+		elif aSelectedItem == E_PARENTAL :
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_Input02 ]
+			if self.mVisibleParental == True :
+				self.SetEnableControls( visibleControlIds, True )
+			else :
+				self.SetEnableControls( visibleControlIds, False )
 
 
 	def LoadIp( self ) :

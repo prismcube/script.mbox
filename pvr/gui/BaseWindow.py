@@ -312,38 +312,12 @@ class SettingWindow( BaseWindow ):
 			ctrlItem = self.mControlList[i]		
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
-					#self.getControl( ctrlItem.mControlId ).setVisible(False)
 					self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).setLabel( aLabel )
-					#self.getControl( ctrlItem.mControlId ).setVisible(True)
-					#print 'dhkim listitem = %s' % self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).getLabel()
-					#print 'dhkim string = %s' % aLabel
-					
-					"""
-					try :
-						lastPos = self.getFocusId( )
-						self.setFocusId( ctrlItem.mControlId + 3 )
 
-						tmp = self.getControl( ctrlItem.mControlId + 3 )
-						xbmc.sleep(20)
-						tmp1 = tmp.getSelectedItem( )
-						xbmc.sleep(20)
-						tmp1.setLabel( aLabel )
-						xbmc.sleep(20)
-
-						self.setFocusId( lastPos )
-
-						self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).setLabel( aLabel )
-						#xbmc.sleep(20)
-						print 'dhkim listitem = %s' % self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).getLabel()
-						print 'dhkim string = %s' % aLabel
-					except Except, e:
-						LOG_TRACE( '=================except[%s]'% e )
-					"""
 		return -1
 		
 
 	def GetGroupId( self, aContgrolId ) :
-
 		count = len( self.mControlList )
 
 		for i in range( count ) :
@@ -361,10 +335,9 @@ class SettingWindow( BaseWindow ):
 					return ctrlItem.mControlId
 				
 		return -1
-		
+
 
 	def SetEnableControl( self, aControlId, aEnable ) :
-
 		count = len( self.mControlList )
 
 		for i in range( count ) :
