@@ -4,6 +4,7 @@ import sys
 
 import pvr.gui.WindowMgr as WinMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
+from pvr.gui.GuiConfig import *
 
 BUTTON_ID_FIRSTINSTALLATION		= 90101
 BUTTON_ID_ANTENNA_SETUP			= 90102
@@ -22,7 +23,9 @@ class Installation( BaseWindow ):
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
 
+		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Installation' )
 
+		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 

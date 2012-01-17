@@ -3,6 +3,10 @@
 		<include>DefaultSettingsBackground</include>
 		<include>DefaultBehindDialogFadeOut</include>
 		<include>DefaultCommonDateTime</include>
+		<include>DefaultMiniTitle</include>
+	</include>
+
+	<include name="DefaultMiniTitle">
 		<control type="group">
 			<posx>60</posx>
 			<posy>0</posy>
@@ -21,6 +25,7 @@
 			</control>
 		</control>
 	</include>
+		
 	<include name="DefaultSettingMainWindow">
 		<control type="group">
 			<posx>-40</posx>

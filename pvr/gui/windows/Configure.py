@@ -9,6 +9,9 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.GuiConfig import *
 from pvr.Util import GuiLock, LOG_TRACE, LOG_ERR
 
+E_DHCP_OFF = 0
+E_DHCP_ON = 1
+
 class Configure( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
@@ -23,9 +26,22 @@ class Configure( SettingWindow ) :
 		self.mLastFocused 		= E_SUBMENU_LIST_ID
 		self.mPrevListItemID 	= 0
 
+		self.mSavedIpAddr	= 0
+		self.mSavedSubNet	= 0
+		self.mSavedGateway	= 0
+		self.mSavedDns		= 0
+
+		self.mTempIpAddr	= 0
+		self.mTempSubNet	= 0
+		self.mTempGateway	= 0
+		self.mTempDns		= 0
+
+		self.mReLoad		= False
+
 		for i in range( len( leftGroupItems ) ) :
 			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i], descriptionList[i] ) )
-			
+
+
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
@@ -38,6 +54,7 @@ class Configure( SettingWindow ) :
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
 		self.SetListControl( )
+		self.LoadIp( )
 		self.mInitialized = True
 
 	def onAction( self, aAction ) :
@@ -60,6 +77,7 @@ class Configure( SettingWindow ) :
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == E_SUBMENU_LIST_ID and selectedId != self.mPrevListItemID :
 				self.mPrevListItemID = selectedId
+				self.mReLoad = True
 				self.SetListControl( )
 			elif focusId != E_SUBMENU_LIST_ID :
 				self.ControlUp( )
@@ -67,6 +85,7 @@ class Configure( SettingWindow ) :
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			if focusId == E_SUBMENU_LIST_ID and selectedId != self.mPrevListItemID :
 				self.mPrevListItemID = selectedId
+				self.mReLoad = True
 				self.SetListControl( )
 			elif focusId != E_SUBMENU_LIST_ID :
 				self.ControlDown( )
@@ -94,11 +113,11 @@ class Configure( SettingWindow ) :
 			self.DisableControl( selectedId )
 			self.ControlSelect( )
 			return
-		
+
 		elif selectedId == E_IP_SETTING :
 			self.IpSetting( groupId )
 			return
-			
+
 		else :
 			self.ControlSelect( )
 
@@ -107,15 +126,16 @@ class Configure( SettingWindow ) :
 	def onFocus( self, aControlId ) :
 		if self.mInitialized == False :
 			return
+
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 		if ( self.mLastFocused != aControlId ) or ( selectedId != self.mPrevListItemID ) :
 			if aControlId == E_SUBMENU_LIST_ID :
-				self.SetListControl( )
 				if self.mLastFocused != aControlId :
 					self.mLastFocused = aControlId
 				if selectedId != self.mPrevListItemID :
 					self.mPrevListItemID =selectedId
-		
+					self.mReLoad = True
+				self.SetListControl( )
 
 	def SetListControl( self ) :
 		self.ResetAllControl( )
@@ -218,22 +238,23 @@ class Configure( SettingWindow ) :
 			return
 
 		
-		elif selectedId == E_IP_SETTING :	
+		elif selectedId == E_IP_SETTING :
+			if self.mReLoad == True :
+				self.ReLoadIp( )
+				self.mReLoad = False
+				
 			self.AddEnumControl( E_SpinEx01, 'DHCP' )
+			self.AddInputControl( E_Input01, 'IP Address', '%d.%d.%d.%d' % MakeHexToIpAddr( self.mTempIpAddr ) )
+			self.AddInputControl( E_Input02, 'Subnet Mask', '%d.%d.%d.%d' % MakeHexToIpAddr( self.mTempSubNet ) )
+			self.AddInputControl( E_Input03, 'Gateway', '%d.%d.%d.%d' % MakeHexToIpAddr( self.mTempGateway ) )
+			self.AddInputControl( E_Input04, 'DNS', '%d.%d.%d.%d' % MakeHexToIpAddr( self.mTempDns ) )
+
+			dhcp = ElisPropertyEnum( 'DHCP', self.mCommander ).GetProp( )
+			if dhcp == E_DHCP_OFF :
+				self.AddInputControl( E_Input05, 'Save', '' )
+			elif dhcp == E_DHCP_ON :
+				self.AddInputControl( E_Input05, 'Get IP Address', '' )
 			
-			ipAddress = ElisPropertyInt( 'IpAddress', self.mCommander ).GetProp( )
-			self.AddInputControl( E_Input01, 'IP Address', '%d.%d.%d.%d' % MakeHexToIpAddr( ipAddress ) )
-
-			subnet = ElisPropertyInt( 'SubNet', self.mCommander ).GetProp( )
-			self.AddInputControl( E_Input02, 'Subnet Mask', '%d.%d.%d.%d' % MakeHexToIpAddr( subnet ) )
-
-			gateway = ElisPropertyInt( 'Gateway', self.mCommander ).GetProp( )
-			self.AddInputControl( E_Input03, 'Gateway', '%d.%d.%d.%d' % MakeHexToIpAddr( gateway ) )
-
-			dns = ElisPropertyInt( 'DNS', self.mCommander ).GetProp( )
-			self.AddInputControl( E_Input04, 'DNS', '%d.%d.%d.%d' % MakeHexToIpAddr( dns ) )
-
-			self.AddInputControl( E_Input05, '', '' )
 
 			visibleControlIds = [ E_SpinEx01, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -312,44 +333,74 @@ class Configure( SettingWindow ) :
 			else :
 				self.SetEnableControls( visibleControlIds, True )
 		elif aSelectedItem == E_IP_SETTING :
-			selectedIndex = self.GetSelectedIndex( E_SpinEx01 )
+			dhcp = ElisPropertyEnum( 'DHCP', self.mCommander ).GetProp( )
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]
-			if selectedIndex == 0 :
+			if dhcp == E_DHCP_ON :
 				self.SetEnableControls( visibleControlIds, False )
-				self.SetControlLabelString( E_Input05, 'Get IP Address' )
-			else :
+			elif dhcp == E_DHCP_OFF :
 				self.SetEnableControls( visibleControlIds, True )
-				self.SetControlLabelString( E_Input05, 'Save' )
+
+
+	def LoadIp( self ) :
+		ipAddress = ElisPropertyInt( 'IpAddress', self.mCommander ).GetProp( )
+		self.mSavedIpAddr = ipAddress
+		self.mTempIpAddr = ipAddress
+		subnet = ElisPropertyInt( 'SubNet', self.mCommander ).GetProp( )
+		self.mSavedSubNet = subnet
+		self.mTempSubNet = subnet
+		gateway = ElisPropertyInt( 'Gateway', self.mCommander ).GetProp( )
+		self.mSavedGateway = gateway
+		self.mTempGateway = gateway
+		dns = ElisPropertyInt( 'DNS', self.mCommander ).GetProp( )
+		self.mSavedDns = dns
+		self.mTempDns = dns
+
+
+	def SaveIp( self ) :
+		self.mSavedIpAddr = self.mTempIpAddr
+		ElisPropertyInt( 'IpAddress', self.mCommander ).SetProp( self.mTempIpAddr )
+		self.mSavedSubNet = self.mTempSubNet
+		ElisPropertyInt( 'SubNet', self.mCommander ).SetProp( self.mTempSubNet )
+		self.mSavedGateway = self.mTempGateway
+		ElisPropertyInt( 'Gateway', self.mCommander ).SetProp( self.mTempGateway )
+		self.mSavedDns = self.mTempDns
+		ElisPropertyInt( 'DNS', self.mCommander ).SetProp( self.mTempDns )
+
+
+	def ReLoadIp( self ) :
+		self.mTempIpAddr	= self.mSavedIpAddr
+		self.mTempSubNet	= self.mSavedSubNet
+		self.mTempGateway	= self.mSavedGateway
+		self.mTempDns		= self.mSavedDns
 
 	def IpSetting( self, aControlId ) :
 		if aControlId == E_SpinEx01 :
-			self.DisableControl( E_IP_SETTING )
 			self.ControlSelect( )
+			self.SetListControl( )
 			
 		elif aControlId == E_Input01 :		# IpAddr
-			property = ElisPropertyInt( 'IpAddress', self.mCommander )
-			ipAddr = property.GetProp( )
-			tempval = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Input Ip Address', '%d.%d.%d.%d' % MakeHexToIpAddr( ipAddr ) )
-			#property.SetProp( MakeStringToHex( tempval ) )
+			self.mTempIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Input Ip Address', '%d.%d.%d.%d' % MakeHexToIpAddr( self.mTempIpAddr ) )
+			self.mTempIpAddr = MakeStringToHex( self.mTempIpAddr )
 			self.SetListControl( )
 
 		elif aControlId == E_Input02 :		# SubNet
-			property = ElisPropertyInt( 'SubNet', self.mCommander )
-			subnet = property.GetProp( )
-			tempval = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Input Subnet Mask', '%d.%d.%d.%d' % MakeHexToIpAddr( subnet ) )
-			#property.SetProp( MakeStringToHex( tempval ) )
+			self.mTempSubNet = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Input Subnet Mask', '%d.%d.%d.%d' % MakeHexToIpAddr( self.mTempSubNet ) )
+			self.mTempSubNet = MakeStringToHex( self.mTempSubNet )
 			self.SetListControl( )
 
 		elif aControlId == E_Input03 :		# Gateway
-			property = ElisPropertyInt( 'Gateway', self.mCommander )
-			gateway = property.GetProp( )
-			tempval = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Input Gateway', '%d.%d.%d.%d' % MakeHexToIpAddr( gateway ) )
-			#property.SetProp( MakeStringToHex( tempval ) )
+			self.mTempGateway = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Input Gateway', '%d.%d.%d.%d' % MakeHexToIpAddr( self.mTempGateway ) )
+			self.mTempGateway = MakeStringToHex( self.mTempGateway )
 			self.SetListControl( )
 
 		elif aControlId == E_Input04 :		# DNS
-			property = ElisPropertyInt( 'DNS', self.mCommander )
-			dns = property.GetProp( )
-			tempval = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Input DNS', '%d.%d.%d.%d' % MakeHexToIpAddr( dns ) )
-			#property.SetProp( MakeStringToHex( tempval ) )
+			self.mTempDns = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Input DNS', '%d.%d.%d.%d' % MakeHexToIpAddr( self.mTempDns ) )
+			self.mTempDns = MakeStringToHex( self.mTempDns )
 			self.SetListControl( )
+
+		elif aControlId == E_Input05 :
+			if ElisPropertyEnum( 'DHCP', self.mCommander ).GetProp( ) == E_DHCP_OFF :
+				if xbmcgui.Dialog( ).yesno( 'Save', 'Save Ip?' ) :
+					self.SaveIp( )
+			elif ElisPropertyEnum( 'DHCP', self.mCommander ).GetProp( ) == E_DHCP_ON :
+				pass

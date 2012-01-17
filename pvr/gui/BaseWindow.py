@@ -168,7 +168,7 @@ class SettingWindow( BaseWindow ):
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_ENUM_CONTROL, aControlId, property, listItems, None, aDescription ) )
 
 	
-	def AddUserEnumControl( self, aControlId, aTitleLabel, aInputType, aSelectItem, aDescription=None ):	
+	def AddUserEnumControl( self, aControlId, aTitleLabel, aInputType, aSelectItem, aDescription=None ) :	
 		listItems = []
 
 		for i in range( len( aInputType ) ):
@@ -177,7 +177,7 @@ class SettingWindow( BaseWindow ):
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_USER_ENUM_CONTROL, aControlId, None, listItems, int( aSelectItem ), aDescription ) )
 
 
-	def AddInputControl( self, aControlId , aTitleLabel, aInputLabel, aDescription=None ):
+	def AddInputControl( self, aControlId , aTitleLabel, aInputLabel, aDescription=None ) :
 		listItems = []
 		listItem = xbmcgui.ListItem( aTitleLabel, aInputLabel )
 		listItems.append( listItem )
@@ -312,17 +312,11 @@ class SettingWindow( BaseWindow ):
 			ctrlItem = self.mControlList[i]		
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
-					lastFocus = self.getFocusId( )
-					GuiLock2(True)
-					self.setFocusId( ctrlItem.mControlId )
+					#self.getControl( ctrlItem.mControlId ).setVisible(False)
 					self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).setLabel( aLabel )
-					GuiLock2(False)
-
-					GuiLock2(True)
-					self.setFocusId( lastFocus )
-					GuiLock2(False)
-					print 'dhkim listitem = %s' % self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).getLabel()
-					print 'dhkim string = %s' % aLabel
+					#self.getControl( ctrlItem.mControlId ).setVisible(True)
+					#print 'dhkim listitem = %s' % self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).getLabel()
+					#print 'dhkim string = %s' % aLabel
 					
 					"""
 					try :
