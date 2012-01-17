@@ -4176,7 +4176,8 @@
 		<animation effect="fade" time="300">Visible</animation>
 		<animation effect="fade" time="300">Hidden</animation>
 	</include>
-	<include name="dialogeffect">
+	<include name="DefaultDialogEffect">
+		<onload>SetProperty(AnimationWaitingDialogOnClose,true)</onload>
 		<animation effect="fade" time="300">WindowOpen</animation>
 	</include>
 	<include name="SideBladeLeft">

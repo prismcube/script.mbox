@@ -88,7 +88,7 @@ class EditSatellite( SettingWindow ) :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_NEW_SATELLITE )
  			dialog.doModal( )
 
-			if dialog.IsOK() == True :
+			if dialog.IsOK() == E_DIALOG_STATE_YES :
 				longitude, band, satelliteName = dialog.GetValue( )
 				ConfigMgr.GetInstance( ).AddSatellite( longitude, band, satelliteName )
 				self.InitConfig( )

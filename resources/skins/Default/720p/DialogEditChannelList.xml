@@ -5,8 +5,7 @@
 		<posx>335</posx>
 		<posy>35</posy>
 	</coordinates>
-	<onload>SetProperty(AnimationWaitingDialogOnClose,true)</onload>
-	<include>dialogeffect</include>
+	<include>DefaultDialogEffect</include>
 	<controls>
 		<control type="group">
             <animation condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional" reversible="false">

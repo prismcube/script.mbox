@@ -1,7 +1,6 @@
 <window id="3304">
 	<defaultcontrol always="true">21</defaultcontrol>
-	<onload>SetProperty(AnimationWaitingDialogOnClose,true)</onload>
-	<include>dialogeffect</include>
+	<include>DefaultDialogEffect</include>
 	<coordinates>
 		<system>2</system>
 		<posx>480</posx>
