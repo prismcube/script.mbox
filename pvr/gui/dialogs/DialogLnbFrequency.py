@@ -15,15 +15,15 @@ class DialogLnbFrequency( SettingDialog ) :
 		self.mLowFreq = 0
 		self.mHighFreq = 0
 		self.mThreshFreq = 0
-		self.mIsOk = False
+		self.mIsOk = E_DIALOG_STATE_NO
 
 		
 	def onInit( self ) :
 		self.SetHeaderLabel( 'LNB Frequency' )
-		self.SetButtonLabel( E_SETTING_DIALOG_OK, 'Confirm' )
-		self.SetButtonLabel( E_SETTING_DIALOG_CANCEL, 'Cancel' )
+		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, 'Confirm' )
+		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, 'Cancel' )
 		self.DrawItem( )
-		self.mIsOk = False		
+		self.mIsOk = E_DIALOG_STATE_NO		
 
 		
 	def onAction( self, aAction ) :
@@ -56,13 +56,13 @@ class DialogLnbFrequency( SettingDialog ) :
 	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
 
-		if groupId == E_SETTING_DIALOG_OK :
-			self.mIsOk = True
+		if groupId == E_SETTING_DIALOG_BUTTON_OK_ID :
+			self.mIsOk = E_DIALOG_STATE_YES
 			self.ResetAllControl( )
 			self.CloseDialog( )
 			
-		elif groupId == E_SETTING_DIALOG_CANCEL :
-			self.mIsOk = False
+		elif groupId == E_SETTING_DIALOG_BUTTON_CANCEL_ID :
+			self.mIsOk = E_DIALOG_STATE_NO
 			self.ResetAllControl( )
 			self.CloseDialog( )
 			

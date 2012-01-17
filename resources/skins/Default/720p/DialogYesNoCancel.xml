@@ -1,0 +1,113 @@
+<window id="3309">
+	<defaultcontrol always="true">301</defaultcontrol>
+	<coordinates>
+		<system>1</system>
+		<posx>340</posx>
+		<posy>235</posy>
+	</coordinates>
+	<include>DefaultDialogEffect</include>
+	<controls>
+		<control type="group">
+            <animation condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional" reversible="false">
+                <effect type="fade" start="100" end="0" time="300" />
+            </animation>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>600</width>
+				<height>230</height>
+				<texture border="20">confluence/OverlayDialogBackground.png</texture>
+			</control>
+			<control type="label" id="100">
+				<description>header label</description>
+				<posx>20</posx>
+				<posy>18</posy>
+				<width>560</width>
+				<height>30</height>
+				<font>font13_title</font>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label" id="200">
+				<description>dialog line 1</description>
+				<posx>20</posx>
+				<posy>60</posy>
+				<width>560</width>
+				<height>30</height>
+				<align>left</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+			</control>
+			<control type="label" id="201">
+				<description>dialog line 2</description>
+				<posx>20</posx>
+				<posy>85</posy>
+				<width>560</width>
+				<height>30</height>
+				<align>left</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+			</control>
+			<control type="label" id="202">
+				<description>dialog line 3</description>
+				<posx>20</posx>
+				<posy>110</posy>
+				<width>560</width>
+				<height>30</height>
+				<align>left</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+			</control>
+			<control type="button" id="301">
+				<description>Yes button</description>
+				<posx>30</posx>
+				<posy>170</posy>
+				<width>160</width>
+				<height>40</height>
+				<font>font12_title</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<align>center</align>
+				<texturenofocus border="5">confluence/MenuItemNF.png</texturenofocus>
+				<texturefocus border="5">confluence/button-focus.png</texturefocus>
+				<label>Yes</label>
+				<onleft>303</onleft>
+				<onright>302</onright>
+			</control>
+			<control type="button" id="302">
+				<description>No button</description>
+				<posx>222</posx>
+				<posy>170</posy>
+				<width>160</width>
+				<height>40</height>
+				<font>font12_title</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<align>center</align>
+				<texturenofocus border="5">confluence/MenuItemNF.png</texturenofocus>
+				<texturefocus border="5">confluence/button-focus.png</texturefocus>
+				<label>No</label>
+				<onleft>301</onleft>
+				<onright>303</onright>
+			</control>
+			<control type="button" id="303">
+				<description>Cancel button</description>
+				<posx>412</posx>
+				<posy>170</posy>
+				<width>160</width>
+				<height>40</height>
+				<font>font12_title</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<align>center</align>
+				<texturenofocus border="5">confluence/MenuItemNF.png</texturenofocus>
+				<texturefocus border="5">confluence/button-focus.png</texturefocus>
+				<label>Cancel</label>
+				<onleft>302</onleft>
+				<onright>301</onright>
+			</control>
+		</control>
+	</controls>
+</window>

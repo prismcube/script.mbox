@@ -16,7 +16,7 @@ from pvr.Util import LOG_WARN, LOG_TRACE, LOG_ERR
 class DialogAddNewSatellite( SettingDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingDialog.__init__( self, *args, **kwargs )
-		self.mIsOk = False
+		self.mIsOk = E_DIALOG_STATE_NO
 		self.mSatelliteName = None
 		self.mLongitude = 0
 		self.mIsWest = 0
@@ -30,10 +30,10 @@ class DialogAddNewSatellite( SettingDialog ) :
 	def onInit( self ) :
 		self.mLongitude = 0
 		self.SetHeaderLabel( 'Add New Satellite' )
-		self.SetButtonLabel( E_SETTING_DIALOG_OK, 'Confirm' )
-		self.SetButtonLabel( E_SETTING_DIALOG_CANCEL, 'Cancel' )
+		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, 'Confirm' )
+		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, 'Cancel' )
 		self.DrawItem( )
-		self.mIsOk = False
+		self.mIsOk = E_DIALOG_STATE_NO
 
 		
 	def onAction( self, aAction ) :
@@ -71,10 +71,10 @@ class DialogAddNewSatellite( SettingDialog ) :
 
 		elif groupId == E_DialogInput02 :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
- 			dialog.SetProperty( 'Set Longitude', self.mLongitude )
+ 			dialog.SetDialogProperty( 'Set Longitude', self.mLongitude )
  			dialog.doModal( )
 
- 			if dialog.IsOK() == True :
+ 			if dialog.IsOK() == E_DIALOG_STATE_YES :
 	 			self.mLongitude  = dialog.GetNumber( )
 	 			self.DrawItem( )
 
@@ -85,13 +85,13 @@ class DialogAddNewSatellite( SettingDialog ) :
 			self.mSatelliteName = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, 'Satellite Name', self.mSatelliteName, 15 )
 			self.DrawItem( )
 
-		elif groupId == E_SETTING_DIALOG_OK :
-			self.mIsOk = True
+		elif groupId == E_SETTING_DIALOG_BUTTON_OK_ID :
+			self.mIsOk = E_DIALOG_STATE_YES
 			self.ResetAllControl( )
 			self.CloseDialog( )
 
-		elif groupId == E_SETTING_DIALOG_CANCEL :
-			self.mIsOk = False
+		elif groupId == E_SETTING_DIALOG_BUTTON_CANCEL_ID :
+			self.mIsOk = E_DIALOG_STATE_NO
 			self.ResetAllControl( )
 			self.CloseDialog( )
 

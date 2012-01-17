@@ -120,7 +120,7 @@ class SatelliteConfigSimple( SettingWindow ):
  			dialog.SetFrequency( self.mCurrentSatellite.mLowLNB, self.mCurrentSatellite.mHighLNB, self.mCurrentSatellite.mLNBThreshold )
  			dialog.doModal( )
 
-			if dialog.IsOK() == True :
+			if dialog.IsOK() == E_DIALOG_STATE_YES :
 	 			lowFreq, highFreq, threshFreq  = dialog.GetFrequency( )
 
 				self.mCurrentSatellite.mLowLNB = int ( lowFreq )

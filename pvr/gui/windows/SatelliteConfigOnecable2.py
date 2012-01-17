@@ -14,11 +14,16 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
 		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
-		self.mTunerIndex = 0
-		self.mCurrentSatellite = []
-		self.mCurrentSatellite2 = []
-		self.mOneCablesatelliteCount = 0
+		self.mTunerIndex				= 0
+		self.mCurrentSatellite			= []
+		self.mCurrentSatellite2			= []
+		self.mOneCablesatelliteCount	= 0
+
+		self.mLoadConfig				= True
 		
+		self.mSavedTunerPin				= [ 0, 0 ]
+		self.mSavedTunerScr				= [ 0, 0 ]
+		self.mSavedTunerFreq			= [ 0, 0 ]
 
 	def onInit( self ) :
 		self.SetSettingWindowLabel( 'OneCable Configuration' )
@@ -27,9 +32,14 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 		self.mCurrentSatellite = []
 		self.mCurrentSatellite2 = []
 
-		if ConfigMgr.GetInstance( ).GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
-			self.mTunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerIndex( )
+		if self.mLoadConfig == True :
+			self.LoadConfig( )
+			self.mLoadConfig = False
 
+		else :
+			return
+
+		if ConfigMgr.GetInstance( ).GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
 			self.AddEnumControl( E_SpinEx01, 'MDU' )
 
 			pinCode = ElisPropertyInt( 'Tuner%d Pin Code' % ( self.mTunerIndex + 1 ), self.mCommander ).GetProp( )
@@ -73,13 +83,13 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 		actionId = aAction.getId( )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			pass
+			self.onClose( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			self.onClose( );
+			self.onClose( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )
@@ -163,7 +173,12 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 				dialog = xbmcgui.Dialog()
 				dialog.ok( 'ERROR', 'Please set a different value for each tuner.' )
 				return
-		if xbmcgui.Dialog( ).yesno('Configure', 'Save Configuration?') == 1 :
+
+		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+		dialog.SetDialogProperty( 'Configure', 'Save Configuration?' )
+		dialog.doModal( )
+	
+		if dialog.IsOK() == E_DIALOG_STATE_YES :
 			if ConfigMgr.GetInstance( ).GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
 				ElisPropertyInt( 'Tuner%d Pin Code' % ( self.mTunerIndex + 1 ), self.mCommander ).SetProp( int( self.GetControlLabel2String( E_Input01 ) ) )
 				ElisPropertyInt( 'Tuner%d SCR' % ( self.mTunerIndex + 1 ), self.mCommander ).SetProp( self.GetSelectedIndex( E_SpinEx02 ) ) 
@@ -177,8 +192,14 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 				ElisPropertyInt( 'Tuner2 SCR', self.mCommander ).SetProp( self.GetSelectedIndex( E_SpinEx04 ) ) 
 				ElisPropertyInt( 'Tuner2 SCR Frequency', self.mCommander ).SetProp( int( E_LIST_ONE_CABLE_TUNER_FREQUENCY[ self.GetSelectedIndex( E_SpinEx05 ) ] ) )	
 
+		elif dialog.IsOK() == E_DIALOG_STATE_NO :
+			self.ReLoadConfig( )
+
+		elif dialog.IsOK() == E_DIALOG_STATE_CANCEL :
+			return
 			
 		self.ResetAllControl( )
+		self.mLoadConfig = True
 		self.close( )
 
 		
@@ -195,3 +216,40 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 				self.SetEnableControl( E_Input01, True )
 			elif ConfigMgr.GetInstance( ).GetCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
 				self.SetEnableControls( enableControls, True )
+
+	def LoadConfig( self ) :
+		if ConfigMgr.GetInstance( ).GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
+			self.mTunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerIndex( )
+			
+			self.mSavedTunerPin[self.mTunerIndex] = ElisPropertyInt( 'Tuner%d Pin Code' % ( self.mTunerIndex + 1 ), self.mCommander ).GetProp( )
+
+			self.mSavedTunerScr[self.mTunerIndex] =  ElisPropertyInt( 'Tuner%d SCR' % ( self.mTunerIndex + 1 ), self.mCommander ).GetProp( )
+
+			self.mSavedTunerFreq[self.mTunerIndex] = ElisPropertyInt( 'Tuner%d SCR Frequency' % ( self.mTunerIndex + 1 ), self.mCommander ).GetProp( )
+
+		elif ConfigMgr.GetInstance( ).GetCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
+			self.mSavedTunerPin[0] = ElisPropertyInt( 'Tuner1 Pin Code', self.mCommander ).GetProp( )
+
+			self.mSavedTunerScr[0] =  ElisPropertyInt( 'Tuner1 SCR' , self.mCommander ).GetProp( )
+
+			self.mSavedTunerFreq[0] = ElisPropertyInt( 'Tuner1 SCR Frequency', self.mCommander ).GetProp( )
+
+			self.mSavedTunerPin[1] = ElisPropertyInt( 'Tuner2 Pin Code', self.mCommander ).GetProp( )
+
+			self.mSavedTunerScr[1] =  ElisPropertyInt( 'Tuner2 SCR' , self.mCommander ).GetProp( )
+
+			self.mSavedTunerFreq[1] = ElisPropertyInt( 'Tuner2 SCR Frequency', self.mCommander ).GetProp( )
+
+	def ReLoadConfig( self ) :
+		if ConfigMgr.GetInstance( ).GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
+			ElisPropertyInt( 'Tuner%d Pin Code' % ( self.mTunerIndex + 1 ), self.mCommander ).SetProp( self.mSavedTunerPin[self.mTunerIndex] )
+			ElisPropertyInt( 'Tuner%d SCR' % ( self.mTunerIndex + 1 ), self.mCommander ).SetProp( self.mSavedTunerScr[self.mTunerIndex] )
+			ElisPropertyInt( 'Tuner%d SCR Frequency' % ( self.mTunerIndex + 1 ), self.mCommander ).SetProp( self.mSavedTunerFreq[self.mTunerIndex]  )
+
+		elif ConfigMgr.GetInstance( ).GetCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
+			ElisPropertyInt( 'Tuner1 Pin Code', self.mCommander ).SetProp( self.mSavedTunerPin[0] )
+			ElisPropertyInt( 'Tuner1 SCR' , self.mCommander ).SetProp( self.mSavedTunerScr[0] )
+			ElisPropertyInt( 'Tuner1 SCR Frequency', self.mCommander ).SetProp( self.mSavedTunerFreq[0] )
+			ElisPropertyInt( 'Tuner2 Pin Code', self.mCommander ).SetProp( self.mSavedTunerPin[1] )
+			ElisPropertyInt( 'Tuner2 SCR' , self.mCommander ).SetProp( self.mSavedTunerScr[1] )
+			ElisPropertyInt( 'Tuner2 SCR Frequency', self.mCommander ).SetProp( self.mSavedTunerFreq[1] )
