@@ -158,6 +158,7 @@ class ChannelListWindow(BaseWindow):
 		self.mSkipList = []
 		self.mLockList = []
 		self.mEditChannelList = []
+		self.mEditFavoriteChannelList = []
 		self.mEditFavorite = []
 		self.mAddGroupFavorite = []
 		self.mDelGroupFavorite = []
@@ -439,12 +440,23 @@ class ChannelListWindow(BaseWindow):
 					self.mCtrlListCHList.reset()
 					self.InitChannelList()
 
-					#copy channel list, use to edit
+					#use to edit
+					#copy to channel list
 					self.mEditChannelList = self.mChannelList
+
 					self.mEditFavorite = []
+					self.mEditGroupChannel=[]
 					if self.mListFavorite :
+						idx = 0
 						for item in self.mListFavorite:
+							#copy to favoriteGroup
 							self.mEditFavorite.append( item.mGroupName )
+
+							#copy to channel list by favoriteGroup
+							self.mEditFavoriteChannelList[idx] = self.mCommander.Channel_GetListByFavorite( self.mChannelListServieType, ElisEnum.E_MODE_FAVORITE, self.mChannelListSortMode, item.mGroupName )
+
+							idx += 1
+
 
 
 					#clear label
@@ -483,37 +495,50 @@ class ChannelListWindow(BaseWindow):
 
 				idxDialog, idxFavorite, isOkDialog = dialog.GetValue( FLAG_OPT_LIST )
 
+				cmd1 = ''
+				cmd2 = True
+				label= ''
 				if idxDialog == E_DialogInput01 :
-					self.SetMarkDeleteCh( 'lock', True )
 					self.mMarkList = []
-					label = 'lock'
+					cmd1 = 'lock'
+					cmd2 = True
 
 				elif idxDialog == E_DialogInput02 :
-					self.SetMarkDeleteCh( 'lock', False )
 					self.mMarkList = []
-					label = 'unlock'
+					cmd1 = 'lock'
+					cmd2 = False
 
 				elif idxDialog == E_DialogInput03 :
-					self.SetMarkDeleteCh('skip', True)
-					label = 'skip'
+					cmd1 = 'skip'
+					cmd2 = True
 
 				elif idxDialog == E_DialogInput04 :
-					self.SetMarkDeleteCh('skip', False)
-					label = 'unskip'
+					cmd1 = 'skip'
+					cmd2 = False
 
 				elif idxDialog == E_DialogInput05 :
-					self.SetMarkDeleteCh('delete', True)
-					label = 'delete'
+					cmd1 = 'delete'
+					cmd2 = True
 
 				elif idxDialog == E_DialogInput06 :
-					self.SetMarkDeleteCh('delete', False)
-					label = 'undelete'
+					cmd1 = 'delete'
+					cmd2 = False
 
+				self.SetMarkDeleteCh( cmd1, cmd2 )
 				GuiLock2( True )
 				self.setFocusId( self.mCtrlGropCHList.getId() )
 				GuiLock2( False )
 
+				if cmd2 == False:
+					label = 'un'+cmd1
 				LOG_TRACE( 'ret=======cmd[%s] Mark[%s] Delete[%s] Skip[%s] Lock[%s]'% (label,self.mMarkList,self.mDeleteList,self.mSkipList,self.mLockList) )
+
+				#group list
+				if self.mEditFavoriteChannelList :
+					idx = 0
+					for item in self.mEditFavoriteChannelList:
+						LOG_TRACE( 'group[%s] ch[%s]'% (self.mEditFavorite[idx], item[idx]) )
+						idx += 1
 
 
 			except Exception, e:
@@ -738,7 +763,6 @@ class ChannelListWindow(BaseWindow):
 
 				LOG_TRACE( 'cmd[channel_GetListByFTACas] idxFtaCas[%s]'% idxFtaCas )
 				ClassToList( 'print', self.mChannelList )
-
 
 			elif aMenuIndex == ElisEnum.E_MODE_FAVORITE:
 				if self.mListFavorite : 
@@ -970,8 +994,9 @@ class ChannelListWindow(BaseWindow):
 		LOG_TRACE( 'Enter' )
 
 		#is change?
-		isSetted = len(self.mLockList) + len(self.mSkipList) + len(self.mDeleteList)
-		if isSetted > 0 :
+		isSetted1 = len(self.mLockList) + len(self.mSkipList) + len(self.mDeleteList)
+		isSetted2 = len(self.mAddGroupFavorite) + len(self.mRenGroupFavorite) + len(self.mDelGroupFavorite)
+		if (isSetted1 + isSetted2) > 0 :
 
 			#ask save question
 			head =  Msg.Strings( MsgId.LANG_CONFIRM )
@@ -985,19 +1010,32 @@ class ChannelListWindow(BaseWindow):
 					retList = []
 					retList.append( self.mEditChannelList[idx] )
 					ret = self.mCommander.Channel_Lock( True, retList )
-					LOG_TRACE( '======= setLock idx[%s] ret[%s]'% (idx,ret) )
+					LOG_TRACE( 'setLock idx[%s] ret[%s]'% (idx,ret) )
 
 				for idx in self.mSkipList :
 					retList = []
 					retList.append( self.mEditChannelList[idx] )
 					ret = self.mCommander.Channel_Skip( True, retList )
-					LOG_TRACE( '======= setSkip idx[%s] ret[%s]'% (idx,ret) )
+					LOG_TRACE( 'setSkip idx[%s] ret[%s]'% (idx,ret) )
 
 				for idx in self.mDeleteList :
 					retList = []
 					retList.append( self.mEditChannelList[idx] )
 					ret = self.mCommander.Channel_Delete( retList )
-					LOG_TRACE( '======= setDelete idx[%s] ret[%s]'% (idx,ret) )
+					LOG_TRACE( 'setDelete idx[%s] ret[%s]'% (idx,ret) )
+
+				for name in self.mDelGroupFavorite :
+					ret = self.mCommander.Favoritegroup_Remove( name, self.mChannelListServieType )	#default : ElisEnum.E_SERVICE_TYPE_TV
+					LOG_TRACE( 'setGroupDelete name[%s] ret[%s]'% (name,ret) )
+
+				for name in self.mAddGroupFavorite :
+					ret = self.mCommander.Favoritegroup_Create( name, self.mChannelListServieType )
+					LOG_TRACE( 'setGroupCreate name[%s] ret[%s]'% (name,ret) )
+
+				for name in self.mRenGroupFavorite :
+					pName = re.split(':', name)
+					ret = self.mCommander.Favoritegroup_ChangeName( pName[1], self.mChannelListServieType, pName[2] )
+					LOG_TRACE( 'setGroupRename name[%s]-->[%s] ret[%s]'% (pName[1],pName[2],ret) )
 
 
 		LOG_TRACE( 'Leave' )
@@ -1011,8 +1049,8 @@ class ChannelListWindow(BaseWindow):
 
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 
-			#slide menu disable
-			self.mCtrlGropMainmenu.setVisible( True )
+			#slide menu visible
+			#self.mCtrlGropMainmenu.setVisible( True )
 
 			#header init		
 			self.mCtrlHeader1.setImage( E_IMG_ICON_TITLE1 )
@@ -1029,7 +1067,7 @@ class ChannelListWindow(BaseWindow):
 
 		else :
 			#slide menu disable
-			self.mCtrlGropMainmenu.setVisible( False )
+			#self.mCtrlGropMainmenu.setVisible( False )
 
 			#header init
 			self.mCtrlHeader1.setImage( E_IMG_ICON_TITLE2 )
