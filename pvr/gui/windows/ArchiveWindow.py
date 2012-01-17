@@ -32,8 +32,8 @@ E_SORT_DATE						= 0
 E_SORT_CHANNEL					= 1
 E_SORT_TITLE					= 2
 E_SORT_DURATION					= 3
-E_SORT_FOLDER					= 4
-E_SORT_END						= 5
+E_SORT_END						= 4
+
 
 
 
@@ -75,23 +75,20 @@ class ArchiveWindow(BaseWindow):
 		self.mAscending[E_SORT_CHANNEL] = True
 		self.mAscending[E_SORT_TITLE] = True
 		self.mAscending[E_SORT_DURATION] = False
-		self.mAscending[E_SORT_FOLDER] = True
+
 		LOG_TRACE('self.mAscending2=%s' %self.mAscending )				
 
 		self.mCtrlRecordList = self.getControl( LIST_ID_RECORD )
 		self.UpdateAscending()
-
+		self.UpdateViewMode( )
+		
 		LOG_TRACE('')
 		self.InitControl()
 		LOG_TRACE('')
 
 		self.Load( )
 		LOG_TRACE('')
-		try :
-			self.UpdateList( )
-		except Exception, ex:
-			LOG_ERR( "Exception %s" %ex )
-			
+		self.UpdateList( )
 		LOG_TRACE('')
 
 		
@@ -130,8 +127,9 @@ class ArchiveWindow(BaseWindow):
 			if self.mViewMode >= E_VIEW_END :
 				self.mViewMode = 0 
 
-			SetSetting( 'VIEW_MODE','%d' %self.mViewMode ) 				
+			SetSetting( 'VIEW_MODE','%d' %self.mViewMode )
 			self.UpdateViewMode( )
+			self.InitControl()			
 			self.UpdateList( )
 		
 		elif aControlId == BUTTON_ID_SORT_MODE :
@@ -141,6 +139,7 @@ class ArchiveWindow(BaseWindow):
 				
 			SetSetting( 'SORT_MODE','%d' %self.mSortMode ) 								
 			self.UpdateSortMode( )
+			self.InitControl()			
 			self.UpdateAscending( )
 			self.UpdateList( )
 
@@ -192,27 +191,34 @@ class ArchiveWindow(BaseWindow):
 			self.mCtrlSortMode.setLabel('SORT: TITLE')		
 		elif self.mSortMode == E_SORT_DURATION :			
 			self.mCtrlSortMode.setLabel('SORT: DURATION')		
-		elif self.mSortMode == E_SORT_FOLDER :			
-			self.mCtrlSortMode.setLabel('SORT: FOLDER')		
 		else :
 			LOG_WARN('Unknown sort mode')
 
 
 	def UpdateViewMode( self ) :
 		LOG_TRACE('---------------------')
-		self.InitControl()
-
+		if self.mViewMode == E_VIEW_LIST :
+			self.mWin.setProperty( 'ViewMode', 'common' )
+		elif self.mViewMode == E_VIEW_THUMBNAIL :			
+			self.mWin.setProperty( 'ViewMode', 'thumbnail' )
+		elif self.mViewMode == E_VIEW_POSTER_WRAP :			
+			self.mWin.setProperty( 'ViewMode', 'posterwrap' )
+		elif self.mViewMode == E_VIEW_FANART :			
+			self.mWin.setProperty( 'ViewMode', 'panart' )
+		else :
+			self.mViewMode = E_VIEW_LIST 		
+			self.mWin.setProperty( 'ViewMode', 'common' )
+		
 
 	def UpdateSortMode( self ) :
 		LOG_TRACE('---------------------')
-		self.InitControl()		
 
 	def UpdateAscending( self ) :
 		LOG_TRACE('--------------------- %d ' %self.mAscending[self.mSortMode])	
 		if self.mAscending[self.mSortMode] == True :
-			self.mWin.setProperty( 'ascending', 'true' )
+			self.mWin.setProperty( 'Ascending', 'true' )
 		else :
-			self.mWin.setProperty( 'ascending', 'false' )
+			self.mWin.setProperty( 'Ascending', 'false' )
 	
 
 	def Flush( self ) :
@@ -248,9 +254,6 @@ class ArchiveWindow(BaseWindow):
 
 		elif self.mSortMode == E_SORT_DURATION :
 			self.mRecordList.sort( self.ByDuration )
-
-		elif self.mSortMode == E_SORT_FOLDER :
-			self.ByFolder( )
 		else :
 			LOG_WARN('Unknown sort mode')		
 			self.mSortMode = 0
@@ -267,11 +270,15 @@ class ArchiveWindow(BaseWindow):
 			LOG_TRACE('---------->i=%d' %i)		
 			recInfo = self.mRecordList[i]
 			recInfo.printdebug()
-			channelName = 'P%04d.%s' %(recInfo.mChannelNo, recInfo.mChannelName)
+			channelName = 'P%04d.%s' %(recInfo.mChannelNo, recInfo.mChannelName,)
 			#recItem = xbmcgui.ListItem( '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz', '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz' )
-			recItem = xbmcgui.ListItem( channelName, recInfo.mRecordName )			
-			recItem.setProperty('RecIcon', 'RecIconSample.jpg')
+			recItem = xbmcgui.ListItem( channelName, recInfo.mRecordName )
+			if i == 0 :
+				recItem.setProperty('RecIcon', 'test.png')
+			else :
+				recItem.setProperty('RecIcon', 'RecIconSample.jpg')
 
+			LOG_TRACE('REC DURATION=%s' %(recInfo.mDuration/60) )
 			recItem.setProperty('RecDate', TimeToString( recInfo.mStartTime ))
 			recItem.setProperty('RecDuration', '%dm' %( recInfo.mDuration/60 ) )
 			self.mRecordListItems.append( recItem )
@@ -281,23 +288,19 @@ class ArchiveWindow(BaseWindow):
 
 
 	def ByDate( self, aRec1, aRec2 ) :
-		return cmp( aRec1.StartTime, aRec2.StartTime )
+		return cmp( aRec1.mStartTime, aRec2.mStartTime )
 		
 
 	def ByChannel( self, aRec1, aRec2 ) :
-		return cmp( aRec1.ChannelNo, aRec2.ChannelNo )
+		return cmp( aRec1.mChannelNo, aRec2.mChannelNo )
 
 
 	def ByTitle( self, aRec1, aRec2 ) :
-		return cmp( aRec1.RecordName, aRec2.RecordName )
+		return cmp( aRec1.mRecordName, aRec2.mRecordName )
 
 
 	def ByDuration( self, aRec1, aRec2 ) :
-		return cmp( aRec1.Duration, aRec2.Duration )
-
-
-	def ByFolder( self ): #ToDO : 
-		pass
+		return cmp( aRec1.mDuration, aRec2.mDuration )
 
 
 	@RunThread

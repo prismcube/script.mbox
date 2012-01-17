@@ -28,7 +28,7 @@ class SatelliteConfigOnecable( SettingWindow ):
 		self.mCurrentSatellite = ConfigMgr.GetInstance( ).GetConfiguredSatellitebyIndex( 0 )
 		self.LoadConfigedSatellite( )
 
-		self.AddLeftLabelButtonControl( E_Input01, 'Configure System' )
+		self.AddInputControl( E_Input01, 'Configure System', '' )
 		
 		listitem = []
 		for i in range( self.mSatelliteCount ) :

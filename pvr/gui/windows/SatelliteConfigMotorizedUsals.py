@@ -121,8 +121,8 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 		tmplatitude = '%03d.%d' % ( ( self.mLatitude / 10 ), self.mLatitude % 10 )
 		self.AddInputControl( E_Input02, 'My Latitude Angle',  tmplatitude)
 		
-		self.AddLeftLabelButtonControl( E_Input03, 'Reference Position to Null' )
-		self.AddLeftLabelButtonControl( E_Input04, 'Configure Satellites' )
+		self.AddInputControl( E_Input03, 'Reference Position to Null', '' )
+		self.AddInputControl( E_Input04, 'Configure Satellites', '' )
 
 		self.InitControl( )
 

@@ -190,9 +190,9 @@ class EditTransponder( SettingWindow ) :
 
 		property = ElisPropertyEnum( 'Polarisation', self.mCommander )
 		self.AddInputControl( E_Input04, 'Polarization', property.GetPropStringByIndex( self.mTransponderList[self.mTransponderIndex].mPolarization ) )
-		self.AddLeftLabelButtonControl( E_Input05, 'Add New Transponder', 'Add new transponder.' )
-		self.AddLeftLabelButtonControl( E_Input06, 'Delete Transponder', 'Delete transponder.' )
-		self.AddLeftLabelButtonControl( E_Input07, 'Edit Transponder', 'Edit transponder.' )
+		self.AddInputControl( E_Input05, 'Add New Transponder', '', 'Add new transponder.' )
+		self.AddInputControl( E_Input06, 'Delete Transponder', '', 'Delete transponder.' )
+		self.AddInputControl( E_Input07, 'Edit Transponder', '', 'Edit transponder.' )
 		
 		self.InitControl( )
 		self.ShowDescription( self.getFocusId( ) )

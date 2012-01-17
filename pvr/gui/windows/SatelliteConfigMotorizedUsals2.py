@@ -163,7 +163,7 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ):
 
 		self.AddUserEnumControl( E_SpinEx03, '22KHz Control', USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mFrequencyLevel )
 		self.AddInputControl( E_Input03, 'Transponder', self.mTransponderList[ self.mSelectedTransponderIndex ] )
-		self.AddLeftLabelButtonControl( E_Input04, 'Go to the Position' )
+		self.AddInputControl( E_Input04, 'Go to the Position', '' )
 
 		if( self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input03, E_Input04 ]

@@ -180,9 +180,9 @@ class SatelliteConfigMotorized12( SettingWindow ):
 
 		self.AddUserEnumControl( E_SpinEx03, '22KHz Control', USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mFrequencyLevel )	
 		self.AddInputControl( E_Input03, 'Transponder', self.mTransponderList[ self.mSelectedTransponderIndex ] )
-		self.AddLeftLabelButtonControl( E_Input04, 'Move Antenna' )
+		self.AddInputControl( E_Input04, 'Move Antenna', '' )
 		self.AddUserEnumControl( E_SpinEx04, 'Action', E_LIST_ONE_CABLE_ACTION, 0 )
-		self.AddLeftLabelButtonControl( E_Input05, 'Store Position and Exit' )
+		self.AddInputControl( E_Input05, 'Store Position and Exit', '' )
 
 		if( self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input01, E_Input03, E_Input04, E_Input05 ]

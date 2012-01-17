@@ -6,12 +6,11 @@ E_LANGUAGE			= 0
 E_PARENTAL			= 1
 E_RECORDING_OPTION	= 2
 E_AUDIO_SETTING		= 3
-E_SCART_SETTING		= 4
-E_HDMI_SETTING		= 5
-E_IP_SETTING		= 6
-E_FORMAT_HDD		= 7
-E_FACTORY_RESET		= 8
-E_ETC				= 9
+E_HDMI_SETTING		= 4
+E_IP_SETTING		= 5
+E_FORMAT_HDD		= 6
+E_FACTORY_RESET		= 7
+E_ETC				= 8
 
 # Setting Window Control Ids
 E_SpinEx01			= 1100
@@ -174,18 +173,38 @@ def getOneCableTunerFrequencyIndex( selectedItem ) :
 			
 	return -1
 
-def NumericKeyboard( aKeyType, aTitle, aString, aMaxLength ) :
+
+def MakeHexToIpAddr( aIpAddr ) :
+	ip1 = 0
+	ip2 = 0
+	ip3 = 0
+	ip4 = 0
+	
+	ip1 = ( aIpAddr & 0xff000000 ) >> 24
+	ip2 = ( aIpAddr & 0x00ff0000 ) >> 16
+	ip3 = ( aIpAddr & 0x0000ff00 ) >> 8
+	ip4 = aIpAddr & 0x000000ff
+
+	return ip1, ip2, ip3, ip4
+
+
+def MakeStringToHex( aString ) :
+	tempList = aString.split( '.', 3 )
+	tempHex = ( int( tempList[0] ) << 24 ) | ( int( tempList[1] ) << 16 ) | ( int( tempList[2] ) << 8 ) | int( tempList[3] )
+	return tempHex
+
+def NumericKeyboard( aKeyType, aTitle, aString, aMaxLength=None ) :
 	dialog = xbmcgui.Dialog( )
 	value = dialog.numeric( aKeyType, aTitle, aString )
 	if value == None or value == '' :
 		return aString
 
-	if len( value ) > aMaxLength :
+	if len( value ) > aMaxLength and aMaxLength != None :
 		value = value[ len ( value ) - aMaxLength :]
 	return value
 		
 
-def InputKeyboard( aType, aTitle, aString, aMaxLength ) :
+def InputKeyboard( aType, aTitle, aString, aMaxLength=None ) :
 	dialog = xbmc.Keyboard( aString, aTitle, aType )
 	dialog.doModal( )
 	if( dialog.isConfirmed( ) ) :
@@ -193,7 +212,7 @@ def InputKeyboard( aType, aTitle, aString, aMaxLength ) :
 		if value == None or value == '' :
 			return aString
 
-		if len( value ) > aMaxLength :
+		if len( value ) > aMaxLength and aMaxLength != None :
 			value = value[ len ( value ) - aMaxLength :]
 		return value
 		

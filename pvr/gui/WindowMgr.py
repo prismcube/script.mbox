@@ -202,10 +202,10 @@ class WindowMgr(object):
 
 		print 'skin name=%s : %s' %( self.mSkinName, currentSkinName[4:] )
 
-		if self.mSkinName != currentSkinName[4:] :
-			print 'change skin name'
-			self.mSkinName = currentSkinName[4:]
-			self.Reset( )
+		#if self.mSkinName != currentSkinName[4:] :
+		print 'change skin name'
+		self.mSkinName = currentSkinName[4:]
+		self.Reset( )
 
 
 	def CopyIncludeFile( self ):
