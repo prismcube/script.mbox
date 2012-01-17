@@ -4483,7 +4483,7 @@
 				<onup>3400</onup>
 				<ondown>3400</ondown>
 				<viewtype label="21371">list</viewtype>
-				<pagecontrol>60</pagecontrol>
+				<pagecontrol>3401</pagecontrol>
 				<scrolltime>200</scrolltime>
 				<preloaditems>2</preloaditems>
 				<visible>substring(Window.Property(ViewMode),thumbnail)</visible>
@@ -4491,24 +4491,51 @@
 					<control type="image">
 						<posx>1</posx>
 						<posy>0</posy>
-						<width>268</width>
-						<height>240</height>
+						<width>256</width>
+						<height>144</height>
 						<bordertexture border="5">button-nofocus.png</bordertexture>
 						<bordersize>5</bordersize>
 						<fadetime>100</fadetime>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
+					<!-- Channel Name -->
 					<control type="label">
 						<posx>135</posx>
-						<posy>240</posy>
-						<width>260</width>
+						<posy>150</posy>
+						<width>256</width>
+						<height>25</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<info>ListItem.Label</info>
+					</control>
+					<!-- Record Name -->
+					<control type="label">
+						<posx>135</posx>
+						<posy>180</posy>
+						<width>256</width>
 						<height>25</height>
 						<font>font12</font>
 						<textcolor>grey2</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>center</align>
 						<aligny>center</aligny>
-						<info>ListItem.Label</info>
+						<label>$INFO[ListItem.Label2]</label>
+					</control>
+					<!-- Date and Duration -->
+					<control type="label">
+						<posx>135</posx>
+						<posy>210</posy>
+						<width>256</width>
+						<height>25</height>
+						<font>font12</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Property(RecDate)]($INFO[ListItem.Property(RecDuration)])</label>
 					</control>
 					<control type="image">
 						<posx>230</posx>
@@ -4523,25 +4550,52 @@
 					<control type="image">
 						<posx>1</posx>
 						<posy>0</posy>
-						<width>268</width>
-						<height>240</height>
+						<width>256</width>
+						<height>144</height>
 						<bordertexture border="5">folder-focus.png</bordertexture>
 						<bordersize>5</bordersize>
 						<fadetime>100</fadetime>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
+					<!--Chanel Name-->
 					<control type="label">
 						<posx>135</posx>
-						<posy>240</posy>
-						<width>260</width>
+						<posy>150</posy>
+						<width>256</width>
 						<height>25</height>
-						<font>font12</font>
+						<font>font13</font>
 						<textcolor>white</textcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>center</align>
 						<aligny>center</aligny>
 						<info>ListItem.Label</info>
 					</control>
+					<!-- Record Name -->
+					<control type="label">
+						<posx>135</posx>
+						<posy>180</posy>
+						<width>256</width>
+						<height>25</height>
+						<font>font12</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+					</control>
+					<!-- Date and Duration -->
+					<control type="label">
+						<posx>135</posx>
+						<posy>210</posy>
+						<width>256</width>
+						<height>25</height>
+						<font>font12</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Property(RecDate)]($INFO[ListItem.Property(RecDuration)])</label>
+					</control>					
 					<control type="image">
 						<posx>230</posx>
 						<posy>200</posy>
@@ -4569,6 +4623,154 @@
 				<visible>Control.IsVisible(3400)+substring(Window.Property(ViewMode),thumbnail)</visible>
 			</control>
 		</control>
+	</include>
+
+	<include name="DefaultPosterWrapArchiveView">
+		<control type="group">
+			<visible>substring(Window.Property(ViewMode),posterwrap)</visible>
+			<include>VisibleFadeEffect</include>
+			<posx>0</posx>
+			<posy>80</posy>
+
+			<control type="image">
+				<posx>240</posx>
+				<posy>420</posy>
+				<width>800</width>
+				<height>70</height>
+				<aspectratio>stretch</aspectratio>
+				<texture>confluence/GlassTitleBar.png</texture>
+			</control>
+
+			<control type="wraplist" id="3400">
+				<visible>substring(Window.Property(ViewMode),posterwrap)</visible>			
+				<visible>true</visible>							
+				<posx>-123</posx>
+				<posy>0</posy>
+				<width>1526</width>
+				<height>460</height>
+				<onleft>3400</onleft>
+				<onright>3400</onright>
+				<onup>100</onup>
+				<ondown>3401</ondown>
+				<viewtype label="31028">bigwrap</viewtype>
+				<pagecontrol>3401</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<focusposition>3</focusposition>
+				<orientation>horizontal</orientation>
+				<preloaditems>4</preloaditems>
+				<itemlayout height="310" width="218">
+					<control type="image">
+						<posx>2</posx>
+						<posy>40</posy>
+						<width>214</width>
+						<height>310</height>
+						<aspectratio>stretch</aspectratio>
+						<bordertexture border="5">confluence/button-nofocus.png</bordertexture>
+						<bordersize>4</bordersize>
+						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
+					</control>
+				</itemlayout>
+				<focusedlayout height="310" width="218">
+					<control type="image">
+						<posx>-2</posx>
+						<posy>36</posy>
+						<width>222</width>
+						<height>318</height>
+						<aspectratio>stretch</aspectratio>
+						<bordertexture border="8">confluence/ThumbBorder.png</bordertexture>
+						<bordersize>8</bordersize>
+						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
+						<animation reversible="false" effect="zoom" start="-2,36,222,318" end="-28,0,284,390" time="200">focus</animation>
+						<animation reversible="false" effect="zoom" end="-2,36,222,318" start="-28,0,284,390" time="200">unfocus</animation>
+					</control>
+					<control type="image">
+						<posx>6</posx>
+						<posy>44</posy>
+						<width>170</width>
+						<height>180</height>
+						<aspectratio>stretch</aspectratio>
+						<texture>confluence/GlassOverlay.png</texture>
+						<animation reversible="false" effect="zoom" start="6,44,170,180" end="-24,4,240,250" time="200">focus</animation>
+						<animation reversible="false" effect="zoom" end="6,44,170,180" start="-24,4,240,250" time="200">unfocus</animation>
+					</control>
+					<control type="image">
+						<posx>205</posx>
+						<posy>310</posy>
+						<width>35</width>
+						<height>35</height>
+						<aspectratio>keep</aspectratio>
+						<texture>$INFO[ListItem.Overlay]</texture>
+						<animation type="focus">
+							<effect type="fade" start="0" end="100" time="200" />
+							<effect type="slide" start="0,0" end="40,40" time="200" />
+						</animation>
+						<animation type="unfocus">
+							<effect type="fade" start="100" end="0" time="200" />
+							<effect type="slide" end="0,0" start="40,40" time="200" />
+						</animation>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="scrollbar" id="3401">
+				<posx>200</posx>
+				<posy>390</posy>
+				<width>880</width>
+				<height>25</height>
+				<texturesliderbackground border="14,0,14,0">confluence/ScrollBarH.png</texturesliderbackground>
+				<texturesliderbar border="14,0,14,0">confluence/ScrollBarH_bar.png</texturesliderbar>
+				<texturesliderbarfocus border="14,0,14,0">confluence/ScrollBarH_bar_focus.png</texturesliderbarfocus>
+				<textureslidernib>confluence/ScrollBarNib.png</textureslidernib>
+				<textureslidernibfocus>confluence/ScrollBarNib.png</textureslidernibfocus>
+				<onup>3400</onup>
+				<ondown>9000</ondown>
+				<showonepage>false</showonepage>
+				<orientation>horizontal</orientation>
+				<visible>Control.IsVisible(3400)</visible>
+			</control>
+		</control>
+		<control type="group">
+			<visible>substring(Window.Property(ViewMode),posterwrap)</visible>
+			<control type="label">
+				<posx>0</posx>
+				<posy>500</posy>
+				<width>1280</width>
+				<height>35</height>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<scroll>true</scroll>
+				<align>center</align>
+				<aligny>center</aligny>
+				<label>$INFO[Container(3400).ListItem(3).Property(RecDate)]($INFO[Container(3400).ListItem(3).Property(RecDuration)])</label>				
+			</control>
+			<control type="label">
+				<posx>30</posx>
+				<posy>530</posy>
+				<width>1220</width>
+				<height>35</height>
+				<font>font30_title</font>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<scroll>true</scroll>
+				<align>center</align>
+				<aligny>center</aligny>
+				<info>Container(3400).ListItem(0).Label</info>
+			</control>
+			<control type="label">
+				<posx>0</posx>
+				<posy>580</posy>
+				<width>1280</width>
+				<height>35</height>
+				<font>font30</font>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<scroll>true</scroll>
+				<align>center</align>
+				<aligny>center</aligny>
+				<info>Container(3400).ListItem(0).Label2</info>				
+			</control>
+		</control>
+
 	</include>
 
 </includes>

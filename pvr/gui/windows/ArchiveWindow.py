@@ -32,8 +32,8 @@ E_SORT_DATE						= 0
 E_SORT_CHANNEL					= 1
 E_SORT_TITLE					= 2
 E_SORT_DURATION					= 3
-E_SORT_FOLDER					= 4
-E_SORT_END						= 5
+E_SORT_END						= 4
+
 
 
 
@@ -75,7 +75,7 @@ class ArchiveWindow(BaseWindow):
 		self.mAscending[E_SORT_CHANNEL] = True
 		self.mAscending[E_SORT_TITLE] = True
 		self.mAscending[E_SORT_DURATION] = False
-		self.mAscending[E_SORT_FOLDER] = True
+
 		LOG_TRACE('self.mAscending2=%s' %self.mAscending )				
 
 		self.mCtrlRecordList = self.getControl( LIST_ID_RECORD )
@@ -191,8 +191,6 @@ class ArchiveWindow(BaseWindow):
 			self.mCtrlSortMode.setLabel('SORT: TITLE')		
 		elif self.mSortMode == E_SORT_DURATION :			
 			self.mCtrlSortMode.setLabel('SORT: DURATION')		
-		elif self.mSortMode == E_SORT_FOLDER :			
-			self.mCtrlSortMode.setLabel('SORT: FOLDER')		
 		else :
 			LOG_WARN('Unknown sort mode')
 
@@ -256,9 +254,6 @@ class ArchiveWindow(BaseWindow):
 
 		elif self.mSortMode == E_SORT_DURATION :
 			self.mRecordList.sort( self.ByDuration )
-
-		elif self.mSortMode == E_SORT_FOLDER :
-			self.ByFolder( )
 		else :
 			LOG_WARN('Unknown sort mode')		
 			self.mSortMode = 0
@@ -277,7 +272,7 @@ class ArchiveWindow(BaseWindow):
 			recInfo.printdebug()
 			channelName = 'P%04d.%s' %(recInfo.mChannelNo, recInfo.mChannelName,)
 			#recItem = xbmcgui.ListItem( '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz', '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz' )
-			recItem = xbmcgui.ListItem( channelName, recInfo.mRecordName )			
+			recItem = xbmcgui.ListItem( channelName, recInfo.mRecordName )
 			recItem.setProperty('RecIcon', 'RecIconSample.jpg')
 
 			recItem.setProperty('RecDate', TimeToString( recInfo.mStartTime ))
@@ -302,10 +297,6 @@ class ArchiveWindow(BaseWindow):
 
 	def ByDuration( self, aRec1, aRec2 ) :
 		return cmp( aRec1.mDuration, aRec2.mDuration )
-
-
-	def ByFolder( self ): #ToDO : 
-		pass
 
 
 	@RunThread
