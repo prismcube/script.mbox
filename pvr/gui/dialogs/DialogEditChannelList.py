@@ -85,6 +85,7 @@ class DialogEditChannelList( SettingDialog ) :
 			if self.mMode == FLAG_OPT_GROUP :
 				self.SetDialogGroup( id )
 
+			self.mIsOk = True
 			self.ResetAllControl()
 			self.CloseDialog()
 
@@ -224,5 +225,5 @@ class DialogEditChannelList( SettingDialog ) :
 		self.mDialogTitle = aTitle
 		self.mFavoriteList = aFavoriteGroup
 
-		LOG_TRACE( '======================title[%s] favoriteList[%s] len[%s]'% (self.mDialogTitle, self.mFavoriteList, len(self.mFavoriteList)) )
+		LOG_TRACE( 'title[%s] favoriteList[%s] len[%s]'% (self.mDialogTitle, self.mFavoriteList, len(self.mFavoriteList)) )
 		
