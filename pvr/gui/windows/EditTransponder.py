@@ -101,7 +101,7 @@ class EditTransponder( SettingWindow ) :
  			dialog.SetDefaultValue( 0, 0, 0, 0 )
  			dialog.doModal( )
 
- 			if dialog.IsOK() == True :
+ 			if dialog.IsOK() == E_DIALOG_STATE_YES :
 				frequency, fec, polarization, simbolrate = dialog.GetValue( )
  			
  				newTransponder = ElisITransponderInfo( )
@@ -126,7 +126,7 @@ class EditTransponder( SettingWindow ) :
  			dialog.SetDefaultValue( self.mTransponderList[self.mTransponderIndex].mFrequency, self.mTransponderList[self.mTransponderIndex].mFECMode, self.mTransponderList[self.mTransponderIndex].mPolarization, self.mTransponderList[self.mTransponderIndex].mSymbolRate)
  			dialog.doModal( )
 
- 			if dialog.IsOK() == True :
+ 			if dialog.IsOK() == E_DIALOG_STATE_YES :
  				satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
  				
 				# Delete

@@ -4,6 +4,7 @@ import sys
 
 import pvr.gui.WindowMgr as WinMgr
 import pvr.TunerConfigMgr as ConfigMgr
+import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
 import pvr.ElisMgr
@@ -50,12 +51,17 @@ class AntennaSetup( SettingWindow ) :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-		
-			if xbmcgui.Dialog( ).yesno('Configure', 'Save Configuration?') == 1 :
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( 'Configure', 'Save Configuration?' )
+			dialog.doModal( )
+
+			if dialog.IsOK() == E_DIALOG_STATE_YES :
 				ConfigMgr.GetInstance( ).SatelliteConfigSaveList( )
 				ConfigMgr.GetInstance( ).SetNeedLoad( True )
-			else :
+			elif dialog.IsOK() == E_DIALOG_STATE_NO :
 				ConfigMgr.GetInstance( ).Restore( )
+			elif dialog.IsOK() == E_DIALOG_STATE_CANCEL :
+				return
 
 			self.ResetAllControl( )
 			self.close( )

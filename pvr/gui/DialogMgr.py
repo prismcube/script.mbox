@@ -14,6 +14,7 @@ DIALOG_ID_MOVE_ANTENNA				= 6
 DIALOG_ID_ADD_NEW_SATELLITE			= 7
 DIALOG_ID_EDIT_CHANNEL_LIST			= 8
 DIALOG_ID_SET_TRANSPONDER			= 9
+DIALOG_ID_YES_NO_CANCEL				= 10
 
 
 gDialogMgr = None
@@ -76,6 +77,10 @@ class DialogMgr(object):
 			elif aDialogId == DIALOG_ID_SET_TRANSPONDER :
 				from pvr.gui.dialogs.DialogSetTransponder import DialogSetTransponder
 				return DialogSetTransponder('DialogSetTransponder.xml', self.scriptDir)
+
+			elif aDialogId == DIALOG_ID_YES_NO_CANCEL :
+				from pvr.gui.dialogs.DialogYesNoCancel import DialogYesNoCancel
+				return DialogYesNoCancel('DialogYesNoCancel.xml', self.scriptDir)
 				
 			else :
 				print "ERROR : can not find dialog"

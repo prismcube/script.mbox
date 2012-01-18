@@ -80,10 +80,10 @@ class SettingDialog( BaseDialog ):
 				control.addItems( ctrlItem.mListItems )
 				control.selectItem( ctrlItem.mSelecteItem )
 
-			if ctrlItem.mControlId == E_SETTING_DIALOG_OK :
+			if ctrlItem.mControlId == E_SETTING_DIALOG_BUTTON_OK_ID :
 				self.getControl( ctrlItem.mControlId ).setPosition( 57, ( ( pos + 1 ) * 40 ) + 160 )
 
-			elif ctrlItem.mControlId == E_SETTING_DIALOG_CANCEL :
+			elif ctrlItem.mControlId == E_SETTING_DIALOG_BUTTON_CANCEL_ID :
 				self.getControl( ctrlItem.mControlId ).setPosition( 277, ( pos * 40 ) + 160 )
 				
 			else :
@@ -91,7 +91,7 @@ class SettingDialog( BaseDialog ):
 			pos += 1
 
 		if self.mIsAutomaicHeight == True :
-			self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE ).setHeight( ( pos * 40 ) + 120 )
+			self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).setHeight( ( pos * 40 ) + 120 )
 
 
 	def SetAutoHeight( self, mMode ) :
@@ -140,8 +140,8 @@ class SettingDialog( BaseDialog ):
 
 
 	def AddOkCanelButton( self ) :
-		self.mControlList.append( ControlItem( ControlItem.E_SETTING_OK_CANCEL_BUTTON, E_SETTING_DIALOG_OK, None, None, None, None ) ) 
-		self.mControlList.append( ControlItem( ControlItem.E_SETTING_OK_CANCEL_BUTTON, E_SETTING_DIALOG_CANCEL, None, None, None, None ) )
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_OK_CANCEL_BUTTON, E_SETTING_DIALOG_BUTTON_OK_ID, None, None, None, None ) ) 
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_OK_CANCEL_BUTTON, E_SETTING_DIALOG_BUTTON_CANCEL_ID, None, None, None, None ) )
 
 
 	def HasControlItem( self, aCtrlItem, aContgrolId  ):

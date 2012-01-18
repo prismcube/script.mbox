@@ -5,6 +5,7 @@ import sys
 
 from pvr.gui.BaseDialog import BaseDialog
 from pvr.gui.BaseWindow import Action
+from pvr.gui.GuiConfig import *
 
 E_INPUT_LABEL			= 4
 E_DIALOG_HEADER			= 1
@@ -22,7 +23,7 @@ class DialogSatelliteNumeric( BaseDialog ) :
 		self.mTitleLabel = ''
 		self.mCursor = 0
 		self.mCtrlEditLabel = 0
-		self.mIsOk = False
+		self.mIsOk = E_DIALOG_STATE_NO
 		self.mInput1 = 0
 		self.mInput2 = 0
 		self.mInput3 = 0
@@ -30,7 +31,7 @@ class DialogSatelliteNumeric( BaseDialog ) :
 
 
 	def onInit( self ) :
-		self.mIsOk = False
+		self.mIsOk = E_DIALOG_STATE_NO
 		self.mCursor = 0
 		self.getControl( E_DIALOG_HEADER ).setLabel( self.GetTitleLabel( ) )
 		self.mCtrlEditLabel = self.getControl( E_INPUT_LABEL )
@@ -69,7 +70,7 @@ class DialogSatelliteNumeric( BaseDialog ) :
 			self.NextCursor( )
 			
 		elif( aControlId == E_BUTTON_DONE ) :
-			self.mIsOk = True
+			self.mIsOk = E_DIALOG_STATE_YES
 			self.CloseDialog( )
 
 		self.SetInputLabel( )
@@ -93,7 +94,7 @@ class DialogSatelliteNumeric( BaseDialog ) :
 	def GetTitleLabel( self ) :
 		return self.mTitleLabel
 		
-	def SetProperty( self, title, value ) :
+	def SetDialogProperty( self, title, value ) :
 		self.mTitleLabel = title
 		
 		self.mInput4 = value % 10

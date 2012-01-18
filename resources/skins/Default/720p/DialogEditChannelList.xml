@@ -5,8 +5,7 @@
 		<posx>335</posx>
 		<posy>35</posy>
 	</coordinates>
-	<onload>SetProperty(AnimationWaitingDialogOnClose,true)</onload>
-	<include>dialogeffect</include>
+	<include>DefaultDialogEffect</include>
 	<controls>
 		<control type="group">
             <animation condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional" reversible="false">
@@ -30,11 +29,8 @@
 				<include>DialogInput05</include>
 				<include>DialogInput06</include>
 				<include>DialogInput07</include>
-				<include>DialogInput08</include>
 				<include>DialogSpinEx01</include>
 				<include>DialogSpinEx02</include>
-				<include>DialogSpinEx03</include>
-				<include>DialogInput09</include>
 				<!--include>SettingDialogButtonOKCancel</include-->
 			</control>
 		</control>

@@ -13,7 +13,7 @@ from pvr.gui.GuiConfig import *
 class DialogSetTransponder( SettingDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingDialog.__init__( self, *args, **kwargs )
-		self.mIsOk			= False
+		self.mIsOk			= E_DIALOG_STATE_NO
 		self.mFrequency		= 0
 		self.mFec			= 0
 		self.mPolarization	= 0
@@ -22,10 +22,10 @@ class DialogSetTransponder( SettingDialog ) :
 		
 	def onInit( self ) :
 		self.SetHeaderLabel( 'Set Transponder' )
-		self.SetButtonLabel( E_SETTING_DIALOG_OK, 'Confirm' )
-		self.SetButtonLabel( E_SETTING_DIALOG_CANCEL, 'Cancel' )
+		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, 'Confirm' )
+		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, 'Cancel' )
 		self.DrawItem( )
-		self.mIsOk = False
+		self.mIsOk = E_DIALOG_STATE_NO
 
 		
 	def onAction( self, aAction ) :
@@ -100,13 +100,13 @@ class DialogSetTransponder( SettingDialog ) :
 			
 			self.SetControlLabel2String( E_DialogInput02, '%d' % self.mSimbolicRate )
 
-		elif groupId == E_SETTING_DIALOG_OK :			
-			self.mIsOk = True
+		elif groupId == E_SETTING_DIALOG_BUTTON_OK_ID :			
+			self.mIsOk = E_DIALOG_STATE_YES
 			self.ResetAllControl( )
 			self.CloseDialog( )
 
-		elif groupId == E_SETTING_DIALOG_CANCEL :
-			self.mIsOk = False
+		elif groupId == E_SETTING_DIALOG_BUTTON_CANCEL_ID :
+			self.mIsOk = E_DIALOG_STATE_NO
 			self.ResetAllControl( )
 			self.CloseDialog( )
 
