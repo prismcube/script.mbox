@@ -273,10 +273,10 @@ class ArchiveWindow(BaseWindow):
 			channelName = 'P%04d.%s' %(recInfo.mChannelNo, recInfo.mChannelName,)
 			#recItem = xbmcgui.ListItem( '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz', '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz' )
 			recItem = xbmcgui.ListItem( channelName, recInfo.mRecordName )
-			if i == 0 :
-				recItem.setProperty('RecIcon', 'test.png')
-			else :
-				recItem.setProperty('RecIcon', 'RecIconSample.jpg')
+			#if i == 0 :
+			#	recItem.setProperty('RecIcon', 'test.png')
+			#else :
+			recItem.setProperty('RecIcon', 'RecIconSample.jpg')
 
 			LOG_TRACE('REC DURATION=%s' %(recInfo.mDuration/60) )
 			recItem.setProperty('RecDate', TimeToString( recInfo.mStartTime ))
