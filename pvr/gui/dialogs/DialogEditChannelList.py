@@ -109,22 +109,22 @@ class DialogEditChannelList( SettingDialog ) :
 		self.ResetAllControl( )
 
 		if self.mMode == FLAG_OPT_LIST :
-			#not visible group
-
+			#visible group
 			self.AddInputControl( E_DialogInput01, Msg.Strings( MsgId.LANG_LOCK ),     '' )
 			self.AddInputControl( E_DialogInput02, Msg.Strings( MsgId.LANG_UNLOCK ),   '' )
 			self.AddInputControl( E_DialogInput03, Msg.Strings( MsgId.LANG_SKIP ),     '' )
 			self.AddInputControl( E_DialogInput04, Msg.Strings( MsgId.LANG_UNSKIP ),   '' )
 			self.AddInputControl( E_DialogInput05, Msg.Strings( MsgId.LANG_DELETE ),   '' )
-			self.AddInputControl( E_DialogInput06, Msg.Strings( MsgId.LANG_UNDELETE ), '' )
-			self.AddInputControl( E_DialogInput07, Msg.Strings( MsgId.LANG_MOVE ),     '' )
+			self.AddInputControl( E_DialogInput06, Msg.Strings( MsgId.LANG_MOVE ),     '' )
+			#unused visible false
+			self.SetVisibleControl( E_DialogSpinEx02, False )
 
 			if len(self.mFavoriteList) > 0 :
 				self.AddUserEnumControl( E_DialogSpinEx01, Msg.Strings( MsgId.LANG_ADD_TO_FAV ), self.mFavoriteList, 0)
-				self.AddInputControl( E_DialogInput08, '', Msg.Strings( MsgId.LANG_ADD_OK ) )
+				self.AddInputControl( E_DialogInput07, '', Msg.Strings( MsgId.LANG_ADD_OK ) )
 			else :
-				self.AddInputControl( E_DialogInput08, Msg.Strings( MsgId.LANG_ADD_TO_FAV ), Msg.Strings( MsgId.LANG_NONE ) )
-				self.SetEnableControl( E_DialogInput08, False )
+				self.AddInputControl( E_DialogInput07, Msg.Strings( MsgId.LANG_ADD_TO_FAV ), Msg.Strings( MsgId.LANG_NONE ) )
+				self.SetEnableControl( E_DialogInput07, False )
 
 
 		elif self.mMode == FLAG_OPT_GROUP :
@@ -133,7 +133,6 @@ class DialogEditChannelList( SettingDialog ) :
 			self.SetVisibleControl( E_DialogInput05, False )
 			self.SetVisibleControl( E_DialogInput06, False )
 			self.SetVisibleControl( E_DialogInput07, False )
-			self.SetVisibleControl( E_DialogInput08, False )
 
 			#visible group only
 			self.AddInputControl( E_DialogInput01, Msg.Strings( MsgId.LANG_CREATE_NEW_GROUP ), '' )
@@ -149,7 +148,7 @@ class DialogEditChannelList( SettingDialog ) :
 				self.SetVisibleControl( E_DialogInput05, False )
 				self.SetVisibleControl( E_DialogInput06, False )
 				self.SetVisibleControl( E_DialogInput07, False )
-				self.SetVisibleControl( E_DialogInput08, False )
+
 			else :
 				self.AddInputControl( E_DialogInput02, Msg.Strings( MsgId.LANG_RENAME_FAV ), Msg.Strings( MsgId.LANG_NONE ) )
 				self.AddInputControl( E_DialogInput03, Msg.Strings( MsgId.LANG_DELETE_FAV ), Msg.Strings( MsgId.LANG_NONE ) )

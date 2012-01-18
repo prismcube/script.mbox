@@ -157,6 +157,10 @@ class ChannelListWindow(BaseWindow):
 		self.mDeleteList = []
 		self.mSkipList = []
 		self.mLockList = []
+		self.mUnSkipList = []
+		self.mUnLockList = []
+
+		self.mDeleteChannelList = []
 		self.mEditChannelList = []
 		self.mEditFavoriteChannelList = []
 		self.mEditFavorite = []
@@ -437,11 +441,9 @@ class ChannelListWindow(BaseWindow):
 
 					self.SubMenuAction(E_SLIDE_ACTION_SUB, ElisEnum.E_MODE_ALL)
 
-					self.mCtrlListCHList.reset()
-					self.InitChannelList()
-
 					#use to edit
 					#copy to channel list
+					self.mEditChannelList = None
 					self.mEditChannelList = self.mChannelList
 
 					self.mEditFavorite = []
@@ -453,7 +455,10 @@ class ChannelListWindow(BaseWindow):
 							self.mEditFavorite.append( item.mGroupName )
 
 							#copy to channel list by favoriteGroup
-							self.mEditFavoriteChannelList[idx] = self.mCommander.Channel_GetListByFavorite( self.mChannelListServieType, ElisEnum.E_MODE_FAVORITE, self.mChannelListSortMode, item.mGroupName )
+							ret = self.mCommander.Channel_GetListByFavorite( self.mChannelListServieType, ElisEnum.E_MODE_FAVORITE, self.mChannelListSortMode, item.mGroupName )
+							if ret:
+								self.mEditFavoriteChannelList.append( ret )
+								LOG_TRACE( 'idx[%s] ch[%s]'% (idx, ClassToList('convert',self.mEditFavoriteChannelList[idx])) )
 
 							idx += 1
 
@@ -462,6 +467,9 @@ class ChannelListWindow(BaseWindow):
 					#clear label
 					self.ResetLabel()
 					self.UpdateLabelInfo()
+
+					self.mCtrlListCHList.reset()
+					self.InitChannelList()
 
 				except Exception, e :
 					LOG_TRACE( 'Error except[%s]'% e )
@@ -497,38 +505,42 @@ class ChannelListWindow(BaseWindow):
 
 				cmd1 = ''
 				cmd2 = True
-				label= ''
-				if idxDialog == E_DialogInput01 :
-					self.mMarkList = []
-					cmd1 = 'lock'
-					cmd2 = True
 
-				elif idxDialog == E_DialogInput02 :
-					self.mMarkList = []
-					cmd1 = 'lock'
-					cmd2 = False
-
-				elif idxDialog == E_DialogInput03 :
-					cmd1 = 'skip'
-					cmd2 = True
-
-				elif idxDialog == E_DialogInput04 :
-					cmd1 = 'skip'
-					cmd2 = False
-
-				elif idxDialog == E_DialogInput05 :
+				if idxDialog == E_DialogInput05 :
 					cmd1 = 'delete'
 					cmd2 = True
 
-				elif idxDialog == E_DialogInput06 :
-					cmd1 = 'delete'
-					cmd2 = False
+					self.SetMarkDeleteCh( cmd1, cmd2 )
+					GuiLock2(True)
+					self.mCtrlListCHList.reset()
+					self.InitChannelList()
+					GuiLock2(False)
 
-				self.SetMarkDeleteCh( cmd1, cmd2 )
+				else:
+					if idxDialog == E_DialogInput01 :
+						cmd1 = 'lock'
+						cmd2 = True
+
+					elif idxDialog == E_DialogInput02 :
+						cmd1 = 'lock'
+						cmd2 = False
+
+					elif idxDialog == E_DialogInput03 :
+						cmd1 = 'skip'
+						cmd2 = True
+
+					elif idxDialog == E_DialogInput04 :
+						cmd1 = 'skip'
+						cmd2 = False
+
+					self.SetMarkDeleteCh( cmd1, cmd2 )
+
 				GuiLock2( True )
 				self.setFocusId( self.mCtrlGropCHList.getId() )
 				GuiLock2( False )
 
+				self.mMarkList = []
+				label= ''
 				if cmd2 == False:
 					label = 'un'+cmd1
 				LOG_TRACE( 'ret=======cmd[%s] Mark[%s] Delete[%s] Skip[%s] Lock[%s]'% (label,self.mMarkList,self.mDeleteList,self.mSkipList,self.mLockList) )
@@ -537,7 +549,7 @@ class ChannelListWindow(BaseWindow):
 				if self.mEditFavoriteChannelList :
 					idx = 0
 					for item in self.mEditFavoriteChannelList:
-						LOG_TRACE( 'group[%s] ch[%s]'% (self.mEditFavorite[idx], item[idx]) )
+						LOG_TRACE( 'group[%s] ch[%s]'% (self.mEditFavorite[idx], ClassToList('convert',item)) )
 						idx += 1
 
 
@@ -1210,24 +1222,30 @@ class ChannelListWindow(BaseWindow):
 				( EnumToString('mode', self.mZappingMode),         \
 				  EnumToString('sort', self.mChannelListSortMode), \
 				  EnumToString('type', self.mChannelListServieType)) )
-			ClassToList( 'print', self.mChannelList )
+			LOG_TRACE( 'len[%s] ch%s'% (len(self.mChannelList),ClassToList( 'convert', self.mChannelList )) )
 
 		LOG_TRACE( 'Leave' )
 
 
 	def InitChannelList(self):
 		LOG_TRACE( 'Enter' )
+		iChannel = None
+		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+			iChannel = self.mChannelList
+		else :
+			iChannel = self.mEditChannelList
 
-		chList = ClassToList( 'convert', self.mChannelList )
-		if len(chList) < 1 :
-			LOG_TRACE( 'no data, self.mChannelList len[%s]'% len(self.mChannelList) )
-			ClassToList( 'print', self.mChannelList )
+		#chList = ClassToList( 'convert', iChannel )
+		#if len(chList) < 1 :
+		if iChannel == None:
+			LOG_TRACE( 'no data, iChannel len[%s]'% len(iChannel) )
+			ClassToList( 'print', iChannel )
 			return 
 
 		lblColorS = E_TAG_COLOR_GREY
 		lblColorE = E_TAG_COLOR_END
 		self.mListItems = []
-		for ch in self.mChannelList:
+		for ch in iChannel:
 
 			try:
 				if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
@@ -1266,7 +1284,7 @@ class ChannelListWindow(BaseWindow):
 
 		#detected to last focus
 		chindex = 0;
-		for ch in self.mChannelList:
+		for ch in iChannel:
 			if ch.mNumber == self.mNavChannel.mNumber :
 				break
 			chindex += 1
@@ -1572,92 +1590,96 @@ class ChannelListWindow(BaseWindow):
 		try:
 			#----------------> 1.set current position item <-------------
 			if len(self.mMarkList) < 1 :
-				#icon toggle
-				if aMode.lower() == 'lock' :
-					listItem = self.mCtrlListCHList.getListItem(lastPos)
+				if aMode.lower() == 'delete' :
+					self.MarkAddDelete( 'delete', self.mEditChannelList[lastPos].mNumber, aEnabled )
+					self.mDeleteChannelList.append( self.mEditChannelList[lastPos] )
+					self.mEditChannelList.pop(lastPos)
+					#LOG_TRACE( 'del:idx[%s] ch%s '% (lastPos, ClassToList('convert', self.mDeleteChannelList)) )
 
-					if aEnabled :
-						#enable lock
-						listItem.setProperty('lock', E_IMG_ICON_LOCK)
-					else :
-						#disible lock
-						listItem.setProperty('lock', '')
+				else:
+					#icon toggle
+					if aMode.lower() == 'lock' :
+						listItem = self.mCtrlListCHList.getListItem(lastPos)
 
-					self.MarkAddDelete( 'lock', lastPos, aEnabled )
-
-					#mark remove
-					listItem.setProperty('mark', '')
-
-
-				#label color
-				else :
-					#remove tag [COLOR ...]label[/COLOR]
-					label1 = self.mCtrlListCHList.getSelectedItem().getLabel()
-					label2 = re.findall('\](.*)\[', label1)
-
-					if aMode.lower() == 'delete' :
 						if aEnabled :
-							label3= str('%s%s%s'%( E_TAG_COLOR_RED, label2[0], E_TAG_COLOR_END ) )
+							#enable lock
+							listItem.setProperty('lock', E_IMG_ICON_LOCK)
 						else :
-							label3= str('%s%s%s'%( E_TAG_COLOR_GREY, label2[0], E_TAG_COLOR_END ) )
-						self.mCtrlListCHList.getSelectedItem().setLabel(label3)
-						self.MarkAddDelete( 'delete', lastPos, aEnabled )
+							#disible lock
+							listItem.setProperty('lock', '')
 
+						self.MarkAddDelete( 'lock', self.mEditChannelList[lastPos].mNumber, aEnabled )
+
+					#label color
 					elif aMode.lower() == 'skip' :
+						#remove tag [COLOR ...]label[/COLOR]
+						label1 = self.mCtrlListCHList.getSelectedItem().getLabel()
+						label2 = re.findall('\](.*)\[', label1)
+
 						if aEnabled :
 							label3= str('%s%s%s'%( E_TAG_COLOR_GREY3, label2[0], E_TAG_COLOR_END ) )
 						else :
 							label3= str('%s%s%s'%( E_TAG_COLOR_GREY, label2[0], E_TAG_COLOR_END ) )
 						self.mCtrlListCHList.getSelectedItem().setLabel(label3)
-						self.MarkAddDelete( 'skip', lastPos, aEnabled )
+						self.MarkAddDelete( 'skip', self.mEditChannelList[lastPos].mNumber, aEnabled )
+
+					#mark remove
+					listItem.setProperty('mark', '')
 
 			else :
 				#----------------> 2.set mark list all <-------------
-				for idx in self.mMarkList :
-					self.mCtrlListCHList.selectItem(idx)
-					xbmc.sleep(50)
+				if aMode.lower() == 'delete' :
+					for idx in self.mMarkList :
+						self.MarkAddDelete( 'delete', self.mEditChannelList[idx].mNumber, aEnabled )
+						self.mDeleteChannelList.append( self.mEditChannelList[idx] )
+						LOG_TRACE( 'del:idx[%s] ch%s '% (idx, ClassToList('convert', self.mDeleteChannelList)) )
 
-					#icon toggle
-					if aMode.lower() == 'lock' :
+
+					for number in self.mDeleteList :
+						for idx in range(len(self.mEditChannelList)) :
+							if number == self.mEditChannelList[idx].mNumber :
+								self.mEditChannelList.pop(idx)
+								break
+
+					LOG_TRACE( 'total len[%s] del:ch[%s] '% (len(self.mEditChannelList), self.mDeleteList) )
+
+				else :
+
+					for idx in self.mMarkList :
+						self.mCtrlListCHList.selectItem(idx)
+						xbmc.sleep(50)
+
 						listItem = self.mCtrlListCHList.getListItem(idx)
 
-						#lock toggle: disable
-						if aEnabled :
-							listItem.setProperty('lock', E_IMG_ICON_LOCK)
-						else :
-							listItem.setProperty('lock', '')
+						#icon toggle
+						if aMode.lower() == 'lock' :
 
-						self.MarkAddDelete( 'lock', idx, aEnabled )
-
-						#mark remove
-						listItem.setProperty('mark', '')
-
-					#label color
-					else :
-						#strip tag [COLOR ...]label[/COLOR]
-						label1 = self.mCtrlListCHList.getSelectedItem().getLabel()
-						label2 = re.findall('\](.*)\[', label1)
-
-						if aMode.lower() == 'delete' :
+							#lock toggle: disable
 							if aEnabled :
-								label3= str('%s%s%s'%( E_TAG_COLOR_RED, label2[0], E_TAG_COLOR_END ) )
+								listItem.setProperty('lock', E_IMG_ICON_LOCK)
 							else :
-								label3= str('%s%s%s'%( E_TAG_COLOR_GREY, label2[0], E_TAG_COLOR_END ) )
-							self.mCtrlListCHList.getSelectedItem().setLabel(label3)
-							self.MarkAddDelete( 'delete', idx, aEnabled )
+								listItem.setProperty('lock', '')
 
-							LOG_TRACE( 'idx[%s] 1%s 2%s 3%s'% (idx, label1,label2,label3) )
+							self.MarkAddDelete( 'lock', self.mEditChannelList[idx].mNumber, aEnabled )
 
+
+						#label color
 						elif aMode.lower() == 'skip' :
+							#strip tag [COLOR ...]label[/COLOR]
+							label1 = self.mCtrlListCHList.getSelectedItem().getLabel()
+							label2 = re.findall('\](.*)\[', label1)
+
 							if aEnabled :
 								label3= str('%s%s%s'%( E_TAG_COLOR_GREY3, label2[0], E_TAG_COLOR_END ) )
 							else :
 								label3= str('%s%s%s'%( E_TAG_COLOR_GREY, label2[0], E_TAG_COLOR_END ) )
 							self.mCtrlListCHList.getSelectedItem().setLabel(label3)
-							self.MarkAddDelete( 'skip', idx, aEnabled )
+							self.MarkAddDelete( 'skip', self.mEditChannelList[idx].mNumber, aEnabled )
 
 							LOG_TRACE( 'idx[%s] 1%s 2%s 3%s'% (idx, label1,label2,label3) )
 
+						#mark remove
+						listItem.setProperty('mark', '')
 
 				#recovery last focus
 				self.mCtrlListCHList.selectItem(lastPos)
@@ -1718,7 +1740,8 @@ class ChannelListWindow(BaseWindow):
 					self.mDeleteList.append( aPos )
 			else :
 				#undelete, remove item
-				self.mDeleteList.pop(idx)
+				if isExist == True :
+					self.mDeleteList.pop(idx)
 
 		elif aMode.lower() == 'skip' :
 			idx = 0
@@ -1737,7 +1760,8 @@ class ChannelListWindow(BaseWindow):
 					self.mSkipList.append( aPos )
 			else :
 				#unskip, remove item
-				self.mSkipList.pop(idx)
+				if isExist == True :
+					self.mSkipList.pop(idx)
 
 		elif aMode.lower() == 'lock' :
 			idx = 0
@@ -1756,7 +1780,8 @@ class ChannelListWindow(BaseWindow):
 					self.mLockList.append( aPos )		
 			else :
 				#unLock, remove item
-				self.mLockList.pop(idx)
+				if isExist == True :
+					self.mLockList.pop(idx)
 
 
 		LOG_TRACE( 'MarkList[%s]'% self.mMarkList )
