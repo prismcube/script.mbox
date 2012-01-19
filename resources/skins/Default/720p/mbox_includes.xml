@@ -4508,7 +4508,7 @@
 						<posy>0</posy>
 						<width>256</width>
 						<height>144</height>
-						<bordertexture border="5">button-nofocus.png</bordertexture>
+						<bordertexture border="5">confluence/button-nofocus.png</bordertexture>
 						<bordersize>5</bordersize>
 						<fadetime>100</fadetime>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
@@ -4567,7 +4567,7 @@
 						<posy>0</posy>
 						<width>256</width>
 						<height>144</height>
-						<bordertexture border="5">folder-focus.png</bordertexture>
+						<bordertexture border="5">confluence/folder-focus.png</bordertexture>
 						<bordersize>5</bordersize>
 						<fadetime>100</fadetime>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
@@ -4632,7 +4632,7 @@
 				<textureslidernib>ScrollBarNib.png</textureslidernib>
 				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
 				<onleft>3400</onleft>
-				<onright>2</onright>
+				<onright>100</onright>
 				<showonepage>false</showonepage>
 				<orientation>vertical</orientation>
 				<visible>Control.IsVisible(3400)+substring(Window.Property(ViewMode),thumbnail)</visible>
@@ -4837,7 +4837,7 @@
 						<width>120</width>
 						<height>160</height>
 						<aspectratio>stretch</aspectratio>
-						<bordertexture border="5" diffuse="diffuse_mirror2.png">button-nofocus.png</bordertexture>
+						<bordertexture border="5" diffuse="diffuse_mirror2.png">confluence/button-nofocus.png</bordertexture>
 						<bordersize>4</bordersize>
 						<fadetime>200</fadetime>
 						<texture background="true" flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem.Icon]</texture>
@@ -4921,4 +4921,401 @@
 		</control>
 	</include>	
 
+	<include name="DefaultCommonEPGView">
+		<control type="group">
+			<visible>substring(Window.Property(EPGMode),channel)</visible>
+			<include>VisibleFadeEffect</include>
+			<control type="list" id="3500">
+				<posx>75</posx>
+				<posy>110</posy>
+				<width>1200</width>
+				<height>520</height>
+				<onleft>100</onleft>
+				<onright>3501</onright>
+				<onup>3500</onup>
+				<ondown>3500</ondown>
+				<viewtype label="535">list</viewtype>
+				<pagecontrol>3501</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<visible>substring(Window.Property(EPGMode),channel)</visible>
+				<itemlayout height="40" width="610">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>730</width>
+						<height>41</height>
+						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
+					</control>
+					<!-- Start Time-->
+					<control type="label">
+						<posx>40</posx>
+						<posy>0</posy>
+						<width>80</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<!-- EPG Name -->
+					<control type="label">
+						<posx>120</posx>
+						<posy>0</posy>
+						<width>540</width>
+						<height>40</height>
+						<font>font13_title</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
+					</control>
+					<control type="image">
+						<posx>665</posx>
+						<posy>14</posy>
+						<width>20</width>
+						<height>16</height>
+						<texture>$INFO[ListItem.Overlay]</texture>
+						<visible>true</visible>
+					</control>
+				</itemlayout>
+				<focusedlayout height="40" width="610">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>720</width>
+						<height>41</height>
+						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
+						<visible>!Control.HasFocus(3500))</visible>
+						<include>VisibleFadeEffect</include>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>730</width>
+						<height>41</height>
+						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
+						<!--
+						<visible>Control.HasFocus(3400)+substring(Window.Property(ViewMode),common)</visible>
+						-->
+						<include>VisibleFadeEffect</include>
+					</control>
+
+
+					<!-- Start Time-->
+					<control type="label">
+						<posx>40</posx>
+						<posy>0</posy>
+						<width>80</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<!-- EPG Name -->					
+					<control type="label">
+						<posx>120</posx>
+						<posy>0</posy>
+						<width>540</width>
+						<height>40</height>
+						<font>font13_title</font>
+						<textcolor>white</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
+					</control>
+					<control type="image">
+						<posx>695</posx>
+						<posy>14</posy>
+						<width>20</width>
+						<height>16</height>
+						<texture>$INFO[ListItem.Overlay]</texture>
+						<!--
+						<visible>substring(Window.Property(ViewMode),common)</visible>
+						-->
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="scrollbar" id="3501">
+				<posx>800</posx>
+				<posy>110</posy>
+				<width>25</width>
+				<height>525</height>
+				<texturesliderbackground border="0,14,0,14">confluence/ScrollBarV.png</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">confluence/ScrollBarV_bar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">confluence/ScrollBarV_bar_focus.png</texturesliderbarfocus>
+				<textureslidernib>confluence/ScrollBarNib.png</textureslidernib>
+				<textureslidernibfocus>confluence/ScrollBarNib.png</textureslidernibfocus>
+				<onleft>3500</onleft>
+				<onright>100</onright>
+				<showonepage>false</showonepage>
+				<orientation>vertical</orientation>
+				<visible>Control.IsVisible(3500)</visible>
+			</control>
+			<control type="group">
+				<posx>850</posx>
+				<posy>100</posy>
+				<visible>Control.IsVisible(3500)</visible>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>360</width>
+					<height>540</height>
+					<aspectratio aligny="bottom">keep</aspectratio>
+					<fadetime>IconCrossfadeTime</fadetime>
+					<texture background="true">$INFO[ListItem.Icon]</texture>
+					<bordertexture border="8">confluence/ThumbShadow.png</bordertexture>
+					<bordersize>8</bordersize>
+				</control>
+				<control type="image">
+					<posx>8</posx>
+					<posy>532</posy>
+					<width>344</width>
+					<height>524</height>
+					<aspectratio aligny="top">keep</aspectratio>
+					<fadetime>IconCrossfadeTime</fadetime>
+					<texture diffuse="confluence/diffuse_mirror3.png" flipy="true" background="true">$INFO[ListItem.Icon]</texture>
+				</control>
+			</control>
+		</control>
+	</include>
+
+	<include name="DefaultBigEPGView">
+		<control type="group">
+			<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>
+			<include>VisibleFadeEffect</include>
+			<control type="list" id="3500">
+				<posx>75</posx>
+				<posy>70</posy>
+				<width>1200</width>
+				<height>560</height>
+				<onleft>100</onleft>
+				<onright>3501</onright>
+				<onup>3500</onup>
+				<ondown>3500</ondown>
+				<viewtype label="535">list</viewtype>
+				<pagecontrol>3501</pagecontrol>
+				<scrolltime>200</scrolltime>
+				<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>
+				<itemlayout height="70" width="610">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>730</width>
+						<height>71</height>
+						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
+					</control>
+					<!-- Channel Name-->
+					<control type="label">
+						<posx>40</posx>
+						<posy>0</posy>
+						<width>540</width>
+						<height>30</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<!-- duration or from ~ until  -->
+					<control type="label">
+						<posx>720</posx>
+						<posy>0</posy>
+						<width>210</width>
+						<height>30</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Property(Duration)]</label>
+					</control>
+					<!-- Record Name -->
+					<control type="label">
+						<posx>40</posx>
+						<posy>30</posy>
+						<width>540</width>
+						<height>40</height>
+						<font>font13_title</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
+					</control>
+					<!-- progress Bar -->	
+					<!--
+					<control type="label">
+						<posx>710</posx>
+						<posy>30</posy>
+						<width>100</width>
+						<height>40</height>
+						<font>font13_title</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Property(RecDuration)]</label>
+						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
+					</control>
+					-->
+					<control type="image">
+						<posx>665</posx>
+						<posy>14</posy>
+						<width>20</width>
+						<height>16</height>
+						<texture>$INFO[ListItem.Overlay]</texture>
+						<visible>true</visible>
+					</control>
+				</itemlayout>
+				<focusedlayout height="70" width="610">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>720</width>
+						<height>71</height>
+						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
+						<visible>!Control.HasFocus(3500)+[ substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)]</visible>
+						<include>VisibleFadeEffect</include>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>730</width>
+						<height>71</height>
+						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
+						<include>VisibleFadeEffect</include>
+					</control>
+
+					<control type="image">
+						<posx>530</posx>
+						<posy>5</posy>
+						<width>200</width>
+						<height>61</height>
+						<texture border="0,0,14,0">confluence/MediaItemDetailBG.png</texture>
+					</control>
+
+					<!-- Channel Name-->
+					<control type="label">
+						<posx>40</posx>
+						<posy>0</posy>
+						<width>540</width>
+						<height>30</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<!-- duration or from ~ until  -->
+					<control type="label">
+						<posx>720</posx>
+						<posy>0</posy>
+						<width>210</width>
+						<height>30</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Property(Duration)]</label>
+					</control>
+					<!-- Record Name -->					
+					<control type="label">
+						<posx>40</posx>
+						<posy>30</posy>
+						<width>540</width>
+						<height>40</height>
+						<font>font13_title</font>
+						<textcolor>white</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
+					</control>
+					<!-- progress Bar -->
+					<!--
+					<control type="label">
+						<posx>710</posx>
+						<posy>30</posy>
+						<width>100</width>
+						<height>40</height>
+						<font>font13_title</font>
+						<textcolor>white</textcolor>
+						<selectedcolor>selected</selectedcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Property(RecDuration)]</label>
+						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
+					</control>
+					-->
+					
+					<control type="image">
+						<posx>695</posx>
+						<posy>14</posy>
+						<width>20</width>
+						<height>16</height>
+						<texture>$INFO[ListItem.Overlay]</texture>
+						<!--
+						<visible>substring(Window.Property(ViewMode),common)</visible>
+						-->
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="scrollbar" id="3501">
+				<posx>800</posx>
+				<posy>70</posy>
+				<width>25</width>
+				<height>565</height>
+				<texturesliderbackground border="0,14,0,14">confluence/ScrollBarV.png</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">confluence/ScrollBarV_bar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">confluence/ScrollBarV_bar_focus.png</texturesliderbarfocus>
+				<textureslidernib>confluence/ScrollBarNib.png</textureslidernib>
+				<textureslidernibfocus>confluence/ScrollBarNib.png</textureslidernibfocus>
+				<onleft>3500</onleft>
+				<onright>100</onright>
+				<showonepage>false</showonepage>
+				<orientation>vertical</orientation>
+				<visible>Control.IsVisible(3500) + [substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)]</visible>
+			</control>
+			<control type="group">
+				<posx>850</posx>
+				<posy>100</posy>
+				<visible>Control.IsVisible(3500)+[substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)]</visible>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>360</width>
+					<height>540</height>
+					<aspectratio aligny="bottom">keep</aspectratio>
+					<fadetime>IconCrossfadeTime</fadetime>
+					<texture background="true">$INFO[ListItem.Icon]</texture>
+					<bordertexture border="8">confluence/ThumbShadow.png</bordertexture>
+					<bordersize>8</bordersize>
+				</control>
+				<control type="image">
+					<posx>8</posx>
+					<posy>532</posy>
+					<width>344</width>
+					<height>524</height>
+					<aspectratio aligny="top">keep</aspectratio>
+					<fadetime>IconCrossfadeTime</fadetime>
+					<texture diffuse="confluence/diffuse_mirror3.png" flipy="true" background="true">$INFO[ListItem.Icon]</texture>
+				</control>
+			</control>
+		</control>
+	</include>
+	
 </includes>

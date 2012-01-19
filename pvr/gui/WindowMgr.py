@@ -8,6 +8,7 @@ import shutil
 from gui.BaseWindow import BaseWindow
 from inspect import currentframe
 from elementtree import ElementTree
+from pvr.Util import LOG_TRACE, LOG_WARN, LOG_ERR
 
 
 WIN_ID_NULLWINDOW 					= 1
@@ -35,7 +36,7 @@ WIN_ID_EDIT_TRANSPONDER				= 22
 WIN_ID_ARCHIVE_WINDOW				= 23
 WIN_ID_SYSTEM_INFO					= 24
 WIN_ID_INSTALLATION					= 25
-
+WIN_ID_EPG_WINDOW					= 26
 
 gWindowMgr = None
 
@@ -177,13 +178,17 @@ class WindowMgr(object):
 				from pvr.gui.windows.ArchiveWindow import ArchiveWindow
 				ArchiveWindow('ArchiveWindow.xml', self.mScriptDir ).doModal()
 
+			elif aWindowId ==  WIN_ID_EPG_WINDOW:
+				from pvr.gui.windows.EPGWindow import EPGWindow
+				EPGWindow('EPGWindow.xml', self.mScriptDir ).doModal()
+
 			else :
 				print 'Unknown widnowId=%d' %aWindowId
 
 			self.mLastId = aWindowId
 
 		except Exception, ex:
-			print "Exception %s" %ex
+			LOG_ERR( "Exception %s" %ex)
 			
 
 

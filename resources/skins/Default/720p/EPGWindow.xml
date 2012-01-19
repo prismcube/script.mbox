@@ -1,0 +1,220 @@
+<window id="3026">
+	<type>window</type>
+	<coordinates>
+		<system>1</system>
+		<posx>0</posx>
+		<posy>0</posy>
+	</coordinates>
+	<defaultcontrol always="true">3500</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+
+	<controls>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<texture background="true">confluence/backgrounds/videos.jpg</texture>
+			<include>DefaultBackgroundFade</include>
+			<fadetime>FanartCrossfadeTime</fadetime>
+			<visible>true</visible>
+		</control>
+		<control type="group">
+			<include>Window_OpenClose_Animation</include>		
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1280</width>
+				<height>720</height>
+				<texture border="20">confluence/black-back.png</texture>
+				<include>VisibleFadeEffect</include>
+				<visible>true</visible>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>128r</posy>
+				<width>1280</width>
+				<height>128</height>
+				<texture>confluence/floor.png</texture>
+				<include>VisibleFadeEffect</include>
+				<visible>true</visible>				
+			</control>
+			<control type="image">
+				<posx>845</posx>
+				<posy>110</posy>
+				<width>352</width>
+				<height>198</height>
+				<texture border="20">special://skin/backgrounds/weather.jpg</texture>
+				<description>pre-view</description>
+				<visible>true</visible>
+			</control>
+			<control type="group">
+				<include>VisibleFadeEffect</include>
+				<visible>true</visible>
+				<control type="image">
+					<posx>40</posx>
+					<posy>40</posy>
+					<width>1200</width>
+					<height>620</height>
+					<texture border="20">confluence/ContentPanel.png</texture>
+				</control>
+				<control type="image">
+					<posx>40</posx>
+					<posy>645</posy>
+					<width>1200</width>
+					<height>600</height>
+					<aspectratio aligny="top">keep</aspectratio>
+					<texture diffuse="confluence/diffuse_mirror3.png" flipy="true" border="20">confluence/ContentPanel.png</texture>
+				</control>
+			</control>
+		</control>
+
+		<control type="group">
+			<include>Window_OpenClose_Animation</include>		
+			<include>DefaultCommonEPGView</include> <!-- Default common View id = 3500 -->
+			<include>DefaultBigEPGView</include> <!-- Default Big View id = 3500 -->			
+		</control>
+		<control type="group">
+			<animation effect="slide" start="0,0" end="250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(9000).HasFocus | ControlGroup(9001).HasFocus">Conditional</animation>
+			<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(9000).HasFocus | ControlGroup(9001).HasFocus">WindowClose</animation>
+			<control type="group">
+				<animation effect="slide" end="-240,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
+				<animation effect="slide" start="-15,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>1</width>
+					<height>720</height>
+					<texture>confluence/MediaBladeSub_Part1.png</texture>
+					<animation effect="zoom" start="0,0,1,720" end="0,0,229,720" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | ControlGroup(9001).HasFocus">Conditional</animation>
+				</control>
+				<control type="image">
+					<posx>1</posx>
+					<posy>0</posy>
+					<width>12</width>
+					<height>720</height>
+					<texture>confluence/MediaBladeSub_Part2.png</texture>
+					<animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | ControlGroup(9001).HasFocus">Conditional</animation>
+				</control>
+			</control>
+			<control type="group" id="9001">
+				<posx>-220</posx>
+				<posy>0</posy>
+				<animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9001).HasFocus + !Control.HasFocus(101)">conditional</animation>
+				<animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(101) | ControlGroup(9001).HasFocus">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(101) | ControlGroup(9001).HasFocus">WindowClose</animation>
+				<animation effect="slide" end="220,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | ControlGroup(9001).HasFocus">conditional</animation>
+
+				<control type="button">
+					<description>Fake button for mouse control</description>
+					<posx>-15</posx>
+					<posy>0</posy>
+					<width>245</width>
+					<height>720</height>
+					<label>-</label>
+					<font>-</font>
+					<texturenofocus>-</texturenofocus>
+					<texturefocus>-</texturefocus>
+					<visible>true</visible>
+				</control>
+
+				<control type="image">
+					<posx>185</posx>
+					<posy>120</posy>
+					<width>40</width>
+					<height>40</height>
+					<texture>confluence/MediaSubSet.png</texture>
+				</control>
+				<control type="grouplist" id="9010">
+					<posx>10</posx>
+					<posy>170</posy>
+					<width>240</width>
+					<height>550</height>
+					<onleft>9000</onleft>
+					<onright>3500</onright>
+					<onup>9010</onup>
+					<ondown>9010</ondown>
+					<itemgap>0</itemgap>
+					<control type="radiobutton" id="200">
+						<description>Stack Toggle</description>
+						<textwidth>170</textwidth>
+						<include>DefaultButtonMediaSubCommonValues</include>
+						<label>Hide Watched</label>
+					</control>
+					<control type="button" id="202">
+						<textwidth>170</textwidth>
+						<include>DefaultButtonMediaSubCommonValues</include>
+						<label>Search</label>
+					</control>
+				</control>
+			</control>
+			<include>DefaultSideBladeLeft</include>
+			<control type="image">
+				<description>LOGO</description>
+				<posx>-230</posx>
+				<posy>50</posy>
+				<width>220</width>
+				<height>80</height>
+				<aspectratio>keep</aspectratio>
+				<texture>confluence/Confluence_Logo.png</texture>
+			</control>
+			<control type="group" id="9000">
+				<posx>-250</posx>
+				<posy>130</posy>
+				<!--
+				<include>CommonNowPlaying</include>
+				-->
+				<control type="button" id="100">
+					<description>View As button</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<include>ButtonCommonValues</include>
+					<label>VIEW:</label>
+					<onleft>3500</onleft>
+					<onright>3500</onright>
+					<onup>101</onup>
+					<ondown>101</ondown>
+				</control>
+
+				<control type="radiobutton" id="101">
+					<description>Extra Options</description>
+					<hitrect x="0" y="120" w="265" h="40" />
+					<posx>0</posx>
+					<posy>40</posy>
+					<include>ButtonCommonValues</include>
+					<radiowidth>18</radiowidth>
+					<radioheight>18</radioheight>
+					<radioposx>222</radioposx>
+					<radioposy>12</radioposy>
+					<textureradiofocus>confluence/HomeHasSub.png</textureradiofocus>
+					<textureradionofocus>confluence/HomeHasSub.png</textureradionofocus>
+					<label>31026</label>
+					<onleft>3500</onleft>
+					<onright>9010</onright>
+					<onup>100</onup>
+					<ondown>100</ondown>
+				</control>
+
+			</control>
+		</control>
+		<control type="group">
+			<posx>60</posx>
+			<posy>0</posy>
+			<animation effect="slide" end="-310,0" time="400" tween="quadratic" easing="out">WindowClose</animation>
+			<animation effect="slide" start="-310,0" time="400" tween="quadratic" easing="out">WindowOpen</animation>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>200</width>
+				<height>35</height>
+				<texture border="0,0,32,0">confluence/header.png</texture>
+			</control>
+			<control type="label">
+				<include>DefaultWindowTitleCommons</include>
+				<posx>80</posx>
+				<label>EPG</label>
+			</control>
+		</control>
+		<include>Clock</include>
+	</controls>
+</window>
