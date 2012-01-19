@@ -34,7 +34,7 @@
 				<height>720</height>
 				<texture border="20">confluence/black-back.png</texture>
 				<include>VisibleFadeEffect</include>
-				<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail) | substring(Window.Property(ViewMode),panart)</visible>
+				<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)</visible>
 			</control>
 			<control type="image">
 				<posx>0</posx>
@@ -56,7 +56,7 @@
 			</control>
 			<control type="group">
 				<include>VisibleFadeEffect</include>
-				<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail) | substring(Window.Property(ViewMode),panart)</visible>
+				<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)</visible>
 				<control type="image">
 					<posx>40</posx>
 					<posy>40</posy>
@@ -127,6 +127,7 @@
 			<include>DefaultCommonArchiveView</include> <!-- Default common View id = 3400 -->
 			<include>DefaultThumbnailArchiveView</include> <!-- Default thumbnail View id = 3410 -->
 			<include>DefaultPosterWrapArchiveView</include> <!-- Default poster wrapView id = 3410 -->						
+			<include>DefaultFanartArchiveView</include> <!-- Default Fanart View id = 3410 -->						
 			
 			<!--
 			<include>FullWidthList</include> -- view id = 51 

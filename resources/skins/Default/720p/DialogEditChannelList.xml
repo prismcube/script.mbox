@@ -31,7 +31,6 @@
 				<include>DialogInput07</include>
 				<include>DialogSpinEx01</include>
 				<include>DialogSpinEx02</include>
-				<include>DialogInput08</include>
 				<!--include>SettingDialogButtonOKCancel</include-->
 			</control>
 		</control>
