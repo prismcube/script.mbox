@@ -62,9 +62,9 @@
 			</control>
 			<control type="button" id="301">
 				<description>Yes button</description>
-				<posx>30</posx>
+				<posx>75</posx>
 				<posy>170</posy>
-				<width>160</width>
+				<width>200</width>
 				<height>40</height>
 				<font>font12_title</font>
 				<textcolor>white</textcolor>
@@ -78,9 +78,9 @@
 			</control>
 			<control type="button" id="302">
 				<description>No button</description>
-				<posx>222</posx>
+				<posx>325</posx>
 				<posy>170</posy>
-				<width>160</width>
+				<width>200</width>
 				<height>40</height>
 				<font>font12_title</font>
 				<textcolor>white</textcolor>
@@ -91,22 +91,6 @@
 				<label>No</label>
 				<onleft>301</onleft>
 				<onright>303</onright>
-			</control>
-			<control type="button" id="303">
-				<description>Cancel button</description>
-				<posx>412</posx>
-				<posy>170</posy>
-				<width>160</width>
-				<height>40</height>
-				<font>font12_title</font>
-				<textcolor>white</textcolor>
-				<focusedcolor>white</focusedcolor>
-				<align>center</align>
-				<texturenofocus border="5">confluence/MenuItemNF.png</texturenofocus>
-				<texturefocus border="5">confluence/button-focus.png</texturefocus>
-				<label>Cancel</label>
-				<onleft>302</onleft>
-				<onright>301</onright>
 			</control>
 		</control>
 	</controls>
