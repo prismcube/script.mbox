@@ -1,6 +1,5 @@
-<window id="3021">
+<window id="3022">
 	<defaultcontrol always="true">9000</defaultcontrol>
-	<allowoverlay>no</allowoverlay>
 	<controls>
 		<include>DefaultSettingHeaderWindow</include>
 		<control type="group">

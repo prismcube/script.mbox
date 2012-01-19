@@ -109,7 +109,7 @@
 					</item>
 					<item id="5">
 						<label>Media Center</label>
-						<onclick>ActivateWindow(Videos)</onclick>
+						<onclick>SendClick(90500)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="6">
@@ -310,6 +310,12 @@
 					<ondown>9050</ondown>
 					<itemgap>0</itemgap>
 					<visible>Container(9000).HasFocus(5)</visible>
+					<control type="button" id="90500">
+						<include>DefaultButtonHomeSubCommonValues</include>
+						<label>MediaCenter</label>
+						<onclick>-</onclick>
+						<visible>false</visible>
+					</control>
 					<control type="button" id="90501">
 						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Weather</label>
