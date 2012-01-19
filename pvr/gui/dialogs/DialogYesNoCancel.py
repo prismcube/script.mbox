@@ -9,7 +9,6 @@ from pvr.gui.GuiConfig import *
 
 E_BUTTON_YES	= 301
 E_BUTTON_NO		= 302
-E_BUTTON_CANCEL = 303
 
 E_HEADER		= 100
 
@@ -56,11 +55,6 @@ class DialogYesNoCancel( BaseDialog ) :
 		elif aControlId == E_BUTTON_NO :
 			self.mIsOk = E_DIALOG_STATE_NO
 			self.CloseDialog( )
-
-		elif aControlId == E_BUTTON_CANCEL :
-			self.mIsOk = E_DIALOG_STATE_CANCEL
-			self.CloseDialog( )
-
 
 	def IsOK( self ) :
 		return self.mIsOk

@@ -143,6 +143,7 @@ class Configure( SettingWindow ) :
 				xbmcgui.Dialog( ).ok( 'ERROR', 'New PIN codes do not match' )
 				return
 			ElisPropertyInt( 'PinCode', self.mCommander ).SetProp( int( newpin ) )
+			xbmcgui.Dialog( ).ok( 'Complete', 'Pin codes change success' )
 
 		else :
 			self.ControlSelect( )
@@ -278,7 +279,6 @@ class Configure( SettingWindow ) :
 				self.AddInputControl( E_Input05, 'Save', '' )
 			elif dhcp == E_DHCP_ON :
 				self.AddInputControl( E_Input05, 'Get IP Address', '' )
-			
 
 			visibleControlIds = [ E_SpinEx01, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -361,6 +361,7 @@ class Configure( SettingWindow ) :
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]
 			if dhcp == E_DHCP_ON :
 				self.SetEnableControls( visibleControlIds, False )
+				
 			elif dhcp == E_DHCP_OFF :
 				self.SetEnableControls( visibleControlIds, True )
 

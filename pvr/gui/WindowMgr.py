@@ -36,7 +36,9 @@ WIN_ID_EDIT_TRANSPONDER				= 22
 WIN_ID_ARCHIVE_WINDOW				= 23
 WIN_ID_SYSTEM_INFO					= 24
 WIN_ID_INSTALLATION					= 25
-WIN_ID_EPG_WINDOW					= 26
+WIN_ID_MEDIACENTER					= 26
+WIN_ID_EPG_WINDOW					= 27
+
 
 gWindowMgr = None
 
@@ -178,9 +180,13 @@ class WindowMgr(object):
 				from pvr.gui.windows.ArchiveWindow import ArchiveWindow
 				ArchiveWindow('ArchiveWindow.xml', self.mScriptDir ).doModal()
 
+
 			elif aWindowId ==  WIN_ID_EPG_WINDOW:
 				from pvr.gui.windows.EPGWindow import EPGWindow
 				EPGWindow('EPGWindow.xml', self.mScriptDir ).doModal()
+			elif aWindowId ==  WIN_ID_MEDIACENTER:
+				from pvr.gui.windows.MediaCenter import MediaCenter
+				MediaCenter('MediaCenter.xml', self.mScriptDir ).doModal()
 
 			else :
 				print 'Unknown widnowId=%d' %aWindowId

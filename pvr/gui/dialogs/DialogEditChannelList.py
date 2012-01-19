@@ -31,9 +31,9 @@ class DialogEditChannelList( SettingDialog ) :
 
 		self.mIsOk = False
 		self.mIdxDialog = 0
-		self.mIdxFavoriteGroup = 0
+		self.mChannelExist = False
 		self.mFavoriteList = []
-		self.mFavoriteEdit = ''
+		self.mFavoriteName = ''
 		self.mDialogTitle = ''
 		self.mMode = FLAG_OPT_LIST
 
@@ -77,14 +77,18 @@ class DialogEditChannelList( SettingDialog ) :
 		self.mIdxDialog = id = self.GetGroupId( aControlId )
 		LOG_TRACE( 'onClick control[%s] getGroup[%s]'% (aControlId, id) )
 
-		if id == E_DialogSpinEx01 :
-			self.mIdxFavoriteGroup = self.GetSelectedIndex( E_DialogSpinEx01 )
-
-		elif id >= E_DialogInput01 and id <= E_DialogInput09 :
+		if id >= E_DialogInput01 and id <= E_DialogInput09 :
+			if self.mFavoriteList :
+				idx = self.GetSelectedIndex( E_DialogSpinEx01 )
+				self.mFavoriteName = self.mFavoriteList[idx]
+			else :
+				self.mFavoriteName = None
 
 			if self.mMode == FLAG_OPT_GROUP :
-				self.SetDialogGroup( id )
+				if id >= E_DialogInput07 and id <= E_DialogInput09 :
+					self.SetDialogGroup( id )
 
+			self.mIsOk = True
 			self.ResetAllControl()
 			self.CloseDialog()
 
@@ -108,7 +112,8 @@ class DialogEditChannelList( SettingDialog ) :
 	def DrawItem( self ) :
 		self.ResetAllControl( )
 
-		if self.mMode == FLAG_OPT_LIST :
+		#------------------ section1 : channel control -------------------
+		if self.mChannelExist :
 			#visible group
 			self.AddInputControl( E_DialogInput01, Msg.Strings( MsgId.LANG_LOCK ),     '' )
 			self.AddInputControl( E_DialogInput02, Msg.Strings( MsgId.LANG_UNLOCK ),   '' )
@@ -116,44 +121,44 @@ class DialogEditChannelList( SettingDialog ) :
 			self.AddInputControl( E_DialogInput04, Msg.Strings( MsgId.LANG_UNSKIP ),   '' )
 			self.AddInputControl( E_DialogInput05, Msg.Strings( MsgId.LANG_DELETE ),   '' )
 			self.AddInputControl( E_DialogInput06, Msg.Strings( MsgId.LANG_MOVE ),     '' )
+		else :
+			self.SetVisibleControl( E_DialogInput01, False )
+			self.SetVisibleControl( E_DialogInput02, False )
+			self.SetVisibleControl( E_DialogInput03, False )
+			self.SetVisibleControl( E_DialogInput04, False )
+			self.SetVisibleControl( E_DialogInput05, False )
+			self.SetVisibleControl( E_DialogInput06, False )
+
+		#------------------ section2 : group control -------------------
+		if self.mMode == FLAG_OPT_LIST :
 			#unused visible false
 			self.SetVisibleControl( E_DialogSpinEx02, False )
 
-			if len(self.mFavoriteList) > 0 :
+			if self.mFavoriteList :
 				self.AddUserEnumControl( E_DialogSpinEx01, Msg.Strings( MsgId.LANG_ADD_TO_FAV ), self.mFavoriteList, 0)
 				self.AddInputControl( E_DialogInput07, '', Msg.Strings( MsgId.LANG_ADD_OK ) )
 			else :
 				self.AddInputControl( E_DialogInput07, Msg.Strings( MsgId.LANG_ADD_TO_FAV ), Msg.Strings( MsgId.LANG_NONE ) )
 				self.SetEnableControl( E_DialogInput07, False )
 
+				#unused visible false
+				self.SetVisibleControl( E_DialogSpinEx01, False )
+
 
 		elif self.mMode == FLAG_OPT_GROUP :
-			#unused visible false
-			self.SetVisibleControl( E_DialogInput04, False )
-			self.SetVisibleControl( E_DialogInput05, False )
-			self.SetVisibleControl( E_DialogInput06, False )
-			self.SetVisibleControl( E_DialogInput07, False )
+			self.AddInputControl( E_DialogInput07, Msg.Strings( MsgId.LANG_CREATE_NEW_GROUP ), '' )
 
-			#visible group only
-			self.AddInputControl( E_DialogInput01, Msg.Strings( MsgId.LANG_CREATE_NEW_GROUP ), '' )
-
-			if len(self.mFavoriteList) > 0 :
+			if self.mFavoriteList :
 				self.AddUserEnumControl( E_DialogSpinEx01, Msg.Strings( MsgId.LANG_RENAME_FAV ), self.mFavoriteList, 0)
-				self.AddInputControl( E_DialogInput02, '', Msg.Strings( MsgId.LANG_RENAME_OK ) )
+				self.AddInputControl( E_DialogInput08, '', Msg.Strings( MsgId.LANG_RENAME_OK ) )
 				self.AddUserEnumControl( E_DialogSpinEx02, Msg.Strings( MsgId.LANG_DELETE_FAV ), self.mFavoriteList, 0)
-				self.AddInputControl( E_DialogInput03, '', Msg.Strings( MsgId.LANG_DELETE_OK ) )
-
-				#unused visible false
-				self.SetVisibleControl( E_DialogInput04, False )
-				self.SetVisibleControl( E_DialogInput05, False )
-				self.SetVisibleControl( E_DialogInput06, False )
-				self.SetVisibleControl( E_DialogInput07, False )
+				self.AddInputControl( E_DialogInput09, '', Msg.Strings( MsgId.LANG_DELETE_OK ) )
 
 			else :
-				self.AddInputControl( E_DialogInput02, Msg.Strings( MsgId.LANG_RENAME_FAV ), Msg.Strings( MsgId.LANG_NONE ) )
-				self.AddInputControl( E_DialogInput03, Msg.Strings( MsgId.LANG_DELETE_FAV ), Msg.Strings( MsgId.LANG_NONE ) )
-				self.SetEnableControl( E_DialogInput02, False )
-				self.SetEnableControl( E_DialogInput03, False )
+				self.AddInputControl( E_DialogInput08, Msg.Strings( MsgId.LANG_RENAME_FAV ), Msg.Strings( MsgId.LANG_NONE ) )
+				self.AddInputControl( E_DialogInput09, Msg.Strings( MsgId.LANG_DELETE_FAV ), Msg.Strings( MsgId.LANG_NONE ) )
+				self.SetEnableControl( E_DialogInput08, False )
+				self.SetEnableControl( E_DialogInput09, False )
 
 				#unused visible false
 				self.SetVisibleControl( E_DialogSpinEx01, False )
@@ -168,11 +173,11 @@ class DialogEditChannelList( SettingDialog ) :
 		LOG_TRACE( 'Enter' )
 
 		label = ''
-		if aFocusId == E_DialogInput03 :
+		if aFocusId == E_DialogInput09 :
 			#delete
 			idx = self.GetSelectedIndex( E_DialogSpinEx02 )
 			name = self.mFavoriteList[idx]
-			self.mFavoriteEdit = name
+			self.mFavoriteName = name
 
 			label = 'delete'
 
@@ -180,14 +185,14 @@ class DialogEditChannelList( SettingDialog ) :
 			title = self.mDialogTitle
 			default = ''
 
-			if aFocusId == E_DialogInput01 :
+			if aFocusId == E_DialogInput07 :
 				#create
 				default = ''
 				result = default
 
 				label = 'create'
 
-			elif aFocusId == E_DialogInput02 :
+			elif aFocusId == E_DialogInput08 :
 				#rename
 				idx = self.GetSelectedIndex( E_DialogSpinEx01 )
 				default = self.mFavoriteList[idx]
@@ -201,9 +206,9 @@ class DialogEditChannelList( SettingDialog ) :
 			name = ''
 			name = kb.getText()
 			if name :
-				self.mFavoriteEdit = result + name
+				self.mFavoriteName = result + name
 
-		LOG_TRACE( '========%s[%s]'% (label,self.mFavoriteEdit) )
+		LOG_TRACE( '========%s[%s]'% (label,self.mFavoriteName) )
 		LOG_TRACE( 'Leave' )
 
 
@@ -212,17 +217,17 @@ class DialogEditChannelList( SettingDialog ) :
 
 	def GetValue( self, aFlag ) :
 
-		if aFlag == FLAG_OPT_LIST :
-			LOG_TRACE('FavoriteGroup idx[%s] isOk[%s]' % ( self.mIdxFavoriteGroup, self.mIsOk ) )
-			return self.mIdxDialog, self.mIdxFavoriteGroup, self.mIsOk
-		elif aFlag == FLAG_OPT_GROUP :
-			LOG_TRACE('FavoriteGroupEdit[%s] isOk[%s]' % ( self.mFavoriteEdit, self.mIsOk ) )
-			return self.mIdxDialog, self.mFavoriteEdit, self.mIsOk
+		LOG_TRACE('FavoriteName[%s] isOk[%s]' % ( self.mFavoriteName, self.mIsOk ) )
+		return self.mIdxDialog, self.mFavoriteName, self.mIsOk
 
-	def SetValue( self, aMode, aTitle, aFavoriteGroup = [] ) :
+	def SetValue( self, aMode, aTitle, aChannelList = [], aFavoriteGroup = [] ) :
 		self.mMode = aMode
 		self.mDialogTitle = aTitle
 		self.mFavoriteList = aFavoriteGroup
+		if aChannelList :
+			self.mChannelExist = True
+		else :
+			self.mChannelExist = False
 
-		LOG_TRACE( '======================title[%s] favoriteList[%s] len[%s]'% (self.mDialogTitle, self.mFavoriteList, len(self.mFavoriteList)) )
+		LOG_TRACE( 'title[%s] channelList[%s] favoriteList[%s]'% (self.mDialogTitle, self.mChannelExist, self.mFavoriteList) )
 		

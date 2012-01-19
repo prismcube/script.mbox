@@ -12,6 +12,7 @@ BUTTON_ID_INSTALLATION			= 90100
 BUTTON_ID_ARCHIVE				= 90200
 BUTTON_ID_EPG					= 90300
 BUTTON_ID_CHANNEL_LIST			= 90400
+BUTTON_ID_MEDIA_CENTER			= 90500
 BUTTON_ID_SYSTEM_INFO			= 90600
 
 BUTTON_ID_FIRSTINSTALLATION		= 90101
@@ -63,6 +64,9 @@ class MainMenu( BaseWindow ):
 
 		elif aControlId == BUTTON_ID_INSTALLATION :
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_INSTALLATION )
+
+		elif aControlId == BUTTON_ID_MEDIA_CENTER :
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
 
 		elif aControlId == BUTTON_ID_ANTENNA_SETUP : # Antenna Setup
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
