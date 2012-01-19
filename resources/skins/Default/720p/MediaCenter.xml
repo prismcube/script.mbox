@@ -74,62 +74,6 @@
 						<label>$INFO[ListItem.Label]</label>
 					</control>
 				</focusedlayout>
-				<content>
-					<item id="1">
-						<label>Weather</label>
-						<label2>31400</label2>
-						<onclick>ActivateWindow(Weather)</onclick>
-						<icon>special://skin/backgrounds/appearance.jpg</icon>
-					</item>
-					<item id="2">
-						<label>Picture</label>
-						<label2>31401</label2>
-						<onclick>ActivateWindow(Pictures)</onclick>
-						<icon>special://skin/backgrounds/videos.jpg</icon>
-					</item>
-					<item id="3">
-						<label>Music</label>
-						<label2>31402</label2>
-						<onclick>ActivateWindow(Music)</onclick>
-						<icon>special://skin/backgrounds/music.jpg</icon>
-					</item>
-					<item id="4">
-						<label>Video</label>
-						<label2>31403</label2>
-						<onclick>ActivateWindow(Videos)</onclick>
-						<icon>special://skin/backgrounds/pictures.jpg</icon>
-					</item>
-					<item id="5">
-						<label>Programs</label>
-						<label2>31404</label2>
-						<onclick>ActivateWindow(Programs,Addons,return)</onclick>
-						<icon>special://skin/backgrounds/weather.jpg</icon>
-					</item>
-					<item id="6">
-						<label>Settings</label>
-						<label2>31408</label2>
-						<onclick>ActivateWindow(Settings)</onclick>
-						<icon>special://skin/backgrounds/addons.jpg</icon>
-					</item>
-					<item id="7">
-						<label>File Manager</label>
-						<label2>31405</label2>
-						<onclick>ActivateWindow(FileManager)</onclick>
-						<icon>special://skin/backgrounds/network.jpg</icon>
-					</item>
-					<item id="8">
-						<label>Profiles</label>
-						<label2>31405</label2>
-						<onclick>ActivateWindow(Profiles)</onclick>
-						<icon>special://skin/backgrounds/network.jpg</icon>
-					</item>
-					<item id="9">
-						<label>System Info</label>
-						<label2>31405</label2>
-						<onclick>ActivateWindow(SystemInfo)</onclick>
-						<icon>special://skin/backgrounds/network.jpg</icon>
-					</item>
-				</content>
 			</control>
 			<control type="image">
 				<posx>268</posx>
