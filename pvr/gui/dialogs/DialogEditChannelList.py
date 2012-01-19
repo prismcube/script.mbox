@@ -78,16 +78,13 @@ class DialogEditChannelList( SettingDialog ) :
 		LOG_TRACE( 'onClick control[%s] getGroup[%s]'% (aControlId, id) )
 
 		if id >= E_DialogInput01 and id <= E_DialogInput09 :
+			if self.mFavoriteList :
+				idx = self.GetSelectedIndex( E_DialogSpinEx01 )
+				self.mFavoriteName = self.mFavoriteList[idx]
+			else :
+				self.mFavoriteName = None
 
-			if self.mMode == FLAG_OPT_LIST :
-				if id == E_DialogInput07 :
-					if self.mFavoriteList :
-						idx = self.GetSelectedIndex( E_DialogSpinEx01 )
-						self.mFavoriteName = self.mFavoriteList[idx]
-					else :
-						self.mFavoriteName = None
-
-			elif self.mMode == FLAG_OPT_GROUP :
+			if self.mMode == FLAG_OPT_GROUP :
 				if id >= E_DialogInput07 and id <= E_DialogInput09 :
 					self.SetDialogGroup( id )
 

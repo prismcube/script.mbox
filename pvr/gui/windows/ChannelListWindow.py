@@ -668,27 +668,27 @@ class ChannelListWindow(BaseWindow):
 			if retPass == False :
 				return
 
-			if len(self.mChannelList) > 0 :
-				#channel list update
-				#self.mCtrlListCHList.reset()
-				self.InitChannelList()
+			#if self.mChannelList :
+			#channel list update
+			self.mCtrlListCHList.reset()
+			self.InitChannelList()
 
-				#path tree, Mainmenu/Submanu
-				self.mSelectMainSlidePosition = self.mCtrlListMainmenu.getSelectedPosition()
-				self.mSelectSubSlidePosition = self.mCtrlListSubmenu.getSelectedPosition()
+			#path tree, Mainmenu/Submanu
+			self.mSelectMainSlidePosition = self.mCtrlListMainmenu.getSelectedPosition()
+			self.mSelectSubSlidePosition = self.mCtrlListSubmenu.getSelectedPosition()
 
-				label1 = EnumToString('mode', self.mZappingMode)
-				label2 = self.mCtrlListSubmenu.getSelectedItem().getLabel()
-				label3 = EnumToString('sort', self.mChannelListSortMode)
-				#self.mCtrlLblPath1.setLabel( '%s'% label1.upper() )
-				#self.mCtrlLblPath2.setLabel( '%s'% label2.title() ) 
-				#self.mCtrlLblPath3.setLabel( 'sort by %s'% label3.title() )
-				self.mCtrlLblPath1.setLabel( '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% (label1.upper(),label2.title(),label3.title()) )
+			label1 = EnumToString('mode', self.mZappingMode)
+			label2 = self.mCtrlListSubmenu.getSelectedItem().getLabel()
+			label3 = EnumToString('sort', self.mChannelListSortMode)
+			#self.mCtrlLblPath1.setLabel( '%s'% label1.upper() )
+			#self.mCtrlLblPath2.setLabel( '%s'% label2.title() ) 
+			#self.mCtrlLblPath3.setLabel( 'sort by %s'% label3.title() )
+			self.mCtrlLblPath1.setLabel( '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% (label1.upper(),label2.title(),label3.title()) )
 
 
-				#close slide : move to focus channel list
-				#self.mCtrlListCHList.setEnabled(True)
-				#self.setFocusId( self.mCtrlGropCHList.getId() )
+			#close slide : move to focus channel list
+			#self.mCtrlListCHList.setEnabled(True)
+			#self.setFocusId( self.mCtrlGropCHList.getId() )
 
 		LOG_TRACE( 'Leave' )
 
@@ -1264,11 +1264,11 @@ class ChannelListWindow(BaseWindow):
 			careerLabel = '%s MHz, %s KS/S, %s'% (value2, value3, polarization)
 			self.mCtrlCareerInfo.setLabel(careerLabel)
 
-		elif careerType == ElisEnum.E_CARRIER_TYPE_DVBT:
+		elif self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBT:
 			pass
-		elif careerType == ElisEnum.E_CARRIER_TYPE_DVBC:
+		elif self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBC:
 			pass
-		elif careerType == ElisEnum.E_CARRIER_TYPE_INVALID:
+		elif self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_INVALID:
 			pass
 			
 		"""
@@ -1550,7 +1550,10 @@ class ChannelListWindow(BaseWindow):
 						label3 = re.split(' ', label2[0] )
 						number = int(label3[0])
 						cmd = 'AddChannel to Group'
-						ret = self.mCommander.Favoritegroup_AddChannel( aGroupName, number, self.mChannelListServieType )
+						if aGroupName :
+							ret = self.mCommander.Favoritegroup_AddChannel( aGroupName, number, self.mChannelListServieType )
+						else :
+							ret = 'group None'
 
 					elif aMode.lower() == 'del' :
 						#strip tag [COLOR ...]label[/COLOR]
@@ -1559,7 +1562,10 @@ class ChannelListWindow(BaseWindow):
 						label3 = re.split(' ', label2[0] )
 						number = int(label3[0])
 						cmd = 'RemoveChannel to Group'
-						ret = self.mCommander.Favoritegroup_RemoveChannel( aGroupName, number, self.mChannelListServieType )
+						if aGroupName :
+							ret = self.mCommander.Favoritegroup_RemoveChannel( aGroupName, number, self.mChannelListServieType )
+						else :
+							ret = 'group None'
 
 					elif aMode.lower() == 'move' :
 						cmd = 'Move'
@@ -1677,7 +1683,7 @@ class ChannelListWindow(BaseWindow):
 				else :
 					cmd = 'del'
 
-				self.SetMarkDeleteCh( cmd, True )
+				self.SetMarkDeleteCh( cmd, True, aGroupName )
 				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 
 			elif aBtn == E_DialogInput06 :
@@ -1780,8 +1786,6 @@ class ChannelListWindow(BaseWindow):
 			idxBtn, groupName, isOk = dialog.GetValue( aMode )
 			if isOk :
 				self.mIsSave |= FLAG_MASK_ADD
-				LOG_TRACE( '============ [%s] [%s] [%s] [%s]'% (aMode, idxBtn, groupName, isOk) )
-
 				self.GroupAddDelete( 'set', aMode, idxBtn, groupName )
 
 		except Exception, e:
