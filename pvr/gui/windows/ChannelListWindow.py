@@ -422,10 +422,11 @@ class ChannelListWindow(BaseWindow):
 
 					self.InitSlideMenuHeader()
 					self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
-					#self.SubMenuAction(E_SLIDE_ACTION_MAIN, E_SLIDE_ALLCHANNEL)
-					self.mCtrlListSubmenu.selectItem( 0 )
-					xbmc.sleep(500)
+					xbmc.sleep(50)
+					self.SubMenuAction(E_SLIDE_ACTION_MAIN, E_SLIDE_ALLCHANNEL)
 
+					self.mCtrlListSubmenu.selectItem( 0 )
+					xbmc.sleep(50)
 					self.SubMenuAction(E_SLIDE_ACTION_SUB, ElisEnum.E_MODE_ALL)
 
 					#clear label
@@ -444,15 +445,16 @@ class ChannelListWindow(BaseWindow):
 
 		elif aControlId == E_CTRL_BTN_FOOTER06:
 			LOG_TRACE( 'onclick footer Opt' )
-			self.EditSettingWindow( FLAG_OPT_LIST )
-			LOG_TRACE( '============================' )
-
+			mode = FLAG_OPT_LIST
+			if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
+				mode = FLAG_OPT_GROUP
+			else :
+				mode = FLAG_OPT_LIST
+			self.EditSettingWindow( mode )
 
 		elif aControlId == E_CTRL_BTN_FOOTER08:
 			LOG_TRACE( 'onclick footer OptGroup' )
 			self.EditSettingWindow( FLAG_OPT_GROUP )
-			LOG_TRACE( '============================' )
-
 
 		elif aControlId == E_CTRL_BTN_FOOTER07:
 			LOG_TRACE( 'onclick footer Mark' )
@@ -1086,8 +1088,8 @@ class ChannelListWindow(BaseWindow):
 	def InitChannelList(self):
 		LOG_TRACE( 'Enter' )
 
-		#chList = ClassToList( 'convert', self.mChannelList )
-		#if len(chList) < 1 :
+
+		#no channel is set Label comment
 		if self.mChannelList == None:
 			label = Msg.Strings( MsgId.LANG_NO_CHANNELS )
 			self.mCtrlChannelName.setLabel( label )
@@ -1095,6 +1097,7 @@ class ChannelListWindow(BaseWindow):
 			LOG_TRACE( 'no data, iChannel[%s]'% self.mChannelList )
 			#ClassToList( 'print', self.mChannelList )
 			return 
+
 
 		lblColorS = E_TAG_COLOR_GREY
 		lblColorE = E_TAG_COLOR_END
@@ -1464,7 +1467,6 @@ class ChannelListWindow(BaseWindow):
 					retList = []
 					retList.append( self.mChannelList[lastPos] )
 					ret = self.mCommander.Channel_Lock( aEnabled, retList )
-					LOG_TRACE( 'set[%s] idx[%s] ret[%s]'% (cmd,lastPos,ret) )
 
 				#label color
 				elif aMode.lower() == 'skip' :
@@ -1484,14 +1486,32 @@ class ChannelListWindow(BaseWindow):
 					retList = []
 					retList.append( self.mChannelList[lastPos] )
 					ret = self.mCommander.Channel_Skip( aEnabled, retList )
-					LOG_TRACE( 'set[%s] idx[%s] ret[%s]'% (cmd,lastPos,ret) )
 
 				elif aMode.lower() == 'delete' :
 					cmd = aMode.title()
 					retList = []
 					retList.append( self.mChannelList[lastPos] )
 					ret = self.mCommander.Channel_Delete( retList )
-					LOG_TRACE( 'set[%s] idx[%s] ret[%s]'% (cmd,lastPos,ret) )
+
+				elif aMode.lower() == 'add' :
+					#strip tag [COLOR ...]label[/COLOR]
+					number = self.mChannelList[lastPos].mNumber
+					cmd = 'AddChannel to Group'
+					if aGroupName :
+						ret = self.mCommander.Favoritegroup_AddChannel( aGroupName, number, self.mChannelListServieType )
+					else :
+						ret = 'group None'
+
+				elif aMode.lower() == 'del' :
+					#strip tag [COLOR ...]label[/COLOR]
+					number = self.mChannelList[lastPos].mNumber
+					cmd = 'RemoveChannel to Group'
+					if aGroupName :
+						ret = self.mCommander.Favoritegroup_RemoveChannel( aGroupName, number, self.mChannelListServieType )
+					else :
+						ret = 'group None'
+
+				LOG_TRACE( 'set[%s] idx[%s] ret[%s]'% (cmd,lastPos,ret) )
 
 			else :
 				#----------------> 2.set mark list all <-------------
@@ -1544,11 +1564,7 @@ class ChannelListWindow(BaseWindow):
 						ret = self.mCommander.Channel_Delete( retList )
 
 					elif aMode.lower() == 'add' :
-						#strip tag [COLOR ...]label[/COLOR]
-						label1 = self.mCtrlListCHList.getSelectedItem().getLabel()
-						label2 = re.findall('\](.*)\[', label1)
-						label3 = re.split(' ', label2[0] )
-						number = int(label3[0])
+						number = self.mChannelList[idx].mNumber
 						cmd = 'AddChannel to Group'
 						if aGroupName :
 							ret = self.mCommander.Favoritegroup_AddChannel( aGroupName, number, self.mChannelListServieType )
@@ -1556,11 +1572,7 @@ class ChannelListWindow(BaseWindow):
 							ret = 'group None'
 
 					elif aMode.lower() == 'del' :
-						#strip tag [COLOR ...]label[/COLOR]
-						label1 = self.mCtrlListCHList.getSelectedItem().getLabel()
-						label2 = re.findall('\](.*)\[', label1)
-						label3 = re.split(' ', label2[0] )
-						number = int(label3[0])
+						number = self.mChannelList[idx].mNumber
 						cmd = 'RemoveChannel to Group'
 						if aGroupName :
 							ret = self.mCommander.Favoritegroup_RemoveChannel( aGroupName, number, self.mChannelListServieType )
