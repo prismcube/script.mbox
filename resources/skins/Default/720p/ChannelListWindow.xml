@@ -443,7 +443,7 @@
 
 <!-- Main Menu -->
 		<control type="group" id="100">
-			<animation effect="slide" start="0,0" end="180,0" time="400" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation> 
+			<animation effect="slide" start="0,0" end="180,0" time="400" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(110).HasFocus | Control.HasFocus(121) | ControlGroup(9001).HasFocus">Conditional</animation> 
 			<animation effect="slide" start="0,0" end="-180,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus">Conditional</animation>
 			<animation effect="slide" start="0,0" end="-180,0" time="400" tween="quadratic" easing="out" condition="Control.HasFocus(101)">WindowClose</animation>
 			<control type="group">
@@ -489,7 +489,7 @@
 				<font>-</font>
 				<texturenofocus>-</texturenofocus>
 				<texturefocus>-</texturefocus>
-				<onclick>202</onclick>
+				<onclick>112</onclick>
 				<visible>true</visible>
 			</control>
 			<control type="image">
@@ -504,7 +504,95 @@
 
 			<control type="group" id="110">
 				<posx>-180</posx>
-				<posy>180</posy>
+				<posy>250</posy>
+				<control type="group">
+					<posx>20</posx>
+					<posy>-110</posy>
+					<control type="button" id="121">
+						<description>Button Icon</description>
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>150</width>
+						<height>35</height>
+						<!--hitrect x="30" y="10" w="120" h="40"></hitrect-->
+						<texturenofocus></texturenofocus>
+						<texturefocus></texturefocus>
+						<onleft>49</onleft>
+						<onright>9001</onright>
+						<onup>102</onup>
+						<ondown>124</ondown>
+						<label></label>
+					</control>
+					<control type="label" id="122">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>150</width>
+						<height>35</height>
+						<font>font12</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>SCRIPT582</label>
+						<visible>!Control.HasFocus(121)</visible>
+					</control>
+					<control type="label" id="123">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>150</width>
+						<height>35</height>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>SCRIPT582</label>
+						<visible>Control.HasFocus(121)</visible>
+					</control>
+					<control type="radiobutton" id="124">
+						<posx>0</posx>
+						<posy>35</posy>
+						<width>150</width>
+						<height>35</height>
+						<texturenofocus></texturenofocus>
+						<texturefocus></texturefocus>
+						<!--selected>False</selected-->
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Tune in</label>
+						<onleft>49</onleft>
+						<onright>9001</onright>
+						<onup>121</onup>
+						<ondown>125</ondown>
+					</control>
+
+					<control type="radiobutton" id="125">
+						<posx>0</posx>
+						<posy>70</posy>
+						<width>150</width>
+						<height>35</height>
+						<texturenofocus></texturenofocus>
+						<texturefocus></texturefocus>
+						<!--selected>True</selected-->
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Mark ON</label>
+						<onleft>49</onleft>
+						<onright>9001</onright>
+						<onup>124</onup>
+						<ondown>102</ondown>
+					</control>
+
+				</control>
+				<control type="image">
+					<description>separator image</description>
+					<width>200</width>
+					<height>2</height>
+					<texture>confluence/separator.png</texture>
+				</control>
+
 				<control type="list" id="102">
 					<posx>0</posx>
 					<posy>0</posy>
@@ -512,12 +600,13 @@
 					<height>535</height>
 					<onleft>49</onleft>
 					<onright>9001</onright>
-					<onup>102</onup>
+					<onup>121</onup>
 					<ondown>102</ondown>
 					<scrolltime>300</scrolltime>
+					<textcolor>grey3</textcolor>
 					<!--focusposition>0</focusposition-->
 					<movement>10</movement>
-					<animation effect="fade" start="0" end="100" time="200">Visible</animation>
+					<!--animation effect="fade" start="0" end="100" time="200">Visible</animation-->
 					<itemlayout height="70" width="185">
 						<control type="label">
 							<posx>20r</posx>
@@ -539,13 +628,12 @@
 							<width>180</width>
 							<height>40</height>
 							<font>font35</font>
-							<textcolor>white</textcolor>
+							<!--textcolor>white</textcolor-->
 							<align>right</align>
 							<aligny>center</aligny>
 							<animation effect="zoom" start="85" end="100" center="185,51" time="200">Focus</animation>
 							<animation effect="zoom" start="100" end="85" center="185,51" time="200">UnFocus</animation>
 							<label>$INFO[ListItem.Label]</label>
-
 						</control>
 						<control type="image">
 							<posx>20r</posx>
@@ -590,11 +678,11 @@
 				<!-- sub main -->
 				<control type="group" id="9001">
 					<posx>10</posx>
-					<posy>-720</posy>
+					<posy>-630</posy>
 					<!--animation effect="slide" end="180,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">conditional</animation-->
-					<animation effect="slide" end="180,720" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">conditional</animation>
+					<animation effect="slide" end="180,630" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">conditional</animation>
 					<animation effect="slide" start="0,0" end="-300,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus">Conditional</animation>
-					<control type="list" id="202">
+					<control type="list" id="112">
 						<posx>5</posx>
 						<posy>0</posy>
 						<width>230</width>
@@ -602,9 +690,9 @@
 						<align>center</align>
 						<font>font12_title</font>
 						<onleft>102</onleft>
-						<onright>202</onright>
-						<onup>202</onup>
-						<ondown>202</ondown>
+						<onright>112</onright>
+						<onup>112</onup>
+						<ondown>112</ondown>
 						<!--pagecontrol>203</pagecontrol-->
 						<scrolltime>200</scrolltime>
 						<!--focusposition>0</focusposition-->
@@ -638,7 +726,7 @@
 								<width>230</width>
 								<height>41</height>
 								<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
-								<visible>!Control.HasFocus(202)</visible>
+								<visible>!Control.HasFocus(112)</visible>
 								<animation effect="fade" time="300">Visible</animation>
 								<animation effect="fade" time="300">Hidden</animation>
 							</control>
@@ -648,7 +736,7 @@
 								<width>230</width>
 								<height>41</height>
 								<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
-								<visible>Control.HasFocus(202)</visible>
+								<visible>Control.HasFocus(112)</visible>
 								<animation effect="fade" time="300">Visible</animation>
 								<animation effect="fade" time="300">Hidden</animation>
 							</control>
@@ -707,8 +795,51 @@
 
 <!-- footer -->
 		<control type="group" id="500">
+			<posx>800</posx>
+			<posy>650</posy>
 			<onup>49</onup>
-			<include>MenuFooter</include>
+			<visible>Control.IsEnabled(124)</visible>
+			<!--include>MenuFooter</include-->
+			<!-- Opt Edit Button -->
+			<control type="button" id="501">
+				<description>opt</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>35</width>
+				<height>35</height>
+				<hitrect x="30" y="10" w="120" h="40"></hitrect>
+				<texturenofocus>confluence/OSDVizNF.png</texturenofocus>
+				<texturefocus>confluence/OSDVizFO.png</texturefocus>
+				<onleft></onleft>
+				<onright></onright>
+				<onup>49</onup>
+				<ondown></ondown>
+			</control>
+			<control type="label">
+				<posx>42</posx>
+				<posy>0</posy>
+				<width>150</width>
+				<height>40</height>
+				<font>font12</font>
+				<textcolor>grey2</textcolor>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>[B]Opt Edit[/B]</label>
+				<visible>![Control.HasFocus(501) | Control.HasFocus(501)]</visible>
+			</control>
+			<control type="label">
+				<posx>42</posx>
+				<posy>0</posy>
+				<width>150</width>
+				<height>40</height>
+				<font>font12</font>
+				<textcolor>white</textcolor>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>[B]Opt Edit[/B]</label>
+				<visible>[Control.HasFocus(501) | Control.HasFocus(501)]</visible>
+			</control>
+
 		</control>
 	</controls>
 </window>
