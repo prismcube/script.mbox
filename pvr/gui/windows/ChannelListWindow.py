@@ -91,10 +91,9 @@ class ChannelListWindow(BaseWindow):
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
 
 		#header
-		self.mCtrlHeader1            = self.getControl( 3000 )
-		self.mCtrlHeader2            = self.getControl( 3001 )
-		self.mCtrlHeader3            = self.getControl( 3002 )
-		self.mCtrlHeader4            = self.getControl( 3003 )
+		self.mCtrlLblPath1           = self.getControl( 21 )
+		self.mCtrlLblLocalTime1      = self.getControl( 31 )
+		self.mCtrlLblLocalTime2      = self.getControl( 32 )
 
 		#opt edit in slide
 		self.mCtrlBtnEdit            = self.getControl( 121 )
@@ -103,12 +102,6 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlRadioTune          = self.getControl( 124 )
 		self.mCtrlRadioMark          = self.getControl( 125 )
 		self.mCtrlBtnOpt             = self.getControl( 501 )
-
-
-		self.mCtrlLblPath1           = self.getControl( 10 )
-		#self.mCtrlLblPath2           = self.getControl( 11 )
-		#self.mCtrlLblPath3           = self.getControl( 12 )
-		self.mCtrlLblPath2            = self.getControl( 21 )
 
 		#main menu
 		self.mCtrlGropMainmenu       = self.getControl( 100 )
@@ -135,8 +128,8 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlServiceTypeImg2    = self.getControl( 311 )
 		self.mCtrlServiceTypeImg3    = self.getControl( 312 )
 		self.mCtrlSelectItem         = self.getControl( 401 )
-		
-		self.mCtrlHeader3.setLabel('')
+
+		self.mCtrlLblLocalTime1.setLabel( '' )
 
 		self.mIsSelect = False
 		self.mIsMark = True
@@ -308,13 +301,11 @@ class ChannelListWindow(BaseWindow):
 		elif aControlId == self.mCtrlRadioTune.getId() :
 			self.mCtrlRadioTune.setSelected( True )
 			self.mCtrlRadioMark.setSelected( False )
-			self.mCtrlLblPath2.setLabel( 'Turn in' )
 			self.mIsMark = False
 
 		elif aControlId == self.mCtrlRadioMark.getId() :
 			self.mCtrlRadioTune.setSelected( False )
 			self.mCtrlRadioMark.setSelected( True )
-			self.mCtrlLblPath2.setLabel( 'Mark ON' )
 			self.mIsMark = True
 
 
@@ -606,7 +597,6 @@ class ChannelListWindow(BaseWindow):
 			label2 = self.mCtrlListSubmenu.getSelectedItem().getLabel()
 			label3 = EnumToString('sort', self.mChannelListSortMode)
 			#self.mCtrlLblPath1.setLabel( '%s'% label1.upper() )
-			#self.mCtrlLblPath2.setLabel( '%s'% label2.title() ) 
 			#self.mCtrlLblPath3.setLabel( 'sort by %s'% label3.title() )
 			self.mCtrlLblPath1.setLabel( '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% (label1.upper(),label2.title(),label3.title()) )
 
@@ -846,10 +836,10 @@ class ChannelListWindow(BaseWindow):
 			#self.mCtrlGropMainmenu.setVisible( True )
 
 			#header init		
-			self.mCtrlHeader1.setImage( E_IMG_ICON_TITLE1 )
-			self.mCtrlHeader2.setLabel( Msg.Strings(MsgId.LANG_TV_CHANNEL_LIST) )
-			self.mCtrlHeader3.setLabel( '' )
-			self.mCtrlHeader4.setLabel( '' )
+			#self.mCtrlHeader1.setImage( E_IMG_ICON_TITLE1 )
+			#self.mCtrlHeader2.setLabel( Msg.Strings(MsgId.LANG_TV_CHANNEL_LIST) )
+			self.mCtrlLblLocalTime1.setLabel( '' )
+			self.mCtrlLblLocalTime2.setLabel( '' )
 
 			#slide edit init
 			self.mCtrlLblEdit1.setLabel( Msg.Strings(MsgId.LANG_EDIT_CHANNEL_LIST) )
@@ -862,10 +852,10 @@ class ChannelListWindow(BaseWindow):
 			#self.mCtrlGropMainmenu.setVisible( False )
 
 			#header init
-			self.mCtrlHeader1.setImage( E_IMG_ICON_TITLE2 )
-			self.mCtrlHeader2.setLabel( Msg.Strings(MsgId.LANG_TV_EDIT_CHANNEL_LIST) )
-			self.mCtrlHeader3.setLabel( '' )
-			self.mCtrlHeader4.setLabel( '' )
+			#self.mCtrlHeader1.setImage( E_IMG_ICON_TITLE2 )
+			#self.mCtrlHeader2.setLabel( Msg.Strings(MsgId.LANG_TV_EDIT_CHANNEL_LIST) )
+			self.mCtrlLblLocalTime1.setLabel( '' )
+			self.mCtrlLblLocalTime2.setLabel( '' )
 
 			#slide edit init
 			self.mCtrlLblEdit1.setLabel( Msg.Strings(MsgId.LANG_UPDATE_CHANNEL_LIST) )
@@ -983,7 +973,6 @@ class ChannelListWindow(BaseWindow):
 		label2 = self.mCtrlListSubmenu.getSelectedItem().getLabel()
 		label3 = EnumToString('sort', self.mChannelListSortMode)
 		#self.mCtrlLblPath1.setLabel( '%s'% label1.upper() )
-		#self.mCtrlLblPath2.setLabel( '%s'% label2.title() ) 
 		#self.mCtrlLblPath3.setLabel( 'sort by %s'% label3.title() )
 		self.mCtrlLblPath1.setLabel( '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% (label1.upper(),label2.title(),label3.title()) )
 		
@@ -1322,8 +1311,8 @@ class ChannelListWindow(BaseWindow):
 
 			#local clock
 			ret = EpgInfoClock(FLAG_CLOCKMODE_ADMYHM, self.mLocalTime, loop)
-			self.mCtrlHeader3.setLabel(ret[0])
-			self.mCtrlHeader4.setLabel(ret[1])
+			self.mCtrlLblLocalTime1.setLabel(ret[0])
+			self.mCtrlLblLocalTime2.setLabel(ret[1])
 
 			#self.nowTime += 1
 			xbmc.sleep(1000)

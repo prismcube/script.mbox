@@ -87,6 +87,9 @@ class NullWindow(BaseWindow):
 			dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_STOP_RECORD )
 			dialog.doModal( )
 
+		elif id == Action.REMOTE_1:  #TEST : bg test
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_TEST1 )
+
 
 		elif id == Action.ACTION_PAGE_UP:
 			pass
