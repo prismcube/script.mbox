@@ -267,11 +267,11 @@ class EPGWindow(BaseWindow):
 						epgStart = epgEvent.mStartTime + self.mLocalOffset
 						tempName = '%s~%s' %(TimeToString( epgStart, TimeFormatEnum.E_HH_MM ), TimeToString( epgStart + epgEvent.mDuration, TimeFormatEnum.E_HH_MM ) )
 						listItem.setProperty( 'Duration', tempName )
-						listItem.setProperty( 'HasEvent', 'True' )
+						listItem.setProperty( 'HasEvent', 'true' )
 					else :
 						listItem = xbmcgui.ListItem( tempChannelName, 'No Event' )
 						listItem.setProperty( 'Duration', '' )
-						listItem.setProperty( 'HasEvent', 'False' )																		
+						listItem.setProperty( 'HasEvent', 'false' )																		
 					
 					self.mListItems.append( listItem )
 
