@@ -96,7 +96,9 @@ class MainMenu( BaseWindow ):
 		elif aControlId == BUTTON_ID_SYSTEM_INFO :
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_SYSTEM_INFO )
 
-		
+		elif aControlId == BUTTON_ID_EPG :
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
+			
 		elif aControlId == 20 :
 			self.close()
 			import pvr.Launcher

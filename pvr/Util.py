@@ -24,7 +24,10 @@ E_LOG_WARN   = 37
 E_LOG_ERR    = 31
 E_LOG_DEBUG  = 33
 
-E_AW_DD_MM_YYYY			= 0
+class TimeFormatEnum(object):
+	E_AW_DD_MM_YYYY			= 0
+	E_HH_MM					= 1
+
 
 def ClearThreads( ):
 	gThreads.clear()
@@ -230,8 +233,10 @@ def SetSetting( aID, aValue ) :
 
 
 def TimeToString( aTime, aFlag=0 ) :
-	if aFlag == E_AW_DD_MM_YYYY :
+	if aFlag == TimeFormatEnum.E_AW_DD_MM_YYYY :
 		return time.strftime("%a, %d.%m.%Y", time.gmtime( aTime ) )
+	elif aFlag == TimeFormatEnum.E_HH_MM :		
+		return time.strftime("%H:%M", time.gmtime( aTime ) )	
 	else :
 		strTime = time.strftime('%a, %d.%m.%Y', aTime )
 		LOG_TRACE('strTime=%s' %strTime )
