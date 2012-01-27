@@ -94,8 +94,8 @@ class ChannelListWindow(BaseWindow):
 
 		#header
 		self.mCtrlLblPath1           = self.getControl( 21 )
-		self.mCtrlLblLocalTime1      = self.getControl( 31 )
-		self.mCtrlLblLocalTime2      = self.getControl( 32 )
+		#self.mCtrlLblLocalTime1      = self.getControl( 31 )
+		#self.mCtrlLblLocalTime2      = self.getControl( 32 )
 
 		#opt edit in slide
 		self.mCtrlBtnEdit            = self.getControl( 121 )
@@ -133,7 +133,7 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlServiceTypeImg3    = self.getControl( 312 )
 		self.mCtrlSelectItem         = self.getControl( 401 )
 
-		self.mCtrlLblLocalTime1.setLabel( '' )
+		#self.mCtrlLblLocalTime1.setLabel( '' )
 
 		self.mIsSelect = False
 		self.mIsMark = True
@@ -851,8 +851,8 @@ class ChannelListWindow(BaseWindow):
 			#header init		
 			#self.mCtrlHeader1.setImage( E_IMG_ICON_TITLE1 )
 			#self.mCtrlHeader2.setLabel( Msg.Strings(MsgId.LANG_TV_CHANNEL_LIST) )
-			self.mCtrlLblLocalTime1.setLabel( '' )
-			self.mCtrlLblLocalTime2.setLabel( '' )
+			#self.mCtrlLblLocalTime1.setLabel( '' )
+			#self.mCtrlLblLocalTime2.setLabel( '' )
 
 			#slide edit init
 			self.mCtrlLblEdit1.setLabel( Msg.Strings(MsgId.LANG_EDIT_CHANNEL_LIST) )
@@ -865,10 +865,9 @@ class ChannelListWindow(BaseWindow):
 			#self.mCtrlGropMainmenu.setVisible( False )
 
 			#header init
-			#self.mCtrlHeader1.setImage( E_IMG_ICON_TITLE2 )
 			#self.mCtrlHeader2.setLabel( Msg.Strings(MsgId.LANG_TV_EDIT_CHANNEL_LIST) )
-			self.mCtrlLblLocalTime1.setLabel( '' )
-			self.mCtrlLblLocalTime2.setLabel( '' )
+			#self.mCtrlLblLocalTime1.setLabel( '' )
+			#self.mCtrlLblLocalTime2.setLabel( '' )
 
 			#slide edit init
 			self.mCtrlLblEdit1.setLabel( Msg.Strings(MsgId.LANG_UPDATE_CHANNEL_LIST) )
@@ -1324,8 +1323,8 @@ class ChannelListWindow(BaseWindow):
 
 			#local clock
 			ret = EpgInfoClock(FLAG_CLOCKMODE_ADMYHM, self.mLocalTime, loop)
-			self.mCtrlLblLocalTime1.setLabel(ret[0])
-			self.mCtrlLblLocalTime2.setLabel(ret[1])
+			#self.mCtrlLblLocalTime1.setLabel(ret[0])
+			#self.mCtrlLblLocalTime2.setLabel(ret[1])
 
 			#self.nowTime += 1
 			xbmc.sleep(1000)
