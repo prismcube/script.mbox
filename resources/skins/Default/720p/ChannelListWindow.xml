@@ -18,7 +18,7 @@
 				<posy>0</posy>
 				<width>1280</width>
 				<height>720</height>
-				<texture border="20">black-back.png</texture>
+				<texture border="20">confluence/black-back.png</texture>
 				<include>VisibleFadeEffect</include>
 			</control>
 			<control type="image">
@@ -39,37 +39,25 @@
 		</control>
 
 
-<!--  Path Info -->
-		<control type="group" id="20">
-			<posx>0</posx>
-			<posy>0</posy>
-			<animation effect="slide" start="-650,0" end="0,0" delay="0" time="100" condition="ControlGroup(49).HasFocus | Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">conditional</animation>
-			<animation effect="slide" start="-650,0" end="0,0" delay="0" time="100" condition="Control.IsVisible(100)">conditional</animation>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>620</width>
-				<height>45</height>
-				<texture border="0,0,32,0">confluence/header.png</texture>
-			</control>
-			<control type="label" id="21">
-				<posx>100</posx>
-				<posy>0</posy>
-				<width>600</width>
-				<height>40</height>
-				<font>font12</font>
-				<textcolor>grey</textcolor>
-				<align>left</align>
-				<aligny>center</aligny>
-				<label>$INFO[ListItem.Label]</label>
-				<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
-			</control>
-		</control>
-
 <!--  local time -->
-		<control type="group">
+		<include>DefaultCommonDateTime</include>
+
+		<!--control type="group">
 			<posx>1110</posx>
 			<posy>0</posy>
+			<control type="label">
+				<description>Title Label</description>
+				<posx>-450</posx>
+				<posy>0</posy>
+				<width>150</width>
+				<height>40</height>
+				<font>font13caps</font>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>grey2</shadowcolor>
+				<label>SCRIPT546</label>
+			</control>
 			<control type="label" id="31">
 				<description>DATE Label</description>
 		        <posx>0</posx>
@@ -104,7 +92,7 @@
 				<height>20</height>
 				<texture>clock.png</texture>
 			</control>
-		</control>
+		</control-->
 
 
 <!-- middle left -->
@@ -115,7 +103,7 @@
 				<width>780</width>
 				<height>401</height>
 				<onleft>102</onleft>
-				<onright>SetFocus(61)</onright>
+				<onright>61</onright>
 				<onup>49</onup>
 				<ondown>49</ondown>
 				<pagecontrol>61</pagecontrol>
@@ -296,8 +284,8 @@
             <textureslidernib>scrollbar_nib.png</textureslidernib> 
             <textureslidernibfocus>scrollbar_nib.png</textureslidernibfocus> 
 -->
-			<onleft>SetFocus(49)</onleft>
-			<onright>SetFocus(49)</onright>
+			<onleft>49</onleft>
+			<onright>49</onright>
 			<ondown>61</ondown>
 			<onup>61</onup>
 			<showonepage>false</showonepage>
@@ -485,48 +473,48 @@
 
 <!-- Main Menu -->
 		<control type="group" id="100">
-			<animation effect="slide" start="0,0" end="180,0" time="400" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(110).HasFocus | Control.HasFocus(121) | ControlGroup(9001).HasFocus">Conditional</animation> 
-			<animation effect="slide" start="0,0" end="-180,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus">Conditional</animation>
-			<animation effect="slide" start="0,0" end="-180,0" time="400" tween="quadratic" easing="out" condition="Control.HasFocus(101)">WindowClose</animation>
+			<animation effect="slide" start="0,0" end="250,0" time="400" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(110).HasFocus | Control.HasFocus(121) | ControlGroup(9001).HasFocus">Conditional</animation> 
+			<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus">Conditional</animation>
+			<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="Control.HasFocus(101)">WindowClose</animation>
 			<control type="group">
                 <animation effect="slide" end="-361,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
 				<control type="image">
                     <posx>0</posx>
-                    <posy>40</posy>
+                    <posy>0</posy>
                     <width>1</width>
-                    <height>535</height>
+                    <height>720</height>
                     <texture>black-back_noAlpha.png</texture>
                     <!--animation effect="zoom" start="0,0,0,535" end="0,0,300,535" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation-->
-                    <animation effect="zoom" start="0,0,0,535" end="0,0,300,535" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
-					<animation effect="slide" start="0,0" end="-300,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(5)">Conditional</animation>
+                    <animation effect="zoom" start="0,0,0,720" end="0,0,250,720" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
+					<animation effect="slide" start="0,0" end="-230,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(5)">Conditional</animation>
                 </control>
                 <control type="image">
                     <posx>0</posx>
-                    <posy>40</posy>
+                    <posy>0</posy>
                     <width>12</width>
-                    <height>600</height>
+                    <height>720</height>
                     <texture>confluence/HomeBladeSub_Part2.png</texture>
                     <!--animation effect="slide" end="300,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation-->
-                    <animation effect="slide" end="300,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
-					<animation effect="slide" start="0,0" end="-300,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(5)">Conditional</animation>
+                    <animation effect="slide" end="250,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
+					<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(5)">Conditional</animation>
                 </control>
 			</control>
 
             <control type="image">
-                <posx>-180</posx>
-                <posy>40</posy>
-                <width>180</width>
-                <height>600</height>
+                <posx>-250</posx>
+                <posy>0</posy>
+                <width>250</width>
+                <height>720</height>
                 <colordiffuse>DAFFFFFF</colordiffuse>
                 <texture>confluence/HomeBlade_bottom.png</texture>
             </control>
 
 			<control type="button" id="101">
 				<description>Fake button for mouse control</description>
-				<posx>-180</posx>
-				<posy>40</posy>
-				<width>195</width>
-				<height>600</height>
+				<posx>-250</posx>
+				<posy>0</posy>
+				<width>265</width>
+				<height>720</height>
 				<label>-</label>
 				<font>-</font>
 				<texturenofocus>-</texturenofocus>
@@ -535,37 +523,37 @@
 				<visible>true</visible>
 			</control>
 			<control type="image">
-				<posx>-180</posx>
-				<posy>40</posy>
-				<width>195</width>
-				<height>600</height>
+				<posx>-250</posx>
+				<posy>0</posy>
+				<width>265</width>
+				<height>720</height>
 				<texture>HomeBlade.png</texture>
 				<animation effect="slide" start="-26,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
 				<animation effect="slide" start="0,0" end="-26,0" time="200" delay="200" tween="quadratic" easing="out">WindowClose</animation>
 			</control>
 
 			<control type="group" id="110">
-				<posx>-180</posx>
+				<posx>-250</posx>
 				<posy>100</posy>
 				<control type="image">
 					<description>LOGO</description>
 					<posx>0</posx>
 					<posy>-70</posy>
-					<width>150</width>
+					<width>220</width>
 					<height>80</height>
 					<aspectratio>keep</aspectratio>
 					<texture>confluence/Confluence_Logo.png</texture>
 				</control>
 				<control type="group">
 					<posx>20</posx>
-					<posy>0</posy>
+					<posy>30</posy>
+					<font>font13caps</font>
 					<control type="button" id="121">
 						<description>Button Icon</description>
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>150</width>
+						<width>230</width>
 						<height>35</height>
-						<!--hitrect x="30" y="10" w="120" h="40"></hitrect-->
 						<texturenofocus></texturenofocus>
 						<texturefocus>confluence/button-focus.png</texturefocus>
 						<onleft>49</onleft>
@@ -575,11 +563,10 @@
 						<label></label>
 					</control>
 					<control type="label" id="122">
-						<posx>10</posx>
+						<posx>5</posx>
 						<posy>0</posy>
-						<width>150</width>
+						<width>230</width>
 						<height>35</height>
-						<font>font12</font>
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -587,11 +574,10 @@
 						<visible>!Control.HasFocus(121)</visible>
 					</control>
 					<control type="label" id="123">
-						<posx>10</posx>
+						<posx>5</posx>
 						<posy>0</posy>
-						<width>150</width>
+						<width>230</width>
 						<height>35</height>
-						<font>font12</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -601,12 +587,11 @@
 					<control type="radiobutton" id="124">
 						<posx>0</posx>
 						<posy>35</posy>
-						<width>150</width>
+						<width>230</width>
 						<height>35</height>
 						<texturenofocus></texturenofocus>
 						<texturefocus>confluence/MenuItemFO.png</texturefocus>
 						<!--selected>False</selected-->
-						<font>font12</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -620,12 +605,11 @@
 					<control type="radiobutton" id="125">
 						<posx>0</posx>
 						<posy>70</posy>
-						<width>150</width>
+						<width>230</width>
 						<height>35</height>
 						<texturenofocus></texturenofocus>
 						<texturefocus>confluence/MenuItemFO.png</texturefocus>
 						<!--selected>True</selected-->
-						<font>font12</font>
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
@@ -638,7 +622,7 @@
 					<control type="image">
 						<posx>-20</posx>
 						<posy>105</posy>
-						<width>180</width>
+						<width>250</width>
 						<height>2</height>
 						<texture>confluence/separator.png</texture>
 					</control>
@@ -646,8 +630,8 @@
 
 				<control type="list" id="102">
 					<posx>0</posx>
-					<posy>100</posy>
-					<width>180</width>
+					<posy>150</posy>
+					<width>250</width>
 					<height>600</height>
 					<onleft>49</onleft>
 					<onright>9001</onright>
@@ -658,13 +642,13 @@
 					<!--focusposition>0</focusposition-->
 					<movement>10</movement>
 					<!--animation effect="fade" start="0" end="100" time="200">Visible</animation-->
-					<itemlayout height="70" width="185">
+					<itemlayout height="70" width="255">
 						<control type="label">
 							<posx>20r</posx>
 							<posy>21</posy>
-							<width>180</width>
+							<width>250</width>
 							<height>40</height>
-							<font>font35</font>
+							<font>font28_title</font>
 							<textcolor>grey3</textcolor>
 							<align>right</align>
 							<aligny>center</aligny>
@@ -672,13 +656,13 @@
 							<animation effect="zoom" start="85" end="85" center="185,51" time="0" condition="true">Conditional</animation>
 						</control>
 					</itemlayout>
-					<focusedlayout height="70" width="185">
+					<focusedlayout height="70" width="255">
 						<control type="label">
 							<posx>20r</posx>
 							<posy>21</posy>
-							<width>180</width>
+							<width>250</width>
 							<height>40</height>
-							<font>font35</font>
+							<font>font28_title</font>
 							<!--textcolor>white</textcolor-->
 							<align>right</align>
 							<aligny>center</aligny>
@@ -730,16 +714,15 @@
 				<control type="group" id="9001">
 					<posx>10</posx>
 					<posy>-630</posy>
-					<!--animation effect="slide" end="180,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">conditional</animation-->
-					<animation effect="slide" end="180,630" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">conditional</animation>
-					<animation effect="slide" start="0,0" end="-300,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus">Conditional</animation>
+					<animation effect="slide" end="250,630" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">conditional</animation>
+					<animation effect="slide" start="0,0" end="-370,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus">Conditional</animation>
 					<control type="list" id="112">
-						<posx>5</posx>
-						<posy>120</posy>
+						<posx>10</posx>
+						<posy>170</posy>
 						<width>230</width>
 						<height>430</height>
 						<align>center</align>
-						<font>font12_title</font>
+						<font>font13caps</font>
 						<onleft>102</onleft>
 						<onright>112</onright>
 						<onup>112</onup>
@@ -760,7 +743,7 @@
 							<control type="label">
 								<posx>10</posx>
 								<posy>0</posy>
-								<width>230</width>
+								<width>180</width>
 								<height>40</height>
 								<font>font12</font>
 								<textcolor>grey3</textcolor>
@@ -826,6 +809,32 @@
 			</control>
 		</control>
 
+<!--  Path Info -->
+		<control type="group" id="20">
+			<posx>0</posx>
+			<posy>0</posy>
+			<animation effect="slide" start="-650,0" end="0,0" delay="0" time="100" condition="ControlGroup(49).HasFocus | Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">conditional</animation>
+			<animation effect="slide" start="-650,0" end="0,0" delay="0" time="100" condition="Control.IsVisible(100)">conditional</animation>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>620</width>
+				<height>35</height>
+				<texture border="0,0,32,0">confluence/header.png</texture>
+			</control>
+			<control type="label" id="21">
+				<posx>105</posx>
+				<posy>0</posy>
+				<width>600</width>
+				<height>28</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>$INFO[ListItem.Label]</label>
+				<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+			</control>
+		</control>
 
 <!-- edit button -->
 		<control type="group" id="500">
@@ -848,7 +857,7 @@
 				<onup>49</onup>
 				<ondown></ondown>
 			</control>
-			<control type="label">
+			<control type="label" id="502">
 				<posx>42</posx>
 				<posy>0</posy>
 				<width>150</width>
@@ -860,7 +869,7 @@
 				<label>[B]Opt Edit[/B]</label>
 				<visible>![Control.HasFocus(501) | Control.HasFocus(501)]</visible>
 			</control>
-			<control type="label">
+			<control type="label" id="503">
 				<posx>42</posx>
 				<posy>0</posy>
 				<width>150</width>

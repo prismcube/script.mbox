@@ -804,7 +804,7 @@
 				<onup>49</onup>
 				<ondown></ondown>
 			</control>
-			<control type="label">
+			<control type="label" id="502">
 				<posx>42</posx>
 				<posy>0</posy>
 				<width>150</width>
@@ -816,7 +816,7 @@
 				<label>[B]Opt Edit[/B]</label>
 				<visible>![Control.HasFocus(501) | Control.HasFocus(501)]</visible>
 			</control>
-			<control type="label">
+			<control type="label" id="503">
 				<posx>42</posx>
 				<posy>0</posy>
 				<width>150</width>

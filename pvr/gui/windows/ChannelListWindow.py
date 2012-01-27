@@ -20,12 +20,14 @@ import threading, time, os, re
 import pvr.Msg as Msg
 import pvr.gui.windows.Define_string as MsgId
 
-FLAG_MASK_ADD  = 0x01
-FLAG_MASK_NONE = 0x00
-FLAG_SLIDE_OPEN= 0
-FLAG_SLIDE_INIT= 1
-FLAG_OPT_LIST  = 0
-FLAG_OPT_GROUP = 1
+FLAG_MASK_ADD    = 0x01
+FLAG_MASK_NONE   = 0x00
+FLAG_SLIDE_OPEN  = 0
+FLAG_SLIDE_INIT  = 1
+FLAG_OPT_LIST    = 0
+FLAG_OPT_GROUP   = 1
+FLAG_OPT_MOVE    = 2
+FLAG_OPT_MOVE_OK = 3
 FLAG_CLOCKMODE_ADMYHM   = 1
 FLAG_CLOCKMODE_AHM      = 2
 FLAG_CLOCKMODE_HMS      = 3
@@ -92,8 +94,8 @@ class ChannelListWindow(BaseWindow):
 
 		#header
 		self.mCtrlLblPath1           = self.getControl( 21 )
-		self.mCtrlLblLocalTime1      = self.getControl( 31 )
-		self.mCtrlLblLocalTime2      = self.getControl( 32 )
+		#self.mCtrlLblLocalTime1      = self.getControl( 31 )
+		#self.mCtrlLblLocalTime2      = self.getControl( 32 )
 
 		#opt edit in slide
 		self.mCtrlBtnEdit            = self.getControl( 121 )
@@ -102,6 +104,8 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlRadioTune          = self.getControl( 124 )
 		self.mCtrlRadioMark          = self.getControl( 125 )
 		self.mCtrlBtnOpt             = self.getControl( 501 )
+		self.mCtrlLblOpt1            = self.getControl( 502 )
+		self.mCtrlLblOpt2            = self.getControl( 503 )
 
 		#main menu
 		self.mCtrlGropMainmenu       = self.getControl( 100 )
@@ -129,7 +133,7 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlServiceTypeImg3    = self.getControl( 312 )
 		self.mCtrlSelectItem         = self.getControl( 401 )
 
-		self.mCtrlLblLocalTime1.setLabel( '' )
+		#self.mCtrlLblLocalTime1.setLabel( '' )
 
 		self.mIsSelect = False
 		self.mIsMark = True
@@ -224,7 +228,7 @@ class ChannelListWindow(BaseWindow):
 			self.GetFocusId()
 			if self.mFocusId == self.mCtrlListCHList.getId() :
 				if self.mMoveFlag :
-					self.EditSettingWindow( FLAG_OPT_LIST, id )
+					self.EditSettingWindow( FLAG_OPT_MOVE, id )
 					return
 
 				self.mIsSelect = False
@@ -262,6 +266,10 @@ class ChannelListWindow(BaseWindow):
 
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
 				try:
+					if self.mMoveFlag :
+						self.EditSettingWindow( FLAG_OPT_MOVE_OK )
+						return
+
 					#Mark mode
 					if self.mIsMark == True :
 						idx = self.mCtrlListCHList.getSelectedPosition()
@@ -347,6 +355,11 @@ class ChannelListWindow(BaseWindow):
 
 		elif aControlId == self.mCtrlBtnOpt.getId():
 			LOG_TRACE( 'onclick Opt' )
+
+			if self.mMoveFlag :
+				self.EditSettingWindow( FLAG_OPT_MOVE_OK )
+				return
+
 			mode = FLAG_OPT_LIST
 			if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
 				mode = FLAG_OPT_GROUP
@@ -838,8 +851,8 @@ class ChannelListWindow(BaseWindow):
 			#header init		
 			#self.mCtrlHeader1.setImage( E_IMG_ICON_TITLE1 )
 			#self.mCtrlHeader2.setLabel( Msg.Strings(MsgId.LANG_TV_CHANNEL_LIST) )
-			self.mCtrlLblLocalTime1.setLabel( '' )
-			self.mCtrlLblLocalTime2.setLabel( '' )
+			#self.mCtrlLblLocalTime1.setLabel( '' )
+			#self.mCtrlLblLocalTime2.setLabel( '' )
 
 			#slide edit init
 			self.mCtrlLblEdit1.setLabel( Msg.Strings(MsgId.LANG_EDIT_CHANNEL_LIST) )
@@ -852,10 +865,9 @@ class ChannelListWindow(BaseWindow):
 			#self.mCtrlGropMainmenu.setVisible( False )
 
 			#header init
-			#self.mCtrlHeader1.setImage( E_IMG_ICON_TITLE2 )
 			#self.mCtrlHeader2.setLabel( Msg.Strings(MsgId.LANG_TV_EDIT_CHANNEL_LIST) )
-			self.mCtrlLblLocalTime1.setLabel( '' )
-			self.mCtrlLblLocalTime2.setLabel( '' )
+			#self.mCtrlLblLocalTime1.setLabel( '' )
+			#self.mCtrlLblLocalTime2.setLabel( '' )
 
 			#slide edit init
 			self.mCtrlLblEdit1.setLabel( Msg.Strings(MsgId.LANG_UPDATE_CHANNEL_LIST) )
@@ -1311,8 +1323,8 @@ class ChannelListWindow(BaseWindow):
 
 			#local clock
 			ret = EpgInfoClock(FLAG_CLOCKMODE_ADMYHM, self.mLocalTime, loop)
-			self.mCtrlLblLocalTime1.setLabel(ret[0])
-			self.mCtrlLblLocalTime2.setLabel(ret[1])
+			#self.mCtrlLblLocalTime1.setLabel(ret[0])
+			#self.mCtrlLblLocalTime2.setLabel(ret[1])
 
 			#self.nowTime += 1
 			xbmc.sleep(1000)
@@ -1612,7 +1624,15 @@ class ChannelListWindow(BaseWindow):
 
 			elif aBtn == E_DialogInput06 :
 				cmd = 'move'
-				#cmd2 = False
+				self.mMoveFlag = True
+				self.mCtrlLblOpt1.setLabel('[B]OK[/B]')
+				self.mCtrlLblOpt2.setLabel('[B]OK[/B]')
+
+				if aDialog == FLAG_OPT_LIST :
+					pass
+				else:
+					pass
+
 				return
 
 			elif aBtn == E_DialogInput07 :
@@ -1661,56 +1681,64 @@ class ChannelListWindow(BaseWindow):
 		LOG_TRACE( 'Enter' )
 
 		try:
-			self.GroupAddDelete( 'get' )
+			if aMode == FLAG_OPT_MOVE :
+				pass
+			elif aMode == FLAG_OPT_MOVE_OK :
+				self.mMoveFlag = False
+				self.mCtrlLblOpt1.setLabel('Opt Edit')
+				self.mCtrlLblOpt2.setLabel('Opt Edit')
 
-			if aMode == FLAG_OPT_LIST :
+			else :
+				self.GroupAddDelete( 'get' )
 
-				#dialog title
-				#select one or one marked : title = channel name
-				#select two more : title = 'Edit Channel'
-				if self.mChannelList :
-					if len(self.mMarkList) > 1 :
-						label3 = Msg.Strings( MsgId.LANG_EDIT_CHANNEL )
+				if aMode == FLAG_OPT_LIST :
 
-					else :
-						if len(self.mMarkList) == 1 :
-							idx = self.mMarkList[0]
-							self.mCtrlListCHList.selectItem(idx)
-							xbmc.sleep(20)
+					#dialog title
+					#select one or one marked : title = channel name
+					#select two more : title = 'Edit Channel'
+					if self.mChannelList :
+						if len(self.mMarkList) > 1 :
+							label3 = Msg.Strings( MsgId.LANG_EDIT_CHANNEL )
 
-						label1 = self.mCtrlListCHList.getSelectedItem().getLabel()
-						label2 = re.findall('\](.*)\[', label1)
-						label3 = label2[0][5:]
+						else :
+							if len(self.mMarkList) == 1 :
+								idx = self.mMarkList[0]
+								self.mCtrlListCHList.selectItem(idx)
+								xbmc.sleep(20)
 
+							label1 = self.mCtrlListCHList.getSelectedItem().getLabel()
+							label2 = re.findall('\](.*)\[', label1)
+							label3 = label2[0][5:]
+
+
+						GuiLock2(True)
+						dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_EDIT_CHANNEL_LIST )
+						dialog.SetValue( FLAG_OPT_LIST, label3, self.mChannelList, self.mEditFavorite )
+			 			dialog.doModal()
+			 			GuiLock2(False)
+
+			 		else :
+						head =  Msg.Strings( MsgId.LANG_INFOMATION )
+						line1 = Msg.Strings( MsgId.LANG_NO_CHANNELS )
+
+						ret = xbmcgui.Dialog().ok(head, line1)
+						return
+
+
+				elif aMode == FLAG_OPT_GROUP :
 
 					GuiLock2(True)
 					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_EDIT_CHANNEL_LIST )
-					dialog.SetValue( FLAG_OPT_LIST, label3, self.mChannelList, self.mEditFavorite )
+					dialog.SetValue( FLAG_OPT_GROUP, Msg.Strings( MsgId.LANG_GROUP_NAME ), self.mChannelList, self.mEditFavorite )
 		 			dialog.doModal()
 		 			GuiLock2(False)
 
-		 		else :
-					head =  Msg.Strings( MsgId.LANG_INFOMATION )
-					line1 = Msg.Strings( MsgId.LANG_NO_CHANNELS )
 
-					ret = xbmcgui.Dialog().ok(head, line1)
-					return
-
-
-			elif aMode == FLAG_OPT_GROUP :
-
-				GuiLock2(True)
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_EDIT_CHANNEL_LIST )
-				dialog.SetValue( FLAG_OPT_GROUP, Msg.Strings( MsgId.LANG_GROUP_NAME ), self.mChannelList, self.mEditFavorite )
-	 			dialog.doModal()
-	 			GuiLock2(False)
-
-
-			#result editing action
-			idxBtn, groupName, isOk = dialog.GetValue( aMode )
-			if isOk :
-				self.mIsSave |= FLAG_MASK_ADD
-				self.GroupAddDelete( 'set', aMode, idxBtn, groupName )
+				#result editing action
+				idxBtn, groupName, isOk = dialog.GetValue( aMode )
+				if isOk :
+					self.mIsSave |= FLAG_MASK_ADD
+					self.GroupAddDelete( 'set', aMode, idxBtn, groupName )
 
 		except Exception, e:
 			LOG_TRACE( 'Error except[%s] OPTMODE[%s]'% (e, aMode) )
