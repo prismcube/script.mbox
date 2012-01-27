@@ -39,6 +39,7 @@ WIN_ID_INSTALLATION					= 25
 WIN_ID_MEDIACENTER					= 26
 WIN_ID_EPG_WINDOW					= 27
 
+WIN_ID_TEST1						= 30
 
 gWindowMgr = None
 
@@ -184,9 +185,14 @@ class WindowMgr(object):
 			elif aWindowId ==  WIN_ID_EPG_WINDOW:
 				from pvr.gui.windows.EPGWindow import EPGWindow
 				EPGWindow('EPGWindow.xml', self.mScriptDir ).doModal()
+
 			elif aWindowId ==  WIN_ID_MEDIACENTER:
 				from pvr.gui.windows.MediaCenter import MediaCenter
 				MediaCenter('MediaCenter.xml', self.mScriptDir ).doModal()
+
+			elif aWindowId ==  WIN_ID_TEST1:
+				from pvr.gui.windows.test1 import Test1
+				Test1('MyPics.xml', self.mScriptDir ).doModal()
 
 			else :
 				print 'Unknown widnowId=%d' %aWindowId

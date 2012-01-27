@@ -10,13 +10,80 @@
 
 	<controls>
 
-<!--  header -->
-		<include>MenuHeader</include>
+<!--  local time -->
+		<control type="group">
+			<posx>0</posx>
+			<posy>0</posy>
+			<control type="image">
+				<description>Title Setting Image</description>
+				<posx>75</posx>
+				<posy>3</posy>
+				<width>90</width>
+				<height>70</height>
+				<texture>headertitle.png</texture>
+			</control>
+			<control type="label">
+				<description>Title Label</description>
+				<posx>180</posx>
+				<posy>27</posy>
+				<width>650</width>
+				<height>40</height>
+				<font>font28_title</font>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>grey2</shadowcolor>
+				<label>SCRIPT546</label>
+			</control>
+			<control type="image">
+				<description>Separator Image</description>
+				<posx>0</posx>
+				<posy>80</posy>
+				<width>1280</width>
+				<height>4</height>
+				<texture>confluence/separator2.png</texture>
+			</control>
+
+			<control type="label" id="31">
+				<description>DATE Label</description>
+		        <posx>1110</posx>
+		        <posy>5</posy>
+		        <width>350</width>
+		        <height>28</height>
+		        <align>right</align>
+		        <aligny>center</aligny>
+		        <font>font13</font>
+		        <textcolor>white</textcolor>
+		        <shadowcolor>black</shadowcolor>
+		        <label>[COLOR=grey]$INFO[Control.GetLabel][/COLOR]</label>
+			</control>
+			<control type="label" id="32">
+				<description>TIME Label</description>
+		        <posx>1155</posx>
+		        <posy>5</posy>
+		        <width>100</width>
+		        <height>28</height>
+		        <align>left</align>
+		        <aligny>center</aligny>
+		        <font>font13</font>
+		        <textcolor>white</textcolor>
+		        <shadowcolor>black</shadowcolor>
+		        <label>$INFO[Control.GetLabel]</label>
+			</control>
+			<control type="image">
+				<description>Clock Image</description>
+				<posx>1130</posx>
+				<posy>12</posy>
+				<width>20</width>
+				<height>20</height>
+				<texture>clock.png</texture>
+			</control>
+		</control>
 
 <!--  Path Info -->
 		<control type="group" id="20">
 			<posx>0</posx>
-			<posy>102</posy>
+			<posy>85</posy>
 			<animation effect="slide" start="-650,0" end="0,0" delay="0" time="100" condition="ControlGroup(49).HasFocus) | Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus)">conditional</animation>
 			<animation effect="slide" start="-650,0" end="0,0" delay="0" time="100" condition="Control.IsVisible(100)">conditional</animation>
 			<control type="image">
@@ -26,7 +93,7 @@
 				<height>45</height>
 				<texture border="0,0,32,0">confluence/header.png</texture>
 			</control>
-			<control type="label" id="10">
+			<control type="label" id="21">
 				<posx>100</posx>
 				<posy>0</posy>
 				<width>600</width>
@@ -39,53 +106,29 @@
 				<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
 			</control>
 		</control>
-		<control type="group">
-			<posx>200r</posx>
-			<posy>102</posy>
-			<animation effect="slide" start="0,0" end="200,0" delay="0" time="300" condition="Control.IsVisible(100)">conditional</animation>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>200</width>
-				<height>35</height>
-				<texture flipx="true" border="32,0,0,0">confluence/header.png</texture>
-			</control>
-			<control type="label" id="21">
-				<description>mark</description>
-				<posx>30</posx>
-				<posy>0</posy>
-				<width>400</width>
-				<height>28</height>
-				<align>left</align>
-				<aligny>center</aligny>
-				<font>font12</font>
-				<textcolor>grey</textcolor>
-				<label>Mark ON</label>
-			</control>
-		</control>
 
 
 <!-- Main Menu -->
 		<control type="group" id="100">
-			<animation effect="slide" start="0,0" end="180,0" time="400" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102)">Conditional</animation> 
+			<animation effect="slide" start="0,0" end="180,0" time="400" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(110).HasFocus | Control.HasFocus(121)">Conditional</animation> 
 			<animation effect="slide" start="0,0" end="-180,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus">Conditional</animation>
 			<animation effect="slide" start="0,0" end="-180,0" time="400" tween="quadratic" easing="out" condition="Control.HasFocus(101)">WindowClose</animation>
 			<control type="button" id="101">
 				<description>Fake button for mouse control</description>
 				<posx>-180</posx>
-				<posy>152</posy>
+				<posy>130</posy>
 				<width>195</width>
 				<height>535</height>
 				<label>-</label>
 				<font>-</font>
 				<texturenofocus>-</texturenofocus>
 				<texturefocus>-</texturefocus>
-				<onclick>202</onclick>
+				<onclick>112</onclick>
 				<visible>true</visible>
 			</control>
 			<control type="image">
 				<posx>-180</posx>
-				<posy>152</posy>
+				<posy>130</posy>
 				<width>195</width>
 				<height>535</height>
 				<texture>HomeBlade.png</texture>
@@ -96,14 +139,101 @@
 			<control type="group" id="110">
 				<posx>-180</posx>
 				<posy>180</posy>
+				<control type="group">
+					<posx>20</posx>
+					<posy>-50</posy>
+					<control type="button" id="121">
+						<description>Button Icon</description>
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>150</width>
+						<height>35</height>
+						<!--hitrect x="30" y="10" w="120" h="40"></hitrect-->
+						<texturenofocus></texturenofocus>
+						<texturefocus>confluence/button-focus.png</texturefocus>
+						<onleft>49</onleft>
+						<onright>9001</onright>
+						<onup>102</onup>
+						<ondown>124</ondown>
+						<label></label>
+					</control>
+					<control type="label" id="122">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>150</width>
+						<height>35</height>
+						<font>font12</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>SCRIPT582</label>
+						<visible>!Control.HasFocus(121)</visible>
+					</control>
+					<control type="label" id="123">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>150</width>
+						<height>35</height>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>SCRIPT582</label>
+						<visible>Control.HasFocus(121)</visible>
+					</control>
+					<control type="radiobutton" id="124">
+						<posx>0</posx>
+						<posy>35</posy>
+						<width>150</width>
+						<height>35</height>
+						<texturenofocus></texturenofocus>
+						<texturefocus>confluence/MenuItemFO.png</texturefocus>
+						<!--selected>False</selected-->
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Tune in</label>
+						<onleft>49</onleft>
+						<onright>9001</onright>
+						<onup>121</onup>
+						<ondown>125</ondown>
+					</control>
+					<control type="radiobutton" id="125">
+						<posx>0</posx>
+						<posy>70</posy>
+						<width>150</width>
+						<height>35</height>
+						<texturenofocus></texturenofocus>
+						<texturefocus>confluence/MenuItemFO.png</texturefocus>
+						<!--selected>True</selected-->
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Mark ON</label>
+						<onleft>49</onleft>
+						<onright>9001</onright>
+						<onup>124</onup>
+						<ondown>102</ondown>
+					</control>
+					<control type="image">
+						<posx>-20</posx>
+						<posy>105</posy>
+						<width>180</width>
+						<height>2</height>
+						<texture>confluence/separator.png</texture>
+					</control>
+				</control>
+
 				<control type="list" id="102">
 					<posx>0</posx>
-					<posy>0</posy>
+					<posy>50</posy>
 					<width>180</width>
 					<height>535</height>
 					<onleft>49</onleft>
 					<onright>49</onright>
-					<onup>102</onup>
+					<onup>121</onup>
 					<ondown>102</ondown>
 					<scrolltime>300</scrolltime>
 					<focusposition>0</focusposition>
@@ -195,7 +325,7 @@
 				<texture border="20">confluence/DialogBack.png</texture>
 			</control-->
 
-			<control type="list" id="202">
+			<control type="list" id="112">
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>230</width>
@@ -204,8 +334,8 @@
 				<font>font12_title</font>
 				<onleft>102</onleft>
 				<onright>49</onright>
-				<onup>202</onup>
-				<ondown>202</ondown>
+				<onup>112</onup>
+				<ondown>112</ondown>
 				<!--pagecontrol>203</pagecontrol-->
 				<scrolltime>200</scrolltime>
 				<!--focusposition>0</focusposition-->
@@ -218,7 +348,7 @@
 						<width>230</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
-						<visible>!Control.HasFocus(202)</visible>
+						<visible>!Control.HasFocus(112)</visible>
 					</control>
 					<control type="label">
 						<posx>10</posx>
@@ -240,7 +370,7 @@
 						<width>230</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
-						<visible>!Control.HasFocus(202)</visible>
+						<visible>!Control.HasFocus(112)</visible>
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>
 					</control>
@@ -250,7 +380,7 @@
 						<width>230</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
-						<!--visible>Control.HasFocus(202)</visible-->
+						<!--visible>Control.HasFocus(112)</visible-->
 						<visible>ControlGroup(9001).HasFocus</visible>
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>
@@ -306,7 +436,7 @@
 				<posy>180</posy>
 				<width>600</width>
 				<height>401</height>
-				<onleft>202</onleft>
+				<onleft>112</onleft>
 				<onright>SetFocus(61)</onright>
 				<onup>49</onup>
 				<ondown>49</ondown>
@@ -324,6 +454,7 @@
 						<width>580</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
+						<visible>!Control.HasFocus(50)</visible>
 					</control>
 					<!-- is cas? -->
 					<control type="image">
@@ -340,6 +471,14 @@
 						<width>30</width>
 						<height>30</height>
 						<texture>$INFO[ListItem.Property(lock)]</texture>
+					</control>
+					<!-- is mark? -->
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>$INFO[ListItem.Property(mark)]</texture>
 					</control>
 
 					<control type="label">
@@ -362,7 +501,7 @@
 						<width>580</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
-						<!--visible>!Control.HasFocus(50)</visible-->
+						<visible>!Control.HasFocus(50)</visible>
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>
 					</control>
@@ -372,20 +511,10 @@
 						<width>580</width>
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
-						<!--visible>Control.HasFocus(50)</visible-->
+						<visible>ControlGroup(49).HasFocus</visible>
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>
 					</control>
-<!--
-					<control type="image">
-						<posx>390</posx>
-						<posy>5</posy>
-						<width>200</width>
-						<height>31</height>
-						<texture border="0,0,14,0">confluence/MediaItemDetailBG.png</texture>
-						<visible>Control.HasFocus(50) + !IsEmpty(ListItem.Label2)</visible>
-					</control>
--->
 					<control type="image">
 						<posx>520</posx>
 						<posy>5</posy>
@@ -408,6 +537,14 @@
 						<width>30</width>
 						<height>30</height>
 						<texture>$INFO[ListItem.Property(lock)]</texture>
+					</control>
+					<!-- is mark? -->
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>$INFO[ListItem.Property(mark)]</texture>
 					</control>
 
 					<control type="label">
@@ -646,10 +783,52 @@
 		</control>
 
 
-<!-- footer -->
+<!-- edit button -->
 		<control type="group" id="500">
-			<onup>SetFocus(49)</onup>
-			<include>MenuFooter</include>
+			<posx>700</posx>
+			<posy>590</posy>
+			<onup>49</onup>
+			<visible>Control.IsEnabled(124)</visible>
+			<!-- Opt Edit Button -->
+			<control type="button" id="501">
+				<description>opt</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>35</width>
+				<height>35</height>
+				<hitrect x="30" y="10" w="120" h="40"></hitrect>
+				<texturenofocus>confluence/OSDVizNF.png</texturenofocus>
+				<texturefocus>confluence/OSDVizFO.png</texturefocus>
+				<onleft></onleft>
+				<onright></onright>
+				<onup>49</onup>
+				<ondown></ondown>
+			</control>
+			<control type="label" id="502">
+				<posx>42</posx>
+				<posy>0</posy>
+				<width>150</width>
+				<height>40</height>
+				<font>font12</font>
+				<textcolor>grey2</textcolor>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>[B]Opt Edit[/B]</label>
+				<visible>![Control.HasFocus(501) | Control.HasFocus(501)]</visible>
+			</control>
+			<control type="label" id="503">
+				<posx>42</posx>
+				<posy>0</posy>
+				<width>150</width>
+				<height>40</height>
+				<font>font12</font>
+				<textcolor>white</textcolor>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>[B]Opt Edit[/B]</label>
+				<visible>[Control.HasFocus(501) | Control.HasFocus(501)]</visible>
+			</control>
 		</control>
+
 	</controls>
 </window>

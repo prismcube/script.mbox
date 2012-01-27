@@ -5,6 +5,7 @@ import sys
 
 from pvr.gui.BaseDialog import SettingDialog
 from pvr.gui.BaseWindow import Action
+import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.GuiConfig import *
 
 
@@ -67,8 +68,11 @@ class DialogLnbFrequency( SettingDialog ) :
 			self.CloseDialog( )
 			
 		elif groupId == E_DialogInput01 :
-			tempval = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input Low Frequency', self.mLowFreq, 5 )
-			self.mLowFreq = '%d' % int( tempval )
+			#tempval = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input Low Frequency', self.mLowFreq, 5 )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog.SetDialogProperty( 'Input Low Frequency', self.mLowFreq, 5 )
+ 			dialog.doModal( )
+			self.mLowFreq = dialog.GetString( )
 			self.DrawItem( )
 
 		elif groupId == E_DialogInput02 :
@@ -86,7 +90,7 @@ class DialogLnbFrequency( SettingDialog ) :
 		return self.mIsOk
 
 		
-	def onFocus( self, aControlId ):
+	def onFocus( self, aControlId ) :
 		pass
 
 
