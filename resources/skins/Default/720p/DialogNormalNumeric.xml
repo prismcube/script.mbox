@@ -1,11 +1,11 @@
 <window id="3310">
 	<defaultcontrol always="true">21</defaultcontrol>
+	<include>DefaultDialogEffect</include>
 	<coordinates>
 		<system>2</system>
 		<posx>480</posx>
 		<posy>145</posy>
 	</coordinates>
-	<include>DefaultDialogEffect</include>
 	<controls>
 		<control type="group">
             <animation condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional" reversible="false">
@@ -45,7 +45,6 @@
 				<shadowcolor>black</shadowcolor>
 				<align>center</align>
 				<aligny>center</aligny>
-				<!--<wrapmultiline>true</wrapmultiline>-->
 			</control>
 			<control type="label" id="4">
 				<description>Edit Text</description>

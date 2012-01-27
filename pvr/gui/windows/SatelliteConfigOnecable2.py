@@ -76,14 +76,27 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 			
 		elif groupId == E_Input01 or groupId == E_Input02 :
 			if ConfigMgr.GetInstance( ).GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
-				self.mTempTunerPin[self.mTunerIndex] = int( NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Tuner%d Pin Code' % ( self.mTunerIndex + 1 ), '%d' % self.mTempTunerPin[self.mTunerIndex], 3 ) )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+				dialog.SetDialogProperty( 'Tuner%d Pin Code' % ( self.mTunerIndex + 1 ), '%d' % self.mTempTunerPin[self.mTunerIndex], 3 )
+	 			dialog.doModal( )
+	 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+	 				self.mTempTunerPin[self.mTunerIndex] = int( dialog.GetString( ) )
 
 			elif ConfigMgr.GetInstance( ).GetCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
 				if groupId == E_Input01 :
-					self.mTempTunerPin[0] = int( NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Tuner1 Pin Code', '%d' % self.mTempTunerPin[0], 3 ) )
-
+					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+					dialog.SetDialogProperty( 'Tuner1 Pin Code', '%d' % self.mTempTunerPin[0], 3 )
+		 			dialog.doModal( )
+		 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+						self.mTempTunerPin[0] = int( dialog.GetString( ) )
+					
 				elif groupId == E_Input02 :					
-					self.mTempTunerPin[1] = int( NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Tuner2 Pin Code', '%d' % self.mTempTunerPin[1], 3 ) )
+					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+					dialog.SetDialogProperty( 'Tuner2 Pin Code', '%d' % self.mTempTunerPin[1], 3 )
+		 			dialog.doModal( )
+		 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+						self.mTempTunerPin[1] = int( dialog.GetString( ) )
+
 			self.InitConfig( )
 
 	def onFocus( self, aControlId ) :
@@ -122,7 +135,7 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 		
 		if ConfigMgr.GetInstance( ).GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
 			self.AddEnumControl( E_SpinEx01, 'MDU' )
-			self.AddInputControl( E_Input01, 'Tuner %d PIN-Code' % ( self.mTunerIndex + 1 ), '%d' % self.mTempTunerPin[self.mTunerIndex] )
+			self.AddInputControl( E_Input01, 'Tuner %d PIN-Code' % ( self.mTunerIndex + 1 ), '%03d' % self.mTempTunerPin[self.mTunerIndex] )
 			self.AddUserEnumControl( E_SpinEx02, 'Tuner %d' % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[self.mTunerIndex] )
 			self.AddUserEnumControl( E_SpinEx03, 'Tuner %d Frequency' % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[self.mTunerIndex] ) )
 
@@ -132,11 +145,11 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 
 		elif ConfigMgr.GetInstance( ).GetCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
 			self.AddEnumControl( E_SpinEx01, 'MDU' )
-			self.AddInputControl( E_Input01, 'Tuner1 PIN-Code', '%d' % self.mTempTunerPin[0] )
+			self.AddInputControl( E_Input01, 'Tuner1 PIN-Code', '%03d' % self.mTempTunerPin[0] )
 			self.AddUserEnumControl( E_SpinEx02, 'Tuner 1', E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[0] )
 			self.AddUserEnumControl( E_SpinEx03, 'Tuner 1 Frequency', E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[0] ) )
 
-			self.AddInputControl( E_Input02, 'Tuner2 PIN-Code', '%d' % self.mTempTunerPin[1] )
+			self.AddInputControl( E_Input02, 'Tuner2 PIN-Code', '%03d' % self.mTempTunerPin[1] )
 			self.AddUserEnumControl( E_SpinEx04, 'Tuner 2', E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[1] )
 			self.AddUserEnumControl( E_SpinEx05, 'Tuner 2 Frequency', E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[1] ) )
 

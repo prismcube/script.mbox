@@ -198,7 +198,7 @@ def Hex2signed( s ) :
 	#assert -sys.maxint-1 <= value <= sys.maxint
 	return int( value )
  
-
+"""
 def NumericKeyboard( aKeyType, aTitle, aString, aMaxLength=None ) :
 	dialog = xbmcgui.Dialog( )
 	value = dialog.numeric( aKeyType, aTitle, aString )
@@ -208,7 +208,7 @@ def NumericKeyboard( aKeyType, aTitle, aString, aMaxLength=None ) :
 	if len( value ) > aMaxLength and aMaxLength != None :
 		value = value[ len ( value ) - aMaxLength :]
 	return value
-		
+"""
 
 def InputKeyboard( aType, aTitle, aString, aMaxLength=None ) :
 	dialog = xbmc.Keyboard( aString, aTitle, aType )

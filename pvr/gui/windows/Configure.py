@@ -3,6 +3,7 @@ import xbmcgui
 import sys
 
 import pvr.gui.WindowMgr as WinMgr
+import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.BaseWindow import SettingWindow, Action
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
@@ -125,12 +126,17 @@ class Configure( SettingWindow ) :
 			return
 
 		elif selectedId == E_PARENTAL and self.mVisibleParental == False and groupId == E_Input01 :
-			tempval = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input PIN Code', '', 4 )
-			if int( tempval ) == ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( ) :
-				self.mVisibleParental = True
-				self.DisableControl( E_PARENTAL )
-			else :
-				xbmcgui.Dialog( ).ok( 'ERROR', 'ERROR PIN Code' )
+			#tempval = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input PIN Code', '', 4 )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog.SetDialogProperty( 'PIN Code', '', 4 )
+ 			dialog.doModal( )
+ 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+ 				tempval = dialog.GetString( )
+				if int( tempval ) == ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( ) :
+					self.mVisibleParental = True
+					self.DisableControl( E_PARENTAL )
+				else :
+					xbmcgui.Dialog( ).ok( 'ERROR', 'ERROR PIN Code' )
 			return
 
 		elif selectedId == E_PARENTAL and groupId == E_Input02 :
