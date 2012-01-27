@@ -101,8 +101,7 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlBtnEdit            = self.getControl( 121 )
 		self.mCtrlLblEdit1           = self.getControl( 122 )
 		self.mCtrlLblEdit2           = self.getControl( 123 )
-		self.mCtrlRadioTune          = self.getControl( 124 )
-		self.mCtrlRadioMark          = self.getControl( 125 )
+		self.mCtrlRadioMisc          = self.getControl( 124 )
 		self.mCtrlBtnOpt             = self.getControl( 501 )
 		self.mCtrlLblOpt1            = self.getControl( 502 )
 		self.mCtrlLblOpt2            = self.getControl( 503 )
@@ -115,6 +114,10 @@ class ChannelListWindow(BaseWindow):
 		#sub menu list
 		self.mCtrlGropSubmenu        = self.getControl( 9001 )
 		self.mCtrlListSubmenu        = self.getControl( 112 )
+
+		#sub menu 2
+		self.mCtrlRadioTune          = self.getControl( 113 )
+		self.mCtrlRadioMark          = self.getControl( 114 )
 
 		#ch list
 		self.mCtrlGropCHList         = self.getControl( 49 )
@@ -154,6 +157,7 @@ class ChannelListWindow(BaseWindow):
 		self.mEditFavorite = []
 		self.mMoveFlag = False
 		self.mMoveItem = []
+
 
 		#initialize get channel list
 		self.InitSlideMenuHeader()
@@ -609,9 +613,13 @@ class ChannelListWindow(BaseWindow):
 			label1 = EnumToString('mode', self.mZappingMode)
 			label2 = self.mCtrlListSubmenu.getSelectedItem().getLabel()
 			label3 = EnumToString('sort', self.mChannelListSortMode)
+
 			#self.mCtrlLblPath1.setLabel( '%s'% label1.upper() )
 			#self.mCtrlLblPath3.setLabel( 'sort by %s'% label3.title() )
-			self.mCtrlLblPath1.setLabel( '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% (label1.upper(),label2.title(),label3.title()) )
+			if self.mZappingMode == ElisEnum.E_MODE_ALL :
+				self.mCtrlLblPath1.setLabel( '%s [COLOR grey3]>[/COLOR] sort by %s'% (label1.upper(),label3.title()) )
+			else :
+				self.mCtrlLblPath1.setLabel( '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% (label1.upper(),label2.title(),label3.title()) )
 
 
 			#close slide : move to focus channel list
@@ -857,8 +865,7 @@ class ChannelListWindow(BaseWindow):
 			#slide edit init
 			self.mCtrlLblEdit1.setLabel( Msg.Strings(MsgId.LANG_EDIT_CHANNEL_LIST) )
 			self.mCtrlLblEdit2.setLabel( Msg.Strings(MsgId.LANG_EDIT_CHANNEL_LIST) )
-			self.mCtrlRadioMark.setEnabled( False )
-			self.mCtrlRadioTune.setEnabled( False )
+			self.mCtrlRadioMisc.setEnabled( False )
 
 		else :
 			#slide menu disable
@@ -872,10 +879,9 @@ class ChannelListWindow(BaseWindow):
 			#slide edit init
 			self.mCtrlLblEdit1.setLabel( Msg.Strings(MsgId.LANG_UPDATE_CHANNEL_LIST) )
 			self.mCtrlLblEdit2.setLabel( Msg.Strings(MsgId.LANG_UPDATE_CHANNEL_LIST) )
+			self.mCtrlRadioMisc.setEnabled( True )
 			self.mCtrlRadioMark.setSelected( True )
 			self.mCtrlRadioTune.setSelected( False )
-			self.mCtrlRadioMark.setEnabled( True )
-			self.mCtrlRadioTune.setEnabled( True )
 
 			return
 
@@ -919,9 +925,9 @@ class ChannelListWindow(BaseWindow):
 
 		#sort list, This is fixed
 		self.mListAllChannel = []
-		self.mListAllChannel.append( Msg.Strings(MsgId.LANG_ALL_CHANNEL_BY_NUMBER) )
-		self.mListAllChannel.append( Msg.Strings(MsgId.LANG_ALL_CHANNEL_BY_ALPHABET) )
-		self.mListAllChannel.append( 'All Channel by HD/SD' )
+		self.mListAllChannel.append( str('%s %s'% (Msg.Strings(MsgId.LANG_SORT_BY), Msg.Strings(MsgId.LANG_NUMBER)) ) )
+		self.mListAllChannel.append( str('%s %s'% (Msg.Strings(MsgId.LANG_SORT_BY), Msg.Strings(MsgId.LANG_ALPHABET)) ) )
+		self.mListAllChannel.append( str('%s %s'% (Msg.Strings(MsgId.LANG_SORT_BY), Msg.Strings(MsgId.LANG_HD)) ) )
 		LOG_TRACE( 'mListAllChannel[%s]'% self.mListAllChannel )
 
 		try :
@@ -986,8 +992,11 @@ class ChannelListWindow(BaseWindow):
 		label3 = EnumToString('sort', self.mChannelListSortMode)
 		#self.mCtrlLblPath1.setLabel( '%s'% label1.upper() )
 		#self.mCtrlLblPath3.setLabel( 'sort by %s'% label3.title() )
-		self.mCtrlLblPath1.setLabel( '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% (label1.upper(),label2.title(),label3.title()) )
-		
+		if self.mZappingMode == ElisEnum.E_MODE_ALL :
+			self.mCtrlLblPath1.setLabel( '%s [COLOR grey3]>[/COLOR] sort by %s'% (label1.upper(),label3.title()) )
+		else :
+			self.mCtrlLblPath1.setLabel( '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% (label1.upper(),label2.title(),label3.title()) )
+
 		self.GetSlideMenuHeader( FLAG_SLIDE_INIT )
 		self.mLastMainSlidePosition = self.mSelectMainSlidePosition
 		self.mLastSubSlidePosition = self.mSelectSubSlidePosition
