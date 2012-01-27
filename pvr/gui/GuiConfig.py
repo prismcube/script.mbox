@@ -1,5 +1,8 @@
 import xbmc
 import xbmcgui
+import sys
+
+from pvr.Util import LOG_TRACE, LOG_ERR, LOG_WARN
 
 ############################ Windows ############################
 # Setting Menu Ids
@@ -161,7 +164,7 @@ def getCommittedSwitchindex( selectedItem ) :
 
 
 def getOneCableTunerFrequencyIndex( selectedItem ) :
-	for i in range( len ( E_LIST_ONE_CABLE_TUNER_FREQUENCY )	) :
+	for i in range( len ( E_LIST_ONE_CABLE_TUNER_FREQUENCY ) ) :
 		if( selectedItem == E_LIST_ONE_CABLE_TUNER_FREQUENCY[ i ] ) :
 			return i
 			
@@ -185,7 +188,16 @@ def MakeHexToIpAddr( aIpAddr ) :
 def MakeStringToHex( aString ) :
 	tempList = aString.split( '.', 3 )
 	tempHex = ( int( tempList[0] ) << 24 ) | ( int( tempList[1] ) << 16 ) | ( int( tempList[2] ) << 8 ) | int( tempList[3] )
-	return tempHex
+	return Hex2signed( '%08x' % tempHex )
+
+
+def Hex2signed( s ) :
+	value = long( s, 16 )
+	if value > sys.maxint :
+		value = value - 2L * sys.maxint - 2
+	#assert -sys.maxint-1 <= value <= sys.maxint
+	return int( value )
+ 
 
 def NumericKeyboard( aKeyType, aTitle, aString, aMaxLength=None ) :
 	dialog = xbmcgui.Dialog( )

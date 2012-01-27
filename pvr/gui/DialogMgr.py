@@ -15,6 +15,7 @@ DIALOG_ID_ADD_NEW_SATELLITE			= 7
 DIALOG_ID_EDIT_CHANNEL_LIST			= 8
 DIALOG_ID_SET_TRANSPONDER			= 9
 DIALOG_ID_YES_NO_CANCEL				= 10
+DIALOG_ID_NUMERIC_KEYBOARD			= 11
 
 
 gDialogMgr = None
@@ -81,6 +82,10 @@ class DialogMgr(object):
 			elif aDialogId == DIALOG_ID_YES_NO_CANCEL :
 				from pvr.gui.dialogs.DialogYesNoCancel import DialogYesNoCancel
 				return DialogYesNoCancel('DialogYesNoCancel.xml', self.scriptDir)
+
+			elif aDialogId == DIALOG_ID_NUMERIC_KEYBOARD :
+				from pvr.gui.dialogs.DialogNumeric import DialogNumeric
+				return DialogNumeric('DialogNumeric.xml', self.scriptDir)
 				
 			else :
 				print "ERROR : can not find dialog"

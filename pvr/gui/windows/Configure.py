@@ -390,13 +390,16 @@ class Configure( SettingWindow ) :
 
 	def SaveIp( self ) :
 		self.mSavedIpAddr = self.mTempIpAddr
-		ElisPropertyInt( 'IpAddress', self.mCommander ).SetProp( self.mTempIpAddr )
+		ElisPropertyInt( 'IpAddress', self.mCommander ).SetProp( self.mSavedIpAddr )
+
 		self.mSavedSubNet = self.mTempSubNet
-		ElisPropertyInt( 'SubNet', self.mCommander ).SetProp( self.mTempSubNet )
+		ElisPropertyInt( 'SubNet', self.mCommander ).SetProp( self.mSavedSubNet )
+
 		self.mSavedGateway = self.mTempGateway
-		ElisPropertyInt( 'Gateway', self.mCommander ).SetProp( self.mTempGateway )
+		ElisPropertyInt( 'Gateway', self.mCommander ).SetProp( self.mSavedGateway )
+
 		self.mSavedDns = self.mTempDns
-		ElisPropertyInt( 'DNS', self.mCommander ).SetProp( self.mTempDns )
+		ElisPropertyInt( 'DNS', self.mCommander ).SetProp( self.mSavedDns )
 
 
 	def ReLoadIp( self ) :
@@ -404,6 +407,7 @@ class Configure( SettingWindow ) :
 		self.mTempSubNet	= self.mSavedSubNet
 		self.mTempGateway	= self.mSavedGateway
 		self.mTempDns		= self.mSavedDns
+
 
 	def IpSetting( self, aControlId ) :
 		if aControlId == E_SpinEx01 :
