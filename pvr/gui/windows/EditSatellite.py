@@ -37,6 +37,7 @@ class EditSatellite( SettingWindow ) :
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.ResetAllControl( )
+			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			self.close( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -44,6 +45,7 @@ class EditSatellite( SettingWindow ) :
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
+			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :

@@ -16,7 +16,6 @@ import pvr.ElisMgr
 class AutomaticScan( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs )
-
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 			
 		self.mInitialized = False
@@ -26,7 +25,6 @@ class AutomaticScan( SettingWindow ):
 
 
 	def onInit(self):
-
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
@@ -47,7 +45,6 @@ class AutomaticScan( SettingWindow ):
 
 		
 	def onAction( self, aAction ):
-
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 
@@ -77,10 +74,9 @@ class AutomaticScan( SettingWindow ):
 
 
 	def onClick( self, aControlId ):
-	
 		groupId = self.GetGroupId( aControlId )
 		
-		#Satellite
+		# Satellite
 		if groupId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
 			select =  dialog.select('Select satellite', self.mFormattedList )
@@ -90,17 +86,16 @@ class AutomaticScan( SettingWindow ):
 			
 			self.InitConfig( )
 
-		#Start Search
+		# Start Search
 		if groupId == E_Input02 :
-			if self.mSelectedSatelliteIndex == 0 : #ToDO : All Channel Search
+			if self.mSelectedSatelliteIndex == 0 :
 				dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_CHANNEL_SEARCH )
 				dialog.SetConfiguredSatellite( self.mConfiguredSatelliteList )
 				dialog.doModal( )
 
 			else :
 				configuredSatelliteList = []
-				config = self.mConfiguredSatelliteList[self.mSelectedSatelliteIndex -1]
-				print 'longitude=%d bandtype=%d' %( config.mSatelliteLongitude, config.mBandType )
+				config = self.mConfiguredSatelliteList[ self.mSelectedSatelliteIndex - 1 ]
 
 				configuredSatelliteList.append( config )
 				dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_CHANNEL_SEARCH )
@@ -112,22 +107,17 @@ class AutomaticScan( SettingWindow ):
 			self.ControlSelect( )
 
 	def onFocus( self, aControlId ):
-
 		if self.mInitialized == False :
 			return
 
-		if ( self.mLastFocused != aControlId ) :
+		if self.mLastFocused != aControlId :
 			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId
 
 
 	def InitConfig( self ) :
-
-		print 'init config'
 		self.ResetAllControl( )
 		count = len( self.mFormattedList )
-
-		print 'init config count=%d' %count
 		
 		if count <= 1 :
 			hideControlIds = [ E_Input01, E_SpinEx01, E_SpinEx02, E_Input02 ]

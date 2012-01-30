@@ -45,6 +45,7 @@ class EditTransponder( SettingWindow ) :
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.ResetAllControl( )
+			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			self.close( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -52,6 +53,7 @@ class EditTransponder( SettingWindow ) :
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
+			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
@@ -84,16 +86,19 @@ class EditTransponder( SettingWindow ) :
 
 	 	# Select frequency
 	 	elif groupId == E_Input02 :
-	 		frequencylist = []
-	 		for i in range( len( self.mTransponderList ) ) :
-	 			frequencylist.append( '%d MHz' % self.mTransponderList[i].mFrequency )
+	 		if len( self.mTransponderList ) <= 0 :
+	 			xbmcgui.Dialog( ).ok( 'Information', 'Satellite has no transponder info.\nFirst add new transponder' )
+	 		else :
+		 		frequencylist = []
+		 		for i in range( len( self.mTransponderList ) ) :
+		 			frequencylist.append( '%d MHz' % self.mTransponderList[i].mFrequency )
 
-	 		dialog = xbmcgui.Dialog()
- 			ret = dialog.select( 'Select Transponder', frequencylist )
+		 		dialog = xbmcgui.Dialog()
+	 			ret = dialog.select( 'Select Transponder', frequencylist )
 
- 			if ret >= 0 :
-	 			self.mTransponderIndex = ret
-	 			self.InitConfig( )
+	 			if ret >= 0 :
+		 			self.mTransponderIndex = ret
+		 			self.InitConfig( )
 
 		# Add Transponder
 		elif groupId == E_Input05 :
@@ -122,48 +127,54 @@ class EditTransponder( SettingWindow ) :
 
 		# Edit Transponder
 		elif groupId == E_Input07 :
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_SET_TRANSPONDER )
- 			dialog.SetDefaultValue( self.mTransponderList[self.mTransponderIndex].mFrequency, self.mTransponderList[self.mTransponderIndex].mFECMode, self.mTransponderList[self.mTransponderIndex].mPolarization, self.mTransponderList[self.mTransponderIndex].mSymbolRate)
- 			dialog.doModal( )
+			if len( self.mTransponderList ) <= 0 :
+	 			xbmcgui.Dialog( ).ok( 'Information', 'Satellite has no transponder info.\nFirst add new transponder' )
+	 		else :
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_SET_TRANSPONDER )
+	 			dialog.SetDefaultValue( self.mTransponderList[self.mTransponderIndex].mFrequency, self.mTransponderList[self.mTransponderIndex].mFECMode, self.mTransponderList[self.mTransponderIndex].mPolarization, self.mTransponderList[self.mTransponderIndex].mSymbolRate)
+	 			dialog.doModal( )
 
- 			if dialog.IsOK() == E_DIALOG_STATE_YES :
- 				satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
- 				
-				# Delete
-				tmplist = []
-		 		tmplist.append( self.mTransponderList[self.mTransponderIndex] )
-		 		self.mCommander.Transponder_Delete( satellite.mLongitude,  satellite.mBand,  tmplist )
-				
- 				# ADD
-				frequency, fec, polarization, simbolrate = dialog.GetValue( )
- 			
- 				newTransponder = ElisITransponderInfo( )
- 				newTransponder.reset( )
- 				newTransponder.mFrequency = frequency
-				newTransponder.mSymbolRate = simbolrate
-				newTransponder.mPolarization = polarization
-				newTransponder.mFECMode = fec
- 				
- 				tmplist = []
-		 		tmplist.append( newTransponder )
-		 		
- 				self.mCommander.Transponder_Add( satellite.mLongitude,  satellite.mBand,  tmplist )
- 				self.mTransponderIndex = 0
-				self.InitConfig( )
-			else :
-				return
+	 			if dialog.IsOK() == E_DIALOG_STATE_YES :
+	 				satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
+	 				
+					# Delete
+					tmplist = []
+			 		tmplist.append( self.mTransponderList[self.mTransponderIndex] )
+			 		self.mCommander.Transponder_Delete( satellite.mLongitude,  satellite.mBand,  tmplist )
+					
+	 				# ADD
+					frequency, fec, polarization, simbolrate = dialog.GetValue( )
+	 			
+	 				newTransponder = ElisITransponderInfo( )
+	 				newTransponder.reset( )
+	 				newTransponder.mFrequency = frequency
+					newTransponder.mSymbolRate = simbolrate
+					newTransponder.mPolarization = polarization
+					newTransponder.mFECMode = fec
+	 				
+	 				tmplist = []
+			 		tmplist.append( newTransponder )
+			 		
+	 				self.mCommander.Transponder_Add( satellite.mLongitude,  satellite.mBand,  tmplist )
+	 				self.mTransponderIndex = 0
+					self.InitConfig( )
+				else :
+					return
 
 	 	# Delete Transponder
 	 	elif groupId == E_Input06 :
-	 		if xbmcgui.Dialog( ).yesno('Confirm', 'Do you want to delete transponder?') == 1 :
-		 		satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
-		 		tmplist = []
-		 		tmplist.append( self.mTransponderList[self.mTransponderIndex] )
-		 		self.mCommander.Transponder_Delete( satellite.mLongitude,  satellite.mBand,  tmplist )
-		 		self.mTransponderIndex = 0
-				self.InitConfig( )
-			else :
-				return
+	 		if len( self.mTransponderList ) <= 0 :
+	 			xbmcgui.Dialog( ).ok( 'Information', 'Satellite has no transponder info.\nFirst add new transponder' )
+	 		else :
+		 		if xbmcgui.Dialog( ).yesno('Confirm', 'Do you want to delete transponder?') == 1 :
+			 		satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
+			 		tmplist = []
+			 		tmplist.append( self.mTransponderList[self.mTransponderIndex] )
+			 		self.mCommander.Transponder_Delete( satellite.mLongitude,  satellite.mBand,  tmplist )
+			 		self.mTransponderIndex = 0
+					self.InitConfig( )
+				else :
+					return
 		
 	def onFocus( self, aControlId ):
 		if self.mInitialized == False :
@@ -182,14 +193,24 @@ class EditTransponder( SettingWindow ) :
 
 		self.mTransponderList = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
 
-		for trans in self.mTransponderList :
-			trans.printdebug()
-			
-		self.AddInputControl( E_Input02, 'Frequency', '%d MHz' % self.mTransponderList[self.mTransponderIndex].mFrequency, 'Select Frequency.' )
-		self.AddInputControl( E_Input03, 'Symbol Rate', '%d KS/s' % self.mTransponderList[self.mTransponderIndex].mSymbolRate )
+		for i in range( len( self.mTransponderList ) ) :
+ 			if self.mTransponderList[i].mError < 0 :
+ 				self.mTransponderList = []
 
-		property = ElisPropertyEnum( 'Polarisation', self.mCommander )
-		self.AddInputControl( E_Input04, 'Polarization', property.GetPropStringByIndex( self.mTransponderList[self.mTransponderIndex].mPolarization ) )
+		if len( self.mTransponderList ) <= 0 :
+			self.AddInputControl( E_Input02, 'Frequency', 'None', 'Select Frequency.' )
+			self.AddInputControl( E_Input03, 'Symbol Rate', 'None' )
+
+			property = ElisPropertyEnum( 'Polarisation', self.mCommander )
+			self.AddInputControl( E_Input04, 'Polarization', 'None' )
+
+		else :
+			self.AddInputControl( E_Input02, 'Frequency', '%d MHz' % self.mTransponderList[self.mTransponderIndex].mFrequency, 'Select Frequency.' )
+			self.AddInputControl( E_Input03, 'Symbol Rate', '%d KS/s' % self.mTransponderList[self.mTransponderIndex].mSymbolRate )
+
+			property = ElisPropertyEnum( 'Polarisation', self.mCommander )
+			self.AddInputControl( E_Input04, 'Polarization', property.GetPropStringByIndex( self.mTransponderList[self.mTransponderIndex].mPolarization ) )
+
 		self.AddInputControl( E_Input05, 'Add New Transponder', '', 'Add new transponder.' )
 		self.AddInputControl( E_Input06, 'Delete Transponder', '', 'Delete transponder.' )
 		self.AddInputControl( E_Input07, 'Edit Transponder', '', 'Edit transponder.' )

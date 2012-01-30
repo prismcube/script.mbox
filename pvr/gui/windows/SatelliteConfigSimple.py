@@ -135,10 +135,11 @@ class SatelliteConfigSimple( SettingWindow ):
 
 		# Transponer
  		elif groupId == E_Input03 :
- 			dialog = xbmcgui.Dialog()
- 			self.mSelectedTransponderIndex = dialog.select( 'Select Transponder', self.mTransponderList )
- 			if self.mSelectedTransponderIndex != -1 :
- 				self.InitConfig( )
+ 			if len( self.mTransponderList ) != 0 :
+	 			dialog = xbmcgui.Dialog()
+	 			self.mSelectedTransponderIndex = dialog.select( 'Select Transponder', self.mTransponderList )
+	 			if self.mSelectedTransponderIndex != -1 :
+	 				self.InitConfig( )
 
 
 	def onFocus( self, aControlId ):
@@ -158,7 +159,11 @@ class SatelliteConfigSimple( SettingWindow ):
 			self.AddInputControl( E_Input02, 'LNB Frequency', lnbFrequency )
 
 		self.AddUserEnumControl( E_SpinEx03, '22KHz Control', USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mFrequencyLevel )
-		self.AddInputControl( E_Input03, 'Transponder', self.mTransponderList[ self.mSelectedTransponderIndex ] )
+
+		if len( self.mTransponderList ) == 0 :
+			self.AddInputControl( E_Input03, 'Transponder', 'None' )
+		else :
+			self.AddInputControl( E_Input03, 'Transponder', self.mTransponderList[ self.mSelectedTransponderIndex ] )
 
 		if( self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input03]

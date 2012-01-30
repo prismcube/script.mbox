@@ -159,6 +159,7 @@ class DialogSetTransponder( SettingDialog ) :
 		
 		self.AddInputControl( E_DialogInput02, 'Symbol Rate', '%d KS/s' % self.mSimbolicRate )
 		self.AddOkCanelButton( )
+		self.SetAutoHeight( True )
 
 		self.InitControl( )
 		self.DisableControl( )

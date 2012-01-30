@@ -9,7 +9,6 @@ from  pvr.TunerConfigMgr import *
 from pvr.gui.GuiConfig import *
 from ElisEnum import ElisEnum
 
-
 from pvr.gui.BaseWindow import SettingWindow, Action
 
 class ManualScan( SettingWindow ):
@@ -130,7 +129,7 @@ class ManualScan( SettingWindow ):
 		if self.mInitialized == False :
 			return
 
-		if ( self.mLastFocused != aControlId ) :
+		if self.mLastFocused != aControlId :
 			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId
 

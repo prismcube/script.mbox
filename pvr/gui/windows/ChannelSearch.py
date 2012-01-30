@@ -61,11 +61,12 @@ class ChannelSearch( SettingWindow ):
 
 
 	def onClick( self, aControlId ):
-		if aControlId == E_Input01 + 1 :
+		groupId = self.GetGroupId( aControlId )
+		if groupId == E_Input01 :
 			self.ResetAllControl( )
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_AUTOMATIC_SCAN )
 			
-		elif aControlId == E_Input02 + 1 :
+		elif groupId == E_Input02 :
 			self.ResetAllControl( )
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MANUAL_SCAN )
 			
@@ -74,6 +75,6 @@ class ChannelSearch( SettingWindow ):
 		if self.mInitialized == False :
 			return
 
-		if ( self.mLastFocused != aControlId ) :
+		if self.mLastFocused != aControlId :
 			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId

@@ -129,6 +129,7 @@ class DialogAddNewSatellite( SettingDialog ) :
 		self.AddInputControl( E_DialogInput02, 'Longitude Angle',  tmplongitude )
 		self.AddUserEnumControl( E_DialogSpinEx02, 'Band Type', self.mListBand, self.mIsCBand )
 		self.AddOkCanelButton( )
+		self.SetAutoHeight( True )
 
 		self.InitControl( )
 		

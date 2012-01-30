@@ -148,7 +148,7 @@ class TunerConfigMgr( object ) :
 		config = self.GetDefaultConfig( )
 		config.mSatelliteLongitude = self.mAllSatelliteList[ aIndex ].mLongitude
 		config.mBandType = self.mAllSatelliteList[ aIndex ].mBand
-		
+		config.printdebug()
 		if self.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
 			self.mConfiguredList1.append( config )
 		
@@ -160,6 +160,18 @@ class TunerConfigMgr( object ) :
 			elif self.GetCurrentTunerIndex( ) == E_TUNER_2 :
 				config.mTunerIndex = 1
 				self.mConfiguredList2.append( config )
+
+	def DeleteConfiguredSatellitebyIndex( self, aIndex ) :
+		if self.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
+			del self.mConfiguredList1[ aIndex ]
+		
+		elif self.GetCurrentTunerConfigType( ) == E_DIFFERENT_TUNER :
+		
+			if self.GetCurrentTunerIndex( ) == E_TUNER_1 :
+				del self.mConfiguredList1[ aIndex ]
+				
+			elif self.GetCurrentTunerIndex( ) == E_TUNER_2 :
+				del self.mConfiguredList2[ aIndex ]
 
 
 	def DeleteSatellite( self, aLongitude, aBand ) :
@@ -349,11 +361,13 @@ class TunerConfigMgr( object ) :
 
 		if found == True :
 			tmptransponderList = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
-
-		for i in range( len( tmptransponderList ) ) :
+  
+ 		for i in range( len( tmptransponderList ) ) :
+ 			if tmptransponderList[i].mError < 0 :
+ 				return []
 			transponderList.append( '%d %d MHz %d KS/s' % ( ( i + 1 ), tmptransponderList[i].mFrequency, tmptransponderList[i].mSymbolRate ) )
 		return transponderList
-
+ 
 
 	def GetSatelliteByIndex( self, aIndex ) :
 		return self.mAllSatelliteList[ aIndex ]

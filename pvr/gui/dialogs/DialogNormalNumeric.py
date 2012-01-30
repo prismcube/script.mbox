@@ -26,6 +26,7 @@ class DialogNormalNumeric( BaseDialog ) :
 		self.mCtrlEditLabel = None
 		self.mCtrlTitleLabel = None
 		self.mMaxLength = 0
+		self.mType = False
 		self.mIsOk = E_DIALOG_STATE_NO
 
 	def onInit( self ) :
@@ -34,7 +35,7 @@ class DialogNormalNumeric( BaseDialog ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 		self.getControl( E_HEADER_LABEL ).setLabel( self.mTitleLabel )
 		self.mCtrlEditLabel = self.getControl( E_INPUT_LABEL )
-		self.mCtrlEditLabel.setLabel( self.mInputLabel )
+		self.SetInputLabel( )
 		self.DrawKeyboard( )
 		
 		
@@ -50,11 +51,11 @@ class DialogNormalNumeric( BaseDialog ) :
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.mInputLabel = self.mInputLabel[ : len( self.mInputLabel ) - 1 ]
-			self.mCtrlEditLabel.setLabel( self.mInputLabel )
+			self.SetInputLabel( )
 
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 and ( len( self.mInputLabel ) < self.mMaxLength ) :
 			self.mInputLabel += self.getControl( 10 + ( actionId - 58 ) ).getLabel( )
-			self.mCtrlEditLabel.setLabel( self.mInputLabel )
+			self.SetInputLabel( )
 		
 
 	def onClick( self, aControlId ):
@@ -75,8 +76,8 @@ class DialogNormalNumeric( BaseDialog ) :
 		elif focusId == E_BUTTON_DONE :
 			self.mIsOk = E_DIALOG_STATE_YES		
 			self.CloseDialog( )
-			
-		self.mCtrlEditLabel.setLabel( self.mInputLabel )
+
+		self.SetInputLabel( )
 
 
 	def onFocus( self, aControlId ) :
@@ -87,11 +88,12 @@ class DialogNormalNumeric( BaseDialog ) :
 		return self.mIsOk
 
 
-	def SetDialogProperty( self, aTitle, aString, aMaxLength ) :
+	def SetDialogProperty( self, aTitle, aString, aMaxLength, aType=False ) :
 		self.mInputLabel = aString
 		self.mOriginalString = aString
 		self.mTitleLabel = aTitle
 		self.mMaxLength = aMaxLength
+		self.mType = aType
 
 
 	def GetString( self ) :
@@ -103,3 +105,10 @@ class DialogNormalNumeric( BaseDialog ) :
 	def DrawKeyboard( self ):
 		for i in range( 10 ) :
 			self.getControl( E_START_ID_NUMBER + i ).setLabel( '%d' % i )
+
+	def SetInputLabel( self ) :
+		if self.mType == True :
+			hideString = '*' * len( self.mInputLabel )
+			self.mCtrlEditLabel.setLabel( hideString )
+		else :
+			self.mCtrlEditLabel.setLabel( self.mInputLabel )

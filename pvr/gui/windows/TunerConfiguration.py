@@ -4,6 +4,7 @@ import sys
 
 import pvr.gui.WindowMgr as WinMgr
 import pvr.TunerConfigMgr as ConfigMgr
+import pvr.gui.DialogMgr as DiaMgr
 from pvr.TunerConfigMgr import *
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
@@ -69,16 +70,33 @@ class TunerConfiguration( SettingWindow ) :
 			position = self.getControl( E_MAIN_LIST_ID ).getSelectedPosition( )
 			
 			configuredList = ConfigMgr.GetInstance().GetConfiguredSatelliteList( )
-			
-			if ( len( configuredList ) ) == position or len( configuredList ) == 0 :
+
+			if len( configuredList ) == position :
 				dialog = xbmcgui.Dialog()
 				satelliteList = ConfigMgr.GetInstance( ).GetFormattedNameList( )
-	 			ret = dialog.select('Select satellite', satelliteList )
+	 			ret = dialog.select( 'Select satellite', satelliteList )
 
 	 			if ret >= 0 :
 					ConfigMgr.GetInstance().AddConfiguredSatellite( ret )
 	 				self.ReloadConfigedSatellite()
-	 				
+
+	 		elif len( configuredList ) + 1 == position :
+	 			if len( configuredList ) == 0 :
+	 				xbmcgui.Dialog( ).ok( 'ERROR', 'Empty Configured Satellite' )
+	 				return
+	 			else :
+					dialog = xbmcgui.Dialog()
+		 			ret = dialog.select( 'delete satellite', self.listItems[ 0 : len( configuredList ) ] )
+ 
+		 			if ret >= 0 :
+		 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+						dialog.SetDialogProperty( 'Configure', 'Delete Satellite : %s' % self.listItems[ ret ] )
+						dialog.doModal( )
+
+						if dialog.IsOK() == E_DIALOG_STATE_YES :
+			 				ConfigMgr.GetInstance().DeleteConfiguredSatellitebyIndex( ret )
+			 				self.ReloadConfigedSatellite()
+
 			else :		
 				config = configuredList[ position ]
 				if config != [] :
@@ -117,9 +135,11 @@ class TunerConfiguration( SettingWindow ) :
 		configuredList = ConfigMgr.GetInstance( ).GetConfiguredSatelliteList( )
 
 		for config in configuredList :
-			self.listItems.append( xbmcgui.ListItem( '%s' % ConfigMgr.GetInstance( ).GetFormattedName( config.mSatelliteLongitude, config.mBandType ) ) )
+			config.printdebug()
+			self.listItems.append( '%s' % ConfigMgr.GetInstance( ).GetFormattedName( config.mSatelliteLongitude, config.mBandType ) )
 
-		self.listItems.append( xbmcgui.ListItem( 'Add New Satellite' ) )
+		self.listItems.append( 'Add New Satellite' )
+		self.listItems.append( 'Delete Satellite' )
 		self.getControl( E_MAIN_LIST_ID ).addItems( self.listItems )
 
 		

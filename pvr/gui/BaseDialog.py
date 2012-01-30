@@ -62,6 +62,7 @@ class SettingDialog( BaseDialog ):
 		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
 		self.mFocusId = -1
 		self.mIsAutomaicHeight = False
+		self.mIsOkCancelType = False
 
 
 	def InitControl( self ):
@@ -91,7 +92,10 @@ class SettingDialog( BaseDialog ):
 			pos += 1
 
 		if self.mIsAutomaicHeight == True :
-			self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).setHeight( ( pos * 40 ) + 120 )
+			if self.mIsOkCancelType == True :
+				self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).setHeight( ( pos * 40 ) + 100 )
+			else :
+				self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).setHeight( ( pos * 40 ) + 120 )
 
 
 	def SetAutoHeight( self, mMode ) :
@@ -142,7 +146,7 @@ class SettingDialog( BaseDialog ):
 	def AddOkCanelButton( self ) :
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_OK_CANCEL_BUTTON, E_SETTING_DIALOG_BUTTON_OK_ID, None, None, None, None ) ) 
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_OK_CANCEL_BUTTON, E_SETTING_DIALOG_BUTTON_CANCEL_ID, None, None, None, None ) )
-
+		self.mIsOkCancelType = True
 
 	def HasControlItem( self, aCtrlItem, aContgrolId  ):
 		if aCtrlItem.mControlType == aCtrlItem.E_SETTING_ENUM_CONTROL or aCtrlItem.mControlType == aCtrlItem.E_SETTING_USER_ENUM_CONTROL :
