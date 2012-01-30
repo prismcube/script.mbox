@@ -11,8 +11,20 @@
 	<controls>
 
 <!-- bg design -->
-		<include>CommonPictureBackground</include>
+		<!--include>CommonPictureBackground</include-->
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<texture background="true">confluence/backgrounds/pictures.jpg</texture>
+			<include>DefaultBackgroundFade</include>
+			<fadetime>FanartCrossfadeTime</fadetime>
+			<visible>true</visible>
+		</control>
+
 		<control type="group">
+			<include>Window_OpenClose_Animation</include>
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
@@ -21,6 +33,15 @@
 				<texture border="20">confluence/black-back.png</texture>
 				<include>VisibleFadeEffect</include>
 			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>128r</posy>
+				<width>1280</width>
+				<height>128</height>
+				<texture>confluence/floor.png</texture>
+				<include>VisibleFadeEffect</include>
+			</control>
+
 			<!--control type="image">
 				<posx>50</posx>
 				<posy>60</posy>
