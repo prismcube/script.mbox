@@ -57,7 +57,7 @@ class ArchiveWindow(BaseWindow):
 		self.mRecordListItems = []
 
 		LOG_TRACE('')
-		self.mServiceType =  self.mCommander.Channel_GetCurrent().mServiceType
+		self.mServiceType =  self.mCurrentMode = self.mCommander.Zappingmode_GetCurrent( ).mServiceType
 		LOG_TRACE('serviceType=%d' %self.mServiceType)		
 		
 		LOG_TRACE('')

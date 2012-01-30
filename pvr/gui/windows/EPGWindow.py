@@ -61,6 +61,7 @@ class EPGWindow(BaseWindow):
 
 		self.mCurrentMode = self.mCommander.Zappingmode_GetCurrent( )
 		self.mCurrentChannel = self.mCommander.Channel_GetCurrent( )
+		LOG_TRACE('ZeppingMode(%d,%d,%d)' %( self.mCurrentMode.mServiceType, self.mCurrentMode.mMode, self.mCurrentMode.mSortingMode ) )
 		self.mChannelList = self.mCommander.Channel_GetList( self.mCurrentMode.mServiceType, self.mCurrentMode.mMode, self.mCurrentMode.mSortingMode )
 
 		LOG_TRACE("ChannelList=%d" %len(self.mChannelList) )
@@ -209,35 +210,54 @@ class EPGWindow(BaseWindow):
 
 		for i in range( len(self.mChannelList) ) :
 			channel = self.mChannelList[ i ]
-			LOG_TRACE('channel[%d].mNumber=%d name=%s' %(i, channel.mNumber, channel.mName) )
+			#LOG_TRACE('channel[%d].mNumber=%d name=%s' %(i, channel.mNumber, channel.mName) )
 			epgList = []
 			epgList = self.mCommander.Epgevent_GetList( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil, 1 )
 
-			LOG_TRACE('')
-			
+		
 			if epgList == None :
-				LOG_TRACE('')			
-				LOG_WARN('Has no')
+				#LOG_WARN('Has no')
+				continue
 
-			else :
-				LOG_TRACE('')			
-				LOG_WARN('epg Err=%d' %epgList[0].mError )
-
-			if epgList == None or epgList[0].mError != 0 :
-				LOG_ERR('ERR')
+			elif epgList[0].mError != 0 :
+				LOG_ERR('epg Err=%d' %epgList[0].mError )
+				continue
 			else :
 				self.mEPGList.append( epgList[0] )
 
-			LOG_TRACE('')
-
-			LOG_TRACE('')
 
 		LOG_TRACE('self.mEPGList COUNT=%d' %len(self.mEPGList ))
 
 
 
 	def LoadByFollowing( self ):
-		pass
+		LOG_TRACE('')
+
+		gmtFrom =  1
+		gmtUntil = 1
+
+		LOG_TRACE('ChannelList len=%d' %(len(self.mChannelList) ) )
+
+		for i in range( len(self.mChannelList) ) :
+			channel = self.mChannelList[ i ]
+			#LOG_TRACE('channel[%d].mNumber=%d name=%s' %(i, channel.mNumber, channel.mName) )
+			epgList = []
+			epgList = self.mCommander.Epgevent_GetList( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil, 1 )
+
+		
+			if epgList == None :
+				#LOG_WARN('Has no')
+				continue
+
+			elif epgList[0].mError != 0 :
+				LOG_ERR('epg Err=%d' %epgList[0].mError )
+				continue
+			else :
+				self.mEPGList.append( epgList[0] )
+
+
+		LOG_TRACE('self.mEPGList COUNT=%d' %len(self.mEPGList ))
+
 
 
 	def UpdateList( self ) :
@@ -271,44 +291,40 @@ class EPGWindow(BaseWindow):
 					else :
 						listItem = xbmcgui.ListItem( tempChannelName, 'No Event' )
 						listItem.setProperty( 'Duration', '' )
-						listItem.setProperty( 'HasEvent', 'false' )																		
-					
+						listItem.setProperty( 'HasEvent', 'false' )
+
+					#ListItem.PercentPlayed
 					self.mListItems.append( listItem )
 
 				except Exception, ex :
 					LOG_ERR( "Exception %s" %ex)
 
+		elif self.mEPGMode == E_VIEW_FOLLOWING :
+			for i in range( len( self.mChannelList ) ) :
+				channel = self.mChannelList[i]
+				tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
+				hasEpg = False
 
-			"""
-			for i in range( len( self.mEPGList ) ) :
-				LOG_TRACE('---------->i=%d' %i)		
-				epgEvent = self.mEPGList[i]
-				epgEvent.printdebug()
-				#epgItem = xbmcgui.ListItem( TimeToString( epgEvent.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM ), epgEvent.mEventName )
 				try :
-					channel = self.GetChannelByIds( epgEvent.mSid, epgEvent.mTsid, epgEvent.mOnid )
-					if channel :
-						tempName = '%04d %s' %( channel.mNumber, channel.mName )
-						epgItem = xbmcgui.ListItem( tempName, epgEvent.mEventName )
-					else :
-						epgItem = xbmcgui.ListItem( '0000 UnKowon Channel', epgEvent.mEventName )
+					epgEvent = self.GetEPGByIds( channel.mSid, channel.mTsid, channel.mOnid )
 
-					epgStart = epgEvent.mStartTime + self.mLocalOffset
-					tempName = '%s~%s' %(TimeToString( epgStart, TimeFormatEnum.E_HH_MM ), TimeToString( epgStart + epgEvent.mDuration, TimeFormatEnum.E_HH_MM ) )
-					epgItem.setProperty( 'Duration', tempName )
-					
-					self.mListItems.append( epgItem )
+					if epgEvent :
+						hasEpg = True
+						listItem = xbmcgui.ListItem( tempChannelName, epgEvent.mEventName )
+						epgStart = epgEvent.mStartTime + self.mLocalOffset
+						tempName = '%s~%s' %(TimeToString( epgStart, TimeFormatEnum.E_HH_MM ), TimeToString( epgStart + epgEvent.mDuration, TimeFormatEnum.E_HH_MM ) )
+						listItem.setProperty( 'Duration', tempName )
+						listItem.setProperty( 'HasEvent', 'true' )
+					else :
+						listItem = xbmcgui.ListItem( tempChannelName, 'No Event' )
+						listItem.setProperty( 'Duration', '' )
+						listItem.setProperty( 'HasEvent', 'false' )
+
+					#ListItem.PercentPlayed
+					self.mListItems.append( listItem )
+
 				except Exception, ex :
 					LOG_ERR( "Exception %s" %ex)
-			"""
-
-		elif self.mEPGMode == E_VIEW_FOLLOWING :
-			for i in range( len( self.mEPGList ) ) :
-				LOG_TRACE('---------->i=%d' %i)		
-				epgEvent = self.mEPGList[i]
-				epgEvent.printdebug()
-				epgItem = xbmcgui.ListItem( TimeToString( epgEvent.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM ), epgEvent.mEventName )			
-				self.mListItems.append( epgItem )
 
 		LOG_TRACE('')
 		self.mCtrlList.addItems( self.mListItems )

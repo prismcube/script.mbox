@@ -70,148 +70,164 @@ class WindowMgr(object):
 		self.mScriptFontPath =[]
 		self.mSkinDir = []
 		self.mListDir = []
+		self.mWindows = {}
 
 		self.AddDefaultFont( )		
 		self.CopyIncludeFile( )
-
+		self.CreateAllWindows( )
 
 	def ShowWindow( self, aWindowId ):
-		print'lael98 check %d %s winid=%d WIN_ID_NULLWINDOW=%d' %(currentframe().f_lineno, currentframe().f_code.co_filename, aWindowId, WIN_ID_NULLWINDOW)    
+		LOG_TRACE('ShowWindow ID=%d' %aWindowId )
+		LOG_TRACE('ShowWindow len=%d' %len(self.mWindows) )		
+		try :
+			LOG_TRACE('window=%s' %self.mWindows[aWindowId] )		
+			self.mWindows[aWindowId].doModal( )
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)
+
+		self.mLastId = aWindowId
+
+	def CreateAllWindows( self ):
+		LOG_TRACE('Create All Windows mScriptDir=%s' %self.mScriptDir)
 		try:
-			if aWindowId ==  WIN_ID_NULLWINDOW:
-				from pvr.gui.windows.NullWindow import NullWindow
-				print 'self.mScriptDir=%s' %self.mScriptDir
-				NullWindow('NullWindow.xml', self.mScriptDir ).doModal()
-
-			elif aWindowId ==  WIN_ID_MAINMENU:
-				from pvr.gui.windows.MainMenu import MainMenu
-				MainMenu('MainMenu.xml', self.mScriptDir).doModal()
-
-			elif aWindowId ==  WIN_ID_CHANNEL_LIST_WINDOW:
-				from pvr.gui.windows.ChannelListWindow import ChannelListWindow
-				ChannelListWindow('ChannelListWindow.xml', self.mScriptDir ).doModal()
-				#ChannelListWindow('ChannelListWindow_b.xml', self.mScriptDir ).doModal()
-
-			elif aWindowId ==  WIN_ID_LIVE_PLATE:
-				from pvr.gui.windows.LivePlate import LivePlate
-				LivePlate('LivePlate.xml', self.mScriptDir ).doModal()
-
-			elif aWindowId == WIN_ID_TIMESHIFT_PLATE:
-				from pvr.gui.windows.TimeshiftPlate import TimeShiftPlate
-				TimeShiftPlate('TimeshiftPlate.xml', self.mScriptDir ).doModal()
-
-			elif aWindowId ==  WIN_ID_CONFIGURE:
-				from pvr.gui.windows.Configure import Configure	
-				Configure('Configure.xml', self.mScriptDir).doModal()
-
-			elif aWindowId ==  WIN_ID_INSTALLATION:
-				from pvr.gui.windows.Installation import Installation	
-				Installation('Installation.xml', self.mScriptDir).doModal()
-
-			elif aWindowId ==  WIN_ID_ANTENNA_SETUP:
-				from pvr.gui.windows.AntennaSetup import AntennaSetup
-				AntennaSetup('AntennaSetup.xml', self.mScriptDir).doModal()
-
-			elif aWindowId ==  WIN_ID_TUNER_CONFIGURATION:
-				from pvr.gui.windows.TunerConfiguration import TunerConfiguration
-				TunerConfiguration('TunerConfiguration.xml', self.mScriptDir).doModal()
+			from pvr.gui.windows.NullWindow import NullWindow
+			self.mWindows[WIN_ID_NULLWINDOW] = NullWindow('NullWindow.xml', self.mScriptDir )
+			LOG_ERR('---------------- self.mWindows[WIN_ID_NULLWINDOW] id=%s' %self.mWindows[WIN_ID_NULLWINDOW] )
+			LOG_TRACE('')
+			
+			"""
+			for attr, val in self.mWindows[WIN_ID_NULLWINDOW].__dict__.items() :
+				LOG_TRACE('NAME=%s type=%s' %(attr, type(val) ) )
+			
+			import inspect
+			for member in inspect.getmembers( self.mWindows[WIN_ID_NULLWINDOW] ) :
+				LOG_TRACE('member=%s' %member[0] )
+			"""				
 				
-			elif aWindowId ==  WIN_ID_CONFIG_SIMPLE:
-				from pvr.gui.windows.SatelliteConfigSimple import SatelliteConfigSimple
-				SatelliteConfigSimple('SatelliteConfiguration.xml', self.mScriptDir).doModal()
 
-			elif aWindowId ==  WIN_ID_CONFIG_MOTORIZED_USALS:
-				from pvr.gui.windows.SatelliteConfigMotorizedUsals import SatelliteConfigMotorizedUsals
-				SatelliteConfigMotorizedUsals('SatelliteConfigMotorizedUsals.xml', self.mScriptDir).doModal()
+			from pvr.gui.windows.MainMenu import MainMenu
+			self.mWindows[WIN_ID_MAINMENU]=MainMenu('MainMenu.xml', self.mScriptDir)
 
-			elif aWindowId ==  WIN_ID_CONFIG_MOTORIZED_USALS2:
-				from pvr.gui.windows.SatelliteConfigMotorizedUsals2 import SatelliteConfigMotorizedUsals2
-				SatelliteConfigMotorizedUsals2('SatelliteConfiguration.xml', self.mScriptDir).doModal()
+			from pvr.gui.windows.ChannelListWindow import ChannelListWindow
+			self.mWindows[WIN_ID_CHANNEL_LIST_WINDOW]=ChannelListWindow('ChannelListWindow.xml', self.mScriptDir )
+			#ChannelListWindow('ChannelListWindow_b.xml', self.mScriptDir ).doModal()
 
-			elif aWindowId ==  WIN_ID_CONFIG_MOTORIZED_12:
-				from pvr.gui.windows.SatelliteConfigMotorized12 import SatelliteConfigMotorized12
-				SatelliteConfigMotorized12('SatelliteConfiguration.xml', self.mScriptDir).doModal()
+			from pvr.gui.windows.LivePlate import LivePlate
+			self.mWindows[WIN_ID_LIVE_PLATE]=LivePlate('LivePlate.xml', self.mScriptDir )
 
-			elif aWindowId ==  WIN_ID_CONFIG_ONECABLE:
-				from pvr.gui.windows.SatelliteConfigOnecable import SatelliteConfigOnecable
-				SatelliteConfigOnecable('SatelliteConfigOnecable.xml', self.mScriptDir).doModal()
-
-			elif aWindowId ==  WIN_ID_CONFIG_ONECABLE_2:
-				from pvr.gui.windows.SatelliteConfigOnecable2 import SatelliteConfigOnecable2
-				SatelliteConfigOnecable2('SatelliteConfigOnecable2.xml', self.mScriptDir).doModal()
-
-			elif aWindowId ==  WIN_ID_CONFIG_DISEQC_10:
-				from pvr.gui.windows.SatelliteConfigDisEqc10 import SatelliteConfigDisEqC10
-				SatelliteConfigDisEqC10('SatelliteConfiguration.xml', self.mScriptDir).doModal()
-
-			elif aWindowId ==  WIN_ID_CONFIG_DISEQC_11:
-				from pvr.gui.windows.SatelliteConfigDisEqc11 import SatelliteConfigDisEqC11
-				SatelliteConfigDisEqC11('SatelliteConfiguration.xml', self.mScriptDir).doModal()
-
-			elif aWindowId ==  WIN_ID_CHANNEL_SEARCH:
-				from pvr.gui.windows.ChannelSearch import ChannelSearch
-				ChannelSearch('ChannelSearch.xml', self.mScriptDir).doModal()
-
-			elif aWindowId ==  WIN_ID_AUTOMATIC_SCAN:
-				from pvr.gui.windows.AutomaticScan import AutomaticScan	
-				AutomaticScan('AutomaticScan.xml', self.mScriptDir).doModal()
-
-			elif aWindowId ==  WIN_ID_MANUAL_SCAN:
-				from pvr.gui.windows.ManualScan import ManualScan
-				ManualScan('ManualScan.xml', self.mScriptDir).doModal()
-
-			elif aWindowId ==  WIN_ID_EDIT_SATELLITE:
-				from pvr.gui.windows.EditSatellite import EditSatellite
-				EditSatellite('EditSatellite.xml', self.mScriptDir).doModal()
-
-			elif aWindowId ==  WIN_ID_EDIT_TRANSPONDER:
-				from pvr.gui.windows.EditTransponder import EditTransponder
-				EditTransponder('EditTransponder.xml', self.mScriptDir).doModal()
-
-			elif aWindowId ==  WIN_ID_CHANNEL_EDIT_WINDOW:
-				#from pvr.gui.windows.channeleditwindow import ChannelEditWindow
-				#ChannelEditWindow('channeleditwindow.xml', self.mScriptDir )
-				pass
-
-			elif aWindowId ==  WIN_ID_SYSTEM_INFO:
-				from pvr.gui.windows.SystemInfo import SystemInfo
-				SystemInfo('SystemInfo.xml', self.mScriptDir ).doModal()
-
-			elif aWindowId ==  WIN_ID_ARCHIVE_WINDOW:
-				from pvr.gui.windows.ArchiveWindow import ArchiveWindow
-				ArchiveWindow('ArchiveWindow.xml', self.mScriptDir ).doModal()
+			from pvr.gui.windows.TimeshiftPlate import TimeShiftPlate
+			self.mWindows[WIN_ID_TIMESHIFT_PLATE]=TimeShiftPlate('TimeshiftPlate.xml', self.mScriptDir )
 
 
-			elif aWindowId ==  WIN_ID_EPG_WINDOW:
-				from pvr.gui.windows.EPGWindow import EPGWindow
-				EPGWindow('EPGWindow.xml', self.mScriptDir ).doModal()
+			from pvr.gui.windows.Configure import Configure	
+			self.mWindows[WIN_ID_CONFIGURE]=Configure('Configure.xml', self.mScriptDir)
 
-			elif aWindowId ==  WIN_ID_MEDIACENTER:
-				from pvr.gui.windows.MediaCenter import MediaCenter
-				MediaCenter('MediaCenter.xml', self.mScriptDir ).doModal()
+			
+			from pvr.gui.windows.Installation import Installation	
+			self.mWindows[WIN_ID_INSTALLATION]=Installation('Installation.xml', self.mScriptDir)
 
-			elif aWindowId ==  WIN_ID_TEST1:
-				from pvr.gui.windows.test1 import Test1
-				Test1('MyPics.xml', self.mScriptDir ).doModal()
+			
+			from pvr.gui.windows.AntennaSetup import AntennaSetup
+			self.mWindows[WIN_ID_ANTENNA_SETUP]=AntennaSetup('AntennaSetup.xml', self.mScriptDir)
 
-			else :
-				print 'Unknown widnowId=%d' %aWindowId
+			
+			from pvr.gui.windows.TunerConfiguration import TunerConfiguration
+			self.mWindows[WIN_ID_TUNER_CONFIGURATION]=TunerConfiguration('TunerConfiguration.xml', self.mScriptDir)
 
-			self.mLastId = aWindowId
+			
+			from pvr.gui.windows.SatelliteConfigSimple import SatelliteConfigSimple
+			self.mWindows[WIN_ID_CONFIG_SIMPLE]=SatelliteConfigSimple('SatelliteConfiguration.xml', self.mScriptDir)
+
+			
+			from pvr.gui.windows.SatelliteConfigMotorizedUsals import SatelliteConfigMotorizedUsals
+			self.mWindows[WIN_ID_CONFIG_MOTORIZED_USALS]=SatelliteConfigMotorizedUsals('SatelliteConfigMotorizedUsals.xml', self.mScriptDir)
+
+			
+			from pvr.gui.windows.SatelliteConfigMotorizedUsals2 import SatelliteConfigMotorizedUsals2
+			self.mWindows[WIN_ID_CONFIG_MOTORIZED_USALS2]=SatelliteConfigMotorizedUsals2('SatelliteConfiguration.xml', self.mScriptDir)
+
+			
+			from pvr.gui.windows.SatelliteConfigMotorized12 import SatelliteConfigMotorized12
+			self.mWindows[WIN_ID_CONFIG_MOTORIZED_12]=SatelliteConfigMotorized12('SatelliteConfiguration.xml', self.mScriptDir)
+
+			
+			from pvr.gui.windows.SatelliteConfigOnecable import SatelliteConfigOnecable
+			self.mWindows[WIN_ID_CONFIG_ONECABLE]=SatelliteConfigOnecable('SatelliteConfigOnecable.xml', self.mScriptDir)
+
+			
+			from pvr.gui.windows.SatelliteConfigOnecable2 import SatelliteConfigOnecable2
+			self.mWindows[WIN_ID_CONFIG_ONECABLE_2]=SatelliteConfigOnecable2('SatelliteConfigOnecable2.xml', self.mScriptDir)
+
+			
+			from pvr.gui.windows.SatelliteConfigDisEqc10 import SatelliteConfigDisEqC10
+			self.mWindows[WIN_ID_CONFIG_DISEQC_10]=SatelliteConfigDisEqC10('SatelliteConfiguration.xml', self.mScriptDir)
+
+			
+			from pvr.gui.windows.SatelliteConfigDisEqc11 import SatelliteConfigDisEqC11
+			self.mWindows[WIN_ID_CONFIG_DISEQC_11]=SatelliteConfigDisEqC11('SatelliteConfiguration.xml', self.mScriptDir)
+
+			
+			from pvr.gui.windows.ChannelSearch import ChannelSearch
+			self.mWindows[WIN_ID_CHANNEL_SEARCH]=ChannelSearch('ChannelSearch.xml', self.mScriptDir)
+
+			
+			from pvr.gui.windows.AutomaticScan import AutomaticScan	
+			self.mWindows[WIN_ID_AUTOMATIC_SCAN]=AutomaticScan('AutomaticScan.xml', self.mScriptDir)
+
+			
+			from pvr.gui.windows.ManualScan import ManualScan
+			self.mWindows[WIN_ID_MANUAL_SCAN]=ManualScan('ManualScan.xml', self.mScriptDir)
+
+			
+			from pvr.gui.windows.EditSatellite import EditSatellite
+			self.mWindows[WIN_ID_EDIT_SATELLITE]=EditSatellite('EditSatellite.xml', self.mScriptDir)
+
+			
+			from pvr.gui.windows.EditTransponder import EditTransponder
+			self.mWindows[WIN_ID_EDIT_TRANSPONDER]=EditTransponder('EditTransponder.xml', self.mScriptDir)
+
+			"""
+			#from pvr.gui.windows.channeleditwindow import ChannelEditWindow
+			#ChannelEditWindow('channeleditwindow.xml', self.mScriptDir )
+			"""
+
+			from pvr.gui.windows.SystemInfo import SystemInfo
+			self.mWindows[WIN_ID_SYSTEM_INFO]=SystemInfo('SystemInfo.xml', self.mScriptDir )
+
+			
+			from pvr.gui.windows.ArchiveWindow import ArchiveWindow
+			self.mWindows[WIN_ID_ARCHIVE_WINDOW]=ArchiveWindow('ArchiveWindow.xml', self.mScriptDir )
+
+			
+			from pvr.gui.windows.EPGWindow import EPGWindow
+			self.mWindows[WIN_ID_EPG_WINDOW]=EPGWindow('EPGWindow.xml', self.mScriptDir )
+
+			
+			from pvr.gui.windows.MediaCenter import MediaCenter
+			self.mWindows[WIN_ID_MEDIACENTER]=MediaCenter('MediaCenter.xml', self.mScriptDir )
+
+			"""
+			from pvr.gui.windows.test1 import Test1
+			Test1('MyPics.xml', self.mScriptDir ).doModal()
+			"""
 
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
 			
-
-
 
 	def Reset( self ):
 		import pvr.Platform 
 		self.mScriptDir = pvr.Platform.GetPlatform().GetScriptDir()
 	
 		self.CopyIncludeFile( )
-		self.showWindow( WIN_ID_MAINMENU )
+		self.AddDefaultFont( )
+		sefl.ResetAllWindows( )
+		self.ShowWindow( WIN_ID_MAINMENU )
 
+	def ResetAllWindows( self ):
+		self.mWindows[ WIN_ID_MAINMENU ].close( )
+		self.mWindows.clear( )
+		self.CreateAllWindows( )
 
 	def CheckSkinChange( self ):
 
@@ -219,10 +235,10 @@ class WindowMgr(object):
 
 		print 'skin name=%s : %s' %( self.mSkinName, currentSkinName[4:] )
 
-		#if self.mSkinName != currentSkinName[4:] :
-		print 'change skin name'
-		self.mSkinName = currentSkinName[4:]
-		self.Reset( )
+		if self.mSkinName != currentSkinName[4:] :
+			LOG_TRACE('change skin name')
+			self.mSkinName = currentSkinName[4:]
+			self.Reset( )
 
 
 	def CopyIncludeFile( self ):
