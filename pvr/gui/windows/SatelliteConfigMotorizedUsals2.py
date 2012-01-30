@@ -78,9 +78,7 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ):
 			if ret >= 0 :
 	 			satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( ret )
 
-	 			for i in range( 22 ) :
-					self.mCurrentSatellite.reset( )
-
+				self.mCurrentSatellite.reset( )
 				self.mCurrentSatellite.mSatelliteLongitude 	= satellite.mLongitude		# Longitude
 				self.mCurrentSatellite.mBandType 			= satellite.mBand			# Band
 				self.mCurrentSatellite.mIsConfigUsed 		= 1							# IsUsed

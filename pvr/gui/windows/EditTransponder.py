@@ -78,10 +78,10 @@ class EditTransponder( SettingWindow ) :
 		if groupId == E_Input01 :
 			satelliteList = ConfigMgr.GetInstance( ).GetFormattedNameList( )
 			dialog = xbmcgui.Dialog()
- 			ret = dialog.select( 'Select satellite', satelliteList )
+ 			select = dialog.select( 'Select satellite', satelliteList )
 
-			if ret >= 0 :
-	 			self.mSatelliteIndex = ret
+			if select >= 0 and select != self.mSatelliteIndex :
+	 			self.mSatelliteIndex = select
 	 			self.InitConfig( )
 
 	 	# Select frequency
@@ -94,10 +94,10 @@ class EditTransponder( SettingWindow ) :
 		 			frequencylist.append( '%d MHz' % self.mTransponderList[i].mFrequency )
 
 		 		dialog = xbmcgui.Dialog()
-	 			ret = dialog.select( 'Select Transponder', frequencylist )
+	 			select = dialog.select( 'Select Transponder', frequencylist )
 
-	 			if ret >= 0 :
-		 			self.mTransponderIndex = ret
+	 			if select >= 0 and select != self.mTransponderIndex :
+		 			self.mTransponderIndex = select
 		 			self.InitConfig( )
 
 		# Add Transponder

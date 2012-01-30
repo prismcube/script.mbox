@@ -27,7 +27,7 @@ def GetInstance( ) :
 
 class TunerConfigMgr( object ) :
 	def __init__( self ) :
-		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )	
+		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.mConfiguredList1 = []
 		self.mConfiguredList2 = []		
 		self.mCurrentTuner = 0

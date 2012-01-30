@@ -79,7 +79,7 @@ class DialogSetTransponder( SettingDialog ) :
 		# DVB Type
 		elif groupId == E_DialogSpinEx01 :
 			if self.GetSelectedIndex( E_DialogSpinEx01 ) == 0 :
-				self.mFec = 0			
+				self.mFec = ElisEnum.E_FEC_UNDEFINED		
 			else :
 				self.mFec = ElisEnum.E_DVBS2_QPSK_1_2
 	
@@ -104,6 +104,8 @@ class DialogSetTransponder( SettingDialog ) :
  				tempval = dialog.GetString( )
 				if int( tempval ) > 60000 :
 					self.mSimbolicRate = 60000
+				elif int( tempval ) < 1000 :
+					self.mSimbolicRate = 1000
 				else :
 					self.mSimbolicRate = int( tempval )
 				
@@ -145,7 +147,7 @@ class DialogSetTransponder( SettingDialog ) :
 		self.AddInputControl( E_DialogInput01, 'Frequency', '%d MHz' % self.mFrequency )
 		
 		self.AddEnumControl( E_DialogSpinEx01, 'DVB Type' )
-		if self.mFec == 0 :
+		if self.mFec == ElisEnum.E_FEC_UNDEFINED :
 			self.SetProp( E_DialogSpinEx01,  0 )
 		else :
 			self.SetProp( E_DialogSpinEx01,  1 )
@@ -166,7 +168,7 @@ class DialogSetTransponder( SettingDialog ) :
 
 
 	def DisableControl( self ) :
-		if self.mFec == 0 :
+		if self.mFec == ElisEnum.E_FEC_UNDEFINED :
 			self.getControl( E_DialogSpinEx02 + 3 ).getListItem( 0 ).setLabel2( 'Automatic' )
 			self.getControl( E_DialogSpinEx02 + 3 ).selectItem( 0 )
 			self.SetEnableControl( E_DialogSpinEx02, False )

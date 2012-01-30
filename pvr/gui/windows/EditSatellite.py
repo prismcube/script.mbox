@@ -70,10 +70,10 @@ class EditSatellite( SettingWindow ) :
 		if groupId == E_Input01 :
 			satelliteList = ConfigMgr.GetInstance( ).GetFormattedNameList( )
 			dialog = xbmcgui.Dialog()
- 			ret = dialog.select( 'Select satellite', satelliteList )
+ 			select = dialog.select( 'Select satellite', satelliteList )
 
-			if ret >= 0 :
-	 			self.mSatelliteIndex = ret
+			if select >= 0 and select != self.mSatelliteIndex :
+	 			self.mSatelliteIndex = select
 	 			self.InitConfig( )
 
 	 	# Edit Satellite Name
