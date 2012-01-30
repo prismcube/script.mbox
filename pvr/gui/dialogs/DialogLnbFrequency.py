@@ -68,22 +68,28 @@ class DialogLnbFrequency( SettingDialog ) :
 			self.CloseDialog( )
 			
 		elif groupId == E_DialogInput01 :
-			#tempval = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input Low Frequency', self.mLowFreq, 5 )
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( 'Input Low Frequency', self.mLowFreq, 5 )
+			dialog.SetDialogProperty( 'Low Frequency', self.mLowFreq, 5 )
  			dialog.doModal( )
-			self.mLowFreq = dialog.GetString( )
-			self.DrawItem( )
+ 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				self.mLowFreq = dialog.GetString( )
+				self.DrawItem( )
 
 		elif groupId == E_DialogInput02 :
-			tempval = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input High Frequency', self.mHighFreq, 5 )
-			self.mHighFreq = '%d' % int( tempval )
-			self.DrawItem( )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog.SetDialogProperty( 'High Frequency', self.mHighFreq, 5 )
+ 			dialog.doModal( )
+ 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				self.mHighFreq = dialog.GetString( )
+				self.DrawItem( )
 
 		elif groupId == E_DialogInput03 :
-			tempval = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input Switch Frequency', self.mThreshFreq, 5 )
-			self.mThreshFreq = '%d' % int( tempval )
-			self.DrawItem( )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog.SetDialogProperty( 'Switch Frequency', self.mThreshFreq, 5 )
+ 			dialog.doModal( )
+ 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				self.mThreshFreq = dialog.GetString( )
+				self.DrawItem( )
 
  				
 	def IsOK( self ) :
@@ -107,9 +113,9 @@ class DialogLnbFrequency( SettingDialog ) :
 	def DrawItem( self ) :
 		self.ResetAllControl( )
 	
-		self.AddInputControl( E_DialogInput01, 'Low Frequency' , self.mLowFreq )
-		self.AddInputControl( E_DialogInput02, 'High Frequency' , self.mHighFreq )
-		self.AddInputControl( E_DialogInput03, 'Switch Frequency' , self.mThreshFreq )
+		self.AddInputControl( E_DialogInput01, 'Low Frequency' , '%d' % int( self.mLowFreq ) )
+		self.AddInputControl( E_DialogInput02, 'High Frequency' , '%d' % int( self.mHighFreq ) )
+		self.AddInputControl( E_DialogInput03, 'Switch Frequency' , '%d' % int( self.mThreshFreq ) )
 		self.AddOkCanelButton( )
 		
 		self.InitControl( )

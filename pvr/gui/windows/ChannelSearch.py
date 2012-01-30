@@ -4,7 +4,10 @@ import xbmcgui
 import sys
 
 import pvr.gui.WindowMgr as WinMgr
+import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.GuiConfig import *
+from ElisProperty import ElisPropertyEnum
+import pvr.ElisMgr
 
 from pvr.gui.BaseWindow import SettingWindow, Action
 
@@ -12,6 +15,7 @@ from pvr.gui.BaseWindow import SettingWindow, Action
 class ChannelSearch( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs )
+		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 			
 		self.mInitialized = False
 		self.mLastFocused = -1
@@ -61,19 +65,50 @@ class ChannelSearch( SettingWindow ):
 
 
 	def onClick( self, aControlId ):
-		if aControlId == E_Input01 + 1 :
-			self.ResetAllControl( )
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_AUTOMATIC_SCAN )
+		groupId = self.GetGroupId( aControlId )
+		if groupId == E_Input01 :
+			if self.CheckConfiguredSatellite( ) == False :
+				xbmcgui.Dialog( ).ok( 'ERROR', 'No Configured Satellite.' )
+			else :
+				self.ResetAllControl( )
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_AUTOMATIC_SCAN )
 			
-		elif aControlId == E_Input02 + 1 :
-			self.ResetAllControl( )
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MANUAL_SCAN )
-			
+		elif groupId == E_Input02 :
+			if self.CheckConfiguredSatellite( ) == False :
+				xbmcgui.Dialog( ).ok( 'ERROR', 'No Configured Satellite.' )
+			else :
+				self.ResetAllControl( )
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MANUAL_SCAN )
+				
 
 	def onFocus( self, aControlId ):
 		if self.mInitialized == False :
 			return
 
-		if ( self.mLastFocused != aControlId ) :
+		if self.mLastFocused != aControlId :
 			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId
+
+
+	def CheckConfiguredSatellite( self ) :
+		property = ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander )
+		if property.GetProp( ) == E_TUNER_SEPARATED :
+			configuredsatellite = self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )
+			for config in configuredsatellite :
+				if config.mError < 0 :
+					return False
+
+			configuredsatellite = self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )
+			for config in configuredsatellite :
+				if config.mError < 0 :
+					return False
+
+			return True
+			
+		elif property.GetProp( ) == E_TUNER_LOOPTHROUGH :
+			configuredsatellite = self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )
+			for config in configuredsatellite :
+				if config.mError < 0 :
+					return False
+
+			return True

@@ -84,8 +84,8 @@ class DialogMgr(object):
 				return DialogYesNoCancel('DialogYesNoCancel.xml', self.scriptDir)
 
 			elif aDialogId == DIALOG_ID_NUMERIC_KEYBOARD :
-				from pvr.gui.dialogs.DialogNumeric import DialogNumeric
-				return DialogNumeric('DialogNumeric.xml', self.scriptDir)
+				from pvr.gui.dialogs.DialogNormalNumeric import DialogNormalNumeric
+				return DialogNormalNumeric('DialogNormalNumeric.xml', self.scriptDir)
 				
 			else :
 				print "ERROR : can not find dialog"

@@ -3,6 +3,7 @@ import xbmcgui
 import time
 import sys
 
+import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.BaseDialog import SettingDialog
 from pvr.gui.BaseWindow import Action
 from ElisEnum import ElisEnum
@@ -61,20 +62,24 @@ class DialogSetTransponder( SettingDialog ) :
 
 		# Frequency
 		if groupId == E_DialogInput01 :
-			tempval = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input Frequency', '%d' % self.mFrequency, 5 )
-			if int( tempval ) > 13000 :
-				self.mFrequency = 13000
-			elif int( tempval ) < 3000 :
-				self.mFrequency = 3000
-			else :
-				self.mFrequency = int( tempval )
-			
-			self.SetControlLabel2String( E_DialogInput01, '%d' % self.mFrequency )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog.SetDialogProperty( 'Frequency', '%d' % self.mFrequency, 5 )
+ 			dialog.doModal( )
+ 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+ 				tempval = dialog.GetString( )
+				if int( tempval ) > 13000 :
+					self.mFrequency = 13000
+				elif int( tempval ) < 3000 :
+					self.mFrequency = 3000
+				else :
+					self.mFrequency = int( tempval )
+				
+				self.SetControlLabel2String( E_DialogInput01, '%d MHz' % self.mFrequency )
 
 		# DVB Type
 		elif groupId == E_DialogSpinEx01 :
 			if self.GetSelectedIndex( E_DialogSpinEx01 ) == 0 :
-				self.mFec = 0			
+				self.mFec = ElisEnum.E_FEC_UNDEFINED		
 			else :
 				self.mFec = ElisEnum.E_DVBS2_QPSK_1_2
 	
@@ -92,13 +97,19 @@ class DialogSetTransponder( SettingDialog ) :
 
 		# Symbol Rate
 		elif groupId == E_DialogInput02 :
-			tempval = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input Symbol Rate', '%d' % self.mSimbolicRate, 5 )
-			if int( tempval ) > 60000 :
-				self.mSimbolicRate = 60000
-			else :
-				self.mSimbolicRate = int( tempval )
-			
-			self.SetControlLabel2String( E_DialogInput02, '%d' % self.mSimbolicRate )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog.SetDialogProperty( 'Symbol Rate', '%d' % self.mSimbolicRate, 5 )
+ 			dialog.doModal( )
+ 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+ 				tempval = dialog.GetString( )
+				if int( tempval ) > 60000 :
+					self.mSimbolicRate = 60000
+				elif int( tempval ) < 1000 :
+					self.mSimbolicRate = 1000
+				else :
+					self.mSimbolicRate = int( tempval )
+				
+				self.SetControlLabel2String( E_DialogInput02, '%d KS/s' % self.mSimbolicRate )
 
 		elif groupId == E_SETTING_DIALOG_BUTTON_OK_ID :			
 			self.mIsOk = E_DIALOG_STATE_YES
@@ -136,7 +147,7 @@ class DialogSetTransponder( SettingDialog ) :
 		self.AddInputControl( E_DialogInput01, 'Frequency', '%d MHz' % self.mFrequency )
 		
 		self.AddEnumControl( E_DialogSpinEx01, 'DVB Type' )
-		if self.mFec == 0 :
+		if self.mFec == ElisEnum.E_FEC_UNDEFINED :
 			self.SetProp( E_DialogSpinEx01,  0 )
 		else :
 			self.SetProp( E_DialogSpinEx01,  1 )
@@ -150,13 +161,14 @@ class DialogSetTransponder( SettingDialog ) :
 		
 		self.AddInputControl( E_DialogInput02, 'Symbol Rate', '%d KS/s' % self.mSimbolicRate )
 		self.AddOkCanelButton( )
+		self.SetAutoHeight( True )
 
 		self.InitControl( )
 		self.DisableControl( )
 
 
 	def DisableControl( self ) :
-		if self.mFec == 0 :
+		if self.mFec == ElisEnum.E_FEC_UNDEFINED :
 			self.getControl( E_DialogSpinEx02 + 3 ).getListItem( 0 ).setLabel2( 'Automatic' )
 			self.getControl( E_DialogSpinEx02 + 3 ).selectItem( 0 )
 			self.SetEnableControl( E_DialogSpinEx02, False )

@@ -37,6 +37,7 @@ class EditSatellite( SettingWindow ) :
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.ResetAllControl( )
+			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			self.close( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -44,6 +45,7 @@ class EditSatellite( SettingWindow ) :
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
+			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
@@ -68,10 +70,10 @@ class EditSatellite( SettingWindow ) :
 		if groupId == E_Input01 :
 			satelliteList = ConfigMgr.GetInstance( ).GetFormattedNameList( )
 			dialog = xbmcgui.Dialog()
- 			ret = dialog.select( 'Select satellite', satelliteList )
+ 			select = dialog.select( 'Select satellite', satelliteList )
 
-			if ret >= 0 :
-	 			self.mSatelliteIndex = ret
+			if select >= 0 and select != self.mSatelliteIndex :
+	 			self.mSatelliteIndex = select
 	 			self.InitConfig( )
 
 	 	# Edit Satellite Name

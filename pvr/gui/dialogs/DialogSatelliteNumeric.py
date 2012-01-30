@@ -56,20 +56,20 @@ class DialogSatelliteNumeric( BaseDialog ) :
 			self.SetInputLabel( )
 
 	def onClick( self, aControlId ) :
-		if( aControlId >= E_START_ID_NUMBER and aControlId <= 19 ) :
+		if aControlId >= E_START_ID_NUMBER and aControlId <= 19 :
 			self.InputControl( aControlId, 0 )
 
-		elif( aControlId == E_BUTTON_BACK_SPACE ) :
+		elif aControlId == E_BUTTON_BACK_SPACE :
 			self.DeleteValue( )
 			self.SetInputLabel( )
 		
-		elif( aControlId == E_BUTTON_PREV ) :
+		elif aControlId == E_BUTTON_PREV :
 			self.PrevCursor( )
 			
-		elif( aControlId == E_BUTTON_NEXT ) :
+		elif aControlId == E_BUTTON_NEXT :
 			self.NextCursor( )
 			
-		elif( aControlId == E_BUTTON_DONE ) :
+		elif aControlId == E_BUTTON_DONE :
 			self.mIsOk = E_DIALOG_STATE_YES
 			self.CloseDialog( )
 
@@ -94,16 +94,16 @@ class DialogSatelliteNumeric( BaseDialog ) :
 	def GetTitleLabel( self ) :
 		return self.mTitleLabel
 		
-	def SetDialogProperty( self, title, value ) :
-		self.mTitleLabel = title
+	def SetDialogProperty( self, aTitle, aValue ) :
+		self.mTitleLabel = aTitle
 		
-		self.mInput4 = value % 10
-		value = value / 10
-		self.mInput3 = value % 10
-		value = value / 10
-		self.mInput2 = value % 10
-		value = value / 10
-		self.mInput1 = value
+		self.mInput4 = aValue % 10
+		aValue = aValue / 10
+		self.mInput3 = aValue % 10
+		aValue = aValue / 10
+		self.mInput2 = aValue % 10
+		aValue = aValue / 10
+		self.mInput1 = aValue
 
 
 	def SetInputLabel( self ) :

@@ -3,12 +3,11 @@ import xbmcgui
 import sys
 
 import pvr.gui.WindowMgr as WinMgr
-import pvr.gui.DialogMgr as DlgMgr
+import pvr.gui.DialogMgr as DiaMgr
 import pvr.TunerConfigMgr as configMgr
 from  pvr.TunerConfigMgr import *
 from pvr.gui.GuiConfig import *
 from ElisEnum import ElisEnum
-
 
 from pvr.gui.BaseWindow import SettingWindow, Action
 
@@ -27,22 +26,28 @@ class ManualScan( SettingWindow ):
 		self.mFormattedSatelliteList = []
 		self.mFormattedTransponderList = []
 
+		self.mIsManualSetup = 0
+		self.mConfigTransponder = None
+
 
 	def onInit(self):
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
 		self.SetSettingWindowLabel( 'Manual Scan' )
+		self.mIsManualSetup = 0
 		
 		self.mSelectedSatelliteIndex = 0
 		self.mSelectedTransponderIndex = 0		
 		self.mAllSatellitelist = []
-		self.mConfiguredSatelliteList = []		
+		self.mConfiguredSatelliteList = []
 		
 		self.mAllSatellitelist = self.mCommander.Satellite_GetList( ElisEnum.E_SORT_INSERTED )
 		self.LoadFormattedSatelliteNameList()
 
-		self.LoadFormattedTransponderNameList( )		
+		self.LoadFormattedTransponderNameList( )
+
+		self.SetConfigTransponder( )
 
 		self.InitConfig( )
 		
@@ -56,11 +61,13 @@ class ManualScan( SettingWindow ):
 		focusId = self.getFocusId( )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			pass
+			self.ResetAllControl( )
+			self.close( )
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
+			self.mConfigTransponder.printdebug()
 			self.ResetAllControl( )
 			self.close( )
 
@@ -84,7 +91,7 @@ class ManualScan( SettingWindow ):
 
 		groupId = self.GetGroupId( aControlId )
 
-		#Satellite		
+		# Satellite		
 		if groupId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
 			select = dialog.select('Select satellite', self.mFormattedSatelliteList )
@@ -93,36 +100,86 @@ class ManualScan( SettingWindow ):
 				self.mSelectedSatelliteIndex = select
 				self.mSelectedTransponderIndex = 0
 				self.LoadFormattedTransponderNameList( )
+				self.SetConfigTransponder( )
 				self.InitConfig( )
 
-		#Transponder
+		# Transponder
 		elif groupId == E_Input02 :
 			dialog = xbmcgui.Dialog( )
 			select = dialog.select('Select Transponder', self.mFormattedTransponderList )
 
-			print 'select = %d %d' %(self.mSelectedTransponderIndex, select)
-
 			if select >=0 and self.mSelectedTransponderIndex != select :
 				self.mSelectedTransponderIndex = select
+				self.SetConfigTransponder( )
 				self.InitConfig( )
 
-		#Start Search
-		elif groupId == E_Input03 : #ToDO : Have to support manual input
+		# Frequency
+		elif groupId == E_Input03 :
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog.SetDialogProperty( 'Frequency', '%d' % self.mConfigTransponder.mFrequency, 5 )
+ 			dialog.doModal( )
+ 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+ 				tempval = dialog.GetString( )
+				if int( tempval ) > 13000 :
+					self.mConfigTransponder.mFrequency = 13000
+				elif int( tempval ) < 3000 :
+					self.mConfigTransponder.mFrequency = 3000
+				else :
+					self.mConfigTransponder.mFrequency = int( tempval )
+
+				self.SetControlLabel2String( E_Input02, '%d MHz' % self.mConfigTransponder.mFrequency )
+
+		# Symbol Rate
+		elif groupId == E_Input04 :
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog.SetDialogProperty( 'Symbol Rate', '%d' % self.mConfigTransponder.mSymbolRate, 5 )
+ 			dialog.doModal( )
+ 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+ 				tempval = dialog.GetString( )
+				if int( tempval ) > 60000 :
+					self.mConfigTransponder.mSymbolRate = 60000
+				elif int( tempval ) < 1000 :
+					self.mConfigTransponder.mSymbolRate = 1000
+				else :
+					self.mConfigTransponder.mSymbolRate = int( tempval )
+
+				self.SetControlLabel2String( E_Input04, '%d KS/s' % self.mConfigTransponder.mSymbolRate )
+
+		# Start Search
+		elif groupId == E_Input05 : #ToDO : Have to support manual input
 			transponderList = []
 			config = self.mConfiguredSatelliteList[self.mSelectedSatelliteIndex]
-			print 'longitude=%d bandtype=%d' %( config.mSatelliteLongitude, config.mBandType )
 
-			transponder = self.mTransponderList[self.mSelectedTransponderIndex]
-			print 'ManualScan #0 index=%d transponder=%s' %(self.mSelectedTransponderIndex, transponder )
-			transponderList.append( transponder )
-			print 'ManualScan #1'
-			dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_CHANNEL_SEARCH )
-			print 'ManualScan #2'			
+			transponderList.append( self.mConfigTransponder )
+
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 			dialog.SetTransponder( config.mSatelliteLongitude, config.mBandType, transponderList )
-			print 'ManualScan #3'			
 			dialog.doModal( )
 
-		if groupId == E_SpinEx05 or groupId == E_SpinEx06   :
+		# Manual Setup
+		elif groupId == E_SpinEx01 :
+			self.mIsManualSetup = self.GetSelectedIndex( E_SpinEx01 )
+			self.DisableControl( )
+
+		# DVB Type
+		elif groupId == E_SpinEx02 :
+			if self.GetSelectedIndex( E_SpinEx02 ) == 0 :
+				self.mConfigTransponder.mFECMode = ElisEnum.E_FEC_UNDEFINED		
+			else :
+				self.mConfigTransponder.mFECMode = ElisEnum.E_DVBS2_QPSK_1_2
+	
+			self.DisableControl( )
+
+		# FEC
+		elif groupId == E_SpinEx03 :
+			self.ControlSelect( )
+			property = ElisPropertyEnum( 'FEC', self.mCommander )
+			self.mConfigTransponder.mFECMode = property.GetProp( )
+		
+		elif groupId == E_SpinEx04 :
+			self.mConfigTransponder.mPolarization = self.GetSelectedIndex( E_SpinEx04 )
+
+		elif groupId == E_SpinEx05 or groupId == E_SpinEx06   :
 			self.ControlSelect( )
 
 
@@ -130,7 +187,7 @@ class ManualScan( SettingWindow ):
 		if self.mInitialized == False :
 			return
 
-		if ( self.mLastFocused != aControlId ) :
+		if self.mLastFocused != aControlId :
 			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId
 
@@ -142,43 +199,44 @@ class ManualScan( SettingWindow ):
 		count = len( self.mFormattedSatelliteList )
 		
 		if count <= 0 :
-			hideControlIds = [ E_Input01, E_Input02,E_Input03, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
+			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
 			self.SetVisibleControls( hideControlIds, False )
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Has no configured satellite' )
 
 		else :
 			self.AddInputControl( E_Input01, 'Satellite', self.mFormattedSatelliteList[self.mSelectedSatelliteIndex], 'Select satellite' )
-			self.AddInputControl( E_Input02, 'Transponder Frequency', self.mFormattedTransponderList[self.mSelectedTransponderIndex], 'Select Transponder Frequency' )
+			self.AddInputControl( E_Input02, 'Transponder Frequency', '%d MHz' % self.mConfigTransponder.mFrequency, 'Select Transponder Frequency' )
 
+			self.AddUserEnumControl( E_SpinEx01, 'Manual Setup', USER_ENUM_LIST_ON_OFF, self.mIsManualSetup )
 
-			#DVB Type
-			self.AddEnumControl( E_SpinEx01, 'DVB Type', None, 'Select DVB Type' )
-			transponder  =  self.mTransponderList [ self.mSelectedTransponderIndex ]
+			# Frequency
+			self.AddInputControl( E_Input03, ' - Set Frequency', '', 'Input Manual Frequency' )
+			
+			# DVB Type
+			self.AddEnumControl( E_SpinEx02, 'DVB Type', ' - DVB Type', 'Select DVB Type' )
 
-			if transponder.mFECMode <= ElisEnum.E_DVBS_7_8 :
-				self.SetProp( E_SpinEx01, 0 )
+			if self.mConfigTransponder.mFECMode == ElisEnum.E_FEC_UNDEFINED :
+				self.SetProp( E_SpinEx02, 0 )
 			else :
-				self.SetProp( E_SpinEx01, 1 )
+				self.SetProp( E_SpinEx02, 1 )
 
+			# FEC
+			self.AddEnumControl( E_SpinEx03, 'FEC', ' - FEC', 'Select FEC' )
+			self.SetProp( E_SpinEx03, self.mConfigTransponder.mFECMode )
 
-			#FEC
-			self.AddEnumControl( E_SpinEx02, 'FEC', None, 'Select FEC' )
-			self.SetProp( E_SpinEx02, transponder.mFECMode )
+			# POL
+			self.AddEnumControl( E_SpinEx04, 'Polarisation', ' - Polarization', 'Select Polarization' )
+			self.SetProp( E_SpinEx04, self.mConfigTransponder.mPolarization )
 
-			#POL
-			self.AddEnumControl( E_SpinEx03, 'Polarisation', None,'Select Polarization' )
-			self.SetProp( E_SpinEx03, transponder.mPolarization )
-
-			#Symbolrate
-			self.AddEnumControl( E_SpinEx04, 'Symbol Rate', None, 'Select Symbol Rate' )
-			self.SetProp( E_SpinEx04, transponder.mSymbolRate )
+			# Symbolrate
+			self.AddInputControl( E_Input04, ' - Symbol Rate', '%d KS/s' % self.mConfigTransponder.mSymbolRate , 'Select Symbol Rate' )
 			
 			self.AddEnumControl( E_SpinEx05, 'Network Search', None, 'Select Network Search' )
 			self.AddEnumControl( E_SpinEx06, 'Channel Search Mode',None, 'Select Channel Search Mode' )
-			self.AddInputControl( E_Input03, 'Start Search', '', 'Start Search' )
+			self.AddInputControl( E_Input05, 'Start Search', '', 'Start Search' )
 
 			self.InitControl( )
-			
+			self.DisableControl( )
 
 
 	def GetFormattedName( self, aLongitude, aBand ) :
@@ -198,7 +256,7 @@ class ManualScan( SettingWindow ):
 				dir = 'W'
 				tmpLongitude = 3600 - aLongitude
 
-			formattedName = '%d.%d %s %s' %( int( tmpLongitude/10 ), tmpLongitude%10, dir, satellite.mName )
+			formattedName = '%d.%d %s %s' %( int( tmpLongitude / 10 ), tmpLongitude % 10, dir, satellite.mName )
 			return formattedName
 
 		return 'UnKnown'
@@ -243,6 +301,38 @@ class ManualScan( SettingWindow ):
 		self.mFormattedTransponderList = []
 		
 		for i in range( len( self.mTransponderList ) ) :
-			self.mFormattedTransponderList.append( '%d' % ( i + 1 ) + ' %d' % self.mTransponderList[i].mFrequency + ' MHz /' + ' %d' % self.mTransponderList[i].mSymbolRate + ' KS/s' )
+			self.mTransponderList[i].printdebug()
+			#self.mFormattedTransponderList.append( '%d' % ( i + 1 ) + ' %d' % self.mTransponderList[i].mFrequency + ' MHz /' + ' %d' % self.mTransponderList[i].mSymbolRate + ' KS/s' )
+			self.mFormattedTransponderList.append( '%d' % self.mTransponderList[i].mFrequency + ' MHz' )
 
-	
+
+	def SetConfigTransponder( self ) :
+		self.mConfigTransponder = ElisITransponderInfo( )
+		self.mConfigTransponder.reset( )
+		self.mConfigTransponder.mFrequency = self.mTransponderList[self.mSelectedTransponderIndex].mFrequency
+		self.mConfigTransponder.mFECMode = self.mTransponderList[self.mSelectedTransponderIndex].mFECMode
+		self.mConfigTransponder.mSymbolRate = self.mTransponderList[self.mSelectedTransponderIndex].mSymbolRate
+		self.mConfigTransponder.mPolarization = self.mTransponderList[self.mSelectedTransponderIndex].mPolarization
+		self.mConfigTransponder.mTsid = self.mTransponderList[self.mSelectedTransponderIndex].mTsid
+		self.mConfigTransponder.mOnid = self.mTransponderList[self.mSelectedTransponderIndex].mOnid
+		self.mConfigTransponder.mNid = self.mTransponderList[self.mSelectedTransponderIndex].mNid
+
+
+	def DisableControl( self ) :
+		disablecontrols = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input03, E_Input04 ]
+		if self.mIsManualSetup == 0 :
+			self.SetEnableControls( disablecontrols, False )
+			self.SetEnableControl( E_Input02, True )
+		else :
+			self.SetEnableControls( disablecontrols, True )
+			self.SetEnableControl( E_Input02, False )
+
+			if self.mConfigTransponder.mFECMode == 0 :
+				self.getControl( E_SpinEx03 + 3 ).getListItem( 0 ).setLabel2( 'Automatic' )
+				self.getControl( E_SpinEx03 + 3 ).selectItem( 0 )
+				self.SetEnableControl( E_SpinEx03, False )
+			else :
+				self.SetProp( E_SpinEx03, 0 )
+				self.getControl( E_SpinEx03 + 3 ).getListItem( 0 ).setLabel2( 'QPSK 1/2' )
+				self.SetEnableControl( E_SpinEx03, True )
+		

@@ -3,6 +3,7 @@ import xbmcgui
 import sys
 
 import pvr.gui.WindowMgr as WinMgr
+import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.BaseWindow import SettingWindow, Action
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
@@ -125,23 +126,48 @@ class Configure( SettingWindow ) :
 			return
 
 		elif selectedId == E_PARENTAL and self.mVisibleParental == False and groupId == E_Input01 :
-			tempval = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Input PIN Code', '', 4 )
-			if int( tempval ) == ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( ) :
-				self.mVisibleParental = True
-				self.DisableControl( E_PARENTAL )
-			else :
-				xbmcgui.Dialog( ).ok( 'ERROR', 'ERROR PIN Code' )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog.SetDialogProperty( 'PIN Code 4 digit', '', 4, True )
+ 			dialog.doModal( )
+ 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+ 				tempval = dialog.GetString( )
+ 				if tempval == '' :
+ 					return
+				if int( tempval ) == ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( ) :
+					self.mVisibleParental = True
+					self.DisableControl( E_PARENTAL )
+				else :
+					xbmcgui.Dialog( ).ok( 'ERROR', 'ERROR PIN Code' )
 			return
 
 		elif selectedId == E_PARENTAL and groupId == E_Input02 :
-			newpin = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'New PIN Code', '', 4 )
-			if newpin == None or newpin == '' or len( newpin ) != 4:
-				xbmcgui.Dialog( ).ok( 'ERROR', 'Input 4 digit' )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog.SetDialogProperty( 'New PIN Code', '', 4, True )
+ 			dialog.doModal( )
+
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				newpin = dialog.GetString( )
+				if newpin == '' or len( newpin ) != 4 :
+					xbmcgui.Dialog( ).ok( 'ERROR', 'Input 4 digit' )
+					return
+			else :
 				return
-			confirm = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_NUMBER, 'Confirm PIN Code', '', 4 )
-			if int( newpin ) != int( confirm ) :
-				xbmcgui.Dialog( ).ok( 'ERROR', 'New PIN codes do not match' )
+
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog.SetDialogProperty( 'Confirm PIN Code', '', 4, True )
+ 			dialog.doModal( )
+
+ 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+ 				confirm = dialog.GetString( )
+ 				if confirm == '' :
+ 					xbmcgui.Dialog( ).ok( 'ERROR', 'New PIN codes do not match' )
+ 					return
+				if int( newpin ) != int( confirm ) :
+					xbmcgui.Dialog( ).ok( 'ERROR', 'New PIN codes do not match' )
+					return
+			else :
 				return
+				
 			ElisPropertyInt( 'PinCode', self.mCommander ).SetProp( int( newpin ) )
 			xbmcgui.Dialog( ).ok( 'Complete', 'Pin codes change success' )
 

@@ -82,9 +82,7 @@ class SatelliteConfigDisEqC11( SettingWindow ):
 			if ret >= 0 :
 	 			satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( ret )
 
-	 			for i in range( 22 ) :
-					self.mCurrentSatellite.reset( )
-
+				self.mCurrentSatellite.reset( )
 				self.mCurrentSatellite.mSatelliteLongitude 	= satellite.mLongitude		# Longitude
 				self.mCurrentSatellite.mBandType 			= satellite.mBand			# Band
 				self.mCurrentSatellite.mIsConfigUsed 		= 1							# IsUsed
@@ -151,10 +149,11 @@ class SatelliteConfigDisEqC11( SettingWindow ):
 
 		# Transponer
  		elif groupId == E_Input03 :
- 			dialog = xbmcgui.Dialog()
- 			self.mSelectedTransponderIndex = dialog.select( 'Select Transponder', self.mTransponderList )
- 			if self.mSelectedTransponderIndex != -1 :
- 				self.InitConfig( )
+ 			if len( self.mTransponderList ) > 0 :
+	 			dialog = xbmcgui.Dialog()
+	 			self.mSelectedTransponderIndex = dialog.select( 'Select Transponder', self.mTransponderList )
+	 			if self.mSelectedTransponderIndex != -1 :
+	 				self.InitConfig( )
 		
 	def onFocus( self, aControlId ):
 		pass
@@ -176,7 +175,10 @@ class SatelliteConfigDisEqC11( SettingWindow ):
 		self.AddUserEnumControl( E_SpinEx04, 'Committed Switch', E_LIST_COMMITTED_SWITCH, getCommittedSwitchindex( self.mCurrentSatellite.mDisEqcMode ) )
 		self.AddUserEnumControl( E_SpinEx05, 'Uncommitted Switch', E_LIST_UNCOMMITTED_SWITCH, self.mCurrentSatellite.mDisEqc11 )
 		self.AddUserEnumControl( E_SpinEx06, 'DiSEqC Repeat', USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mDisEqcRepeat )
-		self.AddInputControl( E_Input03, 'Transponder', self.mTransponderList[ self.mSelectedTransponderIndex ] )
+		if len( self.mTransponderList ) <= 0 :
+			self.AddInputControl( E_Input03, 'Transponder', 'None' )
+		else :
+			self.AddInputControl( E_Input03, 'Transponder', self.mTransponderList[ self.mSelectedTransponderIndex ] )
 		
 		if( self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input03]

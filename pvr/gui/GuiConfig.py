@@ -208,7 +208,7 @@ def NumericKeyboard( aKeyType, aTitle, aString, aMaxLength=None ) :
 	if len( value ) > aMaxLength and aMaxLength != None :
 		value = value[ len ( value ) - aMaxLength :]
 	return value
-		
+
 
 def InputKeyboard( aType, aTitle, aString, aMaxLength=None ) :
 	dialog = xbmc.Keyboard( aString, aTitle, aType )

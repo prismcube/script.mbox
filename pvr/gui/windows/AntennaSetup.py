@@ -60,6 +60,7 @@ class AntennaSetup( SettingWindow ) :
 				ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			elif dialog.IsOK() == E_DIALOG_STATE_NO :
 				ConfigMgr.GetInstance( ).Restore( )
+				ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			elif dialog.IsOK() == E_DIALOG_STATE_CANCEL :
 				return
 
@@ -92,22 +93,24 @@ class AntennaSetup( SettingWindow ) :
 
 			if groupId == E_Input01 :
 			
-				ConfigMgr.GetInstance().SetCurrentTunerIndex( E_TUNER_1 ) 
+				ConfigMgr.GetInstance().SetCurrentTunerIndex( E_TUNER_1 )
+				configcontrol = E_SpinEx03
 
 			elif groupId == E_Input02 :
 
 				ConfigMgr.GetInstance().SetCurrentTunerIndex( E_TUNER_2 )
+				configcontrol = E_SpinEx04
 
-			if self.GetSelectedIndex( E_SpinEx03 ) == E_SIMPLE_LNB :
+			if self.GetSelectedIndex( configcontrol ) == E_SIMPLE_LNB :
 				ConfigMgr.GetInstance( ).SetCurrentConfigIndex( 0 )
 				self.ResetAllControl( )
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_SIMPLE )
 			
-			elif self.GetSelectedIndex( E_SpinEx03 ) == E_MOTORIZE_USALS :
+			elif self.GetSelectedIndex( configcontrol ) == E_MOTORIZE_USALS :
 				self.ResetAllControl( )
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED_USALS )
 				
-			elif self.GetSelectedIndex( E_SpinEx03 ) == E_ONE_CABLE :
+			elif self.GetSelectedIndex( configcontrol ) == E_ONE_CABLE :
 				self.ResetAllControl( )
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_ONECABLE )
 
@@ -121,7 +124,7 @@ class AntennaSetup( SettingWindow ) :
 	def onFocus( self, aControlId ):
 		if self.mInitialized == False :
 			return
-		if ( self.mLastFocused != aControlId ) :
+		if self.mLastFocused != aControlId :
 			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId
 
