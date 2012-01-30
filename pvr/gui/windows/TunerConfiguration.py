@@ -81,7 +81,7 @@ class TunerConfiguration( SettingWindow ) :
 	 				self.ReloadConfigedSatellite()
 
 	 		elif len( configuredList ) + 1 == position :
-	 			if len( configuredList ) == 0 :
+	 			if len( configuredList ) <= 0 :
 	 				xbmcgui.Dialog( ).ok( 'ERROR', 'Empty Configured Satellite' )
 	 				return
 	 			else :
@@ -135,7 +135,6 @@ class TunerConfiguration( SettingWindow ) :
 		configuredList = ConfigMgr.GetInstance( ).GetConfiguredSatelliteList( )
 
 		for config in configuredList :
-			config.printdebug()
 			self.listItems.append( '%s' % ConfigMgr.GetInstance( ).GetFormattedName( config.mSatelliteLongitude, config.mBandType ) )
 
 		self.listItems.append( 'Add New Satellite' )

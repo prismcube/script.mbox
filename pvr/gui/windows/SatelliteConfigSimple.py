@@ -135,7 +135,7 @@ class SatelliteConfigSimple( SettingWindow ):
 
 		# Transponer
  		elif groupId == E_Input03 :
- 			if len( self.mTransponderList ) != 0 :
+ 			if len( self.mTransponderList ) > 0 :
 	 			dialog = xbmcgui.Dialog()
 	 			self.mSelectedTransponderIndex = dialog.select( 'Select Transponder', self.mTransponderList )
 	 			if self.mSelectedTransponderIndex != -1 :
@@ -160,7 +160,7 @@ class SatelliteConfigSimple( SettingWindow ):
 
 		self.AddUserEnumControl( E_SpinEx03, '22KHz Control', USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mFrequencyLevel )
 
-		if len( self.mTransponderList ) == 0 :
+		if len( self.mTransponderList ) <= 0 :
 			self.AddInputControl( E_Input03, 'Transponder', 'None' )
 		else :
 			self.AddInputControl( E_Input03, 'Transponder', self.mTransponderList[ self.mSelectedTransponderIndex ] )
