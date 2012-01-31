@@ -232,7 +232,11 @@ class ChannelListWindow(BaseWindow):
 			self.GetFocusId()
 			if self.mFocusId == self.mCtrlListCHList.getId() :
 				if self.mMoveFlag :
-					self.EditSettingWindow( FLAG_OPT_MOVE, id )
+					LOG_TRACE( '=============' )
+					#self.EditSettingWindow( FLAG_OPT_MOVE, id )
+					self.SetMarkChanneltoMove( FLAG_OPT_MOVE, id )
+					LOG_TRACE( '=============' )
+
 					return
 
 				self.mIsSelect = False
@@ -1514,8 +1518,32 @@ class ChannelListWindow(BaseWindow):
 
 					elif aMode.lower() == 'move' :
 						cmd = 'Move'
-						pass
+						idxM= idx + aEnabled
+						if idxM < 0 : continue
+
+						#exchange name
+						labelM = self.mCtrlListCHList.getSelectedItem().getLabel()
+						name = self.mChannelList[idxM].mName
+						number=self.mChannelList[idxM].mNumber
+						label = str('%s%s %s%s'%( E_TAG_COLOR_GREY, number, name, E_TAG_COLOR_END ) )
+						self.mCtrlListCHList.getSelectedItem().setLabel(label)
+
+						self.mCtrlListCHList.selectItem(idxM)
+						xbmc.sleep(50)
+						self.mCtrlListCHList.getSelectedItem().setLabel(labelM)
+
+						LOG_TRACE( '==================move' )
+						continue
 					
+					elif aMode.lower() == 'gmove' :
+						cmd = 'Move in Group'
+						insertPosition = idx + aEnabled
+						if aGroupName :
+							ret = self.mCommander.FavoriteGroup_MoveChannels( aGroupName, insertPosition, self.mChannelListServieType, self.mChannelList[idx] )
+						else :
+							ret = 'group None'
+
+						LOG_TRACE( '==================gmove' )
 
 
 					LOG_TRACE( 'set[%s] idx[%s] ret[%s]'% (cmd,idx,ret) )
@@ -1561,7 +1589,6 @@ class ChannelListWindow(BaseWindow):
 			#mark toggle: enable
 			else :
 				listItem.setProperty('mark', E_IMG_ICON_MARK)
-
 
 
 		elif aMode.lower() == 'delete' :
@@ -1686,16 +1713,158 @@ class ChannelListWindow(BaseWindow):
 
 		LOG_TRACE( 'Leave' )
 
+	def SetMarkChanneltoMove(self, aMode, aMove = None ) :
+		LOG_TRACE( 'Enter' )
+
+		if aMode == FLAG_OPT_MOVE :
+			updown = 0
+			number = 0
+			cmd = 'move'
+			self.mMarkList.sort()
+			if aMove == Action.ACTION_MOVE_UP :	
+				updown = -1
+				chidx = self.mMarkList[0] + updown
+			elif aMove == Action.ACTION_MOVE_DOWN :	
+				updown = 1
+				chidx = self.mMarkList[(len(self.mMarkList))-1] + updown
+
+			if chidx < 0 : chidx = 0
+			elif chidx > (len(self.mListItems))-1 : chidx = len(self.mListItems)-1
+
+			number = self.mChannelList[chidx].mNumber
+			if self.mZappingMode == ElisEnum.E_MODE_FAVORITE : cmd = 'gmove'
+
+			LOG_TRACE( '========mark[%s]'% self.mMarkList )
+			retList = []
+			pos = 0
+			for idx in self.mMarkList :
+
+				"""
+				name1  = self.mChannelList[idx].mName
+				number1= self.mChannelList[idx].mNumber
+				name2  = self.mChannelList[insert].mName
+				number2= self.mChannelList[insert].mNumber
+
+				label1 = str('%s%s %s%s'%( E_TAG_COLOR_GREY, number1, name2, E_TAG_COLOR_END ) )
+				label2 = str('%s%s %s%s'%( E_TAG_COLOR_GREY, number2, name1, E_TAG_COLOR_END ) )
+
+				listItem2 = self.mCtrlListCHList.getSelectedItem(insert)
+				listItem2.setLabel(label1)
+				xbmc.sleep(50)
+
+				#self.mCtrlListCHList.selectItem(idx)
+				listItem1 = self.mCtrlListCHList.getSelectedItem(idx)
+				listItem1 = self.mCtrlListCHList.getListItem(idx)
+				listItem1.setLabel(label2)
+				xbmc.sleep(50)
+
+				LOG_TRACE( 'label1[%s] label2[%s]'% (label1, label2) )
+				LOG_TRACE( '===============idx[%s] insert[%s]'% (idx, insert) )
+				"""
+
+				"""
+				GuiLock2(True)
+				self.mCtrlListCHList.selectItem(idx)
+				listItem1 = self.mCtrlListCHList.getSelectedItem(idx)
+				xbmc.sleep(50)
+				self.mCtrlListCHList.selectItem(insert)
+				listItem2 = self.mCtrlListCHList.getSelectedItem(insert)
+				xbmc.sleep(50)
+				LOG_TRACE( '-----------1[%s]'% listItem1.getLabel() )
+				LOG_TRACE( '-----------2[%s]'% listItem2.getLabel() )
+
+				tmp = listItem1.getLabel()
+				tmp = re.findall('\](.*)\[', listItem1.getLabel())
+				number1= tmp[0][:4]
+				name1  = tmp[0][5:]
+				
+				tmp = listItem2.getLabel()
+				tmp = re.findall('\](.*)\[', tmp)
+				number2= tmp[0][:4]
+				name2  = tmp[0][5:]
+
+				nlabel1 = str('%s%s %s%s'%( E_TAG_COLOR_GREY, number1, name2, E_TAG_COLOR_END ) )
+				nlabel2 = str('%s%s %s%s'%( E_TAG_COLOR_GREY, number2, name1, E_TAG_COLOR_END ) )
+				LOG_TRACE( 'label1[%s] label2[%s]'% (nlabel1, nlabel2) )
+				LOG_TRACE( '===============idx[%s] insert[%s]'% (idx, insert) )
+
+				listItem1.setLabel(nlabel1)
+				listItem2.setLabel(nlabel2)
+				xbmc.sleep(50)
+				self.setFocusId( self.mCtrlGropCHList.getId() )
+				GuiLock2(False)
+				"""
+
+				listItem = self.mCtrlListCHList.getSelectedItem(idx)
+				xbmc.sleep(50)
+				listItem.setProperty('mark', '')
+
+
+				retList.append( self.mChannelList[idx] )
+
+				self.mMarkList[pos] = idx + updown
+				pos += 1
+
+
+			ret = self.mCommander.Channel_Move( self.mChannelListServieType, number, retList )
+			#LOG_TRACE( '==================move ret[%s]'% ret )
+
+
+			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
+
+			GuiLock2(True)
+			for idx in self.mMarkList :
+				listItem = self.mCtrlListCHList.getListItem(int(idx))
+				xbmc.sleep(50)
+				listItem.setProperty('mark', E_IMG_ICON_MARK)
+				LOG_TRACE( '========new mark[%s] [%s]'% (self.mMarkList, idx) )
+			self.mCtrlListCHList.selectItem(self.mMarkList[0])
+			GuiLock2(False)
+
+			
+
+
+		elif aMove == FLAG_OPT_MOVE_OK :
+
+			"""
+			number= self.mChannelList[insert].mNumber
+			retList = []
+			retList.append( self.mChannelList[idx] )
+			ret = self.mCommander.Channel_Move( self.mChannelListServieType, number, retList )
+			LOG_TRACE( '==================move ret[%s] insert[%s]'% (ret, insert) )
+			"""
+
+			aGroupName = self.mEditFavorite[0]
+			if aGroupName :
+				ret = self.mCommander.FavoriteGroup_MoveChannels( aGroupName, insertPosition, self.mChannelListServieType, channelList[idx] )
+			else :
+				ret = 'group None'
+
+
+			LOG_TRACE( '==================gmove ret[%s]'% ret )
+
+			#editing action
+			self.mIsSave |= FLAG_MASK_ADD
+			#self.SetMarkDeleteCh( cmd, updown, self.mEditFavorite )
+			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
+
+		
+		LOG_TRACE( 'Leave' )
+
+
 	def EditSettingWindow( self, aMode, aMove = None ) :
 		LOG_TRACE( 'Enter' )
 
 		try:
 			if aMode == FLAG_OPT_MOVE :
 				pass
+
 			elif aMode == FLAG_OPT_MOVE_OK :
 				self.mMoveFlag = False
 				self.mCtrlLblOpt1.setLabel('Opt Edit')
 				self.mCtrlLblOpt2.setLabel('Opt Edit')
+
+				LOG_TRACE( '===============' )
 
 			else :
 				self.GroupAddDelete( 'get' )
