@@ -1725,7 +1725,6 @@ class ChannelListWindow(BaseWindow):
 				retList.append( self.mChannelList[i] )
 
 			#3. update mark list
-			#markList.append( self.mMarkList[0] )
 			for i in range(len(self.mMarkList)) :
 				markList.append( self.mMarkList[0]+i )
 
@@ -1774,8 +1773,11 @@ class ChannelListWindow(BaseWindow):
 
 
 		elif aMode == FLAG_OPT_MOVE_UPDOWN :
-			updown = 0
-			loopS, loopE = 0
+			updown= 0
+			loopS = 0
+			loopE = 0
+			retList = []
+			markList= []
 			lastmark = len(self.mMarkList) - 1
 
 			#1. get number
@@ -1792,68 +1794,68 @@ class ChannelListWindow(BaseWindow):
 
 			if chidx < 0 : chidx = 0
 			elif chidx > (len(self.mListItems))-1 : chidx = len(self.mListItems)-1
+			number = self.mChannelList[chidx].mNumber
 
-			"""
 			if loopS < 0 : loopS = 0
 			elif loopE > (len(self.mListItems))-1 : loopE = len(self.mListItems)-1
-			for i in range(loopS, loopE+1) :
-			"""
 
-			retList = []
-			pos = 0
+			LOG_TRACE('1====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList)) )
+			#2. get retList
 			for idx in self.mMarkList :
 				i = int(idx)
-				k = i + updown
+				retList.append( self.mChannelList[i] )
+
+			#3. update mark list
+			for idx in self.mMarkList :
+				markList.append( int(idx) + updown )
+			self.mMarkList = []
+			self.mMarkList = markList
+
+			#4. init channel list
+			ret = False
+			if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
+				if aGroupName :
+					ret = self.mCommander.FavoriteGroup_MoveChannels( aGroupName, chidx, self.mChannelListServieType, retList )
+					LOG_TRACE( '==========group========' )
+			else :
+				ret = self.mCommander.Channel_Move( self.mChannelListServieType, number, retList )
+
+			if ret :
+				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
+			LOG_TRACE('2====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList)) )
+
+
+			#5. refresh section, label move
+			pos = 0
+			for i in range(loopS, loopE+1) :
+
+				number = self.mChannelList[i].mNumber
+				name = self.mChannelList[i].mName
+				icas = self.mChannelList[i].mIsCA
+				lock = self.mChannelList[i].mLocked
 
 				GuiLock2(True)
-				listItem1 = self.mCtrlListCHList.getListItem(i)
-				listItem2 = self.mCtrlListCHList.getListItem(k)
-				tmp = listItem1.getLabel()
-				tmp = re.findall('\](.*)\[', listItem1.getLabel())
-				number1= tmp[0][:4]
-				name1  = tmp[0][5:]
-				
-				tmp = listItem2.getLabel()
-				tmp = re.findall('\](.*)\[', tmp)
-				number2= tmp[0][:4]
-				name2  = tmp[0][5:]
-
-				label1 = str('%s%s %s%s'%( E_TAG_COLOR_GREY, number1, name2, E_TAG_COLOR_END ) )
-				label2 = str('%s%s %s%s'%( E_TAG_COLOR_GREY, number2, name1, E_TAG_COLOR_END ) )
-
 				listItem = self.mCtrlListCHList.getListItem(i)
-				listItem.setLabel(label1)
-				listItem.setProperty('mark', '')
-				lock = icas = False
-				if listItem.getProperty('lock') == E_IMG_ICON_LOCK : 
-					lock = True
-					listItem.setProperty('lock', '')
-				if listItem.getProperty('icas') == E_IMG_ICON_ICAS : 
-					icas = True
-					listItem.setProperty('icas', '')
 				xbmc.sleep(50)
 
-				listItem = self.mCtrlListCHList.getListItem(k)
-				listItem.setLabel(label2)
-				listItem.setProperty('mark', E_IMG_ICON_MARK)
-				if lock : listItem.setProperty('lock', E_IMG_ICON_LOCK)
-				if icas : listItem.setProperty('icas', E_IMG_ICON_ICAS)
-				xbmc.sleep(50)
+				listItem.setProperty( 'lock', '' )
+				listItem.setProperty( 'icas', '' )
+				#listItem.setProperty( 'mark', '' )
+
+				label = str('%s%s %s%s'%( E_TAG_COLOR_GREY, number, name, E_TAG_COLOR_END ) )
+				listItem.setLabel(label)
+
+				if lock : listItem.setProperty( 'lock', E_IMG_ICON_LOCK )
+				if icas : listItem.setProperty( 'icas', E_IMG_ICON_ICAS )
+				#if self.mMarkList[pos] == i : 
+				#	listItem.setProperty( 'mark', E_IMG_ICON_MARK )
 
 				self.setFocusId( self.mCtrlGropCHList.getId() )
 				xbmc.sleep(50)
 				GuiLock2(False)
 
-				retList.append( self.mChannelList[i] )
-
-				self.mMarkList[pos] = i + updown
 				pos += 1
 
-
-			ret = self.mCommander.Channel_Move( self.mChannelListServieType, number, retList )
-			#LOG_TRACE( '==================move ret[%s]'% ret )
-
-			self.mCtrlListCHList.selectItem(self.mMarkList[0])
 		
 		LOG_TRACE( 'Leave' )
 
