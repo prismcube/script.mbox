@@ -122,18 +122,23 @@ class SettingWindow( BaseWindow ):
 			if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL :
 				selectedItem = ctrlItem.mProperty.GetPropIndex()
 				control = self.getControl( ctrlItem.mControlId + 3 )
+				control.reset( )
 				control.addItems( ctrlItem.mListItems )
 				control.selectItem( selectedItem )
 			elif ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
 				control = self.getControl( ctrlItem.mControlId + 3 )
+				control.reset( )
 				control.addItems( ctrlItem.mListItems )
 			elif ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 				control = self.getControl( ctrlItem.mControlId + 3 )
+				control.reset( )
 				control.addItems( ctrlItem.mListItems )
 				control.selectItem( ctrlItem.mSelecteItem )
 
-			self.getControl( ctrlItem.mControlId ).setPosition( 0, ( pos * 40 ) + 50 )
-			pos += 1	
+			pos += self.getControl( ctrlItem.mControlId ).getHeight( )
+			self.getControl( ctrlItem.mControlId ).setPosition( 0, pos )
+			#self.getControl( ctrlItem.mControlId ).setPosition( 0, ( pos * 40 ) + 50 )
+			#pos += 1	
 
 	def ResetAllControl( self ):
 		del self.mControlList[:]
@@ -300,8 +305,8 @@ class SettingWindow( BaseWindow ):
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
 					self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).setLabel2( aLabel )
-
-		return -1
+					
+		return
 
 
 	def SetControlLabelString( self, aControlId, aLabel ) :
@@ -314,7 +319,7 @@ class SettingWindow( BaseWindow ):
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
 					self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).setLabel( aLabel )
 
-		return -1
+		return
 		
 
 	def GetGroupId( self, aContgrolId ) :

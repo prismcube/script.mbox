@@ -438,7 +438,10 @@ class Configure( SettingWindow ) :
 	def IpSetting( self, aControlId ) :
 		if aControlId == E_SpinEx01 :
 			self.ControlSelect( )
-			self.SetListControl( )
+			if ElisPropertyEnum( 'DHCP', self.mCommander ).GetProp( ) == E_DHCP_OFF :
+				self.SetControlLabelString( E_Input05, 'Save' )
+			elif ElisPropertyEnum( 'DHCP', self.mCommander ).GetProp( ) == E_DHCP_ON :
+				self.SetControlLabelString( E_Input05, 'Get IP Address' )
 			
 		elif aControlId == E_Input01 :		# IpAddr
 			self.mTempIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Input Ip Address', '%d.%d.%d.%d' % MakeHexToIpAddr( self.mTempIpAddr ) )
