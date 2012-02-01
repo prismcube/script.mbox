@@ -85,6 +85,9 @@ E_TUNER_1						= 0
 E_TUNER_2						= 1
 E_TUNER_MAX						= 2
 
+#RECORD
+E_MAX_RECORD_COUNT				=2
+
 # Volume
 VOLUME_STEP					= 4
 MAX_VOLUME					= 100

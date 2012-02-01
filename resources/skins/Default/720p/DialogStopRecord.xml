@@ -1,5 +1,5 @@
 <window>
-	<defaultcontrol always="true">201</defaultcontrol>
+	<defaultcontrol always="true">9000</defaultcontrol>
 	<coordinates>
 		<system>1</system>
 		<posx>335</posx>
@@ -7,68 +7,31 @@
 	</coordinates>
 	<include>DefaultDialogEffect</include>
 	<controls>
-		<control type="image">
-			<description>background image</description>
-			<posx>0</posx>
-			<posy>100</posy>
-			<width>610</width>
-			<height>220</height>
-			<texture border="40">confluence/DialogBack.png</texture>
-		</control>
-		<control type="image">
-			<posx>40</posx>
-			<posy>110</posy>
-			<width>530</width>
-			<height>90</height>
-			<aspectratio>stretch</aspectratio>
-			<texture>confluence/GlassTitleBar.png</texture>
+		<control type="group">
+            <animation condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional" reversible="false">
+                <effect type="fade" start="100" end="0" time="300" />
+            </animation>
+			<control type="image" id="100">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>100</posy>
+				<width>610</width>
+				<height>240</height>
+				<texture border="40">confluence/DialogBack.png</texture>
+			</control>
+			<include>DefaultDialogCommonSetting</include>
 		</control>
 
-		
-		<!-- Header -->
-		<control type="label" id="100">
-			<description>header label</description>
-			<posx>20</posx>
-			<posy>118</posy>
-			<width>570</width>
-			<height>30</height>
-			<font>font13_title</font>
-			<align>center</align>
-			<aligny>center</aligny>
-			<textcolor>white</textcolor>
-			<shadowcolor>black</shadowcolor>
-			<label>Stop</label>
-		</control>
-
-		<!-- Close button -->
-		<control type="button">
-			<description>Close Window button</description>
-			<posx>520</posx>
-			<posy>109</posy>
-			<width>64</width>
-			<height>32</height>
-			<label>-</label>
-			<font>-</font>
-			<texturefocus>confluence/DialogCloseButton-focus.png</texturefocus>
-			<texturenofocus>confluence/DialogCloseButton.png</texturenofocus>
-			<onleft>10</onleft>
-			<onright>10</onright>
-			<onup>10</onup>
-			<ondown>10</ondown>
-			<onclick>ParentDir</onclick>
-			<visible>system.getbool(input.enablemouse)</visible>
-		</control>
-
-		<control type="group" id="200">		
-			<control type="list" id="201">
+		<control type="group" id="9000">		
+			<control type="list" id="200">
 				<posx>30</posx>
-				<posy>160</posy>
+				<posy>170</posy>
 				<width>550</width>
-				<height>80</height>
+				<height>140</height>
 				<onleft>300</onleft>
 				<onright>300</onright>
-				<onup>201</onup>
-				<ondown>201</ondown>
+				<onup>200</onup>
+				<ondown>200</ondown>
 				<pagecontrol>61</pagecontrol>
 				<scrolltime>200</scrolltime>
 				<focusposition>0</focusposition>
@@ -76,12 +39,12 @@
 				<visible>true</visible>
 				<enable>true</enable>
 				<animation effect="slide" start="0,0" end="10,0" time="0" condition="true">Conditional</animation>
-				<itemlayout height="40" width="550">
+				<itemlayout height="70" width="550">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>550</width>
-						<height>41</height>
+						<height>71</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 					</control>
 					<control type="label">
@@ -110,14 +73,14 @@
 						<visible>false</visible>
 					</control>	
 				</itemlayout>
-				<focusedlayout height="40" width="550">
+				<focusedlayout height="70" width="550">
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>550</width>
-						<height>41</height>
+						<height>71</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
-						<visible>!Control.HasFocus(201)</visible>
+						<visible>!Control.HasFocus(200)</visible>
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>
 					</control>
@@ -125,18 +88,11 @@
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>550</width>
-						<height>41</height>
+						<height>71</height>
 						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
-						<visible>Control.HasFocus(201)</visible>
+						<visible>Control.HasFocus(200)</visible>
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>
-					</control>
-					<control type="image">
-						<posx>490</posx>
-						<posy>5</posy>
-						<width>30</width>
-						<height>30</height>
-						<texture>DI_Ok.png</texture>
 					</control>
 					<control type="label">
 						<posx>30</posx>
@@ -165,58 +121,8 @@
 						<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="true">conditional</animation>
 					</control>
 				</focusedlayout>
-
 			</control>
 		</control>	
-
-		<!-- Cancel Button -->
-		<control type="group" id="300">
-			<posx>30</posx>
-			<posy>240</posy>
-			<width>115</width>
-			<height>40</height>
-			<defaultcontrol always="true">301</defaultcontrol>
-			<control type="button" id="301">
-				<description>Button Icon</description>
-				<posx>30</posx>
-				<posy>20</posy>
-				<width>35</width>
-				<height>35</height>
-				<hitrect x="30" y="10" w="120" h="40"></hitrect>
-				<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
-				<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
-				<onup>500</onup>
-				<ondown>500</ondown>
-				<onleft>200</onleft>
-				<onright>200</onright>
-				<onclick>ParentDir</onclick>
-			</control>
-			<control type="label">
-				<posx>72</posx>
-				<posy>17</posy>
-				<width>150</width>
-				<height>40</height>
-				<font>font12</font>
-				<textcolor>grey2</textcolor>
-				<align>left</align>
-				<aligny>center</aligny>
-				<label>[B]Cancel[/B]</label>
-				<visible>!Control.HasFocus(300)</visible>
-			</control>
-			<control type="label">
-				<posx>72</posx>
-				<posy>17</posy>
-				<width>150</width>
-				<height>40</height>
-				<font>font12</font>
-				<textcolor>white</textcolor>
-				<align>left</align>
-				<aligny>center</aligny>
-				<label>[B]Cancel[/B]</label>
-				<visible>Control.HasFocus(300)</visible>
-			</control>
-		</control>
-
 	</controls>
 </window>
 

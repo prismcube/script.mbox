@@ -100,9 +100,12 @@ class MainMenu( BaseWindow ):
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 			
 		elif aControlId == 20 :
+			pass
+			"""
 			self.close()
 			import pvr.Launcher
 			pvr.Launcher.GetInstance().PowerOff()
+			"""
 
  
 	def onFocus( self, aControlId ):

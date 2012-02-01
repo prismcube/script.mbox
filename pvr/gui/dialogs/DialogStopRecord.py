@@ -13,13 +13,14 @@ from ElisEnum import ElisEnum
 
 import pvr.ElisMgr
 
-from pvr.Util import RunThread, GuiLock, LOG_TRACE, LOG_WARN, LOG_ERR
+from pvr.Util import RunThread, GuiLock, LOG_TRACE, LOG_WARN, LOG_ERR, TimeToString, TimeFormatEnum
 from pvr.PublicReference import EpgInfoClock
 
 
 
 # Control IDs
-LIST_ID_RECORD				= 201
+IMAGE_ID_BACKGROUND 		= 100
+LIST_ID_RECORD				= 200
 
 
 
@@ -33,8 +34,15 @@ class DialogStopRecord( BaseDialog ) :
 	def onInit( self ):
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
-		self.mRunningRecordCount = self.mCommander.Record_GetRunningRecorderCount()
+
 		self.mCtrlRecordList = self.getControl( LIST_ID_RECORD )
+		self.mCtrlBackgroundImage = self.getControl( IMAGE_ID_BACKGROUND )
+
+		LOG_TRACE('Height=%d' %self.mCtrlRecordList.getItemHeight() )
+
+		self.SetHeaderLabel( 'Stop Record' )
+		self.mRunningRecordCount = self.mCommander.Record_GetRunningRecorderCount()
+		
 		self.mRecordListItems = []
 		self.mRunnigRecordInfoList = []
 
@@ -47,9 +55,16 @@ class DialogStopRecord( BaseDialog ) :
 				listItem = xbmcgui.ListItem( recordInfo.mRecordName, "_" , "-", "-", "-" )
 				self.mRecordListItems.append( listItem )
 				self.mRunnigRecordInfoList.append( recordInfo )
+
+		"""
+		listItem = xbmcgui.ListItem( 'Cancel', "_" , "-", "-", "-" )
+		self.mRecordListItems.append( listItem )
+		"""
 				
 		self.mCtrlRecordList.addItems( self.mRecordListItems )		
 
+		LOG_TRACE('Height=%d' %self.mCtrlRecordList.getItemHeight() )
+		
 
 	@GuiLock
 	def onAction( self, aAction ):
@@ -61,8 +76,8 @@ class DialogStopRecord( BaseDialog ) :
 			self.Close()
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
-				
+			LOG_TRACE('Height=%d' %self.mCtrlRecordList.getItemHeight() )
+					
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.Close()
 
@@ -110,6 +125,10 @@ class DialogStopRecord( BaseDialog ) :
 			self.mCommander.Record_StopRecord( recInfo.ChannelNo, recInfo.ServiceType, recInfo.RecordKey  )
 			LOG_TRACE('recInfo.ChannelNo=%d, recInfo.ServiceType=%d, recInfo.RecordKey=%d' %(recInfo.ChannelNo, recInfo.ServiceType, recInfo.RecordKey) )
 			self.Close( )
+		elif position == len( self.mRunnigRecordInfoList ) :
+			self.Close( )
+		else :
+			LOG_ERR('Unknown Error')
 
 
 	@RunThread
@@ -141,11 +160,8 @@ class DialogStopRecord( BaseDialog ) :
 
 		passDuration = self.mLocalTime - startTime
 
-		startTimeString = EpgInfoClock( 1, startTime, 0 )
-		endTimeString = EpgInfoClock( 1, endTime, 0 )		
-
-		self.getControl( E_LABEL_EPG_START_TIME ).setLabel( startTimeString[1] )
-		self.getControl( E_LABEL_EPG_END_TIME ).setLabel( endTimeString[1] )
+		#self.getControl( E_LABEL_EPG_START_TIME ).setLabel(  TimeToString( startTime, TimeFormatEnum.E_HH_MM ) )
+		#self.getControl( E_LABEL_EPG_END_TIME ).setLabel(  TimeToString( endTime, TimeFormatEnum.E_HH_MM ) )
 
 		if self.mHasEPG == True :
 			recordDuration = endTime - self.mLocalTime

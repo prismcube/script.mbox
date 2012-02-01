@@ -166,6 +166,7 @@
 	                    <onright>9000</onright>
 	                    <onup>9000</onup>
 	                    <ondown>9000</ondown>
+						<onclick>SELECT</onclick>
 	            </control>
         	</control>
 			<control type="group" id="9001">

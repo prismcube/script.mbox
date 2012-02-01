@@ -4,6 +4,7 @@ import sys
 import time
 
 from gui.BaseDialog import BaseDialog
+from pvr.Util import LOG_TRACE, LOG_ERR, LOG_WARN
 
 DIALOG_ID_LNB_FREQUENCY				= 1
 DIALOG_ID_CHANNEL_SEARCH			= 2
@@ -50,12 +51,12 @@ class DialogMgr(object):
 				return DialogChannelSearch('DialogChannelSearch.xml', self.scriptDir)	
 
 			elif aDialogId == DIALOG_ID_START_RECORD :
-				print '---------------- create start record'
+				LOG_TRACE( '---------------- create start record' )
 				from pvr.gui.dialogs.DialogStartRecord import DialogStartRecord
 				return DialogStartRecord('DialogStartRecord.xml', self.scriptDir)	
 
 			elif aDialogId == DIALOG_ID_STOP_RECORD :
-				print '---------------- create start record'
+				LOG_TRACE( '---------------- create stop record')
 				from pvr.gui.dialogs.DialogStopRecord import DialogStopRecord
 				return DialogStopRecord('DialogStopRecord.xml', self.scriptDir)	
 
@@ -88,9 +89,9 @@ class DialogMgr(object):
 				return DialogNormalNumeric('DialogNormalNumeric.xml', self.scriptDir)
 				
 			else :
-				print "ERROR : can not find dialog"
+				LOG_ERR( 'can not find dialog' )
 
-		except Exception, e :
-			print '-----------------------> except[%s]'% e
+		except Exception, ex :
+			LOG_ERR( '-----------------------> except[%s]' %ex )
 
 
