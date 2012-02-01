@@ -169,8 +169,8 @@
 						<posy>75</posy>
 						<width>35</width>
 						<height>35</height>
-						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
-						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
+						<texturenofocus>confluence/OSDStopNF.png</texturenofocus>
+						<texturefocus>confluence/OSDStopFO.png</texturefocus>
 						<onleft>9201</onleft>
 						<onright>9401</onright>
 						<onup>101</onup>
@@ -213,8 +213,8 @@
 						<posy>75</posy>
 						<width>35</width>
 						<height>35</height>
-						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
-						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
+						<texturenofocus>confluence/OSDPlayNF.png</texturenofocus>
+						<texturefocus>confluence/OSDPlayFO.png</texturefocus>
 						<onleft>9301</onleft>
 						<onright>9501</onright>
 						<onup>101</onup>
@@ -257,8 +257,8 @@
 						<posy>75</posy>
 						<width>35</width>
 						<height>35</height>
-						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
-						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
+						<texturenofocus>confluence/OSDForwardNF.png</texturenofocus>
+						<texturefocus>confluence/OSDForwardFO.png</texturefocus>
 						<onleft>9401</onleft>
 						<onright>9101</onright>
 						<onup>101</onup>
