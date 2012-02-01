@@ -215,7 +215,7 @@
 						<description>expantion info</description>
 					</control>
 
-					<control type="image">
+					<!--control type="image">
 						<animation effect="fade" start="0" end="100" delay="0" time="300" condition="Control.HasFocus(622)">conditional</animation>
 						<animation effect="fade" start="100" end="0" delay="0" time="300" condition="!Control.HasFocus(622)">conditional</animation>
 						<posx>45-2</posx>
@@ -223,7 +223,7 @@
 						<width>46</width>
 						<height>36</height>
 						<texture>confluence/button-focus.png</texture>
-					</control>
+					</control-->
 					<control type="button" id="622">
 						<posx>45</posx>
 						<posy>0</posy>
@@ -240,7 +240,7 @@
 						<description>teletext</description>
 					</control>
 
-					<control type="image">
+					<!--control type="image">
 						<animation effect="fade" start="0" end="100" delay="0" time="300" condition="Control.HasFocus(623)">conditional</animation>
 						<animation effect="fade" start="100" end="0" delay="0" time="300" condition="!Control.HasFocus(623)">conditional</animation>
 						<posx>90-2</posx>
@@ -248,7 +248,7 @@
 						<width>46</width>
 						<height>36</height>
 						<texture>confluence/button-focus.png</texture>
-					</control>
+					</control-->
 					<control type="button" id="623">
 						<posx>90</posx>
 						<posy>0</posy>
@@ -265,7 +265,7 @@
 						<description>subtitle</description>
 					</control>
 
-					<control type="image">
+					<!--control type="image">
 						<animation effect="fade" start="0" end="100" delay="0" time="300" condition="Control.HasFocus(624)">conditional</animation>
 						<animation effect="fade" start="100" end="0" delay="0" time="300" condition="!Control.HasFocus(624)">conditional</animation>
 						<posx>135-2</posx>
@@ -273,7 +273,7 @@
 						<width>46</width>
 						<height>36</height>
 						<texture>confluence/button-focus.png</texture>
-					</control>
+					</control-->
 					<control type="button" id="624">
 						<posx>135</posx>
 						<posy>0</posy>
@@ -289,7 +289,7 @@
 						<ondown>SetFocus(702)</ondown>
 						<description>start record</description>
 					</control>
-					<control type="image">
+					<!--control type="image">
 						<animation effect="fade" start="0" end="100" delay="0" time="300" condition="Control.HasFocus(625)">conditional</animation>
 						<animation effect="fade" start="100" end="0" delay="0" time="300" condition="!Control.HasFocus(625)">conditional</animation>
 						<posx>180-2</posx>
@@ -297,7 +297,7 @@
 						<width>46</width>
 						<height>36</height>
 						<texture>confluence/button-focus.png</texture>
-					</control>
+					</control-->
 					<control type="button" id="625">
 						<posx>180</posx>
 						<posy>0</posy>
@@ -314,7 +314,7 @@
 						<description>stop record</description>
 					</control>
 
-					<control type="image">
+					<!--control type="image">
 						<animation effect="fade" start="0" end="100" delay="0" time="300" condition="ControlGroup(629).HasFocus">conditional</animation>
 						<animation effect="fade" start="100" end="0" delay="0" time="300" condition="!ControlGroup(629).HasFocus">conditional</animation>
 						<posx>225-2</posx>
@@ -322,7 +322,7 @@
 						<width>45</width>
 						<height>36</height>
 						<texture>confluence/button-focus.png</texture>
-					</control>
+					</control-->
 					<control type="group" id="629">
 						<control type="button" id="626">
 							<posx>225</posx>
