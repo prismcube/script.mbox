@@ -413,7 +413,8 @@ class ChannelListWindow(BaseWindow):
 		if self.mWinId == xbmcgui.getCurrentWindowId() :
 			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
 
-				if aEvent.mEventId != self.mEventId :
+				LOG_TRACE('1========event id[%s] old[%s]'% (aEvent.mEventId, self.mEventId) )
+				if int(aEvent.mEventId) != int(self.mEventId) :
 					if self.mIsSelect == True :
 						#on select, clicked
 						ret = None
@@ -421,10 +422,11 @@ class ChannelListWindow(BaseWindow):
 						if ret :
 							self.mNavEpg = ret
 							self.mEventId = aEvent.mEventId
+							LOG_TRACE('2========event id[%s] old[%s]'% (aEvent.mEventId, self.mEventId) )
 
 						#not select, key up/down,
-					else :
-						ret = self.InitEPGEvent()
+					#else :
+					#	ret = self.InitEPGEvent()
 
 					#update label
 					self.ResetLabel()
@@ -1145,6 +1147,7 @@ class ChannelListWindow(BaseWindow):
 							maxCount= 1
 							ret = self.mCommander.Epgevent_GetList( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount )
 							xbmc.sleep(500)
+							LOG_TRACE('=============epg get[%s]'% ClassToList('convert', ret ) )
 							if ret :
 								self.mNavEpg = ret
 								ret.printdebug()
