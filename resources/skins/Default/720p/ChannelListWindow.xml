@@ -293,7 +293,6 @@
 				</focusedlayout>
 			</control>
 
-
         <!-- Scrollbar -->
 		<control type="scrollbar" id="61">
 			<posx>770</posx>
@@ -928,7 +927,7 @@
 				<label>[B]Opt Edit[/B]</label>
 				<visible>[Control.HasFocus(501) | Control.HasFocus(501)]</visible>
 			</control>
-
 		</control>
+
 	</controls>
 </window>
