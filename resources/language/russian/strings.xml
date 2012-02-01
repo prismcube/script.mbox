@@ -89,4 +89,8 @@
 	<string id="587">NONE_Alphabet</string>
 	<string id="588">NONE_HD/SD</string>
 	<string id="589">NONE_sort by</string>
+	<string id="590">NONE_All CHANNELS</string>
+	<string id="591">NONE_SATELLITE</string>
+	<string id="592">NONE_FTA/CAS</string>
+	<string id="593">NONE_FAVORITE</string>
 </strings>

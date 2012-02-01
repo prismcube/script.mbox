@@ -77,8 +77,8 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 		#Satellite
 		if groupId == E_Input01 :
 			satelliteList = ConfigMgr.GetInstance( ).GetFormattedNameList( )
-			dialog = xbmcgui.Dialog()
- 			ret = dialog.select('Select satellite', satelliteList )
+			dialog = xbmcgui.Dialog( )
+ 			ret = dialog.select( 'Select satellite', satelliteList )
 
 			if ret >= 0 :
 	 			satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( ret )
@@ -93,7 +93,7 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 
 				self.mTransponderList = ConfigMgr.GetInstance( ).GetTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )				
 		
-				self.InitConfig()
+				self.InitConfig( )
 
 		# LNB Setting
 		elif groupId == E_SpinEx01 :
@@ -118,11 +118,11 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 
 		# LNB Frequency - Inputcontrol
  		elif groupId == E_Input02 :
- 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_LNB_FREQUENCY )
+ 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_LNB_FREQUENCY )
  			dialog.SetFrequency( self.mCurrentSatellite.mLowLNB, self.mCurrentSatellite.mHighLNB, self.mCurrentSatellite.mLNBThreshold )
  			dialog.doModal( )
 
-			if dialog.IsOK() == E_DIALOG_STATE_YES :
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 	 			lowFreq, highFreq, threshFreq  = dialog.GetFrequency( )
 
 				self.mCurrentSatellite.mLowLNB = int ( lowFreq )
@@ -146,7 +146,7 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 		# Transponer
  		elif groupId == E_Input03 :
  			if len( self.mTransponderList ) > 0 :
-	 			dialog = xbmcgui.Dialog()
+	 			dialog = xbmcgui.Dialog( )
 	 			self.mSelectedTransponderIndex = dialog.select( 'Select Transponder', self.mTransponderList )
 	 			if self.mSelectedTransponderIndex != -1 :
 	 				self.InitConfig( )

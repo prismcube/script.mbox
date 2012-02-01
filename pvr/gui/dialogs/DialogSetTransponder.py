@@ -57,7 +57,6 @@ class DialogSetTransponder( SettingDialog ) :
 
 
 	def onClick( self, aControlId ) :
-		pass
 		groupId = self.GetGroupId( aControlId )
 
 		# Frequency
