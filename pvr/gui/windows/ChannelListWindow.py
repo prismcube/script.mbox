@@ -234,7 +234,6 @@ class ChannelListWindow(BaseWindow):
 			if self.mFocusId == self.mCtrlListCHList.getId() :
 				if self.mMoveFlag :
 					self.SetMarkChanneltoMove( FLAG_OPT_MOVE_UPDOWN, id )
-
 					return
 
 				self.mIsSelect = False
@@ -1659,6 +1658,15 @@ class ChannelListWindow(BaseWindow):
 			elif aBtn == E_DialogInput06 :
 				cmd = 'move'
 				self.SetMarkChanneltoMove(FLAG_OPT_MOVE, None, aGroupName )
+				if self.mMarkList :
+					idx = int(self.mMarkList[0])
+					GuiLock2(True)
+					#xbmc.executebuiltin('xbmc.Container.SetViewMode(50)')
+					xbmc.executebuiltin('xbmc.Container.PreviousViewMode')
+					xbmc.sleep(50)
+					self.mCtrlListCHList.selectItem(idx)
+					GuiLock2(False)
+					LOG_TRACE( '=============== focus[%s]'% idx )
 				return
 
 			elif aBtn == E_DialogInput07 :
@@ -1711,6 +1719,11 @@ class ChannelListWindow(BaseWindow):
 			number = 0
 			retList = []
 			markList= []
+
+			if not self.mMarkList :
+				lastPos = self.mCtrlListCHList.getSelectedPosition()
+				self.mMarkList.append( lastPos )
+				LOG_TRACE('last position[%s]'% lastPos )
 			
 			self.mMarkList.sort()
 
@@ -1779,6 +1792,7 @@ class ChannelListWindow(BaseWindow):
 			retList = []
 			markList= []
 			lastmark = len(self.mMarkList) - 1
+			oldmark = 0
 
 			#1. get number
 			if aMove == Action.ACTION_MOVE_UP :	
@@ -1786,11 +1800,14 @@ class ChannelListWindow(BaseWindow):
 				chidx = self.mMarkList[0] + updown
 				loopS = chidx
 				loopE = self.mMarkList[lastmark]
+				oldmark = loopE
 			elif aMove == Action.ACTION_MOVE_DOWN :	
 				updown = 1
-				chidx = self.mMarkList[lastmark] + updown
+				#chidx = self.mMarkList[lastmark] + updown
+				chidx = self.mMarkList[0] + updown
 				loopS = self.mMarkList[0]
-				loopE = chidx
+				loopE = self.mMarkList[lastmark] + updown
+				oldmark = loopS
 
 			if chidx < 0 : chidx = 0
 			elif chidx > (len(self.mListItems))-1 : chidx = len(self.mListItems)-1
@@ -1823,10 +1840,10 @@ class ChannelListWindow(BaseWindow):
 			if ret :
 				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 			LOG_TRACE('2====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList)) )
+			LOG_TRACE('loopS[%s] loopE[%s]'% (loopS, loopE) )
 
-
+			
 			#5. refresh section, label move
-			pos = 0
 			for i in range(loopS, loopE+1) :
 
 				number = self.mChannelList[i].mNumber
@@ -1847,14 +1864,18 @@ class ChannelListWindow(BaseWindow):
 
 				if lock : listItem.setProperty( 'lock', E_IMG_ICON_LOCK )
 				if icas : listItem.setProperty( 'icas', E_IMG_ICON_ICAS )
-				#if self.mMarkList[pos] == i : 
-				#	listItem.setProperty( 'mark', E_IMG_ICON_MARK )
-
-				self.setFocusId( self.mCtrlGropCHList.getId() )
+				listItem.setProperty( 'mark', E_IMG_ICON_MARK )
 				xbmc.sleep(50)
 				GuiLock2(False)
 
-				pos += 1
+
+			#6. erase old mark
+			GuiLock2(True)
+			listItem = self.mCtrlListCHList.getListItem(oldmark)
+			xbmc.sleep(50)
+			listItem.setProperty( 'mark', '' )
+			self.setFocusId( self.mCtrlGropCHList.getId() )
+			GuiLock2(False)
 
 		
 		LOG_TRACE( 'Leave' )
