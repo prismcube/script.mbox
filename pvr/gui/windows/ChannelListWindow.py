@@ -40,7 +40,8 @@ E_SLIDE_ALLCHANNEL      = 0
 E_SLIDE_MENU_SATELLITE  = 1
 E_SLIDE_MENU_FTACAS     = 2
 E_SLIDE_MENU_FAVORITE   = 3
-E_SLIDE_MENU_BACK       = 4
+E_SLIDE_MENU_EDITMODE   = 4
+E_SLIDE_MENU_BACK       = 5
 
 E_IMG_ICON_LOCK   = 'IconLockFocus.png'
 E_IMG_ICON_ICAS   = 'IconCas.png'
@@ -99,10 +100,11 @@ class ChannelListWindow(BaseWindow):
 		#self.mCtrlLblLocalTime2      = self.getControl( 32 )
 
 		#opt edit in slide
-		self.mCtrlBtnEdit            = self.getControl( 121 )
-		self.mCtrlLblEdit1           = self.getControl( 122 )
-		self.mCtrlLblEdit2           = self.getControl( 123 )
-		self.mCtrlRadioMisc          = self.getControl( 124 )
+		#self.mCtrlBtnEdit            = self.getControl( 121 )
+		#self.mCtrlLblEdit1           = self.getControl( 122 )
+		#self.mCtrlLblEdit2           = self.getControl( 123 )
+		#self.mCtrlRadioMisc          = self.getControl( 124 )
+		self.mCtrlGropOpt            = self.getControl( 500 )
 		self.mCtrlBtnOpt             = self.getControl( 501 )
 		self.mCtrlLblOpt1            = self.getControl( 502 )
 		self.mCtrlLblOpt2            = self.getControl( 503 )
@@ -117,8 +119,8 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlListSubmenu        = self.getControl( 112 )
 
 		#sub menu 2
-		self.mCtrlRadioTune          = self.getControl( 113 )
-		self.mCtrlRadioMark          = self.getControl( 114 )
+		#self.mCtrlRadioTune          = self.getControl( 113 )
+		#self.mCtrlRadioMark          = self.getControl( 114 )
 
 		#ch list
 		self.mCtrlGropCHList         = self.getControl( 49 )
@@ -208,10 +210,46 @@ class ChannelListWindow(BaseWindow):
 					self.mCtrlListCHList.setEnabled(True)
 					self.setFocusId( self.mCtrlGropCHList.getId() )
 
+				elif position == E_SLIDE_MENU_EDITMODE :
+					LOG_TRACE( 'onclick opt edit' )
+
+					if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+						self.mViewMode = WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW
+
+						try :
+							#Event UnRegister
+							#self.mEventBus.Deregister( self )
+
+							self.InitSlideMenuHeader()
+							self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
+							xbmc.sleep(50)
+							self.SubMenuAction(E_SLIDE_ACTION_MAIN, E_SLIDE_ALLCHANNEL)
+
+							self.mCtrlListSubmenu.selectItem( 0 )
+							xbmc.sleep(50)
+							self.SubMenuAction(E_SLIDE_ACTION_SUB, ElisEnum.E_MODE_ALL)
+
+							#clear label
+							self.ResetLabel()
+							self.UpdateLabelInfo()
+
+							self.mCtrlListCHList.reset()
+							self.InitChannelList()
+
+							ret = self.mCommander.Channel_Backup()
+							LOG_TRACE( 'channelBackup[%s]'% ret )
+
+							self.mCtrlListCHList.setEnabled(True)
+							self.setFocusId( self.mCtrlGropCHList.getId() )
+
+						except Exception, e :
+							LOG_TRACE( 'Error except[%s]'% e )
+
+					else :
+						self.SetGoBackWindow()
+
 				else :
 					self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
-					#self.setFocusId( self.mCtrlListSubmenu.getId() )
-					#self.setFocusId( self.mCtrlGropSubmenu.getId() )
 
 
 		elif id == Action.ACTION_PARENT_DIR :
@@ -310,54 +348,6 @@ class ChannelListWindow(BaseWindow):
 			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 
 
-
-		elif aControlId == self.mCtrlRadioTune.getId() :
-			self.mCtrlRadioTune.setSelected( True )
-			self.mCtrlRadioMark.setSelected( False )
-			self.mIsMark = False
-
-		elif aControlId == self.mCtrlRadioMark.getId() :
-			self.mCtrlRadioTune.setSelected( False )
-			self.mCtrlRadioMark.setSelected( True )
-			self.mIsMark = True
-
-
-		elif aControlId == self.mCtrlBtnEdit.getId() :
-			LOG_TRACE( 'onclick opt edit' )
-
-			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
-				self.mViewMode = WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW
-
-				try :
-					#Event UnRegister
-					#self.mEventBus.Deregister( self )
-
-					self.InitSlideMenuHeader()
-					self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
-					xbmc.sleep(50)
-					self.SubMenuAction(E_SLIDE_ACTION_MAIN, E_SLIDE_ALLCHANNEL)
-
-					self.mCtrlListSubmenu.selectItem( 0 )
-					xbmc.sleep(50)
-					self.SubMenuAction(E_SLIDE_ACTION_SUB, ElisEnum.E_MODE_ALL)
-
-					#clear label
-					self.ResetLabel()
-					self.UpdateLabelInfo()
-
-					self.mCtrlListCHList.reset()
-					self.InitChannelList()
-
-					ret = self.mCommander.Channel_Backup()
-					LOG_TRACE( 'channelBackup[%s]'% ret )
-
-				except Exception, e :
-					LOG_TRACE( 'Error except[%s]'% e )
-
-			else :
-				self.SetGoBackWindow()
-
-
 		elif aControlId == self.mCtrlBtnOpt.getId():
 			LOG_TRACE( 'onclick Opt' )
 
@@ -368,7 +358,17 @@ class ChannelListWindow(BaseWindow):
 				mode = FLAG_OPT_LIST
 			self.EditSettingWindow( mode )
 
+		"""
+		elif aControlId == self.mCtrlRadioTune.getId() :
+			self.mCtrlRadioTune.setSelected( True )
+			self.mCtrlRadioMark.setSelected( False )
+			self.mIsMark = False
 
+		elif aControlId == self.mCtrlRadioMark.getId() :
+			self.mCtrlRadioTune.setSelected( False )
+			self.mCtrlRadioMark.setSelected( True )
+			self.mIsMark = True
+		"""
 		LOG_TRACE( 'Leave' )
 
 
@@ -864,9 +864,10 @@ class ChannelListWindow(BaseWindow):
 			#self.mCtrlLblLocalTime2.setLabel( '' )
 
 			#slide edit init
-			self.mCtrlLblEdit1.setLabel( Msg.Strings(MsgId.LANG_EDIT_CHANNEL_LIST) )
-			self.mCtrlLblEdit2.setLabel( Msg.Strings(MsgId.LANG_EDIT_CHANNEL_LIST) )
-			self.mCtrlRadioMisc.setEnabled( False )
+			#self.mCtrlLblEdit1.setLabel( Msg.Strings(MsgId.LANG_EDIT_CHANNEL_LIST) )
+			#self.mCtrlLblEdit2.setLabel( Msg.Strings(MsgId.LANG_EDIT_CHANNEL_LIST) )
+			#self.mCtrlRadioMisc.setEnabled( False )
+			self.mCtrlGropOpt.setVisible( False )
 
 		else :
 			#slide menu disable
@@ -878,11 +879,12 @@ class ChannelListWindow(BaseWindow):
 			#self.mCtrlLblLocalTime2.setLabel( '' )
 
 			#slide edit init
-			self.mCtrlLblEdit1.setLabel( Msg.Strings(MsgId.LANG_UPDATE_CHANNEL_LIST) )
-			self.mCtrlLblEdit2.setLabel( Msg.Strings(MsgId.LANG_UPDATE_CHANNEL_LIST) )
-			self.mCtrlRadioMisc.setEnabled( True )
-			self.mCtrlRadioMark.setSelected( True )
-			self.mCtrlRadioTune.setSelected( False )
+			#self.mCtrlLblEdit1.setLabel( Msg.Strings(MsgId.LANG_UPDATE_CHANNEL_LIST) )
+			#self.mCtrlLblEdit2.setLabel( Msg.Strings(MsgId.LANG_UPDATE_CHANNEL_LIST) )
+			#self.mCtrlRadioMisc.setEnabled( True )
+			#self.mCtrlRadioMark.setSelected( True )
+			#self.mCtrlRadioTune.setSelected( False )
+			self.mCtrlGropOpt.setVisible( True )
 
 			return
 
@@ -916,6 +918,7 @@ class ChannelListWindow(BaseWindow):
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_SATELLITE)    )
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_FTA)          )
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_FAVORITE)     )
+		list_Mainmenu.append( 'Edit' )
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_BACK)     )
 		testlistItems = []
 		for item in range( len(list_Mainmenu) ) :
