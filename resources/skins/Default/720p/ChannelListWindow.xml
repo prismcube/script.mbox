@@ -695,22 +695,22 @@
 					</focusedlayout>
 					<content>
 						<item id="1">
-							<label>SCRIPT541</label>
+							<label>SCRIPT590</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="2">
-							<label>SCRIPT542</label>
+							<label>SCRIPT591</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="3">
-							<label>SCRIPT543</label>
+							<label>SCRIPT592</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="4">
-							<label>SCRIPT544</label>
+							<label>SCRIPT593</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
