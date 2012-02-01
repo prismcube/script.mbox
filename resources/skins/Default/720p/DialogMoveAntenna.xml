@@ -125,8 +125,8 @@
 						<posy>75</posy>
 						<width>35</width>
 						<height>35</height>
-						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
-						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
+						<texturenofocus>confluence/OSDRewindPlayNF.png</texturenofocus>
+						<texturefocus>confluence/OSDRewindPlayFO.png</texturefocus>
 						<onleft>9101</onleft>
 						<onright>9301</onright>
 						<onup>101</onup>
