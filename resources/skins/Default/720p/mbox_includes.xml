@@ -175,20 +175,6 @@
 			<fadetime>1000</fadetime>
 		</control>
 	</include>
-	
-
-	<include name="DefaultBehindDialogFadeOut">
-		<control type="image">
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>1280</width>
-			<height>720</height>
-			<texture>black-back.png</texture>
-			<animation effect="fade" time="400">Visible</animation>
-			<animation effect="fade" time="200">Hidden</animation>
-			<visible>true</visible>
-		</control>
-	</include>
 
 	<include name="DefaultWindowTitleCommons">
 		<posy>0</posy>

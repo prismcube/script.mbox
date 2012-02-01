@@ -130,7 +130,7 @@ class ManualScan( SettingWindow ):
 					self.SetControlLabel2String( E_Input02, '%d MHz' % self.mConfigTransponder.mFrequency )
 
 		# Symbol Rate
-		elif groupId == E_Input04 :
+		elif groupId == E_Input03 :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( 'Symbol Rate', '%d' % self.mConfigTransponder.mSymbolRate, 5 )
  			dialog.doModal( )
@@ -143,10 +143,10 @@ class ManualScan( SettingWindow ):
 				else :
 					self.mConfigTransponder.mSymbolRate = int( tempval )
 
-				self.SetControlLabel2String( E_Input04, '%d KS/s' % self.mConfigTransponder.mSymbolRate )
+				self.SetControlLabel2String( E_Input03, '%d KS/s' % self.mConfigTransponder.mSymbolRate )
 
 		# Start Search
-		elif groupId == E_Input05 : #ToDO : Have to support manual input
+		elif groupId == E_Input04 : #ToDO : Have to support manual input
 			transponderList = []
 			config = self.mConfiguredSatelliteList[self.mSelectedSatelliteIndex]
 
@@ -199,7 +199,7 @@ class ManualScan( SettingWindow ):
 		count = len( self.mFormattedSatelliteList )
 		
 		if count <= 0 :
-			hideControlIds = [ E_Input01, E_Input02, E_Input04, E_Input05, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
+			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
 			self.SetVisibleControls( hideControlIds, False )
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Has no configured satellite' )
 
@@ -231,11 +231,11 @@ class ManualScan( SettingWindow ):
 			self.SetProp( E_SpinEx04, self.mConfigTransponder.mPolarization )
 
 			# Symbolrate
-			self.AddInputControl( E_Input04, ' - Symbol Rate', '%d KS/s' % self.mConfigTransponder.mSymbolRate , 'Select Symbol Rate' )
+			self.AddInputControl( E_Input03, ' - Symbol Rate', '%d KS/s' % self.mConfigTransponder.mSymbolRate , 'Select Symbol Rate' )
 			
 			self.AddEnumControl( E_SpinEx05, 'Network Search', None, 'Select Network Search' )
 			self.AddEnumControl( E_SpinEx06, 'Channel Search Mode',None, 'Select Channel Search Mode' )
-			self.AddInputControl( E_Input05, 'Start Search', '', 'Start Search' )
+			self.AddInputControl( E_Input04, 'Start Search', '', 'Start Search' )
 
 			self.InitControl( )
 			self.DisableControl( )
@@ -321,8 +321,8 @@ class ManualScan( SettingWindow ):
 
 
 	def DisableControl( self ) :
-#		disablecontrols = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input03, E_Input04 ]
-		disablecontrols = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input04 ]
+#		disablecontrols = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input03, E_Input03 ]
+		disablecontrols = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input03 ]
 		if self.mIsManualSetup == 0 :
 			self.SetEnableControls( disablecontrols, False )
 			#self.SetEnableControl( E_Input02, True )

@@ -81,8 +81,8 @@
 						<posy>75</posy>
 						<width>35</width>
 						<height>35</height>
-						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
-						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
+						<texturenofocus>confluence/OSDRewindNF.png</texturenofocus>
+						<texturefocus>confluence/OSDRewindFO.png</texturefocus>
 						<onleft>9501</onleft>
 						<onright>9201</onright>
 						<onup>101</onup>
@@ -177,7 +177,7 @@
 						<ondown>101</ondown>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>40</posy>
 						<width>120</width>
 						<height>40</height>
@@ -185,11 +185,11 @@
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>[B]Stop Move[/B]</label>
+						<label>[B]Stop[/B]</label>
 						<visible>![Control.HasFocus(9301)]</visible>
 					</control>
 					<control type="label">
-						<posx>10</posx>
+						<posx>30</posx>
 						<posy>40</posy>
 						<width>120</width>
 						<height>40</height>
@@ -197,7 +197,7 @@
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>[B]Stop Move[/B]</label>
+						<label>[B]Stop[/B]</label>
 						<visible>[Control.HasFocus(9301)]</visible>
 					</control>
 				</control>
@@ -273,7 +273,7 @@
 						<textcolor>grey2</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>[B]Step East[/B]</label>
+						<label>[B]Move East[/B]</label>
 						<visible>![Control.HasFocus(9501)]</visible>
 					</control>
 					<control type="label">
@@ -285,7 +285,7 @@
 						<textcolor>white</textcolor>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>[B]Step East[/B]</label>
+						<label>[B]Move East[/B]</label>
 						<visible>[Control.HasFocus(9501)]</visible>
 					</control>
 				</control>
