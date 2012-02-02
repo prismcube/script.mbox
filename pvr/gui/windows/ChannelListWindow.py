@@ -380,28 +380,33 @@ class ChannelListWindow(BaseWindow):
 		LOG_TRACE( 'Enter' )
 
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
-			self.SaveSlideMenuHeader()
+			ret = False
+			ret = self.SaveSlideMenuHeader()
+			if ret != E_DIALOG_STATE_CANCEL :
+				self.mEnableThread = False
+				self.CurrentTimeThread().join()
+				self.mCtrlListCHList.reset()
+				self.close()
 
-			self.mEnableThread = False
-			self.CurrentTimeThread().join()
-			self.mCtrlListCHList.reset()
-			self.close()
+			LOG_TRACE( 'go out Cancel')
 
 		else :
-			self.SaveEditList()
-			self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
-			self.mCtrlListCHList.reset()
-			self.InitSlideMenuHeader()
-			self.InitChannelList()
+			ret = False
+			ret = self.SaveEditList()
+			if ret != E_DIALOG_STATE_CANCEL :
+				self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
+				self.mCtrlListCHList.reset()
+				self.InitSlideMenuHeader()
+				self.InitChannelList()
 
-			#clear label
-			self.ResetLabel()
+				#clear label
+				self.ResetLabel()
 
-			#initialize get epg event
-			self.InitEPGEvent()
-			self.UpdateLabelInfo()
-			#Event Register
-			#self.mEventBus.Register( self )
+				#initialize get epg event
+				self.InitEPGEvent()
+				self.UpdateLabelInfo()
+				#Event Register
+				#self.mEventBus.Register( self )
 
 		LOG_TRACE( 'Leave' )
 
@@ -466,18 +471,23 @@ class ChannelListWindow(BaseWindow):
 		channelNumbr = ParseLabelToCh( self.mViewMode, label )
 		LOG_TRACE( 'label[%s] ch[%d]'% (label, channelNumbr) )
 
+		ret = False
 		ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
 		#LOG_TRACE( 'MASK[%s] ret[%s]'% (self.mPincodeEnter, ret) )
 		if ret == True :
 			if self.mPincodeEnter == FLAG_MASK_NONE :
 				if self.mCurrentChannel == channelNumbr :
-					self.SaveSlideMenuHeader()
-					self.mEnableThread = False
-					self.CurrentTimeThread().join()
-					self.close()
+					ret = False
+					ret = self.SaveSlideMenuHeader()
+					if ret != E_DIALOG_STATE_CANCEL :
+						self.mEnableThread = False
+						self.CurrentTimeThread().join()
+						self.close()
 
-					WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-					return
+						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+						return
+
+					LOG_TRACE( 'go out Cancel' )
 
 				else :
 					pass
@@ -778,7 +788,7 @@ class ChannelListWindow(BaseWindow):
 		"""
 
 		changed = False
-		ret = False
+		ret = E_DIALOG_STATE_NO
 
 		if self.mSelectMainSlidePosition == self.mLastMainSlidePosition and \
 		   self.mSelectSubSlidePosition == self.mLastSubSlidePosition :
@@ -789,6 +799,7 @@ class ChannelListWindow(BaseWindow):
 		#is change?
 		if changed :
 			try :
+				GuiLock2( True )
 				#ask save question
 				label1 = EnumToString( 'mode', self.mZappingMode )
 				label2 = self.mCtrlListSubmenu.getSelectedItem().getLabel()
@@ -797,11 +808,15 @@ class ChannelListWindow(BaseWindow):
 				line1 = '%s / %s'% ( label1.title(), label2.title() )
 				line2 = Msg.Strings( MsgId.LANG_DO_YOU_WANT_TO_SAVE_CHANNELS )
 
-				ret = xbmcgui.Dialog().yesno(head, line1, '', line2)
-				#LOG_TRACE( 'dialog ret[%s]' % ret )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( head, str('%s\n\n%s'% (line1,line2)) )
+				dialog.doModal()
+				GuiLock2( False )
+
+				ret = dialog.IsOK()
 
 				#anser is yes
-				if ret == True :
+				if ret == E_DIALOG_STATE_YES :
 					#re-configuration class
 					self.mElisSetZappingModeInfo.reset()
 					self.mElisSetZappingModeInfo.mMode = self.mZappingMode
@@ -831,33 +846,44 @@ class ChannelListWindow(BaseWindow):
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
 
+		return ret
+
 		LOG_TRACE( 'Leave' )
 
 
 	def SaveEditList( self ) :
 		LOG_TRACE( 'Enter' )
 
+		ret = E_DIALOG_STATE_NO
+
 		#is change?
 		if self.mIsSave :
-			self.mIsSave = FLAG_MASK_NONE
-
 			#ask save question
 			head =  Msg.Strings( MsgId.LANG_CONFIRM )
 			line1 = Msg.Strings( MsgId.LANG_DO_YOU_WANT_TO_SAVE_CHANNELS )
 
-			ret = xbmcgui.Dialog().yesno(head, line1)
+			#ret = xbmcgui.Dialog().yesno(head, line1)
+			GuiLock2( True )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( head, line1 )
+			dialog.doModal()
+			GuiLock2( False )
+
+			ret = dialog.IsOK()
 
 			#answer is yes
-			if ret :
+			if ret == E_DIALOG_STATE_YES :
+				self.mIsSave = FLAG_MASK_NONE
 				isSave = self.mCommander.Channel_Save()
 				LOG_TRACE( 'save[%s]'% isSave )
 
-			else :
+			elif ret == E_DIALOG_STATE_NO :
+				self.mIsSave = FLAG_MASK_NONE
 				isSave = self.mCommander.Channel_Restore( True )
 				LOG_TRACE( 'Restore[%s]'% isSave )
 
 
-
+		return ret
 
 		LOG_TRACE( 'Leave' )
 
@@ -1291,11 +1317,20 @@ class ChannelListWindow(BaseWindow):
 		#popup pin-code dialog
 		if self.mPincodeEnter > FLAG_MASK_NONE :
 			try :
-				msg1 = Msg.Strings(MsgId.LANG_INPUT_PIN_CODE)
+				msg = Msg.Strings(MsgId.LANG_INPUT_PIN_CODE)
 				#msg2 = Msg.Strings(MsgId.LANG_CURRENT_PIN_CODE)
 
 				inputPin = ''
-				inputPin = xbmcgui.Dialog().numeric( 0, msg1 )
+
+				GuiLock2( True )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+				dialog.SetDialogProperty( msg, '', 4, True )
+	 			dialog.doModal()
+				GuiLock2( False )
+
+	 			if dialog.IsOK() == E_DIALOG_STATE_YES :
+	 				inputPin = dialog.GetString()
+				
 				stbPin = PincodeLimit( self.mCommander, inputPin )
 				if inputPin == None or inputPin == '' :
 					inputPin = ''
@@ -1305,6 +1340,12 @@ class ChannelListWindow(BaseWindow):
 				if inputPin == str('%s'% stbPin) :
 					self.mPincodeEnter = FLAG_MASK_NONE
 					LOG_TRACE( 'Pincode success' )
+				else:
+					msg1 = Msg.Strings(MsgId.LANG_ERROR)
+					msg2 = Msg.Strings(MsgId.LANG_WRONG_PIN_CODE)
+					GuiLock2( True )
+					xbmcgui.Dialog().ok( msg1, msg2 )
+					GuiLock2( False )
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
