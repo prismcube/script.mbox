@@ -387,7 +387,6 @@ class Configure( SettingWindow ) :
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]
 			if dhcp == E_DHCP_ON :
 				self.SetEnableControls( visibleControlIds, False )
-				
 			elif dhcp == E_DHCP_OFF :
 				self.SetEnableControls( visibleControlIds, True )
 
@@ -442,6 +441,7 @@ class Configure( SettingWindow ) :
 				self.SetControlLabelString( E_Input05, 'Save' )
 			elif ElisPropertyEnum( 'DHCP', self.mCommander ).GetProp( ) == E_DHCP_ON :
 				self.SetControlLabelString( E_Input05, 'Get IP Address' )
+			self.DisableControl( E_IP_SETTING )
 			
 		elif aControlId == E_Input01 :		# IpAddr
 			self.mTempIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Input Ip Address', '%d.%d.%d.%d' % MakeHexToIpAddr( self.mTempIpAddr ) )

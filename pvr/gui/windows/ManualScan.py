@@ -205,10 +205,10 @@ class ManualScan( SettingWindow ):
 
 		else :
 			self.AddInputControl( E_Input01, 'Satellite', self.mFormattedSatelliteList[self.mSelectedSatelliteIndex], 'Select satellite' )
-			self.AddUserEnumControl( E_SpinEx01, 'Manual Setup', USER_ENUM_LIST_ON_OFF, self.mIsManualSetup )
+			self.AddUserEnumControl( E_SpinEx01, 'Custom Setup', USER_ENUM_LIST_ON_OFF, self.mIsManualSetup )
 
 			if self.mIsManualSetup == 0 :
-				self.AddInputControl( E_Input02, ' - Transponder Frequency', '%d MHz' % self.mConfigTransponder.mFrequency, 'Select Transponder Frequency' )
+				self.AddInputControl( E_Input02, ' - Select Transponder Frequency', '%d MHz' % self.mConfigTransponder.mFrequency, 'Select Transponder Frequency' )
 			else :
 				self.AddInputControl( E_Input02, ' - Set Frequency', '%d MHz' % self.mConfigTransponder.mFrequency, 'Input Manual Frequency' )
 			# Frequency

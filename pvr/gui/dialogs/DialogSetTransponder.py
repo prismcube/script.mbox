@@ -19,6 +19,7 @@ class DialogSetTransponder( SettingDialog ) :
 		self.mFec			= 0
 		self.mPolarization	= 0
 		self.mSimbolicRate	= 0
+		self.mSatellite		= None
 		
 		
 	def onInit( self ) :
@@ -133,11 +134,12 @@ class DialogSetTransponder( SettingDialog ) :
 		return self.mFrequency, self.mFec, self.mPolarization, self.mSimbolicRate
 
 
-	def SetDefaultValue( self, aFrequency, aFec, aPolarization, aSimbolicRate ) :
+	def SetDefaultValue( self, aFrequency, aFec, aPolarization, aSimbolicRate, aSatellite ) :
 		self.mFrequency		= aFrequency
 		self.mFec			= aFec
 		self.mPolarization	= aPolarization
 		self.mSimbolicRate	= aSimbolicRate
+		self.mSatellite		= aSatellite
 		
 
 	def DrawItem( self ) :
