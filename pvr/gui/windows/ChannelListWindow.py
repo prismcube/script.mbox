@@ -420,17 +420,31 @@ class ChannelListWindow(BaseWindow):
 						ret = None
 						ret = self.mCommander.Epgevent_GetPresent()
 						if ret :
-							self.mNavEpg = ret
-							self.mEventId = aEvent.mEventId
 							LOG_TRACE('2========event id[%s] old[%s]'% (aEvent.mEventId, self.mEventId) )
+							self.mEventId = aEvent.mEventId
+
+							if not self.mNavEpg or \
+							   ret.mEventId != self.mNavEpg.mEventId or \
+							   ret.mSid != self.mNavEpg.mSid or \
+							   ret.mTsid != self.mNavEpg.mTsid or \
+							   ret.mOnid != self.mNavEpg.mOnid :
+								LOG_TRACE('epg DIFFER')
+								self.mNavEpg = ret
+
+								#update label
+								self.ResetLabel()
+								self.UpdateLabelInfo()
+
+							else:
+								LOG_TRACE('epg SAME')
+
+
+						else:
+							LOG_TRACE('2========ret fail[%s] [%s]'% (ret, ClassToList('convert',ret)) )
 
 						#not select, key up/down,
 					#else :
 					#	ret = self.InitEPGEvent()
-
-					#update label
-					self.ResetLabel()
-					self.UpdateLabelInfo()
 
 
 			else :
@@ -1125,7 +1139,7 @@ class ChannelListWindow(BaseWindow):
 		try :
 			if self.mIsSelect == True :
 				ret = self.mCommander.Epgevent_GetPresent()
-				xbmc.sleep(500)
+				xbmc.sleep(50)
 				if ret :
 					self.mNavEpg = ret
 					ret.printdebug()
@@ -1142,16 +1156,19 @@ class ChannelListWindow(BaseWindow):
 							self.mNavChannel = ch
 							LOG_TRACE( 'found ch: getlabel[%s] ch[%s]'% (channelNumbr, ch.mNumber ) )
 
-							gmtFrom = self.mLocalTime - self.mLocalOffset
-							gmtUntil= 0
+							gmtime = self.mCommander.Datetime_GetGMTTime()
+							gmtFrom = gmtime
+							gmtUntil= gmtime
 							maxCount= 1
+							ret = None
 							ret = self.mCommander.Epgevent_GetList( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount )
-							xbmc.sleep(500)
-							LOG_TRACE('=============epg get[%s]'% ClassToList('convert', ret ) )
+							xbmc.sleep(50)
+							LOG_TRACE('=============epg len[%s] list[%s]'% (len(ret),ClassToList('convert', ret )) )
 							if ret :
-								self.mNavEpg = ret
-								ret.printdebug()
-
+								self.mNavEpg = ret[0]
+							else :
+								self.mNavEpg = 0
+							
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -1333,12 +1350,11 @@ class ChannelListWindow(BaseWindow):
 			#progress
 
 			if  ( loop % 10 ) == 0 :
-				LOG_TRACE( 'loop=%d'% loop )
+				LOG_TRACE( '<<<< loop=%d'% loop )
 				self.UpdateLocalTime( )
 
-
 			#local clock
-			ret = EpgInfoClock(FLAG_CLOCKMODE_ADMYHM, self.mLocalTime, loop)
+			#ret = EpgInfoClock(FLAG_CLOCKMODE_ADMYHM, self.mLocalTime, loop)
 			#self.mCtrlLblLocalTime1.setLabel(ret[0])
 			#self.mCtrlLblLocalTime2.setLabel(ret[1])
 
@@ -1359,8 +1375,9 @@ class ChannelListWindow(BaseWindow):
 
 			if self.mNavEpg :
 				endTime = self.mNavEpg.mStartTime + self.mNavEpg.mDuration
-		
-				pastDuration = endTime - self.mLocalTime
+				pastDuration = self.mLocalTime - endTime
+				LOG_TRACE('past[%s] time[%s] start[%s] duration[%s] offset[%s]'% (pastDuration,self.mLocalTime, self.mNavEpg.mStartTime, self.mNavEpg.mDuration,self.mLocalOffset ) )
+
 				if pastDuration < 0 :
 					pastDuration = 0
 
@@ -1369,7 +1386,7 @@ class ChannelListWindow(BaseWindow):
 				else :
 					percent = 0
 
-				#LOG_TRACE( 'percent=%d'% percent )
+				LOG_TRACE( 'percent=%d'% percent )
 				self.mCtrlProgress.setPercent( percent )
 
 		except Exception, e :
