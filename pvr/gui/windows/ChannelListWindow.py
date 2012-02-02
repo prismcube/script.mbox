@@ -293,7 +293,10 @@ class ChannelListWindow(BaseWindow):
 			elif self.mFocusId == self.mCtrlBtnOpt :
 				self.mCtrlListCHList.setEnabled( True )
 				self.setFocusId( self.mCtrlGropCHList.getId() )
-				
+
+		elif id == Action.ACTION_SHOW_INFO :
+			LOG_TRACE( 'popup opt' )
+			self.PopupOpt()
 
 		elif id == 13: #'x'
 			#this is test
@@ -351,13 +354,8 @@ class ChannelListWindow(BaseWindow):
 
 		elif aControlId == self.mCtrlBtnOpt.getId():
 			LOG_TRACE( 'onclick Opt' )
+			self.PopupOpt()
 
-			mode = FLAG_OPT_LIST
-			if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
-				mode = FLAG_OPT_GROUP
-			else :
-				mode = FLAG_OPT_LIST
-			self.EditSettingWindow( mode )
 
 		"""
 		elif aControlId == self.mCtrlRadioTune.getId() :
@@ -928,7 +926,7 @@ class ChannelListWindow(BaseWindow):
 			#self.mCtrlRadioMisc.setEnabled( True )
 			#self.mCtrlRadioMark.setSelected( True )
 			#self.mCtrlRadioTune.setSelected( False )
-			#self.mCtrlGropOpt.setVisible( True )
+			self.mCtrlGropOpt.setVisible( True )
 
 			return
 
@@ -2013,5 +2011,18 @@ class ChannelListWindow(BaseWindow):
 
 
 		LOG_TRACE( 'Leave' )
-	
+
+
+	def PopupOpt( self ) :
+		LOG_TRACE( 'Enter' )
+
+		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
+			mode = FLAG_OPT_LIST
+			if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
+				mode = FLAG_OPT_GROUP
+			else :
+				mode = FLAG_OPT_LIST
+			self.EditSettingWindow( mode )
+
+		LOG_TRACE( 'Leave' )
 

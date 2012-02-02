@@ -907,8 +907,8 @@
 
 <!-- edit button -->
 		<control type="group" id="500">
-			<posx>670</posx>
-			<posy>590</posy>
+			<posx>1100</posx>
+			<posy>620</posy>
 			<onup>49</onup>
 			<!-- Opt Edit Button -->
 			<control type="button" id="501">
