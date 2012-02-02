@@ -139,8 +139,8 @@
 				<height>521</height>
 				<onleft>102</onleft>
 				<onright>61</onright>
-				<onup>49</onup>
-				<ondown>49</ondown>
+				<onup>50</onup>
+				<ondown>50</ondown>
 				<pagecontrol>61</pagecontrol>
 				<scrolltime>200</scrolltime>
 				<focusposition>0</focusposition>
