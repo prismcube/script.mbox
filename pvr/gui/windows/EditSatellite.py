@@ -99,7 +99,11 @@ class EditSatellite( SettingWindow ) :
 				 
 		# Delete Satellite
 		elif groupId == E_Input05 :
-			if xbmcgui.Dialog( ).yesno('Confirm', 'Do you want to delete satellite?') == 1 :
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( 'Confirm', 'Do you want to delete satellite?' )
+			dialog.doModal( )
+
+			if dialog.IsOK() == E_DIALOG_STATE_YES :
 				satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
 				ConfigMgr.GetInstance( ).DeleteSatellite( satellite.mLongitude, satellite.mBand )
 				self.mSatelliteIndex = 0

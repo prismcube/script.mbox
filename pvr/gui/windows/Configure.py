@@ -465,7 +465,12 @@ class Configure( SettingWindow ) :
 
 		elif aControlId == E_Input05 :
 			if ElisPropertyEnum( 'DHCP', self.mCommander ).GetProp( ) == E_DHCP_OFF :
-				if xbmcgui.Dialog( ).yesno( 'Save', 'Save Ip?' ) :
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( 'Configure', 'Save Ip?' )
+				dialog.doModal( )
+
+				if dialog.IsOK() == E_DIALOG_STATE_YES :
 					self.SaveIp( )
+
 			elif ElisPropertyEnum( 'DHCP', self.mCommander ).GetProp( ) == E_DHCP_ON :
 				pass

@@ -165,7 +165,11 @@ class EditTransponder( SettingWindow ) :
 	 		if len( self.mTransponderList ) <= 0 :
 	 			xbmcgui.Dialog( ).ok( 'Information', 'Satellite has no transponder info.\nFirst add new transponder' )
 	 		else :
-		 		if xbmcgui.Dialog( ).yesno('Confirm', 'Do you want to delete transponder?') == 1 :
+		 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( 'Confirm', 'Do you want to delete transponder?' )
+				dialog.doModal( )
+
+				if dialog.IsOK() == E_DIALOG_STATE_YES :
 			 		satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
 			 		tmplist = []
 			 		tmplist.append( self.mTransponderList[self.mTransponderIndex] )

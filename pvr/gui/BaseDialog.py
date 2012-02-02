@@ -82,20 +82,18 @@ class SettingDialog( BaseDialog ):
 				control.selectItem( ctrlItem.mSelecteItem )
 
 			if ctrlItem.mControlId == E_SETTING_DIALOG_BUTTON_OK_ID :
-				self.getControl( ctrlItem.mControlId ).setPosition( 57, ( ( pos + 1 ) * 40 ) + 160 )
-
+				self.getControl( ctrlItem.mControlId ).setPosition( 57,  pos + 185 )
 			elif ctrlItem.mControlId == E_SETTING_DIALOG_BUTTON_CANCEL_ID :
-				self.getControl( ctrlItem.mControlId ).setPosition( 277, ( pos * 40 ) + 160 )
-				
+				self.getControl( ctrlItem.mControlId ).setPosition( 277, pos + 185 )
 			else :
-				self.getControl( ctrlItem.mControlId ).setPosition( 0, ( pos * 40 ) + 175 )
-			pos += 1
+				pos += self.getControl( ctrlItem.mControlId ).getHeight( )
+				self.getControl( ctrlItem.mControlId ).setPosition( 0, pos + 125)
 
 		if self.mIsAutomaicHeight == True :
 			if self.mIsOkCancelType == True :
-				self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).setHeight( ( pos * 40 ) + 100 )
+				self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).setHeight( pos + 165 )
 			else :
-				self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).setHeight( ( pos * 40 ) + 120 )
+				self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).setHeight( pos + 135 )
 
 
 	def SetAutoHeight( self, mMode ) :
