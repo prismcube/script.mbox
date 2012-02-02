@@ -119,7 +119,7 @@
 			<aspectratio>stretch</aspectratio>
 			<texture>confluence/GlassTitleBar.png</texture>
 		</control>
-		<control type="button" id="6996">
+		<control type="button" id="6995">
 			<description>Close Window button</description>
 			<posx>520</posx>
 			<posy>109</posy>
@@ -130,10 +130,8 @@
 			<onclick>PreviousMenu</onclick>
 			<texturefocus>confluence/DialogCloseButton-focus.png</texturefocus>
 			<texturenofocus>confluence/DialogCloseButton.png</texturenofocus>
-			<onleft>10</onleft>
-			<onright>10</onright>
-			<onup>10</onup>
-			<ondown>10</ondown>
+			<onleft>6997</onleft>
+			<onright>6999</onright>
 		</control>
 		<control type="label" id="3005">
 			<description>header label</description>

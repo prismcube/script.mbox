@@ -82,7 +82,9 @@ class TunerConfiguration( SettingWindow ) :
 
 	 		elif len( configuredList ) + 1 == position :
 	 			if len( configuredList ) <= 0 :
-	 				xbmcgui.Dialog( ).ok( 'ERROR', 'Empty Configured Satellite' )
+	 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( 'ERROR', 'Empty Configured Satellite' )
+		 			dialog.doModal( )
 	 				return
 	 			else :
 					dialog = xbmcgui.Dialog()

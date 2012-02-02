@@ -96,7 +96,7 @@ class SettingDialog( BaseDialog ):
 			else :
 				self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).setHeight( pos + 135 )
 
-		#self.mControlList.append( ControlItem( ControlItem.E_SETTING_CLOSE_BUTTON, E_SETTING_DIALOG_BUTTON_CLOSE, None, None, None, None ) )
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_CLOSE_BUTTON, E_SETTING_DIALOG_BUTTON_CLOSE, None, None, None, None ) )
 
 
 	def SetAutoHeight( self, mMode ) :

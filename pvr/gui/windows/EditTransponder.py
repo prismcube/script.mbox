@@ -87,7 +87,9 @@ class EditTransponder( SettingWindow ) :
 	 	# Select frequency
 	 	elif groupId == E_Input02 :
 	 		if len( self.mTransponderList ) <= 0 :
-	 			xbmcgui.Dialog( ).ok( 'Information', 'Satellite has no transponder info.\nFirst add new transponder' )
+	 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'Information', 'Satellite has no transponder info.\nFirst add new transponder' )
+	 			dialog.doModal( )
 	 		else :
 		 		frequencylist = []
 		 		for i in range( len( self.mTransponderList ) ) :
@@ -130,7 +132,9 @@ class EditTransponder( SettingWindow ) :
 		# Edit Transponder
 		elif groupId == E_Input07 :
 			if len( self.mTransponderList ) <= 0 :
-	 			xbmcgui.Dialog( ).ok( 'Information', 'Satellite has no transponder info.\nFirst add new transponder' )
+	 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'Information', 'Satellite has no transponder info.\nFirst add new transponder' )
+	 			dialog.doModal( )
 	 		else :
 	 			satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_TRANSPONDER )
@@ -167,7 +171,9 @@ class EditTransponder( SettingWindow ) :
 	 	# Delete Transponder
 	 	elif groupId == E_Input06 :
 	 		if len( self.mTransponderList ) <= 0 :
-	 			xbmcgui.Dialog( ).ok( 'Information', 'Satellite has no transponder info.\nFirst add new transponder' )
+	 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'Information', 'Satellite has no transponder info.\nFirst add new transponder' )
+	 			dialog.doModal( )
 	 		else :
 		 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( 'Confirm', 'Do you want to delete transponder?' )

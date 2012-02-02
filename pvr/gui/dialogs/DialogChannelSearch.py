@@ -244,7 +244,10 @@ class DialogChannelSearch( BaseDialog ) :
 			tvCount = len( self.mTvListItems )
 			radioCount = len( self.mRadioListItems )
 			searchResult = 'TV Channels : %d \nRadio Channels : %d' %( tvCount, radioCount )
-			xbmcgui.Dialog( ).ok( 'Infomation', searchResult )
+			
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( 'Infomation', searchResult )
+ 			dialog.doModal( )
 
 
 	def UpdateAddChannel(self, aEvent ):

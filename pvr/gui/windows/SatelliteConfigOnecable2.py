@@ -105,12 +105,14 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 	def onClose( self ) :
 		if ConfigMgr.GetInstance( ).GetCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
 			if self.GetSelectedIndex( E_SpinEx02 ) == self.GetSelectedIndex( E_SpinEx04 ) :
-				dialog = xbmcgui.Dialog()
-				dialog.ok( 'ERROR', 'Please set a different value for each tuner.' )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'ERROR', 'Please set a different value for each tuner.' )
+	 			dialog.doModal( )
 				return
 			if self.GetSelectedIndex( E_SpinEx03 ) == self.GetSelectedIndex( E_SpinEx05 ) :
-				dialog = xbmcgui.Dialog()
-				dialog.ok( 'ERROR', 'Please set a different value for each tuner.' )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'ERROR', 'Please set a different value for each tuner.' )
+	 			dialog.doModal( )
 				return
 
 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )

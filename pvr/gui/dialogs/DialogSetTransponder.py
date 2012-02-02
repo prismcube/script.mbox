@@ -71,11 +71,15 @@ class DialogSetTransponder( SettingDialog ) :
 					return
 				
 				if self.mSatelliteBand == ElisEnum.E_BAND_KU and int( tempval ) < 5150 :
-					xbmcgui.Dialog( ).ok( 'ERROR', 'Please input Ku Band Satellite' )
+					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( 'ERROR', 'Please input Ku Band Satellite' )
+		 			dialog.doModal( )
 					return
 
 				if self.mSatelliteBand == ElisEnum.E_BAND_C and int( tempval ) > 10000 :
-					xbmcgui.Dialog( ).ok( 'ERROR', 'Please input C Band Satellite' )
+					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( 'ERROR', 'Please input C Band Satellite' )
+		 			dialog.doModal( )
 					return
 					
 				if int( tempval ) > 13000 :
