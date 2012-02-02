@@ -634,7 +634,7 @@
 
 				<control type="list" id="102">
 					<posx>0</posx>
-					<posy>250</posy>
+					<posy>110</posy>
 					<width>250</width>
 					<height>600</height>
 					<onleft>49</onleft>
@@ -643,42 +643,50 @@
 					<ondown>102</ondown>
 					<scrolltime>300</scrolltime>
 					<textcolor>grey3</textcolor>
-					<!--focusposition>0</focusposition-->
 					<movement>10</movement>
 					<!--animation effect="fade" start="0" end="100" time="200">Visible</animation-->
-					<itemlayout height="70" width="255">
+					<itemlayout height="40" width="255">
 						<control type="label">
-							<posx>20r</posx>
+							<posx>10</posx>
 							<posy>21</posy>
 							<width>250</width>
 							<height>40</height>
-							<font>font12_title</font>
-							<textcolor>grey3</textcolor>
-							<align>right</align>
+							<font>font13caps</font>
+							<textcolor>white</textcolor>
+							<align>left</align>
 							<aligny>center</aligny>
 							<label>$INFO[ListItem.Label]</label>
 							<!--animation effect="zoom" start="85" end="85" center="185,51" time="0" condition="true">Conditional</animation-->
 						</control>
 					</itemlayout>
-					<focusedlayout height="70" width="255">
-						<control type="label">
-							<posx>20r</posx>
+					<focusedlayout height="40" width="255">
+						<control type="image">
+							<animation effect="fade" start="0" end="100" delay="0" time="300" condition="Container(102).HasFocus(1) | Container(102).HasFocus(2) | Container(102).HasFocus(3) | Container(102).HasFocus(4) | Container(102).HasFocus(5) | Container(102).HasFocus(6)">conditional</animation>
+							<animation effect="fade" start="100" end="0" delay="0" time="300" condition="![Container(102).HasFocus(1) | Container(102).HasFocus(2) | Container(102).HasFocus(3) | Container(102).HasFocus(4) | Container(102).HasFocus(5) | Container(102).HasFocus(6)]">conditional</animation>
+							<posx>0</posx>
 							<posy>21</posy>
 							<width>250</width>
 							<height>40</height>
-							<font>font12_title</font>
-							<textcolor>white</textcolor>
-							<align>right</align>
+							<texture>confluence/button-focus.png</texture>
+						</control>
+						<control type="label">
+							<posx>10</posx>
+							<posy>21</posy>
+							<width>250</width>
+							<height>40</height>
+							<font>font13caps</font>
+							<align>left</align>
 							<aligny>center</aligny>
+							<textcolor>white</textcolor>
 							<!--animation effect="zoom" start="85" end="100" center="185,51" time="200">Focus</animation>
 							<animation effect="zoom" start="100" end="85" center="185,51" time="200">UnFocus</animation-->
 							<label>$INFO[ListItem.Label]</label>
 						</control>
 						<control type="image">
-							<posx>20r</posx>
-							<posy>63</posy>
-							<width>10</width>
-							<height>10</height>
+							<posx>30r</posx>
+							<posy>32</posy>
+							<width>18</width>
+							<height>18</height>
 							<texture>confluence/HomeHasSub.png</texture>
 							<visible>Container(102).HasFocus(1) | Container(102).HasFocus(2) | Container(102).HasFocus(3) | Container(102).HasFocus(4)</visible>
 							<!--animation effect="fade" start="0" end="100" time="200">Focus</animation>
@@ -687,22 +695,22 @@
 					</focusedlayout>
 					<content>
 						<item id="1">
-							<label>SCRIPT541</label>
+							<label>SCRIPT590</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="2">
-							<label>SCRIPT542</label>
+							<label>SCRIPT591</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="3">
-							<label>SCRIPT543</label>
+							<label>SCRIPT592</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="4">
-							<label>SCRIPT544</label>
+							<label>SCRIPT593</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
@@ -727,7 +735,7 @@
 					<animation effect="slide" start="0,0" end="-370,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus">Conditional</animation>
 					<control type="list" id="112">
 						<posx>10</posx>
-						<posy>270</posy>
+						<posy>170</posy>
 						<width>230</width>
 						<height>430</height>
 						<align>center</align>
@@ -746,7 +754,7 @@
 								<posy>0</posy>
 								<width>230</width>
 								<height>41</height>
-								<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
+								<!--texture border="0,2,0,2">confluence/MenuItemNF.png</texture-->
 							</control>
 							<control type="label">
 								<posx>10</posx>
@@ -769,8 +777,8 @@
 								<height>41</height>
 								<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 								<visible>!Control.HasFocus(112)</visible>
-								<animation effect="fade" time="300">Visible</animation>
-								<animation effect="fade" time="300">Hidden</animation>
+								<!--animation effect="fade" time="300">Visible</animation>
+								<animation effect="fade" time="300">Hidden</animation-->
 							</control>
 							<control type="image">
 								<posx>0</posx>
@@ -779,8 +787,8 @@
 								<height>41</height>
 								<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
 								<visible>Control.HasFocus(112)</visible>
-								<animation effect="fade" time="300">Visible</animation>
-								<animation effect="fade" time="300">Hidden</animation>
+								<!--animation effect="fade" time="300">Visible</animation>
+								<animation effect="fade" time="300">Hidden</animation-->
 							</control>
 							<control type="label">
 								<posx>10</posx>
