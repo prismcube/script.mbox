@@ -101,8 +101,6 @@ class LivePlate(BaseWindow):
 		self.mCtrlLblEventClock.setLabel('')
 
 		self.mToggleFlag=False
-		self.mEpgStartTime = 0
-		self.mEpgDuration = 0
 		self.mLocalOffset = self.mCommander.Datetime_GetLocalOffset()
 
 		#get channel
@@ -507,13 +505,13 @@ class LivePlate(BaseWindow):
 			#self.mLocalTime = 0
 
 
-		endTime = self.mEpgStartTime + self.mEpgDuration
-		pastDuration = endTime - self.mLocalTime
+		endTime = self.mEventCopy.mStartTime + self.mEventCopy.mDuration
+		pastDuration = self.mLocalTime - endTime
 		if pastDuration < 0 :
 			pastDuration = 0
 
-		if self.mEpgDuration > 0 :
-			percent = pastDuration * 100/self.mEpgDuration
+		if self.mEventCopy.mDuration > 0 :
+			percent = pastDuration * 100/self.mEventCopy.mDuration
 		else :
 			percent = 0
 
