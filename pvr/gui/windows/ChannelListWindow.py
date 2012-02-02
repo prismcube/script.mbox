@@ -267,7 +267,8 @@ class ChannelListWindow(BaseWindow):
 				self.mSlideOpenFlag = True
 
 
-		elif id == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN :
+		elif id == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN or \
+			 id == Action.ACTION_PAGE_UP or id == Action.ACTION_PAGE_DOWN :
 			self.GetFocusId()
 			if self.mFocusId == self.mCtrlListCHList.getId() :
 				if self.mMoveFlag :
@@ -417,14 +418,14 @@ class ChannelListWindow(BaseWindow):
 		if self.mWinId == xbmcgui.getCurrentWindowId() :
 			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
 
-				LOG_TRACE('1========event id[%s] old[%s]'% (aEvent.mEventId, self.mEventId) )
+				#LOG_TRACE('1========event id[%s] old[%s]'% (aEvent.mEventId, self.mEventId) )
 				if int(aEvent.mEventId) != int(self.mEventId) :
 					if self.mIsSelect == True :
 						#on select, clicked
 						ret = None
 						ret = self.mCommander.Epgevent_GetPresent()
 						if ret :
-							LOG_TRACE('2========event id[%s] old[%s]'% (aEvent.mEventId, self.mEventId) )
+							#LOG_TRACE('2========event id[%s] old[%s]'% (aEvent.mEventId, self.mEventId) )
 							self.mEventId = aEvent.mEventId
 
 							if not self.mNavEpg or \
@@ -442,13 +443,6 @@ class ChannelListWindow(BaseWindow):
 							else:
 								LOG_TRACE('epg SAME')
 
-
-						else:
-							LOG_TRACE('2========ret fail[%s] [%s]'% (ret, ClassToList('convert',ret)) )
-
-						#not select, key up/down,
-					#else :
-					#	ret = self.InitEPGEvent()
 
 
 			else :
@@ -1182,7 +1176,7 @@ class ChannelListWindow(BaseWindow):
 						if ch.mNumber == channelNumbr :
 							self.mNavChannel = None
 							self.mNavChannel = ch
-							LOG_TRACE( 'found ch: getlabel[%s] ch[%s]'% (channelNumbr, ch.mNumber ) )
+							#LOG_TRACE( 'found ch: getlabel[%s] ch[%s]'% (channelNumbr, ch.mNumber ) )
 
 							gmtime = self.mCommander.Datetime_GetGMTTime()
 							gmtFrom = gmtime
@@ -1191,7 +1185,7 @@ class ChannelListWindow(BaseWindow):
 							ret = None
 							ret = self.mCommander.Epgevent_GetList( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount )
 							xbmc.sleep(50)
-							LOG_TRACE('=============epg len[%s] list[%s]'% (len(ret),ClassToList('convert', ret )) )
+							#LOG_TRACE('=============epg len[%s] list[%s]'% (len(ret),ClassToList('convert', ret )) )
 							if ret :
 								self.mNavEpg = ret[0]
 							else :
@@ -1731,6 +1725,7 @@ class ChannelListWindow(BaseWindow):
 					xbmc.executebuiltin('xbmc.Container.PreviousViewMode')
 					xbmc.sleep(50)
 					self.mCtrlListCHList.selectItem(idx)
+					self.setFocusId( self.mCtrlGropCHList.getId() )
 					GuiLock2(False)
 					LOG_TRACE( '=============== focus[%s]'% idx )
 				return
@@ -1823,7 +1818,7 @@ class ChannelListWindow(BaseWindow):
 				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 
 			LOG_TRACE('2====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList)) )
-
+			self.mMoveFlag = True
 
 			GuiLock2(True)
 			for idx in self.mMarkList :
@@ -1832,11 +1827,12 @@ class ChannelListWindow(BaseWindow):
 				listItem.setProperty('mark', E_IMG_ICON_MARK)
 
 			self.mCtrlListCHList.selectItem(self.mMarkList[0])
-			GuiLock2(False)
+			self.setFocusId( self.mCtrlGropCHList.getId() )
 
-			self.mMoveFlag = True
 			self.mCtrlLblOpt1.setLabel('[B]OK[/B]')
 			self.mCtrlLblOpt2.setLabel('[B]OK[/B]')
+			GuiLock2(False)
+
 
 			LOG_TRACE ('========= move Init ===' )
 
@@ -1867,6 +1863,7 @@ class ChannelListWindow(BaseWindow):
 				loopS = chidx
 				loopE = self.mMarkList[lastmark]
 				oldmark = loopE
+
 			elif aMove == Action.ACTION_MOVE_DOWN :	
 				updown = 1
 				#chidx = self.mMarkList[lastmark] + updown
@@ -1875,8 +1872,27 @@ class ChannelListWindow(BaseWindow):
 				loopE = self.mMarkList[lastmark] + updown
 				oldmark = loopS
 
-			if chidx < 0 : chidx = 0
-			elif chidx > (len(self.mListItems))-1 : chidx = len(self.mListItems)-1
+			elif aMove == Action.ACTION_PAGE_UP :	
+				updown = -13
+				chidx = self.mMarkList[0] + updown
+				loopS = chidx
+				loopE = self.mMarkList[lastmark] + updown
+				oldmark = self.mMarkList[0]
+
+			elif aMove == Action.ACTION_PAGE_DOWN :	
+				updown = 13
+				#chidx = self.mMarkList[lastmark] + updown
+				chidx = self.mMarkList[0] + updown
+				loopS = self.mMarkList[0] + updown
+				loopE = self.mMarkList[lastmark] + updown
+				oldmark = self.mMarkList[0]
+
+
+			#if chidx < 0 : chidx = 0
+			#elif chidx > (len(self.mListItems))-1 : chidx = len(self.mListItems)-1
+			if chidx < 0 or chidx > ( (len(self.mListItems)-1) - len(self.mMarkList) ) :
+				LOG_TRACE('list limit, do not PAGE MOVE!! idx[%s]'% chidx)
+				return
 			number = self.mChannelList[chidx].mNumber
 
 			if loopS < 0 : loopS = 0
@@ -1889,8 +1905,12 @@ class ChannelListWindow(BaseWindow):
 				retList.append( self.mChannelList[i] )
 
 			#3. update mark list
+			if (int(self.mMarkList[0]) + updown) > (len(self.mListItems))-1 :
+				LOG_TRACE('list limit, do not PAGE MOVE!! idx[%s]'% (int(self.mMarkList[0]) + updown) )
+				return
 			for idx in self.mMarkList :
-				markList.append( int(idx) + updown )
+				idxNew = int(idx) + updown
+				markList.append( idxNew )
 			self.mMarkList = []
 			self.mMarkList = markList
 
@@ -1937,10 +1957,23 @@ class ChannelListWindow(BaseWindow):
 
 			#6. erase old mark
 			GuiLock2(True)
-			listItem = self.mCtrlListCHList.getListItem(oldmark)
-			xbmc.sleep(50)
-			listItem.setProperty( 'mark', '' )
-			self.setFocusId( self.mCtrlGropCHList.getId() )
+			if aMove == Action.ACTION_MOVE_UP or aMove == Action.ACTION_MOVE_DOWN :
+				listItem = self.mCtrlListCHList.getListItem(oldmark)
+				xbmc.sleep(50)
+				listItem.setProperty( 'mark', '' )
+				self.setFocusId( self.mCtrlGropCHList.getId() )
+
+			else:
+				for idx in range(len(self.mMarkList)) :
+					idxOld = oldmark + idx
+					if idxOld > (len(self.mListItems))-1 : 
+						LOG_TRACE('old idx[%s] i[%s]'% (oldmark, idx) )
+						continue
+					listItem = self.mCtrlListCHList.getListItem( idxOld )
+					listItem.setProperty( 'mark', '' )
+					self.setFocusId( self.mCtrlGropCHList.getId() )
+					xbmc.sleep(50)
+					
 			GuiLock2(False)
 
 		
