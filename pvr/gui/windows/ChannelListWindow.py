@@ -323,7 +323,8 @@ class ChannelListWindow(BaseWindow):
 						self.mCtrlListCHList.selectItem( idx+1 )
 						GuiLock2( False )
 
-						self.mCtrlSelectItem.setLabel(str('%s / %s'% (idx+1, len(self.mListItems))) )
+						#self.mCtrlSelectItem.setLabel(str('%s / %s'% (idx+1, len(self.mListItems))) )
+						self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (idx+1)) )
 
 
 					#Turn mode
@@ -498,7 +499,8 @@ class ChannelListWindow(BaseWindow):
 		if ch :
 			self.mNavChannel = ch
 			self.mCurrentChannel = self.mNavChannel.mNumber
-			self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
+			#self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
+			self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
 			self.ResetLabel()
 			self.UpdateLabelInfo()
 			self.PincodeDialogLimit()
@@ -926,7 +928,7 @@ class ChannelListWindow(BaseWindow):
 			#self.mCtrlRadioMisc.setEnabled( True )
 			#self.mCtrlRadioMark.setSelected( True )
 			#self.mCtrlRadioTune.setSelected( False )
-			self.mCtrlGropOpt.setVisible( True )
+			#self.mCtrlGropOpt.setVisible( True )
 
 			return
 
@@ -1128,7 +1130,8 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlListCHList.selectItem( chindex )
 
 		#select item idx, print GUI of 'current / total'
-		self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
+		#self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
+		self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
 
 		LOG_TRACE( 'Leave' )
 
@@ -1143,7 +1146,8 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlProgress.setVisible(False)
 		self.mPincodeEnter = FLAG_MASK_NONE
 
-		self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
+		#self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
+		self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
 		#self.mCtrlChannelName.setLabel('')
 		self.mCtrlEventName.setLabel('')
 		self.mCtrlEventTime.setLabel('')
