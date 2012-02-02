@@ -5,6 +5,7 @@ import xbmcgui
 import xbmcaddon
 import time
 
+import pvr.gui.DialogMgr as DiaMgr
 from inspect import currentframe
 import pvr.ElisMgr
 import pvr.gui.WindowMgr as WindowMgr
@@ -35,7 +36,9 @@ class Launcher(object):
 				self.InitWindowMgr()
 				self.WaitShutdown()
 			except Exception, ex:
-				xbmcgui.Dialog().ok('Error', 'Exception: %s' % str(ex))
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'Error', 'Exception: %s' % str( ex ) )
+	 			dialog.doModal( )
 		finally:
 			print 'Launcher end'
 

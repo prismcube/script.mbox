@@ -1,4 +1,4 @@
-<window id="3309">
+<window id="3311">
 	<defaultcontrol always="true">301</defaultcontrol>
 	<coordinates>
 		<system>1</system>
@@ -50,8 +50,8 @@
 				<font>font13</font>
 			</control>
 			<control type="button" id="301">
-				<description>Yes button</description>
-				<posx>75</posx>
+				<description>OK button</description>
+				<posx>200</posx>
 				<posy>165</posy>
 				<width>200</width>
 				<height>40</height>
@@ -61,12 +61,13 @@
 				<align>center</align>
 				<texturenofocus border="5">confluence/MenuItemNF.png</texturenofocus>
 				<texturefocus border="5">confluence/button-focus.png</texturefocus>
-				<label>Yes</label>
+				<label>OK</label>
 				<onleft>302</onleft>
 				<onright>302</onright>
 				<onup>303</onup>
 				<ondown>303</ondown>
 			</control>
+			<!--
 			<control type="button" id="302">
 				<description>No button</description>
 				<posx>325</posx>
@@ -101,6 +102,7 @@
 				<onup>301</onup>
 				<ondown>301</ondown>
 			</control>
+			-->
 		</control>
 	</controls>
 </window>

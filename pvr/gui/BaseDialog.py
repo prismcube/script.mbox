@@ -43,6 +43,7 @@ class ControlItem:
 	E_SETTING_USER_ENUM_CONTROL				= 2
 	E_SETTING_INPUT_CONTROL					= 3
 	E_SETTING_OK_CANCEL_BUTTON				= 4
+	E_SETTING_CLOSE_BUTTON					= 5
 	
 
 	def __init__( self, aControlType, aControlId, aProperty, aListItems, aSelecteItem, aDescription ):	
@@ -94,6 +95,8 @@ class SettingDialog( BaseDialog ):
 				self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).setHeight( pos + 165 )
 			else :
 				self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).setHeight( pos + 135 )
+
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_CLOSE_BUTTON, E_SETTING_DIALOG_BUTTON_CLOSE, None, None, None, None ) )
 
 
 	def SetAutoHeight( self, mMode ) :
@@ -187,10 +190,10 @@ class SettingDialog( BaseDialog ):
 		for i in range( count ) :
 			ctrlItem = self.mControlList[i]
 
-			if ctrlItem.mEnable and  nextId <= 0 :
+			if ctrlItem.mEnable and nextId <= 0 :
 				nextId = ctrlItem.mControlId
 
-			if ctrlItem.mEnable and  found == True :
+			if ctrlItem.mEnable and found == True :
 				return ctrlItem.mControlId
 
 			if ctrlItem.mControlId == aControlId :
@@ -281,6 +284,7 @@ class SettingDialog( BaseDialog ):
 			elif ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
 				if ctrlItem.mControlId == aContgrolId or ctrlItem.mControlId + 1 == aContgrolId  or ctrlItem.mControlId + 3 == aContgrolId :	
 					return ctrlItem.mControlId
+
 			else :
 				if ctrlItem.mControlId == aContgrolId :
 					return ctrlItem.mControlId
