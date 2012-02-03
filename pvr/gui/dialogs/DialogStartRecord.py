@@ -47,44 +47,10 @@ class DialogStartRecord( BaseDialog ) :
 		self.mLocalTime = self.mCommander.Datetime_GetLocalTime( )
 		self.mRecordName = 'RecordName'
 
-		epg=self.mCommander.Epgevent_GetPresent( )
 		self.mHasEPG = False
+		self.mEPG = None
 
-		if epg == None :
-			LOG_TRACE('has no current epg')
-		else :
-			epg.printdebug( )
-
-		if epg != None and epg.mError == 0:
-			LOG_TRACE('')
-			self.mEPGStartTime = epg.mStartTime #EPG Start Time		
-			self.mEPGDuration = epg.mDuration #EPG Duration
-			self.mRecordName = epg.mEventName
-
-			#Check Valid EPG
-			LOG_TRACE('')			
-			startTime =  self.mEPGStartTime + self.mLocalOffset
-			endTime = startTime + self.mEPGDuration
-			LOG_TRACE('')			
-
-			LOG_TRACE('START : %s' %TimeToString( startTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
-			LOG_TRACE('CUR : %s' %TimeToString( self.mLocalTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
-			LOG_TRACE('END : %s' %TimeToString( endTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
-
-			if startTime < self.mLocalTime and self.mLocalTime < endTime :
-				self.mHasEPG = True
-
-
-		if self.mHasEPG == False :
-			prop = ElisPropertyEnum( 'Default Rec Duration', self.mCommander )
-			self.mEPGDuration = prop.GetProp( )
-			self.mEPGStartTime = self.mLocalTime - self.mLocalOffset
-			channel = self.mCommander.Channel_GetCurrent( )
-			self.mRecordName = channel.mName
-		
-		LOG_TRACE( 'RecordName=%s Duration=%d' %(self.mRecordName, self.mEPGDuration ) )
-
-		self.getControl( E_LABEL_RECORD_NAME ).setLabel( self.mRecordName )
+		self.Reload( )
 
 		self.UpdateEPGTime( )
 
@@ -135,14 +101,14 @@ class DialogStartRecord( BaseDialog ) :
 			self.Close( )
 		elif focusId == E_BUTTON_DURATION :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( 'Duration(Min)', '%d' %int(self.mEPGDuration/60) , 3 )
+			dialog.SetDialogProperty( 'Duration(Min)', '%d' %int(self.mRecordDuration/60) , 3 )
  			dialog.doModal( )
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				duration = int( dialog.GetString( ) )
 				LOG_TRACE('Duration=%d' %duration )
 
 				if duration > 0 :
-					self.mEPGDuration = duration*60
+					self.mRecordDuration = duration*60
 					self.UpdateEPGTime()
 
 			
@@ -168,10 +134,47 @@ class DialogStartRecord( BaseDialog ) :
 		self.CloseDialog( )
 
 
+	def Reload ( self ) :
+
+		self.mEPG=self.mCommander.Epgevent_GetPresent( )
+
+		self.mRecordStartTime = self.mLocalTime - self.mLocalOffset
+		
+		if self.mEPG != None and self.mEPG.mError == 0:
+			self.mEPG.printdebug( )		
+
+			startTime =  self.mEPG.mStartTime + self.mLocalOffset
+			endTime = startTime + self.mEPG.mDuration
+
+			self.mRecordDuration = endTime - self.mLocalTime
+			self.mRecordName = self.mEPG.mEventName
+
+			LOG_TRACE('START : %s' %TimeToString( startTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
+			LOG_TRACE('CUR : %s' %TimeToString( self.mLocalTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
+			LOG_TRACE('END : %s' %TimeToString( endTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
+
+			#Check Valid EPG
+			if startTime < self.mLocalTime and self.mLocalTime < endTime :
+				self.mHasEPG = True
+				self.getControl( E_LABEL_RECORD_NAME ).setLabel( '(%s~%s)%s' %(TimeToString( startTime, TimeFormatEnum.E_HH_MM ), TimeToString( endTime, TimeFormatEnum.E_HH_MM ) , self.mRecordName) )
+				
+
+
+
+		if self.mHasEPG == False :
+			prop = ElisPropertyEnum( 'Default Rec Duration', self.mCommander )
+			self.mRecordDuration = prop.GetProp( )
+			channel = self.mCommander.Channel_GetCurrent( )
+			self.mRecordName = channel.mName
+			self.getControl( E_LABEL_RECORD_NAME ).setLabel( self.mRecordName )
+		
+	
 	def StartRecord( self ):
 		LOG_TRACE('')
+
 		current = self.mCommander.Channel_GetCurrent( )
-		ret = self.mCommander.Timer_AddOTRTimer( self.mHasEPG, self.mEPGDuration, 0,  self.mRecordName,  0,  0,  0,  0,  0)
+		ret = self.mCommander.Timer_AddOTRTimer( self.mHasEPG, self.mRecordDuration, 0,  self.mRecordName,  0,  0,  0,  0,  0)
+			
 		self.Close( )
 
 		if ret == False :
@@ -202,8 +205,9 @@ class DialogStartRecord( BaseDialog ) :
 
 
 	def UpdateProgress( self ):
-		startTime = self.mEPGStartTime+ self.mLocalOffset
-		endTime =  startTime  + self.mEPGDuration
+
+		startTime = self.mRecordStartTime+ self.mLocalOffset
+		endTime =  startTime  + self.mRecordDuration
 
 		passDuration = self.mLocalTime - startTime
 
@@ -211,28 +215,20 @@ class DialogStartRecord( BaseDialog ) :
 
 		self.getControl( E_LABEL_EPG_START_TIME ).setLabel( TimeToString( startTime, TimeFormatEnum.E_HH_MM ) )
 		self.getControl( E_LABEL_EPG_END_TIME ).setLabel( TimeToString( endTime, TimeFormatEnum.E_HH_MM ) )
-
-		"""
-		if self.mHasEPG == True :
-			recordDuration = endTime - self.mLocalTime
-			if recordDuration < 0 :
-				recordDuration = 0
-			self.getControl( E_LABEL_DURATION ).setLabel( '%d(Min)' %int( recordDuration/(60) )  )
-		else :
-		"""
-		self.getControl( E_LABEL_DURATION ).setLabel( '%d(Min)' % int( self.mEPGDuration/(60) ) )			
+		self.getControl( E_LABEL_DURATION ).setLabel( '%d(Min)' % int( self.mRecordDuration/(60) ) )			
 
 
 		if endTime < self.mLocalTime : #Already past
-			passDuration = 100
+			self.mCtrlProgress.setPercent( 100 )
+			return
 		elif self.mLocalTime < startTime :
 			passDuration = 0
 
 		if passDuration < 0 :
 			passDuration = 0
 
-		if self.mEPGDuration > 0 :
-			percent = passDuration * 100/self.mEPGDuration
+		if self.mRecordDuration > 0 :
+			percent = passDuration * 100/self.mRecordDuration
 		else :
 			percent = 0
 
