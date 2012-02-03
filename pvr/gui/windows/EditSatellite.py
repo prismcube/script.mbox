@@ -82,7 +82,8 @@ class EditSatellite( SettingWindow ) :
 			kb = xbmc.Keyboard( satellite.mName, 'Satellite Name', False )
 			kb.doModal( )
 			if( kb.isConfirmed( ) ) :
-				ConfigMgr.GetInstance( ).EditSatellite( satellite.mLongitude, satellite.mBand, kb.getText( ) )
+				ret = ConfigMgr.GetInstance( ).EditSatellite( satellite.mLongitude, satellite.mBand, kb.getText( ) )
+				print 'dhkim test Edit Satellite return val = %s' % ret
 				self.InitConfig( )
 
 		# Add New Satellite
@@ -92,7 +93,17 @@ class EditSatellite( SettingWindow ) :
 
 			if dialog.IsOK() == E_DIALOG_STATE_YES :
 				longitude, band, satelliteName = dialog.GetValue( )
-				ConfigMgr.GetInstance( ).AddSatellite( longitude, band, satelliteName )
+				ret = ConfigMgr.GetInstance( ).AddSatellite( longitude, band, satelliteName )
+
+				print 'dhkim test  Add New Satellite return val = %s' % ret
+				if ret == True :
+					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( 'ERROR', 'ok' )
+		 			dialog.doModal( )
+		 		else :
+		 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( 'ERROR', 'fail' )
+		 			dialog.doModal( )
 				self.InitConfig( )
 			else :
 				return
@@ -105,7 +116,8 @@ class EditSatellite( SettingWindow ) :
 
 			if dialog.IsOK() == E_DIALOG_STATE_YES :
 				satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
-				ConfigMgr.GetInstance( ).DeleteSatellite( satellite.mLongitude, satellite.mBand )
+				ret = ConfigMgr.GetInstance( ).DeleteSatellite( satellite.mLongitude, satellite.mBand )
+				print 'dhkim test Delete Satellite return val = %s' % ret
 				self.mSatelliteIndex = 0
 				self.InitConfig( )
 			else :
