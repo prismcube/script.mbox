@@ -333,7 +333,7 @@
 			<posy>120</posy>
 			<width>430</width>
 			<height>600</height>
-			<allowoverlay>true</allowoverlay>
+			<allowoverlay>yes</allowoverlay>
 			<control type="group">
 				<!--control type="image">
 					<description>LOGO</description>
