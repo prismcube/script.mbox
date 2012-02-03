@@ -335,7 +335,7 @@
 			<height>600</height>
 			<allowoverlay>true</allowoverlay>
 			<control type="group">
-				<control type="image">
+				<!--control type="image">
 					<description>LOGO</description>
 					<posx>60</posx>
 					<posy>0</posy>
@@ -343,27 +343,27 @@
 					<height>80</height>
 					<aspectratio>keep</aspectratio>
 					<texture>confluence/Confluence_Logo.png</texture>
-				</control>
+				</control-->
 				<control type="image">
 					<posx>0</posx>
-					<posy>80</posy>
-					<width>390</width>
-					<height>220</height>
+					<posy>10</posy>
+					<width>352</width>
+					<height>198</height>
 					<texture border="20">confluence/backgrounds/weather.jpg</texture>
 					<description>pre-view</description>
 				</control>
 				<control type="image">
 					<posx>0</posx>
-					<posy>281</posy>
-					<width>390</width>
+					<posy>199</posy>
+					<width>352</width>
 					<height>18</height>
 					<texture border="20">confluence/StackNF.png</texture>
 					<!--<texture border="20">media-overlay.png</texture>-->
 				</control>
 				<control type="label" id="303">
 					<posx>0</posx>
-					<posy>283</posy>
-					<width>390</width>
+					<posy>200</posy>
+					<width>352</width>
 					<height>10</height>
 					<font>font12_title</font>
 					<shadowcolor>ff000000</shadowcolor>
