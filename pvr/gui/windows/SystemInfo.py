@@ -32,6 +32,8 @@ class SystemInfo( SettingWindow ) :
 		self.mCtrlLeftGroup = self.getControl( E_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
 
+		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'System Information' )
+
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
 		self.SetListControl( )
