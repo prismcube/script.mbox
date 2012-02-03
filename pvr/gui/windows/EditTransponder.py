@@ -2,7 +2,6 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DiaMgr
 import pvr.TunerConfigMgr as ConfigMgr
 from pvr.gui.BaseWindow import SettingWindow, Action

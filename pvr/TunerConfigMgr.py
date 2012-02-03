@@ -176,18 +176,6 @@ class TunerConfigMgr( object ) :
 			elif self.GetCurrentTunerIndex( ) == E_TUNER_2 :
 				del self.mConfiguredList2[ aIndex ]
 
-
-	def DeleteSatellite( self, aLongitude, aBand ) :
-		self.mCommander.Satellite_Delete( aLongitude, aBand )
-
-
-	def EditSatellite( self, aLongitude, aBand, aName ) :
-		self.mCommander.Satellite_ChangeName( aLongitude, aBand, aName )
-
-
-	def AddSatellite( self, aLongitude, aBand, aName ) :
-		self.mCommander.Satellite_Add( aLongitude, aBand, aName )
-
 		
 	def Reset( self ) :
 		self.mCurrentTuner  = 0

@@ -6,11 +6,13 @@ import pvr.gui.DialogMgr as DiaMgr
 import pvr.TunerConfigMgr as ConfigMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
+import pvr.ElisMgr
 
 
 class EditSatellite( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
+		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 
 		self.mInitialized = False
 		self.mSatelliteIndex = 0
@@ -82,8 +84,12 @@ class EditSatellite( SettingWindow ) :
 			kb = xbmc.Keyboard( satellite.mName, 'Satellite Name', False )
 			kb.doModal( )
 			if( kb.isConfirmed( ) ) :
-				ret = ConfigMgr.GetInstance( ).EditSatellite( satellite.mLongitude, satellite.mBand, kb.getText( ) )
-				print 'dhkim test Edit Satellite return val = %s' % ret
+				ret = self.mCommander.Satellite_ChangeName( satellite.mLongitude, satellite.mBand, kb.getText( ) )
+				if ret != True :
+					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( 'ERROR', 'Satellite Edit Name Fail' )
+		 			dialog.doModal( )
+		 			return
 				self.InitConfig( )
 
 		# Add New Satellite
@@ -93,17 +99,13 @@ class EditSatellite( SettingWindow ) :
 
 			if dialog.IsOK() == E_DIALOG_STATE_YES :
 				longitude, band, satelliteName = dialog.GetValue( )
-				ret = ConfigMgr.GetInstance( ).AddSatellite( longitude, band, satelliteName )
-
-				print 'dhkim test  Add New Satellite return val = %s' % ret
-				if ret == True :
+				ret = self.mCommander.Satellite_Add( longitude, band, satelliteName )
+				print 'dhkim test ret = %s' % ret
+				if ret != True :
 					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( 'ERROR', 'ok' )
+					dialog.SetDialogProperty( 'ERROR', 'Satellite Add Fail' )
 		 			dialog.doModal( )
-		 		else :
-		 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( 'ERROR', 'fail' )
-		 			dialog.doModal( )
+		 			return
 				self.InitConfig( )
 			else :
 				return
@@ -116,8 +118,12 @@ class EditSatellite( SettingWindow ) :
 
 			if dialog.IsOK() == E_DIALOG_STATE_YES :
 				satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
-				ret = ConfigMgr.GetInstance( ).DeleteSatellite( satellite.mLongitude, satellite.mBand )
-				print 'dhkim test Delete Satellite return val = %s' % ret
+				ret = self.mCommander.Satellite_Delete( satellite.mLongitude, satellite.mBand )
+				if ret != True :
+					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( 'ERROR', 'Satellite Delete Fail' )
+		 			dialog.doModal( )
+		 			return
 				self.mSatelliteIndex = 0
 				self.InitConfig( )
 			else :
