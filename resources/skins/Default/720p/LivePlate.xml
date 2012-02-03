@@ -361,7 +361,7 @@
 					</control-->
 				</control>
 
-				<control type="group" id="650">
+				<!--control type="group" id="650">
 					<posx>720</posx>
 					<posy>-35</posy>
 					<control type="image" id="651">
@@ -378,7 +378,7 @@
 						<height>30</height>
 						<texture>IconCas.png</texture>
 					</control>
-				</control>
+				</control-->
 
 				<control type="image" id="604">
 					<posx>720</posx>
