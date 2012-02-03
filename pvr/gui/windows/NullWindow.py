@@ -9,6 +9,7 @@ from pvr.gui.BaseWindow import BaseWindow, Action
 from inspect import currentframe
 import pvr.ElisMgr
 from pvr.Util import LOG_TRACE, LOG_ERR, LOG_WARN
+from pvr.gui.GuiConfig import *
 
 
 class NullWindow(BaseWindow):
@@ -79,13 +80,25 @@ class NullWindow(BaseWindow):
 
 		elif id == Action.REMOTE_3:  #TEST : start Record
 			print 'open record dialog'
-			dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_START_RECORD )
-			dialog.doModal( )
+			
+			runningCount = self.mCommander.Record_GetRunningRecorderCount()
+			LOG_TRACE( 'runningCount=%d' %runningCount)
+			if  runningCount < E_MAX_RECORD_COUNT :
+				dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_START_RECORD )
+				dialog.doModal( )
+			else:
+				msg = 'Already %d recording(s) running' %runningCount
+				xbmcgui.Dialog().ok('Infomation', msg )
+				
 		
 		elif id == Action.REMOTE_4:  #TEST : stop Record
 			print 'open record dialog'
-			dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_STOP_RECORD )
-			dialog.doModal( )
+			runningCount = self.mCommander.Record_GetRunningRecorderCount()
+			LOG_TRACE( 'runningCount=%d' %runningCount )
+
+			if  runningCount > 0 :
+				dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_STOP_RECORD )
+				dialog.doModal( )
 
 		elif id == Action.REMOTE_1:  #TEST : bg test
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_TEST1 )

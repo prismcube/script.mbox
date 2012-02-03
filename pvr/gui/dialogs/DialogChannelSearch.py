@@ -155,10 +155,28 @@ class DialogChannelSearch( BaseDialog ) :
 
 		print 'scanMode=%d' %self.mScanMode
 		if self.mScanMode == E_SCAN_SATELLITE :
-			config = self.mConfiguredSatelliteList[0] # ToDO send with satelliteList
-			config.printdebug()
+			satelliteList = []
+			for i in range( len(self.mConfiguredSatelliteList)) :
+				config = self.mConfiguredSatelliteList[i] # ToDO send with satelliteList
+				config.printdebug()
+				for satellite in self.mAllSatelliteList :
+					if config.mSatelliteLongitude == satellite.mLongitude and config.mBandType == satellite.mBand :
+						satelliteList.append( satellite )
+						break
+
+
+			LOG_TRACE('------------ Scan Satellite List -------------')			
+			for i in range( len(satelliteList)) :
+				satellite = satelliteList[i]
+				satellite.printdebug()
 			
-			self.mCommander.Channelscan_BySatellite( config.mSatelliteLongitude, config.mBandType ) #longitude, band
+			ret = self.mCommander.Channelscan_BySatelliteList( satelliteList )
+
+			if ret == False :
+				self.mEventBus.Deregister( self )
+				self.CloseDialog( )
+				xbmcgui.Dialog( ).ok('Failure', 'Channel Search Failed')
+			#self.mCommander.Channelscan_BySatellite( config.mSatelliteLongitude, config.mBandType ) #longitude, band
 		elif self.mScanMode == E_SCAN_TRANSPONDER :
 			LOG_TRACE(('long = %d' %self.mLongitude))
 			LOG_TRACE(('band = %d' %self.mBand))

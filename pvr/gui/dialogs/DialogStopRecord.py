@@ -13,15 +13,34 @@ from ElisEnum import ElisEnum
 
 import pvr.ElisMgr
 
-from pvr.Util import RunThread, GuiLock, LOG_TRACE, LOG_WARN, LOG_ERR
+from pvr.Util import RunThread, GuiLock, LOG_TRACE, LOG_WARN, LOG_ERR, TimeToString, TimeFormatEnum
 from pvr.PublicReference import EpgInfoClock
 
 
 
 # Control IDs
-LIST_ID_RECORD				= 201
+IMAGE_ID_BACKGROUND 		= 100
+LIST_ID_RECORD				= 9000
 
+GROUP_ID_RECORD_1			= 500
+GROUP_ID_RECORD_2			= 510
+GROUP_ID_CANCEL				= 520
 
+BUTTON_ID_RECORD_1			= 501
+BUTTON_ID_RECORD_2			= 511
+BUTTON_ID_CANCEL			= 521
+
+LABEL_ID_CHANNELNAME_1		= 502
+LABEL_ID_CHANNELNAME_2		= 512
+
+LABEL_ID_RECORDNAME_1		= 503
+LABEL_ID_RECORDNAME_2		= 513
+
+LABEL_ID_DURATION_1			= 504
+LABEL_ID_DURATION_2			= 514
+
+PROGRESS_ID_DURATION_1		= 505
+PROGRESS_ID_DURATION_2		= 515
 
 
 class DialogStopRecord( BaseDialog ) :
@@ -29,48 +48,93 @@ class DialogStopRecord( BaseDialog ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
+		self.mBackgroundHeight = -1;
 
 	def onInit( self ):
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
-		self.mRunningRecordCount = self.mCommander.Record_GetRunningRecorderCount()
-		self.mCtrlRecordList = self.getControl( LIST_ID_RECORD )
-		self.mRecordListItems = []
-		self.mRunnigRecordInfoList = []
 
+		self.mCtrlRecordGroup = {}
+		self.mCtrlChannelName = {}
+		self.mCtrlRecordName = {}
+		self.mCtrlDuration = {}
+		self.mCtrlProgress = {}		
+
+		try :		
+			self.mCtrlRecordGroup[0] = self.getControl( GROUP_ID_RECORD_1 )
+			self.mCtrlRecordGroup[1] = self.getControl( GROUP_ID_RECORD_2 )
+			self.mCtrlRecordGroup[2] = self.getControl( GROUP_ID_CANCEL )			
+
+			self.mCtrlChannelName[0] = self.getControl( LABEL_ID_CHANNELNAME_1 )
+			self.mCtrlChannelName[1] = self.getControl( LABEL_ID_CHANNELNAME_2 )
+
+			self.mCtrlRecordName[0] = self.getControl( LABEL_ID_RECORDNAME_1 )
+			self.mCtrlRecordName[1] = self.getControl( LABEL_ID_RECORDNAME_2 )
+
+			self.mCtrlDuration[0] = self.getControl( LABEL_ID_DURATION_1 )
+			self.mCtrlDuration[1] = self.getControl( LABEL_ID_DURATION_2 )
+
+			self.mCtrlProgress[0] = self.getControl( PROGRESS_ID_DURATION_1 )
+			self.mCtrlProgress[1] = self.getControl( PROGRESS_ID_DURATION_2 )
+		
+			self.mCtrlCancelGroup = self.getControl( GROUP_ID_CANCEL )					
+			self.mCtrlBackgroundImage = self.getControl( IMAGE_ID_BACKGROUND )
+
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)
+
+		if self.mBackgroundHeight <  0 :
+			self.mBackgroundHeight = self.mCtrlBackgroundImage.getHeight()
+
+		self.SetHeaderLabel( 'Stop Record' )
+
+		self.mLocalTime = self.mCommander.Datetime_GetLocalTime( )		
+		self.mRunningRecordCount = self.mCommander.Record_GetRunningRecorderCount()
+
+		self.mRunnigRecordInfoList = []
 		LOG_TRACE( 'recordcount=%d' %self.mRunningRecordCount )
 
 		for i in range( self.mRunningRecordCount ) :
 			recordInfo = self.mCommander.Record_GetRunningRecordInfo( i )
 			if recordInfo :
 				recordInfo.printdebug()
-				listItem = xbmcgui.ListItem( recordInfo.mRecordName, "_" , "-", "-", "-" )
-				self.mRecordListItems.append( listItem )
 				self.mRunnigRecordInfoList.append( recordInfo )
-				
-		self.mCtrlRecordList.addItems( self.mRecordListItems )		
-
+		
+		self.DrawItem( )
+		
 
 	@GuiLock
 	def onAction( self, aAction ):
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		LOG_TRACE('action=%d' %actionId )
+		LOG_TRACE('focusId=%d' %focusId )		
 	
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.Close()
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-				
+					
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.Close()
 
 		elif actionId == Action.ACTION_MOVE_UP :
-			pass
-	
+			if focusId == BUTTON_ID_RECORD_1 :
+				self.setFocusId( BUTTON_ID_CANCEL )
+			elif focusId == BUTTON_ID_RECORD_2 :
+				self.setFocusId( BUTTON_ID_RECORD_1 )
+			else :
+				self.setFocusId( BUTTON_ID_RECORD_2 )			
+
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			pass
+			if focusId == BUTTON_ID_RECORD_1 :
+				self.setFocusId( BUTTON_ID_RECORD_2 )
+			elif focusId == BUTTON_ID_RECORD_2 :
+				self.setFocusId( BUTTON_ID_CANCEL )
+			else :
+				self.setFocusId( BUTTON_ID_RECORD_1 )			
+
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			pass
@@ -82,11 +146,11 @@ class DialogStopRecord( BaseDialog ) :
 
 
 	def onClick( self, aControlId ):
-		focusId = self.getFocusId( )
 
-		LOG_TRACE('DialogRecord focusId=%d' %focusId )
-		if focusId == LIST_ID_RECORD :
-			self.StopRecord( )
+		LOG_TRACE('DialogRecord aControlId=%d' %aControlId )
+		if aControlId == BUTTON_ID_RECORD_1 or aControlId == BUTTON_ID_RECORD_2 or aControlId == BUTTON_ID_CANCEL :
+			self.StopRecord( aControlId )
+
 
 	def onFocus( self, aControlId ):
 		pass
@@ -102,14 +166,27 @@ class DialogStopRecord( BaseDialog ) :
 		self.close( )
 
 
-	def StopRecord( self ):
-		position = self.mCtrlRecordList.getSelectedPosition( )
-		if position >=0 and position < len( self.mRunnigRecordInfoList ) :
-			LOG_TRACE('position=%d' %position )
-			recInfo = self.mRunnigRecordInfoList[position]
-			self.mCommander.Record_StopRecord( recInfo.ChannelNo, recInfo.ServiceType, recInfo.RecordKey  )
-			LOG_TRACE('recInfo.ChannelNo=%d, recInfo.ServiceType=%d, recInfo.RecordKey=%d' %(recInfo.ChannelNo, recInfo.ServiceType, recInfo.RecordKey) )
+	def StopRecord( self, aControlId ):
+
+		LOG_TRACE('aControlId=%d' %aControlId)
+		if aControlId == BUTTON_ID_RECORD_1 :
+			LOG_TRACE('---------------------------------------->')		
+			recInfo = self.mRunnigRecordInfoList[0]
+			recInfo.printdebug()
+			self.mCommander.Record_StopRecord( recInfo.mChannelNo, recInfo.mServiceType, recInfo.mRecordKey  )
+			self.Close( )			
+
+		elif aControlId == BUTTON_ID_RECORD_2 :
+			LOG_TRACE('---------------------------------------->')
+			recInfo = self.mRunnigRecordInfoList[1]
+			self.mCommander.Record_StopRecord( recInfo.mChannelNo, recInfo.mServiceType, recInfo.mRecordKey  )
 			self.Close( )
+
+		elif aControlId == BUTTON_ID_CANCEL :
+			LOG_TRACE('')		
+			self.Close( )
+		else :
+			LOG_ERR('Can not find control')
 
 
 	@RunThread
@@ -120,32 +197,39 @@ class DialogStopRecord( BaseDialog ) :
 			if  ( loop % 10 ) == 0 :
 				LOG_TRACE(  'loop=%d' %loop )
 				self.mLocalTime = self.mCommander.Datetime_GetLocalTime( )
-				
-			self.UpdateEPGTime( )
+
+			self.UpdateProgress( )
 
 			time.sleep(1)
 			self.mLocalTime += 1			
 			loop += 1
 
 
-	@GuiLock	
-	def UpdateEPGTime( self ):
-		self.UpdateProgress( )
-
-
 	def UpdateProgress( self ):
 		pass
+
+		"""
+		for i in range( self.mRunningRecordCount ) :
+			recordInfo = self.mRunnigRecordInfoList[i]
+			startTime = recordInfo.mStartTime + self.mLocalOffset
+			endTime =  startTime  + recordInfo.mDuration
+
+			LOG_TRACE('START : %s' %TimeToString( startTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
+			LOG_TRACE('CUR : %s' %TimeToString( self.mLocalTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
+			LOG_TRACE('END : %s' %TimeToString( endTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
+		"""
+
+		"""
+		self.mCommander.Record_StopRecord( recInfo.mChannelNo, recInfo.mServiceType, recInfo.mRecordKey  )
+
 
 		startTime = self.mEPGStartTime+ self.mLocalOffset
 		endTime =  startTime  + self.mEPGDuration
 
 		passDuration = self.mLocalTime - startTime
 
-		startTimeString = EpgInfoClock( 1, startTime, 0 )
-		endTimeString = EpgInfoClock( 1, endTime, 0 )		
-
-		self.getControl( E_LABEL_EPG_START_TIME ).setLabel( startTimeString[1] )
-		self.getControl( E_LABEL_EPG_END_TIME ).setLabel( endTimeString[1] )
+		#self.getControl( E_LABEL_EPG_START_TIME ).setLabel(  TimeToString( startTime, TimeFormatEnum.E_HH_MM ) )
+		#self.getControl( E_LABEL_EPG_END_TIME ).setLabel(  TimeToString( endTime, TimeFormatEnum.E_HH_MM ) )
 
 		if self.mHasEPG == True :
 			recordDuration = endTime - self.mLocalTime
@@ -172,4 +256,32 @@ class DialogStopRecord( BaseDialog ) :
 		LOG_TRACE( 'percent=%d' %percent )
 		
 		self.mCtrlProgress.setPercent( percent )
+		"""		
 
+	def DrawItem( self ) :
+		LOG_TRACE('')
+		if self.mRunningRecordCount < 2 :
+			newHeight = self.mBackgroundHeight - self.mCtrlRecordGroup[0].getHeight()
+			self.mCtrlBackgroundImage.setHeight( newHeight )
+			self.mCtrlRecordGroup[1].setVisible( False )
+		else :
+			self.mCtrlBackgroundImage.setHeight( self.mBackgroundHeight )		
+			self.mCtrlRecordGroup[1].setVisible( True )		
+
+
+		for i in range( self.mRunningRecordCount ) :
+			recordInfo = self.mRunnigRecordInfoList[i]
+			LOG_TRACE('i=%d recordInfo.mChannelNo=%d, recordInfo.mChannelName=%s' %( i, recordInfo.mChannelNo, recordInfo.mChannelName ) )
+			"""
+			self.mCtrlChannelName[i].setLabel( '1234567890123456789012345678901234567890' )
+			self.mCtrlRecordName[i].setLabel( '1234567890123456789012345678901234567890' )
+			self.mCtrlDuration[i].setLabel( '999 Min' )
+			self.mCtrlProgress[i].setPercent( 0 )
+			"""
+
+			self.mCtrlChannelName[i].setLabel( 'P%04d %s' %(recordInfo.mChannelNo, recordInfo.mChannelName) )
+			self.mCtrlRecordName[i].setLabel( '%s' %recordInfo.mRecordName )
+			self.mCtrlDuration[i].setLabel( '%d Min' %int(recordInfo.mDuration/60) )
+			self.mCtrlProgress[i].setPercent( 0 )
+
+	

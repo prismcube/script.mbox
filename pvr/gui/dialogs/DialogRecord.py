@@ -11,6 +11,7 @@ from  pvr.TunerConfigMgr import *
 import pvr.gui.DialogMgr as diamgr
 from elisevent import ElisEvent
 from ElisEnum import ElisEnum
+from pvr.gui.GuiConfig import *
 
 import pvr.ElisMgr
 
@@ -20,14 +21,10 @@ from pvr.Util import RunThread, GuiLock, epgInfoClock
 
 # Control IDs
 E_LABEL_RECORD_NAME			= 101
-E_PROGRESS_EPG				= 400
 E_LABEL_EPG_START_TIME		= 102
 E_LABEL_EPG_END_TIME		= 103
-E_BUTTON_DURATION			= 501
-E_LABEL_DURATION			= 502
-E_BUTTON_START				= 201
-E_BUTTON_CANCEL				= 301
-
+E_PROGRESS_EPG				= 400
+#E_DialogInput01
 
 
 
@@ -38,25 +35,29 @@ class DialogRecord( BaseDialog ) :
 		self.mEventBus = pvr.ElisMgr.GetInstance().getEventBus()
 
 	def onInit( self ):
-		self.winId = xbmcgui.getCurrentWindowId()
+		self.mWinId = xbmcgui.getCurrentWindowId()
+		self.mWin = xbmcgui.Window( self.mWinId  )
+
+		self.SetHeaderLabel( 'Record' )
+		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, 'Start Record' )
+		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, 'Cancel' )
 
 		self.mCtrlProgress = self.getControl( E_PROGRESS_EPG )
 		
-		self.mLocalOffset = int( self.mCommander.datetime_GetLocalOffset()[0] )
+		self.mLocalOffset = self.mCommander.Datetime_GetLocalOffset()
+		self.mLocalTime = self.mCommander.datetime_GetLocalTime( )
 		
-		localTime = self.mCommander.datetime_GetLocalTime( )
-		self.mLocalTime = int( localTime[0] )
 		self.mRecordName = 'RecordName'
 
-		epg=self.mCommander.epgevent_GetPresent( )
-		
-		print 'epg=%s' %epg
+		epg=self.mCommander.Epgevent_GetPresent( )
+		epg.printdebug( )
+
 		self.mHasEPG = False
 		
-		if epg != []:
-			self.mEPGStartTime = int( epg[5] ) #EPG Start Time		
-			self.mEPGDuration = int( epg[6] ) #EPG Duration
-			self.mRecordName = epg[1]
+		if epg != None and epg.mError == 0:
+			self.mEPGStartTime = epg.mStartTime
+			self.mEPGDuration = epg.mDuration
+			self.mRecordName = epg.mEventName
 
 			#Check Valid EPG
 			startTime =  self.mEPGStartTime + self.mLocalOffset
@@ -69,18 +70,18 @@ class DialogRecord( BaseDialog ) :
 
 		if self.mHasEPG == False :
 			prop = ElisPropertyEnum( 'Default Rec Duration', self.mCommander )
-			self.mEPGDuration = prop.getProp( )
+			self.mEPGDuration = prop.GetProp( )
 			self.mEPGStartTime = self.mLocalTime - self.mLocalOffset
-			channel = self.mCommander.channel_GetCurrent( )
-			self.mRecordName = channel[2]
+			channel = self.mCommander.Channel_GetCurrent( )
+			self.mRecordName = channel.mName
 		
-		print 'RecordName=%s Duration=%d' %(self.mRecordName, self.mEPGDuration )
+		LOG_TRACE('RecordName=%s Duration=%d' %(self.mRecordName, self.mEPGDuration ) )
 
 		self.getControl( E_LABEL_RECORD_NAME ).setLabel( self.mRecordName )
 
 		self.UpdateEPGTime()
 
-		self.mEventBus.register( self )
+		self.mEventBus.Register( self )
 		
 		self.mEnableThread = True
 		self.CurrentTimeThread( )
@@ -119,10 +120,10 @@ class DialogRecord( BaseDialog ) :
 		focusId = self.getFocusId( )
 
 		print 'DialogRecord focusId=%d' %focusId
-		if focusId == E_BUTTON_START :
+		if focusId == E_SETTING_DIALOG_BUTTON_OK_ID :
 			self.StartRecord( )			
 
-		elif focusId == E_BUTTON_CANCEL :
+		elif focusId == E_SETTING_DIALOG_BUTTON_CANCEL_ID :
 			self.Close( )
 
 
@@ -138,16 +139,18 @@ class DialogRecord( BaseDialog ) :
 			pass
 
 	def Close( self ):
-		self.mEventBus.deregister( self )
+		self.mEventBus.Deregister( self )
 		self.mEnableThread = False
 		self.CurrentTimeThread().join()
-		self.close( )
+		self.CloseDialog( )
 
 
 	def StartRecord( self ):
 		print 'Start Record'
-		current = self.mCommander.channel_GetCurrent( )
-		ret = self.mCommander.record_StartRecord( int( current[0] ),  int( current[3] ),  self.mEPGDuration,  self.mRecordName )
+		current = self.mCommander.Channel_GetCurrent( )
+		"""
+		ret = self.mCommander.Record_StartRecord( int( current[0] ),  int( current[3] ),  self.mEPGDuration,  self.mRecordName )
+		"""
 		print 'Record Result=%s' %ret
 
 		self.Close( )
@@ -160,8 +163,7 @@ class DialogRecord( BaseDialog ) :
 		while self.mEnableThread:
 			if  ( loop % 10 ) == 0 :
 				print 'loop=%d' %loop
-				localTime = self.mCommander.datetime_GetLocalTime( )
-				self.mLocalTime = int( localTime[0] )
+				self.mLocalTime = self.mCommander.Datetime_GetLocalTime( )
 				
 			self.UpdateEPGTime( )
 
@@ -194,13 +196,16 @@ class DialogRecord( BaseDialog ) :
 		self.getControl( E_LABEL_EPG_START_TIME ).setLabel( startTimeString[1] )
 		self.getControl( E_LABEL_EPG_END_TIME ).setLabel( endTimeString[1] )
 
+		self.SetControlLabelString(E_DialogInput01, 'Duration' )
 		if self.mHasEPG == True :
 			recordDuration = endTime - self.mLocalTime
 			if recordDuration < 0 :
 				recordDuration = 0
-			self.getControl( E_LABEL_DURATION ).setLabel( '%d' %int( recordDuration/(60) )  )
+			self.SetControlLabel2String(E_DialogInput01, '%d' %int( recordDuration/(60) ) ) 
+			#self.getControl( E_LABEL_DURATION ).setLabel( '%d' %int( recordDuration/(60) )  )
 		else :
-			self.getControl( E_LABEL_DURATION ).setLabel( '%d' % int( self.mEPGDuration/(60) ) )			
+			self.SetControlLabel2String(E_DialogInput01, '%d' %int( self.mEPGDuration/(60) ) )
+			#self.getControl( E_LABEL_DURATION ).setLabel( '%d' % int( self.mEPGDuration/(60) ) )
 
 
 		if endTime < self.mLocalTime : #Already past
@@ -219,5 +224,12 @@ class DialogRecord( BaseDialog ) :
 		print 'percent=%d' %percent
 		
 		self.mCtrlProgress.setPercent( percent )
+
+
+	def DrawItem( self ) :
+		self.ResetAllControl( )
+		self.AddInputControl( E_DialogInput01, 'Start' , 'Duration' )
+		self.AddOkCanelButton( )
+		self.InitControl( )
 
 

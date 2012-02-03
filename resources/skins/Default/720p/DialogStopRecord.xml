@@ -1,5 +1,5 @@
 <window>
-	<defaultcontrol always="true">201</defaultcontrol>
+	<defaultcontrol always="true">9000</defaultcontrol>
 	<coordinates>
 		<system>1</system>
 		<posx>335</posx>
@@ -7,216 +7,191 @@
 	</coordinates>
 	<include>DefaultDialogEffect</include>
 	<controls>
-		<control type="image">
-			<description>background image</description>
-			<posx>0</posx>
-			<posy>100</posy>
-			<width>610</width>
-			<height>220</height>
-			<texture border="40">confluence/DialogBack.png</texture>
+		<control type="group">
+            <animation condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional" reversible="false">
+                <effect type="fade" start="100" end="0" time="300" />
+            </animation>
+			<control type="image" id="100">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>100</posy>
+				<width>610</width>
+				<height>310</height>
+				<texture border="40">confluence/DialogBack.png</texture>
+			</control>
+			<include>DefaultDialogCommonSetting</include>
 		</control>
-		<control type="image">
+
+		<control type="grouplist" id="9000">		
+			<onleft>9000</onleft>
+			<itemgap>0</itemgap>
 			<posx>40</posx>
-			<posy>110</posy>
-			<width>530</width>
-			<height>90</height>
-			<aspectratio>stretch</aspectratio>
-			<texture>confluence/GlassTitleBar.png</texture>
-		</control>
+			<posy>180</posy>
+			<onup>9000</onup>
+			<ondown>9000</ondown>
 
-		
-		<!-- Header -->
-		<control type="label" id="100">
-			<description>header label</description>
-			<posx>20</posx>
-			<posy>118</posy>
-			<width>570</width>
-			<height>30</height>
-			<font>font13_title</font>
-			<align>center</align>
-			<aligny>center</aligny>
-			<textcolor>white</textcolor>
-			<shadowcolor>black</shadowcolor>
-			<label>Stop</label>
-		</control>
-
-		<!-- Close button -->
-		<control type="button">
-			<description>Close Window button</description>
-			<posx>520</posx>
-			<posy>109</posy>
-			<width>64</width>
-			<height>32</height>
-			<label>-</label>
-			<font>-</font>
-			<texturefocus>confluence/DialogCloseButton-focus.png</texturefocus>
-			<texturenofocus>confluence/DialogCloseButton.png</texturenofocus>
-			<onleft>10</onleft>
-			<onright>10</onright>
-			<onup>10</onup>
-			<ondown>10</ondown>
-			<onclick>ParentDir</onclick>
-			<visible>system.getbool(input.enablemouse)</visible>
-		</control>
-
-		<control type="group" id="200">		
-			<control type="list" id="201">
-				<posx>30</posx>
-				<posy>160</posy>
+			<!-- RECORD1 -->
+			<control type="group" id="500">		
+				<posx>0</posx>
+				<posy>0</posy>
 				<width>550</width>
-				<height>80</height>
-				<onleft>300</onleft>
-				<onright>300</onright>
-				<onup>201</onup>
-				<ondown>201</ondown>
-				<pagecontrol>61</pagecontrol>
-				<scrolltime>200</scrolltime>
-				<focusposition>0</focusposition>
-				<movement>2</movement>
-				<visible>true</visible>
-				<enable>true</enable>
-				<animation effect="slide" start="0,0" end="10,0" time="0" condition="true">Conditional</animation>
-				<itemlayout height="40" width="550">
-					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>550</width>
-						<height>41</height>
-						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
-					</control>
-					<control type="label">
-						<posx>30</posx>
-						<posy>0</posy>
-						<width>520</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>grey3</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>$INFO[ListItem.Label]</label>
-						<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
-					</control>
-					<control type="label">
-						<posx>550</posx>
-						<posy>0</posy>
-						<width>400</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
-						<align>right</align>
-						<aligny>center</aligny>
-						<label>$INFO[ListItem.Label2]</label>
-						<visible>false</visible>
-					</control>	
-				</itemlayout>
-				<focusedlayout height="40" width="550">
-					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>550</width>
-						<height>41</height>
-						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
-						<visible>!Control.HasFocus(201)</visible>
-						<animation effect="fade" time="300">Visible</animation>
-						<animation effect="fade" time="300">Hidden</animation>
-					</control>
-					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>550</width>
-						<height>41</height>
-						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
-						<visible>Control.HasFocus(201)</visible>
-						<animation effect="fade" time="300">Visible</animation>
-						<animation effect="fade" time="300">Hidden</animation>
-					</control>
-					<control type="image">
-						<posx>490</posx>
-						<posy>5</posy>
-						<width>30</width>
-						<height>30</height>
-						<texture>DI_Ok.png</texture>
-					</control>
-					<control type="label">
-						<posx>30</posx>
-						<posy>0</posy>
-						<width>520</width>
-						<height>40</height>
-						<font>font13</font>
-						<textcolor>white</textcolor>
-						<selectedcolor>selected</selectedcolor>						
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>$INFO[ListItem.Label]</label>
-					</control>
-					<control type="label">
-						<posx>500</posx>
-						<posy>0</posy>
-						<width>400</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>grey2</textcolor>
-						<selectedcolor>selected</selectedcolor>
-						<align>right</align>
-						<aligny>center</aligny>
-						<label>$INFO[ListItem.Label2]</label>
-						<visible>false</visible>
-						<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="true">conditional</animation>
-					</control>
-				</focusedlayout>
+				<height>70</height>
+				<visible>true</visible>				
+				<defaultcontrol always="true">501</defaultcontrol>
+				<control type="button" id="501">
+					<description>Button Icon</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>550</width>
+					<height>71</height>
+					<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
+					<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
+					<onleft>-</onleft>
+					<onright>-</onright>
+				</control>
+				<control type="image">
+					<posx>350</posx>
+					<posy>0</posy>
+					<width>200</width>
+					<height>71</height>
+					<texture border="0,0,14,0">confluence/MediaItemDetailBG.png</texture>
+					<visible>Control.HasFocus(501)</visible>
+				</control>
+				<control type="label" id="502">
+					<posx>10</posx>
+					<posy>5</posy>
+					<width>400</width>
+					<height>30</height>
+					<font>font13</font>
+					<textcolor>grey2</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>ChannelName</label>
+				</control>
+				<control type="label" id="503">
+					<posx>10</posx>
+					<posy>30</posy>
+					<width>400</width>
+					<height>40</height>
+					<font>font13_title</font>
+					<textcolor>white</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>RecordName</label>
+				</control>
+				<control type="label" id="504">
+					<posx>530</posx>
+					<posy>30</posy>
+					<width>100</width>
+					<height>40</height>
+					<font>font13_title</font>
+					<textcolor>white</textcolor>
+					<align>right</align>
+					<aligny>center</aligny>
+					<label>Duration</label>
+				</control>
+				<control type="progress" id="505" >
+					<description>progress control</description>
+					<posx>430</posx>
+					<posy>10</posy>
+					<width>100</width>
+					<height>20</height>
+				</control>					
+			</control>
 
+			<!-- RECORD 2 -->			
+			<control type="group" id="510">		
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>550</width>
+				<height>70</height>
+				<visible>true</visible>				
+				<defaultcontrol always="true">511</defaultcontrol>
+				<control type="button" id="511">
+					<description>Button Icon</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>550</width>
+					<height>71</height>
+					<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
+					<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
+					<onleft>-</onleft>
+					<onright>-</onright>
+				</control>
+				<control type="image">
+					<posx>350</posx>
+					<posy>0</posy>
+					<width>200</width>
+					<height>71</height>
+					<texture border="0,0,14,0">confluence/MediaItemDetailBG.png</texture>
+					<visible>Control.HasFocus(511)</visible>
+				</control>
+				<control type="label" id="512">
+					<posx>10</posx>
+					<posy>5</posy>
+					<width>400</width>
+					<height>30</height>
+					<font>font13</font>
+					<textcolor>grey2</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>ChannelName</label>
+				</control>
+				<control type="label" id="513">
+					<posx>10</posx>
+					<posy>30</posy>
+					<width>400</width>
+					<height>40</height>
+					<font>font13_title</font>
+					<textcolor>white</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>RecordName</label>
+				</control>
+				<control type="label" id="514">
+					<posx>530</posx>
+					<posy>30</posy>
+					<width>100</width>
+					<height>40</height>
+					<font>font13_title</font>
+					<textcolor>white</textcolor>
+					<align>right</align>
+					<aligny>center</aligny>
+					<label>Duration</label>
+				</control>
+				<control type="progress" id="515" >
+					<description>progress control</description>
+					<posx>430</posx>
+					<posy>10</posy>
+					<width>100</width>
+					<height>20</height>
+				</control>					
 			</control>
-		</control>	
-
-		<!-- Cancel Button -->
-		<control type="group" id="300">
-			<posx>30</posx>
-			<posy>240</posy>
-			<width>115</width>
-			<height>40</height>
-			<defaultcontrol always="true">301</defaultcontrol>
-			<control type="button" id="301">
-				<description>Button Icon</description>
-				<posx>30</posx>
-				<posy>20</posy>
-				<width>35</width>
-				<height>35</height>
-				<hitrect x="30" y="10" w="120" h="40"></hitrect>
-				<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
-				<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
-				<onup>500</onup>
-				<ondown>500</ondown>
-				<onleft>200</onleft>
-				<onright>200</onright>
-				<onclick>ParentDir</onclick>
-			</control>
-			<control type="label">
-				<posx>72</posx>
-				<posy>17</posy>
-				<width>150</width>
-				<height>40</height>
-				<font>font12</font>
-				<textcolor>grey2</textcolor>
-				<align>left</align>
-				<aligny>center</aligny>
-				<label>[B]Cancel[/B]</label>
-				<visible>!Control.HasFocus(300)</visible>
-			</control>
-			<control type="label">
-				<posx>72</posx>
-				<posy>17</posy>
-				<width>150</width>
-				<height>40</height>
-				<font>font12</font>
-				<textcolor>white</textcolor>
-				<align>left</align>
-				<aligny>center</aligny>
-				<label>[B]Cancel[/B]</label>
-				<visible>Control.HasFocus(300)</visible>
+			
+			<!-- CANCEL -->			
+			<control type="group" id="520">		
+				<posx>0</posx>
+				<posy>70</posy>
+				<width>550</width>
+				<height>70</height>
+				<control type="button" id="521">
+					<description>Yes button</description>
+					<posx>160</posx>
+					<posy>20</posy>				
+					<width>250</width>
+					<height>40</height>
+					<font>font12_title</font>
+					<textcolor>white</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<align>center</align>
+					<texturenofocus border="5">confluence/MenuItemNF.png</texturenofocus>
+					<texturefocus border="5">confluence/button-focus.png</texturefocus>
+					<label>[B]Cancel[/B]</label>
+				</control>
 			</control>
 		</control>
-
+		
 	</controls>
 </window>
+
 
