@@ -108,28 +108,19 @@ class TimeShiftPlate(BaseWindow):
 	def onAction(self, aAction):
 		id = aAction.getId()
 		
-		if id == Action.ACTION_PREVIOUS_MENU:
-			LOG_TRACE( 'youn check action menu' )
-
-		elif id == Action.ACTION_SELECT_ITEM:
-			LOG_TRACE( '===== test youn: ID[%s]' % id )
-	
-		elif id == Action.ACTION_PARENT_DIR:
-			LOG_TRACE( 'youn check ation back' )
-
+		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
+			LOG_TRACE( 'esc close' )
 			# end thread UpdateLocalTime()
 			self.mUntilThread = False
 			self.UpdateLocalTime().join()
-
 			self.close( )
 #			winmgr.GetInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
 #			winmgr.GetInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
 #			winmgr.shutdown()
-		
-		else:
-			#LOG_TRACE( 'youn check action unknown id=%d' % id )
-			#self.ChannelTune(id)
-			pass
+
+		elif id == Action.ACTION_SELECT_ITEM:
+			LOG_TRACE( '===== test youn: ID[%s]' % id )
+	
 
 
 	def onClick(self, aControlId):

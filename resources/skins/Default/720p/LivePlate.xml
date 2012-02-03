@@ -143,22 +143,9 @@
 						<aligny>center</aligny>
 						<font>font12</font>
 						<textcolor>white</textcolor>
-						<label>Mute Off</label>
+						<label>Mute</label>
 						<visible>Control.HasFocus(626)</visible>
 					</control>
-					<control type="label">
-						<posx>30</posx>
-						<posy>0</posy>
-						<width>400</width>
-						<height>28</height>
-						<align>left</align>
-						<aligny>center</aligny>
-						<font>font12</font>
-						<textcolor>white</textcolor>
-						<label>Mute On</label>
-						<visible>Control.HasFocus(627)</visible>
-					</control>
-
 					<control type="label">
 						<posx>30</posx>
 						<posy>0</posy>
@@ -330,27 +317,22 @@
 							<width>45</width>
 							<height>35</height>
 							<label></label>
-							<!--altlabel>208</altlabel-->
 							<textcolor>grey3</textcolor>
-							<texturefocus>confluence/icon-mute.png</texturefocus>
-							<texturenofocus>confluence/VolumeIcon-Mute.png</texturenofocus>
-							<!--usealttexture>Player.Paused | Player.Forwarding | Player.Rewinding</usealttexture>
-							<alttexturefocus>confluence/OSDAudioFO.png</alttexturefocus>
-							<alttexturenofocus>confluence/OSDAudioNF.png</alttexturenofocus>
-							<pulseonselect>false</pulseonselect-->
+							<texturefocus>confluence/OSDAudioFO.png</texturefocus>
+							<texturenofocus>confluence/OSDAudioNF.png</texturenofocus>
 							<onleft>SetFocus(625)</onleft>
 							<onright>SetFocus(621)</onright>
 							<onup></onup>
 							<ondown>SetFocus(702)</ondown>
+							<onclick>Mute</onclick>
 							<description>mute,audio off</description>
 						</control>
-						<control type="button" id="627">
+						<!--control type="button" id="627">
 							<posx>225</posx>
 							<posy>0</posy>
 							<width>45</width>
 							<height>35</height>
 							<label></label>
-							<!--altlabel>208</altlabel-->
 							<textcolor>grey3</textcolor>
 							<texturefocus>confluence/OSDAudioFO.png</texturefocus>
 							<texturenofocus>confluence/OSDAudioNF.png</texturenofocus>
@@ -360,11 +342,9 @@
 							<ondown>SetFocus(702)</ondown>
 							<description>mute, audio on</description>
 							<visible>!Control.IsVisible(626)</visible>
-						</control>
+						</control-->
 					</control>
-
-
-					<control type="button" id="630">
+					<!--control type="button" id="630">
 						<posx>680</posx>
 						<posy>0</posy>
 						<align>left</align>
@@ -378,7 +358,7 @@
 						<onup></onup>
 						<ondown>SetFocus(702)</ondown>
 						<description>time shift banner</description>
-					</control>
+					</control-->
 				</control>
 
 				<control type="image" id="604">
@@ -395,7 +375,6 @@
 					<posy>10</posy>
 					<width>90</width>
 					<height>40</height>
-					<!--<texture>flagging/audio/dolbydigital.png</texture>-->
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>audio dolby</description>
 				</control>
@@ -405,7 +384,6 @@
 					<posy>10</posy>
 					<width>90</width>
 					<height>40</height>
-					<!--<texture>OverlayHD.png</texture>-->
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>video HD</description>
 				</control>
@@ -434,7 +412,7 @@
 						<height>28</height>
 						<align>left</align>
 						<aligny>center</aligny>
-						<font>font12</font>
+						<font>font12caps</font>
 						<textcolor>white</textcolor>
 						<label>TIME $INFO[Control.GetLabel]</label>
 						<description>EPG Clock</description>
@@ -448,11 +426,11 @@
 				<posy>640</posy>
 				
 				<control type="label" id="701">
-					<posx>0</posx>
+					<posx>-50</posx>
 					<posy>10</posy>
-					<width>200></width>
+					<width>300</width>
 					<!--<include>WindowTitleCommons</include>-->
-					<font>font24</font>
+					<font>font13caps</font>
 					<align>center</align>
 					<textcolor>9f9f9f9b</textcolor>
 					<label>$INFO[Control.GetLabel]</label>
@@ -462,9 +440,9 @@
 					<posx>250</posx>
 					<posy>0</posy>
 					<width>40</width>
-					<height>40</height>
+					<height>35</height>
 					<label>210</label>
-					<font>-</font>
+					<font></font>
 					<texturefocus>confluence/scroll-left-focus.png</texturefocus>
 					<texturenofocus>confluence/scroll-left.png</texturenofocus>
 					<onleft></onleft>
@@ -488,7 +466,7 @@
 					<posy>6</posy>
 					<width>67</width>
 					<description>start time</description>
-					<font>font24</font>
+					<font>font13_title</font>
 					<label>$INFO[Control.GetLabel]</label>
 					<description>EPG Time</description>
 				</control>
@@ -510,17 +488,17 @@
 					<width>250</width>
 					<height>8</height>
 					<texturebg border="6,0,6,0">confluence/OSDProgressBack.png</texturebg>
-					<lefttexture>-</lefttexture>
+					<lefttexture></lefttexture>
 					<midtexture border="6,0,6,0">confluence/OSDProgressMid.png</midtexture>
-					<righttexture>-</righttexture>
-					<overlaytexture>-</overlaytexture>
+					<righttexture></righttexture>
+					<overlaytexture></overlaytexture>
 				</control>
 
 				<control type="label" id="705">
 					<posx>1030</posx>
 					<posy>6</posy>
 					<description>end time</description>
-					<font>font24</font>
+					<font>font13_title</font>
 					<label>$INFO[Control.GetLabel]</label>
 					<description>EPG Time</description>
 				</control>
@@ -530,9 +508,9 @@
 					<posy>0</posy>
 					<align>right</align>
 					<width>40</width>
-					<height>40</height>
+					<height>35</height>
 					<label>31354</label>
-					<font>-</font>
+					<font></font>
 					<texturefocus>confluence/scroll-right-focus.png</texturefocus>
 					<texturenofocus>confluence/scroll-right.png</texturenofocus>
 					<onleft>SetFocus(702)</onleft>

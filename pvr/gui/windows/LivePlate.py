@@ -90,8 +90,7 @@ class LivePlate(BaseWindow):
 		self.mCtrlBtnStartRec          = self.getControl( 624 )
 		self.mCtrlBtnStopRec           = self.getControl( 625 )
 		self.mCtrlBtnMute              = self.getControl( 626 )
-		self.mCtrlBtnMuteToggled       = self.getControl( 627 )
-		self.mCtrlBtnTSbanner          = self.getControl( 630 )
+		#self.mCtrlBtnTSbanner          = self.getControl( 630 )
 
 		self.mCtrlBtnPrevEpg           = self.getControl( 702 )
 		self.mCtrlBtnNextEpg           = self.getControl( 706 )
@@ -107,9 +106,26 @@ class LivePlate(BaseWindow):
 		self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
 		#self.mCurrentChannel.printdebug()
 
+		self.mEventCopy = None
+
 		self.UpdateServiceType( self.mCurrentChannel.mServiceType )
 		self.InitLabelInfo()
 		self.UpdateVolume(Action.ACTION_MUTE)
+
+		try :
+			ret = None
+			ret = self.mCommander.Epgevent_GetPresent()
+			if ret :
+				self.mEventCopy = ret
+				self.UpdateONEvent(self.mEventCopy)
+
+				retList = []
+				retList.append( self.mEventCopy )
+				LOG_TRACE( 'epgevent_GetPresent[%s]'% ClassToList( 'convert', retList ) )
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
+
 
 
 		"""
@@ -129,21 +145,6 @@ class LivePlate(BaseWindow):
 
 
 		#get epg event right now, as this windows open
-		try :
-			ret = None
-			ret=self.mCommander.Epgevent_GetPresent()
-			if ret :
-				self.mEventCopy = ret
-				self.UpdateONEvent(self.mEventCopy)
-
-				retList = []
-				retList.append( self.mEventCopy )
-				LOG_TRACE( 'epgevent_GetPresent[%s]'% ClassToList( 'convert', retList ) )
-
-		except Exception, e :
-			LOG_TRACE( 'Error exception[%s]'% e )
-
-
 		self.mEventBus.Register( self )
 
 		#run thread
@@ -157,24 +158,13 @@ class LivePlate(BaseWindow):
 		#LOG_TRACE( 'Enter' )
 		id = aAction.getId()
 
-		if id == Action.ACTION_PREVIOUS_MENU:
-			LOG_TRACE( 'action menu' )
+		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
+			LOG_TRACE( 'esc close' )
 			self.DescboxToggle('close')
 			self.mEnableThread = False
 			self.CurrentTimeThread().join()
-			winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_MAINMENU )
-
-		elif id == Action.ACTION_SELECT_ITEM:
-			LOG_TRACE( 'youn:%s' % id )
-	
-		elif id == Action.ACTION_PARENT_DIR:
-			LOG_TRACE( 'ation back' )
-
-			self.DescboxToggle('close')
-			self.mEnableThread = False
-			self.CurrentTimeThread().join()
-			self.close( )
-			#winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_NULLWINDOW )
+			#winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_MAINMENU )
+			self.close()
 
 			"""
 			self.GetFocusId()
@@ -192,6 +182,9 @@ class LivePlate(BaseWindow):
 #				winmgr.Shutdown()
 			"""
 
+		elif id == Action.ACTION_SELECT_ITEM:
+			LOG_TRACE( 'youn:%s' % id )
+	
 		elif id == Action.ACTION_SHOW_INFO	:
 			self.ShowEPGDescription( self.mCtrlBtnExInfo.getId(), self.mEventCopy)
 
@@ -253,9 +246,6 @@ class LivePlate(BaseWindow):
 		if aControlId == self.mCtrlBtnMute.getId():
 			self.UpdateVolume( Action.ACTION_MUTE )
 
-		elif aControlId == self.mCtrlBtnMuteToggled.getId():
-			self.UpdateVolume( Action.ACTION_MUTE )
-
 		elif aControlId == self.mCtrlBtnExInfo.getId() :
 			LOG_TRACE( 'click expantion info' )
 			self.ShowEPGDescription(aControlId, self.mEventCopy)
@@ -276,20 +266,22 @@ class LivePlate(BaseWindow):
 			LOG_TRACE( 'click stop recording' )
 			self.ShowDialog( aControlId )
 
-		elif aControlId == self.mCtrlBtnTSbanner.getId() :
-			LOG_TRACE( 'click Time Shift banner' )
-			self.mEnableThread = False
-			self.CurrentTimeThread().join()
-
-			winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_TIMESHIFT_PLATE )
-
-
 		elif aControlId == self.mCtrlBtnPrevEpg.getId() :
 			self.ChannelTune(Action.ACTION_MOVE_LEFT)
 
 		elif aControlId == self.mCtrlBtnNextEpg.getId() :
 			self.ChannelTune(Action.ACTION_MOVE_RIGHT)
 
+
+		"""
+		elif aControlId == self.mCtrlBtnTSbanner.getId() :
+			LOG_TRACE( 'click Time Shift banner' )
+			self.mEnableThread = False
+			self.CurrentTimeThread().join()
+			self.close()
+
+			winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_TIMESHIFT_PLATE )
+		"""
 
 		LOG_TRACE( 'Leave' )
 
@@ -306,15 +298,26 @@ class LivePlate(BaseWindow):
 
 		if self.mWinId == xbmcgui.getCurrentWindowId():
 			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
-				if aEvent.mEventId != self.mEventID :
+
+				if int(aEvent.mEventId) != int(self.mEventID) :
 					ret = None
 					ret = self.mCommander.Epgevent_GetPresent()
 					if ret :
-						self.mEventCopy = ret
 						self.mEventID = aEvent.mEventId
-						self.UpdateONEvent( ret )
+						if not self.mEventCopy or \
+						   ret.mEventId != self.mEventCopy.mEventId or \
+						   ret.mSid != self.mEventCopy.mSid or \
+						   ret.mTsid != self.mEventCopy.mTsid or \
+						   ret.mOnid != self.mEventCopy.mOnid :
+							LOG_TRACE('epg DIFFER')
+							self.mEventCopy = ret
 
-					#ret = self.mCommander.Epgevent_Get(self.mEventID, aEvent.mSid, aEvent.mTsid, aEvent.mOnid, self.mLocalTime )
+							#update label
+							self.UpdateONEvent( ret )
+						else:
+							LOG_TRACE('epg SAME')
+
+
 			else :
 				LOG_TRACE( 'event unknown[%s]'% aEvent.getName() )
 		else:
@@ -329,7 +332,7 @@ class LivePlate(BaseWindow):
 		LOG_TRACE( 'tuneActionID[%s]'% aActionID )
 
 		if aActionID == Action.ACTION_PAGE_UP:
-			LOG_TRACE( 'ACTION_PREVIOUS_ITEM control %d' % aActionID )
+			LOG_TRACE( 'ACTION_PREVIOUS_CH control %d' % aActionID )
 			priv_ch = None
 			priv_ch = self.mCommander.Channel_GetPrev()
 
@@ -338,22 +341,21 @@ class LivePlate(BaseWindow):
 				retList.append( priv_ch )
 				LOG_TRACE( 'priv_ch[%s]' % ClassToList( 'convert', retList ) )
 
-			if priv_ch :
-				try:
-					self.mLastChannel = self.mCurrentChannel
-					ret = self.mCommander.Channel_SetCurrent( priv_ch.mNumber , priv_ch.mServiceType )
+			try:
+				self.mLastChannel = self.mCurrentChannel
+				ret = self.mCommander.Channel_SetCurrent( priv_ch.mNumber, priv_ch.mServiceType )
 
-					if ret == True :
-						self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
-						if self.mCurrentChannel :
-							self.UpdateServiceType( priv_ch.mServiceType )
-							self.InitLabelInfo()
+				if ret :
+					self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
+					if self.mCurrentChannel :
+						self.UpdateServiceType( priv_ch.mServiceType )
+						self.InitLabelInfo()
 
-				except Exception, e :
-					LOG_TRACE( 'Error exception[%s]'% e )
+			except Exception, e :
+				LOG_TRACE( 'Error exception[%s]'% e )
 
 		elif aActionID == Action.ACTION_PAGE_DOWN:
-			LOG_TRACE( 'ACTION_NEXT_ITEM control %d' % aActionID )
+			LOG_TRACE( 'ACTION_NEXT_CH control %d' % aActionID )
 			next_ch = None
 			next_ch = self.mCommander.Channel_GetNext()
 
@@ -366,7 +368,7 @@ class LivePlate(BaseWindow):
 				self.mLastChannel = self.mCurrentChannel
 				ret = self.mCommander.Channel_SetCurrent( next_ch.mNumber, next_ch.mServiceType )
 
-				if ret == True :
+				if ret :
 					self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
 					if self.mCurrentChannel :
 						self.UpdateServiceType( next_ch.mServiceType )
@@ -399,8 +401,7 @@ class LivePlate(BaseWindow):
 				self.mEventCopy = ret
 				self.UpdateONEvent( ret )
 
-		else:
-			pass
+
 
 		LOG_TRACE( 'Leave' )
 
@@ -479,15 +480,15 @@ class LivePlate(BaseWindow):
 			#progress
 
 			if  ( loop % 10 ) == 0 :
-				LOG_TRACE( 'loop=%d' %loop )
+				#LOG_TRACE( 'loop=%d' %loop )
 				self.UpdateLocalTime( )
-
 
 			#local clock
 			ret = EpgInfoClock( FLAG_CLOCKMODE_AHM, self.mLocalTime, loop )
-			#self.mCtrlLblEventClock.setLabel( ret[0] )
+			self.mCtrlLblEventClock.setLabel( ret[0] )
 
-			time.sleep(1)
+			xbmc.sleep(1000)
+			#self.mLocalTime += 1
 			loop += 1
 
 		LOG_TRACE( 'leave_end thread' )
@@ -497,26 +498,32 @@ class LivePlate(BaseWindow):
 	def UpdateLocalTime( self ) :
 		
 		try:
-			self.mLocalTime = self.mCommander.Datetime_GetLocalTime( )
+			self.mLocalTime = self.mCommander.Datetime_GetLocalTime()
+
+			if self.mEventCopy :
+				startTime = self.mEventCopy.mStartTime + self.mLocalOffset
+				endTime   = startTime + self.mEventCopy.mDuration
+				pastDuration = endTime - self.mLocalTime
+				LOG_TRACE('past[%s] time[%s] start[%s] duration[%s] offset[%s]'% (pastDuration,self.mLocalTime, self.mEventCopy.mStartTime, self.mEventCopy.mDuration,self.mLocalOffset ) )
+
+				if self.mLocalTime > endTime: #Already past
+					pastDuration = 100
+				elif self.mLocalTime < startTime :
+					pastDuration = 0
+
+				if pastDuration < 0 : #Already past
+					pastDuration = 100
+
+				if self.mEventCopy.mDuration > 0 :
+					percent = 100 - (pastDuration * 100.0/self.mEventCopy.mDuration )
+				else :
+					percent = 0
+
+				LOG_TRACE( 'percent=%d' %percent )
+				self.mCtrlProgress.setPercent( percent )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
-
-			#self.mLocalTime = 0
-
-
-		endTime = self.mEventCopy.mStartTime + self.mEventCopy.mDuration
-		pastDuration = self.mLocalTime - endTime
-		if pastDuration < 0 :
-			pastDuration = 0
-
-		if self.mEventCopy.mDuration > 0 :
-			percent = pastDuration * 100/self.mEventCopy.mDuration
-		else :
-			percent = 0
-
-		#LOG_TRACE( 'percent=%d' %percent )
-		self.mCtrlProgress.setPercent( percent )
 
 		LOG_TRACE( 'Leave' )
 
@@ -601,13 +608,10 @@ class LivePlate(BaseWindow):
 			LOG_TRACE( 'mute:current[%s]'% mute )
 			if mute == False:
 				ret = self.mCommander.Player_SetMute( True )
-				self.mCtrlBtnMute.setVisible(True)
-				self.mCtrlBtnMuteToggled.setVisible( False )
 
 			else:
 				ret = self.mCommander.Player_SetMute( False )
-				self.mCtrlBtnMute.setVisible(False)
-				self.mCtrlBtnMuteToggled.setVisible( True )
+
 
 		elif aCmd == Action.ACTION_VOLUME_UP:
 			pass
@@ -660,20 +664,24 @@ class LivePlate(BaseWindow):
 			runningCount = self.mCommander.Record_GetRunningRecorderCount()
 			LOG_TRACE( 'runningCount=%d' %runningCount)
 
+			GuiLock2(True)
 			if  runningCount < 2 :
 				dialog = diamgr.GetInstance().GetDialog( diamgr.DIALOG_ID_START_RECORD )
-				dialog.doModal( )
+				dialog.doModal()
 			else:
 				msg = 'Already %d recording(s) running' %runningCount
 				xbmcgui.Dialog().ok('Infomation', msg )
+			GuiLock2(False)
 
 		elif aFocusid == self.mCtrlBtnStopRec.getId() :
 			runningCount = self.mCommander.Record_GetRunningRecorderCount()
 			LOG_TRACE( 'runningCount=%d' %runningCount )
 
 			if  runningCount > 0 :
+				GuiLock2(True)
 				dialog = diamgr.GetInstance().GetDialog( diamgr.DIALOG_ID_STOP_RECORD )
-				dialog.doModal( )
+				dialog.doModal()
+				GuiLock2(False)
 			
 
 		#ret = xbmcgui.Dialog().ok(msg1, msg2)
