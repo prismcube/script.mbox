@@ -213,6 +213,9 @@ class LivePlate(BaseWindow):
 			self.CurrentTimeThread().join()
 			winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_TIMESHIFT_PLATE )
 
+		elif id == 13: #'x'
+			#this is test
+			LOG_TRACE( 'cwd[%s]'% xbmc.getLanguage() )
 
 		"""
 		elif id == Action.ACTION_VOLUME_UP:
@@ -331,7 +334,7 @@ class LivePlate(BaseWindow):
 		LOG_TRACE( 'Enter' )
 		LOG_TRACE( 'tuneActionID[%s]'% aActionID )
 
-		if aActionID == Action.ACTION_PAGE_UP:
+		if aActionID == Action.ACTION_PAGE_DOWN:
 			LOG_TRACE( 'ACTION_PREVIOUS_CH control %d' % aActionID )
 			priv_ch = None
 			priv_ch = self.mCommander.Channel_GetPrev()
@@ -354,7 +357,7 @@ class LivePlate(BaseWindow):
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
 
-		elif aActionID == Action.ACTION_PAGE_DOWN:
+		elif aActionID == Action.ACTION_PAGE_UP:
 			LOG_TRACE( 'ACTION_NEXT_CH control %d' % aActionID )
 			next_ch = None
 			next_ch = self.mCommander.Channel_GetNext()
@@ -504,7 +507,7 @@ class LivePlate(BaseWindow):
 				startTime = self.mEventCopy.mStartTime + self.mLocalOffset
 				endTime   = startTime + self.mEventCopy.mDuration
 				pastDuration = endTime - self.mLocalTime
-				LOG_TRACE('past[%s] time[%s] start[%s] duration[%s] offset[%s]'% (pastDuration,self.mLocalTime, self.mEventCopy.mStartTime, self.mEventCopy.mDuration,self.mLocalOffset ) )
+				#LOG_TRACE('past[%s] time[%s] start[%s] duration[%s] offset[%s]'% (pastDuration,self.mLocalTime, self.mEventCopy.mStartTime, self.mEventCopy.mDuration,self.mLocalOffset ) )
 
 				if self.mLocalTime > endTime: #Already past
 					pastDuration = 100

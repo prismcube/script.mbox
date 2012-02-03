@@ -271,11 +271,15 @@ class ChannelListWindow(BaseWindow):
 					self.SetMarkChanneltoMove( FLAG_OPT_MOVE_UPDOWN, id )
 					return
 
+				#TODO : must be need timeout schedule
+				"""
 				self.mIsSelect = False
 				self.InitEPGEvent()
 
 				self.ResetLabel()
 				self.UpdateLabelInfo()
+				"""
+
 
 			if self.mFocusId == self.mCtrlListMainmenu.getId() :
 				#self.onClick( self.mCtrlListMainmenu.getId() )

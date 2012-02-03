@@ -29,7 +29,7 @@
 <!-- info section -->			
 			<control type="group" id="600">
 				<posx>50</posx>
-				<posy>580</posy>
+				<posy>600</posy>
 
 				<control type="label" id="601">
 					<posx>0</posx>
@@ -54,7 +54,7 @@
 
 				<control type="image" id="603">
 					<posx>245</posx>
-					<posy>-15</posy>
+					<posy>-35</posy>
 					<align>left</align>
 					<width>70</width>
 					<height>30</height>
@@ -64,7 +64,7 @@
 
 				<control type="group">
 					<posx>-50</posx>
-					<posy>-15</posy>
+					<posy>-37</posy>
 					<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(620).HasFocus) | Control.HasFocus(702) | Control.HasFocus(706)">conditional</animation>
 					<description>info explane</description>
 					<control type="image">
@@ -176,7 +176,7 @@
 <!-- button control -->
 				<control type="group" id="620">
 					<posx>315</posx>
-					<posy>-15</posy>
+					<posy>-35</posy>
 					<!--control type="image">
 						<animation effect="fade" start="0" end="100" delay="0" time="300" condition="Control.HasFocus(621)">conditional</animation>
 						<animation effect="fade" start="100" end="0" delay="0" time="300" condition="!Control.HasFocus(621)">conditional</animation>
@@ -361,27 +361,44 @@
 					</control-->
 				</control>
 
+				<control type="group" id="650">
+					<posx>720</posx>
+					<posy>-35</posy>
+					<control type="image" id="651">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>IconLockFocus.png</texture>
+					</control>
+					<control type="image" id="652">
+						<posx>30</posx>
+						<posy>1</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>IconCas.png</texture>
+					</control>
+				</control>
+
 				<control type="image" id="604">
 					<posx>720</posx>
-					<posy>10</posy>
+					<posy>18</posy>
 					<width>60</width>
 					<height>40</height>
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>data</description>
 				</control>
-
 				<control type="image" id="605">
 					<posx>775</posx>
-					<posy>10</posy>
+					<posy>18</posy>
 					<width>90</width>
 					<height>40</height>
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>audio dolby</description>
 				</control>
-
 				<control type="image" id="606">
 					<posx>855</posx>
-					<posy>10</posy>
+					<posy>18</posy>
 					<width>90</width>
 					<height>40</height>
 					<texture>$INFO[Control.GetLabel]</texture>
@@ -390,7 +407,7 @@
 
 				<control type="group">
 					<posx>200r</posx>
-					<posy>-15</posy>
+					<posy>-37</posy>
 					<!--
 					<animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
 					<animation effect="slide" start="0,0" end="210,0" delay="0" time="300" condition="Window.Next(Home) | Window.IsVisible(FullscreenVideo) | Window.IsVisible(Visualisation)">WindowClose</animation>
@@ -423,7 +440,7 @@
 <!-- epg section -->			
 			<control type="group" id="700">
 				<posx>50</posx>
-				<posy>640</posy>
+				<posy>660</posy>
 				
 				<control type="label" id="701">
 					<posx>-50</posx>

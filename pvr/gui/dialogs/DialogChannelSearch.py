@@ -3,6 +3,7 @@ import xbmc
 import xbmcgui
 import time
 import sys
+import threading
 
 import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.BaseWindow import Action
@@ -11,7 +12,7 @@ from  pvr.TunerConfigMgr import *
 from ElisEnum import ElisEnum
 
 import pvr.ElisMgr
-from pvr.Util import RunThread, GuiLock, LOG_TRACE
+from pvr.Util import RunThread, GuiLock, LOG_TRACE, GuiLock2
 from ElisEventClass import *
 
 
@@ -47,6 +48,9 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mWin = xbmcgui.Window( self.mWinId  )
 		self.mIsFinished = False	
 
+		self.mTimer = None
+		self.mAboartFlag = False
+		
 		self.mSatelliteFormatedName = 'Unknown'
 		self.mAllSatelliteList = []
 		
@@ -73,7 +77,7 @@ class DialogChannelSearch( BaseDialog ) :
 		focusId = self.getFocusId( )
 	
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			pass
+			LOG_TRACE('%s' %self.mTimer.isAlive() )		 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
@@ -190,15 +194,27 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def ScanAbort( self ) :
 		if self.mIsFinished == False :
+			self.mCommander.Channelscan_Abort( )
+			self.mAboartFlag = True
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( 'Confirm', 'Do you want abort channel scan?' )
 			dialog.doModal( )
-
+			
+			
 			if dialog.IsOK() == E_DIALOG_STATE_YES :
 				LOG_TRACE('before cmd scan abort' )
-				self.mCommander.Channelscan_Abort( ) #ToDO : Check this command has reply
+				#self.mCommander.Channelscan_Abort( ) #ToDO : Check this command has reply
 				LOG_TRACE('after cmd scan abort' )				
 				self.mIsFinished = True
+
+			elif dialog.IsOK() == E_DIALOG_STATE_NO : 
+				self.mAboartFlag == False
+				self.ScanStart( )
+				
+			elif dialog.IsOK() == E_DIALOG_STATE_CANCEL :
+				self.mAboartFlag == False
+				self.ScanStart( )
+
 
 		LOG_TRACE('isFinished=%d' %self.mIsFinished )
 		if self.mIsFinished == True :
@@ -206,27 +222,27 @@ class DialogChannelSearch( BaseDialog ) :
 			self.CloseDialog( )
 
 	@GuiLock
-	def onEvent( self, aEvent ):
+	def onEvent( self, aEvent ) :
+		if self.mAboartFlag == True :
+			return
+		if xbmcgui.getCurrentWindowId( ) == self.mWinId :
 
-		if xbmcgui.getCurrentWindowId() == self.mWinId :
-
-			if aEvent.getName() == ElisEventScanAddChannel.getName():
+			if aEvent.getName( ) == ElisEventScanAddChannel.getName():
 				self.UpdateAddChannel( aEvent )
 
-			elif aEvent.getName() == ElisEventScanProgress.getName():
+			elif aEvent.getName( ) == ElisEventScanProgress.getName():
 				self.UpdateScanProgress( aEvent )
 
 
-
-	def UpdateScanProgress(self, aEvent ):
+	def UpdateScanProgress( self, aEvent ) :
 
 		percent = 0
 		
 		if aEvent.mAllCount > 0 :
-			percent = int( aEvent.mCurrentIndex*100/aEvent.mAllCount )
+			percent = int( aEvent.mCurrentIndex * 100 / aEvent.mAllCount )
 		
 
-		print 'currentIndex=%d total=%d percent=%d finish=%d' %(aEvent.mCurrentIndex, aEvent.mAllCount, percent, aEvent.mFinished )
+		print 'currentIndex=%d total=%d percent=%d finish=%d' % ( aEvent.mCurrentIndex, aEvent.mAllCount, percent, aEvent.mFinished )
 
 		if aEvent.mFinished == 0 and ( aEvent.mAllCount < 10 ) and ( aEvent.mCurrentIndex == aEvent.mAllCount ) :
 			self.mCtrlProgress.setPercent( 90 )
@@ -258,15 +274,22 @@ class DialogChannelSearch( BaseDialog ) :
 			print 'finished'
 			self.mIsFinished = True
 			self.mCtrlProgress.setPercent( 100 )
+			LOG_TRACE('')
+			self.mTimer = threading.Timer( 0.5, self.ShowResult )
+			LOG_TRACE('')
 
-			tvCount = len( self.mTvListItems )
-			radioCount = len( self.mRadioListItems )
-			searchResult = 'TV Channels : %d \nRadio Channels : %d' %( tvCount, radioCount )
+			import inspect
+			for member in inspect.getmembers( self.mTimer ) :
+				LOG_TRACE('member=%s' %member[0] )
 			
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( 'Infomation', searchResult )
- 			dialog.doModal( )
+			self.mTimer.start()
 
+
+			"""
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( 'Infomation', '3333' )
+ 			dialog.doModal( )
+			"""
 
 	def UpdateAddChannel(self, aEvent ):
 
@@ -303,4 +326,16 @@ class DialogChannelSearch( BaseDialog ) :
 
 		return 'UnKnown'
 
+
+	def ShowResult( self ) :
+		LOG_TRACE('')
+		tvCount = len( self.mTvListItems )
+		radioCount = len( self.mRadioListItems )
+		searchResult = 'TV Channels : %d \nRadio Channels : %d' %( tvCount, radioCount )
+		LOG_TRACE('%s' %self.mTimer )
+		LOG_TRACE('%s' %self.mTimer.isAlive() )
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( 'Infomation', searchResult )
+		dialog.doModal( )
 
