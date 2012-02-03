@@ -19,6 +19,7 @@ class DialogSetTransponder( SettingDialog ) :
 		self.mFec			= 0
 		self.mPolarization	= 0
 		self.mSimbolicRate	= 0
+		self.mSatelliteBand = 0
 		
 		
 	def onInit( self ) :
@@ -66,6 +67,21 @@ class DialogSetTransponder( SettingDialog ) :
  			dialog.doModal( )
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
  				tempval = dialog.GetString( )
+				if int( tempval ) == self.mFrequency :
+					return
+				
+				if self.mSatelliteBand == ElisEnum.E_BAND_KU and int( tempval ) < 5150 :
+					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( 'ERROR', 'Please input Ku Band Satellite' )
+		 			dialog.doModal( )
+					return
+
+				if self.mSatelliteBand == ElisEnum.E_BAND_C and int( tempval ) > 10000 :
+					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( 'ERROR', 'Please input C Band Satellite' )
+		 			dialog.doModal( )
+					return
+					
 				if int( tempval ) > 13000 :
 					self.mFrequency = 13000
 				elif int( tempval ) < 3000 :
@@ -101,6 +117,9 @@ class DialogSetTransponder( SettingDialog ) :
  			dialog.doModal( )
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
  				tempval = dialog.GetString( )
+ 				if int( tempval ) == self.mSimbolicRate :
+					return
+					
 				if int( tempval ) > 60000 :
 					self.mSimbolicRate = 60000
 				elif int( tempval ) < 1000 :
@@ -133,11 +152,12 @@ class DialogSetTransponder( SettingDialog ) :
 		return self.mFrequency, self.mFec, self.mPolarization, self.mSimbolicRate
 
 
-	def SetDefaultValue( self, aFrequency, aFec, aPolarization, aSimbolicRate ) :
+	def SetDefaultValue( self, aFrequency, aFec, aPolarization, aSimbolicRate, aSatelliteBand ) :
 		self.mFrequency		= aFrequency
 		self.mFec			= aFec
 		self.mPolarization	= aPolarization
 		self.mSimbolicRate	= aSimbolicRate
+		self.mSatelliteBand	= aSatelliteBand
 		
 
 	def DrawItem( self ) :

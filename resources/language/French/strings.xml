@@ -93,4 +93,6 @@
 	<string id="591">NONE_SATELLITE</string>
 	<string id="592">FTA/CAS</string>
 	<string id="593">NONE_FAVORITE</string>
+	<string id="594">Erreur</string>
+	<string id="595">Mot de passe errone</string>
 </strings>

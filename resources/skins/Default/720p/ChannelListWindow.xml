@@ -11,7 +11,17 @@
 	<controls>
 
 <!-- bg design -->
-		<!--include>CommonPictureBackground</include-->
+<!--
+		<include>DefaultMiniTitle</include>
+		<include>DefaultCommonDateTime</include>
+		<control type="group">
+			<posx>80</posx>
+			<posy>110</posy>
+			<include>DefaultSettingWindowEffect</include>
+			<include>DefaultBehindDialogFadeOut</include>
+			<include>DefaultSettingMainWindow</include>
+		</control>
+-->
 		<control type="image">
 			<posx>0</posx>
 			<posy>0</posy>
@@ -41,37 +51,31 @@
 				<texture>confluence/floor.png</texture>
 				<include>VisibleFadeEffect</include>
 			</control>
-
-			<!--control type="image">
-				<posx>50</posx>
-				<posy>60</posy>
-				<width>750</width>
-				<height>600</height>
-				<texture border="20">confluence/ContentPanel.png</texture>
+			<control type="group">
+				<include>VisibleFadeEffect</include>
+				<visible>true</visible>
+				<control type="image">
+					<posx>40</posx>
+					<posy>60</posy>
+					<width>1200</width>
+					<height>620</height>
+					<texture border="20">confluence/ContentPanel.png</texture>
+				</control>
+				<control type="image">
+					<posx>40</posx>
+					<posy>645</posy>
+					<width>1200</width>
+					<height>600</height>
+					<aspectratio aligny="top">keep</aspectratio>
+					<texture diffuse="confluence/diffuse_mirror3.png" flipy="true" border="20">confluence/ContentPanel.png</texture>
+				</control>
 			</control>
-			<control type="image">
-				<posx>800</posx>
-				<posy>60</posy>
-				<width>430</width>
-				<height>600</height>
-				<texture border="20">confluence/ContentPanel.png</texture>
-			</control-->
-
-			<control type="image">
-				<posx>50</posx>
-				<posy>60</posy>
-				<width>1180</width>
-				<height>600</height>
-				<texture border="20">confluence/ContentPanel.png</texture>
-			</control>
-
 		</control>
-
 
 <!--  local time -->
 		<include>DefaultCommonDateTime</include>
-
-		<!--control type="group">
+<!--
+		<control type="group">
 			<posx>1110</posx>
 			<posy>0</posy>
 			<control type="label">
@@ -89,29 +93,29 @@
 			</control>
 			<control type="label" id="31">
 				<description>DATE Label</description>
-		        <posx>0</posx>
-		        <posy>5</posy>
-		        <width>350</width>
-		        <height>28</height>
-		        <align>right</align>
-		        <aligny>center</aligny>
-		        <font>font13</font>
-		        <textcolor>white</textcolor>
-		        <shadowcolor>black</shadowcolor>
-		        <label>[COLOR=grey]$INFO[Control.GetLabel][/COLOR]</label>
+				<posx>0</posx>
+				<posy>5</posy>
+				<width>350</width>
+				<height>28</height>
+				<align>right</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<label>[COLOR=grey]$INFO[Control.GetLabel][/COLOR]</label>
 			</control>
 			<control type="label" id="32">
 				<description>TIME Label</description>
-		        <posx>45</posx>
-		        <posy>5</posy>
-		        <width>100</width>
-		        <height>28</height>
-		        <align>left</align>
-		        <aligny>center</aligny>
-		        <font>font13</font>
-		        <textcolor>white</textcolor>
-		        <shadowcolor>black</shadowcolor>
-		        <label>$INFO[Control.GetLabel]</label>
+				<posx>45</posx>
+				<posy>5</posy>
+				<width>100</width>
+				<height>28</height>
+				<align>left</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<label>$INFO[Control.GetLabel]</label>
 			</control>
 			<control type="image">
 				<description>Clock Image</description>
@@ -121,20 +125,22 @@
 				<height>20</height>
 				<texture>clock.png</texture>
 			</control>
-		</control-->
-
+		</control>
+-->
 
 <!-- middle left -->
-		<control type="group" id="49">		
+		<control type="group" id="49">
+			<posx>75</posx>
+			<posy>90</posy>
 			<control type="list" id="50">
-				<posx>75</posx>
-				<posy>80</posy>
+				<posx>0</posx>
+				<posy>40</posy>
 				<width>780</width>
-				<height>401</height>
+				<height>521</height>
 				<onleft>102</onleft>
 				<onright>61</onright>
-				<onup>49</onup>
-				<ondown>49</ondown>
+				<onup>50</onup>
+				<ondown>50</ondown>
 				<pagecontrol>61</pagecontrol>
 				<scrolltime>200</scrolltime>
 				<focusposition>0</focusposition>
@@ -292,13 +298,14 @@
 					</control>
 				</focusedlayout>
 			</control>
+		</control>
 
-        <!-- Scrollbar -->
+		<!-- Scrollbar -->
 		<control type="scrollbar" id="61">
 			<posx>770</posx>
-			<posy>75</posy>
+			<posy>125</posy>
 			<width>25</width>
-			<height>411</height>
+			<height>521</height>
 
 			<texturesliderbackground border="0,14,0,14">confluence/ScrollBarV.png</texturesliderbackground>
 			<texturesliderbar border="0,14,0,14">confluence/ScrollBarV_bar.png</texturesliderbar>
@@ -307,10 +314,10 @@
 			<textureslidernibfocus>confluence/ScrollBarNib.png</textureslidernibfocus>
 <!--
 			<texturesliderbackground border="2,2,2,2">scrollbar_bar_back2.png</texturesliderbackground> 
-            <texturesliderbar border="2,16,2,16">scrollbar_bar.png</texturesliderbar> 
-            <texturesliderbarfocus border="2,16,2,16">scrollbar_bar_focus.png</texturesliderbarfocus> 
-            <textureslidernib>scrollbar_nib.png</textureslidernib> 
-            <textureslidernibfocus>scrollbar_nib.png</textureslidernibfocus> 
+			<texturesliderbar border="2,16,2,16">scrollbar_bar.png</texturesliderbar> 
+			<texturesliderbarfocus border="2,16,2,16">scrollbar_bar_focus.png</texturesliderbarfocus> 
+			<textureslidernib>scrollbar_nib.png</textureslidernib> 
+			<textureslidernibfocus>scrollbar_nib.png</textureslidernibfocus> 
 -->
 			<onleft>49</onleft>
 			<onright>49</onright>
@@ -323,24 +330,23 @@
 <!-- middle right -->
 		<control type="group" id="300">
 			<posx>820</posx>
-			<posy>80</posy>
+			<posy>120</posy>
 			<width>430</width>
 			<height>600</height>
 			<allowoverlay>true</allowoverlay>
 			<control type="group">
-				<include>backgroundfade</include>
-				<animation type="WindowOpen" reversible="false">
-					<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
-					<effect type="fade" start="0" end="100" time="300" />
-				</animation>
-				<animation type="WindowClose" reversible="false">
-					<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
-					<effect type="fade" start="100" end="0" time="300" />
-				</animation>			
-
+				<control type="image">
+					<description>LOGO</description>
+					<posx>60</posx>
+					<posy>0</posy>
+					<width>220</width>
+					<height>80</height>
+					<aspectratio>keep</aspectratio>
+					<texture>confluence/Confluence_Logo.png</texture>
+				</control>
 				<control type="image">
 					<posx>0</posx>
-					<posy>0</posy>
+					<posy>80</posy>
 					<width>390</width>
 					<height>220</height>
 					<texture border="20">confluence/backgrounds/weather.jpg</texture>
@@ -348,37 +354,27 @@
 				</control>
 				<control type="image">
 					<posx>0</posx>
-					<posy>201</posy>
+					<posy>281</posy>
 					<width>390</width>
 					<height>18</height>
-					<visible>!Skin.HasSetting(ShowBackgroundVideo)</visible>
 					<texture border="20">confluence/StackNF.png</texture>
 					<!--<texture border="20">media-overlay.png</texture>-->
 				</control>
 				<control type="label" id="303">
 					<posx>0</posx>
-					<posy>203</posy>
+					<posy>283</posy>
 					<width>390</width>
 					<height>10</height>
 					<font>font12_title</font>
 					<shadowcolor>ff000000</shadowcolor>
 					<backgroundcolor>ffff0000</backgroundcolor>
-					<label>$INFO[Control.Label]</label>
+					<label>$INFO[Control.GetLabel]</label>
 					<description>epg name</description>
 				</control>
 			</control>
-<!--
-			<control type="image">
-				  <posx>0</posx>
-				  <posy>200</posy>
-				  <width>350</width>
-				  <height>121</height>
-				<texture border="0">DialogBack.png</texture>
-			</control>
--->
 			<control type="group">
 				<posx>0</posx>
-				<posy>220</posy>
+				<posy>300</posy>
 				<width>390</width>
 				<control type="label" id="304">
 					<description>EPG Info</description>
@@ -386,7 +382,7 @@
 					<posy>0</posy>
 					<font>font12_title</font>
 					<textcolor>grey</textcolor>
-					<label>epg name</label>
+					<label>$INFO[Control.GetLabel]</label>
 				</control>
 
 				<control type="group">
@@ -412,14 +408,13 @@
 						<overlaytexture>-</overlaytexture>
 					</control>
 				</control>
-
 				<control type="label" id="307">
 					<description>satellite info</description>
 					<posx>0</posx>
 					<posy>40</posy>
 					<font>font12_title</font>
 					<textcolor>grey</textcolor>
-					<label>19.2 E ASTRA 1</label>
+					<label>$INFO[Control.GetLabel]</label>
 				</control>
 				<control type="label" id="308">
 					<description>career info</description>
@@ -427,9 +422,8 @@
 					<posy>60</posy>
 					<font>font12_title</font>
 					<textcolor>grey</textcolor>
-					<label>11303 MHz, 22000 KS/S, Horz</label>
+					<label>$INFO[Control.GetLabel]</label>
 				</control>
-
 				<control type="group" id="309">
 					<control type="image">
 						<posx>0</posx>
@@ -448,8 +442,6 @@
 						<label>Locked</label>
 					</control>
 				</control>
-
-
 				<control type="image" id="310">
 					<posx>0</posx>
 					<posy>100</posy>
@@ -458,7 +450,6 @@
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>data</description>
 				</control>
-
 				<control type="image" id="311">
 					<posx>55</posx>
 					<posy>100</posy>
@@ -468,7 +459,6 @@
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>audio dolby</description>
 				</control>
-
 				<control type="image" id="312">
 					<posx>110</posx>
 					<posy>100</posy>
@@ -483,25 +473,47 @@
 
 <!--  page -->
 		<control type="group">
-			<control type="label" id="401">
+			<!--control type="label" id="401">
 				<posx>400</posx>
 				<posy>600</posy>
 				<align>center</align>
 				<textcolor>grey</textcolor>
 				<font>font12</font>
-				<!--<label>[COLOR=blue]$INFO[Control.getSelectedItem(50)][/COLOR]</label>-->
-				<label>$INFO[Control.Label] / $INFO[Container(50).NumItems]</label>
+				<label>$INFO[Control.GetLabel] / $INFO[Container(50).NumItems]</label>
 				<visible>!ControlGroup(110).HasFocus</visible>
 				<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="true">conditional</animation>
+			</control-->
+			<control type="label" id="401">
+				<posx>205r</posx>
+				<posy>30r</posy>
+				<width>500</width>
+				<height>20</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
+				<label>([COLOR=blue] $INFO[Control.GetLabel][/COLOR])</label>
+			</control>
+			<control type="label">
+				<posx>40r</posx>
+				<posy>30r</posy>
+				<width>500</width>
+				<height>20</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
+				<label>[COLOR=blue] / $INFO[Container(50).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(50).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(50).CurrentPage]/$INFO[Container(50).NumPages][/COLOR])</label>
+
 			</control>
 		</control>
-
-	</control>
 
 
 <!-- Main Menu -->
 		<control type="group" id="100">
-			<animation effect="slide" start="0,0" end="250,0" time="400" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(110).HasFocus | Control.HasFocus(121) | ControlGroup(9001).HasFocus | ControlGroup(9002).HasFocus">Conditional</animation> 
+			<animation effect="slide" start="0,0" end="250,0" time="400" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(110).HasFocus | Control.HasFocus(121) | ControlGroup(9001).HasFocus">Conditional</animation> 
 			<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus">Conditional</animation>
 			<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="Control.HasFocus(101)">WindowClose</animation>
 			<control type="group">
@@ -513,7 +525,7 @@
                     <height>720</height>
                     <texture>confluence/MediaBladeSub_Part1.png</texture>
                     <!--animation effect="zoom" start="0,0,0,535" end="0,0,300,535" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation-->
-                    <animation effect="zoom" start="0,0,0,720" end="0,0,250,720" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus | Control.HasFocus(124) | ControlGroup(9002).HasFocus">Conditional</animation>
+                    <animation effect="zoom" start="0,0,0,720" end="0,0,250,720" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
 					<animation effect="slide" start="0,0" end="-230,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(5) | Container(102).HasFocus(6)">Conditional</animation>
                 </control>
                 <control type="image">
@@ -523,7 +535,7 @@
                     <height>720</height>
                     <texture>confluence/MediaBladeSub_Part2.png</texture>
                     <!--animation effect="slide" end="300,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation-->
-                    <animation effect="slide" end="250,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus | Control.HasFocus(124) | ControlGroup(9002).HasFocus">Conditional</animation>
+                    <animation effect="slide" end="250,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
 					<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(5) | Container(102).HasFocus(6)">Conditional</animation>
                 </control>
 			</control>
@@ -639,7 +651,7 @@
 					<height>600</height>
 					<onleft>49</onleft>
 					<onright>9001</onright>
-					<onup>124</onup>
+					<onup>102</onup>
 					<ondown>102</ondown>
 					<scrolltime>300</scrolltime>
 					<textcolor>grey3</textcolor>
@@ -872,8 +884,8 @@
 		<control type="group" id="20">
 			<posx>0</posx>
 			<posy>0</posy>
-			<animation effect="slide" start="-650,0" end="0,0" delay="0" time="100" condition="ControlGroup(49).HasFocus | Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">conditional</animation>
-			<animation effect="slide" start="-650,0" end="0,0" delay="0" time="100" condition="Control.IsVisible(100)">conditional</animation>
+			<!--animation effect="slide" start="-650,0" end="0,0" delay="0" time="100" condition="ControlGroup(49).HasFocus | Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">conditional</animation>
+			<animation effect="slide" start="-650,0" end="0,0" delay="0" time="100" condition="Control.IsVisible(100)">conditional</animation-->
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
@@ -897,8 +909,8 @@
 
 <!-- edit button -->
 		<control type="group" id="500">
-			<posx>670</posx>
-			<posy>590</posy>
+			<posx>1100</posx>
+			<posy>620</posy>
 			<onup>49</onup>
 			<!-- Opt Edit Button -->
 			<control type="button" id="501">

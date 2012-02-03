@@ -68,14 +68,19 @@ class ChannelSearch( SettingWindow ):
 		groupId = self.GetGroupId( aControlId )
 		if groupId == E_Input01 :
 			if self.CheckConfiguredSatellite( ) == False :
-				xbmcgui.Dialog( ).ok( 'ERROR', 'No Configured Satellite.' )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'ERROR', 'No Configured Satellite.' )
+	 			dialog.doModal( )
 			else :
 				self.ResetAllControl( )
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_AUTOMATIC_SCAN )
 			
 		elif groupId == E_Input02 :
 			if self.CheckConfiguredSatellite( ) == False :
-				xbmcgui.Dialog( ).ok( 'ERROR', 'No Configured Satellite.' )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'ERROR', 'No Configured Satellite.' )
+	 			dialog.doModal( )
+				
 			else :
 				self.ResetAllControl( )
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MANUAL_SCAN )

@@ -267,7 +267,8 @@ class ChannelListWindow(BaseWindow):
 				self.mSlideOpenFlag = True
 
 
-		elif id == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN :
+		elif id == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN or \
+			 id == Action.ACTION_PAGE_UP or id == Action.ACTION_PAGE_DOWN :
 			self.GetFocusId()
 			if self.mFocusId == self.mCtrlListCHList.getId() :
 				if self.mMoveFlag :
@@ -293,7 +294,10 @@ class ChannelListWindow(BaseWindow):
 			elif self.mFocusId == self.mCtrlBtnOpt :
 				self.mCtrlListCHList.setEnabled( True )
 				self.setFocusId( self.mCtrlGropCHList.getId() )
-				
+
+		elif id == Action.ACTION_SHOW_INFO :
+			LOG_TRACE( 'popup opt' )
+			self.PopupOpt()
 
 		elif id == 13: #'x'
 			#this is test
@@ -323,7 +327,8 @@ class ChannelListWindow(BaseWindow):
 						self.mCtrlListCHList.selectItem( idx+1 )
 						GuiLock2( False )
 
-						self.mCtrlSelectItem.setLabel(str('%s / %s'% (idx+1, len(self.mListItems))) )
+						#self.mCtrlSelectItem.setLabel(str('%s / %s'% (idx+1, len(self.mListItems))) )
+						self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (idx+1)) )
 
 
 					#Turn mode
@@ -350,13 +355,8 @@ class ChannelListWindow(BaseWindow):
 
 		elif aControlId == self.mCtrlBtnOpt.getId():
 			LOG_TRACE( 'onclick Opt' )
+			self.PopupOpt()
 
-			mode = FLAG_OPT_LIST
-			if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
-				mode = FLAG_OPT_GROUP
-			else :
-				mode = FLAG_OPT_LIST
-			self.EditSettingWindow( mode )
 
 		"""
 		elif aControlId == self.mCtrlRadioTune.getId() :
@@ -380,28 +380,33 @@ class ChannelListWindow(BaseWindow):
 		LOG_TRACE( 'Enter' )
 
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
-			self.SaveSlideMenuHeader()
+			ret = False
+			ret = self.SaveSlideMenuHeader()
+			if ret != E_DIALOG_STATE_CANCEL :
+				self.mEnableThread = False
+				self.CurrentTimeThread().join()
+				self.mCtrlListCHList.reset()
+				self.close()
 
-			self.mEnableThread = False
-			self.CurrentTimeThread().join()
-			self.mCtrlListCHList.reset()
-			self.close()
+			LOG_TRACE( 'go out Cancel')
 
 		else :
-			self.SaveEditList()
-			self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
-			self.mCtrlListCHList.reset()
-			self.InitSlideMenuHeader()
-			self.InitChannelList()
+			ret = False
+			ret = self.SaveEditList()
+			if ret != E_DIALOG_STATE_CANCEL :
+				self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
+				self.mCtrlListCHList.reset()
+				self.InitSlideMenuHeader()
+				self.InitChannelList()
 
-			#clear label
-			self.ResetLabel()
+				#clear label
+				self.ResetLabel()
 
-			#initialize get epg event
-			self.InitEPGEvent()
-			self.UpdateLabelInfo()
-			#Event Register
-			#self.mEventBus.Register( self )
+				#initialize get epg event
+				self.InitEPGEvent()
+				self.UpdateLabelInfo()
+				#Event Register
+				#self.mEventBus.Register( self )
 
 		LOG_TRACE( 'Leave' )
 
@@ -413,24 +418,31 @@ class ChannelListWindow(BaseWindow):
 		if self.mWinId == xbmcgui.getCurrentWindowId() :
 			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
 
-				LOG_TRACE('1========event id[%s] old[%s]'% (aEvent.mEventId, self.mEventId) )
+				#LOG_TRACE('1========event id[%s] old[%s]'% (aEvent.mEventId, self.mEventId) )
 				if int(aEvent.mEventId) != int(self.mEventId) :
 					if self.mIsSelect == True :
 						#on select, clicked
 						ret = None
 						ret = self.mCommander.Epgevent_GetPresent()
 						if ret :
-							self.mNavEpg = ret
+							#LOG_TRACE('2========event id[%s] old[%s]'% (aEvent.mEventId, self.mEventId) )
 							self.mEventId = aEvent.mEventId
-							LOG_TRACE('2========event id[%s] old[%s]'% (aEvent.mEventId, self.mEventId) )
 
-						#not select, key up/down,
-					#else :
-					#	ret = self.InitEPGEvent()
+							if not self.mNavEpg or \
+							   ret.mEventId != self.mNavEpg.mEventId or \
+							   ret.mSid != self.mNavEpg.mSid or \
+							   ret.mTsid != self.mNavEpg.mTsid or \
+							   ret.mOnid != self.mNavEpg.mOnid :
+								LOG_TRACE('epg DIFFER')
+								self.mNavEpg = ret
 
-					#update label
-					self.ResetLabel()
-					self.UpdateLabelInfo()
+								#update label
+								self.ResetLabel()
+								self.UpdateLabelInfo()
+
+							else:
+								LOG_TRACE('epg SAME')
+
 
 
 			else :
@@ -452,18 +464,23 @@ class ChannelListWindow(BaseWindow):
 		channelNumbr = ParseLabelToCh( self.mViewMode, label )
 		LOG_TRACE( 'label[%s] ch[%d]'% (label, channelNumbr) )
 
+		ret = False
 		ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
 		#LOG_TRACE( 'MASK[%s] ret[%s]'% (self.mPincodeEnter, ret) )
 		if ret == True :
 			if self.mPincodeEnter == FLAG_MASK_NONE :
 				if self.mCurrentChannel == channelNumbr :
-					self.SaveSlideMenuHeader()
-					self.mEnableThread = False
-					self.CurrentTimeThread().join()
-					self.close()
+					ret = False
+					ret = self.SaveSlideMenuHeader()
+					if ret != E_DIALOG_STATE_CANCEL :
+						self.mEnableThread = False
+						self.CurrentTimeThread().join()
+						self.close()
 
-					WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-					return
+						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+						return
+
+					LOG_TRACE( 'go out Cancel' )
 
 				else :
 					pass
@@ -474,7 +491,8 @@ class ChannelListWindow(BaseWindow):
 		if ch :
 			self.mNavChannel = ch
 			self.mCurrentChannel = self.mNavChannel.mNumber
-			self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
+			#self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
+			self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
 			self.ResetLabel()
 			self.UpdateLabelInfo()
 			self.PincodeDialogLimit()
@@ -764,7 +782,7 @@ class ChannelListWindow(BaseWindow):
 		"""
 
 		changed = False
-		ret = False
+		ret = E_DIALOG_STATE_NO
 
 		if self.mSelectMainSlidePosition == self.mLastMainSlidePosition and \
 		   self.mSelectSubSlidePosition == self.mLastSubSlidePosition :
@@ -775,6 +793,7 @@ class ChannelListWindow(BaseWindow):
 		#is change?
 		if changed :
 			try :
+				GuiLock2( True )
 				#ask save question
 				label1 = EnumToString( 'mode', self.mZappingMode )
 				label2 = self.mCtrlListSubmenu.getSelectedItem().getLabel()
@@ -783,11 +802,15 @@ class ChannelListWindow(BaseWindow):
 				line1 = '%s / %s'% ( label1.title(), label2.title() )
 				line2 = Msg.Strings( MsgId.LANG_DO_YOU_WANT_TO_SAVE_CHANNELS )
 
-				ret = xbmcgui.Dialog().yesno(head, line1, '', line2)
-				#LOG_TRACE( 'dialog ret[%s]' % ret )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( head, str('%s\n\n%s'% (line1,line2)) )
+				dialog.doModal()
+				GuiLock2( False )
+
+				ret = dialog.IsOK()
 
 				#anser is yes
-				if ret == True :
+				if ret == E_DIALOG_STATE_YES :
 					#re-configuration class
 					self.mElisSetZappingModeInfo.reset()
 					self.mElisSetZappingModeInfo.mMode = self.mZappingMode
@@ -817,33 +840,44 @@ class ChannelListWindow(BaseWindow):
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
 
+		return ret
+
 		LOG_TRACE( 'Leave' )
 
 
 	def SaveEditList( self ) :
 		LOG_TRACE( 'Enter' )
 
+		ret = E_DIALOG_STATE_NO
+
 		#is change?
 		if self.mIsSave :
-			self.mIsSave = FLAG_MASK_NONE
-
 			#ask save question
 			head =  Msg.Strings( MsgId.LANG_CONFIRM )
 			line1 = Msg.Strings( MsgId.LANG_DO_YOU_WANT_TO_SAVE_CHANNELS )
 
-			ret = xbmcgui.Dialog().yesno(head, line1)
+			#ret = xbmcgui.Dialog().yesno(head, line1)
+			GuiLock2( True )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( head, line1 )
+			dialog.doModal()
+			GuiLock2( False )
+
+			ret = dialog.IsOK()
 
 			#answer is yes
-			if ret :
+			if ret == E_DIALOG_STATE_YES :
+				self.mIsSave = FLAG_MASK_NONE
 				isSave = self.mCommander.Channel_Save()
 				LOG_TRACE( 'save[%s]'% isSave )
 
-			else :
+			elif ret == E_DIALOG_STATE_NO :
+				self.mIsSave = FLAG_MASK_NONE
 				isSave = self.mCommander.Channel_Restore( True )
 				LOG_TRACE( 'Restore[%s]'% isSave )
 
 
-
+		return ret
 
 		LOG_TRACE( 'Leave' )
 
@@ -1088,7 +1122,8 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlListCHList.selectItem( chindex )
 
 		#select item idx, print GUI of 'current / total'
-		self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
+		#self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
+		self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
 
 		LOG_TRACE( 'Leave' )
 
@@ -1103,7 +1138,8 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlProgress.setVisible(False)
 		self.mPincodeEnter = FLAG_MASK_NONE
 
-		self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
+		#self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
+		self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
 		#self.mCtrlChannelName.setLabel('')
 		self.mCtrlEventName.setLabel('')
 		self.mCtrlEventTime.setLabel('')
@@ -1125,7 +1161,7 @@ class ChannelListWindow(BaseWindow):
 		try :
 			if self.mIsSelect == True :
 				ret = self.mCommander.Epgevent_GetPresent()
-				xbmc.sleep(500)
+				xbmc.sleep(50)
 				if ret :
 					self.mNavEpg = ret
 					ret.printdebug()
@@ -1140,18 +1176,21 @@ class ChannelListWindow(BaseWindow):
 						if ch.mNumber == channelNumbr :
 							self.mNavChannel = None
 							self.mNavChannel = ch
-							LOG_TRACE( 'found ch: getlabel[%s] ch[%s]'% (channelNumbr, ch.mNumber ) )
+							#LOG_TRACE( 'found ch: getlabel[%s] ch[%s]'% (channelNumbr, ch.mNumber ) )
 
-							gmtFrom = self.mLocalTime - self.mLocalOffset
-							gmtUntil= 0
+							gmtime = self.mCommander.Datetime_GetGMTTime()
+							gmtFrom = gmtime
+							gmtUntil= gmtime
 							maxCount= 1
+							ret = None
 							ret = self.mCommander.Epgevent_GetList( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount )
-							xbmc.sleep(500)
-							LOG_TRACE('=============epg get[%s]'% ClassToList('convert', ret ) )
+							xbmc.sleep(50)
+							#LOG_TRACE('=============epg len[%s] list[%s]'% (len(ret),ClassToList('convert', ret )) )
 							if ret :
-								self.mNavEpg = ret
-								ret.printdebug()
-
+								self.mNavEpg = ret[0]
+							else :
+								self.mNavEpg = 0
+							
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -1274,11 +1313,20 @@ class ChannelListWindow(BaseWindow):
 		#popup pin-code dialog
 		if self.mPincodeEnter > FLAG_MASK_NONE :
 			try :
-				msg1 = Msg.Strings(MsgId.LANG_INPUT_PIN_CODE)
+				msg = Msg.Strings(MsgId.LANG_INPUT_PIN_CODE)
 				#msg2 = Msg.Strings(MsgId.LANG_CURRENT_PIN_CODE)
 
 				inputPin = ''
-				inputPin = xbmcgui.Dialog().numeric( 0, msg1 )
+
+				GuiLock2( True )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+				dialog.SetDialogProperty( msg, '', 4, True )
+	 			dialog.doModal()
+				GuiLock2( False )
+
+	 			if dialog.IsOK() == E_DIALOG_STATE_YES :
+	 				inputPin = dialog.GetString()
+				
 				stbPin = PincodeLimit( self.mCommander, inputPin )
 				if inputPin == None or inputPin == '' :
 					inputPin = ''
@@ -1288,6 +1336,12 @@ class ChannelListWindow(BaseWindow):
 				if inputPin == str('%s'% stbPin) :
 					self.mPincodeEnter = FLAG_MASK_NONE
 					LOG_TRACE( 'Pincode success' )
+				else:
+					msg1 = Msg.Strings(MsgId.LANG_ERROR)
+					msg2 = Msg.Strings(MsgId.LANG_WRONG_PIN_CODE)
+					GuiLock2( True )
+					xbmcgui.Dialog().ok( msg1, msg2 )
+					GuiLock2( False )
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -1333,12 +1387,11 @@ class ChannelListWindow(BaseWindow):
 			#progress
 
 			if  ( loop % 10 ) == 0 :
-				LOG_TRACE( 'loop=%d'% loop )
+				LOG_TRACE( '<<<< loop=%d'% loop )
 				self.UpdateLocalTime( )
 
-
 			#local clock
-			ret = EpgInfoClock(FLAG_CLOCKMODE_ADMYHM, self.mLocalTime, loop)
+			#ret = EpgInfoClock(FLAG_CLOCKMODE_ADMYHM, self.mLocalTime, loop)
 			#self.mCtrlLblLocalTime1.setLabel(ret[0])
 			#self.mCtrlLblLocalTime2.setLabel(ret[1])
 
@@ -1359,8 +1412,9 @@ class ChannelListWindow(BaseWindow):
 
 			if self.mNavEpg :
 				endTime = self.mNavEpg.mStartTime + self.mNavEpg.mDuration
-		
-				pastDuration = endTime - self.mLocalTime
+				pastDuration = self.mLocalTime - endTime
+				LOG_TRACE('past[%s] time[%s] start[%s] duration[%s] offset[%s]'% (pastDuration,self.mLocalTime, self.mNavEpg.mStartTime, self.mNavEpg.mDuration,self.mLocalOffset ) )
+
 				if pastDuration < 0 :
 					pastDuration = 0
 
@@ -1369,7 +1423,7 @@ class ChannelListWindow(BaseWindow):
 				else :
 					percent = 0
 
-				#LOG_TRACE( 'percent=%d'% percent )
+				LOG_TRACE( 'percent=%d'% percent )
 				self.mCtrlProgress.setPercent( percent )
 
 		except Exception, e :
@@ -1671,6 +1725,7 @@ class ChannelListWindow(BaseWindow):
 					xbmc.executebuiltin('xbmc.Container.PreviousViewMode')
 					xbmc.sleep(50)
 					self.mCtrlListCHList.selectItem(idx)
+					self.setFocusId( self.mCtrlGropCHList.getId() )
 					GuiLock2(False)
 					LOG_TRACE( '=============== focus[%s]'% idx )
 				return
@@ -1763,7 +1818,7 @@ class ChannelListWindow(BaseWindow):
 				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 
 			LOG_TRACE('2====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList)) )
-
+			self.mMoveFlag = True
 
 			GuiLock2(True)
 			for idx in self.mMarkList :
@@ -1772,11 +1827,12 @@ class ChannelListWindow(BaseWindow):
 				listItem.setProperty('mark', E_IMG_ICON_MARK)
 
 			self.mCtrlListCHList.selectItem(self.mMarkList[0])
-			GuiLock2(False)
+			self.setFocusId( self.mCtrlGropCHList.getId() )
 
-			self.mMoveFlag = True
 			self.mCtrlLblOpt1.setLabel('[B]OK[/B]')
 			self.mCtrlLblOpt2.setLabel('[B]OK[/B]')
+			GuiLock2(False)
+
 
 			LOG_TRACE ('========= move Init ===' )
 
@@ -1807,6 +1863,7 @@ class ChannelListWindow(BaseWindow):
 				loopS = chidx
 				loopE = self.mMarkList[lastmark]
 				oldmark = loopE
+
 			elif aMove == Action.ACTION_MOVE_DOWN :	
 				updown = 1
 				#chidx = self.mMarkList[lastmark] + updown
@@ -1815,8 +1872,27 @@ class ChannelListWindow(BaseWindow):
 				loopE = self.mMarkList[lastmark] + updown
 				oldmark = loopS
 
-			if chidx < 0 : chidx = 0
-			elif chidx > (len(self.mListItems))-1 : chidx = len(self.mListItems)-1
+			elif aMove == Action.ACTION_PAGE_UP :	
+				updown = -13
+				chidx = self.mMarkList[0] + updown
+				loopS = chidx
+				loopE = self.mMarkList[lastmark] + updown
+				oldmark = self.mMarkList[0]
+
+			elif aMove == Action.ACTION_PAGE_DOWN :	
+				updown = 13
+				#chidx = self.mMarkList[lastmark] + updown
+				chidx = self.mMarkList[0] + updown
+				loopS = self.mMarkList[0] + updown
+				loopE = self.mMarkList[lastmark] + updown
+				oldmark = self.mMarkList[0]
+
+
+			#if chidx < 0 : chidx = 0
+			#elif chidx > (len(self.mListItems))-1 : chidx = len(self.mListItems)-1
+			if chidx < 0 or chidx > ( (len(self.mListItems)-1) - len(self.mMarkList) ) :
+				LOG_TRACE('list limit, do not PAGE MOVE!! idx[%s]'% chidx)
+				return
 			number = self.mChannelList[chidx].mNumber
 
 			if loopS < 0 : loopS = 0
@@ -1829,8 +1905,12 @@ class ChannelListWindow(BaseWindow):
 				retList.append( self.mChannelList[i] )
 
 			#3. update mark list
+			if (int(self.mMarkList[0]) + updown) > (len(self.mListItems))-1 :
+				LOG_TRACE('list limit, do not PAGE MOVE!! idx[%s]'% (int(self.mMarkList[0]) + updown) )
+				return
 			for idx in self.mMarkList :
-				markList.append( int(idx) + updown )
+				idxNew = int(idx) + updown
+				markList.append( idxNew )
 			self.mMarkList = []
 			self.mMarkList = markList
 
@@ -1877,10 +1957,23 @@ class ChannelListWindow(BaseWindow):
 
 			#6. erase old mark
 			GuiLock2(True)
-			listItem = self.mCtrlListCHList.getListItem(oldmark)
-			xbmc.sleep(50)
-			listItem.setProperty( 'mark', '' )
-			self.setFocusId( self.mCtrlGropCHList.getId() )
+			if aMove == Action.ACTION_MOVE_UP or aMove == Action.ACTION_MOVE_DOWN :
+				listItem = self.mCtrlListCHList.getListItem(oldmark)
+				xbmc.sleep(50)
+				listItem.setProperty( 'mark', '' )
+				self.setFocusId( self.mCtrlGropCHList.getId() )
+
+			else:
+				for idx in range(len(self.mMarkList)) :
+					idxOld = oldmark + idx
+					if idxOld > (len(self.mListItems))-1 : 
+						LOG_TRACE('old idx[%s] i[%s]'% (oldmark, idx) )
+						continue
+					listItem = self.mCtrlListCHList.getListItem( idxOld )
+					listItem.setProperty( 'mark', '' )
+					self.setFocusId( self.mCtrlGropCHList.getId() )
+					xbmc.sleep(50)
+					
 			GuiLock2(False)
 
 		
@@ -1951,5 +2044,18 @@ class ChannelListWindow(BaseWindow):
 
 
 		LOG_TRACE( 'Leave' )
-	
+
+
+	def PopupOpt( self ) :
+		LOG_TRACE( 'Enter' )
+
+		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
+			mode = FLAG_OPT_LIST
+			if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
+				mode = FLAG_OPT_GROUP
+			else :
+				mode = FLAG_OPT_LIST
+			self.EditSettingWindow( mode )
+
+		LOG_TRACE( 'Leave' )
 

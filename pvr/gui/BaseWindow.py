@@ -238,14 +238,13 @@ class SettingWindow( BaseWindow ):
 		nextId = -1
 		found = False
 
-		
 		for i in range( count ) :
 			ctrlItem = self.mControlList[i]
 
-			if ctrlItem.mEnable and  nextId <= 0 :
+			if ctrlItem.mEnable and nextId <= 0 :
 				nextId = ctrlItem.mControlId
 
-			if ctrlItem.mEnable and  found == True :
+			if ctrlItem.mEnable and found == True :
 				return ctrlItem.mControlId
 
 			if ctrlItem.mControlId == aControlId :

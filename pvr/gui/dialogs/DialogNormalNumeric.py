@@ -90,6 +90,8 @@ class DialogNormalNumeric( BaseDialog ) :
 
 	def SetDialogProperty( self, aTitle, aString, aMaxLength, aType=False ) :
 		self.mInputLabel = aString
+		if self.mInputLabel == '0' :
+			self.mInputLabel = ''
 		self.mOriginalString = aString
 		self.mTitleLabel = aTitle
 		self.mMaxLength = aMaxLength

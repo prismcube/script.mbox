@@ -77,7 +77,7 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 		elif groupId == E_Input01 or groupId == E_Input02 :
 			if ConfigMgr.GetInstance( ).GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-				dialog.SetDialogProperty( 'Tuner%d Pin Code' % ( self.mTunerIndex + 1 ), '%d' % self.mTempTunerPin[self.mTunerIndex], 3 )
+				dialog.SetDialogProperty( 'Tuner%d Pin Code' % ( self.mTunerIndex + 1 ), '%03d' % self.mTempTunerPin[self.mTunerIndex], 3 )
 	 			dialog.doModal( )
 	 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 	 				self.mTempTunerPin[self.mTunerIndex] = int( dialog.GetString( ) )
@@ -85,14 +85,14 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 			elif ConfigMgr.GetInstance( ).GetCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
 				if groupId == E_Input01 :
 					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-					dialog.SetDialogProperty( 'Tuner1 Pin Code', '%d' % self.mTempTunerPin[0], 3 )
+					dialog.SetDialogProperty( 'Tuner1 Pin Code', '%03d' % self.mTempTunerPin[0], 3 )
 		 			dialog.doModal( )
 		 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 						self.mTempTunerPin[0] = int( dialog.GetString( ) )
 					
 				elif groupId == E_Input02 :					
 					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-					dialog.SetDialogProperty( 'Tuner2 Pin Code', '%d' % self.mTempTunerPin[1], 3 )
+					dialog.SetDialogProperty( 'Tuner2 Pin Code', '%03d' % self.mTempTunerPin[1], 3 )
 		 			dialog.doModal( )
 		 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 						self.mTempTunerPin[1] = int( dialog.GetString( ) )
@@ -105,12 +105,14 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 	def onClose( self ) :
 		if ConfigMgr.GetInstance( ).GetCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
 			if self.GetSelectedIndex( E_SpinEx02 ) == self.GetSelectedIndex( E_SpinEx04 ) :
-				dialog = xbmcgui.Dialog()
-				dialog.ok( 'ERROR', 'Please set a different value for each tuner.' )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'ERROR', 'Please set a different value for each tuner.' )
+	 			dialog.doModal( )
 				return
 			if self.GetSelectedIndex( E_SpinEx03 ) == self.GetSelectedIndex( E_SpinEx05 ) :
-				dialog = xbmcgui.Dialog()
-				dialog.ok( 'ERROR', 'Please set a different value for each tuner.' )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'ERROR', 'Please set a different value for each tuner.' )
+	 			dialog.doModal( )
 				return
 
 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )

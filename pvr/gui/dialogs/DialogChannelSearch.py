@@ -4,7 +4,7 @@ import xbmcgui
 import time
 import sys
 
-
+import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.BaseWindow import Action
 from pvr.gui.BaseDialog import BaseDialog
 from  pvr.TunerConfigMgr import *
@@ -190,7 +190,11 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def ScanAbort( self ) :
 		if self.mIsFinished == False :
-			if xbmcgui.Dialog( ).yesno('Confirm', 'Do you want abort channel scan?') == 1 :
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( 'Confirm', 'Do you want abort channel scan?' )
+			dialog.doModal( )
+
+			if dialog.IsOK() == E_DIALOG_STATE_YES :
 				LOG_TRACE('before cmd scan abort' )
 				self.mCommander.Channelscan_Abort( ) #ToDO : Check this command has reply
 				LOG_TRACE('after cmd scan abort' )				
@@ -258,7 +262,10 @@ class DialogChannelSearch( BaseDialog ) :
 			tvCount = len( self.mTvListItems )
 			radioCount = len( self.mRadioListItems )
 			searchResult = 'TV Channels : %d \nRadio Channels : %d' %( tvCount, radioCount )
-			xbmcgui.Dialog( ).ok( 'Infomation', searchResult )
+			
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( 'Infomation', searchResult )
+ 			dialog.doModal( )
 
 
 	def UpdateAddChannel(self, aEvent ):

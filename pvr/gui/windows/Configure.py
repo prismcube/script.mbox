@@ -137,7 +137,9 @@ class Configure( SettingWindow ) :
 					self.mVisibleParental = True
 					self.DisableControl( E_PARENTAL )
 				else :
-					xbmcgui.Dialog( ).ok( 'ERROR', 'ERROR PIN Code' )
+					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( 'ERROR', 'ERROR PIN Code' )
+		 			dialog.doModal( )
 			return
 
 		elif selectedId == E_PARENTAL and groupId == E_Input02 :
@@ -148,7 +150,9 @@ class Configure( SettingWindow ) :
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				newpin = dialog.GetString( )
 				if newpin == '' or len( newpin ) != 4 :
-					xbmcgui.Dialog( ).ok( 'ERROR', 'Input 4 digit' )
+					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( 'ERROR', 'Input 4 digit' )
+		 			dialog.doModal( )
 					return
 			else :
 				return
@@ -160,16 +164,22 @@ class Configure( SettingWindow ) :
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
  				confirm = dialog.GetString( )
  				if confirm == '' :
- 					xbmcgui.Dialog( ).ok( 'ERROR', 'New PIN codes do not match' )
+ 					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( 'ERROR', 'New PIN codes do not match' )
+		 			dialog.doModal( )
  					return
 				if int( newpin ) != int( confirm ) :
-					xbmcgui.Dialog( ).ok( 'ERROR', 'New PIN codes do not match' )
+					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( 'ERROR', 'New PIN codes do not match' )
+		 			dialog.doModal( )
 					return
 			else :
 				return
 				
 			ElisPropertyInt( 'PinCode', self.mCommander ).SetProp( int( newpin ) )
-			xbmcgui.Dialog( ).ok( 'Complete', 'Pin codes change success' )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( 'ERROR', 'Pin codes change success' )
+ 			dialog.doModal( )
 
 		else :
 			self.ControlSelect( )
@@ -387,7 +397,6 @@ class Configure( SettingWindow ) :
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]
 			if dhcp == E_DHCP_ON :
 				self.SetEnableControls( visibleControlIds, False )
-				
 			elif dhcp == E_DHCP_OFF :
 				self.SetEnableControls( visibleControlIds, True )
 
@@ -442,6 +451,7 @@ class Configure( SettingWindow ) :
 				self.SetControlLabelString( E_Input05, 'Save' )
 			elif ElisPropertyEnum( 'DHCP', self.mCommander ).GetProp( ) == E_DHCP_ON :
 				self.SetControlLabelString( E_Input05, 'Get IP Address' )
+			self.DisableControl( E_IP_SETTING )
 			
 		elif aControlId == E_Input01 :		# IpAddr
 			self.mTempIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Input Ip Address', '%d.%d.%d.%d' % MakeHexToIpAddr( self.mTempIpAddr ) )
@@ -465,7 +475,12 @@ class Configure( SettingWindow ) :
 
 		elif aControlId == E_Input05 :
 			if ElisPropertyEnum( 'DHCP', self.mCommander ).GetProp( ) == E_DHCP_OFF :
-				if xbmcgui.Dialog( ).yesno( 'Save', 'Save Ip?' ) :
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( 'Configure', 'Save Ip?' )
+				dialog.doModal( )
+
+				if dialog.IsOK() == E_DIALOG_STATE_YES :
 					self.SaveIp( )
+
 			elif ElisPropertyEnum( 'DHCP', self.mCommander ).GetProp( ) == E_DHCP_ON :
 				pass
