@@ -1,6 +1,7 @@
 <window id="3002">
 	<defaultcontrol always="true">9000</defaultcontrol>
-	<allowoverlay>no</allowoverlay>	
+	<allowoverlay>yes</allowoverlay>
+	<backgroundcolor>0x00ffffff</backgroundcolor>	
 	<controls>
 		<control type="group">
 			<animation effect="slide" end="-400,0" time="500" tween="quadratic" easing="out">WindowClose</animation>
