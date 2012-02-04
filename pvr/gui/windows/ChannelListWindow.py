@@ -295,7 +295,7 @@ class ChannelListWindow(BaseWindow):
 				self.mCtrlListCHList.setEnabled( True )
 				self.setFocusId( self.mCtrlGropCHList.getId() )
 
-		elif id == Action.ACTION_SHOW_INFO :
+		elif id == Action.ACTION_CONTEXT_MENU :
 			LOG_TRACE( 'popup opt' )
 			self.PopupOpt()
 

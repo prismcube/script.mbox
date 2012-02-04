@@ -7,14 +7,14 @@ from pvr.gui.BaseWindow import Action
 from pvr.gui.BaseDialog import BaseDialog
 from pvr.gui.GuiConfig import *
 
-from pvr.Util import LOG_TRACE
+from pvr.Util import GuiLock, GuiLock2, LOG_WARN, LOG_TRACE, LOG_ERR
 
-E_INPUT_LABEL			= 4
-E_BUTTON_DONE			= 21
-E_BUTTON_BACK_SPACE		= 23
-E_BUTTON_PREV			= 20
-E_BUTTON_NEXT			= 22
-E_START_ID_NUMBER		= 10
+E_INPUT_LABEL			= 102
+E_BUTTON_DONE			= 121
+E_BUTTON_BACK_SPACE		= 123
+E_BUTTON_PREV			= 120
+E_BUTTON_NEXT			= 122
+E_START_ID_NUMBER		= 110
 E_HEADER_LABEL			= 101
 
 class DialogNormalNumeric( BaseDialog ) :
@@ -41,7 +41,8 @@ class DialogNormalNumeric( BaseDialog ) :
 		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-		
+		LOG_TRACE('ACTION ID=%d' %actionId )
+			
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.mInputLabel = self.mOriginalString
 			self.CloseDialog( )
@@ -54,18 +55,34 @@ class DialogNormalNumeric( BaseDialog ) :
 			self.SetInputLabel( )
 
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 and ( len( self.mInputLabel ) < self.mMaxLength ) :
-			self.mInputLabel += self.getControl( 10 + ( actionId - 58 ) ).getLabel( )
+			LOG_TRACE('ACTION ID=%d' %actionId )
+			inputString ='%d' %(actionId - Action.REMOTE_0 )
+			self.mInputLabel += inputString
 			self.SetInputLabel( )
+
+		elif actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 and ( len( self.mInputLabel ) < self.mMaxLength ) :
+			inputNum =  actionId - Action.ACTION_JUMP_SMS2 + 2
+			if inputNum >= 2 and inputNum <= 9 :
+				inputString ='%d' %inputNum
+				self.mInputLabel += inputString
+				self.SetInputLabel( )
 		
 
 	def onClick( self, aControlId ):
 		focusId = self.getFocusId( )
-		
-		if focusId >= E_START_ID_NUMBER and focusId <= 19 and ( len( self.mInputLabel ) < self.mMaxLength ) :
-			self.mInputLabel += self.getControl( focusId ).getLabel( )
+
+		LOG_TRACE('focus=%d' %focusId )
+			
+		if focusId >= E_START_ID_NUMBER and focusId <= E_START_ID_NUMBER+9 and ( len( self.mInputLabel ) < self.mMaxLength ) :
+			LOG_TRACE('focus=%d' %focusId )
+			inputString ='%d' %(focusId - E_START_ID_NUMBER )
+			self.mInputLabel += inputString
+			self.SetInputLabel( )
 
 		elif focusId == E_BUTTON_BACK_SPACE :
-			self.mInputLabel = self.mInputLabel[ : len( self.mInputLabel ) - 1 ]
+			if len( self.mInputLabel ) > 0 :
+				self.mInputLabel = self.mInputLabel[ : len( self.mInputLabel ) - 1 ]
+			self.SetInputLabel( )
 		
 		elif focusId == E_BUTTON_PREV :
 			pass
@@ -77,7 +94,7 @@ class DialogNormalNumeric( BaseDialog ) :
 			self.mIsOk = E_DIALOG_STATE_YES		
 			self.CloseDialog( )
 
-		self.SetInputLabel( )
+
 
 
 	def onFocus( self, aControlId ) :
@@ -108,9 +125,11 @@ class DialogNormalNumeric( BaseDialog ) :
 		for i in range( 10 ) :
 			self.getControl( E_START_ID_NUMBER + i ).setLabel( '%d' % i )
 
+	@GuiLock
 	def SetInputLabel( self ) :
 		if self.mType == True :
 			hideString = '*' * len( self.mInputLabel )
 			self.mCtrlEditLabel.setLabel( hideString )
 		else :
 			self.mCtrlEditLabel.setLabel( self.mInputLabel )
+

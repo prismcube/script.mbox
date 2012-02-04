@@ -1,5 +1,5 @@
 <window id="3310">
-	<defaultcontrol always="true">21</defaultcontrol>
+	<defaultcontrol always="true">121</defaultcontrol>
 	<include>DefaultDialogEffect</include>
 	<coordinates>
 		<system>2</system>
@@ -46,7 +46,7 @@
 				<align>center</align>
 				<aligny>center</aligny>
 			</control>
-			<control type="label" id="4">
+			<control type="label" id="102">
 				<description>Edit Text</description>
 				<posx>35</posx>
 				<posy>70</posy>
@@ -78,7 +78,7 @@
 			<control type="group">
 				<posx>40</posx>
 				<posy>150</posy>
-				<control type="button" id="11">
+				<control type="button" id="111">
 					<description>1 button</description>
 					<posx>0</posx>
 					<posy>0</posy>
@@ -90,12 +90,12 @@
 					<texturenofocus border="25,25,5,5">confluence/KeyboardCornerTopNF.png</texturenofocus>
 					<texturefocus border="25,25,5,5">confluence/KeyboardCornerTop.png</texturefocus>
 					<focusedcolor>black</focusedcolor>
-					<onleft>23</onleft>
-					<onright>12</onright>
-					<onup>20</onup>
-					<ondown>14</ondown>
+					<onleft>123</onleft>
+					<onright>112</onright>
+					<onup>120</onup>
+					<ondown>114</ondown>
 				</control>
-				<control type="button" id="12">
+				<control type="button" id="112">
 					<description>2 button</description>
 					<posx>60</posx>
 					<posy>0</posy>
@@ -107,12 +107,12 @@
 					<texturenofocus border="3">confluence/KeyboardKeyNF.png</texturenofocus>
 					<texturefocus border="5">confluence/KeyboardKey.png</texturefocus>
 					<focusedcolor>black</focusedcolor>
-					<onleft>11</onleft>
-					<onright>13</onright>
-					<onup>10</onup>
-					<ondown>15</ondown>
+					<onleft>111</onleft>
+					<onright>113</onright>
+					<onup>110</onup>
+					<ondown>115</ondown>
 				</control>
-				<control type="button" id="13">
+				<control type="button" id="113">
 					<description>3 button</description>
 					<posx>120</posx>
 					<posy>0</posy>
@@ -124,12 +124,12 @@
 					<texturenofocus border="3">confluence/KeyboardKeyNF.png</texturenofocus>
 					<texturefocus border="5">confluence/KeyboardKey.png</texturefocus>
 					<focusedcolor>black</focusedcolor>
-					<onleft>12</onleft>
-					<onright>23</onright>
-					<onup>22</onup>
-					<ondown>16</ondown>
+					<onleft>112</onleft>
+					<onright>123</onright>
+					<onup>122</onup>
+					<ondown>116</ondown>
 				</control>
-				<control type="button" id="23">
+				<control type="button" id="123">
 					<description>Backspace button</description>
 					<posx>180</posx>
 					<posy>0</posy>
@@ -144,12 +144,12 @@
 					<label>20181</label>
 					<focusedcolor>black</focusedcolor>
 					<angle>270</angle>
-					<onleft>13</onleft>
-					<onright>11</onright>
-					<onup>21</onup>
-					<ondown>21</ondown>
+					<onleft>113</onleft>
+					<onright>111</onright>
+					<onup>121</onup>
+					<ondown>121</ondown>
 				</control>
-				<control type="button" id="14">
+				<control type="button" id="114">
 					<description>4 button</description>
 					<posx>0</posx>
 					<posy>60</posy>
@@ -161,12 +161,12 @@
 					<texturenofocus border="3">confluence/KeyboardKeyNF.png</texturenofocus>
 					<texturefocus border="5">confluence/KeyboardKey.png</texturefocus>
 					<focusedcolor>black</focusedcolor>
-					<onleft>23</onleft>
-					<onright>15</onright>
-					<onup>11</onup>
-					<ondown>17</ondown>
+					<onleft>123</onleft>
+					<onright>115</onright>
+					<onup>111</onup>
+					<ondown>117</ondown>
 				</control>
-				<control type="button" id="15">
+				<control type="button" id="115">
 					<description>5 button</description>
 					<posx>60</posx>
 					<posy>60</posy>
@@ -178,12 +178,12 @@
 					<texturenofocus border="3">confluence/KeyboardKeyNF.png</texturenofocus>
 					<texturefocus border="5">confluence/KeyboardKey.png</texturefocus>
 					<focusedcolor>black</focusedcolor>
-					<onleft>14</onleft>
-					<onright>16</onright>
-					<onup>12</onup>
-					<ondown>18</ondown>
+					<onleft>114</onleft>
+					<onright>116</onright>
+					<onup>112</onup>
+					<ondown>118</ondown>
 				</control>
-				<control type="button" id="16">
+				<control type="button" id="116">
 					<description>6 button</description>
 					<posx>120</posx>
 					<posy>60</posy>
@@ -195,12 +195,12 @@
 					<texturenofocus border="3">confluence/KeyboardKeyNF.png</texturenofocus>
 					<texturefocus border="5">confluence/KeyboardKey.png</texturefocus>
 					<focusedcolor>black</focusedcolor>
-					<onleft>15</onleft>
-					<onright>23</onright>
-					<onup>13</onup>
-					<ondown>19</ondown>
+					<onleft>115</onleft>
+					<onright>123</onright>
+					<onup>113</onup>
+					<ondown>119</ondown>
 				</control>
-				<control type="button" id="17">
+				<control type="button" id="117">
 					<description>7 button</description>
 					<posx>0</posx>
 					<posy>120</posy>
@@ -212,12 +212,12 @@
 					<texturenofocus border="3">confluence/KeyboardKeyNF.png</texturenofocus>
 					<texturefocus border="5">confluence/KeyboardKey.png</texturefocus>
 					<focusedcolor>black</focusedcolor>
-					<onleft>21</onleft>
-					<onright>18</onright>
-					<onup>14</onup>
-					<ondown>20</ondown>
+					<onleft>121</onleft>
+					<onright>118</onright>
+					<onup>114</onup>
+					<ondown>120</ondown>
 				</control>
-				<control type="button" id="18">
+				<control type="button" id="118">
 					<description>8 button</description>
 					<posx>60</posx>
 					<posy>120</posy>
@@ -229,12 +229,12 @@
 					<texturenofocus border="3">confluence/KeyboardKeyNF.png</texturenofocus>
 					<texturefocus border="5">confluence/KeyboardKey.png</texturefocus>
 					<focusedcolor>black</focusedcolor>
-					<onleft>17</onleft>
-					<onright>19</onright>
-					<onup>15</onup>
-					<ondown>10</ondown>
+					<onleft>117</onleft>
+					<onright>119</onright>
+					<onup>115</onup>
+					<ondown>110</ondown>
 				</control>
-				<control type="button" id="19">
+				<control type="button" id="119">
 					<description>9 button</description>
 					<posx>120</posx>
 					<posy>120</posy>
@@ -246,12 +246,12 @@
 					<texturenofocus border="3">confluence/KeyboardKeyNF.png</texturenofocus>
 					<texturefocus border="5">confluence/KeyboardKey.png</texturefocus>
 					<focusedcolor>black</focusedcolor>
-					<onleft>18</onleft>
-					<onright>21</onright>
-					<onup>16</onup>
-					<ondown>22</ondown>
+					<onleft>118</onleft>
+					<onright>121</onright>
+					<onup>116</onup>
+					<ondown>122</ondown>
 				</control>
-				<control type="button" id="21">
+				<control type="button" id="121">
 					<description>Done button</description>
 					<posx>180</posx>
 					<posy>120</posy>
@@ -266,12 +266,12 @@
 					<label>20177</label>
 					<focusedcolor>black</focusedcolor>
 					<angle>270</angle>
-					<onleft>19</onleft>
-					<onright>17</onright>
-					<onup>23</onup>
-					<ondown>23</ondown>
+					<onleft>119</onleft>
+					<onright>117</onright>
+					<onup>123</onup>
+					<ondown>123</ondown>
 				</control>
-				<control type="button" id="20">
+				<control type="button" id="120">
 					<description>prev button</description>
 					<posx>0</posx>
 					<posy>180</posy>
@@ -284,12 +284,12 @@
 					<aligny>center</aligny>
 					<texturenofocus border="25,5,25,5">confluence/KeyboardCornerBottomNF.png</texturenofocus>
 					<texturefocus border="25,5,25,5">confluence/KeyboardCornerBottom.png</texturefocus>
-					<onleft>21</onleft>
-					<onright>10</onright>
-					<onup>17</onup>
-					<ondown>11</ondown>
+					<onleft>121</onleft>
+					<onright>110</onright>
+					<onup>117</onup>
+					<ondown>111</ondown>
 				</control>
-				<control type="button" id="10">
+				<control type="button" id="110">
 					<description>0 button</description>
 					<posx>60</posx>
 					<posy>180</posy>
@@ -301,12 +301,12 @@
 					<texturenofocus border="3">confluence/KeyboardKeyNF.png</texturenofocus>
 					<texturefocus border="5">confluence/KeyboardKey.png</texturefocus>
 					<focusedcolor>black</focusedcolor>
-					<onleft>20</onleft>
-					<onright>22</onright>
-					<onup>18</onup>
-					<ondown>12</ondown>
+					<onleft>120</onleft>
+					<onright>122</onright>
+					<onup>118</onup>
+					<ondown>112</ondown>
 				</control>
-				<control type="button" id="22">
+				<control type="button" id="122">
 					<description>next button</description>
 					<posx>120</posx>
 					<posy>180</posy>
@@ -319,10 +319,10 @@
 					<aligny>center</aligny>
 					<texturenofocus border="3">confluence/KeyboardKeyNF.png</texturenofocus>
 					<texturefocus border="5">confluence/KeyboardKey.png</texturefocus>
-					<onleft>10</onleft>
-					<onright>21</onright>
-					<onup>19</onup>
-					<ondown>13</ondown>
+					<onleft>110</onleft>
+					<onright>121</onright>
+					<onup>119</onup>
+					<ondown>113</ondown>
 				</control>
 			</control>
 		</control>

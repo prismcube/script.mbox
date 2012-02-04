@@ -46,6 +46,17 @@ class Action(object):
 	ACTION_VOLUME_UP			= 88	#Plus
 	ACTION_VOLUME_DOWN			= 89	#Minus
 	ACTION_MUTE					= 91	#F8
+
+	ACTION_CONTEXT_MENU			= 117   # infokey - guid/title
+
+	ACTION_JUMP_SMS2			= 142
+	ACTION_JUMP_SMS3			= 143
+	ACTION_JUMP_SMS4			= 144
+	ACTION_JUMP_SMS5			= 145
+	ACTION_JUMP_SMS6			= 146
+	ACTION_JUMP_SMS7			= 147
+	ACTION_JUMP_SMS8			= 148
+	ACTION_JUMP_SMS9			= 149
 	
 
 class Property(object):
@@ -90,6 +101,36 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 		GuiLock2( True )
 		self.mFocusId = self.getFocusId()
 		GuiLock2( False )
+
+	def GlobalAction( self, aActionId ) :
+	
+		if aActionId == Action.ACTION_MUTE:
+			self.UpdateVolume( )
+
+		elif aActionId == Action.ACTION_VOLUME_UP:
+			self.UpdateVolume( )
+
+		elif aActionId == Action.ACTION_VOLUME_DOWN:
+			self.UpdateVolume( )		
+
+
+	@GuiLock
+	def UpdateVolume( self ) :
+		retVolume = xbmc.executehttpapi("getvolume()")
+		volume = int( retVolume[4:] )
+		LOG_TRACE('GET VOLUME=%d' %volume )
+
+		if volume > MAX_VOLUME :
+			volume = MAX_VOLUME
+			
+		if volume < 0 :
+			volume = 0
+			self.mCommander.Player_SetMute( True )
+		else :
+			if self.mCommander.Player_GetMute( ) == True :
+				self.mCommander.Player_SetMute( False )
+			self.mCommander.Player_SetVolume( volume )
+
 
 class ControlItem:
 	# Setting Window
