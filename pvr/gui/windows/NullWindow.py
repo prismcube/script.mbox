@@ -63,7 +63,7 @@ class NullWindow(BaseWindow):
 		elif id == Action.ACTION_CONTEXT_MENU:
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
-		elif id == Action.ACTION_PAGE_UP:
+		elif id == Action.ACTION_PAGE_DOWN:
 			LOG_TRACE('TRACE')
 			LOG_WARN('WARN')
 			LOG_ERR('ERR')
@@ -76,7 +76,7 @@ class NullWindow(BaseWindow):
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )		
 
 
-		elif id == Action.ACTION_PAGE_DOWN:
+		elif id == Action.ACTION_PAGE_UP:
 			nextChannel = None
 			nextChannel = self.mCommander.Channel_GetNext()
 			if nextChannel :
