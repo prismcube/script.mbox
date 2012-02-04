@@ -159,6 +159,7 @@ class LivePlate(BaseWindow):
 		id = aAction.getId()
 
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
+			self.mEventBus.Deregister( self )		
 			LOG_TRACE( 'esc close' )
 			self.DescboxToggle('close')
 			self.mEnableThread = False
@@ -299,13 +300,25 @@ class LivePlate(BaseWindow):
 		#LOG_TRACE( 'aEvent len[%s]'% len(aEvent) )
 		#ClassToList( 'print', aEvent )
 
+
 		if self.mWinId == xbmcgui.getCurrentWindowId():
 			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
 
-				if int(aEvent.mEventId) != int(self.mEventID) :
+				if self.mCurrentChannel == None :
+					return -1
+				
+				if self.mCurrentChannel.mSid != aEvent.mSid or self.mCurrentChannel.mTsid != aEvent.mTsid or self.mCurrentChannel.mOnid != aEvent.mOnid :
+					return -1
+
+				LOG_TRACE( '%d : %d' %(aEvent.mEventId, self.mEventID ) )
+				aEvent.printdebug()
+				LOG_TRACE( '%d : %d' %(int(aEvent.mEventId), int(self.mEventID) ) )
+
+				if aEvent.mEventId != self.mEventID :
 					ret = None
 					ret = self.mCommander.Epgevent_GetPresent()
 					if ret :
+						ret.printdebug()
 						self.mEventID = aEvent.mEventId
 						if not self.mEventCopy or \
 						   ret.mEventId != self.mEventCopy.mEventId or \
@@ -317,17 +330,12 @@ class LivePlate(BaseWindow):
 
 							#update label
 							self.UpdateONEvent( ret )
-						else:
-							LOG_TRACE('epg SAME')
 
-
-			else :
-				LOG_TRACE( 'event unknown[%s]'% aEvent.getName() )
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
 
 
-		LOG_TRACE( 'Leave' )
+		#LOG_TRACE( 'Leave' )
 
 
 	def ChannelTune(self, aActionID):
@@ -538,7 +546,7 @@ class LivePlate(BaseWindow):
 		if self.mCurrentChannel :
 
 			self.mCtrlProgress.setPercent(0)
-			self.mEventCopy = []
+			self.mEventCopy = None
 
 			self.mCtrlLblChannelNumber.setLabel( str('%s'% self.mCurrentChannel.mNumber) )
 			self.mCtrlLblChannelName.setLabel( self.mCurrentChannel.mName )
