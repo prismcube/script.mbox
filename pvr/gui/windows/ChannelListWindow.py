@@ -76,6 +76,7 @@ class ChannelListWindow(BaseWindow):
 
 		self.mEventId = 0
 		self.mLocalTime = 0
+		self.mTimer	= None
 
 		self.mPincodeEnter = FLAG_MASK_NONE
 		self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
@@ -188,6 +189,9 @@ class ChannelListWindow(BaseWindow):
 		#run thread
 		self.mEnableThread = True
 		self.CurrentTimeThread()
+
+		self.mTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentEPG )
+		self.mTimer.start()
 
 		LOG_TRACE( 'Leave' )
 
@@ -386,7 +390,7 @@ class ChannelListWindow(BaseWindow):
 				self.mEnableThread = False
 				self.CurrentTimeThread().join()
 				self.mCtrlListCHList.reset()
-				self.close()
+				self.Close()
 
 			LOG_TRACE( 'go out Cancel')
 
@@ -479,7 +483,7 @@ class ChannelListWindow(BaseWindow):
 					if ret != E_DIALOG_STATE_CANCEL :
 						self.mEnableThread = False
 						self.CurrentTimeThread().join()
-						self.close()
+						self.Close()
 
 						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 						return
@@ -1143,7 +1147,7 @@ class ChannelListWindow(BaseWindow):
 
 		#self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
 		self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
-		LOG_TRACE( '===========[%s]'% str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
+		#LOG_TRACE( '===========[%s]'% str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
 		#self.mCtrlChannelName.setLabel('')
 		self.mCtrlEventName.setLabel('')
 		self.mCtrlEventTime.setLabel('')
@@ -2074,3 +2078,36 @@ class ChannelListWindow(BaseWindow):
 
 		LOG_TRACE( 'Leave' )
 
+
+	def Close( self ):
+		self.mEventBus.Deregister( self )
+		
+		if self.mTimer and self.mTimer.isAlive() :
+			self.mTimer.cancel()
+
+		self.mTimer = None
+		
+		self.close()
+
+
+	def AsyncUpdateCurrentEPG( self ) :
+		self.InitEPGEvent()
+		pass
+
+		try :
+			ret = None
+			ret = self.mCommander.Epgevent_GetPresent()
+			if ret :
+				self.mNavEpg = ret
+
+				self.mIsSelect = False
+				self.ResetLabel()
+				self.UpdateLabelInfo()
+
+				retList = []
+				retList.append( self.mNavEpg )
+				LOG_TRACE( 'epgevent_GetPresent[%s]'% ClassToList( 'convert', retList ) )
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
+		
