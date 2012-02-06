@@ -76,6 +76,7 @@ class ChannelListWindow(BaseWindow):
 
 		self.mEventId = 0
 		self.mLocalTime = 0
+		self.mTimer	= None
 
 		self.mPincodeEnter = FLAG_MASK_NONE
 		self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
@@ -189,14 +190,18 @@ class ChannelListWindow(BaseWindow):
 		self.mEnableThread = True
 		self.CurrentTimeThread()
 
+		self.mTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentEPG )
+		self.mTimer.start()
+
 		LOG_TRACE( 'Leave' )
 
 	def onAction(self, aAction):
 		#LOG_TRACE( 'Enter' )
 		id = aAction.getId()
 
-		if id == Action.ACTION_PREVIOUS_MENU:
+		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
 			LOG_TRACE( 'goto previous menu' )
+			self.SetGoBackWindow()
 
 		elif id == Action.ACTION_SELECT_ITEM:
 			self.GetFocusId()
@@ -252,11 +257,6 @@ class ChannelListWindow(BaseWindow):
 					self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
 
 
-		elif id == Action.ACTION_PARENT_DIR :
-			LOG_TRACE( 'goto action back' )
-
-			self.SetGoBackWindow()
-
 		elif id == Action.ACTION_MOVE_RIGHT :
 			pass
 
@@ -275,11 +275,15 @@ class ChannelListWindow(BaseWindow):
 					self.SetMarkChanneltoMove( FLAG_OPT_MOVE_UPDOWN, id )
 					return
 
+				#TODO : must be need timeout schedule
+				"""
 				self.mIsSelect = False
 				self.InitEPGEvent()
 
 				self.ResetLabel()
 				self.UpdateLabelInfo()
+				"""
+
 
 			if self.mFocusId == self.mCtrlListMainmenu.getId() :
 				#self.onClick( self.mCtrlListMainmenu.getId() )
@@ -295,7 +299,7 @@ class ChannelListWindow(BaseWindow):
 				self.mCtrlListCHList.setEnabled( True )
 				self.setFocusId( self.mCtrlGropCHList.getId() )
 
-		elif id == Action.ACTION_SHOW_INFO :
+		elif id == Action.ACTION_CONTEXT_MENU :
 			LOG_TRACE( 'popup opt' )
 			self.PopupOpt()
 
@@ -386,7 +390,7 @@ class ChannelListWindow(BaseWindow):
 				self.mEnableThread = False
 				self.CurrentTimeThread().join()
 				self.mCtrlListCHList.reset()
-				self.close()
+				self.Close()
 
 			LOG_TRACE( 'go out Cancel')
 
@@ -399,11 +403,12 @@ class ChannelListWindow(BaseWindow):
 				self.InitSlideMenuHeader()
 				self.InitChannelList()
 
+				#initialize get epg event
+				self.mIsSelect = False
+				self.InitEPGEvent()
+
 				#clear label
 				self.ResetLabel()
-
-				#initialize get epg event
-				self.InitEPGEvent()
 				self.UpdateLabelInfo()
 				#Event Register
 				#self.mEventBus.Register( self )
@@ -412,6 +417,8 @@ class ChannelListWindow(BaseWindow):
 
 	@GuiLock
 	def onEvent(self, aEvent):
+		pass
+
 		LOG_TRACE( 'Enter' )
 		#aEvent.printdebug()
 
@@ -462,7 +469,7 @@ class ChannelListWindow(BaseWindow):
 
 		label = self.mCtrlListCHList.getSelectedItem().getLabel()
 		channelNumbr = ParseLabelToCh( self.mViewMode, label )
-		LOG_TRACE( 'label[%s] ch[%d]'% (label, channelNumbr) )
+		LOG_TRACE( 'label[%s] ch[%d] pin[%s]'% (label, channelNumbr, self.mPincodeEnter) )
 
 		ret = False
 		ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
@@ -472,18 +479,18 @@ class ChannelListWindow(BaseWindow):
 				if self.mCurrentChannel == channelNumbr :
 					ret = False
 					ret = self.SaveSlideMenuHeader()
+					#LOG_TRACE('============== ret[%s]'% ret )
 					if ret != E_DIALOG_STATE_CANCEL :
 						self.mEnableThread = False
 						self.CurrentTimeThread().join()
-						self.close()
+						self.Close()
 
 						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 						return
 
 					LOG_TRACE( 'go out Cancel' )
 
-				else :
-					pass
+				#else :
 					#ToDO : WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_LIVE_PLATE).setLastChannel( self.mCurrentChannel )
 
 		ch = None
@@ -1140,6 +1147,7 @@ class ChannelListWindow(BaseWindow):
 
 		#self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
 		self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
+		#LOG_TRACE( '===========[%s]'% str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
 		#self.mCtrlChannelName.setLabel('')
 		self.mCtrlEventName.setLabel('')
 		self.mCtrlEventTime.setLabel('')
@@ -1189,6 +1197,7 @@ class ChannelListWindow(BaseWindow):
 							if ret :
 								self.mNavEpg = ret[0]
 							else :
+								#self.mNavEpg.reset()
 								self.mNavEpg = 0
 							
 
@@ -1387,7 +1396,7 @@ class ChannelListWindow(BaseWindow):
 			#progress
 
 			if  ( loop % 10 ) == 0 :
-				LOG_TRACE( '<<<< loop=%d'% loop )
+				#LOG_TRACE( '<<<< loop=%d'% loop )
 				self.UpdateLocalTime( )
 
 			#local clock
@@ -1411,15 +1420,25 @@ class ChannelListWindow(BaseWindow):
 
 
 			if self.mNavEpg :
-				endTime = self.mNavEpg.mStartTime + self.mNavEpg.mDuration
-				pastDuration = self.mLocalTime - endTime
-				LOG_TRACE('past[%s] time[%s] start[%s] duration[%s] offset[%s]'% (pastDuration,self.mLocalTime, self.mNavEpg.mStartTime, self.mNavEpg.mDuration,self.mLocalOffset ) )
+				startTime = self.mNavEpg.mStartTime + self.mLocalOffset
+				endTime   = startTime + self.mNavEpg.mDuration
+				pastDuration = endTime - self.mLocalTime
+
+				#endTime = self.mNavEpg.mStartTime + self.mNavEpg.mDuration
+				#pastDuration = self.mLocalTime - endTime
+				#LOG_TRACE('past[%s] time[%s] start[%s] duration[%s] offset[%s]'% (pastDuration,self.mLocalTime, self.mNavEpg.mStartTime, self.mNavEpg.mDuration,self.mLocalOffset ) )
+
+				if self.mLocalTime > endTime: #Already past
+					pastDuration = 100
+				elif self.mLocalTime < startTime :
+					pastDuration = 0
 
 				if pastDuration < 0 :
 					pastDuration = 0
 
 				if self.mNavEpg.mDuration > 0 :
-					percent = pastDuration * 100/self.mNavEpg.mDuration
+					#percent = pastDuration * 100/self.mNavEpg.mDuration
+					percent = 100 - (pastDuration * 100.0/self.mNavEpg.mDuration )
 				else :
 					percent = 0
 
@@ -2059,3 +2078,36 @@ class ChannelListWindow(BaseWindow):
 
 		LOG_TRACE( 'Leave' )
 
+
+	def Close( self ):
+		self.mEventBus.Deregister( self )
+		
+		if self.mTimer and self.mTimer.isAlive() :
+			self.mTimer.cancel()
+
+		self.mTimer = None
+		
+		self.close()
+
+
+	def AsyncUpdateCurrentEPG( self ) :
+		self.InitEPGEvent()
+		pass
+
+		try :
+			ret = None
+			ret = self.mCommander.Epgevent_GetPresent()
+			if ret :
+				self.mNavEpg = ret
+
+				self.mIsSelect = False
+				self.ResetLabel()
+				self.UpdateLabelInfo()
+
+				retList = []
+				retList.append( self.mNavEpg )
+				LOG_TRACE( 'epgevent_GetPresent[%s]'% ClassToList( 'convert', retList ) )
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
+		

@@ -2,7 +2,6 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DiaMgr
 import pvr.TunerConfigMgr as ConfigMgr
 from pvr.gui.BaseWindow import SettingWindow, Action
@@ -123,7 +122,12 @@ class EditTransponder( SettingWindow ) :
  				
  				tmplist = []
 		 		tmplist.append( newTransponder )
- 				self.mCommander.Transponder_Add( satellite.mLongitude, satellite.mBand, tmplist )
+ 				ret = self.mCommander.Transponder_Add( satellite.mLongitude, satellite.mBand, tmplist )
+ 				if ret != True :
+					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( 'ERROR', 'Transponder Add Fail' )
+		 			dialog.doModal( )
+		 			return
  				self.mTransponderIndex = 0
 				self.InitConfig( )
 			else :
@@ -147,7 +151,12 @@ class EditTransponder( SettingWindow ) :
 					# Delete
 					tmplist = []
 			 		tmplist.append( self.mTransponderList[self.mTransponderIndex] )
-			 		self.mCommander.Transponder_Delete( satellite.mLongitude, satellite.mBand, tmplist )
+			 		ret = self.mCommander.Transponder_Delete( satellite.mLongitude, satellite.mBand, tmplist )
+			 		if ret != True :
+						dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+						dialog.SetDialogProperty( 'ERROR', 'Transponder Edit Fail' )
+			 			dialog.doModal( )
+			 			return
 					
 	 				# ADD
 					frequency, fec, polarization, simbolrate = dialog.GetValue( )
@@ -163,6 +172,11 @@ class EditTransponder( SettingWindow ) :
 			 		tmplist.append( newTransponder )
 			 		
 	 				ret = self.mCommander.Transponder_Add( satellite.mLongitude, satellite.mBand, tmplist )
+	 				if ret != True :
+						dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+						dialog.SetDialogProperty( 'ERROR', 'Transponder Edit Fail' )
+			 			dialog.doModal( )
+			 			return
 	 				self.mTransponderIndex = 0
 					self.InitConfig( )
 				else :
@@ -183,7 +197,12 @@ class EditTransponder( SettingWindow ) :
 			 		satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
 			 		tmplist = []
 			 		tmplist.append( self.mTransponderList[self.mTransponderIndex] )
-			 		self.mCommander.Transponder_Delete( satellite.mLongitude, satellite.mBand, tmplist )
+			 		ret = self.mCommander.Transponder_Delete( satellite.mLongitude, satellite.mBand, tmplist )
+			 		if ret != True :
+						dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+						dialog.SetDialogProperty( 'ERROR', 'Transponder Delete Fail' )
+			 			dialog.doModal( )
+			 			return
 			 		self.mTransponderIndex = 0
 					self.InitConfig( )
 				else :

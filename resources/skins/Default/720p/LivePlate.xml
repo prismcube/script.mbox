@@ -1,6 +1,7 @@
 <window type="windows" id="3004">
 	<defaultcontrol always="true">620</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
+	<backgroundcolor>0x00ffffff</backgroundcolor>
 	<controls>
 		<control type="group">
 			<animation effect="slide" start="0,320" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
@@ -29,7 +30,7 @@
 <!-- info section -->			
 			<control type="group" id="600">
 				<posx>50</posx>
-				<posy>580</posy>
+				<posy>600</posy>
 
 				<control type="label" id="601">
 					<posx>0</posx>
@@ -54,7 +55,7 @@
 
 				<control type="image" id="603">
 					<posx>245</posx>
-					<posy>-15</posy>
+					<posy>-35</posy>
 					<align>left</align>
 					<width>70</width>
 					<height>30</height>
@@ -64,7 +65,7 @@
 
 				<control type="group">
 					<posx>-50</posx>
-					<posy>-15</posy>
+					<posy>-37</posy>
 					<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(620).HasFocus) | Control.HasFocus(702) | Control.HasFocus(706)">conditional</animation>
 					<description>info explane</description>
 					<control type="image">
@@ -143,22 +144,9 @@
 						<aligny>center</aligny>
 						<font>font12</font>
 						<textcolor>white</textcolor>
-						<label>Mute Off</label>
+						<label>Mute</label>
 						<visible>Control.HasFocus(626)</visible>
 					</control>
-					<control type="label">
-						<posx>30</posx>
-						<posy>0</posy>
-						<width>400</width>
-						<height>28</height>
-						<align>left</align>
-						<aligny>center</aligny>
-						<font>font12</font>
-						<textcolor>white</textcolor>
-						<label>Mute On</label>
-						<visible>Control.HasFocus(627)</visible>
-					</control>
-
 					<control type="label">
 						<posx>30</posx>
 						<posy>0</posy>
@@ -189,7 +177,7 @@
 <!-- button control -->
 				<control type="group" id="620">
 					<posx>315</posx>
-					<posy>-15</posy>
+					<posy>-35</posy>
 					<!--control type="image">
 						<animation effect="fade" start="0" end="100" delay="0" time="300" condition="Control.HasFocus(621)">conditional</animation>
 						<animation effect="fade" start="100" end="0" delay="0" time="300" condition="!Control.HasFocus(621)">conditional</animation>
@@ -330,27 +318,22 @@
 							<width>45</width>
 							<height>35</height>
 							<label></label>
-							<!--altlabel>208</altlabel-->
 							<textcolor>grey3</textcolor>
-							<texturefocus>confluence/icon-mute.png</texturefocus>
-							<texturenofocus>confluence/VolumeIcon-Mute.png</texturenofocus>
-							<!--usealttexture>Player.Paused | Player.Forwarding | Player.Rewinding</usealttexture>
-							<alttexturefocus>confluence/OSDAudioFO.png</alttexturefocus>
-							<alttexturenofocus>confluence/OSDAudioNF.png</alttexturenofocus>
-							<pulseonselect>false</pulseonselect-->
+							<texturefocus>confluence/OSDAudioFO.png</texturefocus>
+							<texturenofocus>confluence/OSDAudioNF.png</texturenofocus>
 							<onleft>SetFocus(625)</onleft>
 							<onright>SetFocus(621)</onright>
 							<onup></onup>
 							<ondown>SetFocus(702)</ondown>
+							<onclick>Mute</onclick>
 							<description>mute,audio off</description>
 						</control>
-						<control type="button" id="627">
+						<!--control type="button" id="627">
 							<posx>225</posx>
 							<posy>0</posy>
 							<width>45</width>
 							<height>35</height>
 							<label></label>
-							<!--altlabel>208</altlabel-->
 							<textcolor>grey3</textcolor>
 							<texturefocus>confluence/OSDAudioFO.png</texturefocus>
 							<texturenofocus>confluence/OSDAudioNF.png</texturenofocus>
@@ -360,11 +343,9 @@
 							<ondown>SetFocus(702)</ondown>
 							<description>mute, audio on</description>
 							<visible>!Control.IsVisible(626)</visible>
-						</control>
+						</control-->
 					</control>
-
-
-					<control type="button" id="630">
+					<!--control type="button" id="630">
 						<posx>680</posx>
 						<posy>0</posy>
 						<align>left</align>
@@ -378,41 +359,56 @@
 						<onup></onup>
 						<ondown>SetFocus(702)</ondown>
 						<description>time shift banner</description>
-					</control>
+					</control-->
 				</control>
+
+				<!--control type="group" id="650">
+					<posx>720</posx>
+					<posy>-35</posy>
+					<control type="image" id="651">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>IconLockFocus.png</texture>
+					</control>
+					<control type="image" id="652">
+						<posx>30</posx>
+						<posy>1</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>IconCas.png</texture>
+					</control>
+				</control-->
 
 				<control type="image" id="604">
 					<posx>720</posx>
-					<posy>10</posy>
+					<posy>18</posy>
 					<width>60</width>
 					<height>40</height>
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>data</description>
 				</control>
-
 				<control type="image" id="605">
 					<posx>775</posx>
-					<posy>10</posy>
+					<posy>18</posy>
 					<width>90</width>
 					<height>40</height>
-					<!--<texture>flagging/audio/dolbydigital.png</texture>-->
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>audio dolby</description>
 				</control>
-
 				<control type="image" id="606">
 					<posx>855</posx>
-					<posy>10</posy>
+					<posy>18</posy>
 					<width>90</width>
 					<height>40</height>
-					<!--<texture>OverlayHD.png</texture>-->
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>video HD</description>
 				</control>
 
 				<control type="group">
 					<posx>200r</posx>
-					<posy>-15</posy>
+					<posy>-37</posy>
 					<!--
 					<animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
 					<animation effect="slide" start="0,0" end="210,0" delay="0" time="300" condition="Window.Next(Home) | Window.IsVisible(FullscreenVideo) | Window.IsVisible(Visualisation)">WindowClose</animation>
@@ -434,7 +430,7 @@
 						<height>28</height>
 						<align>left</align>
 						<aligny>center</aligny>
-						<font>font12</font>
+						<font>font12caps</font>
 						<textcolor>white</textcolor>
 						<label>TIME $INFO[Control.GetLabel]</label>
 						<description>EPG Clock</description>
@@ -445,14 +441,14 @@
 <!-- epg section -->			
 			<control type="group" id="700">
 				<posx>50</posx>
-				<posy>640</posy>
+				<posy>660</posy>
 				
 				<control type="label" id="701">
-					<posx>0</posx>
+					<posx>-50</posx>
 					<posy>10</posy>
-					<width>200></width>
+					<width>300</width>
 					<!--<include>WindowTitleCommons</include>-->
-					<font>font24</font>
+					<font>font13caps</font>
 					<align>center</align>
 					<textcolor>9f9f9f9b</textcolor>
 					<label>$INFO[Control.GetLabel]</label>
@@ -462,9 +458,9 @@
 					<posx>250</posx>
 					<posy>0</posy>
 					<width>40</width>
-					<height>40</height>
+					<height>35</height>
 					<label>210</label>
-					<font>-</font>
+					<font></font>
 					<texturefocus>confluence/scroll-left-focus.png</texturefocus>
 					<texturenofocus>confluence/scroll-left.png</texturenofocus>
 					<onleft></onleft>
@@ -477,7 +473,6 @@
 					<posx>290</posx>
 					<posy>6</posy>
 					<width>400</width>
-					<description>name</description>
 					<textcolor>9f9c9f9b</textcolor>
 					<label>$INFO[Control.GetLabel]</label>
 					<description>EPG Name</description>
@@ -488,7 +483,7 @@
 					<posy>6</posy>
 					<width>67</width>
 					<description>start time</description>
-					<font>font24</font>
+					<font>font13_title</font>
 					<label>$INFO[Control.GetLabel]</label>
 					<description>EPG Time</description>
 				</control>
@@ -510,17 +505,17 @@
 					<width>250</width>
 					<height>8</height>
 					<texturebg border="6,0,6,0">confluence/OSDProgressBack.png</texturebg>
-					<lefttexture>-</lefttexture>
+					<lefttexture></lefttexture>
 					<midtexture border="6,0,6,0">confluence/OSDProgressMid.png</midtexture>
-					<righttexture>-</righttexture>
-					<overlaytexture>-</overlaytexture>
+					<righttexture></righttexture>
+					<overlaytexture></overlaytexture>
 				</control>
 
 				<control type="label" id="705">
 					<posx>1030</posx>
 					<posy>6</posy>
 					<description>end time</description>
-					<font>font24</font>
+					<font>font13_title</font>
 					<label>$INFO[Control.GetLabel]</label>
 					<description>EPG Time</description>
 				</control>
@@ -530,9 +525,9 @@
 					<posy>0</posy>
 					<align>right</align>
 					<width>40</width>
-					<height>40</height>
+					<height>35</height>
 					<label>31354</label>
-					<font>-</font>
+					<font></font>
 					<texturefocus>confluence/scroll-right-focus.png</texturefocus>
 					<texturenofocus>confluence/scroll-right.png</texturenofocus>
 					<onleft>SetFocus(702)</onleft>

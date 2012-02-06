@@ -6,7 +6,7 @@
 		<posy>0</posy>
 	</coordinates>
 	<defaultcontrol always="true">49</defaultcontrol>
-	<allowoverlay>yes</allowoverlay>
+	<allowoverlay>no</allowoverlay>
 
 	<controls>
 
@@ -333,9 +333,9 @@
 			<posy>120</posy>
 			<width>430</width>
 			<height>600</height>
-			<allowoverlay>true</allowoverlay>
+			<allowoverlay>yes</allowoverlay>
 			<control type="group">
-				<control type="image">
+				<!--control type="image">
 					<description>LOGO</description>
 					<posx>60</posx>
 					<posy>0</posy>
@@ -343,27 +343,27 @@
 					<height>80</height>
 					<aspectratio>keep</aspectratio>
 					<texture>confluence/Confluence_Logo.png</texture>
-				</control>
+				</control-->
 				<control type="image">
 					<posx>0</posx>
-					<posy>80</posy>
-					<width>390</width>
-					<height>220</height>
+					<posy>10</posy>
+					<width>352</width>
+					<height>198</height>
 					<texture border="20">confluence/backgrounds/weather.jpg</texture>
 					<description>pre-view</description>
 				</control>
 				<control type="image">
 					<posx>0</posx>
-					<posy>281</posy>
-					<width>390</width>
+					<posy>199</posy>
+					<width>352</width>
 					<height>18</height>
 					<texture border="20">confluence/StackNF.png</texture>
 					<!--<texture border="20">media-overlay.png</texture>-->
 				</control>
 				<control type="label" id="303">
 					<posx>0</posx>
-					<posy>283</posy>
-					<width>390</width>
+					<posy>200</posy>
+					<width>352</width>
 					<height>10</height>
 					<font>font12_title</font>
 					<shadowcolor>ff000000</shadowcolor>
@@ -484,9 +484,9 @@
 				<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="true">conditional</animation>
 			</control-->
 			<control type="label" id="401">
-				<posx>205r</posx>
+				<posx>200r</posx>
 				<posy>30r</posy>
-				<width>500</width>
+				<width>50</width>
 				<height>20</height>
 				<font>font12</font>
 				<textcolor>grey</textcolor>
@@ -506,7 +506,6 @@
 				<align>right</align>
 				<aligny>center</aligny>
 				<label>[COLOR=blue] / $INFO[Container(50).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(50).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(50).CurrentPage]/$INFO[Container(50).NumPages][/COLOR])</label>
-
 			</control>
 		</control>
 
