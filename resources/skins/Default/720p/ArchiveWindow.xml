@@ -45,15 +45,6 @@
 				<include>VisibleFadeEffect</include>
 				<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail) | substring(Window.Property(ViewMode),panart)</visible>				
 			</control>
-			<control type="image">
-				<posx>845</posx>
-				<posy>110</posy>
-				<width>352</width>
-				<height>198</height>
-				<texture border="20">special://skin/backgrounds/weather.jpg</texture>
-				<description>pre-view</description>
-				<visible>substring(Window.Property(ViewMode),common)</visible>
-			</control>
 			<control type="group">
 				<include>VisibleFadeEffect</include>
 				<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)</visible>
@@ -80,6 +71,16 @@
 				<height>720</height>
 				<texture border="20">confluence/ContentPanel2.png</texture>
 				<visible>substring(Window.Property(ViewMode),posterwrap)</visible>
+			</control>
+
+			<control type="image">
+				<posx>845</posx>
+				<posy>110</posy>
+				<width>352</width>
+				<height>198</height>
+				<texture border="20">special://skin/backgrounds/weather.jpg</texture>
+				<description>pre-view</description>
+				<visible>substring(Window.Property(ViewMode),common)</visible>
 			</control>
 			
 			<!--
@@ -388,9 +389,6 @@
 				<label>Archive</label>
 			</control>
 		</control>
-		<!--
-		<include>WindowTitleHomeButton</include>
-		-->
-		<include>Clock</include>
+		<include>DefaultCommonDateTime</include>
 	</controls>
 </window>
