@@ -1424,9 +1424,12 @@ class ChannelListWindow(BaseWindow):
 				#LOG_TRACE('past[%s] time[%s] start[%s] duration[%s] offset[%s]'% (pastDuration,self.mLocalTime, self.mNavEpg.mStartTime, self.mNavEpg.mDuration,self.mLocalOffset ) )
 
 				if self.mLocalTime > endTime: #Already past
-					pastDuration = 100
+					self.mCtrlProgress.setPercent( 100 )
+					return
+
 				elif self.mLocalTime < startTime :
-					pastDuration = 0
+					self.mCtrlProgress.setPercent( 0 )
+					return
 
 				if pastDuration < 0 :
 					pastDuration = 0

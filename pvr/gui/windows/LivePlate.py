@@ -373,7 +373,7 @@ class LivePlate(BaseWindow):
 			else :
 				self.mEPGListIdx += 1
 
-			msg = 'NEXT_EPG'
+			LOG_TRACE('NEXT_EPG')
 
 		elif aDir == PREV_EPG:
 			if self.mEPGListIdx-1 < 0 :
@@ -381,7 +381,7 @@ class LivePlate(BaseWindow):
 			else :
 				self.mEPGListIdx -= 1
 
-			msg = 'PREV_EPG'
+			LOG_TRACE('PREV_EPG')
 
 
 		self.RestartAsyncEPG()
@@ -539,15 +539,18 @@ class LivePlate(BaseWindow):
 				#LOG_TRACE('past[%s] time[%s] start[%s] duration[%s] offset[%s]'% (pastDuration,self.mLocalTime, self.mEventCopy.mStartTime, self.mEventCopy.mDuration,self.mLocalOffset ) )
 
 				if self.mLocalTime > endTime: #Already past
-					pastDuration = 100
+					self.mCtrlProgress.setPercent( 100 )
+					return
+
 				elif self.mLocalTime < startTime :
-					pastDuration = 0
+					self.mCtrlProgress.setPercent( 0 )
+					return
 
 				if pastDuration < 0 : #Already past
-					pastDuration = 100
+					pastDuration = 0
 
 				if self.mEventCopy.mDuration > 0 :
-					percent = 100 - (pastDuration * 100.0/self.mEventCopy.mDuration )
+					percent = 100 - (pastDuration * 100.0/self.mEventCopy.mDuration)
 				else :
 					percent = 0
 
@@ -824,7 +827,7 @@ class LivePlate(BaseWindow):
 
 				retList = []
 				retList.append( self.mEventCopy )
-				LOG_TRACE( '%s idx[%s] epg[%s]'% (msg, self.mEPGListIdx, ClassToList( 'convert', retList )) )
+				LOG_TRACE( 'idx[%s] epg[%s]'% (self.mEPGListIdx, ClassToList( 'convert', retList )) )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
