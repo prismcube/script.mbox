@@ -6,7 +6,7 @@
 		<posy>0</posy>
 	</coordinates>
 	<defaultcontrol always="true">49</defaultcontrol>
-	<allowoverlay>yes</allowoverlay>
+	<allowoverlay>no</allowoverlay>
 
 	<controls>
 
@@ -333,7 +333,7 @@
 			<posy>120</posy>
 			<width>430</width>
 			<height>600</height>
-			<allowoverlay>true</allowoverlay>
+			<allowoverlay>yes</allowoverlay>
 			<control type="group">
 				<!--control type="image">
 					<description>LOGO</description>
@@ -484,9 +484,9 @@
 				<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="true">conditional</animation>
 			</control-->
 			<control type="label" id="401">
-				<posx>205r</posx>
+				<posx>200r</posx>
 				<posy>30r</posy>
-				<width>500</width>
+				<width>50</width>
 				<height>20</height>
 				<font>font12</font>
 				<textcolor>grey</textcolor>
@@ -506,7 +506,6 @@
 				<align>right</align>
 				<aligny>center</aligny>
 				<label>[COLOR=blue] / $INFO[Container(50).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(50).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(50).CurrentPage]/$INFO[Container(50).NumPages][/COLOR])</label>
-
 			</control>
 		</control>
 

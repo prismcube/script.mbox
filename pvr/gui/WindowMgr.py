@@ -254,13 +254,13 @@ class WindowMgr(object):
 
 		
 		if skinName.lower() == 'default' or skinName.lower() == 'skin.confluence' :
-			mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir(), 'resources', 'skins', 'default', '720p', 'mbox_includes.xml')
+			mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir(), 'resources', 'skins', 'Default', '720p', 'mbox_includes.xml')
 
 		else : 
 			mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir(), 'resources', 'skins', skinName, '720p', 'mbox_includes.xml')
 
 			if not os.path.isfile(mboxIncludePath) :
-				mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir(), 'resources', 'skins', 'default', '720p', 'mbox_includes.xml')			
+				mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir(), 'resources', 'skins', 'Default', '720p', 'mbox_includes.xml')			
 			
 		print 'mboxIncludePath=%s' %mboxIncludePath	
 

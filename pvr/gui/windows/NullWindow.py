@@ -27,6 +27,10 @@ class NullWindow(BaseWindow):
 	def onAction(self, aAction):
 		id = aAction.getId()
 
+		LOG_TRACE('Nullwindow action id=%d' %id )
+
+		self.GlobalAction( id )		
+
 		if id == Action.ACTION_PREVIOUS_MENU:
 			print 'lael98 check ation menu'
 			ConfigMgr.GetInstance( ).SetNeedLoad( True )
@@ -53,10 +57,13 @@ class NullWindow(BaseWindow):
 			print 'youn check ation left'
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
-		elif id == Action.ACTION_SHOW_INFO	:
+		elif id == Action.ACTION_SHOW_INFO:
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
+
+		elif id == Action.ACTION_CONTEXT_MENU:
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-			
-		elif id == Action.ACTION_PAGE_UP:
+
+		elif id == Action.ACTION_PAGE_DOWN:
 			LOG_TRACE('TRACE')
 			LOG_WARN('WARN')
 			LOG_ERR('ERR')
@@ -69,7 +76,7 @@ class NullWindow(BaseWindow):
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )		
 
 
-		elif id == Action.ACTION_PAGE_DOWN:
+		elif id == Action.ACTION_PAGE_UP:
 			nextChannel = None
 			nextChannel = self.mCommander.Channel_GetNext()
 			if nextChannel :
