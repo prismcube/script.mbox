@@ -1533,7 +1533,7 @@ class ChannelListWindow(BaseWindow):
 				for idx in self.mMarkList :
 				
 					self.mCtrlListCHList.selectItem(idx)
-					time.sleep(0.05)
+					xbmc.sleep(50)
 
 					listItem = self.mCtrlListCHList.getListItem(idx)
 					cmd = ''
@@ -1607,7 +1607,7 @@ class ChannelListWindow(BaseWindow):
 						self.mCtrlListCHList.getSelectedItem().setLabel(label)
 
 						self.mCtrlListCHList.selectItem(idxM)
-						time.sleep(0.05)
+						xbmc.sleep(50)
 						self.mCtrlListCHList.getSelectedItem().setLabel(labelM)
 
 						LOG_TRACE( '==================move' )
@@ -1744,7 +1744,7 @@ class ChannelListWindow(BaseWindow):
 					GuiLock2(True)
 					#xbmc.executebuiltin('xbmc.Container.SetViewMode(50)')
 					xbmc.executebuiltin('xbmc.Container.PreviousViewMode')
-					time.sleep(0.05)
+					xbmc.sleep(50)
 					self.mCtrlListCHList.selectItem(idx)
 					self.setFocusId( self.mCtrlGropCHList.getId() )
 					GuiLock2(False)
@@ -1960,7 +1960,7 @@ class ChannelListWindow(BaseWindow):
 
 				GuiLock2(True)
 				listItem = self.mCtrlListCHList.getListItem(i)
-				time.sleep(0.05)
+				xbmc.sleep(50)
 
 				listItem.setProperty( 'lock', '' )
 				listItem.setProperty( 'icas', '' )
@@ -1972,7 +1972,7 @@ class ChannelListWindow(BaseWindow):
 				if lock : listItem.setProperty( 'lock', E_IMG_ICON_LOCK )
 				if icas : listItem.setProperty( 'icas', E_IMG_ICON_ICAS )
 				listItem.setProperty( 'mark', E_IMG_ICON_MARK )
-				time.sleep(0.05)
+				xbmc.sleep(50)
 				GuiLock2(False)
 
 
@@ -1980,7 +1980,7 @@ class ChannelListWindow(BaseWindow):
 			GuiLock2(True)
 			if aMove == Action.ACTION_MOVE_UP or aMove == Action.ACTION_MOVE_DOWN :
 				listItem = self.mCtrlListCHList.getListItem(oldmark)
-				time.sleep(0.05)
+				xbmc.sleep(50)
 				listItem.setProperty( 'mark', '' )
 				self.setFocusId( self.mCtrlGropCHList.getId() )
 
@@ -1993,7 +1993,7 @@ class ChannelListWindow(BaseWindow):
 					listItem = self.mCtrlListCHList.getListItem( idxOld )
 					listItem.setProperty( 'mark', '' )
 					self.setFocusId( self.mCtrlGropCHList.getId() )
-					time.sleep(0.05)
+					xbmc.sleep(50)
 					
 			GuiLock2(False)
 
