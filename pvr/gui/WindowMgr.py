@@ -76,11 +76,20 @@ class WindowMgr(object):
 		self.CopyIncludeFile( )
 		self.CreateAllWindows( )
 
+	def GetWindow( self, aWindowId ):
+		LOG_TRACE('GetWindow ID=%d' %aWindowId )
+		try :
+			return self.mWindows[aWindowId]
+			return True
+		except Exception, ex:
+			aWindow=None
+			LOG_ERR( "Exception %s" %ex)
+			return False
+	
+
 	def ShowWindow( self, aWindowId ):
 		LOG_TRACE('ShowWindow ID=%d' %aWindowId )
-		LOG_TRACE('ShowWindow len=%d' %len(self.mWindows) )		
 		try :
-			LOG_TRACE('window=%s' %self.mWindows[aWindowId] )		
 			self.mWindows[aWindowId].doModal( )
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
@@ -267,11 +276,6 @@ class WindowMgr(object):
 		skinIncludePath = os.path.join( pvr.Platform.GetPlatform().GetSkinDir(), '720p', 'mbox_includes.xml')
 		print 'skinIncludePath=%s' %skinIncludePath	
 		shutil.copyfile( mboxIncludePath, skinIncludePath )
-
-
-	def GetWindow( self, aWindowId ) :
-		pass
-
 
 
 	def AddDefaultFont( self ) :

@@ -413,6 +413,8 @@ class ChannelListWindow(BaseWindow):
 
 	@GuiLock
 	def onEvent(self, aEvent):
+		pass
+
 		LOG_TRACE( 'Enter' )
 		#aEvent.printdebug()
 
