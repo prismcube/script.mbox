@@ -473,7 +473,6 @@
 					<posx>290</posx>
 					<posy>6</posy>
 					<width>400</width>
-					<description>name</description>
 					<textcolor>9f9c9f9b</textcolor>
 					<label>$INFO[Control.GetLabel]</label>
 					<description>EPG Name</description>

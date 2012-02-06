@@ -8,8 +8,10 @@ import pvr.TunerConfigMgr as ConfigMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
 from inspect import currentframe
 import pvr.ElisMgr
-from pvr.Util import LOG_TRACE, LOG_ERR, LOG_WARN
+from pvr.Util import LOG_TRACE, LOG_ERR, LOG_WARN, RunThread
 from pvr.gui.GuiConfig import *
+
+import threading
 
 
 class NullWindow(BaseWindow):
@@ -19,12 +21,22 @@ class NullWindow(BaseWindow):
 		print 'args=%s' % args[0]
 		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()				
 		self.mLastFocusId = None
+		self.mInitialized = False
+		self.mAsyncShowTimer = None
 
 	def onInit(self):
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
 
+		LOG_TRACE('')
+		if self.mInitialized == False :
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )		
+			self.mInitialized = True
+
 	def onAction(self, aAction):
+		if self.mInitialized == False :
+			return
+		
 		id = aAction.getId()
 
 		LOG_TRACE('Nullwindow action id=%d' %id )
@@ -61,7 +73,11 @@ class NullWindow(BaseWindow):
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
 		elif id == Action.ACTION_CONTEXT_MENU:
+
+			window = WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_LIVE_PLATE )
+			window.SetAutomaticHide( False )
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+
 
 		elif id == Action.ACTION_PAGE_DOWN:
 			LOG_TRACE('TRACE')
@@ -72,8 +88,9 @@ class NullWindow(BaseWindow):
 			if prevChannel :
 				self.mCommander.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )
 			
-				#WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_LIVE_PLATE).setLastChannel( currentChannel )
-				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )		
+				window = WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_LIVE_PLATE )
+				window.SetAutomaticHide( True )
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 
 		elif id == Action.ACTION_PAGE_UP:
@@ -81,9 +98,11 @@ class NullWindow(BaseWindow):
 			nextChannel = self.mCommander.Channel_GetNext()
 			if nextChannel :
 				self.mCommander.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
+
+				window = WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_LIVE_PLATE )
+				window.SetAutomaticHide( True )
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 			
-				#WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_LIVE_PLATE).setLastChannel( currentChannel )
-				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )		
 
 		elif id == Action.REMOTE_3:  #TEST : start Record
 			print 'open record dialog'
