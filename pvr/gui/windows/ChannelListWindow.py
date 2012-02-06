@@ -76,7 +76,7 @@ class ChannelListWindow(BaseWindow):
 
 		self.mEventId = 0
 		self.mLocalTime = 0
-		self.mTimer	= None
+		self.mAsyncTuneTimer = None
 
 		self.mPincodeEnter = FLAG_MASK_NONE
 		self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
@@ -190,8 +190,9 @@ class ChannelListWindow(BaseWindow):
 		self.mEnableThread = True
 		self.CurrentTimeThread()
 
-		self.mTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentEPG )
-		self.mTimer.start()
+		self.mAsyncTuneTimer = None
+		self.mAsyncTuneTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentEPG )
+		self.mAsyncTuneTimer.start()
 
 		LOG_TRACE( 'Leave' )
 
@@ -276,13 +277,12 @@ class ChannelListWindow(BaseWindow):
 					return
 
 				#TODO : must be need timeout schedule
-				"""
-				self.mIsSelect = False
-				self.InitEPGEvent()
+				if self.mAsyncTuneTimer :
+					if self.mAsyncTuneTimer.isAlive() :
+						self.mAsyncTuneTimer.cancel()
 
-				self.ResetLabel()
-				self.UpdateLabelInfo()
-				"""
+				self.mAsyncTuneTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentEPG ) 				
+				self.mAsyncTuneTimer.start()
 
 
 			if self.mFocusId == self.mCtrlListMainmenu.getId() :
@@ -417,16 +417,17 @@ class ChannelListWindow(BaseWindow):
 
 	@GuiLock
 	def onEvent(self, aEvent):
-		pass
-
 		LOG_TRACE( 'Enter' )
 		#aEvent.printdebug()
 
 		if self.mWinId == xbmcgui.getCurrentWindowId() :
 			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
 
+				#if self.mCurrentChannel.mSid != aEvent.mSid or self.mCurrentChannel.mTsid != aEvent.mTsid or self.mCurrentChannel.mOnid != aEvent.mOnid :
+				#	return -1
+				
 				#LOG_TRACE('1========event id[%s] old[%s]'% (aEvent.mEventId, self.mEventId) )
-				if int(aEvent.mEventId) != int(self.mEventId) :
+				if aEvent.mEventId != self.mEventId :
 					if self.mIsSelect == True :
 						#on select, clicked
 						ret = None
@@ -440,6 +441,7 @@ class ChannelListWindow(BaseWindow):
 							   ret.mSid != self.mNavEpg.mSid or \
 							   ret.mTsid != self.mNavEpg.mTsid or \
 							   ret.mOnid != self.mNavEpg.mOnid :
+
 								LOG_TRACE('epg DIFFER')
 								self.mNavEpg = ret
 
@@ -1169,7 +1171,7 @@ class ChannelListWindow(BaseWindow):
 		try :
 			if self.mIsSelect == True :
 				ret = self.mCommander.Epgevent_GetPresent()
-				xbmc.sleep(50)
+				time.sleep(0.05)
 				if ret :
 					self.mNavEpg = ret
 					ret.printdebug()
@@ -1192,7 +1194,7 @@ class ChannelListWindow(BaseWindow):
 							maxCount= 1
 							ret = None
 							ret = self.mCommander.Epgevent_GetList( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount )
-							xbmc.sleep(50)
+							time.sleep(0.05)
 							#LOG_TRACE('=============epg len[%s] list[%s]'% (len(ret),ClassToList('convert', ret )) )
 							if ret :
 								self.mNavEpg = ret[0]
@@ -1405,7 +1407,7 @@ class ChannelListWindow(BaseWindow):
 			#self.mCtrlLblLocalTime2.setLabel(ret[1])
 
 			#self.nowTime += 1
-			xbmc.sleep(1000)
+			time.sleep(1)
 			loop += 1
 
 		LOG_TRACE( 'leave_end thread' )
@@ -1531,7 +1533,7 @@ class ChannelListWindow(BaseWindow):
 				for idx in self.mMarkList :
 				
 					self.mCtrlListCHList.selectItem(idx)
-					xbmc.sleep(50)
+					time.sleep(0.05)
 
 					listItem = self.mCtrlListCHList.getListItem(idx)
 					cmd = ''
@@ -1605,7 +1607,7 @@ class ChannelListWindow(BaseWindow):
 						self.mCtrlListCHList.getSelectedItem().setLabel(label)
 
 						self.mCtrlListCHList.selectItem(idxM)
-						xbmc.sleep(50)
+						time.sleep(0.05)
 						self.mCtrlListCHList.getSelectedItem().setLabel(labelM)
 
 						LOG_TRACE( '==================move' )
@@ -1742,7 +1744,7 @@ class ChannelListWindow(BaseWindow):
 					GuiLock2(True)
 					#xbmc.executebuiltin('xbmc.Container.SetViewMode(50)')
 					xbmc.executebuiltin('xbmc.Container.PreviousViewMode')
-					xbmc.sleep(50)
+					time.sleep(0.05)
 					self.mCtrlListCHList.selectItem(idx)
 					self.setFocusId( self.mCtrlGropCHList.getId() )
 					GuiLock2(False)
@@ -1958,7 +1960,7 @@ class ChannelListWindow(BaseWindow):
 
 				GuiLock2(True)
 				listItem = self.mCtrlListCHList.getListItem(i)
-				xbmc.sleep(50)
+				time.sleep(0.05)
 
 				listItem.setProperty( 'lock', '' )
 				listItem.setProperty( 'icas', '' )
@@ -1970,7 +1972,7 @@ class ChannelListWindow(BaseWindow):
 				if lock : listItem.setProperty( 'lock', E_IMG_ICON_LOCK )
 				if icas : listItem.setProperty( 'icas', E_IMG_ICON_ICAS )
 				listItem.setProperty( 'mark', E_IMG_ICON_MARK )
-				xbmc.sleep(50)
+				time.sleep(0.05)
 				GuiLock2(False)
 
 
@@ -1978,7 +1980,7 @@ class ChannelListWindow(BaseWindow):
 			GuiLock2(True)
 			if aMove == Action.ACTION_MOVE_UP or aMove == Action.ACTION_MOVE_DOWN :
 				listItem = self.mCtrlListCHList.getListItem(oldmark)
-				xbmc.sleep(50)
+				time.sleep(0.05)
 				listItem.setProperty( 'mark', '' )
 				self.setFocusId( self.mCtrlGropCHList.getId() )
 
@@ -1991,7 +1993,7 @@ class ChannelListWindow(BaseWindow):
 					listItem = self.mCtrlListCHList.getListItem( idxOld )
 					listItem.setProperty( 'mark', '' )
 					self.setFocusId( self.mCtrlGropCHList.getId() )
-					xbmc.sleep(50)
+					time.sleep(0.05)
 					
 			GuiLock2(False)
 
@@ -2082,31 +2084,20 @@ class ChannelListWindow(BaseWindow):
 	def Close( self ):
 		self.mEventBus.Deregister( self )
 		
-		if self.mTimer and self.mTimer.isAlive() :
-			self.mTimer.cancel()
+		if self.mAsyncTuneTimer and self.mAsyncTuneTimer.isAlive() :
+			self.mAsyncTuneTimer.cancel()
 
-		self.mTimer = None
+		self.mAsyncTuneTimer = None
 		
 		self.close()
 
 
 	def AsyncUpdateCurrentEPG( self ) :
-		self.InitEPGEvent()
-		pass
-
 		try :
-			ret = None
-			ret = self.mCommander.Epgevent_GetPresent()
-			if ret :
-				self.mNavEpg = ret
-
-				self.mIsSelect = False
-				self.ResetLabel()
-				self.UpdateLabelInfo()
-
-				retList = []
-				retList.append( self.mNavEpg )
-				LOG_TRACE( 'epgevent_GetPresent[%s]'% ClassToList( 'convert', retList ) )
+			self.mIsSelect = False
+			self.InitEPGEvent()
+			self.ResetLabel()
+			self.UpdateLabelInfo()
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
