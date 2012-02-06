@@ -15,6 +15,7 @@ from ElisEventClass import *
 
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
 from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit 
+from ElisProperty import ElisPropertyEnum
 
 import threading, time, os
 
@@ -142,14 +143,10 @@ class LivePlate(BaseWindow):
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 		self.mAsyncTuneTimer = None
-
-		LOG_TRACE('automaticHide=%d' %self.mAutomaticHide )
-
 		self.mAutomaticHideTimer = None
 
 		if self.mAutomaticHide == True :
-			self.mAutomaticHideTimer = threading.Timer( 3, self.AsyncAutomaticHide )
-			self.mAutomaticHideTimer.start()
+			self.StartAutomaticHide()
 
 		LOG_TRACE( 'Leave' )
 
@@ -161,6 +158,9 @@ class LivePlate(BaseWindow):
 		self.GlobalAction( id )
 
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
+
 			if self.mShowExtendInfo ==  True :
 				self.ShowEPGDescription( False )
 				return
@@ -168,19 +168,30 @@ class LivePlate(BaseWindow):
 			self.Close()
 
 		elif id == Action.ACTION_SELECT_ITEM:
-			LOG_TRACE( 'youn:%s' % id )
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
+
 	
 		elif id == Action.ACTION_CONTEXT_MENU :
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
+		
 			if self.mShowExtendInfo ==  True :
 				self.ShowEPGDescription( False )
 			self.Close( )
 
 		elif id == Action.ACTION_MOVE_LEFT:
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
+		
 			self.GetFocusId()
 			if self.mFocusId == self.mCtrlBtnPrevEpg.getId():			
 				self.EPGNavigation( PREV_EPG )
 
 		elif id == Action.ACTION_MOVE_RIGHT:
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
+		
 			self.GetFocusId()
 			if self.mFocusId == self.mCtrlBtnNextEpg.getId():
 				self.EPGNavigation( NEXT_EPG )
@@ -209,32 +220,49 @@ class LivePlate(BaseWindow):
 		LOG_TRACE( 'control %d' % aControlId )
 
 		if aControlId == self.mCtrlBtnMute.getId():
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
+		
 			self.GlobalAction( Action.ACTION_MUTE  )
 
 		elif aControlId == self.mCtrlBtnExInfo.getId() :
-			LOG_TRACE( 'click expantion info' )
+			LOG_TRACE( 'click expantion info' )		
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
 			self.ShowEPGDescription( not self.mShowExtendInfo )
 
 		elif aControlId == self.mCtrlBtnTeletext.getId() :
 			LOG_TRACE( 'click teletext' )
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
 			self.ShowDialog( aControlId )
 
 		elif aControlId == self.mCtrlBtnSubtitle.getId() :
 			LOG_TRACE( 'click subtitle' )
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
 			self.ShowDialog( aControlId )
 
 		elif aControlId == self.mCtrlBtnStartRec.getId() :
 			LOG_TRACE( 'click start recording' )
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
 			self.ShowDialog( aControlId )
 
 		elif aControlId == self.mCtrlBtnStopRec.getId() :
 			LOG_TRACE( 'click stop recording' )
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
 			self.ShowDialog( aControlId )
 
 		elif aControlId == self.mCtrlBtnPrevEpg.getId() :
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
 			self.EPGNavigation( PREV_EPG )
 
 		elif aControlId == self.mCtrlBtnNextEpg.getId() :
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
 			self.EPGNavigation( NEXT_EPG )
 
 
@@ -306,13 +334,7 @@ class LivePlate(BaseWindow):
 			self.UpdateServiceType( self.mFakeChannel.mServiceType )
 			self.InitLabelInfo()
 
-			if self.mAsyncTuneTimer :
-				if self.mAsyncTuneTimer.isAlive() :
-					self.mAsyncTuneTimer.cancel()
-
-			self.mAsyncTuneTimer = threading.Timer( 0.2, self.AsyncTuneChannel ) 				
-			self.mAsyncTuneTimer.start()
-			
+			self.RestartAsyncTune()
 
 		elif aDir == NEXT_CHANNEL:
 			nextChannel = self.mCommander.Channel_GetNext()
@@ -324,21 +346,10 @@ class LivePlate(BaseWindow):
 			self.UpdateServiceType( self.mFakeChannel.mServiceType )
 			self.InitLabelInfo()
 
-
-			if self.mAsyncTuneTimer :
-				if self.mAsyncTuneTimer.isAlive() :
-					self.mAsyncTuneTimer.cancel()
-
-			self.mAsyncTuneTimer = threading.Timer( 0.2, self.AsyncTuneChannel ) 				
-			self.mAsyncTuneTimer.start()
-
-		if self.mAutomaticHideTimer and self.mAutomaticHideTimer.isAlive() :
-			self.mAutomaticHideTimer.cancel()
+			self.RestartAsyncTune()
 
 		if self.mAutomaticHide == True :
-			self.mAutomaticHideTimer = threading.Timer( 3, self.AsyncAutomaticHide )
-			self.mAutomaticHideTimer.start()
-
+			self.RestartAutomaticHide()
 
 		LOG_TRACE( 'Leave' )
 
@@ -650,30 +661,63 @@ class LivePlate(BaseWindow):
 		self.mEnableThread = False
 		self.CurrentTimeThread().join()
 		
-		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive() :
-			self.mAsyncTuneTimer.cancel()
+		self.StopAsyncTune()
+		self.StopAutomaticHide()
 
-		self.mAsyncTuneTimer = None
-
-		if self.mAutomaticHideTimer and self.mAutomaticHideTimer.isAlive() :
-			self.mAutomaticHideTimer.cancel()
-
-		self.mAutomaticHideTimer = None
-		
 		self.close()
+
 
 	def SetAutomaticHide( self, aHide=True ) :
 		self.mAutomaticHide = aHide
 
+
 	def GetAutomaticHide( self ) :
 		return self.mAutomaticHide
+
 	
 	def AsyncAutomaticHide( self ) :
 		if self.mShowExtendInfo ==  True :
 			self.ShowEPGDescription( False )
 	
 		self.Close()
+
+
+	def RestartAutomaticHide( self ) :
+		self.StopAutomaticHide()
+		self.StartAutomaticHide()
+
+	
+	def StartAutomaticHide( self ) :
+		bannerTimeout = ElisPropertyEnum( 'Channel Banner Duration', self.mCommander ).GetProp( )
+		self.mAutomaticHideTimer = threading.Timer( bannerTimeout, self.AsyncAutomaticHide )
+		self.mAutomaticHideTimer.start()
 		
+
+	def StopAutomaticHide( self ) :
+		if self.mAutomaticHideTimer and self.mAutomaticHideTimer.isAlive() :
+			self.mAutomaticHideTimer.cancel()
+			del self.mAutomaticHideTimer
+			
+		self.mAutomaticHideTimer = None
+
+
+	def RestartAsyncTune( self ) :
+		self.StopAsyncTune( )
+		self.StartAsyncTune( )
+
+
+	def StartAsyncTune( self ) :
+		self.mAsyncTuneTimer = threading.Timer( 0.2, self.AsyncTuneChannel ) 				
+		self.mAsyncTuneTimer.start()
+
+
+	def StopAsyncTune( self ) :
+		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive() :
+			self.mAsyncTuneTimer.cancel()
+			del self.mAsyncTuneTimer
+
+		self.mAsyncTuneTimer  = None
+
 
 	def AsyncTuneChannel( self ) :
 
