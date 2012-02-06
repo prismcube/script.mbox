@@ -30,9 +30,10 @@ class DialogNormalNumeric( BaseDialog ) :
 		self.mIsOk = E_DIALOG_STATE_NO
 
 	def onInit( self ) :
-		self.mIsOk = E_DIALOG_STATE_NO
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
+
+		self.mIsOk = E_DIALOG_STATE_NO
 		self.getControl( E_HEADER_LABEL ).setLabel( self.mTitleLabel )
 		self.mCtrlEditLabel = self.getControl( E_INPUT_LABEL )
 		self.SetInputLabel( )
