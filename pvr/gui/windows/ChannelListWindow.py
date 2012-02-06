@@ -191,8 +191,6 @@ class ChannelListWindow(BaseWindow):
 		self.CurrentTimeThread()
 
 		self.mAsyncTuneTimer = None
-		self.mAsyncTuneTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentEPG )
-		self.mAsyncTuneTimer.start()
 
 		LOG_TRACE( 'Leave' )
 
@@ -277,12 +275,7 @@ class ChannelListWindow(BaseWindow):
 					return
 
 				#TODO : must be need timeout schedule
-				if self.mAsyncTuneTimer :
-					if self.mAsyncTuneTimer.isAlive() :
-						self.mAsyncTuneTimer.cancel()
-
-				self.mAsyncTuneTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentEPG ) 				
-				self.mAsyncTuneTimer.start()
+				self.RestartAsyncEPG()
 
 
 			if self.mFocusId == self.mCtrlListMainmenu.getId() :
@@ -2083,15 +2076,27 @@ class ChannelListWindow(BaseWindow):
 
 	def Close( self ):
 		self.mEventBus.Deregister( self )
-		
-		if self.mAsyncTuneTimer and self.mAsyncTuneTimer.isAlive() :
-			self.mAsyncTuneTimer.cancel()
-
-		self.mAsyncTuneTimer = None
-		
+		self.StopAsyncEPG()
 		self.close()
 
+	def RestartAsyncEPG( self ) :
+		self.StopAsyncEPG( )
+		self.StartAsyncEPG( )
 
+
+	def StartAsyncEPG( self ) :
+		self.mAsyncTuneTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentEPG ) 				
+		self.mAsyncTuneTimer.start()
+
+
+	def StopAsyncEPG( self ) :
+		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive() :
+			self.mAsyncTuneTimer.cancel()
+			del self.mAsyncTuneTimer
+
+		self.mAsyncTuneTimer  = None
+
+	#TODO : must be need timeout schedule
 	def AsyncUpdateCurrentEPG( self ) :
 		try :
 			self.mIsSelect = False
