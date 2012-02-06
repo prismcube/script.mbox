@@ -44,6 +44,8 @@ class AntennaSetup( SettingWindow ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 
+		self.GlobalAction( actionId )
+
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass
 			

@@ -15,7 +15,7 @@ from ElisEnum import ElisEnum
 class SatelliteConfigSimple( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
+
 		self.mCurrentSatellite = None
 		self.mTransponderList = None
 		self.mSelectedTransponderIndex = 0
@@ -42,7 +42,8 @@ class SatelliteConfigSimple( SettingWindow ):
 		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-
+		self.GlobalAction( actionId )		
+		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass
 			

@@ -49,10 +49,6 @@ class LivePlate(BaseWindow):
 		LOG_TRACE( 'args[0]=[%s]' % args[0] )
 		LOG_TRACE( 'args[1]=[%s]' % args[1] )
 
-		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
-		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
-
-		self.mLastFocusId = None
 		self.mCurrentChannel=None
 		self.mLocalTime = 0
 		self.mEventID = 0
@@ -160,6 +156,7 @@ class LivePlate(BaseWindow):
 
 	def onAction(self, aAction):
 		#LOG_TRACE( 'Enter' )
+
 		id = aAction.getId()
 		self.GlobalAction( id )
 

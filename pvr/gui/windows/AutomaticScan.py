@@ -16,10 +16,6 @@ import pvr.ElisMgr
 class AutomaticScan( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
-			
-		self.mInitialized = False
-		self.mLastFocused = -1
 		self.mAllSatelliteList = []
 		self.mSelectedSatelliteIndex = 0
 
@@ -48,6 +44,8 @@ class AutomaticScan( SettingWindow ):
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 
+		self.GlobalAction( actionId )
+		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass
 		elif actionId == Action.ACTION_SELECT_ITEM :

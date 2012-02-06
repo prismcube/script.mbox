@@ -27,7 +27,6 @@ BUTTON_ID_CAS					= 90107
 class MainMenu( BaseWindow ):
 	def __init__( self, *args, **kwargs ):
 		BaseWindow.__init__( self, *args, **kwargs )
-		LOG_TRACE('')
 
 
 	def onInit( self ):
@@ -41,8 +40,10 @@ class MainMenu( BaseWindow ):
 	def onAction( self, aAction ) :
 		LOG_TRACE('')
 		id = aAction.getId()
-
 		focusId = self.getFocusId( )
+
+		self.GlobalAction( id )		
+		
 		LOG_TRACE( "MainMenu onAction(): focusId %d" % focusId )
 		if id == Action.ACTION_PREVIOUS_MENU :
 			pass

@@ -14,10 +14,7 @@ from pvr.gui.BaseWindow import SettingWindow, Action
 class ManualScan( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 			
-		self.mInitialized = False
-		self.mLastFocused = -1
 		self.mSelectedSatelliteIndex = 0
 		self.mSelectedTransponderIndex = 0		
 		self.mAllSatellitelist = []
@@ -59,6 +56,7 @@ class ManualScan( SettingWindow ):
 
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
+		self.GlobalAction( actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.ResetAllControl( )

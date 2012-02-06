@@ -30,13 +30,6 @@ FLAG_CLOCKMODE_INTTIME= 5
 class TimeShiftPlate(BaseWindow):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
-		LOG_TRACE('')
-		LOG_TRACE( 'args[0]=[%s]' % args[0] )
-		LOG_TRACE( 'args[1]=[%s]' % args[1] )
-
-		self.mLastFocusId = None
-		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
-		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
 
 		#default
 		self.mProgressbarWidth = 980
@@ -107,6 +100,7 @@ class TimeShiftPlate(BaseWindow):
 
 	def onAction(self, aAction):
 		id = aAction.getId()
+		self.GlobalAction( id )				
 		
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
 			LOG_TRACE( 'esc close' )
