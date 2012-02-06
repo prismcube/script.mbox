@@ -41,6 +41,7 @@ class Installation( BaseWindow ):
 	
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
+		self.GlobalAction( actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.close( )

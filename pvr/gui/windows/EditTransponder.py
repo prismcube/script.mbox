@@ -14,13 +14,10 @@ from pvr.gui.GuiConfig import *
 class EditTransponder( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
  
 		self.mTransponderList = []
-		self.mInitialized 		= False
 		self.mSatelliteIndex 	= 0
 		self.mTransponderIndex = 0
-		self.mLastFocused 		= -1
 
 			
 	def onInit( self ) :
@@ -41,6 +38,8 @@ class EditTransponder( SettingWindow ) :
 
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
+
+		self.GlobalAction( actionId )		
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.ResetAllControl( )

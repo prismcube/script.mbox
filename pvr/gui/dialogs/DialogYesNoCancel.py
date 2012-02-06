@@ -29,6 +29,7 @@ class DialogYesNoCancel( BaseDialog ) :
 		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
+		self.GlobalAction( actionId )		
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.mIsOk = E_DIALOG_STATE_CANCEL

@@ -59,8 +59,6 @@ class ChannelListWindow(BaseWindow):
 
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
-		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()		
-		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
 
 		#submenu list
 		self.mListAllChannel= []
@@ -198,6 +196,8 @@ class ChannelListWindow(BaseWindow):
 	def onAction(self, aAction):
 		#LOG_TRACE( 'Enter' )
 		id = aAction.getId()
+
+		self.GlobalAction( id )		
 
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
 			LOG_TRACE( 'goto previous menu' )

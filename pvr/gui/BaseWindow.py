@@ -80,7 +80,13 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 		self.mWin = None
 		self.mWinId = 0
 		self.mClosed = False
-		self.mFocusId = 0
+
+		self.mLastFocused = -1
+		self.mInitialized = False
+		
+		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
+		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
+		
 
 	def SetFooter( self, aFooterMask ):
 		self.mFooterGroupId = FooterMask.G_FOOTER_GROUP_STARTID

@@ -42,7 +42,8 @@ class DialogNormalNumeric( BaseDialog ) :
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		LOG_TRACE('ACTION ID=%d' %actionId )
-			
+		self.GlobalAction( actionId )
+		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.mInputLabel = self.mOriginalString
 			self.CloseDialog( )

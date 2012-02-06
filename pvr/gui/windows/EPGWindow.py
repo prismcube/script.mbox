@@ -34,9 +34,7 @@ class EPGWindow(BaseWindow):
 
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
-		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()		
-		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
-		self.mInitialized = False
+
 	
 	def onInit(self):
 		self.mWinId = xbmcgui.getCurrentWindowId()
@@ -83,6 +81,8 @@ class EPGWindow(BaseWindow):
 		actionId = aAction.getId()
 		focusId = self.getFocusId()
 
+		self.GlobalAction( actionId )
+		
 		#LOG_TRACE('onAction=%d' %actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU:

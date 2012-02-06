@@ -31,8 +31,6 @@ E_PROGRESS_EPG				= 400
 class DialogRecord( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.GetInstance( ).getCommander( )
-		self.mEventBus = pvr.ElisMgr.GetInstance().getEventBus()
 
 	def onInit( self ):
 		self.mWinId = xbmcgui.getCurrentWindowId()
@@ -91,7 +89,9 @@ class DialogRecord( BaseDialog ) :
 	def onAction( self, action ):
 		actionId = action.getId( )
 		focusId = self.getFocusId( )
-	
+
+		self.GlobalAction( actionId )
+			
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass
 		elif actionId == Action.ACTION_SELECT_ITEM :

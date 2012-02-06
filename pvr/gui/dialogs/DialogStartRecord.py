@@ -32,8 +32,6 @@ E_LABEL_DURATION			= 502
 class DialogStartRecord( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
-		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
 
 	def onInit( self ):
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -63,6 +61,7 @@ class DialogStartRecord( BaseDialog ) :
 	def onAction( self, aAction ):
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
+		self.GlobalAction( actionId )		
 
 		LOG_TRACE( 'actionId=%d' %actionId )
 			

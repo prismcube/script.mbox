@@ -46,8 +46,6 @@ PROGRESS_ID_DURATION_2		= 515
 class DialogStopRecord( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
-		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
 		self.mBackgroundHeight = -1;
 
 	def onInit( self ):
@@ -103,13 +101,14 @@ class DialogStopRecord( BaseDialog ) :
 		self.DrawItem( )
 		
 
-	@GuiLock
 	def onAction( self, aAction ):
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		LOG_TRACE('action=%d' %actionId )
-		LOG_TRACE('focusId=%d' %focusId )		
-	
+		LOG_TRACE('focusId=%d' %focusId )
+		
+		self.GlobalAction( actionId )
+		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.Close()
 			
