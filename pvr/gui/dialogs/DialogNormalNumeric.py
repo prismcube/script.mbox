@@ -74,9 +74,9 @@ class DialogNormalNumeric( BaseDialog ) :
 
 		LOG_TRACE('focus=%d' %focusId )
 			
-		if focusId >= E_START_ID_NUMBER and focusId <= E_START_ID_NUMBER+9 and ( len( self.mInputLabel ) < self.mMaxLength ) :
+		if focusId >= E_START_ID_NUMBER and focusId <= E_START_ID_NUMBER + 9 and ( len( self.mInputLabel ) < self.mMaxLength ) :
 			LOG_TRACE('focus=%d' %focusId )
-			inputString ='%d' %(focusId - E_START_ID_NUMBER )
+			inputString ='%d' % (focusId - E_START_ID_NUMBER )
 			self.mInputLabel += inputString
 			self.SetInputLabel( )
 
@@ -94,8 +94,6 @@ class DialogNormalNumeric( BaseDialog ) :
 		elif focusId == E_BUTTON_DONE :
 			self.mIsOk = E_DIALOG_STATE_YES		
 			self.CloseDialog( )
-
-
 
 
 	def onFocus( self, aControlId ) :
