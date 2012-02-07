@@ -41,6 +41,7 @@ FLAG_CLOCKMODE_INTTIME = 5
 E_IMG_SCREEN_HIDE = 'confluence/black-back.png'
 E_IMG_ICON_LOCK   = 'IconLockFocus.png'
 E_IMG_ICON_ICAS   = 'IconCas.png'
+E_IMG_ICON_TV     = 'confluence/tv.png'
 
 NEXT_EPG 				= 0
 PREV_EPG 				= 1
@@ -117,7 +118,7 @@ class LivePlate(BaseWindow):
 		self.mCtrlBtnNextEpg           = self.getControl( 706 )
 
 
-		self.mImgTV    = 'confluence/tv.png'
+		self.mImgTV    = E_IMG_ICON_TV
 		self.mCtrlLblEventClock.setLabel('')
 
 		self.mLocalOffset = self.mCommander.Datetime_GetLocalOffset()
