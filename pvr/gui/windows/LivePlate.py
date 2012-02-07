@@ -41,6 +41,7 @@ FLAG_CLOCKMODE_INTTIME = 5
 E_IMG_SCREEN_HIDE = 'confluence/black-back.png'
 E_IMG_ICON_LOCK   = 'IconLockFocus.png'
 E_IMG_ICON_ICAS   = 'IconCas.png'
+E_IMG_ICON_TV     = 'confluence/tv.png'
 
 NEXT_EPG 				= 0
 PREV_EPG 				= 1
@@ -117,7 +118,7 @@ class LivePlate(BaseWindow):
 		self.mCtrlBtnNextEpg           = self.getControl( 706 )
 
 
-		self.mImgTV    = 'confluence/tv.png'
+		self.mImgTV    = E_IMG_ICON_TV
 		self.mCtrlLblEventClock.setLabel('')
 
 		self.mLocalOffset = self.mCommander.Datetime_GetLocalOffset()
@@ -368,7 +369,8 @@ class LivePlate(BaseWindow):
 	def EPGNavigation(self, aDir ):
 		LOG_TRACE( 'Enter' )
 
-		self.GetEPGList()
+		if self.mChannelChanged :
+			self.GetEPGList()
 
 		lastIdx = len(self.mEPGList) - 1
 		if aDir == NEXT_EPG:
@@ -388,7 +390,7 @@ class LivePlate(BaseWindow):
 			LOG_TRACE('PREV_EPG')
 
 		self.RestartAsyncEPG()
-		self.PincodeDialogLimit()
+		#self.PincodeDialogLimit()
 
 		LOG_TRACE( 'Leave' )
 
@@ -415,10 +417,10 @@ class LivePlate(BaseWindow):
 
 				self.mChannelChanged = False
 
-				retList=[]
-				retList.append(self.mEventCopy)
-				LOG_TRACE('==========[%s]'% ClassToList('convert', retList) )
-				LOG_TRACE('EPGinfo len[%s] [%s]'% (len(self.mEPGList), ClassToList('convert', self.mEPGList)) )
+				#retList=[]
+				#retList.append(self.mEventCopy)
+				#LOG_TRACE('==========[%s]'% ClassToList('convert', retList) )
+				#LOG_TRACE('EPGinfo len[%s] [%s]'% (len(self.mEPGList), ClassToList('convert', self.mEPGList)) )
 				idx = 0
 				for item in self.mEPGList :
 					if 	item.mEventId == self.mEventCopy.mEventId and \
@@ -430,7 +432,7 @@ class LivePlate(BaseWindow):
 
 						retList=[]
 						retList.append(item)
-						LOG_TRACE('SAME EPG idx[%s] [%s]'% (idx, ClassToList('convert', retList)) )
+						LOG_TRACE('SAME NOW EPG idx[%s] [%s]'% (idx, ClassToList('convert', retList)) )
 
 						break
 
@@ -503,7 +505,9 @@ class LivePlate(BaseWindow):
 			LOG_TRACE( 'aEvent null' )
 
 
-		self.mChannelChanged = False
+		if self.mChannelChanged :
+			self.GetEPGList()
+
 		LOG_TRACE( 'Leave' )
 
 
@@ -520,7 +524,7 @@ class LivePlate(BaseWindow):
 
 				#self.SetHideScreen(self.mPincodeEnter)
 				#ret = self.mCommander.Channel_SetInitialBlank( True )
-				ret = self.mCommander.Channel_SetInitialBlank( True )
+				ret = self.mCommander.Player_AVBlank( True, True )
 
 				GuiLock2( True )
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -535,24 +539,25 @@ class LivePlate(BaseWindow):
 	 			elif reply == E_DIALOG_STATE_CANCEL :
 	 				self.mPincodeEnter = FLAG_MASK_NONE
 	 				#self.SetHideScreen(self.mPincodeEnter)
-	 				self.mCommander.Channel_SetInitialBlank( False )
+					self.mCommander.Player_AVBlank( False, True )
 
 	 				inputKey = dialog.GetInputKey()
 	 				self.onAction( inputKey )
 	 				break
 
-
 				stbPin = PincodeLimit( self.mCommander, inputPin )
 				if inputPin == None or inputPin == '' :
 					inputPin = ''
 
-				LOG_TRACE( 'mask[%s] inputPin[%s] stbPin[%s]'% (self.mPincodeEnter, inputPin, stbPin) )
+				#LOG_TRACE( 'mask[%s] inputPin[%s] stbPin[%s]'% (self.mPincodeEnter, inputPin, stbPin) )
 
 				if inputPin == str('%s'% stbPin) :
 					self.mPincodeEnter = FLAG_MASK_NONE
 					#self.SetHideScreen(self.mPincodeEnter)
-					self.mCommander.Channel_SetInitialBlank( False )
-					LOG_TRACE( 'Pincode success' )
+					#ret = self.mCommander.Channel_SetInitialBlank( False )
+					self.mCommander.Player_AVBlank( False, True )
+
+					LOG_TRACE( 'Pincode success' ) 
 					break
 				else:
 					msg1 = Msg.Strings(MsgId.LANG_ERROR)
@@ -718,7 +723,6 @@ class LivePlate(BaseWindow):
 		elif aTvType == ElisEnum.E_SERVICE_TYPE_DATA:
 			pass
 		else:
-			#self.mCtrlImgServiceType.setImage('')
 			self.mImgTV = ''
 			LOG_TRACE( 'unknown ElisEnum tvType[%s]'% aTvType )
 
@@ -797,9 +801,6 @@ class LivePlate(BaseWindow):
 				GuiLock2(False)
 			
 
-		#ret = xbmcgui.Dialog().ok(msg1, msg2)
-		#LOG_TRACE( 'dialog ret[%s]' % ret )
-
 		LOG_TRACE( 'Leave' )
 
 
@@ -868,6 +869,7 @@ class LivePlate(BaseWindow):
 
 
 	def AsyncTuneChannel( self ) :
+		LOG_TRACE( 'Enter' )
 
 		try :
 			ret = self.mCommander.Channel_SetCurrent( self.mFakeChannel.mNumber, self.mFakeChannel.mServiceType )
@@ -876,15 +878,20 @@ class LivePlate(BaseWindow):
 				self.mCurrentChannel = self.mFakeChannel
 				self.mLastChannel = self.mCurrentChannel
 				self.InitLabelInfo()
-				self.UpdateONEvent( self.mEventCopy )
-				self.PincodeDialogLimit()
+				ret = None
+				ret = self.mCommander.Epgevent_GetPresent()
+				if ret :
+					self.mEventCopy = ret
+					self.UpdateONEvent(self.mEventCopy)
 
+				self.PincodeDialogLimit()
 			else :
 				LOG_ERR('Tune Fail')
 			
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
+		LOG_TRACE( 'Leave' )
 
 
 	def RestartAsyncEPG( self ) :
@@ -904,15 +911,20 @@ class LivePlate(BaseWindow):
 
 		self.mAsyncEPGTimer  = None
 
+
 	def AsyncTuneEPG( self ) :
+		LOG_TRACE( 'Enter' )
+
 		try :
 
-			LOG_TRACE('idx[%s]'% self.mEPGListIdx)
+			LOG_TRACE('ch[%s] len[%s] idx[%s]'% (self.mCurrentChannel.mNumber, len(self.mEPGList),self.mEPGListIdx) )
 			ret = self.mEPGList[self.mEPGListIdx]
 
 			if ret :
 				self.InitLabelInfo()
+				GuiLock2(True)
 				self.mEventCopy = ret
+				GuiLock2(False)
 
 				self.UpdateServiceType( self.mCurrentChannel.mServiceType )
 				self.UpdateONEvent( self.mEventCopy )
@@ -923,4 +935,6 @@ class LivePlate(BaseWindow):
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
+
+		LOG_TRACE( 'Leave' )
 
