@@ -17,14 +17,14 @@
 				<!--texture>gray_noAlpha.png</texture-->
 			</control>
 
-			<!--control type="image">
+			<control type="image" id="500">
 				<description>media info background image</description>
 				<posx>0</posx>
-				<posy>320</posy>
+				<posy>0</posy>
 				<width>1280</width>
-				<height>236</height>
-				<texture>confluence/black-back.png</texture>
-			</control-->
+				<height>560</height>
+				<texture>$INFO[Control.GetLabel]</texture>
+			</control>
 			
 
 <!-- info section -->			
@@ -362,7 +362,7 @@
 					</control-->
 				</control>
 
-				<!--control type="group" id="650">
+				<control type="group" id="650">
 					<posx>720</posx>
 					<posy>-35</posy>
 					<control type="image" id="651">
@@ -370,16 +370,18 @@
 						<posy>0</posy>
 						<width>30</width>
 						<height>30</height>
-						<texture>IconLockFocus.png</texture>
+						<texture>$INFO[Control.GetLabel]</texture>
+						<description>lock</description>
 					</control>
 					<control type="image" id="652">
 						<posx>30</posx>
 						<posy>1</posy>
 						<width>30</width>
 						<height>30</height>
-						<texture>IconCas.png</texture>
+						<texture>$INFO[Control.GetLabel]</texture>
+						<description>icas</description>
 					</control>
-				</control-->
+				</control>
 
 				<control type="image" id="604">
 					<posx>720</posx>
