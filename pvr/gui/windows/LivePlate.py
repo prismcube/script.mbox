@@ -15,6 +15,7 @@ from ElisEventClass import *
 
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
 from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit 
+from ElisProperty import ElisPropertyEnum
 
 import threading, time, os
 
@@ -48,10 +49,6 @@ class LivePlate(BaseWindow):
 		LOG_TRACE( 'args[0]=[%s]' % args[0] )
 		LOG_TRACE( 'args[1]=[%s]' % args[1] )
 
-		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
-		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
-
-		self.mLastFocusId = None
 		self.mCurrentChannel=None
 		self.mLocalTime = 0
 		self.mEventID = 0
@@ -59,8 +56,10 @@ class LivePlate(BaseWindow):
 		self.mLastChannel = self.mCommander.Channel_GetCurrent()	
 		self.mCurrentChannel = self.mLastChannel
 		self.mFakeChannel = self.mLastChannel # Used  for zapping speed up
+		self.mChannelChanged = False
 		self.mShowExtendInfo = False
 		self.mAutomaticHideTimer = None	
+		self.mAsyncEPGTimer = None
 		self.mAsyncTuneTimer = None	
 		self.mAutomaticHide = True
 
@@ -119,7 +118,10 @@ class LivePlate(BaseWindow):
 		self.mFakeChannel =	self.mCurrentChannel 
 		#self.mCurrentChannel.printdebug()
 
+		self.mChannelChanged = True
 		self.mEventCopy = None
+		self.mEPGList = None
+		self.mEPGListIdx = 0
 
 		self.UpdateServiceType( self.mCurrentChannel.mServiceType )
 		self.InitLabelInfo()
@@ -141,15 +143,12 @@ class LivePlate(BaseWindow):
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
+		self.mAsyncEPGTimer = None
 		self.mAsyncTuneTimer = None
-
-		LOG_TRACE('automaticHide=%d' %self.mAutomaticHide )
-
 		self.mAutomaticHideTimer = None
 
 		if self.mAutomaticHide == True :
-			self.mAutomaticHideTimer = threading.Timer( 3, self.AsyncAutomaticHide )
-			self.mAutomaticHideTimer.start()
+			self.StartAutomaticHide()
 
 		LOG_TRACE( 'Leave' )
 
@@ -157,10 +156,14 @@ class LivePlate(BaseWindow):
 
 	def onAction(self, aAction):
 		#LOG_TRACE( 'Enter' )
+
 		id = aAction.getId()
 		self.GlobalAction( id )
 
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
+
 			if self.mShowExtendInfo ==  True :
 				self.ShowEPGDescription( False )
 				return
@@ -168,19 +171,30 @@ class LivePlate(BaseWindow):
 			self.Close()
 
 		elif id == Action.ACTION_SELECT_ITEM:
-			LOG_TRACE( 'youn:%s' % id )
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
+
 	
 		elif id == Action.ACTION_CONTEXT_MENU :
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
+		
 			if self.mShowExtendInfo ==  True :
 				self.ShowEPGDescription( False )
 			self.Close( )
 
 		elif id == Action.ACTION_MOVE_LEFT:
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
+		
 			self.GetFocusId()
 			if self.mFocusId == self.mCtrlBtnPrevEpg.getId():			
 				self.EPGNavigation( PREV_EPG )
 
 		elif id == Action.ACTION_MOVE_RIGHT:
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
+		
 			self.GetFocusId()
 			if self.mFocusId == self.mCtrlBtnNextEpg.getId():
 				self.EPGNavigation( NEXT_EPG )
@@ -209,32 +223,49 @@ class LivePlate(BaseWindow):
 		LOG_TRACE( 'control %d' % aControlId )
 
 		if aControlId == self.mCtrlBtnMute.getId():
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
+		
 			self.GlobalAction( Action.ACTION_MUTE  )
 
 		elif aControlId == self.mCtrlBtnExInfo.getId() :
-			LOG_TRACE( 'click expantion info' )
+			LOG_TRACE( 'click expantion info' )		
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
 			self.ShowEPGDescription( not self.mShowExtendInfo )
 
 		elif aControlId == self.mCtrlBtnTeletext.getId() :
 			LOG_TRACE( 'click teletext' )
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
 			self.ShowDialog( aControlId )
 
 		elif aControlId == self.mCtrlBtnSubtitle.getId() :
 			LOG_TRACE( 'click subtitle' )
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
 			self.ShowDialog( aControlId )
 
 		elif aControlId == self.mCtrlBtnStartRec.getId() :
 			LOG_TRACE( 'click start recording' )
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
 			self.ShowDialog( aControlId )
 
 		elif aControlId == self.mCtrlBtnStopRec.getId() :
 			LOG_TRACE( 'click stop recording' )
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
 			self.ShowDialog( aControlId )
 
 		elif aControlId == self.mCtrlBtnPrevEpg.getId() :
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
 			self.EPGNavigation( PREV_EPG )
 
 		elif aControlId == self.mCtrlBtnNextEpg.getId() :
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
 			self.EPGNavigation( NEXT_EPG )
 
 
@@ -263,15 +294,18 @@ class LivePlate(BaseWindow):
 
 				if self.mCurrentChannel.mNumber != self.mFakeChannel.mNumber :
 					return -1
- 
+
+				if self.mChannelChanged != True :
+					return -1
+
 				LOG_TRACE( '%d : %d' %(aEvent.mEventId, self.mEventID ) )
-				aEvent.printdebug()
+				#aEvent.printdebug()
 
 				if aEvent.mEventId != self.mEventID :
 					ret = None
 					ret = self.mCommander.Epgevent_GetPresent()
 					if ret :
-						ret.printdebug()
+						#ret.printdebug()
 
 						if not self.mEventCopy or \
 						ret.mEventId != self.mEventCopy.mEventId or \
@@ -306,13 +340,7 @@ class LivePlate(BaseWindow):
 			self.UpdateServiceType( self.mFakeChannel.mServiceType )
 			self.InitLabelInfo()
 
-			if self.mAsyncTuneTimer :
-				if self.mAsyncTuneTimer.isAlive() :
-					self.mAsyncTuneTimer.cancel()
-
-			self.mAsyncTuneTimer = threading.Timer( 0.2, self.AsyncTuneChannel ) 				
-			self.mAsyncTuneTimer.start()
-			
+			self.RestartAsyncTune()
 
 		elif aDir == NEXT_CHANNEL:
 			nextChannel = self.mCommander.Channel_GetNext()
@@ -324,50 +352,89 @@ class LivePlate(BaseWindow):
 			self.UpdateServiceType( self.mFakeChannel.mServiceType )
 			self.InitLabelInfo()
 
-
-			if self.mAsyncTuneTimer :
-				if self.mAsyncTuneTimer.isAlive() :
-					self.mAsyncTuneTimer.cancel()
-
-			self.mAsyncTuneTimer = threading.Timer( 0.2, self.AsyncTuneChannel ) 				
-			self.mAsyncTuneTimer.start()
-
-		if self.mAutomaticHideTimer and self.mAutomaticHideTimer.isAlive() :
-			self.mAutomaticHideTimer.cancel()
+			self.RestartAsyncTune()
 
 		if self.mAutomaticHide == True :
-			self.mAutomaticHideTimer = threading.Timer( 3, self.AsyncAutomaticHide )
-			self.mAutomaticHideTimer.start()
+			self.RestartAutomaticHide()
 
-
+		self.mChannelChanged = True
 		LOG_TRACE( 'Leave' )
 
 
 	def EPGNavigation(self, aDir ):
-		pass #TODO
-		if aDir == NEXT_EPG:
-			ret = None
-			ret = self.mCommander.Epgevent_GetPresent()
+		LOG_TRACE( 'Enter' )
 
-			if ret :
-				retList = []
-				retList.append( ret )
-				LOG_TRACE( 'epgevent_GetPresent() ret[%s]'% ClassToList( 'convert', retList ) )
-				self.mEventCopy = ret
-				self.UpdateONEvent( ret )
+		self.GetEPGList()
+
+		lastIdx = len(self.mEPGList) - 1
+		if aDir == NEXT_EPG:
+			if self.mEPGListIdx+1 > lastIdx :
+				self.mEPGListIdx = lastIdx
+			else :
+				self.mEPGListIdx += 1
+
+			LOG_TRACE('NEXT_EPG')
 
 		elif aDir == PREV_EPG:
-			ret = None
-			ret = self.mCommander.Epgevent_GetFollowing()
+			if self.mEPGListIdx-1 < 0 :
+				self.mEPGListIdx = 0
+			else :
+				self.mEPGListIdx -= 1
 
-			if ret :
-				retList = []
-				retList.append( ret )
-				LOG_TRACE( 'epgevent_GetFollowing() ret[%s]'% ClassToList( 'convert', retList ) )
-				self.mEventCopy = ret
-				self.UpdateONEvent( ret )
+			LOG_TRACE('PREV_EPG')
 
 
+		self.RestartAsyncEPG()
+
+		LOG_TRACE( 'Leave' )
+
+	def GetEPGList( self ) :
+		LOG_TRACE( 'Enter' )
+
+		ret = None
+
+		try :
+			if self.mChannelChanged == True :
+				if self.mCurrentChannel :
+					self.mEPGList = None
+					self.mEPGList = 0
+					ch = self.mCurrentChannel
+					gmtime = self.mCommander.Datetime_GetGMTTime()
+					gmtFrom = gmtime - ( 3600 * 24 * 7 )
+					gmtUntil= gmtime + ( 3600 * 24 * 7 )
+					maxCount= 100
+					ret = None
+					ret = self.mCommander.Epgevent_GetList( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount )
+					time.sleep(0.05)
+					#LOG_TRACE('=============epg len[%s] list[%s]'% (len(ret),ClassToList('convert', ret )) )
+					if ret :
+						self.mEPGList = ret
+
+					self.mChannelChanged = False
+
+					retList=[]
+					retList.append(self.mEventCopy)
+					LOG_TRACE('==========[%s]'% ClassToList('convert', retList) )
+					LOG_TRACE('EPGinfo len[%s] [%s]'% (len(self.mEPGList), ClassToList('convert', self.mEPGList)) )
+					idx = 0
+					for item in self.mEPGList :
+						if 	item.mEventId == self.mEventCopy.mEventId and \
+							item.mSid == self.mEventCopy.mSid and \
+							item.mTsid == self.mEventCopy.mTsid and \
+							item.mOnid == self.mEventCopy.mOnid :
+
+							self.mEPGListIdx = idx
+
+							retList=[]
+							retList.append(item)
+							LOG_TRACE('SAME EPG idx[%s] [%s]'% (idx, ClassToList('convert', retList)) )
+
+							break
+
+						idx += 1
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
 
 		LOG_TRACE( 'Leave' )
 
@@ -472,15 +539,18 @@ class LivePlate(BaseWindow):
 				#LOG_TRACE('past[%s] time[%s] start[%s] duration[%s] offset[%s]'% (pastDuration,self.mLocalTime, self.mEventCopy.mStartTime, self.mEventCopy.mDuration,self.mLocalOffset ) )
 
 				if self.mLocalTime > endTime: #Already past
-					pastDuration = 100
+					self.mCtrlProgress.setPercent( 100 )
+					return
+
 				elif self.mLocalTime < startTime :
-					pastDuration = 0
+					self.mCtrlProgress.setPercent( 0 )
+					return
 
 				if pastDuration < 0 : #Already past
-					pastDuration = 100
+					pastDuration = 0
 
 				if self.mEventCopy.mDuration > 0 :
-					percent = 100 - (pastDuration * 100.0/self.mEventCopy.mDuration )
+					percent = 100 - (pastDuration * 100.0/self.mEventCopy.mDuration)
 				else :
 					percent = 0
 
@@ -650,30 +720,64 @@ class LivePlate(BaseWindow):
 		self.mEnableThread = False
 		self.CurrentTimeThread().join()
 		
-		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive() :
-			self.mAsyncTuneTimer.cancel()
+		self.StopAsyncEPG()
+		self.StopAsyncTune()
+		self.StopAutomaticHide()
 
-		self.mAsyncTuneTimer = None
-
-		if self.mAutomaticHideTimer and self.mAutomaticHideTimer.isAlive() :
-			self.mAutomaticHideTimer.cancel()
-
-		self.mAutomaticHideTimer = None
-		
 		self.close()
+
 
 	def SetAutomaticHide( self, aHide=True ) :
 		self.mAutomaticHide = aHide
 
+
 	def GetAutomaticHide( self ) :
 		return self.mAutomaticHide
+
 	
 	def AsyncAutomaticHide( self ) :
 		if self.mShowExtendInfo ==  True :
 			self.ShowEPGDescription( False )
 	
 		self.Close()
+
+
+	def RestartAutomaticHide( self ) :
+		self.StopAutomaticHide()
+		self.StartAutomaticHide()
+
+	
+	def StartAutomaticHide( self ) :
+		bannerTimeout = ElisPropertyEnum( 'Channel Banner Duration', self.mCommander ).GetProp( )
+		self.mAutomaticHideTimer = threading.Timer( bannerTimeout, self.AsyncAutomaticHide )
+		self.mAutomaticHideTimer.start()
 		
+
+	def StopAutomaticHide( self ) :
+		if self.mAutomaticHideTimer and self.mAutomaticHideTimer.isAlive() :
+			self.mAutomaticHideTimer.cancel()
+			del self.mAutomaticHideTimer
+			
+		self.mAutomaticHideTimer = None
+
+
+	def RestartAsyncTune( self ) :
+		self.StopAsyncTune( )
+		self.StartAsyncTune( )
+
+
+	def StartAsyncTune( self ) :
+		self.mAsyncTuneTimer = threading.Timer( 0.2, self.AsyncTuneChannel ) 				
+		self.mAsyncTuneTimer.start()
+
+
+	def StopAsyncTune( self ) :
+		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive() :
+			self.mAsyncTuneTimer.cancel()
+			del self.mAsyncTuneTimer
+
+		self.mAsyncTuneTimer  = None
+
 
 	def AsyncTuneChannel( self ) :
 
@@ -686,6 +790,45 @@ class LivePlate(BaseWindow):
 			else :
 				LOG_ERR('Tune Fail')
 			
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
+
+
+
+	def RestartAsyncEPG( self ) :
+		self.StopAsyncEPG( )
+		self.StartAsyncEPG( )
+
+
+	def StartAsyncEPG( self ) :
+		self.mAsyncEPGTimer = threading.Timer( 0.2, self.AsyncTuneEPG ) 				
+		self.mAsyncEPGTimer.start()
+
+
+	def StopAsyncEPG( self ) :
+		if self.mAsyncEPGTimer	and self.mAsyncEPGTimer.isAlive() :
+			self.mAsyncEPGTimer.cancel()
+			del self.mAsyncEPGTimer
+
+		self.mAsyncEPGTimer  = None
+
+	def AsyncTuneEPG( self ) :
+		try :
+
+			LOG_TRACE('idx[%s]'% self.mEPGListIdx)
+			ret = self.mEPGList[self.mEPGListIdx]
+
+			if ret :
+				self.InitLabelInfo()
+				self.mEventCopy = ret
+
+				self.UpdateServiceType( self.mCurrentChannel.mServiceType )
+				self.UpdateONEvent( self.mEventCopy )
+
+				retList = []
+				retList.append( self.mEventCopy )
+				LOG_TRACE( 'idx[%s] epg[%s]'% (self.mEPGListIdx, ClassToList( 'convert', retList )) )
+
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 

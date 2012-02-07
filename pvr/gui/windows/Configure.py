@@ -16,14 +16,12 @@ E_DHCP_ON = 1
 class Configure( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
  
 		leftGroupItems			= [ 'Language', 'Parental', 'Recording Option', 'Audio Setting', 'HDMI Setting', 'IP Setting', 'Format HDD', 'Factory Reset', 'Etc' ]
 		descriptionList			= [ 'DESC Language', 'DESC Parental', 'DESC Recording Option', 'DESC Audio Setting', 'DESC HDMI Setting', 'DESC IP Setting', 'DESC Format HDD', 'DESC Factory Reset', 'DESC Etc' ]
 	
 		self.mCtrlLeftGroup 	= None
 		self.mGroupItems 		= []
-		self.mInitialized 		= False
 		self.mLastFocused 		= E_SUBMENU_LIST_ID
 		self.mPrevListItemID 	= 0
 
@@ -67,6 +65,8 @@ class Configure( SettingWindow ) :
 		focusId = self.getFocusId( )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 
+		self.GlobalAction( actionId )
+		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.mInitialized = False
 			self.close( )

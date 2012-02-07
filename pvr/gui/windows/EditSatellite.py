@@ -12,11 +12,8 @@ import pvr.ElisMgr
 class EditSatellite( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 
-		self.mInitialized = False
 		self.mSatelliteIndex = 0
-		self.mLastFocused = -1
 			
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -37,6 +34,8 @@ class EditSatellite( SettingWindow ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 
+		self.GlobalAction( actionId )
+		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.ResetAllControl( )
 			ConfigMgr.GetInstance( ).SetNeedLoad( True )

@@ -479,13 +479,12 @@
 				</control>
 
 				<control type="label" id="704">
-					<posx>725</posx>
+					<posx>710</posx>
 					<posy>6</posy>
-					<width>67</width>
-					<description>start time</description>
+					<align>left</align>
 					<font>font13_title</font>
 					<label>$INFO[Control.GetLabel]</label>
-					<description>EPG Time</description>
+					<description>EPG STime</description>
 				</control>
 <!--
 				<control type="image" id="11">
@@ -514,10 +513,9 @@
 				<control type="label" id="705">
 					<posx>1030</posx>
 					<posy>6</posy>
-					<description>end time</description>
 					<font>font13_title</font>
 					<label>$INFO[Control.GetLabel]</label>
-					<description>EPG Time</description>
+					<description>EPG ETime</description>
 				</control>
 
 				<control type="button" id="706">

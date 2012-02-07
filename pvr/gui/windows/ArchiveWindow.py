@@ -41,9 +41,6 @@ class ArchiveWindow(BaseWindow):
 
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
-		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()		
-		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
-		self.mInitialized = False
 	
 	def onInit(self):
 		self.mWinId = xbmcgui.getCurrentWindowId()
@@ -97,6 +94,8 @@ class ArchiveWindow(BaseWindow):
 	def onAction(self, aAction):
 		actionId = aAction.getId()
 		focusId = self.getFocusId()
+
+		self.GlobalAction( actionId )		
 
 		#LOG_TRACE('onAction=%d' %actionId )
 

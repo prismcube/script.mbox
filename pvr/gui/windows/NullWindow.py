@@ -17,11 +17,7 @@ import threading
 class NullWindow(BaseWindow):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
-		print 'lael98 check %d %s' %(currentframe().f_lineno, currentframe().f_code.co_filename)    
-		print 'args=%s' % args[0]
-		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()				
-		self.mLastFocusId = None
-		self.mInitialized = False
+
 		self.mAsyncShowTimer = None
 
 	def onInit(self):

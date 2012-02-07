@@ -59,8 +59,6 @@ class ChannelListWindow(BaseWindow):
 
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
-		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()		
-		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
 
 		#submenu list
 		self.mListAllChannel= []
@@ -76,7 +74,7 @@ class ChannelListWindow(BaseWindow):
 
 		self.mEventId = 0
 		self.mLocalTime = 0
-		self.mTimer	= None
+		self.mAsyncTuneTimer = None
 
 		self.mPincodeEnter = FLAG_MASK_NONE
 		self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
@@ -190,14 +188,15 @@ class ChannelListWindow(BaseWindow):
 		self.mEnableThread = True
 		self.CurrentTimeThread()
 
-		self.mTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentEPG )
-		self.mTimer.start()
+		self.mAsyncTuneTimer = None
 
 		LOG_TRACE( 'Leave' )
 
 	def onAction(self, aAction):
 		#LOG_TRACE( 'Enter' )
 		id = aAction.getId()
+
+		self.GlobalAction( id )		
 
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
 			LOG_TRACE( 'goto previous menu' )
@@ -276,13 +275,7 @@ class ChannelListWindow(BaseWindow):
 					return
 
 				#TODO : must be need timeout schedule
-				"""
-				self.mIsSelect = False
-				self.InitEPGEvent()
-
-				self.ResetLabel()
-				self.UpdateLabelInfo()
-				"""
+				self.RestartAsyncEPG()
 
 
 			if self.mFocusId == self.mCtrlListMainmenu.getId() :
@@ -417,16 +410,17 @@ class ChannelListWindow(BaseWindow):
 
 	@GuiLock
 	def onEvent(self, aEvent):
-		pass
-
 		LOG_TRACE( 'Enter' )
 		#aEvent.printdebug()
 
 		if self.mWinId == xbmcgui.getCurrentWindowId() :
 			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
 
+				#if self.mCurrentChannel.mSid != aEvent.mSid or self.mCurrentChannel.mTsid != aEvent.mTsid or self.mCurrentChannel.mOnid != aEvent.mOnid :
+				#	return -1
+				
 				#LOG_TRACE('1========event id[%s] old[%s]'% (aEvent.mEventId, self.mEventId) )
-				if int(aEvent.mEventId) != int(self.mEventId) :
+				if aEvent.mEventId != self.mEventId :
 					if self.mIsSelect == True :
 						#on select, clicked
 						ret = None
@@ -440,6 +434,7 @@ class ChannelListWindow(BaseWindow):
 							   ret.mSid != self.mNavEpg.mSid or \
 							   ret.mTsid != self.mNavEpg.mTsid or \
 							   ret.mOnid != self.mNavEpg.mOnid :
+
 								LOG_TRACE('epg DIFFER')
 								self.mNavEpg = ret
 
@@ -1169,7 +1164,7 @@ class ChannelListWindow(BaseWindow):
 		try :
 			if self.mIsSelect == True :
 				ret = self.mCommander.Epgevent_GetPresent()
-				xbmc.sleep(50)
+				time.sleep(0.05)
 				if ret :
 					self.mNavEpg = ret
 					ret.printdebug()
@@ -1192,7 +1187,7 @@ class ChannelListWindow(BaseWindow):
 							maxCount= 1
 							ret = None
 							ret = self.mCommander.Epgevent_GetList( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount )
-							xbmc.sleep(50)
+							time.sleep(0.05)
 							#LOG_TRACE('=============epg len[%s] list[%s]'% (len(ret),ClassToList('convert', ret )) )
 							if ret :
 								self.mNavEpg = ret[0]
@@ -1405,7 +1400,7 @@ class ChannelListWindow(BaseWindow):
 			#self.mCtrlLblLocalTime2.setLabel(ret[1])
 
 			#self.nowTime += 1
-			xbmc.sleep(1000)
+			time.sleep(1)
 			loop += 1
 
 		LOG_TRACE( 'leave_end thread' )
@@ -1429,9 +1424,12 @@ class ChannelListWindow(BaseWindow):
 				#LOG_TRACE('past[%s] time[%s] start[%s] duration[%s] offset[%s]'% (pastDuration,self.mLocalTime, self.mNavEpg.mStartTime, self.mNavEpg.mDuration,self.mLocalOffset ) )
 
 				if self.mLocalTime > endTime: #Already past
-					pastDuration = 100
+					self.mCtrlProgress.setPercent( 100 )
+					return
+
 				elif self.mLocalTime < startTime :
-					pastDuration = 0
+					self.mCtrlProgress.setPercent( 0 )
+					return
 
 				if pastDuration < 0 :
 					pastDuration = 0
@@ -2081,32 +2079,33 @@ class ChannelListWindow(BaseWindow):
 
 	def Close( self ):
 		self.mEventBus.Deregister( self )
-		
-		if self.mTimer and self.mTimer.isAlive() :
-			self.mTimer.cancel()
-
-		self.mTimer = None
-		
+		self.StopAsyncEPG()
 		self.close()
 
+	def RestartAsyncEPG( self ) :
+		self.StopAsyncEPG( )
+		self.StartAsyncEPG( )
 
+
+	def StartAsyncEPG( self ) :
+		self.mAsyncTuneTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentEPG ) 				
+		self.mAsyncTuneTimer.start()
+
+
+	def StopAsyncEPG( self ) :
+		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive() :
+			self.mAsyncTuneTimer.cancel()
+			del self.mAsyncTuneTimer
+
+		self.mAsyncTuneTimer  = None
+
+	#TODO : must be need timeout schedule
 	def AsyncUpdateCurrentEPG( self ) :
-		self.InitEPGEvent()
-		pass
-
 		try :
-			ret = None
-			ret = self.mCommander.Epgevent_GetPresent()
-			if ret :
-				self.mNavEpg = ret
-
-				self.mIsSelect = False
-				self.ResetLabel()
-				self.UpdateLabelInfo()
-
-				retList = []
-				retList.append( self.mNavEpg )
-				LOG_TRACE( 'epgevent_GetPresent[%s]'% ClassToList( 'convert', retList ) )
+			self.mIsSelect = False
+			self.InitEPGEvent()
+			self.ResetLabel()
+			self.UpdateLabelInfo()
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )

@@ -37,7 +37,8 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-
+		self.GlobalAction( actionId )		
+		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.SetLongitude( )
 			self.SetLatitude( )

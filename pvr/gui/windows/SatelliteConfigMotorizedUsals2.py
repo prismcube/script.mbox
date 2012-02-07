@@ -15,7 +15,6 @@ from ElisEnum import ElisEnum
 class SatelliteConfigMotorizedUsals2( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
 		SettingWindow.__init__( self, *args, **kwargs)
-		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander( )
 			
 	def onInit( self ):
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -43,7 +42,8 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ):
 		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-
+		self.GlobalAction( actionId )		
+		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass
 			

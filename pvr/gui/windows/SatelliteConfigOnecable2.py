@@ -13,7 +13,7 @@ from ElisProperty import ElisPropertyInt
 class SatelliteConfigOnecable2( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
+
 		self.mTunerIndex				= 0
 		self.mCurrentSatellite			= []
 		self.mCurrentSatellite2			= []
@@ -44,6 +44,7 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 				
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
+		self.GlobalAction( actionId )				
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.onClose( )

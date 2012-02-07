@@ -15,6 +15,12 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ):
 		self.mWin = None
 		self.mWinId = 0
 		
+		self.mLastFocused = -1
+		self.mInitialized = False
+		
+		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
+		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
+		
 
 	def SetHeaderLabel( self, aLabel ):
 		self.getControl( HeaderDefine.G_DIALOG_HEADER_LABEL_ID ).setLabel( aLabel )
