@@ -12,20 +12,19 @@ from ElisEnum import ElisEnum
 from ElisEventBus import ElisEventBus
 from ElisEventClass import *
 
-from pvr.Util import RunThread, RunThread, GuiLock, LOG_TRACE, LOG_WARN, LOG_ERR
-from pvr.PublicReference import EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, GetSelectedLongitudeString, ClassToList
+from pvr.Util import RunThread, GuiLock, GuiLock2, LOG_TRACE, LOG_WARN, LOG_ERR, TimeToString, TimeFormatEnum
+from pvr.PublicReference import EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, GetSelectedLongitudeString, ClassToList, EnumToString
+
+import pvr.Msg as Msg
+import pvr.gui.windows.Define_string as MsgId
 
 import thread, threading, time, os
 
-#debug log
-import logging
-from inspect import currentframe
-
-FLAG_CLOCKMODE_ADMYHM = 1
-FLAG_CLOCKMODE_AHM    = 2
-FLAG_CLOCKMODE_HMS    = 3
-FLAG_CLOCKMODE_HHMM   = 4
-FLAG_CLOCKMODE_INTTIME= 5
+FLAG_CLOCKMODE_ADMYHM  = 1
+FLAG_CLOCKMODE_AHM     = 2
+FLAG_CLOCKMODE_HMS     = 3
+FLAG_CLOCKMODE_HHMM    = 4
+FLAG_CLOCKMODE_INTTIME = 5
 
 class TimeShiftPlate(BaseWindow):
 	def __init__(self, *args, **kwargs):
@@ -40,16 +39,12 @@ class TimeShiftPlate(BaseWindow):
 		self.mMode = ElisEnum.E_MODE_LIVE
 		self.mIsPlay = False
 
-		#push push test test
-
-		#time track
-
 
 	def __del__(self):
 		LOG_TRACE( 'destroyed TimeshiftPlate' )
 
-		# end thread UpdateLocalTime()
-		self.mUntilThread = False
+		# end thread CurrentTimeThread()
+		self.mEnableThread = False
 
 	def onInit(self):
 		self.mWinId = xbmcgui.getCurrentWindowId()
@@ -81,8 +76,6 @@ class TimeShiftPlate(BaseWindow):
 		self.mPlayTime = 0
 		self.mLocalTime = 0
 		self.mTimeShiftExcuteTime = 0
-		self.mCtrlEventClock.setLabel('')
-		self.mCtrlProgress.setPercent(0)
 		
 		#get channel
 		#self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
@@ -95,8 +88,10 @@ class TimeShiftPlate(BaseWindow):
 		#self.mEventBus.Register( self )
 
 		#run thread
-		self.mUntilThread = True
-		self.UpdateLocalTime()
+		self.mEnableThread = True
+		self.CurrentTimeThread()
+
+		LOG_TRACE( 'Leave' )
 
 	def onAction(self, aAction):
 		id = aAction.getId()
@@ -104,16 +99,16 @@ class TimeShiftPlate(BaseWindow):
 		
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
 			LOG_TRACE( 'esc close' )
-			# end thread UpdateLocalTime()
-			self.mUntilThread = False
-			self.UpdateLocalTime().join()
+			# end thread CurrentTimeThread()
+			self.mEnableThread = False
+			self.CurrentTimeThread().join()
 			self.close( )
 #			winmgr.GetInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
 #			winmgr.GetInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
 #			winmgr.shutdown()
 
 		elif id == Action.ACTION_SELECT_ITEM:
-			LOG_TRACE( '===== test youn: ID[%s]' % id )
+			LOG_TRACE( '===== select [%s]' % id )
 	
 
 
@@ -142,29 +137,38 @@ class TimeShiftPlate(BaseWindow):
 
 	@GuiLock
 	def onEvent(self, aEvent):
-		LOG_TRACE( '' )
-		aEvent.printdebug()
+		LOG_TRACE( 'Enter' )
+		#aEvent.printdebug()
 
 		if self.mWinId == xbmcgui.getCurrentWindowId():
-
 			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
+				LOG_TRACE( '%d : %d' %(aEvent.mEventId, self.mEventID ) )
+
 				if aEvent.mEventId != self.mEventID :
 					ret = None
 					ret = self.mCommander.Epgevent_GetPresent( )
 					if ret :
-						self.mEventCopy = event
-						self.mEventID = aEvent.mEventId
-						self.UpdateONEvent( ret )
+						if not self.mEventCopy or \
+						ret.mEventId != self.mEventCopy.mEventId or \
+						ret.mSid != self.mEventCopy.mSid or \
+						ret.mTsid != self.mEventCopy.mTsid or \
+						ret.mOnid != self.mEventCopy.mOnid :
+							LOG_TRACE('epg DIFFER')
+							self.mEventID = aEvent.mEventId
+							self.mEventCopy = ret
 
-					#ret = self.mCommander.Epgevent_Get(self.mEventID, aEvent.mSid, aEvent.mTsid, aEvent.mOnid, self.mLocalTime )
-			else :
-				LOG_TRACE( 'event unknown[%s]'% aEvent.getName() )
+							#update label
+							self.UpdateONEvent( ret )
+
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
 
-		
+
+		LOG_TRACE( 'Leave' )
+
+
 	def TimeshiftAction(self, aFocusId):
-		LOG_TRACE( '' )
+		LOG_TRACE( 'Enter' )
 
 		ret = False
 
@@ -230,8 +234,8 @@ class TimeShiftPlate(BaseWindow):
 				self.mProgress_idx = 0.0
 				self.mProgress_max = 0.0
 
-				self.mUntilThread = False
-				self.UpdateLocalTime().join()
+				self.mEnableThread = False
+				self.CurrentTimeThread().join()
 				self.close( )
 
 				winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_NULLWINDOW )
@@ -273,9 +277,14 @@ class TimeShiftPlate(BaseWindow):
 		time.sleep(0.5)
 		self.InitTimeShift()
 
+		LOG_TRACE( 'Leave' )
+
+
 	def UpdateONEvent(self, aEvent) :
-		LOG_TRACE( '' )
+		LOG_TRACE( 'Enter' )
 		aEvent.printdebug()
+
+		LOG_TRACE( 'Leave' )
 
 
 	def InitLabelInfo(self) :
@@ -283,18 +292,28 @@ class TimeShiftPlate(BaseWindow):
 		
 		# todo 
 		self.mEventCopy = []
+		GuiLock2(True)
+		self.mCtrlEventClock.setLabel('')
+		self.mCtrlProgress.setPercent(0)
 		self.mCtrlLblTSStartTime.setLabel('')
 		self.mCtrlLblTSEndTime.setLabel('')
+		GuiLock2(False)
 
 		self.mLocalTime = self.mCommander.Datetime_GetLocalTime()
 		self.InitTimeShift()
 
 	def InitTimeShift(self, loop = 0) :
-		LOG_TRACE( '' )
+		LOG_TRACE('Enter')
 
 		status = None
 		status = self.mCommander.Player_GetStatus()
 		if status :
+			flag_Rewind  = False
+			flag_Forward = False
+			lbl_speed = ''
+			lbl_timeS = ''
+			lbl_timeE = ''
+
 			retList = []
 			retList.append( status )
 			LOG_TRACE( 'player_GetStatus[%s]'% ClassToList( 'convert', retList ) )
@@ -324,10 +343,10 @@ class TimeShiftPlate(BaseWindow):
 				self.mProgress_max = endtime
 
 				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, self.mTimeshift_staTime, 0)
-				label1 = ret[0]
+				lbl_timeS = ret[0]
 
 				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, endtime, 0)
-				label2 = ret[0]
+				lbl_timeE = ret[0]
 
 
 			else :
@@ -339,57 +358,52 @@ class TimeShiftPlate(BaseWindow):
 				#test
 				#self.mTimeshift_curTime = 0.0
 				#self.mTimeshift_endTime = 50
-				label1 = EpgInfoClock(FLAG_CLOCKMODE_HHMM, self.mTimeshift_staTime, 0)
-				label2 = EpgInfoClock(FLAG_CLOCKMODE_HHMM, self.mTimeshift_endTime, 0)
+				lbl_timeS = EpgInfoClock(FLAG_CLOCKMODE_HHMM, self.mTimeshift_staTime, 0)
+				lbl_timeE = EpgInfoClock(FLAG_CLOCKMODE_HHMM, self.mTimeshift_endTime, 0)
 				
 
-			self.mCtrlLblTSStartTime.setLabel(label1)
-			self.mCtrlLblTSEndTime.setLabel(label2)
-			#LOG_TRACE( 'staTime[%s] ret[%s]'% (self.mTimeshift_staTime, ret) )
-
-			
 
 			#Speed label
-			self.mSpeed = status.mSpeed
+			self.mSpeed  = status.mSpeed
 
 			if self.mSpeed == 100 :
-				self.mCtrlImgRewind.setVisible(False)
-				self.mCtrlImgForward.setVisible(False)
-				self.mCtrlLblSpeed.setLabel('')
+				flag_Rewind  = False
+				flag_Forward = False
+				lbl_speed = ''
 
 			elif self.mSpeed >= 200 and self.mSpeed <= 1000:
-				self.mCtrlImgRewind.setVisible(False)
-				self.mCtrlImgForward.setVisible(True)
+				flag_Rewind  = False
+				flag_Forward = True
 
 				if self.mSpeed == 200 :
-					self.mCtrlLblSpeed.setLabel('2x')
+					lbl_speed = '2x'
 				elif self.mSpeed == 300 :
-					self.mCtrlLblSpeed.setLabel('4x')
+					lbl_speed = '4x'
 				elif self.mSpeed == 400 :
-					self.mCtrlLblSpeed.setLabel('8x')
+					lbl_speed = '8x'
 				elif self.mSpeed == 600 :
-					self.mCtrlLblSpeed.setLabel('16x')
+					lbl_speed = '16x'
 				elif self.mSpeed == 800 :
-					self.mCtrlLblSpeed.setLabel('24x')
+					lbl_speed = '24x'
 				elif self.mSpeed == 1000 :
-					self.mCtrlLblSpeed.setLabel('32x')
+					lbl_speed = '32x'
 
 			elif self.mSpeed <= -200 and self.mSpeed >= -1000:
-				self.mCtrlImgRewind.setVisible(True)
-				self.mCtrlImgForward.setVisible(False)
+				flag_Rewind  = True
+				flag_Forward = False
 
 				if self.mSpeed == -200 :
-					self.mCtrlLblSpeed.setLabel('2x')
+					lbl_speed = '2x'
 				elif self.mSpeed == -300 :
-					self.mCtrlLblSpeed.setLabel('4x')
+					lbl_speed = '4x'
 				elif self.mSpeed == -400 :
-					self.mCtrlLblSpeed.setLabel('8x')
+					lbl_speed = '8x'
 				elif self.mSpeed == -600 :
-					self.mCtrlLblSpeed.setLabel('16x')
+					lbl_speed = '16x'
 				elif self.mSpeed == -800 :
-					self.mCtrlLblSpeed.setLabel('24x')
+					lbl_speed = '24x'
 				elif self.mSpeed == -1000 :
-					self.mCtrlLblSpeed.setLabel('32x')
+					lbl_speed = '32x'
 
 
 			"""
@@ -406,16 +420,30 @@ class TimeShiftPlate(BaseWindow):
 				self.mCtrlBtnPause.setVisible(False)
 			"""
 
+			GuiLock2(True)
+			self.mCtrlImgRewind.setVisible( flag_Rewind )
+			self.mCtrlImgForward.setVisible( flag_Forward )
+			self.mCtrlLblSpeed.setLabel( lbl_speed )
 
+			self.mCtrlLblTSStartTime.setLabel( lbl_timeS )
+			self.mCtrlLblTSEndTime.setLabel( lbl_timeE )
+			GuiLock2(False)
+
+
+		GuiLock2(True)
 		if self.mIsPlay == True :
 			self.mCtrlBtnPlay.setVisible(False)
 			self.mCtrlBtnPause.setVisible(True)
 		else :
 			self.mCtrlBtnPlay.setVisible(True)
 			self.mCtrlBtnPause.setVisible(False)
+		GuiLock2(False)
 
+		LOG_TRACE('Leave')
 
 	def GetSpeedValue(self, aFocusId):
+		LOG_TRACE('Enter')
+
 		LOG_TRACE( 'mSpeed[%s]'% self.mSpeed )
 		ret = 0
 		if aFocusId == self.mCtrlBtnRewind.getId():
@@ -479,41 +507,43 @@ class TimeShiftPlate(BaseWindow):
 		else:
 			ret = 100 #default
 
+		LOG_TRACE('Leave')
 		return ret
-		
+
 
 	@RunThread
-	def UpdateLocalTime(self):
+	def CurrentTimeThread(self):
 		LOG_TRACE( 'begin_start thread' )
-		#LOG_TRACE( 'untilThread[%s] self.mProgress_max[%s]' % (self.mUntilThread, self.mProgress_max) )
 
 		loop = 0
-		rLock = threading.RLock()
-		while self.mUntilThread:
-			#LOG_TRACE( 'repeat' )
+		while self.mEnableThread:
+			#LOG_TRACE( 'repeat <<<<' )
 
-
-			#local clock
-			rLock.acquire()
 			if  ( loop % 10 ) == 0 :
+				#LOG_TRACE( 'loop=%d' %loop )
+				self.mLocalTime = self.mCommander.Datetime_GetLocalTime()
+				#self.UpdateLocalTime( )
 
-				isExcept = False
-				try:
-					self.mLocalTime = self.mCommander.Datetime_GetLocalTime()
+			self.UpdateLocalTime( loop )
 
-				except Exception, e:
-					LOG_TRACE( 'except[%s]'% e )
-					isExcept = True
-					rLock.release()
+			time.sleep(1)
+			self.mLocalTime += 1
+			loop += 1
 
-				#local clock
-				if isExcept == False :
-					rLock.release()
-					loop = 0
-					ret = EpgInfoClock(FLAG_CLOCKMODE_AHM, self.mLocalTime, 0)
-					self.mCtrlEventClock.setLabel(ret[0])
+		LOG_TRACE( 'leave_end thread' )
 
+	@GuiLock
+	def UpdateLocalTime(self, loop = 0):
+		LOG_TRACE( 'Enter' )
+		#LOG_TRACE( 'untilThread[%s] self.mProgress_max[%s]' % (self.mEnableThread, self.mProgress_max) )
 
+		try :
+			lbl_localTime = ''
+			lbl_timeE = ''
+			lbl_timeP = ''
+
+			ret = EpgInfoClock(FLAG_CLOCKMODE_AHM, self.mLocalTime, 0)
+			lbl_localTime = ret[0]
 
 			#start,endtime when timeshift
 			if self.mMode == ElisEnum.E_MODE_TIMESHIFT :
@@ -521,12 +551,11 @@ class TimeShiftPlate(BaseWindow):
 				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, self.mLocalTime, 0)
 				endtime = EpgInfoClock(FLAG_CLOCKMODE_INTTIME, 0, ret[0]) + loop
 				
-				self.mProgress_max = endtime
-
 				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, endtime, 0)
-				self.mCtrlLblTSEndTime.setLabel(ret[0])
+				lbl_timeE = ret[0]
 
 				#calculate current position
+				self.mProgress_max = endtime
 				pastTime = self.mTimeshift_curTime + self.mPlayTime
 				#idxmax = self.mProgress_max - self.mTimeshift_staTime
 				#self.mProgress_idx = ( float(self.mPlayTime) / idxmax ) * 100
@@ -536,7 +565,7 @@ class TimeShiftPlate(BaseWindow):
 				LOG_TRACE( 'pastTime[%s] idx[%s] max[%s]'% ( pastTime, self.mProgress_idx, self.mProgress_max ) )
 
 				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, pastTime, 0)
-				label = ret[0]
+				lbl_timeP = ret[0]
 
 			else:
 				#calculate current position
@@ -544,8 +573,7 @@ class TimeShiftPlate(BaseWindow):
 				self.mProgress_idx = ( pastTime / self.mProgress_max * 100 )
 				LOG_TRACE( 'pastTime[%s] idx[%s] max[%s]'% ( pastTime, self.mProgress_idx, self.mProgress_max ) )
 
-				label = ''
-				label = EpgInfoClock(FLAG_CLOCKMODE_HHMM, pastTime, 0)
+				lbl_timeP = EpgInfoClock(FLAG_CLOCKMODE_HHMM, pastTime, 0)
 
 
 			if self.mProgress_idx > 100:
@@ -565,29 +593,24 @@ class TimeShiftPlate(BaseWindow):
 				#LOG_TRACE( 'posx[%s] [%s] [%s]'% (posx, pastTime, pastTime/self.mProgress_max) )
 
 
+
+			#update UI
+			self.mCtrlEventClock.setLabel(lbl_localTime)
+			if self.mMode == ElisEnum.E_MODE_TIMESHIFT :
+				self.mCtrlLblTSEndTime.setLabel( lbl_timeE )
+
 			#progress drawing
-			if self.mProgress_max > 0:
-				try :
-					LOG_TRACE( 'progress_idx[%s] getPercent[%s]' % (self.mProgress_idx, self.mCtrlProgress.getPercent()) )
-
-					self.mCtrlProgress.setPercent( self.mProgress_idx )
-
-					posx = int( self.mProgress_idx * self.mProgressbarWidth / 100 )
-					self.mCtrlBtnCurrent.setPosition( posx, 25 )
-					self.mCtrlBtnCurrent.setLabel( label )
-
-				except Exception, e :
-					LOG_TRACE( 'Error Exception[%s] progress'% e )
-
-			else:
-				LOG_TRACE( 'value error progress_max[%s]' % self.mProgress_max )
+			LOG_TRACE( 'progress max[%s] idx[%s] percent[%s]'% (self.mProgress_max, self.mProgress_idx, self.mCtrlProgress.getPercent()) )
+			self.mCtrlProgress.setPercent( self.mProgress_idx )
+			posx = int( self.mProgress_idx * self.mProgressbarWidth / 100 )
+			self.mCtrlBtnCurrent.setPosition( posx, 25 )
+			self.mCtrlBtnCurrent.setLabel( lbl_timeP )
 
 
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
 
-			loop += 1
-			time.sleep(1)
-
-		LOG_TRACE( 'leave_end thread' )
+		LOG_TRACE( 'leave' )
 
 
 	def updateServiceType(self, aTvType):

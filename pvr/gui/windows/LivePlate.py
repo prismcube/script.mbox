@@ -268,11 +268,13 @@ class LivePlate(BaseWindow):
 			self.ShowDialog( aControlId )
 
 		elif aControlId == self.mCtrlBtnPrevEpg.getId() :
+			LOG_TRACE( 'click prev epg' )
 			self.StopAutomaticHide()
 			self.SetAutomaticHide( False )
 			self.EPGNavigation( PREV_EPG )
 
 		elif aControlId == self.mCtrlBtnNextEpg.getId() :
+			LOG_TRACE( 'click next epg' )
 			self.StopAutomaticHide()
 			self.SetAutomaticHide( False )
 			self.EPGNavigation( NEXT_EPG )
@@ -288,9 +290,6 @@ class LivePlate(BaseWindow):
 
 	def onEvent(self, aEvent):
 		#LOG_TRACE( 'Enter' )
-		#LOG_TRACE( 'aEvent len[%s]'% len(aEvent) )
-		#ClassToList( 'print', aEvent )
-
 
 		if self.mWinId == xbmcgui.getCurrentWindowId():
 			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
