@@ -7,6 +7,7 @@ from pvr.gui.BaseWindow import Property
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 from pvr.gui.GuiConfig import *
+from pvr.gui.BaseWindow import Action
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
 
 class BaseDialog( xbmcgui.WindowXMLDialog, Property ):
