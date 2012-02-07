@@ -1322,6 +1322,7 @@ class ChannelListWindow(BaseWindow):
 
 				inputPin = ''
 
+				ret = self.mCommander.Player_AVBlank( True, True )
 				GuiLock2( True )
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 				dialog.SetDialogProperty( msg, '', 4, True )
@@ -1339,6 +1340,7 @@ class ChannelListWindow(BaseWindow):
 
 				if inputPin == str('%s'% stbPin) :
 					self.mPincodeEnter = FLAG_MASK_NONE
+					self.mCommander.Player_AVBlank( False, True )
 					LOG_TRACE( 'Pincode success' )
 				else:
 					msg1 = Msg.Strings(MsgId.LANG_ERROR)
