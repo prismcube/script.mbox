@@ -28,6 +28,7 @@ class DialogNormalNumeric( BaseDialog ) :
 		self.mMaxLength = 0
 		self.mType = False
 		self.mIsOk = E_DIALOG_STATE_NO
+		self.mInputKey = None
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -43,7 +44,7 @@ class DialogNormalNumeric( BaseDialog ) :
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		LOG_TRACE('ACTION ID=%d' %actionId )
-		self.GlobalAction( actionId )
+		#self.GlobalAction( actionId )
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.mInputLabel = self.mOriginalString
@@ -68,7 +69,11 @@ class DialogNormalNumeric( BaseDialog ) :
 				inputString ='%d' %inputNum
 				self.mInputLabel += inputString
 				self.SetInputLabel( )
-		
+
+		elif actionId == Action.ACTION_PAGE_UP or actionId == Action.ACTION_PAGE_DOWN :
+			self.mIsOk = E_DIALOG_STATE_CANCEL
+			self.mInputKey = aAction
+			self.CloseDialog()
 
 	def onClick( self, aControlId ):
 		focusId = self.getFocusId( )
@@ -104,6 +109,8 @@ class DialogNormalNumeric( BaseDialog ) :
 	def IsOK( self ) :
 		return self.mIsOk
 
+	def GetInputKey( self ) :
+		return self.mInputKey
 
 	def SetDialogProperty( self, aTitle, aString, aMaxLength, aType=False ) :
 		self.mInputLabel = aString

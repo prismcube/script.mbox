@@ -2,8 +2,8 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.WindowMgr as winmgr
-import pvr.gui.DialogMgr as diamgr
+import pvr.gui.WindowMgr as WinMgr
+import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
 from pvr.gui.GuiConfig import *
 
@@ -14,8 +14,11 @@ from ElisEventBus import ElisEventBus
 from ElisEventClass import *
 
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
-from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit 
+from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit, PincodeLimit 
 from ElisProperty import ElisPropertyEnum
+
+import pvr.Msg as Msg
+import pvr.gui.windows.Define_string as MsgId
 
 import threading, time, os
 
@@ -29,12 +32,15 @@ from inspect import currentframe
 
 FLAG_MASK_ADD  = 0x01
 FLAG_MASK_NONE = 0x00
-FLAG_CLOCKMODE_ADMYHM = 1
-FLAG_CLOCKMODE_AHM    = 2
-FLAG_CLOCKMODE_HMS    = 3
-FLAG_CLOCKMODE_HHMM   = 4
-FLAG_CLOCKMODE_INTTIME= 5
+FLAG_CLOCKMODE_ADMYHM  = 1
+FLAG_CLOCKMODE_AHM     = 2
+FLAG_CLOCKMODE_HMS     = 3
+FLAG_CLOCKMODE_HHMM    = 4
+FLAG_CLOCKMODE_INTTIME = 5
 
+E_IMG_SCREEN_HIDE = 'confluence/black-back.png'
+E_IMG_ICON_LOCK   = 'IconLockFocus.png'
+E_IMG_ICON_ICAS   = 'IconCas.png'
 
 NEXT_EPG 				= 0
 PREV_EPG 				= 1
@@ -56,7 +62,7 @@ class LivePlate(BaseWindow):
 		self.mLastChannel = self.mCommander.Channel_GetCurrent()	
 		self.mCurrentChannel = self.mLastChannel
 		self.mFakeChannel = self.mLastChannel # Used  for zapping speed up
-		self.mChannelChanged = False
+		self.mChannelChanged = True
 		self.mShowExtendInfo = False
 		self.mAutomaticHideTimer = None	
 		self.mAsyncEPGTimer = None
@@ -76,7 +82,8 @@ class LivePlate(BaseWindow):
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
 
 		self.mShowExtendInfo = False
-		
+
+		self.mCtrlImgBackgroundHide    = self.getControl( 500 )
 		self.mCtrlLblChannelNumber     = self.getControl( 601 )
 		self.mCtrlLblChannelName       = self.getControl( 602 )
 		self.mCtrlImgServiceType       = self.getControl( 603 )
@@ -102,6 +109,8 @@ class LivePlate(BaseWindow):
 		self.mCtrlBtnStartRec          = self.getControl( 624 )
 		self.mCtrlBtnStopRec           = self.getControl( 625 )
 		self.mCtrlBtnMute              = self.getControl( 626 )
+		self.mCtrlImgLocked            = self.getControl( 651 )
+		self.mCtrlImgICas              = self.getControl( 652 )
 		#self.mCtrlBtnTSbanner          = self.getControl( 630 )
 
 		self.mCtrlBtnPrevEpg           = self.getControl( 702 )
@@ -143,6 +152,7 @@ class LivePlate(BaseWindow):
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
+		self.PincodeDialogLimit()
 		self.mAsyncEPGTimer = None
 		self.mAsyncTuneTimer = None
 		self.mAutomaticHideTimer = None
@@ -151,8 +161,6 @@ class LivePlate(BaseWindow):
 			self.StartAutomaticHide()
 
 		LOG_TRACE( 'Leave' )
-
-
 
 	def onAction(self, aAction):
 		#LOG_TRACE( 'Enter' )
@@ -338,8 +346,6 @@ class LivePlate(BaseWindow):
 
 			self.mFakeChannel = prevChannel
 			self.UpdateServiceType( self.mFakeChannel.mServiceType )
-			self.InitLabelInfo()
-
 			self.RestartAsyncTune()
 
 		elif aDir == NEXT_CHANNEL:
@@ -350,8 +356,6 @@ class LivePlate(BaseWindow):
 
 			self.mFakeChannel = nextChannel
 			self.UpdateServiceType( self.mFakeChannel.mServiceType )
-			self.InitLabelInfo()
-
 			self.RestartAsyncTune()
 
 		if self.mAutomaticHide == True :
@@ -383,8 +387,8 @@ class LivePlate(BaseWindow):
 
 			LOG_TRACE('PREV_EPG')
 
-
 		self.RestartAsyncEPG()
+		self.PincodeDialogLimit()
 
 		LOG_TRACE( 'Leave' )
 
@@ -394,44 +398,43 @@ class LivePlate(BaseWindow):
 		ret = None
 
 		try :
-			if self.mChannelChanged == True :
-				if self.mCurrentChannel :
-					self.mEPGList = None
-					self.mEPGList = 0
-					ch = self.mCurrentChannel
-					gmtime = self.mCommander.Datetime_GetGMTTime()
-					gmtFrom = gmtime - ( 3600 * 24 * 7 )
-					gmtUntil= gmtime + ( 3600 * 24 * 7 )
-					maxCount= 100
-					ret = None
-					ret = self.mCommander.Epgevent_GetList( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount )
-					time.sleep(0.05)
-					#LOG_TRACE('=============epg len[%s] list[%s]'% (len(ret),ClassToList('convert', ret )) )
-					if ret :
-						self.mEPGList = ret
+			if self.mCurrentChannel :
+				self.mEPGList = None
+				self.mEPGList = 0
+				ch = self.mCurrentChannel
+				gmtime = self.mCommander.Datetime_GetGMTTime()
+				gmtFrom = gmtime - ( 3600 * 24 * 7 )
+				gmtUntil= gmtime + ( 3600 * 24 * 7 )
+				maxCount= 100
+				ret = None
+				ret = self.mCommander.Epgevent_GetList( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount )
+				time.sleep(0.05)
+				#LOG_TRACE('=============epg len[%s] list[%s]'% (len(ret),ClassToList('convert', ret )) )
+				if ret :
+					self.mEPGList = ret
 
-					self.mChannelChanged = False
+				self.mChannelChanged = False
 
-					retList=[]
-					retList.append(self.mEventCopy)
-					LOG_TRACE('==========[%s]'% ClassToList('convert', retList) )
-					LOG_TRACE('EPGinfo len[%s] [%s]'% (len(self.mEPGList), ClassToList('convert', self.mEPGList)) )
-					idx = 0
-					for item in self.mEPGList :
-						if 	item.mEventId == self.mEventCopy.mEventId and \
-							item.mSid == self.mEventCopy.mSid and \
-							item.mTsid == self.mEventCopy.mTsid and \
-							item.mOnid == self.mEventCopy.mOnid :
+				retList=[]
+				retList.append(self.mEventCopy)
+				LOG_TRACE('==========[%s]'% ClassToList('convert', retList) )
+				LOG_TRACE('EPGinfo len[%s] [%s]'% (len(self.mEPGList), ClassToList('convert', self.mEPGList)) )
+				idx = 0
+				for item in self.mEPGList :
+					if 	item.mEventId == self.mEventCopy.mEventId and \
+						item.mSid == self.mEventCopy.mSid and \
+						item.mTsid == self.mEventCopy.mTsid and \
+						item.mOnid == self.mEventCopy.mOnid :
 
-							self.mEPGListIdx = idx
+						self.mEPGListIdx = idx
 
-							retList=[]
-							retList.append(item)
-							LOG_TRACE('SAME EPG idx[%s] [%s]'% (idx, ClassToList('convert', retList)) )
+						retList=[]
+						retList.append(item)
+						LOG_TRACE('SAME EPG idx[%s] [%s]'% (idx, ClassToList('convert', retList)) )
 
-							break
+						break
 
-						idx += 1
+					idx += 1
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -443,6 +446,18 @@ class LivePlate(BaseWindow):
 	def UpdateONEvent(self, aEvent):
 		LOG_TRACE( 'Enter' )
 		#LOG_TRACE( 'component [%s]'% EpgInfoComponentImage ( aEvent ))
+
+		if self.mCurrentChannel :
+			ch = self.mCurrentChannel
+
+			if ch.mLocked :
+				self.mCtrlImgLocked.setImage( E_IMG_ICON_LOCK )
+				if self.mChannelChanged == True :
+					self.mPincodeEnter |= FLAG_MASK_ADD
+
+			if ch.mIsCA :
+				self.mCtrlImgICas.setImage( E_IMG_ICON_ICAS )
+
 
 		if aEvent :
 			try :
@@ -475,10 +490,11 @@ class LivePlate(BaseWindow):
 					self.mCtrlImgServiceTypeImg3.setImage('')
 
 				#is Age? agerating check
-				isLimit = AgeLimit( self.mCommander, aEvent.mAgeRating )
-				if isLimit == True :
-					self.mPincodeEnter |= FLAG_MASK_ADD
-					LOG_TRACE( 'AgeLimit[%s]'% isLimit )
+				if self.mChannelChanged == True :
+					isLimit = AgeLimit( self.mCommander, aEvent.mAgeRating )
+					if isLimit == True :
+						self.mPincodeEnter |= FLAG_MASK_ADD
+						LOG_TRACE( 'AgeLimit[%s]'% isLimit )
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -487,18 +503,90 @@ class LivePlate(BaseWindow):
 			LOG_TRACE( 'aEvent null' )
 
 
+		self.mChannelChanged = False
+		LOG_TRACE( 'Leave' )
+
+
+	def PincodeDialogLimit( self ) :
+		LOG_TRACE( 'Enter' )
+
 		#popup pin-code dialog
-		if self.mPincodeEnter > FLAG_MASK_NONE :
-			msg1 = Msg.Strings(MsgId.LANG_INPUT_PIN_CODE)
-			msg2 = Msg.Strings(MsgId.LANG_CURRENT_PIN_CODE)
-			kb = xbmc.Keyboard( msg1, '1111', False )
-			kb.doModal()
-			if( kb.isConfirmed() ) :
-				inputPass = kb.getText()
-				#self.mPincodeEnter = FLAG_MASK_NONE
-				LOG_TRACE( 'password[%s]'% inputPass )
+		#if self.mPincodeEnter > FLAG_MASK_NONE :
+		while self.mPincodeEnter > FLAG_MASK_NONE :
+
+			try :
+				msg = Msg.Strings(MsgId.LANG_INPUT_PIN_CODE)
+				inputPin = ''
+
+				#self.SetHideScreen(self.mPincodeEnter)
+				#ret = self.mCommander.Channel_SetInitialBlank( True )
+				ret = self.mCommander.Channel_SetInitialBlank( True )
+
+				GuiLock2( True )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+				dialog.SetDialogProperty( msg, '', 4, True )
+	 			dialog.doModal()
+				GuiLock2( False )
+
+				reply = dialog.IsOK()
+	 			if reply == E_DIALOG_STATE_YES :
+	 				inputPin = dialog.GetString()
+
+	 			elif reply == E_DIALOG_STATE_CANCEL :
+	 				self.mPincodeEnter = FLAG_MASK_NONE
+	 				#self.SetHideScreen(self.mPincodeEnter)
+	 				self.mCommander.Channel_SetInitialBlank( False )
+
+	 				inputKey = dialog.GetInputKey()
+	 				self.onAction( inputKey )
+	 				break
+
+
+				stbPin = PincodeLimit( self.mCommander, inputPin )
+				if inputPin == None or inputPin == '' :
+					inputPin = ''
+
+				LOG_TRACE( 'mask[%s] inputPin[%s] stbPin[%s]'% (self.mPincodeEnter, inputPin, stbPin) )
+
+				if inputPin == str('%s'% stbPin) :
+					self.mPincodeEnter = FLAG_MASK_NONE
+					#self.SetHideScreen(self.mPincodeEnter)
+					self.mCommander.Channel_SetInitialBlank( False )
+					LOG_TRACE( 'Pincode success' )
+					break
+				else:
+					msg1 = Msg.Strings(MsgId.LANG_ERROR)
+					msg2 = Msg.Strings(MsgId.LANG_WRONG_PIN_CODE)
+					GuiLock2( True )
+					xbmcgui.Dialog().ok( msg1, msg2 )
+					GuiLock2( False )
+
+			except Exception, e:
+				LOG_TRACE( 'Error exception[%s]'% e )
+
+			time.sleep(0.1)
+			LOG_TRACE('=======loop==============')
 
 		LOG_TRACE( 'Leave' )
+
+
+	def SetHideScreen( self, aMask ) :
+		LOG_TRACE( 'Enter' )
+
+		img = ''
+		if aMask > FLAG_MASK_NONE :
+			img = E_IMG_SCREEN_HIDE
+
+		else :
+			img = ''
+
+		GuiLock2( True )
+		self.mCtrlImgBackgroundHide.setImage( img )
+		GuiLock2( False )
+		self.GlobalAction( Action.ACTION_MUTE  )
+
+		LOG_TRACE( 'Leave' )
+
 
 
 	@RunThread
@@ -578,7 +666,8 @@ class LivePlate(BaseWindow):
 			self.mCtrlLblEventStartTime.setLabel('')
 			self.mCtrlLblEventEndTime.setLabel('')
 
-			#self.mCtrlImgServiceType.setImage('')
+			self.mCtrlImgLocked.setImage('')
+			self.mCtrlImgICas.setImage('')
 			self.mCtrlImgServiceType.setImage(self.mImgTV)
 			self.mCtrlImgServiceTypeImg1.setImage('')
 			self.mCtrlImgServiceTypeImg2.setImage('')
@@ -726,7 +815,6 @@ class LivePlate(BaseWindow):
 
 		self.close()
 
-
 	def SetAutomaticHide( self, aHide=True ) :
 		self.mAutomaticHide = aHide
 
@@ -783,10 +871,14 @@ class LivePlate(BaseWindow):
 
 		try :
 			ret = self.mCommander.Channel_SetCurrent( self.mFakeChannel.mNumber, self.mFakeChannel.mServiceType )
-			self.mFakeChannel.printdebug()
+			#self.mFakeChannel.printdebug()
 			if ret == True :
 				self.mCurrentChannel = self.mFakeChannel
 				self.mLastChannel = self.mCurrentChannel
+				self.InitLabelInfo()
+				self.UpdateONEvent( self.mEventCopy )
+				self.PincodeDialogLimit()
+
 			else :
 				LOG_ERR('Tune Fail')
 			
