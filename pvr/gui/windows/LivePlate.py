@@ -416,10 +416,10 @@ class LivePlate(BaseWindow):
 
 				self.mChannelChanged = False
 
-				retList=[]
-				retList.append(self.mEventCopy)
-				LOG_TRACE('==========[%s]'% ClassToList('convert', retList) )
-				LOG_TRACE('EPGinfo len[%s] [%s]'% (len(self.mEPGList), ClassToList('convert', self.mEPGList)) )
+				#retList=[]
+				#retList.append(self.mEventCopy)
+				#LOG_TRACE('==========[%s]'% ClassToList('convert', retList) )
+				#LOG_TRACE('EPGinfo len[%s] [%s]'% (len(self.mEPGList), ClassToList('convert', self.mEPGList)) )
 				idx = 0
 				for item in self.mEPGList :
 					if 	item.mEventId == self.mEventCopy.mEventId and \
@@ -431,7 +431,7 @@ class LivePlate(BaseWindow):
 
 						retList=[]
 						retList.append(item)
-						LOG_TRACE('SAME EPG idx[%s] [%s]'% (idx, ClassToList('convert', retList)) )
+						LOG_TRACE('SAME NOW EPG idx[%s] [%s]'% (idx, ClassToList('convert', retList)) )
 
 						break
 
@@ -548,7 +548,7 @@ class LivePlate(BaseWindow):
 				if inputPin == None or inputPin == '' :
 					inputPin = ''
 
-				LOG_TRACE( 'mask[%s] inputPin[%s] stbPin[%s]'% (self.mPincodeEnter, inputPin, stbPin) )
+				#LOG_TRACE( 'mask[%s] inputPin[%s] stbPin[%s]'% (self.mPincodeEnter, inputPin, stbPin) )
 
 				if inputPin == str('%s'% stbPin) :
 					self.mPincodeEnter = FLAG_MASK_NONE
