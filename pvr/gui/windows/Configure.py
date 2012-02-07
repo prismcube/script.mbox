@@ -178,7 +178,7 @@ class Configure( SettingWindow ) :
 				
 			ElisPropertyInt( 'PinCode', self.mCommander ).SetProp( int( newpin ) )
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( 'ERROR', 'Pin codes change success' )
+			dialog.SetDialogProperty( 'Success', 'Pin codes change success' )
  			dialog.doModal( )
 
 		else :

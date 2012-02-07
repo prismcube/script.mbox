@@ -7,6 +7,7 @@ from pvr.gui.BaseWindow import Property
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 from pvr.gui.GuiConfig import *
+from pvr.gui.BaseWindow import Action
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
 
 class BaseDialog( xbmcgui.WindowXMLDialog, Property ):
@@ -40,6 +41,36 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ):
 		GuiLock2( True )
 		self.mFocusId = self.getFocusId()
 		GuiLock2( False )
+
+
+	def GlobalAction( self, aActionId ) :
+	
+		if aActionId == Action.ACTION_MUTE:
+			self.UpdateVolume( )
+
+		elif aActionId == Action.ACTION_VOLUME_UP:
+			self.UpdateVolume( )
+
+		elif aActionId == Action.ACTION_VOLUME_DOWN:
+			self.UpdateVolume( )		
+
+
+	@GuiLock
+	def UpdateVolume( self ) :
+		retVolume = xbmc.executehttpapi("getvolume()")
+		volume = int( retVolume[4:] )
+		LOG_TRACE('GET VOLUME=%d' %volume )
+
+		if volume > MAX_VOLUME :
+			volume = MAX_VOLUME
+			
+		if volume < 0 :
+			volume = 0
+			self.mCommander.Player_SetMute( True )
+		else :
+			if self.mCommander.Player_GetMute( ) == True :
+				self.mCommander.Player_SetMute( False )
+			self.mCommander.Player_SetVolume( volume )
 
 
 class ControlItem:
@@ -89,12 +120,12 @@ class SettingDialog( BaseDialog ):
 				control.selectItem( ctrlItem.mSelecteItem )
 
 			if ctrlItem.mControlId == E_SETTING_DIALOG_BUTTON_OK_ID :
-				self.getControl( ctrlItem.mControlId ).setPosition( 57,  pos + 185 )
+				self.getControl( ctrlItem.mControlId ).setPosition( 57,  pos + 93 )
 			elif ctrlItem.mControlId == E_SETTING_DIALOG_BUTTON_CANCEL_ID :
-				self.getControl( ctrlItem.mControlId ).setPosition( 277, pos + 185 )
+				self.getControl( ctrlItem.mControlId ).setPosition( 277, pos + 93 )
 			else :
 				pos += self.getControl( ctrlItem.mControlId ).getHeight( )
-				self.getControl( ctrlItem.mControlId ).setPosition( 0, pos + 125)
+				self.getControl( ctrlItem.mControlId ).setPosition( 0, pos + 33)
 
 		if self.mIsAutomaicHeight == True :
 			if self.mIsOkCancelType == True :
@@ -104,6 +135,10 @@ class SettingDialog( BaseDialog ):
 
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_CLOSE_BUTTON, E_SETTING_DIALOG_BUTTON_CLOSE, None, None, None, None ) )
 
+		height = self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).getHeight()
+		start_x = E_WINDOW_WIDTH / 2 - 610 / 2
+		start_y = E_WINDOW_HEIGHT / 2 - height / 2
+		self.getControl( E_SETTING_DIALOG_MAIN_GOURP_ID ).setPosition( start_x, start_y )
 
 	def SetAutoHeight( self, mMode ) :
 		self.mIsAutomaicHeight = mMode

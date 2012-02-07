@@ -3,6 +3,7 @@ import xbmcgui
 import sys
 
 import pvr.gui.WindowMgr as WinMgr
+import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
 from inspect import currentframe
 from pvr.Util import GuiLock, LOG_TRACE
@@ -61,7 +62,9 @@ class MainMenu( BaseWindow ):
 			pass
 
 		elif aControlId == BUTTON_ID_FIRSTINSTALLATION : # First Installation
-			pass
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+			dialog.SetProperty( [ 'test11111111111111', 'test222222222222222', 'test33333333', 'test', '1' ] )
+ 			dialog.doModal( )
 
 		elif aControlId == BUTTON_ID_INSTALLATION :
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_INSTALLATION )
