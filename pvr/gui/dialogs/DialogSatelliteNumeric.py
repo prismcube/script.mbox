@@ -31,6 +31,9 @@ class DialogSatelliteNumeric( BaseDialog ) :
 
 
 	def onInit( self ) :
+		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWin = xbmcgui.Window( self.mWinId )
+		
 		self.mIsOk = E_DIALOG_STATE_NO
 		self.mCursor = 0
 		self.getControl( E_DIALOG_HEADER ).setLabel( self.GetTitleLabel( ) )

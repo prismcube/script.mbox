@@ -18,6 +18,7 @@ DIALOG_ID_SET_TRANSPONDER			= 9
 DIALOG_ID_YES_NO_CANCEL				= 10
 DIALOG_ID_NUMERIC_KEYBOARD			= 11
 DIALOG_ID_POPUP_OK					= 12
+DIALOG_ID_CONTEXT					= 13
 
 gDialogMgr = None
 
@@ -91,6 +92,10 @@ class DialogMgr(object):
 			elif aDialogId == DIALOG_ID_POPUP_OK :
 				from pvr.gui.dialogs.DialogPopupOK import DialogPopupOK
 				return DialogPopupOK('DialogPopupOK.xml', self.scriptDir)
+
+			elif aDialogId == DIALOG_ID_CONTEXT :
+				from pvr.gui.dialogs.DialogContext import DialogContext
+				return DialogContext('DialogContext.xml', self.scriptDir)
 				
 			else :
 				LOG_ERR( 'can not find dialog' )

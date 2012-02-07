@@ -113,16 +113,16 @@
 	<include name="DefaultDialogCommonSetting">
 		<control type="image">
 			<posx>40</posx>
-			<posy>110</posy>
+			<posy>11</posy>
 			<width>530</width>
-			<height>90</height>
+			<height>110</height>
 			<aspectratio>stretch</aspectratio>
 			<texture>confluence/GlassTitleBar.png</texture>
 		</control>
 		<control type="button" id="6995">
 			<description>Close Window button</description>
 			<posx>520</posx>
-			<posy>109</posy>
+			<posy>13</posy>
 			<width>64</width>
 			<height>32</height>
 			<label>-</label>
@@ -136,7 +136,7 @@
 		<control type="label" id="3005">
 			<description>header label</description>
 			<posx>20</posx>
-			<posy>118</posy>
+			<posy>22</posy>
 			<width>570</width>
 			<height>30</height>
 			<font>font13_title</font>

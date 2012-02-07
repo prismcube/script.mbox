@@ -20,6 +20,9 @@ class DialogLnbFrequency( SettingDialog ) :
 
 		
 	def onInit( self ) :
+		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWin = xbmcgui.Window( self.mWinId )
+		
 		self.SetHeaderLabel( 'LNB Frequency' )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, 'Confirm' )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, 'Cancel' )
@@ -117,5 +120,6 @@ class DialogLnbFrequency( SettingDialog ) :
 		self.AddInputControl( E_DialogInput02, 'High Frequency' , '%d' % int( self.mHighFreq ) )
 		self.AddInputControl( E_DialogInput03, 'Switch Frequency' , '%d' % int( self.mThreshFreq ) )
 		self.AddOkCanelButton( )
+		self.SetAutoHeight( True )
 		
 		self.InitControl( )

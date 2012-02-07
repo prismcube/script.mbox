@@ -23,6 +23,9 @@ class DialogSetTransponder( SettingDialog ) :
 		
 		
 	def onInit( self ) :
+		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWin = xbmcgui.Window( self.mWinId )
+		
 		self.SetHeaderLabel( 'Set Transponder' )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, 'Confirm' )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, 'Cancel' )

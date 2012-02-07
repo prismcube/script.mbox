@@ -13,6 +13,9 @@ class DialogMoveAntenna( BaseDialog ) :
 		
 		
 	def onInit( self ) :
+		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWin = xbmcgui.Window( self.mWinId )
+		
 		self.mIsOk = False		
 
 		

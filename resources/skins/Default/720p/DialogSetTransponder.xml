@@ -1,16 +1,9 @@
 <window id="3307">
 	<defaultcontrol always="true">9000</defaultcontrol>
-	<coordinates>
-		<system>1</system>
-		<posx>335</posx>
-		<posy>35</posy>
-	</coordinates>
 	<include>DefaultDialogEffect</include>
 	<controls>
-		<control type="group">
-			<posx>0</posx>
-			<posy>100</posy>
-            <animation condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional" reversible="false">
+			<control type="group" id="8000">
+			<animation condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional" reversible="false">
                 <effect type="fade" start="100" end="0" time="300" />
             </animation>
 			<control type="image" id="9001">
