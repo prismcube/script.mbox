@@ -181,6 +181,30 @@ class Configure( SettingWindow ) :
 			dialog.SetDialogProperty( 'Success', 'Pin codes change success' )
  			dialog.doModal( )
 
+ 		elif selectedId == E_FACTORY_RESET and groupId == E_Input01 :
+ 			resetChannel = ElisPropertyEnum( 'Reset Channel List', self.mCommander ).GetProp( )
+ 			resetFavoriteAddons = ElisPropertyEnum( 'Reset Favorite Add-ons', self.mCommander ).GetProp( )
+ 			resetSystem = ElisPropertyEnum( 'Reset Configure Setting', self.mCommander ).GetProp( )
+ 			if ( resetChannel | resetFavoriteAddons | resetSystem ) == 0 :
+ 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'ERROR', 'No selected reset' )
+		 		dialog.doModal( )
+		 		return
+		 	else :
+		 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( 'Reset', 'Are you sure?' )
+				dialog.doModal( )
+
+				if dialog.IsOK() == E_DIALOG_STATE_YES :
+				 	if resetChannel == 1 :
+				 		self.mCommander.System_SetDefaultChannelList( )
+
+				 	elif resetFavoriteAddons == 1 :
+				 		pass
+
+				 	elif resetSystem == 1 :
+				 		self.mCommander.System_FactoryReset( )
+
 		else :
 			self.ControlSelect( )
 

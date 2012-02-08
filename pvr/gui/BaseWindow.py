@@ -138,7 +138,7 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 			self.mCommander.Player_SetVolume( volume )
 
 
-class ControlItem:
+class ControlItem :
 	# Setting Window
 	E_UNDEFINE								= 0
 	E_SETTING_ENUM_CONTROL					= 1
@@ -511,4 +511,12 @@ class SettingWindow( BaseWindow ):
 					ctrlItem.mProperty.SetProp( aValue )
 					return True
 	
+class ContextMenu :
 
+	def __init__( self, aLabel, aCallback=None ) :
+		self.mLabel = aLabel
+		self.mCallback = aCallback
+
+	#def setCallback( aCallfunc ) :
+	#	self.callfunc = 
+	
