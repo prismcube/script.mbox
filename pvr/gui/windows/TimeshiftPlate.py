@@ -76,6 +76,7 @@ class TimeShiftPlate(BaseWindow):
 		self.mPlayTime = 0
 		self.mLocalTime = 0
 		self.mTimeShiftExcuteTime = 0
+		self.mUserMoveTime = 0
 		
 		#get channel
 		#self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
@@ -109,6 +110,19 @@ class TimeShiftPlate(BaseWindow):
 
 		elif id == Action.ACTION_SELECT_ITEM:
 			LOG_TRACE( '===== select [%s]' % id )
+
+		elif id == Action.ACTION_MOVE_LEFT :
+			self.GetFocusId()
+			LOG_TRACE( '===== [%s]' % self.mFocusId )
+			if self.mFocusId == self.mCtrlBtnCurrent.getId():
+				self.mUserMoveTime -= 10
+				LOG_TRACE('left moveTime[%s]'% self.mUserMoveTime )
+
+		elif id == Action.ACTION_MOVE_RIGHT:
+			self.GetFocusId()
+			if self.mFocusId == self.mCtrlBtnCurrent.getId():
+				self.mUserMoveTime += 10
+				LOG_TRACE('right moveTime[%s]'% self.mUserMoveTime )
 	
 
 
@@ -556,7 +570,7 @@ class TimeShiftPlate(BaseWindow):
 
 				#calculate current position
 				self.mProgress_max = endtime
-				pastTime = self.mTimeshift_curTime + self.mPlayTime
+				pastTime = self.mTimeshift_curTime + self.mPlayTime + self.mUserMoveTime
 				#idxmax = self.mProgress_max - self.mTimeshift_staTime
 				#self.mProgress_idx = ( float(self.mPlayTime) / idxmax ) * 100
 				#LOG_TRACE( 'pastTime[%s] idx[%s] max[%s]'% ( self.mPlayTime, self.mProgress_idx, idxmax ) )
@@ -569,7 +583,7 @@ class TimeShiftPlate(BaseWindow):
 
 			else:
 				#calculate current position
-				pastTime = self.mTimeshift_curTime + self.mPlayTime
+				pastTime = self.mTimeshift_curTime + self.mPlayTime + self.mUserMoveTime
 				self.mProgress_idx = ( pastTime / self.mProgress_max * 100 )
 				LOG_TRACE( 'pastTime[%s] idx[%s] max[%s]'% ( pastTime, self.mProgress_idx, self.mProgress_max ) )
 

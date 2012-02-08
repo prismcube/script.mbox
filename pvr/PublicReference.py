@@ -17,7 +17,7 @@ def EpgInfoTime(aLocalOffset, aStartTime, aDuration):
 	endTime_hh = time.strftime('%H', time.gmtime(epgEndTime) )
 	endTime_mm = time.strftime('%M', time.gmtime(epgEndTime) )
 
-	str_startTime = str ('%02s:%02s -'% (startTime_hh,startTime_mm) )
+	str_startTime = str ('%02s:%02s'% (startTime_hh,startTime_mm) )
 	str_endTime = str ('%02s:%02s'% (endTime_hh,endTime_mm) )
 
 	LOG_TRACE( 'epgStart[%s] epgEndTime[%s]'% (epgStartTime, epgEndTime) )

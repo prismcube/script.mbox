@@ -619,7 +619,7 @@
 					<posy>102</posy>
 					<description>start time</description>
 					<font>font13</font>
-					<label>$INFO[Control.GetLabel(704)] $INFO[Control.GetLabel(705)]</label>
+					<label>$INFO[Control.GetLabel(704)] - $INFO[Control.GetLabel(705)]</label>
 				</control>
 
 			</control>

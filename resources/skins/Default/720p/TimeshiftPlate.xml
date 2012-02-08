@@ -16,18 +16,6 @@
 					<height>256</height>
 					<texture>confluence/MediaInfoBackLower.png</texture>
 				</control>
-				<control type="button">
-					<description>Fake button for mouse control</description>
-					<posx>0</posx>
-					<posy>570</posy>
-					<width>1280</width>
-					<height>266</height>
-					<label>-</label>
-					<font>-</font>
-					<texturenofocus>-</texturenofocus>
-					<texturefocus>-</texturefocus>
-					<visible>true</visible>
-				</control>
 			</control>
 
 <!-- info section -->
@@ -36,9 +24,9 @@
 				<posy>620</posy>
 				<control type="group" id="20">
 					<posx>0</posx>
-					<posy>-25</posy>
-					<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(400).HasFocus">conditional</animation>
-					<animation effect="slide" start="0,0" end="-200,0" delay="0" time="300" condition="!ControlGroup(400).HasFocus">conditional</animation>
+					<posy>-28</posy>
+					<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(400).HasFocus | Control.HasFocus(202)">conditional</animation>
+					<!--animation effect="slide" start="0,0" end="-200,0" delay="0" time="300" condition="!ControlGroup(400).HasFocus | !Control.HasFocus(202)">conditional</animation-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -150,6 +138,19 @@
 						<label>Forward</label>
 						<visible>Control.HasFocus(408)</visible>
 					</control>
+					<control type="label">
+						<posx>120</posx>
+						<posy>0</posy>
+						<width min="100" max="150">auto</width>
+						<height>28</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>TimeShift L/R</label>
+						<visible>Control.HasFocus(202)</visible>
+					</control>
 				</control>
 
 				<control type="group" id="30">
@@ -172,7 +173,7 @@
 					<control type="label" id="33">
 						<description>Speed label</description>
 						<posx>175</posx>
-						<posy>20</posy>
+						<posy>19</posy>
 						<font>font24</font>
 						<textcolor>grey</textcolor>
 						<texture>$INFO[Control.GetLabel]</texture>
@@ -234,10 +235,10 @@
 					<font>-</font>
 					<texturefocus>confluence/OSDSubtitlesFO.png</texturefocus>
 					<texturenofocus>confluence/OSDSubtitlesNF.png</texturenofocus>
-					<onleft>SetFocus(408)</onleft>
-					<onright>SetFocus(402)</onright>
-					<onup></onup>
-					<ondown>SetFocus(404)</ondown>
+					<onleft>408</onleft>
+					<onright>402</onright>
+					<onup>202</onup>
+					<ondown>202</ondown>
 					<!--onclick>XBMC.RunScript($INFO[Skin.String(SubtitleScript_Path)])</onclick-->
 				</control>
 				<control type="button" id="402">
@@ -249,11 +250,10 @@
 					<font>-</font>
 					<texturefocus>confluence/OSDAudioFO.png</texturefocus>
 					<texturenofocus>confluence/OSDAudioNF.png</texturenofocus>
-					<onleft>SetFocus(401)</onleft>
-					<onright>SetFocus(403)</onright>
-					<onup></onup>
-					<ondown>SetFocus(410)</ondown>
-					<!--onclick>XBMC.RunScript($INFO[Skin.String(SubtitleScript_Path)])</onclick-->
+					<onleft>401</onleft>
+					<onright>403</onright>
+					<onup>202</onup>
+					<ondown>202</ondown>
 				</control>
 				<control type="button" id="403">
 					<posx>90</posx>
@@ -264,11 +264,10 @@
 					<font>-</font>
 					<texturefocus>confluence/OSDRecordFO.png</texturefocus>
 					<texturenofocus>confluence/OSDRecordNF.png</texturenofocus>
-					<onleft>SetFocus(402)</onleft>
-					<onright>SetFocus(404)</onright>
-					<onup></onup>
-					<ondown>SetFocus(407)</ondown>
-					<onclick>XBMC.PlayerControl(record)</onclick>
+					<onleft>402</onleft>
+					<onright>404</onright>
+					<onup>202</onup>
+					<ondown>202</ondown>
 				</control>
 				<control type="group">
 					<posx>140</posx>
@@ -282,10 +281,10 @@
 						<font></font>
 						<texturefocus>confluence/OSDRewindFO.png</texturefocus>
 						<texturenofocus>confluence/OSDRewindNF.png</texturenofocus>
-						<onleft>SetFocus(403)</onleft>
-						<onright>SetFocus(405)</onright>
-						<onup>SetFocus(401)</onup>
-						<ondown></ondown>
+						<onleft>403</onleft>
+						<onright>410</onright>
+						<onup>202</onup>
+						<ondown>202</ondown>
 					</control>
 					<control type="group" id="410">
 						<control type="button" id="405">
@@ -298,10 +297,10 @@
 							<font>-</font>
 							<texturefocus>confluence/OSDPlayFO.png</texturefocus>
 							<texturenofocus>confluence/OSDPlayNF.png</texturenofocus>
-							<onleft>SetFocus(404)</onleft>
-							<onright>SetFocus(407)</onright>
-							<onup>SetFocus(402)</onup>
-							<ondown></ondown>
+							<onleft>404</onleft>
+							<onright>407</onright>
+							<onup>202</onup>
+							<ondown>202</ondown>
 							<visible>!Control.IsVisible(406)</visible>
 						</control>
 						<control type="button" id="406">
@@ -314,10 +313,10 @@
 							<font>-</font>
 							<texturefocus>confluence/OSDPauseFO.png</texturefocus>
 							<texturenofocus>confluence/OSDPauseNF.png</texturenofocus>
-							<onleft>SetFocus(404)</onleft>
-							<onright>SetFocus(407)</onright>
-							<onup>SetFocus(402)</onup>
-							<ondown></ondown>
+							<onleft>404</onleft>
+							<onright>407</onright>
+							<onup>202</onup>
+							<ondown>202</ondown>
 							<visible>!Control.IsVisible(405)</visible>
 						</control>
 					</control>
@@ -360,10 +359,10 @@
 						<font>-</font>
 						<texturefocus>confluence/OSDStopFO.png</texturefocus>
 						<texturenofocus>confluence/OSDStopNF.png</texturenofocus>
-						<onleft>SetFocus(406)</onleft>
-						<onright>SetFocus(408)</onright>
-						<onup>SetFocus(403)</onup>
-						<ondown></ondown>
+						<onleft>410</onleft>
+						<onright>408</onright>
+						<onup>202</onup>
+						<ondown>202</ondown>
 					</control>
 					<control type="button" id="408">
 						<posx>150</posx>
@@ -374,10 +373,10 @@
 						<font>-</font>
 						<texturefocus>confluence/OSDForwardFO.png</texturefocus>
 						<texturenofocus>confluence/OSDForwardNF.png</texturenofocus>
-						<onleft>SetFocus(407)</onleft>
-						<onright>SetFocus(401)</onright>
-						<onup></onup>
-						<ondown></ondown>
+						<onleft>407</onleft>
+						<onright>401</onright>
+						<onup>202</onup>
+						<ondown>202</ondown>
 					</control>
 
 					<!--control type="button" id="409">
@@ -431,13 +430,18 @@
 						<align>center</align>
 						<texturefocus>TSProgressCurrent.png</texturefocus>
 						<texturenofocus>TSProgressCurrent.png</texturenofocus>
+						<onleft>202</onleft>
+						<onright>202</onright>
+						<onup>410</onup>
+						<ondown>410</ondown>
+
 					</control>
 				</control>
 
 				<control type="group">
 					<description>info</description>
 					<posx>150r</posx>
-					<posy>-25</posy>
+					<posy>-28</posy>
 					<control type="image">
 						<description>time background</description>
 						<posx>0</posx>
