@@ -1,0 +1,221 @@
+<window>
+	<controls>
+		<control type="image">
+            <posx>379</posx>
+            <posy>0</posy>
+            <width>1</width>
+            <height>720</height>
+            <texture>confluence/HomeBladeSub_Part1.png</texture>           
+        </control>
+        <control type="image">
+            <posx>380</posx>
+            <posy>0</posy>
+            <width>12</width>
+            <height>720</height>
+            <texture>confluence/HomeBladeSub_Part2.png</texture>
+        </control>
+        <control type="image">
+            <posx>-450</posx>
+            <posy>0</posy>
+            <width>846</width>
+            <height>720</height>
+            <colordiffuse>DAFFFFFF</colordiffuse>
+            <texture>confluence/HomeBlade_bottom.png</texture>
+        </control>
+        <control type="image">
+			<posx>370</posx>
+			<posy>63</posy>
+			<width>18</width>
+			<height>18</height>
+			<texture>confluence/HomeHasSub.png</texture>
+		</control>
+		<control type="image">
+            <posx>-450</posx>
+            <posy>0</posy>
+            <width>846</width>
+            <height>720</height>
+            <texture>confluence/HomeBlade_top.png</texture>
+        </control>
+        <control type="image">
+			<description>LOGO</description>
+			<posx>10</posx>
+			<posy>10</posy>
+			<width>140</width>
+			<height>40</height>
+			<texture>confluence/XBMC_Logo.png</texture>
+		</control>
+		<control type="image">
+			<description>LOGO Mirror</description>
+			<posx>10</posx>
+			<posy>42</posy>
+			<width>140</width>
+			<height>40</height>
+			<texture diffuse="confluence/diffuse_mirror.png" flipy="true">confluence/XBMC_Logo.png</texture>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<texture>black-back.png</texture>
+		</control>
+		<control type="image">
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>440</width>
+            <height>35</height>
+            <texture flipx="true" border="32,0,0,0">confluence/header.png</texture>
+        </control>
+        <control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>250</width>
+			<height>35</height>
+			<texture border="0,0,32,0">confluence/header.png</texture>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1100</width>
+			<height>640</height>
+			<texture border="20">confluence/DialogBack.png</texture>
+		</control>
+		<control type="image">
+			<description>LOGO</description>
+			<posx>30</posx>
+			<posy>15</posy>
+			<width>220</width>
+			<height>80</height>
+			<aspectratio>keep</aspectratio>
+			<texture>confluence/Confluence_Logo.png</texture>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>260</width>
+			<height>60</height>
+			<texture border="5">confluence/MenuItemNF.png</texture>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>260</width>
+			<height>60</height>
+			<texture border="5">confluence/MenuItemFO.png</texture>
+		</control>
+		<control type="image">
+			<posx>268</posx>
+			<posy>10</posy>
+			<width>790</width>
+			<height>618</height>
+			<texture border="5">confluence/black-back2.png</texture>
+		</control>
+		<control type="image">
+			<posx>268</posx>
+			<posy>10</posy>
+			<width>804</width>
+			<height>100</height>
+			<aspectratio>stretch</aspectratio>
+			<texture>confluence/GlassTitleBar.png</texture>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1200</width>
+			<height>640</height>
+			<texture border="20">confluence/DialogBack.png</texture>
+		</control>
+		<control type="image">
+			<posx>30</posx>
+			<posy>10</posy>
+			<width>765</width>
+			<height>618</height>
+			<texture border="5">confluence/black-back2.png</texture>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>10</posy>
+			<width>804</width>
+			<height>100</height>
+			<aspectratio>stretch</aspectratio>
+			<texture>confluence/GlassTitleBar.png</texture>
+		</control>
+		<control type="image">
+			<description>LOGO</description>
+			<posx>887</posx>
+			<posy>15</posy>
+			<width>220</width>
+			<height>80</height>
+			<aspectratio>keep</aspectratio>
+			<texture>confluence/Confluence_Logo.png</texture>
+		</control>
+		<control type="button">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>33</width>
+			<height>22</height>
+			<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
+			<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
+		</control>
+		<control type="button">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>33</width>
+			<height>22</height>
+			<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
+			<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>750</width>
+			<height>40</height>
+			<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>750</width>
+			<height>40</height>
+			<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
+		</control>
+		<control type="button" id="2101">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>750</width>
+			<height>40</height>
+			<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
+			<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>550</width>
+			<height>40</height>
+			<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>550</width>
+			<height>40</height>
+			<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
+		</control>
+		<control type="button" id="6241">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>550</width>
+			<height>40</height>
+			<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
+			<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
+		</control>
+		<control type="image">
+            <description>time background</description>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>440</width>
+            <height>35</height>
+            <texture flipx="true" border="32,0,0,0">confluence/header.png</texture>
+        </control>
+	</controls>
+</window>
