@@ -38,6 +38,7 @@ class TimeShiftPlate(BaseWindow):
 		self.mEventID = 0
 		self.mMode = ElisEnum.E_MODE_LIVE
 		self.mIsPlay = False
+		self.mAsyncShiftTimer = None
 
 
 	def __del__(self):
@@ -92,6 +93,8 @@ class TimeShiftPlate(BaseWindow):
 		self.mEnableThread = True
 		self.CurrentTimeThread()
 
+		self.mAsyncShiftTimer = None
+
 		LOG_TRACE( 'Leave' )
 
 	def onAction(self, aAction):
@@ -103,7 +106,7 @@ class TimeShiftPlate(BaseWindow):
 			# end thread CurrentTimeThread()
 			self.mEnableThread = False
 			self.CurrentTimeThread().join()
-			self.close( )
+			self.Close()
 #			winmgr.GetInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
 #			winmgr.GetInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
 #			winmgr.shutdown()
@@ -116,12 +119,17 @@ class TimeShiftPlate(BaseWindow):
 			LOG_TRACE( '===== [%s]' % self.mFocusId )
 			if self.mFocusId == self.mCtrlBtnCurrent.getId():
 				self.mUserMoveTime -= 10
+				#TODO : must be need timeout schedule
+				self.RestartAsyncMove()
+
 				LOG_TRACE('left moveTime[%s]'% self.mUserMoveTime )
 
 		elif id == Action.ACTION_MOVE_RIGHT:
 			self.GetFocusId()
 			if self.mFocusId == self.mCtrlBtnCurrent.getId():
 				self.mUserMoveTime += 10
+				#TODO : must be need timeout schedule
+				self.RestartAsyncMove()
 				LOG_TRACE('right moveTime[%s]'% self.mUserMoveTime )
 	
 
@@ -250,7 +258,7 @@ class TimeShiftPlate(BaseWindow):
 
 				self.mEnableThread = False
 				self.CurrentTimeThread().join()
-				self.close( )
+				self.Close()
 
 				winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_NULLWINDOW )
 
@@ -556,6 +564,7 @@ class TimeShiftPlate(BaseWindow):
 			lbl_timeE = ''
 			lbl_timeP = ''
 
+			#update localTime
 			ret = EpgInfoClock(FLAG_CLOCKMODE_AHM, self.mLocalTime, 0)
 			lbl_localTime = ret[0]
 
@@ -583,7 +592,7 @@ class TimeShiftPlate(BaseWindow):
 
 			else:
 				#calculate current position
-				pastTime = self.mTimeshift_curTime + self.mPlayTime + self.mUserMoveTime
+				pastTime = self.mTimeshift_curTime + self.mPlayTime
 				self.mProgress_idx = ( pastTime / self.mProgress_max * 100 )
 				LOG_TRACE( 'pastTime[%s] idx[%s] max[%s]'% ( pastTime, self.mProgress_idx, self.mProgress_max ) )
 
@@ -592,6 +601,8 @@ class TimeShiftPlate(BaseWindow):
 
 			if self.mProgress_idx > 100:
 				self.mProgress_idx = 100
+			elif self.mProgress_idx < 0 :
+				self.mProgress_idx = 0
 
 			if pastTime > self.mProgress_max :
 				pastTime = self.mProgress_max
@@ -606,9 +617,7 @@ class TimeShiftPlate(BaseWindow):
 				self.mPlayTime += 1
 				#LOG_TRACE( 'posx[%s] [%s] [%s]'% (posx, pastTime, pastTime/self.mProgress_max) )
 
-
-
-			#update UI
+			#print label
 			self.mCtrlEventClock.setLabel(lbl_localTime)
 			if self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				self.mCtrlLblTSEndTime.setLabel( lbl_timeE )
@@ -627,6 +636,14 @@ class TimeShiftPlate(BaseWindow):
 		LOG_TRACE( 'leave' )
 
 
+	@GuiLock
+	def UpdateCurrentMove(self):
+		LOG_TRACE( 'Enter' )
+
+
+		LOG_TRACE( 'leave' )
+
+
 	def updateServiceType(self, aTvType):
 		LOG_TRACE( 'serviceType[%s]' % aTvType )
 
@@ -634,6 +651,40 @@ class TimeShiftPlate(BaseWindow):
 		LOG_TRACE( '' )
 
 		
-		
+	def Close( self ):
+		#self.mEventBus.Deregister( self )
+		self.StopAsyncMove()
+		self.close()
+
+	def RestartAsyncMove( self ) :
+		self.StopAsyncMove( )
+		self.StartAsyncMove( )
+
+
+	def StartAsyncMove( self ) :
+		self.mAsyncShiftTimer = threading.Timer( 0.1, self.AsyncUpdateCurrentMove ) 				
+		self.mAsyncShiftTimer.start()
+
+		self.mINSTime = self.mAccelator * 2
+		self.mAccelator += 2
+		LOG_TRACE('1================Accelator[%s]'% self.mAccelator)
+
+	def StopAsyncMove( self ) :
+		if self.mAsyncShiftTimer	and self.mAsyncShiftTimer.isAlive() :
+			self.mAsyncShiftTimer.cancel()
+			del self.mAsyncShiftTimer
+
+		self.mAsyncShiftTimer  = None
+		self.mAccelator = 0
+		self.mINSTime = 0
+
+	#TODO : must be need timeout schedule
+	def AsyncUpdateCurrentMove( self ) :
+		try :
+			self.UpdateLocalTime()
+			self.mUserMoveTime += self.mINSTime
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
 		
 
