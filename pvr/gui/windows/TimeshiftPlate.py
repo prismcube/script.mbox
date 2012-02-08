@@ -78,6 +78,11 @@ class TimeShiftPlate(BaseWindow):
 		self.mLocalTime = 0
 		self.mTimeShiftExcuteTime = 0
 		self.mUserMoveTime = 0
+		self.mUserMoveTimeBack = 0
+		self.mFlagUserMove = False
+		self.mAccelator = 0
+		self.mINSTime = 0
+
 		
 		#get channel
 		#self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
@@ -116,22 +121,24 @@ class TimeShiftPlate(BaseWindow):
 
 		elif id == Action.ACTION_MOVE_LEFT :
 			self.GetFocusId()
-			LOG_TRACE( '===== [%s]' % self.mFocusId )
 			if self.mFocusId == self.mCtrlBtnCurrent.getId():
+				self.mUserMoveTimeBack = self.mUserMoveTime
 				self.mUserMoveTime -= 10
+				self.mFlagUserMove = True
 				#TODO : must be need timeout schedule
 				self.RestartAsyncMove()
-
 				LOG_TRACE('left moveTime[%s]'% self.mUserMoveTime )
 
 		elif id == Action.ACTION_MOVE_RIGHT:
 			self.GetFocusId()
 			if self.mFocusId == self.mCtrlBtnCurrent.getId():
+				self.mUserMoveTimeBack = self.mUserMoveTime
 				self.mUserMoveTime += 10
+				self.mFlagUserMove = True
 				#TODO : must be need timeout schedule
 				self.RestartAsyncMove()
 				LOG_TRACE('right moveTime[%s]'% self.mUserMoveTime )
-	
+
 
 
 	def onClick(self, aControlId):
@@ -547,10 +554,11 @@ class TimeShiftPlate(BaseWindow):
 				#self.UpdateLocalTime( )
 
 			self.UpdateLocalTime( loop )
+			#self.RestartAsyncMove()
 
 			time.sleep(1)
 			self.mLocalTime += 1
-			loop += 1
+			#loop += 1
 
 		LOG_TRACE( 'leave_end thread' )
 
@@ -580,12 +588,13 @@ class TimeShiftPlate(BaseWindow):
 				#calculate current position
 				self.mProgress_max = endtime
 				pastTime = self.mTimeshift_curTime + self.mPlayTime + self.mUserMoveTime
-				#idxmax = self.mProgress_max - self.mTimeshift_staTime
-				#self.mProgress_idx = ( float(self.mPlayTime) / idxmax ) * 100
-				#LOG_TRACE( 'pastTime[%s] idx[%s] max[%s]'% ( self.mPlayTime, self.mProgress_idx, idxmax ) )
-
 				self.mProgress_idx = ( float(pastTime) / self.mProgress_max * 100 )
 				LOG_TRACE( 'pastTime[%s] idx[%s] max[%s]'% ( pastTime, self.mProgress_idx, self.mProgress_max ) )
+
+				if self.mProgress_idx > 100 or self.mProgress_idx < 0 :
+					self.mUserMoveTime = self.mUserMoveTimeBack
+					pastTime = self.mTimeshift_curTime + self.mPlayTime + self.mUserMoveTimeBack
+					self.mProgress_idx = ( float(pastTime) / self.mProgress_max * 100 )
 
 				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, pastTime, 0)
 				lbl_timeP = ret[0]
@@ -598,7 +607,6 @@ class TimeShiftPlate(BaseWindow):
 
 				lbl_timeP = EpgInfoClock(FLAG_CLOCKMODE_HHMM, pastTime, 0)
 
-
 			if self.mProgress_idx > 100:
 				self.mProgress_idx = 100
 			elif self.mProgress_idx < 0 :
@@ -608,9 +616,8 @@ class TimeShiftPlate(BaseWindow):
 				pastTime = self.mProgress_max
 				self.InitTimeShift( loop )
 
-
 			#increase play time
-			if self.mIsPlay == True:
+			if self.mFlagUserMove == False and self.mIsPlay == True:
 				if self.mSpeed != 100:
 					self.InitTimeShift( loop )
 
@@ -635,13 +642,6 @@ class TimeShiftPlate(BaseWindow):
 
 		LOG_TRACE( 'leave' )
 
-
-	@GuiLock
-	def UpdateCurrentMove(self):
-		LOG_TRACE( 'Enter' )
-
-
-		LOG_TRACE( 'leave' )
 
 
 	def updateServiceType(self, aTvType):
@@ -670,19 +670,21 @@ class TimeShiftPlate(BaseWindow):
 		LOG_TRACE('1================Accelator[%s]'% self.mAccelator)
 
 	def StopAsyncMove( self ) :
-		if self.mAsyncShiftTimer	and self.mAsyncShiftTimer.isAlive() :
+		if self.mAsyncShiftTimer and self.mAsyncShiftTimer.isAlive() :
 			self.mAsyncShiftTimer.cancel()
 			del self.mAsyncShiftTimer
 
 		self.mAsyncShiftTimer  = None
-		self.mAccelator = 0
-		self.mINSTime = 0
 
 	#TODO : must be need timeout schedule
 	def AsyncUpdateCurrentMove( self ) :
 		try :
 			self.UpdateLocalTime()
 			self.mUserMoveTime += self.mINSTime
+			self.mFlagUserMove = False
+			self.mAccelator = 0
+			self.mINSTime = 0
+			LOG_TRACE('2================Accelator[%s]'% self.mAccelator)
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
