@@ -217,5 +217,26 @@
             <height>35</height>
             <texture flipx="true" border="32,0,0,0">confluence/header.png</texture>
         </control>
+        <control type="image">
+			<posx>0</posx>
+			<posy>128r</posy>
+			<width>1280</width>
+			<height>128</height>
+			<texture>confluence/floor.png</texture>
+		</control>
+		<control type="image">
+			<posx>40</posx>
+			<posy>40</posy>
+			<width>1200</width>
+			<height>620</height>
+			<texture border="20">confluence/ContentPanel.png</texture>
+		</control>
+		<control type="image">
+			<posx>40</posx>
+			<posy>645</posy>
+			<width>1200</width>
+			<height>600</height>
+			<texture diffuse="confluence/diffuse_mirror3.png" flipy="true" border="20">confluence/ContentPanel.png</texture>
+		</control>
 	</controls>
 </window>
