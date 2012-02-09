@@ -2098,7 +2098,7 @@ class ChannelListWindow(BaseWindow):
 		self.mEventBus.Deregister( self )
 		self.StopAsyncEPG()
 
-		ret = self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
+		self.SetVideoRestore()
 		self.close()
 
 	def RestartAsyncEPG( self ) :

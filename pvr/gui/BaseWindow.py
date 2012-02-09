@@ -117,7 +117,10 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 			self.UpdateVolume( )
 
 		elif aActionId == Action.ACTION_VOLUME_DOWN:
-			self.UpdateVolume( )		
+			self.UpdateVolume( )
+
+	def SetVideoRestore( self ) :
+		ret = self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
 
 
 	@GuiLock
