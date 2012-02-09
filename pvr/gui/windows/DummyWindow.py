@@ -15,7 +15,7 @@ class DummyWindow( BaseWindow ):
 
 
 	def onInit( self ):
-		self.mWinId = xbmcgui.getCurrentWindowId()
+		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		time.sleep( 0.5 )
 		self.close( )
@@ -27,7 +27,9 @@ class DummyWindow( BaseWindow ):
 
 	def onClick( self, aControlId ):
 		LOG_TRACE('')
+		pass
 		
  
 	def onFocus( self, aControlId ):
 		LOG_TRACE('')
+		pass

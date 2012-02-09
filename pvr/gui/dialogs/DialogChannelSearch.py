@@ -47,7 +47,6 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mIsFinished = False	
 
 		self.mTimer = None
-		self.mAboartFlag = False
 		
 		self.mSatelliteFormatedName = 'Unknown'
 		self.mAllSatelliteList = []
@@ -195,7 +194,6 @@ class DialogChannelSearch( BaseDialog ) :
 	def ScanAbort( self ) :
 		if self.mIsFinished == False :
 			self.mCommander.Channelscan_Abort( )
-			self.mAboartFlag = True
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( 'Confirm', 'Do you want abort channel scan?' )
 			dialog.doModal( )
@@ -208,11 +206,9 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mIsFinished = True
 
 			elif dialog.IsOK() == E_DIALOG_STATE_NO : 
-				self.mAboartFlag == False
 				self.ScanStart( )
 				
 			elif dialog.IsOK() == E_DIALOG_STATE_CANCEL :
-				self.mAboartFlag == False
 				self.ScanStart( )
 
 
@@ -223,8 +219,6 @@ class DialogChannelSearch( BaseDialog ) :
 
 	@GuiLock
 	def onEvent( self, aEvent ) :
-		if self.mAboartFlag == True :
-			return
 		if xbmcgui.getCurrentWindowId( ) == self.mWinId :
 
 			if aEvent.getName( ) == ElisEventScanAddChannel.getName():

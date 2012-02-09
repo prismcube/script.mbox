@@ -75,7 +75,7 @@ class WindowMgr(object):
 
 		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
 		self.SetVideoRestore()
-		
+
 		self.AddDefaultFont( )		
 		self.CopyIncludeFile( )
 		self.CreateAllWindows( )

@@ -6,6 +6,7 @@ import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
 from inspect import currentframe
+import pvr.ElisMgr
 from pvr.Util import GuiLock, LOG_TRACE
 
 LIST_ID_MAIN_MENU				= 9000
@@ -28,7 +29,8 @@ BUTTON_ID_CAS					= 90107
 class MainMenu( BaseWindow ):
 	def __init__( self, *args, **kwargs ):
 		BaseWindow.__init__( self, *args, **kwargs )
-
+		#self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
+		self.mStartMediaCenter = False
 
 	def onInit( self ):
 		LOG_TRACE('')
@@ -36,6 +38,10 @@ class MainMenu( BaseWindow ):
 		self.mWin = xbmcgui.Window( self.mWinId )
 		self.mCtrlMainMenu = self.getControl( LIST_ID_MAIN_MENU )
 		WinMgr.GetInstance().CheckSkinChange( )
+		self.mStartMediaCenter = False
+		if self.mStartMediaCenter == True :
+			# command
+			self.mStartMediaCenter = False
 
 
 	def onAction( self, aAction ) :
@@ -70,6 +76,8 @@ class MainMenu( BaseWindow ):
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_INSTALLATION )
 
 		elif aControlId == BUTTON_ID_MEDIA_CENTER :
+			self.mStartMediaCenter = True
+			# command
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
 
 		elif aControlId == BUTTON_ID_ANTENNA_SETUP : # Antenna Setup
