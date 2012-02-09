@@ -589,7 +589,7 @@ class TimeShiftPlate(BaseWindow):
 				self.mProgress_max = endtime
 				pastTime = self.mTimeshift_curTime + self.mPlayTime + self.mUserMoveTime
 				self.mProgress_idx = ( float(pastTime) / self.mProgress_max * 100 )
-				LOG_TRACE( 'pastTime[%s] idx[%s] max[%s]'% ( pastTime, self.mProgress_idx, self.mProgress_max ) )
+				LOG_TRACE( 'pastTime[%s] idx[%s] max[%s] move[%s]'% ( pastTime, self.mProgress_idx, self.mProgress_max, self.mUserMoveTime ) )
 
 				if self.mProgress_idx > 100 or self.mProgress_idx < 0 :
 					self.mUserMoveTime = self.mUserMoveTimeBack
@@ -665,9 +665,10 @@ class TimeShiftPlate(BaseWindow):
 		self.mAsyncShiftTimer = threading.Timer( 0.1, self.AsyncUpdateCurrentMove ) 				
 		self.mAsyncShiftTimer.start()
 
-		self.mINSTime = self.mAccelator * 2
-		self.mAccelator += 2
-		LOG_TRACE('1================Accelator[%s]'% self.mAccelator)
+		self.mAccelator += 100
+		if self.mAccelator > 200 :
+			self.mUserMoveTime = self.mAccelator * (self.mUserMoveTime / abs(self.mUserMoveTime))
+		LOG_TRACE('1================Accelator[%s] move[%s]'% (self.mAccelator, self.mUserMoveTime) )
 
 	def StopAsyncMove( self ) :
 		if self.mAsyncShiftTimer and self.mAsyncShiftTimer.isAlive() :
@@ -680,11 +681,8 @@ class TimeShiftPlate(BaseWindow):
 	def AsyncUpdateCurrentMove( self ) :
 		try :
 			self.UpdateLocalTime()
-			self.mUserMoveTime += self.mINSTime
 			self.mFlagUserMove = False
 			self.mAccelator = 0
-			self.mINSTime = 0
-			LOG_TRACE('2================Accelator[%s]'% self.mAccelator)
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
