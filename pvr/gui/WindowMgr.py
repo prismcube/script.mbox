@@ -73,6 +73,7 @@ class WindowMgr(object):
 		self.mListDir = []
 		self.mWindows = {}
 
+		self.SetVideoRestore()
 		self.AddDefaultFont( )		
 		self.CopyIncludeFile( )
 		self.CreateAllWindows( )
