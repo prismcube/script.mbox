@@ -207,11 +207,12 @@
 				<shadowcolor>black</shadowcolor>
 			</control>
 		</control>
-		<control type="image" id="9889">
+		<control type="image" id="8898">
 			<posx>362</posx>
 			<posy>112</posy>
 			<width>796</width>
 			<height>446</height>
+			<texture></texture>
 		</control>
 	</controls>
 </window>

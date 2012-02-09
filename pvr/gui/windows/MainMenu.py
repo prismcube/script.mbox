@@ -67,9 +67,10 @@ class MainMenu( BaseWindow ):
 			pass
 
 		elif aControlId == BUTTON_ID_FIRSTINSTALLATION : # First Installation
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+			pass
+			#dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 			#dialog.SetProperty( [ 'test11111111111111', 'test222222222222222', 'test33333333', 'test', '1' ] )
- 			dialog.doModal( )
+ 			#dialog.doModal( )
 
 		elif aControlId == BUTTON_ID_INSTALLATION :
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_INSTALLATION )

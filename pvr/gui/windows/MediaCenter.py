@@ -4,7 +4,10 @@ import sys
 
 import pvr.gui.WindowMgr as WinMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
+import pvr.ElisMgr
 from pvr.gui.GuiConfig import *
+from pvr.Util import GuiLock, LOG_TRACE
+
 
 MENU_ID_WEATHER					= 0
 MENU_ID_PICTURE					= 1
@@ -21,6 +24,7 @@ LEFT_MENU_ID = 9000
 class MediaCenter( BaseWindow ):
 	def __init__( self, *args, **kwargs ):
 		BaseWindow.__init__( self, *args, **kwargs )
+		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
 
 
 	def onInit( self ):
@@ -29,7 +33,7 @@ class MediaCenter( BaseWindow ):
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Media Center' )
 
-		self.mCtrlImgVideoPos = self.getControl( 9889 )
+		self.mCtrlImgVideoPos = self.getControl( 8898 )
 
 		h = self.mCtrlImgVideoPos.getHeight()
 		w = self.mCtrlImgVideoPos.getWidth()

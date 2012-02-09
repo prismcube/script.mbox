@@ -4,6 +4,7 @@ import sys
 
 import pvr.gui.WindowMgr as WinMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
+import pvr.ElisMgr
 from pvr.gui.GuiConfig import *
 
 MENU_ID_FIRSTINSTALLATION		= 0
@@ -17,24 +18,15 @@ MENU_ID_CAS						= 6
 class Installation( BaseWindow ):
 	def __init__( self, *args, **kwargs ):
 		BaseWindow.__init__( self, *args, **kwargs )
+		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
 
 		self.leftGroupItems = [ 'First Installation', 'Antenna Setup', 'Channel Search', 'Edit Satellite', 'Edit Transponder', 'Configure', 'CAS' ]
 		self.descriptionList	 = [ 'Desc First Installation', 'Desc Antenna Setup', 'Desc Channel Search', 'Desc Edit Satellite', 'Desc Edit Transponder', 'Desc Configure', 'Desc CAS' ]
 		#self.icon = [ 'special://skin/backgrounds/appearance.jpg', 'special://skin/backgrounds/videos.jpg', 'special://skin/backgrounds/music.jpg', 'special://skin/backgrounds/pictures.jpg', 'special://skin/backgrounds/weather.jpg', 'special://skin/backgrounds/addons.jpg', 'special://skin/backgrounds/network.jpg' ]
 
 		self.mCtrlLeftGroup = 0
-
-		self.mCtrlImgVideoPos = self.getControl( 9889 )
-
-		h = self.mCtrlImgVideoPos.getHeight()
-		w = self.mCtrlImgVideoPos.getWidth()
-		pos=list(self.mCtrlImgVideoPos.getPosition())
-		x = pos[0]
-		y = pos[1]
-		#LOG_TRACE('==========h[%s] w[%s] x[%s] y[%s]'% (h,w,x,y) )
-
-		ret = self.mCommander.Player_SetVIdeoSize( x, y, w, h ) 
-
+		
+		
 	def onInit( self ):
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
@@ -49,6 +41,17 @@ class Installation( BaseWindow ):
 			
 		self.mCtrlLeftGroup = self.getControl( 9000 )
 		self.mCtrlLeftGroup.addItems( groupItems )
+
+		self.mCtrlImgVideoPos = self.getControl( 8899 )
+
+		h = self.mCtrlImgVideoPos.getHeight()
+		w = self.mCtrlImgVideoPos.getWidth()
+		pos=list(self.mCtrlImgVideoPos.getPosition())
+		x = pos[0]
+		y = pos[1]
+		#LOG_TRACE('==========h[%s] w[%s] x[%s] y[%s]'% (h,w,x,y) )
+
+		ret = self.mCommander.Player_SetVIdeoSize( x, y, w, h )
 		
 	
 	def onAction( self, aAction ) :
