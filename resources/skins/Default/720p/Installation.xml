@@ -114,15 +114,6 @@
 			<control type="image">
 				<posx>272</posx>
 				<posy>62</posy>
-				<width>796</width>
-				<height>446</height>
-				<aspectratio>stretch</aspectratio>
-				<fadetime>600</fadetime>
-				<texture background="true">$INFO[Container(9000).ListItem.Icon]</texture>
-			</control>
-			<control type="image">
-				<posx>272</posx>
-				<posy>62</posy>
 				<width>600</width>
 				<height>340</height>
 				<aspectratio>stretch</aspectratio>
@@ -148,6 +139,12 @@
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 			</control>
+		</control>
+		<control type="image" id="9889">
+			<posx>362</posx>
+			<posy>112</posy>
+			<width>796</width>
+			<height>446</height>
 		</control>
 	</controls>
 </window>

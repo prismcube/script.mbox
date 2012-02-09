@@ -29,18 +29,31 @@ class MediaCenter( BaseWindow ):
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Media Center' )
 
+		self.mCtrlImgVideoPos = self.getControl( 9889 )
+
+		h = self.mCtrlImgVideoPos.getHeight()
+		w = self.mCtrlImgVideoPos.getWidth()
+		pos=list(self.mCtrlImgVideoPos.getPosition())
+		x = pos[0]
+		y = pos[1]
+		#LOG_TRACE('==========h[%s] w[%s] x[%s] y[%s]'% (h,w,x,y) )
+
+		ret = self.mCommander.Player_SetVIdeoSize( x, y, w, h ) 
+
 		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
+			self.SetVideoRestore( )
 			self.close( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
+			self.SetVideoRestore( )
 			self.close( )
 
 
