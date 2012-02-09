@@ -73,11 +73,15 @@ class WindowMgr(object):
 		self.mListDir = []
 		self.mWindows = {}
 
-		#base = gui.BaseWindow(self)
-		#base.SetVideoRestore()
+		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
+		self.SetVideoRestore()
+		
 		self.AddDefaultFont( )		
 		self.CopyIncludeFile( )
 		self.CreateAllWindows( )
+
+	def SetVideoRestore( self ) :
+		ret = self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
 
 	def GetWindow( self, aWindowId ):
 		LOG_TRACE('GetWindow ID=%d' %aWindowId )

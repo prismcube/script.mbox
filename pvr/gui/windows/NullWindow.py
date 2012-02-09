@@ -24,7 +24,6 @@ class NullWindow(BaseWindow):
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.SetVideoRestore()
 		LOG_TRACE('')
 		if self.mInitialized == False :
 			self.mInitialized = True
