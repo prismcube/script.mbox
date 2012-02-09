@@ -982,9 +982,12 @@ class ChannelListWindow(BaseWindow):
 
 		#sort list, This is fixed
 		self.mListAllChannel = []
-		self.mListAllChannel.append( str('%s %s'% (Msg.Strings(MsgId.LANG_SORT_BY), Msg.Strings(MsgId.LANG_NUMBER)) ) )
-		self.mListAllChannel.append( str('%s %s'% (Msg.Strings(MsgId.LANG_SORT_BY), Msg.Strings(MsgId.LANG_ALPHABET)) ) )
-		self.mListAllChannel.append( str('%s %s'% (Msg.Strings(MsgId.LANG_SORT_BY), Msg.Strings(MsgId.LANG_HD)) ) )
+		#self.mListAllChannel.append( str('%s %s'% (Msg.Strings(MsgId.LANG_SORT_BY), Msg.Strings(MsgId.LANG_NUMBER)) ) )
+		#self.mListAllChannel.append( str('%s %s'% (Msg.Strings(MsgId.LANG_SORT_BY), Msg.Strings(MsgId.LANG_ALPHABET)) ) )
+		#self.mListAllChannel.append( str('%s %s'% (Msg.Strings(MsgId.LANG_SORT_BY), Msg.Strings(MsgId.LANG_HD)) ) )
+		self.mListAllChannel.append( 'sort by Number' )
+		self.mListAllChannel.append( 'sort by Alphabet' )
+		self.mListAllChannel.append( 'sort by HD/SD' )
 		LOG_TRACE( 'mListAllChannel[%s]'% self.mListAllChannel )
 
 		try :
