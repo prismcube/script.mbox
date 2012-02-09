@@ -328,6 +328,15 @@
 		</control>
 
 <!-- middle right -->
+		<control type="image" id="301">
+			<posx>820</posx>
+			<posy>130</posy>
+			<width>352</width>
+			<height>198</height>
+			<texture border="20"></texture>
+			<colordiffuse>0x00ffffff</colordiffuse>
+			<description>pre-view</description>
+		</control>
 		<control type="group" id="300">
 			<posx>820</posx>
 			<posy>120</posy>
@@ -344,14 +353,6 @@
 					<aspectratio>keep</aspectratio>
 					<texture>confluence/Confluence_Logo.png</texture>
 				</control-->
-				<control type="image">
-					<posx>0</posx>
-					<posy>10</posy>
-					<width>352</width>
-					<height>198</height>
-					<texture border="20">confluence/backgrounds/weather.jpg</texture>
-					<description>pre-view</description>
-				</control>
 				<control type="image">
 					<posx>0</posx>
 					<posy>199</posy>

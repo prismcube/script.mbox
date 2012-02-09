@@ -126,6 +126,7 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlListCHList         = self.getControl( 50 )
 
 		#info
+		self.mCtrlImgVideoPos        = self.getControl( 301 )
 		self.mCtrlChannelName        = self.getControl( 303 )
 		self.mCtrlEventName          = self.getControl( 304 )
 		self.mCtrlEventTime          = self.getControl( 305 )
@@ -162,6 +163,7 @@ class ChannelListWindow(BaseWindow):
 
 
 		#initialize get channel list
+		self.SetVideoSize()
 		self.InitSlideMenuHeader()
 		#self.GetSlideMenuHeader( FLAG_SLIDE_INIT )
 
@@ -372,6 +374,19 @@ class ChannelListWindow(BaseWindow):
 	def onFocus(self, controlId):
 		#LOG_TRACE( 'control %d' % controlId )
 		pass
+
+	def SetVideoSize( self ) :
+		LOG_TRACE( 'Enter' )
+		h = self.mCtrlImgVideoPos.getHeight()
+		w = self.mCtrlImgVideoPos.getWidth()
+		pos=list(self.mCtrlImgVideoPos.getPosition())
+		x = pos[0]
+		y = pos[1]
+		#LOG_TRACE('==========h[%s] w[%s] x[%s] y[%s]'% (h,w,x,y) )
+
+		ret = self.mCommander.Player_SetVIdeoSize( x, y, w, h ) 
+
+		LOG_TRACE( 'Leave' )
 
 	def SetGoBackWindow( self ) :
 		LOG_TRACE( 'Enter' )
@@ -2082,6 +2097,8 @@ class ChannelListWindow(BaseWindow):
 	def Close( self ):
 		self.mEventBus.Deregister( self )
 		self.StopAsyncEPG()
+
+		ret = self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
 		self.close()
 
 	def RestartAsyncEPG( self ) :
