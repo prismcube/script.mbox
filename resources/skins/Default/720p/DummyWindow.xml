@@ -504,6 +504,28 @@
 				<height>720</height>
 				<texture>black-back_noAlpha.png</texture>
 			</control>
+			<control type="image">
+				<description>media info background image</description>
+				<posx>0</posx>
+				<posy>540</posy>
+				<width>1280</width>
+				<height>256</height>
+				<texture>confluence/MediaInfoBackLower.png</texture>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>200</width>
+				<height>35</height>
+				<texture border="0,0,32,0">confluence/header.png</texture>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1100</width>
+				<height>500</height>
+				<texture border="20">confluence/DialogBack.png</texture>
+			</control>
 		</control>
 	</controls>
 </window>
