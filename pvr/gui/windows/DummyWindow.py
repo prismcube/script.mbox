@@ -17,13 +17,12 @@ class DummyWindow( BaseWindow ):
 	def onInit( self ):
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
+		time.sleep( 0.5 )
+		self.close( )
 
 	def onAction( self, aAction ) :
 		id = aAction.getId( )
 		focusId = self.getFocusId( )
-
-		if id == Action.ACTION_PREVIOUS_MENU:
-			self.close()
 
 
 	def onClick( self, aControlId ):
