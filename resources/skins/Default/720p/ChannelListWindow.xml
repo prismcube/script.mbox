@@ -720,12 +720,12 @@
 							<visible>true</visible>
 						</item>
 						<item id="5">
-							<label>Edit</label>
+							<label>SCRIPT582</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="6">
-							<label>Delete All Channels</label>
+							<label>SCRIPT597</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>

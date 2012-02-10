@@ -393,6 +393,28 @@ class ChannelListWindow(BaseWindow):
 	def SetDeleteAll( self ) :
 		LOG_TRACE( 'Enter' )
 
+		ret = E_DIALOG_STATE_NO
+
+		#ask save question
+		head =  Msg.Strings( MsgId.LANG_CONFIRM )
+		line1 = Msg.Strings( MsgId.LANG_DELETE_ALL_CHANNEL )
+
+		#ret = xbmcgui.Dialog().yesno(head, line1)
+		GuiLock2( True )
+		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+		dialog.SetDialogProperty( head, line1 )
+		dialog.doModal()
+		GuiLock2( False )
+
+		ret = dialog.IsOK()
+
+		#answer is yes
+		if ret == E_DIALOG_STATE_YES :
+			isDelete = self.mCommander.Channel_DeleteAll()
+			LOG_TRACE( 'DeleteAll[%s]'% isDelete )
+
+		return ret
+
 		LOG_TRACE( 'Leave' )
 	
 	def SetGoBackWindow( self ) :
@@ -978,8 +1000,8 @@ class ChannelListWindow(BaseWindow):
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_SATELLITE)    )
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_FTA)          )
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_FAVORITE)     )
-		list_Mainmenu.append( 'Edit' )
-		list_Mainmenu.append( 'Delete All Channel' )
+		list_Mainmenu.append( Msg.Strings(MsgId.LANG_EDIT_CHANNEL) )
+		list_Mainmenu.append( Msg.Strings(MsgId.LANG_DELETE_ALL_CHANNEL) )
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_BACK)     )
 		testlistItems = []
 		for item in range( len(list_Mainmenu) ) :

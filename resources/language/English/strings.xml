@@ -95,4 +95,6 @@
 	<string id="593">FAVORITE</string>
 	<string id="594">Error</string>
 	<string id="595">Wrong PIN Code</string>
+	<string id="596">Do you want to delete?</string>
+	<string id="597">Delete All Channel</string>
 </strings>
