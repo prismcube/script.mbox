@@ -84,7 +84,6 @@ class LivePlate(BaseWindow):
 
 		self.mShowExtendInfo = False
 
-		self.mCtrlImgBackgroundHide    = self.getControl( 500 )
 		self.mCtrlLblChannelNumber     = self.getControl( 601 )
 		self.mCtrlLblChannelName       = self.getControl( 602 )
 		self.mCtrlImgServiceType       = self.getControl( 603 )
@@ -521,7 +520,6 @@ class LivePlate(BaseWindow):
 				msg = Msg.Strings(MsgId.LANG_INPUT_PIN_CODE)
 				inputPin = ''
 
-				#self.SetHideScreen(self.mPincodeEnter)
 				#ret = self.mCommander.Channel_SetInitialBlank( True )
 				ret = self.mCommander.Player_AVBlank( True, True )
 
@@ -537,7 +535,6 @@ class LivePlate(BaseWindow):
 
 	 			elif reply == E_DIALOG_STATE_CANCEL :
 	 				self.mPincodeEnter = FLAG_MASK_NONE
-	 				#self.SetHideScreen(self.mPincodeEnter)
 					self.mCommander.Player_AVBlank( False, True )
 
 	 				inputKey = dialog.GetInputKey()
@@ -552,7 +549,6 @@ class LivePlate(BaseWindow):
 
 				if inputPin == str('%s'% stbPin) :
 					self.mPincodeEnter = FLAG_MASK_NONE
-					#self.SetHideScreen(self.mPincodeEnter)
 					#ret = self.mCommander.Channel_SetInitialBlank( False )
 					self.mCommander.Player_AVBlank( False, True )
 
@@ -572,25 +568,6 @@ class LivePlate(BaseWindow):
 			LOG_TRACE('=======loop==============')
 
 		LOG_TRACE( 'Leave' )
-
-
-	def SetHideScreen( self, aMask ) :
-		LOG_TRACE( 'Enter' )
-
-		img = ''
-		if aMask > FLAG_MASK_NONE :
-			img = E_IMG_SCREEN_HIDE
-
-		else :
-			img = ''
-
-		GuiLock2( True )
-		self.mCtrlImgBackgroundHide.setImage( img )
-		GuiLock2( False )
-		self.GlobalAction( Action.ACTION_MUTE  )
-
-		LOG_TRACE( 'Leave' )
-
 
 
 	@RunThread
