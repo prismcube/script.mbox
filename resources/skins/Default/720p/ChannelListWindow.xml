@@ -34,6 +34,7 @@
 		</control>
 
 		<control type="group">
+			<!--
 			<include>Window_OpenClose_Animation</include>
 			<control type="image">
 				<posx>0</posx>
@@ -43,6 +44,7 @@
 				<texture border="20">confluence/black-back.png</texture>
 				<include>VisibleFadeEffect</include>
 			</control>
+			-->
 			<control type="image">
 				<posx>0</posx>
 				<posy>128r</posy>
@@ -333,10 +335,10 @@
 			<posy>130</posy>
 			<width>352</width>
 			<height>198</height>
-			<texture border="20"></texture>
-			<colordiffuse>0x00ffffff</colordiffuse>
+			<texture border="20">PIPView.png</texture>
 			<description>pre-view</description>
 		</control>
+
 		<control type="group" id="300">
 			<posx>820</posx>
 			<posy>120</posy>
@@ -485,7 +487,7 @@
 				<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="true">conditional</animation>
 			</control-->
 			<control type="label" id="401">
-				<posx>200r</posx>
+				<posx>230r</posx>
 				<posy>30r</posy>
 				<width>50</width>
 				<height>20</height>
@@ -952,6 +954,5 @@
 				<visible>[Control.HasFocus(501) | Control.HasFocus(501)]</visible>
 			</control>
 		</control>
-
 	</controls>
 </window>

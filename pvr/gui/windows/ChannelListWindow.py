@@ -380,9 +380,9 @@ class ChannelListWindow(BaseWindow):
 		h = self.mCtrlImgVideoPos.getHeight()
 		w = self.mCtrlImgVideoPos.getWidth()
 		pos=list(self.mCtrlImgVideoPos.getPosition())
-		x = pos[0]
-		y = pos[1]
-		#LOG_TRACE('==========h[%s] w[%s] x[%s] y[%s]'% (h,w,x,y) )
+		x = pos[0] - 20
+		y = pos[1] + 10
+		LOG_TRACE('==========h[%s] w[%s] x[%s] y[%s]'% (h,w,x,y) )
 
 		ret = self.mCommander.Player_SetVIdeoSize( x, y, w, h ) 
 
