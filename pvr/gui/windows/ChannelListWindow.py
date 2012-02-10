@@ -1001,6 +1001,7 @@ class ChannelListWindow(BaseWindow):
 			self.mChannelListServieType = ElisEnum.E_SERVICE_TYPE_TV
 			LOG_TRACE( 'Error exception[%s] init default zappingmode'% e )
 
+		LOG_TRACE('============lbl[%s]'% Msg.Strings(MsgId.LANG_ALL_CHANNELS) )
 
 		list_Mainmenu = []
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_ALL_CHANNELS) )
@@ -1327,7 +1328,7 @@ class ChannelListWindow(BaseWindow):
 				#self.mNavEpg.printdebug()
 				self.mCtrlEventName.setLabel( self.mNavEpg.mEventName )
 				ret = EpgInfoTime( self.mLocalOffset, self.mNavEpg.mStartTime, self.mNavEpg.mDuration )
-				self.mCtrlEventTime.setLabel( str('%s%s'% (ret[0], ret[1])) )
+				self.mCtrlEventTime.setLabel( str('%s - %s'% (ret[0], ret[1])) )
 
 				#visible progress
 				self.mCtrlProgress.setVisible( True )
