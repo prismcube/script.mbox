@@ -152,7 +152,7 @@ class ChannelListWindow(BaseWindow):
 		self.mChannelList = []
 		self.mNavEpg = None
 		self.mNavChannel = None
-		self.mCurrentChannel = 0
+		self.mCurrentChannel = None
 		self.mSlideOpenFlag = False
 
 		#edit mode
@@ -461,15 +461,18 @@ class ChannelListWindow(BaseWindow):
 
 	@GuiLock
 	def onEvent(self, aEvent):
-		LOG_TRACE( 'Enter' )
+		#LOG_TRACE( 'Enter' )
 		#aEvent.printdebug()
 
 		if self.mWinId == xbmcgui.getCurrentWindowId() :
 			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
 
-				#if self.mCurrentChannel.mSid != aEvent.mSid or self.mCurrentChannel.mTsid != aEvent.mTsid or self.mCurrentChannel.mOnid != aEvent.mOnid :
-				#	return -1
-				
+				if self.mNavChannel == None:
+					return -1
+
+				if self.mNavChannel.mSid != aEvent.mSid or self.mNavChannel.mTsid != aEvent.mTsid or self.mNavChannel.mOnid != aEvent.mOnid :
+					return -1
+		
 				#LOG_TRACE('1========event id[%s] old[%s]'% (aEvent.mEventId, self.mEventId) )
 				if aEvent.mEventId != self.mEventId :
 					if self.mIsSelect == True :
@@ -498,12 +501,12 @@ class ChannelListWindow(BaseWindow):
 
 
 
-			else :
-				LOG_TRACE( 'unknown event[%s]'% aEvent.getName() )
+			#else :
+			#	LOG_TRACE( 'unknown event[%s]'% aEvent.getName() )
 		else:
 			LOG_TRACE( 'channellist winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
 
-		LOG_TRACE( 'Leave' )
+		#LOG_TRACE( 'Leave' )
 
 
 
@@ -1000,8 +1003,6 @@ class ChannelListWindow(BaseWindow):
 			self.mChannelListSortMode   = ElisEnum.E_SORT_BY_DEFAULT
 			self.mChannelListServieType = ElisEnum.E_SERVICE_TYPE_TV
 			LOG_TRACE( 'Error exception[%s] init default zappingmode'% e )
-
-		LOG_TRACE('============lbl[%s]'% Msg.Strings(MsgId.LANG_ALL_CHANNELS) )
 
 		list_Mainmenu = []
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_ALL_CHANNELS) )
