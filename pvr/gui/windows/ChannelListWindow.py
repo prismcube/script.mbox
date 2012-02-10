@@ -41,7 +41,8 @@ E_SLIDE_MENU_SATELLITE  = 1
 E_SLIDE_MENU_FTACAS     = 2
 E_SLIDE_MENU_FAVORITE   = 3
 E_SLIDE_MENU_EDITMODE   = 4
-E_SLIDE_MENU_BACK       = 5
+E_SLIDE_MENU_DELETEALL  = 5
+E_SLIDE_MENU_BACK       = 6
 
 E_IMG_ICON_LOCK   = 'IconLockFocus.png'
 E_IMG_ICON_ICAS   = 'IconCas.png'
@@ -201,23 +202,26 @@ class ChannelListWindow(BaseWindow):
 		self.GlobalAction( id )		
 
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
-			LOG_TRACE( 'goto previous menu' )
+			#LOG_TRACE( 'goto previous menu' )
 			self.SetGoBackWindow()
 
 		elif id == Action.ACTION_SELECT_ITEM:
 			self.GetFocusId()
-			LOG_TRACE( 'item select, action ID[%s]'% id )
+			#LOG_TRACE( 'item select, action ID[%s]'% id )
 
 			if self.mFocusId == self.mCtrlListMainmenu.getId() :
 				position = self.mCtrlListMainmenu.getSelectedPosition()
-				LOG_TRACE( 'focus[%s] idx_main[%s]'% (self.mFocusId, position) )
+				#LOG_TRACE( 'focus[%s] idx_main[%s]'% (self.mFocusId, position) )
 
 				if position == E_SLIDE_MENU_BACK :
 					self.mCtrlListCHList.setEnabled(True)
 					self.setFocusId( self.mCtrlGropCHList.getId() )
 
+				elif position == E_SLIDE_MENU_DELETEALL :
+					self.SetDeleteAll()
+
 				elif position == E_SLIDE_MENU_EDITMODE :
-					LOG_TRACE( 'onclick opt edit' )
+					#LOG_TRACE( 'onclick opt edit' )
 
 					if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 						self.mViewMode = WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW
@@ -243,7 +247,7 @@ class ChannelListWindow(BaseWindow):
 							self.InitChannelList()
 
 							ret = self.mCommander.Channel_Backup()
-							LOG_TRACE( 'channelBackup[%s]'% ret )
+							#LOG_TRACE( 'channelBackup[%s]'% ret )
 
 							self.mCtrlListCHList.setEnabled(True)
 							self.setFocusId( self.mCtrlGropCHList.getId() )
@@ -295,7 +299,7 @@ class ChannelListWindow(BaseWindow):
 				self.setFocusId( self.mCtrlGropCHList.getId() )
 
 		elif id == Action.ACTION_CONTEXT_MENU :
-			LOG_TRACE( 'popup opt' )
+			#LOG_TRACE( 'popup opt' )
 			self.PopupOpt()
 
 		elif id == 13: #'x'
@@ -347,13 +351,11 @@ class ChannelListWindow(BaseWindow):
 		elif aControlId == self.mCtrlListSubmenu.getId() :
 			#list action
 			position = self.mZappingMode
-			LOG_TRACE( 'onclick focus[%s] idx_sub[%s]'% (aControlId, position) )
-
 			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
-
+			#LOG_TRACE( 'onclick focus[%s] idx_sub[%s]'% (aControlId, position) )
 
 		elif aControlId == self.mCtrlBtnOpt.getId():
-			LOG_TRACE( 'onclick Opt' )
+			#LOG_TRACE( 'onclick Opt' )
 			self.PopupOpt()
 
 
@@ -382,12 +384,17 @@ class ChannelListWindow(BaseWindow):
 		pos=list(self.mCtrlImgVideoPos.getPosition())
 		x = pos[0] - 20
 		y = pos[1] + 10
-		LOG_TRACE('==========h[%s] w[%s] x[%s] y[%s]'% (h,w,x,y) )
+		#LOG_TRACE('==========h[%s] w[%s] x[%s] y[%s]'% (h,w,x,y) )
 
 		ret = self.mCommander.Player_SetVIdeoSize( x, y, w, h ) 
 
 		LOG_TRACE( 'Leave' )
 
+	def SetDeleteAll( self ) :
+		LOG_TRACE( 'Enter' )
+
+		LOG_TRACE( 'Leave' )
+	
 	def SetGoBackWindow( self ) :
 		LOG_TRACE( 'Enter' )
 
@@ -591,8 +598,8 @@ class ChannelListWindow(BaseWindow):
 				item = self.mListSatellite[idx_Satellite]
 				retPass = self.GetChannelList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, item.mLongitude, item.mBand, 0, '' )
 
-				LOG_TRACE( 'cmd[channel_GetListBySatellite] idx_Satellite[%s] mLongitude[%s] band[%s]'% ( idx_Satellite, item.mLongitude, item.mBand ) )
-				ClassToList( 'print', self.mChannelList )
+				#LOG_TRACE( 'cmd[channel_GetListBySatellite] idx_Satellite[%s] mLongitude[%s] band[%s]'% ( idx_Satellite, item.mLongitude, item.mBand ) )
+				#ClassToList( 'print', self.mChannelList )
 
 			elif aMenuIndex == ElisEnum.E_MODE_CAS:
 				idxFtaCas = self.mCtrlListSubmenu.getSelectedPosition()
@@ -619,16 +626,16 @@ class ChannelListWindow(BaseWindow):
 
 				retPass = self.GetChannelList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, 0, 0, caid, '' )
 
-				LOG_TRACE( 'cmd[channel_GetListByFTACas] idxFtaCas[%s]'% idxFtaCas )
-				ClassToList( 'print', self.mChannelList )
+				#LOG_TRACE( 'cmd[channel_GetListByFTACas] idxFtaCas[%s]'% idxFtaCas )
+				#ClassToList( 'print', self.mChannelList )
 
 			elif aMenuIndex == ElisEnum.E_MODE_FAVORITE:
 				if self.mListFavorite : 
 					idx_Favorite = self.mCtrlListSubmenu.getSelectedPosition()
 					item = self.mListFavorite[idx_Favorite]
 					retPass = self.GetChannelList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, 0, 0, 0, item.mGroupName )
-					LOG_TRACE( 'cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s]'% ( idx_Favorite, item.mGroupName ) )
-					ClassToList( 'print', self.mChannelList )
+					#LOG_TRACE( 'cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s]'% ( idx_Favorite, item.mGroupName ) )
+					#ClassToList( 'print', self.mChannelList )
 				else:
 					LOG_TRACE( 'cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s]'% ( idx_Favorite, self.mListFavorite ) )
 
@@ -705,9 +712,9 @@ class ChannelListWindow(BaseWindow):
 			try :
 				#LOG_TRACE( 'len[%s]'% len(self.mElisZappingModeInfo) )
 				self.mElisZappingModeInfo.printdebug()
-				LOG_TRACE( 'satellite[%s]'% ClassToList( 'convert', self.mListSatellite ) )
-				LOG_TRACE( 'ftacas[%s]'   % ClassToList( 'convert', self.mListCasList ) )
-				LOG_TRACE( 'favorite[%s]' % ClassToList( 'convert', self.mListFavorite ) )
+				#LOG_TRACE( 'satellite[%s]'% ClassToList( 'convert', self.mListSatellite ) )
+				#LOG_TRACE( 'ftacas[%s]'   % ClassToList( 'convert', self.mListCasList ) )
+				#LOG_TRACE( 'favorite[%s]' % ClassToList( 'convert', self.mListFavorite ) )
 
 			except Exception, e:
 				LOG_TRACE( '[%s:%s]Error exception[%s]'% e )
@@ -852,7 +859,7 @@ class ChannelListWindow(BaseWindow):
 
 					#save zapping mode
 					ret = self.mCommander.Zappingmode_SetCurrent( retList )
-					LOG_TRACE( 'set zappingmode_SetCurrent[%s]'% ret )
+					#LOG_TRACE( 'set zappingmode_SetCurrent[%s]'% ret )
 
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -972,6 +979,7 @@ class ChannelListWindow(BaseWindow):
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_FTA)          )
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_FAVORITE)     )
 		list_Mainmenu.append( 'Edit' )
+		list_Mainmenu.append( 'Delete All Channel' )
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_BACK)     )
 		testlistItems = []
 		for item in range( len(list_Mainmenu) ) :
@@ -988,20 +996,20 @@ class ChannelListWindow(BaseWindow):
 		self.mListAllChannel.append( 'sort by Number' )
 		self.mListAllChannel.append( 'sort by Alphabet' )
 		self.mListAllChannel.append( 'sort by HD/SD' )
-		LOG_TRACE( 'mListAllChannel[%s]'% self.mListAllChannel )
+		#LOG_TRACE( 'mListAllChannel[%s]'% self.mListAllChannel )
 
 		try :
 			#satellite longitude list
 			self.mListSatellite = self.mCommander.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
-			ClassToList( 'print', self.mListSatellite )
+			#ClassToList( 'print', self.mListSatellite )
 
 			#FTA list
 			self.mListCasList = self.mCommander.Fta_cas_GetList( ElisEnum.E_SERVICE_TYPE_TV )
-			ClassToList( 'print', self.mListCasList )
+			#ClassToList( 'print', self.mListCasList )
 
 			#Favorite list
 			self.mListFavorite = self.mCommander.Favorite_GetList( ElisEnum.E_SERVICE_TYPE_TV )
-			ClassToList( 'print', self.mListFavorite )
+			#ClassToList( 'print', self.mListFavorite )
 
 			"""
 			#print
@@ -1068,12 +1076,14 @@ class ChannelListWindow(BaseWindow):
 		self.mChannelList = self.mCommander.Channel_GetList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode )
 		#self.GetChannelList(self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, 0, 0, 0, '')
 
+		"""
 		if self.mChannelList :
 			LOG_TRACE( 'zappingMode[%s] sortMode[%s] serviceType[%s]'%  \
 				( EnumToString('mode', self.mZappingMode),         \
 				  EnumToString('sort', self.mChannelListSortMode), \
 				  EnumToString('type', self.mChannelListServieType)) )
 			LOG_TRACE( 'len[%s] ch%s'% (len(self.mChannelList),ClassToList( 'convert', self.mChannelList )) )
+		"""
 
 		LOG_TRACE( 'Leave' )
 
@@ -1191,7 +1201,7 @@ class ChannelListWindow(BaseWindow):
 				if self.mChannelList :
 					label = self.mCtrlListCHList.getSelectedItem().getLabel()
 					channelNumbr = ParseLabelToCh( self.mViewMode, label )
-					LOG_TRACE( 'label[%s] ch[%d]'% (label, channelNumbr) )
+					#LOG_TRACE( 'label[%s] ch[%d]'% (label, channelNumbr) )
 
 					for ch in self.mChannelList:
 						if ch.mNumber == channelNumbr :
@@ -1222,7 +1232,6 @@ class ChannelListWindow(BaseWindow):
 
 	def UpdateServiceType( self, aTvType ):
 		LOG_TRACE( 'Enter' )
-		LOG_TRACE( 'serviceType[%s]' % aTvType )
 
 		label = ''
 		if aTvType == ElisEnum.E_SERVICE_TYPE_TV:
@@ -1439,10 +1448,6 @@ class ChannelListWindow(BaseWindow):
 				endTime   = startTime + self.mNavEpg.mDuration
 				pastDuration = endTime - self.mLocalTime
 
-				#endTime = self.mNavEpg.mStartTime + self.mNavEpg.mDuration
-				#pastDuration = self.mLocalTime - endTime
-				#LOG_TRACE('past[%s] time[%s] start[%s] duration[%s] offset[%s]'% (pastDuration,self.mLocalTime, self.mNavEpg.mStartTime, self.mNavEpg.mDuration,self.mLocalOffset ) )
-
 				if self.mLocalTime > endTime: #Already past
 					self.mCtrlProgress.setPercent( 100 )
 					return
@@ -1460,7 +1465,7 @@ class ChannelListWindow(BaseWindow):
 				else :
 					percent = 0
 
-				LOG_TRACE( 'percent=%d'% percent )
+				#LOG_TRACE( 'percent=%d'% percent )
 				self.mCtrlProgress.setPercent( percent )
 
 		except Exception, e :
@@ -1542,7 +1547,7 @@ class ChannelListWindow(BaseWindow):
 					else :
 						ret = 'group None'
 
-				LOG_TRACE( 'set[%s] idx[%s] ret[%s]'% (cmd,lastPos,ret) )
+				#LOG_TRACE( 'set[%s] idx[%s] ret[%s]'% (cmd,lastPos,ret) )
 
 			else :
 				#----------------> 2.set mark list all <-------------
@@ -1582,7 +1587,7 @@ class ChannelListWindow(BaseWindow):
 							label3= str('%s%s%s'%( E_TAG_COLOR_GREY, label2[0], E_TAG_COLOR_END ) )
 							cmd = 'UnSkip'
 						self.mCtrlListCHList.getSelectedItem().setLabel(label3)
-						LOG_TRACE( 'idx[%s] 1%s 2%s 3%s'% (idx, label1,label2,label3) )
+						#LOG_TRACE( 'idx[%s] 1%s 2%s 3%s'% (idx, label1,label2,label3) )
 
 						retList = []
 						retList.append( self.mChannelList[idx] )
@@ -1626,7 +1631,6 @@ class ChannelListWindow(BaseWindow):
 						xbmc.sleep(50)
 						self.mCtrlListCHList.getSelectedItem().setLabel(labelM)
 
-						LOG_TRACE( '==================move' )
 						continue
 					
 					elif aMode.lower() == 'gmove' :
@@ -1637,10 +1641,7 @@ class ChannelListWindow(BaseWindow):
 						else :
 							ret = 'group None'
 
-						LOG_TRACE( '==================gmove' )
-
-
-					LOG_TRACE( 'set[%s] idx[%s] ret[%s]'% (cmd,idx,ret) )
+					#LOG_TRACE( 'set[%s] idx[%s] ret[%s]'% (cmd,idx,ret) )
 
 					#mark remove
 					listItem.setProperty('mark', '')
@@ -1650,7 +1651,7 @@ class ChannelListWindow(BaseWindow):
 
 
 		except Exception, e:
-			LOG_TRACE( '============except[%s]'% e )
+			LOG_TRACE( 'Error except[%s]'% e )
 
 		LOG_TRACE( 'Leave' )
 
@@ -1764,7 +1765,6 @@ class ChannelListWindow(BaseWindow):
 					self.mCtrlListCHList.selectItem(idx)
 					self.setFocusId( self.mCtrlGropCHList.getId() )
 					GuiLock2(False)
-					LOG_TRACE( '=============== focus[%s]'% idx )
 				return
 
 			elif aBtn == E_DialogInput07 :
@@ -1775,19 +1775,19 @@ class ChannelListWindow(BaseWindow):
 				else :
 					cmd = 'Create'
 					ret = self.mCommander.Favoritegroup_Create( aGroupName, self.mChannelListServieType )	#default : ElisEnum.E_SERVICE_TYPE_TV
-					LOG_TRACE( 'set[%s] name[%s] ret[%s]'% (cmd,aGroupName,ret) )				
+					#LOG_TRACE( 'set[%s] name[%s] ret[%s]'% (cmd,aGroupName,ret) )				
 
 			elif aBtn == E_DialogInput08 :
 				#parse idx, source name, rename
 				cmd = 'Rename'
 				name = re.split(':', aGroupName)
 				ret = self.mCommander.Favoritegroup_ChangeName( name[1], self.mChannelListServieType, name[2] )
-				LOG_TRACE( 'set[%s] name[%s] ret[%s]'% (cmd,aGroupName,ret) )
+				#LOG_TRACE( 'set[%s] name[%s] ret[%s]'% (cmd,aGroupName,ret) )
 
 			elif aBtn == E_DialogInput09 :
 				cmd = 'Remove'
 				ret = self.mCommander.Favoritegroup_Remove( aGroupName, self.mChannelListServieType )
-				LOG_TRACE( 'set[%s] name[%s] ret[%s]'% (cmd,aGroupName,ret) )
+				#LOG_TRACE( 'set[%s] name[%s] ret[%s]'% (cmd,aGroupName,ret) )
 
 
 			self.mMarkList = []
@@ -1802,8 +1802,8 @@ class ChannelListWindow(BaseWindow):
 				for item in self.mListFavorite:
 					retList = []
 					retList.append( item )
-					LOG_TRACE( 'group[%s] ch[%s]'% (self.mEditFavorite[idx], ClassToList('convert', retList)) )
 					idx += 1
+					#LOG_TRACE( 'group[%s] ch[%s]'% (self.mEditFavorite[idx], ClassToList('convert', retList)) )
 
 
 
@@ -1821,14 +1821,14 @@ class ChannelListWindow(BaseWindow):
 			if not self.mMarkList :
 				lastPos = self.mCtrlListCHList.getSelectedPosition()
 				self.mMarkList.append( lastPos )
-				LOG_TRACE('last position[%s]'% lastPos )
+				#LOG_TRACE('last position[%s]'% lastPos )
 			
 			self.mMarkList.sort()
 
 			chidx = self.mMarkList[0]
 			number = self.mChannelList[chidx].mNumber
 
-			LOG_TRACE('1====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList)) )
+			#LOG_TRACE('1====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList)) )
 
 			#2. get retList
 			for idx in self.mMarkList :
@@ -1847,14 +1847,14 @@ class ChannelListWindow(BaseWindow):
 			if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
 				if aGroupName :
 					ret = self.mCommander.FavoriteGroup_MoveChannels( aGroupName, chidx, self.mChannelListServieType, retList )
-					LOG_TRACE( '==========group========' )
+					#LOG_TRACE( '==========group========' )
 			else :
 				ret = self.mCommander.Channel_Move( self.mChannelListServieType, number, retList )
 
 			if ret :
 				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 
-			LOG_TRACE('2====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList)) )
+			#LOG_TRACE('2====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList)) )
 			self.mMoveFlag = True
 
 			GuiLock2(True)
@@ -1871,7 +1871,7 @@ class ChannelListWindow(BaseWindow):
 			GuiLock2(False)
 
 
-			LOG_TRACE ('========= move Init ===' )
+			#LOG_TRACE ('========= move Init ===' )
 
 		elif aMode == FLAG_OPT_MOVE_OK :
 			self.mMoveFlag = False
@@ -1881,7 +1881,7 @@ class ChannelListWindow(BaseWindow):
 			self.mMarkList = []
 			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 
-			LOG_TRACE ('========= move End ===' )
+			#LOG_TRACE ('========= move End ===' )
 
 
 		elif aMode == FLAG_OPT_MOVE_UPDOWN :
@@ -1928,14 +1928,14 @@ class ChannelListWindow(BaseWindow):
 			#if chidx < 0 : chidx = 0
 			#elif chidx > (len(self.mListItems))-1 : chidx = len(self.mListItems)-1
 			if chidx < 0 or chidx > ( (len(self.mListItems)-1) - len(self.mMarkList) ) :
-				LOG_TRACE('list limit, do not PAGE MOVE!! idx[%s]'% chidx)
+				#LOG_TRACE('list limit, do not PAGE MOVE!! idx[%s]'% chidx)
 				return
 			number = self.mChannelList[chidx].mNumber
 
 			if loopS < 0 : loopS = 0
 			elif loopE > (len(self.mListItems))-1 : loopE = len(self.mListItems)-1
 
-			LOG_TRACE('1====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList)) )
+			#LOG_TRACE('1====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList)) )
 			#2. get retList
 			for idx in self.mMarkList :
 				i = int(idx)
@@ -1943,7 +1943,7 @@ class ChannelListWindow(BaseWindow):
 
 			#3. update mark list
 			if (int(self.mMarkList[0]) + updown) > (len(self.mListItems))-1 :
-				LOG_TRACE('list limit, do not PAGE MOVE!! idx[%s]'% (int(self.mMarkList[0]) + updown) )
+				#LOG_TRACE('list limit, do not PAGE MOVE!! idx[%s]'% (int(self.mMarkList[0]) + updown) )
 				return
 			for idx in self.mMarkList :
 				idxNew = int(idx) + updown
@@ -1956,14 +1956,14 @@ class ChannelListWindow(BaseWindow):
 			if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
 				if aGroupName :
 					ret = self.mCommander.FavoriteGroup_MoveChannels( aGroupName, chidx, self.mChannelListServieType, retList )
-					LOG_TRACE( '==========group========' )
+					#LOG_TRACE( '==========group========' )
 			else :
 				ret = self.mCommander.Channel_Move( self.mChannelListServieType, number, retList )
 
 			if ret :
 				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
-			LOG_TRACE('2====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList)) )
-			LOG_TRACE('loopS[%s] loopE[%s]'% (loopS, loopE) )
+			#LOG_TRACE('2====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList)) )
+			#LOG_TRACE('loopS[%s] loopE[%s]'% (loopS, loopE) )
 
 			
 			#5. refresh section, label move
