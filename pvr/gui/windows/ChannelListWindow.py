@@ -220,6 +220,13 @@ class ChannelListWindow(BaseWindow):
 				elif position == E_SLIDE_MENU_DELETEALL :
 					self.SetDeleteAll()
 
+					#clear label
+					self.ResetLabel()
+					self.UpdateLabelInfo()
+
+					self.mCtrlListCHList.reset()
+					self.InitChannelList()
+
 				elif position == E_SLIDE_MENU_EDITMODE :
 					#LOG_TRACE( 'onclick opt edit' )
 
