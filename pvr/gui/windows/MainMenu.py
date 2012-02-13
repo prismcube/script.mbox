@@ -33,33 +33,36 @@ class MainMenu( BaseWindow ):
 		self.mStartMediaCenter = False
 
 	def onInit( self ):
-		LOG_TRACE('')
-		self.mWinId = xbmcgui.getCurrentWindowId()
-		self.mWin = xbmcgui.Window( self.mWinId )
-		self.mCtrlMainMenu = self.getControl( LIST_ID_MAIN_MENU )
-		WinMgr.GetInstance().CheckSkinChange( )
-		if self.mStartMediaCenter == True :
-			self.mCommander.AppMediaPlayer_Control( 0 )
-			self.mStartMediaCenter = False
+		try :
+			self.mWinId = xbmcgui.getCurrentWindowId()
+			self.mWin = xbmcgui.Window( self.mWinId )
+			self.mCtrlMainMenu = self.getControl( LIST_ID_MAIN_MENU )
+			WinMgr.GetInstance().CheckSkinChange( )
+			if self.mStartMediaCenter == True :
+				self.mCommander.AppMediaPlayer_Control( 0 )
+				self.mStartMediaCenter = False
+		except Exception, ex:
+			LOG_TRACE( 'ERR Exception' )
 
 
 	def onAction( self, aAction ) :
-		LOG_TRACE('')
-		id = aAction.getId()
-		focusId = self.getFocusId( )
+		#LOG_TRACE('')
+		actionId = aAction.getId( )
+		#focusId = self.getFocusId( )
 
-		self.GlobalAction( id )		
+		#self.GlobalAction( actionId )		
 		
-		LOG_TRACE( "MainMenu onAction(): focusId %d" % focusId )
-		if id == Action.ACTION_PREVIOUS_MENU :
+		#LOG_TRACE( "MainMenu onAction(): focusId %d" % focusId )
+		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass
-		elif id == Action.ACTION_SELECT_ITEM :
+		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 
-		elif id == Action.ACTION_PARENT_DIR :			
-			LOG_TRACE('action = ACTION_PARENT_DIR' )
-			self.close()
-
+		elif actionId == Action.ACTION_PARENT_DIR :			
+			try :
+				self.close()
+			except Exception, ex:
+				LOG_TRACE( 'ERR Exception' )
 
 	def onClick( self, aControlId ):
 		LOG_TRACE("MainMenu onclick(): control %d" % aControlId )
