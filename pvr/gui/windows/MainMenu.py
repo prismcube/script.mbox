@@ -6,6 +6,7 @@ import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
 from inspect import currentframe
+import pvr.ElisMgr
 from pvr.Util import GuiLock, LOG_TRACE
 
 LIST_ID_MAIN_MENU				= 9000
@@ -28,7 +29,8 @@ BUTTON_ID_CAS					= 90107
 class MainMenu( BaseWindow ):
 	def __init__( self, *args, **kwargs ):
 		BaseWindow.__init__( self, *args, **kwargs )
-
+		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
+		self.mStartMediaCenter = False
 
 	def onInit( self ):
 		LOG_TRACE('')
@@ -36,6 +38,9 @@ class MainMenu( BaseWindow ):
 		self.mWin = xbmcgui.Window( self.mWinId )
 		self.mCtrlMainMenu = self.getControl( LIST_ID_MAIN_MENU )
 		WinMgr.GetInstance().CheckSkinChange( )
+		if self.mStartMediaCenter == True :
+			self.mCommander.AppMediaPlayer_Control( 0 )
+			self.mStartMediaCenter = False
 
 
 	def onAction( self, aAction ) :
@@ -62,14 +67,17 @@ class MainMenu( BaseWindow ):
 			pass
 
 		elif aControlId == BUTTON_ID_FIRSTINSTALLATION : # First Installation
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-			dialog.SetProperty( [ 'test11111111111111', 'test222222222222222', 'test33333333', 'test', '1' ] )
- 			dialog.doModal( )
+			pass
+			#dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+			#dialog.SetProperty( [ 'test11111111111111', 'test222222222222222', 'test33333333', 'test', '1' ] )
+ 			#dialog.doModal( )
 
 		elif aControlId == BUTTON_ID_INSTALLATION :
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_INSTALLATION )
 
 		elif aControlId == BUTTON_ID_MEDIA_CENTER :
+			self.mStartMediaCenter = True
+			self.mCommander.AppMediaPlayer_Control( 1 )
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
 
 		elif aControlId == BUTTON_ID_ANTENNA_SETUP : # Antenna Setup

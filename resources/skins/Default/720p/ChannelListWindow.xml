@@ -34,6 +34,7 @@
 		</control>
 
 		<control type="group">
+			<!--
 			<include>Window_OpenClose_Animation</include>
 			<control type="image">
 				<posx>0</posx>
@@ -43,6 +44,7 @@
 				<texture border="20">confluence/black-back.png</texture>
 				<include>VisibleFadeEffect</include>
 			</control>
+			-->
 			<control type="image">
 				<posx>0</posx>
 				<posy>128r</posy>
@@ -328,6 +330,15 @@
 		</control>
 
 <!-- middle right -->
+		<control type="image" id="301">
+			<posx>820</posx>
+			<posy>130</posy>
+			<width>352</width>
+			<height>198</height>
+			<texture border="20">PIPView.png</texture>
+			<description>pre-view</description>
+		</control>
+
 		<control type="group" id="300">
 			<posx>820</posx>
 			<posy>120</posy>
@@ -335,23 +346,6 @@
 			<height>600</height>
 			<allowoverlay>yes</allowoverlay>
 			<control type="group">
-				<!--control type="image">
-					<description>LOGO</description>
-					<posx>60</posx>
-					<posy>0</posy>
-					<width>220</width>
-					<height>80</height>
-					<aspectratio>keep</aspectratio>
-					<texture>confluence/Confluence_Logo.png</texture>
-				</control-->
-				<control type="image">
-					<posx>0</posx>
-					<posy>10</posy>
-					<width>352</width>
-					<height>198</height>
-					<texture border="20">confluence/backgrounds/weather.jpg</texture>
-					<description>pre-view</description>
-				</control>
 				<control type="image">
 					<posx>0</posx>
 					<posy>199</posy>
@@ -366,8 +360,8 @@
 					<width>352</width>
 					<height>10</height>
 					<font>font12_title</font>
-					<shadowcolor>ff000000</shadowcolor>
-					<backgroundcolor>ffff0000</backgroundcolor>
+					<!--shadowcolor>ff000000</shadowcolor>
+					<backgroundcolor>ffff0000</backgroundcolor-->
 					<label>$INFO[Control.GetLabel]</label>
 					<description>epg name</description>
 				</control>
@@ -484,7 +478,7 @@
 				<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="true">conditional</animation>
 			</control-->
 			<control type="label" id="401">
-				<posx>200r</posx>
+				<posx>230r</posx>
 				<posy>30r</posy>
 				<width>50</width>
 				<height>20</height>
@@ -525,7 +519,7 @@
                     <texture>confluence/MediaBladeSub_Part1.png</texture>
                     <!--animation effect="zoom" start="0,0,0,535" end="0,0,300,535" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation-->
                     <animation effect="zoom" start="0,0,0,720" end="0,0,250,720" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
-					<animation effect="slide" start="0,0" end="-230,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(5) | Container(102).HasFocus(6)">Conditional</animation>
+					<animation effect="slide" start="0,0" end="-230,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(5) | Container(102).HasFocus(6) | Container(102).HasFocus(7)">Conditional</animation>
                 </control>
                 <control type="image">
                     <posx>0</posx>
@@ -535,7 +529,7 @@
                     <texture>confluence/MediaBladeSub_Part2.png</texture>
                     <!--animation effect="slide" end="300,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation-->
                     <animation effect="slide" end="250,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
-					<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(5) | Container(102).HasFocus(6)">Conditional</animation>
+					<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(5) | Container(102).HasFocus(6) | Container(102).HasFocus(7)">Conditional</animation>
                 </control>
 			</control>
 
@@ -672,8 +666,8 @@
 					</itemlayout>
 					<focusedlayout height="40" width="255">
 						<control type="image">
-							<animation effect="fade" start="0" end="100" delay="0" time="300" condition="Container(102).HasFocus(1) | Container(102).HasFocus(2) | Container(102).HasFocus(3) | Container(102).HasFocus(4) | Container(102).HasFocus(5) | Container(102).HasFocus(6)">conditional</animation>
-							<animation effect="fade" start="100" end="0" delay="0" time="300" condition="![Container(102).HasFocus(1) | Container(102).HasFocus(2) | Container(102).HasFocus(3) | Container(102).HasFocus(4) | Container(102).HasFocus(5) | Container(102).HasFocus(6)]">conditional</animation>
+							<animation effect="fade" start="0" end="100" delay="0" time="300" condition="Container(102).HasFocus(1) | Container(102).HasFocus(2) | Container(102).HasFocus(3) | Container(102).HasFocus(4) | Container(102).HasFocus(5) | Container(102).HasFocus(6) | Container(102).HasFocus(7)">conditional</animation>
+							<animation effect="fade" start="100" end="0" delay="0" time="300" condition="![Container(102).HasFocus(1) | Container(102).HasFocus(2) | Container(102).HasFocus(3) | Container(102).HasFocus(4) | Container(102).HasFocus(5) | Container(102).HasFocus(6) | Container(102).HasFocus(7)]">conditional</animation>
 							<posx>0</posx>
 							<posy>21</posy>
 							<width>250</width>
@@ -726,11 +720,16 @@
 							<visible>true</visible>
 						</item>
 						<item id="5">
-							<label>Edit</label>
+							<label>SCRIPT582</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="6">
+							<label>SCRIPT597</label>
+							<onclick>right</onclick>
+							<visible>true</visible>
+						</item>
+						<item id="7">
 							<label>SCRIPT555</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
@@ -757,7 +756,7 @@
 						<!--pagecontrol>203</pagecontrol-->
 						<scrolltime>200</scrolltime>
 						<!--focusposition>0</focusposition-->
-						<visible>![Container(102).HasFocus(5) | Container(102).HasFocus(6)]</visible>
+						<visible>![Container(102).HasFocus(5) | Container(102).HasFocus(6) | Container(102).HasFocus(7)]</visible>
 						<animation effect="fade" start="0" end="100" time="200">Visible</animation>
 						<itemlayout height="40" width="230">
 							<control type="image">
@@ -951,6 +950,5 @@
 				<visible>[Control.HasFocus(501) | Control.HasFocus(501)]</visible>
 			</control>
 		</control>
-
 	</controls>
 </window>

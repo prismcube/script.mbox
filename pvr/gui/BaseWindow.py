@@ -119,7 +119,10 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 			self.UpdateVolume( )
 
 		elif aActionId == Action.ACTION_VOLUME_DOWN:
-			self.UpdateVolume( )		
+			self.UpdateVolume( )
+
+	def SetVideoRestore( self ) :
+		ret = self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
 
 
 	@GuiLock
@@ -162,7 +165,7 @@ class SettingWindow( BaseWindow ):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
 		self.mControlList = []
-		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
+		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 
 
 	def InitControl( self ):
@@ -186,8 +189,7 @@ class SettingWindow( BaseWindow ):
 
 			pos += self.getControl( ctrlItem.mControlId ).getHeight( )
 			self.getControl( ctrlItem.mControlId ).setPosition( 0, pos )
-			#self.getControl( ctrlItem.mControlId ).setPosition( 0, ( pos * 40 ) + 50 )
-			#pos += 1	
+
 
 	def ResetAllControl( self ):
 		del self.mControlList[:]

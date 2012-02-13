@@ -27,8 +27,8 @@ class NullWindow(BaseWindow):
 		LOG_TRACE('')
 		if self.mInitialized == False :
 			self.mInitialized = True
-			#WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )		
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 
 	def onAction(self, aAction):

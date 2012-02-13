@@ -105,6 +105,7 @@ class SettingDialog( BaseDialog ):
 
 
 	def InitControl( self ):
+		self.getControl( E_SETTING_DIALOG_MAIN_GOURP_ID ).setVisible( False )
 		pos = 0
 		for ctrlItem in self.mControlList:
 			if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL :
@@ -140,6 +141,7 @@ class SettingDialog( BaseDialog ):
 		start_x = E_WINDOW_WIDTH / 2 - 610 / 2
 		start_y = E_WINDOW_HEIGHT / 2 - height / 2
 		self.getControl( E_SETTING_DIALOG_MAIN_GOURP_ID ).setPosition( start_x, start_y )
+		self.getControl( E_SETTING_DIALOG_MAIN_GOURP_ID ).setVisible( True )
 
 	def SetAutoHeight( self, mMode ) :
 		self.mIsAutomaicHeight = mMode

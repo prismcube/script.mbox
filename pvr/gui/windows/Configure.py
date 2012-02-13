@@ -459,6 +459,7 @@ class Configure( SettingWindow ) :
 
 		self.mSavedDns = self.mTempDns
 		ElisPropertyInt( 'DNS', self.mCommander ).SetProp( self.mSavedDns )
+		self.mCommander.NetWork_SaveSetting( )
 
 
 	def ReLoadIp( self ) :
