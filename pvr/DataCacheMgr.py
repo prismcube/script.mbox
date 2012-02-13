@@ -98,9 +98,6 @@ class DataCacheMgr( object ):
 				self.mCurrentEvent = event
 				LOG_TRACE('currentEvent' )
 				self.mCurrentEvent.printdebug()
-			else :
-				self.mCurrentEvent = None
-				
 
 
 	def Load( self ) :
@@ -198,6 +195,7 @@ class DataCacheMgr( object ):
 
 	@DataLock
 	def Channel_SetCurrent( self, aChannelNumber, aServiceType ) :
+		self.mCurrentEvent = None
 		if self.mCommander.Channel_SetCurrent( aChannelNumber, aServiceType ) == True :
 			cacheChannel = self.mChannelListHash.get(aChannelNumber, None )
 			self.mCurrentChannel = cacheChannel.mChannel
@@ -245,7 +243,7 @@ class DataCacheMgr( object ):
 	@DataLock
 	def Datetime_GetLocalTime( self ) :
 		localTime = time.localtime()
-		self.mLocalTime = time.mktime( localTime )
+		self.mLocalTime = time.mktime( localTime ) + self.mLocalOffset
 		return self.mLocalTime
 
 
@@ -264,7 +262,7 @@ class DataCacheMgr( object ):
 		if cacheChannel :
 			carrier = cacheChannel.mChannel.mCarrier
 			if carrier.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBS :
-				hashKey = '%s:%d' %( carrier.mDVBS.mSatelliteLongitude, carrier.mDVBS.mSatelliteBand )
+				hashKey = '%d:%d' %( carrier.mDVBS.mSatelliteLongitude, carrier.mDVBS.mSatelliteBand )
 				satellite = self.mSatelliteListHash.get( hashKey, None )
 				return satellite
 
@@ -290,6 +288,10 @@ class DataCacheMgr( object ):
 		if self.mCurrentEvent :
 			LOG_TRACE('currentEvent' )
 			self.mCurrentEvent.printdebug()
+		else :
+			 self.mCurrentEvent = self.mCommander.Epgevent_GetPresent()
+
 		return self.mCurrentEvent
+
 
 		
