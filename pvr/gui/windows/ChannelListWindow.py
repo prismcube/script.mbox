@@ -1385,6 +1385,7 @@ class ChannelListWindow(BaseWindow):
 				inputPin = ''
 
 				ret = self.mCommander.Player_AVBlank( True, True )
+				#ret = self.mCommander.Channel_SetInitialBlank( True )
 				GuiLock2( True )
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 				dialog.SetDialogProperty( msg, '', 4, True )
@@ -1398,11 +1399,21 @@ class ChannelListWindow(BaseWindow):
 				if inputPin == None or inputPin == '' :
 					inputPin = ''
 
-				#LOG_TRACE( 'mask[%s] inputPin[%s] stbPin[%s]'% (self.mPincodeEnter, inputPin, stbPin) )
+				LOG_TRACE( 'mask[%s] inputPin[%s] stbPin[%s]'% (self.mPincodeEnter, inputPin, stbPin) )
 
 				if inputPin == str('%s'% stbPin) :
+					#self.mCommander.Player_AVBlank( False, True )
+					GuiLock2(True)
+					label = self.mCtrlListCHList.getSelectedItem().getLabel()
+					GuiLock2(False)
+					channelNumbr = ParseLabelToCh( self.mViewMode, label )
+					LOG_TRACE( '=======label[%s] ch[%d] pin[%s]'% (label, channelNumbr, self.mPincodeEnter) )
 					self.mPincodeEnter = FLAG_MASK_NONE
-					self.mCommander.Player_AVBlank( False, True )
+					ret = None
+					ret = self.mDataCache.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
+					#if ret:
+					#	self.mCurrentChannel = channelNumbr
+
 					LOG_TRACE( 'Pincode success' )
 				else:
 					msg1 = Msg.Strings(MsgId.LANG_ERROR)
