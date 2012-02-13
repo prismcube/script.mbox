@@ -8,6 +8,8 @@ from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
 import pvr.ElisMgr
 
+E_PIP_PICTURE_ID = 301
+
 
 class EditSatellite( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -18,6 +20,15 @@ class EditSatellite( SettingWindow ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
+
+		self.mCtrlImgVideoPos = self.getControl( E_PIP_PICTURE_ID )
+
+		h = self.mCtrlImgVideoPos.getHeight( )
+		w = self.mCtrlImgVideoPos.getWidth( )
+		pos = list( self.mCtrlImgVideoPos.getPosition( ) )
+		x = pos[0]
+		y = pos[1]
+		ret = self.mCommander.Player_SetVIdeoSize( x, y, w, h ) 
 
 		if ConfigMgr.GetInstance( ).GetNeedLoad( ) == True : 
 			ConfigMgr.GetInstance( ).LoadOriginalTunerConfig( )
@@ -38,6 +49,7 @@ class EditSatellite( SettingWindow ) :
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.ResetAllControl( )
+			self.SetVideoRestore( )
 			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			self.close( )
 			
@@ -46,6 +58,7 @@ class EditSatellite( SettingWindow ) :
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
+			self.SetVideoRestore( )
 			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			self.close( )
 
