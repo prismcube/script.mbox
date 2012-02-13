@@ -21,32 +21,38 @@ class NullWindow(BaseWindow):
 		self.mAsyncShowTimer = None
 
 	def onInit(self):
-		self.mWinId = xbmcgui.getCurrentWindowId()
-		self.mWin = xbmcgui.Window( self.mWinId )
+		try :
+			self.mWinId = xbmcgui.getCurrentWindowId()
+			self.mWin = xbmcgui.Window( self.mWinId )
 
-		LOG_TRACE('')
-		if self.mInitialized == False :
-			self.mInitialized = True
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+			if self.mInitialized == False :
+				self.mInitialized = True
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+				
+		except Exception, ex:
+			LOG_TRACE( 'ERR Exception' )
 
 
 	def onAction(self, aAction):
 		if self.mInitialized == False :
 			return
 		
-		id = aAction.getId()
+		actionId = aAction.getId( )
 
-		LOG_TRACE('Nullwindow action id=%d' %id )
+		#LOG_TRACE('Nullwindow action id=%d' %id )
 
-		self.GlobalAction( id )		
+		self.GlobalAction( actionId )		
 
-		if id == Action.ACTION_PREVIOUS_MENU:
-			print 'lael98 check ation menu'
-			ConfigMgr.GetInstance( ).SetNeedLoad( True )
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
+		if actionId == Action.ACTION_PREVIOUS_MENU:
+			try :
+				ConfigMgr.GetInstance( ).SetNeedLoad( True )
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
+				
+			except Exception, ex:
+				LOG_TRACE( 'ERR Exception' )
 
-		elif id == Action.ACTION_PARENT_DIR:
+		elif actionId == Action.ACTION_PARENT_DIR:
 			try :
 				currentChannel = self.mCommander.Channel_GetCurrent()
 				#lastChannel = WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_LIVE_PLATE).getLastChannel( )
@@ -58,26 +64,26 @@ class NullWindow(BaseWindow):
 			except Exception, ex:
 				print 'ERR prev channel'
 
-		elif id == Action.ACTION_SELECT_ITEM:
+		elif actionId == Action.ACTION_SELECT_ITEM:
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 #			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 			print 'lael98 check ation select'
 
-		elif id == Action.ACTION_MOVE_LEFT:
+		elif actionId == Action.ACTION_MOVE_LEFT:
 			print 'youn check ation left'
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
-		elif id == Action.ACTION_SHOW_INFO:
+		elif actionId == Action.ACTION_SHOW_INFO:
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
-		elif id == Action.ACTION_CONTEXT_MENU:
+		elif actionId == Action.ACTION_CONTEXT_MENU:
 
 			window = WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_LIVE_PLATE )
 			window.SetAutomaticHide( False )
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 
-		elif id == Action.ACTION_PAGE_DOWN:
+		elif actionId == Action.ACTION_PAGE_DOWN:
 			LOG_TRACE('TRACE')
 			LOG_WARN('WARN')
 			LOG_ERR('ERR')
@@ -92,7 +98,7 @@ class NullWindow(BaseWindow):
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 
-		elif id == Action.ACTION_PAGE_UP:
+		elif actionId == Action.ACTION_PAGE_UP:
 			nextChannel = None
 			nextChannel = self.mDataCache.Channel_GetNext( self.mDataCache.Channel_GetCurrent() )
 			if nextChannel :
@@ -104,7 +110,7 @@ class NullWindow(BaseWindow):
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 			
 
-		elif id == Action.REMOTE_3:  #TEST : start Record
+		elif actionId == Action.REMOTE_3:  #TEST : start Record
 			print 'open record dialog'
 			
 			runningCount = self.mCommander.Record_GetRunningRecorderCount()
@@ -117,7 +123,7 @@ class NullWindow(BaseWindow):
 				xbmcgui.Dialog().ok('Infomation', msg )
 				
 		
-		elif id == Action.REMOTE_4:  #TEST : stop Record
+		elif actionId == Action.REMOTE_4:  #TEST : stop Record
 			print 'open record dialog'
 			runningCount = self.mCommander.Record_GetRunningRecorderCount()
 			LOG_TRACE( 'runningCount=%d' %runningCount )
@@ -126,18 +132,18 @@ class NullWindow(BaseWindow):
 				dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_STOP_RECORD )
 				dialog.doModal( )
 
-		elif id == Action.REMOTE_1:  #TEST : bg test
+		elif actionId == Action.REMOTE_1:  #TEST : bg test
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_TEST1 )
 
 
-		elif id == Action.ACTION_PAGE_UP:
+		elif actionId == Action.ACTION_PAGE_UP:
 			pass
 
-		elif id == Action.ACTION_PAGE_DOWN:
+		elif actionId == Action.ACTION_PAGE_DOWN:
 			pass
 
 		else:
-			print 'lael98 check ation unknown id=%d' %id
+			print 'lael98 check ation unknown id=%d' %actionId
 
 
 	def onClick(self, aControlId):

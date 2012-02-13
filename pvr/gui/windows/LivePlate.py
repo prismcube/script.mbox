@@ -292,19 +292,15 @@ class LivePlate(BaseWindow):
 			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
 
 				if currentChannel == None :
-					LOG_TRACE('-----')
 					return -1
 				
 				if currentChannel.mSid != aEvent.mSid or currentChannel.mTsid != aEvent.mTsid or currentChannel.mOnid != aEvent.mOnid :
-					LOG_TRACE('----- channelNumer=%d' %currentChannel.mNumber)				
 					return -1
 
 				if currentChannel.mNumber != self.mFakeChannel.mNumber :
-					LOG_TRACE('-----')				
 					return -1
 
 				if self.mChannelChanged != True :
-					LOG_TRACE('-----')				
 					return -1
 
 				LOG_TRACE( '%d : %d' %(aEvent.mEventId, self.mEventID ) )
@@ -312,9 +308,10 @@ class LivePlate(BaseWindow):
 
 				if aEvent.mEventId != self.mEventID :
 					ret = None
-					ret = self.mDataCache.Epgevent_GetEvent( aEvent )
+					ret = self.mDataCache.Epgevent_GetPresent( )
 					if ret :
-						#ret.printdebug()
+						LOG_TRACE('-----------------------')
+						ret.printdebug()
 
 						if not self.mEventCopy or \
 						ret.mEventId != self.mEventCopy.mEventId or \
@@ -385,7 +382,7 @@ class LivePlate(BaseWindow):
 				self.mEPGListIdx -= 1
 
 
-		self.RestartAsyncEPG()
+		#self.RestartAsyncEPG()
 		#self.PincodeDialogLimit()
 
 

@@ -1,5 +1,6 @@
 <window id="3307">
 	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
 	<include>DefaultDialogEffect</include>
 	<controls>
 			<control type="group" id="8000">

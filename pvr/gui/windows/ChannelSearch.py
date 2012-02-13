@@ -11,6 +11,7 @@ import pvr.ElisMgr
 
 from pvr.gui.BaseWindow import SettingWindow, Action
 
+E_PIP_PICTURE_ID = 301
 
 class ChannelSearch( SettingWindow ):
 	def __init__( self, *args, **kwargs ):
@@ -20,6 +21,15 @@ class ChannelSearch( SettingWindow ):
 	def onInit(self):
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
+
+		self.mCtrlImgVideoPos = self.getControl( E_PIP_PICTURE_ID )
+
+		h = self.mCtrlImgVideoPos.getHeight( )
+		w = self.mCtrlImgVideoPos.getWidth( )
+		pos = list( self.mCtrlImgVideoPos.getPosition( ) )
+		x = pos[0]
+		y = pos[1]
+		ret = self.mCommander.Player_SetVIdeoSize( x, y, w, h ) 
 
 		self.SetSettingWindowLabel( 'Channel Scan' )
 
@@ -45,6 +55,7 @@ class ChannelSearch( SettingWindow ):
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
+			self.SetVideoRestore( )
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :

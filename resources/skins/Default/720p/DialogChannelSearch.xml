@@ -1,5 +1,6 @@
 <window id="3303">
 	<defaultcontrol always="true">400</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
 	<coordinates>
 		<system>1</system>
 		<posx>100</posx>
