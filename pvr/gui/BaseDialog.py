@@ -21,6 +21,7 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ):
 		
 		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
 		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
+		self.mDataCache = pvr.DataCacheMgr.GetInstance()		
 		
 
 	def SetHeaderLabel( self, aLabel ):

@@ -82,9 +82,10 @@ class NullWindow(BaseWindow):
 			LOG_WARN('WARN')
 			LOG_ERR('ERR')
 			prevChannel = None
-			prevChannel = self.mCommander.Channel_GetPrev()
+			prevChannel = self.mDataCache.Channel_GetPrev( self.mDataCache.Channel_GetCurrent() ) #self.mCommander.Channel_GetPrev()
 			if prevChannel :
-				self.mCommander.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )
+				self.mDataCache.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )			
+				#self.mCommander.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )
 			
 				window = WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_LIVE_PLATE )
 				window.SetAutomaticHide( True )
@@ -93,9 +94,10 @@ class NullWindow(BaseWindow):
 
 		elif id == Action.ACTION_PAGE_UP:
 			nextChannel = None
-			nextChannel = self.mCommander.Channel_GetNext()
+			nextChannel = self.mDataCache.Channel_GetNext( self.mDataCache.Channel_GetCurrent() )
 			if nextChannel :
-				self.mCommander.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
+				self.mDataCache.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
+				#self.mCommander.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
 
 				window = WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_LIVE_PLATE )
 				window.SetAutomaticHide( True )

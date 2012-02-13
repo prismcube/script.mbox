@@ -11,6 +11,7 @@ import pvr.ElisMgr
 import pvr.gui.WindowMgr as WindowMgr
 from pvr.Util import RunThread, HasPendingThreads, WaitUtileThreadsJoin
 import pvr.NetConfig as NetConfig
+import pvr.DataCacheMgr
 
 		
 gLauncher = None
@@ -32,7 +33,8 @@ class Launcher(object):
 			try:
 				time.sleep(1)
 				self.InitElisMgr()
-				self.DoElisTest()				
+				self.DoElisTest()
+				self.InitCacheMgr()
 				self.InitWindowMgr()
 				self.WaitShutdown()
 			except Exception, ex:
@@ -49,6 +51,9 @@ class Launcher(object):
 		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
 		self.mCommander.SetElisReady( NetConfig.myIp)
 
+
+	def InitCacheMgr( self ) :
+		pvr.DataCacheMgr.GetInstance( )
 
 
 	def InitWindowMgr(self):

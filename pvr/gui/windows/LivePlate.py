@@ -4,6 +4,8 @@ import sys
 
 import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DiaMgr
+import pvr.DataCacheMgr as CacheMgr
+
 from pvr.gui.BaseWindow import BaseWindow, Action
 from pvr.gui.GuiConfig import *
 
@@ -53,16 +55,13 @@ PREV_CHANNEL			= 1
 class LivePlate(BaseWindow):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
-		LOG_TRACE( 'args[0]=[%s]' % args[0] )
-		LOG_TRACE( 'args[1]=[%s]' % args[1] )
 
-		self.mCurrentChannel=None
 		self.mLocalTime = 0
 		self.mEventID = 0
 		self.mPincodeEnter = FLAG_MASK_NONE
-		self.mLastChannel = self.mCommander.Channel_GetCurrent()	
-		self.mCurrentChannel = self.mLastChannel
-		self.mFakeChannel = self.mLastChannel # Used  for zapping speed up
+		self.mCurrentChannel = None
+		self.mLastChannel = None
+		self.mFakeChannel = None
 		self.mChannelChanged = True
 		self.mShowExtendInfo = False
 		self.mAutomaticHideTimer = None	
@@ -121,12 +120,12 @@ class LivePlate(BaseWindow):
 		self.mImgTV    = E_IMG_ICON_TV
 		self.mCtrlLblEventClock.setLabel('')
 
-		self.mLocalOffset = self.mCommander.Datetime_GetLocalOffset()
+		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset()
 
 		#get channel
-		self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
-		self.mFakeChannel =	self.mCurrentChannel 
-		#self.mCurrentChannel.printdebug()
+		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent()
+		self.mFakeChannel =	self.mCurrentChannel
+		self.mLastChannel =	self.mCurrentChannel
 
 		self.mChannelChanged = True
 		self.mEventCopy = None
@@ -145,7 +144,7 @@ class LivePlate(BaseWindow):
 
 		try :
 			ret = None
-			ret = self.mCommander.Epgevent_GetPresent()
+			ret = self.mDataCache.Epgevent_GetPresent()
 			if ret :
 				self.mEventCopy = ret
 				self.UpdateONEvent(self.mEventCopy)
@@ -161,10 +160,9 @@ class LivePlate(BaseWindow):
 		if self.mAutomaticHide == True :
 			self.StartAutomaticHide()
 
-		LOG_TRACE( 'Leave' )
 
 	def onAction(self, aAction):
-		#LOG_TRACE( 'Enter' )
+		LOG_TRACE( 'Enter' )
 
 		id = aAction.getId()
 		self.GlobalAction( id )
@@ -224,7 +222,7 @@ class LivePlate(BaseWindow):
 			LOG_TRACE( 'cwd[%s]'% xbmc.getLanguage() )
 
 
-		#LOG_TRACE( 'Leave' )
+		LOG_TRACE( 'Leave' )
 
 
 
@@ -280,7 +278,6 @@ class LivePlate(BaseWindow):
 			self.EPGNavigation( NEXT_EPG )
 
 
-		LOG_TRACE( 'Leave' )
 
 
 	def onFocus(self, aControlId):
@@ -289,21 +286,26 @@ class LivePlate(BaseWindow):
 
 
 	def onEvent(self, aEvent):
-		#LOG_TRACE( 'Enter' )
+		LOG_TRACE( 'Enter-----' )
 
 		if self.mWinId == xbmcgui.getCurrentWindowId():
+			currentChannel = self.mCurrentChannel	
 			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
 
-				if self.mCurrentChannel == None :
+				if currentChannel == None :
+					LOG_TRACE('-----')
 					return -1
 				
-				if self.mCurrentChannel.mSid != aEvent.mSid or self.mCurrentChannel.mTsid != aEvent.mTsid or self.mCurrentChannel.mOnid != aEvent.mOnid :
+				if currentChannel.mSid != aEvent.mSid or currentChannel.mTsid != aEvent.mTsid or currentChannel.mOnid != aEvent.mOnid :
+					LOG_TRACE('----- channelNumer=%d' %currentChannel.mNumber)				
 					return -1
 
-				if self.mCurrentChannel.mNumber != self.mFakeChannel.mNumber :
+				if currentChannel.mNumber != self.mFakeChannel.mNumber :
+					LOG_TRACE('-----')				
 					return -1
 
 				if self.mChannelChanged != True :
+					LOG_TRACE('-----')				
 					return -1
 
 				LOG_TRACE( '%d : %d' %(aEvent.mEventId, self.mEventID ) )
@@ -311,7 +313,7 @@ class LivePlate(BaseWindow):
 
 				if aEvent.mEventId != self.mEventID :
 					ret = None
-					ret = self.mCommander.Epgevent_GetPresent()
+					ret = self.mDataCache.Epgevent_GetEvent( aEvent )
 					if ret :
 						#ret.printdebug()
 
@@ -331,42 +333,40 @@ class LivePlate(BaseWindow):
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
 
 
-		#LOG_TRACE( 'Leave' )
+		LOG_TRACE( 'Leave' )
 
 
 	def ChannelTune(self, aDir):
-		LOG_TRACE( 'Enter' )
 
 		if aDir == PREV_CHANNEL:
 		
-			prevChannel = self.mCommander.Channel_GetPrev()
+			prevChannel = self.mDataCache.Channel_GetPrev( self.mFakeChannel )
 
 			if prevChannel == None or prevChannel.mError != 0 :
 				return
 
 			self.mFakeChannel = prevChannel
 			self.UpdateServiceType( self.mFakeChannel.mServiceType )
+			self.InitLabelInfo()
 			self.RestartAsyncTune()
 
 		elif aDir == NEXT_CHANNEL:
-			nextChannel = self.mCommander.Channel_GetNext()
+			nextChannel = self.mDataCache.Channel_GetNext( self.mFakeChannel )
 
 			if nextChannel == None or nextChannel.mError != 0 :
 				return
 
 			self.mFakeChannel = nextChannel
 			self.UpdateServiceType( self.mFakeChannel.mServiceType )
+			self.InitLabelInfo()			
 			self.RestartAsyncTune()
 
 		if self.mAutomaticHide == True :
 			self.RestartAutomaticHide()
 
-		self.mChannelChanged = True
-		LOG_TRACE( 'Leave' )
-
 
 	def EPGNavigation(self, aDir ):
-		LOG_TRACE( 'Enter' )
+		LOG_TRACE('')
 
 		if self.mChannelChanged :
 			self.GetEPGList()
@@ -378,7 +378,6 @@ class LivePlate(BaseWindow):
 			else :
 				self.mEPGListIdx += 1
 
-			LOG_TRACE('NEXT_EPG')
 
 		elif aDir == PREV_EPG:
 			if self.mEPGListIdx-1 < 0 :
@@ -386,24 +385,22 @@ class LivePlate(BaseWindow):
 			else :
 				self.mEPGListIdx -= 1
 
-			LOG_TRACE('PREV_EPG')
 
 		self.RestartAsyncEPG()
 		#self.PincodeDialogLimit()
 
-		LOG_TRACE( 'Leave' )
 
 	def GetEPGList( self ) :
-		LOG_TRACE( 'Enter' )
 
 		ret = None
 
+		"""
 		try :
-			if self.mCurrentChannel :
+			if currentChannel :
 				self.mEPGList = None
 				self.mEPGList = 0
-				ch = self.mCurrentChannel
-				gmtime = self.mCommander.Datetime_GetGMTTime()
+				ch = currentChannel
+				gmtime = self.mDataCache.Datetime_GetGMTTime()
 				gmtFrom = gmtime - ( 3600 * 24 * 7 )
 				gmtUntil= gmtime + ( 3600 * 24 * 7 )
 				maxCount= 100
@@ -439,14 +436,15 @@ class LivePlate(BaseWindow):
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
+		"""
 
-		LOG_TRACE( 'Leave' )
 
 
 	@GuiLock
 	def UpdateONEvent(self, aEvent):
 		LOG_TRACE( 'Enter' )
 		#LOG_TRACE( 'component [%s]'% EpgInfoComponentImage ( aEvent ))
+
 
 		if self.mCurrentChannel :
 			ch = self.mCurrentChannel
@@ -504,17 +502,21 @@ class LivePlate(BaseWindow):
 			LOG_TRACE( 'aEvent null' )
 
 
+		"""
+		# Todo
 		if self.mChannelChanged :
 			self.GetEPGList()
+		"""
+
 
 		LOG_TRACE( 'Leave' )
 
 
 	def PincodeDialogLimit( self ) :
-		LOG_TRACE( 'Enter' )
 
 		#popup pin-code dialog
 		#if self.mPincodeEnter > FLAG_MASK_NONE :
+
 		while self.mPincodeEnter > FLAG_MASK_NONE :
 
 			try :
@@ -621,7 +623,7 @@ class LivePlate(BaseWindow):
 	def UpdateLocalTime( self ) :
 		
 		try:
-			self.mLocalTime = self.mCommander.Datetime_GetLocalTime()
+			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
 			self.mCtrlLblEventClock.setLabel( TimeToString( self.mLocalTime, TimeFormatEnum.E_HH_MM ) )			
 
 			if self.mEventCopy :
@@ -657,7 +659,6 @@ class LivePlate(BaseWindow):
 
 	@GuiLock
 	def InitLabelInfo(self):
-		LOG_TRACE( 'Enter' )
 		
 		if self.mFakeChannel :
 
@@ -695,24 +696,21 @@ class LivePlate(BaseWindow):
 	def InitLongitudeInfo( self ) :
 
 		ret = ''
+
 		try :
-			self.mLocalTime = self.mCommander.Datetime_GetLocalTime()
-			longitude = None
+			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
 			LOG_TRACE('')
-			longitude = self.mCommander.Satellite_GetByChannelNumber( self.mCurrentChannel.mNumber, self.mCurrentChannel.mServiceType )
-			if longitude :
-				ret = GetSelectedLongitudeString( longitude.mLongitude, self.mCurrentChannel.mName )
+			satellite = self.mDataCache.Satellite_GetByChannelNumber( self.mCurrentChannel.mNumber )
+			if satellite :
+				ret = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
-		LOG_TRACE( 'Leave' )
 		return ret
 
 
 	def UpdateServiceType(self, aTvType):
-		LOG_TRACE( 'Enter' )
-		LOG_TRACE( 'serviceType[%s]' % aTvType )
 
 		if aTvType == ElisEnum.E_SERVICE_TYPE_TV:
 			#self.mCtrlImgServiceType.setImage(self.mImgTV)
@@ -725,7 +723,6 @@ class LivePlate(BaseWindow):
 			self.mImgTV = ''
 			LOG_TRACE( 'unknown ElisEnum tvType[%s]'% aTvType )
 
-		LOG_TRACE( 'Leave' )
 
 
 	def ShowEPGDescription(self, aVisible):
@@ -836,7 +833,8 @@ class LivePlate(BaseWindow):
 
 	
 	def StartAutomaticHide( self ) :
-		bannerTimeout = ElisPropertyEnum( 'Channel Banner Duration', self.mCommander ).GetProp( )
+		prop = ElisPropertyEnum( 'Channel Banner Duration', self.mCommander )
+		bannerTimeout = prop.GetProp()
 		self.mAutomaticHideTimer = threading.Timer( bannerTimeout, self.AsyncAutomaticHide )
 		self.mAutomaticHideTimer.start()
 		
@@ -850,6 +848,7 @@ class LivePlate(BaseWindow):
 
 
 	def RestartAsyncTune( self ) :
+		self.mChannelChanged = False
 		self.StopAsyncTune( )
 		self.StartAsyncTune( )
 
@@ -868,29 +867,24 @@ class LivePlate(BaseWindow):
 
 
 	def AsyncTuneChannel( self ) :
-		LOG_TRACE( 'Enter' )
 
 		try :
-			ret = self.mCommander.Channel_SetCurrent( self.mFakeChannel.mNumber, self.mFakeChannel.mServiceType )
+			ret = self.mDataCache.Channel_SetCurrent( self.mFakeChannel.mNumber, self.mFakeChannel.mServiceType )
 			#self.mFakeChannel.printdebug()
 			if ret == True :
-				self.mCurrentChannel = self.mFakeChannel
+				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent()
+				self.mChannelChanged = True				
+				self.mFakeChannel = self.mCurrentChannel
 				self.mLastChannel = self.mCurrentChannel
 				self.InitLabelInfo()
-				ret = None
-				ret = self.mCommander.Epgevent_GetPresent()
-				if ret :
-					self.mEventCopy = ret
-					self.UpdateONEvent(self.mEventCopy)
-
 				self.PincodeDialogLimit()
+
 			else :
 				LOG_ERR('Tune Fail')
 			
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
-		LOG_TRACE( 'Leave' )
 
 
 	def RestartAsyncEPG( self ) :

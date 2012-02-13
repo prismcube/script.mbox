@@ -7,6 +7,7 @@ from decorator import decorator
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.GuiConfig import *
 import pvr.ElisMgr
+import pvr.DataCacheMgr
 import thread
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
 
@@ -86,6 +87,7 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 		
 		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
 		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
+		self.mDataCache = pvr.DataCacheMgr.GetInstance()
 		
 
 	def SetFooter( self, aFooterMask ):

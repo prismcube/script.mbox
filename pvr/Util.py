@@ -23,6 +23,7 @@ E_LOG_NORMAL = 0
 E_LOG_WARN   = 37
 E_LOG_ERR    = 31
 E_LOG_DEBUG  = 33
+E_DEBUG_ENABLE = 0
 
 class TimeFormatEnum(object):
 	E_AW_DD_MM_YYYY			= 0
@@ -146,6 +147,9 @@ def LOG_WARN( msg ):
 
 
 def MLOG( level=0, msg=None ) :
+	if E_DEBUG_ENABLE == 0 :
+		return
+
 	curframe = inspect.currentframe()
 	calframe = inspect.getouterframes(curframe, 2)
 	filePath = calframe[2][1]
