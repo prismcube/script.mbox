@@ -10,6 +10,8 @@ from ElisClass import *
 from ElisProperty import ElisPropertyEnum
 from pvr.gui.GuiConfig import *
 
+E_PIP_PICTURE_ID = 301
+
 
 class EditTransponder( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -23,6 +25,15 @@ class EditTransponder( SettingWindow ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
+
+		self.mCtrlImgVideoPos = self.getControl( E_PIP_PICTURE_ID )
+
+		h = self.mCtrlImgVideoPos.getHeight( )
+		w = self.mCtrlImgVideoPos.getWidth( )
+		pos = list( self.mCtrlImgVideoPos.getPosition( ) )
+		x = pos[0]
+		y = pos[1]
+		ret = self.mCommander.Player_SetVIdeoSize( x, y, w, h ) 
 
 		if ConfigMgr.GetInstance( ).GetNeedLoad( ) == True : 
 			ConfigMgr.GetInstance( ).LoadOriginalTunerConfig( )
@@ -43,6 +54,7 @@ class EditTransponder( SettingWindow ) :
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.ResetAllControl( )
+			self.SetVideoRestore( )
 			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			self.close( )
 			
@@ -51,6 +63,7 @@ class EditTransponder( SettingWindow ) :
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
+			self.SetVideoRestore( )
 			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			self.close( )
 

@@ -1,5 +1,6 @@
 <window id="3304">
 	<defaultcontrol always="true">21</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
 	<include>DefaultDialogEffect</include>
 	<coordinates>
 		<system>2</system>

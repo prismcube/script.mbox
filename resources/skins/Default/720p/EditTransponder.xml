@@ -1,5 +1,6 @@
 <window id="3019">
 	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
 	<controls>
 		<include>DefaultSettingHeaderWindow</include>	
 		<control type="group" id="9000">
@@ -16,6 +17,12 @@
 				<include>Input05</include>
 				<include>Input06</include>
 				<include>Input07</include>
+			</control>
+			<control type="image" id="301">
+				<posx>842</posx>
+				<posy>160</posy>
+				<width>352</width>
+				<height>198</height>
 			</control>
 		</control>
 	</controls>

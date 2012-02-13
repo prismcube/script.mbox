@@ -84,7 +84,6 @@ class ManualScan( SettingWindow ):
 			self.ShowDescription( focusId )
 			
 
-
 	def onClick( self, aControlId ):
 
 		groupId = self.GetGroupId( aControlId )
