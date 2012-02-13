@@ -552,7 +552,10 @@ class LivePlate(BaseWindow):
 				if inputPin == str('%s'% stbPin) :
 					self.mPincodeEnter = FLAG_MASK_NONE
 					#ret = self.mCommander.Channel_SetInitialBlank( False )
-					self.mCommander.Player_AVBlank( False, True )
+					#self.mCommander.Player_AVBlank( False, True )
+					mNumber = self.mCurrentChannel.mNumber
+					mType = self.mCurrentChannel.mServiceType
+					ret = self.mDataCache.Channel_SetCurrent( mNumber, mType)
 
 					LOG_TRACE( 'Pincode success' ) 
 					break
