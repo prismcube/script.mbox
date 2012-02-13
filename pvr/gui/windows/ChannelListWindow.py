@@ -1250,7 +1250,7 @@ class ChannelListWindow(BaseWindow):
 							maxCount= 1
 							ret = None
 							ret = self.mCommander.Epgevent_GetList( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount )
-							time.sleep(0.05)
+
 							#LOG_TRACE('=============epg len[%s] list[%s]'% (len(ret),ClassToList('convert', ret )) )
 							if ret :
 								self.mNavEpg = ret[0]
@@ -1292,7 +1292,7 @@ class ChannelListWindow(BaseWindow):
 			self.mCtrlChannelName.setLabel( str('%s - %s'% (label, self.mNavChannel.mName )) )
 
 		#update longitude info
-		satellite = self.mDataCache.Satellite_GetByChannelNumber( self.mNavChannel.mNumber )
+		satellite = self.mCommander.Satellite_GetByChannelNumber( self.mNavChannel.mNumber )
 		ret = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
 		self.mCtrlLongitudeInfo.setLabel( ret )
 
@@ -1417,31 +1417,6 @@ class ChannelListWindow(BaseWindow):
 
 		LOG_TRACE( 'Leave' )
 
-	"""
-	def OptDialogLimit( self ) :
-		LOG_TRACE( 'Enter' )
-
-		try :
-			msg1 = 'OPT CH number'
-			msgList=[]
-			msgList.append('Lock')
-			msgList.append('Skip')
-			msgList.append('Move')
-			msgList.append('Delete')
-			#msgList.append('Add to Fav.Group')
-			msgList.append(self.mListFavorite)
-			msgList.append('Start Block Selection')
-
-			ret = xbmcgui.Dialog().select(msg1, msgList)
-
-			LOG_TRACE('======== ret[%s]'% ret)
-		
-		except Exception, e:
-			LOG_TRACE( 'Error exception[%s]'% e )
-
-
-		LOG_TRACE( 'Leave' )
-	"""
 
 	@RunThread
 	def CurrentTimeThread(self):
@@ -1475,7 +1450,7 @@ class ChannelListWindow(BaseWindow):
 		LOG_TRACE( 'Enter' )
 		
 		try:
-			self.mLocalTime = self.mCommander.Datetime_GetLocalTime()
+			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
 
 
 			if self.mNavEpg :
