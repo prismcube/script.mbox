@@ -4,17 +4,21 @@ import sys
 
 import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DiaMgr
+import pvr.DataCacheMgr as CacheMgr
+
 from pvr.gui.BaseWindow import BaseWindow, Action
+from pvr.gui.GuiConfig import *
+
 from ElisEnum import ElisEnum
 from ElisEventBus import ElisEventBus
 from ElisEventClass import *
+
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
 from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit, PincodeLimit, ParseLabelToCh
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 
 from inspect import currentframe
-from pvr.gui.GuiConfig import *
 import threading, time, os, re
 
 import pvr.Msg as Msg
@@ -144,7 +148,7 @@ class ChannelListWindow(BaseWindow):
 
 		self.mIsSelect = False
 		self.mIsMark = True
-		self.mLocalOffset = self.mCommander.Datetime_GetLocalOffset()
+		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset()
 		self.mChannelListServieType = ElisEnum.E_SERVICE_TYPE_INVALID
 		self.mListItems = []
 		self.mZappingMode = ElisEnum.E_MODE_ALL
@@ -169,7 +173,7 @@ class ChannelListWindow(BaseWindow):
 		#self.GetSlideMenuHeader( FLAG_SLIDE_INIT )
 
 		try :
-			self.mNavChannel = self.mCommander.Channel_GetCurrent()
+			self.mNavChannel = self.mDataCache.Channel_GetCurrent()
 			self.mCurrentChannel = self.mNavChannel.mNumber
 			
 		except Exception, e :
@@ -478,7 +482,7 @@ class ChannelListWindow(BaseWindow):
 					if self.mIsSelect == True :
 						#on select, clicked
 						ret = None
-						ret = self.mCommander.Epgevent_GetPresent()
+						ret = self.mDataCache.Epgevent_GetPresent()
 						if ret :
 							#LOG_TRACE('2========event id[%s] old[%s]'% (aEvent.mEventId, self.mEventId) )
 							self.mEventId = aEvent.mEventId
@@ -521,7 +525,7 @@ class ChannelListWindow(BaseWindow):
 		LOG_TRACE( 'label[%s] ch[%d] pin[%s]'% (label, channelNumbr, self.mPincodeEnter) )
 
 		ret = False
-		ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
+		ret = self.mDataCache.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
 		#LOG_TRACE( 'MASK[%s] ret[%s]'% (self.mPincodeEnter, ret) )
 		if ret == True :
 			if self.mPincodeEnter == FLAG_MASK_NONE :
@@ -543,7 +547,7 @@ class ChannelListWindow(BaseWindow):
 					#ToDO : WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_LIVE_PLATE).setLastChannel( self.mCurrentChannel )
 
 		ch = None
-		ch = self.mCommander.Channel_GetCurrent()
+		ch = self.mDataCache.Channel_GetCurrent()
 		if ch :
 			self.mNavChannel = ch
 			self.mCurrentChannel = self.mNavChannel.mNumber
@@ -1168,7 +1172,7 @@ class ChannelListWindow(BaseWindow):
 
 		#get last channel
 		ret = None
-		ret = self.mCommander.Channel_GetCurrent()
+		ret = self.mDataCache.Channel_GetCurrent()
 		if ret :
 			self.mNavChannel = ret
 			self.mCurrentChannel = self.mNavChannel.mNumber
@@ -1222,7 +1226,7 @@ class ChannelListWindow(BaseWindow):
 
 		try :
 			if self.mIsSelect == True :
-				ret = self.mCommander.Epgevent_GetPresent()
+				ret = self.mDataCache.Epgevent_GetPresent()
 				time.sleep(0.05)
 				if ret :
 					self.mNavEpg = ret
@@ -1240,7 +1244,7 @@ class ChannelListWindow(BaseWindow):
 							self.mNavChannel = ch
 							#LOG_TRACE( 'found ch: getlabel[%s] ch[%s]'% (channelNumbr, ch.mNumber ) )
 
-							gmtime = self.mCommander.Datetime_GetGMTTime()
+							gmtime = self.mDataCache.Datetime_GetGMTTime()
 							gmtFrom = gmtime
 							gmtUntil= gmtime
 							maxCount= 1
@@ -1288,7 +1292,7 @@ class ChannelListWindow(BaseWindow):
 			self.mCtrlChannelName.setLabel( str('%s - %s'% (label, self.mNavChannel.mName )) )
 
 		#update longitude info
-		satellite = self.mCommander.Satellite_GetByChannelNumber( self.mNavChannel.mNumber, self.mNavChannel.mServiceType )
+		satellite = self.mDataCache.Satellite_GetByChannelNumber( self.mNavChannel.mNumber, self.mNavChannel.mServiceType )
 		ret = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
 		self.mCtrlLongitudeInfo.setLabel( ret )
 
