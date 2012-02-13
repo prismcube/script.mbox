@@ -1292,7 +1292,7 @@ class ChannelListWindow(BaseWindow):
 			self.mCtrlChannelName.setLabel( str('%s - %s'% (label, self.mNavChannel.mName )) )
 
 		#update longitude info
-		satellite = self.mCommander.Satellite_GetByChannelNumber( self.mNavChannel.mNumber )
+		satellite = self.mCommander.Satellite_GetByChannelNumber( self.mNavChannel.mNumber, self.mNavChannel.mServiceType )
 		ret = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
 		self.mCtrlLongitudeInfo.setLabel( ret )
 
