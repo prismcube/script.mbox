@@ -83,6 +83,7 @@
 				<align>left</align>
 				<aligny>center</aligny>
 			</control>
+			<!--
 			<control type="image">
 				<posx>818</posx>
 				<posy>110</posy>
@@ -91,6 +92,7 @@
 				<texture border="20">special://skin/backgrounds/weather.jpg</texture>
 				<description>pre-view</description>
 			</control>
+			-->
 			<control type="label" id="307">
 				<description>satellite info</description>
 				<posx>818</posx>
