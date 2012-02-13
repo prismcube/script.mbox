@@ -97,7 +97,7 @@ class DataCacheMgr( object ):
 			self.mCurrentChannel.mTsid == event.mTsid and self.mCurrentChannel.mOnid == event.mOnid :
 				self.mCurrentEvent = event
 				LOG_TRACE('currentEvent' )
-				self.mCurrentEvent.printdebug()
+
 
 
 	def Load( self ) :
@@ -285,6 +285,8 @@ class DataCacheMgr( object ):
 
 	@DataLock
 	def Epgevent_GetPresent( self ) :
+		#Todo later
+		""" 
 		if self.mCurrentEvent :
 			LOG_TRACE('currentEvent' )
 			self.mCurrentEvent.printdebug()
@@ -292,6 +294,7 @@ class DataCacheMgr( object ):
 			 self.mCurrentEvent = self.mCommander.Epgevent_GetPresent()
 
 		return self.mCurrentEvent
+		"""
 
-
+		return	self.mCommander.Epgevent_GetPresent()
 		
