@@ -83,8 +83,7 @@
 				<align>left</align>
 				<aligny>center</aligny>
 			</control>
-			<!--
-			<control type="image" id="301">
+			<control type="image" id="1004">
 				<posx>818</posx>
 				<posy>110</posy>
 				<width>352</width>
@@ -92,7 +91,6 @@
 				<texture border="20"></texture>
 				<description>pre-view</description>
 			</control>
-			-->
 			<control type="label" id="307">
 				<description>satellite info</description>
 				<posx>818</posx>
