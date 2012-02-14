@@ -76,6 +76,7 @@ class ChannelListWindow(BaseWindow):
 		self.mLastSubSlidePosition = 0
 		self.mSelectMainSlidePosition = 0
 		self.mSelectSubSlidePosition = 0
+		self.mListItems = None
 
 		self.mEventId = 0
 		self.mLocalTime = 0
@@ -150,7 +151,6 @@ class ChannelListWindow(BaseWindow):
 		self.mIsMark = True
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset()
 		self.mChannelListServieType = ElisEnum.E_SERVICE_TYPE_INVALID
-		self.mListItems = []
 		self.mZappingMode = ElisEnum.E_MODE_ALL
 		self.mChannelListSortMode = ElisEnum.E_SORT_BY_DEFAULT
 		self.mChannelList = []
@@ -286,6 +286,7 @@ class ChannelListWindow(BaseWindow):
 
 		elif id == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN or \
 			 id == Action.ACTION_PAGE_UP or id == Action.ACTION_PAGE_DOWN :
+			#pass
 			self.GetFocusId()
 			if self.mFocusId == self.mCtrlListCHList.getId() :
 				if self.mMoveFlag :
@@ -685,6 +686,7 @@ class ChannelListWindow(BaseWindow):
 			
 			#if self.mChannelList :
 			#channel list update
+			self.mListItems = None
 			self.mCtrlListCHList.reset()
 			self.InitChannelList()
 
@@ -1123,12 +1125,14 @@ class ChannelListWindow(BaseWindow):
 		#### first get is used cache, reason by fast load ###
 		self.mChannelList = self.mDataCache.Channel_GetList()
 
+		"""
 		if self.mChannelList :
 			LOG_TRACE( 'zappingMode[%s] sortMode[%s] serviceType[%s]'%  \
 				( EnumToString('mode', self.mZappingMode),         \
 				  EnumToString('sort', self.mChannelListSortMode), \
 				  EnumToString('type', self.mChannelListServieType)) )
 			LOG_TRACE( 'len[%s] ch%s'% (len(self.mChannelList),ClassToList( 'convert', self.mChannelList )) )
+		"""
 
 
 		LOG_TRACE( 'Leave' )
@@ -1150,40 +1154,47 @@ class ChannelListWindow(BaseWindow):
 
 		lblColorS = E_TAG_COLOR_GREY
 		lblColorE = E_TAG_COLOR_END
-		self.mListItems = []
-		for ch in self.mChannelList:
+		LOG_TRACE('==================listItems data[%s]'% (self.mListItems) )
+		if self.mListItems == None :
+			self.mListItems = []
+			for ch in self.mChannelList:
+				try:
+					if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+						#skip ch
+						if ch.mSkipped == True :
+							continue
+						listItem = xbmcgui.ListItem( "%04d %s"%( ch.mNumber, ch.mName ), "-", "-", "-", "-" )
 
-			try:
-				if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
-					#skip ch
-					if ch.mSkipped == True :
-						continue
-					listItem = xbmcgui.ListItem( "%04d %s"%( ch.mNumber, ch.mName ), "-", "-", "-", "-" )
+					else :
+						#skip ch
+						if ch.mSkipped == True :
+							lblColorS = E_TAG_COLOR_GREY3
+						else:
+							lblColorS = E_TAG_COLOR_GREY
 
-				else :
-					#skip ch
-					if ch.mSkipped == True :
-						lblColorS = E_TAG_COLOR_GREY3
-					else:
-						lblColorS = E_TAG_COLOR_GREY
+						listItem = xbmcgui.ListItem( "%s%04d %s%s"%( lblColorS, ch.mNumber, ch.mName, lblColorE ), "-", "-", "-", "-" )
 
-					listItem = xbmcgui.ListItem( "%s%04d %s%s"%( lblColorS, ch.mNumber, ch.mName, lblColorE ), "-", "-", "-", "-" )
-
-			except Exception, e:
-				LOG_TRACE( '=========== except[%s]'% e )
+				except Exception, e:
+					LOG_TRACE( '=========== except[%s]'% e )
 
 
-			if ch.mLocked  : listItem.setProperty('lock', E_IMG_ICON_LOCK)
-			if ch.mIsCA    : listItem.setProperty('icas', E_IMG_ICON_ICAS)
+				if ch.mLocked  : listItem.setProperty('lock', E_IMG_ICON_LOCK)
+				if ch.mIsCA    : listItem.setProperty('icas', E_IMG_ICON_ICAS)
 
-			self.mListItems.append(listItem)
+				self.mListItems.append(listItem)
 
+		GuiLock2(True)
 		self.mCtrlListCHList.addItems( self.mListItems )
+		GuiLock2(False)
 
 
 		#get last channel
 		ret = None
-		ret = self.mCommander.Channel_GetCurrent()
+		if self.mListItems == None :
+			ret = self.mCommander.Channel_GetCurrent()
+		else :
+			ret = self.mDataCache.Channel_GetCurrent()
+
 		if ret :
 			self.mNavChannel = ret
 			self.mCurrentChannel = self.mNavChannel.mNumber
@@ -1195,11 +1206,14 @@ class ChannelListWindow(BaseWindow):
 				break
 			chindex += 1
 
+		GuiLock2(True)
 		self.mCtrlListCHList.selectItem( chindex )
+		xbmc.sleep(50)
 
 		#select item idx, print GUI of 'current / total'
 		#self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
 		self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
+		GuiLock2(False)
 
 		LOG_TRACE( 'Leave' )
 
