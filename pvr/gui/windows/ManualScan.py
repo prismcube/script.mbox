@@ -261,7 +261,6 @@ class ManualScan( SettingWindow ) :
 
 	def LoadTransponderList( self ) :
 		satellite = self.mConfiguredSatelliteList[ self.mSatelliteIndex ]
-
 		self.mTransponderList = []
 		self.mTransponderList = self.mDataCache.GetTransponderbyHash( satellite.mSatelliteLongitude, satellite.mBandType )
 

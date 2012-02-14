@@ -82,7 +82,7 @@ class DataCacheMgr( object ):
 		self.Load()
 		LOG_TRACE('')
 
-		self.mEventBus.Register( self )		
+		#self.mEventBus.Register( self )		
 
 
 	def onEvent(self, aEvent):
