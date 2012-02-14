@@ -4,58 +4,42 @@ import sys
 
 import pvr.gui.DialogMgr as DiaMgr
 import pvr.TunerConfigMgr as ConfigMgr
+import pvr.DataCacheMgr as CacheMgr
+from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
-import pvr.ElisMgr
 from ElisClass import *
 from ElisProperty import ElisPropertyEnum
-from pvr.gui.GuiConfig import *
-
-E_PIP_PICTURE_ID = 301
 
 
 class EditTransponder( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
  
-		self.mTransponderList = []
-		self.mSatelliteIndex 	= 0
-		self.mTransponderIndex = 0
+		self.mTransponderList	= []
+		self.mSatelliteIndex	= 0
+		self.mTransponderIndex	= 0
+		self.mLongitude			= 0
+		self.mBand				= 0
 
 			
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.mCtrlImgVideoPos = self.getControl( E_PIP_PICTURE_ID )
-
-		h = self.mCtrlImgVideoPos.getHeight( )
-		w = self.mCtrlImgVideoPos.getWidth( )
-		pos = list( self.mCtrlImgVideoPos.getPosition( ) )
-		x = pos[0]
-		y = pos[1]
-		ret = self.mCommander.Player_SetVIdeoSize( x, y, w, h ) 
-
-		if ConfigMgr.GetInstance( ).GetNeedLoad( ) == True : 
-			ConfigMgr.GetInstance( ).LoadOriginalTunerConfig( )
-			ConfigMgr.GetInstance( ).Load( )		
-			ConfigMgr.GetInstance( ).SetNeedLoad( False )
-
+		self.SetPipScreen( )
 		self.InitConfig( )
 		self.SetSettingWindowLabel( 'Edit Transponder' )
 		self.mInitialized = True
 
 
 	def onAction( self, aAction ) :
-
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
-
 		self.GlobalAction( actionId )		
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.ResetAllControl( )
 			self.SetVideoRestore( )
-			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			self.close( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -64,7 +48,6 @@ class EditTransponder( SettingWindow ) :
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
 			self.SetVideoRestore( )
-			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
@@ -87,7 +70,7 @@ class EditTransponder( SettingWindow ) :
 		
 		# Select Satellite
 		if groupId == E_Input01 :
-			satelliteList = ConfigMgr.GetInstance( ).GetFormattedNameList( )
+			satelliteList = CacheMgr.GetInstance( ).Satellite_GetFormattedNameList( )
 			dialog = xbmcgui.Dialog( )
  			select = dialog.select( 'Select satellite', satelliteList )
 
@@ -98,7 +81,7 @@ class EditTransponder( SettingWindow ) :
 	 	# Select frequency
 	 	elif groupId == E_Input02 :
 	 		if len( self.mTransponderList ) <= 0 :
-	 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+	 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'Information', 'Satellite has no transponder info.\nFirst add new transponder' )
 	 			dialog.doModal( )
 	 		else :
@@ -115,9 +98,8 @@ class EditTransponder( SettingWindow ) :
 
 		# Add Transponder
 		elif groupId == E_Input05 :
-			satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_TRANSPONDER )
- 			dialog.SetDefaultValue( 0, 0, 0, 0, satellite.mBand )
+ 			dialog.SetDefaultValue( 0, 0, 0, 0, self.mBand )
  			dialog.doModal( )
 
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -134,9 +116,9 @@ class EditTransponder( SettingWindow ) :
  				
  				tmplist = []
 		 		tmplist.append( newTransponder )
- 				ret = self.mCommander.Transponder_Add( satellite.mLongitude, satellite.mBand, tmplist )
+ 				ret = self.mCommander.Transponder_Add( self.mLongitude, self.mBand, tmplist )
  				if ret != True :
-					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( 'ERROR', 'Transponder Add Fail' )
 		 			dialog.doModal( )
 		 			return
@@ -148,13 +130,12 @@ class EditTransponder( SettingWindow ) :
 		# Edit Transponder
 		elif groupId == E_Input07 :
 			if len( self.mTransponderList ) <= 0 :
-	 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+	 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'Information', 'Satellite has no transponder info.\nFirst add new transponder' )
 	 			dialog.doModal( )
 	 		else :
-	 			satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_TRANSPONDER )
-	 			dialog.SetDefaultValue( self.mTransponderList[self.mTransponderIndex].mFrequency, self.mTransponderList[self.mTransponderIndex].mFECMode, self.mTransponderList[self.mTransponderIndex].mPolarization, self.mTransponderList[self.mTransponderIndex].mSymbolRate, satellite.mBand )
+	 			dialog.SetDefaultValue( self.mTransponderList[self.mTransponderIndex].mFrequency, self.mTransponderList[self.mTransponderIndex].mFECMode, self.mTransponderList[self.mTransponderIndex].mPolarization, self.mTransponderList[self.mTransponderIndex].mSymbolRate, self.mBand )
 	 			dialog.doModal( )
 
 	 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -163,9 +144,9 @@ class EditTransponder( SettingWindow ) :
 					# Delete
 					tmplist = []
 			 		tmplist.append( self.mTransponderList[self.mTransponderIndex] )
-			 		ret = self.mCommander.Transponder_Delete( satellite.mLongitude, satellite.mBand, tmplist )
+			 		ret = self.mCommander.Transponder_Delete( self.mLongitude, self.mBand, tmplist )
 			 		if ret != True :
-						dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( 'ERROR', 'Transponder Edit Fail' )
 			 			dialog.doModal( )
 			 			return
@@ -183,9 +164,9 @@ class EditTransponder( SettingWindow ) :
 	 				tmplist = []
 			 		tmplist.append( newTransponder )
 			 		
-	 				ret = self.mCommander.Transponder_Add( satellite.mLongitude, satellite.mBand, tmplist )
+	 				ret = self.mCommander.Transponder_Add( self.mLongitude, self.mBand, tmplist )
 	 				if ret != True :
-						dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( 'ERROR', 'Transponder Edit Fail' )
 			 			dialog.doModal( )
 			 			return
@@ -197,21 +178,20 @@ class EditTransponder( SettingWindow ) :
 	 	# Delete Transponder
 	 	elif groupId == E_Input06 :
 	 		if len( self.mTransponderList ) <= 0 :
-	 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+	 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'Information', 'Satellite has no transponder info.\nFirst add new transponder' )
 	 			dialog.doModal( )
 	 		else :
-		 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+		 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( 'Confirm', 'Do you want to delete transponder?' )
 				dialog.doModal( )
 
-				if dialog.IsOK() == E_DIALOG_STATE_YES :
-			 		satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			 		tmplist = []
 			 		tmplist.append( self.mTransponderList[self.mTransponderIndex] )
-			 		ret = self.mCommander.Transponder_Delete( satellite.mLongitude, satellite.mBand, tmplist )
+			 		ret = self.mCommander.Transponder_Delete( self.mLongitude, self.mBand, tmplist )
 			 		if ret != True :
-						dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( 'ERROR', 'Transponder Delete Fail' )
 			 			dialog.doModal( )
 			 			return
@@ -220,7 +200,7 @@ class EditTransponder( SettingWindow ) :
 				else :
 					return
 		
-	def onFocus( self, aControlId ):
+	def onFocus( self, aControlId ) :
 		if self.mInitialized == False :
 			return
 		if self.mLastFocused != aControlId :
@@ -230,12 +210,11 @@ class EditTransponder( SettingWindow ) :
 
 	def InitConfig( self ) :
 		self.ResetAllControl( )
-
-		satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
-		satellitename = ConfigMgr.GetInstance( ).GetFormattedName( satellite.mLongitude , satellite.mBand )
+		self.GetSatelliteInfo( self.mSatelliteIndex )
+		satellitename = CacheMgr.GetInstance( ).Satellite_GetFormattedName( self.mLongitude , self.mBand )
 		self.AddInputControl( E_Input01, 'Satellite', satellitename, 'Select satellite.' )
 
-		self.mTransponderList = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
+		self.mTransponderList = self.mCommander.Transponder_GetList( self.mLongitude, self.mBand )
 
 		for i in range( len( self.mTransponderList ) ) :
  			if self.mTransponderList[i].mError < 0 :
@@ -261,3 +240,9 @@ class EditTransponder( SettingWindow ) :
 		self.ShowDescription( self.getFocusId( ) )
 		self.SetEnableControl( E_Input03, False )
 		self.SetEnableControl( E_Input04, False )
+
+
+	def	GetSatelliteInfo( self, aIndex ) :
+		satellite = CacheMgr.GetInstance( ).Satellite_GetSatelliteByIndex( aIndex )
+		self.mLongitude = satellite.mLongitude
+		self.mBand		= satellite.mBand

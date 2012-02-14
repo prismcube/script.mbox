@@ -90,25 +90,11 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 		self.mDataCache = pvr.DataCacheMgr.GetInstance()
 		
 
-	def SetFooter( self, aFooterMask ):
-		self.mFooterGroupId = FooterMask.G_FOOTER_GROUP_STARTID
-		for i in range( FooterMask.G_NUM_OF_FOOTER_ICON ):
-			if not( aFooterMask & ( 1 << i ) ):
-				self.mCtrlFooterGroup = self.getControl( self.mFooterGroupId )
-				self.mCtrlFooterGroup.setVisible( False )
-			self.mFooterGroupId += FooterMask.G_FOOTER_GROUP_IDGAP
-
-	def SetHeaderLabel( self, aLabel ):
-		self.getControl( HeaderDefine.G_WINDOW_HEADER_LABEL_ID ).setLabel( aLabel )
-
-	def SetSettingWindowLabel( self, aLabel ) :
-		self.getControl( E_SETTING_MINI_TITLE ).setLabel( aLabel )
-		self.getControl( E_SETTING_HEADER_TITLE ).setLabel( aLabel )
-
 	def GetFocusId( self ):
 		GuiLock2( True )
 		self.mFocusId = self.getFocusId()
 		GuiLock2( False )
+
 
 	def GlobalAction( self, aActionId ) :
 	
@@ -120,6 +106,7 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 
 		elif aActionId == Action.ACTION_VOLUME_DOWN:
 			self.UpdateVolume( )
+
 
 	def SetVideoRestore( self ) :
 		ret = self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
@@ -165,7 +152,7 @@ class SettingWindow( BaseWindow ):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
 		self.mControlList = []
-		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
+		#self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 
 
 	def InitControl( self ):
@@ -195,6 +182,20 @@ class SettingWindow( BaseWindow ):
 		del self.mControlList[:]
 
 
+	def SetSettingWindowLabel( self, aLabel ) :
+		self.getControl( E_SETTING_MINI_TITLE ).setLabel( aLabel )
+		self.getControl( E_SETTING_HEADER_TITLE ).setLabel( aLabel )
+
+
+	def SetPipScreen( self ) :
+		ctrlImgVideoPos = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
+
+		h = ctrlImgVideoPos.getHeight( )
+		w = ctrlImgVideoPos.getWidth( )
+		x, y = list( ctrlImgVideoPos.getPosition( ) )
+		ret = self.mCommander.Player_SetVIdeoSize( x, y, w, h ) 
+
+		
 	def GetControlIdToListIndex( self, aControlId ) :
 		count = len( self.mControlList )
 		for i in range( count ) :

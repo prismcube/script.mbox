@@ -24,7 +24,6 @@ LEFT_MENU_ID = 9000
 class MediaCenter( BaseWindow ):
 	def __init__( self, *args, **kwargs ):
 		BaseWindow.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
 
 
 	def onInit( self ):

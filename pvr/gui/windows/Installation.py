@@ -18,7 +18,6 @@ MENU_ID_CAS						= 6
 class Installation( BaseWindow ):
 	def __init__( self, *args, **kwargs ):
 		BaseWindow.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
 
 		self.leftGroupItems = [ 'First Installation', 'Antenna Setup', 'Channel Search', 'Edit Satellite', 'Edit Transponder', 'Configure', 'CAS' ]
 		self.descriptionList	 = [ 'Desc First Installation', 'Desc Antenna Setup', 'Desc Channel Search', 'Desc Edit Satellite', 'Desc Edit Transponder', 'Desc Configure', 'Desc CAS' ]

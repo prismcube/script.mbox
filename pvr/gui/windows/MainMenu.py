@@ -29,8 +29,8 @@ BUTTON_ID_CAS					= 90107
 class MainMenu( BaseWindow ):
 	def __init__( self, *args, **kwargs ):
 		BaseWindow.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.mStartMediaCenter = False
+
 
 	def onInit( self ):
 		try :

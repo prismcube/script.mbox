@@ -25,7 +25,7 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ):
 		
 
 	def SetHeaderLabel( self, aLabel ):
-		self.getControl( HeaderDefine.G_DIALOG_HEADER_LABEL_ID ).setLabel( aLabel )
+		self.getControl( G_DIALOG_HEADER_LABEL_ID ).setLabel( aLabel )
 
 
 	def SetButtonLabel( self, aControlId, aLabel ) :

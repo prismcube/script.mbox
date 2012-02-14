@@ -1,4 +1,3 @@
-
 import xbmc
 import xbmcgui
 import sys
@@ -6,31 +5,20 @@ import sys
 import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.GuiConfig import *
-from ElisProperty import ElisPropertyEnum
-import pvr.ElisMgr
-
 from pvr.gui.BaseWindow import SettingWindow, Action
+from ElisProperty import ElisPropertyEnum
 
-E_PIP_PICTURE_ID = 301
 
-class ChannelSearch( SettingWindow ):
-	def __init__( self, *args, **kwargs ):
+class ChannelSearch( SettingWindow ) :
+	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
+
 			
-	def onInit(self):
+	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
-		self.mCtrlImgVideoPos = self.getControl( E_PIP_PICTURE_ID )
-
-		h = self.mCtrlImgVideoPos.getHeight( )
-		w = self.mCtrlImgVideoPos.getWidth( )
-		pos = list( self.mCtrlImgVideoPos.getPosition( ) )
-		x = pos[0]
-		y = pos[1]
-		ret = self.mCommander.Player_SetVIdeoSize( x, y, w, h ) 
-
+		self.SetPipScreen( )
 		self.SetSettingWindowLabel( 'Channel Scan' )
 
 		self.AddInputControl( E_Input01, 'Automatic Scan', '', 'Running automatic scan.' )
@@ -41,15 +29,15 @@ class ChannelSearch( SettingWindow ):
 		self.mInitialized = True
 
 		
-	def onAction( self, aAction ):
-
+	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
-
 		self.GlobalAction( actionId )		
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			pass
+			self.ResetAllControl( )
+			self.SetVideoRestore( )
+			self.close( )
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
@@ -73,30 +61,28 @@ class ChannelSearch( SettingWindow ):
 			self.ShowDescription( focusId )
 			
 
-
-	def onClick( self, aControlId ):
+	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
 		if groupId == E_Input01 :
 			if self.CheckConfiguredSatellite( ) == False :
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'ERROR', 'No Configured Satellite.' )
 	 			dialog.doModal( )
 			else :
 				self.ResetAllControl( )
-				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_AUTOMATIC_SCAN )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_AUTOMATIC_SCAN )
 			
 		elif groupId == E_Input02 :
 			if self.CheckConfiguredSatellite( ) == False :
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'ERROR', 'No Configured Satellite.' )
 	 			dialog.doModal( )
-				
 			else :
 				self.ResetAllControl( )
-				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MANUAL_SCAN )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MANUAL_SCAN )
 				
 
-	def onFocus( self, aControlId ):
+	def onFocus( self, aControlId ) :
 		if self.mInitialized == False :
 			return
 

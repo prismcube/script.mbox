@@ -1,6 +1,5 @@
 import xbmc
 import xbmcgui
-import time
 import sys
 
 import pvr.gui.DialogMgr as DiaMgr
@@ -9,8 +8,7 @@ from pvr.gui.BaseWindow import Action
 from ElisEnum import ElisEnum
 from ElisProperty import ElisPropertyEnum
 from pvr.gui.GuiConfig import *
-
-from pvr.Util import LOG_WARN, LOG_TRACE, LOG_ERR
+from pvr.Util import LOG_TRACE
 
 
 class DialogAddNewSatellite( SettingDialog ) :

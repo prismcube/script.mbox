@@ -10,6 +10,7 @@ import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from ElisClass import *
 from pvr.gui.GuiConfig import *
+import pvr.DataCacheMgr as CacheMgr
 
 gTunerConfigMgr = None
 
@@ -262,8 +263,8 @@ class TunerConfigMgr( object ) :
 
 	def Load( self ) :
 		# Get All Satellite List ( mLongitude, mBand, mName )
-		self.mAllSatelliteList = []
-		self.mAllSatelliteList = self.mCommander.Satellite_GetList( ElisEnum.E_SORT_INSERTED )
+		self.mAllSatelliteList = CacheMgr.GetInstance( ).mSatelliteList
+		#self.mAllSatelliteList = self.mCommander.Satellite_GetList( ElisEnum.E_SORT_INSERTED )
 
 		# Get Configured Satellite List Tuner 1
 		self.mConfiguredList1 = []
@@ -323,25 +324,16 @@ class TunerConfigMgr( object ) :
 
 
 	def GetFormattedLongitude( self, aLongitude, aBand ) :
-		found = False	
+		dir = 'E'
 
-		for satellite in self.mAllSatelliteList :
-			if aLongitude == satellite.mLongitude and aBand == satellite.mBand :
-				found = True
-				break
+		tmpLongitude  = aLongitude
+		if tmpLongitude > 1800 :
+			dir = 'W'
+			tmpLongitude = 3600 - aLongitude
 
-		if found == True :
-			dir = 'E'
-
-			tmpLongitude  = aLongitude
-			if tmpLongitude > 1800 :
-				dir = 'W'
-				tmpLongitude = 3600 - aLongitude
-
-			formattedName = '%d.%d %s' % ( int( tmpLongitude / 10 ), tmpLongitude % 10, dir )
-			return formattedName
-
-		return 'UnKnown'
+		formattedName = '%d.%d %s' % ( int( tmpLongitude / 10 ), tmpLongitude % 10, dir )
+		return formattedName
+		
 
 	def GetFormattedNameList( self ) :
 		formattedlist = []	

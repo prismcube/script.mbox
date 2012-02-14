@@ -130,7 +130,7 @@ class DataCacheMgr( object ):
 
 		for i in range( count ):
 			satellite = self.mSatelliteList[i]
-			hashKey = '%d:%d' %(satellite.mLongitude, satellite.mBand )
+			hashKey = '%d:%d' % ( satellite.mLongitude, satellite.mBand )
 			self.mSatelliteListHash[hashKey] = satellite
 
 
@@ -300,4 +300,43 @@ class DataCacheMgr( object ):
 		"""
 
 		return	self.mCommander.Epgevent_GetPresent()
-		
+
+
+	@DataLock
+	def Satellite_GetFormattedNameList( self ) :
+		formattedlist = []	
+		for satellite in self.mSatelliteList :
+			dir = 'E'
+
+			tmpLongitude  = satellite.mLongitude
+			if tmpLongitude > 1800 :
+				dir = 'W'
+				tmpLongitude = 3600 - satellite.mLongitude
+
+			formattedName = '%d.%d %s %s' %( int( tmpLongitude / 10 ), tmpLongitude % 10, dir, satellite.mName )
+			formattedlist.append( formattedName )
+
+		return formattedlist
+
+
+	@DataLock
+	def Satellite_GetSatelliteByIndex( self, aIndex ) :
+		return self.mSatelliteList[ aIndex ]
+
+
+	@DataLock
+	def Satellite_GetFormattedName( self, aLongitude, aBand ) :
+		hashKey = '%d:%d' % ( aLongitude, aBand )
+		satellite = self.mSatelliteListHash.get( hashKey, None )
+		if satellite != None:
+			dir = 'E'
+
+			tmpLongitude  = aLongitude
+			if tmpLongitude > 1800 :
+				dir = 'W'
+				tmpLongitude = 3600 - aLongitude
+
+			formattedName = '%d.%d %s %s' % ( int( tmpLongitude / 10 ), tmpLongitude % 10, dir, satellite.mName )
+			return formattedName
+
+		return 'UnKnown'

@@ -4,38 +4,25 @@ import sys
 
 import pvr.gui.DialogMgr as DiaMgr
 import pvr.TunerConfigMgr as ConfigMgr
+import pvr.DataCacheMgr as CacheMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
-import pvr.ElisMgr
-
-E_PIP_PICTURE_ID = 301
 
 
 class EditSatellite( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
 
-		self.mSatelliteIndex = 0
+		self.mSatelliteIndex	= 0
+		self.mLongitude			= 0
+		self.mBand				= 0
+		self.mName				= 'Unkown'
 			
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
-
-		self.mCtrlImgVideoPos = self.getControl( E_PIP_PICTURE_ID )
-
-		h = self.mCtrlImgVideoPos.getHeight( )
-		w = self.mCtrlImgVideoPos.getWidth( )
-		pos = list( self.mCtrlImgVideoPos.getPosition( ) )
-		x = pos[0]
-		y = pos[1]
-		ret = self.mCommander.Player_SetVIdeoSize( x, y, w, h ) 
-
-		if ConfigMgr.GetInstance( ).GetNeedLoad( ) == True : 
-			ConfigMgr.GetInstance( ).LoadOriginalTunerConfig( )
-			ConfigMgr.GetInstance( ).Load( )		
-			ConfigMgr.GetInstance( ).SetNeedLoad( False )
-
-	
+		
+		self.SetPipScreen( )	
 		self.InitConfig( )
 		self.SetSettingWindowLabel( 'Edit Satellite' )
 		self.mInitialized = True
@@ -44,13 +31,11 @@ class EditSatellite( SettingWindow ) :
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
-
 		self.GlobalAction( actionId )
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.ResetAllControl( )
 			self.SetVideoRestore( )
-			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			self.close( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -59,7 +44,6 @@ class EditSatellite( SettingWindow ) :
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
 			self.SetVideoRestore( )
-			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
@@ -82,8 +66,8 @@ class EditSatellite( SettingWindow ) :
 		
 		# Select Satellite
 		if groupId == E_Input01 :
-			satelliteList = ConfigMgr.GetInstance( ).GetFormattedNameList( )
-			dialog = xbmcgui.Dialog()
+			satelliteList = CacheMgr.GetInstance( ).Satellite_GetFormattedNameList( )
+			dialog = xbmcgui.Dialog( )
  			select = dialog.select( 'Select satellite', satelliteList )
 
 			if select >= 0 and select != self.mSatelliteIndex :
@@ -92,51 +76,51 @@ class EditSatellite( SettingWindow ) :
 
 	 	# Edit Satellite Name
 		elif groupId == E_Input03 :
-			satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
-			kb = xbmc.Keyboard( satellite.mName, 'Satellite Name', False )
+			kb = xbmc.Keyboard( self.mName, 'Satellite Name', False )
 			kb.doModal( )
 			if( kb.isConfirmed( ) ) :
-				ret = self.mCommander.Satellite_ChangeName( satellite.mLongitude, satellite.mBand, kb.getText( ) )
+				ret = self.mCommander.Satellite_ChangeName( self.mLongitude, self.mBand, kb.getText( ) )
 				if ret != True :
-					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( 'ERROR', 'Satellite Edit Name Fail' )
 		 			dialog.doModal( )
 		 			return
+ 				CacheMgr.GetInstance( ).LoadSatellite( )
 				self.InitConfig( )
 
 		# Add New Satellite
 		elif groupId == E_Input04 :
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_NEW_SATELLITE )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ADD_NEW_SATELLITE )
  			dialog.doModal( )
 
-			if dialog.IsOK() == E_DIALOG_STATE_YES :
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				longitude, band, satelliteName = dialog.GetValue( )
 				ret = self.mCommander.Satellite_Add( longitude, band, satelliteName )
-				print 'dhkim test ret = %s' % ret
 				if ret != True :
-					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( 'ERROR', 'Satellite Add Fail' )
 		 			dialog.doModal( )
 		 			return
+ 				CacheMgr.GetInstance( ).LoadSatellite( )
 				self.InitConfig( )
 			else :
 				return
 				 
 		# Delete Satellite
 		elif groupId == E_Input05 :
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( 'Confirm', 'Do you want to delete satellite?' )
 			dialog.doModal( )
 
-			if dialog.IsOK() == E_DIALOG_STATE_YES :
-				satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
-				ret = self.mCommander.Satellite_Delete( satellite.mLongitude, satellite.mBand )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				ret = self.mCommander.Satellite_Delete( self.mLongitude, self.mBand )
 				if ret != True :
-					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( 'ERROR', 'Satellite Delete Fail' )
 		 			dialog.doModal( )
 		 			return
 				self.mSatelliteIndex = 0
+				CacheMgr.GetInstance( ).LoadSatellite( )
 				self.InitConfig( )
 			else :
 				return
@@ -144,19 +128,17 @@ class EditSatellite( SettingWindow ) :
 	def onFocus( self, aControlId ):
 		if self.mInitialized == False :
 			return
-		if ( self.mLastFocused != aControlId ) :
+		if self.mLastFocused != aControlId :
 			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId
 
 
 	def InitConfig( self ) :
 		self.ResetAllControl( )
-
-		ConfigMgr.GetInstance( ).ReloadAllSatelliteList( )
-		satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( self.mSatelliteIndex )
-		satellitename = ConfigMgr.GetInstance( ).GetFormattedName( satellite.mLongitude , satellite.mBand )
+		self.GetSatelliteInfo( self.mSatelliteIndex )
+		satellitename = CacheMgr.GetInstance( ).Satellite_GetFormattedName( self.mLongitude , self.mBand )
 		self.AddInputControl( E_Input01, 'Satellite', satellitename, 'Select satellite.' )
-		longitude = ConfigMgr.GetInstance( ).GetFormattedLongitude( satellite.mLongitude , satellite.mBand )
+		longitude = ConfigMgr.GetInstance( ).GetFormattedLongitude( self.mLongitude , self.mBand )
 		self.AddInputControl( E_Input02, 'Longitude', longitude )
 		self.AddInputControl( E_Input03, 'Edit Satellite Name', '', 'Edit satellite name.' )
 		self.AddInputControl( E_Input04, 'Add New Satellite', '', 'Add new satellite.' )
@@ -166,12 +148,18 @@ class EditSatellite( SettingWindow ) :
 		self.ShowDescription( self.getFocusId( ) )
 		self.SetEnableControl( E_Input02, False )
 		self.DisableControl( )
+
+
+	def	GetSatelliteInfo( self, aIndex ) :
+		satellite = CacheMgr.GetInstance( ).Satellite_GetSatelliteByIndex( aIndex )
+		self.mLongitude = satellite.mLongitude
+		self.mBand		= satellite.mBand
+		self.mName		= satellite.mName
+
 		
-	def DisableControl( self ) :
-		
+	def DisableControl( self ) :		
 		if self.mSatelliteIndex == 0 :
 			self.SetEnableControl( E_Input05, False )
-			
 		else :
 			self.SetEnableControl( E_Input05, True )
 

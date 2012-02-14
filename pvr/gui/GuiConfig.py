@@ -66,6 +66,7 @@ E_SETUPMENU_GROUP_ID		= 9010
 E_SETTING_MINI_TITLE		=	1001
 E_SETTING_HEADER_TITLE		=	1002
 E_SETTING_DESCRIPTION		=	1003
+E_SETTING_PIP_SCREEN_IMAGE	=	1004
 
 # TUNER TYPE
 E_SIMPLE_LNB					= 0
@@ -115,6 +116,9 @@ E_LIST_MY_LATITUDE  = [ 'North', 'South' ]
 
 
 ############################ Dialog ############################
+
+G_DIALOG_HEADER_LABEL_ID			= 3005
+
 # Settinf Dialog Control Ids
 E_DialogSpinEx01	= 6110
 E_DialogSpinEx02	= 6120
@@ -235,24 +239,3 @@ def InputKeyboard( aType, aTitle, aString, aMaxLength=None ) :
 	else :
 		return aString
 
-
-############################ Global Class For GUI ############################		
-
-class FooterMask(object):
-	G_FOOTER_GROUP_STARTID				= 3100
-	G_FOOTER_GROUP_IDGAP				= 10
-	
-	G_NUM_OF_FOOTER_ICON				= 8
-
-	G_FOOTER_ICON_BACK_MASK				= 1 << 0
-	G_FOOTER_ICON_OK_MASK				= 1 << 1
-	G_FOOTER_ICON_SEARCH_MASK			= 1 << 2
-	G_FOOTER_ICON_RECORD_MASK			= 1 << 3
-	G_FOOTER_ICON_EDIT_MASK			    = 1 << 4
-	G_FOOTER_ICON_OPT_MASK			    = 1 << 5
-	G_FOOTER_ICON_MARK_MASK			    = 1 << 6
-	G_FOOTER_ICON_OPTGROUP_MASK		    = 1 << 7
-
-class HeaderDefine(object):
-	G_WINDOW_HEADER_LABEL_ID			= 3001
-	G_DIALOG_HEADER_LABEL_ID			= 3005

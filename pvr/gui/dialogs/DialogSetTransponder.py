@@ -1,6 +1,5 @@
 import xbmc
 import xbmcgui
-import time
 import sys
 
 import pvr.gui.DialogMgr as DiaMgr
