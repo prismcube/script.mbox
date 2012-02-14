@@ -4,7 +4,6 @@ import sys
 from copy import deepcopy
 
 import pvr.gui.DialogMgr as DiaMgr
-import pvr.DataCacheMgr as CacheMgr
 from pvr.gui.BaseWindow import SettingWindow, Action
 from ElisProperty import ElisPropertyEnum
 from pvr.gui.GuiConfig import *
@@ -16,7 +15,7 @@ class AutomaticScan( SettingWindow ) :
 		self.mSatelliteIndex = 0
 
 
-	def onInit(self):
+	def onInit(self) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
@@ -146,5 +145,5 @@ class AutomaticScan( SettingWindow ) :
 		self.mFormattedList.append( 'All' )
 
 		for config in self.mConfiguredSatelliteList :
-			self.mFormattedList.append( CacheMgr.GetInstance( ).Satellite_GetFormattedName( config.mSatelliteLongitude, config.mBandType ) )
+			self.mFormattedList.append( self.mDataCache.Satellite_GetFormattedName( config.mSatelliteLongitude, config.mBandType ) )
 			

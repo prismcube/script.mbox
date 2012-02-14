@@ -4,7 +4,6 @@ import sys
 from copy import deepcopy
 
 import pvr.gui.DialogMgr as DiaMgr
-import pvr.DataCacheMgr as CacheMgr
 from pvr.gui.BaseWindow import SettingWindow, Action
 from pvr.gui.GuiConfig import *
 from ElisProperty import ElisPropertyEnum
@@ -140,7 +139,7 @@ class ManualScan( SettingWindow ) :
 		# Start Search
 		elif groupId == E_Input04 : #ToDO : Have to support manual input
 			transponderList = []
- 			config = self.mConfiguredSatelliteList[ self.mSatelliteIndex 
+ 			config = self.mConfiguredSatelliteList[ self.mSatelliteIndex ]
 
 			transponderList.append( self.mConfigTransponder )
 
@@ -256,7 +255,7 @@ class ManualScan( SettingWindow ) :
 
 		self.mFormattedSatelliteList = []
 		for config in self.mConfiguredSatelliteList :
-			self.mFormattedSatelliteList.append( CacheMgr.GetInstance( ).Satellite_GetFormattedName( config.mSatelliteLongitude, config.mBandType ) )
+			self.mFormattedSatelliteList.append( self.mDataCache.Satellite_GetFormattedName( config.mSatelliteLongitude, config.mBandType ) )
 
 
 	def LoadFormattedTransponderNameList( self ) :

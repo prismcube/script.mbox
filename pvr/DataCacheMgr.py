@@ -296,7 +296,7 @@ class DataCacheMgr( object ):
 		return self.mCurrentEvent
 		"""
 
-		return	self.mCommander.Epgevent_GetPresent()
+		return	self.mCommander.Epgevent_GetPresent( )
 
 
 	@DataLock

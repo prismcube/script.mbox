@@ -179,7 +179,7 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mEventBus.Deregister( self )
 				self.CloseDialog( )
 				xbmcgui.Dialog( ).ok('Failure', 'Channel Search Failed')
-			#self.mCommander.Channelscan_BySatellite( config.mSatelliteLongitude, config.mBandType ) #longitude, band
+
 		elif self.mScanMode == E_SCAN_TRANSPONDER :
 			LOG_TRACE(('long = %d' %self.mLongitude))
 			LOG_TRACE(('band = %d' %self.mBand))
@@ -200,9 +200,6 @@ class DialogChannelSearch( BaseDialog ) :
 			
 			
 			if dialog.IsOK() == E_DIALOG_STATE_YES :
-				LOG_TRACE('before cmd scan abort' )
-				#self.mCommander.Channelscan_Abort( ) #ToDO : Check this command has reply
-				LOG_TRACE('after cmd scan abort' )				
 				self.mIsFinished = True
 
 			elif dialog.IsOK() == E_DIALOG_STATE_NO : 
