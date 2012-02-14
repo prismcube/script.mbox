@@ -4,7 +4,6 @@ import sys
 
 import pvr.gui.DialogMgr as DiaMgr
 import pvr.TunerConfigMgr as ConfigMgr
-import pvr.DataCacheMgr as CacheMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
 
@@ -66,7 +65,7 @@ class EditSatellite( SettingWindow ) :
 		
 		# Select Satellite
 		if groupId == E_Input01 :
-			satelliteList = CacheMgr.GetInstance( ).Satellite_GetFormattedNameList( )
+			satelliteList = self.mDataCache.Satellite_GetFormattedNameList( )
 			dialog = xbmcgui.Dialog( )
  			select = dialog.select( 'Select satellite', satelliteList )
 
@@ -78,14 +77,14 @@ class EditSatellite( SettingWindow ) :
 		elif groupId == E_Input03 :
 			kb = xbmc.Keyboard( self.mName, 'Satellite Name', False )
 			kb.doModal( )
-			if( kb.isConfirmed( ) ) :
+			if kb.isConfirmed( ) :
 				ret = self.mCommander.Satellite_ChangeName( self.mLongitude, self.mBand, kb.getText( ) )
 				if ret != True :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( 'ERROR', 'Satellite Edit Name Fail' )
 		 			dialog.doModal( )
 		 			return
- 				CacheMgr.GetInstance( ).LoadSatellite( )
+ 				self.mDataCache.LoadSatellite( )
 				self.InitConfig( )
 
 		# Add New Satellite
@@ -101,7 +100,7 @@ class EditSatellite( SettingWindow ) :
 					dialog.SetDialogProperty( 'ERROR', 'Satellite Add Fail' )
 		 			dialog.doModal( )
 		 			return
- 				CacheMgr.GetInstance( ).LoadSatellite( )
+ 				self.mDataCache.LoadSatellite( )
 				self.InitConfig( )
 			else :
 				return
@@ -120,7 +119,7 @@ class EditSatellite( SettingWindow ) :
 		 			dialog.doModal( )
 		 			return
 				self.mSatelliteIndex = 0
-				CacheMgr.GetInstance( ).LoadSatellite( )
+				self.mDataCache.LoadSatellite( )
 				self.InitConfig( )
 			else :
 				return
@@ -136,7 +135,7 @@ class EditSatellite( SettingWindow ) :
 	def InitConfig( self ) :
 		self.ResetAllControl( )
 		self.GetSatelliteInfo( self.mSatelliteIndex )
-		satellitename = CacheMgr.GetInstance( ).Satellite_GetFormattedName( self.mLongitude , self.mBand )
+		satellitename = self.mDataCache.Satellite_GetFormattedName( self.mLongitude , self.mBand )
 		self.AddInputControl( E_Input01, 'Satellite', satellitename, 'Select satellite.' )
 		longitude = ConfigMgr.GetInstance( ).GetFormattedLongitude( self.mLongitude , self.mBand )
 		self.AddInputControl( E_Input02, 'Longitude', longitude )
@@ -151,7 +150,7 @@ class EditSatellite( SettingWindow ) :
 
 
 	def	GetSatelliteInfo( self, aIndex ) :
-		satellite = CacheMgr.GetInstance( ).Satellite_GetSatelliteByIndex( aIndex )
+		satellite = self.mDataCache.Satellite_GetSatelliteByIndex( aIndex )
 		self.mLongitude = satellite.mLongitude
 		self.mBand		= satellite.mBand
 		self.mName		= satellite.mName

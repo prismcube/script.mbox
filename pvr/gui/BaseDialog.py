@@ -98,7 +98,6 @@ class SettingDialog( BaseDialog ):
 	def __init__(self, *args, **kwargs):
 		BaseDialog.__init__(self, *args, **kwargs)
 		self.mControlList = []
-		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
 		self.mFocusId = -1
 		self.mIsAutomaicHeight = False
 		self.mIsOkCancelType = False

@@ -35,13 +35,13 @@ E_SORT_END						= 4
 
 
 
-class ArchiveWindow(BaseWindow):
+class ArchiveWindow( BaseWindow ) :
+	def __init__( self, *args, **kwargs ) :
+		BaseWindow.__init__( self, *args, **kwargs )
 
-	def __init__(self, *args, **kwargs):
-		BaseWindow.__init__(self, *args, **kwargs)
 	
-	def onInit(self):
-		self.mWinId = xbmcgui.getCurrentWindowId()
+	def onInit( self ) :
+		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		LOG_TRACE('')

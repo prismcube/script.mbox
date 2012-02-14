@@ -74,10 +74,10 @@ class Property(object):
 			log.debug('ERR listItem=%s name=%s value=%s' % (aListItem, aName, aValue))
 
 
-class BaseWindow(xbmcgui.WindowXML, Property):
+class BaseWindow( xbmcgui.WindowXML, Property ) :
 
-	def __init__(self, *args, **kwargs):
-		xbmcgui.WindowXML.__init__(self, *args, **kwargs)
+	def __init__( self, *args, **kwargs ) :
+		xbmcgui.WindowXML.__init__( self, *args, **kwargs )
 		self.mWin = None
 		self.mWinId = 0
 		self.mClosed = False
@@ -85,9 +85,9 @@ class BaseWindow(xbmcgui.WindowXML, Property):
 		self.mLastFocused = -1
 		self.mInitialized = False
 		
-		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
-		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
-		self.mDataCache = pvr.DataCacheMgr.GetInstance()
+		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
+		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
+		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		
 
 	def GetFocusId( self ):
@@ -148,11 +148,10 @@ class ControlItem :
 		self.mSelecteItem = aSelecteItem
 	
 
-class SettingWindow( BaseWindow ):
-	def __init__(self, *args, **kwargs):
+class SettingWindow( BaseWindow ) :
+	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__(self, *args, **kwargs)
 		self.mControlList = []
-		#self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 
 
 	def InitControl( self ):

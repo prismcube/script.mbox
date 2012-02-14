@@ -26,13 +26,12 @@ BUTTON_ID_CONFIGURE				= 90106
 BUTTON_ID_CAS					= 90107
 
 
-class MainMenu( BaseWindow ):
+class MainMenu( BaseWindow ) :
 	def __init__( self, *args, **kwargs ):
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mStartMediaCenter = False
 
-
-	def onInit( self ):
+	def onInit( self ) :
 		try :
 			self.mWinId = xbmcgui.getCurrentWindowId()
 			self.mWin = xbmcgui.Window( self.mWinId )

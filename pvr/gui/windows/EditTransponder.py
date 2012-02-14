@@ -4,7 +4,6 @@ import sys
 
 import pvr.gui.DialogMgr as DiaMgr
 import pvr.TunerConfigMgr as ConfigMgr
-import pvr.DataCacheMgr as CacheMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
 from ElisClass import *
@@ -14,7 +13,6 @@ from ElisProperty import ElisPropertyEnum
 class EditTransponder( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
- 
 		self.mTransponderList	= []
 		self.mSatelliteIndex	= 0
 		self.mTransponderIndex	= 0
@@ -70,7 +68,7 @@ class EditTransponder( SettingWindow ) :
 		
 		# Select Satellite
 		if groupId == E_Input01 :
-			satelliteList = CacheMgr.GetInstance( ).Satellite_GetFormattedNameList( )
+			satelliteList = self.mDataCache.Satellite_GetFormattedNameList( )
 			dialog = xbmcgui.Dialog( )
  			select = dialog.select( 'Select satellite', satelliteList )
 
@@ -211,7 +209,7 @@ class EditTransponder( SettingWindow ) :
 	def InitConfig( self ) :
 		self.ResetAllControl( )
 		self.GetSatelliteInfo( self.mSatelliteIndex )
-		satellitename = CacheMgr.GetInstance( ).Satellite_GetFormattedName( self.mLongitude , self.mBand )
+		satellitename = self.mDataCache.Satellite_GetFormattedName( self.mLongitude , self.mBand )
 		self.AddInputControl( E_Input01, 'Satellite', satellitename, 'Select satellite.' )
 
 		self.mTransponderList = self.mCommander.Transponder_GetList( self.mLongitude, self.mBand )
@@ -243,6 +241,6 @@ class EditTransponder( SettingWindow ) :
 
 
 	def	GetSatelliteInfo( self, aIndex ) :
-		satellite = CacheMgr.GetInstance( ).Satellite_GetSatelliteByIndex( aIndex )
+		satellite = self.mDataCache.Satellite_GetSatelliteByIndex( aIndex )
 		self.mLongitude = satellite.mLongitude
 		self.mBand		= satellite.mBand
