@@ -134,11 +134,8 @@ class DataCacheMgr( object ):
 			self.mSatelliteListHash[hashKey] = satellite
 
 
-	def LoadChannelList( self, aChangedList = None ) :
-		if aChangedList :
-			self.mChannelList = aChangedList
-		else :
-			self.mChannelList = self.mCommander.Channel_GetList( self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
+	def LoadChannelList( self ) :
+		self.mChannelList = self.mCommander.Channel_GetList( self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
 
 		prevChannel = None
 		nextChannel = None

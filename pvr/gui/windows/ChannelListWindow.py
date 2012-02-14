@@ -173,6 +173,7 @@ class ChannelListWindow(BaseWindow):
 		#self.GetSlideMenuHeader( FLAG_SLIDE_INIT )
 
 		try :
+			#first get is used cache, reason by fast load
 			self.mNavChannel = self.mDataCache.Channel_GetCurrent()
 			self.mCurrentChannel = self.mNavChannel.mNumber
 			
@@ -525,7 +526,7 @@ class ChannelListWindow(BaseWindow):
 		LOG_TRACE( 'label[%s] ch[%d] pin[%s]'% (label, channelNumbr, self.mPincodeEnter) )
 
 		ret = False
-		ret = self.mDataCache.Channel_SetCurrent( channelNumbr, self.mChannelListServieType )
+		ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType )
 		#LOG_TRACE( 'MASK[%s] ret[%s]'% (self.mPincodeEnter, ret) )
 		if ret == True :
 			if self.mPincodeEnter == FLAG_MASK_NONE :
@@ -547,7 +548,7 @@ class ChannelListWindow(BaseWindow):
 					#ToDO : WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_LIVE_PLATE).setLastChannel( self.mCurrentChannel )
 
 		ch = None
-		ch = self.mDataCache.Channel_GetCurrent()
+		ch = self.mCommander.Channel_GetCurrent()
 		if ch :
 			self.mNavChannel = ch
 			self.mCurrentChannel = self.mNavChannel.mNumber
@@ -684,7 +685,6 @@ class ChannelListWindow(BaseWindow):
 			
 			#if self.mChannelList :
 			#channel list update
-			self.mDataCache.LoadChannelList( self.mChannelList )
 			self.mCtrlListCHList.reset()
 			self.InitChannelList()
 
@@ -899,12 +899,12 @@ class ChannelListWindow(BaseWindow):
 						  EnumToString('type', self.mChannelListServieType)) )
 
 					#save zapping mode
-					ret = self.mDataCache.Zappingmode_SetCurrent( retList )
+					ret = self.mCommander.Zappingmode_SetCurrent( retList )
 					LOG_TRACE( '=========set zappingmode_SetCurrent[%s]'% ret )
 					if ret :
-						#data cache re-load
+						#### data cache re-load ####
 						self.mDataCache.Load()
-						LOG_TRACE ('=====================load')
+						LOG_TRACE ('=====================cache re-load')
 
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -1119,6 +1119,8 @@ class ChannelListWindow(BaseWindow):
 		self.mChannelList = None
 
 		#self.mChannelList = self.mCommander.Channel_GetList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode )
+
+		#### first get is used cache, reason by fast load ###
 		self.mChannelList = self.mDataCache.Channel_GetList()
 
 		if self.mChannelList :
@@ -1181,7 +1183,7 @@ class ChannelListWindow(BaseWindow):
 
 		#get last channel
 		ret = None
-		ret = self.mDataCache.Channel_GetCurrent()
+		ret = self.mCommander.Channel_GetCurrent()
 		if ret :
 			self.mNavChannel = ret
 			self.mCurrentChannel = self.mNavChannel.mNumber
