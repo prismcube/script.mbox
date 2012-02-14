@@ -158,6 +158,7 @@ class ChannelListWindow(BaseWindow):
 		self.mNavChannel = None
 		self.mCurrentChannel = None
 		self.mSlideOpenFlag = False
+		self.mFlag_EditChanged = False
 
 		#edit mode
 		self.mIsSave = FLAG_MASK_NONE
@@ -286,7 +287,6 @@ class ChannelListWindow(BaseWindow):
 
 		elif id == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN or \
 			 id == Action.ACTION_PAGE_UP or id == Action.ACTION_PAGE_DOWN :
-			#pass
 			self.GetFocusId()
 			if self.mFocusId == self.mCtrlListCHList.getId() :
 				if self.mMoveFlag :
@@ -310,6 +310,7 @@ class ChannelListWindow(BaseWindow):
 			elif self.mFocusId == self.mCtrlBtnOpt :
 				self.mCtrlListCHList.setEnabled( True )
 				self.setFocusId( self.mCtrlGropCHList.getId() )
+
 
 		elif id == Action.ACTION_CONTEXT_MENU :
 			#LOG_TRACE( 'popup opt' )
@@ -939,6 +940,7 @@ class ChannelListWindow(BaseWindow):
 			#answer is yes
 			if ret == E_DIALOG_STATE_YES :
 				self.mIsSave = FLAG_MASK_NONE
+				self.mFlag_EditChanged = True
 				isSave = self.mCommander.Channel_Save()
 				LOG_TRACE( 'save[%s]'% isSave )
 
@@ -974,7 +976,16 @@ class ChannelListWindow(BaseWindow):
 			#self.mCtrlLblEdit1.setLabel( Msg.Strings(MsgId.LANG_EDIT_CHANNEL_LIST) )
 			#self.mCtrlLblEdit2.setLabel( Msg.Strings(MsgId.LANG_EDIT_CHANNEL_LIST) )
 			#self.mCtrlRadioMisc.setEnabled( False )
+			GuiLock2(True)
 			self.mCtrlGropOpt.setVisible( False )
+
+			listItem = self.mCtrlListMainmenu.getListItem(E_SLIDE_MENU_EDITMODE)
+			xbmc.sleep(50)
+
+			label = Msg.Strings(MsgId.LANG_EDIT_CHANNEL)
+			listItem.setLabel(label)
+
+			GuiLock2(False)
 
 		else :
 			#slide menu disable
@@ -991,7 +1002,17 @@ class ChannelListWindow(BaseWindow):
 			#self.mCtrlRadioMisc.setEnabled( True )
 			#self.mCtrlRadioMark.setSelected( True )
 			#self.mCtrlRadioTune.setSelected( False )
+
+			GuiLock2(True)
 			self.mCtrlGropOpt.setVisible( True )
+
+			listItem = self.mCtrlListMainmenu.getListItem(E_SLIDE_MENU_EDITMODE)
+			xbmc.sleep(50)
+
+			label = Msg.Strings(MsgId.LANG_SAVE_EDIT)
+			listItem.setLabel(label)
+
+			GuiLock2(False)
 
 			return
 
@@ -1002,7 +1023,11 @@ class ChannelListWindow(BaseWindow):
 
 		#get last zapping mode
 		try:
-			zappingMode = self.mDataCache.Zappingmode_GetCurrent()
+			if self.mFlag_EditChanged :
+				zappingMode = self.mCommander.Zappingmode_GetCurrent()
+			else :
+				zappingMode = self.mDataCache.Zappingmode_GetCurrent()
+				
 			self.mZappingMode           = zappingMode.mMode
 			self.mChannelListSortMode   = zappingMode.mSortingMode
 			self.mChannelListServieType = zappingMode.mServiceType
@@ -1120,10 +1145,11 @@ class ChannelListWindow(BaseWindow):
 		self.mNavChannel = None
 		self.mChannelList = None
 
-		#self.mChannelList = self.mCommander.Channel_GetList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode )
-
-		#### first get is used cache, reason by fast load ###
-		self.mChannelList = self.mDataCache.Channel_GetList()
+		if self.mFlag_EditChanged :
+			self.mChannelList = self.mCommander.Channel_GetList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode )
+		else :
+			#### first get is used cache, reason by fast load ###
+			self.mChannelList = self.mDataCache.Channel_GetList()
 
 		"""
 		if self.mChannelList :
