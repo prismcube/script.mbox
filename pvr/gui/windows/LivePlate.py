@@ -161,7 +161,7 @@ class LivePlate(BaseWindow):
 
 
 	def onAction(self, aAction):
-		LOG_TRACE( 'Enter' )
+		#LOG_TRACE( 'Enter' )
 
 		id = aAction.getId()
 		self.GlobalAction( id )
@@ -221,7 +221,7 @@ class LivePlate(BaseWindow):
 			LOG_TRACE( 'cwd[%s]'% xbmc.getLanguage() )
 
 
-		LOG_TRACE( 'Leave' )
+		#LOG_TRACE( 'Leave' )
 
 
 
@@ -285,7 +285,7 @@ class LivePlate(BaseWindow):
 
 
 	def onEvent(self, aEvent):
-		LOG_TRACE( 'Enter-----' )
+		LOG_TRACE( 'Enter' )
 
 		if self.mWinId == xbmcgui.getCurrentWindowId():
 			currentChannel = self.mCurrentChannel	
@@ -311,7 +311,7 @@ class LivePlate(BaseWindow):
 					ret = self.mDataCache.Epgevent_GetPresent( )
 					if ret :
 						LOG_TRACE('-----------------------')
-						ret.printdebug()
+						#ret.printdebug()
 
 						if not self.mEventCopy or \
 						ret.mEventId != self.mEventCopy.mEventId or \
@@ -437,7 +437,7 @@ class LivePlate(BaseWindow):
 
 
 	@GuiLock
-	def UpdateONEvent(self, aEvent):
+	def UpdateONEvent(self, aEvent = None):
 		LOG_TRACE( 'Enter' )
 		#LOG_TRACE( 'component [%s]'% EpgInfoComponentImage ( aEvent ))
 
@@ -854,6 +854,7 @@ class LivePlate(BaseWindow):
 				self.mFakeChannel = self.mCurrentChannel
 				self.mLastChannel = self.mCurrentChannel
 				self.InitLabelInfo()
+				self.UpdateONEvent()
 				self.PincodeDialogLimit()
 
 			else :

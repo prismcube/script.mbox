@@ -84,7 +84,7 @@ class DataCacheMgr( object ):
 	def onEvent(self, aEvent):
 		if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
 			hashKey = '%d:%d:%d:%d' %( aEvent.mEventId, aEvent.mSid, aEvent.mTsid, aEvent.mOnid )
-			LOG_TRACE('hashKey=%s' %hashKey )
+			#LOG_TRACE('hashKey=%s' %hashKey )
 			event = self.mEPGListHash.get( hashKey, None )
 
 			if event == None:
@@ -96,7 +96,7 @@ class DataCacheMgr( object ):
 			if event and self.mCurrentChannel.mSid == event.mSid and \
 			self.mCurrentChannel.mTsid == event.mTsid and self.mCurrentChannel.mOnid == event.mOnid :
 				self.mCurrentEvent = event
-				LOG_TRACE('currentEvent' )
+				#LOG_TRACE('currentEvent' )
 
 
 
@@ -134,8 +134,11 @@ class DataCacheMgr( object ):
 			self.mSatelliteListHash[hashKey] = satellite
 
 
-	def LoadChannelList( self ) :
-		self.mChannelList = self.mCommander.Channel_GetList( self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
+	def LoadChannelList( self, aChangedList = None ) :
+		if aChangedList :
+			self.mChannelList = aChangedList
+		else :
+			self.mChannelList = self.mCommander.Channel_GetList( self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
 
 		prevChannel = None
 		nextChannel = None
@@ -155,16 +158,16 @@ class DataCacheMgr( object ):
 				else:
 					nextChannel = self.mChannelList[0]
 
-				LOG_TRACE("---------------------- CacheChannel -----------------")
+				#LOG_TRACE("---------------------- CacheChannel -----------------")
 
 				try :
 					cacheChannel = CacheChannel( channel, prevChannel.mNumber, nextChannel.mNumber )
-					LOG_TRACE('')
+					#LOG_TRACE('')
 					self.mChannelListHash[channel.mNumber] = cacheChannel
-					LOG_TRACE('')				
+					#LOG_TRACE('')				
 
-					cacheChannel.mChannel.printdebug()
-					LOG_TRACE('prevKey=%d nextKey=%d' %( cacheChannel.mPrevKey, cacheChannel.mNextKey ) )
+					#cacheChannel.mChannel.printdebug()
+					#LOG_TRACE('prevKey=%d nextKey=%d' %( cacheChannel.mPrevKey, cacheChannel.mNextKey ) )
 
 				except Exception, ex:
 					LOG_ERR( "Exception %s" %ex)
