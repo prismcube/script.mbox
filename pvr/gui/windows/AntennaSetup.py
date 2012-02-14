@@ -33,7 +33,7 @@ class AntennaSetup( SettingWindow ) :
  
 		if ConfigMgr.GetInstance( ).GetNeedLoad( ) == True : 
 			ConfigMgr.GetInstance( ).LoadOriginalTunerConfig( )
-			ConfigMgr.GetInstance( ).Load( )		
+			ConfigMgr.GetInstance( ).Load( )
 			ConfigMgr.GetInstance( ).SetNeedLoad( False )
 		
 		self.SetSettingWindowLabel( 'Antenna & Satellite Setup' )

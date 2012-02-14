@@ -66,7 +66,7 @@ class AutomaticScan( SettingWindow ) :
 		# Satellite
 		if groupId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
-			select =  dialog.select('Select satellite', self.mFormattedList )
+			select =  dialog.select( 'Select satellite', self.mFormattedList )
 
 			if select >= 0 and select != self.mSatelliteIndex :
 				self.mSatelliteIndex = select
@@ -92,7 +92,7 @@ class AutomaticScan( SettingWindow ) :
 		if groupId == E_SpinEx01 or groupId == E_SpinEx02 :
 			self.ControlSelect( )
 
-	def onFocus( self, aControlId ):
+	def onFocus( self, aControlId ) :
 		if self.mInitialized == False :
 			return
 
@@ -120,10 +120,10 @@ class AutomaticScan( SettingWindow ) :
 	def LoadFormattedSatelliteNameList( self ) :
 		
 		configuredSatelliteList1 = []
-		configuredSatelliteList1 = self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )		
+		configuredSatelliteList1 = self.mDataCache.mConfiguredSatelliteList1
 
 		configuredSatelliteList2 = []
-		configuredSatelliteList2 = self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )		
+		configuredSatelliteList2 = self.mDataCache.mConfiguredSatelliteList2
 
 		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander )
 

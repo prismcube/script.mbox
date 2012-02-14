@@ -233,10 +233,10 @@ class ManualScan( SettingWindow ) :
 	def LoadFormattedSatelliteNameList( self ) :
 
 		configuredSatelliteList1 = []
-		configuredSatelliteList1 = self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )		
+		configuredSatelliteList1 = self.mDataCache.mConfiguredSatelliteList1
 
 		configuredSatelliteList2 = []
-		configuredSatelliteList2 = self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )		
+		configuredSatelliteList2 = self.mDataCache.mConfiguredSatelliteList2
 
 		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander )
 
@@ -260,11 +260,10 @@ class ManualScan( SettingWindow ) :
 
 
 	def LoadTransponderList( self ) :
-
 		satellite = self.mConfiguredSatelliteList[ self.mSatelliteIndex ]
 
 		self.mTransponderList = []
-		self.mTransponderList = self.mCommander.Transponder_GetList( satellite.mSatelliteLongitude, satellite.mBandType )
+		self.mTransponderList = self.mDataCache.GetTransponderbyHash( satellite.mSatelliteLongitude, satellite.mBandType )
 
 
 	def SetConfigTransponder( self ) :

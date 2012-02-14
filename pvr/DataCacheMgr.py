@@ -14,7 +14,7 @@ from decorator import decorator
 from ElisClass import *
 from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum
-
+from pvr.gui.GuiConfig import *
 
 
 gDataCacheMgr = None
@@ -56,23 +56,27 @@ class DataCacheMgr( object ):
 	def __init__( self ):
 		self.mShutdowning = False
 		LOG_TRACE('')		
-		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
+		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		LOG_TRACE('')		
-		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
+		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
 		LOG_TRACE('')
 
-		self.mZappingMode = None
-		self.mChannelList = None
-		self.mCurrentChannel = None
-		self.mLocalOffset = 0
-		self.mLocalTime = 0
-		self.mSatelliteList = None
-		self.mEPGList = None
-		self.mCurrentEvent = None
+		self.mZappingMode				= None
+		self.mChannelList				= None
+		self.mCurrentChannel			= None
+		self.mLocalOffset				= 0
+		self.mLocalTime					= 0
+		self.mSatelliteList				= None
+		self.mConfiguredSatelliteList1	= None
+		self.mConfiguredSatelliteList2	= None
+		self.mTransponderList			= None
+		self.mEPGList					= None
+		self.mCurrentEvent				= None
 
-		self.mChannelListHash = {}
-		self.mSatelliteListHash = {}
-		self.mEPGListHash = {}
+		self.mChannelListHash			= {}
+		self.mSatelliteListHash			= {}
+		self.mTransponderListHash		= {}
+		self.mEPGListHash				= {}
 
 		LOG_TRACE('')
 		self.Load()
@@ -111,7 +115,9 @@ class DataCacheMgr( object ):
 
 
 		#SatelliteList
-		self.LoadSatellite( )
+		self.LoadAllSatellite( )
+		self.LoadConfiguredSatellite( )
+		self.LoadConfiguredTransponder( )
 
 
 		# Channel
@@ -123,7 +129,7 @@ class DataCacheMgr( object ):
 		self.mLocalTime = self.mCommander.Datetime_GetLocalTime( )
 
 
-	def LoadSatellite( self ) :
+	def LoadAllSatellite( self ) :
 		self.mSatelliteList = self.mCommander.Satellite_GetList( ElisEnum.E_SORT_INSERTED )
 		count =  len( self.mSatelliteList )
 		LOG_TRACE('satellite count=%d' %count )
@@ -132,6 +138,34 @@ class DataCacheMgr( object ):
 			satellite = self.mSatelliteList[i]
 			hashKey = '%d:%d' % ( satellite.mLongitude, satellite.mBand )
 			self.mSatelliteListHash[hashKey] = satellite
+
+
+	def LoadConfiguredSatellite( self ) :
+		self.mConfiguredSatelliteList1 = self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )
+		self.mConfiguredSatelliteList2 = self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )
+
+
+	def LoadConfiguredTransponder( self ) :
+		self.mTransponderList = []
+		self.mTransponderListHash = {}
+		
+		if len( self.mConfiguredSatelliteList1 ) == 0 and len( self.mConfiguredSatelliteList2 ) == 0 :
+			LOG_TRACE( 'Configured Satellite List is Empty' )
+			return
+			
+		if len( self.mConfiguredSatelliteList1 ) != 0 :
+			for satellite in self.mConfiguredSatelliteList1 :
+				transponder = self.mCommander.Transponder_GetList( satellite.mSatelliteLongitude, satellite.mBandType )
+				self.mTransponderList.append( transponder )
+				hashKey = '%d:%d' % ( satellite.mSatelliteLongitude, satellite.mBandType )
+				self.mTransponderListHash[hashKey] = transponder
+				
+		if len( self.mConfiguredSatelliteList2 ) != 0 :
+			for satellite in self.mConfiguredSatelliteList2 :
+				transponder = self.mCommander.Transponder_GetList( satellite.mSatelliteLongitude, satellite.mBandType )
+				self.mTransponderList.append( transponder )
+				hashKey = '%d:%d' % ( satellite.mSatelliteLongitude, satellite.mBandType )
+				self.mTransponderListHash[hashKey] = transponder
 
 
 	def LoadChannelList( self ) :
@@ -337,3 +371,13 @@ class DataCacheMgr( object ):
 			return formattedName
 
 		return 'UnKnown'
+
+
+	@DataLock
+	def GetTransponderbyHash( self, aLongitude, aBand ) :
+		hashKey = '%d:%d' % ( aLongitude, aBand )
+		transponder = self.mTransponderListHash.get( hashKey, None )
+		if transponder :
+			return transponder
+
+		return []
