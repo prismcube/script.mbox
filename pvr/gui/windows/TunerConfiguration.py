@@ -16,8 +16,8 @@ E_MAIN_LIST_ID = 9000
 class TunerConfiguration( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs)
-		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.listItems= []
+
 			
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )

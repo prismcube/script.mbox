@@ -18,12 +18,6 @@
 				<include>Input06</include>
 				<include>Input07</include>
 			</control>
-			<control type="image" id="301">
-				<posx>842</posx>
-				<posy>160</posy>
-				<width>352</width>
-				<height>198</height>
-			</control>
 		</control>
 	</controls>
 </window>

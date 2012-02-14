@@ -1,6 +1,5 @@
 import xbmc
 import xbmcgui
-import time
 import sys
 
 from pvr.gui.BaseDialog import BaseDialog

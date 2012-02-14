@@ -135,7 +135,6 @@ class EditSatellite( SettingWindow ) :
 
 	def InitConfig( self ) :
 		self.ResetAllControl( )
-
 		self.GetSatelliteInfo( self.mSatelliteIndex )
 		satellitename = CacheMgr.GetInstance( ).Satellite_GetFormattedName( self.mLongitude , self.mBand )
 		self.AddInputControl( E_Input01, 'Satellite', satellitename, 'Select satellite.' )
