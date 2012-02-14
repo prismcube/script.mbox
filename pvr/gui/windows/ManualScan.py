@@ -20,8 +20,6 @@ class ManualScan( SettingWindow ) :
 		self.mTransponderList			= []
 
 		self.mFormattedSatelliteList	= []
-		self.mFormattedTransponderList	= []
-
 		self.mIsManualSetup				= 0
 		self.mConfigTransponder			= None
 
@@ -38,7 +36,7 @@ class ManualScan( SettingWindow ) :
 		self.mConfiguredSatelliteList = []
 		
 		self.LoadFormattedSatelliteNameList( )
-		self.LoadFormattedTransponderNameList( )
+		self.LoadTransponderList( )
 		self.SetConfigTransponder( )
 
 		self.InitConfig( )
@@ -90,15 +88,18 @@ class ManualScan( SettingWindow ) :
 			if select >= 0 :
 				self.mSatelliteIndex = select
 				self.mTransponderIndex = 0
-				self.LoadFormattedTransponderNameList( )
+				self.LoadTransponderList( )
 				self.SetConfigTransponder( )
 				self.InitConfig( )
 
 		# Transponder
 		elif groupId == E_Input02 :
 			if self.mIsManualSetup == 0 :
+				formattedTransponderList = []
+				for i in range( len( self.mTransponderList ) ) :			
+					formattedTransponderList.append( '%d' % self.mTransponderList[i].mFrequency + ' MHz' )
 				dialog = xbmcgui.Dialog( )
-				select = dialog.select('Select Transponder', self.mFormattedTransponderList )
+				select = dialog.select('Select Transponder', formattedTransponderList )
 
 				if select >=0 :
 					self.mTransponderIndex = select
@@ -258,17 +259,12 @@ class ManualScan( SettingWindow ) :
 			self.mFormattedSatelliteList.append( self.mDataCache.Satellite_GetFormattedName( config.mSatelliteLongitude, config.mBandType ) )
 
 
-	def LoadFormattedTransponderNameList( self ) :
+	def LoadTransponderList( self ) :
 
 		satellite = self.mConfiguredSatelliteList[ self.mSatelliteIndex ]
 
 		self.mTransponderList = []
 		self.mTransponderList = self.mCommander.Transponder_GetList( satellite.mSatelliteLongitude, satellite.mBandType )
-
-		self.mFormattedTransponderList = []
-		
-		for i in range( len( self.mTransponderList ) ) :			
-			self.mFormattedTransponderList.append( '%d' % self.mTransponderList[i].mFrequency + ' MHz' )
 
 
 	def SetConfigTransponder( self ) :
