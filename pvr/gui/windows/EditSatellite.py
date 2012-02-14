@@ -13,10 +13,10 @@ class EditSatellite( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
 
-		self.mSatelliteIndex = 0
-		self.mLongitude = 0
-		self.mBand = 0
-		self.mName = None
+		self.mSatelliteIndex	= 0
+		self.mLongitude			= 0
+		self.mBand				= 0
+		self.mName				= 'Unkown'
 			
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -31,7 +31,6 @@ class EditSatellite( SettingWindow ) :
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
-
 		self.GlobalAction( actionId )
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
@@ -82,7 +81,7 @@ class EditSatellite( SettingWindow ) :
 			if( kb.isConfirmed( ) ) :
 				ret = self.mCommander.Satellite_ChangeName( self.mLongitude, self.mBand, kb.getText( ) )
 				if ret != True :
-					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( 'ERROR', 'Satellite Edit Name Fail' )
 		 			dialog.doModal( )
 		 			return
@@ -98,7 +97,7 @@ class EditSatellite( SettingWindow ) :
 				longitude, band, satelliteName = dialog.GetValue( )
 				ret = self.mCommander.Satellite_Add( longitude, band, satelliteName )
 				if ret != True :
-					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( 'ERROR', 'Satellite Add Fail' )
 		 			dialog.doModal( )
 		 			return
@@ -116,7 +115,7 @@ class EditSatellite( SettingWindow ) :
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				ret = self.mCommander.Satellite_Delete( self.mLongitude, self.mBand )
 				if ret != True :
-					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( 'ERROR', 'Satellite Delete Fail' )
 		 			dialog.doModal( )
 		 			return
@@ -129,7 +128,7 @@ class EditSatellite( SettingWindow ) :
 	def onFocus( self, aControlId ):
 		if self.mInitialized == False :
 			return
-		if ( self.mLastFocused != aControlId ) :
+		if self.mLastFocused != aControlId :
 			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId
 
