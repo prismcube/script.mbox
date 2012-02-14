@@ -30,7 +30,6 @@ E_SCAN_SATELLITE			= 1
 E_SCAN_TRANSPONDER			= 2
 
 
-
 class DialogChannelSearch( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
@@ -42,10 +41,10 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mBand = 0
 
 	def onInit( self ):
-		self.mWinId = xbmcgui.getCurrentWindowId()
-		self.mWin = xbmcgui.Window( self.mWinId  )
+		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWin = xbmcgui.Window( self.mWinId )
+		
 		self.mIsFinished = False	
-
 		self.mTimer = None
 		
 		self.mSatelliteFormatedName = 'Unknown'
@@ -69,14 +68,13 @@ class DialogChannelSearch( BaseDialog ) :
 		self.DrawItem( )
 
 
-	def onAction( self, aAction ):
+	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-		focusId = self.getFocusId( )
-
 		self.GlobalAction( actionId )
 			
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			LOG_TRACE('%s' %self.mTimer.isAlive() )		 			
+			LOG_TRACE( '%s' % self.mTimer.isAlive( ) )
+			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
@@ -110,7 +108,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 		count = len( self.mNewTVChannelList )
 		for i in range( count ) :
-			listItem = xbmcgui.ListItem( self.mNewTVChannelList[i], "TV", "-", "-", "-" )
+			listItem = xbmcgui.ListItem( self.mNewTVChannelList[i], "TV" )
 			self.mTvListItems.append( listItem )
 
 		if count > 0 :
@@ -120,14 +118,13 @@ class DialogChannelSearch( BaseDialog ) :
 
 		count = len( self.mNewRadioChannelList )
 		for i in range( count ) :
-			listItem = xbmcgui.ListItem( self.mNewRadioChannelList[i], "Radio", "-", "-", "-" )
+			listItem = xbmcgui.ListItem( self.mNewRadioChannelList[i], "Radio" )
 			self.mRadioListItems.append( listItem )
 
 		if count > 0 :
 			self.getControl( LIST_ID_RADIO ).addItems( self.mRadioListItems )
 			lastPosition = len( self.mRadioListItems ) - 1			
 			self.getControl( LIST_ID_RADIO ).selectItem( lastPosition  )
-
 
 		self.mNewTVChannelList = []
 		self.mNewRadioChannelList = []
@@ -141,9 +138,7 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mScanMode = E_SCAN_SATELLITE 
 
 
-
 	def SetTransponder( self, aLongitude, aBand, aTransponderList ) :
-		print 'scanByTransponder=%s' %aTransponderList
 		self.mScanMode = E_SCAN_TRANSPONDER	
 		self.mLongitude = aLongitude
 		self.mBand = aBand		
@@ -151,27 +146,17 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 	def ScanStart( self ) :
+		self.mSatelliteFormatedName = self.mDataCache.Satellite_GetFormattedName( self.mLongitude , self.mBand  )		
 
-		self.mAllSatelliteList = []
-		self.mAllSatelliteList = self.mCommander.Satellite_GetList( ElisEnum.E_SORT_INSERTED )
-		self.mSatelliteFormatedName = self.GetFormattedName( self.mLongitude , self.mBand  )		
-
-		print 'scanMode=%d' %self.mScanMode
 		if self.mScanMode == E_SCAN_SATELLITE :
 			satelliteList = []
-			for i in range( len(self.mConfiguredSatelliteList)) :
-				config = self.mConfiguredSatelliteList[i] # ToDO send with satelliteList
-				config.printdebug()
-				for satellite in self.mAllSatelliteList :
+			for i in range( len( self.mConfiguredSatelliteList ) ) :
+				config = self.mConfiguredSatelliteList[i]
+				for satellite in self.mDataCache.mSatelliteList :
 					if config.mSatelliteLongitude == satellite.mLongitude and config.mBandType == satellite.mBand :
 						satelliteList.append( satellite )
 						break
 
-
-			LOG_TRACE('------------ Scan Satellite List -------------')			
-			for i in range( len(satelliteList)) :
-				satellite = satelliteList[i]
-				satellite.printdebug()
 			
 			ret = self.mCommander.Channelscan_BySatelliteList( satelliteList )
 
@@ -181,12 +166,14 @@ class DialogChannelSearch( BaseDialog ) :
 				xbmcgui.Dialog( ).ok('Failure', 'Channel Search Failed')
 
 		elif self.mScanMode == E_SCAN_TRANSPONDER :
-			LOG_TRACE(('long = %d' %self.mLongitude))
-			LOG_TRACE(('band = %d' %self.mBand))
-			for tp in self.mTransponderList :
-				tp.printdebug()
+		
+			ret = self.mCommander.Channel_SearchByCarrier( self.mLongitude, self.mBand, self.mTransponderList )
 
-			self.mCommander.Channel_SearchByCarrier( self.mLongitude, self.mBand, self.mTransponderList )
+			if ret == False :
+				self.mEventBus.Deregister( self )
+				self.CloseDialog( )
+				xbmcgui.Dialog( ).ok('Failure', 'Channel Search Failed')
+			
 		else :
 			self.mIsFinished == True
 
@@ -203,11 +190,12 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mIsFinished = True
 
 			elif dialog.IsOK() == E_DIALOG_STATE_NO : 
-				self.ScanStart( )
+				pass
+				#self.ScanStart( )
 				
 			elif dialog.IsOK() == E_DIALOG_STATE_CANCEL :
-				self.ScanStart( )
-
+				pass
+				#self.ScanStart( )
 
 		LOG_TRACE('isFinished=%d' %self.mIsFinished )
 		if self.mIsFinished == True :
@@ -249,7 +237,7 @@ class DialogChannelSearch( BaseDialog ) :
 			if self.mLongitude != aEvent.mCarrier.mDVBS.mSatelliteLongitude or self.mBand != aEvent.mCarrier.mDVBS.mSatelliteBand :
 				self.mLongitude = aEvent.mCarrier.mDVBS.mSatelliteLongitude
 				self.mBand = aEvent.mCarrier.mDVBS.mSatelliteBand
-				self.mSatelliteFormatedName = self.GetFormattedName( self.mLongitude , self.mBand  )
+				self.mSatelliteFormatedName = self.mDataCache.Satellite_GetFormattedName( self.mLongitude , self.mBand  )
 			
 			strTransponderInfo = '%s - %d Mhz - %s - %d MS/s ' %( self.mSatelliteFormatedName, aEvent.mCarrier.mDVBS.mFrequency, strPol, aEvent.mCarrier.mDVBS.mSymbolRate )
 			self.mCtrlTransponderInfo.setLabel( strTransponderInfo )
@@ -276,12 +264,6 @@ class DialogChannelSearch( BaseDialog ) :
 			self.mTimer.start()
 
 
-			"""
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( 'Infomation', '3333' )
- 			dialog.doModal( )
-			"""
-
 	def UpdateAddChannel(self, aEvent ):
 
 		print 'update addchnnel channelName=%s serviceType=%d' %( aEvent.mIChannel.mName, aEvent.mIChannel.mServiceType )
@@ -295,36 +277,10 @@ class DialogChannelSearch( BaseDialog ) :
 		self.DrawItem( )
 
 
-	def GetFormattedName( self, aLongitude, aBand ) :
-
-		found = False
-
-		for satellite in self.mAllSatelliteList :
-			if aLongitude == satellite.mLongitude and aBand == satellite.mBand :
-				found = True
-				break
-
-		if found == True :
-			dir = 'E'
-
-			tmpLongitude  = aLongitude
-			if tmpLongitude > 1800 :
-				dir = 'W'
-				tmpLongitude = 3600 - aLongitude
-
-			formattedName = '%d.%d %s %s' %( int( tmpLongitude/10 ), tmpLongitude%10, dir, satellite.mName )
-			return formattedName
-
-		return 'UnKnown'
-
-
 	def ShowResult( self ) :
-		LOG_TRACE('')
 		tvCount = len( self.mTvListItems )
 		radioCount = len( self.mRadioListItems )
 		searchResult = 'TV Channels : %d \nRadio Channels : %d' %( tvCount, radioCount )
-		LOG_TRACE('%s' %self.mTimer )
-		LOG_TRACE('%s' %self.mTimer.isAlive() )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( 'Infomation', searchResult )

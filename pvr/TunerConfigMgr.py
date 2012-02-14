@@ -6,11 +6,12 @@ from copy import deepcopy
 
 from ElisAction import ElisAction
 from ElisEnum import ElisEnum
+import pvr.DataCacheMgr
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from ElisClass import *
 from pvr.gui.GuiConfig import *
-import pvr.DataCacheMgr as CacheMgr
+
 
 gTunerConfigMgr = None
 
@@ -29,6 +30,7 @@ def GetInstance( ) :
 class TunerConfigMgr( object ) :
 	def __init__( self ) :
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
+		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mConfiguredList1 = []
 		self.mConfiguredList2 = []		
 		self.mCurrentTuner = 0
@@ -263,8 +265,7 @@ class TunerConfigMgr( object ) :
 
 	def Load( self ) :
 		# Get All Satellite List ( mLongitude, mBand, mName )
-		self.mAllSatelliteList = CacheMgr.GetInstance( ).mSatelliteList
-		#self.mAllSatelliteList = self.mCommander.Satellite_GetList( ElisEnum.E_SORT_INSERTED )
+		self.mAllSatelliteList = self.mDataCache.mSatelliteList
 
 		# Get Configured Satellite List Tuner 1
 		self.mConfiguredList1 = []

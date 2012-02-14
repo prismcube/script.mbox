@@ -84,7 +84,7 @@ class EditSatellite( SettingWindow ) :
 					dialog.SetDialogProperty( 'ERROR', 'Satellite Edit Name Fail' )
 		 			dialog.doModal( )
 		 			return
- 				self.mDataCache.LoadSatellite( )
+ 				self.mDataCache.LoadAllSatellite( )
 				self.InitConfig( )
 
 		# Add New Satellite
@@ -100,7 +100,7 @@ class EditSatellite( SettingWindow ) :
 					dialog.SetDialogProperty( 'ERROR', 'Satellite Add Fail' )
 		 			dialog.doModal( )
 		 			return
- 				self.mDataCache.LoadSatellite( )
+ 				self.mDataCache.LoadAllSatellite( )
 				self.InitConfig( )
 			else :
 				return
@@ -119,7 +119,7 @@ class EditSatellite( SettingWindow ) :
 		 			dialog.doModal( )
 		 			return
 				self.mSatelliteIndex = 0
-				self.mDataCache.LoadSatellite( )
+				self.mDataCache.LoadAllSatellite( )
 				self.InitConfig( )
 			else :
 				return
