@@ -173,6 +173,7 @@ class ChannelListWindow(BaseWindow):
 		#self.GetSlideMenuHeader( FLAG_SLIDE_INIT )
 
 		try :
+			#first get is used cache, reason by fast load
 			self.mNavChannel = self.mDataCache.Channel_GetCurrent()
 			self.mCurrentChannel = self.mNavChannel.mNumber
 			
@@ -525,7 +526,7 @@ class ChannelListWindow(BaseWindow):
 		LOG_TRACE( 'label[%s] ch[%d] pin[%s]'% (label, channelNumbr, self.mPincodeEnter) )
 
 		ret = False
-		ret = self.mDataCache.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
+		ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType )
 		#LOG_TRACE( 'MASK[%s] ret[%s]'% (self.mPincodeEnter, ret) )
 		if ret == True :
 			if self.mPincodeEnter == FLAG_MASK_NONE :
@@ -547,7 +548,7 @@ class ChannelListWindow(BaseWindow):
 					#ToDO : WinMgr.GetInstance().getWindow(WinMgr.WIN_ID_LIVE_PLATE).setLastChannel( self.mCurrentChannel )
 
 		ch = None
-		ch = self.mDataCache.Channel_GetCurrent()
+		ch = self.mCommander.Channel_GetCurrent()
 		if ch :
 			self.mNavChannel = ch
 			self.mCurrentChannel = self.mNavChannel.mNumber
@@ -892,10 +893,18 @@ class ChannelListWindow(BaseWindow):
 					retList = []
 					retList.append( self.mElisSetZappingModeInfo )
 					#LOG_TRACE( 'mElisSetZappingModeInfo[%s]'% ClassToList( 'convert', retList ) )
+					LOG_TRACE( 'zappingMode[%s] sortMode[%s] serviceType[%s]'%  \
+						( EnumToString('mode', self.mZappingMode),         \
+						  EnumToString('sort', self.mChannelListSortMode), \
+						  EnumToString('type', self.mChannelListServieType)) )
 
 					#save zapping mode
 					ret = self.mCommander.Zappingmode_SetCurrent( retList )
-					#LOG_TRACE( 'set zappingmode_SetCurrent[%s]'% ret )
+					LOG_TRACE( '=========set zappingmode_SetCurrent[%s]'% ret )
+					if ret :
+						#### data cache re-load ####
+						self.mDataCache.Load()
+						LOG_TRACE ('=====================cache re-load')
 
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -991,7 +1000,7 @@ class ChannelListWindow(BaseWindow):
 
 		#get last zapping mode
 		try:
-			zappingMode = self.mCommander.Zappingmode_GetCurrent()
+			zappingMode = self.mDataCache.Zappingmode_GetCurrent()
 			self.mZappingMode           = zappingMode.mMode
 			self.mChannelListSortMode   = zappingMode.mSortingMode
 			self.mChannelListServieType = zappingMode.mServiceType
@@ -1108,17 +1117,19 @@ class ChannelListWindow(BaseWindow):
 		#get channel list by last on zapping mode, sorting, service type
 		self.mNavChannel = None
 		self.mChannelList = None
-		self.mChannelList = self.mCommander.Channel_GetList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode )
-		#self.GetChannelList(self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, 0, 0, 0, '')
 
-		"""
+		#self.mChannelList = self.mCommander.Channel_GetList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode )
+
+		#### first get is used cache, reason by fast load ###
+		self.mChannelList = self.mDataCache.Channel_GetList()
+
 		if self.mChannelList :
 			LOG_TRACE( 'zappingMode[%s] sortMode[%s] serviceType[%s]'%  \
 				( EnumToString('mode', self.mZappingMode),         \
 				  EnumToString('sort', self.mChannelListSortMode), \
 				  EnumToString('type', self.mChannelListServieType)) )
 			LOG_TRACE( 'len[%s] ch%s'% (len(self.mChannelList),ClassToList( 'convert', self.mChannelList )) )
-		"""
+
 
 		LOG_TRACE( 'Leave' )
 
@@ -1172,7 +1183,7 @@ class ChannelListWindow(BaseWindow):
 
 		#get last channel
 		ret = None
-		ret = self.mDataCache.Channel_GetCurrent()
+		ret = self.mCommander.Channel_GetCurrent()
 		if ret :
 			self.mNavChannel = ret
 			self.mCurrentChannel = self.mNavChannel.mNumber
@@ -1286,45 +1297,46 @@ class ChannelListWindow(BaseWindow):
 	def UpdateLabelInfo( self ):
 		LOG_TRACE( 'Enter' )
 
-		#update channel name
-		if self.mIsSelect == True :
-			label = self.UpdateServiceType( self.mNavChannel.mServiceType )
-			self.mCtrlChannelName.setLabel( str('%s - %s'% (label, self.mNavChannel.mName )) )
+		if self.mNavChannel :
+			#update channel name
+			if self.mIsSelect == True :
+				label = self.UpdateServiceType( self.mNavChannel.mServiceType )
+				self.mCtrlChannelName.setLabel( str('%s - %s'% (label, self.mNavChannel.mName )) )
 
-		#update longitude info
-		satellite = self.mCommander.Satellite_GetByChannelNumber( self.mNavChannel.mNumber, self.mNavChannel.mServiceType )
-		ret = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
-		self.mCtrlLongitudeInfo.setLabel( ret )
+			#update longitude info
+			satellite = self.mCommander.Satellite_GetByChannelNumber( self.mNavChannel.mNumber, self.mNavChannel.mServiceType )
+			ret = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
+			self.mCtrlLongitudeInfo.setLabel( ret )
 
-		#update lock-icon visible
-		if self.mNavChannel.mLocked :
-				self.mCtrlLockedInfo.setVisible( True )
+			#update lock-icon visible
+			if self.mNavChannel.mLocked :
+					self.mCtrlLockedInfo.setVisible( True )
+					self.mPincodeEnter |= FLAG_MASK_ADD
+
+
+			#update career info
+			if self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBS:
+				value1 = self.mNavChannel.mCarrier.mDVBS.mPolarization
+				value2 = self.mNavChannel.mCarrier.mDVBS.mFrequency
+				value3 = self.mNavChannel.mCarrier.mDVBS.mSymbolRate
+
+				polarization = EnumToString( 'Polarization', value1 )
+				careerLabel = '%s MHz, %s KS/S, %s'% (value2, value3, polarization)
+				self.mCtrlCareerInfo.setLabel(careerLabel)
+
+			elif self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBT:
+				pass
+			elif self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBC:
+				pass
+			elif self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_INVALID:
+				pass
+				
+			"""
+			#is cas?
+			if self.mNavChannel.mIsCA == True:
+				#scrambled
 				self.mPincodeEnter |= FLAG_MASK_ADD
-
-
-		#update career info
-		if self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBS:
-			value1 = self.mNavChannel.mCarrier.mDVBS.mPolarization
-			value2 = self.mNavChannel.mCarrier.mDVBS.mFrequency
-			value3 = self.mNavChannel.mCarrier.mDVBS.mSymbolRate
-
-			polarization = EnumToString( 'Polarization', value1 )
-			careerLabel = '%s MHz, %s KS/S, %s'% (value2, value3, polarization)
-			self.mCtrlCareerInfo.setLabel(careerLabel)
-
-		elif self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBT:
-			pass
-		elif self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBC:
-			pass
-		elif self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_INVALID:
-			pass
-			
-		"""
-		#is cas?
-		if self.mNavChannel.mIsCA == True:
-			#scrambled
-			self.mPincodeEnter |= FLAG_MASK_ADD
-		"""
+			"""
 
 
 		#update epgName uiID(304)
@@ -1410,9 +1422,9 @@ class ChannelListWindow(BaseWindow):
 					LOG_TRACE( '=======label[%s] ch[%d] pin[%s]'% (label, channelNumbr, self.mPincodeEnter) )
 					self.mPincodeEnter = FLAG_MASK_NONE
 					ret = None
-					ret = self.mDataCache.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
-					#if ret:
-					#	self.mCurrentChannel = channelNumbr
+					ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
+					if ret:
+						self.mCurrentChannel = channelNumbr
 
 					LOG_TRACE( 'Pincode success' )
 				else:
