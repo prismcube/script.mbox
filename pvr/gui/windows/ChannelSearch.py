@@ -7,7 +7,6 @@ import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
 from ElisProperty import ElisPropertyEnum
-import pvr.ElisMgr
 
 
 class ChannelSearch( SettingWindow ) :

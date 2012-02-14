@@ -3,21 +3,17 @@ import xbmcgui
 import sys
 from copy import deepcopy
 
-import pvr.gui.WindowMgr as WinMgr
-import pvr.gui.DialogMgr as DlgMgr
-import pvr.TunerConfigMgr as ConfigMgr
-from  pvr.TunerConfigMgr import *
+import pvr.gui.DialogMgr as DiaMgr
+import pvr.DataCacheMgr as CacheMgr
+from pvr.gui.BaseWindow import SettingWindow, Action
+from ElisProperty import ElisPropertyEnum
 from pvr.gui.GuiConfig import *
 
-from pvr.gui.BaseWindow import SettingWindow, Action
-import pvr.ElisMgr
 
-
-class AutomaticScan( SettingWindow ):
-	def __init__( self, *args, **kwargs ):
+class AutomaticScan( SettingWindow ) :
+	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mAllSatelliteList = []
-		self.mSelectedSatelliteIndex = 0
+		self.mSatelliteIndex = 0
 
 
 	def onInit(self):
@@ -26,24 +22,19 @@ class AutomaticScan( SettingWindow ):
 
 		self.SetSettingWindowLabel( 'Automatic Scan' )
 
-		self.mSelectedSatelliteIndex = 0
-		self.mAllSatelliteList = []
+		self.mSatelliteIndex = 0
 		self.mFormattedList = []
 		self.mConfiguredSatelliteList = []		
 		
-		self.mAllSatelliteList = self.mCommander.Satellite_GetList( ElisEnum.E_SORT_INSERTED )
 		self.LoadFormattedSatelliteNameList()
-
 		self.InitConfig( )
-
 		self.ShowDescription( self.getFocusId( ) )
 		self.mInitialized = True
 
 		
-	def onAction( self, aAction ):
+	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
-
 		self.GlobalAction( actionId )
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
@@ -70,7 +61,6 @@ class AutomaticScan( SettingWindow ):
 			self.ShowDescription( focusId )
 			
 
-
 	def onClick( self, aControlId ):
 		groupId = self.GetGroupId( aControlId )
 		
@@ -79,28 +69,27 @@ class AutomaticScan( SettingWindow ):
 			dialog = xbmcgui.Dialog( )
 			select =  dialog.select('Select satellite', self.mFormattedList )
 
-			if select >= 0 and select != self.mSelectedSatelliteIndex :
-				self.mSelectedSatelliteIndex = select
+			if select >= 0 and select != self.mSatelliteIndex :
+				self.mSatelliteIndex = select
 			
 			self.InitConfig( )
 
 		# Start Search
 		if groupId == E_Input02 :
-			if self.mSelectedSatelliteIndex == 0 :
-				dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_CHANNEL_SEARCH )
+			if self.mSatelliteIndex == 0 :
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 				dialog.SetConfiguredSatellite( self.mConfiguredSatelliteList )
 				dialog.doModal( )
 
 			else :
 				configuredSatelliteList = []
-				config = self.mConfiguredSatelliteList[ self.mSelectedSatelliteIndex - 1 ]
+				config = self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ]
 
 				configuredSatelliteList.append( config )
-				dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_CHANNEL_SEARCH )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 				dialog.SetConfiguredSatellite( self.mConfiguredSatelliteList )				
 				dialog.doModal( )
 					
-
 		if groupId == E_SpinEx01 or groupId == E_SpinEx02 :
 			self.ControlSelect( )
 
@@ -116,43 +105,19 @@ class AutomaticScan( SettingWindow ):
 	def InitConfig( self ) :
 		self.ResetAllControl( )
 		count = len( self.mFormattedList )
-		
 		if count <= 1 :
 			hideControlIds = [ E_Input01, E_SpinEx01, E_SpinEx02, E_Input02 ]
 			self.SetVisibleControls( hideControlIds, False )
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Has no configured satellite' )
 
 		else :
-			self.AddInputControl( E_Input01, 'Satellite', self.mFormattedList[self.mSelectedSatelliteIndex], 'Select satellite' )
+			self.AddInputControl( E_Input01, 'Satellite', self.mFormattedList[self.mSatelliteIndex], 'Select satellite' )
 			self.AddEnumControl( E_SpinEx01, 'Network Search', None, 'Network Search' )
 			self.AddEnumControl( E_SpinEx02, 'Channel Search Mode', None, 'Channel Search Mode' )
 			self.AddInputControl( E_Input02, 'Start Search', '','Start Search' )
 			self.InitControl( )
 
-		
-	def GetFormattedName( self, aLongitude, aBand ) :
 	
-		found = False	
-
-		for satellite in self.mAllSatelliteList :
-			if aLongitude == satellite.mLongitude and aBand == satellite.mBand :
-				found = True
-				break
-
-		if found == True :
-			dir = 'E'
-
-			tmpLongitude  = aLongitude
-			if tmpLongitude > 1800 :
-				dir = 'W'
-				tmpLongitude = 3600 - aLongitude
-
-			formattedName = '%d.%d %s %s' %( int( tmpLongitude/10 ), tmpLongitude%10, dir, satellite.mName )
-			return formattedName
-
-		return 'UnKnown'
-
-
 	def LoadFormattedSatelliteNameList( self ) :
 		
 		configuredSatelliteList1 = []
@@ -178,10 +143,8 @@ class AutomaticScan( SettingWindow ):
 
 
 		self.mFormattedList = []
-		self.mFormattedList.append('All')
+		self.mFormattedList.append( 'All' )
 
 		for config in self.mConfiguredSatelliteList :
-			self.mFormattedList.append( self.GetFormattedName( config.mSatelliteLongitude, config.mBandType ) )
-
-		print 'formattedList=%s' %self.mFormattedList
-		
+			self.mFormattedList.append( CacheMgr.GetInstance( ).Satellite_GetFormattedName( config.mSatelliteLongitude, config.mBandType ) )
+			

@@ -323,7 +323,6 @@ class DataCacheMgr( object ):
 
 	@DataLock
 	def Satellite_GetFormattedName( self, aLongitude, aBand ) :
-		found = False
 		hashKey = '%d:%d' % ( aLongitude, aBand )
 		satellite = self.mSatelliteListHash.get( hashKey, None )
 		if satellite != None:
