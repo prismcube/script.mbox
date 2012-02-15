@@ -118,7 +118,7 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlGropMainmenu       = self.getControl( 100 )
 		self.mCtrlBtnMenu            = self.getControl( 101 )
 		self.mCtrlListMainmenu       = self.getControl( 102 )
-		
+
 		#sub menu list
 		self.mCtrlGropSubmenu        = self.getControl( 9001 )
 		self.mCtrlListSubmenu        = self.getControl( 112 )
@@ -367,6 +367,12 @@ class ChannelListWindow(BaseWindow):
 			position = self.mZappingMode
 			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 			#LOG_TRACE( 'onclick focus[%s] idx_sub[%s]'% (aControlId, position) )
+
+			#slide close
+			GuiLock2(True)
+			self.mCtrlListCHList.setEnabled(True)
+			self.setFocusId( self.mCtrlGropCHList.getId() )
+			GuiLock2(False)
 
 		elif aControlId == self.mCtrlBtnOpt.getId():
 			#LOG_TRACE( 'onclick Opt' )
@@ -978,13 +984,6 @@ class ChannelListWindow(BaseWindow):
 			#self.mCtrlRadioMisc.setEnabled( False )
 			GuiLock2(True)
 			self.mCtrlGropOpt.setVisible( False )
-
-			listItem = self.mCtrlListMainmenu.getListItem(E_SLIDE_MENU_EDITMODE)
-			xbmc.sleep(50)
-
-			label = Msg.Strings(MsgId.LANG_EDIT_CHANNEL)
-			listItem.setLabel(label)
-
 			GuiLock2(False)
 
 		else :
@@ -1005,14 +1004,15 @@ class ChannelListWindow(BaseWindow):
 
 			GuiLock2(True)
 			self.mCtrlGropOpt.setVisible( True )
+			GuiLock2(False)
 
+			"""
 			listItem = self.mCtrlListMainmenu.getListItem(E_SLIDE_MENU_EDITMODE)
 			xbmc.sleep(50)
 
-			label = Msg.Strings(MsgId.LANG_SAVE_EDIT)
+			label = '%s'% Msg.Strings(MsgId.LANG_SAVE_EDIT)
 			listItem.setLabel(label)
-
-			GuiLock2(False)
+			"""
 
 			return
 
@@ -1049,7 +1049,7 @@ class ChannelListWindow(BaseWindow):
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_SATELLITE)    )
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_FTA)          )
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_FAVORITE)     )
-		list_Mainmenu.append( Msg.Strings(MsgId.LANG_EDIT_CHANNEL) )
+		list_Mainmenu.append( Msg.Strings(MsgId.LANG_EDIT) )
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_DELETE_ALL_CHANNEL) )
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_BACK)     )
 		testlistItems = []
@@ -1145,11 +1145,13 @@ class ChannelListWindow(BaseWindow):
 		self.mNavChannel = None
 		self.mChannelList = None
 
+
 		if self.mFlag_EditChanged :
 			self.mChannelList = self.mCommander.Channel_GetList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode )
 		else :
 			#### first get is used cache, reason by fast load ###
 			self.mChannelList = self.mDataCache.Channel_GetList()
+
 
 		"""
 		if self.mChannelList :
@@ -1159,8 +1161,6 @@ class ChannelListWindow(BaseWindow):
 				  EnumToString('type', self.mChannelListServieType)) )
 			LOG_TRACE( 'len[%s] ch%s'% (len(self.mChannelList),ClassToList( 'convert', self.mChannelList )) )
 		"""
-
-
 		LOG_TRACE( 'Leave' )
 
 
