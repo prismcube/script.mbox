@@ -6,8 +6,6 @@ import pvr.gui.DialogMgr as DiaMgr
 import pvr.TunerConfigMgr as ConfigMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
-import pvr.ElisMgr
-
 from ElisProperty import ElisPropertyEnum
 from ElisEnum import ElisEnum
 
@@ -28,7 +26,7 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 
 		tunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerIndex( )
 		self.mCurrentSatellite = ConfigMgr.GetInstance( ).GetCurrentConfiguredSatellite( )
-		self.mTransponderList = ConfigMgr.GetInstance( ).GetTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
+		self.mTransponderList = self.mDataCache.Satellite_GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 		self.mSelectedTransponderIndex = 0
 
 		self.SetSettingWindowLabel( 'Satellite Configuration' )
@@ -38,7 +36,6 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 		elif tunerIndex == E_TUNER_2 : 
 			property = ElisPropertyEnum( 'Tuner2 Type', self.mCommander )
 		else :
-			print 'Error : unknown Tuner'
 			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
  				
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %d - %s' % ( tunerIndex + 1, property.GetPropString( ) ) )
@@ -77,12 +74,12 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 		
 		#Satellite
 		if groupId == E_Input01 :
-			satelliteList = ConfigMgr.GetInstance( ).GetFormattedNameList( )
+			satelliteList = self.mDataCache.Satellite_GetFormattedNameList( )
 			dialog = xbmcgui.Dialog( )
  			ret = dialog.select( 'Select satellite', satelliteList )
 
 			if ret >= 0 :
-	 			satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( ret )
+	 			satellite = self.mDataCache.Satellite_GetSatelliteByIndex( ret )
 	 			
 				self.mCurrentSatellite.reset( )
 				self.mCurrentSatellite.mSatelliteLongitude 	= satellite.mLongitude		# Longitude
@@ -92,7 +89,7 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 				self.mCurrentSatellite.mHighLNB 			= 10600						# High
 				self.mCurrentSatellite.mLNBThreshold		= 11700						# Threshold
 
-				self.mTransponderList = ConfigMgr.GetInstance( ).GetTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )				
+				self.mTransponderList = self.mDataCache.Satellite_GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )				
 		
 				self.InitConfig( )
 
@@ -159,7 +156,7 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 	def InitConfig( self ) :
 		self.ResetAllControl( )
 
-		self.AddInputControl( E_Input01, 'Satellite' , ConfigMgr.GetInstance( ).GetFormattedName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ) )
+		self.AddInputControl( E_Input01, 'Satellite' , self.mDataCache.Satellite_GetFormattedName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ) )
 		self.AddUserEnumControl( E_SpinEx01, 'LNB Type', E_LIST_LNB_TYPE, self.mSelectedIndexLnbType )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :

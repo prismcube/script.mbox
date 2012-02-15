@@ -4,7 +4,7 @@
 	<coordinates>
 		<system>1</system>
 		<posx>335</posx>
-		<posy>35</posy>
+		<posy>100</posy>
 	</coordinates>
 	<include>DefaultDialogEffect</include>
 	<controls>
@@ -20,7 +20,10 @@
 				<height>300</height>
 				<texture border="40">confluence/DialogBack.png</texture>
 			</control>
-			<include>DefaultDialogCommonSetting</include>
+			<control type="group">
+				<posy>100</posy>
+				<include>DefaultDialogCommonSetting</include>
+			</control>
 			<!-- Record Name -->
 			<control type="label" id="101">
 				<description>Record Name</description>
@@ -167,7 +170,7 @@
 					<onleft>201</onleft>
 					<onright>201</onright>
 					<onup>500</onup>
-					<label>[B]Satrt Record[/B]</label>					
+					<label>[B]Start Record[/B]</label>					
 				</control>
 				<control type="button" id="201">
 					<description>Cancel button</description>

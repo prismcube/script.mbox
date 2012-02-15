@@ -11,7 +11,6 @@ from pvr.gui.BaseWindow import SettingWindow, Action
 class EditSatellite( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-
 		self.mSatelliteIndex	= 0
 		self.mLongitude			= 0
 		self.mBand				= 0
@@ -137,7 +136,7 @@ class EditSatellite( SettingWindow ) :
 		self.GetSatelliteInfo( self.mSatelliteIndex )
 		satellitename = self.mDataCache.Satellite_GetFormattedName( self.mLongitude , self.mBand )
 		self.AddInputControl( E_Input01, 'Satellite', satellitename, 'Select satellite.' )
-		longitude = ConfigMgr.GetInstance( ).GetFormattedLongitude( self.mLongitude , self.mBand )
+		longitude = self.GetFormattedLongitude( self.mLongitude , self.mBand )
 		self.AddInputControl( E_Input02, 'Longitude', longitude )
 		self.AddInputControl( E_Input03, 'Edit Satellite Name', '', 'Edit satellite name.' )
 		self.AddInputControl( E_Input04, 'Add New Satellite', '', 'Add new satellite.' )
@@ -162,3 +161,14 @@ class EditSatellite( SettingWindow ) :
 		else :
 			self.SetEnableControl( E_Input05, True )
 
+
+	def GetFormattedLongitude( self, aLongitude, aBand ) :
+		dir = 'E'
+
+		tmpLongitude  = aLongitude
+		if tmpLongitude > 1800 :
+			dir = 'W'
+			tmpLongitude = 3600 - aLongitude
+
+		formattedName = '%d.%d %s' % ( int( tmpLongitude / 10 ), tmpLongitude % 10, dir )
+		return formattedName

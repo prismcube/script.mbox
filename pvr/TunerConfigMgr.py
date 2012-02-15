@@ -12,7 +12,6 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from ElisClass import *
 from pvr.gui.GuiConfig import *
 
-
 gTunerConfigMgr = None
 
 def GetInstance( ) :
@@ -167,6 +166,7 @@ class TunerConfigMgr( object ) :
 				config.mTunerIndex = 1
 				self.mConfiguredList2.append( config )
 
+
 	def DeleteConfiguredSatellitebyIndex( self, aIndex ) :
 		if self.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
 			del self.mConfiguredList1[ aIndex ]
@@ -185,6 +185,7 @@ class TunerConfigMgr( object ) :
 		self.mCurrentConfigIndex = 0
 		self.mCurrentTunerType = 0
 		self.mOnecableSatelliteCount = 0
+
 
 	def Restore( self ) :
 		# Tuner
@@ -268,13 +269,7 @@ class TunerConfigMgr( object ) :
 		self.mAllSatelliteList = self.mDataCache.mSatelliteList
 
 		# Get Configured Satellite List Tuner 1
-		self.mConfiguredList1 = []
-		self.mConfiguredList1 = self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )
-		
-		for configsatellite in self.mConfiguredList1 :
-			if configsatellite.mError < 0 :
-				self.mConfiguredList1 = []
-				break
+		self.mConfiguredList1 = self.mDataCache.mConfiguredSatelliteList1
 
 		if len( self.mConfiguredList1 ) == 0 :		# If empty list to return, add one default satellite
 			config = self.GetDefaultConfig( )
@@ -283,95 +278,13 @@ class TunerConfigMgr( object ) :
 			self.mConfiguredList1.append( config )
 
 		# Get Configured Satellite List Tuner 2
-		self.mConfiguredList2 = []
-		self.mConfiguredList2 = self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )
-
-		for configsatellite in self.mConfiguredList2 :
-			if configsatellite.mError < 0 :
-				self.mConfiguredList2 = []
-				break
+		self.mConfiguredList2 = self.mDataCache.mConfiguredSatelliteList2
 
 		if len( self.mConfiguredList2 ) == 0 :		# If empty list to return, add one default satellite
 			config = self.GetDefaultConfig( )
 			config.mSatelliteLongitude = self.mAllSatelliteList[ 0 ].mLongitude
 			config.mBandType = self.mAllSatelliteList[ 0 ].mBand
 			self.mConfiguredList2.append( config )
-
-
-	def ReloadAllSatelliteList( self ) :
-		self.mAllSatelliteList = self.mCommander.Satellite_GetList( ElisEnum.E_SORT_INSERTED )
-			
-
-	def GetFormattedName( self, aLongitude, aBand ) :
-		found = False	
-
-		for satellite in self.mAllSatelliteList :
-			if aLongitude == satellite.mLongitude and aBand == satellite.mBand :
-				found = True
-				break
-
-		if found == True :
-			dir = 'E'
-
-			tmpLongitude  = aLongitude
-			if tmpLongitude > 1800 :
-				dir = 'W'
-				tmpLongitude = 3600 - aLongitude
-
-			formattedName = '%d.%d %s %s' % ( int( tmpLongitude / 10 ), tmpLongitude % 10, dir, satellite.mName )
-			return formattedName
-
-		return 'UnKnown'
-
-
-	def GetFormattedLongitude( self, aLongitude, aBand ) :
-		dir = 'E'
-
-		tmpLongitude  = aLongitude
-		if tmpLongitude > 1800 :
-			dir = 'W'
-			tmpLongitude = 3600 - aLongitude
-
-		formattedName = '%d.%d %s' % ( int( tmpLongitude / 10 ), tmpLongitude % 10, dir )
-		return formattedName
-		
-
-	def GetFormattedNameList( self ) :
-		formattedlist = []	
-		for satellite in self.mAllSatelliteList :
-			dir = 'E'
-
-			tmpLongitude  = satellite.mLongitude
-			if tmpLongitude > 1800 :
-				dir = 'W'
-				tmpLongitude = 3600 - satellite.mLongitude
-
-			formattedName = '%d.%d %s %s' %( int( tmpLongitude / 10 ), tmpLongitude % 10, dir, satellite.mName )
-			formattedlist.append( formattedName )
-
-		return formattedlist
-
-	def GetTransponderList( self, aLongitude, aBand ) :
-		tmptransponderList = []
-		transponderList = []
-		found = False	
-		for satellite in self.mAllSatelliteList :
-			if aLongitude == satellite.mLongitude and aBand == satellite.mBand :
-				found = True
-				break
-
-		if found == True :
-			tmptransponderList = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
-  
- 		for i in range( len( tmptransponderList ) ) :
- 			if tmptransponderList[i].mError < 0 :
- 				return []
-			transponderList.append( '%d %d MHz %d KS/s' % ( ( i + 1 ), tmptransponderList[i].mFrequency, tmptransponderList[i].mSymbolRate ) )
-		return transponderList
- 
-
-	def GetSatelliteByIndex( self, aIndex ) :
-		return self.mAllSatelliteList[ aIndex ]
 
 
 	def LoadOriginalTunerConfig( self ) :
@@ -429,20 +342,3 @@ class TunerConfigMgr( object ) :
 	def GetNeedLoad( self ) :
 		return self.mNeedLoad
 
-	def updateSimpleLNB( self ) :
-		pass
-	
-	def updateDiseqc10( self ) :
-		pass
-
-	def updateDiseqc11( self ) :
-		pass
-
-	def updateMotorized12( self  )	 :
-		pass
-
-	def updateMotorizedUSALS( self ) :
-		pass
-
-	def updateOneCable( self ) :
-		pass

@@ -6,28 +6,25 @@ import pvr.gui.DialogMgr as DiaMgr
 import pvr.TunerConfigMgr as ConfigMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
-import pvr.ElisMgr
-
 from ElisProperty import ElisPropertyEnum
 from ElisEnum import ElisEnum
 
 
-class SatelliteConfigDisEqC11( SettingWindow ):
-	def __init__( self, *args, **kwargs ):
-		SettingWindow.__init__( self, *args, **kwargs)
-
+class SatelliteConfigDisEqC11( SettingWindow ) :
+	def __init__( self, *args, **kwargs ) :
+		SettingWindow.__init__( self, *args, **kwargs )
 		self.mCurrentSatellite = None
 		self.mTransponderList = None
 		self.mSelectedTransponderIndex = 0
 		self.mSelectedIndexLnbType = 0
 		
-	def onInit( self ):
+	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		tunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerIndex( )
 		self.mCurrentSatellite = ConfigMgr.GetInstance( ).GetCurrentConfiguredSatellite( )
-		self.mTransponderList = ConfigMgr.GetInstance( ).GetTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
+		self.mTransponderList = self.mDataCache.Satellite_GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 		self.mSelectedTransponderIndex = 0
 
 		self.SetSettingWindowLabel( 'Satellite Configuration' )
@@ -37,7 +34,6 @@ class SatelliteConfigDisEqC11( SettingWindow ):
 		elif tunerIndex == E_TUNER_2 : 
 			property = ElisPropertyEnum( 'Tuner2 Type', self.mCommander )
 		else :
-			print 'Error : unknown Tuner'
 			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
  				
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %d - %s' % ( tunerIndex + 1, property.GetPropString( ) ) )
@@ -71,17 +67,17 @@ class SatelliteConfigDisEqC11( SettingWindow ):
 			self.ControlDown( )
 
 
-	def onClick( self, aControlId ):
+	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
 		
 		#Satellite
 		if groupId == E_Input01 :
-			satelliteList = ConfigMgr.GetInstance( ).GetFormattedNameList( )
+			satelliteList = self.mDataCache.Satellite_GetFormattedNameList( )
 			dialog = xbmcgui.Dialog()
  			ret = dialog.select('Select satellite', satelliteList )
 
 			if ret >= 0 :
-	 			satellite = ConfigMgr.GetInstance( ).GetSatelliteByIndex( ret )
+	 			satellite = self.mDataCache.Satellite_GetSatelliteByIndex( ret )
 
 				self.mCurrentSatellite.reset( )
 				self.mCurrentSatellite.mSatelliteLongitude 	= satellite.mLongitude		# Longitude
@@ -91,7 +87,7 @@ class SatelliteConfigDisEqC11( SettingWindow ):
 				self.mCurrentSatellite.mHighLNB 			= 10600						# High
 				self.mCurrentSatellite.mLNBThreshold		= 11700						# Threshold
 
-				self.mTransponderList = ConfigMgr.GetInstance( ).GetTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )				
+				self.mTransponderList = self.mDataCache.Satellite_GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )				
 		
 				self.InitConfig()
 
@@ -156,14 +152,14 @@ class SatelliteConfigDisEqC11( SettingWindow ):
 	 			if self.mSelectedTransponderIndex != -1 :
 	 				self.InitConfig( )
 		
-	def onFocus( self, aControlId ):
+	def onFocus( self, aControlId ) :
 		pass
 
 
 	def InitConfig( self ) :
 		self.ResetAllControl( )
 
-		self.AddInputControl( E_Input01, 'Satellite' , ConfigMgr.GetInstance( ).GetFormattedName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ) )
+		self.AddInputControl( E_Input01, 'Satellite' , self.mDataCache.Satellite_GetFormattedName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ) )
 		self.AddUserEnumControl( E_SpinEx01, 'LNB Type', E_LIST_LNB_TYPE, self.mSelectedIndexLnbType )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
@@ -183,10 +179,10 @@ class SatelliteConfigDisEqC11( SettingWindow ):
 		
 		if( self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input03]
-			hideControlIds = [ E_Input02, E_Input04, E_Input05 ]
+			hideControlIds = [ E_Input02, E_Input04, E_Input05, E_Input06 ]
 		else :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input02, E_Input03 ]
-			hideControlIds = [ E_SpinEx02, E_Input04, E_Input05 ]
+			hideControlIds = [ E_SpinEx02, E_Input04, E_Input05, E_Input06 ]
 			
 		self.SetVisibleControls( visibleControlIds, True )
 		self.SetEnableControls( visibleControlIds, True )
@@ -197,7 +193,7 @@ class SatelliteConfigDisEqC11( SettingWindow ):
 		self.disableControl( )
 		
 
-	def disableControl( self ):
+	def disableControl( self ) :
 		enableControlIds = [ E_Input02, E_SpinEx02, E_SpinEx03 ]
 		if ( self.mSelectedIndexLnbType == ElisEnum.E_LNB_UNIVERSAL ) :
 			self.SetEnableControls( enableControlIds, False )

@@ -38,6 +38,7 @@ WIN_ID_SYSTEM_INFO					= 24
 WIN_ID_INSTALLATION					= 25
 WIN_ID_MEDIACENTER					= 26
 WIN_ID_EPG_WINDOW					= 27
+WIN_ID_CONDITIONAL_ACCESS			= 28
 
 WIN_ID_TEST1						= 30
 WIN_ID_DUMMY_WINDOW					= 100
@@ -225,6 +226,10 @@ class WindowMgr(object):
 
 			from pvr.gui.windows.DummyWindow import DummyWindow
 			self.mWindows[WIN_ID_DUMMY_WINDOW]=DummyWindow('DummyWindow.xml', self.mScriptDir ) 
+
+
+			from pvr.gui.windows.ConditionalAccess import ConditionalAccess
+			self.mWindows[WIN_ID_CONDITIONAL_ACCESS]=ConditionalAccess('ConditionalAccess.xml', self.mScriptDir ) 
 
 			"""
 			from pvr.gui.windows.test1 import Test1

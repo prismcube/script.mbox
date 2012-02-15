@@ -82,7 +82,7 @@ class DataCacheMgr( object ):
 		self.Load()
 		LOG_TRACE('')
 
-		#self.mEventBus.Register( self )		
+		self.mEventBus.Register( self )		
 
 
 	def onEvent(self, aEvent):
@@ -142,8 +142,16 @@ class DataCacheMgr( object ):
 
 	def LoadConfiguredSatellite( self ) :
 		self.mConfiguredSatelliteList1 = self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )
+		for configsatellite in self.mConfiguredSatelliteList1 :
+			if configsatellite.mError < 0 :
+				self.mConfiguredSatelliteList1 = []
+				break
+				
 		self.mConfiguredSatelliteList2 = self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )
-
+		for configsatellite in self.mConfiguredSatelliteList2 :
+			if configsatellite.mError < 0 :
+				self.mConfiguredSatelliteList2 = []
+				break
 
 	def LoadConfiguredTransponder( self ) :
 		self.mTransponderList = []
@@ -355,7 +363,6 @@ class DataCacheMgr( object ):
 		return self.mSatelliteList[ aIndex ]
 
 
-	@DataLock
 	def Satellite_GetFormattedName( self, aLongitude, aBand ) :
 		hashKey = '%d:%d' % ( aLongitude, aBand )
 		satellite = self.mSatelliteListHash.get( hashKey, None )
@@ -373,11 +380,31 @@ class DataCacheMgr( object ):
 		return 'UnKnown'
 
 
-	@DataLock
-	def GetTransponderbyHash( self, aLongitude, aBand ) :
+	def Satellite_GetTransponder( self, aLongitude, aBand ) :
+		transponder = []
 		hashKey = '%d:%d' % ( aLongitude, aBand )
 		transponder = self.mTransponderListHash.get( hashKey, None )
 		if transponder :
 			return transponder
+		else :
+			transponder = self.mCommander.Transponder_GetList( aLongitude, aBand )
+		if transponder < 0 :
+			return []
+		else :
+			return transponder
 
-		return []
+
+	def Satellite_GetFormattedTransponderList( self, aLongitude, aBand ) :
+		tmptransponderList = []
+		transponderList = []
+		
+		tmptransponderList = self.Satellite_GetTransponder( aLongitude, aBand )
+  
+ 		for i in range( len( tmptransponderList ) ) :
+ 			if tmptransponderList[i].mError < 0 :
+ 				transponderList.append( 'Empty' ) 
+	 			return transponderList
+ 			else :
+				transponderList.append( '%d %d MHz %d KS/s' % ( ( i + 1 ), tmptransponderList[i].mFrequency, tmptransponderList[i].mSymbolRate ) )
+
+		return transponderList

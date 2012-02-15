@@ -43,8 +43,6 @@ class DialogNormalNumeric( BaseDialog ) :
 		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-		LOG_TRACE('ACTION ID=%d' %actionId )
-		#self.GlobalAction( actionId )
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.mInputLabel = self.mOriginalString
@@ -58,7 +56,6 @@ class DialogNormalNumeric( BaseDialog ) :
 			self.SetInputLabel( )
 
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 and ( len( self.mInputLabel ) < self.mMaxLength ) :
-			LOG_TRACE('ACTION ID=%d' %actionId )
 			inputString ='%d' %(actionId - Action.REMOTE_0 )
 			self.mInputLabel += inputString
 			self.SetInputLabel( )

@@ -10,15 +10,15 @@ from pvr.gui.BaseWindow import SettingWindow, Action
 MAX_SATELLITE_CNT = 4
 
 
-class SatelliteConfigOnecable( SettingWindow ):
-	def __init__( self, *args, **kwargs ):
+class SatelliteConfigOnecable( SettingWindow ) :
+	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
 		self.mSatelliteCount = 0
 		self.mSatellitelist = []
 		self.mCurrentSatellite = None
 		
 
-	def onInit( self ):
+	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		
@@ -46,7 +46,7 @@ class SatelliteConfigOnecable( SettingWindow ):
 		self.DisableControl( )
 
 				
-	def onAction( self, aAction ):
+	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )		
 		
@@ -83,14 +83,14 @@ class SatelliteConfigOnecable( SettingWindow ):
 			self.ControlDown( )
 
 
-	def onClick( self, aControlId ):
+	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
 
 		if groupId == E_Input01 :
 			position = self.GetControlIdToListIndex( groupId ) - 2
 			ConfigMgr.GetInstance( ).SetOnecableSatelliteCount( position + 1 )
 			self.ResetAllControl( )
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_ONECABLE_2 )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_ONECABLE_2 )
 		
 		elif groupId == E_SpinEx01 :
 			self.DisableControl( )
@@ -99,13 +99,13 @@ class SatelliteConfigOnecable( SettingWindow ):
 			position = self.GetControlIdToListIndex( groupId ) - 2
 			ConfigMgr.GetInstance( ).SetCurrentConfigIndex( position )
 			self.ResetAllControl( )
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_SIMPLE )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_SIMPLE )
 			
-	def onFocus( self, aControlId ):
+	def onFocus( self, aControlId ) :
 		pass
 
 
-	def DisableControl( self ): 
+	def DisableControl( self ) : 
 		for i in range( MAX_SATELLITE_CNT ) :
 			if ( self.GetSelectedIndex( E_SpinEx01 ) + 1 ) > i :
 				self.SetEnableControl( self.GetListIndextoControlId( 2 + i ), True )
@@ -115,7 +115,7 @@ class SatelliteConfigOnecable( SettingWindow ):
 				self.SetVisibleControl( self.GetListIndextoControlId( 2 + i ), False ) 
 		
 		
-	def LoadConfigedSatellite( self ):
+	def LoadConfigedSatellite( self ) :
 		configuredList = []
 
 		configuredList = ConfigMgr.GetInstance( ).GetConfiguredSatelliteList( )
@@ -123,6 +123,6 @@ class SatelliteConfigOnecable( SettingWindow ):
 
 		for i in range( MAX_SATELLITE_CNT ) :
 			if i < self.mSatelliteCount :
-				self.mSatellitelist.append( ConfigMgr.GetInstance( ).GetFormattedName( configuredList[i].mSatelliteLongitude, configuredList[i].mBandType ) )
+				self.mSatellitelist.append( self.mDataCache.Satellite_GetFormattedName( configuredList[i].mSatelliteLongitude, configuredList[i].mBandType ) )
 			else :
 				self.mSatellitelist.append( '' ) # dummy Data
