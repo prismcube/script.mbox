@@ -243,3 +243,28 @@ def InputKeyboard( aType, aTitle, aString, aMaxLength=None ) :
 	else :
 		return aString
 
+
+############################ Global Class ############################
+
+E_USER_DEFINE		= 0
+E_TEST_FUNCTION_1	= 1
+E_TEST_FUNCTION_2	= 2
+E_TEST_FUNCTION_3	= 3
+
+
+class ContextItem :
+
+	def __init__( self, aDescription = 'None', aFunctionIndex = E_USER_DEFINE ) :
+		self.mDescription = aDescription
+		self.mFunctionIndex = aFunctionIndex
+
+	def DoAction( self ) :
+		if self.mFunctionIndex == E_TEST_FUNCTION_1 :
+			print 'dhkim test function1'
+
+		elif self.mFunctionIndex == E_TEST_FUNCTION_2 :
+			print 'dhkim test function2'
+
+		elif self.mFunctionIndex == E_TEST_FUNCTION_3 :
+			print 'dhkim test function3'
+		

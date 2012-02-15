@@ -21,7 +21,7 @@ class DialogContext( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )	
 		self.mItemList = []
-
+		self.selectedIndex = -1
 		self.mCtrlList = None
 
 	def onInit( self ) :
@@ -29,7 +29,8 @@ class DialogContext( BaseDialog ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.mCtrlList = self.getControl( DIALOG_LIST_ID )
-		self.mCtrlList.addItems( self.mItemList )
+		for i in range( len( self.mItemList ) ) :
+			self.mCtrlList.addItem( self.mItemList[i].mDescription )
 
 		# Set Dialog Size
 		height = len ( self.mItemList ) * 38
@@ -61,8 +62,13 @@ class DialogContext( BaseDialog ) :
 			
 
 	def onClick( self, aControlId ) :
-		pass
-
+		selectedIndex = self.mCtrlList.getSelectedPosition( )
+		if self.mItemList[ selectedIndex ].mFunctionIndex == E_USER_DEFINE :
+			self.selectedIndex = selectedIndex
+			self.CloseDialog( )
+		else :
+			self.mItemList[ selectedIndex ].DoAction( )
+			self.CloseDialog( )
 
 	def onFocus( self, aControlId ) :
 		pass
@@ -72,4 +78,7 @@ class DialogContext( BaseDialog ) :
 		self.mItemList = aItemList
 			
 		if len( self.mItemList ) == 0 :
-			self.mItemList = [ 'None' ]
+			self.mItemList = ContextItem( 'None' )
+
+	def GetSelectedIndex( self ) :
+		return self.selectedIndex

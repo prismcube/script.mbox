@@ -70,13 +70,28 @@ class MainMenu( BaseWindow ) :
 			pass
 
 		elif aControlId == BUTTON_ID_FIRSTINSTALLATION : # First Installation
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
-			dialog.SetDialogProperty( '0', 1005 )
-			dialog.doModal( )
-			#dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-			#dialog.SetProperty( [ 'test11111111111111', 'test222222222222222', 'test33333333', 'test', '1' ] )
- 			#dialog.doModal( )
+			pass
+			"""
+			context = []
+			context.append( ContextItem( 'test00000' ) )
+			context.append( ContextItem( 'test11111111111', E_TEST_FUNCTION_1 ) )
+			context.append( ContextItem( 'test2222222', E_TEST_FUNCTION_2 ) )
+			context.append( ContextItem( 'test333333333', E_TEST_FUNCTION_3 ) )
+			context.append( ContextItem( 'test' ) )
 
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+			dialog.SetProperty( context )
+ 			dialog.doModal( )
+
+ 			print 'dhkim test Selected Position = %d' % dialog.GetSelectedIndex( )
+			"""
+			
+			#dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
+			#dialog.SetDialogProperty( '0', 1005 )
+			#dialog.doModal( )
+
+			
+			
 		elif aControlId == BUTTON_ID_INSTALLATION :
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_INSTALLATION )
 

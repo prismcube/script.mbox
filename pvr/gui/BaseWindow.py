@@ -138,7 +138,7 @@ class ControlItem :
 	E_SETTING_INPUT_CONTROL					= 3
 
 
-	def __init__( self, aControlType, aControlId, aProperty, aListItems, aSelecteItem, aDescription ):	
+	def __init__( self, aControlType, aControlId, aProperty, aListItems, aSelecteItem, aDescription ) :	
 		self.mControlType = aControlType	
 		self.mControlId  = aControlId
 		self.mProperty = aProperty		# E_SETTING_ENUM_CONTROL : propery, E_SETTING_INPUT_CONTROL : input type
