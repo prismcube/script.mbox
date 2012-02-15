@@ -924,10 +924,11 @@ class ChannelListWindow(BaseWindow):
 		changed = False
 		ret = E_DIALOG_STATE_NO
 
-		if self.mSelectMainSlidePosition == self.mLastMainSlidePosition and \
-		   self.mSelectSubSlidePosition == self.mLastSubSlidePosition :
-			changed = False
-		else :
+		if self.mSelectMainSlidePosition != self.mLastMainSlidePosition or \
+		   self.mSelectSubSlidePosition != self.mLastSubSlidePosition :
+			changed = True
+
+		if self.mElisZappingModeInfo.mServiceType != self.mChannelListServieType :
 			changed = True
 
 		#is change?
