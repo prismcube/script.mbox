@@ -26,6 +26,9 @@ import pvr.gui.windows.Define_string as MsgId
 
 FLAG_MASK_ADD    = 0x01
 FLAG_MASK_NONE   = 0x00
+FLAG_MODE_TV     = ElisEnum.E_SERVICE_TYPE_TV
+FLAG_MODE_RADIO  = ElisEnum.E_SERVICE_TYPE_RADIO
+FLAG_MODE_DATA   = ElisEnum.E_SERVICE_TYPE_DATA
 FLAG_SLIDE_OPEN  = 0
 FLAG_SLIDE_INIT  = 1
 FLAG_OPT_LIST    = 0
@@ -44,9 +47,9 @@ E_SLIDE_ALLCHANNEL      = 0
 E_SLIDE_MENU_SATELLITE  = 1
 E_SLIDE_MENU_FTACAS     = 2
 E_SLIDE_MENU_FAVORITE   = 3
-E_SLIDE_MENU_EDITMODE   = 4
-E_SLIDE_MENU_DELETEALL  = 5
-E_SLIDE_MENU_BACK       = 6
+#E_SLIDE_MENU_EDITMODE   = 4
+#E_SLIDE_MENU_DELETEALL  = 5
+E_SLIDE_MENU_BACK       = 5
 
 E_IMG_ICON_LOCK   = 'IconLockFocus.png'
 E_IMG_ICON_ICAS   = 'IconCas.png'
@@ -123,9 +126,11 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlGropSubmenu        = self.getControl( 9001 )
 		self.mCtrlListSubmenu        = self.getControl( 112 )
 
-		#sub menu 2
-		#self.mCtrlRadioTune          = self.getControl( 113 )
-		#self.mCtrlRadioMark          = self.getControl( 114 )
+		#sub menu 9002
+		self.mCtrlRdoTV              = self.getControl( 113 )
+		self.mCtrlRdoRadio           = self.getControl( 114 )
+		self.mCtrlBtnEdit            = self.getControl( 115 )
+		self.mCtrlBtnDelAll          = self.getControl( 116 )
 
 		#ch list
 		self.mCtrlGropCHList         = self.getControl( 49 )
@@ -223,6 +228,10 @@ class ChannelListWindow(BaseWindow):
 					self.mCtrlListCHList.setEnabled(True)
 					self.setFocusId( self.mCtrlGropCHList.getId() )
 
+				else :
+					self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
+
+				"""
 				elif position == E_SLIDE_MENU_DELETEALL :
 					self.SetDeleteAll()
 
@@ -234,45 +243,9 @@ class ChannelListWindow(BaseWindow):
 					self.InitChannelList()
 
 				elif position == E_SLIDE_MENU_EDITMODE :
-					#LOG_TRACE( 'onclick opt edit' )
+					self.SetGoBackEdit()
+				"""
 
-					if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
-						self.mViewMode = WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW
-
-						try :
-							#Event UnRegister
-							#self.mEventBus.Deregister( self )
-
-							self.InitSlideMenuHeader()
-							self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
-							xbmc.sleep(50)
-							self.SubMenuAction(E_SLIDE_ACTION_MAIN, E_SLIDE_ALLCHANNEL)
-
-							self.mCtrlListSubmenu.selectItem( 0 )
-							xbmc.sleep(50)
-							self.SubMenuAction(E_SLIDE_ACTION_SUB, ElisEnum.E_MODE_ALL)
-
-							#clear label
-							self.ResetLabel()
-							self.UpdateLabelInfo()
-
-							self.mCtrlListCHList.reset()
-							self.InitChannelList()
-
-							ret = self.mCommander.Channel_Backup()
-							#LOG_TRACE( 'channelBackup[%s]'% ret )
-
-							self.mCtrlListCHList.setEnabled(True)
-							self.setFocusId( self.mCtrlGropCHList.getId() )
-
-						except Exception, e :
-							LOG_TRACE( 'Error except[%s]'% e )
-
-					else :
-						self.SetGoBackWindow()
-
-				else :
-					self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
 
 
 		elif id == Action.ACTION_MOVE_RIGHT :
@@ -379,17 +352,25 @@ class ChannelListWindow(BaseWindow):
 			self.PopupOpt()
 
 
-		"""
-		elif aControlId == self.mCtrlRadioTune.getId() :
-			self.mCtrlRadioTune.setSelected( True )
-			self.mCtrlRadioMark.setSelected( False )
-			self.mIsMark = False
+		elif aControlId == self.mCtrlBtnEdit.getId():
+			self.SetGoBackEdit()
 
-		elif aControlId == self.mCtrlRadioMark.getId() :
-			self.mCtrlRadioTune.setSelected( False )
-			self.mCtrlRadioMark.setSelected( True )
-			self.mIsMark = True
-		"""
+		elif aControlId == self.mCtrlBtnDelAll.getId():
+			self.SetDeleteAll()
+
+			#clear label
+			self.ResetLabel()
+			self.UpdateLabelInfo()
+
+			self.mCtrlListCHList.reset()
+			self.InitChannelList()
+
+		elif aControlId == self.mCtrlRdoTV.getId():
+			self.SetModeChanged( FLAG_MODE_TV )
+
+		elif aControlId == self.mCtrlRdoRadio.getId():
+			self.SetModeChanged( FLAG_MODE_RADIO )
+
 		LOG_TRACE( 'Leave' )
 
 
@@ -436,7 +417,97 @@ class ChannelListWindow(BaseWindow):
 		return ret
 
 		LOG_TRACE( 'Leave' )
-	
+
+	def SetModeChanged( self, aType = FLAG_MODE_TV) :
+		LOG_TRACE( 'Enter' )
+
+		self.mChannelListServieType = aType
+
+		GuiLock2(True)
+		if aType == FLAG_MODE_TV :
+			#self.mCtrlRdoRadio.setSelected(False)
+			label = self.mCtrlListCHList.getSelectedItem().getLabel()
+			channelNumbr = ParseLabelToCh( self.mViewMode, label )
+			LOG_TRACE( '=======label[%s] ch[%d] tvmode[%s]'% (label, channelNumbr, self.mChannelListServieType) )
+			ret = None
+			ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
+			if ret:
+				self.mCurrentChannel = channelNumbr
+
+		elif aType == FLAG_MODE_RADIO :
+			#self.mCtrlRdoTV.setSelected(False)
+			ret = self.mCommander.Player_VideoBlank( True, True )
+
+		GuiLock2(False)
+
+		self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
+		xbmc.sleep(50)
+		self.SubMenuAction(E_SLIDE_ACTION_MAIN, E_SLIDE_ALLCHANNEL)
+		self.mCtrlListSubmenu.selectItem( 0 )
+		xbmc.sleep(50)
+		self.SubMenuAction(E_SLIDE_ACTION_SUB, ElisEnum.E_MODE_ALL, True)
+
+		#clear label
+		self.ResetLabel()
+		self.UpdateLabelInfo()
+
+		self.mCtrlListCHList.reset()
+		self.InitChannelList()
+
+		#initialize get epg event
+		self.mIsSelect = False
+		self.InitEPGEvent()
+
+		#slide close
+		self.mCtrlListCHList.setEnabled(True)
+		self.setFocusId( self.mCtrlGropCHList.getId() )
+
+
+		LOG_TRACE( 'Leave' )
+
+	def SetGoBackEdit( self ) :
+		LOG_TRACE( 'Enter' )
+
+		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+			self.mViewMode = WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW
+
+			try :
+				#Event UnRegister
+				#self.mEventBus.Deregister( self )
+
+				self.InitSlideMenuHeader()
+				self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
+				xbmc.sleep(50)
+				self.SubMenuAction(E_SLIDE_ACTION_MAIN, E_SLIDE_ALLCHANNEL)
+
+				self.mCtrlListSubmenu.selectItem( 0 )
+				xbmc.sleep(50)
+				self.SubMenuAction(E_SLIDE_ACTION_SUB, ElisEnum.E_MODE_ALL)
+
+				#clear label
+				self.ResetLabel()
+				self.UpdateLabelInfo()
+
+				self.mCtrlListCHList.reset()
+				self.InitChannelList()
+
+				ret = self.mCommander.Channel_Backup()
+				#LOG_TRACE( 'channelBackup[%s]'% ret )
+
+				#slide close
+				GuiLock2(True)
+				self.mCtrlListCHList.setEnabled(True)
+				self.setFocusId( self.mCtrlGropCHList.getId() )
+				GuiLock2(False)
+
+			except Exception, e :
+				LOG_TRACE( 'Error except[%s]'% e )
+
+		else :
+			self.SetGoBackWindow()
+
+		LOG_TRACE( 'Leave' )
+
 	def SetGoBackWindow( self ) :
 		LOG_TRACE( 'Enter' )
 
@@ -522,7 +593,6 @@ class ChannelListWindow(BaseWindow):
 		#LOG_TRACE( 'Leave' )
 
 
-
 	def SetChannelTune( self ) :
 		LOG_TRACE( 'Enter' )
 
@@ -571,7 +641,7 @@ class ChannelListWindow(BaseWindow):
 
 
 	@GuiLock
-	def SubMenuAction(self, aAction, aMenuIndex):
+	def SubMenuAction(self, aAction, aMenuIndex, aForce = None):
 		LOG_TRACE( 'Enter' )
 		retPass = False
 
@@ -616,7 +686,7 @@ class ChannelListWindow(BaseWindow):
 				#self.mCtrlLblPath1.setLabel( label1.title() )
 
 		elif aAction == E_SLIDE_ACTION_SUB:
-			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+			if aForce == None and self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 				if self.mSelectMainSlidePosition == self.mCtrlListMainmenu.getSelectedPosition() and \
 				   self.mSelectSubSlidePosition == self.mCtrlListSubmenu.getSelectedPosition() :
 				   LOG_TRACE( 'aready select!!!' )
@@ -854,10 +924,11 @@ class ChannelListWindow(BaseWindow):
 		changed = False
 		ret = E_DIALOG_STATE_NO
 
-		if self.mSelectMainSlidePosition == self.mLastMainSlidePosition and \
-		   self.mSelectSubSlidePosition == self.mLastSubSlidePosition :
-			changed = False
-		else :
+		if self.mSelectMainSlidePosition != self.mLastMainSlidePosition or \
+		   self.mSelectSubSlidePosition != self.mLastSubSlidePosition :
+			changed = True
+
+		if self.mElisZappingModeInfo.mServiceType != self.mChannelListServieType :
 			changed = True
 
 		#is change?
@@ -1049,8 +1120,9 @@ class ChannelListWindow(BaseWindow):
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_SATELLITE)    )
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_FTA)          )
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_FAVORITE)     )
-		list_Mainmenu.append( Msg.Strings(MsgId.LANG_EDIT) )
-		list_Mainmenu.append( Msg.Strings(MsgId.LANG_DELETE_ALL_CHANNEL) )
+		#list_Mainmenu.append( Msg.Strings(MsgId.LANG_EDIT) )
+		#list_Mainmenu.append( Msg.Strings(MsgId.LANG_DELETE_ALL_CHANNEL) )
+		list_Mainmenu.append( 'MODE' )
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_BACK)     )
 		testlistItems = []
 		for item in range( len(list_Mainmenu) ) :
@@ -1250,6 +1322,13 @@ class ChannelListWindow(BaseWindow):
 		#LOG_TRACE( 'currentChannel[%s]'% chListInfo )
 
 
+		if self.mChannelListServieType == ElisEnum.E_SERVICE_TYPE_TV:
+			self.mCtrlRdoTV.setSelected( True )
+			self.mCtrlRdoRadio.setSelected( False )
+		elif self.mChannelListServieType == ElisEnum.E_SERVICE_TYPE_RADIO:
+			self.mCtrlRdoTV.setSelected( False )
+			self.mCtrlRdoRadio.setSelected( True )
+
 		self.mCtrlProgress.setPercent(0)
 		self.mCtrlProgress.setVisible(False)
 		self.mPincodeEnter = FLAG_MASK_NONE
@@ -1422,7 +1501,6 @@ class ChannelListWindow(BaseWindow):
 
 
 		LOG_TRACE( 'Leave' )
-
 
 
 	def PincodeDialogLimit( self ) :

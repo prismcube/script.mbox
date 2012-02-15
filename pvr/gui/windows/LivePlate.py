@@ -44,6 +44,7 @@ E_IMG_SCREEN_HIDE = 'confluence/black-back.png'
 E_IMG_ICON_LOCK   = 'IconLockFocus.png'
 E_IMG_ICON_ICAS   = 'IconCas.png'
 E_IMG_ICON_TV     = 'confluence/tv.png'
+E_IMG_ICON_RADIO  = 'icon_radio.png'
 
 NEXT_EPG 				= 0
 PREV_EPG 				= 1
@@ -691,9 +692,9 @@ class LivePlate(BaseWindow):
 
 		if aTvType == ElisEnum.E_SERVICE_TYPE_TV:
 			#self.mCtrlImgServiceType.setImage(self.mImgTV)
-			self.mImgTV = 'confluence/tv.png'
+			self.mImgTV = E_IMG_ICON_TV
 		elif aTvType == ElisEnum.E_SERVICE_TYPE_RADIO:
-			pass
+			self.mImgTV = E_IMG_ICON_RADIO
 		elif aTvType == ElisEnum.E_SERVICE_TYPE_DATA:
 			pass
 		else:
