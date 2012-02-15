@@ -3,6 +3,7 @@ import xbmcgui
 import sys
 
 import pvr.gui.WindowMgr as WinMgr
+import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
 import pvr.ElisMgr
 from pvr.gui.GuiConfig import *
@@ -91,7 +92,13 @@ class Installation( BaseWindow ):
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIGURE )
 
 		elif selectedId == MENU_ID_CAS : # CAS
-			pass
+			ret = self.mCommander.Cicam_IsInserted( CAS_SLOT_NUM_1 )
+			if ret == True :
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONDITIONAL_ACCESS )
+			else :
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'ERROR', 'SMART card not inserted' )
+	 			dialog.doModal( )
 
  
 	def onFocus( self, aControlId ):

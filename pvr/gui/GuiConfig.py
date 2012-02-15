@@ -90,6 +90,10 @@ E_TUNER_1						= 0
 E_TUNER_2						= 1
 E_TUNER_MAX						= 2
 
+# CAS
+CAS_SLOT_NUM_1					= 0
+CAS_SLOT_NUM_2					= 1
+
 #RECORD
 E_MAX_RECORD_COUNT				= 2
 
