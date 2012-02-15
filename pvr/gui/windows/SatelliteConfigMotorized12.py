@@ -17,28 +17,29 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 		self.mTransponderList = None
 		self.mSelectedIndexLnbType = None
 		self.mSelectedTransponderIndex = 0
+		self.tunerIndex = 0
 		
 			
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		
-		tunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerIndex( )
+		self.tunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerIndex( )
 		self.mCurrentSatellite = ConfigMgr.GetInstance( ).GetCurrentConfiguredSatellite( )
 		self.mTransponderList = self.mDataCache.Satellite_GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 		self.mSelectedTransponderIndex = 0
 
 		self.SetSettingWindowLabel( 'Satellite Configuration' )
 		
-		if tunerIndex == E_TUNER_1 :
+		if self.tunerIndex == E_TUNER_1 :
 			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
-		elif tunerIndex == E_TUNER_2 : 
+		elif self.tunerIndex == E_TUNER_2 : 
 			property = ElisPropertyEnum( 'Tuner2 Type', self.mCommander )
 		else :
 			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
  
 		
-		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %d - %s' % ( tunerIndex + 1, property.GetPropString( ) ) )
+		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %d - %s' % ( self.tunerIndex + 1, property.GetPropString( ) ) )
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.InitConfig( )
 
@@ -153,8 +154,24 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 		elif groupId == E_SpinEx04 :
 			pass
 
-		# Store Position and Exit
+
+		# Antenna Action
 		elif groupId == E_Input05 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( 'Configure', 'Are Yor Sure?' )
+			dialog.doModal( )
+
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				selected = self.GetSelectedIndex( E_SpinEx04 )
+				if selected == 0 :
+					self.mCommander.Motorized_ResetLimit( self.tunerIndex )
+				elif selected == 1 :
+					self.mCommander.Motorized_SetEastLimit( self.tunerIndex )
+				elif selected == 2 :			
+					self.mCommander.Motorized_SetWestLimit( self.tunerIndex )
+
+		# Store Position and Exit
+		elif groupId == E_Input06 :
 			pass
 
 
@@ -182,15 +199,16 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 			self.AddInputControl( E_Input03, 'Transponder', self.mTransponderList[ self.mSelectedTransponderIndex ] )
 
 		self.AddInputControl( E_Input04, 'Move Antenna', '' )
-		self.AddUserEnumControl( E_SpinEx04, 'Action', E_LIST_ONE_CABLE_ACTION, 0 )
-		self.AddInputControl( E_Input05, 'Store Position and Exit', '' )
+		self.AddUserEnumControl( E_SpinEx04, 'Action', E_LIST_MOTORIZE_ACTION, 0 )
+		self.AddInputControl( E_Input05, ' - Action Start', '' )
+		self.AddInputControl( E_Input06, 'Store Position and Exit', '' )
 
 		if( self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input01, E_Input03, E_Input04, E_Input05 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input01, E_Input03, E_Input04, E_Input05, E_Input06 ]
 			hideControlIds = [ E_SpinEx05, E_SpinEx06, E_Input02 ]
 		else :
-			visibleControlIds = [ E_SpinEx01, E_SpinEx03, E_SpinEx04, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
-			hideControlIds = [ E_SpinEx02, E_SpinEx05, E_SpinEx06 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx03, E_SpinEx04, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
+			hideControlIds = [ E_SpinEx02, E_SpinEx06, E_SpinEx05 ]
 			
 		self.SetVisibleControls( visibleControlIds, True )
 		self.SetEnableControls( visibleControlIds, True )

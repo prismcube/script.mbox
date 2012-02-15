@@ -4,7 +4,7 @@
 	<coordinates>
 		<system>1</system>
 		<posx>335</posx>
-		<posy>35</posy>
+		<posy>90</posy>
 	</coordinates>
 	<include>DefaultDialogEffect</include>
 	<controls>
@@ -20,7 +20,10 @@
 				<height>310</height>
 				<texture border="40">confluence/DialogBack.png</texture>
 			</control>
-			<include>DefaultDialogCommonSetting</include>
+			<control type="group">
+				<posy>90</posy>
+				<include>DefaultDialogCommonSetting</include>
+			</control>
 		</control>
 
 		<control type="grouplist" id="9000">		
