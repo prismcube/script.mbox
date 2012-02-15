@@ -9,8 +9,6 @@ from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
 from ElisProperty import ElisPropertyInt
 
-from pvr.Util import *
-
 
 class SatelliteConfigMotorizedUsals( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :

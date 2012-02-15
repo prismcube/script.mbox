@@ -10,11 +10,12 @@ from ElisProperty import ElisPropertyEnum
 from ElisEnum import ElisEnum
 from ElisClass import *
 
+E_DEFAULT_GOURP_ID		= 9000
+
 
 class ManualScan( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-			
 		self.mSatelliteIndex			= 0
 		self.mTransponderIndex			= 0
 		self.mTransponderList			= []
@@ -22,11 +23,14 @@ class ManualScan( SettingWindow ) :
 		self.mFormattedSatelliteList	= []
 		self.mIsManualSetup				= 0
 		self.mConfigTransponder			= None
+		self.mCtrlMainGroup				= None		
 
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
+
+		self.mCtrlMainGroup = self.getControl( E_DEFAULT_GOURP_ID )
 
 		self.SetSettingWindowLabel( 'Manual Scan' )
 		self.mIsManualSetup = 0
@@ -195,6 +199,7 @@ class ManualScan( SettingWindow ) :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Has no configured satellite' )
 
 		else :
+			self.mCtrlMainGroup.setVisible( False )
 			self.AddInputControl( E_Input01, 'Satellite', self.mFormattedSatelliteList[ self.mSatelliteIndex ], 'Select satellite' )
 			self.AddUserEnumControl( E_SpinEx01, 'Custom Setup', USER_ENUM_LIST_ON_OFF, self.mIsManualSetup )
 
@@ -228,7 +233,7 @@ class ManualScan( SettingWindow ) :
 
 			self.InitControl( )
 			self.DisableControl( )
-
+			self.mCtrlMainGroup.setVisible( True )
 
 	def LoadFormattedSatelliteNameList( self ) :
 
@@ -262,7 +267,7 @@ class ManualScan( SettingWindow ) :
 	def LoadTransponderList( self ) :
 		satellite = self.mConfiguredSatelliteList[ self.mSatelliteIndex ]
 		self.mTransponderList = []
-		self.mTransponderList = self.mDataCache.GetTransponderbyHash( satellite.mSatelliteLongitude, satellite.mBandType )
+		self.mTransponderList = self.mDataCache.Satellite_GetTransponder( satellite.mSatelliteLongitude, satellite.mBandType )
 
 
 	def SetConfigTransponder( self ) :
