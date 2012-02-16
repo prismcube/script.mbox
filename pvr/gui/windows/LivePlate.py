@@ -295,15 +295,19 @@ class LivePlate(BaseWindow):
 			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
 
 				if currentChannel == None :
+					LOG_TRACE('ignore event, currentChannel None, [%s]'% currentChannel)
 					return -1
 				
 				if currentChannel.mSid != aEvent.mSid or currentChannel.mTsid != aEvent.mTsid or currentChannel.mOnid != aEvent.mOnid :
+					#LOG_TRACE('ignore event, same event')
 					return -1
 
 				if currentChannel.mNumber != self.mFakeChannel.mNumber :
+					LOG_TRACE('ignore event, Channel: current[%s] fake[%s]'% (currentChannel.mNumber, self.mFakeChannel.mNumber) )
 					return -1
 
 				if self.mFlag_OnEvent != True :
+					LOG_TRACE('ignore event, mFlag_OnEvent[%s]'% self.mFlag_OnEvent)
 					return -1
 
 				LOG_TRACE( 'eventid:new[%d] old[%d]' %(aEvent.mEventId, self.mEventID ) )
@@ -324,6 +328,8 @@ class LivePlate(BaseWindow):
 							LOG_TRACE('epg DIFFER, id[%s]'% ret.mEventId)
 							self.mEventID = aEvent.mEventId
 							self.mEventCopy = ret
+							#update label
+							self.UpdateONEvent( ret )
 
 							#check : new event?
 							if self.mEPGList :
@@ -356,12 +362,10 @@ class LivePlate(BaseWindow):
 											break
 
 									self.mEPGListIdx = idx
-									self.mEPGList[idx].append( self.mEventCopy )
+									self.mEPGList = self.mEPGList[:idx]+[self.mEventCopy]+self.mEPGList[idx:]
 									LOG_TRACE('append new idx[%s], epgTotal:oldlen[%s] newlen[%s]'% (idx, oldLen, len(self.mEPGList)) )
+									LOG_TRACE('list[%s]'% ClassToList('convert',self.mEPGList) )
 
-
-							#update label
-							self.UpdateONEvent( ret )
 
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
@@ -400,7 +404,7 @@ class LivePlate(BaseWindow):
 
 
 	def EPGNavigation(self, aDir ):
-		LOG_TRACE('')
+		LOG_TRACE('Enter')
 
 		#if self.mFlag_OnEvent :
 		#	self.GetEPGList()
@@ -423,6 +427,8 @@ class LivePlate(BaseWindow):
 			self.EPGListMove()
 			#self.PincodeDialogLimit()
 
+
+		LOG_TRACE('Leave')
 
 	def GetEPGList( self ) :
 		LOG_TRACE( 'Enter' )
@@ -463,6 +469,7 @@ class LivePlate(BaseWindow):
 					self.mFlag_OnEvent = True
 					return -1
 
+				LOG_TRACE('event[%s]'% self.mEventCopy )
 				retList=[]
 				retList.append(self.mEventCopy)
 				LOG_TRACE('==========[%s]'% ClassToList('convert', retList) )
@@ -963,6 +970,7 @@ class LivePlate(BaseWindow):
 				self.InitLabelInfo()
 				GuiLock2(True)
 				self.mEventCopy = ret
+				self.mFlag_OnEvent = False
 				GuiLock2(False)
 
 				self.UpdateServiceType( self.mCurrentChannel.mServiceType )
