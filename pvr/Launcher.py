@@ -9,11 +9,11 @@ import pvr.gui.DialogMgr as DiaMgr
 from inspect import currentframe
 import pvr.ElisMgr
 import pvr.gui.WindowMgr as WindowMgr
-from pvr.Util import RunThread, HasPendingThreads, WaitUtileThreadsJoin
+from pvr.Util import RunThread, HasPendingThreads, WaitUtileThreadsJoin, LOG_TRACE
 import pvr.NetConfig as NetConfig
 import pvr.DataCacheMgr
 
-		
+
 gLauncher = None
 
 def GetInstance():
@@ -26,7 +26,8 @@ class Launcher(object):
 
 	def __init__(self):
 		self.mShutdownReceived = False
-		self.mShutdowning = False		
+		self.mShutdowning = False
+		self.mLoadCount = 0
 
 	def Run(self):
 		try:
@@ -38,9 +39,17 @@ class Launcher(object):
 				self.InitWindowMgr()
 				self.WaitShutdown()
 			except Exception, ex:
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Error', 'Exception: %s' % str( ex ) )
-	 			dialog.doModal( )
+				#dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				#dialog.SetDialogProperty( 'Error', 'Exception: %s' % str( ex ) )
+	 			#dialog.doModal( )
+	 			LOG_TRACE('Error exception[%s]'% ex)
+
+	 			self.mLoadCount += 1
+	 			LOG_TRACE('==============>retry run[%s]'% self.mLoadCount)
+	 			self.mShutdowning = False
+	 			self.Shutdown()
+	 			time.sleep(5)
+	 			self.Run()
 		finally:
 			print 'Launcher end'
 
