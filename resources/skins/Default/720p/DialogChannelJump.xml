@@ -1,17 +1,13 @@
 <window id="3313">
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>no</allowoverlay>
-	<coordinates>
-		<system>1</system>
-		<posx>400</posx>
-		<posy>245</posy>
-	</coordinates>
-	<include>DefaultDialogEffect</include>
+	<include>DefaultDialogOpenEffect</include>
 	<controls>
+		<include>DefaultBehindDialogFadeOut</include>
 		<control type="group">
-            <animation condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional" reversible="false">
-                <effect type="fade" start="100" end="0" time="300" />
-            </animation>
+			<posx>400</posx>
+			<posy>245</posy>
+            <include>DefaultDialogCloseEffect</include>
 			<control type="image">
 				<description>background image</description>
 				<posx>0</posx>
@@ -20,16 +16,6 @@
 				<height>230</height>
 				<texture border="40">confluence/DialogBack.png</texture>
 			</control>
-			<!--
-			<control type="image">
-				<posx>40</posx>
-				<posy>10</posy>
-				<width>530</width>
-				<height>90</height>
-				<aspectratio>stretch</aspectratio>
-				<texture>confluence/GlassTitleBar.png</texture>
-			</control>
-			-->
 			<control type="label" id="210">
 				<description>Channel Number</description>
 				<posx>0</posx>
@@ -40,7 +26,6 @@
 				<align>center</align>
 				<aligny>center</aligny>
 			</control>
-			
 			<control type="label" id="211">
 				<description>Channel Name</description>			
 				<posx>0</posx>
@@ -50,8 +35,7 @@
 				<align>center</align>
 				<aligny>center</aligny>
 				<font>font13</font>
-			</control>
-			
+			</control>		
 			<control type="label" id="212">
 				<description>EPG Name</description>			
 				<posx>0</posx>
@@ -63,7 +47,6 @@
 				<font>font13</font>
 				<label>EPG Test Label</label>
 			</control>
-			
 			<control type="progress" id="213">
 				<posx>50</posx>
 				<posy>170</posy>

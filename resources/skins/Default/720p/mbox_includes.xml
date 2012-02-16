@@ -1,7 +1,6 @@
 <includes>
 	<include name="DefaultSettingHeaderWindow">
 		<include>DefaultSettingsBackground</include>
-		<include>DefaultBehindDialogFadeOut</include>
 		<include>DefaultCommonDateTime</include>
 		<include>DefaultMiniTitle</include>
 	</include>
@@ -174,6 +173,25 @@
 		</control>
 	</include>
 
+	<include name="DefaultBackgroundFade">
+		 <animation effect="fade" time="600">Visible</animation>
+		 <animation effect="fade" time="600">Hidden</animation>
+	</include>
+	
+	<include name="VisibleFadeEffect">
+		<animation effect="fade" time="300">Visible</animation>
+		<animation effect="fade" time="300">Hidden</animation>
+	</include>
+	
+	<include name="DefaultDialogOpenEffect">
+		<onload>SetProperty(AnimationWaitingDialogOnClose,true)</onload>
+		<animation effect="fade" time="300">WindowOpen</animation>
+	</include>
+
+	<include name="DefaultDialogCloseEffect">
+		<animation effect="fade" start="100" end="0" time="300" condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional">Conditional</animation>
+	</include>
+
 	<include name="DefaultBehindDialogFadeOut">
 		<control type="image">
 			<posx>0</posx>
@@ -181,9 +199,7 @@
 			<width>1280</width>
 			<height>720</height>
 			<texture>black-back.png</texture>
-			<animation effect="fade" time="400">Visible</animation>
-			<animation effect="fade" time="200">Hidden</animation>
-			<visible>Window.IsActive(MovieInformation) | Window.IsActive(MusicInformation) | Window.IsActive(SongInformation) | Window.IsActive(FileBrowser) | Window.IsActive(TextViewer) | Window.IsActive(AddonSettings) | Window.IsActive(ContentSettings) | Window.IsActive(SelectDialog) | Window.IsActive(FileStackingDialog) | Window.IsActive(MediaSource) | Window.IsActive(PictureInfo) | Window.IsActive(PlayerControls) | Window.IsActive(VirtualKeyboard) | Window.IsActive(NumericInput) | Window.IsActive(ProfileSettings) | Window.IsActive(LockSettings) | Window.IsActive(SmartPlaylistEditor) | Window.IsActive(SmartPlaylistRule) | Window.IsActive(script-Apple_Movie_Trailers-settings.xml) | Window.IsActive(script-Apple_Movie_Trailers-chooser.xml) | Window.IsActive(script-Apple_Movie_Trailers-search.xml) | Window.IsActive(script-Apple_Movie_Trailers-showtimes.xml) | Window.IsActive(script-XBMC_Lyrics-settings.xml) | Window.IsActive(script-RSS_Editor-rssEditor.xml) | Window.IsActive(script-RSS_Editor-setEditor.xml) | Window.IsActive(AddonInformation)</visible>
+			<animation effect="fade" start="100" end="0" time="300" condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional">Conditional</animation>
 		</control>
 	</include>
 
@@ -4149,18 +4165,7 @@
             </control>
         </control>
 	</include>
-	<include name="DefaultBackgroundFade">
-		 <animation effect="fade" time="600">Visible</animation>
-		 <animation effect="fade" time="600">Hidden</animation>
-	</include>
-	<include name="VisibleFadeEffect">
-		<animation effect="fade" time="300">Visible</animation>
-		<animation effect="fade" time="300">Hidden</animation>
-	</include>
-	<include name="DefaultDialogEffect">
-		<onload>SetProperty(AnimationWaitingDialogOnClose,true)</onload>
-		<animation effect="fade" time="300">WindowOpen</animation>
-	</include>
+	
 	<include name="SideBladeLeft">
 		<control type="image">
 			<posx>-820</posx>
@@ -4172,6 +4177,7 @@
 			<animation effect="slide" start="0,0" end="-26,0" time="200" delay="200" tween="quadratic" easing="out">WindowClose</animation>
 		</control>
 	</include>
+	
 	<include name="ButtonCommonValues">
 		<height>40</height>
 		<width>250</width>

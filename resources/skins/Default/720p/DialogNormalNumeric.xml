@@ -1,17 +1,13 @@
 <window id="3310">
 	<defaultcontrol always="true">121</defaultcontrol>
 	<allowoverlay>no</allowoverlay>
-	<include>DefaultDialogEffect</include>
-	<coordinates>
-		<system>2</system>
-		<posx>480</posx>
-		<posy>145</posy>
-	</coordinates>
+	<include>DefaultDialogOpenEffect</include>
 	<controls>
+		<include>DefaultBehindDialogFadeOut</include>
 		<control type="group">
-            <animation condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional" reversible="false">
-                <effect type="fade" start="100" end="0" time="300" />
-            </animation>
+			<posx>480</posx>
+			<posy>145</posy>
+            <include>DefaultDialogCloseEffect</include>
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>

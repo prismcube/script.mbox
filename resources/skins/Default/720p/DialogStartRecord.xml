@@ -1,17 +1,13 @@
 <window>
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>no</allowoverlay>
-	<coordinates>
-		<system>1</system>
-		<posx>335</posx>
-		<posy>100</posy>
-	</coordinates>
-	<include>DefaultDialogEffect</include>
+	<include>DefaultDialogOpenEffect</include>
 	<controls>
+		<include>DefaultBehindDialogFadeOut</include>
 		<control type="group">
-            <animation condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional" reversible="false">
-                <effect type="fade" start="100" end="0" time="300" />
-            </animation>
+			<posx>335</posx>
+			<posy>100</posy>
+            <include>DefaultDialogCloseEffect</include>
 			<control type="image">
 				<description>background image</description>
 				<posx>0</posx>

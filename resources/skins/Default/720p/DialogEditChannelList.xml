@@ -1,12 +1,11 @@
 <window id="3308">
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>no</allowoverlay>
-	<include>DefaultDialogEffect</include>
+	<include>DefaultDialogOpenEffect</include>
 	<controls>
+		<include>DefaultBehindDialogFadeOut</include>
 		<control type="group" id="8000">
-            <animation condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional" reversible="false">
-                <effect type="fade" start="100" end="0" time="300" />
-            </animation>
+            <include>DefaultDialogCloseEffect</include>
 			<control type="image" id="9001">
 				<description>background image</description>
 				<posx>0</posx>
