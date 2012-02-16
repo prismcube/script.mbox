@@ -8,6 +8,8 @@ import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
 
+E_DEFAULT_GOURP_ID		= 9000
+
 
 class AntennaSetup( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -26,7 +28,8 @@ class AntennaSetup( SettingWindow ) :
 			ConfigMgr.GetInstance( ).SetNeedLoad( False )
 		
 		self.SetSettingWindowLabel( 'Antenna & Satellite Setup' )
-		
+
+		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( False )
 		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', None, 'Select tuner 2 connection type.' )
 		self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', None, 'Select tuner 2 configuration.' )
 		self.AddEnumControl( E_SpinEx03, 'Tuner1 Type', None, 'Setup tuner 1.' )
@@ -38,6 +41,7 @@ class AntennaSetup( SettingWindow ) :
 		self.ShowDescription( self.getFocusId( ) )
 		self.DisableControl( )
 		self.mInitialized = True
+		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True )
 		
 		
 	def onAction( self, aAction ) :

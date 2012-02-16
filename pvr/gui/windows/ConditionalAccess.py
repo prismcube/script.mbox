@@ -20,12 +20,25 @@ class ConditionalAccess( SettingWindow ) :
 		self.SetPipScreen( )
 		self.SetSettingWindowLabel( 'Conditional Access' )
 
-		self.AddInputControl( E_Input01, 'Smartcard Information', '', 'View smartcard information' )
-		self.AddInputControl( E_Input02, 'PIN Code Modification', '', 'Change pin code' )
-		self.AddInputControl( E_Input03, 'Maturity Rating', '', 'Access maturity rating' )
-		self.AddInputControl( E_Input04, 'Rights Consultation', '', 'View rights consultation' )
-		self.AddInputControl( E_Input05, 'Purchase List Consultation', '', 'View purchase list consultation' )
-		self.AddInputControl( E_Input06, 'Operator Message', '', 'View operator message' )
+		smartCard = self.mCommander.Conax_GetInformation( CAS_SLOT_NUM_1 )
+		smartCardName = 'Not inserted'
+		if smartCard == None or smartCard.mError < 0 :
+			smartCardName = 'Not inserted'
+		else :
+			smartCardName = 'CONAX - %s' % smartCard.card_number
+		self.AddInputControl( E_Input01, 'Smartcard Information', '%s' % smartCardName, 'View smartcard information' )
+
+		camName = 'Not inserted'
+		if self.mCommander.Cicam_IsInserted( CAS_SLOT_NUM_1 ) == True :
+			cardinfo = self.mCommander.Cicam_GetInfo( CAS_SLOT_NUM_1 )
+			camName = cardinfo.mName
+		self.AddInputControl( E_Input02, 'CAM Information', '%s' % camName, 'View smartcard information' )
+		
+		self.AddInputControl( E_Input03, 'PIN Code Modification', '', 'Change pin code' )
+		self.AddInputControl( E_Input04, 'Maturity Rating', '', 'Access maturity rating' )
+		self.AddInputControl( E_Input05, 'Rights Consultation', '', 'View rights consultation' )
+		self.AddInputControl( E_Input06, 'Purchase List Consultation', '', 'View purchase list consultation' )
+		self.AddInputControl( E_Input07, 'Operator Message', '', 'View operator message' )
 		
 		self.InitControl( )
 		self.ShowDescription( self.getFocusId( ) )
@@ -64,10 +77,7 @@ class ConditionalAccess( SettingWindow ) :
 	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
 		if groupId == E_Input01 :
-			cardinfo = self.mCommander.Cicam_GetInfo( CAS_SLOT_NUM_1 )
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( 'SMART Card Inserted', 'SMART card Name = %s' % cardinfo.mName)
- 			dialog.doModal( )
+			pass
 			
 		elif groupId == E_Input02 :
 			pass
@@ -79,6 +89,9 @@ class ConditionalAccess( SettingWindow ) :
 			pass
 
 		elif groupId == E_Input05 :
+			pass
+
+		elif groupId == E_Input06 :
 			pass
 
 		elif groupId == E_Input06 :

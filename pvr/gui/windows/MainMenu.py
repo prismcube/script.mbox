@@ -116,15 +116,7 @@ class MainMenu( BaseWindow ) :
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIGURE )
 
 		elif aControlId == BUTTON_ID_CAS : # CAS
-			ret = self.mCommander.Cicam_IsInserted( CAS_SLOT_NUM_1 )
-			if ret == True :
-				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONDITIONAL_ACCESS )
-			else :
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'ERROR', 'SMART card not inserted' )
-	 			dialog.doModal( )
-
-	 		
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONDITIONAL_ACCESS )
 
 		elif aControlId == BUTTON_ID_CHANNEL_LIST : #Channel List
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
