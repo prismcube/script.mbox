@@ -101,6 +101,7 @@
 				<shadowcolor>black</shadowcolor>
 			</control>
 			<control type="group" id="9010">
+				<!--<animation effect="fade" start="100" end="0" time="500" condition="Container(9000).OnNext" type="conditional">Conditional</animation>-->
 				<posx>290</posx>
 				<posy>60</posy>
 				<control type="label" id="100">

@@ -20,9 +20,11 @@ class ConditionalAccess( SettingWindow ) :
 		self.SetPipScreen( )
 		self.SetSettingWindowLabel( 'Conditional Access' )
 
-		smartCardName = 'Not inserted'
 		smartCard = self.mCommander.Conax_GetInformation( CAS_SLOT_NUM_1 )
-		if smartCard.mError >= 0 and smartCard != None :
+		smartCardName = 'Not inserted'
+		if smartCard == None or smartCard.mError < 0 :
+			smartCardName = 'Not inserted'
+		else :
 			smartCardName = 'CONAX - %s' % smartCard.card_number
 		self.AddInputControl( E_Input01, 'Smartcard Information', '%s' % smartCardName, 'View smartcard information' )
 
