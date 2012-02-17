@@ -479,16 +479,16 @@
 				<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="true">conditional</animation>
 			</control-->
 			<control type="label" id="401">
-				<posx>250r</posx>
+				<posx>260r</posx>
 				<posy>30r</posy>
-				<width>50</width>
+				<width>100</width>
 				<height>20</height>
 				<font>font12</font>
 				<textcolor>grey</textcolor>
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue] $INFO[Control.GetLabel][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Control.GetLabel][/COLOR])</label>
 			</control>
 			<control type="label">
 				<posx>40r</posx>
