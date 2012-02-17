@@ -67,7 +67,7 @@
 						<font>fontContextMenu</font>
 						<align>center</align>
 						<aligny>center</aligny>
-						<textcolor>white</textcolor>
+						<textcolor>grey2</textcolor>
 						<label>$INFO[ListItem.Label]</label>
 					</control>		
 				</itemlayout>
@@ -89,6 +89,7 @@
 						<aligny>center</aligny>
 						<textcolor>white</textcolor>
 						<label>$INFO[ListItem.Label]</label>
+						<scroll>true</scroll>
 					</control>
 				</focusedlayout>
 			</control>

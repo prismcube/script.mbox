@@ -74,7 +74,7 @@ class MainMenu( BaseWindow ) :
 			"""
 			context = []
 			context.append( ContextItem( 'test00000' ) )
-			context.append( ContextItem( 'test11111111111', E_TEST_FUNCTION_1 ) )
+			context.append( ContextItem( 'test11111111111111111111111111111111', E_TEST_FUNCTION_1 ) )
 			context.append( ContextItem( 'test2222222', E_TEST_FUNCTION_2 ) )
 			context.append( ContextItem( 'test333333333', E_TEST_FUNCTION_3 ) )
 			context.append( ContextItem( 'test' ) )

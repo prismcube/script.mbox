@@ -233,13 +233,6 @@
 				<texture>confluence/floor.png</texture>
 			</control>
 			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
-				<height>720</height>
-				<texture background="true">confluence/backgrounds/videos.jpg</texture>
-			</control>
-			<control type="image">
 				<posx>40</posx>
 				<posy>645</posy>
 				<width>1200</width>
@@ -260,13 +253,6 @@
 				<width>1280</width>
 				<height>720</height>
 				<texture border="20">confluence/ContentPanel2.png</texture>
-			</control>
-			<control type="image">
-				<posx>845</posx>
-				<posy>110</posy>
-				<width>352</width>
-				<height>198</height>
-				<texture border="20">special://skin/backgrounds/weather.jpg</texture>
 			</control>
 			<control type="image">
 				<posx>0</posx>
@@ -518,6 +504,34 @@
 				<width>1100</width>
 				<height>500</height>
 				<texture border="20">confluence/DialogBack.png</texture>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1280</width>
+				<height>720</height>
+				<texture background="true">confluence/backgrounds/videos.jpg</texture>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1280</width>
+				<height>720</height>
+				<texture background="true">confluence/backgrounds/pictures.jpg</texture>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1280</width>
+				<height>720</height>
+				<texture background="true">confluence/backgrounds/settings.jpg</texture>
+			</control>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1280</width>
+				<height>720</height>
+				<texture background="true">confluence/backgrounds/weather.jpg</texture>
 			</control>
 			<control type="image">
 				<posx>0</posx>
