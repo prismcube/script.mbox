@@ -63,7 +63,7 @@ class LivePlate(BaseWindow):
 		self.mCurrentChannel = None
 		self.mLastChannel = None
 		self.mFakeChannel = None
-		self.mChannelChanged = True
+		self.mFlag_OnEvent = True
 		self.mShowExtendInfo = False
 		self.mAutomaticHideTimer = None	
 		self.mAsyncEPGTimer = None
@@ -127,11 +127,13 @@ class LivePlate(BaseWindow):
 		self.mFakeChannel =	self.mCurrentChannel
 		self.mLastChannel =	self.mCurrentChannel
 
-		self.mChannelChanged = True
+		self.mFlag_OnEvent = True
+		self.mFlag_ChannelChanged = True
 		self.mEventCopy = None
 		self.mEPGList = None
 		self.mEPGListIdx = 0
 
+		self.GetEPGList()
 		self.UpdateServiceType( self.mCurrentChannel.mServiceType )
 		self.InitLabelInfo()
 
@@ -286,25 +288,29 @@ class LivePlate(BaseWindow):
 
 
 	def onEvent(self, aEvent):
-		LOG_TRACE( 'Enter' )
+		#LOG_TRACE( 'Enter' )
 
 		if self.mWinId == xbmcgui.getCurrentWindowId():
 			currentChannel = self.mCurrentChannel	
 			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
 
 				if currentChannel == None :
+					LOG_TRACE('ignore event, currentChannel None, [%s]'% currentChannel)
 					return -1
 				
 				if currentChannel.mSid != aEvent.mSid or currentChannel.mTsid != aEvent.mTsid or currentChannel.mOnid != aEvent.mOnid :
+					#LOG_TRACE('ignore event, same event')
 					return -1
 
 				if currentChannel.mNumber != self.mFakeChannel.mNumber :
+					LOG_TRACE('ignore event, Channel: current[%s] fake[%s]'% (currentChannel.mNumber, self.mFakeChannel.mNumber) )
 					return -1
 
-				if self.mChannelChanged != True :
+				if self.mFlag_OnEvent != True :
+					LOG_TRACE('ignore event, mFlag_OnEvent[%s]'% self.mFlag_OnEvent)
 					return -1
 
-				LOG_TRACE( '%d : %d' %(aEvent.mEventId, self.mEventID ) )
+				LOG_TRACE( 'eventid:new[%d] old[%d]' %(aEvent.mEventId, self.mEventID ) )
 				#aEvent.printdebug()
 
 				if aEvent.mEventId != self.mEventID :
@@ -319,18 +325,53 @@ class LivePlate(BaseWindow):
 						ret.mSid != self.mEventCopy.mSid or \
 						ret.mTsid != self.mEventCopy.mTsid or \
 						ret.mOnid != self.mEventCopy.mOnid :
-							LOG_TRACE('epg DIFFER')
+							LOG_TRACE('epg DIFFER, id[%s]'% ret.mEventId)
 							self.mEventID = aEvent.mEventId
 							self.mEventCopy = ret
-
 							#update label
 							self.UpdateONEvent( ret )
+
+							#check : new event?
+							if self.mEPGList :
+								#1. aready exist? search in EPGList
+								idx = 0
+								self.mEPGListIdx = -1
+								for item in self.mEPGList :
+									if 	item.mEventId == self.mEventCopy.mEventId and \
+										item.mSid == self.mEventCopy.mSid and \
+										item.mTsid == self.mEventCopy.mTsid and \
+										item.mOnid == self.mEventCopy.mOnid :
+
+										self.mEPGListIdx = idx
+										LOG_TRACE('Received ONEvent : EPGList idx moved(current idx)')
+
+										retList=[]
+										retList.append(item)
+										LOG_TRACE('1.Aready Exist: NOW EPG idx[%s] [%s]'% (idx, ClassToList('convert', retList)) )
+										break
+
+									idx += 1
+
+								#2. new epg, append to EPGList
+								if self.mEPGListIdx == -1 :
+									LOG_TRACE('new EPG received, not exist in EPGList')
+									oldLen = len(self.mEPGList)
+									idx = 0
+									for idx in range(len(self.mEPGList)) :
+										if self.mEventCopy.mStartTime < self.mEPGList[idx].mStartTime :
+											break
+
+									self.mEPGListIdx = idx
+									self.mEPGList = self.mEPGList[:idx]+[self.mEventCopy]+self.mEPGList[idx:]
+									LOG_TRACE('append new idx[%s], epgTotal:oldlen[%s] newlen[%s]'% (idx, oldLen, len(self.mEPGList)) )
+									LOG_TRACE('list[%s]'% ClassToList('convert',self.mEPGList) )
+
 
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
 
 
-		LOG_TRACE( 'Leave' )
+		#LOG_TRACE( 'Leave' )
 
 
 	def ChannelTune(self, aDir):
@@ -363,59 +404,81 @@ class LivePlate(BaseWindow):
 
 
 	def EPGNavigation(self, aDir ):
-		LOG_TRACE('')
+		LOG_TRACE('Enter')
 
-		if self.mChannelChanged :
-			self.GetEPGList()
+		#if self.mFlag_OnEvent :
+		#	self.GetEPGList()
 
-		lastIdx = len(self.mEPGList) - 1
-		if aDir == NEXT_EPG:
-			if self.mEPGListIdx+1 > lastIdx :
-				self.mEPGListIdx = lastIdx
-			else :
-				self.mEPGListIdx += 1
-
-
-		elif aDir == PREV_EPG:
-			if self.mEPGListIdx-1 < 0 :
-				self.mEPGListIdx = 0
-			else :
-				self.mEPGListIdx -= 1
+		if self.mEPGList :
+			lastIdx = len(self.mEPGList) - 1
+			if aDir == NEXT_EPG:
+				if self.mEPGListIdx+1 > lastIdx :
+					self.mEPGListIdx = lastIdx
+				else :
+					self.mEPGListIdx += 1
 
 
-		#self.RestartAsyncEPG()
-		#self.PincodeDialogLimit()
+			elif aDir == PREV_EPG:
+				if self.mEPGListIdx-1 < 0 :
+					self.mEPGListIdx = 0
+				else :
+					self.mEPGListIdx -= 1
 
+			self.EPGListMove()
+			#self.PincodeDialogLimit()
+
+
+		LOG_TRACE('Leave')
 
 	def GetEPGList( self ) :
+		LOG_TRACE( 'Enter' )
 
 		ret = None
 
-		"""
 		try :
-			if currentChannel :
+			#stop onEvent
+			self.mFlag_OnEvent = False
+			if self.mEventCopy == None :
+				ret = self.mCommander.Epgevent_GetPresent()
+				if ret :
+					self.mEventCopy = ret
+				else :
+					#receive onEvent
+					self.mFlag_OnEvent = True
+					return -1
+
+			if self.mCurrentChannel :
 				self.mEPGList = None
-				self.mEPGList = 0
-				ch = currentChannel
-				gmtime = self.mDataCache.Datetime_GetGMTTime()
-				gmtFrom = gmtime - ( 3600 * 24 * 7 )
-				gmtUntil= gmtime + ( 3600 * 24 * 7 )
-				maxCount= 100
+				ichannel = self.mCurrentChannel
+				#gmtime = self.mDataCache.Datetime_GetGMTTime()
+				gmtFrom  = self.mEventCopy.mStartTime
+				gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
+				maxCount = 100
 				ret = None
-				ret = self.mCommander.Epgevent_GetList( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount )
+				ret = self.mCommander.Epgevent_GetList( ichannel.mSid, ichannel.mTsid, ichannel.mOnid, gmtFrom, gmtUntil, maxCount )
 				time.sleep(0.05)
+				LOG_TRACE('==================')
+				LOG_TRACE('ret[%s] ch[%d] sid[%d] tid[%d] oid[%d] from[%s] until[%s]'% (ret,ichannel.mNumber,ichannel.mSid, ichannel.mTsid, ichannel.mOnid, time.asctime(time.localtime(gmtFrom)), time.asctime(time.localtime(gmtUntil))) )
 				#LOG_TRACE('=============epg len[%s] list[%s]'% (len(ret),ClassToList('convert', ret )) )
 				if ret :
 					self.mEPGList = ret
+					self.mFlag_ChannelChanged = False
+				else :
+					LOG_TRACE('EPGList is None\nLeave')
+					#receive onEvent
+					self.mFlag_OnEvent = True
+					return -1
 
-				self.mChannelChanged = False
-
-				#retList=[]
-				#retList.append(self.mEventCopy)
-				#LOG_TRACE('==========[%s]'% ClassToList('convert', retList) )
-				#LOG_TRACE('EPGinfo len[%s] [%s]'% (len(self.mEPGList), ClassToList('convert', self.mEPGList)) )
+				LOG_TRACE('event[%s]'% self.mEventCopy )
+				retList=[]
+				retList.append(self.mEventCopy)
+				LOG_TRACE('==========[%s]'% ClassToList('convert', retList) )
+				LOG_TRACE('EPGList len[%s] [%s]'% (len(self.mEPGList), ClassToList('convert', self.mEPGList)) )
+				LOG_TRACE('onEvent[%s] list[%s]'% (self.mEventCopy, self.mEPGList))
 				idx = 0
+				self.mEPGListIdx = -1
 				for item in self.mEPGList :
+					#LOG_TRACE('idx[%s] item[%s]'% (idx, item) )
 					if 	item.mEventId == self.mEventCopy.mEventId and \
 						item.mSid == self.mEventCopy.mSid and \
 						item.mTsid == self.mEventCopy.mTsid and \
@@ -431,10 +494,19 @@ class LivePlate(BaseWindow):
 
 					idx += 1
 
+				#search not current epg
+				if self.mEPGListIdx == -1 : 
+					self.mEPGListIdx = 0
+					LOG_TRACE('SEARCH NOT CURRENT EPG, idx=0')
+
+
+				#receive onEvent
+				self.mFlag_OnEvent = True
+
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
-		"""
 
+		LOG_TRACE( 'Leave' )
 
 
 	@GuiLock
@@ -448,7 +520,7 @@ class LivePlate(BaseWindow):
 
 			if ch.mLocked :
 				self.mCtrlImgLocked.setImage( E_IMG_ICON_LOCK )
-				if self.mChannelChanged == True :
+				if self.mFlag_OnEvent == True :
 					self.mPincodeEnter |= FLAG_MASK_ADD
 
 			if ch.mIsCA :
@@ -486,7 +558,7 @@ class LivePlate(BaseWindow):
 					self.mCtrlImgServiceTypeImg3.setImage('')
 
 				#is Age? agerating check
-				if self.mChannelChanged == True :
+				if self.mFlag_OnEvent == True :
 					isLimit = AgeLimit( self.mCommander, aEvent.mAgeRating )
 					if isLimit == True :
 						self.mPincodeEnter |= FLAG_MASK_ADD
@@ -501,7 +573,7 @@ class LivePlate(BaseWindow):
 
 		"""
 		# Todo
-		if self.mChannelChanged :
+		if self.mFlag_OnEvent :
 			self.GetEPGList()
 		"""
 
@@ -586,6 +658,8 @@ class LivePlate(BaseWindow):
 
 			if  ( loop % 10 ) == 0 :
 				#LOG_TRACE( 'loop=%d' %loop )
+				if self.mFlag_ChannelChanged :
+					self.GetEPGList()
 				self.UpdateLocalTime( )
 
 
@@ -779,12 +853,12 @@ class LivePlate(BaseWindow):
 
 
 	def Close( self ):
-		self.mEventBus.Deregister( self )
+		#self.mEventBus.Deregister( self )
 
 		self.mEnableThread = False
 		self.CurrentTimeThread().join()
 		
-		self.StopAsyncEPG()
+		#self.StopAsyncEPG()
 		self.StopAsyncTune()
 		self.StopAutomaticHide()
 
@@ -826,7 +900,7 @@ class LivePlate(BaseWindow):
 
 
 	def RestartAsyncTune( self ) :
-		self.mChannelChanged = False
+		self.mFlag_ChannelChanged = True
 		self.StopAsyncTune( )
 		self.StartAsyncTune( )
 
@@ -851,7 +925,6 @@ class LivePlate(BaseWindow):
 			#self.mFakeChannel.printdebug()
 			if ret == True :
 				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent()
-				self.mChannelChanged = True				
 				self.mFakeChannel = self.mCurrentChannel
 				self.mLastChannel = self.mCurrentChannel
 				self.InitLabelInfo()
@@ -866,15 +939,14 @@ class LivePlate(BaseWindow):
 
 
 
+	"""
 	def RestartAsyncEPG( self ) :
 		self.StopAsyncEPG( )
 		self.StartAsyncEPG( )
 
-
 	def StartAsyncEPG( self ) :
 		self.mAsyncEPGTimer = threading.Timer( 0.2, self.AsyncTuneEPG ) 				
 		self.mAsyncEPGTimer.start()
-
 
 	def StopAsyncEPG( self ) :
 		if self.mAsyncEPGTimer	and self.mAsyncEPGTimer.isAlive() :
@@ -882,9 +954,11 @@ class LivePlate(BaseWindow):
 			del self.mAsyncEPGTimer
 
 		self.mAsyncEPGTimer  = None
+	"""
 
 
-	def AsyncTuneEPG( self ) :
+	#def AsyncTuneEPG( self ) :
+	def EPGListMove( self ) :
 		LOG_TRACE( 'Enter' )
 
 		try :
@@ -896,6 +970,7 @@ class LivePlate(BaseWindow):
 				self.InitLabelInfo()
 				GuiLock2(True)
 				self.mEventCopy = ret
+				self.mFlag_OnEvent = False
 				GuiLock2(False)
 
 				self.UpdateServiceType( self.mCurrentChannel.mServiceType )

@@ -107,7 +107,7 @@ class DataCacheMgr( object ):
 	def Load( self ) :
 
 		#Zapping Mode
-		LOG_TRACE('')		
+		LOG_TRACE('')
 		self.mZappingMode = self.mCommander.Zappingmode_GetCurrent( )
 		LOG_TRACE('')		
 		self.mCurrentChannel = self.mCommander.Channel_GetCurrent( )
