@@ -289,6 +289,7 @@ class ChannelListWindow(BaseWindow):
 			#LOG_TRACE( 'popup opt' )
 			self.PopupOpt()
 
+
 		elif id == 13: #'x'
 			#this is test
 			LOG_TRACE( 'cwd[%s]'% xbmc.getLanguage() )
@@ -318,7 +319,8 @@ class ChannelListWindow(BaseWindow):
 						GuiLock2( False )
 
 						#self.mCtrlSelectItem.setLabel(str('%s / %s'% (idx+1, len(self.mListItems))) )
-						self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (idx+1)) )
+						#self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (idx+1)) )
+						self.mCtrlSelectItem.setLabel( str('%s'% (idx+1)) )
 
 
 					#Turn mode
@@ -631,7 +633,8 @@ class ChannelListWindow(BaseWindow):
 			self.mNavChannel = ch
 			self.mCurrentChannel = self.mNavChannel.mNumber
 			#self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
-			self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
+			#self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
+			self.mCtrlSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
 			self.ResetLabel()
 			self.UpdateLabelInfo()
 			self.PincodeDialogLimit()
@@ -1310,7 +1313,8 @@ class ChannelListWindow(BaseWindow):
 
 		#select item idx, print GUI of 'current / total'
 		#self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
-		self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
+		#self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
+		self.mCtrlSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
 		GuiLock2(False)
 
 		LOG_TRACE( 'Leave' )
@@ -1334,7 +1338,8 @@ class ChannelListWindow(BaseWindow):
 		self.mPincodeEnter = FLAG_MASK_NONE
 
 		#self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
-		self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
+		#self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
+		self.mCtrlSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
 		#LOG_TRACE( '===========[%s]'% str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
 		#self.mCtrlChannelName.setLabel('')
 		self.mCtrlEventName.setLabel('')
@@ -1413,6 +1418,39 @@ class ChannelListWindow(BaseWindow):
 		return label
 
 	@GuiLock
+	def UpdateLabelGUI( self, aCtrlID = None, aValue = None ) :
+		LOG_TRACE( 'Enter' )
+
+		if aCtrlID == self.mCtrlChannelName.getId() :
+			self.mCtrlChannelName.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlLongitudeInfo.getId() :
+			self.mCtrlLongitudeInfo.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlCareerInfo.getId() :
+			self.mCtrlCareerInfo.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlEventName.getId() :
+			self.mCtrlEventName.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlEventTime.getId() :
+			self.mCtrlEventTime.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlLockedInfo.getId() :
+			self.mCtrlLockedInfo.setVisible( aValue )
+
+		elif aCtrlID == self.mCtrlServiceTypeImg1.getId() :
+			self.mCtrlServiceTypeImg1.setImage( aValue )
+
+		elif aCtrlID == self.mCtrlServiceTypeImg2.getId() :
+			self.mCtrlServiceTypeImg2.setImage( aValue )
+
+		elif aCtrlID == self.mCtrlServiceTypeImg3.getId() :
+			self.mCtrlServiceTypeImg3.setImage( aValue )
+
+		LOG_TRACE( 'Leave' )
+
+	
 	def UpdateLabelInfo( self ):
 		LOG_TRACE( 'Enter' )
 
@@ -1420,17 +1458,18 @@ class ChannelListWindow(BaseWindow):
 			#update channel name
 			if self.mIsSelect == True :
 				label = self.UpdateServiceType( self.mNavChannel.mServiceType )
-				self.mCtrlChannelName.setLabel( str('%s - %s'% (label, self.mNavChannel.mName )) )
+				value = '%s - %s'% (label, self.mNavChannel.mName)
+				self.UpdateLabelGUI( self.mCtrlChannelName.getId(), value )
 
 			#update longitude info
 			satellite = self.mCommander.Satellite_GetByChannelNumber( self.mNavChannel.mNumber, self.mNavChannel.mServiceType )
 			ret = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
-			self.mCtrlLongitudeInfo.setLabel( ret )
+			self.UpdateLabelGUI( self.mCtrlLongitudeInfo.getId(), ret )
 
 			#update lock-icon visible
 			if self.mNavChannel.mLocked :
-					self.mCtrlLockedInfo.setVisible( True )
 					self.mPincodeEnter |= FLAG_MASK_ADD
+					self.UpdateLabelGUI( self.mCtrlLockedInfo.getId(), True )
 
 
 			#update career info
@@ -1441,7 +1480,7 @@ class ChannelListWindow(BaseWindow):
 
 				polarization = EnumToString( 'Polarization', value1 )
 				careerLabel = '%s MHz, %s KS/S, %s'% (value2, value3, polarization)
-				self.mCtrlCareerInfo.setLabel(careerLabel)
+				self.UpdateLabelGUI( self.mCtrlCareerInfo.getId(), careerLabel )
 
 			elif self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBT:
 				pass
@@ -1462,9 +1501,10 @@ class ChannelListWindow(BaseWindow):
 		if self.mNavEpg :
 			try :
 				#self.mNavEpg.printdebug()
-				self.mCtrlEventName.setLabel( self.mNavEpg.mEventName )
 				ret = EpgInfoTime( self.mLocalOffset, self.mNavEpg.mStartTime, self.mNavEpg.mDuration )
-				self.mCtrlEventTime.setLabel( str('%s - %s'% (ret[0], ret[1])) )
+				value = '%s - %s'% (ret[0], ret[1])
+				self.UpdateLabelGUI( self.mCtrlEventName.getId(), self.mNavEpg.mEventName )
+				self.UpdateLabelGUI( self.mCtrlEventTime.getId(), value )
 
 				#visible progress
 				self.mCtrlProgress.setVisible( True )
@@ -1472,18 +1512,19 @@ class ChannelListWindow(BaseWindow):
 				#component
 				imagelist = EpgInfoComponentImage( self.mNavEpg )				
 				if len(imagelist) == 1:
-					self.mCtrlServiceTypeImg1.setImage(imagelist[0])
+					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId(), imagelist[0] )
 				elif len(imagelist) == 2:
-					self.mCtrlServiceTypeImg1.setImage(imagelist[0])
-					self.mCtrlServiceTypeImg2.setImage(imagelist[1])
+					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId(), imagelist[0] )
+					self.UpdateLabelGUI( self.mCtrlServiceTypeImg2.getId(), imagelist[1] )
+
 				elif len(imagelist) == 3:
-					self.mCtrlServiceTypeImg1.setImage(imagelist[0])
-					self.mCtrlServiceTypeImg2.setImage(imagelist[1])
-					self.mCtrlServiceTypeImg3.setImage(imagelist[2])
+					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId(), imagelist[0] )
+					self.UpdateLabelGUI( self.mCtrlServiceTypeImg2.getId(), imagelist[1] )
+					self.UpdateLabelGUI( self.mCtrlServiceTypeImg3.getId(), imagelist[2] )
 				else:
-					self.mCtrlServiceTypeImg1.setImage('')
-					self.mCtrlServiceTypeImg2.setImage('')
-					self.mCtrlServiceTypeImg3.setImage('')
+					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId(), '' )
+					self.UpdateLabelGUI( self.mCtrlServiceTypeImg2.getId(), '' )
+					self.UpdateLabelGUI( self.mCtrlServiceTypeImg3.getId(), '' )
 
 
 				#is Age? agerating check
@@ -2233,6 +2274,160 @@ class ChannelListWindow(BaseWindow):
 
 		LOG_TRACE( 'Leave' )
 
+	def EditSettingWindowContext( self, aMode, aMove = None ) :
+		LOG_TRACE( 'Enter' )
+
+		#try:
+		if self.mMoveFlag :
+			self.SetMarkChanneltoMove( FLAG_OPT_MOVE_OK )
+			return
+
+		self.GroupAddDelete( 'get' )
+
+		#default context item
+		context1 = []
+		context2 = []
+		if self.mChannelList :
+			context1.append( ContextItem( Msg.Strings( MsgId.LANG_LOCK ) ) )
+			context1.append( ContextItem( Msg.Strings( MsgId.LANG_UNLOCK ) ) )
+			context1.append( ContextItem( Msg.Strings( MsgId.LANG_SKIP ) ) )
+			context1.append( ContextItem( Msg.Strings( MsgId.LANG_UNSKIP ) ) )
+			context1.append( ContextItem( Msg.Strings( MsgId.LANG_DELETE ) ) )
+			context1.append( ContextItem( Msg.Strings( MsgId.LANG_MOVE ) ) )
+
+		for name in self.mEditFavorite:
+			context2.append( ContextItem( name ) )
+
+
+		if aMode == FLAG_OPT_LIST :
+
+			if self.mChannelList :
+				if self.mEditFavorite:
+					lblItem = '%s'% Msg.Strings( MsgId.LANG_ADD_TO_FAV )
+				else:
+					label   = '%s\tNone'% Msg.Strings( MsgId.LANG_ADD_TO_FAV )
+					lblItem = str('%s%s%s'%( E_TAG_COLOR_GREY3, label, E_TAG_COLOR_END ) )
+
+				context1.append( ContextItem( lblItem ) )
+
+				GuiLock2(True)
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+				dialog.SetProperty( context1 )
+	 			dialog.doModal()
+	 			GuiLock2(False)
+
+	 		else :
+				head =  Msg.Strings( MsgId.LANG_INFOMATION )
+				line1 = Msg.Strings( MsgId.LANG_NO_CHANNELS )
+
+				ret = xbmcgui.Dialog().ok(head, line1)
+				return
+
+
+		elif aMode == FLAG_OPT_GROUP :
+			if not self.mChannelList :
+				context1 = []
+
+			lblItem1 = '%s'% Msg.Strings( MsgId.LANG_CREATE_NEW_GROUP )
+
+			if self.mEditFavorite:
+				lblItem2 = '%s'% Msg.Strings( MsgId.LANG_RENAME_FAV )
+				lblItem3 = '%s'% Msg.Strings( MsgId.LANG_DELETE_FAV )
+			else:
+				label1   = '%s\tNone'% Msg.Strings( MsgId.LANG_RENAME_FAV )
+				label2   = '%s\tNone'% Msg.Strings( MsgId.LANG_DELETE_FAV )
+				lblItem2 = str('%s%s%s'%( E_TAG_COLOR_GREY3, label1, E_TAG_COLOR_END ) )
+				lblItem3 = str('%s%s%s'%( E_TAG_COLOR_GREY3, label2, E_TAG_COLOR_END ) )
+
+			context1.append( ContextItem( lblItem1 ) )
+			context1.append( ContextItem( lblItem2 ) )
+			context1.append( ContextItem( lblItem3 ) )
+
+			GuiLock2(True)
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+			dialog.SetProperty( context1 )
+ 			dialog.doModal()
+ 			GuiLock2(False)
+
+
+		#result editing action
+		selectIdx = dialog.GetSelectedIndex()
+		LOG_TRACE('=======select idx[%s]'% selectIdx)
+
+		if selectIdx == -1 :
+			LOG_TRACE('CANCEL by context dialog')
+			return
+
+		if (aMode == FLAG_OPT_LIST) and (not self.mEditFavorite) and (selectIdx == 6) :
+			#can not add to Fav : no favorite group
+			LOG_TRACE('Disabled item : selectIdx[%s]'% selectIdx)
+			return
+
+		if ((aMode == FLAG_OPT_GROUP) and (not self.mEditFavorite) and (selectIdx == 7)) or \
+		   ((aMode == FLAG_OPT_GROUP) and (not self.mEditFavorite) and (selectIdx == 8)) :
+			#can not rename / delete : no favorite group
+			LOG_TRACE('Disabled item : selectIdx[%s]'% selectIdx)
+			return
+		#--------------------------------------------------------------- section 1
+
+		publicBtn = (selectIdx * 10) + E_DialogInput01
+		groupName = None
+
+		if aMode == FLAG_OPT_GROUP and (not self.mChannelList) :
+			#if no Channel then
+			#create Fav:7, rename Fav:8, delete Fav:9
+			publicBtn = ((selectIdx+6) * 10) + E_DialogInput01
+
+
+		# add Fav, Ren Fav, Del Fav ==> popup select group
+		if aMode == FLAG_OPT_LIST and publicBtn == E_DialogInput07 or \
+		   aMode == FLAG_OPT_GROUP and publicBtn == E_DialogInput08 or \
+		   aMode == FLAG_OPT_GROUP and publicBtn == E_DialogInput09 :
+			GuiLock2(True)
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+			dialog.SetProperty( context2 )
+ 			dialog.doModal()
+ 			GuiLock2(False)
+
+ 			grpIdx = dialog.GetSelectedIndex()
+ 			groupName = self.mEditFavorite[grpIdx]
+
+			if grpIdx == -1 :
+				LOG_TRACE('CANCEL by context dialog')
+				return
+
+		# Ren Fav, Del Fav ==> popup input group Name
+		if aMode == FLAG_OPT_GROUP and publicBtn == E_DialogInput07 or \
+		   aMode == FLAG_OPT_GROUP and publicBtn == E_DialogInput08 :
+			label = ''
+			default = ''
+			if publicBtn == E_DialogInput07 :
+				#create
+				result = ''
+				label = Msg.Strings( MsgId.LANG_CREATE_NEW_GROUP )
+
+			elif publicBtn == E_DialogInput08 :
+				#rename
+				default = groupName
+				result = '%d'%grpIdx+':'+groupName+':'
+				label = Msg.Strings( MsgId.LANG_RENAME_FAV )
+
+			kb = xbmc.Keyboard( default, label, False )
+			kb.doModal()
+
+			name = ''
+			name = kb.getText()
+			if name :
+				groupName = result + name
+
+		LOG_TRACE('mode[%s] btn[%s] groupName[%s]'% (aMode, publicBtn, groupName) )
+		#--------------------------------------------------------------- section 2
+
+		self.GroupAddDelete( 'set', aMode, publicBtn, groupName )
+		self.mIsSave |= FLAG_MASK_ADD
+
+		LOG_TRACE( 'Leave' )
+
 
 	def PopupOpt( self ) :
 		LOG_TRACE( 'Enter' )
@@ -2243,7 +2438,8 @@ class ChannelListWindow(BaseWindow):
 				mode = FLAG_OPT_GROUP
 			else :
 				mode = FLAG_OPT_LIST
-			self.EditSettingWindow( mode )
+			#self.EditSettingWindow( mode )        	 # dialog 1
+			self.EditSettingWindowContext( mode )	 # dialog 2
 
 		LOG_TRACE( 'Leave' )
 
