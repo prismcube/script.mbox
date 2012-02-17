@@ -319,7 +319,8 @@ class ChannelListWindow(BaseWindow):
 						GuiLock2( False )
 
 						#self.mCtrlSelectItem.setLabel(str('%s / %s'% (idx+1, len(self.mListItems))) )
-						self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (idx+1)) )
+						#self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (idx+1)) )
+						self.mCtrlSelectItem.setLabel( str('%s'% (idx+1)) )
 
 
 					#Turn mode
@@ -632,7 +633,8 @@ class ChannelListWindow(BaseWindow):
 			self.mNavChannel = ch
 			self.mCurrentChannel = self.mNavChannel.mNumber
 			#self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
-			self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
+			#self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
+			self.mCtrlSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
 			self.ResetLabel()
 			self.UpdateLabelInfo()
 			self.PincodeDialogLimit()
@@ -1311,7 +1313,8 @@ class ChannelListWindow(BaseWindow):
 
 		#select item idx, print GUI of 'current / total'
 		#self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
-		self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
+		#self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
+		self.mCtrlSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
 		GuiLock2(False)
 
 		LOG_TRACE( 'Leave' )
@@ -1335,7 +1338,8 @@ class ChannelListWindow(BaseWindow):
 		self.mPincodeEnter = FLAG_MASK_NONE
 
 		#self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
-		self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
+		#self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
+		self.mCtrlSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
 		#LOG_TRACE( '===========[%s]'% str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
 		#self.mCtrlChannelName.setLabel('')
 		self.mCtrlEventName.setLabel('')

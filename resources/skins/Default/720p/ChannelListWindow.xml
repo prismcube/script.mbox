@@ -488,7 +488,9 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Control.GetLabel][/COLOR])</label>
+				<!--label>([COLOR=blue]$INFO[Control.GetLabel][/COLOR])</label-->
+				<label>$INFO[Control.GetLabel]</label>
+				<visible>false</visible>
 			</control>
 			<control type="label">
 				<posx>40r</posx>
@@ -500,7 +502,8 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>[COLOR=blue] / $INFO[Container(50).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(50).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(50).CurrentPage]/$INFO[Container(50).NumPages][/COLOR])</label>
+				<!--label>[COLOR=blue] / $INFO[Container(50).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(50).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(50).CurrentPage]/$INFO[Container(50).NumPages][/COLOR])</label-->
+				<label>([COLOR=blue]$INFO[Control.GetLabel(401)] / $INFO[Container(50).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(50).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(50).CurrentPage]/$INFO[Container(50).NumPages][/COLOR])</label>
 			</control>
 		</control>
 
