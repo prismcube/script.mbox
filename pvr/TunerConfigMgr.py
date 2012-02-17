@@ -269,7 +269,7 @@ class TunerConfigMgr( object ) :
 		self.mAllSatelliteList = self.mDataCache.mSatelliteList
 
 		# Get Configured Satellite List Tuner 1
-		self.mConfiguredList1 = self.mDataCache.mConfiguredSatelliteList1
+		self.mConfiguredList1 = self.mDataCache.GetConfiguredSatellite( E_TUNER_1 )
 
 		if len( self.mConfiguredList1 ) == 0 :		# If empty list to return, add one default satellite
 			config = self.GetDefaultConfig( )
@@ -278,7 +278,7 @@ class TunerConfigMgr( object ) :
 			self.mConfiguredList1.append( config )
 
 		# Get Configured Satellite List Tuner 2
-		self.mConfiguredList2 = self.mDataCache.mConfiguredSatelliteList2
+		self.mConfiguredList2 = self.mDataCache.GetConfiguredSatellite( E_TUNER_2 )
 
 		if len( self.mConfiguredList2 ) == 0 :		# If empty list to return, add one default satellite
 			config = self.GetDefaultConfig( )

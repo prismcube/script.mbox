@@ -38,7 +38,7 @@ class AntennaSetup( SettingWindow ) :
 		self.AddInputControl( E_Input02, ' - Tuner 2 Configuration','', 'Go to Tuner 2 Configure.' )
 	
 		self.InitControl( )
-		self.ShowDescription( self.getFocusId( ) )
+		self.ShowDescription( )
 		self.DisableControl( )
 		self.mInitialized = True
 		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True )
@@ -88,11 +88,11 @@ class AntennaSetup( SettingWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			self.ShowDescription( focusId )
+			self.ShowDescription( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
-			self.ShowDescription( focusId )
+			self.ShowDescription( )
 			
 
 	def onClick( self, aControlId ) :
@@ -138,7 +138,7 @@ class AntennaSetup( SettingWindow ) :
 		if self.mInitialized == False :
 			return
 		if self.mLastFocused != aControlId :
-			self.ShowDescription( aControlId )
+			self.ShowDescription( )
 			self.mLastFocused = aControlId
 
 

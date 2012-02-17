@@ -56,11 +56,11 @@ class EditTransponder( SettingWindow ) :
 			
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			self.ShowDescription( focusId )
+			self.ShowDescription( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
-			self.ShowDescription( focusId )
+			self.ShowDescription( )
 			
 
 	def onClick( self, aControlId ) :
@@ -202,7 +202,7 @@ class EditTransponder( SettingWindow ) :
 		if self.mInitialized == False :
 			return
 		if self.mLastFocused != aControlId :
-			self.ShowDescription( aControlId )
+			self.ShowDescription( )
 			self.mLastFocused = aControlId
 	
 
@@ -235,7 +235,7 @@ class EditTransponder( SettingWindow ) :
 		self.AddInputControl( E_Input07, 'Edit Transponder', '', 'Edit transponder.' )
 		
 		self.InitControl( )
-		self.ShowDescription( self.getFocusId( ) )
+		self.ShowDescription( )
 		self.SetEnableControl( E_Input03, False )
 		self.SetEnableControl( E_Input04, False )
 

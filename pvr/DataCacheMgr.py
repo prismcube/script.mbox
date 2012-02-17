@@ -153,6 +153,19 @@ class DataCacheMgr( object ):
 				self.mConfiguredSatelliteList2 = []
 				break
 
+
+	def GetConfiguredSatellite( self, aTunerNumber ) :
+		if aTunerNumber == E_TUNER_1 :
+			return self.mConfiguredSatelliteList1
+
+		elif aTunerNumber == E_TUNER_2 :
+			return self.mConfiguredSatelliteList2
+
+		else :
+			LOG_ERR( 'Unknown Tuner Number %s' % aTunerNumber )
+			return self.mConfiguredSatelliteList1
+
+
 	def LoadConfiguredTransponder( self ) :
 		self.mTransponderList = []
 		self.mTransponderListHash = {}

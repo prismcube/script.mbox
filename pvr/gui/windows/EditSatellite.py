@@ -52,11 +52,11 @@ class EditSatellite( SettingWindow ) :
 			
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			self.ShowDescription( focusId )
+			self.ShowDescription( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
-			self.ShowDescription( focusId )
+			self.ShowDescription( )
 
 
 	def onClick( self, aControlId ) :
@@ -127,7 +127,7 @@ class EditSatellite( SettingWindow ) :
 		if self.mInitialized == False :
 			return
 		if self.mLastFocused != aControlId :
-			self.ShowDescription( aControlId )
+			self.ShowDescription( )
 			self.mLastFocused = aControlId
 
 
@@ -143,7 +143,7 @@ class EditSatellite( SettingWindow ) :
 		self.AddInputControl( E_Input05, 'Delete Satellite', '', 'Delete satellite.' )
 		
 		self.InitControl( )
-		self.ShowDescription( self.getFocusId( ) )
+		self.ShowDescription( )
 		self.SetEnableControl( E_Input02, False )
 		self.DisableControl( )
 

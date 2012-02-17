@@ -45,7 +45,7 @@ class ManualScan( SettingWindow ) :
 
 		self.InitConfig( )
 		
-		self.ShowDescription( self.getFocusId( ) )
+		self.ShowDescription( )
 		self.mInitialized = True
 
 		
@@ -73,11 +73,11 @@ class ManualScan( SettingWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			self.ShowDescription( focusId )
+			self.ShowDescription( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
-			self.ShowDescription( focusId )
+			self.ShowDescription( )
 			
 
 	def onClick( self, aControlId ) :
@@ -184,7 +184,7 @@ class ManualScan( SettingWindow ) :
 			return
 
 		if self.mLastFocused != aControlId :
-			self.ShowDescription( aControlId )
+			self.ShowDescription( )
 			self.mLastFocused = aControlId
 
 
@@ -238,10 +238,10 @@ class ManualScan( SettingWindow ) :
 	def LoadFormattedSatelliteNameList( self ) :
 
 		configuredSatelliteList1 = []
-		configuredSatelliteList1 = self.mDataCache.mConfiguredSatelliteList1
+		configuredSatelliteList1 = self.mDataCache.GetConfiguredSatellite( E_TUNER_1 )
 
 		configuredSatelliteList2 = []
-		configuredSatelliteList2 = self.mDataCache.mConfiguredSatelliteList2
+		configuredSatelliteList2 = self.mDataCache.GetConfiguredSatellite( E_TUNER_2 )
 
 		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander )
 

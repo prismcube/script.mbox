@@ -32,7 +32,7 @@ class ConditionalAccess( SettingWindow ) :
 		if self.mCommander.Cicam_IsInserted( CAS_SLOT_NUM_1 ) == True :
 			cardinfo = self.mCommander.Cicam_GetInfo( CAS_SLOT_NUM_1 )
 			camName = cardinfo.mName
-		self.AddInputControl( E_Input02, 'CAM Information', '%s' % camName, 'View smartcard information' )
+		self.AddInputControl( E_Input02, 'CAM Information', '%s' % camName, 'View CAM information' )
 		
 		self.AddInputControl( E_Input03, 'PIN Code Modification', '', 'Change pin code' )
 		self.AddInputControl( E_Input04, 'Maturity Rating', '', 'Access maturity rating' )
@@ -41,13 +41,13 @@ class ConditionalAccess( SettingWindow ) :
 		self.AddInputControl( E_Input07, 'Operator Message', '', 'View operator message' )
 		
 		self.InitControl( )
-		self.ShowDescription( self.getFocusId( ) )
+		self.ShowDescription( )
 		self.mInitialized = True
 
 		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-		focusId = self.getFocusId( )
+		self.GetFocusId( )
 		self.GlobalAction( actionId )		
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
@@ -67,11 +67,11 @@ class ConditionalAccess( SettingWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			self.ShowDescription( focusId )
+			self.ShowDescription( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
-			self.ShowDescription( focusId )
+			self.ShowDescription( )
 			
 
 	def onClick( self, aControlId ) :
@@ -103,5 +103,5 @@ class ConditionalAccess( SettingWindow ) :
 			return
 
 		if self.mLastFocused != aControlId :
-			self.ShowDescription( aControlId )
+			self.ShowDescription( )
 			self.mLastFocused = aControlId

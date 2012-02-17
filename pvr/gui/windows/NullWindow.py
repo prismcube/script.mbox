@@ -29,7 +29,7 @@ class NullWindow(BaseWindow):
 				self.mInitialized = True
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-				
+			print 'dhkim test Null FocusId = %d' % self.getFocusId( )	
 		except Exception, ex:
 			LOG_TRACE( 'ERR Exception' )
 

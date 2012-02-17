@@ -41,6 +41,7 @@ class MainMenu( BaseWindow ) :
 			if self.mStartMediaCenter == True :
 				self.mCommander.AppMediaPlayer_Control( 0 )
 				self.mStartMediaCenter = False
+			print 'dhkim test Main FocusId = %d' % self.getFocusId( )
 		except Exception, ex:
 			LOG_TRACE( 'ERR Exception' )
 
