@@ -2280,15 +2280,20 @@ class ChannelListWindow(BaseWindow):
 
 		self.GroupAddDelete( 'get' )
 
-		#context item
-		context = []
+		#default context item
+		context1 = []
+		context2 = []
 		if self.mChannelList :
-			context.append( ContextItem( Msg.Strings( MsgId.LANG_LOCK ) ) )
-			context.append( ContextItem( Msg.Strings( MsgId.LANG_UNLOCK ) ) )
-			context.append( ContextItem( Msg.Strings( MsgId.LANG_SKIP ) ) )
-			context.append( ContextItem( Msg.Strings( MsgId.LANG_UNSKIP ) ) )
-			context.append( ContextItem( Msg.Strings( MsgId.LANG_DELETE ) ) )
-			context.append( ContextItem( Msg.Strings( MsgId.LANG_MOVE ) ) )
+			context1.append( ContextItem( Msg.Strings( MsgId.LANG_LOCK ) ) )
+			context1.append( ContextItem( Msg.Strings( MsgId.LANG_UNLOCK ) ) )
+			context1.append( ContextItem( Msg.Strings( MsgId.LANG_SKIP ) ) )
+			context1.append( ContextItem( Msg.Strings( MsgId.LANG_UNSKIP ) ) )
+			context1.append( ContextItem( Msg.Strings( MsgId.LANG_DELETE ) ) )
+			context1.append( ContextItem( Msg.Strings( MsgId.LANG_MOVE ) ) )
+
+		for name in self.mEditFavorite:
+			context2.append( ContextItem( name ) )
+
 
 		if aMode == FLAG_OPT_LIST :
 
@@ -2299,11 +2304,11 @@ class ChannelListWindow(BaseWindow):
 					label   = '%s\tNone'% Msg.Strings( MsgId.LANG_ADD_TO_FAV )
 					lblItem = str('%s%s%s'%( E_TAG_COLOR_GREY3, label, E_TAG_COLOR_END ) )
 
-				context.append( ContextItem( lblItem ) )
+				context1.append( ContextItem( lblItem ) )
 
 				GuiLock2(True)
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-				dialog.SetProperty( context )
+				dialog.SetProperty( context1 )
 	 			dialog.doModal()
 	 			GuiLock2(False)
 
@@ -2317,7 +2322,7 @@ class ChannelListWindow(BaseWindow):
 
 		elif aMode == FLAG_OPT_GROUP :
 			if not self.mChannelList :
-				context = []
+				context1 = []
 
 			lblItem1 = '%s'% Msg.Strings( MsgId.LANG_CREATE_NEW_GROUP )
 
@@ -2330,13 +2335,13 @@ class ChannelListWindow(BaseWindow):
 				lblItem2 = str('%s%s%s'%( E_TAG_COLOR_GREY3, label1, E_TAG_COLOR_END ) )
 				lblItem3 = str('%s%s%s'%( E_TAG_COLOR_GREY3, label2, E_TAG_COLOR_END ) )
 
-			context.append( ContextItem( lblItem1 ) )
-			context.append( ContextItem( lblItem2 ) )
-			context.append( ContextItem( lblItem3 ) )
+			context1.append( ContextItem( lblItem1 ) )
+			context1.append( ContextItem( lblItem2 ) )
+			context1.append( ContextItem( lblItem3 ) )
 
 			GuiLock2(True)
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-			dialog.SetProperty( context )
+			dialog.SetProperty( context1 )
  			dialog.doModal()
  			GuiLock2(False)
 
@@ -2345,16 +2350,77 @@ class ChannelListWindow(BaseWindow):
 		selectIdx = dialog.GetSelectedIndex()
 		LOG_TRACE('=======select idx[%s]'% selectIdx)
 
-		#todo : group?
-		#select to idxbtn
+		if selectIdx == -1 :
+			LOG_TRACE('CANCEL by context dialog')
+			return
 
-		#if selectIdx > -1 :
-		#	self.mIsSave |= FLAG_MASK_ADD
-		#	self.GroupAddDelete( 'set', aMode, idxBtn, groupName )
+		if (aMode == FLAG_OPT_LIST) and (not self.mEditFavorite) and (selectIdx == 6) :
+			#can not add to Fav : no favorite group
+			LOG_TRACE('Disabled item : selectIdx[%s]'% selectIdx)
+			return
 
-		#except Exception, e:
-		#	LOG_TRACE( 'Error except[%s] OPTMODE[%s]'% (e, aMode) )
+		if ((aMode == FLAG_OPT_GROUP) and (not self.mEditFavorite) and (selectIdx == 7)) or \
+		   ((aMode == FLAG_OPT_GROUP) and (not self.mEditFavorite) and (selectIdx == 8)) :
+			#can not rename / delete : no favorite group
+			LOG_TRACE('Disabled item : selectIdx[%s]'% selectIdx)
+			return
+		#--------------------------------------------------------------- section 1
 
+		publicBtn = (selectIdx * 10) + E_DialogInput01
+		groupName = None
+
+		if aMode == FLAG_OPT_GROUP and (not self.mChannelList) :
+			#if no Channel then
+			#create Fav:7, rename Fav:8, delete Fav:9
+			publicBtn = ((selectIdx+6) * 10) + E_DialogInput01
+
+
+		# add Fav, Ren Fav, Del Fav ==> popup select group
+		if aMode == FLAG_OPT_LIST and publicBtn == E_DialogInput07 or \
+		   aMode == FLAG_OPT_GROUP and publicBtn == E_DialogInput08 or \
+		   aMode == FLAG_OPT_GROUP and publicBtn == E_DialogInput09 :
+			GuiLock2(True)
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+			dialog.SetProperty( context2 )
+ 			dialog.doModal()
+ 			GuiLock2(False)
+
+ 			grpIdx = dialog.GetSelectedIndex()
+ 			groupName = self.mEditFavorite[grpIdx]
+
+			if grpIdx == -1 :
+				LOG_TRACE('CANCEL by context dialog')
+				return
+
+		# Ren Fav, Del Fav ==> popup input group Name
+		if aMode == FLAG_OPT_GROUP and publicBtn == E_DialogInput07 or \
+		   aMode == FLAG_OPT_GROUP and publicBtn == E_DialogInput08 :
+			label = ''
+			default = ''
+			if publicBtn == E_DialogInput07 :
+				#create
+				result = ''
+				label = Msg.Strings( MsgId.LANG_CREATE_NEW_GROUP )
+
+			elif publicBtn == E_DialogInput08 :
+				#rename
+				default = groupName
+				result = '%d'%grpIdx+':'+groupName+':'
+				label = Msg.Strings( MsgId.LANG_RENAME_FAV )
+
+			kb = xbmc.Keyboard( default, label, False )
+			kb.doModal()
+
+			name = ''
+			name = kb.getText()
+			if name :
+				groupName = result + name
+
+		LOG_TRACE('mode[%s] btn[%s] groupName[%s]'% (aMode, publicBtn, groupName) )
+		#--------------------------------------------------------------- section 2
+
+		self.GroupAddDelete( 'set', aMode, publicBtn, groupName )
+		self.mIsSave |= FLAG_MASK_ADD
 
 		LOG_TRACE( 'Leave' )
 
@@ -2368,8 +2434,8 @@ class ChannelListWindow(BaseWindow):
 				mode = FLAG_OPT_GROUP
 			else :
 				mode = FLAG_OPT_LIST
-			self.EditSettingWindow( mode )         # dialog 1
-			#self.EditSettingWindowContext( mode )   # dialog 2
+			#self.EditSettingWindow( mode )        	 # dialog 1
+			self.EditSettingWindowContext( mode )	 # dialog 2
 
 		LOG_TRACE( 'Leave' )
 
