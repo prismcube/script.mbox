@@ -167,7 +167,9 @@ class LivePlate(BaseWindow):
 		#LOG_TRACE( 'Enter' )
 
 		id = aAction.getId()
-		self.GlobalAction( id )
+		key = self.GlobalAction( id )
+		if key >= Action.REMOTE_0 and key <= Action.REMOTE_9:
+			self.KeySearch( key-Action.REMOTE_0 )
 
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
 			self.StopAutomaticHide()
@@ -402,6 +404,33 @@ class LivePlate(BaseWindow):
 		if self.mAutomaticHide == True :
 			self.RestartAutomaticHide()
 
+
+	def EPGListMove( self ) :
+		LOG_TRACE( 'Enter' )
+
+		try :
+
+			LOG_TRACE('ch[%s] len[%s] idx[%s]'% (self.mCurrentChannel.mNumber, len(self.mEPGList),self.mEPGListIdx) )
+			ret = self.mEPGList[self.mEPGListIdx]
+
+			if ret :
+				self.InitLabelInfo()
+				GuiLock2(True)
+				self.mEventCopy = ret
+				self.mFlag_OnEvent = False
+				GuiLock2(False)
+
+				self.UpdateServiceType( self.mCurrentChannel.mServiceType )
+				self.UpdateONEvent( self.mEventCopy )
+
+				retList = []
+				retList.append( self.mEventCopy )
+				LOG_TRACE( 'idx[%s] epg[%s]'% (self.mEPGListIdx, ClassToList( 'convert', retList )) )
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
+
+		LOG_TRACE( 'Leave' )
 
 	def EPGNavigation(self, aDir ):
 		LOG_TRACE('Enter')
@@ -831,7 +860,7 @@ class LivePlate(BaseWindow):
 
 			GuiLock2(True)
 			if  runningCount < 2 :
-				dialog = diamgr.GetInstance().GetDialog( diamgr.DIALOG_ID_START_RECORD )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 				dialog.doModal()
 			else:
 				msg = 'Already %d recording(s) running' %runningCount
@@ -844,7 +873,7 @@ class LivePlate(BaseWindow):
 
 			if  runningCount > 0 :
 				GuiLock2(True)
-				dialog = diamgr.GetInstance().GetDialog( diamgr.DIALOG_ID_STOP_RECORD )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
 				dialog.doModal()
 				GuiLock2(False)
 			
@@ -938,50 +967,14 @@ class LivePlate(BaseWindow):
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-
-	"""
-	def RestartAsyncEPG( self ) :
-		self.StopAsyncEPG( )
-		self.StartAsyncEPG( )
-
-	def StartAsyncEPG( self ) :
-		self.mAsyncEPGTimer = threading.Timer( 0.2, self.AsyncTuneEPG ) 				
-		self.mAsyncEPGTimer.start()
-
-	def StopAsyncEPG( self ) :
-		if self.mAsyncEPGTimer	and self.mAsyncEPGTimer.isAlive() :
-			self.mAsyncEPGTimer.cancel()
-			del self.mAsyncEPGTimer
-
-		self.mAsyncEPGTimer  = None
-	"""
-
-
-	#def AsyncTuneEPG( self ) :
-	def EPGListMove( self ) :
+	def KeySearch( self, aKey ) :
 		LOG_TRACE( 'Enter' )
 
-		try :
-
-			LOG_TRACE('ch[%s] len[%s] idx[%s]'% (self.mCurrentChannel.mNumber, len(self.mEPGList),self.mEPGListIdx) )
-			ret = self.mEPGList[self.mEPGListIdx]
-
-			if ret :
-				self.InitLabelInfo()
-				GuiLock2(True)
-				self.mEventCopy = ret
-				self.mFlag_OnEvent = False
-				GuiLock2(False)
-
-				self.UpdateServiceType( self.mCurrentChannel.mServiceType )
-				self.UpdateONEvent( self.mEventCopy )
-
-				retList = []
-				retList.append( self.mEventCopy )
-				LOG_TRACE( 'idx[%s] epg[%s]'% (self.mEPGListIdx, ClassToList( 'convert', retList )) )
-
-		except Exception, e :
-			LOG_TRACE( 'Error exception[%s]'% e )
+		GuiLock2(True)
+		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
+		dialog.doModal()
+		GuiLock2(False)
 
 		LOG_TRACE( 'Leave' )
+	
 
