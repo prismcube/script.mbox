@@ -134,6 +134,8 @@ class DialogEditChannelList( SettingDialog ) :
 		if self.mMode == FLAG_OPT_LIST :
 			#unused visible false
 			self.SetVisibleControl( E_DialogSpinEx02, False )
+			self.SetVisibleControl( E_DialogInput08, False )
+			self.SetVisibleControl( E_DialogInput09, False )
 
 			if self.mFavoriteList :
 				self.AddUserEnumControl( E_DialogSpinEx01, Msg.Strings( MsgId.LANG_ADD_TO_FAV ), self.mFavoriteList, 0)
