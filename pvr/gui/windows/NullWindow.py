@@ -8,7 +8,7 @@ import pvr.TunerConfigMgr as ConfigMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
 from inspect import currentframe
 import pvr.ElisMgr
-from pvr.Util import LOG_TRACE, LOG_ERR, LOG_WARN, RunThread
+from pvr.Util import GuiLock2, LOG_TRACE, LOG_ERR, LOG_WARN, RunThread
 from pvr.gui.GuiConfig import *
 
 import threading
@@ -29,6 +29,7 @@ class NullWindow(BaseWindow):
 				self.mInitialized = True
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+				#WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 				
 		except Exception, ex:
 			LOG_TRACE( 'ERR Exception' )
@@ -110,6 +111,29 @@ class NullWindow(BaseWindow):
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 			
 
+		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
+			aKey = actionId - Action.REMOTE_0
+			GuiLock2(True)
+			dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_CHANNEL_JUMP )
+			event = self.mDataCache.Epgevent_GetPresent()
+			if event:
+				dialog.SetDialogProperty( str(aKey), 9999, event.mStartTime)
+			else :
+				dialog.SetDialogProperty( str(aKey), 9999)
+			dialog.doModal()
+			GuiLock2(False)
+
+			inputNumber = dialog.GetChannelLast()
+			LOG_TRACE('=========== Jump chNum[%s]'% inputNumber)
+
+			jumpChannel = self.mDataCache.Channel_GetCurr( int(inputNumber) )
+			if jumpChannel :
+				self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType )
+
+		else:
+			print 'lael98 check ation unknown id=%d' %actionId
+
+		"""
 		elif actionId == Action.REMOTE_3:  #TEST : start Record
 			print 'open record dialog'
 			
@@ -134,16 +158,8 @@ class NullWindow(BaseWindow):
 
 		elif actionId == Action.REMOTE_1:  #TEST : bg test
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_TEST1 )
+		"""
 
-
-		elif actionId == Action.ACTION_PAGE_UP:
-			pass
-
-		elif actionId == Action.ACTION_PAGE_DOWN:
-			pass
-
-		else:
-			print 'lael98 check ation unknown id=%d' %actionId
 
 
 	def onClick(self, aControlId):

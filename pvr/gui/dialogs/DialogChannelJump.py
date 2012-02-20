@@ -1,10 +1,14 @@
 import xbmc
 import xbmcgui
-import time
+import threading, time
 import sys
 
 from pvr.gui.BaseDialog import BaseDialog
 from pvr.gui.BaseWindow import Action
+
+import pvr.DataCacheMgr as CacheMgr
+from pvr.PublicReference import ClassToList
+from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
 
 E_CHANNEL_NUM_ID	= 210
 E_CHANNEL_NAME_ID	= 211
@@ -22,6 +26,12 @@ class DialogChannelJump( BaseDialog ) :
 		self.mCtrlEPGName		= None
 		self.mCtrlProgress		= None
 
+		self.mFlagFind          = False
+		self.mAsyncTuneTimer    = None
+		self.mFakeChannel       = None
+		self.mFakeEPG           = None
+		self.mTestTime          = 0
+
 		self.mMaxChannelNum		= 9999
 
 
@@ -33,6 +43,8 @@ class DialogChannelJump( BaseDialog ) :
 		self.mCtrlChannelName	= self.getControl( E_CHANNEL_NAME_ID )
 		self.mCtrlEPGName		= self.getControl( E_EPG_NAME_ID )
 		self.mCtrlProgress		= self.getControl( E_PROGRESS_ID )
+
+		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset()
 
 		self.SetLabelChannelNumber( )
 		self.SetLabelChannelName( )
@@ -57,6 +69,11 @@ class DialogChannelJump( BaseDialog ) :
 				self.mChannelNumber = inputString
 			self.SetLabelChannelNumber( )
 
+			self.SetLabelChannelName()
+			self.SetLabelEPGName()
+			self.SetPogress()
+			self.SearchChannel()
+
 		elif actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 :
 			inputNum = actionId - Action.ACTION_JUMP_SMS2 + 2
 			if inputNum >= 2 and inputNum <= 9 :
@@ -66,6 +83,11 @@ class DialogChannelJump( BaseDialog ) :
 				if int( self.mChannelNumber ) > self.mMaxChannelNum :
 					self.mChannelNumber = inputString
 				self.SetLabelChannelNumber( )
+
+				self.SetLabelChannelName()
+				self.SetLabelEPGName()
+				self.SetPogress()
+				self.SearchChannel()
 
 
 	def onClick( self, aControlId ) :
@@ -77,23 +99,107 @@ class DialogChannelJump( BaseDialog ) :
 		pass
 
 		
-	def SetDialogProperty( self, aChannelFirstNum, aMaxChannelNum ) :
+	def SetDialogProperty( self, aChannelFirstNum, aMaxChannelNum, testTime = None ) :
 		self.mChannelNumber	= aChannelFirstNum
 		self.mMaxChannelNum = aMaxChannelNum
 
+		if testTime:
+			self.mTestTime = testTime
+
 
 	def SetLabelChannelNumber( self ) :
+		self.mFlagFind = False
 		self.mCtrlChannelNum.setLabel( self.mChannelNumber )
-
 
 	def SetLabelChannelName( self, aChannelName='No Channel' ) :
 		self.mCtrlChannelName.setLabel( aChannelName )
 
-
 	def SetLabelEPGName( self, aEPGName='' ) :
 		self.mCtrlEPGName.setLabel( aEPGName )
 
-
-	def SetPogress( self, aPercent ) :
+	def SetPogress( self, aPercent=0 ) :
 		self.mCtrlProgress.setPercent( aPercent )
-		
+
+	def SearchChannel( self ) :
+		fChannel = self.mDataCache.Channel_GetSearch( int(self.mChannelNumber) )
+		if fChannel == None or fChannel.mError != 0 :
+			LOG_TRACE('No search Channel[%s]'% self.mChannelNumber)
+			return
+
+		retList = []
+		retList.append(fChannel)
+		LOG_TRACE('======= Search Channel[%s]'% ClassToList('convert', retList) )
+
+		self.SetLabelChannelName( fChannel.mName )
+		self.GetEPGInfo( fChannel )
+
+		self.mFlagFind = True
+		self.RestartAsyncTune()
+
+	def GetEPGInfo( self, aChannel ):
+		event = None
+		event = self.mDataCache.Epgevent_GetList( aChannel, self.mTestTime )
+
+		if event :
+			self.mFakeEPG = event
+			self.SetLabelEPGName( self.mFakeEPG.mEventName )
+			self.GetEPGProgress()
+
+	def GetEPGProgress( self ):
+		try:
+			mLocalTime = self.mDataCache.Datetime_GetLocalTime()
+
+			if self.mFakeEPG :
+				startTime = self.mFakeEPG.mStartTime + self.mLocalOffset
+				endTime   = startTime + self.mFakeEPG.mDuration
+				pastDuration = endTime - mLocalTime
+
+				if mLocalTime > endTime: #Already past
+					self.SetPogress( 100 )
+					return
+
+				elif mLocalTime < startTime :
+					self.SetPogress( 0 )
+					return
+
+				if pastDuration < 0 :
+					pastDuration = 0
+
+				if self.mFakeEPG.mDuration > 0 :
+					#percent = pastDuration * 100/self.mFakeEPG.mDuration
+					percent = 100 - (pastDuration * 100.0/self.mFakeEPG.mDuration )
+				else :
+					percent = 0
+
+				#LOG_TRACE( 'percent=%d'% percent )
+				self.SetPogress( percent )
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
+
+
+	def GetChannelLast( self ):
+		return self.mChannelNumber
+
+	def RestartAsyncTune( self ) :
+		self.StopAsyncTune( )
+		self.StartAsyncTune( )
+
+
+	def StartAsyncTune( self ) :
+		self.mAsyncTuneTimer = threading.Timer( 2, self.AsyncTuneChannel ) 				
+		self.mAsyncTuneTimer.start()
+
+
+	def StopAsyncTune( self ) :
+		if self.mAsyncTuneTimer	and self.mAsyncTuneTimer.isAlive() :
+			self.mAsyncTuneTimer.cancel()
+			del self.mAsyncTuneTimer
+
+		self.mAsyncTuneTimer  = None
+
+
+	def AsyncTuneChannel( self ) :
+		if self.mFlagFind :
+			self.CloseDialog( )
+

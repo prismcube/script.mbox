@@ -275,7 +275,37 @@ class DataCacheMgr( object ):
 		#LOG_TRACE('------------ Next Channel-------------------')
 		#channel.printdebug()
 		return channel
-	
+
+	@DataLock
+	def Channel_GetCurr( self, aJumpNumber ) :
+
+		cacheChannel = self.mChannelListHash.get(aJumpNumber, None).mChannel
+		if cacheChannel == None :
+			return None
+
+		channel =  cacheChannel
+		#LOG_TRACE('------------ Current Channel-------------------')
+		#channel.printdebug()
+		return channel
+
+	@DataLock
+	def Channel_GetSearch( self, aNumber ) :
+
+		fChannel = None
+		if self.mChannelList and self.mChannelList[0].mError == 0 :
+			findCh = False
+			for iChannel in self.mChannelList :
+				#LOG_TRACE('searching[%s] [%s]'% (iChannel.mNumber, aChannel.mNumber) )
+				if iChannel.mNumber == aNumber :
+					fChannel = iChannel
+					findCh = True
+					LOG_TRACE('------- Success to searched[%s]'% iChannel.mNumber)
+					break
+			if findCh == False:
+				LOG_TRACE('------- Fail to searched[%s]'% aNumber)
+				return None
+
+		return fChannel
 
 	@DataLock
 	def Datetime_GetLocalOffset( self ) :
@@ -313,6 +343,26 @@ class DataCacheMgr( object ):
 
 		return None
 
+	#@DataLock
+	def Epgevent_GetList( self, aChannel, aTestTime=0 ) :
+		if aTestTime :
+			gmtime = aTestTime
+		else:
+			gmtime = self.Datetime_GetGMTTime()
+
+		gmtFrom = gmtime
+		gmtUntil= gmtime
+		maxCount= 1
+
+		LOG_TRACE('ch[%s] sid[%d] tsid[%d] oid[%d]'% (aChannel.mNumber, aChannel.mSid, aChannel.mTsid, aChannel.mOnid) )
+		LOG_TRACE('from[%s] until[%s]'% (time.strftime("%H:%M", time.gmtime(gmtFrom)), time.strftime("%H:%M", time.gmtime(gmtFrom)) ) )
+		event = self.mCommander.Epgevent_GetList( aChannel.mSid, aChannel.mTsid, aChannel.mOnid, gmtFrom, gmtUntil, maxCount )
+		if event :
+			#from pvr.PublicReference import ClassToList
+			#LOG_TRACE('=============epg len[%s] list[%s]'% (len(event),ClassToList('convert', event )) )
+			return event[0]
+
+		return None
 
 	@DataLock
 	def Epgevent_GetEvent( self, aEvent ) :

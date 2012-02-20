@@ -51,6 +51,7 @@ PREV_EPG 				= 1
 
 NEXT_CHANNEL			= 0
 PREV_CHANNEL			= 1
+CURR_CHANNEL			= 2
 
 
 class LivePlate(BaseWindow):
@@ -132,6 +133,7 @@ class LivePlate(BaseWindow):
 		self.mEventCopy = None
 		self.mEPGList = None
 		self.mEPGListIdx = 0
+		self.mJumpNumber = 0
 
 		self.GetEPGList()
 		self.UpdateServiceType( self.mCurrentChannel.mServiceType )
@@ -167,11 +169,11 @@ class LivePlate(BaseWindow):
 		#LOG_TRACE( 'Enter' )
 
 		id = aAction.getId()
-		key = self.GlobalAction( id )
-		if key >= Action.REMOTE_0 and key <= Action.REMOTE_9:
-			self.KeySearch( key-Action.REMOTE_0 )
+		self.GlobalAction( id )
+		if id >= Action.REMOTE_0 and id <= Action.REMOTE_9:
+			self.KeySearch( id-Action.REMOTE_0 )
 
-		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
+		elif id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
 			self.StopAutomaticHide()
 			self.SetAutomaticHide( False )
 
@@ -322,6 +324,12 @@ class LivePlate(BaseWindow):
 						LOG_TRACE('-----------------------')
 						#ret.printdebug()
 
+						if ret.mEventName == 'No Name' :
+							retList = []
+							retList.append(ret)
+							LOG_TRACE('ignore event, No Name[%s]'% ClassToList('convert', retList) )
+							return -1
+
 						if not self.mEventCopy or \
 						ret.mEventId != self.mEventCopy.mEventId or \
 						ret.mSid != self.mEventCopy.mSid or \
@@ -397,6 +405,17 @@ class LivePlate(BaseWindow):
 				return
 
 			self.mFakeChannel = nextChannel
+			self.UpdateServiceType( self.mFakeChannel.mServiceType )
+			self.InitLabelInfo()			
+			self.RestartAsyncTune()
+
+		elif aDir == CURR_CHANNEL:
+			jumpChannel = self.mDataCache.Channel_GetCurr( self.mJumpNumber )
+
+			if jumpChannel == None or jumpChannel.mError != 0 :
+				return
+
+			self.mFakeChannel = jumpChannel
 			self.UpdateServiceType( self.mFakeChannel.mServiceType )
 			self.InitLabelInfo()			
 			self.RestartAsyncTune()
@@ -479,8 +498,12 @@ class LivePlate(BaseWindow):
 			if self.mCurrentChannel :
 				self.mEPGList = None
 				ichannel = self.mCurrentChannel
+
+				#Live EPG
 				#gmtime = self.mDataCache.Datetime_GetGMTTime()
+				#test Stream
 				gmtFrom  = self.mEventCopy.mStartTime
+
 				gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
 				maxCount = 100
 				ret = None
@@ -745,7 +768,7 @@ class LivePlate(BaseWindow):
 
 			self.mCtrlProgress.setPercent(0)
 			self.mEventCopy = None
-			self.mCtrlLblChannelNumber.setLabel( '%d' %self.mFakeChannel.mNumber )
+			self.mCtrlLblChannelNumber.setLabel( '%s'% self.mFakeChannel.mNumber )
 			self.mCtrlLblChannelName.setLabel( self.mFakeChannel.mName )
 			self.mCtrlLblLongitudeInfo.setLabel('')
 			self.mCtrlLblEventName.setLabel('')
@@ -970,10 +993,25 @@ class LivePlate(BaseWindow):
 	def KeySearch( self, aKey ) :
 		LOG_TRACE( 'Enter' )
 
+		self.mFlag_OnEvent = False
+
 		GuiLock2(True)
 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
+		if self.mEventCopy:
+			dialog.SetDialogProperty( str(aKey), 9999, self.mEventCopy.mStartTime)
+		else :
+			dialog.SetDialogProperty( str(aKey), 9999)
 		dialog.doModal()
 		GuiLock2(False)
+
+		self.mFlag_OnEvent = True
+
+		inputNumber = dialog.GetChannelLast()
+		LOG_TRACE('=========== Jump chNum[%s]'% inputNumber)
+
+		self.mJumpNumber = int(inputNumber)
+		self.ChannelTune(CURR_CHANNEL)
+
 
 		LOG_TRACE( 'Leave' )
 	
