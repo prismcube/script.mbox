@@ -117,9 +117,9 @@ class NullWindow(BaseWindow):
 			dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_CHANNEL_JUMP )
 			event = self.mDataCache.Epgevent_GetPresent()
 			if event:
-				dialog.SetDialogProperty( str(aKey), 9999, event.mStartTime)
+				dialog.SetDialogProperty( str(aKey), 9999, None, event.mStartTime)
 			else :
-				dialog.SetDialogProperty( str(aKey), 9999)
+				dialog.SetDialogProperty( str(aKey), 9999, None)
 			dialog.doModal()
 			GuiLock2(False)
 

@@ -27,6 +27,7 @@ class DialogChannelJump( BaseDialog ) :
 		self.mCtrlProgress		= None
 
 		self.mFlagFind          = False
+		self.mChannelList       = None
 		self.mAsyncTuneTimer    = None
 		self.mFakeChannel       = None
 		self.mFakeEPG           = None
@@ -99,9 +100,10 @@ class DialogChannelJump( BaseDialog ) :
 		pass
 
 		
-	def SetDialogProperty( self, aChannelFirstNum, aMaxChannelNum, testTime = None ) :
+	def SetDialogProperty( self, aChannelFirstNum, aMaxChannelNum, aChannelList, testTime = None ) :
 		self.mChannelNumber	= aChannelFirstNum
 		self.mMaxChannelNum = aMaxChannelNum
+		self.mChannelList = aChannelList
 
 		if testTime:
 			self.mTestTime = testTime
@@ -120,8 +122,24 @@ class DialogChannelJump( BaseDialog ) :
 	def SetPogress( self, aPercent=0 ) :
 		self.mCtrlProgress.setPercent( aPercent )
 
+	def ChannelList_GetSearch( self, aNumber ):
+		iChannel = None
+		idx = 0;
+		for ch in self.mChannelList:
+			if ch.mNumber == aNumber :
+				iChannel = self.mChannelList[idx]
+				LOG_TRACE('------- Success to searched[%s]'% iChannel.mNumber)
+				break
+			idx += 1
+
+		return iChannel
+
 	def SearchChannel( self ) :
-		fChannel = self.mDataCache.Channel_GetSearch( int(self.mChannelNumber) )
+		if self.mChannelList:
+			fChannel = self.ChannelList_GetSearch( int(self.mChannelNumber) )
+		else:
+			fChannel = self.mDataCache.Channel_GetSearch( int(self.mChannelNumber) )
+
 		if fChannel == None or fChannel.mError != 0 :
 			LOG_TRACE('No search Channel[%s]'% self.mChannelNumber)
 			return

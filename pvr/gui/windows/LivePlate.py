@@ -998,9 +998,9 @@ class LivePlate(BaseWindow):
 		GuiLock2(True)
 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
 		if self.mEventCopy:
-			dialog.SetDialogProperty( str(aKey), 9999, self.mEventCopy.mStartTime)
+			dialog.SetDialogProperty( str(aKey), 9999, None, self.mEventCopy.mStartTime)
 		else :
-			dialog.SetDialogProperty( str(aKey), 9999)
+			dialog.SetDialogProperty( str(aKey), 9999, None)
 		dialog.doModal()
 		GuiLock2(False)
 
