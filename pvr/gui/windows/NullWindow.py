@@ -96,7 +96,7 @@ class NullWindow( BaseWindow ) :
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 or \
 			actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 :
 
-			aKey = id-(Action.ACTION_JUMP_SMS2-2)
+			aKey = actionId-(Action.ACTION_JUMP_SMS2-2)
 			if actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9:
 				aKey = actionId - Action.REMOTE_0
 
