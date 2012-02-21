@@ -43,7 +43,9 @@ class ManualScan( SettingWindow ) :
 		self.LoadTransponderList( )
 		self.SetConfigTransponder( )
 
+		self.mCtrlMainGroup.setVisible( False )
 		self.InitConfig( )
+		self.mCtrlMainGroup.setVisible( True )
 		
 		self.ShowDescription( )
 		self.mInitialized = True
@@ -199,7 +201,6 @@ class ManualScan( SettingWindow ) :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Has no configured satellite' )
 
 		else :
-			self.mCtrlMainGroup.setVisible( False )
 			self.AddInputControl( E_Input01, 'Satellite', self.mFormattedSatelliteList[ self.mSatelliteIndex ], 'Select satellite' )
 			self.AddUserEnumControl( E_SpinEx01, 'Custom Setup', USER_ENUM_LIST_ON_OFF, self.mIsManualSetup )
 
@@ -233,7 +234,7 @@ class ManualScan( SettingWindow ) :
 
 			self.InitControl( )
 			self.DisableControl( )
-			self.mCtrlMainGroup.setVisible( True )
+
 
 	def LoadFormattedSatelliteNameList( self ) :
 

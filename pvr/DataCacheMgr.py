@@ -143,13 +143,21 @@ class DataCacheMgr( object ):
 	def LoadConfiguredSatellite( self ) :
 		self.mConfiguredSatelliteList1 = self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )
 		for configsatellite in self.mConfiguredSatelliteList1 :
-			if configsatellite.mError < 0 :
+			if configsatellite == None :
+				self.mConfiguredSatelliteList1 = []
+				break
+				
+			elif configsatellite.mError < 0 :
 				self.mConfiguredSatelliteList1 = []
 				break
 				
 		self.mConfiguredSatelliteList2 = self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )
 		for configsatellite in self.mConfiguredSatelliteList2 :
-			if configsatellite.mError < 0 :
+			if configsatellite == None :
+				self.mConfiguredSatelliteList2 = []
+				break
+				
+			elif configsatellite.mError < 0 :
 				self.mConfiguredSatelliteList2 = []
 				break
 

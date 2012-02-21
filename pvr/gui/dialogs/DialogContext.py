@@ -6,7 +6,6 @@ import sys
 from pvr.gui.BaseDialog import BaseDialog
 from pvr.gui.BaseWindow import Action
 from pvr.gui.GuiConfig import *
-from pvr.Util import LOG_TRACE
 
 DIALOG_MAIN_GROUP_ID		= 9000
 DIALOG_WIDTH				= 370
@@ -15,7 +14,7 @@ DIALOG_MIDDLE_IMAGE_ID		= 100
 DIALOG_BOTTOM_IMAGE_ID		= 101
 
 DIALOG_LIST_ID				= 102
-DIALOG_BUTTON_CLOSE_Id		= 103
+DIALOG_BUTTON_CLOSE_ID		= 103
 
 class DialogContext( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
@@ -42,7 +41,6 @@ class DialogContext( BaseDialog ) :
 		self.getControl( DIALOG_BOTTOM_IMAGE_ID ).setPosition( 0, middle_y + middley_height )
 
 		# Set Center Align
-		# TODO
 		start_x = E_WINDOW_WIDTH / 2 - DIALOG_WIDTH / 2
 		start_y = E_WINDOW_HEIGHT / 2 - middley_height / 2
 		self.getControl( DIALOG_MAIN_GROUP_ID ).setPosition( start_x, start_y )
@@ -62,6 +60,9 @@ class DialogContext( BaseDialog ) :
 			
 
 	def onClick( self, aControlId ) :
+		if aControlId == DIALOG_BUTTON_CLOSE_ID :
+			self.CloseDialog( )
+	
 		selectedIndex = self.mCtrlList.getSelectedPosition( )
 		if self.mItemList[ selectedIndex ].mFunctionIndex == E_USER_DEFINE :
 			self.selectedIndex = selectedIndex
@@ -69,6 +70,7 @@ class DialogContext( BaseDialog ) :
 		else :
 			self.mItemList[ selectedIndex ].DoAction( )
 			self.CloseDialog( )
+
 
 	def onFocus( self, aControlId ) :
 		pass
@@ -80,5 +82,7 @@ class DialogContext( BaseDialog ) :
 		if len( self.mItemList ) == 0 :
 			self.mItemList = ContextItem( 'None' )
 
+
 	def GetSelectedIndex( self ) :
 		return self.selectedIndex
+		
