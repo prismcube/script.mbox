@@ -174,7 +174,7 @@ class LivePlate(BaseWindow):
 			self.KeySearch( id-Action.REMOTE_0 )
 
 		elif id >= Action.ACTION_JUMP_SMS2 and id <= Action.ACTION_JUMP_SMS9 :
-			rKey = id-(Action.ACTION_JUMP_SMS2+2)
+			rKey = id-(Action.ACTION_JUMP_SMS2-2)
 			self.KeySearch( rKey )
 
 		elif id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
