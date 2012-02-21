@@ -611,6 +611,10 @@ class ChannelListWindow(BaseWindow):
 			chindex = 0;
 			for ch in self.mChannelList:
 				if ch.mNumber == aJumpNumber :
+					self.mNavChannel = ch
+					self.ResetLabel()
+					self.UpdateLabelInfo()
+					self.PincodeDialogLimit()
 					break
 				chindex += 1
 
@@ -657,6 +661,10 @@ class ChannelListWindow(BaseWindow):
 			#self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
 			#self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
 			self.mCtrlSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
+
+			if aJumpNumber :
+				return 
+
 			self.ResetLabel()
 			self.UpdateLabelInfo()
 			self.PincodeDialogLimit()
@@ -1005,7 +1013,7 @@ class ChannelListWindow(BaseWindow):
 
 					#save zapping mode
 					ret = self.mCommander.Zappingmode_SetCurrent( retList )
-					LOG_TRACE( '=========set zappingmode_SetCurrent[%s]'% ret )
+					LOG_TRACE( 'set zappingmode_SetCurrent[%s]'% ret )
 					if ret :
 						#### data cache re-load ####
 						self.mDataCache.Load()
@@ -1013,6 +1021,10 @@ class ChannelListWindow(BaseWindow):
 
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
+
+		else:
+			#channel sync
+			self.mDataCache.mCurrentChannel = self.mNavChannel
 
 		return ret
 

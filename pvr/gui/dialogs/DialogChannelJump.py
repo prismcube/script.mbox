@@ -49,6 +49,7 @@ class DialogChannelJump( BaseDialog ) :
 
 		self.SetLabelChannelNumber( )
 		self.SetLabelChannelName( )
+		self.SearchChannel()
 				
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )

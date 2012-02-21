@@ -149,7 +149,7 @@ class LivePlate(BaseWindow):
 		try :
 			ret = None
 			ret = self.mDataCache.Epgevent_GetPresent()
-			if ret :
+			if ret and ret.mEventName != 'No Name':
 				self.mEventCopy = ret
 				self.UpdateONEvent(self.mEventCopy)
 
@@ -320,15 +320,9 @@ class LivePlate(BaseWindow):
 				if aEvent.mEventId != self.mEventID :
 					ret = None
 					ret = self.mDataCache.Epgevent_GetPresent( )
-					if ret :
+					if ret and ret.mEventName != 'No Name':
 						LOG_TRACE('-----------------------')
 						#ret.printdebug()
-
-						if ret.mEventName == 'No Name' :
-							retList = []
-							retList.append(ret)
-							LOG_TRACE('ignore event, No Name[%s]'% ClassToList('convert', retList) )
-							return -1
 
 						if not self.mEventCopy or \
 						ret.mEventId != self.mEventCopy.mEventId or \
@@ -488,8 +482,9 @@ class LivePlate(BaseWindow):
 			self.mFlag_OnEvent = False
 			if self.mEventCopy == None :
 				ret = self.mCommander.Epgevent_GetPresent()
-				if ret :
+				if ret and ret.mEventName != 'No Name':
 					self.mEventCopy = ret
+
 				else :
 					#receive onEvent
 					self.mFlag_OnEvent = True
