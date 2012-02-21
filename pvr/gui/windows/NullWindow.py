@@ -94,8 +94,13 @@ class NullWindow( BaseWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 			
 
-		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
-			aKey = actionId - Action.REMOTE_0
+		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 or \
+			actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 :
+
+			aKey = id-(Action.ACTION_JUMP_SMS2-2)
+			if actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9:
+				aKey = actionId - Action.REMOTE_0
+
 			GuiLock2(True)
 			dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_CHANNEL_JUMP )
 			event = self.mDataCache.Epgevent_GetPresent()
