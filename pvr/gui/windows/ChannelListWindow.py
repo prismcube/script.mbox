@@ -570,7 +570,7 @@ class ChannelListWindow(BaseWindow):
 						#on select, clicked
 						ret = None
 						ret = self.mDataCache.Epgevent_GetPresent()
-						if ret :
+						if ret and ret.mEventName != 'No Name':
 							#LOG_TRACE('2========event id[%s] old[%s]'% (aEvent.mEventId, self.mEventId) )
 							self.mEventId = aEvent.mEventId
 
@@ -1396,8 +1396,7 @@ class ChannelListWindow(BaseWindow):
 		try :
 			if self.mIsSelect == True :
 				ret = self.mDataCache.Epgevent_GetPresent()
-				time.sleep(0.05)
-				if ret :
+				if ret and ret.mEventName != 'No Name':
 					self.mNavEpg = ret
 					ret.printdebug()
 
