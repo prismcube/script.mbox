@@ -153,7 +153,7 @@ class TunerConfigMgr( object ) :
 		config = self.GetDefaultConfig( )
 		config.mSatelliteLongitude = self.mAllSatelliteList[ aIndex ].mLongitude
 		config.mBandType = self.mAllSatelliteList[ aIndex ].mBand
-		config.printdebug()
+
 		if self.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
 			self.mConfiguredList1.append( config )
 		
@@ -208,7 +208,7 @@ class TunerConfigMgr( object ) :
 		ElisPropertyInt( 'MyLatitude', self.mCommander ).SetProp( self.mOrgMyLatitude )
 
 		# After Retore
-		self.LoadOriginalTunerConfig()
+		self.LoadOriginalTunerConfig( )
 
 
 	def SatelliteConfigSaveList( self ) :

@@ -141,6 +141,7 @@ class DataCacheMgr( object ):
 
 
 	def LoadConfiguredSatellite( self ) :
+		self.mConfiguredSatelliteList1 = []
 		self.mConfiguredSatelliteList1 = self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )
 		for configsatellite in self.mConfiguredSatelliteList1 :
 			if configsatellite == None :
@@ -150,7 +151,8 @@ class DataCacheMgr( object ):
 			elif configsatellite.mError < 0 :
 				self.mConfiguredSatelliteList1 = []
 				break
-				
+
+		self.mConfiguredSatelliteList2 = []				
 		self.mConfiguredSatelliteList2 = self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )
 		for configsatellite in self.mConfiguredSatelliteList2 :
 			if configsatellite == None :

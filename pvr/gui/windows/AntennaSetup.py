@@ -62,14 +62,18 @@ class AntennaSetup( SettingWindow ) :
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				ConfigMgr.GetInstance( ).SatelliteConfigSaveList( )
-				ConfigMgr.GetInstance( ).SetNeedLoad( True )
-				self.mDataCache.LoadConfiguredSatellite( )
-				self.mDataCache.LoadConfiguredTransponder( )
+				ret = ConfigMgr.GetInstance( ).SatelliteConfigSaveList( )
+				if ret == True :
+					ConfigMgr.GetInstance( ).SetNeedLoad( True )
+					self.mDataCache.LoadConfiguredSatellite( )
+					self.mDataCache.LoadConfiguredTransponder( )
+				else :
+					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( 'ERROR', 'Save Configuration Fail' )
+		 			dialog.doModal( )
 				
 			elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 				ConfigMgr.GetInstance( ).Restore( )
-				ConfigMgr.GetInstance( ).SetNeedLoad( True )
 				self.mDataCache.LoadConfiguredSatellite( )
 				self.mDataCache.LoadConfiguredTransponder( )
 				
