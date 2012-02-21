@@ -271,9 +271,6 @@ class TunerConfigMgr( object ) :
 	def Load( self ) :
 		# Get All Satellite List ( mLongitude, mBand, mName )
 		self.mAllSatelliteList = deepcopy( self.mDataCache.mSatelliteList )
-		for satellite in self.mAllSatelliteList :
-			satellite.printdebug()
-		
 
 		# Get Configured Satellite List Tuner 1
 		self.mConfiguredList1 = deepcopy( self.mDataCache.GetConfiguredSatellite( E_TUNER_1 ) )
