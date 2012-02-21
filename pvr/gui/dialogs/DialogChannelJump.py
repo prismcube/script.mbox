@@ -77,7 +77,7 @@ class DialogChannelJump( BaseDialog ) :
 			self.SearchChannel()
 
 		elif actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 :
-			inputNum = actionId - Action.ACTION_JUMP_SMS2 + 2
+			inputNum = actionId - (Action.ACTION_JUMP_SMS2 - 2)
 			if inputNum >= 2 and inputNum <= 9 :
 				inputString = '%d' % inputNum
 				self.mChannelNumber += inputString
