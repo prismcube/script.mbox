@@ -354,8 +354,8 @@ class DataCacheMgr( object ):
 		gmtUntil= gmtime
 		maxCount= 1
 
-		LOG_TRACE('ch[%s] sid[%d] tsid[%d] oid[%d]'% (aChannel.mNumber, aChannel.mSid, aChannel.mTsid, aChannel.mOnid) )
-		LOG_TRACE('from[%s] until[%s]'% (time.strftime("%H:%M", time.gmtime(gmtFrom)), time.strftime("%H:%M", time.gmtime(gmtFrom)) ) )
+		#LOG_TRACE('ch[%s] sid[%d] tsid[%d] oid[%d]'% (aChannel.mNumber, aChannel.mSid, aChannel.mTsid, aChannel.mOnid) )
+		#LOG_TRACE('from[%s] until[%s]'% (time.strftime("%H:%M", time.gmtime(gmtFrom)), time.strftime("%H:%M", time.gmtime(gmtFrom)) ) )
 		event = self.mCommander.Epgevent_GetList( aChannel.mSid, aChannel.mTsid, aChannel.mOnid, gmtFrom, gmtUntil, maxCount )
 		if event :
 			#from pvr.PublicReference import ClassToList
