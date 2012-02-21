@@ -139,8 +139,7 @@ class NullWindow( BaseWindow ) :
 				dialog.doModal( )
 
 		elif actionId == Action.REMOTE_1:  #TEST : bg test
-
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TEST1 )
+		"""
 
 
 	def onClick(self, aControlId) :
