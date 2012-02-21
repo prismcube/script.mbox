@@ -10,6 +10,7 @@ from pvr.gui.BaseWindow import Action
 from pvr.gui.BaseDialog import BaseDialog
 from  pvr.TunerConfigMgr import *
 from ElisEnum import ElisEnum
+import pvr.DataCacheMgr
 
 import pvr.ElisMgr
 from pvr.Util import RunThread, GuiLock, LOG_TRACE, GuiLock2
@@ -39,6 +40,8 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mConfiguredSatelliteList = []
 		self.mLongitude = 0
 		self.mBand = 0
+
+		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 
 	def onInit( self ):
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -285,4 +288,7 @@ class DialogChannelSearch( BaseDialog ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( 'Infomation', searchResult )
 		dialog.doModal( )
+
+		if tvCount != 0 or radioCount != 0 :
+			self.mDataCache.Load()
 

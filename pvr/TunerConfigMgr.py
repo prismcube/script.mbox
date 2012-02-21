@@ -237,23 +237,20 @@ class TunerConfigMgr( object ) :
 		if self.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER and tunerType != E_ONE_CABLE:
 		
 			self.mConfiguredList2 = deepcopy( self.mConfiguredList1 )
-
-
 			count = len ( self.mConfiguredList2 )
 			for i in range( count ) :
 				self.mConfiguredList2[i].mTunerIndex = E_TUNER_2
-
 
 		count = len ( self.mConfiguredList1 )
 		for i in range( count ) :
 			self.mConfiguredList1[i].mSlotNumber = i
 		
-
 		count = len ( self.mConfiguredList2 )
 		for i in range( count ) :
 			self.mConfiguredList2[i].mSlotNumber = i
 
 		""" FOR TEST """
+		print '=====dhkim test Satellite save list===='
 		for satellite in self.mConfiguredList1 :
 			satellite.printdebug()
 		
@@ -262,14 +259,20 @@ class TunerConfigMgr( object ) :
 		
 		ret1 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList1 )
 		ret2 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList2 )
-		if ret1 == False or ret2 == False :
+
+		if ret1 == True and ret2 == True :
+			return True
+		elif ret1 == False or ret2 == False :
 			self.mCommander.Satelliteconfig_SaveList( self.mDataCache.GetConfiguredSatellite( E_TUNER_1 ) )
 			self.mCommander.Satelliteconfig_SaveList( self.mDataCache.GetConfiguredSatellite( E_TUNER_2 ) )
+			return False
 			
 
 	def Load( self ) :
 		# Get All Satellite List ( mLongitude, mBand, mName )
 		self.mAllSatelliteList = deepcopy( self.mDataCache.mSatelliteList )
+		for satellite in self.mAllSatelliteList :
+			satellite.printdebug()
 		
 
 		# Get Configured Satellite List Tuner 1

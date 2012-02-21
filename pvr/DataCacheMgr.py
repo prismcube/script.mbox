@@ -143,6 +143,7 @@ class DataCacheMgr( object ):
 	def LoadConfiguredSatellite( self ) :
 		self.mConfiguredSatelliteList1 = []
 		self.mConfiguredSatelliteList1 = self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )
+		print 'dhkim test satllite = %s' % self.mConfiguredSatelliteList1
 		for configsatellite in self.mConfiguredSatelliteList1 :
 			if configsatellite == None :
 				self.mConfiguredSatelliteList1 = []
@@ -154,6 +155,7 @@ class DataCacheMgr( object ):
 
 		self.mConfiguredSatelliteList2 = []				
 		self.mConfiguredSatelliteList2 = self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )
+		print 'dhkim test satllite = %s' % self.mConfiguredSatelliteList2
 		for configsatellite in self.mConfiguredSatelliteList2 :
 			if configsatellite == None :
 				self.mConfiguredSatelliteList2 = []
