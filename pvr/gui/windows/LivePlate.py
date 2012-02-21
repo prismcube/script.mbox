@@ -51,6 +51,7 @@ PREV_EPG 				= 1
 
 NEXT_CHANNEL			= 0
 PREV_CHANNEL			= 1
+CURR_CHANNEL			= 2
 
 
 class LivePlate(BaseWindow):
@@ -132,6 +133,7 @@ class LivePlate(BaseWindow):
 		self.mEventCopy = None
 		self.mEPGList = None
 		self.mEPGListIdx = 0
+		self.mJumpNumber = 0
 
 		self.GetEPGList()
 		self.UpdateServiceType( self.mCurrentChannel.mServiceType )
@@ -147,7 +149,7 @@ class LivePlate(BaseWindow):
 		try :
 			ret = None
 			ret = self.mDataCache.Epgevent_GetPresent()
-			if ret :
+			if ret and ret.mEventName != 'No Name':
 				self.mEventCopy = ret
 				self.UpdateONEvent(self.mEventCopy)
 
@@ -168,8 +170,10 @@ class LivePlate(BaseWindow):
 
 		id = aAction.getId()
 		self.GlobalAction( id )
+		if id >= Action.REMOTE_0 and id <= Action.REMOTE_9:
+			self.KeySearch( id-Action.REMOTE_0 )
 
-		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
+		elif id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
 			self.StopAutomaticHide()
 			self.SetAutomaticHide( False )
 
@@ -316,7 +320,7 @@ class LivePlate(BaseWindow):
 				if aEvent.mEventId != self.mEventID :
 					ret = None
 					ret = self.mDataCache.Epgevent_GetPresent( )
-					if ret :
+					if ret and ret.mEventName != 'No Name':
 						LOG_TRACE('-----------------------')
 						#ret.printdebug()
 
@@ -399,9 +403,47 @@ class LivePlate(BaseWindow):
 			self.InitLabelInfo()			
 			self.RestartAsyncTune()
 
+		elif aDir == CURR_CHANNEL:
+			jumpChannel = self.mDataCache.Channel_GetCurr( self.mJumpNumber )
+
+			if jumpChannel == None or jumpChannel.mError != 0 :
+				return
+
+			self.mFakeChannel = jumpChannel
+			self.UpdateServiceType( self.mFakeChannel.mServiceType )
+			self.InitLabelInfo()			
+			self.RestartAsyncTune()
+
 		if self.mAutomaticHide == True :
 			self.RestartAutomaticHide()
 
+
+	def EPGListMove( self ) :
+		LOG_TRACE( 'Enter' )
+
+		try :
+
+			LOG_TRACE('ch[%s] len[%s] idx[%s]'% (self.mCurrentChannel.mNumber, len(self.mEPGList),self.mEPGListIdx) )
+			ret = self.mEPGList[self.mEPGListIdx]
+
+			if ret :
+				self.InitLabelInfo()
+				GuiLock2(True)
+				self.mEventCopy = ret
+				self.mFlag_OnEvent = False
+				GuiLock2(False)
+
+				self.UpdateServiceType( self.mCurrentChannel.mServiceType )
+				self.UpdateONEvent( self.mEventCopy )
+
+				retList = []
+				retList.append( self.mEventCopy )
+				LOG_TRACE( 'idx[%s] epg[%s]'% (self.mEPGListIdx, ClassToList( 'convert', retList )) )
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
+
+		LOG_TRACE( 'Leave' )
 
 	def EPGNavigation(self, aDir ):
 		LOG_TRACE('Enter')
@@ -440,8 +482,9 @@ class LivePlate(BaseWindow):
 			self.mFlag_OnEvent = False
 			if self.mEventCopy == None :
 				ret = self.mCommander.Epgevent_GetPresent()
-				if ret :
+				if ret and ret.mEventName != 'No Name':
 					self.mEventCopy = ret
+
 				else :
 					#receive onEvent
 					self.mFlag_OnEvent = True
@@ -450,8 +493,12 @@ class LivePlate(BaseWindow):
 			if self.mCurrentChannel :
 				self.mEPGList = None
 				ichannel = self.mCurrentChannel
+
+				#Live EPG
 				#gmtime = self.mDataCache.Datetime_GetGMTTime()
+				#test Stream
 				gmtFrom  = self.mEventCopy.mStartTime
+
 				gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
 				maxCount = 100
 				ret = None
@@ -716,7 +763,7 @@ class LivePlate(BaseWindow):
 
 			self.mCtrlProgress.setPercent(0)
 			self.mEventCopy = None
-			self.mCtrlLblChannelNumber.setLabel( '%d' %self.mFakeChannel.mNumber )
+			self.mCtrlLblChannelNumber.setLabel( '%s'% self.mFakeChannel.mNumber )
 			self.mCtrlLblChannelName.setLabel( self.mFakeChannel.mName )
 			self.mCtrlLblLongitudeInfo.setLabel('')
 			self.mCtrlLblEventName.setLabel('')
@@ -831,7 +878,7 @@ class LivePlate(BaseWindow):
 
 			GuiLock2(True)
 			if  runningCount < 2 :
-				dialog = diamgr.GetInstance().GetDialog( diamgr.DIALOG_ID_START_RECORD )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 				dialog.doModal()
 			else:
 				msg = 'Already %d recording(s) running' %runningCount
@@ -844,7 +891,7 @@ class LivePlate(BaseWindow):
 
 			if  runningCount > 0 :
 				GuiLock2(True)
-				dialog = diamgr.GetInstance().GetDialog( diamgr.DIALOG_ID_STOP_RECORD )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
 				dialog.doModal()
 				GuiLock2(False)
 			
@@ -938,50 +985,29 @@ class LivePlate(BaseWindow):
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-
-	"""
-	def RestartAsyncEPG( self ) :
-		self.StopAsyncEPG( )
-		self.StartAsyncEPG( )
-
-	def StartAsyncEPG( self ) :
-		self.mAsyncEPGTimer = threading.Timer( 0.2, self.AsyncTuneEPG ) 				
-		self.mAsyncEPGTimer.start()
-
-	def StopAsyncEPG( self ) :
-		if self.mAsyncEPGTimer	and self.mAsyncEPGTimer.isAlive() :
-			self.mAsyncEPGTimer.cancel()
-			del self.mAsyncEPGTimer
-
-		self.mAsyncEPGTimer  = None
-	"""
-
-
-	#def AsyncTuneEPG( self ) :
-	def EPGListMove( self ) :
+	def KeySearch( self, aKey ) :
 		LOG_TRACE( 'Enter' )
 
-		try :
+		self.mFlag_OnEvent = False
 
-			LOG_TRACE('ch[%s] len[%s] idx[%s]'% (self.mCurrentChannel.mNumber, len(self.mEPGList),self.mEPGListIdx) )
-			ret = self.mEPGList[self.mEPGListIdx]
+		GuiLock2(True)
+		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
+		if self.mEventCopy:
+			dialog.SetDialogProperty( str(aKey), 9999, None, self.mEventCopy.mStartTime)
+		else :
+			dialog.SetDialogProperty( str(aKey), 9999, None)
+		dialog.doModal()
+		GuiLock2(False)
 
-			if ret :
-				self.InitLabelInfo()
-				GuiLock2(True)
-				self.mEventCopy = ret
-				self.mFlag_OnEvent = False
-				GuiLock2(False)
+		self.mFlag_OnEvent = True
 
-				self.UpdateServiceType( self.mCurrentChannel.mServiceType )
-				self.UpdateONEvent( self.mEventCopy )
+		inputNumber = dialog.GetChannelLast()
+		LOG_TRACE('=========== Jump chNum[%s]'% inputNumber)
 
-				retList = []
-				retList.append( self.mEventCopy )
-				LOG_TRACE( 'idx[%s] epg[%s]'% (self.mEPGListIdx, ClassToList( 'convert', retList )) )
+		self.mJumpNumber = int(inputNumber)
+		self.ChannelTune(CURR_CHANNEL)
 
-		except Exception, e :
-			LOG_TRACE( 'Error exception[%s]'% e )
 
 		LOG_TRACE( 'Leave' )
+	
 

@@ -63,6 +63,8 @@ E_TAG_COLOR_GREY  = '[COLOR grey]'
 E_TAG_COLOR_GREY3 = '[COLOR grey3]'
 E_TAG_COLOR_END   = '[/COLOR]'
 
+FLAG_MODE_JUMP   = True
+
 class ChannelListWindow(BaseWindow):
 
 	def __init__(self, *args, **kwargs):
@@ -212,7 +214,10 @@ class ChannelListWindow(BaseWindow):
 
 		self.GlobalAction( id )		
 
-		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
+		if id >= Action.REMOTE_0 and id <= Action.REMOTE_9:
+			self.KeySearch( id-Action.REMOTE_0 )
+
+		elif id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
 			#LOG_TRACE( 'goto previous menu' )
 			self.SetGoBackWindow()
 
@@ -565,7 +570,7 @@ class ChannelListWindow(BaseWindow):
 						#on select, clicked
 						ret = None
 						ret = self.mDataCache.Epgevent_GetPresent()
-						if ret :
+						if ret and ret.mEventName != 'No Name':
 							#LOG_TRACE('2========event id[%s] old[%s]'% (aEvent.mEventId, self.mEventId) )
 							self.mEventId = aEvent.mEventId
 
@@ -595,14 +600,35 @@ class ChannelListWindow(BaseWindow):
 		#LOG_TRACE( 'Leave' )
 
 
-	def SetChannelTune( self ) :
+	def SetChannelTune( self, aJumpNumber = None ) :
 		LOG_TRACE( 'Enter' )
 
 		#Turn in
 		self.mIsSelect = True
 
-		label = self.mCtrlListCHList.getSelectedItem().getLabel()
-		channelNumbr = ParseLabelToCh( self.mViewMode, label )
+		if aJumpNumber:
+			#detected to jump focus
+			chindex = 0;
+			for ch in self.mChannelList:
+				if ch.mNumber == aJumpNumber :
+					self.mNavChannel = ch
+					self.ResetLabel()
+					self.UpdateLabelInfo()
+					self.PincodeDialogLimit()
+					break
+				chindex += 1
+
+			GuiLock2(True)
+			self.mCtrlListCHList.selectItem( chindex )
+			xbmc.sleep(50)
+			GuiLock2(False)
+
+			channelNumbr = aJumpNumber
+			label = 'JumpChannel'
+
+		else:
+			label = self.mCtrlListCHList.getSelectedItem().getLabel()
+			channelNumbr = ParseLabelToCh( self.mViewMode, label )
 		LOG_TRACE( 'label[%s] ch[%d] pin[%s]'% (label, channelNumbr, self.mPincodeEnter) )
 
 		ret = False
@@ -635,6 +661,10 @@ class ChannelListWindow(BaseWindow):
 			#self.mCtrlSelectItem.setLabel(str('%s / %s'% (self.mCtrlListCHList.getSelectedPosition()+1, len(self.mListItems))) )
 			#self.mCtrlSelectItem.setLabel( str('([COLOR=blue]%s[/COLOR]'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
 			self.mCtrlSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
+
+			if aJumpNumber :
+				return 
+
 			self.ResetLabel()
 			self.UpdateLabelInfo()
 			self.PincodeDialogLimit()
@@ -983,7 +1013,7 @@ class ChannelListWindow(BaseWindow):
 
 					#save zapping mode
 					ret = self.mCommander.Zappingmode_SetCurrent( retList )
-					LOG_TRACE( '=========set zappingmode_SetCurrent[%s]'% ret )
+					LOG_TRACE( 'set zappingmode_SetCurrent[%s]'% ret )
 					if ret :
 						#### data cache re-load ####
 						self.mDataCache.Load()
@@ -991,6 +1021,10 @@ class ChannelListWindow(BaseWindow):
 
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
+
+		else:
+			#channel sync
+			self.mDataCache.mCurrentChannel = self.mNavChannel
 
 		return ret
 
@@ -1362,8 +1396,7 @@ class ChannelListWindow(BaseWindow):
 		try :
 			if self.mIsSelect == True :
 				ret = self.mDataCache.Epgevent_GetPresent()
-				time.sleep(0.05)
-				if ret :
+				if ret and ret.mEventName != 'No Name':
 					self.mNavEpg = ret
 					ret.printdebug()
 
@@ -2478,4 +2511,31 @@ class ChannelListWindow(BaseWindow):
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
-		
+
+
+	def KeySearch( self, aKey ) :
+		LOG_TRACE( 'Enter' )
+
+		if self.mChannelList == None:
+			return -1
+
+		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW:
+
+			GuiLock2(True)
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
+			if self.mNavEpg:
+				dialog.SetDialogProperty( str(aKey), 9999, self.mChannelList, self.mNavEpg.mStartTime )
+			else :
+				dialog.SetDialogProperty( str(aKey), 9999, self.mChannelList)
+			dialog.doModal()
+			GuiLock2(False)
+
+
+			inputNumber = dialog.GetChannelLast()
+			LOG_TRACE('=========== Jump chNum[%s]'% inputNumber)
+
+			self.SetChannelTune( int(inputNumber) )
+
+
+		LOG_TRACE( 'Leave' )
+

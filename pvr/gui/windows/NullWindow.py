@@ -8,7 +8,7 @@ import pvr.TunerConfigMgr as ConfigMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
 from inspect import currentframe
 import pvr.ElisMgr
-from pvr.Util import LOG_TRACE, LOG_ERR, LOG_WARN, RunThread
+from pvr.Util import GuiLock2, LOG_TRACE, LOG_ERR, LOG_WARN, RunThread
 from pvr.gui.GuiConfig import *
 
 
@@ -16,6 +16,7 @@ class NullWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mAsyncShowTimer = None
+
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -92,6 +93,29 @@ class NullWindow( BaseWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 			
 
+		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
+			aKey = actionId - Action.REMOTE_0
+			GuiLock2(True)
+			dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_CHANNEL_JUMP )
+			event = self.mDataCache.Epgevent_GetPresent()
+			if event:
+				dialog.SetDialogProperty( str(aKey), 9999, None, event.mStartTime)
+			else :
+				dialog.SetDialogProperty( str(aKey), 9999, None)
+			dialog.doModal()
+			GuiLock2(False)
+
+			inputNumber = dialog.GetChannelLast()
+			LOG_TRACE('=========== Jump chNum[%s]'% inputNumber)
+
+			jumpChannel = self.mDataCache.Channel_GetCurr( int(inputNumber) )
+			if jumpChannel :
+				self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType )
+
+		else:
+			print 'lael98 check ation unknown id=%d' %actionId
+
+		"""
 		elif actionId == Action.REMOTE_3:  #TEST : start Record
 			print 'open record dialog'
 			
@@ -115,17 +139,8 @@ class NullWindow( BaseWindow ) :
 				dialog.doModal( )
 
 		elif actionId == Action.REMOTE_1:  #TEST : bg test
+
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TEST1 )
-
-
-		elif actionId == Action.ACTION_PAGE_UP:
-			pass
-
-		elif actionId == Action.ACTION_PAGE_DOWN:
-			pass
-
-		else:
-			print 'lael98 check ation unknown id=%d' %actionId
 
 
 	def onClick(self, aControlId) :
