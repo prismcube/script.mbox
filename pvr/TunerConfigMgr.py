@@ -260,9 +260,12 @@ class TunerConfigMgr( object ) :
 		for satellite in self.mConfiguredList2 :
 			satellite.printdebug()
 		
-		ret = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList1 )
-		ret = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList2 )
-
+		ret1 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList1 )
+		ret2 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList2 )
+		if ret1 == False or ret2 == False :
+			self.mCommander.Satelliteconfig_SaveList( self.mDataCache.GetConfiguredSatellite( E_TUNER_1 ) )
+			self.mCommander.Satelliteconfig_SaveList( self.mDataCache.GetConfiguredSatellite( E_TUNER_2 ) )
+			
 
 	def Load( self ) :
 		# Get All Satellite List ( mLongitude, mBand, mName )
