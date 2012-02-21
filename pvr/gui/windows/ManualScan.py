@@ -43,9 +43,11 @@ class ManualScan( SettingWindow ) :
 		self.LoadTransponderList( )
 		self.SetConfigTransponder( )
 
+		self.mCtrlMainGroup.setVisible( False )
 		self.InitConfig( )
+		self.mCtrlMainGroup.setVisible( True )
 		
-		self.ShowDescription( self.getFocusId( ) )
+		self.ShowDescription( )
 		self.mInitialized = True
 
 		
@@ -73,11 +75,11 @@ class ManualScan( SettingWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			self.ShowDescription( focusId )
+			self.ShowDescription( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
-			self.ShowDescription( focusId )
+			self.ShowDescription( )
 			
 
 	def onClick( self, aControlId ) :
@@ -184,7 +186,7 @@ class ManualScan( SettingWindow ) :
 			return
 
 		if self.mLastFocused != aControlId :
-			self.ShowDescription( aControlId )
+			self.ShowDescription( )
 			self.mLastFocused = aControlId
 
 
@@ -199,7 +201,6 @@ class ManualScan( SettingWindow ) :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Has no configured satellite' )
 
 		else :
-			self.mCtrlMainGroup.setVisible( False )
 			self.AddInputControl( E_Input01, 'Satellite', self.mFormattedSatelliteList[ self.mSatelliteIndex ], 'Select satellite' )
 			self.AddUserEnumControl( E_SpinEx01, 'Custom Setup', USER_ENUM_LIST_ON_OFF, self.mIsManualSetup )
 
@@ -233,15 +234,15 @@ class ManualScan( SettingWindow ) :
 
 			self.InitControl( )
 			self.DisableControl( )
-			self.mCtrlMainGroup.setVisible( True )
+
 
 	def LoadFormattedSatelliteNameList( self ) :
 
 		configuredSatelliteList1 = []
-		configuredSatelliteList1 = self.mDataCache.mConfiguredSatelliteList1
+		configuredSatelliteList1 = self.mDataCache.GetConfiguredSatellite( E_TUNER_1 )
 
 		configuredSatelliteList2 = []
-		configuredSatelliteList2 = self.mDataCache.mConfiguredSatelliteList2
+		configuredSatelliteList2 = self.mDataCache.GetConfiguredSatellite( E_TUNER_2 )
 
 		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander )
 

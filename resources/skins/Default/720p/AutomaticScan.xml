@@ -1,8 +1,8 @@
 <window id="3013">
-	<defaultcontrol always="true">9000</defaultcontrol>
+	<defaultcontrol always="false">9000</defaultcontrol>
 	<allowoverlay>no</allowoverlay>
 	<controls>
-		<include>DefaultSettingHeaderWindow</include>	
+		<include>DefaultSettingHeaderWindow</include>
 		<control type="group" id="9000">
 			<posx>80</posx>
 			<posy>110</posy>

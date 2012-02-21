@@ -8,7 +8,7 @@ from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import BaseWindow, Action
 from inspect import currentframe
 import pvr.ElisMgr
-from pvr.Util import GuiLock, LOG_TRACE
+from pvr.Util import LOG_TRACE, LOG_ERR, LOG_WARN, RunThread
 
 LIST_ID_MAIN_MENU				= 9000
 BUTTON_ID_INSTALLATION			= 90100
@@ -28,43 +28,35 @@ BUTTON_ID_CAS					= 90107
 
 
 class MainMenu( BaseWindow ) :
-	def __init__( self, *args, **kwargs ):
+	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mStartMediaCenter = False
+		
 
 	def onInit( self ) :
-		try :
-			self.mWinId = xbmcgui.getCurrentWindowId()
-			self.mWin = xbmcgui.Window( self.mWinId )
-			self.mCtrlMainMenu = self.getControl( LIST_ID_MAIN_MENU )
-			WinMgr.GetInstance().CheckSkinChange( )
-			if self.mStartMediaCenter == True :
-				self.mCommander.AppMediaPlayer_Control( 0 )
-				self.mStartMediaCenter = False
-		except Exception, ex:
-			LOG_TRACE( 'ERR Exception' )
+		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWin = xbmcgui.Window( self.mWinId )
+		self.mCtrlMainMenu = self.getControl( LIST_ID_MAIN_MENU )
+		WinMgr.GetInstance().CheckSkinChange( )
+		if self.mStartMediaCenter == True :
+			self.mCommander.AppMediaPlayer_Control( 0 )
+			self.mStartMediaCenter = False
 
 
 	def onAction( self, aAction ) :
-		#LOG_TRACE('')
 		actionId = aAction.getId( )
-		#focusId = self.getFocusId( )
-
-		#self.GlobalAction( actionId )		
+		self.GlobalAction( actionId )
 		
-		#LOG_TRACE( "MainMenu onAction(): focusId %d" % focusId )
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 
 		elif actionId == Action.ACTION_PARENT_DIR :			
-			try :
-				self.close()
-			except Exception, ex:
-				LOG_TRACE( 'ERR Exception' )
+			self.close( )
 
-	def onClick( self, aControlId ):
+
+	def onClick( self, aControlId ) :
 		LOG_TRACE("MainMenu onclick(): control %d" % aControlId )
 		if aControlId == LIST_ID_MAIN_MENU :
 			pass
@@ -90,7 +82,6 @@ class MainMenu( BaseWindow ) :
 			#dialog.SetDialogProperty( '0', 1005 )
 			#dialog.doModal( )
 
-			
 			
 		elif aControlId == BUTTON_ID_INSTALLATION :
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_INSTALLATION )
@@ -142,4 +133,4 @@ class MainMenu( BaseWindow ) :
 	def onFocus( self, aControlId ):
 		LOG_TRACE('')
 		pass
-
+		

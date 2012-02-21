@@ -25,12 +25,12 @@ class AutomaticScan( SettingWindow ) :
 		self.mFormattedList = []
 		self.mConfiguredSatelliteList = []		
 		
-		self.LoadFormattedSatelliteNameList()
+		self.LoadFormattedSatelliteNameList( )
 		self.InitConfig( )
-		self.ShowDescription( self.getFocusId( ) )
+		self.ShowDescription( )
 		self.mInitialized = True
-
 		
+
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
@@ -53,14 +53,14 @@ class AutomaticScan( SettingWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			self.ShowDescription( focusId )
+			self.ShowDescription( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
-			self.ShowDescription( focusId )
+			self.ShowDescription( )
 			
 
-	def onClick( self, aControlId ):
+	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
 		
 		# Satellite
@@ -97,7 +97,7 @@ class AutomaticScan( SettingWindow ) :
 			return
 
 		if self.mLastFocused != aControlId :
-			self.ShowDescription( aControlId )
+			self.ShowDescription( )
 			self.mLastFocused = aControlId
 
 
@@ -120,10 +120,10 @@ class AutomaticScan( SettingWindow ) :
 	def LoadFormattedSatelliteNameList( self ) :
 		
 		configuredSatelliteList1 = []
-		configuredSatelliteList1 = self.mDataCache.mConfiguredSatelliteList1
+		configuredSatelliteList1 = self.mDataCache.GetConfiguredSatellite( E_TUNER_1 )
 
 		configuredSatelliteList2 = []
-		configuredSatelliteList2 = self.mDataCache.mConfiguredSatelliteList2
+		configuredSatelliteList2 = self.mDataCache.GetConfiguredSatellite( E_TUNER_2 )
 
 		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander )
 

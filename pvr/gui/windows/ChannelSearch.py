@@ -13,7 +13,7 @@ class ChannelSearch( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
 
-			
+
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
@@ -25,10 +25,10 @@ class ChannelSearch( SettingWindow ) :
 		self.AddInputControl( E_Input02, 'Manual Scan', '', 'Running manual scan.' )
 
 		self.InitControl( )
-		self.ShowDescription( self.getFocusId( ) )
+		self.ShowDescription( )
 		self.mInitialized = True
 
-		
+
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
@@ -54,12 +54,12 @@ class ChannelSearch( SettingWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			self.ShowDescription( focusId )
+			self.ShowDescription( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
-			self.ShowDescription( focusId )
-			
+			self.ShowDescription( )
+
 
 	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
@@ -87,7 +87,7 @@ class ChannelSearch( SettingWindow ) :
 			return
 
 		if self.mLastFocused != aControlId :
-			self.ShowDescription( aControlId )
+			self.ShowDescription( )
 			self.mLastFocused = aControlId
 
 

@@ -11,7 +11,7 @@ import pvr.DataCacheMgr
 import thread
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
 
-class Action(object):
+class Action(object) :
 	ACTION_NONE					= 0
 	ACTION_MOVE_LEFT			= 1		#Left Arrow
 	ACTION_MOVE_RIGHT			= 2		#Right Arrow
@@ -60,14 +60,14 @@ class Action(object):
 	ACTION_JUMP_SMS9			= 149
 	
 
-class Property(object):
+class Property(object) :
 
-	def GetListItemProperty(self, aListItem, aName):
+	def GetListItemProperty(self, aListItem, aName) :
 		p = aListItem.getProperty(aName)
 		if p is not None:
 			return p.decode('utf-8')
 
-	def SetListItemProperty(self, aListItem, aName, aValue):
+	def SetListItemProperty(self, aListItem, aName, aValue) :
 		if aListItem and aName and not aValue is None:
 			aListItem.setProperty(aName, aValue)
 		else:
@@ -82,6 +82,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mWinId = 0
 		self.mClosed = False
 
+		self.mFocusId = -1
 		self.mLastFocused = -1
 		self.mInitialized = False
 		
@@ -90,9 +91,9 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		
 
-	def GetFocusId( self ):
+	def GetFocusId( self ) :
 		GuiLock2( True )
-		self.mFocusId = self.getFocusId()
+		self.mFocusId = self.getFocusId( )
 		GuiLock2( False )
 
 
@@ -154,7 +155,7 @@ class SettingWindow( BaseWindow ) :
 		self.mControlList = []
 
 
-	def InitControl( self ):
+	def InitControl( self ) :
 		pos = 0
 		for ctrlItem in self.mControlList:
 			if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL :
@@ -177,7 +178,7 @@ class SettingWindow( BaseWindow ) :
 			self.getControl( ctrlItem.mControlId ).setPosition( 0, pos )
 
 
-	def ResetAllControl( self ):
+	def ResetAllControl( self ) :
 		del self.mControlList[:]
 
 
@@ -212,10 +213,10 @@ class SettingWindow( BaseWindow ) :
 		return len( self.mControlList )
 
 
-	def AddEnumControl( self, aControlId, aPropName, aTitleLabel=None, aDescription=None ):
+	def AddEnumControl( self, aControlId, aPropName, aTitleLabel=None, aDescription=None ) :
 		property = ElisPropertyEnum( aPropName, self.mCommander )
 		listItems = []
-		for i in range( property.GetIndexCount() ):
+		for i in range( property.GetIndexCount() ) :
 			if aTitleLabel == None :
 				listItem = xbmcgui.ListItem( property.GetName(), property.GetPropStringByIndex( i ) )
 			else :
@@ -227,7 +228,7 @@ class SettingWindow( BaseWindow ) :
 	def AddUserEnumControl( self, aControlId, aTitleLabel, aInputType, aSelectItem, aDescription=None ) :	
 		listItems = []
 
-		for i in range( len( aInputType ) ):
+		for i in range( len( aInputType ) ) :
 			listItem = xbmcgui.ListItem( aTitleLabel, aInputType[i] )
 			listItems.append( listItem )
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_USER_ENUM_CONTROL, aControlId, None, listItems, int( aSelectItem ), aDescription ) )
@@ -240,19 +241,20 @@ class SettingWindow( BaseWindow ) :
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, aControlId, None, listItems, None, aDescription ) )
 
 
-	def ShowDescription( self, aControlId ):
+	def ShowDescription( self ) :
+		self.GetFocusId( )
 		count = len( self.mControlList )
 
 		for i in range( count ) :
 			ctrlItem = self.mControlList[i]		
-			if self.HasControlItem( ctrlItem, aControlId ) :
+			if self.HasControlItem( ctrlItem, self.mFocusId ) :
 				if ctrlItem.mDescription == None :
 					return False
 				self.getControl( E_SETTING_DESCRIPTION ).setLabel( ctrlItem.mDescription )
 		return False
 
 
-	def HasControlItem( self, aCtrlItem, aContgrolId  ):
+	def HasControlItem( self, aCtrlItem, aContgrolId  ) :
 		if aCtrlItem.mControlType == aCtrlItem.E_SETTING_ENUM_CONTROL or aCtrlItem.mControlType == aCtrlItem.E_SETTING_USER_ENUM_CONTROL :
 			if aCtrlItem.mControlId == aContgrolId or aCtrlItem.mControlId + 1 == aContgrolId or aCtrlItem.mControlId + 2 == aContgrolId or aCtrlItem.mControlId + 3 == aContgrolId  :
 				return True
@@ -265,7 +267,7 @@ class SettingWindow( BaseWindow ) :
 
 		return False
 
-	def GetPrevId( self, aControlId ):
+	def GetPrevId( self, aControlId ) :
 		count = len( self.mControlList )
 		prevId = -1
 		found = False
@@ -284,7 +286,7 @@ class SettingWindow( BaseWindow ) :
 
 		return prevId
 
-	def GetNextId( self, aControlId ):
+	def GetNextId( self, aControlId ) :
 		count = len( self.mControlList )
 		nextId = -1
 		found = False
@@ -422,25 +424,25 @@ class SettingWindow( BaseWindow ) :
 
 	def ControlSelect( self ) :
 	
-		focusId = self.getFocusId( )
+		self.GetFocusId( )
 		count = len( self.mControlList )
 
 		for i in range( count ) :
 			ctrlItem = self.mControlList[i]		
-			if self.HasControlItem( ctrlItem, focusId ) :
+			if self.HasControlItem( ctrlItem, self.mFocusId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL :
 					control = self.getControl( ctrlItem.mControlId + 3 )
 					time.sleep( 0.02 )
-					ctrlItem.mProperty.SetPropIndex( control.getSelectedPosition() )
+					ctrlItem.mProperty.SetPropIndex( control.getSelectedPosition( ) )
 					return True
 					
 		return False
 
 
-	def ControlUp( self ):
+	def ControlUp( self ) :
 
-		focusId = self.getFocusId( )
-		groupId = self.GetGroupId( focusId )
+		self.GetFocusId( )
+		groupId = self.GetGroupId( self.mFocusId )
 		prevId = self.GetPrevId( groupId )
 
 		if prevId > 0 and groupId != prevId :
@@ -450,10 +452,10 @@ class SettingWindow( BaseWindow ) :
 		return False
 
 
-	def ControlDown( self ):
+	def ControlDown( self ) :
 
-		focusId = self.getFocusId( )
-		groupId = self.GetGroupId( focusId )
+		self.GetFocusId( )
+		groupId = self.GetGroupId( self.mFocusId )
 		nextId = self.GetNextId( groupId )
 
 		if nextId > 0 and groupId != nextId :
@@ -462,31 +464,31 @@ class SettingWindow( BaseWindow ) :
 
 		return False
 
-	def ControlLeft( self ):
+	def ControlLeft( self ) :
 
-		focusId = self.getFocusId( )
+		self.GetFocusId( )
 		count = len( self.mControlList )
 
 		for i in range( count ) :
 			ctrlItem = self.mControlList[i]		
-			if self.HasControlItem( ctrlItem, focusId ) :
+			if self.HasControlItem( ctrlItem, self.mFocusId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
-					if focusId % 10 == 2 :
-						self.setFocusId( focusId - 1 )
+					if self.mFocusId % 10 == 2 :
+						self.setFocusId( self.mFocusId - 1 )
 						return
 
 
-	def ControlRight( self ):
+	def ControlRight( self ) :
 
-		focusId = self.getFocusId( )
+		self.GetFocusId( )
 		count = len( self.mControlList )
 
 		for i in range( count ) :
 			ctrlItem = self.mControlList[i]		
-			if self.HasControlItem( ctrlItem, focusId ) :
+			if self.HasControlItem( ctrlItem, self.mFocusId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
-					if focusId % 10 == 1 :
-						self.setFocusId( focusId + 1 )
+					if self.mFocusId % 10 == 1 :
+						self.setFocusId( self.mFocusId + 1 )
 						return
 
 
@@ -504,7 +506,7 @@ class SettingWindow( BaseWindow ) :
 
 		return False
 
-	def SetProp( self, aControlId, aValue ):
+	def SetProp( self, aControlId, aValue ) :
 	
 		count = len( self.mControlList )
 

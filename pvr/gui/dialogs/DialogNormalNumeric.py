@@ -20,7 +20,6 @@ E_HEADER_LABEL			= 101
 class DialogNormalNumeric( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
-		
 		self.mInputLabel = ''
 		self.mTitleLabel = ''
 		self.mCtrlEditLabel = None
@@ -72,7 +71,8 @@ class DialogNormalNumeric( BaseDialog ) :
 			self.mInputKey = aAction
 			self.CloseDialog()
 
-	def onClick( self, aControlId ):
+
+	def onClick( self, aControlId ) :
 		focusId = self.getFocusId( )
 
 		LOG_TRACE('focus=%d' %focusId )
