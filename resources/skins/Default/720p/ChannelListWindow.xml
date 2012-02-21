@@ -349,22 +349,19 @@
 			<control type="group">
 				<control type="image">
 					<posx>0</posx>
-					<posy>199</posy>
+					<posy>220</posy>
 					<width>352</width>
 					<height>18</height>
 					<texture border="20">confluence/StackNF.png</texture>
-					<!--<texture border="20">media-overlay.png</texture>-->
 				</control>
 				<control type="label" id="303">
 					<posx>0</posx>
-					<posy>200</posy>
+					<posy>217</posy>
 					<width>352</width>
 					<height>10</height>
 					<font>font12_title</font>
-					<!--shadowcolor>ff000000</shadowcolor>
-					<backgroundcolor>ffff0000</backgroundcolor-->
 					<label>$INFO[Control.GetLabel]</label>
-					<description>epg name</description>
+					<description>ch name</description>
 				</control>
 			</control>
 			<control type="group">
