@@ -862,15 +862,11 @@ class ChannelListWindow(BaseWindow):
 		idx2 = 0
 
 		if mode == FLAG_SLIDE_INIT :
-			try :
-				#LOG_TRACE( 'len[%s]'% len(self.mElisZappingModeInfo) )
-				self.mElisZappingModeInfo.printdebug()
-				#LOG_TRACE( 'satellite[%s]'% ClassToList( 'convert', self.mListSatellite ) )
-				#LOG_TRACE( 'ftacas[%s]'   % ClassToList( 'convert', self.mListCasList ) )
-				#LOG_TRACE( 'favorite[%s]' % ClassToList( 'convert', self.mListFavorite ) )
 
-			except Exception, e:
-				LOG_TRACE( '[%s:%s]Error exception[%s]'% e )
+			#self.mElisZappingModeInfo.printdebug()
+			#LOG_TRACE( 'satellite[%s]'% ClassToList( 'convert', self.mListSatellite ) )
+			#LOG_TRACE( 'ftacas[%s]'   % ClassToList( 'convert', self.mListCasList ) )
+			#LOG_TRACE( 'favorite[%s]' % ClassToList( 'convert', self.mListFavorite ) )
 
 			_mode = self.mElisZappingModeInfo.mMode
 			_sort = self.mElisZappingModeInfo.mSortingMode
@@ -1402,7 +1398,7 @@ class ChannelListWindow(BaseWindow):
 				ret = self.mDataCache.Epgevent_GetPresent()
 				if ret and ret.mEventName != 'No Name':
 					self.mNavEpg = ret
-					ret.printdebug()
+					#ret.printdebug()
 
 			else :
 				if self.mChannelList :
