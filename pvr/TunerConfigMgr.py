@@ -260,16 +260,17 @@ class TunerConfigMgr( object ) :
 		for satellite in self.mConfiguredList2 :
 			satellite.printdebug()
 		
-		self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList1 )
-		self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList2 )
+		ret = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList1 )
+		ret = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList2 )
 
 
 	def Load( self ) :
 		# Get All Satellite List ( mLongitude, mBand, mName )
-		self.mAllSatelliteList = self.mDataCache.mSatelliteList
+		self.mAllSatelliteList = deepcopy( self.mDataCache.mSatelliteList )
+		
 
 		# Get Configured Satellite List Tuner 1
-		self.mConfiguredList1 = self.mDataCache.GetConfiguredSatellite( E_TUNER_1 )
+		self.mConfiguredList1 = deepcopy( self.mDataCache.GetConfiguredSatellite( E_TUNER_1 ) )
 
 		if len( self.mConfiguredList1 ) == 0 :		# If empty list to return, add one default satellite
 			config = self.GetDefaultConfig( )
@@ -278,7 +279,7 @@ class TunerConfigMgr( object ) :
 			self.mConfiguredList1.append( config )
 
 		# Get Configured Satellite List Tuner 2
-		self.mConfiguredList2 = self.mDataCache.GetConfiguredSatellite( E_TUNER_2 )
+		self.mConfiguredList2 = deepcopy( self.mDataCache.GetConfiguredSatellite( E_TUNER_2 ) )
 
 		if len( self.mConfiguredList2 ) == 0 :		# If empty list to return, add one default satellite
 			config = self.GetDefaultConfig( )

@@ -74,8 +74,7 @@ class AntennaSetup( SettingWindow ) :
 				
 			elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 				ConfigMgr.GetInstance( ).Restore( )
-				self.mDataCache.LoadConfiguredSatellite( )
-				self.mDataCache.LoadConfiguredTransponder( )
+				ConfigMgr.GetInstance( ).SetNeedLoad( True )
 				
 			elif dialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
 				return
