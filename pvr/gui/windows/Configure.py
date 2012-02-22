@@ -39,7 +39,8 @@ class Configure( SettingWindow ) :
 
 		self.mReLoadIp			= False
 		self.mVisibleParental	= False
-		
+
+		self.mSetupChannel		= None
 		self.mHasChannel		= False
 		self.mFinishEndSetTime	= False
 
@@ -141,8 +142,8 @@ class Configure( SettingWindow ) :
  			ret = dialog.select( 'Select Channel', channelNameList )
 
 			if ret >= 0 :
-				ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( channelList[ret].mNumber )
-				self.SetListControl( )
+				self.mSetupChannel = channelList[ ret ]
+				self.SetControlLabel2String( E_Input01, self.mSetupChannel.mName )
 			return
 
 		elif selectedId == E_TIME_SETTING and groupId == E_Input04 :
@@ -151,9 +152,12 @@ class Configure( SettingWindow ) :
 
 			
 			oriChannel = self.mDataCache.Channel_GetCurrent( )
+			ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( self.mSetupChannel.mNumber )
+			self.mDataCache.Channel_SetCurrent( self.mSetupChannel.mNumber, self.mSetupChannel.mServiceType ) # Todo After : using ServiceType to different way
 			ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
 
 			progress = Progress( 'Setting Time...' )
+			progress.Update( 0 )
 			for i in range( 10 ) :
 				time.sleep( 1 )
 				progress.Update( ( i + 1 ) * 10 )
@@ -280,8 +284,8 @@ class Configure( SettingWindow ) :
 
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
-			# Todo
-			# if aEvent.getName() ==
+			if aEvent.getName( ) == ElisEventTimeReceived.getName( ) :
+				self.mFinishEndSetTime	= True
 			return
 
 
@@ -416,38 +420,18 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_TIME_SETTING :
 			setupChannelNumber = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
-			channel = self.mDataCache.Channel_GetSearch( setupChannelNumber )
-			if channel :
+			self.mSetupChannel = self.mDataCache.Channel_GetSearch( setupChannelNumber )
+			if self.mSetupChannel :
 				self.mHasChannel = True
-				channelName = channel.mName
+				channelName = self.mSetupChannel.mName
 			else :
 				channellist = self.mDataCache.Channel_GetList( )
 				if channellist :
-					channelName = channellist[0].mName
+					self.mSetupChannel = channellist[0]
+					channelName = self.mSetupChannel.mName
 				else :
 					self.mHasChannel = False
 					channelName = 'None'
-			#	self.mDataCache.Channel_GetNext
-			"""
-			self.mchannellist = self.mDataCache.Channel_GetList( )
-			#self.mChannelNameList = []
-			channelName = 'None'
-			if self.mchannellist :
-				self.mSetupChannelNumber = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
-				self.mHasChannel = True
-				for channel in self.mchannellist :
-					#self.mChannelNameList.append( channel.mName )
-					if self.mSetupChannelNumber == channel.mNumber :
-						channelName = channel.mName
-						break
-				if channelName == 'None' :
-					self.mDataCache.Channel_GetNext
-						#next name
-						
-			else :
-				#self.mChannelNameList.append( 'None' )
-				self.mHasChannel = False
-			"""
 			
 			self.AddInputControl( E_Input01, 'Channel', channelName )
 			self.AddInputControl( E_Input02, 'Date', '01.01.2000' )
@@ -548,12 +532,14 @@ class Configure( SettingWindow ) :
 				self.SetEnableControls( visibleControlIds, False )
 
 		elif aSelectedItem == E_TIME_SETTING :
-			visibleControlIds = [ E_Input02, E_Input03 ]
-			self.SetEnableControls( visibleControlIds, False )
+			print 'dhkim test visible = %s' % self.mHasChannel
+			visibleControlIds1 = [ E_Input02, E_Input03 ]
+			visibleControlIds2 = [ E_SpinEx01, E_SpinEx02, E_Input01, E_Input04 ]
+			self.SetEnableControls( visibleControlIds1, False )
 			if self.mHasChannel == True :
-				self.SetEnableControl( E_Input01, True )
+				self.SetEnableControls( visibleControlIds2, True )
 			else :
-				self.SetEnableControl( E_Input01, False )
+				self.SetEnableControls( visibleControlIds2, False )
 
 	def LoadIp( self ) :
 		ipAddress = ElisPropertyInt( 'IpAddress', self.mCommander ).GetProp( )
