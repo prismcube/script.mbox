@@ -146,7 +146,10 @@ class Configure( SettingWindow ) :
 			return
 
 		elif selectedId == E_TIME_SETTING and groupId == E_Input04 :
-			print 'dhkim test time before set= %d' % self.mCommander.Datetime_GetLocalTime( )
+		
+			time1 = self.mCommander.Datetime_GetLocalTime( )
+
+			
 			oriChannel = self.mDataCache.Channel_GetCurrent( )
 			ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
 
@@ -154,16 +157,26 @@ class Configure( SettingWindow ) :
 			for i in range( 10 ) :
 				time.sleep( 1 )
 				progress.Update( ( i + 1 ) * 10 )
+				
 				if self.mFinishEndSetTime == True :
 					progress.Update( 100, 'Complete time set' )
 					progress.Close( )
+					
 			if self.mFinishEndSetTime == False :
 				progress.Update( 100, 'Time set fail' )
 				progress.Close( )
-			
+				
+			self.mFinishEndSetTime = False
 			ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
 			self.mDataCache.Channel_SetCurrent( oriChannel.mNumber, oriChannel.mServiceType) # Todo After : using ServiceType to different way
-			print 'dhkim test time after set= %d' % self.mCommander.Datetime_GetLocalTime( )
+
+
+
+			time2 = self.mCommander.Datetime_GetLocalTime( )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( 'Notice', 'before Time = %s, after time = %s' % ( time1, time2 ) )
+ 			dialog.doModal( )
+			
 
 		elif selectedId == E_PARENTAL and self.mVisibleParental == False and groupId == E_Input01 :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
