@@ -16,7 +16,7 @@ from ElisEventBus import ElisEventBus
 from ElisEventClass import *
 
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
-from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit, PincodeLimit 
+from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit
 from ElisProperty import ElisPropertyEnum
 
 import pvr.Msg as Msg
@@ -66,6 +66,9 @@ class LivePlate(BaseWindow):
 		self.mFakeChannel = None
 		self.mFlag_OnEvent = True
 		self.mShowExtendInfo = False
+		self.mPropertyAge = 0
+		self.mPropertyPincode = -1
+
 		self.mAutomaticHideTimer = None	
 		self.mAsyncEPGTimer = None
 		self.mAsyncTuneTimer = None	
@@ -121,6 +124,8 @@ class LivePlate(BaseWindow):
 		self.mImgTV    = E_IMG_ICON_TV
 		self.mCtrlLblEventClock.setLabel('')
 
+		self.mPropertyAge = self.mDataCache.mPropertyAge
+		self.mPropertyPincode = self.mDataCache.mPropertyPincode
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset()
 
 		#get channel
@@ -610,7 +615,7 @@ class LivePlate(BaseWindow):
 
 				#is Age? agerating check
 				if self.mFlag_OnEvent == True :
-					isLimit = AgeLimit( self.mCommander, aEvent.mAgeRating )
+					isLimit = AgeLimit( self.mPropertyAge, aEvent.mAgeRating )
 					if isLimit == True :
 						self.mPincodeEnter |= FLAG_MASK_ADD
 						LOG_TRACE( 'AgeLimit[%s]'% isLimit )
@@ -664,13 +669,13 @@ class LivePlate(BaseWindow):
 	 				self.onAction( inputKey )
 	 				break
 
-				stbPin = PincodeLimit( self.mCommander, inputPin )
+
 				if inputPin == None or inputPin == '' :
 					inputPin = ''
 
-				#LOG_TRACE( 'mask[%s] inputPin[%s] stbPin[%s]'% (self.mPincodeEnter, inputPin, stbPin) )
+				#LOG_TRACE( 'mask[%s] inputPin[%s] stbPin[%s]'% (self.mPincodeEnter, inputPin, self.mPropertyPincode) )
 
-				if inputPin == str('%s'% stbPin) :
+				if inputPin == str('%s'% self.mPropertyPincode) :
 					self.mPincodeEnter = FLAG_MASK_NONE
 					#ret = self.mCommander.Channel_SetInitialBlank( False )
 					#self.mCommander.Player_AVBlank( False, True )
@@ -1005,11 +1010,14 @@ class LivePlate(BaseWindow):
 
 		self.mFlag_OnEvent = True
 
-		inputNumber = dialog.GetChannelLast()
-		LOG_TRACE('=========== Jump chNum[%s]'% inputNumber)
+		isOK = dialog.IsOK()
+		if isOK == E_DIALOG_STATE_YES :
 
-		self.mJumpNumber = int(inputNumber)
-		self.ChannelTune(CURR_CHANNEL)
+			inputNumber = dialog.GetChannelLast()
+			LOG_TRACE('=========== Jump chNum[%s]'% inputNumber)
+
+			self.mJumpNumber = int(inputNumber)
+			self.ChannelTune(CURR_CHANNEL)
 
 
 		LOG_TRACE( 'Leave' )

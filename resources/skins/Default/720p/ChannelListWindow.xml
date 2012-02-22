@@ -11,17 +11,6 @@
 	<controls>
 
 <!-- bg design -->
-<!--
-		<include>DefaultMiniTitle</include>
-		<include>DefaultCommonDateTime</include>
-		<control type="group">
-			<posx>80</posx>
-			<posy>110</posy>
-			<include>DefaultSettingWindowEffect</include>
-			<include>DefaultBehindDialogFadeOut</include>
-			<include>DefaultSettingMainWindow</include>
-		</control>
--->
 		<control type="image">
 			<posx>0</posx>
 			<posy>0</posy>
@@ -76,59 +65,6 @@
 
 <!--  local time -->
 		<include>DefaultCommonDateTime</include>
-<!--
-		<control type="group">
-			<posx>1110</posx>
-			<posy>0</posy>
-			<control type="label">
-				<description>Title Label</description>
-				<posx>-450</posx>
-				<posy>0</posy>
-				<width>150</width>
-				<height>40</height>
-				<font>font13caps</font>
-				<align>left</align>
-				<aligny>center</aligny>
-				<textcolor>white</textcolor>
-				<shadowcolor>grey2</shadowcolor>
-				<label>SCRIPT546</label>
-			</control>
-			<control type="label" id="31">
-				<description>DATE Label</description>
-				<posx>0</posx>
-				<posy>5</posy>
-				<width>350</width>
-				<height>28</height>
-				<align>right</align>
-				<aligny>center</aligny>
-				<font>font13</font>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
-				<label>[COLOR=grey]$INFO[Control.GetLabel][/COLOR]</label>
-			</control>
-			<control type="label" id="32">
-				<description>TIME Label</description>
-				<posx>45</posx>
-				<posy>5</posy>
-				<width>100</width>
-				<height>28</height>
-				<align>left</align>
-				<aligny>center</aligny>
-				<font>font13</font>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
-				<label>$INFO[Control.GetLabel]</label>
-			</control>
-			<control type="image">
-				<description>Clock Image</description>
-				<posx>20</posx>
-				<posy>12</posy>
-				<width>20</width>
-				<height>20</height>
-				<texture>clock.png</texture>
-			</control>
-		</control>
--->
 
 <!-- middle left -->
 		<control type="group" id="49">
@@ -230,16 +166,6 @@
 						<animation effect="fade" time="300">Visible</animation>
 						<animation effect="fade" time="300">Hidden</animation>
 					</control>
-<!--
-					<control type="image">
-						<posx>390</posx>
-						<posy>5</posy>
-						<width>200</width>
-						<height>31</height>
-						<texture border="0,0,14,0">confluence/MediaItemDetailBG.png</texture>
-						<visible>Control.HasFocus(50) + !IsEmpty(ListItem.Label2)</visible>
-					</control>
--->
 					<control type="image">
 						<posx>620</posx>
 						<posy>5</posy>
@@ -314,13 +240,6 @@
 			<texturesliderbarfocus border="0,14,0,14">confluence/ScrollBarV_bar_focus.png</texturesliderbarfocus>
 			<textureslidernib>confluence/ScrollBarNib.png</textureslidernib>
 			<textureslidernibfocus>confluence/ScrollBarNib.png</textureslidernibfocus>
-<!--
-			<texturesliderbackground border="2,2,2,2">scrollbar_bar_back2.png</texturesliderbackground> 
-			<texturesliderbar border="2,16,2,16">scrollbar_bar.png</texturesliderbar> 
-			<texturesliderbarfocus border="2,16,2,16">scrollbar_bar_focus.png</texturesliderbarfocus> 
-			<textureslidernib>scrollbar_nib.png</textureslidernib> 
-			<textureslidernibfocus>scrollbar_nib.png</textureslidernibfocus> 
--->
 			<onleft>49</onleft>
 			<onright>49</onright>
 			<ondown>61</ondown>
@@ -422,7 +341,6 @@
 						<posy>75</posy>
 						<width>30</width>
 						<height>30</height>
-						<!--<texture>confluence/OverlayHD.png</texture>-->
 						<texture>confluence/OverlayLocked.png</texture>
 						<description>lock</description>
 					</control>
@@ -447,7 +365,6 @@
 					<posy>100</posy>
 					<width>65</width>
 					<height>30</height>
-					<!--<texture>confluence/dolbydigital.png</texture>-->
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>audio dolby</description>
 				</control>
@@ -456,7 +373,6 @@
 					<posy>100</posy>
 					<width>65</width>
 					<height>30</height>
-					<!--<texture>confluence/OverlayHD.png</texture>-->
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>video HD</description>
 				</control>
@@ -465,16 +381,6 @@
 
 <!--  page -->
 		<control type="group">
-			<!--control type="label" id="401">
-				<posx>400</posx>
-				<posy>600</posy>
-				<align>center</align>
-				<textcolor>grey</textcolor>
-				<font>font12</font>
-				<label>$INFO[Control.GetLabel] / $INFO[Container(50).NumItems]</label>
-				<visible>!ControlGroup(110).HasFocus</visible>
-				<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="true">conditional</animation>
-			</control-->
 			<control type="label" id="401">
 				<posx>260r</posx>
 				<posy>30r</posy>
@@ -568,39 +474,6 @@
 					<aspectratio>keep</aspectratio>
 					<texture>confluence/Confluence_Logo.png</texture>
 				</control>
-
-				<!--control type="button" id="121">
-					<description>Button Icon</description>
-					<posx>0</posx>
-					<posy>430</posy>
-					<width>250</width>
-					<height>40</height>
-					<texturenofocus></texturenofocus>
-					<texturefocus>confluence/button-focus.png</texturefocus>
-					<onleft>49</onleft>
-					<onright>9002</onright>
-					<onup>102</onup>
-					<ondown>102</ondown>
-					<font>font13caps</font>
-					<label>TEST</label>
-				</control>
-				<control type="image">
-					<posx>220</posx>
-					<posy>442</posy>
-					<width>18</width>
-					<height>18</height>
-					<texture>confluence/HomeHasSub.png</texture>
-					<visible>Control.HasFocus(121)</visible>
-				</control>
-				<control type="image">
-					<posx>0</posx>
-					<posy>520</posy>
-					<width>250</width>
-					<height>2</height>
-					<texture>confluence/separator.png</texture>
-				</control-->
-
-
 				<control type="list" id="102">
 					<posx>0</posx>
 					<posy>110</posy>
@@ -644,8 +517,6 @@
 							<align>left</align>
 							<aligny>center</aligny>
 							<textcolor>white</textcolor>
-							<!--animation effect="zoom" start="85" end="100" center="185,51" time="200">Focus</animation>
-							<animation effect="zoom" start="100" end="85" center="185,51" time="200">UnFocus</animation-->
 							<label>$INFO[ListItem.Label]</label>
 						</control>
 						<control type="image">
@@ -655,8 +526,6 @@
 							<height>18</height>
 							<texture>confluence/HomeHasSub.png</texture>
 							<visible>Container(102).HasFocus(1) | Container(102).HasFocus(2) | Container(102).HasFocus(3) | Container(102).HasFocus(4) | Container(102).HasFocus(5)</visible>
-							<!--animation effect="fade" start="0" end="100" time="200">Focus</animation>
-							<animation effect="fade" start="100" end="0" time="200">UnFocus</animation-->
 						</control>
 					</focusedlayout>
 					<content>
@@ -879,8 +748,6 @@
 		<control type="group" id="20">
 			<posx>0</posx>
 			<posy>0</posy>
-			<!--animation effect="slide" start="-650,0" end="0,0" delay="0" time="100" condition="ControlGroup(49).HasFocus | Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">conditional</animation>
-			<animation effect="slide" start="-650,0" end="0,0" delay="0" time="100" condition="Control.IsVisible(100)">conditional</animation-->
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>

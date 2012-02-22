@@ -187,37 +187,21 @@ def EnumToString(aType, aValue):
 
 	return ret.upper()
 
-def AgeLimit(aCmd, aAgerating):
-	from ElisProperty import ElisPropertyEnum
+def AgeLimit(aPropertyAge, aEPGAge):
 
-	property = ElisPropertyEnum( 'Age Limit', aCmd )
-	#LOG_TRACE( 'TTTTTTTTTTTTTTT[%s][%s][%s]'% ( agerating, property.GetProp(), property.GetPropString() ) )
-
-	isWatch = True
-	limit = property.GetProp()
-	if limit == 0 :
+	isLimit = False
+	if aPropertyAge == 0 :
 		#no limit
 		isLimit = False
 
 	else:
-		if limit <= aAgerating :
+		if aPropertyAge <= aEPGAge :
 			#limitted
 			isLimit = True
 		else:
 			isLimit = False
 
 	return isLimit
-
-def PincodeLimit(aCmd, aInput):
-	from ElisProperty import ElisPropertyInt
-
-	property = ElisPropertyInt( 'PinCode', aCmd )
-	#LOG_TRACE( 'TTTTTTTTTTTTTTT[%s][%s]'% ( aInput, property.GetProp() ) )
-
-	pincode = -1
-	pincode = property.GetProp()
-
-	return pincode
 
 def ClassToList( aMode, aClassList ) :
 
