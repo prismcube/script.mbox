@@ -1,12 +1,14 @@
 import xbmc
 import xbmcgui
 import sys
+import time
 
 import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.BaseWindow import SettingWindow, Action
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
+from ElisEventBus import ElisEventBus
 from pvr.gui.GuiConfig import *
 from pvr.Util import GuiLock, LOG_TRACE, LOG_ERR
 
@@ -39,6 +41,7 @@ class Configure( SettingWindow ) :
 		self.mVisibleParental	= False
 		
 		self.mHasChannel		= False
+		self.mFinishEndSetTime	= False
 
 		for i in range( len( leftGroupItems ) ) :
 			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i], descriptionList[i] ) )
@@ -47,6 +50,8 @@ class Configure( SettingWindow ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
+
+		self.mEventBus.Register( self )
 
 		self.mCtrlLeftGroup = self.getControl( E_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
@@ -141,9 +146,24 @@ class Configure( SettingWindow ) :
 			return
 
 		elif selectedId == E_TIME_SETTING and groupId == E_Input04 :
-			pass
-			return
-			# Todo Apply Time
+			print 'dhkim test time before set= %d' % self.mCommander.Datetime_GetLocalTime( )
+			oriChannel = self.mDataCache.Channel_GetCurrent( )
+			ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
+
+			progress = Progress( 'Setting Time...' )
+			for i in range( 10 ) :
+				time.sleep( 1 )
+				progress.Update( ( i + 1 ) * 10 )
+				if self.mFinishEndSetTime == True :
+					progress.Update( 100, 'Complete time set' )
+					progress.Close( )
+			if self.mFinishEndSetTime == False :
+				progress.Update( 100, 'Time set fail' )
+				progress.Close( )
+			
+			ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
+			self.mDataCache.Channel_SetCurrent( oriChannel.mNumber, oriChannel.mServiceType) # Todo After : using ServiceType to different way
+			print 'dhkim test time after set= %d' % self.mCommander.Datetime_GetLocalTime( )
 
 		elif selectedId == E_PARENTAL and self.mVisibleParental == False and groupId == E_Input01 :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -243,6 +263,14 @@ class Configure( SettingWindow ) :
 					self.mReLoadIp = True
 					self.mVisibleParental = False
 				self.SetListControl( )
+
+
+	def onEvent( self, aEvent ) :
+		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
+			# Todo
+			# if aEvent.getName() ==
+			return
+
 
 	def SetListControl( self ) :
 		self.ResetAllControl( )
