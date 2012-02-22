@@ -1,6 +1,7 @@
 import xbmc
 import xbmcgui
 import sys
+import time
 
 import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DiaMgr
@@ -8,6 +9,7 @@ import pvr.DataCacheMgr as CacheMgr
 from pvr.gui.BaseWindow import SettingWindow, Action
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
+from ElisEventBus import ElisEventBus
 from pvr.gui.GuiConfig import *
 from pvr.Util import GuiLock, LOG_TRACE, LOG_ERR
 
@@ -38,8 +40,10 @@ class Configure( SettingWindow ) :
 
 		self.mReLoadIp			= False
 		self.mVisibleParental	= False
-		
+
+		self.mSetupChannel		= None
 		self.mHasChannel		= False
+		self.mFinishEndSetTime	= False
 
 		for i in range( len( leftGroupItems ) ) :
 			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i], descriptionList[i] ) )
@@ -48,6 +52,8 @@ class Configure( SettingWindow ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
+
+		self.mEventBus.Register( self )
 
 		self.mCtrlLeftGroup = self.getControl( E_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
@@ -137,14 +143,45 @@ class Configure( SettingWindow ) :
  			ret = dialog.select( 'Select Channel', channelNameList )
 
 			if ret >= 0 :
-				ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( channelList[ret].mNumber )
-				self.SetListControl( )
+				self.mSetupChannel = channelList[ ret ]
+				self.SetControlLabel2String( E_Input01, self.mSetupChannel.mName )
 			return
 
 		elif selectedId == E_TIME_SETTING and groupId == E_Input04 :
-			pass
-			return
-			# Todo Apply Time
+		
+			time1 = self.mCommander.Datetime_GetLocalTime( )
+
+			
+			oriChannel = self.mDataCache.Channel_GetCurrent( )
+			ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( self.mSetupChannel.mNumber )
+			self.mDataCache.Channel_SetCurrent( self.mSetupChannel.mNumber, self.mSetupChannel.mServiceType ) # Todo After : using ServiceType to different way
+			ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
+
+			progress = Progress( 'Setting Time...' )
+			progress.Update( 0 )
+			for i in range( 10 ) :
+				time.sleep( 1 )
+				progress.Update( ( i + 1 ) * 10 )
+				
+				if self.mFinishEndSetTime == True :
+					progress.Update( 100, 'Complete time set' )
+					progress.Close( )
+					
+			if self.mFinishEndSetTime == False :
+				progress.Update( 100, 'Time set fail' )
+				progress.Close( )
+				
+			self.mFinishEndSetTime = False
+			ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
+			self.mDataCache.Channel_SetCurrent( oriChannel.mNumber, oriChannel.mServiceType) # Todo After : using ServiceType to different way
+
+
+
+			time2 = self.mCommander.Datetime_GetLocalTime( )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( 'Notice', 'before Time = %s, after time = %s' % ( time1, time2 ) )
+ 			dialog.doModal( )
+			
 
 		elif selectedId == E_PARENTAL and self.mVisibleParental == False and groupId == E_Input01 :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -245,6 +282,14 @@ class Configure( SettingWindow ) :
 					self.mReLoadIp = True
 					self.mVisibleParental = False
 				self.SetListControl( )
+
+
+	def onEvent( self, aEvent ) :
+		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
+			if aEvent.getName( ) == ElisEventTimeReceived.getName( ) :
+				self.mFinishEndSetTime	= True
+			return
+
 
 	def SetListControl( self ) :
 		self.ResetAllControl( )
@@ -377,33 +422,20 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_TIME_SETTING :
 			setupChannelNumber = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
-			channel = self.mDataCache.Channel_GetSearch( setupChannelNumber )
-			if channel :
+			self.mSetupChannel = self.mDataCache.Channel_GetSearch( setupChannelNumber )
+			if self.mSetupChannel :
 				self.mHasChannel = True
-			#else :
-			#	self.mDataCache.Channel_GetNext
-			"""
-			self.mchannellist = self.mDataCache.Channel_GetList( )
-			#self.mChannelNameList = []
-			channelName = 'None'
-			if self.mchannellist :
-				self.mSetupChannelNumber = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
-				self.mHasChannel = True
-				for channel in self.mchannellist :
-					#self.mChannelNameList.append( channel.mName )
-					if self.mSetupChannelNumber == channel.mNumber :
-						channelName = channel.mName
-						break
-				if channelName == 'None' :
-					self.mDataCache.Channel_GetNext
-						#next name
-						
+				channelName = self.mSetupChannel.mName
 			else :
-				#self.mChannelNameList.append( 'None' )
-				self.mHasChannel = False
-			"""
+				channellist = self.mDataCache.Channel_GetList( )
+				if channellist :
+					self.mSetupChannel = channellist[0]
+					channelName = self.mSetupChannel.mName
+				else :
+					self.mHasChannel = False
+					channelName = 'None'
 			
-			self.AddInputControl( E_Input01, 'Channel', channel.mName )
+			self.AddInputControl( E_Input01, 'Channel', channelName )
 			self.AddInputControl( E_Input02, 'Date', '01.01.2000' )
 			self.AddInputControl( E_Input03, 'Time', '05:25' )
 			self.AddEnumControl( E_SpinEx01, 'Local Time Offset' )
@@ -502,12 +534,14 @@ class Configure( SettingWindow ) :
 				self.SetEnableControls( visibleControlIds, False )
 
 		elif aSelectedItem == E_TIME_SETTING :
-			visibleControlIds = [ E_Input02, E_Input03 ]
-			self.SetEnableControls( visibleControlIds, False )
+			print 'dhkim test visible = %s' % self.mHasChannel
+			visibleControlIds1 = [ E_Input02, E_Input03 ]
+			visibleControlIds2 = [ E_SpinEx01, E_SpinEx02, E_Input01, E_Input04 ]
+			self.SetEnableControls( visibleControlIds1, False )
 			if self.mHasChannel == True :
-				self.SetEnableControl( E_Input01, True )
+				self.SetEnableControls( visibleControlIds2, True )
 			else :
-				self.SetEnableControl( E_Input01, False )
+				self.SetEnableControls( visibleControlIds2, False )
 
 	def LoadIp( self ) :
 		ipAddress = ElisPropertyInt( 'IpAddress', self.mCommander ).GetProp( )

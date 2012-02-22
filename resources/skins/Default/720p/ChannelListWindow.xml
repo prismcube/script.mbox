@@ -31,7 +31,7 @@
 				<width>1280</width>
 				<height>720</height>
 				<texture border="20">confluence/black-back.png</texture>
-				<include>VisibleFadeEffect</include>
+				<include>DefaultVisibleFadeEffect</include>
 			</control>
 			-->
 			<control type="image">
@@ -40,10 +40,10 @@
 				<width>1280</width>
 				<height>128</height>
 				<texture>confluence/floor.png</texture>
-				<include>VisibleFadeEffect</include>
+				<include>DefaultVisibleFadeEffect</include>
 			</control>
 			<control type="group">
-				<include>VisibleFadeEffect</include>
+				<include>DefaultVisibleFadeEffect</include>
 				<visible>true</visible>
 				<control type="image">
 					<posx>40</posx>

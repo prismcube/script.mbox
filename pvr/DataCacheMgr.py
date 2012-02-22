@@ -296,7 +296,7 @@ class DataCacheMgr( object ):
 	def Channel_SetCurrent( self, aChannelNumber, aServiceType ) :
 		self.mCurrentEvent = None
 		if self.mCommander.Channel_SetCurrent( aChannelNumber, aServiceType ) == True :
-			cacheChannel = self.mChannelListHash.get(aChannelNumber, None )
+			cacheChannel = self.mChannelListHash.get( aChannelNumber, None )
 			self.mCurrentChannel = cacheChannel.mChannel
 			return True
 		return False

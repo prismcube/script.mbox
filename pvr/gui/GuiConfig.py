@@ -1,6 +1,7 @@
 import xbmc
 import xbmcgui
 import sys
+import time
 
 from pvr.Util import LOG_TRACE, LOG_ERR, LOG_WARN
 
@@ -268,4 +269,23 @@ class ContextItem :
 
 		elif self.mFunctionIndex == E_TEST_FUNCTION_3 :
 			print 'dhkim test function3'
-		
+
+
+class Progress :
+
+	def __init__( self, aDescription = 'Wait...' ) :
+		self.mDescription = aDescription
+		self.progress = xbmcgui.DialogProgress( )
+		self.progress.create('Wait', self.mDescription )
+
+
+	def Close ( self ) :
+		time.sleep( 1 )
+		self.progress.close( )
+
+
+	def Update( self, aPercent , aLabel=None ) :
+		if aLabel != None :
+			self.progress.update( aPercent, aLabel ) 
+		else :
+			self.progress.update( aPercent ) 

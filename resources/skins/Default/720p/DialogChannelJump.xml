@@ -48,15 +48,12 @@
 				<label>EPG Test Label</label>
 			</control>
 			<control type="progress" id="213">
-				<posx>50</posx>
+				<posx>40</posx>
 				<posy>170</posy>
 				<width>400</width>
 				<height>15</height>
 				<texturebg border="6,0,6,0">confluence/OSDProgressBack.png</texturebg>
-				<lefttexture>-</lefttexture>
 				<midtexture border="6,0,6,0">confluence/OSDProgressMid.png</midtexture>
-				<righttexture>-</righttexture>
-				<overlaytexture>-</overlaytexture>
 			</control>
 		</control>
 	</controls>

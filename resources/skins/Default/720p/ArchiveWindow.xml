@@ -33,7 +33,7 @@
 				<width>1280</width>
 				<height>720</height>
 				<texture border="20">confluence/black-back.png</texture>
-				<include>VisibleFadeEffect</include>
+				<include>DefaultVisibleFadeEffect</include>
 				<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)</visible>
 			</control>
 			<control type="image">
@@ -42,11 +42,11 @@
 				<width>1280</width>
 				<height>128</height>
 				<texture>confluence/floor.png</texture>
-				<include>VisibleFadeEffect</include>
+				<include>DefaultVisibleFadeEffect</include>
 				<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail) | substring(Window.Property(ViewMode),panart)</visible>				
 			</control>
 			<control type="group">
-				<include>VisibleFadeEffect</include>
+				<include>DefaultVisibleFadeEffect</include>
 				<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)</visible>
 				<control type="image">
 					<posx>40</posx>
@@ -90,11 +90,11 @@
 				<width>1280</width>
 				<height>720</height>
 				<texture border="20">ContentPanel2.png</texture>
-				<include>VisibleFadeEffect</include>
+				<include>DefaultVisibleFadeEffect</include>
 				<visible>Control.IsVisible(501)</visible>
 			</control>
 			<control type="group">
-				<include>VisibleFadeEffect</include>
+				<include>DefaultVisibleFadeEffect</include>
 				<visible>Control.IsVisible(51) | Control.IsVisible(500) | Control.IsVisible(505)</visible>
 				<control type="image">
 					<posx>75</posx>
@@ -118,7 +118,7 @@
 				<width>1280</width>
 				<height>725</height>
 				<texture border="0,5,0,0">ContentPanel4.png</texture>
-				<include>VisibleFadeEffect</include>
+				<include>DefaultVisibleFadeEffect</include>
 				<visible>Control.IsVisible(550) | Control.IsVisible(560)</visible>
 			</control>
 			-->
@@ -227,7 +227,7 @@
 						<width>220</width>
 						<height>45</height>
 						<font>font12caps</font>
-						<include>ButtonCommonValues</include>
+						<include>DefaultButtonCommonValues</include>
 						<label>Search</label>
 						<align>lef</align>
 						<aligny>center</aligny>
@@ -280,7 +280,7 @@
 					<description>View As button</description>
 					<posx>0</posx>
 					<posy>0</posy>
-					<include>ButtonCommonValues</include>
+					<include>DefaultButtonCommonValues</include>
 					<label>VIEW:</label>
 					<onleft>3400</onleft>
 					<onright>3400</onright>
@@ -291,7 +291,7 @@
 					<description>Sort by button</description>
 					<posx>0</posx>
 					<posy>40</posy>
-					<include>ButtonCommonValues</include>
+					<include>DefaultButtonCommonValues</include>
 					<label>SORT:</label>
 					<onleft>3400</onleft>
 					<onright>102</onright>
@@ -322,7 +322,7 @@
 					<label>TEST4</label>
 					<onclick>ReplaceWindow(VideoLibrary)</onclick>
 					<selected>Window.IsVisible(VideoLibrary)</selected>
-					<include>ButtonCommonValues</include>
+					<include>DefaultButtonCommonValues</include>
 					<onleft>3400</onleft>
 					<onright>3400</onright>
 					<onup>101</onup>
@@ -335,7 +335,7 @@
 					<hitrect x="0" y="120" w="265" h="40" />
 					<posx>0</posx>
 					<posy>80</posy>
-					<include>ButtonCommonValues</include>
+					<include>DefaultButtonCommonValues</include>
 					<radiowidth>18</radiowidth>
 					<radioheight>18</radioheight>
 					<radioposx>222</radioposx>
