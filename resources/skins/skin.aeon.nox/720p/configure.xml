@@ -1,12 +1,8 @@
 <window id="3007">
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<controls>
-
-		<include>SettingsBackground</include>
-		<!--		
-		<include>BehindDialogFadeOut</include>
+		<include>DefaultSettingsBackground</include>
 		<include>DefaultCommonDateTime</include>
-		-->
 		<control type="group">
 			<posx>60</posx>
 			<posy>0</posy>

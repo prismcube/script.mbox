@@ -145,34 +145,6 @@
 				<textcolor>white</textcolor>
 				<label>Product name: test elmo</label>
 			</control>
-			
-			<!--
-			<control type="group" id="9010">
-				<posx>290</posx>
-				<posy>60</posy>
-				<control type="label" id="100">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>750</width>
-					<height>45</height>
-					<font>font13_title</font>
-					<label>$INFO[Container(9000).ListItem.Label2]</label>
-					<textcolor>blue</textcolor>
-					<shadowcolor>black</shadowcolor>
-					<align>left</align>
-					<aligny>center</aligny>
-				</control>
-				<include>SpinEx01</include>
-				<include>SpinEx02</include>
-				<include>SpinEx03</include>
-				<include>SpinEx04</include>
-				<include>SpinEx05</include>
-				<include>Input01</include>
-				<include>Input02</include>
-				<include>Input03</include>
-				<include>Input04</include>
-			</control>
-			-->
 		</control>
 	</controls>
 </window>

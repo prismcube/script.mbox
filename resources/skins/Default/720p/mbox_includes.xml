@@ -1,8 +1,23 @@
 <includes>
 	<include name="DefaultSettingHeaderWindow">
 		<include>DefaultSettingsBackground</include>
-		<include>DefaultCommonDateTime</include>
 		<include>DefaultMiniTitle</include>
+		<include>DefaultCommonDateTime</include>
+	</include>
+
+	<include name="DefaultSettingsBackground">
+		<control type="multiimage">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<imagepath>confluence/backgrounds/settings.jpg</imagepath>
+			<timeperimage>5000</timeperimage>
+			<fadetime>2000</fadetime>
+			<pauseatend>10000</pauseatend>
+			<randomize>true</randomize>
+			<loop>no</loop>
+		</control>
 	</include>
 
 	<include name="DefaultMiniTitle">
@@ -23,6 +38,37 @@
 				<posx>220</posx>
 			</control>
 		</control>
+	</include>
+
+	<include name="DefaultCommonDateTime">
+		<control type="group">
+            <posx>390r</posx>
+            <posy>0</posy>
+            <animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
+            <animation effect="slide" start="0,0" end="420,0" delay="0" time="300">WindowClose</animation>
+            <animation effect="slide" start="420,0" end="0,0" delay="0" time="300">WindowOpen</animation>
+            <control type="image">
+                <description>time background</description>
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>440</width>
+                <height>35</height>
+                <texture flipx="true" border="32,0,0,0">confluence/header.png</texture>
+            </control>
+            <control type="label">
+                <description>time label</description>
+                <posx>30</posx>
+                <posy>0</posy>
+                <width>400</width>
+                <height>28</height>
+                <align>left</align>
+                <aligny>center</aligny>
+                <font>font12</font>
+                <textcolor>white</textcolor>
+                <shadowcolor>black</shadowcolor>
+                <label>[COLOR=grey]$INFO[System.Date][/COLOR] | $INFO[System.Time]</label>
+            </control>
+        </control>
 	</include>
 		
 	<include name="DefaultSettingMainWindow">
@@ -107,6 +153,17 @@
 		</control>
 	</include>
 
+	<include name="DefaultSettingWindowEffect">
+		<animation type="WindowOpen" reversible="false">
+			<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
+			<effect type="fade" start="0" end="100" time="300" />
+		</animation>
+		<animation type="WindowClose" reversible="false">
+			<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
+			<effect type="fade" start="100" end="0" time="300" />
+		</animation>
+	</include>
+
 	<include name="DefaultDialogCommonSetting">
 		<control type="image">
 			<posx>40</posx>
@@ -122,8 +179,6 @@
 			<posy>13</posy>
 			<width>64</width>
 			<height>32</height>
-			<label>-</label>
-			<font>-</font>
 			<onclick>PreviousMenu</onclick>
 			<texturefocus>confluence/DialogCloseButton-focus.png</texturefocus>
 			<texturenofocus>confluence/DialogCloseButton.png</texturenofocus>
@@ -144,7 +199,7 @@
 		</control>
 	</include>
 
-	<include name="SettingDialogButtonOKCancel">
+	<include name="DefaultSettingDialogButtonOKCancel">
 		<control type="button" id="6997">
 			<description>Yes button</description>
 			<width>200</width>
@@ -178,7 +233,7 @@
 		 <animation effect="fade" time="600">Hidden</animation>
 	</include>
 	
-	<include name="VisibleFadeEffect">
+	<include name="DefaultVisibleFadeEffect">
 		<animation effect="fade" time="300">Visible</animation>
 		<animation effect="fade" time="300">Hidden</animation>
 	</include>
@@ -200,19 +255,6 @@
 			<height>720</height>
 			<texture>black-back.png</texture>
 			<animation effect="fade" start="100" end="0" time="300" condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional">Conditional</animation>
-		</control>
-	</include>
-
-	<include name="DefaultSettingsBackground">
-		<control type="multiimage">
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>1280</width>
-			<height>720</height>
-			<imagepath>confluence/backgrounds/settings.jpg</imagepath>
-			<timeperimage>10000</timeperimage>
-			<randomize>true</randomize>
-			<fadetime>1000</fadetime>
 		</control>
 	</include>
 
@@ -240,6 +282,17 @@
 		<textcolor>white</textcolor>
 		<focusedcolor>white</focusedcolor>
 	</include>
+
+	<include name="DefaultButtonCommonValues">
+		<height>40</height>
+		<width>250</width>
+		<textoffsetx>10</textoffsetx>
+		<textwidth>235</textwidth>
+		<aligny>center</aligny>
+		<font>font13caps</font>
+		<texturefocus border="5">confluence/button-focus.png</texturefocus>
+		<pulseonselect>false</pulseonselect>
+	</include>
 	
 	<include name="SpinEx01">
 		<control type="group" id="1100">
@@ -254,15 +307,11 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1103,1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onup>1101</onup>
+				<ondown>1101</ondown>
 			</control>
 			<control type="button" id="1102">
 				<description>Menu Item Prev Button</description>
@@ -271,22 +320,17 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1103,-1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onup>1102</onup>
+				<ondown>1102</ondown>
 			</control>
 			<control type="list" id="1103">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>750</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -397,15 +441,11 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1203,1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onup>1201</onup>
+				<ondown>1201</ondown>
 			</control>
 			<control type="button" id="1202">
 				<description>Menu Item Prev Button</description>
@@ -415,22 +455,17 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1203,-1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onup>1202</onup>
+				<ondown>1202</ondown>
 			</control>
 			<control type="list" id="1203">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>750</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -541,15 +576,11 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1303,1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onup>1301</onup>
+				<ondown>1301</ondown>
 			</control>
 			<control type="button" id="1302">
 				<description>Menu Item Prev Button</description>
@@ -558,22 +589,17 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1303,-1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onup>1302</onup>
+				<ondown>1302</ondown>
 			</control>
 			<control type="list" id="1303">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>750</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -684,15 +710,11 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1403,1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onup>1401</onup>
+				<ondown>1401</ondown>
 			</control>
 			<control type="button" id="1402">
 				<description>Menu Item Prev Button</description>
@@ -701,22 +723,17 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1403,-1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onup>1402</onup>
+				<ondown>1402</ondown>
 			</control>
 			<control type="list" id="1403">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>750</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -827,15 +844,11 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1503,1)</onclick>
-				<onleft></onleft>
-				<onright></onright>
-				<onup></onup>
-				<ondown></ondown>
+				<onup>1501</onup>
+				<ondown>1501</ondown>
 			</control>
 			<control type="button" id="1502">
 				<description>Menu Item Prev Button</description>
@@ -844,22 +857,17 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1503,-1)</onclick>
-				<onleft></onleft>
-				<onright></onright>
-				<onup></onup>
-				<ondown></ondown>
+				<onup>1502</onup>
+				<ondown>1502</ondown>
 			</control>
 			<control type="list" id="1503">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>750</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -970,15 +978,11 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1603,1)</onclick>
-				<onleft></onleft>
-				<onright></onright>
-				<onup></onup>
-				<ondown></ondown>
+				<onup>1601</onup>
+				<ondown>1601</ondown>
 			</control>
 			<control type="button" id="1602">
 				<description>Menu Item Prev Button</description>
@@ -987,22 +991,17 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1603,-1)</onclick>
-				<onleft></onleft>
-				<onright></onright>
-				<onup></onup>
-				<ondown></ondown>
+				<onup>1602</onup>
+				<ondown>1602</ondown>
 			</control>
 			<control type="list" id="1603">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>750</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -1113,15 +1112,11 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1703,1)</onclick>
-				<onleft></onleft>
-				<onright></onright>
-				<onup></onup>
-				<ondown></ondown>
+				<onup>1701</onup>
+				<ondown>1701</ondown>
 			</control>
 			<control type="button" id="1702">
 				<description>Menu Item Prev Button</description>
@@ -1130,22 +1125,17 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1703,-1)</onclick>
-				<onleft></onleft>
-				<onright></onright>
-				<onup></onup>
-				<ondown></ondown>
+				<onup>1702</onup>
+				<ondown>1702</ondown>
 			</control>
 			<control type="list" id="1703">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>750</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -1256,15 +1246,11 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1803,1)</onclick>
-				<onleft></onleft>
-				<onright></onright>
-				<onup></onup>
-				<ondown></ondown>
+				<onup>1801</onup>
+				<ondown>1801</ondown>
 			</control>
 			<control type="button" id="1802">
 				<description>Menu Item Prev Button</description>
@@ -1273,22 +1259,17 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1803,-1)</onclick>
-				<onleft></onleft>
-				<onright></onright>
-				<onup></onup>
-				<ondown></ondown>
+				<onup>1802</onup>
+				<ondown>1802</ondown>
 			</control>
 			<control type="list" id="1803">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>750</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -1399,15 +1380,11 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(1903,1)</onclick>
-				<onleft></onleft>
-				<onright></onright>
-				<onup></onup>
-				<ondown></ondown>
+				<onup>1901</onup>
+				<ondown>1901</ondown>
 			</control>
 			<control type="button" id="1902">
 				<description>Menu Item Prev Button</description>
@@ -1416,22 +1393,17 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(1903,-1)</onclick>
-				<onleft></onleft>
-				<onright></onright>
-				<onup></onup>
-				<ondown></ondown>
+				<onup>1902</onup>
+				<ondown>1902</ondown>
 			</control>
 			<control type="list" id="1903">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>750</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -1537,20 +1509,17 @@
 			<control type="button" id="2101">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control(2100).IsVisible()</visible>
-				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>750</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
 				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
-				<!--<onclick>Control.Move(1103,1)</onclick>-->
 			</control>
 			<control type="list" id="2103">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>750</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -1640,20 +1609,17 @@
 			<control type="button" id="2201">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control(2200).IsVisible()</visible>
-				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>750</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
 				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
-				<!--<onclick>Control.Move(1103,1)</onclick>-->
 			</control>
 			<control type="list" id="2203">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>750</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -1734,6 +1700,7 @@
 			</control>
 		</control>
 	</include>
+	
 	<include name="Input03">
 		<control type="group" id="2300">
 			<width>750</width>
@@ -1742,20 +1709,17 @@
 			<control type="button" id="2301">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control(2300).IsVisible()</visible>
-				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>750</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
 				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
-				<!--<onclick>Control.Move(1103,1)</onclick>-->
 			</control>
 			<control type="list" id="2303">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>750</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -1836,6 +1800,7 @@
 			</control>
 		</control>
 	</include>
+	
 	<include name="Input04">
 		<control type="group" id="2400">
 			<width>750</width>
@@ -1844,20 +1809,17 @@
 			<control type="button" id="2401">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control(2400).IsVisible()</visible>
-				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>750</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
 				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
-				<!--<onclick>Control.Move(1103,1)</onclick>-->
 			</control>
 			<control type="list" id="2403">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>750</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -1938,6 +1900,7 @@
 			</control>
 		</control>
 	</include>
+	
 	<include name="Input05">
 		<control type="group" id="2500">
 			<width>750</width>
@@ -1946,20 +1909,17 @@
 			<control type="button" id="2501">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control(2500).IsVisible()</visible>
-				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>750</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
 				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
-				<!--<onclick>Control.Move(1103,1)</onclick>-->
 			</control>
 			<control type="list" id="2503">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>750</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -2040,6 +2000,7 @@
 			</control>
 		</control>
 	</include>
+	
 	<include name="Input06">
 		<control type="group" id="2600">
 			<width>750</width>
@@ -2048,20 +2009,17 @@
 			<control type="button" id="2601">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control(2600).IsVisible()</visible>
-				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>750</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
 				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
-				<!--<onclick>Control.Move(1103,1)</onclick>-->
 			</control>
 			<control type="list" id="2603">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>750</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -2142,6 +2100,7 @@
 			</control>
 		</control>
 	</include>
+	
 	<include name="Input07">
 		<control type="group" id="2700">
 			<width>750</width>
@@ -2150,20 +2109,17 @@
 			<control type="button" id="2701">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control(2700).IsVisible()</visible>
-				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>750</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
 				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
-				<!--<onclick>Control.Move(1103,1)</onclick>-->
 			</control>
 			<control type="list" id="2703">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>750</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -2258,15 +2214,11 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(6113,1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onup>6111</onup>
+				<ondown>6111</ondown>
 			</control>
 			<control type="button" id="6112">
 				<description>Menu Item Prev Button</description>
@@ -2275,22 +2227,17 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(6113,-1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onup>6112</onup>
+				<ondown>6112</ondown>
 			</control>
 			<control type="list" id="6113">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>550</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="550">
 				</itemlayout>
@@ -2401,15 +2348,11 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(6123,1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onup>6121</onup>
+				<ondown>6121</ondown>
 			</control>
 			<control type="button" id="6122">
 				<description>Menu Item Prev Button</description>
@@ -2418,22 +2361,17 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(6123,-1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onup>6122</onup>
+				<ondown>6122</ondown>
 			</control>
 			<control type="list" id="6123">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>550</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="550">
 				</itemlayout>
@@ -2544,15 +2482,11 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-down-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-down-focus-2.png</texturefocus>
 				<onclick>Control.Move(6133,1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onup>6131</onup>
+				<ondown>6131</ondown>
 			</control>
 			<control type="button" id="6132">
 				<description>Menu Item Prev Button</description>
@@ -2561,22 +2495,17 @@
 				<posy>9</posy>
 				<width>33</width>
 				<height>22</height>
-				<label>-</label>
-				<font>-</font>
 				<texturenofocus>confluence/scroll-up-2.png</texturenofocus>
 				<texturefocus>confluence/scroll-up-focus-2.png</texturefocus>
 				<onclick>Control.Move(6133,-1)</onclick>
-				<onleft>-</onleft>
-				<onright>-</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
+				<onup>6132</onup>
+				<ondown>6132</ondown>
 			</control>
 			<control type="list" id="6133">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>550</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="550">
 				</itemlayout>
@@ -2682,20 +2611,17 @@
 			<control type="button" id="6211">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control(6210).IsVisible()</visible>
-				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>550</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
 				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
-				<!--<onclick>Control.Move(1103,1)</onclick>-->
 			</control>
 			<control type="list" id="6213">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>550</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="550">
 				</itemlayout>
@@ -2785,20 +2711,17 @@
 			<control type="button" id="6221">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control(6220).IsVisible()</visible>
-				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>550</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
 				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
-				<!--<onclick>Control.Move(1103,1)</onclick>-->
 			</control>
 			<control type="list" id="6223">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>550</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="550">
 				</itemlayout>
@@ -2888,20 +2811,17 @@
 			<control type="button" id="6231">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control(6230).IsVisible()</visible>
-				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>550</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
 				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
-				<!--<onclick>Control.Move(1103,1)</onclick>-->
 			</control>
 			<control type="list" id="6233">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>550</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="550">
 				</itemlayout>
@@ -2991,20 +2911,17 @@
 			<control type="button" id="6241">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control(6240).IsVisible()</visible>
-				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>550</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
 				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
-				<!--<onclick>Control.Move(1103,1)</onclick>-->
 			</control>
 			<control type="list" id="6243">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>550</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="550">
 				</itemlayout>
@@ -3094,20 +3011,17 @@
 			<control type="button" id="6251">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control(6250).IsVisible()</visible>
-				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>550</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
 				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
-				<!--<onclick>Control.Move(1103,1)</onclick>-->
 			</control>
 			<control type="list" id="6253">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>550</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="550">
 				</itemlayout>
@@ -3197,20 +3111,17 @@
 			<control type="button" id="6261">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control(6260).IsVisible()</visible>
-				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>550</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
 				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
-				<!--<onclick>Control.Move(1103,1)</onclick>-->
 			</control>
 			<control type="list" id="6263">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>550</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="550">
 				</itemlayout>
@@ -3300,20 +3211,17 @@
 			<control type="button" id="6271">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control(6270).IsVisible()</visible>
-				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>550</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
 				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
-				<!--<onclick>Control.Move(1103,1)</onclick>-->
 			</control>
 			<control type="list" id="6273">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>550</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="550">
 				</itemlayout>
@@ -3403,20 +3311,17 @@
 			<control type="button" id="6281">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control(6280).IsVisible()</visible>
-				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>550</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
 				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
-				<!--<onclick>Control.Move(1103,1)</onclick>-->
 			</control>
 			<control type="list" id="6283">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>550</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="550">
 				</itemlayout>
@@ -3506,20 +3411,17 @@
 			<control type="button" id="6291">
 				<description>INPUT CONTROL BUTTON</description>
 				<visible>Control(6290).IsVisible()</visible>
-				<!--<hitrect x="0" y="0" w="750" h="40" />	-->
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>550</width>
 				<height>40</height>
 				<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
 				<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
-				<!--<onclick>Control.Move(1103,1)</onclick>-->
 			</control>
 			<control type="list" id="6293">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>550</width>
 				<height>40</height>						
-				<pagecontrol>-</pagecontrol>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="550">
 				</itemlayout>
@@ -3601,595 +3503,6 @@
 		</control>
 	</include>
 	
-	<include name="MenuHeader">
-		<control type="group">
-			<posy>20</posy>
-			<animation type="WindowOpen" reversible="false">
-				<effect type="slide" start="0,-80" time="400" tween="quadratic" easing="out" />
-				<effect type="fade" start="0" end="100" time="400" />
-			</animation>
-			<animation type="WindowClose" reversible="false">
-				<effect type="slide" end="0,-80" time="400" tween="quadratic" easing="out" /> 
-				<effect type="fade" start="100" end="0" time="400" />
-			</animation>
-			<control type="image" id="3000">
-				<description>Title Setting Image</description>
-				<posx>75</posx>
-				<posy>3</posy>
-				<width>90</width>
-				<height>70</height>
-				<texture>headertitle.png</texture>
-			</control>
-			<control type="label" id="3001">
-				<description>Title Label</description>
-				<posx>180</posx>
-				<posy>27</posy>
-				<width>650</width>
-				<height>40</height>
-				<font>font28_title</font>
-				<align>left</align>
-				<aligny>center</aligny>
-				<textcolor>white</textcolor>
-				<shadowcolor>grey2</shadowcolor>
-			</control>
-			<control type="image">
-				<description>Separator Image</description>
-				<posx>0</posx>
-				<posy>80</posy>
-				<width>1280</width>
-				<height>4</height>
-				<texture>confluence/separator2.png</texture>
-			</control>
-			<control type="label" id="3002">
-				<description>DATE Label</description>
-		        <posx>1060</posx>
-		        <posy>35</posy>
-		        <width>350</width>
-		        <height>28</height>
-		        <align>right</align>
-		        <aligny>center</aligny>
-		        <font>font13</font>
-		        <textcolor>white</textcolor>
-		        <shadowcolor>black</shadowcolor>
-		        <label>[COLOR=grey]$INFO[System.Date][/COLOR]</label>
-			</control>
-			<control type="label" id="3003">
-				<description>TIME Label</description>
-		        <posx>1105</posx>
-		        <posy>35</posy>
-		        <width>100</width>
-		        <height>28</height>
-		        <align>left</align>
-		        <aligny>center</aligny>
-		        <font>font13</font>
-		        <textcolor>white</textcolor>
-		        <shadowcolor>black</shadowcolor>
-		        <label>$INFO[System.Time]</label>
-			</control>
-			<control type="image">
-				<description>Clock Image</description>
-				<posx>1080</posx>
-				<posy>42</posy>
-				<width>20</width>
-				<height>20</height>
-				<texture>clock.png</texture>
-			</control>
-		</control>
-	</include>
-	<include name="MenuFooter">
-		<control type="group">
-			<posy>610</posy>
-			<animation type="WindowOpen" reversible="false">
-				<effect type="slide" start="0,80" time="400" tween="quadratic" easing="out" />
-				<effect type="fade" start="0" end="100" time="400" />
-			</animation>
-			<animation type="WindowClose" reversible="false">
-				<effect type="slide" end="0,80" time="400" tween="quadratic" easing="out" /> 
-				<effect type="fade" start="100" end="0" time="400" />
-			</animation>
-			<control type="image">
-				<posx>0</posx>
-				<posy>30</posy>
-				<width>1280</width>
-				<height>6</height>
-				<texture>confluence/separator.png</texture>
-			</control>
-			<!-- FOOTER BUTTON -->
-			<control type="grouplist">
-				<visible>true</visible>
-				<posx>100</posx>
-				<posy>40</posy>
-				<width>1000</width>
-				<height>50</height>
-				<itemgap>10</itemgap>
-				<onleft>9001</onleft>
-				<onright>9001</onright>
-				<onup>-</onup>
-				<ondown>-</ondown>
-				<orientation>horizontal</orientation>
-				<!-- Back Button -->
-				<control type="group" id="3100">
-					<visible></visible>
-					<width>90</width>
-					<height>40</height>
-					<defaultcontrol always="true">3101</defaultcontrol>
-					<control type="button" id="3101">
-						<description>Button Icon</description>
-						<posx>30</posx>
-						<posy>10</posy>
-						<width>35</width>
-						<height>35</height>
-						<hitrect x="30" y="10" w="100" h="40"></hitrect>
-						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
-						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
-						<onleft>3171</onleft>
-						<onright>3111</onright>
-						<onup></onup>
-						<ondown></ondown>
-					</control>
-					<control type="label">
-						<posx>72</posx>
-						<posy>7</posy>
-						<width>150</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>grey2</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Back[/B]</label>
-						<visible>![Control.HasFocus(3101) | Control.HasFocus(3101)]</visible>
-					</control>
-					<control type="label">
-						<posx>72</posx>
-						<posy>7</posy>
-						<width>150</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>white</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Back[/B]</label>
-						<visible>[Control.HasFocus(3101) | Control.HasFocus(3101)]</visible>
-					</control>
-				</control>
-				<!-- Tune in Button -->
-				<control type="group" id="3110">
-					<visible></visible>
-					<width>115</width>
-					<height>40</height>
-					<defaultcontrol always="true">3111</defaultcontrol>
-					<control type="button" id="3111">
-						<description>Button Icon</description>
-						<posx>30</posx>
-						<posy>10</posy>
-						<width>35</width>
-						<height>35</height>
-						<hitrect x="30" y="10" w="120" h="40"></hitrect>
-						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
-						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
-						<onleft>3101</onleft>
-						<onright>3121</onright>
-						<onup></onup>
-						<ondown></ondown>
-					</control>
-					<control type="label">
-						<posx>72</posx>
-						<posy>7</posy>
-						<width>150</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>grey2</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Tune in[/B]</label>
-						<visible>![Control.HasFocus(3111) | Control.HasFocus(3111)]</visible>
-					</control>
-					<control type="label">
-						<posx>72</posx>
-						<posy>7</posy>
-						<width>150</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>white</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Tune in[/B]</label>
-						<visible>[Control.HasFocus(3111) | Control.HasFocus(3111)]</visible>
-					</control>
-				</control>
-				<!-- Search Button -->
-				<control type="group" id="3120">
-					<visible></visible>
-					<width>110</width>
-					<height>40</height>
-					<defaultcontrol always="true">3121</defaultcontrol>
-					<control type="button" id="3121">
-						<description>Button Icon</description>
-						<posx>30</posx>
-						<posy>10</posy>
-						<width>35</width>
-						<height>35</height>
-						<hitrect x="30" y="10" w="120" h="40"></hitrect>
-						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
-						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
-						<onleft>3111</onleft>
-						<onright>3131</onright>
-						<onup></onup>
-						<ondown></ondown>
-					</control>
-					<control type="label">
-						<posx>72</posx>
-						<posy>7</posy>
-						<width>150</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>grey2</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Search[/B]</label>
-						<visible>![Control.HasFocus(3121) | Control.HasFocus(3121)]</visible>
-					</control>
-					<control type="label">
-						<posx>72</posx>
-						<posy>7</posy>
-						<width>150</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>white</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Search[/B]</label>
-						<visible>[Control.HasFocus(3121) | Control.HasFocus(3121)]</visible>
-					</control>
-				</control>
-				<!-- Rec Button -->
-				<control type="group" id="3130">
-					<visible></visible>
-					<width>110</width>
-					<height>40</height>
-					<defaultcontrol always="true">3131</defaultcontrol>
-					<control type="button" id="3131">
-						<description>Button Icon</description>
-						<posx>30</posx>
-						<posy>10</posy>
-						<width>35</width>
-						<height>35</height>
-						<hitrect x="30" y="10" w="110" h="40"></hitrect>
-						<texturenofocus>confluence/OSDRecordNF.png</texturenofocus>
-						<texturefocus>confluence/OSDRecord2.png</texturefocus>
-						<onleft>3121</onleft>
-						<onright>3141</onright>
-						<onup></onup>
-						<ondown></ondown>
-					</control>
-					<control type="label">
-						<posx>72</posx>
-						<posy>7</posy>
-						<width>150</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>grey2</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Record[/B]</label>
-						<visible>![Control.HasFocus(3131) | Control.HasFocus(3131)]</visible>
-					</control>
-					<control type="label">
-						<posx>72</posx>
-						<posy>7</posy>
-						<width>150</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>white</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Record[/B]</label>
-						<visible>[Control.HasFocus(3131) | Control.HasFocus(3131)]</visible>
-					</control>
-				</control>
-				<!-- Edit Channel Button -->
-				<control type="group" id="3140">
-					<visible></visible>
-					<width>110</width>
-					<height>40</height>
-					<defaultcontrol always="true">3141</defaultcontrol>
-					<control type="button" id="3141">
-						<description>Button Icon</description>
-						<posx>30</posx>
-						<posy>10</posy>
-						<width>35</width>
-						<height>35</height>
-						<hitrect x="30" y="10" w="150" h="40"></hitrect>
-						<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
-						<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
-						<onleft>3131</onleft>
-						<onright>3151</onright>
-						<onup></onup>
-						<ondown></ondown>
-					</control>
-					<control type="label">
-						<posx>72</posx>
-						<posy>7</posy>
-						<width>150</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>grey2</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Edit Channel[/B]</label>
-						<visible>![Control.HasFocus(3141) | Control.HasFocus(3141)]</visible>
-					</control>
-					<control type="label">
-						<posx>72</posx>
-						<posy>7</posy>
-						<width>150</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>white</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Edit Channel[/B]</label>
-						<visible>[Control.HasFocus(3141) | Control.HasFocus(3141)]</visible>
-					</control>
-				</control>
-				<!-- Opt Edit Button -->
-				<control type="group" id="3150">
-					<visible></visible>
-					<width>110</width>
-					<height>40</height>
-					<defaultcontrol always="true">3151</defaultcontrol>
-					<control type="button" id="3151">
-						<description>Button Icon</description>
-						<posx>30</posx>
-						<posy>10</posy>
-						<width>35</width>
-						<height>35</height>
-						<hitrect x="30" y="10" w="120" h="40"></hitrect>
-						<texturenofocus>confluence/OSDVizNF.png</texturenofocus>
-						<texturefocus>confluence/OSDVizFO.png</texturefocus>
-						<onleft>3141</onleft>
-						<onright>3161</onright>
-						<onup></onup>
-						<ondown></ondown>
-					</control>
-					<control type="label">
-						<posx>72</posx>
-						<posy>7</posy>
-						<width>150</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>grey2</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Opt Edit[/B]</label>
-						<visible>![Control.HasFocus(3151) | Control.HasFocus(3151)]</visible>
-					</control>
-					<control type="label">
-						<posx>72</posx>
-						<posy>7</posy>
-						<width>150</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>white</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Opt Edit[/B]</label>
-						<visible>[Control.HasFocus(3151) | Control.HasFocus(3151)]</visible>
-					</control>
-				</control>
-				<!-- Mark Button -->
-				<control type="group" id="3160">
-					<visible></visible>
-					<width>110</width>
-					<height>40</height>
-					<defaultcontrol always="true">3161</defaultcontrol>
-					<control type="button" id="3161">
-						<description>Button Icon</description>
-						<posx>30</posx>
-						<posy>10</posy>
-						<width>35</width>
-						<height>35</height>
-						<hitrect x="30" y="10" w="100" h="40"></hitrect>
-						<texturenofocus>confluence/OverlayWatched.png</texturenofocus>
-						<texturefocus>confluence/amt-overlay-watched.png</texturefocus>
-						<onleft>3151</onleft>
-						<onright>3171</onright>
-						<onup></onup>
-						<ondown></ondown>
-					</control>
-					<control type="label">
-						<posx>72</posx>
-						<posy>7</posy>
-						<width>150</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>grey2</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Mark[/B]</label>
-						<visible>![Control.HasFocus(3161) | Control.HasFocus(3161)]</visible>
-					</control>
-					<control type="label">
-						<posx>72</posx>
-						<posy>7</posy>
-						<width>150</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>white</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Mark[/B]</label>
-						<visible>[Control.HasFocus(3161) | Control.HasFocus(3161)]</visible>
-					</control>
-				</control>
-				<!-- OPT Group Button -->
-				<control type="group" id="3170">
-					<visible></visible>
-					<width>110</width>
-					<height>40</height>
-					<defaultcontrol always="true">3171</defaultcontrol>
-					<control type="button" id="3171">
-						<description>Button Icon</description>
-						<posx>30</posx>
-						<posy>10</posy>
-						<width>35</width>
-						<height>35</height>
-						<hitrect x="30" y="10" w="120" h="40"></hitrect>
-						<texturenofocus>confluence/OSDSubtitlesNF.png</texturenofocus>
-						<texturefocus>confluence/OSDSubtitlesFO.png</texturefocus>
-						<onleft>3161</onleft>
-						<onright>3101</onright>
-						<onup></onup>
-						<ondown></ondown>
-					</control>
-					<control type="label">
-						<posx>72</posx>
-						<posy>7</posy>
-						<width>150</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>grey2</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Opt Group[/B]</label>
-						<visible>![Control.HasFocus(3171) | Control.HasFocus(3171)]</visible>
-					</control>
-					<control type="label">
-						<posx>72</posx>
-						<posy>7</posy>
-						<width>150</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>white</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Opt Group[/B]</label>
-						<visible>[Control.HasFocus(3171) | Control.HasFocus(3171)]</visible>
-					</control>
-				</control>
-			</control>
-		</control>
-	</include>
-	<include name="FadeEffect">
-		<animation type="WindowOpen" reversible="false">
-			<effect type="fade" start="0" end="100" time="400" />
-		</animation>
-		<animation type="WindowClose" reversible="false">
-			<effect type="fade" start="100" end="0" time="400" />
-		</animation>
-	</include>
-	<include name="CommonSettingSlideMenu">
-		<control type="button" id="3301">
-			<description>Fake button for mouse control</description>
-			<posx>-250</posx>
-			<posy>0</posy>
-			<width>265</width>
-			<height>720</height>
-			<label>-</label>
-			<font>-</font>
-			<texturenofocus>-</texturenofocus>
-			<texturefocus>-</texturefocus>
-			<visible>true</visible>
-		</control>
-		<include>SideBladeLeft</include>
-		<control type="image">
-			<description>LOGO</description>
-			<posx>-230</posx>
-			<posy>50</posy>
-			<width>220</width>
-			<height>80</height>
-			<aspectratio>keep</aspectratio>
-			<texture>confluence/Confluence_Logo.png</texture>
-		</control>
-	</include>
-	<include name="SlideMenuButton01">
-		<control type="group" id="3310">
-			<defaultcontrol always="true">3311</defaultcontrol>
-			<control type="button" id="3311">
-				<description>View As button</description>
-				<posx>0</posx>
-				<posy>0</posy>
-				<include>ButtonCommonValues</include>
-			</control>
-		</control>
-	</include>
-	<include name="SlideMenuButton02">
-		<control type="group" id="3320">
-			<defaultcontrol always="true">3321</defaultcontrol>
-			<control type="button" id="3321">
-				<description>View As button</description>
-				<posx>0</posx>
-				<posy>0</posy>
-				<include>ButtonCommonValues</include>
-			</control>
-		</control>
-	</include>
-	<include name="SlideMenuButton03">
-		<control type="group" id="3330">
-			<defaultcontrol always="true">3331</defaultcontrol>
-			<control type="button" id="3331">
-				<description>View As button</description>
-				<posx>0</posx>
-				<posy>0</posy>
-				<include>ButtonCommonValues</include>
-			</control>
-		</control>
-	</include>
-	<include name="DefaultCommonDateTime">
-		<control type="group">
-            <posx>390r</posx>
-            <posy>0</posy>
-            <animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
-            <animation effect="slide" start="0,0" end="420,0" delay="0" time="300">WindowClose</animation>
-            <animation effect="slide" start="420,0" end="0,0" delay="0" time="300">WindowOpen</animation>
-            <control type="image">
-                <description>time background</description>
-                <posx>0</posx>
-                <posy>0</posy>
-                <width>440</width>
-                <height>35</height>
-                <texture flipx="true" border="32,0,0,0">confluence/header.png</texture>
-            </control>
-            <control type="label">
-                <description>time label</description>
-                <posx>30</posx>
-                <posy>0</posy>
-                <width>400</width>
-                <height>28</height>
-                <align>left</align>
-                <aligny>center</aligny>
-                <font>font12</font>
-                <textcolor>white</textcolor>
-                <shadowcolor>black</shadowcolor>
-                <label>[COLOR=grey]$INFO[System.Date][/COLOR] | $INFO[System.Time]</label>
-            </control>
-        </control>
-	</include>
-	
-	<include name="SideBladeLeft">
-		<control type="image">
-			<posx>-820</posx>
-			<posy>0</posy>
-			<width>846</width>
-			<height>720</height>
-			<texture>confluence/HomeBlade.png</texture>
-			<animation effect="slide" start="-26,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
-			<animation effect="slide" start="0,0" end="-26,0" time="200" delay="200" tween="quadratic" easing="out">WindowClose</animation>
-		</control>
-	</include>
-	
-	<include name="ButtonCommonValues">
-		<height>40</height>
-		<width>250</width>
-		<textoffsetx>10</textoffsetx>
-		<textwidth>235</textwidth>
-		<aligny>center</aligny>
-		<font>font13caps</font>
-		<texturefocus border="5">confluence/button-focus.png</texturefocus>
-		<texturenofocus>-</texturenofocus>
-		<pulseonselect>false</pulseonselect>
-	</include>
-
 	<include name="DefaultSideBladeLeft">
 		<control type="image">
 			<posx>-820</posx>
@@ -4214,21 +3527,10 @@
 		<pulseonselect>false</pulseonselect>
 	</include>
 
-	<include name="DefaultSettingWindowEffect">
-		<animation type="WindowOpen" reversible="false">
-			<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
-			<effect type="fade" start="0" end="100" time="300" />
-		</animation>
-		<animation type="WindowClose" reversible="false">
-			<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
-			<effect type="fade" start="100" end="0" time="300" />
-		</animation>
-	</include>
-
 	<include name="DefaultCommonArchiveView">
 		<control type="group">
 			<visible>substring(Window.Property(ViewMode),common)</visible>
-			<include>VisibleFadeEffect</include>
+			<include>DefaultVisibleFadeEffect</include>
 			<control type="list" id="3400">
 				<posx>75</posx>
 				<posy>70</posy>
@@ -4328,7 +3630,7 @@
 						<height>71</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 						<visible>!Control.HasFocus(3400)+substring(Window.Property(ViewMode),common)</visible>
-						<include>VisibleFadeEffect</include>
+						<include>DefaultVisibleFadeEffect</include>
 					</control>
 					<control type="image">
 						<posx>0</posx>
@@ -4339,7 +3641,7 @@
 						<!--
 						<visible>Control.HasFocus(3400)+substring(Window.Property(ViewMode),common)</visible>
 						-->
-						<include>VisibleFadeEffect</include>
+						<include>DefaultVisibleFadeEffect</include>
 					</control>
 
 					<control type="image">
@@ -4474,7 +3776,7 @@
 	<include name="DefaultThumbnailArchiveView">
 		<control type="group">
 			<visible>substring(Window.Property(ViewMode),thumbnail)</visible>
-			<include>VisibleFadeEffect</include>
+			<include>DefaultVisibleFadeEffect</include>
 			<control type="panel" id="3400">
 				<posx>90</posx>
 				<posy>80</posy>
@@ -4630,7 +3932,7 @@
 	<include name="DefaultPosterWrapArchiveView">
 		<control type="group">
 			<visible>substring(Window.Property(ViewMode),posterwrap)</visible>
-			<include>VisibleFadeEffect</include>
+			<include>DefaultVisibleFadeEffect</include>
 			<posx>0</posx>
 			<posy>80</posy>
 
@@ -4777,7 +4079,7 @@
 	<include name="DefaultFanartArchiveView">
 		<control type="group">
 			<visible>substring(Window.Property(ViewMode),panart)</visible>
-			<include>VisibleFadeEffect</include>
+			<include>DefaultVisibleFadeEffect</include>
 			<posx>0</posx>
 			<posy>440</posy>
 
@@ -4911,7 +4213,7 @@
 	<include name="DefaultCommonEPGView">
 		<control type="group">
 			<visible>substring(Window.Property(EPGMode),channel)</visible>
-			<include>VisibleFadeEffect</include>
+			<include>DefaultVisibleFadeEffect</include>
 			<control type="list" id="3500">
 				<posx>75</posx>
 				<posy>110</posy>
@@ -4977,7 +4279,7 @@
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 						<visible>!Control.HasFocus(3500))</visible>
-						<include>VisibleFadeEffect</include>
+						<include>DefaultVisibleFadeEffect</include>
 					</control>
 					<control type="image">
 						<posx>0</posx>
@@ -4988,7 +4290,7 @@
 						<!--
 						<visible>Control.HasFocus(3400)+substring(Window.Property(ViewMode),common)</visible>
 						-->
-						<include>VisibleFadeEffect</include>
+						<include>DefaultVisibleFadeEffect</include>
 					</control>
 
 
@@ -5078,7 +4380,7 @@
 	<include name="DefaultBigEPGView">
 		<control type="group">
 			<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>
-			<include>VisibleFadeEffect</include>
+			<include>DefaultVisibleFadeEffect</include>
 			<control type="list" id="3500">
 				<posx>75</posx>
 				<posy>70</posy>
@@ -5170,7 +4472,7 @@
 						<height>71</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 						<visible>!Control.HasFocus(3500)+[ substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)]</visible>
-						<include>VisibleFadeEffect</include>
+						<include>DefaultVisibleFadeEffect</include>
 					</control>
 					<control type="image">
 						<posx>0</posx>
@@ -5178,7 +4480,7 @@
 						<width>730</width>
 						<height>71</height>
 						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
-						<include>VisibleFadeEffect</include>
+						<include>DefaultVisibleFadeEffect</include>
 					</control>
 
 					<control type="image">

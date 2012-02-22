@@ -22,7 +22,7 @@
 				<include>DialogSpinEx02</include>
 				<include>DialogSpinEx03</include>
 				<include>DialogInput02</include>
-				<include>SettingDialogButtonOKCancel</include>
+				<include>DefaultSettingDialogButtonOKCancel</include>
 			</control>
 		</control>
 	</controls>

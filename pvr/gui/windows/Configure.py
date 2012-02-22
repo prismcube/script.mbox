@@ -378,7 +378,14 @@ class Configure( SettingWindow ) :
 			channel = self.mDataCache.Channel_GetSearch( setupChannelNumber )
 			if channel :
 				self.mHasChannel = True
-			#else :
+				channelName = channel.mName
+			else :
+				channellist = self.mDataCache.Channel_GetList( )
+				if channellist :
+					channelName = channellist[0].mName
+				else :
+					self.mHasChannel = False
+					channelName = 'None'
 			#	self.mDataCache.Channel_GetNext
 			"""
 			self.mchannellist = self.mDataCache.Channel_GetList( )
@@ -401,7 +408,7 @@ class Configure( SettingWindow ) :
 				self.mHasChannel = False
 			"""
 			
-			self.AddInputControl( E_Input01, 'Channel', channel.mName )
+			self.AddInputControl( E_Input01, 'Channel', channelName )
 			self.AddInputControl( E_Input02, 'Date', '01.01.2000' )
 			self.AddInputControl( E_Input03, 'Time', '05:25' )
 			self.AddEnumControl( E_SpinEx01, 'Local Time Offset' )

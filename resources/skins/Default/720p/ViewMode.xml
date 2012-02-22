@@ -2,7 +2,7 @@
 	<include name="CommonRootView">
 		<control type="group">
 			<visible>true</visible>
-			<include>VisibleFadeEffect</include>
+			<include>DefaultVisibleFadeEffect</include>
 			<control type="list" id="50">
 				<hitrect x="50" y="50" w="330" h="620" />
 				<posx>-20</posx>
@@ -144,7 +144,7 @@
 	<include name="CommonRootView">
 		<control type="group">
 			<visible>true</visible>
-			<include>VisibleFadeEffect</include>
+			<include>DefaultVisibleFadeEffect</include>
 			<control type="list" id="50">
 				<posx>70</posx>
 				<posy>78</posy>
@@ -208,7 +208,7 @@
 						<height>41</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>!Control.HasFocus(50)</visible>
-						<include>VisibleFadeEffect</include>
+						<include>DefaultVisibleFadeEffect</include>
 					</control>
 					<control type="image">
 						<posx>0</posx>
@@ -217,7 +217,7 @@
 						<height>41</height>
 						<texture border="0,2,0,2">MenuItemFO.png</texture>
 						<visible>Control.HasFocus(50)</visible>
-						<include>VisibleFadeEffect</include>
+						<include>DefaultVisibleFadeEffect</include>
 					</control>
 					<control type="image">
 						<posx>490</posx>
@@ -346,7 +346,7 @@
 	<include name="ThumbnailView">
 		<control type="group">
 			<visible>Control.IsVisible(500)</visible>
-			<include>VisibleFadeEffect</include>
+			<include>DefaultVisibleFadeEffect</include>
 			<control type="panel" id="500">
 				<posx>90</posx>
 				<posy>80</posy>
@@ -447,7 +447,7 @@
 	<include name="WideIconView">
 		<control type="group">
 			<visible>Control.IsVisible(505)</visible>
-			<include>VisibleFadeEffect</include>
+			<include>DefaultVisibleFadeEffect</include>
 			<control type="panel" id="505">
 				<visible>[Container.Content(TVShows) + !Skin.HasSetting(TVShowsUsePosters)] | Window.IsVisible(VideoFiles)</visible>
 				<posx>95</posx>
@@ -522,7 +522,7 @@
 	<include name="FullWidthList">
 		<control type="group">
 			<visible>Control.IsVisible(51)</visible>
-			<include>VisibleFadeEffect</include>
+			<include>DefaultVisibleFadeEffect</include>
 			<control type="list" id="51">
 				<posx>95</posx>
 				<posy>78</posy>
@@ -592,7 +592,7 @@
 						<height>41</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 						<visible>!Control.HasFocus(51)</visible>
-						<include>VisibleFadeEffect</include>
+						<include>DefaultVisibleFadeEffect</include>
 					</control>
 					<control type="image">
 						<posx>0</posx>
@@ -601,7 +601,7 @@
 						<height>41</height>
 						<texture border="0,2,0,2">MenuItemFO.png</texture>
 						<visible>Control.HasFocus(51)</visible>
-						<include>VisibleFadeEffect</include>
+						<include>DefaultVisibleFadeEffect</include>
 					</control>
 					<control type="image">
 						<posx>875</posx>

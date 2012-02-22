@@ -28,7 +28,7 @@
 				<include>DialogInput09</include>
 				<include>DialogSpinEx01</include>
 				<include>DialogSpinEx02</include>
-				<!--include>SettingDialogButtonOKCancel</include-->
+				<!--include>DefaultSettingDialogButtonOKCancel</include-->
 			</control>
 		</control>
 	</controls>

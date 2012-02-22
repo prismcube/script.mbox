@@ -20,7 +20,7 @@
 				<include>DialogInput01</include>
 				<include>DialogInput02</include>
 				<include>DialogInput03</include>
-				<include>SettingDialogButtonOKCancel</include>
+				<include>DefaultSettingDialogButtonOKCancel</include>
 			</control>
 		</control>
 	</controls>

@@ -27,7 +27,7 @@
 				<width>1280</width>
 				<height>720</height>
 				<texture border="20">confluence/black-back.png</texture>
-				<include>VisibleFadeEffect</include>
+				<include>DefaultVisibleFadeEffect</include>
 				<visible>true</visible>
 			</control>
 			<control type="image">
@@ -36,11 +36,11 @@
 				<width>1280</width>
 				<height>128</height>
 				<texture>confluence/floor.png</texture>
-				<include>VisibleFadeEffect</include>
+				<include>DefaultVisibleFadeEffect</include>
 				<visible>true</visible>				
 			</control>
 			<control type="group">
-				<include>VisibleFadeEffect</include>
+				<include>DefaultVisibleFadeEffect</include>
 				<visible>true</visible>
 				<control type="image">
 					<posx>40</posx>
@@ -168,7 +168,7 @@
 					<description>View As button</description>
 					<posx>0</posx>
 					<posy>0</posy>
-					<include>ButtonCommonValues</include>
+					<include>DefaultButtonCommonValues</include>
 					<label>VIEW:</label>
 					<onleft>3500</onleft>
 					<onright>3500</onright>
@@ -181,7 +181,7 @@
 					<hitrect x="0" y="120" w="265" h="40" />
 					<posx>0</posx>
 					<posy>40</posy>
-					<include>ButtonCommonValues</include>
+					<include>DefaultButtonCommonValues</include>
 					<radiowidth>18</radiowidth>
 					<radioheight>18</radioheight>
 					<radioposx>222</radioposx>

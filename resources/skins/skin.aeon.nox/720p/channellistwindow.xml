@@ -75,7 +75,7 @@
 
 <!-- middle left -->
 		<control type="group">
-			<include>VisibleFadeEffect</include>
+			<include>DefaultVisibleFadeEffect</include>
 			<visible>true</visible>
 <!--
 			<control type="image">
