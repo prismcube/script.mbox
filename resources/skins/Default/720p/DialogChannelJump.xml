@@ -19,17 +19,17 @@
 			<control type="label" id="210">
 				<description>Channel Number</description>
 				<posx>0</posx>
-				<posy>25</posy>
+				<posy>35</posy>
 				<width>480</width>
 				<height>30</height>
-				<font>font24_title</font>
+				<font>font35_title</font>
 				<align>center</align>
 				<aligny>center</aligny>
 			</control>
 			<control type="label" id="211">
 				<description>Channel Name</description>			
 				<posx>0</posx>
-				<posy>65</posy>
+				<posy>75</posy>
 				<width>480</width>
 				<height>30</height>
 				<align>center</align>
@@ -39,7 +39,7 @@
 			<control type="label" id="212">
 				<description>EPG Name</description>			
 				<posx>0</posx>
-				<posy>120</posy>
+				<posy>125</posy>
 				<width>480</width>
 				<height>30</height>
 				<align>center</align>

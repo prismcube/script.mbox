@@ -149,7 +149,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 	def ScanStart( self ) :
-		self.mSatelliteFormatedName = self.mDataCache.Satellite_GetFormattedName( self.mLongitude , self.mBand  )		
+		#self.mSatelliteFormatedName = self.mDataCache.Satellite_GetFormattedName( self.mLongitude , self.mBand  )		
 
 		if self.mScanMode == E_SCAN_SATELLITE :
 			satelliteList = []
@@ -289,6 +289,8 @@ class DialogChannelSearch( BaseDialog ) :
 		dialog.SetDialogProperty( 'Infomation', searchResult )
 		dialog.doModal( )
 
-		if tvCount != 0 or radioCount != 0 :
-			self.mDataCache.Load()
-
+		"""
+		if tvCount > 0 or radioCount > 0 :
+			print 'dhkim test in load'
+			self.mDataCache.LoadChannelList( )
+		"""

@@ -17,8 +17,8 @@ class Configure( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
  
-		leftGroupItems			= [ 'Language', 'Parental', 'Recording Option', 'Audio Setting', 'HDMI Setting', 'IP Setting', 'Format HDD', 'Factory Reset', 'Etc' ]
-		descriptionList			= [ 'DESC Language', 'DESC Parental', 'DESC Recording Option', 'DESC Audio Setting', 'DESC HDMI Setting', 'DESC IP Setting', 'DESC Format HDD', 'DESC Factory Reset', 'DESC Etc' ]
+		leftGroupItems			= [ 'Language', 'Parental', 'Recording Option', 'Audio Setting', 'HDMI Setting', 'IP Setting', 'Time Setting', 'Format HDD', 'Factory Reset', 'Etc' ]
+		descriptionList			= [ 'DESC Language', 'DESC Parental', 'DESC Recording Option', 'DESC Audio Setting', 'DESC HDMI Setting', 'DESC IP Setting', 'DESC Time Setting', 'DESC Format HDD', 'DESC Factory Reset', 'DESC Etc' ]
 	
 		self.mCtrlLeftGroup 	= None
 		self.mGroupItems 		= []
@@ -37,6 +37,8 @@ class Configure( SettingWindow ) :
 
 		self.mReLoadIp			= False
 		self.mVisibleParental	= False
+		
+		self.mHasChannel		= False
 
 		for i in range( len( leftGroupItems ) ) :
 			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i], descriptionList[i] ) )
@@ -124,6 +126,24 @@ class Configure( SettingWindow ) :
 		elif selectedId == E_IP_SETTING :
 			self.IpSetting( groupId )
 			return
+
+		elif selectedId == E_TIME_SETTING and groupId == E_Input01 :
+			dialog = xbmcgui.Dialog( )
+			channelList = self.mDataCache.Channel_GetList( )
+			channelNameList = []
+			for channel in channelList :
+				channelNameList.append( channel.mName )
+ 			ret = dialog.select( 'Select Channel', channelNameList )
+
+			if ret >= 0 :
+				ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( channelList[ret].mNumber )
+				self.SetListControl( )
+			return
+
+		elif selectedId == E_TIME_SETTING and groupId == E_Input04 :
+			pass
+			return
+			# Todo Apply Time
 
 		elif selectedId == E_PARENTAL and self.mVisibleParental == False and groupId == E_Input01 :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -351,6 +371,54 @@ class Configure( SettingWindow ) :
 			self.DisableControl( E_IP_SETTING )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
+
+
+		elif selectedId == E_TIME_SETTING :
+			setupChannelNumber = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
+			channel = self.mDataCache.Channel_GetSearch( setupChannelNumber )
+			if channel :
+				self.mHasChannel = True
+			#else :
+			#	self.mDataCache.Channel_GetNext
+			"""
+			self.mchannellist = self.mDataCache.Channel_GetList( )
+			#self.mChannelNameList = []
+			channelName = 'None'
+			if self.mchannellist :
+				self.mSetupChannelNumber = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
+				self.mHasChannel = True
+				for channel in self.mchannellist :
+					#self.mChannelNameList.append( channel.mName )
+					if self.mSetupChannelNumber == channel.mNumber :
+						channelName = channel.mName
+						break
+				if channelName == 'None' :
+					self.mDataCache.Channel_GetNext
+						#next name
+						
+			else :
+				#self.mChannelNameList.append( 'None' )
+				self.mHasChannel = False
+			"""
+			
+			self.AddInputControl( E_Input01, 'Channel', channel.mName )
+			self.AddInputControl( E_Input02, 'Date', '01.01.2000' )
+			self.AddInputControl( E_Input03, 'Time', '05:25' )
+			self.AddEnumControl( E_SpinEx01, 'Local Time Offset' )
+			self.AddEnumControl( E_SpinEx02, 'Summer Time' )
+			self.AddInputControl( E_Input04, 'Apply', '' )
+
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_Input01, E_Input02, E_Input03, E_Input04 ]
+			self.SetVisibleControls( visibleControlIds, True )
+			self.SetEnableControls( visibleControlIds, True )
+
+			hideControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input05 ]
+			self.SetVisibleControls( hideControlIds, False )
+			
+			self.InitControl( )
+			self.DisableControl( E_TIME_SETTING )
+			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
+			return
 			
 
 		elif selectedId == E_FORMAT_HDD :	
@@ -431,6 +499,13 @@ class Configure( SettingWindow ) :
 			else :
 				self.SetEnableControls( visibleControlIds, False )
 
+		elif aSelectedItem == E_TIME_SETTING :
+			visibleControlIds = [ E_Input02, E_Input03 ]
+			self.SetEnableControls( visibleControlIds, False )
+			if self.mHasChannel == True :
+				self.SetEnableControl( E_Input01, True )
+			else :
+				self.SetEnableControl( E_Input01, False )
 
 	def LoadIp( self ) :
 		ipAddress = ElisPropertyInt( 'IpAddress', self.mCommander ).GetProp( )

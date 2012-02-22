@@ -75,7 +75,7 @@ class AntennaSetup( SettingWindow ) :
 			elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 				ConfigMgr.GetInstance( ).Restore( )
 				ConfigMgr.GetInstance( ).SetNeedLoad( True )
-				
+					
 			elif dialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
 				return
 
