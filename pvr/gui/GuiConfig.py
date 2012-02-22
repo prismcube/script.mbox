@@ -284,5 +284,8 @@ class Progress :
 		self.progress.close( )
 
 
-	def Update( self, aPercent , aLabel=self.mDescription ) :
-		self.progress.update( aPercent, aLabel ) 
+	def Update( self, aPercent , aLabel=None ) :
+		if aLabel != None :
+			self.progress.update( aPercent, aLabel ) 
+		else :
+			self.progress.update( aPercent ) 
