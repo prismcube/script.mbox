@@ -13,7 +13,7 @@ import select
 from decorator import decorator
 from ElisClass import *
 from ElisEventClass import *
-from ElisProperty import ElisPropertyEnum
+from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.GuiConfig import *
 
 
@@ -72,6 +72,11 @@ class DataCacheMgr( object ):
 		self.mTransponderList			= None
 		self.mEPGList					= None
 		self.mCurrentEvent				= None
+		self.mListSatellite				= None
+		self.mListCasList				= None
+		self.mListFavorite				= None
+		self.mPropertyAge				= 0
+		self.mPropertyPincode			= -1
 
 		self.mChannelListHash			= {}
 		self.mSatelliteListHash			= {}
@@ -103,15 +108,15 @@ class DataCacheMgr( object ):
 				#LOG_TRACE('currentEvent' )
 
 
-
 	def Load( self ) :
+
+		self.LoadPropertyLimit( )
 
 		#Zapping Mode
 		LOG_TRACE('')
-		self.mZappingMode = self.mCommander.Zappingmode_GetCurrent( )
-		LOG_TRACE('')		
-		self.mCurrentChannel = self.mCommander.Channel_GetCurrent( )
-		LOG_TRACE('')		
+		self.LoadZappingmode( )
+		self.LoadZappingList( )
+		LOG_TRACE('')
 
 
 		#SatelliteList
@@ -133,6 +138,8 @@ class DataCacheMgr( object ):
 		self.mSatelliteList = self.mCommander.Satellite_GetList( ElisEnum.E_SORT_INSERTED )
 		count =  len( self.mSatelliteList )
 		LOG_TRACE('satellite count=%d' %count )
+		from pvr.PublicReference import ClassToList
+		LOG_TRACE('satellite[%s]'% ClassToList('convert', self.mSatelliteList) )
 
 		for i in range( count ):
 			satellite = self.mSatelliteList[i]
@@ -240,15 +247,41 @@ class DataCacheMgr( object ):
 				prevChannel = channel		
 	
 
+	def LoadZappingmode( self ) :
+		self.mZappingMode = self.mCommander.Zappingmode_GetCurrent( )
+		self.mCurrentChannel = self.mCommander.Channel_GetCurrent( )
+
+	def LoadZappingList( self ) :
+		serviceType = ElisEnum.E_SERVICE_TYPE_TV
+		if self.mZappingMode :
+			serviceType = self.mZappingMode.mServiceType
+		self.mListSatellite = self.mCommander.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
+		self.mListCasList   = self.mCommander.Fta_cas_GetList( serviceType )
+		self.mListFavorite  = self.mCommander.Favorite_GetList( serviceType )
+
+	def LoadPropertyLimit( self ) :
+		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
+		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
+
+	def Zappingmode_SetCurrent( self , aZappingMode ) :
+		if self.mCommander.Zappingmode_SetCurrent( aZappingMode ) == True :
+			self.mZappingMode = aZappingMode
+
 	@DataLock
 	def Zappingmode_GetCurrent( self ) :
 		return self.mZappingMode
 
+	@DataLock
+	def Satellite_GetConfiguredList( self ) :
+		return self.mListSatellite
 
 	@DataLock
-	def Zappingmode_SetCurrent( self , aZappingMode ) :
-		if self.mCommander.Zappingmode_SetCurrent( aZappingMode ) == True :
-			self.mZappingMode = aZappingMode
+	def Fta_cas_GetList( self ) :
+		return self.mListCasList
+
+	@DataLock
+	def Favorite_GetList( self ) :
+		return self.mListFavorite
 
 	@DataLock
 	def Channel_GetList( self ) :
@@ -260,7 +293,6 @@ class DataCacheMgr( object ):
 		return self.mCurrentChannel
 
 
-	@DataLock
 	def Channel_SetCurrent( self, aChannelNumber, aServiceType ) :
 		self.mCurrentEvent = None
 		if self.mCommander.Channel_SetCurrent( aChannelNumber, aServiceType ) == True :
@@ -368,7 +400,6 @@ class DataCacheMgr( object ):
 
 		return None
 
-	#@DataLock
 	def Epgevent_GetList( self, aChannel, aTestTime=0 ) :
 		if aTestTime :
 			gmtime = aTestTime
@@ -400,7 +431,7 @@ class DataCacheMgr( object ):
 		return None
 
 
-	@DataLock
+	#@DataLock
 	def Epgevent_GetPresent( self ) :
 		#Todo later
 		""" 
@@ -483,3 +514,5 @@ class DataCacheMgr( object ):
 				transponderList.append( '%d %d MHz %d KS/s' % ( ( i + 1 ), tmptransponderList[i].mFrequency, tmptransponderList[i].mSymbolRate ) )
 
 		return transponderList
+
+

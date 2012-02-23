@@ -5,6 +5,7 @@ import time
 
 import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DiaMgr
+import pvr.DataCacheMgr as CacheMgr
 from pvr.gui.BaseWindow import SettingWindow, Action
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
@@ -235,6 +236,7 @@ class Configure( SettingWindow ) :
 				return
 				
 			ElisPropertyInt( 'PinCode', self.mCommander ).SetProp( int( newpin ) )
+			self.mDataCache.LoadPropertyLimit()
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( 'Success', 'Pin codes change success' )
  			dialog.doModal( )

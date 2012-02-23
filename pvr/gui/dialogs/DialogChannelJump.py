@@ -5,6 +5,7 @@ import sys
 
 from pvr.gui.BaseDialog import BaseDialog
 from pvr.gui.BaseWindow import Action
+from pvr.gui.GuiConfig import *
 
 import pvr.DataCacheMgr as CacheMgr
 from pvr.PublicReference import ClassToList
@@ -34,6 +35,7 @@ class DialogChannelJump( BaseDialog ) :
 		self.mTestTime          = 0
 
 		self.mMaxChannelNum		= 9999
+		self.mIsOk              = E_DIALOG_STATE_CANCEL
 
 
 	def onInit( self ) :
@@ -55,12 +57,14 @@ class DialogChannelJump( BaseDialog ) :
 		actionId = aAction.getId( )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
+			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.CloseDialog( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 			
 		elif actionId == Action.ACTION_PARENT_DIR :
+			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.CloseDialog( )
 
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
@@ -200,13 +204,16 @@ class DialogChannelJump( BaseDialog ) :
 	def GetChannelLast( self ):
 		return self.mChannelNumber
 
+	def IsOK( self ) :
+		return self.mIsOk
+
 	def RestartAsyncTune( self ) :
 		self.StopAsyncTune( )
 		self.StartAsyncTune( )
 
 
 	def StartAsyncTune( self ) :
-		self.mAsyncTuneTimer = threading.Timer( 2, self.AsyncTuneChannel ) 				
+		self.mAsyncTuneTimer = threading.Timer( 1, self.AsyncTuneChannel ) 				
 		self.mAsyncTuneTimer.start()
 
 
@@ -220,5 +227,6 @@ class DialogChannelJump( BaseDialog ) :
 
 	def AsyncTuneChannel( self ) :
 		if self.mFlagFind :
+			self.mIsOk = E_DIALOG_STATE_YES
 			self.CloseDialog( )
 

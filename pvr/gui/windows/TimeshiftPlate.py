@@ -3,6 +3,7 @@ import xbmcgui
 import sys
 
 import pvr.gui.WindowMgr as winmgr
+import pvr.DataCacheMgr as CacheMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
 from pvr.gui.GuiConfig import *
 
@@ -87,7 +88,7 @@ class TimeShiftPlate(BaseWindow):
 		#get channel
 		#self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
 
-		self.mTimeShiftExcuteTime = self.mCommander.Datetime_GetLocalTime()
+		self.mTimeShiftExcuteTime = self.mDataCache.Datetime_GetLocalTime()
 
 		self.InitLabelInfo()
 		self.TimeshiftAction( self.mCtrlBtnPause.getId() )
@@ -95,8 +96,8 @@ class TimeShiftPlate(BaseWindow):
 		#self.mEventBus.Register( self )
 
 		#run thread
-		self.mEnableThread = True
-		self.CurrentTimeThread()
+		#self.mEnableThread = True
+		#self.CurrentTimeThread()
 
 		self.mAsyncShiftTimer = None
 
@@ -112,9 +113,6 @@ class TimeShiftPlate(BaseWindow):
 			self.mEnableThread = False
 			self.CurrentTimeThread().join()
 			self.Close()
-#			winmgr.GetInstance().showWindow( winmgr.WIN_ID_CHANNEL_LIST_WINDOW )
-#			winmgr.GetInstance().showWindow( winmgr.WIN_ID_NULLWINDOW )
-#			winmgr.shutdown()
 
 		elif id == Action.ACTION_SELECT_ITEM:
 			LOG_TRACE( '===== select [%s]' % id )
@@ -145,11 +143,9 @@ class TimeShiftPlate(BaseWindow):
 		LOG_TRACE( 'control %d' % aControlId )
 
 		if aControlId >= self.mCtrlBtnRewind.getId() and aControlId <= self.mCtrlBtnForward.getId() :
-		#if aControlId >= self.mCtrlBtnRewind.getId() and aControlId <= self.mCtrlBtnTest.getId() :
 			#self.InitTimeShift()
 			self.TimeshiftAction( aControlId )
 		
-
 		elif aControlId == self.mCtrlBtnRecord.getId():
 			self.TimeshiftAction( aControlId )
 
@@ -311,7 +307,7 @@ class TimeShiftPlate(BaseWindow):
 
 	def UpdateONEvent(self, aEvent) :
 		LOG_TRACE( 'Enter' )
-		aEvent.printdebug()
+		#aEvent.printdebug()
 
 		LOG_TRACE( 'Leave' )
 
@@ -328,7 +324,7 @@ class TimeShiftPlate(BaseWindow):
 		self.mCtrlLblTSEndTime.setLabel('')
 		GuiLock2(False)
 
-		self.mLocalTime = self.mCommander.Datetime_GetLocalTime()
+		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
 		self.InitTimeShift()
 
 	def InitTimeShift(self, loop = 0) :
@@ -550,7 +546,7 @@ class TimeShiftPlate(BaseWindow):
 
 			if  ( loop % 10 ) == 0 :
 				#LOG_TRACE( 'loop=%d' %loop )
-				self.mLocalTime = self.mCommander.Datetime_GetLocalTime()
+				self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
 				#self.UpdateLocalTime( )
 
 			self.UpdateLocalTime( loop )
@@ -653,6 +649,7 @@ class TimeShiftPlate(BaseWindow):
 		
 	def Close( self ):
 		#self.mEventBus.Deregister( self )
+		self.TimeshiftAction(self.mCtrlBtnStop.getId())
 		self.StopAsyncMove()
 		self.close()
 

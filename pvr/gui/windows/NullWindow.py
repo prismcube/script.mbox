@@ -27,6 +27,7 @@ class NullWindow( BaseWindow ) :
 			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
 
 	def onAction(self, aAction) :		
@@ -111,12 +112,14 @@ class NullWindow( BaseWindow ) :
 			dialog.doModal()
 			GuiLock2(False)
 
-			inputNumber = dialog.GetChannelLast()
-			LOG_TRACE('=========== Jump chNum[%s]'% inputNumber)
+			isOK = dialog.IsOK()
+			if isOK == E_DIALOG_STATE_YES :
+				inputNumber = dialog.GetChannelLast()
+				LOG_TRACE('=========== Jump chNum[%s]'% inputNumber)
 
-			jumpChannel = self.mDataCache.Channel_GetCurr( int(inputNumber) )
-			if jumpChannel :
-				self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType )
+				jumpChannel = self.mDataCache.Channel_GetCurr( int(inputNumber) )
+				if jumpChannel :
+					self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType )
 
 		else:
 			print 'lael98 check ation unknown id=%d' %actionId
