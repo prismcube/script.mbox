@@ -108,6 +108,14 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		elif aActionId == Action.ACTION_VOLUME_DOWN:
 			self.UpdateVolume( )
 
+	def SetPipScreen( self ) :
+		ctrlImgVideoPos = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
+
+		h = ctrlImgVideoPos.getHeight( )
+		w = ctrlImgVideoPos.getWidth( )
+		x, y = list( ctrlImgVideoPos.getPosition( ) )
+		ret = self.mCommander.Player_SetVIdeoSize( x, y, w, h )
+
 
 	def SetVideoRestore( self ) :
 		ret = self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
@@ -185,15 +193,6 @@ class SettingWindow( BaseWindow ) :
 	def SetSettingWindowLabel( self, aLabel ) :
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( aLabel )
 		self.getControl( E_SETTING_HEADER_TITLE ).setLabel( aLabel )
-
-
-	def SetPipScreen( self ) :
-		ctrlImgVideoPos = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
-
-		h = ctrlImgVideoPos.getHeight( )
-		w = ctrlImgVideoPos.getWidth( )
-		x, y = list( ctrlImgVideoPos.getPosition( ) )
-		ret = self.mCommander.Player_SetVIdeoSize( x, y, w, h ) 
 
 		
 	def GetControlIdToListIndex( self, aControlId ) :
