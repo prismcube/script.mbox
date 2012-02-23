@@ -94,6 +94,7 @@ class EPGWindow(BaseWindow):
 			pass
 
 		elif actionId == Action.ACTION_PARENT_DIR :
+			self.SetVideoRestore( )		
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
