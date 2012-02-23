@@ -4,6 +4,7 @@ import sys
 
 import pvr.gui.WindowMgr as WinMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
+from pvr.gui.GuiConfig import *
 from ElisEnum import ElisEnum
 from ElisEventBus import ElisEventBus
 from ElisEventClass import *
@@ -37,6 +38,9 @@ class EPGWindow(BaseWindow):
 	def onInit(self):
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
+
+		self.SetPipScreen( )
+		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'EPG' )
 
 		LOG_TRACE('')
 		self.mEPGCount = 0
@@ -75,21 +79,22 @@ class EPGWindow(BaseWindow):
 		
 		self.mInitialized = True
 
-	def onAction(self, aAction):
-		actionId = aAction.getId()
-		focusId = self.getFocusId()
+	def onAction( self, aAction ) :
+		actionId = aAction.getId( )
 
 		self.GlobalAction( actionId )
 		
 		#LOG_TRACE('onAction=%d' %actionId )
 
-		if actionId == Action.ACTION_PREVIOUS_MENU:
+		if actionId == Action.ACTION_PREVIOUS_MENU :
+			self.SetVideoRestore( )
 			self.close( )
 
-		elif actionId == Action.ACTION_SELECT_ITEM:
+		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 
 		elif actionId == Action.ACTION_PARENT_DIR :
+			self.SetVideoRestore( )		
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
