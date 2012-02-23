@@ -34,7 +34,7 @@ class DialogChannelJump( BaseDialog ) :
 		self.mFakeEPG           = None
 		self.mTestTime          = 0
 
-		self.mMaxChannelNum		= 9999
+		self.mMaxChannelNum		= E_INPUT_MAX
 		self.mIsOk              = E_DIALOG_STATE_CANCEL
 
 

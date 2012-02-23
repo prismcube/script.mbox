@@ -26,8 +26,8 @@ class NullWindow( BaseWindow ) :
 			self.mInitialized = True
 			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
 
 	def onAction(self, aAction) :		
@@ -106,9 +106,9 @@ class NullWindow( BaseWindow ) :
 			dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_CHANNEL_JUMP )
 			event = self.mDataCache.Epgevent_GetPresent()
 			if event:
-				dialog.SetDialogProperty( str(aKey), 9999, None, event.mStartTime)
+				dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, None, event.mStartTime)
 			else :
-				dialog.SetDialogProperty( str(aKey), 9999, None)
+				dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, None)
 			dialog.doModal()
 			GuiLock2(False)
 

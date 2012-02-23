@@ -2361,9 +2361,9 @@ class ChannelListWindow(BaseWindow):
 			GuiLock2(True)
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
 			if self.mNavEpg:
-				dialog.SetDialogProperty( str(aKey), 9999, self.mChannelList, self.mNavEpg.mStartTime )
+				dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, self.mChannelList, self.mNavEpg.mStartTime )
 			else :
-				dialog.SetDialogProperty( str(aKey), 9999, self.mChannelList)
+				dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, self.mChannelList)
 			dialog.doModal()
 			GuiLock2(False)
 
