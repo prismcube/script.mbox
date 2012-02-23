@@ -107,7 +107,7 @@ class ChannelListWindow(BaseWindow):
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
 
 		starttime = time.time()
-		print '==================== TEST TIME START[%s]'% starttime
+		print '==================== TEST TIME[ONINIT] START[%s]'% starttime
 
 		#header
 		self.mCtrlLblPath1           = self.getControl( 21 )
@@ -204,7 +204,7 @@ class ChannelListWindow(BaseWindow):
 		self.mAsyncTuneTimer = None
 
 		endtime = time.time()
-		print '==================== TEST TIME END[%s] loading[%s]'% (endtime, endtime-starttime )
+		print '==================== TEST TIME[ONINIT] END[%s] loading[%s]'% (endtime, endtime-starttime )
 		LOG_TRACE( 'Leave' )
 
 	def onAction(self, aAction):
@@ -1163,6 +1163,8 @@ class ChannelListWindow(BaseWindow):
 	def InitChannelList(self):
 		LOG_TRACE( 'Enter' )
 
+		#starttime = time.time()
+		#print '==================== TEST TIME[LIST] START[%s]'% starttime
 
 		#no channel is set Label comment
 		if self.mChannelList == None:
@@ -1235,6 +1237,8 @@ class ChannelListWindow(BaseWindow):
 		self.mCtrlSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition()+1)) )
 		GuiLock2(False)
 
+		#endtime = time.time()
+		#print '==================== TEST TIME[LIST] END[%s] loading[%s]'% (endtime, endtime-starttime )
 		LOG_TRACE( 'Leave' )
 
 
