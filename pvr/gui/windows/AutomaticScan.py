@@ -6,6 +6,7 @@ from copy import deepcopy
 import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.BaseWindow import SettingWindow, Action
 from ElisProperty import ElisPropertyEnum
+from ElisEnum import ElisEnum
 from pvr.gui.GuiConfig import *
 
 
@@ -26,10 +27,19 @@ class AutomaticScan( SettingWindow ) :
 		self.mConfiguredSatelliteList = []		
 		
 		self.LoadFormattedSatelliteNameList( )
-		self.InitConfig( )
-		self.ShowDescription( )
-		self.mInitialized = True
-		
+		if len( self.mConfiguredSatelliteList ) > 0 :
+			self.InitConfig( )
+			self.ShowDescription( )
+			self.mInitialized = True
+		else :
+			hideControlIds = [ E_Input01, E_Input02, E_SpinEx01, E_SpinEx02 ]
+			self.SetVisibleControls( hideControlIds, False )
+			self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Has no configured satellite' )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( 'ERROR', 'Has No Configurd Satellite' )
+ 			dialog.doModal( )
+ 			self.close( )
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -37,7 +47,8 @@ class AutomaticScan( SettingWindow ) :
 		self.GlobalAction( actionId )
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			pass
+			self.ResetAllControl( )
+			self.close( )
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
@@ -118,32 +129,12 @@ class AutomaticScan( SettingWindow ) :
 
 	
 	def LoadFormattedSatelliteNameList( self ) :
-		
-		configuredSatelliteList1 = []
-		configuredSatelliteList1 = self.mDataCache.GetConfiguredSatellite( E_TUNER_1 )
-
-		configuredSatelliteList2 = []
-		configuredSatelliteList2 = self.mDataCache.GetConfiguredSatellite( E_TUNER_2 )
-
-		property = ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander )
-
-		self.mConfiguredSatelliteList = deepcopy( configuredSatelliteList1 )
-		
-		if property.GetProp( ) == E_DIFFERENT_TUNER :
-			for config in configuredSatelliteList2 :
-				find = False
-				for compare in configuredSatelliteList1 :
-					if config.mSatelliteLongitude == compare.mSatelliteLongitude and config.mBandType == compare.mBandType:
-						find = True
-						break
-
-				if find == False :
-					self.mConfiguredSatelliteList.append( config )
-
-
+		self.mConfiguredSatelliteList = self.mDataCache.Satellite_GetConfiguredList( )
+		if len( self.mConfiguredSatelliteList ) <= 0 :
+ 			return
 		self.mFormattedList = []
 		self.mFormattedList.append( 'All' )
 
 		for config in self.mConfiguredSatelliteList :
-			self.mFormattedList.append( self.mDataCache.Satellite_GetFormattedName( config.mSatelliteLongitude, config.mBandType ) )
-			
+			self.mFormattedList.append( self.mDataCache.Satellite_GetFormattedName( config.mLongitude, config.mBand ) )
+		

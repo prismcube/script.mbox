@@ -248,32 +248,24 @@ class TunerConfigMgr( object ) :
 		count = len ( self.mConfiguredList2 )
 		for i in range( count ) :
 			self.mConfiguredList2[i].mSlotNumber = i
-
-		""" FOR TEST """
-		print '=====dhkim test Satellite save list===='
-		for satellite in self.mConfiguredList1 :
-			satellite.printdebug()
-		
-		for satellite in self.mConfiguredList2 :
-			satellite.printdebug()
-		
+	
 		ret1 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList1 )
 		ret2 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList2 )
 
 		if ret1 == True and ret2 == True :
 			return True
 		elif ret1 == False or ret2 == False :
-			self.mCommander.Satelliteconfig_SaveList( self.mDataCache.GetConfiguredSatellite( E_TUNER_1 ) )
-			self.mCommander.Satelliteconfig_SaveList( self.mDataCache.GetConfiguredSatellite( E_TUNER_2 ) )
+			self.mCommander.Satelliteconfig_SaveList( self.mDataCache.Satellite_ConfiguredTunerSatellite( E_TUNER_1 ) )
+			self.mCommander.Satelliteconfig_SaveList( self.mDataCache.Satellite_ConfiguredTunerSatellite( E_TUNER_2 ) )
 			return False
 			
 
 	def Load( self ) :
 		# Get All Satellite List ( mLongitude, mBand, mName )
-		self.mAllSatelliteList = self.mDataCache.mSatelliteList
+		self.mAllSatelliteList = self.mDataCache.Satellite_GetAllSatelliteList( )
 
 		# Get Configured Satellite List Tuner 1
-		self.mConfiguredList1 = deepcopy( self.mDataCache.GetConfiguredSatellite( E_TUNER_1 ) )
+		self.mConfiguredList1 = deepcopy( self.mDataCache.Satellite_ConfiguredTunerSatellite( E_TUNER_1 ) )
 
 		if len( self.mConfiguredList1 ) == 0 :		# If empty list to return, add one default satellite
 			config = self.GetDefaultConfig( )
@@ -282,7 +274,7 @@ class TunerConfigMgr( object ) :
 			self.mConfiguredList1.append( config )
 
 		# Get Configured Satellite List Tuner 2
-		self.mConfiguredList2 = deepcopy( self.mDataCache.GetConfiguredSatellite( E_TUNER_2 ) )
+		self.mConfiguredList2 = deepcopy( self.mDataCache.Satellite_ConfiguredTunerSatellite( E_TUNER_2 ) )
 
 		if len( self.mConfiguredList2 ) == 0 :		# If empty list to return, add one default satellite
 			config = self.GetDefaultConfig( )
