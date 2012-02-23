@@ -106,6 +106,9 @@ class ChannelListWindow(BaseWindow):
 		self.mWin = xbmcgui.Window( self.mWinId )
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
 
+		starttime = time.time()
+		LOG_TRACE('==================== TEST TIME START[%s]'% starttime )
+
 		#header
 		self.mCtrlLblPath1           = self.getControl( 21 )
 		self.mCtrlGropOpt            = self.getControl( 500 )
@@ -200,6 +203,8 @@ class ChannelListWindow(BaseWindow):
 
 		self.mAsyncTuneTimer = None
 
+		endtime = time.time()
+		LOG_TRACE('==================== TEST TIME END[%s] loading[%s]'% (endtime, endtime-starttime ) )
 		LOG_TRACE( 'Leave' )
 
 	def onAction(self, aAction):
@@ -1173,31 +1178,32 @@ class ChannelListWindow(BaseWindow):
 		LOG_TRACE('listItems data[%s]'% (self.mListItems) )
 		if self.mListItems == None :
 			self.mListItems = []
-			for iChannel in self.mChannelList:
-				try:
-					if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
-						#skip ch
-						if iChannel.mSkipped == True :
-							continue
-						listItem = xbmcgui.ListItem( "%04d %s"%( iChannel.mNumber, iChannel.mName ), "-", "-", "-", "-" )
+			for testCount in range(10):
+				for iChannel in self.mChannelList:
+					try:
+						if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+							#skip ch
+							if iChannel.mSkipped == True :
+								continue
+							listItem = xbmcgui.ListItem( "%04d %s"%( iChannel.mNumber, iChannel.mName ), "-", "-", "-", "-" )
 
-					else :
-						#skip ch
-						if iChannel.mSkipped == True :
-							lblColorS = E_TAG_COLOR_GREY3
-						else:
-							lblColorS = E_TAG_COLOR_GREY
+						else :
+							#skip ch
+							if iChannel.mSkipped == True :
+								lblColorS = E_TAG_COLOR_GREY3
+							else:
+								lblColorS = E_TAG_COLOR_GREY
 
-						listItem = xbmcgui.ListItem( "%s%04d %s%s"%( lblColorS, iChannel.mNumber, iChannel.mName, lblColorE ), "-", "-", "-", "-" )
+							listItem = xbmcgui.ListItem( "%s%04d %s%s"%( lblColorS, iChannel.mNumber, iChannel.mName, lblColorE ), "-", "-", "-", "-" )
 
-				except Exception, e:
-					LOG_TRACE( '=========== except[%s]'% e )
+					except Exception, e:
+						LOG_TRACE( '=========== except[%s]'% e )
 
 
-				if iChannel.mLocked  : listItem.setProperty('lock', E_IMG_ICON_LOCK)
-				if iChannel.mIsCA    : listItem.setProperty('icas', E_IMG_ICON_ICAS)
+					if iChannel.mLocked  : listItem.setProperty('lock', E_IMG_ICON_LOCK)
+					if iChannel.mIsCA    : listItem.setProperty('icas', E_IMG_ICON_ICAS)
 
-				self.mListItems.append(listItem)
+					self.mListItems.append(listItem)
 
 		GuiLock2(True)
 		self.mCtrlListCHList.addItems( self.mListItems )
@@ -2361,9 +2367,9 @@ class ChannelListWindow(BaseWindow):
 			GuiLock2(True)
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
 			if self.mNavEpg:
-				dialog.SetDialogProperty( str(aKey), 9999, self.mChannelList, self.mNavEpg.mStartTime )
+				dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, self.mChannelList, self.mNavEpg.mStartTime )
 			else :
-				dialog.SetDialogProperty( str(aKey), 9999, self.mChannelList)
+				dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, self.mChannelList)
 			dialog.doModal()
 			GuiLock2(False)
 

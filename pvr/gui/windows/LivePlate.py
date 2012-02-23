@@ -46,13 +46,12 @@ E_IMG_ICON_ICAS   = 'IconCas.png'
 E_IMG_ICON_TV     = 'confluence/tv.png'
 E_IMG_ICON_RADIO  = 'icon_radio.png'
 
-NEXT_EPG 				= 0
-PREV_EPG 				= 1
+NEXT_EPG		= 0
+PREV_EPG 		= 1
 
-NEXT_CHANNEL			= 0
-PREV_CHANNEL			= 1
-CURR_CHANNEL			= 2
-
+NEXT_CHANNEL	= 0
+PREV_CHANNEL	= 1
+CURR_CHANNEL	= 2
 
 class LivePlate(BaseWindow):
 	def __init__(self, *args, **kwargs):
@@ -1002,9 +1001,9 @@ class LivePlate(BaseWindow):
 		GuiLock2(True)
 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
 		if self.mEventCopy:
-			dialog.SetDialogProperty( str(aKey), 9999, None, self.mEventCopy.mStartTime)
+			dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, None, self.mEventCopy.mStartTime)
 		else :
-			dialog.SetDialogProperty( str(aKey), 9999, None)
+			dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, None)
 		dialog.doModal()
 		GuiLock2(False)
 
