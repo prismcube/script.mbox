@@ -165,6 +165,7 @@ class Configure( SettingWindow ) :
 				if self.mFinishEndSetTime == True :
 					progress.Update( 100, 'Complete time set' )
 					progress.Close( )
+					break
 					
 			if self.mFinishEndSetTime == False :
 				progress.Update( 100, 'Time set fail' )
