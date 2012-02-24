@@ -181,9 +181,9 @@ class ChannelListWindow( BaseWindow ) :
 
 		try :
 			#first get is used cache, reason by fast load
-			iEPG = self.mDataCache.Channel_GetCurrent( )
-			if iEPG :
-				self.mNavChannel = iEPG
+			iChannel = self.mDataCache.Channel_GetCurrent( )
+			if iChannel :
+				self.mNavChannel = iChannel
 				self.mCurrentChannel = self.mNavChannel.mNumber
 
 		except Exception, e :
@@ -343,17 +343,18 @@ class ChannelListWindow( BaseWindow ) :
 
 			if ret == E_DIALOG_STATE_YES :
 				self.mListItems = None
-				self.mChannelList = []
+				self.mChannelList = None
 				self.mNavEpg = None
 				self.mNavChannel = None
 
 				self.InitSlideMenuHeader( )
-				#clear label
-				self.ResetLabel( )
-				self.UpdateLabelInfo( )
 
 				self.mCtrlListCHList.reset( )
 				self.InitChannelList( )
+
+				#clear label
+				self.ResetLabel( )
+				self.UpdateLabelInfo( )
 
 				#slide close
 				GuiLock2( True )
@@ -1007,10 +1008,10 @@ class ChannelListWindow( BaseWindow ) :
 				elif answer == E_DIALOG_STATE_NO :
 					#zapping changed then will re-paint list items for cache
 					self.mListItems = None
-					pass
-					#restore backup zapping
-					#isSave = self.mCommander.Channel_Restore( True )
-					#LOG_TRACE( 'Restore[%s]'% isSave )
+					if self.mFlag_DeleteAll : 
+						#restore backup zapping
+						isRestore = self.mCommander.Channel_Restore( True )
+						LOG_TRACE( 'Restore[%s]'% isRestore )
 
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
