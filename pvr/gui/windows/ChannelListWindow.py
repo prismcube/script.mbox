@@ -349,6 +349,9 @@ class ChannelListWindow( BaseWindow ) :
 
 				self.mListItems = None
 				self.mChannelList = []
+				self.mNavEpg = None
+				self.mNavChannel = None
+
 				self.mCtrlListCHList.reset( )
 				self.InitChannelList( )
 
