@@ -97,7 +97,7 @@ class AutomaticScan( SettingWindow ) :
 
 				configuredSatelliteList.append( config )
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
-				dialog.SetConfiguredSatellite( self.mConfiguredSatelliteList )				
+				dialog.SetConfiguredSatellite( configuredSatelliteList )				
 				dialog.doModal( )
 					
 		if groupId == E_SpinEx01 or groupId == E_SpinEx02 :
