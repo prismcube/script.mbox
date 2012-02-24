@@ -169,6 +169,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mMoveFlag = False
 		self.mMoveItem = []
 
+		#self.SqlTest( )
 
 		#initialize get channel list
 		self.mPropertyAge = self.mDataCache.mPropertyAge
@@ -1019,6 +1020,12 @@ class ChannelListWindow( BaseWindow ) :
 				isSave = self.mCommander.Channel_Save( )
 				LOG_TRACE( 'save[%s]'% isSave )
 
+				#### data cache re-load ####
+				self.mDataCache.LoadZappingmode( )
+				self.mDataCache.LoadZappingList( )
+				self.mDataCache.LoadChannelList( )
+				LOG_TRACE ('=====================cache re-load')
+
 			elif answer == E_DIALOG_STATE_NO :
 				self.mIsSave = FLAG_MASK_NONE
 				isSave = self.mCommander.Channel_Restore( True )
@@ -1698,6 +1705,7 @@ class ChannelListWindow( BaseWindow ) :
 						retList = []
 						retList.append( self.mChannelList[idx] )
 						ret = self.mCommander.Channel_Delete( retList )
+						LOG_TRACE('delete[%s]'% ClassToList('convert', retList) )
 
 					elif aMode.lower( ) == 'add' :
 						number = self.mChannelList[idx].mNumber
@@ -1741,7 +1749,7 @@ class ChannelListWindow( BaseWindow ) :
 						else :
 							ret = 'group None'
 
-					#LOG_TRACE( 'set[%s] idx[%s] ret[%s]'% (cmd,idx,ret) )
+					LOG_TRACE( 'set[%s] idx[%s] ret[%s]'% (cmd,idx,ret) )
 
 					#mark remove
 					listItem.setProperty('mark', '')
@@ -2394,4 +2402,26 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		LOG_TRACE( 'Leave' )
+
+	def SqlTest( self ) :
+		try:
+			try:
+				from sqlite3 import dbapi2 as sqlite3
+			except:
+				from pysqlite2 import dbapi2 as sqlite3
+
+			path = 'd:/temp/tmp/channel.db'
+			#path = 'd:\\temp\\tmp\\channel.db'
+			conn = sqlite3.connect( path )
+			cursor = conn.cursor( )
+			channels = cursor.execute( "select * from tblChannel limit 3" )
+
+			LOG_TRACE('TEST DB[%s]'% channels.fetchall() )
+
+			cursor.close( )
+			conn.close( )
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
+
 
