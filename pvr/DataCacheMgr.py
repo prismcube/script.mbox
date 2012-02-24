@@ -487,22 +487,26 @@ class DataCacheMgr( object ):
 		return None
 
 	def Epgevent_GetList( self, aChannel, aTestTime=0 ) :
-		if aTestTime :
-			gmtime = aTestTime
-		else:
-			gmtime = self.Datetime_GetGMTTime()
+		try :
+			if aTestTime :
+				gmtime = aTestTime
+			else:
+				gmtime = self.Datetime_GetGMTTime()
 
-		gmtFrom = gmtime
-		gmtUntil= gmtime
-		maxCount= 1
+			gmtFrom = gmtime
+			gmtUntil= gmtime
+			maxCount= 1
 
-		#LOG_TRACE('ch[%s] sid[%d] tsid[%d] oid[%d]'% (aChannel.mNumber, aChannel.mSid, aChannel.mTsid, aChannel.mOnid) )
-		#LOG_TRACE('from[%s] until[%s]'% (time.strftime("%H:%M", time.gmtime(gmtFrom)), time.strftime("%H:%M", time.gmtime(gmtFrom)) ) )
-		event = self.mCommander.Epgevent_GetList( aChannel.mSid, aChannel.mTsid, aChannel.mOnid, gmtFrom, gmtUntil, maxCount )
-		if event :
-			#from pvr.PublicReference import ClassToList
-			#LOG_TRACE('=============epg len[%s] list[%s]'% (len(event),ClassToList('convert', event )) )
-			return event[0]
+			#LOG_TRACE('ch[%s] sid[%d] tsid[%d] oid[%d]'% (aChannel.mNumber, aChannel.mSid, aChannel.mTsid, aChannel.mOnid) )
+			#LOG_TRACE('from[%s] until[%s]'% (time.strftime("%H:%M", time.gmtime(gmtFrom)), time.strftime("%H:%M", time.gmtime(gmtFrom)) ) )
+			event = self.mCommander.Epgevent_GetList( aChannel.mSid, aChannel.mTsid, aChannel.mOnid, gmtFrom, gmtUntil, maxCount )
+			if event :
+				#from pvr.PublicReference import ClassToList
+				#LOG_TRACE('=============epg len[%s] list[%s]'% (len(event),ClassToList('convert', event )) )
+				return event[0]
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
 
 		return None
 

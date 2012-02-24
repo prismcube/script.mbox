@@ -974,6 +974,8 @@ class ChannelListWindow( BaseWindow ) :
 					#LOG_TRACE( 'save[%s]'% isSave )
 
 				elif answer == E_DIALOG_STATE_NO :
+					#zapping changed then will re-paint list items for cache
+					self.mListItems = None
 					pass
 					#restore backup zapping
 					#isSave = self.mCommander.Channel_Restore( True )
@@ -1164,6 +1166,7 @@ class ChannelListWindow( BaseWindow ) :
 				  EnumToString('type', self.mChannelListServieType) ) )
 			LOG_TRACE( 'len[%s] ch%s'% (len(self.mChannelList),ClassToList( 'convert', self.mChannelList ) ) )
 		"""
+
 		LOG_TRACE( 'Leave' )
 
 
@@ -1180,7 +1183,6 @@ class ChannelListWindow( BaseWindow ) :
 
 			LOG_TRACE( 'no data, iChannel[%s]'% self.mChannelList )
 			return 
-
 
 		lblColorS = E_TAG_COLOR_GREY
 		lblColorE = E_TAG_COLOR_END
@@ -1232,7 +1234,7 @@ class ChannelListWindow( BaseWindow ) :
 		#detected to last focus
 		iChannelIdx = 0;
 		for iChannel in self.mChannelList:
-			if iChannel.mNumber == self.mNavChannel.mNumber :
+			if iChannel.mNumber == self.mCurrentChannel :
 				break
 			iChannelIdx += 1
 
