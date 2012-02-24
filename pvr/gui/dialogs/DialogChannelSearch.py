@@ -43,7 +43,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 
-	def onInit( self ):
+	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		
@@ -70,13 +70,16 @@ class DialogChannelSearch( BaseDialog ) :
 		self.ScanStart( )
 		self.DrawItem( )
 
+		self.AbortDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+		self.AbortDialog.SetDialogProperty( 'Confirm', 'Do you want abort channel scan?' )
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )
 			
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			LOG_TRACE( '%s' % self.mTimer.isAlive( ) )
+			self.ScanAbort( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -97,13 +100,13 @@ class DialogChannelSearch( BaseDialog ) :
 			pass
 
 
-	def onClick( self, aControlId ):
+	def onClick( self, aControlId ) :
 		focusId = self.getFocusId( )
 
 		if focusId == BUTTON_ID_CANCEL :
 			self.ScanAbort( )
 
-	def onFocus( self, controlId ):
+	def onFocus( self, controlId ) :
 		pass
 
 
@@ -150,16 +153,6 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def ScanStart( self ) :
 		if self.mScanMode == E_SCAN_SATELLITE :
-			"""
-			satelliteList = []
-			for i in range( len( self.mConfiguredSatelliteList ) ) :
-				config = self.mConfiguredSatelliteList[i]
-				for satellite in self.mDataCache.mSatelliteList :
-					if config.mSatelliteLongitude == satellite.mLongitude and config.mBandType == satellite.mBand :
-						satelliteList.append( satellite )
-						break
-			"""
-			
 			ret = self.mCommander.Channelscan_BySatelliteList( self.mConfiguredSatelliteList )
 
 			if ret == False :
@@ -168,7 +161,6 @@ class DialogChannelSearch( BaseDialog ) :
 				xbmcgui.Dialog( ).ok('Failure', 'Channel Search Failed')
 
 		elif self.mScanMode == E_SCAN_TRANSPONDER :
-		
 			ret = self.mCommander.Channel_SearchByCarrier( self.mLongitude, self.mBand, self.mTransponderList )
 
 			if ret == False :
@@ -182,24 +174,19 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def ScanAbort( self ) :
 		if self.mIsFinished == False :
-			self.mCommander.Channelscan_Abort( )
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( 'Confirm', 'Do you want abort channel scan?' )
-			dialog.doModal( )
-			
-			
-			if dialog.IsOK() == E_DIALOG_STATE_YES :
+			self.AbortDialog.doModal( )
+
+			if self.AbortDialog.IsOK( ) == E_DIALOG_STATE_YES :
+				self.mCommander.Channelscan_Abort( )
 				self.mIsFinished = True
 
-			elif dialog.IsOK() == E_DIALOG_STATE_NO : 
-				pass
-				#self.ScanStart( )
+			elif self.AbortDialog.IsOK( ) == E_DIALOG_STATE_NO : 
+				return
 				
-			elif dialog.IsOK() == E_DIALOG_STATE_CANCEL :
-				pass
-				#self.ScanStart( )
+			elif self.AbortDialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
+				return
+ 
 
-		LOG_TRACE('isFinished=%d' %self.mIsFinished )
 		if self.mIsFinished == True :
 			self.mEventBus.Deregister( self )
 			self.CloseDialog( )
@@ -208,10 +195,10 @@ class DialogChannelSearch( BaseDialog ) :
 	def onEvent( self, aEvent ) :
 		if xbmcgui.getCurrentWindowId( ) == self.mWinId :
 
-			if aEvent.getName( ) == ElisEventScanAddChannel.getName():
+			if aEvent.getName( ) == ElisEventScanAddChannel.getName( ) :
 				self.UpdateAddChannel( aEvent )
 
-			elif aEvent.getName( ) == ElisEventScanProgress.getName():
+			elif aEvent.getName( ) == ElisEventScanProgress.getName( ) :
 				self.UpdateScanProgress( aEvent )
 
 
@@ -221,9 +208,6 @@ class DialogChannelSearch( BaseDialog ) :
 		
 		if aEvent.mAllCount > 0 :
 			percent = int( aEvent.mCurrentIndex * 100 / aEvent.mAllCount )
-		
-
-		print 'currentIndex=%d total=%d percent=%d finish=%d' % ( aEvent.mCurrentIndex, aEvent.mAllCount, percent, aEvent.mFinished )
 
 		if aEvent.mFinished == 0 and ( aEvent.mAllCount < 10 ) and ( aEvent.mCurrentIndex == aEvent.mAllCount ) :
 			self.mCtrlProgress.setPercent( 90 )
@@ -252,23 +236,12 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 		if aEvent.mFinished and aEvent.mCurrentIndex >= aEvent.mAllCount :
-			print 'finished'
-			self.mIsFinished = True
 			self.mCtrlProgress.setPercent( 100 )
-			LOG_TRACE('')
-			self.mTimer = threading.Timer( 0.5, self.ShowResult )
-			LOG_TRACE('')
-
-			import inspect
-			for member in inspect.getmembers( self.mTimer ) :
-				LOG_TRACE('member=%s' %member[0] )
-			
-			self.mTimer.start()
+			self.mTimer = threading.Timer( 0.5, self.ShowResult )			
+			self.mTimer.start( )
 
 
-	def UpdateAddChannel(self, aEvent ):
-
-		print 'update addchnnel channelName=%s serviceType=%d' %( aEvent.mIChannel.mName, aEvent.mIChannel.mServiceType )
+	def UpdateAddChannel(self, aEvent ) :
 		if aEvent.mIChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
 			self.mNewTVChannelList.append( aEvent.mIChannel.mName )
 		elif aEvent.mIChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
@@ -284,10 +257,13 @@ class DialogChannelSearch( BaseDialog ) :
 		radioCount = len( self.mRadioListItems )
 		searchResult = 'TV Channels : %d \nRadio Channels : %d' %( tvCount, radioCount )
 
+		self.AbortDialog.close( )
+
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( 'Infomation', searchResult )
 		dialog.doModal( )
 
 		if tvCount > 0 or radioCount > 0 :
 			self.mDataCache.LoadChannelList( )
+		self.mIsFinished = True
 
