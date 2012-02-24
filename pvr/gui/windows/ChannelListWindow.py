@@ -161,6 +161,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCurrentChannel = None
 		self.mSlideOpenFlag = False
 		self.mFlag_EditChanged = False
+		self.mFlag_DeleteAll = False
 
 		#edit mode
 		self.mIsSave = FLAG_MASK_NONE
@@ -336,14 +337,25 @@ class ChannelListWindow( BaseWindow ) :
 			self.SetGoBackEdit( )
 
 		elif aControlId == self.mCtrlBtnDelAll.getId( ):
-			self.SetDeleteAll( )
+			ret = self.SetDeleteAll( )
 
-			#clear label
-			self.ResetLabel( )
-			self.UpdateLabelInfo( )
+			if ret == E_DIALOG_STATE_YES :
+				self.InitSlideMenuHeader( )
+				#clear label
+				self.ResetLabel( )
+				self.UpdateLabelInfo( )
 
-			self.mCtrlListCHList.reset( )
-			self.InitChannelList( )
+				self.mListItems = None
+				self.mChannelList = []
+				self.mCtrlListCHList.reset( )
+				self.InitChannelList( )
+
+				#slide close
+				GuiLock2( True )
+				self.mCtrlListCHList.setEnabled(True)
+				self.setFocusId( self.mCtrlGropCHList.getId( ) )
+				GuiLock2( False )
+
 
 		elif aControlId == self.mCtrlRdoTV.getId( ):
 			self.SetModeChanged( FLAG_MODE_TV )
@@ -390,8 +402,12 @@ class ChannelListWindow( BaseWindow ) :
 
 		#answer is yes
 		if ret == E_DIALOG_STATE_YES :
+			isBackup = self.mCommander.Channel_Backup( )
 			isDelete = self.mCommander.Channel_DeleteAll( )
-			LOG_TRACE( 'DeleteAll[%s]'% isDelete )
+			if isDelete :
+				self.mFlag_DeleteAll = True
+				LOG_TRACE( 'DeleteAll[%s]'% isDelete )
+
 
 		return ret
 
@@ -642,6 +658,9 @@ class ChannelListWindow( BaseWindow ) :
 	def SubMenuAction(self, aAction, aMenuIndex, aForce = None):
 		LOG_TRACE( 'Enter' )
 
+		if self.mFlag_DeleteAll :
+			return
+
 		retPass = False
 
 		if aAction == E_SLIDE_ACTION_MAIN:
@@ -653,15 +672,17 @@ class ChannelListWindow( BaseWindow ) :
 
 			elif aMenuIndex == 1 :
 				self.mZappingMode = ElisEnum.E_MODE_SATELLITE
-				for itemClass in self.mListSatellite:
-					ret = GetSelectedLongitudeString( itemClass.mLongitude, itemClass.mName )
-					testlistItems.append( xbmcgui.ListItem(ret) )
+				if self.mListSatellite :
+					for itemClass in self.mListSatellite:
+						ret = GetSelectedLongitudeString( itemClass.mLongitude, itemClass.mName )
+						testlistItems.append( xbmcgui.ListItem(ret) )
 
 			elif aMenuIndex == 2 :
 				self.mZappingMode = ElisEnum.E_MODE_CAS
-				for itemClass in self.mListCasList:
-					ret = '%s(%s)'% ( itemClass.mName, itemClass.mChannelCount )
-					testlistItems.append( xbmcgui.ListItem(ret) )
+				if self.mListCasList :
+					for itemClass in self.mListCasList:
+						ret = '%s(%s)'% ( itemClass.mName, itemClass.mChannelCount )
+						testlistItems.append( xbmcgui.ListItem(ret) )
 
 			elif aMenuIndex == 3 :
 				self.mZappingMode = ElisEnum.E_MODE_FAVORITE
@@ -909,6 +930,9 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mElisZappingModeInfo.mServiceType != self.mChannelListServieType :
 			changed = True
 
+		if self.mFlag_DeleteAll :
+			changed = True
+
 		#is change?
 		if changed :
 			try :
@@ -1054,6 +1078,20 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlGropOpt.setVisible( True )
 			GuiLock2( False )
 			return
+
+		if self.mFlag_DeleteAll :
+			self.mZappingMode           = ElisEnum.E_MODE_ALL
+			self.mChannelListSortMode   = ElisEnum.E_SORT_BY_DEFAULT
+			self.mChannelListServieType = ElisEnum.E_SERVICE_TYPE_TV
+
+			self.mCtrlListSubmenu.reset( )
+			testlistItems = []
+			testlistItems.append(xbmcgui.ListItem( Msg.Strings(MsgId.LANG_NONE) ) )
+			self.mCtrlListSubmenu.addItems( testlistItems )
+
+			return
+
+
 
 		#main/sub menu init
 		self.mCtrlListMainmenu.reset( )
@@ -1633,12 +1671,6 @@ class ChannelListWindow( BaseWindow ) :
 					retList.append( self.mChannelList[lastPos] )
 					ret = self.mCommander.Channel_Skip( aEnabled, retList )
 
-				elif aMode.lower( ) == 'delete' :
-					cmd = aMode.title( )
-					retList = []
-					retList.append( self.mChannelList[lastPos] )
-					ret = self.mCommander.Channel_Delete( retList )
-
 				elif aMode.lower( ) == 'add' :
 					#strip tag [COLOR ...]label[/COLOR]
 					number = self.mChannelList[lastPos].mNumber
@@ -1656,6 +1688,14 @@ class ChannelListWindow( BaseWindow ) :
 						ret = self.mCommander.Favoritegroup_RemoveChannel( aGroupName, number, self.mChannelListServieType )
 					else :
 						ret = 'group None'
+
+				"""
+				elif aMode.lower( ) == 'delete' :
+					cmd = aMode.title( )
+					retList = []
+					retList.append( self.mChannelList[lastPos] )
+					ret = self.mCommander.Channel_Delete( retList )
+				"""
 
 				#LOG_TRACE( 'set[%s] idx[%s] ret[%s]'% (cmd,lastPos,ret) )
 
@@ -1703,13 +1743,6 @@ class ChannelListWindow( BaseWindow ) :
 						retList.append( self.mChannelList[idx] )
 						ret = self.mCommander.Channel_Skip( aEnabled, retList )
 
-					elif aMode.lower( ) == 'delete' :
-						cmd = 'Delete'
-						retList = []
-						retList.append( self.mChannelList[idx] )
-						ret = self.mCommander.Channel_Delete( retList )
-						#LOG_TRACE('delete[%s]'% ClassToList('convert', retList) )
-
 					elif aMode.lower( ) == 'add' :
 						number = self.mChannelList[idx].mNumber
 						cmd = 'AddChannel to Group'
@@ -1752,6 +1785,15 @@ class ChannelListWindow( BaseWindow ) :
 							ret = self.mCommander.FavoriteGroup_MoveChannels( aGroupName, insertPosition, self.mChannelListServieType, self.mChannelList[idx] )
 						else :
 							ret = 'group None'
+
+					"""
+					elif aMode.lower( ) == 'delete' :
+						cmd = 'Delete'
+						retList = []
+						retList.append( self.mChannelList[idx] )
+						ret = self.mCommander.Channel_Delete( retList )
+						LOG_TRACE('delete[%s]'% ClassToList('convert', retList) )
+					"""
 
 					LOG_TRACE( 'set[%s] idx[%s] ret[%s]'% (cmd,idx,ret) )
 
@@ -1856,6 +1898,22 @@ class ChannelListWindow( BaseWindow ) :
 			elif aBtn == E_DialogInput05 :
 				if aDialog == FLAG_OPT_LIST :
 					cmd = 'delete'
+
+					retList = []
+					for idx in self.mMarkList :
+						#mark remove
+						self.mCtrlListCHList.selectItem(idx)
+						xbmc.sleep( 50 )
+						listItem = self.mCtrlListCHList.getListItem(idx)
+						listItem.setProperty('mark', '')
+
+						retList.append( self.mChannelList[idx] )
+
+					ret = self.mCommander.Channel_Delete( retList )
+					LOG_TRACE('delete[%s]'% ClassToList('convert', retList) )
+					self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
+					return
+
 				else :
 					cmd = 'del'
 					#idxThisFavorite = self.mCtrlListSubmenu.getSelectedPosition( )
