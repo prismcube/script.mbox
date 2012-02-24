@@ -1908,20 +1908,32 @@ class ChannelListWindow( BaseWindow ) :
 			elif aBtn == E_DialogInput05 :
 				if aDialog == FLAG_OPT_LIST :
 					cmd = 'delete'
+					try:
+						retList = []
+						for idx in self.mMarkList :
+							retList.append( self.mChannelList[idx] )
 
-					retList = []
-					for idx in self.mMarkList :
-						#mark remove
-						self.mCtrlListCHList.selectItem(idx)
-						xbmc.sleep( 50 )
-						listItem = self.mCtrlListCHList.getListItem(idx)
-						listItem.setProperty('mark', '')
+							GuiLock2( True )
+							#mark remove
+							self.mCtrlListCHList.selectItem(idx)
+							xbmc.sleep( 50 )
+							listItem = self.mCtrlListCHList.getListItem(idx)
+							listItem.setProperty('mark', '')
+							GuiLock2( False )
 
-						retList.append( self.mChannelList[idx] )
+						ret = self.mCommander.Channel_Delete( retList )
+						LOG_TRACE('delete[%s]'% ClassToList('convert', retList) )
+						self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 
-					ret = self.mCommander.Channel_Delete( retList )
-					LOG_TRACE('delete[%s]'% ClassToList('convert', retList) )
-					self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
+						self.mMarkList = []
+						GuiLock2( True )
+						self.setFocusId( self.mCtrlGropCHList.getId( ) )
+						self.mCtrlSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition( )+1) ) )
+						GuiLock2( False )
+
+					except Exception, e:
+						LOG_TRACE( 'Error except[%s]'% e )
+
 					return
 
 				else :
@@ -1975,6 +1987,7 @@ class ChannelListWindow( BaseWindow ) :
 			GuiLock2( False )
 
 
+			"""
 			#group list
 			if self.mEditFavorite :
 				idx = 0
@@ -1982,7 +1995,8 @@ class ChannelListWindow( BaseWindow ) :
 					retList = []
 					retList.append( item )
 					idx += 1
-					#LOG_TRACE( 'group[%s] ch[%s]'% (self.mEditFavorite[idx], ClassToList('convert', retList) ) )
+					LOG_TRACE( 'group[%s] ch[%s]'% (self.mEditFavorite[idx], ClassToList('convert', retList) ) )
+			"""
 
 
 
