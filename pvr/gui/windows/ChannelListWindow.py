@@ -184,7 +184,11 @@ class ChannelListWindow( BaseWindow ) :
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if iChannel :
 				self.mNavChannel = iChannel
-				self.mCurrentChannel = self.mNavChannel.mNumber
+				self.mCurrentChannel = iChannel.mNumber
+
+				strType = self.UpdateServiceType( iChannel.mServiceType )
+				label = '%s - %s'% (strType, iChannel.mName)
+				self.UpdateLabelGUI( self.mCtrlChannelName.getId( ), label )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
