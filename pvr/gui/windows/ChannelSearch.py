@@ -64,22 +64,12 @@ class ChannelSearch( SettingWindow ) :
 	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
 		if groupId == E_Input01 :
-			if self.CheckConfiguredSatellite( ) == False :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'ERROR', 'No Configured Satellite.' )
-	 			dialog.doModal( )
-			else :
-				self.ResetAllControl( )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_AUTOMATIC_SCAN )
+			self.ResetAllControl( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_AUTOMATIC_SCAN )
 			
 		elif groupId == E_Input02 :
-			if self.CheckConfiguredSatellite( ) == False :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'ERROR', 'No Configured Satellite.' )
-	 			dialog.doModal( )
-			else :
-				self.ResetAllControl( )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MANUAL_SCAN )
+			self.ResetAllControl( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MANUAL_SCAN )
 				
 
 	def onFocus( self, aControlId ) :
@@ -89,27 +79,3 @@ class ChannelSearch( SettingWindow ) :
 		if self.mLastFocused != aControlId :
 			self.ShowDescription( )
 			self.mLastFocused = aControlId
-
-
-	def CheckConfiguredSatellite( self ) :
-		property = ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander )
-		if property.GetProp( ) == E_TUNER_SEPARATED :
-			configuredsatellite = self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )
-			for config in configuredsatellite :
-				if config.mError < 0 :
-					return False
-
-			configuredsatellite = self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )
-			for config in configuredsatellite :
-				if config.mError < 0 :
-					return False
-
-			return True
-			
-		elif property.GetProp( ) == E_TUNER_LOOPTHROUGH :
-			configuredsatellite = self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )
-			for config in configuredsatellite :
-				if config.mError < 0 :
-					return False
-
-			return True
