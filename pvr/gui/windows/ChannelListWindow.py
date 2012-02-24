@@ -181,9 +181,11 @@ class ChannelListWindow( BaseWindow ) :
 
 		try :
 			#first get is used cache, reason by fast load
-			self.mNavChannel = self.mDataCache.Channel_GetCurrent( )
-			self.mCurrentChannel = self.mNavChannel.mNumber
-			
+			iEPG = self.mDataCache.Channel_GetCurrent( )
+			if iEPG :
+				self.mNavChannel = iEPG
+				self.mCurrentChannel = self.mNavChannel.mNumber
+
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
