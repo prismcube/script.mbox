@@ -342,15 +342,15 @@ class ChannelListWindow( BaseWindow ) :
 			ret = self.SetDeleteAll( )
 
 			if ret == E_DIALOG_STATE_YES :
-				self.InitSlideMenuHeader( )
-				#clear label
-				self.ResetLabel( )
-				self.UpdateLabelInfo( )
-
 				self.mListItems = None
 				self.mChannelList = []
 				self.mNavEpg = None
 				self.mNavChannel = None
+
+				self.InitSlideMenuHeader( )
+				#clear label
+				self.ResetLabel( )
+				self.UpdateLabelInfo( )
 
 				self.mCtrlListCHList.reset( )
 				self.InitChannelList( )
