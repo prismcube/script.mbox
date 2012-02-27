@@ -91,6 +91,10 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		
 
+	@classmethod
+	def GetName(cls):
+		return cls.__name__
+
 	def GetFocusId( self ) :
 		GuiLock2( True )
 		self.mFocusId = self.getFocusId( )

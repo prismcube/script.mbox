@@ -24,6 +24,10 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ):
 		self.mDataCache = pvr.DataCacheMgr.GetInstance()		
 		
 
+	@classmethod
+	def GetName(cls):
+		return cls.__name__
+
 	def SetHeaderLabel( self, aLabel ):
 		self.getControl( G_DIALOG_HEADER_LABEL_ID ).setLabel( aLabel )
 
