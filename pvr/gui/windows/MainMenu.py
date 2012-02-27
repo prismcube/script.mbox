@@ -31,7 +31,7 @@ class MainMenu( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mStartMediaCenter = False
-		# TEST branch
+
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
