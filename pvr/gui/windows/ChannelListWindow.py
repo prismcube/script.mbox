@@ -718,6 +718,7 @@ class ChannelListWindow( BaseWindow ) :
 				   LOG_TRACE( 'aready select!!!' )
 				   return
 
+			zappingName = ''
 			if aMenuIndex == ElisEnum.E_MODE_ALL :
 				position   = self.mCtrlListSubmenu.getSelectedPosition( )
 				if position == 0:
@@ -731,46 +732,54 @@ class ChannelListWindow( BaseWindow ) :
 				retPass = self.GetChannelList( self.mChannelListServieType, self.mZappingMode, sortingMode, 0, 0, 0, '' )
 
 			elif aMenuIndex == ElisEnum.E_MODE_SATELLITE:
-				idx_Satellite = self.mCtrlListSubmenu.getSelectedPosition( )
-				item = self.mListSatellite[idx_Satellite]
-				retPass = self.GetChannelList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, item.mLongitude, item.mBand, 0, '' )
-				#LOG_TRACE( 'cmd[channel_GetListBySatellite] idx_Satellite[%s] mLongitude[%s] band[%s]'% ( idx_Satellite, item.mLongitude, item.mBand ) )
+				if self.mListSatellite :
+					idx_Satellite = self.mCtrlListSubmenu.getSelectedPosition( )
+					item = self.mListSatellite[idx_Satellite]
+					zappingName = item.mName
+					retPass = self.GetChannelList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, item.mLongitude, item.mBand, 0, '' )
+					#LOG_TRACE( 'cmd[channel_GetListBySatellite] idx_Satellite[%s] mLongitude[%s] band[%s]'% ( idx_Satellite, item.mLongitude, item.mBand ) )
+				else:
+					LOG_TRACE( 'cmd[channel_GetListBySatellite] mListSatellite[%s]'% self.mListSatellite )
 
 			elif aMenuIndex == ElisEnum.E_MODE_CAS:
-				idxFtaCas = self.mCtrlListSubmenu.getSelectedPosition( )
-				if idxFtaCas == 0 :
-					caid = ElisEnum.E_FTA_CHANNEL
-				elif idxFtaCas == 1 :
-					caid = ElisEnum.E_MEDIAGUARD
-				elif idxFtaCas == 2 :
-					caid = ElisEnum.E_VIACCESS
-				elif idxFtaCas == 3 :
-					caid = ElisEnum.E_NAGRA
-				elif idxFtaCas == 4 :
-					caid = ElisEnum.E_IRDETO
-				elif idxFtaCas == 5 :
-					caid = ElisEnum.E_CRYPTOWORKS
-				elif idxFtaCas == 6 :
-					caid = ElisEnum.E_BETADIGITAL
-				elif idxFtaCas == 7 :
-					caid = ElisEnum.E_NDS
-				elif idxFtaCas == 8 :
-					caid = ElisEnum.E_CONAX
-				else :
-					caid = ElisEnum.E_OTHERS
+				if self.mListCasList :
+					idxFtaCas = self.mCtrlListSubmenu.getSelectedPosition( )
+					zappingName = self.mListCasList[idxFtaCas].mName
+					if idxFtaCas == 0 :
+						caid = ElisEnum.E_FTA_CHANNEL
+					elif idxFtaCas == 1 :
+						caid = ElisEnum.E_MEDIAGUARD
+					elif idxFtaCas == 2 :
+						caid = ElisEnum.E_VIACCESS
+					elif idxFtaCas == 3 :
+						caid = ElisEnum.E_NAGRA
+					elif idxFtaCas == 4 :
+						caid = ElisEnum.E_IRDETO
+					elif idxFtaCas == 5 :
+						caid = ElisEnum.E_CRYPTOWORKS
+					elif idxFtaCas == 6 :
+						caid = ElisEnum.E_BETADIGITAL
+					elif idxFtaCas == 7 :
+						caid = ElisEnum.E_NDS
+					elif idxFtaCas == 8 :
+						caid = ElisEnum.E_CONAX
+					else :
+						caid = ElisEnum.E_OTHERS
 
-				retPass = self.GetChannelList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, 0, 0, caid, '' )
-				#LOG_TRACE( 'cmd[channel_GetListByFTACas] idxFtaCas[%s]'% idxFtaCas )
+					retPass = self.GetChannelList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, 0, 0, caid, '' )
+					#LOG_TRACE( 'cmd[channel_GetListByFTACas] idxFtaCas[%s]'% idxFtaCas )
+				else:
+					LOG_TRACE( 'cmd[channel_GetListByFTA/CAS] mListCasList[%s]'% self.mListCasList )
 
 			elif aMenuIndex == ElisEnum.E_MODE_FAVORITE:
 				if self.mListFavorite : 
 					idx_Favorite = self.mCtrlListSubmenu.getSelectedPosition( )
 					item = self.mListFavorite[idx_Favorite]
+					zappingName = item.mGroupName
 					retPass = self.GetChannelList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode, 0, 0, 0, item.mGroupName )
 					#LOG_TRACE( 'cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s]'% ( idx_Favorite, item.mGroupName ) )
-
 				else:
-					LOG_TRACE( 'cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s]'% ( idx_Favorite, self.mListFavorite ) )
+					LOG_TRACE( 'cmd[channel_GetListByFavorite] mListFavorite[%s]'% self.mListFavorite )
 
 			if retPass == False :
 				return
@@ -789,14 +798,16 @@ class ChannelListWindow( BaseWindow ) :
 			self.mSelectMainSlidePosition = self.mCtrlListMainmenu.getSelectedPosition( )
 			self.mSelectSubSlidePosition = self.mCtrlListSubmenu.getSelectedPosition( )
 
+			label = ''
 			label1 = EnumToString('mode', self.mZappingMode)
-			label2 = self.mCtrlListSubmenu.getSelectedItem( ).getLabel( )
+			label2 = zappingName
 			label3 = EnumToString('sort', self.mChannelListSortMode)
 
 			if self.mZappingMode == ElisEnum.E_MODE_ALL :
-				self.mCtrlLblPath1.setLabel( '%s [COLOR grey3]>[/COLOR] sort by %s'% (label1.upper( ),label3.title( ) ) )
+				label = '%s [COLOR grey3]>[/COLOR] sort by %s'% (label1.upper( ),label3.title( ) )
 			else :
-				self.mCtrlLblPath1.setLabel( '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% (label1.upper( ),label2.title( ),label3.title( ) ) )
+				label = '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% (label1.upper( ),label2.title( ),label3.title( ) )
+			self.mCtrlLblPath1.setLabel( label )
 
 			#current zapping backup
 			#self.mCommander.Channel_Backup( )
@@ -832,67 +843,67 @@ class ChannelListWindow( BaseWindow ) :
 		LOG_TRACE( 'Leave' )
 		return True
 
-	def GetSlideMenuHeader(self, mode) :
+	def GetSlideMenuHeader(self, aMode) :
 		LOG_TRACE( 'Enter' )
 
 		idx1 = 0
 		idx2 = 0
 
-		if mode == FLAG_SLIDE_INIT :
+		if aMode == FLAG_SLIDE_INIT :
 
 			#self.mElisZappingModeInfo.printdebug( )
 			#LOG_TRACE( 'satellite[%s]'% ClassToList( 'convert', self.mListSatellite ) )
 			#LOG_TRACE( 'ftacas[%s]'   % ClassToList( 'convert', self.mListCasList ) )
 			#LOG_TRACE( 'favorite[%s]' % ClassToList( 'convert', self.mListFavorite ) )
 
-			_mode = self.mElisZappingModeInfo.mMode
-			_sort = self.mElisZappingModeInfo.mSortingMode
-			_type = self.mElisZappingModeInfo.mServiceType
-			_name = ''
+			zInfo_mode = self.mElisZappingModeInfo.mMode
+			zInfo_sort = self.mElisZappingModeInfo.mSortingMode
+			zInfo_type = self.mElisZappingModeInfo.mServiceType
+			zInfo_name = ''
 
-			if _mode == ElisEnum.E_MODE_ALL :
+			if zInfo_mode == ElisEnum.E_MODE_ALL :
 				idx1 = 0
-				if _sort == ElisEnum.E_SORT_BY_NUMBER :
+				if zInfo_sort == ElisEnum.E_SORT_BY_NUMBER :
 					idx2 = 0
-				elif _sort == ElisEnum.E_SORT_BY_ALPHABET :
+				elif zInfo_sort == ElisEnum.E_SORT_BY_ALPHABET :
 					idx2 = 1
-				elif _sort == ElisEnum.E_SORT_BY_HD :
+				elif zInfo_sort == ElisEnum.E_SORT_BY_HD :
 					idx2 = 2
 				else :
 					idx2 = 0
 
-			elif _mode == ElisEnum.E_MODE_SATELLITE :
+			elif zInfo_mode == ElisEnum.E_MODE_SATELLITE :
 				idx1 = 1
-				_name = self.mElisZappingModeInfo.mSatelliteInfo.mName
+				zInfo_name = self.mElisZappingModeInfo.mSatelliteInfo.mName
 
 				for item in self.mListSatellite :
-					if _name == item.mName :
+					if zInfo_name == item.mName :
 						break
 					idx2 += 1
 
-			elif _mode == ElisEnum.E_MODE_CAS :
+			elif zInfo_mode == ElisEnum.E_MODE_CAS :
 				idx1 = 2
-				_name = self.mElisZappingModeInfo.mCasInfo.mName
+				zInfo_name = self.mElisZappingModeInfo.mCasInfo.mName
 
 				for item in self.mListCasList :
-					if _name == item.mName :
+					if zInfo_name == item.mName :
 						break
 					idx2 += 1
 
-			elif _mode == ElisEnum.E_MODE_FAVORITE :
+			elif zInfo_mode == ElisEnum.E_MODE_FAVORITE :
 				idx1 = 3
-				_name = self.mElisZappingModeInfo.mFavoriteGroup.mGroupName
+				zInfo_name = self.mElisZappingModeInfo.mFavoriteGroup.mGroupName
 
 				for item in self.mListFavorite :
-					if _name == item.mGroupName :
+					if zInfo_name == item.mGroupName :
 						break
 					idx2 += 1
 
-			self.mZappingName = _name
+			self.mZappingName = zInfo_name
 			self.mSelectMainSlidePosition = idx1
 			self.mSelectSubSlidePosition = idx2
 
-		elif mode == FLAG_SLIDE_OPEN :
+		elif aMode == FLAG_SLIDE_OPEN :
 			idx1 = self.mSelectMainSlidePosition
 			idx2 = self.mSelectSubSlidePosition
 
@@ -905,7 +916,7 @@ class ChannelListWindow( BaseWindow ) :
 		LOG_TRACE( 'Leave' )
 
 
-	def SaveSlideMenuHeader(self) :
+	def SaveSlideMenuHeader( self ) :
 		LOG_TRACE( 'Enter' )
 
 		"""
@@ -1078,15 +1089,10 @@ class ChannelListWindow( BaseWindow ) :
 
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			#opt btn blind
-			GuiLock2( True )
-			self.mCtrlGropOpt.setVisible( False )
-			GuiLock2( False )
-
+			self.UpdateLabelGUI( self.mCtrlGropOpt.getId( ), False )
 		else :
 			#opt btn visible
-			GuiLock2( True )
-			self.mCtrlGropOpt.setVisible( True )
-			GuiLock2( False )
+			self.UpdateLabelGUI( self.mCtrlGropOpt.getId( ), True )
 			return
 
 		if self.mFlag_DeleteAll :
@@ -1196,13 +1202,15 @@ class ChannelListWindow( BaseWindow ) :
 		self.mLastSubSlidePosition = self.mSelectSubSlidePosition
 
 		#path tree, Mainmenu/Submanu
+		label = ''
 		label1 = EnumToString('mode', self.mZappingMode)
 		label2 = self.mZappingName
 		label3 = EnumToString('sort', self.mChannelListSortMode)
 		if self.mZappingMode == ElisEnum.E_MODE_ALL :
-			self.mCtrlLblPath1.setLabel( '%s [COLOR grey3]>[/COLOR] sort by %s'% (label1.upper( ),label3.title( ) ) )
+			label = '%s [COLOR grey3]>[/COLOR] sort by %s'% ( label1.upper( ),label3.title( ) )
 		else :
-			self.mCtrlLblPath1.setLabel( '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% (label1.upper( ),label2.title( ),label3.title( ) ) )
+			label = '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% ( label1.upper( ),label2.title( ),label3.title( ) )
+		self.UpdateLabelGUI( self.mCtrlLblPath1.getId( ), label )
 
 		#get channel list by last on zapping mode, sorting, service type
 		self.mNavChannel = None
@@ -1426,6 +1434,12 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aCtrlID == self.mCtrlServiceTypeImg3.getId( ) :
 			self.mCtrlServiceTypeImg3.setImage( aValue )
+
+		elif aCtrlID == self.mCtrlGropOpt.getId( ) :
+			self.mCtrlGropOpt.setVisible( aValue )
+
+		elif aCtrlID == self.mCtrlLblPath1.getId( ) :
+			self.mCtrlLblPath1.setLabel( aValue )
 
 		LOG_TRACE( 'Leave' )
 
