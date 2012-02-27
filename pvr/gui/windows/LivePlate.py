@@ -908,7 +908,7 @@ class LivePlate(BaseWindow):
 
 
 	def Close( self ):
-		#self.mEventBus.Deregister( self )
+		self.mEventBus.Deregister( self )
 
 		self.mEnableThread = False
 		self.CurrentTimeThread().join()
