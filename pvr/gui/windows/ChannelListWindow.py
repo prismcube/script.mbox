@@ -56,7 +56,7 @@ E_IMG_ICON_ICAS   = 'IconCas.png'
 E_IMG_ICON_MARK   = 'confluence/OverlayWatched.png'
 E_IMG_ICON_TITLE1 = 'IconHeaderTitleSmall.png'
 E_IMG_ICON_TITLE2 = 'icon_setting_focus.png'
-E_IMG_ICON_UPDOWN = 'DI_Cursor_UpDown'
+E_IMG_ICON_UPDOWN = 'DI_Cursor_UpDown.png'
 
 E_TAG_COLOR_RED   = '[COLOR red]'
 E_TAG_COLOR_GREY  = '[COLOR grey]'
@@ -1926,26 +1926,20 @@ class ChannelListWindow( BaseWindow ) :
 						for idx in self.mMarkList :
 							retList.append( self.mChannelList[idx] )
 
-							GuiLock2( True )
-							#mark remove
-							self.mCtrlListCHList.selectItem(idx)
-							xbmc.sleep( 50 )
-							listItem = self.mCtrlListCHList.getListItem(idx)
-							listItem.setProperty('mark', '')
-							GuiLock2( False )
-
 						ret = self.mCommander.Channel_Delete( retList )
-						LOG_TRACE('delete[%s]'% ClassToList('convert', retList) )
-						self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
-
-						self.mMarkList = []
-						GuiLock2( True )
-						self.setFocusId( self.mCtrlGropCHList.getId( ) )
-						self.mCtrlSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition( )+1) ) )
-						GuiLock2( False )
-
+						#LOG_TRACE('delete[%s]'% ClassToList('convert', retList) )
 					except Exception, e:
 						LOG_TRACE( 'Error except[%s]'% e )
+
+					LOG_TRACE('ret[%s] len[%s] delete[%s]'% (ret, len(retList), ClassToList('convert', retList) ) )
+					self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
+					self.mListItems = None
+
+					self.mMarkList = []
+					GuiLock2( True )
+					self.setFocusId( self.mCtrlGropCHList.getId( ) )
+					self.mCtrlSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition( )+1) ) )
+					GuiLock2( False )
 
 					return
 
