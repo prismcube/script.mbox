@@ -1090,9 +1090,13 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			#opt btn blind
 			self.UpdateLabelGUI( self.mCtrlGropOpt.getId( ), False )
+			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ), True )
+			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ), True )
 		else :
 			#opt btn visible
 			self.UpdateLabelGUI( self.mCtrlGropOpt.getId( ), True )
+			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ), False )
+			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ), False )
 			return
 
 		if self.mFlag_DeleteAll :
@@ -1440,6 +1444,12 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aCtrlID == self.mCtrlLblPath1.getId( ) :
 			self.mCtrlLblPath1.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlRdoTV.getId( ) :
+			self.mCtrlRdoTV.setEnabled( aValue )
+
+		elif aCtrlID == self.mCtrlRdoRadio.getId( ) :
+			self.mCtrlRdoRadio.setEnabled( aValue )
 
 		LOG_TRACE( 'Leave' )
 
