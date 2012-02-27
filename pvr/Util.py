@@ -20,10 +20,10 @@ gLogOut = 0
 gThreads = odict()
 
 E_LOG_NORMAL = 0
-E_LOG_WARN   = 37
-E_LOG_ERR    = 31
-E_LOG_DEBUG  = 33
-E_DEBUG_ENABLE = 0
+E_LOG_ERR    = 2
+E_LOG_WARN   = 1
+E_LOG_DEBUG  = 0
+E_DEBUG_LEVEL = E_LOG_ERR
 
 class TimeFormatEnum(object):
 	E_AW_DD_MM_YYYY			= 0
@@ -147,8 +147,10 @@ def LOG_WARN( msg ):
 
 
 def MLOG( level=0, msg=None ) :
-	if E_DEBUG_ENABLE == 0 :
+	if E_DEBUG_LEVEL > level :
 		return
+
+
 
 	curframe = inspect.currentframe()
 	calframe = inspect.getouterframes(curframe, 2)
@@ -160,11 +162,16 @@ def MLOG( level=0, msg=None ) :
 	filefunc = calframe[2][3]
 
 	#if level >= 0 and level <= 18 :
-	if level == 0 or level == E_LOG_DEBUG or gLogOut == 0 :
+	if gLogOut == 0 :
 		print '[%s() %s:%s]%s'% (filefunc, filename, lineno, msg)
 
 	else :
-		print '\033[1;%sm[%s() %s:%s]%s\033[1;m'% (level, filefunc, filename, lineno, msg)
+		color = 33 #black
+		if level == E_LOG_ERR :
+			color = 31 #red
+		elif level == E_LOG_WARN :
+			color = 37 #green ?
+		print '\033[1;%sm[%s() %s:%s]%s\033[1;m'% (color, filefunc, filename, lineno, msg)
 
 
 

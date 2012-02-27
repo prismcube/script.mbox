@@ -86,7 +86,12 @@ class DataCacheMgr( object ):
 		self.Load()
 		LOG_TRACE('')
 
-		self.mEventBus.Register( self )		
+		#self.mEventBus.Register( self )
+
+
+	@classmethod
+	def GetName(cls):
+		return cls.__name__
 
 
 	def onEvent(self, aEvent):
@@ -106,6 +111,16 @@ class DataCacheMgr( object ):
 				self.mCurrentEvent = event
 				#LOG_TRACE('currentEvent' )
 
+
+	def Test( self ):
+		before = time.clock()
+		LOG_ERR('before=%s' %before )
+		for i in range( 10 ) :
+			self.mChannelList = self.mCommander.Channel_GetList( self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )	
+
+		after = time.clock()
+		LOG_ERR('after=%s' %after )		
+		LOG_ERR('--------------> diff=%s' %(after-before) )
 
 	def Load( self ) :
 
