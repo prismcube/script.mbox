@@ -155,6 +155,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mChannelListServieType = ElisEnum.E_SERVICE_TYPE_INVALID
 		self.mZappingMode = ElisEnum.E_MODE_ALL
 		self.mChannelListSortMode = ElisEnum.E_SORT_BY_DEFAULT
+		self.mZappingName = ''
 		self.mChannelList = []
 		self.mNavEpg = None
 		self.mNavChannel = None
@@ -887,6 +888,7 @@ class ChannelListWindow( BaseWindow ) :
 						break
 					idx2 += 1
 
+			self.mZappingName = _name
 			self.mSelectMainSlidePosition = idx1
 			self.mSelectSubSlidePosition = idx2
 
@@ -1074,13 +1076,11 @@ class ChannelListWindow( BaseWindow ) :
 	def InitSlideMenuHeader( self ) :
 		LOG_TRACE( 'Enter' )
 
-
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			#opt btn blind
 			GuiLock2( True )
 			self.mCtrlGropOpt.setVisible( False )
 			GuiLock2( False )
-			time.sleep(0.02)
 
 		else :
 			#opt btn visible
@@ -1101,11 +1101,11 @@ class ChannelListWindow( BaseWindow ) :
 
 			return
 
-
-
 		#main/sub menu init
+		GuiLock2( True )
 		self.mCtrlListMainmenu.reset( )
 		self.mCtrlListSubmenu.reset( )
+		GuiLock2( False )
 
 		#get last zapping mode
 		try:
@@ -1191,30 +1191,29 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlListSubmenu.addItems( testlistItems )
 
 
+		self.GetSlideMenuHeader( FLAG_SLIDE_INIT )
+		self.mLastMainSlidePosition = self.mSelectMainSlidePosition
+		self.mLastSubSlidePosition = self.mSelectSubSlidePosition
+
 		#path tree, Mainmenu/Submanu
 		label1 = EnumToString('mode', self.mZappingMode)
-		label2 = self.mCtrlListSubmenu.getSelectedItem( ).getLabel( )
+		label2 = self.mZappingName
 		label3 = EnumToString('sort', self.mChannelListSortMode)
 		if self.mZappingMode == ElisEnum.E_MODE_ALL :
 			self.mCtrlLblPath1.setLabel( '%s [COLOR grey3]>[/COLOR] sort by %s'% (label1.upper( ),label3.title( ) ) )
 		else :
 			self.mCtrlLblPath1.setLabel( '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% (label1.upper( ),label2.title( ),label3.title( ) ) )
 
-		self.GetSlideMenuHeader( FLAG_SLIDE_INIT )
-		self.mLastMainSlidePosition = self.mSelectMainSlidePosition
-		self.mLastSubSlidePosition = self.mSelectSubSlidePosition
-
-
 		#get channel list by last on zapping mode, sorting, service type
 		self.mNavChannel = None
 		self.mChannelList = None
-
 
 		if self.mFlag_EditChanged :
 			self.mChannelList = self.mCommander.Channel_GetList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode )
 		else :
 			#### first get is used cache, reason by fast load ###
 			self.mChannelList = self.mDataCache.Channel_GetList( )
+
 
 		"""
 		if self.mChannelList :
