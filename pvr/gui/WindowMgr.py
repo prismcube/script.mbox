@@ -246,7 +246,7 @@ class WindowMgr(object):
 	
 		self.CopyIncludeFile( )
 		self.AddDefaultFont( )
-		sefl.ResetAllWindows( )
+		self.ResetAllWindows( )
 		self.ShowWindow( WIN_ID_MAINMENU )
 
 	def ResetAllWindows( self ):
