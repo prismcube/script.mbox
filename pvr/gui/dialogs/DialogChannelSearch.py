@@ -269,7 +269,6 @@ class DialogChannelSearch( BaseDialog ) :
 			self.mDataCache.LoadZappingmode( )
 			self.mDataCache.LoadZappingList( )
 			self.mDataCache.LoadChannelList( )
-			self.mDataCache.mCacheReload = True
 
 		self.mIsFinished = True
 

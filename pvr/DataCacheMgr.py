@@ -315,14 +315,16 @@ class DataCacheMgr( object ):
 
 
 	def LoadChannelList( self ) :
-		self.mChannelList = self.mCommander.Channel_GetList( self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
+		tmpChannelList = self.mCommander.Channel_GetList( self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
 
 		prevChannel = None
 		nextChannel = None
-		
-		if self.mChannelList and self.mChannelList[0].mError == 0 :
 
-			LOG_TRACE('')
+		if tmpChannelList and tmpChannelList[0].mError == 0 :
+			if self.mChannelList and len(self.mChannelList) != len(tmpChannelList) :
+				self.mCacheReload = True
+
+			self.mChannelList = tmpChannelList
 			count = len( self.mChannelList )
 			LOG_TRACE('count=%d' %count)			
 
