@@ -424,7 +424,6 @@ class ChannelListWindow( BaseWindow ) :
 				self.mFlag_DeleteAll = True
 				LOG_TRACE( 'DeleteAll[%s]'% isDelete )
 
-
 		return ret
 
 		LOG_TRACE( 'Leave' )
@@ -1014,6 +1013,7 @@ class ChannelListWindow( BaseWindow ) :
 						  EnumToString('type', self.mElisSetZappingModeInfo.mServiceType) ) )
 
 					#save zapping mode
+					self.mCommander.Channel_Save( )
 					ret = self.mCommander.Zappingmode_SetCurrent( retList )
 					LOG_TRACE( 'set zappingmode_SetCurrent[%s]'% ret )
 					if ret :

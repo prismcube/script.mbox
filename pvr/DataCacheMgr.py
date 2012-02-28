@@ -317,14 +317,20 @@ class DataCacheMgr( object ):
 	def LoadChannelList( self ) :
 		tmpChannelList = self.mCommander.Channel_GetList( self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
 
+		mCount = 0
+		tCount = 0
+		if self.mChannelList :
+			mCount = len(self.mChannelList)
+		if tmpChannelList :
+			tCount = len(tmpChannelList)
+		if mCount != tCount :
+			self.mCacheReload = True
+
 		prevChannel = None
 		nextChannel = None
 
-		if tmpChannelList and tmpChannelList[0].mError == 0 :
-			if self.mChannelList and len(self.mChannelList) != len(tmpChannelList) :
-				self.mCacheReload = True
-
-			self.mChannelList = tmpChannelList
+		self.mChannelList = tmpChannelList
+		if self.mChannelList and self.mChannelList[0].mError == 0 :
 			count = len( self.mChannelList )
 			LOG_TRACE('count=%d' %count)			
 
@@ -351,8 +357,8 @@ class DataCacheMgr( object ):
 				except Exception, ex:
 					LOG_ERR( "Exception %s" %ex)
 				
-				
-				prevChannel = channel		
+				prevChannel = channel
+		
 	
 
 	def LoadZappingmode( self ) :
