@@ -18,6 +18,8 @@ BUTTON_ID_CHANNEL_LIST			= 90400
 BUTTON_ID_MEDIA_CENTER			= 90500
 BUTTON_ID_SYSTEM_INFO			= 90600
 
+BUTTON_ID_MEDIA_SETTINGS        = 90506
+
 BUTTON_ID_FIRSTINSTALLATION		= 90101
 BUTTON_ID_ANTENNA_SETUP			= 90102
 BUTTON_ID_CHANNEL_SEARCH		= 90103
@@ -37,11 +39,11 @@ class MainMenu( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		self.mCtrlMainMenu = self.getControl( LIST_ID_MAIN_MENU )
-		WinMgr.GetInstance().CheckSkinChange( )
 		if self.mStartMediaCenter == True :
 			self.mCommander.AppMediaPlayer_Control( 0 )
+			#WinMgr.GetInstance().CheckSkinChange( )
+			WinMgr.GetInstance().Reset( )
 			self.mStartMediaCenter = False
-
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -86,10 +88,11 @@ class MainMenu( BaseWindow ) :
 		elif aControlId == BUTTON_ID_INSTALLATION :
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_INSTALLATION )
 
-		elif aControlId == BUTTON_ID_MEDIA_CENTER :
+		elif aControlId == BUTTON_ID_MEDIA_CENTER or aControlId == BUTTON_ID_MEDIA_SETTINGS :
 			self.mStartMediaCenter = True
 			self.mCommander.AppMediaPlayer_Control( 1 )
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
+			if aControlId == BUTTON_ID_MEDIA_CENTER :
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
 
 		elif aControlId == BUTTON_ID_ANTENNA_SETUP : # Antenna Setup
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )

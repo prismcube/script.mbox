@@ -76,6 +76,7 @@ class DataCacheMgr( object ):
 		self.mListFavorite						= None
 		self.mPropertyAge						= 0
 		self.mPropertyPincode					= -1
+		self.mCacheReload						= False
 
 		self.mChannelListHash					= {}
 		self.mAllSatelliteListHash				= {}
@@ -110,7 +111,6 @@ class DataCacheMgr( object ):
 			self.mCurrentChannel.mTsid == event.mTsid and self.mCurrentChannel.mOnid == event.mOnid :
 				self.mCurrentEvent = event
 				#LOG_TRACE('currentEvent' )
-
 
 	def Test( self ):
 		before = time.clock()
@@ -330,14 +330,22 @@ class DataCacheMgr( object ):
 
 
 	def LoadChannelList( self ) :
-		self.mChannelList = self.mCommander.Channel_GetList( self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
+		tmpChannelList = self.mCommander.Channel_GetList( self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
+
+		mCount = 0
+		tCount = 0
+		if self.mChannelList :
+			mCount = len(self.mChannelList)
+		if tmpChannelList :
+			tCount = len(tmpChannelList)
+		if mCount != tCount :
+			self.mCacheReload = True
 
 		prevChannel = None
 		nextChannel = None
-		
-		if self.mChannelList and self.mChannelList[0].mError == 0 :
 
-			LOG_TRACE('')
+		self.mChannelList = tmpChannelList
+		if self.mChannelList and self.mChannelList[0].mError == 0 :
 			count = len( self.mChannelList )
 			LOG_TRACE('count=%d' %count)			
 
@@ -364,8 +372,8 @@ class DataCacheMgr( object ):
 				except Exception, ex:
 					LOG_ERR( "Exception %s" %ex)
 				
-				
-				prevChannel = channel		
+				prevChannel = channel
+		
 	
 
 	def LoadZappingmode( self ) :

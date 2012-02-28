@@ -176,6 +176,11 @@ class ChannelListWindow( BaseWindow ) :
 		#initialize get channel list
 		self.mPropertyAge = self.mDataCache.mPropertyAge
 		self.mPropertyPincode = self.mDataCache.mPropertyPincode
+		if self.mDataCache.mCacheReload :
+			self.mListItems = None
+			self.mDataCache.mCacheReload = False
+			LOG_TRACE('NEW APPEND LIST reason by reload cache')
+
 		self.SetVideoSize( )
 		self.InitSlideMenuHeader( )
 		#self.GetSlideMenuHeader( FLAG_SLIDE_INIT )
@@ -418,7 +423,6 @@ class ChannelListWindow( BaseWindow ) :
 			if isDelete :
 				self.mFlag_DeleteAll = True
 				LOG_TRACE( 'DeleteAll[%s]'% isDelete )
-
 
 		return ret
 
@@ -1009,6 +1013,7 @@ class ChannelListWindow( BaseWindow ) :
 						  EnumToString('type', self.mElisSetZappingModeInfo.mServiceType) ) )
 
 					#save zapping mode
+					self.mCommander.Channel_Save( )
 					ret = self.mCommander.Zappingmode_SetCurrent( retList )
 					LOG_TRACE( 'set zappingmode_SetCurrent[%s]'% ret )
 					if ret :
@@ -1264,7 +1269,7 @@ class ChannelListWindow( BaseWindow ) :
 						#skip ch
 						if iChannel.mSkipped == True :
 							continue
-						listItem = xbmcgui.ListItem( "%04d %s"%( iChannel.mNumber, iChannel.mName ), "-", "-", "-", "-" )
+						listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ) )
 
 					else :
 						#skip ch
@@ -1273,7 +1278,7 @@ class ChannelListWindow( BaseWindow ) :
 						else:
 							lblColorS = E_TAG_COLOR_GREY
 
-						listItem = xbmcgui.ListItem( "%s%04d %s%s"%( lblColorS, iChannel.mNumber, iChannel.mName, lblColorE ), "-", "-", "-", "-" )
+						listItem = xbmcgui.ListItem( '%s%04d %s%s'%( lblColorS, iChannel.mNumber, iChannel.mName, lblColorE ) )
 
 				except Exception, e:
 					LOG_TRACE( '=========== except[%s]'% e )
