@@ -1264,7 +1264,7 @@ class ChannelListWindow( BaseWindow ) :
 						#skip ch
 						if iChannel.mSkipped == True :
 							continue
-						listItem = xbmcgui.ListItem( "%04d %s"%( iChannel.mNumber, iChannel.mName ), "-", "-", "-", "-" )
+						listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ) )
 
 					else :
 						#skip ch
@@ -1273,7 +1273,7 @@ class ChannelListWindow( BaseWindow ) :
 						else:
 							lblColorS = E_TAG_COLOR_GREY
 
-						listItem = xbmcgui.ListItem( "%s%04d %s%s"%( lblColorS, iChannel.mNumber, iChannel.mName, lblColorE ), "-", "-", "-", "-" )
+						listItem = xbmcgui.ListItem( '%s%04d %s%s'%( lblColorS, iChannel.mNumber, iChannel.mName, lblColorE ) )
 
 				except Exception, e:
 					LOG_TRACE( '=========== except[%s]'% e )
