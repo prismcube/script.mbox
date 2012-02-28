@@ -65,6 +65,7 @@ class WindowMgr(object):
 		self.mScriptDir = pvr.Platform.GetPlatform().GetScriptDir()
 		print 'lael98 test scriptDir= %s' %self.mScriptDir
 
+		self.mDefaultLanguage = xbmc.getLanguage()
 		currentSkinName = xbmc.executehttpapi("GetGUISetting(3, lookandfeel.skin)")
 		self.mSkinName = currentSkinName[4:]
 
@@ -80,6 +81,9 @@ class WindowMgr(object):
 		self.AddDefaultFont( )		
 		self.CopyIncludeFile( )
 		self.CreateAllWindows( )
+
+		self.DefaultWindows( )
+
 
 	def SetVideoRestore( self ) :
 		ret = self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
@@ -104,13 +108,14 @@ class WindowMgr(object):
 
 		self.mLastId = aWindowId
 
+	def DefaultWindows( self ) :
+		from pvr.gui.windows.NullWindow import NullWindow
+		self.mWindows[WIN_ID_NULLWINDOW] = NullWindow('NullWindow.xml', self.mScriptDir )
+		LOG_ERR('---------------- self.mWindows[WIN_ID_NULLWINDOW] id=%s' %self.mWindows[WIN_ID_NULLWINDOW] )
+
 	def CreateAllWindows( self ):
 		LOG_TRACE('Create All Windows mScriptDir=%s' %self.mScriptDir)
 		try:
-			from pvr.gui.windows.NullWindow import NullWindow
-			self.mWindows[WIN_ID_NULLWINDOW] = NullWindow('NullWindow.xml', self.mScriptDir )
-			LOG_ERR('---------------- self.mWindows[WIN_ID_NULLWINDOW] id=%s' %self.mWindows[WIN_ID_NULLWINDOW] )
-			LOG_TRACE('')
 			
 			"""
 			for attr, val in self.mWindows[WIN_ID_NULLWINDOW].__dict__.items() :
@@ -246,7 +251,7 @@ class WindowMgr(object):
 	
 		self.CopyIncludeFile( )
 		self.AddDefaultFont( )
-		sefl.ResetAllWindows( )
+		self.ResetAllWindows( )
 		self.ShowWindow( WIN_ID_MAINMENU )
 
 	def ResetAllWindows( self ):
@@ -264,7 +269,6 @@ class WindowMgr(object):
 			LOG_TRACE('change skin name')
 			self.mSkinName = currentSkinName[4:]
 			self.Reset( )
-
 
 	def CopyIncludeFile( self ):
 		import os, shutil
