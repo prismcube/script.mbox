@@ -176,6 +176,11 @@ class ChannelListWindow( BaseWindow ) :
 		#initialize get channel list
 		self.mPropertyAge = self.mDataCache.mPropertyAge
 		self.mPropertyPincode = self.mDataCache.mPropertyPincode
+		if self.mDataCache.mCacheReload :
+			self.mListItems = None
+			self.mDataCache.mCacheReload = False
+			LOG_TRACE('NEW APPEND LIST reason by reload cache')
+
 		self.SetVideoSize( )
 		self.InitSlideMenuHeader( )
 		#self.GetSlideMenuHeader( FLAG_SLIDE_INIT )

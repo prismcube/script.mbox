@@ -76,6 +76,7 @@ class DataCacheMgr( object ):
 		self.mListFavorite						= None
 		self.mPropertyAge						= 0
 		self.mPropertyPincode					= -1
+		self.mCacheReload						= False
 
 		self.mChannelListHash					= {}
 		self.mAllSatelliteListHash				= {}
@@ -110,7 +111,6 @@ class DataCacheMgr( object ):
 			self.mCurrentChannel.mTsid == event.mTsid and self.mCurrentChannel.mOnid == event.mOnid :
 				self.mCurrentEvent = event
 				#LOG_TRACE('currentEvent' )
-
 
 	def Test( self ):
 		before = time.clock()

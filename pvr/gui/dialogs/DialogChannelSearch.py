@@ -265,6 +265,11 @@ class DialogChannelSearch( BaseDialog ) :
 		dialog.doModal( )
 
 		if tvCount > 0 or radioCount > 0 :
+			#### data cache re-load ####
+			self.mDataCache.LoadZappingmode( )
+			self.mDataCache.LoadZappingList( )
 			self.mDataCache.LoadChannelList( )
+			self.mDataCache.mCacheReload = True
+
 		self.mIsFinished = True
 
