@@ -19,6 +19,7 @@ from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfo
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 
+from copy import deepcopy
 from inspect import currentframe
 import threading, time, os, re
 
@@ -177,7 +178,16 @@ class ChannelListWindow( BaseWindow ) :
 
 		#self.SqlTest( )
 
-		#initialize get channel list
+		self.SetVideoSize( )
+
+		#initialize get cache
+		zappingmode = None
+		zappingmode = self.mDataCache.Zappingmode_GetCurrent( )
+		if zappingmode :
+			self.mElisSetZappingModeInfo = deepcopy( zappingmode )
+		else :
+			self.mElisSetZappingModeInfo = ElisIZappingMode()
+
 		self.mPropertyAge = self.mDataCache.mPropertyAge
 		self.mPropertyPincode = self.mDataCache.mPropertyPincode
 		if self.mDataCache.mCacheReload :
@@ -185,7 +195,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mDataCache.mCacheReload = False
 			LOG_TRACE('NEW APPEND LIST reason by reload cache')
 
-		self.SetVideoSize( )
+		#initialize get channel list
 		self.InitSlideMenuHeader( )
 		#self.GetSlideMenuHeader( FLAG_SLIDE_INIT )
 
@@ -947,17 +957,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.mListSatellite[self.mSelectSubSlidePosition].printdebug( )
 		self.mListCasList[self.mSelectSubSlidePosition].printdebug( )
 		self.mListFavorite[self.mSelectSubSlidePosition].printdebug( )
-
-		array=[]
-		self.mElisSetZappingModeInfo.reset( )
-		self.mElisSetZappingModeInfo.mMode = self.mZappingMode
-		self.mElisSetZappingModeInfo.mSortingMode = self.mChannelListSortMode
-		self.mElisSetZappingModeInfo.mServiceType = self.mChannelListServieType
-
-		self.mElisSetZappingModeInfo.printdebug( )
-
-		array.append( self.mElisSetZappingModeInfo )
-		ret = self.mCommander.Zappingmode_SetCurrent( array )
 		"""
 
 		changed = False
@@ -968,13 +967,8 @@ class ChannelListWindow( BaseWindow ) :
 		   self.mSelectSubSlidePosition != self.mLastSubSlidePosition :
 			changed = True
 
-		if self.mElisZappingModeInfo.mServiceType != self.mChannelListServieType :
+		if self.mElisSetZappingModeInfo.mServiceType != self.mChannelListServieType :
 			changed = True
-
-		"""
-		if self.mElisZappingModeInfo != self.mElisSetZappingModeInfo :
-			changed = True
-		"""
 
 		if self.mFlag_DeleteAll :
 			changed = True
@@ -1020,7 +1014,6 @@ class ChannelListWindow( BaseWindow ) :
 
 					retList = []
 					retList.append( self.mElisSetZappingModeInfo )
-					#LOG_TRACE( 'mElisSetZappingModeInfo[%s]'% ClassToList( 'convert', retList ) )
 					LOG_TRACE( '1. zappingMode[%s] sortMode[%s] serviceType[%s]'%  \
 						( EnumToString('mode', self.mZappingMode),         \
 						  EnumToString('sort', self.mChannelListSortMode), \
@@ -1152,7 +1145,6 @@ class ChannelListWindow( BaseWindow ) :
 				self.mChannelListSortMode   = zappingMode.mSortingMode
 				self.mChannelListServieType = zappingMode.mServiceType
 				self.mElisZappingModeInfo   = zappingMode
-				self.mElisSetZappingModeInfo= zappingMode
 
 			except Exception, e:
 				#set default
@@ -1161,7 +1153,6 @@ class ChannelListWindow( BaseWindow ) :
 				self.mChannelListServieType = ElisEnum.E_SERVICE_TYPE_TV
 				zappingMode                 = ElisIZappingMode()
 				self.mElisZappingModeInfo   = zappingMode
-				self.mElisSetZappingModeInfo= zappingMode
 				LOG_TRACE( 'Error exception[%s] init default zappingmode'% e )
 
 
