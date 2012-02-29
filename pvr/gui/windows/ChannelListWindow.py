@@ -559,7 +559,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
 				self.mListItems = None
 				self.mCtrlListCHList.reset( )
-				self.InitSlideMenuHeader( )
+				self.InitSlideMenuHeader( FLAG_ZAPPING_CHANGE )
 				self.InitChannelList( )
 
 				#initialize get epg event
