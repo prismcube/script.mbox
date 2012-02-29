@@ -39,7 +39,8 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mConfiguredSatelliteList = []
 		self.mLongitude = 0
 		self.mBand = 0
-		
+		self.mSatelliteFormatedName = 'Unknown'		
+
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -47,8 +48,6 @@ class DialogChannelSearch( BaseDialog ) :
 		
 		self.mIsFinished = False	
 		self.mTimer = None
-		
-		self.mAllSatelliteList = []
 		
 		self.mNewTVChannelList = []
 		self.mNewRadioChannelList = []
@@ -139,6 +138,7 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mLongitude = config.mLongitude
 		self.mBand = config.mBand
 		self.mScanMode = E_SCAN_SATELLITE 
+		self.mSatelliteFormatedName = self.mDataCache.Satellite_GetFormattedName( self.mLongitude , self.mBand  )
 
 
 	def SetTransponder( self, aLongitude, aBand, aTransponderList ) :
@@ -146,7 +146,8 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mLongitude = aLongitude
 		self.mBand = aBand		
 		self.mTransponderList = aTransponderList
-
+		self.mSatelliteFormatedName = self.mDataCache.Satellite_GetFormattedName( self.mLongitude , self.mBand  )
+		
 
 	def ScanStart( self ) :
 		if self.mScanMode == E_SCAN_SATELLITE :
@@ -220,9 +221,9 @@ class DialogChannelSearch( BaseDialog ) :
 			if self.mLongitude != aEvent.mCarrier.mDVBS.mSatelliteLongitude or self.mBand != aEvent.mCarrier.mDVBS.mSatelliteBand :
 				self.mLongitude = aEvent.mCarrier.mDVBS.mSatelliteLongitude
 				self.mBand = aEvent.mCarrier.mDVBS.mSatelliteBand
-			satelliteFormatedName = self.mDataCache.Satellite_GetFormattedName( self.mLongitude , self.mBand  )
+				self.mSatelliteFormatedName = self.mDataCache.Satellite_GetFormattedName( self.mLongitude , self.mBand  )
 			
-			strTransponderInfo = '%s - %d Mhz - %s - %d MS/s ' %( satelliteFormatedName, aEvent.mCarrier.mDVBS.mFrequency, strPol, aEvent.mCarrier.mDVBS.mSymbolRate )
+			strTransponderInfo = '%s - %d Mhz - %s - %d MS/s ' %( self.mSatelliteFormatedName, aEvent.mCarrier.mDVBS.mFrequency, strPol, aEvent.mCarrier.mDVBS.mSymbolRate )
 			self.mCtrlTransponderInfo.setLabel( strTransponderInfo )
 
 		elif aEvent.mCarrier.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBT :
