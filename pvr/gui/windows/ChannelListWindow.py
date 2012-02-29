@@ -68,6 +68,8 @@ E_TAG_COLOR_END   = '[/COLOR]'
 FLAG_MODE_JUMP      = True
 FLAG_ZAPPING_LOAD   = 0
 FLAG_ZAPPING_CHANGE = 1
+FLAG_LOAD_CACHE     = 0
+FLAG_LOAD_ELIS      = 1
 
 class ChannelListWindow( BaseWindow ) :
 
@@ -409,7 +411,7 @@ class ChannelListWindow( BaseWindow ) :
 		y = pos[1] + 10
 		#LOG_TRACE('==========h[%s] w[%s] x[%s] y[%s]'% (h,w,x,y) )
 
-		ret = self.mCommander.Player_SetVIdeoSize( x, y, w, h ) 
+		ret = self.mDataCache.Player_SetVIdeoSize( x, y, w, h ) 
 
 		LOG_TRACE( 'Leave' )
 
@@ -432,8 +434,8 @@ class ChannelListWindow( BaseWindow ) :
 
 		#answer is yes
 		if ret == E_DIALOG_STATE_YES :
-			isBackup = self.mCommander.Channel_Backup( )
-			isDelete = self.mCommander.Channel_DeleteAll( )
+			isBackup = self.mDataCache.Channel_Backup( )
+			isDelete = self.mDataCache.Channel_DeleteAll( )
 			if isDelete :
 				self.mFlag_DeleteAll = True
 				LOG_TRACE( 'DeleteAll[%s]'% isDelete )
@@ -480,7 +482,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			elif aType == FLAG_MODE_RADIO :
 				self.mLastChannel = self.mCurrentChannel
-				self.mCommander.Player_VideoBlank( True, True )
+				self.mDataCache.Player_VideoBlank( True, True )
 			GuiLock2( False )
 
 			#initialize get epg event
@@ -521,7 +523,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.mCtrlListCHList.reset( )
 				self.InitChannelList( )
 
-				ret = self.mCommander.Channel_Backup( )
+				ret = self.mDataCache.Channel_Backup( )
 				#LOG_TRACE( 'channelBackup[%s]'% ret )
 
 				#slide close
@@ -657,7 +659,8 @@ class ChannelListWindow( BaseWindow ) :
 		LOG_TRACE( 'label[%s] ch[%d] pin[%s]'% (label, channelNumbr, self.mPincodeEnter) )
 
 		ret = False
-		ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType )
+		ret = self.mDataCache.Channel_SetCurrent_Elis( channelNumbr, self.mChannelListServieType )
+		FLAG_LOAD_CACHE
 		#LOG_TRACE( 'MASK[%s] ret[%s]'% (self.mPincodeEnter, ret) )
 		if ret == True :
 			if self.mPincodeEnter == FLAG_MASK_NONE :
@@ -676,7 +679,7 @@ class ChannelListWindow( BaseWindow ) :
 					LOG_TRACE( 'go out Cancel' )
 
 		ch = None
-		ch = self.mCommander.Channel_GetCurrent( )
+		ch = self.mDataCache.Channel_GetCurrent_Elis( )
 		if ch :
 			self.mNavChannel = ch
 			self.mCurrentChannel = self.mNavChannel.mNumber
@@ -837,7 +840,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlLblPath1.setLabel( label )
 
 			#current zapping backup
-			#self.mCommander.Channel_Backup( )
+			#self.mDataCache.Channel_Backup( )
 
 		LOG_TRACE( 'Leave' )
 
@@ -847,16 +850,16 @@ class ChannelListWindow( BaseWindow ) :
 
 		try :
 			if aMode == ElisEnum.E_MODE_ALL :
-				self.mChannelList = self.mCommander.Channel_GetList( aType, aMode, aSort )
+				self.mChannelList = self.mDataCache.Channel_GetList_Elis( aType, aMode, aSort )
 
 			elif aMode == ElisEnum.E_MODE_SATELLITE :
-				self.mChannelList = self.mCommander.Channel_GetListBySatellite( aType, aMode, aSort, aLongitude, aBand )
+				self.mChannelList = self.mDataCache.Channel_GetListBySatellite( aType, aMode, aSort, aLongitude, aBand )
 
 			elif aMode == ElisEnum.E_MODE_CAS :
-				self.mChannelList = self.mCommander.Channel_GetListByFTACas( aType, aMode, aSort, aCAid )
+				self.mChannelList = self.mDataCache.Channel_GetListByFTACas( aType, aMode, aSort, aCAid )
 				
 			elif aMode == ElisEnum.E_MODE_FAVORITE :
-				self.mChannelList = self.mCommander.Channel_GetListByFavorite( aType, aMode, aSort, aFavName )
+				self.mChannelList = self.mDataCache.Channel_GetListByFavorite( aType, aMode, aSort, aFavName )
 
 			elif aMode == ElisEnum.E_MODE_NETWORK :
 				pass
@@ -1012,8 +1015,9 @@ class ChannelListWindow( BaseWindow ) :
 						groupInfo = self.mListFavorite[self.mSelectSubSlidePosition]
 						self.mElisSetZappingModeInfo.mFavoriteGroup = groupInfo
 
-					retList = []
-					retList.append( self.mElisSetZappingModeInfo )
+					iZappingMode = []
+					iZappingMode.append( self.mElisSetZappingModeInfo )
+					"""
 					LOG_TRACE( '1. zappingMode[%s] sortMode[%s] serviceType[%s]'%  \
 						( EnumToString('mode', self.mZappingMode),         \
 						  EnumToString('sort', self.mChannelListSortMode), \
@@ -1022,10 +1026,11 @@ class ChannelListWindow( BaseWindow ) :
 						( EnumToString('mode', self.mElisSetZappingModeInfo.mMode),         \
 						  EnumToString('sort', self.mElisSetZappingModeInfo.mSortingMode), \
 						  EnumToString('type', self.mElisSetZappingModeInfo.mServiceType) ) )
+					"""
 
 					#save zapping mode
-					self.mCommander.Channel_Save( )
-					ret = self.mCommander.Zappingmode_SetCurrent( retList )
+					self.mDataCache.Channel_Save( )
+					ret = self.mDataCache.Zappingmode_SetCurrent( iZappingMode )
 					LOG_TRACE( 'set zappingmode_SetCurrent[%s]'% ret )
 					if ret :
 						#### data cache re-load ####
@@ -1035,7 +1040,7 @@ class ChannelListWindow( BaseWindow ) :
 						LOG_TRACE ('=====================cache re-load')
 
 					#save current zapping
-					#isSave = self.mCommander.Channel_Save( )
+					#isSave = self.mDataCache.Channel_Save( )
 					#LOG_TRACE( 'save[%s]'% isSave )
 
 				elif answer == E_DIALOG_STATE_NO :
@@ -1043,7 +1048,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mListItems = None
 					if self.mFlag_DeleteAll : 
 						#restore backup zapping
-						isRestore = self.mCommander.Channel_Restore( True )
+						isRestore = self.mDataCache.Channel_Restore( True )
 						LOG_TRACE( 'Restore[%s]'% isRestore )
 
 			except Exception, e :
@@ -1081,7 +1086,7 @@ class ChannelListWindow( BaseWindow ) :
 			if answer == E_DIALOG_STATE_YES :
 				self.mIsSave = FLAG_MASK_NONE
 				self.mFlag_EditChanged = True
-				isSave = self.mCommander.Channel_Save( )
+				isSave = self.mDataCache.Channel_Save( )
 				LOG_TRACE( 'save[%s]'% isSave )
 
 				#### data cache re-load ####
@@ -1092,7 +1097,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			elif answer == E_DIALOG_STATE_NO :
 				self.mIsSave = FLAG_MASK_NONE
-				isSave = self.mCommander.Channel_Restore( True )
+				isSave = self.mDataCache.Channel_Restore( True )
 				LOG_TRACE( 'Restore[%s]'% isSave )
 
 
@@ -1137,7 +1142,7 @@ class ChannelListWindow( BaseWindow ) :
 		if aZappingMode == FLAG_ZAPPING_LOAD :
 			try:
 				if self.mFlag_EditChanged :
-					zappingMode = self.mCommander.Zappingmode_GetCurrent( )
+					zappingMode = self.mDataCache.Zappingmode_GetCurrent_Elis( )
 				else :
 					zappingMode = self.mDataCache.Zappingmode_GetCurrent( )
 					
@@ -1179,15 +1184,15 @@ class ChannelListWindow( BaseWindow ) :
 		try :
 			if self.mFlag_EditChanged :
 				#satellite longitude list
-				self.mListSatellite = self.mCommander.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
+				self.mListSatellite = self.mDataCache.Satellite_GetConfiguredList_Elis( ElisEnum.E_SORT_NAME )
 				#ClassToList( 'print', self.mListSatellite )
 
 				#FTA list
-				self.mListCasList = self.mCommander.Fta_cas_GetList( self.mChannelListServieType )
+				self.mListCasList = self.mDataCache.Fta_cas_GetList_Elis( self.mChannelListServieType )
 				#ClassToList( 'print', self.mListCasList )
 
 				#Favorite list
-				self.mListFavorite = self.mCommander.Favorite_GetList( self.mChannelListServieType )
+				self.mListFavorite = self.mDataCache.Favorite_GetList_Elis( self.mChannelListServieType )
 				#ClassToList( 'print', self.mListFavorite )
 			else:
 				self.mListSatellite = self.mDataCache.Satellite_GetConfiguredList( )
@@ -1243,7 +1248,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mChannelList = None
 
 		if self.mFlag_EditChanged :
-			self.mChannelList = self.mCommander.Channel_GetList( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode )
+			self.mChannelList = self.mDataCache.Channel_GetList_Elis( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode )
 		else :
 			#### first get is used cache, reason by fast load ###
 			self.mChannelList = self.mDataCache.Channel_GetList( )
@@ -1314,7 +1319,7 @@ class ChannelListWindow( BaseWindow ) :
 		#get last channel
 		iChannel = None
 		if self.mListItems == None :
-			iChannel = self.mCommander.Channel_GetCurrent( )
+			iChannel = self.mDataCache.Channel_GetCurrent_Elis( )
 		else :
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 
@@ -1392,16 +1397,12 @@ class ChannelListWindow( BaseWindow ) :
 							self.mNavChannel = iChannel
 							#LOG_TRACE( 'found ch: getlabel[%s] ch[%s]'% (channelNumbr, ch.mNumber ) )
 
-							gmtime = self.mDataCache.Datetime_GetGMTTime( )
-							gmtFrom = gmtime
-							gmtUntil= gmtime
-							maxCount= 1
 							iEPGList = None
-							iEPGList = self.mCommander.Epgevent_GetList( iChannel.mSid, iChannel.mTsid, iChannel.mOnid, gmtFrom, gmtUntil, maxCount )
+							iEPGList = self.mDataCache.Epgevent_GetList( iChannel )
 
 							#LOG_TRACE('=============epg len[%s] list[%s]'% (len(iEPGList),ClassToList('convert', iEPGList ) ) )
 							if iEPGList :
-								self.mNavEpg = iEPGList[0]
+								self.mNavEpg = iEPGList
 							else :
 								#self.mNavEpg.reset( )
 								self.mNavEpg = 0
@@ -1496,7 +1497,7 @@ class ChannelListWindow( BaseWindow ) :
 			satellite = self.mDataCache.Satellite_GetByChannelNumber( self.mNavChannel.mNumber )
 			if not satellite :
 				#LOG_TRACE('Fail GetByChannelNumber by Cache')
-				satellite = self.mCommander.Satellite_GetByChannelNumber( self.mNavChannel.mNumber, self.mNavChannel.mServiceType )
+				satellite = self.mDataCache.Satellite_GetByChannelNumber_Elis( self.mNavChannel.mNumber, self.mNavChannel.mServiceType )
 
 			if satellite :
 				label = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
@@ -1588,8 +1589,8 @@ class ChannelListWindow( BaseWindow ) :
 				msg = Msg.Strings(MsgId.LANG_INPUT_PIN_CODE)
 
 				inputPin = ''
-				self.mCommander.Player_AVBlank( True, True )
-				#self.mCommander.Channel_SetInitialBlank( True )
+				self.mDataCache.Player_AVBlank( True, True )
+				#self.mDataCache.Channel_SetInitialBlank( True )
 				GuiLock2( True )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 				dialog.SetDialogProperty( msg, '', 4, True )
@@ -1611,7 +1612,7 @@ class ChannelListWindow( BaseWindow ) :
 					LOG_TRACE( '=======label[%s] ch[%d] pin[%s]'% (label, channelNumbr, self.mPincodeEnter) )
 					self.mPincodeEnter = FLAG_MASK_NONE
 					ret = None
-					ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
+					ret = self.mDataCache.Channel_SetCurrent_Elis( channelNumbr, self.mChannelListServieType)
 					if ret:
 						self.mCurrentChannel = channelNumbr
 
@@ -1711,7 +1712,7 @@ class ChannelListWindow( BaseWindow ) :
 
 					retList = []
 					retList.append( self.mChannelList[lastPos] )
-					ret = self.mCommander.Channel_Lock( aEnabled, retList )
+					ret = self.mDataCache.Channel_Lock( aEnabled, retList )
 
 				#label color
 				elif aMode.lower( ) == 'skip' :
@@ -1730,14 +1731,14 @@ class ChannelListWindow( BaseWindow ) :
 
 					retList = []
 					retList.append( self.mChannelList[lastPos] )
-					ret = self.mCommander.Channel_Skip( aEnabled, retList )
+					ret = self.mDataCache.Channel_Skip( aEnabled, retList )
 
 				elif aMode.lower( ) == 'add' :
 					#strip tag [COLOR ...]label[/COLOR]
 					number = self.mChannelList[lastPos].mNumber
 					cmd = 'AddChannel to Group'
 					if aGroupName :
-						ret = self.mCommander.Favoritegroup_AddChannel( aGroupName, number, self.mChannelListServieType )
+						ret = self.mDataCache.Favoritegroup_AddChannel( aGroupName, number, self.mChannelListServieType )
 					else :
 						ret = 'group None'
 
@@ -1746,17 +1747,16 @@ class ChannelListWindow( BaseWindow ) :
 					number = self.mChannelList[lastPos].mNumber
 					cmd = 'RemoveChannel to Group'
 					if aGroupName :
-						ret = self.mCommander.Favoritegroup_RemoveChannel( aGroupName, number, self.mChannelListServieType )
+						ret = self.mDataCache.Favoritegroup_RemoveChannel( aGroupName, number, self.mChannelListServieType )
 					else :
 						ret = 'group None'
 
-				"""
 				elif aMode.lower( ) == 'delete' :
 					cmd = aMode.title( )
 					retList = []
 					retList.append( self.mChannelList[lastPos] )
-					ret = self.mCommander.Channel_Delete( retList )
-				"""
+					ret = self.mDataCache.Channel_Delete( retList )
+
 
 				#LOG_TRACE( 'set[%s] idx[%s] ret[%s]'% (cmd,lastPos,ret) )
 
@@ -1783,7 +1783,7 @@ class ChannelListWindow( BaseWindow ) :
 
 						retList = []
 						retList.append( self.mChannelList[idx] )
-						ret = self.mCommander.Channel_Lock( aEnabled, retList )
+						ret = self.mDataCache.Channel_Lock( aEnabled, retList )
 
 
 					#label color
@@ -1802,13 +1802,13 @@ class ChannelListWindow( BaseWindow ) :
 
 						retList = []
 						retList.append( self.mChannelList[idx] )
-						ret = self.mCommander.Channel_Skip( aEnabled, retList )
+						ret = self.mDataCache.Channel_Skip( aEnabled, retList )
 
 					elif aMode.lower( ) == 'add' :
 						number = self.mChannelList[idx].mNumber
 						cmd = 'AddChannel to Group'
 						if aGroupName :
-							ret = self.mCommander.Favoritegroup_AddChannel( aGroupName, number, self.mChannelListServieType )
+							ret = self.mDataCache.Favoritegroup_AddChannel( aGroupName, number, self.mChannelListServieType )
 						else :
 							ret = 'group None'
 
@@ -1817,7 +1817,7 @@ class ChannelListWindow( BaseWindow ) :
 						LOG_TRACE('delete by Fav grp[%s] ch[%s]'% (aGroupName, number) )
 						cmd = 'RemoveChannel to Group'
 						if aGroupName :
-							ret = self.mCommander.Favoritegroup_RemoveChannel( aGroupName, number, self.mChannelListServieType )
+							ret = self.mDataCache.Favoritegroup_RemoveChannel( aGroupName, number, self.mChannelListServieType )
 						else :
 							ret = 'group None'
 
@@ -1843,7 +1843,7 @@ class ChannelListWindow( BaseWindow ) :
 						cmd = 'Move in Group'
 						insertPosition = idx + aEnabled
 						if aGroupName :
-							ret = self.mCommander.FavoriteGroup_MoveChannels( aGroupName, insertPosition, self.mChannelListServieType, self.mChannelList[idx] )
+							ret = self.mDataCache.FavoriteGroup_MoveChannels( aGroupName, insertPosition, self.mChannelListServieType, self.mChannelList[idx] )
 						else :
 							ret = 'group None'
 
@@ -1852,7 +1852,7 @@ class ChannelListWindow( BaseWindow ) :
 						cmd = 'Delete'
 						retList = []
 						retList.append( self.mChannelList[idx] )
-						ret = self.mCommander.Channel_Delete( retList )
+						ret = self.mDataCache.Channel_Delete( retList )
 						LOG_TRACE('delete[%s]'% ClassToList('convert', retList) )
 					"""
 
@@ -1927,7 +1927,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		if aMode.lower( ) == 'get' :
 			#Favorite list
-			self.mListFavorite = self.mCommander.Favorite_GetList( self.mChannelListServieType )
+			self.mListFavorite = self.mDataCache.Favorite_GetList_Elis( self.mChannelListServieType )
 			ClassToList( 'print', self.mListFavorite )
 
 			self.mEditFavorite = []
@@ -1959,17 +1959,21 @@ class ChannelListWindow( BaseWindow ) :
 			elif aBtn == E_DialogInput05 :
 				if aDialog == FLAG_OPT_LIST :
 					cmd = 'delete'
-					try:
-						retList = []
-						for idx in self.mMarkList :
-							retList.append( self.mChannelList[idx] )
 
-						ret = self.mCommander.Channel_Delete( retList )
-						#LOG_TRACE('delete[%s]'% ClassToList('convert', retList) )
-					except Exception, e:
-						LOG_TRACE( 'Error except[%s]'% e )
+					if self.mMarkList :
+						try:
+							retList = []
+							for idx in self.mMarkList :
+								retList.append( self.mChannelList[idx] )
 
-					LOG_TRACE('ret[%s] len[%s] delete[%s]'% (ret, len(retList), ClassToList('convert', retList) ) )
+							ret = self.mDataCache.Channel_Delete( retList )
+							LOG_TRACE('ret[%s] len[%s] delete[%s]'% (ret, len(retList), ClassToList('convert', retList) ) )
+
+						except Exception, e:
+							LOG_TRACE( 'Error except[%s]'% e )
+					else :
+						self.SetMarkDeleteCh( cmd, False )
+
 					self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 					self.mListItems = None
 
@@ -2010,19 +2014,19 @@ class ChannelListWindow( BaseWindow ) :
 					self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 				else :
 					cmd = 'Create'
-					ret = self.mCommander.Favoritegroup_Create( aGroupName, self.mChannelListServieType )	#default : ElisEnum.E_SERVICE_TYPE_TV
+					ret = self.mDataCache.Favoritegroup_Create( aGroupName, self.mChannelListServieType )	#default : ElisEnum.E_SERVICE_TYPE_TV
 					#LOG_TRACE( 'set[%s] name[%s] ret[%s]'% (cmd,aGroupName,ret) )				
 
 			elif aBtn == E_DialogInput08 :
 				#parse idx, source name, rename
 				cmd = 'Rename'
 				name = re.split(':', aGroupName)
-				ret = self.mCommander.Favoritegroup_ChangeName( name[1], self.mChannelListServieType, name[2] )
+				ret = self.mDataCache.Favoritegroup_ChangeName( name[1], self.mChannelListServieType, name[2] )
 				#LOG_TRACE( 'set[%s] name[%s] ret[%s]'% (cmd,aGroupName,ret) )
 
 			elif aBtn == E_DialogInput09 :
 				cmd = 'Remove'
-				ret = self.mCommander.Favoritegroup_Remove( aGroupName, self.mChannelListServieType )
+				ret = self.mDataCache.Favoritegroup_Remove( aGroupName, self.mChannelListServieType )
 				#LOG_TRACE( 'set[%s] name[%s] ret[%s]'% (cmd,aGroupName,ret) )
 
 
@@ -2084,10 +2088,10 @@ class ChannelListWindow( BaseWindow ) :
 			ret = False
 			if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
 				if aGroupName :
-					ret = self.mCommander.FavoriteGroup_MoveChannels( aGroupName, chidx, self.mChannelListServieType, retList )
+					ret = self.mDataCache.FavoriteGroup_MoveChannels( aGroupName, chidx, self.mChannelListServieType, retList )
 					#LOG_TRACE( '==========group========' )
 			else :
-				ret = self.mCommander.Channel_Move( self.mChannelListServieType, number, retList )
+				ret = self.mDataCache.Channel_Move( self.mChannelListServieType, number, retList )
 
 			if ret :
 				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
@@ -2187,10 +2191,10 @@ class ChannelListWindow( BaseWindow ) :
 			answer = False
 			if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
 				if aGroupName :
-					answer = self.mCommander.FavoriteGroup_MoveChannels( aGroupName, chidx, self.mChannelListServieType, retList )
+					answer = self.mDataCache.FavoriteGroup_MoveChannels( aGroupName, chidx, self.mChannelListServieType, retList )
 					#LOG_TRACE( '==========group========' )
 			else :
-				answer = self.mCommander.Channel_Move( self.mChannelListServieType, number, retList )
+				answer = self.mDataCache.Channel_Move( self.mChannelListServieType, number, retList )
 
 			if answer :
 				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
