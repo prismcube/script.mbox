@@ -258,6 +258,7 @@ class Configure( SettingWindow ) :
 				if dialog.IsOK() == E_DIALOG_STATE_YES :
 				 	if resetChannel == 1 :
 				 		self.mCommander.System_SetDefaultChannelList( )
+				 		self.mDataCache.LoadAllSatellite( )
 
 				 	elif resetFavoriteAddons == 1 :
 				 		pass
@@ -535,7 +536,6 @@ class Configure( SettingWindow ) :
 				self.SetEnableControls( visibleControlIds, False )
 
 		elif aSelectedItem == E_TIME_SETTING :
-			print 'dhkim test visible = %s' % self.mHasChannel
 			visibleControlIds1 = [ E_Input02, E_Input03 ]
 			visibleControlIds2 = [ E_SpinEx01, E_SpinEx02, E_Input01, E_Input04 ]
 			self.SetEnableControls( visibleControlIds1, False )

@@ -27,7 +27,7 @@ class AutomaticScan( SettingWindow ) :
 		self.mConfiguredSatelliteList = []		
 		
 		self.LoadFormattedSatelliteNameList( )
-		if len( self.mConfiguredSatelliteList ) > 0 :
+		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError :
 			self.InitConfig( )
 			self.ShowDescription( )
 			self.mInitialized = True
@@ -130,7 +130,9 @@ class AutomaticScan( SettingWindow ) :
 	
 	def LoadFormattedSatelliteNameList( self ) :
 		self.mConfiguredSatelliteList = self.mDataCache.Satellite_GetConfiguredList( )
-		if len( self.mConfiguredSatelliteList ) <= 0 :
+		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList.mError == 0 :
+			pass
+		else :
  			return
 		self.mFormattedList = []
 		self.mFormattedList.append( 'All' )

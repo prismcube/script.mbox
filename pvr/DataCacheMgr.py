@@ -171,68 +171,40 @@ class DataCacheMgr( object ):
 		self.mConfiguredSatelliteList = self.mCommander.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
 
 		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
-			for configsatellite in self.mConfiguredSatelliteList :
-				if configsatellite == None :
-					self.mConfiguredSatelliteList = []
-					break
-					
-				elif configsatellite.mError < 0 :
-					self.mConfiguredSatelliteList = []
-					break
-				
+			pass
+		else :
+			LOG_WARN('Has no Configured Satellite')
+
 		self.mConfiguredSatelliteListTuner1 = []
 		self.mConfiguredSatelliteListTuner1 = self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )
 
 		if self.mConfiguredSatelliteListTuner1 and self.mConfiguredSatelliteListTuner1[0].mError == 0 :
-			for configsatellite in self.mConfiguredSatelliteListTuner1 :
-				if configsatellite == None :
-					self.mConfiguredSatelliteListTuner1 = []
-					break
-					
-				elif configsatellite.mError < 0 :
-					self.mConfiguredSatelliteListTuner1 = []
-					break
+			pass
+		else :
+			LOG_WARN('Has no Configured Satellite Tuner 1')
 
 		self.mConfiguredSatelliteListTuner2 = []
 		self.mConfiguredSatelliteListTuner2 = self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )
 
 		if self.mConfiguredSatelliteListTuner2 and self.mConfiguredSatelliteListTuner2[0].mError == 0 :
-			for configsatellite in self.mConfiguredSatelliteListTuner2 :
-				if configsatellite == None :
-					self.mConfiguredSatelliteListTuner2 = []
-					break
-					
-				elif configsatellite.mError < 0 :
-					self.mConfiguredSatelliteListTuner2 = []
-					break
+			pass
+		else :
+			LOG_WARN('Has no Configured Satellite Tuner 2')
 
 
 	def LoadConfiguredTransponder( self ) :
 		self.mTransponderList = []
 		self.mTransponderListHash = {}
 
-
-		try :
-	 		if self.mConfiguredSatelliteListTuner1 and  len( self.mConfiguredSatelliteListTuner1 ) != 0 :
-				for satellite in self.mConfiguredSatelliteListTuner1 :
-					transponder = self.mCommander.Transponder_GetList( satellite.mSatelliteLongitude, satellite.mBandType )
-					self.mTransponderList.append( transponder )
-					hashKey = '%d:%d' % ( satellite.mSatelliteLongitude, satellite.mBandType )
-					self.mTransponderListHash[hashKey] = transponder
-		except Exception, ex:
-			LOG_ERR( "Exception %s" %ex)
-
-		try :
-			if self.mConfiguredSatelliteListTuner2 and len( self.mConfiguredSatelliteListTuner2 ) != 0 :
-				for satellite in self.mConfiguredSatelliteListTuner2 :
-					transponder = self.mCommander.Transponder_GetList( satellite.mSatelliteLongitude, satellite.mBandType )
-					self.mTransponderList.append( transponder )
-					hashKey = '%d:%d' % ( satellite.mSatelliteLongitude, satellite.mBandType )
-					self.mTransponderListHash[hashKey] = transponder
-
-		except Exception, ex:
-			LOG_ERR( "Exception %s" %ex)
-
+	 	if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
+			for satellite in self.mConfiguredSatelliteList :
+				transponder = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
+				self.mTransponderList.append( transponder )
+				hashKey = '%d:%d' % ( satellite.mLongitude, satellite.mBand )
+				self.mTransponderListHash[hashKey] = transponder
+		else :
+			LOG_WARN('Has no Configured Satellite')
+		
 	@DataLock
 	def Satellite_GetAllSatelliteList( self ) :
 		return self.mAllSatelliteList
@@ -241,20 +213,28 @@ class DataCacheMgr( object ):
 	@DataLock
 	def Satellite_ConfiguredTunerSatellite( self, aTunerNumber ) :
 		if aTunerNumber == E_TUNER_1 :
-			return self.mConfiguredSatelliteListTuner1
-
+			if self.mConfiguredSatelliteListTuner1 :
+				return self.mConfiguredSatelliteListTuner1
+			else :
+				return self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )
+				
 		elif aTunerNumber == E_TUNER_2 :
-			return self.mConfiguredSatelliteListTuner2
+			if self.mConfiguredSatelliteListTuner2 :
+				return self.mConfiguredSatelliteListTuner2
+			else :
+				return self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )
 
 		else :
 			LOG_ERR( 'Unknown Tuner Number %s' % aTunerNumber )
-			return self.mConfiguredSatelliteListTuner1
 
 
 	@DataLock
 	def Satellite_GetConfiguredList( self ) :
-		return self.mConfiguredSatelliteList
-
+		if self.mConfiguredSatelliteList :
+			return self.mConfiguredSatelliteList
+		else :
+			return self.mCommander.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
+			
 
 	@DataLock
 	def Satellite_GetFormattedNameList( self ) :
@@ -295,36 +275,26 @@ class DataCacheMgr( object ):
 		return 'UnKnown'
 
 
-	def Satellite_GetTransponder( self, aLongitude, aBand ) :
+	def Satellite_GetTransponderList( self, aLongitude, aBand ) :
 		transponder = []
 		hashKey = '%d:%d' % ( aLongitude, aBand )
 		transponder = self.mTransponderListHash.get( hashKey, None )
 		if transponder :
 			return transponder
 		else :
-			transponder = self.mCommander.Transponder_GetList( aLongitude, aBand )
-		if transponder < 0 :
-			return []
-		else :
-			return transponder
+			return self.mCommander.Transponder_GetList( aLongitude, aBand )
 
 
 	def Satellite_GetFormattedTransponderList( self, aLongitude, aBand ) :
 		tmptransponderList = []
-		transponderList = []
+		transponderList = None
 		
-		tmptransponderList = self.Satellite_GetTransponder( aLongitude, aBand )
-
-		try :
+		tmptransponderList = self.Satellite_GetTransponderList( aLongitude, aBand )
+		
+		if tmptransponderList and tmptransponderList[0].mError == 0 :
+			transponderList = []
 	 		for i in range( len( tmptransponderList ) ) :
-	 			if tmptransponderList[i].mError < 0 :
-	 				transponderList.append( 'Empty' ) 
-		 			return transponderList
-	 			else :
-					transponderList.append( '%d %d MHz %d KS/s' % ( ( i + 1 ), tmptransponderList[i].mFrequency, tmptransponderList[i].mSymbolRate ) )
-
-		except Exception, ex:
-			LOG_ERR( "Exception %s" %ex)
+				transponderList.append( '%d %d MHz %d KS/s' % ( ( i + 1 ), tmptransponderList[i].mFrequency, tmptransponderList[i].mSymbolRate ) )
 
 		return transponderList
 

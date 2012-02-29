@@ -17,6 +17,8 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 		self.mTransponderList = None
 		self.mSelectedTransponderIndex = 0
 		self.mSelectedIndexLnbType = 0
+		self.mHasTransponder = False
+		
 		
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -146,7 +148,7 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 
 		# Transponer
  		elif groupId == E_Input03 :
- 			if len( self.mTransponderList ) > 0 :
+ 			if self.mTransponderList :
 	 			dialog = xbmcgui.Dialog()
 	 			self.mSelectedTransponderIndex = dialog.select( 'Select Transponder', self.mTransponderList )
 	 			if self.mSelectedTransponderIndex != -1 :
@@ -172,12 +174,14 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 		self.AddUserEnumControl( E_SpinEx04, 'Committed Switch', E_LIST_COMMITTED_SWITCH, getCommittedSwitchindex( self.mCurrentSatellite.mDisEqcMode ) )
 		self.AddUserEnumControl( E_SpinEx05, 'Uncommitted Switch', E_LIST_UNCOMMITTED_SWITCH, self.mCurrentSatellite.mDisEqc11 )
 		self.AddUserEnumControl( E_SpinEx06, 'DiSEqC Repeat', USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mDisEqcRepeat )
-		if len( self.mTransponderList ) <= 0 :
-			self.AddInputControl( E_Input03, 'Transponder', 'None' )
-		else :
+		if self.mTransponderList :
 			self.AddInputControl( E_Input03, 'Transponder', self.mTransponderList[ self.mSelectedTransponderIndex ] )
+			self.mHasTransponder = True
+		else :
+			self.AddInputControl( E_Input03, 'Transponder', 'None' )			
+			self.mHasTransponder = False
 		
-		if( self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
+		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input01, E_Input03]
 			hideControlIds = [ E_Input02, E_Input04, E_Input05, E_Input06 ]
 		else :
@@ -195,9 +199,13 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 
 	def disableControl( self ) :
 		enableControlIds = [ E_Input02, E_SpinEx02, E_SpinEx03 ]
-		if ( self.mSelectedIndexLnbType == ElisEnum.E_LNB_UNIVERSAL ) :
+		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_UNIVERSAL :
 			self.SetEnableControls( enableControlIds, False )
-			self.getControl( E_SpinEx03 + 3 ).selectItem( 1 )	# Always On
-			
+			self.getControl( E_SpinEx03 + 3 ).selectItem( 1 )	# Always On	
 		else :
 			self.SetEnableControls( enableControlIds, True )	
+
+		if self.mHasTransponder == False :
+			self.SetEnableControl( E_Input03, False )
+		else :
+			self.SetEnableControl( E_Input03, True )

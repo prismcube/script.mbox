@@ -4,6 +4,7 @@ import sys
 
 import pvr.gui.WindowMgr as WinMgr
 import pvr.TunerConfigMgr as ConfigMgr
+import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
 
@@ -119,10 +120,17 @@ class SatelliteConfigOnecable( SettingWindow ) :
 		configuredList = []
 
 		configuredList = ConfigMgr.GetInstance( ).GetConfiguredSatelliteList( )
-		self.mSatelliteCount = len( configuredList )
+		if configuredList and configuredList[0].mError == 0 :
+			self.mSatelliteCount = len( configuredList )
 
-		for i in range( MAX_SATELLITE_CNT ) :
-			if i < self.mSatelliteCount :
-				self.mSatellitelist.append( self.mDataCache.Satellite_GetFormattedName( configuredList[i].mSatelliteLongitude, configuredList[i].mBandType ) )
-			else :
-				self.mSatellitelist.append( '' ) # dummy Data
+			for i in range( MAX_SATELLITE_CNT ) :
+				if i < self.mSatelliteCount :
+					self.mSatellitelist.append( self.mDataCache.Satellite_GetFormattedName( configuredList[i].mSatelliteLongitude, configuredList[i].mBandType ) )
+				else :
+					self.mSatellitelist.append( '' ) # dummy Data
+		else :
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( 'ERROR', 'Save Configuration Fail' )
+ 			dialog.doModal( )
+ 			self.ResetAllControl( )
+			self.close( )

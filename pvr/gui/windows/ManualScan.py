@@ -23,7 +23,8 @@ class ManualScan( SettingWindow ) :
 		self.mFormattedList	= []
 		self.mIsManualSetup				= 0
 		self.mConfigTransponder			= None
-		self.mCtrlMainGroup				= None		
+		self.mCtrlMainGroup				= None
+		self.mHasTansponder				= False
 
 
 	def onInit( self ) :
@@ -40,7 +41,7 @@ class ManualScan( SettingWindow ) :
 		self.mConfiguredSatelliteList = []
 		
 		self.LoadFormattedSatelliteNameList( )
-		if len( self.mConfiguredSatelliteList ) > 0 :
+		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
 			self.LoadTransponderList( )
 			self.SetConfigTransponder( )
 
@@ -240,33 +241,35 @@ class ManualScan( SettingWindow ) :
 
 	def LoadFormattedSatelliteNameList( self ) :
 		self.mConfiguredSatelliteList = self.mDataCache.Satellite_GetConfiguredList( )
-		if len( self.mConfiguredSatelliteList ) <= 0 :
- 			return
-		self.mFormattedList = []
-
-		for config in self.mConfiguredSatelliteList :
-			self.mFormattedList.append( self.mDataCache.Satellite_GetFormattedName( config.mLongitude, config.mBand ) )
+		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
+			self.mFormattedList = []
+			for config in self.mConfiguredSatelliteList :
+				self.mFormattedList.append( self.mDataCache.Satellite_GetFormattedName( config.mLongitude, config.mBand ) )
 
 
 	def LoadTransponderList( self ) :
 		satellite = self.mConfiguredSatelliteList[ self.mSatelliteIndex ]
 		self.mTransponderList = []
-		self.mTransponderList = self.mDataCache.Satellite_GetTransponder( satellite.mLongitude, satellite.mBand )
-
+		self.mTransponderList = self.mDataCache.Satellite_GetTransponderList( satellite.mLongitude, satellite.mBand )
+		if self.mTransponderList and self.mTransponderList[0].mError == 0 :
+			self.mHasTansponder = True
+		else :
+			self.mHasTansponder = False
 
 	def SetConfigTransponder( self ) :
 		self.mConfigTransponder = ElisITransponderInfo( )
 		self.mConfigTransponder.reset( )
-		self.mConfigTransponder.mFrequency = self.mTransponderList[self.mTransponderIndex].mFrequency
-		self.mConfigTransponder.mFECMode = self.mTransponderList[self.mTransponderIndex].mFECMode
-		self.mConfigTransponder.mSymbolRate = self.mTransponderList[self.mTransponderIndex].mSymbolRate
-		self.mConfigTransponder.mPolarization = self.mTransponderList[self.mTransponderIndex].mPolarization
-		self.mConfigTransponder.mTsid = self.mTransponderList[self.mTransponderIndex].mTsid
-		self.mConfigTransponder.mOnid = self.mTransponderList[self.mTransponderIndex].mOnid
-		self.mConfigTransponder.mNid = self.mTransponderList[self.mTransponderIndex].mNid
+		if self.mHasTansponder == True :	
+			self.mConfigTransponder.mFrequency = self.mTransponderList[self.mTransponderIndex].mFrequency
+			self.mConfigTransponder.mFECMode = self.mTransponderList[self.mTransponderIndex].mFECMode
+			self.mConfigTransponder.mSymbolRate = self.mTransponderList[self.mTransponderIndex].mSymbolRate
+			self.mConfigTransponder.mPolarization = self.mTransponderList[self.mTransponderIndex].mPolarization
+			self.mConfigTransponder.mTsid = self.mTransponderList[self.mTransponderIndex].mTsid
+			self.mConfigTransponder.mOnid = self.mTransponderList[self.mTransponderIndex].mOnid
+			self.mConfigTransponder.mNid = self.mTransponderList[self.mTransponderIndex].mNid
 
 
-	def DisableControl( self ) :
+	def DisableControl( self ) :	
 		disablecontrols = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input03 ]
 		if self.mIsManualSetup == 0 :
 			self.SetEnableControls( disablecontrols, False )
@@ -281,4 +284,7 @@ class ManualScan( SettingWindow ) :
 				self.SetProp( E_SpinEx03, 0 )
 				self.getControl( E_SpinEx03 + 3 ).getListItem( 0 ).setLabel2( 'QPSK 1/2' )
 				self.SetEnableControl( E_SpinEx03, True )
-		
+
+		if self.mHasTansponder == False :
+			disablecontrols = [ E_Input02, E_Input03, E_Input04, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
+			self.SetEnableControls( disablecontrols, False )
