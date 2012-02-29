@@ -102,6 +102,8 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 			
 		# Configure Satellites
 		elif groupId == E_Input04 :
+			self.SetLongitude( )
+			self.SetLatitude( )
 			self.ResetAllControl( )
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_TUNER_CONFIGURATION )
 			

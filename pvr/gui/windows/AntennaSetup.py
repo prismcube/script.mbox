@@ -26,7 +26,7 @@ class AntennaSetup( SettingWindow ) :
 			ConfigMgr.GetInstance( ).LoadOriginalTunerConfig( )
 			ConfigMgr.GetInstance( ).Load( )
 			ConfigMgr.GetInstance( ).SetNeedLoad( False )
-		
+
 		self.SetSettingWindowLabel( 'Antenna & Satellite Setup' )
 
 		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( False )
@@ -36,13 +36,13 @@ class AntennaSetup( SettingWindow ) :
 		self.AddInputControl( E_Input01, ' - Tuner 1 Configuration', '', 'Go to Tuner 1 Configure.' )
 		self.AddEnumControl( E_SpinEx04, 'Tuner2 Type', None, 'Setup tuner 2.' )
 		self.AddInputControl( E_Input02, ' - Tuner 2 Configuration','', 'Go to Tuner 2 Configure.' )
-	
+
 		self.InitControl( )
 		self.ShowDescription( )
 		self.DisableControl( )
 		self.mInitialized = True
 		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True )
-		
+
 		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -102,20 +102,19 @@ class AntennaSetup( SettingWindow ) :
 		self.DisableControl( )
 		groupId = self.GetGroupId( aControlId )
 		if groupId == E_Input01 or groupId == E_Input02 :
-		
-			configuredList = ConfigMgr.GetInstance( ).GetConfiguredSatelliteList( )
-			if len( configuredList ) <= 0 :
-				ConfigMgr.GetInstance( ).AddConfiguredSatellite( 0 )
-
 			if groupId == E_Input01 :
-			
 				ConfigMgr.GetInstance( ).SetCurrentTunerIndex( E_TUNER_1 )
 				configcontrol = E_SpinEx03
 
 			elif groupId == E_Input02 :
-
 				ConfigMgr.GetInstance( ).SetCurrentTunerIndex( E_TUNER_2 )
 				configcontrol = E_SpinEx04
+		
+			configuredList = ConfigMgr.GetInstance( ).GetConfiguredSatelliteList( )
+			if configuredList and configuredList[0].mError == 0 :
+				pass
+			else :
+				ConfigMgr.GetInstance( ).AddConfiguredSatellite( 0 )
 
 			if self.GetSelectedIndex( configcontrol ) == E_SIMPLE_LNB :
 				ConfigMgr.GetInstance( ).SetCurrentConfigIndex( 0 )

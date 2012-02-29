@@ -18,6 +18,7 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 		self.mSelectedIndexLnbType = None
 		self.mSelectedTransponderIndex = 0
 		self.tunerIndex = 0
+		self.mHasTransponder = False
 		
 			
 	def onInit( self ) :
@@ -138,7 +139,7 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 
 		# Transponer
  		elif groupId == E_Input03 :
-	 		if len( self.mTransponderList ) > 0 :
+	 		if self.mTransponderList :
 	 			dialog = xbmcgui.Dialog()
 	 			self.mSelectedTransponderIndex = dialog.select( 'Select Transponder', self.mTransponderList )
 	 			if self.mSelectedTransponderIndex != -1 :
@@ -193,10 +194,12 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 
 		self.AddUserEnumControl( E_SpinEx03, '22KHz Control', USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mFrequencyLevel )	
 
-		if len( self.mTransponderList ) <= 0 :
-			self.AddInputControl( E_Input03, 'Transponder', 'None' )
-		else :
+		if self.mTransponderList :
 			self.AddInputControl( E_Input03, 'Transponder', self.mTransponderList[ self.mSelectedTransponderIndex ] )
+			self.mHasTransponder = True			
+		else :
+			self.AddInputControl( E_Input03, 'Transponder', 'None' )			
+			self.mHasTransponder = False
 
 		self.AddInputControl( E_Input04, 'Move Antenna', '' )
 		self.AddUserEnumControl( E_SpinEx04, 'Action', E_LIST_MOTORIZE_ACTION, 0 )
@@ -227,3 +230,8 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 			
 		else :
 			self.SetEnableControls( enableControlIds, True )
+
+		if self.mHasTransponder == False :
+			self.SetEnableControl( E_Input03, False )
+		else:
+			self.SetEnableControl( E_Input03, True )

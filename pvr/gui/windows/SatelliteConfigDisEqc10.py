@@ -13,11 +13,11 @@ from ElisEnum import ElisEnum
 class SatelliteConfigDisEqC10( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-
 		self.mCurrentSatellite = None
 		self.mTransponderList = None
+		self.mSelectedIndexLnbType = None
 		self.mSelectedTransponderIndex = 0
-		self.mSelectedIndexLnbType = 0
+		self.mHasTransponder = False
 
 			
 	def onInit( self ) :
@@ -41,6 +41,7 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %d - %s' % ( tunerIndex + 1, property.GetPropString( ) ) )
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.InitConfig( )
+
 		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -143,7 +144,7 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 
 		# Transponer
  		elif groupId == E_Input03 :
- 			if len( self.mTransponderList ) > 0 :
+ 			if self.mTransponderList :
 	 			dialog = xbmcgui.Dialog( )
 	 			self.mSelectedTransponderIndex = dialog.select( 'Select Transponder', self.mTransponderList )
 	 			if self.mSelectedTransponderIndex != -1 :
@@ -168,10 +169,12 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 		self.AddUserEnumControl( E_SpinEx03, '22KHz Control', USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mFrequencyLevel )
 		self.AddUserEnumControl( E_SpinEx04, 'DiSEqC 1.0 Switch', E_LIST_DISEQC_MODE, self.mCurrentSatellite.mDisEqcMode )
 		self.AddUserEnumControl( E_SpinEx05, 'DiSEqC Repeat', USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mDisEqcRepeat )
-		if len( self.mTransponderList ) <= 0 :
-			self.AddInputControl( E_Input03, 'Transponder', 'None' )
-		else :
+		if self.mTransponderList :
 			self.AddInputControl( E_Input03, 'Transponder', self.mTransponderList[ self.mSelectedTransponderIndex ] )
+			self.mHasTransponder = True
+		else :
+			self.AddInputControl( E_Input03, 'Transponder', 'None' )			
+			self.mHasTransponder = False
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input03 ]
@@ -193,6 +196,10 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_UNIVERSAL :
 			self.SetEnableControls( enableControlIds, False )
 			self.getControl( E_SpinEx03 + 3 ).selectItem( 1 )	# Always On
-			
 		else :
 			self.SetEnableControls( enableControlIds, True )
+
+		if self.mHasTransponder == False :
+			self.SetEnableControl( E_Input03, False )
+		else :
+			self.SetEnableControl( E_Input03, True )

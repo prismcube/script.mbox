@@ -22,10 +22,10 @@ class ConditionalAccess( SettingWindow ) :
 
 		smartCard = self.mCommander.Conax_GetInformation( CAS_SLOT_NUM_1 )
 		smartCardName = 'Not inserted'
-		if smartCard == None or smartCard.mError < 0 :
-			smartCardName = 'Not inserted'
-		else :
+		if smartCard and smartCard.mError == 0 :
 			smartCardName = 'CONAX - %s' % smartCard.card_number
+		else :
+			smartCardName = 'Not inserted'			
 		self.AddInputControl( E_Input01, 'Smartcard Information', '%s' % smartCardName, 'View smartcard information' )
 
 		camName = 'Not inserted'

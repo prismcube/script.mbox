@@ -71,7 +71,7 @@ class TunerConfigMgr( object ) :
 		if self.mCurrentTuner == E_TUNER_1 :	
 			return self.mConfiguredList1[ self.mCurrentConfigIndex ]
 			
-		elif self.mCurrentTuner == E_TUNER_2:
+		elif self.mCurrentTuner == E_TUNER_2 :
 			return self.mConfiguredList2[ self.mCurrentConfigIndex ]
 			
 		else :
@@ -264,19 +264,25 @@ class TunerConfigMgr( object ) :
 		# Get All Satellite List ( mLongitude, mBand, mName )
 		self.mAllSatelliteList = self.mDataCache.Satellite_GetAllSatelliteList( )
 
+		
 		# Get Configured Satellite List Tuner 1
 		self.mConfiguredList1 = deepcopy( self.mDataCache.Satellite_ConfiguredTunerSatellite( E_TUNER_1 ) )
-
-		if len( self.mConfiguredList1 ) == 0 :		# If empty list to return, add one default satellite
+		if self.mConfiguredList1 and self.mConfiguredList1[0].mError == 0 :
+			pass
+		else :	# If empty list to return, add one default satellite
+			self.mConfiguredList1 = []
 			config = self.GetDefaultConfig( )
 			config.mSatelliteLongitude = self.mAllSatelliteList[ 0 ].mLongitude
 			config.mBandType = self.mAllSatelliteList[ 0 ].mBand
 			self.mConfiguredList1.append( config )
 
+		
 		# Get Configured Satellite List Tuner 2
 		self.mConfiguredList2 = deepcopy( self.mDataCache.Satellite_ConfiguredTunerSatellite( E_TUNER_2 ) )
-
-		if len( self.mConfiguredList2 ) == 0 :		# If empty list to return, add one default satellite
+		if self.mConfiguredList2 and self.mConfiguredList2[0].mError == 0 :
+			pass
+		else :	# If empty list to return, add one default satellite
+			self.mConfiguredList2 = []
 			config = self.GetDefaultConfig( )
 			config.mSatelliteLongitude = self.mAllSatelliteList[ 0 ].mLongitude
 			config.mBandType = self.mAllSatelliteList[ 0 ].mBand
