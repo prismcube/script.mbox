@@ -124,8 +124,6 @@ class DataCacheMgr( object ):
 
 	def Load( self ) :
 
-		self.LoadPropertyLimit( )
-
 		#Zapping Mode
 		LOG_TRACE('')
 		self.LoadZappingmode( )
@@ -356,10 +354,6 @@ class DataCacheMgr( object ):
 			serviceType = self.mZappingMode.mServiceType
 		self.mListCasList   = self.mCommander.Fta_cas_GetList( serviceType )
 		self.mListFavorite  = self.mCommander.Favorite_GetList( serviceType )
-
-	def LoadPropertyLimit( self ) :
-		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
-		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
 
 	def Zappingmode_SetCurrent( self , aZappingMode ) :
 		if self.mCommander.Zappingmode_SetCurrent( aZappingMode ) == True :

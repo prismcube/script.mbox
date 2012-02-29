@@ -123,8 +123,8 @@ class LivePlate(BaseWindow):
 		self.mImgTV    = E_IMG_ICON_TV
 		self.mCtrlLblEventClock.setLabel('')
 
-		self.mPropertyAge = self.mDataCache.mPropertyAge
-		self.mPropertyPincode = self.mDataCache.mPropertyPincode
+		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
+		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset()
 
 		#get channel

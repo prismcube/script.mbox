@@ -190,8 +190,8 @@ class ChannelListWindow( BaseWindow ) :
 		else :
 			self.mElisSetZappingModeInfo = ElisIZappingMode()
 
-		self.mPropertyAge = self.mDataCache.mPropertyAge
-		self.mPropertyPincode = self.mDataCache.mPropertyPincode
+		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
+		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
 		if self.mDataCache.mCacheReload :
 			self.mListItems = None
 			self.mDataCache.mCacheReload = False
