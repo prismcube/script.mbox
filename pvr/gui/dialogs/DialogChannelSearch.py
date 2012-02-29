@@ -48,7 +48,6 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mIsFinished = False	
 		self.mTimer = None
 		
-		self.mSatelliteFormatedName = 'Unknown'
 		self.mAllSatelliteList = []
 		
 		self.mNewTVChannelList = []
@@ -221,9 +220,9 @@ class DialogChannelSearch( BaseDialog ) :
 			if self.mLongitude != aEvent.mCarrier.mDVBS.mSatelliteLongitude or self.mBand != aEvent.mCarrier.mDVBS.mSatelliteBand :
 				self.mLongitude = aEvent.mCarrier.mDVBS.mSatelliteLongitude
 				self.mBand = aEvent.mCarrier.mDVBS.mSatelliteBand
-				self.mSatelliteFormatedName = self.mDataCache.Satellite_GetFormattedName( self.mLongitude , self.mBand  )
+			satelliteFormatedName = self.mDataCache.Satellite_GetFormattedName( self.mLongitude , self.mBand  )
 			
-			strTransponderInfo = '%s - %d Mhz - %s - %d MS/s ' %( self.mSatelliteFormatedName, aEvent.mCarrier.mDVBS.mFrequency, strPol, aEvent.mCarrier.mDVBS.mSymbolRate )
+			strTransponderInfo = '%s - %d Mhz - %s - %d MS/s ' %( satelliteFormatedName, aEvent.mCarrier.mDVBS.mFrequency, strPol, aEvent.mCarrier.mDVBS.mSymbolRate )
 			self.mCtrlTransponderInfo.setLabel( strTransponderInfo )
 
 		elif aEvent.mCarrier.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBT :
