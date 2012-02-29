@@ -12,12 +12,14 @@ from pvr.gui.GuiConfig import *
 from ElisEnum import ElisEnum
 from ElisEventBus import ElisEventBus
 from ElisEventClass import *
+from ElisClass import *
 
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
 from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit, ParseLabelToCh
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 
+from copy import deepcopy
 from inspect import currentframe
 import threading, time, os, re
 
@@ -63,7 +65,9 @@ E_TAG_COLOR_GREY  = '[COLOR grey]'
 E_TAG_COLOR_GREY3 = '[COLOR grey3]'
 E_TAG_COLOR_END   = '[/COLOR]'
 
-FLAG_MODE_JUMP   = True
+FLAG_MODE_JUMP      = True
+FLAG_ZAPPING_LOAD   = 0
+FLAG_ZAPPING_CHANGE = 1
 
 class ChannelListWindow( BaseWindow ) :
 
@@ -81,6 +85,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mLastSubSlidePosition = 0
 		self.mSelectMainSlidePosition = 0
 		self.mSelectSubSlidePosition = 0
+		self.mLastChannel = None
 		self.mListItems = None
 
 		self.mEventId = 0
@@ -153,8 +158,8 @@ class ChannelListWindow( BaseWindow ) :
 		self.mIsMark = True
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		self.mChannelListServieType = ElisEnum.E_SERVICE_TYPE_INVALID
-		self.mZappingMode = ElisEnum.E_MODE_ALL
 		self.mChannelListSortMode = ElisEnum.E_SORT_BY_DEFAULT
+		self.mZappingMode = ElisEnum.E_MODE_ALL
 		self.mZappingName = ''
 		self.mChannelList = []
 		self.mNavEpg = None
@@ -173,7 +178,16 @@ class ChannelListWindow( BaseWindow ) :
 
 		#self.SqlTest( )
 
-		#initialize get channel list
+		self.SetVideoSize( )
+
+		#initialize get cache
+		zappingmode = None
+		zappingmode = self.mDataCache.Zappingmode_GetCurrent( )
+		if zappingmode :
+			self.mElisSetZappingModeInfo = deepcopy( zappingmode )
+		else :
+			self.mElisSetZappingModeInfo = ElisIZappingMode()
+
 		self.mPropertyAge = self.mDataCache.mPropertyAge
 		self.mPropertyPincode = self.mDataCache.mPropertyPincode
 		if self.mDataCache.mCacheReload :
@@ -181,7 +195,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mDataCache.mCacheReload = False
 			LOG_TRACE('NEW APPEND LIST reason by reload cache')
 
-		self.SetVideoSize( )
+		#initialize get channel list
 		self.InitSlideMenuHeader( )
 		#self.GetSlideMenuHeader( FLAG_SLIDE_INIT )
 
@@ -431,39 +445,48 @@ class ChannelListWindow( BaseWindow ) :
 	def SetModeChanged( self, aType = FLAG_MODE_TV) :
 		LOG_TRACE( 'Enter' )
 
-		self.mChannelListServieType = aType
+		if self.mChannelListServieType == aType :
+			if self.mChannelListServieType == FLAG_MODE_TV:
+				self.UpdateLabelGUI( self.mCtrlRdoTV.getId(), True, True )
 
-		GuiLock2( True )
-		if aType == FLAG_MODE_TV :
-			label = self.mCtrlListCHList.getSelectedItem( ).getLabel( )
-			channelNumbr = ParseLabelToCh( self.mViewMode, label )
-			LOG_TRACE( '=======label[%s] ch[%d] tvmode[%s]'% (label, channelNumbr, self.mChannelListServieType) )
-			ret = None
-			ret = self.mCommander.Channel_SetCurrent( channelNumbr, self.mChannelListServieType)
-			if ret:
-				self.mCurrentChannel = channelNumbr
+			elif self.mChannelListServieType == FLAG_MODE_RADIO:
+				self.UpdateLabelGUI( self.mCtrlRdoRadio.getId(), True, True )
 
-		elif aType == FLAG_MODE_RADIO :
-			self.mCommander.Player_VideoBlank( True, True )
-		GuiLock2( False )
+		else :
+			self.mFlag_EditChanged = True
+			self.mChannelListServieType = aType
+			self.mElisZappingModeInfo.mServiceType = aType
 
-		self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
-		xbmc.sleep( 50 )
-		self.SubMenuAction(E_SLIDE_ACTION_MAIN, E_SLIDE_ALLCHANNEL)
-		self.mCtrlListSubmenu.selectItem( 0 )
-		xbmc.sleep( 50 )
-		self.SubMenuAction(E_SLIDE_ACTION_SUB, ElisEnum.E_MODE_ALL, True)
+			self.InitSlideMenuHeader( FLAG_ZAPPING_CHANGE )
 
-		#clear label
-		self.ResetLabel( )
-		self.UpdateLabelInfo( )
+			self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
+			xbmc.sleep( 50 )
+			self.SubMenuAction(E_SLIDE_ACTION_MAIN, E_SLIDE_ALLCHANNEL)
+			self.mCtrlListSubmenu.selectItem( 0 )
+			xbmc.sleep( 50 )
+			self.SubMenuAction(E_SLIDE_ACTION_SUB, ElisEnum.E_MODE_ALL, True)
 
-		self.mCtrlListCHList.reset( )
-		self.InitChannelList( )
+			#clear label
+			self.ResetLabel( )
+			self.UpdateLabelInfo( )
 
-		#initialize get epg event
-		self.mIsSelect = False
-		self.InitEPGEvent( )
+			self.mCtrlListCHList.reset( )
+			self.InitChannelList( )
+
+			GuiLock2( True )
+			if aType == FLAG_MODE_TV :
+				self.mCurrentChannel = None
+				self.SetChannelTune( self.mLastChannel )
+
+			elif aType == FLAG_MODE_RADIO :
+				self.mLastChannel = self.mCurrentChannel
+				self.mCommander.Player_VideoBlank( True, True )
+			GuiLock2( False )
+
+			#initialize get epg event
+			self.mIsSelect = False
+			self.InitEPGEvent( )
+
 
 		#slide close
 		self.mCtrlListCHList.setEnabled(True)
@@ -536,7 +559,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
 				self.mListItems = None
 				self.mCtrlListCHList.reset( )
-				self.InitSlideMenuHeader( )
+				self.InitSlideMenuHeader( FLAG_ZAPPING_CHANGE )
 				self.InitChannelList( )
 
 				#initialize get epg event
@@ -934,27 +957,17 @@ class ChannelListWindow( BaseWindow ) :
 		self.mListSatellite[self.mSelectSubSlidePosition].printdebug( )
 		self.mListCasList[self.mSelectSubSlidePosition].printdebug( )
 		self.mListFavorite[self.mSelectSubSlidePosition].printdebug( )
-
-		array=[]
-		self.mElisSetZappingModeInfo.reset( )
-		self.mElisSetZappingModeInfo.mMode = self.mZappingMode
-		self.mElisSetZappingModeInfo.mSortingMode = self.mChannelListSortMode
-		self.mElisSetZappingModeInfo.mServiceType = self.mChannelListServieType
-
-		self.mElisSetZappingModeInfo.printdebug( )
-
-		array.append( self.mElisSetZappingModeInfo )
-		ret = self.mCommander.Zappingmode_SetCurrent( array )
 		"""
 
 		changed = False
 		answer = E_DIALOG_STATE_NO
 
+
 		if self.mSelectMainSlidePosition != self.mLastMainSlidePosition or \
 		   self.mSelectSubSlidePosition != self.mLastSubSlidePosition :
 			changed = True
 
-		if self.mElisZappingModeInfo.mServiceType != self.mChannelListServieType :
+		if self.mElisSetZappingModeInfo.mServiceType != self.mChannelListServieType :
 			changed = True
 
 		if self.mFlag_DeleteAll :
@@ -999,10 +1012,8 @@ class ChannelListWindow( BaseWindow ) :
 						groupInfo = self.mListFavorite[self.mSelectSubSlidePosition]
 						self.mElisSetZappingModeInfo.mFavoriteGroup = groupInfo
 
-
 					retList = []
 					retList.append( self.mElisSetZappingModeInfo )
-					#LOG_TRACE( 'mElisSetZappingModeInfo[%s]'% ClassToList( 'convert', retList ) )
 					LOG_TRACE( '1. zappingMode[%s] sortMode[%s] serviceType[%s]'%  \
 						( EnumToString('mode', self.mZappingMode),         \
 						  EnumToString('sort', self.mChannelListSortMode), \
@@ -1089,7 +1100,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		LOG_TRACE( 'Leave' )
 
-	def InitSlideMenuHeader( self ) :
+	def InitSlideMenuHeader( self, aZappingMode = FLAG_ZAPPING_LOAD ) :
 		LOG_TRACE( 'Enter' )
 
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
@@ -1123,23 +1134,26 @@ class ChannelListWindow( BaseWindow ) :
 		GuiLock2( False )
 
 		#get last zapping mode
-		try:
-			if self.mFlag_EditChanged :
-				zappingMode = self.mCommander.Zappingmode_GetCurrent( )
-			else :
-				zappingMode = self.mDataCache.Zappingmode_GetCurrent( )
-				
-			self.mZappingMode           = zappingMode.mMode
-			self.mChannelListSortMode   = zappingMode.mSortingMode
-			self.mChannelListServieType = zappingMode.mServiceType
-			self.mElisZappingModeInfo   = zappingMode
-			self.mElisSetZappingModeInfo= zappingMode
+		if aZappingMode == FLAG_ZAPPING_LOAD :
+			try:
+				if self.mFlag_EditChanged :
+					zappingMode = self.mCommander.Zappingmode_GetCurrent( )
+				else :
+					zappingMode = self.mDataCache.Zappingmode_GetCurrent( )
+					
+				self.mZappingMode           = zappingMode.mMode
+				self.mChannelListSortMode   = zappingMode.mSortingMode
+				self.mChannelListServieType = zappingMode.mServiceType
+				self.mElisZappingModeInfo   = zappingMode
 
-		except Exception, e:
-			self.mZappingMode           = ElisEnum.E_MODE_ALL
-			self.mChannelListSortMode   = ElisEnum.E_SORT_BY_DEFAULT
-			self.mChannelListServieType = ElisEnum.E_SERVICE_TYPE_TV
-			LOG_TRACE( 'Error exception[%s] init default zappingmode'% e )
+			except Exception, e:
+				#set default
+				self.mZappingMode           = ElisEnum.E_MODE_ALL
+				self.mChannelListSortMode   = ElisEnum.E_SORT_BY_DEFAULT
+				self.mChannelListServieType = ElisEnum.E_SERVICE_TYPE_TV
+				zappingMode                 = ElisIZappingMode()
+				self.mElisZappingModeInfo   = zappingMode
+				LOG_TRACE( 'Error exception[%s] init default zappingmode'% e )
 
 
 		list_Mainmenu = []
@@ -1190,18 +1204,21 @@ class ChannelListWindow( BaseWindow ) :
 				testlistItems.append(xbmcgui.ListItem(self.mListAllChannel[item]) )
 
 		elif self.mZappingMode == ElisEnum.E_MODE_SATELLITE :
-			for item in self.mListSatellite:
-				ret = GetSelectedLongitudeString( item.mLongitude, item.mName )
-				testlistItems.append(xbmcgui.ListItem(ret) )
+			if self.mListSatellite :
+				for item in self.mListSatellite:
+					ret = GetSelectedLongitudeString( item.mLongitude, item.mName )
+					testlistItems.append(xbmcgui.ListItem(ret) )
 
 		elif self.mZappingMode == ElisEnum.E_MODE_CAS :
-			for item in self.mListCasList:
-				ret = '%s(%s)'% ( item.mName, item.mChannelCount )
-				testlistItems.append(xbmcgui.ListItem( ret ) )
+			if self.mListCasList :
+				for item in self.mListCasList:
+					ret = '%s(%s)'% ( item.mName, item.mChannelCount )
+					testlistItems.append(xbmcgui.ListItem( ret ) )
 
 		elif self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
-			for item in self.mListFavorite:
-				testlistItems.append(xbmcgui.ListItem( item.mGroupName ) )
+			if self.mListFavorite :
+				for item in self.mListFavorite:
+					testlistItems.append(xbmcgui.ListItem( item.mGroupName ) )
 
 		self.mCtrlListSubmenu.addItems( testlistItems )
 
@@ -1414,7 +1431,7 @@ class ChannelListWindow( BaseWindow ) :
 		return label
 
 	@GuiLock
-	def UpdateLabelGUI( self, aCtrlID = None, aValue = None ) :
+	def UpdateLabelGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		LOG_TRACE( 'Enter' )
 
 		if aCtrlID == self.mCtrlChannelName.getId( ) :
@@ -1451,10 +1468,16 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlLblPath1.setLabel( aValue )
 
 		elif aCtrlID == self.mCtrlRdoTV.getId( ) :
-			self.mCtrlRdoTV.setEnabled( aValue )
+			if aExtra :
+				self.mCtrlRdoTV.setSelected( aValue )
+			else :
+				self.mCtrlRdoTV.setEnabled( aValue )
 
 		elif aCtrlID == self.mCtrlRdoRadio.getId( ) :
-			self.mCtrlRdoRadio.setEnabled( aValue )
+			if aExtra :
+				self.mCtrlRdoRadio.setSelected( aValue )
+			else :
+				self.mCtrlRdoRadio.setEnabled( aValue )
 
 		LOG_TRACE( 'Leave' )
 
