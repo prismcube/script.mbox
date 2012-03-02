@@ -17,7 +17,7 @@ from ElisEventClass import *
 
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
 from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit
-from ElisProperty import ElisPropertyEnum
+from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 
 import pvr.Msg as Msg
 import pvr.gui.windows.Define_string as MsgId
