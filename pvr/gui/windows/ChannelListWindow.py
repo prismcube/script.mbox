@@ -68,8 +68,6 @@ E_TAG_COLOR_END   = '[/COLOR]'
 FLAG_MODE_JUMP      = True
 FLAG_ZAPPING_LOAD   = 0
 FLAG_ZAPPING_CHANGE = 1
-FLAG_LOAD_CACHE     = 0
-FLAG_LOAD_ELIS      = 1
 
 class ChannelListWindow( BaseWindow ) :
 
@@ -656,11 +654,10 @@ class ChannelListWindow( BaseWindow ) :
 		else:
 			label = self.mCtrlListCHList.getSelectedItem( ).getLabel( )
 			channelNumbr = ParseLabelToCh( self.mViewMode, label )
-		LOG_TRACE( 'label[%s] ch[%d] pin[%s]'% (label, channelNumbr, self.mPincodeEnter) )
+		LOG_TRACE( 'label[%s] ch[%d] mask[%s]'% (label, channelNumbr, self.mPincodeEnter) )
 
 		ret = False
 		ret = self.mDataCache.Channel_SetCurrent_Elis( channelNumbr, self.mChannelListServieType )
-		FLAG_LOAD_CACHE
 		#LOG_TRACE( 'MASK[%s] ret[%s]'% (self.mPincodeEnter, ret) )
 		if ret == True :
 			if self.mPincodeEnter == FLAG_MASK_NONE :
@@ -1145,11 +1142,20 @@ class ChannelListWindow( BaseWindow ) :
 					zappingMode = self.mDataCache.Zappingmode_GetCurrent_Elis( )
 				else :
 					zappingMode = self.mDataCache.Zappingmode_GetCurrent( )
-					
-				self.mZappingMode           = zappingMode.mMode
-				self.mChannelListSortMode   = zappingMode.mSortingMode
-				self.mChannelListServieType = zappingMode.mServiceType
-				self.mElisZappingModeInfo   = zappingMode
+
+				if zappingMode :
+					self.mZappingMode           = zappingMode.mMode
+					self.mChannelListSortMode   = zappingMode.mSortingMode
+					self.mChannelListServieType = zappingMode.mServiceType
+					self.mElisZappingModeInfo   = zappingMode
+				else :
+					#set default
+					self.mZappingMode           = ElisEnum.E_MODE_ALL
+					self.mChannelListSortMode   = ElisEnum.E_SORT_BY_DEFAULT
+					self.mChannelListServieType = ElisEnum.E_SERVICE_TYPE_TV
+					zappingMode                 = ElisIZappingMode()
+					self.mElisZappingModeInfo   = zappingMode
+					LOG_TRACE( 'Fail GetCurrent!!! [set default ZappingMode]' )
 
 			except Exception, e:
 				#set default
@@ -1158,8 +1164,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.mChannelListServieType = ElisEnum.E_SERVICE_TYPE_TV
 				zappingMode                 = ElisIZappingMode()
 				self.mElisZappingModeInfo   = zappingMode
-				LOG_TRACE( 'Error exception[%s] init default zappingmode'% e )
-
+				LOG_TRACE( 'Error exception[%s] [set default ZappingMode]'% e )
 
 		list_Mainmenu = []
 		list_Mainmenu.append( Msg.Strings(MsgId.LANG_ALL_CHANNELS) )
@@ -1602,21 +1607,16 @@ class ChannelListWindow( BaseWindow ) :
 				
 				if inputPin == None or inputPin == '' :
 					inputPin = ''
-				LOG_TRACE( 'mask[%s] inputPin[%s] stbPin[%s]'% (self.mPincodeEnter, inputPin, self.mPropertyPincode) )
+				LOG_TRACE( 'ch[%d] mask[%s] inputPin[%s] stbPin[%s]'% (self.mCurrentChannel, self.mPincodeEnter, inputPin, self.mPropertyPincode) )
 
 				if inputPin == str('%s'% self.mPropertyPincode) :
-					GuiLock2( True )
-					label = self.mCtrlListCHList.getSelectedItem( ).getLabel( )
-					GuiLock2( False )
-					channelNumbr = ParseLabelToCh( self.mViewMode, label )
-					LOG_TRACE( '=======label[%s] ch[%d] pin[%s]'% (label, channelNumbr, self.mPincodeEnter) )
 					self.mPincodeEnter = FLAG_MASK_NONE
-					ret = None
-					ret = self.mDataCache.Channel_SetCurrent_Elis( channelNumbr, self.mChannelListServieType)
-					if ret:
-						self.mCurrentChannel = channelNumbr
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetLastChannelCertificationPinCode( True )
 
+					ret = None
+					ret = self.mDataCache.Channel_SetCurrent_Elis( self.mCurrentChannel, self.mChannelListServieType)
 					LOG_TRACE( 'Pincode success' )
+
 				else:
 					msg1 = Msg.Strings(MsgId.LANG_ERROR)
 					msg2 = Msg.Strings(MsgId.LANG_WRONG_PIN_CODE)

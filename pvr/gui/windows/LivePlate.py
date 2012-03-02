@@ -123,6 +123,7 @@ class LivePlate(BaseWindow):
 		self.mImgTV    = E_IMG_ICON_TV
 		self.mCtrlLblEventClock.setLabel('')
 
+		self.mCertification = False
 		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
 		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset()
@@ -160,7 +161,8 @@ class LivePlate(BaseWindow):
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
-		self.PincodeDialogLimit()
+		if not self.mCertification :
+			self.PincodeDialogLimit()
 		self.mAsyncEPGTimer = None
 		self.mAsyncTuneTimer = None
 		self.mAutomaticHideTimer = None
@@ -918,6 +920,9 @@ class LivePlate(BaseWindow):
 		self.StopAutomaticHide()
 
 		self.close()
+
+	def SetLastChannelCertificationPinCode( self, aCertification ) :
+		self.mCertification = aCertification
 
 	def SetAutomaticHide( self, aHide=True ) :
 		self.mAutomaticHide = aHide
