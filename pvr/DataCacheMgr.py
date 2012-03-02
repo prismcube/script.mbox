@@ -124,8 +124,6 @@ class DataCacheMgr( object ):
 
 	def Load( self ) :
 
-		self.LoadPropertyLimit( )
-
 		#Zapping Mode
 		LOG_TRACE('')
 		self.LoadZappingmode( )
@@ -357,10 +355,6 @@ class DataCacheMgr( object ):
 		self.mListCasList   = self.mCommander.Fta_cas_GetList( serviceType )
 		self.mListFavorite  = self.mCommander.Favorite_GetList( serviceType )
 
-	def LoadPropertyLimit( self ) :
-		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
-		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
-
 	def Zappingmode_SetCurrent( self , aZappingMode ) :
 		if self.mCommander.Zappingmode_SetCurrent( aZappingMode ) == True :
 			self.mZappingMode = aZappingMode
@@ -380,7 +374,6 @@ class DataCacheMgr( object ):
 	@DataLock
 	def Channel_GetList( self ) :
 		return self.mChannelList
-		
 
 	@DataLock
 	def Channel_GetCurrent( self ) :
@@ -394,7 +387,6 @@ class DataCacheMgr( object ):
 			self.mCurrentChannel = cacheChannel.mChannel
 			return True
 		return False
-
 
 	@DataLock
 	def Channel_GetPrev( self, aChannel ) :
@@ -544,5 +536,96 @@ class DataCacheMgr( object ):
 
 		return	self.mCommander.Epgevent_GetPresent( )
 
+
+	#Aready declared : _Elis, request direct command 
+
+	def Channel_GetList_Elis( self, aType, aMode, aSort ) :
+		return self.mCommander.Channel_GetList( aType, aMode, aSort )
+
+	def Channel_GetCurrent_Elis( self ) :
+		return self.mCommander.Channel_GetCurrent( )
+
+	def Channel_SetCurrent_Elis( self, aChannelNumber, aServiceType ) :
+		return self.mCommander.Channel_SetCurrent( aChannelNumber, aServiceType )
+
+	def Zappingmode_GetCurrent_Elis( self ) :
+		return self.mCommander.Zappingmode_GetCurrent( )
+
+	def Satellite_GetConfiguredList_Elis( self, aSortMode ) :
+		return self.mCommander.Satellite_GetConfiguredList( aSortMode )
+
+	def Fta_cas_GetList_Elis( self, aServiceType ) :
+		return self.mCommander.Fta_cas_GetList( aServiceType )
+
+	def Favorite_GetList_Elis( self, aServieType ) :
+		return self.mCommander.Favorite_GetList( aServieType )
+
+	def Satellite_GetByChannelNumber_Elis( self, aNumber, aType ) :
+		return self.mCommander.Satellite_GetByChannelNumber( aNumber, aType )
+
+	#New declared : request direct command 
+
+	def Channel_GetListBySatellite( self, aType, aMode, aSort, aLongitude, aBand ) :
+		return self.mCommander.Channel_GetListBySatellite( aType, aMode, aSort, aLongitude, aBand )
+
+	def Channel_GetListByFTACas( self, aType, aMode, aSort, aCAid ) :
+		return self.mCommander.Channel_GetListByFTACas( aType, aMode, aSort, aCAid )
+
+	def Channel_GetListByFavorite( self, aType, aMode, aSort, aFavName ) :
+		return self.mCommander.Channel_GetListByFavorite( aType, aMode, aSort, aFavName )
+
+	def Channel_Lock( self, aLock, aIChannel ) :
+		return self.mCommander.Channel_Lock( aLock, aIChannel )
+
+	def Channel_Skip( self, aSet, aIChannel ) :
+		return self.mCommander.Channel_Skip( aSet, aIChannel )
+
+	def Favoritegroup_AddChannel( self, aGroupName, aNumber, aServieType ) :
+		return self.mCommander.Favoritegroup_AddChannel( aGroupName, aNumber, aServieType )
+
+	def Favoritegroup_RemoveChannel( self, aGroupName, aNumber, aServieType ) :
+		return self.mCommander.Favoritegroup_RemoveChannel( aGroupName, aNumber, aServieType )
+
+	def FavoriteGroup_MoveChannels( self, aGroupName, aInsertPosition, aServieType, aIChannel ) :
+		return self.mCommander.FavoriteGroup_MoveChannels( aGroupName, aInsertPosition, aServieType, aIChannel )
+
+	def Channel_Delete( self, aIChannel ) :
+		return self.mCommander.Channel_Delete( aIChannel )
+
+	def Favoritegroup_Create( self, aGroupName, aServieType ) :
+		return self.mCommander.Favoritegroup_Create( aGroupName, aServieType )
+
+	def Favoritegroup_ChangeName( self, aGroupName, aServieType, aGroupNewName ) :
+		return self.mCommander.Favoritegroup_ChangeName( aGroupName, aServieType, aGroupNewName )
+
+	def Favoritegroup_Remove( self, aGroupName, aServieType ) :
+		return self.mCommander.Favoritegroup_Remove( aGroupName, aServieType )
+
+	def Channel_Move( self, aServieType, aNumber, aIChannel ) :
+		return self.mCommander.Channel_Move( aServieType, aNumber, aIChannel )
+
+	def Player_SetVIdeoSize( self, aX, aY, aW, aH ) :
+		return self.mCommander.Player_SetVIdeoSize( aX, aY, aW, aH ) 
+
+	def Channel_Save( self ) :
+		return self.mCommander.Channel_Save( )
+
+	def Channel_Backup( self ) :
+		return self.mCommander.Channel_Backup( )
+
+	def Channel_Restore( self, aRestore ) :
+		return self.mCommander.Channel_Restore( aRestore )
+
+	def Channel_DeleteAll( self ) :
+		return self.mCommander.Channel_DeleteAll( )
+
+	def Player_VideoBlank( self, aBlank, aForce ) :
+		return self.mCommander.Player_VideoBlank( aBlank, aForce )
+
+	def Player_AVBlank( self, aBlank, aForce ) :
+		return self.mCommander.Player_AVBlank( aBlank, aForce )
+
+	def Channel_SetInitialBlank( self, aBlank ) :
+		return self.mCommander.Channel_SetInitialBlank( aBlank )
 
 

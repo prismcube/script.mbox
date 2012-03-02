@@ -236,7 +236,6 @@ class Configure( SettingWindow ) :
 				return
 				
 			ElisPropertyInt( 'PinCode', self.mCommander ).SetProp( int( newpin ) )
-			self.mDataCache.LoadPropertyLimit( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( 'Success', 'Pin codes change success' )
  			dialog.doModal( )
