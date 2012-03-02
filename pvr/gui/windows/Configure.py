@@ -264,6 +264,7 @@ class Configure( SettingWindow ) :
 
 				 	elif resetSystem == 1 :
 				 		self.mCommander.System_FactoryReset( )
+				 		gPropertyEnumHash = {}
 
 		else :
 			self.ControlSelect( )
