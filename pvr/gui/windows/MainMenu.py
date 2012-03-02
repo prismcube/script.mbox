@@ -42,7 +42,6 @@ class MainMenu( BaseWindow ) :
 		if self.mStartMediaCenter == True :
 			self.mCommander.AppMediaPlayer_Control( 0 )
 			#WinMgr.GetInstance().CheckSkinChange( )
-			WinMgr.GetInstance().Reset( )
 			self.mStartMediaCenter = False
 
 	def onAction( self, aAction ) :
@@ -93,7 +92,8 @@ class MainMenu( BaseWindow ) :
 			self.mCommander.AppMediaPlayer_Control( 1 )
 			if aControlId == BUTTON_ID_MEDIA_CENTER :
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
-
+			WinMgr.GetInstance().Reset( )
+	
 		elif aControlId == BUTTON_ID_ANTENNA_SETUP : # Antenna Setup
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
 
