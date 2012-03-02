@@ -238,6 +238,12 @@ class EditTransponder( SettingWindow ) :
 		self.SetEnableControl( E_Input03, False )
 		self.SetEnableControl( E_Input04, False )
 
+		visiblecontrolIds = [ E_Input02, E_Input06, E_Input07 ]
+		if self.mTransponderList and self.mTransponderList[0].mError == 0 :
+			self.SetEnableControls( visiblecontrolIds, True )
+		else :
+			self.SetEnableControls( visiblecontrolIds, False )
+
 
 	def	GetSatelliteInfo( self, aIndex ) :
 		satellite = self.mDataCache.Satellite_GetSatelliteByIndex( aIndex )
