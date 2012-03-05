@@ -92,6 +92,7 @@ class TimeShiftPlate(BaseWindow):
 
 		self.InitLabelInfo()
 		self.TimeshiftAction( self.mCtrlBtnPause.getId() )
+		self.setFocusId( self.mCtrlBtnPlay.getId() )
 
 		#self.mEventBus.Register( self )
 
@@ -112,7 +113,7 @@ class TimeShiftPlate(BaseWindow):
 			#self.mEnableThread = False
 			#self.CurrentTimeThread().join()
 			#self.Close()
-			self.TimeshiftAction(self.mCtrlBtnStop.getId())
+			self.TimeshiftAction( self.mCtrlBtnStop.getId() )
 
 		elif id == Action.ACTION_SELECT_ITEM:
 			LOG_TRACE( '===== select [%s]' % id )
