@@ -109,10 +109,10 @@ class TimeShiftPlate(BaseWindow):
 		
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
 			LOG_TRACE( 'esc close' )
-			# end thread CurrentTimeThread()
-			self.mEnableThread = False
-			self.CurrentTimeThread().join()
-			self.Close()
+			#self.mEnableThread = False
+			#self.CurrentTimeThread().join()
+			#self.Close()
+			self.TimeshiftAction(self.mCtrlBtnStop.getId())
 
 		elif id == Action.ACTION_SELECT_ITEM:
 			LOG_TRACE( '===== select [%s]' % id )
@@ -234,8 +234,8 @@ class TimeShiftPlate(BaseWindow):
 			elif self.mMode == ElisEnum.E_MODE_PVR:
 				ret = self.mCommander.Player_Pause()
 
+			LOG_TRACE( 'play_pause() ret[%s]'% ret )
 			if ret :
-				LOG_TRACE( 'play_pause() ret[%s]'% ret )
 				self.mIsPlay = False
 
 				# toggle
@@ -244,26 +244,33 @@ class TimeShiftPlate(BaseWindow):
 
 		elif aFocusId == self.mCtrlBtnStop.getId() :
 
-			if self.mMode == ElisEnum.E_MODE_LIVE :
-				ret = self.mCommander.Player_Stop()
+			third = 3
+			while third :
+				if self.mMode == ElisEnum.E_MODE_LIVE :
+					ret = self.mCommander.Player_Stop()
 
-			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
-				ret = self.mCommander.Player_Stop()
+				elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
+					ret = self.mCommander.Player_Stop()
 
-			elif self.mMode == ElisEnum.E_MODE_PVR :
-				ret = self.mCommander.Player_Stop()
+				elif self.mMode == ElisEnum.E_MODE_PVR :
+					ret = self.mCommander.Player_Stop()
 
-			if ret :
-				LOG_TRACE( 'play_stop() ret[%s]'% ret )
-				self.mCtrlProgress.setPercent( 0 )
-				self.mProgress_idx = 0.0
-				self.mProgress_max = 0.0
+				third -= 1
+				LOG_TRACE( 'play_stop() ret[%s] try[%d]'% (ret,third) )
+				if ret :
+					break
+				else:
+					time.sleep(0.5)
 
-				self.mEnableThread = False
-				self.CurrentTimeThread().join()
-				self.Close()
+			self.mCtrlProgress.setPercent( 0 )
+			self.mProgress_idx = 0.0
+			self.mProgress_max = 0.0
 
-				winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_NULLWINDOW )
+			self.mEnableThread = False
+			self.CurrentTimeThread().join()
+			self.Close()
+
+			#winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_NULLWINDOW )
 
 		elif aFocusId == self.mCtrlBtnRewind.getId() :
 			nextSpeed = 100
@@ -649,7 +656,8 @@ class TimeShiftPlate(BaseWindow):
 		
 	def Close( self ):
 		#self.mEventBus.Deregister( self )
-		self.TimeshiftAction(self.mCtrlBtnStop.getId())
+		#self.TimeshiftAction(self.mCtrlBtnStop.getId())
+		#self.mCommander.Player_Stop()
 		self.StopAsyncMove()
 		self.close()
 
