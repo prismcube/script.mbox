@@ -209,24 +209,21 @@ class TimeShiftPlate(BaseWindow):
 			elif self.mMode == ElisEnum.E_MODE_PVR:
 				ret = self.mCommander.Player_Resume()
 
+			LOG_TRACE( 'play_resume() ret[%s]'% ret )
 			if ret :
-				LOG_TRACE( 'play_resume() ret[%s]'% ret )
-
 				if self.mSpeed != 100:
-					self.mCommander.Player_SetSpeed( 100 )
-					self.mCtrlImgRewind.setVisible( False )
-					self.mCtrlImgForward.setVisible( False )
-					self.mCtrlLblSpeed.setLabel( '' )
+					#_self.mCommander.Player_SetSpeed( 100 )
+					self.UpdateLabelGUI( self.mCtrlImgRewind.getId(), False )
+					self.UpdateLabelGUI( self.mCtrlImgForward.getId(), False )
+					self.UpdateLabelGUI( self.mCtrlLblSpeed.getId(), '' )
 
 				self.mIsPlay = True
 
 				# toggle
-				#self.mCtrlBtnPlay.setVisible( False )
-				#self.mCtrlBtnPause.setVisible( True )
-
+				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), False )
+				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), True, True )
 
 		elif aFocusId == self.mCtrlBtnPause.getId() :
-		#elif aFocusId == self.mCtrlBtnTest.getId() :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
 				ret = self.mCommander.Player_StartTimeshiftPlayback( ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE, 0 )
 
@@ -240,11 +237,10 @@ class TimeShiftPlate(BaseWindow):
 				self.mIsPlay = False
 
 				# toggle
-				#self.mCtrlBtnPlay.setVisible( True )
-				#self.mCtrlBtnPause.setVisible( False )
+				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True, True )
+				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
 
 		elif aFocusId == self.mCtrlBtnStop.getId() :
-
 			third = 3
 			while third :
 				if self.mMode == ElisEnum.E_MODE_LIVE :
@@ -263,7 +259,7 @@ class TimeShiftPlate(BaseWindow):
 				else:
 					time.sleep(0.5)
 
-			self.mCtrlProgress.setPercent( 0 )
+			self.UpdateLabelGUI( self.mCtrlProgress.getId(), 0 )
 			self.mProgress_idx = 0.0
 			self.mProgress_max = 0.0
 
@@ -325,15 +321,63 @@ class TimeShiftPlate(BaseWindow):
 		
 		# todo 
 		self.mEventCopy = []
-		GuiLock2(True)
-		self.mCtrlEventClock.setLabel('')
-		self.mCtrlProgress.setPercent(0)
-		self.mCtrlLblTSStartTime.setLabel('')
-		self.mCtrlLblTSEndTime.setLabel('')
-		GuiLock2(False)
+		self.UpdateLabelGUI( self.mCtrlEventClock.getId(), '' )
+		self.UpdateLabelGUI( self.mCtrlProgress.getId(), 0 )
+		self.UpdateLabelGUI( self.mCtrlLblTSStartTime.getId(), '' )
+		self.UpdateLabelGUI( self.mCtrlLblTSStartTime.getId(), '' )
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
 		self.InitTimeShift()
+
+	@GuiLock
+	def UpdateLabelGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
+		LOG_TRACE( 'Enter' )
+
+		if aCtrlID == self.mCtrlBtnVolume.getId( ) :
+			self.mCtrlBtnVolume.setVisible( aValue )
+
+		elif aCtrlID == self.mCtrlBtnRecord.getId( ) :
+			self.mCtrlBtnRecord.setVisible( aValue )
+
+		elif aCtrlID == self.mCtrlBtnRewind.getId( ) :
+			self.mCtrlBtnRewind.setVisible( aValue )
+
+		elif aCtrlID == self.mCtrlBtnPlay.getId( ) :
+			self.mCtrlBtnPlay.setVisible( aValue )
+			if aExtra :
+				self.setFocusId( aCtrlID )
+
+		elif aCtrlID == self.mCtrlBtnPause.getId( ) :
+			self.mCtrlBtnPause.setVisible( aValue )
+			if aExtra :
+				self.setFocusId( aCtrlID )
+
+		elif aCtrlID == self.mCtrlBtnStop.getId( ) :
+			self.mCtrlBtnStop.setVisible( aValue )
+
+		elif aCtrlID == self.mCtrlBtnForward.getId( ) :
+			self.mCtrlBtnForward.setVisible( aValue )
+
+		elif aCtrlID == self.mCtrlImgRewind.getId( ) :
+			self.mCtrlImgRewind.setVisible( aValue )
+
+		elif aCtrlID == self.mCtrlImgForward.getId( ) :
+			self.mCtrlImgForward.setVisible( aValue )
+
+		elif aCtrlID == self.mCtrlEventClock.getId( ) :
+			self.mCtrlEventClock.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlProgress.getId( ) :
+			self.mCtrlProgress.setPercent( aValue )
+
+		elif aCtrlID == self.mCtrlLblTSStartTime.getId( ) :
+			self.mCtrlLblTSStartTime.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlLblTSEndTime.getId( ) :
+			self.mCtrlLblTSEndTime.setLabel( aValue )
+
+
+		LOG_TRACE( 'Leave' )
 
 	def InitTimeShift(self, loop = 0) :
 		LOG_TRACE('Enter')
@@ -453,24 +497,21 @@ class TimeShiftPlate(BaseWindow):
 				self.mCtrlBtnPause.setVisible(False)
 			"""
 
-			GuiLock2(True)
-			self.mCtrlImgRewind.setVisible( flag_Rewind )
-			self.mCtrlImgForward.setVisible( flag_Forward )
-			self.mCtrlLblSpeed.setLabel( lbl_speed )
+			self.UpdateLabelGUI( self.mCtrlImgRewind.getId(), flag_Rewind )
+			self.UpdateLabelGUI( self.mCtrlImgForward.getId(), flag_Forward )
+			self.UpdateLabelGUI( self.mCtrlLblSpeed.getId(), lbl_speed )
 
-			self.mCtrlLblTSStartTime.setLabel( lbl_timeS )
-			self.mCtrlLblTSEndTime.setLabel( lbl_timeE )
-			GuiLock2(False)
+			self.UpdateLabelGUI( self.mCtrlLblTSStartTime.getId(), lbl_timeS )
+			self.UpdateLabelGUI( self.mCtrlLblTSEndTime.getId(), lbl_timeE )
 
-
-		GuiLock2(True)
+		"""
 		if self.mIsPlay == True :
-			self.mCtrlBtnPlay.setVisible(False)
-			self.mCtrlBtnPause.setVisible(True)
+			self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), False )
+			self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), True )
 		else :
-			self.mCtrlBtnPlay.setVisible(True)
-			self.mCtrlBtnPause.setVisible(False)
-		GuiLock2(False)
+			self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True )
+			self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
+		"""
 
 		LOG_TRACE('Leave')
 

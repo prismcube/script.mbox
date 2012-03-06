@@ -301,7 +301,7 @@
 							<onright>407</onright>
 							<onup>202</onup>
 							<ondown>202</ondown>
-							<visible>!Control.IsVisible(406)</visible>
+							<!--visible>!Control.IsVisible(406)</visible-->
 						</control>
 						<control type="button" id="406">
 							<posx>50</posx>
@@ -317,7 +317,7 @@
 							<onright>407</onright>
 							<onup>202</onup>
 							<ondown>202</ondown>
-							<visible>!Control.IsVisible(405)</visible>
+							<!--visible>!Control.IsVisible(405)</visible-->
 						</control>
 					</control>
 					<!--control type="button" id="405">
