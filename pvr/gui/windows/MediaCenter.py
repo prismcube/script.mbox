@@ -49,7 +49,7 @@ class MediaCenter( BaseWindow ) :
 			self.close( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
+			self.SetVideoRestore( )
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.SetVideoRestore( )
