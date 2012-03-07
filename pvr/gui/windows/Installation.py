@@ -89,12 +89,12 @@ class Installation( BaseWindow ):
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_EDIT_TRANSPONDER )
 
 		elif selectedId == MENU_ID_CONFIGURE : # Config
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIGURE )
 			self.SetVideoRestore( )
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIGURE )
 
 		elif selectedId == MENU_ID_CAS : # CAS
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONDITIONAL_ACCESS )
 			self.SetVideoRestore( )
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONDITIONAL_ACCESS )
 
  
 	def onFocus( self, aControlId ):
