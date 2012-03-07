@@ -63,7 +63,7 @@ class Installation( BaseWindow ):
 			self.close( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
-			self.SetVideoRestore( )
+			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.SetVideoRestore( )
@@ -78,21 +78,27 @@ class Installation( BaseWindow ):
 
 		elif selectedId == MENU_ID_ANTENNA_SETUP : # Antenna Setup
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
+			self.SetVideoRestore( )
 
 		elif selectedId == MENU_ID_CHANNEL_SEARCH : # Channel Search
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )
+			self.SetVideoRestore( )
 
 		elif selectedId == MENU_ID_EDIT_SATELLITE : # Edit Satellite
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_EDIT_SATELLITE )
+			self.SetVideoRestore( )
 			
 		elif selectedId == MENU_ID_EDIT_TRANSPONDER : # Edit TransPonder
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_EDIT_TRANSPONDER )
+			self.SetVideoRestore( )
 
 		elif selectedId == MENU_ID_CONFIGURE : # Config
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIGURE )
+			self.SetVideoRestore( )
 
 		elif selectedId == MENU_ID_CAS : # CAS
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONDITIONAL_ACCESS )
+			self.SetVideoRestore( )
 
  
 	def onFocus( self, aControlId ):
