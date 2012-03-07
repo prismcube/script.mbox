@@ -173,7 +173,7 @@ class DialogStartRecord( BaseDialog ) :
 
 		current = self.mCommander.Channel_GetCurrent( )
 		ret = self.mCommander.Timer_AddOTRTimer( self.mHasEPG, self.mRecordDuration, 0,  self.mRecordName,  0,  0,  0,  0,  0)
-			
+					
 		self.Close( )
 
 		if ret == False :
