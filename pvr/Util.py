@@ -28,8 +28,9 @@ E_DEBUG_LEVEL = E_LOG_ERR
 class TimeFormatEnum(object):
 	E_AW_DD_MM_YYYY			= 0
 	E_HH_MM					= 1
-	E_DD_MM_YYYY_HH_MM		= 2	
-
+	E_DD_MM_YYYY_HH_MM		= 2
+	E_DD_MM_YYYY			= 3
+	
 
 def ClearThreads( ):
 	gThreads.clear()
@@ -251,6 +252,8 @@ def TimeToString( aTime, aFlag=0 ) :
 		return time.strftime("%H:%M", time.gmtime( aTime ) )	
 	elif aFlag == TimeFormatEnum.E_DD_MM_YYYY_HH_MM :
 		return time.strftime("%d.%m.%Y %H:%M", time.gmtime( aTime ) )		
+	elif aFlag == TimeFormatEnum.E_DD_MM_YYYY :
+		return time.strftime("%d.%m.%Y", time.gmtime( aTime ) )
 	else :
 		strTime = time.strftime('%a, %d.%m.%Y', aTime )
 		LOG_TRACE('strTime=%s' %strTime )

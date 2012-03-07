@@ -155,6 +155,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 			if ret == False :
 				self.mEventBus.Deregister( self )
+				self.ReTune( )
 				self.CloseDialog( )
 				xbmcgui.Dialog( ).ok('Failure', 'Channel Search Failed')
 
@@ -163,6 +164,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 			if ret == False :
 				self.mEventBus.Deregister( self )
+				self.ReTune( )
 				self.CloseDialog( )
 				xbmcgui.Dialog( ).ok('Failure', 'Channel Search Failed')
 			
@@ -187,6 +189,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 		if self.mIsFinished == True :
 			self.mEventBus.Deregister( self )
+			self.ReTune( )
 			self.CloseDialog( )
 
 	@GuiLock
@@ -263,6 +266,7 @@ class DialogChannelSearch( BaseDialog ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( 'Infomation', searchResult )
 		dialog.doModal( )
+		self.mIsFinished = True
 
 		if tvCount > 0 or radioCount > 0 :
 			#### data cache re-load ####
@@ -270,5 +274,7 @@ class DialogChannelSearch( BaseDialog ) :
 			self.mDataCache.LoadZappingList( )
 			self.mDataCache.LoadChannelList( )
 
-		self.mIsFinished = True
 
+	def ReTune( self ) :
+		channel = self.mDataCache.Channel_GetCurrent( )
+		self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType) # Todo After : using ServiceType to different way
