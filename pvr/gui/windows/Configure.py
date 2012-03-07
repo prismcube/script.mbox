@@ -12,9 +12,12 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from ElisEventBus import ElisEventBus
 from pvr.gui.GuiConfig import *
 from pvr.Util import GuiLock, LOG_TRACE, LOG_ERR
+from ElisClass import *
 
-E_DHCP_OFF = 0
-E_DHCP_ON = 1
+E_DHCP_OFF		= 0
+E_DHCP_ON		= 1
+TIME_AUTOMATIC	= 0
+TIME_MANUAL		= 1
 
 class Configure( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -44,6 +47,7 @@ class Configure( SettingWindow ) :
 		self.mSetupChannel		= None
 		self.mHasChannel		= False
 		self.mFinishEndSetTime	= False
+		self.ProgressOpen		= False
 
 		for i in range( len( leftGroupItems ) ) :
 			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i], descriptionList[i] ) )
@@ -134,55 +138,64 @@ class Configure( SettingWindow ) :
 			self.IpSetting( groupId )
 			return
 
-		elif selectedId == E_TIME_SETTING and groupId == E_Input01 :
-			dialog = xbmcgui.Dialog( )
-			channelList = self.mDataCache.Channel_GetList( )
-			channelNameList = []
-			for channel in channelList :
-				channelNameList.append( channel.mName )
- 			ret = dialog.select( 'Select Channel', channelNameList )
-
-			if ret >= 0 :
-				self.mSetupChannel = channelList[ ret ]
-				self.SetControlLabel2String( E_Input01, self.mSetupChannel.mName )
-			return
-
-		elif selectedId == E_TIME_SETTING and groupId == E_Input04 :
-		
-			time1 = self.mCommander.Datetime_GetLocalTime( )
-
-			
-			oriChannel = self.mDataCache.Channel_GetCurrent( )
-			ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( self.mSetupChannel.mNumber )
-			self.mDataCache.Channel_SetCurrent( self.mSetupChannel.mNumber, self.mSetupChannel.mServiceType ) # Todo After : using ServiceType to different way
-			ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
-
-			progress = Progress( 'Setting Time...' )
-			progress.Update( 0 )
-			for i in range( 10 ) :
-				time.sleep( 1 )
-				progress.Update( ( i + 1 ) * 10 )
+		elif selectedId == E_TIME_SETTING :
+			if groupId == E_SpinEx01 :
+				self.DisableControl( selectedId )
+				return
 				
-				if self.mFinishEndSetTime == True :
-					progress.Update( 100, 'Complete time set' )
-					progress.Close( )
-					break
-					
-			if self.mFinishEndSetTime == False :
-				progress.Update( 100, 'Time set fail' )
-				progress.Close( )
+			elif groupId == E_Input01 :
+				dialog = xbmcgui.Dialog( )
+				channelList = self.mDataCache.Channel_GetList( )
+				channelNameList = []
+				for channel in channelList :
+					channelNameList.append( channel.mName )
+	 			ret = dialog.select( 'Select Channel', channelNameList )
+
+				if ret >= 0 :
+					self.mSetupChannel = channelList[ ret ]
+					self.SetControlLabel2String( E_Input01, self.mSetupChannel.mName )
+				return
 				
-			self.mFinishEndSetTime = False
-			ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
-			self.mDataCache.Channel_SetCurrent( oriChannel.mNumber, oriChannel.mServiceType) # Todo After : using ServiceType to different way
+			elif groupId == E_Input04 :
+				oriChannel = self.mDataCache.Channel_GetCurrent( )
+				ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( self.mSetupChannel.mNumber )
+				self.mDataCache.Channel_SetCurrent( self.mSetupChannel.mNumber, self.mSetupChannel.mServiceType ) # Todo After : using ServiceType to different way
+				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
 
+				progress = Progress( 'Setting Time...' )
+				self.ProgressOpen = True
+				progress.Update( 0 )
+				for i in range( 10 ) :
+					time.sleep( 1 )
+					progress.Update( ( i + 1 ) * 10 )
 
+					if progress.IsCanceled( ) == True :
+						progress.Close( )
+						break
 
-			time2 = self.mCommander.Datetime_GetLocalTime( )
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( 'Notice', 'before Time = %s, after time = %s' % ( time1, time2 ) )
- 			dialog.doModal( )
-			
+					if self.mFinishEndSetTime == True :
+						progress.Update( 100, 'Complete time set' )
+						progress.Close( )
+						break
+						
+				if self.mFinishEndSetTime == False and progress.IsCanceled( ) == False :
+						progress.Update( 100, 'Time set fail' )
+						progress.Close( )
+
+				self.ProgressOpen = False
+				self.mFinishEndSetTime = False
+				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
+				self.mDataCache.Channel_SetCurrent( oriChannel.mNumber, oriChannel.mServiceType) # Todo After : using ServiceType to different way
+				return
+
+			elif groupId == E_Input02 :
+				NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_DATE, 'Input Date', '01/01/2000' )
+				return
+				
+			elif groupId == E_Input03 :
+				NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Input Time', '01:21' )
+				return
+
 
 		elif selectedId == E_PARENTAL and self.mVisibleParental == False and groupId == E_Input01 :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -287,10 +300,9 @@ class Configure( SettingWindow ) :
 
 
 	def onEvent( self, aEvent ) :
-		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
+		if self.ProgressOpen == True :
 			if aEvent.getName( ) == ElisEventTimeReceived.getName( ) :
 				self.mFinishEndSetTime	= True
-			return
 
 
 	def SetListControl( self ) :
@@ -436,19 +448,20 @@ class Configure( SettingWindow ) :
 				else :
 					self.mHasChannel = False
 					channelName = 'None'
-			
+
+			self.AddEnumControl( E_SpinEx01, 'Time Mode' )			
 			self.AddInputControl( E_Input01, 'Channel', channelName )
 			self.AddInputControl( E_Input02, 'Date', '01.01.2000' )
 			self.AddInputControl( E_Input03, 'Time', '05:25' )
-			self.AddEnumControl( E_SpinEx01, 'Local Time Offset' )
-			self.AddEnumControl( E_SpinEx02, 'Summer Time' )
+			self.AddEnumControl( E_SpinEx02, 'Local Time Offset' )
+			self.AddEnumControl( E_SpinEx03, 'Summer Time' )
 			self.AddInputControl( E_Input04, 'Apply', '' )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_Input01, E_Input02, E_Input03, E_Input04 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03, E_Input04 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input05 ]
+			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_Input05 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
@@ -536,13 +549,21 @@ class Configure( SettingWindow ) :
 				self.SetEnableControls( visibleControlIds, False )
 
 		elif aSelectedItem == E_TIME_SETTING :
-			visibleControlIds1 = [ E_Input02, E_Input03 ]
-			visibleControlIds2 = [ E_SpinEx01, E_SpinEx02, E_Input01, E_Input04 ]
-			self.SetEnableControls( visibleControlIds1, False )
-			if self.mHasChannel == True :
-				self.SetEnableControls( visibleControlIds2, True )
+			if self.mHasChannel == False :
+				ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
+				self.SetEnableControl( E_SpinEx01, False )
+				self.SetEnableControl( E_Input01, False )
 			else :
-				self.SetEnableControls( visibleControlIds2, False )
+				selectedIndex = self.GetSelectedIndex( E_SpinEx01 )
+				if selectedIndex == TIME_AUTOMATIC :
+					self.SetEnableControl( E_Input02, False )
+					self.SetEnableControl( E_Input03, False )
+					self.SetEnableControl( E_Input01, True )
+				else :
+					self.SetEnableControl( E_Input01, False )
+					self.SetEnableControl( E_Input02, True )
+					self.SetEnableControl( E_Input03, True )
+
 
 	def LoadIp( self ) :
 		ipAddress = ElisPropertyInt( 'IpAddress', self.mCommander ).GetProp( )

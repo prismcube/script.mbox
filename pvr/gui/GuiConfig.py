@@ -280,7 +280,7 @@ class Progress :
 		self.progress.create('Wait', self.mDescription )
 
 
-	def Close ( self ) :
+	def Close( self ) :
 		time.sleep( 1 )
 		self.progress.close( )
 
@@ -289,4 +289,10 @@ class Progress :
 		if aLabel != None :
 			self.progress.update( aPercent, aLabel ) 
 		else :
-			self.progress.update( aPercent ) 
+			self.progress.update( aPercent )
+
+	def IsCanceled( self ) :
+		if self.progress.iscanceled() == True :
+			return True
+		else :
+			return False
