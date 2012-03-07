@@ -78,19 +78,15 @@ class Installation( BaseWindow ):
 
 		elif selectedId == MENU_ID_ANTENNA_SETUP : # Antenna Setup
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
-			self.SetVideoRestore( )
 
 		elif selectedId == MENU_ID_CHANNEL_SEARCH : # Channel Search
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )
-			self.SetVideoRestore( )
 
 		elif selectedId == MENU_ID_EDIT_SATELLITE : # Edit Satellite
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_EDIT_SATELLITE )
-			self.SetVideoRestore( )
 			
 		elif selectedId == MENU_ID_EDIT_TRANSPONDER : # Edit TransPonder
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_EDIT_TRANSPONDER )
-			self.SetVideoRestore( )
 
 		elif selectedId == MENU_ID_CONFIGURE : # Config
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIGURE )
