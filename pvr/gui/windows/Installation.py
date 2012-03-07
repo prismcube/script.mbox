@@ -93,7 +93,6 @@ class Installation( BaseWindow ):
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIGURE )
 
 		elif selectedId == MENU_ID_CAS : # CAS
-			self.SetVideoRestore( )
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONDITIONAL_ACCESS )
 
  
