@@ -93,6 +93,7 @@ class ArchiveWindow( BaseWindow ) :
 		
 		self.mInitialized = True
 
+
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 
@@ -101,14 +102,21 @@ class ArchiveWindow( BaseWindow ) :
 		#LOG_TRACE('onAction=%d' %actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
+			LOG_ERR('ERROR TEST')		
 			self.SetVideoRestore( )
+			LOG_ERR('ERROR TEST')			
 			self.close( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
+			LOG_ERR('ERROR TEST')
+			self.StartRecordPlayback()
+			LOG_ERR('ERROR TEST')
+
 
 		elif actionId == Action.ACTION_PARENT_DIR :
+			LOG_ERR('ERROR TEST')		
 			self.SetVideoRestore( )
+			LOG_ERR('ERROR TEST')			
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
@@ -343,4 +351,19 @@ class ArchiveWindow( BaseWindow ) :
 
 			self.mLocalTime = 0
 		"""
+
+
+
+
+	def StartRecordPlayback( self ) :
+		#(self ,  recordKey,  serviceType,  offsetms,  speed) :
+		LOG_ERR('ERROR TEST')
+		position = self.mCtrlRecordList.getSelectedPosition( )
+		LOG_ERR('ERROR TEST position=%d' %position)		
+		recInfo = self.mRecordList[position]
+		LOG_ERR('ERROR TEST recInfo.mRecordKey=%d self.mServiceType=%d' %(recInfo.mRecordKey, self.mServiceType ) )
+		self.mCommander.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
+		#self.close()
+		self.SetVideoRestore();
+		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )				
 

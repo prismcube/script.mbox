@@ -89,6 +89,8 @@ class DialogStopRecord( BaseDialog ) :
 		self.mLocalTime = self.mCommander.Datetime_GetLocalTime( )		
 		self.mRunningRecordCount = self.mCommander.Record_GetRunningRecorderCount()
 
+		LOG_ERR("self.mRunningRecordCount=%d" %self.mRunningRecordCount )
+
 		self.mRunnigRecordInfoList = []
 		LOG_TRACE( 'recordcount=%d' %self.mRunningRecordCount )
 
