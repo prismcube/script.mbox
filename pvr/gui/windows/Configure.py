@@ -11,7 +11,7 @@ import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from ElisEventBus import ElisEventBus
 from pvr.gui.GuiConfig import *
-from pvr.Util import GuiLock, LOG_TRACE, LOG_ERR
+from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
 from ElisClass import *
 
 E_DHCP_OFF		= 0
@@ -44,6 +44,8 @@ class Configure( SettingWindow ) :
 		self.mReLoadIp			= False
 		self.mVisibleParental	= False
 
+		self.mDate				= '1/1/1999'
+		self.mTime				= '12:59'
 		self.mSetupChannel		= None
 		self.mHasChannel		= False
 		self.mFinishEndSetTime	= False
@@ -157,43 +159,53 @@ class Configure( SettingWindow ) :
 				return
 				
 			elif groupId == E_Input04 :
-				oriChannel = self.mDataCache.Channel_GetCurrent( )
-				ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( self.mSetupChannel.mNumber )
-				self.mDataCache.Channel_SetCurrent( self.mSetupChannel.mNumber, self.mSetupChannel.mServiceType ) # Todo After : using ServiceType to different way
-				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
+				selectedIndex = self.GetSelectedIndex( E_SpinEx01 )
+				if selectedIndex == TIME_AUTOMATIC :
+					oriChannel = self.mDataCache.Channel_GetCurrent( )
+					ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( self.mSetupChannel.mNumber )
+					self.mDataCache.Channel_SetCurrent( self.mSetupChannel.mNumber, self.mSetupChannel.mServiceType ) # Todo After : using ServiceType to different way
+					ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
 
-				progress = Progress( 'Setting Time...' )
-				self.ProgressOpen = True
-				progress.Update( 0 )
-				for i in range( 10 ) :
-					time.sleep( 1 )
-					progress.Update( ( i + 1 ) * 10 )
+					progress = Progress( 'Setting Time...' )
+					self.ProgressOpen = True
+					progress.Update( 0 )
+					for i in range( 10 ) :
+						time.sleep( 1 )
+						progress.Update( ( i + 1 ) * 10 )
 
-					if progress.IsCanceled( ) == True :
-						progress.Close( )
-						break
+						if progress.IsCanceled( ) == True :
+							progress.Close( )
+							break
 
-					if self.mFinishEndSetTime == True :
-						progress.Update( 100, 'Complete time set' )
-						progress.Close( )
-						break
-						
-				if self.mFinishEndSetTime == False and progress.IsCanceled( ) == False :
-						progress.Update( 100, 'Time set fail' )
-						progress.Close( )
+						if self.mFinishEndSetTime == True :
+							progress.Update( 100, 'Complete time set' )
+							progress.Close( )
+							self.mDataCache.LoadTime( )
+							break
+							
+					if self.mFinishEndSetTime == False and progress.IsCanceled( ) == False :
+							progress.Update( 100, 'Time set fail' )
+							progress.Close( )
 
-				self.ProgressOpen = False
-				self.mFinishEndSetTime = False
-				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
-				self.mDataCache.Channel_SetCurrent( oriChannel.mNumber, oriChannel.mServiceType) # Todo After : using ServiceType to different way
-				return
+					self.ProgressOpen = False
+					self.mFinishEndSetTime = False
+					ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
+					self.mDataCache.Channel_SetCurrent( oriChannel.mNumber, oriChannel.mServiceType) # Todo After : using ServiceType to different way
+					return
+					
+				else :
+					return
+					# Todo System Date Setting
 
 			elif groupId == E_Input02 :
-				NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_DATE, 'Input Date', '01/01/2000' )
+				self.mDate = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_DATE, 'Input Date', self.mDate )
+				self.SetControlLabel2String( E_Input02, self.mDate )
 				return
 				
 			elif groupId == E_Input03 :
-				NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Input Time', '01:21' )
+				self.mTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Input Time', self.mTime )
+				self.SetControlLabel2String( E_Input03, self.mTime )
+				
 				return
 
 
@@ -451,8 +463,10 @@ class Configure( SettingWindow ) :
 
 			self.AddEnumControl( E_SpinEx01, 'Time Mode' )			
 			self.AddInputControl( E_Input01, 'Channel', channelName )
-			self.AddInputControl( E_Input02, 'Date', '01.01.2000' )
-			self.AddInputControl( E_Input03, 'Time', '05:25' )
+			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
+			self.AddInputControl( E_Input02, 'Date', self.mDate )
+			self.mTime = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_HH_MM )
+			self.AddInputControl( E_Input03, 'Time', self.mTime )
 			self.AddEnumControl( E_SpinEx02, 'Local Time Offset' )
 			self.AddEnumControl( E_SpinEx03, 'Summer Time' )
 			self.AddInputControl( E_Input04, 'Apply', '' )
@@ -466,7 +480,7 @@ class Configure( SettingWindow ) :
 			
 			self.InitControl( )
 			self.DisableControl( E_TIME_SETTING )
-			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
+			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )	
 			return
 			
 

@@ -263,12 +263,10 @@ class DialogChannelSearch( BaseDialog ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( 'Infomation', searchResult )
 		dialog.doModal( )
+		self.mIsFinished = True
 
 		if tvCount > 0 or radioCount > 0 :
 			#### data cache re-load ####
 			self.mDataCache.LoadZappingmode( )
 			self.mDataCache.LoadZappingList( )
 			self.mDataCache.LoadChannelList( )
-
-		self.mIsFinished = True
-
