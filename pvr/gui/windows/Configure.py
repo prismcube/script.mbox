@@ -13,6 +13,7 @@ from ElisEventBus import ElisEventBus
 from pvr.gui.GuiConfig import *
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
 from ElisClass import *
+from ElisEventClass import *
 
 E_DHCP_OFF		= 0
 E_DHCP_ON		= 1
@@ -622,15 +623,24 @@ class Configure( SettingWindow ) :
 			return
 			
 		elif aControlId == E_Input04 :
-			oriTimeMode = ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( )
-			oriLocalTimeOffset = ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetProp( )
-			oriSummerTime = ElisPropertyEnum( 'Summer Time', self.mCommander ).GetProp( )
+			oriSetupChannel = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
+			if oriSetupChannel == self.mSetupChannel.mNumber :
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'ERROR', 'Same Setup Channel' )
+		 		dialog.doModal( )
+		 		return
+		 		
 			ElisPropertyEnum( 'Time Mode', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx01 ) )
 			ElisPropertyEnum( 'Local Time Offset', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx02) )
 			ElisPropertyEnum( 'Summer Time', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx03 ) )
  			
 			if ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( ) == TIME_AUTOMATIC :
+				
+				oriTimeMode = ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( )
+				oriLocalTimeOffset = ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetProp( )
+				oriSummerTime = ElisPropertyEnum( 'Summer Time', self.mCommander ).GetProp( )
 				oriChannel = self.mDataCache.Channel_GetCurrent( )
+				
 				ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( self.mSetupChannel.mNumber )
 				self.mDataCache.Channel_SetCurrent( self.mSetupChannel.mNumber, self.mSetupChannel.mServiceType ) # Todo After : using ServiceType to different way
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
@@ -658,6 +668,7 @@ class Configure( SettingWindow ) :
 						ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( oriTimeMode )
 						ElisPropertyEnum( 'Local Time Offset', self.mCommander ).SetProp( oriLocalTimeOffset )
 						ElisPropertyEnum( 'Summer Time', self.mCommander ).SetProp( oriSummerTime )
+						ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( oriSetupChannel )
 
 				self.ProgressOpen = False
 				self.mFinishEndSetTime = False
