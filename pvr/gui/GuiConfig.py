@@ -281,7 +281,7 @@ class Progress :
 
 
 	def Close( self ) :
-		time.sleep( 1 )
+		time.sleep( 0.5 )
 		self.progress.close( )
 
 
