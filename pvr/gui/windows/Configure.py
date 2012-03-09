@@ -13,6 +13,7 @@ from ElisEventBus import ElisEventBus
 from pvr.gui.GuiConfig import *
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
 from ElisClass import *
+from ElisEventClass import *
 
 E_DHCP_OFF		= 0
 E_DHCP_ON		= 1
@@ -141,73 +142,8 @@ class Configure( SettingWindow ) :
 			return
 
 		elif selectedId == E_TIME_SETTING :
-			if groupId == E_SpinEx01 :
-				self.DisableControl( selectedId )
-				return
-				
-			elif groupId == E_Input01 :
-				dialog = xbmcgui.Dialog( )
-				channelList = self.mDataCache.Channel_GetList( )
-				channelNameList = []
-				for channel in channelList :
-					channelNameList.append( channel.mName )
-	 			ret = dialog.select( 'Select Channel', channelNameList )
-
-				if ret >= 0 :
-					self.mSetupChannel = channelList[ ret ]
-					self.SetControlLabel2String( E_Input01, self.mSetupChannel.mName )
-				return
-				
-			elif groupId == E_Input04 :
-				selectedIndex = self.GetSelectedIndex( E_SpinEx01 )
-				if selectedIndex == TIME_AUTOMATIC :
-					oriChannel = self.mDataCache.Channel_GetCurrent( )
-					ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( self.mSetupChannel.mNumber )
-					self.mDataCache.Channel_SetCurrent( self.mSetupChannel.mNumber, self.mSetupChannel.mServiceType ) # Todo After : using ServiceType to different way
-					ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
-
-					progress = Progress( 'Setting Time...' )
-					self.ProgressOpen = True
-					progress.Update( 0 )
-					for i in range( 10 ) :
-						time.sleep( 1 )
-						progress.Update( ( i + 1 ) * 10 )
-
-						if progress.IsCanceled( ) == True :
-							progress.Close( )
-							break
-
-						if self.mFinishEndSetTime == True :
-							progress.Update( 100, 'Complete time set' )
-							progress.Close( )
-							self.mDataCache.LoadTime( )
-							break
-							
-					if self.mFinishEndSetTime == False and progress.IsCanceled( ) == False :
-							progress.Update( 100, 'Time set fail' )
-							progress.Close( )
-
-					self.ProgressOpen = False
-					self.mFinishEndSetTime = False
-					ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
-					self.mDataCache.Channel_SetCurrent( oriChannel.mNumber, oriChannel.mServiceType) # Todo After : using ServiceType to different way
-					return
-					
-				else :
-					return
-					# Todo System Date Setting
-
-			elif groupId == E_Input02 :
-				self.mDate = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_DATE, 'Input Date', self.mDate )
-				self.SetControlLabel2String( E_Input02, self.mDate )
-				return
-				
-			elif groupId == E_Input03 :
-				self.mTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Input Time', self.mTime )
-				self.SetControlLabel2String( E_Input03, self.mTime )
-				
-				return
-
+			self.TimeSetting( groupId )
+			return
 
 		elif selectedId == E_PARENTAL and self.mVisibleParental == False and groupId == E_Input01 :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -656,3 +592,96 @@ class Configure( SettingWindow ) :
 
 			elif ElisPropertyEnum( 'DHCP', self.mCommander ).GetProp( ) == E_DHCP_ON :
 				pass
+
+
+	def TimeSetting( self, aControlId ) :
+		if aControlId == E_SpinEx01 :
+			self.DisableControl( E_TIME_SETTING )
+			return
+				
+		elif aControlId == E_Input01 :
+			dialog = xbmcgui.Dialog( )
+			channelList = self.mDataCache.Channel_GetList( )
+			channelNameList = []
+			for channel in channelList :
+				channelNameList.append( channel.mName )
+ 			ret = dialog.select( 'Select Channel', channelNameList )
+
+			if ret >= 0 :
+				self.mSetupChannel = channelList[ ret ]
+				self.SetControlLabel2String( E_Input01, self.mSetupChannel.mName )
+			return
+
+		elif aControlId == E_Input02 :
+			self.mDate = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_DATE, 'Input Date', self.mDate )
+			self.SetControlLabel2String( E_Input02, self.mDate )
+			return
+			
+		elif aControlId == E_Input03 :
+			self.mTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Input Time', self.mTime )
+			self.SetControlLabel2String( E_Input03, self.mTime )		
+			return
+			
+		elif aControlId == E_Input04 :
+			oriSetupChannel = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
+			if oriSetupChannel == self.mSetupChannel.mNumber :
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'ERROR', 'Same Setup Channel' )
+		 		dialog.doModal( )
+		 		return
+		 		
+			ElisPropertyEnum( 'Time Mode', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx01 ) )
+			ElisPropertyEnum( 'Local Time Offset', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx02) )
+			ElisPropertyEnum( 'Summer Time', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx03 ) )
+ 			
+			if ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( ) == TIME_AUTOMATIC :
+				
+				oriTimeMode = ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( )
+				oriLocalTimeOffset = ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetProp( )
+				oriSummerTime = ElisPropertyEnum( 'Summer Time', self.mCommander ).GetProp( )
+				oriChannel = self.mDataCache.Channel_GetCurrent( )
+				
+				ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( self.mSetupChannel.mNumber )
+				self.mDataCache.Channel_SetCurrent( self.mSetupChannel.mNumber, self.mSetupChannel.mServiceType ) # Todo After : using ServiceType to different way
+				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
+
+				progress = Progress( 'Setting Time...' )
+				self.ProgressOpen = True
+				progress.Update( 0 )
+				for i in range( 10 ) :
+					time.sleep( 1 )
+					progress.Update( ( i + 1 ) * 10 )
+
+					if progress.IsCanceled( ) == True :
+						ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
+						self.ProgressOpen = False
+						progress.Close( )
+						break
+
+					if self.mFinishEndSetTime == True :
+						progress.Update( 100, 'Complete time set' )
+						self.ProgressOpen = False
+						progress.Close( )
+						self.SetListControl( )
+						break
+						
+				if self.mFinishEndSetTime == False :
+						progress.Update( 100, 'Time set fail' )
+						progress.Close( )
+						ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( oriTimeMode )
+						ElisPropertyEnum( 'Local Time Offset', self.mCommander ).SetProp( oriLocalTimeOffset )
+						ElisPropertyEnum( 'Summer Time', self.mCommander ).SetProp( oriSummerTime )
+						ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( oriSetupChannel )
+
+				self.ProgressOpen = False
+				self.mFinishEndSetTime = False
+				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
+				self.mDataCache.Channel_SetCurrent( oriChannel.mNumber, oriChannel.mServiceType) # Todo After : using ServiceType to different way
+				return
+				
+			else :
+				return
+				# Todo System Date Setting
+
+		
+

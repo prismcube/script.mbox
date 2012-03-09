@@ -221,13 +221,21 @@ def Hex2signed( s ) :
  
 
 def NumericKeyboard( aKeyType, aTitle, aString, aMaxLength=None ) :
-	dialog = xbmcgui.Dialog( )
+	dialog = xbmcgui.Dialog( )		
 	value = dialog.numeric( aKeyType, aTitle, aString )
 	if value == None or value == '' :
 		return aString
 
 	if len( value ) > aMaxLength and aMaxLength != None :
 		value = value[ len ( value ) - aMaxLength :]
+
+	if aKeyType == E_NUMERIC_KEYBOARD_TYPE_DATE :
+		tempList = value.split( '/', 2 )
+		value = '%02d.%02d.%04d' % ( int( tempList[0] ),  int( tempList[1] ),  int( tempList[2] ) )
+
+	elif aKeyType == E_NUMERIC_KEYBOARD_TYPE_TIME :
+		tempList = value.split( ':', 1 )
+		value = '%02d:%02d' % ( int( tempList[0] ),  int( tempList[1] ) )
 	return value
 
 
@@ -281,7 +289,7 @@ class Progress :
 
 
 	def Close( self ) :
-		time.sleep( 1 )
+		time.sleep( 0.5 )
 		self.progress.close( )
 
 
