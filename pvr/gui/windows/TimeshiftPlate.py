@@ -91,7 +91,7 @@ class TimeShiftPlate(BaseWindow):
 		self.mTimeShiftExcuteTime = self.mDataCache.Datetime_GetLocalTime()
 
 		self.InitLabelInfo()
-		self.TimeshiftAction( self.mCtrlBtnPause.getId() )
+		#self.TimeshiftAction( self.mCtrlBtnPause.getId() )
 		self.setFocusId( self.mCtrlBtnPlay.getId() )
 
 		#self.mEventBus.Register( self )
@@ -125,7 +125,8 @@ class TimeShiftPlate(BaseWindow):
 				self.mUserMoveTime -= 10
 				self.mFlagUserMove = True
 				#TODO : must be need timeout schedule
-				self.RestartAsyncMove()
+				#self.RestartAsyncMove()
+				self.mCommander.Player_JumpByIFrame( -10000 )
 				LOG_TRACE('left moveTime[%s]'% self.mUserMoveTime )
 
 		elif id == Action.ACTION_MOVE_RIGHT:
@@ -135,7 +136,8 @@ class TimeShiftPlate(BaseWindow):
 				self.mUserMoveTime += 10
 				self.mFlagUserMove = True
 				#TODO : must be need timeout schedule
-				self.RestartAsyncMove()
+				#self.RestartAsyncMove()
+				self.mCommander.Player_JumpByIFrame( 10000 )
 				LOG_TRACE('right moveTime[%s]'% self.mUserMoveTime )
 
 
