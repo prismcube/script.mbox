@@ -653,16 +653,19 @@ class Configure( SettingWindow ) :
 					progress.Update( ( i + 1 ) * 10 )
 
 					if progress.IsCanceled( ) == True :
+						ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
+						self.ProgressOpen = False
 						progress.Close( )
 						break
 
 					if self.mFinishEndSetTime == True :
 						progress.Update( 100, 'Complete time set' )
+						self.ProgressOpen = False
 						progress.Close( )
 						self.SetListControl( )
 						break
 						
-				if self.mFinishEndSetTime == False and progress.IsCanceled( ) != True :
+				if self.mFinishEndSetTime == False :
 						progress.Update( 100, 'Time set fail' )
 						progress.Close( )
 						ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( oriTimeMode )

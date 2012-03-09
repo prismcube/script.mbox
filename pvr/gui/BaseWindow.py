@@ -143,6 +143,15 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 			self.mCommander.Player_SetVolume( volume )
 
 
+	def OpenBusyDialog( self ) :
+		#self.setProperty( 'BusyDialogBackground', 'True' )
+		xbmc.executebuiltin( "ActivateWindow(busydialog)" )
+
+	def CloseBusyDialog( self ) :
+		#self.setProperty( 'BusyDialogBackground', 'False' )
+		xbmc.executebuiltin( "Dialog.Close(busydialog)" )
+
+
 class ControlItem :
 	# Setting Window
 	E_UNDEFINE								= 0

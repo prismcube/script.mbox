@@ -62,6 +62,7 @@ class AntennaSetup( SettingWindow ) :
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				self.OpenBusyDialog( )
 				ret = ConfigMgr.GetInstance( ).SatelliteConfigSaveList( )
 				if ret == True :
 					ConfigMgr.GetInstance( ).SetNeedLoad( True )
@@ -72,7 +73,8 @@ class AntennaSetup( SettingWindow ) :
 					dialog.SetDialogProperty( 'ERROR', 'Save Configuration Fail' )
 		 			dialog.doModal( )
 				
-			elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
+			elif dialog.IsOK( ) == E_DIALOG_STATE_NO :				
+				self.OpenBusyDialog( )
 				ConfigMgr.GetInstance( ).Restore( )
 				ConfigMgr.GetInstance( ).SetNeedLoad( True )
 					
@@ -82,6 +84,8 @@ class AntennaSetup( SettingWindow ) :
 			self.ResetAllControl( )
 			self.SetVideoRestore( )
 			self.close( )
+			self.CloseBusyDialog( )
+			
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )
