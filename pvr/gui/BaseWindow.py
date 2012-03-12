@@ -89,7 +89,6 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
-		
 
 	@classmethod
 	def GetName(cls):
@@ -125,15 +124,18 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		ret = self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
 
 
-	@GuiLock
+	#@GuiLock
 	def UpdateVolume( self ) :
-		retVolume = xbmc.executehttpapi("getvolume()")
+
+		GuiLock2(True)
+		retVolume = xbmc.executehttpapi('getvolume()')
+		GuiLock2(False)
 		volume = int( retVolume[4:] )
 		LOG_TRACE('GET VOLUME=%d' %volume )
 
 		if volume > MAX_VOLUME :
 			volume = MAX_VOLUME
-			
+
 		if volume < 0 :
 			volume = 0
 			self.mCommander.Player_SetMute( True )
@@ -142,6 +144,15 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 				self.mCommander.Player_SetMute( False )
 			self.mCommander.Player_SetVolume( volume )
 
+
+	def SetApiGUIVolume( self ) :
+		volume = self.mCommander.Player_GetVolume( )
+		LOG_TRACE( 'playerVolume[%s]'% volume)
+
+		apiSet = 'setvolume(%s)'% volume
+		GuiLock2(True)
+		xbmc.executehttpapi(apiSet)
+		GuiLock2(False)
 
 	def OpenBusyDialog( self ) :
 		#self.setProperty( 'BusyDialogBackground', 'True' )

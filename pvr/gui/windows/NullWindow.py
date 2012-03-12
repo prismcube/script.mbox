@@ -24,10 +24,10 @@ class NullWindow( BaseWindow ) :
 
 		if self.mInitialized == False :
 			self.mInitialized = True
+			self.SetApiGUIVolume( )
 			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
 
 	def onAction(self, aAction) :		
