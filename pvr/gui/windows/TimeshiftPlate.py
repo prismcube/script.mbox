@@ -450,22 +450,28 @@ class TimeShiftPlate(BaseWindow):
 				flag_Forward = False
 				lbl_speed = ''
 
-			elif self.mSpeed >= 200 and self.mSpeed <= 1000:
+			elif self.mSpeed >= 120 and self.mSpeed <= 12800:
 				flag_Rewind  = False
 				flag_Forward = True
 
-				if self.mSpeed == 200 :
+				if self.mSpeed == 120 :
+					lbl_speed = '1.2x'
+				elif self.mSpeed == 160 :
+					lbl_speed = '1.6x'
+				elif self.mSpeed == 200 :
 					lbl_speed = '2x'
-				elif self.mSpeed == 300 :
-					lbl_speed = '4x'
 				elif self.mSpeed == 400 :
-					lbl_speed = '8x'
-				elif self.mSpeed == 600 :
-					lbl_speed = '16x'
+					lbl_speed = '4x'
 				elif self.mSpeed == 800 :
-					lbl_speed = '24x'
-				elif self.mSpeed == 1000 :
+					lbl_speed = '8x'
+				elif self.mSpeed == 1600 :
+					lbl_speed = '16x'
+				elif self.mSpeed == 3200 :
 					lbl_speed = '32x'
+				elif self.mSpeed == 6400 :
+					lbl_speed = '64x'
+				elif self.mSpeed == 12800 :
+					lbl_speed = '128x'
 
 			elif self.mSpeed <= -200 and self.mSpeed >= -1000:
 				flag_Rewind  = True
@@ -473,16 +479,18 @@ class TimeShiftPlate(BaseWindow):
 
 				if self.mSpeed == -200 :
 					lbl_speed = '2x'
-				elif self.mSpeed == -300 :
-					lbl_speed = '4x'
 				elif self.mSpeed == -400 :
-					lbl_speed = '8x'
-				elif self.mSpeed == -600 :
-					lbl_speed = '16x'
+					lbl_speed = '4x'
 				elif self.mSpeed == -800 :
-					lbl_speed = '24x'
-				elif self.mSpeed == -1000 :
+					lbl_speed = '8x'
+				elif self.mSpeed == -1600 :
+					lbl_speed = '16x'
+				elif self.mSpeed == -3200 :
 					lbl_speed = '32x'
+				elif self.mSpeed == -6400 :
+					lbl_speed = '64x'
+				elif self.mSpeed == -12800 :
+					lbl_speed = '128x'
 
 
 			"""
@@ -524,62 +532,76 @@ class TimeShiftPlate(BaseWindow):
 		ret = 0
 		if aFocusId == self.mCtrlBtnRewind.getId():
 
-			if self.mSpeed == -1000 :
-				ret = -1000
+			if self.mSpeed == -12800 :
+				ret = -12800
+			elif self.mSpeed == -6400 :
+				ret = -12800
+			elif self.mSpeed == -3200 :
+				ret = -6400
+			elif self.mSpeed == -1600 :
+				ret = -3200
 			elif self.mSpeed == -800 :
-				ret = -1000
-			elif self.mSpeed == -600 :
-				ret = -800
+				ret = -1600
 			elif self.mSpeed == -400 :
-				ret = -600
-			elif self.mSpeed == -300 :
-				ret = -400
+				ret = -800
 			elif self.mSpeed == -200 :
-				ret = -300
+				ret = -400
 			elif self.mSpeed == 100 :
 				ret = -200
+			elif self.mSpeed == 120 :
+				ret = 100
+			elif self.mSpeed == 160 :
+				ret = 120
 			elif self.mSpeed == 200 :
 				ret = 100
-			elif self.mSpeed == 300 :
-				ret = 200
 			elif self.mSpeed == 400 :
-				ret = 300
-			elif self.mSpeed == 600 :
-				ret = 400
+				ret = 200
 			elif self.mSpeed == 800 :
-				ret = 600
-			elif self.mSpeed == 1000 :
+				ret = 400
+			elif self.mSpeed == 1600 :
 				ret = 800
+			elif self.mSpeed == 3200 :
+				ret = 1600
+			elif self.mSpeed == 6400 :
+				ret = 3200
+			elif self.mSpeed == 12800 :
+				ret = 6400
 
 		elif aFocusId == self.mCtrlBtnForward.getId():
-			if self.mSpeed == 100 :
-				ret = 200
-			elif self.mSpeed == 200 :
-				ret = 300
-			elif self.mSpeed == 300 :
-				ret = 400
-			elif self.mSpeed == 400 :
-				ret = 600
-			elif self.mSpeed == 600 :
-				ret = 800
-			elif self.mSpeed == 800 :
-				ret = 1000
-			elif self.mSpeed == 1000 :
-				ret = 1000
-
+			if self.mSpeed == -12800 :
+				ret = -6400
+			elif self.mSpeed == -6400 :
+				ret = -3200
+			elif self.mSpeed == -3200 :
+				ret = -1600
+			elif self.mSpeed == -1600 :
+				ret = -800
+			elif self.mSpeed == -800 :
+				ret = -400
+			elif self.mSpeed == -400 :
+				ret = -200
 			elif self.mSpeed == -200 :
 				ret = 100
-			elif self.mSpeed == -300 :
-				ret = -200
-			elif self.mSpeed == -400 :
-				ret = -300
-			elif self.mSpeed == -600 :
-				ret = -400
-			elif self.mSpeed == -800 :
-				ret = -600
-			elif self.mSpeed == -1000 :
-				ret = -800
-
+			elif self.mSpeed == 100 :
+				ret = 200
+			elif self.mSpeed == 120 :
+				ret = 160
+			elif self.mSpeed == 160 :
+				ret = 200
+			elif self.mSpeed == 200 :
+				ret = 400
+			elif self.mSpeed == 400 :
+				ret = 800
+			elif self.mSpeed == 800 :
+				ret = 1600
+			elif self.mSpeed == 1600 :
+				ret = 3200
+			elif self.mSpeed == 3200 :
+				ret = 6400
+			elif self.mSpeed == 6400 :
+				ret = 12800
+			elif self.mSpeed == 12800 :
+				ret = 12800
 		else:
 			ret = 100 #default
 

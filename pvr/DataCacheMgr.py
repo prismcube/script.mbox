@@ -124,6 +124,8 @@ class DataCacheMgr( object ):
 
 	def Load( self ) :
 
+		self.LoadVolumeToSetGUI( )
+
 		#Zapping Mode
 		LOG_TRACE('')
 		self.LoadZappingmode( )
@@ -144,6 +146,13 @@ class DataCacheMgr( object ):
 		# DATE
 		self.LoadTime( )
 
+
+	def LoadVolumeToSetGUI( self ) :
+		volume = self.mCommander.Player_GetVolume( )
+		LOG_TRACE( 'playerVolume[%s]'% volume)
+
+		apiSet = 'setvolume(%s)'% volume
+		xbmc.executehttpapi(apiSet)
 
 	def LoadTime( self ) :
 		self.mLocalOffset = self.mCommander.Datetime_GetLocalOffset( )
@@ -360,8 +369,12 @@ class DataCacheMgr( object ):
 		self.mListFavorite  = self.mCommander.Favorite_GetList( serviceType )
 
 	def Zappingmode_SetCurrent( self , aZappingMode ) :
-		if self.mCommander.Zappingmode_SetCurrent( aZappingMode ) == True :
+		ret = False
+		ret = self.mCommander.Zappingmode_SetCurrent( aZappingMode )
+		if ret == True :
 			self.mZappingMode = aZappingMode
+
+		return ret
 
 	@DataLock
 	def Zappingmode_GetCurrent( self ) :

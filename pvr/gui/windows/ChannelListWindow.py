@@ -112,7 +112,7 @@ class ChannelListWindow( BaseWindow ) :
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
 
 		starttime = time.time( )
-		print '==================== TEST TIME[ONINIT] START[%s]'% starttime
+		#print '==================== TEST TIME[ONINIT] START[%s]'% starttime
 
 		#header
 		self.mCtrlLblPath1           = self.getControl( 21 )
@@ -232,7 +232,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mAsyncTuneTimer = None
 
 		endtime = time.time( )
-		print '==================== TEST TIME[ONINIT] END[%s] loading[%s]'% (endtime, endtime-starttime )
+		#print '==================== TEST TIME[ONINIT] END[%s] loading[%s]'% (endtime, endtime-starttime )
 		LOG_TRACE( 'Leave' )
 
 	def onAction(self, aAction):
