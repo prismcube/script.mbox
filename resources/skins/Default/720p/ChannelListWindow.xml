@@ -266,6 +266,8 @@
 			<height>600</height>
 			<allowoverlay>yes</allowoverlay>
 			<control type="group">
+				<posx>-25</posx>
+				<posy>-20</posy>
 				<control type="image">
 					<posx>0</posx>
 					<posy>220</posy>
