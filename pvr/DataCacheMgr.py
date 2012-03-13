@@ -360,8 +360,12 @@ class DataCacheMgr( object ):
 		self.mListFavorite  = self.mCommander.Favorite_GetList( serviceType )
 
 	def Zappingmode_SetCurrent( self , aZappingMode ) :
-		if self.mCommander.Zappingmode_SetCurrent( aZappingMode ) == True :
+		ret = False
+		ret = self.mCommander.Zappingmode_SetCurrent( aZappingMode )
+		if ret == True :
 			self.mZappingMode = aZappingMode
+
+		return ret
 
 	@DataLock
 	def Zappingmode_GetCurrent( self ) :
