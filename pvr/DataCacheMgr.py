@@ -124,6 +124,8 @@ class DataCacheMgr( object ):
 
 	def Load( self ) :
 
+		self.LoadVolumeToSetGUI( )
+
 		#Zapping Mode
 		LOG_TRACE('')
 		self.LoadZappingmode( )
@@ -144,6 +146,13 @@ class DataCacheMgr( object ):
 		# DATE
 		self.LoadTime( )
 
+
+	def LoadVolumeToSetGUI( self ) :
+		volume = self.mCommander.Player_GetVolume( )
+		LOG_TRACE( 'playerVolume[%s]'% volume)
+
+		apiSet = 'setvolume(%s)'% volume
+		xbmc.executehttpapi(apiSet)
 
 	def LoadTime( self ) :
 		self.mLocalOffset = self.mCommander.Datetime_GetLocalOffset( )

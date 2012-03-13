@@ -145,15 +145,6 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 			self.mCommander.Player_SetVolume( volume )
 
 
-	def SetApiGUIVolume( self ) :
-		volume = self.mCommander.Player_GetVolume( )
-		LOG_TRACE( 'playerVolume[%s]'% volume)
-
-		apiSet = 'setvolume(%s)'% volume
-		GuiLock2(True)
-		xbmc.executehttpapi(apiSet)
-		GuiLock2(False)
-
 	def OpenBusyDialog( self ) :
 		#self.setProperty( 'BusyDialogBackground', 'True' )
 		xbmc.executebuiltin( "ActivateWindow(busydialog)" )
