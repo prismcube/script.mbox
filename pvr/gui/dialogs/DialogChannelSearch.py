@@ -107,7 +107,6 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 	def DrawItem( self ) :
-
 		count = len( self.mNewTVChannelList )
 		for i in range( count ) :
 			listItem = xbmcgui.ListItem( self.mNewTVChannelList[i], "TV" )
@@ -186,11 +185,11 @@ class DialogChannelSearch( BaseDialog ) :
 			elif self.AbortDialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
 				return
  
-
 		if self.mIsFinished == True :
 			self.mEventBus.Deregister( self )
 			self.ReTune( )
 			self.CloseDialog( )
+
 
 	@GuiLock
 	def onEvent( self, aEvent ) :
@@ -204,7 +203,6 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 	def UpdateScanProgress( self, aEvent ) :
-
 		percent = 0
 		
 		if aEvent.mAllCount > 0 :
@@ -235,7 +233,6 @@ class DialogChannelSearch( BaseDialog ) :
 		elif aEvent.mCarrier.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBC :
 			pass
 
-
 		if aEvent.mFinished and aEvent.mCurrentIndex >= aEvent.mAllCount :
 			self.mCtrlProgress.setPercent( 100 )
 			self.mTimer = threading.Timer( 0.5, self.ShowResult )			
@@ -249,7 +246,6 @@ class DialogChannelSearch( BaseDialog ) :
 			self.mNewRadioChannelList.append( aEvent.mIChannel.mName )
 		else : 
 			LOG_ERR('Unknown service type')
-
 		self.DrawItem( )
 
 

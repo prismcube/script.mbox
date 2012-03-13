@@ -67,6 +67,7 @@ class Property(object) :
 		if p is not None:
 			return p.decode('utf-8')
 
+
 	def SetListItemProperty(self, aListItem, aName, aValue) :
 		if aListItem and aName and not aValue is None:
 			aListItem.setProperty(aName, aValue)
@@ -95,6 +96,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 	def GetName(cls):
 		return cls.__name__
 
+
 	def GetFocusId( self ) :
 		GuiLock2( True )
 		self.mFocusId = self.getFocusId( )
@@ -111,6 +113,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 		elif aActionId == Action.ACTION_VOLUME_DOWN:
 			self.UpdateVolume( )
+
 
 	def SetPipScreen( self ) :
 		ctrlImgVideoPos = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
@@ -146,6 +149,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 	def OpenBusyDialog( self ) :
 		#self.setProperty( 'BusyDialogBackground', 'True' )
 		xbmc.executebuiltin( "ActivateWindow(busydialog)" )
+
 
 	def CloseBusyDialog( self ) :
 		#self.setProperty( 'BusyDialogBackground', 'False' )
