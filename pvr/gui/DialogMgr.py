@@ -20,6 +20,7 @@ DIALOG_ID_NUMERIC_KEYBOARD			= 11
 DIALOG_ID_POPUP_OK					= 12
 DIALOG_ID_CONTEXT					= 13
 DIALOG_ID_CHANNEL_JUMP				= 14
+DIALOG_ID_FORCE_PROGRESS			= 15
 
 gDialogMgr = None
 
@@ -101,6 +102,10 @@ class DialogMgr(object):
 			elif aDialogId == DIALOG_ID_CHANNEL_JUMP :
 				from pvr.gui.dialogs.DialogChannelJump import DialogChannelJump
 				return DialogChannelJump('DialogChannelJump.xml', self.scriptDir)
+
+			elif aDialogId == DIALOG_ID_FORCE_PROGRESS :
+				from pvr.gui.dialogs.DialogForceProgress import DialogForceProgress
+				return DialogForceProgress('DialogForceProgress.xml', self.scriptDir)
 				
 			else :
 				LOG_ERR( 'can not find dialog' )

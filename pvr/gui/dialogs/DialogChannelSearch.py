@@ -176,7 +176,7 @@ class DialogChannelSearch( BaseDialog ) :
 			self.AbortDialog.doModal( )
 
 			if self.AbortDialog.IsOK( ) == E_DIALOG_STATE_YES :
-				self.mCommander.Channelscan_Abort( )
+				ret = self.mCommander.Channelscan_Abort( )
 				self.mIsFinished = True
 
 			elif self.AbortDialog.IsOK( ) == E_DIALOG_STATE_NO : 

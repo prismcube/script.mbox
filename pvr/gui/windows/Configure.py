@@ -9,10 +9,8 @@ import pvr.DataCacheMgr as CacheMgr
 from pvr.gui.BaseWindow import SettingWindow, Action
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-from ElisEventBus import ElisEventBus
 from pvr.gui.GuiConfig import *
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
-from ElisClass import *
 from ElisEventClass import *
 
 E_DHCP_OFF		= 0
@@ -60,7 +58,7 @@ class Configure( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.mEventBus.Register( self )
+		#self.mEventBus.Register( self )
 
 		self.mCtrlLeftGroup = self.getControl( E_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
@@ -245,12 +243,6 @@ class Configure( SettingWindow ) :
 					self.mReLoadIp = True
 					self.mVisibleParental = False
 				self.SetListControl( )
-
-
-	def onEvent( self, aEvent ) :
-		if self.ProgressOpen == True :
-			if aEvent.getName( ) == ElisEventTimeReceived.getName( ) :
-				self.mFinishEndSetTime	= True
 
 
 	def SetListControl( self ) :
@@ -635,7 +627,6 @@ class Configure( SettingWindow ) :
 			ElisPropertyEnum( 'Summer Time', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx03 ) )
  			
 			if ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( ) == TIME_AUTOMATIC :
-				
 				oriTimeMode = ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( )
 				oriLocalTimeOffset = ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetProp( )
 				oriSummerTime = ElisPropertyEnum( 'Summer Time', self.mCommander ).GetProp( )
@@ -645,36 +636,17 @@ class Configure( SettingWindow ) :
 				self.mDataCache.Channel_SetCurrent( self.mSetupChannel.mNumber, self.mSetupChannel.mServiceType ) # Todo After : using ServiceType to different way
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
 
-				progress = Progress( 'Setting Time...' )
-				self.ProgressOpen = True
-				progress.Update( 0 )
-				for i in range( 10 ) :
-					time.sleep( 1 )
-					progress.Update( ( i + 1 ) * 10 )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
+				dialog.SetDialogProperty( 10, 'Setting Time...', ElisEventTimeReceived.getName( ) )
+				dialog.doModal( )
 
-					if progress.IsCanceled( ) == True :
-						ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
-						self.ProgressOpen = False
-						progress.Close( )
-						break
+				if dialog.GetResult( ) == False :
+					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( oriTimeMode )
+					ElisPropertyEnum( 'Local Time Offset', self.mCommander ).SetProp( oriLocalTimeOffset )
+					ElisPropertyEnum( 'Summer Time', self.mCommander ).SetProp( oriSummerTime )
+					ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( oriSetupChannel )
 
-					if self.mFinishEndSetTime == True :
-						progress.Update( 100, 'Complete time set' )
-						self.ProgressOpen = False
-						progress.Close( )
-						self.SetListControl( )
-						break
-						
-				if self.mFinishEndSetTime == False :
-						progress.Update( 100, 'Time set fail' )
-						progress.Close( )
-						ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( oriTimeMode )
-						ElisPropertyEnum( 'Local Time Offset', self.mCommander ).SetProp( oriLocalTimeOffset )
-						ElisPropertyEnum( 'Summer Time', self.mCommander ).SetProp( oriSummerTime )
-						ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( oriSetupChannel )
-
-				self.ProgressOpen = False
-				self.mFinishEndSetTime = False
+				self.SetListControl( )
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
 				self.mDataCache.Channel_SetCurrent( oriChannel.mNumber, oriChannel.mServiceType) # Todo After : using ServiceType to different way
 				return
