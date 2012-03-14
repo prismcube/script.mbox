@@ -94,6 +94,26 @@ class NullWindow( BaseWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 			
 
+		#test code
+		elif actionId == Action.REMOTE_0 :
+			LOG_ERR('')
+			try :
+				from ElisEPGDB import ElisEPGDB
+			except Exception, ex:
+				LOG_ERR( "Exception %s" %ex)
+				
+			LOG_ERR('')
+			try :			
+				channelDB = ElisEPGDB()
+			except Exception, ex:
+				LOG_ERR( "Exception %s" %ex)
+				
+			LOG_ERR('')
+			#channel = self.mDataCache.Channel_GetCurrent()
+			#gmtTime = self.mDataCache.Datetime_GetGMTTime()
+			#epgDB.Epgevent_GetList( channel.mSid,  channel.mTsid,  channel.mOnid, gmtTime, gmtTime+3600, 100) :	
+			
+			
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 or \
 			actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 :
 
