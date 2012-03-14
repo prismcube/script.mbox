@@ -99,8 +99,14 @@ class TimeShiftPlate(BaseWindow):
 		self.mTimeShiftExcuteTime = self.mDataCache.Datetime_GetLocalTime()
 
 		self.InitLabelInfo()
-		self.TimeshiftAction( self.mCtrlBtnPause.getId() )
-		self.setFocusId( self.mCtrlBtnPlay.getId() )
+		self.InitTimeShift()
+
+		if self.mSpeed != 0 :
+			self.TimeshiftAction( self.mCtrlBtnPlay.getId() )
+			self.setFocusId( self.mCtrlBtnPlay.getId() )
+		else :
+			self.TimeshiftAction( self.mCtrlBtnPause.getId() )
+			self.setFocusId( self.mCtrlBtnPause.getId() )
 
 		#self.mEventBus.Register( self )
 
@@ -323,7 +329,7 @@ class TimeShiftPlate(BaseWindow):
 				self.InitLabelInfo()
 				self.mIsPlay = True
 				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), False )
-				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), True, True )
+				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), True )
 
 		elif aFocusId == self.mCtrlBtnRewind.getId() :
 			nextSpeed = 100
@@ -345,7 +351,7 @@ class TimeShiftPlate(BaseWindow):
 			#resume by toggle
 			if self.mIsPlay :
 				#self.mIsPlay = False
-				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True, True )
+				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True )
 				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
 
 		elif aFocusId == self.mCtrlBtnForward.getId() :
@@ -368,7 +374,7 @@ class TimeShiftPlate(BaseWindow):
 			#resume by toggle
 			if self.mIsPlay :
 				#self.mIsPlay = False
-				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True, True )
+				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True )
 				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
 
 		elif aFocusId == self.mCtrlBtnJumpRR.getId() :
@@ -473,7 +479,7 @@ class TimeShiftPlate(BaseWindow):
 
 		LOG_TRACE( 'Leave' )
 
-	def InitTimeShift(self, loop = 0) :
+	def InitTimeShift( self, loop = 0 ) :
 		LOG_TRACE('Enter')
 
 		status = None
@@ -564,6 +570,8 @@ class TimeShiftPlate(BaseWindow):
 			#Speed label
 			self.mSpeed  = status.mSpeed
 
+			#self.mRepeatStatus = abs(self.mSpeed) / 100
+
 			if self.mSpeed == 100 :
 				flag_Rewind  = False
 				flag_Forward = False
@@ -625,6 +633,7 @@ class TimeShiftPlate(BaseWindow):
 				self.mCtrlBtnPlay.setVisible(True)
 				self.mCtrlBtnPause.setVisible(False)
 			"""
+
 
 			self.UpdateLabelGUI( self.mCtrlImgRewind.getId(), flag_Rewind )
 			self.UpdateLabelGUI( self.mCtrlImgForward.getId(), flag_Forward )
