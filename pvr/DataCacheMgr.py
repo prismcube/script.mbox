@@ -21,6 +21,7 @@ gDataCacheMgr = None
 
 gDataLock = thread.allocate_lock()
 
+SUPPORT_DATABASE = True
 
 @decorator
 def DataLock(func, *args, **kw):
