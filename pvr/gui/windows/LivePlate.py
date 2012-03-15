@@ -106,6 +106,7 @@ class LivePlate(BaseWindow):
 		#self.mCtrlProgress(self.Progress)
 
 		#button icon
+		self.mCtrlImgRec               = self.getControl(  10 )
 		self.mCtrlBtnExInfo            = self.getControl( 621 )
 		self.mCtrlBtnTeletext          = self.getControl( 622 )
 		self.mCtrlBtnSubtitle          = self.getControl( 623 )
@@ -119,7 +120,7 @@ class LivePlate(BaseWindow):
 		self.mCtrlBtnPrevEpg           = self.getControl( 702 )
 		self.mCtrlBtnNextEpg           = self.getControl( 706 )
 
-
+		self.ShowIsRunRec( )
 		self.mImgTV    = E_IMG_ICON_TV
 		self.mCtrlLblEventClock.setLabel('')
 
@@ -883,13 +884,17 @@ class LivePlate(BaseWindow):
 			msg2 = 'test'
 
 		elif aFocusid == self.mCtrlBtnStartRec.getId() :
-			runningCount = self.mCommander.Record_GetRunningRecorderCount()
+			runningCount = self.ShowIsRunRec()
 			LOG_TRACE( 'runningCount=%d' %runningCount)
 
 			GuiLock2(True)
 			if  runningCount < 2 :
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 				dialog.doModal()
+
+				isOK = dialog.IsOK()
+				if isOK == E_DIALOG_STATE_YES :
+					self.mCtrlImgRec.setVisible( True )
 			else:
 				msg = 'Already %d recording(s) running' %runningCount
 				xbmcgui.Dialog().ok('Infomation', msg )
@@ -904,9 +909,36 @@ class LivePlate(BaseWindow):
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
 				dialog.doModal()
 				GuiLock2(False)
+
+			time.sleep(1.5)
+			self.ShowIsRunRec()
 			
 
 		LOG_TRACE( 'Leave' )
+
+	def ShowIsRunRec( self ) :
+		LOG_TRACE('Enter')
+
+		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+		LOG_TRACE('isRunRecCount[%s]'% isRunRec)
+
+		imgValue = False
+		btnValue = False
+		if isRunRec > 0 :
+			imgValue = True
+		else :
+			imgValue = False
+		self.mCtrlImgRec.setVisible( imgValue )
+
+		if isRunRec >= 2 :
+			btnValue = False
+		else :
+			btnValue = True
+		self.mCtrlBtnStartRec.setEnabled( btnValue )
+
+		return isRunRec
+
+		LOG_TRACE('Leave')
 
 
 	def Close( self ):

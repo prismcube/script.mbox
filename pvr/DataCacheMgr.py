@@ -645,4 +645,6 @@ class DataCacheMgr( object ):
 	def Channel_SetInitialBlank( self, aBlank ) :
 		return self.mCommander.Channel_SetInitialBlank( aBlank )
 
+	def Record_GetRunningRecorderCount( self ) :
+		return self.mCommander.Record_GetRunningRecorderCount( )
 

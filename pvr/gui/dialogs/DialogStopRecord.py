@@ -57,6 +57,7 @@ class DialogStopRecord( BaseDialog ) :
 		self.mCtrlRecordName = {}
 		self.mCtrlDuration = {}
 		self.mCtrlProgress = {}		
+		self.mIsOk = E_DIALOG_STATE_CANCEL
 
 		try :		
 			self.mCtrlRecordGroup[0] = self.getControl( GROUP_ID_RECORD_1 )
@@ -112,12 +113,14 @@ class DialogStopRecord( BaseDialog ) :
 		self.GlobalAction( actionId )
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
+			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.Close()
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 					
 		elif actionId == Action.ACTION_PARENT_DIR :
+			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.Close()
 		
 		elif actionId == Action.ACTION_MOVE_UP :
@@ -186,6 +189,7 @@ class DialogStopRecord( BaseDialog ) :
 			recInfo.printdebug()
 			self.mCommander.Timer_StopRecordingByRecordKey( recInfo.mRecordKey )
 			#self.mCommander.Record_StopRecord( recInfo.mChannelNo, recInfo.mServiceType, recInfo.mRecordKey  )
+			self.mIsOk = E_DIALOG_STATE_YES
 			self.Close( )			
 
 		elif aControlId == BUTTON_ID_RECORD_2 :
@@ -193,10 +197,12 @@ class DialogStopRecord( BaseDialog ) :
 			recInfo = self.mRunnigRecordInfoList[1]
 			self.mCommander.Timer_StopRecordingByRecordKey( recInfo.mRecordKey )			
 			#self.mCommander.Record_StopRecord( recInfo.mChannelNo, recInfo.mServiceType, recInfo.mRecordKey  )
+			self.mIsOk = E_DIALOG_STATE_YES
 			self.Close( )
 
 		elif aControlId == BUTTON_ID_CANCEL :
 			LOG_TRACE('')		
+			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.Close( )
 		else :
 			LOG_ERR('Can not find control')
@@ -297,5 +303,8 @@ class DialogStopRecord( BaseDialog ) :
 			self.mCtrlRecordName[i].setLabel( '%s' %recordInfo.mRecordName )
 			self.mCtrlDuration[i].setLabel( '%d Min' %int(recordInfo.mDuration/60) )
 			self.mCtrlProgress[i].setPercent( 0 )
+
+	def IsOK( self ) :
+		return self.mIsOk
 
 	
