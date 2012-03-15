@@ -70,6 +70,23 @@ E_SETTING_HEADER_TITLE		=	1002
 E_SETTING_DESCRIPTION		=	1003
 E_SETTING_PIP_SCREEN_IMAGE	=	1004
 
+# FirstTimeInstallation Button Ids
+E_STEP_SELECT_LANGUAGE			=	0
+E_STEP_VIDEO_AUDIO				=	1
+E_STEP_ANTENNA					=	2
+E_STEP_CHANNEL_SEARCH_CONFIG	=	3
+E_STEP_DATE_TIME				=	4
+E_STEP_RESULT					=	5
+
+FIRST_TIME_INSTALLATION_STEP			= 6
+
+E_FIRST_TIME_INSTALLATION_PREV			= 7001
+E_FIRST_TIME_INSTALLATION_NEXT			= 7003
+E_FIRST_TIME_INSTALLATION_NEXT_LABEL	= 7004
+
+E_FIRST_TIME_INSTALLATION_STEP_IMAGE		= 8100
+E_FIRST_TIME_INSTALLATION_STEP_IMAGE_BACK	= 8110
+
 # TUNER TYPE
 E_SIMPLE_LNB					= 0
 E_DISEQC_1_0					= 1
@@ -100,12 +117,17 @@ CAS_SLOT_NUM_2					= 1
 E_MAX_RECORD_COUNT				= 2
 
 # Volume
-VOLUME_STEP					= 4
-MAX_VOLUME					= 100
+VOLUME_STEP						= 4
+MAX_VOLUME						= 100
+
+# Time Mode
+TIME_AUTOMATIC					= 0
+TIME_MANUAL						= 1
 
 
 # Tuner Config String Define
 USER_ENUM_LIST_ON_OFF				= [ 'Off', 'On' ]
+USER_ENUM_LIST_YES_NO				= [ 'No', 'Yes' ]
 
 E_LIST_LNB_TYPE						= [ 'Universal' , 'Single', 'Userdefined' ]
 E_LIST_SINGLE_FREQUENCY 			= [ '5150', '9750', '10600', '10750', '11300' ]
@@ -253,7 +275,6 @@ def InputKeyboard( aType, aTitle, aString, aMaxLength=None ) :
 		
 	else :
 		return aString
-
 
 ############################ Global Class ############################
 

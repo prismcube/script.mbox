@@ -164,6 +164,7 @@ class ControlItem :
 	E_SETTING_ENUM_CONTROL					= 1
 	E_SETTING_USER_ENUM_CONTROL				= 2
 	E_SETTING_INPUT_CONTROL					= 3
+	E_SETTING_PREV_NEXT_BUTTON				= 4
 
 
 	def __init__( self, aControlType, aControlId, aProperty, aListItems, aSelecteItem, aDescription ) :	
@@ -180,6 +181,7 @@ class SettingWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__(self, *args, **kwargs)
 		self.mControlList = []
+		self.mFirstTimeInstallationType = False
 
 
 	def InitControl( self ) :
@@ -201,8 +203,13 @@ class SettingWindow( BaseWindow ) :
 				control.addItems( ctrlItem.mListItems )
 				control.selectItem( ctrlItem.mSelecteItem )
 
-			pos += self.getControl( ctrlItem.mControlId ).getHeight( )
-			self.getControl( ctrlItem.mControlId ).setPosition( 0, pos )
+			if ctrlItem.mControlId == E_FIRST_TIME_INSTALLATION_PREV :
+				self.getControl( ctrlItem.mControlId ).setPosition( 0,  470 )
+			elif ctrlItem.mControlId == E_FIRST_TIME_INSTALLATION_NEXT :
+				self.getControl( ctrlItem.mControlId ).setPosition( 690, 470 )
+			else :
+				pos += self.getControl( ctrlItem.mControlId ).getHeight( )
+				self.getControl( ctrlItem.mControlId ).setPosition( 0, pos )
 
 
 	def ResetAllControl( self ) :
@@ -257,6 +264,12 @@ class SettingWindow( BaseWindow ) :
 		listItem = xbmcgui.ListItem( aTitleLabel, aInputLabel )
 		listItems.append( listItem )
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, aControlId, None, listItems, None, aDescription ) )
+
+
+	def AddPrevNextButton( self ) :
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_PREV, None, None, None, None ) ) 
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_NEXT, None, None, None, None ) )
+		self.mFirstTimeInstallationType = True
 
 
 	def ShowDescription( self ) :
@@ -440,6 +453,18 @@ class SettingWindow( BaseWindow ) :
 			self.SetVisibleControl( controlId, aVisible )
 
 
+	def SetFocusControl( self, aControlId ) :
+		count = len( self.mControlList )
+
+		for i in range( count ) :
+			ctrlItem = self.mControlList[i]
+			if aControlId == ctrlItem.mControlId :
+				self.setFocusId( ctrlItem.mControlId + 1 )
+				return True
+
+		return False
+
+
 	def ControlSelect( self ) :
 	
 		self.GetFocusId( )
@@ -535,12 +560,17 @@ class SettingWindow( BaseWindow ) :
 					ctrlItem.mProperty.SetProp( aValue )
 					return True
 	
-class ContextMenu :
 
-	def __init__( self, aLabel, aCallback=None ) :
-		self.mLabel = aLabel
-		self.mCallback = aCallback
-
-	#def setCallback( aCallfunc ) :
-	#	self.callfunc = 
-	
+	def DrawFirstTimeInstallationStep( self, aStep ) :
+		if aStep == None :
+			for i in range( FIRST_TIME_INSTALLATION_STEP ) :
+				self.getControl( E_FIRST_TIME_INSTALLATION_STEP_IMAGE_BACK + i ).setVisible( False )
+				self.getControl( E_FIRST_TIME_INSTALLATION_STEP_IMAGE + i ).setVisible( False )
+		else :
+			for i in range( FIRST_TIME_INSTALLATION_STEP ) :
+				if i == aStep :
+					self.getControl( E_FIRST_TIME_INSTALLATION_STEP_IMAGE + i ).setVisible( True )
+				else :
+					self.getControl( E_FIRST_TIME_INSTALLATION_STEP_IMAGE + i ).setVisible( False )
+				self.getControl( E_FIRST_TIME_INSTALLATION_STEP_IMAGE_BACK + i ).setVisible( True )
+		

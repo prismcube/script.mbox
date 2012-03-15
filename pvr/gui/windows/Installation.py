@@ -74,7 +74,7 @@ class Installation( BaseWindow ):
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 		
 		if selectedId == MENU_ID_FIRSTINSTALLATION : # First Installation
-			pass
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION )
 
 		elif selectedId == MENU_ID_ANTENNA_SETUP : # Antenna Setup
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )

@@ -228,6 +228,163 @@
 		</control>
 	</include>
 
+	<include name="DefaultFirstTimeInstallationButton">
+		<control type="button" id="7001">
+			<description>Prev button</description>
+			<width>60</width>
+			<height>50</height>
+			<texturenofocus border="5">confluence/scroll-left.png</texturenofocus>
+			<texturefocus border="5">confluence/scroll-left-focus.png</texturefocus>
+			<onleft>7003</onleft>
+			<onright>7003</onright>
+		</control>
+		<control type="label">
+			<posx>60</posx>
+			<posy>478</posy>
+			<width>200</width>
+			<height>40</height>
+			<font>font12_title</font>
+			<textcolor>grey2</textcolor>
+			<align>left</align>
+			<aligny>center</aligny>
+			<label>Back</label>
+			<visible>Control.IsEnabled(7001) + !Control.HasFocus(7001)</visible>
+		</control>
+		<control type="label">
+			<posx>60</posx>
+			<posy>478</posy>
+			<width>200</width>
+			<height>40</height>
+			<font>font13_title</font>
+			<textcolor>white</textcolor>
+			<align>left</align>
+			<aligny>center</aligny>
+			<label>Back</label>
+			<visible>Control.IsEnabled(7001) + Control.HasFocus(7001)</visible>
+		</control>
+		<control type="button" id="7003">
+			<description>Next button</description>
+			<width>60</width>
+			<height>50</height>
+			<texturenofocus border="5">confluence/scroll-right.png</texturenofocus>
+			<texturefocus border="5">confluence/scroll-right-focus.png</texturefocus>
+			<onleft>7001</onleft>
+			<onright>7001</onright>
+		</control>
+		<control type="label" id="7004">
+			<posx>645</posx>
+			<posy>478</posy>
+			<width>200</width>
+			<height>40</height>
+			<font>font12_title</font>
+			<textcolor>grey2</textcolor>
+			<align>left</align>
+			<aligny>center</aligny>
+			<label></label>
+			<visible>Control.IsEnabled(7003) + !Control.HasFocus(7003)</visible>
+		</control>
+		<control type="label">
+			<posx>645</posx>
+			<posy>478</posy>
+			<width>200</width>
+			<height>40</height>
+			<font>font13_title</font>
+			<textcolor>white</textcolor>
+			<align>left</align>
+			<aligny>center</aligny>
+			<label>$INFO[Control.GetLabel(7004)]</label>
+			<visible>Control.IsEnabled(7003) + Control.HasFocus(7003)</visible>
+		</control>
+	</include>
+
+	<include name="DefaultFirstTimeInstallationStepImage">
+		<control type="image" id="8110">
+			<posx>260</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressBack.png</texture>
+		</control>
+		<control type="image" id="8111">
+			<posx>300</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressBack.png</texture>
+		</control>
+		<control type="image" id="8112">
+			<posx>340</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressBack.png</texture>
+		</control>
+		<control type="image" id="8113">
+			<posx>380</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressBack.png</texture>
+		</control>
+		<control type="image" id="8114">
+			<posx>420</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressBack.png</texture>
+		</control>
+		<control type="image" id="8115">
+			<posx>460</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressBack.png</texture>
+		</control>	
+		<control type="image" id="8100">
+			<posx>260</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressMid.png</texture>
+		</control>
+		<control type="image" id="8101">
+			<posx>300</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressMid.png</texture>
+		</control>
+		<control type="image" id="8102">
+			<posx>340</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressMid.png</texture>
+		</control>
+		<control type="image" id="8103">
+			<posx>380</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressMid.png</texture>
+		</control>
+		<control type="image" id="8104">
+			<posx>420</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressMid.png</texture>
+		</control>
+		<control type="image" id="8105">
+			<posx>460</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressMid.png</texture>
+		</control>
+		
+	</include>
+
 	<include name="DefaultBackgroundFade">
 		 <animation effect="fade" time="600">Visible</animation>
 		 <animation effect="fade" time="600">Hidden</animation>
