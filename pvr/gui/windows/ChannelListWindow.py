@@ -179,7 +179,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		#self.SqlTest( )
 
-		self.ShowIsRunRec( )
+		self.ShowRecording( )
 		self.SetVideoSize( )
 
 		#initialize get cache
@@ -2543,7 +2543,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		LOG_TRACE( 'Leave' )
 
-	def ShowIsRunRec( self ) :
+	def ShowRecording( self ) :
 		LOG_TRACE('Enter')
 
 		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
