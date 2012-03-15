@@ -56,7 +56,7 @@ class TimeShiftPlate(BaseWindow):
 		self.mWin = xbmcgui.Window( self.mWinId )
 		LOG_TRACE( 'winID[%d]'% self.mWinId )
 
-
+		self.mCtrlImgRec            = self.getControl(  10 )
 		self.mCtrlImgRewind	        = self.getControl(  31 )
 		self.mCtrlImgForward        = self.getControl(  32 )
 		self.mCtrlLblSpeed          = self.getControl(  33 )
@@ -90,8 +90,9 @@ class TimeShiftPlate(BaseWindow):
 		self.mFlagUserMove = False
 		self.mAccelator = 0
 		self.mINSTime = 0
-		self.mRepeatStatus = 1
+		self.mRepeatTimeout = 1
 
+		self.ShowIsRunRec( )
 		
 		#get channel
 		#self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
@@ -154,7 +155,11 @@ class TimeShiftPlate(BaseWindow):
 				#self.mCommander.Player_JumpByIFrame( 10000 )
 				LOG_TRACE('right moveTime[%s]'% self.mUserMoveTime )
 
-
+		#test
+		elif id == 104 : #scroll up
+			self.ShowIsRunRec()
+		elif id == 105 :
+			pass
 
 	def onClick(self, aControlId):
 		LOG_TRACE( 'control %d' % aControlId )
@@ -166,20 +171,25 @@ class TimeShiftPlate(BaseWindow):
 			self.GlobalAction( Action.ACTION_MUTE )
 		
 		elif aControlId == self.mCtrlBtnStartRec.getId() :
-			runningCount = self.mCommander.Record_GetRunningRecorderCount()
+			runningCount = self.ShowIsRunRec()
 			LOG_TRACE( 'runningCount=%d' %runningCount)
 
 			GuiLock2(True)
 			if  runningCount < 2 :
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 				dialog.doModal()
+
+				isOK = dialog.IsOK()
+				if isOK == E_DIALOG_STATE_YES :
+					self.mCtrlImgRec.setVisible( True )
 			else:
 				msg = 'Already %d recording(s) running' %runningCount
 				xbmcgui.Dialog().ok('Infomation', msg )
 			GuiLock2(False)
 
+
 		elif aControlId == self.mCtrlBtnStopRec.getId() :
-			runningCount = self.mCommander.Record_GetRunningRecorderCount()
+			runningCount = self.ShowIsRunRec()
 			LOG_TRACE( 'runningCount=%d' %runningCount )
 
 			if  runningCount > 0 :
@@ -187,6 +197,9 @@ class TimeShiftPlate(BaseWindow):
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
 				dialog.doModal()
 				GuiLock2(False)
+
+			time.sleep(1.5)
+			self.ShowIsRunRec()
 
 		elif aControlId == self.mCtrlBtnBookMark.getId():
 			self.ShowDialog( aControlId )
@@ -427,10 +440,10 @@ class TimeShiftPlate(BaseWindow):
 			self.mCtrlBtnVolume.setVisible( aValue )
 
 		elif aCtrlID == self.mCtrlBtnStartRec.getId( ) :
-			self.mCtrlBtnStartRec.setVisible( aValue )
+			self.mCtrlBtnStartRec.setEnabled( aValue )
 
 		elif aCtrlID == self.mCtrlBtnStopRec.getId( ) :
-			self.mCtrlBtnStopRec.setVisible( aValue )
+			self.mCtrlBtnStopRec.setEnabled( aValue )
 
 		elif aCtrlID == self.mCtrlBtnRewind.getId( ) :
 			self.mCtrlBtnRewind.setVisible( aValue )
@@ -438,11 +451,13 @@ class TimeShiftPlate(BaseWindow):
 		elif aCtrlID == self.mCtrlBtnPlay.getId( ) :
 			self.mCtrlBtnPlay.setVisible( aValue )
 			if aExtra :
+				time.sleep(0.050)
 				self.setFocusId( aCtrlID )
 
 		elif aCtrlID == self.mCtrlBtnPause.getId( ) :
 			self.mCtrlBtnPause.setVisible( aValue )
 			if aExtra :
+				time.sleep(0.050)
 				self.setFocusId( aCtrlID )
 
 		elif aCtrlID == self.mCtrlBtnStop.getId( ) :
@@ -472,10 +487,13 @@ class TimeShiftPlate(BaseWindow):
 		elif aCtrlID == self.mCtrlLblSpeed.getId( ) :
 			self.mCtrlLblSpeed.setLabel( aValue )
 
+		elif aCtrlID == self.mCtrlImgRec.getId( ) :
+			self.mCtrlImgRec.setVisible( aValue )
+
+
 
 		elif aCtrlID == self.mCtrlLblMode.getId( ) :
 			self.mCtrlLblMode.setLabel( aValue )
-
 
 		LOG_TRACE( 'Leave' )
 
@@ -518,9 +536,9 @@ class TimeShiftPlate(BaseWindow):
 			else :
 				lblMode = 'UNKNOWN'
 
-			lblMode = 'testLabel mode:' + lblMode + ' current:[%s]'% status.mPlayTimeInMs
+			test = EpgInfoClock(FLAG_CLOCKMODE_HMS, status.mPlayTimeInMs, 0)
+			lblMode = 'mode:' + lblMode + ' current:[%s] currentToTime[%s] timeout[%s]'% (status.mPlayTimeInMs, test[0], self.mRepeatTimeout)
 			self.UpdateLabelGUI( self.mCtrlLblMode.getId(), lblMode )
-
 
 
 			#progress info
@@ -529,13 +547,13 @@ class TimeShiftPlate(BaseWindow):
 			self.mTimeshift_endTime = 0.0
 			self.mTimeshift_playTime= status.mPlayTimeInMs
 
-
 			#start,endtime when timeshift
 			if self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				#strTime to timeT
 				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, self.mTimeShiftExcuteTime, 0)
 				self.mTimeshift_staTime = EpgInfoClock(FLAG_CLOCKMODE_INTTIME, 0, ret[0])
 				self.mTimeshift_curTime = self.mTimeshift_staTime
+				#self.mTimeshift_curTime = status.mPlayTimeInMs
 
 				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, self.mLocalTime, 0)
 				endtime = EpgInfoClock(FLAG_CLOCKMODE_INTTIME, 0, ret[0]) + loop
@@ -570,12 +588,16 @@ class TimeShiftPlate(BaseWindow):
 			#Speed label
 			self.mSpeed  = status.mSpeed
 
-			#self.mRepeatStatus = abs(self.mSpeed) / 100
+			if self.mSpeed != 0 :
+				self.mRepeatTimeout = 100.0 / abs(self.mSpeed)
+				if self.mRepeatTimeout < 0.1 :
+					self.mRepeatTimeout = 0.1
 
 			if self.mSpeed == 100 :
 				flag_Rewind  = False
 				flag_Forward = False
 				lbl_speed = ''
+				self.mRepeatTimeout = 1 #sec
 
 			elif self.mSpeed >= 120 and self.mSpeed <= 12800:
 				flag_Rewind  = False
@@ -745,18 +767,18 @@ class TimeShiftPlate(BaseWindow):
 		while self.mEnableThread:
 			#LOG_TRACE( 'repeat <<<<' )
 
-			if  ( loop % self.mRepeatStatus ) == 0 :
-				#LOG_TRACE( 'loop=%d' %loop )
+			if self.mSpeed != 0 :
 				self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
-				#self.UpdateLocalTime( )
 
-			self.InitTimeShift( )
-			self.UpdateLocalTime( loop )
-			#self.RestartAsyncMove()
+				self.InitTimeShift( )
+				self.UpdateLocalTime( loop )
+				#self.RestartAsyncMove()
 
-			time.sleep(self.mRepeatStatus)
-			self.mLocalTime += 1
-			#loop += 1
+				time.sleep(self.mRepeatTimeout)
+				#self.mLocalTime += 1
+				#loop += 1
+			else :
+				time.sleep(1)
 
 		LOG_TRACE( 'leave_end thread' )
 
@@ -787,7 +809,7 @@ class TimeShiftPlate(BaseWindow):
 				self.mProgress_max = endtime
 				pastTime = self.mTimeshift_curTime + self.mPlayTime + self.mUserMoveTime
 				self.mProgress_idx = ( float(pastTime) / self.mProgress_max * 100 )
-				LOG_TRACE( 'pastTime[%s] idx[%s] max[%s] move[%s]'% ( pastTime, self.mProgress_idx, self.mProgress_max, self.mUserMoveTime ) )
+				LOG_TRACE( 'pastTime[%s] idx[%s] max[%s] move[%s]'% (pastTime, self.mProgress_idx, self.mProgress_max, self.mUserMoveTime ) )
 
 				if self.mProgress_idx > 100 or self.mProgress_idx < 0 :
 					self.mUserMoveTime = self.mUserMoveTimeBack
@@ -847,6 +869,30 @@ class TimeShiftPlate(BaseWindow):
 
 	def showEPGDescription(self, aFocusid, aEvent):
 		LOG_TRACE( '' )
+
+	def ShowIsRunRec( self ) :
+		LOG_TRACE('Enter')
+
+		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+		LOG_TRACE('isRunRecCount[%s]'% isRunRec)
+
+		imgValue = False
+		btnValue = False
+		if isRunRec > 0 :
+			imgValue = True
+		else :
+			imgValue = False
+		self.UpdateLabelGUI( self.mCtrlImgRec.getId(), imgValue )
+
+		if isRunRec >= 2 :
+			btnValue = False
+		else :
+			btnValue = True
+		self.UpdateLabelGUI( self.mCtrlBtnStartRec.getId(), btnValue )
+
+		return isRunRec
+
+		LOG_TRACE('Leave')
 
 		
 	def Close( self ):

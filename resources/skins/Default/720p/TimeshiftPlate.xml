@@ -7,7 +7,7 @@
 			<!--animation effect="slide" start="0,570" end="0,0" time="300" delay="300" tween="quadratic" easing="out">WindowOpen</animation>
 			<animation effect="slide" start="0,0" end="0,570" time="300" delay="150" tween="quadratic" easing="out" >WindowClose</animation-->
 			<include>Window_OpenClose_Animation</include>
-			<control type="group" id="10">
+			<control type="group">
 				<control type="image">
 					<description>media info background image</description>
 					<posx>0</posx>
@@ -15,6 +15,27 @@
 					<width>1320</width>
 					<height>256</height>
 					<texture>confluence/MediaInfoBackLower.png</texture>
+				</control>
+			</control>
+
+<!-- Rec info -->
+			<control type="group">
+				<posx>0</posx>
+				<posy>0</posy>
+				<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="Control.IsVisible(10)">conditional</animation>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>100</width>
+					<height>35</height>
+					<texture border="0,0,32,0">confluence/header.png</texture>
+				</control>
+				<control type="image" id="10">
+					<posx>10</posx>
+					<posy>2</posy>
+					<width>60</width>
+					<height>25</height>
+					<texture>i_record.png</texture>
 				</control>
 			</control>
 
@@ -310,8 +331,8 @@
 					<height>45</height>
 					<label>13395</label>
 					<font>-</font>
-					<texturefocus>confluence/OSDRecordFO.png</texturefocus>
-					<texturenofocus>confluence/OSDRecordNF.png</texturenofocus>
+					<texturefocus>confluence/OSDStopFO.png</texturefocus>
+					<texturenofocus>confluence/OSDStopNF.png</texturenofocus>
 					<onleft>402</onleft>
 					<onright>404</onright>
 					<onup>202</onup>
@@ -365,7 +386,7 @@
 							<onright>407</onright>
 							<onup>202</onup>
 							<ondown>202</ondown>
-							<!--visible>!Control.IsVisible(405)</visible-->
+							<visible>!Control.IsVisible(405)</visible>
 						</control>
 					</control>
 					<!--control type="button" id="405">

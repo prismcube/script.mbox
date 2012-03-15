@@ -15,6 +15,27 @@
 				<!--texture>gray_noAlpha.png</texture-->
 			</control>
 
+<!-- Rec info -->
+			<control type="group">
+				<posx>0</posx>
+				<posy>0</posy>
+				<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="Control.IsVisible(10)">conditional</animation>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>100</width>
+					<height>35</height>
+					<texture border="0,0,32,0">confluence/header.png</texture>
+				</control>
+				<control type="image" id="10">
+					<posx>10</posx>
+					<posy>2</posy>
+					<width>60</width>
+					<height>25</height>
+					<texture>i_record.png</texture>
+				</control>
+			</control>
+
 <!-- info section -->			
 			<control type="group" id="600">
 				<posx>50</posx>
@@ -184,10 +205,10 @@
 						<textcolor>grey3</textcolor>
 						<texturefocus>confluence/DefaultIconWarning.png</texturefocus>
 						<texturenofocus>confluence/DefaultIconInfo.png</texturenofocus>
-						<onleft>SetFocus(629)</onleft>
-						<onright>SetFocus(622)</onright>
+						<onleft>629</onleft>
+						<onright>622</onright>
 						<onup></onup>
-						<ondown>SetFocus(702)</ondown>
+						<ondown>702</ondown>
 						<description>expantion info</description>
 					</control>
 
@@ -209,10 +230,10 @@
 						<textcolor>grey3</textcolor>
 						<texturefocus>confluence/OSDPlaylistFO.png</texturefocus>
 						<texturenofocus>confluence/OSDPlaylistNF.png</texturenofocus>
-						<onleft>SetFocus(621)</onleft>
-						<onright>SetFocus(623)</onright>
+						<onleft>621</onleft>
+						<onright>623</onright>
 						<onup></onup>
-						<ondown>SetFocus(702)</ondown>
+						<ondown>702</ondown>
 						<description>teletext</description>
 					</control>
 
@@ -234,10 +255,10 @@
 						<textcolor>grey3</textcolor>
 						<texturefocus>confluence/OSDSubtitlesFO.png</texturefocus>
 						<texturenofocus>confluence/OSDSubtitlesNF.png</texturenofocus>
-						<onleft>SetFocus(622)</onleft>
-						<onright>SetFocus(624)</onright>
+						<onleft>622</onleft>
+						<onright>624</onright>
 						<onup></onup>
-						<ondown>SetFocus(702)</ondown>
+						<ondown>702</ondown>
 						<description>subtitle</description>
 					</control>
 
@@ -259,10 +280,10 @@
 						<textcolor>grey3</textcolor>
 						<texturefocus>confluence/OSDRecord2.png</texturefocus>
 						<texturenofocus>confluence/OSDRecordNF.png</texturenofocus>
-						<onleft>SetFocus(623)</onleft>
-						<onright>SetFocus(625)</onright>
+						<onleft>623</onleft>
+						<onright>625</onright>
 						<onup></onup>
-						<ondown>SetFocus(702)</ondown>
+						<ondown>702</ondown>
 						<description>start record</description>
 					</control>
 					<!--control type="image">
@@ -283,10 +304,10 @@
 						<textcolor>grey3</textcolor>
 						<texturefocus>confluence/OSDStopFO.png</texturefocus>
 						<texturenofocus>confluence/OSDStopNF.png</texturenofocus>
-						<onleft>SetFocus(624)</onleft>
-						<onright>SetFocus(629)</onright>
+						<onleft>624</onleft>
+						<onright>629</onright>
 						<onup></onup>
-						<ondown>SetFocus(702)</ondown>
+						<ondown>702</ondown>
 						<description>stop record</description>
 					</control>
 
@@ -309,10 +330,10 @@
 							<textcolor>grey3</textcolor>
 							<texturefocus>confluence/OSDAudioFO.png</texturefocus>
 							<texturenofocus>confluence/OSDAudioNF.png</texturenofocus>
-							<onleft>SetFocus(625)</onleft>
-							<onright>SetFocus(621)</onright>
+							<onleft>625</onleft>
+							<onright>621</onright>
 							<onup></onup>
-							<ondown>SetFocus(702)</ondown>
+							<ondown>702</ondown>
 							<onclick>Mute</onclick>
 							<description>mute,audio off</description>
 						</control>
