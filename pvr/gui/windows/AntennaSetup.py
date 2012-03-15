@@ -14,11 +14,16 @@ E_DEFAULT_GOURP_ID		= 9000
 class AntennaSetup( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-		
+		self.mFirstInstallationType = False
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
+
+		if self.mFirstInstallationType == True :
+			self.DrawFirstTimeInstallationStep( E_STEP_ANTENNA )
+		else :
+			self.DrawFirstTimeInstallationStep( None )
 
 		self.SetPipScreen( )
 		
@@ -164,3 +169,7 @@ class AntennaSetup( SettingWindow ) :
 		else :
 			self.SetEnableControl( E_SpinEx04, True)
 			self.SetEnableControl( E_Input02, True )
+
+
+	def SetWindowType( self, aType ) :
+		self.mFirstInstallationType = aType
