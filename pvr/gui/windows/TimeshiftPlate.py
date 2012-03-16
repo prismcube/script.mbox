@@ -794,15 +794,16 @@ class TimeShiftPlate(BaseWindow):
 		while self.mEnableThread:
 			#LOG_TRACE( 'repeat <<<<' )
 
-			if self.mSpeed != 0 :
-				self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
+			#update localTime
+			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
+			lbl_localTime = EpgInfoClock(FLAG_CLOCKMODE_AHM, self.mLocalTime, 0)
+			self.mCtrlEventClock.setLabel( lbl_localTime[0] )
+			#self.mCtrlEventClock.setLabel( TimeToString( self.mLocalTime, TimeFormatEnum.E_HH_MM ) )
 
+			if self.mSpeed != 0 :
 				self.InitTimeShift( )
 				self.UpdateLocalTime( loop )
-				#self.RestartAsyncMove()
-
 				time.sleep(self.mRepeatTimeout)
-				#self.mLocalTime += 1
 				#loop += 1
 			else :
 				time.sleep(1)
@@ -815,13 +816,8 @@ class TimeShiftPlate(BaseWindow):
 		#LOG_TRACE( 'untilThread[%s] self.mProgress_max[%s]' % (self.mEnableThread, self.mProgress_max) )
 
 		try :
-			lbl_localTime = ''
 			lbl_timeE = ''
 			lbl_timeP = ''
-
-			#update localTime
-			ret = EpgInfoClock(FLAG_CLOCKMODE_AHM, self.mLocalTime, 0)
-			lbl_localTime = ret[0]
 
 			#start,endtime when timeshift
 			if self.mMode == ElisEnum.E_MODE_TIMESHIFT :
@@ -881,7 +877,6 @@ class TimeShiftPlate(BaseWindow):
 				self.mPlayTime += 1
 				#LOG_TRACE( 'posx[%s] [%s] [%s]'% (posx, pastTime, pastTime/self.mProgress_max) )
 
-			self.mCtrlEventClock.setLabel(lbl_localTime)
 			#if self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 			#	self.mCtrlLblTSEndTime.setLabel( lbl_timeE )
 
@@ -944,7 +939,7 @@ class TimeShiftPlate(BaseWindow):
 
 
 	def StartAsyncMove( self ) :
-		self.mAsyncShiftTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentMove ) 				
+		self.mAsyncShiftTimer = threading.Timer( 1.5, self.AsyncUpdateCurrentMove ) 				
 		self.mAsyncShiftTimer.start()
 
 		self.mAccelator += 1
@@ -962,8 +957,9 @@ class TimeShiftPlate(BaseWindow):
 		try :
 			if self.mTimeshift_playTime :
 				if self.mAccelator > 2 :
-					self.mUserMoveTime = int( self.mUserMoveTime * (1.5 ** self.mAccelator) / 1000 )
-				frameJump = self.mTimeshift_playTime + self.mUserMoveTime * 100
+					#self.mUserMoveTime = int( self.mUserMoveTime * (1.5 ** self.mAccelator) / 10000 )
+					self.mUserMoveTime = self.mUserMoveTime * self.mAccelator
+				frameJump = self.mTimeshift_playTime + self.mUserMoveTime * 1000
 				ret = self.mCommander.Player_JumpToIFrame( frameJump )
 				LOG_TRACE('2============frameJump[%s] ret[%s]'% (frameJump,ret) )
 				if ret :
