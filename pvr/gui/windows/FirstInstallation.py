@@ -14,7 +14,8 @@ from ElisEventClass import *
 from ElisEnum import ElisEnum
 
 
-E_EMPTY_BUTTON_ID				=	999
+E_MAIN_GROUP_ID		=	9000
+E_FAKE_BUTTON		=	999
 
 
 class FirstInstallation( SettingWindow ) :
@@ -33,11 +34,14 @@ class FirstInstallation( SettingWindow ) :
 		self.mHasChannel		= False
 
 		self.mStepImage			= []
+		self.mIsAlreadyClose 	= False
+		self.mIsNextAntenna		= True
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
+		self.getControl( E_MAIN_GROUP_ID ).setVisible( True )
 		self.SetPipScreen( )
 		
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'First Installation' )
@@ -59,18 +63,11 @@ class FirstInstallation( SettingWindow ) :
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				self.ResetAllControl( )
-				self.SetVideoRestore( )
-				self.mStepNum = E_STEP_SELECT_LANGUAGE				
-				self.close( )
+				self.Close( )
 			elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 				return	
 			elif dialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
 				return
-			
-			self.ResetAllControl( )
-			self.SetVideoRestore( )
-			self.close( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -83,18 +80,11 @@ class FirstInstallation( SettingWindow ) :
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				self.ResetAllControl( )
-				self.SetVideoRestore( )
-				self.mStepNum = E_STEP_SELECT_LANGUAGE
-				self.close( )
+				self.Close( )
 			elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 				return	
 			elif dialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
 				return
-			
-			self.ResetAllControl( )
-			self.SetVideoRestore( )
-			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )
@@ -114,18 +104,16 @@ class FirstInstallation( SettingWindow ) :
 
 		if self.mStepNum == E_STEP_SELECT_LANGUAGE :
 			if groupId == E_FIRST_TIME_INSTALLATION_NEXT :
-				self.setFocusId( E_EMPTY_BUTTON_ID )
+				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )
 				self.SetListControl( E_STEP_VIDEO_AUDIO )
 			else :
 				self.ControlSelect( )
+			return
 
 		elif self.mStepNum == E_STEP_VIDEO_AUDIO :
 			if groupId == E_FIRST_TIME_INSTALLATION_NEXT :
-				WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_ANTENNA_SETUP ).SetWindowType( True )
-				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
-				WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_ANTENNA_SETUP ).SetWindowType( False )
-				self.SetListControl( E_STEP_CHANNEL_SEARCH_CONFIG )
+				self.OpenAntennaSetupWindow( )
 			else :
 				self.ControlSelect( )
 
@@ -137,15 +125,15 @@ class FirstInstallation( SettingWindow ) :
 
 		elif self.mStepNum == E_STEP_RESULT :
 			if groupId == E_FIRST_TIME_INSTALLATION_NEXT :
-				self.ResetAllControl( )
-				self.SetVideoRestore( )
-				self.mStepNum = E_STEP_SELECT_LANGUAGE
-				self.close( )
+				self.Close( )
 
 		if groupId == E_FIRST_TIME_INSTALLATION_PREV :
-			self.setFocusId( E_EMPTY_BUTTON_ID )
-			time.sleep( 0.3 )
-			self.SetListControl( self.mPrevStepNum )
+			if self.mStepNum == E_STEP_CHANNEL_SEARCH_CONFIG :
+				self.OpenAntennaSetupWindow( )
+			else :				
+				self.setFocusId( E_FAKE_BUTTON )
+				time.sleep( 0.3 )
+				self.SetListControl( self.mPrevStepNum )
 
 
 	def onFocus( self, aControlId ) :
@@ -154,6 +142,44 @@ class FirstInstallation( SettingWindow ) :
 		if self.mLastFocused != aControlId :
 			self.ShowDescription( )
 			self.mLastFocused = aControlId
+
+
+	def Close( self ) :
+		self.ResetAllControl( )
+		self.SetVideoRestore( )
+		self.mStepNum = E_STEP_SELECT_LANGUAGE
+		self.close( )
+
+
+	def OpenAntennaSetupWindow( self ) :
+		WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_ANTENNA_SETUP ).SetWindowType( True )
+		WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
+		WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_ANTENNA_SETUP ).SetWindowType( False )
+		if self.GetResultAntennaStep( ) == True :
+			self.SetListControl( E_STEP_CHANNEL_SEARCH_CONFIG )
+		else :
+			self.SetListControl( E_STEP_VIDEO_AUDIO )
+		if self.GetAlreadyClose( ) == True :
+			self.getControl( E_MAIN_GROUP_ID ).setVisible( False )
+			self.SetAlreadyClose( False ) 
+			self.Close( )
+			self.getControl( E_MAIN_GROUP_ID ).setVisible( True )
+
+
+	def GetAlreadyClose( self ) :
+		return self.mIsAlreadyClose
+
+
+	def SetAlreadyClose( self, aFlag ) :
+		self.mIsAlreadyClose = aFlag
+
+
+	def SetResultAntennaStep( self, aFlag ) :
+		self.mIsNextAntenna = aFlag
+
+
+	def GetResultAntennaStep( self ) :
+		return self.mIsNextAntenna
 
 
 	def SetListControl( self, aStep ) :
@@ -166,7 +192,7 @@ class FirstInstallation( SettingWindow ) :
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( 'Select Language' )
 			self.AddEnumControl( E_SpinEx01, 'Language', None, 'Select Language & Lacation' )
 			self.AddEnumControl( E_SpinEx02, 'Audio Language' )
-			self.AddPrevNextButton( )
+			self.AddNextButton( )
 			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02 ]
@@ -179,7 +205,6 @@ class FirstInstallation( SettingWindow ) :
 			self.InitControl( )
 			self.SetFocusControl( E_SpinEx01 )
 			self.ShowDescription( )
-			
 			return
 
 		elif self.mStepNum == E_STEP_VIDEO_AUDIO :
@@ -285,7 +310,7 @@ class FirstInstallation( SettingWindow ) :
 					cntRadio = cntRadio + 1
 			self.AddInputControl( E_Input04, 'TV Channels', '%d' % cntChannel )
 			self.AddInputControl( E_Input05, 'Radio Channels', '%d' % cntRadio )
-			self.AddPrevNextButton( )
+			self.AddNextButton( )
 			self.SetPrevNextButtonLabel( )
 			
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
@@ -303,17 +328,14 @@ class FirstInstallation( SettingWindow ) :
 	def SetPrevNextButtonLabel( self ) :
 		if self.mStepNum == E_STEP_SELECT_LANGUAGE :
 			self.SetVisibleControl( E_FIRST_TIME_INSTALLATION_PREV, False )
-			self.SetEnableControl( E_FIRST_TIME_INSTALLATION_PREV, False )
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( 'Next' )
 
 		elif self.mStepNum == E_STEP_RESULT :
 			self.SetVisibleControl( E_FIRST_TIME_INSTALLATION_PREV, False )
-			self.SetEnableControl( E_FIRST_TIME_INSTALLATION_PREV, False )
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( 'Exit' )
 
 		else :
 			self.SetVisibleControl( E_FIRST_TIME_INSTALLATION_PREV, True )
-			self.SetEnableControl( E_FIRST_TIME_INSTALLATION_PREV, True )
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( 'Next' )
 
 
@@ -368,11 +390,11 @@ class FirstInstallation( SettingWindow ) :
 					dialog.SetConfiguredSatellite( configuredSatelliteList )				
 					dialog.doModal( )
 
-				self.setFocusId( E_EMPTY_BUTTON_ID )
+				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )
 				self.SetListControl( E_STEP_DATE_TIME )				
 			else :
-				self.setFocusId( E_EMPTY_BUTTON_ID )
+				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )
 				self.SetListControl( E_STEP_DATE_TIME )
 
@@ -444,13 +466,13 @@ class FirstInstallation( SettingWindow ) :
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
 				self.mDataCache.Channel_SetCurrent( oriChannel.mNumber, oriChannel.mServiceType) # Todo After : using ServiceType to different way
 
-				self.setFocusId( E_EMPTY_BUTTON_ID )
+				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )
 				self.SetListControl( E_STEP_RESULT )
 				return
 				
 			else :
-				self.setFocusId( E_EMPTY_BUTTON_ID )
+				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )
 				self.SetListControl( E_STEP_RESULT )
 				return

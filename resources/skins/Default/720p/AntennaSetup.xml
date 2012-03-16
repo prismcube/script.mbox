@@ -16,6 +16,7 @@
 				<include>Input01</include>
 				<include>SpinEx04</include>
 				<include>Input02</include>
+				<include>DefaultFirstTimeInstallationButton</include>
 				<include>DefaultFirstTimeInstallationStepImage</include>
 			</control>
 		</control>
