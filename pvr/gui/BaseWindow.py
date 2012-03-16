@@ -181,7 +181,6 @@ class SettingWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__(self, *args, **kwargs)
 		self.mControlList = []
-		self.mFirstTimeInstallationType = False
 
 
 	def InitControl( self ) :
@@ -269,7 +268,10 @@ class SettingWindow( BaseWindow ) :
 	def AddPrevNextButton( self ) :
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_PREV, None, None, None, None ) ) 
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_NEXT, None, None, None, None ) )
-		self.mFirstTimeInstallationType = True
+
+
+	def AddNextButton( self ) :
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_NEXT, None, None, None, None ) )
 
 
 	def ShowDescription( self ) :

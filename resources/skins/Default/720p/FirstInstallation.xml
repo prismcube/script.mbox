@@ -30,14 +30,6 @@
 				<include>DefaultFirstTimeInstallationStepImage</include>
 			</control>
 		</control>
-		<control type="button" id="999">
-			<description>empty button</description>
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>1</width>
-			<height>1</height>
-			<texturenofocus>confluence/black-back.png</texturenofocus>
-			<texturefocus>confluence/black-back.png</texturefocus>
-		</control>
+		<include>DefaultFakeButton</include>
 	</controls>
 </window>
