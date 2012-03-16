@@ -800,13 +800,19 @@ class TimeShiftPlate(BaseWindow):
 			self.mCtrlEventClock.setLabel( lbl_localTime[0] )
 			#self.mCtrlEventClock.setLabel( TimeToString( self.mLocalTime, TimeFormatEnum.E_HH_MM ) )
 
+			"""
 			if self.mSpeed != 0 :
 				self.InitTimeShift( )
 				self.UpdateLocalTime( loop )
 				time.sleep(self.mRepeatTimeout)
-				#loop += 1
+			#loop += 1
 			else :
 				time.sleep(1)
+			"""
+			self.InitTimeShift( )
+			self.UpdateLocalTime( loop )
+			time.sleep(self.mRepeatTimeout)
+			
 
 		LOG_TRACE( 'leave_end thread' )
 
