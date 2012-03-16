@@ -945,8 +945,6 @@ class LivePlate(BaseWindow):
 
 			publicBtn = ( selectIdx1 * 10 ) + E_DialogInput01
 			if publicBtn == E_DialogInput01 :
-				#TODO Video format
-
 				getFormat = ElisPropertyEnum( 'TV Aspect', self.mCommander ).GetPropString( )
 				listProperty = ElisPropertyEnum( 'TV Aspect', self.mCommander ).mProperty
 				LOG_TRACE ('get[%s] list[%s]'% (getFormat, listProperty) )
@@ -959,7 +957,7 @@ class LivePlate(BaseWindow):
 						label = '%s%s%s' % (E_TAG_COLOR_GREY,ele[1],E_TAG_COLOR_END)
 					
 					context.append( ContextItem( label ) )
-				LOG_TRACE ('list[%s]'% context )
+				#LOG_TRACE ('list[%s]'% context )
 
 				GuiLock2( True )
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
@@ -972,8 +970,30 @@ class LivePlate(BaseWindow):
 
 
 			elif publicBtn == E_DialogInput02 :
-				#TODO Audio Track
-				pass
+				getCount = self.mDataCache.Audiotrack_GetCount( )
+				selectIdx= self.mDataCache.Audiotrack_GetSelectedIndex( )
+				#LOG_TRACE('AudioTrack count[%s] select[%s]'% (getCount, selectIdx) )
+
+				context = []
+				for idx in range(getCount) :
+					idxTrack = self.mDataCache.Audiotrack_Get( idx )
+					#LOG_TRACE('getTrack name[%s] lang[%s]'% (idxTrack.mName, idxTrack.mLang) )
+					if selectIdx == idx :
+						label = '%s%s-%s%s' % (E_TAG_COLOR_WHITE,idxTrack.mName,idxTrack.mLang,E_TAG_COLOR_END)
+					else :
+						label = '%s%s-%s%s' % (E_TAG_COLOR_GREY,idxTrack.mName,idxTrack.mLang,E_TAG_COLOR_END)
+
+					context.append( ContextItem( label ) )
+
+				GuiLock2( True )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+				dialog.SetProperty( context )
+				dialog.doModal( )
+				GuiLock2( False )
+
+				selectIdx2 = dialog.GetSelectedIndex( )
+				self.mDataCache.Audiotrack_select( selectIdx2 )
+
 
 			LOG_TRACE('Select[%s --> %s]'% (selectIdx1, selectIdx2) )
 
