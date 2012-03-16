@@ -46,6 +46,11 @@ E_IMG_ICON_ICAS   = 'IconCas.png'
 E_IMG_ICON_TV     = 'confluence/tv.png'
 E_IMG_ICON_RADIO  = 'icon_radio.png'
 
+E_TAG_COLOR_WHITE = '[COLOR white]'
+E_TAG_COLOR_GREY  = '[COLOR grey]'
+E_TAG_COLOR_GREY3 = '[COLOR grey3]'
+E_TAG_COLOR_END   = '[/COLOR]'
+
 NEXT_EPG		= 0
 PREV_EPG 		= 1
 
@@ -113,6 +118,7 @@ class LivePlate(BaseWindow):
 		self.mCtrlBtnStartRec          = self.getControl( 624 )
 		self.mCtrlBtnStopRec           = self.getControl( 625 )
 		self.mCtrlBtnMute              = self.getControl( 626 )
+		self.mCtrlBtnSettingFormat     = self.getControl( 627 )
 		self.mCtrlImgLocked            = self.getControl( 651 )
 		self.mCtrlImgICas              = self.getControl( 652 )
 		#self.mCtrlBtnTSbanner          = self.getControl( 630 )
@@ -120,7 +126,8 @@ class LivePlate(BaseWindow):
 		self.mCtrlBtnPrevEpg           = self.getControl( 702 )
 		self.mCtrlBtnNextEpg           = self.getControl( 706 )
 
-		self.ShowIsRunRec( )
+		self.ShowRecording( )
+
 		self.mImgTV    = E_IMG_ICON_TV
 		self.mCtrlLblEventClock.setLabel('')
 
@@ -278,6 +285,12 @@ class LivePlate(BaseWindow):
 
 		elif aControlId == self.mCtrlBtnStopRec.getId() :
 			LOG_TRACE( 'click stop recording' )
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
+			self.ShowDialog( aControlId )
+
+		elif aControlId == self.mCtrlBtnSettingFormat.getId() :
+			LOG_TRACE( 'click setting format' )
 			self.StopAutomaticHide()
 			self.SetAutomaticHide( False )
 			self.ShowDialog( aControlId )
@@ -884,7 +897,7 @@ class LivePlate(BaseWindow):
 			msg2 = 'test'
 
 		elif aFocusid == self.mCtrlBtnStartRec.getId() :
-			runningCount = self.ShowIsRunRec()
+			runningCount = self.ShowRecording()
 			LOG_TRACE( 'runningCount=%d' %runningCount)
 
 			GuiLock2(True)
@@ -901,44 +914,123 @@ class LivePlate(BaseWindow):
 			GuiLock2(False)
 
 		elif aFocusid == self.mCtrlBtnStopRec.getId() :
-			runningCount = self.mCommander.Record_GetRunningRecorderCount()
+			runningCount = self.ShowRecording()
 			LOG_TRACE( 'runningCount=%d' %runningCount )
 
 			if  runningCount > 0 :
-				GuiLock2(True)
+				GuiLock2( True )
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
-				dialog.doModal()
-				GuiLock2(False)
+				dialog.doModal( )
+				GuiLock2( False )
 
 			time.sleep(1.5)
-			self.ShowIsRunRec()
-			
+			self.ShowRecording( )
+
+		elif aFocusid == self.mCtrlBtnSettingFormat.getId() :
+
+			context = []
+			context.append( ContextItem( 'Video Format' ) )
+			context.append( ContextItem( 'Audio Track' ) )
+
+			GuiLock2( True )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+			dialog.SetProperty( context )
+			dialog.doModal( )
+			GuiLock2( False )
+
+			selectIdx1 = dialog.GetSelectedIndex( )
+			if selectIdx1 == -1 :
+				LOG_TRACE('CANCEL by context dialog')
+				return
+
+			publicBtn = ( selectIdx1 * 10 ) + E_DialogInput01
+			if publicBtn == E_DialogInput01 :
+				getFormat = ElisPropertyEnum( 'TV Aspect', self.mCommander ).GetPropString( )
+				listProperty = ElisPropertyEnum( 'TV Aspect', self.mCommander ).mProperty
+				LOG_TRACE ('get[%s] list[%s]'% (getFormat, listProperty) )
+
+				context = []
+				for ele in listProperty :
+					if getFormat == ele[1] :
+						label = '%s%s%s' % (E_TAG_COLOR_WHITE,ele[1],E_TAG_COLOR_END)
+					else :
+						label = '%s%s%s' % (E_TAG_COLOR_GREY,ele[1],E_TAG_COLOR_END)
+					
+					context.append( ContextItem( label ) )
+				#LOG_TRACE ('list[%s]'% context )
+
+				GuiLock2( True )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+				dialog.SetProperty( context )
+				dialog.doModal( )
+				GuiLock2( False )
+
+				selectIdx2 = dialog.GetSelectedIndex( )
+				ElisPropertyEnum( 'TV Aspect', self.mCommander ).SetPropIndex( selectIdx2 )
+
+
+			elif publicBtn == E_DialogInput02 :
+				getCount = self.mDataCache.Audiotrack_GetCount( )
+				selectIdx= self.mDataCache.Audiotrack_GetSelectedIndex( )
+				#LOG_TRACE('AudioTrack count[%s] select[%s]'% (getCount, selectIdx) )
+
+				context = []
+				for idx in range(getCount) :
+					idxTrack = self.mDataCache.Audiotrack_Get( idx )
+					#LOG_TRACE('getTrack name[%s] lang[%s]'% (idxTrack.mName, idxTrack.mLang) )
+					if selectIdx == idx :
+						label = '%s%s-%s%s' % (E_TAG_COLOR_WHITE,idxTrack.mName,idxTrack.mLang,E_TAG_COLOR_END)
+					else :
+						label = '%s%s-%s%s' % (E_TAG_COLOR_GREY,idxTrack.mName,idxTrack.mLang,E_TAG_COLOR_END)
+
+					context.append( ContextItem( label ) )
+
+				GuiLock2( True )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+				dialog.SetProperty( context )
+				dialog.doModal( )
+				GuiLock2( False )
+
+				selectIdx2 = dialog.GetSelectedIndex( )
+				self.mDataCache.Audiotrack_select( selectIdx2 )
+
+
+			LOG_TRACE('Select[%s --> %s]'% (selectIdx1, selectIdx2) )
+
 
 		LOG_TRACE( 'Leave' )
 
-	def ShowIsRunRec( self ) :
+	def ShowRecording( self ) :
 		LOG_TRACE('Enter')
 
-		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
-		LOG_TRACE('isRunRecCount[%s]'% isRunRec)
+		try:
+			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+			LOG_TRACE('isRunRecCount[%s]'% isRunRec)
 
-		imgValue = False
-		btnValue = False
-		if isRunRec > 0 :
-			imgValue = True
-		else :
 			imgValue = False
-		self.mCtrlImgRec.setVisible( imgValue )
-
-		if isRunRec >= 2 :
 			btnValue = False
-		else :
-			btnValue = True
-		self.mCtrlBtnStartRec.setEnabled( btnValue )
+			if isRunRec > 0 :
+				imgValue = True
+			else :
+				imgValue = False
 
-		return isRunRec
+			if isRunRec >= 2 :
+				btnValue = False
+			else :
+				btnValue = True
 
-		LOG_TRACE('Leave')
+			GuiLock2( True )
+			self.mCtrlImgRec.setVisible( imgValue )
+			LOG_TRACE('imgValue[%s]'% imgValue )
+			self.mCtrlBtnStartRec.setEnabled( btnValue )
+			GuiLock2( False )
+
+			LOG_TRACE('Leave')
+
+			return isRunRec
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
 
 
 	def Close( self ):

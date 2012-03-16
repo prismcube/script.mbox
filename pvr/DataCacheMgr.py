@@ -648,3 +648,15 @@ class DataCacheMgr( object ):
 	def Record_GetRunningRecorderCount( self ) :
 		return self.mCommander.Record_GetRunningRecorderCount( )
 
+	def Audiotrack_GetCount( self ) :
+		return self.mCommander.Audiotrack_GetCount( )
+
+	def Audiotrack_GetSelectedIndex( self ) :
+		return self.mCommander.Audiotrack_GetSelectedIndex( )
+
+	def Audiotrack_select( self, aIndex ) :
+		return self.mCommander.Audiotrack_select( aIndex )
+
+	def Audiotrack_Get( self, aIndex ) :
+		return self.mCommander.Audiotrack_Get( aIndex )
+

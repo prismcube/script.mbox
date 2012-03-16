@@ -19,13 +19,14 @@
 			<control type="group">
 				<posx>0</posx>
 				<posy>0</posy>
-				<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="Control.IsVisible(10)">conditional</animation>
+				<animation effect="slide" start="-100,0" end="0,0" delay="0" time="300" condition="Control.IsVisible(10)">conditional</animation>
 				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
 					<width>100</width>
 					<height>35</height>
 					<texture border="0,0,32,0">confluence/header.png</texture>
+					<visible>Control.IsVisible(10)</visible>
 				</control>
 				<control type="image" id="10">
 					<posx>10</posx>
@@ -165,6 +166,18 @@
 						<aligny>center</aligny>
 						<font>font12</font>
 						<textcolor>white</textcolor>
+						<label>A/V Setting</label>
+						<visible>Control.HasFocus(627)</visible>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textcolor>white</textcolor>
 						<label>EPG Present</label>
 						<visible>Control.HasFocus(702)</visible>
 					</control>
@@ -205,7 +218,7 @@
 						<textcolor>grey3</textcolor>
 						<texturefocus>confluence/DefaultIconWarning.png</texturefocus>
 						<texturenofocus>confluence/DefaultIconInfo.png</texturenofocus>
-						<onleft>629</onleft>
+						<onleft>627</onleft>
 						<onright>622</onright>
 						<onup></onup>
 						<ondown>702</ondown>
@@ -331,7 +344,7 @@
 							<texturefocus>confluence/OSDAudioFO.png</texturefocus>
 							<texturenofocus>confluence/OSDAudioNF.png</texturenofocus>
 							<onleft>625</onleft>
-							<onright>621</onright>
+							<onright>627</onright>
 							<onup></onup>
 							<ondown>702</ondown>
 							<onclick>Mute</onclick>
@@ -353,6 +366,21 @@
 							<description>mute, audio on</description>
 							<visible>!Control.IsVisible(626)</visible>
 						</control-->
+					</control>
+					<control type="button" id="627">
+						<posx>270</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>45</width>
+						<height>35</height>
+						<textcolor>grey3</textcolor>
+						<texturefocus>confluence/OSDPresetSettingsFO.png</texturefocus>
+						<texturenofocus>confluence/OSDPresetSettingsNF.png</texturenofocus>
+						<onleft>629</onleft>
+						<onright>621</onright>
+						<onup></onup>
+						<ondown>702</ondown>
+						<description>setting format</description>
 					</control>
 					<!--control type="button" id="630">
 						<posx>680</posx>

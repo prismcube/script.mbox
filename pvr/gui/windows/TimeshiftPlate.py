@@ -92,7 +92,7 @@ class TimeShiftPlate(BaseWindow):
 		self.mINSTime = 0
 		self.mRepeatTimeout = 1
 
-		self.ShowIsRunRec( )
+		self.ShowRecording( )
 		
 		#get channel
 		#self.mCurrentChannel = self.mCommander.Channel_GetCurrent()
@@ -157,7 +157,7 @@ class TimeShiftPlate(BaseWindow):
 
 		#test
 		elif id == 104 : #scroll up
-			self.ShowIsRunRec()
+			self.ShowRecording()
 		elif id == 105 :
 			pass
 
@@ -171,7 +171,7 @@ class TimeShiftPlate(BaseWindow):
 			self.GlobalAction( Action.ACTION_MUTE )
 		
 		elif aControlId == self.mCtrlBtnStartRec.getId() :
-			runningCount = self.ShowIsRunRec()
+			runningCount = self.ShowRecording()
 			LOG_TRACE( 'runningCount=%d' %runningCount)
 
 			GuiLock2(True)
@@ -189,7 +189,7 @@ class TimeShiftPlate(BaseWindow):
 
 
 		elif aControlId == self.mCtrlBtnStopRec.getId() :
-			runningCount = self.ShowIsRunRec()
+			runningCount = self.ShowRecording()
 			LOG_TRACE( 'runningCount=%d' %runningCount )
 
 			if  runningCount > 0 :
@@ -199,7 +199,7 @@ class TimeShiftPlate(BaseWindow):
 				GuiLock2(False)
 
 			time.sleep(1.5)
-			self.ShowIsRunRec()
+			self.ShowRecording()
 
 		elif aControlId == self.mCtrlBtnBookMark.getId():
 			self.ShowDialog( aControlId )
@@ -870,7 +870,7 @@ class TimeShiftPlate(BaseWindow):
 	def showEPGDescription(self, aFocusid, aEvent):
 		LOG_TRACE( '' )
 
-	def ShowIsRunRec( self ) :
+	def ShowRecording( self ) :
 		LOG_TRACE('Enter')
 
 		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
