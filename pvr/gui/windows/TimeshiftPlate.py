@@ -550,7 +550,7 @@ class TimeShiftPlate(BaseWindow):
 			else :
 				lblMode = 'UNKNOWN'
 
-			test = EpgInfoClock(FLAG_CLOCKMODE_HMS, status.mPlayTimeInMs, 0)
+			test = EpgInfoClock(FLAG_CLOCKMODE_HMS, status.mPlayTimeInMs/1000, 0)
 			lblMode = 'mode:' + lblMode + ' current:[%s] currentToTime[%s] timeout[%s]'% (status.mPlayTimeInMs, test[0], self.mRepeatTimeout)
 			self.UpdateLabelGUI( self.mCtrlLblMode.getId(), lblMode )
 
@@ -579,11 +579,11 @@ class TimeShiftPlate(BaseWindow):
 				lbl_timeE = ret[0]
 				"""
 				if status.mStartTimeInMs :
-					self.mTimeshift_staTime = status.mStartTimeInMs
+					self.mTimeshift_staTime = status.mStartTimeInMs / 1000.0
 				if status.mPlayTimeInMs :
-					self.mTimeshift_curTime = status.mPlayTimeInMs
+					self.mTimeshift_curTime = status.mPlayTimeInMs / 1000.0
 				if status.mEndTimeInMs :
-					self.mTimeshift_endTime = status.mEndTimeInMs
+					self.mTimeshift_endTime = status.mEndTimeInMs / 1000.0
 					self.mProgress_max = self.mTimeshift_endTime
 
 				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, self.mTimeshift_staTime, 0)
