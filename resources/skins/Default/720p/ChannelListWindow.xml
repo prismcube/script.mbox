@@ -641,8 +641,8 @@
 						<!--pagecontrol>203</pagecontrol-->
 						<scrolltime>200</scrolltime>
 						<!--focusposition>0</focusposition-->
-						<!--visible>![Container(102).HasFocus(5) | Container(102).HasFocus(6)]</visible-->
-						<animation effect="slide" start="-500,0" end="0,0" time="300" tween="quadratic" easing="out" condition="![Container(102).HasFocus(5) | Container(102).HasFocus(6)]">conditional</animation>
+						<visible>![Container(102).HasFocus(5) | Container(102).HasFocus(6)]</visible>
+						<!--animation effect="slide" start="-500,0" end="0,0" time="300" tween="quadratic" easing="out" condition="![Container(102).HasFocus(5) | Container(102).HasFocus(6)]">conditional</animation-->
 						<itemlayout height="40" width="230">
 							<control type="image">
 								<posx>0</posx>
@@ -705,8 +705,8 @@
 						<onright>9002</onright>
 						<onup>9002</onup>
 						<ondown>9002</ondown>
-						<visible>Container(102).HasFocus(5)</visible>
 						<focusposition>113</focusposition>
+						<visible>Container(102).HasFocus(5)</visible>
 						<animation effect="slide" start="-500,0" end="0,0" time="400" tween="quadratic" easing="out" condition="Container(102).HasFocus(5)">conditional</animation>
 						<control type="group">
 							<control type="image">
