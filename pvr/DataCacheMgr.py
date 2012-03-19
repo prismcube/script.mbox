@@ -585,6 +585,18 @@ class DataCacheMgr( object ):
 		return eventList
 
 
+	def Epgevent_GetCurrentList( self  ) :
+
+		eventList = None
+
+		if SUPPORT_DATABASE	== True :
+			eventList = self.mEpgDB.Epgevent_GetCurrentList( self.Datetime_GetGMTTime() )
+		else:
+			return None
+
+		return eventList
+
+
 #	@DataLock
 	def Epgevent_GetFollowing( self, aSid, aTsid, aOnid ) :
 

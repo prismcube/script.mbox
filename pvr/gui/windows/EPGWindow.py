@@ -205,6 +205,13 @@ class EPGWindow(BaseWindow):
 
 
 	def LoadByCurrent( self ):
+		try :
+			self.mEPGList=self.mDataCache.Epgevent_GetCurrentList()
+
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)
+	
+		"""
 		LOG_TRACE('')
 		LOG_TRACE('ChannelList len=%d' %(len(self.mChannelList) ) )
 
@@ -241,12 +248,10 @@ class EPGWindow(BaseWindow):
 		after = time.clock()
 		LOG_ERR('after=%s' %after )		
 		LOG_ERR('--------------> diff=%s' %(after-before) )
+		"""
 
 
 	def LoadByFollowing( self ):
-		LOG_TRACE('')
-		"""
-		LOG_TRACE('ChannelList len=%d' %(len(self.mChannelList) ) )
 
 		try :
 			self.mEPGList=self.mDataCache.Epgevent_GetFollowingList()
@@ -281,7 +286,7 @@ class EPGWindow(BaseWindow):
 
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
-
+		"""
 
 		LOG_TRACE('self.mEPGList COUNT=%d' %len(self.mEPGList ))
 
