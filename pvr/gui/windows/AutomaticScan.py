@@ -81,8 +81,7 @@ class AutomaticScan( SettingWindow ) :
 
 			if select >= 0 and select != self.mSatelliteIndex :
 				self.mSatelliteIndex = select
-			
-			self.InitConfig( )
+			self.SetControlLabel2String( E_Input01, self.mFormattedList[ self.mSatelliteIndex ] )
 
 		# Start Search
 		if groupId == E_Input02 :

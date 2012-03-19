@@ -1,5 +1,5 @@
 <window type="windows" id="3009">
-	<defaultcontrol always="true">410</defaultcontrol>
+	<defaultcontrol always="true">450</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
 	<backgroundcolor>0x00ffffff</backgroundcolor>		
 	<controls>
@@ -7,7 +7,7 @@
 			<!--animation effect="slide" start="0,570" end="0,0" time="300" delay="300" tween="quadratic" easing="out">WindowOpen</animation>
 			<animation effect="slide" start="0,0" end="0,570" time="300" delay="150" tween="quadratic" easing="out" >WindowClose</animation-->
 			<include>Window_OpenClose_Animation</include>
-			<control type="group" id="10">
+			<control type="group">
 				<control type="image">
 					<description>media info background image</description>
 					<posx>0</posx>
@@ -15,6 +15,28 @@
 					<width>1320</width>
 					<height>256</height>
 					<texture>confluence/MediaInfoBackLower.png</texture>
+				</control>
+			</control>
+
+<!-- Rec info -->
+			<control type="group">
+				<posx>0</posx>
+				<posy>0</posy>
+				<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="Control.IsVisible(10)">conditional</animation>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>100</width>
+					<height>35</height>
+					<texture border="0,0,32,0">confluence/header.png</texture>
+					<visible>Control.IsVisible(10)</visible>
+				</control>
+				<control type="image" id="10">
+					<posx>10</posx>
+					<posy>2</posy>
+					<width>60</width>
+					<height>25</height>
+					<texture>i_record.png</texture>
 				</control>
 			</control>
 
@@ -44,11 +66,11 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Subtitle</label>
+						<label>Volume</label>
 						<visible>Control.HasFocus(401)</visible>
 					</control>
 					<control type="label">
-						<posx>50</posx>
+						<posx>20</posx>
 						<posy>0</posy>
 						<width min="100" max="150">auto</width>
 						<height>28</height>
@@ -57,11 +79,11 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Volume</label>
+						<label>Record Start</label>
 						<visible>Control.HasFocus(402)</visible>
 					</control>
 					<control type="label">
-						<posx>50</posx>
+						<posx>20</posx>
 						<posy>0</posy>
 						<width min="100" max="150">auto</width>
 						<height>28</height>
@@ -70,7 +92,7 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Record</label>
+						<label>Record Stop</label>
 						<visible>Control.HasFocus(403)</visible>
 					</control>
 					<control type="label">
@@ -139,6 +161,46 @@
 						<visible>Control.HasFocus(408)</visible>
 					</control>
 					<control type="label">
+						<posx>20</posx>
+						<posy>0</posy>
+						<width min="100" max="150">auto</width>
+						<height>28</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Jump Rewind</label>
+						<visible>Control.HasFocus(409)</visible>
+					</control>
+					<control type="label">
+						<posx>20</posx>
+						<posy>0</posy>
+						<width min="100" max="150">auto</width>
+						<height>28</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Jump Forward</label>
+						<visible>Control.HasFocus(410)</visible>
+					</control>
+					<control type="label">
+						<posx>40</posx>
+						<posy>0</posy>
+						<width min="100" max="150">auto</width>
+						<height>28</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>BookMark</label>
+						<visible>Control.HasFocus(411)</visible>
+					</control>
+
+					<control type="label">
 						<posx>120</posx>
 						<posy>0</posy>
 						<width min="100" max="150">auto</width>
@@ -164,7 +226,7 @@
 					</control>
 					<control type="image" id="32">
 						<description>Forward Image</description>
-						<posx>200</posx>
+						<posx>210</posx>
 						<posy>20</posy>
 						<width>20</width>
 						<height>20</height>
@@ -173,6 +235,14 @@
 					<control type="label" id="33">
 						<description>Speed label</description>
 						<posx>175</posx>
+						<posy>19</posy>
+						<font>font24</font>
+						<textcolor>grey</textcolor>
+						<texture>$INFO[Control.GetLabel]</texture>
+					</control>
+					<control type="label" id="35">
+						<description>test</description>
+						<posx>375</posx>
 						<posy>19</posy>
 						<font>font24</font>
 						<textcolor>grey</textcolor>
@@ -224,25 +294,10 @@
 
 <!-- play section -->
 			<control type="group" id="400">
-				<posx>450</posx>
+				<posx>400</posx>
 				<posy>605</posy>
 				<control type="button" id="401">
 					<posx>0</posx>
-					<posy>0</posy>
-					<width>45</width>
-					<height>45</height>
-					<label>298</label>
-					<font>-</font>
-					<texturefocus>confluence/OSDSubtitlesFO.png</texturefocus>
-					<texturenofocus>confluence/OSDSubtitlesNF.png</texturenofocus>
-					<onleft>408</onleft>
-					<onright>402</onright>
-					<onup>202</onup>
-					<ondown>202</ondown>
-					<!--onclick>XBMC.RunScript($INFO[Skin.String(SubtitleScript_Path)])</onclick-->
-				</control>
-				<control type="button" id="402">
-					<posx>45</posx>
 					<posy>0</posy>
 					<width>45</width>
 					<height>45</height>
@@ -250,6 +305,21 @@
 					<font>-</font>
 					<texturefocus>confluence/OSDAudioFO.png</texturefocus>
 					<texturenofocus>confluence/OSDAudioNF.png</texturenofocus>
+					<onclick>Mute</onclick>
+					<onleft>411</onleft>
+					<onright>402</onright>
+					<onup>202</onup>
+					<ondown>202</ondown>
+				</control>
+				<control type="button" id="402">
+					<posx>45</posx>
+					<posy>0</posy>
+					<width>45</width>
+					<height>45</height>
+					<label>13395</label>
+					<font>-</font>
+					<texturefocus>confluence/OSDRecord2.png</texturefocus>
+					<texturenofocus>confluence/OSDRecordNF.png</texturenofocus>
 					<onleft>401</onleft>
 					<onright>403</onright>
 					<onup>202</onup>
@@ -262,8 +332,8 @@
 					<height>45</height>
 					<label>13395</label>
 					<font>-</font>
-					<texturefocus>confluence/OSDRecordFO.png</texturefocus>
-					<texturenofocus>confluence/OSDRecordNF.png</texturenofocus>
+					<texturefocus>confluence/OSDStopFO.png</texturefocus>
+					<texturenofocus>confluence/OSDStopNF.png</texturenofocus>
 					<onleft>402</onleft>
 					<onright>404</onright>
 					<onup>202</onup>
@@ -282,11 +352,11 @@
 						<texturefocus>confluence/OSDRewindFO.png</texturefocus>
 						<texturenofocus>confluence/OSDRewindNF.png</texturenofocus>
 						<onleft>403</onleft>
-						<onright>410</onright>
+						<onright>450</onright>
 						<onup>202</onup>
 						<ondown>202</ondown>
 					</control>
-					<control type="group" id="410">
+					<control type="group" id="450">
 						<control type="button" id="405">
 							<posx>50</posx>
 							<posy>0</posy>
@@ -317,7 +387,7 @@
 							<onright>407</onright>
 							<onup>202</onup>
 							<ondown>202</ondown>
-							<!--visible>!Control.IsVisible(405)</visible-->
+							<visible>!Control.IsVisible(405)</visible>
 						</control>
 					</control>
 					<!--control type="button" id="405">
@@ -359,7 +429,7 @@
 						<font>-</font>
 						<texturefocus>confluence/OSDStopFO.png</texturefocus>
 						<texturenofocus>confluence/OSDStopNF.png</texturenofocus>
-						<onleft>410</onleft>
+						<onleft>450</onleft>
 						<onright>408</onright>
 						<onup>202</onup>
 						<ondown>202</ondown>
@@ -374,26 +444,52 @@
 						<texturefocus>confluence/OSDForwardFO.png</texturefocus>
 						<texturenofocus>confluence/OSDForwardNF.png</texturenofocus>
 						<onleft>407</onleft>
+						<onright>409</onright>
+						<onup>202</onup>
+						<ondown>202</ondown>
+					</control>
+					<control type="button" id="409">
+						<posx>200</posx>
+						<posy>0</posy>
+						<width>50</width>
+						<height>50</height>
+						<label></label>
+						<font>-</font>
+						<texturefocus>confluence/OSDPrevTrackFO.png</texturefocus>
+						<texturenofocus>confluence/OSDPrevTrackNF.png</texturenofocus>
+						<onleft>408</onleft>
+						<onright>410</onright>
+						<onup>202</onup>
+						<ondown>202</ondown>
+					</control>
+					<control type="button" id="410">
+						<posx>250</posx>
+						<posy>0</posy>
+						<width>50</width>
+						<height>50</height>
+						<label></label>
+						<font>-</font>
+						<texturefocus>confluence/OSDNextTrackFO.png</texturefocus>
+						<texturenofocus>confluence/OSDNextTrackNF.png</texturenofocus>
+						<onleft>409</onleft>
+						<onright>411</onright>
+						<onup>202</onup>
+						<ondown>202</ondown>
+					</control>
+					<control type="button" id="411">
+						<posx>300</posx>
+						<posy>0</posy>
+						<width>50</width>
+						<height>50</height>
+						<label></label>
+						<font>-</font>
+						<texturefocus>confluence/OSDBookmarksFO.png</texturefocus>
+						<texturenofocus>confluence/OSDBookmarksNF.png</texturenofocus>
+						<onleft>410</onleft>
 						<onright>401</onright>
 						<onup>202</onup>
 						<ondown>202</ondown>
 					</control>
-
-					<!--control type="button" id="409">
-						<posx>200</posx>
-						<posy>45</posy>
-						<width>50</width>
-						<height>50</height>
-						<label>31351</label>
-						<altlabel>208</altlabel>
-						<font>-</font>
-						<texturefocus>confluence/OSDPauseFO.png</texturefocus>
-						<texturenofocus>confluence/OSDPauseNF.png</texturenofocus>
-						<onleft>SetFocus(404)</onleft>
-						<onright>SetFocus(407)</onright>
-						<onup>SetFocus(402)</onup>
-						<ondown></ondown>
-					</control-->
 
 				</control>
 
@@ -428,12 +524,12 @@
 						<font>font12</font>
 						<textcolor>grey</textcolor>
 						<align>center</align>
-						<texturefocus>TSProgressCurrent.png</texturefocus>
-						<texturenofocus>TSProgressCurrent.png</texturenofocus>
+						<texturefocus>TSProgressCurrentFO.png</texturefocus>
+						<texturenofocus>TSProgressCurrentNF.png</texturenofocus>
 						<onleft>202</onleft>
 						<onright>202</onright>
-						<onup>410</onup>
-						<ondown>410</ondown>
+						<onup>450</onup>
+						<ondown>450</ondown>
 
 					</control>
 				</control>

@@ -115,6 +115,7 @@ class ChannelListWindow( BaseWindow ) :
 		#print '==================== TEST TIME[ONINIT] START[%s]'% starttime
 
 		#header
+		self.mCtrlImgRec             = self.getControl( 10 )
 		self.mCtrlLblPath1           = self.getControl( 21 )
 		self.mCtrlGropOpt            = self.getControl( 500 )
 		self.mCtrlBtnOpt             = self.getControl( 501 )
@@ -178,6 +179,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		#self.SqlTest( )
 
+		self.ShowRecording( )
 		self.SetVideoSize( )
 
 		#initialize get cache
@@ -2540,6 +2542,22 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		LOG_TRACE( 'Leave' )
+
+	def ShowRecording( self ) :
+		LOG_TRACE('Enter')
+
+		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+		LOG_TRACE('isRunRecCount[%s]'% isRunRec)
+
+		imgValue = False
+		btnValue = False
+		if isRunRec > 0 :
+			imgValue = True
+		else :
+			imgValue = False
+		self.mCtrlImgRec.setVisible( imgValue )
+
+		LOG_TRACE('Leave')
 
 	def SqlTest( self ) :
 		try:

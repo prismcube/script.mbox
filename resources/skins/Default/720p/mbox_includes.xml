@@ -24,8 +24,10 @@
 		<control type="group">
 			<posx>60</posx>
 			<posy>0</posy>
-			<animation effect="slide" end="-310,0" time="400" tween="quadratic" easing="out">WindowClose</animation>
-			<animation effect="slide" start="-310,0" time="400" tween="quadratic" easing="out">WindowOpen</animation>
+			<animation effect="slide" end="-310,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
+			<animation effect="slide" start="-310,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+			<animation effect="slide" end="-310,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(999)">Conditional</animation>
+			<animation effect="slide" start="-310,0" time="300" tween="quadratic" easing="out" condition="!Control.HasFocus(999)">Conditional</animation>
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
@@ -47,7 +49,9 @@
             <animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
             <animation effect="slide" start="0,0" end="420,0" delay="0" time="300">WindowClose</animation>
             <animation effect="slide" start="420,0" end="0,0" delay="0" time="300">WindowOpen</animation>
-            <control type="image">
+            <animation effect="slide" start="0,0" end="420,0" delay="0" time="300" condition="Control.HasFocus(999)">Conditional</animation>
+			<animation effect="slide" start="420,0" end="0,0" delay="0" time="300" condition="!Control.HasFocus(999)">Conditional</animation>
+			<control type="image">
                 <description>time background</description>
                 <posx>0</posx>
                 <posy>0</posy>
@@ -69,6 +73,18 @@
                 <label>[COLOR=grey]$INFO[System.Date][/COLOR] | $INFO[System.Time]</label>
             </control>
         </control>
+	</include>
+
+	<include name="DefaultFakeButton">
+		<control type="button" id="999">
+			<description>empty button</description>
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1</width>
+			<height>1</height>
+			<texturenofocus>confluence/black-back.png</texturenofocus>
+			<texturefocus>confluence/black-back.png</texturefocus>
+		</control>
 	</include>
 		
 	<include name="DefaultSettingMainWindow">
@@ -226,6 +242,163 @@
 			<onleft>6997</onleft>
 			<onright>6997</onright>
 		</control>
+	</include>
+
+	<include name="DefaultFirstTimeInstallationButton">
+		<control type="button" id="7001">
+			<description>Prev button</description>
+			<width>60</width>
+			<height>50</height>
+			<texturenofocus border="5">confluence/scroll-left.png</texturenofocus>
+			<texturefocus border="5">confluence/scroll-left-focus.png</texturefocus>
+			<onleft>7003</onleft>
+			<onright>7003</onright>
+		</control>
+		<control type="label">
+			<posx>60</posx>
+			<posy>478</posy>
+			<width>200</width>
+			<height>40</height>
+			<font>font12_title</font>
+			<textcolor>grey2</textcolor>
+			<align>left</align>
+			<aligny>center</aligny>
+			<label>Back</label>
+			<visible>Control.IsVisible(7001) + !Control.HasFocus(7001)</visible>
+		</control>
+		<control type="label">
+			<posx>60</posx>
+			<posy>478</posy>
+			<width>200</width>
+			<height>40</height>
+			<font>font13_title</font>
+			<textcolor>white</textcolor>
+			<align>left</align>
+			<aligny>center</aligny>
+			<label>Back</label>
+			<visible>Control.IsVisible(7001) + Control.HasFocus(7001)</visible>
+		</control>
+		<control type="button" id="7003">
+			<description>Next button</description>
+			<width>60</width>
+			<height>50</height>
+			<texturenofocus border="5">confluence/scroll-right.png</texturenofocus>
+			<texturefocus border="5">confluence/scroll-right-focus.png</texturefocus>
+			<onleft>7001</onleft>
+			<onright>7001</onright>
+		</control>
+		<control type="label" id="7004">
+			<posx>645</posx>
+			<posy>478</posy>
+			<width>200</width>
+			<height>40</height>
+			<font>font12_title</font>
+			<textcolor>grey2</textcolor>
+			<align>left</align>
+			<aligny>center</aligny>
+			<label></label>
+			<visible>Control.IsVisible(7003) + !Control.HasFocus(7003)</visible>
+		</control>
+		<control type="label">
+			<posx>645</posx>
+			<posy>478</posy>
+			<width>200</width>
+			<height>40</height>
+			<font>font13_title</font>
+			<textcolor>white</textcolor>
+			<align>left</align>
+			<aligny>center</aligny>
+			<label>$INFO[Control.GetLabel(7004)]</label>
+			<visible>Control.IsVisible(7003) + Control.HasFocus(7003)</visible>
+		</control>
+	</include>
+
+	<include name="DefaultFirstTimeInstallationStepImage">
+		<control type="image" id="8110">
+			<posx>260</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressBack.png</texture>
+		</control>
+		<control type="image" id="8111">
+			<posx>300</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressBack.png</texture>
+		</control>
+		<control type="image" id="8112">
+			<posx>340</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressBack.png</texture>
+		</control>
+		<control type="image" id="8113">
+			<posx>380</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressBack.png</texture>
+		</control>
+		<control type="image" id="8114">
+			<posx>420</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressBack.png</texture>
+		</control>
+		<control type="image" id="8115">
+			<posx>460</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressBack.png</texture>
+		</control>	
+		<control type="image" id="8100">
+			<posx>260</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressMid.png</texture>
+		</control>
+		<control type="image" id="8101">
+			<posx>300</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressMid.png</texture>
+		</control>
+		<control type="image" id="8102">
+			<posx>340</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressMid.png</texture>
+		</control>
+		<control type="image" id="8103">
+			<posx>380</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressMid.png</texture>
+		</control>
+		<control type="image" id="8104">
+			<posx>420</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressMid.png</texture>
+		</control>
+		<control type="image" id="8105">
+			<posx>460</posx>
+			<posy>489</posy>
+			<width>20</width>
+			<height>20</height>
+			<texture border="0,1,0,1">confluence/OSDProgressMid.png</texture>
+		</control>
+		
 	</include>
 
 	<include name="DefaultBackgroundFade">

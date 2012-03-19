@@ -15,8 +15,6 @@ from ElisEventClass import *
 
 E_DHCP_OFF		= 0
 E_DHCP_ON		= 1
-TIME_AUTOMATIC	= 0
-TIME_MANUAL		= 1
 
 class Configure( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -43,12 +41,10 @@ class Configure( SettingWindow ) :
 		self.mReLoadIp			= False
 		self.mVisibleParental	= False
 
-		self.mDate				= '1/1/1999'
-		self.mTime				= '12:59'
+		self.mDate				= 0
+		self.mTime				= 0
 		self.mSetupChannel		= None
 		self.mHasChannel		= False
-		self.mFinishEndSetTime	= False
-		self.ProgressOpen		= False
 
 		for i in range( len( leftGroupItems ) ) :
 			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i], descriptionList[i] ) )
@@ -328,7 +324,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_HDMI_SETTING :
 			self.AddEnumControl( E_SpinEx01, 'HDMI Format' )
-			self.AddEnumControl( E_SpinEx02, 'Show 4:3' )
+			self.AddEnumControl( E_SpinEx02, 'Show 4:3', 'TV Screen Format' )
 			self.AddEnumControl( E_SpinEx03, 'HDMI Color Space' )
 			self.AddEnumControl( E_SpinEx04, 'TV System' )
 			
@@ -616,11 +612,6 @@ class Configure( SettingWindow ) :
 			
 		elif aControlId == E_Input04 :
 			oriSetupChannel = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
-			if oriSetupChannel == self.mSetupChannel.mNumber :
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'ERROR', 'Same Setup Channel' )
-		 		dialog.doModal( )
-		 		return
 		 		
 			ElisPropertyEnum( 'Time Mode', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx01 ) )
 			ElisPropertyEnum( 'Local Time Offset', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx02) )
