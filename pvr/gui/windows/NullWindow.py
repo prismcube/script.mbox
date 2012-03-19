@@ -55,6 +55,8 @@ class NullWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_LEFT:
 			print 'youn check ation left'
+			window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+			window.SetAutomaticHide( True )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
 		elif actionId == Action.ACTION_SHOW_INFO:
