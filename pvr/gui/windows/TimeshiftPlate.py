@@ -84,6 +84,9 @@ class TimeShiftPlate(BaseWindow):
 		#test
 		self.mCtrlLblMode          = self.getControl( 35 )
 
+		self.mTimeshift_staTime = 0.0
+		self.mTimeshift_curTime = 0.0
+		self.mTimeshift_endTime = 0.0
 		self.mSpeed = 100	#normal
 		self.mPlayTime = 0
 		self.mLocalTime = 0
@@ -593,6 +596,7 @@ class TimeShiftPlate(BaseWindow):
 				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, self.mTimeshift_endTime, 0)
 				lbl_timeE = ret[0]
 
+
 			else :
 				self.mPlayTime = 0
 				self.mTimeshift_staTime = status.mStartTimeInMs / 1000.0
@@ -945,9 +949,10 @@ class TimeShiftPlate(BaseWindow):
 
 
 	def StartAsyncMove( self ) :
-		self.mAsyncShiftTimer = threading.Timer( 1.5, self.AsyncUpdateCurrentMove ) 				
+		self.mAsyncShiftTimer = threading.Timer( 0.1, self.AsyncUpdateCurrentMove ) 				
 		self.mAsyncShiftTimer.start()
 
+		self.mFlagUserMove = False
 		self.mAccelator += 1
 		LOG_TRACE('1================Accelator[%s]'% self.mAccelator )
 
@@ -961,19 +966,19 @@ class TimeShiftPlate(BaseWindow):
 	#TODO : must be need timeout schedule
 	def AsyncUpdateCurrentMove( self ) :
 		try :
-			if self.mTimeshift_playTime :
+			if self.mFlagUserMove != True :
 				if self.mAccelator > 2 :
 					#self.mUserMoveTime = int( self.mUserMoveTime * (1.5 ** self.mAccelator) / 10000 )
 					self.mUserMoveTime = self.mUserMoveTime * self.mAccelator
 				frameJump = self.mTimeshift_playTime + self.mUserMoveTime * 1000
 				ret = self.mCommander.Player_JumpToIFrame( frameJump )
-				LOG_TRACE('2============frameJump[%s] ret[%s]'% (frameJump,ret) )
+				LOG_TRACE('2============frameJump[%s] accelator[%s] ret[%s]'% (frameJump,self.mAccelator,ret) )
 				if ret :
 					self.InitTimeShift()
 					self.UpdateLocalTime()
 
-			self.mFlagUserMove = False
-			self.mAccelator = 0
+				self.mFlagUserMove = True
+				self.mAccelator = 0
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
