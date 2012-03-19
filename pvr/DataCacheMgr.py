@@ -587,20 +587,13 @@ class DataCacheMgr( object ):
 
 #	@DataLock
 	def Epgevent_GetFollowing( self, aSid, aTsid, aOnid ) :
-		LOG_TRACE('');
+
 		eventList = None
 
 		if SUPPORT_DATABASE	== True :
-			LOG_TRACE('');
-			try :
-				LOG_TRACE('');			
-				eventList = self.mEpgDB.Epgevent_GetFollowing( aSid, aTsid, aOnid, self.Datetime_GetGMTTime() )
-				LOG_TRACE('');				
-			except Exception, ex:
-				LOG_ERR( "Exception %s" %ex)
+			eventList = self.mEpgDB.Epgevent_GetFollowing( aSid, aTsid, aOnid, self.Datetime_GetGMTTime() )
 			
 		else:
-			LOG_TRACE('');		
 			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, 1, 1, 1 )
 
 		return eventList
