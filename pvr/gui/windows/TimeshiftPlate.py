@@ -13,6 +13,7 @@ from ElisAction import ElisAction
 from ElisEnum import ElisEnum
 from ElisEventBus import ElisEventBus
 from ElisEventClass import *
+from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 
 from pvr.Util import RunThread, GuiLock, GuiLock2, LOG_TRACE, LOG_WARN, LOG_ERR, TimeToString, TimeFormatEnum
 from pvr.PublicReference import EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, GetSelectedLongitudeString, ClassToList, EnumToString
@@ -45,7 +46,10 @@ class TimeShiftPlate(BaseWindow):
 		self.mEventID = 0
 		self.mMode = ElisEnum.E_MODE_LIVE
 		self.mIsPlay = False
+
 		self.mAsyncShiftTimer = None
+		self.mAutomaticHideTimer = None	
+		self.mAutomaticHide = False
 
 
 	def __del__(self):
@@ -97,6 +101,8 @@ class TimeShiftPlate(BaseWindow):
 		self.mAccelator = 0
 		self.mINSTime = 0
 		self.mRepeatTimeout = 1
+		self.mAsyncShiftTimer = None
+		self.mAutomaticHideTimer = None
 
 		self.ShowRecording( )
 		
@@ -115,13 +121,14 @@ class TimeShiftPlate(BaseWindow):
 			self.TimeshiftAction( self.mCtrlBtnPause.getId() )
 			#self.setFocusId( self.mCtrlBtnPause.getId() )
 
-		#self.mEventBus.Register( self )
+		self.mEventBus.Register( self )
 
 		#run thread
 		self.mEnableThread = True
 		self.CurrentTimeThread()
 
-		self.mAsyncShiftTimer = None
+		#if self.mAutomaticHide == True :
+		#	self.StartAutomaticHide()
 
 		LOG_TRACE( 'Leave' )
 
@@ -131,10 +138,8 @@ class TimeShiftPlate(BaseWindow):
 		
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
 			LOG_TRACE( 'esc close' )
-			#self.mEnableThread = False
-			#self.CurrentTimeThread().join()
-			#self.Close()
-			self.TimeshiftAction( self.mCtrlBtnStop.getId(), FLAG_TIMESHIFT_CLOSE )
+			self.Close()
+			#self.TimeshiftAction( self.mCtrlBtnStop.getId(), FLAG_TIMESHIFT_CLOSE )
 
 		elif id == Action.ACTION_SELECT_ITEM:
 			LOG_TRACE( '===== select [%s]' % id )
@@ -145,9 +150,11 @@ class TimeShiftPlate(BaseWindow):
 				self.mUserMoveTimeBack = self.mUserMoveTime
 				self.mUserMoveTime = -10
 				self.mFlagUserMove = True
-				#TODO : must be need timeout schedule
+				if self.mAutomaticHide :
+					self.mAutomaticHide = False
+					self.StopAutomaticHide()
+
 				self.RestartAsyncMove()
-				#self.mCommander.Player_JumpByIFrame( -10000 )
 				LOG_TRACE('left moveTime[%s]'% self.mUserMoveTime )
 
 		elif id == Action.ACTION_MOVE_RIGHT:
@@ -156,9 +163,11 @@ class TimeShiftPlate(BaseWindow):
 				self.mUserMoveTimeBack = self.mUserMoveTime
 				self.mUserMoveTime = 10
 				self.mFlagUserMove = True
-				#TODO : must be need timeout schedule
+				if self.mAutomaticHide :
+					self.mAutomaticHide = False
+					self.StopAutomaticHide()
+
 				self.RestartAsyncMove()
-				#self.mCommander.Player_JumpByIFrame( 10000 )
 				LOG_TRACE('right moveTime[%s]'% self.mUserMoveTime )
 
 		#test
@@ -171,10 +180,17 @@ class TimeShiftPlate(BaseWindow):
 		LOG_TRACE( 'control %d' % aControlId )
 
 		if aControlId >= self.mCtrlBtnRewind.getId() and aControlId <= self.mCtrlBtnJumpFF.getId() :
+			if aControlId == self.mCtrlBtnPlay.getId() :
+				self.mAutomaticHide = True
+			else :
+				self.mAutomaticHide = False
+
 			self.TimeshiftAction( aControlId )
+
 
 		elif aControlId == self.mCtrlBtnVolume.getId():
 			self.GlobalAction( Action.ACTION_MUTE )
+			self.StopAutomaticHide()
 		
 		elif aControlId == self.mCtrlBtnStartRec.getId() :
 			runningCount = self.ShowRecording()
@@ -219,27 +235,19 @@ class TimeShiftPlate(BaseWindow):
 	@GuiLock
 	def onEvent(self, aEvent):
 		LOG_TRACE( 'Enter' )
-		#aEvent.printdebug()
 
 		if self.mWinId == xbmcgui.getCurrentWindowId():
-			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
-				LOG_TRACE( '%d : %d' %(aEvent.mEventId, self.mEventID ) )
+			if aEvent.getName() == ElisEventPlaybackEOF.getName() :
+				#aEvent.printdebug()
+				LOG_TRACE( 'mType[%d]' %(aEvent.mType ) )
 
-				if aEvent.mEventId != self.mEventID :
-					ret = None
-					ret = self.mCommander.Epgevent_GetPresent( )
-					if ret :
-						if not self.mEventCopy or \
-						ret.mEventId != self.mEventCopy.mEventId or \
-						ret.mSid != self.mEventCopy.mSid or \
-						ret.mTsid != self.mEventCopy.mTsid or \
-						ret.mOnid != self.mEventCopy.mOnid :
-							LOG_TRACE('epg DIFFER')
-							self.mEventID = aEvent.mEventId
-							self.mEventCopy = ret
+				if aEvent.mType == ElisEnum.E_EOF_START :
+					#self.TimeshiftAction( self.mCtrlBtnPlay.getId() )
+					LOG_TRACE( 'EventRecv EOF_START' )
 
-							#update label
-							self.UpdateONEvent( ret )
+				elif aEvent.mType == ElisEnum.E_EOF_END :
+					#self.TimeshiftAction( self.mCtrlBtnStop.getId() )
+					LOG_TRACE( 'EventRecv EOF_STOP' )
 
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
@@ -335,8 +343,6 @@ class TimeShiftPlate(BaseWindow):
 				self.mProgress_idx = 0.0
 				self.mProgress_max = 0.0
 
-				self.mEnableThread = False
-				self.CurrentTimeThread().join()
 				self.Close()
 				#winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_NULLWINDOW )
 			else :
@@ -397,38 +403,23 @@ class TimeShiftPlate(BaseWindow):
 				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
 
 		elif aFocusId == self.mCtrlBtnJumpRR.getId() :
-			"""
-			self.mUserMoveTimeBack = self.mUserMoveTime
-			self.mUserMoveTime -= 10
-
-			if self.mTimeshift_playTime :
-				ret = self.mCommander.Player_JumpToIFrame( self.mTimeshift_playTime-10000 )
-				LOG_TRACE('JumpRR ret[%s]'% ret )
-			"""
 			ret = self.mCommander.Player_JumpToIFrame( self.mTimeshift_playTime-10000 )
 			LOG_TRACE('JumpRR ret[%s]'% ret )
 
 		elif aFocusId == self.mCtrlBtnJumpFF.getId() :
-			"""
-			self.mUserMoveTimeBack = self.mUserMoveTime
-			self.mUserMoveTime += 10
-
-			if self.mTimeshift_playTime :
-				ret = self.mCommander.Player_JumpToIFrame( self.mTimeshift_playTime+10000 )
-				LOG_TRACE('JumpFF ret[%s]'% ret )
-			"""
 			ret = self.mCommander.Player_JumpToIFrame( self.mTimeshift_playTime+10000 )
 			LOG_TRACE('JumpFF ret[%s]'% ret )
 
 		time.sleep(0.5)
+
 		self.InitTimeShift()
+		if self.mAutomaticHide :
+			self.RestartAutomaticHide()
+			LOG_TRACE( 'Restart Hide')
+		else :
+			self.StopAutomaticHide()
+			LOG_TRACE( 'Stop Hide')
 
-		LOG_TRACE( 'Leave' )
-
-
-	def UpdateONEvent(self, aEvent) :
-		LOG_TRACE( 'Enter' )
-		#aEvent.printdebug()
 
 		LOG_TRACE( 'Leave' )
 
@@ -443,7 +434,8 @@ class TimeShiftPlate(BaseWindow):
 		self.UpdateLabelGUI( self.mCtrlLblSpeed.getId(),       '' )
 		self.UpdateLabelGUI( self.mCtrlImgRewind.getId(),   False )
 		self.UpdateLabelGUI( self.mCtrlImgForward.getId(),  False )
-		self.UpdateLabelGUI( self.mCtrlBtnCurrent.getId(),     '', True )
+		self.UpdateLabelGUI( self.mCtrlBtnCurrent.getId(),     '', 'lbl' )
+		self.UpdateLabelGUI( self.mCtrlBtnCurrent.getId(),      0, 'pos' )
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
 		self.InitTimeShift()
@@ -495,9 +487,10 @@ class TimeShiftPlate(BaseWindow):
 			self.mCtrlProgress.setPercent( aValue )
 
 		elif aCtrlID == self.mCtrlBtnCurrent.getId( ) :
-			self.mCtrlBtnCurrent.setLabel( aValue )
-			if aExtra :
-				self.mCtrlBtnCurrent.setPosition( 0, E_DEFAULT_POSY )
+			if aExtra == 'lbl':
+				self.mCtrlBtnCurrent.setLabel( aValue )
+			elif aExtra == 'pos':
+				self.mCtrlBtnCurrent.setPosition( aValue, E_DEFAULT_POSY )
 
 		elif aCtrlID == self.mCtrlLblTSStartTime.getId( ) :
 			self.mCtrlLblTSStartTime.setLabel( aValue )
@@ -621,65 +614,11 @@ class TimeShiftPlate(BaseWindow):
 				if self.mRepeatTimeout < 0.1 :
 					self.mRepeatTimeout = 0.1
 
-			"""
-			if self.mSpeed == 100 :
-				flag_Rewind  = False
-				flag_Forward = False
-				lbl_speed = ''
-				self.mRepeatTimeout = 1 #sec
-
-			elif self.mSpeed >= 120 and self.mSpeed <= 12800:
-				flag_Rewind  = False
-				flag_Forward = True
-
-				if self.mSpeed == 120 :
-					lbl_speed = '1.2x'
-				elif self.mSpeed == 160 :
-					lbl_speed = '1.6x'
-				elif self.mSpeed == 200 :
-					lbl_speed = '2x'
-				elif self.mSpeed == 400 :
-					lbl_speed = '4x'
-				elif self.mSpeed == 800 :
-					lbl_speed = '8x'
-				elif self.mSpeed == 1600 :
-					lbl_speed = '16x'
-				elif self.mSpeed == 3200 :
-					lbl_speed = '32x'
-				elif self.mSpeed == 6400 :
-					lbl_speed = '64x'
-				elif self.mSpeed == 12800 :
-					lbl_speed = '128x'
-
-			elif self.mSpeed <= -200 and self.mSpeed >= -12800:
-				flag_Rewind  = True
-				flag_Forward = False
-
-				if self.mSpeed == -200 :
-					lbl_speed = '2x'
-				elif self.mSpeed == -400 :
-					lbl_speed = '4x'
-				elif self.mSpeed == -800 :
-					lbl_speed = '8x'
-				elif self.mSpeed == -1600 :
-					lbl_speed = '16x'
-				elif self.mSpeed == -3200 :
-					lbl_speed = '32x'
-				elif self.mSpeed == -6400 :
-					lbl_speed = '64x'
-				elif self.mSpeed == -12800 :
-					lbl_speed = '128x'
-
-
-			self.UpdateLabelGUI( self.mCtrlImgRewind.getId(), flag_Rewind )
-			self.UpdateLabelGUI( self.mCtrlImgForward.getId(), flag_Forward )
-			self.UpdateLabelGUI( self.mCtrlLblSpeed.getId(), lbl_speed )
-			"""
 
 			if lbl_timeS != '' :
 				self.UpdateLabelGUI( self.mCtrlLblTSStartTime.getId(), lbl_timeS )
 			if lbl_timeP != '' :
-				self.UpdateLabelGUI( self.mCtrlBtnCurrent.getId(), lbl_timeP )
+				self.UpdateLabelGUI( self.mCtrlBtnCurrent.getId(), lbl_timeP, 'lbl' )
 			if lbl_timeE != '' :
 				self.UpdateLabelGUI( self.mCtrlLblTSEndTime.getId(), lbl_timeE )
 
@@ -801,7 +740,8 @@ class TimeShiftPlate(BaseWindow):
 			#update localTime
 			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
 			lbl_localTime = EpgInfoClock(FLAG_CLOCKMODE_AHM, self.mLocalTime, 0)
-			self.mCtrlEventClock.setLabel( lbl_localTime[0] )
+			#self.mCtrlEventClock.setLabel( lbl_localTime[0] )
+			self.UpdateLabelGUI( self.mCtrlEventClock.getId(), lbl_localTime[0] )
 			#self.mCtrlEventClock.setLabel( TimeToString( self.mLocalTime, TimeFormatEnum.E_HH_MM ) )
 
 			"""
@@ -820,7 +760,6 @@ class TimeShiftPlate(BaseWindow):
 
 		LOG_TRACE( 'leave_end thread' )
 
-	@GuiLock
 	def UpdateLocalTime(self, loop = 0):
 		LOG_TRACE( 'Enter' )
 		#LOG_TRACE( 'untilThread[%s] self.mProgress_max[%s]' % (self.mEnableThread, self.mProgress_max) )
@@ -828,44 +767,26 @@ class TimeShiftPlate(BaseWindow):
 		try :
 			lbl_timeE = ''
 			lbl_timeP = ''
+			pastTime = 0
 
 			#start,endtime when timeshift
 			if self.mMode == ElisEnum.E_MODE_TIMESHIFT :
-				"""
-				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, self.mLocalTime, 0)
-				endtime = EpgInfoClock(FLAG_CLOCKMODE_INTTIME, 0, ret[0]) + loop
-				
-				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, endtime, 0)
-				lbl_timeE = ret[0]
-
-				#calculate current position
-				self.mProgress_max = endtime
-				pastTime = self.mTimeshift_curTime + self.mPlayTime + self.mUserMoveTime
-				self.mProgress_idx = ( float(pastTime) / self.mProgress_max * 100 )
-				LOG_TRACE( 'pastTime[%s] idx[%s] max[%s] move[%s]'% (pastTime, self.mProgress_idx, self.mProgress_max, self.mUserMoveTime ) )
-
-				if self.mProgress_idx > 100 or self.mProgress_idx < 0 :
-					self.mUserMoveTime = self.mUserMoveTimeBack
-					pastTime = self.mTimeshift_curTime + self.mPlayTime + self.mUserMoveTimeBack
-					self.mProgress_idx = ( float(pastTime) / self.mProgress_max * 100 )
-
-				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, pastTime, 0)
-				lbl_timeP = ret[0]
-				"""
 				#calculate current position
 				pastTime = self.mTimeshift_curTime + self.mUserMoveTime
-				self.mProgress_idx = ( float(pastTime) / self.mProgress_max * 100 )
+				self.mProgress_idx = ( pastTime / self.mProgress_max ) * 100
+				"""
 				if self.mProgress_idx > 100 or self.mProgress_idx < 0 :
 					self.mUserMoveTime = self.mUserMoveTimeBack
 					pastTime = self.mTimeshift_curTime + self.mUserMoveTime
 					self.mProgress_idx = ( float(pastTime) / self.mProgress_max * 100 )
-
+				"""
+				LOG_TRACE( 'current[%s] move[%s]'% (self.mTimeshift_playTime, (self.mUserMoveTime/10000)) )
 				LOG_TRACE( 'pastTime[%s] idx[%s] max[%s]'% ( pastTime, self.mProgress_idx, self.mProgress_max ) )
 
 			else:
 				#calculate current position
-				pastTime = self.mTimeshift_curTime + self.mPlayTime
-				self.mProgress_idx = ( pastTime / self.mProgress_max * 100 )
+				pastTime = self.mTimeshift_curTime + self.mUserMoveTime
+				self.mProgress_idx = ( pastTime / self.mProgress_max ) * 100
 				LOG_TRACE( 'pastTime[%s] idx[%s] max[%s]'% ( pastTime, self.mProgress_idx, self.mProgress_max ) )
 
 				#lbl_timeP = EpgInfoClock(FLAG_CLOCKMODE_HHMM, pastTime, 0)
@@ -877,8 +798,9 @@ class TimeShiftPlate(BaseWindow):
 
 			if pastTime > self.mProgress_max :
 				pastTime = self.mProgress_max
-				self.InitTimeShift( loop )
+				#self.InitTimeShift( loop )
 
+			"""
 			#increase play time
 			if self.mFlagUserMove == False and self.mIsPlay == True:
 				if self.mSpeed != 100:
@@ -886,17 +808,15 @@ class TimeShiftPlate(BaseWindow):
 
 				self.mPlayTime += 1
 				#LOG_TRACE( 'posx[%s] [%s] [%s]'% (posx, pastTime, pastTime/self.mProgress_max) )
-
-			#if self.mMode == ElisEnum.E_MODE_TIMESHIFT :
-			#	self.mCtrlLblTSEndTime.setLabel( lbl_timeE )
+			"""
 
 			#progress drawing
-			LOG_TRACE( 'progress max[%s] idx[%s] percent[%s]'% (self.mProgress_max, self.mProgress_idx, self.mCtrlProgress.getPercent()) )
-			self.mCtrlProgress.setPercent( self.mProgress_idx )
 			posx = int( self.mProgress_idx * self.mProgressbarWidth / 100 )
-			self.mCtrlBtnCurrent.setPosition( posx, E_DEFAULT_POSY )
-			#self.mCtrlBtnCurrent.setLabel( lbl_timeP )
-
+			self.UpdateLabelGUI( self.mCtrlBtnCurrent.getId(), posx, 'pos' )
+			self.UpdateLabelGUI( self.mCtrlProgress.getId(), self.mProgress_idx )
+			#self.mCtrlBtnCurrent.setPosition( posx, E_DEFAULT_POSY )
+			#self.mCtrlProgress.setPercent( self.mProgress_idx )
+			LOG_TRACE( 'progress max[%s] idx[%s] posx[%s]'% (self.mProgress_max, self.mProgress_idx, posx) )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -937,11 +857,47 @@ class TimeShiftPlate(BaseWindow):
 
 		
 	def Close( self ):
-		#self.mEventBus.Deregister( self )
+		self.mEventBus.Deregister( self )
 		#self.TimeshiftAction(self.mCtrlBtnStop.getId())
 		#self.mCommander.Player_Stop()
+
+		self.mEnableThread = False
+		self.CurrentTimeThread().join()
+
 		self.StopAsyncMove()
+		self.StopAutomaticHide()
+
 		self.close()
+
+	def SetAutomaticHide( self, aHide=True ) :
+		self.mAutomaticHide = aHide
+
+
+	def GetAutomaticHide( self ) :
+		return self.mAutomaticHide
+
+	
+	def AsyncAutomaticHide( self ) :
+		self.Close()
+
+
+	def RestartAutomaticHide( self ) :
+		self.StopAutomaticHide()
+		self.StartAutomaticHide()
+
+	
+	def StartAutomaticHide( self ) :
+		prop = ElisPropertyEnum( 'Channel Banner Duration', self.mCommander )
+		bannerTimeout = prop.GetProp()
+		self.mAutomaticHideTimer = threading.Timer( bannerTimeout, self.AsyncAutomaticHide )
+		self.mAutomaticHideTimer.start()
+
+	def StopAutomaticHide( self ) :
+		if self.mAutomaticHideTimer and self.mAutomaticHideTimer.isAlive() :
+			self.mAutomaticHideTimer.cancel()
+			del self.mAutomaticHideTimer
+			
+		self.mAutomaticHideTimer = None
 
 	def RestartAsyncMove( self ) :
 		self.StopAsyncMove( )
@@ -949,7 +905,7 @@ class TimeShiftPlate(BaseWindow):
 
 
 	def StartAsyncMove( self ) :
-		self.mAsyncShiftTimer = threading.Timer( 0.1, self.AsyncUpdateCurrentMove ) 				
+		self.mAsyncShiftTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentMove ) 				
 		self.mAsyncShiftTimer.start()
 
 		self.mFlagUserMove = False
@@ -967,18 +923,22 @@ class TimeShiftPlate(BaseWindow):
 	def AsyncUpdateCurrentMove( self ) :
 		try :
 			if self.mFlagUserMove != True :
-				if self.mAccelator > 2 :
+				#if self.mAccelator > 2 :
 					#self.mUserMoveTime = int( self.mUserMoveTime * (1.5 ** self.mAccelator) / 10000 )
-					self.mUserMoveTime = self.mUserMoveTime * self.mAccelator
+
+				self.mUserMoveTime = self.mUserMoveTime * self.mAccelator
 				frameJump = self.mTimeshift_playTime + self.mUserMoveTime * 1000
 				ret = self.mCommander.Player_JumpToIFrame( frameJump )
 				LOG_TRACE('2============frameJump[%s] accelator[%s] ret[%s]'% (frameJump,self.mAccelator,ret) )
+				"""
 				if ret :
 					self.InitTimeShift()
 					self.UpdateLocalTime()
+				"""
 
-				self.mFlagUserMove = True
+				self.mFlagUserMove = False
 				self.mAccelator = 0
+				self.mUserMoveTime = 0
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
