@@ -15,6 +15,7 @@ from ElisClass import *
 from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.GuiConfig import *
+from ElisEPGDB import ElisEPGDB
 
 
 gDataCacheMgr = None
@@ -88,12 +89,27 @@ class DataCacheMgr( object ):
 		self.Load()
 		LOG_TRACE('')
 
+		self.mEpgDB = None
+
+		if SUPPORT_DATABASE	 == True :
+			self.mEpgDB = ElisEPGDB()
+			
 		#self.mEventBus.Register( self )
 
 
 	@classmethod
 	def GetName(cls):
 		return cls.__name__
+
+
+	def BeginEPGTransaction( self ) :
+		if SUPPORT_DATABASE	== True :
+			self.mEpgDB.Execute('begin')
+
+
+	def EndEPGTransaction( self ):
+		if SUPPORT_DATABASE	== True :
+			self.mEpgDB.Execute('commit')
 
 
 	def onEvent(self, aEvent):
@@ -468,6 +484,7 @@ class DataCacheMgr( object ):
 
 		return fChannel
 
+
 	@DataLock
 	def Datetime_GetLocalOffset( self ) :
 		return self.mLocalOffset
@@ -504,6 +521,8 @@ class DataCacheMgr( object ):
 
 		return None
 
+
+#	@DataLock
 	def Epgevent_GetList( self, aChannel, aTestTime=0 ) :
 		try :
 			if aTestTime :
@@ -528,7 +547,21 @@ class DataCacheMgr( object ):
 
 		return None
 
-	@DataLock
+
+#	@DataLock
+	def Epgevent_GetList( self, aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount ) :
+
+		eventList = None
+		
+		if SUPPORT_DATABASE	== True :
+			eventList = self.mEpgDB.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
+		else:
+			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
+
+		return eventList
+
+
+#	@DataLock
 	def Epgevent_GetEvent( self, aEvent ) :
 		hashKey = '%d:%d:%d:%d' %( aEvent.mEventId, aEvent.mSid, aEvent.mTsid, aEvent.mOnid )
 		event = self.mEPGListHash.get( hashKey, None )
@@ -537,6 +570,54 @@ class DataCacheMgr( object ):
 			return event
 
 		return None
+
+
+#	@DataLock
+	def Epgevent_GetCurrent( self, aSid, aTsid, aOnid ) :
+
+		eventList = None
+		
+		if SUPPORT_DATABASE	== True :
+			eventList = self.mEpgDB.Epgevent_GetCurrent( aSid, aTsid, aOnid, self.Datetime_GetGMTTime() )
+		else:
+			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, 0, 0, 1 )
+
+		return eventList
+
+
+#	@DataLock
+	def Epgevent_GetFollowing( self, aSid, aTsid, aOnid ) :
+		LOG_TRACE('');
+		eventList = None
+
+		if SUPPORT_DATABASE	== True :
+			LOG_TRACE('');
+			try :
+				LOG_TRACE('');			
+				eventList = self.mEpgDB.Epgevent_GetFollowing( aSid, aTsid, aOnid, self.Datetime_GetGMTTime() )
+				LOG_TRACE('');				
+			except Exception, ex:
+				LOG_ERR( "Exception %s" %ex)
+			
+		else:
+			LOG_TRACE('');		
+			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, 1, 1, 1 )
+
+		return eventList
+
+
+#	@DataLock
+	def Epgevent_GetFollowingList( self  ) :
+
+		eventList = None
+
+		if SUPPORT_DATABASE	== True :
+			eventList = self.mEpgDB.Epgevent_GetFollowingList( self.Datetime_GetGMTTime() )
+		else:
+			return None
+
+		return eventList
+
 
 
 	#@DataLock
