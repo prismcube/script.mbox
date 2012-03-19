@@ -492,8 +492,10 @@ class DataCacheMgr( object ):
 
 	@DataLock
 	def Datetime_GetLocalTime( self ) :
+		"""
 		localTime = time.localtime()
 		self.mLocalTime = time.mktime( localTime ) + self.mLocalOffset
+		"""
 		return self.mLocalTime
 
 

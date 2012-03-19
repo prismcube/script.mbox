@@ -384,6 +384,7 @@ class Configure( SettingWindow ) :
 				else :
 					self.mHasChannel = False
 					channelName = 'None'
+					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
 
 			self.AddEnumControl( E_SpinEx01, 'Time Mode' )			
 			self.AddInputControl( E_Input01, 'Channel', channelName )
@@ -488,7 +489,6 @@ class Configure( SettingWindow ) :
 
 		elif aSelectedItem == E_TIME_SETTING :
 			if self.mHasChannel == False :
-				ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
 				self.SetEnableControl( E_SpinEx01, False )
 				self.SetEnableControl( E_Input01, False )
 			else :
