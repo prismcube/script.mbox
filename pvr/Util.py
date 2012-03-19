@@ -23,7 +23,7 @@ E_LOG_NORMAL = 0
 E_LOG_ERR    = 2
 E_LOG_WARN   = 1
 E_LOG_DEBUG  = 0
-E_DEBUG_LEVEL = E_LOG_DEBUG
+E_DEBUG_LEVEL = E_LOG_ERR
 
 class TimeFormatEnum(object):
 	E_AW_DD_MM_YYYY			= 0
