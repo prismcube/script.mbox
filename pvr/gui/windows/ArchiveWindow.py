@@ -128,6 +128,14 @@ class ArchiveWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN :
 			pass
 
+		#testcode remove all archive
+		elif actionId == Action.REMOTE_0 :
+			LOG_TRACE('----------- Remove All Archive --------------')
+			
+		#testcode remove all timer
+		elif actionId == Action.REMOTE_1 :
+			LOG_TRACE('----------- Remove All Timer --------------')
+			
 		
 	def onClick( self, aControlId ) :
 		LOG_TRACE( 'aControlId=%d' % aControlId )
