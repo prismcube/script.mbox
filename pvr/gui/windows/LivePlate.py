@@ -927,7 +927,8 @@ class LivePlate(BaseWindow):
 			self.ShowRecording( )
 
 		elif aFocusid == self.mCtrlBtnSettingFormat.getId() :
-
+			pass
+			"""
 			context = []
 			context.append( ContextItem( 'Video Format' ) )
 			context.append( ContextItem( 'Audio Track' ) )
@@ -996,7 +997,7 @@ class LivePlate(BaseWindow):
 
 
 			LOG_TRACE('Select[%s --> %s]'% (selectIdx1, selectIdx2) )
-
+			"""
 
 		LOG_TRACE( 'Leave' )
 

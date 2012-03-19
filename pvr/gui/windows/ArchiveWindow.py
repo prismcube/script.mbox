@@ -56,7 +56,7 @@ class ArchiveWindow( BaseWindow ) :
 		self.mRecordListItems = []
 
 		LOG_TRACE('')
-		self.mServiceType =  self.mCurrentMode = self.mCommander.Zappingmode_GetCurrent( ).mServiceType
+		self.mServiceType =  self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( ).mServiceType
 		LOG_TRACE('serviceType=%d' %self.mServiceType)		
 		
 		LOG_TRACE('')
@@ -131,6 +131,16 @@ class ArchiveWindow( BaseWindow ) :
 		#testcode remove all archive
 		elif actionId == Action.REMOTE_0 :
 			LOG_TRACE('----------- Remove All Archive --------------')
+			recordCount = self.mDataCache.Record_GetCount( self.mServiceType )
+			
+			self.OpenBusyDialog( )
+
+			for i in range( recordCount ) :
+				LOG_TRACE('i=%d' %i)		
+				recInfo = self.mDataCache.Record_GetRecordInfo( i, self.mServiceType )
+				self.mDataCache.Record_DeleteRecord( recInfo.mKey, self.mServiceType )
+
+			self.CloseBusyDialog( )			
 			
 		#testcode remove all timer
 		elif actionId == Action.REMOTE_1 :
@@ -248,14 +258,18 @@ class ArchiveWindow( BaseWindow ) :
 	def Load( self ) :
 
 		LOG_TRACE('----------------------------------->')
-		self.mRecordCount = self.mCommander.Record_GetCount( self.mServiceType )
+		try :
+			self.mRecordCount = self.mDataCache.Record_GetCount( self.mServiceType )
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)
+		
 		
 		LOG_TRACE('')
 		LOG_TRACE('RecordCount=%d' %self.mRecordCount )
 		
 		for i in range( self.mRecordCount ) :
 			LOG_TRACE('i=%d' %i)		
-			recInfo = self.mCommander.Record_GetRecordInfo( i, self.mServiceType )
+			recInfo = self.mDataCache.Record_GetRecordInfo( i, self.mServiceType )
 			recInfo.printdebug()
 			self.mRecordList.append( recInfo )
 
@@ -361,8 +375,6 @@ class ArchiveWindow( BaseWindow ) :
 		"""
 
 
-
-
 	def StartRecordPlayback( self ) :
 		#(self ,  recordKey,  serviceType,  offsetms,  speed) :
 		LOG_ERR('ERROR TEST')
@@ -370,7 +382,7 @@ class ArchiveWindow( BaseWindow ) :
 		LOG_ERR('ERROR TEST position=%d' %position)		
 		recInfo = self.mRecordList[position]
 		LOG_ERR('ERROR TEST recInfo.mRecordKey=%d self.mServiceType=%d' %(recInfo.mRecordKey, self.mServiceType ) )
-		self.mCommander.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
+		self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
 		#self.close()
 		self.SetVideoRestore();
 		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )				

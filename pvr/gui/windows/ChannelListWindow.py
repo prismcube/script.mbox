@@ -2474,8 +2474,8 @@ class ChannelListWindow( BaseWindow ) :
 				mode = FLAG_OPT_GROUP
 			else :
 				mode = FLAG_OPT_LIST
-			#self.EditSettingWindow( mode )        	 # dialog 1
-			self.EditSettingWindowContext( mode )	 # dialog 2
+			self.EditSettingWindow( mode )        	 # dialog 1
+			#self.EditSettingWindowContext( mode )	 # dialog 2
 
 		LOG_TRACE( 'Leave' )
 

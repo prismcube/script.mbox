@@ -192,13 +192,14 @@ class EPGWindow(BaseWindow):
 		gmtUntil = self.mGMTTime + E_MAX_SCHEDULE_DAYS*3600*24
 
 		try :
-			self.mEPGList = self.mDataCache.Epgevent_GetList(  self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid,  gmtFrom,  gmtUntil,  E_MAX_EPG_COUNT)
+			self.mEPGList = self.mDataCache.Epgevent_GetListByChannel(  self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid,  gmtFrom,  gmtUntil,  E_MAX_EPG_COUNT)
 
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
 
 		if self.mEPGList == None or self.mEPGList[0].mError != 0 :
 			self.mEPGList = []
+			return
 
 		LOG_TRACE('self.mEPGList COUNT=%d' %len(self.mEPGList ))
 		

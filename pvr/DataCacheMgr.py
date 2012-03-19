@@ -551,7 +551,7 @@ class DataCacheMgr( object ):
 
 
 #	@DataLock
-	def Epgevent_GetList( self, aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount ) :
+	def Epgevent_GetListByChannel( self, aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount ) :
 
 		eventList = None
 		
@@ -710,8 +710,6 @@ class DataCacheMgr( object ):
 	def Channel_Move( self, aServieType, aNumber, aIChannel ) :
 		return self.mCommander.Channel_Move( aServieType, aNumber, aIChannel )
 
-	def Player_SetVIdeoSize( self, aX, aY, aW, aH ) :
-		return self.mCommander.Player_SetVIdeoSize( aX, aY, aW, aH ) 
 
 	def Channel_Save( self ) :
 		return self.mCommander.Channel_Save( )
@@ -725,17 +723,9 @@ class DataCacheMgr( object ):
 	def Channel_DeleteAll( self ) :
 		return self.mCommander.Channel_DeleteAll( )
 
-	def Player_VideoBlank( self, aBlank, aForce ) :
-		return self.mCommander.Player_VideoBlank( aBlank, aForce )
-
-	def Player_AVBlank( self, aBlank, aForce ) :
-		return self.mCommander.Player_AVBlank( aBlank, aForce )
 
 	def Channel_SetInitialBlank( self, aBlank ) :
 		return self.mCommander.Channel_SetInitialBlank( aBlank )
-
-	def Record_GetRunningRecorderCount( self ) :
-		return self.mCommander.Record_GetRunningRecorderCount( )
 
 	def Audiotrack_GetCount( self ) :
 		return self.mCommander.Audiotrack_GetCount( )
@@ -748,4 +738,39 @@ class DataCacheMgr( object ):
 
 	def Audiotrack_Get( self, aIndex ) :
 		return self.mCommander.Audiotrack_Get( aIndex )
+
+
+	def Player_SetVIdeoSize( self, aX, aY, aW, aH ) :
+		return self.mCommander.Player_SetVIdeoSize( aX, aY, aW, aH ) 
+
+
+	def Player_VideoBlank( self, aBlank, aForce ) :
+		return self.mCommander.Player_VideoBlank( aBlank, aForce )
+
+
+	def Player_AVBlank( self, aBlank, aForce ) :
+		return self.mCommander.Player_AVBlank( aBlank, aForce )
+
+
+	def Player_StartInternalRecordPlayback( self, aRecordKey, aServiceType, aOffsetMS, aSpeed ) :
+		return self.mCommander.Player_StartInternalRecordPlayback( aRecordKey, aServiceType, aOffsetMS, aSpeed )
+
+
+	def Record_GetRunningRecorderCount( self ) :
+		return self.mCommander.Record_GetRunningRecorderCount( )
+
+
+	def Record_GetCount( self, aServiceType ) :
+		return self.mCommander.Record_GetCount( aServiceType )
+
+
+	def Record_GetRecordInfo( self, aIndex, aServiceType ) :
+		return self.mCommander.Record_GetRecordInfo( aIndex, aServiceType )
+
+
+	def Record_DeleteRecord( self, aKey, aServiceType ) :
+		return self.mCommander.Record_DeleteRecord( aKey, aServiceType )
+
+
+
 
