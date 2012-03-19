@@ -12,6 +12,7 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
 from ElisEventClass import *
 from ElisEnum import ElisEnum
+from pvr.IpParser import IpParser
 
 
 E_MAIN_GROUP_ID		=	9000
@@ -47,6 +48,21 @@ class FirstInstallation( SettingWindow ) :
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'First Installation' )
 		self.SetListControl( self.mStepNum )
 		self.mInitialized = True
+
+		# for test
+		print 'dhkim test #0'
+		ipparser = IpParser( )
+		print 'dhkim test #1'
+		ipparser.LoadNetworkType( )
+		print 'dhkim test #2'
+		ipparser.LoadNetworkAddress( )
+		print 'dhkim test #4'		
+		ip0, ip1, ip2, ip3 = ipparser.GetNetworkAddress( )
+		print 'dhkim test #5'		
+		iptype = ipparser.GetNetworkType( )
+		print 'dhkim test ip = %s, %s, %s, %s' % ( ip0, ip1, ip2, ip3 )
+		print 'dhkim test ip type = %d' % iptype
+ 
 
 		
 	def onAction( self, aAction ) :
@@ -267,6 +283,7 @@ class FirstInstallation( SettingWindow ) :
 				else :
 					self.mHasChannel = False
 					channelName = 'None'
+					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
 
 			self.AddEnumControl( E_SpinEx01, 'Time Mode', None, 'Select Time Setting Option')			
 			self.AddInputControl( E_Input01, 'Channel', channelName )
@@ -287,7 +304,10 @@ class FirstInstallation( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
-			self.SetFocusControl( E_SpinEx01 )
+			if self.mHasChannel == False :
+				self.SetFocusControl( E_Input02 )
+			else :
+				self.SetFocusControl( E_SpinEx01 )
 			self.ShowDescription( )
 			self.DisableControl( self.mStepNum )
 			return
@@ -303,11 +323,12 @@ class FirstInstallation( SettingWindow ) :
 			channelList = self.mDataCache.Channel_GetList( )
 			cntChannel = 0
 			cntRadio = 0
-			for channel in channelList :
-				if channel.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
-					cntChannel = cntChannel + 1
-				elif channel.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
-					cntRadio = cntRadio + 1
+			if channelList and channelList[0].mError == 0 :
+				for channel in channelList :
+					if channel.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
+						cntChannel = cntChannel + 1
+					elif channel.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
+						cntRadio = cntRadio + 1
 			self.AddInputControl( E_Input04, 'TV Channels', '%d' % cntChannel )
 			self.AddInputControl( E_Input05, 'Radio Channels', '%d' % cntRadio )
 			self.AddNextButton( )
@@ -342,7 +363,6 @@ class FirstInstallation( SettingWindow ) :
 	def DisableControl( self, aStep ) :			
 		if self.mStepNum == E_STEP_DATE_TIME :
 			if self.mHasChannel == False :
-				ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
 				self.SetEnableControl( E_SpinEx01, False )
 				self.SetEnableControl( E_Input01, False )
 			else :

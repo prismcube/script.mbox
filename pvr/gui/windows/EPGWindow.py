@@ -59,15 +59,16 @@ class EPGWindow(BaseWindow):
 		self.InitControl()
 		LOG_TRACE('')
 
-		self.mCurrentMode = self.mCommander.Zappingmode_GetCurrent( )
-		self.mCurrentChannel = self.mCommander.Channel_GetCurrent( )
+		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
+		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 		LOG_TRACE('ZeppingMode(%d,%d,%d)' %( self.mCurrentMode.mServiceType, self.mCurrentMode.mMode, self.mCurrentMode.mSortingMode ) )
-		self.mChannelList = self.mCommander.Channel_GetList( self.mCurrentMode.mServiceType, self.mCurrentMode.mMode, self.mCurrentMode.mSortingMode )
+		#self.mChannelList = self.mDataCache.Channel_GetList( self.mCurrentMode.mServiceType, self.mCurrentMode.mMode, self.mCurrentMode.mSortingMode )
+		self.mChannelList = self.mDataCache.Channel_GetList( )
 
 		LOG_TRACE("ChannelList=%d" %len(self.mChannelList) )
 		
 		self.mSelectChannel = self.mCurrentChannel
-		self.mLocalOffset = self.mCommander.Datetime_GetLocalOffset( )
+		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		self.mGMTTime = 0
 		LOG_TRACE('CHANNEL current=%s select=%s' %( self.mCurrentChannel, self.mSelectChannel ))
 
@@ -170,7 +171,7 @@ class EPGWindow(BaseWindow):
 	def Load( self ) :
 
 		LOG_TRACE('----------------------------------->')
-		self.mGMTTime = self.mCommander.Datetime_GetGMTTime( )
+		self.mGMTTime = self.mDataCache.Datetime_GetGMTTime( )
 		self.mEPGList = []
 		
 		if self.mEPGMode == E_VIEW_CHANNEL :
@@ -191,7 +192,7 @@ class EPGWindow(BaseWindow):
 		gmtUntil = self.mGMTTime + E_MAX_SCHEDULE_DAYS*3600*24
 
 		try :
-			self.mEPGList = self.mCommander.Epgevent_GetList(  self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid,  gmtFrom,  gmtUntil,  E_MAX_EPG_COUNT)
+			self.mEPGList = self.mDataCache.Epgevent_GetList(  self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid,  gmtFrom,  gmtUntil,  E_MAX_EPG_COUNT)
 
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
@@ -204,60 +205,88 @@ class EPGWindow(BaseWindow):
 
 
 	def LoadByCurrent( self ):
+		try :
+			self.mEPGList=self.mDataCache.Epgevent_GetCurrentList()
+
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)
+	
+		"""
 		LOG_TRACE('')
-
-		gmtFrom =  0
-		gmtUntil = 0
-
 		LOG_TRACE('ChannelList len=%d' %(len(self.mChannelList) ) )
 
-		for i in range( len(self.mChannelList) ) :
-			channel = self.mChannelList[ i ]
-			#LOG_TRACE('channel[%d].mNumber=%d name=%s' %(i, channel.mNumber, channel.mName) )
-			epgList = []
-			epgList = self.mCommander.Epgevent_GetList( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil, 1 )
+		before = time.clock()
+		LOG_ERR('before=%s' %before )
 
+		try :
+			#self.mDataCache.BeginEPGTransaction()
+			
+			for i in range( len(self.mChannelList) ) :
+				channel = self.mChannelList[ i ]
+				#LOG_TRACE('channel[%d].mNumber=%d name=%s' %(i, channel.mNumber, channel.mName) )
+				epgList = []
+				epgList = self.mDataCache.Epgevent_GetCurrent( channel.mSid, channel.mTsid, channel.mOnid )
+
+			
+				if epgList == None :
+					#LOG_WARN('Has no')
+					continue
+
+				elif epgList[0].mError != 0 :
+					LOG_ERR('epg Err=%d' %epgList[0].mError )
+					continue
+				else :
+					self.mEPGList.append( epgList[0] )
+
+			#self.mDataCache.EndEPGTransaction()
+
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)
 		
-			if epgList == None :
-				#LOG_WARN('Has no')
-				continue
-
-			elif epgList[0].mError != 0 :
-				LOG_ERR('epg Err=%d' %epgList[0].mError )
-				continue
-			else :
-				self.mEPGList.append( epgList[0] )
-
-
 		LOG_TRACE('self.mEPGList COUNT=%d' %len(self.mEPGList ))
 
+		after = time.clock()
+		LOG_ERR('after=%s' %after )		
+		LOG_ERR('--------------> diff=%s' %(after-before) )
+		"""
 
 
 	def LoadByFollowing( self ):
-		LOG_TRACE('')
 
-		gmtFrom =  1
-		gmtUntil = 1
+		try :
+			self.mEPGList=self.mDataCache.Epgevent_GetFollowingList()
 
-		LOG_TRACE('ChannelList len=%d' %(len(self.mChannelList) ) )
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)
 
-		for i in range( len(self.mChannelList) ) :
-			channel = self.mChannelList[ i ]
-			#LOG_TRACE('channel[%d].mNumber=%d name=%s' %(i, channel.mNumber, channel.mName) )
-			epgList = []
-			epgList = self.mCommander.Epgevent_GetList( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil, 1 )
 
-		
-			if epgList == None :
-				#LOG_WARN('Has no')
-				continue
+		"""
+		try :
+			#self.mDataCache.BeginEPGTransaction()
+			
+			for i in range( len(self.mChannelList) ) :
+				channel = self.mChannelList[ i ]
+				LOG_TRACE('channel[%d].mNumber=%d name=%s' %(i, channel.mNumber, channel.mName) )
+				epgList = []
+				epgList = self.mDataCache.Epgevent_GetFollowing( channel.mSid, channel.mTsid, channel.mOnid )
 
-			elif epgList[0].mError != 0 :
-				LOG_ERR('epg Err=%d' %epgList[0].mError )
-				continue
-			else :
-				self.mEPGList.append( epgList[0] )
+			
+				if epgList == None :
+					LOG_WARN('Has no')
+					continue
 
+				elif epgList[0].mError != 0 :
+					LOG_ERR('epg Err=%d' %epgList[0].mError )
+					continue
+				else :
+					self.mEPGList.append( epgList[0] )
+
+
+			#self.mDataCache.EndEPGTransaction()
+
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)
+		"""
 
 		LOG_TRACE('self.mEPGList COUNT=%d' %len(self.mEPGList ))
 
@@ -270,7 +299,7 @@ class EPGWindow(BaseWindow):
 			for i in range( len( self.mEPGList ) ) :
 				LOG_TRACE('---------->i=%d' %i)		
 				epgEvent = self.mEPGList[i]
-				epgEvent.printdebug()
+				#epgEvent.printdebug()
 				listItem = xbmcgui.ListItem( TimeToString( epgEvent.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM ), epgEvent.mEventName )			
 				self.mListItems.append( listItem )
 
@@ -354,7 +383,7 @@ class EPGWindow(BaseWindow):
 
 		"""
 		try:
-			self.mLocalTime = self.mCommander.Datetime_GetLocalTime( )
+			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 
 
 			if self.mNavEpg :

@@ -17,11 +17,13 @@ DIALOG_LIST_ID				= 102
 DIALOG_BUTTON_CLOSE_ID		= 103
 
 class DialogContext( BaseDialog ) :
+
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )	
 		self.mItemList = []
 		self.selectedIndex = -1
 		self.mCtrlList = None
+
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
