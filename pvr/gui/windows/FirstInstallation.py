@@ -50,6 +50,7 @@ class FirstInstallation( SettingWindow ) :
 		self.mInitialized = True
 
 		# for test
+		print 'dhkim test #0'
 		ipparser = IpParser( )
 		print 'dhkim test #1'
 		ipparser.LoadNetworkType( )
