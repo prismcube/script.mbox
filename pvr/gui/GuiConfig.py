@@ -126,6 +126,10 @@ MAX_VOLUME						= 100
 TIME_AUTOMATIC					= 0
 TIME_MANUAL						= 1
 
+# Network Mode
+NET_DHCP						= 0
+NET_STATIC						= 1
+
 
 # Tuner Config String Define
 USER_ENUM_LIST_ON_OFF				= [ 'Off', 'On' ]
