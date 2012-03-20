@@ -1,6 +1,6 @@
 <window id="3308">
 	<defaultcontrol always="true">9000</defaultcontrol>
-	<allowoverlay>no</allowoverlay>
+	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<include>DefaultBehindDialogFadeOut</include>
