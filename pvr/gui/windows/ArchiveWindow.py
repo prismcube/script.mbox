@@ -137,10 +137,16 @@ class ArchiveWindow( BaseWindow ) :
 
 			for i in range( recordCount ) :
 				LOG_TRACE('i=%d' %i)		
-				recInfo = self.mDataCache.Record_GetRecordInfo( i, self.mServiceType )
-				self.mDataCache.Record_DeleteRecord( recInfo.mKey, self.mServiceType )
+				recInfo = self.mDataCache.Record_GetRecordInfo( 0, self.mServiceType )
+				self.mDataCache.Record_DeleteRecord( recInfo.mRecordKey, self.mServiceType )
 
-			self.CloseBusyDialog( )			
+
+			self.CloseBusyDialog( )
+
+			self.Flush( )
+			self.Load( )
+			self.UpdateList( )
+
 			
 		#testcode remove all timer
 		elif actionId == Action.REMOTE_1 :
@@ -296,7 +302,8 @@ class ArchiveWindow( BaseWindow ) :
 			self.mRecordList.reverse()
 
 		LOG_TRACE('')
-		
+
+		self.mCtrlRecordList.reset( )
 		self.mRecordListItems = []
 		for i in range( len( self.mRecordList ) ) :
 			LOG_TRACE('---------->i=%d' %i)		
