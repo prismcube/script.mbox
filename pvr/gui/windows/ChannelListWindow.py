@@ -1304,7 +1304,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		lblColorS = E_TAG_COLOR_GREY
 		lblColorE = E_TAG_COLOR_END
-		LOG_TRACE('listItems data[%s]'% (self.mListItems) )
+		#LOG_TRACE('listItems data[%s]'% (self.mListItems) )
 		if self.mListItems == None :
 			self.mListItems = []
 			for iChannel in self.mChannelList:
@@ -1703,7 +1703,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	@GuiLock
-	def SetEditChannelList( self, aMode, aEnabled = True, aGroupName = '' ) :
+	def SetEditChannelList( self, aCmd, aEnabled = True, aGroupName = '' ) :
 		LOG_TRACE( 'Enter' )
 
 		lastPos = self.mCtrlListCHList.getSelectedPosition( )
@@ -1712,7 +1712,7 @@ class ChannelListWindow( BaseWindow ) :
 			#----------------> 1.set current position item <-------------
 			if len(self.mMarkList) < 1 :
 				#icon toggle
-				if aMode.lower( ) == 'lock' :
+				if aCmd.lower( ) == 'lock' :
 					listItem = self.mCtrlListCHList.getListItem(lastPos)
 
 					if aEnabled :
@@ -1732,7 +1732,7 @@ class ChannelListWindow( BaseWindow ) :
 					ret = self.mDataCache.Channel_Lock( aEnabled, retList )
 
 				#label color
-				elif aMode.lower( ) == 'skip' :
+				elif aCmd.lower( ) == 'skip' :
 					#remove tag [COLOR ...]label[/COLOR]
 					label1 = self.mCtrlListCHList.getSelectedItem( ).getLabel( )
 					label2 = re.findall('\](.*)\[', label1)
@@ -1750,7 +1750,7 @@ class ChannelListWindow( BaseWindow ) :
 					retList.append( self.mChannelList[lastPos] )
 					ret = self.mDataCache.Channel_Skip( aEnabled, retList )
 
-				elif aMode.lower( ) == 'add' :
+				elif aCmd.lower( ) == 'add' :
 					#strip tag [COLOR ...]label[/COLOR]
 					number = self.mChannelList[lastPos].mNumber
 					cmd = 'AddChannel to Group'
@@ -1759,7 +1759,7 @@ class ChannelListWindow( BaseWindow ) :
 					else :
 						ret = 'group None'
 
-				elif aMode.lower( ) == 'del' :
+				elif aCmd.lower( ) == 'del' :
 					#strip tag [COLOR ...]label[/COLOR]
 					number = self.mChannelList[lastPos].mNumber
 					cmd = 'RemoveChannel to Group'
@@ -1768,8 +1768,8 @@ class ChannelListWindow( BaseWindow ) :
 					else :
 						ret = 'group None'
 
-				elif aMode.lower( ) == 'delete' :
-					cmd = aMode.title( )
+				elif aCmd.lower( ) == 'delete' :
+					cmd = aCmd.title( )
 					retList = []
 					retList.append( self.mChannelList[lastPos] )
 					ret = self.mDataCache.Channel_Delete( retList )
@@ -1788,7 +1788,7 @@ class ChannelListWindow( BaseWindow ) :
 					cmd = ''
 					ret = ''
 					#icon toggle
-					if aMode.lower( ) == 'lock' :
+					if aCmd.lower( ) == 'lock' :
 
 						#lock toggle: disable
 						if aEnabled :
@@ -1804,7 +1804,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 					#label color
-					elif aMode.lower( ) == 'skip' :
+					elif aCmd.lower( ) == 'skip' :
 						#strip tag [COLOR ...]label[/COLOR]
 						label1 = self.mCtrlListCHList.getSelectedItem( ).getLabel( )
 						label2 = re.findall('\](.*)\[', label1)
@@ -1821,7 +1821,7 @@ class ChannelListWindow( BaseWindow ) :
 						retList.append( self.mChannelList[idx] )
 						ret = self.mDataCache.Channel_Skip( aEnabled, retList )
 
-					elif aMode.lower( ) == 'add' :
+					elif aCmd.lower( ) == 'add' :
 						number = self.mChannelList[idx].mNumber
 						cmd = 'AddChannel to Group'
 						if aGroupName :
@@ -1829,7 +1829,7 @@ class ChannelListWindow( BaseWindow ) :
 						else :
 							ret = 'group None'
 
-					elif aMode.lower( ) == 'del' :
+					elif aCmd.lower( ) == 'del' :
 						number = self.mChannelList[idx].mNumber
 						LOG_TRACE('delete by Fav grp[%s] ch[%s]'% (aGroupName, number) )
 						cmd = 'RemoveChannel to Group'
@@ -1838,7 +1838,7 @@ class ChannelListWindow( BaseWindow ) :
 						else :
 							ret = 'group None'
 
-					elif aMode.lower( ) == 'move' :
+					elif aCmd.lower( ) == 'move' :
 						cmd = 'Move'
 						idxM= idx + aEnabled
 						if idxM < 0 : continue
@@ -1856,7 +1856,7 @@ class ChannelListWindow( BaseWindow ) :
 
 						continue
 					
-					elif aMode.lower( ) == 'gmove' :
+					elif aCmd.lower( ) == 'gmove' :
 						cmd = 'Move in Group'
 						insertPosition = idx + aEnabled
 						if aGroupName :
@@ -1865,7 +1865,7 @@ class ChannelListWindow( BaseWindow ) :
 							ret = 'group None'
 
 					"""
-					elif aMode.lower( ) == 'delete' :
+					elif aCmd.lower( ) == 'delete' :
 						cmd = 'Delete'
 						retList = []
 						retList.append( self.mChannelList[idx] )
@@ -1940,6 +1940,8 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def GetFavoriteGroup( self ) :
+		LOG_TRACE( 'Enter' )
+
 		self.mListFavorite = self.mDataCache.Favorite_GetList_Elis( self.mChannelListServieType )
 		#ClassToList( 'print', self.mListFavorite )
 
@@ -1948,6 +1950,8 @@ class ChannelListWindow( BaseWindow ) :
 			for item in self.mListFavorite:
 				#copy to favoriteGroup
 				self.mEditFavorite.append( item.mGroupName )
+
+		LOG_TRACE( 'Leave' )
 
 
 	def DoContextAdtion( self, aMode, aContextAction, aGroupName = '' ) :
@@ -2003,6 +2007,9 @@ class ChannelListWindow( BaseWindow ) :
 				#idxThisFavorite = self.mCtrlListSubmenu.getSelectedPosition( )
 				#aGroupName = self.mListFavorite[idxThisFavorite].mGroupName
 				aGroupName = self.mCtrlListSubmenu.getSelectedItem( ).getLabel( )
+
+			self.SetEditChannelList( cmd, True, aGroupName )
+			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 
 		elif aContextAction == CONTEXT_ACTION_MOVE :
 			cmd = 'move'
@@ -2464,11 +2471,11 @@ class ChannelListWindow( BaseWindow ) :
 			if not self.mChannelList :
 				context = []
 
-			context.append( ContextItem( Msg.Strings( MsgId.LANG_CREATE_NEW_GROUP , CONTEXT_ACTION_CREATE_GROUP_FAV ) ) )
+			context.append( ContextItem( Msg.Strings( MsgId.LANG_CREATE_NEW_GROUP ), CONTEXT_ACTION_CREATE_GROUP_FAV ) )
 
 			if self.mEditFavorite:
-				context.append( ContextItem( '%s'% Msg.Strings( MsgId.LANG_RENAME_FAV, CONTEXT_ACTION_RENAME_FAV ) ) )
-				context.append( ContextItem( '%s'% Msg.Strings( MsgId.LANG_DELETE_FAV, CONTEXT_ACTION_DELETE_FAV ) ) )
+				context.append( ContextItem( '%s'% Msg.Strings( MsgId.LANG_RENAME_FAV ), CONTEXT_ACTION_RENAME_FAV ) )
+				context.append( ContextItem( '%s'% Msg.Strings( MsgId.LANG_DELETE_FAV ), CONTEXT_ACTION_DELETE_FAV ) )
 				
 				
 			else:
@@ -2487,26 +2494,21 @@ class ChannelListWindow( BaseWindow ) :
  		GuiLock2( False )
 
 		selectedAction = dialog.GetSelectedAction( )
-		LOG_TRACE(' selected context[%s]'% selectedAction )
-
-
-		#result editing action
-		selectedAction = dialog.GetSelectedAction( )
-		LOG_TRACE('=======selectedAction[%s]'% selectedAction)
+		LOG_TRACE('selectedAction[%s]'% selectedAction )
 
 		if selectedAction == -1 :
 			LOG_TRACE('CANCEL by context dialog')
 			return
 
-		if (aMode == FLAG_OPT_LIST) and (not self.mEditFavorite) and (selectedAction == CONTEXT_ACTION_ADD_TO_FAV) :
+		if (not self.mEditFavorite) and (selectedAction == CONTEXT_ACTION_ADD_TO_FAV) :
 			#can not add to Fav : no favorite group
-			LOG_TRACE('Disabled item : selectedAction[%s]'% selectedAction)
+			LOG_TRACE('Disabled! Fav is empty, Can not add to Fav : selectedAction[%s]'% selectedAction)
 			return
 
-		if ((aMode == FLAG_OPT_GROUP) and (not self.mEditFavorite) and (selectedAction == CONTEXT_ACTION_RENAME_FAV) ) or \
-		   ((aMode == FLAG_OPT_GROUP) and (not self.mEditFavorite) and (selectedAction == CONTEXT_ACTION_DELETE_FAV) ) :
+		if ((not self.mEditFavorite) and (selectedAction == CONTEXT_ACTION_RENAME_FAV) ) or \
+		   ((not self.mEditFavorite) and (selectedAction == CONTEXT_ACTION_DELETE_FAV) ) :
 			#can not rename / delete : no favorite group
-			LOG_TRACE('Disabled item : selectedAction[%s]'% selectedAction)
+			LOG_TRACE('Disabled Fav is empty, Can not Rename or Delete Fav : selectedAction[%s]'% selectedAction)
 			return
 		#--------------------------------------------------------------- section 1
 
@@ -2524,9 +2526,11 @@ class ChannelListWindow( BaseWindow ) :
 		if selectedAction == CONTEXT_ACTION_ADD_TO_FAV or \
 		   selectedAction == CONTEXT_ACTION_RENAME_FAV or \
 		   selectedAction == CONTEXT_ACTION_DELETE_FAV :
-		   	conttext = []
+		   	context = []
+		   	idx = 0
    			for name in self.mEditFavorite:
-				context.append( ContextItem( name ) )
+				context.append( ContextItem( name, idx ) )
+				idx += 1
 
 			GuiLock2( True )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
@@ -2535,6 +2539,7 @@ class ChannelListWindow( BaseWindow ) :
  			GuiLock2( False )
 
  			grpIdx = dialog.GetSelectedAction( )
+ 			LOG_TRACE('---------------grpIdx[%s]'% grpIdx)
  			groupName = self.mEditFavorite[grpIdx]
 
 			if grpIdx == -1 :
@@ -2585,8 +2590,8 @@ class ChannelListWindow( BaseWindow ) :
 				mode = FLAG_OPT_GROUP
 			else :
 				mode = FLAG_OPT_LIST
-			self.EditSettingWindow( mode )        	 # dialog 1
-			#self.EditSettingWindowContext( mode )	 # dialog 2
+			#self.EditSettingWindow( mode )        	 # dialog 1
+			self.EditSettingWindowContext( mode )	 # dialog 2
 
 		LOG_TRACE( 'Leave' )
 
