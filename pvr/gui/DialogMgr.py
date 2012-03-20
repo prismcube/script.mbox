@@ -13,7 +13,7 @@ DIALOG_ID_STOP_RECORD				= 4
 DIALOG_ID_SATELLITE_NUMERIC			= 5
 DIALOG_ID_MOVE_ANTENNA				= 6
 DIALOG_ID_ADD_NEW_SATELLITE			= 7
-DIALOG_ID_EDIT_CHANNEL_LIST			= 8
+DIALOG_ID_SET_LIVE_PLATE			= 8
 DIALOG_ID_SET_TRANSPONDER			= 9
 DIALOG_ID_YES_NO_CANCEL				= 10
 DIALOG_ID_NUMERIC_KEYBOARD			= 11
@@ -21,7 +21,6 @@ DIALOG_ID_POPUP_OK					= 12
 DIALOG_ID_CONTEXT					= 13
 DIALOG_ID_CHANNEL_JUMP				= 14
 DIALOG_ID_FORCE_PROGRESS			= 15
-DIALOG_ID_SET_LIVE_PLATE			= 16
 
 gDialogMgr = None
 
@@ -76,10 +75,6 @@ class DialogMgr(object):
 				from pvr.gui.dialogs.DialogAddNewSatellite import DialogAddNewSatellite
 				return DialogAddNewSatellite('DialogAddNewSatellite.xml', self.scriptDir)
 
-			elif aDialogId == DIALOG_ID_EDIT_CHANNEL_LIST :
-				from pvr.gui.dialogs.DialogEditChannelList import DialogEditChannelList
-				return DialogEditChannelList('DialogEditChannelList.xml', self.scriptDir)
-
 			elif aDialogId == DIALOG_ID_SET_TRANSPONDER :
 				from pvr.gui.dialogs.DialogSetTransponder import DialogSetTransponder
 				return DialogSetTransponder('DialogSetTransponder.xml', self.scriptDir)
@@ -110,7 +105,7 @@ class DialogMgr(object):
 
 			elif aDialogId == DIALOG_ID_SET_LIVE_PLATE :
 				from pvr.gui.dialogs.DialogSetLivePlate import DialogSetLivePlate
-				return DialogSetLivePlate('DialogEditChannelList.xml', self.scriptDir)
+				return DialogSetLivePlate('DialogSetLivePlate.xml', self.scriptDir)
 				
 			else :
 				LOG_ERR( 'can not find dialog' )

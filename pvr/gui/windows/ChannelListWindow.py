@@ -337,7 +337,7 @@ class ChannelListWindow( BaseWindow ) :
 					#Mark mode
 					if self.mIsMark == True :
 						idx = self.mCtrlListCHList.getSelectedPosition( )
-						self.MarkAddDelete('mark', idx )
+						self.SetEditMarkupGUI('mark', idx )
 
 						GuiLock2( True )
 						self.setFocusId( self.mCtrlGropCHList.getId( ) )
@@ -1853,26 +1853,8 @@ class ChannelListWindow( BaseWindow ) :
 						self.mCtrlListCHList.selectItem(idxM)
 						xbmc.sleep( 50 )
 						self.mCtrlListCHList.getSelectedItem( ).setLabel(labelM)
-
 						continue
 					
-					elif aCmd.lower( ) == 'gmove' :
-						cmd = 'Move in Group'
-						insertPosition = idx + aEnabled
-						if aGroupName :
-							ret = self.mDataCache.FavoriteGroup_MoveChannels( aGroupName, insertPosition, self.mChannelListServieType, self.mChannelList[idx] )
-						else :
-							ret = 'group None'
-
-					"""
-					elif aCmd.lower( ) == 'delete' :
-						cmd = 'Delete'
-						retList = []
-						retList.append( self.mChannelList[idx] )
-						ret = self.mDataCache.Channel_Delete( retList )
-						LOG_TRACE('delete[%s]'% ClassToList('convert', retList) )
-					"""
-
 					LOG_TRACE( 'set[%s] idx[%s] ret[%s]'% (cmd,idx,ret) )
 
 					#mark remove
@@ -1887,7 +1869,204 @@ class ChannelListWindow( BaseWindow ) :
 
 		LOG_TRACE( 'Leave' )
 
-	def MarkAddDelete( self, aMode, aPos, aEnabled=True ) :
+	def SetEditChanneltoMove(self, aMode, aMove = None, aGroupName = None ) :
+		LOG_TRACE( 'Enter' )
+
+		if aMode == FLAG_OPT_MOVE :
+		
+			number = 0
+			retList = []
+			markList= []
+
+			if not self.mMarkList :
+				lastPos = self.mCtrlListCHList.getSelectedPosition( )
+				self.mMarkList.append( lastPos )
+				#LOG_TRACE('last position[%s]'% lastPos )
+			
+			self.mMarkList.sort( )
+
+			chidx = int(self.mMarkList[0])
+			number = self.mChannelList[chidx].mNumber
+
+			LOG_TRACE('1====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList) ) )
+
+			#2. make listing of ichannel in marked idx
+			for idx in self.mMarkList :
+				i = int(idx)
+				retList.append( self.mChannelList[i] )
+
+			#3. update mark list (sorted)
+			for i in range(len(self.mMarkList) ) :
+				markList.append( int(self.mMarkList[0])+i )
+			LOG_TRACE('mark: new[%s] old[%s]'% (markList, self.mMarkList) )
+
+			#4. init channel list
+			ret = False
+			if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
+				if aGroupName :
+					ret = self.mDataCache.FavoriteGroup_MoveChannels( aGroupName, chidx, self.mChannelListServieType, retList )
+					#LOG_TRACE( '==========group========' )
+			else :
+				ret = self.mDataCache.Channel_Move( self.mChannelListServieType, number, retList )
+
+			if ret :
+				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
+
+			self.mMarkList = []
+			self.mMarkList = deepcopy(markList)
+
+			LOG_TRACE('2====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList) ) )
+			self.mMoveFlag = True
+
+			GuiLock2( True )
+			for idx in self.mMarkList :
+				i = int(idx)
+				listItem = self.mCtrlListCHList.getListItem( i )
+				listItem.setProperty('mark', E_IMG_ICON_MARK)
+
+			self.mCtrlListCHList.selectItem(self.mMarkList[0])
+			self.setFocusId( self.mCtrlGropCHList.getId( ) )
+
+			self.mCtrlLblOpt1.setLabel('[B]OK[/B]')
+			self.mCtrlLblOpt2.setLabel('[B]OK[/B]')
+			GuiLock2( False )
+
+			#LOG_TRACE ('========= move Init ===' )
+
+		elif aMode == FLAG_OPT_MOVE_OK :
+			self.mMoveFlag = False
+			self.mCtrlLblOpt1.setLabel('[B]Opt Edit[/B]')
+			self.mCtrlLblOpt2.setLabel('[B]Opt Edit[/B]')
+
+			self.mMarkList = []
+			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
+
+			#LOG_TRACE ('========= move End ===' )
+
+		elif aMode == FLAG_OPT_MOVE_UPDOWN :
+			updown= 0
+			loopS = 0
+			loopE = 0
+			retList = []
+			markList= []
+			lastmark = len(self.mMarkList) - 1
+			oldmark = 0
+
+			#1. get number
+			if aMove == Action.ACTION_MOVE_UP :	
+				updown = -1
+				chidx = self.mMarkList[0] + updown
+				loopS = chidx
+				loopE = self.mMarkList[lastmark]
+				oldmark = loopE
+
+			elif aMove == Action.ACTION_MOVE_DOWN :	
+				updown = 1
+				chidx = self.mMarkList[0] + updown
+				loopS = self.mMarkList[0]
+				loopE = self.mMarkList[lastmark] + updown
+				oldmark = loopS
+
+			elif aMove == Action.ACTION_PAGE_UP :	
+				updown = -13
+				chidx = self.mMarkList[0] + updown
+				loopS = chidx
+				loopE = self.mMarkList[lastmark] + updown
+				oldmark = self.mMarkList[0]
+
+			elif aMove == Action.ACTION_PAGE_DOWN :	
+				updown = 13
+				chidx = self.mMarkList[0] + updown
+				loopS = self.mMarkList[0] + updown
+				loopE = self.mMarkList[lastmark] + updown
+				oldmark = self.mMarkList[0]
+
+
+			if chidx < 0 or chidx > ( (len(self.mListItems)-1) - len(self.mMarkList) ) :
+				#LOG_TRACE('list limit, do not PAGE MOVE!! idx[%s]'% chidx)
+				return
+			number = self.mChannelList[chidx].mNumber
+
+			if loopS < 0 : loopS = 0
+			elif loopE > (len(self.mListItems) )-1 : loopE = len(self.mListItems)-1
+			#LOG_TRACE('1====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList) ) )
+
+			#2. get retList
+			for idx in self.mMarkList :
+				i = int(idx)
+				retList.append( self.mChannelList[i] )
+
+			#3. update mark list
+			if (int(self.mMarkList[0]) + updown) > (len(self.mListItems) )-1 :
+				#LOG_TRACE('list limit, do not PAGE MOVE!! idx[%s]'% (int(self.mMarkList[0]) + updown) )
+				return
+			for idx in self.mMarkList :
+				idxNew = int(idx) + updown
+				markList.append( idxNew )
+			self.mMarkList = []
+			self.mMarkList = markList
+
+			#4. init channel list
+			answer = False
+			if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
+				if aGroupName :
+					answer = self.mDataCache.FavoriteGroup_MoveChannels( aGroupName, chidx, self.mChannelListServieType, retList )
+					#LOG_TRACE( '==========group========' )
+			else :
+				answer = self.mDataCache.Channel_Move( self.mChannelListServieType, number, retList )
+
+			if answer :
+				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
+			#LOG_TRACE('2====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList) ) )
+			#LOG_TRACE('loopS[%s] loopE[%s]'% (loopS, loopE) )
+
+			#5. refresh section, label move
+			for i in range(loopS, loopE+1) :
+
+				number = self.mChannelList[i].mNumber
+				name = self.mChannelList[i].mName
+				icas = self.mChannelList[i].mIsCA
+				lock = self.mChannelList[i].mLocked
+
+				GuiLock2( True )
+				listItem = self.mCtrlListCHList.getListItem( i )
+				xbmc.sleep( 50 )
+
+				listItem.setProperty( 'lock', '' )
+				listItem.setProperty( 'icas', '' )
+
+				label = str('%s%04d %s%s'%( E_TAG_COLOR_GREY, number, name, E_TAG_COLOR_END ) )
+				listItem.setLabel(label)
+
+				if lock : listItem.setProperty( 'lock', E_IMG_ICON_LOCK )
+				if icas : listItem.setProperty( 'icas', E_IMG_ICON_ICAS )
+				listItem.setProperty( 'mark', E_IMG_ICON_MARK )
+				xbmc.sleep( 50 )
+				GuiLock2( False )
+
+			#6. erase old mark
+			GuiLock2( True )
+			if aMove == Action.ACTION_MOVE_UP or aMove == Action.ACTION_MOVE_DOWN :
+				listItem = self.mCtrlListCHList.getListItem(oldmark)
+				xbmc.sleep( 50 )
+				listItem.setProperty( 'mark', '' )
+				self.setFocusId( self.mCtrlGropCHList.getId( ) )
+
+			else:
+				for idx in range(len(self.mMarkList) ) :
+					idxOld = oldmark + idx
+					if idxOld > (len(self.mListItems) )-1 : 
+						LOG_TRACE('old idx[%s] i[%s]'% (oldmark, idx) )
+						continue
+					listItem = self.mCtrlListCHList.getListItem( idxOld )
+					listItem.setProperty( 'mark', '' )
+					self.setFocusId( self.mCtrlGropCHList.getId( ) )
+					xbmc.sleep( 50 )
+			GuiLock2( False )
+
+		LOG_TRACE( 'Leave' )
+
+	def SetEditMarkupGUI( self, aMode, aPos, aEnabled=True ) :
 		LOG_TRACE( 'Enter' )
 
 		if aMode.lower( ) == 'mark' :
@@ -2017,7 +2196,8 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mMarkList :
 				idx = int(self.mMarkList[0])
 				GuiLock2( True )
-				xbmc.executebuiltin('xbmc.Container.PreviousViewMode')
+				#xbmc.executebuiltin('xbmc.Container.PreviousViewMode')
+				xbmc.executebuiltin('xbmc.Container.SetViewMode(50)')
 				xbmc.sleep( 50 )
 				self.mCtrlListCHList.selectItem(idx)
 				self.setFocusId( self.mCtrlGropCHList.getId( ) )
@@ -2050,382 +2230,6 @@ class ChannelListWindow( BaseWindow ) :
 
 		LOG_TRACE( 'Leave' )
 
-
-	def DoDialogAction( self, aMode = 0, aBtn = 0, aGroupName = '' ) :
-		LOG_TRACE( 'Enter' )
-
-		cmd = ''
-		ret = ''
-
-		if aBtn == E_DialogInput01:
-			cmd = 'lock'
-			self.SetEditChannelList( cmd, True )
-
-		elif aBtn == E_DialogInput02 :
-			cmd = 'lock'
-			self.SetEditChannelList( cmd, False)
-
-		elif aBtn == E_DialogInput03 :
-			cmd = 'skip'
-			self.SetEditChannelList( cmd, True )
-
-		elif aBtn == E_DialogInput04 :
-			cmd = 'skip'
-			self.SetEditChannelList( cmd, False )
-
-		elif aBtn == E_DialogInput05 :
-			if aMode == FLAG_OPT_LIST :
-				cmd = 'delete'
-
-				if self.mMarkList :
-					try:
-						retList = []
-						for idx in self.mMarkList :
-							retList.append( self.mChannelList[idx] )
-
-						ret = self.mDataCache.Channel_Delete( retList )
-						LOG_TRACE('ret[%s] len[%s] delete[%s]'% (ret, len(retList), ClassToList('convert', retList) ) )
-
-					except Exception, e:
-						LOG_TRACE( 'Error except[%s]'% e )
-				else :
-					self.SetEditChannelList( cmd, False )
-
-				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
-				self.mListItems = None
-
-				self.mMarkList = []
-				GuiLock2( True )
-				self.setFocusId( self.mCtrlGropCHList.getId( ) )
-				self.mCtrlSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition( )+1) ) )
-				GuiLock2( False )
-
-				return
-
-			else :
-				cmd = 'del'
-				#idxThisFavorite = self.mCtrlListSubmenu.getSelectedPosition( )
-				#aGroupName = self.mListFavorite[idxThisFavorite].mGroupName
-				aGroupName = self.mCtrlListSubmenu.getSelectedItem( ).getLabel( )
-
-			self.SetEditChannelList( cmd, True, aGroupName )
-			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
-
-		elif aBtn == E_DialogInput06 :
-			cmd = 'move'
-			self.SetEditChanneltoMove(FLAG_OPT_MOVE, None, aGroupName )
-			if self.mMarkList :
-				idx = int(self.mMarkList[0])
-				GuiLock2( True )
-				xbmc.executebuiltin('xbmc.Container.PreviousViewMode')
-				xbmc.sleep( 50 )
-				self.mCtrlListCHList.selectItem(idx)
-				self.setFocusId( self.mCtrlGropCHList.getId( ) )
-				GuiLock2( False )
-			return
-
-		elif aBtn == E_DialogInput07 :
-			if aMode == FLAG_OPT_LIST :
-				cmd = 'add'
-				self.SetEditChannelList( cmd, True, aGroupName )
-				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
-			else :
-				cmd = 'Create'
-				ret = self.mDataCache.Favoritegroup_Create( aGroupName, self.mChannelListServieType )	#default : ElisEnum.E_SERVICE_TYPE_TV
-				#LOG_TRACE( 'set[%s] name[%s] ret[%s]'% (cmd,aGroupName,ret) )				
-
-		elif aBtn == E_DialogInput08 :
-			#parse idx, source name, rename
-			cmd = 'Rename'
-			name = re.split(':', aGroupName)
-			ret = self.mDataCache.Favoritegroup_ChangeName( name[1], self.mChannelListServieType, name[2] )
-			#LOG_TRACE( 'set[%s] name[%s] ret[%s]'% (cmd,aGroupName,ret) )
-
-		elif aBtn == E_DialogInput09 :
-			cmd = 'Remove'
-			ret = self.mDataCache.Favoritegroup_Remove( aGroupName, self.mChannelListServieType )
-			#LOG_TRACE( 'set[%s] name[%s] ret[%s]'% (cmd,aGroupName,ret) )
-
-
-		self.mMarkList = []
-		GuiLock2( True )
-		self.setFocusId( self.mCtrlGropCHList.getId( ) )
-		GuiLock2( False )
-
-
-		"""
-		#group list
-		if self.mEditFavorite :
-			idx = 0
-			for item in self.mListFavorite:
-				retList = []
-				retList.append( item )
-				idx += 1
-				LOG_TRACE( 'group[%s] ch[%s]'% (self.mEditFavorite[idx], ClassToList('convert', retList) ) )
-		"""
-
-
-
-		LOG_TRACE( 'Leave' )
-
-	def SetEditChanneltoMove(self, aMode, aMove = None, aGroupName = None ) :
-		LOG_TRACE( 'Enter' )
-
-		if aMode == FLAG_OPT_MOVE :
-		
-			number = 0
-			retList = []
-			markList= []
-
-			if not self.mMarkList :
-				lastPos = self.mCtrlListCHList.getSelectedPosition( )
-				self.mMarkList.append( lastPos )
-				#LOG_TRACE('last position[%s]'% lastPos )
-			
-			self.mMarkList.sort( )
-
-			chidx = self.mMarkList[0]
-			number = self.mChannelList[chidx].mNumber
-
-			#LOG_TRACE('1====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList) ) )
-
-			#2. get retList
-			for idx in self.mMarkList :
-				i = int(idx)
-				retList.append( self.mChannelList[i] )
-
-			#3. update mark list
-			for i in range(len(self.mMarkList) ) :
-				markList.append( self.mMarkList[0]+i )
-
-			self.mMarkList = []
-			self.mMarkList = markList
-
-			#4. init channel list
-			ret = False
-			if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
-				if aGroupName :
-					ret = self.mDataCache.FavoriteGroup_MoveChannels( aGroupName, chidx, self.mChannelListServieType, retList )
-					#LOG_TRACE( '==========group========' )
-			else :
-				ret = self.mDataCache.Channel_Move( self.mChannelListServieType, number, retList )
-
-			if ret :
-				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
-
-			#LOG_TRACE('2====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList) ) )
-			self.mMoveFlag = True
-
-			GuiLock2( True )
-			for idx in self.mMarkList :
-				i = int(idx)
-				listItem = self.mCtrlListCHList.getListItem( i )
-				listItem.setProperty('mark', E_IMG_ICON_MARK)
-
-			self.mCtrlListCHList.selectItem(self.mMarkList[0])
-			self.setFocusId( self.mCtrlGropCHList.getId( ) )
-
-			self.mCtrlLblOpt1.setLabel('[B]OK[/B]')
-			self.mCtrlLblOpt2.setLabel('[B]OK[/B]')
-			GuiLock2( False )
-
-			#LOG_TRACE ('========= move Init ===' )
-
-		elif aMode == FLAG_OPT_MOVE_OK :
-			self.mMoveFlag = False
-			self.mCtrlLblOpt1.setLabel('[B]Opt Edit[/B]')
-			self.mCtrlLblOpt2.setLabel('[B]Opt Edit[/B]')
-
-			self.mMarkList = []
-			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
-
-			#LOG_TRACE ('========= move End ===' )
-
-		elif aMode == FLAG_OPT_MOVE_UPDOWN :
-			updown= 0
-			loopS = 0
-			loopE = 0
-			retList = []
-			markList= []
-			lastmark = len(self.mMarkList) - 1
-			oldmark = 0
-
-			#1. get number
-			if aMove == Action.ACTION_MOVE_UP :	
-				updown = -1
-				chidx = self.mMarkList[0] + updown
-				loopS = chidx
-				loopE = self.mMarkList[lastmark]
-				oldmark = loopE
-
-			elif aMove == Action.ACTION_MOVE_DOWN :	
-				updown = 1
-				chidx = self.mMarkList[0] + updown
-				loopS = self.mMarkList[0]
-				loopE = self.mMarkList[lastmark] + updown
-				oldmark = loopS
-
-			elif aMove == Action.ACTION_PAGE_UP :	
-				updown = -13
-				chidx = self.mMarkList[0] + updown
-				loopS = chidx
-				loopE = self.mMarkList[lastmark] + updown
-				oldmark = self.mMarkList[0]
-
-			elif aMove == Action.ACTION_PAGE_DOWN :	
-				updown = 13
-				chidx = self.mMarkList[0] + updown
-				loopS = self.mMarkList[0] + updown
-				loopE = self.mMarkList[lastmark] + updown
-				oldmark = self.mMarkList[0]
-
-
-			if chidx < 0 or chidx > ( (len(self.mListItems)-1) - len(self.mMarkList) ) :
-				#LOG_TRACE('list limit, do not PAGE MOVE!! idx[%s]'% chidx)
-				return
-			number = self.mChannelList[chidx].mNumber
-
-			if loopS < 0 : loopS = 0
-			elif loopE > (len(self.mListItems) )-1 : loopE = len(self.mListItems)-1
-			#LOG_TRACE('1====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList) ) )
-
-			#2. get retList
-			for idx in self.mMarkList :
-				i = int(idx)
-				retList.append( self.mChannelList[i] )
-
-			#3. update mark list
-			if (int(self.mMarkList[0]) + updown) > (len(self.mListItems) )-1 :
-				#LOG_TRACE('list limit, do not PAGE MOVE!! idx[%s]'% (int(self.mMarkList[0]) + updown) )
-				return
-			for idx in self.mMarkList :
-				idxNew = int(idx) + updown
-				markList.append( idxNew )
-			self.mMarkList = []
-			self.mMarkList = markList
-
-			#4. init channel list
-			answer = False
-			if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
-				if aGroupName :
-					answer = self.mDataCache.FavoriteGroup_MoveChannels( aGroupName, chidx, self.mChannelListServieType, retList )
-					#LOG_TRACE( '==========group========' )
-			else :
-				answer = self.mDataCache.Channel_Move( self.mChannelListServieType, number, retList )
-
-			if answer :
-				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
-			#LOG_TRACE('2====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList) ) )
-			#LOG_TRACE('loopS[%s] loopE[%s]'% (loopS, loopE) )
-
-			#5. refresh section, label move
-			for i in range(loopS, loopE+1) :
-
-				number = self.mChannelList[i].mNumber
-				name = self.mChannelList[i].mName
-				icas = self.mChannelList[i].mIsCA
-				lock = self.mChannelList[i].mLocked
-
-				GuiLock2( True )
-				listItem = self.mCtrlListCHList.getListItem( i )
-				xbmc.sleep( 50 )
-
-				listItem.setProperty( 'lock', '' )
-				listItem.setProperty( 'icas', '' )
-
-				label = str('%s%s %s%s'%( E_TAG_COLOR_GREY, number, name, E_TAG_COLOR_END ) )
-				listItem.setLabel(label)
-
-				if lock : listItem.setProperty( 'lock', E_IMG_ICON_LOCK )
-				if icas : listItem.setProperty( 'icas', E_IMG_ICON_ICAS )
-				listItem.setProperty( 'mark', E_IMG_ICON_MARK )
-				xbmc.sleep( 50 )
-				GuiLock2( False )
-
-			#6. erase old mark
-			GuiLock2( True )
-			if aMove == Action.ACTION_MOVE_UP or aMove == Action.ACTION_MOVE_DOWN :
-				listItem = self.mCtrlListCHList.getListItem(oldmark)
-				xbmc.sleep( 50 )
-				listItem.setProperty( 'mark', '' )
-				self.setFocusId( self.mCtrlGropCHList.getId( ) )
-
-			else:
-				for idx in range(len(self.mMarkList) ) :
-					idxOld = oldmark + idx
-					if idxOld > (len(self.mListItems) )-1 : 
-						LOG_TRACE('old idx[%s] i[%s]'% (oldmark, idx) )
-						continue
-					listItem = self.mCtrlListCHList.getListItem( idxOld )
-					listItem.setProperty( 'mark', '' )
-					self.setFocusId( self.mCtrlGropCHList.getId( ) )
-					xbmc.sleep( 50 )
-			GuiLock2( False )
-
-		LOG_TRACE( 'Leave' )
-
-
-	def EditSettingWindow( self, aMode, aMove = None ) :
-		LOG_TRACE( 'Enter' )
-
-		try:
-			if self.mMoveFlag :
-				self.SetEditChanneltoMove( FLAG_OPT_MOVE_OK )
-				return
-
-			self.GetFavoriteGroup( )
-
-			if aMode == FLAG_OPT_LIST :
-
-				#dialog title
-				#select one or one marked : title = channel name
-				#select two more : title = 'Edit Channel'
-				if self.mChannelList :
-					if len(self.mMarkList) > 1 :
-						label3 = Msg.Strings( MsgId.LANG_EDIT_CHANNEL )
-
-					else :
-						if len(self.mMarkList) == 1 :
-							idx = self.mMarkList[0]
-							self.mCtrlListCHList.selectItem( idx )
-							xbmc.sleep(20)
-
-						label1 = self.mCtrlListCHList.getSelectedItem( ).getLabel( )
-						label2 = re.findall( '\](.*)\[', label1 )
-						label3 = label2[0][5:]
-
-					GuiLock2( True )
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_EDIT_CHANNEL_LIST )
-					dialog.SetValue( FLAG_OPT_LIST, label3, self.mChannelList, self.mEditFavorite )
-		 			dialog.doModal( )
-		 			GuiLock2( False )
-
-		 		else :
-					head =  Msg.Strings( MsgId.LANG_INFOMATION )
-					line1 = Msg.Strings( MsgId.LANG_NO_CHANNELS )
-
-					ret = xbmcgui.Dialog( ).ok( head, line1 )
-					return
-
-			elif aMode == FLAG_OPT_GROUP :
-				GuiLock2( True )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_EDIT_CHANNEL_LIST )
-				dialog.SetValue( FLAG_OPT_GROUP, Msg.Strings( MsgId.LANG_GROUP_NAME ), self.mChannelList, self.mEditFavorite )
-	 			dialog.doModal( )
-	 			GuiLock2( False )
-
-
-			#result editing action
-			idxBtn, groupName, isOk = dialog.GetValue( aMode )
-			if isOk :
-				self.mIsSave |= FLAG_MASK_ADD
-				self.DoDialogAction( aMode, idxBtn, groupName )
-
-		except Exception, e:
-			LOG_TRACE( 'Error except[%s] OPTMODE[%s]'% (e, aMode) )
-
-
-		LOG_TRACE( 'Leave' )
 
 	def EditSettingWindowContext( self, aMode, aMove = None ) :
 		LOG_TRACE( 'Enter' )
@@ -2512,15 +2316,7 @@ class ChannelListWindow( BaseWindow ) :
 			return
 		#--------------------------------------------------------------- section 1
 
-		#publicBtn = ( selectIdx * 10 ) + E_DialogInput01
 		groupName = None
-
-		"""
-		if aMode == FLAG_OPT_GROUP and (not self.mChannelList) :
-			#if no Channel then
-			#create Fav:7, rename Fav:8, delete Fav:9
-			publicBtn = ( (selectIdx+6) * 10 ) + E_DialogInput01
-		"""
 
 		# add Fav, Ren Fav, Del Fav ==> popup select group
 		if selectedAction == CONTEXT_ACTION_ADD_TO_FAV or \
@@ -2590,8 +2386,8 @@ class ChannelListWindow( BaseWindow ) :
 				mode = FLAG_OPT_GROUP
 			else :
 				mode = FLAG_OPT_LIST
-			#self.EditSettingWindow( mode )        	 # dialog 1
-			self.EditSettingWindowContext( mode )	 # dialog 2
+
+			self.EditSettingWindowContext( mode )
 
 		LOG_TRACE( 'Leave' )
 
