@@ -28,7 +28,19 @@
 				<include>DialogInput09</include>
 				<include>DialogSpinEx01</include>
 				<include>DialogSpinEx02</include>
-				<!--include>DefaultSettingDialogButtonOKCancel</include-->
+				<include>DialogSpinEx03</include>
+				<include>DialogSpinEx04</include>
+
+				<!--include>SpinEx01</include>
+				<include>SpinEx02</include>
+				<include>SpinEx03</include>
+				<include>SpinEx04</include>
+				<include>SpinEx05</include>
+				<include>Input01</include>
+				<include>Input02</include>
+				<include>Input03</include>
+				<include>Input04</include>
+				<include>Input05</include-->
 			</control>
 		</control>
 	</controls>

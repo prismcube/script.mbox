@@ -58,6 +58,9 @@ NEXT_CHANNEL	= 0
 PREV_CHANNEL	= 1
 CURR_CHANNEL	= 2
 
+CONTEXT_ACTION_VIDEO_SETTING = 1 
+CONTEXT_ACTION_AUDIO_SETTING = 2
+
 class LivePlate(BaseWindow):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
@@ -927,11 +930,9 @@ class LivePlate(BaseWindow):
 			self.ShowRecording( )
 
 		elif aFocusid == self.mCtrlBtnSettingFormat.getId() :
-			pass
-			"""
 			context = []
-			context.append( ContextItem( 'Video Format' ) )
-			context.append( ContextItem( 'Audio Track' ) )
+			context.append( ContextItem( 'Video Format', CONTEXT_ACTION_VIDEO_SETTING ) )
+			context.append( ContextItem( 'Audio Track',  CONTEXT_ACTION_AUDIO_SETTING ) )
 
 			GuiLock2( True )
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
@@ -939,65 +940,17 @@ class LivePlate(BaseWindow):
 			dialog.doModal( )
 			GuiLock2( False )
 
-			selectIdx1 = dialog.GetSelectedIndex( )
-			if selectIdx1 == -1 :
+			selectAction = dialog.GetSelectedAction( )
+			if selectAction == -1 :
 				LOG_TRACE('CANCEL by context dialog')
 				return
 
-			publicBtn = ( selectIdx1 * 10 ) + E_DialogInput01
-			if publicBtn == E_DialogInput01 :
-				getFormat = ElisPropertyEnum( 'TV Aspect', self.mCommander ).GetPropString( )
-				listProperty = ElisPropertyEnum( 'TV Aspect', self.mCommander ).mProperty
-				LOG_TRACE ('get[%s] list[%s]'% (getFormat, listProperty) )
+			GuiLock2( True )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_LIVE_PLATE )
+			dialog.SetValue( selectAction )
+ 			dialog.doModal( )
+ 			GuiLock2( False )
 
-				context = []
-				for ele in listProperty :
-					if getFormat == ele[1] :
-						label = '%s%s%s' % (E_TAG_COLOR_WHITE,ele[1],E_TAG_COLOR_END)
-					else :
-						label = '%s%s%s' % (E_TAG_COLOR_GREY,ele[1],E_TAG_COLOR_END)
-					
-					context.append( ContextItem( label ) )
-				#LOG_TRACE ('list[%s]'% context )
-
-				GuiLock2( True )
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-				dialog.SetProperty( context )
-				dialog.doModal( )
-				GuiLock2( False )
-
-				selectIdx2 = dialog.GetSelectedIndex( )
-				ElisPropertyEnum( 'TV Aspect', self.mCommander ).SetPropIndex( selectIdx2 )
-
-
-			elif publicBtn == E_DialogInput02 :
-				getCount = self.mDataCache.Audiotrack_GetCount( )
-				selectIdx= self.mDataCache.Audiotrack_GetSelectedIndex( )
-				#LOG_TRACE('AudioTrack count[%s] select[%s]'% (getCount, selectIdx) )
-
-				context = []
-				for idx in range(getCount) :
-					idxTrack = self.mDataCache.Audiotrack_Get( idx )
-					#LOG_TRACE('getTrack name[%s] lang[%s]'% (idxTrack.mName, idxTrack.mLang) )
-					if selectIdx == idx :
-						label = '%s%s-%s%s' % (E_TAG_COLOR_WHITE,idxTrack.mName,idxTrack.mLang,E_TAG_COLOR_END)
-					else :
-						label = '%s%s-%s%s' % (E_TAG_COLOR_GREY,idxTrack.mName,idxTrack.mLang,E_TAG_COLOR_END)
-
-					context.append( ContextItem( label ) )
-
-				GuiLock2( True )
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-				dialog.SetProperty( context )
-				dialog.doModal( )
-				GuiLock2( False )
-
-				selectIdx2 = dialog.GetSelectedIndex( )
-				self.mDataCache.Audiotrack_select( selectIdx2 )
-
-
-			LOG_TRACE('Select[%s --> %s]'% (selectIdx1, selectIdx2) )
-			"""
 
 		LOG_TRACE( 'Leave' )
 

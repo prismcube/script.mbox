@@ -157,6 +157,7 @@ G_DIALOG_HEADER_LABEL_ID			= 3005
 E_DialogSpinEx01	= 6110
 E_DialogSpinEx02	= 6120
 E_DialogSpinEx03	= 6130
+E_DialogSpinEx04	= 6140
 
 E_DialogInput01		= 6210
 E_DialogInput02		= 6220
