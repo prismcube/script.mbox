@@ -130,7 +130,10 @@ class ChannelListWindow( BaseWindow ) :
 		#print '==================== TEST TIME[ONINIT] START[%s]'% starttime
 
 		#header
-		self.mCtrlImgRec             = self.getControl( 10 )
+		self.mCtrlImgRec1            = self.getControl( 10 )
+		self.mCtrlLblRec1            = self.getControl( 11 )
+		self.mCtrlImgRec2            = self.getControl( 15 )
+		self.mCtrlLblRec2            = self.getControl( 16 )
 		self.mCtrlLblPath1           = self.getControl( 21 )
 		self.mCtrlGropOpt            = self.getControl( 500 )
 		self.mCtrlBtnOpt             = self.getControl( 501 )
@@ -2458,16 +2461,36 @@ class ChannelListWindow( BaseWindow ) :
 	def ShowRecording( self ) :
 		LOG_TRACE('Enter')
 
-		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
-		LOG_TRACE('isRunRecCount[%s]'% isRunRec)
+		try:
+			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+			LOG_TRACE('isRunRecCount[%s]'% isRunRec)
 
-		imgValue = False
-		btnValue = False
-		if isRunRec > 0 :
-			imgValue = True
-		else :
-			imgValue = False
-		self.mCtrlImgRec.setVisible( imgValue )
+			recLabel1 = ''
+			recLabel2 = ''
+			recImg1   = False
+			recImg2   = False
+			if isRunRec == 1 :
+				recImg1 = True
+				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
+				recLabel1 = '%04d %s'% (recInfo.mChannelNo, recInfo.mChannelName)
+
+			elif isRunRec == 2 :
+				recImg1 = True
+				recImg2 = True
+				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
+				recLabel1 = '%04d %s'% (recInfo.mChannelNo, recInfo.mChannelName)
+				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
+				recLabel2 = '%04d %s'% (recInfo.mChannelNo, recInfo.mChannelName)
+
+			GuiLock2( True )
+			self.mCtrlLblRec1.setLabel( recLabel1 )
+			self.mCtrlImgRec1.setVisible( recImg1 )
+			self.mCtrlLblRec2.setLabel( recLabel2 )
+			self.mCtrlImgRec2.setVisible( recImg2 )
+			GuiLock2( False )
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
 
 		LOG_TRACE('Leave')
 

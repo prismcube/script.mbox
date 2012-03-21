@@ -114,7 +114,10 @@ class LivePlate(BaseWindow):
 		#self.mCtrlProgress(self.Progress)
 
 		#button icon
-		self.mCtrlImgRec               = self.getControl(  10 )
+		self.mCtrlImgRec1              = self.getControl(  10 )
+		self.mCtrlLblRec1              = self.getControl(  11 )
+		self.mCtrlImgRec2              = self.getControl(  15 )
+		self.mCtrlLblRec2              = self.getControl(  16 )
 		self.mCtrlBtnExInfo            = self.getControl( 621 )
 		self.mCtrlBtnTeletext          = self.getControl( 622 )
 		self.mCtrlBtnSubtitle          = self.getControl( 623 )
@@ -901,24 +904,31 @@ class LivePlate(BaseWindow):
 
 		elif aFocusid == self.mCtrlBtnStartRec.getId() :
 			runningCount = self.ShowRecording()
-			LOG_TRACE( 'runningCount=%d' %runningCount)
+			LOG_TRACE( 'runningCount[%s]' %runningCount)
 
+
+			isOK = False
 			GuiLock2(True)
-			if  runningCount < 2 :
+			if runningCount < 2 :
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 				dialog.doModal()
 
 				isOK = dialog.IsOK()
 				if isOK == E_DIALOG_STATE_YES :
-					self.mCtrlImgRec.setVisible( True )
+					isOK = True
+
 			else:
-				msg = 'Already %d recording(s) running' %runningCount
+				msg = 'Already [%s] recording(s) running' %runningCount
 				xbmcgui.Dialog().ok('Infomation', msg )
 			GuiLock2(False)
 
+			if isOK :
+				time.sleep(1.5)
+				self.ShowRecording()
+
 		elif aFocusid == self.mCtrlBtnStopRec.getId() :
 			runningCount = self.ShowRecording()
-			LOG_TRACE( 'runningCount=%d' %runningCount )
+			LOG_TRACE( 'runningCount[%s]' %runningCount )
 
 			if  runningCount > 0 :
 				GuiLock2( True )
@@ -961,21 +971,35 @@ class LivePlate(BaseWindow):
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			LOG_TRACE('isRunRecCount[%s]'% isRunRec)
 
-			imgValue = False
-			btnValue = False
-			if isRunRec > 0 :
-				imgValue = True
-			else :
-				imgValue = False
 
+			recLabel1 = ''
+			recLabel2 = ''
+			recImg1   = False
+			recImg2   = False
+			if isRunRec == 1 :
+				recImg1 = True
+				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
+				recLabel1 = '%04d %s'% (recInfo.mChannelNo, recInfo.mChannelName)
+
+			elif isRunRec == 2 :
+				recImg1 = True
+				recImg2 = True
+				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
+				recLabel1 = '%04d %s'% (recInfo.mChannelNo, recInfo.mChannelName)
+				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
+				recLabel2 = '%04d %s'% (recInfo.mChannelNo, recInfo.mChannelName)
+
+			btnValue = False
 			if isRunRec >= 2 :
 				btnValue = False
 			else :
 				btnValue = True
 
 			GuiLock2( True )
-			self.mCtrlImgRec.setVisible( imgValue )
-			LOG_TRACE('imgValue[%s]'% imgValue )
+			self.mCtrlLblRec1.setLabel( recLabel1 )
+			self.mCtrlImgRec1.setVisible( recImg1 )
+			self.mCtrlLblRec2.setLabel( recLabel2 )
+			self.mCtrlImgRec2.setVisible( recImg2 )
 			self.mCtrlBtnStartRec.setEnabled( btnValue )
 			GuiLock2( False )
 
