@@ -1,0 +1,194 @@
+<window>
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<defaultcontrol always="true">200</defaultcontrol>	
+	<controls>
+		<include>DefaultBehindDialogFadeOut</include>
+		<control type="group">
+			<posx>335</posx>
+			<posy>100</posy>
+            <include>DefaultDialogCloseEffect</include>
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>100</posy>
+				<width>610</width>
+				<height>300</height>
+				<texture border="40">confluence/DialogBack.png</texture>
+			</control>
+			<control type="group">
+				<posy>100</posy>
+				<include>DefaultDialogCommonSetting</include>
+			</control>
+			<!-- Record Name -->
+			<control type="label" id="101">
+				<description>Record Name</description>
+				<posx>20</posx>
+				<posy>160</posy>
+				<width>570</width>
+				<height>20</height>
+				<font>font13</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<label>RecordName</label>
+			</control>
+
+			<!-- Progress Bar -->
+			<control type="progress" id="400">
+				<description>Progressbar</description>
+				<posx>120</posx>
+				<posy>200</posy>
+				<width>370</width>
+				<height>20</height>
+			</control>
+
+			<!-- Start Time -->
+			<control type="label" id="102">
+				<description>EPG Start Time</description>
+				<posx>110l</posx>
+				<posy>200</posy>
+				<width>110</width>
+				<height>20</height>
+				<font>font13</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<label>00:00</label>
+			</control>
+
+
+			<!-- EndTime -->
+			<control type="label" id="103">
+				<description>EPG End Time</description>
+				<posx>500</posx>
+				<posy>200</posy>
+				<width>110</width>
+				<height>20</height>
+				<font>font13</font>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<label>00:00</label>
+			</control>
+
+		
+			<control type="group" id="9000">
+				<posx>40</posx>
+				<posy>250</posy>
+				<!--
+				<include>DialogInput01</include>
+				-->
+				<!-- Duration -->
+				<control type="group" id="500">		
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>550</width>
+					<height>40</height>
+					<defaultcontrol always="true">501</defaultcontrol>			
+					<control type="button" id="501">
+						<description>Button Icon</description>
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>550</width>
+						<height>50</height>
+						<texturenofocus>confluence/MenuItemNF.png</texturenofocus>
+						<texturefocus>confluence/MenuItemFO.png</texturefocus>
+						<onup>200</onup>
+						<ondown>200</ondown>
+						<onleft>-</onleft>
+						<onright>-</onright>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>50</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Duration</label>
+						<visible>!Control.HasFocus(500)</visible>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>50</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Duration</label>
+						<visible>Control.HasFocus(500)</visible>
+					</control>
+					<control type="label" id="502">
+						<posx>380</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>50</height>
+						<font>font13</font>
+						<textcolor>grey2</textcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>120 Min</label>
+						<visible>!Control.HasFocus(500)</visible>
+					</control>
+					<control type="label" id="502">
+						<posx>380</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>50</height>
+						<font>font13</font>
+						<textcolor>white</textcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>120 Min</label>
+						<visible>Control.HasFocus(500)</visible>
+					</control>
+				</control>				
+				<control type="button" id="200">
+					<description>Yes button</description>
+					<posx>30</posx>
+					<posy>80</posy>				
+					<width>200</width>
+					<height>40</height>
+					<font>font12_title</font>
+					<textcolor>white</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<align>center</align>
+					<texturenofocus border="5">confluence/MenuItemNF.png</texturenofocus>
+					<texturefocus border="5">confluence/button-focus.png</texturefocus>
+					<onleft>201</onleft>
+					<onright>201</onright>
+					<onup>500</onup>
+					<label>[B]Start Record[/B]</label>					
+				</control>
+				<control type="button" id="201">
+					<description>Cancel button</description>
+					<posx>270</posx>
+					<posy>80</posy>				
+					<width>200</width>
+					<height>40</height>
+					<font>font12_title</font>
+					<textcolor>white</textcolor>
+					<focusedcolor>white</focusedcolor>
+					<align>center</align>
+					<texturenofocus border="5">confluence/MenuItemNF.png</texturenofocus>
+					<texturefocus border="5">confluence/button-focus.png</texturefocus>
+					<onleft>200</onleft>
+					<onright>200</onright>
+					<onup>500</onup>					
+					<label>[B]Cancel[/B]</label>					
+				</control>
+
+			</control>
+		</control>
+	</controls>
+</window>
+
