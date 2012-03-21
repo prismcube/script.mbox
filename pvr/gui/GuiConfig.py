@@ -134,6 +134,7 @@ NET_STATIC						= 1
 # Tuner Config String Define
 USER_ENUM_LIST_ON_OFF				= [ 'Off', 'On' ]
 USER_ENUM_LIST_YES_NO				= [ 'No', 'Yes' ]
+USER_ENUM_LIST_DHCP_STATIC			= [ 'DHCP', 'Static' ]
 
 E_LIST_LNB_TYPE						= [ 'Universal' , 'Single', 'Userdefined' ]
 E_LIST_SINGLE_FREQUENCY 			= [ '5150', '9750', '10600', '10750', '11300' ]
@@ -157,6 +158,7 @@ G_DIALOG_HEADER_LABEL_ID			= 3005
 E_DialogSpinEx01	= 6110
 E_DialogSpinEx02	= 6120
 E_DialogSpinEx03	= 6130
+E_DialogSpinEx04	= 6140
 
 E_DialogInput01		= 6210
 E_DialogInput02		= 6220

@@ -19,8 +19,6 @@ class SatelliteConfigSimple( SettingWindow ) :
 		self.mSelectedIndexLnbType = 0
 		self.mHasTransponder = False
 
-		self.mType = False
-
 		
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -38,18 +36,10 @@ class SatelliteConfigSimple( SettingWindow ) :
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.InitConfig( )
 
-
-	def SetType( self, aType ) :
-		self.mType = aType
-
 		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )
-
-		if self.mType == True :
-			print 'dhkim test Type'
-			return
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass

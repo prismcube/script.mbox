@@ -20,23 +20,62 @@
 
 <!-- Rec info -->
 			<control type="group">
-				<posx>0</posx>
-				<posy>0</posy>
-				<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="Control.IsVisible(10)">conditional</animation>
-				<control type="image">
+				<posx>300r</posx>
+				<posy>570</posy>
+				<animation effect="slide" start="300r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(10) | Control.IsVisible(15)">conditional</animation>
+				<control type="group">
 					<posx>0</posx>
-					<posy>0</posy>
-					<width>100</width>
-					<height>35</height>
-					<texture border="0,0,32,0">confluence/header.png</texture>
-					<visible>Control.IsVisible(10)</visible>
+					<posy>-20</posy>
+					<!--animation effect="slide" start="400r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(10)">conditional</animation-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>35</height>
+						<texture flipy="true" flipx="true" border="50,0,32,0">confluence/header.png</texture>
+						<visible>Control.IsVisible(10)</visible>
+					</control>
+					<control type="image" id="10">
+						<posx>45</posx>
+						<posy>7</posy>
+						<width>60</width>
+						<height>25</height>
+						<texture>i_record.png</texture>
+					</control>
+					<control type="label" id="11">
+						<posx>121</posx>
+						<posy>7</posy>
+						<font>font12caps</font>
+						<textcolor>white</textcolor>
+						<texture>$INFO[Control.GetLabel]</texture>
+					</control>
 				</control>
-				<control type="image" id="10">
-					<posx>10</posx>
-					<posy>2</posy>
-					<width>60</width>
-					<height>25</height>
-					<texture>i_record.png</texture>
+				<control type="group">
+					<posx>21</posx>
+					<posy>-51</posy>
+					<!--animation effect="slide" start="400r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(15)">conditional</animation-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>35</height>
+						<texture flipy="true" flipx="true" border="50,0,32,0">confluence/header.png</texture>
+						<visible>Control.IsVisible(15)</visible>
+					</control>
+					<control type="image" id="15">
+						<posx>25</posx>
+						<posy>7</posy>
+						<width>60</width>
+						<height>25</height>
+						<texture>i_record.png</texture>
+					</control>
+					<control type="label" id="16">
+						<posx>100</posx>
+						<posy>7</posy>
+						<font>font12caps</font>
+						<textcolor>white</textcolor>
+						<texture>$INFO[Control.GetLabel]</texture>
+					</control>
 				</control>
 			</control>
 
@@ -321,11 +360,11 @@
 					<texturefocus>confluence/OSDRecord2.png</texturefocus>
 					<texturenofocus>confluence/OSDRecordNF.png</texturenofocus>
 					<onleft>401</onleft>
-					<onright>403</onright>
+					<onright>404</onright>
 					<onup>202</onup>
 					<ondown>202</ondown>
 				</control>
-				<control type="button" id="403">
+				<!--control type="button" id="403">
 					<posx>90</posx>
 					<posy>0</posy>
 					<width>45</width>
@@ -338,9 +377,9 @@
 					<onright>404</onright>
 					<onup>202</onup>
 					<ondown>202</ondown>
-				</control>
+				</control-->
 				<control type="group">
-					<posx>140</posx>
+					<posx>95</posx>
 					<posy>-5</posy>
 					<control type="button" id="404">
 						<posx>0</posx>
@@ -351,7 +390,7 @@
 						<font></font>
 						<texturefocus>confluence/OSDRewindFO.png</texturefocus>
 						<texturenofocus>confluence/OSDRewindNF.png</texturenofocus>
-						<onleft>403</onleft>
+						<onleft>402</onleft>
 						<onright>450</onright>
 						<onup>202</onup>
 						<ondown>202</ondown>
@@ -478,9 +517,9 @@
 					</control>
 					<control type="button" id="411">
 						<posx>300</posx>
-						<posy>0</posy>
-						<width>50</width>
-						<height>50</height>
+						<posy>5</posy>
+						<width>45</width>
+						<height>40</height>
 						<label></label>
 						<font>-</font>
 						<texturefocus>confluence/OSDBookmarksFO.png</texturefocus>
@@ -530,8 +569,17 @@
 						<onright>202</onright>
 						<onup>450</onup>
 						<ondown>450</ondown>
-
 					</control>
+					<control type="label" id="203">
+						<description>mode</description>
+						<posx>50</posx>
+						<posy>-40</posy>
+						<font>font24_title</font>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>black</shadowcolor>
+						<label>$INFO[Control.GetLabel]</label>
+					</control>
+
 				</control>
 
 				<control type="group">
@@ -573,7 +621,7 @@
 						<label>00:00:00</label>
 					</control>
 					<control type="label" id="222">
-						<description>start</description>
+						<description>end</description>
 						<posx>1100</posx>
 						<posy>3</posy>
 						<textcolor>grey</textcolor>
@@ -581,7 +629,6 @@
 						<label>$INFO[Control.GetLabel]</label>
 					</control>
 				</control>
-
 			</control>
 
 

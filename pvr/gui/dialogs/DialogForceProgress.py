@@ -97,9 +97,13 @@ class DialogForceProgress( BaseDialog ) :
 		self.mCtrlLabelPercent.setLabel( '100' )
 		self.mCtrlProgress.setPercent( 100 )
 		time.sleep( 1 )
-		self.CloseDialog( )
 		self.mEventBus.Deregister( self )
+		self.CloseDialog( )
 
 
 	def GetResult( self ) :
 		return self.mFinish
+
+
+	def SetResult( self, aResult ) :
+		self.mFinish = aResult

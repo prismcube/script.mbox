@@ -16,6 +16,7 @@ from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.GuiConfig import *
 from ElisEPGDB import ElisEPGDB
+from ElisChannelDB import ElisChannelDB
 
 
 gDataCacheMgr = None
@@ -85,15 +86,15 @@ class DataCacheMgr( object ):
 		self.mTransponderListHash				= {}
 		self.mEPGListHash						= {}
 
-		LOG_TRACE('')
-		self.Load()
-		LOG_TRACE('')
-
 		self.mEpgDB = None
-
+		self.mChannelDB = None
 		if SUPPORT_DATABASE	 == True :
-			self.mEpgDB = ElisEPGDB()
-			
+			self.mEpgDB = ElisEPGDB( )
+			self.mChannelDB = ElisChannelDB( )
+
+		LOG_TRACE('')
+		self.Load( )
+		LOG_TRACE('')
 		#self.mEventBus.Register( self )
 
 
@@ -179,14 +180,17 @@ class DataCacheMgr( object ):
 
 
 	def LoadAllSatellite( self ) :
-		self.mAllSatelliteList = self.mCommander.Satellite_GetList( ElisEnum.E_SORT_INSERTED )
+		if SUPPORT_DATABASE	== True :
+			self.mAllSatelliteList = self.mChannelDB.Satellite_GetList( ElisEnum.E_SORTING_FAVORITE )
+		else:
+			self.mAllSatelliteList = self.mCommander.Satellite_GetList( ElisEnum.E_SORTING_FAVORITE )
 
 		if self.mAllSatelliteList and self.mAllSatelliteList[0].mError == 0 :
 		
 			count =  len( self.mAllSatelliteList )
-			LOG_TRACE('satellite count=%d' %count )
+			LOG_TRACE( 'satellite count = %d' % count )
 			from pvr.PublicReference import ClassToList
-			LOG_TRACE('satellite[%s]'% ClassToList('convert', self.mAllSatelliteList) )
+			LOG_TRACE( 'satellite[%s]' % ClassToList( 'convert', self.mAllSatelliteList ) )
 
 			for i in range( count ):
 				satellite = self.mAllSatelliteList[i]
@@ -194,27 +198,38 @@ class DataCacheMgr( object ):
 				self.mAllSatelliteListHash[hashKey] = satellite
 		else :
 			LOG_ERR('Has no Satellite')
- 
+
 
 	def LoadConfiguredSatellite( self ) :
 		self.mConfiguredSatelliteList = []
-		self.mConfiguredSatelliteList = self.mCommander.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
+		if SUPPORT_DATABASE	== True :
+			self.mConfiguredSatelliteList = self.mChannelDB.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
+		else :
+			self.mConfiguredSatelliteList = self.mCommander.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
 
 		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
 			pass
 		else :
 			LOG_WARN('Has no Configured Satellite')
 
+
 		self.mConfiguredSatelliteListTuner1 = []
-		self.mConfiguredSatelliteListTuner1 = self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )
+		if SUPPORT_DATABASE	== True :
+			self.mConfiguredSatelliteListTuner1 = self.mChannelDB.Satelliteconfig_GetList( E_TUNER_1 )
+		else :
+			self.mConfiguredSatelliteListTuner1 = self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )
 
 		if self.mConfiguredSatelliteListTuner1 and self.mConfiguredSatelliteListTuner1[0].mError == 0 :
 			pass
 		else :
 			LOG_WARN('Has no Configured Satellite Tuner 1')
 
+
 		self.mConfiguredSatelliteListTuner2 = []
-		self.mConfiguredSatelliteListTuner2 = self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )
+		if SUPPORT_DATABASE	== True :
+			self.mConfiguredSatelliteListTuner2 = self.mChannelDB.Satelliteconfig_GetList( E_TUNER_2 )
+		else :
+			self.mConfiguredSatelliteListTuner2 = self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )
 
 		if self.mConfiguredSatelliteListTuner2 and self.mConfiguredSatelliteListTuner2[0].mError == 0 :
 			pass
@@ -228,7 +243,10 @@ class DataCacheMgr( object ):
 
 	 	if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
 			for satellite in self.mConfiguredSatelliteList :
-				transponder = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
+				if SUPPORT_DATABASE	== True :
+					transponder = self.mChannelDB.Transponder_GetList( satellite.mLongitude, satellite.mBand )
+				else :
+					transponder = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
 				self.mTransponderList.append( transponder )
 				hashKey = '%d:%d' % ( satellite.mLongitude, satellite.mBand )
 				self.mTransponderListHash[hashKey] = transponder
@@ -246,13 +264,20 @@ class DataCacheMgr( object ):
 			if self.mConfiguredSatelliteListTuner1 :
 				return self.mConfiguredSatelliteListTuner1
 			else :
-				return self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )
+				if SUPPORT_DATABASE	== True :
+					return self.mChannelDB.Satelliteconfig_GetList( E_TUNER_1 )
+				else :
+					return self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )
+
 				
 		elif aTunerNumber == E_TUNER_2 :
 			if self.mConfiguredSatelliteListTuner2 :
 				return self.mConfiguredSatelliteListTuner2
 			else :
-				return self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )
+				if SUPPORT_DATABASE	== True :
+					return self.mChannelDB.Satelliteconfig_GetList( E_TUNER_2 )
+				else :
+					return self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )
 
 		else :
 			LOG_ERR( 'Unknown Tuner Number %s' % aTunerNumber )
@@ -263,7 +288,10 @@ class DataCacheMgr( object ):
 		if self.mConfiguredSatelliteList :
 			return self.mConfiguredSatelliteList
 		else :
-			return self.mCommander.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
+			if SUPPORT_DATABASE	== True :
+				return self.mChannelDB.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
+			else :
+				return self.mCommander.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
 			
 
 	@DataLock
@@ -312,7 +340,10 @@ class DataCacheMgr( object ):
 		if transponder :
 			return transponder
 		else :
-			return self.mCommander.Transponder_GetList( aLongitude, aBand )
+			if SUPPORT_DATABASE	== True :
+				return self.mChannelDB.Transponder_GetList( aLongitude, aBand )
+			else :
+				return self.mCommander.Transponder_GetList( aLongitude, aBand )
 
 
 	def Satellite_GetFormattedTransponderList( self, aLongitude, aBand ) :
@@ -768,6 +799,9 @@ class DataCacheMgr( object ):
 
 	def Record_GetRunningRecorderCount( self ) :
 		return self.mCommander.Record_GetRunningRecorderCount( )
+
+	def Record_GetRunningRecordInfo( self, aIndex ) :
+		return self.mCommander.Record_GetRunningRecordInfo( aIndex )
 
 
 	def Record_GetCount( self, aServiceType ) :
