@@ -23,7 +23,9 @@ gDataCacheMgr = None
 
 gDataLock = thread.allocate_lock()
 
-SUPPORT_DATABASE = True
+SUPPORT_EPG_DATABASE = True
+SUPPORT_CHANNEL_DATABASE = True
+
 
 @decorator
 def DataLock(func, *args, **kw):
@@ -88,9 +90,12 @@ class DataCacheMgr( object ):
 
 		self.mEpgDB = None
 		self.mChannelDB = None
-		if SUPPORT_DATABASE	 == True :
+		if SUPPORT_EPG_DATABASE	 == True :
 			self.mEpgDB = ElisEPGDB( )
+
+		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
+
 
 		LOG_TRACE('')
 		self.Load( )
@@ -104,12 +109,12 @@ class DataCacheMgr( object ):
 
 
 	def BeginEPGTransaction( self ) :
-		if SUPPORT_DATABASE	== True :
+		if SUPPORT_EPG_DATABASE	== True :
 			self.mEpgDB.Execute('begin')
 
 
 	def EndEPGTransaction( self ):
-		if SUPPORT_DATABASE	== True :
+		if SUPPORT_EPG_DATABASE	== True :
 			self.mEpgDB.Execute('commit')
 
 
@@ -180,7 +185,7 @@ class DataCacheMgr( object ):
 
 
 	def LoadAllSatellite( self ) :
-		if SUPPORT_DATABASE	== True :
+		if SUPPORT_CHANNEL_DATABASE	== True :
 			self.mAllSatelliteList = self.mChannelDB.Satellite_GetList( ElisEnum.E_SORTING_FAVORITE )
 		else:
 			self.mAllSatelliteList = self.mCommander.Satellite_GetList( ElisEnum.E_SORTING_FAVORITE )
@@ -202,7 +207,7 @@ class DataCacheMgr( object ):
 
 	def LoadConfiguredSatellite( self ) :
 		self.mConfiguredSatelliteList = []
-		if SUPPORT_DATABASE	== True :
+		if SUPPORT_CHANNEL_DATABASE	== True :
 			self.mConfiguredSatelliteList = self.mChannelDB.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
 		else :
 			self.mConfiguredSatelliteList = self.mCommander.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
@@ -214,7 +219,7 @@ class DataCacheMgr( object ):
 
 
 		self.mConfiguredSatelliteListTuner1 = []
-		if SUPPORT_DATABASE	== True :
+		if SUPPORT_CHANNEL_DATABASE	== True :
 			self.mConfiguredSatelliteListTuner1 = self.mChannelDB.Satelliteconfig_GetList( E_TUNER_1 )
 		else :
 			self.mConfiguredSatelliteListTuner1 = self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )
@@ -226,7 +231,7 @@ class DataCacheMgr( object ):
 
 
 		self.mConfiguredSatelliteListTuner2 = []
-		if SUPPORT_DATABASE	== True :
+		if SUPPORT_CHANNEL_DATABASE	== True :
 			self.mConfiguredSatelliteListTuner2 = self.mChannelDB.Satelliteconfig_GetList( E_TUNER_2 )
 		else :
 			self.mConfiguredSatelliteListTuner2 = self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )
@@ -243,7 +248,7 @@ class DataCacheMgr( object ):
 
 	 	if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
 			for satellite in self.mConfiguredSatelliteList :
-				if SUPPORT_DATABASE	== True :
+				if SUPPORT_CHANNEL_DATABASE	== True :
 					transponder = self.mChannelDB.Transponder_GetList( satellite.mLongitude, satellite.mBand )
 				else :
 					transponder = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
@@ -264,7 +269,7 @@ class DataCacheMgr( object ):
 			if self.mConfiguredSatelliteListTuner1 :
 				return self.mConfiguredSatelliteListTuner1
 			else :
-				if SUPPORT_DATABASE	== True :
+				if SUPPORT_CHANNEL_DATABASE	== True :
 					return self.mChannelDB.Satelliteconfig_GetList( E_TUNER_1 )
 				else :
 					return self.mCommander.Satelliteconfig_GetList( E_TUNER_1 )
@@ -274,7 +279,7 @@ class DataCacheMgr( object ):
 			if self.mConfiguredSatelliteListTuner2 :
 				return self.mConfiguredSatelliteListTuner2
 			else :
-				if SUPPORT_DATABASE	== True :
+				if SUPPORT_CHANNEL_DATABASE	== True :
 					return self.mChannelDB.Satelliteconfig_GetList( E_TUNER_2 )
 				else :
 					return self.mCommander.Satelliteconfig_GetList( E_TUNER_2 )
@@ -288,7 +293,7 @@ class DataCacheMgr( object ):
 		if self.mConfiguredSatelliteList :
 			return self.mConfiguredSatelliteList
 		else :
-			if SUPPORT_DATABASE	== True :
+			if SUPPORT_CHANNEL_DATABASE	== True :
 				return self.mChannelDB.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
 			else :
 				return self.mCommander.Satellite_GetConfiguredList( ElisEnum.E_SORT_NAME )
@@ -340,7 +345,7 @@ class DataCacheMgr( object ):
 		if transponder :
 			return transponder
 		else :
-			if SUPPORT_DATABASE	== True :
+			if SUPPORT_CHANNEL_DATABASE	== True :
 				return self.mChannelDB.Transponder_GetList( aLongitude, aBand )
 			else :
 				return self.mCommander.Transponder_GetList( aLongitude, aBand )
@@ -596,7 +601,7 @@ class DataCacheMgr( object ):
 
 		eventList = None
 		
-		if SUPPORT_DATABASE	== True :
+		if SUPPORT_EPG_DATABASE	== True :
 			eventList = self.mEpgDB.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
 		else:
 			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
@@ -620,7 +625,7 @@ class DataCacheMgr( object ):
 
 		eventList = None
 		
-		if SUPPORT_DATABASE	== True :
+		if SUPPORT_EPG_DATABASE	== True :
 			eventList = self.mEpgDB.Epgevent_GetCurrent( aSid, aTsid, aOnid, self.Datetime_GetGMTTime() )
 		else:
 			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, 0, 0, 1 )
@@ -632,7 +637,7 @@ class DataCacheMgr( object ):
 
 		eventList = None
 
-		if SUPPORT_DATABASE	== True :
+		if SUPPORT_EPG_DATABASE	== True :
 			eventList = self.mEpgDB.Epgevent_GetCurrentList( self.Datetime_GetGMTTime() )
 		else:
 			return None
@@ -645,7 +650,7 @@ class DataCacheMgr( object ):
 
 		eventList = None
 
-		if SUPPORT_DATABASE	== True :
+		if SUPPORT_EPG_DATABASE	== True :
 			eventList = self.mEpgDB.Epgevent_GetFollowing( aSid, aTsid, aOnid, self.Datetime_GetGMTTime() )
 			
 		else:
@@ -659,7 +664,7 @@ class DataCacheMgr( object ):
 
 		eventList = None
 
-		if SUPPORT_DATABASE	== True :
+		if SUPPORT_EPG_DATABASE	== True :
 			eventList = self.mEpgDB.Epgevent_GetFollowingList( self.Datetime_GetGMTTime() )
 		else:
 			return None
@@ -822,4 +827,14 @@ class DataCacheMgr( object ):
 
 	def Timer_GetByIndex( self, aIndex ) :
 		return self.mCommander.Timer_GetByIndex( aIndex )
+
+
+	def Timer_AddOTRTimer( self, aFromEPG, aFixedDuration, aCopyTimeshift, aTimerName, aForceDecrypt, aEventId, aSid, aTsid, aOnid) : 
+		return self.mCommander.Timer_AddOTRTimer( aFromEPG, aFixedDuration, aCopyTimeshift, aTimerName, aForceDecrypt, aEventId, aSid, aTsid, aOnid )
+
+
+	def Timer_AddEPGTimer( self, aEPG, aForceDecrypt=0, aForceThisEvent=0 ) : 
+		#ToDO : Change as AddEPGTimer
+		return self.mCommander.Timer_AddOTRTimer( True, 2*60*60, 0, aEPG.mEventName, 0, 0, 0, 0, 0 )
+
 

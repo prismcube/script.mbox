@@ -477,7 +477,11 @@ class EPGWindow(BaseWindow):
 		LOG_TRACE('aContextAction=%d' %aContextAction )
 
 		if aContextAction == CONTEXT_ADD_TIMER :
-			self.ShowAddTimer( )
+			epg = self.GetSelectedEPG( )
+			if epg :
+				self.ShowAddTimer( epg )
+			else :
+				self.ShowManualTimer( None )			
 
 		elif aContextAction == CONTEXT_EDIT_TIMER :
 			self.ShowEditTimer( )
@@ -489,17 +493,24 @@ class EPGWindow(BaseWindow):
 			self.ShowDetailInfomation( )
 
 
-	def ShowAddTimer( self ) :
+	def ShowAddTimer( self, aEPG ) :
 		LOG_TRACE('ShowAddTimer')
-		epg = self.GetSelectedEPG( )
-		try :
-			GuiLock2( True )
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_TIMER )
-			dialog.SetEPG( epg )
-			dialog.doModal( )
-			GuiLock2( False )
-		except Exception, ex :
-			LOG_ERR( "Exception %s" %ex)
+		GuiLock2( True )
+		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_TIMER )
+		dialog.SetEPG( aEPG )
+		dialog.doModal( )
+		GuiLock2( False )
+
+
+	def ShowManualTimer( self, aEPG ) :
+		LOG_TRACE('ShowManualTimer')
+		"""
+		GuiLock2( True )
+		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_TIMER )
+		dialog.SetEPG( aEPG )
+		dialog.doModal( )
+		GuiLock2( False )
+		"""
 
 
 	def ShowDeleteConfirm( self ) :
