@@ -139,6 +139,7 @@ class DataCacheMgr( object ):
 		LOG_ERR('after=%s' %after )		
 		LOG_ERR('--------------> diff=%s' %(after-before) )
 
+
 	def Load( self ) :
 
 		self.LoadVolumeToSetGUI( )
@@ -170,6 +171,7 @@ class DataCacheMgr( object ):
 
 		apiSet = 'setvolume(%s)'% volume
 		xbmc.executehttpapi(apiSet)
+
 
 	def LoadTime( self ) :
 		self.mLocalOffset = self.mCommander.Datetime_GetLocalOffset( )
@@ -373,10 +375,10 @@ class DataCacheMgr( object ):
 				prevChannel = channel
 		
 	
-
 	def LoadZappingmode( self ) :
 		self.mZappingMode = self.mCommander.Zappingmode_GetCurrent( )
 		self.mCurrentChannel = self.mCommander.Channel_GetCurrent( )
+
 
 	def LoadZappingList( self ) :
 		serviceType = ElisEnum.E_SERVICE_TYPE_TV
@@ -384,6 +386,7 @@ class DataCacheMgr( object ):
 			serviceType = self.mZappingMode.mServiceType
 		self.mListCasList   = self.mCommander.Fta_cas_GetList( serviceType )
 		self.mListFavorite  = self.mCommander.Favorite_GetList( serviceType )
+
 
 	def Zappingmode_SetCurrent( self , aZappingMode ) :
 		ret = False
@@ -393,21 +396,26 @@ class DataCacheMgr( object ):
 
 		return ret
 
+
 	@DataLock
 	def Zappingmode_GetCurrent( self ) :
 		return self.mZappingMode
+
 
 	@DataLock
 	def Fta_cas_GetList( self ) :
 		return self.mListCasList
 
+
 	@DataLock
 	def Favorite_GetList( self ) :
 		return self.mListFavorite
 
+
 	@DataLock
 	def Channel_GetList( self ) :
 		return self.mChannelList
+
 
 	@DataLock
 	def Channel_GetCurrent( self ) :
@@ -421,6 +429,7 @@ class DataCacheMgr( object ):
 			self.mCurrentChannel = cacheChannel.mChannel
 			return True
 		return False
+
 
 	@DataLock
 	def Channel_GetPrev( self, aChannel ) :
@@ -464,6 +473,7 @@ class DataCacheMgr( object ):
 		#LOG_TRACE('------------ Current Channel-------------------')
 		#channel.printdebug()
 		return channel
+
 
 	@DataLock
 	def Channel_GetSearch( self, aNumber ) :
@@ -772,5 +782,10 @@ class DataCacheMgr( object ):
 		return self.mCommander.Record_DeleteRecord( aKey, aServiceType )
 
 
+	def Timer_GetTimerCount( self ) :
+		return self.mCommander.Timer_GetTimerCount()
 
+
+	def Timer_GetByIndex( self, aIndex ) :
+		return self.mCommander.Timer_GetByIndex( aIndex )
 

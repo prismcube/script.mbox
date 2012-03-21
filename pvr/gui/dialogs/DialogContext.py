@@ -16,6 +16,7 @@ DIALOG_BOTTOM_IMAGE_ID		= 101
 DIALOG_LIST_ID				= 102
 DIALOG_BUTTON_CLOSE_ID		= 103
 
+
 class DialogContext( BaseDialog ) :
 
 	def __init__( self, *args, **kwargs ) :
@@ -78,7 +79,7 @@ class DialogContext( BaseDialog ) :
 		self.mItemList = aItemList
 			
 		if len( self.mItemList ) == 0 :
-			self.mItemList = ContextItem( 'None' )
+			self.mItemList.append( ContextItem( 'None' ) )
 
 
 	def GetSelectedAction( self ) :

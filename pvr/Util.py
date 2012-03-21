@@ -260,3 +260,36 @@ def TimeToString( aTime, aFlag=0 ) :
 		return strTime
 
 
+def GetImageByEPGComponent( aEPG, aFlag ) :
+	if aFlag == ElisEnum.E_HasHDVideo and aEPG.mHasHDVideo :
+		return 'confluence/OverlayHD.png' #ToDO -> support multi skin
+
+	elif aFlag == ElisEnum.E_Has16_9Video and aEPG.mHas16_9Video :
+		pass
+
+	elif aFlag == ElisEnum.E_HasStereoAudio and aEPG.mHasStereoAudio :
+		pass
+
+	elif aFlag == ElisEnum.E_HasMultichannelAudio and aEPG.mHasMultichannelAudio :
+		pass
+
+	elif aFlag == ElisEnum.E_HasDolbyDigital and aEPG.mHasDolbyDigital :
+		return 'confluence/dolbydigital.png' #ToDO -> support multi skin
+	
+	elif aFlag == ElisEnum.E_HasSubtitles and aEPG.mHasSubtitles :
+		return 'confluence/OSDPlaylistNF.png' #ToDO -> support multi skin
+	
+	elif aFlag == ElisEnum.E_HasHardOfHearingAudio and aEPG.mHasHardOfHearingAudio:
+		pass
+	
+	elif aFlag == ElisEnum.E_HasHardOfHearingSub and aEPG.mHasHardOfHearingSub:
+		pass
+	
+	elif aFlag == ElisEnum.E_HasVisuallyImpairedAudio and aEPG.mHasVisuallyImpairedAudio:
+		pass
+	
+	else :
+		pass
+
+	return None
+
