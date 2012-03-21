@@ -158,6 +158,7 @@ G_DIALOG_HEADER_LABEL_ID			= 3005
 E_DialogSpinEx01	= 6110
 E_DialogSpinEx02	= 6120
 E_DialogSpinEx03	= 6130
+E_DialogSpinEx04	= 6140
 
 E_DialogInput01		= 6210
 E_DialogInput02		= 6220
@@ -285,27 +286,13 @@ def InputKeyboard( aType, aTitle, aString, aMaxLength=None ) :
 
 ############################ Global Class ############################
 
-E_USER_DEFINE		= 0
-E_TEST_FUNCTION_1	= 1
-E_TEST_FUNCTION_2	= 2
-E_TEST_FUNCTION_3	= 3
 
 
 class ContextItem :
 
-	def __init__( self, aDescription = 'None', aFunctionIndex = E_USER_DEFINE ) :
+	def __init__( self, aDescription = 'None', aContextAction = -1 ) :
 		self.mDescription = aDescription
-		self.mFunctionIndex = aFunctionIndex
-
-	def DoAction( self ) :
-		if self.mFunctionIndex == E_TEST_FUNCTION_1 :
-			print 'dhkim test function1'
-
-		elif self.mFunctionIndex == E_TEST_FUNCTION_2 :
-			print 'dhkim test function2'
-
-		elif self.mFunctionIndex == E_TEST_FUNCTION_3 :
-			print 'dhkim test function3'
+		self.mContextAction = aContextAction
 
 
 class Progress :

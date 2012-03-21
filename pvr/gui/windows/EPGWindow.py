@@ -192,19 +192,27 @@ class EPGWindow(BaseWindow):
 		gmtUntil = self.mGMTTime + E_MAX_SCHEDULE_DAYS*3600*24
 
 		try :
-			self.mEPGList = self.mDataCache.Epgevent_GetList(  self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid,  gmtFrom,  gmtUntil,  E_MAX_EPG_COUNT)
+			self.mEPGList = self.mDataCache.Epgevent_GetListByChannel(  self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid,  gmtFrom,  gmtUntil,  E_MAX_EPG_COUNT)
 
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
 
 		if self.mEPGList == None or self.mEPGList[0].mError != 0 :
 			self.mEPGList = []
+			return
 
 		LOG_TRACE('self.mEPGList COUNT=%d' %len(self.mEPGList ))
 		
 
 
 	def LoadByCurrent( self ):
+		try :
+			self.mEPGList=self.mDataCache.Epgevent_GetCurrentList()
+
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)
+	
+		"""
 		LOG_TRACE('')
 		LOG_TRACE('ChannelList len=%d' %(len(self.mChannelList) ) )
 
@@ -241,12 +249,10 @@ class EPGWindow(BaseWindow):
 		after = time.clock()
 		LOG_ERR('after=%s' %after )		
 		LOG_ERR('--------------> diff=%s' %(after-before) )
+		"""
 
 
 	def LoadByFollowing( self ):
-		LOG_TRACE('')
-		"""
-		LOG_TRACE('ChannelList len=%d' %(len(self.mChannelList) ) )
 
 		try :
 			self.mEPGList=self.mDataCache.Epgevent_GetFollowingList()
@@ -281,7 +287,7 @@ class EPGWindow(BaseWindow):
 
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
-
+		"""
 
 		LOG_TRACE('self.mEPGList COUNT=%d' %len(self.mEPGList ))
 
