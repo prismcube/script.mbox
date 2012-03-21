@@ -86,17 +86,15 @@ class DataCacheMgr( object ):
 		self.mTransponderListHash				= {}
 		self.mEPGListHash						= {}
 
+		self.mEpgDB = None
+		self.mChannelDB = None
+		if SUPPORT_DATABASE	 == True :
+			self.mEpgDB = ElisEPGDB( )
+			self.mChannelDB = ElisChannelDB( )
+
 		LOG_TRACE('')
 		self.Load( )
 		LOG_TRACE('')
-
-		self.mEpgDB = None
-		self.mChannelDB = None
-		print 'dhkim test db = %s' % self.mChannelDB
-		if SUPPORT_DATABASE	 == False :
-			self.mEpgDB = ElisEPGDB( )
-			self.mChannelDB = ElisChannelDB( )
-			
 		#self.mEventBus.Register( self )
 
 
@@ -184,7 +182,7 @@ class DataCacheMgr( object ):
 			self.mAllSatelliteList = self.mChannelDB.Satellite_GetList( ElisEnum.E_SORTING_FAVORITE )
 		else:
 			self.mAllSatelliteList = self.mCommander.Satellite_GetList( ElisEnum.E_SORTING_FAVORITE )
-		print 'dhkim test #2'
+
 		if self.mAllSatelliteList and self.mAllSatelliteList[0].mError == 0 :
 		
 			count =  len( self.mAllSatelliteList )
