@@ -12,7 +12,6 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
 from ElisEventClass import *
 from ElisEnum import ElisEnum
-from pvr.IpParser import IpParser
 
 
 E_MAIN_GROUP_ID		=	9000
@@ -49,21 +48,6 @@ class FirstInstallation( SettingWindow ) :
 		self.SetListControl( self.mStepNum )
 		self.mInitialized = True
 
-		# for test
-		print 'dhkim test #0'
-		ipparser = IpParser( )
-		print 'dhkim test #1'
-		ipparser.LoadNetworkType( )
-		print 'dhkim test #2'
-		ipparser.LoadNetworkAddress( )
-		print 'dhkim test #4'		
-		ip0, ip1, ip2, ip3 = ipparser.GetNetworkAddress( )
-		print 'dhkim test #5'		
-		iptype = ipparser.GetNetworkType( )
-		print 'dhkim test ip = %s, %s, %s, %s' % ( ip0, ip1, ip2, ip3 )
-		print 'dhkim test ip type = %d' % iptype
- 
-
 		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -98,7 +82,7 @@ class FirstInstallation( SettingWindow ) :
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.Close( )
 			elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
-				return	
+				return
 			elif dialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
 				return
 

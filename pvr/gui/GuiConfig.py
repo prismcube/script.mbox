@@ -134,6 +134,7 @@ NET_STATIC						= 1
 # Tuner Config String Define
 USER_ENUM_LIST_ON_OFF				= [ 'Off', 'On' ]
 USER_ENUM_LIST_YES_NO				= [ 'No', 'Yes' ]
+USER_ENUM_LIST_DHCP_STATIC			= [ 'DHCP', 'Static' ]
 
 E_LIST_LNB_TYPE						= [ 'Universal' , 'Single', 'Userdefined' ]
 E_LIST_SINGLE_FREQUENCY 			= [ '5150', '9750', '10600', '10750', '11300' ]
