@@ -211,8 +211,9 @@ class TunerConfigMgr( object ) :
 		self.LoadOriginalTunerConfig( )
 
 
+	# DB TODO
 	def SatelliteConfigSaveList( self ) :
-		self.mCommander.Satelliteconfig_DeleteAll( )
+		self.mCommander.Satelliteconfig_DeleteAll( ) 
 		
 		tunerType = self.GetCurrentTunerType( )
 		configuredList = self.GetConfiguredSatelliteList( )
