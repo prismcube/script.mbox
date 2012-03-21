@@ -333,15 +333,19 @@ class TimeShiftPlate(BaseWindow):
 
 		elif aFocusId == self.mCtrlBtnStop.getId() :
 			third = 3
+			gobackID = winmgr.WIN_ID_NULLWINDOW
 			while third :
 				if self.mMode == ElisEnum.E_MODE_LIVE :
 					ret = self.mCommander.Player_Stop()
+					gobackID = winmgr.WIN_ID_LIVE_PLATE
 
 				elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 					ret = self.mCommander.Player_Stop()
+					gobackID = winmgr.WIN_ID_LIVE_PLATE
 
 				elif self.mMode == ElisEnum.E_MODE_PVR :
 					ret = self.mCommander.Player_Stop()
+					gobackID = winmgr.WIN_ID_ARCHIVE_WINDOW
 
 				third -= 1
 				LOG_TRACE( 'play_stop() ret[%s] try[%d]'% (ret,third) )
@@ -350,14 +354,15 @@ class TimeShiftPlate(BaseWindow):
 				else:
 					time.sleep(0.5)
 
-
+			aClose = 1
 			if aClose :
 				self.UpdateLabelGUI( self.mCtrlProgress.getId(), 0 )
 				self.mProgress_idx = 0.0
 				self.mProgress_max = 0.0
 
 				self.Close()
-				#winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_NULLWINDOW )
+				winmgr.GetInstance().ShowWindow( gobackID )
+				return
 			else :
 				self.mSpeed = 0
 				self.mLocalTime = 0
