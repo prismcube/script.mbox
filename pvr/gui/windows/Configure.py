@@ -2,6 +2,7 @@ import xbmc
 import xbmcgui
 import sys
 import time
+import threading
 
 import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DiaMgr
@@ -12,6 +13,7 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.GuiConfig import *
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
 from ElisEventClass import *
+from pvr.IpParser import IpParser
 
 E_DHCP_OFF		= 0
 E_DHCP_ON		= 1
@@ -28,15 +30,17 @@ class Configure( SettingWindow ) :
 		self.mLastFocused 		= E_SUBMENU_LIST_ID
 		self.mPrevListItemID 	= 0
 
-		self.mSavedIpAddr		= 0
-		self.mSavedSubNet		= 0
-		self.mSavedGateway		= 0
-		self.mSavedDns			= 0
+		self.mSavedNetworkType	= NET_DHCP
+		self.mSavedIpAddr		= 'None'
+		self.mSavedSubNet		= 'None'
+		self.mSavedGateway		= 'None'
+		self.mSavedDns			= 'None'
 
-		self.mTempIpAddr		= 0
-		self.mTempSubNet		= 0
-		self.mTempGateway		= 0
-		self.mTempDns			= 0
+		self.mTempNetworkType	= NET_DHCP
+		self.mTempIpAddr		= 'None'
+		self.mTempSubNet		= 'None'
+		self.mTempGateway		= 'None'
+		self.mTempDns			= 'None'
 
 		self.mReLoadIp			= False
 		self.mVisibleParental	= False
@@ -45,6 +49,9 @@ class Configure( SettingWindow ) :
 		self.mTime				= 0
 		self.mSetupChannel		= None
 		self.mHasChannel		= False
+
+		self.mIpParser			= None
+		self.progress			= None
 
 		for i in range( len( leftGroupItems ) ) :
 			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i], descriptionList[i] ) )
@@ -63,8 +70,9 @@ class Configure( SettingWindow ) :
 
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
-		self.SetListControl( )
+		self.mIpParser = IpParser( )
 		self.LoadIp( )
+		self.SetListControl( )
 		self.mInitialized = True
 		self.mVisibleParental = False
 		self.mReLoadIp = False
@@ -345,17 +353,16 @@ class Configure( SettingWindow ) :
 				self.ReLoadIp( )
 				self.mReLoadIp = False
 				
-			self.AddEnumControl( E_SpinEx01, 'DHCP' )
-			self.AddInputControl( E_Input01, 'IP Address', '%d.%d.%d.%d' % MakeHexToIpAddr( self.mTempIpAddr ) )
-			self.AddInputControl( E_Input02, 'Subnet Mask', '%d.%d.%d.%d' % MakeHexToIpAddr( self.mTempSubNet ) )
-			self.AddInputControl( E_Input03, 'Gateway', '%d.%d.%d.%d' % MakeHexToIpAddr( self.mTempGateway ) )
-			self.AddInputControl( E_Input04, 'DNS', '%d.%d.%d.%d' % MakeHexToIpAddr( self.mTempDns ) )
+			self.AddUserEnumControl( E_SpinEx01, 'Network Type', USER_ENUM_LIST_DHCP_STATIC, self.mTempNetworkType )
+			self.AddInputControl( E_Input01, 'IP Address', self.mTempIpAddr )
+			self.AddInputControl( E_Input02, 'Subnet Mask', self.mTempSubNet )
+			self.AddInputControl( E_Input03, 'Gateway', self.mTempGateway )
+			self.AddInputControl( E_Input04, 'DNS', self.mTempDns )
 
-			dhcp = ElisPropertyEnum( 'DHCP', self.mCommander ).GetProp( )
-			if dhcp == E_DHCP_OFF :
-				self.AddInputControl( E_Input05, 'Save', '' )
-			elif dhcp == E_DHCP_ON :
+			if self.mTempNetworkType == NET_DHCP :
 				self.AddInputControl( E_Input05, 'Get IP Address', '' )
+			else :
+				self.AddInputControl( E_Input05, 'Save', '' )
 
 			visibleControlIds = [ E_SpinEx01, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -473,11 +480,10 @@ class Configure( SettingWindow ) :
 			else :
 				self.SetEnableControls( visibleControlIds, True )
 		elif aSelectedItem == E_IP_SETTING :
-			dhcp = ElisPropertyEnum( 'DHCP', self.mCommander ).GetProp( )
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]
-			if dhcp == E_DHCP_ON :
+			if self.mTempNetworkType == NET_DHCP :
 				self.SetEnableControls( visibleControlIds, False )
-			elif dhcp == E_DHCP_OFF :
+			else :
 				self.SetEnableControls( visibleControlIds, True )
 
 		elif aSelectedItem == E_PARENTAL :
@@ -504,82 +510,137 @@ class Configure( SettingWindow ) :
 
 
 	def LoadIp( self ) :
-		ipAddress = ElisPropertyInt( 'IpAddress', self.mCommander ).GetProp( )
-		self.mSavedIpAddr = ipAddress
-		self.mTempIpAddr = ipAddress
-		subnet = ElisPropertyInt( 'SubNet', self.mCommander ).GetProp( )
-		self.mSavedSubNet = subnet
-		self.mTempSubNet = subnet
-		gateway = ElisPropertyInt( 'Gateway', self.mCommander ).GetProp( )
-		self.mSavedGateway = gateway
-		self.mTempGateway = gateway
-		dns = ElisPropertyInt( 'DNS', self.mCommander ).GetProp( )
-		self.mSavedDns = dns
-		self.mTempDns = dns
+		self.LoadNetworkType( )
+		self.LoadNetworkAddress( )
+
+
+	def LoadNetworkType( self ) :
+		ret = self.mIpParser.LoadNetworkType( )
+		if ret == True :
+			self.mSavedNetworkType	= self.mIpParser.GetNetworkType( )
+			self.mTempNetworkType	= self.mIpParser.GetNetworkType( )
+		else :
+			self.mSavedNetworkType	= 'None'
+			self.mTempNetworkType	= 'None'
+			LOG_ERR( 'Can not read network type(dhcp/static)' )
+
+
+	def LoadNetworkAddress( self ) :		
+		ret = self.mIpParser.LoadNetworkAddress( )
+		if ret == True :
+			self.mSavedIpAddr, self.mSavedSubNet, self.mSavedGateway, self.mSavedDns = self.mIpParser.GetNetworkAddress( )
+			self.mTempIpAddr,  self.mTempSubNet,  self.mTempGateway,  self.mTempDns  = self.mIpParser.GetNetworkAddress( )
+		else :
+			self.mSavedIpAddr	= 'None'
+			self.mTempIpAddr	= 'None'
+			self.mSavedSubNet	= 'None'
+			self.mTempSubNet	= 'None'
+			self.mSavedGateway	= 'None'
+			self.mTempGateway	= 'None'
+			self.mSavedDns		= 'None'
+			self.mTempDns		= 'None'
+			LOG_ERR( 'Can not read ip address' )
 
 
 	def SaveIp( self ) :
-		self.mSavedIpAddr = self.mTempIpAddr
-		ElisPropertyInt( 'IpAddress', self.mCommander ).SetProp( self.mSavedIpAddr )
+		self.ShowProgress( )
+		ret = self.mIpParser.SetNetwork( self.mTempNetworkType, self.mTempIpAddr, self.mTempSubNet, self.mTempGateway, self.mTempDns )
+		if ret == False :
+			try :
+				self.progress.SetResult( True )
+				time.sleep( 2 )
 
-		self.mSavedSubNet = self.mTempSubNet
-		ElisPropertyInt( 'SubNet', self.mCommander ).SetProp( self.mSavedSubNet )
+			except Exception, e :
+				LOG_ERR( 'Error exception[%s]' % e )
 
-		self.mSavedGateway = self.mTempGateway
-		ElisPropertyInt( 'Gateway', self.mCommander ).SetProp( self.mSavedGateway )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( 'Error', 'Network Set Fail' )
+ 			dialog.doModal( )
+		else :
+			if self.mTempNetworkType == NET_DHCP :
+				self.mSavedNetworkType = self.mTempNetworkType
+				self.LoadNetworkAddress( )
+				try :
+					self.progress.SetResult( True )
+					time.sleep( 2 )
 
-		self.mSavedDns = self.mTempDns
-		ElisPropertyInt( 'DNS', self.mCommander ).SetProp( self.mSavedDns )
-		self.mCommander.NetWork_SaveSetting( )
+				except Exception, e :
+					LOG_ERR( 'Error exception[%s]' % e )
+				self.SetListControl( )
+			else :
+				self.mSavedIpAddr = self.mTempIpAddr
+				self.mSavedSubNet = self.mTempSubNet
+				self.mSavedGateway = self.mTempGateway
+				self.mSavedDns = self.mTempDns
+				self.mSavedNetworkType = self.mTempNetworkType
+	 			try :
+					self.progress.SetResult( True )
+					time.sleep( 2 )
+
+				except Exception, e :
+					LOG_ERR( 'Error exception[%s]' % e )
+
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( 'Confirm', 'Network Set Complete' )
+ 			dialog.doModal( )
 
 
 	def ReLoadIp( self ) :
-		self.mTempIpAddr	= self.mSavedIpAddr
-		self.mTempSubNet	= self.mSavedSubNet
-		self.mTempGateway	= self.mSavedGateway
-		self.mTempDns		= self.mSavedDns
+		self.mTempIpAddr			= self.mSavedIpAddr
+		self.mTempSubNet			= self.mSavedSubNet
+		self.mTempGateway			= self.mSavedGateway
+		self.mTempDns				= self.mSavedDns
+		self.mTempNetworkType		= self.mSavedNetworkType
 
 
 	def IpSetting( self, aControlId ) :
 		if aControlId == E_SpinEx01 :
-			self.ControlSelect( )
-			if ElisPropertyEnum( 'DHCP', self.mCommander ).GetProp( ) == E_DHCP_OFF :
-				self.SetControlLabelString( E_Input05, 'Save' )
-			elif ElisPropertyEnum( 'DHCP', self.mCommander ).GetProp( ) == E_DHCP_ON :
-				self.SetControlLabelString( E_Input05, 'Get IP Address' )
-			self.DisableControl( E_IP_SETTING )
+			if self.mTempNetworkType == NET_DHCP :
+				self.mTempNetworkType = NET_STATIC
+			else :
+				self.mTempNetworkType = NET_DHCP
+			self.SetListControl( )
 			
-		elif aControlId == E_Input01 :		# IpAddr
-			self.mTempIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Input Ip Address', '%d.%d.%d.%d' % MakeHexToIpAddr( self.mTempIpAddr ) )
-			self.mTempIpAddr = MakeStringToHex( self.mTempIpAddr )
+		elif aControlId == E_Input01 :
+			self.mTempIpAddr = self.ShowIpInputDialog( self.mTempIpAddr )
 			self.SetListControl( )
 
-		elif aControlId == E_Input02 :		# SubNet
-			self.mTempSubNet = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Input Subnet Mask', '%d.%d.%d.%d' % MakeHexToIpAddr( self.mTempSubNet ) )
-			self.mTempSubNet = MakeStringToHex( self.mTempSubNet )
+		elif aControlId == E_Input02 :
+			self.mTempSubNet = self.ShowIpInputDialog( self.mTempSubNet )
 			self.SetListControl( )
 
-		elif aControlId == E_Input03 :		# Gateway
-			self.mTempGateway = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Input Gateway', '%d.%d.%d.%d' % MakeHexToIpAddr( self.mTempGateway ) )
-			self.mTempGateway = MakeStringToHex( self.mTempGateway )
+		elif aControlId == E_Input03 :
+			self.mTempGateway = self.ShowIpInputDialog( self.mTempGateway )
 			self.SetListControl( )
 
-		elif aControlId == E_Input04 :		# DNS
-			self.mTempDns = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Input DNS', '%d.%d.%d.%d' % MakeHexToIpAddr( self.mTempDns ) )
-			self.mTempDns = MakeStringToHex( self.mTempDns )
+		elif aControlId == E_Input04 :
+			self.mTempDns = self.ShowIpInputDialog( self.mTempDns )
 			self.SetListControl( )
 
 		elif aControlId == E_Input05 :
-			if ElisPropertyEnum( 'DHCP', self.mCommander ).GetProp( ) == E_DHCP_OFF :
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( 'Configure', 'Save Ip?' )
-				dialog.doModal( )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( 'Configure', 'Set Ip?' )
+			dialog.doModal( )
 
-				if dialog.IsOK() == E_DIALOG_STATE_YES :
-					self.SaveIp( )
+			if dialog.IsOK() == E_DIALOG_STATE_YES :
+				self.SaveIp( )
 
-			elif ElisPropertyEnum( 'DHCP', self.mCommander ).GetProp( ) == E_DHCP_ON :
-				pass
+
+	def ShowIpInputDialog( self, aIpAddr ) :
+		if aIpAddr == 'None' :
+			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Input Ip', '0.0.0.0' )
+		else :
+			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Input Ip', aIpAddr )
+
+		return aIpAddr
+
+
+	@RunThread
+	def ShowProgress( self ) :
+		self.progress = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
+		self.progress.SetDialogProperty( 10, 'Setting Network...' )
+		self.progress.doModal( )
+		return
 
 
 	def TimeSetting( self, aControlId ) :
