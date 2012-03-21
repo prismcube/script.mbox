@@ -759,6 +759,9 @@ class DataCacheMgr( object ):
 	def Record_GetRunningRecorderCount( self ) :
 		return self.mCommander.Record_GetRunningRecorderCount( )
 
+	def Record_GetRunningRecordInfo( self, aIndex ) :
+		return self.mCommander.Record_GetRunningRecordInfo( aIndex )
+
 
 	def Record_GetCount( self, aServiceType ) :
 		return self.mCommander.Record_GetCount( aServiceType )

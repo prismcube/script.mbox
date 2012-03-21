@@ -17,26 +17,64 @@
 
 <!-- Rec info -->
 			<control type="group">
-				<posx>0</posx>
-				<posy>0</posy>
-				<animation effect="slide" start="-100,0" end="0,0" delay="0" time="300" condition="Control.IsVisible(10)">conditional</animation>
-				<control type="image">
+				<posx>300r</posx>
+				<posy>540</posy>
+				<animation effect="slide" start="300r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(10) | Control.IsVisible(15)">conditional</animation>
+				<control type="group">
 					<posx>0</posx>
-					<posy>0</posy>
-					<width>100</width>
-					<height>35</height>
-					<texture border="0,0,32,0">confluence/header.png</texture>
-					<visible>Control.IsVisible(10)</visible>
+					<posy>-20</posy>
+					<!--animation effect="slide" start="400r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(10)">conditional</animation-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>35</height>
+						<texture flipy="true" flipx="true" border="50,0,32,0">confluence/header.png</texture>
+						<visible>Control.IsVisible(10)</visible>
+					</control>
+					<control type="image" id="10">
+						<posx>45</posx>
+						<posy>7</posy>
+						<width>60</width>
+						<height>25</height>
+						<texture>i_record.png</texture>
+					</control>
+					<control type="label" id="11">
+						<posx>121</posx>
+						<posy>7</posy>
+						<font>font12caps</font>
+						<textcolor>white</textcolor>
+						<texture>$INFO[Control.GetLabel]</texture>
+					</control>
 				</control>
-				<control type="image" id="10">
-					<posx>10</posx>
-					<posy>2</posy>
-					<width>60</width>
-					<height>25</height>
-					<texture>i_record.png</texture>
+				<control type="group">
+					<posx>21</posx>
+					<posy>-51</posy>
+					<!--animation effect="slide" start="400r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(15)">conditional</animation-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>35</height>
+						<texture flipy="true" flipx="true" border="50,0,32,0">confluence/header.png</texture>
+						<visible>Control.IsVisible(15)</visible>
+					</control>
+					<control type="image" id="15">
+						<posx>25</posx>
+						<posy>7</posy>
+						<width>60</width>
+						<height>25</height>
+						<texture>i_record.png</texture>
+					</control>
+					<control type="label" id="16">
+						<posx>100</posx>
+						<posy>7</posy>
+						<font>font12caps</font>
+						<textcolor>white</textcolor>
+						<texture>$INFO[Control.GetLabel]</texture>
+					</control>
 				</control>
 			</control>
-
 <!-- info section -->			
 			<control type="group" id="600">
 				<posx>50</posx>
