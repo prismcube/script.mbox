@@ -155,7 +155,6 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 		elif groupId == E_SpinEx04 :
 			pass
 
-
 		# Antenna Action
 		elif groupId == E_Input05 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -173,7 +172,16 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 
 		# Store Position and Exit
 		elif groupId == E_Input06 :
-			pass
+			pos = self.mCommander.Satelliteconfig_GetFirstAvailablePos( self.tunerIndex, self.mCurrentSatellite )
+			ret = self.mCommander.Motorized_SavePosition( self.tunerIndex, pos )
+			if ret == True :
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'Confirm', 'Save Position OK' )
+	 			dialog.doModal( )
+			else :
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'ERROR', 'Save Position Fail' )
+	 			dialog.doModal( )
 
 
 	def onFocus( self, aControlId ) :

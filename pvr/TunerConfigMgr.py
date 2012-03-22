@@ -211,7 +211,6 @@ class TunerConfigMgr( object ) :
 		self.LoadOriginalTunerConfig( )
 
 
-	# DB TODO
 	def SatelliteConfigSaveList( self ) :
 		self.mCommander.Satelliteconfig_DeleteAll( ) 
 		
@@ -249,7 +248,7 @@ class TunerConfigMgr( object ) :
 		count = len ( self.mConfiguredList2 )
 		for i in range( count ) :
 			self.mConfiguredList2[i].mSlotNumber = i
-	
+
 		ret1 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList1 )
 		ret2 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList2 )
 

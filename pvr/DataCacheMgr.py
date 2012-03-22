@@ -409,12 +409,14 @@ class DataCacheMgr( object ):
 		self.mZappingMode = self.mCommander.Zappingmode_GetCurrent( )
 		self.mCurrentChannel = self.mCommander.Channel_GetCurrent( )
 
+
 	def LoadZappingList( self ) :
 		serviceType = ElisEnum.E_SERVICE_TYPE_TV
 		if self.mZappingMode :
 			serviceType = self.mZappingMode.mServiceType
 		self.mListCasList   = self.mCommander.Fta_cas_GetList( serviceType )
 		self.mListFavorite  = self.mCommander.Favorite_GetList( serviceType )
+
 
 	def Zappingmode_SetCurrent( self , aZappingMode ) :
 		ret = False
@@ -423,6 +425,7 @@ class DataCacheMgr( object ):
 			self.mZappingMode = aZappingMode
 
 		return ret
+
 
 	@DataLock
 	def Zappingmode_GetCurrent( self ) :
@@ -523,10 +526,8 @@ class DataCacheMgr( object ):
 
 	@DataLock
 	def Datetime_GetLocalTime( self ) :
-		"""
-		localTime = time.localtime()
+		localTime = time.localtime( )
 		self.mLocalTime = time.mktime( localTime ) + self.mLocalOffset
-		"""
 		return self.mLocalTime
 
 
