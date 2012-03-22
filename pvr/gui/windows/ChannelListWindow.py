@@ -69,6 +69,21 @@ FLAG_MODE_JUMP      = True
 FLAG_ZAPPING_LOAD   = 0
 FLAG_ZAPPING_CHANGE = 1
 
+CONTEXT_ACTION_LOCK				= 1 
+CONTEXT_ACTION_UNLOCK			= 2
+CONTEXT_ACTION_SKIP				= 3
+CONTEXT_ACTION_UNSKIP			= 4
+CONTEXT_ACTION_DELETE			= 5
+CONTEXT_ACTION_MOVE				= 6
+CONTEXT_ACTION_ADD_TO_FAV		= 7
+
+
+CONTEXT_ACTION_CREATE_GROUP_FAV	= 10
+CONTEXT_ACTION_RENAME_FAV		= 11
+CONTEXT_ACTION_DELETE_FAV		= 12
+
+
+
 class ChannelListWindow( BaseWindow ) :
 
 	def __init__( self, *args, **kwargs ) :
@@ -112,9 +127,13 @@ class ChannelListWindow( BaseWindow ) :
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
 
 		starttime = time.time( )
-		print '==================== TEST TIME[ONINIT] START[%s]'% starttime
+		#print '==================== TEST TIME[ONINIT] START[%s]'% starttime
 
 		#header
+		self.mCtrlImgRec1            = self.getControl( 10 )
+		self.mCtrlLblRec1            = self.getControl( 11 )
+		self.mCtrlImgRec2            = self.getControl( 15 )
+		self.mCtrlLblRec2            = self.getControl( 16 )
 		self.mCtrlLblPath1           = self.getControl( 21 )
 		self.mCtrlGropOpt            = self.getControl( 500 )
 		self.mCtrlBtnOpt             = self.getControl( 501 )
@@ -178,6 +197,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		#self.SqlTest( )
 
+		self.ShowRecording( )
 		self.SetVideoSize( )
 
 		#initialize get cache
@@ -232,7 +252,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mAsyncTuneTimer = None
 
 		endtime = time.time( )
-		print '==================== TEST TIME[ONINIT] END[%s] loading[%s]'% (endtime, endtime-starttime )
+		#print '==================== TEST TIME[ONINIT] END[%s] loading[%s]'% (endtime, endtime-starttime )
 		LOG_TRACE( 'Leave' )
 
 	def onAction(self, aAction):
@@ -281,7 +301,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.GetFocusId( )
 			if self.mFocusId == self.mCtrlListCHList.getId( ) :
 				if self.mMoveFlag :
-					self.SetMarkChanneltoMove( FLAG_OPT_MOVE_UPDOWN, id )
+					self.SetEditChanneltoMove( FLAG_OPT_MOVE_UPDOWN, id )
 					return
 
 				#TODO : must be need timeout schedule
@@ -314,13 +334,13 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
 				try:
 					if self.mMoveFlag :
-						self.SetMarkChanneltoMove( FLAG_OPT_MOVE_OK )
+						self.SetEditChanneltoMove( FLAG_OPT_MOVE_OK )
 						return
 
 					#Mark mode
 					if self.mIsMark == True :
 						idx = self.mCtrlListCHList.getSelectedPosition( )
-						self.MarkAddDelete('mark', idx )
+						self.SetEditMarkupGUI('mark', idx )
 
 						GuiLock2( True )
 						self.setFocusId( self.mCtrlGropCHList.getId( ) )
@@ -1287,7 +1307,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		lblColorS = E_TAG_COLOR_GREY
 		lblColorE = E_TAG_COLOR_END
-		LOG_TRACE('listItems data[%s]'% (self.mListItems) )
+		#LOG_TRACE('listItems data[%s]'% (self.mListItems) )
 		if self.mListItems == None :
 			self.mListItems = []
 			for iChannel in self.mChannelList:
@@ -1686,7 +1706,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	@GuiLock
-	def SetMarkDeleteCh( self, aMode, aEnabled = True, aGroupName = '' ) :
+	def SetEditChannelList( self, aCmd, aEnabled = True, aGroupName = '' ) :
 		LOG_TRACE( 'Enter' )
 
 		lastPos = self.mCtrlListCHList.getSelectedPosition( )
@@ -1695,7 +1715,7 @@ class ChannelListWindow( BaseWindow ) :
 			#----------------> 1.set current position item <-------------
 			if len(self.mMarkList) < 1 :
 				#icon toggle
-				if aMode.lower( ) == 'lock' :
+				if aCmd.lower( ) == 'lock' :
 					listItem = self.mCtrlListCHList.getListItem(lastPos)
 
 					if aEnabled :
@@ -1715,7 +1735,7 @@ class ChannelListWindow( BaseWindow ) :
 					ret = self.mDataCache.Channel_Lock( aEnabled, retList )
 
 				#label color
-				elif aMode.lower( ) == 'skip' :
+				elif aCmd.lower( ) == 'skip' :
 					#remove tag [COLOR ...]label[/COLOR]
 					label1 = self.mCtrlListCHList.getSelectedItem( ).getLabel( )
 					label2 = re.findall('\](.*)\[', label1)
@@ -1733,7 +1753,7 @@ class ChannelListWindow( BaseWindow ) :
 					retList.append( self.mChannelList[lastPos] )
 					ret = self.mDataCache.Channel_Skip( aEnabled, retList )
 
-				elif aMode.lower( ) == 'add' :
+				elif aCmd.lower( ) == 'add' :
 					#strip tag [COLOR ...]label[/COLOR]
 					number = self.mChannelList[lastPos].mNumber
 					cmd = 'AddChannel to Group'
@@ -1742,7 +1762,7 @@ class ChannelListWindow( BaseWindow ) :
 					else :
 						ret = 'group None'
 
-				elif aMode.lower( ) == 'del' :
+				elif aCmd.lower( ) == 'del' :
 					#strip tag [COLOR ...]label[/COLOR]
 					number = self.mChannelList[lastPos].mNumber
 					cmd = 'RemoveChannel to Group'
@@ -1751,8 +1771,8 @@ class ChannelListWindow( BaseWindow ) :
 					else :
 						ret = 'group None'
 
-				elif aMode.lower( ) == 'delete' :
-					cmd = aMode.title( )
+				elif aCmd.lower( ) == 'delete' :
+					cmd = aCmd.title( )
 					retList = []
 					retList.append( self.mChannelList[lastPos] )
 					ret = self.mDataCache.Channel_Delete( retList )
@@ -1771,7 +1791,7 @@ class ChannelListWindow( BaseWindow ) :
 					cmd = ''
 					ret = ''
 					#icon toggle
-					if aMode.lower( ) == 'lock' :
+					if aCmd.lower( ) == 'lock' :
 
 						#lock toggle: disable
 						if aEnabled :
@@ -1787,7 +1807,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 					#label color
-					elif aMode.lower( ) == 'skip' :
+					elif aCmd.lower( ) == 'skip' :
 						#strip tag [COLOR ...]label[/COLOR]
 						label1 = self.mCtrlListCHList.getSelectedItem( ).getLabel( )
 						label2 = re.findall('\](.*)\[', label1)
@@ -1804,7 +1824,7 @@ class ChannelListWindow( BaseWindow ) :
 						retList.append( self.mChannelList[idx] )
 						ret = self.mDataCache.Channel_Skip( aEnabled, retList )
 
-					elif aMode.lower( ) == 'add' :
+					elif aCmd.lower( ) == 'add' :
 						number = self.mChannelList[idx].mNumber
 						cmd = 'AddChannel to Group'
 						if aGroupName :
@@ -1812,7 +1832,7 @@ class ChannelListWindow( BaseWindow ) :
 						else :
 							ret = 'group None'
 
-					elif aMode.lower( ) == 'del' :
+					elif aCmd.lower( ) == 'del' :
 						number = self.mChannelList[idx].mNumber
 						LOG_TRACE('delete by Fav grp[%s] ch[%s]'% (aGroupName, number) )
 						cmd = 'RemoveChannel to Group'
@@ -1821,7 +1841,7 @@ class ChannelListWindow( BaseWindow ) :
 						else :
 							ret = 'group None'
 
-					elif aMode.lower( ) == 'move' :
+					elif aCmd.lower( ) == 'move' :
 						cmd = 'Move'
 						idxM= idx + aEnabled
 						if idxM < 0 : continue
@@ -1836,26 +1856,8 @@ class ChannelListWindow( BaseWindow ) :
 						self.mCtrlListCHList.selectItem(idxM)
 						xbmc.sleep( 50 )
 						self.mCtrlListCHList.getSelectedItem( ).setLabel(labelM)
-
 						continue
 					
-					elif aMode.lower( ) == 'gmove' :
-						cmd = 'Move in Group'
-						insertPosition = idx + aEnabled
-						if aGroupName :
-							ret = self.mDataCache.FavoriteGroup_MoveChannels( aGroupName, insertPosition, self.mChannelListServieType, self.mChannelList[idx] )
-						else :
-							ret = 'group None'
-
-					"""
-					elif aMode.lower( ) == 'delete' :
-						cmd = 'Delete'
-						retList = []
-						retList.append( self.mChannelList[idx] )
-						ret = self.mDataCache.Channel_Delete( retList )
-						LOG_TRACE('delete[%s]'% ClassToList('convert', retList) )
-					"""
-
 					LOG_TRACE( 'set[%s] idx[%s] ret[%s]'% (cmd,idx,ret) )
 
 					#mark remove
@@ -1870,188 +1872,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		LOG_TRACE( 'Leave' )
 
-	def MarkAddDelete( self, aMode, aPos, aEnabled=True ) :
-		LOG_TRACE( 'Enter' )
-
-		if aMode.lower( ) == 'mark' :
-			idx = 0
-			isExist = False
-
-			#aready mark is mark delete
-			for i in self.mMarkList :
-				if i == aPos :
-					self.mMarkList.pop(idx)
-					isExist = True
-				idx += 1
-
-			#do not exist is append mark
-			if isExist == False : 
-				self.mMarkList.append( aPos )
-
-			listItem = self.mCtrlListCHList.getListItem(aPos)
-
-			#mark toggle: disable
-			if listItem.getProperty('mark') == E_IMG_ICON_MARK :
-				listItem.setProperty('mark', '')
-
-			#mark toggle: enable
-			else :
-				listItem.setProperty('mark', E_IMG_ICON_MARK)
-
-
-		elif aMode.lower( ) == 'delete' :
-			idx = 0
-			isExist = False
-
-			#aready exist check, do not append
-			for i in self.mDeleteList :
-				if i == aPos :
-					isExist = True
-					break
-				idx += 1
-
-			if aEnabled :
-				#delete, append item when not exist
-				if isExist == False : 
-					self.mDeleteList.append( aPos )
-			else :
-				#undelete, remove item
-				if isExist == True :
-					self.mDeleteList.pop(idx)
-
-		LOG_TRACE( 'Leave' )
-
-
-	def GroupAddDelete( self, aMode, aDialog = 0, aBtn = 0, aGroupName = '' ) :
-		LOG_TRACE( 'Enter' )
-
-		if aMode.lower( ) == 'get' :
-			#Favorite list
-			self.mListFavorite = self.mDataCache.Favorite_GetList_Elis( self.mChannelListServieType )
-			ClassToList( 'print', self.mListFavorite )
-
-			self.mEditFavorite = []
-			if self.mListFavorite :
-				for item in self.mListFavorite:
-					#copy to favoriteGroup
-					self.mEditFavorite.append( item.mGroupName )
-
-		elif aMode.lower( ) == 'set' :
-			cmd = ''
-			ret = ''
-
-			if aBtn == E_DialogInput01 :
-				cmd = 'lock'
-				self.SetMarkDeleteCh( cmd, True )
-
-			elif aBtn == E_DialogInput02 :
-				cmd = 'lock'
-				self.SetMarkDeleteCh( cmd, False)
-
-			elif aBtn == E_DialogInput03 :
-				cmd = 'skip'
-				self.SetMarkDeleteCh( cmd, True )
-
-			elif aBtn == E_DialogInput04 :
-				cmd = 'skip'
-				self.SetMarkDeleteCh( cmd, False )
-
-			elif aBtn == E_DialogInput05 :
-				if aDialog == FLAG_OPT_LIST :
-					cmd = 'delete'
-
-					if self.mMarkList :
-						try:
-							retList = []
-							for idx in self.mMarkList :
-								retList.append( self.mChannelList[idx] )
-
-							ret = self.mDataCache.Channel_Delete( retList )
-							LOG_TRACE('ret[%s] len[%s] delete[%s]'% (ret, len(retList), ClassToList('convert', retList) ) )
-
-						except Exception, e:
-							LOG_TRACE( 'Error except[%s]'% e )
-					else :
-						self.SetMarkDeleteCh( cmd, False )
-
-					self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
-					self.mListItems = None
-
-					self.mMarkList = []
-					GuiLock2( True )
-					self.setFocusId( self.mCtrlGropCHList.getId( ) )
-					self.mCtrlSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition( )+1) ) )
-					GuiLock2( False )
-
-					return
-
-				else :
-					cmd = 'del'
-					#idxThisFavorite = self.mCtrlListSubmenu.getSelectedPosition( )
-					#aGroupName = self.mListFavorite[idxThisFavorite].mGroupName
-					aGroupName = self.mCtrlListSubmenu.getSelectedItem( ).getLabel( )
-
-				self.SetMarkDeleteCh( cmd, True, aGroupName )
-				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
-
-			elif aBtn == E_DialogInput06 :
-				cmd = 'move'
-				self.SetMarkChanneltoMove(FLAG_OPT_MOVE, None, aGroupName )
-				if self.mMarkList :
-					idx = int(self.mMarkList[0])
-					GuiLock2( True )
-					xbmc.executebuiltin('xbmc.Container.PreviousViewMode')
-					xbmc.sleep( 50 )
-					self.mCtrlListCHList.selectItem(idx)
-					self.setFocusId( self.mCtrlGropCHList.getId( ) )
-					GuiLock2( False )
-				return
-
-			elif aBtn == E_DialogInput07 :
-				if aDialog == FLAG_OPT_LIST :
-					cmd = 'add'
-					self.SetMarkDeleteCh( cmd, True, aGroupName )
-					self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
-				else :
-					cmd = 'Create'
-					ret = self.mDataCache.Favoritegroup_Create( aGroupName, self.mChannelListServieType )	#default : ElisEnum.E_SERVICE_TYPE_TV
-					#LOG_TRACE( 'set[%s] name[%s] ret[%s]'% (cmd,aGroupName,ret) )				
-
-			elif aBtn == E_DialogInput08 :
-				#parse idx, source name, rename
-				cmd = 'Rename'
-				name = re.split(':', aGroupName)
-				ret = self.mDataCache.Favoritegroup_ChangeName( name[1], self.mChannelListServieType, name[2] )
-				#LOG_TRACE( 'set[%s] name[%s] ret[%s]'% (cmd,aGroupName,ret) )
-
-			elif aBtn == E_DialogInput09 :
-				cmd = 'Remove'
-				ret = self.mDataCache.Favoritegroup_Remove( aGroupName, self.mChannelListServieType )
-				#LOG_TRACE( 'set[%s] name[%s] ret[%s]'% (cmd,aGroupName,ret) )
-
-
-			self.mMarkList = []
-			GuiLock2( True )
-			self.setFocusId( self.mCtrlGropCHList.getId( ) )
-			GuiLock2( False )
-
-
-			"""
-			#group list
-			if self.mEditFavorite :
-				idx = 0
-				for item in self.mListFavorite:
-					retList = []
-					retList.append( item )
-					idx += 1
-					LOG_TRACE( 'group[%s] ch[%s]'% (self.mEditFavorite[idx], ClassToList('convert', retList) ) )
-			"""
-
-
-
-		LOG_TRACE( 'Leave' )
-
-	def SetMarkChanneltoMove(self, aMode, aMove = None, aGroupName = None ) :
+	def SetEditChanneltoMove(self, aMode, aMove = None, aGroupName = None ) :
 		LOG_TRACE( 'Enter' )
 
 		if aMode == FLAG_OPT_MOVE :
@@ -2067,22 +1888,20 @@ class ChannelListWindow( BaseWindow ) :
 			
 			self.mMarkList.sort( )
 
-			chidx = self.mMarkList[0]
+			chidx = int(self.mMarkList[0])
 			number = self.mChannelList[chidx].mNumber
 
-			#LOG_TRACE('1====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList) ) )
+			LOG_TRACE('1====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList) ) )
 
-			#2. get retList
+			#2. make listing of ichannel in marked idx
 			for idx in self.mMarkList :
 				i = int(idx)
 				retList.append( self.mChannelList[i] )
 
-			#3. update mark list
+			#3. update mark list (sorted)
 			for i in range(len(self.mMarkList) ) :
-				markList.append( self.mMarkList[0]+i )
-
-			self.mMarkList = []
-			self.mMarkList = markList
+				markList.append( int(self.mMarkList[0])+i )
+			LOG_TRACE('mark: new[%s] old[%s]'% (markList, self.mMarkList) )
 
 			#4. init channel list
 			ret = False
@@ -2096,7 +1915,10 @@ class ChannelListWindow( BaseWindow ) :
 			if ret :
 				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 
-			#LOG_TRACE('2====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList) ) )
+			self.mMarkList = []
+			self.mMarkList = deepcopy(markList)
+
+			LOG_TRACE('2====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList) ) )
 			self.mMoveFlag = True
 
 			GuiLock2( True )
@@ -2216,7 +2038,7 @@ class ChannelListWindow( BaseWindow ) :
 				listItem.setProperty( 'lock', '' )
 				listItem.setProperty( 'icas', '' )
 
-				label = str('%s%s %s%s'%( E_TAG_COLOR_GREY, number, name, E_TAG_COLOR_END ) )
+				label = str('%s%04d %s%s'%( E_TAG_COLOR_GREY, number, name, E_TAG_COLOR_END ) )
 				listItem.setLabel(label)
 
 				if lock : listItem.setProperty( 'lock', E_IMG_ICON_LOCK )
@@ -2247,92 +2069,190 @@ class ChannelListWindow( BaseWindow ) :
 
 		LOG_TRACE( 'Leave' )
 
-
-	def EditSettingWindow( self, aMode, aMove = None ) :
+	def SetEditMarkupGUI( self, aMode, aPos, aEnabled=True ) :
 		LOG_TRACE( 'Enter' )
 
-		try:
-			if self.mMoveFlag :
-				self.SetMarkChanneltoMove( FLAG_OPT_MOVE_OK )
-				return
+		if aMode.lower( ) == 'mark' :
+			idx = 0
+			isExist = False
 
-			self.GroupAddDelete( 'get' )
+			#aready mark is mark delete
+			for i in self.mMarkList :
+				if i == aPos :
+					self.mMarkList.pop(idx)
+					isExist = True
+				idx += 1
 
-			if aMode == FLAG_OPT_LIST :
+			#do not exist is append mark
+			if isExist == False : 
+				self.mMarkList.append( aPos )
 
-				#dialog title
-				#select one or one marked : title = channel name
-				#select two more : title = 'Edit Channel'
-				if self.mChannelList :
-					if len(self.mMarkList) > 1 :
-						label3 = Msg.Strings( MsgId.LANG_EDIT_CHANNEL )
+			listItem = self.mCtrlListCHList.getListItem(aPos)
 
-					else :
-						if len(self.mMarkList) == 1 :
-							idx = self.mMarkList[0]
-							self.mCtrlListCHList.selectItem( idx )
-							xbmc.sleep(20)
+			#mark toggle: disable
+			if listItem.getProperty('mark') == E_IMG_ICON_MARK :
+				listItem.setProperty('mark', '')
 
-						label1 = self.mCtrlListCHList.getSelectedItem( ).getLabel( )
-						label2 = re.findall( '\](.*)\[', label1 )
-						label3 = label2[0][5:]
-
-					GuiLock2( True )
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_EDIT_CHANNEL_LIST )
-					dialog.SetValue( FLAG_OPT_LIST, label3, self.mChannelList, self.mEditFavorite )
-		 			dialog.doModal( )
-		 			GuiLock2( False )
-
-		 		else :
-					head =  Msg.Strings( MsgId.LANG_INFOMATION )
-					line1 = Msg.Strings( MsgId.LANG_NO_CHANNELS )
-
-					ret = xbmcgui.Dialog( ).ok( head, line1 )
-					return
-
-			elif aMode == FLAG_OPT_GROUP :
-				GuiLock2( True )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_EDIT_CHANNEL_LIST )
-				dialog.SetValue( FLAG_OPT_GROUP, Msg.Strings( MsgId.LANG_GROUP_NAME ), self.mChannelList, self.mEditFavorite )
-	 			dialog.doModal( )
-	 			GuiLock2( False )
+			#mark toggle: enable
+			else :
+				listItem.setProperty('mark', E_IMG_ICON_MARK)
 
 
-			#result editing action
-			idxBtn, groupName, isOk = dialog.GetValue( aMode )
-			if isOk :
-				self.mIsSave |= FLAG_MASK_ADD
-				self.GroupAddDelete( 'set', aMode, idxBtn, groupName )
+		elif aMode.lower( ) == 'delete' :
+			idx = 0
+			isExist = False
 
-		except Exception, e:
-			LOG_TRACE( 'Error except[%s] OPTMODE[%s]'% (e, aMode) )
+			#aready exist check, do not append
+			for i in self.mDeleteList :
+				if i == aPos :
+					isExist = True
+					break
+				idx += 1
 
+			if aEnabled :
+				#delete, append item when not exist
+				if isExist == False : 
+					self.mDeleteList.append( aPos )
+			else :
+				#undelete, remove item
+				if isExist == True :
+					self.mDeleteList.pop(idx)
 
 		LOG_TRACE( 'Leave' )
+
+
+	def GetFavoriteGroup( self ) :
+		LOG_TRACE( 'Enter' )
+
+		self.mListFavorite = self.mDataCache.Favorite_GetList_Elis( self.mChannelListServieType )
+		#ClassToList( 'print', self.mListFavorite )
+
+		self.mEditFavorite = []
+		if self.mListFavorite :
+			for item in self.mListFavorite:
+				#copy to favoriteGroup
+				self.mEditFavorite.append( item.mGroupName )
+
+		LOG_TRACE( 'Leave' )
+
+
+	def DoContextAdtion( self, aMode, aContextAction, aGroupName = '' ) :
+		LOG_TRACE( 'Enter' )
+
+		if aContextAction == CONTEXT_ACTION_LOCK :
+			cmd = 'lock'
+			self.SetEditChannelList( cmd, True )
+
+		elif aContextAction == CONTEXT_ACTION_UNLOCK :
+			cmd = 'lock'
+			self.SetEditChannelList( cmd, False)
+
+		elif aContextAction == CONTEXT_ACTION_SKIP :
+			cmd = 'skip'
+			self.SetEditChannelList( cmd, True )
+
+		elif aContextAction == CONTEXT_ACTION_UNSKIP :
+			cmd = 'skip'
+			self.SetEditChannelList( cmd, False )
+
+		elif aContextAction == CONTEXT_ACTION_DELETE :
+			if aMode == FLAG_OPT_LIST :
+				cmd = 'delete'
+
+				if self.mMarkList :
+					try:
+						retList = []
+						for idx in self.mMarkList :
+							retList.append( self.mChannelList[idx] )
+
+						ret = self.mDataCache.Channel_Delete( retList )
+						LOG_TRACE('ret[%s] len[%s] delete[%s]'% (ret, len(retList), ClassToList('convert', retList) ) )
+
+					except Exception, e:
+						LOG_TRACE( 'Error except[%s]'% e )
+				else :
+					self.SetEditChannelList( cmd, False )
+
+				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
+				self.mListItems = None
+
+				self.mMarkList = []
+				GuiLock2( True )
+				self.setFocusId( self.mCtrlGropCHList.getId( ) )
+				self.mCtrlSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition( )+1) ) )
+				GuiLock2( False )
+
+				return
+
+			else :
+				cmd = 'del'
+				#idxThisFavorite = self.mCtrlListSubmenu.getSelectedPosition( )
+				#aGroupName = self.mListFavorite[idxThisFavorite].mGroupName
+				aGroupName = self.mCtrlListSubmenu.getSelectedItem( ).getLabel( )
+
+			self.SetEditChannelList( cmd, True, aGroupName )
+			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
+
+		elif aContextAction == CONTEXT_ACTION_MOVE :
+			cmd = 'move'
+			self.SetEditChanneltoMove(FLAG_OPT_MOVE, None, aGroupName )
+			if self.mMarkList :
+				idx = int(self.mMarkList[0])
+				GuiLock2( True )
+				#xbmc.executebuiltin('xbmc.Container.PreviousViewMode')
+				xbmc.executebuiltin('xbmc.Container.SetViewMode(50)')
+				xbmc.sleep( 50 )
+				self.mCtrlListCHList.selectItem(idx)
+				self.setFocusId( self.mCtrlGropCHList.getId( ) )
+				GuiLock2( False )
+			return
+
+		elif aContextAction == CONTEXT_ACTION_ADD_TO_FAV :
+			cmd = 'add'
+			self.SetEditChannelList( cmd, True, aGroupName )
+			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
+
+		elif aContextAction == CONTEXT_ACTION_CREATE_GROUP_FAV :
+			cmd = 'Create'
+			ret = self.mDataCache.Favoritegroup_Create( aGroupName, self.mChannelListServieType )	#default : ElisEnum.E_SERVICE_TYPE_TV
+			#LOG_TRACE( 'set[%s] name[%s] ret[%s]'% (cmd,aGroupName,ret) )				
+
+		elif aContextAction == CONTEXT_ACTION_RENAME_FAV :
+			cmd = 'Rename'
+			name = re.split(':', aGroupName)
+			ret = self.mDataCache.Favoritegroup_ChangeName( name[1], self.mChannelListServieType, name[2] )
+
+		elif aContextAction == CONTEXT_ACTION_DELETE_FAV :
+			cmd = 'Remove'
+			ret = self.mDataCache.Favoritegroup_Remove( aGroupName, self.mChannelListServieType )
+
+		self.mMarkList = []
+		GuiLock2( True )
+		self.setFocusId( self.mCtrlGropCHList.getId( ) )
+		GuiLock2( False )
+
+		LOG_TRACE( 'Leave' )
+
 
 	def EditSettingWindowContext( self, aMode, aMove = None ) :
 		LOG_TRACE( 'Enter' )
 
 		#try:
 		if self.mMoveFlag :
-			self.SetMarkChanneltoMove( FLAG_OPT_MOVE_OK )
+			self.SetEditChanneltoMove( FLAG_OPT_MOVE_OK )
 			return
 
-		self.GroupAddDelete( 'get' )
+		self.GetFavoriteGroup( )
 
 		#default context item
-		context1 = []
-		context2 = []
+		context = []
 		if self.mChannelList :
-			context1.append( ContextItem( Msg.Strings( MsgId.LANG_LOCK ) ) )
-			context1.append( ContextItem( Msg.Strings( MsgId.LANG_UNLOCK ) ) )
-			context1.append( ContextItem( Msg.Strings( MsgId.LANG_SKIP ) ) )
-			context1.append( ContextItem( Msg.Strings( MsgId.LANG_UNSKIP ) ) )
-			context1.append( ContextItem( Msg.Strings( MsgId.LANG_DELETE ) ) )
-			context1.append( ContextItem( Msg.Strings( MsgId.LANG_MOVE ) ) )
-
-		for name in self.mEditFavorite:
-			context2.append( ContextItem( name ) )
+			context.append( ContextItem( Msg.Strings( MsgId.LANG_LOCK ),   CONTEXT_ACTION_LOCK ) )
+			context.append( ContextItem( Msg.Strings( MsgId.LANG_UNLOCK ), CONTEXT_ACTION_UNLOCK ) )
+			context.append( ContextItem( Msg.Strings( MsgId.LANG_SKIP ),   CONTEXT_ACTION_SKIP ) )
+			context.append( ContextItem( Msg.Strings( MsgId.LANG_UNSKIP ), CONTEXT_ACTION_UNSKIP  ) )
+			context.append( ContextItem( Msg.Strings( MsgId.LANG_DELETE ), CONTEXT_ACTION_DELETE ) )
+			context.append( ContextItem( Msg.Strings( MsgId.LANG_MOVE ),   CONTEXT_ACTION_MOVE ) )
 
 
 		if aMode == FLAG_OPT_LIST :
@@ -2344,14 +2264,9 @@ class ChannelListWindow( BaseWindow ) :
 					label   = '%s\tNone'% Msg.Strings( MsgId.LANG_ADD_TO_FAV )
 					lblItem = str('%s%s%s'%( E_TAG_COLOR_GREY3, label, E_TAG_COLOR_END ) )
 
-				context1.append( ContextItem( lblItem ) )
-				GuiLock2( True )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-				dialog.SetProperty( context1 )
-	 			dialog.doModal( )
-	 			GuiLock2( False )
+				context.append( ContextItem( lblItem, CONTEXT_ACTION_ADD_TO_FAV  ) )
 
-	 		else :
+			else :
 				head =  Msg.Strings( MsgId.LANG_INFOMATION )
 				line1 = Msg.Strings( MsgId.LANG_NO_CHANNELS )
 
@@ -2361,69 +2276,69 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aMode == FLAG_OPT_GROUP :
 			if not self.mChannelList :
-				context1 = []
+				context = []
 
-			lblItem1 = '%s'% Msg.Strings( MsgId.LANG_CREATE_NEW_GROUP )
+			context.append( ContextItem( Msg.Strings( MsgId.LANG_CREATE_NEW_GROUP ), CONTEXT_ACTION_CREATE_GROUP_FAV ) )
 
 			if self.mEditFavorite:
-				lblItem2 = '%s'% Msg.Strings( MsgId.LANG_RENAME_FAV )
-				lblItem3 = '%s'% Msg.Strings( MsgId.LANG_DELETE_FAV )
+				context.append( ContextItem( '%s'% Msg.Strings( MsgId.LANG_RENAME_FAV ), CONTEXT_ACTION_RENAME_FAV ) )
+				context.append( ContextItem( '%s'% Msg.Strings( MsgId.LANG_DELETE_FAV ), CONTEXT_ACTION_DELETE_FAV ) )
+				
+				
 			else:
 				label1   = '%s\tNone'% Msg.Strings( MsgId.LANG_RENAME_FAV )
 				label2   = '%s\tNone'% Msg.Strings( MsgId.LANG_DELETE_FAV )
 				lblItem2 = str('%s%s%s'%( E_TAG_COLOR_GREY3, label1, E_TAG_COLOR_END ) )
 				lblItem3 = str('%s%s%s'%( E_TAG_COLOR_GREY3, label2, E_TAG_COLOR_END ) )
-
-			context1.append( ContextItem( lblItem1 ) )
-			context1.append( ContextItem( lblItem2 ) )
-			context1.append( ContextItem( lblItem3 ) )
-
-			GuiLock2( True )
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-			dialog.SetProperty( context1 )
- 			dialog.doModal( )
- 			GuiLock2( False )
+				context.append( ContextItem( lblItem2 , CONTEXT_ACTION_RENAME_FAV ) )
+				context.append( ContextItem( lblItem3, CONTEXT_ACTION_DELETE_FAV ) )
 
 
-		#result editing action
-		selectIdx = dialog.GetSelectedIndex( )
-		LOG_TRACE('=======select idx[%s]'% selectIdx)
+		GuiLock2( True )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+		dialog.SetProperty( context )
+ 		dialog.doModal( )
+ 		GuiLock2( False )
 
-		if selectIdx == -1 :
+		selectedAction = dialog.GetSelectedAction( )
+		LOG_TRACE('selectedAction[%s]'% selectedAction )
+
+		if selectedAction == -1 :
 			LOG_TRACE('CANCEL by context dialog')
 			return
 
-		if (aMode == FLAG_OPT_LIST) and (not self.mEditFavorite) and (selectIdx == 6) :
+		if (not self.mEditFavorite) and (selectedAction == CONTEXT_ACTION_ADD_TO_FAV) :
 			#can not add to Fav : no favorite group
-			LOG_TRACE('Disabled item : selectIdx[%s]'% selectIdx)
+			LOG_TRACE('Disabled! Fav is empty, Can not add to Fav : selectedAction[%s]'% selectedAction)
 			return
 
-		if ((aMode == FLAG_OPT_GROUP) and (not self.mEditFavorite) and (selectIdx == 7) ) or \
-		   ((aMode == FLAG_OPT_GROUP) and (not self.mEditFavorite) and (selectIdx == 8) ) :
+		if ((not self.mEditFavorite) and (selectedAction == CONTEXT_ACTION_RENAME_FAV) ) or \
+		   ((not self.mEditFavorite) and (selectedAction == CONTEXT_ACTION_DELETE_FAV) ) :
 			#can not rename / delete : no favorite group
-			LOG_TRACE('Disabled item : selectIdx[%s]'% selectIdx)
+			LOG_TRACE('Disabled Fav is empty, Can not Rename or Delete Fav : selectedAction[%s]'% selectedAction)
 			return
 		#--------------------------------------------------------------- section 1
 
-		publicBtn = ( selectIdx * 10 ) + E_DialogInput01
 		groupName = None
 
-		if aMode == FLAG_OPT_GROUP and (not self.mChannelList) :
-			#if no Channel then
-			#create Fav:7, rename Fav:8, delete Fav:9
-			publicBtn = ( (selectIdx+6) * 10 ) + E_DialogInput01
-
 		# add Fav, Ren Fav, Del Fav ==> popup select group
-		if aMode == FLAG_OPT_LIST and publicBtn == E_DialogInput07 or \
-		   aMode == FLAG_OPT_GROUP and publicBtn == E_DialogInput08 or \
-		   aMode == FLAG_OPT_GROUP and publicBtn == E_DialogInput09 :
+		if selectedAction == CONTEXT_ACTION_ADD_TO_FAV or \
+		   selectedAction == CONTEXT_ACTION_RENAME_FAV or \
+		   selectedAction == CONTEXT_ACTION_DELETE_FAV :
+		   	context = []
+		   	idx = 0
+   			for name in self.mEditFavorite:
+				context.append( ContextItem( name, idx ) )
+				idx += 1
+
 			GuiLock2( True )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-			dialog.SetProperty( context2 )
+			dialog.SetProperty( context )
  			dialog.doModal( )
  			GuiLock2( False )
 
- 			grpIdx = dialog.GetSelectedIndex( )
+ 			grpIdx = dialog.GetSelectedAction( )
+ 			LOG_TRACE('---------------grpIdx[%s]'% grpIdx)
  			groupName = self.mEditFavorite[grpIdx]
 
 			if grpIdx == -1 :
@@ -2431,16 +2346,16 @@ class ChannelListWindow( BaseWindow ) :
 				return
 
 		# Ren Fav, Del Fav ==> popup input group Name
-		if aMode == FLAG_OPT_GROUP and publicBtn == E_DialogInput07 or \
-		   aMode == FLAG_OPT_GROUP and publicBtn == E_DialogInput08 :
+		if selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV or \
+		   selectedAction == CONTEXT_ACTION_RENAME_FAV :
 			label = ''
 			default = ''
-			if publicBtn == E_DialogInput07 :
+			if selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV :
 				#create
 				result = ''
 				label = Msg.Strings( MsgId.LANG_CREATE_NEW_GROUP )
 
-			elif publicBtn == E_DialogInput08 :
+			elif selectedAction == CONTEXT_ACTION_RENAME_FAV :
 				#rename
 				default = groupName
 				result = '%d'%grpIdx + ':' + groupName + ':'
@@ -2454,13 +2369,15 @@ class ChannelListWindow( BaseWindow ) :
 			if name :
 				groupName = result + name
 
-		LOG_TRACE('mode[%s] btn[%s] groupName[%s]'% (aMode, publicBtn, groupName) )
+		LOG_TRACE('mode[%s] btn[%s] groupName[%s]'% (aMode, selectedAction, groupName) )
 		#--------------------------------------------------------------- section 2
 
-		self.GroupAddDelete( 'set', aMode, publicBtn, groupName )
+		self.DoContextAdtion( aMode, selectedAction, groupName )
+
 		self.mIsSave |= FLAG_MASK_ADD
 
 		LOG_TRACE( 'Leave' )
+
 
 
 	def PopupOpt( self ) :
@@ -2472,8 +2389,8 @@ class ChannelListWindow( BaseWindow ) :
 				mode = FLAG_OPT_GROUP
 			else :
 				mode = FLAG_OPT_LIST
-			#self.EditSettingWindow( mode )        	 # dialog 1
-			self.EditSettingWindowContext( mode )	 # dialog 2
+
+			self.EditSettingWindowContext( mode )
 
 		LOG_TRACE( 'Leave' )
 
@@ -2520,6 +2437,9 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mChannelList == None:
 			return -1
 
+		if aKey == 0 :
+			return -1
+
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW:
 
 			GuiLock2( True )
@@ -2540,6 +2460,42 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		LOG_TRACE( 'Leave' )
+
+	def ShowRecording( self ) :
+		LOG_TRACE('Enter')
+
+		try:
+			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+			LOG_TRACE('isRunRecCount[%s]'% isRunRec)
+
+			recLabel1 = ''
+			recLabel2 = ''
+			recImg1   = False
+			recImg2   = False
+			if isRunRec == 1 :
+				recImg1 = True
+				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
+				recLabel1 = '%04d %s'% (recInfo.mChannelNo, recInfo.mChannelName)
+
+			elif isRunRec == 2 :
+				recImg1 = True
+				recImg2 = True
+				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
+				recLabel1 = '%04d %s'% (recInfo.mChannelNo, recInfo.mChannelName)
+				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
+				recLabel2 = '%04d %s'% (recInfo.mChannelNo, recInfo.mChannelName)
+
+			GuiLock2( True )
+			self.mCtrlLblRec1.setLabel( recLabel1 )
+			self.mCtrlImgRec1.setVisible( recImg1 )
+			self.mCtrlLblRec2.setLabel( recLabel2 )
+			self.mCtrlImgRec2.setVisible( recImg2 )
+			GuiLock2( False )
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
+
+		LOG_TRACE('Leave')
 
 	def SqlTest( self ) :
 		try:

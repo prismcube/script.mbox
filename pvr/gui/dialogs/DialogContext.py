@@ -16,12 +16,15 @@ DIALOG_BOTTOM_IMAGE_ID		= 101
 DIALOG_LIST_ID				= 102
 DIALOG_BUTTON_CLOSE_ID		= 103
 
+
 class DialogContext( BaseDialog ) :
+
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )	
 		self.mItemList = []
-		self.selectedIndex = -1
+		self.mSelectedIndex = -1
 		self.mCtrlList = None
+
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -62,14 +65,10 @@ class DialogContext( BaseDialog ) :
 	def onClick( self, aControlId ) :
 		if aControlId == DIALOG_BUTTON_CLOSE_ID :
 			self.CloseDialog( )
-	
-		selectedIndex = self.mCtrlList.getSelectedPosition( )
-		if self.mItemList[ selectedIndex ].mFunctionIndex == E_USER_DEFINE :
-			self.selectedIndex = selectedIndex
-			self.CloseDialog( )
-		else :
-			self.mItemList[ selectedIndex ].DoAction( )
-			self.CloseDialog( )
+			self.mSelectedIndex = -1
+
+		self.mSelectedIndex = self.mCtrlList.getSelectedPosition( )
+		self.CloseDialog( )		
 
 
 	def onFocus( self, aControlId ) :
@@ -80,9 +79,16 @@ class DialogContext( BaseDialog ) :
 		self.mItemList = aItemList
 			
 		if len( self.mItemList ) == 0 :
-			self.mItemList = ContextItem( 'None' )
+			self.mItemList.append( ContextItem( 'None' ) )
 
 
-	def GetSelectedIndex( self ) :
-		return self.selectedIndex
+	def GetSelectedAction( self ) :
+		if self.mSelectedIndex <  0 :
+			return -1
+			
+		if self.mItemList == None or len( self.mItemList ) <= 0 :
+			return -1
 		
+		return self.mItemList[self.mSelectedIndex].mContextAction
+		
+	

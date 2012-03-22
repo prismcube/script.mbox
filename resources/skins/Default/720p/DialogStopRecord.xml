@@ -1,6 +1,6 @@
 <window>
 	<defaultcontrol always="true">9000</defaultcontrol>
-	<allowoverlay>no</allowoverlay>
+	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<include>DefaultBehindDialogFadeOut</include>
@@ -25,11 +25,12 @@
 		<control type="grouplist" id="9000">		
 			<onleft>9000</onleft>
 			<itemgap>0</itemgap>
-			<posx>40</posx>
-			<posy>180</posy>
+			<posx>375</posx>
+			<posy>250</posy>
 			<onup>9000</onup>
 			<ondown>9000</ondown>
-
+			<defaultcontrol always="true">500</defaultcontrol>
+			
 			<!-- RECORD1 -->
 			<control type="group" id="500">		
 				<posx>0</posx>
@@ -105,7 +106,6 @@
 				<posy>0</posy>
 				<width>550</width>
 				<height>70</height>
-				<visible>true</visible>				
 				<defaultcontrol always="true">511</defaultcontrol>
 				<control type="button" id="511">
 					<description>Button Icon</description>

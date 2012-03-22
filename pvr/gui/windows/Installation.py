@@ -74,7 +74,7 @@ class Installation( BaseWindow ):
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 		
 		if selectedId == MENU_ID_FIRSTINSTALLATION : # First Installation
-			pass
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION )
 
 		elif selectedId == MENU_ID_ANTENNA_SETUP : # Antenna Setup
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
@@ -89,6 +89,7 @@ class Installation( BaseWindow ):
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_EDIT_TRANSPONDER )
 
 		elif selectedId == MENU_ID_CONFIGURE : # Config
+			self.SetVideoRestore( )
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIGURE )
 
 		elif selectedId == MENU_ID_CAS : # CAS

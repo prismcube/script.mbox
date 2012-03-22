@@ -107,7 +107,6 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 	def DrawItem( self ) :
-
 		count = len( self.mNewTVChannelList )
 		for i in range( count ) :
 			listItem = xbmcgui.ListItem( self.mNewTVChannelList[i], "TV" )
@@ -155,6 +154,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 			if ret == False :
 				self.mEventBus.Deregister( self )
+				self.ReTune( )
 				self.CloseDialog( )
 				xbmcgui.Dialog( ).ok('Failure', 'Channel Search Failed')
 
@@ -163,6 +163,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 			if ret == False :
 				self.mEventBus.Deregister( self )
+				self.ReTune( )
 				self.CloseDialog( )
 				xbmcgui.Dialog( ).ok('Failure', 'Channel Search Failed')
 			
@@ -175,7 +176,7 @@ class DialogChannelSearch( BaseDialog ) :
 			self.AbortDialog.doModal( )
 
 			if self.AbortDialog.IsOK( ) == E_DIALOG_STATE_YES :
-				self.mCommander.Channelscan_Abort( )
+				ret = self.mCommander.Channelscan_Abort( )
 				self.mIsFinished = True
 
 			elif self.AbortDialog.IsOK( ) == E_DIALOG_STATE_NO : 
@@ -184,10 +185,11 @@ class DialogChannelSearch( BaseDialog ) :
 			elif self.AbortDialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
 				return
  
-
 		if self.mIsFinished == True :
 			self.mEventBus.Deregister( self )
+			self.ReTune( )
 			self.CloseDialog( )
+
 
 	@GuiLock
 	def onEvent( self, aEvent ) :
@@ -201,7 +203,6 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 	def UpdateScanProgress( self, aEvent ) :
-
 		percent = 0
 		
 		if aEvent.mAllCount > 0 :
@@ -232,7 +233,6 @@ class DialogChannelSearch( BaseDialog ) :
 		elif aEvent.mCarrier.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBC :
 			pass
 
-
 		if aEvent.mFinished and aEvent.mCurrentIndex >= aEvent.mAllCount :
 			self.mCtrlProgress.setPercent( 100 )
 			self.mTimer = threading.Timer( 0.5, self.ShowResult )			
@@ -246,7 +246,6 @@ class DialogChannelSearch( BaseDialog ) :
 			self.mNewRadioChannelList.append( aEvent.mIChannel.mName )
 		else : 
 			LOG_ERR('Unknown service type')
-
 		self.DrawItem( )
 
 
@@ -263,6 +262,7 @@ class DialogChannelSearch( BaseDialog ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( 'Infomation', searchResult )
 		dialog.doModal( )
+		self.mIsFinished = True
 
 		if tvCount > 0 or radioCount > 0 :
 			#### data cache re-load ####
@@ -270,5 +270,7 @@ class DialogChannelSearch( BaseDialog ) :
 			self.mDataCache.LoadZappingList( )
 			self.mDataCache.LoadChannelList( )
 
-		self.mIsFinished = True
 
+	def ReTune( self ) :
+		channel = self.mDataCache.Channel_GetCurrent( )
+		self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType) # Todo After : using ServiceType to different way

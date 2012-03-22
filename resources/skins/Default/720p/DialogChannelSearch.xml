@@ -169,8 +169,8 @@
 				<textureslidernibfocus>confluence/ScrollBarNib.png</textureslidernibfocus>
 				<onleft>401</onleft>
 				<onright>402</onright>
-				<ondown>-</ondown>
-				<onup>-</onup>
+				<ondown>401</ondown>
+				<onup>401</onup>
 				<showonepage>false</showonepage>
 				<orientation>vertical</orientation>
 			</control>

@@ -66,12 +66,14 @@ class DialogStartRecord( BaseDialog ) :
 		LOG_TRACE( 'actionId=%d' %actionId )
 			
 		if actionId == Action.ACTION_PREVIOUS_MENU :
+			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.Close()		
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
+			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.Close()
 
 		elif actionId == Action.ACTION_MOVE_UP :
@@ -94,10 +96,13 @@ class DialogStartRecord( BaseDialog ) :
 
 		LOG_TRACE( 'DialogRecord focusId=%d' %focusId )
 		if focusId == E_BUTTON_START :
+			self.mIsOk = E_DIALOG_STATE_YES
 			self.StartRecord( )			
 
 		elif focusId == E_BUTTON_CANCEL :
+			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.Close( )
+
 		elif focusId == E_BUTTON_DURATION :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( 'Duration(Min)', '%d' %int(self.mRecordDuration/60) , 3 )
@@ -125,6 +130,9 @@ class DialogStartRecord( BaseDialog ) :
 			print 'Do Event'
 			pass
 		"""
+
+	def IsOK( self ) :
+		return self.mIsOk
 
 	def Close( self ):
 		self.mEventBus.Deregister( self )
@@ -173,10 +181,11 @@ class DialogStartRecord( BaseDialog ) :
 
 		current = self.mCommander.Channel_GetCurrent( )
 		ret = self.mCommander.Timer_AddOTRTimer( self.mHasEPG, self.mRecordDuration, 0,  self.mRecordName,  0,  0,  0,  0,  0)
-			
+					
 		self.Close( )
 
 		if ret == False :
+			self.mIsOk = E_DIALOG_STATE_CANCEL
 			xbmcgui.Dialog().ok('Failure', 'Start Record Fail' )
 
 

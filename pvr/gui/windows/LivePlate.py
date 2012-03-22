@@ -46,12 +46,20 @@ E_IMG_ICON_ICAS   = 'IconCas.png'
 E_IMG_ICON_TV     = 'confluence/tv.png'
 E_IMG_ICON_RADIO  = 'icon_radio.png'
 
+E_TAG_COLOR_WHITE = '[COLOR white]'
+E_TAG_COLOR_GREY  = '[COLOR grey]'
+E_TAG_COLOR_GREY3 = '[COLOR grey3]'
+E_TAG_COLOR_END   = '[/COLOR]'
+
 NEXT_EPG		= 0
 PREV_EPG 		= 1
 
 NEXT_CHANNEL	= 0
 PREV_CHANNEL	= 1
 CURR_CHANNEL	= 2
+
+CONTEXT_ACTION_VIDEO_SETTING = 1 
+CONTEXT_ACTION_AUDIO_SETTING = 2
 
 class LivePlate(BaseWindow):
 	def __init__(self, *args, **kwargs):
@@ -106,12 +114,17 @@ class LivePlate(BaseWindow):
 		#self.mCtrlProgress(self.Progress)
 
 		#button icon
+		self.mCtrlImgRec1              = self.getControl(  10 )
+		self.mCtrlLblRec1              = self.getControl(  11 )
+		self.mCtrlImgRec2              = self.getControl(  15 )
+		self.mCtrlLblRec2              = self.getControl(  16 )
 		self.mCtrlBtnExInfo            = self.getControl( 621 )
 		self.mCtrlBtnTeletext          = self.getControl( 622 )
 		self.mCtrlBtnSubtitle          = self.getControl( 623 )
 		self.mCtrlBtnStartRec          = self.getControl( 624 )
 		self.mCtrlBtnStopRec           = self.getControl( 625 )
 		self.mCtrlBtnMute              = self.getControl( 626 )
+		self.mCtrlBtnSettingFormat     = self.getControl( 627 )
 		self.mCtrlImgLocked            = self.getControl( 651 )
 		self.mCtrlImgICas              = self.getControl( 652 )
 		#self.mCtrlBtnTSbanner          = self.getControl( 630 )
@@ -119,6 +132,7 @@ class LivePlate(BaseWindow):
 		self.mCtrlBtnPrevEpg           = self.getControl( 702 )
 		self.mCtrlBtnNextEpg           = self.getControl( 706 )
 
+		self.ShowRecording( )
 
 		self.mImgTV    = E_IMG_ICON_TV
 		self.mCtrlLblEventClock.setLabel('')
@@ -277,6 +291,12 @@ class LivePlate(BaseWindow):
 
 		elif aControlId == self.mCtrlBtnStopRec.getId() :
 			LOG_TRACE( 'click stop recording' )
+			self.StopAutomaticHide()
+			self.SetAutomaticHide( False )
+			self.ShowDialog( aControlId )
+
+		elif aControlId == self.mCtrlBtnSettingFormat.getId() :
+			LOG_TRACE( 'click setting format' )
 			self.StopAutomaticHide()
 			self.SetAutomaticHide( False )
 			self.ShowDialog( aControlId )
@@ -883,30 +903,112 @@ class LivePlate(BaseWindow):
 			msg2 = 'test'
 
 		elif aFocusid == self.mCtrlBtnStartRec.getId() :
-			runningCount = self.mCommander.Record_GetRunningRecorderCount()
-			LOG_TRACE( 'runningCount=%d' %runningCount)
+			runningCount = self.ShowRecording()
+			LOG_TRACE( 'runningCount[%s]' %runningCount)
 
+
+			isOK = False
 			GuiLock2(True)
-			if  runningCount < 2 :
+			if runningCount < 2 :
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 				dialog.doModal()
+
+				isOK = dialog.IsOK()
+				if isOK == E_DIALOG_STATE_YES :
+					isOK = True
+
 			else:
-				msg = 'Already %d recording(s) running' %runningCount
+				msg = 'Already [%s] recording(s) running' %runningCount
 				xbmcgui.Dialog().ok('Infomation', msg )
 			GuiLock2(False)
 
+			if isOK :
+				time.sleep(1.5)
+				self.ShowRecording()
+
 		elif aFocusid == self.mCtrlBtnStopRec.getId() :
-			runningCount = self.mCommander.Record_GetRunningRecorderCount()
-			LOG_TRACE( 'runningCount=%d' %runningCount )
+			runningCount = self.ShowRecording()
+			LOG_TRACE( 'runningCount[%s]' %runningCount )
 
 			if  runningCount > 0 :
-				GuiLock2(True)
+				GuiLock2( True )
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
-				dialog.doModal()
-				GuiLock2(False)
-			
+				dialog.doModal( )
+				GuiLock2( False )
+
+			time.sleep(1.5)
+			self.ShowRecording( )
+
+		elif aFocusid == self.mCtrlBtnSettingFormat.getId() :
+			context = []
+			context.append( ContextItem( 'Video Format', CONTEXT_ACTION_VIDEO_SETTING ) )
+			context.append( ContextItem( 'Audio Track',  CONTEXT_ACTION_AUDIO_SETTING ) )
+
+			GuiLock2( True )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+			dialog.SetProperty( context )
+			dialog.doModal( )
+			GuiLock2( False )
+
+			selectAction = dialog.GetSelectedAction( )
+			if selectAction == -1 :
+				LOG_TRACE('CANCEL by context dialog')
+				return
+
+			GuiLock2( True )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_LIVE_PLATE )
+			dialog.SetValue( selectAction )
+ 			dialog.doModal( )
+ 			GuiLock2( False )
+
 
 		LOG_TRACE( 'Leave' )
+
+	def ShowRecording( self ) :
+		LOG_TRACE('Enter')
+
+		try:
+			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+			LOG_TRACE('isRunRecCount[%s]'% isRunRec)
+
+
+			recLabel1 = ''
+			recLabel2 = ''
+			recImg1   = False
+			recImg2   = False
+			if isRunRec == 1 :
+				recImg1 = True
+				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
+				recLabel1 = '%04d %s'% (recInfo.mChannelNo, recInfo.mChannelName)
+
+			elif isRunRec == 2 :
+				recImg1 = True
+				recImg2 = True
+				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
+				recLabel1 = '%04d %s'% (recInfo.mChannelNo, recInfo.mChannelName)
+				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
+				recLabel2 = '%04d %s'% (recInfo.mChannelNo, recInfo.mChannelName)
+
+			btnValue = False
+			if isRunRec >= 2 :
+				btnValue = False
+			else :
+				btnValue = True
+
+			GuiLock2( True )
+			self.mCtrlLblRec1.setLabel( recLabel1 )
+			self.mCtrlImgRec1.setVisible( recImg1 )
+			self.mCtrlLblRec2.setLabel( recLabel2 )
+			self.mCtrlImgRec2.setVisible( recImg2 )
+			self.mCtrlBtnStartRec.setEnabled( btnValue )
+			GuiLock2( False )
+
+			LOG_TRACE('Leave')
+
+			return isRunRec
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
 
 
 	def Close( self ):
@@ -1000,6 +1102,9 @@ class LivePlate(BaseWindow):
 
 	def KeySearch( self, aKey ) :
 		LOG_TRACE( 'Enter' )
+
+		if aKey == 0 :
+			return -1
 
 		self.mFlag_OnEvent = False
 

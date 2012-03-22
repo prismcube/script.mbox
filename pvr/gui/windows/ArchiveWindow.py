@@ -56,7 +56,7 @@ class ArchiveWindow( BaseWindow ) :
 		self.mRecordListItems = []
 
 		LOG_TRACE('')
-		self.mServiceType =  self.mCurrentMode = self.mCommander.Zappingmode_GetCurrent( ).mServiceType
+		self.mServiceType =  self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( ).mServiceType
 		LOG_TRACE('serviceType=%d' %self.mServiceType)		
 		
 		LOG_TRACE('')
@@ -93,23 +93,36 @@ class ArchiveWindow( BaseWindow ) :
 		
 		self.mInitialized = True
 
+
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-
 		self.GlobalAction( actionId )		
 
 		#LOG_TRACE('onAction=%d' %actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
+			LOG_ERR('ERROR TEST')		
 			self.SetVideoRestore( )
+			LOG_ERR('ERROR TEST')			
 			self.close( )
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
+			LOG_ERR('ERROR TEST')
+			focusId = self.GetFocusId()
+			if focusId == LIST_ID_RECORD :			
+				self.StartRecordPlayback()
+				#self.close()
+			LOG_ERR('ERROR TEST')
+
 
 		elif actionId == Action.ACTION_PARENT_DIR :
+			LOG_ERR('ERROR TEST')
 			self.SetVideoRestore( )
-			self.close( )
+			self.close( )				
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
+			LOG_ERR('ERROR TEST')			
+
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			pass
@@ -120,6 +133,30 @@ class ArchiveWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN :
 			pass
 
+		#testcode remove all archive
+		elif actionId == Action.REMOTE_0 :
+			LOG_TRACE('----------- Remove All Archive --------------')
+			recordCount = self.mDataCache.Record_GetCount( self.mServiceType )
+			
+			self.OpenBusyDialog( )
+
+			for i in range( recordCount ) :
+				LOG_TRACE('i=%d' %i)		
+				recInfo = self.mDataCache.Record_GetRecordInfo( 0, self.mServiceType )
+				self.mDataCache.Record_DeleteRecord( recInfo.mRecordKey, self.mServiceType )
+
+
+			self.CloseBusyDialog( )
+
+			self.Flush( )
+			self.Load( )
+			self.UpdateList( )
+
+			
+		#testcode remove all timer
+		elif actionId == Action.REMOTE_1 :
+			LOG_TRACE('----------- Remove All Timer --------------')
+			
 		
 	def onClick( self, aControlId ) :
 		LOG_TRACE( 'aControlId=%d' % aControlId )
@@ -232,14 +269,18 @@ class ArchiveWindow( BaseWindow ) :
 	def Load( self ) :
 
 		LOG_TRACE('----------------------------------->')
-		self.mRecordCount = self.mCommander.Record_GetCount( self.mServiceType )
+		try :
+			self.mRecordCount = self.mDataCache.Record_GetCount( self.mServiceType )
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)
+		
 		
 		LOG_TRACE('')
 		LOG_TRACE('RecordCount=%d' %self.mRecordCount )
 		
 		for i in range( self.mRecordCount ) :
 			LOG_TRACE('i=%d' %i)		
-			recInfo = self.mCommander.Record_GetRecordInfo( i, self.mServiceType )
+			recInfo = self.mDataCache.Record_GetRecordInfo( i, self.mServiceType )
 			recInfo.printdebug()
 			self.mRecordList.append( recInfo )
 
@@ -266,7 +307,8 @@ class ArchiveWindow( BaseWindow ) :
 			self.mRecordList.reverse()
 
 		LOG_TRACE('')
-		
+
+		self.mCtrlRecordList.reset( )
 		self.mRecordListItems = []
 		for i in range( len( self.mRecordList ) ) :
 			LOG_TRACE('---------->i=%d' %i)		
@@ -343,4 +385,18 @@ class ArchiveWindow( BaseWindow ) :
 
 			self.mLocalTime = 0
 		"""
+
+
+	def StartRecordPlayback( self ) :
+		#(self ,  recordKey,  serviceType,  offsetms,  speed) :
+		LOG_ERR('ERROR TEST')
+		position = self.mCtrlRecordList.getSelectedPosition( )
+		LOG_ERR('ERROR TEST position=%d' %position)		
+		recInfo = self.mRecordList[position]
+		LOG_ERR('ERROR TEST recInfo.mRecordKey=%d self.mServiceType=%d' %(recInfo.mRecordKey, self.mServiceType ) )
+		self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
+		#self.close()
+		self.SetVideoRestore();
+		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )				
+
 

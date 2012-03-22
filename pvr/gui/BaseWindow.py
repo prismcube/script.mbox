@@ -67,6 +67,7 @@ class Property(object) :
 		if p is not None:
 			return p.decode('utf-8')
 
+
 	def SetListItemProperty(self, aListItem, aName, aValue) :
 		if aListItem and aName and not aValue is None:
 			aListItem.setProperty(aName, aValue)
@@ -89,16 +90,17 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
-		
 
 	@classmethod
 	def GetName(cls):
 		return cls.__name__
 
+
 	def GetFocusId( self ) :
 		GuiLock2( True )
 		self.mFocusId = self.getFocusId( )
 		GuiLock2( False )
+		return self.mFocusId
 
 
 	def GlobalAction( self, aActionId ) :
@@ -111,6 +113,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 		elif aActionId == Action.ACTION_VOLUME_DOWN:
 			self.UpdateVolume( )
+
 
 	def SetPipScreen( self ) :
 		ctrlImgVideoPos = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
@@ -125,15 +128,18 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		ret = self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
 
 
-	@GuiLock
+	#@GuiLock
 	def UpdateVolume( self ) :
-		retVolume = xbmc.executehttpapi("getvolume()")
+
+		GuiLock2(True)
+		retVolume = xbmc.executehttpapi('getvolume()')
+		GuiLock2(False)
 		volume = int( retVolume[4:] )
 		LOG_TRACE('GET VOLUME=%d' %volume )
 
 		if volume > MAX_VOLUME :
 			volume = MAX_VOLUME
-			
+
 		if volume < 0 :
 			volume = 0
 			self.mCommander.Player_SetMute( True )
@@ -143,12 +149,23 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 			self.mCommander.Player_SetVolume( volume )
 
 
+	def OpenBusyDialog( self ) :
+		#self.setProperty( 'BusyDialogBackground', 'True' )
+		xbmc.executebuiltin( "ActivateWindow(busydialog)" )
+
+
+	def CloseBusyDialog( self ) :
+		#self.setProperty( 'BusyDialogBackground', 'False' )
+		xbmc.executebuiltin( "Dialog.Close(busydialog)" )
+
+
 class ControlItem :
 	# Setting Window
 	E_UNDEFINE								= 0
 	E_SETTING_ENUM_CONTROL					= 1
 	E_SETTING_USER_ENUM_CONTROL				= 2
 	E_SETTING_INPUT_CONTROL					= 3
+	E_SETTING_PREV_NEXT_BUTTON				= 4
 
 
 	def __init__( self, aControlType, aControlId, aProperty, aListItems, aSelecteItem, aDescription ) :	
@@ -186,8 +203,13 @@ class SettingWindow( BaseWindow ) :
 				control.addItems( ctrlItem.mListItems )
 				control.selectItem( ctrlItem.mSelecteItem )
 
-			pos += self.getControl( ctrlItem.mControlId ).getHeight( )
-			self.getControl( ctrlItem.mControlId ).setPosition( 0, pos )
+			if ctrlItem.mControlId == E_FIRST_TIME_INSTALLATION_PREV :
+				self.getControl( ctrlItem.mControlId ).setPosition( 0,  470 )
+			elif ctrlItem.mControlId == E_FIRST_TIME_INSTALLATION_NEXT :
+				self.getControl( ctrlItem.mControlId ).setPosition( 690, 470 )
+			else :
+				pos += self.getControl( ctrlItem.mControlId ).getHeight( )
+				self.getControl( ctrlItem.mControlId ).setPosition( 0, pos )
 
 
 	def ResetAllControl( self ) :
@@ -242,6 +264,15 @@ class SettingWindow( BaseWindow ) :
 		listItem = xbmcgui.ListItem( aTitleLabel, aInputLabel )
 		listItems.append( listItem )
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, aControlId, None, listItems, None, aDescription ) )
+
+
+	def AddPrevNextButton( self ) :
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_PREV, None, None, None, None ) ) 
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_NEXT, None, None, None, None ) )
+
+
+	def AddNextButton( self ) :
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_NEXT, None, None, None, None ) )
 
 
 	def ShowDescription( self ) :
@@ -425,6 +456,18 @@ class SettingWindow( BaseWindow ) :
 			self.SetVisibleControl( controlId, aVisible )
 
 
+	def SetFocusControl( self, aControlId ) :
+		count = len( self.mControlList )
+
+		for i in range( count ) :
+			ctrlItem = self.mControlList[i]
+			if aControlId == ctrlItem.mControlId :
+				self.setFocusId( ctrlItem.mControlId + 1 )
+				return True
+
+		return False
+
+
 	def ControlSelect( self ) :
 	
 		self.GetFocusId( )
@@ -520,12 +563,17 @@ class SettingWindow( BaseWindow ) :
 					ctrlItem.mProperty.SetProp( aValue )
 					return True
 	
-class ContextMenu :
 
-	def __init__( self, aLabel, aCallback=None ) :
-		self.mLabel = aLabel
-		self.mCallback = aCallback
-
-	#def setCallback( aCallfunc ) :
-	#	self.callfunc = 
-	
+	def DrawFirstTimeInstallationStep( self, aStep ) :
+		if aStep == None :
+			for i in range( FIRST_TIME_INSTALLATION_STEP ) :
+				self.getControl( E_FIRST_TIME_INSTALLATION_STEP_IMAGE_BACK + i ).setVisible( False )
+				self.getControl( E_FIRST_TIME_INSTALLATION_STEP_IMAGE + i ).setVisible( False )
+		else :
+			for i in range( FIRST_TIME_INSTALLATION_STEP ) :
+				if i == aStep :
+					self.getControl( E_FIRST_TIME_INSTALLATION_STEP_IMAGE + i ).setVisible( True )
+				else :
+					self.getControl( E_FIRST_TIME_INSTALLATION_STEP_IMAGE + i ).setVisible( False )
+				self.getControl( E_FIRST_TIME_INSTALLATION_STEP_IMAGE_BACK + i ).setVisible( True )
+		

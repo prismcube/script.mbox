@@ -70,6 +70,25 @@ E_SETTING_HEADER_TITLE		=	1002
 E_SETTING_DESCRIPTION		=	1003
 E_SETTING_PIP_SCREEN_IMAGE	=	1004
 
+E_FAKE_BUTTON				=	999
+
+# FirstTimeInstallation Button Ids
+E_STEP_SELECT_LANGUAGE			=	0
+E_STEP_VIDEO_AUDIO				=	1
+E_STEP_ANTENNA					=	2
+E_STEP_CHANNEL_SEARCH_CONFIG	=	3
+E_STEP_DATE_TIME				=	4
+E_STEP_RESULT					=	5
+
+FIRST_TIME_INSTALLATION_STEP			= 6
+
+E_FIRST_TIME_INSTALLATION_PREV			= 7001
+E_FIRST_TIME_INSTALLATION_NEXT			= 7003
+E_FIRST_TIME_INSTALLATION_NEXT_LABEL	= 7004
+
+E_FIRST_TIME_INSTALLATION_STEP_IMAGE		= 8100
+E_FIRST_TIME_INSTALLATION_STEP_IMAGE_BACK	= 8110
+
 # TUNER TYPE
 E_SIMPLE_LNB					= 0
 E_DISEQC_1_0					= 1
@@ -100,12 +119,22 @@ CAS_SLOT_NUM_2					= 1
 E_MAX_RECORD_COUNT				= 2
 
 # Volume
-VOLUME_STEP					= 4
-MAX_VOLUME					= 100
+VOLUME_STEP						= 4
+MAX_VOLUME						= 100
+
+# Time Mode
+TIME_AUTOMATIC					= 0
+TIME_MANUAL						= 1
+
+# Network Mode
+NET_DHCP						= 0
+NET_STATIC						= 1
 
 
 # Tuner Config String Define
 USER_ENUM_LIST_ON_OFF				= [ 'Off', 'On' ]
+USER_ENUM_LIST_YES_NO				= [ 'No', 'Yes' ]
+USER_ENUM_LIST_DHCP_STATIC			= [ 'DHCP', 'Static' ]
 
 E_LIST_LNB_TYPE						= [ 'Universal' , 'Single', 'Userdefined' ]
 E_LIST_SINGLE_FREQUENCY 			= [ '5150', '9750', '10600', '10750', '11300' ]
@@ -129,6 +158,7 @@ G_DIALOG_HEADER_LABEL_ID			= 3005
 E_DialogSpinEx01	= 6110
 E_DialogSpinEx02	= 6120
 E_DialogSpinEx03	= 6130
+E_DialogSpinEx04	= 6140
 
 E_DialogInput01		= 6210
 E_DialogInput02		= 6220
@@ -221,13 +251,21 @@ def Hex2signed( s ) :
  
 
 def NumericKeyboard( aKeyType, aTitle, aString, aMaxLength=None ) :
-	dialog = xbmcgui.Dialog( )
+	dialog = xbmcgui.Dialog( )		
 	value = dialog.numeric( aKeyType, aTitle, aString )
 	if value == None or value == '' :
 		return aString
 
 	if len( value ) > aMaxLength and aMaxLength != None :
 		value = value[ len ( value ) - aMaxLength :]
+
+	if aKeyType == E_NUMERIC_KEYBOARD_TYPE_DATE :
+		tempList = value.split( '/', 2 )
+		value = '%02d.%02d.%04d' % ( int( tempList[0] ),  int( tempList[1] ),  int( tempList[2] ) )
+
+	elif aKeyType == E_NUMERIC_KEYBOARD_TYPE_TIME :
+		tempList = value.split( ':', 1 )
+		value = '%02d:%02d' % ( int( tempList[0] ),  int( tempList[1] ) )
 	return value
 
 
@@ -246,30 +284,15 @@ def InputKeyboard( aType, aTitle, aString, aMaxLength=None ) :
 	else :
 		return aString
 
-
 ############################ Global Class ############################
 
-E_USER_DEFINE		= 0
-E_TEST_FUNCTION_1	= 1
-E_TEST_FUNCTION_2	= 2
-E_TEST_FUNCTION_3	= 3
 
 
 class ContextItem :
 
-	def __init__( self, aDescription = 'None', aFunctionIndex = E_USER_DEFINE ) :
+	def __init__( self, aDescription = 'None', aContextAction = -1 ) :
 		self.mDescription = aDescription
-		self.mFunctionIndex = aFunctionIndex
-
-	def DoAction( self ) :
-		if self.mFunctionIndex == E_TEST_FUNCTION_1 :
-			print 'dhkim test function1'
-
-		elif self.mFunctionIndex == E_TEST_FUNCTION_2 :
-			print 'dhkim test function2'
-
-		elif self.mFunctionIndex == E_TEST_FUNCTION_3 :
-			print 'dhkim test function3'
+		self.mContextAction = aContextAction
 
 
 class Progress :
@@ -280,8 +303,8 @@ class Progress :
 		self.progress.create('Wait', self.mDescription )
 
 
-	def Close ( self ) :
-		time.sleep( 1 )
+	def Close( self ) :
+		time.sleep( 0.5 )
 		self.progress.close( )
 
 
@@ -289,4 +312,10 @@ class Progress :
 		if aLabel != None :
 			self.progress.update( aPercent, aLabel ) 
 		else :
-			self.progress.update( aPercent ) 
+			self.progress.update( aPercent )
+
+	def IsCanceled( self ) :
+		if self.progress.iscanceled() == True :
+			return True
+		else :
+			return False

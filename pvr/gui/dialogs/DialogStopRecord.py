@@ -57,6 +57,7 @@ class DialogStopRecord( BaseDialog ) :
 		self.mCtrlRecordName = {}
 		self.mCtrlDuration = {}
 		self.mCtrlProgress = {}		
+		self.mIsOk = E_DIALOG_STATE_CANCEL
 
 		try :		
 			self.mCtrlRecordGroup[0] = self.getControl( GROUP_ID_RECORD_1 )
@@ -89,6 +90,8 @@ class DialogStopRecord( BaseDialog ) :
 		self.mLocalTime = self.mCommander.Datetime_GetLocalTime( )		
 		self.mRunningRecordCount = self.mCommander.Record_GetRunningRecorderCount()
 
+		LOG_ERR("self.mRunningRecordCount=%d" %self.mRunningRecordCount )
+
 		self.mRunnigRecordInfoList = []
 		LOG_TRACE( 'recordcount=%d' %self.mRunningRecordCount )
 
@@ -99,8 +102,8 @@ class DialogStopRecord( BaseDialog ) :
 				self.mRunnigRecordInfoList.append( recordInfo )
 		
 		self.DrawItem( )
+		#self.setFocusId( self.mCtrlGropCHList.getId( ) )
 		
-
 	def onAction( self, aAction ):
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
@@ -110,29 +113,41 @@ class DialogStopRecord( BaseDialog ) :
 		self.GlobalAction( actionId )
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
+			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.Close()
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 					
 		elif actionId == Action.ACTION_PARENT_DIR :
+			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.Close()
-
+		
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == BUTTON_ID_RECORD_1 :
 				self.setFocusId( BUTTON_ID_CANCEL )
 			elif focusId == BUTTON_ID_RECORD_2 :
 				self.setFocusId( BUTTON_ID_RECORD_1 )
+			elif focusId == BUTTON_ID_CANCEL :
+				if self.mRunningRecordCount < 2 :
+					self.setFocusId( BUTTON_ID_RECORD_1 )								
+				else :
+					self.setFocusId( BUTTON_ID_RECORD_2 )
 			else :
-				self.setFocusId( BUTTON_ID_RECORD_2 )			
+				self.setFocusId( BUTTON_ID_CANCEL )			
 
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			if focusId == BUTTON_ID_RECORD_1 :
-				self.setFocusId( BUTTON_ID_RECORD_2 )
+				if self.mRunningRecordCount < 2 :
+					self.setFocusId( BUTTON_ID_CANCEL )								
+				else :
+					self.setFocusId( BUTTON_ID_RECORD_2 )
 			elif focusId == BUTTON_ID_RECORD_2 :
 				self.setFocusId( BUTTON_ID_CANCEL )
+			elif focusId == BUTTON_ID_CANCEL :
+				self.setFocusId( BUTTON_ID_RECORD_1 )
 			else :
-				self.setFocusId( BUTTON_ID_RECORD_1 )			
+				self.setFocusId( BUTTON_ID_CANCEL )			
 
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
@@ -172,17 +187,22 @@ class DialogStopRecord( BaseDialog ) :
 			LOG_TRACE('---------------------------------------->')		
 			recInfo = self.mRunnigRecordInfoList[0]
 			recInfo.printdebug()
-			self.mCommander.Record_StopRecord( recInfo.mChannelNo, recInfo.mServiceType, recInfo.mRecordKey  )
+			self.mCommander.Timer_StopRecordingByRecordKey( recInfo.mRecordKey )
+			#self.mCommander.Record_StopRecord( recInfo.mChannelNo, recInfo.mServiceType, recInfo.mRecordKey  )
+			self.mIsOk = E_DIALOG_STATE_YES
 			self.Close( )			
 
 		elif aControlId == BUTTON_ID_RECORD_2 :
 			LOG_TRACE('---------------------------------------->')
 			recInfo = self.mRunnigRecordInfoList[1]
-			self.mCommander.Record_StopRecord( recInfo.mChannelNo, recInfo.mServiceType, recInfo.mRecordKey  )
+			self.mCommander.Timer_StopRecordingByRecordKey( recInfo.mRecordKey )			
+			#self.mCommander.Record_StopRecord( recInfo.mChannelNo, recInfo.mServiceType, recInfo.mRecordKey  )
+			self.mIsOk = E_DIALOG_STATE_YES
 			self.Close( )
 
 		elif aControlId == BUTTON_ID_CANCEL :
 			LOG_TRACE('')		
+			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.Close( )
 		else :
 			LOG_ERR('Can not find control')
@@ -263,9 +283,10 @@ class DialogStopRecord( BaseDialog ) :
 			newHeight = self.mBackgroundHeight - self.mCtrlRecordGroup[0].getHeight()
 			self.mCtrlBackgroundImage.setHeight( newHeight )
 			self.mCtrlRecordGroup[1].setVisible( False )
+			
 		else :
 			self.mCtrlBackgroundImage.setHeight( self.mBackgroundHeight )		
-			self.mCtrlRecordGroup[1].setVisible( True )		
+			self.mCtrlRecordGroup[1].setVisible( True )
 
 
 		for i in range( self.mRunningRecordCount ) :
@@ -282,5 +303,8 @@ class DialogStopRecord( BaseDialog ) :
 			self.mCtrlRecordName[i].setLabel( '%s' %recordInfo.mRecordName )
 			self.mCtrlDuration[i].setLabel( '%d Min' %int(recordInfo.mDuration/60) )
 			self.mCtrlProgress[i].setPercent( 0 )
+
+	def IsOK( self ) :
+		return self.mIsOk
 
 	

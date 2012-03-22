@@ -27,7 +27,6 @@ class NullWindow( BaseWindow ) :
 			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
 
 	def onAction(self, aAction) :		
@@ -56,6 +55,8 @@ class NullWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_LEFT:
 			print 'youn check ation left'
+			window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+			window.SetAutomaticHide( True )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
 		elif actionId == Action.ACTION_SHOW_INFO:
@@ -94,13 +95,16 @@ class NullWindow( BaseWindow ) :
 				window.SetAutomaticHide( True )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 			
-
+	
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 or \
 			actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 :
 
 			aKey = actionId - (Action.ACTION_JUMP_SMS2 - 2)
 			if actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9:
 				aKey = actionId - Action.REMOTE_0
+
+			if aKey == 0 :
+				return -1
 
 			GuiLock2(True)
 			dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_CHANNEL_JUMP )

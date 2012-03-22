@@ -23,13 +23,14 @@ E_LOG_NORMAL = 0
 E_LOG_ERR    = 2
 E_LOG_WARN   = 1
 E_LOG_DEBUG  = 0
-E_DEBUG_LEVEL = E_LOG_ERR
+E_DEBUG_LEVEL = E_LOG_DEBUG
 
 class TimeFormatEnum(object):
 	E_AW_DD_MM_YYYY			= 0
 	E_HH_MM					= 1
-	E_DD_MM_YYYY_HH_MM		= 2	
-
+	E_DD_MM_YYYY_HH_MM		= 2
+	E_DD_MM_YYYY			= 3
+	
 
 def ClearThreads( ):
 	gThreads.clear()
@@ -251,9 +252,44 @@ def TimeToString( aTime, aFlag=0 ) :
 		return time.strftime("%H:%M", time.gmtime( aTime ) )	
 	elif aFlag == TimeFormatEnum.E_DD_MM_YYYY_HH_MM :
 		return time.strftime("%d.%m.%Y %H:%M", time.gmtime( aTime ) )		
+	elif aFlag == TimeFormatEnum.E_DD_MM_YYYY :
+		return time.strftime("%d.%m.%Y", time.gmtime( aTime ) )
 	else :
 		strTime = time.strftime('%a, %d.%m.%Y', aTime )
 		LOG_TRACE('strTime=%s' %strTime )
 		return strTime
 
+
+def GetImageByEPGComponent( aEPG, aFlag ) :
+	if aFlag == ElisEnum.E_HasHDVideo and aEPG.mHasHDVideo :
+		return 'confluence/OverlayHD.png' #ToDO -> support multi skin
+
+	elif aFlag == ElisEnum.E_Has16_9Video and aEPG.mHas16_9Video :
+		pass
+
+	elif aFlag == ElisEnum.E_HasStereoAudio and aEPG.mHasStereoAudio :
+		pass
+
+	elif aFlag == ElisEnum.E_HasMultichannelAudio and aEPG.mHasMultichannelAudio :
+		pass
+
+	elif aFlag == ElisEnum.E_HasDolbyDigital and aEPG.mHasDolbyDigital :
+		return 'confluence/dolbydigital.png' #ToDO -> support multi skin
+	
+	elif aFlag == ElisEnum.E_HasSubtitles and aEPG.mHasSubtitles :
+		return 'confluence/OSDPlaylistNF.png' #ToDO -> support multi skin
+	
+	elif aFlag == ElisEnum.E_HasHardOfHearingAudio and aEPG.mHasHardOfHearingAudio:
+		pass
+	
+	elif aFlag == ElisEnum.E_HasHardOfHearingSub and aEPG.mHasHardOfHearingSub:
+		pass
+	
+	elif aFlag == ElisEnum.E_HasVisuallyImpairedAudio and aEPG.mHasVisuallyImpairedAudio:
+		pass
+	
+	else :
+		pass
+
+	return None
 

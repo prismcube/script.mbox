@@ -27,7 +27,7 @@ class AutomaticScan( SettingWindow ) :
 		self.mConfiguredSatelliteList = []		
 		
 		self.LoadFormattedSatelliteNameList( )
-		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError :
+		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
 			self.InitConfig( )
 			self.ShowDescription( )
 			self.mInitialized = True
@@ -81,8 +81,7 @@ class AutomaticScan( SettingWindow ) :
 
 			if select >= 0 and select != self.mSatelliteIndex :
 				self.mSatelliteIndex = select
-			
-			self.InitConfig( )
+			self.SetControlLabel2String( E_Input01, self.mFormattedList[ self.mSatelliteIndex ] )
 
 		# Start Search
 		if groupId == E_Input02 :
@@ -130,7 +129,7 @@ class AutomaticScan( SettingWindow ) :
 	
 	def LoadFormattedSatelliteNameList( self ) :
 		self.mConfiguredSatelliteList = self.mDataCache.Satellite_GetConfiguredList( )
-		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList.mError == 0 :
+		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
 			pass
 		else :
  			return

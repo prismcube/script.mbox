@@ -39,7 +39,7 @@ class SatelliteConfigSimple( SettingWindow ) :
 		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-		self.GlobalAction( actionId )		
+		self.GlobalAction( actionId )
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass
@@ -71,7 +71,7 @@ class SatelliteConfigSimple( SettingWindow ) :
 		if groupId == E_Input01 :
 			satelliteList = self.mDataCache.Satellite_GetFormattedNameList( )
 			dialog = xbmcgui.Dialog()
- 			ret = dialog.select('Select satellite', satelliteList )
+ 			ret = dialog.select( 'Select satellite', satelliteList )
 
 			if ret >= 0 :
 	 			satellite = self.mDataCache.Satellite_GetSatelliteByIndex( ret )
