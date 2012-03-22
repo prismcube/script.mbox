@@ -2,7 +2,7 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.WindowMgr as winmgr
+import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DiaMgr
 import pvr.DataCacheMgr as CacheMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
@@ -29,14 +29,17 @@ FLAG_CLOCKMODE_HMS     = 3
 FLAG_CLOCKMODE_HHMM    = 4
 FLAG_CLOCKMODE_INTTIME = 5
 
-E_DEFAULT_POSY = 25
-E_PROGRESS_WIDTH_MAX = 980
-E_BUTTON_GROUP_PLAYPAUSE = 450
-
 FLAG_TIMESHIFT_CLOSE = True
 FLAG_STOP  = 0
 FLAG_PLAY  = 1
 FLAG_PAUSE = 2
+
+E_DEFAULT_POSY = 25
+E_PROGRESS_WIDTH_MAX = 980
+E_BUTTON_GROUP_PLAYPAUSE = 450
+
+E_INDEX_FIRST_RECORDING = 0
+E_INDEX_SECOND_RECORDING = 1
 
 class TimeShiftPlate(BaseWindow):
 	def __init__(self, *args, **kwargs):
@@ -146,8 +149,9 @@ class TimeShiftPlate(BaseWindow):
 		self.GlobalAction( id )				
 		
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
-			LOG_TRACE( 'esc close' )
+			LOG_TRACE( 'esc close : [%s] [%s]'% (aAction, id) )
 			self.Close()
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )			
 
 		elif id == Action.ACTION_SELECT_ITEM:
 			LOG_TRACE( '===== select [%s]' % id )
@@ -333,19 +337,19 @@ class TimeShiftPlate(BaseWindow):
 
 		elif aFocusId == self.mCtrlBtnStop.getId() :
 			third = 3
-			gobackID = winmgr.WIN_ID_NULLWINDOW
+			gobackID = WinMgr.WIN_ID_NULLWINDOW
 			while third :
 				if self.mMode == ElisEnum.E_MODE_LIVE :
 					ret = self.mCommander.Player_Stop()
-					gobackID = winmgr.WIN_ID_LIVE_PLATE
+					gobackID = WinMgr.WIN_ID_LIVE_PLATE
 
 				elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 					ret = self.mCommander.Player_Stop()
-					gobackID = winmgr.WIN_ID_LIVE_PLATE
+					gobackID = WinMgr.WIN_ID_LIVE_PLATE
 
 				elif self.mMode == ElisEnum.E_MODE_PVR :
 					ret = self.mCommander.Player_Stop()
-					gobackID = winmgr.WIN_ID_ARCHIVE_WINDOW
+					gobackID = WinMgr.WIN_ID_ARCHIVE_WINDOW
 
 				third -= 1
 				LOG_TRACE( 'play_stop() ret[%s] try[%d]'% (ret,third) )
@@ -361,7 +365,7 @@ class TimeShiftPlate(BaseWindow):
 				self.mProgress_max = 0.0
 
 				self.Close()
-				winmgr.GetInstance().ShowWindow( gobackID )
+				WinMgr.GetInstance().ShowWindow( gobackID )
 				return
 			else :
 				self.mSpeed = 0
@@ -429,17 +433,7 @@ class TimeShiftPlate(BaseWindow):
 			LOG_TRACE('JumpFF ret[%s]'% ret )
 
 		time.sleep(0.5)
-
 		self.InitTimeShift()
-		"""
-		if self.mAutomaticHide :
-			self.RestartAutomaticHide()
-			LOG_TRACE( 'Restart Hide')
-		else :
-			self.StopAutomaticHide()
-			LOG_TRACE( 'Stop Hide')
-		"""
-
 
 		LOG_TRACE( 'Leave' )
 
@@ -461,7 +455,6 @@ class TimeShiftPlate(BaseWindow):
 		self.UpdateLabelGUI( self.mCtrlBtnCurrent.getId(),      0, 'pos' )
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
-		self.InitTimeShift()
 
 	@GuiLock
 	def UpdateLabelGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
@@ -471,7 +464,10 @@ class TimeShiftPlate(BaseWindow):
 			self.mCtrlBtnVolume.setVisible( aValue )
 
 		elif aCtrlID == self.mCtrlBtnStartRec.getId( ) :
-			self.mCtrlBtnStartRec.setEnabled( aValue )
+			if aExtra == 'enable' :
+				self.mCtrlBtnStartRec.setEnabled( aValue )
+			elif aExtra == 'visible' :
+				self.mCtrlBtnStartRec.setVisible( aValue )
 
 		elif aCtrlID == self.mCtrlBtnRewind.getId( ) :
 			self.mCtrlBtnRewind.setVisible( aValue )
@@ -723,12 +719,14 @@ class TimeShiftPlate(BaseWindow):
 		LOG_TRACE('Enter')
 
 		labelMode = ''
+		buttonHide= True
 		if self.mMode == ElisEnum.E_MODE_LIVE :
 			labelMode = 'LIVE'
 		elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 			labelMode = 'TIMESHIFT'
 		elif self.mMode == ElisEnum.E_MODE_PVR :
 			labelMode = 'PVR'
+			buttonHide= False
 		elif self.mMode == ElisEnum.E_MODE_EXTERNAL_PVR :
 			labelMode = 'EXTERNAL_PVR'
 		elif self.mMode == ElisEnum.E_MODE_MULTIMEDIA :
@@ -736,7 +734,9 @@ class TimeShiftPlate(BaseWindow):
 		else :
 			labelMode = 'UNKNOWN'
 
+		self.UpdateLabelGUI( self.mCtrlBtnStartRec.getId(), buttonHide, 'visible' )
 		LOG_TRACE('Leave')
+
 		return labelMode
 
 	@RunThread
@@ -836,15 +836,15 @@ class TimeShiftPlate(BaseWindow):
 		recImg2   = False
 		if isRunRec == 1 :
 			recImg1 = True
-			recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
+			recInfo = self.mDataCache.Record_GetRunningRecordInfo( E_INDEX_FIRST_RECORDING )
 			recLabel1 = '%04d %s'% (recInfo.mChannelNo, recInfo.mChannelName)
 
 		elif isRunRec == 2 :
 			recImg1 = True
 			recImg2 = True
-			recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
+			recInfo = self.mDataCache.Record_GetRunningRecordInfo( E_INDEX_FIRST_RECORDING )
 			recLabel1 = '%04d %s'% (recInfo.mChannelNo, recInfo.mChannelName)
-			recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
+			recInfo = self.mDataCache.Record_GetRunningRecordInfo( E_INDEX_SECOND_RECORDING )
 			recLabel2 = '%04d %s'% (recInfo.mChannelNo, recInfo.mChannelName)
 
 		btnValue = False
@@ -857,7 +857,7 @@ class TimeShiftPlate(BaseWindow):
 		self.UpdateLabelGUI( self.mCtrlImgRec1.getId(), recImg1 )
 		self.UpdateLabelGUI( self.mCtrlLblRec2.getId(), recLabel2 )
 		self.UpdateLabelGUI( self.mCtrlImgRec2.getId(), recImg2 )
-		self.UpdateLabelGUI( self.mCtrlBtnStartRec.getId(), btnValue )
+		self.UpdateLabelGUI( self.mCtrlBtnStartRec.getId(), btnValue, 'enable' )
 
 		return isRunRec
 
@@ -865,6 +865,8 @@ class TimeShiftPlate(BaseWindow):
 
 		
 	def Close( self ):
+		LOG_TRACE('Enter')
+
 		self.mEventBus.Deregister( self )
 		#self.TimeshiftAction(self.mCtrlBtnStop.getId())
 		#self.mCommander.Player_Stop()
@@ -876,6 +878,7 @@ class TimeShiftPlate(BaseWindow):
 		self.StopAutomaticHide()
 
 		self.close()
+		LOG_TRACE('Leave')
 
 	def SetAutomaticHide( self, aHide=True ) :
 		self.mAutomaticHide = aHide
@@ -887,7 +890,10 @@ class TimeShiftPlate(BaseWindow):
 	
 	def AsyncAutomaticHide( self ) :
 		if self.mSpeed == 100 :
-			self.Close()
+			#self.Close()
+			xbmc.executebuiltin('xbmc.Action(previousmenu)')
+			LOG_TRACE('HIDE : TimeShiftPlate')
+			#WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 
 	def RestartAutomaticHide( self ) :
