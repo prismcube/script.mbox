@@ -96,7 +96,7 @@ class ArchiveWindow( BaseWindow ) :
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-
+		focusId = self.GetFocusId()
 		self.GlobalAction( actionId )		
 
 		#LOG_TRACE('onAction=%d' %actionId )
@@ -109,15 +109,17 @@ class ArchiveWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			LOG_ERR('ERROR TEST')
-			self.StartRecordPlayback()
+			if focusId == LIST_ID_RECORD :			
+				self.StartRecordPlayback()
 			LOG_ERR('ERROR TEST')
 
 
 		elif actionId == Action.ACTION_PARENT_DIR :
-			LOG_ERR('ERROR TEST')		
+			LOG_ERR('ERROR TEST')
 			self.SetVideoRestore( )
+			self.close( )				
 			LOG_ERR('ERROR TEST')			
-			self.close( )
+
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			pass

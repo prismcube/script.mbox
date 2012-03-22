@@ -1,0 +1,99 @@
+<window>
+	<allowoverlay>no</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<include>DefaultBehindDialogFadeOut</include>
+		<control type="group" id="9000">
+			<control type="group">
+				<posx>90</posx>
+				<posy>50</posy>
+				<!--
+				<animation type="WindowOpen" reversible="false">
+					<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
+					<effect type="fade" start="0" end="100" time="300" />
+				</animation>
+				<animation type="WindowClose" reversible="false">
+					<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
+					<effect type="fade" start="100" end="0" time="300" />
+				</animation>			
+				-->
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>1100</width>
+					<height>500</height>
+					<texture border="20">confluence/DialogBack.png</texture>
+				</control>
+
+				<control type="label" id="100">
+					  <description>EPG Title</description>
+					  <posx>100</posx>
+					  <posy>30</posy>
+					  <width>950</width>
+					  <height>100</height>
+					  <visible>true</visible>
+					  <colordiffuse>FFFFFFFF</colordiffuse>
+					  <font>font35_title</font>
+					  <textcolor>FFFFFFFF</textcolor>
+					  <label>$INFO[Window.Property(EPGTitle)]</label>
+				</control>
+
+				<control type="textbox" id="101">
+					  <description>EPG Description</description>
+					  <posx>100</posx>
+					  <posy>120</posy>
+					  <width>950</width>
+					  <height>600</height>
+					  <visible>true</visible>
+					  <colordiffuse>FFFFFFFF</colordiffuse>
+					  <font>font13</font>
+					  <textcolor>FFFFFFFF</textcolor>
+					  <wrapmultiline>true</wrapmultiline>
+					  <label>$INFO[Window.Property(EPGDescription)]</label>
+				</control>
+
+				<control type="label" id="102">
+					<posx>900</posx>
+					<posy>102</posy>
+					<description>start time</description>
+					<font>font13</font>
+					<label>-</label>
+				</control>				
+				
+
+				<control type="image" id="201">
+					<posx>520</posx>
+					<posy>100</posy>
+					<width>60</width>
+					<height>40</height>
+					<texture>confluence/OSDPlaylistNF.png</texture>
+					<visible>substring(Window.Property(HasSubtitle),true)</visible>					
+					<description>Subtitle</description>
+				</control>
+
+				<control type="image" id="202">
+					<posx>575</posx>
+					<posy>100</posy>
+					<width>90</width>
+					<height>40</height>
+					<texture>confluence/dolbydigital.png</texture>
+					<visible>substring(Window.Property(HasDolby),true)</visible>					
+					<description>audio dolby</description>
+				</control>
+
+				<control type="image" id="203">
+					<posx>655</posx>
+					<posy>100</posy>
+					<width>90</width>
+					<height>40</height>
+					<texture>confluence/OverlayHD.png</texture>
+					<visible>substring(Window.Property(HasHD),true)</visible>					
+					<description>video HD</description>
+				</control>
+
+
+
+			</control>
+		</control>
+	</controls>
+</window>

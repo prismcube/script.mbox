@@ -4537,7 +4537,7 @@
 				<posy>110</posy>
 				<width>1200</width>
 				<height>520</height>
-				<onleft>100</onleft>
+				<onleft>9000</onleft>
 				<onright>3501</onright>
 				<onup>3500</onup>
 				<ondown>3500</ondown>
@@ -4553,6 +4553,17 @@
 						<height>41</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 					</control>
+
+					<!-- Recording Icon-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture border="0,2,0,2">IconPlateRec.png</texture>
+						<visible>substring(ListItem.Property(HasTimer),true)</visible>						
+					</control>
+					
 					<!-- Start Time-->
 					<control type="label">
 						<posx>40</posx>
@@ -4699,17 +4710,17 @@
 		<control type="group">
 			<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>
 			<include>DefaultVisibleFadeEffect</include>
-			<control type="list" id="3500">
+			<control type="list" id="3510">
 				<posx>75</posx>
 				<posy>70</posy>
 				<width>1200</width>
 				<height>560</height>
-				<onleft>100</onleft>
-				<onright>3501</onright>
-				<onup>3500</onup>
-				<ondown>3500</ondown>
+				<onleft>9000</onleft>
+				<onright>3511</onright>
+				<onup>3510</onup>
+				<ondown>3510</ondown>
 				<viewtype label="535">list</viewtype>
-				<pagecontrol>3501</pagecontrol>
+				<pagecontrol>3511</pagecontrol>
 				<scrolltime>200</scrolltime>
 				<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>
 				<itemlayout height="70" width="610">
@@ -4720,6 +4731,17 @@
 						<height>71</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 					</control>
+					
+					<!-- Recording Icon-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture border="0,2,0,2">IconPlateRec.png</texture>
+						<visible>substring(ListItem.Property(HasTimer),true)</visible>						
+					</control>
+					
 					<!-- Channel Name-->
 					<control type="label">
 						<posx>40</posx>
@@ -4789,7 +4811,7 @@
 						<width>720</width>
 						<height>71</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
-						<visible>!Control.HasFocus(3500)+[ substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)]</visible>
+						<visible>!Control.HasFocus(3510)+[ substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)]</visible>
 						<include>DefaultVisibleFadeEffect</include>
 					</control>
 					<control type="image">
@@ -4871,7 +4893,7 @@
 					</control>
 				</focusedlayout>
 			</control>
-			<control type="scrollbar" id="3501">
+			<control type="scrollbar" id="3511">
 				<posx>800</posx>
 				<posy>70</posy>
 				<width>25</width>
@@ -4881,16 +4903,16 @@
 				<texturesliderbarfocus border="0,14,0,14">confluence/ScrollBarV_bar_focus.png</texturesliderbarfocus>
 				<textureslidernib>confluence/ScrollBarNib.png</textureslidernib>
 				<textureslidernibfocus>confluence/ScrollBarNib.png</textureslidernibfocus>
-				<onleft>3500</onleft>
+				<onleft>3510</onleft>
 				<onright>100</onright>
 				<showonepage>false</showonepage>
 				<orientation>vertical</orientation>
-				<visible>Control.IsVisible(3500) + [substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)]</visible>
+				<visible>Control.IsVisible(3510) + [substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)]</visible>
 			</control>
 			<control type="group">
 				<posx>850</posx>
 				<posy>100</posy>
-				<visible>Control.IsVisible(3500)+[substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)]</visible>
+				<visible>Control.IsVisible(3510)+[substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)]</visible>
 				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>

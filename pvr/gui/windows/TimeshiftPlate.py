@@ -83,7 +83,7 @@ class TimeShiftPlate(BaseWindow):
 
 		self.mCtrlBtnVolume         = self.getControl( 401 )
 		self.mCtrlBtnStartRec       = self.getControl( 402 )
-		self.mCtrlBtnStopRec        = self.getControl( 403 )
+		#self.mCtrlBtnStopRec        = self.getControl( 403 )
 		self.mCtrlBtnRewind         = self.getControl( 404 )
 		self.mCtrlBtnPlay           = self.getControl( 405 )
 		self.mCtrlBtnPause          = self.getControl( 406 )
@@ -216,7 +216,7 @@ class TimeShiftPlate(BaseWindow):
 
 			isOK = False
 			GuiLock2(True)
-			if  runningCount < 2 :
+			if  runningCount < 1 :
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 				dialog.doModal()
 
@@ -231,20 +231,6 @@ class TimeShiftPlate(BaseWindow):
 			if isOK :
 				time.sleep(1.5)
 				self.ShowRecording()
-
-
-		elif aControlId == self.mCtrlBtnStopRec.getId() :
-			runningCount = self.ShowRecording()
-			LOG_TRACE( 'runningCount[%s]' %runningCount )
-
-			if  runningCount > 0 :
-				GuiLock2(True)
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
-				dialog.doModal()
-				GuiLock2(False)
-
-			time.sleep(1.5)
-			self.ShowRecording()
 
 		elif aControlId == self.mCtrlBtnBookMark.getId():
 			self.ShowDialog( aControlId )
@@ -347,15 +333,19 @@ class TimeShiftPlate(BaseWindow):
 
 		elif aFocusId == self.mCtrlBtnStop.getId() :
 			third = 3
+			gobackID = winmgr.WIN_ID_NULLWINDOW
 			while third :
 				if self.mMode == ElisEnum.E_MODE_LIVE :
 					ret = self.mCommander.Player_Stop()
+					gobackID = winmgr.WIN_ID_LIVE_PLATE
 
 				elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 					ret = self.mCommander.Player_Stop()
+					gobackID = winmgr.WIN_ID_LIVE_PLATE
 
 				elif self.mMode == ElisEnum.E_MODE_PVR :
 					ret = self.mCommander.Player_Stop()
+					gobackID = winmgr.WIN_ID_ARCHIVE_WINDOW
 
 				third -= 1
 				LOG_TRACE( 'play_stop() ret[%s] try[%d]'% (ret,third) )
@@ -364,14 +354,15 @@ class TimeShiftPlate(BaseWindow):
 				else:
 					time.sleep(0.5)
 
-
+			aClose = 1
 			if aClose :
 				self.UpdateLabelGUI( self.mCtrlProgress.getId(), 0 )
 				self.mProgress_idx = 0.0
 				self.mProgress_max = 0.0
 
 				self.Close()
-				#winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_NULLWINDOW )
+				winmgr.GetInstance().ShowWindow( gobackID )
+				return
 			else :
 				self.mSpeed = 0
 				self.mLocalTime = 0
@@ -481,9 +472,6 @@ class TimeShiftPlate(BaseWindow):
 
 		elif aCtrlID == self.mCtrlBtnStartRec.getId( ) :
 			self.mCtrlBtnStartRec.setEnabled( aValue )
-
-		elif aCtrlID == self.mCtrlBtnStopRec.getId( ) :
-			self.mCtrlBtnStopRec.setEnabled( aValue )
 
 		elif aCtrlID == self.mCtrlBtnRewind.getId( ) :
 			self.mCtrlBtnRewind.setVisible( aValue )
@@ -860,7 +848,7 @@ class TimeShiftPlate(BaseWindow):
 			recLabel2 = '%04d %s'% (recInfo.mChannelNo, recInfo.mChannelName)
 
 		btnValue = False
-		if isRunRec >= 2 :
+		if isRunRec >= 1 :
 			btnValue = False
 		else :
 			btnValue = True

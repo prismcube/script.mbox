@@ -360,11 +360,11 @@
 					<texturefocus>confluence/OSDRecord2.png</texturefocus>
 					<texturenofocus>confluence/OSDRecordNF.png</texturenofocus>
 					<onleft>401</onleft>
-					<onright>403</onright>
+					<onright>404</onright>
 					<onup>202</onup>
 					<ondown>202</ondown>
 				</control>
-				<control type="button" id="403">
+				<!--control type="button" id="403">
 					<posx>90</posx>
 					<posy>0</posy>
 					<width>45</width>
@@ -377,9 +377,9 @@
 					<onright>404</onright>
 					<onup>202</onup>
 					<ondown>202</ondown>
-				</control>
+				</control-->
 				<control type="group">
-					<posx>140</posx>
+					<posx>95</posx>
 					<posy>-5</posy>
 					<control type="button" id="404">
 						<posx>0</posx>
@@ -390,7 +390,7 @@
 						<font></font>
 						<texturefocus>confluence/OSDRewindFO.png</texturefocus>
 						<texturenofocus>confluence/OSDRewindNF.png</texturenofocus>
-						<onleft>403</onleft>
+						<onleft>402</onleft>
 						<onright>450</onright>
 						<onup>202</onup>
 						<ondown>202</ondown>
@@ -517,9 +517,9 @@
 					</control>
 					<control type="button" id="411">
 						<posx>300</posx>
-						<posy>0</posy>
-						<width>50</width>
-						<height>50</height>
+						<posy>5</posy>
+						<width>45</width>
+						<height>40</height>
 						<label></label>
 						<font>-</font>
 						<texturefocus>confluence/OSDBookmarksFO.png</texturefocus>

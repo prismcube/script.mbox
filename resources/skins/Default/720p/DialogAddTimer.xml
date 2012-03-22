@@ -1,0 +1,110 @@
+<window>
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<defaultcontrol always="true">200</defaultcontrol>	
+	<controls>
+		<include>DefaultBehindDialogFadeOut</include>
+		<control type="group">
+			<posx>335</posx>
+			<posy>100</posy>
+            <include>DefaultDialogCloseEffect</include>
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>100</posy>
+				<width>610</width>
+				<height>230</height>
+				<texture border="40">confluence/DialogBack.png</texture>
+			</control>
+			<control type="group">
+				<posy>100</posy>
+				<include>DefaultDialogCommonSetting</include>
+			</control>
+
+			<!-- Record Name -->
+			<control type="label" id="101">
+				<description>Record Name</description>
+				<posx>20</posx>
+				<posy>170</posy>
+				<width>570</width>
+				<height>20</height>
+				<font>font13</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<label>RecordName</label>
+			</control>
+
+
+			<!-- Start Time -->
+			<control type="label" id="102">
+				<description>EPG Start Time</description>
+				<posx>100</posx>
+				<posy>220</posy>
+				<width>200</width>
+				<height>20</height>
+				<font>font13</font>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<label>Start : 00:00</label>
+			</control>
+
+
+			<!-- EndTime -->
+			<control type="label" id="103">
+				<description>EPG End Time</description>
+				<posx>350</posx>
+				<posy>220</posy>
+				<width>200</width>
+				<height>20</height>
+				<font>font13</font>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<label>End : 00:00</label>
+			</control>
+
+			<control type="button" id="200">
+				<description>Yes button</description>
+				<posx>70</posx>
+				<posy>270</posy>				
+				<width>200</width>
+				<height>40</height>
+				<font>font12_title</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<align>center</align>
+				<texturenofocus border="5">confluence/MenuItemNF.png</texturenofocus>
+				<texturefocus border="5">confluence/button-focus.png</texturefocus>
+				<onleft>201</onleft>
+				<onright>201</onright>
+				<onup>-</onup>
+				<label>[B]Add[/B]</label>					
+			</control>
+
+			<control type="button" id="201">
+				<description>Cancel button</description>
+				<posx>300</posx>
+				<posy>270</posy>				
+				<width>200</width>
+				<height>40</height>
+				<font>font12_title</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<align>center</align>
+				<texturenofocus border="5">confluence/MenuItemNF.png</texturenofocus>
+				<texturefocus border="5">confluence/button-focus.png</texturefocus>
+				<onleft>200</onleft>
+				<onright>200</onright>
+				<onup>-</onup>					
+				<label>[B]Cancel[/B]</label>					
+			</control>
+		</control>
+	</controls>
+</window>
+

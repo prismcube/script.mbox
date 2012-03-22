@@ -100,6 +100,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		GuiLock2( True )
 		self.mFocusId = self.getFocusId( )
 		GuiLock2( False )
+		return self.mFocusId
 
 
 	def GlobalAction( self, aActionId ) :
