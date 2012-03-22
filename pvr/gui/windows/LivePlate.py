@@ -1103,6 +1103,9 @@ class LivePlate(BaseWindow):
 	def KeySearch( self, aKey ) :
 		LOG_TRACE( 'Enter' )
 
+		if aKey == 0 :
+			return -1
+
 		self.mFlag_OnEvent = False
 
 		GuiLock2(True)
