@@ -647,7 +647,7 @@ class Configure( SettingWindow ) :
 		if aControlId == E_SpinEx01 :
 			self.DisableControl( E_TIME_SETTING )
 			return
-				
+
 		elif aControlId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
 			channelList = self.mDataCache.Channel_GetList( )
@@ -693,6 +693,9 @@ class Configure( SettingWindow ) :
 				dialog.doModal( )
 
 				if dialog.GetResult( ) == False :
+					self.mDataCache.LoadTime( )
+					# Todo Send Time to M/W
+				else :
 					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( oriTimeMode )
 					ElisPropertyEnum( 'Local Time Offset', self.mCommander ).SetProp( oriLocalTimeOffset )
 					ElisPropertyEnum( 'Summer Time', self.mCommander ).SetProp( oriSummerTime )
@@ -700,12 +703,12 @@ class Configure( SettingWindow ) :
 
 				self.SetListControl( )
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
-				self.mDataCache.Channel_SetCurrent( oriChannel.mNumber, oriChannel.mServiceType) # Todo After : using ServiceType to different way
+				self.mDataCache.Channel_SetCurrent( oriChannel.mNumber, oriChannel.mServiceType ) # Todo After : using ServiceType to different way
 				return
 				
 			else :
-				return
-				# Todo System Date Setting
-
+				pass
+				# Todo Send Time to M/W
+				self.SetListControl( )
 		
 

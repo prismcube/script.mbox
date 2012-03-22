@@ -8,6 +8,7 @@ from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
 from ElisProperty import ElisPropertyEnum
 from ElisEnum import ElisEnum
+from pvr.Util import LOG_ERR
 
 
 class SatelliteConfigMotorizedUsals2( SettingWindow ) :
@@ -150,7 +151,11 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 
 
 	def onFocus( self, controlId ) :
-		pass
+		itransponder = self.mDataCache.Satellite_GetTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
+		ret = self.mCommander.ScanHelper_ChangeContext( itransponder, self.mCurrentSatellite )
+		if ret == False :
+			LOG_ERR( 'ScanHelper_ChangeContext Return False' )
+		
 
 
 	def InitConfig( self ) :
