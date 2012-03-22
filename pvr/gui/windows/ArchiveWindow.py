@@ -105,6 +105,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.SetVideoRestore( )
 			LOG_ERR('ERROR TEST')			
 			self.close( )
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			LOG_ERR('ERROR TEST')
@@ -119,6 +120,7 @@ class ArchiveWindow( BaseWindow ) :
 			LOG_ERR('ERROR TEST')
 			self.SetVideoRestore( )
 			self.close( )				
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
 			LOG_ERR('ERROR TEST')			
 
 
@@ -393,7 +395,7 @@ class ArchiveWindow( BaseWindow ) :
 		recInfo = self.mRecordList[position]
 		LOG_ERR('ERROR TEST recInfo.mRecordKey=%d self.mServiceType=%d' %(recInfo.mRecordKey, self.mServiceType ) )
 		self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
-		self.close()
+		#self.close()
 		self.SetVideoRestore();
 		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )				
 
