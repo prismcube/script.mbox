@@ -38,6 +38,7 @@ CONTEXT_DELETE_TIMER			= 2
 CONTEXT_EXTEND_INFOMATION		= 3
 CONTEXT_SEARCH					= 4
 
+MININUM_KEYWORD_SIZE			= 3
 
 
 class EPGWindow(BaseWindow):
@@ -172,7 +173,6 @@ class EPGWindow(BaseWindow):
 			
 
 	def UpdateViewMode( self ) :
-		LOG_TRACE('---------------------')
 		if self.mEPGMode == E_VIEW_CHANNEL :
 			self.mWin.setProperty( 'EPGMode', 'channel' )
 		elif self.mEPGMode == E_VIEW_CURRENT :			
@@ -182,6 +182,8 @@ class EPGWindow(BaseWindow):
 		else :
 			self.mEPGMode = E_VIEW_LIST 		
 			self.mWin.setProperty( 'EPGMode', 'channel' )
+			
+		LOG_TRACE('---------------------self.mEPGMode=%d' %self.mEPGMode)
 		
 
 	def Flush( self ) :
@@ -227,6 +229,8 @@ class EPGWindow(BaseWindow):
 
 
 	def LoadByCurrent( self ):
+		LOG_TRACE('')	
+		
 		try :
 			self.mEPGList=self.mDataCache.Epgevent_GetCurrentList()
 
@@ -235,7 +239,8 @@ class EPGWindow(BaseWindow):
 	
 
 	def LoadByFollowing( self ):
-
+		LOG_TRACE('')
+		
 		try :
 			self.mEPGList=self.mDataCache.Epgevent_GetFollowingList()
 
@@ -432,13 +437,16 @@ class EPGWindow(BaseWindow):
 				LOG_TRACE('')			
 				context.append( ContextItem( 'Edit Timer', CONTEXT_EDIT_TIMER ) )
 				context.append( ContextItem( 'Delete Timer', CONTEXT_DELETE_TIMER ) )
+				context.append( ContextItem( 'Search', CONTEXT_SEARCH ) )				
 			else :
 				LOG_TRACE('')
 				if self.HasIntersectionRecording( selectedEPG ) == True :
 					context.append( ContextItem( 'Edit Timer', CONTEXT_EDIT_TIMER ) )
 					context.append( ContextItem( 'Delete Timer', CONTEXT_DELETE_TIMER ) )
+					context.append( ContextItem( 'Search', CONTEXT_SEARCH ) )					
 				else:
 					context.append( ContextItem( 'Add Timer', CONTEXT_ADD_TIMER ) )
+					context.append( ContextItem( 'Search', CONTEXT_SEARCH ) )					
 
 			context.append( ContextItem( 'Extend Infomation', CONTEXT_EXTEND_INFOMATION ) )		
 			
@@ -458,10 +466,14 @@ class EPGWindow(BaseWindow):
 				LOG_TRACE('')			
 				context.append( ContextItem( 'Edit Timer', CONTEXT_EDIT_TIMER ) )
 				context.append( ContextItem( 'Delete Timer', CONTEXT_DELETE_TIMER ) )
+				context.append( ContextItem( 'Search', CONTEXT_SEARCH ) )				
 			else :
 				LOG_TRACE('')			
 				context.append( ContextItem( 'Add Timer', CONTEXT_ADD_TIMER ) )
+				context.append( ContextItem( 'Search', CONTEXT_SEARCH ) )				
 				
+
+
 
 		GuiLock2( True )
 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
@@ -492,6 +504,9 @@ class EPGWindow(BaseWindow):
 		elif aContextAction == CONTEXT_EXTEND_INFOMATION :
 			self.ShowDetailInfomation( )
 
+		elif aContextAction == CONTEXT_SEARCH :
+			self.ShowKeybordDialog( )
+
 
 	def ShowAddTimer( self, aEPG ) :
 		LOG_TRACE('ShowAddTimer')
@@ -521,6 +536,50 @@ class EPGWindow(BaseWindow):
 	def ShowEditTimer( self ) :
 		LOG_TRACE('ShowEditTimer')
 		pass
+
+
+	def ShowKeybordDialog( self ) :
+		try :
+			kb = xbmc.Keyboard( '', 'Search', False )
+			kb.doModal( )
+			if kb.isConfirmed( ) :
+				keyword = kb.getText( )
+				LOG_TRACE('keyword len=%d' %len( keyword ) )
+				if len( keyword ) < MININUM_KEYWORD_SIZE :
+					xbmcgui.Dialog( ).ok('Infomation', 'Input more than %d characters' %MININUM_KEYWORD_SIZE )
+					return
+					
+				searchList = []
+				indexList = []
+				count = len( self.mListItems )
+				
+				for i in range( count ) :
+					listItem = self.mListItems[ i ]
+
+					label2 = listItem.getLabel2( )
+					if label2.lower().find( keyword.lower() ) >= 0 :
+						searchList.append( label2 )
+						indexList.append( i )						
+
+				LOG_TRACE('Result =%d' %len( searchList ) )
+
+				if len( searchList ) <= 0 :
+					xbmcgui.Dialog( ).ok('Infomation', 'Can not find matched result')			
+		 			return
+		 		else :
+					dialog = xbmcgui.Dialog( )
+		 			select = dialog.select( 'Select Event', searchList )
+
+					if select >= 0 and select < len( searchList ) :
+						LOG_TRACE('selectIndex=%d' %indexList[select] )
+						LOG_TRACE('selectName=%s' %searchList[select] )
+						if self.mEPGMode == E_VIEW_CHANNEL :
+							self.mCtrlList.selectItem( indexList[select] )
+						else:
+							self.mCtrlBigList.selectItem( indexList[select] )
+
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)
 
 
 	def ShowDetailInfomation( self ) :
@@ -567,8 +626,8 @@ class EPGWindow(BaseWindow):
 	def HasManualRecording( self, aChannel ) :
 		for i in range( len( self.mTimerList ) ) :
 			timer =  self.mTimerList[i]
-			#if timer.mTimerType == ElisEnum.E_ITIMER_MANUAL and aChannel.mSid == timer.mSid and aChannel.mTsid == timer.mTsid and aChannel.mOnid == timer.mOnid :
-			if timer.mTimerType == 1 and aChannel.mSid == timer.mSid and aChannel.mTsid == timer.mTsid and aChannel.mOnid == timer.mOnid :			
+			#if timer.mTimerType == 1 and aChannel.mSid == timer.mSid and aChannel.mTsid == timer.mTsid and aChannel.mOnid == timer.mOnid :						
+			if timer.mTimerType == ElisEnum.E_ITIMER_MANUAL and aChannel.mSid == timer.mSid and aChannel.mTsid == timer.mTsid and aChannel.mOnid == timer.mOnid :
 				return True
 
 		return False
@@ -593,6 +652,7 @@ class EPGWindow(BaseWindow):
 				if ( aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid ) and \
 					(( startTime >= timer.mStartTime and startTime < (timer.mStartTime + timer.mDuration) ) or \
 					( endTime > timer.mStartTime and endTime < (timer.mStartTime + timer.mDuration) ) ) :
+					LOG_TRACE('------------------- find -------------------------')
 					return True
 
 		except Exception, ex :

@@ -4622,6 +4622,15 @@
 						<include>DefaultVisibleFadeEffect</include>
 					</control>
 
+					<!-- Recording Icon-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture border="0,2,0,2">IconPlateRec.png</texture>
+						<visible>substring(ListItem.Property(HasTimer),true)</visible>						
+					</control>
 
 					<!-- Start Time-->
 					<control type="label">
@@ -4829,6 +4838,16 @@
 						<width>200</width>
 						<height>61</height>
 						<texture border="0,0,14,0">confluence/MediaItemDetailBG.png</texture>
+					</control>
+					
+					<!-- Recording Icon-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture border="0,2,0,2">IconPlateRec.png</texture>
+						<visible>substring(ListItem.Property(HasTimer),true)</visible>						
 					</control>
 
 					<!-- Channel Name-->
