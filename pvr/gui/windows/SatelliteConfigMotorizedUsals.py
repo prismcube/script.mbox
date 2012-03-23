@@ -98,7 +98,8 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 			
 		# Reference Position to Null
 		elif groupId == E_Input03 :
-			pass
+			self.mCommander.Motorized_GotoNull( self.tunerIndex )
+
 			
 		# Configure Satellites
 		elif groupId == E_Input04 :

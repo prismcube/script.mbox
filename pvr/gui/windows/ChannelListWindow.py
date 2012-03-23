@@ -2437,6 +2437,9 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mChannelList == None:
 			return -1
 
+		if aKey == 0 :
+			return -1
+
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW:
 
 			GuiLock2( True )
