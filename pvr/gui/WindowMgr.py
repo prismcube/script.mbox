@@ -82,23 +82,23 @@ class WindowMgr(object):
 
 		self.AddDefaultFont( )		
 		self.CopyIncludeFile( )
-		self.CreateAllWindows( )
 
 		self.DefaultWindows( )
+		self.CreateAllWindows( )
+
 
 
 	def SetVideoRestore( self ) :
 		ret = self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
 
+
 	def GetWindow( self, aWindowId ):
 		LOG_TRACE('GetWindow ID=%d' %aWindowId )
 		try :
 			return self.mWindows[aWindowId]
-			return True
 		except Exception, ex:
-			aWindow=None
 			LOG_ERR( "Exception %s" %ex)
-			return False
+			return None
 	
 
 	def ShowWindow( self, aWindowId ):
@@ -110,10 +110,12 @@ class WindowMgr(object):
 
 		self.mLastId = aWindowId
 
+
 	def DefaultWindows( self ) :
 		from pvr.gui.windows.NullWindow import NullWindow
 		self.mWindows[WIN_ID_NULLWINDOW] = NullWindow('NullWindow.xml', self.mScriptDir )
 		LOG_ERR('---------------- self.mWindows[WIN_ID_NULLWINDOW] id=%s' %self.mWindows[WIN_ID_NULLWINDOW] )
+
 
 	def CreateAllWindows( self ):
 		LOG_TRACE('Create All Windows mScriptDir=%s' %self.mScriptDir)

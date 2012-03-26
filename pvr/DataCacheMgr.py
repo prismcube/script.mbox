@@ -24,7 +24,7 @@ gDataCacheMgr = None
 gDataLock = thread.allocate_lock()
 
 SUPPORT_EPG_DATABASE = True
-SUPPORT_CHANNEL_DATABASE = True
+SUPPORT_CHANNEL_DATABASE = False
 
 
 @decorator
