@@ -35,12 +35,6 @@ gDataCacheMgr = None
 
 gDataLock = thread.allocate_lock()
 
-<<<<<<< HEAD
-=======
-SUPPORT_EPG_DATABASE = True
-SUPPORT_CHANNEL_DATABASE = True
-
->>>>>>> af688e629542696c75cbc2e0e88fe473beb67733
 
 @decorator
 def DataLock(func, *args, **kw):
