@@ -41,7 +41,7 @@ class MainMenu( BaseWindow ) :
 		self.mCtrlMainMenu = self.getControl( LIST_ID_MAIN_MENU )
 		if self.mStartMediaCenter == True :
 			self.mCommander.AppMediaPlayer_Control( 0 )
-			#WinMgr.GetInstance().CheckSkinChange( )
+			WinMgr.GetInstance().CheckSkinChange( )
 			self.mStartMediaCenter = False
 
 

@@ -24,7 +24,7 @@ gDataCacheMgr = None
 gDataLock = thread.allocate_lock()
 
 SUPPORT_EPG_DATABASE = True
-SUPPORT_CHANNEL_DATABASE = True
+SUPPORT_CHANNEL_DATABASE = False
 
 
 @decorator
@@ -781,17 +781,36 @@ class DataCacheMgr( object ):
 	def Audiotrack_Get( self, aIndex ) :
 		return self.mCommander.Audiotrack_Get( aIndex )
 
-
 	def Player_SetVIdeoSize( self, aX, aY, aW, aH ) :
 		return self.mCommander.Player_SetVIdeoSize( aX, aY, aW, aH ) 
-
 
 	def Player_VideoBlank( self, aBlank, aForce ) :
 		return self.mCommander.Player_VideoBlank( aBlank, aForce )
 
-
 	def Player_AVBlank( self, aBlank, aForce ) :
 		return self.mCommander.Player_AVBlank( aBlank, aForce )
+
+	def Player_GetStatus( self ) :
+		return self.mCommander.Player_GetStatus( )
+
+	def Player_Resume( self ) :
+		return self.mCommander.Player_Resume( )
+
+	def Player_Pause( self ) :
+		return self.mCommander.Player_Pause( )
+
+	def Player_Stop( self ) :
+		return self.mCommander.Player_Stop( )
+
+	def Player_SetSpeed( self, aSpeed ) :
+		return self.mCommander.Player_SetSpeed( aSpeed )
+
+	def Player_JumpToIFrame( self, aMiliSec ) :
+		return self.mCommander.Player_JumpToIFrame( aMiliSec )
+
+
+	def Player_StartTimeshiftPlayback( self, aPlayBackMode, aData ) :
+		return self.mCommander.Player_StartTimeshiftPlayback( aPlayBackMode, aData )
 
 
 	def Player_StartInternalRecordPlayback( self, aRecordKey, aServiceType, aOffsetMS, aSpeed ) :

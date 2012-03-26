@@ -96,7 +96,6 @@ class ArchiveWindow( BaseWindow ) :
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-		focusId = self.GetFocusId()
 		self.GlobalAction( actionId )		
 
 		#LOG_TRACE('onAction=%d' %actionId )
@@ -106,11 +105,14 @@ class ArchiveWindow( BaseWindow ) :
 			self.SetVideoRestore( )
 			LOG_ERR('ERROR TEST')			
 			self.close( )
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			LOG_ERR('ERROR TEST')
+			focusId = self.GetFocusId()
 			if focusId == LIST_ID_RECORD :			
 				self.StartRecordPlayback()
+				#self.close()
 			LOG_ERR('ERROR TEST')
 
 
@@ -118,6 +120,7 @@ class ArchiveWindow( BaseWindow ) :
 			LOG_ERR('ERROR TEST')
 			self.SetVideoRestore( )
 			self.close( )				
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
 			LOG_ERR('ERROR TEST')			
 
 
@@ -395,4 +398,5 @@ class ArchiveWindow( BaseWindow ) :
 		#self.close()
 		self.SetVideoRestore();
 		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )				
+
 

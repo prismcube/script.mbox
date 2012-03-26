@@ -120,6 +120,9 @@ class NullWindow( BaseWindow ) :
 			if actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9:
 				aKey = actionId - Action.REMOTE_0
 
+			if aKey == 0 :
+				return -1
+
 			GuiLock2(True)
 			dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_CHANNEL_JUMP )
 			event = self.mDataCache.Epgevent_GetPresent()
