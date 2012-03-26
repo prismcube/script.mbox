@@ -365,7 +365,29 @@ class DataCacheMgr( object ):
 
 	def LoadChannelList( self ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
-			tmpChannelList = self.mChannelDB.Channel_GetList( self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
+			mType = self.mZappingMode.mServiceType
+			mMode = self.mZappingMode.mMode
+			mSort = self.mZappingMode.mSortingMode
+
+			if mMode == ElisEnum.E_MODE_ALL :
+				tmpChannelList = self.mChannelDB.Channel_GetList( mType, mMode, mSort )
+
+			elif mMode == ElisEnum.E_MODE_SATELLITE :
+				mLongitude = self.mZappingMode.mSatelliteInfo.mLongitude
+				mBand = self.mZappingMode.mSatelliteInfo.mBand
+				tmpChannelList = self.Channel_GetListBySatellite( mType, mMode, mSort, mLongitude, mBand )
+
+			elif mMode == ElisEnum.E_MODE_CAS :
+				mCaid = self.mZappingMode.mCasInfo.mCAId
+				tmpChannelList = self.Channel_GetListByFTACas( mType, mMode, mSort, mCaid )
+				
+			elif mMode == ElisEnum.E_MODE_FAVORITE :
+				mFavName = self.mZappingMode.mFavoriteGroup.mGroupName
+				tmpChannelList = self.Channel_GetListByFavorite( mType, mMode, mSort, mFavName )
+
+			elif mMode == ElisEnum.E_MODE_NETWORK :
+				return None
+
 		else:
 			tmpChannelList = self.mCommander.Channel_GetList( self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
 
@@ -415,7 +437,7 @@ class DataCacheMgr( object ):
 	def LoadZappingmode( self ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			self.mZappingMode = self.mChannelDB.Zappingmode_GetCurrent( )
-			self.mCurrentChannel = self.mChannelDB.Channel_GetCurrent( )
+			self.mCurrentChannel = self.mCommander.Channel_GetCurrent( )
 		else :
 			self.mZappingMode = self.mCommander.Zappingmode_GetCurrent( )
 			self.mCurrentChannel = self.mCommander.Channel_GetCurrent( )
@@ -442,13 +464,12 @@ class DataCacheMgr( object ):
 		return ret
 
 
-	@DataLock
 	def Zappingmode_GetCurrent( self, aRequestChanged = 0 ) :
 		if aRequestChanged :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				self.mZappingMode = self.mChannelDB.Zappingmode_GetCurrent( )
 			else :
-				self.mZappingMode = self.Zappingmode_GetCurrent_Elis( )
+				self.mZappingMode = self.mCommander.Zappingmode_GetCurrent( )
 
 		return self.mZappingMode
 
@@ -460,32 +481,31 @@ class DataCacheMgr( object ):
 			return self.mListCasList
 
 
-	@DataLock
-	def Favorite_GetList( self, aServiceType = ElisEnum.E_SERVICE_TYPE_INVALID ) :
-		if aServiceType :
+	def Favorite_GetList( self, aRequestChanged = 0, aServiceType = ElisEnum.E_SERVICE_TYPE_INVALID ) :
+		if aRequestChanged :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				return self.mChannelDB.Favorite_GetList( aServiceType )
 			else :
-				return self.Favorite_GetList( aServiceType )
+				return self.mCommander.Favorite_GetList( aServiceType )
 		else :
 			return self.mListFavorite
 
-	@DataLock
 	def Channel_GetList( self, aRequestChanged = 0, aType = 0, aMode = 0, aSort = 0 ) :
 		if aRequestChanged :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				return self.mChannelDB.Channel_GetList( aType, aMode, aSort )
 			else :
-				return self.Channel_GetList_Elis( aType, aMode, aSort )
+				return self.mCommander.Channel_GetList( aType, aMode, aSort )
 
 		else :
 			return self.mChannelList
 
 
-	@DataLock
-	def Channel_GetCurrent( self ) :
-		return self.mCurrentChannel
+	def Channel_GetCurrent( self, aRequestChanged = 0 ) :
+		if aRequestChanged :
+			return self.mCommander.Channel_GetCurrent( )
 
+		return self.mCurrentChannel
 
 	def Channel_SetCurrent( self, aChannelNumber, aServiceType ) :
 		self.mCurrentEvent = None
@@ -582,17 +602,24 @@ class DataCacheMgr( object ):
 
 
 	@DataLock
-	def Satellite_GetByChannelNumber( self , aNumber ) :
-		cacheChannel = self.mChannelListHash.get(aNumber, None)
-		if cacheChannel :
-			carrier = cacheChannel.mChannel.mCarrier
-			if carrier.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBS :
-				hashKey = '%d:%d' %( carrier.mDVBS.mSatelliteLongitude, carrier.mDVBS.mSatelliteBand )
-				satellite = self.mAllSatelliteListHash.get( hashKey, None )
-				return satellite
+	def Satellite_GetByChannelNumber( self, aNumber, aRequestType = -1 ) :
+		if aRequestType == -1 :
+			cacheChannel = self.mChannelListHash.get(aNumber, None)
+			if cacheChannel :
+				carrier = cacheChannel.mChannel.mCarrier
+				if carrier.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBS :
+					hashKey = '%d:%d' %( carrier.mDVBS.mSatelliteLongitude, carrier.mDVBS.mSatelliteBand )
+					satellite = self.mAllSatelliteListHash.get( hashKey, None )
+					return satellite
 
+				else :
+					LOG_ERR('Not Supported Carrier type =%d' %carrier.mCarrierType )
+
+		else :
+			if SUPPORT_CHANNEL_DATABASE	== True :
+				return self.mChannelDB.Satellite_GetByChannelNumber( aNumber, aType )
 			else :
-				LOG_ERR('Not Supported Carrier type =%d' %carrier.mCarrierType )
+				return self.mCommander.Satellite_GetByChannelNumber( aNumber, aType )
 
 		return None
 
@@ -718,34 +745,25 @@ class DataCacheMgr( object ):
 
 	#Aready declared : _Elis, request direct command 
 
-	def Channel_GetCurrent_Elis( self ) :
-		return self.mCommander.Channel_GetCurrent( )
-
-	def Channel_SetCurrent_Elis( self, aChannelNumber, aServiceType ) :
-		return self.mCommander.Channel_SetCurrent( aChannelNumber, aServiceType )
-
-	def Channel_GetList_Elis( self, aType = 0, aMode = 0, aSort = 0 ) :
-		return self.mCommander.Channel_GetList( aType, aMode, aSort )
-
-	def Zappingmode_GetCurrent_Elis( self ) :
-		return self.mCommander.Zappingmode_GetCurrent( )
-
-	def Favorite_GetList_Elis( self, aServiceType = ElisEnum.E_SERVICE_TYPE_INVALID ) :
-		return self.mCommander.Favorite_GetList( aServiceType )
-
-	def Satellite_GetByChannelNumber_Elis( self, aNumber, aType ) :
-		return self.mCommander.Satellite_GetByChannelNumber( aNumber, aType )
 
 	#New declared : request direct command 
-
 	def Channel_GetListBySatellite( self, aType, aMode, aSort, aLongitude, aBand ) :
-		return self.mCommander.Channel_GetListBySatellite( aType, aMode, aSort, aLongitude, aBand )
+		if SUPPORT_CHANNEL_DATABASE	== True :
+			return self.mChannelDB.Channel_GetList( aType, aMode, aSort, aLongitude, aBand )
+		else :
+			return self.mCommander.Channel_GetListBySatellite( aType, aMode, aSort, aLongitude, aBand )
 
 	def Channel_GetListByFTACas( self, aType, aMode, aSort, aCAid ) :
-		return self.mCommander.Channel_GetListByFTACas( aType, aMode, aSort, aCAid )
+		if SUPPORT_CHANNEL_DATABASE	== True :
+			return self.mChannelDB.Channel_GetList( aType, aMode, aSort, None, None, aCAid )
+		else :
+			return self.mCommander.Channel_GetListByFTACas( aType, aMode, aSort, aCAid )
 
 	def Channel_GetListByFavorite( self, aType, aMode, aSort, aFavName ) :
-		return self.mCommander.Channel_GetListByFavorite( aType, aMode, aSort, aFavName )
+		if SUPPORT_CHANNEL_DATABASE	== True :
+			return self.mChannelDB.Channel_GetList( aType, aMode, aSort, None, None, None, aFavName )
+		else :
+			return self.mCommander.Channel_GetListByFavorite( aType, aMode, aSort, aFavName )
 
 	def Channel_Lock( self, aLock, aIChannel ) :
 		return self.mCommander.Channel_Lock( aLock, aIChannel )

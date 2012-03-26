@@ -677,7 +677,7 @@ class ChannelListWindow( BaseWindow ) :
 		LOG_TRACE( 'label[%s] ch[%d] mask[%s]'% (label, channelNumbr, self.mPincodeEnter) )
 
 		ret = False
-		ret = self.mDataCache.Channel_SetCurrent_Elis( channelNumbr, self.mChannelListServieType )
+		ret = self.mDataCache.Channel_SetCurrent( channelNumbr, self.mChannelListServieType )
 		#LOG_TRACE( 'MASK[%s] ret[%s]'% (self.mPincodeEnter, ret) )
 		if ret == True :
 			if self.mPincodeEnter == FLAG_MASK_NONE :
@@ -696,7 +696,7 @@ class ChannelListWindow( BaseWindow ) :
 					LOG_TRACE( 'go out Cancel' )
 
 		ch = None
-		ch = self.mDataCache.Channel_GetCurrent_Elis( )
+		ch = self.mDataCache.Channel_GetCurrent( )
 		if ch :
 			self.mNavChannel = ch
 			self.mCurrentChannel = self.mNavChannel.mNumber
@@ -867,7 +867,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		try :
 			if aMode == ElisEnum.E_MODE_ALL :
-				self.mChannelList = self.mDataCache.Channel_GetList_Elis( aType, aMode, aSort )
+				self.mChannelList = self.mDataCache.Channel_GetList( FLAG_ZAPPING_CHANGE, aType, aMode, aSort )
 
 			elif aMode == ElisEnum.E_MODE_SATELLITE :
 				self.mChannelList = self.mDataCache.Channel_GetListBySatellite( aType, aMode, aSort, aLongitude, aBand )
@@ -1217,7 +1217,7 @@ class ChannelListWindow( BaseWindow ) :
 				#ClassToList( 'print', self.mListCasList )
 
 				#Favorite list
-				self.mListFavorite = self.mDataCache.Favorite_GetList( self.mChannelListServieType )
+				self.mListFavorite = self.mDataCache.Favorite_GetList(FLAG_ZAPPING_CHANGE, self.mChannelListServieType )
 				#ClassToList( 'print', self.mListFavorite )
 			else:
 				self.mListSatellite = self.mDataCache.Satellite_GetConfiguredList( )
@@ -1344,7 +1344,7 @@ class ChannelListWindow( BaseWindow ) :
 		#get last channel
 		iChannel = None
 		if self.mListItems == None :
-			iChannel = self.mDataCache.Channel_GetCurrent_Elis( )
+			iChannel = self.mDataCache.Channel_GetCurrent( FLAG_ZAPPING_CHANGE )
 		else :
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 
@@ -1522,7 +1522,7 @@ class ChannelListWindow( BaseWindow ) :
 			satellite = self.mDataCache.Satellite_GetByChannelNumber( self.mNavChannel.mNumber )
 			if not satellite :
 				#LOG_TRACE('Fail GetByChannelNumber by Cache')
-				satellite = self.mDataCache.Satellite_GetByChannelNumber_Elis( self.mNavChannel.mNumber, self.mNavChannel.mServiceType )
+				satellite = self.mDataCache.Satellite_GetByChannelNumber( self.mNavChannel.mNumber, self.mNavChannel.mServiceType )
 
 			if satellite :
 				label = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
@@ -1634,7 +1634,7 @@ class ChannelListWindow( BaseWindow ) :
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetLastChannelCertificationPinCode( True )
 
 					ret = None
-					ret = self.mDataCache.Channel_SetCurrent_Elis( self.mCurrentChannel, self.mChannelListServieType)
+					ret = self.mDataCache.Channel_SetCurrent( self.mCurrentChannel, self.mChannelListServieType)
 					LOG_TRACE( 'Pincode success' )
 
 				else:
@@ -2124,7 +2124,7 @@ class ChannelListWindow( BaseWindow ) :
 	def GetFavoriteGroup( self ) :
 		LOG_TRACE( 'Enter' )
 
-		self.mListFavorite = self.mDataCache.Favorite_GetList_Elis( self.mChannelListServieType )
+		self.mListFavorite = self.mDataCache.Favorite_GetList( FLAG_ZAPPING_CHANGE, self.mChannelListServieType )
 		#ClassToList( 'print', self.mListFavorite )
 
 		self.mEditFavorite = []
