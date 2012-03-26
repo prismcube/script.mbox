@@ -140,26 +140,34 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 		# Transponer
  		elif groupId == E_Input03 :
  			if self.mTransponderList :
-	 			dialog = xbmcgui.Dialog()
+	 			dialog = xbmcgui.Dialog( )
 	 			self.mSelectedTransponderIndex = dialog.select( 'Select Transponder', self.mTransponderList )
 	 			if self.mSelectedTransponderIndex != -1 :
 	 				self.InitConfig( )
 
 		# Go to the Position
 		elif groupId == E_Input04 :
-			pass
+			alltransponder = self.mDataCache.Satellite_GetTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
+			transponder = alltransponder[ self.mSelectedTransponderIndex ]
+			transpondertemp = []
+			transpondertemp.append( transponder )
+
+			satellitetemp = []
+			satellitetemp.append( self.mCurrentSatellite )
+			ret = self.mCommander.ScanHelper_ChangeContext( transpondertemp, satellitetemp )
+			
+			if ret == False :
+				LOG_ERR( 'ScanHelper_ChangeContext Return False' )
 
 
 	def onFocus( self, controlId ) :
-		itransponder = self.mDataCache.Satellite_GetTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
-		ret = self.mCommander.ScanHelper_ChangeContext( itransponder, self.mCurrentSatellite )
-		if ret == False :
-			LOG_ERR( 'ScanHelper_ChangeContext Return False' )
-		
+		pass
 
 
 	def InitConfig( self ) :
 		self.ResetAllControl( )
+
+		self.mCurrentSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_USALS
 
 		self.AddInputControl( E_Input01, 'Satellite' , self.mDataCache.Satellite_GetFormattedName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ) )
 		self.AddUserEnumControl( E_SpinEx01, 'LNB Type', E_LIST_LNB_TYPE, self.mSelectedIndexLnbType )

@@ -44,6 +44,7 @@ class MainMenu( BaseWindow ) :
 			WinMgr.GetInstance().CheckSkinChange( )
 			self.mStartMediaCenter = False
 
+
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )
@@ -53,9 +54,9 @@ class MainMenu( BaseWindow ) :
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 
-		elif actionId == Action.ACTION_PARENT_DIR :			
+		elif actionId == Action.ACTION_PARENT_DIR :
 			self.close( )
-
+			
 
 	def onClick( self, aControlId ) :
 		LOG_TRACE("MainMenu onclick(): control %d" % aControlId )

@@ -8,12 +8,12 @@ from pvr.gui.GuiConfig import *
 
 E_INPUT_LABEL			= 4
 E_DIALOG_HEADER			= 1
-E_BUTTON_DONE			= 21
-E_BUTTON_BACK_SPACE		= 23
-E_BUTTON_PREV			= 20
-E_BUTTON_NEXT			= 22
+E_BUTTON_DONE			= 201
+E_BUTTON_BACK_SPACE		= 200
+E_BUTTON_PREV			= 202
+E_BUTTON_NEXT			= 203
 
-E_START_ID_NUMBER		= 10
+E_START_ID_NUMBER		= 100
 
 class DialogSatelliteNumeric( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
@@ -53,13 +53,17 @@ class DialogSatelliteNumeric( BaseDialog ) :
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :		# number
 			self.InputControl( actionId, 1 )
 			self.SetInputLabel( )
+
+		elif actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 :
+			self.InputControl( actionId, 2 )
+			self.SetInputLabel( )
 			
 		elif actionId == Action.ACTION_PARENT_DIR : 							# back space
 			self.DeleteValue( )
 			self.SetInputLabel( )
 
 	def onClick( self, aControlId ) :
-		if aControlId >= E_START_ID_NUMBER and aControlId <= 19 :
+		if aControlId >= E_START_ID_NUMBER and aControlId <= 109 :
 			self.InputControl( aControlId, 0 )
 
 		elif aControlId == E_BUTTON_BACK_SPACE :
@@ -134,6 +138,10 @@ class DialogSatelliteNumeric( BaseDialog ) :
 			
 		elif aInputtype == 1 :
 			tmp = chr( aControlId - 10 )
+			value = int( tmp )
+
+		elif aInputtype == 2 :
+			tmp = chr( aControlId - 92 )
 			value = int( tmp )
 
 		else :
