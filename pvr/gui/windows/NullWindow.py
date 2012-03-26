@@ -8,6 +8,7 @@ import pvr.TunerConfigMgr as ConfigMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
 from inspect import currentframe
 import pvr.ElisMgr
+from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.Util import GuiLock2, LOG_TRACE, LOG_ERR, LOG_WARN, RunThread
 from pvr.gui.GuiConfig import *
 
@@ -34,7 +35,23 @@ class NullWindow( BaseWindow ) :
 		self.GlobalAction( actionId )		
 
 		if actionId == Action.ACTION_PREVIOUS_MENU:
+			if ElisPropertyEnum( 'Lock Mainmenu', self.mCommander ).GetProp( ) == 0 :
+				dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+				dialog.SetDialogProperty( 'PIN Code 4 digit', '', 4, True )
+	 			dialog.doModal( )
+	 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+	 				tempval = dialog.GetString( )
+	 				if tempval == '' :
+	 					return
+					if int( tempval ) == ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( ) :
+						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
+					else :
+						dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_POPUP_OK )
+						dialog.SetDialogProperty( 'ERROR', 'ERROR PIN Code' )
+			 			dialog.doModal( )
+			 	return
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
+			
 				
 		elif actionId == Action.ACTION_PARENT_DIR:
 			try :

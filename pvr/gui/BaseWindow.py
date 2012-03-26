@@ -188,7 +188,7 @@ class SettingWindow( BaseWindow ) :
 		pos = 0
 		for ctrlItem in self.mControlList:
 			if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL :
-				selectedItem = ctrlItem.mProperty.GetPropIndex()
+				selectedItem = ctrlItem.mProperty.GetPropIndex( )
 				control = self.getControl( ctrlItem.mControlId + 3 )
 				control.reset( )
 				control.addItems( ctrlItem.mListItems )

@@ -17,14 +17,15 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 		self.mIsSouth = 0
 		self.mLongitude	= 0
 		self.mLatitude	= 0
+		self.tunerIndex = 0
 
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		tunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerIndex( )
-		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'USALS configuration : Tuner %s' % ( tunerIndex + 1 ) )
+		self.tunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerIndex( )
+		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'USALS configuration : Tuner %s' % ( self.tunerIndex + 1 ) )
 
 		self.SetSettingWindowLabel( 'Motorize Configuration' )
 		
@@ -107,6 +108,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 			self.SetLatitude( )
 			self.ResetAllControl( )
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_TUNER_CONFIGURATION )
+
 			
 	def onFocus( self, controlId ) :
 		pass

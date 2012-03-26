@@ -89,7 +89,7 @@ class DialogForceProgress( BaseDialog ) :
 				self.Close( )
 				break
 
-		self.mCtrlLabelString.setLabel( '%s Set fail' % self.mTitle )
+		self.mCtrlLabelString.setLabel( '%s Progress Time Over' % self.mTitle )
 		self.Close( )
 
 
