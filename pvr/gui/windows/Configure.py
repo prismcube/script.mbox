@@ -9,11 +9,13 @@ import pvr.gui.DialogMgr as DiaMgr
 import pvr.DataCacheMgr as CacheMgr
 from pvr.gui.BaseWindow import SettingWindow, Action
 import pvr.ElisMgr
-from ElisProperty import ElisPropertyEnum, ElisPropertyInt
+from ElisProperty import *
 from pvr.gui.GuiConfig import *
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
 from ElisEventClass import *
 from pvr.IpParser import IpParser
+from ElisProperty import ElisPropertyEnum
+
 
 E_DHCP_OFF		= 0
 E_DHCP_ON		= 1
@@ -218,16 +220,38 @@ class Configure( SettingWindow ) :
 				dialog.doModal( )
 
 				if dialog.IsOK() == E_DIALOG_STATE_YES :
+					ret1 = True
+					ret2 = True
+					ret3 = True
+					self.ShowProgress( 'Now Reset...' )
 				 	if resetChannel == 1 :
-				 		self.mCommander.System_SetDefaultChannelList( )
+				 		ret = self.mCommander.System_SetDefaultChannelList( )
+				 		self.mDataCache.LoadChannelList( )
 				 		self.mDataCache.LoadAllSatellite( )
 
-				 	elif resetFavoriteAddons == 1 :
+				 	if resetFavoriteAddons == 1 :
 				 		pass
 
-				 	elif resetSystem == 1 :
-				 		self.mCommander.System_FactoryReset( )
-				 		gPropertyEnumHash = {}
+				 	if resetSystem == 1 :
+				 		ret1 = self.mCommander.System_FactoryReset( )	
+			 		try :
+			 			if ret1 == True and ret2 == True and ret3 == True :
+							self.progress.SetResult( True )
+							time.sleep( 1 )
+							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+							dialog.SetDialogProperty( 'Confirm', 'Reset system Success' )
+				 			dialog.doModal( )
+						else :
+							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+							dialog.SetDialogProperty( 'ERROR', 'Reset system Fail' )
+				 			dialog.doModal( )
+							
+					except Exception, e :
+						LOG_ERR( 'Error exception[%s]' % e )
+
+					if resetSystem == 1 :	
+				 		ElisPropertyEnum( 'Reset Configure Setting', self.mCommander ).ResetHash( )
+				 		self.SetListControl( )
 
 		else :
 			self.ControlSelect( )
@@ -543,7 +567,7 @@ class Configure( SettingWindow ) :
 
 
 	def SaveIp( self ) :
-		self.ShowProgress( )
+		self.ShowProgress( 'Setting Network...' )
 		ret = self.mIpParser.SetNetwork( self.mTempNetworkType, self.mTempIpAddr, self.mTempSubNet, self.mTempGateway, self.mTempDns )
 		if ret == False :
 			try :
@@ -636,9 +660,9 @@ class Configure( SettingWindow ) :
 
 
 	@RunThread
-	def ShowProgress( self ) :
+	def ShowProgress( self, aString ) :
 		self.progress = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
-		self.progress.SetDialogProperty( 10, 'Setting Network...' )
+		self.progress.SetDialogProperty( 10, aString )
 		self.progress.doModal( )
 		return
 
@@ -673,17 +697,18 @@ class Configure( SettingWindow ) :
 			
 		elif aControlId == E_Input04 :
 			oriSetupChannel = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
+			oriTimeMode = ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( )
+			oriLocalTimeOffset = ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetProp( )
+			oriSummerTime = ElisPropertyEnum( 'Summer Time', self.mCommander ).GetProp( )
+			oriChannel = self.mDataCache.Channel_GetCurrent( )
 		 		
 			ElisPropertyEnum( 'Time Mode', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx01 ) )
 			ElisPropertyEnum( 'Local Time Offset', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx02) )
+			localOffset = ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetProp( )
+			self.mCommander.Datetime_SetLocalOffset( localOffset )
 			ElisPropertyEnum( 'Summer Time', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx03 ) )
  			
 			if ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( ) == TIME_AUTOMATIC :
-				oriTimeMode = ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( )
-				oriLocalTimeOffset = ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetProp( )
-				oriSummerTime = ElisPropertyEnum( 'Summer Time', self.mCommander ).GetProp( )
-				oriChannel = self.mDataCache.Channel_GetCurrent( )
-				
 				ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( self.mSetupChannel.mNumber )
 				self.mDataCache.Channel_SetCurrent( self.mSetupChannel.mNumber, self.mSetupChannel.mServiceType ) # Todo After : using ServiceType to different way
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
@@ -693,22 +718,18 @@ class Configure( SettingWindow ) :
 				dialog.doModal( )
 
 				if dialog.GetResult( ) == False :
-					self.mDataCache.LoadTime( )
-					# Todo Send Time to M/W
-				else :
 					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( oriTimeMode )
-					ElisPropertyEnum( 'Local Time Offset', self.mCommander ).SetProp( oriLocalTimeOffset )
+					self.mCommander.Datetime_SetLocalOffset( oriLocalTimeOffset )
 					ElisPropertyEnum( 'Summer Time', self.mCommander ).SetProp( oriSummerTime )
 					ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( oriSetupChannel )
 
+				self.mDataCache.LoadTime( )
 				self.SetListControl( )
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
 				self.mDataCache.Channel_SetCurrent( oriChannel.mNumber, oriChannel.mServiceType ) # Todo After : using ServiceType to different way
-				return
-				
 			else :
-				pass
-				# Todo Send Time to M/W
-				self.SetListControl( )
-		
+				sumtime = self.mDate + '.' + self.mTime
+				t = time.strptime( sumtime, '%d.%m.%Y.%H:%M' )
+				ret = self.mCommander.Datetime_SetSystemUTCTime( int( time.mktime( t ) ) )
+				self.mDataCache.LoadTime( )		
 

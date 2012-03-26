@@ -7,6 +7,7 @@ import pvr.TunerConfigMgr as ConfigMgr
 import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
+from ElisProperty import ElisPropertyEnum
 
 E_DEFAULT_GOURP_ID		= 9000
 
@@ -45,7 +46,6 @@ class AntennaSetup( SettingWindow ) :
 			self.AddPrevNextButton( )
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( 'Next' )
 		self.setVisibleButton( )
-		
 
 		self.InitControl( )
 		self.SetFocusControl( E_SpinEx01 )
@@ -156,6 +156,8 @@ class AntennaSetup( SettingWindow ) :
 		
 		if groupId == E_SpinEx01 or groupId == E_SpinEx02 or groupId == E_SpinEx03 or groupId == E_SpinEx04 :
 			self.ControlSelect( )
+			#print 'dhkim test tuner 1 type = %d' % ElisPropertyEnum( 'tuner1 type', self.mCommander ).GetProp( )
+			#print 'dhkim test tuner 2 type = %d' % ElisPropertyEnum( 'tuner2 type', self.mCommander ).GetProp( )
 
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
 			self.SaveConfiguration( )
