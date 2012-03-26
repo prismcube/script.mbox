@@ -29,7 +29,8 @@ class TimeFormatEnum(object):
 	E_AW_DD_MM_YYYY			= 0
 	E_HH_MM					= 1
 	E_DD_MM_YYYY_HH_MM		= 2
-	E_DD_MM_YYYY			= 3
+	E_AW_DD_MM_YYYY_HH_MM	= 3	
+	E_DD_MM_YYYY			= 4
 	
 
 def ClearThreads( ):
@@ -252,6 +253,8 @@ def TimeToString( aTime, aFlag=0 ) :
 		return time.strftime("%H:%M", time.gmtime( aTime ) )	
 	elif aFlag == TimeFormatEnum.E_DD_MM_YYYY_HH_MM :
 		return time.strftime("%d.%m.%Y %H:%M", time.gmtime( aTime ) )		
+	elif aFlag == TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM :
+		return time.strftime("%a, %d.%m.%Y %H:%M", time.gmtime( aTime ) )		
 	elif aFlag == TimeFormatEnum.E_DD_MM_YYYY :
 		return time.strftime("%d.%m.%Y", time.gmtime( aTime ) )
 	else :
@@ -291,5 +294,5 @@ def GetImageByEPGComponent( aEPG, aFlag ) :
 	else :
 		pass
 
-	return None
+	return ''
 

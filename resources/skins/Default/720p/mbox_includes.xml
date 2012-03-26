@@ -4554,15 +4554,26 @@
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 					</control>
 
-					<!-- Recording Icon-->
+					<!-- Running Recording Icon-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>5</posy>
 						<width>32</width>
 						<height>32</height>
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
-						<visible>substring(ListItem.Property(HasTimer),true)</visible>						
+						<visible>substring(ListItem.Property(TimerType),Running)</visible>						
 					</control>
+
+					<!-- Schedule Recording Icon-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture border="0,2,0,2">IconTimer.png</texture>
+						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>						
+					</control>
+					
 					
 					<!-- Start Time-->
 					<control type="label">
@@ -4622,14 +4633,24 @@
 						<include>DefaultVisibleFadeEffect</include>
 					</control>
 
-					<!-- Recording Icon-->
+					<!-- Running Recording Icon-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>5</posy>
 						<width>32</width>
 						<height>32</height>
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
-						<visible>substring(ListItem.Property(HasTimer),true)</visible>						
+						<visible>substring(ListItem.Property(TimerType),Running)</visible>						
+					</control>
+
+					<!-- Schedule Recording Icon-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture border="0,2,0,2">IconTimer.png</texture>
+						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>						
 					</control>
 
 					<!-- Start Time-->
@@ -4741,14 +4762,24 @@
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
 					</control>
 					
-					<!-- Recording Icon-->
+					<!-- Running Recording Icon-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>5</posy>
 						<width>32</width>
 						<height>32</height>
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
-						<visible>substring(ListItem.Property(HasTimer),true)</visible>						
+						<visible>substring(ListItem.Property(TimerType),Running)</visible>						
+					</control>
+
+					<!-- Schedule Recording Icon-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture border="0,2,0,2">IconTimer.png</texture>
+						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>						
 					</control>
 					
 					<!-- Channel Name-->
@@ -4840,14 +4871,24 @@
 						<texture border="0,0,14,0">confluence/MediaItemDetailBG.png</texture>
 					</control>
 					
-					<!-- Recording Icon-->
+					<!-- Running Recording Icon-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>5</posy>
 						<width>32</width>
 						<height>32</height>
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
-						<visible>substring(ListItem.Property(HasTimer),true)</visible>						
+						<visible>substring(ListItem.Property(TimerType),Running)</visible>						
+					</control>
+
+					<!-- Schedule Recording Icon-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture border="0,2,0,2">IconTimer.png</texture>
+						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>						
 					</control>
 
 					<!-- Channel Name-->

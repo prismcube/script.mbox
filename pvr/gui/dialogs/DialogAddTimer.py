@@ -36,6 +36,7 @@ class DialogAddTimer( BaseDialog ) :
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
 		self.SetHeaderLabel( 'Add Recording' )
+		self.mIsOk = E_DIALOG_STATE_CANCEL		
 
 		self.Reload( )
 		self.mEventBus.Register( self )
@@ -80,7 +81,7 @@ class DialogAddTimer( BaseDialog ) :
 		LOG_TRACE( 'DialogRecord focusId=%d' %focusId )
 		if focusId == E_BUTTON_ADD :
 			self.mIsOk = E_DIALOG_STATE_YES
-			self.AddRecord( )			
+			self.Close( )
 
 		elif focusId == E_BUTTON_CANCEL :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
@@ -141,6 +142,7 @@ class DialogAddTimer( BaseDialog ) :
 			LOG_ERR( "Exception %s" %ex)
 
 
+	"""
 	def AddRecord( self ):
 		LOG_TRACE('')
 
@@ -151,5 +153,5 @@ class DialogAddTimer( BaseDialog ) :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
 			xbmcgui.Dialog().ok('Failure', 'Start Record Fail' )
 
-
-
+	"""
+	

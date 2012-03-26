@@ -15,16 +15,25 @@ from ElisClass import *
 from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.GuiConfig import *
-from ElisEPGDB import ElisEPGDB
-from ElisChannelDB import ElisChannelDB
+
+
+SUPPORT_EPG_DATABASE = True
+SUPPORT_CHANNEL_DATABASE = True
+SUPPORT_TIMER_DATABASE = False
+
+if SUPPORT_EPG_DATABASE == True :
+	from ElisEPGDB import ElisEPGDB
+
+if SUPPORT_CHANNEL_DATABASE == True :
+	from ElisChannelDB import ElisChannelDB
+
+if SUPPORT_TIMER_DATABASE == True :
+	from ElisTimerDB import ElisTimerDB
 
 
 gDataCacheMgr = None
 
 gDataLock = thread.allocate_lock()
-
-SUPPORT_EPG_DATABASE = True
-SUPPORT_CHANNEL_DATABASE = False
 
 
 @decorator
@@ -90,12 +99,16 @@ class DataCacheMgr( object ):
 
 		self.mEpgDB = None
 		self.mChannelDB = None
+		self.mTimerDB = None
+
 		if SUPPORT_EPG_DATABASE	 == True :
 			self.mEpgDB = ElisEPGDB( )
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
 
+		if SUPPORT_TIMER_DATABASE == True :
+			self.mTimerDB = ElisTimerDB( )			
 
 		LOG_TRACE('')
 		self.Load( )
@@ -838,20 +851,59 @@ class DataCacheMgr( object ):
 		return self.mCommander.Record_DeleteRecord( aKey, aServiceType )
 
 
+	def Timer_GetTimerList( self ) :
+		if SUPPORT_TIMER_DATABASE == True :
+			return self.mTimerDB.Timer_GetTimerList()
+		else :
+			timerList = []
+			timerCount = self.Timer_GetTimerCount( )
+
+			for i in range( timerCount ) :
+				timer = self.Timer_GetByIndex( i )
+				timerList.append( timer )
+
+			return timerList
+
+
 	def Timer_GetTimerCount( self ) :
-		return self.mCommander.Timer_GetTimerCount()
+		if SUPPORT_TIMER_DATABASE == True :
+			return self.mTimerDB.Timer_GetTimerCount()
+		else :
+			return self.mCommander.Timer_GetTimerCount()
+
+
+	def Timer_GetById( self, aTimderId ) :
+		if SUPPORT_TIMER_DATABASE == True :
+			return self.mTimerDB.Timer_GetById( aTimderId )
+		else :	
+			return self.mCommander.Timer_GetById( aTimderId )
 
 
 	def Timer_GetByIndex( self, aIndex ) :
-		return self.mCommander.Timer_GetByIndex( aIndex )
+		if SUPPORT_TIMER_DATABASE == True :
+			return self.mTimerDB.Timer_GetByIndex( aIndex )
+		else :	
+			return self.mCommander.Timer_GetByIndex( aIndex )
 
 
 	def Timer_AddOTRTimer( self, aFromEPG, aFixedDuration, aCopyTimeshift, aTimerName, aForceDecrypt, aEventId, aSid, aTsid, aOnid) : 
 		return self.mCommander.Timer_AddOTRTimer( aFromEPG, aFixedDuration, aCopyTimeshift, aTimerName, aForceDecrypt, aEventId, aSid, aTsid, aOnid )
 
 
-	def Timer_AddEPGTimer( self, aEPG, aForceDecrypt=0, aForceThisEvent=0 ) : 
+	def Timer_AddEPGTimer( self, aForceDecrypt, aForceThisEvent, aEPG  ) : 
 		#ToDO : Change as AddEPGTimer
-		return self.mCommander.Timer_AddOTRTimer( True, 2*60*60, 0, aEPG.mEventName, 0, 0, 0, 0, 0 )
+		LOG_TRACE('')
+		aEPG.printdebug()
+		LOG_TRACE('')
+		epgList = []
+		epgList.append( aEPG )
+		return self.mCommander.Timer_AddEPGTimer( aForceDecrypt, aForceThisEvent, epgList )
 
+
+	def Timer_DeleteTimer( self, aTimerId ) :
+		return self.mCommander.Timer_DeleteTimer( aTimerId )
+
+
+	def Timer_GetRunningTimers( self ) :
+		return self.mCommander.Timer_GetRunningTimers( )
 
