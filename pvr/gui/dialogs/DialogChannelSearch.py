@@ -160,7 +160,6 @@ class DialogChannelSearch( BaseDialog ) :
 
 		elif self.mScanMode == E_SCAN_TRANSPONDER :
 			ret = self.mCommander.Channel_SearchByCarrier( self.mLongitude, self.mBand, self.mTransponderList )
-
 			if ret == False :
 				self.mEventBus.Deregister( self )
 				self.ReTune( )
@@ -176,7 +175,7 @@ class DialogChannelSearch( BaseDialog ) :
 			self.AbortDialog.doModal( )
 
 			if self.AbortDialog.IsOK( ) == E_DIALOG_STATE_YES :
-				ret = self.mCommander.Channelscan_Abort( )
+				self.mCommander.Channelscan_Abort( )
 				self.mIsFinished = True
 
 			elif self.AbortDialog.IsOK( ) == E_DIALOG_STATE_NO : 

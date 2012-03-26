@@ -256,6 +256,7 @@ class ManualScan( SettingWindow ) :
 		else :
 			self.mHasTansponder = False
 
+
 	def SetConfigTransponder( self ) :
 		self.mConfigTransponder = ElisITransponderInfo( )
 		self.mConfigTransponder.reset( )

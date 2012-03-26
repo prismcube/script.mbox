@@ -261,7 +261,6 @@ class DataCacheMgr( object ):
 		return self.mAllSatelliteList
 
 
-	@DataLock
 	def Satellite_ConfiguredTunerSatellite( self, aTunerNumber ) :
 		if aTunerNumber == E_TUNER_1 :
 			if self.mConfiguredSatelliteListTuner1 :
@@ -286,7 +285,6 @@ class DataCacheMgr( object ):
 			LOG_ERR( 'Unknown Tuner Number %s' % aTunerNumber )
 
 
-	@DataLock
 	def Satellite_GetConfiguredList( self ) :
 		if self.mConfiguredSatelliteList :
 			return self.mConfiguredSatelliteList
