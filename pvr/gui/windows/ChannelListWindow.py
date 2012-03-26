@@ -1159,7 +1159,7 @@ class ChannelListWindow( BaseWindow ) :
 		if aZappingMode == FLAG_ZAPPING_LOAD :
 			try:
 				if self.mFlag_EditChanged :
-					zappingMode = self.mDataCache.Zappingmode_GetCurrent_Elis( )
+					zappingMode = self.mDataCache.Zappingmode_GetCurrent( FLAG_ZAPPING_CHANGE )
 				else :
 					zappingMode = self.mDataCache.Zappingmode_GetCurrent( )
 
@@ -1209,15 +1209,15 @@ class ChannelListWindow( BaseWindow ) :
 		try :
 			if self.mFlag_EditChanged :
 				#satellite longitude list
-				self.mListSatellite = self.mDataCache.Satellite_GetConfiguredList_Elis( ElisEnum.E_SORT_NAME )
+				self.mListSatellite = self.mDataCache.Satellite_GetConfiguredList( )
 				#ClassToList( 'print', self.mListSatellite )
 
 				#FTA list
-				self.mListCasList = self.mDataCache.Fta_cas_GetList_Elis( self.mChannelListServieType )
+				self.mListCasList = self.mDataCache.Fta_cas_GetList( self.mChannelListServieType )
 				#ClassToList( 'print', self.mListCasList )
 
 				#Favorite list
-				self.mListFavorite = self.mDataCache.Favorite_GetList_Elis( self.mChannelListServieType )
+				self.mListFavorite = self.mDataCache.Favorite_GetList( self.mChannelListServieType )
 				#ClassToList( 'print', self.mListFavorite )
 			else:
 				self.mListSatellite = self.mDataCache.Satellite_GetConfiguredList( )
@@ -1273,7 +1273,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mChannelList = None
 
 		if self.mFlag_EditChanged :
-			self.mChannelList = self.mDataCache.Channel_GetList_Elis( self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode )
+			self.mChannelList = self.mDataCache.Channel_GetList( self.mFlag_EditChanged, self.mChannelListServieType, self.mZappingMode, self.mChannelListSortMode )
 		else :
 			#### first get is used cache, reason by fast load ###
 			self.mChannelList = self.mDataCache.Channel_GetList( )
