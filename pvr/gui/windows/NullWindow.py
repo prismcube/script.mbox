@@ -138,9 +138,11 @@ class NullWindow( BaseWindow ) :
 				inputNumber = dialog.GetChannelLast()
 				LOG_TRACE('=========== Jump chNum[%s]'% inputNumber)
 
-				jumpChannel = self.mDataCache.Channel_GetCurr( int(inputNumber) )
-				if jumpChannel :
-					self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType )
+				iCurrentCh = self.mDataCache.Channel_GetCurrent( )
+				if iCurrentCh.mNumber != int(inputNumber) :
+					jumpChannel = self.mDataCache.Channel_GetCurr( int(inputNumber) )
+					if jumpChannel :
+						self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType )
 
 		else:
 			print 'lael98 check ation unknown id=%d' %actionId
