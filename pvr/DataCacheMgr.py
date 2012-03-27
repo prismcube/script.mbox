@@ -28,7 +28,7 @@ if SUPPORT_EPG_DATABASE == True :
 if SUPPORT_CHANNEL_DATABASE == True :
 	from ElisChannelDB import ElisChannelDB
 
-if SUPPORT_TIMER_DATABASE == False :
+if SUPPORT_TIMER_DATABASE == True :
 	from ElisTimerDB import ElisTimerDB
 
 if SUPPORT_RECORD_DATABASE == True :
@@ -685,6 +685,8 @@ class DataCacheMgr( object ):
 				
 		else:
 			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
+			if eventList :
+				eventList = eventList[0]
 
 		return eventList
 
@@ -714,6 +716,8 @@ class DataCacheMgr( object ):
 				eventList = self.mEpgDB.Epgevent_GetCurrent( aSid, aTsid, aOnid, self.Datetime_GetGMTTime() )
 		else:
 			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, 0, 0, 1 )
+			if eventList :
+				eventList = eventList[0]
 
 		return eventList
 
