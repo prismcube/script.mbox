@@ -2,7 +2,7 @@
 <settings>
 
 	<!-- Archive -->
-	<setting id="VIEW_MODE" type="enum" label="ViewMode" values="0|1|2|3" default="0" />
+	<setting id="VIEW_MODE" type="enum" label="ViewMode" values="0|1|2|3" default="1" />
 	<setting id="SORT_MODE" type="enum" label="SortMode" values="0|1|2|3" default="0" />
 
 	<!-- EPG -->

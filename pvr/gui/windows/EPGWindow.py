@@ -345,7 +345,7 @@ class EPGWindow(BaseWindow):
 
 				if aUpdateOnly == False :
 					self.mCtrlList.addItems( self.mListItems )
-					self.setFocusId( LIST_ID_COMMON_EPG )
+					#self.setFocusId( LIST_ID_COMMON_EPG )
 				else :
 					xbmc.executebuiltin('container.update')
 					#xbmc.executebuiltin('xbmc.Container.SetViewMode(%d)' %E_VIEW_CHANNEL)
@@ -414,7 +414,7 @@ class EPGWindow(BaseWindow):
 
 			if aUpdateOnly == False :
 				self.mCtrlBigList.addItems( self.mListItems )
-				self.setFocusId( LIST_ID_BIG_EPG )
+				#self.setFocusId( LIST_ID_BIG_EPG )
 			else :
 				xbmc.executebuiltin('container.update')			
 				#xbmc.executebuiltin('xbmc.Container.SetViewMode(%d)' %E_VIEW_CURRENT)			
@@ -475,7 +475,7 @@ class EPGWindow(BaseWindow):
 
 			if aUpdateOnly == False :
 				self.mCtrlBigList.addItems( self.mListItems )
-				self.setFocusId( LIST_ID_BIG_EPG )
+				#self.setFocusId( LIST_ID_BIG_EPG )
 			else :
 				xbmc.executebuiltin('container.update')			
 				#xbmc.executebuiltin('xbmc.Container.SetViewMode(%d)' %E_VIEW_FOLLOWING)				

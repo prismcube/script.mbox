@@ -1,6 +1,6 @@
 <window id="3023">
-	<defaultcontrol always="true">3400</defaultcontrol>
-	<allowoverlay>no</allowoverlay>
+	<defaultcontrol always="true">9003</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
 	<controls>
 		<control type="image">
 			<posx>0</posx>
@@ -10,7 +10,7 @@
 			<texture background="true">confluence/backgrounds/videos.jpg</texture>
 			<include>DefaultBackgroundFade</include>
 			<fadetime>FanartCrossfadeTime</fadetime>
-			<visible>true</visible>
+			<visible>false</visible>
 		</control>
 		<control type="group">
 			<include>Window_OpenClose_Animation</include>		
@@ -34,7 +34,7 @@
 			</control>
 			<control type="group">
 				<include>DefaultVisibleFadeEffect</include>
-				<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)</visible>
+				<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail) | substring(Window.Property(ViewMode),panart)</visible>
 				<control type="image">
 					<posx>40</posx>
 					<posy>40</posy>
@@ -111,8 +111,8 @@
 			<include>Window_OpenClose_Animation</include>		
 			<include>DefaultCommonArchiveView</include> <!-- Default common View id = 3400 -->
 			<include>DefaultThumbnailArchiveView</include> <!-- Default thumbnail View id = 3410 -->
-			<include>DefaultPosterWrapArchiveView</include> <!-- Default poster wrapView id = 3410 -->						
-			<include>DefaultFanartArchiveView</include> <!-- Default Fanart View id = 3410 -->						
+			<include>DefaultPosterWrapArchiveView</include> <!-- Default poster wrapView id = 3420 -->						
+			<include>DefaultFanartArchiveView</include> <!-- Default Fanart View id = 3430 -->						
 			
 			<!--
 			<include>FullWidthList</include> -- view id = 51 
