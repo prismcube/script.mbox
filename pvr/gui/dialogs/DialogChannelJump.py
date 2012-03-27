@@ -160,11 +160,20 @@ class DialogChannelJump( BaseDialog ) :
 		self.RestartAsyncTune()
 
 	def GetEPGInfo( self, aChannel ):
-		event = None
-		event = self.mDataCache.Epgevent_GetList( aChannel, self.mTestTime )
+		sid  = aChannel.mSid
+		tsid = aChannel.mTsid
+		onid = aChannel.mOnid
+		#gmtime = self.mDataCache.Datetime_GetGMTTime()
+		#gmtFrom = gmtime
+		#gmtUntil= gmtime
+		#maxCount= 1
 
-		if event :
-			self.mFakeEPG = event
+		iEPGList = None
+		iEPGList = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
+		#iEPGList = self.mDataCache.Epgevent_GetListByChannel( sid, tsid, onid, gmtFrom, gmtUntil, maxCount )
+
+		if iEPGList :
+			self.mFakeEPG = iEPGList[0]
 			self.SetLabelEPGName( self.mFakeEPG.mEventName )
 			self.GetEPGProgress()
 

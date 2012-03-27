@@ -478,9 +478,6 @@ class LivePlate(BaseWindow):
 	def EPGNavigation(self, aDir ):
 		LOG_TRACE('Enter')
 
-		#if self.mFlag_OnEvent :
-		#	self.GetEPGList()
-
 		if self.mEPGList :
 			lastIdx = len(self.mEPGList) - 1
 			if aDir == NEXT_EPG:
@@ -505,15 +502,14 @@ class LivePlate(BaseWindow):
 	def GetEPGList( self ) :
 		LOG_TRACE( 'Enter' )
 
-		ret = None
-
 		try :
 			#stop onEvent
 			self.mFlag_OnEvent = False
 			if self.mEventCopy == None :
-				ret = self.mCommander.Epgevent_GetPresent()
-				if ret and ret.mEventName != 'No Name':
-					self.mEventCopy = ret
+				iEPG = None
+				iEPG = self.mDataCache.Epgevent_GetPresent()
+				if iEPG and iEPG.mEventName != 'No Name':
+					self.mEventCopy = iEPG
 
 				else :
 					#receive onEvent
@@ -522,23 +518,21 @@ class LivePlate(BaseWindow):
 
 			if self.mCurrentChannel :
 				self.mEPGList = None
-				ichannel = self.mCurrentChannel
+				iChannel = self.mCurrentChannel
 
 				#Live EPG
 				#gmtime = self.mDataCache.Datetime_GetGMTTime()
-				#test Stream
 				gmtFrom  = self.mEventCopy.mStartTime
-
 				gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
 				maxCount = 100
-				ret = None
-				ret = self.mCommander.Epgevent_GetList( ichannel.mSid, ichannel.mTsid, ichannel.mOnid, gmtFrom, gmtUntil, maxCount )
+				iEPGList = None
+				iEPGList = self.mDataCache.Epgevent_GetListByChannel( iChannel.mSid, iChannel.mTsid, iChannel.mOnid, gmtFrom, gmtUntil, maxCount )
 				time.sleep(0.05)
 				LOG_TRACE('==================')
-				LOG_TRACE('ret[%s] ch[%d] sid[%d] tid[%d] oid[%d] from[%s] until[%s]'% (ret,ichannel.mNumber,ichannel.mSid, ichannel.mTsid, ichannel.mOnid, time.asctime(time.localtime(gmtFrom)), time.asctime(time.localtime(gmtUntil))) )
+				LOG_TRACE('iEPGList[%s] ch[%d] sid[%d] tid[%d] oid[%d] from[%s] until[%s]'% (iEPGList, iChannel.mNumber, iChannel.mSid, iChannel.mTsid, iChannel.mOnid, time.asctime(time.localtime(gmtFrom)), time.asctime(time.localtime(gmtUntil))) )
 				#LOG_TRACE('=============epg len[%s] list[%s]'% (len(ret),ClassToList('convert', ret )) )
-				if ret :
-					self.mEPGList = ret
+				if iEPGList :
+					self.mEPGList = iEPGList
 					self.mFlag_ChannelChanged = False
 				else :
 					LOG_TRACE('EPGList is None\nLeave')
@@ -648,13 +642,6 @@ class LivePlate(BaseWindow):
 			LOG_TRACE( 'aEvent null' )
 
 
-		"""
-		# Todo
-		if self.mFlag_OnEvent :
-			self.GetEPGList()
-		"""
-
-
 		LOG_TRACE( 'Leave' )
 
 
@@ -669,8 +656,8 @@ class LivePlate(BaseWindow):
 				msg = Msg.Strings(MsgId.LANG_INPUT_PIN_CODE)
 				inputPin = ''
 
-				#ret = self.mCommander.Channel_SetInitialBlank( True )
-				ret = self.mCommander.Player_AVBlank( True, True )
+				#ret = self.mDataCache.Channel_SetInitialBlank( True )
+				ret = self.mDataCache.Player_AVBlank( True, True )
 
 				GuiLock2( True )
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -684,7 +671,7 @@ class LivePlate(BaseWindow):
 
 	 			elif reply == E_DIALOG_STATE_CANCEL :
 	 				self.mPincodeEnter = FLAG_MASK_NONE
-					self.mCommander.Player_AVBlank( False, True )
+					self.mDataCache.Player_AVBlank( False, True )
 
 	 				inputKey = dialog.GetInputKey()
 	 				self.onAction( inputKey )
@@ -698,8 +685,8 @@ class LivePlate(BaseWindow):
 
 				if inputPin == str('%s'% self.mPropertyPincode) :
 					self.mPincodeEnter = FLAG_MASK_NONE
-					#ret = self.mCommander.Channel_SetInitialBlank( False )
-					#self.mCommander.Player_AVBlank( False, True )
+					#ret = self.mDataCache.Channel_SetInitialBlank( False )
+					#self.mDataCache.Player_AVBlank( False, True )
 					mNumber = self.mCurrentChannel.mNumber
 					mType = self.mCurrentChannel.mServiceType
 					ret = self.mDataCache.Channel_SetCurrent( mNumber, mType)
@@ -731,16 +718,11 @@ class LivePlate(BaseWindow):
 		while self.mEnableThread:
 			#LOG_TRACE( 'repeat <<<<' )
 
-			#progress
-
 			if  ( loop % 10 ) == 0 :
-				#LOG_TRACE( 'loop=%d' %loop )
 				if self.mFlag_ChannelChanged :
 					self.GetEPGList()
 				self.UpdateLocalTime( )
 
-
-			#bmc.sleep(1000)
 			time.sleep(1)
 			self.mLocalTime += 1
 			loop += 1

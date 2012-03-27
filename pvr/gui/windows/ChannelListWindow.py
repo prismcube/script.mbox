@@ -1422,14 +1422,24 @@ class ChannelListWindow( BaseWindow ) :
 							self.mNavChannel = iChannel
 							#LOG_TRACE( 'found ch: getlabel[%s] ch[%s]'% (channelNumbr, ch.mNumber ) )
 
+							sid  = iChannel.mSid
+							tsid = iChannel.mTsid
+							onid = iChannel.mOnid
+
+							#gmtime = self.mDataCache.Datetime_GetGMTTime()
+							#LOG_TRACE('gmt[%s]'% EpgInfoClock(3,gmtime,0)[0] )
+							#gmtFrom = gmtime
+							#gmtUntil= gmtime
+							#maxCount= 1
+
 							iEPGList = None
-							iEPGList = self.mDataCache.Epgevent_GetList( iChannel )
+							#iEPGList = self.mDataCache.Epgevent_GetListByChannel( sid, tsid, onid, gmtFrom, gmtUntil, maxCount )
+							iEPGList = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
 
 							#LOG_TRACE('=============epg len[%s] list[%s]'% (len(iEPGList),ClassToList('convert', iEPGList ) ) )
 							if iEPGList :
-								self.mNavEpg = iEPGList
+								self.mNavEpg = iEPGList[0]
 							else :
-								#self.mNavEpg.reset( )
 								self.mNavEpg = 0
 							
 
