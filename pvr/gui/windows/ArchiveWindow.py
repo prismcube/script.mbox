@@ -19,7 +19,11 @@ BUTTON_ID_VIEW_MODE				= 100
 BUTTON_ID_SORT_MODE				= 101
 TOGGLEBUTTON_ID_ASC				= 102
 RADIIOBUTTON_ID_EXTRA			= 103
-LIST_ID_RECORD					= 3400
+LIST_ID_COMMON_RECORD			= 3400
+LIST_ID_THUMBNAIL_RECORD		= 3410
+LIST_ID_POSTERWRAP_RECORD		= 3420
+LIST_ID_FANART_RECORD			= 3430
+
 
 E_VIEW_LIST						= 0
 E_VIEW_THUMBNAIL				= 1
@@ -45,7 +49,6 @@ class ArchiveWindow( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.SetPipScreen( )
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Archive' )
 
 		LOG_TRACE('')
@@ -77,7 +80,11 @@ class ArchiveWindow( BaseWindow ) :
 
 		LOG_TRACE('self.mAscending2=%s' %self.mAscending )				
 
-		self.mCtrlRecordList = self.getControl( LIST_ID_RECORD )
+		self.mCtrlCommonList = self.getControl( LIST_ID_COMMON_RECORD )
+		self.mCtrlThumbnailList = self.getControl( LIST_ID_THUMBNAIL_RECORD )
+		self.mCtrlPosterwrapList = self.getControl( LIST_ID_POSTERWRAP_RECORD )
+		self.mCtrlFanartList = self.getControl( LIST_ID_FANART_RECORD )
+
 		self.UpdateAscending()
 		self.UpdateViewMode( )
 		
@@ -110,7 +117,8 @@ class ArchiveWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			LOG_ERR('ERROR TEST')
 			focusId = self.GetFocusId()
-			if focusId == LIST_ID_RECORD :			
+			LOG_ERR('ERROR TEST focusId=%d' %focusId)			
+			if focusId == LIST_ID_COMMON_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD or focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD:
 				self.StartRecordPlayback()
 				#self.close()
 			LOG_ERR('ERROR TEST')
@@ -299,7 +307,7 @@ class ArchiveWindow( BaseWindow ) :
 		
 
 	def UpdateList( self ) :
-		LOG_TRACE('')
+		LOG_TRACE('UpdateList Start')
 		try :
 			if self.mSortMode == E_SORT_DATE :
 				self.mRecordList.sort( self.ByDate )
@@ -322,12 +330,15 @@ class ArchiveWindow( BaseWindow ) :
 
 			LOG_TRACE('')
 
-			self.mCtrlRecordList.reset( )
+			self.mCtrlCommonList.reset( )
+			self.mCtrlThumbnailList.reset( )
+			self.mCtrlPosterwrapList.reset( )
+			self.mCtrlFanartList.reset( )
+			
 			self.mRecordListItems = []
 			for i in range( len( self.mRecordList ) ) :
-				LOG_TRACE('---------->i=%d' %i)		
 				recInfo = self.mRecordList[i]
-				recInfo.printdebug()
+				#recInfo.printdebug()
 				channelName = 'P%04d.%s' %(recInfo.mChannelNo, recInfo.mChannelName,)
 				#recItem = xbmcgui.ListItem( '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz', '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz' )
 				recItem = xbmcgui.ListItem( channelName, recInfo.mRecordName )
@@ -336,18 +347,33 @@ class ArchiveWindow( BaseWindow ) :
 				#else :
 				recItem.setProperty('RecIcon', 'RecIconSample.jpg')
 
-				LOG_TRACE('REC DURATION=%s' %(recInfo.mDuration/60) )
 				recItem.setProperty('RecDate', TimeToString( recInfo.mStartTime ))
-				LOG_TRACE('')
 				recItem.setProperty('RecDuration', '%dm' %( recInfo.mDuration/60 ) )
-				LOG_TRACE('')
 				self.mRecordListItems.append( recItem )
-				LOG_TRACE('')
 
-			LOG_TRACE('')
-			self.mCtrlRecordList.addItems( self.mRecordListItems )
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
+
+		if self.mViewMode == E_VIEW_LIST :
+			self.SetPipScreen( )		
+			self.mCtrlCommonList.addItems( self.mRecordListItems )		
+			#self.setFocusId( LIST_ID_COMMON_RECORD )
+		elif self.mViewMode == E_VIEW_THUMBNAIL :
+			self.SetVideoRestore( )		
+			self.mCtrlThumbnailList.addItems( self.mRecordListItems )		
+			#self.setFocusId( LIST_ID_THUMBNAIL_RECORD )
+		elif self.mViewMode == E_VIEW_POSTER_WRAP :
+			self.SetVideoRestore( )		
+			self.mCtrlPosterwrapList.addItems( self.mRecordListItems )		
+			#self.setFocusId( LIST_ID_POSTERWRAP_RECORD )
+		elif self.mViewMode == E_VIEW_FANART :
+			self.SetVideoRestore( )		
+			self.mCtrlFanartList.addItems( self.mRecordListItems )		
+			#self.setFocusId( LIST_ID_FANART_RECORD )
+		else :
+			LOG_WARN('Unknown view mode')
+
+		LOG_TRACE('UpdateList END')
 
 
 	def ByDate( self, aRec1, aRec2 ) :
@@ -408,14 +434,32 @@ class ArchiveWindow( BaseWindow ) :
 
 	def StartRecordPlayback( self ) :
 		#(self ,  recordKey,  serviceType,  offsetms,  speed) :
-		LOG_ERR('ERROR TEST')
-		position = self.mCtrlRecordList.getSelectedPosition( )
-		LOG_ERR('ERROR TEST position=%d' %position)		
-		recInfo = self.mRecordList[position]
-		LOG_ERR('ERROR TEST recInfo.mRecordKey=%d self.mServiceType=%d' %(recInfo.mRecordKey, self.mServiceType ) )
-		self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
+		position = self.GetSelectedPosition()
+		LOG_TRACE('position=%d' %position)
+		
+		if position >= 0 :
+			recInfo = self.mRecordList[position]
+			self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
 		#self.close()
+
 		self.SetVideoRestore();
 		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )				
+
+
+	def GetSelectedPosition( self ) :
+		position  = -1 
+
+		if self.mViewMode == E_VIEW_LIST :
+			position = self.mCtrlCommonList.getSelectedPosition( )		
+		elif self.mViewMode == E_VIEW_THUMBNAIL :
+			position = self.mCtrlThumbnailList.getSelectedPosition( )		
+		elif self.mViewMode == E_VIEW_POSTER_WRAP :
+			position = self.mCtrlPosterwrapList.getSelectedPosition( )		
+		elif self.mViewMode == E_VIEW_FANART :
+			position = self.mCtrlFanartList.getSelectedPosition( )		
+		else :
+			position = -1
+
+		return position
 
 
