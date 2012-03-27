@@ -18,7 +18,7 @@ from pvr.gui.GuiConfig import *
 
 
 SUPPORT_EPG_DATABASE = True
-SUPPORT_CHANNEL_DATABASE = False
+SUPPORT_CHANNEL_DATABASE = True
 SUPPORT_TIMER_DATABASE = False
 
 if SUPPORT_EPG_DATABASE == True :
@@ -376,9 +376,13 @@ class DataCacheMgr( object ):
 
 	def LoadChannelList( self ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
-			mType = self.mZappingMode.mServiceType
-			mMode = self.mZappingMode.mMode
-			mSort = self.mZappingMode.mSortingMode
+			mType = ElisEnum.E_SERVICE_TYPE_TV
+			mMode = ElisEnum.E_MODE_ALL
+			mSort = ElisEnum.E_SORT_BY_NUMBER
+			if self.mZappingMode :
+				mType = self.mZappingMode.mServiceType
+				mMode = self.mZappingMode.mMode
+				mSort = self.mZappingMode.mSortingMode
 
 			if mMode == ElisEnum.E_MODE_ALL :
 				tmpChannelList = self.mChannelDB.Channel_GetList( mType, mMode, mSort )
