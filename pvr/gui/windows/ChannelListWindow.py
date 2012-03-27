@@ -2464,9 +2464,10 @@ class ChannelListWindow( BaseWindow ) :
 			isOK = dialog.IsOK( )
 			if isOK == E_DIALOG_STATE_YES :
 				inputNumber = dialog.GetChannelLast( )
-				LOG_TRACE( 'Jump chNum[%s]'% inputNumber )
+				LOG_TRACE( 'Jump chNum[%s] currentCh[%s]'% (inputNumber,self.mCurrentChannel) )
 
-				self.SetChannelTune( int(inputNumber) )
+				if int(self.mCurrentChannel) != int(inputNumber) :
+					self.SetChannelTune( int(inputNumber) )
 
 
 		LOG_TRACE( 'Leave' )

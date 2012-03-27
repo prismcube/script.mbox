@@ -1105,10 +1105,11 @@ class LivePlate(BaseWindow):
 		if isOK == E_DIALOG_STATE_YES :
 
 			inputNumber = dialog.GetChannelLast()
-			LOG_TRACE('=========== Jump chNum[%s]'% inputNumber)
+			LOG_TRACE('=========== Jump chNum[%s] currentCh[%s]'% (inputNumber,self.mCurrentChannel.mNumber) )
 
-			self.mJumpNumber = int(inputNumber)
-			self.ChannelTune(CURR_CHANNEL)
+			if self.mCurrentChannel.mNumber != int(inputNumber) :
+				self.mJumpNumber = int(inputNumber)
+				self.ChannelTune(CURR_CHANNEL)
 
 
 		LOG_TRACE( 'Leave' )
