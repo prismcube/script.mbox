@@ -25,7 +25,7 @@ SUPPORT_RECORD_DATABASE = True
 if SUPPORT_EPG_DATABASE == True :
 	from ElisEPGDB import ElisEPGDB
 
-if SUPPORT_CHANNEL_DATABASE == True :
+if SUPPORT_CHANNEL_DATABASE == False :
 	from ElisChannelDB import ElisChannelDB
 
 if SUPPORT_TIMER_DATABASE == True :
@@ -643,7 +643,8 @@ class DataCacheMgr( object ):
 
 	@DataLock
 	def Datetime_GetGMTTime( self ) :
-		return time.localtime( )
+		localTime = time.localtime( )
+		return  time.mktime( localTime )
 
 
 	@DataLock
