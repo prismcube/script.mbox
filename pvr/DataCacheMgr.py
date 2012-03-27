@@ -671,12 +671,18 @@ class DataCacheMgr( object ):
 
 
 #	@DataLock
-	def Epgevent_GetListByChannel( self, aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount ) :
+	def Epgevent_GetListByChannel( self, aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount, aReopen = False ) :
 
 		eventList = None
 		
 		if SUPPORT_EPG_DATABASE	== True :
-			eventList = self.mEpgDB.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
+			if aReopen == True :
+				epgDB = ElisEPGDB()
+				eventList = epgDB.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
+				epgDB.Close()
+			else :
+				eventList = self.mEpgDB.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
+				
 		else:
 			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
 
@@ -695,12 +701,17 @@ class DataCacheMgr( object ):
 
 
 #	@DataLock
-	def Epgevent_GetCurrent( self, aSid, aTsid, aOnid ) :
+	def Epgevent_GetCurrent( self, aSid, aTsid, aOnid, aReopen = False ) :
 
 		eventList = None
 		
 		if SUPPORT_EPG_DATABASE	== True :
-			eventList = self.mEpgDB.Epgevent_GetCurrent( aSid, aTsid, aOnid, self.Datetime_GetGMTTime() )
+			if aReopen == True :
+				epgDB = ElisEPGDB()
+				eventList = epgDB.Epgevent_GetCurrent( aSid, aTsid, aOnid, self.Datetime_GetGMTTime() )
+				epgDB.Close()
+			else :
+				eventList = self.mEpgDB.Epgevent_GetCurrent( aSid, aTsid, aOnid, self.Datetime_GetGMTTime() )
 		else:
 			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, 0, 0, 1 )
 

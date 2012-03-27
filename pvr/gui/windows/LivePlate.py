@@ -526,7 +526,7 @@ class LivePlate(BaseWindow):
 				gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
 				maxCount = 100
 				iEPGList = None
-				iEPGList = self.mDataCache.Epgevent_GetListByChannel( iChannel.mSid, iChannel.mTsid, iChannel.mOnid, gmtFrom, gmtUntil, maxCount )
+				iEPGList = self.mDataCache.Epgevent_GetListByChannel( iChannel.mSid, iChannel.mTsid, iChannel.mOnid, gmtFrom, gmtUntil, maxCount, True )
 				time.sleep(0.05)
 				LOG_TRACE('==================')
 				LOG_TRACE('iEPGList[%s] ch[%d] sid[%d] tid[%d] oid[%d] from[%s] until[%s]'% (iEPGList, iChannel.mNumber, iChannel.mSid, iChannel.mTsid, iChannel.mOnid, time.asctime(time.localtime(gmtFrom)), time.asctime(time.localtime(gmtUntil))) )

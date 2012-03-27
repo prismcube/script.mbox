@@ -169,8 +169,8 @@ class DialogChannelJump( BaseDialog ) :
 		#maxCount= 1
 
 		iEPGList = None
-		iEPGList = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
-		#iEPGList = self.mDataCache.Epgevent_GetListByChannel( sid, tsid, onid, gmtFrom, gmtUntil, maxCount )
+		iEPGList = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid, True )
+		#iEPGList = self.mDataCache.Epgevent_GetListByChannel( sid, tsid, onid, gmtFrom, gmtUntil, maxCount, True )
 
 		if iEPGList :
 			self.mFakeEPG = iEPGList
