@@ -25,7 +25,7 @@ SUPPORT_RECORD_DATABASE = True
 if SUPPORT_EPG_DATABASE == True :
 	from ElisEPGDB import ElisEPGDB
 
-if SUPPORT_CHANNEL_DATABASE == False :
+if SUPPORT_CHANNEL_DATABASE == True :
 	from ElisChannelDB import ElisChannelDB
 
 if SUPPORT_TIMER_DATABASE == True :
