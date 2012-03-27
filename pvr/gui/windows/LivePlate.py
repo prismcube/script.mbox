@@ -359,7 +359,7 @@ class LivePlate(BaseWindow):
 						iEPG.mSid != self.mEventCopy.mSid or \
 						iEPG.mTsid != self.mEventCopy.mTsid or \
 						iEPG.mOnid != self.mEventCopy.mOnid :
-							LOG_TRACE('epg DIFFER, id[%s]'% ret.mEventId)
+							LOG_TRACE('epg DIFFER, id[%s]'% iEPG.mEventId)
 							self.mEventID = aEvent.mEventId
 							self.mEventCopy = iEPG
 							#update label

@@ -18,17 +18,17 @@ from pvr.gui.GuiConfig import *
 
 
 SUPPORT_EPG_DATABASE = True
-SUPPORT_CHANNEL_DATABASE = False
+SUPPORT_CHANNEL_DATABASE = True
 SUPPORT_TIMER_DATABASE = False
 SUPPORT_RECORD_DATABASE = True
 
 if SUPPORT_EPG_DATABASE == True :
 	from ElisEPGDB import ElisEPGDB
 
-if SUPPORT_CHANNEL_DATABASE == False :
+if SUPPORT_CHANNEL_DATABASE == True :
 	from ElisChannelDB import ElisChannelDB
 
-if SUPPORT_TIMER_DATABASE == True :
+if SUPPORT_TIMER_DATABASE == False :
 	from ElisTimerDB import ElisTimerDB
 
 if SUPPORT_RECORD_DATABASE == True :
@@ -647,7 +647,7 @@ class DataCacheMgr( object ):
 		return  time.mktime( localTime )
 
 
-	@DataLock
+#	@DataLock
 	def Satellite_GetByChannelNumber( self, aNumber, aRequestType = -1 ) :
 		if aRequestType == -1 :
 			cacheChannel = self.mChannelListHash.get(aNumber, None)

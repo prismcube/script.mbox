@@ -1438,7 +1438,7 @@ class ChannelListWindow( BaseWindow ) :
 
 							#LOG_TRACE('=============epg len[%s] list[%s]'% (len(iEPGList),ClassToList('convert', iEPGList ) ) )
 							if iEPGList :
-								self.mNavEpg = iEPGList[0]
+								self.mNavEpg = iEPGList
 							else :
 								self.mNavEpg = 0
 							
@@ -1514,6 +1514,22 @@ class ChannelListWindow( BaseWindow ) :
 				self.mCtrlRdoRadio.setSelected( aValue )
 			else :
 				self.mCtrlRdoRadio.setEnabled( aValue )
+
+		elif aCtrlID == self.mCtrlBtnEdit.getId( ) :
+			self.mCtrlBtnEdit.setEnabled( aValue )
+
+		elif aCtrlID == self.mCtrlLblRec1.getId( ) :
+			self.mCtrlLblRec1.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlImgRec1.getId( ) :
+			self.mCtrlImgRec1.setVisible( aValue )
+
+		elif aCtrlID == self.mCtrlLblRec2.getId( ) :
+			self.mCtrlLblRec2.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlImgRec2.getId( ) :
+			self.mCtrlImgRec2.setVisible( aValue )
+
 
 		LOG_TRACE( 'Leave' )
 
@@ -2483,12 +2499,15 @@ class ChannelListWindow( BaseWindow ) :
 			recLabel2 = ''
 			recImg1   = False
 			recImg2   = False
+			btnEdit   = True
 			if isRunRec == 1 :
+				btnEdit = False
 				recImg1 = True
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
 				recLabel1 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
 
 			elif isRunRec == 2 :
+				btnEdit = False
 				recImg1 = True
 				recImg2 = True
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
@@ -2496,12 +2515,12 @@ class ChannelListWindow( BaseWindow ) :
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
 				recLabel2 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
 
-			GuiLock2( True )
-			self.mCtrlLblRec1.setLabel( recLabel1 )
-			self.mCtrlImgRec1.setVisible( recImg1 )
-			self.mCtrlLblRec2.setLabel( recLabel2 )
-			self.mCtrlImgRec2.setVisible( recImg2 )
-			GuiLock2( False )
+
+			self.UpdateLabelGUI( self.mCtrlLblRec1.getId( ), recLabel1 )
+			self.UpdateLabelGUI( self.mCtrlImgRec1.getId( ), recImg1 )
+			self.UpdateLabelGUI( self.mCtrlLblRec2.getId( ), recLabel2 )
+			self.UpdateLabelGUI( self.mCtrlImgRec2.getId( ), recImg2 )
+			self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), btnEdit )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )

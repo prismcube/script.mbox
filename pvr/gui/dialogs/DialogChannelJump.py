@@ -173,7 +173,7 @@ class DialogChannelJump( BaseDialog ) :
 		#iEPGList = self.mDataCache.Epgevent_GetListByChannel( sid, tsid, onid, gmtFrom, gmtUntil, maxCount )
 
 		if iEPGList :
-			self.mFakeEPG = iEPGList[0]
+			self.mFakeEPG = iEPGList
 			self.SetLabelEPGName( self.mFakeEPG.mEventName )
 			self.GetEPGProgress()
 
