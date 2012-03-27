@@ -2475,15 +2475,15 @@ class ChannelListWindow( BaseWindow ) :
 			if isRunRec == 1 :
 				recImg1 = True
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
-				recLabel1 = '%04d %s'% (recInfo.mChannelNo, recInfo.mChannelName)
+				recLabel1 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
 
 			elif isRunRec == 2 :
 				recImg1 = True
 				recImg2 = True
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
-				recLabel1 = '%04d %s'% (recInfo.mChannelNo, recInfo.mChannelName)
+				recLabel1 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
-				recLabel2 = '%04d %s'% (recInfo.mChannelNo, recInfo.mChannelName)
+				recLabel2 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
 
 			GuiLock2( True )
 			self.mCtrlLblRec1.setLabel( recLabel1 )
