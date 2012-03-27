@@ -166,10 +166,10 @@ class LivePlate(BaseWindow):
 		self.CurrentTimeThread()
 
 		try :
-			ret = None
-			ret = self.mDataCache.Epgevent_GetPresent()
-			if ret and ret.mEventName != 'No Name':
-				self.mEventCopy = ret
+			iEPG = None
+			iEPG = self.mDataCache.Epgevent_GetPresent()
+			if iEPG and iEPG.mEventName != 'No Name':
+				self.mEventCopy = iEPG
 				self.UpdateONEvent(self.mEventCopy)
 
 		except Exception, e :
@@ -348,22 +348,22 @@ class LivePlate(BaseWindow):
 				#aEvent.printdebug()
 
 				if aEvent.mEventId != self.mEventID :
-					ret = None
-					ret = self.mDataCache.Epgevent_GetPresent( )
-					if ret and ret.mEventName != 'No Name':
+					iEPG = None
+					iEPG = self.mDataCache.Epgevent_GetPresent( )
+					if iEPG and iEPG.mEventName != 'No Name':
 						LOG_TRACE('-----------------------')
 						#ret.printdebug()
 
 						if not self.mEventCopy or \
-						ret.mEventId != self.mEventCopy.mEventId or \
-						ret.mSid != self.mEventCopy.mSid or \
-						ret.mTsid != self.mEventCopy.mTsid or \
-						ret.mOnid != self.mEventCopy.mOnid :
+						iEPG.mEventId != self.mEventCopy.mEventId or \
+						iEPG.mSid != self.mEventCopy.mSid or \
+						iEPG.mTsid != self.mEventCopy.mTsid or \
+						iEPG.mOnid != self.mEventCopy.mOnid :
 							LOG_TRACE('epg DIFFER, id[%s]'% ret.mEventId)
 							self.mEventID = aEvent.mEventId
-							self.mEventCopy = ret
+							self.mEventCopy = iEPG
 							#update label
-							self.UpdateONEvent( ret )
+							self.UpdateONEvent( iEPG )
 
 							#check : new event?
 							if self.mEPGList :
@@ -379,9 +379,9 @@ class LivePlate(BaseWindow):
 										self.mEPGListIdx = idx
 										LOG_TRACE('Received ONEvent : EPGList idx moved(current idx)')
 
-										retList=[]
-										retList.append(item)
-										LOG_TRACE('1.Aready Exist: NOW EPG idx[%s] [%s]'% (idx, ClassToList('convert', retList)) )
+										iEPGList=[]
+										iEPGList.append(item)
+										LOG_TRACE('1.Aready Exist: NOW EPG idx[%s] [%s]'% (idx, ClassToList('convert', iEPGList)) )
 										break
 
 									idx += 1
