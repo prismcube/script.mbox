@@ -252,6 +252,7 @@ class ArchiveWindow( BaseWindow ) :
 	def UpdateSortMode( self ) :
 		LOG_TRACE('---------------------')
 
+
 	def UpdateAscending( self ) :
 		LOG_TRACE('--------------------- %d ' %self.mAscending[self.mSortMode])	
 		if self.mAscending[self.mSortMode] == True :
@@ -270,10 +271,21 @@ class ArchiveWindow( BaseWindow ) :
 
 		LOG_TRACE('----------------------------------->')
 		try :
+			self.mRecordList = self.mDataCache.Record_GetList( self.mServiceType )
+			if self.mRecordList == None :
+				self.mRecordCount = 0
+			else :
+				self.mRecordCount = len( self.mRecordList  )
+
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)
+
+
+		"""
+		try :
 			self.mRecordCount = self.mDataCache.Record_GetCount( self.mServiceType )
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
-		
 		
 		LOG_TRACE('')
 		LOG_TRACE('RecordCount=%d' %self.mRecordCount )
@@ -283,52 +295,59 @@ class ArchiveWindow( BaseWindow ) :
 			recInfo = self.mDataCache.Record_GetRecordInfo( i, self.mServiceType )
 			recInfo.printdebug()
 			self.mRecordList.append( recInfo )
-
+		"""
+		
 
 	def UpdateList( self ) :
 		LOG_TRACE('')
-		if self.mSortMode == E_SORT_DATE :
-			self.mRecordList.sort( self.ByDate )
-		elif self.mSortMode == E_SORT_CHANNEL :
-			self.mRecordList.sort( self.ByChannel )
+		try :
+			if self.mSortMode == E_SORT_DATE :
+				self.mRecordList.sort( self.ByDate )
+			elif self.mSortMode == E_SORT_CHANNEL :
+				self.mRecordList.sort( self.ByChannel )
 
-		elif self.mSortMode == E_SORT_TITLE :
-			self.mRecordList.sort( self.ByTitle )
+			elif self.mSortMode == E_SORT_TITLE :
+				self.mRecordList.sort( self.ByTitle )
 
-		elif self.mSortMode == E_SORT_DURATION :
-			self.mRecordList.sort( self.ByDuration )
-		else :
-			LOG_WARN('Unknown sort mode')		
-			self.mSortMode = 0
-			self.mRecordList.sort( self.ByDate )
+			elif self.mSortMode == E_SORT_DURATION :
+				self.mRecordList.sort( self.ByDuration )
+			else :
+				LOG_WARN('Unknown sort mode')		
+				self.mSortMode = 0
+				self.mRecordList.sort( self.ByDate )
 
-		LOG_TRACE('')			
-		if self.mAscending[self.mSortMode] == False :
-			self.mRecordList.reverse()
+			LOG_TRACE('')			
+			if self.mAscending[self.mSortMode] == False :
+				self.mRecordList.reverse()
 
-		LOG_TRACE('')
+			LOG_TRACE('')
 
-		self.mCtrlRecordList.reset( )
-		self.mRecordListItems = []
-		for i in range( len( self.mRecordList ) ) :
-			LOG_TRACE('---------->i=%d' %i)		
-			recInfo = self.mRecordList[i]
-			recInfo.printdebug()
-			channelName = 'P%04d.%s' %(recInfo.mChannelNo, recInfo.mChannelName,)
-			#recItem = xbmcgui.ListItem( '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz', '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz' )
-			recItem = xbmcgui.ListItem( channelName, recInfo.mRecordName )
-			#if i == 0 :
-			#	recItem.setProperty('RecIcon', 'test.png')
-			#else :
-			recItem.setProperty('RecIcon', 'RecIconSample.jpg')
+			self.mCtrlRecordList.reset( )
+			self.mRecordListItems = []
+			for i in range( len( self.mRecordList ) ) :
+				LOG_TRACE('---------->i=%d' %i)		
+				recInfo = self.mRecordList[i]
+				recInfo.printdebug()
+				channelName = 'P%04d.%s' %(recInfo.mChannelNo, recInfo.mChannelName,)
+				#recItem = xbmcgui.ListItem( '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz', '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz' )
+				recItem = xbmcgui.ListItem( channelName, recInfo.mRecordName )
+				#if i == 0 :
+				#	recItem.setProperty('RecIcon', 'test.png')
+				#else :
+				recItem.setProperty('RecIcon', 'RecIconSample.jpg')
 
-			LOG_TRACE('REC DURATION=%s' %(recInfo.mDuration/60) )
-			recItem.setProperty('RecDate', TimeToString( recInfo.mStartTime ))
-			recItem.setProperty('RecDuration', '%dm' %( recInfo.mDuration/60 ) )
-			self.mRecordListItems.append( recItem )
+				LOG_TRACE('REC DURATION=%s' %(recInfo.mDuration/60) )
+				recItem.setProperty('RecDate', TimeToString( recInfo.mStartTime ))
+				LOG_TRACE('')
+				recItem.setProperty('RecDuration', '%dm' %( recInfo.mDuration/60 ) )
+				LOG_TRACE('')
+				self.mRecordListItems.append( recItem )
+				LOG_TRACE('')
 
-		LOG_TRACE('')
-		self.mCtrlRecordList.addItems( self.mRecordListItems )
+			LOG_TRACE('')
+			self.mCtrlRecordList.addItems( self.mRecordListItems )
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)
 
 
 	def ByDate( self, aRec1, aRec2 ) :

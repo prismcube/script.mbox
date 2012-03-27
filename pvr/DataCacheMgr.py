@@ -18,8 +18,9 @@ from pvr.gui.GuiConfig import *
 
 
 SUPPORT_EPG_DATABASE = True
-SUPPORT_CHANNEL_DATABASE = True
+SUPPORT_CHANNEL_DATABASE = False
 SUPPORT_TIMER_DATABASE = False
+SUPPORT_RECORD_DATABASE = True
 
 if SUPPORT_EPG_DATABASE == True :
 	from ElisEPGDB import ElisEPGDB
@@ -29,6 +30,9 @@ if SUPPORT_CHANNEL_DATABASE == True :
 
 if SUPPORT_TIMER_DATABASE == True :
 	from ElisTimerDB import ElisTimerDB
+
+if SUPPORT_RECORD_DATABASE == True :
+	from ElisRecordDB import ElisRecordDB
 
 
 gDataCacheMgr = None
@@ -100,6 +104,7 @@ class DataCacheMgr( object ):
 		self.mEpgDB = None
 		self.mChannelDB = None
 		self.mTimerDB = None
+		self.mRecordDB = None		
 
 		if SUPPORT_EPG_DATABASE	 == True :
 			self.mEpgDB = ElisEPGDB( )
@@ -108,7 +113,36 @@ class DataCacheMgr( object ):
 			self.mChannelDB = ElisChannelDB( )
 
 		if SUPPORT_TIMER_DATABASE == True :
-			self.mTimerDB = ElisTimerDB( )			
+			self.mTimerDB = ElisTimerDB( )
+			#TEST CODE
+			"""
+			count = self.mTimerDB.Timer_GetTimerCount()
+			LOG_TRACE('TIMER DB TEST count=%d' %count )
+			for i in range( count ) :
+				timer = self.mTimerDB.Timer_GetByIndex( i )
+				timer.printdebug()
+			timerList = self.mTimerDB.Timer_GetTimerList()
+			LOG_TRACE('TIMER DB TEST2')
+			if timerList :
+				for timer in timerList :
+					timer.printdebug()
+			"""
+
+		if SUPPORT_RECORD_DATABASE == True :
+			self.mRecordDB = ElisRecordDB( )
+			#TEST CODE
+			"""
+			count = self.mRecordDB.Record_GetCount( ElisEnum.E_SERVICE_TYPE_TV )
+			LOG_TRACE('RECORD DB TEST count=%d' %count )
+			for i in range( count ) :
+				record = self.mRecordDB.Record_GetRecordInfo( i, ElisEnum.E_SERVICE_TYPE_TV )
+				record.printdebug()
+			recordList = self.mRecordDB.Record_GetList( ElisEnum.E_SERVICE_TYPE_TV )
+			LOG_TRACE('RECORD DB TEST2')
+			if recordList :
+				for record in recordList :
+					record.printdebug()
+			"""
 
 		LOG_TRACE('')
 		self.Load( )
@@ -605,11 +639,7 @@ class DataCacheMgr( object ):
 
 	@DataLock
 	def Datetime_GetGMTTime( self ) :
-		gmtTime = self.mLocalTime - self.mLocalOffset
-		if gmtTime <= 0 :
-			return self.mLocalTime
-
-		return gmtTime
+		return time.localtime( )
 
 
 	@DataLock
@@ -879,11 +909,28 @@ class DataCacheMgr( object ):
 
 
 	def Record_GetCount( self, aServiceType ) :
-		return self.mCommander.Record_GetCount( aServiceType )
+		if SUPPORT_RECORD_DATABASE == True :	
+			return self.mRecordDB.Record_GetCount( aServiceType )
+		else :
+			return self.mCommander.Record_GetCount( aServiceType )
 
+
+	def Record_GetList( self, aServiceType ) :
+		if SUPPORT_RECORD_DATABASE == True :	
+			return self.mRecordDB.Record_GetList( aServiceType )		
+		else :
+			recordList = []
+			count = self.Record_GetCount( aServiceType )
+			for i in range( count ) :
+				recInfo = self.Record_GetRecordInfo( i, aServiceType )
+				recordList.append( recInfo )
+			return recordList
 
 	def Record_GetRecordInfo( self, aIndex, aServiceType ) :
-		return self.mCommander.Record_GetRecordInfo( aIndex, aServiceType )
+		if SUPPORT_RECORD_DATABASE == True :	
+			return self.mRecordDB.Record_GetRecordInfo( aServiceType )
+		else :
+			return self.mCommander.Record_GetRecordInfo( aIndex, aServiceType )
 
 
 	def Record_DeleteRecord( self, aKey, aServiceType ) :

@@ -107,7 +107,7 @@
 			</control>
 			-->
 		</control>
-		<control type="group">
+		<control type="group" id="9003">
 			<include>Window_OpenClose_Animation</include>		
 			<include>DefaultCommonArchiveView</include> <!-- Default common View id = 3400 -->
 			<include>DefaultThumbnailArchiveView</include> <!-- Default thumbnail View id = 3410 -->
@@ -266,8 +266,8 @@
 					<posy>0</posy>
 					<include>DefaultButtonCommonValues</include>
 					<label>VIEW:</label>
-					<onleft>3400</onleft>
-					<onright>3400</onright>
+					<onleft>9003</onleft>
+					<onright>9003</onright>
 					<onup>104</onup>
 					<ondown>101</ondown>
 				</control>
@@ -277,7 +277,7 @@
 					<posy>40</posy>
 					<include>DefaultButtonCommonValues</include>
 					<label>SORT:</label>
-					<onleft>3400</onleft>
+					<onleft>9003</onleft>
 					<onright>102</onright>
 					<onup>100</onup>
 					<ondown>104</ondown>
@@ -292,7 +292,7 @@
 					<posy>53</posy>
 					<label>-</label>
 					<onleft>101</onleft>
-					<onright>3400</onright>
+					<onright>9003</onright>
 					<onup>101</onup>
 					<ondown>104</ondown>
 					<usealttexture>substring(Window.Property(Ascending),true)</usealttexture>
@@ -327,7 +327,7 @@
 					<textureradiofocus>confluence/HomeHasSub.png</textureradiofocus>
 					<textureradionofocus>confluence/HomeHasSub.png</textureradionofocus>
 					<label>31026</label>
-					<onleft>3400</onleft>
+					<onleft>9003</onleft>
 					<onright>9010</onright>
 					<onup>101</onup>
 					<ondown>100</ondown>

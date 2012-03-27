@@ -294,7 +294,7 @@ class EPGWindow(BaseWindow):
 		try :
 			if epg :
 				self.mCtrlTimeLabel.setLabel('%s~%s' %( TimeToString( epg.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( epg.mStartTime + epg.mDuration, TimeFormatEnum.E_HH_MM ) ) )
-				self.mCtrlDateLabel.setLabel('%s' %TimeToString( epg.mStartTime, TimeFormatEnum.E_AW_DD_MM_YYYY_HH_MM ) )
+				self.mCtrlDateLabel.setLabel('%s' %TimeToString( epg.mStartTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
 				self.mCtrlDurationLabel.setLabel('%dMin' %(epg.mDuration/60) )
 
 				self.mCtrlHDImage.setImage( GetImageByEPGComponent( epg, ElisEnum.E_HasHDVideo ) )
@@ -812,12 +812,12 @@ class EPGWindow(BaseWindow):
 				LOG_TRACE('Timer End Time = %s' % TimeToString( timer.mStartTime + timer.mDuration , TimeFormatEnum.E_HH_MM ) )
 				LOG_TRACE('End Time = %x:%x' % (endTime, timer.mStartTime + timer.mDuration )	)
 
-				LOG_TRACE(' timer.mFromEPG = %d  aEPG.mEventId=%d timer.mTimerId=%d' % (timer.mFromEPG, aEPG.mEventId, timer.mEventId ) )
+				LOG_TRACE(' timer.mFromEPG = %d  aEPG.mEventId=%d timer.mEventId=%d timer.mTimerId=%d' % (timer.mFromEPG, aEPG.mEventId, timer.mEventId, timer.mTimerId ) )
 				
 				if timer.mFromEPG :
 					if  timer.mEventId > 0  and aEPG.mEventId == timer.mEventId and aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid :
 						LOG_TRACE('------------------- find by id -------------------------')					
-						return aEPG.mTimerId
+						return timer.mTimerId
 
 				else :
 					if ( aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid ) and \
