@@ -484,6 +484,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mChannelListServieType = aType
 			self.mElisZappingModeInfo.mServiceType = aType
 
+			self.mDataCache.Channel_GetZappingList( aType )
 			self.InitSlideMenuHeader( FLAG_ZAPPING_CHANGE )
 
 			self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
