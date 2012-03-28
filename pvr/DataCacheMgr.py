@@ -407,8 +407,11 @@ class DataCacheMgr( object ):
 
 		return transponderList
 
+	def SetChangeDBTableChannel( self, aChannelTable ) :
+		if SUPPORT_CHANNEL_DATABASE	== True :
+			self.mChannelDB.mDBChTable = aChannelTable
 
-	def LoadChannelList( self ) :
+	def LoadChannelList( self, aUpdateAvailDB = False, aSync = 0 ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			mType = ElisEnum.E_SERVICE_TYPE_TV
 			mMode = ElisEnum.E_MODE_ALL
@@ -417,6 +420,11 @@ class DataCacheMgr( object ):
 				mType = self.mZappingMode.mServiceType
 				mMode = self.mZappingMode.mMode
 				mSort = self.mZappingMode.mSortingMode
+
+			#available channel : ZappingChannel Sync for 'tblZappingChannel' DB
+			if aUpdateAvailDB :
+				ret = self.Channel_GetZappingList( mType, aSync )	#0:Sync, 1:aSync
+				LOG_TRACE('DB ZappingList sync[%s]'% ret)
 
 			if mMode == ElisEnum.E_MODE_ALL :
 				tmpChannelList = self.mChannelDB.Channel_GetList( mType, mMode, mSort )
@@ -685,8 +693,6 @@ class DataCacheMgr( object ):
 				
 		else:
 			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
-			if eventList :
-				eventList = eventList[0]
 
 		return eventList
 
@@ -843,9 +849,12 @@ class DataCacheMgr( object ):
 	def Channel_DeleteAll( self ) :
 		return self.mCommander.Channel_DeleteAll( )
 
-
 	def Channel_SetInitialBlank( self, aBlank ) :
 		return self.mCommander.Channel_SetInitialBlank( aBlank )
+
+	def Channel_GetZappingList( self, aType, aSync ) :
+		return self.mCommander.Channel_GetZappingList( aType, aSync )
+
 
 	def Audiotrack_GetCount( self ) :
 		return self.mCommander.Audiotrack_GetCount( )

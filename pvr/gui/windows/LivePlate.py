@@ -61,6 +61,10 @@ CURR_CHANNEL	= 2
 CONTEXT_ACTION_VIDEO_SETTING = 1 
 CONTEXT_ACTION_AUDIO_SETTING = 2
 
+E_SYNCHRONIZED  = 0
+E_ASYNCHRONIZED = 1
+E_UPDATE_AVAIL_DB = True
+
 class LivePlate(BaseWindow):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
@@ -71,6 +75,7 @@ class LivePlate(BaseWindow):
 		self.mCurrentChannel = None
 		self.mLastChannel = None
 		self.mFakeChannel = None
+		self.mZappingMode = None
 		self.mFlag_OnEvent = True
 		self.mShowExtendInfo = False
 		self.mPropertyAge = 0
@@ -132,27 +137,30 @@ class LivePlate(BaseWindow):
 		self.mCtrlBtnPrevEpg           = self.getControl( 702 )
 		self.mCtrlBtnNextEpg           = self.getControl( 706 )
 
-		self.ShowRecording( )
-
 		self.mImgTV    = E_IMG_ICON_TV
 		self.mCtrlLblEventClock.setLabel('')
-
-		self.mCertification = False
-		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
-		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
-		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset()
-
-		#get channel
-		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
-		self.mFakeChannel =	self.mCurrentChannel
-		self.mLastChannel =	self.mCurrentChannel
-
 		self.mFlag_OnEvent = True
 		self.mFlag_ChannelChanged = True
 		self.mEventCopy = None
 		self.mEPGList = None
 		self.mEPGListIdx = 0
 		self.mJumpNumber = 0
+		self.mCertification = False
+		self.mZappingMode = None
+
+		self.ShowRecording( )
+		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
+		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
+		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
+
+		self.mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
+		if not self.mZappingMode :
+			self.mZappingMode = ElisIZappingMode( )
+
+		#get channel
+		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
+		self.mFakeChannel =	self.mCurrentChannel
+		self.mLastChannel =	self.mCurrentChannel
 
 		self.GetEPGList()
 		self.UpdateServiceType( self.mCurrentChannel.mServiceType )
@@ -908,6 +916,10 @@ class LivePlate(BaseWindow):
 				time.sleep(1.5)
 				self.ShowRecording()
 
+				#reload available channel : ZappingChannel Sync for 'tblZappingChannel' DB
+				self.mDataCache.LoadChannelList( E_UPDATE_AVAIL_DB )
+
+
 		elif aFocusid == self.mCtrlBtnStopRec.getId() :
 			runningCount = self.ShowRecording()
 			LOG_TRACE( 'runningCount[%s]' %runningCount )
@@ -917,6 +929,9 @@ class LivePlate(BaseWindow):
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
 				dialog.doModal( )
 				GuiLock2( False )
+
+				#reload available channel : ZappingChannel Sync for 'tblZappingChannel' DB
+				self.mDataCache.LoadChannelList( E_UPDATE_AVAIL_DB )
 
 			time.sleep(1.5)
 			self.ShowRecording( )

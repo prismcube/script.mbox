@@ -42,7 +42,11 @@ FLAG_CLOCKMODE_ADMYHM   = 1
 FLAG_CLOCKMODE_AHM      = 2
 FLAG_CLOCKMODE_HMS      = 3
 FLAG_CLOCKMODE_HHMM     = 4
+FLAG_MODE_JUMP      = True
+FLAG_ZAPPING_LOAD   = 0
+FLAG_ZAPPING_CHANGE = 1
 
+#slide index
 E_SLIDE_ACTION_MAIN     = 0
 E_SLIDE_ACTION_SUB      = 1
 E_SLIDE_ALLCHANNEL      = 0
@@ -53,22 +57,26 @@ E_SLIDE_MENU_FAVORITE   = 3
 #E_SLIDE_MENU_DELETEALL  = 5
 E_SLIDE_MENU_BACK       = 5
 
+#list property
 E_IMG_ICON_LOCK   = 'IconLockFocus.png'
 E_IMG_ICON_ICAS   = 'IconCas.png'
 E_IMG_ICON_MARK   = 'confluence/OverlayWatched.png'
 E_IMG_ICON_TITLE1 = 'IconHeaderTitleSmall.png'
 E_IMG_ICON_TITLE2 = 'icon_setting_focus.png'
 E_IMG_ICON_UPDOWN = 'DI_Cursor_UpDown.png'
-
 E_TAG_COLOR_RED   = '[COLOR red]'
 E_TAG_COLOR_GREY  = '[COLOR grey]'
 E_TAG_COLOR_GREY3 = '[COLOR grey3]'
 E_TAG_COLOR_END   = '[/COLOR]'
 
-FLAG_MODE_JUMP      = True
-FLAG_ZAPPING_LOAD   = 0
-FLAG_ZAPPING_CHANGE = 1
+#db
+E_SYNCHRONIZED  = 0
+E_ASYNCHRONIZED = 1
+E_UPDATE_AVAIL_DB = True
+E_TABLE_ZAPPING = 0
+E_TABLE_ALLCHANNEL = 1
 
+#dialog menu
 CONTEXT_ACTION_LOCK				= 1 
 CONTEXT_ACTION_UNLOCK			= 2
 CONTEXT_ACTION_SKIP				= 3
@@ -76,12 +84,9 @@ CONTEXT_ACTION_UNSKIP			= 4
 CONTEXT_ACTION_DELETE			= 5
 CONTEXT_ACTION_MOVE				= 6
 CONTEXT_ACTION_ADD_TO_FAV		= 7
-
-
 CONTEXT_ACTION_CREATE_GROUP_FAV	= 10
 CONTEXT_ACTION_RENAME_FAV		= 11
 CONTEXT_ACTION_DELETE_FAV		= 12
-
 
 
 class ChannelListWindow( BaseWindow ) :
@@ -199,6 +204,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.ShowRecording( )
 		self.SetVideoSize( )
+
 
 		#initialize get cache
 		zappingmode = None
@@ -357,7 +363,8 @@ class ChannelListWindow( BaseWindow ) :
 					LOG_TRACE( 'Error except[%s]'% e )
 
 			else :
-				self.SetChannelTune( )
+				if self.mChannelList :
+					self.SetChannelTune( )
 
 		elif aControlId == self.mCtrlBtnMenu.getId( ) or aControlId == self.mCtrlListMainmenu.getId( ) :
 			#list view
@@ -525,6 +532,8 @@ class ChannelListWindow( BaseWindow ) :
 				#Event UnRegister
 				#self.mEventBus.Deregister( self )
 
+				self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
+
 				self.InitSlideMenuHeader( )
 				self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
 				xbmc.sleep( 50 )
@@ -579,6 +588,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
 				self.mListItems = None
 				self.mCtrlListCHList.reset( )
+				self.mDataCache.SetChangeDBTableChannel( E_TABLE_ZAPPING )
 				self.InitSlideMenuHeader( FLAG_ZAPPING_CHANGE )
 				self.InitChannelList( )
 
@@ -1053,12 +1063,9 @@ class ChannelListWindow( BaseWindow ) :
 						#### data cache re-load ####
 						self.mDataCache.LoadZappingmode( )
 						self.mDataCache.LoadZappingList( )
-						self.mDataCache.LoadChannelList( )
+						#reload available channel : ZappingChannel Sync for 'tblZappingChannel' DB
+						self.mDataCache.LoadChannelList( E_UPDATE_AVAIL_DB )
 						LOG_TRACE ('=====================cache re-load')
-
-					#save current zapping
-					#isSave = self.mDataCache.Channel_Save( )
-					#LOG_TRACE( 'save[%s]'% isSave )
 
 				elif answer == E_DIALOG_STATE_NO :
 					#zapping changed then will re-paint list items for cache
@@ -1110,7 +1117,8 @@ class ChannelListWindow( BaseWindow ) :
 				#### data cache re-load ####
 				self.mDataCache.LoadZappingmode( )
 				self.mDataCache.LoadZappingList( )
-				self.mDataCache.LoadChannelList( )
+				#reload available channel : ZappingChannel Sync for 'tblZappingChannel' DB
+				self.mDataCache.LoadChannelList( E_UPDATE_AVAIL_DB )
 				LOG_TRACE ('cache re-load')
 
 			elif answer == E_DIALOG_STATE_NO :
