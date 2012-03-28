@@ -485,7 +485,9 @@ class ChannelListWindow( BaseWindow ) :
 			self.mElisZappingModeInfo.mServiceType = aType
 
 			#self.mDataCache.Channel_GetZappingList( aType )
-			ret = self.mDataCache.Zappingmode_SetCurrent( self.mElisZappingModeInfo )
+			iZappingList = []
+			iZappingList.append( self.mElisZappingModeInfo )
+			ret = self.mDataCache.Zappingmode_SetCurrent( iZappingList )
 			if ret :
 				#### data cache re-load ####
 				self.mDataCache.LoadZappingmode( )
@@ -495,9 +497,7 @@ class ChannelListWindow( BaseWindow ) :
 				LOG_TRACE ('=====================cache re-load')
 
 
-
 			self.InitSlideMenuHeader( FLAG_ZAPPING_CHANGE )
-
 			self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
 			xbmc.sleep( 50 )
 			self.SubMenuAction(E_SLIDE_ACTION_MAIN, E_SLIDE_ALLCHANNEL)
@@ -1054,8 +1054,8 @@ class ChannelListWindow( BaseWindow ) :
 						groupInfo = self.mListFavorite[self.mSelectSubSlidePosition]
 						self.mElisSetZappingModeInfo.mFavoriteGroup = groupInfo
 
-					iZappingMode = []
-					iZappingMode.append( self.mElisSetZappingModeInfo )
+					iZappingList = []
+					iZappingList.append( self.mElisSetZappingModeInfo )
 					"""
 					LOG_TRACE( '1. zappingMode[%s] sortMode[%s] serviceType[%s]'%  \
 						( EnumToString('mode', self.mZappingMode),         \
@@ -1069,7 +1069,7 @@ class ChannelListWindow( BaseWindow ) :
 
 					#save zapping mode
 					self.mDataCache.Channel_Save( )
-					ret = self.mDataCache.Zappingmode_SetCurrent( iZappingMode )
+					ret = self.mDataCache.Zappingmode_SetCurrent( iZappingList )
 					LOG_TRACE( 'set zappingmode_SetCurrent[%s]'% ret )
 					if ret :
 						#### data cache re-load ####
@@ -1093,7 +1093,9 @@ class ChannelListWindow( BaseWindow ) :
 		else:
 			#channel sync
 			#self.mDataCache.mCurrentChannel = self.mNavChannel
-			ret = self.mDataCache.Zappingmode_SetCurrent( self.mElisSetZappingModeInfo )
+			iZappingList = []
+			iZappingList.append( self.mElisSetZappingModeInfo )
+			ret = self.mDataCache.Zappingmode_SetCurrent( iZappingList )
 			if ret :
 				#### data cache re-load ####
 				self.mDataCache.LoadZappingmode( )
