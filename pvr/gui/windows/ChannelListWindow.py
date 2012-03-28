@@ -484,7 +484,18 @@ class ChannelListWindow( BaseWindow ) :
 			self.mChannelListServieType = aType
 			self.mElisZappingModeInfo.mServiceType = aType
 
-			self.mDataCache.Channel_GetZappingList( aType )
+			#self.mDataCache.Channel_GetZappingList( aType )
+			ret = self.mDataCache.Zappingmode_SetCurrent( self.mElisZappingModeInfo )
+			if ret :
+				#### data cache re-load ####
+				self.mDataCache.LoadZappingmode( )
+				self.mDataCache.LoadZappingList( )
+				#reload available channel : ZappingChannel Sync for 'tblZappingChannel' DB
+				self.mDataCache.LoadChannelList( E_UPDATE_AVAIL_DB )
+				LOG_TRACE ('=====================cache re-load')
+
+
+
 			self.InitSlideMenuHeader( FLAG_ZAPPING_CHANGE )
 
 			self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
@@ -1079,9 +1090,17 @@ class ChannelListWindow( BaseWindow ) :
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
 
-		#else:
+		else:
 			#channel sync
 			#self.mDataCache.mCurrentChannel = self.mNavChannel
+			ret = self.mDataCache.Zappingmode_SetCurrent( self.mElisSetZappingModeInfo )
+			if ret :
+				#### data cache re-load ####
+				self.mDataCache.LoadZappingmode( )
+				self.mDataCache.LoadZappingList( )
+				#reload available channel : ZappingChannel Sync for 'tblZappingChannel' DB
+				self.mDataCache.LoadChannelList( E_UPDATE_AVAIL_DB )
+				LOG_TRACE ('=====================cache re-load')
 			
 
 		return answer
