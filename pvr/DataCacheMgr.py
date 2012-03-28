@@ -210,6 +210,7 @@ class DataCacheMgr( object ):
 		self.LoadConfiguredTransponder( )
 
 		# Channel
+		self.Channel_GetZappingList( self.mZappingMode.mServiceType )
 		self.LoadChannelList( )
 
 		# DATE
@@ -671,9 +672,9 @@ class DataCacheMgr( object ):
 
 		else :
 			if SUPPORT_CHANNEL_DATABASE	== True :
-				return self.mChannelDB.Satellite_GetByChannelNumber( aNumber, aType )
+				return self.mChannelDB.Satellite_GetByChannelNumber( aNumber, aRequestType )
 			else :
-				return self.mCommander.Satellite_GetByChannelNumber( aNumber, aType )
+				return self.mCommander.Satellite_GetByChannelNumber( aNumber, aRequestType )
 
 		return None
 
@@ -852,7 +853,7 @@ class DataCacheMgr( object ):
 	def Channel_SetInitialBlank( self, aBlank ) :
 		return self.mCommander.Channel_SetInitialBlank( aBlank )
 
-	def Channel_GetZappingList( self, aType, aSync ) :
+	def Channel_GetZappingList( self, aType, aSync = 0 ) :
 		return self.mCommander.Channel_GetZappingList( aType, aSync )
 
 

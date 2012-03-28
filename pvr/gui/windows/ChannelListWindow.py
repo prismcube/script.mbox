@@ -1475,7 +1475,7 @@ class ChannelListWindow( BaseWindow ) :
 		LOG_TRACE( 'Leave' )
 		return label
 
-	#@GuiLock
+	GuiLock
 	def UpdateLabelGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		LOG_TRACE( 'Enter' )
 
