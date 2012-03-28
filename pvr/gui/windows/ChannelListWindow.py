@@ -350,8 +350,8 @@ class ChannelListWindow( BaseWindow ) :
 						self.mCtrlSelectItem.setLabel( str('%s'% (idx+1) ) )
 
 					#Turn mode
-					else :
-						self.SetChannelTune( )
+					#else :
+					#	self.SetChannelTune( )
 
 				except Exception, e:
 					LOG_TRACE( 'Error except[%s]'% e )
