@@ -210,7 +210,8 @@ class DataCacheMgr( object ):
 		self.LoadConfiguredTransponder( )
 
 		# Channel
-		self.Channel_GetZappingList( self.mZappingMode.mServiceType )
+		if SUPPORT_CHANNEL_DATABASE	== True :
+			self.Channel_GetZappingList( self.mZappingMode.mServiceType )
 		self.LoadChannelList( )
 
 		# DATE
