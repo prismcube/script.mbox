@@ -61,6 +61,10 @@ CURR_CHANNEL	= 2
 CONTEXT_ACTION_VIDEO_SETTING = 1 
 CONTEXT_ACTION_AUDIO_SETTING = 2
 
+E_SYNCHRONIZED  = 0
+E_ASYNCHRONIZED = 1
+E_UPDATE_AVAIL_DB = True
+
 class LivePlate(BaseWindow):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
@@ -71,6 +75,7 @@ class LivePlate(BaseWindow):
 		self.mCurrentChannel = None
 		self.mLastChannel = None
 		self.mFakeChannel = None
+		self.mZappingMode = None
 		self.mFlag_OnEvent = True
 		self.mShowExtendInfo = False
 		self.mPropertyAge = 0
@@ -132,27 +137,30 @@ class LivePlate(BaseWindow):
 		self.mCtrlBtnPrevEpg           = self.getControl( 702 )
 		self.mCtrlBtnNextEpg           = self.getControl( 706 )
 
-		self.ShowRecording( )
-
 		self.mImgTV    = E_IMG_ICON_TV
 		self.mCtrlLblEventClock.setLabel('')
-
-		self.mCertification = False
-		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
-		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
-		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset()
-
-		#get channel
-		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent()
-		self.mFakeChannel =	self.mCurrentChannel
-		self.mLastChannel =	self.mCurrentChannel
-
 		self.mFlag_OnEvent = True
 		self.mFlag_ChannelChanged = True
 		self.mEventCopy = None
 		self.mEPGList = None
 		self.mEPGListIdx = 0
 		self.mJumpNumber = 0
+		self.mCertification = False
+		self.mZappingMode = None
+
+		self.ShowRecording( )
+		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
+		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
+		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
+
+		self.mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
+		if not self.mZappingMode :
+			self.mZappingMode = ElisIZappingMode( )
+
+		#get channel
+		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
+		self.mFakeChannel =	self.mCurrentChannel
+		self.mLastChannel =	self.mCurrentChannel
 
 		self.GetEPGList()
 		self.UpdateServiceType( self.mCurrentChannel.mServiceType )
@@ -359,7 +367,7 @@ class LivePlate(BaseWindow):
 						iEPG.mSid != self.mEventCopy.mSid or \
 						iEPG.mTsid != self.mEventCopy.mTsid or \
 						iEPG.mOnid != self.mEventCopy.mOnid :
-							LOG_TRACE('epg DIFFER, id[%s]'% ret.mEventId)
+							LOG_TRACE('epg DIFFER, id[%s]'% iEPG.mEventId)
 							self.mEventID = aEvent.mEventId
 							self.mEventCopy = iEPG
 							#update label
@@ -526,7 +534,7 @@ class LivePlate(BaseWindow):
 				gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
 				maxCount = 100
 				iEPGList = None
-				iEPGList = self.mDataCache.Epgevent_GetListByChannel( iChannel.mSid, iChannel.mTsid, iChannel.mOnid, gmtFrom, gmtUntil, maxCount )
+				iEPGList = self.mDataCache.Epgevent_GetListByChannel( iChannel.mSid, iChannel.mTsid, iChannel.mOnid, gmtFrom, gmtUntil, maxCount, True )
 				time.sleep(0.05)
 				LOG_TRACE('==================')
 				LOG_TRACE('iEPGList[%s] ch[%d] sid[%d] tid[%d] oid[%d] from[%s] until[%s]'% (iEPGList, iChannel.mNumber, iChannel.mSid, iChannel.mTsid, iChannel.mOnid, time.asctime(time.localtime(gmtFrom)), time.asctime(time.localtime(gmtUntil))) )
@@ -908,6 +916,10 @@ class LivePlate(BaseWindow):
 				time.sleep(1.5)
 				self.ShowRecording()
 
+				#reload available channel : ZappingChannel Sync for 'tblZappingChannel' DB
+				self.mDataCache.LoadChannelList( E_UPDATE_AVAIL_DB )
+
+
 		elif aFocusid == self.mCtrlBtnStopRec.getId() :
 			runningCount = self.ShowRecording()
 			LOG_TRACE( 'runningCount[%s]' %runningCount )
@@ -917,6 +929,9 @@ class LivePlate(BaseWindow):
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
 				dialog.doModal( )
 				GuiLock2( False )
+
+				#reload available channel : ZappingChannel Sync for 'tblZappingChannel' DB
+				self.mDataCache.LoadChannelList( E_UPDATE_AVAIL_DB )
 
 			time.sleep(1.5)
 			self.ShowRecording( )
@@ -961,15 +976,15 @@ class LivePlate(BaseWindow):
 			if isRunRec == 1 :
 				recImg1 = True
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
-				recLabel1 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
+				recLabel1 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
 
 			elif isRunRec == 2 :
 				recImg1 = True
 				recImg2 = True
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
-				recLabel1 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
+				recLabel1 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
-				recLabel2 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
+				recLabel2 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
 
 			btnValue = False
 			if isRunRec >= 2 :

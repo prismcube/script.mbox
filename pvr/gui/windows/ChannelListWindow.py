@@ -42,7 +42,11 @@ FLAG_CLOCKMODE_ADMYHM   = 1
 FLAG_CLOCKMODE_AHM      = 2
 FLAG_CLOCKMODE_HMS      = 3
 FLAG_CLOCKMODE_HHMM     = 4
+FLAG_MODE_JUMP      = True
+FLAG_ZAPPING_LOAD   = 0
+FLAG_ZAPPING_CHANGE = 1
 
+#slide index
 E_SLIDE_ACTION_MAIN     = 0
 E_SLIDE_ACTION_SUB      = 1
 E_SLIDE_ALLCHANNEL      = 0
@@ -53,22 +57,26 @@ E_SLIDE_MENU_FAVORITE   = 3
 #E_SLIDE_MENU_DELETEALL  = 5
 E_SLIDE_MENU_BACK       = 5
 
+#list property
 E_IMG_ICON_LOCK   = 'IconLockFocus.png'
 E_IMG_ICON_ICAS   = 'IconCas.png'
 E_IMG_ICON_MARK   = 'confluence/OverlayWatched.png'
 E_IMG_ICON_TITLE1 = 'IconHeaderTitleSmall.png'
 E_IMG_ICON_TITLE2 = 'icon_setting_focus.png'
 E_IMG_ICON_UPDOWN = 'DI_Cursor_UpDown.png'
-
 E_TAG_COLOR_RED   = '[COLOR red]'
 E_TAG_COLOR_GREY  = '[COLOR grey]'
 E_TAG_COLOR_GREY3 = '[COLOR grey3]'
 E_TAG_COLOR_END   = '[/COLOR]'
 
-FLAG_MODE_JUMP      = True
-FLAG_ZAPPING_LOAD   = 0
-FLAG_ZAPPING_CHANGE = 1
+#db
+E_SYNCHRONIZED  = 0
+E_ASYNCHRONIZED = 1
+E_UPDATE_AVAIL_DB = True
+E_TABLE_ZAPPING = 0
+E_TABLE_ALLCHANNEL = 1
 
+#dialog menu
 CONTEXT_ACTION_LOCK				= 1 
 CONTEXT_ACTION_UNLOCK			= 2
 CONTEXT_ACTION_SKIP				= 3
@@ -76,12 +84,9 @@ CONTEXT_ACTION_UNSKIP			= 4
 CONTEXT_ACTION_DELETE			= 5
 CONTEXT_ACTION_MOVE				= 6
 CONTEXT_ACTION_ADD_TO_FAV		= 7
-
-
 CONTEXT_ACTION_CREATE_GROUP_FAV	= 10
 CONTEXT_ACTION_RENAME_FAV		= 11
 CONTEXT_ACTION_DELETE_FAV		= 12
-
 
 
 class ChannelListWindow( BaseWindow ) :
@@ -199,6 +204,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.ShowRecording( )
 		self.SetVideoSize( )
+
 
 		#initialize get cache
 		zappingmode = None
@@ -350,14 +356,15 @@ class ChannelListWindow( BaseWindow ) :
 						self.mCtrlSelectItem.setLabel( str('%s'% (idx+1) ) )
 
 					#Turn mode
-					else :
-						self.SetChannelTune( )
+					#else :
+					#	self.SetChannelTune( )
 
 				except Exception, e:
 					LOG_TRACE( 'Error except[%s]'% e )
 
 			else :
-				self.SetChannelTune( )
+				if self.mChannelList :
+					self.SetChannelTune( )
 
 		elif aControlId == self.mCtrlBtnMenu.getId( ) or aControlId == self.mCtrlListMainmenu.getId( ) :
 			#list view
@@ -525,6 +532,8 @@ class ChannelListWindow( BaseWindow ) :
 				#Event UnRegister
 				#self.mEventBus.Deregister( self )
 
+				self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
+
 				self.InitSlideMenuHeader( )
 				self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
 				xbmc.sleep( 50 )
@@ -579,6 +588,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
 				self.mListItems = None
 				self.mCtrlListCHList.reset( )
+				self.mDataCache.SetChangeDBTableChannel( E_TABLE_ZAPPING )
 				self.InitSlideMenuHeader( FLAG_ZAPPING_CHANGE )
 				self.InitChannelList( )
 
@@ -1053,12 +1063,9 @@ class ChannelListWindow( BaseWindow ) :
 						#### data cache re-load ####
 						self.mDataCache.LoadZappingmode( )
 						self.mDataCache.LoadZappingList( )
-						self.mDataCache.LoadChannelList( )
+						#reload available channel : ZappingChannel Sync for 'tblZappingChannel' DB
+						self.mDataCache.LoadChannelList( E_UPDATE_AVAIL_DB )
 						LOG_TRACE ('=====================cache re-load')
-
-					#save current zapping
-					#isSave = self.mDataCache.Channel_Save( )
-					#LOG_TRACE( 'save[%s]'% isSave )
 
 				elif answer == E_DIALOG_STATE_NO :
 					#zapping changed then will re-paint list items for cache
@@ -1071,9 +1078,10 @@ class ChannelListWindow( BaseWindow ) :
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
 
-		else:
+		#else:
 			#channel sync
-			self.mDataCache.mCurrentChannel = self.mNavChannel
+			#self.mDataCache.mCurrentChannel = self.mNavChannel
+			
 
 		return answer
 
@@ -1109,7 +1117,8 @@ class ChannelListWindow( BaseWindow ) :
 				#### data cache re-load ####
 				self.mDataCache.LoadZappingmode( )
 				self.mDataCache.LoadZappingList( )
-				self.mDataCache.LoadChannelList( )
+				#reload available channel : ZappingChannel Sync for 'tblZappingChannel' DB
+				self.mDataCache.LoadChannelList( E_UPDATE_AVAIL_DB )
 				LOG_TRACE ('cache re-load')
 
 			elif answer == E_DIALOG_STATE_NO :
@@ -1433,12 +1442,12 @@ class ChannelListWindow( BaseWindow ) :
 							#maxCount= 1
 
 							iEPGList = None
-							#iEPGList = self.mDataCache.Epgevent_GetListByChannel( sid, tsid, onid, gmtFrom, gmtUntil, maxCount )
-							iEPGList = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
+							#iEPGList = self.mDataCache.Epgevent_GetListByChannel( sid, tsid, onid, gmtFrom, gmtUntil, maxCount, True )
+							iEPGList = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid, True )
 
 							#LOG_TRACE('=============epg len[%s] list[%s]'% (len(iEPGList),ClassToList('convert', iEPGList ) ) )
 							if iEPGList :
-								self.mNavEpg = iEPGList[0]
+								self.mNavEpg = iEPGList
 							else :
 								self.mNavEpg = 0
 							
@@ -1466,7 +1475,7 @@ class ChannelListWindow( BaseWindow ) :
 		LOG_TRACE( 'Leave' )
 		return label
 
-	@GuiLock
+	GuiLock
 	def UpdateLabelGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		LOG_TRACE( 'Enter' )
 
@@ -1514,6 +1523,22 @@ class ChannelListWindow( BaseWindow ) :
 				self.mCtrlRdoRadio.setSelected( aValue )
 			else :
 				self.mCtrlRdoRadio.setEnabled( aValue )
+
+		elif aCtrlID == self.mCtrlBtnEdit.getId( ) :
+			self.mCtrlBtnEdit.setEnabled( aValue )
+
+		elif aCtrlID == self.mCtrlLblRec1.getId( ) :
+			self.mCtrlLblRec1.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlImgRec1.getId( ) :
+			self.mCtrlImgRec1.setVisible( aValue )
+
+		elif aCtrlID == self.mCtrlLblRec2.getId( ) :
+			self.mCtrlLblRec2.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlImgRec2.getId( ) :
+			self.mCtrlImgRec2.setVisible( aValue )
+
 
 		LOG_TRACE( 'Leave' )
 
@@ -2483,12 +2508,15 @@ class ChannelListWindow( BaseWindow ) :
 			recLabel2 = ''
 			recImg1   = False
 			recImg2   = False
+			btnEdit   = True
 			if isRunRec == 1 :
+				btnEdit = False
 				recImg1 = True
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
 				recLabel1 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
 
 			elif isRunRec == 2 :
+				btnEdit = False
 				recImg1 = True
 				recImg2 = True
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
@@ -2496,12 +2524,12 @@ class ChannelListWindow( BaseWindow ) :
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
 				recLabel2 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
 
-			GuiLock2( True )
-			self.mCtrlLblRec1.setLabel( recLabel1 )
-			self.mCtrlImgRec1.setVisible( recImg1 )
-			self.mCtrlLblRec2.setLabel( recLabel2 )
-			self.mCtrlImgRec2.setVisible( recImg2 )
-			GuiLock2( False )
+
+			self.UpdateLabelGUI( self.mCtrlLblRec1.getId( ), recLabel1 )
+			self.UpdateLabelGUI( self.mCtrlImgRec1.getId( ), recImg1 )
+			self.UpdateLabelGUI( self.mCtrlLblRec2.getId( ), recLabel2 )
+			self.UpdateLabelGUI( self.mCtrlImgRec2.getId( ), recImg2 )
+			self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), btnEdit )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )

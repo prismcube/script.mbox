@@ -18,7 +18,7 @@ from pvr.gui.GuiConfig import *
 
 
 SUPPORT_EPG_DATABASE = True
-SUPPORT_CHANNEL_DATABASE = False
+SUPPORT_CHANNEL_DATABASE = True
 SUPPORT_TIMER_DATABASE = False
 SUPPORT_RECORD_DATABASE = True
 
@@ -210,6 +210,8 @@ class DataCacheMgr( object ):
 		self.LoadConfiguredTransponder( )
 
 		# Channel
+		if SUPPORT_CHANNEL_DATABASE	== True :
+			self.Channel_GetZappingList( self.mZappingMode.mServiceType )
 		self.LoadChannelList( )
 
 		# DATE
@@ -407,8 +409,11 @@ class DataCacheMgr( object ):
 
 		return transponderList
 
+	def SetChangeDBTableChannel( self, aChannelTable ) :
+		if SUPPORT_CHANNEL_DATABASE	== True :
+			self.mChannelDB.mDBChTable = aChannelTable
 
-	def LoadChannelList( self ) :
+	def LoadChannelList( self, aUpdateAvailDB = False, aSync = 0 ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			mType = ElisEnum.E_SERVICE_TYPE_TV
 			mMode = ElisEnum.E_MODE_ALL
@@ -417,6 +422,11 @@ class DataCacheMgr( object ):
 				mType = self.mZappingMode.mServiceType
 				mMode = self.mZappingMode.mMode
 				mSort = self.mZappingMode.mSortingMode
+
+			#available channel : ZappingChannel Sync for 'tblZappingChannel' DB
+			if aUpdateAvailDB :
+				ret = self.Channel_GetZappingList( mType, aSync )	#0:Sync, 1:aSync
+				LOG_TRACE('DB ZappingList sync[%s]'% ret)
 
 			if mMode == ElisEnum.E_MODE_ALL :
 				tmpChannelList = self.mChannelDB.Channel_GetList( mType, mMode, mSort )
@@ -647,7 +657,7 @@ class DataCacheMgr( object ):
 		return  time.mktime( localTime )
 
 
-	@DataLock
+#	@DataLock
 	def Satellite_GetByChannelNumber( self, aNumber, aRequestType = -1 ) :
 		if aRequestType == -1 :
 			cacheChannel = self.mChannelListHash.get(aNumber, None)
@@ -663,20 +673,26 @@ class DataCacheMgr( object ):
 
 		else :
 			if SUPPORT_CHANNEL_DATABASE	== True :
-				return self.mChannelDB.Satellite_GetByChannelNumber( aNumber, aType )
+				return self.mChannelDB.Satellite_GetByChannelNumber( aNumber, aRequestType )
 			else :
-				return self.mCommander.Satellite_GetByChannelNumber( aNumber, aType )
+				return self.mCommander.Satellite_GetByChannelNumber( aNumber, aRequestType )
 
 		return None
 
 
 #	@DataLock
-	def Epgevent_GetListByChannel( self, aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount ) :
+	def Epgevent_GetListByChannel( self, aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount, aReopen = False ) :
 
 		eventList = None
 		
 		if SUPPORT_EPG_DATABASE	== True :
-			eventList = self.mEpgDB.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
+			if aReopen == True :
+				epgDB = ElisEPGDB()
+				eventList = epgDB.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
+				epgDB.Close()
+			else :
+				eventList = self.mEpgDB.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
+				
 		else:
 			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
 
@@ -695,14 +711,21 @@ class DataCacheMgr( object ):
 
 
 #	@DataLock
-	def Epgevent_GetCurrent( self, aSid, aTsid, aOnid ) :
+	def Epgevent_GetCurrent( self, aSid, aTsid, aOnid, aReopen = False ) :
 
 		eventList = None
 		
 		if SUPPORT_EPG_DATABASE	== True :
-			eventList = self.mEpgDB.Epgevent_GetCurrent( aSid, aTsid, aOnid, self.Datetime_GetGMTTime() )
+			if aReopen == True :
+				epgDB = ElisEPGDB()
+				eventList = epgDB.Epgevent_GetCurrent( aSid, aTsid, aOnid, self.Datetime_GetGMTTime() )
+				epgDB.Close()
+			else :
+				eventList = self.mEpgDB.Epgevent_GetCurrent( aSid, aTsid, aOnid, self.Datetime_GetGMTTime() )
 		else:
 			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, 0, 0, 1 )
+			if eventList :
+				eventList = eventList[0]
 
 		return eventList
 
@@ -828,9 +851,12 @@ class DataCacheMgr( object ):
 	def Channel_DeleteAll( self ) :
 		return self.mCommander.Channel_DeleteAll( )
 
-
 	def Channel_SetInitialBlank( self, aBlank ) :
 		return self.mCommander.Channel_SetInitialBlank( aBlank )
+
+	def Channel_GetZappingList( self, aType, aSync = 0 ) :
+		return self.mCommander.Channel_GetZappingList( aType, aSync )
+
 
 	def Audiotrack_GetCount( self ) :
 		return self.mCommander.Audiotrack_GetCount( )
