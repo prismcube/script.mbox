@@ -143,7 +143,7 @@ class LivePlate(BaseWindow):
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset()
 
 		#get channel
-		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent()
+		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 		self.mFakeChannel =	self.mCurrentChannel
 		self.mLastChannel =	self.mCurrentChannel
 

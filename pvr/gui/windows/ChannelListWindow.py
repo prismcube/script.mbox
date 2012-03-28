@@ -350,8 +350,8 @@ class ChannelListWindow( BaseWindow ) :
 						self.mCtrlSelectItem.setLabel( str('%s'% (idx+1) ) )
 
 					#Turn mode
-					else :
-						self.SetChannelTune( )
+					#else :
+					#	self.SetChannelTune( )
 
 				except Exception, e:
 					LOG_TRACE( 'Error except[%s]'% e )
@@ -1071,9 +1071,10 @@ class ChannelListWindow( BaseWindow ) :
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
 
-		else:
+		#else:
 			#channel sync
-			self.mDataCache.mCurrentChannel = self.mNavChannel
+			#self.mDataCache.mCurrentChannel = self.mNavChannel
+			
 
 		return answer
 
@@ -1466,7 +1467,7 @@ class ChannelListWindow( BaseWindow ) :
 		LOG_TRACE( 'Leave' )
 		return label
 
-	@GuiLock
+	#@GuiLock
 	def UpdateLabelGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		LOG_TRACE( 'Enter' )
 
