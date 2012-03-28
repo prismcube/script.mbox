@@ -3,12 +3,13 @@ import xbmcgui
 import sys
 
 import pvr.gui.WindowMgr as WinMgr
+import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
 from pvr.gui.GuiConfig import *
 from ElisEnum import ElisEnum
 from ElisEventBus import ElisEventBus
 from ElisEventClass import *
-from pvr.Util import RunThread, GuiLock, LOG_TRACE, LOG_WARN, LOG_ERR, GetSetting, SetSetting, TimeToString
+from pvr.Util import RunThread, GuiLock, GuiLock2, LOG_TRACE, LOG_WARN, LOG_ERR, GetSetting, SetSetting, TimeToString
 from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
@@ -37,6 +38,15 @@ E_SORT_TITLE					= 2
 E_SORT_DURATION					= 3
 E_SORT_END						= 4
 
+
+CONTEXT_PLAY					= 0
+CONTEXT_PLAY_FROM_BEGINNIG		= 1
+CONTEXT_DELETE					= 2
+CONTEXT_LOCK					= 3
+CONTEXT_UNLOCK					= 4
+CONTEXT_RENAME					= 5
+CONTEXT_START_MARK				= 6
+CONTEXT_CLEAR_MARK				= 7
 
 
 
@@ -140,6 +150,10 @@ class ArchiveWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN :
 			pass
+
+		elif actionId == Action.ACTION_CONTEXT_MENU:
+			LOG_TRACE('')
+			self.ShowContextMenu( )
 
 		#testcode remove all archive
 		elif actionId == Action.REMOTE_0 :
@@ -346,9 +360,16 @@ class ArchiveWindow( BaseWindow ) :
 				#	recItem.setProperty('RecIcon', 'test.png')
 				#else :
 				recItem.setProperty('RecIcon', 'RecIconSample.jpg')
-
 				recItem.setProperty('RecDate', TimeToString( recInfo.mStartTime ))
 				recItem.setProperty('RecDuration', '%dm' %( recInfo.mDuration/60 ) )
+				LOG_TRACE('Locked string=%s' %recInfo.mLocked )
+				LOG_TRACE('Locked int=%d' %recInfo.mLocked )				
+				
+				if recInfo.mLocked :
+					recItem.setProperty('Locked', 'True')
+				else :
+					recItem.setProperty('Locked', 'False')
+					
 				self.mRecordListItems.append( recItem )
 
 		except Exception, ex:
@@ -432,14 +453,18 @@ class ArchiveWindow( BaseWindow ) :
 		"""
 
 
-	def StartRecordPlayback( self ) :
+	def StartRecordPlayback( self, aResume=True ) :
 		#(self ,  recordKey,  serviceType,  offsetms,  speed) :
-		position = self.GetSelectedPosition()
-		LOG_TRACE('position=%d' %position)
+		selectedPos = self.GetSelectedPosition()
+		LOG_TRACE('selectedPos=%d' %selectedPos)
 		
-		if position >= 0 :
-			recInfo = self.mRecordList[position]
-			self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
+		if selectedPos >= 0 and selectedPos < len( self.mRecordList ):
+			recInfo = self.mRecordList[selectedPos]
+			if aResume == True :
+				#ToDO
+				self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
+			else :
+				self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )			
 		#self.close()
 
 		self.SetVideoRestore();
@@ -463,3 +488,155 @@ class ArchiveWindow( BaseWindow ) :
 		return position
 
 
+	def GetMarkedList( self ) :
+		markedList = []
+		return markedList
+		
+		count = len( self.mRecordListItems )
+
+		for i in range( count ) :
+			listItem = self.mRecordListItems[i]
+			if listItem.getProperty('Locked') == 'True' :
+				markedList.append( i )
+
+		return markedList
+
+
+	def ShowContextMenu( self ) :
+		LOG_TRACE('')
+		try :
+			selectedPos = self.GetSelectedPosition()
+			context = []
+
+			markedList = self.GetMarkedList()
+			
+			if markedList and len( markedList ) > 0 :
+				context.append( ContextItem( 'Delete', CONTEXT_DELETE ) )
+				context.append( ContextItem( 'Lock', CONTEXT_LOCK ) )
+				context.append( ContextItem( 'Unlock', CONTEXT_UNLOCK ) )	
+				context.append( ContextItem( 'Clear Marked Items', CONTEXT_CLEAR_MARK ) )	
+				
+			elif selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
+				recordInfo = self.mRecordList[ selectedPos ]		
+				context.append( ContextItem( 'Play', CONTEXT_PLAY ) )
+				context.append( ContextItem( 'Play from beginning', CONTEXT_PLAY_FROM_BEGINNIG ) )
+				context.append( ContextItem( 'Delete', CONTEXT_DELETE ) )
+				if recordInfo.mLocked:
+					context.append( ContextItem( 'Unlock', CONTEXT_UNLOCK ) )
+				else :
+					context.append( ContextItem( 'Lock', CONTEXT_LOCK ) )
+
+				context.append( ContextItem( 'Rename', CONTEXT_RENAME ) )
+				context.append( ContextItem( 'Start Mark', CONTEXT_START_MARK ) )
+
+			else :
+				return
+				
+			GuiLock2( True )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+			dialog.SetProperty( context )
+			dialog.doModal( )
+			GuiLock2( False )
+			
+			contextAction = dialog.GetSelectedAction()
+			self.DoContextAction( contextAction ) 
+
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)
+
+
+	def DoContextAction( self, aContextAction ) :
+		LOG_TRACE('aContextAction=%d' %aContextAction )
+
+		if aContextAction == CONTEXT_PLAY :
+			LOG_TRACE('')
+			self.StartRecordPlayback( True )
+
+		elif aContextAction == CONTEXT_PLAY_FROM_BEGINNIG :
+			self.StartRecordPlayback( False )
+
+		elif aContextAction == CONTEXT_DELETE :
+			LOG_TRACE('')
+			self.ShowDeleteConfirm()
+
+		elif aContextAction == CONTEXT_LOCK :
+			LOG_TRACE('')
+			self.DoLockUnlock( True )
+
+		elif aContextAction == CONTEXT_UNLOCK :
+			LOG_TRACE('')
+			self.DoLockUnlock( False )
+
+		elif aContextAction == CONTEXT_RENAME :
+			LOG_TRACE('')
+
+		elif aContextAction == CONTEXT_START_MARK :
+			LOG_TRACE('')
+
+		elif aContextAction == CONTEXT_CLEAR_MARK :
+			LOG_TRACE('')
+		else :
+			LOG_ERR('Unknown Context Action')
+
+
+	def ShowDeleteConfirm( self ) :
+		LOG_TRACE('ShowDeleteConfirm')
+
+		markedList = self.GetMarkedList()
+		selectedPos = self.GetSelectedPosition( )
+
+		if markedList == None or len( markedList ) <= 0 :
+			markedList = []
+			if selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
+				markedList.append( selectedPos )
+
+		if len( markedList ) > 0 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( 'Confirm', 'Do you want to delete record(s)?' )
+			dialog.doModal( )
+
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				self.DoDelete( markedList )
+
+
+	def DoDelete( self, aDeleteList ) :
+
+		if len( aDeleteList ) > 0 :
+			self.OpenBusyDialog( )
+
+			count = len( aDeleteList )
+			for i in range( count ) :
+				LOG_TRACE('i=%d' %i)
+				self.mDataCache.Record_DeleteRecord( self.mRecordList[i].mRecordKey, self.mServiceType )
+
+			self.CloseBusyDialog( )
+			self.Flush( )
+			self.Load( )
+			self.UpdateList( )
+
+
+	def DoLockUnlock( self, aLock=False ) :
+		markedList = self.GetMarkedList()
+		selectedPos = self.GetSelectedPosition( )
+
+		if markedList == None or len( markedList ) <= 0 :
+			markedList = []
+			if selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
+				markedList.append( selectedPos )
+				
+		if len( markedList ) > 0 :	
+			count = len( markedList )
+			for i in range( count ) :
+				LOG_TRACE('i=%d' %i)
+				position =  markedList[i]
+				listItem = self.mRecordListItems[position]
+				if aLock == True :
+					self.mDataCache.Record_SetLock( self.mRecordList[position].mRecordKey, self.mServiceType, True )
+					listItem.setProperty('Locked', 'True')
+				else :
+					self.mDataCache.Record_SetLock( self.mRecordList[position].mRecordKey, self.mServiceType, False )				
+					listItem.setProperty('Locked', 'False')							
+			xbmc.executebuiltin('container.update')
+
+
+	

@@ -3939,6 +3939,15 @@
 						<texture>$INFO[ListItem.Overlay]</texture>
 						<visible>true</visible>
 					</control>
+					<-- Lock -->					
+					<control type="image">
+						<posx>700</posx>
+						<posy>25</posy>
+						<width>30</width>
+						<height>25</height>
+						<texture>confluence/OverlayLocked.png</texture>
+						<visible>substring(ListItem.Property(Locked),True)</visible>
+					</control>
 				</itemlayout>
 				<focusedlayout height="70" width="610">
 					<control type="image">
@@ -4044,6 +4053,15 @@
 						<!--
 						<visible>substring(Window.Property(ViewMode),common)</visible>
 						-->
+					</control>
+					<-- Lock -->
+					<control type="image">
+						<posx>700</posx>
+						<posy>25</posy>
+						<width>30</width>
+						<height>25</height>
+						<texture>confluence/OverlayLocked.png</texture>
+						<visible>substring(ListItem.Property(Locked),True)</visible>
 					</control>
 				</focusedlayout>
 			</control>
