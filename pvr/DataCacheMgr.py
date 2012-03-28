@@ -916,6 +916,14 @@ class DataCacheMgr( object ):
 		return self.mCommander.Record_DeleteRecord( aKey, aServiceType )
 
 
+	def Record_SetLock(self, aKey, aServiceType, aLock ) :
+		return self.mCommander.Record_SetLock( aKey, aServiceType, aLock )
+
+
+	def Record_Rename(self, aKey, aServiceType, aNewName ) :
+		return self.mCommander.Record_Rename( aKey, aServiceType, aNewName )
+
+
 	def Timer_GetTimerList( self ) :
 		if SUPPORT_TIMER_DATABASE == True :
 			return self.mTimerDB.Timer_GetTimerList()
