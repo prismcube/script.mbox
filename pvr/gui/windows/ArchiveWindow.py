@@ -367,16 +367,17 @@ class ArchiveWindow( BaseWindow ) :
 				#if i == 0 :
 				#	recItem.setProperty('RecIcon', 'test.png')
 				#else :
-				recItem.setProperty('RecIcon', 'RecIconSample.jpg')
 				recItem.setProperty('RecDate', TimeToString( recInfo.mStartTime ))
 				recItem.setProperty('RecDuration', '%dm' %( recInfo.mDuration/60 ) )
 				
 				if recInfo.mLocked :
 					recItem.setProperty('Locked', 'True')
+					recItem.setProperty('RecIcon', 'IconNotAvailable.png')
 				else :
 					recItem.setProperty('Locked', 'False')
+					recItem.setProperty('RecIcon', 'RecIconSample.jpg')					
 
-				recItem.setProperty('Marked', 'False')					
+				recItem.setProperty('Marked', 'False')
 					
 				self.mRecordListItems.append( recItem )
 
@@ -468,6 +469,10 @@ class ArchiveWindow( BaseWindow ) :
 		
 		if selectedPos >= 0 and selectedPos < len( self.mRecordList ):
 			recInfo = self.mRecordList[selectedPos]
+			if recInfo.mLocked == True :
+				if self.CheckPincode() == False :
+					return False
+			
 			if aResume == True :
 				#ToDO
 				self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
@@ -604,11 +609,25 @@ class ArchiveWindow( BaseWindow ) :
 				markedList.append( selectedPos )
 
 		if len( markedList ) > 0 :
+			hasLocked = False
+
+			# Check Locked Item
+			for i in range( len( markedList ) ) :
+				position = markedList[i]
+				recInfo = self.mRecordList[ position ]
+				if recInfo.mLocked == True :
+					hasLocked = True
+					break
+
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( 'Confirm', 'Do you want to delete record(s)?' )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				if hasLocked == True :
+					if self.CheckPincode() == False :
+						return False
+
 				self.DoDelete( markedList )
 
 
@@ -624,6 +643,10 @@ class ArchiveWindow( BaseWindow ) :
 					xbmcgui.Dialog( ).ok('Infomation', 'Input more than %d characters' %MININUM_KEYWORD_SIZE )
 					return
 				else :
+					if self.mRecordList[ selectedPos ].mLocked == True :
+						if self.CheckPincode() == False :
+							return False
+
 					LOG_TRACE('Key=%d ServiceType=%d Name=%s %s' %(self.mRecordList[ selectedPos ].mRecordKey,  self.mServiceType, self.mRecordList[ selectedPos ].mRecordName, newName ) )
 					self.mDataCache.Record_Rename( self.mRecordList[ selectedPos ].mRecordKey, self.mServiceType, newName )
 					self.mRecordListItems[selectedPos].setLabel2( newName )	
@@ -643,8 +666,9 @@ class ArchiveWindow( BaseWindow ) :
 
 			count = len( aDeleteList )
 			for i in range( count ) :
-				LOG_TRACE('i=%d serviceType=%d key=%d' %(i, self.mServiceType, self.mRecordList[i].mRecordKey ) )
-				self.mDataCache.Record_DeleteRecord( self.mRecordList[i].mRecordKey, self.mServiceType )
+				position = aDeleteList[i]
+				LOG_TRACE('i=%d serviceType=%d key=%d' %(position, self.mServiceType, self.mRecordList[position].mRecordKey ) )
+				self.mDataCache.Record_DeleteRecord( self.mRecordList[position].mRecordKey, self.mServiceType )
 
 			self.CloseBusyDialog( )
 			self.Flush( )
@@ -661,7 +685,10 @@ class ArchiveWindow( BaseWindow ) :
 			if selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
 				markedList.append( selectedPos )
 				
-		if len( markedList ) > 0 :	
+		if len( markedList ) > 0 :
+			if self.CheckPincode() == False :
+				return False
+
 			count = len( markedList )
 			for i in range( count ) :
 				LOG_TRACE('i=%d' %i)
@@ -671,10 +698,13 @@ class ArchiveWindow( BaseWindow ) :
 					self.mRecordList[ position ].mLocked = True
 					self.mDataCache.Record_SetLock( self.mRecordList[position].mRecordKey, self.mServiceType, True )
 					listItem.setProperty('Locked', 'True')
+					listItem.setProperty('RecIcon', 'IconNotAvailable.png')
 				else :
 					self.mRecordList[ position ].mLocked = False
 					self.mDataCache.Record_SetLock( self.mRecordList[position].mRecordKey, self.mServiceType, False )				
 					listItem.setProperty('Locked', 'False')
+					listItem.setProperty('RecIcon', 'RecIconSample.jpg')
+
 			self.DoClearMark()
 			xbmc.executebuiltin('container.update')
 
@@ -724,4 +754,26 @@ class ArchiveWindow( BaseWindow ) :
 				LOG_WARN('Unknown view mode')
 			
 		#xbmc.executebuiltin('container.update')
+
+
+	def CheckPincode( self ) :
+		LOG_TRACE('')
+		savedPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
+		GuiLock2( True )
+		pincodeDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+		pincodeDialog.SetDialogProperty( 'Input Pincode', '', 4, True )
+		pincodeDialog.doModal( )
+		GuiLock2( False )
+		
+		if pincodeDialog.IsOK( ) == E_DIALOG_STATE_YES :
+			inputPincode = int( pincodeDialog.GetString( ) )
+			LOG_TRACE('Input pincode=%d savedPincode=%d' %( savedPincode, inputPincode) )
+			if inputPincode == savedPincode :
+				return True
+			else :
+				infoDialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				infoDialog.SetDialogProperty( 'ERROR', 'New PIN codes do not match' )
+	 			infoDialog.doModal( )
+
+		return False
 		
