@@ -2239,8 +2239,8 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mMarkList :
 				idx = int(self.mMarkList[0])
 				GuiLock2( True )
-				#xbmc.executebuiltin('xbmc.Container.PreviousViewMode')
-				xbmc.executebuiltin('xbmc.Container.SetViewMode(50)')
+				#xbmc.executebuiltin('xbmc.Container.SetViewMode(50)')
+				xbmc.executebuiltin('container.update')
 				xbmc.sleep( 50 )
 				self.mCtrlListCHList.selectItem(idx)
 				self.setFocusId( self.mCtrlGropCHList.getId( ) )

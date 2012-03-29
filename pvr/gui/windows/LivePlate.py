@@ -998,13 +998,11 @@ class LivePlate(BaseWindow):
 				if isRunRec > 0 :
 					#use zapping table, in recording
 					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ZAPPING )
+					self.mDataCache.Channel_GetZappingList( )
+					self.mDataCache.LoadChannelList( )
 				else :
 					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
 
-				#### data cache re-load ####
-				self.mDataCache.Channel_GetZappingList( )
-				self.mDataCache.LoadChannelList( )
-				LOG_TRACE('Recording changed: cache re-load')
 				ret = self.mDataCache.GetChangeDBTableChannel( )
 				LOG_TRACE('table[%s]'% ret)
 
