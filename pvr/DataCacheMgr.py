@@ -210,8 +210,7 @@ class DataCacheMgr( object ):
 		self.LoadConfiguredTransponder( )
 
 		# Channel
-		if SUPPORT_CHANNEL_DATABASE	== True :
-			self.Channel_GetZappingList( self.mZappingMode.mServiceType )
+		self.Channel_GetZappingList( self.mZappingMode.mServiceType )
 		self.LoadChannelList( )
 
 		# DATE
@@ -855,7 +854,8 @@ class DataCacheMgr( object ):
 		return self.mCommander.Channel_SetInitialBlank( aBlank )
 
 	def Channel_GetZappingList( self, aType, aSync = 0 ) :
-		return self.mCommander.Channel_GetZappingList( aType, aSync )
+		if SUPPORT_CHANNEL_DATABASE	== True :
+			return self.mCommander.Channel_GetZappingList( aType, aSync )
 
 
 	def Audiotrack_GetCount( self ) :

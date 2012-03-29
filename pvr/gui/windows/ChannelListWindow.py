@@ -484,8 +484,24 @@ class ChannelListWindow( BaseWindow ) :
 			self.mChannelListServieType = aType
 			self.mElisZappingModeInfo.mServiceType = aType
 
-			self.InitSlideMenuHeader( FLAG_ZAPPING_CHANGE )
+ 			#self.mDataCache.Channel_GetZappingList( aType )
+			iZappingList = []
+			iZappingList.append( self.mElisZappingModeInfo )
+			ret = self.mDataCache.Zappingmode_SetCurrent( iZappingList )
+			LOG_TRACE('---------1 Type[%s] set[%s]'% (self.mElisZappingModeInfo.mServiceType,ret) )
+			LOG_TRACE('zapping[%s]'% ClassToList('convert', iZappingList) )
+			if ret :
+				#### data cache re-load ####
+				self.mDataCache.LoadZappingmode( )
+				self.mDataCache.LoadZappingList( )
+				#reload available channel : ZappingChannel Sync for 'tblZappingChannel' DB
+				self.mDataCache.LoadChannelList( E_UPDATE_AVAIL_DB )
+				LOG_TRACE ('=====================cache re-load')
 
+				zapping = self.mDataCache.Zappingmode_GetCurrent( )
+				LOG_TRACE('---------2 type[%s]'% zapping.mServiceType)
+
+			self.InitSlideMenuHeader( FLAG_ZAPPING_CHANGE )
 			self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
 			xbmc.sleep( 50 )
 			self.SubMenuAction(E_SLIDE_ACTION_MAIN, E_SLIDE_ALLCHANNEL)
@@ -1042,8 +1058,8 @@ class ChannelListWindow( BaseWindow ) :
 						groupInfo = self.mListFavorite[self.mSelectSubSlidePosition]
 						self.mElisSetZappingModeInfo.mFavoriteGroup = groupInfo
 
-					iZappingMode = []
-					iZappingMode.append( self.mElisSetZappingModeInfo )
+					iZappingList = []
+					iZappingList.append( self.mElisSetZappingModeInfo )
 					"""
 					LOG_TRACE( '1. zappingMode[%s] sortMode[%s] serviceType[%s]'%  \
 						( EnumToString('mode', self.mZappingMode),         \
@@ -1057,7 +1073,7 @@ class ChannelListWindow( BaseWindow ) :
 
 					#save zapping mode
 					self.mDataCache.Channel_Save( )
-					ret = self.mDataCache.Zappingmode_SetCurrent( iZappingMode )
+					ret = self.mDataCache.Zappingmode_SetCurrent( iZappingList )
 					LOG_TRACE( 'set zappingmode_SetCurrent[%s]'% ret )
 					if ret :
 						#### data cache re-load ####
@@ -1075,12 +1091,29 @@ class ChannelListWindow( BaseWindow ) :
 						isRestore = self.mDataCache.Channel_Restore( True )
 						LOG_TRACE( 'Restore[%s]'% isRestore )
 
+					iZappingList = []
+					iZappingList.append( self.mElisSetZappingModeInfo )
+					ret = self.mDataCache.Zappingmode_SetCurrent( iZappingList )
+					if ret :
+						#### data cache re-load ####
+						self.mDataCache.LoadZappingmode( )
+						self.mDataCache.LoadZappingList( )
+						#reload available channel : ZappingChannel Sync for 'tblZappingChannel' DB
+						self.mDataCache.LoadChannelList( E_UPDATE_AVAIL_DB )
+						LOG_TRACE ('=====================cache re-load')
+
+						if self.mElisSetZappingModeInfo.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
+							self.mDataCache.Player_AVBlank( False, True )
+						else :
+							self.mDataCache.Player_AVBlank( True, True )
+
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
 
-		#else:
+		else:
 			#channel sync
 			#self.mDataCache.mCurrentChannel = self.mNavChannel
+			pass
 			
 
 		return answer
@@ -1434,17 +1467,8 @@ class ChannelListWindow( BaseWindow ) :
 							sid  = iChannel.mSid
 							tsid = iChannel.mTsid
 							onid = iChannel.mOnid
-
-							#gmtime = self.mDataCache.Datetime_GetGMTTime()
-							#LOG_TRACE('gmt[%s]'% EpgInfoClock(3,gmtime,0)[0] )
-							#gmtFrom = gmtime
-							#gmtUntil= gmtime
-							#maxCount= 1
-
 							iEPGList = None
-							#iEPGList = self.mDataCache.Epgevent_GetListByChannel( sid, tsid, onid, gmtFrom, gmtUntil, maxCount, True )
 							iEPGList = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid, True )
-
 							#LOG_TRACE('=============epg len[%s] list[%s]'% (len(iEPGList),ClassToList('convert', iEPGList ) ) )
 							if iEPGList :
 								self.mNavEpg = iEPGList
@@ -1670,6 +1694,7 @@ class ChannelListWindow( BaseWindow ) :
 
 					ret = None
 					ret = self.mDataCache.Channel_SetCurrent( self.mCurrentChannel, self.mChannelListServieType)
+					self.mDataCache.Player_AVBlank( False, True )
 					LOG_TRACE( 'Pincode success' )
 
 				else:
