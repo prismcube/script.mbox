@@ -3924,6 +3924,7 @@
 						<label>$INFO[ListItem.Property(RecDuration)]</label>
 						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
 					</control>
+					<!-- Thumbnail  and  Lock -->					
 					<control type="image">
 						<posx>5</posx>
 						<posy>5</posy>
@@ -3939,14 +3940,14 @@
 						<texture>$INFO[ListItem.Overlay]</texture>
 						<visible>true</visible>
 					</control>
-					<-- Lock -->					
+					<!-- Mark -->					
 					<control type="image">
-						<posx>700</posx>
-						<posy>25</posy>
-						<width>30</width>
-						<height>25</height>
-						<texture>confluence/OverlayLocked.png</texture>
-						<visible>substring(ListItem.Property(Locked),True)</visible>
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture>confluence/OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 				</itemlayout>
 				<focusedlayout height="70" width="610">
@@ -3981,7 +3982,7 @@
 						<visible>Control.HasFocus(3400)+substring(Window.Property(ViewMode),common)</visible>
 						-->
 					</control>
-
+					<!-- Thumbnail  and  Lock -->
 					<control type="image">
 						<posx>5</posx>
 						<posy>5</posy>
@@ -4054,14 +4055,14 @@
 						<visible>substring(Window.Property(ViewMode),common)</visible>
 						-->
 					</control>
-					<-- Lock -->
+					<!-- Mark -->
 					<control type="image">
-						<posx>700</posx>
-						<posy>25</posy>
-						<width>30</width>
-						<height>25</height>
-						<texture>confluence/OverlayLocked.png</texture>
-						<visible>substring(ListItem.Property(Locked),True)</visible>
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture>confluence/OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 				</focusedlayout>
 			</control>
@@ -4185,6 +4186,15 @@
 						<aspectratio>keep</aspectratio>
 						<texture>$INFO[ListItem.Overlay]</texture>
 					</control>
+					<!-- Mark -->
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture>confluence/OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(Marked),True)</visible>
+					</control>
 				</itemlayout>
 				<focusedlayout height="275" width="270">
 					<control type="image">
@@ -4243,6 +4253,15 @@
 						<height>35</height>
 						<aspectratio>keep</aspectratio>
 						<texture>$INFO[ListItem.Overlay]</texture>
+					</control>
+					<!-- Mark -->
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture>confluence/OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 				</focusedlayout>
 			</control>
@@ -4309,6 +4328,15 @@
 						<bordersize>4</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
+					<!-- Mark -->
+					<control type="image">
+						<posx>0</posx>
+						<posy>45</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture>confluence/OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(Marked),True)</visible>
+					</control>
 				</itemlayout>
 				<focusedlayout height="310" width="218">
 					<control type="image">
@@ -4348,6 +4376,15 @@
 							<effect type="fade" start="100" end="0" time="200" />
 							<effect type="slide" end="0,0" start="40,40" time="200" />
 						</animation>
+					</control>
+					<!-- Mark -->
+					<control type="image">
+						<posx>0</posx>
+						<posy>45</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture>confluence/OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 				</focusedlayout>
 			</control>
@@ -4467,6 +4504,15 @@
 						<fadetime>200</fadetime>
 						<texture background="true" flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem.Icon]</texture>
 					</control>
+					<!-- Mark -->
+					<control type="image">
+						<posx>0</posx>
+						<posy>45</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture>confluence/OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(Marked),True)</visible>
+					</control>
 				</itemlayout>
 				<focusedlayout height="310" width="120">
 					<control type="image">
@@ -4497,6 +4543,15 @@
 							<effect type="fade" start="100" end="0" time="200" />
 							<effect type="slide" end="0,0" start="10,5" time="200" />
 						</animation>
+					</control>
+					<!-- Mark -->
+					<control type="image">
+						<posx>0</posx>
+						<posy>45</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture>confluence/OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 				</focusedlayout>
 			</control>

@@ -50,6 +50,9 @@ CONTEXT_CLEAR_MARK				= 7
 
 
 
+MININUM_KEYWORD_SIZE			= 3
+
+
 class ArchiveWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
@@ -129,7 +132,10 @@ class ArchiveWindow( BaseWindow ) :
 			focusId = self.GetFocusId()
 			LOG_ERR('ERROR TEST focusId=%d' %focusId)			
 			if focusId == LIST_ID_COMMON_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD or focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD:
-				self.StartRecordPlayback()
+				if	self.mMarkMode == True	:
+					self.DoMarkToggle()
+				else :
+					self.StartRecordPlayback()
 				#self.close()
 			LOG_ERR('ERROR TEST')
 
@@ -291,6 +297,8 @@ class ArchiveWindow( BaseWindow ) :
 
 	def Load( self ) :
 
+		self.mMarkMode = False
+
 		LOG_TRACE('----------------------------------->')
 		try :
 			self.mRecordList = self.mDataCache.Record_GetList( self.mServiceType )
@@ -359,16 +367,17 @@ class ArchiveWindow( BaseWindow ) :
 				#if i == 0 :
 				#	recItem.setProperty('RecIcon', 'test.png')
 				#else :
-				recItem.setProperty('RecIcon', 'RecIconSample.jpg')
 				recItem.setProperty('RecDate', TimeToString( recInfo.mStartTime ))
 				recItem.setProperty('RecDuration', '%dm' %( recInfo.mDuration/60 ) )
-				LOG_TRACE('Locked string=%s' %recInfo.mLocked )
-				LOG_TRACE('Locked int=%d' %recInfo.mLocked )				
 				
 				if recInfo.mLocked :
 					recItem.setProperty('Locked', 'True')
+					recItem.setProperty('RecIcon', 'IconNotAvailable.png')
 				else :
 					recItem.setProperty('Locked', 'False')
+					recItem.setProperty('RecIcon', 'RecIconSample.jpg')					
+
+				recItem.setProperty('Marked', 'False')
 					
 				self.mRecordListItems.append( recItem )
 
@@ -460,6 +469,10 @@ class ArchiveWindow( BaseWindow ) :
 		
 		if selectedPos >= 0 and selectedPos < len( self.mRecordList ):
 			recInfo = self.mRecordList[selectedPos]
+			if recInfo.mLocked == True :
+				if self.CheckPincode() == False :
+					return False
+			
 			if aResume == True :
 				#ToDO
 				self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
@@ -490,13 +503,15 @@ class ArchiveWindow( BaseWindow ) :
 
 	def GetMarkedList( self ) :
 		markedList = []
-		return markedList
-		
+
+		if self.mRecordListItems == None :
+			return markedList
+
 		count = len( self.mRecordListItems )
 
 		for i in range( count ) :
 			listItem = self.mRecordListItems[i]
-			if listItem.getProperty('Locked') == 'True' :
+			if listItem.getProperty('Marked') == 'True' :
 				markedList.append( i )
 
 		return markedList
@@ -569,12 +584,15 @@ class ArchiveWindow( BaseWindow ) :
 
 		elif aContextAction == CONTEXT_RENAME :
 			LOG_TRACE('')
+			self.ShowRenameDialog( )
 
 		elif aContextAction == CONTEXT_START_MARK :
 			LOG_TRACE('')
+			self.DoStartMark( )
 
 		elif aContextAction == CONTEXT_CLEAR_MARK :
-			LOG_TRACE('')
+			LOG_TRACE('')		
+			self.DoClearMark( )
 		else :
 			LOG_ERR('Unknown Context Action')
 
@@ -591,12 +609,54 @@ class ArchiveWindow( BaseWindow ) :
 				markedList.append( selectedPos )
 
 		if len( markedList ) > 0 :
+			hasLocked = False
+
+			# Check Locked Item
+			for i in range( len( markedList ) ) :
+				position = markedList[i]
+				recInfo = self.mRecordList[ position ]
+				if recInfo.mLocked == True :
+					hasLocked = True
+					break
+
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( 'Confirm', 'Do you want to delete record(s)?' )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				if hasLocked == True :
+					if self.CheckPincode() == False :
+						return False
+
 				self.DoDelete( markedList )
+
+
+	def ShowRenameDialog( self ) :
+		selectedPos = self.GetSelectedPosition( )	
+		try :
+			kb = xbmc.Keyboard( '', 'Rename', False )
+			kb.doModal( )
+			if kb.isConfirmed( ) :
+				newName = kb.getText( )
+				LOG_TRACE('newName len=%d' %len( newName ) )
+				if len( newName ) < MININUM_KEYWORD_SIZE :
+					xbmcgui.Dialog( ).ok('Infomation', 'Input more than %d characters' %MININUM_KEYWORD_SIZE )
+					return
+				else :
+					if self.mRecordList[ selectedPos ].mLocked == True :
+						if self.CheckPincode() == False :
+							return False
+
+					LOG_TRACE('Key=%d ServiceType=%d Name=%s %s' %(self.mRecordList[ selectedPos ].mRecordKey,  self.mServiceType, self.mRecordList[ selectedPos ].mRecordName, newName ) )
+					self.mDataCache.Record_Rename( self.mRecordList[ selectedPos ].mRecordKey, self.mServiceType, newName )
+					self.mRecordListItems[selectedPos].setLabel2( newName )	
+					self.mRecordList[ selectedPos ].mRecordName = newName
+					xbmc.executebuiltin('container.update')
+
+					
+
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)
 
 
 	def DoDelete( self, aDeleteList ) :
@@ -606,8 +666,9 @@ class ArchiveWindow( BaseWindow ) :
 
 			count = len( aDeleteList )
 			for i in range( count ) :
-				LOG_TRACE('i=%d' %i)
-				self.mDataCache.Record_DeleteRecord( self.mRecordList[i].mRecordKey, self.mServiceType )
+				position = aDeleteList[i]
+				LOG_TRACE('i=%d serviceType=%d key=%d' %(position, self.mServiceType, self.mRecordList[position].mRecordKey ) )
+				self.mDataCache.Record_DeleteRecord( self.mRecordList[position].mRecordKey, self.mServiceType )
 
 			self.CloseBusyDialog( )
 			self.Flush( )
@@ -624,19 +685,95 @@ class ArchiveWindow( BaseWindow ) :
 			if selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
 				markedList.append( selectedPos )
 				
-		if len( markedList ) > 0 :	
+		if len( markedList ) > 0 :
+			if self.CheckPincode() == False :
+				return False
+
 			count = len( markedList )
 			for i in range( count ) :
 				LOG_TRACE('i=%d' %i)
 				position =  markedList[i]
 				listItem = self.mRecordListItems[position]
 				if aLock == True :
+					self.mRecordList[ position ].mLocked = True
 					self.mDataCache.Record_SetLock( self.mRecordList[position].mRecordKey, self.mServiceType, True )
 					listItem.setProperty('Locked', 'True')
+					listItem.setProperty('RecIcon', 'IconNotAvailable.png')
 				else :
+					self.mRecordList[ position ].mLocked = False
 					self.mDataCache.Record_SetLock( self.mRecordList[position].mRecordKey, self.mServiceType, False )				
-					listItem.setProperty('Locked', 'False')							
+					listItem.setProperty('Locked', 'False')
+					listItem.setProperty('RecIcon', 'RecIconSample.jpg')
+
+			self.DoClearMark()
 			xbmc.executebuiltin('container.update')
 
 
-	
+	def DoStartMark( self ) :
+		self.mMarkMode = True
+
+
+	def DoClearMark( self ) :
+		self.mMarkMode = False
+
+		if self.mRecordListItems == None :
+			return
+ 
+		for listItem in self.mRecordListItems:
+			listItem.setProperty('Marked', 'False')
+
+
+	def DoMarkToggle( self ) :
+		if self.mRecordListItems == None :
+			return
+			
+		selectedPos = self.GetSelectedPosition( )
+
+		if selectedPos >= 0 and selectedPos < len( self.mRecordListItems ) :
+			listItem = self.mRecordListItems[selectedPos]
+			if listItem.getProperty('Marked') == 'True' :
+				listItem.setProperty('Marked', 'False')
+			else :
+				listItem.setProperty('Marked', 'True')			
+
+
+		selectedPos = selectedPos + 1	
+		if selectedPos >= len( self.mRecordListItems ) :
+			selectedPos = 0
+			
+		if selectedPos >= 0 and selectedPos < len( self.mRecordListItems ) :
+			if self.mViewMode == E_VIEW_LIST :
+				self.mCtrlCommonList.selectItem( selectedPos )		
+			elif self.mViewMode == E_VIEW_THUMBNAIL :
+				self.mCtrlThumbnailList.selectItem( selectedPos )		
+			elif self.mViewMode == E_VIEW_POSTER_WRAP :
+				self.mCtrlPosterwrapList.addselectItemItems( selectedPos )		
+			elif self.mViewMode == E_VIEW_FANART :
+				self.mCtrlFanartList.selectItem( selectedPos )		
+			else :
+				LOG_WARN('Unknown view mode')
+			
+		#xbmc.executebuiltin('container.update')
+
+
+	def CheckPincode( self ) :
+		LOG_TRACE('')
+		savedPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
+		GuiLock2( True )
+		pincodeDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+		pincodeDialog.SetDialogProperty( 'Input Pincode', '', 4, True )
+		pincodeDialog.doModal( )
+		GuiLock2( False )
+		
+		if pincodeDialog.IsOK( ) == E_DIALOG_STATE_YES :
+			inputPincode = int( pincodeDialog.GetString( ) )
+			LOG_TRACE('Input pincode=%d savedPincode=%d' %( savedPincode, inputPincode) )
+			if inputPincode == savedPincode :
+				return True
+			else :
+				infoDialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				infoDialog.SetDialogProperty( 'ERROR', 'New PIN codes do not match' )
+	 			infoDialog.doModal( )
+
+		return False
+		
