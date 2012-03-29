@@ -120,7 +120,7 @@ class DialogAddNewSatellite( SettingDialog ) :
 		self.ResetAllControl( )
 	
 		if self.mSatelliteName == None :
-			self.mSatelliteName = 'No Name'
+			self.mSatelliteName = ''
 		self.AddInputControl( E_DialogInput01, 'Satellite Name', self.mSatelliteName )
 		self.AddUserEnumControl( E_DialogSpinEx01, 'Longitude Direction', E_LIST_MY_LONGITUDE, self.mIsWest )
 
