@@ -694,7 +694,7 @@ class LivePlate(BaseWindow):
 				if inputPin == str('%s'% self.mPropertyPincode) :
 					self.mPincodeEnter = FLAG_MASK_NONE
 					#ret = self.mDataCache.Channel_SetInitialBlank( False )
-					#self.mDataCache.Player_AVBlank( False, True )
+					self.mDataCache.Player_AVBlank( False, True )
 					mNumber = self.mCurrentChannel.mNumber
 					mType = self.mCurrentChannel.mServiceType
 					ret = self.mDataCache.Channel_SetCurrent( mNumber, mType)
