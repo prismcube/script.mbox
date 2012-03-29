@@ -956,6 +956,8 @@ class DataCacheMgr( object ):
 	def Record_Rename(self, aKey, aServiceType, aNewName ) :
 		return self.mCommander.Record_Rename( aKey, aServiceType, aNewName )
 
+	def Timer_StopRecordingByRecordKey( self, aKey ) :
+		return self.mCommander.Timer_StopRecordingByRecordKey( aKey )
 
 	def Timer_GetTimerList( self ) :
 		if SUPPORT_TIMER_DATABASE == True :
