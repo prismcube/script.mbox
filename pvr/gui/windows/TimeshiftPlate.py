@@ -42,8 +42,6 @@ E_INDEX_FIRST_RECORDING = 0
 E_INDEX_SECOND_RECORDING = 1
 E_INDEX_JUMP_MAX = 100
 
-E_UPDATE_AVAIL_DB = True
-
 class TimeShiftPlate(BaseWindow):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
@@ -246,8 +244,6 @@ class TimeShiftPlate(BaseWindow):
 			if isOK :
 				time.sleep(1.5)
 				self.ShowRecording()
-				#reload available channel : ZappingChannel Sync for 'tblZappingChannel' DB
-				self.mDataCache.LoadChannelList( E_UPDATE_AVAIL_DB )
 
 		elif aControlId == self.mCtrlBtnBookMark.getId():
 			self.ShowDialog( aControlId )

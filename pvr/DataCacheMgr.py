@@ -210,7 +210,7 @@ class DataCacheMgr( object ):
 		self.LoadConfiguredTransponder( )
 
 		# Channel
-		self.Channel_GetZappingList( self.mZappingMode.mServiceType )
+		self.Channel_GetZappingList( )
 		self.LoadChannelList( )
 
 		# DATE
@@ -412,6 +412,13 @@ class DataCacheMgr( object ):
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			self.mChannelDB.mDBChTable = aChannelTable
 
+	def GetChangeDBTableChannel( self ) :
+		ret = -1
+		if SUPPORT_CHANNEL_DATABASE	== True :
+			ret = self.mChannelDB.mDBChTable
+
+		return ret
+
 	def LoadChannelList( self, aUpdateAvailDB = False, aSync = 0 ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			mType = ElisEnum.E_SERVICE_TYPE_TV
@@ -423,9 +430,9 @@ class DataCacheMgr( object ):
 				mSort = self.mZappingMode.mSortingMode
 
 			#available channel : ZappingChannel Sync for 'tblZappingChannel' DB
-			if aUpdateAvailDB :
-				ret = self.Channel_GetZappingList( mType, aSync )	#0:Sync, 1:aSync
-				LOG_TRACE('DB ZappingList sync[%s]'% ret)
+			#if aUpdateAvailDB :
+			#	ret = self.Channel_GetZappingList( aSync )	#0:Sync, 1:aSync
+			#	LOG_TRACE('DB ZappingList sync[%s]'% ret)
 
 			if mMode == ElisEnum.E_MODE_ALL :
 				tmpChannelList = self.mChannelDB.Channel_GetList( mType, mMode, mSort )
@@ -513,11 +520,11 @@ class DataCacheMgr( object ):
 			self.mListCasList   = self.mCommander.Fta_cas_GetList( serviceType )
 			self.mListFavorite  = self.mCommander.Favorite_GetList( serviceType )
 
-	def Zappingmode_SetCurrent( self , aZappingMode ) :
+	def Zappingmode_SetCurrent( self , aZappingMode, aSync = 0 ) :
 		ret = False
 		ret = self.mCommander.Zappingmode_SetCurrent( aZappingMode )
 		if ret == True :
-			self.mZappingMode = aZappingMode
+			self.mZappingMode = aZappingMode[0]
 
 		return ret
 
@@ -853,9 +860,9 @@ class DataCacheMgr( object ):
 	def Channel_SetInitialBlank( self, aBlank ) :
 		return self.mCommander.Channel_SetInitialBlank( aBlank )
 
-	def Channel_GetZappingList( self, aType, aSync = 0 ) :
+	def Channel_GetZappingList( self, aSync = 0 ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
-			return self.mCommander.Channel_GetZappingList( aType, aSync )
+			return self.mCommander.Channel_GetZappingList( aSync )
 
 
 	def Audiotrack_GetCount( self ) :
