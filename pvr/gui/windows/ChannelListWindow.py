@@ -2229,8 +2229,11 @@ class ChannelListWindow( BaseWindow ) :
 						retList = []
 						for idx in self.mMarkList :
 							retList.append( self.mChannelList[idx] )
+							#chNum = self.mChannelList[idx].mNumber
+							#retList.append( int(chNum) )
 
 						ret = self.mDataCache.Channel_Delete( retList )
+						#ret = self.mDataCache.Channel_DeleteByNumber( int(self.mChannelListServiceType), retList )
 						LOG_TRACE('ret[%s] len[%s] delete[%s]'% (ret, len(retList), ClassToList('convert', retList) ) )
 
 					except Exception, e:

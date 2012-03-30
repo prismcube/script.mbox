@@ -835,9 +835,6 @@ class DataCacheMgr( object ):
 	def FavoriteGroup_MoveChannels( self, aGroupName, aInsertPosition, aServieType, aIChannel ) :
 		return self.mCommander.FavoriteGroup_MoveChannels( aGroupName, aInsertPosition, aServieType, aIChannel )
 
-	def Channel_Delete( self, aIChannel ) :
-		return self.mCommander.Channel_Delete( aIChannel )
-
 	def Favoritegroup_Create( self, aGroupName, aServieType ) :
 		return self.mCommander.Favoritegroup_Create( aGroupName, aServieType )
 
@@ -850,7 +847,6 @@ class DataCacheMgr( object ):
 	def Channel_Move( self, aServieType, aNumber, aIChannel ) :
 		return self.mCommander.Channel_Move( aServieType, aNumber, aIChannel )
 
-
 	def Channel_Save( self ) :
 		return self.mCommander.Channel_Save( )
 
@@ -859,6 +855,12 @@ class DataCacheMgr( object ):
 
 	def Channel_Restore( self, aRestore ) :
 		return self.mCommander.Channel_Restore( aRestore )
+
+	def Channel_Delete( self, aIChannel ) :
+		return self.mCommander.Channel_Delete( aIChannel )
+
+	def Channel_DeleteByNumber( self, aType, aNumList ) :
+		return self.mCommander.Channel_DeleteByNumber( aType, aNumList )
 
 	def Channel_DeleteAll( self ) :
 		return self.mCommander.Channel_DeleteAll( )
