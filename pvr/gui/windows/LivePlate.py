@@ -187,6 +187,7 @@ class LivePlate(BaseWindow):
 
 		if not self.mCertification :
 			self.PincodeDialogLimit()
+		"""
 		else :
 			if self.mZappingMode.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
 				self.mDataCache.Player_AVBlank( False, False )
@@ -194,6 +195,7 @@ class LivePlate(BaseWindow):
 			else :
 				self.mDataCache.Player_AVBlank( True, False )
 				LOG_TRACE('------------- type[%s] avBlank True'% self.mZappingMode.mServiceType)
+		"""
 
 		self.mAsyncEPGTimer = None
 		self.mAsyncTuneTimer = None
@@ -829,7 +831,7 @@ class LivePlate(BaseWindow):
 		try :
 			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
 			LOG_TRACE('')
-			satellite = self.mDataCache.Satellite_GetByChannelNumber( self.mCurrentChannel.mNumber )
+			satellite = self.mDataCache.Satellite_GetByChannelNumber( self.mCurrentChannel.mNumber, -1, True )
 			if satellite :
 				ret = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
 

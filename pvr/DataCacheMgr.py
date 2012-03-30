@@ -419,20 +419,16 @@ class DataCacheMgr( object ):
 
 		return ret
 
-	def LoadChannelList( self, aUpdateAvailDB = False, aSync = 0 ) :
+	def LoadChannelList( self, aSync = 0, aType = ElisEnum.E_SERVICE_TYPE_TV, aMode = ElisEnum.E_MODE_ALL, aSort = ElisEnum.E_SORT_BY_NUMBER ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
-			mType = ElisEnum.E_SERVICE_TYPE_TV
-			mMode = ElisEnum.E_MODE_ALL
-			mSort = ElisEnum.E_SORT_BY_NUMBER
-			if self.mZappingMode :
+			mType = aType
+			mMode = aMode
+			mSort = aSort
+		
+			if aSync == 0 and self.mZappingMode :
 				mType = self.mZappingMode.mServiceType
 				mMode = self.mZappingMode.mMode
 				mSort = self.mZappingMode.mSortingMode
-
-			#available channel : ZappingChannel Sync for 'tblZappingChannel' DB
-			#if aUpdateAvailDB :
-			#	ret = self.Channel_GetZappingList( aSync )	#0:Sync, 1:aSync
-			#	LOG_TRACE('DB ZappingList sync[%s]'% ret)
 
 			if mMode == ElisEnum.E_MODE_ALL :
 				tmpChannelList = self.mChannelDB.Channel_GetList( mType, mMode, mSort )
@@ -573,11 +569,14 @@ class DataCacheMgr( object ):
 		return self.mCurrentChannel
 
 	def Channel_SetCurrent( self, aChannelNumber, aServiceType ) :
+		ret = False
 		self.mCurrentEvent = None
 		if self.mCommander.Channel_SetCurrent( aChannelNumber, aServiceType ) == True :
 			cacheChannel = self.mChannelListHash.get( aChannelNumber, None )
-			self.mCurrentChannel = cacheChannel.mChannel
-			return True
+			if cacheChannel :
+				self.mCurrentChannel = cacheChannel.mChannel
+				ret = True
+
 		return False
 
 
@@ -664,7 +663,7 @@ class DataCacheMgr( object ):
 
 
 #	@DataLock
-	def Satellite_GetByChannelNumber( self, aNumber, aRequestType = -1 ) :
+	def Satellite_GetByChannelNumber( self, aNumber, aRequestType = -1, aReopen = False ) :
 		if aRequestType == -1 :
 			cacheChannel = self.mChannelListHash.get(aNumber, None)
 			if cacheChannel :
@@ -679,7 +678,13 @@ class DataCacheMgr( object ):
 
 		else :
 			if SUPPORT_CHANNEL_DATABASE	== True :
-				return self.mChannelDB.Satellite_GetByChannelNumber( aNumber, aRequestType )
+				if aReopen :
+					channelDB = ElisChannelDB()
+					return self.channelDB.Satellite_GetByChannelNumber( aNumber, aRequestType )
+					channelDB.Close()
+				else :
+					return self.mChannelDB.Satellite_GetByChannelNumber( aNumber, aRequestType )
+				
 			else :
 				return self.mCommander.Satellite_GetByChannelNumber( aNumber, aRequestType )
 
@@ -728,6 +733,7 @@ class DataCacheMgr( object ):
 				epgDB.Close()
 			else :
 				eventList = self.mEpgDB.Epgevent_GetCurrent( aSid, aTsid, aOnid, self.Datetime_GetGMTTime() )
+
 		else:
 			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, 0, 0, 1 )
 			if eventList :
