@@ -447,7 +447,7 @@ class Configure( SettingWindow ) :
 		elif selectedId == E_TIME_SETTING :
 			setupChannelNumber = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
 			self.mSetupChannel = self.mDataCache.Channel_GetSearch( setupChannelNumber )
-			if self.mSetupChannel :
+			if self.mSetupChannel != None:
 				self.mHasChannel = True
 				channelName = self.mSetupChannel.mName
 			else :
