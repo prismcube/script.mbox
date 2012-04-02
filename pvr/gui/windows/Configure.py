@@ -608,6 +608,7 @@ class Configure( SettingWindow ) :
 
 	def LoadNetworkAddress( self ) :		
 		ret = self.mIpParser.LoadNetworkAddress( )
+
 		if ret == True :
 			self.mSavedIpAddr, self.mSavedSubNet, self.mSavedGateway, self.mSavedDns = self.mIpParser.GetNetworkAddress( )
 			self.mTempIpAddr,  self.mTempSubNet,  self.mTempGateway,  self.mTempDns  = self.mIpParser.GetNetworkAddress( )
