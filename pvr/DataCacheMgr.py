@@ -593,7 +593,7 @@ class DataCacheMgr( object ):
 				self.mCurrentChannel = cacheChannel.mChannel
 				ret = True
 
-		return False
+		return ret
 
 
 	@DataLock
