@@ -64,10 +64,9 @@
 		</control>
 
 <!-- Rec info -->
-		<control type="group">
+		<!--control type="group">
 			<posx>425r</posx>
 			<posy>30</posy>
-			<!--animation effect="slide" start="600,0" end="0,0" delay="0" time="300" condition="Control.IsVisible(10) | Control.IsVisible(15)">conditional</animation-->
 			<control type="group">
 				<posx>200</posx>
 				<posy>0</posy>
@@ -122,7 +121,7 @@
 					<texture>$INFO[Control.GetLabel]</texture>
 				</control>
 			</control>
-		</control>
+		</control-->
 
 <!--  local time -->
 		<include>DefaultCommonDateTime</include>
@@ -178,6 +177,14 @@
 						<width>30</width>
 						<height>30</height>
 						<texture>$INFO[ListItem.Property(mark)]</texture>
+					</control>
+					<!-- is recording? -->
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>$INFO[ListItem.Property(rec)]</texture>
 					</control>
 
 					<control type="label">
@@ -257,6 +264,14 @@
 						<width>30</width>
 						<height>30</height>
 						<texture>$INFO[ListItem.Property(mark)]</texture>
+					</control>
+					<!-- is recording? -->
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>$INFO[ListItem.Property(rec)]</texture>
 					</control>
 
 					<control type="label">

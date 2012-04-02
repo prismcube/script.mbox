@@ -61,6 +61,7 @@ E_SLIDE_MENU_BACK       = 5
 E_IMG_ICON_LOCK   = 'IconLockFocus.png'
 E_IMG_ICON_ICAS   = 'IconCas.png'
 E_IMG_ICON_MARK   = 'confluence/OverlayWatched.png'
+E_IMG_ICON_REC   = 'IconPlateRec.png'
 E_IMG_ICON_TITLE1 = 'IconHeaderTitleSmall.png'
 E_IMG_ICON_TITLE2 = 'icon_setting_focus.png'
 E_IMG_ICON_UPDOWN = 'DI_Cursor_UpDown.png'
@@ -134,10 +135,10 @@ class ChannelListWindow( BaseWindow ) :
 		#print '==================== TEST TIME[ONINIT] START[%s]'% starttime
 
 		#header
-		self.mCtrlImgRec1            = self.getControl( 10 )
-		self.mCtrlLblRec1            = self.getControl( 11 )
-		self.mCtrlImgRec2            = self.getControl( 15 )
-		self.mCtrlLblRec2            = self.getControl( 16 )
+		#self.mCtrlImgRec1            = self.getControl( 10 )
+		#self.mCtrlLblRec1            = self.getControl( 11 )
+		#self.mCtrlImgRec2            = self.getControl( 15 )
+		#self.mCtrlLblRec2            = self.getControl( 16 )
 		self.mCtrlLblPath1           = self.getControl( 21 )
 		self.mCtrlGropOpt            = self.getControl( 500 )
 		self.mCtrlBtnOpt             = self.getControl( 501 )
@@ -189,6 +190,9 @@ class ChannelListWindow( BaseWindow ) :
 		self.mNavChannel = None
 		self.mCurrentChannel = None
 		self.mRecoveryChannel = None
+		self.mRecCount = 0
+		self.mRecChannel1 = None
+		self.mRecChannel2 = None
 		self.mSlideOpenFlag = False
 		self.mFlag_EditChanged = False
 		self.mFlag_DeleteAll = False
@@ -1375,6 +1379,9 @@ class ChannelListWindow( BaseWindow ) :
 
 				if iChannel.mLocked  : listItem.setProperty('lock', E_IMG_ICON_LOCK)
 				if iChannel.mIsCA    : listItem.setProperty('icas', E_IMG_ICON_ICAS)
+				if self.mRecCount :
+					if iChannel.mNumber == self.mRecChannel1 : listItem.setProperty('rec', E_IMG_ICON_REC)
+					if iChannel.mNumber == self.mRecChannel2 : listItem.setProperty('rec', E_IMG_ICON_REC)
 
 				self.mListItems.append(listItem)
 
@@ -1502,7 +1509,7 @@ class ChannelListWindow( BaseWindow ) :
 
 	@GuiLock
 	def UpdateLabelGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
-		LOG_TRACE( 'Enter' )
+		LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
 
 		if aCtrlID == self.mCtrlChannelName.getId( ) :
 			self.mCtrlChannelName.setLabel( aValue )
@@ -1552,6 +1559,7 @@ class ChannelListWindow( BaseWindow ) :
 		elif aCtrlID == self.mCtrlBtnEdit.getId( ) :
 			self.mCtrlBtnEdit.setEnabled( aValue )
 
+		"""
 		elif aCtrlID == self.mCtrlLblRec1.getId( ) :
 			self.mCtrlLblRec1.setLabel( aValue )
 
@@ -1563,6 +1571,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aCtrlID == self.mCtrlImgRec2.getId( ) :
 			self.mCtrlImgRec2.setVisible( aValue )
+		"""
 
 
 		LOG_TRACE( 'Leave' )
@@ -2545,6 +2554,7 @@ class ChannelListWindow( BaseWindow ) :
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			LOG_TRACE('isRunRecCount[%s]'% isRunRec)
 
+			"""
 			recLabel1 = ''
 			recLabel2 = ''
 			recImg1   = False
@@ -2576,11 +2586,36 @@ class ChannelListWindow( BaseWindow ) :
 					#use all channel table, not recording
 					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
 
+
 			self.UpdateLabelGUI( self.mCtrlLblRec1.getId( ), recLabel1 )
 			self.UpdateLabelGUI( self.mCtrlImgRec1.getId( ), recImg1 )
 			self.UpdateLabelGUI( self.mCtrlLblRec2.getId( ), recLabel2 )
 			self.UpdateLabelGUI( self.mCtrlImgRec2.getId( ), recImg2 )
 			self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), btnEdit )
+			"""
+
+			self.mRecCount = isRunRec
+			if isRunRec == 1 :
+				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
+				self.mRecChannel1 = int(recInfo.mChannelNo)
+
+			elif isRunRec == 2 :
+				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
+				self.mRecChannel1 = int(recInfo.mChannelNo)
+				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
+				self.mRecChannel2 = int(recInfo.mChannelNo)
+
+			if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
+				if isRunRec > 0 :
+					#use zapping table, in recording
+					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ZAPPING )
+					self.mDataCache.Channel_GetZappingList( )
+					self.mDataCache.LoadChannelList( )
+					LOG_TRACE ('Recording changed: cache re-load')
+				else :
+					#use all channel table, not recording
+					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
+
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
