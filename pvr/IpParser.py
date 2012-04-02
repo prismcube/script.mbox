@@ -78,23 +78,19 @@ class IpParser :
 			self.LoadNameServer( )
 
 			if self.CheckIsIptype( self.mAddressIp ) == False :
-				self.mAddressIp = None
+				self.mAddressIp = 'None'
 
 			if self.CheckIsIptype( self.mAddressMask ) == False :
-				self.mAddressMask = None
+				self.mAddressMask = 'None'
 
 			if self.CheckIsIptype( self.mAddressGateway ) == False :
-				self.mAddressGateway = None
+				self.mAddressGateway = 'None'
 
 			if self.CheckIsIptype( self.mAddressNameServer ) == False :
-				self.mAddressNameServer = None
+				self.mAddressNameServer = 'None'
 
 			inputFile.close( )
-			if self.mAddressIp == None or self.mAddressMask == None or self.mAddressGateway == None or self.mAddressNameServer == None :
-				LOG_ERR( 'Load Ip fail !!' )
-				return False
-			else :
-				return True
+			return True
 
 		except Exception, e :
 			inputFile.close( )
