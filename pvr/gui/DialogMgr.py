@@ -23,7 +23,9 @@ DIALOG_ID_CHANNEL_JUMP				= 14
 DIALOG_ID_FORCE_PROGRESS			= 15
 DIALOG_ID_EXTEND_EPG				= 16
 DIALOG_ID_ADD_TIMER					= 17
-DIALOG_ID_TIMESHIFT_JUMP			= 18
+DIALOG_ID_ADD_MANUAL_TIMER			= 18
+DIALOG_ID_TIMESHIFT_JUMP			= 19
+
 
 gDialogMgr = None
 
@@ -113,6 +115,10 @@ class DialogMgr(object):
 			elif aDialogId == DIALOG_ID_ADD_TIMER :
 				from pvr.gui.dialogs.DialogAddTimer import DialogAddTimer
 				return DialogAddTimer('DialogAddTimer.xml', self.scriptDir)
+
+			elif aDialogId == DIALOG_ID_ADD_MANUAL_TIMER :
+				from pvr.gui.dialogs.DialogAddManualTimer import DialogAddManualTimer
+				return DialogAddManualTimer('DialogAddManualTimer.xml', self.scriptDir)
 
 			elif aDialogId == DIALOG_ID_SET_LIVE_PLATE :
 				from pvr.gui.dialogs.DialogSetLivePlate import DialogSetLivePlate

@@ -40,11 +40,12 @@ E_MAX_EPG_COUNT					= 512
 E_MAX_SCHEDULE_DAYS				= 8
 
 
-CONTEXT_ADD_TIMER				= 0
-CONTEXT_EDIT_TIMER				= 1
-CONTEXT_DELETE_TIMER			= 2
-CONTEXT_EXTEND_INFOMATION		= 3
-CONTEXT_SEARCH					= 4
+CONTEXT_ADD_EPG_TIMER			= 0
+CONTEXT_ADD_MANUAL_TIMER		= 1
+CONTEXT_EDIT_TIMER				= 2
+CONTEXT_DELETE_TIMER			= 3
+CONTEXT_EXTEND_INFOMATION		= 4
+CONTEXT_SEARCH					= 5
 
 MININUM_KEYWORD_SIZE			= 3
 
@@ -556,7 +557,8 @@ class EPGWindow(BaseWindow):
 					context.append( ContextItem( 'Delete Timer', CONTEXT_DELETE_TIMER ) )
 					context.append( ContextItem( 'Search', CONTEXT_SEARCH ) )					
 				else:
-					context.append( ContextItem( 'Add Timer', CONTEXT_ADD_TIMER ) )
+					context.append( ContextItem( 'Add Timer', CONTEXT_ADD_EPG_TIMER ) )
+					context.append( ContextItem( 'Add Manual Timer', CONTEXT_ADD_MANUAL_TIMER ) )
 					context.append( ContextItem( 'Search', CONTEXT_SEARCH ) )					
 
 			context.append( ContextItem( 'Extend Infomation', CONTEXT_EXTEND_INFOMATION ) )		
@@ -580,11 +582,9 @@ class EPGWindow(BaseWindow):
 				context.append( ContextItem( 'Search', CONTEXT_SEARCH ) )				
 			else :
 				LOG_TRACE('')			
-				context.append( ContextItem( 'Add Timer', CONTEXT_ADD_TIMER ) )
+				context.append( ContextItem( 'Add Manual Timer', CONTEXT_ADD_MANUAL_TIMER ) )
 				context.append( ContextItem( 'Search', CONTEXT_SEARCH ) )				
 				
-
-
 
 		GuiLock2( True )
 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
@@ -599,15 +599,18 @@ class EPGWindow(BaseWindow):
 	def DoContextAction( self, aContextAction ) :
 		LOG_TRACE('aContextAction=%d' %aContextAction )
 
-		if aContextAction == CONTEXT_ADD_TIMER :
+		if aContextAction == CONTEXT_ADD_EPG_TIMER :
 			epg = self.GetSelectedEPG( )
 			if epg :
-				self.ShowAddTimer( epg )
-			else :
-				self.ShowManualTimer( None )			
+				self.ShowEPGTimer( epg )
+
+		elif aContextAction == CONTEXT_ADD_MANUAL_TIMER :
+			epg = self.GetSelectedEPG( )
+			self.ShowManualTimer( epg )
 
 		elif aContextAction == CONTEXT_EDIT_TIMER :
-			self.ShowEditTimer( )
+			epg = self.GetSelectedEPG( )		
+			self.ShowManualTimer( epg, True )		
 
 		elif aContextAction == CONTEXT_DELETE_TIMER :
 			self.ShowDeleteConfirm( )
@@ -616,11 +619,11 @@ class EPGWindow(BaseWindow):
 			self.ShowDetailInfomation( )
 
 		elif aContextAction == CONTEXT_SEARCH :
-			self.ShowKeybordDialog( )
+			self.ShowSearchDialog( )
 
 
-	def ShowAddTimer( self, aEPG ) :
-		LOG_TRACE('ShowAddTimer')
+	def ShowEPGTimer( self, aEPG ) :
+		LOG_TRACE('ShowEPGTimer')
 		GuiLock2( True )
 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_TIMER )
 		dialog.SetEPG( aEPG )
@@ -639,8 +642,44 @@ class EPGWindow(BaseWindow):
 			LOG_ERR( "Exception %s" %ex)
 
 
-	def ShowManualTimer( self, aEPG ) :
-		LOG_TRACE('ShowManualTimer')
+	def ShowManualTimer( self, aEPG, aIsEdit=False ) :
+		if aEPG :
+			LOG_TRACE('ShowManualTimer EPG=%d IsEdit=%d' %( aEPG.mEventId, aIsEdit) )
+		else :
+			LOG_TRACE('ShowManualTimer EPG=None IsEdit=%d' %aIsEdit )
+
+		GuiLock2( True )
+		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
+
+		if aIsEdit :
+			dialog.SetEditMode( True )		
+			timerId = self.GetTimerByEPG( aEPG )		
+			dialolg.SetTimer( timerId )
+			
+			if timerId < 0 :
+				LOG_ERR('Can not find Timer')
+				GuiLock2( False )				
+				return
+
+		else :
+			dialog.SetEditMode( False )
+
+			if aEPG :
+				dialog.SetEPG( aEPG )
+			else :
+				channel = None
+				if self.mEPGMode == E_VIEW_CHANNEL  :
+					channel = self.mDataCache.Channel_GetCurrent( )
+				else :
+					selectedPos = self.mCtrlBigList.getSelectedPosition()
+					if selectedPos >= 0 and selectedPos < len( self.mChannelList ) :
+						channel = self.mChannelList[ selectedPos ]
+			
+				dialog.SetChannel( channel )			
+			
+		dialog.doModal( )
+		GuiLock2( False )
+
 		"""
 		GuiLock2( True )
 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_TIMER )
@@ -676,12 +715,7 @@ class EPGWindow(BaseWindow):
 				self.UpdateList( True )
 
 
-	def ShowEditTimer( self ) :
-		LOG_TRACE('ShowEditTimer')
-		pass
-
-
-	def ShowKeybordDialog( self ) :
+	def ShowSearchDialog( self ) :
 		try :
 			kb = xbmc.Keyboard( '', 'Search', False )
 			kb.doModal( )
@@ -801,8 +835,9 @@ class EPGWindow(BaseWindow):
 			for i in range( len( self.mTimerList ) ) :
 				timer =  self.mTimerList[i]
 				startTime = aEPG.mStartTime +  self.mLocalOffset 
-				endTime = aEPG.mStartTime + aEPG.mDuration
+				endTime = startTime + aEPG.mDuration
 
+				"""
 				LOG_TRACE('id=%d:%d %d:%d %d:%d' %(aEPG.mSid, timer.mSid, aEPG.mTsid, timer.mTsid, aEPG.mOnid, timer.mOnid) )
 				LOG_TRACE('EPG Start Time = %s' % TimeToString( startTime, TimeFormatEnum.E_HH_MM ) )
 				LOG_TRACE('Timer Start Time = %s' % TimeToString( timer.mStartTime , TimeFormatEnum.E_HH_MM ) )			
@@ -813,6 +848,7 @@ class EPGWindow(BaseWindow):
 				LOG_TRACE('End Time = %x:%x' % (endTime, timer.mStartTime + timer.mDuration )	)
 
 				LOG_TRACE(' timer.mFromEPG = %d  aEPG.mEventId=%d timer.mEventId=%d timer.mTimerId=%d' % (timer.mFromEPG, aEPG.mEventId, timer.mEventId, timer.mTimerId ) )
+				"""				
 				
 				if timer.mFromEPG :
 					if  timer.mEventId > 0  and aEPG.mEventId == timer.mEventId and aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid :
