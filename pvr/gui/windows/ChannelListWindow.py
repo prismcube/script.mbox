@@ -2228,12 +2228,13 @@ class ChannelListWindow( BaseWindow ) :
 					try:
 						retList = []
 						for idx in self.mMarkList :
-							retList.append( self.mChannelList[idx] )
-							#chNum = self.mChannelList[idx].mNumber
-							#retList.append( int(chNum) )
+							#retList.append( self.mChannelList[idx] )
+							chNum = ElisEInteger( )
+							chNum.mParam = self.mChannelList[idx].mNumber
+							retList.append( chNum )
 
-						ret = self.mDataCache.Channel_Delete( retList )
-						#ret = self.mDataCache.Channel_DeleteByNumber( int(self.mChannelListServiceType), retList )
+						#ret = self.mDataCache.Channel_Delete( retList )
+						ret = self.mDataCache.Channel_DeleteByNumber( int(self.mChannelListServiceType), retList )
 						LOG_TRACE('ret[%s] len[%s] delete[%s]'% (ret, len(retList), ClassToList('convert', retList) ) )
 
 					except Exception, e:
@@ -2494,7 +2495,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.mAsyncTuneTimer  = None
 
-	#TODO : must be need timeout schedule
+
 	def AsyncUpdateCurrentEPG( self ) :
 		try :
 			self.mIsSelect = False
@@ -2585,26 +2586,5 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 		LOG_TRACE('Leave')
-
-	def SqlTest( self ) :
-		try:
-			try:
-				from sqlite3 import dbapi2 as sqlite3
-			except:
-				from pysqlite2 import dbapi2 as sqlite3
-
-			path = 'd:/temp/tmp/channel.db'
-			#path = 'd:\\temp\\tmp\\channel.db'
-			conn = sqlite3.connect( path )
-			cursor = conn.cursor( )
-			channels = cursor.execute( "select * from tblChannel limit 3" )
-
-			LOG_TRACE('TEST DB[%s]'% channels.fetchall() )
-
-			cursor.close( )
-			conn.close( )
-
-		except Exception, e :
-			LOG_TRACE( 'Error exception[%s]'% e )
 
 
