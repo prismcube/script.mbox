@@ -352,7 +352,7 @@ class SettingWindow( BaseWindow ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 					control = self.getControl( ctrlItem.mControlId + 3 )
 					time.sleep( 0.02 )
-					return control.getSelectedPosition()
+					return control.getSelectedPosition( )
 
 		return -1
 

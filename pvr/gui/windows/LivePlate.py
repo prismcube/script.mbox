@@ -63,7 +63,8 @@ CONTEXT_ACTION_AUDIO_SETTING = 2
 
 E_SYNCHRONIZED  = 0
 E_ASYNCHRONIZED = 1
-E_UPDATE_AVAIL_DB = True
+E_TABLE_ALLCHANNEL = 0
+E_TABLE_ZAPPING = 1
 
 class LivePlate(BaseWindow):
 	def __init__(self, *args, **kwargs):
@@ -80,6 +81,7 @@ class LivePlate(BaseWindow):
 		self.mShowExtendInfo = False
 		self.mPropertyAge = 0
 		self.mPropertyPincode = -1
+		self.mCertification = False
 
 		self.mAutomaticHideTimer = None	
 		self.mAsyncEPGTimer = None
@@ -145,10 +147,8 @@ class LivePlate(BaseWindow):
 		self.mEPGList = None
 		self.mEPGListIdx = 0
 		self.mJumpNumber = 0
-		self.mCertification = False
 		self.mZappingMode = None
 
-		self.ShowRecording( )
 		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
 		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
@@ -156,6 +156,8 @@ class LivePlate(BaseWindow):
 		self.mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
 		if not self.mZappingMode :
 			self.mZappingMode = ElisIZappingMode( )
+
+		self.ShowRecording( )
 
 		#get channel
 		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
@@ -185,6 +187,16 @@ class LivePlate(BaseWindow):
 
 		if not self.mCertification :
 			self.PincodeDialogLimit()
+		"""
+		else :
+			if self.mZappingMode.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
+				self.mDataCache.Player_AVBlank( False, False )
+				LOG_TRACE('------------- type[%s] avBlank False'% self.mZappingMode.mServiceType)
+			else :
+				self.mDataCache.Player_AVBlank( True, False )
+				LOG_TRACE('------------- type[%s] avBlank True'% self.mZappingMode.mServiceType)
+		"""
+
 		self.mAsyncEPGTimer = None
 		self.mAsyncTuneTimer = None
 		self.mAutomaticHideTimer = None
@@ -665,7 +677,7 @@ class LivePlate(BaseWindow):
 				inputPin = ''
 
 				#ret = self.mDataCache.Channel_SetInitialBlank( True )
-				ret = self.mDataCache.Player_AVBlank( True, True )
+				ret = self.mDataCache.Player_AVBlank( True, False )
 
 				GuiLock2( True )
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -679,7 +691,7 @@ class LivePlate(BaseWindow):
 
 	 			elif reply == E_DIALOG_STATE_CANCEL :
 	 				self.mPincodeEnter = FLAG_MASK_NONE
-					self.mDataCache.Player_AVBlank( False, True )
+					self.mDataCache.Player_AVBlank( False, False )
 
 	 				inputKey = dialog.GetInputKey()
 	 				self.onAction( inputKey )
@@ -694,7 +706,7 @@ class LivePlate(BaseWindow):
 				if inputPin == str('%s'% self.mPropertyPincode) :
 					self.mPincodeEnter = FLAG_MASK_NONE
 					#ret = self.mDataCache.Channel_SetInitialBlank( False )
-					self.mDataCache.Player_AVBlank( False, True )
+					self.mDataCache.Player_AVBlank( False, False )
 					mNumber = self.mCurrentChannel.mNumber
 					mType = self.mCurrentChannel.mServiceType
 					ret = self.mDataCache.Channel_SetCurrent( mNumber, mType)
@@ -819,7 +831,7 @@ class LivePlate(BaseWindow):
 		try :
 			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
 			LOG_TRACE('')
-			satellite = self.mDataCache.Satellite_GetByChannelNumber( self.mCurrentChannel.mNumber )
+			satellite = self.mDataCache.Satellite_GetByChannelNumber( self.mCurrentChannel.mNumber, -1, True )
 			if satellite :
 				ret = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
 
@@ -916,25 +928,24 @@ class LivePlate(BaseWindow):
 				time.sleep(1.5)
 				self.ShowRecording()
 
-				#reload available channel : ZappingChannel Sync for 'tblZappingChannel' DB
-				self.mDataCache.LoadChannelList( E_UPDATE_AVAIL_DB )
-
-
 		elif aFocusid == self.mCtrlBtnStopRec.getId() :
 			runningCount = self.ShowRecording()
 			LOG_TRACE( 'runningCount[%s]' %runningCount )
 
-			if  runningCount > 0 :
+			isOK = False
+			if runningCount > 0 :
 				GuiLock2( True )
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
 				dialog.doModal( )
+
+				isOK = dialog.IsOK()
+				if isOK == E_DIALOG_STATE_YES :
+					isOK = True
 				GuiLock2( False )
 
-				#reload available channel : ZappingChannel Sync for 'tblZappingChannel' DB
-				self.mDataCache.LoadChannelList( E_UPDATE_AVAIL_DB )
-
-			time.sleep(1.5)
-			self.ShowRecording( )
+			if isOK :
+				time.sleep(1.5)
+				self.ShowRecording( )
 
 		elif aFocusid == self.mCtrlBtnSettingFormat.getId() :
 			context = []
@@ -968,7 +979,6 @@ class LivePlate(BaseWindow):
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			LOG_TRACE('isRunRecCount[%s]'% isRunRec)
 
-
 			recLabel1 = ''
 			recLabel2 = ''
 			recImg1   = False
@@ -985,6 +995,19 @@ class LivePlate(BaseWindow):
 				recLabel1 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
 				recLabel2 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
+
+			if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
+				if isRunRec > 0 :
+					#use zapping table, in recording
+					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ZAPPING )
+					self.mDataCache.Channel_GetZappingList( )
+					self.mDataCache.LoadChannelList( )
+				else :
+					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
+
+				ret = self.mDataCache.GetChangeDBTableChannel( )
+				LOG_TRACE('table[%s]'% ret)
+
 
 			btnValue = False
 			if isRunRec >= 2 :

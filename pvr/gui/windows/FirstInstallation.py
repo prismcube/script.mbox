@@ -467,6 +467,8 @@ class FirstInstallation( SettingWindow ) :
 					ElisPropertyEnum( 'Summer Time', self.mCommander ).SetProp( oriSummerTime )
 					ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( oriSetupChannel )
 
+				self.mDataCache.LoadTime( )
+				self.SetListControl( )
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
 				self.mDataCache.Channel_SetCurrent( oriChannel.mNumber, oriChannel.mServiceType) # Todo After : using ServiceType to different way
 
@@ -474,13 +476,14 @@ class FirstInstallation( SettingWindow ) :
 				time.sleep( 0.3 )
 				self.SetListControl( E_STEP_RESULT )
 				return
-				
 			else :
+				sumtime = self.mDate + '.' + self.mTime
+				t = time.strptime( sumtime, '%d.%m.%Y.%H:%M' )
+				ret = self.mCommander.Datetime_SetSystemUTCTime( int( time.mktime( t ) ) )
+				self.mDataCache.LoadTime( )
+
 				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )
 				self.SetListControl( E_STEP_RESULT )
 				return
-				# Todo System Date Setting
-
-			
 			

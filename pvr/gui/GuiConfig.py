@@ -17,10 +17,11 @@ E_RECORDING_OPTION	= 2
 E_AUDIO_SETTING		= 3
 E_HDMI_SETTING		= 4
 E_IP_SETTING		= 5
-E_TIME_SETTING		= 6
-E_FORMAT_HDD		= 7
-E_FACTORY_RESET		= 8
-E_ETC				= 9
+E_WIFI_SETTING		= 6
+E_TIME_SETTING		= 7
+E_FORMAT_HDD		= 8
+E_FACTORY_RESET		= 9
+E_ETC				= 10
 
 # Setting Window Control Ids
 E_SpinEx01			= 1100
@@ -130,11 +131,30 @@ TIME_MANUAL						= 1
 NET_DHCP						= 0
 NET_STATIC						= 1
 
+# Wifi Encript Type
+ENCRIPT_TYPE_WEP				= 0
+ENCRIPT_TYPE_WPA				= 1
+ENCRIPT_TYPE_WPA2				= 2
+ENCRIPT_TYPE_WPA_WPA2			= 3
+
+# Wifi Password Type
+PASSWORD_TYPE_ASCII				= 0
+PASSWORD_TYPE_HEX				= 1
+
+# Wifi Use Hidden SSID
+NOT_USE_HIDDEN_SSID				= 0
+USE_HIDDEN_SSID					= 1
+
+# Wifi Use Encrypt
+NOT_USE_PASSWORD_ENCRYPT		= 0
+USE_PASSWORD_ENCRYPT			= 1
 
 # Tuner Config String Define
 USER_ENUM_LIST_ON_OFF				= [ 'Off', 'On' ]
 USER_ENUM_LIST_YES_NO				= [ 'No', 'Yes' ]
 USER_ENUM_LIST_DHCP_STATIC			= [ 'DHCP', 'Static' ]
+USER_ENUM_LIST_ENCRIPT_TYPE			= [ 'WEP', 'WPA', 'WPA2', 'WPA/WPA2' ]
+USER_ENUM_LIST_PASSWORD_TYPE		= [ 'Ascii', 'Hex' ]
 
 E_LIST_LNB_TYPE						= [ 'Universal' , 'Single', 'Userdefined' ]
 E_LIST_SINGLE_FREQUENCY 			= [ '5150', '9750', '10600', '10750', '11300' ]
@@ -287,6 +307,16 @@ def InputKeyboard( aType, aTitle, aString, aMaxLength=None ) :
 	else :
 		return aString
 
+
+def StringToHidden( aString=None ) :
+	if aString == None or aString =='' :
+		return ''
+	length = len( aString )
+	result = ''
+	for i in range( length ) :
+		result += '*'
+	return result
+	
 ############################ Global Class ############################
 
 

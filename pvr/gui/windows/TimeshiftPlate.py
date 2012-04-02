@@ -42,8 +42,6 @@ E_INDEX_FIRST_RECORDING = 0
 E_INDEX_SECOND_RECORDING = 1
 E_INDEX_JUMP_MAX = 100
 
-E_UPDATE_AVAIL_DB = True
-
 class TimeShiftPlate(BaseWindow):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
@@ -246,8 +244,6 @@ class TimeShiftPlate(BaseWindow):
 			if isOK :
 				time.sleep(1.5)
 				self.ShowRecording()
-				#reload available channel : ZappingChannel Sync for 'tblZappingChannel' DB
-				self.mDataCache.LoadChannelList( E_UPDATE_AVAIL_DB )
 
 		elif aControlId == self.mCtrlBtnBookMark.getId():
 			self.ShowDialog( aControlId )
@@ -375,25 +371,15 @@ class TimeShiftPlate(BaseWindow):
 				else:
 					time.sleep(0.5)
 
-			aClose = 1
-			if aClose :
-				self.UpdateLabelGUI( self.mCtrlProgress.getId(), 0 )
-				self.mProgress_idx = 0.0
+			self.UpdateLabelGUI( self.mCtrlProgress.getId(), 0 )
+			self.mProgress_idx = 0.0
 
-				self.Close()
-				WinMgr.GetInstance().ShowWindow( gobackID )
-				return
-			else :
-				self.mSpeed = 0
-				self.mLocalTime = 0
-				self.mUserMoveTime = 0
-				self.mUserMoveTimeBack = 0
-				self.mProgress_idx = 0.0
-				self.InitLabelInfo()
-				self.mIsPlay = FLAG_STOP
-				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), False )
-				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), True )
-				return
+			#todo recording stop
+			self.RecordingStop( )
+
+			self.Close()
+			WinMgr.GetInstance().ShowWindow( gobackID )
+			return
 
 		elif aFocusId == self.mCtrlBtnRewind.getId() :
 			nextSpeed = 100
@@ -582,9 +568,10 @@ class TimeShiftPlate(BaseWindow):
 			#play mode
 			self.mMode = status.mMode
 
-			test = EpgInfoClock(FLAG_CLOCKMODE_HMS, status.mPlayTimeInMs/1000, 0)
-			lblTest = 'current:[%s] currentToTime[%s] timeout[%s]'% (status.mPlayTimeInMs, test[0], self.mRepeatTimeout)
-			self.UpdateLabelGUI( self.mCtrlLblTest.getId(), lblTest )
+			#test label
+			#test = EpgInfoClock(FLAG_CLOCKMODE_HMS, status.mPlayTimeInMs/1000, 0)
+			#lblTest = 'current:[%s] currentToTime[%s] timeout[%s]'% (status.mPlayTimeInMs, test[0], self.mRepeatTimeout)
+			#self.UpdateLabelGUI( self.mCtrlLblTest.getId(), lblTest )
 
 
 			#progress info
@@ -872,6 +859,20 @@ class TimeShiftPlate(BaseWindow):
 
 		LOG_TRACE('Leave')
 
+	def RecordingStop( self ) :
+		LOG_TRACE('Enter')
+
+		RunningRecordCount = self.mCommander.Record_GetRunningRecorderCount()
+		LOG_ERR('RunningRecordCount=%s'% RunningRecordCount )
+
+		for i in range( int(RunningRecordCount) ) :
+			recInfo = self.mDataCache.Record_GetRunningRecordInfo( i )
+			if recInfo :
+				#recInfo.printdebug()
+				ret = self.mDataCache.Timer_StopRecordingByRecordKey( recInfo.mRecordKey )
+				LOG_TRACE('record key[%s] stop[%s]'% (recInfo.mRecordKey, ret) )
+
+		LOG_TRACE('Leave')
 		
 	def Close( self ):
 		LOG_TRACE('Enter')

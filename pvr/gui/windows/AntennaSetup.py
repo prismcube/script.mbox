@@ -35,7 +35,7 @@ class AntennaSetup( SettingWindow ) :
 
 		self.SetSettingWindowLabel( 'Antenna & Satellite Setup' )
 
-		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( False )
+		#self.getControl( E_DEFAULT_GOURP_ID ).setVisible( False )
 		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', None, 'Select tuner 2 connection type.' )
 		self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', None, 'Select tuner 2 configuration.' )
 		self.AddEnumControl( E_SpinEx03, 'Tuner1 Type', None, 'Setup tuner 1.' )
@@ -52,7 +52,7 @@ class AntennaSetup( SettingWindow ) :
 		self.ShowDescription( )
 		self.DisableControl( )
 		self.mInitialized = True
-		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True )
+		#self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True )
 
 		
 	def onAction( self, aAction ) :
@@ -156,8 +156,6 @@ class AntennaSetup( SettingWindow ) :
 		
 		if groupId == E_SpinEx01 or groupId == E_SpinEx02 or groupId == E_SpinEx03 or groupId == E_SpinEx04 :
 			self.ControlSelect( )
-			#print 'dhkim test tuner 1 type = %d' % ElisPropertyEnum( 'tuner1 type', self.mCommander ).GetProp( )
-			#print 'dhkim test tuner 2 type = %d' % ElisPropertyEnum( 'tuner2 type', self.mCommander ).GetProp( )
 
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
 			self.SaveConfiguration( )
@@ -205,6 +203,7 @@ class AntennaSetup( SettingWindow ) :
 		if selectedIndex1 == 1 :
 			self.SetEnableControl( E_SpinEx02, False )
 			self.getControl( E_SpinEx02 + 3 ).selectItem( 0 )
+			self.SetProp( E_SpinEx02, 0 )
 		else :
 			self.SetEnableControl( E_SpinEx02, True )
 
@@ -213,6 +212,7 @@ class AntennaSetup( SettingWindow ) :
 			self.SetEnableControl( E_SpinEx04, False )
 			self.SetEnableControl( E_Input02, False )
 			self.getControl( E_SpinEx04 + 3 ).selectItem( self.GetSelectedIndex( E_SpinEx03 ) )
+			self.SetProp( E_SpinEx04, self.GetSelectedIndex( E_SpinEx03 ) )
 		else :
 			self.SetEnableControl( E_SpinEx04, True)
 			self.SetEnableControl( E_Input02, True )

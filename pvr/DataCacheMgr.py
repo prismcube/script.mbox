@@ -210,7 +210,7 @@ class DataCacheMgr( object ):
 		self.LoadConfiguredTransponder( )
 
 		# Channel
-		self.Channel_GetZappingList( self.mZappingMode.mServiceType )
+		self.Channel_GetZappingList( )
 		self.LoadChannelList( )
 
 		# DATE
@@ -412,20 +412,23 @@ class DataCacheMgr( object ):
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			self.mChannelDB.mDBChTable = aChannelTable
 
-	def LoadChannelList( self, aUpdateAvailDB = False, aSync = 0 ) :
+	def GetChangeDBTableChannel( self ) :
+		ret = -1
 		if SUPPORT_CHANNEL_DATABASE	== True :
-			mType = ElisEnum.E_SERVICE_TYPE_TV
-			mMode = ElisEnum.E_MODE_ALL
-			mSort = ElisEnum.E_SORT_BY_NUMBER
-			if self.mZappingMode :
+			ret = self.mChannelDB.mDBChTable
+
+		return ret
+
+	def LoadChannelList( self, aSync = 0, aType = ElisEnum.E_SERVICE_TYPE_TV, aMode = ElisEnum.E_MODE_ALL, aSort = ElisEnum.E_SORT_BY_NUMBER ) :
+		if SUPPORT_CHANNEL_DATABASE	== True :
+			mType = aType
+			mMode = aMode
+			mSort = aSort
+		
+			if aSync == 0 and self.mZappingMode :
 				mType = self.mZappingMode.mServiceType
 				mMode = self.mZappingMode.mMode
 				mSort = self.mZappingMode.mSortingMode
-
-			#available channel : ZappingChannel Sync for 'tblZappingChannel' DB
-			if aUpdateAvailDB :
-				ret = self.Channel_GetZappingList( mType, aSync )	#0:Sync, 1:aSync
-				LOG_TRACE('DB ZappingList sync[%s]'% ret)
 
 			if mMode == ElisEnum.E_MODE_ALL :
 				tmpChannelList = self.mChannelDB.Channel_GetList( mType, mMode, mSort )
@@ -513,11 +516,11 @@ class DataCacheMgr( object ):
 			self.mListCasList   = self.mCommander.Fta_cas_GetList( serviceType )
 			self.mListFavorite  = self.mCommander.Favorite_GetList( serviceType )
 
-	def Zappingmode_SetCurrent( self , aZappingMode ) :
+	def Zappingmode_SetCurrent( self , aZappingMode, aSync = 0 ) :
 		ret = False
 		ret = self.mCommander.Zappingmode_SetCurrent( aZappingMode )
 		if ret == True :
-			self.mZappingMode = aZappingMode
+			self.mZappingMode = aZappingMode[0]
 
 		return ret
 
@@ -566,11 +569,14 @@ class DataCacheMgr( object ):
 		return self.mCurrentChannel
 
 	def Channel_SetCurrent( self, aChannelNumber, aServiceType ) :
+		ret = False
 		self.mCurrentEvent = None
 		if self.mCommander.Channel_SetCurrent( aChannelNumber, aServiceType ) == True :
 			cacheChannel = self.mChannelListHash.get( aChannelNumber, None )
-			self.mCurrentChannel = cacheChannel.mChannel
-			return True
+			if cacheChannel :
+				self.mCurrentChannel = cacheChannel.mChannel
+				ret = True
+
 		return False
 
 
@@ -657,7 +663,7 @@ class DataCacheMgr( object ):
 
 
 #	@DataLock
-	def Satellite_GetByChannelNumber( self, aNumber, aRequestType = -1 ) :
+	def Satellite_GetByChannelNumber( self, aNumber, aRequestType = -1, aReopen = False ) :
 		if aRequestType == -1 :
 			cacheChannel = self.mChannelListHash.get(aNumber, None)
 			if cacheChannel :
@@ -672,7 +678,13 @@ class DataCacheMgr( object ):
 
 		else :
 			if SUPPORT_CHANNEL_DATABASE	== True :
-				return self.mChannelDB.Satellite_GetByChannelNumber( aNumber, aRequestType )
+				if aReopen :
+					channelDB = ElisChannelDB()
+					return self.channelDB.Satellite_GetByChannelNumber( aNumber, aRequestType )
+					channelDB.Close()
+				else :
+					return self.mChannelDB.Satellite_GetByChannelNumber( aNumber, aRequestType )
+				
 			else :
 				return self.mCommander.Satellite_GetByChannelNumber( aNumber, aRequestType )
 
@@ -721,6 +733,7 @@ class DataCacheMgr( object ):
 				epgDB.Close()
 			else :
 				eventList = self.mEpgDB.Epgevent_GetCurrent( aSid, aTsid, aOnid, self.Datetime_GetGMTTime() )
+
 		else:
 			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, 0, 0, 1 )
 			if eventList :
@@ -822,9 +835,6 @@ class DataCacheMgr( object ):
 	def FavoriteGroup_MoveChannels( self, aGroupName, aInsertPosition, aServieType, aIChannel ) :
 		return self.mCommander.FavoriteGroup_MoveChannels( aGroupName, aInsertPosition, aServieType, aIChannel )
 
-	def Channel_Delete( self, aIChannel ) :
-		return self.mCommander.Channel_Delete( aIChannel )
-
 	def Favoritegroup_Create( self, aGroupName, aServieType ) :
 		return self.mCommander.Favoritegroup_Create( aGroupName, aServieType )
 
@@ -837,7 +847,6 @@ class DataCacheMgr( object ):
 	def Channel_Move( self, aServieType, aNumber, aIChannel ) :
 		return self.mCommander.Channel_Move( aServieType, aNumber, aIChannel )
 
-
 	def Channel_Save( self ) :
 		return self.mCommander.Channel_Save( )
 
@@ -847,15 +856,21 @@ class DataCacheMgr( object ):
 	def Channel_Restore( self, aRestore ) :
 		return self.mCommander.Channel_Restore( aRestore )
 
+	def Channel_Delete( self, aIChannel ) :
+		return self.mCommander.Channel_Delete( aIChannel )
+
+	def Channel_DeleteByNumber( self, aType, aNumList ) :
+		return self.mCommander.Channel_DeleteByNumber( aType, aNumList )
+
 	def Channel_DeleteAll( self ) :
 		return self.mCommander.Channel_DeleteAll( )
 
 	def Channel_SetInitialBlank( self, aBlank ) :
 		return self.mCommander.Channel_SetInitialBlank( aBlank )
 
-	def Channel_GetZappingList( self, aType, aSync = 0 ) :
+	def Channel_GetZappingList( self, aSync = 0 ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
-			return self.mCommander.Channel_GetZappingList( aType, aSync )
+			return self.mCommander.Channel_GetZappingList( aSync )
 
 
 	def Audiotrack_GetCount( self ) :
@@ -949,6 +964,8 @@ class DataCacheMgr( object ):
 	def Record_Rename(self, aKey, aServiceType, aNewName ) :
 		return self.mCommander.Record_Rename( aKey, aServiceType, aNewName )
 
+	def Timer_StopRecordingByRecordKey( self, aKey ) :
+		return self.mCommander.Timer_StopRecordingByRecordKey( aKey )
 
 	def Timer_GetTimerList( self ) :
 		if SUPPORT_TIMER_DATABASE == True :
