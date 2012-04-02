@@ -131,7 +131,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
 
-		starttime = time.time( )
+		#starttime = time.time( )
 		#print '==================== TEST TIME[ONINIT] START[%s]'% starttime
 
 		#header
@@ -186,13 +186,13 @@ class ChannelListWindow( BaseWindow ) :
 		self.mZappingMode = ElisEnum.E_MODE_ALL
 		self.mZappingName = ''
 		self.mChannelList = []
+		self.mRecCount = 0
+		self.mRecChannel1 = []
+		self.mRecChannel2 = []
 		self.mNavEpg = None
 		self.mNavChannel = None
 		self.mCurrentChannel = None
 		self.mRecoveryChannel = None
-		self.mRecCount = 0
-		self.mRecChannel1 = None
-		self.mRecChannel2 = None
 		self.mSlideOpenFlag = False
 		self.mFlag_EditChanged = False
 		self.mFlag_DeleteAll = False
@@ -203,8 +203,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.mEditFavorite = []
 		self.mMoveFlag = False
 		self.mMoveItem = []
-
-		#self.SqlTest( )
 
 		self.SetVideoSize( )
 
@@ -260,7 +258,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.mAsyncTuneTimer = None
 
-		endtime = time.time( )
+		#endtime = time.time( )
 		#print '==================== TEST TIME[ONINIT] END[%s] loading[%s]'% (endtime, endtime-starttime )
 		LOG_TRACE( 'Leave' )
 
@@ -1380,8 +1378,10 @@ class ChannelListWindow( BaseWindow ) :
 				if iChannel.mLocked  : listItem.setProperty('lock', E_IMG_ICON_LOCK)
 				if iChannel.mIsCA    : listItem.setProperty('icas', E_IMG_ICON_ICAS)
 				if self.mRecCount :
-					if iChannel.mNumber == self.mRecChannel1 : listItem.setProperty('rec', E_IMG_ICON_REC)
-					if iChannel.mNumber == self.mRecChannel2 : listItem.setProperty('rec', E_IMG_ICON_REC)
+					if self.mRecChannel1 :
+						if iChannel.mNumber == self.mRecChannel1[0] : listItem.setProperty('rec', E_IMG_ICON_REC)
+					if self.mRecChannel2 :
+						if iChannel.mNumber == self.mRecChannel2[0] : listItem.setProperty('rec', E_IMG_ICON_REC)
 
 				self.mListItems.append(listItem)
 
@@ -1461,8 +1461,6 @@ class ChannelListWindow( BaseWindow ) :
 
 			else :
 				if self.mChannelList :
-					#label = self.mCtrlListCHList.getSelectedItem( ).getLabel( )
-					#chNumber = ParseLabelToCh( self.mViewMode, label )
 					idx = self.mCtrlListCHList.getSelectedPosition( )
 					chNumber = self.mChannelList[idx].mNumber
 					#LOG_TRACE( 'label[%s] ch[%d]'% (label, chNumber) )
@@ -2595,15 +2593,26 @@ class ChannelListWindow( BaseWindow ) :
 			"""
 
 			self.mRecCount = isRunRec
+
 			if isRunRec == 1 :
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
-				self.mRecChannel1 = int(recInfo.mChannelNo)
+				recNum  = int(recInfo.mChannelNo)
+				recName = recInfo.mChannelName
+				self.mRecChannel1.append( recNum )
+				self.mRecChannel1.append( recName )
 
 			elif isRunRec == 2 :
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
-				self.mRecChannel1 = int(recInfo.mChannelNo)
+				recNum  = int(recInfo.mChannelNo)
+				recName = recInfo.mChannelName
+				self.mRecChannel1.append( recNum )
+				self.mRecChannel1.append( recName )
+
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
-				self.mRecChannel2 = int(recInfo.mChannelNo)
+				recNum  = int(recInfo.mChannelNo)
+				recName = recInfo.mChannelName
+				self.mRecChannel2.append( recNum )
+				self.mRecChannel2.append( recName )
 
 			if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
 				if isRunRec > 0 :

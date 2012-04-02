@@ -244,6 +244,7 @@ class TimeShiftPlate(BaseWindow):
 			if isOK :
 				time.sleep(1.5)
 				self.ShowRecording()
+				self.mDataCache.mCacheReload = True
 
 		elif aControlId == self.mCtrlBtnBookMark.getId():
 			self.ShowDialog( aControlId )
@@ -871,6 +872,9 @@ class TimeShiftPlate(BaseWindow):
 				#recInfo.printdebug()
 				ret = self.mDataCache.Timer_StopRecordingByRecordKey( recInfo.mRecordKey )
 				LOG_TRACE('record key[%s] stop[%s]'% (recInfo.mRecordKey, ret) )
+
+		if RunningRecordCount :
+			self.mDataCache.mCacheReload = True
 
 		LOG_TRACE('Leave')
 		
