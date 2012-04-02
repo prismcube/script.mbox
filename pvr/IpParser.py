@@ -90,7 +90,7 @@ class IpParser :
 				self.mAddressNameServer = None
 
 			inputFile.close( )
-			if self.mAddressIp == None or self.mAddressIp == None or self.mAddressIp == None or self.mAddressIp == None :
+			if self.mAddressIp == None or self.mAddressMask == None or self.mAddressGateway == None or self.mAddressNameServer == None :
 				LOG_ERR( 'Load Ip fail !!' )
 				return False
 			else :
