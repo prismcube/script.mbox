@@ -265,9 +265,9 @@ class DialogChannelSearch( BaseDialog ) :
 
 		if tvCount > 0 or radioCount > 0 :
 			#### data cache re-load ####
-			self.mDataCache.LoadZappingmode( )
-			self.mDataCache.LoadZappingList( )
-			self.mDataCache.LoadChannelList( )
+			self.mDataCache.LoadZappingmode( True )
+			self.mDataCache.LoadZappingList( True )
+			self.mDataCache.LoadChannelList( 0, ElisEnum.E_SERVICE_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER, True )
 
 
 	def ReTune( self ) :

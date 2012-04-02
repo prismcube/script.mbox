@@ -23,7 +23,7 @@ E_LOG_NORMAL = 0
 E_LOG_ERR    = 2
 E_LOG_WARN   = 1
 E_LOG_DEBUG  = 0
-E_DEBUG_LEVEL = E_LOG_DEBUG
+E_DEBUG_LEVEL = 0#E_LOG_DEBUG
 
 class TimeFormatEnum(object):
 	E_AW_DD_MM_YYYY			= 0
@@ -161,6 +161,9 @@ def MLOG( level=0, msg=None ) :
 	filename = os.path.basename( filePath )
 	lineno   = calframe[2][2]
 	filefunc = calframe[2][3]
+
+	#if filename != 'ChannelListWindow.py' :
+	#	return
 
 	#if level >= 0 and level <= 18 :
 	if gLogOut == 0 :
