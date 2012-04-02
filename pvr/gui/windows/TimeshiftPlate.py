@@ -375,8 +375,7 @@ class TimeShiftPlate(BaseWindow):
 			self.UpdateLabelGUI( self.mCtrlProgress.getId(), 0 )
 			self.mProgress_idx = 0.0
 
-			#todo recording stop
-			self.RecordingStop( )
+			#self.RecordingStop( )
 
 			self.Close()
 			WinMgr.GetInstance().ShowWindow( gobackID )
