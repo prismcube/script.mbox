@@ -257,16 +257,35 @@ class LivePlate(BaseWindow):
 				self.EPGNavigation( NEXT_EPG )
 
 		elif id == Action.ACTION_PAGE_UP:
+			isArchive = WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).GetKeyDisabled( )
+			if isArchive :
+				LOG_TRACE('Archive playing now')
+				return -1
+
 			self.ChannelTune( NEXT_CHANNEL )
 
 		elif id == Action.ACTION_PAGE_DOWN:
+			isArchive = WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).GetKeyDisabled( )
+			if isArchive :
+				LOG_TRACE('Archive playing now')
+				return -1
+
 			self.ChannelTune( PREV_CHANNEL )
 
 		elif id == Action.ACTION_PAUSE:
 			if self.mShowExtendInfo ==  False :
 				self.Close()
 				winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_TIMESHIFT_PLATE )
- 		
+
+		elif id == Action.ACTION_STOP :
+			status = None
+			status = self.mDataCache.Player_GetStatus()
+			if status.mMode :
+				ret = self.mDataCache.Player_Stop()
+				LOG_TRACE('----------mode[%s] stop[%s]'% (status.mMode, ret) )
+			else :
+				self.ShowDialog( self.mCtrlBtnStopRec.getId() )
+
 		elif id == 13: #'x'
 			#this is test
 			LOG_TRACE( 'cwd[%s]'% xbmc.getLanguage() )
@@ -1127,6 +1146,11 @@ class LivePlate(BaseWindow):
 
 	def KeySearch( self, aKey ) :
 		LOG_TRACE( 'Enter' )
+
+		isArchive = WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).GetKeyDisabled( )
+		if isArchive :
+			LOG_TRACE('Archive playing now')
+			return -1
 
 		if aKey == 0 :
 			return -1
