@@ -2616,6 +2616,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
 				if isRunRec > 0 :
+					self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), False )
 					#use zapping table, in recording
 					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ZAPPING )
 					self.mDataCache.Channel_GetZappingList( )
