@@ -927,6 +927,7 @@ class LivePlate(BaseWindow):
 			if isOK :
 				time.sleep(1.5)
 				self.ShowRecording()
+				self.mDataCache.mCacheReload = True
 
 		elif aFocusid == self.mCtrlBtnStopRec.getId() :
 			runningCount = self.ShowRecording()
@@ -946,6 +947,7 @@ class LivePlate(BaseWindow):
 			if isOK :
 				time.sleep(1.5)
 				self.ShowRecording( )
+				self.mDataCache.mCacheReload = True
 
 		elif aFocusid == self.mCtrlBtnSettingFormat.getId() :
 			context = []
@@ -1004,6 +1006,9 @@ class LivePlate(BaseWindow):
 					self.mDataCache.LoadChannelList( )
 				else :
 					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
+					if self.mDataCache.mCacheReload :
+						self.mDataCache.mCacheReload = False
+						self.mDataCache.LoadChannelList( )
 
 				ret = self.mDataCache.GetChangeDBTableChannel( )
 				LOG_TRACE('table[%s]'% ret)
