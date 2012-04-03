@@ -47,9 +47,8 @@ class Launcher(object):
 	 			self.mLoadCount += 1
 	 			LOG_TRACE('==============>retry run[%s]'% self.mLoadCount)
 	 			self.mShutdowning = False
-	 			#self.Shutdown()
-	 			time.sleep(10)
-				self.mShutdowning = False
+	 			self.Shutdown()
+	 			time.sleep(5)
 	 			self.Run()
 		finally:
 			print 'Launcher end'
@@ -106,5 +105,4 @@ class Launcher(object):
 		test = ElisTest()
 		test.testAll()
 		"""
-
 

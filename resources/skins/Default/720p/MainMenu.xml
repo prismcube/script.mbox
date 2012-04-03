@@ -351,7 +351,7 @@
 					<control type="button" id="90506">
 						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Settings</label>
-						<!--onclick>ActivateWindow(Settings)</onclick-->
+						<onclick>ActivateWindow(Settings)</onclick>
 						<visible>true</visible>
 					</control>
 					<control type="button" id="90507">
