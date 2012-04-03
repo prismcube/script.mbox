@@ -2623,6 +2623,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mDataCache.LoadChannelList( )
 					LOG_TRACE ('Recording changed: cache re-load')
 				else :
+					self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), True )
 					#use all channel table, not recording
 					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
 
