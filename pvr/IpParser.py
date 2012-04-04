@@ -5,9 +5,9 @@ import shutil
 import string
 import time
 from pvr.gui.GuiConfig import *
-#from pythonwifi.iwlibs import Wireless
-#import pythonwifi.flags
-from pvr.Util import LOG_ERR
+from pythonwifi.iwlibs import Wireless
+import pythonwifi.flags
+from pvr.Util import LOG_ERR, GuiLock2
 
 
 FILE_NAME_INTERFACES	 		=	'/etc/network/interfaces'
@@ -24,7 +24,6 @@ SYSTEM_COMMAND_GET_IP			=	"ifconfig eth0 | awk '/inet / {print $2}' | awk -F: '{
 SYSTEM_COMMAND_GET_MASK			=	"ifconfig eth0 | awk '/inet / {print $4}' | awk -F: '{print $2}'"
 SYSTEM_COMMAND_GET_GATEWAY		=	"route -n | awk '/^0.0.0.0/ {print $2}'"
 
-COMMAND_NETWORK_RESTART			=	"/etc/init.d/networking restart"
 COMMAND_COPY_INTERFACES			=	"cp " + FILE_NAME_TEMP_INTERFACES + " " + FILE_NAME_INTERFACES
 
 
@@ -140,6 +139,7 @@ class IpParser :
 
 	def SetNetwork( self, aType, aIpAddress=None, aMaskAddress=None, aGatewayAddress=None, aNameAddress=None ) :
 		try :
+
 			inputFile = open( FILE_NAME_INTERFACES, 'r' )
 			outputFile = open( FILE_NAME_TEMP_INTERFACES, 'w+' )
 			inputline = inputFile.readlines( )
@@ -160,9 +160,29 @@ class IpParser :
 			self.SetNameServer( aType, aNameAddress )
 			inputFile.close( )
 			outputFile.close( )
-
+			#print 'dhkim test fd1 = %s' % inputFile
+			#print 'dhkim test fd2 = %s' % outputFile
+			#print 'dhkim test val = %s, %s, %s, %s' % ( aIpAddress, aMaskAddress, aGatewayAddress, aNameAddress )
 			os.system( COMMAND_COPY_INTERFACES )
-			os.system( COMMAND_NETWORK_RESTART )
+
+			os.system( 'ifdown eth0' )	
+			time.sleep( 1 )
+			os.system( 'ifup eth0' )	
+			
+			"""
+			pid = os.fork( )
+			if pid :
+				pid, status = os.wait( )
+				print 'dhkim test died code = %d' % status
+			else :
+				os.system( 'ifup eth0' )
+				os._exit( 44 )
+
+			if status == 44 :
+				return True
+			return False
+
+			"""
 			return True
 
 		except Exception, e :
