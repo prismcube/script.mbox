@@ -623,8 +623,8 @@ class Configure( SettingWindow ) :
 			self.mSavedNetworkType	= self.mIpParser.GetNetworkType( )
 			self.mTempNetworkType	= self.mIpParser.GetNetworkType( )
 		else :
-			self.mSavedNetworkType	= 'None'
-			self.mTempNetworkType	= 'None'
+			self.mSavedNetworkType	= NET_DHCP
+			self.mTempNetworkType	= NET_DHCP
 			LOG_ERR( 'Can not read network type(dhcp/static)' )
 
 
