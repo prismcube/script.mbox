@@ -52,6 +52,19 @@ class Configure( SettingWindow ) :
 		self.mTime				= 0
 		self.mSetupChannel		= None
 		self.mHasChannel		= False
+		#self.mReLoadTime		= False
+
+
+		self.mSavedTimeMode		= TIME_MANUAL
+		self.mSavedTimeChannel	= 0
+		self.mSavedLocalOffset	= 0
+		self.mSavedSummerTime	= 0
+		"""		
+		self.mTempTimeMode		= TIME_MANUAL
+		self.mTempTimeChannel	= 0
+		self.mTempLocalOffset	= 0
+		self.mTempSummerTime	= 0
+		"""
 
 		self.mIpParser			= None
 		self.mProgress			= None
@@ -89,6 +102,7 @@ class Configure( SettingWindow ) :
 		self.mWireless = WirelessParser( )
 		self.LoadIp( )
 		self.LoadWifi( )
+		#self.LoadTimeSet( )
 		self.SetListControl( )
 		self.mInitialized = True
 		self.mVisibleParental = False
@@ -117,6 +131,7 @@ class Configure( SettingWindow ) :
 			if focusId == E_SUBMENU_LIST_ID and selectedId != self.mPrevListItemID :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
+				self.mReLoadTime = True
 				self.mVisibleParental = False
 				self.SetListControl( )
 			elif focusId != E_SUBMENU_LIST_ID :
@@ -126,6 +141,7 @@ class Configure( SettingWindow ) :
 			if focusId == E_SUBMENU_LIST_ID and selectedId != self.mPrevListItemID :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
+				self.mReLoadTime = True
 				self.mVisibleParental = False
 				self.SetListControl( )
 			elif focusId != E_SUBMENU_LIST_ID :
@@ -445,6 +461,11 @@ class Configure( SettingWindow ) :
 
 
 		elif selectedId == E_TIME_SETTING :
+			"""
+			if self.mReLoadTime == True :
+				self.ReLoadTimeSet( )
+				self.mReLoadTime = False
+			"""
 			setupChannelNumber = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
 			self.mSetupChannel = self.mDataCache.Channel_GetSearch( setupChannelNumber )
 			self.mHasChannel = True
@@ -459,7 +480,7 @@ class Configure( SettingWindow ) :
 					self.mHasChannel = False
 					channelName = 'None'
 					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
-
+			print 'dhkim test tmie mide = %d' % ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( )
 			self.AddEnumControl( E_SpinEx01, 'Time Mode' )			
 			self.AddInputControl( E_Input01, 'Channel', channelName )
 			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
@@ -580,6 +601,7 @@ class Configure( SettingWindow ) :
 				self.SetEnableControl( E_Input01, False )
 			else :
 				selectedIndex = self.GetSelectedIndex( E_SpinEx01 )
+				print 'dhkim test tmie mide = %d' % ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( )
 				if selectedIndex == TIME_AUTOMATIC :
 					self.SetEnableControl( E_Input02, False )
 					self.SetEnableControl( E_Input03, False )
@@ -754,17 +776,9 @@ class Configure( SettingWindow ) :
 			return
 			
 		elif aControlId == E_Input04 :
-			oriSetupChannel = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
-			oriTimeMode = ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( )
-			oriLocalTimeOffset = ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetProp( )
-			oriSummerTime = ElisPropertyEnum( 'Summer Time', self.mCommander ).GetProp( )
+			self.LoadSavedTime( )
 			oriChannel = self.mDataCache.Channel_GetCurrent( )
-		 		
-			ElisPropertyEnum( 'Time Mode', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx01 ) )
-			ElisPropertyEnum( 'Local Time Offset', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx02) )
-			localOffset = ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetProp( )
-			self.mCommander.Datetime_SetLocalOffset( localOffset )
-			ElisPropertyEnum( 'Summer Time', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx03 ) )
+		 	self.SetTimeProperty( )	
  			
 			if ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( ) == TIME_AUTOMATIC :
 				ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( self.mSetupChannel.mNumber )
@@ -776,10 +790,7 @@ class Configure( SettingWindow ) :
 				dialog.doModal( )
 
 				if dialog.GetResult( ) == False :
-					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( oriTimeMode )
-					self.mCommander.Datetime_SetLocalOffset( oriLocalTimeOffset )
-					ElisPropertyEnum( 'Summer Time', self.mCommander ).SetProp( oriSummerTime )
-					ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( oriSetupChannel )
+					self.ReLoadTimeSet( )
 
 				self.mDataCache.LoadTime( )
 				self.SetListControl( )
@@ -790,6 +801,32 @@ class Configure( SettingWindow ) :
 				t = time.strptime( sumtime, '%d.%m.%Y.%H:%M' )
 				ret = self.mCommander.Datetime_SetSystemUTCTime( int( time.mktime( t ) ) )
 				self.mDataCache.LoadTime( )
+
+
+	def LoadSavedTime( self ) :
+		self.mSavedTimeChannel	= ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
+		self.mSavedTimeMode		= ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( )
+		self.mSavedLocalOffset	= ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetProp( )
+		self.mSavedSummerTime	= ElisPropertyEnum( 'Summer Time', self.mCommander ).GetProp( )
+
+
+	def SetTimeProperty( self ) :
+		ElisPropertyEnum( 'Time Mode', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx01 ) )
+		ElisPropertyEnum( 'Summer Time', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx03 ) )
+		ElisPropertyEnum( 'Local Time Offset', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx02) )
+		localOffset = ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetProp( )
+		self.mCommander.Datetime_SetLocalOffset( localOffset )
+
+
+	def ReLoadTimeSet( self ) :
+		ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( self.mSavedTimeMode )
+		ElisPropertyEnum( 'Summer Time', self.mCommander ).SetProp( self.mSavedSummerTime )
+		ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( self.mSavedTimeChannel )
+		ElisPropertyEnum( 'Local Time Offset', self.mCommander ).SetProp( self.mSavedLocalOffset )
+		self.getControl( E_SpinEx01 + 3 ).selectItem( ElisPropertyEnum( 'Time Mode', self.mCommander ).GetPropIndex( ) )
+		self.getControl( E_SpinEx02 + 3 ).selectItem( ElisPropertyEnum( 'Summer Time', self.mCommander ).GetPropIndex( ) )
+		self.getControl( E_SpinEx03 + 3 ).selectItem( ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetPropIndex( ) )
+		self.mCommander.Datetime_SetLocalOffset( self.mSavedLocalOffset )
 
 
 	def WifiSetting( self, aControlId ) :

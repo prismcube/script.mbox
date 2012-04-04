@@ -42,6 +42,10 @@ E_INDEX_FIRST_RECORDING = 0
 E_INDEX_SECOND_RECORDING = 1
 E_INDEX_JUMP_MAX = 100
 
+E_TAG_COLOR_RED   = '[COLOR red]'
+E_TAG_COLOR_GREEN = '[COLOR green]'
+E_TAG_COLOR_END   = '[/COLOR]'
+
 class TimeShiftPlate(BaseWindow):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
@@ -118,9 +122,6 @@ class TimeShiftPlate(BaseWindow):
 
 		self.ShowRecording( )
 		
-		#get channel
-		#self.mCurrentChannel = self.mDataCache.Channel_GetCurrent()
-
 		self.mTimeShiftExcuteTime = self.mDataCache.Datetime_GetLocalTime()
 
 		self.InitLabelInfo()
@@ -194,6 +195,41 @@ class TimeShiftPlate(BaseWindow):
 				LOG_TRACE('right moveTime[%s]'% self.mUserMoveTime )
 			else :
 				self.RestartAutomaticHide()
+
+		elif id == Action.ACTION_PAGE_DOWN:
+			LOG_TRACE('key down')
+			isArchive = WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).GetKeyDisabled( )
+			if isArchive :
+				LOG_TRACE('Archive playing now')
+				return -1
+
+			prevChannel = None
+			prevChannel = self.mDataCache.Channel_GetPrev( self.mDataCache.Channel_GetCurrent( ) ) #self.mCommander.Channel_GetPrev( )
+			if prevChannel :
+				self.mDataCache.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )			
+				#self.mCommander.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )
+				self.onClick( self.mCtrlBtnStop.getId() )
+				
+			
+		elif id == Action.ACTION_PAGE_UP:
+			LOG_TRACE('key up')
+			isArchive = WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).GetKeyDisabled( )
+			if isArchive :
+				LOG_TRACE('Archive playing now')
+				return -1
+
+			nextChannel = None
+			nextChannel = self.mDataCache.Channel_GetNext( self.mDataCache.Channel_GetCurrent( ) )
+			if nextChannel :
+				self.mDataCache.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
+				#self.mCommander.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
+				self.onClick( self.mCtrlBtnStop.getId() )
+
+		elif id == Action.ACTION_CONTEXT_MENU:
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+
+		elif id == Action.ACTION_STOP :
+			self.onClick( self.mCtrlBtnStop.getId() )
 
 		#test
 		elif id == 104 : #scroll up
@@ -363,7 +399,12 @@ class TimeShiftPlate(BaseWindow):
 
 				elif self.mMode == ElisEnum.E_MODE_PVR :
 					ret = self.mDataCache.Player_Stop()
-					gobackID = WinMgr.WIN_ID_ARCHIVE_WINDOW
+					isArchive = WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).GetKeyDisabled( )
+					if isArchive :
+						gobackID = WinMgr.WIN_ID_ARCHIVE_WINDOW
+					else :
+						gobackID = WinMgr.WIN_ID_LIVE_PLATE
+					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).SetKeyDisabled( False )
 
 				third -= 1
 				LOG_TRACE( 'play_stop() ret[%s] try[%d]'% (ret,third) )
@@ -375,7 +416,7 @@ class TimeShiftPlate(BaseWindow):
 			self.UpdateLabelGUI( self.mCtrlProgress.getId(), 0 )
 			self.mProgress_idx = 0.0
 
-			#self.RecordingStop( )
+			#self.RecordingStopAll( )
 
 			self.Close()
 			WinMgr.GetInstance().ShowWindow( gobackID )
@@ -730,9 +771,9 @@ class TimeShiftPlate(BaseWindow):
 		if self.mMode == ElisEnum.E_MODE_LIVE :
 			labelMode = 'LIVE'
 		elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
-			labelMode = 'TIMESHIFT'
+			labelMode = E_TAG_COLOR_GREEN + 'TIMESHIFT' + E_TAG_COLOR_END
 		elif self.mMode == ElisEnum.E_MODE_PVR :
-			labelMode = 'PVR'
+			labelMode = E_TAG_COLOR_RED + 'PVR' + E_TAG_COLOR_END
 			buttonHide= False
 		elif self.mMode == ElisEnum.E_MODE_EXTERNAL_PVR :
 			labelMode = 'EXTERNAL_PVR'
@@ -859,7 +900,7 @@ class TimeShiftPlate(BaseWindow):
 
 		LOG_TRACE('Leave')
 
-	def RecordingStop( self ) :
+	def RecordingStopAll( self ) :
 		LOG_TRACE('Enter')
 
 		RunningRecordCount = self.mCommander.Record_GetRunningRecorderCount()
@@ -881,8 +922,6 @@ class TimeShiftPlate(BaseWindow):
 		LOG_TRACE('Enter')
 
 		self.mEventBus.Deregister( self )
-		#self.TimeshiftAction(self.mCtrlBtnStop.getId())
-		#self.mDataCache.Player_Stop()
 
 		self.mEnableThread = False
 		self.CurrentTimeThread().join()
@@ -903,11 +942,8 @@ class TimeShiftPlate(BaseWindow):
 	
 	def AsyncAutomaticHide( self ) :
 		if self.mSpeed == 100 :
-			#self.Close()
 			xbmc.executebuiltin('xbmc.Action(previousmenu)')
 			LOG_TRACE('HIDE : TimeShiftPlate')
-			#WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-
 
 	def RestartAutomaticHide( self ) :
 		self.StopAutomaticHide()

@@ -120,7 +120,6 @@ class AntennaSetup( SettingWindow ) :
 			
 
 	def onClick( self, aControlId ) :
-		self.DisableControl( )
 		groupId = self.GetGroupId( aControlId )
 		if groupId == E_Input01 or groupId == E_Input02 :
 			if groupId == E_Input01 :
@@ -156,6 +155,7 @@ class AntennaSetup( SettingWindow ) :
 		
 		if groupId == E_SpinEx01 or groupId == E_SpinEx02 or groupId == E_SpinEx03 or groupId == E_SpinEx04 :
 			self.ControlSelect( )
+			self.DisableControl( )
 
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
 			self.SaveConfiguration( )
@@ -170,6 +170,7 @@ class AntennaSetup( SettingWindow ) :
 			WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).SetResultAntennaStep( False )
 			self.close( )
 			self.CloseBusyDialog( )
+
 		
 	def onFocus( self, aControlId ) :
 		if self.mInitialized == False :
@@ -199,16 +200,16 @@ class AntennaSetup( SettingWindow ) :
 	
 
 	def DisableControl( self ) :
-		selectedIndex1 = self.GetSelectedIndex( E_SpinEx01 )
-		if selectedIndex1 == 1 :
+		selectedIndex = self.GetSelectedIndex( E_SpinEx01 )
+		if selectedIndex == 1 :
 			self.SetEnableControl( E_SpinEx02, False )
 			self.getControl( E_SpinEx02 + 3 ).selectItem( 0 )
 			self.SetProp( E_SpinEx02, 0 )
 		else :
 			self.SetEnableControl( E_SpinEx02, True )
 
-		selectedIndex2 = self.GetSelectedIndex( E_SpinEx02 )	
-		if selectedIndex2 == 0 :
+		selectedIndex = self.GetSelectedIndex( E_SpinEx02 )	
+		if selectedIndex == 0 :
 			self.SetEnableControl( E_SpinEx04, False )
 			self.SetEnableControl( E_Input02, False )
 			self.getControl( E_SpinEx04 + 3 ).selectItem( self.GetSelectedIndex( E_SpinEx03 ) )

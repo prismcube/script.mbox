@@ -8,20 +8,26 @@ import pvr.TunerConfigMgr as ConfigMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
 from inspect import currentframe
 import pvr.ElisMgr
+from ElisEnum import ElisEnum
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.Util import GuiLock2, LOG_TRACE, LOG_ERR, LOG_WARN, RunThread
 from pvr.gui.GuiConfig import *
+
+E_TABLE_ALLCHANNEL = 0
+E_TABLE_ZAPPING = 1
 
 
 class NullWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mAsyncShowTimer = None
+		self.mStatusIsArchive = False
 
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
+		self.mGotoWinID = None
 
 		if self.mInitialized == False :
 			self.mInitialized = True
@@ -35,6 +41,12 @@ class NullWindow( BaseWindow ) :
 		self.GlobalAction( actionId )		
 
 		if actionId == Action.ACTION_PREVIOUS_MENU:
+			if self.mGotoWinID :
+				if self.mGotoWinID == WinMgr.WIN_ID_ARCHIVE_WINDOW :
+					self.mGotoWinID = None
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+				return
+				
 			if ElisPropertyEnum( 'Lock Mainmenu', self.mCommander ).GetProp( ) == 0 :
 				dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 				dialog.SetDialogProperty( 'PIN Code 4 digit', '', 4, True )
@@ -66,9 +78,11 @@ class NullWindow( BaseWindow ) :
 				print 'ERR prev channel'
 
 		elif actionId == Action.ACTION_SELECT_ITEM:
+			LOG_TRACE('key ok')
+			if self.mStatusIsArchive :
+				LOG_TRACE('Archive playing now')
+				return -1
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
-#			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-			print 'lael98 check ation select'
 
 		elif actionId == Action.ACTION_MOVE_LEFT:
 			print 'youn check ation left'
@@ -80,16 +94,22 @@ class NullWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
 		elif actionId == Action.ACTION_CONTEXT_MENU:
+			status = None
+			status = self.mDataCache.Player_GetStatus()
+			gotoWinId = WinMgr.WIN_ID_LIVE_PLATE
+			if status.mMode != ElisEnum.E_MODE_LIVE :
+				gotoWinId = WinMgr.WIN_ID_TIMESHIFT_PLATE
 
-			window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE )
+			window = WinMgr.GetInstance( ).GetWindow( gotoWinId )
 			window.SetAutomaticHide( False )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-
+			WinMgr.GetInstance( ).ShowWindow( gotoWinId )
 
 		elif actionId == Action.ACTION_PAGE_DOWN:
-			LOG_TRACE('TRACE')
-			LOG_WARN('WARN')
-			LOG_ERR('ERR')
+			LOG_TRACE('key down')
+			if self.mStatusIsArchive :
+				LOG_TRACE('Archive playing now')
+				return -1
+
 			prevChannel = None
 			prevChannel = self.mDataCache.Channel_GetPrev( self.mDataCache.Channel_GetCurrent( ) ) #self.mCommander.Channel_GetPrev( )
 			if prevChannel :
@@ -102,6 +122,11 @@ class NullWindow( BaseWindow ) :
 
 
 		elif actionId == Action.ACTION_PAGE_UP:
+			LOG_TRACE('key up')
+			if self.mStatusIsArchive :
+				LOG_TRACE('Archive playing now')
+				return -1
+
 			nextChannel = None
 			nextChannel = self.mDataCache.Channel_GetNext( self.mDataCache.Channel_GetCurrent( ) )
 			if nextChannel :
@@ -119,6 +144,10 @@ class NullWindow( BaseWindow ) :
 			aKey = actionId - (Action.ACTION_JUMP_SMS2 - 2)
 			if actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9:
 				aKey = actionId - Action.REMOTE_0
+
+			if self.mStatusIsArchive :
+				LOG_TRACE('Archive playing now')
+				return -1
 
 			if aKey == 0 :
 				return -1
@@ -143,6 +172,31 @@ class NullWindow( BaseWindow ) :
 					jumpChannel = self.mDataCache.Channel_GetCurr( int(inputNumber) )
 					if jumpChannel :
 						self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType )
+
+		elif actionId == Action.ACTION_STOP :
+			status = None
+			status = self.mDataCache.Player_GetStatus()
+			if status.mMode :
+				ret = self.mDataCache.Player_Stop()
+				LOG_TRACE('----------mode[%s] stop[%s] up/down[%s]'% (status.mMode, ret, self.mStatusIsArchive) )
+				if ret :
+					if status.mMode == ElisEnum.E_MODE_PVR :
+						if self.mStatusIsArchive :
+							self.mGotoWinID = WinMgr.WIN_ID_ARCHIVE_WINDOW
+							self.mStatusIsArchive = False
+							LOG_TRACE('archive play, stop to go Archive')
+						else :
+							self.mGotoWinID = None
+							self.mStatusIsArchive = False
+							LOG_TRACE('recording play, stop only(NullWindow)')
+
+						LOG_TRACE('up/down key released, goto win[%s]'% self.mGotoWinID)
+						if self.mGotoWinID :
+							xbmc.executebuiltin('xbmc.Action(previousmenu)')
+
+			else :
+				self.RecordingStop()
+
 
 		else:
 			print 'lael98 check ation unknown id=%d' %actionId
@@ -181,4 +235,41 @@ class NullWindow( BaseWindow ) :
 	def onFocus(self, aControlId) :
 		print "onFocus( ): control %s" % aControlId
 		self.mLastFocusId = aControlId
-		
+
+
+	def RecordingStop( self ) :
+		LOG_TRACE('Enter')
+
+		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+		LOG_TRACE( 'runningCount[%s]'% isRunRec )
+
+		if isRunRec > 0 :
+			GuiLock2( True )
+			dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_STOP_RECORD )
+			dialog.doModal( )
+			GuiLock2( False )
+
+			isOK = dialog.IsOK()
+			if isOK == E_DIALOG_STATE_YES :
+				if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
+					time.sleep(1.5)
+					isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+					if isRunRec > 0 :
+						#use zapping table, in recording
+						self.mDataCache.SetChangeDBTableChannel( E_TABLE_ZAPPING )
+						self.mDataCache.Channel_GetZappingList( )
+						self.mDataCache.LoadChannelList( )
+					else :
+						self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
+						self.mDataCache.LoadChannelList( )
+						self.mDataCache.mCacheReload = True
+
+		LOG_TRACE('Leave')
+
+	def SetKeyDisabled( self, aDisable = False ) :
+		self.mStatusIsArchive = aDisable
+
+	def GetKeyDisabled( self ) :
+		return self.mStatusIsArchive
+
+

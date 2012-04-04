@@ -277,14 +277,15 @@ class FirstInstallation( SettingWindow ) :
 			self.AddInputControl( E_Input03, 'Time', self.mTime )
 			self.AddEnumControl( E_SpinEx02, 'Local Time Offset' )
 			self.AddEnumControl( E_SpinEx03, 'Summer Time' )
+			self.AddInputControl( E_Input04, 'Apply', '' )
 			self.AddPrevNextButton( )
 			self.SetPrevNextButtonLabel( )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03, E_Input04 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_Input04, E_Input05 ]
+			hideControlIds = [ E_Input05 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
@@ -336,7 +337,6 @@ class FirstInstallation( SettingWindow ) :
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( 'Next' )
 
 		elif self.mStepNum == E_STEP_RESULT :
-			self.SetVisibleControl( E_FIRST_TIME_INSTALLATION_PREV, False )
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( 'Exit' )
 
 		else :
@@ -415,7 +415,6 @@ class FirstInstallation( SettingWindow ) :
 	def TimeSetting( self, aControlId ) :
 		if aControlId == E_SpinEx01 :
 			self.DisableControl( E_TIME_SETTING )
-			return
 				
 		elif aControlId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
@@ -428,31 +427,29 @@ class FirstInstallation( SettingWindow ) :
 			if ret >= 0 :
 				self.mSetupChannel = channelList[ ret ]
 				self.SetControlLabel2String( E_Input01, self.mSetupChannel.mName )
-			return
 
 		elif aControlId == E_Input02 :
 			self.mDate = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_DATE, 'Input Date', self.mDate )
 			self.SetControlLabel2String( E_Input02, self.mDate )
-			return
 			
 		elif aControlId == E_Input03 :
 			self.mTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Input Time', self.mTime )
 			self.SetControlLabel2String( E_Input03, self.mTime )		
-			return
-			
-		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
+
+		elif aControlId == E_Input04 :
 			oriSetupChannel = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
+			oriTimeMode = ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( )
+			oriLocalTimeOffset = ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetProp( )
+			oriSummerTime = ElisPropertyEnum( 'Summer Time', self.mCommander ).GetProp( )
+			oriChannel = self.mDataCache.Channel_GetCurrent( )
 		 		
 			ElisPropertyEnum( 'Time Mode', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx01 ) )
 			ElisPropertyEnum( 'Local Time Offset', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx02) )
 			ElisPropertyEnum( 'Summer Time', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx03 ) )
+			localOffset = ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetProp( )
+			self.mCommander.Datetime_SetLocalOffset( localOffset )
  			
 			if ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( ) == TIME_AUTOMATIC :
-				oriTimeMode = ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( )
-				oriLocalTimeOffset = ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetProp( )
-				oriSummerTime = ElisPropertyEnum( 'Summer Time', self.mCommander ).GetProp( )
-				oriChannel = self.mDataCache.Channel_GetCurrent( )
-				
 				ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( self.mSetupChannel.mNumber )
 				self.mDataCache.Channel_SetCurrent( self.mSetupChannel.mNumber, self.mSetupChannel.mServiceType ) # Todo After : using ServiceType to different way
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
@@ -463,27 +460,25 @@ class FirstInstallation( SettingWindow ) :
 
 				if dialog.GetResult( ) == False :
 					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( oriTimeMode )
-					ElisPropertyEnum( 'Local Time Offset', self.mCommander ).SetProp( oriLocalTimeOffset )
 					ElisPropertyEnum( 'Summer Time', self.mCommander ).SetProp( oriSummerTime )
 					ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( oriSetupChannel )
+					ElisPropertyEnum( 'Local Time Offset', self.mCommander ).SetProp( oriLocalTimeOffset )
+					self.getControl( E_SpinEx01 + 3 ).selectItem( ElisPropertyEnum( 'Time Mode', self.mCommander ).GetPropIndex( ) )
+					self.getControl( E_SpinEx02 + 3 ).selectItem( ElisPropertyEnum( 'Summer Time', self.mCommander ).GetPropIndex( ) )
+					self.getControl( E_SpinEx03 + 3 ).selectItem( ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetPropIndex( ) )
+					self.mCommander.Datetime_SetLocalOffset( oriLocalTimeOffset )
 
 				self.mDataCache.LoadTime( )
-				self.SetListControl( )
+				self.SetListControl( E_STEP_DATE_TIME )
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
 				self.mDataCache.Channel_SetCurrent( oriChannel.mNumber, oriChannel.mServiceType) # Todo After : using ServiceType to different way
-
-				self.setFocusId( E_FAKE_BUTTON )
-				time.sleep( 0.3 )
-				self.SetListControl( E_STEP_RESULT )
-				return
 			else :
 				sumtime = self.mDate + '.' + self.mTime
 				t = time.strptime( sumtime, '%d.%m.%Y.%H:%M' )
 				ret = self.mCommander.Datetime_SetSystemUTCTime( int( time.mktime( t ) ) )
 				self.mDataCache.LoadTime( )
 
+		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
 				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )
 				self.SetListControl( E_STEP_RESULT )
-				return
-			
