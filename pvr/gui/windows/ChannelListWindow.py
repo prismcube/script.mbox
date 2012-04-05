@@ -195,6 +195,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mRecoveryChannel = None
 		self.mSlideOpenFlag = False
 		self.mFlag_EditChanged = False
+		self.mFlag_ModeChanged = False
 		self.mFlag_DeleteAll = False
 
 		#edit mode
@@ -473,15 +474,9 @@ class ChannelListWindow( BaseWindow ) :
 	def SetModeChanged( self, aType = FLAG_MODE_TV) :
 		LOG_TRACE( 'Enter' )
 
-		if self.mChannelListServiceType == aType :
-			if self.mChannelListServiceType == FLAG_MODE_TV:
-				self.UpdateLabelGUI( self.mCtrlRdoTV.getId(), True, True )
-
-			elif self.mChannelListServiceType == FLAG_MODE_RADIO:
-				self.UpdateLabelGUI( self.mCtrlRdoRadio.getId(), True, True )
-
-		else :
+		if self.mChannelListServiceType != aType :
 			self.mFlag_EditChanged = True
+			self.mFlag_ModeChanged = True
 			self.mChannelListServiceType = aType
 			self.mElisZappingModeInfo.mServiceType = aType
 
@@ -495,6 +490,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			self.mCtrlListCHList.reset( )
 			self.InitChannelList( )
+			self.mCtrlListCHList.selectItem(0)
 			self.mFlag_EditChanged = False
 
 			#### data cache re-load ####
@@ -503,12 +499,12 @@ class ChannelListWindow( BaseWindow ) :
 			if aType == FLAG_MODE_TV :
 				self.mCurrentChannel = None
 				#self.SetChannelTune( self.mLastChannel )
-				self.mDataCache.Player_AVBlank( False, False )
+				#self.mDataCache.Player_AVBlank( False, False )
 
 			elif aType == FLAG_MODE_RADIO :
 				if self.mCurrentChannel :
 					self.mLastChannel = self.mCurrentChannel
-				self.mDataCache.Player_AVBlank( True, False )
+				#self.mDataCache.Player_AVBlank( True, False )
 
 			#initialize get epg event
 			self.mIsSelect = False
@@ -623,20 +619,23 @@ class ChannelListWindow( BaseWindow ) :
 				if aEvent.mEventId != self.mEventId :
 					if self.mIsSelect == True :
 						#on select, clicked
-						ret = None
-						ret = self.mDataCache.Epgevent_GetPresent( )
-						if ret and ret.mEventName != 'No Name':
+						iEPG = None
+						sid  = self.mNavChannel.mSid
+						tsid = self.mNavChannel.mTsid
+						onid = self.mNavChannel.mOnid
+						iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid, True )
+						if iEPG and iEPG.mEventName != 'No Name':
 							#LOG_TRACE('2========event id[%s] old[%s]'% (aEvent.mEventId, self.mEventId) )
 							self.mEventId = aEvent.mEventId
 
 							if not self.mNavEpg or \
-							   ret.mEventId != self.mNavEpg.mEventId or \
-							   ret.mSid != self.mNavEpg.mSid or \
-							   ret.mTsid != self.mNavEpg.mTsid or \
-							   ret.mOnid != self.mNavEpg.mOnid :
+							   iEPG.mEventId != self.mNavEpg.mEventId or \
+							   iEPG.mSid != self.mNavEpg.mSid or \
+							   iEPG.mTsid != self.mNavEpg.mTsid or \
+							   iEPG.mOnid != self.mNavEpg.mOnid :
 
 								LOG_TRACE('epg DIFFER')
-								self.mNavEpg = ret
+								self.mNavEpg = iEPG
 
 								#update label
 								self.ResetLabel( )
@@ -701,6 +700,14 @@ class ChannelListWindow( BaseWindow ) :
 			idx = self.mCtrlListCHList.getSelectedPosition( )
 			iChannel = self.mChannelList[idx]
 			LOG_TRACE('chinfo: num[%s] type[%s] name[%s]'% (iChannel.mNumber, iChannel.mServiceType, iChannel.mName) )
+
+
+		if self.mFlag_ModeChanged :
+			self.mFlag_ModeChanged = False
+			isBlank = False
+			if iChannel.mServiceType == FLAG_MODE_RADIO :
+				isBlank = True
+			self.mDataCache.Player_AVBlank( isBlank, False )
 
 		ret = False
 		#ret = self.mDataCache.Channel_SetCurrent( chNumber, self.mChannelListServiceType )
@@ -1452,8 +1459,15 @@ class ChannelListWindow( BaseWindow ) :
 
 		try :
 			if self.mIsSelect == True :
+				if not self.mNavChannel :
+					LOG_TRACE('No Channels')
+					return
+
+				sid  = self.mNavChannel.mSid
+				tsid = self.mNavChannel.mTsid
+				onid = self.mNavChannel.mOnid
 				iEPG = None
-				iEPG = self.mDataCache.Epgevent_GetPresent( )
+				iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid, True )
 				if iEPG and iEPG.mEventName != 'No Name':
 					self.mNavEpg = iEPG
 					#iEPG.printdebug( )

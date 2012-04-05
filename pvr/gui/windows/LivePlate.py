@@ -286,10 +286,9 @@ class LivePlate(BaseWindow):
 			else :
 				self.ShowDialog( self.mCtrlBtnStopRec.getId() )
 
+		#test
 		elif id == 13: #'x'
-			#this is test
 			LOG_TRACE( 'cwd[%s]'% xbmc.getLanguage() )
-
 
 		#LOG_TRACE( 'Leave' )
 
@@ -388,7 +387,11 @@ class LivePlate(BaseWindow):
 
 				if aEvent.mEventId != self.mEventID :
 					iEPG = None
-					iEPG = self.mDataCache.Epgevent_GetPresent( )
+					#iEPG = self.mDataCache.Epgevent_GetPresent( )
+					sid  = currentChannel.mSid
+					tsid = currentChannel.mTsid
+					onid = currentChannel.mOnid
+					iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid, True )
 					if iEPG and iEPG.mEventName != 'No Name':
 						LOG_TRACE('-----------------------')
 						#ret.printdebug()
@@ -545,8 +548,15 @@ class LivePlate(BaseWindow):
 			#stop onEvent
 			self.mFlag_OnEvent = False
 			if self.mEventCopy == None :
+				if not self.mCurrentChannel :
+					LOG_TRACE('No Channels')
+					return
+
 				iEPG = None
-				iEPG = self.mDataCache.Epgevent_GetPresent()
+				sid  = self.mCurrentChannel.mSid
+				tsid = self.mCurrentChannel.mTsid
+				onid = self.mCurrentChannel.mOnid
+				iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid, True )
 				if iEPG and iEPG.mEventName != 'No Name':
 					self.mEventCopy = iEPG
 
@@ -917,11 +927,13 @@ class LivePlate(BaseWindow):
 		elif aFocusid == self.mCtrlBtnTeletext.getId() :
 			msg1 = 'Teletext'
 			msg2 = 'test'
+			xbmc.executebuiltin('Custom.SetLanguage(French)')
 
 
 		elif aFocusid == self.mCtrlBtnSubtitle.getId() :
 			msg1 = 'Subtitle'
 			msg2 = 'test'
+			xbmc.executebuiltin('Custom.SetLanguage(English)')
 
 		elif aFocusid == self.mCtrlBtnStartRec.getId() :
 			runningCount = self.ShowRecording()
