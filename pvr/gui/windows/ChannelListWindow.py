@@ -1329,9 +1329,8 @@ class ChannelListWindow( BaseWindow ) :
 				( EnumToString('mode', self.mZappingMode),         \
 				  EnumToString('sort', self.mChannelListSortMode), \
 				  EnumToString('type', self.mChannelListServiceType) ) )
-			LOG_TRACE( 'len[%s] ch%s'% (len(self.mChannelList),ClassToList( 'convert', self.mChannelList ) ) )
+			LOG_TRACE( 'len[%s] ch[%s]'% (len(self.mChannelList),ClassToList( 'convert', self.mChannelList ) ) )
 		"""
-
 		LOG_TRACE( 'Leave' )
 
 
@@ -1589,7 +1588,7 @@ class ChannelListWindow( BaseWindow ) :
 			satellite = self.mDataCache.Satellite_GetByChannelNumber( self.mNavChannel.mNumber, -1, True )
 			if not satellite :
 				#LOG_TRACE('Fail GetByChannelNumber by Cache')
-				satellite = self.mDataCache.Satellite_GetByChannelNumber( self.mNavChannel.mNumber, self.mNavChannel.mServiceType, -1, True )
+				satellite = self.mDataCache.Satellite_GetByChannelNumber( self.mNavChannel.mNumber, self.mNavChannel.mServiceType, True )
 
 			if satellite :
 				label = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
