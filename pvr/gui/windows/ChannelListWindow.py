@@ -511,6 +511,13 @@ class ChannelListWindow( BaseWindow ) :
 			self.InitEPGEvent( )
 
 
+		if aType == FLAG_MODE_TV :
+			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ),   True, 'select' )
+			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ),False, 'select' )
+		else :
+			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ),   False, 'select' )
+			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ),True, 'select' )
+
 		#slide close
 		self.mCtrlListCHList.setEnabled(True)
 		self.setFocusId( self.mCtrlGropCHList.getId( ) )
@@ -1178,13 +1185,13 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			#opt btn blind
 			self.UpdateLabelGUI( self.mCtrlGropOpt.getId( ), False )
-			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ), True )
-			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ), True )
+			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ), True, 'enable' )
+			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ), True, 'enable' )
 		else :
 			#opt btn visible
 			self.UpdateLabelGUI( self.mCtrlGropOpt.getId( ), True )
-			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ), False )
-			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ), False )
+			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ), False, 'enable' )
+			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ), False, 'enable' )
 			return
 
 		if self.mFlag_DeleteAll :
@@ -1556,9 +1563,9 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlLblPath1.setLabel( aValue )
 
 		elif aCtrlID == self.mCtrlRdoTV.getId( ) :
-			if aExtra :
+			if aExtra == 'select' :
 				self.mCtrlRdoTV.setSelected( aValue )
-			else :
+			elif aExtra == 'enable' :
 				self.mCtrlRdoTV.setEnabled( aValue )
 
 		elif aCtrlID == self.mCtrlRdoRadio.getId( ) :
