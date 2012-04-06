@@ -5,8 +5,8 @@ import shutil
 import string
 import time
 from pvr.gui.GuiConfig import *
-#from pythonwifi.iwlibs import Wireless
-#import pythonwifi.flags
+from pythonwifi.iwlibs import Wireless
+import pythonwifi.flags
 from pvr.Util import LOG_ERR
 
 
@@ -17,44 +17,70 @@ FILE_NAME_AUTO_RESOLV_CONF		=	'/etc/init.d/update-resolv.sh'
 FILE_TEMP						=	'/tmp/ip_temp'
 FILE_WPA_SUPPLICANT				=	'/etc/wpa_supplicant/wpa_supplicant.conf'
 
-KEYWORD_ETH0					=	'iface eth0 inet'
 KEYWORD_NAMESERVER				=	'nameserver'
 
-SYSTEM_COMMAND_GET_IP			=	"ifconfig eth0 | awk '/inet / {print $2}' | awk -F: '{print $2}'"
-SYSTEM_COMMAND_GET_MASK			=	"ifconfig eth0 | awk '/inet / {print $4}' | awk -F: '{print $2}'"
 SYSTEM_COMMAND_GET_GATEWAY		=	"route -n | awk '/^0.0.0.0/ {print $2}'"
 
-COMMAND_NETWORK_RESTART			=	"/etc/init.d/networking restart"
 COMMAND_COPY_INTERFACES			=	"cp " + FILE_NAME_TEMP_INTERFACES + " " + FILE_NAME_INTERFACES
+
+
+def GetAdapterState( aDevice ) :
+	classdir = "/sys/class/net/" + aDevice + "/device/"
+	if os.path.exists( classdir ) :
+		files = os.listdir( classdir )
+		if 'driver' in files :
+			return True
+		else:
+			return False
+	else:
+		return False
+
+
+def GetInstalledAdapters( ) :
+	return [ dev for dev in os.listdir( '/sys/class/net' ) ]
 
 
 class IpParser :
 
 	def __init__( self ) :
-		self.mEth0Type			= None
+		self.mEthType			= None
 		self.mAddressIp			= '255.255.255.255'
 		self.mAddressMask		= '255.255.255.255'
 		self.mAddressGateway	= '255.255.255.255'
 		self.mAddressNameServer	= '255.255.255.255'
+		self.mDevName			= 'eth0'
+
+
+	def GetEthdevice( self ) :
+		for dev in GetInstalledAdapters( ) :
+			if dev.startswith( 'eth' ) :
+				if GetAdapterState( dev ) == True :
+					return dev
+		return None	
 
 
 	def LoadNetworkType( self ) :
 		try :
-			inputFile = open( FILE_NAME_INTERFACES, 'r' )
-			inputline = inputFile.readlines( )
-			for line in inputline :
-				if line.startswith( KEYWORD_ETH0 ) :
-					words = string.split( line )
-					if words[3] == 'static' :
-						self.mEth0Type = NET_STATIC
-					else :
-						self.mEth0Type = NET_DHCP
-					inputFile.close( )
-					return True
+			self.mDevName = self.GetEthdevice( )
+			if self.mDevName != None :
+				inputFile = open( FILE_NAME_INTERFACES, 'r' )
+				inputline = inputFile.readlines( )
+				for line in inputline :
+					if line.startswith( 'iface ' + self.mDevName + ' inet' ) :
+						words = string.split( line )
+						if words[3] == 'static' :
+							self.mEthType = NET_STATIC
+						else :
+							self.mEthType = NET_DHCP
+						inputFile.close( )
+						return True
 
-			inputFile.close( )
-			LOG_ERR( 'LoadNetworkType Load Fail!!!' )
-			return False
+				inputFile.close( )
+				LOG_ERR( 'LoadNetworkType Load Fail!!!' )
+				return False
+			else :
+				LOG_ERR( 'LoadNetworkType Load Fail!!!' )
+				return False
 
 		except Exception, e :
 			inputFile.close( )
@@ -64,7 +90,7 @@ class IpParser :
 
 	def LoadNetworkAddress( self ) :
 		try :
-			osCommand = [ SYSTEM_COMMAND_GET_IP + ' > ' + FILE_TEMP, SYSTEM_COMMAND_GET_MASK + ' >> ' + FILE_TEMP, SYSTEM_COMMAND_GET_GATEWAY + ' >> ' + FILE_TEMP ]
+			osCommand = [ "ifconfig %s | awk '/inet / {print $2}' | awk -F: '{print $2}'" % self.mDevName + ' > ' + FILE_TEMP, "ifconfig %s | awk '/inet / {print $4}' | awk -F: '{print $2}'" % self.mDevName + ' >> ' + FILE_TEMP, SYSTEM_COMMAND_GET_GATEWAY + ' >> ' + FILE_TEMP ]
 			
 			for command in osCommand :
 				time.sleep( 0.01 )
@@ -113,7 +139,7 @@ class IpParser :
 
 
 	def GetNetworkType( self ) :
-		return self.mEth0Type
+		return self.mEthType
 
 
 	def GetNetworkAddress( self ) :
@@ -140,15 +166,16 @@ class IpParser :
 
 	def SetNetwork( self, aType, aIpAddress=None, aMaskAddress=None, aGatewayAddress=None, aNameAddress=None ) :
 		try :
+
 			inputFile = open( FILE_NAME_INTERFACES, 'r' )
 			outputFile = open( FILE_NAME_TEMP_INTERFACES, 'w+' )
 			inputline = inputFile.readlines( )
 			for line in inputline :
-				if line.startswith( KEYWORD_ETH0 ) :
+				if line.startswith( 'iface ' + self.mDevName + ' inet' ) :
 					if aType == NET_DHCP :
-						outputFile.writelines( KEYWORD_ETH0 + ' ' + 'dhcp\n' )
+						outputFile.writelines( 'iface ' + self.mDevName + ' inet' + ' ' + 'dhcp\n' )
 					else :
-						outputFile.writelines( KEYWORD_ETH0 + ' ' + 'static\n' )
+						outputFile.writelines( 'iface ' + self.mDevName + ' inet' + ' ' + 'static\n' )
 						outputFile.writelines( 'address %s\n' % aIpAddress )
 						outputFile.writelines( 'netmask %s\n' % aMaskAddress )
 						outputFile.writelines( 'gateway %s\n' % aGatewayAddress )
@@ -160,9 +187,11 @@ class IpParser :
 			self.SetNameServer( aType, aNameAddress )
 			inputFile.close( )
 			outputFile.close( )
-
 			os.system( COMMAND_COPY_INTERFACES )
-			os.system( COMMAND_NETWORK_RESTART )
+
+			os.system( 'ifdown eth0' )	
+			time.sleep( 1 )
+			os.system( 'ifup eth0' )	
 			return True
 
 		except Exception, e :
@@ -207,28 +236,11 @@ class WirelessParser :
 		self.mEncriptType	= ENCRIPT_TYPE_WEP
 	
 
-	def getAdapterState( self, aDevice ) :
-		classdir = "/sys/class/net/" + aDevice + "/device/"
-		driverdir = "/sys/class/net/" + aDevice + "/device/driver/"
-		if os.path.exists( classdir ):
-			files = os.listdir( classdir )
-			if 'driver' in files:
-				return True
-			else:
-				return False
-		else:
-			return False
-
-
-	def getInstalledAdapters( self ) :
-		return [ dev for dev in os.listdir( '/sys/class/net' ) ]
-
-
 	def getWlandevice( self ) :
-		for dev in self.getInstalledAdapters( ) :
+		for dev in GetInstalledAdapters( ) :
 			if dev.startswith( 'eth' ) or dev == 'lo':
 				continue
-			if self.getAdapterState( dev ) == True :
+			if GetAdapterState( dev ) == True :
 				return dev
 		return None	
 
