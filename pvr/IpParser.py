@@ -275,8 +275,6 @@ class IpParser :
 
 			self.SetNameServer( aType, aNameAddress )
 			os.system( COMMAND_COPY_INTERFACES )
-			print 'dhkim test ###################################### %s' % gWifiDevName
-			print 'dhkim test ###################################### %s' % gEthernetDevName
 			os.system( 'ifdown %s' % gWifiDevName )
 			os.system( 'ifdown %s' % gEthernetDevName )
 			
@@ -349,7 +347,6 @@ class WirelessParser :
 			scanResult = None
 			if GetCurrentNetworkType( ) != NETWORK_WIRELESS :
 				os.system( 'ifup %s' % aDev )
-				print '&&&&&&&&&&&&&&&&&&&&&&dhkim test dev = %s' % aDev
 			wifi = Wireless( aDev )
 
 			scanResult  = wifi.scan( )
@@ -479,9 +476,6 @@ class WirelessParser :
 	def ConnectWifi( self, aDev ) :
 		global gEthernetDevName	
 		try :
-			print 'dhkim test ###################################### %s' % aDev
-			print 'dhkim test ###################################### %s' % gEthernetDevName
-
 			os.system( 'ifdown %s' % aDev )
 			time.sleep( 0.5 )
 			os.system( 'ifdown %s' % gEthernetDevName )

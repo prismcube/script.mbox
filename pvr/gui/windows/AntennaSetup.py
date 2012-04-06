@@ -18,6 +18,7 @@ class AntennaSetup( SettingWindow ) :
 		self.mFirstInstallationType = False
 
 	def onInit( self ) :
+		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( False )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
@@ -35,7 +36,7 @@ class AntennaSetup( SettingWindow ) :
 
 		self.SetSettingWindowLabel( 'Antenna & Satellite Setup' )
 
-		#self.getControl( E_DEFAULT_GOURP_ID ).setVisible( False )
+
 		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', None, 'Select tuner 2 connection type.' )
 		self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', None, 'Select tuner 2 configuration.' )
 		self.AddEnumControl( E_SpinEx03, 'Tuner1 Type', None, 'Setup tuner 1.' )
@@ -48,11 +49,10 @@ class AntennaSetup( SettingWindow ) :
 		self.setVisibleButton( )
 
 		self.InitControl( )
-		self.SetFocusControl( E_SpinEx01 )
 		self.ShowDescription( )
 		self.DisableControl( )
 		self.mInitialized = True
-		#self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True )
+		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True )
 
 		
 	def onAction( self, aAction ) :
@@ -91,12 +91,12 @@ class AntennaSetup( SettingWindow ) :
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					self.SaveConfiguration( )
-					channel = self.mDataCache.Channel_GetCurrent( )
-					self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
+					self.ReTune( )
 					
 				elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 					self.CancelConfiguration( )
-						
+					self.ReTune( )
+
 				elif dialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
 					return
 
@@ -204,18 +204,23 @@ class AntennaSetup( SettingWindow ) :
 	def DisableControl( self ) :
 		selectedIndex = self.GetSelectedIndex( E_SpinEx01 )
 		if selectedIndex == 1 :
-			self.SetEnableControl( E_SpinEx02, False )
-			self.getControl( E_SpinEx02 + 3 ).selectItem( 0 )
+			control = self.getControl( E_SpinEx02 + 3 )
+			time.sleep( 0.02 )
+			cotnrol.selectItem( 0 )
 			self.SetProp( E_SpinEx02, 0 )
+			self.SetEnableControl( E_SpinEx02, False )
 		else :
 			self.SetEnableControl( E_SpinEx02, True )
 
 		selectedIndex = self.GetSelectedIndex( E_SpinEx02 )	
 		if selectedIndex == 0 :
+			control = self.getControl( E_SpinEx04 + 3 )
+			time.sleep( 0.02 )
+			control.selectItem( self.GetSelectedIndex( E_SpinEx03 ) )
+			self.SetProp( E_SpinEx04, self.GetSelectedIndex( E_SpinEx03 ) )
 			self.SetEnableControl( E_SpinEx04, False )
 			self.SetEnableControl( E_Input02, False )
-			self.getControl( E_SpinEx04 + 3 ).selectItem( self.GetSelectedIndex( E_SpinEx03 ) )
-			self.SetProp( E_SpinEx04, self.GetSelectedIndex( E_SpinEx03 ) )
+
 		else :
 			self.SetEnableControl( E_SpinEx04, True)
 			self.SetEnableControl( E_Input02, True )
@@ -232,3 +237,9 @@ class AntennaSetup( SettingWindow ) :
 
 	def SetWindowType( self, aType ) :
 		self.mFirstInstallationType = aType
+
+
+	def ReTune( self ) :
+		channel = self.mDataCache.Channel_GetCurrent( )
+		self.mCommander.Channel_InvalidateCurrent( )
+		self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )

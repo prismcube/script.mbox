@@ -221,23 +221,26 @@ class TunerConfigMgr( object ) :
 		tuner1Type = ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( )
 		configuredList1 = self.GetConfiguredSatellitebyTunerIndex( E_TUNER_1 )
 		for i in range( len( configuredList1 ) ) :
+			configuredList1[i].mSlotNumber = i
 			if tuner1Type == E_SIMPLE_LNB or tuner1Type == E_DISEQC_1_0 or tuner1Type == E_DISEQC_1_1 :
 				configuredList1[i].mMotorizedType = ElisEnum.E_MOTORIZED_OFF
 				configuredList1[i].mIsOneCable = 0
+				configuredList1[i].mMotorizedData = 0
 				
 			elif tuner1Type == E_MOTORIZE_1_2 :
 				configuredList1[i].mMotorizedType = ElisEnum.E_MOTORIZED_ON
 				configuredList1[i].mIsOneCable = 0
+				configuredList1[i].mMotorizedData = configuredList1[i].mSlotNumber + 1
 
 			elif tuner1Type == E_MOTORIZE_USALS :
 				configuredList1[i].mMotorizedType = ElisEnum.E_MOTORIZED_USALS
 				configuredList1[i].mIsOneCable = 0
+				configuredList1[i].mMotorizedData = 0
 				
 			elif tuner1Type == E_ONE_CABLE :
 				configuredList1[i].mMotorizedType = ElisEnum.E_MOTORIZED_OFF
 				configuredList1[i].mIsOneCable = 1
-
-			configuredList1[i].mSlotNumber = i
+				configuredList1[i].mMotorizedData = 0
 		
 		if self.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER and tuner1Type != E_ONE_CABLE :
 			self.mConfiguredList2 = deepcopy( self.mConfiguredList1 )
@@ -248,24 +251,27 @@ class TunerConfigMgr( object ) :
 		else :
 			tuner2Type = ElisPropertyEnum( 'Tuner2 Type', self.mCommander ).GetProp( )
 			configuredList2 = self.GetConfiguredSatellitebyTunerIndex( E_TUNER_2 )
-			for i in range( len( configuredList1 ) ) :
+			for i in range( len( configuredList2 ) ) :
+				configuredList2[i].mSlotNumber = i
 				if tuner2Type == E_SIMPLE_LNB or tuner2Type == E_DISEQC_1_0 or tuner2Type == E_DISEQC_1_1 :
 					configuredList2[i].mMotorizedType = ElisEnum.E_MOTORIZED_OFF
 					configuredList2[i].mIsOneCable = 0
-					
+					configuredList2[i].mMotorizedData = 0
+
 				elif tuner2Type == E_MOTORIZE_1_2 :
 					configuredList2[i].mMotorizedType = ElisEnum.E_MOTORIZED_ON
 					configuredList2[i].mIsOneCable = 0
+					configuredList1[i].mMotorizedData = configuredList1[i].mSlotNumber + 1
 
 				elif tuner2Type == E_MOTORIZE_USALS :
 					configuredList2[i].mMotorizedType = ElisEnum.E_MOTORIZED_USALS
 					configuredList2[i].mIsOneCable = 0
+					configuredList2[i].mMotorizedData = 0
 					
 				elif tuner2Type == E_ONE_CABLE :
 					configuredList2[i].mMotorizedType = ElisEnum.E_MOTORIZED_OFF
 					configuredList2[i].mIsOneCable = 1
-
-				configuredList2[i].mSlotNumber = i
+					configuredList2[i].mMotorizedData = 0
 
 		ret1 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList1 )
 		ret2 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList2 )
