@@ -90,7 +90,7 @@ def EpgInfoComponentImage(aEpg):
 
 	LOG_TRACE( 'component flag[%s]'% tempFile )
 
-	imgData  = 'confluence/IconTeletext.png'
+	imgData  = 'IconTeletext.png'
 	imgDolby = 'confluence/dolbydigital.png'
 	imgHD    = 'confluence/OverlayHD.png'
 	imagelist = []
