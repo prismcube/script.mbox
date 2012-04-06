@@ -831,22 +831,23 @@ class TimeShiftPlate(BaseWindow):
 			#calculate current position
 			totTime = self.mTimeshift_endTime - self.mTimeshift_staTime
 			curTime = self.mTimeshift_curTime - self.mTimeshift_staTime
-			self.mProgress_idx = (curTime / float(totTime))  * 100.0
 
-			LOG_TRACE( 'curTime[%s] totTime[%s]'% ( curTime,totTime ) )
-			LOG_TRACE( 'curTime[%s] idx[%s] endTime[%s]'% ( self.mTimeshift_staTime, self.mProgress_idx, self.mTimeshift_endTime ) )
+			if totTime > 0 and curTime >= 0 :
+				self.mProgress_idx = (curTime / float(totTime))  * 100.0
 
+				LOG_TRACE( 'curTime[%s] totTime[%s]'% ( curTime,totTime ) )
+				LOG_TRACE( 'curTime[%s] idx[%s] endTime[%s]'% ( self.mTimeshift_staTime, self.mProgress_idx, self.mTimeshift_endTime ) )
 
-			if self.mProgress_idx > 100 :
-				self.mProgress_idx = 100
-			elif self.mProgress_idx < 0 :
-				self.mProgress_idx = 0
+				if self.mProgress_idx > 100 :
+					self.mProgress_idx = 100
+				elif self.mProgress_idx < 0 :
+					self.mProgress_idx = 0
 
-			#progress drawing
-			posx = int( self.mProgress_idx * self.mProgressbarWidth / 100 )
-			self.UpdateLabelGUI( self.mCtrlBtnCurrent.getId(), posx, 'pos' )
-			self.UpdateLabelGUI( self.mCtrlProgress.getId(), self.mProgress_idx )
-			LOG_TRACE( 'progress endTime[%s] idx[%s] posx[%s]'% (self.mTimeshift_endTime, self.mProgress_idx, posx) )
+				#progress drawing
+				posx = int( self.mProgress_idx * self.mProgressbarWidth / 100 )
+				self.UpdateLabelGUI( self.mCtrlBtnCurrent.getId(), posx, 'pos' )
+				self.UpdateLabelGUI( self.mCtrlProgress.getId(), self.mProgress_idx )
+				LOG_TRACE( 'progress endTime[%s] idx[%s] posx[%s]'% (self.mTimeshift_endTime, self.mProgress_idx, posx) )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
