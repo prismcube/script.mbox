@@ -91,6 +91,8 @@ class AntennaSetup( SettingWindow ) :
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					self.SaveConfiguration( )
+					channel = self.mDataCache.Channel_GetCurrent( )
+					self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
 					
 				elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 					self.CancelConfiguration( )

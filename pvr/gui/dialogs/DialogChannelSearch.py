@@ -272,4 +272,4 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def ReTune( self ) :
 		channel = self.mDataCache.Channel_GetCurrent( )
-		self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType) # Todo After : using ServiceType to different way
+		self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType ) # Todo After : using ServiceType to different way

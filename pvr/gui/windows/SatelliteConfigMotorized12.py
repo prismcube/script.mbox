@@ -172,7 +172,9 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 
 		# Store Position and Exit
 		elif groupId == E_Input06 :
-			pos = self.mCommander.Satelliteconfig_GetFirstAvailablePos( self.tunerIndex, ConfigMgr.GetInstance( ).GetCurrentConfigIndex( ) )
+			pos = self.mCommander.Satelliteconfig_GetFirstAvailablePos( self.tunerIndex, self.mCurrentSatellite.mSlotNumber )
+			print 'dhkim test #################### tuner index = %d, slotnumber = %d' % (self.tunerIndex, self.mCurrentSatellite.mSlotNumber)
+			print 'dhkim test #################### pos = %d' % pos
 			ret = self.mCommander.Motorized_SavePosition( self.tunerIndex, pos )
 			if ret == True :
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )

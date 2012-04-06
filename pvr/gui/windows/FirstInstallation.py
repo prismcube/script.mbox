@@ -190,7 +190,7 @@ class FirstInstallation( SettingWindow ) :
 		if self.mStepNum == E_STEP_SELECT_LANGUAGE :
 			self.mPrevStepNum = E_STEP_SELECT_LANGUAGE
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( 'Select Language' )
-			self.AddEnumControl( E_SpinEx01, 'Language', None, 'Select Language & Lacation' )
+			self.AddEnumControl( E_SpinEx01, 'Language', None, 'Select Language & Location' )
 			self.AddEnumControl( E_SpinEx02, 'Audio Language' )
 			self.AddNextButton( )
 			self.SetPrevNextButtonLabel( )
@@ -414,7 +414,7 @@ class FirstInstallation( SettingWindow ) :
 
 	def TimeSetting( self, aControlId ) :
 		if aControlId == E_SpinEx01 :
-			self.DisableControl( E_TIME_SETTING )
+			self.DisableControl( self.mStepNum )
 				
 		elif aControlId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
