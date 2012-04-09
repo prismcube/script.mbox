@@ -480,7 +480,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )			
 
 		self.close()
-		WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).SetKeyDisabled( True )
+		WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).SetKeyDisabled( True, recInfo )
 
 		self.SetVideoRestore();
 		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )				
