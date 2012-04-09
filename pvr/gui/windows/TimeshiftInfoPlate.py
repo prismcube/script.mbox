@@ -57,6 +57,7 @@ E_IMG_ICON_ICAS   = 'IconCas.png'
 E_IMG_ICON_TV     = 'confluence/tv.png'
 E_IMG_ICON_RADIO  = 'icon_radio.png'
 
+E_TAG_COLOR_WHITE = '[COLOR white]'
 E_TAG_COLOR_RED   = '[COLOR red]'
 E_TAG_COLOR_GREEN = '[COLOR green]'
 E_TAG_COLOR_END   = '[/COLOR]'
@@ -1398,11 +1399,40 @@ class TimeShiftInfoPlate(BaseWindow):
 				LOG_TRACE('CANCEL by context dialog')
 				return
 
-			GuiLock2( True )
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_LIVE_PLATE )
-			dialog.SetValue( selectAction )
- 			dialog.doModal( )
- 			GuiLock2( False )
+			if selectAction == CONTEXT_ACTION_AUDIO_SETTING :
+				GuiLock2( True )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_LIVE_PLATE )
+				dialog.SetValue( selectAction )
+	 			dialog.doModal( )
+	 			GuiLock2( False )
+
+	 		else :
+				getCount = self.mDataCache.Audiotrack_GetCount( )
+				selectIdx= self.mDataCache.Audiotrack_GetSelectedIndex( )
+				#LOG_TRACE('AudioTrack count[%s] select[%s]'% (getCount, selectIdx) )
+
+				context = []
+				for idx in range(getCount) :
+					idxTrack = self.mDataCache.Audiotrack_Get( idx )
+					#LOG_TRACE('getTrack name[%s] lang[%s]'% (idxTrack.mName, idxTrack.mLang) )
+					if selectIdx == idx :
+						label = '%s%s-%s%s' % (E_TAG_COLOR_WHITE,idxTrack.mName,idxTrack.mLang,E_TAG_COLOR_END)
+					else :
+						label = '%s%s-%s%s' % (E_TAG_COLOR_GREY,idxTrack.mName,idxTrack.mLang,E_TAG_COLOR_END)
+
+					context.append( ContextItem( label ) )
+
+				GuiLock2( True )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+				dialog.SetProperty( context )
+				dialog.doModal( )
+				GuiLock2( False )
+
+				selectIdx2 = dialog.GetSelectedIndex( )
+				self.mDataCache.Audiotrack_select( selectIdx2 )
+
+				LOG_TRACE('Select[%s --> %s]'% (selectAction, selectIdx2) )
+
 
 		LOG_TRACE( 'Leave' )
 
