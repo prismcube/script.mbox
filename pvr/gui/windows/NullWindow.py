@@ -35,6 +35,7 @@ class NullWindow( BaseWindow ) :
 			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_INFO_PLATE )
 
 
 	def onAction(self, aAction) :		
@@ -199,7 +200,7 @@ class NullWindow( BaseWindow ) :
 				self.RecordingStop()
 
 		#test
-		elif id == Action.ACTION_MOVE_RIGHT :
+		elif actionId == Action.ACTION_MOVE_RIGHT :
 			print 'youn check ation right'
 			#window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 			#window.SetAutomaticHide( True )

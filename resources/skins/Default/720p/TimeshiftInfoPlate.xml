@@ -431,16 +431,16 @@
 				<control type="group">
 					<control type="image">
 						<posx>0</posx>
-						<posy>-20</posy>
+						<posy>15</posy>
 						<width>850</width>
-						<height>70</height>
+						<height>45</height>
 						<texture flipy="true" flipx="true" border="50,0,32,0">confluence/header.png</texture>
 					</control>
 					<control type="image">
 						<posx>450</posx>
-						<posy>-20</posy>
+						<posy>15</posy>
 						<width>830</width>
-						<height>70</height>
+						<height>45</height>
 						<texture flipy="true" border="50,0,32,0">confluence/header.png</texture>
 					</control>
 
@@ -470,7 +470,7 @@
 							<align>center</align>
 							<label>00:00:00</label>
 							<texturefocus flipy="true">TSProgressCurrentFO.png</texturefocus>
-							<texturenofocus flipy="true">TSProgressCurrentNF.png</texturenofocus>
+							<!--texturenofocus flipy="true">TSProgressCurrentNF.png</texturenofocus-->
 							<onleft>202</onleft>
 							<onright>202</onright>
 							<onup></onup>
@@ -481,7 +481,7 @@
 					<control type="label" id="203">
 						<description>mode</description>
 						<posx>30</posx>
-						<posy>7</posy>
+						<posy>17</posy>
 						<font>font24_title</font>
 						<textcolor>FFB2D4F5</textcolor>
 						<shadowcolor>black</shadowcolor>
