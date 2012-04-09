@@ -22,6 +22,7 @@ class NullWindow( BaseWindow ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mAsyncShowTimer = None
 		self.mStatusIsArchive = False
+		self.mRecInfo = None
 
 
 	def onInit( self ) :
@@ -266,8 +267,9 @@ class NullWindow( BaseWindow ) :
 
 		LOG_TRACE('Leave')
 
-	def SetKeyDisabled( self, aDisable = False ) :
+	def SetKeyDisabled( self, aDisable = False, aRecInfo = None ) :
 		self.mStatusIsArchive = aDisable
+		self.mRecInfo = aRecInfo
 
 	def GetKeyDisabled( self ) :
 		return self.mStatusIsArchive
