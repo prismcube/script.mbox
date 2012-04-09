@@ -7,62 +7,6 @@ from pvr.Util import LOG_WARN, LOG_TRACE, LOG_ERR
 from inspect import currentframe
 __file__ = os.path.basename( currentframe().f_code.co_filename )
 
-def EpgInfoTime(aLocalOffset, aStartTime, aDuration):
-
-	epgStartTime = aStartTime + aLocalOffset
-	epgEndTime =  aStartTime + aDuration + aLocalOffset
-
-	startTime_hh = time.strftime('%H', time.gmtime(epgStartTime) )
-	startTime_mm = time.strftime('%M', time.gmtime(epgStartTime) )
-	endTime_hh = time.strftime('%H', time.gmtime(epgEndTime) )
-	endTime_mm = time.strftime('%M', time.gmtime(epgEndTime) )
-
-	str_startTime = str ('%02s:%02s'% (startTime_hh,startTime_mm) )
-	str_endTime = str ('%02s:%02s'% (endTime_hh,endTime_mm) )
-
-	LOG_TRACE( 'epgStart[%s] epgEndTime[%s]'% (epgStartTime, epgEndTime) )
-	LOG_TRACE( 'epgStart[%s] epgEndTime[%s]'% (time.strftime('%x %X',time.gmtime(epgStartTime)), time.strftime('%x %X',time.gmtime(epgEndTime)) ) )
-	LOG_TRACE( 'start[%s] end[%s]'%(str_startTime, str_endTime) )
-	LOG_TRACE( 'hh[%s] mm[%s] hh[%s] mm[%s]' % (startTime_hh, startTime_mm, endTime_hh, endTime_mm) )
-
-	ret = []
-	ret.append(str_startTime)
-	ret.append(str_endTime)
-
-	return ret
-
-def EpgInfoClock(aFlag, aNowTime, aStrTime):
-
-	strClock = []
-	
-	if aFlag == 1:
-		strClock.append( time.strftime('%a, %d.%m.%Y', time.gmtime(aNowTime) ) )
-		if aStrTime % 2 == 0:
-			strClock.append( time.strftime('%H:%M', time.gmtime(aNowTime) ) )
-		else :
-			strClock.append( time.strftime('%H %M', time.gmtime(aNowTime) ) )
-
-	elif aFlag == 2:
-		strClock.append( time.strftime('%a. %H:%M', time.gmtime(aNowTime) ) )
-
-	elif aFlag == 3:
-		strClock.append( time.strftime('%H:%M:%S', time.gmtime(aNowTime) ) )
-
-	elif aFlag == 4:
-		hour =  aNowTime / 3600
-		min  = (aNowTime % 3600) / 60
-		sec  = (aNowTime % 3600) % 60
-		ret = '%d:%02d:%02d' % ( hour, min, sec )
-		return ret
-
-	elif aFlag == 5:
-		import re
-		ret = re.split(':', aStrTime)
-		timeT = int(ret[0]) * 3600 + int(ret[1]) * 60 + int(ret[2])
-		return timeT
-
-	#LOG_TRACE( 'epgClock[%s:%s]'% (strClock, time.strftime('%S', time.gmtime(stbClock)) ) )
-	return strClock
 
 def EpgInfoComponentImage(aEpg):
 	LOG_TRACE( 'Enter' )

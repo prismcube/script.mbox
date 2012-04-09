@@ -16,7 +16,7 @@ from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 
 from pvr.Util import RunThread, GuiLock, GuiLock2, LOG_TRACE, LOG_WARN, LOG_ERR, TimeToString, TimeFormatEnum
-from pvr.PublicReference import EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, GetSelectedLongitudeString, ClassToList, EnumToString
+from pvr.PublicReference import EpgInfoComponentImage, GetSelectedLongitudeString, ClassToList, EnumToString
 
 import pvr.Msg as Msg
 import pvr.gui.windows.Define_string as MsgId
@@ -610,8 +610,8 @@ class TimeShiftPlate(BaseWindow):
 			self.mMode = status.mMode
 
 			#test label
-			#test = EpgInfoClock(FLAG_CLOCKMODE_HMS, status.mPlayTimeInMs/1000, 0)
-			#lblTest = 'current:[%s] currentToTime[%s] timeout[%s]'% (status.mPlayTimeInMs, test[0], self.mRepeatTimeout)
+			#test = TimeToString(status.mPlayTimeInMs/1000, TimeFormatEnum.E_HH_MM_SS)
+			#lblTest = 'current:[%s] currentToTime[%s] timeout[%s]'% (status.mPlayTimeInMs, test, self.mRepeatTimeout)
 			#self.UpdateLabelGUI( self.mCtrlLblTest.getId(), lblTest )
 
 
@@ -628,19 +628,6 @@ class TimeShiftPlate(BaseWindow):
 			if status.mEndTimeInMs :
 				self.mTimeshift_endTime = status.mEndTimeInMs   #/ 1000.0
 
-			if self.mMode == ElisEnum.E_MODE_TIMESHIFT :
-				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, (self.mTimeshift_staTime/1000.0), 0)
-				lbl_timeS = ret[0]
-				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, (self.mTimeshift_curTime/1000.0), 0)
-				lbl_timeP = ret[0]
-				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, (self.mTimeshift_endTime/1000.0), 0)
-				lbl_timeE = ret[0]
-
-			else :
-				lbl_timeS = EpgInfoClock(FLAG_CLOCKMODE_HHMM, (self.mTimeshift_staTime/1000.0), 0)
-				lbl_timeP = EpgInfoClock(FLAG_CLOCKMODE_HHMM, (self.mTimeshift_curTime/1000.0), 0)
-				lbl_timeE = EpgInfoClock(FLAG_CLOCKMODE_HHMM, (self.mTimeshift_endTime/1000.0), 0)
-				
 
 			#Speed label
 			self.mSpeed  = status.mSpeed
@@ -650,6 +637,10 @@ class TimeShiftPlate(BaseWindow):
 				if self.mRepeatTimeout < 0.1 :
 					self.mRepeatTimeout = 0.1
 
+
+			lbl_timeS = TimeToString( (self.mTimeshift_staTime/1000.0), TimeFormatEnum.E_HH_MM_SS)
+			lbl_timeP = TimeToString( (self.mTimeshift_curTime/1000.0), TimeFormatEnum.E_HH_MM_SS)
+			lbl_timeE = TimeToString( (self.mTimeshift_endTime/1000.0), TimeFormatEnum.E_HH_MM_SS)
 
 			if lbl_timeS != '' :
 				self.UpdateLabelGUI( self.mCtrlLblTSStartTime.getId(), lbl_timeS )
@@ -797,20 +788,9 @@ class TimeShiftPlate(BaseWindow):
 
 			#update localTime
 			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
-			lbl_localTime = EpgInfoClock(FLAG_CLOCKMODE_AHM, self.mLocalTime, 0)
-			#self.mCtrlEventClock.setLabel( lbl_localTime[0] )
-			self.UpdateLabelGUI( self.mCtrlEventClock.getId(), lbl_localTime[0] )
-			#self.mCtrlEventClock.setLabel( TimeToString( self.mLocalTime, TimeFormatEnum.E_HH_MM ) )
+			lbl_localTime = TimeToString( self.mLocalTime, TimeFormatEnum.E_AW_HH_MM)
+			self.UpdateLabelGUI( self.mCtrlEventClock.getId(), lbl_localTime )
 
-			"""
-			if self.mSpeed != 0 :
-				self.InitTimeShift( )
-				self.UpdateLocalTime( loop )
-				time.sleep(self.mRepeatTimeout)
-			#loop += 1
-			else :
-				time.sleep(1)
-			"""
 			if self.mIsPlay != FLAG_STOP :
 				self.InitTimeShift( )
 				self.UpdateLocalTime( loop )

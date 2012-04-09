@@ -9,8 +9,8 @@ from pvr.gui.GuiConfig import *
 
 from ElisEnum import ElisEnum
 import pvr.DataCacheMgr as CacheMgr
-from pvr.PublicReference import ClassToList, EpgInfoClock
-from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
+from pvr.PublicReference import ClassToList
+from pvr.Util import GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
 
 E_MOVETOJUMP_NUM_ID  = 210
 E_RESERVED_ID        = 211
@@ -146,12 +146,7 @@ class DialogTimeshiftJump( BaseDialog ) :
 
 		lbl_timeP = ''
 		if self.mJumpIFrame :
-			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
-				ret = EpgInfoClock(FLAG_CLOCKMODE_HMS, (self.mJumpIFrame/1000.0), 0)
-				lbl_timeP = ret[0]
-			else :
-				lbl_timeP = EpgInfoClock(FLAG_CLOCKMODE_HHMM, (self.mJumpIFrame/1000.0), 0)
-
+			lbl_timeP = TimeToString( (self.mJumpIFrame/1000.0), TimeFormatEnum.E_HH_MM_SS)
 			LOG_TRACE('move time[%s] iframe[%s] progress[%s]'% (lbl_timeP, self.mJumpIFrame, self.mMoveToNumber) )
 		else :
 			lbl_timeP = 'Move Fail'
