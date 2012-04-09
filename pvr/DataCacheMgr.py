@@ -951,13 +951,14 @@ class DataCacheMgr( object ):
 	def Player_StartInternalRecordPlayback( self, aRecordKey, aServiceType, aOffsetMS, aSpeed ) :
 		return self.mCommander.Player_StartInternalRecordPlayback( aRecordKey, aServiceType, aOffsetMS, aSpeed )
 
+	def RecordItem_GetEventInfo( self, aKey ) :
+		return self.mCommander.RecordItem_GetEventInfo( aKey )
 
 	def Record_GetRunningRecorderCount( self ) :
 		return self.mCommander.Record_GetRunningRecorderCount( )
 
 	def Record_GetRunningRecordInfo( self, aIndex ) :
 		return self.mCommander.Record_GetRunningRecordInfo( aIndex )
-
 
 	def Record_GetCount( self, aServiceType ) :
 		if SUPPORT_RECORD_DATABASE == True :	
