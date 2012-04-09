@@ -45,6 +45,9 @@ WIN_ID_FIRST_INSTALLATION			= 29
 WIN_ID_TEST1						= 30
 WIN_ID_DUMMY_WINDOW					= 100
 
+WIN_ID_TIMESHIFT_INFO_PLATE			= 31
+WIN_ID_TIMESHIFT_NEW_PLATE			= 32
+
 gWindowMgr = None
 
 def GetInstance():
@@ -243,6 +246,10 @@ class WindowMgr(object):
 
 			from pvr.gui.windows.FirstInstallation import FirstInstallation
 			self.mWindows[WIN_ID_FIRST_INSTALLATION]=FirstInstallation('FirstInstallation.xml', self.mScriptDir )
+
+			#test
+			from pvr.gui.windows.TimeshiftInfoPlate import TimeShiftInfoPlate
+			self.mWindows[WIN_ID_TIMESHIFT_INFO_PLATE]=TimeShiftInfoPlate('TimeshiftInfoPlate.xml', self.mScriptDir )
 			
 			"""
 			from pvr.gui.windows.test1 import Test1

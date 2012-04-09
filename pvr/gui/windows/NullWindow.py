@@ -198,6 +198,12 @@ class NullWindow( BaseWindow ) :
 			else :
 				self.RecordingStop()
 
+		#test
+		elif id == Action.ACTION_MOVE_RIGHT :
+			print 'youn check ation right'
+			#window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+			#window.SetAutomaticHide( True )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_INFO_PLATE )
 
 		else:
 			print 'lael98 check ation unknown id=%d' %actionId
