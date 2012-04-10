@@ -3,7 +3,6 @@ import xbmcgui
 import sys
 
 import pvr.gui.WindowMgr as WinMgr
-import pvr.TunerConfigMgr as ConfigMgr
 import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
@@ -26,7 +25,7 @@ class SatelliteConfigOnecable( SettingWindow ) :
 		self.SetSettingWindowLabel( 'OneCable Configuration' )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'OneCable configuration' )
 
-		self.mCurrentSatellite = ConfigMgr.GetInstance( ).GetConfiguredSatellitebyIndex( 0 )
+		self.mCurrentSatellite = self.mTunerMgr.GetConfiguredSatellitebyIndex( 0 )
 		self.LoadConfigedSatellite( )
 
 		self.AddInputControl( E_Input01, 'Configure System', '' )
@@ -59,7 +58,7 @@ class SatelliteConfigOnecable( SettingWindow ) :
 		elif actionId == Action.ACTION_PARENT_DIR :
 			if self.mSatelliteCount > 1 :
 				for i in range( self.mSatelliteCount - 1 ) :
-					satellite = ConfigMgr.GetInstance( ).GetConfiguredSatellitebyIndex( i + 1 )
+					satellite = self.mTunerMgr.GetConfiguredSatellitebyIndex( i + 1 )
 					satellite.mIsOneCable = self.mCurrentSatellite.mIsOneCable
 					satellite.mOneCablePin = self.mCurrentSatellite.mOneCablePin
 					satellite.mOneCableMDU = self.mCurrentSatellite.mOneCableMDU
@@ -89,7 +88,7 @@ class SatelliteConfigOnecable( SettingWindow ) :
 
 		if groupId == E_Input01 :
 			position = self.GetControlIdToListIndex( groupId ) - 2
-			ConfigMgr.GetInstance( ).SetOnecableSatelliteCount( position + 1 )
+			self.mTunerMgr.SetOnecableSatelliteCount( position + 1 )
 			self.ResetAllControl( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_ONECABLE_2 )
 		
@@ -98,7 +97,7 @@ class SatelliteConfigOnecable( SettingWindow ) :
 
 		else :
 			position = self.GetControlIdToListIndex( groupId ) - 2
-			ConfigMgr.GetInstance( ).SetCurrentConfigIndex( position )
+			self.mTunerMgr.SetCurrentConfigIndex( position )
 			self.ResetAllControl( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_SIMPLE )
 			
@@ -119,7 +118,7 @@ class SatelliteConfigOnecable( SettingWindow ) :
 	def LoadConfigedSatellite( self ) :
 		configuredList = []
 
-		configuredList = ConfigMgr.GetInstance( ).GetConfiguredSatelliteList( )
+		configuredList = self.mTunerMgr.GetConfiguredSatelliteList( )
 		if configuredList and configuredList[0].mError == 0 :
 			self.mSatelliteCount = len( configuredList )
 

@@ -4,7 +4,6 @@ import sys
 import time
 
 import pvr.gui.WindowMgr as WinMgr
-import pvr.TunerConfigMgr as ConfigMgr
 import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action

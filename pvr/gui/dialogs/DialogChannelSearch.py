@@ -156,7 +156,9 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mEventBus.Deregister( self )
 				self.ReTune( )
 				self.CloseDialog( )
-				xbmcgui.Dialog( ).ok('Failure', 'Channel Search Failed')
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'Error', 'Channel Search Failed' )
+				dialog.doModal( )
 
 		elif self.mScanMode == E_SCAN_TRANSPONDER :
 			ret = self.mCommander.Channel_SearchByCarrier( self.mLongitude, self.mBand, self.mTransponderList )
@@ -164,7 +166,9 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mEventBus.Deregister( self )
 				self.ReTune( )
 				self.CloseDialog( )
-				xbmcgui.Dialog( ).ok('Failure', 'Channel Search Failed')
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'Error', 'Channel Search Failed' )
+				dialog.doModal( )
 			
 		else :
 			self.mIsFinished == True
@@ -272,4 +276,5 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def ReTune( self ) :
 		channel = self.mDataCache.Channel_GetCurrent( )
+		self.mCommander.Channel_InvalidateCurrent( )
 		self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType ) # Todo After : using ServiceType to different way

@@ -2,7 +2,6 @@ import xbmc
 import xbmcgui
 import sys
 import time
-import threading
 
 import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DiaMgr
@@ -93,10 +92,9 @@ class Configure( SettingWindow ) :
 
 
 	def onInit( self ) :
+		self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( False )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
-
-		#self.mEventBus.Register( self )
 
 		self.mCtrlLeftGroup = self.getControl( E_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
@@ -116,7 +114,6 @@ class Configure( SettingWindow ) :
 		self.mReLoadIp = False
 
 	def onAction( self, aAction ) :
-
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
@@ -187,7 +184,7 @@ class Configure( SettingWindow ) :
 				context = []
 				context.append( ContextItem( 'Internal Test', PING_TEST_INTERNAL ) )
 				context.append( ContextItem( 'External Test', PING_TEST_EXTERNAL ) )
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 				dialog.SetProperty( context )
 				dialog.doModal( )
 				contextAction = dialog.GetSelectedAction( )
@@ -207,7 +204,7 @@ class Configure( SettingWindow ) :
 						state = 'Disconnected'
 				self.mProgress.SetResult( True )
 				time.sleep( 1.5 )
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'Complete', 'Network State : %s' % state )
 	 			dialog.doModal( )
 
@@ -221,7 +218,7 @@ class Configure( SettingWindow ) :
 			return
 
 		elif selectedId == E_PARENTAL and self.mVisibleParental == False and groupId == E_Input01 :
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( 'PIN Code 4 digit', '', 4, True )
  			dialog.doModal( )
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -232,39 +229,39 @@ class Configure( SettingWindow ) :
 					self.mVisibleParental = True
 					self.DisableControl( E_PARENTAL )
 				else :
-					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( 'ERROR', 'ERROR PIN Code' )
 		 			dialog.doModal( )
 			return
 
 		elif selectedId == E_PARENTAL and groupId == E_Input02 :
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( 'New PIN Code', '', 4, True )
  			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				newpin = dialog.GetString( )
 				if newpin == '' or len( newpin ) != 4 :
-					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( 'ERROR', 'Input 4 digit' )
 		 			dialog.doModal( )
 					return
 			else :
 				return
 
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( 'Confirm PIN Code', '', 4, True )
  			dialog.doModal( )
 
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
  				confirm = dialog.GetString( )
  				if confirm == '' :
- 					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+ 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( 'ERROR', 'New PIN codes do not match' )
 		 			dialog.doModal( )
  					return
 				if int( newpin ) != int( confirm ) :
-					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( 'ERROR', 'New PIN codes do not match' )
 		 			dialog.doModal( )
 					return
@@ -281,16 +278,16 @@ class Configure( SettingWindow ) :
  			resetFavoriteAddons = ElisPropertyEnum( 'Reset Favorite Add-ons', self.mCommander ).GetProp( )
  			resetSystem = ElisPropertyEnum( 'Reset Configure Setting', self.mCommander ).GetProp( )
  			if ( resetChannel | resetFavoriteAddons | resetSystem ) == 0 :
- 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+ 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'ERROR', 'No selected reset' )
 		 		dialog.doModal( )
 		 		return
 		 	else :
-		 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+		 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( 'Reset', 'Are you sure?' )
 				dialog.doModal( )
 
-				if dialog.IsOK() == E_DIALOG_STATE_YES :
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					ret1 = True
 					ret2 = True
 					ret3 = True
@@ -586,7 +583,7 @@ class Configure( SettingWindow ) :
 			LOG_ERR( 'Can not find selected ID' )
 
 
-	def DisableControl( self, aSelectedItem ):
+	def DisableControl( self, aSelectedItem ) :
 		if aSelectedItem == E_LANGUAGE :
 			selectedIndex = self.GetSelectedIndex( E_SpinEx03 )
 			visibleControlIds = [ E_SpinEx04, E_SpinEx05 ]
@@ -758,7 +755,7 @@ class Configure( SettingWindow ) :
 
 	@RunThread
 	def ShowProgress( self, aString, aTime ) :
-		self.mProgress = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
+		self.mProgress = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
 		self.mProgress.SetDialogProperty( aTime, aString )
 		self.mProgress.doModal( )
 		return
@@ -802,7 +799,7 @@ class Configure( SettingWindow ) :
 				self.mDataCache.Channel_SetCurrent( self.mSetupChannel.mNumber, self.mSetupChannel.mServiceType ) # Todo After : using ServiceType to different way
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
 
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
 				dialog.SetDialogProperty( 10, 'Setting Time...', ElisEventTimeReceived.getName( ) )
 				dialog.doModal( )
 

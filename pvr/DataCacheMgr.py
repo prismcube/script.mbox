@@ -409,9 +409,31 @@ class DataCacheMgr( object ):
 
 		return transponderList
 
+
+	def Satellite_GetTransponderListByIndex( self, aLongitude, aBand, aIndex ) :
+		transponder = []
+		hashKey = '%d:%d' % ( aLongitude, aBand )
+		transponder = self.mTransponderListHash.get( hashKey, None )
+		if transponder :
+			return transponder[ aIndex ]
+		else :
+			if SUPPORT_CHANNEL_DATABASE	== True :
+				channelDB = ElisChannelDB( )
+				transponder = channelDB.Transponder_GetList( aLongitude, aBand )
+				channelDB.Close( )
+				if transponder :
+					return transponder[ aIndex ]
+			else :
+				transponder = self.mCommander.Transponder_GetList( aLongitude, aBand )
+				if transponder :
+					return transponder[ aIndex ]
+		return None
+
+
 	def SetChangeDBTableChannel( self, aChannelTable ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			self.mChannelDB.mDBChTable = aChannelTable
+
 
 	def GetChangeDBTableChannel( self ) :
 		ret = -1
@@ -419,6 +441,7 @@ class DataCacheMgr( object ):
 			ret = self.mChannelDB.mDBChTable
 
 		return ret
+
 
 	def LoadChannelList( self, aSync = 0, aType = ElisEnum.E_SERVICE_TYPE_TV, aMode = ElisEnum.E_MODE_ALL, aSort = ElisEnum.E_SORT_BY_NUMBER, aReopen = False ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :

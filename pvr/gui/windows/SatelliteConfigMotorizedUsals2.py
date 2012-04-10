@@ -3,12 +3,12 @@ import xbmcgui
 import sys
 
 import pvr.gui.DialogMgr as DiaMgr
-import pvr.TunerConfigMgr as ConfigMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
 from ElisProperty import ElisPropertyEnum
 from ElisEnum import ElisEnum
-from pvr.Util import LOG_ERR
+from ElisEventClass import *
+from pvr.Util import LOG_WARN, LOG_TRACE, LOG_ERR, GuiLock
 
 
 class SatelliteConfigMotorizedUsals2( SettingWindow ) :
@@ -25,8 +25,11 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		tunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerIndex( )
-		self.mCurrentSatellite = ConfigMgr.GetInstance( ).GetCurrentConfiguredSatellite( )
+		self.mEventBus.Register( self )
+		self.ScanHelper_Start( )
+
+		tunerIndex = self.mTunerMgr.GetCurrentTunerIndex( )
+		self.mCurrentSatellite = self.mTunerMgr.GetCurrentConfiguredSatellite( )
 		self.mTransponderList = self.mDataCache.Satellite_GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 		self.mSelectedTransponderIndex = 0
 
@@ -43,6 +46,7 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %d - %s' % ( tunerIndex + 1, property.GetPropString( ) ) )
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.InitConfig( )
+		self.ScanHelper_ChangeContext( self.mCurrentSatellite, self.mDataCache.Satellite_GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
 
 		
 	def onAction( self, aAction ) :
@@ -57,6 +61,7 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
+			self.ScanHelper_Stop( )			
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
@@ -91,9 +96,10 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 				self.mCurrentSatellite.mLowLNB 				= 9750						# Low
 				self.mCurrentSatellite.mHighLNB 			= 10600						# High
 				self.mCurrentSatellite.mLNBThreshold		= 11700						# Threshold
+				self.mSelectedIndexLnbType					= ElisEnum.E_LNB_UNIVERSAL				
 
 				self.mTransponderList = self.mDataCache.Satellite_GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )				
-		
+				self.mSelectedTransponderIndex = 0
 				self.InitConfig()
 
 		# LNB Setting
@@ -140,27 +146,33 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
  		elif groupId == E_Input03 :
  			if self.mTransponderList :
 	 			dialog = xbmcgui.Dialog( )
-	 			self.mSelectedTransponderIndex = dialog.select( 'Select Transponder', self.mTransponderList )
-	 			if self.mSelectedTransponderIndex != -1 :
+	 			tempIndex = dialog.select( 'Select Transponder', self.mTransponderList )
+	 			if tempIndex != -1 :
+	 				self.mSelectedTransponderIndex = tempIndex
 	 				self.InitConfig( )
 
 		# Go to the Position
 		elif groupId == E_Input04 :
-			alltransponder = self.mDataCache.Satellite_GetTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
-			transponder = alltransponder[ self.mSelectedTransponderIndex ]
-			transpondertemp = []
-			transpondertemp.append( transponder )
+			pass
 
-			satellitetemp = []
-			satellitetemp.append( self.mCurrentSatellite )
-			ret = self.mCommander.ScanHelper_ChangeContext( transpondertemp, satellitetemp )
-			
-			if ret == False :
-				LOG_ERR( 'ScanHelper_ChangeContext Return False' )
+		self.ScanHelper_ChangeContext( self.mCurrentSatellite, self.mDataCache.Satellite_GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
 
 
 	def onFocus( self, controlId ) :
 		pass
+
+
+	@GuiLock
+	def onEvent( self, aEvent ) :
+		if xbmcgui.getCurrentWindowId( ) == self.mWinId :
+			if aEvent.getName( ) == ElisEventTuningStatus.getName( ) :
+				self.UpdateStatus( aEvent )
+
+
+	def UpdateStatus( self, aEvent ) :
+		freq = self.mDataCache.Satellite_GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ).mFrequency
+		if aEvent.mFrequency == freq :			
+			self.ScanHerper_Progress( aEvent.mSignalStrength, aEvent.mSignalQuality, aEvent.mIsLocked )
 
 
 	def InitConfig( self ) :
@@ -209,6 +221,7 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_UNIVERSAL :
 			self.SetEnableControls( enableControlIds, False )
 			self.getControl( E_SpinEx03 + 3 ).selectItem( 1 )	# Always On
+			self.mCurrentSatellite.mFrequencyLevel = 1
 		else :
 			self.SetEnableControls( enableControlIds, True )
 
