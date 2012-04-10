@@ -254,8 +254,7 @@ class TimeShiftInfoPlate(BaseWindow):
 				self.UpdateLabelGUI( self.mCtrlGroupInfo.getId(), False )
 				self.setFocusId( E_BUTTON_GROUP_PLAYPLATE )
 
-				self.StopAutomaticHide()
-				self.RestartAsyncMove()
+				self.RestartAutomaticHide()
 				return
 
 			self.Close()
@@ -281,11 +280,17 @@ class TimeShiftInfoPlate(BaseWindow):
 				self.RestartAsyncMove()
 				LOG_TRACE('left moveTime[%s]'% self.mUserMoveTime )
 
-			if self.mFocusId == self.mCtrlBtnPrevEpg.getId():			
-				self.EPGNavigation( PREV_EPG )
-
 			else :
 				self.RestartAutomaticHide()
+
+			if self.mFocusId == self.mCtrlBtnPrevEpg.getId():
+				self.EPGNavigation( PREV_EPG )
+
+
+			if self.mFocusId >= self.mCtrlBtnExInfo.getId() and self.mFocusId <= self.mCtrlBtnSettingFormat.getId() or \
+			   self.mFocusId == self.mCtrlBtnPrevEpg.getId() or self.mFocusId == self.mCtrlBtnNextEpg.getId() :
+				if self.mAutomaticHideTimer :
+					self.StopAutomaticHide()
 
 		elif id == Action.ACTION_MOVE_RIGHT:
 			self.GetFocusId()
@@ -297,11 +302,16 @@ class TimeShiftInfoPlate(BaseWindow):
 				self.RestartAsyncMove()
 				LOG_TRACE('right moveTime[%s]'% self.mUserMoveTime )
 
-			elif self.mFocusId == self.mCtrlBtnNextEpg.getId():
-				self.EPGNavigation( NEXT_EPG )
-
 			else :
 				self.RestartAutomaticHide()
+
+			if self.mFocusId == self.mCtrlBtnNextEpg.getId():
+				self.EPGNavigation( NEXT_EPG )
+
+			if self.mFocusId >= self.mCtrlBtnExInfo.getId() and self.mFocusId <= self.mCtrlBtnSettingFormat.getId() or \
+			   self.mFocusId == self.mCtrlBtnPrevEpg.getId() or self.mFocusId == self.mCtrlBtnNextEpg.getId() :
+				if self.mAutomaticHideTimer :
+					self.StopAutomaticHide()
 
 		elif id == Action.ACTION_PAGE_UP:
 			LOG_TRACE('key up')
