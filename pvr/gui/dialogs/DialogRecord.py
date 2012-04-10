@@ -15,8 +15,7 @@ from pvr.gui.GuiConfig import *
 
 import pvr.ElisMgr
 
-from pvr.Util import RunThread, GuiLock, epgInfoClock
-
+from pvr.Util import RunThread, GuiLock, TimeToString, TimeFormatEnum
 
 
 # Control IDs
@@ -184,14 +183,14 @@ class DialogRecord( BaseDialog ) :
 		passDuration = self.mLocalTime - startTime
 
 		print 'mLocalOffset=%d' % int( self.mLocalOffset/60 )
-		print 'start=%s' % epgInfoClock( 1, startTime, 0 )
-		print 'current=%s' % epgInfoClock( 1,self.mLocalTime, 0 )
-		print 'end=%s' % epgInfoClock( 1, endTime, 0 )		
+		print 'start=%s'%   TimeToString( startTime, TimeFormatEnum.E_HH_MM)
+		print 'current=%s'% TimeToString( (endTime-startTime), TimeFormatEnum.E_HH_MM)
+		print 'end=%s'%     TimeToString( endTime, TimeFormatEnum.E_HH_MM)
 
 		print 'UpdateProgress=%d' %passDuration 
 
-		startTimeString = epgInfoClock( 1, startTime, 0 )
-		endTimeString = epgInfoClock( 1, endTime, 0 )		
+		startTimeString = TimeToString( startTime, TimeFormatEnum.E_HH_MM)
+		endTimeString   = TimeToString( endTime, TimeFormatEnum.E_HH_MM)
 
 		self.getControl( E_LABEL_EPG_START_TIME ).setLabel( startTimeString[1] )
 		self.getControl( E_LABEL_EPG_END_TIME ).setLabel( endTimeString[1] )

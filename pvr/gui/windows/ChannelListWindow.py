@@ -14,8 +14,8 @@ from ElisEventBus import ElisEventBus
 from ElisEventClass import *
 from ElisClass import *
 
-from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
-from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit, ParseLabelToCh
+from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
+from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit, ParseLabelToCh
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 
@@ -1651,10 +1651,12 @@ class ChannelListWindow( BaseWindow ) :
 		#update epgName uiID(304)
 		if self.mNavEpg :
 			try :
-				epgTime = EpgInfoTime( self.mLocalOffset, self.mNavEpg.mStartTime, self.mNavEpg.mDuration )
-				label = '%s - %s'% (epgTime[0], epgTime[1])
-				self.UpdateLabelGUI( self.mCtrlEventName.getId( ), self.mNavEpg.mEventName )
+
+				startTime = TimeToString( self.mNavEpg.mStartTime, TimeFormatEnum.E_HH_MM )
+				endTime   = TimeToString( self.mNavEpg.mStartTime + self.mNavEpg.mDuration, TimeFormatEnum.E_HH_MM )
+				label = '%s - %s'% (startTime, endTime)
 				self.UpdateLabelGUI( self.mCtrlEventTime.getId( ), label )
+				self.UpdateLabelGUI( self.mCtrlEventName.getId( ), self.mNavEpg.mEventName )
 				self.mCtrlProgress.setVisible( True )
 
 				#component

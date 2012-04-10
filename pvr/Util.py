@@ -30,7 +30,9 @@ class TimeFormatEnum(object):
 	E_HH_MM					= 1
 	E_DD_MM_YYYY_HH_MM		= 2
 	E_DD_MM_YYYY			= 3
-	
+	E_AW_HH_MM				= 4
+	E_HH_MM_SS				= 5
+
 
 def ClearThreads( ):
 	gThreads.clear()
@@ -259,6 +261,10 @@ def TimeToString( aTime, aFlag=0 ) :
 		return time.strftime("%a, %d.%m.%Y %H:%M", time.gmtime( aTime ) )		
 	elif aFlag == TimeFormatEnum.E_DD_MM_YYYY :
 		return time.strftime("%d.%m.%Y", time.gmtime( aTime ) )
+	elif aFlag == TimeFormatEnum.E_AW_HH_MM :
+		return time.strftime("%a, %H:%M", time.gmtime( aTime ) )
+	elif aFlag == TimeFormatEnum.E_HH_MM_SS :
+		return time.strftime("%H:%M:%S", time.gmtime( aTime ) )
 	else :
 		strTime = time.strftime('%a, %d.%m.%Y', aTime )
 		LOG_TRACE('strTime=%s' %strTime )

@@ -10,7 +10,7 @@ from ElisEnum import ElisEnum
 from ElisEventBus import ElisEventBus
 from ElisEventClass import *
 from pvr.Util import RunThread, GuiLock, GuiLock2, LOG_TRACE, LOG_WARN, LOG_ERR, GetSetting, SetSetting, TimeToString
-from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoTime, EpgInfoClock, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit
+from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import threading, time, os
@@ -480,7 +480,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )			
 
 		self.close()
-		WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).SetKeyDisabled( True )
+		WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).SetKeyDisabled( True, recInfo )
 
 		self.SetVideoRestore();
 		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )				

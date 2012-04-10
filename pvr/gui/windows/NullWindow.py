@@ -22,6 +22,7 @@ class NullWindow( BaseWindow ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mAsyncShowTimer = None
 		self.mStatusIsArchive = False
+		self.mRecInfo = None
 
 
 	def onInit( self ) :
@@ -33,7 +34,8 @@ class NullWindow( BaseWindow ) :
 			self.mInitialized = True
 			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_INFO_PLATE )
 
 
 	def onAction(self, aAction) :		
@@ -197,6 +199,12 @@ class NullWindow( BaseWindow ) :
 			else :
 				self.RecordingStop()
 
+		#test
+		elif actionId == Action.ACTION_MOVE_RIGHT :
+			print 'youn check ation right'
+			#window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+			#window.SetAutomaticHide( True )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_INFO_PLATE )
 
 		else:
 			print 'lael98 check ation unknown id=%d' %actionId
@@ -266,8 +274,9 @@ class NullWindow( BaseWindow ) :
 
 		LOG_TRACE('Leave')
 
-	def SetKeyDisabled( self, aDisable = False ) :
+	def SetKeyDisabled( self, aDisable = False, aRecInfo = None ) :
 		self.mStatusIsArchive = aDisable
+		self.mRecInfo = aRecInfo
 
 	def GetKeyDisabled( self ) :
 		return self.mStatusIsArchive
