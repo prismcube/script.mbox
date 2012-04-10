@@ -35,11 +35,8 @@ FLAG_PLAY  = 1
 FLAG_PAUSE = 2
 
 E_DEFAULT_POSY = 0
-E_PROGRESS_WIDTH_MAX = 380
-
+E_PROGRESS_WIDTH_MAX = 550
 E_BUTTON_GROUP_PLAYPAUSE = 450
-E_BUTTON_GROUP_PLAYPLATE = 400
-E_BUTTON_GROUP_INFOPLATE = 620
 
 E_INDEX_FIRST_RECORDING = 0
 E_INDEX_SECOND_RECORDING = 1
@@ -60,12 +57,11 @@ E_IMG_ICON_ICAS   = 'IconCas.png'
 E_IMG_ICON_TV     = 'confluence/tv.png'
 E_IMG_ICON_RADIO  = 'icon_radio.png'
 
-E_TAG_COLOR_WHITE = '[COLOR white]'
 E_TAG_COLOR_RED   = '[COLOR red]'
 E_TAG_COLOR_GREEN = '[COLOR green]'
 E_TAG_COLOR_END   = '[/COLOR]'
 
-class TimeShiftInfoPlate(BaseWindow):
+class TimeShiftInfoPlate1(BaseWindow):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
 
@@ -77,7 +73,6 @@ class TimeShiftInfoPlate(BaseWindow):
 		self.mMode = ElisEnum.E_MODE_LIVE
 		self.mIsPlay = FLAG_PLAY
 		self.mFlag_OnEvent = True
-		self.mFlag_OnEventEPGReceive = True
 		self.mShowExtendInfo = False
 
 		self.mAsyncShiftTimer = None
@@ -108,22 +103,19 @@ class TimeShiftInfoPlate(BaseWindow):
 		return self.mAutomaticHide
 	"""
 
-
-
 	def onInit(self):
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
 		LOG_TRACE( 'winID[%d]'% self.mWinId )
 
-		self.mCtrlImgRec1              = self.getControl( 110 )
-		self.mCtrlLblRec1              = self.getControl( 111 )
-		self.mCtrlImgRec2              = self.getControl( 115 )
-		self.mCtrlLblRec2              = self.getControl( 116 )
+		self.mCtrlImgRec1              = self.getControl(  10 )
+		self.mCtrlLblRec1              = self.getControl(  11 )
+		self.mCtrlImgRec2              = self.getControl(  15 )
+		self.mCtrlLblRec2              = self.getControl(  16 )
 
 		self.mCtrlProgress             = self.getControl( 201 )
 		self.mCtrlBtnCurrent           = self.getControl( 202 )
 		self.mCtrlLblMode              = self.getControl( 203 )
-		self.mCtrlLblStatus            = self.getControl( 204 )
 		self.mCtrlLblTSStartTime       = self.getControl( 221 )
 		self.mCtrlLblTSEndTime         = self.getControl( 222 )
 
@@ -170,16 +162,11 @@ class TimeShiftInfoPlate(BaseWindow):
 		self.mCtrlTxtBoxEventDescText1 = self.getControl( 801 )
 		self.mCtrlTxtBoxEventDescText2 = self.getControl( 802 )
 
-		#entire
-		self.mCtrlGroupPlay             = self.getControl( 300 )
-		self.mCtrlGroupInfo             = self.getControl(  10 )
-
 
 		#test
 		self.mCtrlLblTest              = self.getControl( 35 )
 
 		self.mFlag_OnEvent = True
-		self.mFlag_OnEventEPGReceive = True
 		self.mTimeshift_staTime = 0.0
 		self.mTimeshift_curTime = 0.0
 		self.mTimeshift_endTime = 0.0
@@ -194,8 +181,6 @@ class TimeShiftInfoPlate(BaseWindow):
 		self.mAsyncShiftTimer = None
 		self.mAutomaticHideTimer = None
 		self.mShowExtendInfo = False
-		self.mShowGroupInfo = False
-		self.mShowGroupPlay = True
 
 		self.mImgTV    = E_IMG_ICON_TV
 		self.mEventID = 0
@@ -203,17 +188,22 @@ class TimeShiftInfoPlate(BaseWindow):
 		self.mEPGList = None
 		self.mEPGListIdx = 0
 
-		self.UpdateLabelGUI( self.mCtrlGroupInfo.getId(), False )
-
 		self.ShowRecording( )
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
+		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
+		self.GetEPGList()
+		try :
+			iEPG = None
+			iEPG = self.mDataCache.Epgevent_GetPresent()
+			if iEPG and iEPG.mEventName != 'No Name':
+				self.mEventCopy = iEPG
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
 
 		self.InitLabelInfo()
 		self.InitTimeShift()
-		#ToDo get info : ch, epg in PVR? or TimeShift?
-		self.InitInfoChannelEPG()
-		
 		self.UpdateONEvent( self.mEventCopy )
 
 		label = self.GetModeValue( )
@@ -243,18 +233,8 @@ class TimeShiftInfoPlate(BaseWindow):
 		
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
 			LOG_TRACE( 'esc close : [%s] [%s]'% (aAction, id) )
-
 			if self.mShowExtendInfo ==  True :
 				self.ShowDialog( self.mCtrlBtnExInfo.getId(), False )
-				return
-
-			if not self.mShowGroupPlay :
-				self.mShowGroupPlay = True
-				self.UpdateLabelGUI( self.mCtrlGroupPlay.getId(), True )
-				self.UpdateLabelGUI( self.mCtrlGroupInfo.getId(), False )
-				self.setFocusId( E_BUTTON_GROUP_PLAYPLATE )
-
-				self.RestartAutomaticHide()
 				return
 
 			self.Close()
@@ -276,21 +256,17 @@ class TimeShiftInfoPlate(BaseWindow):
 				self.mUserMoveTimeBack = self.mUserMoveTime
 				self.mUserMoveTime = -10
 				self.mFlagUserMove = True
+				#if self.mAutomaticHide :
+				#	self.mAutomaticHide = False
 				self.StopAutomaticHide()
 				self.RestartAsyncMove()
 				LOG_TRACE('left moveTime[%s]'% self.mUserMoveTime )
 
-			else :
-				self.RestartAutomaticHide()
-
-			if self.mFocusId == self.mCtrlBtnPrevEpg.getId():
+			if self.mFocusId == self.mCtrlBtnPrevEpg.getId():			
 				self.EPGNavigation( PREV_EPG )
 
-
-			if self.mFocusId >= self.mCtrlBtnExInfo.getId() and self.mFocusId <= self.mCtrlBtnSettingFormat.getId() or \
-			   self.mFocusId == self.mCtrlBtnPrevEpg.getId() or self.mFocusId == self.mCtrlBtnNextEpg.getId() :
-				if self.mAutomaticHideTimer :
-					self.StopAutomaticHide()
+			else :
+				self.RestartAutomaticHide()
 
 		elif id == Action.ACTION_MOVE_RIGHT:
 			self.GetFocusId()
@@ -298,20 +274,17 @@ class TimeShiftInfoPlate(BaseWindow):
 				self.mUserMoveTimeBack = self.mUserMoveTime
 				self.mUserMoveTime = 10
 				self.mFlagUserMove = True
+				#if self.mAutomaticHide :
+				#	self.mAutomaticHide = False
 				self.StopAutomaticHide()
 				self.RestartAsyncMove()
 				LOG_TRACE('right moveTime[%s]'% self.mUserMoveTime )
 
-			else :
-				self.RestartAutomaticHide()
-
-			if self.mFocusId == self.mCtrlBtnNextEpg.getId():
+			elif self.mFocusId == self.mCtrlBtnNextEpg.getId():
 				self.EPGNavigation( NEXT_EPG )
 
-			if self.mFocusId >= self.mCtrlBtnExInfo.getId() and self.mFocusId <= self.mCtrlBtnSettingFormat.getId() or \
-			   self.mFocusId == self.mCtrlBtnPrevEpg.getId() or self.mFocusId == self.mCtrlBtnNextEpg.getId() :
-				if self.mAutomaticHideTimer :
-					self.StopAutomaticHide()
+			else :
+				self.RestartAutomaticHide()
 
 		elif id == Action.ACTION_PAGE_UP:
 			LOG_TRACE('key up')
@@ -324,16 +297,8 @@ class TimeShiftInfoPlate(BaseWindow):
 
 			
 		elif id == Action.ACTION_CONTEXT_MENU:
-			self.StopAutomaticHide()
-
-			if self.mShowGroupPlay :
-				self.mShowGroupPlay = False
-				self.UpdateLabelGUI( self.mCtrlGroupPlay.getId(), False )
-				self.UpdateLabelGUI( self.mCtrlGroupInfo.getId(), True )
-				self.setFocusId( E_BUTTON_GROUP_INFOPLATE )
-			else :
-				self.onClick( self.mCtrlBtnExInfo.getId() )
-
+			#WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+			self.onClick( self.mCtrlBtnExInfo.getId() )
 
 		elif id == Action.ACTION_STOP :
 			self.onClick( self.mCtrlBtnStop.getId() )
@@ -412,7 +377,7 @@ class TimeShiftInfoPlate(BaseWindow):
 		pass
 
 
-	@GuiLock
+	#@GuiLock
 	def onEvent(self, aEvent):
 		LOG_TRACE( 'Enter' )
 
@@ -435,8 +400,7 @@ class TimeShiftInfoPlate(BaseWindow):
 					LOG_TRACE( 'EventRecv EOF_STOP' )
 
 			elif aEvent.getName() == ElisEventCurrentEITReceived.getName() :
-				if self.mFlag_OnEventEPGReceive :
-					self.UpdateEPGList( aEvent )
+				self.UpdateEPGList( aEvent )
 
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
@@ -448,7 +412,6 @@ class TimeShiftInfoPlate(BaseWindow):
 		LOG_TRACE( 'Enter' )
 
 		ret = False
-		clickButton = ''
 
 		if aFocusId == self.mCtrlBtnPlay.getId() :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
@@ -475,10 +438,8 @@ class TimeShiftInfoPlate(BaseWindow):
 				self.UpdateLabelGUI( self.mCtrlLblMode.getId(), label )
 				# toggle
 				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), False )
-				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), True )
+				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), True, True )
 				self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
-
-				clickButton = 'Play'
 
 		elif aFocusId == self.mCtrlBtnPause.getId() :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
@@ -494,10 +455,9 @@ class TimeShiftInfoPlate(BaseWindow):
 				self.mIsPlay = FLAG_PLAY
 
 				# toggle
-				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True )
+				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True, True )
 				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
 				self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
-				clickButton = 'Pause'
 
 		elif aFocusId == self.mCtrlBtnStop.getId() :
 			third = 3
@@ -552,12 +512,6 @@ class TimeShiftInfoPlate(BaseWindow):
 
 			if ret :
 				LOG_TRACE( 'play_rewind() ret[%s], player_SetSpeed[%s]'% (ret, nextSpeed) )
-				if nextSpeed == 100 :
-					if self.mSpeed == 0 : clickButton = 'Pause'
-					else : clickButton = 'Play'
-				elif nextSpeed < 100 : clickButton = 'Rewind'
-				elif nextSpeed > 100 : clickButton = 'Forward'
-
 
 			#resume by toggle
 			if self.mIsPlay == FLAG_PLAY :
@@ -580,11 +534,6 @@ class TimeShiftInfoPlate(BaseWindow):
 
 			if ret :
 				LOG_TRACE( 'play_forward() ret[%s] player_SetSpeed[%s]'% (ret, nextSpeed) )
-				if nextSpeed == 100 :
-					if self.mSpeed == 0 : clickButton = 'Pause'
-					else : clickButton = 'Play'
-				elif nextSpeed < 100 : clickButton = 'Rewind'
-				elif nextSpeed > 100 : clickButton = 'Forward'
 
 			#resume by toggle
 			if self.mIsPlay == FLAG_PLAY :
@@ -606,7 +555,6 @@ class TimeShiftInfoPlate(BaseWindow):
 			LOG_TRACE('JumpFF ret[%s]'% ret )
 
 		time.sleep(0.5)
-		self.UpdateLabelGUI( self.mCtrlLblStatus.getId(), clickButton.upper() )
 		self.InitTimeShift()
 
 		LOG_TRACE( 'Leave' )
@@ -628,8 +576,8 @@ class TimeShiftInfoPlate(BaseWindow):
 
 		#Chnnel, EPG
 		self.mEventCopy = None
-		self.UpdateLabelGUI( self.mCtrlLblChannelNumber.getId(),      '' )
-		self.UpdateLabelGUI( self.mCtrlLblChannelName.getId(),        '' )
+		self.UpdateLabelGUI( self.mCtrlLblChannelNumber.getId(), '%s'% self.mCurrentChannel.mNumber )
+		self.UpdateLabelGUI( self.mCtrlLblChannelName.getId(), self.mCurrentChannel.mName)
 		self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText1.getId(),  '' )
 		self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText2.getId(),  '' )
 		self.UpdateLabelGUI( self.mCtrlGropEventDescGroup.getId(), False )
@@ -648,9 +596,9 @@ class TimeShiftInfoPlate(BaseWindow):
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
 
-	#@GuiLock
+	@GuiLock
 	def UpdateLabelGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
-		LOG_TRACE( 'Enter id[%s] value[%s]'% (aCtrlID, aValue) )
+		LOG_TRACE( 'Enter' )
 
 		if aCtrlID == self.mCtrlBtnMute.getId( ) :
 			self.mCtrlBtnMute.setVisible( aValue )
@@ -767,28 +715,6 @@ class TimeShiftInfoPlate(BaseWindow):
 		elif aCtrlID == self.mCtrlImgServiceTypeImg3.getId( ) :
 			self.mCtrlImgServiceTypeImg3.setImage( aValue )
 
-		elif aCtrlID == self.mCtrlBtnPrevEpg.getId( ) :
-			if aExtra == 'enable' :
-				self.mCtrlBtnPrevEpg.setEnabled( aValue )
-			elif aExtra == 'visible' :
-				self.mCtrlBtnPrevEpg.setVisible( aValue )
-
-		elif aCtrlID == self.mCtrlBtnNextEpg.getId( ) :
-			if aExtra == 'enable' :
-				self.mCtrlBtnNextEpg.setEnabled( aValue )
-			elif aExtra == 'visible' :
-				self.mCtrlBtnNextEpg.setVisible( aValue )
-
-		elif aCtrlID == self.mCtrlGroupInfo.getId( ) :
-			self.mCtrlGroupInfo.setVisible( aValue )
-
-		elif aCtrlID == self.mCtrlGroupPlay.getId( ) :
-			self.mCtrlGroupPlay.setVisible( aValue )
-
-		elif aCtrlID == self.mCtrlLblStatus.getId( ) :
-			self.mCtrlLblStatus.setLabel( aValue )
-
-
 
 		elif aCtrlID == self.mCtrlLblTest.getId( ) :
 			self.mCtrlLblTest.setLabel( aValue )
@@ -863,88 +789,91 @@ class TimeShiftInfoPlate(BaseWindow):
 		LOG_TRACE('Enter')
 
 		LOG_TRACE( 'mSpeed[%s]'% self.mSpeed )
-		nextSpeed = 0
+		ret = 0
 		if aFocusId == self.mCtrlBtnRewind.getId():
 
 			if self.mSpeed == -12800 :
-				nextSpeed = -12800
+				ret = -12800
 			elif self.mSpeed == -6400 :
-				nextSpeed = -12800
+				ret = -12800
 			elif self.mSpeed == -3200 :
-				nextSpeed = -6400
+				ret = -6400
 			elif self.mSpeed == -1600 :
-				nextSpeed = -3200
+				ret = -3200
 			elif self.mSpeed == -800 :
-				nextSpeed = -1600
+				ret = -1600
 			elif self.mSpeed == -400 :
-				nextSpeed = -800
+				ret = -800
 			elif self.mSpeed == -200 :
-				nextSpeed = -400
+				ret = -400
 			elif self.mSpeed == 100 :
-				nextSpeed = -200
+				ret = -200
 			elif self.mSpeed == 120 :
-				nextSpeed = 100
+				ret = 100
 			elif self.mSpeed == 160 :
-				nextSpeed = 120
+				ret = 120
 			elif self.mSpeed == 200 :
-				nextSpeed = 100 #160
+				ret = 100 #160
 			elif self.mSpeed == 400 :
-				nextSpeed = 200
+				ret = 200
 			elif self.mSpeed == 800 :
-				nextSpeed = 400
+				ret = 400
 			elif self.mSpeed == 1600 :
-				nextSpeed = 800
+				ret = 800
 			elif self.mSpeed == 3200 :
-				nextSpeed = 1600
+				ret = 1600
 			elif self.mSpeed == 6400 :
-				nextSpeed = 3200
+				ret = 3200
 			elif self.mSpeed == 12800 :
-				nextSpeed = 6400
+				ret = 6400
 
 		elif aFocusId == self.mCtrlBtnForward.getId():
 			if self.mSpeed == -12800 :
-				nextSpeed = -6400
+				ret = -6400
 			elif self.mSpeed == -6400 :
-				nextSpeed = -3200
+				ret = -3200
 			elif self.mSpeed == -3200 :
-				nextSpeed = -1600
+				ret = -1600
 			elif self.mSpeed == -1600 :
-				nextSpeed = -800
+				ret = -800
 			elif self.mSpeed == -800 :
-				nextSpeed = -400
+				ret = -400
 			elif self.mSpeed == -400 :
-				nextSpeed = -200
+				ret = -200
 			elif self.mSpeed == -200 :
-				nextSpeed = 100
+				ret = 100
 			elif self.mSpeed == 100 :
-				nextSpeed = 200 #120
+				ret = 200 #120
 			elif self.mSpeed == 120 :
-				nextSpeed = 160
+				ret = 160
 			elif self.mSpeed == 160 :
-				nextSpeed = 200
+				ret = 200
 			elif self.mSpeed == 200 :
-				nextSpeed = 400
+				ret = 400
 			elif self.mSpeed == 400 :
-				nextSpeed = 800
+				ret = 800
 			elif self.mSpeed == 800 :
-				nextSpeed = 1600
+				ret = 1600
 			elif self.mSpeed == 1600 :
-				nextSpeed = 3200
+				ret = 3200
 			elif self.mSpeed == 3200 :
-				nextSpeed = 6400
+				ret = 6400
 			elif self.mSpeed == 6400 :
-				nextSpeed = 12800
+				ret = 12800
 			elif self.mSpeed == 12800 :
-				nextSpeed = 12800
+				ret = 12800
 		else:
-			nextSpeed = 100 #default
+			ret = 100 #default
 
-		labelSpeed = ''
+		lspeed = ''
 		flagFF = False
 		flagRR = False
-		if nextSpeed != 100 :
-			labelSpeed = '%sx'% ( abs(nextSpeed) / 100)
-			if nextSpeed > 100 :
+		if ret == 100 :
+			lspeed = ''
+		else :
+			lspeed = '%sx'% ( abs(ret) / 100)
+
+			if ret > 100 :
 				flagFF = True
 				flagRR = False
 			else :
@@ -953,10 +882,10 @@ class TimeShiftInfoPlate(BaseWindow):
 
 		self.UpdateLabelGUI( self.mCtrlImgRewind.getId(), flagRR )
 		self.UpdateLabelGUI( self.mCtrlImgForward.getId(), flagFF )
-		self.UpdateLabelGUI( self.mCtrlLblSpeed.getId(), labelSpeed )
+		self.UpdateLabelGUI( self.mCtrlLblSpeed.getId(), lspeed )
 
 		LOG_TRACE('Leave')
-		return nextSpeed
+		return ret
 
 	def GetModeValue( self ) :
 		LOG_TRACE('Enter')
@@ -1142,7 +1071,7 @@ class TimeShiftInfoPlate(BaseWindow):
 			LOG_TRACE('ch[%s] len[%s] idx[%s]'% (self.mCurrentChannel.mNumber, len(self.mEPGList),self.mEPGListIdx) )
 			iEPG = self.mEPGList[self.mEPGListIdx]
 
-			if iEPG :
+			if ret :
 				self.mEventCopy = iEPG
 				self.UpdateONEvent( iEPG )
 
@@ -1273,12 +1202,9 @@ class TimeShiftInfoPlate(BaseWindow):
 			try :
 				#satellite
 				label = ''
-				if self.mMode == ElisEnum.E_MODE_PVR :
-					label = 'Archive'
-				else :
-					satellite = self.mDataCache.Satellite_GetByChannelNumber( ch.mNumber, -1, True )
-					if satellite :
-						label = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
+				satellite = self.mDataCache.Satellite_GetByChannelNumber( ch.mNumber, -1, True )
+				if satellite :
+					label = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
 				self.UpdateLabelGUI( self.mCtrlLblLongitudeInfo.getId(), label )
 
 				#lock,cas
@@ -1361,7 +1287,7 @@ class TimeShiftInfoPlate(BaseWindow):
 			iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mTsid, ch.mOnid )
 			if iEPG and iEPG.mEventName != 'No Name':
 				LOG_TRACE('-----------------------')
-				iEPG.printdebug()
+				#iEPG.printdebug()
 
 				if not self.mEventCopy or \
 				iEPG.mEventId != self.mEventCopy.mEventId or \
@@ -1429,8 +1355,8 @@ class TimeShiftInfoPlate(BaseWindow):
 			if aVisible == True :
 				LOG_TRACE('')
 				if self.mEventCopy :
-					self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText1.getId(), self.mEventCopy.mEventName )
-					self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText2.getId(), self.mEventCopy.mEventDescription )
+					self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText1.getId(), epgName )
+					self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText2.getId(), epgDesc )
 					self.UpdateLabelGUI( self.mCtrlGropEventDescGroup.getId(),  True )
 					
 				else:
@@ -1464,104 +1390,15 @@ class TimeShiftInfoPlate(BaseWindow):
 				LOG_TRACE('CANCEL by context dialog')
 				return
 
-			if selectAction == CONTEXT_ACTION_AUDIO_SETTING :
-				GuiLock2( True )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_LIVE_PLATE )
-				dialog.SetValue( selectAction )
-	 			dialog.doModal( )
-	 			GuiLock2( False )
-
-	 		else :
-				getCount = self.mDataCache.Audiotrack_GetCount( )
-				selectIdx= self.mDataCache.Audiotrack_GetSelectedIndex( )
-				#LOG_TRACE('AudioTrack count[%s] select[%s]'% (getCount, selectIdx) )
-
-				context = []
-				for idx in range(getCount) :
-					idxTrack = self.mDataCache.Audiotrack_Get( idx )
-					#LOG_TRACE('getTrack name[%s] lang[%s]'% (idxTrack.mName, idxTrack.mLang) )
-					if selectIdx == idx :
-						label = '%s%s-%s%s' % (E_TAG_COLOR_WHITE,idxTrack.mName,idxTrack.mLang,E_TAG_COLOR_END)
-					else :
-						label = '%s%s-%s%s' % (E_TAG_COLOR_GREY,idxTrack.mName,idxTrack.mLang,E_TAG_COLOR_END)
-
-					context.append( ContextItem( label ) )
-
-				GuiLock2( True )
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-				dialog.SetProperty( context )
-				dialog.doModal( )
-				GuiLock2( False )
-
-				selectIdx2 = dialog.GetSelectedIndex( )
-				self.mDataCache.Audiotrack_select( selectIdx2 )
-
-				LOG_TRACE('Select[%s --> %s]'% (selectAction, selectIdx2) )
+			GuiLock2( True )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_LIVE_PLATE )
+			dialog.SetValue( selectAction )
+ 			dialog.doModal( )
+ 			GuiLock2( False )
 
 
 		LOG_TRACE( 'Leave' )
 
-	def InitInfoChannelEPG( self ):
-		LOG_TRACE('Enter')
-
-		self.mCurrentChannel = ElisIChannel()
-		self.mEventCopy = ElisIEPGEvent()
-
-		#get ch
-		if self.mMode == ElisEnum.E_MODE_PVR :
-			recInfo = WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).mRecInfo
-			if recInfo :
-				self.mCurrentChannel.mServiceType = recInfo.mServiceType
-				self.mCurrentChannel.mNumber      = recInfo.mChannelNo
-				self.mCurrentChannel.mName        = recInfo.mChannelName
-				self.mCurrentChannel.mLocked      = recInfo.mLocked
-
-				#self.mEventCopy.mStartTime = recInfo.mStartTime
-				#self.mEventCopy.mDuration  = recInfo.mDuration
-				#self.mEventCopy.mAgeRating = recInfo.mAgeRating
-				self.mFlag_OnEventEPGReceive = False
-				iEPG = self.mDataCache.RecordItem_GetEventInfo(recInfo.mRecordKey)
-				if iEPG :
-					if iEPG.mSid == 0 and iEPG.mTsid == 0 and iEPG.mOnid == 0 and iEPG.mEventId == 0 :
-						self.mEventCopy.mName = ''
-
-					else :
-						self.mEventCopy = iEPG
-
-					iEPGList = []
-					iEPGList.append(iEPG)
-					self.mEPGList = iEPGList
-					LOG_TRACE('pvr epg[%s]'% ClassToList('convert', iEPGList) )
-
-			#disable control epg
-			self.UpdateLabelGUI( self.mCtrlBtnPrevEpg.getId(), False, 'enable' )
-			self.UpdateLabelGUI( self.mCtrlBtnNextEpg.getId(), False, 'enable' )
-
-
-		else :
-			self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
-
-			#get epg
-			self.GetEPGList()
-			try :
-				iEPG = None
-				iEPG = self.mDataCache.Epgevent_GetPresent()
-				if iEPG and iEPG.mEventName != 'No Name':
-					self.mEventCopy = iEPG
-
-			except Exception, e :
-				LOG_TRACE( 'Error exception[%s]'% e )
-
-			#enable control epg
-			self.UpdateLabelGUI( self.mCtrlBtnPrevEpg.getId(), True, 'enable' )
-			self.UpdateLabelGUI( self.mCtrlBtnNextEpg.getId(), True, 'enable' )
-
-		if self.mCurrentChannel :
-			self.UpdateLabelGUI( self.mCtrlLblChannelNumber.getId(), '%s'% self.mCurrentChannel.mNumber )
-			self.UpdateLabelGUI( self.mCtrlLblChannelName.getId(),   self.mCurrentChannel.mName )
-
-
-		LOG_TRACE( 'Leave' )
 
 		
 	def Close( self ):
