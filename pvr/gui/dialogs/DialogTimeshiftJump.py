@@ -35,7 +35,7 @@ class DialogTimeshiftJump( BaseDialog ) :
 		self.mAsyncMoveTimer    = None
 		self.mTestTime          = 0
 
-		self.mMaxChannelNum		= E_INDEX_JUMP_MAX
+		self.mMaxMoveNum		= E_INDEX_JUMP_MAX
 		self.mIsOk              = E_DIALOG_STATE_CANCEL
 
 
@@ -76,7 +76,7 @@ class DialogTimeshiftJump( BaseDialog ) :
 			inputString = '%d' % ( actionId - Action.REMOTE_0 )
 			self.mMoveToNumber += inputString
 			self.mMoveToNumber = '%d' % int( self.mMoveToNumber )
-			if int( self.mMoveToNumber ) > self.mMaxChannelNum :
+			if int( self.mMoveToNumber ) > self.mMaxMoveNum :
 				self.mMoveToNumber = inputString
 			self.SetLabelMoveToNumber( )
 			self.GetPreviewMove( )
@@ -89,7 +89,7 @@ class DialogTimeshiftJump( BaseDialog ) :
 				inputString = '%d' % inputNum
 				self.mMoveToNumber += inputString
 				self.mMoveToNumber = '%d' % int( self.mMoveToNumber )
-				if int( self.mMoveToNumber ) > self.mMaxChannelNum :
+				if int( self.mMoveToNumber ) > self.mMaxMoveNum :
 					self.mMoveToNumber = inputString
 				self.SetLabelMoveToNumber( )
 				self.GetPreviewMove( )
@@ -106,7 +106,7 @@ class DialogTimeshiftJump( BaseDialog ) :
 		
 	def SetDialogProperty( self, aMoveToFirstNum, aMoveToMax, aTestTime = None ) :
 		self.mMoveToNumber	= aMoveToFirstNum
-		self.mMaxChannelNum = aMoveToMax
+		self.mMaxMoveNum = aMoveToMax
 
 		if aTestTime:
 			self.mTestTime = aTestTime
