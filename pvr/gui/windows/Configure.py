@@ -113,6 +113,7 @@ class Configure( SettingWindow ) :
 		self.mVisibleParental = False
 		self.mReLoadIp = False
 
+
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
@@ -191,17 +192,16 @@ class Configure( SettingWindow ) :
 				if contextAction == PING_TEST_INTERNAL :
 					self.ShowProgress( 'Now Test...', 10 )
 					if PingTestInternal( ) == True :
-						state = 'Connected'
+						state = 'Connected defalut rauter'
 					else :
-						state = 'Disconnected'
+						state = 'Disconnected defalut rauter'
 				else :
-					addr = xbmc.Keyboard( '', 'Input address', False )
-					addr.doModal( )
+					addr = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, 'Address', '', 30 )
 					self.ShowProgress( 'Now Test...', 10 )
-					if PingTestExternal( addr.getText( ) ) == True :
-						state = 'Connected'
+					if PingTestExternal( addr ) == True :
+						state = 'External ping test success'
 					else :
-						state = 'Disconnected'
+						state = 'External ping test failed'
 				self.mProgress.SetResult( True )
 				time.sleep( 1.5 )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )

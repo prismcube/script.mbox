@@ -7,8 +7,8 @@ import time
 import commands
 from pvr.gui.GuiConfig import *
 from pvr.Util import LOG_ERR
-from pythonwifi.iwlibs import Wireless
-import pythonwifi.flags
+#from pythonwifi.iwlibs import Wireless
+#import pythonwifi.flags
 
 
 FILE_NAME_INTERFACES	 		=	'/etc/network/interfaces'
@@ -342,6 +342,8 @@ class WirelessParser :
 
 
 	def ScanAp( self, aDev ) :
+		from pythonwifi.iwlibs import Wireless
+		import pythonwifi.flags
 		status = None
 		try :
 			scanResult = None

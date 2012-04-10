@@ -7,6 +7,8 @@ import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
 from ElisProperty import ElisPropertyEnum
+from pvr.Util import LOG_ERR
+
 
 E_DEFAULT_GOURP_ID		= 9000
 
@@ -51,6 +53,7 @@ class AntennaSetup( SettingWindow ) :
 		self.ShowDescription( )
 		self.DisableControl( )
 		self.mInitialized = True
+		self.SetFocusControl( E_SpinEx01 )
 		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True )
 
 		
@@ -184,16 +187,18 @@ class AntennaSetup( SettingWindow ) :
 					self.mTunerMgr.SetTunerTypeFlag( satellite, tunertype )
 
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
-			self.SaveConfiguration( )
-			self.ReTune( )
+			if self.CompareConfiguration( ) == False :
+				self.SaveConfiguration( )
+				self.ReTune( )
 			self.ResetAllControl( )
 			WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).SetResultAntennaStep( True )
 			self.close( )
 			self.CloseBusyDialog( )
 			
 		elif aControlId == E_FIRST_TIME_INSTALLATION_PREV :
-			self.CancelConfiguration( )
-			self.ReTune( )
+			if self.CompareConfiguration( ) == False :
+				self.CancelConfiguration( )
+				self.ReTune( )
 			self.ResetAllControl( )
 			WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).SetResultAntennaStep( False )
 			self.close( )
@@ -267,8 +272,11 @@ class AntennaSetup( SettingWindow ) :
 
 	def ReTune( self ) :
 		channel = self.mDataCache.Channel_GetCurrent( )
-		self.mCommander.Channel_InvalidateCurrent( )
-		self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
+		if channel == None or channel.mError != 0 :
+			LOG_ERR( 'Load Channel_GetCurrent ERROR' )
+		else :
+			self.mCommander.Channel_InvalidateCurrent( )
+			self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
 
 
 	def CompareConfiguration( self ) :

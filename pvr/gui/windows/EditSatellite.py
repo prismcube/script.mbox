@@ -74,6 +74,7 @@ class EditSatellite( SettingWindow ) :
 	 	# Edit Satellite Name
 		elif groupId == E_Input03 :
 			kb = xbmc.Keyboard( self.mName, 'Satellite Name', False )
+			kb.setHiddenInput( False )
 			kb.doModal( )
 			if kb.isConfirmed( ) :
 				ret = self.mCommander.Satellite_ChangeName( self.mLongitude, self.mBand, kb.getText( ) )

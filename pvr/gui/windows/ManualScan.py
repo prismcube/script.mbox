@@ -9,6 +9,9 @@ from pvr.gui.GuiConfig import *
 from ElisProperty import ElisPropertyEnum
 from ElisEnum import ElisEnum
 from ElisClass import *
+#from ElisEventClass import *
+#from pvr.Util import LOG_WARN, LOG_TRACE, LOG_ERR, GuiLock
+
 
 E_DEFAULT_GOURP_ID		= 9000
 
@@ -31,6 +34,9 @@ class ManualScan( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
+		#self.mEventBus.Register( self )
+		#self.ScanHelper_Start( )
+
 		self.mCtrlMainGroup = self.getControl( E_DEFAULT_GOURP_ID )
 
 		self.SetSettingWindowLabel( 'Manual Scan' )
@@ -52,6 +58,8 @@ class ManualScan( SettingWindow ) :
 			self.ShowDescription( )
 			self.mInitialized = True
 
+			#self.ScanHelper_ChangeContextByCarrier( self.mConfigTransponder )
+
 		else :
 			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
 			self.SetVisibleControls( hideControlIds, False )
@@ -70,12 +78,14 @@ class ManualScan( SettingWindow ) :
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.ResetAllControl( )
+			self.ScanHelper_Stop( )
 			self.close( )
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
+			self.ScanHelper_Stop( )
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
@@ -191,6 +201,8 @@ class ManualScan( SettingWindow ) :
 		elif groupId == E_SpinEx05 or groupId == E_SpinEx06   :
 			self.ControlSelect( )
 
+		#self.ScanHelper_ChangeContextByCarrier( self.mConfigTransponder )
+
 
 	def onFocus( self, aControlId ) :
 		if self.mInitialized == False :
@@ -199,6 +211,24 @@ class ManualScan( SettingWindow ) :
 		if self.mLastFocused != aControlId :
 			self.ShowDescription( )
 			self.mLastFocused = aControlId
+
+	"""
+	@GuiLock
+	def onEvent( self, aEvent ) :
+		if xbmcgui.getCurrentWindowId( ) == self.mWinId :
+			print 'dhkim test #1'
+			if aEvent.getName( ) == ElisEventTuningStatus.getName( ) :
+				print 'dhkim test #2'
+				self.UpdateStatus( aEvent )
+
+
+	def UpdateStatus( self, aEvent ) :
+		print 'dhkim test fre 1 = %d' % aEvent.mFrequency
+		print 'dhkim test fre 2 = %d' % self.mConfigTransponder.mFrequency
+		if aEvent.mFrequency == self.mConfigTransponder.mFrequency :
+			print 'dhkim test #3'
+			self.ScanHerper_Progress( aEvent.mSignalStrength, aEvent.mSignalQuality, aEvent.mIsLocked )
+	"""
 
 
 	def InitConfig( self ) :

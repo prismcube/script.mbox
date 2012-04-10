@@ -290,6 +290,7 @@ def NumericKeyboard( aKeyType, aTitle, aString, aMaxLength=None ) :
 
 def InputKeyboard( aType, aTitle, aString, aMaxLength=None ) :
 	dialog = xbmc.Keyboard( aString, aTitle, aType )
+	dialog.setHiddenInput( aType )
 	dialog.doModal( )
 	if( dialog.isConfirmed( ) ) :
 		value = dialog.getText( )

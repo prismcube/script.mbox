@@ -602,7 +602,7 @@ class SettingWindow( BaseWindow ) :
 			self.ScanHerper_Progress( 0, 0, 0 )
 			transpondertemp = []
 			transpondertemp.append( aTp )
-			self.mCommander.ScanHelper_ChangeContext( transpondertemp )
+			self.mCommander.ScanHelper_ChangeContextByCarrier( transpondertemp )
 		else :
 			LOG_ERR( 'ScanHelper_ChangeContextByCarrier : Tp is None' )
 
