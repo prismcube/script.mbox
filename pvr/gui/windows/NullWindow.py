@@ -34,8 +34,7 @@ class NullWindow( BaseWindow ) :
 			self.mInitialized = True
 			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
-			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_INFO_PLATE )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 
 	def onAction(self, aAction) :		
@@ -199,17 +198,24 @@ class NullWindow( BaseWindow ) :
 			else :
 				self.RecordingStop()
 
-		#test
-		elif actionId == Action.ACTION_MOVE_RIGHT :
-			print 'youn check ation right'
-			#window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
-			#window.SetAutomaticHide( True )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_INFO_PLATE )
-
 		else:
 			print 'lael98 check ation unknown id=%d' %actionId
 
+
 		"""
+		#test
+		elif actionId == Action.ACTION_MOVE_RIGHT :
+			print 'youn check ation right'
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_INFO_PLATE1 )
+
+		elif actionId == Action.ACTION_MOVE_UP :
+			print 'youn check ation up'
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_INFO_PLATE )
+
+		elif actionId == Action.ACTION_MOVE_DOWN :
+			print 'youn check ation up'
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_INFO_PLATE2 )
+
 		elif actionId == Action.REMOTE_3:  #TEST : start Record
 			print 'open record dialog'
 			

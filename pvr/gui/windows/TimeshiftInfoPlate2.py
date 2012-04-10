@@ -35,7 +35,7 @@ FLAG_PLAY  = 1
 FLAG_PAUSE = 2
 
 E_DEFAULT_POSY = 0
-E_PROGRESS_WIDTH_MAX = 380
+E_PROGRESS_WIDTH_MAX = 630
 
 E_BUTTON_GROUP_PLAYPAUSE = 450
 E_BUTTON_GROUP_PLAYPLATE = 400
@@ -59,13 +59,15 @@ E_IMG_ICON_LOCK   = 'IconLockFocus.png'
 E_IMG_ICON_ICAS   = 'IconCas.png'
 E_IMG_ICON_TV     = 'confluence/tv.png'
 E_IMG_ICON_RADIO  = 'icon_radio.png'
+E_IMG_ICON_PLAY   = 'confluence/OSDPlay.png'
+E_IMG_ICON_PAUSE  = 'confluence/OSDPause.png'
 
 E_TAG_COLOR_WHITE = '[COLOR white]'
 E_TAG_COLOR_RED   = '[COLOR red]'
 E_TAG_COLOR_GREEN = '[COLOR green]'
 E_TAG_COLOR_END   = '[/COLOR]'
 
-class TimeShiftInfoPlate(BaseWindow):
+class TimeShiftInfoPlate2(BaseWindow):
 	def __init__(self, *args, **kwargs):
 		BaseWindow.__init__(self, *args, **kwargs)
 
@@ -127,9 +129,7 @@ class TimeShiftInfoPlate(BaseWindow):
 		self.mCtrlLblTSStartTime       = self.getControl( 221 )
 		self.mCtrlLblTSEndTime         = self.getControl( 222 )
 
-		self.mCtrlImgRewind	           = self.getControl( 231 )
-		self.mCtrlImgForward           = self.getControl( 232 )
-		self.mCtrlLblSpeed             = self.getControl( 233 )
+		self.mCtrlImgSpeed	           = self.getControl( 231 )
 
 		#self.mCtrlBtnStopRec          = self.getControl( 403 )
 		self.mCtrlBtnRewind            = self.getControl( 404 )
@@ -355,10 +355,8 @@ class TimeShiftInfoPlate(BaseWindow):
 		if aControlId >= self.mCtrlBtnRewind.getId() and aControlId <= self.mCtrlBtnJumpFF.getId() :
 
 			if aControlId == self.mCtrlBtnPlay.getId() :
-				#self.mAutomaticHide = True
 				self.RestartAutomaticHide()
 			else :
-				#self.mAutomaticHide = False
 				self.StopAutomaticHide()
 
 
@@ -463,22 +461,16 @@ class TimeShiftInfoPlate(BaseWindow):
 
 			LOG_TRACE( 'play_resume() ret[%s]'% ret )
 			if ret :
-				if self.mSpeed != 100:
-					#_self.mDataCache.Player_SetSpeed( 100 )
-					self.UpdateLabelGUI( self.mCtrlImgRewind.getId(), False )
-					self.UpdateLabelGUI( self.mCtrlImgForward.getId(), False )
-					self.UpdateLabelGUI( self.mCtrlLblSpeed.getId(), '' )
-
 				self.mIsPlay = FLAG_PAUSE
+				mode = self.GetModeValue( )
+				self.UpdateLabelGUI( self.mCtrlLblMode.getId(), mode )
 
-				label = self.GetModeValue( )
-				self.UpdateLabelGUI( self.mCtrlLblMode.getId(), label )
 				# toggle
 				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), False )
 				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), True )
 				self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
-
 				clickButton = 'Play'
+				self.UpdateLabelGUI( self.mCtrlImgSpeed.getId(), E_IMG_ICON_PLAY )
 
 		elif aFocusId == self.mCtrlBtnPause.getId() :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
@@ -498,6 +490,7 @@ class TimeShiftInfoPlate(BaseWindow):
 				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
 				self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
 				clickButton = 'Pause'
+				self.UpdateLabelGUI( self.mCtrlImgSpeed.getId(), E_IMG_ICON_PAUSE )
 
 		elif aFocusId == self.mCtrlBtnStop.getId() :
 			third = 3
@@ -605,8 +598,11 @@ class TimeShiftInfoPlate(BaseWindow):
 			ret = self.mDataCache.Player_JumpToIFrame( nextJump )
 			LOG_TRACE('JumpFF ret[%s]'% ret )
 
+
+		if clickButton :
+			self.UpdateLabelGUI( self.mCtrlLblStatus.getId(), clickButton.upper() )
+
 		time.sleep(0.5)
-		self.UpdateLabelGUI( self.mCtrlLblStatus.getId(), clickButton.upper() )
 		self.InitTimeShift()
 
 		LOG_TRACE( 'Leave' )
@@ -620,9 +616,7 @@ class TimeShiftInfoPlate(BaseWindow):
 		self.UpdateLabelGUI( self.mCtrlProgress.getId(),        0 )
 		self.UpdateLabelGUI( self.mCtrlLblTSStartTime.getId(), '' )
 		self.UpdateLabelGUI( self.mCtrlLblTSEndTime.getId(),   '' )
-		self.UpdateLabelGUI( self.mCtrlLblSpeed.getId(),       '' )
-		self.UpdateLabelGUI( self.mCtrlImgRewind.getId(),   False )
-		self.UpdateLabelGUI( self.mCtrlImgForward.getId(),  False )
+		self.UpdateLabelGUI( self.mCtrlImgSpeed.getId(),       '' )
 		self.UpdateLabelGUI( self.mCtrlBtnCurrent.getId(),     '', 'lbl' )
 		self.UpdateLabelGUI( self.mCtrlBtnCurrent.getId(),      0, 'pos' )
 
@@ -676,11 +670,8 @@ class TimeShiftInfoPlate(BaseWindow):
 		elif aCtrlID == self.mCtrlBtnForward.getId( ) :
 			self.mCtrlBtnForward.setVisible( aValue )
 
-		elif aCtrlID == self.mCtrlImgRewind.getId( ) :
-			self.mCtrlImgRewind.setVisible( aValue )
-
-		elif aCtrlID == self.mCtrlImgForward.getId( ) :
-			self.mCtrlImgForward.setVisible( aValue )
+		elif aCtrlID == self.mCtrlImgSpeed.getId( ) :
+			self.mCtrlImgSpeed.setImage( aValue )
 
 		elif aCtrlID == self.mCtrlLblLocalClock.getId( ) :
 			self.mCtrlLblLocalClock.setLabel( aValue )
@@ -699,9 +690,6 @@ class TimeShiftInfoPlate(BaseWindow):
 
 		elif aCtrlID == self.mCtrlLblTSEndTime.getId( ) :
 			self.mCtrlLblTSEndTime.setLabel( aValue )
-
-		elif aCtrlID == self.mCtrlLblSpeed.getId( ) :
-			self.mCtrlLblSpeed.setLabel( aValue )
 
 		elif aCtrlID == self.mCtrlImgRec1.getId( ) :
 			self.mCtrlImgRec1.setVisible( aValue )
@@ -940,20 +928,12 @@ class TimeShiftInfoPlate(BaseWindow):
 			nextSpeed = 100 #default
 
 		labelSpeed = ''
-		flagFF = False
-		flagRR = False
+		imgSpeed = 'confluence/OSDPlay.png'
 		if nextSpeed != 100 :
 			labelSpeed = '%sx'% ( abs(nextSpeed) / 100)
-			if nextSpeed > 100 :
-				flagFF = True
-				flagRR = False
-			else :
-				flagFF = False
-				flagRR = True
+			imgSpeed = 'confluence/OSD%s.png'% labelSpeed
 
-		self.UpdateLabelGUI( self.mCtrlImgRewind.getId(), flagRR )
-		self.UpdateLabelGUI( self.mCtrlImgForward.getId(), flagFF )
-		self.UpdateLabelGUI( self.mCtrlLblSpeed.getId(), labelSpeed )
+		self.UpdateLabelGUI( self.mCtrlImgSpeed.getId(), imgSpeed )
 
 		LOG_TRACE('Leave')
 		return nextSpeed

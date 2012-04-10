@@ -1,0 +1,885 @@
+<window type="windows" id="3031">
+	<defaultcontrol always="true">450</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<backgroundcolor>0x00ffffff</backgroundcolor>
+	<controls>
+		<control type="group">
+			<include>Window_OpenClose_Animation</include>
+			<control type="image">
+				<posx>0</posx>
+				<posy>540</posy>
+				<width>1320</width>
+				<height>256</height>
+				<texture>confluence/MediaInfoBackLower.png</texture>
+			</control>
+
+
+<!-- info section -->
+			<control type="group" id="600">
+				<posx>50</posx>
+				<posy>600</posy>
+				<control type="group">
+					<posx>-50</posx>
+					<posy>-37</posy>
+					<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(400).HasFocus) | ControlGroup(620).HasFocus) | Control.HasFocus(702) | Control.HasFocus(706) | Control.HasFocus(202)">conditional</animation>
+					<description>info explane</description>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>35</height>
+						<texture border="0,0,32,0">confluence/header.png</texture>
+					</control>
+
+					<control type="label">
+						<posx>20</posx>
+						<posy>0</posy>
+						<width min="100" max="150">auto</width>
+						<height>28</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Record Start</label>
+						<visible>Control.HasFocus(624)</visible>
+					</control>
+					<control type="label">
+						<posx>50</posx>
+						<posy>0</posy>
+						<width min="100" max="150">auto</width>
+						<height>28</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Rewind</label>
+						<visible>Control.HasFocus(404)</visible>
+					</control>
+					<control type="label">
+						<posx>50</posx>
+						<posy>0</posy>
+						<width min="100" max="150">auto</width>
+						<height>28</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Play</label>
+						<visible>Control.HasFocus(405)</visible>
+					</control>
+					<control type="label">
+						<posx>50</posx>
+						<posy>0</posy>
+						<width min="100" max="150">auto</width>
+						<height>28</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Pause</label>
+						<visible>Control.HasFocus(406)</visible>
+					</control>
+					<control type="label">
+						<posx>50</posx>
+						<posy>0</posy>
+						<width min="100" max="150">auto</width>
+						<height>28</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Stop</label>
+						<visible>Control.HasFocus(407)</visible>
+					</control>
+					<control type="label">
+						<posx>50</posx>
+						<posy>0</posy>
+						<width min="100" max="150">auto</width>
+						<height>28</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Forward</label>
+						<visible>Control.HasFocus(408)</visible>
+					</control>
+					<control type="label">
+						<posx>20</posx>
+						<posy>0</posy>
+						<width min="100" max="150">auto</width>
+						<height>28</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Jump Rewind</label>
+						<visible>Control.HasFocus(409)</visible>
+					</control>
+					<control type="label">
+						<posx>20</posx>
+						<posy>0</posy>
+						<width min="100" max="150">auto</width>
+						<height>28</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>Jump Forward</label>
+						<visible>Control.HasFocus(410)</visible>
+					</control>
+					<control type="label">
+						<posx>40</posx>
+						<posy>0</posy>
+						<width min="100" max="150">auto</width>
+						<height>28</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>BookMark</label>
+						<visible>Control.HasFocus(622)</visible>
+					</control>
+					<control type="label">
+						<posx>120</posx>
+						<posy>0</posy>
+						<width min="100" max="150">auto</width>
+						<height>28</height>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<scroll>false</scroll>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>Jump L/R</label>
+						<visible>Control.HasFocus(202)</visible>
+					</control>
+
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<label>Description</label>
+						<visible>Control.HasFocus(621)</visible>
+					</control>
+					<control type="label">
+						<posx>50</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<label>Mute</label>
+						<visible>Control.HasFocus(625)</visible>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<label>A/V Setting</label>
+						<visible>Control.HasFocus(627)</visible>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<label>EPG Present</label>
+						<visible>Control.HasFocus(702)</visible>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textcolor>grey</textcolor>
+						<label>EPG Next</label>
+						<visible>Control.HasFocus(706)</visible>
+					</control>
+				</control>
+			</control>
+
+<!-- button control -->
+			<control type="group">
+				<posx>315</posx>
+				<posy>570</posy>
+				<control type="group" id="400">
+					<posx>0</posx>
+					<posy>-5</posy>
+					<control type="button" id="404">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>45</width>
+						<height>40</height>
+						<label>31354</label>
+						<font></font>
+						<texturefocus>confluence/OSDRewindFO.png</texturefocus>
+						<texturenofocus>confluence/OSDRewindNF.png</texturenofocus>
+						<onleft>620</onleft>
+						<onright>450</onright>
+						<onup>202</onup>
+						<ondown>700</ondown>
+					</control>
+					<control type="group" id="450">
+						<control type="button" id="405">
+							<posx>45</posx>
+							<posy>0</posy>
+							<width>45</width>
+							<height>40</height>
+							<label>31351</label>
+							<altlabel>208</altlabel>
+							<font>-</font>
+							<texturefocus>confluence/OSDPlayFO.png</texturefocus>
+							<texturenofocus>confluence/OSDPlayNF.png</texturenofocus>
+							<onleft>404</onleft>
+							<onright>407</onright>
+							<onup>202</onup>
+							<ondown>700</ondown>
+						</control>
+						<control type="button" id="406">
+							<posx>45</posx>
+							<posy>0</posy>
+							<width>45</width>
+							<height>40</height>
+							<label>31351</label>
+							<altlabel>208</altlabel>
+							<font>-</font>
+							<texturefocus>confluence/OSDPauseFO.png</texturefocus>
+							<texturenofocus>confluence/OSDPauseNF.png</texturenofocus>
+							<onleft>404</onleft>
+							<onright>407</onright>
+							<onup>202</onup>
+							<ondown>700</ondown>
+							<visible>!Control.IsVisible(405)</visible>
+						</control>
+					</control>
+					<control type="button" id="407">
+						<posx>90</posx>
+						<posy>0</posy>
+						<width>45</width>
+						<height>40</height>
+						<label>31352</label>
+						<font>-</font>
+						<texturefocus>confluence/OSDStopFO.png</texturefocus>
+						<texturenofocus>confluence/OSDStopNF.png</texturenofocus>
+						<onleft>450</onleft>
+						<onright>408</onright>
+						<onup>202</onup>
+						<ondown>700</ondown>
+					</control>
+					<control type="button" id="408">
+						<posx>135</posx>
+						<posy>0</posy>
+						<width>45</width>
+						<height>40</height>
+						<label>31353</label>
+						<font>-</font>
+						<texturefocus>confluence/OSDForwardFO.png</texturefocus>
+						<texturenofocus>confluence/OSDForwardNF.png</texturenofocus>
+						<onleft>407</onleft>
+						<onright>409</onright>
+						<onup>202</onup>
+						<ondown>700</ondown>
+					</control>
+					<control type="button" id="409">
+						<posx>180</posx>
+						<posy>0</posy>
+						<width>45</width>
+						<height>40</height>
+						<label></label>
+						<font>-</font>
+						<texturefocus>confluence/OSDPrevTrackFO.png</texturefocus>
+						<texturenofocus>confluence/OSDPrevTrackNF.png</texturenofocus>
+						<onleft>408</onleft>
+						<onright>410</onright>
+						<onup>202</onup>
+						<ondown>700</ondown>
+					</control>
+					<control type="button" id="410">
+						<posx>225</posx>
+						<posy>0</posy>
+						<width>45</width>
+						<height>40</height>
+						<label></label>
+						<font>-</font>
+						<texturefocus>confluence/OSDNextTrackFO.png</texturefocus>
+						<texturenofocus>confluence/OSDNextTrackNF.png</texturenofocus>
+						<onleft>409</onleft>
+						<onright>620</onright>
+						<onup>202</onup>
+						<ondown>700</ondown>
+					</control>
+				</control>
+
+				<control type="group" id="620">
+					<posx>270</posx>
+					<posy>0</posy>
+					<control type="button" id="621">
+						<posx>0</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>45</width>
+						<height>35</height>
+						<textcolor>grey3</textcolor>
+						<texturefocus>confluence/DefaultIconWarning.png</texturefocus>
+						<texturenofocus>confluence/DefaultIconInfo.png</texturenofocus>
+						<onleft>410</onleft>
+						<onright>622</onright>
+						<onup></onup>
+						<ondown>700</ondown>
+						<description>expantion info</description>
+					</control>
+					<control type="group">
+						<visible>ControlGroup(620).HasFocus</visible>
+						<control type="button" id="622">
+							<posx>45</posx>
+							<posy>0</posy>
+							<align>left</align>
+							<width>45</width>
+							<height>35</height>
+							<textcolor>grey3</textcolor>
+							<texturefocus>confluence/OSDBookmarksFO.png</texturefocus>
+							<texturenofocus>confluence/OSDBookmarksNF.png</texturenofocus>
+							<onleft>621</onleft>
+							<onright>624</onright>
+							<onup></onup>
+							<ondown>700</ondown>
+							<description>teletext</description>
+						</control>
+						<control type="button" id="624">
+							<posx>90</posx>
+							<posy>0</posy>
+							<align>left</align>
+							<width>45</width>
+							<height>35</height>
+							<textcolor>grey3</textcolor>
+							<texturefocus>confluence/OSDRecord2.png</texturefocus>
+							<texturenofocus>confluence/OSDRecordNF.png</texturenofocus>
+							<onleft>622</onleft>
+							<onright>625</onright>
+							<onup></onup>
+							<ondown>700</ondown>
+							<description>start record</description>
+						</control>
+						<control type="button" id="625">
+							<posx>135</posx>
+							<posy>0</posy>
+							<width>45</width>
+							<height>35</height>
+							<label></label>
+							<textcolor>grey3</textcolor>
+							<texturefocus>confluence/OSDAudioFO.png</texturefocus>
+							<texturenofocus>confluence/OSDAudioNF.png</texturenofocus>
+							<onleft>624</onleft>
+							<onright>627</onright>
+							<onup></onup>
+							<ondown>700</ondown>
+							<onclick>Mute</onclick>
+							<description>mute,audio off</description>
+						</control>
+						<control type="button" id="627">
+							<posx>180</posx>
+							<posy>0</posy>
+							<align>left</align>
+							<width>45</width>
+							<height>35</height>
+							<textcolor>grey3</textcolor>
+							<texturefocus>confluence/OSDPresetSettingsFO.png</texturefocus>
+							<texturenofocus>confluence/OSDPresetSettingsNF.png</texturenofocus>
+							<onleft>625</onleft>
+							<onright>404</onright>
+							<onup></onup>
+							<ondown>700</ondown>
+							<description>setting format</description>
+						</control>
+					</control>
+				</control>
+			</control>
+
+
+<!-- progress section -->
+			<control type="group">
+				<posx>200</posx>
+				<posy>503</posy>
+				<animation effect="fade" start="100" end="0" time="300" condition="ControlGroup(620).HasFocus">conditional</animation>
+				<control type="group">
+					<control type="image">
+						<posx>0</posx>
+						<posy>-20</posy>
+						<width>850</width>
+						<height>70</height>
+						<texture flipy="true" flipx="true" border="50,0,32,0">confluence/header.png</texture>
+					</control>
+					<control type="image">
+						<posx>450</posx>
+						<posy>-20</posy>
+						<width>830</width>
+						<height>70</height>
+						<texture flipy="true" border="50,0,32,0">confluence/header.png</texture>
+					</control>
+
+					<control type="progress" id="201">
+						<description>progress control</description>
+						<posx>240</posx>
+						<posy>24</posy>
+						<width>550</width>
+						<height>16</height>
+						<texturebg border="6,0,6,0">confluence/OSDProgressBack.png</texturebg>
+						<lefttexture>-</lefttexture>
+						<midtexture border="6,0,6,0">confluence/OSDProgressMid.png</midtexture>
+						<righttexture>-</righttexture>
+						<overlaytexture>-</overlaytexture>
+					</control>
+					<control type="group">
+						<posx>190</posx>
+						<posy>2</posy>
+						<control type="button" id="202">
+							<description>play time</description>
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>100</width>
+							<height>25</height>
+							<font>font12</font>
+							<textcolor>grey</textcolor>
+							<align>center</align>
+							<label>00:00:00</label>
+							<texturefocus flipy="true">TSProgressCurrentFO.png</texturefocus>
+							<texturenofocus flipy="true">TSProgressCurrentNF.png</texturenofocus>
+							<onleft>202</onleft>
+							<onright>202</onright>
+							<onup></onup>
+							<ondown>400</ondown>
+						</control>
+					</control>
+
+					<control type="label" id="203">
+						<description>mode</description>
+						<posx>30</posx>
+						<posy>7</posy>
+						<font>font24_title</font>
+						<textcolor>FFB2D4F5</textcolor>
+						<shadowcolor>black</shadowcolor>
+						<label>$INFO[Control.GetLabel]</label>
+					</control>
+				</control>
+
+				<control type="group">
+					<posx>150</posx>
+					<posy>17</posy>
+					<width>150</width>
+					<control type="label" id="221">
+						<description>start</description>
+						<posx>27</posx>
+						<posy>3</posy>
+						<textcolor>grey</textcolor>
+						<font>font12</font>
+						<label>00:00:00</label>
+					</control>
+					<control type="label" id="222">
+						<description>end</description>
+						<posx>650</posx>
+						<posy>3</posy>
+						<textcolor>grey</textcolor>
+						<font>font12</font>
+						<label>$INFO[Control.GetLabel]</label>
+					</control>
+				</control>
+
+				<control type="group" id="230">
+					<posx>700</posx>
+					<posy>65</posy>
+					<control type="image" id="231">
+						<description>Rewind Image</description>
+						<posx>0</posx>
+						<posy>1</posy>
+						<width>20</width>
+						<height>20</height>
+						<texture>TSIconRewind.png</texture>
+					</control>
+					<control type="image" id="232">
+						<description>Forward Image</description>
+						<posx>60</posx>
+						<posy>1</posy>
+						<width>20</width>
+						<height>20</height>
+						<texture>TSIconFastForward.png</texture>
+					</control>
+					<control type="label" id="233">
+						<description>Speed label</description>
+						<posx>25</posx>
+						<posy>0</posy>
+						<font>font24</font>
+						<textcolor>grey</textcolor>
+						<texture>$INFO[Control.GetLabel]</texture>
+					</control>
+					<control type="label" id="35">
+						<description>test</description>
+						<posx>225</posx>
+						<posy>0</posy>
+						<font>font24</font>
+						<textcolor>grey</textcolor>
+						<texture>$INFO[Control.GetLabel]</texture>
+					</control>
+				</control>
+			</control>
+
+<!-- ch info -->
+			<control type="group" id="600">
+				<posx>50</posx>
+				<posy>600</posy>
+				<control type="label" id="601">
+					<posx>0</posx>
+					<posy>10</posy>
+					<width>200</width>
+					<height>50</height>
+					<align>center</align>
+					<font>font50caps_title</font>
+					<label>$INFO[Control.GetLabel]</label>
+					<description>Ch Num</description>
+				</control>
+				<control type="label" id="602">
+					<posx>250</posx>
+					<posy>20</posy>
+					<align>left</align>
+					<width>500</width>
+					<font>font35_title</font>
+					<textcolor>FFB2D4F5</textcolor>
+					<label>$INFO[Control.GetLabel]</label>
+					<description>Ch name</description>
+				</control>
+
+				<control type="image" id="603">
+					<posx>200</posx>
+					<posy>-35</posy>
+					<align>left</align>
+					<width>70</width>
+					<height>30</height>
+					<texture>$INFO[Control.GetLabel]</texture>
+					<description>service type</description>
+				</control>
+			</control>
+
+			<control type="group">
+				<posx>780</posx>
+				<posy>570</posy>
+				<control type="group" id="650">
+					<posx>150</posx>
+					<posy>0</posy>
+					<control type="image" id="651">
+						<posx>40</posx>
+						<posy>-2</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>$INFO[Control.GetLabel]</texture>
+						<description>lock</description>
+					</control>
+					<control type="image" id="652">
+						<posx>70</posx>
+						<posy>1</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>$INFO[Control.GetLabel]</texture>
+						<description>icas</description>
+					</control>
+				</control>
+
+				<control type="image" id="604">
+					<posx>55</posx>
+					<posy>28</posy>
+					<width>60</width>
+					<height>40</height>
+					<texture>$INFO[Control.GetLabel]</texture>
+					<description>data</description>
+				</control>
+				<control type="image" id="605">
+					<posx>110</posx>
+					<posy>28</posy>
+					<width>90</width>
+					<height>40</height>
+					<texture>$INFO[Control.GetLabel]</texture>
+					<description>audio dolby</description>
+				</control>
+				<control type="image" id="606">
+					<posx>190</posx>
+					<posy>28</posy>
+					<width>90</width>
+					<height>40</height>
+					<texture>$INFO[Control.GetLabel]</texture>
+					<description>video HD</description>
+				</control>
+			</control>
+
+<!-- epg section -->
+			<control type="group" id="700">
+				<posx>50</posx>
+				<posy>660</posy>
+				
+				<control type="label" id="701">
+					<posx>0</posx>
+					<posy>10</posy>
+					<width>300</width>
+					<font>font13caps</font>
+					<align>center</align>
+					<textcolor>9f9f9f9b</textcolor>
+					<label>$INFO[Control.GetLabel]</label>
+				</control>
+				 
+				<control type="button" id="702">
+					<posx>250</posx>
+					<posy>0</posy>
+					<width>40</width>
+					<height>35</height>
+					<label>210</label>
+					<font></font>
+					<texturefocus>confluence/scroll-left-focus.png</texturefocus>
+					<texturenofocus>confluence/scroll-left.png</texturenofocus>
+					<onleft></onleft>
+					<onright>706</onright>
+					<onup>400</onup>
+					<ondown></ondown>
+				</control>
+
+				<control type="label" id="703">
+					<posx>290</posx>
+					<posy>4</posy>
+					<width>400</width>
+					<textcolor>9f9c9f9b</textcolor>
+					<label>$INFO[Control.GetLabel]</label>
+					<description>EPG Name</description>
+				</control>
+
+				<control type="label" id="704">
+					<posx>715</posx>
+					<posy>2</posy>
+					<align>left</align>
+					<font>font13_title</font>
+					<label>$INFO[Control.GetLabel]</label>
+					<description>EPG STime</description>
+				</control>
+
+				<control type="progress" id="707">
+					<description>progress control</description>
+					<posx>780</posx>
+					<posy>15</posy>
+					<width>250</width>
+					<height>8</height>
+					<texturebg border="6,0,6,0">confluence/OSDProgressBack.png</texturebg>
+					<lefttexture></lefttexture>
+					<midtexture border="6,0,6,0">confluence/OSDProgressMid.png</midtexture>
+					<righttexture></righttexture>
+					<overlaytexture></overlaytexture>
+				</control>
+				<control type="label" id="705">
+					<posx>1040</posx>
+					<posy>2</posy>
+					<font>font13_title</font>
+					<label>$INFO[Control.GetLabel]</label>
+					<description>EPG ETime</description>
+				</control>
+				<control type="button" id="706">
+					<posx>1110</posx>
+					<posy>0</posy>
+					<align>right</align>
+					<width>40</width>
+					<height>35</height>
+					<label>31354</label>
+					<font></font>
+					<texturefocus>confluence/scroll-right-focus.png</texturefocus>
+					<texturenofocus>confluence/scroll-right.png</texturenofocus>
+					<onleft>702</onleft>
+					<onright></onright>
+					<onup>400</onup>
+					<ondown></ondown>
+				</control>
+			</control>
+
+			<control type="group">
+				<posx>200r</posx>
+				<posy>563</posy>
+				<control type="image">
+					<description>time background</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>200</width>
+					<height>35</height>
+					<texture flipx="true" border="32,0,0,0">confluence/header.png</texture>
+				</control>
+				<control type="label" id="711">
+					<description>time label</description>
+					<posx>30</posx>
+					<posy>0</posy>
+					<width>400</width>
+					<height>28</height>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>font12caps</font>
+					<textcolor>white</textcolor>
+					<label>$INFO[Control.GetLabel]</label>
+					<description>LocalTime</description>
+				</control>
+			</control>
+
+
+<!-- Rec info -->
+			<control type="group">
+				<posx>240r</posx>
+				<posy>520</posy>
+				<animation effect="slide" start="280r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(10) | Control.IsVisible(15)">conditional</animation>
+				<control type="group">
+					<posx>10</posx>
+					<posy>0</posy>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>250</width>
+						<height>35</height>
+						<texture flipx="true" border="50,0,32,0">confluence/header.png</texture>
+						<visible>Control.IsVisible(10)</visible>
+					</control>
+					<control type="image" id="10">
+						<posx>30</posx>
+						<posy>5</posy>
+						<width>60</width>
+						<height>25</height>
+						<texture>i_record.png</texture>
+					</control>
+					<control type="label" id="11">
+						<posx>90</posx>
+						<posy>5</posy>
+						<font>font12caps</font>
+						<textcolor>white</textcolor>
+						<label>$INFO[Control.GetLabel]</label>
+					</control>
+				</control>
+				<control type="group">
+					<posx>-20</posx>
+					<posy>-35</posy>
+					<control type="image">
+						<posx>10</posx>
+						<posy>7</posy>
+						<width>250</width>
+						<height>35</height>
+						<texture flipx="true" border="50,0,32,0">confluence/header.png</texture>
+						<visible>Control.IsVisible(15)</visible>
+					</control>
+					<control type="image" id="15">
+						<posx>60</posx>
+						<posy>9</posy>
+						<width>60</width>
+						<height>25</height>
+						<texture>i_record.png</texture>
+					</control>
+					<control type="label" id="16">
+						<posx>120</posx>
+						<posy>9</posy>
+						<font>font12caps</font>
+						<textcolor>white</textcolor>
+						<label>$INFO[Control.GetLabel]</label>
+					</control>
+				</control>
+			</control>
+
+		</control>
+
+<!-- epg Description -->	
+		<control type="group" id="800">
+			<posx>90</posx>
+			<posy>50</posy>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1100</width>
+				<height>500</height>
+				<texture border="20">confluence/DialogBack.png</texture>
+			</control>
+			<control type="textbox" id="801">
+				  <description>EPG Description</description>
+				  <posx>100</posx>
+				  <posy>30</posy>
+				  <width>950</width>
+				  <height>100</height>
+				  <visible>true</visible>
+				  <colordiffuse>FFFFFFFF</colordiffuse>
+				  <font>font35_title</font>
+				  <textcolor>FFFFFFFF</textcolor>
+				  <wrapmultiline>true</wrapmultiline>
+				  <label>$INFO[Control.GetLabel]</label>
+			</control>
+			<control type="textbox" id="802">
+				  <description>EPG Description</description>
+				  <posx>100</posx>
+				  <posy>120</posy>
+				  <width>950</width>
+				  <height>600</height>
+				  <visible>true</visible>
+				  <colordiffuse>FFFFFFFF</colordiffuse>
+				  <font>font13</font>
+				  <textcolor>FFFFFFFF</textcolor>
+				  <wrapmultiline>true</wrapmultiline>
+				  <label>$INFO[Control.GetLabel]</label>
+			</control>
+
+			<control type="image">
+				<posx>520</posx>
+				<posy>100</posy>
+				<width>60</width>
+				<height>40</height>
+				<texture>$INFO[Control.GetLabel(604)]</texture>
+				<description>data</description>
+			</control>
+
+			<control type="image">
+				<posx>575</posx>
+				<posy>100</posy>
+				<width>90</width>
+				<height>40</height>
+				<texture>$INFO[Control.GetLabel(605)]</texture>
+				<description>audio dolby</description>
+			</control>
+
+			<control type="image">
+				<posx>655</posx>
+				<posy>100</posy>
+				<width>90</width>
+				<height>40</height>
+				<texture>$INFO[Control.GetLabel(606)]</texture>
+				<description>video HD</description>
+			</control>
+
+			<control type="label">
+				<posx>900</posx>
+				<posy>102</posy>
+				<description>start time</description>
+				<font>font13</font>
+				<label>$INFO[Control.GetLabel(704)] - $INFO[Control.GetLabel(705)]</label>
+			</control>
+		</control>
+
+	</controls>
+</window>

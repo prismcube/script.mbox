@@ -46,7 +46,8 @@ WIN_ID_TEST1						= 30
 WIN_ID_DUMMY_WINDOW					= 100
 
 WIN_ID_TIMESHIFT_INFO_PLATE			= 31
-WIN_ID_TIMESHIFT_NEW_PLATE			= 32
+WIN_ID_TIMESHIFT_INFO_PLATE1		= 32
+WIN_ID_TIMESHIFT_INFO_PLATE2		= 33
 
 gWindowMgr = None
 
@@ -247,11 +248,18 @@ class WindowMgr(object):
 			from pvr.gui.windows.FirstInstallation import FirstInstallation
 			self.mWindows[WIN_ID_FIRST_INSTALLATION]=FirstInstallation('FirstInstallation.xml', self.mScriptDir )
 
+			"""
 			#test
 			from pvr.gui.windows.TimeshiftInfoPlate import TimeShiftInfoPlate
 			self.mWindows[WIN_ID_TIMESHIFT_INFO_PLATE]=TimeShiftInfoPlate('TimeshiftInfoPlate.xml', self.mScriptDir )
+
+			from pvr.gui.windows.TimeshiftInfoPlate1 import TimeShiftInfoPlate1
+			self.mWindows[WIN_ID_TIMESHIFT_INFO_PLATE1]=TimeShiftInfoPlate1('TimeshiftInfoPlate1.xml', self.mScriptDir )
+
+			from pvr.gui.windows.TimeshiftInfoPlate2 import TimeShiftInfoPlate2
+			self.mWindows[WIN_ID_TIMESHIFT_INFO_PLATE2]=TimeShiftInfoPlate2('TimeshiftInfoPlate2.xml', self.mScriptDir )
 			
-			"""
+
 			from pvr.gui.windows.test1 import Test1
 			Test1('MyPics.xml', self.mScriptDir ).doModal()
 			"""
