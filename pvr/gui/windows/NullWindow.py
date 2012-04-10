@@ -35,7 +35,6 @@ class NullWindow( BaseWindow ) :
 			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_INFO_PLATE2 )
 
 
 	def onAction(self, aAction) :		
@@ -199,6 +198,11 @@ class NullWindow( BaseWindow ) :
 			else :
 				self.RecordingStop()
 
+		else:
+			print 'lael98 check ation unknown id=%d' %actionId
+
+
+		"""
 		#test
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			print 'youn check ation right'
@@ -212,10 +216,6 @@ class NullWindow( BaseWindow ) :
 			print 'youn check ation up'
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_INFO_PLATE2 )
 
-		else:
-			print 'lael98 check ation unknown id=%d' %actionId
-
-		"""
 		elif actionId == Action.REMOTE_3:  #TEST : start Record
 			print 'open record dialog'
 			

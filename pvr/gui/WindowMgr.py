@@ -248,6 +248,7 @@ class WindowMgr(object):
 			from pvr.gui.windows.FirstInstallation import FirstInstallation
 			self.mWindows[WIN_ID_FIRST_INSTALLATION]=FirstInstallation('FirstInstallation.xml', self.mScriptDir )
 
+			"""
 			#test
 			from pvr.gui.windows.TimeshiftInfoPlate import TimeShiftInfoPlate
 			self.mWindows[WIN_ID_TIMESHIFT_INFO_PLATE]=TimeShiftInfoPlate('TimeshiftInfoPlate.xml', self.mScriptDir )
@@ -258,7 +259,7 @@ class WindowMgr(object):
 			from pvr.gui.windows.TimeshiftInfoPlate2 import TimeShiftInfoPlate2
 			self.mWindows[WIN_ID_TIMESHIFT_INFO_PLATE2]=TimeShiftInfoPlate2('TimeshiftInfoPlate2.xml', self.mScriptDir )
 			
-			"""
+
 			from pvr.gui.windows.test1 import Test1
 			Test1('MyPics.xml', self.mScriptDir ).doModal()
 			"""
