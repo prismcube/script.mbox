@@ -253,6 +253,9 @@ class TimeShiftInfoPlate(BaseWindow):
 				self.UpdateLabelGUI( self.mCtrlGroupPlay.getId(), True )
 				self.UpdateLabelGUI( self.mCtrlGroupInfo.getId(), False )
 				self.setFocusId( E_BUTTON_GROUP_PLAYPLATE )
+
+				self.StopAutomaticHide()
+				self.RestartAsyncMove()
 				return
 
 			self.Close()
@@ -274,8 +277,6 @@ class TimeShiftInfoPlate(BaseWindow):
 				self.mUserMoveTimeBack = self.mUserMoveTime
 				self.mUserMoveTime = -10
 				self.mFlagUserMove = True
-				#if self.mAutomaticHide :
-				#	self.mAutomaticHide = False
 				self.StopAutomaticHide()
 				self.RestartAsyncMove()
 				LOG_TRACE('left moveTime[%s]'% self.mUserMoveTime )
@@ -292,8 +293,6 @@ class TimeShiftInfoPlate(BaseWindow):
 				self.mUserMoveTimeBack = self.mUserMoveTime
 				self.mUserMoveTime = 10
 				self.mFlagUserMove = True
-				#if self.mAutomaticHide :
-				#	self.mAutomaticHide = False
 				self.StopAutomaticHide()
 				self.RestartAsyncMove()
 				LOG_TRACE('right moveTime[%s]'% self.mUserMoveTime )
@@ -315,6 +314,8 @@ class TimeShiftInfoPlate(BaseWindow):
 
 			
 		elif id == Action.ACTION_CONTEXT_MENU:
+			self.StopAutomaticHide()
+
 			if self.mShowGroupPlay :
 				self.mShowGroupPlay = False
 				self.UpdateLabelGUI( self.mCtrlGroupPlay.getId(), False )
@@ -1576,10 +1577,9 @@ class TimeShiftInfoPlate(BaseWindow):
 
 	
 	def AsyncAutomaticHide( self ) :
-		pass
-		#if self.mSpeed == 100 :
-		#	xbmc.executebuiltin('xbmc.Action(previousmenu)')
-		#	LOG_TRACE('HIDE : TimeShiftPlate')
+		if self.mSpeed == 100 :
+			xbmc.executebuiltin('xbmc.Action(previousmenu)')
+			LOG_TRACE('HIDE : TimeShiftPlate')
 
 	def RestartAutomaticHide( self ) :
 		self.StopAutomaticHide()
