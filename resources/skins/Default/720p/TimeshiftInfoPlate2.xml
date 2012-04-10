@@ -698,7 +698,6 @@
 					<textcolor>white</textcolor>
 					<label>$INFO[Control.GetLabel(711)]</label>
 				</control>
-
 				<!--control type="label">
 					<posx>30</posx>
 					<posy>50</posy>
@@ -711,8 +710,8 @@
 			</control>
 
 			<control type="group" id="400">
-				<posx>550</posx>
-				<posy>30</posy>
+				<posx>600</posx>
+				<posy>20</posy>
 				<control type="button" id="409">
 					<posx>-40</posx>
 					<posy>0</posy>
@@ -819,8 +818,8 @@
 
 <!-- progress section -->
 			<control type="group">
-				<posx>300</posx>
-				<posy>75</posy>
+				<posx>400</posx>
+				<posy>65</posy>
 				<control type="progress" id="201">
 					<description>progress control</description>
 					<posx>10</posx>
@@ -835,7 +834,7 @@
 				</control>
 				<control type="group">
 					<posx>-40</posx>
-					<posy>15</posy>
+					<posy>10</posy>
 					<control type="button" id="202">
 						<description>play time</description>
 						<posx>0</posx>
@@ -897,21 +896,35 @@
 				</control>
 
 				<control type="group" id="230">
-					<posx>650</posx>
-					<posy>-40</posy>
+					<posx>-80</posx>
+					<posy>-24</posy>
 					<control type="image">
-						<posx>0</posx>
-						<posy>1</posy>
-						<width>120</width>
-						<height>60</height>
+						<posx>-25</posx>
+						<posy>-5</posy>
+						<width>100</width>
+						<height>50</height>
 						<texture>confluence/OSDSeekFrame.png</texture>
 					</control>
 					<control type="image" id="231">
-						<posx>30</posx>
-						<posy>5</posy>
-						<width>60</width>
-						<height>50</height>
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>50</width>
+						<height>40</height>
 						<texture>$INFO[Control.GetLabel]</texture>
+					</control>
+					<control type="image" id="232">
+						<posx>-35</posx>
+						<posy>-2</posy>
+						<width>20</width>
+						<height>45</height>
+						<texture>confluence/OSDSeekRewind.png</texture>
+					</control>
+					<control type="image" id="233">
+						<posx>65</posx>
+						<posy>-2</posy>
+						<width>20</width>
+						<height>45</height>
+						<texture>confluence/OSDSeekForward.png</texture>
 					</control>
 				</control>
 
