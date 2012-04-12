@@ -20,6 +20,7 @@ class AntennaSetup( SettingWindow ) :
 
 	def onInit( self ) :
 		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( False )
+
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
@@ -33,6 +34,7 @@ class AntennaSetup( SettingWindow ) :
 		if self.mTunerMgr.GetNeedLoad( ) == True : 
 			self.mTunerMgr.LoadOriginalTunerConfig( )
 			self.mTunerMgr.Load( )
+			print '############################dhkim test Load Tuner Config#############################'
 			self.mTunerMgr.SetNeedLoad( False )
 
 		self.SetSettingWindowLabel( 'Antenna & Satellite Setup' )
@@ -76,7 +78,10 @@ class AntennaSetup( SettingWindow ) :
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-					self.CancelConfiguration( )
+					self.OpenBusyDialog( )
+					if self.CompareConfigurationProperty( ) == False :
+						self.CancelConfiguration( )
+					self.mTunerMgr.SetNeedLoad( True )
 					self.ResetAllControl( )
 					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).SetAlreadyClose( True )
 					self.close( )
@@ -94,20 +99,17 @@ class AntennaSetup( SettingWindow ) :
 				if dialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
 					return
 
-				if self.CompareConfiguration( ) == True :
-					self.ResetAllControl( )
-					self.SetVideoRestore( )
-					self.close( )
-					return
-
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-					self.SaveConfiguration( )
-					self.ReTune( )
+					self.OpenBusyDialog( )
+					if self.CompareConfigurationSatellite( ) == False :
+						self.SaveConfiguration( )
+						self.ReTune( )
 					
 				elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
-					self.CancelConfiguration( )
-					self.ReTune( )
-
+					self.OpenBusyDialog( )
+					if self.CompareConfigurationProperty( ) == False :
+						self.CancelConfiguration( )
+					self.mTunerMgr.SetNeedLoad( True )
 
 				self.ResetAllControl( )
 				self.SetVideoRestore( )
@@ -186,22 +188,18 @@ class AntennaSetup( SettingWindow ) :
 				for satellite in configuredList :
 					self.mTunerMgr.SetTunerTypeFlag( satellite, tunertype )
 
-		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
-			if self.CompareConfiguration( ) == False :
+		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT or aControlId == E_FIRST_TIME_INSTALLATION_PREV :
+			self.OpenBusyDialog( )
+			if self.CompareConfigurationSatellite( ) == False :
 				self.SaveConfiguration( )
 				self.ReTune( )
 			self.ResetAllControl( )
-			WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).SetResultAntennaStep( True )
+			if aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
+				WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).SetResultAntennaStep( True )
+			else :
+				WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).SetResultAntennaStep( False )
 			self.close( )
-			self.CloseBusyDialog( )
-			
-		elif aControlId == E_FIRST_TIME_INSTALLATION_PREV :
-			if self.CompareConfiguration( ) == False :
-				self.CancelConfiguration( )
-				self.ReTune( )
-			self.ResetAllControl( )
-			WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).SetResultAntennaStep( False )
-			self.close( )
+			self.mTunerMgr.SetNeedLoad( True )
 			self.CloseBusyDialog( )
 
 		
@@ -214,22 +212,14 @@ class AntennaSetup( SettingWindow ) :
 
 
 	def SaveConfiguration( self ) :
-		self.OpenBusyDialog( )
 		ret = self.mTunerMgr.SatelliteConfigSaveList( )
-		if ret == True :
-			self.mTunerMgr.SetNeedLoad( True )
-			self.mDataCache.LoadConfiguredSatellite( )
-			self.mDataCache.LoadConfiguredTransponder( )
-		else :
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( 'ERROR', 'Save Configuration Fail' )
- 			dialog.doModal( )
+		self.mTunerMgr.SetNeedLoad( True )
+		self.mDataCache.LoadConfiguredSatellite( )
+		self.mDataCache.LoadConfiguredTransponder( )
 
 
 	def CancelConfiguration( self ) :
-		self.OpenBusyDialog( )
 		self.mTunerMgr.Restore( )
-		self.mTunerMgr.SetNeedLoad( True )
 	
 
 	def DisableControl( self ) :
@@ -273,17 +263,17 @@ class AntennaSetup( SettingWindow ) :
 	def ReTune( self ) :
 		channel = self.mDataCache.Channel_GetCurrent( )
 		if channel == None or channel.mError != 0 :
-			LOG_ERR( 'Load Channel_GetCurrent ERROR' )
+			LOG_ERR( 'Load Channel_GetCurrent None' )
 		else :
 			self.mCommander.Channel_InvalidateCurrent( )
 			self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
 
 
-	def CompareConfiguration( self ) :
+	def CompareConfigurationSatellite( self ) :
 		configuredList1		= self.mTunerMgr.GetConfiguredSatellitebyTunerIndex( E_TUNER_1 )	
-		oriconfiguredList1	= self.mDataCache.Satellite_ConfiguredTunerSatellite( E_TUNER_1 )
+		oriconfiguredList1	= self.mDataCache.Satellite_Get_ConfiguredList_By_TunerIndex( E_TUNER_1 )
 		configuredList2		= self.mTunerMgr.GetConfiguredSatellitebyTunerIndex( E_TUNER_2 ) 
-		oriconfiguredList2	= self.mDataCache.Satellite_ConfiguredTunerSatellite( E_TUNER_2 )
+		oriconfiguredList2	= self.mDataCache.Satellite_Get_ConfiguredList_By_TunerIndex( E_TUNER_2 )
 		if self.mTunerMgr.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
 			if len( configuredList1 ) != len( oriconfiguredList1 ) :
 				return False
@@ -301,7 +291,10 @@ class AntennaSetup( SettingWindow ) :
 				if configuredList2[i].__dict__ != oriconfiguredList2[i].__dict__ :
 					return False
 
+		return True
+
+
+	def CompareConfigurationProperty( self ) :
 		if self.mTunerMgr.GetOriginalTunerConfig( ) != self.mTunerMgr.GetCurrentTunerConfig( ) :
 			return False
-
 		return True

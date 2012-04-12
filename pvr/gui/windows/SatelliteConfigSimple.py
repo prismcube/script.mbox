@@ -99,7 +99,6 @@ class SatelliteConfigSimple( SettingWindow ) :
 		elif groupId == E_SpinEx01 :
 			self.mSelectedIndexLnbType = self.GetSelectedIndex( E_SpinEx01 )
 			self.mCurrentSatellite.mLnbType = self.mSelectedIndexLnbType
-			self.mCurrentSatellite.mFrequencyLevel = 0
 			
 			if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
 				self.mCurrentSatellite.mLowLNB = 5150
@@ -206,8 +205,6 @@ class SatelliteConfigSimple( SettingWindow ) :
 		enableControlIds = [ E_Input02, E_SpinEx02, E_SpinEx03 ]
 		if ( self.mSelectedIndexLnbType == ElisEnum.E_LNB_UNIVERSAL ) :
 			self.SetEnableControls( enableControlIds, False )
-			self.getControl( E_SpinEx03 + 3 ).selectItem( 1 )	# Always On
-			self.mCurrentSatellite.mFrequencyLevel = 1
 		else :
 			self.SetEnableControls( enableControlIds, True )
 

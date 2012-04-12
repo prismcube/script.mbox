@@ -10,6 +10,9 @@ from ElisEnum import ElisEnum
 from pvr.gui.GuiConfig import *
 
 
+E_DEFAULT_GOURP_ID		= 9000
+
+
 class AutomaticScan( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
@@ -17,6 +20,8 @@ class AutomaticScan( SettingWindow ) :
 
 
 	def onInit(self) :
+		self.mCtrlMainGroup = self.getControl( E_DEFAULT_GOURP_ID )
+
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
@@ -39,6 +44,8 @@ class AutomaticScan( SettingWindow ) :
 			dialog.SetDialogProperty( 'ERROR', 'Has No Configurd Satellite' )
  			dialog.doModal( )
  			self.close( )
+
+		self.mCtrlMainGroup = self.getControl( E_DEFAULT_GOURP_ID )
 
 
 	def onAction( self, aAction ) :

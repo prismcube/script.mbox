@@ -306,11 +306,11 @@ class DataCacheMgr( object ):
 			LOG_WARN('Has no Configured Satellite')
 		
 	@DataLock
-	def Satellite_GetAllSatelliteList( self ) :
+	def Satellite_Get_All_SatelliteList( self ) :
 		return self.mAllSatelliteList
 
 
-	def Satellite_ConfiguredTunerSatellite( self, aTunerNumber ) :
+	def Satellite_Get_ConfiguredList_By_TunerIndex( self, aTunerNumber ) :
 		if aTunerNumber == E_TUNER_1 :
 			if self.mConfiguredSatelliteListTuner1 :
 				return self.mConfiguredSatelliteListTuner1

@@ -276,5 +276,8 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def ReTune( self ) :
 		channel = self.mDataCache.Channel_GetCurrent( )
-		self.mCommander.Channel_InvalidateCurrent( )
-		self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType ) # Todo After : using ServiceType to different way
+		if channel == None or channel.mError != 0 :
+			LOG_ERR( 'Load Channel_GetCurrent None' )
+		else :
+			self.mCommander.Channel_InvalidateCurrent( )
+			self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )

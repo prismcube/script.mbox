@@ -9,8 +9,8 @@ from pvr.gui.GuiConfig import *
 from ElisProperty import ElisPropertyEnum
 from ElisEnum import ElisEnum
 from ElisClass import *
-#from ElisEventClass import *
-#from pvr.Util import LOG_WARN, LOG_TRACE, LOG_ERR, GuiLock
+from ElisEventClass import *
+from pvr.Util import LOG_WARN, LOG_TRACE, LOG_ERR, GuiLock
 
 
 E_DEFAULT_GOURP_ID		= 9000
@@ -31,13 +31,13 @@ class ManualScan( SettingWindow ) :
 
 
 	def onInit( self ) :
+		self.mCtrlMainGroup = self.getControl( E_DEFAULT_GOURP_ID )
+
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
-		#self.mEventBus.Register( self )
-		#self.ScanHelper_Start( )
-
-		self.mCtrlMainGroup = self.getControl( E_DEFAULT_GOURP_ID )
+		self.mEventBus.Register( self )
+		self.ScanHelper_Start( )
 
 		self.SetSettingWindowLabel( 'Manual Scan' )
 		self.mIsManualSetup = 0
@@ -47,7 +47,7 @@ class ManualScan( SettingWindow ) :
 		self.mConfiguredSatelliteList = []
 		
 		self.LoadFormattedSatelliteNameList( )
-		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
+		if len( self.mConfiguredSatelliteList ) > 0 :
 			self.LoadTransponderList( )
 			self.SetConfigTransponder( )
 
@@ -58,7 +58,7 @@ class ManualScan( SettingWindow ) :
 			self.ShowDescription( )
 			self.mInitialized = True
 
-			#self.ScanHelper_ChangeContextByCarrier( self.mConfigTransponder )
+			self.ScanHelper_ChangeContext( self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
 
 		else :
 			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
@@ -68,6 +68,8 @@ class ManualScan( SettingWindow ) :
 			dialog.SetDialogProperty( 'ERROR', 'Has No Configurd Satellite' )
  			dialog.doModal( )
  			self.close( )
+
+		self.mCtrlMainGroup = self.getControl( E_DEFAULT_GOURP_ID )
 
 		
 	def onAction( self, aAction ) :
@@ -172,13 +174,14 @@ class ManualScan( SettingWindow ) :
 			transponderList.append( self.mConfigTransponder )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
-			dialog.SetTransponder( config.mLongitude, config.mBand, transponderList )
+			dialog.SetTransponder( config.mSatelliteLongitude, config.mBandType, transponderList )
 			dialog.doModal( )
 
 		# Manual Setup
 		elif groupId == E_SpinEx01 :
 			self.mIsManualSetup = self.GetSelectedIndex( E_SpinEx01 )
 			self.InitConfig( )
+			return
 
 		# DVB Type
 		elif groupId == E_SpinEx02 :
@@ -194,14 +197,16 @@ class ManualScan( SettingWindow ) :
 			self.ControlSelect( )
 			property = ElisPropertyEnum( 'FEC', self.mCommander )
 			self.mConfigTransponder.mFECMode = property.GetProp( )
-		
+
+		# Polarization
 		elif groupId == E_SpinEx04 :
 			self.mConfigTransponder.mPolarization = self.GetSelectedIndex( E_SpinEx04 )
 
 		elif groupId == E_SpinEx05 or groupId == E_SpinEx06   :
 			self.ControlSelect( )
+			return
 
-		#self.ScanHelper_ChangeContextByCarrier( self.mConfigTransponder )
+		self.ScanHelper_ChangeContext( self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
 
 
 	def onFocus( self, aControlId ) :
@@ -212,23 +217,17 @@ class ManualScan( SettingWindow ) :
 			self.ShowDescription( )
 			self.mLastFocused = aControlId
 
-	"""
+
 	@GuiLock
 	def onEvent( self, aEvent ) :
 		if xbmcgui.getCurrentWindowId( ) == self.mWinId :
-			print 'dhkim test #1'
 			if aEvent.getName( ) == ElisEventTuningStatus.getName( ) :
-				print 'dhkim test #2'
 				self.UpdateStatus( aEvent )
 
 
 	def UpdateStatus( self, aEvent ) :
-		print 'dhkim test fre 1 = %d' % aEvent.mFrequency
-		print 'dhkim test fre 2 = %d' % self.mConfigTransponder.mFrequency
 		if aEvent.mFrequency == self.mConfigTransponder.mFrequency :
-			print 'dhkim test #3'
 			self.ScanHerper_Progress( aEvent.mSignalStrength, aEvent.mSignalQuality, aEvent.mIsLocked )
-	"""
 
 
 	def InitConfig( self ) :
@@ -270,17 +269,36 @@ class ManualScan( SettingWindow ) :
 
 
 	def LoadFormattedSatelliteNameList( self ) :
-		self.mConfiguredSatelliteList = self.mDataCache.Satellite_GetConfiguredList( )
-		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
+		self.mConfiguredSatelliteList = []
+
+		configuredSatelliteList1 = self.mDataCache.Satellite_Get_ConfiguredList_By_TunerIndex( E_TUNER_1 )
+		configuredSatelliteList2 = self.mDataCache.Satellite_Get_ConfiguredList_By_TunerIndex( E_TUNER_2 )
+
+		if configuredSatelliteList1 and configuredSatelliteList1[0].mError == 0 :
+			self.mConfiguredSatelliteList = deepcopy( configuredSatelliteList1 )
+
+		if self.mTunerMgr.GetCurrentTunerConfigType( ) == E_DIFFERENT_TUNER :
+			if configuredSatelliteList2 and configuredSatelliteList2[0].mError == 0 :
+				for config in configuredSatelliteList2 :
+					find = False
+					for compare in configuredSatelliteList1 :
+						if ( config.mSatelliteLongitude == compare.mSatelliteLongitude ) and ( config.mBandType == compare.mBandType ) :
+							find = True
+							break
+
+					if find == False :
+						self.mConfiguredSatelliteList.append( config )
+
+		if len( self.mConfiguredSatelliteList ) > 0 :
 			self.mFormattedList = []
 			for config in self.mConfiguredSatelliteList :
-				self.mFormattedList.append( self.mDataCache.Satellite_GetFormattedName( config.mLongitude, config.mBand ) )
+				self.mFormattedList.append( self.mDataCache.Satellite_GetFormattedName( config.mSatelliteLongitude, config.mBandType ) )
 
 
 	def LoadTransponderList( self ) :
 		satellite = self.mConfiguredSatelliteList[ self.mSatelliteIndex ]
 		self.mTransponderList = []
-		self.mTransponderList = self.mDataCache.Satellite_GetTransponderList( satellite.mLongitude, satellite.mBand )
+		self.mTransponderList = self.mDataCache.Satellite_GetTransponderList( satellite.mSatelliteLongitude, satellite.mBandType )
 		if self.mTransponderList and self.mTransponderList[0].mError == 0 :
 			self.mHasTansponder = True
 		else :

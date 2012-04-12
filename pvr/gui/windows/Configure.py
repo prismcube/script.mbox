@@ -192,9 +192,9 @@ class Configure( SettingWindow ) :
 				if contextAction == PING_TEST_INTERNAL :
 					self.ShowProgress( 'Now Test...', 10 )
 					if PingTestInternal( ) == True :
-						state = 'Connected defalut rauter'
+						state = 'Connected Default Rauter'
 					else :
-						state = 'Disconnected defalut rauter'
+						state = 'Disconnected Default Rauter'
 				else :
 					addr = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, 'Address', '', 30 )
 					self.ShowProgress( 'Now Test...', 10 )

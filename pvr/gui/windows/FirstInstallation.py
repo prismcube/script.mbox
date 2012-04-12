@@ -127,10 +127,13 @@ class FirstInstallation( SettingWindow ) :
 			if groupId == E_FIRST_TIME_INSTALLATION_NEXT :
 				self.Close( )
 
+		print 'dhkim test back!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11111     %d' % groupId
 		if groupId == E_FIRST_TIME_INSTALLATION_PREV :
+			print 'dhkim test back!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!22222222'
 			if self.mStepNum == E_STEP_CHANNEL_SEARCH_CONFIG :
 				self.OpenAntennaSetupWindow( )
-			else :				
+			else :
+				print 'dhkim test back!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!333333333'
 				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )
 				self.SetListControl( self.mPrevStepNum )
@@ -316,7 +319,7 @@ class FirstInstallation( SettingWindow ) :
 						cntRadio = cntRadio + 1
 			self.AddInputControl( E_Input04, 'TV Channels', '%d' % cntChannel )
 			self.AddInputControl( E_Input05, 'Radio Channels', '%d' % cntRadio )
-			self.AddNextButton( )
+			self.AddPrevNextButton( )
 			self.SetPrevNextButtonLabel( )
 			
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
