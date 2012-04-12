@@ -7,6 +7,8 @@ import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
 
+CAS_SLOT_NUM_1					= 0
+CAS_SLOT_NUM_2					= 1
 
 class ConditionalAccess( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :

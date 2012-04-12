@@ -2,7 +2,6 @@ import xbmc
 import xbmcgui
 import sys
 import time
-import threading
 
 import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DiaMgr
@@ -13,25 +12,40 @@ from ElisProperty import *
 from pvr.gui.GuiConfig import *
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
 from ElisEventClass import *
-from pvr.IpParser import IpParser, WirelessParser
+from pvr.IpParser import *
 from ElisProperty import ElisPropertyEnum
 
 
-E_DHCP_OFF		= 0
-E_DHCP_ON		= 1
+E_LANGUAGE				= 0
+E_PARENTAL				= 1
+E_RECORDING_OPTION		= 2
+E_AUDIO_SETTING			= 3
+E_HDMI_SETTING			= 4
+E_NETWORK_SETTING		= 5
+E_TIME_SETTING			= 6
+E_FORMAT_HDD			= 7
+E_FACTORY_RESET			= 8
+E_ETC					= 9
+E_ETHERNET				= 100
+E_WIFI					= 101
+
+PING_TEST_INTERNAL		= 0
+PING_TEST_EXTERNAL		= 1
 
 
 class Configure( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
  
-		leftGroupItems			= [ 'Language', 'Parental', 'Recording Option', 'Audio Setting', 'HDMI Setting', 'IP Setting', 'Wifi Setting', 'Time Setting', 'Format HDD', 'Factory Reset', 'Etc' ]
-		descriptionList			= [ 'DESC Language', 'DESC Parental', 'DESC Recording Option', 'DESC Audio Setting', 'DESC HDMI Setting', 'DESC IP Setting', 'DESC Wifi Setting', 'DESC Time Setting', 'DESC Format HDD', 'DESC Factory Reset', 'DESC Etc' ]
+		leftGroupItems			= [ 'Language', 'Parental', 'Recording Option', 'Audio Setting', 'HDMI Setting', 'Network Setting', 'Time Setting', 'Format HDD', 'Factory Reset', 'Etc' ]
+		descriptionList			= [ 'DESC Language', 'DESC Parental', 'DESC Recording Option', 'DESC Audio Setting', 'DESC HDMI Setting', 'DESC Network Setting', 'DESC Time Setting', 'DESC Format HDD', 'DESC Factory Reset', 'DESC Etc' ]
 	
 		self.mCtrlLeftGroup 	= None
 		self.mGroupItems 		= []
 		self.mLastFocused 		= E_SUBMENU_LIST_ID
 		self.mPrevListItemID 	= 0
+
+		self.mUseNetworkType	= NETWORK_ETHERNET
 
 		self.mSavedNetworkType	= NET_DHCP
 		self.mSavedIpAddr		= 'None'
@@ -52,19 +66,11 @@ class Configure( SettingWindow ) :
 		self.mTime				= 0
 		self.mSetupChannel		= None
 		self.mHasChannel		= False
-		#self.mReLoadTime		= False
-
 
 		self.mSavedTimeMode		= TIME_MANUAL
 		self.mSavedTimeChannel	= 0
 		self.mSavedLocalOffset	= 0
 		self.mSavedSummerTime	= 0
-		"""		
-		self.mTempTimeMode		= TIME_MANUAL
-		self.mTempTimeChannel	= 0
-		self.mTempLocalOffset	= 0
-		self.mTempSummerTime	= 0
-		"""
 
 		self.mIpParser			= None
 		self.mProgress			= None
@@ -86,10 +92,9 @@ class Configure( SettingWindow ) :
 
 
 	def onInit( self ) :
+		self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( False )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
-
-		#self.mEventBus.Register( self )
 
 		self.mCtrlLeftGroup = self.getControl( E_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
@@ -102,14 +107,14 @@ class Configure( SettingWindow ) :
 		self.mWireless = WirelessParser( )
 		self.LoadIp( )
 		self.LoadWifi( )
-		#self.LoadTimeSet( )
+		SetCurrentNetworkType( self.mUseNetworkType )
 		self.SetListControl( )
 		self.mInitialized = True
 		self.mVisibleParental = False
 		self.mReLoadIp = False
 
-	def onAction( self, aAction ) :
 
+	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
@@ -172,20 +177,48 @@ class Configure( SettingWindow ) :
 			self.ControlSelect( )
 			return
 
-		elif selectedId == E_IP_SETTING :
-			self.IpSetting( groupId )
-			return
+		elif selectedId == E_NETWORK_SETTING :
+			if groupId == E_SpinEx05 :
+				self.mUseNetworkType = self.GetSelectedIndex( E_SpinEx05 )
+				self.SetListControl( )
+			elif groupId == E_Input06 :
+				context = []
+				context.append( ContextItem( 'Internal Test', PING_TEST_INTERNAL ) )
+				context.append( ContextItem( 'External Test', PING_TEST_EXTERNAL ) )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+				dialog.SetProperty( context )
+				dialog.doModal( )
+				contextAction = dialog.GetSelectedAction( )
+				if contextAction == PING_TEST_INTERNAL :
+					self.ShowProgress( 'Now Test...', 10 )
+					if PingTestInternal( ) == True :
+						state = 'Connected defalut rauter'
+					else :
+						state = 'Disconnected defalut rauter'
+				else :
+					addr = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, 'Address', '', 30 )
+					self.ShowProgress( 'Now Test...', 10 )
+					if PingTestExternal( addr ) == True :
+						state = 'External ping test success'
+					else :
+						state = 'External ping test failed'
+				self.mProgress.SetResult( True )
+				time.sleep( 1.5 )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'Complete', 'Network State : %s' % state )
+	 			dialog.doModal( )
 
-		elif selectedId == E_WIFI_SETTING :
-			self.WifiSetting( groupId )
-			return
+			elif self.mUseNetworkType == NETWORK_ETHERNET :
+				self.IpSetting( groupId )
+			elif self.mUseNetworkType == NETWORK_WIRELESS :
+				self.WifiSetting( groupId )
 
 		elif selectedId == E_TIME_SETTING :
 			self.TimeSetting( groupId )
 			return
 
 		elif selectedId == E_PARENTAL and self.mVisibleParental == False and groupId == E_Input01 :
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( 'PIN Code 4 digit', '', 4, True )
  			dialog.doModal( )
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -196,39 +229,39 @@ class Configure( SettingWindow ) :
 					self.mVisibleParental = True
 					self.DisableControl( E_PARENTAL )
 				else :
-					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( 'ERROR', 'ERROR PIN Code' )
 		 			dialog.doModal( )
 			return
 
 		elif selectedId == E_PARENTAL and groupId == E_Input02 :
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( 'New PIN Code', '', 4, True )
  			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				newpin = dialog.GetString( )
 				if newpin == '' or len( newpin ) != 4 :
-					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( 'ERROR', 'Input 4 digit' )
 		 			dialog.doModal( )
 					return
 			else :
 				return
 
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( 'Confirm PIN Code', '', 4, True )
  			dialog.doModal( )
 
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
  				confirm = dialog.GetString( )
  				if confirm == '' :
- 					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+ 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( 'ERROR', 'New PIN codes do not match' )
 		 			dialog.doModal( )
  					return
 				if int( newpin ) != int( confirm ) :
-					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( 'ERROR', 'New PIN codes do not match' )
 		 			dialog.doModal( )
 					return
@@ -245,16 +278,16 @@ class Configure( SettingWindow ) :
  			resetFavoriteAddons = ElisPropertyEnum( 'Reset Favorite Add-ons', self.mCommander ).GetProp( )
  			resetSystem = ElisPropertyEnum( 'Reset Configure Setting', self.mCommander ).GetProp( )
  			if ( resetChannel | resetFavoriteAddons | resetSystem ) == 0 :
- 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+ 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'ERROR', 'No selected reset' )
 		 		dialog.doModal( )
 		 		return
 		 	else :
-		 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+		 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( 'Reset', 'Are you sure?' )
 				dialog.doModal( )
 
-				if dialog.IsOK() == E_DIALOG_STATE_YES :
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					ret1 = True
 					ret2 = True
 					ret3 = True
@@ -272,7 +305,7 @@ class Configure( SettingWindow ) :
 			 		try :
 			 			if ret1 == True and ret2 == True and ret3 == True :
 							self.mProgress.SetResult( True )
-							time.sleep( 1 )
+							time.sleep( 1.5 )
 							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 							dialog.SetDialogProperty( 'Confirm', 'Reset system Success' )
 				 			dialog.doModal( )
@@ -326,7 +359,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
+			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
@@ -345,7 +378,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input03, E_Input04, E_Input05 ]
+			hideControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input03, E_Input04, E_Input05, E_Input06 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
@@ -365,7 +398,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
+			hideControlIds = [ E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
@@ -382,7 +415,7 @@ class Configure( SettingWindow ) :
 			self.SetEnableControls( visibleControlIds, True )
 			self.SetVisibleControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx04, E_SpinEx05,  E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
+			hideControlIds = [ E_SpinEx04, E_SpinEx05,  E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -400,72 +433,63 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
+			hideControlIds = [ E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
 
-		
-		elif selectedId == E_IP_SETTING :
-			if self.mReLoadIp == True :
-				self.ReLoadIp( )
-				self.mReLoadIp = False
+
+		elif selectedId == E_NETWORK_SETTING :
+			self.AddUserEnumControl( E_SpinEx05, 'Select Network', USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType )
+			self.AddInputControl( E_Input06, ' - Network Test', '' )
+			if self.mUseNetworkType == NETWORK_WIRELESS :
+				self.AddInputControl( E_Input01, 'Search and Select AP', self.mCurrentSsid )
+				self.AddUserEnumControl( E_SpinEx01, 'Use hidden ssid', USER_ENUM_LIST_ON_OFF, self.mUseHiddenId )
+				self.AddInputControl( E_Input02, ' - hidden ssid', self.mHiddenSsid )
+				self.AddUserEnumControl( E_SpinEx02, 'Use Encrypt', USER_ENUM_LIST_ON_OFF, self.mUseEncrypt )
+				self.AddUserEnumControl( E_SpinEx03, ' - Encrypt Type', USER_ENUM_LIST_ENCRIPT_TYPE, self.mEncriptType )
+				self.AddUserEnumControl( E_SpinEx04, 'Password Type', USER_ENUM_LIST_PASSWORD_TYPE, self.mPasswordType )
+				self.AddInputControl( E_Input03, 'Password', StringToHidden( self.mPassWord ) )
+				self.AddInputControl( E_Input04, 'Connect Current Ap', '' )
+
+				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input06 ]
+				self.SetVisibleControls( visibleControlIds, True )
+				self.SetEnableControls( visibleControlIds, True )
+
+				hideControlIds = [ E_Input05 ]
+				self.SetVisibleControls( hideControlIds, False )
 				
-			self.AddUserEnumControl( E_SpinEx01, 'Network Type', USER_ENUM_LIST_DHCP_STATIC, self.mTempNetworkType )
-			self.AddInputControl( E_Input01, 'IP Address', self.mTempIpAddr )
-			self.AddInputControl( E_Input02, 'Subnet Mask', self.mTempSubNet )
-			self.AddInputControl( E_Input03, 'Gateway', self.mTempGateway )
-			self.AddInputControl( E_Input04, 'DNS', self.mTempDns )
+				self.InitControl( )
+				self.DisableControl( E_WIFI )
+				self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 
-			if self.mTempNetworkType == NET_DHCP :
-				self.AddInputControl( E_Input05, 'Get IP Address', '' )
 			else :
-				self.AddInputControl( E_Input05, 'Save', '' )
+				if self.mReLoadIp == True :
+					self.ReLoadIp( )
+					self.mReLoadIp = False
+					
+				self.AddUserEnumControl( E_SpinEx01, 'Network Type', USER_ENUM_LIST_DHCP_STATIC, self.mTempNetworkType )
+				self.AddInputControl( E_Input01, 'IP Address', self.mTempIpAddr )
+				self.AddInputControl( E_Input02, 'Subnet Mask', self.mTempSubNet )
+				self.AddInputControl( E_Input03, 'Gateway', self.mTempGateway )
+				self.AddInputControl( E_Input04, 'DNS', self.mTempDns )
+				self.AddInputControl( E_Input05, 'Apply', '' )
 
-			visibleControlIds = [ E_SpinEx01, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
-			self.SetVisibleControls( visibleControlIds, True )
-			self.SetEnableControls( visibleControlIds, True )
+				visibleControlIds = [ E_SpinEx01, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
+				self.SetVisibleControls( visibleControlIds, True )
+				self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
-			self.SetVisibleControls( hideControlIds, False )
-			
-			self.InitControl( )
-			self.DisableControl( E_IP_SETTING )
-			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
-			return
-
-
-		elif selectedId == E_WIFI_SETTING :
-			self.AddInputControl( E_Input01, 'Search and Select AP', self.mCurrentSsid )
-			self.AddUserEnumControl( E_SpinEx01, 'Use hidden ssid', USER_ENUM_LIST_ON_OFF, self.mUseHiddenId )
-			self.AddInputControl( E_Input02, ' - hidden ssid', self.mHiddenSsid )
-			self.AddUserEnumControl( E_SpinEx02, 'Use Encrypt', USER_ENUM_LIST_ON_OFF, self.mUseEncrypt )
-			self.AddUserEnumControl( E_SpinEx03, ' - Encrypt Type', USER_ENUM_LIST_ENCRIPT_TYPE, self.mEncriptType )
-			self.AddUserEnumControl( E_SpinEx04, 'Password Type', USER_ENUM_LIST_PASSWORD_TYPE, self.mPasswordType )
-			self.AddInputControl( E_Input03, 'Password', StringToHidden( self.mPassWord ) )
-			self.AddInputControl( E_Input04, 'Connect Current Set Ap', '' )
-
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input01, E_Input02, E_Input03, E_Input04 ]
-			self.SetVisibleControls( visibleControlIds, True )
-			self.SetEnableControls( visibleControlIds, True )
-
-			hideControlIds = [ E_SpinEx05, E_Input05 ]
-			self.SetVisibleControls( hideControlIds, False )
-			
-			self.InitControl( )
-			self.DisableControl( E_WIFI_SETTING )
-			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
-			return
+				hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
+				self.SetVisibleControls( hideControlIds, False )
+				
+				self.InitControl( )
+				self.DisableControl( E_ETHERNET )
+				self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 
 
 		elif selectedId == E_TIME_SETTING :
-			"""
-			if self.mReLoadTime == True :
-				self.ReLoadTimeSet( )
-				self.mReLoadTime = False
-			"""
 			setupChannelNumber = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
 			self.mSetupChannel = self.mDataCache.Channel_GetSearch( setupChannelNumber )
 			self.mHasChannel = True
@@ -480,7 +504,7 @@ class Configure( SettingWindow ) :
 					self.mHasChannel = False
 					channelName = 'None'
 					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
-			print 'dhkim test tmie mide = %d' % ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( )
+
 			self.AddEnumControl( E_SpinEx01, 'Time Mode' )			
 			self.AddInputControl( E_Input01, 'Channel', channelName )
 			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
@@ -495,7 +519,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_Input05 ]
+			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_Input05, E_Input06 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
@@ -512,7 +536,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input02, E_Input03, E_Input04, E_Input05 ]
+			hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
@@ -531,7 +555,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx04 , E_SpinEx05, E_Input02, E_Input03, E_Input04, E_Input05 ]
+			hideControlIds = [ E_SpinEx04 , E_SpinEx05, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -547,7 +571,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
+			hideControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
@@ -559,7 +583,7 @@ class Configure( SettingWindow ) :
 			LOG_ERR( 'Can not find selected ID' )
 
 
-	def DisableControl( self, aSelectedItem ):
+	def DisableControl( self, aSelectedItem ) :
 		if aSelectedItem == E_LANGUAGE :
 			selectedIndex = self.GetSelectedIndex( E_SpinEx03 )
 			visibleControlIds = [ E_SpinEx04, E_SpinEx05 ]
@@ -567,22 +591,21 @@ class Configure( SettingWindow ) :
 				self.SetEnableControls( visibleControlIds, False )
 			else :
 				self.SetEnableControls( visibleControlIds, True )
-		elif aSelectedItem == E_IP_SETTING :
+		elif aSelectedItem == E_ETHERNET :
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04 ]
 			if self.mTempNetworkType == NET_DHCP :
 				self.SetEnableControls( visibleControlIds, False )
 			else :
 				self.SetEnableControls( visibleControlIds, True )
 
-		elif aSelectedItem == E_WIFI_SETTING :
-			#selectedIndex = self.GetSelectedIndex( E_SpinEx01 )
+		elif aSelectedItem == E_WIFI :
 			if self.mUseHiddenId == NOT_USE_HIDDEN_SSID :
 				self.SetEnableControl( E_Input01, True )
 				self.SetEnableControl( E_Input02, False )					
 			else :
 				self.SetEnableControl( E_Input01, False )
 				self.SetEnableControl( E_Input02, True )
-			#selectedIndex = self.GetSelectedIndex( E_SpinEx02 )
+
 			if self.mUseEncrypt == NOT_USE_PASSWORD_ENCRYPT :
 				self.SetEnableControl( E_SpinEx03, False )
 			else :
@@ -601,7 +624,6 @@ class Configure( SettingWindow ) :
 				self.SetEnableControl( E_Input01, False )
 			else :
 				selectedIndex = self.GetSelectedIndex( E_SpinEx01 )
-				print 'dhkim test tmie mide = %d' % ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( )
 				if selectedIndex == TIME_AUTOMATIC :
 					self.SetEnableControl( E_Input02, False )
 					self.SetEnableControl( E_Input03, False )
@@ -647,12 +669,13 @@ class Configure( SettingWindow ) :
 
 
 	def SaveIp( self ) :
+		SetCurrentNetworkType( self.mUseNetworkType )
 		self.ShowProgress( 'Setting Network...', 15 )
 		ret = self.mIpParser.SetNetwork( self.mTempNetworkType, self.mTempIpAddr, self.mTempSubNet, self.mTempGateway, self.mTempDns )
 		if ret == False :
 			try :
 				self.mProgress.SetResult( True )
-				time.sleep( 2 )
+				time.sleep( 1.5 )
 
 			except Exception, e :
 				LOG_ERR( 'Error exception[%s]' % e )
@@ -666,7 +689,7 @@ class Configure( SettingWindow ) :
 				self.LoadNetworkAddress( )
 				try :
 					self.mProgress.SetResult( True )
-					time.sleep( 2 )
+					time.sleep( 1.5 )
 
 				except Exception, e :
 					LOG_ERR( 'Error exception[%s]' % e )
@@ -679,14 +702,10 @@ class Configure( SettingWindow ) :
 				self.mSavedNetworkType = self.mTempNetworkType
 	 			try :
 					self.mProgress.SetResult( True )
-					time.sleep( 2 )
+					time.sleep( 1.5 )
 
 				except Exception, e :
 					LOG_ERR( 'Error exception[%s]' % e )
-
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( 'Confirm', 'Network Set Complete' )
- 			dialog.doModal( )
 
 
 	def ReLoadIp( self ) :
@@ -722,12 +741,7 @@ class Configure( SettingWindow ) :
 			self.SetListControl( )
 
 		elif aControlId == E_Input05 :
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( 'Configure', 'Set Ip?' )
-			dialog.doModal( )
-
-			if dialog.IsOK() == E_DIALOG_STATE_YES :
-				self.SaveIp( )
+			self.SaveIp( )
 
 
 	def ShowIpInputDialog( self, aIpAddr ) :
@@ -741,7 +755,7 @@ class Configure( SettingWindow ) :
 
 	@RunThread
 	def ShowProgress( self, aString, aTime ) :
-		self.mProgress = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
+		self.mProgress = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
 		self.mProgress.SetDialogProperty( aTime, aString )
 		self.mProgress.doModal( )
 		return
@@ -785,7 +799,7 @@ class Configure( SettingWindow ) :
 				self.mDataCache.Channel_SetCurrent( self.mSetupChannel.mNumber, self.mSetupChannel.mServiceType ) # Todo After : using ServiceType to different way
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
 
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
 				dialog.SetDialogProperty( 10, 'Setting Time...', ElisEventTimeReceived.getName( ) )
 				dialog.doModal( )
 
@@ -833,13 +847,14 @@ class Configure( SettingWindow ) :
 		if aControlId == E_SpinEx01 or aControlId == E_SpinEx02 :
 			self.mUseHiddenId = self.GetSelectedIndex( E_SpinEx01 )
 			self.mUseEncrypt = self.GetSelectedIndex( E_SpinEx02 )
-			self.DisableControl( E_WIFI_SETTING )
+			self.DisableControl( E_WIFI )
 
 		elif aControlId == E_SpinEx03 or aControlId == E_SpinEx04 :
 			self.mEncriptType	= self.GetSelectedIndex( E_SpinEx03 )
 			self.mPasswordType	= self.GetSelectedIndex( E_SpinEx04 )
 
 		elif aControlId == E_Input01 :
+			self.ShowProgress( 'Scan Ap...', 20 )
 			dev = self.mWireless.getWlandevice( )
 			if dev == None :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -848,6 +863,8 @@ class Configure( SettingWindow ) :
 	 			return
 
 			self.apList = self.mWireless.ScanAp( dev )
+			self.mProgress.SetResult( True )
+			time.sleep( 1.5 )
 			dialog = xbmcgui.Dialog( )
 			if self.apList == None :
 				ret = dialog.select( 'Select Ap', [ 'No Ap list' ] )
@@ -870,6 +887,7 @@ class Configure( SettingWindow ) :
 			self.SetControlLabel2String( E_Input03, StringToHidden( self.mPassWord ) )
 
 	 	elif aControlId == E_Input04 :
+			SetCurrentNetworkType( self.mUseNetworkType )
 			dev = self.mWireless.getWlandevice( )
 	 		if self.apList == None or dev == None :
 	 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -877,21 +895,17 @@ class Configure( SettingWindow ) :
 	 			dialog.doModal( )
 	 			return
 
-	 		self.ShowProgress( 'Setting Wifi...', 15 )
+	 		self.ShowProgress( 'Setting Wifi...', 20 )
 	 		ret1 = self.mWireless.WriteWpaSupplicant( self.mUseHiddenId, self.mHiddenSsid, self.mCurrentSsid, self.mUseEncrypt, self.mEncriptType, self.mPasswordType, self.mPassWord )
 			ret2 = self.mWireless.ConnectWifi( dev )
 			try :
 				self.mProgress.SetResult( True )
-				time.sleep( 1 )
+				time.sleep( 1.5 )
 			except Exception, e :
 				LOG_ERR( 'Error exception[%s]' % e )
-			if ret1 == True :
+			if ret1 == False :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Confirm', 'Wifi connected' )
-	 			dialog.doModal( )
-	 		else :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Error', 'Wifi Can not connected' )
+				dialog.SetDialogProperty( 'Error', 'WriteWpaSupplicant write fail' )
 	 			dialog.doModal( )
 
 

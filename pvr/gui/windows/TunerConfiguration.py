@@ -3,7 +3,6 @@ import xbmcgui
 import sys
 
 import pvr.gui.WindowMgr as WinMgr
-import pvr.TunerConfigMgr as ConfigMgr
 import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
@@ -22,7 +21,7 @@ class TunerConfiguration( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.tunerIndex = ConfigMgr.GetInstance().GetCurrentTunerIndex( )
+		self.tunerIndex = self.mTunerMgr.GetCurrentTunerIndex( )
 
 		if self.tunerIndex == E_TUNER_1 :
 			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
@@ -68,7 +67,7 @@ class TunerConfiguration( SettingWindow ) :
 		if aControlId == E_MAIN_LIST_ID : 
 			position = self.getControl( E_MAIN_LIST_ID ).getSelectedPosition( )
 			
-			configuredList = ConfigMgr.GetInstance().GetConfiguredSatelliteList( )
+			configuredList = self.mTunerMgr.GetConfiguredSatelliteList( )
 
 			if len( configuredList ) == position :
 				dialog = xbmcgui.Dialog()
@@ -76,7 +75,7 @@ class TunerConfiguration( SettingWindow ) :
 	 			ret = dialog.select( 'Select satellite', satelliteList )
 
 	 			if ret >= 0 :
-					ConfigMgr.GetInstance().AddConfiguredSatellite( ret )
+					self.mTunerMgr.AddConfiguredSatellite( ret )
 	 				self.ReloadConfigedSatellite()
 
 	 		elif len( configuredList ) + 1 == position :
@@ -95,15 +94,15 @@ class TunerConfiguration( SettingWindow ) :
 						dialog.doModal( )
 
 						if dialog.IsOK() == E_DIALOG_STATE_YES :
-			 				ConfigMgr.GetInstance().DeleteConfiguredSatellitebyIndex( ret )
+			 				self.mTunerMgr.DeleteConfiguredSatellitebyIndex( ret )
 			 				self.ReloadConfigedSatellite()
 
 			else :		
 				config = configuredList[ position ]
-				if config != [] :
-					ConfigMgr.GetInstance( ).SetCurrentConfigIndex( position )
+				if config :
+					self.mTunerMgr.SetCurrentConfigIndex( position )
 					self.ResetAllControl( )
-					tunertype = ConfigMgr.GetInstance( ).GetCurrentTunerType( )
+					tunertype = self.mTunerMgr.GetCurrentTunerType( )
 					
 					if tunertype == E_DISEQC_1_0 :
 						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_DISEQC_10 )
@@ -133,7 +132,7 @@ class TunerConfiguration( SettingWindow ) :
 		configuredList = []
 		self.listItems = []
 
-		configuredList = ConfigMgr.GetInstance( ).GetConfiguredSatelliteList( )
+		configuredList = self.mTunerMgr.GetConfiguredSatelliteList( )
 
 		for config in configuredList :
 			self.listItems.append( '%s' % self.mDataCache.Satellite_GetFormattedName( config.mSatelliteLongitude, config.mBandType ) )

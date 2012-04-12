@@ -3,7 +3,6 @@ import xbmcgui
 import sys
 
 import pvr.gui.WindowMgr as WinMgr
-import pvr.TunerConfigMgr as ConfigMgr
 import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
@@ -24,7 +23,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.tunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerIndex( )
+		self.tunerIndex = self.mTunerMgr.GetCurrentTunerIndex( )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'USALS configuration : Tuner %s' % ( self.tunerIndex + 1 ) )
 
 		self.SetSettingWindowLabel( 'Motorize Configuration' )

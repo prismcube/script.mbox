@@ -10,19 +10,6 @@ E_WINDOW_HEIGHT		= 720
 
 
 ############################ Windows ############################
-# Setting Menu Ids
-E_LANGUAGE			= 0
-E_PARENTAL			= 1
-E_RECORDING_OPTION	= 2
-E_AUDIO_SETTING		= 3
-E_HDMI_SETTING		= 4
-E_IP_SETTING		= 5
-E_WIFI_SETTING		= 6
-E_TIME_SETTING		= 7
-E_FORMAT_HDD		= 8
-E_FACTORY_RESET		= 9
-E_ETC				= 10
-
 # Setting Window Control Ids
 E_SpinEx01			= 1100
 E_SpinEx02			= 1200
@@ -81,14 +68,21 @@ E_STEP_CHANNEL_SEARCH_CONFIG	=	3
 E_STEP_DATE_TIME				=	4
 E_STEP_RESULT					=	5
 
-FIRST_TIME_INSTALLATION_STEP			= 6
+FIRST_TIME_INSTALLATION_STEP				= 6
 
-E_FIRST_TIME_INSTALLATION_PREV			= 7001
-E_FIRST_TIME_INSTALLATION_NEXT			= 7003
-E_FIRST_TIME_INSTALLATION_NEXT_LABEL	= 7004
+E_FIRST_TIME_INSTALLATION_PREV				= 7001
+E_FIRST_TIME_INSTALLATION_NEXT				= 7003
+E_FIRST_TIME_INSTALLATION_NEXT_LABEL		= 7004
 
 E_FIRST_TIME_INSTALLATION_STEP_IMAGE		= 8100
 E_FIRST_TIME_INSTALLATION_STEP_IMAGE_BACK	= 8110
+
+# Scan Heler Status
+E_SCAN_HELPER_GROUP				= 1007
+E_SCAN_HELPER_LABEL_STRENGTH	= 1005
+E_SCAN_HELPER_PROGRESS_STRENGTH	= 1010
+E_SCAN_HELPER_LABEL_QUALITY		= 1006
+E_SCAN_HELPER_PROGRESS_QUALITY	= 1011
 
 # TUNER TYPE
 E_SIMPLE_LNB					= 0
@@ -106,15 +100,10 @@ E_TUNER_LOOPTHROUGH				= 1
 E_SAMEWITH_TUNER				= 0
 E_DIFFERENT_TUNER				= 1
 
-
 # TUNER
 E_TUNER_1						= 0
 E_TUNER_2						= 1
 E_TUNER_MAX						= 2
-
-# CAS
-CAS_SLOT_NUM_1					= 0
-CAS_SLOT_NUM_2					= 1
 
 #RECORD
 E_MAX_RECORD_COUNT				= 2
@@ -141,18 +130,25 @@ ENCRIPT_TYPE_WPA_WPA2			= 3
 PASSWORD_TYPE_ASCII				= 0
 PASSWORD_TYPE_HEX				= 1
 
-# Wifi Use Hidden SSID
-NOT_USE_HIDDEN_SSID				= 0
-USE_HIDDEN_SSID					= 1
-
 # Wifi Use Encrypt
 NOT_USE_PASSWORD_ENCRYPT		= 0
 USE_PASSWORD_ENCRYPT			= 1
+
+# Wifi Use Hidden Ssid
+NOT_USE_HIDDEN_SSID		= 0
+USE_HIDDEN_SSID			= 1
+
+# Network Type
+NETWORK_ETHERNET				= 0
+NETWORK_WIRELESS				= 1
+
+
 
 # Tuner Config String Define
 USER_ENUM_LIST_ON_OFF				= [ 'Off', 'On' ]
 USER_ENUM_LIST_YES_NO				= [ 'No', 'Yes' ]
 USER_ENUM_LIST_DHCP_STATIC			= [ 'DHCP', 'Static' ]
+USER_ENUM_LIST_NETWORK_TYPE			= [ 'Ethernet', 'Wireless' ]
 USER_ENUM_LIST_ENCRIPT_TYPE			= [ 'WEP', 'WPA', 'WPA2', 'WPA/WPA2' ]
 USER_ENUM_LIST_PASSWORD_TYPE		= [ 'Ascii', 'Hex' ]
 
@@ -294,6 +290,7 @@ def NumericKeyboard( aKeyType, aTitle, aString, aMaxLength=None ) :
 
 def InputKeyboard( aType, aTitle, aString, aMaxLength=None ) :
 	dialog = xbmc.Keyboard( aString, aTitle, aType )
+	dialog.setHiddenInput( aType )
 	dialog.doModal( )
 	if( dialog.isConfirmed( ) ) :
 		value = dialog.getText( )

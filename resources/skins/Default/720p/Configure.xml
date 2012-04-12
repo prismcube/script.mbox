@@ -126,6 +126,7 @@
 				<include>Input03</include>
 				<include>Input04</include>
 				<include>Input05</include>
+				<include>Input06</include>
 			</control>
 		</control>
 	</controls>

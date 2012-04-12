@@ -56,8 +56,8 @@ class MainMenu( BaseWindow ) :
 
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.close( )
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )			
-			
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+
 
 	def onClick( self, aControlId ) :
 		LOG_TRACE("MainMenu onclick(): control %d" % aControlId )

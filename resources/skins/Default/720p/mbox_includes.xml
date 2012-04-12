@@ -150,21 +150,78 @@
 				<width>352</width>
 				<height>198</height>
 			</control>
-			<control type="label" id="307">
-				<description>satellite info</description>
-				<posx>818</posx>
-				<posy>350</posy>
+			<include>DefaultScanHelperStatusProgress</include>
+		</control>
+	</include>
+
+	<include name="DefaultScanHelperStatusProgress">
+		<control type="group" id="1007">
+			<visible>substring(Window.Property(ViewProgress),True)</visible>
+			<control type="label">
+				<description>Strength</description>
+				<posx>830</posx>
+				<posy>320</posy>
+				<width>100</width>
+				<height>40</height>
 				<font>font12_title</font>
-				<textcolor>grey</textcolor>
-				<label>19.2 E ASTRA 1</label>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<label>Strength</label>
 			</control>
-			<control type="label" id="308">
-				<description>career info</description>
-				<posx>818</posx>
-				<posy>380</posy>
+			<control type="label" id="1005">
+				<description>Strength Percent</description>
+				<posx>1160</posx>
+				<posy>320</posy>
+				<width>100</width>
+				<height>40</height>
 				<font>font12_title</font>
-				<textcolor>grey</textcolor>
-				<label>11303 MHz, 22000 KS/S, Horz</label>
+				<align>right</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<label>10 %</label>
+			</control>
+			<control type="progress" id="1010">
+				<description>Scan Helper Progress</description>
+				<posx>820</posx>
+				<posy>350</posy>
+				<width>350</width>
+				<height>18</height>
+				<texturebg border="6,0,6,0">confluence/OSDProgressBack.png</texturebg>
+				<midtexture border="6,0,6,0">confluence/OSDProgressMid.png</midtexture>
+			</control>
+			<control type="label">
+				<description>Quality</description>
+				<posx>830</posx>
+				<posy>380</posy>
+				<width>100</width>
+				<height>40</height>
+				<font>font12_title</font>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<label>Quality</label>
+			</control>
+			<control type="label" id="1006">
+				<description>Quality Percent</description>
+				<posx>1160</posx>
+				<posy>380</posy>
+				<width>100</width>
+				<height>40</height>
+				<font>font12_title</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<label>10 %</label>
+			</control>
+			<control type="progress" id="1011">
+				<description>Scan Helper Progress</description>
+				<posx>820</posx>
+				<posy>410</posy>
+				<width>350</width>
+				<height>18</height>
+				<texturebg border="6,0,6,0">confluence/OSDProgressBack.png</texturebg>
+				<midtexture border="6,0,6,0">confluence/OSDProgressMid.png</midtexture>
 			</control>
 		</control>
 	</include>
@@ -413,7 +470,7 @@
 	
 	<include name="DefaultDialogOpenEffect">
 		<onload>SetProperty(AnimationWaitingDialogOnClose,true)</onload>
-		<animation effect="fade" time="300">WindowOpen</animation>
+		<animation effect="fade" time="200">WindowOpen</animation>
 	</include>
 
 	<include name="DefaultDialogCloseEffect">
@@ -427,7 +484,7 @@
 			<width>1280</width>
 			<height>720</height>
 			<texture>black-back.png</texture>
-			<animation effect="fade" start="100" end="0" time="300" condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional">Conditional</animation>
+			<animation effect="fade" start="100" end="0" time="200" condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional">Conditional</animation>
 		</control>
 	</include>
 	<!--

@@ -3,7 +3,6 @@ import xbmcgui
 import sys
 
 import pvr.gui.DialogMgr as DiaMgr
-import pvr.TunerConfigMgr as ConfigMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
 
@@ -75,6 +74,7 @@ class EditSatellite( SettingWindow ) :
 	 	# Edit Satellite Name
 		elif groupId == E_Input03 :
 			kb = xbmc.Keyboard( self.mName, 'Satellite Name', False )
+			kb.setHiddenInput( False )
 			kb.doModal( )
 			if kb.isConfirmed( ) :
 				ret = self.mCommander.Satellite_ChangeName( self.mLongitude, self.mBand, kb.getText( ) )
