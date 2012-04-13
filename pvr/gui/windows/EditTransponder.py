@@ -2,7 +2,7 @@ import xbmc
 import xbmcgui
 import sys
 
-import pvr.gui.DialogMgr as DiaMg
+import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import SettingWindow, Action
 from ElisClass import *
