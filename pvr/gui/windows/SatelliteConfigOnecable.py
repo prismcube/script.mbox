@@ -87,8 +87,8 @@ class SatelliteConfigOnecable( SettingWindow ) :
 		groupId = self.GetGroupId( aControlId )
 
 		if groupId == E_Input01 :
-			position = self.GetControlIdToListIndex( groupId ) - 2
-			self.mTunerMgr.SetOnecableSatelliteCount( position + 1 )
+			position = self.GetSelectedIndex( E_SpinEx01 ) + 1
+			self.mTunerMgr.SetOnecableSatelliteCount( position )
 			self.ResetAllControl( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_ONECABLE_2 )
 		

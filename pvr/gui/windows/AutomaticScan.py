@@ -17,6 +17,8 @@ class AutomaticScan( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
 		self.mSatelliteIndex = 0
+		self.mFormattedList = None
+		self.mConfiguredSatelliteList = None
 
 
 	def onInit(self) :
@@ -28,8 +30,8 @@ class AutomaticScan( SettingWindow ) :
 		self.SetSettingWindowLabel( 'Automatic Scan' )
 
 		self.mSatelliteIndex = 0
-		self.mFormattedList = []
-		self.mConfiguredSatelliteList = []		
+		self.mFormattedList = None
+		self.mConfiguredSatelliteList = None		
 		
 		self.LoadFormattedSatelliteNameList( )
 		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :

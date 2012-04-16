@@ -127,13 +127,10 @@ class FirstInstallation( SettingWindow ) :
 			if groupId == E_FIRST_TIME_INSTALLATION_NEXT :
 				self.Close( )
 
-		print 'dhkim test back!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11111     %d' % groupId
 		if groupId == E_FIRST_TIME_INSTALLATION_PREV :
-			print 'dhkim test back!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!22222222'
 			if self.mStepNum == E_STEP_CHANNEL_SEARCH_CONFIG :
 				self.OpenAntennaSetupWindow( )
 			else :
-				print 'dhkim test back!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!333333333'
 				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )
 				self.SetListControl( self.mPrevStepNum )

@@ -34,7 +34,6 @@ class AntennaSetup( SettingWindow ) :
 		if self.mTunerMgr.GetNeedLoad( ) == True : 
 			self.mTunerMgr.LoadOriginalTunerConfig( )
 			self.mTunerMgr.Load( )
-			print '############################dhkim test Load Tuner Config#############################'
 			self.mTunerMgr.SetNeedLoad( False )
 
 		self.SetSettingWindowLabel( 'Antenna & Satellite Setup' )
@@ -79,7 +78,7 @@ class AntennaSetup( SettingWindow ) :
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					self.OpenBusyDialog( )
-					if self.CompareConfigurationProperty( ) == False :
+					if self.CompareConfigurationSatellite( ) == False or self.CompareConfigurationProperty( ) == False :
 						self.CancelConfiguration( )
 					self.mTunerMgr.SetNeedLoad( True )
 					self.ResetAllControl( )
@@ -101,13 +100,13 @@ class AntennaSetup( SettingWindow ) :
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					self.OpenBusyDialog( )
-					if self.CompareConfigurationSatellite( ) == False :
+					if self.CompareConfigurationSatellite( ) == False or self.CompareConfigurationProperty( ) == False :
 						self.SaveConfiguration( )
 						self.ReTune( )
 					
 				elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 					self.OpenBusyDialog( )
-					if self.CompareConfigurationProperty( ) == False :
+					if self.CompareConfigurationSatellite( ) == False or self.CompareConfigurationProperty( ) == False :
 						self.CancelConfiguration( )
 					self.mTunerMgr.SetNeedLoad( True )
 
@@ -190,7 +189,7 @@ class AntennaSetup( SettingWindow ) :
 
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT or aControlId == E_FIRST_TIME_INSTALLATION_PREV :
 			self.OpenBusyDialog( )
-			if self.CompareConfigurationSatellite( ) == False :
+			if self.CompareConfigurationSatellite( ) == False or self.CompareConfigurationProperty( ) == False :
 				self.SaveConfiguration( )
 				self.ReTune( )
 			self.ResetAllControl( )
@@ -274,6 +273,9 @@ class AntennaSetup( SettingWindow ) :
 		oriconfiguredList1	= self.mDataCache.Satellite_Get_ConfiguredList_By_TunerIndex( E_TUNER_1 )
 		configuredList2		= self.mTunerMgr.GetConfiguredSatellitebyTunerIndex( E_TUNER_2 ) 
 		oriconfiguredList2	= self.mDataCache.Satellite_Get_ConfiguredList_By_TunerIndex( E_TUNER_2 )
+		if oriconfiguredList1 == None or oriconfiguredList2 == None :
+			return False
+		
 		if self.mTunerMgr.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
 			if len( configuredList1 ) != len( oriconfiguredList1 ) :
 				return False

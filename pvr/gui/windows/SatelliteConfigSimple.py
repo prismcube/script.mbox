@@ -165,6 +165,8 @@ class SatelliteConfigSimple( SettingWindow ) :
 
 
 	def InitConfig( self ) :
+		if self.mTunerMgr.GetCurrentTunerType( ) == E_ONE_CABLE :
+			self.mCurrentSatellite.mMotorizedType = 1
 		self.ResetAllControl( )
 
 		self.AddInputControl( E_Input01, 'Satellite' , self.mDataCache.Satellite_GetFormattedName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ) )
@@ -203,7 +205,7 @@ class SatelliteConfigSimple( SettingWindow ) :
 
 	def DisableControl( self ) :
 		enableControlIds = [ E_Input02, E_SpinEx02, E_SpinEx03 ]
-		if ( self.mSelectedIndexLnbType == ElisEnum.E_LNB_UNIVERSAL ) :
+		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_UNIVERSAL :
 			self.SetEnableControls( enableControlIds, False )
 		else :
 			self.SetEnableControls( enableControlIds, True )

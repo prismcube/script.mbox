@@ -68,7 +68,6 @@ class TunerConfigMgr( object ) :
 
 
 	def GetCurrentConfiguredSatellite( self ) :
-
 		if self.mCurrentTuner == E_TUNER_1 :	
 			return self.mConfiguredList1[ self.mCurrentConfigIndex ]
 			
@@ -261,12 +260,14 @@ class TunerConfigMgr( object ) :
 
 		ret1 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList1 )
 		ret2 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList2 )
+
 		"""
 		for satellite in self.mConfiguredList1 :
 			satellite.printdebug()
 		for satellite in self.mConfiguredList2 :
 			satellite.printdebug()
 		"""
+
 		if ret1 == True and ret2 == True :
 			return True
 		elif ret1 == False or ret2 == False :

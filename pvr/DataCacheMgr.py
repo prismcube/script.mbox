@@ -612,10 +612,12 @@ class DataCacheMgr( object ):
 		self.mCurrentEvent = None
 		if self.mCommander.Channel_SetCurrent( aChannelNumber, aServiceType ) == True :
 			cacheChannel = self.mChannelListHash.get( aChannelNumber, None )
-			if cacheChannel :
+			if cacheChannel :		
 				self.mCurrentChannel = cacheChannel.mChannel
 				ret = True
 
+		channel = self.Channel_GetCurrent( )
+		self.mCommander.Frontdisplay_SetMessage( channel.mName )
 		return ret
 
 
