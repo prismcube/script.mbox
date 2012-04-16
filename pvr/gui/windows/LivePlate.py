@@ -45,6 +45,7 @@ E_IMG_ICON_LOCK   = 'IconLockFocus.png'
 E_IMG_ICON_ICAS   = 'IconCas.png'
 E_IMG_ICON_TV     = 'confluence/tv.png'
 E_IMG_ICON_RADIO  = 'icon_radio.png'
+E_IMG_ICON_RECORD = 'i_record.png'
 
 E_TAG_COLOR_WHITE = '[COLOR white]'
 E_TAG_COLOR_GREY  = '[COLOR grey]'
@@ -1054,6 +1055,9 @@ class LivePlate(BaseWindow):
 			self.mCtrlLblRec2.setLabel( recLabel2 )
 			self.mCtrlImgRec2.setVisible( recImg2 )
 			self.mCtrlBtnStartRec.setEnabled( btnValue )
+
+			self.mCtrlImgRec1.setImage(E_IMG_ICON_RECORD)
+			self.mCtrlImgRec2.setImage(E_IMG_ICON_RECORD)
 			GuiLock2( False )
 
 			LOG_TRACE('Leave')

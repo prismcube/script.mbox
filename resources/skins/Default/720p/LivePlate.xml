@@ -37,7 +37,7 @@
 						<posy>7</posy>
 						<width>60</width>
 						<height>25</height>
-						<texture>i_record.png</texture>
+						<texture>$INFO[Control.GetLabel]</texture>
 					</control>
 					<control type="label" id="11">
 						<posx>121</posx>
@@ -64,7 +64,7 @@
 						<posy>7</posy>
 						<width>60</width>
 						<height>25</height>
-						<texture>i_record.png</texture>
+						<texture>$INFO[Control.GetLabel]</texture>
 					</control>
 					<control type="label" id="16">
 						<posx>100</posx>
