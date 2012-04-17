@@ -309,8 +309,10 @@ class TimeShiftPlate(BaseWindow):
 					LOG_TRACE( 'EventRecv EOF_START' )
 
 				elif aEvent.mType == ElisEnum.E_EOF_END :
-					#self.TimeshiftAction( self.mCtrlBtnStop.getId() )
 					LOG_TRACE( 'EventRecv EOF_STOP' )
+					if self.mMode == ElisEnum.E_MODE_PVR :
+						self.TimeshiftAction( self.mCtrlBtnStop.getId() )
+
 
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
@@ -418,8 +420,8 @@ class TimeShiftPlate(BaseWindow):
 
 			#self.RecordingStopAll( )
 
-			self.Close()
 			WinMgr.GetInstance().ShowWindow( gobackID )
+			self.Close()
 			return
 
 		elif aFocusId == self.mCtrlBtnRewind.getId() :
