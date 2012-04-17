@@ -1,4 +1,3 @@
-
 import xbmc
 import xbmcgui
 import time
@@ -11,6 +10,8 @@ from  pvr.TunerConfigMgr import *
 from ElisEnum import ElisEnum
 import pvr.gui.DialogMgr as DiaMgr
 from ElisProperty import ElisPropertyEnum
+from ElisClass import *
+
 
 
 import pvr.ElisMgr
@@ -30,8 +31,17 @@ E_ONCE						= 0
 E_DAILY						= 1
 E_WEEKLY					= 2
 
+
+WEEKLY_DEFALUT_EXPIRE_DAYS	= 7
+
 LIST_RECORDING_MODE	= [ 'Once', 'Daily', 'Weekly' ]
 LIST_WEEKLY = ['Sun','Mon','Tue', 'Wed', 'The', 'Fri', 'Sat' ]
+
+MININUM_KEYWORD_SIZE  		= 3
+
+class UsedWeeklyTimer( ElisIWeeklyTimer ):
+	def __init__( self ):
+		self.mUsed=False
 
 
 class DialogAddManualTimer( SettingDialog ) :
@@ -42,6 +52,13 @@ class DialogAddManualTimer( SettingDialog ) :
 		self.mRecordingMode = E_ONCE
 		self.mChanne = None
 		self.mTimer = -1;
+		self.mUsedWeeklyList = None
+		self.mSelectedWeekOfDay = 0
+		self.mRecordName = 'None'
+		self.mErrorMessage = 'Unknown Error'		
+		self.mWeeklyStart = 0
+		self.mWekklyEnd = 0
+		
 
 
 	def onInit( self ):
@@ -53,11 +70,16 @@ class DialogAddManualTimer( SettingDialog ) :
 		else :
 			self.SetHeaderLabel( 'Add Manual Recording' )
 
+		if self.mEPG  :
+			self.mRecordName = self.mEPG.mEventName
+		else :
+			self.mRecordName = self.mChannel.mName
 
 		self.Reload( )
 		#self.mEventBus.Register( self )
 
 		self.mIsOk = E_DIALOG_STATE_CANCEL
+
 
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, 'Confirm' )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, 'Cancel' )
@@ -70,19 +92,35 @@ class DialogAddManualTimer( SettingDialog ) :
 		focusId = self.GetFocusId( )
 		self.GlobalAction( actionId )		
 
-		LOG_TRACE( 'actionId=%d' %actionId )
-			
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.ResetAllControl( )
 			self.Close()		
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
-			LOG_TRACE('FOCUS=%d' %focusId )
-			LOG_TRACE('FOCUS2=%d' %E_DialogSpinEx01 )			
-			if self.GetGroupId( focusId ) == E_DialogSpinEx01 :
-				self.mRecordingMode = self.GetSelectedIndex( E_DialogSpinEx01 )
+			groupId = self.GetGroupId( focusId )
+
+			if groupId == E_DialogInput01 :
+				self.ShowRecordName()
 				self.DrawItem()
+			
+			elif groupId == E_DialogSpinEx01 :
+				self.mRecordingMode = self.GetSelectedIndex( E_DialogSpinEx01 )
+				self.Reload()
+				self.DrawItem()
+
+			elif groupId == E_DialogSpinDay :
+				self.SelectWeeklyDay()
+				self.DrawItem()
+
+			elif groupId == E_DialogInput03 :
+				self.ShowStartTime( )
+				self.DrawItem()
+
+			elif groupId == E_DialogInput04 :
+				self.ShowEndTime( )
+				self.DrawItem()
+
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
@@ -96,10 +134,19 @@ class DialogAddManualTimer( SettingDialog ) :
 			self.ControlDown( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
-			self.ControlLeft( )
+			if self.GetGroupId( focusId ) == E_DialogSpinDay :
+				self.ChangeWeeklyDay( )
+				self.DrawItem()
+			else :
+				self.ControlLeft( )
 				
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			self.ControlRight( )
+			if self.GetGroupId( focusId ) == E_DialogSpinDay :
+				self.ChangeWeeklyDay( )
+				self.DrawItem()
+			else :
+				self.ControlLeft( )
+
 
 		else :
 			LOG_WARN( 'Unknown Action' )
@@ -110,8 +157,9 @@ class DialogAddManualTimer( SettingDialog ) :
 		groupId = self.GetGroupId( aControlId )
 
 		if groupId == E_SETTING_DIALOG_BUTTON_OK_ID :			
-			self.mIsOk = E_DIALOG_STATE_YES
-			self.DoAddTimer()
+			if self.DoAddTimer() == False :
+				self.mIsOk = E_DIALOG_STATE_ERROR			
+			
 			self.ResetAllControl( )
 			self.Close( )
 
@@ -120,47 +168,6 @@ class DialogAddManualTimer( SettingDialog ) :
 			self.ResetAllControl( )
 			self.Close( )
 
-
-		"""
-		if groupId == E_DialogSpinEx01 :
-			self.mIsWest = self.GetSelectedIndex( E_DialogSpinEx01 )
-
-		elif groupId == E_DialogInput02 :
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
- 			dialog.SetDialogProperty( 'Set Longitude', self.mLongitude )
- 			dialog.doModal( )
-
- 			if dialog.IsOK() == E_DIALOG_STATE_YES :
-	 			self.mLongitude  = dialog.GetNumber( )
-	 			self.DrawItem( )
-
-		elif groupId == E_DialogSpinEx02 :
-			self.mIsCBand = self.GetSelectedIndex( E_DialogSpinEx02 )
-
-		elif groupId == E_DialogInput01 :
-			self.mSatelliteName = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, 'Satellite Name', self.mSatelliteName, 15 )
-			self.DrawItem( )
-
-		elif groupId == E_SETTING_DIALOG_BUTTON_OK_ID :
-			self.mIsOk = E_DIALOG_STATE_YES
-			self.ResetAllControl( )
-			self.CloseDialog( )
-
-		elif groupId == E_SETTING_DIALOG_BUTTON_CANCEL_ID :
-			self.mIsOk = E_DIALOG_STATE_NO
-			self.ResetAllControl( )
-			self.CloseDialog( )
-
-	
-		if focusId == E_BUTTON_ADD :
-			self.mIsOk = E_DIALOG_STATE_YES
-			self.Close( )
-
-		elif focusId == E_BUTTON_CANCEL :
-			self.mIsOk = E_DIALOG_STATE_CANCEL
-			self.Close( )
-		"""
-		
 
 	def onFocus( self, aControlId ):
 		pass
@@ -174,6 +181,10 @@ class DialogAddManualTimer( SettingDialog ) :
 			print 'Do Event'
 			pass
 		"""
+
+
+	def GetErrorMessage( self ) :
+		return self.mErrorMessage
 
 
 	def SetEditMode( self, aIsEdit ):
@@ -203,105 +214,321 @@ class DialogAddManualTimer( SettingDialog ) :
 
 	def Reload ( self ) :
 		LOG_TRACE('')
-		return
-
-
 		try :
-			if self.mEPG != None and self.mEPG.mError == 0:
-				self.mEPG.printdebug( )		
+			self.mSelectedWeekOfDay	= 0 
+			self.mUsedWeeklyList = []
 
-				localOffset = self.mDataCache.Datetime_GetLocalOffset()
-				localTime = self.mDataCache.Datetime_GetLocalTime( )
+			if self.mIsEdit  == True :
+				LOG_TRACE('')
+			else :
+				startTime = self.mDataCache.Datetime_GetLocalTime()
+				prop = ElisPropertyEnum( 'Default Rec Duration', self.mCommander )
+				duration = prop.GetProp( )
 
-				startTime = self.mEPG.mStartTime + localOffset
-				endTime =  startTime  + self.mEPG.mDuration
-			
+				if self.mEPG :
+					startTime = self.mEPG.mStartTime + self.mDataCache.Datetime_GetLocalOffset()
+					duraton = self.mEPG.mDuration
+					self.mRecordName = self.mEPG.mEventName					
+				else :
+					self.mRecordName = self.mChannel.mName
 
-				LOG_TRACE('START : %s' %TimeToString( startTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
-				LOG_TRACE('CUR : %s' %TimeToString( localTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
-				LOG_TRACE('END : %s' %TimeToString( endTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
-				self.getControl( E_LABEL_RECORD_NAME ).setLabel( '%s' %self.mEPG.mEventName )
 
-				self.getControl( E_LABEL_EPG_START_TIME ).setLabel( 'Start : %s' %TimeToString( startTime, TimeFormatEnum.E_HH_MM ) )
-				self.getControl( E_LABEL_EPG_END_TIME ).setLabel( 'End : %s' %TimeToString( endTime, TimeFormatEnum.E_HH_MM ) )
+				days = int( startTime/(24*3600) )
+				self.mWeeklyStart = days*24*3600
+				self.mWeeklyEnd = days*24*3600 + WEEKLY_DEFALUT_EXPIRE_DAYS*24*3600 - 1
+
+				struct_time = time.gmtime( startTime )
+				# tm_wday is different between Python and C++
+				if struct_time[6] == 6 : #tm_wday
+					weekday = 0
+				elif struct_time[6] == 0 :
+					weekday = 6
+				else  :
+					weekday = struct_time[6] + 1
+
+				for i in range( 7 ) :
+
+					usedTimer =  UsedWeeklyTimer()
+
+					if self.mRecordingMode == E_ONCE :
+						if i == 0 :
+							usedTimer.mUsed = True
+						else :
+							usedTimer.mUsed = False
+
+					elif self.mRecordingMode == E_WEEKLY :
+						if i == weekday :
+							usedTimer.mUsed = True
+							self.mSelectedWeekOfDay	= weekday							
+						else :
+							usedTimer.mUsed = False
+						
+					else :
+						usedTimer.mUsed = True
+						if i == weekday :
+							self.mSelectedWeekOfDay	= weekday
+
+					usedTimer.mDate = i
+					usedTimer.mStartTime = startTime %( 24*3600 )
+					usedTimer.mDuration = duration
+					self.mUsedWeeklyList.append( usedTimer )
+
 			
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex)
 
+		return
+
 
 	def DrawItem( self ) :
 		LOG_TRACE('self.mRecordingMode=%d' %self.mRecordingMode )
-		if self.mEPG :
-			LOG_TRACE('Has EPG')
-			self.mEPG.printdebug()
-		else  :
-			LOG_TRACE('Has no EPG')
-			self.mChannel.printdebug()
 
-		self.ResetAllControl( )
+		try :
 
-		if self.mIsEdit  == True :
-			self.AddUserEnumControl( E_DialogSpinEx01, 'Recording', LIST_RECORDING_MODE, self.mRecordingMode )
-			#SetEnableControl
+			self.ResetAllControl( )
 
-		else :
-			self.AddUserEnumControl( E_DialogSpinEx01, 'Recording', LIST_RECORDING_MODE, self.mRecordingMode )
-			self.SetEnableControl(E_DialogSpinEx01,  True )
-			if self.mEPG  :
-				self.AddInputControl( E_DialogInput01, 'Name', self.mEPG.mEventName )
+			if self.mIsEdit  == True :
+				self.AddUserEnumControl( E_DialogSpinEx01, 'Recording', LIST_RECORDING_MODE, self.mRecordingMode )
+				#SetEnableControl
+
 			else :
-				self.AddInputControl( E_DialogInput01, 'Name', self.mChannel.mName )
-				
-			self.SetEnableControl(E_DialogInput01,  True )
-			
-			if self.mRecordingMode == E_ONCE :
-				startTime = self.mDataCache.Datetime_GetLocalTime()
-				prop = ElisPropertyEnum( 'Default Rec Duration', self.mCommander )
-				duration = prop.GetProp( )
-				
-				if self.mEPG :
-					startTime = self.mEPG.mStartTime + self.mDataCache.Datetime_GetLocalOffset()
-					duraton = self.mEPG.mDuration
-					endTime = startTime + duraton
+				self.AddUserEnumControl( E_DialogSpinEx01, 'Recording', LIST_RECORDING_MODE, self.mRecordingMode )
+				self.SetEnableControl(E_DialogSpinEx01,  True )
+				self.AddInputControl( E_DialogInput01, 'Name :',  self.mRecordName )
+				self.SetEnableControl(E_DialogInput01,  True )
+
+				if self.mRecordingMode == E_ONCE :
+					startTime = self.mWeeklyStart + self.mUsedWeeklyList[0].mStartTime
+					endTime = startTime + self.mUsedWeeklyList[0].mDuration
+						
+					self.SetVisibleControl( E_DialogSpinDay, False )
+					self.SetVisibleControl( E_DialogInput02, True )
+					self.AddInputControl( E_DialogInput02, 'Date :', TimeToString( startTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
+					self.SetEnableControl( E_DialogInput02, False )
 					
-				self.AddInputControl( E_DialogInput02, 'Date :', TimeToString( startTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
-				self.SetVisibleControl( E_DialogInput02, True )
-				self.SetVisibleControl( E_DialogSpinDay, False )
-				
-				self.AddInputControl( E_DialogInput03, 'Start Time :',  TimeToString( startTime, TimeFormatEnum.E_HH_MM ) )
-				self.AddInputControl( E_DialogInput04, 'End Time :',  TimeToString( endTime, TimeFormatEnum.E_HH_MM) )
-				
-			else :
-				self.AddListControl( E_DialogSpinDay, LIST_WEEKLY, 0 )
-				self.SetListControlTitle( E_DialogSpinDay, 'Daily' )
-				self.SetVisibleControl( E_DialogInput02, False )
-				self.SetVisibleControl( E_DialogSpinDay, True )
+					self.AddInputControl( E_DialogInput03, 'Start Time :',  TimeToString( startTime, TimeFormatEnum.E_HH_MM ) )
+					self.AddInputControl( E_DialogInput04, 'End Time :',  TimeToString( endTime, TimeFormatEnum.E_HH_MM) )
+					
+				else :
 
-				self.AddInputControl( E_DialogInput03, 'Start Time :',  '00:00' )
-				self.AddInputControl( E_DialogInput04, 'End Time :',  '12:00' )
+					LOG_TRACE('self.mSelectedWeekOfDay =%d' %self.mSelectedWeekOfDay )
+					self.AddListControl( E_DialogSpinDay, LIST_WEEKLY, self.mSelectedWeekOfDay )
+					listItems = self.GetListItems( E_DialogSpinDay )
 
-			self.AddOkCanelButton( )
-			self.SetAutoHeight( True )
+					for i in range( len(listItems) ) :
+						if self.mUsedWeeklyList[i].mUsed == True :
+							listItems[i].setProperty( 'Used', 'True')
+						else :
+							listItems[i].setProperty( 'Used', 'False')
+					
+					
+					self.SetListControlTitle( E_DialogSpinDay, 'Daily' )
+					self.SetVisibleControl( E_DialogSpinDay, True )
 
-		self.InitControl( )
+					self.SetVisibleControl( E_DialogInput02, False )					
 
+					if self.mRecordingMode == E_WEEKLY :
+						self.SetEnableControl( E_DialogSpinDay, True )
+					else :
+						self.SetEnableControl( E_DialogSpinDay, False )
+						
+					startTime = self.mUsedWeeklyList[self.mSelectedWeekOfDay ].mStartTime
+					endTime = startTime + self.mUsedWeeklyList[self.mSelectedWeekOfDay ].mDuration
+
+					self.AddInputControl( E_DialogInput03, 'Start Time :',  TimeToString( startTime, TimeFormatEnum.E_HH_MM ) )
+					self.AddInputControl( E_DialogInput04, 'End Time :',  TimeToString( endTime, TimeFormatEnum.E_HH_MM) )
+
+					if self.mRecordingMode == E_WEEKLY and self.mUsedWeeklyList[self.mSelectedWeekOfDay].mUsed == False:
+						self.SetEnableControl( E_DialogInput03, False )
+						self.SetEnableControl( E_DialogInput04, False )
+					else :
+						self.SetEnableControl( E_DialogInput03, True )
+						self.SetEnableControl( E_DialogInput04, True )
+					
+				self.AddOkCanelButton( )
+				self.SetAutoHeight( True )
+
+			self.InitControl( )
+
+		except Exception, ex :
+			LOG_ERR( "Exception %s" %ex)
+		
+
+	def ChangeWeeklyDay( self ) :
+		selectIndex = self.GetSelectedIndex( E_DialogSpinDay )
+		LOG_TRACE('selectIndex = %d' %selectIndex )
+		if selectIndex >= 0 and selectIndex < len(self.mUsedWeeklyList) :
+			self.mSelectedWeekOfDay	= selectIndex
+			return
+
+
+	def ShowRecordName( self ) :
+		try :
+			kb = xbmc.Keyboard( self.mRecordName, 'Change Record Name', False )
+			kb.doModal( )
+			if kb.isConfirmed( ) :
+				keyword = kb.getText( )
+				LOG_TRACE('keyword len=%d' %len( keyword ) )
+				if len( keyword ) < MININUM_KEYWORD_SIZE :
+					xbmcgui.Dialog( ).ok('Infomation', 'Input more than %d characters' %MININUM_KEYWORD_SIZE )
+					return
+
+				self.mRecordName = keyword
+
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)	
+		E_DialogInput01	
+
+	
+
+	def SelectWeeklyDay( self ) :
+		selectIndex = self.GetSelectedIndex( E_DialogSpinDay )
+		LOG_TRACE('selectIndex = %d' %selectIndex )
+		if selectIndex >= 0 and selectIndex < len(self.mUsedWeeklyList) :
+			listItems = self.GetListItems( E_DialogSpinDay )
+
+			if self.mUsedWeeklyList[selectIndex].mUsed == True :
+				self.mUsedWeeklyList[selectIndex].mUsed = False
+				listItems[selectIndex].setProperty( 'Used', 'False')
+			else:
+				self.mUsedWeeklyList[selectIndex].mUsed = True
+				listItems[selectIndex].setProperty( 'Used', 'True')				
+
+			tmpItems = self.GetListItems( E_DialogSpinDay )
+	
 
 	def DoAddTimer( self ) :
-		LOG_TRACE('')
-		if self.mIsEdit  == True :
-			LOG_TRACE('Edit Mode')
-	
-		else :
-			LOG_TRACE('Add Mode')		
-			if self.mRecordingMode == E_ONCE :
-				if self.mEPG  :
-					LOG_TRACE('EPG and Once')
-				else:
-					LOG_TRACE('no EPG and Once')				
+		try :
+			if self.mIsEdit  == True :
+				LOG_TRACE('Edit Mode')
+		
 			else :
-				if self.mEPG  :
-					LOG_TRACE('EPG and Daily or Weekly')
-				else:
-					LOG_TRACE('no EPG and Daily or Weekly')				
-			
+				for i in range( len(self.mUsedWeeklyList) ) :
+					#debug
+					LOG_TRACE('index=%d' %i )
+					LOG_TRACE('used=%d' %self.mUsedWeeklyList[i].mUsed )
+					LOG_TRACE('date=%d' %self.mUsedWeeklyList[i].mDate )
+					LOG_TRACE('startTime=%s' %TimeToString(self.mWeeklyStart, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
+					LOG_TRACE('weeklyTime=%s' %TimeToString(self.mUsedWeeklyList[i].mStartTime, TimeFormatEnum.E_HH_MM ) )
 
+				if self.mRecordingMode == E_ONCE :
+					startTime = self.mWeeklyStart + self.mUsedWeeklyList[0].mStartTime
+					if  startTime + self.mUsedWeeklyList[0].mDuration < self.mDataCache.Datetime_GetLocalTime() :
+						self.mErrorMessage = 'Already Passed'
+						return False
+					self.mCommander.Timer_AddManualTimer( self.mChannel.mNumber, self.mChannel.mServiceType, startTime,	self.mUsedWeeklyList[0].mDuration, self.mRecordName, 0 )
+					return True
+				else :
+					count = len( self.mUsedWeeklyList )
+					weeklyTimerList = []
+					for i in range( count ) :
+						if self.mUsedWeeklyList[i].mUsed == True and self.mDataCache.Datetime_GetLocalTime() < self.mWeeklyEnd:
+							timer = ElisIWeeklyTimer()
+							timer.mDate = i
+							timer.mStartTime = self.mUsedWeeklyList[i].mStartTime
+							timer.mDuration = self.mUsedWeeklyList[i].mDuration
+							weeklyTimerList.append( timer )
+
+					if len( weeklyTimerList ) <= 0 :
+						self.mErrorMessage = 'Has no valid Timer'
+						return False
+
+					self.mCommander.Timer_AddWeeklyTimer( self.mChannel.mNumber, self.mChannel.mServiceType, 0, 0, self.mRecordName, len( weeklyTimerList ), weeklyTimerList )
+
+					return True
+
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)	
+
+		return False
+
+			
+	def ShowStartTime( self ) :
+
+		try :
+		
+			focusId = self.GetFocusId( )
+
+			strStartTime = self.GetControlLabel2String( E_DialogInput03 )
+			dialog = xbmcgui.Dialog( )
+
+			selectIndex = self.GetSelectedIndex( E_DialogSpinDay )
+
+			if self.mRecordingMode == E_DAILY or self.mRecordingMode == E_WEEKLY :
+				strStartTime = TimeToString( self.mUsedWeeklyList[selectIndex].mStartTime, TimeFormatEnum.E_HH_MM )
+			else :
+				strStartTime = TimeToString( self.mUsedWeeklyList[0].mStartTime, TimeFormatEnum.E_HH_MM )			
+
+			strStartTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Input Time', strStartTime )		
+
+			tempList = strStartTime.split( ':', 1 )
+
+			startHour = int( tempList[0] )
+		
+			startMin = int( tempList[1] )
+
+			if self.mRecordingMode == E_WEEKLY  :
+				self.mUsedWeeklyList[selectIndex].mStartTime = startHour*3600 + startMin*60
+			else :
+				for i in range( len(self.mUsedWeeklyList) ) :
+					self.mUsedWeeklyList[i].mStartTime = startHour*3600 + startMin*60
+
+		except Exception, ex :
+			LOG_ERR( "Exception %s" %ex)
+
+
+	def ShowEndTime( self ) :	
+		try :
+
+			focusId = self.GetFocusId( )
+			
+			strEndTime = self.GetControlLabel2String( E_DialogInput04 )
+			dialog = xbmcgui.Dialog( )
+
+			selectIndex = self.GetSelectedIndex( E_DialogSpinDay )
+
+
+			if self.mRecordingMode == E_DAILY or self.mRecordingMode == E_WEEKLY :
+				strEndTime = TimeToString( self.mUsedWeeklyList[selectIndex].mStartTime + self.mUsedWeeklyList[selectIndex].mDuration, TimeFormatEnum.E_HH_MM )
+			else :
+				strEndTime = TimeToString( self.mUsedWeeklyList[0].mStartTime + self.mUsedWeeklyList[0].mDuration, TimeFormatEnum.E_HH_MM )			
+
+			strEndTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Input Time', strEndTime )		
+
+			tempList = strEndTime.split( ':', 1 )
+
+			endHour = int( tempList[0] )
+			
+			endMin = int( tempList[1] )
+
+			if self.mRecordingMode == E_WEEKLY :
+				endTime = endHour*3600 + endMin*60
+				duration = endTime - self.mUsedWeeklyList[selectIndex].mStartTime
+
+				if duration <= 0 :
+					duration = duration + 24*3600
+
+				if duration <= 0 :
+					prop = ElisPropertyEnum( 'Default Rec Duration', self.mCommander )
+					duration = prop.GetProp( )
+
+				self.mUsedWeeklyList[selectIndex].mDuration = duration
+
+			else :
+				endTime = endHour*3600 + endMin*60
+				duration = endTime - self.mUsedWeeklyList[0].mStartTime
+
+				if duration <= 0 :
+					duration = duration + 24*3600
+
+				if duration <= 0 :
+					prop = ElisPropertyEnum( 'Default Rec Duration', self.mCommander )
+					duration = prop.GetProp( )
+
+				for i in range( len(self.mUsedWeeklyList) ) :
+					self.mUsedWeeklyList[i].mDuration = duration
+
+		except Exception, ex :
+			LOG_ERR( "Exception %s" %ex)
+
+	

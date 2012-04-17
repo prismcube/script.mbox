@@ -4,6 +4,7 @@ import sys
 import time
 import os
 import shutil
+import weakref
 
 from gui.BaseWindow import BaseWindow
 from inspect import currentframe
@@ -75,6 +76,7 @@ class WindowMgr(object):
 		currentSkinName = xbmc.executehttpapi("GetGUISetting(3, lookandfeel.skin)")
 		self.mSkinName = currentSkinName[4:]
 
+		self.mLastId = -1
 		self.mSkinFontPath = []
 		self.mScriptFontPath =[]
 		self.mSkinDir = []
@@ -99,7 +101,7 @@ class WindowMgr(object):
 	def GetWindow( self, aWindowId ):
 		LOG_TRACE('GetWindow ID=%d' %aWindowId )
 		try :
-			return self.mWindows[aWindowId]
+			return weakref.proxy( self.mWindows[aWindowId] )
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
 			return None
@@ -166,7 +168,7 @@ class WindowMgr(object):
 
 			
 			from pvr.gui.windows.SatelliteConfigSimple import SatelliteConfigSimple
-			self.mWindows[WIN_ID_CONFIG_SIMPLE]=SatelliteConfigSimple('SatelliteConfiguration.xml', self.mScriptDir)
+			self.mWindows[WIN_ID_CONFIG_SIMPLE]=SatelliteConfigSimple('SatelliteConfigSimple.xml', self.mScriptDir)
 
 			
 			from pvr.gui.windows.SatelliteConfigMotorizedUsals import SatelliteConfigMotorizedUsals
@@ -174,11 +176,11 @@ class WindowMgr(object):
 
 			
 			from pvr.gui.windows.SatelliteConfigMotorizedUsals2 import SatelliteConfigMotorizedUsals2
-			self.mWindows[WIN_ID_CONFIG_MOTORIZED_USALS2]=SatelliteConfigMotorizedUsals2('SatelliteConfiguration.xml', self.mScriptDir)
+			self.mWindows[WIN_ID_CONFIG_MOTORIZED_USALS2]=SatelliteConfigMotorizedUsals2('SatelliteConfigMotorizedUsals2.xml', self.mScriptDir)
 
 			
 			from pvr.gui.windows.SatelliteConfigMotorized12 import SatelliteConfigMotorized12
-			self.mWindows[WIN_ID_CONFIG_MOTORIZED_12]=SatelliteConfigMotorized12('SatelliteConfiguration.xml', self.mScriptDir)
+			self.mWindows[WIN_ID_CONFIG_MOTORIZED_12]=SatelliteConfigMotorized12('SatelliteConfigMotorized12.xml', self.mScriptDir)
 
 			
 			from pvr.gui.windows.SatelliteConfigOnecable import SatelliteConfigOnecable
@@ -190,11 +192,11 @@ class WindowMgr(object):
 
 			
 			from pvr.gui.windows.SatelliteConfigDisEqc10 import SatelliteConfigDisEqC10
-			self.mWindows[WIN_ID_CONFIG_DISEQC_10]=SatelliteConfigDisEqC10('SatelliteConfiguration.xml', self.mScriptDir)
+			self.mWindows[WIN_ID_CONFIG_DISEQC_10]=SatelliteConfigDisEqC10('SatelliteConfigDisEqC10.xml', self.mScriptDir)
 
 			
 			from pvr.gui.windows.SatelliteConfigDisEqc11 import SatelliteConfigDisEqC11
-			self.mWindows[WIN_ID_CONFIG_DISEQC_11]=SatelliteConfigDisEqC11('SatelliteConfiguration.xml', self.mScriptDir)
+			self.mWindows[WIN_ID_CONFIG_DISEQC_11]=SatelliteConfigDisEqC11('SatelliteConfigDisEqC11.xml', self.mScriptDir)
 
 			
 			from pvr.gui.windows.ChannelSearch import ChannelSearch

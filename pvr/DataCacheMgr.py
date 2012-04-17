@@ -19,7 +19,7 @@ from pvr.gui.GuiConfig import *
 
 SUPPORT_EPG_DATABASE = True
 SUPPORT_CHANNEL_DATABASE = True
-SUPPORT_TIMER_DATABASE = False
+SUPPORT_TIMER_DATABASE = True
 SUPPORT_RECORD_DATABASE = True
 
 
@@ -677,6 +677,16 @@ class DataCacheMgr( object ):
 		#channel.printdebug()
 		return channel
 
+	@DataLock
+	def Channel_GetByNumber( self, aNumber ) :
+
+		cacheChannel = self.mChannelListHash.get(aNumber, None).mChannel
+		if cacheChannel == None :
+			return None
+
+		channel =  cacheChannel
+		return channel
+
 
 	@DataLock
 	def Channel_GetSearch( self, aNumber ) :
@@ -1039,6 +1049,7 @@ class DataCacheMgr( object ):
 
 	def Timer_GetTimerList( self ) :
 		if SUPPORT_TIMER_DATABASE == True :
+			self.mTimerDB = ElisTimerDB( )
 			return self.mTimerDB.Timer_GetTimerList()
 		else :
 			timerList = []

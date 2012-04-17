@@ -64,11 +64,14 @@ class TimeShiftPlate(BaseWindow):
 		self.mAutomaticHide = True
 
 
+	"""
 	def __del__(self):
 		LOG_TRACE( 'destroyed TimeshiftPlate' )
 
 		# end thread CurrentTimeThread()
 		self.mEnableThread = False
+	"""
+	
 
 	def onInit(self):
 		self.mWinId = xbmcgui.getCurrentWindowId()

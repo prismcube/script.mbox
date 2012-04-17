@@ -3923,6 +3923,19 @@
 						<align>center</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
+						<visible>substring(ListItem.Property(Used),False)</visible>						
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>60</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>FFFF0000</textcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>substring(ListItem.Property(Used),True)</visible>
 					</control>
 				</itemlayout>
 				<focusedlayout height="40" width="60">
@@ -3946,6 +3959,19 @@
 						<align>center</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
+						<visible>substring(ListItem.Property(Used),False)</visible>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>60</width>
+						<height>40</height>
+						<font>font13</font>
+						<textcolor>FFFF0000</textcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>substring(ListItem.Property(Used),True)</visible>						
 					</control>
 				</focusedlayout>
 			</control>
@@ -4942,7 +4968,7 @@
 
 	<include name="DefaultBigEPGView">
 		<control type="group">
-			<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>
+			<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(TimerMode), true)</visible>
 			<include>DefaultVisibleFadeEffect</include>
 			<control type="list" id="3510">
 				<posx>75</posx>
@@ -4956,7 +4982,7 @@
 				<viewtype label="535">list</viewtype>
 				<pagecontrol>3511</pagecontrol>
 				<scrolltime>200</scrolltime>
-				<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>
+				<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(TimerMode), true)</visible>
 				<itemlayout height="70" width="610">
 					<control type="image">
 						<posx>0</posx>
@@ -5055,7 +5081,7 @@
 						<width>720</width>
 						<height>71</height>
 						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
-						<visible>!Control.HasFocus(3510)+[ substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)]</visible>
+						<visible>!Control.HasFocus(3510)+[ substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(TimerMode), true)]</visible>
 						<include>DefaultVisibleFadeEffect</include>
 					</control>
 					<control type="image">
@@ -5171,12 +5197,12 @@
 				<onright>100</onright>
 				<showonepage>false</showonepage>
 				<orientation>vertical</orientation>
-				<visible>Control.IsVisible(3510) + [substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)]</visible>
+				<visible>Control.IsVisible(3510) + [substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(TimerMode), true)]</visible>
 			</control>
 			<control type="group">
 				<posx>850</posx>
 				<posy>100</posy>
-				<visible>Control.IsVisible(3510)+[substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)]</visible>
+				<visible>Control.IsVisible(3510)+[substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(TimerMode), true)]</visible>
 				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
@@ -5201,4 +5227,21 @@
 		</control>
 	</include>
 	
+	<include name="DefaultSatelliteConfigGroup">
+		<control type="group">
+			<posy>10</posy>
+			<include>Input01</include>
+			<include>Input02</include>
+			<include>Input03</include>
+			<include>Input04</include>
+			<include>Input05</include>
+			<include>Input06</include>
+			<include>SpinEx01</include>
+			<include>SpinEx02</include>
+			<include>SpinEx03</include>
+			<include>SpinEx04</include>
+			<include>SpinEx05</include>
+			<include>SpinEx06</include>
+		</control>
+	</include>	
 </includes>

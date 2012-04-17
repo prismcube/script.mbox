@@ -32,7 +32,7 @@ class TimeFormatEnum(object):
 	E_DD_MM_YYYY			= 3
 	E_AW_HH_MM				= 4
 	E_HH_MM_SS				= 5
-
+	E_WEEK_OF_DAY			= 6
 
 def ClearThreads( ):
 	gThreads.clear()
@@ -179,6 +179,8 @@ def MLOG( level=0, msg=None ) :
 			color = 37 #green ?
 		print '\033[1;%sm[%s() %s:%s]%s\033[1;m'% (color, filefunc, filename, lineno, msg)
 
+	del calframe
+	del curframe
 
 
 def LOG_INIT( ):
@@ -254,7 +256,7 @@ def TimeToString( aTime, aFlag=0 ) :
 	if aFlag == TimeFormatEnum.E_AW_DD_MM_YYYY :
 		return time.strftime("%a, %d.%m.%Y", time.gmtime( aTime ) )
 	elif aFlag == TimeFormatEnum.E_HH_MM :		
-		return time.strftime("%H:%M", time.gmtime( aTime ) )	
+		return time.strftime("%02H:%02M", time.gmtime( aTime ) )	
 	elif aFlag == TimeFormatEnum.E_DD_MM_YYYY_HH_MM :
 		return time.strftime("%d.%m.%Y %H:%M", time.gmtime( aTime ) )		
 	elif aFlag == TimeFormatEnum.E_AW_DD_MM_YYYY :
@@ -265,6 +267,8 @@ def TimeToString( aTime, aFlag=0 ) :
 		return time.strftime("%a, %H:%M", time.gmtime( aTime ) )
 	elif aFlag == TimeFormatEnum.E_HH_MM_SS :
 		return time.strftime("%H:%M:%S", time.gmtime( aTime ) )
+	elif aFlag == TimeFormatEnum.E_WEEK_OF_DAY :
+		return time.strftime("%a", time.gmtime( aTime ) )			
 	else :
 		strTime = time.strftime('%a, %d.%m.%Y', aTime )
 		LOG_TRACE('strTime=%s' %strTime )

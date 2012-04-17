@@ -505,3 +505,20 @@ class SettingDialog( BaseDialog ):
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL :
 					ctrlItem.mProperty.SetProp( aValue )
 					return True
+
+
+
+	def GetListItems( self, aControlId ) :
+
+		count = len( self.mControlList )
+
+		for i in range( count ) :
+
+			ctrlItem = self.mControlList[i]		
+			if self.HasControlItem( ctrlItem, aControlId ) :
+				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
+					return ctrlItem.mListItems
+				elif ctrlItem.mControlType == ctrlItem.E_SETTING_LIST_CONTROL :
+					return ctrlItem.mListItems				
+
+

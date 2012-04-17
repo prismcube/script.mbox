@@ -215,6 +215,7 @@ E_INPUT_MAX						= 9999
 E_DIALOG_STATE_YES		= 1
 E_DIALOG_STATE_NO		= 2
 E_DIALOG_STATE_CANCEL	= 3
+E_DIALOG_STATE_ERROR	= 4
 
 
 ############################ Global Function For GUI ############################

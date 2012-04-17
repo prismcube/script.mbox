@@ -116,12 +116,15 @@ class ChannelListWindow( BaseWindow ) :
 		self.mPropertyPincode = -1
 		self.mPincodeEnter = FLAG_MASK_NONE
 		self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
-		
+
+
+	"""		
 	def __del__(self):
 		LOG_TRACE( 'destroyed ChannelList' )
 
 		# end thread
 		self.mEnableThread = False
+	"""
 
 
 	def onInit(self):
