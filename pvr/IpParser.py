@@ -7,8 +7,6 @@ import time
 import commands
 from pvr.gui.GuiConfig import *
 from pvr.Util import LOG_ERR
-#from pythonwifi.iwlibs import Wireless
-#import pythonwifi.flags
 
 
 FILE_NAME_INTERFACES	 		=	'/etc/network/interfaces'
@@ -526,4 +524,4 @@ class WirelessParser :
 		else :
 			self.mEncriptType = ENCRIPT_TYPE_WEP
 			
-		return self.mEncriptType	
+		return self.mEncriptType

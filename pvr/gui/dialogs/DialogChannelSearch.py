@@ -43,6 +43,8 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 	def onInit( self ) :
+		self.mDataCache.Player_AVBlank( True, False )
+	
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		
@@ -156,6 +158,7 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mEventBus.Deregister( self )
 				self.ReTune( )
 				self.CloseDialog( )
+				self.mDataCache.Player_AVBlank( False, False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'Error', 'Channel Search Failed' )
 				dialog.doModal( )
@@ -166,6 +169,7 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mEventBus.Deregister( self )
 				self.ReTune( )
 				self.CloseDialog( )
+				self.mDataCache.Player_AVBlank( False, False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'Error', 'Channel Search Failed' )
 				dialog.doModal( )
@@ -192,6 +196,7 @@ class DialogChannelSearch( BaseDialog ) :
 			self.mEventBus.Deregister( self )
 			self.ReTune( )
 			self.CloseDialog( )
+			self.mDataCache.Player_AVBlank( False, False )
 
 
 	@GuiLock

@@ -20,6 +20,13 @@ class AntennaSetup( SettingWindow ) :
 
 	def onInit( self ) :
 		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( False )
+		
+		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( 'Error', 'Satellite Infomation is empty. Please Reset STB' )
+			dialog.doModal( )
+			self.close( )
+			return
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
@@ -167,11 +174,11 @@ class AntennaSetup( SettingWindow ) :
 		
 		if groupId == E_SpinEx01 or groupId == E_SpinEx02 :
 			self.ControlSelect( )
-			self.DisableControl( )
+			self.DisableControl( groupId )
 
 		elif groupId == E_SpinEx03 :
 			self.ControlSelect( )
-			self.DisableControl( )
+			self.DisableControl( groupId )
 			configuredList = self.mTunerMgr.GetConfiguredSatellitebyTunerIndex( E_TUNER_1 ) 
 			if configuredList :
 				tunertype = self.GetSelectedIndex( E_SpinEx03 )
@@ -180,7 +187,6 @@ class AntennaSetup( SettingWindow ) :
 
 		elif groupId == E_SpinEx04 :
 			self.ControlSelect( )
-			self.DisableControl( )
 			configuredList = self.mTunerMgr.GetConfiguredSatellitebyTunerIndex( E_TUNER_2 )
 			if configuredList :
 				tunertype = self.GetSelectedIndex( E_SpinEx04 )
@@ -221,29 +227,41 @@ class AntennaSetup( SettingWindow ) :
 		self.mTunerMgr.Restore( )
 	
 
-	def DisableControl( self ) :
-		selectedIndex = self.GetSelectedIndex( E_SpinEx01 )
-		if selectedIndex == E_TUNER_LOOPTHROUGH :
-			control = self.getControl( E_SpinEx02 + 3 )
-			time.sleep( 0.02 )
-			control.selectItem( E_SAMEWITH_TUNER )
-			self.SetProp( E_SpinEx02, E_SAMEWITH_TUNER )
-			self.SetEnableControl( E_SpinEx02, False )
-		else :
-			self.SetEnableControl( E_SpinEx02, True )
+	def DisableControl( self, aControlID = None ) :
+		if aControlID == None or aControlID == E_SpinEx01 :
+			selectedIndex = self.GetSelectedIndex( E_SpinEx01 )
+			if selectedIndex == E_TUNER_LOOPTHROUGH :
+				control = self.getControl( E_SpinEx02 + 3 )
+				time.sleep( 0.01 )
+				control.selectItem( E_SAMEWITH_TUNER )
+				self.SetProp( E_SpinEx02, E_SAMEWITH_TUNER )
+				self.SetEnableControl( E_SpinEx02, False )
+			else :
+				self.SetEnableControl( E_SpinEx02, True )
 
-		selectedIndex = self.GetSelectedIndex( E_SpinEx02 )	
-		if selectedIndex == E_SAMEWITH_TUNER :
-			control = self.getControl( E_SpinEx04 + 3 )
-			time.sleep( 0.02 )
-			control.selectItem( self.GetSelectedIndex( E_SpinEx03 ) )
-			self.SetProp( E_SpinEx04, self.GetSelectedIndex( E_SpinEx03 ) )
-			self.SetEnableControl( E_SpinEx04, False )
-			self.SetEnableControl( E_Input02, False )
+		if aControlID == None or aControlID == E_SpinEx02 :
+			selectedIndex = self.GetSelectedIndex( E_SpinEx02 )	
+			if selectedIndex == E_SAMEWITH_TUNER :
+				if self.GetSelectedIndex( E_SpinEx03 ) != self.GetSelectedIndex( E_SpinEx04 ) :
+					control = self.getControl( E_SpinEx04 + 3 )
+					time.sleep( 0.01 )
+					control.selectItem( self.GetSelectedIndex( E_SpinEx03 ) )
+					self.SetProp( E_SpinEx04, self.GetSelectedIndex( E_SpinEx03 ) )
+				self.SetEnableControl( E_SpinEx04, False )
+				self.SetEnableControl( E_Input02, False )
+			else :
+				self.SetEnableControl( E_SpinEx04, True)
+				self.SetEnableControl( E_Input02, True )
 
-		else :
-			self.SetEnableControl( E_SpinEx04, True)
-			self.SetEnableControl( E_Input02, True )
+		if aControlID == E_SpinEx03 :
+			selectedIndex = self.GetSelectedIndex( E_SpinEx02 )	
+			if selectedIndex == E_SAMEWITH_TUNER :
+				control = self.getControl( E_SpinEx04 + 3 )
+				time.sleep( 0.01 )
+				control.selectItem( self.GetSelectedIndex( E_SpinEx03 ) )
+				self.SetProp( E_SpinEx04, self.GetSelectedIndex( E_SpinEx03 ) )
+				self.SetEnableControl( E_SpinEx04, False )
+				self.SetEnableControl( E_Input02, False )
 
 
 	def setVisibleButton( self ) :

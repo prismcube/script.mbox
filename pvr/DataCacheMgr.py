@@ -96,6 +96,7 @@ class DataCacheMgr( object ):
 		self.mPropertyAge						= 0
 		self.mPropertyPincode					= -1
 		self.mCacheReload						= False
+		self.mIsEmptySatelliteInfo				= False
 
 		self.mChannelListHash					= {}
 		self.mAllSatelliteListHash				= {}
@@ -238,18 +239,30 @@ class DataCacheMgr( object ):
 			self.mAllSatelliteList = self.mCommander.Satellite_GetList( ElisEnum.E_SORTING_FAVORITE )
 
 		if self.mAllSatelliteList and self.mAllSatelliteList[0].mError == 0 :
-		
 			count =  len( self.mAllSatelliteList )
 			LOG_TRACE( 'satellite count = %d' % count )
 			from pvr.PublicReference import ClassToList
 			LOG_TRACE( 'satellite[%s]' % ClassToList( 'convert', self.mAllSatelliteList ) )
+			if count == 0 :
+				self.SetEmptySatelliteInfo( True )
+			else :
+				self.SetEmptySatelliteInfo( False )
 
 			for i in range( count ):
 				satellite = self.mAllSatelliteList[i]
 				hashKey = '%d:%d' % ( satellite.mLongitude, satellite.mBand )
 				self.mAllSatelliteListHash[hashKey] = satellite
 		else :
+			self.SetEmptySatelliteInfo( True )
 			LOG_ERR('Has no Satellite')
+
+
+	def SetEmptySatelliteInfo( self, aFlag ) :
+		self.mIsEmptySatelliteInfo = aFlag
+
+
+	def GetEmptySatelliteInfo( self ) :
+		return self.mIsEmptySatelliteInfo
 
 
 	def LoadConfiguredSatellite( self ) :

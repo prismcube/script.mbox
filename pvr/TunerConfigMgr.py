@@ -261,12 +261,12 @@ class TunerConfigMgr( object ) :
 		ret1 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList1 )
 		ret2 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList2 )
 
-		"""
+
 		for satellite in self.mConfiguredList1 :
 			satellite.printdebug()
 		for satellite in self.mConfiguredList2 :
 			satellite.printdebug()
-		"""
+
 
 		if ret1 == True and ret2 == True :
 			return True
@@ -287,8 +287,6 @@ class TunerConfigMgr( object ) :
 		else :	# If empty list to return, add one default satellite
 			self.mConfiguredList1 = []
 			config = self.GetDefaultConfig( )
-			config.mSatelliteLongitude = self.mAllSatelliteList[ 0 ].mLongitude
-			config.mBandType = self.mAllSatelliteList[ 0 ].mBand
 			self.mConfiguredList1.append( config )
 		
 		# Get Configured Satellite List Tuner 2
@@ -298,8 +296,6 @@ class TunerConfigMgr( object ) :
 		else :	# If empty list to return, add one default satellite
 			self.mConfiguredList2 = []
 			config = self.GetDefaultConfig( )
-			config.mSatelliteLongitude = self.mAllSatelliteList[ 0 ].mLongitude
-			config.mBandType = self.mAllSatelliteList[ 0 ].mBand
 			self.mConfiguredList2.append( config )
 
 

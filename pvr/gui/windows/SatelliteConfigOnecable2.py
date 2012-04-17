@@ -133,8 +133,8 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 
 	def InitConfig( self ) :
 		self.ResetAllControl( )
-		
-		if self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
+		tunertype = self.mTunerMgr.GetCurrentTunerConnectionType( )
+		if tunertype == E_TUNER_SEPARATED :
 			self.AddEnumControl( E_SpinEx01, 'MDU' )
 			self.AddInputControl( E_Input01, 'Tuner %d PIN-Code' % ( self.mTunerIndex + 1 ), '%03d' % self.mTempTunerPin[self.mTunerIndex] )
 			self.AddUserEnumControl( E_SpinEx02, 'Tuner %d' % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[self.mTunerIndex] )
@@ -144,31 +144,36 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 			self.SetVisibleControls( disableControls, False )
 			self.SetEnableControls( disableControls, False )
 
-		elif self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
+		elif tunertype == E_TUNER_LOOPTHROUGH :
 			self.AddEnumControl( E_SpinEx01, 'MDU' )
-			self.AddInputControl( E_Input01, 'Tuner1 PIN-Code', '%03d' % self.mTempTunerPin[0] )
+			self.AddInputControl( E_Input01, 'Tuner 1 PIN-Code', '%03d' % self.mTempTunerPin[0] )
 			self.AddUserEnumControl( E_SpinEx02, 'Tuner 1', E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[0] )
 			self.AddUserEnumControl( E_SpinEx03, 'Tuner 1 Frequency', E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[0] ) )
 
-			self.AddInputControl( E_Input02, 'Tuner2 PIN-Code', '%03d' % self.mTempTunerPin[1] )
+			self.AddInputControl( E_Input02, 'Tuner 2 PIN-Code', '%03d' % self.mTempTunerPin[1] )
 			self.AddUserEnumControl( E_SpinEx04, 'Tuner 2', E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[1] )
 			self.AddUserEnumControl( E_SpinEx05, 'Tuner 2 Frequency', E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[1] ) )
+
+			disableControls = [ E_Input02, E_SpinEx04, E_SpinEx05 ]
+			self.SetVisibleControls( disableControls, True )
+			self.SetEnableControls( disableControls, True )
 
 		self.InitControl( )
 		self.DisableControl( )
 		
 	def DisableControl( self ) :
+		tunertype = self.mTunerMgr.GetCurrentTunerConnectionType( )
 		selectedIndex = self.GetSelectedIndex( E_SpinEx01 )
 		enableControls = [ E_Input01, E_Input02 ]
 		if selectedIndex == 0 :
-			if self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
+			if tunertype == E_TUNER_SEPARATED :
 				self.SetEnableControl( E_Input01, False )
-			elif self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
+			else :
 				self.SetEnableControls( enableControls, False )
 		else :
-			if self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
+			if tunertype == E_TUNER_SEPARATED :
 				self.SetEnableControl( E_Input01, True )
-			elif self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
+			else :
 				self.SetEnableControls( enableControls, True )
 
 	def LoadConfig( self ) :

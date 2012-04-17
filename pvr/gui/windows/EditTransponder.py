@@ -9,6 +9,9 @@ from ElisClass import *
 from ElisProperty import ElisPropertyEnum
 
 
+E_DEFAULT_GOURP_ID		= 9000
+
+
 class EditTransponder( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
@@ -20,6 +23,14 @@ class EditTransponder( SettingWindow ) :
 
 			
 	def onInit( self ) :
+		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( False )
+		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( 'Error', 'Satellite Infomation is empty. Please Reset STB' )
+			dialog.doModal( )
+			self.close( )
+			return
+
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
@@ -27,7 +38,8 @@ class EditTransponder( SettingWindow ) :
 		self.InitConfig( )
 		self.SetSettingWindowLabel( 'Edit Transponder' )
 		self.mInitialized = True
-
+		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True )
+		
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )

@@ -40,7 +40,7 @@ class MainMenu( BaseWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 		self.mCtrlMainMenu = self.getControl( LIST_ID_MAIN_MENU )
 		if self.mStartMediaCenter == True :
-			self.mCommander.AppMediaPlayer_Control( 0 )
+			ret = self.mCommander.AppMediaPlayer_Control( 0 )
 			WinMgr.GetInstance().CheckSkinChange( )
 			self.mStartMediaCenter = False
 
