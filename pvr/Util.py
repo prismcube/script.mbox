@@ -23,7 +23,7 @@ E_LOG_NORMAL = 0
 E_LOG_ERR    = 2
 E_LOG_WARN   = 1
 E_LOG_DEBUG  = 0
-E_DEBUG_LEVEL = E_LOG_ERR
+E_DEBUG_LEVEL = E_LOG_DEBUG
 
 class TimeFormatEnum(object):
 	E_AW_DD_MM_YYYY			= 0
@@ -33,6 +33,8 @@ class TimeFormatEnum(object):
 	E_AW_HH_MM				= 4
 	E_HH_MM_SS				= 5
 	E_WEEK_OF_DAY			= 6
+	E_AW_DD_MON				= 7
+	
 
 def ClearThreads( ):
 	gThreads.clear()
@@ -269,6 +271,8 @@ def TimeToString( aTime, aFlag=0 ) :
 		return time.strftime("%H:%M:%S", time.gmtime( aTime ) )
 	elif aFlag == TimeFormatEnum.E_WEEK_OF_DAY :
 		return time.strftime("%a", time.gmtime( aTime ) )			
+	elif aFlag == TimeFormatEnum.E_AW_DD_MON :
+		return time.strftime("%a. %d %b", time.gmtime( aTime ) )			
 	else :
 		strTime = time.strftime('%a, %d.%m.%Y', aTime )
 		LOG_TRACE('strTime=%s' %strTime )
