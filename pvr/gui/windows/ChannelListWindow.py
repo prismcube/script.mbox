@@ -13,17 +13,17 @@ from ElisEnum import ElisEnum
 from ElisEventBus import ElisEventBus
 from ElisEventClass import *
 from ElisClass import *
-
-from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
-from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit, ParseLabelToCh
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
+
+from pvr.Util import RunThread, GuiLock, GuiLock2, TimeToString, TimeFormatEnum
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+from pvr.GuiHelper import GetSelectedLongitudeString, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit, ParseLabelToCh, Strings
 
 from copy import deepcopy
 from inspect import currentframe
 import threading, time, os, re
 
-import pvr.Msg as Msg
 import pvr.gui.windows.Define_string as MsgId
 
 FLAG_MASK_ADD    = 0x01
@@ -451,8 +451,8 @@ class ChannelListWindow( BaseWindow ) :
 		ret = E_DIALOG_STATE_NO
 
 		#ask save question
-		head =  Msg.Strings( MsgId.LANG_CONFIRM )
-		line1 = Msg.Strings( MsgId.LANG_DELETE_ALL_CHANNEL )
+		head =  Strings( MsgId.LANG_CONFIRM )
+		line1 = Strings( MsgId.LANG_DELETE_ALL_CHANNEL )
 
 		GuiLock2( True )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -678,7 +678,7 @@ class ChannelListWindow( BaseWindow ) :
 				chindex += 1
 
 			if self.mChannelList == None:
-				label = 'Empty Channels'#Msg.Strings( MsgId.LANG_NO_CHANNELS )
+				label = 'Empty Channels'#Strings( MsgId.LANG_NO_CHANNELS )
 				self.UpdateLabelGUI( self.mCtrlChannelName.getId( ), label )
 				LOG_TRACE( 'empty channel, iChannel[%s]'% self.mChannelList )
 				return 
@@ -698,7 +698,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		else:
 			if self.mChannelList == None:
-				label = 'Empty Channels'#Msg.Strings( MsgId.LANG_NO_CHANNELS )
+				label = 'Empty Channels'#Strings( MsgId.LANG_NO_CHANNELS )
 				self.UpdateLabelGUI( self.mCtrlChannelName.getId( ), label )
 				LOG_TRACE( 'empty channel, iChannel[%s]'% self.mChannelList )
 				return 
@@ -792,7 +792,7 @@ class ChannelListWindow( BaseWindow ) :
 					for itemClass in self.mListFavorite:
 						testlistItems.append( xbmcgui.ListItem(itemClass.mGroupName) )
 				else:
-					testlistItems.append( xbmcgui.ListItem( Msg.Strings(MsgId.LANG_NONE) ) )
+					testlistItems.append( xbmcgui.ListItem( Strings(MsgId.LANG_NONE) ) )
 
 			if testlistItems != [] :
 				#submenu update
@@ -1045,9 +1045,9 @@ class ChannelListWindow( BaseWindow ) :
 				label1 = EnumToString( 'mode', self.mZappingMode )
 				label2 = self.mCtrlListSubmenu.getSelectedItem( ).getLabel( )
 
-				head =  Msg.Strings( MsgId.LANG_SETTING_TO_CHANGE_ZAPPING_MODE )
+				head =  Strings( MsgId.LANG_SETTING_TO_CHANGE_ZAPPING_MODE )
 				line1 = '%s / %s'% ( label1.title( ), label2.title( ) )
-				line2 = Msg.Strings( MsgId.LANG_DO_YOU_WANT_TO_SAVE_CHANNELS )
+				line2 = Strings( MsgId.LANG_DO_YOU_WANT_TO_SAVE_CHANNELS )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( head, str('%s\n\n%s'% (line1,line2) ) )
@@ -1148,8 +1148,8 @@ class ChannelListWindow( BaseWindow ) :
 		#is change?
 		if self.mIsSave :
 			#ask save question
-			head =  Msg.Strings( MsgId.LANG_CONFIRM )
-			line1 = Msg.Strings( MsgId.LANG_DO_YOU_WANT_TO_SAVE_CHANNELS )
+			head =  Strings( MsgId.LANG_CONFIRM )
+			line1 = Strings( MsgId.LANG_DO_YOU_WANT_TO_SAVE_CHANNELS )
 
 			GuiLock2( True )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -1204,7 +1204,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			self.mCtrlListSubmenu.reset( )
 			testlistItems = []
-			testlistItems.append(xbmcgui.ListItem( Msg.Strings(MsgId.LANG_NONE) ) )
+			testlistItems.append(xbmcgui.ListItem( Strings(MsgId.LANG_NONE) ) )
 			self.mCtrlListSubmenu.addItems( testlistItems )
 
 			return
@@ -1248,12 +1248,12 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		list_Mainmenu = []
-		list_Mainmenu.append( Msg.Strings(MsgId.LANG_ALL_CHANNELS) )
-		list_Mainmenu.append( Msg.Strings(MsgId.LANG_SATELLITE)    )
-		list_Mainmenu.append( Msg.Strings(MsgId.LANG_FTA)          )
-		list_Mainmenu.append( Msg.Strings(MsgId.LANG_FAVORITE)     )
+		list_Mainmenu.append( Strings(MsgId.LANG_ALL_CHANNELS) )
+		list_Mainmenu.append( Strings(MsgId.LANG_SATELLITE)    )
+		list_Mainmenu.append( Strings(MsgId.LANG_FTA)          )
+		list_Mainmenu.append( Strings(MsgId.LANG_FAVORITE)     )
 		list_Mainmenu.append( 'MODE' )
-		list_Mainmenu.append( Msg.Strings(MsgId.LANG_BACK)     )
+		list_Mainmenu.append( Strings(MsgId.LANG_BACK)     )
 		testlistItems = []
 		for item in range( len(list_Mainmenu) ) :
 			testlistItems.append( xbmcgui.ListItem(list_Mainmenu[item]) )
@@ -1359,7 +1359,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		#no channel is set Label comment
 		if self.mChannelList == None:
-			label = 'Empty Channels'#Msg.Strings( MsgId.LANG_NO_CHANNELS )
+			label = 'Empty Channels'#Strings( MsgId.LANG_NO_CHANNELS )
 			self.UpdateLabelGUI( self.mCtrlChannelName.getId( ), label )
 
 			LOG_TRACE( 'empty channel, iChannel[%s]'% self.mChannelList )
@@ -1703,7 +1703,7 @@ class ChannelListWindow( BaseWindow ) :
 		#popup pin-code dialog
 		if self.mPincodeEnter > FLAG_MASK_NONE :
 			try :
-				msg = Msg.Strings(MsgId.LANG_INPUT_PIN_CODE)
+				msg = Strings(MsgId.LANG_INPUT_PIN_CODE)
 
 				inputPin = ''
 				self.mDataCache.Player_AVBlank( True, False )
@@ -1731,8 +1731,8 @@ class ChannelListWindow( BaseWindow ) :
 					LOG_TRACE( 'Pincode success' )
 
 				else:
-					msg1 = Msg.Strings(MsgId.LANG_ERROR)
-					msg2 = Msg.Strings(MsgId.LANG_WRONG_PIN_CODE)
+					msg1 = Strings(MsgId.LANG_ERROR)
+					msg2 = Strings(MsgId.LANG_WRONG_PIN_CODE)
 					GuiLock2( True )
 					xbmcgui.Dialog( ).ok( msg1, msg2 )
 					GuiLock2( False )
@@ -2355,28 +2355,28 @@ class ChannelListWindow( BaseWindow ) :
 		#default context item
 		context = []
 		if self.mChannelList :
-			context.append( ContextItem( Msg.Strings( MsgId.LANG_LOCK ),   CONTEXT_ACTION_LOCK ) )
-			context.append( ContextItem( Msg.Strings( MsgId.LANG_UNLOCK ), CONTEXT_ACTION_UNLOCK ) )
-			context.append( ContextItem( Msg.Strings( MsgId.LANG_SKIP ),   CONTEXT_ACTION_SKIP ) )
-			context.append( ContextItem( Msg.Strings( MsgId.LANG_UNSKIP ), CONTEXT_ACTION_UNSKIP  ) )
-			context.append( ContextItem( Msg.Strings( MsgId.LANG_DELETE ), CONTEXT_ACTION_DELETE ) )
-			context.append( ContextItem( Msg.Strings( MsgId.LANG_MOVE ),   CONTEXT_ACTION_MOVE ) )
+			context.append( ContextItem( Strings( MsgId.LANG_LOCK ),   CONTEXT_ACTION_LOCK ) )
+			context.append( ContextItem( Strings( MsgId.LANG_UNLOCK ), CONTEXT_ACTION_UNLOCK ) )
+			context.append( ContextItem( Strings( MsgId.LANG_SKIP ),   CONTEXT_ACTION_SKIP ) )
+			context.append( ContextItem( Strings( MsgId.LANG_UNSKIP ), CONTEXT_ACTION_UNSKIP  ) )
+			context.append( ContextItem( Strings( MsgId.LANG_DELETE ), CONTEXT_ACTION_DELETE ) )
+			context.append( ContextItem( Strings( MsgId.LANG_MOVE ),   CONTEXT_ACTION_MOVE ) )
 
 
 		if aMode == FLAG_OPT_LIST :
 
 			if self.mChannelList :
 				if self.mEditFavorite:
-					lblItem = '%s'% Msg.Strings( MsgId.LANG_ADD_TO_FAV )
+					lblItem = '%s'% Strings( MsgId.LANG_ADD_TO_FAV )
 				else:
-					label   = '%s\tNone'% Msg.Strings( MsgId.LANG_ADD_TO_FAV )
+					label   = '%s\tNone'% Strings( MsgId.LANG_ADD_TO_FAV )
 					lblItem = str('%s%s%s'%( E_TAG_COLOR_GREY3, label, E_TAG_COLOR_END ) )
 
 				context.append( ContextItem( lblItem, CONTEXT_ACTION_ADD_TO_FAV  ) )
 
 			else :
-				head =  Msg.Strings( MsgId.LANG_INFOMATION )
-				line1 = Msg.Strings( MsgId.LANG_NO_CHANNELS )
+				head =  Strings( MsgId.LANG_INFOMATION )
+				line1 = Strings( MsgId.LANG_NO_CHANNELS )
 
 				xbmcgui.Dialog( ).ok(head, line1)
 				return
@@ -2386,16 +2386,16 @@ class ChannelListWindow( BaseWindow ) :
 			if not self.mChannelList :
 				context = []
 
-			context.append( ContextItem( Msg.Strings( MsgId.LANG_CREATE_NEW_GROUP ), CONTEXT_ACTION_CREATE_GROUP_FAV ) )
+			context.append( ContextItem( Strings( MsgId.LANG_CREATE_NEW_GROUP ), CONTEXT_ACTION_CREATE_GROUP_FAV ) )
 
 			if self.mEditFavorite:
-				context.append( ContextItem( '%s'% Msg.Strings( MsgId.LANG_RENAME_FAV ), CONTEXT_ACTION_RENAME_FAV ) )
-				context.append( ContextItem( '%s'% Msg.Strings( MsgId.LANG_DELETE_FAV ), CONTEXT_ACTION_DELETE_FAV ) )
+				context.append( ContextItem( '%s'% Strings( MsgId.LANG_RENAME_FAV ), CONTEXT_ACTION_RENAME_FAV ) )
+				context.append( ContextItem( '%s'% Strings( MsgId.LANG_DELETE_FAV ), CONTEXT_ACTION_DELETE_FAV ) )
 				
 				
 			else:
-				label1   = '%s\tNone'% Msg.Strings( MsgId.LANG_RENAME_FAV )
-				label2   = '%s\tNone'% Msg.Strings( MsgId.LANG_DELETE_FAV )
+				label1   = '%s\tNone'% Strings( MsgId.LANG_RENAME_FAV )
+				label2   = '%s\tNone'% Strings( MsgId.LANG_DELETE_FAV )
 				lblItem2 = str('%s%s%s'%( E_TAG_COLOR_GREY3, label1, E_TAG_COLOR_END ) )
 				lblItem3 = str('%s%s%s'%( E_TAG_COLOR_GREY3, label2, E_TAG_COLOR_END ) )
 				context.append( ContextItem( lblItem2 , CONTEXT_ACTION_RENAME_FAV ) )
@@ -2461,13 +2461,13 @@ class ChannelListWindow( BaseWindow ) :
 			if selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV :
 				#create
 				result = ''
-				label = Msg.Strings( MsgId.LANG_CREATE_NEW_GROUP )
+				label = Strings( MsgId.LANG_CREATE_NEW_GROUP )
 
 			elif selectedAction == CONTEXT_ACTION_RENAME_FAV :
 				#rename
 				default = groupName
 				result = '%d'%grpIdx + ':' + groupName + ':'
-				label = Msg.Strings( MsgId.LANG_RENAME_FAV )
+				label = Strings( MsgId.LANG_RENAME_FAV )
 
 			kb = xbmc.Keyboard( default, label, False )
 			kb.doModal( )

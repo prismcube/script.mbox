@@ -6,7 +6,8 @@ import time
 import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.BaseWindow import BaseWindow, Action
-from pvr.Util import GuiLock, LOG_TRACE
+from pvr.Util import GuiLock
+from util.Logger import LOG_TRACE
 
 
 class DummyWindow( BaseWindow ):

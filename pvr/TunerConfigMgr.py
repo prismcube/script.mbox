@@ -11,7 +11,7 @@ import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from ElisClass import *
 from pvr.gui.GuiConfig import *
-from pvr.Util import LOG_WARN, LOG_TRACE, LOG_ERR
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
 gTunerConfigMgr = None
 

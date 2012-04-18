@@ -10,8 +10,8 @@ from ElisEnum import ElisEnum
 from ElisProperty import ElisPropertyEnum
 from pvr.gui.GuiConfig import *
 
-from pvr.Util import LOG_WARN, LOG_TRACE, LOG_ERR
-import pvr.Msg as Msg
+from pvr.GuiHelper import Strings
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 import pvr.gui.windows.Define_string as MsgId
 
 """
@@ -116,12 +116,12 @@ class DialogEditChannelList( SettingDialog ) :
 		#------------------ section1 : channel control -------------------
 		if self.mChannelExist :
 			#visible group
-			self.AddInputControl( E_DialogInput01, Msg.Strings( MsgId.LANG_LOCK ),     '' )
-			self.AddInputControl( E_DialogInput02, Msg.Strings( MsgId.LANG_UNLOCK ),   '' )
-			self.AddInputControl( E_DialogInput03, Msg.Strings( MsgId.LANG_SKIP ),     '' )
-			self.AddInputControl( E_DialogInput04, Msg.Strings( MsgId.LANG_UNSKIP ),   '' )
-			self.AddInputControl( E_DialogInput05, Msg.Strings( MsgId.LANG_DELETE ),   '' )
-			self.AddInputControl( E_DialogInput06, Msg.Strings( MsgId.LANG_MOVE ),     '' )
+			self.AddInputControl( E_DialogInput01, Strings( MsgId.LANG_LOCK ),     '' )
+			self.AddInputControl( E_DialogInput02, Strings( MsgId.LANG_UNLOCK ),   '' )
+			self.AddInputControl( E_DialogInput03, Strings( MsgId.LANG_SKIP ),     '' )
+			self.AddInputControl( E_DialogInput04, Strings( MsgId.LANG_UNSKIP ),   '' )
+			self.AddInputControl( E_DialogInput05, Strings( MsgId.LANG_DELETE ),   '' )
+			self.AddInputControl( E_DialogInput06, Strings( MsgId.LANG_MOVE ),     '' )
 		else :
 			self.SetVisibleControl( E_DialogInput01, False )
 			self.SetVisibleControl( E_DialogInput02, False )
@@ -138,10 +138,10 @@ class DialogEditChannelList( SettingDialog ) :
 			self.SetVisibleControl( E_DialogInput09, False )
 
 			if self.mFavoriteList :
-				self.AddUserEnumControl( E_DialogSpinEx01, Msg.Strings( MsgId.LANG_ADD_TO_FAV ), self.mFavoriteList, 0)
-				self.AddInputControl( E_DialogInput07, '', Msg.Strings( MsgId.LANG_ADD_OK ) )
+				self.AddUserEnumControl( E_DialogSpinEx01, Strings( MsgId.LANG_ADD_TO_FAV ), self.mFavoriteList, 0)
+				self.AddInputControl( E_DialogInput07, '', Strings( MsgId.LANG_ADD_OK ) )
 			else :
-				self.AddInputControl( E_DialogInput07, Msg.Strings( MsgId.LANG_ADD_TO_FAV ), Msg.Strings( MsgId.LANG_NONE ) )
+				self.AddInputControl( E_DialogInput07, Strings( MsgId.LANG_ADD_TO_FAV ), Strings( MsgId.LANG_NONE ) )
 				self.SetEnableControl( E_DialogInput07, False )
 
 				#unused visible false
@@ -149,17 +149,17 @@ class DialogEditChannelList( SettingDialog ) :
 
 
 		elif self.mMode == FLAG_OPT_GROUP :
-			self.AddInputControl( E_DialogInput07, Msg.Strings( MsgId.LANG_CREATE_NEW_GROUP ), '' )
+			self.AddInputControl( E_DialogInput07, Strings( MsgId.LANG_CREATE_NEW_GROUP ), '' )
 
 			if self.mFavoriteList :
-				self.AddUserEnumControl( E_DialogSpinEx01, Msg.Strings( MsgId.LANG_RENAME_FAV ), self.mFavoriteList, 0)
-				self.AddInputControl( E_DialogInput08, '', Msg.Strings( MsgId.LANG_RENAME_OK ) )
-				self.AddUserEnumControl( E_DialogSpinEx02, Msg.Strings( MsgId.LANG_DELETE_FAV ), self.mFavoriteList, 0)
-				self.AddInputControl( E_DialogInput09, '', Msg.Strings( MsgId.LANG_DELETE_OK ) )
+				self.AddUserEnumControl( E_DialogSpinEx01, Strings( MsgId.LANG_RENAME_FAV ), self.mFavoriteList, 0)
+				self.AddInputControl( E_DialogInput08, '', Strings( MsgId.LANG_RENAME_OK ) )
+				self.AddUserEnumControl( E_DialogSpinEx02, Strings( MsgId.LANG_DELETE_FAV ), self.mFavoriteList, 0)
+				self.AddInputControl( E_DialogInput09, '', Strings( MsgId.LANG_DELETE_OK ) )
 
 			else :
-				self.AddInputControl( E_DialogInput08, Msg.Strings( MsgId.LANG_RENAME_FAV ), Msg.Strings( MsgId.LANG_NONE ) )
-				self.AddInputControl( E_DialogInput09, Msg.Strings( MsgId.LANG_DELETE_FAV ), Msg.Strings( MsgId.LANG_NONE ) )
+				self.AddInputControl( E_DialogInput08, Strings( MsgId.LANG_RENAME_FAV ), Strings( MsgId.LANG_NONE ) )
+				self.AddInputControl( E_DialogInput09, Strings( MsgId.LANG_DELETE_FAV ), Strings( MsgId.LANG_NONE ) )
 				self.SetEnableControl( E_DialogInput08, False )
 				self.SetEnableControl( E_DialogInput09, False )
 

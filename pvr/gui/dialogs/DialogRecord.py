@@ -16,6 +16,7 @@ from pvr.gui.GuiConfig import *
 import pvr.ElisMgr
 
 from pvr.Util import RunThread, GuiLock, TimeToString, TimeFormatEnum
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
 
 # Control IDs

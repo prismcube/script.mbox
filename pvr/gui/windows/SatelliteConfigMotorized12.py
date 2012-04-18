@@ -8,7 +8,8 @@ from pvr.gui.BaseWindow import SettingWindow, Action
 from ElisProperty import ElisPropertyEnum
 from ElisEnum import ElisEnum
 from ElisEventClass import *
-from pvr.Util import LOG_WARN, LOG_TRACE, LOG_ERR, GuiLock
+from pvr.Util import GuiLock
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
 
 class SatelliteConfigMotorized12( SettingWindow ) :

@@ -15,10 +15,10 @@ from ElisEventBus import ElisEventBus
 from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 
-from pvr.Util import RunThread, GuiLock, GuiLock2, LOG_TRACE, LOG_WARN, LOG_ERR, TimeToString, TimeFormatEnum
-from pvr.PublicReference import EpgInfoComponentImage, GetSelectedLongitudeString, ClassToList, EnumToString
+from pvr.Util import RunThread, GuiLock, GuiLock2, TimeToString, TimeFormatEnum
+from pvr.GuiHelper import EpgInfoComponentImage, GetSelectedLongitudeString, ClassToList, EnumToString, Strings
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
-import pvr.Msg as Msg
 import pvr.gui.windows.Define_string as MsgId
 
 import thread, threading, time, os

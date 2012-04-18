@@ -10,7 +10,8 @@ import pvr.ElisMgr
 import pvr.DataCacheMgr
 import pvr.TunerConfigMgr
 import thread
-from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
+from pvr.Util import RunThread, GuiLock, GuiLock2
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
 
 class Action(object) :

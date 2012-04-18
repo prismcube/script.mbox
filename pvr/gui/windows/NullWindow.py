@@ -10,7 +10,8 @@ from inspect import currentframe
 import pvr.ElisMgr
 from ElisEnum import ElisEnum
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-from pvr.Util import RunThread, GuiLock, GuiLock2, LOG_TRACE, LOG_ERR, LOG_WARN
+from pvr.Util import RunThread, GuiLock, GuiLock2
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 from pvr.gui.GuiConfig import *
 from ElisEventClass import *
 
@@ -32,7 +33,7 @@ class NullWindow( BaseWindow ) :
 		self.mGotoWinID = None
 		self.mOnEventing= False
 
-		self.mEventBus.Register( self )
+		#self.mEventBus.Register( self )
 
 		if self.mInitialized == False :
 			self.mInitialized = True

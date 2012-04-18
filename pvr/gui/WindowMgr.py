@@ -9,7 +9,7 @@ import weakref
 from gui.BaseWindow import BaseWindow
 from inspect import currentframe
 from elementtree import ElementTree
-from pvr.Util import LOG_TRACE, LOG_WARN, LOG_ERR
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
 
 WIN_ID_NULLWINDOW 					= 1

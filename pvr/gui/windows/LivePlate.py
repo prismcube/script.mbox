@@ -14,12 +14,12 @@ from ElisAction import ElisAction
 from ElisEnum import ElisEnum
 from ElisEventBus import ElisEventBus
 from ElisEventClass import *
-
-from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
-from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 
-import pvr.Msg as Msg
+from pvr.Util import RunThread, GuiLock, GuiLock2, TimeToString, TimeFormatEnum
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+from pvr.GuiHelper import GetSelectedLongitudeString, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit, Strings
+
 import pvr.gui.windows.Define_string as MsgId
 
 import threading, time, os
@@ -711,7 +711,7 @@ class LivePlate(BaseWindow):
 		while self.mPincodeEnter > FLAG_MASK_NONE :
 
 			try :
-				msg = Msg.Strings(MsgId.LANG_INPUT_PIN_CODE)
+				msg = Strings(MsgId.LANG_INPUT_PIN_CODE)
 				inputPin = ''
 
 				#ret = self.mDataCache.Channel_SetInitialBlank( True )
@@ -752,8 +752,8 @@ class LivePlate(BaseWindow):
 					LOG_TRACE( 'Pincode success' ) 
 					break
 				else:
-					msg1 = Msg.Strings(MsgId.LANG_ERROR)
-					msg2 = Msg.Strings(MsgId.LANG_WRONG_PIN_CODE)
+					msg1 = Strings(MsgId.LANG_ERROR)
+					msg2 = Strings(MsgId.LANG_WRONG_PIN_CODE)
 					GuiLock2( True )
 					xbmcgui.Dialog().ok( msg1, msg2 )
 					GuiLock2( False )
