@@ -314,7 +314,8 @@ class TimeShiftPlate(BaseWindow):
 				elif aEvent.mType == ElisEnum.E_EOF_END :
 					LOG_TRACE( 'EventRecv EOF_STOP' )
 					if self.mMode == ElisEnum.E_MODE_PVR :
-						self.TimeshiftAction( self.mCtrlBtnStop.getId() )
+						pass
+						#xbmc.executebuiltin('xbmc.Action(stop)')
 
 
 		else:

@@ -10,8 +10,9 @@ from inspect import currentframe
 import pvr.ElisMgr
 from ElisEnum import ElisEnum
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-from pvr.Util import GuiLock2, LOG_TRACE, LOG_ERR, LOG_WARN, RunThread
+from pvr.Util import RunThread, GuiLock, GuiLock2, LOG_TRACE, LOG_ERR, LOG_WARN
 from pvr.gui.GuiConfig import *
+from ElisEventClass import *
 
 E_TABLE_ALLCHANNEL = 0
 E_TABLE_ZAPPING = 1
@@ -29,6 +30,9 @@ class NullWindow( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		self.mGotoWinID = None
+		self.mOnEventing= False
+
+		self.mEventBus.Register( self )
 
 		if self.mInitialized == False :
 			self.mInitialized = True
@@ -251,6 +255,36 @@ class NullWindow( BaseWindow ) :
 		self.mLastFocusId = aControlId
 
 
+	@GuiLock
+	def onEvent(self, aEvent):
+		LOG_TRACE( 'Enter' )
+
+		if self.mWinId == xbmcgui.getCurrentWindowId():
+			LOG_TRACE( 'NullWindow winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
+			if aEvent.getName() == ElisEventPlaybackEOF.getName() :
+				#aEvent.printdebug()
+				LOG_TRACE( 'mType[%d]' %(aEvent.mType ) )
+
+				if self.mOnEventing :
+					LOG_TRACE('ignore event, mFlag_OnEvent[%s]'% self.mOnEventing)
+					return -1
+
+				self.mOnEventing = True
+
+				if aEvent.mType == ElisEnum.E_EOF_END :
+					LOG_TRACE( 'EventRecv EOF_STOP' )
+					xbmc.executebuiltin('xbmc.Action(stop)')
+
+				self.mOnEventing = False
+
+
+		else:
+			LOG_TRACE( 'NullWindow winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
+
+
+		LOG_TRACE( 'Leave' )
+
+
 	def RecordingStop( self ) :
 		LOG_TRACE('Enter')
 
@@ -287,4 +321,7 @@ class NullWindow( BaseWindow ) :
 	def GetKeyDisabled( self ) :
 		return self.mStatusIsArchive
 
+	def Close( self ) :
+		#self.mOnEventing = aDisable
+		self.mEventBus.Deregister( self )
 
