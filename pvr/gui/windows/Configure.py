@@ -5,9 +5,7 @@ import time
 
 import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DiaMgr
-import pvr.DataCacheMgr as CacheMgr
 from pvr.gui.BaseWindow import SettingWindow, Action
-import pvr.ElisMgr
 from ElisProperty import *
 from pvr.gui.GuiConfig import *
 from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
@@ -202,7 +200,10 @@ class Configure( SettingWindow ) :
 						state = 'External ping test success'
 					else :
 						state = 'External ping test failed'
-				self.mProgress.SetResult( True )
+				try :		
+					self.mProgress.SetResult( True )
+				except Exception, e :
+					LOG_ERR( 'Error exception[%s]' % e )
 				time.sleep( 1.5 )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'Complete', 'Network State : %s' % state )
@@ -863,7 +864,10 @@ class Configure( SettingWindow ) :
 	 			return
 
 			self.apList = self.mWireless.ScanAp( dev )
-			self.mProgress.SetResult( True )
+			try :
+				self.mProgress.SetResult( True )
+			except Exception, e :
+				LOG_ERR( 'Error exception[%s]' % e )
 			time.sleep( 1.5 )
 			dialog = xbmcgui.Dialog( )
 			if self.apList == None :

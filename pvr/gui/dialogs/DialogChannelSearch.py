@@ -167,7 +167,6 @@ class DialogChannelSearch( BaseDialog ) :
 			ret = self.mCommander.Channel_SearchByCarrier( self.mLongitude, self.mBand, self.mTransponderList )
 			if ret == False :
 				self.mEventBus.Deregister( self )
-				self.ReTune( )
 				self.CloseDialog( )
 				self.mDataCache.Player_AVBlank( False, False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -194,7 +193,8 @@ class DialogChannelSearch( BaseDialog ) :
  
 		if self.mIsFinished == True :
 			self.mEventBus.Deregister( self )
-			self.ReTune( )
+			if self.mScanMode == E_SCAN_SATELLITE :
+				self.ReTune( )
 			self.CloseDialog( )
 			self.mDataCache.Player_AVBlank( False, False )
 

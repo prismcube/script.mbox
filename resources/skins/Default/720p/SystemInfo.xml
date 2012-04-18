@@ -1,4 +1,4 @@
-<window id="3020">
+<window id="3024">
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>no</allowoverlay>
 	<controls>
@@ -125,7 +125,7 @@
 				<height>35</height>
 				<font>font13</font>
 				<textcolor>white</textcolor>
-				<label>Software version: 1.00</label>
+				<label>Software version: Beta-0.0.3</label>
 			</control>
 			<control type="label">
 				<posx>290</posx>
