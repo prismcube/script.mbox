@@ -65,7 +65,6 @@ class EPGWindow(BaseWindow):
 		self.SetPipScreen( )
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'EPG' )
 
-		LOG_TRACE('')
 		self.mIsTimerMode = False
 		self.mSelectedWeeklyTimer = 0
 
@@ -75,7 +74,6 @@ class EPGWindow(BaseWindow):
 		self.mListItems = []
 		self.mTimerList = []
 
-		LOG_TRACE('')
 		self.mEPGMode = int( GetSetting( 'EPG_MODE' ) )
 		self.mCtrlEPGMode = self.getControl( BUTTON_ID_EPG_MODE )
 		self.mCtrlList = self.getControl( LIST_ID_COMMON_EPG )
@@ -99,10 +97,8 @@ class EPGWindow(BaseWindow):
 		
 
 		self.UpdateViewMode( )
-		
-		LOG_TRACE('')
+		self.UpdateTimerMode( )
 		self.InitControl()
-		LOG_TRACE('')
 
 		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
 		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
@@ -117,9 +113,7 @@ class EPGWindow(BaseWindow):
 		LOG_TRACE('CHANNEL current=%s select=%s' %( self.mCurrentChannel, self.mSelectChannel ))
 
 		self.Load( )
-		LOG_TRACE('')
 		self.UpdateList( )
-		LOG_TRACE('')
 		self.UpdateEPGInfomation( )
 
 		self.mEventBus.Register( self )	
@@ -164,18 +158,15 @@ class EPGWindow(BaseWindow):
 
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
 			if self.mFocusId == LIST_ID_COMMON_EPG or self.mFocusId == LIST_ID_BIG_EPG :
-				LOG_TRACE('')
 				if self.mIsTimerMode == False :
 					self.UpdateEPGInfomation( )
 
 		elif actionId == Action.ACTION_PAGE_UP  or actionId == Action.ACTION_PAGE_DOWN :
 			if self.mFocusId == LIST_ID_COMMON_EPG or self.mFocusId == LIST_ID_BIG_EPG :
-				LOG_TRACE('')
 				if self.mIsTimerMode == False :
 					self.UpdateEPGInfomation( )
 		
 		elif actionId == Action.ACTION_CONTEXT_MENU:
-			LOG_TRACE('')
 			self.ShowContextMenu( )
 
 
@@ -246,7 +237,14 @@ class EPGWindow(BaseWindow):
 			self.mWin.setProperty( 'EPGMode', 'channel' )
 			
 		LOG_TRACE('---------------------self.mEPGMode=%d' %self.mEPGMode)
-		
+
+
+	def UpdateTimerMode( self ) :
+		if self.mIsTimerMode == True :	
+			self.mWin.setProperty( 'TimerMode', 'true' )
+		else :
+			self.mWin.setProperty( 'TimerMode', 'false' )
+
 
 	def Flush( self ) :
 		self.mEPGCount = 0
@@ -277,7 +275,6 @@ class EPGWindow(BaseWindow):
 
 
 	def LoadByChannel( self ):
-		LOG_TRACE('')
 
 		gmtFrom =  self.mGMTTime 
 		gmtUntil = self.mGMTTime + E_MAX_SCHEDULE_DAYS*3600*24
@@ -296,7 +293,6 @@ class EPGWindow(BaseWindow):
 		
 
 	def LoadByCurrent( self ):
-		LOG_TRACE('')	
 		
 		try :
 			self.mEPGList=self.mDataCache.Epgevent_GetCurrentList()
@@ -306,7 +302,6 @@ class EPGWindow(BaseWindow):
 	
 
 	def LoadByFollowing( self ):
-		LOG_TRACE('')
 		
 		try :
 			self.mEPGList=self.mDataCache.Epgevent_GetFollowingList()
@@ -346,14 +341,11 @@ class EPGWindow(BaseWindow):
 
 
 	def UpdateList( self, aUpdateOnly=False ) :
-		LOG_TRACE('')
 		if aUpdateOnly == False :
 			self.mListItems = []
 		self.LoadTimerList( )
 
-		LOG_TRACE('')
 		if self.mIsTimerMode == True :
-			LOG_TRACE('')
 
 			self.mCtrlBigList.reset()
 			self.mListItems = []
@@ -390,12 +382,12 @@ class EPGWindow(BaseWindow):
 					LOG_TRACE('weekday=%d'  %weekday )
 
 					listItem = xbmcgui.ListItem( '..' )
+					listItem.setProperty( 'StartTime', '' )
 					listItem.setProperty( 'Duration', '' )
 					listItem.setProperty( 'TimerType', 'None' )
 					listItem.setProperty( 'HasEvent', 'false' )
 
 					self.mListItems.append( listItem )					
-					LOG_TRACE('')					
 
 					for weeklyTimer in timer.mWeeklyTimer :
 						dateLeft = weeklyTimer.mDate - weekday
@@ -408,16 +400,16 @@ class EPGWindow(BaseWindow):
 						weeklyStarTime = dateLeft*24*3600 + timer.mStartTime + weeklyTimer.mStartTime - secondsNow
 
 						channel = self.mDataCache.Channel_GetByNumber( timer.mChannelNo )
-						LOG_TRACE('----------')
 						channel.printdebug()
 						tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
 
 						listItem = xbmcgui.ListItem( tempChannelName, timer.mName )							
 
-						#tempName = '%s(%s~%s)' %(TimeToString( weeklyStarTime, TimeFormatEnum.E_AW_DD_MM_YYYY ), TimeToString( weeklyStarTime, TimeFormatEnum.E_HH_MM ), TimeToString( weeklyStarTime + weeklyTimer.mDuration, TimeFormatEnum.E_HH_MM ) )
-						tempName = '%s(%d)' %(TimeToString( weeklyStarTime, TimeFormatEnum.E_AW_DD_MM_YYYY ), weeklyTimer.mDuration )						
-							
-						listItem.setProperty( 'Duration', tempName )
+						tempName = '%s' %(TimeToString( weeklyStarTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )						
+						listItem.setProperty( 'StartTime', tempName )
+
+						tempDuration = '%s~%s' %(TimeToString( weeklyStarTime, TimeFormatEnum.E_HH_MM ), TimeToString( weeklyStarTime + weeklyTimer.mDuration, TimeFormatEnum.E_HH_MM )) 
+						listItem.setProperty( 'Duration', tempDuration )
 
 						if self.IsRunningTimer( timer.mTimerId ) == True and \
 							weeklyStarTime < self.mDataCache.Datetime_GetLocalTime() and self.mDataCache.Datetime_GetLocalTime() < weeklyStarTime + weeklyTimer.mDuration :
@@ -435,27 +427,24 @@ class EPGWindow(BaseWindow):
 					for i in range( len( self.mTimerList ) ) :
 						timer = self.mTimerList[i]
 						channel = self.mDataCache.Channel_GetByNumber( timer.mChannelNo )
-						LOG_TRACE('----------')
 						channel.printdebug()
 						tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
 
-						LOG_TRACE('----------')
-						
 						if aUpdateOnly == False :
-							LOG_TRACE('----------')						
 							listItem = xbmcgui.ListItem( tempChannelName, timer.mName )	
 						else :
-							LOG_TRACE('----------')						
 							listItem = self.mListItems[i]
 
 						if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY :
 							tempName = 'Weekly'
+							listItem.setProperty( 'Duration', '' )
+							tempDuration = ''
 						else :
-							tempName = '%s~%s' %(TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( timer.mStartTime + timer.mDuration, TimeFormatEnum.E_HH_MM ) )
+							tempName = '%s' %(TimeToString( timer.mStartTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )						
+							tempDuration = '%s~%s' %(TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( timer.mStartTime + timer.mDuration, TimeFormatEnum.E_HH_MM ) )
 
-						LOG_TRACE('----------')
-						
-						listItem.setProperty( 'Duration', tempName )
+						listItem.setProperty( 'StartTime', tempName )
+						listItem.setProperty( 'Duration', tempDuration )
 
 						if self.IsRunningTimer( timer.mTimerId ) == True :
 							listItem.setProperty( 'TimerType', 'Running' )
@@ -464,15 +453,12 @@ class EPGWindow(BaseWindow):
 
 						listItem.setProperty( 'HasEvent', 'false' )
 
-						LOG_TRACE('----------')
-						
 						if aUpdateOnly == False :
 							self.mListItems.append( listItem )
 
 						LOG_TRACE('---------- self.mListItems COUNT=%d' %len(self.mListItems))
 						
 					if aUpdateOnly == False :
-						LOG_TRACE('----------')					
 						self.mCtrlBigList.addItems( self.mListItems )
 
 					xbmc.executebuiltin('container.update')
@@ -540,7 +526,8 @@ class EPGWindow(BaseWindow):
 
 						epgStart = epgEvent.mStartTime + self.mLocalOffset
 						tempName = '%s~%s' %(TimeToString( epgStart, TimeFormatEnum.E_HH_MM ), TimeToString( epgStart + epgEvent.mDuration, TimeFormatEnum.E_HH_MM ) )
-						listItem.setProperty( 'Duration', tempName )
+						listItem.setProperty( 'StartTime', tempName )
+						listItem.setProperty( 'Duration', '' )
 						listItem.setProperty( 'HasEvent', 'true' )
  
 						timerId = self.GetTimerByEPG( epgEvent )
@@ -558,7 +545,8 @@ class EPGWindow(BaseWindow):
 						else:
 							listItem = self.mListItems[i]
 
-						listItem.setProperty( 'Duration', '' )
+						listItem.setProperty( 'StartTime', '' )
+						listItem.setProperty( 'Duration', '' )						
 						listItem.setProperty( 'HasEvent', 'false' )
 						timerId = self.GetTimerByChannel( channel )
  
@@ -606,7 +594,8 @@ class EPGWindow(BaseWindow):
 
 						epgStart = epgEvent.mStartTime + self.mLocalOffset
 						tempName = '%s~%s' %(TimeToString( epgStart, TimeFormatEnum.E_HH_MM ), TimeToString( epgStart + epgEvent.mDuration, TimeFormatEnum.E_HH_MM ) )
-						listItem.setProperty( 'Duration', tempName )
+						listItem.setProperty( 'StartTime', tempName )
+						listItem.setProperty( 'Duration', '' )						
 						listItem.setProperty( 'HasEvent', 'true' )
  
 						timerId = self.GetTimerByEPG( epgEvent )
@@ -620,7 +609,8 @@ class EPGWindow(BaseWindow):
 						
 					else :
 						listItem = xbmcgui.ListItem( tempChannelName, 'No Event' )
-						listItem.setProperty( 'Duration', '' )
+						listItem.setProperty( 'StartTime', '' )
+						listItem.setProperty( 'Duration', '' )						
 						listItem.setProperty( 'HasEvent', 'false' )
  						timerId = self.GetTimerByChannel( channel )
 
@@ -646,8 +636,6 @@ class EPGWindow(BaseWindow):
 				xbmc.executebuiltin('container.update')			
 				#xbmc.executebuiltin('xbmc.Container.SetViewMode(%d)' %E_VIEW_FOLLOWING)				
 
-		LOG_TRACE('')
-
 
 	def GetEPGByIds( self, aSid, aTsid, aOnid ) :
 		if self.mEPGList == None :
@@ -672,7 +660,6 @@ class EPGWindow(BaseWindow):
 
 
 	def ShowContextMenu( self ) :
-		LOG_TRACE('')
 		context = []
 		
 		if self.mIsTimerMode == True :
@@ -685,15 +672,11 @@ class EPGWindow(BaseWindow):
 
 			selectedEPG = self.GetSelectedEPG()
 
-			LOG_TRACE('')
 			if selectedEPG :
-				LOG_TRACE('')		
 				if selectedEPG.mHasTimer :
-					LOG_TRACE('')			
 					context.append( ContextItem( 'Edit Timer', CONTEXT_EDIT_TIMER ) )
 					context.append( ContextItem( 'Delete Timer', CONTEXT_DELETE_TIMER ) )
 				else :
-					LOG_TRACE('')
 					timerId = self.GetTimerByEPG( selectedEPG )
 					if timerId > 0 :
 						context.append( ContextItem( 'Edit Timer', CONTEXT_EDIT_TIMER ) )
@@ -712,22 +695,18 @@ class EPGWindow(BaseWindow):
 				
 
 			else :
-				LOG_TRACE('')		
 				timerId = 0
 
 				if self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :				
-					LOG_TRACE('')			
 					selectedPos = self.mCtrlBigList.getSelectedPosition()
 					if selectedPos >= 0 and selectedPos < len( self.mChannelList ) :
 						channel = self.mChannelList[ selectedPos ]
 						timerId = self.GetTimerByChannel( channel )					
 
 				if timerId > 0 :
-					LOG_TRACE('')			
 					context.append( ContextItem( 'Edit Timer', CONTEXT_EDIT_TIMER ) )
 					context.append( ContextItem( 'Delete Timer', CONTEXT_DELETE_TIMER ) )
 				else :
-					LOG_TRACE('')			
 					context.append( ContextItem( 'Add Manual Timer', CONTEXT_ADD_MANUAL_TIMER ) )
 
 				if 	self.mTimerList and len( self.mTimerList ) > 0 :
@@ -866,7 +845,6 @@ class EPGWindow(BaseWindow):
 
 			else :
 				if self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :				
-					LOG_TRACE('')			
 					selectedPos = self.mCtrlBigList.getSelectedPosition()
 					if selectedPos >= 0 and selectedPos < len( self.mChannelList ) :
 						channel = self.mChannelList[ selectedPos ]
@@ -912,6 +890,7 @@ class EPGWindow(BaseWindow):
 		self.mIsTimerMode = True
 		self.mSelectedWeeklyTimer = 0
 		self.Load()
+		self.UpdateTimerMode( )
 		self.UpdateList()
 		self.UpdateEPGInfomation()
 		
@@ -1055,6 +1034,7 @@ class EPGWindow(BaseWindow):
 				startTime = aEPG.mStartTime +  self.mLocalOffset 
 				endTime = startTime + aEPG.mDuration
 
+				""" Debug 
 				LOG_TRACE('timerType=%d' %timer.mTimerType )
 				LOG_TRACE('id=%d:%d %d:%d %d:%d' %(aEPG.mSid, timer.mSid, aEPG.mTsid, timer.mTsid, aEPG.mOnid, timer.mOnid) )
 				LOG_TRACE('EPG Start Time = %s' % TimeToString( startTime, TimeFormatEnum.E_HH_MM ) )
@@ -1066,6 +1046,7 @@ class EPGWindow(BaseWindow):
 				LOG_TRACE('End Time = %x:%x' % (endTime, timer.mStartTime + timer.mDuration )	)
 
 				LOG_TRACE(' timer.mFromEPG = %d  aEPG.mEventId=%d timer.mEventId=%d timer.mTimerId=%d' % (timer.mFromEPG, aEPG.mEventId, timer.mEventId, timer.mTimerId ) )
+				"""				
 
 				if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY and timer.mWeeklyTimer and timer.mWeeklyTimerCount > 0 :
 
@@ -1096,7 +1077,7 @@ class EPGWindow(BaseWindow):
 
 						weeklyStarTime = dateLeft*24*3600 + timer.mStartTime + weeklyTimer.mStartTime - secondsNow
 
-						LOG_TRACE('weeklyTimer date==%d time=%s duration=%d' %(weeklyTimer.mDate, TimeToString( weeklyStarTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ), weeklyTimer.mDuration ) )
+						#LOG_TRACE('weeklyTimer date==%d time=%s duration=%d' %(weeklyTimer.mDate, TimeToString( weeklyStarTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ), weeklyTimer.mDuration ) )
 						if ( aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid ) and \
 							(( startTime >= weeklyStarTime and startTime < (weeklyStarTime + weeklyTimer.mDuration) ) or \
 							( endTime > weeklyStarTime and endTime < (weeklyStarTime + weeklyTimer.mDuration) ) ) :
@@ -1176,8 +1157,8 @@ class EPGWindow(BaseWindow):
 		else :
 			self.mIsTimerMode = False
 			self.Load()
+			self.UpdateTimerMode()
 			self.UpdateList()
 			self.UpdateEPGInfomation()
-
 
 
