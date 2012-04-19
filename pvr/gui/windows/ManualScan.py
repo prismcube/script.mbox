@@ -169,6 +169,7 @@ class ManualScan( SettingWindow ) :
 
 		# Start Search
 		elif groupId == E_Input04 : #ToDO : Have to support manual input
+			self.ScanHelper_Stop( )
 			transponderList = []
  			config = self.mConfiguredSatelliteList[ self.mSatelliteIndex ]
 
@@ -177,6 +178,7 @@ class ManualScan( SettingWindow ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 			dialog.SetTransponder( config.mSatelliteLongitude, config.mBandType, transponderList )
 			dialog.doModal( )
+			self.ScanHelper_Start( )
 
 		# Manual Setup
 		elif groupId == E_SpinEx01 :
