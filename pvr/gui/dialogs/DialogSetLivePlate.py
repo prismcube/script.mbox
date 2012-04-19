@@ -11,9 +11,8 @@ from ElisEnum import ElisEnum
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.GuiConfig import *
 
-from pvr.GuiHelper import Strings
+from pvr.GuiHelper import MR_LANG
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-import pvr.gui.windows.Define_string as MsgId
 import threading
 
 CONTEXT_ACTION_VIDEO_SETTING = 1
@@ -106,7 +105,7 @@ class DialogSetLivePlate( SettingDialog ) :
 
 		elif self.mMode == CONTEXT_ACTION_AUDIO_SETTING :
 			LOG_TRACE('list audio[%s]'% self.mAudioTrack)
-			self.AddUserEnumControl( E_DialogSpinEx01, Strings( MsgId.LANG_AUDIO_HDMI ), self.mAudioTrack, 0)
+			self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG('Audio HDMI'), self.mAudioTrack, 0)
 
 			visibleControlIds = [ E_DialogSpinEx01 ]
 			self.SetVisibleControls( visibleControlIds, True )

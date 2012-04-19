@@ -176,11 +176,11 @@ def ParseLabelToCh( aMode, aLabel ) :
 
 
 def Strings(aStringID, aReplacements = None):
-    string = xbmcaddon.Addon(id = 'script.mbox').getLocalizedString(aStringID)
-    if aReplacements is not None :
-        return string % aReplacements
-    else :
-        return string
+	string = xbmcaddon.Addon(id = 'script.mbox').getLocalizedString(aStringID)
+	if aReplacements is not None :
+		return string % aReplacements
+	else :
+		return string
 
 
 def MR_LANG( aString ) :

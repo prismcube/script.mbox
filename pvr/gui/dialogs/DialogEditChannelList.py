@@ -10,9 +10,8 @@ from ElisEnum import ElisEnum
 from ElisProperty import ElisPropertyEnum
 from pvr.gui.GuiConfig import *
 
-from pvr.GuiHelper import Strings
+from pvr.GuiHelper import MR_LANG
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-import pvr.gui.windows.Define_string as MsgId
 
 """
 E_DIALOG_HEADER			= 100
@@ -116,12 +115,12 @@ class DialogEditChannelList( SettingDialog ) :
 		#------------------ section1 : channel control -------------------
 		if self.mChannelExist :
 			#visible group
-			self.AddInputControl( E_DialogInput01, Strings( MsgId.LANG_LOCK ),     '' )
-			self.AddInputControl( E_DialogInput02, Strings( MsgId.LANG_UNLOCK ),   '' )
-			self.AddInputControl( E_DialogInput03, Strings( MsgId.LANG_SKIP ),     '' )
-			self.AddInputControl( E_DialogInput04, Strings( MsgId.LANG_UNSKIP ),   '' )
-			self.AddInputControl( E_DialogInput05, Strings( MsgId.LANG_DELETE ),   '' )
-			self.AddInputControl( E_DialogInput06, Strings( MsgId.LANG_MOVE ),     '' )
+			self.AddInputControl( E_DialogInput01, MR_LANG('Lock'),     '' )
+			self.AddInputControl( E_DialogInput02, MR_LANG('Unlock'),   '' )
+			self.AddInputControl( E_DialogInput03, MR_LANG('Skip'),     '' )
+			self.AddInputControl( E_DialogInput04, MR_LANG('Unskip'),   '' )
+			self.AddInputControl( E_DialogInput05, MR_LANG('Delete'),   '' )
+			self.AddInputControl( E_DialogInput06, MR_LANG('Move'),     '' )
 		else :
 			self.SetVisibleControl( E_DialogInput01, False )
 			self.SetVisibleControl( E_DialogInput02, False )
@@ -138,10 +137,10 @@ class DialogEditChannelList( SettingDialog ) :
 			self.SetVisibleControl( E_DialogInput09, False )
 
 			if self.mFavoriteList :
-				self.AddUserEnumControl( E_DialogSpinEx01, Strings( MsgId.LANG_ADD_TO_FAV ), self.mFavoriteList, 0)
-				self.AddInputControl( E_DialogInput07, '', Strings( MsgId.LANG_ADD_OK ) )
+				self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG('Add to Fav. Group'), self.mFavoriteList, 0)
+				self.AddInputControl( E_DialogInput07, '', MR_LANG('Add OK') )
 			else :
-				self.AddInputControl( E_DialogInput07, Strings( MsgId.LANG_ADD_TO_FAV ), Strings( MsgId.LANG_NONE ) )
+				self.AddInputControl( E_DialogInput07, MR_LANG('Add to Fav. Group'), MR_LANG('None') )
 				self.SetEnableControl( E_DialogInput07, False )
 
 				#unused visible false
@@ -149,17 +148,17 @@ class DialogEditChannelList( SettingDialog ) :
 
 
 		elif self.mMode == FLAG_OPT_GROUP :
-			self.AddInputControl( E_DialogInput07, Strings( MsgId.LANG_CREATE_NEW_GROUP ), '' )
+			self.AddInputControl( E_DialogInput07, MR_LANG('Create New Group'), '' )
 
 			if self.mFavoriteList :
-				self.AddUserEnumControl( E_DialogSpinEx01, Strings( MsgId.LANG_RENAME_FAV ), self.mFavoriteList, 0)
-				self.AddInputControl( E_DialogInput08, '', Strings( MsgId.LANG_RENAME_OK ) )
-				self.AddUserEnumControl( E_DialogSpinEx02, Strings( MsgId.LANG_DELETE_FAV ), self.mFavoriteList, 0)
-				self.AddInputControl( E_DialogInput09, '', Strings( MsgId.LANG_DELETE_OK ) )
+				self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG('Rename Fav. Group'), self.mFavoriteList, 0)
+				self.AddInputControl( E_DialogInput08, '', MR_LANG('Rename OK') )
+				self.AddUserEnumControl( E_DialogSpinEx02, MR_LANG('Delete Fav. Group'), self.mFavoriteList, 0)
+				self.AddInputControl( E_DialogInput09, '', MR_LANG('Delete OK') )
 
 			else :
-				self.AddInputControl( E_DialogInput08, Strings( MsgId.LANG_RENAME_FAV ), Strings( MsgId.LANG_NONE ) )
-				self.AddInputControl( E_DialogInput09, Strings( MsgId.LANG_DELETE_FAV ), Strings( MsgId.LANG_NONE ) )
+				self.AddInputControl( E_DialogInput08, MR_LANG('Rename Fav. Group'), MR_LANG('None') )
+				self.AddInputControl( E_DialogInput09, MR_LANG('Delete Fav. Group'), MR_LANG('None') )
 				self.SetEnableControl( E_DialogInput08, False )
 				self.SetEnableControl( E_DialogInput09, False )
 
