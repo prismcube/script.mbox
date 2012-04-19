@@ -33,7 +33,7 @@ class NullWindow( BaseWindow ) :
 		self.mGotoWinID = None
 		self.mOnEventing= False
 
-		#self.mEventBus.Register( self )
+		self.mEventBus.Register( self )
 
 		if self.mInitialized == False :
 			self.mInitialized = True
@@ -248,12 +248,14 @@ class NullWindow( BaseWindow ) :
 
 
 	def onClick(self, aControlId) :
-		print "onclick( ): control %s" % aControlId
+		pass
+		#print "onclick( ): control %s" % aControlId
 
 
 	def onFocus(self, aControlId) :
-		print "onFocus( ): control %s" % aControlId
-		self.mLastFocusId = aControlId
+		pass
+		#print "onFocus( ): control %s" % aControlId
+		#self.mLastFocusId = aControlId
 
 
 	@GuiLock
@@ -281,7 +283,6 @@ class NullWindow( BaseWindow ) :
 
 		else:
 			LOG_TRACE( 'NullWindow winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
-
 
 		LOG_TRACE( 'Leave' )
 
@@ -323,6 +324,5 @@ class NullWindow( BaseWindow ) :
 		return self.mStatusIsArchive
 
 	def Close( self ) :
-		#self.mOnEventing = aDisable
 		self.mEventBus.Deregister( self )
 

@@ -6,7 +6,6 @@ import select
 
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 from ElisCommander import ElisCommander
-from ElisEventClass import *
 from ElisEventBus import ElisEventBus
 from ElisAction import ElisAction
 from ElisEnum import ElisEnum

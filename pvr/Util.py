@@ -1,62 +1,13 @@
-import os
-import sys
-import time
-import xbmcgui
+import os, sys, time
 import xbmc
+import xbmcgui
 import xbmcaddon
-import time
 
 from decorator import decorator
 from odict import odict
-from threading import RLock
-
-from inspect import currentframe
-import inspect
 from ElisEnum import ElisEnum
 
 gThreads = odict()
-
-E_LOG_NORMAL = 0
-E_LOG_ERR    = 2
-E_LOG_WARN   = 1
-E_LOG_DEBUG  = 0
-E_DEBUG_LEVEL = E_LOG_DEBUG
-
-class TimeFormatEnum(object):
-	E_AW_DD_MM_YYYY			= 0
-	E_HH_MM					= 1
-	E_DD_MM_YYYY_HH_MM		= 2
-	E_DD_MM_YYYY			= 3
-	E_AW_HH_MM				= 4
-	E_HH_MM_SS				= 5
-	E_WEEK_OF_DAY			= 6
-	E_AW_DD_MON				= 7
-	
-
-def TimeToString( aTime, aFlag=0 ) :
-	if aFlag == TimeFormatEnum.E_AW_DD_MM_YYYY :
-		return time.strftime("%a, %d.%m.%Y", time.gmtime( aTime ) )
-	elif aFlag == TimeFormatEnum.E_HH_MM :		
-		return time.strftime("%02H:%02M", time.gmtime( aTime ) )	
-	elif aFlag == TimeFormatEnum.E_DD_MM_YYYY_HH_MM :
-		return time.strftime("%d.%m.%Y %H:%M", time.gmtime( aTime ) )		
-	elif aFlag == TimeFormatEnum.E_AW_DD_MM_YYYY :
-		return time.strftime("%a, %d.%m.%Y %H:%M", time.gmtime( aTime ) )		
-	elif aFlag == TimeFormatEnum.E_DD_MM_YYYY :
-		return time.strftime("%d.%m.%Y", time.gmtime( aTime ) )
-	elif aFlag == TimeFormatEnum.E_AW_HH_MM :
-		return time.strftime("%a, %H:%M", time.gmtime( aTime ) )
-	elif aFlag == TimeFormatEnum.E_HH_MM_SS :
-		return time.strftime("%H:%M:%S", time.gmtime( aTime ) )
-	elif aFlag == TimeFormatEnum.E_WEEK_OF_DAY :
-		return time.strftime("%a", time.gmtime( aTime ) )			
-	elif aFlag == TimeFormatEnum.E_AW_DD_MON :
-		return time.strftime("%a. %d %b", time.gmtime( aTime ) )			
-	else :
-		strTime = time.strftime('%a, %d.%m.%Y', aTime )
-		LOG_TRACE('strTime=%s' %strTime )
-		return strTime
-
 
 def ClearThreads( ):
 	gThreads.clear()
@@ -88,8 +39,8 @@ def MakeDir(dir):
 		os.makedirs(dir)
 	return dir
 
-gGuiLock = False
 
+gGuiLock = False
 
 @decorator
 def GuiLock(func, *args, **kw):
@@ -131,48 +82,41 @@ def RunThread(func, *args, **kwargs):
 	return worker
 
 
-"""
-def LOG_TRACE( msg ):
-	MLOG( E_LOG_DEBUG, msg )
+class TimeFormatEnum(object):
+	E_AW_DD_MM_YYYY			= 0
+	E_HH_MM					= 1
+	E_DD_MM_YYYY_HH_MM		= 2
+	E_DD_MM_YYYY			= 3
+	E_AW_HH_MM				= 4
+	E_HH_MM_SS				= 5
+	E_WEEK_OF_DAY			= 6
+	E_AW_DD_MON				= 7
 
 
-def LOG_ERR( msg ):
-	MLOG( E_LOG_ERR, msg )
-
-
-def LOG_WARN( msg ):
-	MLOG( E_LOG_WARN, msg )
-
-
-def MLOG( level=0, msg=None ) :
-	if E_DEBUG_LEVEL > level :
-		return
-
-	curframe = inspect.currentframe()
-	calframe = inspect.getouterframes(curframe, 2)
-	filePath = calframe[2][1]
-
-
-	filename = os.path.basename( filePath )
-	lineno   = calframe[2][2]
-	filefunc = calframe[2][3]
-
-	#if filename != 'ChannelListWindow.py' :
-	#	return
-
-	#if level >= 0 and level <= 18 :
-	if gLogOut == 0 :
-		print '[%s() %s:%s]%s'% (filefunc, filename, lineno, msg)
-
+def TimeToString( aTime, aFlag = 0 ) :
+	strTime = ''
+	if aFlag == TimeFormatEnum.E_AW_DD_MM_YYYY :
+		strTime = time.strftime('%a, %d.%m.%Y', time.gmtime( aTime ) )
+	elif aFlag == TimeFormatEnum.E_HH_MM :
+		strTime = time.strftime('%H:%M', time.gmtime( aTime ) )
+	elif aFlag == TimeFormatEnum.E_DD_MM_YYYY_HH_MM :
+		strTime = time.strftime('%d.%m.%Y %H:%M', time.gmtime( aTime ) )
+	elif aFlag == TimeFormatEnum.E_AW_DD_MM_YYYY :
+		strTime = time.strftime('%a, %d.%m.%Y %H:%M', time.gmtime( aTime ) )
+	elif aFlag == TimeFormatEnum.E_DD_MM_YYYY :
+		strTime = time.strftime('%d.%m.%Y', time.gmtime( aTime ) )
+	elif aFlag == TimeFormatEnum.E_AW_HH_MM :
+		strTime = time.strftime('%a, %H:%M', time.gmtime( aTime ) )
+	elif aFlag == TimeFormatEnum.E_HH_MM_SS :
+		strTime = time.strftime('%H:%M:%S', time.gmtime( aTime ) )
+	elif aFlag == TimeFormatEnum.E_WEEK_OF_DAY :
+		strTime = time.strftime('%a', time.gmtime( aTime ) )
+	elif aFlag == TimeFormatEnum.E_AW_DD_MON :
+		strTime = time.strftime('%a. %d %b', time.gmtime( aTime ) )
 	else :
-		color = 33 #black
-		if level == E_LOG_ERR :
-			color = 31 #red
-		elif level == E_LOG_WARN :
-			color = 37 #green ?
-		print '\033[1;%sm[%s() %s:%s]%s\033[1;m'% (color, filefunc, filename, lineno, msg)
+		strTime = time.strftime('%a, %d.%m.%Y', aTime )
+		#print 'strTime=%s' %strTime
 
-	del calframe
-	del curframe
-"""
+	return strTime
+
 

@@ -352,7 +352,7 @@
 				</control>
 				<control type="label" id="303">
 					<posx>0</posx>
-					<posy>217</posy>
+					<posy>235</posy>
 					<width>352</width>
 					<height>10</height>
 					<font>font12_title</font>
