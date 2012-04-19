@@ -43,7 +43,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 	def onInit( self ) :
-		self.mDataCache.Player_AVBlank( True, False )
+		self.mDataCache.Player_AVBlank( True, True )
 	
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
@@ -158,17 +158,18 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mEventBus.Deregister( self )
 				self.ReTune( )
 				self.CloseDialog( )
-				self.mDataCache.Player_AVBlank( False, False )
+				self.mDataCache.Player_AVBlank( False, True )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'Error', 'Channel Search Failed' )
 				dialog.doModal( )
+				self.ReTune( )
 
 		elif self.mScanMode == E_SCAN_TRANSPONDER :
 			ret = self.mCommander.Channel_SearchByCarrier( self.mLongitude, self.mBand, self.mTransponderList )
 			if ret == False :
 				self.mEventBus.Deregister( self )
 				self.CloseDialog( )
-				self.mDataCache.Player_AVBlank( False, False )
+				self.mDataCache.Player_AVBlank( False, True )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'Error', 'Channel Search Failed' )
 				dialog.doModal( )
@@ -280,7 +281,6 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 	def ReTune( self ) :
-		print 'dhkim test Retune!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 		channel = self.mDataCache.Channel_GetCurrent( )
 		if channel == None or channel.mError != 0 :
 			LOG_ERR( 'Load Channel_GetCurrent None' )
