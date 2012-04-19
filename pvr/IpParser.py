@@ -6,7 +6,8 @@ import string
 import time
 import commands
 from pvr.gui.GuiConfig import *
-from pvr.Util import LOG_ERR
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+
 
 
 FILE_NAME_INTERFACES	 		=	'/etc/network/interfaces'

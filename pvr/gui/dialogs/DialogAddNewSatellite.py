@@ -8,7 +8,7 @@ from pvr.gui.BaseWindow import Action
 from ElisEnum import ElisEnum
 from ElisProperty import ElisPropertyEnum
 from pvr.gui.GuiConfig import *
-from pvr.Util import LOG_TRACE
+from util.Logger import LOG_TRACE
 
 
 class DialogAddNewSatellite( SettingDialog ) :

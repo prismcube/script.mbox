@@ -1,15 +1,16 @@
 
 import datetime
 import time
-from pvr.Util import RunThread, LOG_WARN, LOG_TRACE, LOG_ERR
+import thread
+import select
+
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 from ElisCommander import ElisCommander
 from ElisEventClass import *
 from ElisEventBus import ElisEventBus
 from ElisAction import ElisAction
 from ElisEnum import ElisEnum
 import pvr.ElisMgr
-import thread
-import select
 from decorator import decorator
 from ElisClass import *
 from ElisEventClass import *
@@ -241,7 +242,7 @@ class DataCacheMgr( object ):
 		if self.mAllSatelliteList and self.mAllSatelliteList[0].mError == 0 :
 			count =  len( self.mAllSatelliteList )
 			LOG_TRACE( 'satellite count = %d' % count )
-			from pvr.PublicReference import ClassToList
+			from pvr.GuiHelper import ClassToList
 			LOG_TRACE( 'satellite[%s]' % ClassToList( 'convert', self.mAllSatelliteList ) )
 			if count == 0 :
 				self.SetEmptySatelliteInfo( True )

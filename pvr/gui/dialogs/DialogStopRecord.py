@@ -13,7 +13,9 @@ from ElisEnum import ElisEnum
 
 import pvr.ElisMgr
 
-from pvr.Util import RunThread, GuiLock, LOG_TRACE, LOG_WARN, LOG_ERR, TimeToString, TimeFormatEnum
+from pvr.Util import RunThread, GuiLock, TimeToString, TimeFormatEnum
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+
 
 
 # Control IDs

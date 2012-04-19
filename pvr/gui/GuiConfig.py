@@ -3,7 +3,8 @@ import xbmcgui
 import sys
 import time
 
-from pvr.Util import LOG_TRACE, LOG_ERR, LOG_WARN
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+
 
 E_WINDOW_WIDTH		= 1280
 E_WINDOW_HEIGHT		= 720

@@ -9,8 +9,10 @@ from pvr.gui.GuiConfig import *
 
 from ElisEnum import ElisEnum
 import pvr.DataCacheMgr as CacheMgr
-from pvr.PublicReference import ClassToList
-from pvr.Util import GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
+from pvr.GuiHelper import ClassToList
+from pvr.Util import GuiLock, GuiLock2, TimeToString, TimeFormatEnum
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+
 
 E_MOVETOJUMP_NUM_ID  = 210
 E_RESERVED_ID        = 211

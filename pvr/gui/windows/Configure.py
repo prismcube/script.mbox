@@ -8,7 +8,8 @@ import pvr.gui.DialogMgr as DiaMgr
 from pvr.gui.BaseWindow import SettingWindow, Action
 from ElisProperty import *
 from pvr.gui.GuiConfig import *
-from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
+from pvr.Util import RunThread, GuiLock, GuiLock2, TimeToString, TimeFormatEnum
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 from ElisEventClass import *
 from pvr.IpParser import *
 from ElisProperty import ElisPropertyEnum

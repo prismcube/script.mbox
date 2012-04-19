@@ -8,7 +8,8 @@ from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import BaseWindow, Action
 from inspect import currentframe
 import pvr.ElisMgr
-from pvr.Util import LOG_TRACE, LOG_ERR, LOG_WARN, RunThread
+from pvr.Util import RunThread
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
 LIST_ID_MAIN_MENU				= 9000
 BUTTON_ID_INSTALLATION			= 90100

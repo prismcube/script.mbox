@@ -8,8 +8,9 @@ from pvr.gui.BaseWindow import Action
 from pvr.gui.GuiConfig import *
 
 import pvr.DataCacheMgr as CacheMgr
-from pvr.PublicReference import ClassToList
-from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
+from pvr.GuiHelper import ClassToList
+from pvr.Util import RunThread, GuiLock, GuiLock2
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
 E_CHANNEL_NUM_ID	= 210
 E_CHANNEL_NAME_ID	= 211

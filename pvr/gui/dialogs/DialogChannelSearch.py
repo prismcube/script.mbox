@@ -11,7 +11,8 @@ from  pvr.TunerConfigMgr import *
 from ElisEnum import ElisEnum
 
 import pvr.ElisMgr
-from pvr.Util import GuiLock, LOG_TRACE
+from pvr.Util import GuiLock
+from util.Logger import LOG_TRACE
 from ElisEventClass import *
 
 

@@ -3,6 +3,7 @@ import datetime
 import socket
 import time
 from pvr.Util import RunThread
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 from ElisCommander import ElisCommander
 from net.Net import EventServer, EventHandler, EventRequest
 from ElisEventClass import *

@@ -7,7 +7,8 @@ from pvr.gui.BaseWindow import Action
 from pvr.gui.BaseDialog import BaseDialog
 from pvr.gui.GuiConfig import *
 
-from pvr.Util import GuiLock, GuiLock2, LOG_WARN, LOG_TRACE, LOG_ERR
+from pvr.Util import GuiLock, GuiLock2
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
 E_INPUT_LABEL			= 102
 E_BUTTON_DONE			= 121

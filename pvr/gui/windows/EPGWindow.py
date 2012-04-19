@@ -10,10 +10,12 @@ from pvr.gui.GuiConfig import *
 from ElisEnum import ElisEnum
 from ElisEventBus import ElisEventBus
 from ElisEventClass import *
-from pvr.Util import GetImageByEPGComponent,RunThread, GuiLock, GuiLock2, LOG_TRACE, LOG_WARN, LOG_ERR, GetSetting, SetSetting, TimeToString, TimeFormatEnum
-from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
+
+from pvr.Util import RunThread, GuiLock, GuiLock2, TimeToString, TimeFormatEnum
+from pvr.GuiHelper import GetImageByEPGComponent, GetSetting, SetSetting
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 import threading, time, os
 
 
