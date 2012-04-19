@@ -101,6 +101,8 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 				self.mTransponderList = self.mDataCache.Satellite_GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )				
 				self.mSelectedTransponderIndex = 0
 				self.InitConfig()
+			else :
+				return
 
 		# LNB Setting
 		elif groupId == E_SpinEx01 :
@@ -137,6 +139,8 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 				self.mCurrentSatellite.mLNBThreshold = int ( threshFreq )
 
 				self.InitConfig( )
+			else :
+				return
 
 		# 22Khz
  		elif groupId == E_SpinEx03 :
@@ -162,6 +166,8 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 	 			if tempIndex != -1 :
 	 				self.mSelectedTransponderIndex = tempIndex
 	 				self.InitConfig( )
+	 			else :
+	 				return
 
 	 	self.ScanHelper_ChangeContext( self.mCurrentSatellite, self.mDataCache.Satellite_GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
 

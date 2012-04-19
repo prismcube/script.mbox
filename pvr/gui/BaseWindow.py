@@ -279,13 +279,12 @@ class SettingWindow( BaseWindow ) :
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_NEXT, None, None, None, None ) )
 
 
-	def ShowDescription( self ) :
-		self.GetFocusId( )
+	def ShowDescription( self, aFocusId ) :
 		count = len( self.mControlList )
 
 		for i in range( count ) :
 			ctrlItem = self.mControlList[i]		
-			if self.HasControlItem( ctrlItem, self.mFocusId ) :
+			if self.HasControlItem( ctrlItem, aFocusId ) :
 				if ctrlItem.mDescription == None :
 					return False
 				self.getControl( E_SETTING_DESCRIPTION ).setLabel( ctrlItem.mDescription )
@@ -466,14 +465,13 @@ class SettingWindow( BaseWindow ) :
 		for i in range( count ) :
 			ctrlItem = self.mControlList[i]
 			if aControlId == ctrlItem.mControlId :
-				self.setFocusId( ctrlItem.mControlId + 1 )
+				self.setFocusId( ctrlItem.mControlId )
 				return True
 
 		return False
 
 
 	def ControlSelect( self ) :
-	
 		self.GetFocusId( )
 		count = len( self.mControlList )
 
@@ -490,7 +488,6 @@ class SettingWindow( BaseWindow ) :
 
 
 	def ControlUp( self ) :
-
 		self.GetFocusId( )
 		groupId = self.GetGroupId( self.mFocusId )
 		prevId = self.GetPrevId( groupId )
@@ -503,7 +500,6 @@ class SettingWindow( BaseWindow ) :
 
 
 	def ControlDown( self ) :
-
 		self.GetFocusId( )
 		groupId = self.GetGroupId( self.mFocusId )
 		nextId = self.GetNextId( groupId )
@@ -515,7 +511,6 @@ class SettingWindow( BaseWindow ) :
 		return False
 
 	def ControlLeft( self ) :
-
 		self.GetFocusId( )
 		count = len( self.mControlList )
 
@@ -529,7 +524,6 @@ class SettingWindow( BaseWindow ) :
 
 
 	def ControlRight( self ) :
-
 		self.GetFocusId( )
 		count = len( self.mControlList )
 
@@ -543,7 +537,6 @@ class SettingWindow( BaseWindow ) :
 
 
 	def SelectPosition( self, aControlId, aPosition ) :
-
 		count = len( self.mControlList )
 
 		for i in range( count ) :
@@ -557,7 +550,6 @@ class SettingWindow( BaseWindow ) :
 		return False
 
 	def SetProp( self, aControlId, aValue ) :
-	
 		count = len( self.mControlList )
 
 		for i in range( count ) :
@@ -609,8 +601,8 @@ class SettingWindow( BaseWindow ) :
 			LOG_ERR( 'ScanHelper_ChangeContextByCarrier : Tp is None' )
 
 
-	def ScanHelper_Stop( self ) :
-		self.mCommander.ScanHelper_Stop( True )
+	def ScanHelper_Stop( self, aReturn=True ) :
+		self.mCommander.ScanHelper_Stop( aReturn )
 		self.setProperty( 'ViewProgress', 'False' )
 
 	def ScanHerper_Progress( self, aStrength, aQuality, aLocked ) :

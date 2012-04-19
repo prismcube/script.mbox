@@ -58,7 +58,6 @@ class AntennaSetup( SettingWindow ) :
 		self.setVisibleButton( )
 
 		self.InitControl( )
-		self.ShowDescription( )
 		self.DisableControl( )
 		self.mInitialized = True
 		self.SetFocusControl( E_SpinEx01 )
@@ -131,12 +130,10 @@ class AntennaSetup( SettingWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			self.ShowDescription( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
-			self.ShowDescription( )
-			
+
 
 	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
@@ -212,7 +209,7 @@ class AntennaSetup( SettingWindow ) :
 		if self.mInitialized == False :
 			return
 		if self.mLastFocused != aControlId :
-			self.ShowDescription( )
+			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId
 
 

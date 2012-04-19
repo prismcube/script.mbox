@@ -55,10 +55,9 @@ class ManualScan( SettingWindow ) :
 			self.mCtrlMainGroup.setVisible( False )
 			self.InitConfig( )
 			self.mCtrlMainGroup.setVisible( True )
-			
-			self.ShowDescription( )
-			self.mInitialized = True
 
+			self.mInitialized = True
+			self.SetFocusControl( E_Input01 )
 			self.ScanHelper_ChangeContext( self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
 
 		else :
@@ -99,11 +98,9 @@ class ManualScan( SettingWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			self.ShowDescription( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
-			self.ShowDescription( )
 			
 
 	def onClick( self, aControlId ) :
@@ -121,6 +118,8 @@ class ManualScan( SettingWindow ) :
 				self.LoadTransponderList( )
 				self.SetConfigTransponder( )
 				self.InitConfig( )
+			else :
+				return
 
 		# Transponder
 		elif groupId == E_Input02 :
@@ -135,6 +134,8 @@ class ManualScan( SettingWindow ) :
 					self.mTransponderIndex = select
 					self.SetConfigTransponder( )
 					self.InitConfig( )
+				else :
+					return
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -150,6 +151,8 @@ class ManualScan( SettingWindow ) :
 						self.mConfigTransponder.mFrequency = int( tempval )
 
 					self.SetControlLabel2String( E_Input02, '%d MHz' % self.mConfigTransponder.mFrequency )
+				else :
+					return
 
 		# Symbol Rate
 		elif groupId == E_Input03 :
@@ -166,10 +169,12 @@ class ManualScan( SettingWindow ) :
 					self.mConfigTransponder.mSymbolRate = int( tempval )
 
 				self.SetControlLabel2String( E_Input03, '%d KS/s' % self.mConfigTransponder.mSymbolRate )
+			else :
+				return
 
 		# Start Search
 		elif groupId == E_Input04 : #ToDO : Have to support manual input
-			self.ScanHelper_Stop( )
+			self.ScanHelper_Stop( False )
 			transponderList = []
  			config = self.mConfiguredSatelliteList[ self.mSatelliteIndex ]
 
@@ -217,7 +222,7 @@ class ManualScan( SettingWindow ) :
 			return
 
 		if self.mLastFocused != aControlId :
-			self.ShowDescription( )
+			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId
 
 
@@ -237,7 +242,7 @@ class ManualScan( SettingWindow ) :
 		self.ResetAllControl( )	
 
 		self.AddInputControl( E_Input01, 'Satellite', self.mFormattedList[ self.mSatelliteIndex ], 'Select satellite' )
-		self.AddUserEnumControl( E_SpinEx01, 'Custom Setup', USER_ENUM_LIST_ON_OFF, self.mIsManualSetup )
+		self.AddUserEnumControl( E_SpinEx01, 'Custom Setup', USER_ENUM_LIST_ON_OFF, self.mIsManualSetup, 'Control Custom Setup' )
 
 		if self.mIsManualSetup == 0 :
 			self.AddInputControl( E_Input02, ' - Select Transponder Frequency', '%d MHz' % self.mConfigTransponder.mFrequency, 'Select Transponder Frequency' )

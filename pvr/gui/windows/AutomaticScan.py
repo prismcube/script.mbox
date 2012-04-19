@@ -36,8 +36,8 @@ class AutomaticScan( SettingWindow ) :
 		self.LoadFormattedSatelliteNameList( )
 		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
 			self.InitConfig( )
-			self.ShowDescription( )
 			self.mInitialized = True
+			self.SetFocusControl( E_Input01 )
 		else :
 			hideControlIds = [ E_Input01, E_Input02, E_SpinEx01, E_SpinEx02 ]
 			self.SetVisibleControls( hideControlIds, False )
@@ -73,11 +73,9 @@ class AutomaticScan( SettingWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			self.ShowDescription( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
-			self.ShowDescription( )
 			
 
 	def onClick( self, aControlId ) :
@@ -116,7 +114,7 @@ class AutomaticScan( SettingWindow ) :
 			return
 
 		if self.mLastFocused != aControlId :
-			self.ShowDescription( )
+			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId
 
 

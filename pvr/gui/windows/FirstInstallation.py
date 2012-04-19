@@ -141,7 +141,7 @@ class FirstInstallation( SettingWindow ) :
 		if self.mInitialized == False :
 			return
 		if self.mLastFocused != aControlId :
-			self.ShowDescription( )
+			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId
 
 
@@ -205,7 +205,6 @@ class FirstInstallation( SettingWindow ) :
 			
 			self.InitControl( )
 			self.SetFocusControl( E_SpinEx01 )
-			self.ShowDescription( )
 			return
 
 		elif self.mStepNum == E_STEP_VIDEO_AUDIO :
@@ -226,7 +225,6 @@ class FirstInstallation( SettingWindow ) :
 			
 			self.InitControl( )
 			self.SetFocusControl( E_SpinEx01 )
-			self.ShowDescription( )
 			return
 
 		elif self.mStepNum == E_STEP_CHANNEL_SEARCH_CONFIG :
@@ -249,7 +247,6 @@ class FirstInstallation( SettingWindow ) :
 			
 			self.InitControl( )
 			self.SetFocusControl( E_SpinEx01 )
-			self.ShowDescription( )
 			return
 
 		elif self.mStepNum == E_STEP_DATE_TIME :
@@ -294,7 +291,6 @@ class FirstInstallation( SettingWindow ) :
 				self.SetFocusControl( E_Input02 )
 			else :
 				self.SetFocusControl( E_SpinEx01 )
-			self.ShowDescription( )
 			self.DisableControl( self.mStepNum )
 			return
 
@@ -329,7 +325,6 @@ class FirstInstallation( SettingWindow ) :
 			
 			self.InitControl( )
 			self.SetFocusControl( E_Input01 )
-			self.ShowDescription( )
 			return
 
 	def SetPrevNextButtonLabel( self ) :

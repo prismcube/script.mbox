@@ -25,8 +25,8 @@ class ChannelSearch( SettingWindow ) :
 		self.AddInputControl( E_Input02, 'Manual Scan', '', 'Running manual scan.' )
 
 		self.InitControl( )
-		self.ShowDescription( )
 		self.mInitialized = True
+		self.SetFocusControl( E_Input01 )
 
 
 	def onAction( self, aAction ) :
@@ -54,11 +54,9 @@ class ChannelSearch( SettingWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			self.ShowDescription( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
-			self.ShowDescription( )
 
 
 	def onClick( self, aControlId ) :
@@ -77,5 +75,5 @@ class ChannelSearch( SettingWindow ) :
 			return
 
 		if self.mLastFocused != aControlId :
-			self.ShowDescription( )
+			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId

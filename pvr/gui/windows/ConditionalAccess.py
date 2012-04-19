@@ -43,8 +43,8 @@ class ConditionalAccess( SettingWindow ) :
 		self.AddInputControl( E_Input07, 'Operator Message', '', 'View operator message' )
 		
 		self.InitControl( )
-		self.ShowDescription( )
 		self.mInitialized = True
+		self.SetFocusControl( E_Input01 )
 
 		
 	def onAction( self, aAction ) :
@@ -69,11 +69,9 @@ class ConditionalAccess( SettingWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			self.ShowDescription( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
-			self.ShowDescription( )
 			
 
 	def onClick( self, aControlId ) :
@@ -105,5 +103,5 @@ class ConditionalAccess( SettingWindow ) :
 			return
 
 		if self.mLastFocused != aControlId :
-			self.ShowDescription( )
+			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId
