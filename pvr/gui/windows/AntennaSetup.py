@@ -10,7 +10,6 @@ from ElisProperty import ElisPropertyEnum
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
 
-
 E_DEFAULT_GOURP_ID		= 9000
 
 

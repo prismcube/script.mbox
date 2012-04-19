@@ -280,6 +280,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 	def ReTune( self ) :
+		print 'dhkim test Retune!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 		channel = self.mDataCache.Channel_GetCurrent( )
 		if channel == None or channel.mError != 0 :
 			LOG_ERR( 'Load Channel_GetCurrent None' )

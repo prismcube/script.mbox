@@ -101,6 +101,8 @@ def PingTestExternal( aAddr ) :
 		os.system( 'ping -c 1 -W 6 %s > %s' % ( aAddr, FILE_TEMP ) )
 		inputFile = open( FILE_TEMP, 'r' )
 		inputline = inputFile.readlines( )
+		if len( inputline ) == 0 :
+			return
 		for line in inputline :
 			if line.startswith( '1 packets') :
 				if line.split(' packets received')[0].split(', ')[-1] == '1' :

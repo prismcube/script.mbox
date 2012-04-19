@@ -856,7 +856,7 @@ class Configure( SettingWindow ) :
 			self.mPasswordType	= self.GetSelectedIndex( E_SpinEx04 )
 
 		elif aControlId == E_Input01 :
-			self.ShowProgress( 'Scan Ap...', 20 )
+			self.ShowProgress( 'Scan Ap...', 30 )
 			dev = self.mWireless.getWlandevice( )
 			if dev == None :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
