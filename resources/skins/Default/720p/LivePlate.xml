@@ -44,7 +44,7 @@
 						<posy>7</posy>
 						<font>font12caps</font>
 						<textcolor>white</textcolor>
-						<texture>$INFO[Control.GetLabel]</texture>
+						<label>$INFO[Control.GetLabel]</label>
 					</control>
 				</control>
 				<control type="group">
@@ -71,10 +71,11 @@
 						<posy>7</posy>
 						<font>font12caps</font>
 						<textcolor>white</textcolor>
-						<texture>$INFO[Control.GetLabel]</texture>
+						<label>$INFO[Control.GetLabel]</label>
 					</control>
 				</control>
 			</control>
+
 <!-- info section -->			
 			<control type="group" id="600">
 				<posx>50</posx>

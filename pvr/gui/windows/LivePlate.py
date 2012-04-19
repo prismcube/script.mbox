@@ -18,10 +18,10 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 
 from pvr.Util import RunThread, GuiLock, GuiLock2, TimeToString, TimeFormatEnum
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-from pvr.GuiHelper import GetSelectedLongitudeString, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit, Strings
+from pvr.GuiHelper import GetImageByEPGComponent, GetSelectedLongitudeString, EnumToString, ClassToList, AgeLimit, Strings
 
 import pvr.gui.windows.Define_string as MsgId
-
+from copy import deepcopy
 import threading, time, os
 
 #debug log
@@ -142,8 +142,6 @@ class LivePlate(BaseWindow):
 		self.mCtrlBtnPrevEpg           = self.getControl( 702 )
 		self.mCtrlBtnNextEpg           = self.getControl( 706 )
 
-		self.mImgTV    = E_IMG_ICON_TV
-		self.mCtrlLblEventClock.setLabel('')
 		self.mFlag_OnEvent = True
 		self.mFlag_ChannelChanged = True
 		self.mEventCopy = None
@@ -151,6 +149,12 @@ class LivePlate(BaseWindow):
 		self.mEPGListIdx = 0
 		self.mJumpNumber = 0
 		self.mZappingMode = None
+
+		self.mAsyncEPGTimer = None
+		self.mAsyncTuneTimer = None
+		self.mAutomaticHideTimer = None
+
+		self.UpdateLabelGUI( self.mCtrlLblEventClock.getId(), '' )
 
 		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
 		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
@@ -167,22 +171,15 @@ class LivePlate(BaseWindow):
 		self.mFakeChannel =	self.mCurrentChannel
 		self.mLastChannel =	self.mCurrentChannel
 
-		self.GetEPGList()
 		self.InitLabelInfo()
-
-		#get epg event right now, as this windows open
-		self.mEventBus.Register( self )
-
-		#run thread
-		self.mEnableThread = True
-		self.CurrentTimeThread()
+		self.GetEPGList()
 
 		try :
 			iEPG = None
 			iEPG = self.mDataCache.Epgevent_GetPresent()
 			if iEPG and iEPG.mEventName != 'No Name':
 				self.mEventCopy = iEPG
-				self.UpdateONEvent(self.mEventCopy)
+				self.UpdateONEvent( iEPG )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -199,9 +196,12 @@ class LivePlate(BaseWindow):
 				LOG_TRACE('------------- type[%s] avBlank True'% self.mZappingMode.mServiceType)
 		"""
 
-		self.mAsyncEPGTimer = None
-		self.mAsyncTuneTimer = None
-		self.mAutomaticHideTimer = None
+		#get epg event right now, as this windows open
+		self.mEventBus.Register( self )
+
+		#run thread
+		self.mEnableThread = True
+		self.CurrentTimeThread()
 
 		if self.mAutomaticHide == True :
 			self.StartAutomaticHide()
@@ -353,12 +353,12 @@ class LivePlate(BaseWindow):
 
 
 
-
 	def onFocus(self, aControlId):
 		#LOG_TRACE( 'control %d' % controlId )
 		pass
 
 
+	@GuiLock
 	def onEvent(self, aEvent):
 		#LOG_TRACE( 'Enter' )
 
@@ -498,16 +498,17 @@ class LivePlate(BaseWindow):
 				self.mFlag_OnEvent = False
 				GuiLock2(False)
 
-				self.UpdateONEvent( self.mEventCopy )
+				self.UpdateONEvent( iEPG )
 
 				retList = []
-				retList.append( self.mEventCopy )
+				retList.append( iEPG )
 				LOG_TRACE( 'idx[%s] epg[%s]'% (self.mEPGListIdx, ClassToList( 'convert', retList )) )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 		LOG_TRACE( 'Leave' )
+
 
 	def EPGNavigation(self, aDir ):
 		LOG_TRACE('Enter')
@@ -532,6 +533,7 @@ class LivePlate(BaseWindow):
 
 
 		LOG_TRACE('Leave')
+
 
 	def GetEPGList( self ) :
 		LOG_TRACE( 'Enter' )
@@ -568,7 +570,6 @@ class LivePlate(BaseWindow):
 				iEPGList = None
 				iEPGList = self.mDataCache.Epgevent_GetListByChannel( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount, True )
 				time.sleep(0.05)
-				LOG_TRACE('==================')
 				LOG_TRACE('iEPGList[%s] ch[%d] sid[%d] tid[%d] oid[%d] from[%s] until[%s]'% (iEPGList, ch.mNumber, ch.mSid, ch.mTsid, ch.mOnid, time.asctime(time.localtime(gmtFrom)), time.asctime(time.localtime(gmtUntil))) )
 				#LOG_TRACE('=============epg len[%s] list[%s]'% (len(ret),ClassToList('convert', ret )) )
 				if iEPGList :
@@ -619,10 +620,8 @@ class LivePlate(BaseWindow):
 		LOG_TRACE( 'Leave' )
 
 
-	@GuiLock
 	def UpdateONEvent(self, aEvent = None):
 		LOG_TRACE( 'Enter' )
-		#LOG_TRACE( 'component [%s]'% EpgInfoComponentImage ( aEvent ))
 
 		ch = self.mCurrentChannel
 		if ch :
@@ -632,16 +631,16 @@ class LivePlate(BaseWindow):
 				satellite = self.mDataCache.Satellite_GetByChannelNumber( ch.mNumber, -1, True )
 				if satellite :
 					label = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
-				self.mCtrlLblLongitudeInfo.setLabel( label )
+				self.UpdateLabelGUI( self.mCtrlLblLongitudeInfo.getId(), label )
 
 				#lock,cas
 				if ch.mLocked :
-					self.mCtrlImgLocked.setImage( E_IMG_ICON_LOCK )
+					self.UpdateLabelGUI( self.mCtrlImgLocked.getId(), E_IMG_ICON_LOCK )
 					if self.mFlag_OnEvent == True :
 						self.mPincodeEnter |= FLAG_MASK_ADD
 
 				if ch.mIsCA :
-					self.mCtrlImgICas.setImage( E_IMG_ICON_ICAS )
+					self.UpdateLabelGUI( self.mCtrlImgICas.getId(), E_IMG_ICON_ICAS )
 
 				#type
 				imgfile = ''
@@ -650,7 +649,7 @@ class LivePlate(BaseWindow):
 				elif ch.mServiceType == ElisEnum.E_SERVICE_TYPE_DATA:	pass
 				else:
 					LOG_TRACE( 'unknown ElisEnum tvType[%s]'% ch.mServiceType )
-				self.mCtrlImgServiceType.setImage( imgfile )
+				self.UpdateLabelGUI( self.mCtrlImgServiceType.getId(), imgfile )
 
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -659,32 +658,42 @@ class LivePlate(BaseWindow):
 		if aEvent :
 			try :
 				#epg name
-				self.mCtrlLblEventName.setLabel(aEvent.mEventName)
+				self.UpdateLabelGUI( self.mCtrlLblEventName.getId(), deepcopy(aEvent.mEventName) )
 
 				#start,end
 				label = TimeToString( aEvent.mStartTime, TimeFormatEnum.E_HH_MM )
-				self.mCtrlLblEventStartTime.setLabel( label )
+				self.UpdateLabelGUI( self.mCtrlLblEventStartTime.getId(), label )
 				label = TimeToString( aEvent.mStartTime + aEvent.mDuration, TimeFormatEnum.E_HH_MM )
-				self.mCtrlLblEventEndTime.setLabel( label )
+				self.UpdateLabelGUI( self.mCtrlLblEventEndTime.getId(),   label )
 
 				LOG_TRACE( 'mStartTime[%s] mDuration[%s]'% (aEvent.mStartTime, aEvent.mDuration) )
 
 
 				#component
-				imglist = EpgInfoComponentImage( aEvent )
+				imglist = []
+				img = GetImageByEPGComponent( aEvent, ElisEnum.E_HasSubtitles )
+				if img:
+					imglist.append(img)
+				img = GetImageByEPGComponent( aEvent, ElisEnum.E_HasDolbyDigital )
+				if img:
+					imglist.append(img)
+				img = GetImageByEPGComponent( aEvent, ElisEnum.E_HasHDVideo )
+				if img:
+					imglist.append(img)
+				
 				if len(imglist) == 1:
-					self.mCtrlImgServiceTypeImg1.setImage( imglist[0] )
+					self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg1.getId(), imglist[0] )
 				elif len(imglist) == 2:
-					self.mCtrlImgServiceTypeImg1.setImage( imglist[0] )
-					self.mCtrlImgServiceTypeImg2.setImage( imglist[1] )
+					self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg1.getId(), imglist[0] )
+					self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg2.getId(), imglist[1] )
 				elif len(imglist) == 3:
-					self.mCtrlImgServiceTypeImg1.setImage( imglist[0] )
-					self.mCtrlImgServiceTypeImg2.setImage( imglist[1] )
-					self.mCtrlImgServiceTypeImg3.setImage( imglist[2] )
+					self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg1.getId(), imglist[0] )
+					self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg2.getId(), imglist[1] )
+					self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg3.getId(), imglist[2] )
 				else:
-					self.mCtrlImgServiceTypeImg1.setImage('')
-					self.mCtrlImgServiceTypeImg2.setImage('')
-					self.mCtrlImgServiceTypeImg3.setImage('')
+					self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg1.getId(), '' )
+					self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg2.getId(), '' )
+					self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg3.getId(), '' )
 
 				#is Age? agerating check
 				if self.mFlag_OnEvent == True :
@@ -771,30 +780,24 @@ class LivePlate(BaseWindow):
 	def CurrentTimeThread(self):
 		LOG_TRACE( 'begin_start thread' )
 
-		loop = 0
-		#rLock = threading.RLock()
 		while self.mEnableThread:
 			#LOG_TRACE( 'repeat <<<<' )
+			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
+			lbl_localTime = TimeToString( self.mLocalTime, TimeFormatEnum.E_HH_MM )
+			self.UpdateLabelGUI( self.mCtrlLblEventClock.getId(), lbl_localTime )
 
-			if  ( loop % 10 ) == 0 :
+			if  ( self.mLocalTime % 10 ) == 0 :
 				if self.mFlag_ChannelChanged :
-					self.GetEPGList()
+					self.GetEPGList( )
 				self.UpdateLocalTime( )
 
 			time.sleep(1)
-			self.mLocalTime += 1
-			loop += 1
 
 		LOG_TRACE( 'leave_end thread' )
 
 
-	@GuiLock
 	def UpdateLocalTime( self ) :
-		
 		try:
-			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
-			self.mCtrlLblEventClock.setLabel( TimeToString( self.mLocalTime, TimeFormatEnum.E_HH_MM ) )			
-
 			if self.mEventCopy :
 				startTime = self.mEventCopy.mStartTime + self.mLocalOffset
 				endTime   = startTime + self.mEventCopy.mDuration
@@ -802,11 +805,11 @@ class LivePlate(BaseWindow):
 				#LOG_TRACE('past[%s] time[%s] start[%s] duration[%s] offset[%s]'% (pastDuration,self.mLocalTime, self.mEventCopy.mStartTime, self.mEventCopy.mDuration,self.mLocalOffset ) )
 
 				if self.mLocalTime > endTime: #Already past
-					self.mCtrlProgress.setPercent( 100 )
+					self.UpdateLabelGUI( self.mCtrlProgress.getId(), 100 )
 					return
 
 				elif self.mLocalTime < startTime :
-					self.mCtrlProgress.setPercent( 0 )
+					self.UpdateLabelGUI( self.mCtrlProgress.getId(), 0 )
 					return
 
 				if pastDuration < 0 : #Already past
@@ -818,39 +821,34 @@ class LivePlate(BaseWindow):
 					percent = 0
 
 				LOG_TRACE( 'percent=%d' %percent )
-				self.mCtrlProgress.setPercent( percent )
+				self.UpdateLabelGUI( self.mCtrlProgress.getId(), percent )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
-		LOG_TRACE( 'Leave' )
 
-
-	@GuiLock
 	def InitLabelInfo(self):
+		LOG_TRACE( 'Enter' )
 		
 		if self.mFakeChannel :
-
-			self.mCtrlProgress.setPercent(0)
 			self.mEventCopy = None
-			self.mCtrlLblChannelNumber.setLabel( '%s'% self.mFakeChannel.mNumber )
-			self.mCtrlLblChannelName.setLabel( self.mFakeChannel.mName )
-			self.mCtrlLblLongitudeInfo.setLabel('')
-			self.mCtrlLblEventName.setLabel('')
-			self.mCtrlLblEventStartTime.setLabel('')
-			self.mCtrlLblEventEndTime.setLabel('')
-
-			self.mCtrlImgLocked.setImage('')
-			self.mCtrlImgICas.setImage('')
-			self.mCtrlImgServiceType.setImage(self.mImgTV)
-			self.mCtrlImgServiceTypeImg1.setImage('')
-			self.mCtrlImgServiceTypeImg2.setImage('')
-			self.mCtrlImgServiceTypeImg3.setImage('')
-			self.mCtrlGropEventDescGroup.setVisible( False )
-			self.mCtrlTxtBoxEventDescText1.reset()
-			self.mCtrlTxtBoxEventDescText2.reset()
-			self.mCtrlLblLongitudeInfo.setLabel( '' )
-
+			self.UpdateLabelGUI( self.mCtrlProgress.getId(),                  0 )
+			self.UpdateLabelGUI( self.mCtrlLblChannelNumber.getId(), deepcopy('%s'% self.mFakeChannel.mNumber) )
+			self.UpdateLabelGUI( self.mCtrlLblChannelName.getId(), deepcopy(self.mFakeChannel.mName) )
+			self.UpdateLabelGUI( self.mCtrlLblLongitudeInfo.getId(),         '' )
+			self.UpdateLabelGUI( self.mCtrlLblEventName.getId(),             '' )
+			self.UpdateLabelGUI( self.mCtrlLblEventStartTime.getId(),        '' )
+			self.UpdateLabelGUI( self.mCtrlLblEventEndTime.getId(),          '' )
+			self.UpdateLabelGUI( self.mCtrlImgLocked.getId(),                '' )
+			self.UpdateLabelGUI( self.mCtrlImgICas.getId(),                  '' )
+			self.UpdateLabelGUI( self.mCtrlImgServiceType.getId(), E_IMG_ICON_TV )
+			self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg1.getId(),       '' )
+			self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg2.getId(),       '' )
+			self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg3.getId(),       '' )
+			self.UpdateLabelGUI( self.mCtrlGropEventDescGroup.getId(),    False )
+			self.UpdateLabelGUI( self.mCtrlLblLongitudeInfo.getId(),         '' )
+			self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText1.getId(), '', 'reset' )
+			self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText1.getId(), '', 'reset' )
 
 		else:
 			LOG_TRACE( 'has no channel' )
@@ -860,6 +858,91 @@ class LivePlate(BaseWindow):
 
 		LOG_TRACE( 'Leave' )
 
+
+	@GuiLock
+	def UpdateLabelGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
+		LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
+
+		if aCtrlID == self.mCtrlLblChannelNumber.getId( ) :
+			self.mCtrlLblChannelNumber.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlLblChannelName.getId( ) :
+			self.mCtrlLblChannelName.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlImgServiceType.getId( ) :
+			self.mCtrlImgServiceType.setImage( aValue )
+
+		elif aCtrlID == self.mCtrlImgServiceTypeImg1.getId( ) :
+			self.mCtrlImgServiceTypeImg1.setImage( aValue )
+
+		elif aCtrlID == self.mCtrlImgServiceTypeImg2.getId( ) :
+			self.mCtrlImgServiceTypeImg2.setImage( aValue )
+
+		elif aCtrlID == self.mCtrlImgServiceTypeImg3.getId( ) :
+			self.mCtrlImgServiceTypeImg3.setImage( aValue )
+
+		elif aCtrlID == self.mCtrlLblEventClock.getId( ) :
+			self.mCtrlLblEventClock.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlLblLongitudeInfo.getId( ) :
+			self.mCtrlLblLongitudeInfo.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlLblEventName.getId( ) :
+			self.mCtrlLblEventName.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlLblEventStartTime.getId( ) :
+			self.mCtrlLblEventStartTime.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlLblEventEndTime.getId( ) :
+			self.mCtrlLblEventEndTime.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlProgress.getId( ) :
+			self.mCtrlProgress.setPercent( aValue )
+
+		elif aCtrlID == self.mCtrlGropEventDescGroup.getId( ) :
+			self.mCtrlGropEventDescGroup.setVisible( aValue )
+
+		elif aCtrlID == self.mCtrlTxtBoxEventDescText1.getId( ) :
+			if aExtra == 'reset' :
+				self.mCtrlTxtBoxEventDescText1.reset()
+			else :
+				self.mCtrlTxtBoxEventDescText1.setText( aValue )
+
+		elif aCtrlID == self.mCtrlTxtBoxEventDescText2.getId( ) :
+			if aExtra == 'reset' :
+				self.mCtrlTxtBoxEventDescText2.reset()
+			else :
+				self.mCtrlTxtBoxEventDescText2.setText( aValue )
+
+		elif aCtrlID == self.mCtrlImgLocked.getId( ) :
+			self.mCtrlImgLocked.setImage( aValue )
+
+		elif aCtrlID == self.mCtrlImgICas.getId( ) :
+			self.mCtrlImgICas.setImage( aValue )
+
+		elif aCtrlID == self.mCtrlImgRec1.getId( ) :
+			if aExtra == 'visible' :
+				self.mCtrlImgRec1.setVisible( aValue )
+			else :
+				self.mCtrlImgRec1.setImage( aValue )
+
+		elif aCtrlID == self.mCtrlImgRec2.getId( ) :
+			if aExtra == 'visible' :
+				self.mCtrlImgRec2.setVisible( aValue )
+			else :
+				self.mCtrlImgRec2.setImage( aValue )
+
+		elif aCtrlID == self.mCtrlLblRec1.getId( ) :
+			self.mCtrlLblRec1.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlLblRec2.getId( ) :
+			self.mCtrlLblRec2.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlBtnStartRec.getId( ) :
+			self.mCtrlBtnStartRec.setEnabled( aValue )
+
+
+		LOG_TRACE( 'Leave' )
 
 
 	def ShowDialog( self, aFocusId, aVisible = False ):
@@ -888,22 +971,21 @@ class LivePlate(BaseWindow):
 				LOG_TRACE('')
 				if self.mEventCopy :
 					LOG_TRACE('')
-					
-					self.mCtrlTxtBoxEventDescText1.setText( self.mEventCopy.mEventName )
-					self.mCtrlTxtBoxEventDescText2.setText( self.mEventCopy.mEventDescription )
-					self.mCtrlGropEventDescGroup.setVisible( True )
+					self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText1.getId(), self.mEventCopy.mEventName )
+					self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText2.getId(), self.mEventCopy.mEventDescription )
+					self.UpdateLabelGUI( self.mCtrlGropEventDescGroup.getId(), True )
 
 				else:
 					LOG_TRACE( 'event is None' )
-					self.mCtrlTxtBoxEventDescText1.setText('')
-					self.mCtrlTxtBoxEventDescText2.setText('')
-					self.mCtrlGropEventDescGroup.setVisible( True )				
+					self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText1.getId(), '' )
+					self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText2.getId(), '' )
+					self.UpdateLabelGUI( self.mCtrlGropEventDescGroup.getId(), True )
 
 			else :
 				LOG_TRACE('')		
-				self.mCtrlTxtBoxEventDescText1.reset()
-				self.mCtrlTxtBoxEventDescText2.reset()
-				self.mCtrlGropEventDescGroup.setVisible( False )
+				self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText1.getId(), '', 'reset' )
+				self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText2.getId(), '', 'reset' )
+				self.UpdateLabelGUI( self.mCtrlGropEventDescGroup.getId(), False )
 
 			self.mShowExtendInfo = aVisible
 
@@ -1002,8 +1084,8 @@ class LivePlate(BaseWindow):
 
 				LOG_TRACE('Select[%s --> %s]'% (selectAction, selectIdx2) )
 
-
 		LOG_TRACE( 'Leave' )
+
 
 	def ShowRecording( self ) :
 		LOG_TRACE('Enter')
@@ -1051,16 +1133,16 @@ class LivePlate(BaseWindow):
 			else :
 				btnValue = True
 
-			GuiLock2( True )
-			self.mCtrlLblRec1.setLabel( recLabel1 )
-			self.mCtrlImgRec1.setVisible( recImg1 )
-			self.mCtrlLblRec2.setLabel( recLabel2 )
-			self.mCtrlImgRec2.setVisible( recImg2 )
-			self.mCtrlBtnStartRec.setEnabled( btnValue )
 
-			self.mCtrlImgRec1.setImage(E_IMG_ICON_RECORD)
-			self.mCtrlImgRec2.setImage(E_IMG_ICON_RECORD)
-			GuiLock2( False )
+			self.UpdateLabelGUI( self.mCtrlLblRec1.getId(), recLabel1 )
+			self.UpdateLabelGUI( self.mCtrlLblRec2.getId(), recLabel2 )
+			self.UpdateLabelGUI( self.mCtrlBtnStartRec.getId(), btnValue )
+			self.UpdateLabelGUI( self.mCtrlImgRec1.getId(), recImg1, 'visible' )
+			self.UpdateLabelGUI( self.mCtrlImgRec2.getId(), recImg2, 'visible' )
+			if recImg1 :
+				self.UpdateLabelGUI( self.mCtrlImgRec1.getId(), E_IMG_ICON_RECORD )
+			if recImg2 :
+				self.UpdateLabelGUI( self.mCtrlImgRec2.getId(), E_IMG_ICON_RECORD )
 
 			LOG_TRACE('Leave')
 

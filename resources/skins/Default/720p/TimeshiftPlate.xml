@@ -47,7 +47,7 @@
 						<posy>7</posy>
 						<font>font12caps</font>
 						<textcolor>white</textcolor>
-						<texture>$INFO[Control.GetLabel]</texture>
+						<label>$INFO[Control.GetLabel]</label>
 					</control>
 				</control>
 				<control type="group">
@@ -74,7 +74,7 @@
 						<posy>7</posy>
 						<font>font12caps</font>
 						<textcolor>white</textcolor>
-						<texture>$INFO[Control.GetLabel]</texture>
+						<label>$INFO[Control.GetLabel]</label>
 					</control>
 				</control>
 			</control>
@@ -277,7 +277,7 @@
 						<posy>19</posy>
 						<font>font24</font>
 						<textcolor>grey</textcolor>
-						<texture>$INFO[Control.GetLabel]</texture>
+						<label>$INFO[Control.GetLabel]</label>
 					</control>
 					<control type="label" id="35">
 						<description>test</description>
@@ -285,7 +285,7 @@
 						<posy>19</posy>
 						<font>font24</font>
 						<textcolor>grey</textcolor>
-						<texture>$INFO[Control.GetLabel]</texture>
+						<label>$INFO[Control.GetLabel]</label>
 					</control>
 				</control>
 

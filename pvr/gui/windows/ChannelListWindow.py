@@ -18,7 +18,7 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 
 from pvr.Util import RunThread, GuiLock, GuiLock2, TimeToString, TimeFormatEnum
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-from pvr.GuiHelper import GetSelectedLongitudeString, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit, ParseLabelToCh, Strings
+from pvr.GuiHelper import GetSelectedLongitudeString, GetImageByEPGComponent, EnumToString, ClassToList, AgeLimit, ParseLabelToCh, Strings
 
 from copy import deepcopy
 from inspect import currentframe
@@ -1663,17 +1663,27 @@ class ChannelListWindow( BaseWindow ) :
 				self.mCtrlProgress.setVisible( True )
 
 				#component
-				imagelist = EpgInfoComponentImage( self.mNavEpg )				
-				if len(imagelist) == 1:
-					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId( ), imagelist[0] )
-				elif len(imagelist) == 2:
-					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId( ), imagelist[0] )
-					self.UpdateLabelGUI( self.mCtrlServiceTypeImg2.getId( ), imagelist[1] )
+				imglist = []
+				img = GetImageByEPGComponent( self.mNavEpg, ElisEnum.E_HasSubtitles )
+				if img:
+					imglist.append(img)
+				img = GetImageByEPGComponent( self.mNavEpg, ElisEnum.E_HasDolbyDigital )
+				if img:
+					imglist.append(img)
+				img = GetImageByEPGComponent( self.mNavEpg, ElisEnum.E_HasHDVideo )
+				if img:
+					imglist.append(img)
 
-				elif len(imagelist) == 3:
-					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId( ), imagelist[0] )
-					self.UpdateLabelGUI( self.mCtrlServiceTypeImg2.getId( ), imagelist[1] )
-					self.UpdateLabelGUI( self.mCtrlServiceTypeImg3.getId( ), imagelist[2] )
+				if len(imglist) == 1:
+					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId( ), imglist[0] )
+				elif len(imglist) == 2:
+					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId( ), imglist[0] )
+					self.UpdateLabelGUI( self.mCtrlServiceTypeImg2.getId( ), imglist[1] )
+
+				elif len(imglist) == 3:
+					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId( ), imglist[0] )
+					self.UpdateLabelGUI( self.mCtrlServiceTypeImg2.getId( ), imglist[1] )
+					self.UpdateLabelGUI( self.mCtrlServiceTypeImg3.getId( ), imglist[2] )
 				else:
 					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId( ), '' )
 					self.UpdateLabelGUI( self.mCtrlServiceTypeImg2.getId( ), '' )

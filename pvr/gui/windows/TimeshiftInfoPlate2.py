@@ -16,7 +16,7 @@ from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 
 from pvr.Util import RunThread, GuiLock, GuiLock2, TimeToString, TimeFormatEnum
-from pvr.GuiHelper import EpgInfoComponentImage, GetSelectedLongitudeString, ClassToList, EnumToString
+from pvr.GuiHelper import GetImageByEPGComponent, GetSelectedLongitudeString, ClassToList, EnumToString
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
 import pvr.gui.windows.Define_string as MsgId
@@ -1325,7 +1325,17 @@ class TimeShiftInfoPlate2(BaseWindow):
 
 
 				#component
-				imglist = EpgInfoComponentImage( aEvent )
+				imglist = []
+				img = GetImageByEPGComponent( aEvent, ElisEnum.E_HasSubtitles )
+				if img:
+					imglist.append(img)
+				img = GetImageByEPGComponent( aEvent, ElisEnum.E_HasDolbyDigital )
+				if img:
+					imglist.append(img)
+				img = GetImageByEPGComponent( aEvent, ElisEnum.E_HasHDVideo )
+				if img:
+					imglist.append(img)
+
 				if len(imglist) == 1:
 					self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg1.getId(), imglist[0] )
 				elif len(imglist) == 2:

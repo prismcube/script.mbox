@@ -1,9 +1,9 @@
 import os, sys, time
 import xbmcgui
 import xbmcaddon
-
+from ElisEnum import ElisEnum
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-from inspect import currentframe
+#from inspect import currentframe
 #__file__ = os.path.basename( currentframe().f_code.co_filename )
 
 gSettings = xbmcaddon.Addon(id="script.mbox")
@@ -53,60 +53,6 @@ def GetImageByEPGComponent( aEPG, aFlag ) :
 	return ''
 
 
-def EpgInfoComponentImage(aEpg):
-	LOG_TRACE( 'Enter' )
-	from ElisEnum import ElisEnum
-
-	tempFile = 0x00
-	if aEpg.mHasHDVideo :              #== ElisEnum.E_HasHDVideo:                # 1<<0
-		tempFile |= 0x01
-	if aEpg.mHas16_9Video :            #== ElisEnum.E_Has16_9Video:              # 1<<1
-		pass
-	if aEpg.mHasStereoAudio :          #== ElisEnum.E_HasStereoAudio:            # 1<<2
-		pass
-	if aEpg.mHasMultichannelAudio :    #== ElisEnum.E_mHasMultichannelAudio:     # 1<<3
-		pass
-	if aEpg.mHasDolbyDigital :         #== ElisEnum.E_mHasDolbyDigital:          # 1<<4
-		tempFile |= 0x02
-	if aEpg.mHasSubtitles :            #== ElisEnum.E_mHasSubtitles:             # 1<<5
-		tempFile |= 0x04
-	if aEpg.mHasHardOfHearingAudio :   #== ElisEnum.E_mHasHardOfHearingAudio:    # 1<<6
-		pass
-	if aEpg.mHasHardOfHearingSub :     #== ElisEnum.E_mHasHardOfHearingSub:      # 1<<7
-		pass
-	if aEpg.mHasVisuallyImpairedAudio :#== ElisEnum.E_mHasVisuallyImpairedAudio: # 1<<8
-		pass
-
-	LOG_TRACE( 'component flag[%s]'% tempFile )
-
-	imgData  = 'IconTeletext.png'
-	imgDolby = 'confluence/dolbydigital.png'
-	imgHD    = 'confluence/OverlayHD.png'
-	imagelist = []
-	if tempFile == 1:
-		imagelist.append(imgHD)
-	elif tempFile == 2:	
-		imagelist.append(imgDolby)
-	elif tempFile == 3:	
-		imagelist.append(imgDolby)
-		imagelist.append(imgHD)
-	elif tempFile == 4:	
-		imagelist.append(imgData)
-	elif tempFile == 5:	
-		imagelist.append(imgData)
-		imagelist.append(imgHD)
-	elif tempFile == 6:	
-		imagelist.append(imgData)
-		imagelist.append(imgDolby)
-	elif tempFile == 7:	
-		imagelist.append(imgData)
-		imagelist.append(imgDolby)
-		imagelist.append(imgHD)
-	else:
-		LOG_TRACE( 'unknown component image' )
-
-	return imagelist
-
 def GetSelectedLongitudeString(aLongitude, aName):
 	LOG_TRACE( 'Enter' )
 
@@ -125,6 +71,7 @@ def GetSelectedLongitudeString(aLongitude, aName):
 
 	LOG_TRACE( 'Leave[%s]'% ret )
 	return ret
+
 
 def EnumToString(aType, aValue):
 	from ElisEnum import ElisEnum
@@ -176,6 +123,7 @@ def EnumToString(aType, aValue):
 
 	return ret.upper()
 
+
 def AgeLimit(aPropertyAge, aEPGAge):
 
 	isLimit = False
@@ -192,19 +140,21 @@ def AgeLimit(aPropertyAge, aEPGAge):
 
 	return isLimit
 
+
 def ClassToList( aMode, aClassList ) :
 
 	if aClassList :
-		list = []
+		ilist = []
 		for item in aClassList :
 			req = []
 			item.appendReqBuffer( req )
-			list.append( req )
+			ilist.append( req )
 	
 		if aMode == 'print' :
-			LOG_TRACE( '%s'% list)
+			LOG_TRACE( '%s'% ilist)
 		elif aMode == 'convert' :
-			return list
+			return ilist
+
 
 def ParseLabelToCh( aMode, aLabel ) :
 	import re
@@ -231,6 +181,7 @@ def Strings(aStringID, aReplacements = None):
         return string % aReplacements
     else :
         return string
+
 
 def MR_LANG( aString ) :
 	return aString
