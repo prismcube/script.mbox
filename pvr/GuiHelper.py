@@ -177,8 +177,9 @@ def ParseLabelToCh( aMode, aLabel ) :
 
 
 def MR_LANG( aString ) :
-	mStrLanguage = GetInstance()
-	return mStrLanguage.StringTranslate(aString)
+	#mStrLanguage = GetInstance()
+	#return mStrLanguage.StringTranslate(aString)
+	return aString
 
 
 def Strings(aStringID, aReplacements = None):
