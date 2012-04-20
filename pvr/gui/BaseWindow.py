@@ -126,6 +126,17 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		x, y = list( ctrlImgVideoPos.getPosition( ) )
 		ret = self.mCommander.Player_SetVIdeoSize( x, y, w, h )
 
+		a1 = xbmc.executehttpapi("GetGUISetting(0, lookandfeel.skin)")
+		a2 = xbmc.executehttpapi("GetGUISetting(1, lookandfeel.skin)")
+		a3 = xbmc.executehttpapi("GetGUISetting(2, lookandfeel.skin)")
+		a4 = xbmc.executehttpapi("GetGUISetting(3, lookandfeel.skin)")
+
+		print '########################'
+		print 'dhkim test a = %s' % a1
+		print 'dhkim test a = %s' % a2
+		print 'dhkim test a = %s' % a3
+		print 'dhkim test a = %s' % a4		
+		print '########################'
 
 	def SetVideoRestore( self ) :
 		ret = self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
