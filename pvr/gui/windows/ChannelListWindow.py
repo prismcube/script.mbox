@@ -2389,11 +2389,12 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mChannelList :
 				if self.mEditFavorite:
 					lblItem = '%s'% MR_LANG('Add to Fav. Group')
+					context.append( ContextItem( lblItem, CONTEXT_ACTION_ADD_TO_FAV  ) )
 				else:
-					label   = '%s\t%s'% ( MR_LANG('Add to Fav. Group'), MR_LANG('None') )
-					lblItem = str('%s%s%s'%( E_TAG_COLOR_GREY3, label, E_TAG_COLOR_END ) )
-
-				context.append( ContextItem( lblItem, CONTEXT_ACTION_ADD_TO_FAV  ) )
+					#label   = '%s\t%s'% ( MR_LANG('Add to Fav. Group'), MR_LANG('None') )
+					#lblItem = str('%s%s%s'%( E_TAG_COLOR_GREY3, label, E_TAG_COLOR_END ) )
+					lblItem = '%s'% MR_LANG('Create New Group')
+					context.append( ContextItem( lblItem, CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
 
 			else :
 				head =  MR_LANG('Infomation')
@@ -2453,25 +2454,21 @@ class ChannelListWindow( BaseWindow ) :
 		if selectedAction == CONTEXT_ACTION_ADD_TO_FAV or \
 		   selectedAction == CONTEXT_ACTION_RENAME_FAV or \
 		   selectedAction == CONTEXT_ACTION_DELETE_FAV :
-		   	context = []
-		   	idx = 0
-   			for name in self.mEditFavorite:
-				context.append( ContextItem( name, idx ) )
-				idx += 1
+ 			title = ''
+ 			if selectedAction == CONTEXT_ACTION_ADD_TO_FAV :   title = MR_LANG('Add to Fav. Group')
+ 			elif selectedAction == CONTEXT_ACTION_RENAME_FAV : title = MR_LANG('Rename Fav. Group')
+ 			elif selectedAction == CONTEXT_ACTION_DELETE_FAV : title = MR_LANG('Delete Fav. Group')
 
-			GuiLock2( True )
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-			dialog.SetProperty( context )
- 			dialog.doModal( )
- 			GuiLock2( False )
-
- 			grpIdx = dialog.GetSelectedAction( )
- 			LOG_TRACE('---------------grpIdx[%s]'% grpIdx)
+ 			grpIdx = xbmcgui.Dialog().select(title, self.mEditFavorite)
  			groupName = self.mEditFavorite[grpIdx]
+ 			LOG_TRACE('---------------grpIdx[%s] fav[%s]'% (grpIdx,groupName) )
 
 			if grpIdx == -1 :
 				LOG_TRACE('CANCEL by context dialog')
 				return
+
+			grpIdx = selectedAction
+
 
 		# Ren Fav, Del Fav ==> popup input group Name
 		if selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV or \
