@@ -271,8 +271,8 @@ class SettingWindow( BaseWindow ) :
 
 
 	def AddPrevNextButton( self ) :
-		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_PREV, None, None, None, None ) ) 
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_NEXT, None, None, None, None ) )
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_PREV, None, None, None, None ) ) 		
 
 
 	def AddNextButton( self ) :

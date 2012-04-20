@@ -333,7 +333,7 @@ class FirstInstallation( SettingWindow ) :
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( 'Next' )
 
 		elif self.mStepNum == E_STEP_RESULT :
-			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( 'Exit' )
+			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( 'Finish' )
 
 		else :
 			self.SetVisibleControl( E_FIRST_TIME_INSTALLATION_PREV, True )
