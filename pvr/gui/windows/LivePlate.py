@@ -18,9 +18,8 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 
 from pvr.Util import RunThread, GuiLock, GuiLock2, TimeToString, TimeFormatEnum
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-from pvr.GuiHelper import GetImageByEPGComponent, GetSelectedLongitudeString, EnumToString, ClassToList, AgeLimit, Strings
+from pvr.GuiHelper import GetImageByEPGComponent, GetSelectedLongitudeString, EnumToString, ClassToList, AgeLimit, MR_LANG
 
-import pvr.gui.windows.Define_string as MsgId
 from copy import deepcopy
 import threading, time, os
 
@@ -720,7 +719,7 @@ class LivePlate(BaseWindow):
 		while self.mPincodeEnter > FLAG_MASK_NONE :
 
 			try :
-				msg = Strings(MsgId.LANG_INPUT_PIN_CODE)
+				msg = MR_LANG('Input PIN Code')
 				inputPin = ''
 
 				#ret = self.mDataCache.Channel_SetInitialBlank( True )
@@ -761,8 +760,8 @@ class LivePlate(BaseWindow):
 					LOG_TRACE( 'Pincode success' ) 
 					break
 				else:
-					msg1 = Strings(MsgId.LANG_ERROR)
-					msg2 = Strings(MsgId.LANG_WRONG_PIN_CODE)
+					msg1 = MR_LANG('Error')
+					msg2 = MR_LANG('Wrong PIN Code')
 					GuiLock2( True )
 					xbmcgui.Dialog().ok( msg1, msg2 )
 					GuiLock2( False )
@@ -1079,7 +1078,7 @@ class LivePlate(BaseWindow):
 				dialog.doModal( )
 				GuiLock2( False )
 
-				selectIdx2 = dialog.GetSelectedIndex( )
+				selectIdx2 = dialog.GetSelectedAction( )
 				self.mDataCache.Audiotrack_select( selectIdx2 )
 
 				LOG_TRACE('Select[%s --> %s]'% (selectAction, selectIdx2) )
