@@ -325,7 +325,7 @@
 
 <!-- middle right -->
 
-		<control type="image" id="301">
+		<control type="image" id="1004">
 			<posx>820</posx>
 			<posy>130</posy>
 			<width>352</width>
