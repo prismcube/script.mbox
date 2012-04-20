@@ -145,7 +145,7 @@
 				<aligny>center</aligny>
 			</control>
 			<control type="image" id="1004">
-				<posx>842</posx>
+				<posx>857</posx>
 				<posy>160</posy>
 				<width>352</width>
 				<height>198</height>
