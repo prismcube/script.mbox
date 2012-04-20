@@ -190,6 +190,27 @@ def Strings(aStringID, aReplacements = None):
 		return string
 
 
+def GetCalibration( aX, aY, aWidth, aHeight ) :
+	#a1 = xbmc.executehttpapi("GetGUISetting(0, resolutions)")
+	temX = 100
+	temY = 100
+	temA = 100
+	temB = 100
+	#rate = ( 1280 - 33 ) / float( 1280 ) * 100
+	#x = aX * ( 1280 - temX ) / float( 1280 )
+	#y = aY * ( 720 - temY ) / float( 720 )
+	x = aX - ( aX * temX / float( 1280 ) )
+	y = aY - ( aY * temY / float( 1280 ) )
+	w = 352 - ( 352 * temX / float( 1280 ) )
+	h = 198 - ( 198 * temY / float( 720 ) )
+
+	x = x + temX
+	y = y + temY
+
+	print 'dhkim test pos in GetCalibration = %s, %s, %s, %s' % ( x, y, w, h )
+	return int( x), int(y), int(w), int(h)
+
+
 gMRStringHash = {}
 gCacheMRLanguage = None
 def GetInstance():
