@@ -1059,9 +1059,10 @@ class ChannelListWindow( BaseWindow ) :
 				head =  MR_LANG('Setting - to change zapping mode')
 				line1 = '%s / %s'% ( label1.title( ), label2.title( ) )
 				line2 = MR_LANG('Do you want to save channels?')
+				posLine = abs( 100 - len(line1) )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( head, str('%s\n\n%s'% (line1,line2) ) )
+				dialog.SetDialogProperty( head, str('%s\n\n%s'% (line1.center(posLine), line2) ) )
 				dialog.doModal( )
 				GuiLock2( False )
 
@@ -2413,7 +2414,7 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mEditFavorite:
 				context.append( ContextItem( '%s'% MR_LANG('Rename Fav. Group'), CONTEXT_ACTION_RENAME_FAV ) )
 				context.append( ContextItem( '%s'% MR_LANG('Delete Fav. Group'), CONTEXT_ACTION_DELETE_FAV ) )
-
+			"""
 			else:
 				label1   = '%s\tNone'% MR_LANG('Rename Fav. Group')
 				label2   = '%s\tNone'% MR_LANG('Delete Fav. Group')
@@ -2421,6 +2422,7 @@ class ChannelListWindow( BaseWindow ) :
 				lblItem3 = str('%s%s%s'%( E_TAG_COLOR_GREY3, label2, E_TAG_COLOR_END ) )
 				context.append( ContextItem( lblItem2 , CONTEXT_ACTION_RENAME_FAV ) )
 				context.append( ContextItem( lblItem3, CONTEXT_ACTION_DELETE_FAV ) )
+			"""
 
 
 		GuiLock2( True )
@@ -2448,6 +2450,7 @@ class ChannelListWindow( BaseWindow ) :
 			return
 		#--------------------------------------------------------------- section 1
 
+		grpIdx = -1
 		groupName = None
 
 		# add Fav, Ren Fav, Del Fav ==> popup select group
@@ -2467,8 +2470,24 @@ class ChannelListWindow( BaseWindow ) :
 				LOG_TRACE('CANCEL by context dialog')
 				return
 
-			grpIdx = selectedAction
+			if selectedAction == CONTEXT_ACTION_DELETE_FAV :
+				head = MR_LANG('Delete Fav. Group')
+				line1 = '%s'% groupName
+				line2 = '%s'% MR_LANG('Do you want to delete?')
+				posLine = abs( 100 - len(line1) )
 
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( head, str('%s\n\n%s'% (line1.center(posLine), line2)) )
+				dialog.doModal( )
+
+
+				answer = dialog.IsOK( )
+
+				#answer is yes
+				if answer != E_DIALOG_STATE_YES :
+					return
+
+			grpIdx = selectedAction
 
 		# Ren Fav, Del Fav ==> popup input group Name
 		if selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV or \
@@ -2498,8 +2517,16 @@ class ChannelListWindow( BaseWindow ) :
 		#--------------------------------------------------------------- section 2
 
 		self.DoContextAdtion( aMode, selectedAction, groupName )
-
 		self.mIsSave |= FLAG_MASK_ADD
+
+		if selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV or \
+			selectedAction == CONTEXT_ACTION_RENAME_FAV or \
+			selectedAction == CONTEXT_ACTION_DELETE_FAV :
+
+			self.GetFavoriteGroup( )
+			#self.mCtrlListMainmenu.selectItem( E_SLIDE_MENU_FAVORITE )
+			if self.mCtrlListMainmenu.getSelectedPosition( ) == E_SLIDE_MENU_FAVORITE :
+				self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE )
 
 		LOG_TRACE( 'Leave' )
 
