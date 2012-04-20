@@ -437,6 +437,12 @@ class LivePlate(BaseWindow):
 									LOG_TRACE('append new idx[%s], epgTotal:oldlen[%s] newlen[%s]'% (idx, oldLen, len(self.mEPGList)) )
 									LOG_TRACE('list[%s]'% ClassToList('convert',self.mEPGList) )
 
+			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
+				 aEvent.getName() == ElisEventRecordingStopped.getName() :
+				time.sleep(1.5)
+				self.ShowRecording()
+				self.mDataCache.mCacheReload = True
+				LOG_TRACE('Receive Event[%s]'% aEvent.getName() )
 
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )

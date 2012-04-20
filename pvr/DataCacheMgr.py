@@ -16,11 +16,17 @@ from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.GuiConfig import *
 
+import sys
+if sys.platform == 'win32' :
+	gFlagUseDB = False
+else :
+	gFlagUseDB = True
+print 'mBox----------------use db[%s]'% gFlagUseDB
 
-SUPPORT_EPG_DATABASE = True
-SUPPORT_CHANNEL_DATABASE = True
-SUPPORT_TIMER_DATABASE = True
-SUPPORT_RECORD_DATABASE = True
+SUPPORT_EPG_DATABASE = gFlagUseDB
+SUPPORT_CHANNEL_DATABASE = gFlagUseDB
+SUPPORT_TIMER_DATABASE = gFlagUseDB
+SUPPORT_RECORD_DATABASE = gFlagUseDB
 
 
 if SUPPORT_EPG_DATABASE == True :
