@@ -177,9 +177,9 @@ def ParseLabelToCh( aMode, aLabel ) :
 
 
 def MR_LANG( aString ) :
-	#mStrLanguage = GetInstance()
-	#return mStrLanguage.StringTranslate(aString)
-	return aString
+	mStrLanguage = GetInstance()
+	return mStrLanguage.StringTranslate(aString)
+	#return aString
 
 
 def Strings(aStringID, aReplacements = None):
@@ -205,7 +205,7 @@ def GetInstance():
 class CacheMRLanguage( object ) :
 	def __init__( self ):
 
-		from pvr.BeautifulSoup import BeautifulSoup
+		from BeautifulSoup import BeautifulSoup
 
 		self.mStrLanguage = None
 
