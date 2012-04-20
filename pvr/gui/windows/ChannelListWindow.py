@@ -651,6 +651,19 @@ class ChannelListWindow( BaseWindow ) :
 
 							else:
 								LOG_TRACE('epg SAME')
+
+			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
+				 aEvent.getName() == ElisEventRecordingStopped.getName() :
+				time.sleep(1.5)
+				self.mRecChannel1 = []
+				self.mRecChannel2 = []
+				self.ShowRecording()
+				self.mDataCache.mCacheReload = True
+				self.mListItems = None
+				self.InitChannelList( )
+				
+				LOG_TRACE('Receive Event[%s]'% aEvent.getName() )
+
 		else:
 			LOG_TRACE( 'channellist winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
 

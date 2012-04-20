@@ -315,6 +315,13 @@ class TimeShiftPlate(BaseWindow):
 						pass
 						#xbmc.executebuiltin('xbmc.Action(stop)')
 
+			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
+				 aEvent.getName() == ElisEventRecordingStopped.getName() :
+				time.sleep(1.5)
+				self.ShowRecording()
+				self.mDataCache.mCacheReload = True
+				LOG_TRACE('Receive Event[%s]'% aEvent.getName() )
+
 
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
