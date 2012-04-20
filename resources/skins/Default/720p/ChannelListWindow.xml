@@ -325,7 +325,7 @@
 
 <!-- middle right -->
 
-		<control type="image" id="301">
+		<control type="image" id="1004">
 			<posx>820</posx>
 			<posy>130</posy>
 			<width>352</width>
@@ -341,19 +341,19 @@
 			<height>600</height>
 			<allowoverlay>yes</allowoverlay>
 			<control type="group">
-				<posx>-25</posx>
+				<posx>-18</posx>
 				<posy>-20</posy>
 				<control type="image">
 					<posx>0</posx>
-					<posy>220</posy>
-					<width>352</width>
+					<posy>210</posy>
+					<width>367</width>
 					<height>18</height>
 					<texture border="20">confluence/StackNF.png</texture>
 				</control>
 				<control type="label" id="303">
 					<posx>0</posx>
-					<posy>235</posy>
-					<width>352</width>
+					<posy>209</posy>
+					<width>367</width>
 					<height>10</height>
 					<font>font12_title</font>
 					<label>$INFO[Control.GetLabel]</label>
