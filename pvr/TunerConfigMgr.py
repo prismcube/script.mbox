@@ -261,12 +261,12 @@ class TunerConfigMgr( object ) :
 		ret1 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList1 )
 		ret2 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList2 )
 
-
+		"""
 		for satellite in self.mConfiguredList1 :
 			satellite.printdebug()
 		for satellite in self.mConfiguredList2 :
 			satellite.printdebug()
-
+		"""
 
 		if ret1 == True and ret2 == True :
 			return True

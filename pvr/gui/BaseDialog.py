@@ -45,7 +45,7 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ):
 
 	def GetFocusId( self ):
 		GuiLock2( True )
-		self.mFocusId = self.getFocusId()
+		self.mFocusId = self.getFocusId( )
 		GuiLock2( False )
 		return self.mFocusId
 

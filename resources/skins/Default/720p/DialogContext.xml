@@ -1,5 +1,6 @@
 <window>
 	<defaultcontrol always="true">102</defaultcontrol>
+	<onload>SetProperty(ItemHeight,38)</onload>					<!--Input Item Height-->
 	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
@@ -53,17 +54,17 @@
 				<posx>34</posx>
 				<posy>0</posy>
 				<width>297</width>
-				<height>500</height>
+				<height>380</height>						<!--Change ProPerty ItemHeight * 10 -->
 				<onup>102</onup>
 				<ondown>102</ondown>
 				<onleft>103</onleft>
 				<onright>103</onright>
-				<itemlayout height="38" width="297">
+				<itemlayout width="297" height="38" >		<!--Change ProPerty ItemHeight-->
 					<control type="label">
 						<posx>150</posx>
 						<posy>0</posy>
 						<width>297</width>
-						<height>38</height>
+						<height>38</height>					<!--Change ProPerty ItemHeight-->
 						<font>fontContextMenu</font>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -71,19 +72,19 @@
 						<label>$INFO[ListItem.Label]</label>
 					</control>		
 				</itemlayout>
-				<focusedlayout height="38" width="297">
+				<focusedlayout width="297" height="38">		<!--Change ProPerty ItemHeight-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
 						<width>297</width>
-						<height>38</height>
+						<height>38</height>					<!--Change ProPerty ItemHeight-->
 						<texture border="5">confluence/button-focus.png</texture>
 					</control>
 					<control type="label">
 						<posx>150</posx>
 						<posy>0</posy>
 						<width>297</width>
-						<height>38</height>
+						<height>38</height>					<!--Change ProPerty ItemHeight-->
 						<font>fontContextMenu</font>
 						<align>center</align>
 						<aligny>center</aligny>

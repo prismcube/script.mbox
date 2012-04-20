@@ -183,11 +183,13 @@ class Configure( SettingWindow ) :
 			elif groupId == E_Input06 :
 				context = []
 				context.append( ContextItem( 'Internal Test', PING_TEST_INTERNAL ) )
-				context.append( ContextItem( 'External Test', PING_TEST_EXTERNAL ) )
+				context.append( ContextItem( 'External Test', PING_TEST_EXTERNAL ) )				
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 				dialog.SetProperty( context )
 				dialog.doModal( )
 				contextAction = dialog.GetSelectedAction( )
+				if contextAction < 0 :
+					return
 				if contextAction == PING_TEST_INTERNAL :
 					self.ShowProgress( 'Now Test...', 10 )
 					if PingTestInternal( ) == True :
