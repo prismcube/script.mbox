@@ -12,7 +12,7 @@ import pvr.TunerConfigMgr
 import thread
 from pvr.Util import RunThread, GuiLock, GuiLock2
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-from pvr.GuiHelper import GetCalibration
+from pvr.GuiHelper import GetResolution
 
 
 class Action(object) :
@@ -128,7 +128,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 		print 'dhkim test size1 = %d, %d, %d, %d' % ( x, y, w, h )
 		
-		x, y, w, h = GetCalibration( x, y, w, h )
+		x, y, w, h = GetResolution( x, y, w, h )
 		
 
 		self.mDataCache.Player_SetVIdeoSize( x, y, w, h )

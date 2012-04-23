@@ -149,7 +149,7 @@
 				<posy>160</posy>
 				<width>352</width>
 				<height>198</height>
-				<texture>confluence/backgrounds/settings.jpg</texture>
+				<!--<texture>confluence/backgrounds/settings.jpg</texture>-->
 			</control>
 			<include>DefaultScanHelperStatusProgress</include>
 		</control>

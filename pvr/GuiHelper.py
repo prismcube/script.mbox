@@ -3,6 +3,7 @@ import xbmcgui
 import xbmcaddon
 from ElisEnum import ElisEnum
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+from pvr.gui.GuiConfig import *
 #from inspect import currentframe
 #__file__ = os.path.basename( currentframe().f_code.co_filename )
 
@@ -190,25 +191,40 @@ def Strings(aStringID, aReplacements = None):
 		return string
 
 
-def GetCalibration( aX, aY, aWidth, aHeight ) :
+def GetResolution( aX, aY, aWidth, aHeight ) :
 	#a1 = xbmc.executehttpapi("GetGUISetting(0, resolutions)")
-	temX = 100
-	temY = 100
-	temA = 100
-	temB = 100
-	#rate = ( 1280 - 33 ) / float( 1280 ) * 100
-	#x = aX * ( 1280 - temX ) / float( 1280 )
-	#y = aY * ( 720 - temY ) / float( 720 )
-	x = aX - ( aX * temX / float( 1280 ) )
-	y = aY - ( aY * temY / float( 1280 ) )
-	w = 352 - ( 352 * temX / float( 1280 ) )
-	h = 198 - ( 198 * temY / float( 720 ) )
+	temX =34
+	temY = 18
+	temX1 = 33
+	temY1 = 18
+
+	zoom = 0
+
+	if zoom != 0 :
+		w = aWidth  / float( 100 ) * ( 100 + zoom )
+		h = aHeight / float( 100 ) * ( 100 + zoom )
+		x = aX + ( ( w -  aWidth ) / float( 2 ) )
+		y = aY + ( ( aHeight - h ) / float( 2 ) )
+	else :
+		w = aWidth
+		h = aHeight
+		x = aX
+		y = aY
+
+	x = x * ( E_WINDOW_WIDTH  - ( temX + temX1 ) ) / float( E_WINDOW_WIDTH )
+	y = y * ( E_WINDOW_HEIGHT - ( temY + temY1 ) ) / float( E_WINDOW_HEIGHT )
+	w = w * ( E_WINDOW_WIDTH  - ( temX + temX1 ) ) / float( E_WINDOW_WIDTH )
+	h = h * ( E_WINDOW_HEIGHT - ( temY + temY1 ) ) / float( E_WINDOW_HEIGHT )
 
 	x = x + temX
 	y = y + temY
+	
+	x = round( x )
+	y = round( y )
+	w = round( w )
+	h = round( h )
 
-	print 'dhkim test pos in GetCalibration = %s, %s, %s, %s' % ( x, y, w, h )
-	return int( x), int(y), int(w), int(h)
+	return int( x ), int( y ), int( w ), int( h )
 
 
 gMRStringHash = {}
