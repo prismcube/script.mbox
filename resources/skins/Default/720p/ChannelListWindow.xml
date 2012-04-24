@@ -625,44 +625,44 @@
 					</focusedlayout>
 					<content>
 						<item id="1">
-							<label>SCRIPT590</label>
+							<label>SCRIPT21</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="2">
-							<label>SCRIPT591</label>
+							<label>SCRIPT22</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="3">
-							<label>SCRIPT592</label>
+							<label>SCRIPT23</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="4">
-							<label>SCRIPT593</label>
+							<label>SCRIPT24</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<!--
 						<item id="5">
-							<label>SCRIPT599</label>
+							<label>SCRIPT25</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="6">
-							<label>SCRIPT597</label>
+							<label>SCRIPT26</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						-->
 						<item id="5">
-							<label>MODE</label>
+							<label>SCRIPT25</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="6">
-							<label>SCRIPT555</label>
+							<label>SCRIPT26</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
@@ -805,7 +805,7 @@
 								<include>DefaultButtonMediaSubCommonValues</include>
 								<textcolor>grey3</textcolor>
 								<focusedcolor>white</focusedcolor>
-								<label>SCRIPT599</label>
+								<label>$INFO[Control.GetLabel]</label>
 								<onleft>102</onleft>
 								<onright>115</onright>
 								<onup>114</onup>
@@ -819,7 +819,7 @@
 								<include>DefaultButtonMediaSubCommonValues</include>
 								<textcolor>grey3</textcolor>
 								<focusedcolor>white</focusedcolor>
-								<label>SCRIPT597</label>
+								<label>$INFO[Control.GetLabel]</label>
 								<onleft>102</onleft>
 								<onright>116</onright>
 								<onup>115</onup>

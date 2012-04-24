@@ -206,6 +206,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mMoveItem = []
 
 		self.SetPipScreen( )
+		self.UpdateLabelGUI( self.mCtrlBtnDelAll.getId( ), MR_LANG('Delete All Channel') )
 
 		#initialize get cache
 		zappingmode = None
@@ -1188,11 +1189,14 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateLabelGUI( self.mCtrlGropOpt.getId( ), False )
 			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ), True, 'enable' )
 			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ), True, 'enable' )
+			self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), MR_LANG('Edit Channel'), 'label' )
+
 		else :
 			#opt btn visible
 			self.UpdateLabelGUI( self.mCtrlGropOpt.getId( ), True )
 			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ), False, 'enable' )
 			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ), False, 'enable' )
+			self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), MR_LANG('Save Channel'), 'label' )
 			return
 
 		if self.mFlag_DeleteAll :
@@ -1257,6 +1261,7 @@ class ChannelListWindow( BaseWindow ) :
 			testlistItems.append( xbmcgui.ListItem(list_Mainmenu[item]) )
 
 		self.mCtrlListMainmenu.addItems( testlistItems )
+
 
 		#sort list, This is fixed
 		self.mListAllChannel = []
@@ -1576,7 +1581,14 @@ class ChannelListWindow( BaseWindow ) :
 				self.mCtrlRdoRadio.setEnabled( aValue )
 
 		elif aCtrlID == self.mCtrlBtnEdit.getId( ) :
-			self.mCtrlBtnEdit.setEnabled( aValue )
+			if aExtra == 'enable' :
+				self.mCtrlBtnEdit.setEnabled( aValue )
+			elif aExtra == 'label' :
+				self.mCtrlBtnEdit.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlBtnDelAll.getId( ) :
+			self.mCtrlBtnDelAll.setLabel( aValue )
+
 
 		"""
 		elif aCtrlID == self.mCtrlLblRec1.getId( ) :
@@ -1620,8 +1632,8 @@ class ChannelListWindow( BaseWindow ) :
 
 			#update lock-icon visible
 			if self.mNavChannel.mLocked :
-					self.mPincodeEnter |= FLAG_MASK_ADD
-					self.UpdateLabelGUI( self.mCtrlLockedInfo.getId( ), True )
+				self.mPincodeEnter |= FLAG_MASK_ADD
+				self.UpdateLabelGUI( self.mCtrlLockedInfo.getId( ), True )
 
 
 			#update career info
@@ -2644,7 +2656,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateLabelGUI( self.mCtrlImgRec1.getId( ), recImg1 )
 			self.UpdateLabelGUI( self.mCtrlLblRec2.getId( ), recLabel2 )
 			self.UpdateLabelGUI( self.mCtrlImgRec2.getId( ), recImg2 )
-			self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), btnEdit )
+			self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), btnEdit, 'enable' )
 			"""
 
 			self.mRecCount = isRunRec
@@ -2671,7 +2683,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
 				if isRunRec > 0 :
-					self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), False )
+					self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), False, 'enable' )
 					#use zapping table, in recording
 					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ZAPPING )
 					self.mDataCache.Channel_GetZappingList( )
