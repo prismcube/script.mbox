@@ -625,22 +625,22 @@
 					</focusedlayout>
 					<content>
 						<item id="1">
-							<label>SCRIPT21</label>
+							<label>All CHANNELS</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="2">
-							<label>SCRIPT22</label>
+							<label>SATELLITE</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="3">
-							<label>SCRIPT23</label>
+							<label>FTA/CAS</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="4">
-							<label>SCRIPT24</label>
+							<label>FAVORITE</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
@@ -657,12 +657,12 @@
 						</item>
 						-->
 						<item id="5">
-							<label>SCRIPT25</label>
+							<label>MODE</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="6">
-							<label>SCRIPT26</label>
+							<label>Back</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
