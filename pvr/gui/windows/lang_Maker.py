@@ -443,7 +443,7 @@ def parseProperty( elisDir, stringXML ):
 		lines.pop(lineCount-1)
 		max = len(soup.strings) / 2
 
-	wFile = elisDir + '/lib/elisinterface/stringsProperty.xml'
+	wFile = 'stringsProperty.xml'
 	wf = open(wFile, 'w')
 	if lines :
 		wf.writelines(lines)
@@ -498,6 +498,8 @@ def parseProperty( elisDir, stringXML ):
 	wf.close()
 	#print 'repeatWord[%s]'% repeatWord
 	print 'propertyTotal[%s] countNew[%s] countRepeat[%s]'% (countTot, countNew, countRepeat)
+	
+	os.rename(wFile, 'Strings.xml')
 	
 	return wFile
 
@@ -668,9 +670,9 @@ def AutoMakeLanguage() :
 	readToXML(stringFile)
 
 	print '\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'parse property')
-	propertyXml = parseProperty(elisDir, stringFile)
+	parseProperty(elisDir, stringFile)
 	print '\033[1;%sm[%s]%s\033[1;m'% (30, 'make language', 'made string')
-	readToXML(propertyXml)
+	readToXML(stringFile)
 
 	print '\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'verifying localizedString ID')
 	verify_defineString()
