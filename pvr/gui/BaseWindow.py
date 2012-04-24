@@ -126,7 +126,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		w = ctrlImgVideoPos.getWidth( )
 		x, y = list( ctrlImgVideoPos.getPosition( ) )
 		
-		x, y, w, h = GetResolution( x, y, w, h )
+		#x, y, w, h = GetResolution( x, y, w, h )
 		
 
 		self.mDataCache.Player_SetVIdeoSize( x, y, w, h )
