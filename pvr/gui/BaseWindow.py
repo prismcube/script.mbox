@@ -125,15 +125,11 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		h = ctrlImgVideoPos.getHeight( )
 		w = ctrlImgVideoPos.getWidth( )
 		x, y = list( ctrlImgVideoPos.getPosition( ) )
-
-		print 'dhkim test size1 = %d, %d, %d, %d' % ( x, y, w, h )
 		
 		x, y, w, h = GetResolution( x, y, w, h )
 		
 
 		self.mDataCache.Player_SetVIdeoSize( x, y, w, h )
-
-		print 'dhkim test size2 = %d, %d, %d, %d' % ( x, y, w, h )
 		"""
 		a1 = xbmc.executehttpapi("GetGUISetting(0, resolutions)")
 		a2 = xbmc.executehttpapi("GetGUISetting(1, resolutions)")

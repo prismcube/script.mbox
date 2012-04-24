@@ -193,7 +193,7 @@ def Strings(aStringID, aReplacements = None):
 
 def GetResolution( aX, aY, aWidth, aHeight ) :
 	#a1 = xbmc.executehttpapi("GetGUISetting(0, resolutions)")
-	temX =34
+	temX = 34
 	temY = 18
 	temX1 = 33
 	temY1 = 18
@@ -203,13 +203,8 @@ def GetResolution( aX, aY, aWidth, aHeight ) :
 	if zoom != 0 :
 		w = aWidth  / float( 100 ) * ( 100 + zoom )
 		h = aHeight / float( 100 ) * ( 100 + zoom )
-		x = aX + ( ( w -  aWidth ) / float( 2 ) )
-		y = aY + ( ( aHeight - h ) / float( 2 ) )
-	else :
-		w = aWidth
-		h = aHeight
-		x = aX
-		y = aY
+		y = aY - ( h - aHeight )
+		x = aX + ( ( w - aWidth ) / 2 )
 
 	x = x * ( E_WINDOW_WIDTH  - ( temX + temX1 ) ) / float( E_WINDOW_WIDTH )
 	y = y * ( E_WINDOW_HEIGHT - ( temY + temY1 ) ) / float( E_WINDOW_HEIGHT )
