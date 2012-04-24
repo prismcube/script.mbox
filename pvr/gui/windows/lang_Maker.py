@@ -659,9 +659,8 @@ def AutoMakeLanguage() :
 	stringFile = mboxDir + '/pvr/gui/windows/Strings.xml'
 	propertyFile = elisDir + '/lib/elisinterface/ElisProperty.py'
 
-	#findallSource(sourceDir, '[a-zA-Z0-9]\w*.py', 'Strings.xml')
-	#findallSource(propertyDir, '[a-zA-Z0-9]\w*.py', 'ElisProperty.py')
-	#print 'fname[%s] gcount[%s]'% (gName, gCount)
+	if os.path.exists(stringFile) :
+		os.remove(stringFile)
 
 	print '\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'parse source')
 	findallSource(mboxDir, '[a-zA-Z0-9]\w*.py')
@@ -761,6 +760,9 @@ if __name__ == "__main__":
 	#test()
 	#test2()
 	"""
+	#findallSource(sourceDir, '[a-zA-Z0-9]\w*.py', 'Strings.xml')
+	#findallSource(propertyDir, '[a-zA-Z0-9]\w*.py', 'ElisProperty.py')
+	#print 'fname[%s] gcount[%s]'% (gName, gCount)
 
 	AutoMakeLanguage()
 
