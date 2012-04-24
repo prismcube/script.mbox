@@ -326,8 +326,8 @@
 <!-- middle right -->
 
 		<control type="image" id="1004">
-			<posx>820</posx>
-			<posy>130</posy>
+			<posx>835</posx>
+			<posy>132</posy>
 			<width>352</width>
 			<height>198</height>
 			<texture></texture>
@@ -335,8 +335,8 @@
 
 
 		<control type="group" id="300">
-			<posx>820</posx>
-			<posy>120</posy>
+			<posx>853</posx>
+			<posy>142</posy>
 			<width>430</width>
 			<height>600</height>
 			<allowoverlay>yes</allowoverlay>
@@ -346,7 +346,7 @@
 				<control type="image">
 					<posx>0</posx>
 					<posy>210</posy>
-					<width>367</width>
+					<width>352</width>
 					<height>18</height>
 					<texture border="20">confluence/StackNF.png</texture>
 				</control>

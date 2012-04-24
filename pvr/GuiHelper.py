@@ -3,6 +3,7 @@ import xbmcgui
 import xbmcaddon
 from ElisEnum import ElisEnum
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+from pvr.gui.GuiConfig import *
 #from inspect import currentframe
 #__file__ = os.path.basename( currentframe().f_code.co_filename )
 
@@ -188,6 +189,42 @@ def Strings(aStringID, aReplacements = None):
 		return string % aReplacements
 	else :
 		return string
+
+
+def GetResolution( aX, aY, aWidth, aHeight ) :
+	#a1 = xbmc.executehttpapi("GetGUISetting(0, resolutions)")
+	temX = 34
+	temY = 18
+	temX1 = 33
+	temY1 = 18
+
+	zoom = 0
+
+	if zoom != 0 :
+		w = aWidth  / float( 100 ) * ( 100 + zoom )
+		h = aHeight / float( 100 ) * ( 100 + zoom )
+		y = aY - ( h - aHeight )
+		x = aX + ( ( w - aWidth ) / 2 )
+	else :
+		x = aX
+		y = aY
+		w = aWidth
+		h = aHeight
+
+	x = x * ( E_WINDOW_WIDTH  - ( temX + temX1 ) ) / float( E_WINDOW_WIDTH )
+	y = y * ( E_WINDOW_HEIGHT - ( temY + temY1 ) ) / float( E_WINDOW_HEIGHT )
+	w = w * ( E_WINDOW_WIDTH  - ( temX + temX1 ) ) / float( E_WINDOW_WIDTH )
+	h = h * ( E_WINDOW_HEIGHT - ( temY + temY1 ) ) / float( E_WINDOW_HEIGHT )
+
+	x = x + temX
+	y = y + temY
+	
+	x = round( x )
+	y = round( y )
+	w = round( w )
+	h = round( h )
+
+	return int( x ), int( y ), int( w ), int( h )
 
 
 gMRStringHash = {}

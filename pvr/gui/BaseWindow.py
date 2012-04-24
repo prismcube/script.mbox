@@ -12,6 +12,7 @@ import pvr.TunerConfigMgr
 import thread
 from pvr.Util import RunThread, GuiLock, GuiLock2
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+from pvr.GuiHelper import GetResolution
 
 
 class Action(object) :
@@ -124,12 +125,18 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		h = ctrlImgVideoPos.getHeight( )
 		w = ctrlImgVideoPos.getWidth( )
 		x, y = list( ctrlImgVideoPos.getPosition( ) )
-		ret = self.mCommander.Player_SetVIdeoSize( x, y, w, h )
+		
+		#x, y, w, h = GetResolution( x, y, w, h )
+		
 
-		a1 = xbmc.executehttpapi("GetGUISetting(0, lookandfeel.skin)")
-		a2 = xbmc.executehttpapi("GetGUISetting(1, lookandfeel.skin)")
-		a3 = xbmc.executehttpapi("GetGUISetting(2, lookandfeel.skin)")
-		a4 = xbmc.executehttpapi("GetGUISetting(3, lookandfeel.skin)")
+		self.mDataCache.Player_SetVIdeoSize( x, y, w, h )
+		"""
+		a1 = xbmc.executehttpapi("GetGUISetting(0, resolutions)")
+		a2 = xbmc.executehttpapi("GetGUISetting(1, resolutions)")
+		a3 = xbmc.executehttpapi("GetGUISetting(2, resolutions)")
+		a4 = xbmc.executehttpapi("GetGUISetting(3, resolutions)")
+		#).replace("<li>","") )
+		#GetGuiSetting(1, services.webserver)")[4:] 
 
 		print '########################'
 		print 'dhkim test a = %s' % a1
@@ -137,6 +144,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		print 'dhkim test a = %s' % a3
 		print 'dhkim test a = %s' % a4		
 		print '########################'
+		"""
 
 	def SetVideoRestore( self ) :
 		ret = self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
