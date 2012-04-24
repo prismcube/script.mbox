@@ -205,6 +205,11 @@ def GetResolution( aX, aY, aWidth, aHeight ) :
 		h = aHeight / float( 100 ) * ( 100 + zoom )
 		y = aY - ( h - aHeight )
 		x = aX + ( ( w - aWidth ) / 2 )
+	else :
+		x = aX
+		y = aY
+		w = aWidth
+		h = aHeight
 
 	x = x * ( E_WINDOW_WIDTH  - ( temX + temX1 ) ) / float( E_WINDOW_WIDTH )
 	y = y * ( E_WINDOW_HEIGHT - ( temY + temY1 ) ) / float( E_WINDOW_HEIGHT )
