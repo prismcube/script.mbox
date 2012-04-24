@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<strings>
+	<string id="1">Lock</string>
+	<string id="2">Unlock</string>
+	<string id="3">Skip</string>
+	<string id="4">Unskip</string>
+	<string id="5">Delete</string>
+	<string id="6">Move</string>
+	<string id="7">Add to Fav. Group</string>
+	<string id="8">Add OK</string>
+	<string id="9">None</string>
+	<string id="10">Create New Group</string>
+	<string id="11">Rename Fav. Group</string>
+	<string id="12">Rename OK</string>
+	<string id="13">Delete Fav. Group</string>
+	<string id="14">Delete OK</string>
+	<string id="15">Audio HDMI</string>
+	<string id="16">*</string>
+	<string id="17">Confirm</string>
+	<string id="18">Delete All Channel</string>
+	<string id="19">Empty Channels</string>
+	<string id="20">Setting - to change zapping mode</string>
+	<string id="21">All CHANNELS</string>
+	<string id="22">SATELLITE</string>
+	<string id="23">FTA/CAS</string>
+	<string id="24">FAVORITE</string>
+	<string id="25">MODE</string>
+	<string id="26">Back</string>
+	<string id="27">Input PIN Code</string>
+	<string id="28">Error</string>
+	<string id="29">Wrong PIN Code</string>
+	<string id="30">Infomation</string>
+	<string id="31">Do you want to delete?</string>
+</strings>
