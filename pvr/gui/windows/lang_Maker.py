@@ -233,7 +233,7 @@ def readToXML(inFile):
 				wFile = wDir + 'strings.xml'
 				wf.append( open( wFile, 'w' ) )
 
-				str = '<?xml version="1.0" encoding="utf-8"?>\n<strings>\n'
+				str = '<?xml version="1.0" encoding="utf-8"?>\r\n<strings>\r\n'
 				wf[i].writelines(str)
 	#print wFileList
 
@@ -298,7 +298,7 @@ def readToXML(inFile):
 					strid = re.sub(',', '', csvret2[len(csvret2)-1])
 					#strid = sidx
 	
-					str = '\t' + (tag1 % strid) + csvret[i] + tag2 +'\n'
+					str = '\t' + (tag1 % strid) + csvret[i] + tag2 +'\r\n'
 					wf[i].writelines( str )
 	
 				except Exception, e:
@@ -335,7 +335,7 @@ def readToXML(inFile):
 				else :
 					defineStr = var_[0]
 
-				str = 'LANG_' + defineStr + ' = ' + strid +'\n'
+				str = 'LANG_' + defineStr + ' = ' + strid +'\r\n'
 				#print str
 				df.writelines(str)
 	
@@ -347,7 +347,7 @@ def readToXML(inFile):
 
 
 	for i in range(len(wFileList)):
-		wf[i].writelines('</strings>\n')
+		wf[i].writelines('</strings>\r\n')
 		wf[i].close()
 
 	rf.close()
@@ -381,7 +381,7 @@ def verify_defineString():
 			ret2 = re.split('\W+', iline)
 
 			if (defineId != int(ret2[1])) and (defineStr == ret2[0]):
-				line = defineStr + '_VERIFYED%s = %d'% (idx, defineId) + '\n'
+				line = defineStr + '_VERIFYED%s = %d'% (idx, defineId) + '\r\n'
 				lines[idx] = line
 				verified += 1
 				#print '[%s][%s] equal[%s][%s]'% (defineStr, defineId, ret2[0], ret2[1] )
@@ -418,12 +418,8 @@ def parseProperty( elisDir, stringXML ):
 	sys.path.append(os.path.join(elisDir, 'lib', 'elisinterface'))
 	from ElisProperty import _propertyMapEnum
 
-	reservedWord = 'Min Hour 480i 480p 576i 576p 720p 1080i 1080p-25 CVBS RGB YC ms'
-	timePattern  = '[0-9]{2}:[0-9]{2}|[0-9]*\*[0-9]'
-	unitPattern  = '[0-9]* Min|[0-9]* s|[0-9]* ms|[0-9]* GB|[0-9]* Sec|[0-9] Hour|[0-9] \%'
-
 	elementHash = {}
-	for element in re.split(' ', reservedWord) :
+	for element in re.split(' ', gReservedWord) :
 		elementHash[element] = element
 		#print element
 
@@ -448,8 +444,8 @@ def parseProperty( elisDir, stringXML ):
 	if lines :
 		wf.writelines(lines)
 	else :
-		wf.writelines('<?xml version="1.0" encoding="utf-8"?>\n')
-		wf.writelines('<strings>\n')
+		wf.writelines('<?xml version="1.0" encoding="utf-8"?>\r\n')
+		wf.writelines('<strings>\r\n')
 
 	countTot = 0
 	countNew = 1000 + max + 1
@@ -467,8 +463,8 @@ def parseProperty( elisDir, stringXML ):
 					element = item
 
 				#filter
-				timeStr  = re.findall(timePattern, element)
-				unitStr  = re.findall(unitPattern, element)
+				timeStr  = re.findall(gTimePattern, element)
+				unitStr  = re.findall(gUnitPattern, element)
 				digitStr = re.sub(':', '', element)
 				digitStr = re.sub('\s', '', digitStr)
 
@@ -478,7 +474,7 @@ def parseProperty( elisDir, stringXML ):
 					countRepeat += 1
 
 				else :
-					line = '\t<string id=\"%d\">%s</string>\n'% (countNew, element)
+					line = '\t<string id=\"%d\">%s</string>\r\n'% (countNew, element)
 					wf.writelines(line)
 					elementHash[element] = countNew
 					countNew += 1
@@ -490,7 +486,7 @@ def parseProperty( elisDir, stringXML ):
 				return
 
 
-	wf.writelines('</strings>\n')
+	wf.writelines('</strings>\r\n')
 	wf.close()
 
 	wf = open('repeatWord', 'w')
@@ -550,14 +546,11 @@ def parseSource(sourceFile):
 	rlines = rFile.readlines()
 	rFile.close()
 
-	reservedWord    = 'Min Hour 480i 480p 576i 576p 720p 1080i 1080p-25 CVBS RGB YC ms'
-	timePattern     = '[0-9]{2}:[0-9]{2}|[0-9]*\*[0-9]'
-	unitPattern     = '[0-9]* Min|[0-9]* s|[0-9]* ms|[0-9]* GB|[0-9]* Sec|[0-9] Hour'
 	functionPattern = 'MR_LANG\(\'[^"\']*\'\)'
 	stringPattern   = '\'([^"]*)\''
 
 	elementHash = {}
-	for element in re.split(' ', reservedWord) :
+	for element in re.split(' ', gReservedWord) :
 		elementHash[element] = element
 		#print element
 
@@ -584,8 +577,8 @@ def parseSource(sourceFile):
 	if lines :
 		wf.writelines(lines)
 	else :
-		wf.writelines('<?xml version="1.0" encoding="utf-8"?>\n')
-		wf.writelines('<strings>\n')
+		wf.writelines('<?xml version="1.0" encoding="utf-8"?>\r\n')
+		wf.writelines('<strings>\r\n')
 
 	countTot = 0
 	countNew = max+1
@@ -607,8 +600,8 @@ def parseSource(sourceFile):
 	#write xml
 	for element in strings :
 		#filter
-		timeStr  = re.findall(timePattern, element)
-		unitStr  = re.findall(unitPattern, element)
+		timeStr  = re.findall(gTimePattern, element)
+		unitStr  = re.findall(gUnitPattern, element)
 		digitStr = re.sub(':', '', element)
 		digitStr = re.sub('\s', '', digitStr)
 
@@ -618,14 +611,14 @@ def parseSource(sourceFile):
 			countRepeat += 1
 
 		else :
-			line = '\t<string id=\"%d\">%s</string>\n'% (countNew, element)
+			line = '\t<string id=\"%d\">%s</string>\r\n'% (countNew, element)
 			wf.writelines(line)
 			elementHash[element] = countNew
 			countNew += 1
 
 		countTot += 1
 
-	wf.writelines('</strings>\n')
+	wf.writelines('</strings>\r\n')
 	wf.close()
 
 	#wf = open('repeatWord', 'w')
@@ -656,6 +649,10 @@ def copyLanguage(srcDir, langDir) :
 
 
 ########## installation
+gReservedWord = 'Min Hour 480i 480p 576i 576p 720p 1080i 1080p-25 CVBS RGB YC ms FAT FAT16 FAT32 EXT2 EXT3 EXT4 NTFS'
+gTimePattern  = '[0-9]{2}:[0-9]{2}|[0-9]*\*[0-9]'
+gUnitPattern  = '[0-9]* Min|[0-9]* s|[0-9]* ms|[0-9]* GB|[0-9]* Sec|[0-9] Hour|[0-9] \%'
+
 def AutoMakeLanguage() :
 	currDir = os.getcwd()
 	mboxDir = os.path.abspath(currDir + '/../../../../script.mbox')
