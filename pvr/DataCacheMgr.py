@@ -153,6 +153,7 @@ class DataCacheMgr( object ):
 			"""
 
 		LOG_TRACE('')
+		self.mPropertyPincode = ElisPropertyEnum( 'PinCode', self.mCommander ).GetProp( )
 		self.Load( )
 		LOG_TRACE('')
 		#self.mEventBus.Register( self )
