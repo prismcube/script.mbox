@@ -524,7 +524,7 @@ def findallSource(dir, patternStr, reqFile=None):
 					break
 
 			else :
-				if gNoParseList.get(fname) != None :
+				if gNoParseList.get(fname) == fname :
 					#print gNoParseList.get(fname)
 					continue
 
@@ -546,7 +546,7 @@ def parseSource(sourceFile):
 	rlines = rFile.readlines()
 	rFile.close()
 
-	functionPattern = 'MR_LANG\(\'[^"\']*\'\)'
+	functionPattern = 'MR_LANG\s*\(\s*\'[^"\']*\'\s*\)'
 	stringPattern   = '\'([^"]*)\''
 
 	elementHash = {}
@@ -593,9 +593,9 @@ def parseSource(sourceFile):
 			ret = re.findall(stringPattern, var[i])
 			if ret :
 				strings.append(ret[0])
-	#if len(strings) :
-	#	print sourceFile
-	#	print 'len[%s] catch MR_LANG\n%s'% (len(strings), strings)
+	if len(strings) :
+		print sourceFile
+		print 'len[%s] catch MR_LANG\n%s'% (len(strings), strings)
 
 	#write xml
 	for element in strings :
@@ -664,25 +664,25 @@ def AutoMakeLanguage() :
 	if os.path.exists(stringFile) :
 		os.remove(stringFile)
 
-	print '\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'parse source')
+	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'parse source')
 	findallSource(mboxDir, '[a-zA-Z0-9]\w*.py')
-	print 'findAll source[%s]'% gCount
+	print '\nfindAll source[%s]'% gCount
 	print '\033[1;%sm[%s]%s\033[1;m'% (30, 'make language', 'made string')
 	readToXML(stringFile)
 
-	print '\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'parse property')
+	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'parse property')
 	parseProperty(elisDir, stringFile)
 	print '\033[1;%sm[%s]%s\033[1;m'% (30, 'make language', 'made string')
 	readToXML(stringFile)
 
-	print '\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'verifying localizedString ID')
+	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'verifying localizedString ID')
 	verify_defineString()
 
-	print '\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'copy to ../resource/language')
+	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'copy to ../resource/language')
 	langDir = mboxDir + '/resources/language'
 	copyLanguage('language', langDir)
 
-	print '\033[1;%sm%s\033[1;m\n'% (30, 'Completed..')
+	print '\n\033[1;%sm%s\033[1;m\n'% (30, 'Completed..')
 
 
 ########## test
@@ -725,25 +725,25 @@ def test2():
 	print var_
 	"""
 
-	"""
-	functionPattern = 'MR_LANG\(\'[^"\']*\'\)'
+
+	functionPattern = 'MR_LANG\s*\(\s*\'[^"\']*\'\s*\)'
 	stringPattern   = '\'([^"]*)\''
-	#var = "MR_LANG('Add to Fav. Group'), MR_LANG('None')"
-	var = "MR_LANG('Add to Fav. Group')"
+	var = "MR_LANG   (  'Add to Fav. Group' ), MR_LANG('None')"
+	#var = "MR_LANG('Add to Fav. Group')"
 	var_ = re.findall(functionPattern, var)
-	print var_
+	#print var_
 	for i in range(len(var_)) :
-		str_ = re.findall(functionPattern, var_[i])
+		str_ = re.findall(stringPattern, var_[i])[0]
 		print str_
-	"""
+
 	
-	strDic = '[Delete Fav. Group]'
-	print strDic.find('Delete Fav. Group')
+	#strDic = '[Delete Fav. Group]'
+	#print strDic.find('Delete Fav. Group')
 
 import sys
 if __name__ == "__main__":
 
-	nameSelf = sys.argv[0]
+	nameSelf = os.path.basename(sys.argv[0])
 	gNoParseList[nameSelf] = nameSelf
 	cmd = sys.argv[1:]
 
@@ -761,10 +761,10 @@ if __name__ == "__main__":
 		csvToXML()
 
 	verify_defineString()
-
+	"""
 	#test()
 	#test2()
-	"""
+
 	#findallSource(sourceDir, '[a-zA-Z0-9]\w*.py', 'Strings.xml')
 	#findallSource(propertyDir, '[a-zA-Z0-9]\w*.py', 'ElisProperty.py')
 	#print 'fname[%s] gcount[%s]'% (gName, gCount)
