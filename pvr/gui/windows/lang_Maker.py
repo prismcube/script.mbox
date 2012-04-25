@@ -509,6 +509,7 @@ def parseProperty( elisDir, stringXML ):
 import glob
 gCount = 0
 gName = None
+gNoParseList = {}
 def findallSource(dir, patternStr, reqFile=None):
 	retlist = glob.glob(os.path.join(dir, patternStr))
 	findlist = os.listdir(dir)
@@ -527,6 +528,10 @@ def findallSource(dir, patternStr, reqFile=None):
 					break
 
 			else :
+				if gNoParseList.get(fname) != None :
+					#print gNoParseList.get(fname)
+					continue
+
 				filename = os.path.splitext(fname)
 				if filename[1] == '.py' :
 					#print '[%s]%s/%s'% (gCount,dir,fname)
@@ -534,7 +539,6 @@ def findallSource(dir, patternStr, reqFile=None):
 
 					gCount += 1
 
-	#print gCount
 	return retlist
 
 def parseSource(sourceFile):
@@ -596,8 +600,9 @@ def parseSource(sourceFile):
 			ret = re.findall(stringPattern, var[i])
 			if ret :
 				strings.append(ret[0])
-
-	#print 'len[%s] catch MR_LANG\n%s'% (len(strings), strings)
+	#if len(strings) :
+	#	print sourceFile
+	#	print 'len[%s] catch MR_LANG\n%s'% (len(strings), strings)
 
 	#write xml
 	for element in strings :
@@ -740,6 +745,9 @@ def test2():
 
 import sys
 if __name__ == "__main__":
+
+	nameSelf = sys.argv[0]
+	gNoParseList[nameSelf] = nameSelf
 	cmd = sys.argv[1:]
 
 	"""
@@ -763,6 +771,8 @@ if __name__ == "__main__":
 	#findallSource(sourceDir, '[a-zA-Z0-9]\w*.py', 'Strings.xml')
 	#findallSource(propertyDir, '[a-zA-Z0-9]\w*.py', 'ElisProperty.py')
 	#print 'fname[%s] gcount[%s]'% (gName, gCount)
+	#testDir = '/home/youn/devel/elmo_test/test/elmo-nand-image/home/root/.xbmc/addons/script.mbox'
+	#findallSource(testDir, '[a-zA-Z0-9]\w*.py')
 
 	AutoMakeLanguage()
 
