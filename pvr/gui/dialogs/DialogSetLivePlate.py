@@ -85,11 +85,6 @@ class DialogSetLivePlate( SettingDialog ) :
 	def DrawItem( self ) :
 		self.ResetAllControl( )
 
-		#------------------ section1 : unused control -------------------
-		for idx in range(9) :
-			self.SetVisibleControl( idx*10 + E_DialogInput01, False )
-
-		#------------------ section2 : using control -------------------
 		if self.mMode == CONTEXT_ACTION_VIDEO_SETTING :
 
 			self.AddEnumControl( E_DialogSpinEx01, 'HDMI Format' )
