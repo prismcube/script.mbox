@@ -176,21 +176,6 @@ def ParseLabelToCh( aMode, aLabel ) :
 	return int(parse2[0])
 
 
-
-def MR_LANG( aString ) :
-	mStrLanguage = GetInstance()
-	return mStrLanguage.StringTranslate(aString)
-	#return aString
-
-
-def Strings(aStringID, aReplacements = None):
-	string = xbmcaddon.Addon(id = 'script.mbox').getLocalizedString(aStringID)
-	if aReplacements is not None :
-		return string % aReplacements
-	else :
-		return string
-
-
 def GetResolution( aX, aY, aWidth, aHeight ) :
 	#a1 = xbmc.executehttpapi("GetGUISetting(0, resolutions)")
 	temX = 34
@@ -227,6 +212,14 @@ def GetResolution( aX, aY, aWidth, aHeight ) :
 	return int( x ), int( y ), int( w ), int( h )
 
 
+def Strings(aStringID, aReplacements = None):
+	string = xbmcaddon.Addon(id = 'script.mbox').getLocalizedString(aStringID)
+	if aReplacements is not None :
+		return string % aReplacements
+	else :
+		return string
+
+
 gMRStringHash = {}
 gCacheMRLanguage = None
 def GetInstance():
@@ -259,16 +252,22 @@ class CacheMRLanguage( object ) :
 		for node in self.mStrLanguage.findAll('string'):
 			gMRStringHash[ node.string ] = int(node['id'])
 
-		LOG_TRACE('============cache Language')
+		LOG_ERR('============cache Language')
 
 	def StringTranslate(self, string = None):
 		strId = gMRStringHash.get(string, None)
 		if strId :
 			xmlString = Strings( strId )
-			print 'xml_string[%s] parse[%s]'% (string, xmlString)
+			LOG_TRACE('xml_string[%s] parse[%s]'% (string, xmlString) )
 			return xmlString.encode('utf-8')
 
 		else:
 			return string
 
+
+gStrLanguage = GetInstance()
+def MR_LANG( aString ) :
+	#mStrLanguage = GetInstance()
+	return gStrLanguage.StringTranslate(aString)
+	#return aString
 
