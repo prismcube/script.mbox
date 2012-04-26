@@ -75,12 +75,14 @@ class WindowMgr(object):
 		currentSkinName = xbmc.executehttpapi("GetGUISetting(3, lookandfeel.skin)")
 		self.mSkinName = currentSkinName[4:]
 
-		self.mLastId = -1
-		self.mSkinFontPath = []
-		self.mScriptFontPath =[]
-		self.mSkinDir = []
-		self.mListDir = []
-		self.mWindows = {}
+		self.mLastId			= -1
+		self.mSkinFontPath		= []
+		self.mScriptFontPath	= []
+		self.mSkinDir			= []
+		self.mListDir			= []
+		self.mWindows			= {}
+
+		self.LoadSkinPosition( )
 
 		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
 		self.SetVideoRestore()
@@ -288,11 +290,36 @@ class WindowMgr(object):
 		currentSkinName = xbmc.executehttpapi("GetGUISetting(3, lookandfeel.skin)")
 
 		print 'skin name=%s : %s' %( self.mSkinName, currentSkinName[4:] )
-
+		self.LoadSkinPosition( )
 		if self.mSkinName != currentSkinName[4:] :
 			LOG_TRACE('change skin name')
 			self.mSkinName = currentSkinName[4:]
 			self.Reset( )
+
+
+	def LoadSkinPosition( self ) :
+		try :
+			import pvr.Platform
+			from pvr.GuiHelper import GetInstanceSkinPosition
+			from BeautifulSoup import BeautifulSoup
+			userDatePath	= pvr.Platform.GetPlatform( ).GetUserDataDir( ) + 'guisettings.xml'
+			fp				= open( userDatePath )			
+			xml				= fp.read( )
+			resolutionInfo	= BeautifulSoup( xml )
+			resolution		= resolutionInfo.findAll('resolution')
+			left			= int( resolution[1].find('left').string )
+			top				= int( resolution[1].find('top').string )
+			right			= int( resolution[1].find('right').string )
+			bottom			= int( resolution[1].find('bottom').string )
+			zoom			= int( resolutionInfo.find('skinzoom').string )
+			pvr.GuiHelper.GetInstanceSkinPosition( ).SetPosition( left, top, right, bottom, zoom )
+
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+
+		finally :
+			fp.close( )
+
 
 	def CopyIncludeFile( self ):
 		import os, shutil

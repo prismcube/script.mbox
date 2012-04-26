@@ -191,42 +191,6 @@ def Strings(aStringID, aReplacements = None):
 		return string
 
 
-def GetResolution( aX, aY, aWidth, aHeight ) :
-	#a1 = xbmc.executehttpapi("GetGUISetting(0, resolutions)")
-	temX = 34
-	temY = 18
-	temX1 = 33
-	temY1 = 18
-
-	zoom = 0
-
-	if zoom != 0 :
-		w = aWidth  / float( 100 ) * ( 100 + zoom )
-		h = aHeight / float( 100 ) * ( 100 + zoom )
-		y = aY - ( h - aHeight )
-		x = aX + ( ( w - aWidth ) / 2 )
-	else :
-		x = aX
-		y = aY
-		w = aWidth
-		h = aHeight
-
-	x = x * ( E_WINDOW_WIDTH  - ( temX + temX1 ) ) / float( E_WINDOW_WIDTH )
-	y = y * ( E_WINDOW_HEIGHT - ( temY + temY1 ) ) / float( E_WINDOW_HEIGHT )
-	w = w * ( E_WINDOW_WIDTH  - ( temX + temX1 ) ) / float( E_WINDOW_WIDTH )
-	h = h * ( E_WINDOW_HEIGHT - ( temY + temY1 ) ) / float( E_WINDOW_HEIGHT )
-
-	x = x + temX
-	y = y + temY
-	
-	x = round( x )
-	y = round( y )
-	w = round( w )
-	h = round( h )
-
-	return int( x ), int( y ), int( w ), int( h )
-
-
 gMRStringHash = {}
 gCacheMRLanguage = None
 def GetInstance():
@@ -241,9 +205,6 @@ def GetInstance():
 
 class CacheMRLanguage( object ) :
 	def __init__( self ):
-
-		from BeautifulSoup import BeautifulSoup
-
 		self.mStrLanguage = None
 
 		scriptDir = xbmcaddon.Addon('script.mbox').getAddonInfo('path')
@@ -253,6 +214,7 @@ class CacheMRLanguage( object ) :
 		xml = fp.read()
 		fp.close()
 
+		from BeautifulSoup import BeautifulSoup
 		self.mStrLanguage = BeautifulSoup(xml)
 
 		global gMRStringHash
@@ -262,13 +224,67 @@ class CacheMRLanguage( object ) :
 		LOG_TRACE('============cache Language')
 
 	def StringTranslate(self, string = None):
+
 		strId = gMRStringHash.get(string, None)
+		
 		if strId :
 			xmlString = Strings( strId )
+			return string
 			print 'xml_string[%s] parse[%s]'% (string, xmlString)
 			return xmlString.encode('utf-8')
 
 		else:
 			return string
 
+
+gSkinPosition = None
+
+def GetInstanceSkinPosition( ):
+	global gSkinPosition
+	if not gSkinPosition:
+		gSkinPosition = GuiSkinPosition( )
+	return gSkinPosition
+
+class GuiSkinPosition( object ) :
+	def __init__( self ) :
+		self.mLeft	 = 0
+		self.mTop	 = 0
+		self.mRight	 = 0
+		self.mBottom = 0
+		self.mZoom	 = 0
+
+
+	def GetPipPosition( self, aX, aY, aWidth, aHeight ) :
+		if self.mZoom != 0 :
+			w = aWidth  / float( 100 ) * ( 100 + self.mZoom )
+			h = aHeight / float( 100 ) * ( 100 + self.mZoom )
+			y = ( ( E_WINDOW_HEIGHT - ( E_WINDOW_HEIGHT / float( 100 ) * ( 100 + self.mZoom ) ) ) / float( 2 ) ) + ( ( aY / float( 100 ) ) * ( 100 + self.mZoom ) )
+			x = ( ( E_WINDOW_WIDTH  - ( E_WINDOW_WIDTH  / float( 100 ) * ( 100 + self.mZoom ) ) ) / float( 2 ) ) + ( ( aX / float( 100 ) ) * ( 100 + self.mZoom ) )
+		else :
+			x = aX
+			y = aY
+			w = aWidth
+			h = aHeight
+
+		x = x * ( E_WINDOW_WIDTH  - ( self.mLeft + ( E_WINDOW_WIDTH  -  self.mRight ) ) ) / float( E_WINDOW_WIDTH )
+		y = y * ( E_WINDOW_HEIGHT - ( self.mTop  + ( E_WINDOW_HEIGHT - self.mBottom ) ) ) / float( E_WINDOW_HEIGHT )
+		w = w * ( E_WINDOW_WIDTH  - ( self.mLeft + ( E_WINDOW_WIDTH  -  self.mRight ) ) ) / float( E_WINDOW_WIDTH )
+		h = h * ( E_WINDOW_HEIGHT - ( self.mTop  + ( E_WINDOW_HEIGHT - self.mBottom ) ) ) / float( E_WINDOW_HEIGHT )
+
+		x = x + self.mLeft
+		y = y + self.mTop
+
+		x = round( x )
+		y = round( y )
+		w = round( w )
+		h = round( h )
+		return int( x ), int( y ), int( w ), int( h )
+
+
+	def SetPosition( self, aLeft, aTop, aRight, aBottom, aZoom ) :
+		self.mLeft	 = aLeft
+		self.mTop	 = aTop
+		self.mRight	 = aRight
+		self.mBottom = aBottom
+		self.mZoom	 = aZoom
 

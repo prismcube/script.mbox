@@ -327,10 +327,9 @@
 
 		<control type="image" id="1004">
 			<posx>835</posx>
-			<posy>132</posy>
-			<width>352</width>
+			<posy>133</posy>
+			<width>353</width>
 			<height>198</height>
-			<texture></texture>
 		</control>
 
 
