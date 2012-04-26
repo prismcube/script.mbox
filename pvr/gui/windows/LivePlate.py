@@ -78,7 +78,6 @@ class LivePlate(BaseWindow):
 		self.mFakeChannel = None
 		self.mZappingMode = None
 		self.mFlag_OnEvent = True
-		self.mShowExtendInfo = False
 		self.mPropertyAge = 0
 		self.mPropertyPincode = -1
 		self.mCertification = False
@@ -102,8 +101,6 @@ class LivePlate(BaseWindow):
 		self.mWin = xbmcgui.Window( self.mWinId )
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
 
-		self.mShowExtendInfo = False
-
 		self.mCtrlLblChannelNumber     = self.getControl( 601 )
 		self.mCtrlLblChannelName       = self.getControl( 602 )
 		self.mCtrlImgServiceType       = self.getControl( 603 )
@@ -116,9 +113,6 @@ class LivePlate(BaseWindow):
 		self.mCtrlLblEventStartTime    = self.getControl( 704 )
 		self.mCtrlLblEventEndTime      = self.getControl( 705 )
 		self.mCtrlProgress             = self.getControl( 707 )
-		self.mCtrlGropEventDescGroup   = self.getControl( 800 )
-		self.mCtrlTxtBoxEventDescText1 = self.getControl( 801 )
-		self.mCtrlTxtBoxEventDescText2 = self.getControl( 802 )
 		#self.mCtrlProgress = xbmcgui.ControlProgress(100, 250, 125, 75)
 		#self.mCtrlProgress(self.Progress)
 
@@ -222,10 +216,6 @@ class LivePlate(BaseWindow):
 			self.StopAutomaticHide()
 			self.SetAutomaticHide( False )
 
-			if self.mShowExtendInfo ==  True :
-				self.ShowDialog( self.mCtrlBtnExInfo.getId(), False )
-				return
- 
 			self.Close()
 
 		elif id == Action.ACTION_SELECT_ITEM:
@@ -272,9 +262,7 @@ class LivePlate(BaseWindow):
 			self.ChannelTune( PREV_CHANNEL )
 
 		elif id == Action.ACTION_PAUSE:
-			if self.mShowExtendInfo ==  False :
-				self.Close()
-				winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_TIMESHIFT_PLATE )
+			winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_TIMESHIFT_PLATE )
 
 		elif id == Action.ACTION_STOP :
 			status = None
@@ -306,7 +294,7 @@ class LivePlate(BaseWindow):
 			LOG_TRACE( 'click expantion info' )		
 			self.StopAutomaticHide()
 			self.SetAutomaticHide( False )
-			self.ShowDialog( aControlId, not self.mShowExtendInfo )
+			self.ShowDialog( aControlId )
 
 		elif aControlId == self.mCtrlBtnTeletext.getId() :
 			LOG_TRACE( 'click teletext' )
@@ -850,10 +838,10 @@ class LivePlate(BaseWindow):
 			self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg1.getId(),       '' )
 			self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg2.getId(),       '' )
 			self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg3.getId(),       '' )
-			self.UpdateLabelGUI( self.mCtrlGropEventDescGroup.getId(),    False )
 			self.UpdateLabelGUI( self.mCtrlLblLongitudeInfo.getId(),         '' )
-			self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText1.getId(), '', 'reset' )
-			self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText1.getId(), '', 'reset' )
+			#self.UpdateLabelGUI( self.mCtrlGropEventDescGroup.getId(),    False )
+			#self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText1.getId(), '', 'reset' )
+			#self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText1.getId(), '', 'reset' )
 
 		else:
 			LOG_TRACE( 'has no channel' )
@@ -904,21 +892,6 @@ class LivePlate(BaseWindow):
 		elif aCtrlID == self.mCtrlProgress.getId( ) :
 			self.mCtrlProgress.setPercent( aValue )
 
-		elif aCtrlID == self.mCtrlGropEventDescGroup.getId( ) :
-			self.mCtrlGropEventDescGroup.setVisible( aValue )
-
-		elif aCtrlID == self.mCtrlTxtBoxEventDescText1.getId( ) :
-			if aExtra == 'reset' :
-				self.mCtrlTxtBoxEventDescText1.reset()
-			else :
-				self.mCtrlTxtBoxEventDescText1.setText( aValue )
-
-		elif aCtrlID == self.mCtrlTxtBoxEventDescText2.getId( ) :
-			if aExtra == 'reset' :
-				self.mCtrlTxtBoxEventDescText2.reset()
-			else :
-				self.mCtrlTxtBoxEventDescText2.setText( aValue )
-
 		elif aCtrlID == self.mCtrlImgLocked.getId( ) :
 			self.mCtrlImgLocked.setImage( aValue )
 
@@ -946,7 +919,6 @@ class LivePlate(BaseWindow):
 		elif aCtrlID == self.mCtrlBtnStartRec.getId( ) :
 			self.mCtrlBtnStartRec.setEnabled( aValue )
 
-
 		LOG_TRACE( 'Leave' )
 
 
@@ -963,36 +935,21 @@ class LivePlate(BaseWindow):
 		elif aFocusId == self.mCtrlBtnTeletext.getId() :
 			msg1 = 'Teletext'
 			msg2 = 'test'
-			xbmc.executebuiltin('Custom.SetLanguage(French)')
+			#xbmc.executebuiltin('Custom.SetLanguage(French)')
 
 
 		elif aFocusId == self.mCtrlBtnSubtitle.getId() :
 			msg1 = 'Subtitle'
 			msg2 = 'test'
-			xbmc.executebuiltin('Custom.SetLanguage(English)')
+			#xbmc.executebuiltin('Custom.SetLanguage(English)')
 
 		elif aFocusId == self.mCtrlBtnExInfo.getId() :
-			if aVisible == True :
-				LOG_TRACE('')
-				if self.mEventCopy :
-					LOG_TRACE('')
-					self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText1.getId(), self.mEventCopy.mEventName )
-					self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText2.getId(), self.mEventCopy.mEventDescription )
-					self.UpdateLabelGUI( self.mCtrlGropEventDescGroup.getId(), True )
-
-				else:
-					LOG_TRACE( 'event is None' )
-					self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText1.getId(), '' )
-					self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText2.getId(), '' )
-					self.UpdateLabelGUI( self.mCtrlGropEventDescGroup.getId(), True )
-
-			else :
-				LOG_TRACE('')		
-				self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText1.getId(), '', 'reset' )
-				self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText2.getId(), '', 'reset' )
-				self.UpdateLabelGUI( self.mCtrlGropEventDescGroup.getId(), False )
-
-			self.mShowExtendInfo = aVisible
+			if self.mEventCopy :
+				GuiLock2( True )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_EXTEND_EPG )
+				dialog.SetEPG( self.mEventCopy )
+				dialog.doModal( )
+				GuiLock2( False )
 
 
 		elif aFocusId == self.mCtrlBtnStartRec.getId() :
@@ -1181,9 +1138,6 @@ class LivePlate(BaseWindow):
 
 	
 	def AsyncAutomaticHide( self ) :
-		if self.mShowExtendInfo ==  True :
-			self.ShowDialog( self.mCtrlBtnExInfo.getId(), False )
-	
 		self.Close()
 
 

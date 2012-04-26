@@ -1,5 +1,5 @@
 <window>
-	<allowoverlay>no</allowoverlay>
+	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<include>DefaultBehindDialogFadeOut</include>
@@ -57,7 +57,7 @@
 					<posy>102</posy>
 					<description>start time</description>
 					<font>font13</font>
-					<label>-</label>
+					<label>$INFO[Window.Property(EPGTime)]</label>
 				</control>				
 				
 
