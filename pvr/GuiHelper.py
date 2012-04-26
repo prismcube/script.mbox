@@ -176,12 +176,10 @@ def ParseLabelToCh( aMode, aLabel ) :
 	return int(parse2[0])
 
 
-
 def MR_LANG( aString ) :
 	mStrLanguage = GetInstance()
 	return mStrLanguage.StringTranslate(aString)
 	#return aString
-
 
 def Strings(aStringID, aReplacements = None):
 	string = xbmcaddon.Addon(id = 'script.mbox').getLocalizedString(aStringID)
@@ -221,16 +219,14 @@ class CacheMRLanguage( object ) :
 		for node in self.mStrLanguage.findAll('string'):
 			gMRStringHash[ node.string ] = int(node['id'])
 
-		LOG_TRACE('============cache Language')
+		LOG_ERR('============cache Language')
 
 	def StringTranslate(self, string = None):
-
 		strId = gMRStringHash.get(string, None)
 		
 		if strId :
 			xmlString = Strings( strId )
-			return string
-			print 'xml_string[%s] parse[%s]'% (string, xmlString)
+			LOG_TRACE('xml_string[%s] parse[%s]'% (string, xmlString) )
 			return xmlString.encode('utf-8')
 
 		else:
@@ -287,4 +283,3 @@ class GuiSkinPosition( object ) :
 		self.mRight	 = aRight
 		self.mBottom = aBottom
 		self.mZoom	 = aZoom
-
