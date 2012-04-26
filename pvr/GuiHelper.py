@@ -176,11 +176,6 @@ def ParseLabelToCh( aMode, aLabel ) :
 	return int(parse2[0])
 
 
-def MR_LANG( aString ) :
-	mStrLanguage = GetInstance()
-	return mStrLanguage.StringTranslate(aString)
-	#return aString
-
 def Strings(aStringID, aReplacements = None):
 	string = xbmcaddon.Addon(id = 'script.mbox').getLocalizedString(aStringID)
 	if aReplacements is not None :
@@ -233,6 +228,12 @@ class CacheMRLanguage( object ) :
 			return string
 
 
+gStrLanguage = GetInstance()
+def MR_LANG( aString ) :
+	return gStrLanguage.StringTranslate(aString)
+	#return aString
+
+
 gSkinPosition = None
 
 def GetInstanceSkinPosition( ):
@@ -283,3 +284,5 @@ class GuiSkinPosition( object ) :
 		self.mRight	 = aRight
 		self.mBottom = aBottom
 		self.mZoom	 = aZoom
+
+
