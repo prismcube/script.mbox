@@ -171,8 +171,10 @@ def ParseLabelToCh( aMode, aLabel ) :
 	return int(parse2[0])
 
 
+gLanguage = xbmcaddon.Addon(id = 'script.mbox')
 def Strings(aStringID, aReplacements = None):
-	string = xbmcaddon.Addon(id = 'script.mbox').getLocalizedString(aStringID)
+	#string = xbmcaddon.Addon(id = 'script.mbox').getLocalizedString(aStringID)
+	string = gLanguage.getLocalizedString(aStringID)
 	if aReplacements is not None :
 		return string % aReplacements
 	else :
