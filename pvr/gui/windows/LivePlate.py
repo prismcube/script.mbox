@@ -943,6 +943,23 @@ class LivePlate(BaseWindow):
 			msg2 = 'test'
 			#xbmc.executebuiltin('Custom.SetLanguage(English)')
 
+			starttime = time.time( )
+			for i in range(15):
+				print '[%s]'% xbmc.getLocalizedString(i)
+
+			endtime = time.time( )
+			print '==================== TEST TIME[localized] END[system] loading[%s]'% (endtime-starttime )
+
+			import xbmcaddon
+			addon = xbmcaddon.Addon(id = 'script.mbox')
+			starttime = time.time( )
+			for i in range(15):
+				print '[%s]'% addon.getLocalizedString(i)
+
+			endtime = time.time( )
+			print '==================== TEST TIME[localized] END[addon] loading[%s]'% (endtime-starttime )
+
+
 		elif aFocusId == self.mCtrlBtnExInfo.getId() :
 			if self.mEventCopy :
 				GuiLock2( True )
