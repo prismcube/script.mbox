@@ -1,15 +1,4 @@
-import xbmc
-import xbmcgui
-import sys
-
-import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.GuiConfig import *
-from pvr.gui.BaseWindow import SettingWindow, Action
-from ElisProperty import ElisPropertyEnum
-from ElisEnum import ElisEnum
-from ElisEventClass import *
-from pvr.Util import GuiLock
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+from pvr.gui.WindowImport import *
 
 
 class SatelliteConfigMotorizedUsals2( SettingWindow ) :

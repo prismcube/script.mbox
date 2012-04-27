@@ -1,12 +1,5 @@
-import xbmc
-import xbmcgui
-import time
-import sys
+from pvr.gui.WindowImport import *
 
-from pvr.gui.BaseDialog import BaseDialog
-from pvr.gui.BaseWindow import Action
-from ElisEventClass import *
-from ElisEventBus import ElisEventBus
 
 # Control IDs
 
@@ -64,6 +57,7 @@ class DialogForceProgress( BaseDialog ) :
 		pass
 
 
+	@GuiLock
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
 			if aEvent.getName( ) == self.mEventName :

@@ -1,25 +1,6 @@
-import xbmc
-import xbmcgui
-import sys
+from pvr.gui.WindowImport import *
+from pvr.GuiHelper import ClassToList
 
-import pvr.gui.WindowMgr as WinMgr
-import pvr.gui.DialogMgr as DiaMgr
-import pvr.DataCacheMgr as CacheMgr
-from pvr.gui.BaseWindow import BaseWindow, Action
-from pvr.gui.GuiConfig import *
-
-import pvr.ElisMgr
-from ElisAction import ElisAction
-from ElisEnum import ElisEnum
-from ElisEventBus import ElisEventBus
-from ElisEventClass import *
-from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-
-from pvr.Util import RunThread, GuiLock, GuiLock2, TimeToString, TimeFormatEnum
-from pvr.GuiHelper import GetSelectedLongitudeString, ClassToList, EnumToString
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-
-import thread, threading, time, os
 
 FLAG_CLOCKMODE_ADMYHM  = 1
 FLAG_CLOCKMODE_AHM     = 2

@@ -6,6 +6,7 @@ import os
 import shutil
 import weakref
 
+
 from gui.BaseWindow import BaseWindow
 from inspect import currentframe
 from elementtree import ElementTree
@@ -313,16 +314,15 @@ class WindowMgr(object):
 			bottom			= int( resolution[1].find('bottom').string )
 			zoom			= int( resolutionInfo.find('skinzoom').string )
 			pvr.GuiHelper.GetInstanceSkinPosition( ).SetPosition( left, top, right, bottom, zoom )
+			fp.close( )
 
 		except Exception, e :
+			if fp.closed == False :
+				fp.close( )
 			LOG_ERR( 'Error exception[%s]' % e )
-
-		finally :
-			fp.close( )
 
 
 	def CopyIncludeFile( self ):
-		import os, shutil
 		import pvr.Platform 
 
 		skinName = self.mSkinName

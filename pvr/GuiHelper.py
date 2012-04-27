@@ -1,11 +1,6 @@
-import os, sys, time
-import xbmcgui
 import xbmcaddon
 from ElisEnum import ElisEnum
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 from pvr.gui.GuiConfig import *
-#from inspect import currentframe
-#__file__ = os.path.basename( currentframe().f_code.co_filename )
 
 gSettings = xbmcaddon.Addon(id="script.mbox")
 

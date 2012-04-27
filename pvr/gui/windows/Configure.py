@@ -1,18 +1,6 @@
-import xbmc
-import xbmcgui
-import sys
-import time
-
-import pvr.gui.WindowMgr as WinMgr
-import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.BaseWindow import SettingWindow, Action
-from ElisProperty import *
-from pvr.gui.GuiConfig import *
-from pvr.Util import RunThread, GuiLock, GuiLock2, TimeToString, TimeFormatEnum
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-from ElisEventClass import *
-from pvr.IpParser import *
-from ElisProperty import ElisPropertyEnum
+from pvr.gui.WindowImport import *
+if sys.platform != 'win32' :
+	from pvr.IpParser import *
 
 
 E_LANGUAGE				= 0

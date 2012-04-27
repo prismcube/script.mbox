@@ -1,13 +1,4 @@
-import xbmc
-import xbmcgui
-import sys
-from copy import deepcopy
-
-import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.BaseWindow import SettingWindow, Action
-from ElisProperty import ElisPropertyEnum
-from ElisEnum import ElisEnum
-from pvr.gui.GuiConfig import *
+from pvr.gui.WindowImport import *
 
 
 E_DEFAULT_GOURP_ID		= 9000

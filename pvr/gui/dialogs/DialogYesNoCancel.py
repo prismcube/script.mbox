@@ -1,11 +1,5 @@
-import xbmc
-import xbmcgui
-import time
-import sys
+from pvr.gui.WindowImport import *
 
-from pvr.gui.BaseDialog import BaseDialog
-from pvr.gui.BaseWindow import Action
-from pvr.gui.GuiConfig import *
 
 E_BUTTON_YES	= 301
 E_BUTTON_NO		= 302

@@ -1,15 +1,5 @@
-import xbmc
-import xbmcgui
-import sys
+from pvr.gui.WindowImport import *
 
-import pvr.gui.WindowMgr as WinMgr
-import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.GuiConfig import *
-from pvr.gui.BaseWindow import BaseWindow, Action
-from inspect import currentframe
-import pvr.ElisMgr
-from pvr.Util import RunThread
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
 LIST_ID_MAIN_MENU				= 9000
 BUTTON_ID_INSTALLATION			= 90100

@@ -1,17 +1,4 @@
-import xbmc
-import xbmcgui
-import threading, time
-import sys
-
-from pvr.gui.BaseDialog import BaseDialog
-from pvr.gui.BaseWindow import Action
-from pvr.gui.GuiConfig import *
-
-from ElisEnum import ElisEnum
-import pvr.DataCacheMgr as CacheMgr
-from pvr.GuiHelper import ClassToList
-from pvr.Util import GuiLock, GuiLock2, TimeToString, TimeFormatEnum
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+from pvr.gui.WindowImport import *
 
 
 E_MOVETOJUMP_NUM_ID  = 210

@@ -1,19 +1,13 @@
-import xbmc
-import xbmcgui
-import sys
-import time
-from copy import deepcopy
-
-from ElisAction import ElisAction
 from ElisEnum import ElisEnum
 import pvr.DataCacheMgr
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-from ElisClass import *
+from ElisClass import ElisISatelliteConfig
 from pvr.gui.GuiConfig import *
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+
 
 gTunerConfigMgr = None
+
 
 def GetInstance( ) :
 	global gTunerConfigMgr
@@ -36,7 +30,7 @@ class TunerConfigMgr( object ) :
 		self.mCurrentTuner = 0
 		self.mCurrentConfigIndex = 0
 		self.mCurrentTunerType = 0
-		self.mNeedLoad = False
+		self.mNeedLoad = True
 
 		self.mOrgTuner2ConnectType = 0
 		self.mOrgTuner2Config = 0

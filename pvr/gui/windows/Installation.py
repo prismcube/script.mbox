@@ -1,12 +1,5 @@
-import xbmc
-import xbmcgui
-import sys
+from pvr.gui.WindowImport import *
 
-import pvr.gui.WindowMgr as WinMgr
-import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.BaseWindow import BaseWindow, Action
-import pvr.ElisMgr
-from pvr.gui.GuiConfig import *
 
 MENU_ID_FIRSTINSTALLATION		= 0
 MENU_ID_ANTENNA_SETUP			= 1
@@ -42,16 +35,7 @@ class Installation( BaseWindow ):
 		self.mCtrlLeftGroup = self.getControl( 9000 )
 		self.mCtrlLeftGroup.addItems( groupItems )
 
-		self.mCtrlImgVideoPos = self.getControl( 8899 )
-
-		h = self.mCtrlImgVideoPos.getHeight()
-		w = self.mCtrlImgVideoPos.getWidth()
-		pos=list(self.mCtrlImgVideoPos.getPosition())
-		x = pos[0]
-		y = pos[1]
-		#LOG_TRACE('==========h[%s] w[%s] x[%s] y[%s]'% (h,w,x,y) )
-
-		ret = self.mCommander.Player_SetVIdeoSize( x, y, w, h )
+		self.SetPipScreen( )
 		
 	
 	def onAction( self, aAction ) :

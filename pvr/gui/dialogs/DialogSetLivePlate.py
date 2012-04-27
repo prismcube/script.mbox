@@ -1,19 +1,5 @@
-import xbmc
-import xbmcgui
-import time
-import sys
+from pvr.gui.WindowImport import *
 
-import pvr.gui.DialogMgr as DiaMgr
-import pvr.DataCacheMgr as CacheMgr
-from pvr.gui.BaseDialog import SettingDialog
-from pvr.gui.BaseWindow import Action
-from ElisEnum import ElisEnum
-from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-from pvr.gui.GuiConfig import *
-
-from pvr.GuiHelper import MR_LANG
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-import threading
 
 CONTEXT_ACTION_VIDEO_SETTING = 1
 CONTEXT_ACTION_AUDIO_SETTING = 2

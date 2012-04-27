@@ -1,22 +1,5 @@
-import xbmc
-import xbmcgui
-import sys
-import time
-
-import pvr.gui.WindowMgr as WinMgr
-import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.BaseWindow import BaseWindow, Action
-from pvr.gui.GuiConfig import *
-from ElisEnum import ElisEnum
-from ElisEventBus import ElisEventBus
-from ElisEventClass import *
-import pvr.ElisMgr
-from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-
-from pvr.Util import RunThread, GuiLock, GuiLock2, TimeToString, TimeFormatEnum
-from pvr.GuiHelper import GetImageByEPGComponent, GetSetting, SetSetting
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-import threading, time, os
+from pvr.gui.WindowImport import *
+from pvr.GuiHelper import GetSetting, SetSetting, GetSelectedLongitudeString, EnumToString, ClassToList, AgeLimit
 
 
 BUTTON_ID_EPG_MODE				= 100

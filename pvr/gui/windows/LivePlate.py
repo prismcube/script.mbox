@@ -1,34 +1,5 @@
-import xbmc
-import xbmcgui
-import sys
-
-import pvr.gui.WindowMgr as WinMgr
-import pvr.gui.DialogMgr as DiaMgr
-import pvr.DataCacheMgr as CacheMgr
-
-from pvr.gui.BaseWindow import BaseWindow, Action
-from pvr.gui.GuiConfig import *
-
-import pvr.ElisMgr
-from ElisAction import ElisAction
-from ElisEnum import ElisEnum
-from ElisEventBus import ElisEventBus
-from ElisEventClass import *
-from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-
-from pvr.Util import RunThread, GuiLock, GuiLock2, TimeToString, TimeFormatEnum
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+from pvr.gui.WindowImport import *
 from pvr.GuiHelper import GetImageByEPGComponent, GetSelectedLongitudeString, EnumToString, ClassToList, AgeLimit, MR_LANG
-
-from copy import deepcopy
-import threading, time, os
-
-#debug log
-import logging
-from inspect import currentframe
-
-#log = logging.getLogger('mythbox.ui')
-#mlog = logging.getLogger('mythbox.method')
 
 
 FLAG_MASK_ADD  = 0x01

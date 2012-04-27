@@ -1,19 +1,5 @@
-import xbmc
-import xbmcgui
-import sys
+from pvr.gui.WindowImport import *
 
-import pvr.gui.WindowMgr as WinMgr
-import pvr.gui.DialogMgr as DlgMgr
-import pvr.TunerConfigMgr as ConfigMgr
-from pvr.gui.BaseWindow import BaseWindow, Action
-from inspect import currentframe
-import pvr.ElisMgr
-from ElisEnum import ElisEnum
-from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-from pvr.Util import RunThread, GuiLock, GuiLock2
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-from pvr.gui.GuiConfig import *
-from ElisEventClass import *
 
 E_TABLE_ALLCHANNEL = 0
 E_TABLE_ZAPPING = 1
@@ -37,7 +23,6 @@ class NullWindow( BaseWindow ) :
 
 		if self.mInitialized == False :
 			self.mInitialized = True
-			ConfigMgr.GetInstance( ).SetNeedLoad( True )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
@@ -54,7 +39,7 @@ class NullWindow( BaseWindow ) :
 				return
 				
 			if ElisPropertyEnum( 'Lock Mainmenu', self.mCommander ).GetProp( ) == 0 :
-				dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 				dialog.SetDialogProperty( 'PIN Code 4 digit', '', 4, True )
 	 			dialog.doModal( )
 	 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -64,7 +49,7 @@ class NullWindow( BaseWindow ) :
 					if int( tempval ) == ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( ) :
 						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 					else :
-						dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_POPUP_OK )
+						dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( 'ERROR', 'ERROR PIN Code' )
 			 			dialog.doModal( )
 			 	return
@@ -159,7 +144,7 @@ class NullWindow( BaseWindow ) :
 				return -1
 
 			GuiLock2(True)
-			dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_CHANNEL_JUMP )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
 			event = self.mDataCache.Epgevent_GetPresent()
 			if event:
 				dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, None, event.mStartTime)
@@ -227,7 +212,7 @@ class NullWindow( BaseWindow ) :
 			runningCount = self.mCommander.Record_GetRunningRecorderCount( )
 			LOG_TRACE( 'runningCount=%d' %runningCount)
 			if  runningCount < E_MAX_RECORD_COUNT :
-				dialog = DlgMgr.GetInstance( ).GetDialog( DlgMgr.DIALOG_ID_START_RECORD )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 				dialog.doModal( )
 			else:
 				msg = 'Already %d recording(s) running' %runningCount
@@ -240,7 +225,7 @@ class NullWindow( BaseWindow ) :
 			LOG_TRACE( 'runningCount=%d' %runningCount )
 
 			if  runningCount > 0 :
-				dialog = DlgMgr.GetInstance( ).GetDialog( DlgMgr.DIALOG_ID_STOP_RECORD )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
 				dialog.doModal( )
 
 		elif actionId == Action.REMOTE_1:  #TEST : bg test
@@ -295,7 +280,7 @@ class NullWindow( BaseWindow ) :
 
 		if isRunRec > 0 :
 			GuiLock2( True )
-			dialog = DlgMgr.GetInstance().GetDialog( DlgMgr.DIALOG_ID_STOP_RECORD )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
 			dialog.doModal( )
 			GuiLock2( False )
 

@@ -1,16 +1,6 @@
-import xbmc
-import xbmcgui
-import threading, time
-import sys
-
-from pvr.gui.BaseDialog import BaseDialog
-from pvr.gui.BaseWindow import Action
-from pvr.gui.GuiConfig import *
-
-import pvr.DataCacheMgr as CacheMgr
+from pvr.gui.WindowImport import *
 from pvr.GuiHelper import ClassToList
-from pvr.Util import RunThread, GuiLock, GuiLock2
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+
 
 E_CHANNEL_NUM_ID	= 210
 E_CHANNEL_NAME_ID	= 211

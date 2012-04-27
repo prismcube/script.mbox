@@ -1,17 +1,5 @@
-import xbmc
-import xbmcgui
-import time
-import sys
+from pvr.gui.WindowImport import *
 
-import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.BaseDialog import SettingDialog
-from pvr.gui.BaseWindow import Action
-from ElisEnum import ElisEnum
-from ElisProperty import ElisPropertyEnum
-from pvr.gui.GuiConfig import *
-
-from pvr.GuiHelper import MR_LANG
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
 """
 E_DIALOG_HEADER			= 100

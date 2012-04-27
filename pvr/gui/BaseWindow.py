@@ -1,17 +1,10 @@
-import xbmc
-import xbmcgui
-import time
-import sys
-
+from pvr.gui.GuiConfig import *
 from decorator import decorator
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-from pvr.gui.GuiConfig import *
 import pvr.ElisMgr
 import pvr.DataCacheMgr
-import pvr.TunerConfigMgr
-import thread
-from pvr.Util import RunThread, GuiLock, GuiLock2
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+import pvr.TunerConfigMgr 
+from pvr.Util import RunThread, GuiLock, GuiLock2 
 
 
 class Action(object) :

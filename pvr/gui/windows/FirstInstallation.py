@@ -1,17 +1,4 @@
-import xbmc
-import xbmcgui
-import sys
-import time
-
-import pvr.gui.WindowMgr as WinMgr
-import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.GuiConfig import *
-from pvr.gui.BaseWindow import SettingWindow, Action
-from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-from pvr.Util import RunThread, GuiLock, GuiLock2, TimeToString, TimeFormatEnum
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-from ElisEventClass import *
-from ElisEnum import ElisEnum
+from pvr.gui.WindowImport import *
 
 
 E_MAIN_GROUP_ID		=	9000

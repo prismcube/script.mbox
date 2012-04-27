@@ -1,14 +1,4 @@
-import xbmc
-import xbmcgui
-import time
-import sys
-
-from pvr.gui.BaseDialog import BaseDialog
-from pvr.gui.BaseWindow import Action
-from pvr.gui.GuiConfig import *
-from pvr.Util import RunThread, GuiLock, GuiLock2, TimeToString, TimeFormatEnum
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-from ElisEnum import ElisEnum
+from pvr.gui.WindowImport import *
 
 
 TEXTBOX_ID_TITLE					= 100

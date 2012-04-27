@@ -1,13 +1,4 @@
-import os
-import re
-import sys
-import shutil
-import string
-import time
-import commands
 from pvr.gui.GuiConfig import *
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-
 
 
 FILE_NAME_INTERFACES	 		=	'/etc/network/interfaces'
@@ -120,6 +111,8 @@ def PingTestExternal( aAddr ) :
 
 def CheckIsIptype( aAddress ) :
 	try :
+		if aAddress == None or len( aAddress ) < 1 :
+			return False
 		string = aAddress.split( '.', 3 )
 		if int( string[0] ) < 0 or int( string[0] ) > 255 :
 			return False

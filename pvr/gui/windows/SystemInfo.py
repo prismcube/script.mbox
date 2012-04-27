@@ -1,13 +1,4 @@
-"""
-import xbmc
-import xbmcgui
-import sys
-"""
-#import pvr.gui.WindowMgr as WinMgr
-from pvr.gui.BaseWindow import SettingWindow, Action
-#import pvr.ElisMgr
-#from ElisProperty import ElisPropertyEnum
-from pvr.gui.GuiConfig import *
+from pvr.gui.WindowImport import *
 
 
 class SystemInfo( SettingWindow ) :

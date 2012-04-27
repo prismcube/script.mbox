@@ -1,12 +1,4 @@
-import xbmc
-import xbmcgui
-import time
-import sys
-
-from pvr.gui.BaseDialog import SettingDialog
-from pvr.gui.BaseWindow import Action
-import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.GuiConfig import *
+from pvr.gui.WindowImport import *
 
 
 class DialogLnbFrequency( SettingDialog ) :

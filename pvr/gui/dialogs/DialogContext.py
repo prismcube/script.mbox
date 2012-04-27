@@ -1,11 +1,5 @@
-import xbmc
-import xbmcgui
-import time
-import sys
+from pvr.gui.WindowImport import *
 
-from pvr.gui.BaseDialog import BaseDialog
-from pvr.gui.BaseWindow import Action
-from pvr.gui.GuiConfig import *
 
 DIALOG_MAIN_GROUP_ID		= 9000
 DIALOG_WIDTH				= 370
