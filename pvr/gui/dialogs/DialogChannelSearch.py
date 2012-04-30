@@ -2,7 +2,7 @@ from pvr.gui.WindowImport import *
 
 
 # Control IDs
-LABEL_ID_TRANSPONDER_INFO		= 104
+LABEL_ID_TRANSPONDER_INFO		= 404
 PROGRESS_ID_SCAN				= 200
 LIST_ID_TV						= 400
 LIST_ID_RADIO					= 402
@@ -49,7 +49,7 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mCtrlTransponderInfo = self.getControl( LABEL_ID_TRANSPONDER_INFO )		
 
 		self.mEventBus.Register( self )	
-		
+
 		self.ScanStart( )
 		self.DrawItem( )
 
@@ -144,6 +144,7 @@ class DialogChannelSearch( BaseDialog ) :
 				self.ReTune( )
 				self.CloseDialog( )
 				self.mDataCache.Player_AVBlank( False, True )
+				self.ReLoadChannelList( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'Error', 'Channel Search Failed' )
 				dialog.doModal( )
@@ -155,10 +156,10 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mEventBus.Deregister( self )
 				self.CloseDialog( )
 				self.mDataCache.Player_AVBlank( False, True )
+				self.ReLoadChannelList( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'Error', 'Channel Search Failed' )
 				dialog.doModal( )
-			
 		else :
 			self.mIsFinished == True
 
@@ -183,6 +184,7 @@ class DialogChannelSearch( BaseDialog ) :
 				self.ReTune( )
 			self.CloseDialog( )
 			self.mDataCache.Player_AVBlank( False, False )
+			self.ReLoadChannelList( )
 
 
 	@GuiLock
@@ -258,11 +260,15 @@ class DialogChannelSearch( BaseDialog ) :
 		dialog.doModal( )
 		self.mIsFinished = True
 
-		if tvCount > 0 or radioCount > 0 :
+		#if tvCount > 0 or radioCount > 0 :
 			#### data cache re-load ####
-			self.mDataCache.LoadZappingmode( True )
-			self.mDataCache.LoadZappingList( True )
-			self.mDataCache.LoadChannelList( 0, ElisEnum.E_SERVICE_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER, True )
+			#self.ReLoadChannelList( )
+
+
+	def ReLoadChannelList( self ) :
+		self.mDataCache.LoadZappingmode( True )
+		self.mDataCache.LoadZappingList( True )
+		self.mDataCache.LoadChannelList( 0, ElisEnum.E_SERVICE_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER, True )
 
 
 	def ReTune( self ) :
