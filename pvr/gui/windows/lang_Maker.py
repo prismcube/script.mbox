@@ -401,13 +401,38 @@ from BeautifulSoup import BeautifulSoup
 def findStringInXML(soup, reqStr) :
 
 	isFind = False
-	for node in soup.findAll('string'):
+	for node in soup.findAll('string') :
 		if node.string == reqStr :
 			#print 'id[%s]'% node['id']
 			isFind = True
 			break
 
 	return isFind
+
+gTagString = []
+gTagproperty = []
+def parseStringInXML(xmlFile, tagName) :
+
+	soup = None
+	lines = []
+	nodeAll = ''
+	if os.path.exists(xmlFile) :
+
+		fp = open(xmlFile)
+		soup = BeautifulSoup(fp)
+		fp.close()
+
+		for node in soup.findAll(tagName) :
+			for element in node.findAll('string') :
+				elementry = [ int(element['id']), str(element.string), '%s\r\n'% str(element) ]
+				lines.append(elementry)
+			
+			nodeAll = node
+
+		#print len(lines), lines[len(lines)-1][0]
+
+	return soup, lines
+
 
 def parseProperty( elisDir, stringXML ):
 
@@ -423,37 +448,42 @@ def parseProperty( elisDir, stringXML ):
 		elementHash[element] = element
 		#print element
 
-	max = 0
-	lines = ''
-	soup = None
-	if os.path.exists(stringXML) :
-		fp = open(stringXML)
-		soup = BeautifulSoup(fp)
-		fp.close()
-
-		rf = open(stringXML, 'rb')
-		lines = rf.readlines()
-		rf.close()
-
-		lineCount = len(lines)
-		lines.pop(lineCount-1)
-		max = len(soup.strings) / 2
 
 	wFile = 'stringsProperty.xml'
 	wf = open(wFile, 'w')
-	if lines :
-		wf.writelines(lines)
-	else :
-		wf.writelines('<?xml version="1.0" encoding="utf-8"?>\r\n')
+	wf.writelines('<?xml version="1.0" encoding="utf-8"?>\r\n')
+
+	max = 0
+	lines = ''
+	soup, nodes = parseStringInXML(stringXML, 'strings')
+
+	if nodes :
 		wf.writelines('<strings>\r\n')
 
+		for line in nodes :
+			wf.writelines('\t%s'% line[2])
+
+		wf.writelines('</strings>\r\n')
+
+	wf.writelines('<property>\r\n')
+	soup, nodes = parseStringInXML(stringXML, 'property')
+	if nodes :
+		node_len = len(nodes)
+		max = nodes[node_len - 1][0]
+
+		for line in nodes :
+			wf.writelines('\t%s'% line[2])
+	else :
+		max = 1000
+
 	countTot = 0
-	countNew = 1000 + max + 1
+	countNew = 0
+	countContinue = max + 1
 	countRepeat=0
 	repeatWord = ''
 	for prop in _propertyMapEnum :
 		mProperty = prop[0:]
-		#print '%s'% prop[1:]
+		#print '%s'% mProperty
 
 		for item in mProperty :
 			try:
@@ -474,9 +504,10 @@ def parseProperty( elisDir, stringXML ):
 					countRepeat += 1
 
 				else :
-					line = '\t<string id=\"%d\">%s</string>\r\n'% (countNew, element)
+					line = '\t<string id=\"%d\">%s</string>\r\n'% (countContinue, element)
 					wf.writelines(line)
-					elementHash[element] = countNew
+					elementHash[element] = countContinue
+					countContinue += 1
 					countNew += 1
 
 				countTot += 1
@@ -486,7 +517,7 @@ def parseProperty( elisDir, stringXML ):
 				return
 
 
-	wf.writelines('</strings>\r\n')
+	wf.writelines('</property>\r\n')
 	wf.close()
 
 	wf = open('repeatWord', 'w')
@@ -556,32 +587,26 @@ def parseSource(sourceFile):
 
 	soup = None
 	max = 0
+	nodes = []
 	lines = ''
 	xmlFile = 'Strings.xml'
-	if os.path.exists(xmlFile) :
-
-		fp = open(xmlFile)
-		soup = BeautifulSoup(fp)
-		fp.close()
-
-		rf = open(xmlFile, 'rb')
-		lines = rf.readlines()
-		rf.close()
-
-		lineCount = len(lines)
-		lines.pop(lineCount-1)
-		max = len(soup.strings) / 2
+	soup, nodes = parseStringInXML(xmlFile, 'strings')
 
 	wFile = 'strings_temp.xml'
 	wf = open(wFile, 'w')
-	if lines :
-		wf.writelines(lines)
-	else :
-		wf.writelines('<?xml version="1.0" encoding="utf-8"?>\r\n')
-		wf.writelines('<strings>\r\n')
+	wf.writelines('<?xml version="1.0" encoding="utf-8"?>\r\n')
+	wf.writelines('<strings>\r\n')
+
+	if nodes :
+		node_len = len(nodes)
+		max = nodes[node_len - 1][0]
+		
+		for line in nodes :
+			wf.writelines('\t%s'% line[2])
 
 	countTot = 0
-	countNew = max+1
+	countNew = 0
+	countContinue = max + 1
 	countRepeat=0
 	repeatWord = ''
 
@@ -611,14 +636,23 @@ def parseSource(sourceFile):
 			countRepeat += 1
 
 		else :
-			line = '\t<string id=\"%d\">%s</string>\r\n'% (countNew, element)
+			line = '\t<string id=\"%d\">%s</string>\r\n'% (countContinue, element)
 			wf.writelines(line)
-			elementHash[element] = countNew
+			elementHash[element] = countContinue
+			countContinue += 1
 			countNew += 1
 
 		countTot += 1
 
 	wf.writelines('</strings>\r\n')
+
+	global gTagProperty
+	if gTagProperty :
+		wf.writelines('<property>\r\n')
+		for line in gTagProperty :
+			wf.writelines('\t%s'% line[2])
+		wf.writelines('</property>\r\n')
+
 	wf.close()
 
 	#wf = open('repeatWord', 'w')
@@ -626,7 +660,8 @@ def parseSource(sourceFile):
 	#wf.close()
 	#print 'repeatWord[%s]'% repeatWord
 	#print 'source[%s]'% sourceFile
-	#print 'propertyTotal[%s] countNew[%s] countRepeat[%s]'% (countTot, countNew, countRepeat)
+	if countTot :
+		print 'MR_LANG Total[%s] countNew[%s] countRepeat[%s]'% (countTot, countNew, countRepeat)
 
 	os.rename(wFile, 'Strings.xml')
 
@@ -660,16 +695,21 @@ def AutoMakeLanguage() :
 	#print elisDir
 	stringFile = mboxDir + '/pvr/gui/windows/Strings.xml'
 	propertyFile = elisDir + '/lib/elisinterface/ElisProperty.py'
+	global gTagString, gTagProperty
 
-	if os.path.exists(stringFile) :
-		os.remove(stringFile)
+	#if os.path.exists(stringFile) :
+	#	os.remove(stringFile)
 
+	###### 1. collection source
+	soup, gTagProperty = parseStringInXML('Strings.xml', 'property')
 	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'parse source')
 	findallSource(mboxDir, '[a-zA-Z0-9]\w*.py')
 	print '\nfindAll source[%s]'% gCount
 	print '\033[1;%sm[%s]%s\033[1;m'% (30, 'make language', 'made string')
 	readToXML(stringFile)
 
+
+	###### 2. collection property
 	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'parse property')
 	parseProperty(elisDir, stringFile)
 	print '\033[1;%sm[%s]%s\033[1;m'% (30, 'make language', 'made string')
@@ -740,6 +780,24 @@ def test2():
 	#strDic = '[Delete Fav. Group]'
 	#print strDic.find('Delete Fav. Group')
 
+def test3():
+	testDir = '/home/youn/devel/elmo_test/test/elmo-nand-image/home/root/.xbmc/addons/script.mbox'
+	xmlFile = testDir + '/pvr/gui/windows/Strings.xml'
+	fp = open(xmlFile)
+	soup = BeautifulSoup(fp)
+	fp.close()
+
+	for node in soup.findAll('strings'):
+		#break
+		for element in node.findAll('string') :
+			#print element['id'], element.string
+			print element
+		#print node
+
+	#print len(node(0))
+	#print node(0)
+
+
 import sys
 if __name__ == "__main__":
 
@@ -764,12 +822,21 @@ if __name__ == "__main__":
 	"""
 	#test()
 	#test2()
+	#test3()
 
 	#findallSource(sourceDir, '[a-zA-Z0-9]\w*.py', 'Strings.xml')
 	#findallSource(propertyDir, '[a-zA-Z0-9]\w*.py', 'ElisProperty.py')
 	#print 'fname[%s] gcount[%s]'% (gName, gCount)
+
+	#soup, gTagString = parseStringInXML('Strings.xml', 'strings')
+	#soup, gTagProperty = parseStringInXML('Strings.xml', 'property')
+	#print type(int(nodes[0][0]))
+
 	#testDir = '/home/youn/devel/elmo_test/test/elmo-nand-image/home/root/.xbmc/addons/script.mbox'
+	#elisDir = '/home/youn/devel/elmo_test/test/elmo-nand-image/home/root/.xbmc/addons/script.module.elisinterface'
 	#findallSource(testDir, '[a-zA-Z0-9]\w*.py')
+	#parseProperty(elisDir, 'Strings.xml')
+
 
 	AutoMakeLanguage()
 
