@@ -908,12 +908,36 @@ class LivePlate(BaseWindow):
 			msg2 = 'test'
 			#xbmc.executebuiltin('Custom.SetLanguage(French)')
 
+			"""
+			from ElisChannelDB import ElisChannelDB
+			channelDB = ElisChannelDB()
+			
+			starttime = time.time( )
+			for i in range(1,2) :
+				retdb = channelDB.Channel_GetList( 1, 0, 3 )
+			endtime = time.time( )
+			channelDB.Close()
+			print 'len[%s]'% (len(retdb)*i )
+			print '==================== TEST TIME[opened db] loading[%s]'% (endtime-starttime )
+
+
+
+			starttime = time.time( )
+			for i in range(1,2) :
+				channelDB = ElisChannelDB()
+				retdb = channelDB.Channel_GetList( 1, 0, 3 )
+				channelDB.Close()
+			endtime = time.time( )
+			print 'len[%s]'% (len(retdb)*i )
+			print '==================== TEST TIME[new db]    loading[%s]'% (endtime-starttime )
+			"""
+			
 
 		elif aFocusId == self.mCtrlBtnSubtitle.getId() :
 			msg1 = 'Subtitle'
 			msg2 = 'test'
 			#xbmc.executebuiltin('Custom.SetLanguage(English)')
-
+			"""
 			starttime = time.time( )
 			for i in range(15):
 				print '[%s]'% xbmc.getLocalizedString(i)
@@ -929,7 +953,7 @@ class LivePlate(BaseWindow):
 
 			endtime = time.time( )
 			print '==================== TEST TIME[localized] END[addon] loading[%s]'% (endtime-starttime )
-
+			"""
 
 		elif aFocusId == self.mCtrlBtnExInfo.getId() :
 			if self.mEventCopy :
