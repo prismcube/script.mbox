@@ -53,13 +53,15 @@ def GetDefaultGateway( ) :
 		addr = inputFile.readline( ).strip( )
 		if CheckIsIptype( addr ) == False :
 			addr = None
+		inputFile.close( )
+		return addr
+			
 
 	except Exception, e :
+		if inputFile.closed == False :
+			inputFile.close( )
 		LOG_ERR( 'Error exception[%s]' % e )
 		addr = None
-
-	finally :
-		inputFile.close( )
 		return addr
 
 		
@@ -77,12 +79,14 @@ def PingTestInternal( ) :
 						status = True
 						break
 
+		inputFile.close( )
+		return status
+
 	except Exception, e :
+		if inputFile.closed == False :
+			inputFile.close( )
 		LOG_ERR( 'Error exception[%s]' % e )
 		status = False
-
-	finally :
-		inputFile.close( )
 		return status
 
 
@@ -93,20 +97,22 @@ def PingTestExternal( aAddr ) :
 		inputFile = open( FILE_TEMP, 'r' )
 		inputline = inputFile.readlines( )
 		if len( inputline ) == 0 :
-			return
+			inputFile.close( )
+			return status
 		for line in inputline :
 			if line.startswith( '1 packets') :
 				if line.split(' packets received')[0].split(', ')[-1] == '1' :
 					status = True
 					break
 
-	except Exception, e :
-		LOG_ERR( 'Error exception[%s]' % e )
-		status = False
-
-	finally :
 		inputFile.close( )
 		return status
+
+	except Exception, e :
+		if inputFile.closed == False :
+			inputFile.close( )
+		LOG_ERR( 'Error exception[%s]' % e )
+		status = False
 
 
 def CheckIsIptype( aAddress ) :
@@ -171,18 +177,19 @@ class IpParser :
 			else :
 				LOG_ERR( 'LoadNetworkType Load Fail!!!' )
 
+			inputFile.close( )
+			return status
+
 		except Exception, e :
+			if inputFile.closed == False :
+				inputFile.close( )
 			LOG_ERR( 'Error exception[%s]' % e )
 			status = False
-
-		finally :
-			inputFile.close( )
 			return status
 
 
 	def LoadNetworkAddress( self ) :
 		global gEthernetDevName
-		status = False
 		try :
 			osCommand = [ "ifconfig %s | awk '/inet / {print $2}' | awk -F: '{print $2}'" % gEthernetDevName + ' > ' + FILE_TEMP, "ifconfig %s | awk '/inet / {print $4}' | awk -F: '{print $2}'" % gEthernetDevName + ' >> ' + FILE_TEMP, SYSTEM_COMMAND_GET_GATEWAY + ' >> ' + FILE_TEMP ]
 			
@@ -208,15 +215,15 @@ class IpParser :
 
 			if CheckIsIptype( self.mAddressNameServer ) == False :
 				self.mAddressNameServer = 'None'
-			status = True
+
+			inputFile.close( )
+			return True
 
 		except Exception, e :
+			if inputFile.closed == False :
+				inputFile.close( )
 			LOG_ERR( 'Error exception[%s]' % e )
-			status = False
-
-		finally :
-			inputFile.close( )
-			return status
+			return False
 
 
 	def LoadNameServer( self ) :
@@ -224,14 +231,14 @@ class IpParser :
 			inputFile = open( FILE_NAME_RESOLV_CONF, 'r' )
 			inputline = inputFile.readline( )
 			words = string.split( inputline )
-			self.mAddressNameServer = words[1]					
+			self.mAddressNameServer = words[1]
+			inputFile.close( )
 
 		except Exception, e :
+			if inputFile.closed == False :
+				inputFile.close( )
 			self.mAddressNameServer = 'None'
 			LOG_ERR( 'Error exception[%s]' % e )
-
-		finally :
-			inputFile.close( )
 
 
 	def GetNetworkType( self ) :
@@ -275,17 +282,19 @@ class IpParser :
 			time.sleep( 1 )
 			os.system( 'ifup %s'% gEthernetDevName )	
 			status = True
+			inputFile.close( )
+			outputFile.close( )
+			return status
 
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]' % e )
 			status = False
-
-		finally :
 			if inputFile.closed == False :
 				inputFile.close( )
 			if outputFile.closed == False :
 				outputFile.close( )
 			return status
+
 
 	def SetNameServer( self, aType, aNameAddress ) :
 		try :
@@ -363,18 +372,19 @@ class WirelessParser :
 				else :
 					status = None
 
-		except Exception, e :
-			LOG_ERR( 'Error exception[%s]' % e )
-			status = None
-
-		finally :
 			if GetCurrentNetworkType( ) != NETWORK_WIRELESS :
 				os.system( 'ifdown %s' % aDev )
 			return status
 
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			if GetCurrentNetworkType( ) != NETWORK_WIRELESS :
+				os.system( 'ifdown %s' % aDev )
+			status = None
+			return status
+
 
 	def LoadWpaSupplicant( self ) :
-		status = False
 		self.ResetInfo( )
 		try :
 			openFile = open( FILE_WPA_SUPPLICANT, 'r' )
@@ -402,19 +412,18 @@ class WirelessParser :
 					self.key_mgmt = line[ 9 : -1 ]
 				elif line.startswith( 'proto=' ) and len( line ) > 6 :
 					self.proto = line[ 6 : -1 ]
-			status = True
+
+			openFile.close( )
+			return True
 
 		except Exception, e :
+			if openFile.closed == False :
+				openFile.close( )
 			LOG_ERR( 'Error exception[%s]' % e )
-			status = False
-
-		finally :
-			openFile.close( )
-			return status
+			return False
 
 
 	def WriteWpaSupplicant( self, aUseHiddenId, aHiddenSsid, aCurrentSsid, aUseEncrypt, aEncriptType, aPasswordType, aPassWord ) :
-		status = False
 		try :
 			openFile = open( FILE_WPA_SUPPLICANT, 'w' )
 			words = "ctrl_interface=/var/run/wpa_supplicant\n"
@@ -458,15 +467,14 @@ class WirelessParser :
 				words += "\tkey_mgmt=NONE\n"
 			words += "}\n"
 			openFile.write( words )
-			status = True
+			openFile.close( )
+			return True
 
 		except Exception, e :
+			if openFile.closed == False :
+				openFile.close( )				
 			LOG_ERR( 'Error exception[%s]' % e )
-			status = False
-
-		finally :
-			openFile.close( )
-			return status
+			return False
 
 
 	def ConnectWifi( self, aDev ) :
