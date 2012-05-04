@@ -907,21 +907,20 @@ class LivePlate(BaseWindow):
 			msg1 = 'Teletext'
 			msg2 = 'test'
 			#xbmc.executebuiltin('Custom.SetLanguage(French)')
-
-			"""
 			from ElisChannelDB import ElisChannelDB
+			starttime = time.time( )
 			channelDB = ElisChannelDB()
+			openclose = time.time( ) - starttime
+			
+			retdb = channelDB.Channel_GetList( 1, 0, 3 )
 			
 			starttime = time.time( )
-			for i in range(1,2) :
-				retdb = channelDB.Channel_GetList( 1, 0, 3 )
-			endtime = time.time( )
 			channelDB.Close()
-			print 'len[%s]'% (len(retdb)*i )
-			print '==================== TEST TIME[opened db] loading[%s]'% (endtime-starttime )
+			openclose += time.time( ) - starttime
+			print '==================== TEST TIME[close]     loading[%s]'% (openclose )
 
 
-
+			"""
 			starttime = time.time( )
 			for i in range(1,2) :
 				channelDB = ElisChannelDB()
@@ -931,12 +930,84 @@ class LivePlate(BaseWindow):
 			print 'len[%s]'% (len(retdb)*i )
 			print '==================== TEST TIME[new db]    loading[%s]'% (endtime-starttime )
 			"""
+
 			
 
 		elif aFocusId == self.mCtrlBtnSubtitle.getId() :
 			msg1 = 'Subtitle'
 			msg2 = 'test'
 			#xbmc.executebuiltin('Custom.SetLanguage(English)')
+			starttime = time.time( )			
+			import sqlite3
+			db = sqlite3.connect("/tmp/channel.db")
+			cursor =db.cursor()
+
+			query = 'select * from tblChannel where ServiceType = 1 order by Number'
+
+			reply = cursor.execute(query)
+			endtime = time.time( )
+			#reply = cursor.fetchall()
+			#print 'len[%s] '% (len(reply) )
+			print '==================== TEST TIME[query]    loading[%s]'% (endtime-starttime )
+
+			starttime = time.time( )			
+			result = []
+			idx = 0
+			iChannel = ElisIChannel()
+			for aIChannel in reply :
+				iChannel.mNumber							= aIChannel[1+idx]
+				iChannel.mPresentationNumber				= aIChannel[2+idx]
+				iChannel.mName								= aIChannel[3+idx].encode('utf-8')
+				iChannel.mServiceType						= aIChannel[4+idx]
+				iChannel.mLocked							= aIChannel[5+idx]
+				iChannel.mSkipped							= aIChannel[6+idx]
+				iChannel.mIsBlank							= aIChannel[7+idx]
+				iChannel.mIsCA								= aIChannel[8+idx]
+				iChannel.mIsHD								= aIChannel[9+idx]
+				#iChannel.mLockStartTime					= aIChannel[10+idx]
+				#iChannel.mLockEndTime						= aIChannel[11+idx]
+				iChannel.mCarrierType						= aIChannel[12+idx]
+				result.append( iChannel )				
+			endtime = time.time( )
+			#print 'result[%s]'% ClassToList('convert', result)
+			print 'len[%s]'% len(result)
+			print '==================== TEST TIME[mapping1]    parse[%s]'% (endtime-starttime )
+
+			cursor.close()
+			db.commit()
+			db.close()
+
+
+
+			"""
+			db = sqlite3.connect(':memory:')
+			cursor =db.cursor()
+
+			query = 'create table tblChannel ( Number INTEGER, Name VARCHAR(32), ServiceType INTEGER)'
+			ret =cursor.execute(query)
+			for i in range(3000) :
+				name='test_%s'% i
+				query = 'insert into tblChannel (Number, Name, ServiceType) values (%s,\'%s\',1)'% (i,name)
+				ret =cursor.execute(query)
+			print 'make db on memory'
+
+			starttime = time.time( )
+			
+			query = 'select * from tblChannel where ServiceType = 1 order by Number'
+
+			retdb = cursor.execute(query)
+			endtime = time.time( )
+			reply = cursor.fetchall()
+			print 'len[%s]'% (len(reply) )
+			print '==================== TEST TIME[memory db]    loading[%s]'% (endtime-starttime )
+			cursor.close()
+			db.commit()
+			db.close()
+			"""
+			
+
+
+			
 			"""
 			starttime = time.time( )
 			for i in range(15):
