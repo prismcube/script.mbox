@@ -1108,6 +1108,7 @@ class LivePlate(BaseWindow):
 				#LOG_TRACE('AudioTrack count[%s] select[%s]'% (getCount, selectIdx) )
 
 				context = []
+				iSelectAction = 0
 				for idx in range(getCount) :
 					idxTrack = self.mDataCache.Audiotrack_Get( idx )
 					#LOG_TRACE('getTrack name[%s] lang[%s]'% (idxTrack.mName, idxTrack.mLang) )
@@ -1116,7 +1117,8 @@ class LivePlate(BaseWindow):
 					else :
 						label = '%s%s-%s%s' % (E_TAG_COLOR_GREY,idxTrack.mName,idxTrack.mLang,E_TAG_COLOR_END)
 
-					context.append( ContextItem( label ) )
+					context.append( ContextItem( label, iSelectAction ) )
+					iSelectAction += 1
 
 				GuiLock2( True )
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
