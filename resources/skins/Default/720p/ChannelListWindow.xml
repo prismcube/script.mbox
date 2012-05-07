@@ -165,7 +165,7 @@
 					<!-- is lock? -->
 					<control type="image">
 						<posx>0</posx>
-						<posy>5</posy>
+						<posy>7</posy>
 						<width>30</width>
 						<height>30</height>
 						<texture>$INFO[ListItem.Property(lock)]</texture>
@@ -252,7 +252,7 @@
 					<!-- is lock? -->
 					<control type="image">
 						<posx>0</posx>
-						<posy>5</posy>
+						<posy>7</posy>
 						<width>30</width>
 						<height>30</height>
 						<texture>$INFO[ListItem.Property(lock)]</texture>

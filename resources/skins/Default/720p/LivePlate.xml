@@ -443,14 +443,14 @@
 					<posy>-35</posy>
 					<control type="image" id="651">
 						<posx>0</posx>
-						<posy>0</posy>
-						<width>30</width>
-						<height>30</height>
+						<posy>-5</posy>
+						<width>50</width>
+						<height>40</height>
 						<texture>$INFO[Control.GetLabel]</texture>
 						<description>lock</description>
 					</control>
 					<control type="image" id="652">
-						<posx>30</posx>
+						<posx>35</posx>
 						<posy>1</posy>
 						<width>30</width>
 						<height>30</height>

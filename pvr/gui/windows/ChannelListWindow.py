@@ -34,9 +34,9 @@ E_SLIDE_MENU_FAVORITE   = 3
 E_SLIDE_MENU_BACK       = 5
 
 #list property
-E_IMG_ICON_LOCK   = 'IconLockFocus.png'
+E_IMG_ICON_LOCK   = 'OverlayLocked.png'
 E_IMG_ICON_ICAS   = 'IconCas.png'
-E_IMG_ICON_MARK   = 'confluence/OverlayWatched.png'
+E_IMG_ICON_MARK   = 'OverlayWatched.png'
 E_IMG_ICON_REC   = 'IconPlateRec.png'
 E_IMG_ICON_TITLE1 = 'IconHeaderTitleSmall.png'
 E_IMG_ICON_TITLE2 = 'icon_setting_focus.png'
