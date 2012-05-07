@@ -81,6 +81,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mLastSubSlidePosition = 0
 		self.mSelectMainSlidePosition = 0
 		self.mSelectSubSlidePosition = 0
+		self.mCurrentPosition = 0
 		self.mLastChannel = None
 		self.mListItems = None
 
@@ -721,7 +722,8 @@ class ChannelListWindow( BaseWindow ) :
 		if ch :
 			self.mNavChannel = ch
 			self.mCurrentChannel = self.mNavChannel.mNumber
-			pos = self.mCtrlListCHList.getSelectedPosition( )+1
+			self.mCurrentPosition = self.mCtrlListCHList.getSelectedPosition( )
+			pos = self.mCurrentPosition + 1
 			self.mCtrlSelectItem.setLabel( str('%s'% pos ) )
 			LOG_TRACE('chinfo: num[%s] type[%s] name[%s] pos[%s]'% (ch.mNumber, ch.mServiceType, ch.mName, pos) )
 
@@ -1410,7 +1412,8 @@ class ChannelListWindow( BaseWindow ) :
 		xbmc.sleep( 50 )
 
 		#select item idx, print GUI of 'current / total'
-		self.mCtrlSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition( )+1) ) )
+		self.mCurrentPosition = iChannelIdx
+		self.mCtrlSelectItem.setLabel( str('%s'% (iChannelIdx+1) ) )
 		GuiLock2( False )
 
 		#endtime = time.time( )
@@ -2584,7 +2587,24 @@ class ChannelListWindow( BaseWindow ) :
 				inputNumber = dialog.GetChannelLast( )
 				LOG_TRACE( 'Jump chNum[%s] currentCh[%s]'% (inputNumber,self.mCurrentChannel) )
 
-				if int(self.mCurrentChannel) != int(inputNumber) :
+				if int(self.mCurrentChannel) == int(inputNumber) :
+					ch = None
+					ch = self.mDataCache.Channel_GetCurrent( )
+					if ch :
+						self.mNavChannel = ch
+						self.mCurrentChannel = self.mNavChannel.mNumber
+						pos = self.mCurrentPosition
+						self.mCtrlListCHList.selectItem(pos)
+						xbmc.sleep( 20 )
+
+						self.mCtrlSelectItem.setLabel( str('%s'% pos ) )
+						LOG_TRACE('chinfo: num[%s] type[%s] name[%s] pos[%s]'% (ch.mNumber, ch.mServiceType, ch.mName, pos) )
+
+						self.ResetLabel( )
+						self.UpdateLabelInfo( )
+						self.PincodeDialogLimit( )
+
+				else :
 					self.SetChannelTune( int(inputNumber) )
 
 
