@@ -420,7 +420,9 @@ class LivePlate(BaseWindow):
 				return
 
 			self.mFakeChannel = prevChannel
-			self.InitLabelInfo()
+			#self.InitLabelInfo()
+			self.UpdateLabelGUI( self.mCtrlLblChannelNumber.getId(), ('%s'% self.mFakeChannel.mNumber) )
+			self.UpdateLabelGUI( self.mCtrlLblChannelName.getId(), self.mFakeChannel.mName )
 			self.RestartAsyncTune()
 
 		elif aDir == NEXT_CHANNEL:
@@ -430,7 +432,9 @@ class LivePlate(BaseWindow):
 				return
 
 			self.mFakeChannel = nextChannel
-			self.InitLabelInfo()			
+			#self.InitLabelInfo()
+			self.UpdateLabelGUI( self.mCtrlLblChannelNumber.getId(), ('%s'% self.mFakeChannel.mNumber) )
+			self.UpdateLabelGUI( self.mCtrlLblChannelName.getId(), self.mFakeChannel.mName )
 			self.RestartAsyncTune()
 
 		elif aDir == CURR_CHANNEL:
@@ -440,7 +444,7 @@ class LivePlate(BaseWindow):
 				return
 
 			self.mFakeChannel = jumpChannel
-			self.InitLabelInfo()			
+			self.InitLabelInfo()
 			self.RestartAsyncTune()
 
 		if self.mAutomaticHide == True :
@@ -797,8 +801,8 @@ class LivePlate(BaseWindow):
 		if self.mFakeChannel :
 			self.mEventCopy = None
 			self.UpdateLabelGUI( self.mCtrlProgress.getId(),                  0 )
-			self.UpdateLabelGUI( self.mCtrlLblChannelNumber.getId(), deepcopy('%s'% self.mFakeChannel.mNumber) )
-			self.UpdateLabelGUI( self.mCtrlLblChannelName.getId(), deepcopy(self.mFakeChannel.mName) )
+			self.UpdateLabelGUI( self.mCtrlLblChannelNumber.getId(), ('%s'% self.mFakeChannel.mNumber) )
+			self.UpdateLabelGUI( self.mCtrlLblChannelName.getId(), self.mFakeChannel.mName )
 			self.UpdateLabelGUI( self.mCtrlLblLongitudeInfo.getId(),         '' )
 			self.UpdateLabelGUI( self.mCtrlLblEventName.getId(),             '' )
 			self.UpdateLabelGUI( self.mCtrlLblEventStartTime.getId(),        '' )
@@ -907,6 +911,7 @@ class LivePlate(BaseWindow):
 			msg1 = 'Teletext'
 			msg2 = 'test'
 			#xbmc.executebuiltin('Custom.SetLanguage(French)')
+			"""
 			from ElisChannelDB import ElisChannelDB
 			starttime = time.time( )
 			channelDB = ElisChannelDB()
@@ -918,25 +923,29 @@ class LivePlate(BaseWindow):
 			channelDB.Close()
 			openclose += time.time( ) - starttime
 			print '==================== TEST TIME[close]     loading[%s]'% (openclose )
-
-
-			"""
+			
+			#1.string
+			a = '<string add>'
+			b = c= d =e = 'test'
 			starttime = time.time( )
-			for i in range(1,2) :
-				channelDB = ElisChannelDB()
-				retdb = channelDB.Channel_GetList( 1, 0, 3 )
-				channelDB.Close()
+			#for i in range(1000):
+			d = a + b + c + d + e + "</test>"
 			endtime = time.time( )
-			print 'len[%s]'% (len(retdb)*i )
-			print '==================== TEST TIME[new db]    loading[%s]'% (endtime-starttime )
+			print '==================== TEST TIME[string1]     loading[%s]'% (endtime - starttime )
+			
+			starttime = time.time( )
+			#for i in range(1000):
+			d = "%s%s%s%s%s</test>"% (a,b,c,d,e)
+			endtime = time.time( )
+			print '==================== TEST TIME[string2]     loading[%s]'% (endtime - starttime )
 			"""
-
 			
 
 		elif aFocusId == self.mCtrlBtnSubtitle.getId() :
 			msg1 = 'Subtitle'
 			msg2 = 'test'
 			#xbmc.executebuiltin('Custom.SetLanguage(English)')
+			"""
 			starttime = time.time( )			
 			import sqlite3
 			db = sqlite3.connect("/tmp/channel.db")
@@ -976,7 +985,7 @@ class LivePlate(BaseWindow):
 			cursor.close()
 			db.commit()
 			db.close()
-
+			"""
 
 
 			"""
@@ -1005,8 +1014,6 @@ class LivePlate(BaseWindow):
 			db.close()
 			"""
 			
-
-
 			
 			"""
 			starttime = time.time( )
@@ -1025,6 +1032,8 @@ class LivePlate(BaseWindow):
 			endtime = time.time( )
 			print '==================== TEST TIME[localized] END[addon] loading[%s]'% (endtime-starttime )
 			"""
+
+
 
 		elif aFocusId == self.mCtrlBtnExInfo.getId() :
 			if self.mEventCopy :
@@ -1253,7 +1262,7 @@ class LivePlate(BaseWindow):
 
 
 	def StartAsyncTune( self ) :
-		self.mAsyncTuneTimer = threading.Timer( 0.2, self.AsyncTuneChannel ) 				
+		self.mAsyncTuneTimer = threading.Timer( 0.5, self.AsyncTuneChannel ) 				
 		self.mAsyncTuneTimer.start()
 
 
