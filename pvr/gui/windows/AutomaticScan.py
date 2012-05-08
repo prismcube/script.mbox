@@ -13,7 +13,7 @@ class AutomaticScan( SettingWindow ) :
 
 
 	def onInit(self) :
-		self.mCtrlMainGroup = self.getControl( E_DEFAULT_GOURP_ID )
+		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( False )
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
@@ -23,8 +23,9 @@ class AutomaticScan( SettingWindow ) :
 		self.mSatelliteIndex = 0
 		self.mFormattedList = None
 		self.mConfiguredSatelliteList = None		
-		
+
 		self.LoadFormattedSatelliteNameList( )
+
 		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
 			self.InitConfig( )
 			self.mInitialized = True
@@ -38,7 +39,7 @@ class AutomaticScan( SettingWindow ) :
  			dialog.doModal( )
  			self.close( )
 
-		self.mCtrlMainGroup = self.getControl( E_DEFAULT_GOURP_ID )
+		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True )
 
 
 	def onAction( self, aAction ) :
@@ -118,12 +119,20 @@ class AutomaticScan( SettingWindow ) :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Has no configured satellite' )
 
 		else :
-			self.AddInputControl( E_Input01, 'Satellite', self.mFormattedList[self.mSatelliteIndex], 'Select satellite' )
-			self.AddEnumControl( E_SpinEx01, 'Network Search', None, 'Network Search' )
-			self.AddEnumControl( E_SpinEx02, 'Channel Search Mode', None, 'Channel Search Mode' )
-			self.AddInputControl( E_Input02, 'Start Search', '','Start Search' )
-			self.InitControl( )
-
+			try :
+				print 'dhkim test #1'
+				self.AddInputControl( E_Input01, 'Satellite', self.mFormattedList[self.mSatelliteIndex], 'Select satellite' )
+				print 'dhkim test #2'
+				self.AddEnumControl( E_SpinEx01, 'Network Search', None, 'Network Search' )
+				print 'dhkim test #3'
+				self.AddEnumControl( E_SpinEx02, 'Channel Search Mode', None, 'Channel Search Mode' )
+				print 'dhkim test #4'
+				self.AddInputControl( E_Input02, 'Start Search', '','Start Search' )
+				print 'dhkim test #5'
+				self.InitControl( )
+				print 'dhkim test #6'
+			except Exception, ex :
+				LOG_TRACE('Error exception[%s]'% ex)
 	
 	def LoadFormattedSatelliteNameList( self ) :
 		self.mConfiguredSatelliteList = self.mDataCache.Satellite_GetConfiguredList( )

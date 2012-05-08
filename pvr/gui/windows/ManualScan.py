@@ -14,12 +14,11 @@ class ManualScan( SettingWindow ) :
 		self.mFormattedList	= []
 		self.mIsManualSetup				= 0
 		self.mConfigTransponder			= None
-		self.mCtrlMainGroup				= None
 		self.mHasTansponder				= False
 
 
 	def onInit( self ) :
-		self.mCtrlMainGroup = self.getControl( E_DEFAULT_GOURP_ID )
+		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( False )
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
@@ -39,9 +38,7 @@ class ManualScan( SettingWindow ) :
 			self.LoadTransponderList( )
 			self.SetConfigTransponder( )
 
-			self.mCtrlMainGroup.setVisible( False )
 			self.InitConfig( )
-			self.mCtrlMainGroup.setVisible( True )
 
 			self.mInitialized = True
 			self.SetFocusControl( E_Input01 )
@@ -56,7 +53,7 @@ class ManualScan( SettingWindow ) :
  			dialog.doModal( )
  			self.close( )
 
-		self.mCtrlMainGroup = self.getControl( E_DEFAULT_GOURP_ID )
+		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True )
 
 		
 	def onAction( self, aAction ) :
