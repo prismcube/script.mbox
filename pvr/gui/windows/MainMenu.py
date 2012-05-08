@@ -1,14 +1,5 @@
-import xbmc
-import xbmcgui
-import sys
+from pvr.gui.WindowImport import *
 
-import pvr.gui.WindowMgr as WinMgr
-import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.GuiConfig import *
-from pvr.gui.BaseWindow import BaseWindow, Action
-from inspect import currentframe
-import pvr.ElisMgr
-from pvr.Util import LOG_TRACE, LOG_ERR, LOG_WARN, RunThread
 
 LIST_ID_MAIN_MENU				= 9000
 BUTTON_ID_INSTALLATION			= 90100
@@ -18,7 +9,15 @@ BUTTON_ID_CHANNEL_LIST			= 90400
 BUTTON_ID_MEDIA_CENTER			= 90500
 BUTTON_ID_SYSTEM_INFO			= 90600
 
+BUTTON_ID_MEDIA_WEATHER	        = 90501
+BUTTON_ID_MEDIA_PICTURES        = 90502
+BUTTON_ID_MEDIA_MUSICS	        = 90503
+BUTTON_ID_MEDIA_VIDEOS	        = 90504
+BUTTON_ID_MEDIA_PROGRAMS        = 90505
 BUTTON_ID_MEDIA_SETTINGS        = 90506
+BUTTON_ID_MEDIA_FILE_MGR        = 90507
+BUTTON_ID_MEDIA_PROFILES        = 90508
+BUTTON_ID_MEDIA_SYS_INFO        = 90509
 
 BUTTON_ID_FIRSTINSTALLATION		= 90101
 BUTTON_ID_ANTENNA_SETUP			= 90102
@@ -40,7 +39,7 @@ class MainMenu( BaseWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 		self.mCtrlMainMenu = self.getControl( LIST_ID_MAIN_MENU )
 		if self.mStartMediaCenter == True :
-			self.mCommander.AppMediaPlayer_Control( 0 )
+			ret = self.mCommander.AppMediaPlayer_Control( 0 )
 			WinMgr.GetInstance().CheckSkinChange( )
 			self.mStartMediaCenter = False
 
@@ -70,12 +69,12 @@ class MainMenu( BaseWindow ) :
 		elif aControlId == BUTTON_ID_INSTALLATION :
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_INSTALLATION )
 
-		elif aControlId == BUTTON_ID_MEDIA_CENTER or aControlId == BUTTON_ID_MEDIA_SETTINGS :
+		elif aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO :
 			self.mStartMediaCenter = True
 			self.mCommander.AppMediaPlayer_Control( 1 )
 			if aControlId == BUTTON_ID_MEDIA_CENTER :
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
-			WinMgr.GetInstance().Reset( )
+			#WinMgr.GetInstance().Reset( )
 	
 		elif aControlId == BUTTON_ID_ANTENNA_SETUP : # Antenna Setup
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )

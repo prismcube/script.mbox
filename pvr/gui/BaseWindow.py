@@ -1,16 +1,11 @@
-import xbmc
-import xbmcgui
-import time
-import sys
-
+from pvr.gui.GuiConfig import *
 from decorator import decorator
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-from pvr.gui.GuiConfig import *
 import pvr.ElisMgr
 import pvr.DataCacheMgr
-import pvr.TunerConfigMgr
-import thread
-from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
+import pvr.TunerConfigMgr 
+from pvr.Util import RunThread, GuiLock, GuiLock2 
+
 
 class Action(object) :
 	ACTION_NONE					= 0
@@ -117,12 +112,16 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def SetPipScreen( self ) :
+		from pvr.GuiHelper import GetInstanceSkinPosition
 		ctrlImgVideoPos = self.getControl( E_SETTING_PIP_SCREEN_IMAGE )
 
 		h = ctrlImgVideoPos.getHeight( )
 		w = ctrlImgVideoPos.getWidth( )
 		x, y = list( ctrlImgVideoPos.getPosition( ) )
-		ret = self.mCommander.Player_SetVIdeoSize( x, y, w, h )
+		
+		x, y, w, h = pvr.GuiHelper.GetInstanceSkinPosition( ).GetPipPosition( x, y, w, h )
+
+		self.mDataCache.Player_SetVIdeoSize( x, y, w, h )
 
 
 	def SetVideoRestore( self ) :
@@ -269,21 +268,20 @@ class SettingWindow( BaseWindow ) :
 
 
 	def AddPrevNextButton( self ) :
-		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_PREV, None, None, None, None ) ) 
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_NEXT, None, None, None, None ) )
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_PREV, None, None, None, None ) ) 		
 
 
 	def AddNextButton( self ) :
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_NEXT, None, None, None, None ) )
 
 
-	def ShowDescription( self ) :
-		self.GetFocusId( )
+	def ShowDescription( self, aFocusId ) :
 		count = len( self.mControlList )
 
 		for i in range( count ) :
 			ctrlItem = self.mControlList[i]		
-			if self.HasControlItem( ctrlItem, self.mFocusId ) :
+			if self.HasControlItem( ctrlItem, aFocusId ) :
 				if ctrlItem.mDescription == None :
 					return False
 				self.getControl( E_SETTING_DESCRIPTION ).setLabel( ctrlItem.mDescription )
@@ -464,14 +462,13 @@ class SettingWindow( BaseWindow ) :
 		for i in range( count ) :
 			ctrlItem = self.mControlList[i]
 			if aControlId == ctrlItem.mControlId :
-				self.setFocusId( ctrlItem.mControlId + 1 )
+				self.setFocusId( ctrlItem.mControlId )
 				return True
 
 		return False
 
 
 	def ControlSelect( self ) :
-	
 		self.GetFocusId( )
 		count = len( self.mControlList )
 
@@ -488,7 +485,6 @@ class SettingWindow( BaseWindow ) :
 
 
 	def ControlUp( self ) :
-
 		self.GetFocusId( )
 		groupId = self.GetGroupId( self.mFocusId )
 		prevId = self.GetPrevId( groupId )
@@ -501,7 +497,6 @@ class SettingWindow( BaseWindow ) :
 
 
 	def ControlDown( self ) :
-
 		self.GetFocusId( )
 		groupId = self.GetGroupId( self.mFocusId )
 		nextId = self.GetNextId( groupId )
@@ -513,7 +508,6 @@ class SettingWindow( BaseWindow ) :
 		return False
 
 	def ControlLeft( self ) :
-
 		self.GetFocusId( )
 		count = len( self.mControlList )
 
@@ -527,7 +521,6 @@ class SettingWindow( BaseWindow ) :
 
 
 	def ControlRight( self ) :
-
 		self.GetFocusId( )
 		count = len( self.mControlList )
 
@@ -541,7 +534,6 @@ class SettingWindow( BaseWindow ) :
 
 
 	def SelectPosition( self, aControlId, aPosition ) :
-
 		count = len( self.mControlList )
 
 		for i in range( count ) :
@@ -555,7 +547,6 @@ class SettingWindow( BaseWindow ) :
 		return False
 
 	def SetProp( self, aControlId, aValue ) :
-	
 		count = len( self.mControlList )
 
 		for i in range( count ) :
@@ -607,8 +598,8 @@ class SettingWindow( BaseWindow ) :
 			LOG_ERR( 'ScanHelper_ChangeContextByCarrier : Tp is None' )
 
 
-	def ScanHelper_Stop( self ) :
-		self.mCommander.ScanHelper_Stop( True )
+	def ScanHelper_Stop( self, aReturn=True ) :
+		self.mCommander.ScanHelper_Stop( aReturn )
 		self.setProperty( 'ViewProgress', 'False' )
 
 	def ScanHerper_Progress( self, aStrength, aQuality, aLocked ) :

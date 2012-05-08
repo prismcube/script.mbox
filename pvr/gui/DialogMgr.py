@@ -4,7 +4,7 @@ import sys
 import time
 
 from gui.BaseDialog import BaseDialog
-from pvr.Util import LOG_TRACE, LOG_ERR, LOG_WARN
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
 DIALOG_ID_LNB_FREQUENCY				= 1
 DIALOG_ID_CHANNEL_SEARCH			= 2

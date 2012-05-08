@@ -1,27 +1,6 @@
-import xbmc
-import xbmcgui
-import sys
+from pvr.gui.WindowImport import *
+from pvr.GuiHelper import ClassToList
 
-import pvr.gui.WindowMgr as WinMgr
-import pvr.gui.DialogMgr as DiaMgr
-import pvr.DataCacheMgr as CacheMgr
-from pvr.gui.BaseWindow import BaseWindow, Action
-from pvr.gui.GuiConfig import *
-
-import pvr.ElisMgr
-from ElisAction import ElisAction
-from ElisEnum import ElisEnum
-from ElisEventBus import ElisEventBus
-from ElisEventClass import *
-from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-
-from pvr.Util import RunThread, GuiLock, GuiLock2, LOG_TRACE, LOG_WARN, LOG_ERR, TimeToString, TimeFormatEnum
-from pvr.PublicReference import EpgInfoComponentImage, GetSelectedLongitudeString, ClassToList, EnumToString
-
-import pvr.Msg as Msg
-import pvr.gui.windows.Define_string as MsgId
-
-import thread, threading, time, os
 
 FLAG_CLOCKMODE_ADMYHM  = 1
 FLAG_CLOCKMODE_AHM     = 2
@@ -64,11 +43,14 @@ class TimeShiftPlate(BaseWindow):
 		self.mAutomaticHide = True
 
 
+	"""
 	def __del__(self):
 		LOG_TRACE( 'destroyed TimeshiftPlate' )
 
 		# end thread CurrentTimeThread()
 		self.mEnableThread = False
+	"""
+	
 
 	def onInit(self):
 		self.mWinId = xbmcgui.getCurrentWindowId()
@@ -309,8 +291,18 @@ class TimeShiftPlate(BaseWindow):
 					LOG_TRACE( 'EventRecv EOF_START' )
 
 				elif aEvent.mType == ElisEnum.E_EOF_END :
-					#self.TimeshiftAction( self.mCtrlBtnStop.getId() )
 					LOG_TRACE( 'EventRecv EOF_STOP' )
+					if self.mMode == ElisEnum.E_MODE_PVR :
+						pass
+						#xbmc.executebuiltin('xbmc.Action(stop)')
+
+			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
+				 aEvent.getName() == ElisEventRecordingStopped.getName() :
+				time.sleep(1.5)
+				self.ShowRecording()
+				self.mDataCache.mCacheReload = True
+				LOG_TRACE('Receive Event[%s]'% aEvent.getName() )
+
 
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
@@ -418,8 +410,8 @@ class TimeShiftPlate(BaseWindow):
 
 			#self.RecordingStopAll( )
 
-			self.Close()
 			WinMgr.GetInstance().ShowWindow( gobackID )
+			self.Close()
 			return
 
 		elif aFocusId == self.mCtrlBtnRewind.getId() :

@@ -4,11 +4,13 @@ import sys
 import time
 import os
 import shutil
+import weakref
+
 
 from gui.BaseWindow import BaseWindow
 from inspect import currentframe
 from elementtree import ElementTree
-from pvr.Util import LOG_TRACE, LOG_WARN, LOG_ERR
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
 
 WIN_ID_NULLWINDOW 					= 1
@@ -42,12 +44,11 @@ WIN_ID_CONDITIONAL_ACCESS			= 28
 WIN_ID_FIRST_INSTALLATION			= 29
 
 
-WIN_ID_TEST1						= 30
 WIN_ID_DUMMY_WINDOW					= 100
 
-WIN_ID_TIMESHIFT_INFO_PLATE			= 31
-WIN_ID_TIMESHIFT_INFO_PLATE1		= 32
-WIN_ID_TIMESHIFT_INFO_PLATE2		= 33
+WIN_ID_TIMESHIFT_INFO_PLATE			= 101
+WIN_ID_TIMESHIFT_INFO_PLATE1		= 102
+WIN_ID_TIMESHIFT_INFO_PLATE2		= 103
 
 gWindowMgr = None
 
@@ -75,11 +76,14 @@ class WindowMgr(object):
 		currentSkinName = xbmc.executehttpapi("GetGUISetting(3, lookandfeel.skin)")
 		self.mSkinName = currentSkinName[4:]
 
-		self.mSkinFontPath = []
-		self.mScriptFontPath =[]
-		self.mSkinDir = []
-		self.mListDir = []
-		self.mWindows = {}
+		self.mLastId			= -1
+		self.mSkinFontPath		= []
+		self.mScriptFontPath	= []
+		self.mSkinDir			= []
+		self.mListDir			= []
+		self.mWindows			= {}
+
+		self.LoadSkinPosition( )
 
 		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
 		self.SetVideoRestore()
@@ -99,7 +103,7 @@ class WindowMgr(object):
 	def GetWindow( self, aWindowId ):
 		LOG_TRACE('GetWindow ID=%d' %aWindowId )
 		try :
-			return self.mWindows[aWindowId]
+			return weakref.proxy( self.mWindows[aWindowId] )
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
 			return None
@@ -166,7 +170,7 @@ class WindowMgr(object):
 
 			
 			from pvr.gui.windows.SatelliteConfigSimple import SatelliteConfigSimple
-			self.mWindows[WIN_ID_CONFIG_SIMPLE]=SatelliteConfigSimple('SatelliteConfiguration.xml', self.mScriptDir)
+			self.mWindows[WIN_ID_CONFIG_SIMPLE]=SatelliteConfigSimple('SatelliteConfigSimple.xml', self.mScriptDir)
 
 			
 			from pvr.gui.windows.SatelliteConfigMotorizedUsals import SatelliteConfigMotorizedUsals
@@ -174,11 +178,11 @@ class WindowMgr(object):
 
 			
 			from pvr.gui.windows.SatelliteConfigMotorizedUsals2 import SatelliteConfigMotorizedUsals2
-			self.mWindows[WIN_ID_CONFIG_MOTORIZED_USALS2]=SatelliteConfigMotorizedUsals2('SatelliteConfiguration.xml', self.mScriptDir)
+			self.mWindows[WIN_ID_CONFIG_MOTORIZED_USALS2]=SatelliteConfigMotorizedUsals2('SatelliteConfigMotorizedUsals2.xml', self.mScriptDir)
 
 			
 			from pvr.gui.windows.SatelliteConfigMotorized12 import SatelliteConfigMotorized12
-			self.mWindows[WIN_ID_CONFIG_MOTORIZED_12]=SatelliteConfigMotorized12('SatelliteConfiguration.xml', self.mScriptDir)
+			self.mWindows[WIN_ID_CONFIG_MOTORIZED_12]=SatelliteConfigMotorized12('SatelliteConfigMotorized12.xml', self.mScriptDir)
 
 			
 			from pvr.gui.windows.SatelliteConfigOnecable import SatelliteConfigOnecable
@@ -190,11 +194,11 @@ class WindowMgr(object):
 
 			
 			from pvr.gui.windows.SatelliteConfigDisEqc10 import SatelliteConfigDisEqC10
-			self.mWindows[WIN_ID_CONFIG_DISEQC_10]=SatelliteConfigDisEqC10('SatelliteConfiguration.xml', self.mScriptDir)
+			self.mWindows[WIN_ID_CONFIG_DISEQC_10]=SatelliteConfigDisEqC10('SatelliteConfigDisEqC10.xml', self.mScriptDir)
 
 			
 			from pvr.gui.windows.SatelliteConfigDisEqc11 import SatelliteConfigDisEqC11
-			self.mWindows[WIN_ID_CONFIG_DISEQC_11]=SatelliteConfigDisEqC11('SatelliteConfiguration.xml', self.mScriptDir)
+			self.mWindows[WIN_ID_CONFIG_DISEQC_11]=SatelliteConfigDisEqC11('SatelliteConfigDisEqC11.xml', self.mScriptDir)
 
 			
 			from pvr.gui.windows.ChannelSearch import ChannelSearch
@@ -287,14 +291,38 @@ class WindowMgr(object):
 		currentSkinName = xbmc.executehttpapi("GetGUISetting(3, lookandfeel.skin)")
 
 		print 'skin name=%s : %s' %( self.mSkinName, currentSkinName[4:] )
-
+		self.LoadSkinPosition( )
 		if self.mSkinName != currentSkinName[4:] :
 			LOG_TRACE('change skin name')
 			self.mSkinName = currentSkinName[4:]
 			self.Reset( )
 
+
+	def LoadSkinPosition( self ) :
+		try :
+			import pvr.Platform
+			from pvr.GuiHelper import GetInstanceSkinPosition
+			from BeautifulSoup import BeautifulSoup
+			userDatePath	= pvr.Platform.GetPlatform( ).GetUserDataDir( ) + 'guisettings.xml'
+			fp				= open( userDatePath )			
+			xml				= fp.read( )
+			resolutionInfo	= BeautifulSoup( xml )
+			resolution		= resolutionInfo.findAll('resolution')
+			left			= int( resolution[1].find('left').string )
+			top				= int( resolution[1].find('top').string )
+			right			= int( resolution[1].find('right').string )
+			bottom			= int( resolution[1].find('bottom').string )
+			zoom			= int( resolutionInfo.find('skinzoom').string )
+			pvr.GuiHelper.GetInstanceSkinPosition( ).SetPosition( left, top, right, bottom, zoom )
+			fp.close( )
+
+		except Exception, e :
+			if fp.closed == False :
+				fp.close( )
+			LOG_ERR( 'Error exception[%s]' % e )
+
+
 	def CopyIncludeFile( self ):
-		import os, shutil
 		import pvr.Platform 
 
 		skinName = self.mSkinName

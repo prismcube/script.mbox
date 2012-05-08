@@ -1,14 +1,10 @@
-import xbmc
-import xbmcgui
-import time
-import sys
-
+from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import Property
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
-from pvr.gui.GuiConfig import *
 from pvr.gui.BaseWindow import Action
-from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR
+from pvr.Util import RunThread, GuiLock, GuiLock2
+ 
 
 class BaseDialog( xbmcgui.WindowXMLDialog, Property ):
 	def __init__( self, *args, **kwargs ):
@@ -44,7 +40,7 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ):
 
 	def GetFocusId( self ):
 		GuiLock2( True )
-		self.mFocusId = self.getFocusId()
+		self.mFocusId = self.getFocusId( )
 		GuiLock2( False )
 		return self.mFocusId
 
@@ -505,3 +501,20 @@ class SettingDialog( BaseDialog ):
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL :
 					ctrlItem.mProperty.SetProp( aValue )
 					return True
+
+
+
+	def GetListItems( self, aControlId ) :
+
+		count = len( self.mControlList )
+
+		for i in range( count ) :
+
+			ctrlItem = self.mControlList[i]		
+			if self.HasControlItem( ctrlItem, aControlId ) :
+				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
+					return ctrlItem.mListItems
+				elif ctrlItem.mControlType == ctrlItem.E_SETTING_LIST_CONTROL :
+					return ctrlItem.mListItems				
+
+

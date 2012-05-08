@@ -1,12 +1,4 @@
-import xbmc
-import xbmcgui
-import sys
-import time
-
-import pvr.gui.WindowMgr as WinMgr
-import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.BaseWindow import BaseWindow, Action
-from pvr.Util import GuiLock, LOG_TRACE
+from pvr.gui.WindowImport import *
 
 
 class DummyWindow( BaseWindow ):

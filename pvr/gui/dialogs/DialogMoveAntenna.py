@@ -1,11 +1,6 @@
-import xbmc
-import xbmcgui
-import time
-import sys
-
-from pvr.gui.BaseDialog import BaseDialog
-from pvr.gui.BaseWindow import Action
+from pvr.gui.WindowImport import *
 import pvr.TunerConfigMgr as ConfigMgr
+
 
 E_MOVE_WEST_BUTTON_ID		= 9101
 E_STEP_WEST_BUTTON_ID		= 9201

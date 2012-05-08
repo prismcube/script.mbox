@@ -1,23 +1,8 @@
-
-import xbmc
-import xbmcgui
-import time
-import sys
-import threading
-
-import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.BaseWindow import Action
-from pvr.gui.BaseDialog import BaseDialog
-from  pvr.TunerConfigMgr import *
-from ElisEnum import ElisEnum
-
-import pvr.ElisMgr
-from pvr.Util import GuiLock, LOG_TRACE
-from ElisEventClass import *
+from pvr.gui.WindowImport import *
 
 
 # Control IDs
-LABEL_ID_TRANSPONDER_INFO		= 104
+LABEL_ID_TRANSPONDER_INFO		= 404
 PROGRESS_ID_SCAN				= 200
 LIST_ID_TV						= 400
 LIST_ID_RADIO					= 402
@@ -43,6 +28,8 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 	def onInit( self ) :
+		self.mDataCache.Player_AVBlank( True, True )
+	
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		
@@ -62,7 +49,7 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mCtrlTransponderInfo = self.getControl( LABEL_ID_TRANSPONDER_INFO )		
 
 		self.mEventBus.Register( self )	
-		
+
 		self.ScanStart( )
 		self.DrawItem( )
 
@@ -156,20 +143,23 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mEventBus.Deregister( self )
 				self.ReTune( )
 				self.CloseDialog( )
+				self.mDataCache.Player_AVBlank( False, True )
+				self.ReLoadChannelList( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'Error', 'Channel Search Failed' )
 				dialog.doModal( )
+				self.ReTune( )
 
 		elif self.mScanMode == E_SCAN_TRANSPONDER :
 			ret = self.mCommander.Channel_SearchByCarrier( self.mLongitude, self.mBand, self.mTransponderList )
 			if ret == False :
 				self.mEventBus.Deregister( self )
-				self.ReTune( )
 				self.CloseDialog( )
+				self.mDataCache.Player_AVBlank( False, True )
+				self.ReLoadChannelList( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'Error', 'Channel Search Failed' )
 				dialog.doModal( )
-			
 		else :
 			self.mIsFinished == True
 
@@ -190,8 +180,11 @@ class DialogChannelSearch( BaseDialog ) :
  
 		if self.mIsFinished == True :
 			self.mEventBus.Deregister( self )
-			self.ReTune( )
+			if self.mScanMode == E_SCAN_SATELLITE :
+				self.ReTune( )
 			self.CloseDialog( )
+			self.mDataCache.Player_AVBlank( False, False )
+			self.ReLoadChannelList( )
 
 
 	@GuiLock
@@ -267,11 +260,15 @@ class DialogChannelSearch( BaseDialog ) :
 		dialog.doModal( )
 		self.mIsFinished = True
 
-		if tvCount > 0 or radioCount > 0 :
+		#if tvCount > 0 or radioCount > 0 :
 			#### data cache re-load ####
-			self.mDataCache.LoadZappingmode( True )
-			self.mDataCache.LoadZappingList( True )
-			self.mDataCache.LoadChannelList( 0, ElisEnum.E_SERVICE_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER, True )
+			#self.ReLoadChannelList( )
+
+
+	def ReLoadChannelList( self ) :
+		self.mDataCache.LoadZappingmode( True )
+		self.mDataCache.LoadZappingList( True )
+		self.mDataCache.LoadChannelList( 0, ElisEnum.E_SERVICE_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER, True )
 
 
 	def ReTune( self ) :

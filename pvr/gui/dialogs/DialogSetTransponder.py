@@ -1,13 +1,4 @@
-import xbmc
-import xbmcgui
-import sys
-
-import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.BaseDialog import SettingDialog
-from pvr.gui.BaseWindow import Action
-from ElisEnum import ElisEnum
-from ElisProperty import ElisPropertyEnum
-from pvr.gui.GuiConfig import *
+from pvr.gui.WindowImport import *
 
 
 class DialogSetTransponder( SettingDialog ) :

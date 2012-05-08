@@ -1,12 +1,5 @@
-import xbmc
-import xbmcgui
-import sys
+from pvr.gui.WindowImport import *
 
-import pvr.gui.WindowMgr as WinMgr
-import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.GuiConfig import *
-from pvr.gui.BaseWindow import SettingWindow, Action
-from ElisProperty import ElisPropertyEnum
 
 E_MAIN_LIST_ID = 9000
 
@@ -70,32 +63,32 @@ class TunerConfiguration( SettingWindow ) :
 			configuredList = self.mTunerMgr.GetConfiguredSatelliteList( )
 
 			if len( configuredList ) == position :
-				dialog = xbmcgui.Dialog()
+				dialog = xbmcgui.Dialog( )
 				satelliteList = self.mDataCache.Satellite_GetFormattedNameList( )
 	 			ret = dialog.select( 'Select satellite', satelliteList )
 
 	 			if ret >= 0 :
 					self.mTunerMgr.AddConfiguredSatellite( ret )
-	 				self.ReloadConfigedSatellite()
+	 				self.ReloadConfigedSatellite( )
 
 	 		elif len( configuredList ) + 1 == position :
 	 			if len( configuredList ) <= 0 :
-	 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+	 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( 'ERROR', 'Empty Configured Satellite' )
 		 			dialog.doModal( )
 	 				return
 	 			else :
-					dialog = xbmcgui.Dialog()
+					dialog = xbmcgui.Dialog( )
 		 			ret = dialog.select( 'delete satellite', self.listItems[ 0 : len( configuredList ) ] )
  
 		 			if ret >= 0 :
-		 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+		 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 						dialog.SetDialogProperty( 'Configure', 'Delete Satellite : %s' % self.listItems[ ret ] )
 						dialog.doModal( )
 
-						if dialog.IsOK() == E_DIALOG_STATE_YES :
+						if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			 				self.mTunerMgr.DeleteConfiguredSatellitebyIndex( ret )
-			 				self.ReloadConfigedSatellite()
+			 				self.ReloadConfigedSatellite( )
 
 			else :		
 				config = configuredList[ position ]
@@ -105,16 +98,16 @@ class TunerConfiguration( SettingWindow ) :
 					tunertype = self.mTunerMgr.GetCurrentTunerType( )
 					
 					if tunertype == E_DISEQC_1_0 :
-						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_DISEQC_10 )
+						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_DISEQC_10 )
 
 					elif tunertype == E_DISEQC_1_1 :
-						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_DISEQC_11 )
+						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_DISEQC_11 )
 					
 					elif tunertype == E_MOTORIZE_1_2 :
-						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED_12 )
+						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED_12 )
 
 					elif tunertype == E_MOTORIZE_USALS :
-						WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED_USALS2 )
+						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED_USALS2 )
 
 				else :
 					print 'ERR : Can not find configured satellite'
@@ -124,7 +117,7 @@ class TunerConfiguration( SettingWindow ) :
 		pass
 
 
-	def InitConfig( self ):
+	def InitConfig( self ) :
 		self.ReloadConfigedSatellite( )
 
 

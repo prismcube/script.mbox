@@ -1,30 +1,6 @@
-import xbmc
-import xbmcgui
-import sys
+from pvr.gui.WindowImport import *
+from pvr.GuiHelper import GetSelectedLongitudeString, GetImageByEPGComponent, EnumToString, ClassToList, AgeLimit, ParseLabelToCh, MR_LANG
 
-import pvr.gui.WindowMgr as WinMgr
-import pvr.gui.DialogMgr as DiaMgr
-import pvr.DataCacheMgr as CacheMgr
-
-from pvr.gui.BaseWindow import BaseWindow, Action
-from pvr.gui.GuiConfig import *
-
-from ElisEnum import ElisEnum
-from ElisEventBus import ElisEventBus
-from ElisEventClass import *
-from ElisClass import *
-
-from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
-from pvr.PublicReference import GetSelectedLongitudeString, EpgInfoComponentImage, EnumToString, ClassToList, AgeLimit, ParseLabelToCh
-import pvr.ElisMgr
-from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-
-from copy import deepcopy
-from inspect import currentframe
-import threading, time, os, re
-
-import pvr.Msg as Msg
-import pvr.gui.windows.Define_string as MsgId
 
 FLAG_MASK_ADD    = 0x01
 FLAG_MASK_NONE   = 0x00
@@ -58,9 +34,9 @@ E_SLIDE_MENU_FAVORITE   = 3
 E_SLIDE_MENU_BACK       = 5
 
 #list property
-E_IMG_ICON_LOCK   = 'IconLockFocus.png'
+E_IMG_ICON_LOCK   = 'OverlayLocked.png'
 E_IMG_ICON_ICAS   = 'IconCas.png'
-E_IMG_ICON_MARK   = 'confluence/OverlayWatched.png'
+E_IMG_ICON_MARK   = 'OverlayWatched.png'
 E_IMG_ICON_REC   = 'IconPlateRec.png'
 E_IMG_ICON_TITLE1 = 'IconHeaderTitleSmall.png'
 E_IMG_ICON_TITLE2 = 'icon_setting_focus.png'
@@ -105,6 +81,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mLastSubSlidePosition = 0
 		self.mSelectMainSlidePosition = 0
 		self.mSelectSubSlidePosition = 0
+		self.mCurrentPosition = 0
 		self.mLastChannel = None
 		self.mListItems = None
 
@@ -116,12 +93,15 @@ class ChannelListWindow( BaseWindow ) :
 		self.mPropertyPincode = -1
 		self.mPincodeEnter = FLAG_MASK_NONE
 		self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
-		
+
+
+	"""		
 	def __del__(self):
 		LOG_TRACE( 'destroyed ChannelList' )
 
 		# end thread
 		self.mEnableThread = False
+	"""
 
 
 	def onInit(self):
@@ -165,7 +145,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlListCHList         = self.getControl( 50 )
 
 		#info
-		self.mCtrlImgVideoPos        = self.getControl( 301 )
 		self.mCtrlChannelName        = self.getControl( 303 )
 		self.mCtrlEventName          = self.getControl( 304 )
 		self.mCtrlEventTime          = self.getControl( 305 )
@@ -205,7 +184,8 @@ class ChannelListWindow( BaseWindow ) :
 		self.mMoveFlag = False
 		self.mMoveItem = []
 
-		self.SetVideoSize( )
+		self.SetPipScreen( )
+		self.UpdateLabelGUI( self.mCtrlBtnDelAll.getId( ), MR_LANG('Delete All Channel') )
 
 		#initialize get cache
 		zappingmode = None
@@ -429,27 +409,14 @@ class ChannelListWindow( BaseWindow ) :
 		#LOG_TRACE( 'control %d' % controlId )
 		pass
 
-	def SetVideoSize( self ) :
-		LOG_TRACE( 'Enter' )
-		h = self.mCtrlImgVideoPos.getHeight( )
-		w = self.mCtrlImgVideoPos.getWidth( )
-		pos=list(self.mCtrlImgVideoPos.getPosition( ) )
-		x = pos[0] - 20
-		y = pos[1] + 10
-		#LOG_TRACE('==========h[%s] w[%s] x[%s] y[%s]'% (h,w,x,y) )
-
-		ret = self.mDataCache.Player_SetVIdeoSize( x, y, w, h ) 
-
-		LOG_TRACE( 'Leave' )
-
 	def SetDeleteAll( self ) :
 		LOG_TRACE( 'Enter' )
 
 		ret = E_DIALOG_STATE_NO
 
 		#ask save question
-		head =  Msg.Strings( MsgId.LANG_CONFIRM )
-		line1 = Msg.Strings( MsgId.LANG_DELETE_ALL_CHANNEL )
+		head =  MR_LANG('Confirm')
+		line1 = MR_LANG('Delete All Channel')
 
 		GuiLock2( True )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -650,6 +617,19 @@ class ChannelListWindow( BaseWindow ) :
 
 							else:
 								LOG_TRACE('epg SAME')
+
+			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
+				 aEvent.getName() == ElisEventRecordingStopped.getName() :
+				time.sleep(1.5)
+				self.mRecChannel1 = []
+				self.mRecChannel2 = []
+				self.ShowRecording()
+				self.mDataCache.mCacheReload = True
+				self.mListItems = None
+				self.InitChannelList( )
+				
+				LOG_TRACE('Receive Event[%s]'% aEvent.getName() )
+
 		else:
 			LOG_TRACE( 'channellist winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
 
@@ -675,7 +655,7 @@ class ChannelListWindow( BaseWindow ) :
 				chindex += 1
 
 			if self.mChannelList == None:
-				label = 'Empty Channels'#Msg.Strings( MsgId.LANG_NO_CHANNELS )
+				label = MR_LANG('Empty Channels')
 				self.UpdateLabelGUI( self.mCtrlChannelName.getId( ), label )
 				LOG_TRACE( 'empty channel, iChannel[%s]'% self.mChannelList )
 				return 
@@ -695,7 +675,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		else:
 			if self.mChannelList == None:
-				label = 'Empty Channels'#Msg.Strings( MsgId.LANG_NO_CHANNELS )
+				label = MR_LANG('Empty Channels')
 				self.UpdateLabelGUI( self.mCtrlChannelName.getId( ), label )
 				LOG_TRACE( 'empty channel, iChannel[%s]'% self.mChannelList )
 				return 
@@ -742,7 +722,8 @@ class ChannelListWindow( BaseWindow ) :
 		if ch :
 			self.mNavChannel = ch
 			self.mCurrentChannel = self.mNavChannel.mNumber
-			pos = self.mCtrlListCHList.getSelectedPosition( )+1
+			self.mCurrentPosition = self.mCtrlListCHList.getSelectedPosition( )
+			pos = self.mCurrentPosition + 1
 			self.mCtrlSelectItem.setLabel( str('%s'% pos ) )
 			LOG_TRACE('chinfo: num[%s] type[%s] name[%s] pos[%s]'% (ch.mNumber, ch.mServiceType, ch.mName, pos) )
 
@@ -789,7 +770,7 @@ class ChannelListWindow( BaseWindow ) :
 					for itemClass in self.mListFavorite:
 						testlistItems.append( xbmcgui.ListItem(itemClass.mGroupName) )
 				else:
-					testlistItems.append( xbmcgui.ListItem( Msg.Strings(MsgId.LANG_NONE) ) )
+					testlistItems.append( xbmcgui.ListItem( MR_LANG('None') ) )
 
 			if testlistItems != [] :
 				#submenu update
@@ -1042,12 +1023,13 @@ class ChannelListWindow( BaseWindow ) :
 				label1 = EnumToString( 'mode', self.mZappingMode )
 				label2 = self.mCtrlListSubmenu.getSelectedItem( ).getLabel( )
 
-				head =  Msg.Strings( MsgId.LANG_SETTING_TO_CHANGE_ZAPPING_MODE )
+				head =  MR_LANG('Setting - to change zapping mode')
 				line1 = '%s / %s'% ( label1.title( ), label2.title( ) )
-				line2 = Msg.Strings( MsgId.LANG_DO_YOU_WANT_TO_SAVE_CHANNELS )
+				line2 = MR_LANG('Do you want to save channels?')
+				posLine = abs( 100 - len(line1) )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( head, str('%s\n\n%s'% (line1,line2) ) )
+				dialog.SetDialogProperty( head, str('%s\n\n%s'% (line1.center(posLine), line2) ) )
 				dialog.doModal( )
 				GuiLock2( False )
 
@@ -1145,8 +1127,8 @@ class ChannelListWindow( BaseWindow ) :
 		#is change?
 		if self.mIsSave :
 			#ask save question
-			head =  Msg.Strings( MsgId.LANG_CONFIRM )
-			line1 = Msg.Strings( MsgId.LANG_DO_YOU_WANT_TO_SAVE_CHANNELS )
+			head =  MR_LANG('Confirm')
+			line1 = MR_LANG('Do you want to save channels?')
 
 			GuiLock2( True )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -1187,11 +1169,14 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateLabelGUI( self.mCtrlGropOpt.getId( ), False )
 			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ), True, 'enable' )
 			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ), True, 'enable' )
+			self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), MR_LANG('Edit Channel'), 'label' )
+
 		else :
 			#opt btn visible
 			self.UpdateLabelGUI( self.mCtrlGropOpt.getId( ), True )
 			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ), False, 'enable' )
 			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ), False, 'enable' )
+			self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), MR_LANG('Save Channel'), 'label' )
 			return
 
 		if self.mFlag_DeleteAll :
@@ -1201,7 +1186,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			self.mCtrlListSubmenu.reset( )
 			testlistItems = []
-			testlistItems.append(xbmcgui.ListItem( Msg.Strings(MsgId.LANG_NONE) ) )
+			testlistItems.append(xbmcgui.ListItem( MR_LANG('None') ) )
 			self.mCtrlListSubmenu.addItems( testlistItems )
 
 			return
@@ -1245,17 +1230,18 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		list_Mainmenu = []
-		list_Mainmenu.append( Msg.Strings(MsgId.LANG_ALL_CHANNELS) )
-		list_Mainmenu.append( Msg.Strings(MsgId.LANG_SATELLITE)    )
-		list_Mainmenu.append( Msg.Strings(MsgId.LANG_FTA)          )
-		list_Mainmenu.append( Msg.Strings(MsgId.LANG_FAVORITE)     )
-		list_Mainmenu.append( 'MODE' )
-		list_Mainmenu.append( Msg.Strings(MsgId.LANG_BACK)     )
+		list_Mainmenu.append( MR_LANG('All CHANNELS') )
+		list_Mainmenu.append( MR_LANG('SATELLITE')    )
+		list_Mainmenu.append( MR_LANG('FTA/CAS')          )
+		list_Mainmenu.append( MR_LANG('FAVORITE')     )
+		list_Mainmenu.append( MR_LANG('MODE') )
+		list_Mainmenu.append( MR_LANG('Back') )
 		testlistItems = []
 		for item in range( len(list_Mainmenu) ) :
 			testlistItems.append( xbmcgui.ListItem(list_Mainmenu[item]) )
 
 		self.mCtrlListMainmenu.addItems( testlistItems )
+
 
 		#sort list, This is fixed
 		self.mListAllChannel = []
@@ -1356,7 +1342,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		#no channel is set Label comment
 		if self.mChannelList == None:
-			label = 'Empty Channels'#Msg.Strings( MsgId.LANG_NO_CHANNELS )
+			label = MR_LANG('Empty Channels')
 			self.UpdateLabelGUI( self.mCtrlChannelName.getId( ), label )
 
 			LOG_TRACE( 'empty channel, iChannel[%s]'% self.mChannelList )
@@ -1426,7 +1412,8 @@ class ChannelListWindow( BaseWindow ) :
 		xbmc.sleep( 50 )
 
 		#select item idx, print GUI of 'current / total'
-		self.mCtrlSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition( )+1) ) )
+		self.mCurrentPosition = iChannelIdx
+		self.mCtrlSelectItem.setLabel( str('%s'% (iChannelIdx+1) ) )
 		GuiLock2( False )
 
 		#endtime = time.time( )
@@ -1575,7 +1562,14 @@ class ChannelListWindow( BaseWindow ) :
 				self.mCtrlRdoRadio.setEnabled( aValue )
 
 		elif aCtrlID == self.mCtrlBtnEdit.getId( ) :
-			self.mCtrlBtnEdit.setEnabled( aValue )
+			if aExtra == 'enable' :
+				self.mCtrlBtnEdit.setEnabled( aValue )
+			elif aExtra == 'label' :
+				self.mCtrlBtnEdit.setLabel( aValue )
+
+		elif aCtrlID == self.mCtrlBtnDelAll.getId( ) :
+			self.mCtrlBtnDelAll.setLabel( aValue )
+
 
 		"""
 		elif aCtrlID == self.mCtrlLblRec1.getId( ) :
@@ -1619,8 +1613,8 @@ class ChannelListWindow( BaseWindow ) :
 
 			#update lock-icon visible
 			if self.mNavChannel.mLocked :
-					self.mPincodeEnter |= FLAG_MASK_ADD
-					self.UpdateLabelGUI( self.mCtrlLockedInfo.getId( ), True )
+				self.mPincodeEnter |= FLAG_MASK_ADD
+				self.UpdateLabelGUI( self.mCtrlLockedInfo.getId( ), True )
 
 
 			#update career info
@@ -1660,17 +1654,27 @@ class ChannelListWindow( BaseWindow ) :
 				self.mCtrlProgress.setVisible( True )
 
 				#component
-				imagelist = EpgInfoComponentImage( self.mNavEpg )				
-				if len(imagelist) == 1:
-					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId( ), imagelist[0] )
-				elif len(imagelist) == 2:
-					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId( ), imagelist[0] )
-					self.UpdateLabelGUI( self.mCtrlServiceTypeImg2.getId( ), imagelist[1] )
+				imglist = []
+				img = GetImageByEPGComponent( self.mNavEpg, ElisEnum.E_HasSubtitles )
+				if img:
+					imglist.append(img)
+				img = GetImageByEPGComponent( self.mNavEpg, ElisEnum.E_HasDolbyDigital )
+				if img:
+					imglist.append(img)
+				img = GetImageByEPGComponent( self.mNavEpg, ElisEnum.E_HasHDVideo )
+				if img:
+					imglist.append(img)
 
-				elif len(imagelist) == 3:
-					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId( ), imagelist[0] )
-					self.UpdateLabelGUI( self.mCtrlServiceTypeImg2.getId( ), imagelist[1] )
-					self.UpdateLabelGUI( self.mCtrlServiceTypeImg3.getId( ), imagelist[2] )
+				if len(imglist) == 1:
+					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId( ), imglist[0] )
+				elif len(imglist) == 2:
+					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId( ), imglist[0] )
+					self.UpdateLabelGUI( self.mCtrlServiceTypeImg2.getId( ), imglist[1] )
+
+				elif len(imglist) == 3:
+					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId( ), imglist[0] )
+					self.UpdateLabelGUI( self.mCtrlServiceTypeImg2.getId( ), imglist[1] )
+					self.UpdateLabelGUI( self.mCtrlServiceTypeImg3.getId( ), imglist[2] )
 				else:
 					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId( ), '' )
 					self.UpdateLabelGUI( self.mCtrlServiceTypeImg2.getId( ), '' )
@@ -1700,7 +1704,7 @@ class ChannelListWindow( BaseWindow ) :
 		#popup pin-code dialog
 		if self.mPincodeEnter > FLAG_MASK_NONE :
 			try :
-				msg = Msg.Strings(MsgId.LANG_INPUT_PIN_CODE)
+				msg = MR_LANG('Input PIN Code')
 
 				inputPin = ''
 				self.mDataCache.Player_AVBlank( True, False )
@@ -1728,8 +1732,8 @@ class ChannelListWindow( BaseWindow ) :
 					LOG_TRACE( 'Pincode success' )
 
 				else:
-					msg1 = Msg.Strings(MsgId.LANG_ERROR)
-					msg2 = Msg.Strings(MsgId.LANG_WRONG_PIN_CODE)
+					msg1 = MR_LANG('Error')
+					msg2 = MR_LANG('Wrong PIN Code')
 					GuiLock2( True )
 					xbmcgui.Dialog( ).ok( msg1, msg2 )
 					GuiLock2( False )
@@ -2352,28 +2356,29 @@ class ChannelListWindow( BaseWindow ) :
 		#default context item
 		context = []
 		if self.mChannelList :
-			context.append( ContextItem( Msg.Strings( MsgId.LANG_LOCK ),   CONTEXT_ACTION_LOCK ) )
-			context.append( ContextItem( Msg.Strings( MsgId.LANG_UNLOCK ), CONTEXT_ACTION_UNLOCK ) )
-			context.append( ContextItem( Msg.Strings( MsgId.LANG_SKIP ),   CONTEXT_ACTION_SKIP ) )
-			context.append( ContextItem( Msg.Strings( MsgId.LANG_UNSKIP ), CONTEXT_ACTION_UNSKIP  ) )
-			context.append( ContextItem( Msg.Strings( MsgId.LANG_DELETE ), CONTEXT_ACTION_DELETE ) )
-			context.append( ContextItem( Msg.Strings( MsgId.LANG_MOVE ),   CONTEXT_ACTION_MOVE ) )
+			context.append( ContextItem( MR_LANG('Lock'),   CONTEXT_ACTION_LOCK ) )
+			context.append( ContextItem( MR_LANG('Unlock'), CONTEXT_ACTION_UNLOCK ) )
+			context.append( ContextItem( MR_LANG('Skip'),   CONTEXT_ACTION_SKIP ) )
+			context.append( ContextItem( MR_LANG('Unskip'), CONTEXT_ACTION_UNSKIP  ) )
+			context.append( ContextItem( MR_LANG('Delete'), CONTEXT_ACTION_DELETE ) )
+			context.append( ContextItem( MR_LANG('Move'),   CONTEXT_ACTION_MOVE ) )
 
 
 		if aMode == FLAG_OPT_LIST :
 
 			if self.mChannelList :
 				if self.mEditFavorite:
-					lblItem = '%s'% Msg.Strings( MsgId.LANG_ADD_TO_FAV )
+					lblItem = '%s'% MR_LANG('Add to Fav. Group')
+					context.append( ContextItem( lblItem, CONTEXT_ACTION_ADD_TO_FAV  ) )
 				else:
-					label   = '%s\tNone'% Msg.Strings( MsgId.LANG_ADD_TO_FAV )
-					lblItem = str('%s%s%s'%( E_TAG_COLOR_GREY3, label, E_TAG_COLOR_END ) )
-
-				context.append( ContextItem( lblItem, CONTEXT_ACTION_ADD_TO_FAV  ) )
+					#label   = '%s\t%s'% ( MR_LANG('Add to Fav. Group'), MR_LANG('None') )
+					#lblItem = str('%s%s%s'%( E_TAG_COLOR_GREY3, label, E_TAG_COLOR_END ) )
+					lblItem = '%s'% MR_LANG('Create New Group')
+					context.append( ContextItem( lblItem, CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
 
 			else :
-				head =  Msg.Strings( MsgId.LANG_INFOMATION )
-				line1 = Msg.Strings( MsgId.LANG_NO_CHANNELS )
+				head =  MR_LANG('Infomation')
+				line1 = MR_LANG('Empty Channels')
 
 				xbmcgui.Dialog( ).ok(head, line1)
 				return
@@ -2383,20 +2388,20 @@ class ChannelListWindow( BaseWindow ) :
 			if not self.mChannelList :
 				context = []
 
-			context.append( ContextItem( Msg.Strings( MsgId.LANG_CREATE_NEW_GROUP ), CONTEXT_ACTION_CREATE_GROUP_FAV ) )
+			context.append( ContextItem( MR_LANG('Create New Group'), CONTEXT_ACTION_CREATE_GROUP_FAV ) )
 
 			if self.mEditFavorite:
-				context.append( ContextItem( '%s'% Msg.Strings( MsgId.LANG_RENAME_FAV ), CONTEXT_ACTION_RENAME_FAV ) )
-				context.append( ContextItem( '%s'% Msg.Strings( MsgId.LANG_DELETE_FAV ), CONTEXT_ACTION_DELETE_FAV ) )
-				
-				
+				context.append( ContextItem( '%s'% MR_LANG('Rename Fav. Group'), CONTEXT_ACTION_RENAME_FAV ) )
+				context.append( ContextItem( '%s'% MR_LANG('Delete Fav. Group'), CONTEXT_ACTION_DELETE_FAV ) )
+			"""
 			else:
-				label1   = '%s\tNone'% Msg.Strings( MsgId.LANG_RENAME_FAV )
-				label2   = '%s\tNone'% Msg.Strings( MsgId.LANG_DELETE_FAV )
+				label1   = '%s\tNone'% MR_LANG('Rename Fav. Group')
+				label2   = '%s\tNone'% MR_LANG('Delete Fav. Group')
 				lblItem2 = str('%s%s%s'%( E_TAG_COLOR_GREY3, label1, E_TAG_COLOR_END ) )
 				lblItem3 = str('%s%s%s'%( E_TAG_COLOR_GREY3, label2, E_TAG_COLOR_END ) )
 				context.append( ContextItem( lblItem2 , CONTEXT_ACTION_RENAME_FAV ) )
 				context.append( ContextItem( lblItem3, CONTEXT_ACTION_DELETE_FAV ) )
+			"""
 
 
 		GuiLock2( True )
@@ -2424,31 +2429,44 @@ class ChannelListWindow( BaseWindow ) :
 			return
 		#--------------------------------------------------------------- section 1
 
+		grpIdx = -1
 		groupName = None
 
 		# add Fav, Ren Fav, Del Fav ==> popup select group
 		if selectedAction == CONTEXT_ACTION_ADD_TO_FAV or \
 		   selectedAction == CONTEXT_ACTION_RENAME_FAV or \
 		   selectedAction == CONTEXT_ACTION_DELETE_FAV :
-		   	context = []
-		   	idx = 0
-   			for name in self.mEditFavorite:
-				context.append( ContextItem( name, idx ) )
-				idx += 1
+ 			title = ''
+ 			if selectedAction == CONTEXT_ACTION_ADD_TO_FAV :   title = MR_LANG('Add to Fav. Group')
+ 			elif selectedAction == CONTEXT_ACTION_RENAME_FAV : title = MR_LANG('Rename Fav. Group')
+ 			elif selectedAction == CONTEXT_ACTION_DELETE_FAV : title = MR_LANG('Delete Fav. Group')
 
-			GuiLock2( True )
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-			dialog.SetProperty( context )
- 			dialog.doModal( )
- 			GuiLock2( False )
-
- 			grpIdx = dialog.GetSelectedAction( )
- 			LOG_TRACE('---------------grpIdx[%s]'% grpIdx)
+ 			grpIdx = xbmcgui.Dialog().select(title, self.mEditFavorite)
  			groupName = self.mEditFavorite[grpIdx]
+ 			LOG_TRACE('---------------grpIdx[%s] fav[%s]'% (grpIdx,groupName) )
 
 			if grpIdx == -1 :
 				LOG_TRACE('CANCEL by context dialog')
 				return
+
+			if selectedAction == CONTEXT_ACTION_DELETE_FAV :
+				head = MR_LANG('Delete Fav. Group')
+				line1 = '%s'% groupName
+				line2 = '%s'% MR_LANG('Do you want to delete?')
+				posLine = abs( 100 - len(line1) )
+
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( head, str('%s\n\n%s'% (line1.center(posLine), line2)) )
+				dialog.doModal( )
+
+
+				answer = dialog.IsOK( )
+
+				#answer is yes
+				if answer != E_DIALOG_STATE_YES :
+					return
+
+			grpIdx = selectedAction
 
 		# Ren Fav, Del Fav ==> popup input group Name
 		if selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV or \
@@ -2458,13 +2476,13 @@ class ChannelListWindow( BaseWindow ) :
 			if selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV :
 				#create
 				result = ''
-				label = Msg.Strings( MsgId.LANG_CREATE_NEW_GROUP )
+				label = MR_LANG('Create New Group')
 
 			elif selectedAction == CONTEXT_ACTION_RENAME_FAV :
 				#rename
 				default = groupName
 				result = '%d'%grpIdx + ':' + groupName + ':'
-				label = Msg.Strings( MsgId.LANG_RENAME_FAV )
+				label = MR_LANG('Rename Fav. Group')
 
 			kb = xbmc.Keyboard( default, label, False )
 			kb.doModal( )
@@ -2478,8 +2496,16 @@ class ChannelListWindow( BaseWindow ) :
 		#--------------------------------------------------------------- section 2
 
 		self.DoContextAdtion( aMode, selectedAction, groupName )
-
 		self.mIsSave |= FLAG_MASK_ADD
+
+		if selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV or \
+			selectedAction == CONTEXT_ACTION_RENAME_FAV or \
+			selectedAction == CONTEXT_ACTION_DELETE_FAV :
+
+			self.GetFavoriteGroup( )
+			#self.mCtrlListMainmenu.selectItem( E_SLIDE_MENU_FAVORITE )
+			if self.mCtrlListMainmenu.getSelectedPosition( ) == E_SLIDE_MENU_FAVORITE :
+				self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE )
 
 		LOG_TRACE( 'Leave' )
 
@@ -2561,7 +2587,24 @@ class ChannelListWindow( BaseWindow ) :
 				inputNumber = dialog.GetChannelLast( )
 				LOG_TRACE( 'Jump chNum[%s] currentCh[%s]'% (inputNumber,self.mCurrentChannel) )
 
-				if int(self.mCurrentChannel) != int(inputNumber) :
+				if int(self.mCurrentChannel) == int(inputNumber) :
+					ch = None
+					ch = self.mDataCache.Channel_GetCurrent( )
+					if ch :
+						self.mNavChannel = ch
+						self.mCurrentChannel = self.mNavChannel.mNumber
+						pos = self.mCurrentPosition
+						self.mCtrlListCHList.selectItem(pos)
+						xbmc.sleep( 20 )
+
+						self.mCtrlSelectItem.setLabel( str('%s'% pos ) )
+						LOG_TRACE('chinfo: num[%s] type[%s] name[%s] pos[%s]'% (ch.mNumber, ch.mServiceType, ch.mName, pos) )
+
+						self.ResetLabel( )
+						self.UpdateLabelInfo( )
+						self.PincodeDialogLimit( )
+
+				else :
 					self.SetChannelTune( int(inputNumber) )
 
 
@@ -2611,7 +2654,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateLabelGUI( self.mCtrlImgRec1.getId( ), recImg1 )
 			self.UpdateLabelGUI( self.mCtrlLblRec2.getId( ), recLabel2 )
 			self.UpdateLabelGUI( self.mCtrlImgRec2.getId( ), recImg2 )
-			self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), btnEdit )
+			self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), btnEdit, 'enable' )
 			"""
 
 			self.mRecCount = isRunRec
@@ -2638,7 +2681,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
 				if isRunRec > 0 :
-					self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), False )
+					self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), False, 'enable' )
 					#use zapping table, in recording
 					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ZAPPING )
 					self.mDataCache.Channel_GetZappingList( )

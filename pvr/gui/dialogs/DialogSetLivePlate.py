@@ -1,20 +1,5 @@
-import xbmc
-import xbmcgui
-import time
-import sys
+from pvr.gui.WindowImport import *
 
-import pvr.gui.DialogMgr as DiaMgr
-import pvr.DataCacheMgr as CacheMgr
-from pvr.gui.BaseDialog import SettingDialog
-from pvr.gui.BaseWindow import Action
-from ElisEnum import ElisEnum
-from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-from pvr.gui.GuiConfig import *
-
-from pvr.Util import LOG_WARN, LOG_TRACE, LOG_ERR
-import pvr.Msg as Msg
-import pvr.gui.windows.Define_string as MsgId
-import threading
 
 CONTEXT_ACTION_VIDEO_SETTING = 1
 CONTEXT_ACTION_AUDIO_SETTING = 2
@@ -86,11 +71,6 @@ class DialogSetLivePlate( SettingDialog ) :
 	def DrawItem( self ) :
 		self.ResetAllControl( )
 
-		#------------------ section1 : unused control -------------------
-		for idx in range(9) :
-			self.SetVisibleControl( idx*10 + E_DialogInput01, False )
-
-		#------------------ section2 : using control -------------------
 		if self.mMode == CONTEXT_ACTION_VIDEO_SETTING :
 
 			self.AddEnumControl( E_DialogSpinEx01, 'HDMI Format' )
@@ -106,7 +86,7 @@ class DialogSetLivePlate( SettingDialog ) :
 
 		elif self.mMode == CONTEXT_ACTION_AUDIO_SETTING :
 			LOG_TRACE('list audio[%s]'% self.mAudioTrack)
-			self.AddUserEnumControl( E_DialogSpinEx01, Msg.Strings( MsgId.LANG_AUDIO_HDMI ), self.mAudioTrack, 0)
+			self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG('Audio HDMI'), self.mAudioTrack, 0)
 
 			visibleControlIds = [ E_DialogSpinEx01 ]
 			self.SetVisibleControls( visibleControlIds, True )

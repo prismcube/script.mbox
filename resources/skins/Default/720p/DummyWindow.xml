@@ -1,4 +1,5 @@
-<window>
+<window id="3100">
+	<defaultcontrol always="true">9000</defaultcontrol>
 	<controls>
 		<control type="group" id="9000">
 			<control type="image">

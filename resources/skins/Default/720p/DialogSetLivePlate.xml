@@ -1,4 +1,4 @@
-<window id="3308">
+<window>
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
@@ -17,15 +17,6 @@
 			<include>DefaultDialogCommonSetting</include>
 			<control type="group" id="9000">
 				<posx>40</posx>
-				<include>DialogInput01</include>
-				<include>DialogInput02</include>
-				<include>DialogInput03</include>
-				<include>DialogInput04</include>
-				<include>DialogInput05</include>
-				<include>DialogInput06</include>
-				<include>DialogInput07</include>
-				<include>DialogInput08</include>
-				<include>DialogInput09</include>
 				<include>DialogSpinEx01</include>
 				<include>DialogSpinEx02</include>
 				<include>DialogSpinEx03</include>

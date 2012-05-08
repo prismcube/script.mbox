@@ -1,13 +1,5 @@
-import xbmc
-import xbmcgui
-import time
-import sys
+from pvr.gui.WindowImport import *
 
-from pvr.gui.BaseWindow import Action
-from pvr.gui.BaseDialog import BaseDialog
-from pvr.gui.GuiConfig import *
-
-from pvr.Util import GuiLock, GuiLock2, LOG_WARN, LOG_TRACE, LOG_ERR
 
 E_INPUT_LABEL			= 102
 E_BUTTON_DONE			= 121
@@ -16,6 +8,7 @@ E_BUTTON_PREV			= 120
 E_BUTTON_NEXT			= 122
 E_START_ID_NUMBER		= 110
 E_HEADER_LABEL			= 101
+
 
 class DialogNormalNumeric( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :

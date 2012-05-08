@@ -1,16 +1,4 @@
-import xbmc
-import xbmcgui
-import sys
-import time
-
-import pvr.gui.WindowMgr as WinMgr
-import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.GuiConfig import *
-from pvr.gui.BaseWindow import SettingWindow, Action
-from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
-from ElisEventClass import *
-from ElisEnum import ElisEnum
+from pvr.gui.WindowImport import *
 
 
 E_MAIN_GROUP_ID		=	9000
@@ -127,13 +115,10 @@ class FirstInstallation( SettingWindow ) :
 			if groupId == E_FIRST_TIME_INSTALLATION_NEXT :
 				self.Close( )
 
-		print 'dhkim test back!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11111     %d' % groupId
 		if groupId == E_FIRST_TIME_INSTALLATION_PREV :
-			print 'dhkim test back!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!22222222'
 			if self.mStepNum == E_STEP_CHANNEL_SEARCH_CONFIG :
 				self.OpenAntennaSetupWindow( )
 			else :
-				print 'dhkim test back!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!333333333'
 				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )
 				self.SetListControl( self.mPrevStepNum )
@@ -143,7 +128,7 @@ class FirstInstallation( SettingWindow ) :
 		if self.mInitialized == False :
 			return
 		if self.mLastFocused != aControlId :
-			self.ShowDescription( )
+			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId
 
 
@@ -207,7 +192,6 @@ class FirstInstallation( SettingWindow ) :
 			
 			self.InitControl( )
 			self.SetFocusControl( E_SpinEx01 )
-			self.ShowDescription( )
 			return
 
 		elif self.mStepNum == E_STEP_VIDEO_AUDIO :
@@ -228,7 +212,6 @@ class FirstInstallation( SettingWindow ) :
 			
 			self.InitControl( )
 			self.SetFocusControl( E_SpinEx01 )
-			self.ShowDescription( )
 			return
 
 		elif self.mStepNum == E_STEP_CHANNEL_SEARCH_CONFIG :
@@ -251,7 +234,6 @@ class FirstInstallation( SettingWindow ) :
 			
 			self.InitControl( )
 			self.SetFocusControl( E_SpinEx01 )
-			self.ShowDescription( )
 			return
 
 		elif self.mStepNum == E_STEP_DATE_TIME :
@@ -296,7 +278,6 @@ class FirstInstallation( SettingWindow ) :
 				self.SetFocusControl( E_Input02 )
 			else :
 				self.SetFocusControl( E_SpinEx01 )
-			self.ShowDescription( )
 			self.DisableControl( self.mStepNum )
 			return
 
@@ -331,7 +312,6 @@ class FirstInstallation( SettingWindow ) :
 			
 			self.InitControl( )
 			self.SetFocusControl( E_Input01 )
-			self.ShowDescription( )
 			return
 
 	def SetPrevNextButtonLabel( self ) :
@@ -340,7 +320,7 @@ class FirstInstallation( SettingWindow ) :
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( 'Next' )
 
 		elif self.mStepNum == E_STEP_RESULT :
-			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( 'Exit' )
+			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( 'Finish' )
 
 		else :
 			self.SetVisibleControl( E_FIRST_TIME_INSTALLATION_PREV, True )

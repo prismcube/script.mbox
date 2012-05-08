@@ -1,10 +1,5 @@
-import xbmc
-import xbmcgui
-import sys
+from pvr.gui.WindowImport import *
 
-import pvr.gui.WindowMgr as WinMgr
-from pvr.gui.BaseWindow import BaseWindow, Action
-from pvr.gui.GuiConfig import *
 
 MENU_ID_WEATHER					= 0
 MENU_ID_PICTURE					= 1
@@ -28,16 +23,6 @@ class MediaCenter( BaseWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Media Center' )
-
-		self.mCtrlImgVideoPos = self.getControl( 8898 )
-
-		h = self.mCtrlImgVideoPos.getHeight( )
-		w = self.mCtrlImgVideoPos.getWidth( )
-		pos=list(self.mCtrlImgVideoPos.getPosition( ) )
-		x = pos[0]
-		y = pos[1]
-
-		ret = self.mCommander.Player_SetVIdeoSize( x, y, w, h ) 
 
 		
 	def onAction( self, aAction ) :

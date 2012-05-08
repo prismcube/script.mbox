@@ -1,14 +1,4 @@
-import xbmc
-import xbmcgui
-import sys
-
-import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.GuiConfig import *
-from pvr.gui.BaseWindow import SettingWindow, Action
-from ElisProperty import ElisPropertyEnum
-from ElisEnum import ElisEnum
-from ElisEventClass import *
-from pvr.Util import LOG_WARN, LOG_TRACE, LOG_ERR, GuiLock
+from pvr.gui.WindowImport import *
 
 
 class SatelliteConfigMotorizedUsals2( SettingWindow ) :
@@ -100,7 +90,9 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 
 				self.mTransponderList = self.mDataCache.Satellite_GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )				
 				self.mSelectedTransponderIndex = 0
-				self.InitConfig()
+				self.InitConfig( )
+			else :
+				return
 
 		# LNB Setting
 		elif groupId == E_SpinEx01 :
@@ -136,6 +128,8 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 				self.mCurrentSatellite.mLNBThreshold = int ( threshFreq )
 
 				self.InitConfig( )
+			else :
+				return
 
 		# 22Khz
  		elif groupId == E_SpinEx03 :
@@ -149,6 +143,8 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 	 			if tempIndex != -1 :
 	 				self.mSelectedTransponderIndex = tempIndex
 	 				self.InitConfig( )
+	 			else :
+	 				return
 
 		# Go to the Position
 		elif groupId == E_Input04 :

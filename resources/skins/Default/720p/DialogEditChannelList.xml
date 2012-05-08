@@ -1,4 +1,4 @@
-<window id="3308">
+<window>
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>no</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>

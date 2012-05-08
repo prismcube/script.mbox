@@ -1,18 +1,9 @@
-import xbmc
-import xbmcgui
-import time
-import sys
-
-from pvr.gui.BaseDialog import BaseDialog
-from pvr.gui.BaseWindow import Action
-from pvr.gui.GuiConfig import *
-from pvr.Util import RunThread, GetImageByEPGComponent, GuiLock, GuiLock2, LOG_TRACE, LOG_WARN, LOG_ERR, GetSetting, SetSetting, TimeToString, TimeFormatEnum
-from ElisEnum import ElisEnum
+from pvr.gui.WindowImport import *
 
 
 TEXTBOX_ID_TITLE					= 100
 TEXTBOX_ID_DESCRIPTION				= 101
-LABEL_ID_DATE						= 300
+LABEL_ID_DATE						= 102
 
 
 class DialogExtendEPG( BaseDialog ) :
@@ -48,7 +39,11 @@ class DialogExtendEPG( BaseDialog ) :
 		
 		self.mCtrlTitle = self.getControl( TEXTBOX_ID_TITLE )
 		self.mCtrlDescription = self.getControl( TEXTBOX_ID_DESCRIPTION )
-		self.mCtrlDate = self.getControl( TEXTBOX_ID_DESCRIPTION )		
+		self.mCtrlDate = self.getControl( LABEL_ID_DATE )
+
+		sTime = TimeToString( self.mEPG.mStartTime, TimeFormatEnum.E_HH_MM )
+		eTime = TimeToString( self.mEPG.mStartTime + self.mEPG.mDuration, TimeFormatEnum.E_HH_MM )
+		self.mWin.setProperty( 'EPGTime', '%s - %s'% (sTime, eTime) )
 	
 
 	def onAction( self, aAction ) :
@@ -64,6 +59,8 @@ class DialogExtendEPG( BaseDialog ) :
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.CloseDialog( )
 			
+		elif actionId == Action.ACTION_CONTEXT_MENU :
+			self.CloseDialog( )
 
 	def onClick( self, aControlId ) :
 		LOG_TRACE('')	

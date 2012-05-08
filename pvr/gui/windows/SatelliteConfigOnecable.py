@@ -1,11 +1,5 @@
-import xbmc
-import xbmcgui
-import sys
+from pvr.gui.WindowImport import *
 
-import pvr.gui.WindowMgr as WinMgr
-import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.GuiConfig import *
-from pvr.gui.BaseWindow import SettingWindow, Action
 
 MAX_SATELLITE_CNT = 4
 
@@ -87,8 +81,8 @@ class SatelliteConfigOnecable( SettingWindow ) :
 		groupId = self.GetGroupId( aControlId )
 
 		if groupId == E_Input01 :
-			position = self.GetControlIdToListIndex( groupId ) - 2
-			self.mTunerMgr.SetOnecableSatelliteCount( position + 1 )
+			position = self.GetSelectedIndex( E_SpinEx01 ) + 1
+			self.mTunerMgr.SetOnecableSatelliteCount( position )
 			self.ResetAllControl( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_ONECABLE_2 )
 		

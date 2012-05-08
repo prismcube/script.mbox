@@ -1,26 +1,22 @@
-
-import datetime
-import time
-from pvr.Util import RunThread, LOG_WARN, LOG_TRACE, LOG_ERR
-from ElisCommander import ElisCommander
-from ElisEventClass import *
-from ElisEventBus import ElisEventBus
-from ElisAction import ElisAction
-from ElisEnum import ElisEnum
-import pvr.ElisMgr
 import thread
-import select
+
+import pvr.ElisMgr
 from decorator import decorator
-from ElisClass import *
 from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 from pvr.gui.GuiConfig import *
 
+import sys
+if sys.platform == 'win32' :
+	gFlagUseDB = False
+else :
+	gFlagUseDB = True
+print 'mBox----------------use db[%s]'% gFlagUseDB
 
-SUPPORT_EPG_DATABASE = True
-SUPPORT_CHANNEL_DATABASE = True
-SUPPORT_TIMER_DATABASE = False
-SUPPORT_RECORD_DATABASE = True
+SUPPORT_EPG_DATABASE = gFlagUseDB
+SUPPORT_CHANNEL_DATABASE = gFlagUseDB
+SUPPORT_TIMER_DATABASE = gFlagUseDB
+SUPPORT_RECORD_DATABASE = gFlagUseDB
 
 
 if SUPPORT_EPG_DATABASE == True :
@@ -96,6 +92,7 @@ class DataCacheMgr( object ):
 		self.mPropertyAge						= 0
 		self.mPropertyPincode					= -1
 		self.mCacheReload						= False
+		self.mIsEmptySatelliteInfo				= False
 
 		self.mChannelListHash					= {}
 		self.mAllSatelliteListHash				= {}
@@ -146,6 +143,7 @@ class DataCacheMgr( object ):
 			"""
 
 		LOG_TRACE('')
+		self.mPropertyPincode = ElisPropertyEnum( 'PinCode', self.mCommander ).GetProp( )
 		self.Load( )
 		LOG_TRACE('')
 		#self.mEventBus.Register( self )
@@ -238,18 +236,30 @@ class DataCacheMgr( object ):
 			self.mAllSatelliteList = self.mCommander.Satellite_GetList( ElisEnum.E_SORTING_FAVORITE )
 
 		if self.mAllSatelliteList and self.mAllSatelliteList[0].mError == 0 :
-		
 			count =  len( self.mAllSatelliteList )
 			LOG_TRACE( 'satellite count = %d' % count )
-			from pvr.PublicReference import ClassToList
+			from pvr.GuiHelper import ClassToList
 			LOG_TRACE( 'satellite[%s]' % ClassToList( 'convert', self.mAllSatelliteList ) )
+			if count == 0 :
+				self.SetEmptySatelliteInfo( True )
+			else :
+				self.SetEmptySatelliteInfo( False )
 
 			for i in range( count ):
 				satellite = self.mAllSatelliteList[i]
 				hashKey = '%d:%d' % ( satellite.mLongitude, satellite.mBand )
 				self.mAllSatelliteListHash[hashKey] = satellite
 		else :
+			self.SetEmptySatelliteInfo( True )
 			LOG_ERR('Has no Satellite')
+
+
+	def SetEmptySatelliteInfo( self, aFlag ) :
+		self.mIsEmptySatelliteInfo = aFlag
+
+
+	def GetEmptySatelliteInfo( self ) :
+		return self.mIsEmptySatelliteInfo
 
 
 	def LoadConfiguredSatellite( self ) :
@@ -612,10 +622,12 @@ class DataCacheMgr( object ):
 		self.mCurrentEvent = None
 		if self.mCommander.Channel_SetCurrent( aChannelNumber, aServiceType ) == True :
 			cacheChannel = self.mChannelListHash.get( aChannelNumber, None )
-			if cacheChannel :
+			if cacheChannel :		
 				self.mCurrentChannel = cacheChannel.mChannel
 				ret = True
 
+		channel = self.Channel_GetCurrent( )
+		self.mCommander.Frontdisplay_SetMessage( channel.mName )
 		return ret
 
 
@@ -660,6 +672,16 @@ class DataCacheMgr( object ):
 		channel =  cacheChannel
 		#LOG_TRACE('------------ Current Channel-------------------')
 		#channel.printdebug()
+		return channel
+
+	@DataLock
+	def Channel_GetByNumber( self, aNumber ) :
+
+		cacheChannel = self.mChannelListHash.get(aNumber, None).mChannel
+		if cacheChannel == None :
+			return None
+
+		channel =  cacheChannel
 		return channel
 
 
@@ -1024,6 +1046,7 @@ class DataCacheMgr( object ):
 
 	def Timer_GetTimerList( self ) :
 		if SUPPORT_TIMER_DATABASE == True :
+			self.mTimerDB = ElisTimerDB( )
 			return self.mTimerDB.Timer_GetTimerList()
 		else :
 			timerList = []

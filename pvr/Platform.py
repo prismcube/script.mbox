@@ -76,7 +76,8 @@ class Platform(object):
             'zope.interface',
             'mockito',
             'unittest2',
-            'unittest']
+            'unittest',
+            'beautifulsoup']
         
         for lib in libs:
             sys.path.append(os.path.join(self.GetScriptDir(), 'libs', lib))

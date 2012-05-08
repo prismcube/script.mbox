@@ -1,14 +1,4 @@
-import xbmc
-import xbmcgui
-import sys
-
-import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.GuiConfig import *
-from pvr.gui.BaseWindow import SettingWindow, Action
-from ElisProperty import ElisPropertyEnum
-from ElisEnum import ElisEnum
-from ElisEventClass import *
-from pvr.Util import LOG_WARN, LOG_TRACE, LOG_ERR, GuiLock
+from pvr.gui.WindowImport import *
 
 
 class SatelliteConfigSimple( SettingWindow ) :
@@ -93,7 +83,9 @@ class SatelliteConfigSimple( SettingWindow ) :
 
 				self.mTransponderList = self.mDataCache.Satellite_GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )				
 				self.mSelectedTransponderIndex = 0
-				self.InitConfig()
+				self.InitConfig( )
+			else :
+				return
 
 		# LNB Setting
 		elif groupId == E_SpinEx01 :
@@ -130,6 +122,8 @@ class SatelliteConfigSimple( SettingWindow ) :
 				self.mCurrentSatellite.mLNBThreshold = int ( threshFreq )
 
 				self.InitConfig( )
+			else :
+				return
 
 		# 22Khz
  		elif groupId == E_SpinEx03 :
@@ -143,6 +137,8 @@ class SatelliteConfigSimple( SettingWindow ) :
 	 			if tempIndex != -1 :
 	 				self.mSelectedTransponderIndex = tempIndex
 	 				self.InitConfig( )
+	 			else :
+	 				return
 
 	 	self.ScanHelper_ChangeContext( self.mCurrentSatellite, self.mDataCache.Satellite_GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
 
@@ -165,6 +161,8 @@ class SatelliteConfigSimple( SettingWindow ) :
 
 
 	def InitConfig( self ) :
+		if self.mTunerMgr.GetCurrentTunerType( ) == E_ONE_CABLE :
+			self.mCurrentSatellite.mMotorizedType = 1
 		self.ResetAllControl( )
 
 		self.AddInputControl( E_Input01, 'Satellite' , self.mDataCache.Satellite_GetFormattedName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ) )
@@ -203,7 +201,7 @@ class SatelliteConfigSimple( SettingWindow ) :
 
 	def DisableControl( self ) :
 		enableControlIds = [ E_Input02, E_SpinEx02, E_SpinEx03 ]
-		if ( self.mSelectedIndexLnbType == ElisEnum.E_LNB_UNIVERSAL ) :
+		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_UNIVERSAL :
 			self.SetEnableControls( enableControlIds, False )
 		else :
 			self.SetEnableControls( enableControlIds, True )

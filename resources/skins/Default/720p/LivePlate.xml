@@ -37,14 +37,14 @@
 						<posy>7</posy>
 						<width>60</width>
 						<height>25</height>
-						<texture>i_record.png</texture>
+						<texture>$INFO[Control.GetLabel]</texture>
 					</control>
 					<control type="label" id="11">
 						<posx>121</posx>
 						<posy>7</posy>
 						<font>font12caps</font>
 						<textcolor>white</textcolor>
-						<texture>$INFO[Control.GetLabel]</texture>
+						<label>$INFO[Control.GetLabel]</label>
 					</control>
 				</control>
 				<control type="group">
@@ -64,17 +64,18 @@
 						<posy>7</posy>
 						<width>60</width>
 						<height>25</height>
-						<texture>i_record.png</texture>
+						<texture>$INFO[Control.GetLabel]</texture>
 					</control>
 					<control type="label" id="16">
 						<posx>100</posx>
 						<posy>7</posy>
 						<font>font12caps</font>
 						<textcolor>white</textcolor>
-						<texture>$INFO[Control.GetLabel]</texture>
+						<label>$INFO[Control.GetLabel]</label>
 					</control>
 				</control>
 			</control>
+
 <!-- info section -->			
 			<control type="group" id="600">
 				<posx>50</posx>
@@ -442,14 +443,14 @@
 					<posy>-35</posy>
 					<control type="image" id="651">
 						<posx>0</posx>
-						<posy>0</posy>
-						<width>30</width>
-						<height>30</height>
+						<posy>-5</posy>
+						<width>50</width>
+						<height>40</height>
 						<texture>$INFO[Control.GetLabel]</texture>
 						<description>lock</description>
 					</control>
 					<control type="image" id="652">
-						<posx>30</posx>
+						<posx>35</posx>
 						<posy>1</posy>
 						<width>30</width>
 						<height>30</height>
@@ -610,93 +611,6 @@
 					<onup>SetFocus(621)</onup>
 					<ondown></ondown>
 				</control>
-			</control>
-		</control>
-
-<!-- epg Description -->	
-		<control type="group" id="800">
-			<!--<include>CommonSettingsBackground</include>-->
-			<!--<include>CommonMediaPlayingBackground</include>-->
-			<control type="group">
-				<posx>90</posx>
-				<posy>50</posy>
-				<animation type="WindowOpen" reversible="false">
-					<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
-					<effect type="fade" start="0" end="100" time="300" />
-				</animation>
-				<animation type="WindowClose" reversible="false">
-					<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
-					<effect type="fade" start="100" end="0" time="300" />
-				</animation>			
-				<control type="image">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>1100</width>
-					<height>500</height>
-					<texture border="20">confluence/DialogBack.png</texture>
-				</control>
-				<control type="textbox" id="801">
-					  <description>EPG Description</description>
-					  <posx>100</posx>
-					  <posy>30</posy>
-					  <width>950</width>
-					  <height>100</height>
-					  <visible>true</visible>
-					  <colordiffuse>FFFFFFFF</colordiffuse>
-					  <font>font35_title</font>
-					  <textcolor>FFFFFFFF</textcolor>
-					  <wrapmultiline>true</wrapmultiline>
-					  <label>$INFO[Control.GetLabel]</label>
-				</control>
-				<control type="textbox" id="802">
-					  <description>EPG Description</description>
-					  <posx>100</posx>
-					  <posy>120</posy>
-					  <width>950</width>
-					  <height>600</height>
-					  <visible>true</visible>
-					  <colordiffuse>FFFFFFFF</colordiffuse>
-					  <font>font13</font>
-					  <textcolor>FFFFFFFF</textcolor>
-					  <wrapmultiline>true</wrapmultiline>
-					  <label>$INFO[Control.GetLabel]</label>
-				</control>
-
-				<control type="image">
-					<posx>520</posx>
-					<posy>100</posy>
-					<width>60</width>
-					<height>40</height>
-					<texture>$INFO[Control.GetLabel(604)]</texture>
-					<description>data</description>
-				</control>
-
-				<control type="image">
-					<posx>575</posx>
-					<posy>100</posy>
-					<width>90</width>
-					<height>40</height>
-					<texture>$INFO[Control.GetLabel(605)]</texture>
-					<description>audio dolby</description>
-				</control>
-
-				<control type="image">
-					<posx>655</posx>
-					<posy>100</posy>
-					<width>90</width>
-					<height>40</height>
-					<texture>$INFO[Control.GetLabel(606)]</texture>
-					<description>video HD</description>
-				</control>
-
-				<control type="label" id="704">
-					<posx>900</posx>
-					<posy>102</posy>
-					<description>start time</description>
-					<font>font13</font>
-					<label>$INFO[Control.GetLabel(704)] - $INFO[Control.GetLabel(705)]</label>
-				</control>
-
 			</control>
 		</control>
 

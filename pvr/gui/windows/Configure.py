@@ -1,19 +1,6 @@
-import xbmc
-import xbmcgui
-import sys
-import time
-
-import pvr.gui.WindowMgr as WinMgr
-import pvr.gui.DialogMgr as DiaMgr
-import pvr.DataCacheMgr as CacheMgr
-from pvr.gui.BaseWindow import SettingWindow, Action
-import pvr.ElisMgr
-from ElisProperty import *
-from pvr.gui.GuiConfig import *
-from pvr.Util import RunThread, GuiLock, GuiLock2, MLOG, LOG_WARN, LOG_TRACE, LOG_ERR, TimeToString, TimeFormatEnum
-from ElisEventClass import *
-from pvr.IpParser import *
-from ElisProperty import ElisPropertyEnum
+from pvr.gui.WindowImport import *
+if sys.platform != 'win32' :
+	from pvr.IpParser import *
 
 
 E_LANGUAGE				= 0
@@ -103,11 +90,12 @@ class Configure( SettingWindow ) :
 
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
-		self.mIpParser = IpParser( )
-		self.mWireless = WirelessParser( )
-		self.LoadIp( )
-		self.LoadWifi( )
-		SetCurrentNetworkType( self.mUseNetworkType )
+		if sys.platform != 'win32' :
+			self.mIpParser = IpParser( )
+			self.mWireless = WirelessParser( )
+			self.LoadIp( )
+			self.LoadWifi( )
+			SetCurrentNetworkType( self.mUseNetworkType )
 		self.SetListControl( )
 		self.mInitialized = True
 		self.mVisibleParental = False
@@ -178,19 +166,27 @@ class Configure( SettingWindow ) :
 			return
 
 		elif selectedId == E_NETWORK_SETTING :
+			if sys.platform == 'win32' :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'Error', 'Not support win32')
+	 			dialog.doModal( )
+	 			return
 			if groupId == E_SpinEx05 :
 				self.mUseNetworkType = self.GetSelectedIndex( E_SpinEx05 )
 				self.SetListControl( )
 			elif groupId == E_Input06 :
 				context = []
 				context.append( ContextItem( 'Internal Test', PING_TEST_INTERNAL ) )
-				context.append( ContextItem( 'External Test', PING_TEST_EXTERNAL ) )
+				context.append( ContextItem( 'External Test', PING_TEST_EXTERNAL ) )				
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 				dialog.SetProperty( context )
 				dialog.doModal( )
 				contextAction = dialog.GetSelectedAction( )
+				if contextAction < 0 :
+					return
 				if contextAction == PING_TEST_INTERNAL :
 					self.ShowProgress( 'Now Test...', 10 )
+					time.sleep( 1 )
 					if PingTestInternal( ) == True :
 						state = 'Connected Default Rauter'
 					else :
@@ -198,11 +194,15 @@ class Configure( SettingWindow ) :
 				else :
 					addr = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, 'Address', '', 30 )
 					self.ShowProgress( 'Now Test...', 10 )
+					time.sleep( 1 )
 					if PingTestExternal( addr ) == True :
 						state = 'External ping test success'
 					else :
 						state = 'External ping test failed'
-				self.mProgress.SetResult( True )
+				try :		
+					self.mProgress.SetResult( True )
+				except Exception, e :
+					LOG_ERR( 'Error exception[%s]' % e )
 				time.sleep( 1.5 )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'Complete', 'Network State : %s' % state )
@@ -305,7 +305,7 @@ class Configure( SettingWindow ) :
 			 		try :
 			 			if ret1 == True and ret2 == True and ret3 == True :
 							self.mProgress.SetResult( True )
-							time.sleep( 1.5 )
+							time.sleep( 1 )
 							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 							dialog.SetDialogProperty( 'Confirm', 'Reset system Success' )
 				 			dialog.doModal( )
@@ -854,17 +854,25 @@ class Configure( SettingWindow ) :
 			self.mPasswordType	= self.GetSelectedIndex( E_SpinEx04 )
 
 		elif aControlId == E_Input01 :
-			self.ShowProgress( 'Scan Ap...', 20 )
+			self.ShowProgress( 'Scan Ap...', 30 )
+			time.sleep( 1 )
 			dev = self.mWireless.getWlandevice( )
 			if dev == None :
+				try :
+					self.mProgress.SetResult( True )
+				except Exception, e :
+					LOG_ERR( 'Error exception[%s]' % e )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'Error', 'Can not found device' )
 	 			dialog.doModal( )
 	 			return
 
 			self.apList = self.mWireless.ScanAp( dev )
-			self.mProgress.SetResult( True )
-			time.sleep( 1.5 )
+			try :
+				self.mProgress.SetResult( True )
+			except Exception, e :
+				LOG_ERR( 'Error exception[%s]' % e )
+			time.sleep( 1 )
 			dialog = xbmcgui.Dialog( )
 			if self.apList == None :
 				ret = dialog.select( 'Select Ap', [ 'No Ap list' ] )
@@ -896,6 +904,7 @@ class Configure( SettingWindow ) :
 	 			return
 
 	 		self.ShowProgress( 'Setting Wifi...', 20 )
+	 		time.sleep( 1 )
 	 		ret1 = self.mWireless.WriteWpaSupplicant( self.mUseHiddenId, self.mHiddenSsid, self.mCurrentSsid, self.mUseEncrypt, self.mEncriptType, self.mPasswordType, self.mPassWord )
 			ret2 = self.mWireless.ConnectWifi( dev )
 			try :

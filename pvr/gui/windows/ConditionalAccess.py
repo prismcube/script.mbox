@@ -1,11 +1,5 @@
-import xbmc
-import xbmcgui
-import sys
+from pvr.gui.WindowImport import *
 
-import pvr.gui.WindowMgr as WinMgr
-import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.GuiConfig import *
-from pvr.gui.BaseWindow import SettingWindow, Action
 
 CAS_SLOT_NUM_1					= 0
 CAS_SLOT_NUM_2					= 1
@@ -43,8 +37,8 @@ class ConditionalAccess( SettingWindow ) :
 		self.AddInputControl( E_Input07, 'Operator Message', '', 'View operator message' )
 		
 		self.InitControl( )
-		self.ShowDescription( )
 		self.mInitialized = True
+		self.SetFocusControl( E_Input01 )
 
 		
 	def onAction( self, aAction ) :
@@ -69,11 +63,9 @@ class ConditionalAccess( SettingWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			self.ShowDescription( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
-			self.ShowDescription( )
 			
 
 	def onClick( self, aControlId ) :
@@ -105,5 +97,5 @@ class ConditionalAccess( SettingWindow ) :
 			return
 
 		if self.mLastFocused != aControlId :
-			self.ShowDescription( )
+			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId

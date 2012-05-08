@@ -1,20 +1,4 @@
-
-import xbmc
-import xbmcgui
-import time
-import sys
-
-
-from pvr.gui.BaseDialog import BaseDialog
-from pvr.gui.BaseWindow import Action
-from  pvr.TunerConfigMgr import *
-from ElisEnum import ElisEnum
-import pvr.gui.DialogMgr as DiaMgr
-
-import pvr.ElisMgr
-
-from pvr.Util import RunThread, GuiLock, LOG_TRACE, LOG_WARN, LOG_ERR, TimeToString, TimeFormatEnum
-from pvr.gui.GuiConfig import *
+from pvr.gui.WindowImport import *
 
 
 # Control IDs

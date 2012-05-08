@@ -1,27 +1,6 @@
-import xbmc
-import xbmcgui
-import sys
+from pvr.gui.WindowImport import *
+from pvr.GuiHelper import GetImageByEPGComponent, GetSelectedLongitudeString, ClassToList
 
-import pvr.gui.WindowMgr as WinMgr
-import pvr.gui.DialogMgr as DiaMgr
-import pvr.DataCacheMgr as CacheMgr
-from pvr.gui.BaseWindow import BaseWindow, Action
-from pvr.gui.GuiConfig import *
-
-import pvr.ElisMgr
-from ElisAction import ElisAction
-from ElisEnum import ElisEnum
-from ElisEventBus import ElisEventBus
-from ElisEventClass import *
-from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-
-from pvr.Util import RunThread, GuiLock, GuiLock2, LOG_TRACE, LOG_WARN, LOG_ERR, TimeToString, TimeFormatEnum
-from pvr.PublicReference import EpgInfoComponentImage, GetSelectedLongitudeString, ClassToList, EnumToString
-
-import pvr.Msg as Msg
-import pvr.gui.windows.Define_string as MsgId
-
-import thread, threading, time, os
 
 FLAG_CLOCKMODE_ADMYHM  = 1
 FLAG_CLOCKMODE_AHM     = 2
@@ -437,6 +416,13 @@ class TimeShiftInfoPlate(BaseWindow):
 			elif aEvent.getName() == ElisEventCurrentEITReceived.getName() :
 				if self.mFlag_OnEventEPGReceive :
 					self.UpdateEPGList( aEvent )
+
+			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
+				 aEvent.getName() == ElisEventRecordingStopped.getName() :
+				time.sleep(1.5)
+				self.ShowRecording()
+				self.mDataCache.mCacheReload = True
+				LOG_TRACE('Receive Event[%s]'% aEvent.getName() )
 
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
@@ -1315,7 +1301,17 @@ class TimeShiftInfoPlate(BaseWindow):
 
 
 				#component
-				imglist = EpgInfoComponentImage( aEvent )
+				imglist = []
+				img = GetImageByEPGComponent( aEvent, ElisEnum.E_HasSubtitles )
+				if img:
+					imglist.append(img)
+				img = GetImageByEPGComponent( aEvent, ElisEnum.E_HasDolbyDigital )
+				if img:
+					imglist.append(img)
+				img = GetImageByEPGComponent( aEvent, ElisEnum.E_HasHDVideo )
+				if img:
+					imglist.append(img)
+
 				if len(imglist) == 1:
 					self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg1.getId(), imglist[0] )
 				elif len(imglist) == 2:

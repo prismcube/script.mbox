@@ -1,4 +1,4 @@
-<window id="3021">
+<window id="3025">
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>no</allowoverlay>
 	<controls>
@@ -140,10 +140,10 @@
 				<shadowcolor>black</shadowcolor>
 			</control>
 		</control>
-		<control type="image" id="8899">
+		<control type="image" id="1004">
 			<posx>362</posx>
 			<posy>112</posy>
-			<width>796</width>
+			<width>799</width>
 			<height>446</height>
 			<texture></texture>
 		</control>

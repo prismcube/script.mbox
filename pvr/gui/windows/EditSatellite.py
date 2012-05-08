@@ -1,10 +1,7 @@
-import xbmc
-import xbmcgui
-import sys
+from pvr.gui.WindowImport import *
 
-import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.GuiConfig import *
-from pvr.gui.BaseWindow import SettingWindow, Action
+
+E_DEFAULT_GOURP_ID		= 9000
 
 
 class EditSatellite( SettingWindow ) :
@@ -16,6 +13,14 @@ class EditSatellite( SettingWindow ) :
 		self.mName				= 'Unkown'
 			
 	def onInit( self ) :
+		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( False )	
+		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( 'Error', 'Satellite Infomation is empty. Please Reset STB' )
+			dialog.doModal( )
+			self.close( )
+			return
+
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		
@@ -23,6 +28,8 @@ class EditSatellite( SettingWindow ) :
 		self.InitConfig( )
 		self.SetSettingWindowLabel( 'Edit Satellite' )
 		self.mInitialized = True
+		self.SetFocusControl( E_Input01 )
+		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True )
 		
 		
 	def onAction( self, aAction ) :
@@ -51,11 +58,9 @@ class EditSatellite( SettingWindow ) :
 			
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			self.ShowDescription( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
-			self.ShowDescription( )
 
 
 	def onClick( self, aControlId ) :
@@ -127,7 +132,7 @@ class EditSatellite( SettingWindow ) :
 		if self.mInitialized == False :
 			return
 		if self.mLastFocused != aControlId :
-			self.ShowDescription( )
+			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId
 
 
@@ -143,7 +148,6 @@ class EditSatellite( SettingWindow ) :
 		self.AddInputControl( E_Input05, 'Delete Satellite', '', 'Delete satellite.' )
 		
 		self.InitControl( )
-		self.ShowDescription( )
 		self.SetEnableControl( E_Input02, False )
 		self.DisableControl( )
 

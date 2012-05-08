@@ -1,16 +1,4 @@
-import xbmc
-import xbmcgui
-import sys
-from copy import deepcopy
-
-import pvr.gui.DialogMgr as DiaMgr
-from pvr.gui.BaseWindow import SettingWindow, Action
-from pvr.gui.GuiConfig import *
-from ElisProperty import ElisPropertyEnum
-from ElisEnum import ElisEnum
-from ElisClass import *
-from ElisEventClass import *
-from pvr.Util import LOG_WARN, LOG_TRACE, LOG_ERR, GuiLock
+from pvr.gui.WindowImport import *
 
 
 E_DEFAULT_GOURP_ID		= 9000
@@ -26,12 +14,11 @@ class ManualScan( SettingWindow ) :
 		self.mFormattedList	= []
 		self.mIsManualSetup				= 0
 		self.mConfigTransponder			= None
-		self.mCtrlMainGroup				= None
 		self.mHasTansponder				= False
 
 
 	def onInit( self ) :
-		self.mCtrlMainGroup = self.getControl( E_DEFAULT_GOURP_ID )
+		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( False )
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
@@ -51,13 +38,10 @@ class ManualScan( SettingWindow ) :
 			self.LoadTransponderList( )
 			self.SetConfigTransponder( )
 
-			self.mCtrlMainGroup.setVisible( False )
 			self.InitConfig( )
-			self.mCtrlMainGroup.setVisible( True )
-			
-			self.ShowDescription( )
-			self.mInitialized = True
 
+			self.mInitialized = True
+			self.SetFocusControl( E_Input01 )
 			self.ScanHelper_ChangeContext( self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
 
 		else :
@@ -69,7 +53,7 @@ class ManualScan( SettingWindow ) :
  			dialog.doModal( )
  			self.close( )
 
-		self.mCtrlMainGroup = self.getControl( E_DEFAULT_GOURP_ID )
+		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True )
 
 		
 	def onAction( self, aAction ) :
@@ -98,11 +82,9 @@ class ManualScan( SettingWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			self.ShowDescription( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
-			self.ShowDescription( )
 			
 
 	def onClick( self, aControlId ) :
@@ -120,6 +102,8 @@ class ManualScan( SettingWindow ) :
 				self.LoadTransponderList( )
 				self.SetConfigTransponder( )
 				self.InitConfig( )
+			else :
+				return
 
 		# Transponder
 		elif groupId == E_Input02 :
@@ -134,6 +118,8 @@ class ManualScan( SettingWindow ) :
 					self.mTransponderIndex = select
 					self.SetConfigTransponder( )
 					self.InitConfig( )
+				else :
+					return
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -149,6 +135,8 @@ class ManualScan( SettingWindow ) :
 						self.mConfigTransponder.mFrequency = int( tempval )
 
 					self.SetControlLabel2String( E_Input02, '%d MHz' % self.mConfigTransponder.mFrequency )
+				else :
+					return
 
 		# Symbol Rate
 		elif groupId == E_Input03 :
@@ -165,9 +153,12 @@ class ManualScan( SettingWindow ) :
 					self.mConfigTransponder.mSymbolRate = int( tempval )
 
 				self.SetControlLabel2String( E_Input03, '%d KS/s' % self.mConfigTransponder.mSymbolRate )
+			else :
+				return
 
 		# Start Search
 		elif groupId == E_Input04 : #ToDO : Have to support manual input
+			self.ScanHelper_Stop( False )
 			transponderList = []
  			config = self.mConfiguredSatelliteList[ self.mSatelliteIndex ]
 
@@ -176,6 +167,7 @@ class ManualScan( SettingWindow ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 			dialog.SetTransponder( config.mSatelliteLongitude, config.mBandType, transponderList )
 			dialog.doModal( )
+			self.ScanHelper_Start( )
 
 		# Manual Setup
 		elif groupId == E_SpinEx01 :
@@ -214,7 +206,7 @@ class ManualScan( SettingWindow ) :
 			return
 
 		if self.mLastFocused != aControlId :
-			self.ShowDescription( )
+			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId
 
 
@@ -234,7 +226,7 @@ class ManualScan( SettingWindow ) :
 		self.ResetAllControl( )	
 
 		self.AddInputControl( E_Input01, 'Satellite', self.mFormattedList[ self.mSatelliteIndex ], 'Select satellite' )
-		self.AddUserEnumControl( E_SpinEx01, 'Custom Setup', USER_ENUM_LIST_ON_OFF, self.mIsManualSetup )
+		self.AddUserEnumControl( E_SpinEx01, 'Custom Setup', USER_ENUM_LIST_ON_OFF, self.mIsManualSetup, 'Control Custom Setup' )
 
 		if self.mIsManualSetup == 0 :
 			self.AddInputControl( E_Input02, ' - Select Transponder Frequency', '%d MHz' % self.mConfigTransponder.mFrequency, 'Select Transponder Frequency' )

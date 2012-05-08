@@ -1,19 +1,13 @@
-import xbmc
-import xbmcgui
-import sys
-import time
-from copy import deepcopy
-
-from ElisAction import ElisAction
 from ElisEnum import ElisEnum
 import pvr.DataCacheMgr
 import pvr.ElisMgr
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-from ElisClass import *
+from ElisClass import ElisISatelliteConfig
 from pvr.gui.GuiConfig import *
-from pvr.Util import LOG_WARN, LOG_TRACE, LOG_ERR
+
 
 gTunerConfigMgr = None
+
 
 def GetInstance( ) :
 	global gTunerConfigMgr
@@ -36,7 +30,7 @@ class TunerConfigMgr( object ) :
 		self.mCurrentTuner = 0
 		self.mCurrentConfigIndex = 0
 		self.mCurrentTunerType = 0
-		self.mNeedLoad = False
+		self.mNeedLoad = True
 
 		self.mOrgTuner2ConnectType = 0
 		self.mOrgTuner2Config = 0
@@ -68,7 +62,6 @@ class TunerConfigMgr( object ) :
 
 
 	def GetCurrentConfiguredSatellite( self ) :
-
 		if self.mCurrentTuner == E_TUNER_1 :	
 			return self.mConfiguredList1[ self.mCurrentConfigIndex ]
 			
@@ -261,12 +254,14 @@ class TunerConfigMgr( object ) :
 
 		ret1 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList1 )
 		ret2 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList2 )
+
 		"""
 		for satellite in self.mConfiguredList1 :
 			satellite.printdebug()
 		for satellite in self.mConfiguredList2 :
 			satellite.printdebug()
 		"""
+
 		if ret1 == True and ret2 == True :
 			return True
 		elif ret1 == False or ret2 == False :
@@ -286,8 +281,6 @@ class TunerConfigMgr( object ) :
 		else :	# If empty list to return, add one default satellite
 			self.mConfiguredList1 = []
 			config = self.GetDefaultConfig( )
-			config.mSatelliteLongitude = self.mAllSatelliteList[ 0 ].mLongitude
-			config.mBandType = self.mAllSatelliteList[ 0 ].mBand
 			self.mConfiguredList1.append( config )
 		
 		# Get Configured Satellite List Tuner 2
@@ -297,8 +290,6 @@ class TunerConfigMgr( object ) :
 		else :	# If empty list to return, add one default satellite
 			self.mConfiguredList2 = []
 			config = self.GetDefaultConfig( )
-			config.mSatelliteLongitude = self.mAllSatelliteList[ 0 ].mLongitude
-			config.mBandType = self.mAllSatelliteList[ 0 ].mBand
 			self.mConfiguredList2.append( config )
 
 

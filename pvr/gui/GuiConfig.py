@@ -1,9 +1,7 @@
-import xbmc
-import xbmcgui
-import sys
-import time
+import xbmc, xbmcgui, time, sys, threading, os, re, shutil, string
+from copy import deepcopy
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
-from pvr.Util import LOG_TRACE, LOG_ERR, LOG_WARN
 
 E_WINDOW_WIDTH		= 1280
 E_WINDOW_HEIGHT		= 720
@@ -135,8 +133,8 @@ NOT_USE_PASSWORD_ENCRYPT		= 0
 USE_PASSWORD_ENCRYPT			= 1
 
 # Wifi Use Hidden Ssid
-NOT_USE_HIDDEN_SSID		= 0
-USE_HIDDEN_SSID			= 1
+NOT_USE_HIDDEN_SSID				= 0
+USE_HIDDEN_SSID					= 1
 
 # Network Type
 NETWORK_ETHERNET				= 0
@@ -215,6 +213,7 @@ E_INPUT_MAX						= 9999
 E_DIALOG_STATE_YES		= 1
 E_DIALOG_STATE_NO		= 2
 E_DIALOG_STATE_CANCEL	= 3
+E_DIALOG_STATE_ERROR	= 4
 
 
 ############################ Global Function For GUI ############################
