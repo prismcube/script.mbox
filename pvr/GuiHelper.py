@@ -1,8 +1,6 @@
 import xbmcaddon
 from ElisEnum import ElisEnum
 from pvr.gui.GuiConfig import *
-import re
-import pvr.gui.WindowMgr as WinMgr
 
 gSettings = xbmcaddon.Addon(id="script.mbox")
 
@@ -154,6 +152,8 @@ def ClassToList( aMode, aClassList ) :
 
 
 def ParseLabelToCh( aMode, aLabel ) :
+	import re
+	import pvr.gui.WindowMgr as WinMgr
 	#aLabel = '[COLOR grey]1065 NGC2[/COLOR]'
 
 	parse2 = 0

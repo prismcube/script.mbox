@@ -1,5 +1,5 @@
 from pvr.gui.WindowImport import *
-from pvr.GuiHelper import GetSelectedLongitudeString, GetImageByEPGComponent, EnumToString, ClassToList, AgeLimit, ParseLabelToCh, MR_LANG
+from pvr.GuiHelper import GetSelectedLongitudeString, GetImageByEPGComponent, EnumToString, ClassToList, AgeLimit, MR_LANG
 
 
 FLAG_MASK_ADD    = 0x01
@@ -679,10 +679,6 @@ class ChannelListWindow( BaseWindow ) :
 				self.UpdateLabelGUI( self.mCtrlChannelName.getId( ), label )
 				LOG_TRACE( 'empty channel, iChannel[%s]'% self.mChannelList )
 				return 
-
-			#label = self.mCtrlListCHList.getSelectedItem( ).getLabel( )
-			#chNumber = ParseLabelToCh( self.mViewMode, label )
-			#LOG_TRACE( 'label[%s] ch[%d] mask[%s] type[%s]'% (label, chNumber, self.mPincodeEnter, self.mChannelListServiceType) )
 
 			idx = self.mCtrlListCHList.getSelectedPosition( )
 			iChannel = self.mChannelList[idx]
