@@ -66,7 +66,7 @@
 					<posy>100</posy>
 					<width>60</width>
 					<height>40</height>
-					<texture>confluence/OSDPlaylistNF.png</texture>
+					<texture>IconTeletext.png</texture>
 					<visible>substring(Window.Property(HasSubtitle),true)</visible>					
 					<description>Subtitle</description>
 				</control>
@@ -76,7 +76,7 @@
 					<posy>100</posy>
 					<width>90</width>
 					<height>40</height>
-					<texture>confluence/dolbydigital.png</texture>
+					<texture>dolbydigital.png</texture>
 					<visible>substring(Window.Property(HasDolby),true)</visible>					
 					<description>audio dolby</description>
 				</control>
@@ -86,7 +86,7 @@
 					<posy>100</posy>
 					<width>90</width>
 					<height>40</height>
-					<texture>confluence/OverlayHD.png</texture>
+					<texture>OverlayHD.png</texture>
 					<visible>substring(Window.Property(HasHD),true)</visible>					
 					<description>video HD</description>
 				</control>

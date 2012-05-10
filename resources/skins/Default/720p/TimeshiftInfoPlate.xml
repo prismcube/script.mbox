@@ -339,7 +339,7 @@
 					<align>left</align>
 					<width>70</width>
 					<height>30</height>
-					<texture>confluence/tv.png$INFO[Control.GetLabel]</texture>
+					<texture>tv.png$INFO[Control.GetLabel]</texture>
 					<description>service type</description>
 				</control>
 			</control>
@@ -381,7 +381,7 @@
 					<posy>45</posy>
 					<width>90</width>
 					<height>40</height>
-					<texture>confluence/dolbydigital.png$INFO[Control.GetLabel]</texture>
+					<texture>dolbydigital.png$INFO[Control.GetLabel]</texture>
 					<description>audio dolby</description>
 				</control>
 				<control type="image" id="606">

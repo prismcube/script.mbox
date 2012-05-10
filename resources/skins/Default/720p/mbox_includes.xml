@@ -4104,7 +4104,7 @@
 						<posy>5</posy>
 						<width>32</width>
 						<height>32</height>
-						<texture>confluence/OverlayWatched.png</texture>
+						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 				</itemlayout>
@@ -4219,7 +4219,7 @@
 						<posy>5</posy>
 						<width>32</width>
 						<height>32</height>
-						<texture>confluence/OverlayWatched.png</texture>
+						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 				</focusedlayout>
@@ -4350,7 +4350,7 @@
 						<posy>5</posy>
 						<width>32</width>
 						<height>32</height>
-						<texture>confluence/OverlayWatched.png</texture>
+						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 				</itemlayout>
@@ -4418,7 +4418,7 @@
 						<posy>5</posy>
 						<width>32</width>
 						<height>32</height>
-						<texture>confluence/OverlayWatched.png</texture>
+						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 				</focusedlayout>
@@ -4492,7 +4492,7 @@
 						<posy>45</posy>
 						<width>32</width>
 						<height>32</height>
-						<texture>confluence/OverlayWatched.png</texture>
+						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 				</itemlayout>
@@ -4541,7 +4541,7 @@
 						<posy>45</posy>
 						<width>32</width>
 						<height>32</height>
-						<texture>confluence/OverlayWatched.png</texture>
+						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 				</focusedlayout>
@@ -4668,7 +4668,7 @@
 						<posy>45</posy>
 						<width>32</width>
 						<height>32</height>
-						<texture>confluence/OverlayWatched.png</texture>
+						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 				</itemlayout>
@@ -4708,7 +4708,7 @@
 						<posy>45</posy>
 						<width>32</width>
 						<height>32</height>
-						<texture>confluence/OverlayWatched.png</texture>
+						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 				</focusedlayout>

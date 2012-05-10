@@ -720,8 +720,7 @@
 						<posy>75</posy>
 						<width>30</width>
 						<height>30</height>
-						<!--<texture>confluence/OverlayHD.png</texture>-->
-						<texture>confluence/OverlayLocked.png</texture>
+						<texture>OverlayLocked.png</texture>
 						<description>lock</description>
 					</control>
 					<control type="label">
@@ -748,7 +747,6 @@
 					<posy>100</posy>
 					<width>65</width>
 					<height>30</height>
-					<!--<texture>confluence/dolbydigital.png</texture>-->
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>audio dolby</description>
 				</control>
@@ -758,7 +756,6 @@
 					<posy>100</posy>
 					<width>65</width>
 					<height>30</height>
-					<!--<texture>confluence/OverlayHD.png</texture>-->
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>video HD</description>
 				</control>

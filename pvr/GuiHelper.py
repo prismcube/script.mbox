@@ -1,6 +1,8 @@
 import xbmcaddon
 from ElisEnum import ElisEnum
 from pvr.gui.GuiConfig import *
+import re
+import pvr.gui.WindowMgr as WinMgr
 
 gSettings = xbmcaddon.Addon(id="script.mbox")
 
@@ -17,7 +19,7 @@ def SetSetting( aID, aValue ) :
 
 def GetImageByEPGComponent( aEPG, aFlag ) :
 	if aFlag == ElisEnum.E_HasHDVideo and aEPG.mHasHDVideo :
-		return 'confluence/OverlayHD.png' #ToDO -> support multi skin
+		return 'OverlayHD.png' #ToDO -> support multi skin
 
 	elif aFlag == ElisEnum.E_Has16_9Video and aEPG.mHas16_9Video :
 		pass
@@ -29,10 +31,10 @@ def GetImageByEPGComponent( aEPG, aFlag ) :
 		pass
 
 	elif aFlag == ElisEnum.E_HasDolbyDigital and aEPG.mHasDolbyDigital :
-		return 'confluence/dolbydigital.png' #ToDO -> support multi skin
+		return 'dolbydigital.png' #ToDO -> support multi skin
 	
 	elif aFlag == ElisEnum.E_HasSubtitles and aEPG.mHasSubtitles :
-		return 'confluence/OSDPlaylistNF.png' #ToDO -> support multi skin
+		return 'IconTeletext.png' #ToDO -> support multi skin
 	
 	elif aFlag == ElisEnum.E_HasHardOfHearingAudio and aEPG.mHasHardOfHearingAudio:
 		pass
@@ -70,7 +72,6 @@ def GetSelectedLongitudeString(aLongitude, aName):
 
 
 def EnumToString(aType, aValue):
-	from ElisEnum import ElisEnum
 
 	ret = ''
 	if aType == 'type' :
@@ -153,8 +154,6 @@ def ClassToList( aMode, aClassList ) :
 
 
 def ParseLabelToCh( aMode, aLabel ) :
-	import re
-	import pvr.gui.WindowMgr as WinMgr
 	#aLabel = '[COLOR grey]1065 NGC2[/COLOR]'
 
 	parse2 = 0

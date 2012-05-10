@@ -43,7 +43,7 @@ CONTEXT_ACTION_AUDIO_SETTING = 2
 
 E_IMG_ICON_LOCK   = 'IconLockFocus.png'
 E_IMG_ICON_ICAS   = 'IconCas.png'
-E_IMG_ICON_TV     = 'confluence/tv.png'
+E_IMG_ICON_TV     = 'tv.png'
 E_IMG_ICON_RADIO  = 'icon_radio.png'
 E_IMG_ICON_PLAY   = 'confluence/OSDPlay.png'
 E_IMG_ICON_PAUSE  = 'confluence/OSDPause.png'

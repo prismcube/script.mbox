@@ -417,7 +417,7 @@
 						<posy>75</posy>
 						<width>30</width>
 						<height>30</height>
-						<texture>confluence/OverlayLocked.png</texture>
+						<texture>OverlayLocked.png</texture>
 						<description>lock</description>
 					</control>
 					<control type="label">

@@ -10,7 +10,6 @@ FLAG_CLOCKMODE_HMS     = 3
 FLAG_CLOCKMODE_HHMM    = 4
 FLAG_CLOCKMODE_INTTIME = 5
 
-E_IMG_SCREEN_HIDE = 'confluence/black-back.png'
 E_IMG_ICON_LOCK   = 'OverlayLocked.png'
 E_IMG_ICON_ICAS   = 'IconCas.png'
 E_IMG_ICON_TV     = 'tv.png'
