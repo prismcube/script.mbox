@@ -566,6 +566,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.ResetLabel( )
 				self.UpdateLabelInfo( )
 				self.mFlag_EditChanged = False
+				self.mMoveFlag = False
 
 				#slide close
 				GuiLock2( True )
@@ -2115,7 +2116,6 @@ class ChannelListWindow( BaseWindow ) :
 
 			#5. refresh section, label move
 			for i in range(loopS, loopE+1) :
-
 				number = self.mChannelList[i].mNumber
 				name = self.mChannelList[i].mName
 				icas = self.mChannelList[i].mIsCA
@@ -2136,6 +2136,7 @@ class ChannelListWindow( BaseWindow ) :
 				listItem.setProperty( 'mark', E_IMG_ICON_MARK )
 				xbmc.sleep( 50 )
 				GuiLock2( False )
+
 
 			#6. erase old mark
 			GuiLock2( True )
@@ -2298,9 +2299,10 @@ class ChannelListWindow( BaseWindow ) :
 				idx = int(self.mMarkList[0])
 				GuiLock2( True )
 				#xbmc.executebuiltin('xbmc.Container.SetViewMode(50)')
-				xbmc.executebuiltin('container.update')
+				xbmc.executebuiltin('xbmc.Container(50).Update')
 				xbmc.sleep( 50 )
 				self.mCtrlListCHList.selectItem(idx)
+				
 				self.setFocusId( self.mCtrlGropCHList.getId( ) )
 				GuiLock2( False )
 			return
@@ -2613,46 +2615,6 @@ class ChannelListWindow( BaseWindow ) :
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			LOG_TRACE('isRunRecCount[%s]'% isRunRec)
 
-			"""
-			recLabel1 = ''
-			recLabel2 = ''
-			recImg1   = False
-			recImg2   = False
-			btnEdit   = True
-			if isRunRec == 1 :
-				btnEdit = False
-				recImg1 = True
-				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
-				recLabel1 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
-
-			elif isRunRec == 2 :
-				btnEdit = False
-				recImg1 = True
-				recImg2 = True
-				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
-				recLabel1 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
-				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
-				recLabel2 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
-
-			if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
-				if isRunRec > 0 :
-					#use zapping table, in recording
-					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ZAPPING )
-					self.mDataCache.Channel_GetZappingList( )
-					self.mDataCache.LoadChannelList( )
-					LOG_TRACE ('Recording changed: cache re-load')
-				else :
-					#use all channel table, not recording
-					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
-
-
-			self.UpdateLabelGUI( self.mCtrlLblRec1.getId( ), recLabel1 )
-			self.UpdateLabelGUI( self.mCtrlImgRec1.getId( ), recImg1 )
-			self.UpdateLabelGUI( self.mCtrlLblRec2.getId( ), recLabel2 )
-			self.UpdateLabelGUI( self.mCtrlImgRec2.getId( ), recImg2 )
-			self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), btnEdit, 'enable' )
-			"""
-
 			self.mRecCount = isRunRec
 
 			if isRunRec == 1 :
@@ -2684,7 +2646,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mDataCache.LoadChannelList( )
 					LOG_TRACE ('Recording changed: cache re-load')
 				else :
-					self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), True )
+					self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), True, 'enable' )
 					#use all channel table, not recording
 					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
 
