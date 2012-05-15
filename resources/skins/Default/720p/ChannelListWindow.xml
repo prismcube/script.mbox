@@ -259,13 +259,13 @@
 		</control>
 
 		<control type="group" id="300">
-			<posx>853</posx>
+			<posx>835</posx>
 			<posy>142</posy>
 			<width>430</width>
 			<height>600</height>
 			<allowoverlay>yes</allowoverlay>
 			<control type="group">
-				<posx>-18</posx>
+				<posx>0</posx>
 				<posy>-20</posy>
 				<control type="image">
 					<posx>0</posx>

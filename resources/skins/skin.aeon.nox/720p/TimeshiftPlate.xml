@@ -4,8 +4,6 @@
 	<backgroundcolor>0x00ffffff</backgroundcolor>		
 	<controls>
 		<control type="group">
-			<!--animation effect="slide" start="0,570" end="0,0" time="300" delay="300" tween="quadratic" easing="out">WindowOpen</animation>
-			<animation effect="slide" start="0,0" end="0,570" time="300" delay="150" tween="quadratic" easing="out" >WindowClose</animation-->
 			<include>Window_OpenClose_Animation</include>
 			<control type="group">
 				<control type="image">
@@ -26,7 +24,6 @@
 				<control type="group">
 					<posx>0</posx>
 					<posy>-20</posy>
-					<!--animation effect="slide" start="400r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(10)">conditional</animation-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -53,7 +50,6 @@
 				<control type="group">
 					<posx>21</posx>
 					<posy>-51</posy>
-					<!--animation effect="slide" start="400r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(15)">conditional</animation-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -87,7 +83,6 @@
 					<posx>0</posx>
 					<posy>-28</posy>
 					<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(400).HasFocus | Control.HasFocus(202)">conditional</animation>
-					<!--animation effect="slide" start="0,0" end="-200,0" delay="0" time="300" condition="!ControlGroup(400).HasFocus | !Control.HasFocus(202)">conditional</animation-->
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -389,36 +384,6 @@
 							<visible>!Control.IsVisible(405)</visible>
 						</control>
 					</control>
-					<!--control type="button" id="405">
-						<posx>50</posx>
-						<posy>0</posy>
-						<width>85</width>
-						<height>75</height>
-						<label>31351</label>
-						<altlabel>208</altlabel>
-						<font>-</font>
-						<texturefocus>osd/buttons/OSDPlayFO.png</texturefocus>
-						<texturenofocus>osd/buttons/OSDPlayNF.png</texturenofocus>
-						<onleft>SetFocus(404)</onleft>
-						<onright>SetFocus(406)</onright>
-						<onup>SetFocus(402)</onup>
-						<ondown></ondown>
-					</control>
-					<control type="button" id="406">
-						<posx>100</posx>
-						<posy>0</posy>
-						<width>85</width>
-						<height>75</height>
-						<label>31351</label>
-						<altlabel>208</altlabel>
-						<font>-</font>
-						<texturefocus>osd/buttons/OSDPauseFO.png</texturefocus>
-						<texturenofocus>osd/buttons/OSDPauseNF.png</texturenofocus>
-						<onleft>SetFocus(404)</onleft>
-						<onright>SetFocus(407)</onright>
-						<onup>SetFocus(402)</onup>
-						<ondown></ondown>
-					</control-->
 					<control type="button" id="407">
 						<posx>100</posx>
 						<posy>0</posy>
@@ -491,8 +456,6 @@
 					</control>
 
 				</control>
-
-
 			</control>
 
 <!-- EPG section -->
@@ -589,9 +552,6 @@
 					</control>
 				</control>
 			</control>
-
-
-
 
 		</control>
 	</controls>

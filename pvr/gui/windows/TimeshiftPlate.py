@@ -129,6 +129,7 @@ class TimeShiftPlate(BaseWindow):
 
 		LOG_TRACE( 'Leave' )
 
+
 	def onAction(self, aAction):
 		id = aAction.getId()
 		self.GlobalAction( id )				
@@ -154,8 +155,6 @@ class TimeShiftPlate(BaseWindow):
 				self.mUserMoveTimeBack = self.mUserMoveTime
 				self.mUserMoveTime = -10
 				self.mFlagUserMove = True
-				#if self.mAutomaticHide :
-				#	self.mAutomaticHide = False
 				self.StopAutomaticHide()
 				self.RestartAsyncMove()
 
@@ -169,8 +168,6 @@ class TimeShiftPlate(BaseWindow):
 				self.mUserMoveTimeBack = self.mUserMoveTime
 				self.mUserMoveTime = 10
 				self.mFlagUserMove = True
-				#if self.mAutomaticHide :
-				#	self.mAutomaticHide = False
 				self.StopAutomaticHide()
 				self.RestartAsyncMove()
 
@@ -221,16 +218,15 @@ class TimeShiftPlate(BaseWindow):
 			#self.UpdateLabelGUI( self.mCtrlImgRec1.getId(), False )
 			pass
 
+
 	def onClick(self, aControlId):
 		LOG_TRACE( 'control %d' % aControlId )
 
 		if aControlId >= self.mCtrlBtnRewind.getId() and aControlId <= self.mCtrlBtnJumpFF.getId() :
 
 			if aControlId == self.mCtrlBtnPlay.getId() :
-				#self.mAutomaticHide = True
 				self.RestartAutomaticHide()
 			else :
-				#self.mAutomaticHide = False
 				self.StopAutomaticHide()
 
 
@@ -309,6 +305,7 @@ class TimeShiftPlate(BaseWindow):
 
 
 		LOG_TRACE( 'Leave' )
+
 
 	def ShowDialog( self, aFocusId ) :
 		LOG_TRACE( 'Enter' )
@@ -496,6 +493,7 @@ class TimeShiftPlate(BaseWindow):
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
 
+
 	@GuiLock
 	def UpdateLabelGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		LOG_TRACE( 'Enter' )
@@ -580,6 +578,7 @@ class TimeShiftPlate(BaseWindow):
 
 		LOG_TRACE( 'Leave' )
 
+
 	def InitTimeShift( self, loop = 0 ) :
 		LOG_TRACE('Enter')
 
@@ -607,7 +606,7 @@ class TimeShiftPlate(BaseWindow):
 			#self.UpdateLabelGUI( self.mCtrlLblTest.getId(), lblTest )
 
 
-			#progress info
+			#progress data
 			#self.mTimeshift_staTime = 0.0
 			#self.mTimeshift_curTime = 0.0
 			#self.mTimeshift_endTime = 0.0
@@ -643,6 +642,7 @@ class TimeShiftPlate(BaseWindow):
 
 
 		LOG_TRACE('Leave')
+
 
 	def GetNextSpeed(self, aFocusId):
 		LOG_TRACE('Enter')
@@ -746,6 +746,7 @@ class TimeShiftPlate(BaseWindow):
 		LOG_TRACE('Leave')
 		return ret
 
+
 	def GetModeValue( self ) :
 		LOG_TRACE('Enter')
 
@@ -770,6 +771,7 @@ class TimeShiftPlate(BaseWindow):
 
 		return labelMode
 
+
 	@RunThread
 	def CurrentTimeThread(self):
 		LOG_TRACE( 'begin_start thread' )
@@ -791,6 +793,7 @@ class TimeShiftPlate(BaseWindow):
 			
 
 		LOG_TRACE( 'leave_end thread' )
+
 
 	def UpdateLocalTime(self, loop = 0):
 		LOG_TRACE( 'Enter' )
@@ -826,13 +829,6 @@ class TimeShiftPlate(BaseWindow):
 
 		LOG_TRACE( 'leave' )
 
-
-
-	def updateServiceType(self, aTvType):
-		LOG_TRACE( 'serviceType[%s]' % aTvType )
-
-	def showEPGDescription(self, aFocusid, aEvent):
-		LOG_TRACE( '' )
 
 	def ShowRecording( self ) :
 		LOG_TRACE('Enter')
@@ -873,6 +869,7 @@ class TimeShiftPlate(BaseWindow):
 
 		LOG_TRACE('Leave')
 
+
 	def RecordingStopAll( self ) :
 		LOG_TRACE('Enter')
 
@@ -891,6 +888,7 @@ class TimeShiftPlate(BaseWindow):
 
 		LOG_TRACE('Leave')
 		
+
 	def Close( self ):
 		LOG_TRACE('Enter')
 
@@ -905,6 +903,7 @@ class TimeShiftPlate(BaseWindow):
 		self.close()
 		LOG_TRACE('Leave')
 
+
 	def SetAutomaticHide( self, aHide=True ) :
 		self.mAutomaticHide = aHide
 
@@ -918,6 +917,7 @@ class TimeShiftPlate(BaseWindow):
 			xbmc.executebuiltin('xbmc.Action(previousmenu)')
 			LOG_TRACE('HIDE : TimeShiftPlate')
 
+
 	def RestartAutomaticHide( self ) :
 		self.StopAutomaticHide()
 		self.StartAutomaticHide()
@@ -929,12 +929,14 @@ class TimeShiftPlate(BaseWindow):
 		self.mAutomaticHideTimer = threading.Timer( bannerTimeout, self.AsyncAutomaticHide )
 		self.mAutomaticHideTimer.start()
 
+
 	def StopAutomaticHide( self ) :
 		if self.mAutomaticHideTimer and self.mAutomaticHideTimer.isAlive() :
 			self.mAutomaticHideTimer.cancel()
 			del self.mAutomaticHideTimer
 			
 		self.mAutomaticHideTimer = None
+
 
 	def RestartAsyncMove( self ) :
 		self.StopAsyncMove( )
@@ -949,12 +951,14 @@ class TimeShiftPlate(BaseWindow):
 		self.mAccelator += 1
 		LOG_TRACE('1================Accelator[%s]'% self.mAccelator )
 
+
 	def StopAsyncMove( self ) :
 		if self.mAsyncShiftTimer and self.mAsyncShiftTimer.isAlive() :
 			self.mAsyncShiftTimer.cancel()
 			del self.mAsyncShiftTimer
 
 		self.mAsyncShiftTimer  = None
+
 
 	#TODO : must be need timeout schedule
 	def AsyncUpdateCurrentMove( self ) :
@@ -979,6 +983,7 @@ class TimeShiftPlate(BaseWindow):
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
+
 
 	def KeySearch( self, aKey ) :
 		LOG_TRACE( 'Enter' )
