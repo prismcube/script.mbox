@@ -42,6 +42,7 @@ WIN_ID_MEDIACENTER					= 26
 WIN_ID_EPG_WINDOW					= 27
 WIN_ID_CONDITIONAL_ACCESS			= 28
 WIN_ID_FIRST_INSTALLATION			= 29
+WIN_ID_TIMER_WINDOW					= 30
 
 
 WIN_ID_DUMMY_WINDOW					= 100
@@ -251,6 +252,12 @@ class WindowMgr(object):
 
 			from pvr.gui.windows.FirstInstallation import FirstInstallation
 			self.mWindows[WIN_ID_FIRST_INSTALLATION]=FirstInstallation('FirstInstallation.xml', self.mScriptDir )
+
+			try :
+				from pvr.gui.windows.TimerWindow import TimerWindow
+				self.mWindows[WIN_ID_TIMER_WINDOW]=TimerWindow('TimerWindow.xml', self.mScriptDir )
+			except Exception, ex:
+				LOG_TRACE('LAEL98 Exception=%s' %ex)
 
 			"""
 			#test
