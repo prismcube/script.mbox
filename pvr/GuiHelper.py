@@ -69,7 +69,9 @@ def GetSelectedLongitudeString( aLongitude, aName ) :
 	return ret
 
 
+
 def EnumToString( aType, aValue ) :
+	from ElisEnum import ElisEnum
 	ret = ''
 	if aType == 'type' :
 		if aValue == ElisEnum.E_SERVICE_TYPE_TV :
@@ -119,7 +121,6 @@ def EnumToString( aType, aValue ) :
 
 
 def AgeLimit( aPropertyAge, aEPGAge ) :
-
 	isLimit = False
 	if aPropertyAge == 0 :
 		#no limit
@@ -170,6 +171,7 @@ def ParseLabelToCh( aMode, aLabel ) :
 
 
 gLanguage = xbmcaddon.Addon(id = 'script.mbox')
+
 def Strings( aStringID, aReplacements = None ) :
 	#string = xbmcaddon.Addon(id = 'script.mbox').getLocalizedString(aStringID)
 	string = gLanguage.getLocalizedString(aStringID)
@@ -181,6 +183,7 @@ def Strings( aStringID, aReplacements = None ) :
 
 gMRStringHash = {}
 gCacheMRLanguage = None
+
 def GetInstance( ) :
 	global gCacheMRLanguage
 	if not gCacheMRLanguage:
