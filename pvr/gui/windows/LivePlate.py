@@ -36,9 +36,9 @@ E_ASYNCHRONIZED = 1
 E_TABLE_ALLCHANNEL = 0
 E_TABLE_ZAPPING = 1
 
-class LivePlate(BaseWindow):
-	def __init__(self, *args, **kwargs):
-		BaseWindow.__init__(self, *args, **kwargs)
+class LivePlate( BaseWindow ) :
+	def __init__( self, *args, **kwargs ) :
+		BaseWindow.__init__( self, *args, **kwargs )
 
 		self.mLocalTime = 0
 		self.mEventID = 0
@@ -66,8 +66,8 @@ class LivePlate(BaseWindow):
 		self.mEnableThread = False
 	"""
 
-	def onInit(self):
-		self.mWinId = xbmcgui.getCurrentWindowId()
+	def onInit( self ) :
+		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
 

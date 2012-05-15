@@ -102,6 +102,7 @@ class ChannelListWindow( BaseWindow ) :
 		# end thread
 		self.mEnableThread = False
 
+
 	def onAction(self, aAction):
 		id = aAction.getId()
 		
@@ -1759,7 +1760,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	@RunThread
-	def CurrentTimeThread(self):
+	def CurrentTimeThread( self ) :
 		LOG_TRACE( 'begin_start thread' )
 
 		loop = 0
@@ -2630,7 +2631,6 @@ class ChannelListWindow( BaseWindow ) :
 		try:
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			LOG_TRACE('isRunRecCount[%s]'% isRunRec)
-
 			self.mRecCount = isRunRec
 
 			if isRunRec == 1 :
