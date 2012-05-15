@@ -1,0 +1,158 @@
+<window>
+	<defaultcontrol>9301</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<control type="group">
+			<include>DefaultDialogCloseEffect</include>
+			<include>SmallerDialogs</include>
+			<include>Dialogs_Group</include>
+			<include>Dialogs_Tablet</include>
+			<control type="image">
+				<posx>9</posx>
+				<posy>9</posy>
+				<width>73</width>
+				<height>73</height>
+				<texture>dialogs/exclam_icon.png</texture>
+				<animation effect="fade" start="100" end="70" time="600" pulse="true" condition="true">Conditional</animation>
+			</control>
+			<control type="label" id="100">
+				<posy>8</posy>
+				<posx>105</posx>
+				<width>376</width>
+				<height>21</height>
+				<textcolor>abFFFFFF</textcolor>
+				<align>left</align>
+				<font>Font_Info</font>
+				<scroll>true</scroll>
+				<label>Move Antenna</label>
+			</control>
+				<control type="label" id="200">
+				<posy>26</posy>
+				<posx>105</posx>
+				<width>376</width>
+				<height>21</height>
+				<textcolor>abFFFFFF</textcolor>
+				<align>left</align>
+				<font>Font_Info</font>
+				<scroll>true</scroll>
+				<label>Select Action</label>
+			</control>
+			<control type="button" id="9101">
+				<posx>214</posx>
+				<posy>50</posy>
+				<width>110</width>
+				<align>center</align>
+				<textcolor>abFFFFFF</textcolor>
+				<font>Font_Reg18</font>
+				<label>Move West</label>
+				<scroll>true</scroll>
+				<onleft>9601</onleft>
+				<onright>9201</onright>
+				<texturefocus>-</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<include>Animation_CommonFade</include>
+				<visible allowhiddenfocus="true">Control.HasFocus(9101)</visible>
+			</control>
+			<control type="button" id="9201">
+				<posx>214</posx>
+				<posy>50</posy>
+				<width>110</width>
+				<align>center</align>
+				<textcolor>abFFFFFF</textcolor>
+				<font>Font_Reg18</font>
+				<label>Step West</label>
+				<texturefocus>-</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<scroll>true</scroll>
+				<onleft>9101</onleft>
+				<onright>9301</onright>
+				<include>Animation_CommonFade</include>
+				<visible allowhiddenfocus="true">Control.HasFocus(9201)</visible>
+			</control>
+			<control type="button" id="9301">
+				<posx>214</posx>
+				<posy>50</posy>
+				<width>110</width>
+				<align>center</align>
+				<textcolor>abFFFFFF</textcolor>
+				<font>Font_Reg18</font>
+				<label>Stop</label>
+				<texturefocus>-</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<scroll>true</scroll>
+				<onleft>9201</onleft>
+				<onright>9401</onright>
+				<include>Animation_CommonFade</include>
+				<visible allowhiddenfocus="true">Control.HasFocus(9301)</visible>
+			</control>
+			<control type="button" id="9401">
+				<posx>214</posx>
+				<posy>50</posy>
+				<width>110</width>
+				<align>center</align>
+				<textcolor>abFFFFFF</textcolor>
+				<font>Font_Reg18</font>
+				<label>Step East</label>
+				<texturefocus>-</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<scroll>true</scroll>
+				<onleft>9301</onleft>
+				<onright>9501</onright>
+				<include>Animation_CommonFade</include>
+				<visible allowhiddenfocus="true">Control.HasFocus(9401)</visible>
+			</control>
+			<control type="button" id="9501">
+				<posx>214</posx>
+				<posy>50</posy>
+				<width>110</width>
+				<align>center</align>
+				<textcolor>abFFFFFF</textcolor>
+				<font>Font_Reg18</font>
+				<label>Move East</label>
+				<texturefocus>-</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<scroll>true</scroll>
+				<onleft>9401</onleft>
+				<onright>9601</onright>
+				<include>Animation_CommonFade</include>
+				<visible allowhiddenfocus="true">Control.HasFocus(9501)</visible>
+			</control>
+			<control type="button" id="9601">
+				<posx>214</posx>
+				<posy>50</posy>
+				<width>110</width>
+				<align>center</align>
+				<textcolor>abFFFFFF</textcolor>
+				<font>Font_Reg18</font>
+				<label>Close Menu</label>
+				<texturefocus>-</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<scroll>true</scroll>
+				<onleft>9501</onleft>
+				<onright>9101</onright>
+				<include>Animation_CommonFade</include>
+				<visible allowhiddenfocus="true">Control.HasFocus(9601)</visible>
+				<onclick>PreviousMenu</onclick>
+			</control>
+			<control type="image">
+				<description>left arrow</description>
+				<posx>189</posx>
+				<posy>62</posy>
+				<width>20</width>
+				<height>20</height>
+				<texture>views/multiplex_arrow2.png</texture>
+				<include>Animation_CommonFade</include>
+			</control>
+			<control type="image">
+				<description>right arrow</description>
+				<posx>328</posx>
+				<posy>62</posy>
+				<width>20</width>
+				<height>20</height>
+				<texture>views/multiplex_arrow.png</texture>
+				<include>Animation_CommonFade</include>
+			</control>
+		</control>
+	</controls>
+</window>

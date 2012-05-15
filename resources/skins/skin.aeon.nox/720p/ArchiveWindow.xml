@@ -1,0 +1,373 @@
+<window id="3023">
+	<defaultcontrol always="true">9003</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<controls>
+		<!-- Background -->
+		<control type="group">
+			<include>DefaultSettingWindowEffect</include>
+			<control type="multiimage">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1280</width>
+				<height>720</height>
+				<imagepath>special://skin/backgrounds/curtains.jpg</imagepath>
+				<timeperimage>5000</timeperimage>
+				<fadetime>2000</fadetime>
+				<pauseatend>10000</pauseatend>
+				<randomize>true</randomize>
+				<loop>no</loop>
+			</control>
+			
+			<!-- PIP -->
+			<control type="image" id="1004">
+				<posx>862</posx>
+				<posy>133</posy>
+				<width>353</width>
+				<height>198</height>
+			</control>
+		</control>
+
+		<!-- Bottom Gradation Image -->
+		<include>Furniture_Showcase</include>
+
+		<!-- Left big Box -->
+		<control type="group">
+			<control type="image">
+				<posx>394</posx>
+				<posy>655</posy>
+				<width>1280</width>
+				<height>68</height>
+				<texture background="true">views/showcase_gradient.png</texture>
+				<include>Animation_CommonFade</include>
+				<include>Animation_HideMultiplex</include>
+			</control>
+			<control type="group">
+				<animation effect="slide" time="700" start="-800,0" end="0,0" tween="cubic" easing="out">WindowOpen</animation>
+				<animation effect="slide" time="700" start="0,0" end="-800,0" tween="cubic" easing="out">WindowClose</animation>
+				<control type="image">
+					<include>Animation_CommonFade</include>
+					<posx>60</posx>
+					<posy>40</posy>
+					<width>759</width>
+					<height>682</height>
+					<texture background="true">views/listpanel_black.png</texture>
+					<visible>substring(Window.Property(ViewMode),common)</visible>
+				</control>
+				<control type="image">
+					<include>Animation_CommonFade</include>
+					<posx>60</posx>
+					<posy>40</posy>
+					<width>759</width>
+					<height>682</height>
+					<texture>views/listpanel_back.png</texture>
+					<visible>substring(Window.Property(ViewMode),common)</visible>
+				</control>				
+				<control type="image">
+					<posx>669</posx>
+					<posy>49</posy>
+					<width>97</width>
+					<height>600</height>
+					<texture>views/listpanel_detailwide.png</texture>
+					<visible>substring(Window.Property(ViewMode),common)</visible>
+				</control>
+				<control type="group" id="9003">
+					<include>Animation_CommonFade</include>
+					<include>DefaultCommonArchiveView</include> <!-- Default common View id = 3400 -->
+					<include>DefaultThumbnailArchiveView</include> <!-- Default thumbnail View id = 3410 -->
+					<include>DefaultPosterWrapArchiveView</include> <!-- Default poster wrapView id = 3420 -->						
+					<include>DefaultFanartArchiveView</include> <!-- Default Fanart View id = 3430 -->			
+				</control>
+			</control>
+		</control>
+
+		<control type="group">
+			<posy>25</posy>
+			<control type="image">
+				<posx>-215</posx>
+				<posy>190</posy>
+				<width>680</width>
+				<height>300</height>
+				<texture background="true">views/listpanel_black.png</texture>
+				<animation effect="rotate" center="auto" start="0" end="-90" time="100" condition="true">Conditional</animation>
+				<animation type="Conditional" condition="!ControlGroup(9000).HasFocus">
+					<effect type="slide" end="0,280" time="400" easing="in" tween="cubic"/>
+				</animation>
+				<animation type="WindowClose">
+					<effect type="slide" end="0,280" time="400" easing="in" tween="cubic"/>
+				</animation>					
+			</control>
+			<control type="image">
+				<posx>-215</posx>
+				<posy>190</posy>
+				<width>680</width>
+				<height>300</height>
+				<texture background="true">views/listpanel_back_noreflect.png</texture>
+				<animation effect="rotate" center="auto" start="0" end="-90" time="100" condition="true">Conditional</animation>
+				<animation type="Conditional" condition="!ControlGroup(9000).HasFocus">
+					<effect type="slide" end="0,280" time="400" easing="in" tween="cubic"/>
+				</animation>
+				<animation type="WindowClose">
+					<effect type="slide" end="0,280" time="400" easing="in" tween="cubic"/>
+				</animation>
+			</control>
+			<control type="grouplist" id="9000">
+				<animation type="Conditional" condition="!ControlGroup(9000).HasFocus">
+					<effect type="slide" end="-280,0" time="400" easing="in" tween="cubic"/>
+				</animation>
+				<animation type="WindowClose">
+					<effect type="slide" end="-280,0" time="400" easing="in" tween="cubic"/>
+				</animation>
+				<posx>0</posx>
+				<posy>25</posy>
+				<width>300</width>
+				<height>650</height>
+				<itemgap>0</itemgap>
+				<orientation>vertical</orientation>
+				<scroll>true</scroll>
+				<onleft>9003</onleft>
+				<onright>9003</onright>
+				<onup>9000</onup>
+				<ondown>9000</ondown>
+
+				<control type="button" id="1111">
+					<height>26</height>
+					<width>265</width>
+					<texturenofocus>-</texturenofocus>
+					<texturefocus>settings/listselect.png</texturefocus>
+					<alttexturenofocus>-</alttexturenofocus>
+					<alttexturefocus>settings/listselect.png</alttexturefocus>
+					<textcolor>selected</textcolor>
+					<disabledcolor>selected</disabledcolor>
+					<textoffsetx>10</textoffsetx>
+					<textoffsety>1</textoffsety>
+					<align>center</align>
+					<aligny>top</aligny>
+					<font>Font_Reg19</font>
+					<include>Animation_CommonFade</include>
+					<enable>no</enable>
+					<label>Select view type</label>
+				</control>
+				<control type="button" id="100">
+					<include>Objects_MediaMenuButtonAlt</include>
+					<label>VIEW:</label>
+				</control>
+				<control type="button" id="1112">
+					<height>26</height>
+					<width>265</width>
+					<texturenofocus>-</texturenofocus>
+					<texturefocus>settings/listselect.png</texturefocus>
+					<alttexturenofocus>-</alttexturenofocus>
+					<alttexturefocus>settings/listselect.png</alttexturefocus>
+					<textcolor>selected</textcolor>
+					<disabledcolor>selected</disabledcolor>
+					<textoffsetx>10</textoffsetx>
+					<textoffsety>1</textoffsety>
+					<align>center</align>
+					<aligny>top</aligny>
+					<font>Font_Reg19</font>
+					<include>Animation_CommonFade</include>
+					<enable>no</enable>
+					<label>Select Sort Order</label>
+				</control>
+				<control type="button" id="101">
+					<include>Objects_MediaMenuButtonAlt</include>
+					<label>SORT:</label>
+				</control>
+				<control type="togglebutton" id="102">
+					<description>Sort asc</description>
+					<include>Objects_MediaMenuButtonAlt</include>
+					<label>Order : Descending</label>
+            		<altlabel>Order : Ascending</altlabel>
+					<usealttexture>substring(Window.Property(Ascending),true)</usealttexture>
+				</control>
+				<control type="button" id="1113">
+					<height>26</height>
+					<width>265</width>
+					<texturenofocus>-</texturenofocus>
+					<texturefocus>settings/listselect.png</texturefocus>
+					<alttexturenofocus>-</alttexturenofocus>
+					<alttexturefocus>settings/listselect.png</alttexturefocus>
+					<textcolor>selected</textcolor>
+					<disabledcolor>selected</disabledcolor>
+					<textoffsetx>10</textoffsetx>
+					<textoffsety>1</textoffsety>
+					<align>center</align>
+					<aligny>top</aligny>
+					<font>Font_Reg19</font>
+					<include>Animation_CommonFade</include>
+					<enable>no</enable>
+					<label>Misc Options</label>
+				</control>
+				<control type="radiobutton" id="200">
+					<include>Objects_MediaMenuButtonAlt</include>
+					<label>Hide Watched</label>
+				</control>
+				<control type="radiobutton" id="201">
+					<include>Objects_MediaMenuButtonAlt</include>
+					<label>FolderType</label>
+				</control>
+				<control type="button" id="202">
+					<include>Objects_MediaMenuButtonAlt</include>
+					<label>Search</label>
+				</control>
+			</control>
+		</control>
+	
+		<!--
+		<control type="group">
+			<animation effect="slide" start="0,0" end="250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(9000).HasFocus | ControlGroup(9001).HasFocus">Conditional</animation>
+			<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(9000).HasFocus | ControlGroup(9001).HasFocus">WindowClose</animation>
+			<control type="group">
+				<animation effect="slide" end="-240,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
+				<animation effect="slide" start="-15,0" end="0,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>1</width>
+					<height>720</height>
+					<texture>confluence/MediaBladeSub_Part1.png</texture>
+					<animation effect="zoom" start="0,0,1,720" end="0,0,229,720" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(104) | ControlGroup(9001).HasFocus">Conditional</animation>
+				</control>
+				<control type="image">
+					<posx>1</posx>
+					<posy>0</posy>
+					<width>12</width>
+					<height>720</height>
+					<texture>confluence/MediaBladeSub_Part2.png</texture>
+					<animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(104) | ControlGroup(9001).HasFocus">Conditional</animation>
+				</control>
+			</control>
+			<control type="group" id="9001">
+				<posx>-220</posx>
+				<posy>0</posy>
+				<animation effect="fade" start="100" end="0" time="0" condition="!ControlGroup(9001).HasFocus + !Control.HasFocus(104)">conditional</animation>
+				<animation effect="fade" start="0" end="100" delay="300" time="200" condition="Control.HasFocus(104) | ControlGroup(9001).HasFocus">conditional</animation>
+				<animation effect="fade" start="100" end="0" time="0" condition="Control.HasFocus(104) | ControlGroup(9001).HasFocus">WindowClose</animation>
+				<animation effect="slide" end="220,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(104) | ControlGroup(9001).HasFocus">conditional</animation>
+
+				<control type="button">
+					<description>Fake button for mouse control</description>
+					<posx>-15</posx>
+					<posy>0</posy>
+					<width>245</width>
+					<height>720</height>
+					<label>-</label>
+					<font>-</font>
+					<texturenofocus>-</texturenofocus>
+					<texturefocus>-</texturefocus>
+					<visible>true</visible>
+				</control>
+
+				<control type="image">
+					<posx>185</posx>
+					<posy>160</posy>
+					<width>40</width>
+					<height>40</height>
+					<texture>confluence/MediaSubSet.png</texture>
+				</control>
+				<control type="grouplist" id="9010">
+					<posx>10</posx>
+					<posy>210</posy>
+					<width>240</width>
+					<height>550</height>
+					<onleft>9000</onleft>
+					<onright>3400</onright>
+					<onup>9010</onup>
+					<ondown>9010</ondown>
+					<itemgap>0</itemgap>
+					<control type="radiobutton" id="200">
+						<description>Stack Toggle</description>
+						<textwidth>170</textwidth>
+						<include>DefaultButtonMediaSubCommonValues</include>
+						<label>Hide Watched</label>
+					</control>
+					<control type="radiobutton" id="201">
+						<description>Folder Type</description>
+						<textwidth>170</textwidth>
+						<include>DefaultButtonMediaSubCommonValues</include>
+						<label>FolderType</label>
+					</control>
+					<control type="button" id="202">
+						<textwidth>170</textwidth>
+						<include>DefaultButtonMediaSubCommonValues</include>
+						<label>Search</label>
+				
+					</control>
+			
+				</control>
+			</control>
+
+			<include>DefaultSideBladeLeft</include>
+			<control type="image">
+				<description>LOGO</description>
+				<posx>-230</posx>
+				<posy>50</posy>
+				<width>220</width>
+				<height>80</height>
+				<aspectratio>keep</aspectratio>
+				<texture>confluence/Confluence_Logo.png</texture>
+			</control>
+			<control type="group" id="9000">
+				<posx>-250</posx>
+				<posy>130</posy>
+	
+				<control type="button" id="100">
+					<description>View As button</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<include>DefaultButtonCommonValues</include>
+					<label>VIEW:</label>
+					<onleft>9003</onleft>
+					<onright>9003</onright>
+					<onup>104</onup>
+					<ondown>101</ondown>
+				</control>
+				<control type="button" id="101">
+					<description>Sort by button</description>
+					<posx>0</posx>
+					<posy>40</posy>
+					<include>DefaultButtonCommonValues</include>
+					<label>SORT:</label>
+					<onleft>9003</onleft>
+					<onright>102</onright>
+					<onup>100</onup>
+					<ondown>104</ondown>
+		
+				</control>
+				
+				<control type="togglebutton" id="102">
+					<description>Sort asc</description>
+					<posx>220</posx>
+					<posy>53</posy>
+					<label>-</label>
+					<onleft>101</onleft>
+					<onright>9003</onright>
+					<onup>101</onup>
+					<ondown>104</ondown>
+					<usealttexture>substring(Window.Property(Ascending),true)</usealttexture>
+				</control>
+
+				<control type="radiobutton" id="104">
+					<description>Extra Options</description>
+					<hitrect x="0" y="120" w="265" h="40" />
+					<posx>0</posx>
+					<posy>80</posy>
+					<include>DefaultButtonCommonValues</include>
+					<radiowidth>18</radiowidth>
+					<radioheight>18</radioheight>
+					<radioposx>222</radioposx>
+					<radioposy>12</radioposy>
+					<textureradiofocus>confluence/HomeHasSub.png</textureradiofocus>
+					<textureradionofocus>confluence/HomeHasSub.png</textureradionofocus>
+					<label>31026</label>
+					<onleft>9003</onleft>
+					<onright>9010</onright>
+					<onup>101</onup>
+					<ondown>100</ondown>
+				</control>
+			</control>
+		</control>
+		-->
+		<include>DefaultMiniTitle</include>
+	</controls>
+</window>

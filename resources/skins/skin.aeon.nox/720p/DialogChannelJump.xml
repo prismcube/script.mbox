@@ -1,0 +1,63 @@
+<window>
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<backgroundcolor>0x00ffffff</backgroundcolor>
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<include>DefaultBehindDialogFadeOut</include>
+		<control type="group">
+			<posx>400</posx>
+			<posy>245</posy>
+            <include>DefaultDialogCloseEffect</include>
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>480</width>
+				<height>230</height>
+				<texture border="40">osd/osd_settings_back.png</texture>
+			</control>
+			<control type="label" id="210">
+				<description>Channel Number</description>
+				<posx>0</posx>
+				<posy>35</posy>
+				<width>480</width>
+				<height>30</height>
+				<font>Font_Bold24</font>
+				<align>center</align>
+				<aligny>center</aligny>
+			</control>
+			<control type="label" id="211">
+				<description>Channel Name</description>			
+				<posx>0</posx>
+				<posy>75</posy>
+				<width>480</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>Font_Reg18</font>
+			</control>		
+			<control type="label" id="212">
+				<description>EPG Name</description>			
+				<posx>0</posx>
+				<posy>125</posy>
+				<width>480</width>
+				<height>30</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>Font_Reg18</font>
+				<label>No EPG Infomation</label>
+			</control>
+			<control type="progress" id="213">
+				<posx>40</posx>
+				<posy>170</posy>
+				<width>400</width>
+				<height>15</height>
+				<texturebg>osd/seek/progress_back_long.png</texturebg>
+				<lefttexture>osd/seek/progress_left.png</lefttexture>
+				<midtexture>osd/seek/progress_mid.png</midtexture>
+				<righttexture>osd/seek/progress_right.png</righttexture>
+			</control>
+		</control>
+	</controls>
+</window>

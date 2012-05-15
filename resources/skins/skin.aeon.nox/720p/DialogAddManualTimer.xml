@@ -1,0 +1,47 @@
+<window>
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<include>DefaultBehindDialogFadeOut</include>
+		<control type="group" id="8000">
+			<include>DefaultDialogCloseEffect</include>
+			<control type="image" id="9001">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>610</width>
+				<height>340</height>
+				<texture border="40">osd/osd_settings_back.png</texture>
+			</control>
+			<include>DefaultDialogCommonSetting</include>
+			<control type="group" id="9000">
+				<posx>25</posx>
+				<posy>5</posy>
+
+				<!-- Recording Type -->
+				<include>DialogSpinEx01</include>
+				
+				<!-- Recording Name -->
+				<include>DialogInput01</include>
+
+				<!-- Weekly -->
+				<include>DialogSpinDay</include>
+
+				<!-- Date -->
+				<include>DialogInput02</include>
+				
+				<!--StartTime -->
+				<include>DialogInput03</include>
+
+				<!--EndTim -->
+				<include>DialogInput04</include>
+
+				<!-- OK/Cancel -->
+				<include>DefaultSettingDialogButtonOKCancel</include>
+
+			</control>
+		</control>
+	</controls>
+</window>
+

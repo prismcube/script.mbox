@@ -1,0 +1,106 @@
+<window id="3025">
+	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<controls>
+		<control type="group">
+			<include>DefaultSettingWindowEffect</include>
+			<include>DefaultSettingHeaderWindow</include>
+			<include>Furniture_SettingsBackPanel</include>
+			<control type="image">
+				<include>Furniture_SettingsInternalBackPanel</include>
+				<include>Animation_SettingsInternalPanel</include>
+			</control>
+			<control type="image">
+				<posx>70</posx>
+				<posy>44</posy>
+				<width>180</width>
+				<height>72</height>
+				<texture>XBMC_Logo.png</texture>
+			</control>
+			<control type="list" id="9000">
+				<hitrect x="10" y="82" w="260" h="541"></hitrect>
+				<posx>42</posx>
+				<posy>120</posy>
+				<width>260</width>
+				<height>546</height>
+				<onleft>9000</onleft>
+				<onright>9000</onright>
+				<onup>9000</onup>
+				<ondown>9000</ondown>
+				<pagecontrol>-</pagecontrol>
+				<scrolltime>300</scrolltime>
+				<itemlayout height="54" width="260">
+					<control type="label">
+						<posx>20</posx>
+						<posy>6</posy>
+						<width>216</width>
+						<height>58</height>
+						<font>Font_Bold22</font>
+						<textcolor>FFf5f5f5</textcolor>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</itemlayout>
+				<focusedlayout height="54" width="260">
+					<control type="image">
+						<posx>2</posx>
+						<posy>3</posy>
+						<width>214</width>
+						<height>64</height>
+						<texture border="5">views/listpanel_selectbar.png</texture>
+					</control>
+					<control type="label">
+						<posx>20</posx>
+						<posy>6</posy>
+						<width>216</width>
+						<height>58</height>
+						<font>Font_Bold22</font>
+						<textcolor>FF262728</textcolor>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+				</focusedlayout>
+			</control>
+			<control type="textbox">
+				<description>Appearance Description</description>
+				<posx>370</posx>
+				<posy>580</posy>
+				<width>600</width>
+				<height>100</height>
+				<font>Font_Info</font>
+				<label>$INFO[Container(9000).ListItem.Label2]</label>
+				<align>left</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label">
+				<description>header label</description>
+				<posx>370</posx>
+				<posy>60</posy>
+				<width>740</width>
+				<height>30</height>
+				<font>Font_ShowcaseMainLabel2_Caps</font>
+				<label>Installation - $INFO[Container(9000).ListItem.Label]</label>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<control type="image">
+				<description>background image</description>
+				<posx>42</posx>
+				<posy>28</posy>
+				<width>1196</width>
+				<height>651</height>
+				<texture>settings/settings_panelfront.png</texture>
+			</control>
+			<control type="image" id="1004">
+				<posx>360</posx>
+				<posy>114</posy>
+				<width>780</width>
+				<height>446</height>
+				<texture></texture>
+			</control>
+		</control>			
+	</controls>
+</window>

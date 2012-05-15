@@ -1,0 +1,329 @@
+<window>
+	<defaultcontrol always="true">400</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<include>DefaultBehindDialogFadeOut</include>
+		<control type="group">
+			<posx>90</posx>
+			<posy>40</posy>
+            <include>DefaultDialogCloseEffect</include>
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>1100</width>
+				<height>640</height>
+				<texture border="40">osd/osd_settings_back.png</texture>
+			</control>
+			
+			<control type="button" id="104">
+				<description>Close Window button</description>
+				<posx>925</posx>
+				<posy>36</posy>
+				<width>125</width>
+				<height>25</height>
+				<onclick>PreviousMenu</onclick>
+				<onleft>400</onleft>
+				<onright>402</onright>
+				<onup>400</onup>
+				<ondown>400</ondown>
+				<texturenofocus></texturenofocus>
+				<texturefocus></texturefocus>
+				<align>right</align>
+				<aligny>center</aligny>
+				<textcolor>grey2</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<shadowcolor>black</shadowcolor>
+				<label>Go to back</label>
+				<font>Font_Bold20</font>	
+			</control>
+			<control type="label" id="100">
+				<description>Title</description>
+				<posx>53</posx>
+				<posy>30</posy>
+				<width>1100</width>
+				<height>40</height>
+				<font>Font_Bold22</font>
+				<label>Channel Search Progress</label>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label" id="101">
+				<description>TV List</description>
+				<posx>55</posx>
+				<posy>70</posy>
+				<width>500</width>
+				<height>40</height>
+				<font>Font_Bold18</font>
+				<label>TV List</label>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label" id="103">
+				<description>Radio List</description>
+				<posx>570</posx>
+				<posy>70</posy>
+				<width>500</width>
+				<height>40</height>
+				<font>Font_Bold18</font>
+				<label>Radio List</label>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<!-- TV List -->
+			<control type="list" id="400">
+				<posx>60</posx>
+				<posy>110</posy>
+				<width>500</width>
+				<height>360</height>
+				<onleft>104</onleft>
+				<onright>401</onright>
+				<onup>400</onup>
+				<ondown>400</ondown>
+				<scrolltime>200</scrolltime>
+				<pagecontrol>401</pagecontrol>
+				<itemlayout height="40" width="500">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>460</width>
+						<height>40</height>
+						<texture>settings/settings_radiobuttonoff.png</texture>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>450</width>
+						<height>40</height>
+						<font>Font_Reg18</font>
+						<textcolor>grey3</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<control type="label">
+						<posx>460</posx>
+						<posy>0</posy>
+						<width>450</width>
+						<height>40</height>
+						<font>Font_Reg18</font>
+						<textcolor>grey2</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+					</control>	
+				</itemlayout>
+				<focusedlayout height="40" width="500">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>460</width>
+						<height>41</height>
+						<texture>settings/settings_radiobuttonoff.png</texture>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>450</width>
+						<height>40</height>
+						<font>Font_Reg20</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<animation effect="fade" start="100" end="50" time="100" condition="!Control.HasFocus(400)">Conditional</animation>
+					</control>
+					<control type="label">
+						<posx>460</posx>
+						<posy>0</posy>
+						<width>450</width>
+						<height>40</height>
+						<font>Font_Reg20</font>
+						<textcolor>grey2</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+					</control>
+				</focusedlayout>
+			</control>
+
+	        <!-- TV Scrollbar -->
+			<control type="scrollbar" id="401">
+				<posx>525</posx>
+				<posy>105</posy>
+				<width>25</width>
+				<height>375</height>
+				<texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
+				<texturesliderbar>-</texturesliderbar>
+				<texturesliderbarfocus>-</texturesliderbarfocus>
+				<textureslidernib>views/scrollbarnub-nofocus.png</textureslidernib>
+				<textureslidernibfocus>views/scrollbarnub-focus.png</textureslidernibfocus>
+				<onleft>400</onleft>
+				<onright>403</onright>
+				<ondown>300</ondown>
+				<onup>104</onup>
+				<showonepage>false</showonepage>
+				<orientation>vertical</orientation>
+				<include>Animation_CommonFade</include>
+			</control>
+
+			<control type="label">
+				<posx>510</posx>
+				<posy>475</posy>
+				<width>300</width>
+				<height>35</height>
+				<font>Font_Reg18</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<scroll>true</scroll>
+				<textcolor>grey</textcolor>
+				<label>([COLOR=blue]$INFO[Container(400).NumItems][/COLOR]) Items - Page([COLOR=blue]$INFO[Container(400).CurrentPage]/$INFO[Container(400).NumPages][/COLOR])</label>
+				<visible>Control.IsVisible(400)</visible>
+			</control>
+			
+			<!-- Radio List -->
+			<control type="list" id="402">
+				<posx>580</posx>
+				<posy>110</posy>
+				<width>500</width>
+				<height>360</height>
+				<onleft>403</onleft>
+				<onright>104</onright>
+				<onup>402</onup>
+				<ondown>402</ondown>
+				<pagecontrol>403</pagecontrol>
+				<itemlayout height="40" width="500">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>460</width>
+						<height>41</height>
+						<texture>settings/settings_radiobuttonoff.png</texture>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>450</width>
+						<height>40</height>
+						<font>Font_Reg18</font>
+						<textcolor>grey3</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
+					<control type="label">
+						<posx>460</posx>
+						<posy>0</posy>
+						<width>450</width>
+						<height>40</height>
+						<font>Font_Reg18</font>
+						<textcolor>grey2</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+					</control>	
+				</itemlayout>
+				<focusedlayout height="40" width="500">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>460</width>
+						<height>41</height>
+						<texture>settings/settings_radiobuttonoff.png</texture>
+					</control>
+					<control type="label">
+						<posx>10</posx>
+						<posy>0</posy>
+						<width>450</width>
+						<height>40</height>
+						<font>Font_Reg20</font>
+						<textcolor>white</textcolor>
+						<align>left</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<animation effect="fade" start="100" end="50" time="100" condition="!Control.HasFocus(402)">Conditional</animation>
+					</control>
+					<control type="label">
+						<posx>460</posx>
+						<posy>0</posy>
+						<width>450</width>
+						<height>40</height>
+						<font>Font_Reg20</font>
+						<textcolor>grey2</textcolor>
+						<align>right</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label2]</label>
+					</control>
+				</focusedlayout>
+			</control>
+
+	        <!-- Radio Scrollbar -->
+			<control type="scrollbar" id="403">
+				<posx>555</posx>
+				<posy>105</posy>
+				<width>25</width>
+				<height>375</height>
+				<texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
+				<texturesliderbar>-</texturesliderbar>
+				<texturesliderbarfocus>-</texturesliderbarfocus>
+				<textureslidernib>views/scrollbarnub-nofocus.png</textureslidernib>
+				<textureslidernibfocus>views/scrollbarnub-focus.png</textureslidernibfocus>
+				<onleft>401</onleft>
+				<onright>402</onright>
+				<ondown>300</ondown>
+				<onup>104</onup>
+				<showonepage>false</showonepage>
+				<orientation>vertical</orientation>
+				<include>Animation_CommonFade</include>
+			</control>
+
+			<control type="label">
+				<posx>1025</posx>
+				<posy>475</posy>
+				<width>300</width>
+				<height>35</height>
+				<font>Font_Reg18</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<scroll>true</scroll>
+				<textcolor>grey</textcolor>
+				<label>([COLOR=blue]$INFO[Container(402).NumItems][/COLOR]) Items - Page([COLOR=blue]$INFO[Container(402).CurrentPage]/$INFO[Container(402).NumPages][/COLOR])</label>
+				<visible>Control.IsVisible(402)</visible>
+			</control>
+
+			<!--  Transponder Info -->
+			<control type="label" id="404">
+				<description>TransponderInfo</description>
+				<posx>55</posx>
+				<posy>515</posy>
+				<width>1000</width>
+				<height>40</height>
+				<font>Font_Bold20</font>
+				<label>Transponder Info</label>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<!-- Progress Bar -->
+			<control type="progress" id="200">
+				<description>Progressbar</description>
+				<posx>50</posx>
+				<posy>565</posy>
+				<width>1000</width>
+				<height>18</height>
+				<texturebg>osd/seek/progress_back_long.png</texturebg>
+				<lefttexture>osd/seek/progress_left.png</lefttexture>
+				<midtexture>osd/seek/progress_mid.png</midtexture>
+				<righttexture>osd/seek/progress_right.png</righttexture>
+			</control>
+		</control>
+	</controls>
+</window>

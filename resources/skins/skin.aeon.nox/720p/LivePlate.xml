@@ -1,0 +1,520 @@
+<window type="windows" id="3004">
+	<defaultcontrol always="true">620</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<backgroundcolor>0x00ffffff</backgroundcolor>
+	<controls>
+		<control type="group">
+			<include>Window_OpenClose_Animation</include>
+			<control type="image">
+				<description>media info background image</description>
+				<posx>0</posx>
+				<posy>550</posy>
+				<width>1320</width>
+				<height>256</height>
+				<texture>osd/osd_back.png</texture>
+			</control>
+
+<!-- Rec info -->
+			<control type="group">
+				<posx>300r</posx>
+				<posy>540</posy>
+				<animation effect="slide" start="300r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(10) | Control.IsVisible(15)">conditional</animation>
+				<control type="group">
+					<posx>0</posx>
+					<posy>-15</posy>
+					<!--animation effect="slide" start="400r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(10)">conditional</animation-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>35</height>
+						<texture border="50,0,32,0">home/timepanel_mid.png</texture>
+						<visible>Control.IsVisible(10)</visible>
+					</control>
+					<control type="image" id="10">
+						<posx>45</posx>
+						<posy>7</posy>
+						<width>60</width>
+						<height>25</height>
+						<texture>$INFO[Control.GetLabel]</texture>
+					</control>
+					<control type="label" id="11">
+						<posx>121</posx>
+						<posy>7</posy>
+						<font>Font_Reg20</font>
+						<textcolor>white</textcolor>
+						<label>$INFO[Control.GetLabel]</label>
+					</control>
+				</control>
+				<control type="group">
+					<posx>21</posx>
+					<posy>-49</posy>
+					<!--animation effect="slide" start="400r,0" end="0r,0" delay="0" time="300" condition="Control.IsVisible(15)">conditional</animation-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>300</width>
+						<height>35</height>
+						<texture border="50,0,32,0">home/timepanel_mid.png</texture>
+						<visible>Control.IsVisible(15)</visible>
+					</control>
+					<control type="image" id="15">
+						<posx>25</posx>
+						<posy>7</posy>
+						<width>60</width>
+						<height>25</height>
+						<texture>$INFO[Control.GetLabel]</texture>
+					</control>
+					<control type="label" id="16">
+						<posx>100</posx>
+						<posy>7</posy>
+						<font>Font_Reg20</font>
+						<textcolor>white</textcolor>
+						<label>$INFO[Control.GetLabel]</label>
+					</control>
+				</control>
+			</control>
+
+<!-- info section -->
+			<control type="group">
+				<posx>0</posx>
+				<posy>563</posy>
+				<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(620).HasFocus) | Control.HasFocus(702) | Control.HasFocus(706)">conditional</animation>
+				<description>info explane</description>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>200</width>
+					<height>35</height>
+					<texture flipy="true" flipx="true" border="0,0,32,0">home/timepanel_mid.png</texture>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<width>400</width>
+					<height>28</height>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>Font_Info</font>
+					<textcolor>grey</textcolor>
+					<label>Description</label>
+					<visible>Control.HasFocus(621)</visible>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<width>400</width>
+					<height>28</height>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>Font_Info</font>
+					<textcolor>grey</textcolor>
+					<label>Teletext</label>
+					<visible>Control.HasFocus(622)</visible>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<width>400</width>
+					<height>28</height>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>Font_Info</font>
+					<textcolor>grey</textcolor>
+					<label>Subtitle</label>
+					<visible>Control.HasFocus(623)</visible>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<width>400</width>
+					<height>28</height>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>Font_Info</font>
+					<textcolor>grey</textcolor>
+					<label>Start Recording</label>
+					<visible>Control.HasFocus(624)</visible>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<width>400</width>
+					<height>28</height>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>Font_Info</font>
+					<textcolor>grey</textcolor>
+					<label>Stop Recording</label>
+					<visible>Control.HasFocus(625)</visible>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<width>400</width>
+					<height>28</height>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>Font_Info</font>
+					<textcolor>grey</textcolor>
+					<label>Mute</label>
+					<visible>Control.HasFocus(626)</visible>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<width>400</width>
+					<height>28</height>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>Font_Info</font>
+					<textcolor>grey</textcolor>
+					<label>A/V Setting</label>
+					<visible>Control.HasFocus(627)</visible>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<width>400</width>
+					<height>28</height>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>Font_Info</font>
+					<textcolor>grey</textcolor>
+					<label>EPG Present</label>
+					<visible>Control.HasFocus(702)</visible>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<width>400</width>
+					<height>28</height>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>Font_Info</font>
+					<textcolor>grey</textcolor>
+					<label>EPG Next</label>
+					<visible>Control.HasFocus(706)</visible>
+				</control>
+			</control>
+
+<!-- channel -->
+			<control type="group" id="600">
+				<posx>50</posx>
+				<posy>600</posy>
+
+				<control type="label" id="601">
+					<posx>0</posx>
+					<posy>10</posy>
+					<width>200</width>
+					<height>50</height>
+					<align>center</align>
+					<font>Font_MainMenu</font>
+					<label>$INFO[Control.GetLabel]</label>
+					<description>Ch Num</description>
+				</control>
+				<control type="label" id="602">
+					<posx>250</posx>
+					<posy>20</posy>
+					<align>left</align>
+					<width>500</width>
+					<font>Font_Reg38</font>
+					<textcolor>FFB2D4F5</textcolor>
+					<label>$INFO[Control.GetLabel]</label>
+					<description>Ch name</description>
+				</control>
+
+				<control type="image" id="603">
+					<posx>245</posx>
+					<posy>-25</posy>
+					<align>left</align>
+					<width>70</width>
+					<height>30</height>
+					<texture>$INFO[Control.GetLabel]</texture>
+					<description>service type</description>
+				</control>
+
+
+<!-- button control -->
+				<control type="group" id="620">
+					<posx>310</posx>
+					<posy>-40</posy>
+					<control type="button" id="621">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>75</width>
+						<height>65</height>
+						<texturefocus>aeon.nox/OSDInfoFO.png</texturefocus>
+						<texturenofocus>aeon.nox/OSDInfoNF.png</texturenofocus>
+						<onleft>627</onleft>
+						<onright>622</onright>
+						<onup></onup>
+						<ondown>702</ondown>
+						<description>expantion info</description>
+					</control>
+					<control type="button" id="622">
+						<posx>45</posx>
+						<posy>0</posy>
+						<width>75</width>
+						<height>65</height>
+						<texturefocus>osd/buttons/OSDBookMarksFO.png</texturefocus>
+						<texturenofocus>osd/buttons/OSDBookMarksNF.png</texturenofocus>
+						<onleft>621</onleft>
+						<onright>623</onright>
+						<onup></onup>
+						<ondown>702</ondown>
+						<description>teletext</description>
+					</control>
+					<control type="button" id="623">
+						<posx>90</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>75</width>
+						<height>65</height>
+						<textcolor>grey3</textcolor>
+						<texturefocus>osd/buttons/OSDSubtitlesFO.png</texturefocus>
+						<texturenofocus>osd/buttons/OSDSubtitlesNF.png</texturenofocus>
+						<onleft>622</onleft>
+						<onright>624</onright>
+						<onup></onup>
+						<ondown>702</ondown>
+						<description>subtitle</description>
+					</control>
+					<control type="button" id="624">
+						<posx>135</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>75</width>
+						<height>65</height>
+						<textcolor>grey3</textcolor>
+						<texturefocus>aeon.nox/OSDRecordFO.png</texturefocus>
+						<texturenofocus>aeon.nox/OSDRecordNF.png</texturenofocus>
+						<onleft>623</onleft>
+						<onright>625</onright>
+						<onup></onup>
+						<ondown>702</ondown>
+						<description>start record</description>
+						<visible>true</visible>
+					</control>
+					<control type="button" id="625">
+						<posx>180</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>75</width>
+						<height>65</height>
+						<textcolor>grey3</textcolor>
+						<texturefocus>osd/buttons/OSDStopFO.png</texturefocus>
+						<texturenofocus>osd/buttons/OSDStopNF.png</texturenofocus>
+						<onleft>624</onleft>
+						<onright>629</onright>
+						<onup></onup>
+						<ondown>702</ondown>
+						<description>stop record</description>
+					</control>
+					<control type="group" id="629">
+						<control type="button" id="626">
+							<posx>225</posx>
+							<posy>0</posy>
+							<width>75</width>
+							<height>65</height>
+							<label></label>
+							<textcolor>grey3</textcolor>
+							<texturefocus>osd/buttons/OSDAudioFO.png</texturefocus>
+							<texturenofocus>osd/buttons/OSDAudioNF.png</texturenofocus>
+							<onleft>625</onleft>
+							<onright>627</onright>
+							<onup></onup>
+							<ondown>702</ondown>
+							<onclick>Mute</onclick>
+							<description>mute,audio off</description>
+						</control>
+						<!--control type="button" id="627">
+							<posx>225</posx>
+							<posy>0</posy>
+							<width>45</width>
+							<height>35</height>
+							<label></label>
+							<textcolor>grey3</textcolor>
+							<texturefocus>osd/buttons/OSDAudioFO.png</texturefocus>
+							<texturenofocus>osd/buttons/OSDAudioNF.png</texturenofocus>
+							<onleft>SetFocus(625)</onleft>
+							<onright>SetFocus(621)</onright>
+							<onup></onup>
+							<ondown>SetFocus(702)</ondown>
+							<description>mute, audio on</description>
+							<visible>!Control.IsVisible(626)</visible>
+						</control-->
+					</control>
+					<control type="button" id="627">
+						<posx>270</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>75</width>
+						<height>65</height>
+						<textcolor>grey3</textcolor>
+						<texturefocus>osd/buttons/OSDSkinFO.png</texturefocus>
+						<texturenofocus>osd/buttons/OSDSkinNF.png</texturenofocus>
+						<onleft>629</onleft>
+						<onright>621</onright>
+						<onup></onup>
+						<ondown>702</ondown>
+						<description>setting format</description>
+					</control>
+				</control>
+
+				<control type="group" id="650">
+					<posx>710</posx>
+					<posy>-25</posy>
+					<control type="image" id="651">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>60</width>
+						<height>40</height>
+						<texture>$INFO[Control.GetLabel]</texture>
+						<description>lock</description>
+					</control>
+					<control type="image" id="652">
+						<posx>50</posx>
+						<posy>5</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>$INFO[Control.GetLabel]</texture>
+						<description>icas</description>
+					</control>
+				</control>
+
+				<control type="image" id="604">
+					<posx>720</posx>
+					<posy>18</posy>
+					<width>60</width>
+					<height>40</height>
+					<texture>$INFO[Control.GetLabel]</texture>
+					<description>data</description>
+				</control>
+				<control type="image" id="605">
+					<posx>775</posx>
+					<posy>18</posy>
+					<width>90</width>
+					<height>40</height>
+					<texture>$INFO[Control.GetLabel]</texture>
+					<description>audio dolby</description>
+				</control>
+				<control type="image" id="606">
+					<posx>855</posx>
+					<posy>18</posy>
+					<width>90</width>
+					<height>40</height>
+					<texture>$INFO[Control.GetLabel]</texture>
+					<description>video HD</description>
+				</control>
+
+				<control type="group">
+					<posx>200r</posx>
+					<posy>-37</posy>
+					<control type="image">
+						<description>time background</description>
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>200</width>
+						<height>35</height>
+						<texture flipy="true" border="32,0,0,0">home/timepanel_mid.png</texture>
+					</control>
+					<control type="label" id="610">
+						<description>time label</description>
+						<posx>50</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>Font_Info</font>
+						<textcolor>grey</textcolor>
+						<label>$INFO[Control.GetLabel]</label>
+						<description>EPG Clock</description>
+					</control>
+				</control>
+			</control>
+
+<!-- epg section -->			
+			<control type="group" id="700">
+				<posx>50</posx>
+				<posy>660</posy>
+				
+				<control type="label" id="701">
+					<posx>-50</posx>
+					<posy>10</posy>
+					<width>300</width>
+					<font>Font_Reg24_Caps</font>
+					<align>center</align>
+					<textcolor>9f9f9f9b</textcolor>
+					<label>$INFO[Control.GetLabel]</label>
+				</control>
+				<control type="button" id="702">
+					<posx>250</posx>
+					<posy>3</posy>
+					<width>30</width>
+					<height>30</height>
+					<label>210</label>
+					<font></font>
+					<texturefocus>views/multiplex_arrowfocus2.png</texturefocus>
+					<texturenofocus>views/multiplex_arrow2.png</texturenofocus>
+					<onleft></onleft>
+					<onright>SetFocus(706)</onright>
+					<onup>SetFocus(621)</onup>
+					<ondown></ondown>
+				</control>
+				<control type="label" id="703">
+					<posx>290</posx>
+					<posy>3</posy>
+					<width>400</width>
+					<font>Font_Reg22</font>
+					<textcolor>9f9c9f9b</textcolor>
+					<label>$INFO[Control.GetLabel]</label>
+					<description>EPG Name</description>
+				</control>
+				<control type="label" id="704">
+					<posx>720</posx>
+					<posy>5</posy>
+					<align>left</align>
+					<font>Font_Reg20</font>
+					<label>$INFO[Control.GetLabel]</label>
+					<description>EPG STime</description>
+				</control>
+				<control type="progress" id="707">
+					<description>progress control</description>
+					<posx>780</posx>
+					<posy>15</posy>
+					<width>250</width>
+					<height>8</height>
+					<texturebg>osd/seek/progress_back_long.png</texturebg>
+					<lefttexture>osd/seek/progress_left.png</lefttexture>
+					<midtexture>osd/seek/progress_mid.png</midtexture>
+					<righttexture>osd/seek/progress_right.png</righttexture>
+				</control>
+				<control type="label" id="705">
+					<posx>1040</posx>
+					<posy>5</posy>
+					<font>Font_Reg20</font>
+					<label>$INFO[Control.GetLabel]</label>
+					<description>EPG ETime</description>
+				</control>
+				<control type="button" id="706">
+					<posx>1110</posx>
+					<posy>3</posy>
+					<align>right</align>
+					<width>30</width>
+					<height>30</height>
+					<label>31354</label>
+					<font></font>
+					<texturefocus>views/multiplex_arrowfocus.png</texturefocus>
+					<texturenofocus>views/multiplex_arrow.png</texturenofocus>
+					<onleft>SetFocus(702)</onleft>
+					<onright></onright>
+					<onup>SetFocus(621)</onup>
+					<ondown></ondown>
+				</control>
+			</control>
+		</control>
+
+	</controls>
+</window>
