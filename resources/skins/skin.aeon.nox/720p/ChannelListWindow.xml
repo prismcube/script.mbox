@@ -30,10 +30,35 @@
 <!-- Bottom Gradation Image -->
 		<include>Furniture_Showcase</include>
 
-<!--  local time -->
+		<!--  local time -->
 		<include>DefaultCommonDateTime</include>
 
-<!-- pip -->
+		<!--  Path Info -->
+		<control type="group" id="20">
+			<posx>0</posx>
+			<posy>0</posy>
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>510</width>
+				<height>35</height>
+				<texture flipx="true" flipy="true" border="0,0,32,0">home/timepanel_mid.png</texture>
+			</control>
+			<control type="label" id="21">
+				<posx>105</posx>
+				<posy>0</posy>
+				<width>400</width>
+				<height>28</height>
+				<font>Font_Info</font>
+				<textcolor>grey</textcolor>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>$INFO[ListItem.Label]</label>
+				<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+			</control>
+		</control>
+
+		<!-- pip -->
 		<control type="image" id="1004">
 			<posx>862</posx>
 			<posy>133</posy>
@@ -76,22 +101,21 @@
 					<texture>views/listpanel_detailwide.png</texture>
 				</control>
 
-
 				<control type="group" id="49">
 					<posx>75</posx>
-					<posy>78</posy>
+					<posy>34</posy>
 					<control type="list" id="50">
 						<posx>0</posx>
 						<posy>40</posy>
 						<width>740</width>
-						<height>521</height>
+						<height>565</height>
 						<onleft>102</onleft>
 						<onright>61</onright>
 						<onup>50</onup>
 						<ondown>50</ondown>
+						<viewtype label="535">list</viewtype>
 						<pagecontrol>61</pagecontrol>
 						<scrolltime>200</scrolltime>
-						<focusposition>0</focusposition>
 						<movement>2</movement>
 						<visible>true</visible>
 						<enable>!Control.HasFocus(101) | !Control.HasFocus(102) | !ControlGroup(9001).HasFocus</enable>
@@ -256,9 +280,9 @@
 				<!-- Scrollbar -->
 				<control type="scrollbar" id="61">
 					<posx>825</posx>
-					<posy>125</posy>
+					<posy>74</posy>
 					<width>25</width>
-					<height>521</height>
+					<height>565</height>
 					<texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
 					<texturesliderbar></texturesliderbar>
 					<texturesliderbarfocus></texturesliderbarfocus>
@@ -266,28 +290,8 @@
 					<textureslidernibfocus>views/scrollbarnub-focus.png</textureslidernibfocus>
 					<onleft>49</onleft>
 					<onright>49</onright>
-					<ondown></ondown>
-					<onup></onup>
 					<showonepage>false</showonepage>
 					<orientation>vertical</orientation>
-				</control>
-
-				<!--  Path Info -->
-				<control type="group" id="20">
-					<posx>105</posx>
-					<posy>50</posy>
-					<control type="label" id="21">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>600</width>
-						<height>28</height>
-						<font>Font_Info</font>
-						<textcolor>grey</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>$INFO[ListItem.Label]</label>
-						<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
-					</control>
 				</control>
 
 				<!--  page -->
@@ -538,9 +542,9 @@
 			<control type="group">
                 <animation effect="slide" end="-361,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
 				<control type="image">
-					<posx>-250</posx>
+					<posx>-290</posx>
 					<posy>210</posy>
-					<width>590</width>
+					<width>680</width>
 					<height>260</height>
 					<texture background="true">views/listpanel_black.png</texture>
 					<animation effect="rotate" center="auto" start="0" end="-90" time="100" condition="true">Conditional</animation>
@@ -548,9 +552,9 @@
 					<animation effect="slide" end="0,400" time="400" easing="in" tween="cubic" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(6)">Conditional</animation>
                 </control>
                 <control type="image">
-					<posx>-250</posx>
+					<posx>-290</posx>
 					<posy>210</posy>
-					<width>590</width>
+					<width>680</width>
 					<height>260</height>
 					<texture background="true">views/listpanel_back_noreflect.png</texture>
     				<animation effect="rotate" center="auto" start="0" end="-90" time="100" condition="true">Conditional</animation>
@@ -564,7 +568,7 @@
 				<posx>-240</posx>
 				<posy>0</posy>
 				<width>265</width>
-				<height>590</height>
+				<height>680</height>
 				<label></label>
 				<font></font>
 				<texturenofocus></texturenofocus>
@@ -573,9 +577,9 @@
 				<visible>true</visible>
 			</control>
             <control type="image">
-				<posx>-190</posx>
+				<posx>-230</posx>
 				<posy>190</posy>
-				<width>590</width>
+				<width>680</width>
 				<height>300</height>
 				<texture background="true">views/listpanel_black.png</texture>
 				<animation effect="rotate" center="auto" start="0" end="-90" time="100" condition="true">Conditional</animation>
@@ -583,9 +587,9 @@
 				<animation effect="slide" end="0,0" time="400" easing="in" tween="cubic" condition="ControlGroup(49).HasFocus">Conditional</animation>
             </control>
 			<control type="image">
-				<posx>-190</posx>
+				<posx>-230</posx>
 				<posy>190</posy>
-				<width>590</width>
+				<width>680</width>
 				<height>300</height>
 				<texture background="true">views/listpanel_back_noreflect.png</texture>
 				<animation effect="rotate" center="auto" start="0" end="-90" time="100" condition="true">Conditional</animation>
@@ -711,8 +715,8 @@
 
 				<!-- sub main -->
 				<control type="group" id="9001">
-					<posx>-240</posx>
-					<posy>3</posy>
+					<posx>-235</posx>
+					<posy>1</posy>
 					<animation effect="slide" start="-500,0" end="500,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">conditional</animation>
 					<animation effect="slide" start="0,0" end="-500,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus">Conditional</animation>
 					<control type="list" id="112">
@@ -883,7 +887,7 @@
 								<texturenofocus>button-nofocus.png</texturenofocus>
 								<textcolor>grey3</textcolor>
 								<focusedcolor>white</focusedcolor>
-								<label>105.5 E ASIASAT 3S_C$INFO[Control.GetLabel]</label>
+								<label>$INFO[Control.GetLabel]</label>
 								<onleft>102</onleft>
 								<onright>116</onright>
 								<onup>115</onup>

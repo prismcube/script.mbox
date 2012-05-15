@@ -101,8 +101,24 @@ class ChannelListWindow( BaseWindow ) :
 
 		# end thread
 		self.mEnableThread = False
-	"""
 
+	def onAction(self, aAction):
+		id = aAction.getId()
+		
+		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )			
+
+		elif id == 104 : #scroll up
+			xbmc.executebuiltin('XBMC.ReloadSkin()')
+		elif id == Action.REMOTE_0 : 
+			xbmc.executebuiltin('XBMC.ReloadSkin()')
+
+	def SetAutomaticHide( self, aHide=True ) :
+		self.mAutomaticHide = aHide
+
+	def GetAutomaticHide( self ) :
+		return self.mAutomaticHide
+	"""
 
 	def onInit(self):
 		LOG_TRACE( 'Enter' )
