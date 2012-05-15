@@ -488,7 +488,7 @@ class EPGWindow( BaseWindow ) :
 	def ShowContextMenu( self ) :
 		context = []
 		
-		selectedEPG = self.GetSelectedEPG()
+		selectedEPG = self.GetSelectedEPG( )
 
 		if selectedEPG :
 			if selectedEPG.mHasTimer :
