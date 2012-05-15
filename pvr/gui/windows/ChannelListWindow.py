@@ -132,10 +132,6 @@ class ChannelListWindow( BaseWindow ) :
 		#print '==================== TEST TIME[ONINIT] START[%s]'% starttime
 
 		#header
-		#self.mCtrlImgRec1            = self.getControl( 10 )
-		#self.mCtrlLblRec1            = self.getControl( 11 )
-		#self.mCtrlImgRec2            = self.getControl( 15 )
-		#self.mCtrlLblRec2            = self.getControl( 16 )
 		self.mCtrlLblPath1           = self.getControl( 21 )
 		self.mCtrlGropOpt            = self.getControl( 500 )
 		self.mCtrlBtnOpt             = self.getControl( 501 )
@@ -188,7 +184,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.mNavEpg = None
 		self.mNavChannel = None
 		self.mCurrentChannel = None
-		self.mRecoveryChannel = None
 		self.mSlideOpenFlag = False
 		self.mFlag_EditChanged = False
 		self.mFlag_ModeChanged = False
@@ -227,7 +222,6 @@ class ChannelListWindow( BaseWindow ) :
 			#first get is used cache, reason by fast load
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if iChannel :
-				self.mRecoveryChannel = iChannel
 				self.mNavChannel = iChannel
 				self.mCurrentChannel = iChannel.mNumber
 
@@ -1006,7 +1000,7 @@ class ChannelListWindow( BaseWindow ) :
 		LOG_TRACE( 'mode[%s] sort[%s] type[%s] mpos[%s] spos[%s]'% ( \
 			self.mZappingMode,                \
 			self.mChannelListSortMode,        \
-			self.mChannelListServiceType,      \
+			self.mChannelListServiceType,     \
 			self.mSelectMainSlidePosition,    \
 			self.mSelectSubSlidePosition      \
 		)
@@ -1073,11 +1067,11 @@ class ChannelListWindow( BaseWindow ) :
 					iZappingList.append( self.mElisSetZappingModeInfo )
 					"""
 					LOG_TRACE( '1. zappingMode[%s] sortMode[%s] serviceType[%s]'%  \
-						( EnumToString('mode', self.mZappingMode),         \
-						  EnumToString('sort', self.mChannelListSortMode), \
+						( EnumToString('mode', self.mZappingMode),                 \
+						  EnumToString('sort', self.mChannelListSortMode),         \
 						  EnumToString('type', self.mChannelListServiceType) ) )
-					LOG_TRACE( '2. zappingMode[%s] sortMode[%s] serviceType[%s]'%  \
-						( EnumToString('mode', self.mElisSetZappingModeInfo.mMode),         \
+					LOG_TRACE( '2. zappingMode[%s] sortMode[%s] serviceType[%s]'%          \
+						( EnumToString('mode', self.mElisSetZappingModeInfo.mMode),        \
 						  EnumToString('sort', self.mElisSetZappingModeInfo.mSortingMode), \
 						  EnumToString('type', self.mElisSetZappingModeInfo.mServiceType) ) )
 					"""
@@ -1124,9 +1118,6 @@ class ChannelListWindow( BaseWindow ) :
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
 
-		#else:
-			#channel sync
-			#self.mDataCache.mCurrentChannel = self.mNavChannel
 
 		return answer
 
@@ -1220,33 +1211,33 @@ class ChannelListWindow( BaseWindow ) :
 					zappingMode = self.mDataCache.Zappingmode_GetCurrent( )
 
 				if zappingMode :
-					self.mZappingMode           = zappingMode.mMode
-					self.mChannelListSortMode   = zappingMode.mSortingMode
+					self.mZappingMode            = zappingMode.mMode
+					self.mChannelListSortMode    = zappingMode.mSortingMode
 					self.mChannelListServiceType = zappingMode.mServiceType
-					self.mElisZappingModeInfo   = zappingMode
+					self.mElisZappingModeInfo    = zappingMode
 				else :
 					#set default
-					self.mZappingMode           = ElisEnum.E_MODE_ALL
-					self.mChannelListSortMode   = ElisEnum.E_SORT_BY_DEFAULT
+					self.mZappingMode            = ElisEnum.E_MODE_ALL
+					self.mChannelListSortMode    = ElisEnum.E_SORT_BY_DEFAULT
 					self.mChannelListServiceType = ElisEnum.E_SERVICE_TYPE_TV
-					zappingMode                 = ElisIZappingMode()
-					self.mElisZappingModeInfo   = zappingMode
+					zappingMode                  = ElisIZappingMode()
+					self.mElisZappingModeInfo    = zappingMode
 					LOG_TRACE( 'Fail GetCurrent!!! [set default ZappingMode]' )
 
 			except Exception, e:
 				#set default
-				self.mZappingMode           = ElisEnum.E_MODE_ALL
-				self.mChannelListSortMode   = ElisEnum.E_SORT_BY_DEFAULT
+				self.mZappingMode            = ElisEnum.E_MODE_ALL
+				self.mChannelListSortMode    = ElisEnum.E_SORT_BY_DEFAULT
 				self.mChannelListServiceType = ElisEnum.E_SERVICE_TYPE_TV
-				zappingMode                 = ElisIZappingMode()
-				self.mElisZappingModeInfo   = zappingMode
+				zappingMode                  = ElisIZappingMode()
+				self.mElisZappingModeInfo    = zappingMode
 				LOG_TRACE( 'Error exception[%s] [set default ZappingMode]'% e )
 
 
 		list_Mainmenu = []
 		list_Mainmenu.append( MR_LANG('All CHANNELS') )
 		list_Mainmenu.append( MR_LANG('SATELLITE')    )
-		list_Mainmenu.append( MR_LANG('FTA/CAS')          )
+		list_Mainmenu.append( MR_LANG('FTA/CAS')      )
 		list_Mainmenu.append( MR_LANG('FAVORITE')     )
 		list_Mainmenu.append( MR_LANG('MODE') )
 		list_Mainmenu.append( MR_LANG('Back') )
@@ -1266,17 +1257,15 @@ class ChannelListWindow( BaseWindow ) :
 
 		try :
 			if self.mFlag_EditChanged :
-				#satellite longitude list
+				#satellite list
 				self.mListSatellite = self.mDataCache.Satellite_GetConfiguredList( )
-				#ClassToList( 'print', self.mListSatellite )
 
 				#FTA list
 				self.mListCasList = self.mDataCache.Fta_cas_GetList( self.mChannelListServiceType )
-				#ClassToList( 'print', self.mListCasList )
 
 				#Favorite list
 				self.mListFavorite = self.mDataCache.Favorite_GetList(FLAG_ZAPPING_CHANGE, self.mChannelListServiceType )
-				#ClassToList( 'print', self.mListFavorite )
+
 			else:
 				self.mListSatellite = self.mDataCache.Satellite_GetConfiguredList( )
 				self.mListCasList = self.mDataCache.Fta_cas_GetList( )
@@ -1339,9 +1328,9 @@ class ChannelListWindow( BaseWindow ) :
 
 		"""
 		if self.mChannelList :
-			LOG_TRACE( 'zappingMode[%s] sortMode[%s] serviceType[%s]'%  \
-				( EnumToString('mode', self.mZappingMode),         \
-				  EnumToString('sort', self.mChannelListSortMode), \
+			LOG_TRACE( 'zappingMode[%s] sortMode[%s] serviceType[%s]'% \
+				( EnumToString('mode', self.mZappingMode),             \
+				  EnumToString('sort', self.mChannelListSortMode),     \
 				  EnumToString('type', self.mChannelListServiceType) ) )
 			LOG_TRACE( 'len[%s] ch[%s]'% (len(self.mChannelList),ClassToList( 'convert', self.mChannelList ) ) )
 		"""
@@ -1526,6 +1515,7 @@ class ChannelListWindow( BaseWindow ) :
 		LOG_TRACE( 'Leave' )
 		return label
 
+
 	@GuiLock
 	def UpdateLabelGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
@@ -1583,21 +1573,6 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aCtrlID == self.mCtrlBtnDelAll.getId( ) :
 			self.mCtrlBtnDelAll.setLabel( aValue )
-
-
-		"""
-		elif aCtrlID == self.mCtrlLblRec1.getId( ) :
-			self.mCtrlLblRec1.setLabel( aValue )
-
-		elif aCtrlID == self.mCtrlImgRec1.getId( ) :
-			self.mCtrlImgRec1.setVisible( aValue )
-
-		elif aCtrlID == self.mCtrlLblRec2.getId( ) :
-			self.mCtrlLblRec2.setLabel( aValue )
-
-		elif aCtrlID == self.mCtrlImgRec2.getId( ) :
-			self.mCtrlImgRec2.setVisible( aValue )
-		"""
 
 
 		LOG_TRACE( 'Leave' )
@@ -2177,6 +2152,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		LOG_TRACE( 'Leave' )
 
+
 	def SetEditMarkupGUI( self, aMode, aPos, aEnabled=True ) :
 		LOG_TRACE( 'Enter' )
 
@@ -2408,15 +2384,6 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mEditFavorite:
 				context.append( ContextItem( '%s'% MR_LANG('Rename Fav. Group'), CONTEXT_ACTION_RENAME_FAV ) )
 				context.append( ContextItem( '%s'% MR_LANG('Delete Fav. Group'), CONTEXT_ACTION_DELETE_FAV ) )
-			"""
-			else:
-				label1   = '%s\tNone'% MR_LANG('Rename Fav. Group')
-				label2   = '%s\tNone'% MR_LANG('Delete Fav. Group')
-				lblItem2 = str('%s%s%s'%( E_TAG_COLOR_GREY3, label1, E_TAG_COLOR_END ) )
-				lblItem3 = str('%s%s%s'%( E_TAG_COLOR_GREY3, label2, E_TAG_COLOR_END ) )
-				context.append( ContextItem( lblItem2 , CONTEXT_ACTION_RENAME_FAV ) )
-				context.append( ContextItem( lblItem3, CONTEXT_ACTION_DELETE_FAV ) )
-			"""
 
 
 		GuiLock2( True )
@@ -2525,7 +2492,6 @@ class ChannelListWindow( BaseWindow ) :
 		LOG_TRACE( 'Leave' )
 
 
-
 	def PopupOpt( self ) :
 		LOG_TRACE( 'Enter' )
 
@@ -2547,6 +2513,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.SetVideoRestore( )
 		self.close( )
+
 
 	def RestartAsyncEPG( self ) :
 		self.StopAsyncEPG( )
@@ -2624,6 +2591,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		LOG_TRACE( 'Leave' )
+
 
 	def ShowRecording( self ) :
 		LOG_TRACE('Enter')

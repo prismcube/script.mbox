@@ -32,6 +32,8 @@
 	<string id="30">Wrong PIN Code</string>
 	<string id="31">Infomation</string>
 	<string id="32">Do you want to delete?</string>
+	<string id="33">View: TV</string>
+	<string id="34">View: RADIO</string>
 </strings>
 <property>
 	<string id="1001">Last ServiceType</string>

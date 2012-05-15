@@ -1213,14 +1213,15 @@ class LivePlate( BaseWindow ) :
 		self.mEnableThread = False
 		self.CurrentTimeThread().join()
 		
-		#self.StopAsyncEPG()
 		self.StopAsyncTune()
 		self.StopAutomaticHide()
 
 		self.close()
 
+
 	def SetLastChannelCertificationPinCode( self, aCertification ) :
 		self.mCertification = aCertification
+
 
 	def SetAutomaticHide( self, aHide=True ) :
 		self.mAutomaticHide = aHide
