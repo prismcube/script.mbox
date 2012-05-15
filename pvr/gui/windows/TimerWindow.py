@@ -168,19 +168,17 @@ class TimerWindow(BaseWindow):
 
 
 	def UpdateList( self, aUpdateOnly=False ) :
-		if aUpdateOnly == False :
-			self.mListItems = []
+		self.mListItems = []
 		self.LoadTimerList( )
 
 		self.mCtrlBigList.reset()
 		self.mListItems = []
-		
 		if self.mTimerList== None or len( self.mTimerList ) <= 0 :
 			return
 			
 		try :
-
 			if self.mSelectedWeeklyTimer > 0 :
+				LOG_TRACE('')			
 				timer = None
 				for i in range( len( self.mTimerList ) ) :
 					if self.mTimerList[i].mTimerId == self.mSelectedWeeklyTimer :
@@ -255,10 +253,7 @@ class TimerWindow(BaseWindow):
 					channel.printdebug()
 					tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
 
-					if aUpdateOnly == False :
-						listItem = xbmcgui.ListItem( tempChannelName, timer.mName )	
-					else :
-						listItem = self.mListItems[i]
+					listItem = xbmcgui.ListItem( tempChannelName, timer.mName )	
 
 					if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY :
 						tempName = 'Weekly'
@@ -278,13 +273,11 @@ class TimerWindow(BaseWindow):
 
 					listItem.setProperty( 'HasEvent', 'false' )
 
-					if aUpdateOnly == False :
-						self.mListItems.append( listItem )
+					self.mListItems.append( listItem )
 
 					LOG_TRACE('---------- self.mListItems COUNT=%d' %len(self.mListItems))
 					
-				if aUpdateOnly == False :
-					self.mCtrlBigList.addItems( self.mListItems )
+				self.mCtrlBigList.addItems( self.mListItems )
 
 				xbmc.executebuiltin('container.update')
 
@@ -341,16 +334,18 @@ class TimerWindow(BaseWindow):
 		LOG_TRACE('ShowDeleteConfirm')
 
 		timerId = 0
+
+		selectedPos = self.mCtrlBigList.getSelectedPosition()
 		
-		LOG_TRACE('LAEL98 EPG Delete debug')
-		LOG_TRACE('LAEL98 EPG Delete debug self.mSelectedWeeklyTimer=%d' %self.mSelectedWeeklyTimer)			
+		LOG_TRACE('LAEL98 EPG Delete debug selectedPos=%d' %selectedPos)
 
 		if self.mSelectedWeeklyTimer > 0 :
 			LOG_TRACE('LAEL98 EPG Delete debug : selected weekly timer')
 
 		else :
-			LOG_TRACE('LAEL98 EPG Delete debug : has no selected weekly timer')			
-			pass
+			if selectedPos >= 0 and selectedPos < len( self.mTimerList ) :
+				timer = self.mTimerList[selectedPos]
+				timerId = timer.mTimerId
 
 	
 		if timerId > 0 :		
