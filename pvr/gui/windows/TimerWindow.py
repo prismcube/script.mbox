@@ -14,9 +14,10 @@ IMAMGE_ID_DOLBY					= 311
 IMAMGE_ID_SUBTITLE				= 312
 
 
-CONTEXT_EDIT_TIMER				= 1
-CONTEXT_DELETE_TIMER			= 2
-CONTEXT_DELETE_ALL_TIMERS		= 3
+CONTEXT_GO_PARENT				= 1
+CONTEXT_EDIT_TIMER				= 2
+CONTEXT_DELETE_TIMER			= 3
+CONTEXT_DELETE_ALL_TIMERS		= 4
 
 
 
@@ -121,7 +122,8 @@ class TimerWindow(BaseWindow):
 
 	def onClick(self, aControlId):
 		LOG_TRACE( 'aControlId=%d' %aControlId )
-		pass
+		if aControlId == BUTTON_ID_GO_PARENT :
+			self.GoParentTimer()
 
 
 	def onFocus(self, aControlId):
@@ -301,10 +303,13 @@ class TimerWindow(BaseWindow):
 
 	def ShowContextMenu( self ) :
 		context = []
+
+		context.append( ContextItem( 'Go Parent', CONTEXT_GO_PARENT ) )
 		
-		context.append( ContextItem( 'Edit Timer', CONTEXT_EDIT_TIMER ) )
-		context.append( ContextItem( 'Delete Timer', CONTEXT_DELETE_TIMER ) )
-		context.append( ContextItem( 'Delete All Timers', CONTEXT_DELETE_ALL_TIMERS ) )			
+		if self.mListItems and len( self.mListItems ) > 0 :
+			context.append( ContextItem( 'Edit Timer', CONTEXT_EDIT_TIMER ) )
+			context.append( ContextItem( 'Delete Timer', CONTEXT_DELETE_TIMER ) )
+			context.append( ContextItem( 'Delete All Timers', CONTEXT_DELETE_ALL_TIMERS ) )			
 
 		GuiLock2( True )
 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
@@ -319,8 +324,10 @@ class TimerWindow(BaseWindow):
 	def DoContextAction( self, aContextAction ) :
 		LOG_TRACE('aContextAction=%d' %aContextAction )
 
+		if aContextAction == CONTEXT_GO_PARENT :
+			self.GoParentTimer()
 
-		if aContextAction == CONTEXT_EDIT_TIMER :
+		elif aContextAction == CONTEXT_EDIT_TIMER :
 			pass
 
 		elif aContextAction == CONTEXT_DELETE_TIMER :
@@ -368,14 +375,14 @@ class TimerWindow(BaseWindow):
 
 		self.OpenBusyDialog( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-			for timer in self.mTimerList:
-				timer.printdebug()
-				self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
-
-			if self.mIsTimerMode == True :
-				self.UpdateList( )
+			if self.mSelectedWeeklyTimer > 0 :
+				self.mDataCache.Timer_DeleteTimer( self.mSelectedWeeklyTimer )
 			else :
-				self.UpdateList( True )
+				for timer in self.mTimerList:
+					timer.printdebug()
+					self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
+
+			self.UpdateList( True )
 	
 		self.CloseBusyDialog( )
 
