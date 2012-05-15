@@ -1,0 +1,442 @@
+from pvr.gui.WindowImport import *
+from pvr.GuiHelper import GetSetting, SetSetting, GetSelectedLongitudeString, EnumToString, ClassToList, AgeLimit
+
+
+BUTTON_ID_GO_PARENT				= 100
+LIST_ID_BIG_EPG					= 3510
+
+LABEL_ID_TIME					= 300
+LABEL_ID_DATE					= 301
+LABEL_ID_DURATION				= 302
+
+IMAMGE_ID_HD					= 310
+IMAMGE_ID_DOLBY					= 311
+IMAMGE_ID_SUBTITLE				= 312
+
+
+CONTEXT_EDIT_TIMER				= 1
+CONTEXT_DELETE_TIMER			= 2
+CONTEXT_DELETE_ALL_TIMERS		= 3
+
+
+
+class TimerWindow(BaseWindow):
+
+	def __init__(self, *args, **kwargs):
+		BaseWindow.__init__(self, *args, **kwargs)
+
+	
+	def onInit(self):
+		self.mWinId = xbmcgui.getCurrentWindowId()
+		self.mWin = xbmcgui.Window( self.mWinId )
+
+		self.SetPipScreen( )
+		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Timer' )
+		self.mSelectedWeeklyTimer = 0
+
+		self.mListItems = []
+		self.mTimerList = []
+
+		self.mCtrlBigList = self.getControl( LIST_ID_BIG_EPG )
+
+		self.mCtrlTimeLabel = self.getControl( LABEL_ID_TIME )
+		self.mCtrlDateLabel = self.getControl( LABEL_ID_DATE )
+		self.mCtrlDurationLabel = self.getControl( LABEL_ID_DURATION )		
+
+		self.mCtrlHDImage = self.getControl( IMAMGE_ID_HD )
+		self.mCtrlDolbyImage = self.getControl( IMAMGE_ID_DOLBY )
+		self.mCtrlSubtitleImage = self.getControl( IMAMGE_ID_SUBTITLE )		
+
+		self.mCtrlTimeLabel.setLabel('')
+		self.mCtrlDateLabel.setLabel('')
+		self.mCtrlDurationLabel.setLabel('')
+
+		self.mCtrlHDImage.setImage('')
+		self.mCtrlDolbyImage.setImage('')
+		self.mCtrlSubtitleImage.setImage('')
+		
+		self.UpdateTimerMode( )
+
+		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
+		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
+		LOG_TRACE('ZeppingMode(%d,%d,%d)' %( self.mCurrentMode.mServiceType, self.mCurrentMode.mMode, self.mCurrentMode.mSortingMode ) )
+		self.mChannelList = self.mDataCache.Channel_GetList( )
+
+		LOG_TRACE("ChannelList=%d" %len(self.mChannelList) )
+		
+		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
+		self.mGMTTime = 0
+
+		
+		self.Load( )
+		self.UpdateList( )
+
+		
+		self.mEventBus.Register( self )	
+		
+		self.mInitialized = True
+
+	def onAction( self, aAction ) :
+		self.GetFocusId()
+		actionId = aAction.getId( )
+		self.GlobalAction( actionId )
+
+		
+		#LOG_TRACE('onAction=%d' %actionId )
+
+		if actionId == Action.ACTION_PREVIOUS_MENU :
+			self.GoParentTimer()
+
+
+		elif  actionId == Action.ACTION_SELECT_ITEM :
+			if self.mSelectedWeeklyTimer == 0 :
+				self.GoChildTimer()
+			else :
+				selectedPos = self.mCtrlBigList.getSelectedPosition()		
+				if self.mSelectedWeeklyTimer > 0 and selectedPos == 0 :
+					self.GoParentTimer()
+				return
+
+	
+		elif actionId == Action.ACTION_PARENT_DIR :
+			self.GoParentTimer( )
+			
+		elif actionId == Action.ACTION_MOVE_RIGHT :
+			pass
+
+		elif actionId == Action.ACTION_MOVE_LEFT :
+			pass
+
+		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
+			if self.mFocusId == LIST_ID_BIG_EPG :
+				pass
+
+		elif actionId == Action.ACTION_PAGE_UP  or actionId == Action.ACTION_PAGE_DOWN :
+			if self.mFocusId == LIST_ID_BIG_EPG :
+				pass
+		
+		elif actionId == Action.ACTION_CONTEXT_MENU:
+			self.ShowContextMenu( )
+
+
+	def onClick(self, aControlId):
+		LOG_TRACE( 'aControlId=%d' %aControlId )
+		pass
+
+
+	def onFocus(self, aControlId):
+		pass
+
+
+	@GuiLock
+	def onEvent(self, aEvent):
+		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
+			if aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
+				LOG_TRACE('Record Status chanaged')
+				self.UpdateList( True )
+
+
+	def Close( self ) :
+		self.mEventBus.Deregister( self )	
+		self.SetVideoRestore( )
+		self.close( )
+
+
+	def UpdateTimerMode( self ) :
+		self.mWin.setProperty( 'TimerMode', 'true' )
+
+
+	def Flush( self ) :
+		pass
+
+
+	def Load( self ) :
+
+		LOG_TRACE('----------------------------------->')
+		self.mGMTTime = self.mDataCache.Datetime_GetGMTTime( )
+
+		self.mTimerList = []
+		try :
+			self.mTimerList = self.mDataCache.Timer_GetTimerList( )
+		except Exception, ex :
+			LOG_ERR( "Exception %s" %ex)
+
+		if self.mTimerList :
+			LOG_TRACE('self.mTimerList len=%d' %len( self.mTimerList ) )
+
+
+	def UpdateList( self, aUpdateOnly=False ) :
+		if aUpdateOnly == False :
+			self.mListItems = []
+		self.LoadTimerList( )
+
+		self.mCtrlBigList.reset()
+		self.mListItems = []
+		
+		if self.mTimerList== None or len( self.mTimerList ) <= 0 :
+			return
+			
+		try :
+
+			if self.mSelectedWeeklyTimer > 0 :
+				timer = None
+				for i in range( len( self.mTimerList ) ) :
+					if self.mTimerList[i].mTimerId == self.mSelectedWeeklyTimer :
+						timer = self.mTimerList[i]
+						break
+
+				if timer == None :
+					return
+
+				struct_time = time.gmtime( timer.mStartTime )
+				# tm_wday is different between Python and C++
+				LOG_TRACE('time.struct_time[6]=%d' %struct_time[6] )
+				if struct_time[6] == 6 : #tm_wday
+					weekday = 0
+				elif struct_time[6] == 0 :
+					weekday = 6
+				else  :
+					weekday = struct_time[6] + 1
+
+					
+				# hour*3600 + min*60 + sec
+				secondsNow = struct_time[3]*3600 + struct_time[4]*60 + struct_time[5]
+
+				LOG_TRACE('weekday=%d'  %weekday )
+
+				listItem = xbmcgui.ListItem( '..' )
+				listItem.setProperty( 'StartTime', '' )
+				listItem.setProperty( 'Duration', '' )
+				listItem.setProperty( 'TimerType', 'None' )
+				listItem.setProperty( 'HasEvent', 'false' )
+
+				self.mListItems.append( listItem )					
+
+				for weeklyTimer in timer.mWeeklyTimer :
+					dateLeft = weeklyTimer.mDate - weekday
+					if dateLeft < 0 :
+						dateLeft += 7
+					elif dateLeft == 0 :
+						if weeklyTimer.mStartTime < secondsNow :
+							dateLeft += 7
+
+					weeklyStarTime = dateLeft*24*3600 + timer.mStartTime + weeklyTimer.mStartTime - secondsNow
+
+					channel = self.mDataCache.Channel_GetByNumber( timer.mChannelNo )
+					channel.printdebug()
+					tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
+
+					listItem = xbmcgui.ListItem( tempChannelName, timer.mName )							
+
+					tempName = '%s' %(TimeToString( weeklyStarTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )						
+					listItem.setProperty( 'StartTime', tempName )
+
+					tempDuration = '%s~%s' %(TimeToString( weeklyStarTime, TimeFormatEnum.E_HH_MM ), TimeToString( weeklyStarTime + weeklyTimer.mDuration, TimeFormatEnum.E_HH_MM )) 
+					listItem.setProperty( 'Duration', tempDuration )
+
+					if self.IsRunningTimer( timer.mTimerId ) == True and \
+						weeklyStarTime < self.mDataCache.Datetime_GetLocalTime() and self.mDataCache.Datetime_GetLocalTime() < weeklyStarTime + weeklyTimer.mDuration :
+						listItem.setProperty( 'TimerType', 'Running' )
+					else :
+						listItem.setProperty( 'TimerType', 'None' )
+
+					listItem.setProperty( 'HasEvent', 'false' )
+
+					self.mListItems.append( listItem )
+
+				self.mCtrlBigList.addItems( self.mListItems )						
+
+			else :
+				for i in range( len( self.mTimerList ) ) :
+					timer = self.mTimerList[i]
+					channel = self.mDataCache.Channel_GetByNumber( timer.mChannelNo )
+					channel.printdebug()
+					tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
+
+					if aUpdateOnly == False :
+						listItem = xbmcgui.ListItem( tempChannelName, timer.mName )	
+					else :
+						listItem = self.mListItems[i]
+
+					if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY :
+						tempName = 'Weekly'
+						listItem.setProperty( 'Duration', '' )
+						tempDuration = ''
+					else :
+						tempName = '%s' %(TimeToString( timer.mStartTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )						
+						tempDuration = '%s~%s' %(TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( timer.mStartTime + timer.mDuration, TimeFormatEnum.E_HH_MM ) )
+
+					listItem.setProperty( 'StartTime', tempName )
+					listItem.setProperty( 'Duration', tempDuration )
+
+					if self.IsRunningTimer( timer.mTimerId ) == True :
+						listItem.setProperty( 'TimerType', 'Running' )
+					else :
+						listItem.setProperty( 'TimerType', 'None' )
+
+					listItem.setProperty( 'HasEvent', 'false' )
+
+					if aUpdateOnly == False :
+						self.mListItems.append( listItem )
+
+					LOG_TRACE('---------- self.mListItems COUNT=%d' %len(self.mListItems))
+					
+				if aUpdateOnly == False :
+					self.mCtrlBigList.addItems( self.mListItems )
+
+				xbmc.executebuiltin('container.update')
+
+		except Exception, ex :
+			LOG_ERR( "Exception %s" %ex)
+
+	@RunThread
+	def CurrentTimeThread(self):
+		pass
+
+
+	@GuiLock
+	def UpdateLocalTime( self ) :
+		pass
+
+
+	def ShowContextMenu( self ) :
+		context = []
+		
+		context.append( ContextItem( 'Edit Timer', CONTEXT_EDIT_TIMER ) )
+		context.append( ContextItem( 'Delete Timer', CONTEXT_DELETE_TIMER ) )
+		context.append( ContextItem( 'Delete All Timers', CONTEXT_DELETE_ALL_TIMERS ) )			
+
+		GuiLock2( True )
+		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+		dialog.SetProperty( context )
+		dialog.doModal( )
+		GuiLock2( False )
+		
+		contextAction = dialog.GetSelectedAction()
+		self.DoContextAction( contextAction ) 
+
+
+	def DoContextAction( self, aContextAction ) :
+		LOG_TRACE('aContextAction=%d' %aContextAction )
+
+
+		if aContextAction == CONTEXT_EDIT_TIMER :
+			pass
+
+		elif aContextAction == CONTEXT_DELETE_TIMER :
+			self.ShowDeleteConfirm( )
+
+		elif aContextAction == CONTEXT_DELETE_ALL_TIMERS :
+			self.ShowDeleteAllConfirm( )
+
+
+	def ShowDeleteConfirm( self ) :
+		LOG_TRACE('ShowDeleteConfirm')
+
+		timerId = 0
+		
+		LOG_TRACE('LAEL98 EPG Delete debug')
+		LOG_TRACE('LAEL98 EPG Delete debug self.mSelectedWeeklyTimer=%d' %self.mSelectedWeeklyTimer)			
+
+		if self.mSelectedWeeklyTimer > 0 :
+			LOG_TRACE('LAEL98 EPG Delete debug : selected weekly timer')
+
+		else :
+			LOG_TRACE('LAEL98 EPG Delete debug : has no selected weekly timer')			
+			pass
+
+	
+		if timerId > 0 :		
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( 'Confirm', 'Do you want to delete timer?' )
+			dialog.doModal( )
+
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				self.mDataCache.Timer_DeleteTimer( timerId )
+				self.UpdateList( True )
+
+
+	def ShowDeleteAllConfirm( self ) :
+		LOG_TRACE('ShowDeleteConfirm')
+		if self.mTimerList == None or len(self.mTimerList) <= 0 :
+			LOG_WARN('Has no Timer')
+			return
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+		dialog.SetDialogProperty( 'Confirm', 'Do you want to delete all timers?' )
+		dialog.doModal( )
+
+		self.OpenBusyDialog( )
+		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			for timer in self.mTimerList:
+				timer.printdebug()
+				self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
+
+			if self.mIsTimerMode == True :
+				self.UpdateList( )
+			else :
+				self.UpdateList( True )
+	
+		self.CloseBusyDialog( )
+
+
+	def LoadTimerList( self ) :
+		self.mTimerList = []
+		LOG_TRACE('')
+
+		try :
+			self.mTimerList = self.mDataCache.Timer_GetTimerList( )
+		except Exception, ex :
+			LOG_ERR( "Exception %s" %ex)
+
+		if self.mTimerList :
+			LOG_TRACE('self.mTimerList len=%d' %len( self.mTimerList ) )
+
+
+	def GetTimerByChannel( self, aChannel ) :
+		if self.mTimerList == None :
+			return 0
+ 
+		for i in range( len( self.mTimerList ) ) :
+			timer =  self.mTimerList[i]
+			if aChannel.mSid == timer.mSid and aChannel.mTsid == timer.mTsid and aChannel.mOnid == timer.mOnid :			
+				return timer.mTimerId
+
+		return 0
+
+
+	def IsRunningTimer( self, aTimerId ) :
+		runningTimers = self.mDataCache.Timer_GetRunningTimers( )
+		if runningTimers == None :
+			return False
+			
+		for timer in runningTimers :
+			if timer.mTimerId == aTimerId :
+				return True
+
+		return False
+			
+
+	def GoChildTimer( self ) :
+		if self.mSelectedWeeklyTimer > 0 :
+			return
+
+		selectedPos = self.mCtrlBigList.getSelectedPosition()
+		
+		if selectedPos >= 0 and selectedPos < len( self.mTimerList ) :
+			timer = self.mTimerList[selectedPos]
+
+			if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY and timer.mWeeklyTimerCount > 0 :
+				self.mSelectedWeeklyTimer = timer.mTimerId
+				self.UpdateList()
+		
+
+	def GoParentTimer( self ) :
+		if self.mSelectedWeeklyTimer > 0 :
+			self.mSelectedWeeklyTimer = 0
+			self.UpdateList()
+
+		else :
+			self.Close()
+
+
