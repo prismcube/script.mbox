@@ -37,14 +37,14 @@ CONTEXT_SEARCH					= 7
 MININUM_KEYWORD_SIZE			= 3
 
 
-class EPGWindow(BaseWindow):
+class EPGWindow( BaseWindow ) :
 
-	def __init__(self, *args, **kwargs):
-		BaseWindow.__init__(self, *args, **kwargs)
+	def __init__( self, *args, **kwargs ) :
+		BaseWindow.__init__( self, *args, **kwargs )
 
 	
-	def onInit(self):
-		self.mWinId = xbmcgui.getCurrentWindowId()
+	def onInit( self ) :
+		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.SetPipScreen( )
@@ -135,7 +135,7 @@ class EPGWindow(BaseWindow):
 			self.ShowContextMenu( )
 
 
-	def onClick(self, aControlId):
+	def onClick( self, aControlId ) :
 		LOG_TRACE( 'aControlId=%d' %aControlId )
 
 		if aControlId == BUTTON_ID_EPG_MODE :
@@ -157,13 +157,13 @@ class EPGWindow(BaseWindow):
 			pass
 
 
-	def onFocus(self, aControlId):
+	def onFocus( self, aControlId ) :
 		if self.mInitialized == False :
 			return
 
 
 	@GuiLock
-	def onEvent(self, aEvent):
+	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
 			if aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
 				LOG_TRACE('Record Status chanaged')
@@ -225,7 +225,7 @@ class EPGWindow(BaseWindow):
 			self.LoadByChannel( )
 
 
-	def LoadByChannel( self ):
+	def LoadByChannel( self ) :
 
 		gmtFrom =  self.mGMTTime 
 		gmtUntil = self.mGMTTime + E_MAX_SCHEDULE_DAYS*3600*24
@@ -243,7 +243,7 @@ class EPGWindow(BaseWindow):
 		LOG_TRACE('self.mEPGList COUNT=%d' %len(self.mEPGList ))
 		
 
-	def LoadByCurrent( self ):
+	def LoadByCurrent( self ) :
 		
 		try :
 			self.mEPGList=self.mDataCache.Epgevent_GetCurrentList()
@@ -252,7 +252,7 @@ class EPGWindow(BaseWindow):
 			LOG_ERR( "Exception %s" %ex)
 	
 
-	def LoadByFollowing( self ):
+	def LoadByFollowing( self ) :
 		
 		try :
 			self.mEPGList=self.mDataCache.Epgevent_GetFollowingList()

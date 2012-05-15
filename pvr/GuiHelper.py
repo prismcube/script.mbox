@@ -49,7 +49,7 @@ def GetImageByEPGComponent( aEPG, aFlag ) :
 	return ''
 
 
-def GetSelectedLongitudeString(aLongitude, aName):
+def GetSelectedLongitudeString( aLongitude, aName ) :
 	LOG_TRACE( 'Enter' )
 
 	ret = ''
@@ -69,8 +69,7 @@ def GetSelectedLongitudeString(aLongitude, aName):
 	return ret
 
 
-def EnumToString(aType, aValue):
-
+def EnumToString( aType, aValue ) :
 	ret = ''
 	if aType == 'type' :
 		if aValue == ElisEnum.E_SERVICE_TYPE_TV :
@@ -119,7 +118,7 @@ def EnumToString(aType, aValue):
 	return ret.upper()
 
 
-def AgeLimit(aPropertyAge, aEPGAge):
+def AgeLimit( aPropertyAge, aEPGAge ) :
 
 	isLimit = False
 	if aPropertyAge == 0 :
@@ -171,7 +170,7 @@ def ParseLabelToCh( aMode, aLabel ) :
 
 
 gLanguage = xbmcaddon.Addon(id = 'script.mbox')
-def Strings(aStringID, aReplacements = None):
+def Strings( aStringID, aReplacements = None ) :
 	#string = xbmcaddon.Addon(id = 'script.mbox').getLocalizedString(aStringID)
 	string = gLanguage.getLocalizedString(aStringID)
 	if aReplacements is not None :
@@ -182,7 +181,7 @@ def Strings(aStringID, aReplacements = None):
 
 gMRStringHash = {}
 gCacheMRLanguage = None
-def GetInstance():
+def GetInstance( ) :
 	global gCacheMRLanguage
 	if not gCacheMRLanguage:
 		gCacheMRLanguage = CacheMRLanguage()

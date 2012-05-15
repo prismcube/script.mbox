@@ -1759,7 +1759,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	@RunThread
-	def CurrentTimeThread(self):
+	def CurrentTimeThread( self ) :
 		LOG_TRACE( 'begin_start thread' )
 
 		loop = 0
