@@ -34,13 +34,13 @@ def GetImageByEPGComponent( aEPG, aFlag ) :
 	elif aFlag == ElisEnum.E_HasSubtitles and aEPG.mHasSubtitles :
 		return 'IconTeletext.png' #ToDO -> support multi skin
 	
-	elif aFlag == ElisEnum.E_HasHardOfHearingAudio and aEPG.mHasHardOfHearingAudio:
+	elif aFlag == ElisEnum.E_HasHardOfHearingAudio and aEPG.mHasHardOfHearingAudio :
 		pass
 	
-	elif aFlag == ElisEnum.E_HasHardOfHearingSub and aEPG.mHasHardOfHearingSub:
+	elif aFlag == ElisEnum.E_HasHardOfHearingSub and aEPG.mHasHardOfHearingSub :
 		pass
 	
-	elif aFlag == ElisEnum.E_HasVisuallyImpairedAudio and aEPG.mHasVisuallyImpairedAudio:
+	elif aFlag == ElisEnum.E_HasVisuallyImpairedAudio and aEPG.mHasVisuallyImpairedAudio :
 		pass
 	
 	else :
