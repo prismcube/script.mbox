@@ -253,11 +253,8 @@ class WindowMgr(object):
 			from pvr.gui.windows.FirstInstallation import FirstInstallation
 			self.mWindows[WIN_ID_FIRST_INSTALLATION]=FirstInstallation('FirstInstallation.xml', self.mScriptDir )
 
-			try :
-				from pvr.gui.windows.TimerWindow import TimerWindow
-				self.mWindows[WIN_ID_TIMER_WINDOW]=TimerWindow('TimerWindow.xml', self.mScriptDir )
-			except Exception, ex:
-				LOG_TRACE('LAEL98 Exception=%s' %ex)
+			from pvr.gui.windows.TimerWindow import TimerWindow
+			self.mWindows[WIN_ID_TIMER_WINDOW]=TimerWindow('TimerWindow.xml', self.mScriptDir )
 
 			"""
 			#test
