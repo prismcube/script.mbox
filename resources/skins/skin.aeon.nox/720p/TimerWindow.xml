@@ -1,4 +1,4 @@
-<window id="3027">
+<window id="3030">
 	<defaultcontrol always="true">9003</defaultcontrol>
 	<allowoverlay>no</allowoverlay>
 	<controls>
@@ -67,9 +67,7 @@
 					<texture>views/listpanel_detailwide.png</texture>
 				</control>
 				<control type="group" id="9003">
-					<include>Animation_CommonFade</include>
-					<include>DefaultCommonEPGView</include> <!-- Default common View id = 3500 -->
-					<include>DefaultBigEPGView</include> <!-- Default Big View id = 3510 -->			
+					<include>DefaultBigEPGView</include>
 				</control>
 			</control>
 		</control>
@@ -142,11 +140,11 @@
 					<font>Font_Reg19</font>
 					<include>Animation_CommonFade</include>
 					<enable>no</enable>
-					<label>Select view type</label>
+					<label>Select Action</label>
 				</control>
 				<control type="button" id="100">
 					<include>Objects_MediaMenuButtonAlt</include>
-					<label>VIEW:</label>
+					<label>Go Parent</label>
 				</control>
 				<control type="radiobutton" id="101">
 					<description>Extra Options</description>
