@@ -118,4 +118,7 @@ class MainMenu( BaseWindow ) :
 	def onFocus( self, aControlId ):
 		LOG_TRACE('')
 		pass
-		
+
+	def Close( self ) :
+		self.close()
+

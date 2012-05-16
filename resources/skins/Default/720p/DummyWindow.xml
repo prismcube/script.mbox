@@ -541,13 +541,6 @@
 				<height>720</height>
 				<texture>black-back_noAlpha.png</texture>
 			</control>
-			<control type="image">
-				<posx>90</posx>
-				<posy>50</posy>
-				<width>1100</width>
-				<height>500</height>
-				<texture border="20">confluence/DialogBack.png</texture>
-			</control>
 		</control>
 	</controls>
 </window>

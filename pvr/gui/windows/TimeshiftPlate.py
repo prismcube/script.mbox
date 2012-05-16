@@ -132,12 +132,14 @@ class TimeShiftPlate(BaseWindow):
 
 	def onAction(self, aAction):
 		id = aAction.getId()
-		self.GlobalAction( id )				
+		self.GlobalAction( id )
 		
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
 			LOG_TRACE( 'esc close : [%s] [%s]'% (aAction, id) )
 			self.Close()
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )			
+			WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).Close()
+			WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_MAINMENU ).Close()
+			#WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 		elif id >= Action.REMOTE_0 and id <= Action.REMOTE_9 :
 			self.KeySearch( id-Action.REMOTE_0 )

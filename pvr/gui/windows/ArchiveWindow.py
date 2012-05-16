@@ -465,7 +465,7 @@ class ArchiveWindow( BaseWindow ) :
 			else :
 				self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )			
 
-		self.close()
+		#self.close()
 		WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).SetKeyDisabled( True, recInfo )
 
 		self.SetVideoRestore();
@@ -764,4 +764,7 @@ class ArchiveWindow( BaseWindow ) :
 	 			infoDialog.doModal( )
 
 		return False
-		
+
+	def Close( self ) :
+		self.close()
+
