@@ -289,8 +289,8 @@ class TimeShiftPlate(BaseWindow):
 				elif aEvent.mType == ElisEnum.E_EOF_END :
 					LOG_TRACE( 'EventRecv EOF_STOP' )
 					if self.mMode == ElisEnum.E_MODE_PVR :
-						pass
-						#xbmc.executebuiltin('xbmc.Action(stop)')
+						#pass
+						xbmc.executebuiltin('xbmc.Action(stop)')
 
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
