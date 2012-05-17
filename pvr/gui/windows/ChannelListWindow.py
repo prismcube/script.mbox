@@ -1755,10 +1755,10 @@ class ChannelListWindow( BaseWindow ) :
 		#LOG_TRACE( 'Enter' )
 		
 		try:
-			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
+			self.mLocalTime = self.mDataCache.Datetime_GetGMTTime( )
 
 			if self.mNavEpg :
-				startTime = self.mNavEpg.mStartTime + self.mLocalOffset
+				startTime = self.mNavEpg.mStartTime# + self.mLocalOffset
 				endTime   = startTime + self.mNavEpg.mDuration
 				pastDuration = endTime - self.mLocalTime
 

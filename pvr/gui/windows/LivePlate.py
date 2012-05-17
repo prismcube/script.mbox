@@ -752,7 +752,7 @@ class LivePlate( BaseWindow ) :
 
 		while self.mEnableThread:
 			#LOG_TRACE( 'repeat <<<<' )
-			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
+			self.mLocalTime = self.mDataCache.Datetime_GetGMTTime()
 			lbl_localTime = TimeToString( self.mLocalTime, TimeFormatEnum.E_HH_MM )
 			self.UpdateLabelGUI( self.mCtrlLblEventClock.getId(), lbl_localTime )
 
@@ -769,7 +769,7 @@ class LivePlate( BaseWindow ) :
 	def UpdateLocalTime( self ) :
 		try:
 			if self.mEventCopy :
-				startTime = self.mEventCopy.mStartTime + self.mLocalOffset
+				startTime = self.mEventCopy.mStartTime# + self.mLocalOffset
 				endTime   = startTime + self.mEventCopy.mDuration
 				pastDuration = endTime - self.mLocalTime
 				#LOG_TRACE('past[%s] time[%s] start[%s] duration[%s] offset[%s]'% (pastDuration,self.mLocalTime, self.mEventCopy.mStartTime, self.mEventCopy.mDuration,self.mLocalOffset ) )

@@ -170,10 +170,10 @@ class DialogChannelJump( BaseDialog ) :
 
 	def GetEPGProgress( self ):
 		try:
-			mLocalTime = self.mDataCache.Datetime_GetLocalTime()
+			mLocalTime = self.mDataCache.Datetime_GetGMTTime()
 
 			if self.mFakeEPG :
-				startTime = self.mFakeEPG.mStartTime + self.mLocalOffset
+				startTime = self.mFakeEPG.mStartTime# + self.mLocalOffset
 				endTime   = startTime + self.mFakeEPG.mDuration
 				pastDuration = endTime - mLocalTime
 
