@@ -14,7 +14,6 @@ E_IMG_ICON_LOCK   = 'OverlayLocked.png'
 E_IMG_ICON_ICAS   = 'IconCas.png'
 E_IMG_ICON_TV     = 'tv.png'
 E_IMG_ICON_RADIO  = 'icon_radio.png'
-E_IMG_ICON_RECORD = 'i_record.png'
 
 E_TAG_COLOR_WHITE = '[COLOR white]'
 E_TAG_COLOR_GREY  = '[COLOR grey]'
@@ -873,16 +872,10 @@ class LivePlate( BaseWindow ) :
 			self.mCtrlImgICas.setImage( aValue )
 
 		elif aCtrlID == self.mCtrlImgRec1.getId( ) :
-			if aExtra == 'visible' :
-				self.mCtrlImgRec1.setVisible( aValue )
-			else :
-				self.mCtrlImgRec1.setImage( aValue )
+			self.mWin.setProperty( 'ViewRecord1', aValue )
 
 		elif aCtrlID == self.mCtrlImgRec2.getId( ) :
-			if aExtra == 'visible' :
-				self.mCtrlImgRec2.setVisible( aValue )
-			else :
-				self.mCtrlImgRec2.setImage( aValue )
+			self.mWin.setProperty( 'ViewRecord2', aValue )
 
 		elif aCtrlID == self.mCtrlLblRec1.getId( ) :
 			self.mCtrlLblRec1.setLabel( aValue )
@@ -1149,22 +1142,22 @@ class LivePlate( BaseWindow ) :
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			LOG_TRACE('isRunRecCount[%s]'% isRunRec)
 
-			recLabel1 = ''
-			recLabel2 = ''
-			recImg1   = False
-			recImg2   = False
+			strLabelRecord1 = ''
+			strLabelRecord2 = ''
+			setPropertyRecord1 = 'False'
+			setPropertyRecord2 = 'False'
 			if isRunRec == 1 :
-				recImg1 = True
+				setPropertyRecord1 = 'True'
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
-				recLabel1 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
+				strLabelRecord1 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
 
 			elif isRunRec == 2 :
-				recImg1 = True
-				recImg2 = True
+				setPropertyRecord1 = 'True'
+				setPropertyRecord2 = 'True'
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
-				recLabel1 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
+				strLabelRecord1 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
-				recLabel2 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
+				strLabelRecord2 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
 
 			if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
 				if isRunRec > 0 :
@@ -1188,16 +1181,11 @@ class LivePlate( BaseWindow ) :
 			else :
 				btnValue = True
 
-
-			self.UpdateLabelGUI( self.mCtrlLblRec1.getId(), recLabel1 )
-			self.UpdateLabelGUI( self.mCtrlLblRec2.getId(), recLabel2 )
+			self.UpdateLabelGUI( self.mCtrlLblRec1.getId(), strLabelRecord1 )
+			self.UpdateLabelGUI( self.mCtrlLblRec2.getId(), strLabelRecord2 )
+			self.UpdateLabelGUI( self.mCtrlImgRec1.getId(), setPropertyRecord1 )
+			self.UpdateLabelGUI( self.mCtrlImgRec2.getId(), setPropertyRecord2 )
 			self.UpdateLabelGUI( self.mCtrlBtnStartRec.getId(), btnValue )
-			self.UpdateLabelGUI( self.mCtrlImgRec1.getId(), recImg1, 'visible' )
-			self.UpdateLabelGUI( self.mCtrlImgRec2.getId(), recImg2, 'visible' )
-			if recImg1 :
-				self.UpdateLabelGUI( self.mCtrlImgRec1.getId(), E_IMG_ICON_RECORD )
-			if recImg2 :
-				self.UpdateLabelGUI( self.mCtrlImgRec2.getId(), E_IMG_ICON_RECORD )
 
 			LOG_TRACE('Leave')
 

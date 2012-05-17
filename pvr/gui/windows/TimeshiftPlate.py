@@ -13,6 +13,11 @@ FLAG_STOP  = 0
 FLAG_PLAY  = 1
 FLAG_PAUSE = 2
 
+E_CONTROL_ENABLE  = 'enable'
+E_CONTROL_VISIBLE = 'visible'
+E_CONTROL_LABEL   = 'label'
+E_CONTROL_POSY    = 'posy'
+
 E_DEFAULT_POSY = 25
 E_PROGRESS_WIDTH_MAX = 980
 E_BUTTON_GROUP_PLAYPAUSE = 450
@@ -490,8 +495,8 @@ class TimeShiftPlate(BaseWindow):
 		self.UpdateLabelGUI( self.mCtrlLblSpeed.getId(),       '' )
 		self.UpdateLabelGUI( self.mCtrlImgRewind.getId(),   False )
 		self.UpdateLabelGUI( self.mCtrlImgForward.getId(),  False )
-		self.UpdateLabelGUI( self.mCtrlBtnCurrent.getId(),     '', 'lbl' )
-		self.UpdateLabelGUI( self.mCtrlBtnCurrent.getId(),      0, 'pos' )
+		self.UpdateLabelGUI( self.mCtrlBtnCurrent.getId(),     '', E_CONTROL_LABEL )
+		self.UpdateLabelGUI( self.mCtrlBtnCurrent.getId(),      0, E_CONTROL_POSY )
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
 
@@ -504,9 +509,9 @@ class TimeShiftPlate(BaseWindow):
 			self.mCtrlBtnVolume.setVisible( aValue )
 
 		elif aCtrlID == self.mCtrlBtnStartRec.getId( ) :
-			if aExtra == 'enable' :
+			if aExtra == E_CONTROL_ENABLE :
 				self.mCtrlBtnStartRec.setEnabled( aValue )
-			elif aExtra == 'visible' :
+			elif aExtra == E_CONTROL_VISIBLE :
 				self.mCtrlBtnStartRec.setVisible( aValue )
 
 		elif aCtrlID == self.mCtrlBtnRewind.getId( ) :
@@ -545,9 +550,9 @@ class TimeShiftPlate(BaseWindow):
 			self.mCtrlProgress.setPercent( aValue )
 
 		elif aCtrlID == self.mCtrlBtnCurrent.getId( ) :
-			if aExtra == 'lbl':
+			if aExtra == E_CONTROL_LABEL:
 				self.mCtrlBtnCurrent.setLabel( aValue )
-			elif aExtra == 'pos':
+			elif aExtra == E_CONTROL_POSY:
 				self.mCtrlBtnCurrent.setPosition( aValue, E_DEFAULT_POSY )
 
 		elif aCtrlID == self.mCtrlLblTSStartTime.getId( ) :
@@ -560,10 +565,10 @@ class TimeShiftPlate(BaseWindow):
 			self.mCtrlLblSpeed.setLabel( aValue )
 
 		elif aCtrlID == self.mCtrlImgRec1.getId( ) :
-			self.mCtrlImgRec1.setVisible( aValue )
+			self.mWin.setProperty( 'ViewRecord1', aValue )
 
 		elif aCtrlID == self.mCtrlImgRec2.getId( ) :
-			self.mCtrlImgRec2.setVisible( aValue )
+			self.mWin.setProperty( 'ViewRecord2', aValue )
 
 		elif aCtrlID == self.mCtrlLblRec1.getId( ) :
 			self.mCtrlLblRec1.setLabel( aValue )
@@ -638,7 +643,7 @@ class TimeShiftPlate(BaseWindow):
 			if lbl_timeS != '' :
 				self.UpdateLabelGUI( self.mCtrlLblTSStartTime.getId(), lbl_timeS )
 			if lbl_timeP != '' :
-				self.UpdateLabelGUI( self.mCtrlBtnCurrent.getId(), lbl_timeP, 'lbl' )
+				self.UpdateLabelGUI( self.mCtrlBtnCurrent.getId(), lbl_timeP, E_CONTROL_LABEL )
 			if lbl_timeE != '' :
 				self.UpdateLabelGUI( self.mCtrlLblTSEndTime.getId(), lbl_timeE )
 
@@ -768,7 +773,7 @@ class TimeShiftPlate(BaseWindow):
 		else :
 			labelMode = 'UNKNOWN'
 
-		self.UpdateLabelGUI( self.mCtrlBtnStartRec.getId(), buttonHide, 'visible' )
+		self.UpdateLabelGUI( self.mCtrlBtnStartRec.getId(), buttonHide, E_CONTROL_VISIBLE )
 		LOG_TRACE('Leave')
 
 		return labelMode
@@ -822,7 +827,7 @@ class TimeShiftPlate(BaseWindow):
 
 				#progress drawing
 				posx = int( self.mProgress_idx * self.mProgressbarWidth / 100 )
-				self.UpdateLabelGUI( self.mCtrlBtnCurrent.getId(), posx, 'pos' )
+				self.UpdateLabelGUI( self.mCtrlBtnCurrent.getId(), posx, E_CONTROL_POSY )
 				self.UpdateLabelGUI( self.mCtrlProgress.getId(), self.mProgress_idx )
 				LOG_TRACE( 'progress endTime[%s] idx[%s] posx[%s]'% (self.mTimeshift_endTime, self.mProgress_idx, posx) )
 
@@ -838,22 +843,22 @@ class TimeShiftPlate(BaseWindow):
 		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 		LOG_TRACE('isRunRecCount[%s]'% isRunRec)
 
-		recLabel1 = ''
-		recLabel2 = ''
-		recImg1   = False
-		recImg2   = False
+		strLabelRecord1 = ''
+		strLabelRecord2 = ''
+		setPropertyRecord1   = 'False'
+		setPropertyRecord2   = 'False'
 		if isRunRec == 1 :
-			recImg1 = True
+			setPropertyRecord1 = 'True'
 			recInfo = self.mDataCache.Record_GetRunningRecordInfo( E_INDEX_FIRST_RECORDING )
-			recLabel1 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
+			strLabelRecord1 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
 
 		elif isRunRec == 2 :
-			recImg1 = True
-			recImg2 = True
+			setPropertyRecord1 = 'True'
+			setPropertyRecord2 = 'True'
 			recInfo = self.mDataCache.Record_GetRunningRecordInfo( E_INDEX_FIRST_RECORDING )
-			recLabel1 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
+			strLabelRecord1 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
 			recInfo = self.mDataCache.Record_GetRunningRecordInfo( E_INDEX_SECOND_RECORDING )
-			recLabel2 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
+			strLabelRecord2 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
 
 		btnValue = False
 		if isRunRec >= 1 :
@@ -861,11 +866,11 @@ class TimeShiftPlate(BaseWindow):
 		else :
 			btnValue = True
 
-		self.UpdateLabelGUI( self.mCtrlLblRec1.getId(), recLabel1 )
-		self.UpdateLabelGUI( self.mCtrlImgRec1.getId(), recImg1 )
-		self.UpdateLabelGUI( self.mCtrlLblRec2.getId(), recLabel2 )
-		self.UpdateLabelGUI( self.mCtrlImgRec2.getId(), recImg2 )
-		self.UpdateLabelGUI( self.mCtrlBtnStartRec.getId(), btnValue, 'enable' )
+		self.UpdateLabelGUI( self.mCtrlLblRec1.getId(), strLabelRecord1 )
+		self.UpdateLabelGUI( self.mCtrlLblRec2.getId(), strLabelRecord2 )
+		self.UpdateLabelGUI( self.mCtrlImgRec1.getId(), setPropertyRecord1 )
+		self.UpdateLabelGUI( self.mCtrlImgRec2.getId(), setPropertyRecord2 )
+		self.UpdateLabelGUI( self.mCtrlBtnStartRec.getId(), btnValue, E_CONTROL_ENABLE )
 
 		return isRunRec
 
