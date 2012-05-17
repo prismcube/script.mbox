@@ -69,11 +69,7 @@ class CacheChannel( object ) :
 class DataCacheMgr( object ):
 	def __init__( self ):
 		self.mShutdowning = False
-		LOG_TRACE('')		
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
-		LOG_TRACE('')		
-		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
-		LOG_TRACE('')
 
 		self.mZappingMode						= None
 		self.mChannelList						= None
@@ -84,7 +80,7 @@ class DataCacheMgr( object ):
 		self.mConfiguredSatelliteList			= None
 		self.mConfiguredSatelliteListTuner1		= None
 		self.mConfiguredSatelliteListTuner2		= None
-		self.mTransponderList					= None
+		self.mTransponderLists					= None
 		self.mEPGList							= None
 		self.mCurrentEvent						= None
 		self.mListCasList						= None
@@ -142,11 +138,8 @@ class DataCacheMgr( object ):
 					record.printdebug()
 			"""
 
-		LOG_TRACE('')
 		self.mPropertyPincode = ElisPropertyEnum( 'PinCode', self.mCommander ).GetProp( )
 		self.Load( )
-		LOG_TRACE('')
-		#self.mEventBus.Register( self )
 
 
 	@classmethod
@@ -164,23 +157,6 @@ class DataCacheMgr( object ):
 			self.mEpgDB.Execute('commit')
 
 
-	def onEvent(self, aEvent):
-		if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
-			hashKey = '%d:%d:%d:%d' %( aEvent.mEventId, aEvent.mSid, aEvent.mTsid, aEvent.mOnid )
-			#LOG_TRACE('hashKey=%s' %hashKey )
-			event = self.mEPGListHash.get( hashKey, None )
-
-			if event == None:
-				event = self.mCommander.Epgevent_GetPresent()
-				if event and event.mError == 0:
-					LOG_TRACE('add hashKey=%s' %hashKey )				
-					self.mEPGListHash[hashKey] = event
-
-			if event and self.mCurrentChannel.mSid == event.mSid and \
-			self.mCurrentChannel.mTsid == event.mTsid and self.mCurrentChannel.mOnid == event.mOnid :
-				self.mCurrentEvent = event
-				#LOG_TRACE('currentEvent' )
-
 	def Test( self ):
 		before = time.clock()
 		LOG_ERR('before=%s' %before )
@@ -197,10 +173,8 @@ class DataCacheMgr( object ):
 		self.LoadVolumeToSetGUI( )
 
 		#Zapping Mode
-		LOG_TRACE('')
 		self.LoadZappingmode( )
 		self.LoadZappingList( )
-		LOG_TRACE('')
 
 
 		#SatelliteList
@@ -220,8 +194,8 @@ class DataCacheMgr( object ):
 		volume = self.mCommander.Player_GetVolume( )
 		LOG_TRACE( 'playerVolume[%s]'% volume)
 
-		apiSet = 'setvolume(%s)'% volume
-		xbmc.executehttpapi(apiSet)
+		volumeString = 'setvolume(%s)'% volume
+		xbmc.executehttpapi(volumeString)
 
 
 	def LoadTime( self ) :
@@ -300,18 +274,18 @@ class DataCacheMgr( object ):
 
 
 	def LoadConfiguredTransponder( self ) :
-		self.mTransponderList = []
+		self.mTransponderLists = []
 		self.mTransponderListHash = {}
 
 	 	if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
 			for satellite in self.mConfiguredSatelliteList :
 				if SUPPORT_CHANNEL_DATABASE	== True :
-					transponder = self.mChannelDB.Transponder_GetList( satellite.mLongitude, satellite.mBand )
+					transponderList = self.mChannelDB.Transponder_GetList( satellite.mLongitude, satellite.mBand )
 				else :
-					transponder = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
-				self.mTransponderList.append( transponder )
+					transponderList = self.mCommander.Transponder_GetList( satellite.mLongitude, satellite.mBand )
+				self.mTransponderLists.append( transponderList )
 				hashKey = '%d:%d' % ( satellite.mLongitude, satellite.mBand )
-				self.mTransponderListHash[hashKey] = transponder
+				self.mTransponderListHash[hashKey] = transponderList
 		else :
 			LOG_WARN('Has no Configured Satellite')
 		
@@ -772,17 +746,6 @@ class DataCacheMgr( object ):
 
 
 #	@DataLock
-	def Epgevent_GetEvent( self, aEvent ) :
-		hashKey = '%d:%d:%d:%d' %( aEvent.mEventId, aEvent.mSid, aEvent.mTsid, aEvent.mOnid )
-		event = self.mEPGListHash.get( hashKey, None )
-
-		if event :
-			return event
-
-		return None
-
-
-#	@DataLock
 	def Epgevent_GetCurrent( self, aSid, aTsid, aOnid, aReopen = False ) :
 
 		eventList = None
@@ -1101,3 +1064,7 @@ class DataCacheMgr( object ):
 	def Timer_GetRunningTimers( self ) :
 		return self.mCommander.Timer_GetRunningTimers( )
 
+
+	def Timer_DeleteOneWeeklyTimer( self, aTimerId, aDate, aStartTime, aDuration ) :
+		return self.mCommander.Timer_EditWeeklyTimer( aTimerId, aDate, aStartTime, aDuration, aStartTime, 0 ) 
+		
