@@ -468,7 +468,7 @@ class ArchiveWindow( BaseWindow ) :
 		#self.close()
 		WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).SetKeyDisabled( True, recInfo )
 
-		self.SetVideoRestore();
+		self.SetVideoRestore()
 		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )				
 
 
