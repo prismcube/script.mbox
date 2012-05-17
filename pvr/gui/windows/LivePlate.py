@@ -10,11 +10,6 @@ FLAG_CLOCKMODE_HMS     = 3
 FLAG_CLOCKMODE_HHMM    = 4
 FLAG_CLOCKMODE_INTTIME = 5
 
-E_IMG_ICON_LOCK   = 'OverlayLocked.png'
-E_IMG_ICON_ICAS   = 'IconCas.png'
-E_IMG_ICON_TV     = 'tv.png'
-E_IMG_ICON_RADIO  = 'icon_radio.png'
-
 E_TAG_COLOR_WHITE = '[COLOR white]'
 E_TAG_COLOR_GREY  = '[COLOR grey]'
 E_TAG_COLOR_GREY3 = '[COLOR grey3]'
@@ -72,10 +67,12 @@ class LivePlate( BaseWindow ) :
 
 		self.mCtrlLblChannelNumber     = self.getControl( 601 )
 		self.mCtrlLblChannelName       = self.getControl( 602 )
-		self.mCtrlImgServiceType       = self.getControl( 603 )
-		self.mCtrlImgServiceTypeImg1   = self.getControl( 604 )
-		self.mCtrlImgServiceTypeImg2   = self.getControl( 605 )
-		self.mCtrlImgServiceTypeImg3   = self.getControl( 606 )
+		self.mCtrlImgServiceTypeTV     = self.getControl( 603 )
+		self.mCtrlImgServiceTypeRadio  = self.getControl( 604 )
+
+		self.mCtrlImgServiceTypeImg1   = self.getControl( 605 )
+		self.mCtrlImgServiceTypeImg2   = self.getControl( 606 )
+		self.mCtrlImgServiceTypeImg3   = self.getControl( 607 )
 		self.mCtrlLblEventClock        = self.getControl( 610 )
 		self.mCtrlLblLongitudeInfo     = self.getControl( 701 )
 		self.mCtrlLblEventName         = self.getControl( 703 )
@@ -601,21 +598,28 @@ class LivePlate( BaseWindow ) :
 
 				#lock,cas
 				if ch.mLocked :
-					self.UpdateLabelGUI( self.mCtrlImgLocked.getId(), E_IMG_ICON_LOCK )
+					self.UpdateLabelGUI( self.mCtrlImgLocked.getId(), 'True' )
 					if self.mFlag_OnEvent == True :
 						self.mPincodeEnter |= FLAG_MASK_ADD
 
 				if ch.mIsCA :
-					self.UpdateLabelGUI( self.mCtrlImgICas.getId(), E_IMG_ICON_ICAS )
+					self.UpdateLabelGUI( self.mCtrlImgICas.getId(), 'True' )
 
 				#type
-				imgfile = ''
-				if ch.mServiceType == ElisEnum.E_SERVICE_TYPE_TV: 		imgfile = E_IMG_ICON_TV
-				elif ch.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO:	imgfile = E_IMG_ICON_RADIO
-				elif ch.mServiceType == ElisEnum.E_SERVICE_TYPE_DATA:	pass
+				setPropertyTV    = 'False'
+				setPropertyRadio = 'False'
+				if ch.mServiceType == ElisEnum.E_SERVICE_TYPE_TV:
+					setPropertyTV    = 'True'
+					setPropertyRadio = 'False'
+				elif ch.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO:
+					setPropertyTV    = 'False'
+					setPropertyRadio = 'True'
+				elif ch.mServiceType == ElisEnum.E_SERVICE_TYPE_DATA:
+					pass
 				else:
 					LOG_TRACE( 'unknown ElisEnum tvType[%s]'% ch.mServiceType )
-				self.UpdateLabelGUI( self.mCtrlImgServiceType.getId(), imgfile )
+				self.UpdateLabelGUI( self.mCtrlImgServiceTypeTV.getId(),    setPropertyTV )
+				self.UpdateLabelGUI( self.mCtrlImgServiceTypeRadio.getId(), setPropertyRadio )
 
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -805,16 +809,15 @@ class LivePlate( BaseWindow ) :
 			self.UpdateLabelGUI( self.mCtrlLblEventName.getId(),             '' )
 			self.UpdateLabelGUI( self.mCtrlLblEventStartTime.getId(),        '' )
 			self.UpdateLabelGUI( self.mCtrlLblEventEndTime.getId(),          '' )
-			self.UpdateLabelGUI( self.mCtrlImgLocked.getId(),                '' )
-			self.UpdateLabelGUI( self.mCtrlImgICas.getId(),                  '' )
-			self.UpdateLabelGUI( self.mCtrlImgServiceType.getId(), E_IMG_ICON_TV )
+			self.UpdateLabelGUI( self.mCtrlImgServiceTypeTV.getId(),     'True' )
+			self.UpdateLabelGUI( self.mCtrlImgServiceTypeRadio.getId(), 'False' )
+			self.UpdateLabelGUI( self.mCtrlImgLocked.getId(),           'False' )
+			self.UpdateLabelGUI( self.mCtrlImgICas.getId(),             'False' )
+
 			self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg1.getId(),       '' )
 			self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg2.getId(),       '' )
 			self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg3.getId(),       '' )
 			self.UpdateLabelGUI( self.mCtrlLblLongitudeInfo.getId(),         '' )
-			#self.UpdateLabelGUI( self.mCtrlGropEventDescGroup.getId(),    False )
-			#self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText1.getId(), '', 'reset' )
-			#self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText1.getId(), '', 'reset' )
 
 		else:
 			LOG_TRACE( 'has no channel' )
@@ -835,8 +838,11 @@ class LivePlate( BaseWindow ) :
 		elif aCtrlID == self.mCtrlLblChannelName.getId( ) :
 			self.mCtrlLblChannelName.setLabel( aValue )
 
-		elif aCtrlID == self.mCtrlImgServiceType.getId( ) :
-			self.mCtrlImgServiceType.setImage( aValue )
+		elif aCtrlID == self.mCtrlImgServiceTypeTV.getId( ) :
+			self.mWin.setProperty( 'ServiceTypeTV', aValue )
+
+		elif aCtrlID == self.mCtrlImgServiceTypeRadio.getId( ) :
+			self.mWin.setProperty( 'ServiceTypeRadio', aValue )
 
 		elif aCtrlID == self.mCtrlImgServiceTypeImg1.getId( ) :
 			self.mCtrlImgServiceTypeImg1.setImage( aValue )
@@ -866,10 +872,10 @@ class LivePlate( BaseWindow ) :
 			self.mCtrlProgress.setPercent( aValue )
 
 		elif aCtrlID == self.mCtrlImgLocked.getId( ) :
-			self.mCtrlImgLocked.setImage( aValue )
+			self.mWin.setProperty( 'iLock', aValue )
 
 		elif aCtrlID == self.mCtrlImgICas.getId( ) :
-			self.mCtrlImgICas.setImage( aValue )
+			self.mWin.setProperty( 'iCas', aValue )
 
 		elif aCtrlID == self.mCtrlImgRec1.getId( ) :
 			self.mWin.setProperty( 'ViewRecord1', aValue )

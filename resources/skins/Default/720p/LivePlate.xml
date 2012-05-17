@@ -101,15 +101,29 @@
 					<description>Ch name</description>
 				</control>
 
-				<control type="image" id="603">
+				<control type = "group">
 					<posx>245</posx>
 					<posy>-35</posy>
-					<align>left</align>
-					<width>70</width>
-					<height>30</height>
-					<texture>$INFO[Control.GetLabel]</texture>
-					<description>service type</description>
+					<control type="image" id="603">
+						<posx>0</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>70</width>
+						<height>30</height>
+						<texture>tv.png</texture>
+						<visible>substring(Window.Property(ServiceTypeTV),true)</visible>
+					</control>
+					<control type="image" id="604">
+						<posx>0</posx>
+						<posy>0</posy>
+						<align>left</align>
+						<width>70</width>
+						<height>30</height>
+						<texture>icon_radio.png</texture>
+						<visible>substring(Window.Property(ServiceTypeRadio),true)</visible>
+					</control>
 				</control>
+
 
 				<control type="group">
 					<posx>-50</posx>
@@ -372,7 +386,8 @@
 						<posy>-5</posy>
 						<width>50</width>
 						<height>40</height>
-						<texture>$INFO[Control.GetLabel]</texture>
+						<texture>OverlayLocked.png</texture>
+						<visible>substring(Window.Property(iLock),true)</visible>
 						<description>lock</description>
 					</control>
 					<control type="image" id="652">
@@ -380,11 +395,12 @@
 						<posy>1</posy>
 						<width>30</width>
 						<height>30</height>
-						<texture>$INFO[Control.GetLabel]</texture>
+						<texture>IconCas.png</texture>
+						<visible>substring(Window.Property(iCas),true)</visible>
 						<description>icas</description>
 					</control>
 				</control>
-				<control type="image" id="604">
+				<control type="image" id="605">
 					<posx>720</posx>
 					<posy>18</posy>
 					<width>60</width>
@@ -392,7 +408,7 @@
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>data</description>
 				</control>
-				<control type="image" id="605">
+				<control type="image" id="606">
 					<posx>775</posx>
 					<posy>18</posy>
 					<width>90</width>
@@ -400,7 +416,7 @@
 					<texture>$INFO[Control.GetLabel]</texture>
 					<description>audio dolby</description>
 				</control>
-				<control type="image" id="606">
+				<control type="image" id="607">
 					<posx>855</posx>
 					<posy>18</posy>
 					<width>90</width>
