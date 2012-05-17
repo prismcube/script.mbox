@@ -656,7 +656,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		if aJumpNumber:
 			#detected to jump focus
-			chindex = 0;
+			chindex = 0
 			for ch in self.mChannelList:
 				if ch.mNumber == aJumpNumber :
 					self.mNavChannel = ch
@@ -1404,7 +1404,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCurrentChannel = self.mNavChannel.mNumber
 
 		#detected to last focus
-		iChannelIdx = 0;
+		iChannelIdx = 0
 		for iChannel in self.mChannelList:
 			if iChannel.mNumber == self.mCurrentChannel :
 				break

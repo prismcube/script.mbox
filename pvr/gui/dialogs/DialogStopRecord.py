@@ -29,7 +29,7 @@ PROGRESS_ID_DURATION_2		= 515
 class DialogStopRecord( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
-		self.mBackgroundHeight = -1;
+		self.mBackgroundHeight = -1
 
 	def onInit( self ):
 		self.mWinId = xbmcgui.getCurrentWindowId( )
