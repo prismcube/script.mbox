@@ -32,7 +32,7 @@ class DialogAddManualTimer( SettingDialog ) :
 		self.mIsEdit = False
 		self.mRecordingMode = E_ONCE
 		self.mChanne = None
-		self.mTimer = -1;
+		self.mTimer = -1
 		self.mUsedWeeklyList = None
 		self.mSelectedWeekOfDay = 0
 		self.mRecordName = 'None'

@@ -120,7 +120,7 @@ class DialogChannelJump( BaseDialog ) :
 
 	def ChannelList_GetSearch( self, aNumber ):
 		iChannel = None
-		idx = 0;
+		idx = 0
 		for ch in self.mChannelList:
 			if ch.mNumber == aNumber :
 				iChannel = self.mChannelList[idx]
