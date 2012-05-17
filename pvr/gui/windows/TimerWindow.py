@@ -340,7 +340,27 @@ class TimerWindow(BaseWindow):
 		LOG_TRACE('LAEL98 EPG Delete debug selectedPos=%d' %selectedPos)
 
 		if self.mSelectedWeeklyTimer > 0 :
-			LOG_TRACE('LAEL98 EPG Delete debug : selected weekly timer')
+			LOG_TRACE('LAEL98 EPG Delete debug : selected weekly timer')		
+			if selectedPos > 0 and selectedPos <= len( self.mTimerList ) :
+				timer = None
+				for i in range( len( self.mTimerList ) ) :
+					if self.mTimerList[i].mTimerId == self.mSelectedWeeklyTimer :
+						timer = self.mTimerList[i]
+						break
+
+				if timer == None :
+					LOG_WARN('Can not find weeklytimer')
+					return
+
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( 'Confirm', 'Do you want to delete timer?' )
+				dialog.doModal( )
+
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					weeklyTimer = timer.mWeeklyTimer[selectedPos-1]
+					self.mDataCache.Timer_DeleteOneWeeklyTimer( self.mSelectedWeeklyTimer, weeklyTimer.mDate, weeklyTimer.mStartTime, weeklyTimer.mDuration ) 
+					self.UpdateList( True )
+
 
 		else :
 			if selectedPos >= 0 and selectedPos < len( self.mTimerList ) :
@@ -348,14 +368,14 @@ class TimerWindow(BaseWindow):
 				timerId = timer.mTimerId
 
 	
-		if timerId > 0 :		
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( 'Confirm', 'Do you want to delete timer?' )
-			dialog.doModal( )
+			if timerId > 0 :		
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( 'Confirm', 'Do you want to delete timer?' )
+				dialog.doModal( )
 
-			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				self.mDataCache.Timer_DeleteTimer( timerId )
-				self.UpdateList( True )
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					self.mDataCache.Timer_DeleteTimer( timerId )
+					self.UpdateList( True )
 
 
 	def ShowDeleteAllConfirm( self ) :
