@@ -1,7 +1,6 @@
 from pvr.gui.WindowImport import *
 from pvr.GuiHelper import GetImageByEPGComponent, GetSelectedLongitudeString, EnumToString, ClassToList, AgeLimit, MR_LANG
 
-
 FLAG_MASK_ADD  = 0x01
 FLAG_MASK_NONE = 0x00
 FLAG_CLOCKMODE_ADMYHM  = 1
@@ -58,6 +57,37 @@ class LivePlate( BaseWindow ) :
 
 		# end thread CurrentTimeThread()
 		self.mEnableThread = False
+
+	def onInit ( self ) :
+		self.tt1 = self.getControl( 605 )
+		self.tt2 = self.getControl( 606 )
+
+	def onAction(self, aAction):
+		id = aAction.getId()
+		
+		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )			
+
+		elif id == Action.REMOTE_0 : 
+			xbmc.executebuiltin('XBMC.ReloadSkin()')
+
+		elif id == 104 : #scroll up
+			xbmc.executebuiltin('XBMC.ReloadSkin()')
+			aa1 = self.tt1.getPosition()
+			aa2 = self.tt2.getPosition()
+			print '-----aa1[%s] aa1[%s], aa2[%s] aa2[%s]'% (aa1[0],aa1[1],aa2[0],aa2[1])
+			self.tt1.setPosition(aa2[0],aa2[1])
+			self.tt2.setPosition(aa1[0],aa1[1])
+
+	def onFocus(self, aControlId):
+		pass
+
+
+	def SetAutomaticHide( self, aHide=True ) :
+		self.mAutomaticHide = aHide
+
+	def GetAutomaticHide( self ) :
+		return self.mAutomaticHide
 	"""
 
 	def onInit( self ) :
@@ -70,9 +100,9 @@ class LivePlate( BaseWindow ) :
 		self.mCtrlImgServiceTypeTV     = self.getControl( 603 )
 		self.mCtrlImgServiceTypeRadio  = self.getControl( 604 )
 
-		self.mCtrlImgServiceTypeImg1   = self.getControl( 605 )
-		self.mCtrlImgServiceTypeImg2   = self.getControl( 606 )
-		self.mCtrlImgServiceTypeImg3   = self.getControl( 607 )
+		self.mCtrlGroupComponentData   = self.getControl( 605 )
+		self.mCtrlGroupComponentDolby  = self.getControl( 606 )
+		self.mCtrlGroupComponentHD     = self.getControl( 607 )
 		self.mCtrlLblEventClock        = self.getControl( 610 )
 		self.mCtrlLblLongitudeInfo     = self.getControl( 701 )
 		self.mCtrlLblEventName         = self.getControl( 703 )
@@ -635,35 +665,16 @@ class LivePlate( BaseWindow ) :
 				self.UpdateLabelGUI( self.mCtrlLblEventStartTime.getId(), label )
 				label = TimeToString( aEvent.mStartTime + aEvent.mDuration, TimeFormatEnum.E_HH_MM )
 				self.UpdateLabelGUI( self.mCtrlLblEventEndTime.getId(),   label )
-
 				LOG_TRACE( 'mStartTime[%s] mDuration[%s]'% (aEvent.mStartTime, aEvent.mDuration) )
 
-
 				#component
-				imglist = []
-				img = GetImageByEPGComponent( aEvent, ElisEnum.E_HasSubtitles )
-				if img:
-					imglist.append(img)
-				img = GetImageByEPGComponent( aEvent, ElisEnum.E_HasDolbyDigital )
-				if img:
-					imglist.append(img)
-				img = GetImageByEPGComponent( aEvent, ElisEnum.E_HasHDVideo )
-				if img:
-					imglist.append(img)
-				
-				if len(imglist) == 1:
-					self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg1.getId(), imglist[0] )
-				elif len(imglist) == 2:
-					self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg1.getId(), imglist[0] )
-					self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg2.getId(), imglist[1] )
-				elif len(imglist) == 3:
-					self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg1.getId(), imglist[0] )
-					self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg2.getId(), imglist[1] )
-					self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg3.getId(), imglist[2] )
-				else:
-					self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg1.getId(), '' )
-					self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg2.getId(), '' )
-					self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg3.getId(), '' )
+				setPropertyList = []
+				setPropertyList = GetPropertyByEPGComponent( aEvent )
+				self.UpdateLabelGUI( self.mCtrlGroupComponentData.getId(),  setPropertyList[0] )
+				self.UpdateLabelGUI( self.mCtrlGroupComponentDolby.getId(), setPropertyList[1] )
+				self.UpdateLabelGUI( self.mCtrlGroupComponentHD.getId(),    setPropertyList[2] )
+				LOG_TRACE( 'Component[%s]'% setPropertyList )
+
 
 				#is Age? agerating check
 				if self.mFlag_OnEvent == True :
@@ -814,9 +825,9 @@ class LivePlate( BaseWindow ) :
 			self.UpdateLabelGUI( self.mCtrlImgLocked.getId(),           'False' )
 			self.UpdateLabelGUI( self.mCtrlImgICas.getId(),             'False' )
 
-			self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg1.getId(),       '' )
-			self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg2.getId(),       '' )
-			self.UpdateLabelGUI( self.mCtrlImgServiceTypeImg3.getId(),       '' )
+			self.UpdateLabelGUI( self.mCtrlGroupComponentData.getId(),  'False' )
+			self.UpdateLabelGUI( self.mCtrlGroupComponentDolby.getId(), 'False' )
+			self.UpdateLabelGUI( self.mCtrlGroupComponentHD.getId(),    'False' )
 			self.UpdateLabelGUI( self.mCtrlLblLongitudeInfo.getId(),         '' )
 
 		else:
@@ -844,14 +855,14 @@ class LivePlate( BaseWindow ) :
 		elif aCtrlID == self.mCtrlImgServiceTypeRadio.getId( ) :
 			self.mWin.setProperty( 'ServiceTypeRadio', aValue )
 
-		elif aCtrlID == self.mCtrlImgServiceTypeImg1.getId( ) :
-			self.mCtrlImgServiceTypeImg1.setImage( aValue )
+		elif aCtrlID == self.mCtrlGroupComponentData.getId( ) :
+			self.mWin.setProperty( 'HasSubtitle', aValue )
 
-		elif aCtrlID == self.mCtrlImgServiceTypeImg2.getId( ) :
-			self.mCtrlImgServiceTypeImg2.setImage( aValue )
+		elif aCtrlID == self.mCtrlGroupComponentDolby.getId( ) :
+			self.mWin.setProperty( 'HasDolby', aValue )
 
-		elif aCtrlID == self.mCtrlImgServiceTypeImg3.getId( ) :
-			self.mCtrlImgServiceTypeImg3.setImage( aValue )
+		elif aCtrlID == self.mCtrlGroupComponentHD.getId( ) :
+			self.mWin.setProperty( 'HasHD', aValue )
 
 		elif aCtrlID == self.mCtrlLblEventClock.getId( ) :
 			self.mCtrlLblEventClock.setLabel( aValue )
@@ -1324,5 +1335,5 @@ class LivePlate( BaseWindow ) :
 
 
 		LOG_TRACE( 'Leave' )
-	
+
 

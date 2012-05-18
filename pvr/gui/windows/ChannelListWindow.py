@@ -1,6 +1,6 @@
 from pvr.gui.WindowImport import *
 from pvr.GuiHelper import GetSelectedLongitudeString, GetImageByEPGComponent, EnumToString, ClassToList, AgeLimit, MR_LANG
-
+from copy import deepcopy
 
 FLAG_MASK_ADD    = 0x01
 FLAG_MASK_NONE   = 0x00
@@ -33,14 +33,7 @@ E_SLIDE_MENU_FAVORITE   = 3
 #E_SLIDE_MENU_DELETEALL  = 5
 E_SLIDE_MENU_BACK       = 5
 
-#list property
-E_IMG_ICON_LOCK   = 'OverlayLocked.png'
-E_IMG_ICON_ICAS   = 'IconCas.png'
-E_IMG_ICON_MARK   = 'OverlayWatched.png'
-E_IMG_ICON_REC   = 'IconPlateRec.png'
-E_IMG_ICON_TITLE1 = 'IconHeaderTitleSmall.png'
-E_IMG_ICON_TITLE2 = 'icon_setting_focus.png'
-E_IMG_ICON_UPDOWN = 'DI_Cursor_UpDown.png'
+#color tag
 E_TAG_COLOR_RED   = '[COLOR red]'
 E_TAG_COLOR_GREY  = '[COLOR grey]'
 E_TAG_COLOR_GREY3 = '[COLOR grey3]'
@@ -132,43 +125,43 @@ class ChannelListWindow( BaseWindow ) :
 		#print '==================== TEST TIME[ONINIT] START[%s]'% starttime
 
 		#header
-		self.mCtrlLblPath1           = self.getControl( 21 )
-		self.mCtrlGropOpt            = self.getControl( 500 )
-		self.mCtrlBtnOpt             = self.getControl( 501 )
-		self.mCtrlLblOpt1            = self.getControl( 502 )
-		self.mCtrlLblOpt2            = self.getControl( 503 )
+		self.mCtrlLblPath1            = self.getControl( 21 )
+		self.mCtrlGroupOpt            = self.getControl( 500 )
+		self.mCtrlBtnOpt              = self.getControl( 501 )
+		self.mCtrlLblOpt1             = self.getControl( 502 )
+		self.mCtrlLblOpt2             = self.getControl( 503 )
 
 		#main menu
-		self.mCtrlGropMainmenu       = self.getControl( 100 )
-		self.mCtrlBtnMenu            = self.getControl( 101 )
-		self.mCtrlListMainmenu       = self.getControl( 102 )
+		self.mCtrlGroupMainmenu       = self.getControl( 100 )
+		self.mCtrlBtnMenu             = self.getControl( 101 )
+		self.mCtrlListMainmenu        = self.getControl( 102 )
 
 		#sub menu list
-		self.mCtrlGropSubmenu        = self.getControl( 9001 )
-		self.mCtrlListSubmenu        = self.getControl( 112 )
+		self.mCtrlGroupSubmenu        = self.getControl( 9001 )
+		self.mCtrlListSubmenu         = self.getControl( 112 )
 
 		#sub menu btn
-		self.mCtrlRdoTV              = self.getControl( 113 )
-		self.mCtrlRdoRadio           = self.getControl( 114 )
-		self.mCtrlBtnEdit            = self.getControl( 115 )
-		self.mCtrlBtnDelAll          = self.getControl( 116 )
+		self.mCtrlRdoTV               = self.getControl( 113 )
+		self.mCtrlRdoRadio            = self.getControl( 114 )
+		self.mCtrlBtnEdit             = self.getControl( 115 )
+		self.mCtrlBtnDelAll           = self.getControl( 116 )
 
 		#ch list
-		self.mCtrlGropCHList         = self.getControl( 49 )
-		self.mCtrlListCHList         = self.getControl( 50 )
+		self.mCtrlGroupCHList         = self.getControl( 49 )
+		self.mCtrlListCHList          = self.getControl( 50 )
 
 		#info
-		self.mCtrlChannelName        = self.getControl( 303 )
-		self.mCtrlEventName          = self.getControl( 304 )
-		self.mCtrlEventTime          = self.getControl( 305 )
-		self.mCtrlProgress           = self.getControl( 306 )
-		self.mCtrlLongitudeInfo      = self.getControl( 307 )
-		self.mCtrlCareerInfo         = self.getControl( 308 )
-		self.mCtrlLockedInfo         = self.getControl( 309 )
-		self.mCtrlServiceTypeImg1    = self.getControl( 310 )
-		self.mCtrlServiceTypeImg2    = self.getControl( 311 )
-		self.mCtrlServiceTypeImg3    = self.getControl( 312 )
-		self.mCtrlSelectItem         = self.getControl( 401 )
+		self.mCtrlChannelName         = self.getControl( 303 )
+		self.mCtrlEventName           = self.getControl( 304 )
+		self.mCtrlEventTime           = self.getControl( 305 )
+		self.mCtrlProgress            = self.getControl( 306 )
+		self.mCtrlLongitudeInfo       = self.getControl( 307 )
+		self.mCtrlCareerInfo          = self.getControl( 308 )
+		self.mCtrlLockedInfo          = self.getControl( 309 )
+		self.mCtrlGroupComponentData  = self.getControl( 310 )
+		self.mCtrlGroupComponentDolby = self.getControl( 311 )
+		self.mCtrlGroupComponentHD    = self.getControl( 312 )
+		self.mCtrlSelectItem          = self.getControl( 401 )
 
 		self.mIsSelect = False
 		self.mIsMark = True
@@ -281,7 +274,7 @@ class ChannelListWindow( BaseWindow ) :
 
 				if position == E_SLIDE_MENU_BACK :
 					self.mCtrlListCHList.setEnabled(True)
-					self.setFocusId( self.mCtrlGropCHList.getId( ) )
+					self.setFocusId( self.mCtrlGroupCHList.getId( ) )
 
 				else :
 					self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
@@ -312,7 +305,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			elif self.mFocusId == self.mCtrlBtnOpt :
 				self.mCtrlListCHList.setEnabled( True )
-				self.setFocusId( self.mCtrlGropCHList.getId( ) )
+				self.setFocusId( self.mCtrlGroupCHList.getId( ) )
 
 
 		elif id == Action.ACTION_CONTEXT_MENU :
@@ -342,7 +335,7 @@ class ChannelListWindow( BaseWindow ) :
 						self.SetEditMarkupGUI('mark', idx )
 
 						GuiLock2( True )
-						self.setFocusId( self.mCtrlGropCHList.getId( ) )
+						self.setFocusId( self.mCtrlGroupCHList.getId( ) )
 						self.mCtrlListCHList.selectItem( idx+1 )
 						GuiLock2( False )
 
@@ -372,7 +365,7 @@ class ChannelListWindow( BaseWindow ) :
 			#slide close
 			GuiLock2( True )
 			self.mCtrlListCHList.setEnabled(True)
-			self.setFocusId( self.mCtrlGropCHList.getId( ) )
+			self.setFocusId( self.mCtrlGroupCHList.getId( ) )
 			GuiLock2( False )
 
 		elif aControlId == self.mCtrlBtnOpt.getId( ):
@@ -403,7 +396,7 @@ class ChannelListWindow( BaseWindow ) :
 				#slide close
 				GuiLock2( True )
 				self.mCtrlListCHList.setEnabled(True)
-				self.setFocusId( self.mCtrlGropCHList.getId( ) )
+				self.setFocusId( self.mCtrlGroupCHList.getId( ) )
 				GuiLock2( False )
 
 
@@ -498,7 +491,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		#slide close
 		self.mCtrlListCHList.setEnabled(True)
-		self.setFocusId( self.mCtrlGropCHList.getId( ) )
+		self.setFocusId( self.mCtrlGroupCHList.getId( ) )
 
 
 		LOG_TRACE( 'Leave' )
@@ -534,7 +527,7 @@ class ChannelListWindow( BaseWindow ) :
 				#slide close
 				GuiLock2( True )
 				self.mCtrlListCHList.setEnabled(True)
-				self.setFocusId( self.mCtrlGropCHList.getId( ) )
+				self.setFocusId( self.mCtrlGroupCHList.getId( ) )
 				GuiLock2( False )
 
 			except Exception, e :
@@ -582,7 +575,7 @@ class ChannelListWindow( BaseWindow ) :
 				#slide close
 				GuiLock2( True )
 				self.mCtrlListCHList.setEnabled(True)
-				self.setFocusId( self.mCtrlGropCHList.getId( ) )
+				self.setFocusId( self.mCtrlGroupCHList.getId( ) )
 				GuiLock2( False )
 
 		LOG_TRACE( 'Leave' )
@@ -1171,14 +1164,14 @@ class ChannelListWindow( BaseWindow ) :
 
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			#opt btn blind
-			self.UpdateLabelGUI( self.mCtrlGropOpt.getId( ), False )
+			self.UpdateLabelGUI( self.mCtrlGroupOpt.getId( ), False )
 			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ), True, 'enable' )
 			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ), True, 'enable' )
 			self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), MR_LANG('Edit Channel'), 'label' )
 
 		else :
 			#opt btn visible
-			self.UpdateLabelGUI( self.mCtrlGropOpt.getId( ), True )
+			self.UpdateLabelGUI( self.mCtrlGroupOpt.getId( ), True )
 			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ), False, 'enable' )
 			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ), False, 'enable' )
 			self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), MR_LANG('Save Channel'), 'label' )
@@ -1376,14 +1369,13 @@ class ChannelListWindow( BaseWindow ) :
 				except Exception, e:
 					LOG_TRACE( '=========== except[%s]'% e )
 
-
-				if iChannel.mLocked  : listItem.setProperty('lock', E_IMG_ICON_LOCK)
-				if iChannel.mIsCA    : listItem.setProperty('icas', E_IMG_ICON_ICAS)
+				if iChannel.mLocked  : listItem.setProperty( 'lock', 'True' )
+				if iChannel.mIsCA    : listItem.setProperty( 'icas', 'True' )
 				if self.mRecCount :
 					if self.mRecChannel1 :
-						if iChannel.mNumber == self.mRecChannel1[0] : listItem.setProperty('rec', E_IMG_ICON_REC)
+						if iChannel.mNumber == self.mRecChannel1[0] : listItem.setProperty('rec', 'True')
 					if self.mRecChannel2 :
-						if iChannel.mNumber == self.mRecChannel2[0] : listItem.setProperty('rec', E_IMG_ICON_REC)
+						if iChannel.mNumber == self.mRecChannel2[0] : listItem.setProperty('rec', 'True')
 
 				self.mListItems.append(listItem)
 
@@ -1444,9 +1436,9 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlLongitudeInfo.setLabel('')
 		self.mCtrlCareerInfo.setLabel('')
 		self.mCtrlLockedInfo.setVisible(False)
-		self.mCtrlServiceTypeImg1.setImage('')
-		self.mCtrlServiceTypeImg2.setImage('')
-		self.mCtrlServiceTypeImg3.setImage('')
+		self.mWin.setProperty( 'HasSubtitle', 'False' )
+		self.mWin.setProperty( 'HasDolby',    'False' )
+		self.mWin.setProperty( 'HasHD',       'False' )
 
 		LOG_TRACE( 'Leave' )
 
@@ -1538,17 +1530,17 @@ class ChannelListWindow( BaseWindow ) :
 		elif aCtrlID == self.mCtrlLockedInfo.getId( ) :
 			self.mCtrlLockedInfo.setVisible( aValue )
 
-		elif aCtrlID == self.mCtrlServiceTypeImg1.getId( ) :
-			self.mCtrlServiceTypeImg1.setImage( aValue )
+		elif aCtrlID == self.mCtrlGroupComponentData.getId( ) :
+			self.mWin.setProperty( 'HasSubtitle', aValue )
 
-		elif aCtrlID == self.mCtrlServiceTypeImg2.getId( ) :
-			self.mCtrlServiceTypeImg2.setImage( aValue )
+		elif aCtrlID == self.mCtrlGroupComponentDolby.getId( ) :
+			self.mWin.setProperty( 'HasDolby', aValue )
 
-		elif aCtrlID == self.mCtrlServiceTypeImg3.getId( ) :
-			self.mCtrlServiceTypeImg3.setImage( aValue )
+		elif aCtrlID == self.mCtrlGroupComponentHD.getId( ) :
+			self.mWin.setProperty( 'HasHD', aValue )
 
-		elif aCtrlID == self.mCtrlGropOpt.getId( ) :
-			self.mCtrlGropOpt.setVisible( aValue )
+		elif aCtrlID == self.mCtrlGroupOpt.getId( ) :
+			self.mCtrlGroupOpt.setVisible( aValue )
 
 		elif aCtrlID == self.mCtrlLblPath1.getId( ) :
 			self.mCtrlLblPath1.setLabel( aValue )
@@ -1643,31 +1635,12 @@ class ChannelListWindow( BaseWindow ) :
 				self.mCtrlProgress.setVisible( True )
 
 				#component
-				imglist = []
-				img = GetImageByEPGComponent( self.mNavEpg, ElisEnum.E_HasSubtitles )
-				if img:
-					imglist.append(img)
-				img = GetImageByEPGComponent( self.mNavEpg, ElisEnum.E_HasDolbyDigital )
-				if img:
-					imglist.append(img)
-				img = GetImageByEPGComponent( self.mNavEpg, ElisEnum.E_HasHDVideo )
-				if img:
-					imglist.append(img)
-
-				if len(imglist) == 1:
-					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId( ), imglist[0] )
-				elif len(imglist) == 2:
-					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId( ), imglist[0] )
-					self.UpdateLabelGUI( self.mCtrlServiceTypeImg2.getId( ), imglist[1] )
-
-				elif len(imglist) == 3:
-					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId( ), imglist[0] )
-					self.UpdateLabelGUI( self.mCtrlServiceTypeImg2.getId( ), imglist[1] )
-					self.UpdateLabelGUI( self.mCtrlServiceTypeImg3.getId( ), imglist[2] )
-				else:
-					self.UpdateLabelGUI( self.mCtrlServiceTypeImg1.getId( ), '' )
-					self.UpdateLabelGUI( self.mCtrlServiceTypeImg2.getId( ), '' )
-					self.UpdateLabelGUI( self.mCtrlServiceTypeImg3.getId( ), '' )
+				setPropertyList = []
+				setPropertyList = GetPropertyByEPGComponent( self.mNavEpg )
+				self.UpdateLabelGUI( self.mCtrlGroupComponentData.getId(),  setPropertyList[0] )
+				self.UpdateLabelGUI( self.mCtrlGroupComponentDolby.getId(), setPropertyList[1] )
+				self.UpdateLabelGUI( self.mCtrlGroupComponentHD.getId(),    setPropertyList[2] )
+				LOG_TRACE( 'Component[%s]'% setPropertyList )
 
 
 				#is Age? agerating check
@@ -1803,15 +1776,15 @@ class ChannelListWindow( BaseWindow ) :
 
 					if aEnabled :
 						#enable lock
-						listItem.setProperty('lock', E_IMG_ICON_LOCK)
+						listItem.setProperty('lock', 'True')
 						cmd = 'Lock'
 					else :
 						#disible lock
-						listItem.setProperty('lock', '')
+						listItem.setProperty('lock', 'False')
 						cmd = 'UnLock'
 
 					#mark remove
-					listItem.setProperty('mark', '')
+					listItem.setProperty('mark', 'False')
 
 					retList = []
 					retList.append( self.mChannelList[lastPos] )
@@ -1878,10 +1851,10 @@ class ChannelListWindow( BaseWindow ) :
 
 						#lock toggle: disable
 						if aEnabled :
-							listItem.setProperty('lock', E_IMG_ICON_LOCK)
+							listItem.setProperty('lock', 'True')
 							cmd = 'Lock'
 						else :
-							listItem.setProperty('lock', '')
+							listItem.setProperty('lock', 'False')
 							cmd = 'UnLock'
 
 						retList = []
@@ -1944,7 +1917,7 @@ class ChannelListWindow( BaseWindow ) :
 					LOG_TRACE( 'set[%s] idx[%s] ret[%s]'% (cmd,idx,ret) )
 
 					#mark remove
-					listItem.setProperty('mark', '')
+					listItem.setProperty('mark', 'False')
 
 				#recovery last focus
 				self.mCtrlListCHList.selectItem(lastPos)
@@ -2008,10 +1981,10 @@ class ChannelListWindow( BaseWindow ) :
 			for idx in self.mMarkList :
 				i = int(idx)
 				listItem = self.mCtrlListCHList.getListItem( i )
-				listItem.setProperty('mark', E_IMG_ICON_MARK)
+				listItem.setProperty('mark', 'True')
 
 			self.mCtrlListCHList.selectItem(self.mMarkList[0])
-			self.setFocusId( self.mCtrlGropCHList.getId( ) )
+			self.setFocusId( self.mCtrlGroupCHList.getId( ) )
 
 			self.mCtrlLblOpt1.setLabel('[B]OK[/B]')
 			self.mCtrlLblOpt2.setLabel('[B]OK[/B]')
@@ -2117,15 +2090,15 @@ class ChannelListWindow( BaseWindow ) :
 				listItem = self.mCtrlListCHList.getListItem( i )
 				xbmc.sleep( 50 )
 
-				listItem.setProperty( 'lock', '' )
-				listItem.setProperty( 'icas', '' )
+				listItem.setProperty( 'lock', 'False' )
+				listItem.setProperty( 'icas', 'False' )
 
 				label = str('%s%04d %s%s'%( E_TAG_COLOR_GREY, number, name, E_TAG_COLOR_END ) )
 				listItem.setLabel(label)
 
-				if lock : listItem.setProperty( 'lock', E_IMG_ICON_LOCK )
-				if icas : listItem.setProperty( 'icas', E_IMG_ICON_ICAS )
-				listItem.setProperty( 'mark', E_IMG_ICON_MARK )
+				if lock : listItem.setProperty( 'lock', 'True' )
+				if icas : listItem.setProperty( 'icas', 'True' )
+				listItem.setProperty( 'mark', 'True' )
 				xbmc.sleep( 50 )
 				GuiLock2( False )
 
@@ -2135,8 +2108,8 @@ class ChannelListWindow( BaseWindow ) :
 			if aMove == Action.ACTION_MOVE_UP or aMove == Action.ACTION_MOVE_DOWN :
 				listItem = self.mCtrlListCHList.getListItem(oldmark)
 				xbmc.sleep( 50 )
-				listItem.setProperty( 'mark', '' )
-				self.setFocusId( self.mCtrlGropCHList.getId( ) )
+				listItem.setProperty( 'mark', 'False' )
+				self.setFocusId( self.mCtrlGroupCHList.getId( ) )
 
 			else:
 				for idx in range(len(self.mMarkList) ) :
@@ -2145,8 +2118,8 @@ class ChannelListWindow( BaseWindow ) :
 						LOG_TRACE('old idx[%s] i[%s]'% (oldmark, idx) )
 						continue
 					listItem = self.mCtrlListCHList.getListItem( idxOld )
-					listItem.setProperty( 'mark', '' )
-					self.setFocusId( self.mCtrlGropCHList.getId( ) )
+					listItem.setProperty( 'mark', 'False' )
+					self.setFocusId( self.mCtrlGroupCHList.getId( ) )
 					xbmc.sleep( 50 )
 			GuiLock2( False )
 
@@ -2173,13 +2146,9 @@ class ChannelListWindow( BaseWindow ) :
 
 			listItem = self.mCtrlListCHList.getListItem(aPos)
 
-			#mark toggle: disable
-			if listItem.getProperty('mark') == E_IMG_ICON_MARK :
-				listItem.setProperty('mark', '')
-
-			#mark toggle: enable
-			else :
-				listItem.setProperty('mark', E_IMG_ICON_MARK)
+			#mark toggle: disable/enable
+			if listItem.getProperty('mark') == 'True' : listItem.setProperty('mark', 'False')
+			else : 										listItem.setProperty('mark', 'True')
 
 
 		elif aMode.lower( ) == 'delete' :
@@ -2270,7 +2239,7 @@ class ChannelListWindow( BaseWindow ) :
 
 				self.mMarkList = []
 				GuiLock2( True )
-				self.setFocusId( self.mCtrlGropCHList.getId( ) )
+				self.setFocusId( self.mCtrlGroupCHList.getId( ) )
 				self.mCtrlSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition( )+1) ) )
 				GuiLock2( False )
 
@@ -2296,7 +2265,7 @@ class ChannelListWindow( BaseWindow ) :
 				xbmc.sleep( 50 )
 				self.mCtrlListCHList.selectItem(idx)
 				
-				self.setFocusId( self.mCtrlGropCHList.getId( ) )
+				self.setFocusId( self.mCtrlGroupCHList.getId( ) )
 				GuiLock2( False )
 			return
 
@@ -2328,7 +2297,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.mMarkList = []
 		GuiLock2( True )
-		self.setFocusId( self.mCtrlGropCHList.getId( ) )
+		self.setFocusId( self.mCtrlGroupCHList.getId( ) )
 		GuiLock2( False )
 
 		LOG_TRACE( 'Leave' )

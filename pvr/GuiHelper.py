@@ -17,7 +17,8 @@ def SetSetting( aID, aValue ) :
 
 def GetImageByEPGComponent( aEPG, aFlag ) :
 	if aFlag == ElisEnum.E_HasHDVideo and aEPG.mHasHDVideo :
-		return 'OverlayHD.png' #ToDO -> support multi skin
+		#return 'OverlayHD.png' #ToDO -> support multi skin
+		return ElisEnum.E_HasHDVideo
 
 	elif aFlag == ElisEnum.E_Has16_9Video and aEPG.mHas16_9Video :
 		pass
@@ -29,10 +30,12 @@ def GetImageByEPGComponent( aEPG, aFlag ) :
 		pass
 
 	elif aFlag == ElisEnum.E_HasDolbyDigital and aEPG.mHasDolbyDigital :
-		return 'dolbydigital.png' #ToDO -> support multi skin
+		#return 'dolbydigital.png' #ToDO -> support multi skin
+		return ElisEnum.E_HasDolbyDigital
 	
 	elif aFlag == ElisEnum.E_HasSubtitles and aEPG.mHasSubtitles :
-		return 'IconTeletext.png' #ToDO -> support multi skin
+		#return 'IconTeletext.png' #ToDO -> support multi skin
+		return ElisEnum.E_HasSubtitles
 	
 	elif aFlag == ElisEnum.E_HasHardOfHearingAudio and aEPG.mHasHardOfHearingAudio :
 		pass
@@ -46,7 +49,55 @@ def GetImageByEPGComponent( aEPG, aFlag ) :
 	else :
 		pass
 
-	return ''
+	return 0
+
+
+def GetPropertyByEPGComponent( aEPG ) :
+	setPropertyData  = 'False'
+	setPropertyDolby = 'False'
+	setPropertyHD    = 'False'
+	bitCount = 0
+	bitCount += GetImageByEPGComponent( aEPG, ElisEnum.E_HasSubtitles )
+	bitCount += GetImageByEPGComponent( aEPG, ElisEnum.E_HasDolbyDigital )
+	bitCount += GetImageByEPGComponent( aEPG, ElisEnum.E_HasHDVideo )
+	LOG_TRACE('component bitCount[%s]'% bitCount)
+
+	if bitCount == ElisEnum.E_HasDolbyDigital + ElisEnum.E_HasHDVideo:
+		setPropertyData  = 'False'
+		setPropertyDolby = 'True'
+		setPropertyHD    = 'True'
+
+	elif bitCount == ElisEnum.E_HasHDVideo:
+		setPropertyData  = 'False'
+		setPropertyDolby = 'False'
+		setPropertyHD    = 'True'
+
+	elif bitCount == ElisEnum.E_HasDolbyDigital :
+		setPropertyData  = 'False'
+		setPropertyDolby = 'True'
+		setPropertyHD    = 'False'
+
+	elif bitCount == ElisEnum.E_HasSubtitles :
+		setPropertyData  = 'True'
+		setPropertyDolby = 'False'
+		setPropertyHD    = 'False'
+
+	elif bitCount == ElisEnum.E_HasSubtitles + ElisEnum.E_HasDolbyDigital + ElisEnum.E_HasHDVideo:
+		setPropertyData  = 'True'
+		setPropertyDolby = 'True'
+		setPropertyHD    = 'True'
+
+	elif bitCount == ElisEnum.E_HasSubtitles + ElisEnum.E_HasDolbyDigital :
+		setPropertyData  = 'True'
+		setPropertyDolby = 'True'
+		setPropertyHD    = 'False'
+
+	elif bitCount == ElisEnum.E_HasSubtitles + ElisEnum.E_HasHDVideo :
+		setPropertyData  = 'True'
+		setPropertyDolby = 'False'
+		setPropertyHD    = 'True'
+
+	return [setPropertyData, setPropertyDolby, setPropertyHD]
 
 
 def GetSelectedLongitudeString( aLongitude, aName ) :
