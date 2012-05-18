@@ -415,7 +415,7 @@
 							<posy>0</posy>
 							<width>60</width>
 							<height>40</height>
-							<visible>substring(Window.Property(Component1),true)</visible>
+							<visible>substring(Window.Property(HasSubtitle),true)</visible>
 							<control type="image">
 								<posx>0</posx>
 								<posy>0</posy>
@@ -429,7 +429,7 @@
 							<posy>0</posy>
 							<width>90</width>
 							<height>40</height>
-							<visible>substring(Window.Property(Component2),true)</visible>
+							<visible>substring(Window.Property(HasDolby),true)</visible>
 							<control type="image">
 								<posx>0</posx>
 								<posy>0</posy>
@@ -443,7 +443,7 @@
 							<posy>0</posy>
 							<width>90</width>
 							<height>40</height>
-							<visible>substring(Window.Property(Component3),true)</visible>
+							<visible>substring(Window.Property(HasHD),true)</visible>
 							<control type="image">
 								<posx>0</posx>
 								<posy>0</posy>
