@@ -291,7 +291,7 @@ class Configure( SettingWindow ) :
 					ret1 = True
 					ret2 = True
 					ret3 = True
-					self.ShowProgress( 'Now Reset...', 15 )
+					self.ShowProgress( 'Now Reset...', 30 )
 				 	if resetChannel == 1 :
 				 		ret = self.mCommander.System_SetDefaultChannelList( )
 				 		self.mDataCache.LoadChannelList( )
