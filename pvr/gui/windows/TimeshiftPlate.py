@@ -931,7 +931,7 @@ class TimeShiftPlate(BaseWindow):
 
 	
 	def StartAutomaticHide( self ) :
-		prop = ElisPropertyEnum( 'Channel Banner Duration', self.mCommander )
+		prop = ElisPropertyEnum( 'Playback Banner Duration', self.mCommander )
 		bannerTimeout = prop.GetProp()
 		self.mAutomaticHideTimer = threading.Timer( bannerTimeout, self.AsyncAutomaticHide )
 		self.mAutomaticHideTimer.start()

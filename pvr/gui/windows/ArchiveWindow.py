@@ -317,32 +317,30 @@ class ArchiveWindow( BaseWindow ) :
 	def UpdateList( self ) :
 		LOG_TRACE('UpdateList Start')
 		try :
-			if self.mSortMode == E_SORT_DATE :
-				self.mRecordList.sort( self.ByDate )
-			elif self.mSortMode == E_SORT_CHANNEL :
-				self.mRecordList.sort( self.ByChannel )
+			if self.mRecordList :
+				if self.mSortMode == E_SORT_DATE :
+					self.mRecordList.sort( self.ByDate )
+				elif self.mSortMode == E_SORT_CHANNEL :
+					self.mRecordList.sort( self.ByChannel )
 
-			elif self.mSortMode == E_SORT_TITLE :
-				self.mRecordList.sort( self.ByTitle )
+				elif self.mSortMode == E_SORT_TITLE :
+					self.mRecordList.sort( self.ByTitle )
 
-			elif self.mSortMode == E_SORT_DURATION :
-				self.mRecordList.sort( self.ByDuration )
-			else :
-				LOG_WARN('Unknown sort mode')		
-				self.mSortMode = 0
-				self.mRecordList.sort( self.ByDate )
+				elif self.mSortMode == E_SORT_DURATION :
+					self.mRecordList.sort( self.ByDuration )
+				else :
+					LOG_WARN('Unknown sort mode')		
+					self.mSortMode = 0
+					self.mRecordList.sort( self.ByDate )
 
-			LOG_TRACE('')			
-			if self.mAscending[self.mSortMode] == False :
-				self.mRecordList.reverse()
-
-			LOG_TRACE('')
+				if self.mAscending[self.mSortMode] == False :
+					self.mRecordList.reverse()
 
 			self.mCtrlCommonList.reset( )
 			self.mCtrlThumbnailList.reset( )
 			self.mCtrlPosterwrapList.reset( )
 			self.mCtrlFanartList.reset( )
-			
+
 			self.mRecordListItems = []
 			for i in range( len( self.mRecordList ) ) :
 				recInfo = self.mRecordList[i]
@@ -493,6 +491,7 @@ class ArchiveWindow( BaseWindow ) :
 		markedList = []
 
 		if self.mRecordListItems == None :
+			self.UpdateList( )
 			return markedList
 
 		count = len( self.mRecordListItems )

@@ -9,6 +9,9 @@ FLAG_CLOCKMODE_HMS     = 3
 FLAG_CLOCKMODE_HHMM    = 4
 FLAG_CLOCKMODE_INTTIME = 5
 
+FLAG_ZAPPING_LOAD   = 0
+FLAG_ZAPPING_CHANGE = 1
+
 E_TAG_COLOR_WHITE = '[COLOR white]'
 E_TAG_COLOR_GREY  = '[COLOR grey]'
 E_TAG_COLOR_GREY3 = '[COLOR grey3]'
@@ -24,10 +27,12 @@ CURR_CHANNEL	= 2
 CONTEXT_ACTION_VIDEO_SETTING = 1 
 CONTEXT_ACTION_AUDIO_SETTING = 2
 
+#db
 E_SYNCHRONIZED  = 0
 E_ASYNCHRONIZED = 1
 E_TABLE_ALLCHANNEL = 0
 E_TABLE_ZAPPING = 1
+
 
 class LivePlate( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -1181,12 +1186,15 @@ class LivePlate( BaseWindow ) :
 					#use zapping table, in recording
 					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ZAPPING )
 					self.mDataCache.Channel_GetZappingList( )
-					self.mDataCache.LoadChannelList( )
+					#### data cache re-load ####
+					self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, True  )
+
 				else :
 					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
 					if self.mDataCache.mCacheReload :
 						self.mDataCache.mCacheReload = False
-						self.mDataCache.LoadChannelList( )
+						#### data cache re-load ####
+						self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, True  )
 
 				ret = self.mDataCache.GetChangeDBTableChannel( )
 				LOG_TRACE('table[%s]'% ret)

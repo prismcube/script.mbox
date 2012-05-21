@@ -988,7 +988,7 @@ class DataCacheMgr( object ):
 
 	def Record_GetRecordInfo( self, aIndex, aServiceType ) :
 		if SUPPORT_RECORD_DATABASE == True :	
-			return self.mRecordDB.Record_GetRecordInfo( aServiceType )
+			return self.mRecordDB.Record_GetRecordInfo( aIndex, aServiceType )
 		else :
 			return self.mCommander.Record_GetRecordInfo( aIndex, aServiceType )
 

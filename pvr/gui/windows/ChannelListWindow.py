@@ -192,6 +192,13 @@ class ChannelListWindow( BaseWindow ) :
 		self.SetPipScreen( )
 		self.UpdateLabelGUI( self.mCtrlBtnDelAll.getId( ), MR_LANG('Delete All Channel') )
 
+		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
+		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
+		if self.mDataCache.mCacheReload :
+			self.mListItems = None
+			self.mDataCache.mCacheReload = False
+			LOG_TRACE('NEW APPEND LIST reason by reload cache')
+
 		#initialize get cache
 		zappingmode = None
 		zappingmode = self.mDataCache.Zappingmode_GetCurrent( )
@@ -200,13 +207,6 @@ class ChannelListWindow( BaseWindow ) :
 		else :
 			self.mElisSetZappingModeInfo = ElisIZappingMode()
 		self.ShowRecording( )
-
-		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
-		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
-		if self.mDataCache.mCacheReload :
-			self.mListItems = None
-			self.mDataCache.mCacheReload = False
-			LOG_TRACE('NEW APPEND LIST reason by reload cache')
 
 		#initialize get channel list
 		self.InitSlideMenuHeader( )
