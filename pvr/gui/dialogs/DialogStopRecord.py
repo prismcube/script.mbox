@@ -32,7 +32,7 @@ class DialogStopRecord( BaseDialog ) :
 		self.mBackgroundHeight = -1
 
 	def onInit( self ):
-		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
 		self.mCtrlRecordGroup = {}
@@ -155,7 +155,7 @@ class DialogStopRecord( BaseDialog ) :
 
 	@GuiLock	
 	def onEvent( self, aEvent ):
-		if xbmcgui.getCurrentWindowId() == self.mWinId :
+		if xbmcgui.getCurrentWindowDialogId() == self.mWinId :
 			LOG_TRACE('')
 			pass
 

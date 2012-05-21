@@ -144,5 +144,5 @@ class AutomaticScan( SettingWindow ) :
 		self.mFormattedList.append( 'All' )
 
 		for config in self.mConfiguredSatelliteList :
-			self.mFormattedList.append( self.mDataCache.Satellite_GetFormattedName( config.mLongitude, config.mBand ) )
+			self.mFormattedList.append( self.mDataCache.GetFormattedSatelliteName( config.mLongitude, config.mBand ) )
 		

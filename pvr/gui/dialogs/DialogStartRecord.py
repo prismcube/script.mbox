@@ -18,7 +18,7 @@ class DialogStartRecord( BaseDialog ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 
 	def onInit( self ):
-		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
 		self.SetHeaderLabel( 'Record' )
@@ -110,7 +110,7 @@ class DialogStartRecord( BaseDialog ) :
 	def onEvent( self, aEvent ):
 		pass
 		"""
-		if xbmcgui.getCurrentWindowId() == self.winId :
+		if xbmcgui.getCurrentWindowDialogId() == self.winId :
 			print 'Do Event'
 			pass
 		"""

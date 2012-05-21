@@ -43,7 +43,7 @@ class DialogAddManualTimer( SettingDialog ) :
 
 
 	def onInit( self ):
-		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
 		if self.mIsEdit == True :
@@ -158,7 +158,7 @@ class DialogAddManualTimer( SettingDialog ) :
 	def onEvent( self, aEvent ):
 		pass
 		"""
-		if xbmcgui.getCurrentWindowId() == self.winId :
+		if xbmcgui.getCurrentWindowDialogId() == self.winId :
 			print 'Do Event'
 			pass
 		"""

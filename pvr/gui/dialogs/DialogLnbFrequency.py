@@ -12,7 +12,7 @@ class DialogLnbFrequency( SettingDialog ) :
 
 		
 	def onInit( self ) :
-		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		
 		self.SetHeaderLabel( 'LNB Frequency' )

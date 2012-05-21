@@ -70,7 +70,7 @@ class EditTransponder( SettingWindow ) :
 		
 		# Select Satellite
 		if groupId == E_Input01 :
-			satelliteList = self.mDataCache.Satellite_GetFormattedNameList( )
+			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog( )
  			select = dialog.select( 'Select satellite', satelliteList )
 
@@ -215,10 +215,10 @@ class EditTransponder( SettingWindow ) :
 	def InitConfig( self ) :
 		self.ResetAllControl( )
 		self.GetSatelliteInfo( self.mSatelliteIndex )
-		satellitename = self.mDataCache.Satellite_GetFormattedName( self.mLongitude , self.mBand )
+		satellitename = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand )
 		self.AddInputControl( E_Input01, 'Satellite', satellitename, 'Select satellite.' )
 
-		self.mTransponderList = self.mDataCache.Satellite_GetTransponderList( self.mLongitude, self.mBand )
+		self.mTransponderList = self.mDataCache.GetTransponderListBySatellite( self.mLongitude, self.mBand )
 
 		if self.mTransponderList and self.mTransponderList[0].mError == 0 :
 			self.AddInputControl( E_Input02, 'Frequency', '%d MHz' % self.mTransponderList[self.mTransponderIndex].mFrequency, 'Select Frequency.' )
@@ -247,6 +247,6 @@ class EditTransponder( SettingWindow ) :
 
 
 	def	GetSatelliteInfo( self, aIndex ) :
-		satellite = self.mDataCache.Satellite_GetSatelliteByIndex( aIndex )
+		satellite = self.mDataCache.GetSatelliteByIndex( aIndex )
 		self.mLongitude = satellite.mLongitude
 		self.mBand		= satellite.mBand

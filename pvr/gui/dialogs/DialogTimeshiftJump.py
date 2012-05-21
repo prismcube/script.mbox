@@ -29,7 +29,7 @@ class DialogTimeshiftJump( BaseDialog ) :
 
 
 	def onInit( self ) :
-		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.mCtrlLblMoveToNum	= self.getControl( E_MOVETOJUMP_NUM_ID )

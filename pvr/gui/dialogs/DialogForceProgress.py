@@ -22,7 +22,7 @@ class DialogForceProgress( BaseDialog ) :
 		
 
 	def onInit( self ) :
-		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.mEventBus.Register( self )
@@ -59,7 +59,7 @@ class DialogForceProgress( BaseDialog ) :
 
 	@GuiLock
 	def onEvent( self, aEvent ) :
-		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
+		if self.mWinId == xbmcgui.getCurrentWindowDialogId( ) :
 			if aEvent.getName( ) == self.mEventName :
 				self.mFinish = True
 

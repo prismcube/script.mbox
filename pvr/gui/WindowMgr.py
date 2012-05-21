@@ -276,30 +276,46 @@ class WindowMgr(object):
 			LOG_ERR( "Exception %s" %ex)
 			
 
-	def Reset( self ):
+	def Reset( self ) :
 		import pvr.Platform 
 		self.mScriptDir = pvr.Platform.GetPlatform().GetScriptDir()
 	
 		self.CopyIncludeFile( )
 		self.AddDefaultFont( )
 		self.ResetAllWindows( )
+		xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 		self.ShowWindow( WIN_ID_MAINMENU )
 
-	def ResetAllWindows( self ):
+
+	def ResetAllWindows( self ) :
 		self.mWindows[ WIN_ID_MAINMENU ].close( )
+		xbmc.executebuiltin( "ActivateWindow(busydialog)" )
 		self.mWindows.clear( )
 		self.CreateAllWindows( )
 
-	def CheckSkinChange( self ):
 
-		currentSkinName = xbmc.executehttpapi("GetGUISetting(3, lookandfeel.skin)")
-
-		print 'skin name=%s : %s' %( self.mSkinName, currentSkinName[4:] )
+	def CheckGUISettings( self ) :
+		xbmc.executebuiltin( "ActivateWindow(busydialog)" )
 		self.LoadSkinPosition( )
+		xbmc.executebuiltin( "Dialog.Close(busydialog)" )
+		if self.CheckSkinChange( ) or self.CheckFontChange( ) :
+			self.Reset( )
+			
+
+
+	def CheckSkinChange( self ) :
+		currentSkinName = xbmc.executehttpapi("GetGUISetting(3, lookandfeel.skin)")
+		print 'skin name=%s : %s' %( self.mSkinName, currentSkinName[4:] )
+
 		if self.mSkinName != currentSkinName[4:] :
 			LOG_TRACE('change skin name')
 			self.mSkinName = currentSkinName[4:]
-			self.Reset( )
+			return True
+		return False
+
+
+	def CheckFontChange( self ) :
+		return False
 
 
 	def LoadSkinPosition( self ) :

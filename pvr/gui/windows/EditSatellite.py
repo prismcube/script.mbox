@@ -68,7 +68,7 @@ class EditSatellite( SettingWindow ) :
 		
 		# Select Satellite
 		if groupId == E_Input01 :
-			satelliteList = self.mDataCache.Satellite_GetFormattedNameList( )
+			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog( )
  			select = dialog.select( 'Select satellite', satelliteList )
 
@@ -139,7 +139,7 @@ class EditSatellite( SettingWindow ) :
 	def InitConfig( self ) :
 		self.ResetAllControl( )
 		self.GetSatelliteInfo( self.mSatelliteIndex )
-		satellitename = self.mDataCache.Satellite_GetFormattedName( self.mLongitude , self.mBand )
+		satellitename = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand )
 		self.AddInputControl( E_Input01, 'Satellite', satellitename, 'Select satellite.' )
 		longitude = self.GetFormattedLongitude( self.mLongitude , self.mBand )
 		self.AddInputControl( E_Input02, 'Longitude', longitude )
@@ -153,7 +153,7 @@ class EditSatellite( SettingWindow ) :
 
 
 	def	GetSatelliteInfo( self, aIndex ) :
-		satellite = self.mDataCache.Satellite_GetSatelliteByIndex( aIndex )
+		satellite = self.mDataCache.GetSatelliteByIndex( aIndex )
 		self.mLongitude = satellite.mLongitude
 		self.mBand		= satellite.mBand
 		self.mName		= satellite.mName

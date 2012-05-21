@@ -1,4 +1,5 @@
 from pvr.gui.WindowImport import *
+import pvr.ScanHelper as ScanHelper
 
 
 E_DEFAULT_GOURP_ID		= 9000
@@ -24,7 +25,7 @@ class ManualScan( SettingWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
 		self.mEventBus.Register( self )
-		self.ScanHelper_Start( )
+		ScanHelper.GetInstance( ).ScanHelper_Start( self.mWin )
 
 		self.SetSettingWindowLabel( 'Manual Scan' )
 		self.mIsManualSetup = 0
@@ -42,7 +43,7 @@ class ManualScan( SettingWindow ) :
 
 			self.mInitialized = True
 			self.SetFocusControl( E_Input01 )
-			self.ScanHelper_ChangeContext( self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
+			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
 
 		else :
 			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
@@ -64,14 +65,14 @@ class ManualScan( SettingWindow ) :
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.ResetAllControl( )
-			self.ScanHelper_Stop( )
+			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
 			self.close( )
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
-			self.ScanHelper_Stop( )
+			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
@@ -158,7 +159,7 @@ class ManualScan( SettingWindow ) :
 
 		# Start Search
 		elif groupId == E_Input04 : #ToDO : Have to support manual input
-			self.ScanHelper_Stop( False )
+			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin, False )
 			transponderList = []
  			config = self.mConfiguredSatelliteList[ self.mSatelliteIndex ]
 
@@ -167,7 +168,7 @@ class ManualScan( SettingWindow ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 			dialog.SetTransponder( config.mSatelliteLongitude, config.mBandType, transponderList )
 			dialog.doModal( )
-			self.ScanHelper_Start( )
+			ScanHelper.GetInstance( ).ScanHelper_Start( self.mWin )
 
 		# Manual Setup
 		elif groupId == E_SpinEx01 :
@@ -198,7 +199,7 @@ class ManualScan( SettingWindow ) :
 			self.ControlSelect( )
 			return
 
-		self.ScanHelper_ChangeContext( self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
+		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
 
 
 	def onFocus( self, aControlId ) :
@@ -219,7 +220,7 @@ class ManualScan( SettingWindow ) :
 
 	def UpdateStatus( self, aEvent ) :
 		if aEvent.mFrequency == self.mConfigTransponder.mFrequency :
-			self.ScanHerper_Progress( aEvent.mSignalStrength, aEvent.mSignalQuality, aEvent.mIsLocked )
+			ScanHelper.GetInstance( ).ScanHerper_Progress( self.mWin, aEvent.mSignalStrength, aEvent.mSignalQuality, aEvent.mIsLocked )
 
 
 	def InitConfig( self ) :
@@ -263,8 +264,8 @@ class ManualScan( SettingWindow ) :
 	def LoadFormattedSatelliteNameList( self ) :
 		self.mConfiguredSatelliteList = []
 
-		configuredSatelliteList1 = self.mDataCache.Satellite_Get_ConfiguredList_By_TunerIndex( E_TUNER_1 )
-		configuredSatelliteList2 = self.mDataCache.Satellite_Get_ConfiguredList_By_TunerIndex( E_TUNER_2 )
+		configuredSatelliteList1 = self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_1 )
+		configuredSatelliteList2 = self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_2 )
 
 		if configuredSatelliteList1 and configuredSatelliteList1[0].mError == 0 :
 			self.mConfiguredSatelliteList = deepcopy( configuredSatelliteList1 )
@@ -284,13 +285,13 @@ class ManualScan( SettingWindow ) :
 		if len( self.mConfiguredSatelliteList ) > 0 :
 			self.mFormattedList = []
 			for config in self.mConfiguredSatelliteList :
-				self.mFormattedList.append( self.mDataCache.Satellite_GetFormattedName( config.mSatelliteLongitude, config.mBandType ) )
+				self.mFormattedList.append( self.mDataCache.GetFormattedSatelliteName( config.mSatelliteLongitude, config.mBandType ) )
 
 
 	def LoadTransponderList( self ) :
 		satellite = self.mConfiguredSatelliteList[ self.mSatelliteIndex ]
 		self.mTransponderList = []
-		self.mTransponderList = self.mDataCache.Satellite_GetTransponderList( satellite.mSatelliteLongitude, satellite.mBandType )
+		self.mTransponderList = self.mDataCache.GetTransponderListBySatellite( satellite.mSatelliteLongitude, satellite.mBandType )
 		if self.mTransponderList and self.mTransponderList[0].mError == 0 :
 			self.mHasTansponder = True
 		else :

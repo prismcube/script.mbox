@@ -1,4 +1,5 @@
 from pvr.gui.WindowImport import *
+import pvr.ScanHelper as ScanHelper
 
 
 class SatelliteConfigMotorizedUsals2( SettingWindow ) :
@@ -16,11 +17,11 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.mEventBus.Register( self )
-		self.ScanHelper_Start( )
+		ScanHelper.GetInstance( ).ScanHelper_Start( self.mWin )
 
 		tunerIndex = self.mTunerMgr.GetCurrentTunerIndex( )
 		self.mCurrentSatellite = self.mTunerMgr.GetCurrentConfiguredSatellite( )
-		self.mTransponderList = self.mDataCache.Satellite_GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
+		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 		self.mSelectedTransponderIndex = 0
 
 		self.SetSettingWindowLabel( 'Satellite Configuration' )
@@ -36,7 +37,7 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %d - %s' % ( tunerIndex + 1, property.GetPropString( ) ) )
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.InitConfig( )
-		self.ScanHelper_ChangeContext( self.mCurrentSatellite, self.mDataCache.Satellite_GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
+		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
 
 		
 	def onAction( self, aAction ) :
@@ -51,7 +52,7 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
-			self.ScanHelper_Stop( )			
+			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )			
 			self.close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
@@ -72,12 +73,12 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 		
 		# Satellite
 		if groupId == E_Input01 :
-			satelliteList = self.mDataCache.Satellite_GetFormattedNameList( )
+			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog()
  			ret = dialog.select('Select satellite', satelliteList )
 
 			if ret >= 0 :
-	 			satellite = self.mDataCache.Satellite_GetSatelliteByIndex( ret )
+	 			satellite = self.mDataCache.GetSatelliteByIndex( ret )
 
 				self.mCurrentSatellite.reset( )
 				self.mCurrentSatellite.mSatelliteLongitude 	= satellite.mLongitude		# Longitude
@@ -88,7 +89,7 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 				self.mCurrentSatellite.mLNBThreshold		= 11700						# Threshold
 				self.mSelectedIndexLnbType					= ElisEnum.E_LNB_UNIVERSAL				
 
-				self.mTransponderList = self.mDataCache.Satellite_GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )				
+				self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )				
 				self.mSelectedTransponderIndex = 0
 				self.InitConfig( )
 			else :
@@ -150,7 +151,7 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 		elif groupId == E_Input04 :
 			pass
 
-		self.ScanHelper_ChangeContext( self.mCurrentSatellite, self.mDataCache.Satellite_GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
+		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
 
 
 	def onFocus( self, controlId ) :
@@ -165,9 +166,9 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 
 
 	def UpdateStatus( self, aEvent ) :
-		freq = self.mDataCache.Satellite_GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ).mFrequency
+		freq = self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ).mFrequency
 		if aEvent.mFrequency == freq :			
-			self.ScanHerper_Progress( aEvent.mSignalStrength, aEvent.mSignalQuality, aEvent.mIsLocked )
+			ScanHelper.GetInstance( ).ScanHerper_Progress( self.mWin, aEvent.mSignalStrength, aEvent.mSignalQuality, aEvent.mIsLocked )
 
 
 	def InitConfig( self ) :
@@ -175,7 +176,7 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 
 		self.mCurrentSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_USALS
 
-		self.AddInputControl( E_Input01, 'Satellite' , self.mDataCache.Satellite_GetFormattedName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ) )
+		self.AddInputControl( E_Input01, 'Satellite' , self.mDataCache.GetFormattedSatelliteName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ) )
 		self.AddUserEnumControl( E_SpinEx01, 'LNB Type', E_LIST_LNB_TYPE, self.mSelectedIndexLnbType )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :

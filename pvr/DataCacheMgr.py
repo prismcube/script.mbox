@@ -290,11 +290,11 @@ class DataCacheMgr( object ):
 			LOG_WARN('Has no Configured Satellite')
 		
 	@DataLock
-	def Satellite_Get_All_SatelliteList( self ) :
+	def GetAllSatelliteList( self ) :
 		return self.mAllSatelliteList
 
 
-	def Satellite_Get_ConfiguredList_By_TunerIndex( self, aTunerNumber ) :
+	def GetConfiguredSatelliteListByTunerIndex( self, aTunerNumber ) :
 		if aTunerNumber == E_TUNER_1 :
 			if self.mConfiguredSatelliteListTuner1 :
 				return self.mConfiguredSatelliteListTuner1
@@ -329,7 +329,7 @@ class DataCacheMgr( object ):
 			
 
 	@DataLock
-	def Satellite_GetFormattedNameList( self ) :
+	def GetFormattedSatelliteNameList( self ) :
 		formattedlist = []	
 		for satellite in self.mAllSatelliteList :
 			dir = 'E'
@@ -346,11 +346,11 @@ class DataCacheMgr( object ):
 
 
 	@DataLock
-	def Satellite_GetSatelliteByIndex( self, aIndex ) :
+	def GetSatelliteByIndex( self, aIndex ) :
 		return self.mAllSatelliteList[ aIndex ]
 
 
-	def Satellite_GetFormattedName( self, aLongitude, aBand ) :
+	def GetFormattedSatelliteName( self, aLongitude, aBand ) :
 		hashKey = '%d:%d' % ( aLongitude, aBand )
 		satellite = self.mAllSatelliteListHash.get( hashKey, None )
 		if satellite != None:
@@ -367,7 +367,7 @@ class DataCacheMgr( object ):
 		return 'UnKnown'
 
 
-	def Satellite_GetTransponderList( self, aLongitude, aBand ) :
+	def GetTransponderListBySatellite( self, aLongitude, aBand ) :
 		transponder = []
 		hashKey = '%d:%d' % ( aLongitude, aBand )
 		transponder = self.mTransponderListHash.get( hashKey, None )
@@ -380,11 +380,11 @@ class DataCacheMgr( object ):
 				return self.mCommander.Transponder_GetList( aLongitude, aBand )
 
 
-	def Satellite_GetFormattedTransponderList( self, aLongitude, aBand ) :
+	def GetFormattedTransponderList( self, aLongitude, aBand ) :
 		tmptransponderList = []
 		transponderList = None
 		
-		tmptransponderList = self.Satellite_GetTransponderList( aLongitude, aBand )
+		tmptransponderList = self.GetTransponderListBySatellite( aLongitude, aBand )
 		
 		if tmptransponderList and tmptransponderList[0].mError == 0 :
 			transponderList = []
@@ -394,7 +394,7 @@ class DataCacheMgr( object ):
 		return transponderList
 
 
-	def Satellite_GetTransponderListByIndex( self, aLongitude, aBand, aIndex ) :
+	def GetTransponderListByIndex( self, aLongitude, aBand, aIndex ) :
 		transponder = []
 		hashKey = '%d:%d' % ( aLongitude, aBand )
 		transponder = self.mTransponderListHash.get( hashKey, None )

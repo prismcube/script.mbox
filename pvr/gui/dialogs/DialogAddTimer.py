@@ -16,7 +16,7 @@ class DialogAddTimer( BaseDialog ) :
 		self.mEPG = None
 
 	def onInit( self ):
-		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
 		self.SetHeaderLabel( 'Add Recording' )
@@ -80,7 +80,7 @@ class DialogAddTimer( BaseDialog ) :
 	def onEvent( self, aEvent ):
 		pass
 		"""
-		if xbmcgui.getCurrentWindowId() == self.winId :
+		if xbmcgui.getCurrentWindowDialogId() == self.winId :
 			print 'Do Event'
 			pass
 		"""

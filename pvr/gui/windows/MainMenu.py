@@ -1,7 +1,6 @@
 from pvr.gui.WindowImport import *
 
 
-LIST_ID_MAIN_MENU				= 9000
 BUTTON_ID_INSTALLATION			= 90100
 BUTTON_ID_ARCHIVE				= 90200
 BUTTON_ID_EPG					= 90300
@@ -37,10 +36,10 @@ class MainMenu( BaseWindow ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
-		self.mCtrlMainMenu = self.getControl( LIST_ID_MAIN_MENU )
+
 		if self.mStartMediaCenter == True :
 			ret = self.mCommander.AppMediaPlayer_Control( 0 )
-			WinMgr.GetInstance().CheckSkinChange( )
+			WinMgr.GetInstance().CheckGUISettings( )
 			self.mStartMediaCenter = False
 
 
@@ -60,10 +59,7 @@ class MainMenu( BaseWindow ) :
 
 	def onClick( self, aControlId ) :
 		LOG_TRACE("MainMenu onclick(): control %d" % aControlId )
-		if aControlId == LIST_ID_MAIN_MENU :
-			pass
-
-		elif aControlId == BUTTON_ID_FIRSTINSTALLATION : # First Installation
+		if aControlId == BUTTON_ID_FIRSTINSTALLATION : # First Installation
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION )
 			
 		elif aControlId == BUTTON_ID_INSTALLATION :

@@ -23,7 +23,7 @@ class DialogNormalNumeric( BaseDialog ) :
 		self.mInputKey = None
 
 	def onInit( self ) :
-		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.mIsOk = E_DIALOG_STATE_NO

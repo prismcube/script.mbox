@@ -118,7 +118,7 @@ class SatelliteConfigOnecable( SettingWindow ) :
 
 			for i in range( MAX_SATELLITE_CNT ) :
 				if i < self.mSatelliteCount :
-					self.mSatellitelist.append( self.mDataCache.Satellite_GetFormattedName( configuredList[i].mSatelliteLongitude, configuredList[i].mBandType ) )
+					self.mSatellitelist.append( self.mDataCache.GetFormattedSatelliteName( configuredList[i].mSatelliteLongitude, configuredList[i].mBandType ) )
 				else :
 					self.mSatellitelist.append( '' ) # dummy Data
 		else :

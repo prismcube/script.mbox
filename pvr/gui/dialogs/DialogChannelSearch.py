@@ -30,7 +30,7 @@ class DialogChannelSearch( BaseDialog ) :
 	def onInit( self ) :
 		self.mDataCache.Player_AVBlank( True, True )
 	
-		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		
 		self.mIsFinished = False	
@@ -124,7 +124,7 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mLongitude = config.mLongitude
 		self.mBand = config.mBand
 		self.mScanMode = E_SCAN_SATELLITE 
-		self.mSatelliteFormatedName = self.mDataCache.Satellite_GetFormattedName( self.mLongitude , self.mBand  )
+		self.mSatelliteFormatedName = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand  )
 
 
 	def SetTransponder( self, aLongitude, aBand, aTransponderList ) :
@@ -132,7 +132,7 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mLongitude = aLongitude
 		self.mBand = aBand		
 		self.mTransponderList = aTransponderList
-		self.mSatelliteFormatedName = self.mDataCache.Satellite_GetFormattedName( self.mLongitude , self.mBand  )
+		self.mSatelliteFormatedName = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand  )
 		
 
 	def ScanStart( self ) :
@@ -189,7 +189,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 	@GuiLock
 	def onEvent( self, aEvent ) :
-		if xbmcgui.getCurrentWindowId( ) == self.mWinId :
+		if xbmcgui.getCurrentWindowDialogId( ) == self.mWinId :
 
 			if aEvent.getName( ) == ElisEventScanAddChannel.getName( ) :
 				self.UpdateAddChannel( aEvent )
@@ -218,7 +218,7 @@ class DialogChannelSearch( BaseDialog ) :
 			if self.mLongitude != aEvent.mCarrier.mDVBS.mSatelliteLongitude or self.mBand != aEvent.mCarrier.mDVBS.mSatelliteBand :
 				self.mLongitude = aEvent.mCarrier.mDVBS.mSatelliteLongitude
 				self.mBand = aEvent.mCarrier.mDVBS.mSatelliteBand
-				self.mSatelliteFormatedName = self.mDataCache.Satellite_GetFormattedName( self.mLongitude , self.mBand  )
+				self.mSatelliteFormatedName = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand  )
 			
 			strTransponderInfo = '%s - %d Mhz - %s - %d MS/s ' %( self.mSatelliteFormatedName, aEvent.mCarrier.mDVBS.mFrequency, strPol, aEvent.mCarrier.mDVBS.mSymbolRate )
 			self.mCtrlTransponderInfo.setLabel( strTransponderInfo )

@@ -318,7 +318,8 @@ class Configure( SettingWindow ) :
 						LOG_ERR( 'Error exception[%s]' % e )
 
 					if resetSystem == 1 :	
-				 		ElisPropertyEnum( 'Reset Configure Setting', self.mCommander ).ResetHash( )
+						from ElisProperty import ResetHash
+						ResetHash( )
 				 		self.SetListControl( )
 
 		else :

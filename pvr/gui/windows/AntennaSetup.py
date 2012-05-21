@@ -276,9 +276,9 @@ class AntennaSetup( SettingWindow ) :
 
 	def CompareConfigurationSatellite( self ) :
 		configuredList1		= self.mTunerMgr.GetConfiguredSatellitebyTunerIndex( E_TUNER_1 )	
-		oriconfiguredList1	= self.mDataCache.Satellite_Get_ConfiguredList_By_TunerIndex( E_TUNER_1 )
+		oriconfiguredList1	= self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_1 )
 		configuredList2		= self.mTunerMgr.GetConfiguredSatellitebyTunerIndex( E_TUNER_2 ) 
-		oriconfiguredList2	= self.mDataCache.Satellite_Get_ConfiguredList_By_TunerIndex( E_TUNER_2 )
+		oriconfiguredList2	= self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_2 )
 		if oriconfiguredList1 == None or oriconfiguredList2 == None :
 			return False
 		

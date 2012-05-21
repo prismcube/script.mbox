@@ -25,7 +25,7 @@ class DialogContext( BaseDialog ) :
 
 
 	def onInit( self ) :
-		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		itemHeight = int( self.getProperty( 'ItemHeight' ) )

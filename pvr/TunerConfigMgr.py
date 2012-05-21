@@ -265,17 +265,17 @@ class TunerConfigMgr( object ) :
 		if ret1 == True and ret2 == True :
 			return True
 		elif ret1 == False or ret2 == False :
-			self.mCommander.Satelliteconfig_SaveList( self.mDataCache.Satellite_Get_ConfiguredList_By_TunerIndex( E_TUNER_1 ) )
-			self.mCommander.Satelliteconfig_SaveList( self.mDataCache.Satellite_Get_ConfiguredList_By_TunerIndex( E_TUNER_2 ) )
+			self.mCommander.Satelliteconfig_SaveList( self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_1 ) )
+			self.mCommander.Satelliteconfig_SaveList( self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_2 ) )
 			return False
 			
 
 	def Load( self ) :
 		# Get All Satellite List ( mLongitude, mBand, mName )
-		self.mAllSatelliteList = self.mDataCache.Satellite_Get_All_SatelliteList( )
+		self.mAllSatelliteList = self.mDataCache.GetAllSatelliteList( )
 		
 		# Get Configured Satellite List Tuner 1
-		self.mConfiguredList1 = deepcopy( self.mDataCache.Satellite_Get_ConfiguredList_By_TunerIndex( E_TUNER_1 ) )
+		self.mConfiguredList1 = deepcopy( self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_1 ) )
 		if self.mConfiguredList1 and self.mConfiguredList1[0].mError == 0 :
 			pass
 		else :	# If empty list to return, add one default satellite
@@ -284,7 +284,7 @@ class TunerConfigMgr( object ) :
 			self.mConfiguredList1.append( config )
 		
 		# Get Configured Satellite List Tuner 2
-		self.mConfiguredList2 = deepcopy( self.mDataCache.Satellite_Get_ConfiguredList_By_TunerIndex( E_TUNER_2 ) )
+		self.mConfiguredList2 = deepcopy( self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_2 ) )
 		if self.mConfiguredList2 and self.mConfiguredList2[0].mError == 0 :
 			pass
 		else :	# If empty list to return, add one default satellite

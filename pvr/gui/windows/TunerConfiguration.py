@@ -64,7 +64,7 @@ class TunerConfiguration( SettingWindow ) :
 
 			if len( configuredList ) == position :
 				dialog = xbmcgui.Dialog( )
-				satelliteList = self.mDataCache.Satellite_GetFormattedNameList( )
+				satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 	 			ret = dialog.select( 'Select satellite', satelliteList )
 
 	 			if ret >= 0 :
@@ -128,7 +128,7 @@ class TunerConfiguration( SettingWindow ) :
 		configuredList = self.mTunerMgr.GetConfiguredSatelliteList( )
 
 		for config in configuredList :
-			self.listItems.append( '%s' % self.mDataCache.Satellite_GetFormattedName( config.mSatelliteLongitude, config.mBandType ) )
+			self.listItems.append( '%s' % self.mDataCache.GetFormattedSatelliteName( config.mSatelliteLongitude, config.mBandType ) )
 
 		self.listItems.append( 'Add New Satellite' )
 		self.listItems.append( 'Delete Satellite' )

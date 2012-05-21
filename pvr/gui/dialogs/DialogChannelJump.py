@@ -30,7 +30,7 @@ class DialogChannelJump( BaseDialog ) :
 
 
 	def onInit( self ) :
-		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.mCtrlChannelNum	= self.getControl( E_CHANNEL_NUM_ID )
