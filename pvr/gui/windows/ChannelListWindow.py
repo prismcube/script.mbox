@@ -693,8 +693,8 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mFlag_ModeChanged :
 			self.mFlag_ModeChanged = False
 			isBlank = False
-			if iChannel.mServiceType == FLAG_MODE_RADIO :
-				isBlank = True
+			if iChannel.mServiceType == FLAG_MODE_RADIO : 	isBlank = True
+			else : 											isBlank = False
 			self.mDataCache.Player_AVBlank( isBlank, False )
 
 		ret = False
