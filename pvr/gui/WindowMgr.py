@@ -283,21 +283,17 @@ class WindowMgr(object):
 		self.CopyIncludeFile( )
 		self.AddDefaultFont( )
 		self.ResetAllWindows( )
-		xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 		self.ShowWindow( WIN_ID_MAINMENU )
 
 
 	def ResetAllWindows( self ) :
 		self.mWindows[ WIN_ID_MAINMENU ].close( )
-		xbmc.executebuiltin( "ActivateWindow(busydialog)" )
 		self.mWindows.clear( )
 		self.CreateAllWindows( )
 
 
 	def CheckGUISettings( self ) :
-		xbmc.executebuiltin( "ActivateWindow(busydialog)" )
 		self.LoadSkinPosition( )
-		xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 		if self.CheckSkinChange( ) or self.CheckFontChange( ) :
 			self.Reset( )
 			
