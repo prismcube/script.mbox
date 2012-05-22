@@ -564,15 +564,16 @@ class Configure( SettingWindow ) :
 			return
 			
 
-		elif selectedId == E_ETC :	
-			self.AddEnumControl( E_SpinEx01, 'Channel Banner Duration' )	#	Erase channel list yes/no
-			self.AddEnumControl( E_SpinEx02, 'Playback Banner Duration' )	#	Erase custom menu yes/no
+		elif selectedId == E_ETC :
+			self.AddEnumControl( E_SpinEx01, 'Deep Standby' )
+			self.AddEnumControl( E_SpinEx02, 'Channel Banner Duration' )	#	Erase channel list yes/no
+			self.AddEnumControl( E_SpinEx03, 'Playback Banner Duration' )	#	Erase custom menu yes/no
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
+			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
