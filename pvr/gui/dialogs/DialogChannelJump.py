@@ -159,9 +159,14 @@ class DialogChannelJump( BaseDialog ) :
 		#gmtUntil= gmtime
 		#maxCount= 1
 
-		iEPGList = None
-		iEPGList = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid, True )
-		#iEPGList = self.mDataCache.Epgevent_GetListByChannel( sid, tsid, onid, gmtFrom, gmtUntil, maxCount, True )
+		try:
+			iEPGList = None
+			iEPGList = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid, True )
+			#iEPGList = self.mDataCache.Epgevent_GetListByChannel( sid, tsid, onid, gmtFrom, gmtUntil, maxCount, True )
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
+			return -1
+
 
 		if iEPGList :
 			self.mFakeEPG = iEPGList

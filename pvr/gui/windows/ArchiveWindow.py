@@ -317,24 +317,26 @@ class ArchiveWindow( BaseWindow ) :
 	def UpdateList( self ) :
 		LOG_TRACE('UpdateList Start')
 		try :
-			if self.mRecordList :
-				if self.mSortMode == E_SORT_DATE :
-					self.mRecordList.sort( self.ByDate )
-				elif self.mSortMode == E_SORT_CHANNEL :
-					self.mRecordList.sort( self.ByChannel )
+			if not self.mRecordList or self.mRecordList == None :
+				self.mRecordList = []
 
-				elif self.mSortMode == E_SORT_TITLE :
-					self.mRecordList.sort( self.ByTitle )
+			if self.mSortMode == E_SORT_DATE :
+				self.mRecordList.sort( self.ByDate )
+			elif self.mSortMode == E_SORT_CHANNEL :
+				self.mRecordList.sort( self.ByChannel )
 
-				elif self.mSortMode == E_SORT_DURATION :
-					self.mRecordList.sort( self.ByDuration )
-				else :
-					LOG_WARN('Unknown sort mode')		
-					self.mSortMode = 0
-					self.mRecordList.sort( self.ByDate )
+			elif self.mSortMode == E_SORT_TITLE :
+				self.mRecordList.sort( self.ByTitle )
 
-				if self.mAscending[self.mSortMode] == False :
-					self.mRecordList.reverse()
+			elif self.mSortMode == E_SORT_DURATION :
+				self.mRecordList.sort( self.ByDuration )
+			else :
+				LOG_WARN('Unknown sort mode')		
+				self.mSortMode = 0
+				self.mRecordList.sort( self.ByDate )
+
+			if self.mAscending[self.mSortMode] == False :
+				self.mRecordList.reverse()
 
 			self.mCtrlCommonList.reset( )
 			self.mCtrlThumbnailList.reset( )
