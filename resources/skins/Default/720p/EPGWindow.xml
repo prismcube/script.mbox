@@ -52,8 +52,8 @@
 				</control>
 			</control>
 			<control type="image" id="1004">
-				<posx>850</posx>
-				<posy>160</posy>
+				<posx>845</posx>
+				<posy>118</posy>
 				<width>352</width>
 				<height>198</height>
 			</control>
@@ -179,7 +179,7 @@
 					<textureradiofocus>confluence/HomeHasSub.png</textureradiofocus>
 					<textureradionofocus>confluence/HomeHasSub.png</textureradionofocus>
 					<label>31026</label>
-					<onleft>3500</onleft>
+					<onleft>9003</onleft>
 					<onright>9010</onright>
 					<onup>100</onup>
 					<ondown>100</ondown>
@@ -190,11 +190,49 @@
 		<include>DefaultMiniTitle</include>
 		<include>DefaultCommonDateTime</include>
 
+		<control type="label" id="400">
+			<description>Channel Name</description>					
+			<posx>115</posx>
+			<posy>62</posy>
+			<width>600</width>
+			<height>40</height>
+			<font>font13_title</font>
+			<textcolor>blue</textcolor>
+			<align>left</align>
+			<aligny>center</aligny>
+			<label></label>
+			<visible>substring(Window.Property(EPGMode),channel) </visible>			
+		</control>
+
+		<control type="group">
+			<posx>845</posx>
+			<posy>317</posy>
+			<!--
+			<control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>352</width>
+				<height>18</height>
+				<texture>confluence/StackNF.png</texture>
+			</control>
+			-->
+			<control type="label" id="401">
+				<description>Current Channel</description>			
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>352</width>
+				<height>18</height>
+				<font>font12_title</font>
+			</control>
+		</control>
+		
+		
 		<control type="group" id="9020">
 			<posx>850</posx>
-			<posy>400</posy>
+			<posy>360</posy>
 
 			<control type="label" id="300">
+				<description>EPG start and end time</description>			
 				<posx>0</posx>
 				<posy>0</posy>
 				<font>font12_title</font>
@@ -203,6 +241,7 @@
 			</control>
 
 			<control type="label" id="301">
+				<description>EPG start date</description>
 				<posx>150</posx>
 				<posy>0</posy>
 				<font>font12_title</font>
@@ -211,6 +250,7 @@
 			</control>
 
 			<control type="label" id="302">
+				<description>EPG duration</description>			
 				<posx>0</posx>
 				<posy>30</posy>
 				<font>font12_title</font>
@@ -218,14 +258,78 @@
 				<label>200Min</label>
 			</control>
 
+			<control type="textbox" id="303">
+				<description>EPG infomation</description>			
+				<posx>0</posx>
+				<posy>60</posy>
+				<width>352</width>
+			 	<height>160</height>
+				<font>font12_title</font>
+				<textcolor>grey</textcolor>
+				<label>none</label>
+			</control>
+
+			<!-- component -->
+			<control type="group">
+				<control type="grouplist">
+					<posx>0</posx>
+					<posy>240</posy>
+					<width>190</width>
+					<height>30</height>
+					<itemgap>1</itemgap>
+					<visible>true</visible>
+					<orientation>horizontal</orientation>
+					<control type="group" id="310">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>60</width>
+						<height>30</height>
+						<visible>substring(Window.Property(HasSubtitle),True)</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>60</width>
+							<height>30</height>
+							<texture>IconTeletext.png</texture>
+						</control>
+					</control>
+					<control type="group" id="311">
+						<posx>55</posx>
+						<posy>0</posy>
+						<width>65</width>
+						<height>30</height>
+						<visible>substring(Window.Property(HasDolby),True)</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>65</width>
+							<height>30</height>
+							<texture>dolbydigital.png</texture>
+						</control>
+					</control>
+					<control type="group" id="312">
+						<posx>110</posx>
+						<posy>0</posy>
+						<width>65</width>
+						<height>30</height>
+						<visible>substring(Window.Property(HasHD),True)</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>65</width>
+							<height>30</height>
+							<texture>OverlayHD.png</texture>
+						</control>
+					</control>
+				</control>
+			</control>
+
+			<!--
 			<control type="image" id="310">
 				<posx>0</posx>
 				<posy>60</posy>
 				<width>60</width>
 				<height>30</height>
-				<!--
-				<texture>$INFO[Control.GetLabel]</texture>
-				-->
 				<description>video HD</description>
 			</control>
 			
@@ -234,9 +338,6 @@
 				<posy>60</posy>
 				<width>65</width>
 				<height>30</height>
-				<!--
-				<texture>$INFO[Control.GetLabel]</texture>
-				-->
 				<description>audio dolby</description>
 			</control>
 
@@ -244,12 +345,10 @@
 				<posx>110</posx>
 				<posy>60</posy>
 				<width>65</width>
-				<height>30</height>
-				<!--
-				<texture>$INFO[Control.GetLabel]</texture>
-				-->
 				<description>subtitle</description>
 			</control>
+			-->
+
 		</control>
 
 	</controls>

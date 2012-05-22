@@ -4761,7 +4761,7 @@
 
 	<include name="DefaultCommonEPGView">
 		<control type="group">
-			<visible>substring(Window.Property(EPGMode),channel) + substring(Window.Property(TimerMode),false) </visible>
+			<visible>substring(Window.Property(EPGMode),channel) </visible>
 			<include>DefaultVisibleFadeEffect</include>
 			<control type="list" id="3500">
 				<posx>75</posx>

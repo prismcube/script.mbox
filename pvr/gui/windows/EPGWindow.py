@@ -10,10 +10,9 @@ LIST_ID_BIG_EPG					= 3510
 LABEL_ID_TIME					= 300
 LABEL_ID_DATE					= 301
 LABEL_ID_DURATION				= 302
-
-IMAMGE_ID_HD					= 310
-IMAMGE_ID_DOLBY					= 311
-IMAMGE_ID_SUBTITLE				= 312
+LABEL_ID_EVENT_NAME				= 303
+LABEL_ID_EPG_CHANNEL_NAME		= 400
+LABEL_ID_CURRNET_CHANNEL_NAME	= 401
 
 E_VIEW_CHANNEL					= 0
 E_VIEW_CURRENT					= 1
@@ -63,26 +62,19 @@ class EPGWindow( BaseWindow ) :
 
 		self.mCtrlTimeLabel = self.getControl( LABEL_ID_TIME )
 		self.mCtrlDateLabel = self.getControl( LABEL_ID_DATE )
-		self.mCtrlDurationLabel = self.getControl( LABEL_ID_DURATION )		
+		self.mCtrlDurationLabel = self.getControl( LABEL_ID_DURATION )
+		self.mCtrlEPGDescription = self.getControl( LABEL_ID_EVENT_NAME )
+		self.mCtrlEPGChannelLabel = self.getControl( LABEL_ID_EPG_CHANNEL_NAME )
+		self.mCtrlCurrentChannelLabel = self.getControl( LABEL_ID_CURRNET_CHANNEL_NAME )
 
-		self.mCtrlHDImage = self.getControl( IMAMGE_ID_HD )
-		self.mCtrlDolbyImage = self.getControl( IMAMGE_ID_DOLBY )
-		self.mCtrlSubtitleImage = self.getControl( IMAMGE_ID_SUBTITLE )		
-
-		self.mCtrlTimeLabel.setLabel('')
-		self.mCtrlDateLabel.setLabel('')
-		self.mCtrlDurationLabel.setLabel('')
-
-		self.mCtrlHDImage.setImage('')
-		self.mCtrlDolbyImage.setImage('')
-		self.mCtrlSubtitleImage.setImage('')
-		
+		self.ResetEPGInfomation( )
 
 		self.UpdateViewMode( )
 		self.InitControl()
 
 		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
 		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
+		self.mEPGChannel = self.mCurrentChannel
 		LOG_TRACE('ZeppingMode(%d,%d,%d)' %( self.mCurrentMode.mServiceType, self.mCurrentMode.mMode, self.mCurrentMode.mSortingMode ) )
 		self.mChannelList = self.mDataCache.Channel_GetList( )
 
@@ -95,6 +87,8 @@ class EPGWindow( BaseWindow ) :
 
 		self.Load( )
 		self.UpdateList( )
+		self.UpdateCurrentChannel( )
+		self.UpdateEPGChannel( )
 		self.UpdateEPGInfomation( )
 
 		self.mEventBus.Register( self )	
@@ -113,7 +107,8 @@ class EPGWindow( BaseWindow ) :
 			self.Close( )
 
 		elif  actionId == Action.ACTION_SELECT_ITEM :
-			self.Tune( )
+			if self.mFocusId == LIST_ID_COMMON_EPG or self.mFocusId == LIST_ID_BIG_EPG :
+				self.Tune( )
 	
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.Close( )
@@ -148,6 +143,7 @@ class EPGWindow( BaseWindow ) :
 			self.UpdateViewMode( )
 			self.InitControl( )
 			self.Load( )
+			self.UpdateEPGChannel( )			
 			self.UpdateList( )
 			self.UpdateEPGInfomation()
 		
@@ -264,28 +260,55 @@ class EPGWindow( BaseWindow ) :
 		LOG_TRACE('self.mEPGList COUNT=%d' %len(self.mEPGList ))
 
 
+	def UpdateEPGChannel( self ) :
+		if self.mEPGChannel :
+			self.mCtrlEPGChannelLabel.setLabel( '%04d %s' %( self.mEPGChannel.mNumber, self.mEPGChannel.mName ) )
+		else:
+			self.mCtrlEPGChannelLabel.setLabel( 'No Channel' )
+
+
+	def UpdateCurrentChannel( self ) :
+		if self.mCurrentChannel :
+			self.mCtrlCurrentChannelLabel.setLabel( self.mCurrentChannel.mName )
+		else :
+			self.mCtrlCurrentChannelLabel.setLabel( '' )
+
+
 	def UpdateEPGInfomation( self ) :
 		epg = self.GetSelectedEPG( )
 
 		try :
 			if epg :
-				self.mCtrlTimeLabel.setLabel('%s~%s' %( TimeToString( epg.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( epg.mStartTime + epg.mDuration, TimeFormatEnum.E_HH_MM ) ) )
-				self.mCtrlDateLabel.setLabel('%s' %TimeToString( epg.mStartTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
-				self.mCtrlDurationLabel.setLabel('%dMin' %(epg.mDuration/60) )
+				self.mCtrlTimeLabel.setLabel( '%s~%s' %( TimeToString( epg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM ), TimeToString( epg.mStartTime + epg.mDuration, TimeFormatEnum.E_HH_MM ) ) )
+				self.mCtrlDateLabel.setLabel( '%s' %TimeToString( epg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
+				self.mCtrlDurationLabel.setLabel( '%dMin' %( epg.mDuration/60) )
 
-				self.mCtrlHDImage.setImage( GetImageByEPGComponent( epg, ElisEnum.E_HasHDVideo ) )
-				self.mCtrlDolbyImage.setImage( GetImageByEPGComponent( epg, ElisEnum.E_HasDolbyDigital ) )
-				self.mCtrlSubtitleImage.setImage( GetImageByEPGComponent( epg, ElisEnum.E_HasSubtitles ) )
+				if epg.mEventDescription and epg.mEventDescription.upper() != '(NULL)' :
+					self.mCtrlEPGDescription.setText( epg.mEventDescription )
+				elif epg.mEventName :
+					self.mCtrlEPGDescription.setText( epg.mEventName )
+				else :
+					self.mCtrlEPGDescription.setText( '' )
+
+				self.mWin.setProperty( 'HasHD', HasEPGComponent( epg, ElisEnum.E_HasHDVideo ) )
+				self.mWin.setProperty( 'HasDolby', HasEPGComponent( epg, ElisEnum.E_HasDolbyDigital ) )
+				self.mWin.setProperty( 'HasSubtitle', HasEPGComponent( epg, ElisEnum.E_HasSubtitles ) )
 			else :
-				self.mCtrlTimeLabel.setLabel('')
-				self.mCtrlDateLabel.setLabel('')
-				self.mCtrlDurationLabel.setLabel('')
+				self.ResetEPGInfomation( )
 
-				self.mCtrlHDImage.setImage('')
-				self.mCtrlDolbyImage.setImage('')
-				self.mCtrlSubtitleImage.setImage('')
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex)
+
+
+	def	ResetEPGInfomation( self ) :
+		self.mCtrlTimeLabel.setLabel('')
+		self.mCtrlDateLabel.setLabel('')
+		self.mCtrlDurationLabel.setLabel('')
+		self.mCtrlEPGDescription.setText( '' )
+		
+		self.mWin.setProperty( 'HasSubtitle', 'False' )
+		self.mWin.setProperty( 'HasDolby', 'False' )
+		self.mWin.setProperty( 'HasHD', 'False' )
 
 
 	def UpdateList( self, aUpdateOnly=False ) :
@@ -293,11 +316,16 @@ class EPGWindow( BaseWindow ) :
 			self.mListItems = []
 		self.LoadTimerList( )
 
+		LOG_TRACE('LAEL98 EPG TEST Update Only=%d' %aUpdateOnly)
+		
 		if self.mEPGMode == E_VIEW_CHANNEL :
+			LOG_TRACE('LAEL98 EPG TEST')
 			if self.mEPGList == None :
 				self.mCtrlList.reset()
 				return
 
+			LOG_TRACE('LAEL98 EPG TEST')
+			
 			try :		
 				for i in range( len( self.mEPGList ) ) :
 					epgEvent = self.mEPGList[i]
@@ -319,6 +347,8 @@ class EPGWindow( BaseWindow ) :
 					if aUpdateOnly == False :
 						self.mListItems.append( listItem )
 
+				LOG_TRACE('LAEL98 EPG TEST len(self.mListItems)=%d' %len(self.mListItems) )
+				
 				if aUpdateOnly == False :
 					self.mCtrlList.addItems( self.mListItems )
 					#self.setFocusId( LIST_ID_COMMON_EPG )
@@ -921,4 +951,7 @@ class EPGWindow( BaseWindow ) :
 				channel = self.mChannelList[ selectedPos ]
 				LOG_TRACE('--------------- number=%d ----------------' %channel.mNumber )
 				self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
-				
+				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
+				self.mEPGChannel = self.mCurrentChannel
+				self.UpdateCurrentChannel( )
+

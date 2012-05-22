@@ -100,6 +100,40 @@ def GetPropertyByEPGComponent( aEPG ) :
 	return [setPropertyData, setPropertyDolby, setPropertyHD]
 
 
+def HasEPGComponent( aEPG, aFlag ) :
+	if aFlag == ElisEnum.E_HasHDVideo:
+		return ( 'True', 'False' ) [ aEPG.mHasHDVideo == 0 ]
+
+	elif aFlag == ElisEnum.E_Has16_9Video :
+		return ( 'True', 'False' ) [ aEPG.mHas16_9Video == 0 ]	
+
+	elif aFlag == ElisEnum.E_HasStereoAudio :
+		return ( 'True', 'False' ) [ aEPG.mHasStereoAudio == 0 ]	
+
+	elif aFlag == ElisEnum.E_HasMultichannelAudio :
+		return ( 'True', 'False' ) [ aEPG.mHasMultichannelAudio == 0 ]		
+
+	elif aFlag == ElisEnum.E_HasDolbyDigital :
+		return ( 'True', 'False' ) [ aEPG.mHasDolbyDigital == 0 ]		
+	
+	elif aFlag == ElisEnum.E_HasSubtitles :
+		return ( 'True', 'False' ) [ aEPG.mHasSubtitles == 0 ]		
+	
+	elif aFlag == ElisEnum.E_HasHardOfHearingAudio :
+		return ( 'True', 'False' ) [ aEPG.mHasHardOfHearingAudio == 0 ]		
+	
+	elif aFlag == ElisEnum.E_HasHardOfHearingSub :
+		return ( 'True', 'False' ) [ aEPG.mHasHardOfHearingSub == 0 ]		
+	
+	elif aFlag == ElisEnum.E_HasVisuallyImpairedAudio :
+		return ( 'True', 'False' ) [ aEPG.mHasVisuallyImpairedAudio == 0 ]		
+
+	else :
+		return 'False'
+
+	return 'False'
+
+
 def GetSelectedLongitudeString( aLongitude, aName ) :
 	LOG_TRACE( 'Enter' )
 
