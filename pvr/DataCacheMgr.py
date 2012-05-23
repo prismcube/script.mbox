@@ -74,6 +74,7 @@ class DataCacheMgr( object ):
 		self.mZappingMode						= None
 		self.mChannelList						= None
 		self.mCurrentChannel					= None
+		self.mOldChannel						= None
 		self.mLocalOffset						= 0
 		self.mLocalTime							= 0
 		self.mAllSatelliteList					= None
@@ -594,6 +595,7 @@ class DataCacheMgr( object ):
 	def Channel_SetCurrent( self, aChannelNumber, aServiceType ) :
 		ret = False
 		self.mCurrentEvent = None
+		self.mOldChannel = self.Channel_GetCurrent( )
 		if self.mCommander.Channel_SetCurrent( aChannelNumber, aServiceType ) == True :
 			cacheChannel = self.mChannelListHash.get( aChannelNumber, None )
 			if cacheChannel :		

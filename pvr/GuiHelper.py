@@ -154,7 +154,6 @@ def GetSelectedLongitudeString( aLongitude, aName ) :
 	return ret
 
 
-
 def EnumToString( aType, aValue ) :
 	from ElisEnum import ElisEnum
 	ret = ''

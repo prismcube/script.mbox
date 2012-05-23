@@ -58,7 +58,9 @@ class NullWindow( BaseWindow ) :
 				
 		elif actionId == Action.ACTION_PARENT_DIR:
 			try :
-				currentChannel = self.mCommander.Channel_GetCurrent( )
+				ch = self.mDataCache.mOldChannel
+				self.mDataCache.Channel_SetCurrent( ch.mNumber, ch.mServiceType )
+
 				#lastChannel = WinMgr.GetInstance( ).getWindow(WinMgr.WIN_ID_LIVE_PLATE).getLastChannel( )
 				#if lastChannel > 0 and lastchannel != currentChannel :
 				#	self.mCommander.channel_SetCurrent( lastChannel )
@@ -265,11 +267,57 @@ class NullWindow( BaseWindow ) :
 
 				self.mOnEventing = False
 
+			elif aEvent.getName() == ElisEventChannelChangeResult.getName() :
+				ch = self.mDataCache.Channel_GetCurrent( )
+				if ch.mLocked :
+					self.PincodeDialogLimit( self.mDataCache.mPropertyPincode )
 
 		else:
 			LOG_TRACE( 'NullWindow winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
 
 		LOG_TRACE( 'Leave' )
+
+
+	def PincodeDialogLimit( self, aPincode ) :
+		LOG_TRACE( 'Enter' )
+
+		isUnlock = False
+		try :
+			self.mDataCache.Player_AVBlank( True, False )
+			msg = MR_LANG('Input PIN Code')
+			inputPin = ''
+
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog.SetDialogProperty( msg, '', 4, True )
+			dialog.doModal()
+
+			reply = dialog.IsOK()
+			if reply == E_DIALOG_STATE_YES :
+				inputPin = dialog.GetString()
+
+			elif reply == E_DIALOG_STATE_CANCEL :
+				return isUnlock
+
+
+			if inputPin == None or inputPin == '' :
+				inputPin = ''
+
+			if inputPin == str('%s'% aPincode ) :
+				isUnlock = True
+				self.mDataCache.Player_AVBlank( False, False )
+				LOG_TRACE( 'Pincode success' ) 
+
+			else:
+				msg1 = MR_LANG('Error')
+				msg2 = MR_LANG('Wrong PIN Code')
+				xbmcgui.Dialog().ok( msg1, msg2 )
+
+
+		except Exception, e:
+			LOG_TRACE( 'Error exception[%s]'% e )
+
+		LOG_TRACE( 'Leave' )
+		return isUnlock
 
 
 	def RecordingStop( self ) :
@@ -300,6 +348,7 @@ class NullWindow( BaseWindow ) :
 						self.mDataCache.mCacheReload = True
 
 		LOG_TRACE('Leave')
+
 
 	def SetKeyDisabled( self, aDisable = False, aRecInfo = None ) :
 		self.mStatusIsArchive = aDisable

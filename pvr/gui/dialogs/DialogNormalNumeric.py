@@ -44,8 +44,13 @@ class DialogNormalNumeric( BaseDialog ) :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			self.mInputLabel = self.mInputLabel[ : len( self.mInputLabel ) - 1 ]
-			self.SetInputLabel( )
+			if len(self.mInputLabel) < 1 :
+				self.mIsOk = E_DIALOG_STATE_CANCEL
+				self.mInputKey = aAction
+				self.CloseDialog( )
+			else :
+				self.mInputLabel = self.mInputLabel[ : len( self.mInputLabel ) - 1 ]
+				self.SetInputLabel( )
 
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 and ( len( self.mInputLabel ) < self.mMaxLength ) :
 			inputString ='%d' %(actionId - Action.REMOTE_0 )

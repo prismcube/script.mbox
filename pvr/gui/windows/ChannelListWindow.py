@@ -586,6 +586,8 @@ class ChannelListWindow( BaseWindow ) :
 		#aEvent.printdebug( )
 
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
+			LOG_TRACE('Receive Event[%s]'% aEvent.getName() )
+
 			if aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
 
 				if self.mNavChannel == None:
@@ -633,7 +635,15 @@ class ChannelListWindow( BaseWindow ) :
 				self.mListItems = None
 				self.InitChannelList( )
 				
-				LOG_TRACE('Receive Event[%s]'% aEvent.getName() )
+			elif aEvent.getName() == ElisEventChannelChangeResult.getName() :
+				ch = self.mDataCache.Channel_GetCurrent( )
+				isLimit = False
+				if self.mNavEpg :
+					isLimit = AgeLimit( self.mPropertyAge, self.mNavEpg.mAgeRating )
+
+				LOG_TRACE( 'ch[%s] AgeLimit[%s] Locked[%s]'% (ch.mNumber, isLimit, ch.mLocked) )
+				if ch.mLocked or isLimit :
+					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mPropertyPincode )
 
 		else:
 			LOG_TRACE( 'channellist winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
@@ -655,7 +665,6 @@ class ChannelListWindow( BaseWindow ) :
 					self.mNavChannel = ch
 					self.ResetLabel( )
 					self.UpdateLabelInfo( )
-					self.PincodeDialogLimit( )
 					break
 				chindex += 1
 
@@ -698,25 +707,24 @@ class ChannelListWindow( BaseWindow ) :
 			self.mDataCache.Player_AVBlank( isBlank, False )
 
 		ret = False
-		#ret = self.mDataCache.Channel_SetCurrent( chNumber, self.mChannelListServiceType )
 		ret = self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
 
 		#LOG_TRACE( 'MASK[%s] ret[%s]'% (self.mPincodeEnter, ret) )
 		if ret == True :
-			if self.mPincodeEnter == FLAG_MASK_NONE :
-				if self.mCurrentChannel == iChannel.mNumber :
-					ret = False
-					ret = self.SaveSlideMenuHeader( )
-					#LOG_TRACE('============== ret[%s]'% ret )
-					if ret != E_DIALOG_STATE_CANCEL :
-						self.mEnableThread = False
-						self.CurrentTimeThread( ).join( )
-						self.Close( )
+			#if self.mPincodeEnter == FLAG_MASK_NONE :
+			if self.mCurrentChannel == iChannel.mNumber :
+				ret = False
+				ret = self.SaveSlideMenuHeader( )
+				#LOG_TRACE('============== ret[%s]'% ret )
+				if ret != E_DIALOG_STATE_CANCEL :
+					self.mEnableThread = False
+					self.CurrentTimeThread( ).join( )
+					self.Close( )
 
-						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-						return
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+					return
 
-					LOG_TRACE( 'go out Cancel' )
+				LOG_TRACE( 'go out Cancel' )
 
 		ch = None
 		ch = self.mDataCache.Channel_GetCurrent( )
@@ -730,7 +738,6 @@ class ChannelListWindow( BaseWindow ) :
 
 			self.ResetLabel( )
 			self.UpdateLabelInfo( )
-			self.PincodeDialogLimit( )
 
 		LOG_TRACE( 'Leave' )
 
@@ -1594,7 +1601,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			#update lock-icon visible
 			if self.mNavChannel.mLocked :
-				self.mPincodeEnter |= FLAG_MASK_ADD
+				#self.mPincodeEnter |= FLAG_MASK_ADD
 				self.UpdateLabelGUI( self.mCtrlLockedInfo.getId( ), True )
 
 
@@ -1643,11 +1650,13 @@ class ChannelListWindow( BaseWindow ) :
 				LOG_TRACE( 'Component[%s]'% setPropertyList )
 
 
+				"""
 				#is Age? agerating check
 				isLimit = AgeLimit( self.mPropertyAge, self.mNavEpg.mAgeRating )
 				if isLimit == True :
 					self.mPincodeEnter |= FLAG_MASK_ADD
 					LOG_TRACE( 'AgeLimit[%s]'% isLimit )
+				"""
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -1655,53 +1664,6 @@ class ChannelListWindow( BaseWindow ) :
 
 		else:
 			LOG_TRACE( 'event null' )
-
-
-		LOG_TRACE( 'Leave' )
-
-
-	def PincodeDialogLimit( self ) :
-		LOG_TRACE( 'Enter' )
-
-		#popup pin-code dialog
-		if self.mPincodeEnter > FLAG_MASK_NONE :
-			try :
-				msg = MR_LANG('Input PIN Code')
-
-				inputPin = ''
-				self.mDataCache.Player_AVBlank( True, False )
-				#self.mDataCache.Channel_SetInitialBlank( True )
-				GuiLock2( True )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-				dialog.SetDialogProperty( msg, '', 4, True )
-	 			dialog.doModal( )
-				GuiLock2( False )
-
-	 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-	 				inputPin = dialog.GetString( )
-				
-				if inputPin == None or inputPin == '' :
-					inputPin = ''
-				LOG_TRACE( 'ch[%d] mask[%s] inputPin[%s] stbPin[%s]'% (self.mCurrentChannel, self.mPincodeEnter, inputPin, self.mPropertyPincode) )
-
-				if inputPin == str('%s'% self.mPropertyPincode) :
-					self.mPincodeEnter = FLAG_MASK_NONE
-					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetLastChannelCertificationPinCode( True )
-
-					ret = None
-					ret = self.mDataCache.Channel_SetCurrent( self.mCurrentChannel, self.mChannelListServiceType)
-					self.mDataCache.Player_AVBlank( False, False )
-					LOG_TRACE( 'Pincode success' )
-
-				else:
-					msg1 = MR_LANG('Error')
-					msg2 = MR_LANG('Wrong PIN Code')
-					GuiLock2( True )
-					xbmcgui.Dialog( ).ok( msg1, msg2 )
-					GuiLock2( False )
-
-			except Exception, e:
-				LOG_TRACE( 'Error exception[%s]'% e )
 
 
 		LOG_TRACE( 'Leave' )
@@ -2553,7 +2515,7 @@ class ChannelListWindow( BaseWindow ) :
 
 						self.ResetLabel( )
 						self.UpdateLabelInfo( )
-						self.PincodeDialogLimit( )
+
 
 				else :
 					self.SetChannelTune( int(inputNumber) )
