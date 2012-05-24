@@ -298,7 +298,6 @@ class WindowMgr(object):
 			self.Reset( )
 			
 
-
 	def CheckSkinChange( self ) :
 		currentSkinName = xbmc.executehttpapi("GetGUISetting(3, lookandfeel.skin)")
 		print 'skin name=%s : %s' %( self.mSkinName, currentSkinName[4:] )

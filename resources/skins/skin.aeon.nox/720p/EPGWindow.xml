@@ -174,28 +174,6 @@
 		</control>
 		<include>DefaultMiniTitle</include>
 
-		<control type="group">
-			<posx>865</posx>
-			<posy>330</posy>
-			<!--
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>352</width>
-				<height>18</height>
-				<texture>confluence/StackNF.png</texture>
-			</control>
-			-->
-			<control type="label" id="401">
-				<description>Current Channel</description>			
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>352</width>
-				<height>18</height>
-				<font>font12_title</font>
-			</control>
-		</control>
-
 		<!-- Right smoll Box -->
 		<control type="group">
 			<include>Animation_CommonFade</include>
@@ -217,6 +195,22 @@
 					<height>315</height>
 					<texture>views/listpanel_back.png</texture>
 				</control>
+				<control type="image">
+					<posx>811</posx>
+					<posy>333</posy>
+					<width>392</width>
+					<height>18</height>
+					<texture border="20">settings/settings_panelback.png</texture>
+				</control>
+				<control type="label" id="401">
+					<description>Current Channel</description>			
+					<posx>838</posx>
+					<posy>329</posy>
+					<width>352</width>
+					<height>18</height>
+					<font>Font_Reg20</font>
+				</control>
+
 				<control type="group" id="9020">
 					<posx>860</posx>
 					<posy>405</posy>

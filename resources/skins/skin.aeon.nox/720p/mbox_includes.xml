@@ -536,6 +536,34 @@
 			<width>750</width>
 			<height>40</height>
 			<defaultcontrol always="true">1101</defaultcontrol>
+			<control type="button" id="1101">
+				<description>Menu Item Next Button</description>
+				<visible>Control(1100).IsVisible()</visible>
+				<hitrect x="0" y="0" w="705" h="40" />	
+				<posx>660</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+				<onclick>Control.Move(1103,1)</onclick>
+				<onup>1101</onup>
+				<ondown>1101</ondown>
+				<aligny>center</aligny>
+			</control>
+			<control type="button" id="1102">
+				<description>Menu Item Prev Button</description>
+				<visible>Control(1100).IsVisible()</visible>				
+				<posx>705</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+				<onclick>Control.Move(1103,-1)</onclick>
+				<onup>1102</onup>
+				<ondown>1102</ondown>
+			</control>
 			<control type="list" id="1103">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
@@ -635,34 +663,6 @@
 					</control>
 				</focusedlayout>
 			</control>
-			<control type="button" id="1101">
-				<description>Menu Item Next Button</description>
-				<visible>Control(1100).IsVisible()</visible>
-				<hitrect x="0" y="0" w="705" h="40" />	
-				<posx>660</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-down.png</texturenofocus>
-				<texturefocus>settings/spin-down-focus.png</texturefocus>
-				<onclick>Control.Move(1103,1)</onclick>
-				<onup>1101</onup>
-				<ondown>1101</ondown>
-				<aligny>center</aligny>
-			</control>
-			<control type="button" id="1102">
-				<description>Menu Item Prev Button</description>
-				<visible>Control(1100).IsVisible()</visible>				
-				<posx>705</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-up.png</texturenofocus>
-				<texturefocus>settings/spin-up-focus.png</texturefocus>
-				<onclick>Control.Move(1103,-1)</onclick>
-				<onup>1102</onup>
-				<ondown>1102</ondown>
-			</control>
 		</control>
 	</include>
 
@@ -671,6 +671,34 @@
 			<width>750</width>
 			<height>40</height>
 			<defaultcontrol always="true">1201</defaultcontrol>
+			<control type="button" id="1201">
+				<description>Menu Item Next Button</description>
+				<visible>Control(1200).IsVisible()</visible>
+				<hitrect x="0" y="0" w="705" h="40" />
+				<posx>660</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+				<onclick>Control.Move(1203,1)</onclick>
+				<onup>1201</onup>
+				<ondown>1201</ondown>
+			</control>
+			<control type="button" id="1202">
+				<description>Menu Item Prev Button</description>
+				<visible>Control(1200).IsVisible()</visible>
+				<description>Menu Item Prev Button</description>				
+				<posx>705</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+				<onclick>Control.Move(1203,-1)</onclick>
+				<onup>1202</onup>
+				<ondown>1202</ondown>
+			</control>
 			<control type="list" id="1203">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
@@ -770,34 +798,6 @@
 					</control>
 				</focusedlayout>
 			</control>
-			<control type="button" id="1201">
-				<description>Menu Item Next Button</description>
-				<visible>Control(1200).IsVisible()</visible>
-				<hitrect x="0" y="0" w="705" h="40" />
-				<posx>660</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-down.png</texturenofocus>
-				<texturefocus>settings/spin-down-focus.png</texturefocus>
-				<onclick>Control.Move(1203,1)</onclick>
-				<onup>1201</onup>
-				<ondown>1201</ondown>
-			</control>
-			<control type="button" id="1202">
-				<description>Menu Item Prev Button</description>
-				<visible>Control(1200).IsVisible()</visible>
-				<description>Menu Item Prev Button</description>				
-				<posx>705</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-up.png</texturenofocus>
-				<texturefocus>settings/spin-up-focus.png</texturefocus>
-				<onclick>Control.Move(1203,-1)</onclick>
-				<onup>1202</onup>
-				<ondown>1202</ondown>
-			</control>
 		</control>
 	</include>
 
@@ -806,6 +806,33 @@
 			<width>750</width>
 			<height>40</height>
 			<defaultcontrol always="true">1301</defaultcontrol>
+			<control type="button" id="1301">
+				<description>Menu Item Next Button</description>
+				<visible>Control(1300).IsVisible()</visible>
+				<hitrect x="0" y="0" w="705" h="40" />	
+				<posx>660</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+				<onclick>Control.Move(1303,1)</onclick>
+				<onup>1301</onup>
+				<ondown>1301</ondown>
+			</control>
+			<control type="button" id="1302">
+				<description>Menu Item Prev Button</description>
+				<visible>Control(1300).IsVisible()</visible>
+				<posx>705</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+				<onclick>Control.Move(1303,-1)</onclick>
+				<onup>1302</onup>
+				<ondown>1302</ondown>
+			</control>
 			<control type="list" id="1303">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
@@ -905,33 +932,6 @@
 					</control>
 				</focusedlayout>
 			</control>
-			<control type="button" id="1301">
-				<description>Menu Item Next Button</description>
-				<visible>Control(1300).IsVisible()</visible>
-				<hitrect x="0" y="0" w="705" h="40" />	
-				<posx>660</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-down.png</texturenofocus>
-				<texturefocus>settings/spin-down-focus.png</texturefocus>
-				<onclick>Control.Move(1303,1)</onclick>
-				<onup>1301</onup>
-				<ondown>1301</ondown>
-			</control>
-			<control type="button" id="1302">
-				<description>Menu Item Prev Button</description>
-				<visible>Control(1300).IsVisible()</visible>
-				<posx>705</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-up.png</texturenofocus>
-				<texturefocus>settings/spin-up-focus.png</texturefocus>
-				<onclick>Control.Move(1303,-1)</onclick>
-				<onup>1302</onup>
-				<ondown>1302</ondown>
-			</control>
 		</control>
 	</include>	
 
@@ -940,6 +940,33 @@
 			<width>750</width>
 			<height>40</height>
 			<defaultcontrol always="true">1401</defaultcontrol>
+			<control type="button" id="1401">
+				<description>Menu Item Next Button</description>
+				<visible>Control(1400).IsVisible()</visible>
+				<hitrect x="0" y="0" w="705" h="40" />
+				<posx>660</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+				<onclick>Control.Move(1403,1)</onclick>
+				<onup>1401</onup>
+				<ondown>1401</ondown>
+			</control>
+			<control type="button" id="1402">
+				<description>Menu Item Prev Button</description>
+				<visible>Control(1400).IsVisible()</visible>
+				<posx>705</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+				<onclick>Control.Move(1403,-1)</onclick>
+				<onup>1402</onup>
+				<ondown>1402</ondown>
+			</control>
 			<control type="list" id="1403">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
@@ -1039,33 +1066,6 @@
 					</control>
 				</focusedlayout>
 			</control>
-			<control type="button" id="1401">
-				<description>Menu Item Next Button</description>
-				<visible>Control(1400).IsVisible()</visible>
-				<hitrect x="0" y="0" w="705" h="40" />
-				<posx>660</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-down.png</texturenofocus>
-				<texturefocus>settings/spin-down-focus.png</texturefocus>
-				<onclick>Control.Move(1403,1)</onclick>
-				<onup>1401</onup>
-				<ondown>1401</ondown>
-			</control>
-			<control type="button" id="1402">
-				<description>Menu Item Prev Button</description>
-				<visible>Control(1400).IsVisible()</visible>
-				<posx>705</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-up.png</texturenofocus>
-				<texturefocus>settings/spin-up-focus.png</texturefocus>
-				<onclick>Control.Move(1403,-1)</onclick>
-				<onup>1402</onup>
-				<ondown>1402</ondown>
-			</control>
 		</control>
 	</include>	
 
@@ -1074,6 +1074,33 @@
 			<width>750</width>
 			<height>40</height>
 			<defaultcontrol always="true">1501</defaultcontrol>
+			<control type="button" id="1501">
+				<description>Menu Item Next Button</description>
+				<visible>Control(1500).IsVisible()</visible>
+				<hitrect x="0" y="0" w="705" h="40" />	
+				<posx>660</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+				<onclick>Control.Move(1503,1)</onclick>
+				<onup>1501</onup>
+				<ondown>1501</ondown>
+			</control>
+			<control type="button" id="1502">
+				<description>Menu Item Prev Button</description>
+				<visible>Control(1500).IsVisible()</visible>
+				<posx>705</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+				<onclick>Control.Move(1503,-1)</onclick>
+				<onup>1502</onup>
+				<ondown>1502</ondown>
+			</control>
 			<control type="list" id="1503">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
@@ -1173,33 +1200,6 @@
 					</control>
 				</focusedlayout>
 			</control>
-			<control type="button" id="1501">
-				<description>Menu Item Next Button</description>
-				<visible>Control(1500).IsVisible()</visible>
-				<hitrect x="0" y="0" w="705" h="40" />	
-				<posx>660</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-down.png</texturenofocus>
-				<texturefocus>settings/spin-down-focus.png</texturefocus>
-				<onclick>Control.Move(1503,1)</onclick>
-				<onup>1501</onup>
-				<ondown>1501</ondown>
-			</control>
-			<control type="button" id="1502">
-				<description>Menu Item Prev Button</description>
-				<visible>Control(1500).IsVisible()</visible>
-				<posx>705</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-up.png</texturenofocus>
-				<texturefocus>settings/spin-up-focus.png</texturefocus>
-				<onclick>Control.Move(1503,-1)</onclick>
-				<onup>1502</onup>
-				<ondown>1502</ondown>
-			</control>
 		</control>
 	</include>	
 
@@ -1208,6 +1208,33 @@
 			<width>750</width>
 			<height>40</height>
 			<defaultcontrol always="true">1601</defaultcontrol>
+			<control type="button" id="1601">
+				<description>Menu Item Next Button</description>
+				<visible>Control(1600).IsVisible()</visible>
+				<hitrect x="0" y="0" w="705" h="40" />	
+				<posx>660</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+				<onclick>Control.Move(1603,1)</onclick>
+				<onup>1601</onup>
+				<ondown>1601</ondown>
+			</control>
+			<control type="button" id="1602">
+				<description>Menu Item Prev Button</description>
+				<visible>Control(1600).IsVisible()</visible>
+				<posx>705</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+				<onclick>Control.Move(1603,-1)</onclick>
+				<onup>1602</onup>
+				<ondown>1602</ondown>
+			</control>
 			<control type="list" id="1603">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
@@ -1307,33 +1334,6 @@
 					</control>
 				</focusedlayout>
 			</control>
-			<control type="button" id="1601">
-				<description>Menu Item Next Button</description>
-				<visible>Control(1600).IsVisible()</visible>
-				<hitrect x="0" y="0" w="705" h="40" />	
-				<posx>660</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-down.png</texturenofocus>
-				<texturefocus>settings/spin-down-focus.png</texturefocus>
-				<onclick>Control.Move(1603,1)</onclick>
-				<onup>1601</onup>
-				<ondown>1601</ondown>
-			</control>
-			<control type="button" id="1602">
-				<description>Menu Item Prev Button</description>
-				<visible>Control(1600).IsVisible()</visible>
-				<posx>705</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-up.png</texturenofocus>
-				<texturefocus>settings/spin-up-focus.png</texturefocus>
-				<onclick>Control.Move(1603,-1)</onclick>
-				<onup>1602</onup>
-				<ondown>1602</ondown>
-			</control>
 		</control>
 	</include>	
 
@@ -1342,6 +1342,33 @@
 			<width>750</width>
 			<height>40</height>
 			<defaultcontrol always="true">1701</defaultcontrol>
+			<control type="button" id="1701">
+				<description>Menu Item Next Button</description>
+				<visible>Control(1700).IsVisible()</visible>
+				<hitrect x="0" y="0" w="705" h="40" />	
+				<posx>660</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+				<onclick>Control.Move(1703,1)</onclick>
+				<onup>1701</onup>
+				<ondown>1701</ondown>
+			</control>
+			<control type="button" id="1702">
+				<description>Menu Item Prev Button</description>
+				<visible>Control(1700).IsVisible()</visible>
+				<posx>705</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+				<onclick>Control.Move(1703,-1)</onclick>
+				<onup>1702</onup>
+				<ondown>1702</ondown>
+			</control>
 			<control type="list" id="1703">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
@@ -1441,33 +1468,6 @@
 					</control>
 				</focusedlayout>
 			</control>
-			<control type="button" id="1701">
-				<description>Menu Item Next Button</description>
-				<visible>Control(1700).IsVisible()</visible>
-				<hitrect x="0" y="0" w="705" h="40" />	
-				<posx>660</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-down.png</texturenofocus>
-				<texturefocus>settings/spin-down-focus.png</texturefocus>
-				<onclick>Control.Move(1703,1)</onclick>
-				<onup>1701</onup>
-				<ondown>1701</ondown>
-			</control>
-			<control type="button" id="1702">
-				<description>Menu Item Prev Button</description>
-				<visible>Control(1700).IsVisible()</visible>
-				<posx>705</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-up.png</texturenofocus>
-				<texturefocus>settings/spin-up-focus.png</texturefocus>
-				<onclick>Control.Move(1703,-1)</onclick>
-				<onup>1702</onup>
-				<ondown>1702</ondown>
-			</control>
 		</control>
 	</include>
 
@@ -1476,6 +1476,33 @@
 			<width>750</width>
 			<height>40</height>
 			<defaultcontrol always="true">1801</defaultcontrol>
+			<control type="button" id="1801">
+				<description>Menu Item Next Button</description>
+				<visible>Control(1800).IsVisible()</visible>
+				<hitrect x="0" y="0" w="705" h="40" />	
+				<posx>660</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+				<onclick>Control.Move(1803,1)</onclick>
+				<onup>1801</onup>
+				<ondown>1801</ondown>
+			</control>
+			<control type="button" id="1802">
+				<description>Menu Item Prev Button</description>
+				<visible>Control(1800).IsVisible()</visible>
+				<posx>705</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+				<onclick>Control.Move(1803,-1)</onclick>
+				<onup>1802</onup>
+				<ondown>1802</ondown>
+			</control>
 			<control type="list" id="1803">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
@@ -1575,33 +1602,6 @@
 					</control>
 				</focusedlayout>
 			</control>
-			<control type="button" id="1801">
-				<description>Menu Item Next Button</description>
-				<visible>Control(1800).IsVisible()</visible>
-				<hitrect x="0" y="0" w="705" h="40" />	
-				<posx>660</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-down.png</texturenofocus>
-				<texturefocus>settings/spin-down-focus.png</texturefocus>
-				<onclick>Control.Move(1803,1)</onclick>
-				<onup>1801</onup>
-				<ondown>1801</ondown>
-			</control>
-			<control type="button" id="1802">
-				<description>Menu Item Prev Button</description>
-				<visible>Control(1800).IsVisible()</visible>
-				<posx>705</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-up.png</texturenofocus>
-				<texturefocus>settings/spin-up-focus.png</texturefocus>
-				<onclick>Control.Move(1803,-1)</onclick>
-				<onup>1802</onup>
-				<ondown>1802</ondown>
-			</control>
 		</control>
 	</include>		
 
@@ -1610,6 +1610,33 @@
 			<width>750</width>
 			<height>40</height>
 			<defaultcontrol always="true">1901</defaultcontrol>
+			<control type="button" id="1901">
+				<description>Menu Item Next Button</description>
+				<visible>Control(1900).IsVisible()</visible>
+				<hitrect x="0" y="0" w="705" h="40" />	
+				<posx>660</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+				<onclick>Control.Move(1903,1)</onclick>
+				<onup>1901</onup>
+				<ondown>1901</ondown>
+			</control>
+			<control type="button" id="1902">
+				<description>Menu Item Prev Button</description>
+				<visible>Control(1900).IsVisible()</visible>
+				<posx>705</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+				<onclick>Control.Move(1903,-1)</onclick>
+				<onup>1902</onup>
+				<ondown>1902</ondown>
+			</control>
 			<control type="list" id="1903">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
@@ -1708,33 +1735,6 @@
 						<visible>Control.IsEnabled(1900) + [Control.HasFocus(1901) | Control.HasFocus(1902)]</visible>
 					</control>
 				</focusedlayout>
-			</control>
-			<control type="button" id="1901">
-				<description>Menu Item Next Button</description>
-				<visible>Control(1900).IsVisible()</visible>
-				<hitrect x="0" y="0" w="705" h="40" />	
-				<posx>660</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-down.png</texturenofocus>
-				<texturefocus>settings/spin-down-focus.png</texturefocus>
-				<onclick>Control.Move(1903,1)</onclick>
-				<onup>1901</onup>
-				<ondown>1901</ondown>
-			</control>
-			<control type="button" id="1902">
-				<description>Menu Item Prev Button</description>
-				<visible>Control(1900).IsVisible()</visible>
-				<posx>705</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-up.png</texturenofocus>
-				<texturefocus>settings/spin-up-focus.png</texturefocus>
-				<onclick>Control.Move(1903,-1)</onclick>
-				<onup>1902</onup>
-				<ondown>1902</ondown>
 			</control>
 		</control>
 	</include>
@@ -2444,6 +2444,33 @@
 			<width>640</width>
 			<height>40</height>
 			<defaultcontrol always="true">6111</defaultcontrol>
+			<control type="button" id="6111">
+				<description>Menu Item Next Button</description>
+				<visible>Control(6110).IsVisible()</visible>
+				<hitrect x="0" y="0" w="515" h="40" />	
+				<posx>470</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+				<onclick>Control.Move(6113,1)</onclick>
+				<onup>6111</onup>
+				<ondown>6111</ondown>
+			</control>
+			<control type="button" id="6112">
+				<description>Menu Item Prev Button</description>
+				<visible>Control(6110).IsVisible()</visible>				
+				<posx>515</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+				<onclick>Control.Move(6113,-1)</onclick>
+				<onup>6112</onup>
+				<ondown>6112</ondown>
+			</control>
 			<control type="list" id="6113">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
@@ -2543,33 +2570,6 @@
 					</control>
 				</focusedlayout>
 			</control>
-			<control type="button" id="6111">
-				<description>Menu Item Next Button</description>
-				<visible>Control(6110).IsVisible()</visible>
-				<hitrect x="0" y="0" w="515" h="40" />	
-				<posx>470</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-down.png</texturenofocus>
-				<texturefocus>settings/spin-down-focus.png</texturefocus>
-				<onclick>Control.Move(6113,1)</onclick>
-				<onup>6111</onup>
-				<ondown>6111</ondown>
-			</control>
-			<control type="button" id="6112">
-				<description>Menu Item Prev Button</description>
-				<visible>Control(6110).IsVisible()</visible>				
-				<posx>515</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-up.png</texturenofocus>
-				<texturefocus>settings/spin-up-focus.png</texturefocus>
-				<onclick>Control.Move(6113,-1)</onclick>
-				<onup>6112</onup>
-				<ondown>6112</ondown>
-			</control>
 		</control>
 	</include>
 
@@ -2578,6 +2578,33 @@
 			<width>640</width>
 			<height>40</height>
 			<defaultcontrol always="true">6121</defaultcontrol>
+			<control type="button" id="6121">
+				<description>Menu Item Next Button</description>
+				<visible>Control(6120).IsVisible()</visible>
+				<hitrect x="0" y="0" w="515" h="40" />	
+				<posx>470</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+				<onclick>Control.Move(6123,1)</onclick>
+				<onup>6121</onup>
+				<ondown>6121</ondown>
+			</control>
+			<control type="button" id="6122">
+				<description>Menu Item Prev Button</description>
+				<visible>Control(6120).IsVisible()</visible>				
+				<posx>515</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+				<onclick>Control.Move(6123,-1)</onclick>
+				<onup>6122</onup>
+				<ondown>6122</ondown>
+			</control>
 			<control type="list" id="6123">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
@@ -2677,33 +2704,6 @@
 					</control>
 				</focusedlayout>
 			</control>
-			<control type="button" id="6121">
-				<description>Menu Item Next Button</description>
-				<visible>Control(6120).IsVisible()</visible>
-				<hitrect x="0" y="0" w="515" h="40" />	
-				<posx>470</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-down.png</texturenofocus>
-				<texturefocus>settings/spin-down-focus.png</texturefocus>
-				<onclick>Control.Move(6123,1)</onclick>
-				<onup>6121</onup>
-				<ondown>6121</ondown>
-			</control>
-			<control type="button" id="6122">
-				<description>Menu Item Prev Button</description>
-				<visible>Control(6120).IsVisible()</visible>				
-				<posx>515</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-up.png</texturenofocus>
-				<texturefocus>settings/spin-up-focus.png</texturefocus>
-				<onclick>Control.Move(6123,-1)</onclick>
-				<onup>6122</onup>
-				<ondown>6122</ondown>
-			</control>
 		</control>
 	</include>
 
@@ -2712,6 +2712,33 @@
 			<width>640</width>
 			<height>40</height>
 			<defaultcontrol always="true">6131</defaultcontrol>
+			<control type="button" id="6131">
+				<description>Menu Item Next Button</description>
+				<visible>Control(6130).IsVisible()</visible>
+				<hitrect x="0" y="0" w="515" h="40" />	
+				<posx>470</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+				<onclick>Control.Move(6133,1)</onclick>
+				<onup>6131</onup>
+				<ondown>6131</ondown>
+			</control>
+			<control type="button" id="6132">
+				<description>Menu Item Prev Button</description>
+				<visible>Control(6130).IsVisible()</visible>				
+				<posx>515</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+				<onclick>Control.Move(6133,-1)</onclick>
+				<onup>6132</onup>
+				<ondown>6132</ondown>
+			</control>
 			<control type="list" id="6133">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
@@ -2811,33 +2838,6 @@
 					</control>
 				</focusedlayout>
 			</control>
-			<control type="button" id="6131">
-				<description>Menu Item Next Button</description>
-				<visible>Control(6130).IsVisible()</visible>
-				<hitrect x="0" y="0" w="515" h="40" />	
-				<posx>470</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-down.png</texturenofocus>
-				<texturefocus>settings/spin-down-focus.png</texturefocus>
-				<onclick>Control.Move(6133,1)</onclick>
-				<onup>6131</onup>
-				<ondown>6131</ondown>
-			</control>
-			<control type="button" id="6132">
-				<description>Menu Item Prev Button</description>
-				<visible>Control(6130).IsVisible()</visible>				
-				<posx>515</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-up.png</texturenofocus>
-				<texturefocus>settings/spin-up-focus.png</texturefocus>
-				<onclick>Control.Move(6133,-1)</onclick>
-				<onup>6132</onup>
-				<ondown>6132</ondown>
-			</control>
 		</control>
 	</include>
 
@@ -2846,6 +2846,33 @@
 			<width>640</width>
 			<height>40</height>
 			<defaultcontrol always="true">6141</defaultcontrol>
+			<control type="button" id="6141">
+				<description>Menu Item Next Button</description>
+				<visible>Control(6140).IsVisible()</visible>
+				<hitrect x="0" y="0" w="515" h="40" />	
+				<posx>470</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-down.png</texturenofocus>
+				<texturefocus>settings/spin-down-focus.png</texturefocus>
+				<onclick>Control.Move(6143,1)</onclick>
+				<onup>6141</onup>
+				<ondown>6141</ondown>
+			</control>
+			<control type="button" id="6142">
+				<description>Menu Item Prev Button</description>
+				<visible>Control(6140).IsVisible()</visible>				
+				<posx>515</posx>
+				<posy>-6</posy>
+				<width>45</width>
+				<height>55</height>
+				<texturenofocus>settings/spin-up.png</texturenofocus>
+				<texturefocus>settings/spin-up-focus.png</texturefocus>
+				<onclick>Control.Move(6143,-1)</onclick>
+				<onup>6142</onup>
+				<ondown>6142</ondown>
+			</control>
 			<control type="list" id="6143">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
@@ -2944,33 +2971,6 @@
 						<visible>Control.IsEnabled(6140) + [Control.HasFocus(6141) | Control.HasFocus(6142)]</visible>
 					</control>
 				</focusedlayout>
-			</control>
-			<control type="button" id="6141">
-				<description>Menu Item Next Button</description>
-				<visible>Control(6140).IsVisible()</visible>
-				<hitrect x="0" y="0" w="515" h="40" />	
-				<posx>470</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-down.png</texturenofocus>
-				<texturefocus>settings/spin-down-focus.png</texturefocus>
-				<onclick>Control.Move(6143,1)</onclick>
-				<onup>6141</onup>
-				<ondown>6141</ondown>
-			</control>
-			<control type="button" id="6142">
-				<description>Menu Item Prev Button</description>
-				<visible>Control(6140).IsVisible()</visible>				
-				<posx>515</posx>
-				<posy>-6</posy>
-				<width>45</width>
-				<height>55</height>
-				<texturenofocus>settings/spin-up.png</texturenofocus>
-				<texturefocus>settings/spin-up-focus.png</texturefocus>
-				<onclick>Control.Move(6143,-1)</onclick>
-				<onup>6142</onup>
-				<ondown>6142</ondown>
 			</control>
 		</control>
 	</include>
