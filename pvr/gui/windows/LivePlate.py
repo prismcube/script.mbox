@@ -179,7 +179,6 @@ class LivePlate( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 		#if not self.mCertification :
-			#self.PincodeDialogLimit()
 		if self.mCurrentChannel.mLocked :
 			WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mDataCache.mPropertyPincode )
 
@@ -539,7 +538,6 @@ class LivePlate( BaseWindow ) :
 					self.mEPGListIdx -= 1
 
 			self.EPGListMove()
-			#self.PincodeDialogLimit()
 
 
 		LOG_TRACE('Leave')
@@ -707,70 +705,6 @@ class LivePlate( BaseWindow ) :
 		else:
 			LOG_TRACE( 'aEvent null' )
 
-
-		LOG_TRACE( 'Leave' )
-
-
-	def PincodeDialogLimit( self ) :
-
-		#popup pin-code dialog
-		#if self.mPincodeEnter > FLAG_MASK_NONE :
-
-		while self.mPincodeEnter > FLAG_MASK_NONE :
-
-			try :
-				msg = MR_LANG('Input PIN Code')
-				inputPin = ''
-
-				#ret = self.mDataCache.Channel_SetInitialBlank( True )
-				ret = self.mDataCache.Player_AVBlank( True, False )
-
-				GuiLock2( True )
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-				dialog.SetDialogProperty( msg, '', 4, True )
-	 			dialog.doModal()
-				GuiLock2( False )
-
-				reply = dialog.IsOK()
-	 			if reply == E_DIALOG_STATE_YES :
-	 				inputPin = dialog.GetString()
-
-	 			elif reply == E_DIALOG_STATE_CANCEL :
-	 				self.mPincodeEnter = FLAG_MASK_NONE
-					self.mDataCache.Player_AVBlank( False, False )
-
-	 				inputKey = dialog.GetInputKey()
-	 				self.onAction( inputKey )
-	 				break
-
-
-				if inputPin == None or inputPin == '' :
-					inputPin = ''
-
-				#LOG_TRACE( 'mask[%s] inputPin[%s] stbPin[%s]'% (self.mPincodeEnter, inputPin, self.mPropertyPincode) )
-
-				if inputPin == str('%s'% self.mPropertyPincode) :
-					self.mPincodeEnter = FLAG_MASK_NONE
-					#ret = self.mDataCache.Channel_SetInitialBlank( False )
-					self.mDataCache.Player_AVBlank( False, False )
-					mNumber = self.mCurrentChannel.mNumber
-					mType = self.mCurrentChannel.mServiceType
-					ret = self.mDataCache.Channel_SetCurrent( mNumber, mType)
-
-					LOG_TRACE( 'Pincode success' ) 
-					break
-				else:
-					msg1 = MR_LANG('Error')
-					msg2 = MR_LANG('Wrong PIN Code')
-					GuiLock2( True )
-					xbmcgui.Dialog().ok( msg1, msg2 )
-					GuiLock2( False )
-
-			except Exception, e:
-				LOG_TRACE( 'Error exception[%s]'% e )
-
-			time.sleep(0.1)
-			LOG_TRACE('=======loop==============')
 
 		LOG_TRACE( 'Leave' )
 
@@ -1311,7 +1245,6 @@ class LivePlate( BaseWindow ) :
 				self.mLastChannel = self.mCurrentChannel
 				self.InitLabelInfo()
 				self.UpdateONEvent()
-				#self.PincodeDialogLimit()
 
 			else :
 				LOG_ERR('Tune Fail')

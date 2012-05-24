@@ -452,12 +452,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mElisZappingModeInfo.mServiceType = aType
 
 			self.InitSlideMenuHeader( FLAG_ZAPPING_CHANGE )
-			self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
-			xbmc.sleep( 50 )
-			self.SubMenuAction(E_SLIDE_ACTION_MAIN, E_SLIDE_ALLCHANNEL)
-			self.mCtrlListSubmenu.selectItem( 0 )
-			xbmc.sleep( 50 )
-			self.SubMenuAction(E_SLIDE_ACTION_SUB, ElisEnum.E_MODE_ALL, True)
+			self.RefreshSlideMenu( E_SLIDE_ALLCHANNEL, ElisEnum.E_MODE_ALL, True )
 
 			self.mCtrlListCHList.reset( )
 			self.InitChannelList( )
@@ -506,13 +501,7 @@ class ChannelListWindow( BaseWindow ) :
 				#Event UnRegister
 				#self.mEventBus.Deregister( self )
 				self.InitSlideMenuHeader( )
-				self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
-				xbmc.sleep( 50 )
-				self.SubMenuAction(E_SLIDE_ACTION_MAIN, E_SLIDE_ALLCHANNEL)
-
-				self.mCtrlListSubmenu.selectItem( 0 )
-				xbmc.sleep( 50 )
-				self.SubMenuAction(E_SLIDE_ACTION_SUB, ElisEnum.E_MODE_ALL)
+				self.RefreshSlideMenu( )
 
 				#clear label
 				self.ResetLabel( )
@@ -741,6 +730,15 @@ class ChannelListWindow( BaseWindow ) :
 
 		LOG_TRACE( 'Leave' )
 
+
+	def RefreshSlideMenu( self, aMainIndex = E_SLIDE_ALLCHANNEL, aSubIndex = ElisEnum.E_MODE_ALL, aForce = None ) :
+		self.mCtrlListMainmenu.selectItem( aMainIndex )
+		xbmc.sleep( 50 )
+		self.SubMenuAction( E_SLIDE_ACTION_MAIN, aMainIndex, aForce )
+
+		self.mCtrlListSubmenu.selectItem( 0 )
+		xbmc.sleep( 50 )
+		self.SubMenuAction( E_SLIDE_ACTION_SUB, aSubIndex, aForce )
 
 	@GuiLock
 	def SubMenuAction(self, aAction, aMenuIndex, aForce = None):
@@ -1170,6 +1168,7 @@ class ChannelListWindow( BaseWindow ) :
 		LOG_TRACE( 'Enter' )
 
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+			self.mDataCache.SetSkipChannelToDBTable( False )
 			#opt btn blind
 			self.UpdateLabelGUI( self.mCtrlGroupOpt.getId( ), False )
 			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ), True, 'enable' )
@@ -1177,6 +1176,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), MR_LANG('Edit Channel'), 'label' )
 
 		else :
+			self.mDataCache.SetSkipChannelToDBTable( True )
 			#opt btn visible
 			self.UpdateLabelGUI( self.mCtrlGroupOpt.getId( ), True )
 			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ), False, 'enable' )
@@ -1356,6 +1356,7 @@ class ChannelListWindow( BaseWindow ) :
 		#LOG_TRACE('listItems data[%s]'% (self.mListItems) )
 		if self.mListItems == None :
 			self.mListItems = []
+
 			for iChannel in self.mChannelList:
 				try:
 					if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
@@ -2234,7 +2235,6 @@ class ChannelListWindow( BaseWindow ) :
 		elif aContextAction == CONTEXT_ACTION_ADD_TO_FAV :
 			cmd = 'add'
 			self.SetEditChannelList( cmd, True, aGroupName )
-			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 
 		elif aContextAction == CONTEXT_ACTION_CREATE_GROUP_FAV :
 			cmd = 'Create'
@@ -2255,6 +2255,9 @@ class ChannelListWindow( BaseWindow ) :
 			ret = self.mDataCache.Favoritegroup_Remove( aGroupName, self.mChannelListServiceType )
 			if ret :
 				self.GetFavoriteGroup( )
+
+			self.mZappingMode == ElisEnum.E_MODE_ALL
+			self.RefreshSlideMenu( E_SLIDE_ALLCHANNEL, ElisEnum.E_MODE_ALL, True )
 
 
 		self.mMarkList = []

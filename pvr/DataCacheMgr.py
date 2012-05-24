@@ -428,6 +428,11 @@ class DataCacheMgr( object ):
 		return ret
 
 
+	def SetSkipChannelToDBTable( self, aSkip ) :
+		if SUPPORT_CHANNEL_DATABASE :
+			self.mChannelDB.mSkip = aSkip
+
+
 	def LoadChannelList( self, aSync = 0, aType = ElisEnum.E_SERVICE_TYPE_TV, aMode = ElisEnum.E_MODE_ALL, aSort = ElisEnum.E_SORT_BY_NUMBER, aReopen = False ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			mType = aType
@@ -486,6 +491,7 @@ class DataCacheMgr( object ):
 					nextChannel = self.mChannelList[i+1]
 				else:
 					nextChannel = self.mChannelList[0]
+
 
 				#LOG_TRACE("---------------------- CacheChannel -----------------")
 

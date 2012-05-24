@@ -287,9 +287,11 @@ class NullWindow( BaseWindow ) :
 			msg = MR_LANG('Input PIN Code')
 			inputPin = ''
 
+			GuiLock2(True)
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( msg, '', 4, True )
 			dialog.doModal()
+			GuiLock2(False)
 
 			reply = dialog.IsOK()
 			if reply == E_DIALOG_STATE_YES :
@@ -297,7 +299,6 @@ class NullWindow( BaseWindow ) :
 
 			elif reply == E_DIALOG_STATE_CANCEL :
 				return isUnlock
-
 
 			if inputPin == None or inputPin == '' :
 				inputPin = ''
@@ -310,7 +311,9 @@ class NullWindow( BaseWindow ) :
 			else:
 				msg1 = MR_LANG('Error')
 				msg2 = MR_LANG('Wrong PIN Code')
+				GuiLock2(True)
 				xbmcgui.Dialog().ok( msg1, msg2 )
+				GuiLock2(False)
 
 
 		except Exception, e:
