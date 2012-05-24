@@ -101,6 +101,9 @@ class DataCacheMgr( object ):
 		self.mTimerDB = None
 		self.mRecordDB = None		
 
+		self.mStatusIsArchive = False
+		self.mRecInfo = None
+
 		if SUPPORT_EPG_DATABASE	 == True :
 			self.mEpgDB = ElisEPGDB( )
 
@@ -1075,4 +1078,10 @@ class DataCacheMgr( object ):
 
 	def Timer_DeleteOneWeeklyTimer( self, aTimerId, aDate, aStartTime, aDuration ) :
 		return self.mCommander.Timer_EditWeeklyTimer( aTimerId, aDate, aStartTime, aDuration, aStartTime, 0 ) 
-		
+
+
+	def SetKeyDisabled( self, aDisable = False, aRecInfo = None ) :
+		self.mStatusIsArchive = aDisable
+		self.mRecInfo = aRecInfo
+
+

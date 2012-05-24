@@ -184,8 +184,7 @@ class TimeShiftPlate(BaseWindow):
 
 		elif id == Action.ACTION_PAGE_DOWN:
 			LOG_TRACE('key down')
-			isArchive = WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).GetKeyDisabled( )
-			if isArchive :
+			if self.mDataCache.mStatusIsArchive :
 				LOG_TRACE('Archive playing now')
 				return -1
 
@@ -199,8 +198,7 @@ class TimeShiftPlate(BaseWindow):
 			
 		elif id == Action.ACTION_PAGE_UP:
 			LOG_TRACE('key up')
-			isArchive = WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).GetKeyDisabled( )
-			if isArchive :
+			if self.mDataCache.mStatusIsArchive :
 				LOG_TRACE('Archive playing now')
 				return -1
 
@@ -395,12 +393,11 @@ class TimeShiftPlate(BaseWindow):
 
 				elif self.mMode == ElisEnum.E_MODE_PVR :
 					ret = self.mDataCache.Player_Stop()
-					isArchive = WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).GetKeyDisabled( )
-					if isArchive :
+					if self.mDataCache.mStatusIsArchive :
 						gobackID = WinMgr.WIN_ID_ARCHIVE_WINDOW
 					else :
 						gobackID = WinMgr.WIN_ID_LIVE_PLATE
-					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).SetKeyDisabled( False )
+					self.mDataCache.SetKeyDisabled( False )
 
 				third -= 1
 				LOG_TRACE( 'play_stop() ret[%s] try[%d]'% (ret,third) )

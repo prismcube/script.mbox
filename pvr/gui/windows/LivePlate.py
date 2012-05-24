@@ -249,16 +249,14 @@ class LivePlate( BaseWindow ) :
 				self.EPGNavigation( NEXT_EPG )
 
 		elif id == Action.ACTION_PAGE_UP:
-			isArchive = WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).GetKeyDisabled( )
-			if isArchive :
+			if self.mDataCache.mStatusIsArchive :
 				LOG_TRACE('Archive playing now')
 				return -1
 
 			self.ChannelTune( NEXT_CHANNEL )
 
 		elif id == Action.ACTION_PAGE_DOWN:
-			isArchive = WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).GetKeyDisabled( )
-			if isArchive :
+			if self.mDataCache.mStatusIsArchive :
 				LOG_TRACE('Archive playing now')
 				return -1
 
@@ -1256,8 +1254,7 @@ class LivePlate( BaseWindow ) :
 	def KeySearch( self, aKey ) :
 		LOG_TRACE( 'Enter' )
 
-		isArchive = WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).GetKeyDisabled( )
-		if isArchive :
+		if self.mDataCache.mStatusIsArchive :
 			LOG_TRACE('Archive playing now')
 			return -1
 

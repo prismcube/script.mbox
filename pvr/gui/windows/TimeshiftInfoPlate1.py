@@ -459,12 +459,11 @@ class TimeShiftInfoPlate1(BaseWindow):
 
 				elif self.mMode == ElisEnum.E_MODE_PVR :
 					ret = self.mDataCache.Player_Stop()
-					isArchive = WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).GetKeyDisabled( )
-					if isArchive :
+					if self.mDataCache.mStatusIsArchive :
 						gobackID = WinMgr.WIN_ID_ARCHIVE_WINDOW
 					else :
 						gobackID = WinMgr.WIN_ID_LIVE_PLATE
-					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).SetKeyDisabled( False )
+					self.mDataCache.SetKeyDisabled( False )
 
 				third -= 1
 				LOG_TRACE( 'play_stop() ret[%s] try[%d]'% (ret,third) )
@@ -1024,8 +1023,7 @@ class TimeShiftInfoPlate1(BaseWindow):
 	def ChannelTune(self, aDir):
 		LOG_TRACE( 'Enter' )
 
-		isArchive = WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).GetKeyDisabled( )
-		if isArchive :
+		if self.mDataCache.mStatusIsArchive :
 			LOG_TRACE('Archive playing now')
 
 		else:

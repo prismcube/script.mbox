@@ -9,8 +9,6 @@ class NullWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mAsyncShowTimer = None
-		self.mStatusIsArchive = False
-		self.mRecInfo = None
 
 
 	def onInit( self ) :
@@ -72,7 +70,7 @@ class NullWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_SELECT_ITEM:
 			LOG_TRACE('key ok')
-			if self.mStatusIsArchive :
+			if self.mDataCache.mStatusIsArchive :
 				LOG_TRACE('Archive playing now')
 				return -1
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
@@ -99,7 +97,7 @@ class NullWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_PAGE_DOWN:
 			LOG_TRACE('key down')
-			if self.mStatusIsArchive :
+			if self.mDataCache.mStatusIsArchive :
 				LOG_TRACE('Archive playing now')
 				return -1
 
@@ -116,7 +114,7 @@ class NullWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_PAGE_UP:
 			LOG_TRACE('key up')
-			if self.mStatusIsArchive :
+			if self.mDataCache.mStatusIsArchive :
 				LOG_TRACE('Archive playing now')
 				return -1
 
@@ -138,7 +136,7 @@ class NullWindow( BaseWindow ) :
 			if actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9:
 				aKey = actionId - Action.REMOTE_0
 
-			if self.mStatusIsArchive :
+			if self.mDataCache.mStatusIsArchive :
 				LOG_TRACE('Archive playing now')
 				return -1
 
@@ -171,16 +169,16 @@ class NullWindow( BaseWindow ) :
 			status = self.mDataCache.Player_GetStatus()
 			if status.mMode :
 				ret = self.mDataCache.Player_Stop()
-				LOG_TRACE('----------mode[%s] stop[%s] up/down[%s]'% (status.mMode, ret, self.mStatusIsArchive) )
+				LOG_TRACE('----------mode[%s] stop[%s] up/down[%s]'% (status.mMode, ret, self.mDataCache.mStatusIsArchive) )
 				if ret :
 					if status.mMode == ElisEnum.E_MODE_PVR :
-						if self.mStatusIsArchive :
+						if self.mDataCache.mStatusIsArchive :
 							self.mGotoWinID = WinMgr.WIN_ID_ARCHIVE_WINDOW
-							self.mStatusIsArchive = False
+							self.mDataCache.mStatusIsArchive = False
 							LOG_TRACE('archive play, stop to go Archive')
 						else :
 							self.mGotoWinID = None
-							self.mStatusIsArchive = False
+							self.mDataCache.mStatusIsArchive = False
 							LOG_TRACE('recording play, stop only(NullWindow)')
 
 						LOG_TRACE('up/down key released, goto win[%s]'% self.mGotoWinID)
@@ -352,13 +350,6 @@ class NullWindow( BaseWindow ) :
 
 		LOG_TRACE('Leave')
 
-
-	def SetKeyDisabled( self, aDisable = False, aRecInfo = None ) :
-		self.mStatusIsArchive = aDisable
-		self.mRecInfo = aRecInfo
-
-	def GetKeyDisabled( self ) :
-		return self.mStatusIsArchive
 
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
