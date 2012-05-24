@@ -13,7 +13,7 @@
 			<visible>true</visible>
 		</control>
 		<control type="group">
-			<include>Window_OpenClose_Animation</include>		
+			<include>Window_OpenClose_Animation</include>
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
@@ -207,7 +207,6 @@
 		<control type="group">
 			<posx>845</posx>
 			<posy>317</posy>
-			<!--
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
@@ -215,7 +214,6 @@
 				<height>18</height>
 				<texture>confluence/StackNF.png</texture>
 			</control>
-			-->
 			<control type="label" id="401">
 				<description>Current Channel</description>			
 				<posx>0</posx>

@@ -1,11 +1,15 @@
 from pvr.gui.WindowImport import *
 from pvr.GuiHelper import GetSetting, SetSetting, GetSelectedLongitudeString, EnumToString, ClassToList, AgeLimit
-
+import time
 
 BUTTON_ID_EPG_MODE				= 100
 RADIIOBUTTON_ID_EXTRA			= 101
 LIST_ID_COMMON_EPG				= 3500
 LIST_ID_BIG_EPG					= 3510
+
+SCROLL_ID_COMMON_EPG			= 3501
+SCROLL_ID_BIG_EPG				= 3511
+
 
 LABEL_ID_TIME					= 300
 LABEL_ID_DATE					= 301
@@ -51,7 +55,8 @@ class EPGWindow( BaseWindow ) :
 
 		self.mEPGCount = 0
 		self.mSelectedIndex = 0
-		self.mEPGList = [] 
+		self.mEPGList = []
+		self.mEPGListHash = {}
 		self.mListItems = []
 		self.mTimerList = []
 
@@ -85,7 +90,9 @@ class EPGWindow( BaseWindow ) :
 		self.mGMTTime = 0
 		LOG_TRACE('CHANNEL current=%s select=%s' %( self.mCurrentChannel, self.mSelectChannel ))
 
+		LOG_ERR( 'LAEL98 TEST' )
 		self.Load( )
+		LOG_ERR( 'LAEL98 TEST' )		
 		self.UpdateList( )
 		self.UpdateCurrentChannel( )
 		self.UpdateEPGChannel( )
@@ -120,11 +127,11 @@ class EPGWindow( BaseWindow ) :
 			pass
 
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
-			if self.mFocusId == LIST_ID_COMMON_EPG or self.mFocusId == LIST_ID_BIG_EPG :
+			if self.mFocusId == LIST_ID_COMMON_EPG or self.mFocusId == LIST_ID_BIG_EPG or self.mFocusId == SCROLL_ID_COMMON_EPG or self.mFocusId == SCROLL_ID_BIG_EPG:
 				self.UpdateEPGInfomation( )
 
 		elif actionId == Action.ACTION_PAGE_UP  or actionId == Action.ACTION_PAGE_DOWN :
-			if self.mFocusId == LIST_ID_COMMON_EPG or self.mFocusId == LIST_ID_BIG_EPG :
+			if self.mFocusId == LIST_ID_COMMON_EPG or self.mFocusId == LIST_ID_BIG_EPG or self.mFocusId == SCROLL_ID_COMMON_EPG or self.mFocusId == SCROLL_ID_BIG_EPG:
 				self.UpdateEPGInfomation( )
 
 		elif actionId == Action.ACTION_CONTEXT_MENU:
@@ -142,7 +149,9 @@ class EPGWindow( BaseWindow ) :
 			SetSetting( 'EPG_MODE','%d' %self.mEPGMode )
 			self.UpdateViewMode( )
 			self.InitControl( )
+			LOG_ERR( 'LAEL98 TEST' )			
 			self.Load( )
+			LOG_ERR( 'LAEL98 TEST' )			
 			self.UpdateEPGChannel( )			
 			self.UpdateList( )
 			self.UpdateEPGInfomation()
@@ -202,11 +211,14 @@ class EPGWindow( BaseWindow ) :
 	def Flush( self ) :
 		self.mEPGCount = 0
 		self.mEPGList = []
+		self.mEPGListHash = {}
 
 
 	def Load( self ) :
 
 		LOG_TRACE('----------------------------------->')
+		self.mDebugStart = time.time( )
+		
 		self.mGMTTime = self.mDataCache.Datetime_GetGMTTime( )
 
 		self.mEPGList = None
@@ -220,7 +232,9 @@ class EPGWindow( BaseWindow ) :
 		else :
 			self.mEPGMode = E_VIEW_CHANNEL 		
 			self.LoadByChannel( )
-
+			
+		self.mDebugEnd = time.time( )
+		print 'epg loading test time =%s' %( self.mDebugEnd  - self.mDebugStart )
 
 
 	def LoadByChannel( self ) :
@@ -237,8 +251,14 @@ class EPGWindow( BaseWindow ) :
 			self.mEPGList = None
 			return
 
+		if self.mEPGList == None or len ( self.mEPGList ) <= 0 :
+			return
+
 		LOG_TRACE('self.mEPGList COUNT=%d' %len(self.mEPGList ))
-		
+
+		for epg in self.mEPGList :
+			self.mEPGListHash[ '%d:%d:%d' %( epg.mSid, epg.mTsid, epg.mOnid) ] = epg
+
 
 	def LoadByCurrent( self ) :
 	
@@ -247,6 +267,16 @@ class EPGWindow( BaseWindow ) :
 
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
+
+		if self.mEPGList == None or len ( self.mEPGList ) <= 0 :
+			return
+
+		LOG_TRACE('self.mEPGList COUNT=%d' %len(self.mEPGList ))
+		
+		for epg in self.mEPGList :
+			epg.printdebug( )
+			self.mEPGListHash[ '%d:%d:%d' %( epg.mSid, epg.mTsid, epg.mOnid) ] = epg
+
 	
 
 
@@ -257,7 +287,13 @@ class EPGWindow( BaseWindow ) :
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
 
+		if self.mEPGList == None or len ( self.mEPGList ) <= 0 :
+			return
+
 		LOG_TRACE('self.mEPGList COUNT=%d' %len(self.mEPGList ))
+		
+		for epg in self.mEPGList :
+			self.mEPGListHash[ '%d:%d:%d' %( epg.mSid, epg.mTsid, epg.mOnid) ] = epg
 
 
 	def UpdateEPGChannel( self ) :
@@ -279,7 +315,7 @@ class EPGWindow( BaseWindow ) :
 
 		try :
 			if epg :
-				self.mCtrlTimeLabel.setLabel( '%s~%s' %( TimeToString( epg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM ), TimeToString( epg.mStartTime + epg.mDuration, TimeFormatEnum.E_HH_MM ) ) )
+				self.mCtrlTimeLabel.setLabel( '%s~%s' %( TimeToString( epg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM ), TimeToString( epg.mStartTime + self.mLocalOffset+ epg.mDuration, TimeFormatEnum.E_HH_MM ) ) )
 				self.mCtrlDateLabel.setLabel( '%s' %TimeToString( epg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
 				self.mCtrlDurationLabel.setLabel( '%dMin' %( epg.mDuration/60) )
 
@@ -316,16 +352,11 @@ class EPGWindow( BaseWindow ) :
 			self.mListItems = []
 		self.LoadTimerList( )
 
-		LOG_TRACE('LAEL98 EPG TEST Update Only=%d' %aUpdateOnly)
-		
 		if self.mEPGMode == E_VIEW_CHANNEL :
-			LOG_TRACE('LAEL98 EPG TEST')
 			if self.mEPGList == None :
 				self.mCtrlList.reset()
 				return
 
-			LOG_TRACE('LAEL98 EPG TEST')
-			
 			try :		
 				for i in range( len( self.mEPGList ) ) :
 					epgEvent = self.mEPGList[i]
@@ -346,8 +377,6 @@ class EPGWindow( BaseWindow ) :
 
 					if aUpdateOnly == False :
 						self.mListItems.append( listItem )
-
-				LOG_TRACE('LAEL98 EPG TEST len(self.mListItems)=%d' %len(self.mListItems) )
 				
 				if aUpdateOnly == False :
 					self.mCtrlList.addItems( self.mListItems )
@@ -355,12 +384,12 @@ class EPGWindow( BaseWindow ) :
 				else :
 					xbmc.executebuiltin('container.update')
 					#xbmc.executebuiltin('xbmc.Container.SetViewMode(%d)' %E_VIEW_CHANNEL)
-					
 				
 			except Exception, ex :
 				LOG_ERR( "Exception %s" %ex)
 
 		elif self.mEPGMode == E_VIEW_CURRENT :
+			self.mDebugStart = time.time( )		
 			if self.mChannelList == None :
 				self.mCtrlBigList.reset()			
 				return
@@ -426,7 +455,11 @@ class EPGWindow( BaseWindow ) :
 				#self.setFocusId( LIST_ID_BIG_EPG )
 			else :
 				xbmc.executebuiltin('container.update')			
-				#xbmc.executebuiltin('xbmc.Container.SetViewMode(%d)' %E_VIEW_CURRENT)			
+				#xbmc.executebuiltin('xbmc.Container.SetViewMode(%d)' %E_VIEW_CURRENT)
+
+			self.mDebugEnd = time.time( )
+			print 'epg loading test =%s' %( self.mDebugEnd  - self.mDebugStart )
+				
 
 		elif self.mEPGMode == E_VIEW_FOLLOWING :
 			if self.mChannelList == None :
@@ -494,6 +527,9 @@ class EPGWindow( BaseWindow ) :
 
 
 	def GetEPGByIds( self, aSid, aTsid, aOnid ) :
+
+		return self.mEPGListHash.get( '%d:%d:%d' %( aSid, aTsid, aOnid ), None )
+		"""
 		if self.mEPGList == None :
 			return None
 
@@ -503,6 +539,7 @@ class EPGWindow( BaseWindow ) :
 				return epgEvent
 
 		return None
+		"""
 
 
 	@RunThread
