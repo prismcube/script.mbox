@@ -73,6 +73,8 @@ CONTEXT_ACTION_CREATE_GROUP_FAV	= 10
 CONTEXT_ACTION_RENAME_FAV		= 11
 CONTEXT_ACTION_DELETE_FAV		= 12
 
+#xml control id
+E_CONTROL_ID_SCROLLBAR = 61
 
 class ChannelListWindow( BaseWindow ) :
 
@@ -307,7 +309,7 @@ class ChannelListWindow( BaseWindow ) :
 		elif id == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN or \
 			 id == Action.ACTION_PAGE_UP or id == Action.ACTION_PAGE_DOWN :
 			self.GetFocusId( )
-			if self.mFocusId == self.mCtrlListCHList.getId( ) :
+			if self.mFocusId == self.mCtrlListCHList.getId( ) or self.mFocusId == E_CONTROL_ID_SCROLLBAR :
 				if self.mMoveFlag :
 					self.SetEditChanneltoMove( FLAG_OPT_MOVE_UPDOWN, id )
 					return
