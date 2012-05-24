@@ -1378,10 +1378,9 @@ class ChannelListWindow( BaseWindow ) :
 				try:
 					if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 						#skip ch
-						if iChannel.mSkipped == True :
-							continue
+						#if iChannel.mSkipped == True :
+						#	continue
 						listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ) )
-
 					else :
 						#skip ch
 						if iChannel.mSkipped == True :

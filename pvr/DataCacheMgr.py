@@ -103,6 +103,7 @@ class DataCacheMgr( object ):
 
 		self.mStatusIsArchive = False
 		self.mRecInfo = None
+		self.mSkip = False
 
 		if SUPPORT_EPG_DATABASE	 == True :
 			self.mEpgDB = ElisEPGDB( )
@@ -433,7 +434,7 @@ class DataCacheMgr( object ):
 
 	def SetSkipChannelToDBTable( self, aSkip ) :
 		if SUPPORT_CHANNEL_DATABASE :
-			self.mChannelDB.mSkip = aSkip
+			self.mSkip = aSkip
 
 
 	def LoadChannelList( self, aSync = 0, aType = ElisEnum.E_SERVICE_TYPE_TV, aMode = ElisEnum.E_MODE_ALL, aSort = ElisEnum.E_SORT_BY_NUMBER, aReopen = False ) :
@@ -448,7 +449,7 @@ class DataCacheMgr( object ):
 				mSort = self.mZappingMode.mSortingMode
 
 			if mMode == ElisEnum.E_MODE_ALL :
-				tmpChannelList = self.Channel_GetList( True, mType, mMode, mSort, aReopen )
+				tmpChannelList = self.Channel_GetList( True, mType, mMode, mSort, aReopen, self.mSkip )
 
 			elif mMode == ElisEnum.E_MODE_SATELLITE :
 				mLongitude = self.mZappingMode.mSatelliteInfo.mLongitude
@@ -579,15 +580,15 @@ class DataCacheMgr( object ):
 		else :
 			return self.mListFavorite
 
-	def Channel_GetList( self, aRequestChanged = 0, aType = 0, aMode = 0, aSort = 0, aReopen = False ) :
+	def Channel_GetList( self, aRequestChanged = 0, aType = 0, aMode = 0, aSort = 0, aReopen = False, aSkip = False ) :
 		if aRequestChanged :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				if aReopen :
 					channelDB = ElisChannelDB()
-					return channelDB.Channel_GetList( aType, aMode, aSort )
+					return channelDB.Channel_GetList( aType, aMode, aSort, -1, -1, -1, '', self.mSkip )
 					channelDB.Close()
 				else :
-					return self.mChannelDB.Channel_GetList( aType, aMode, aSort )
+					return self.mChannelDB.Channel_GetList( aType, aMode, aSort, -1, -1, -1, '', self.mSkip )
 			else :
 				return self.mCommander.Channel_GetList( aType, aMode, aSort )
 
@@ -841,10 +842,10 @@ class DataCacheMgr( object ):
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			if aReopen :
 				channelDB = ElisChannelDB()
-				return channelDB.Channel_GetList( aType, aMode, aSort, aLongitude, aBand )
+				return channelDB.Channel_GetList( aType, aMode, aSort, aLongitude, aBand, -1, '', self.mSkip )
 				channelDB.Close()
 			else :
-				return self.mChannelDB.Channel_GetList( aType, aMode, aSort, aLongitude, aBand )
+				return self.mChannelDB.Channel_GetList( aType, aMode, aSort, aLongitude, aBand, -1, '', self.mSkip )
 		else :
 			return self.mCommander.Channel_GetListBySatellite( aType, aMode, aSort, aLongitude, aBand )
 
@@ -852,10 +853,10 @@ class DataCacheMgr( object ):
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			if aReopen :
 				channelDB = ElisChannelDB()
-				return channelDB.Channel_GetList( aType, aMode, aSort, None, None, aCAid )
+				return channelDB.Channel_GetList( aType, aMode, aSort, None, None, aCAid, '', self.mSkip )
 				channelDB.Close()
 			else :
-				return self.mChannelDB.Channel_GetList( aType, aMode, aSort, None, None, aCAid )
+				return self.mChannelDB.Channel_GetList( aType, aMode, aSort, None, None, aCAid, '', self.mSkip )
 		else :
 			return self.mCommander.Channel_GetListByFTACas( aType, aMode, aSort, aCAid )
 
@@ -863,10 +864,10 @@ class DataCacheMgr( object ):
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			if aReopen :
 				channelDB = ElisChannelDB()
-				return channelDB.Channel_GetList( aType, aMode, aSort, None, None, None, aFavName )
+				return channelDB.Channel_GetList( aType, aMode, aSort, None, None, None, aFavName, self.mSkip )
 				channelDB.Close()
 			else :
-				return self.mChannelDB.Channel_GetList( aType, aMode, aSort, None, None, None, aFavName )
+				return self.mChannelDB.Channel_GetList( aType, aMode, aSort, None, None, None, aFavName, self.mSkip )
 		else :
 			return self.mCommander.Channel_GetListByFavorite( aType, aMode, aSort, aFavName )
 
