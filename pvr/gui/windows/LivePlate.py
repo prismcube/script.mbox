@@ -138,7 +138,7 @@ class LivePlate( BaseWindow ) :
 
 		self.mFlag_OnEvent = True
 		self.mFlag_ChannelChanged = True
-		self.mEventCopy = None
+		self.mCurrentEvent = None
 		self.mEPGList = None
 		self.mEPGListIdx = 0
 		self.mJumpNumber = 0
@@ -172,14 +172,16 @@ class LivePlate( BaseWindow ) :
 			iEPG = None
 			iEPG = self.mDataCache.Epgevent_GetPresent()
 			if iEPG and iEPG.mEventName != 'No Name':
-				self.mEventCopy = iEPG
+				self.mCurrentEvent = iEPG
 				self.UpdateONEvent( iEPG )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
-		if not self.mCertification :
-			self.PincodeDialogLimit()
+		#if not self.mCertification :
+		if self.mCurrentChannel.mLocked :
+			WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mDataCache.mPropertyPincode )
+
 		"""
 		else :
 			if self.mZappingMode.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
@@ -380,14 +382,14 @@ class LivePlate( BaseWindow ) :
 						LOG_TRACE('-----------------------')
 						#ret.printdebug()
 
-						if not self.mEventCopy or \
-						iEPG.mEventId != self.mEventCopy.mEventId or \
-						iEPG.mSid != self.mEventCopy.mSid or \
-						iEPG.mTsid != self.mEventCopy.mTsid or \
-						iEPG.mOnid != self.mEventCopy.mOnid :
+						if not self.mCurrentEvent or \
+						iEPG.mEventId != self.mCurrentEvent.mEventId or \
+						iEPG.mSid != self.mCurrentEvent.mSid or \
+						iEPG.mTsid != self.mCurrentEvent.mTsid or \
+						iEPG.mOnid != self.mCurrentEvent.mOnid :
 							LOG_TRACE('epg DIFFER, id[%s]'% iEPG.mEventId)
 							self.mEventID = aEvent.mEventId
-							self.mEventCopy = iEPG
+							self.mCurrentEvent = iEPG
 							#update label
 							self.UpdateONEvent( iEPG )
 
@@ -397,10 +399,10 @@ class LivePlate( BaseWindow ) :
 								idx = 0
 								self.mEPGListIdx = -1
 								for item in self.mEPGList :
-									if 	item.mEventId == self.mEventCopy.mEventId and \
-										item.mSid == self.mEventCopy.mSid and \
-										item.mTsid == self.mEventCopy.mTsid and \
-										item.mOnid == self.mEventCopy.mOnid :
+									if 	item.mEventId == self.mCurrentEvent.mEventId and \
+										item.mSid == self.mCurrentEvent.mSid and \
+										item.mTsid == self.mCurrentEvent.mTsid and \
+										item.mOnid == self.mCurrentEvent.mOnid :
 
 										self.mEPGListIdx = idx
 										LOG_TRACE('Received ONEvent : EPGList idx moved(current idx)')
@@ -418,11 +420,11 @@ class LivePlate( BaseWindow ) :
 									oldLen = len(self.mEPGList)
 									idx = 0
 									for idx in range(len(self.mEPGList)) :
-										if self.mEventCopy.mStartTime < self.mEPGList[idx].mStartTime :
+										if self.mCurrentEvent.mStartTime < self.mEPGList[idx].mStartTime :
 											break
 
 									self.mEPGListIdx = idx
-									self.mEPGList = self.mEPGList[:idx]+[self.mEventCopy]+self.mEPGList[idx:]
+									self.mEPGList = self.mEPGList[:idx]+[self.mCurrentEvent]+self.mEPGList[idx:]
 									LOG_TRACE('append new idx[%s], epgTotal:oldlen[%s] newlen[%s]'% (idx, oldLen, len(self.mEPGList)) )
 									LOG_TRACE('list[%s]'% ClassToList('convert',self.mEPGList) )
 
@@ -432,6 +434,15 @@ class LivePlate( BaseWindow ) :
 				self.ShowRecording()
 				self.mDataCache.mCacheReload = True
 				LOG_TRACE('Receive Event[%s]'% aEvent.getName() )
+
+			elif aEvent.getName() == ElisEventChannelChangeResult.getName() :
+				isLimit = False
+				if self.mCurrentEvent :
+					isLimit = AgeLimit( self.mPropertyAge, self.mCurrentEvent.mAgeRating )
+
+				LOG_TRACE( 'ch[%s] AgeLimit[%s] Locked[%s]'% (ch.mNumber, isLimit, ch.mLocked) )
+				if ch.mLocked or isLimit :
+					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mDataCache.mPropertyPincode )
 
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
@@ -492,7 +503,7 @@ class LivePlate( BaseWindow ) :
 			if iEPG :
 				self.InitLabelInfo()
 				GuiLock2(True)
-				self.mEventCopy = iEPG
+				self.mCurrentEvent = iEPG
 				self.mFlag_OnEvent = False
 				GuiLock2(False)
 
@@ -527,7 +538,6 @@ class LivePlate( BaseWindow ) :
 					self.mEPGListIdx -= 1
 
 			self.EPGListMove()
-			#self.PincodeDialogLimit()
 
 
 		LOG_TRACE('Leave')
@@ -542,7 +552,7 @@ class LivePlate( BaseWindow ) :
 		try :
 			ch = self.mCurrentChannel
 
-			if self.mEventCopy == None :
+			if self.mCurrentEvent == None :
 				if not ch :
 					LOG_TRACE('No Channels')
 					return
@@ -550,7 +560,7 @@ class LivePlate( BaseWindow ) :
 				iEPG = None
 				iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mOnid, True )
 				if iEPG and iEPG.mEventName != 'No Name':
-					self.mEventCopy = iEPG
+					self.mCurrentEvent = iEPG
 
 				else :
 					#receive onEvent
@@ -562,7 +572,7 @@ class LivePlate( BaseWindow ) :
 
 				#Live EPG
 				#gmtime = self.mDataCache.Datetime_GetGMTTime()
-				gmtFrom  = self.mEventCopy.mStartTime
+				gmtFrom  = self.mCurrentEvent.mStartTime
 				gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
 				maxCount = 100
 				iEPGList = None
@@ -579,20 +589,20 @@ class LivePlate( BaseWindow ) :
 					LOG_TRACE('EPGList is None\nLeave')
 					return -1
 
-				LOG_TRACE('event[%s]'% self.mEventCopy )
+				LOG_TRACE('event[%s]'% self.mCurrentEvent )
 				retList=[]
-				retList.append(self.mEventCopy)
+				retList.append(self.mCurrentEvent)
 				LOG_TRACE('==========[%s]'% ClassToList('convert', retList) )
 				LOG_TRACE('EPGList len[%s] [%s]'% (len(self.mEPGList), ClassToList('convert', self.mEPGList)) )
-				LOG_TRACE('onEvent[%s] list[%s]'% (self.mEventCopy, self.mEPGList))
+				LOG_TRACE('onEvent[%s] list[%s]'% (self.mCurrentEvent, self.mEPGList))
 				idx = 0
 				self.mEPGListIdx = -1
 				for item in self.mEPGList :
 					#LOG_TRACE('idx[%s] item[%s]'% (idx, item) )
-					if 	item.mEventId == self.mEventCopy.mEventId and \
-						item.mSid == self.mEventCopy.mSid and \
-						item.mTsid == self.mEventCopy.mTsid and \
-						item.mOnid == self.mEventCopy.mOnid :
+					if 	item.mEventId == self.mCurrentEvent.mEventId and \
+						item.mSid == self.mCurrentEvent.mSid and \
+						item.mTsid == self.mCurrentEvent.mTsid and \
+						item.mOnid == self.mCurrentEvent.mOnid :
 
 						self.mEPGListIdx = idx
 
@@ -634,8 +644,8 @@ class LivePlate( BaseWindow ) :
 				#lock,cas
 				if ch.mLocked :
 					self.UpdateLabelGUI( self.mCtrlImgLocked.getId(), 'True' )
-					if self.mFlag_OnEvent == True :
-						self.mPincodeEnter |= FLAG_MASK_ADD
+					#if self.mFlag_OnEvent == True :
+					#	self.mPincodeEnter |= FLAG_MASK_ADD
 
 				if ch.mIsCA :
 					self.UpdateLabelGUI( self.mCtrlImgICas.getId(), 'True' )
@@ -680,13 +690,14 @@ class LivePlate( BaseWindow ) :
 				self.UpdateLabelGUI( self.mCtrlGroupComponentHD.getId(),    setPropertyList[2] )
 				LOG_TRACE( 'Component[%s]'% setPropertyList )
 
-
+				"""
 				#is Age? agerating check
 				if self.mFlag_OnEvent == True :
 					isLimit = AgeLimit( self.mPropertyAge, aEvent.mAgeRating )
 					if isLimit == True :
 						self.mPincodeEnter |= FLAG_MASK_ADD
 						LOG_TRACE( 'AgeLimit[%s]'% isLimit )
+				"""
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -694,70 +705,6 @@ class LivePlate( BaseWindow ) :
 		else:
 			LOG_TRACE( 'aEvent null' )
 
-
-		LOG_TRACE( 'Leave' )
-
-
-	def PincodeDialogLimit( self ) :
-
-		#popup pin-code dialog
-		#if self.mPincodeEnter > FLAG_MASK_NONE :
-
-		while self.mPincodeEnter > FLAG_MASK_NONE :
-
-			try :
-				msg = MR_LANG('Input PIN Code')
-				inputPin = ''
-
-				#ret = self.mDataCache.Channel_SetInitialBlank( True )
-				ret = self.mDataCache.Player_AVBlank( True, False )
-
-				GuiLock2( True )
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-				dialog.SetDialogProperty( msg, '', 4, True )
-	 			dialog.doModal()
-				GuiLock2( False )
-
-				reply = dialog.IsOK()
-	 			if reply == E_DIALOG_STATE_YES :
-	 				inputPin = dialog.GetString()
-
-	 			elif reply == E_DIALOG_STATE_CANCEL :
-	 				self.mPincodeEnter = FLAG_MASK_NONE
-					self.mDataCache.Player_AVBlank( False, False )
-
-	 				inputKey = dialog.GetInputKey()
-	 				self.onAction( inputKey )
-	 				break
-
-
-				if inputPin == None or inputPin == '' :
-					inputPin = ''
-
-				#LOG_TRACE( 'mask[%s] inputPin[%s] stbPin[%s]'% (self.mPincodeEnter, inputPin, self.mPropertyPincode) )
-
-				if inputPin == str('%s'% self.mPropertyPincode) :
-					self.mPincodeEnter = FLAG_MASK_NONE
-					#ret = self.mDataCache.Channel_SetInitialBlank( False )
-					self.mDataCache.Player_AVBlank( False, False )
-					mNumber = self.mCurrentChannel.mNumber
-					mType = self.mCurrentChannel.mServiceType
-					ret = self.mDataCache.Channel_SetCurrent( mNumber, mType)
-
-					LOG_TRACE( 'Pincode success' ) 
-					break
-				else:
-					msg1 = MR_LANG('Error')
-					msg2 = MR_LANG('Wrong PIN Code')
-					GuiLock2( True )
-					xbmcgui.Dialog().ok( msg1, msg2 )
-					GuiLock2( False )
-
-			except Exception, e:
-				LOG_TRACE( 'Error exception[%s]'% e )
-
-			time.sleep(0.1)
-			LOG_TRACE('=======loop==============')
 
 		LOG_TRACE( 'Leave' )
 
@@ -784,11 +731,11 @@ class LivePlate( BaseWindow ) :
 
 	def UpdateLocalTime( self ) :
 		try:
-			if self.mEventCopy :
-				startTime = self.mEventCopy.mStartTime# + self.mLocalOffset
-				endTime   = startTime + self.mEventCopy.mDuration
+			if self.mCurrentEvent :
+				startTime = self.mCurrentEvent.mStartTime# + self.mLocalOffset
+				endTime   = startTime + self.mCurrentEvent.mDuration
 				pastDuration = endTime - self.mLocalTime
-				#LOG_TRACE('past[%s] time[%s] start[%s] duration[%s] offset[%s]'% (pastDuration,self.mLocalTime, self.mEventCopy.mStartTime, self.mEventCopy.mDuration,self.mLocalOffset ) )
+				#LOG_TRACE('past[%s] time[%s] start[%s] duration[%s] offset[%s]'% (pastDuration,self.mLocalTime, self.mCurrentEvent.mStartTime, self.mCurrentEvent.mDuration,self.mLocalOffset ) )
 
 				if self.mLocalTime > endTime: #Already past
 					self.UpdateLabelGUI( self.mCtrlProgress.getId(), 100 )
@@ -801,8 +748,8 @@ class LivePlate( BaseWindow ) :
 				if pastDuration < 0 : #Already past
 					pastDuration = 0
 
-				if self.mEventCopy.mDuration > 0 :
-					percent = 100 - (pastDuration * 100.0/self.mEventCopy.mDuration)
+				if self.mCurrentEvent.mDuration > 0 :
+					percent = 100 - (pastDuration * 100.0/self.mCurrentEvent.mDuration)
 				else :
 					percent = 0
 
@@ -817,7 +764,7 @@ class LivePlate( BaseWindow ) :
 		LOG_TRACE( 'Enter' )
 		
 		if self.mFakeChannel :
-			self.mEventCopy = None
+			self.mCurrentEvent = None
 			self.UpdateLabelGUI( self.mCtrlProgress.getId(),                  0 )
 			self.UpdateLabelGUI( self.mCtrlLblChannelNumber.getId(), ('%s'% self.mFakeChannel.mNumber) )
 			self.UpdateLabelGUI( self.mCtrlLblChannelName.getId(), self.mFakeChannel.mName )
@@ -1050,10 +997,10 @@ class LivePlate( BaseWindow ) :
 
 
 		elif aFocusId == self.mCtrlBtnExInfo.getId() :
-			if self.mEventCopy :
+			if self.mCurrentEvent :
 				GuiLock2( True )
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_EXTEND_EPG )
-				dialog.SetEPG( self.mEventCopy )
+				dialog.SetEPG( self.mCurrentEvent )
 				dialog.doModal( )
 				GuiLock2( False )
 
@@ -1298,7 +1245,6 @@ class LivePlate( BaseWindow ) :
 				self.mLastChannel = self.mCurrentChannel
 				self.InitLabelInfo()
 				self.UpdateONEvent()
-				self.PincodeDialogLimit()
 
 			else :
 				LOG_ERR('Tune Fail')
@@ -1322,8 +1268,8 @@ class LivePlate( BaseWindow ) :
 
 		GuiLock2(True)
 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
-		if self.mEventCopy:
-			dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, None, self.mEventCopy.mStartTime)
+		if self.mCurrentEvent:
+			dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, None, self.mCurrentEvent.mStartTime)
 		else :
 			dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, None)
 		dialog.doModal()

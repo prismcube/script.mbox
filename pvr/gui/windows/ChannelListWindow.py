@@ -38,6 +38,22 @@ E_TAG_COLOR_RED   = '[COLOR red]'
 E_TAG_COLOR_GREY  = '[COLOR grey]'
 E_TAG_COLOR_GREY3 = '[COLOR grey3]'
 E_TAG_COLOR_END   = '[/COLOR]'
+#string tag
+E_TAG_ENABLE  = 'enable'
+E_TAG_VISIBLE = 'visible'
+E_TAG_SELECT  = 'select'
+E_TAG_LABEL   = 'label'
+E_TAG_TRUE    = 'True'
+E_TAG_FALSE   = 'False'
+
+#xml property name
+E_XML_PROPERTY_SUBTITLE  = 'HasSubtitle'
+E_XML_PROPERTY_DOLBY     = 'HasDolby'
+E_XML_PROPERTY_HD        = 'HasHD'
+E_XML_PROPERTY_MARK      = 'mark'
+E_XML_PROPERTY_CAS       = 'icas'
+E_XML_PROPERTY_LOCK      = 'lock'
+E_XML_PROPERTY_RECORDING = 'rec'
 
 #db
 E_SYNCHRONIZED  = 0
@@ -332,7 +348,7 @@ class ChannelListWindow( BaseWindow ) :
 					#Mark mode
 					if self.mIsMark == True :
 						idx = self.mCtrlListCHList.getSelectedPosition( )
-						self.SetEditMarkupGUI('mark', idx )
+						self.SetEditMarkupGUI( idx )
 
 						GuiLock2( True )
 						self.setFocusId( self.mCtrlGroupCHList.getId( ) )
@@ -452,12 +468,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mElisZappingModeInfo.mServiceType = aType
 
 			self.InitSlideMenuHeader( FLAG_ZAPPING_CHANGE )
-			self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
-			xbmc.sleep( 50 )
-			self.SubMenuAction(E_SLIDE_ACTION_MAIN, E_SLIDE_ALLCHANNEL)
-			self.mCtrlListSubmenu.selectItem( 0 )
-			xbmc.sleep( 50 )
-			self.SubMenuAction(E_SLIDE_ACTION_SUB, ElisEnum.E_MODE_ALL, True)
+			self.RefreshSlideMenu( E_SLIDE_ALLCHANNEL, ElisEnum.E_MODE_ALL, True )
 
 			self.mCtrlListCHList.reset( )
 			self.InitChannelList( )
@@ -469,13 +480,10 @@ class ChannelListWindow( BaseWindow ) :
 
 			if aType == FLAG_MODE_TV :
 				self.mCurrentChannel = None
-				#self.SetChannelTune( self.mLastChannel )
-				#self.mDataCache.Player_AVBlank( False, False )
 
 			elif aType == FLAG_MODE_RADIO :
 				if self.mCurrentChannel :
 					self.mLastChannel = self.mCurrentChannel
-				#self.mDataCache.Player_AVBlank( True, False )
 
 			#initialize get epg event
 			self.mIsSelect = False
@@ -483,11 +491,11 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		if aType == FLAG_MODE_TV :
-			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ),   True, 'select' )
-			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ),False, 'select' )
+			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ),   True, E_TAG_SELECT )
+			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ),False, E_TAG_SELECT )
 		else :
-			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ),   False, 'select' )
-			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ),True, 'select' )
+			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ),   False, E_TAG_SELECT )
+			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ),True, E_TAG_SELECT )
 
 		#slide close
 		self.mCtrlListCHList.setEnabled(True)
@@ -506,13 +514,7 @@ class ChannelListWindow( BaseWindow ) :
 				#Event UnRegister
 				#self.mEventBus.Deregister( self )
 				self.InitSlideMenuHeader( )
-				self.mCtrlListMainmenu.selectItem( E_SLIDE_ALLCHANNEL )
-				xbmc.sleep( 50 )
-				self.SubMenuAction(E_SLIDE_ACTION_MAIN, E_SLIDE_ALLCHANNEL)
-
-				self.mCtrlListSubmenu.selectItem( 0 )
-				xbmc.sleep( 50 )
-				self.SubMenuAction(E_SLIDE_ACTION_SUB, ElisEnum.E_MODE_ALL)
+				self.RefreshSlideMenu( )
 
 				#clear label
 				self.ResetLabel( )
@@ -586,6 +588,8 @@ class ChannelListWindow( BaseWindow ) :
 		#aEvent.printdebug( )
 
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
+			LOG_TRACE('Receive Event[%s]'% aEvent.getName() )
+
 			if aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
 
 				if self.mNavChannel == None:
@@ -633,7 +637,15 @@ class ChannelListWindow( BaseWindow ) :
 				self.mListItems = None
 				self.InitChannelList( )
 				
-				LOG_TRACE('Receive Event[%s]'% aEvent.getName() )
+			elif aEvent.getName() == ElisEventChannelChangeResult.getName() :
+				ch = self.mDataCache.Channel_GetCurrent( )
+				isLimit = False
+				if self.mNavEpg :
+					isLimit = AgeLimit( self.mPropertyAge, self.mNavEpg.mAgeRating )
+
+				LOG_TRACE( 'ch[%s] AgeLimit[%s] Locked[%s]'% (ch.mNumber, isLimit, ch.mLocked) )
+				if ch.mLocked or isLimit :
+					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mPropertyPincode )
 
 		else:
 			LOG_TRACE( 'channellist winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
@@ -655,7 +667,6 @@ class ChannelListWindow( BaseWindow ) :
 					self.mNavChannel = ch
 					self.ResetLabel( )
 					self.UpdateLabelInfo( )
-					self.PincodeDialogLimit( )
 					break
 				chindex += 1
 
@@ -695,28 +706,27 @@ class ChannelListWindow( BaseWindow ) :
 			isBlank = False
 			if iChannel.mServiceType == FLAG_MODE_RADIO : 	isBlank = True
 			else : 											isBlank = False
-			self.mDataCache.Player_AVBlank( isBlank, False )
+			self.mDataCache.Player_VideoBlank( isBlank, False )
 
 		ret = False
-		#ret = self.mDataCache.Channel_SetCurrent( chNumber, self.mChannelListServiceType )
 		ret = self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
 
 		#LOG_TRACE( 'MASK[%s] ret[%s]'% (self.mPincodeEnter, ret) )
 		if ret == True :
-			if self.mPincodeEnter == FLAG_MASK_NONE :
-				if self.mCurrentChannel == iChannel.mNumber :
-					ret = False
-					ret = self.SaveSlideMenuHeader( )
-					#LOG_TRACE('============== ret[%s]'% ret )
-					if ret != E_DIALOG_STATE_CANCEL :
-						self.mEnableThread = False
-						self.CurrentTimeThread( ).join( )
-						self.Close( )
+			#if self.mPincodeEnter == FLAG_MASK_NONE :
+			if self.mCurrentChannel == iChannel.mNumber :
+				ret = False
+				ret = self.SaveSlideMenuHeader( )
+				#LOG_TRACE('============== ret[%s]'% ret )
+				if ret != E_DIALOG_STATE_CANCEL :
+					self.mEnableThread = False
+					self.CurrentTimeThread( ).join( )
+					self.Close( )
 
-						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-						return
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+					return
 
-					LOG_TRACE( 'go out Cancel' )
+				LOG_TRACE( 'go out Cancel' )
 
 		ch = None
 		ch = self.mDataCache.Channel_GetCurrent( )
@@ -730,10 +740,18 @@ class ChannelListWindow( BaseWindow ) :
 
 			self.ResetLabel( )
 			self.UpdateLabelInfo( )
-			self.PincodeDialogLimit( )
 
 		LOG_TRACE( 'Leave' )
 
+
+	def RefreshSlideMenu( self, aMainIndex = E_SLIDE_ALLCHANNEL, aSubIndex = ElisEnum.E_MODE_ALL, aForce = None ) :
+		self.mCtrlListMainmenu.selectItem( aMainIndex )
+		xbmc.sleep( 50 )
+		self.SubMenuAction( E_SLIDE_ACTION_MAIN, aMainIndex, aForce )
+
+		self.mCtrlListSubmenu.selectItem( 0 )
+		xbmc.sleep( 50 )
+		self.SubMenuAction( E_SLIDE_ACTION_SUB, aSubIndex, aForce )
 
 	@GuiLock
 	def SubMenuAction(self, aAction, aMenuIndex, aForce = None):
@@ -1163,18 +1181,20 @@ class ChannelListWindow( BaseWindow ) :
 		LOG_TRACE( 'Enter' )
 
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+			self.mDataCache.SetSkipChannelToDBTable( False )
 			#opt btn blind
 			self.UpdateLabelGUI( self.mCtrlGroupOpt.getId( ), False )
-			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ), True, 'enable' )
-			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ), True, 'enable' )
-			self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), MR_LANG('Edit Channel'), 'label' )
+			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ), True, E_TAG_ENABLE )
+			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ), True, E_TAG_ENABLE )
+			self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), MR_LANG('Edit Channel'), E_TAG_LABEL )
 
 		else :
+			self.mDataCache.SetSkipChannelToDBTable( True )
 			#opt btn visible
 			self.UpdateLabelGUI( self.mCtrlGroupOpt.getId( ), True )
-			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ), False, 'enable' )
-			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ), False, 'enable' )
-			self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), MR_LANG('Save Channel'), 'label' )
+			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ), False, E_TAG_ENABLE )
+			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ), False, E_TAG_ENABLE )
+			self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), MR_LANG('Save Channel'), E_TAG_LABEL )
 			return
 
 		if self.mFlag_DeleteAll :
@@ -1349,6 +1369,7 @@ class ChannelListWindow( BaseWindow ) :
 		#LOG_TRACE('listItems data[%s]'% (self.mListItems) )
 		if self.mListItems == None :
 			self.mListItems = []
+
 			for iChannel in self.mChannelList:
 				try:
 					if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
@@ -1369,13 +1390,13 @@ class ChannelListWindow( BaseWindow ) :
 				except Exception, e:
 					LOG_TRACE( '=========== except[%s]'% e )
 
-				if iChannel.mLocked  : listItem.setProperty( 'lock', 'True' )
-				if iChannel.mIsCA    : listItem.setProperty( 'icas', 'True' )
+				if iChannel.mLocked  : listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
+				if iChannel.mIsCA    : listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
 				if self.mRecCount :
 					if self.mRecChannel1 :
-						if iChannel.mNumber == self.mRecChannel1[0] : listItem.setProperty('rec', 'True')
+						if iChannel.mNumber == self.mRecChannel1[0] : listItem.setProperty(E_XML_PROPERTY_RECORDING, E_TAG_TRUE)
 					if self.mRecChannel2 :
-						if iChannel.mNumber == self.mRecChannel2[0] : listItem.setProperty('rec', 'True')
+						if iChannel.mNumber == self.mRecChannel2[0] : listItem.setProperty(E_XML_PROPERTY_RECORDING, E_TAG_TRUE)
 
 				self.mListItems.append(listItem)
 
@@ -1436,9 +1457,9 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlLongitudeInfo.setLabel('')
 		self.mCtrlCareerInfo.setLabel('')
 		self.mCtrlLockedInfo.setVisible(False)
-		self.mWin.setProperty( 'HasSubtitle', 'False' )
-		self.mWin.setProperty( 'HasDolby',    'False' )
-		self.mWin.setProperty( 'HasHD',       'False' )
+		self.mWin.setProperty( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
+		self.mWin.setProperty( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
+		self.mWin.setProperty( E_XML_PROPERTY_HD,       E_TAG_FALSE )
 
 		LOG_TRACE( 'Leave' )
 
@@ -1531,13 +1552,13 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlLockedInfo.setVisible( aValue )
 
 		elif aCtrlID == self.mCtrlGroupComponentData.getId( ) :
-			self.mWin.setProperty( 'HasSubtitle', aValue )
+			self.mWin.setProperty( E_XML_PROPERTY_SUBTITLE, aValue )
 
 		elif aCtrlID == self.mCtrlGroupComponentDolby.getId( ) :
-			self.mWin.setProperty( 'HasDolby', aValue )
+			self.mWin.setProperty( E_XML_PROPERTY_DOLBY, aValue )
 
 		elif aCtrlID == self.mCtrlGroupComponentHD.getId( ) :
-			self.mWin.setProperty( 'HasHD', aValue )
+			self.mWin.setProperty( E_XML_PROPERTY_HD, aValue )
 
 		elif aCtrlID == self.mCtrlGroupOpt.getId( ) :
 			self.mCtrlGroupOpt.setVisible( aValue )
@@ -1546,9 +1567,9 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlLblPath1.setLabel( aValue )
 
 		elif aCtrlID == self.mCtrlRdoTV.getId( ) :
-			if aExtra == 'select' :
+			if aExtra == E_TAG_SELECT :
 				self.mCtrlRdoTV.setSelected( aValue )
-			elif aExtra == 'enable' :
+			elif aExtra == E_TAG_ENABLE :
 				self.mCtrlRdoTV.setEnabled( aValue )
 
 		elif aCtrlID == self.mCtrlRdoRadio.getId( ) :
@@ -1558,9 +1579,9 @@ class ChannelListWindow( BaseWindow ) :
 				self.mCtrlRdoRadio.setEnabled( aValue )
 
 		elif aCtrlID == self.mCtrlBtnEdit.getId( ) :
-			if aExtra == 'enable' :
+			if aExtra == E_TAG_ENABLE :
 				self.mCtrlBtnEdit.setEnabled( aValue )
-			elif aExtra == 'label' :
+			elif aExtra == E_TAG_LABEL :
 				self.mCtrlBtnEdit.setLabel( aValue )
 
 		elif aCtrlID == self.mCtrlBtnDelAll.getId( ) :
@@ -1594,7 +1615,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			#update lock-icon visible
 			if self.mNavChannel.mLocked :
-				self.mPincodeEnter |= FLAG_MASK_ADD
+				#self.mPincodeEnter |= FLAG_MASK_ADD
 				self.UpdateLabelGUI( self.mCtrlLockedInfo.getId( ), True )
 
 
@@ -1643,11 +1664,13 @@ class ChannelListWindow( BaseWindow ) :
 				LOG_TRACE( 'Component[%s]'% setPropertyList )
 
 
+				"""
 				#is Age? agerating check
 				isLimit = AgeLimit( self.mPropertyAge, self.mNavEpg.mAgeRating )
 				if isLimit == True :
 					self.mPincodeEnter |= FLAG_MASK_ADD
 					LOG_TRACE( 'AgeLimit[%s]'% isLimit )
+				"""
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -1655,53 +1678,6 @@ class ChannelListWindow( BaseWindow ) :
 
 		else:
 			LOG_TRACE( 'event null' )
-
-
-		LOG_TRACE( 'Leave' )
-
-
-	def PincodeDialogLimit( self ) :
-		LOG_TRACE( 'Enter' )
-
-		#popup pin-code dialog
-		if self.mPincodeEnter > FLAG_MASK_NONE :
-			try :
-				msg = MR_LANG('Input PIN Code')
-
-				inputPin = ''
-				self.mDataCache.Player_AVBlank( True, False )
-				#self.mDataCache.Channel_SetInitialBlank( True )
-				GuiLock2( True )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-				dialog.SetDialogProperty( msg, '', 4, True )
-	 			dialog.doModal( )
-				GuiLock2( False )
-
-	 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-	 				inputPin = dialog.GetString( )
-				
-				if inputPin == None or inputPin == '' :
-					inputPin = ''
-				LOG_TRACE( 'ch[%d] mask[%s] inputPin[%s] stbPin[%s]'% (self.mCurrentChannel, self.mPincodeEnter, inputPin, self.mPropertyPincode) )
-
-				if inputPin == str('%s'% self.mPropertyPincode) :
-					self.mPincodeEnter = FLAG_MASK_NONE
-					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetLastChannelCertificationPinCode( True )
-
-					ret = None
-					ret = self.mDataCache.Channel_SetCurrent( self.mCurrentChannel, self.mChannelListServiceType)
-					self.mDataCache.Player_AVBlank( False, False )
-					LOG_TRACE( 'Pincode success' )
-
-				else:
-					msg1 = MR_LANG('Error')
-					msg2 = MR_LANG('Wrong PIN Code')
-					GuiLock2( True )
-					xbmcgui.Dialog( ).ok( msg1, msg2 )
-					GuiLock2( False )
-
-			except Exception, e:
-				LOG_TRACE( 'Error exception[%s]'% e )
 
 
 		LOG_TRACE( 'Leave' )
@@ -1762,41 +1738,45 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	@GuiLock
-	def SetEditChannelList( self, aCmd, aEnabled = True, aGroupName = '' ) :
+	def SetEditDoAction( self, aCmd, aEnabled = True, aGroupName = '' ) :
 		LOG_TRACE( 'Enter' )
 
 		lastPos = self.mCtrlListCHList.getSelectedPosition( )
 
 		try:
-			#----------------> 1.set current position item <-------------
+			#1.set current position item
 			if len(self.mMarkList) < 1 :
+				self.SetEditMarkupGUI(lastPos)
+
+			#2.set mark list all
+			for idx in self.mMarkList :
+				self.mCtrlListCHList.selectItem(idx)
+				xbmc.sleep( 50 )
+
+				listItem = self.mCtrlListCHList.getListItem(idx)
+				cmd = ''
+				ret = ''
 				#icon toggle
 				if aCmd.lower( ) == 'lock' :
-					listItem = self.mCtrlListCHList.getListItem(lastPos)
 
+					#lock toggle: disable
 					if aEnabled :
-						#enable lock
-						listItem.setProperty('lock', 'True')
+						listItem.setProperty(E_XML_PROPERTY_LOCK, E_TAG_TRUE)
 						cmd = 'Lock'
 					else :
-						#disible lock
-						listItem.setProperty('lock', 'False')
+						listItem.setProperty(E_XML_PROPERTY_LOCK, E_TAG_FALSE)
 						cmd = 'UnLock'
 
-					#mark remove
-					listItem.setProperty('mark', 'False')
-
 					retList = []
-					retList.append( self.mChannelList[lastPos] )
+					retList.append( self.mChannelList[idx] )
 					ret = self.mDataCache.Channel_Lock( aEnabled, retList )
+
 
 				#label color
 				elif aCmd.lower( ) == 'skip' :
-					#remove tag [COLOR ...]label[/COLOR]
+					#strip tag [COLOR ...]label[/COLOR]
 					label1 = self.mCtrlListCHList.getSelectedItem( ).getLabel( )
 					label2 = re.findall('\](.*)\[', label1)
-					cmd = ''
-
 					if aEnabled :
 						label3= str('%s%s%s'%( E_TAG_COLOR_GREY3, label2[0], E_TAG_COLOR_END ) )
 						cmd = 'Skip'
@@ -1804,14 +1784,14 @@ class ChannelListWindow( BaseWindow ) :
 						label3= str('%s%s%s'%( E_TAG_COLOR_GREY, label2[0], E_TAG_COLOR_END ) )
 						cmd = 'UnSkip'
 					self.mCtrlListCHList.getSelectedItem( ).setLabel(label3)
+					#LOG_TRACE( 'idx[%s] 1%s 2%s 3%s'% (idx, label1,label2,label3) )
 
 					retList = []
-					retList.append( self.mChannelList[lastPos] )
+					retList.append( self.mChannelList[idx] )
 					ret = self.mDataCache.Channel_Skip( aEnabled, retList )
 
 				elif aCmd.lower( ) == 'add' :
-					#strip tag [COLOR ...]label[/COLOR]
-					number = self.mChannelList[lastPos].mNumber
+					number = self.mChannelList[idx].mNumber
 					cmd = 'AddChannel to Group'
 					if aGroupName :
 						ret = self.mDataCache.Favoritegroup_AddChannel( aGroupName, number, self.mChannelListServiceType )
@@ -1819,8 +1799,8 @@ class ChannelListWindow( BaseWindow ) :
 						ret = 'group None'
 
 				elif aCmd.lower( ) == 'del' :
-					#strip tag [COLOR ...]label[/COLOR]
-					number = self.mChannelList[lastPos].mNumber
+					number = self.mChannelList[idx].mNumber
+					LOG_TRACE('delete by Fav grp[%s] ch[%s]'% (aGroupName, number) )
 					cmd = 'RemoveChannel to Group'
 					if aGroupName :
 						ret = self.mDataCache.Favoritegroup_RemoveChannel( aGroupName, number, self.mChannelListServiceType )
@@ -1833,100 +1813,37 @@ class ChannelListWindow( BaseWindow ) :
 					retList.append( self.mChannelList[lastPos] )
 					ret = self.mDataCache.Channel_Delete( retList )
 
+				elif aCmd.lower( ) == 'move' :
+					cmd = 'Move'
+					idxM= idx + aEnabled
+					if idxM < 0 : continue
 
-				#LOG_TRACE( 'set[%s] idx[%s] ret[%s]'% (cmd,lastPos,ret) )
+					#exchange name
+					labelM = self.mCtrlListCHList.getSelectedItem( ).getLabel( )
+					name = self.mChannelList[idxM].mName
+					number=self.mChannelList[idxM].mNumber
+					label = str('%s%s %s%s'%( E_TAG_COLOR_GREY, number, name, E_TAG_COLOR_END ) )
+					self.mCtrlListCHList.getSelectedItem( ).setLabel(label)
 
-			else :
-				#----------------> 2.set mark list all <-------------
-				for idx in self.mMarkList :
-				
-					self.mCtrlListCHList.selectItem(idx)
+					self.mCtrlListCHList.selectItem(idxM)
 					xbmc.sleep( 50 )
+					self.mCtrlListCHList.getSelectedItem( ).setLabel(labelM)
+					continue
+				
+				LOG_TRACE( 'set[%s] idx[%s] ret[%s]'% (cmd,idx,ret) )
 
-					listItem = self.mCtrlListCHList.getListItem(idx)
-					cmd = ''
-					ret = ''
-					#icon toggle
-					if aCmd.lower( ) == 'lock' :
+				#mark remove
+				listItem.setProperty(E_XML_PROPERTY_MARK, E_TAG_FALSE)
 
-						#lock toggle: disable
-						if aEnabled :
-							listItem.setProperty('lock', 'True')
-							cmd = 'Lock'
-						else :
-							listItem.setProperty('lock', 'False')
-							cmd = 'UnLock'
-
-						retList = []
-						retList.append( self.mChannelList[idx] )
-						ret = self.mDataCache.Channel_Lock( aEnabled, retList )
-
-
-					#label color
-					elif aCmd.lower( ) == 'skip' :
-						#strip tag [COLOR ...]label[/COLOR]
-						label1 = self.mCtrlListCHList.getSelectedItem( ).getLabel( )
-						label2 = re.findall('\](.*)\[', label1)
-						if aEnabled :
-							label3= str('%s%s%s'%( E_TAG_COLOR_GREY3, label2[0], E_TAG_COLOR_END ) )
-							cmd = 'Skip'
-						else :
-							label3= str('%s%s%s'%( E_TAG_COLOR_GREY, label2[0], E_TAG_COLOR_END ) )
-							cmd = 'UnSkip'
-						self.mCtrlListCHList.getSelectedItem( ).setLabel(label3)
-						#LOG_TRACE( 'idx[%s] 1%s 2%s 3%s'% (idx, label1,label2,label3) )
-
-						retList = []
-						retList.append( self.mChannelList[idx] )
-						ret = self.mDataCache.Channel_Skip( aEnabled, retList )
-
-					elif aCmd.lower( ) == 'add' :
-						number = self.mChannelList[idx].mNumber
-						cmd = 'AddChannel to Group'
-						if aGroupName :
-							ret = self.mDataCache.Favoritegroup_AddChannel( aGroupName, number, self.mChannelListServiceType )
-						else :
-							ret = 'group None'
-
-					elif aCmd.lower( ) == 'del' :
-						number = self.mChannelList[idx].mNumber
-						LOG_TRACE('delete by Fav grp[%s] ch[%s]'% (aGroupName, number) )
-						cmd = 'RemoveChannel to Group'
-						if aGroupName :
-							ret = self.mDataCache.Favoritegroup_RemoveChannel( aGroupName, number, self.mChannelListServiceType )
-						else :
-							ret = 'group None'
-
-					elif aCmd.lower( ) == 'move' :
-						cmd = 'Move'
-						idxM= idx + aEnabled
-						if idxM < 0 : continue
-
-						#exchange name
-						labelM = self.mCtrlListCHList.getSelectedItem( ).getLabel( )
-						name = self.mChannelList[idxM].mName
-						number=self.mChannelList[idxM].mNumber
-						label = str('%s%s %s%s'%( E_TAG_COLOR_GREY, number, name, E_TAG_COLOR_END ) )
-						self.mCtrlListCHList.getSelectedItem( ).setLabel(label)
-
-						self.mCtrlListCHList.selectItem(idxM)
-						xbmc.sleep( 50 )
-						self.mCtrlListCHList.getSelectedItem( ).setLabel(labelM)
-						continue
-					
-					LOG_TRACE( 'set[%s] idx[%s] ret[%s]'% (cmd,idx,ret) )
-
-					#mark remove
-					listItem.setProperty('mark', 'False')
-
-				#recovery last focus
-				self.mCtrlListCHList.selectItem(lastPos)
+			#recovery last focus
+			self.mCtrlListCHList.selectItem(lastPos)
 
 
 		except Exception, e:
 			LOG_TRACE( 'Error except[%s]'% e )
 
 		LOG_TRACE( 'Leave' )
+
 
 	def SetEditChanneltoMove(self, aMode, aMove = None, aGroupName = None ) :
 		LOG_TRACE( 'Enter' )
@@ -1981,7 +1898,7 @@ class ChannelListWindow( BaseWindow ) :
 			for idx in self.mMarkList :
 				i = int(idx)
 				listItem = self.mCtrlListCHList.getListItem( i )
-				listItem.setProperty('mark', 'True')
+				listItem.setProperty(E_XML_PROPERTY_MARK, E_TAG_TRUE)
 
 			self.mCtrlListCHList.selectItem(self.mMarkList[0])
 			self.setFocusId( self.mCtrlGroupCHList.getId( ) )
@@ -2090,15 +2007,15 @@ class ChannelListWindow( BaseWindow ) :
 				listItem = self.mCtrlListCHList.getListItem( i )
 				xbmc.sleep( 50 )
 
-				listItem.setProperty( 'lock', 'False' )
-				listItem.setProperty( 'icas', 'False' )
+				listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_FALSE )
+				listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_FALSE )
 
 				label = str('%s%04d %s%s'%( E_TAG_COLOR_GREY, number, name, E_TAG_COLOR_END ) )
 				listItem.setLabel(label)
 
-				if lock : listItem.setProperty( 'lock', 'True' )
-				if icas : listItem.setProperty( 'icas', 'True' )
-				listItem.setProperty( 'mark', 'True' )
+				if lock : listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
+				if icas : listItem.setProperty( E_XML_PROPERTY_CAS, E_TAG_TRUE )
+				listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_TRUE )
 				xbmc.sleep( 50 )
 				GuiLock2( False )
 
@@ -2108,7 +2025,7 @@ class ChannelListWindow( BaseWindow ) :
 			if aMove == Action.ACTION_MOVE_UP or aMove == Action.ACTION_MOVE_DOWN :
 				listItem = self.mCtrlListCHList.getListItem(oldmark)
 				xbmc.sleep( 50 )
-				listItem.setProperty( 'mark', 'False' )
+				listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_FALSE )
 				self.setFocusId( self.mCtrlGroupCHList.getId( ) )
 
 			else:
@@ -2118,7 +2035,7 @@ class ChannelListWindow( BaseWindow ) :
 						LOG_TRACE('old idx[%s] i[%s]'% (oldmark, idx) )
 						continue
 					listItem = self.mCtrlListCHList.getListItem( idxOld )
-					listItem.setProperty( 'mark', 'False' )
+					listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_FALSE )
 					self.setFocusId( self.mCtrlGroupCHList.getId( ) )
 					xbmc.sleep( 50 )
 			GuiLock2( False )
@@ -2126,50 +2043,31 @@ class ChannelListWindow( BaseWindow ) :
 		LOG_TRACE( 'Leave' )
 
 
-	def SetEditMarkupGUI( self, aMode, aPos, aEnabled=True ) :
+	def SetEditMarkupGUI( self, aPos ) :
 		LOG_TRACE( 'Enter' )
 
-		if aMode.lower( ) == 'mark' :
-			idx = 0
-			isExist = False
+		idx = 0
+		isExist = False
 
-			#aready mark is mark delete
-			for i in self.mMarkList :
-				if i == aPos :
-					self.mMarkList.pop(idx)
-					isExist = True
-				idx += 1
+		#aready mark is mark delete
+		for i in self.mMarkList :
+			if i == aPos :
+				self.mMarkList.pop(idx)
+				isExist = True
+			idx += 1
 
-			#do not exist is append mark
-			if isExist == False : 
-				self.mMarkList.append( aPos )
+		#do not exist is append mark
+		if isExist == False : 
+			self.mMarkList.append( aPos )
 
-			listItem = self.mCtrlListCHList.getListItem(aPos)
+		listItem = self.mCtrlListCHList.getListItem(aPos)
 
-			#mark toggle: disable/enable
-			if listItem.getProperty('mark') == 'True' : listItem.setProperty('mark', 'False')
-			else : 										listItem.setProperty('mark', 'True')
+		#mark toggle: disable/enable
+		if listItem.getProperty(E_XML_PROPERTY_MARK) == E_TAG_TRUE : 
+			listItem.setProperty(E_XML_PROPERTY_MARK, E_TAG_FALSE)
+		else :
+			listItem.setProperty(E_XML_PROPERTY_MARK, E_TAG_TRUE)
 
-
-		elif aMode.lower( ) == 'delete' :
-			idx = 0
-			isExist = False
-
-			#aready exist check, do not append
-			for i in self.mDeleteList :
-				if i == aPos :
-					isExist = True
-					break
-				idx += 1
-
-			if aEnabled :
-				#delete, append item when not exist
-				if isExist == False : 
-					self.mDeleteList.append( aPos )
-			else :
-				#undelete, remove item
-				if isExist == True :
-					self.mDeleteList.pop(idx)
 
 		LOG_TRACE( 'Leave' )
 
@@ -2198,19 +2096,19 @@ class ChannelListWindow( BaseWindow ) :
 
 		if aContextAction == CONTEXT_ACTION_LOCK :
 			cmd = 'lock'
-			self.SetEditChannelList( cmd, True )
+			self.SetEditDoAction( cmd, True )
 
 		elif aContextAction == CONTEXT_ACTION_UNLOCK :
 			cmd = 'lock'
-			self.SetEditChannelList( cmd, False)
+			self.SetEditDoAction( cmd, False)
 
 		elif aContextAction == CONTEXT_ACTION_SKIP :
 			cmd = 'skip'
-			self.SetEditChannelList( cmd, True )
+			self.SetEditDoAction( cmd, True )
 
 		elif aContextAction == CONTEXT_ACTION_UNSKIP :
 			cmd = 'skip'
-			self.SetEditChannelList( cmd, False )
+			self.SetEditDoAction( cmd, False )
 
 		elif aContextAction == CONTEXT_ACTION_DELETE :
 			if aMode == FLAG_OPT_LIST :
@@ -2232,7 +2130,7 @@ class ChannelListWindow( BaseWindow ) :
 					except Exception, e:
 						LOG_TRACE( 'Error except[%s]'% e )
 				else :
-					self.SetEditChannelList( cmd, False )
+					self.SetEditDoAction( cmd, False )
 
 				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 				self.mListItems = None
@@ -2251,7 +2149,7 @@ class ChannelListWindow( BaseWindow ) :
 				#aGroupName = self.mListFavorite[idxThisFavorite].mGroupName
 				aGroupName = self.mCtrlListSubmenu.getSelectedItem( ).getLabel( )
 
-			self.SetEditChannelList( cmd, True, aGroupName )
+			self.SetEditDoAction( cmd, True, aGroupName )
 			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 
 		elif aContextAction == CONTEXT_ACTION_MOVE :
@@ -2271,15 +2169,15 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aContextAction == CONTEXT_ACTION_ADD_TO_FAV :
 			cmd = 'add'
-			self.SetEditChannelList( cmd, True, aGroupName )
-			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
+			self.SetEditDoAction( cmd, True, aGroupName )
 
 		elif aContextAction == CONTEXT_ACTION_CREATE_GROUP_FAV :
 			cmd = 'Create'
-			ret = self.mDataCache.Favoritegroup_Create( aGroupName, self.mChannelListServiceType )	#default : ElisEnum.E_SERVICE_TYPE_TV
-			#LOG_TRACE( 'set[%s] name[%s] ret[%s]'% (cmd,aGroupName,ret) )				
-			if ret :
-				self.GetFavoriteGroup( )
+			if aGroupName :
+				ret = self.mDataCache.Favoritegroup_Create( aGroupName, self.mChannelListServiceType )	#default : ElisEnum.E_SERVICE_TYPE_TV
+				#LOG_TRACE( 'set[%s] name[%s] ret[%s]'% (cmd,aGroupName,ret) )				
+				if ret :
+					self.GetFavoriteGroup( )
 
 		elif aContextAction == CONTEXT_ACTION_RENAME_FAV :
 			cmd = 'Rename'
@@ -2293,6 +2191,9 @@ class ChannelListWindow( BaseWindow ) :
 			ret = self.mDataCache.Favoritegroup_Remove( aGroupName, self.mChannelListServiceType )
 			if ret :
 				self.GetFavoriteGroup( )
+
+			self.mZappingMode == ElisEnum.E_MODE_ALL
+			self.RefreshSlideMenu( E_SLIDE_ALLCHANNEL, ElisEnum.E_MODE_ALL, True )
 
 
 		self.mMarkList = []
@@ -2553,7 +2454,7 @@ class ChannelListWindow( BaseWindow ) :
 
 						self.ResetLabel( )
 						self.UpdateLabelInfo( )
-						self.PincodeDialogLimit( )
+
 
 				else :
 					self.SetChannelTune( int(inputNumber) )
@@ -2592,14 +2493,14 @@ class ChannelListWindow( BaseWindow ) :
 
 			if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
 				if isRunRec > 0 :
-					self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), False, 'enable' )
+					self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), False, E_TAG_ENABLE )
 					#use zapping table, in recording
 					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ZAPPING )
 					self.mDataCache.Channel_GetZappingList( )
 					self.mDataCache.LoadChannelList( )
 					LOG_TRACE ('Recording changed: cache re-load')
 				else :
-					self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), True, 'enable' )
+					self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), True, E_TAG_ENABLE )
 					#use all channel table, not recording
 					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
 
