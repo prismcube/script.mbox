@@ -725,6 +725,8 @@ class ChannelListWindow( BaseWindow ) :
 					self.CurrentTimeThread( ).join( )
 					self.Close( )
 
+					window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE )
+					window.SetAutomaticHide( True )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 					return
 
