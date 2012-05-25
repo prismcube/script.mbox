@@ -140,12 +140,12 @@
 				<shadowcolor>black</shadowcolor>
 			</control>
 		</control>
-		<control type="image" id="1004">
+		<control type="image" id="8899">
 			<posx>362</posx>
 			<posy>112</posy>
 			<width>799</width>
 			<height>446</height>
-			<texture></texture>
+			<texture>video_pig_overlay.png</texture>
 		</control>
 	</controls>
 </window>

@@ -120,11 +120,12 @@
 				<align>left</align>
 				<aligny>center</aligny>
 			</control>
-			<control type="image" id="1004">
+			<control type="image" id="8899">
 				<posx>880</posx>
 				<posy>150</posy>
 				<width>350</width>
 				<height>198</height>
+				<texture>video_pig_overlay.png</texture>
 			</control>
 			<include>DefaultScanHelperStatusProgress</include>
 		</control>
