@@ -105,8 +105,6 @@ class DataCacheMgr( object ):
 		self.mRecInfo = None
 		self.mSkip = False
 
-		if SUPPORT_EPG_DATABASE	 == True :
-			self.mEpgDB = ElisEPGDB( )
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
@@ -150,16 +148,6 @@ class DataCacheMgr( object ):
 	@classmethod
 	def GetName(cls):
 		return cls.__name__
-
-
-	def BeginEPGTransaction( self ) :
-		if SUPPORT_EPG_DATABASE	== True :
-			self.mEpgDB.Execute('begin')
-
-
-	def EndEPGTransaction( self ):
-		if SUPPORT_EPG_DATABASE	== True :
-			self.mEpgDB.Execute('commit')
 
 
 	def Test( self ):
@@ -744,13 +732,9 @@ class DataCacheMgr( object ):
 		eventList = None
 		
 		if SUPPORT_EPG_DATABASE	== True :
-			if aReopen == True :
-				epgDB = ElisEPGDB()
-				eventList = epgDB.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
-				epgDB.Close()
-			else :
-				eventList = self.mEpgDB.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
-				
+ 			self.mEpgDB = ElisEPGDB()
+ 			eventList = self.mEpgDB.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
+ 			self.mEpgDB.Close()
 		else:
 			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
 
@@ -763,13 +747,9 @@ class DataCacheMgr( object ):
 		eventList = None
 		
 		if SUPPORT_EPG_DATABASE	== True :
-			if aReopen == True :
-				epgDB = ElisEPGDB()
-				eventList = epgDB.Epgevent_GetCurrent( aSid, aTsid, aOnid, self.Datetime_GetGMTTime() )
-				epgDB.Close()
-			else :
-				eventList = self.mEpgDB.Epgevent_GetCurrent( aSid, aTsid, aOnid, self.Datetime_GetGMTTime() )
-
+			self.mEpgDB = ElisEPGDB()
+			eventList = self.mEpgDB.Epgevent_GetCurrent( aSid, aTsid, aOnid, self.Datetime_GetGMTTime() )
+			self.mEpgDB.Close()
 		else:
 			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, 0, 0, 1 )
 			if eventList :
@@ -783,7 +763,9 @@ class DataCacheMgr( object ):
 		eventList = None
 
 		if SUPPORT_EPG_DATABASE	== True :
+			self.mEpgDB = ElisEPGDB()
 			eventList = self.mEpgDB.Epgevent_GetCurrentList( self.Datetime_GetGMTTime() )
+			self.mEpgDB.Close()
 		else:
 			return None
 
@@ -796,8 +778,9 @@ class DataCacheMgr( object ):
 		eventList = None
 
 		if SUPPORT_EPG_DATABASE	== True :
+			self.mEpgDB = ElisEPGDB()
 			eventList = self.mEpgDB.Epgevent_GetFollowing( aSid, aTsid, aOnid, self.Datetime_GetGMTTime() )
-			
+			self.mEpgDB.Close()
 		else:
 			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, 1, 1, 1 )
 
@@ -810,7 +793,9 @@ class DataCacheMgr( object ):
 		eventList = None
 
 		if SUPPORT_EPG_DATABASE	== True :
+			self.mEpgDB = ElisEPGDB()
 			eventList = self.mEpgDB.Epgevent_GetFollowingList( self.Datetime_GetGMTTime() )
+			self.mEpgDB.Close()
 		else:
 			return None
 

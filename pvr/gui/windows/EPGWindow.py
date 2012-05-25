@@ -1,6 +1,7 @@
 from pvr.gui.WindowImport import *
 from pvr.GuiHelper import GetSetting, SetSetting, GetSelectedLongitudeString, EnumToString, ClassToList, AgeLimit
 import time
+import thread
 
 BUTTON_ID_EPG_MODE				= 100
 RADIIOBUTTON_ID_EXTRA			= 101
@@ -44,6 +45,7 @@ class EPGWindow( BaseWindow ) :
 
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
+		self.mLock = thread.allocate_lock()		
 
 	
 	def onInit( self ) :
@@ -90,17 +92,21 @@ class EPGWindow( BaseWindow ) :
 		self.mGMTTime = 0
 		LOG_TRACE('CHANNEL current=%s select=%s' %( self.mCurrentChannel, self.mSelectChannel ))
 
-		LOG_ERR( 'LAEL98 TEST' )
 		self.Load( )
-		LOG_ERR( 'LAEL98 TEST' )		
 		self.UpdateList( )
 		self.UpdateCurrentChannel( )
 		self.UpdateEPGChannel( )
 		self.UpdateEPGInfomation( )
+		self.FocusCurrentChannel( )
 
-		self.mEventBus.Register( self )	
+		self.mUpdateLocked = False
+
+		self.mEventBus.Register( self )
+
+		self.StartEPGUpdateTimer( )
 		
 		self.mInitialized = True
+
 
 	def onAction( self, aAction ) :
 		self.GetFocusId()
@@ -142,19 +148,34 @@ class EPGWindow( BaseWindow ) :
 		LOG_TRACE( 'aControlId=%d' %aControlId )
 
 		if aControlId == BUTTON_ID_EPG_MODE :
+			self.mLock.acquire( )
+			self.mUpdateLocked = True
+			self.mLock.release( )
+
 			self.mEPGMode += 1
 			if self.mEPGMode >= E_VIEW_END :
 				self.mEPGMode = 0 
 
 			SetSetting( 'EPG_MODE','%d' %self.mEPGMode )
+
+			self.mEventBus.Deregister( self )
+			self.StopEPGUpdateTimer( )
+
 			self.UpdateViewMode( )
 			self.InitControl( )
-			LOG_ERR( 'LAEL98 TEST' )			
 			self.Load( )
-			LOG_ERR( 'LAEL98 TEST' )			
-			self.UpdateEPGChannel( )			
+			
+			self.UpdateEPGChannel( )
 			self.UpdateList( )
 			self.UpdateEPGInfomation()
+
+			self.mLock.acquire( )
+			self.mUpdateLocked = False
+			self.mLock.release( )
+
+			self.mEventBus.Register( self )
+			self.StartEPGUpdateTimer( )
+			
 		
 		elif aControlId == RADIIOBUTTON_ID_EXTRA :
 			pass
@@ -172,12 +193,16 @@ class EPGWindow( BaseWindow ) :
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
 			if aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
-				LOG_TRACE('Record Status chanaged')
-				self.UpdateList( True )
+				self.RestartEPGUpdateTimer( 1 )
+			"""
+			elif aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
+				self.DoCurrentEITReceived( aEvent )
+			"""
 
 
 	def Close( self ) :
 		self.mEventBus.Deregister( self )	
+		self.StopEPGUpdateTimer( )
 		self.SetVideoRestore( )
 		self.close( )
 
@@ -274,7 +299,6 @@ class EPGWindow( BaseWindow ) :
 		LOG_TRACE('self.mEPGList COUNT=%d' %len(self.mEPGList ))
 		
 		for epg in self.mEPGList :
-			epg.printdebug( )
 			self.mEPGListHash[ '%d:%d:%d' %( epg.mSid, epg.mTsid, epg.mOnid) ] = epg
 
 	
@@ -294,6 +318,24 @@ class EPGWindow( BaseWindow ) :
 		
 		for epg in self.mEPGList :
 			self.mEPGListHash[ '%d:%d:%d' %( epg.mSid, epg.mTsid, epg.mOnid) ] = epg
+
+
+	def FocusCurrentChannel( self ) :
+		if self.mChannelList == None :
+			return
+
+		if self.mEPGMode == E_VIEW_CHANNEL :
+			self.mCtrlList.selectItem( 0 )
+		else :
+			focuxIndex = 0
+			for channel in self.mChannelList:
+				if channel.mNumber == self.mCurrentChannel.mNumber :
+					break
+				focuxIndex += 1
+
+			GuiLock2( True )
+			self.mCtrlBigList.selectItem( focuxIndex )
+			GuiLock2( False )
 
 
 	def UpdateEPGChannel( self ) :
@@ -981,6 +1023,7 @@ class EPGWindow( BaseWindow ) :
 		if self.mEPGMode == E_VIEW_CHANNEL :
 			channel = self.mDataCache.Channel_GetCurrent( )
 			self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType ) 
+			self.RestartEPGUpdateTimer( 5 )			
 
 		else : #self.mEPGMode == E_VIEW_CURRENT  or self.mEPGMode == E_VIEW_FOLLOWING
 			selectedPos = self.mCtrlBigList.getSelectedPosition()		
@@ -991,4 +1034,38 @@ class EPGWindow( BaseWindow ) :
 				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 				self.mEPGChannel = self.mCurrentChannel
 				self.UpdateCurrentChannel( )
+				self.RestartEPGUpdateTimer( 5 )
+
+
+	def RestartEPGUpdateTimer( self, aTimeout=30 ) :
+		self.StopEPGUpdateTimer( )
+		self.StartEPGUpdateTimer( aTimeout )
+		
+
+	def StartEPGUpdateTimer( self, aTimeout=30 ) :
+		self.mEPGUpdateTimer = threading.Timer( aTimeout, self.AsyncEPGUpdateTimer )
+		self.mEPGUpdateTimer.start()
+	
+
+	def StopEPGUpdateTimer( self ) :
+		if self.mEPGUpdateTimer and self.mEPGUpdateTimer.isAlive() :
+			self.mEPGUpdateTimer.cancel()
+			del self.mEPGUpdateTimer
+			
+		self.mEPGUpdateTimer = None
+
+
+	def AsyncEPGUpdateTimer( self ) :	
+		if self.mUpdateLocked == False :	
+			if self.mEPGMode == E_VIEW_FOLLOWING : # Following is not support until now.
+				LOG_TRACE("ToDO : DocurrentEITReceived is not support until now.")
+				pass
+			else :
+				GuiLock2( True )
+				self.Load( )
+				self.UpdateList( True )
+				GuiLock2( False )
+
+		self.StartEPGUpdateTimer( )
+
 
