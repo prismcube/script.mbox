@@ -39,6 +39,8 @@ CONTEXT_DELETE_ALL_TIMERS		= 4
 CONTEXT_SHOW_ALL_TIMERS			= 5
 CONTEXT_EXTEND_INFOMATION		= 6
 CONTEXT_SEARCH					= 7
+CONTEXT_SELECT_CHANNEL			= 8
+
 
 MININUM_KEYWORD_SIZE			= 3
 
@@ -170,7 +172,8 @@ class EPGWindow( BaseWindow ) :
 			self.InitControl( )
 			self.Load( )
 			
-			self.UpdateListWithGUILock( )
+			#self.UpdateListWithGUILock( )
+			self.UpdateList( )	
 			self.UpdateSelectedChannel( )
 			self.FocusCurrentChannel( )			
 			self.UpdateEPGInfomation()
@@ -637,6 +640,9 @@ class EPGWindow( BaseWindow ) :
 		
 		selectedEPG = self.GetSelectedEPG( )
 
+		if self.mEPGMode == E_VIEW_CHANNEL :
+			context.append( ContextItem( 'Select Channel', CONTEXT_SELECT_CHANNEL ) )
+
 		if selectedEPG :
 			if selectedEPG.mHasTimer :
 				context.append( ContextItem( 'Edit Timer', CONTEXT_EDIT_TIMER ) )
@@ -724,6 +730,10 @@ class EPGWindow( BaseWindow ) :
 
 		elif aContextAction == CONTEXT_SHOW_ALL_TIMERS :
 			self.ShowAllTimers( )
+			
+		elif aContextAction == CONTEXT_SELECT_CHANNEL :
+			self.ShowSelectChannel( )
+			
 
 
 	def ShowEPGTimer( self, aEPG ) :
@@ -917,6 +927,37 @@ class EPGWindow( BaseWindow ) :
 			dialog.SetEPG( epg )
 			dialog.doModal( )
 			GuiLock2( False )
+
+
+	def ShowSelectChannel( self ) :
+		if self.mChannelList == None or len( self.mChannelList ) <= 0 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( 'Error', 'Has no channel' )
+ 			dialog.doModal( )
+			return
+	
+		dialog = xbmcgui.Dialog( )
+		channelNameList = []
+		for channel in self.mChannelList :
+			channelNameList.append( '%04d %s' %( channel.mNumber, channel.mName ) )
+
+		ret = dialog.select( 'Select Channel', channelNameList )
+
+		if ret >= 0 :
+			self.mSelectChannel = self.mChannelList[ ret ]
+
+			self.mEventBus.Deregister( self )
+			self.StopEPGUpdateTimer( )
+			
+			self.Load( )
+			self.UpdateList( )			
+			#self.UpdateListWithGUILock( )
+			self.UpdateSelectedChannel( )
+			self.FocusCurrentChannel( )			
+			self.UpdateEPGInfomation()
+
+			self.mEventBus.Register( self )
+			self.StartEPGUpdateTimer( )
 
 
 	def	GetSelectedEPG( self ) :

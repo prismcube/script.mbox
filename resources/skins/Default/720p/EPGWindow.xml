@@ -335,7 +335,7 @@
 			<scroll>false</scroll>
 			<align>right</align>
 			<aligny>center</aligny>
-			<label>([COLOR=blue]$$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3500).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3500).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3500).CurrentPage]/$INFO[Container(3500).NumPages][/COLOR])</label>
+			<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3500).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3500).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3500).CurrentPage]/$INFO[Container(3500).NumPages][/COLOR])</label>
 			<visible>substring(Window.Property(EPGMode),channel) </visible>						
 		</control>
 
