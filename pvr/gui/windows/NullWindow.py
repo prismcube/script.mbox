@@ -17,13 +17,16 @@ class NullWindow( BaseWindow ) :
 		self.mGotoWinID = None
 		self.mOnEventing= False
 
-		self.mEventBus.Register( self )
 
 		if self.mInitialized == False :
 			self.mInitialized = True
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
+		self.mEventBus.Register( self )
+
+		if E_SUPPROT_HBBTV == True :
+			self.mCommander.AppHBBTV_Ready( 1 )
 
 	def onAction(self, aAction) :		
 		actionId = aAction.getId( )
@@ -33,6 +36,7 @@ class NullWindow( BaseWindow ) :
 			if self.mGotoWinID :
 				if self.mGotoWinID == WinMgr.WIN_ID_ARCHIVE_WINDOW :
 					self.mGotoWinID = None
+					self.Close( )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 				return
 				
@@ -45,12 +49,14 @@ class NullWindow( BaseWindow ) :
 	 				if tempval == '' :
 	 					return
 					if int( tempval ) == ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( ) :
+						self.Close( )
 						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 					else :
 						dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( 'ERROR', 'ERROR PIN Code' )
 			 			dialog.doModal( )
 			 	return
+			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 			
 				
@@ -73,15 +79,18 @@ class NullWindow( BaseWindow ) :
 			if self.mDataCache.mStatusIsArchive :
 				LOG_TRACE('Archive playing now')
 				return -1
+			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
 		elif actionId == Action.ACTION_MOVE_LEFT:
 			print 'youn check ation left'
 			window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 			window.SetAutomaticHide( True )
+			self.Close( )			
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
 		elif actionId == Action.ACTION_SHOW_INFO:
+			self.Close( )		
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
 		elif actionId == Action.ACTION_CONTEXT_MENU:
@@ -93,6 +102,7 @@ class NullWindow( BaseWindow ) :
 
 			window = WinMgr.GetInstance( ).GetWindow( gotoWinId )
 			window.SetAutomaticHide( False )
+			self.Close( )			
 			WinMgr.GetInstance( ).ShowWindow( gotoWinId )
 
 		elif actionId == Action.ACTION_PAGE_DOWN:
@@ -109,6 +119,7 @@ class NullWindow( BaseWindow ) :
 			
 				window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE )
 				window.SetAutomaticHide( True )
+				self.Close( )				
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 
@@ -126,6 +137,7 @@ class NullWindow( BaseWindow ) :
 
 				window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE )
 				window.SetAutomaticHide( True )
+				self.Close( )				
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 			
 	
@@ -353,4 +365,8 @@ class NullWindow( BaseWindow ) :
 
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
+
+		if E_SUPPROT_HBBTV == True :
+			self.mCommander.AppHBBTV_Ready( 0 )
+		
 

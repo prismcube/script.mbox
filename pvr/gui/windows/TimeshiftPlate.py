@@ -210,6 +210,7 @@ class TimeShiftPlate(BaseWindow):
 				self.onClick( self.mCtrlBtnStop.getId() )
 
 		elif id == Action.ACTION_CONTEXT_MENU:
+			self.Close( )
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif id == Action.ACTION_STOP :
@@ -410,9 +411,8 @@ class TimeShiftPlate(BaseWindow):
 			self.mProgress_idx = 0.0
 
 			#self.RecordingStopAll( )
-
-			WinMgr.GetInstance().ShowWindow( gobackID )
 			self.Close()
+			WinMgr.GetInstance().ShowWindow( gobackID )
 			return
 
 		elif aFocusId == self.mCtrlBtnRewind.getId() :

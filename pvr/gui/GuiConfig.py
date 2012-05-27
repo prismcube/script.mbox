@@ -3,6 +3,10 @@ from copy import deepcopy
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
 
+####### HBBTV SUPPOERT #############
+E_SUPPROT_HBBTV		= False
+
+
 E_WINDOW_WIDTH		= 1280
 E_WINDOW_HEIGHT		= 720
 
