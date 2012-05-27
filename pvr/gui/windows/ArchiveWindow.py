@@ -42,6 +42,7 @@ MININUM_KEYWORD_SIZE			= 3
 class ArchiveWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
+		self.mSelectRecordKey = -1
 
 	
 	def onInit( self ) :
@@ -50,34 +51,28 @@ class ArchiveWindow( BaseWindow ) :
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Archive' )
 
-		LOG_TRACE('')
 		self.mRecordCount = 0
 		self.mSelectedIndex = 0
 		self.mRecordList = [] 
 		self.mSortList = [] 		
 		self.mRecordListItems = []
 
-		LOG_TRACE('')
 		self.mServiceType =  self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( ).mServiceType
-		LOG_TRACE('serviceType=%d' %self.mServiceType)		
 		
-		LOG_TRACE('')
 		self.mViewMode = int( GetSetting( 'VIEW_MODE' ) )
 		self.mCtrlViewMode = self.getControl( BUTTON_ID_VIEW_MODE )
 
-		LOG_TRACE('')
 		self.mSortMode = int( GetSetting( 'SORT_MODE' ) )		
 		self.mCtrlSortMode = self.getControl( BUTTON_ID_SORT_MODE )
 
 		self.mAscending = []
 		self.mAscending = [False,False,False,False,False]
-		LOG_TRACE('self.mAscending=%s' %self.mAscending )		
+
 		self.mAscending[E_SORT_DATE] = False
 		self.mAscending[E_SORT_CHANNEL] = True
 		self.mAscending[E_SORT_TITLE] = True
 		self.mAscending[E_SORT_DURATION] = False
 
-		LOG_TRACE('self.mAscending2=%s' %self.mAscending )				
 
 		self.mCtrlCommonList = self.getControl( LIST_ID_COMMON_RECORD )
 		self.mCtrlThumbnailList = self.getControl( LIST_ID_THUMBNAIL_RECORD )
@@ -87,64 +82,53 @@ class ArchiveWindow( BaseWindow ) :
 		self.UpdateAscending()
 		self.UpdateViewMode( )
 		
-		LOG_TRACE('')
 		self.InitControl()
-		LOG_TRACE('')
 
 		self.Load( )
-		LOG_TRACE('')
 		self.UpdateList( )
-		LOG_TRACE('')
 
-		
+		self.SelectLastRecordKey( )
+
 		self.mInitialized = True
 
 
 	def onAction( self, aAction ) :
+		focusId = self.GetFocusId()
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )		
 
-		#LOG_TRACE('onAction=%d' %actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			LOG_ERR('ERROR TEST')		
 			self.SetVideoRestore( )
-			LOG_ERR('ERROR TEST')			
 			self.close( )
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
-			LOG_ERR('ERROR TEST')
-			focusId = self.GetFocusId()
-			LOG_ERR('ERROR TEST focusId=%d' %focusId)			
-			if focusId == LIST_ID_COMMON_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD or focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD:
+			if focusId  == LIST_ID_COMMON_RECORD or focusId  == LIST_ID_THUMBNAIL_RECORD or focusId  == LIST_ID_POSTERWRAP_RECORD or focusId  == LIST_ID_FANART_RECORD:
 				if	self.mMarkMode == True	:
 					self.DoMarkToggle()
 				else :
 					self.StartRecordPlayback()
 				#self.close()
-			LOG_ERR('ERROR TEST')
 
 
 		elif actionId == Action.ACTION_PARENT_DIR :
-			LOG_ERR('ERROR TEST')
 			self.SetVideoRestore( )
 			self.close( )				
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
-			LOG_ERR('ERROR TEST')			
 
 
-		elif actionId == Action.ACTION_MOVE_RIGHT :
-			pass
+		elif actionId == Action.ACTION_MOVE_RIGHT or actionId == Action.ACTION_MOVE_LEFT :
+			if focusId == LIST_ID_POSTERWRAP_RECORD or focusId  == LIST_ID_FANART_RECORD or focusId  == LIST_ID_THUMBNAIL_RECORD:
+				self.UpdateSelectedPosition( )
 
-		elif actionId == Action.ACTION_MOVE_LEFT :
-			pass
-
-		elif actionId == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN :
-			pass
+		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
+			if focusId  == LIST_ID_COMMON_RECORD or focusId  == LIST_ID_THUMBNAIL_RECORD :
+				self.UpdateSelectedPosition( )
+				if focusId  == LIST_ID_COMMON_RECORD	 :
+					self.UpdateArchiveInfomation( )
 
 		elif actionId == Action.ACTION_CONTEXT_MENU:
-			LOG_TRACE('')
 			self.ShowContextMenu( )
 
 		#testcode remove all archive
@@ -155,7 +139,6 @@ class ArchiveWindow( BaseWindow ) :
 			self.OpenBusyDialog( )
 
 			for i in range( recordCount ) :
-				LOG_TRACE('i=%d' %i)		
 				recInfo = self.mDataCache.Record_GetRecordInfo( 0, self.mServiceType )
 				self.mDataCache.Record_DeleteRecord( recInfo.mRecordKey, self.mServiceType )
 
@@ -166,16 +149,12 @@ class ArchiveWindow( BaseWindow ) :
 			self.Load( )
 			self.UpdateList( )
 
-			
-		#testcode remove all timer
-		elif actionId == Action.REMOTE_1 :
-			LOG_TRACE('----------- Remove All Timer --------------')
-			
-		
+	
 	def onClick( self, aControlId ) :
 		LOG_TRACE( 'aControlId=%d' % aControlId )
 
 		if aControlId == BUTTON_ID_VIEW_MODE :
+			self.RestoreLastRecordKey( )		
 			self.mViewMode += 1
 			if self.mViewMode >= E_VIEW_END :
 				self.mViewMode = 0 
@@ -184,8 +163,10 @@ class ArchiveWindow( BaseWindow ) :
 			self.UpdateViewMode( )
 			self.InitControl()			
 			self.UpdateList( )
+			self.SelectLastRecordKey( )			
 		
 		elif aControlId == BUTTON_ID_SORT_MODE :
+			self.RestoreLastRecordKey( )		
 			self.mSortMode += 1
 			if self.mSortMode >= E_SORT_END :
 				self.mSortMode = 0 
@@ -195,8 +176,10 @@ class ArchiveWindow( BaseWindow ) :
 			self.InitControl()			
 			self.UpdateAscending( )
 			self.UpdateList( )
-
+			self.SelectLastRecordKey( )
+			
 		elif aControlId == TOGGLEBUTTON_ID_ASC :
+			self.RestoreLastRecordKey( )
 			LOG_TRACE('Mode=%d' % self.mSortMode )
 			LOG_TRACE('mAscending=%d' %self.mAscending[self.mSortMode] )
 			if self.mAscending[self.mSortMode] == True :
@@ -206,6 +189,7 @@ class ArchiveWindow( BaseWindow ) :
 
 			self.UpdateAscending( )
 			self.UpdateList( )
+			self.SelectLastRecordKey( )			
 
 		elif aControlId == RADIIOBUTTON_ID_EXTRA :
 			pass
@@ -297,22 +281,6 @@ class ArchiveWindow( BaseWindow ) :
 			LOG_ERR( "Exception %s" %ex)
 
 
-		"""
-		try :
-			self.mRecordCount = self.mDataCache.Record_GetCount( self.mServiceType )
-		except Exception, ex:
-			LOG_ERR( "Exception %s" %ex)
-		
-		LOG_TRACE('')
-		LOG_TRACE('RecordCount=%d' %self.mRecordCount )
-		
-		for i in range( self.mRecordCount ) :
-			LOG_TRACE('i=%d' %i)		
-			recInfo = self.mDataCache.Record_GetRecordInfo( i, self.mServiceType )
-			recInfo.printdebug()
-			self.mRecordList.append( recInfo )
-		"""
-		
 
 	def UpdateList( self ) :
 		LOG_TRACE('UpdateList Start')
@@ -468,7 +436,8 @@ class ArchiveWindow( BaseWindow ) :
 		#self.close()
 		self.mDataCache.SetKeyDisabled( True, recInfo )
 
-		self.SetVideoRestore()
+		self.RestoreLastRecordKey( )
+		self.SetVideoRestore( )
 		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )				
 
 
@@ -507,7 +476,6 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def ShowContextMenu( self ) :
-		LOG_TRACE('')
 		try :
 			selectedPos = self.GetSelectedPosition()
 			context = []
@@ -553,42 +521,33 @@ class ArchiveWindow( BaseWindow ) :
 		LOG_TRACE('aContextAction=%d' %aContextAction )
 
 		if aContextAction == CONTEXT_PLAY :
-			LOG_TRACE('')
 			self.StartRecordPlayback( True )
 
 		elif aContextAction == CONTEXT_PLAY_FROM_BEGINNIG :
 			self.StartRecordPlayback( False )
 
 		elif aContextAction == CONTEXT_DELETE :
-			LOG_TRACE('')
 			self.ShowDeleteConfirm()
 
 		elif aContextAction == CONTEXT_LOCK :
-			LOG_TRACE('')
 			self.DoLockUnlock( True )
 
 		elif aContextAction == CONTEXT_UNLOCK :
-			LOG_TRACE('')
 			self.DoLockUnlock( False )
 
 		elif aContextAction == CONTEXT_RENAME :
-			LOG_TRACE('')
 			self.ShowRenameDialog( )
 
 		elif aContextAction == CONTEXT_START_MARK :
-			LOG_TRACE('')
 			self.DoStartMark( )
 
 		elif aContextAction == CONTEXT_CLEAR_MARK :
-			LOG_TRACE('')		
 			self.DoClearMark( )
 		else :
 			LOG_ERR('Unknown Context Action')
 
 
 	def ShowDeleteConfirm( self ) :
-		LOG_TRACE('ShowDeleteConfirm')
-
 		markedList = self.GetMarkedList()
 		selectedPos = self.GetSelectedPosition( )
 
@@ -680,7 +639,6 @@ class ArchiveWindow( BaseWindow ) :
 
 			count = len( markedList )
 			for i in range( count ) :
-				LOG_TRACE('i=%d' %i)
 				position =  markedList[i]
 				listItem = self.mRecordListItems[position]
 				if aLock == True :
@@ -746,7 +704,6 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def CheckPincode( self ) :
-		LOG_TRACE('')
 		savedPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
 		GuiLock2( True )
 		pincodeDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -766,6 +723,79 @@ class ArchiveWindow( BaseWindow ) :
 
 		return False
 
-	def Close( self ) :
-		self.close()
 
+	def Close( self ) :
+		self.close( )
+
+
+	def UpdateSelectedPosition( self ) :
+		selectedPos = self.GetSelectedPosition( )
+		if selectedPos < 0 :
+			self.mWin.setProperty( 'SelectedPosition', '0' )
+		else :
+			self.mWin.setProperty( 'SelectedPosition', '%d' %(selectedPos+1) )		
+				
+
+	def UpdateArchiveInfomation( self ) :
+		selectedPos = self.GetSelectedPosition()
+		
+		if selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
+			recInfo = self.mRecordList[selectedPos]
+			"""
+			LOG_TRACE( 'Archive Info --> ChannelName=%s' %recInfo.mChannelName )
+			LOG_TRACE( 'Archive Info --> RecDate=%s' %TimeToString( recInfo.mStartTime ) )
+			LOG_TRACE( 'Archive Info --> RecDuration=%d' %( recInfo.mDuration/60 ) )
+			LOG_TRACE( 'Archive Info --> RecName=%s' %recInfo.mRecordName )
+			"""
+			
+			if recInfo :
+				self.mWin.setProperty( 'ChannelName', recInfo.mChannelName )
+				self.mWin.setProperty( 'RecDate',  TimeToString( recInfo.mStartTime ) )
+				self.mWin.setProperty( 'RecDuration',  '%dm' %( recInfo.mDuration/60 ) )
+				self.mWin.setProperty( 'RecName', recInfo.mRecordName )
+			else :
+				self.ResetArchiveInfomation( )
+		else :
+			self.ResetArchiveInfomation( )
+
+
+	def ResetArchiveInfomation( self ) :
+		self.mWin.setProperty( 'ChannelName', '' )
+		self.mWin.setProperty( 'RecDate', '' )
+		self.mWin.setProperty( 'RecDuration',  '' )
+		self.mWin.setProperty( 'RecName', '' )				
+
+
+	def RestoreLastRecordKey( self ):
+		selectedPos = self.GetSelectedPosition()
+
+		if selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
+			recInfo = self.mRecordList[selectedPos]
+			self.mSelectRecordKey = recInfo.mRecordKey
+		else :
+			self.mSelectRecordKey = -1
+
+
+	
+	def SelectLastRecordKey( self ) :
+		selectedPos = 0
+		for i in range( len( self.mRecordList ) ) :
+			recInfo = self.mRecordList[i]
+			if recInfo.mRecordKey == self.mSelectRecordKey  :
+				break;
+			selectedPos += 1
+				
+		if self.mViewMode == E_VIEW_LIST :
+			self.mCtrlCommonList.selectItem( selectedPos )
+		elif self.mViewMode == E_VIEW_THUMBNAIL :
+			self.mCtrlThumbnailList.selectItem( selectedPos )
+		elif self.mViewMode == E_VIEW_POSTER_WRAP :
+			self.mCtrlPosterwrapList.selectItem( selectedPos )
+		elif self.mViewMode == E_VIEW_FANART :
+			self.mCtrlFanartList.selectItem( selectedPos )
+		else :
+			LOG_WARN( 'Unknown View Mode' )
+
+		self.UpdateSelectedPosition( )
+		self.UpdateArchiveInfomation( )
+	

@@ -24,6 +24,8 @@ E_VIEW_CURRENT					= 1
 E_VIEW_FOLLOWING				= 2
 E_VIEW_END						= 3
 
+E_NOMAL_UPDATE_TIME				= 30
+E_SHORT_UPDATE_TIME				= 10
 
 E_MAX_EPG_COUNT					= 512
 E_MAX_SCHEDULE_DAYS				= 8
@@ -81,7 +83,6 @@ class EPGWindow( BaseWindow ) :
 
 		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
 		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
-		self.mEPGChannel = self.mCurrentChannel
 		LOG_TRACE('ZeppingMode(%d,%d,%d)' %( self.mCurrentMode.mServiceType, self.mCurrentMode.mMode, self.mCurrentMode.mSortingMode ) )
 		self.mChannelList = self.mDataCache.Channel_GetList( )
 
@@ -95,11 +96,13 @@ class EPGWindow( BaseWindow ) :
 		self.Load( )
 		self.UpdateList( )
 		self.UpdateCurrentChannel( )
-		self.UpdateEPGChannel( )
+		self.UpdateSelectedChannel( )
+		self.FocusCurrentChannel( )		
 		self.UpdateEPGInfomation( )
-		self.FocusCurrentChannel( )
+
 
 		self.mUpdateLocked = False
+		self.mIsUpdateEnable = True
 
 		self.mEventBus.Register( self )
 
@@ -156,6 +159,8 @@ class EPGWindow( BaseWindow ) :
 			if self.mEPGMode >= E_VIEW_END :
 				self.mEPGMode = 0 
 
+			self.mSelectChannel = self.mCurrentChannel
+			
 			SetSetting( 'EPG_MODE','%d' %self.mEPGMode )
 
 			self.mEventBus.Deregister( self )
@@ -165,8 +170,9 @@ class EPGWindow( BaseWindow ) :
 			self.InitControl( )
 			self.Load( )
 			
-			self.UpdateEPGChannel( )
-			self.UpdateList( )
+			self.UpdateListWithGUILock( )
+			self.UpdateSelectedChannel( )
+			self.FocusCurrentChannel( )			
 			self.UpdateEPGInfomation()
 
 			self.mLock.acquire( )
@@ -193,7 +199,11 @@ class EPGWindow( BaseWindow ) :
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
 			if aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
-				self.RestartEPGUpdateTimer( 1 )
+				if self.mIsUpdateEnable == True	:
+					self.StopEPGUpdateTimer( )
+					self.UpdateListWithGUILock( )
+					self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
+
 			"""
 			elif aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
 				self.DoCurrentEITReceived( aEvent )
@@ -202,6 +212,7 @@ class EPGWindow( BaseWindow ) :
 
 	def Close( self ) :
 		self.mEventBus.Deregister( self )	
+
 		self.StopEPGUpdateTimer( )
 		self.SetVideoRestore( )
 		self.close( )
@@ -265,7 +276,6 @@ class EPGWindow( BaseWindow ) :
 	def LoadByChannel( self ) :
 		gmtFrom =  self.mGMTTime 
 		gmtUntil = self.mGMTTime + E_MAX_SCHEDULE_DAYS*3600*24
-
 		try :
 			self.mEPGList = self.mDataCache.Epgevent_GetListByChannel(  self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid,  gmtFrom,  gmtUntil,  E_MAX_EPG_COUNT)
 
@@ -320,6 +330,21 @@ class EPGWindow( BaseWindow ) :
 			self.mEPGListHash[ '%d:%d:%d' %( epg.mSid, epg.mTsid, epg.mOnid) ] = epg
 
 
+	def UpdateSelcetedPosition( self ) :
+		if self.mChannelList == None :
+			self.mWin.setProperty( 'SelectedPosition', '0' )		
+			return
+
+		selectedPos = 0
+		
+		if self.mEPGMode == E_VIEW_CHANNEL :
+			selectedPos = self.mCtrlList.getSelectedPosition( )		
+		else :
+			selectedPos = self.mCtrlBigList.getSelectedPosition( )
+
+		self.mWin.setProperty( 'SelectedPosition', '%d' %( selectedPos+1 ) )
+
+
 	def FocusCurrentChannel( self ) :
 		if self.mChannelList == None :
 			return
@@ -327,20 +352,21 @@ class EPGWindow( BaseWindow ) :
 		if self.mEPGMode == E_VIEW_CHANNEL :
 			self.mCtrlList.selectItem( 0 )
 		else :
-			focuxIndex = 0
+			fucusIndex = 0
 			for channel in self.mChannelList:
 				if channel.mNumber == self.mCurrentChannel.mNumber :
 					break
-				focuxIndex += 1
+				fucusIndex += 1
 
 			GuiLock2( True )
-			self.mCtrlBigList.selectItem( focuxIndex )
+			self.mCtrlBigList.selectItem( fucusIndex )
 			GuiLock2( False )
 
 
-	def UpdateEPGChannel( self ) :
-		if self.mEPGChannel :
-			self.mCtrlEPGChannelLabel.setLabel( '%04d %s' %( self.mEPGChannel.mNumber, self.mEPGChannel.mName ) )
+	def UpdateSelectedChannel( self ) :
+	
+		if self.mSelectChannel :
+			self.mCtrlEPGChannelLabel.setLabel( '%04d %s' %( self.mSelectChannel.mNumber, self.mSelectChannel.mName ) )
 		else:
 			self.mCtrlEPGChannelLabel.setLabel( 'No Channel' )
 
@@ -353,6 +379,8 @@ class EPGWindow( BaseWindow ) :
 
 
 	def UpdateEPGInfomation( self ) :
+		self.UpdateSelcetedPosition( )
+		
 		epg = self.GetSelectedEPG( )
 
 		try :
@@ -388,6 +416,16 @@ class EPGWindow( BaseWindow ) :
 		self.mWin.setProperty( 'HasDolby', 'False' )
 		self.mWin.setProperty( 'HasHD', 'False' )
 
+
+	def UpdateListWithGUILock( self ) :
+		if self.mUpdateLocked == True :
+			return
+
+		self.mIsUpdateEnable = False
+		GuiLock2( True )
+		self.UpdateList( True )
+		GuiLock2( False )
+		self.mIsUpdateEnable = True
 
 	def UpdateList( self, aUpdateOnly=False ) :
 		if aUpdateOnly == False :
@@ -700,7 +738,10 @@ class EPGWindow( BaseWindow ) :
 			if dialog.IsOK() == E_DIALOG_STATE_YES :
 				LOG_TRACE('')
 				self.mDataCache.Timer_AddEPGTimer( 0, 0, aEPG )
-				self.UpdateList( True )
+				self.StopEPGUpdateTimer( )
+				self.UpdateListWithGUILock( )
+				self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
+
 			else :
 				LOG_TRACE('')
 
@@ -754,7 +795,10 @@ class EPGWindow( BaseWindow ) :
 			xbmcgui.Dialog( ).ok('Error', dialog.GetErrorMessage() )
 			return
 
-		self.UpdateList( True )
+		self.StopEPGUpdateTimer( )
+		self.UpdateListWithGUILock( )
+		self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
+
 
 
 	def ShowDeleteConfirm( self ) :
@@ -781,7 +825,10 @@ class EPGWindow( BaseWindow ) :
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.mDataCache.Timer_DeleteTimer( timerId )
-				self.UpdateList( True )
+				self.StopEPGUpdateTimer( )
+				self.UpdateListWithGUILock( )
+				self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
+
 
 
 	def ShowDeleteAllConfirm( self ) :
@@ -800,7 +847,10 @@ class EPGWindow( BaseWindow ) :
 				timer.printdebug()
 				self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
 
-			self.UpdateList( True )	
+			self.StopEPGUpdateTimer( )
+			self.UpdateListWithGUILock( )
+			self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
+
 		self.CloseBusyDialog( )
 
 
@@ -1015,7 +1065,6 @@ class EPGWindow( BaseWindow ) :
 		return False
 			
 
-
 	def Tune( self ) :
 
 		LOG_TRACE('###########################')
@@ -1032,23 +1081,25 @@ class EPGWindow( BaseWindow ) :
 				LOG_TRACE('--------------- number=%d ----------------' %channel.mNumber )
 				self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
 				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
-				self.mEPGChannel = self.mCurrentChannel
 				self.UpdateCurrentChannel( )
 				self.RestartEPGUpdateTimer( 5 )
 
 
-	def RestartEPGUpdateTimer( self, aTimeout=30 ) :
+	def RestartEPGUpdateTimer( self, aTimeout=E_NOMAL_UPDATE_TIME ) :
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Restart' )
 		self.StopEPGUpdateTimer( )
 		self.StartEPGUpdateTimer( aTimeout )
 		
 
-	def StartEPGUpdateTimer( self, aTimeout=30 ) :
+	def StartEPGUpdateTimer( self, aTimeout=E_NOMAL_UPDATE_TIME ) :
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Start' )	
 		self.mEPGUpdateTimer = threading.Timer( aTimeout, self.AsyncEPGUpdateTimer )
 		self.mEPGUpdateTimer.start()
 	
 
 	def StopEPGUpdateTimer( self ) :
-		if self.mEPGUpdateTimer and self.mEPGUpdateTimer.isAlive() :
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )	
+		if self.mEPGUpdateTimer and self.mEPGUpdateTimer.isAlive( ) :
 			self.mEPGUpdateTimer.cancel()
 			del self.mEPGUpdateTimer
 			
@@ -1056,16 +1107,21 @@ class EPGWindow( BaseWindow ) :
 
 
 	def AsyncEPGUpdateTimer( self ) :	
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )	
+		if self.mEPGUpdateTimer == None :
+			LOG_WARN( 'EPG Update timer expired' )
+			return
+
 		if self.mUpdateLocked == False :	
 			if self.mEPGMode == E_VIEW_FOLLOWING : # Following is not support until now.
 				LOG_TRACE("ToDO : DocurrentEITReceived is not support until now.")
-				pass
+				self.RestartEPGUpdateTimer( )
 			else :
-				GuiLock2( True )
+				self.mLock.acquire( )
 				self.Load( )
-				self.UpdateList( True )
-				GuiLock2( False )
+				self.mLock.release( )
+				self.UpdateListWithGUILock( )
 
-		self.StartEPGUpdateTimer( )
+				self.RestartEPGUpdateTimer( )
 
 

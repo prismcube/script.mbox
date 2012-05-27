@@ -322,32 +322,36 @@
 					</control>
 				</control>
 			</control>
+		</control>
 
-			<!--
-			<control type="image" id="310">
-				<posx>0</posx>
-				<posy>60</posy>
-				<width>60</width>
-				<height>30</height>
-				<description>video HD</description>
-			</control>
-			
-			<control type="image" id="311">
-				<posx>55</posx>
-				<posy>60</posy>
-				<width>65</width>
-				<height>30</height>
-				<description>audio dolby</description>
-			</control>
+		<!-- Item Position and Page Number for common list-->
+		<control type="label">
+			<posx>60r</posx>
+			<posy>50r</posy>
+			<width>300</width>
+			<height>20</height>
+			<font>font12</font>
+			<textcolor>grey</textcolor>
+			<scroll>false</scroll>
+			<align>right</align>
+			<aligny>center</aligny>
+			<label>([COLOR=blue]$$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3500).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3500).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3500).CurrentPage]/$INFO[Container(3500).NumPages][/COLOR])</label>
+			<visible>substring(Window.Property(EPGMode),channel) </visible>						
+		</control>
 
-			<control type="image" id="312">
-				<posx>110</posx>
-				<posy>60</posy>
-				<width>65</width>
-				<description>subtitle</description>
-			</control>
-			-->
-
+		<!-- Item Position and Page Number for big list-->
+		<control type="label">
+			<posx>60r</posx>
+			<posy>50r</posy>
+			<width>300</width>
+			<height>20</height>
+			<font>font12</font>
+			<textcolor>grey</textcolor>
+			<scroll>false</scroll>
+			<align>right</align>
+			<aligny>center</aligny>
+			<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3510).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3510).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3510).CurrentPage]/$INFO[Container(3510).NumPages][/COLOR])</label>
+			<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>						
 		</control>
 
 	</controls>

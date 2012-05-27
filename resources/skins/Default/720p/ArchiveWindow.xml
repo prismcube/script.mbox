@@ -61,52 +61,12 @@
 			</control>
 
 			<control type="image" id="8899">
-				<posx>850</posx>
-				<posy>160</posy>
+				<posx>845</posx>
+				<posy>118</posy>
 				<width>352</width>
 				<height>198</height>
 				<texture>video_pig_overlay.png</texture>
 			</control>
-			
-			<!--
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
-				<height>720</height>
-				<texture border="20">ContentPanel2.png</texture>
-				<include>DefaultVisibleFadeEffect</include>
-				<visible>Control.IsVisible(501)</visible>
-			</control>
-			<control type="group">
-				<include>DefaultVisibleFadeEffect</include>
-				<visible>Control.IsVisible(51) | Control.IsVisible(500) | Control.IsVisible(505)</visible>
-				<control type="image">
-					<posx>75</posx>
-					<posy>60</posy>
-					<width>1130</width>
-					<height>600</height>
-					<texture border="20">ContentPanel.png</texture>
-				</control>
-				<control type="image">
-					<posx>75</posx>
-					<posy>645</posy>
-					<width>1130</width>
-					<height>600</height>
-					<aspectratio aligny="top">keep</aspectratio>
-					<texture diffuse="diffuse_mirror3.png" flipy="true" border="20">ContentPanel.png</texture>
-				</control>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>-5</posy>
-				<width>1280</width>
-				<height>725</height>
-				<texture border="0,5,0,0">ContentPanel4.png</texture>
-				<include>DefaultVisibleFadeEffect</include>
-				<visible>Control.IsVisible(550) | Control.IsVisible(560)</visible>
-			</control>
-			-->
 		</control>
 		<control type="group" id="9003">
 			<include>Window_OpenClose_Animation</include>		
@@ -114,22 +74,8 @@
 			<include>DefaultThumbnailArchiveView</include> <!-- Default thumbnail View id = 3410 -->
 			<include>DefaultPosterWrapArchiveView</include> <!-- Default poster wrapView id = 3420 -->						
 			<include>DefaultFanartArchiveView</include> <!-- Default Fanart View id = 3430 -->						
-			
-			<!--
-			<include>FullWidthList</include> -- view id = 51 
-			<include>ThumbnailView</include> -- view id = 500 
-			<include>PosterWrapView</include> -- view id = 501 --
-			<include>PosterWrapView2_Fanart</include> -- view id = 508 --
-			<include>WideIconView</include> -- view id = 505 --
-			<include>AddonInfoListView1</include> -- view id = 550 --
-			<include>LiveTVView1</include> -- view id = 560 --
-			-->
 		</control>
-		<!--
-		<include>CommonPageCount</include>
-		<include>BehindDialogFadeOut</include>
-		<include>ScrollOffsetLabel</include>
-		-->
+
 		<control type="group">
 			<animation effect="slide" start="0,0" end="250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(9000).HasFocus | ControlGroup(9001).HasFocus">Conditional</animation>
 			<animation effect="slide" start="0,0" end="-250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(9000).HasFocus | ControlGroup(9001).HasFocus">WindowClose</animation>
@@ -207,44 +153,9 @@
 						<textwidth>170</textwidth>
 						<include>DefaultButtonMediaSubCommonValues</include>
 						<label>Search</label>
-						<!--				
-						<description>Search Button</description>
-						<width>220</width>
-						<height>45</height>
-						<font>font12caps</font>
-						<include>DefaultButtonCommonValues</include>
-						<label>Search</label>
-						<align>lef</align>
-						<aligny>center</aligny>
-						-->
 					</control>
-					<!--
-					<control type="radiobutton" id="201">
-						<description>Toggle Fanart</description>
-						<textwidth>170</textwidth>
-						<include>ButtonMediaSubCommonValues</include>
-						<label>31307</label>
-						<onclick>Skin.ToggleSetting(VideoFilesFanart)</onclick>
-						<selected>Skin.HasSetting(VideoFilesFanart)</selected>
-						<visible>!Control.IsVisible(508)</visible>
-					</control>
-					-->
 				</control>
 			</control>
-			<!--
-			<control type="button" id="8999">
-				<description>Fake button for mouse control</description>
-				<posx>-250</posx>
-				<posy>0</posy>
-				<width>265</width>
-				<height>720</height>
-				<label>-</label>
-				<font>-</font>
-				<texturenofocus>-</texturenofocus>
-				<texturefocus>-</texturefocus>
-				<visible>true</visible>
-			</control>
-			-->
 			<include>DefaultSideBladeLeft</include>
 			<control type="image">
 				<description>LOGO</description>
@@ -258,9 +169,6 @@
 			<control type="group" id="9000">
 				<posx>-250</posx>
 				<posy>130</posy>
-				<!--
-				<include>CommonNowPlaying</include>
-				-->
 				<control type="button" id="100">
 					<description>View As button</description>
 					<posx>0</posx>
@@ -282,9 +190,6 @@
 					<onright>102</onright>
 					<onup>100</onup>
 					<ondown>104</ondown>
-					<!--
-					<enable>substring(Window.Property(ascending),true)</enable>
-					-->
 				</control>
 				
 				<control type="togglebutton" id="102">
@@ -299,22 +204,6 @@
 					<usealttexture>substring(Window.Property(Ascending),true)</usealttexture>
 				</control>
 
-				<!--
-				<control type="radiobutton" id="103">
-					<description>Library button</description>
-					<posx>0</posx>
-					<posy>80</posy>
-					<label>TEST4</label>
-					<onclick>ReplaceWindow(VideoLibrary)</onclick>
-					<selected>Window.IsVisible(VideoLibrary)</selected>
-					<include>DefaultButtonCommonValues</include>
-					<onleft>3400</onleft>
-					<onright>3400</onright>
-					<onup>101</onup>
-					<ondown>104</ondown>
-					<enable>Library.HasContent(Video)</enable>
-				</control>
-				-->
 				<control type="radiobutton" id="104">
 					<description>Extra Options</description>
 					<hitrect x="0" y="120" w="265" h="40" />
@@ -333,51 +222,172 @@
 					<onup>101</onup>
 					<ondown>100</ondown>
 				</control>
-				<!--
-				<control type="button" id="105">
-					<description>Fake Button to fix Player Controls Navigation</description>
-					<onup>104</onup>
-					<ondown>603</ondown>
-					<visible>false</visible>
-				</control>
-
-				<control type="group">
-					<posx>0</posx>
-					<posy>260</posy>
-					<include>CommonNowPlaying_Controls</include>
-				</control>
-				<control type="button" id="106">
-					<description>Fake Button to fix Player Controls Navigation</description>
-					<onup>608</onup>
-					<ondown>2</ondown>
-					<visible>false</visible>
-				</control>
-				-->
-
 			</control>
 		</control>
 		<include>DefaultMiniTitle</include>
 		<include>DefaultCommonDateTime</include>
-		<!--
-		<control type="group">
-			<posx>60</posx>
-			<posy>0</posy>
-			<animation effect="slide" end="-310,0" time="400" tween="quadratic" easing="out">WindowClose</animation>
-			<animation effect="slide" start="-310,0" time="400" tween="quadratic" easing="out">WindowOpen</animation>
-			<control type="image">
+
+		<control type="group" id="9020">
+			<posx>850</posx>
+			<posy>360</posy>
+			<visible>substring(Window.Property(ViewMode),common) </visible>
+			
+
+			<control type="label" id="300">
+				<description>Channel Name</description>			
 				<posx>0</posx>
 				<posy>0</posy>
-				<width>200</width>
-				<height>35</height>
-				<texture border="0,0,32,0">confluence/header.png</texture>
+				<font>font12_title</font>
+				<textcolor>grey</textcolor>
+				<label>$INFO[Window.Property(ChannelName)]</label>
 			</control>
-			<control type="label">
-				<include>DefaultWindowTitleCommons</include>
-				<posx>80</posx>
-				<label>Archive</label>
+
+			<control type="label" id="301">
+				<description>Date</description>
+				<posx>0</posx>
+				<posy>30</posy>
+				<font>font12_title</font>
+				<textcolor>grey</textcolor>
+				<label>$INFO[Window.Property(RecDuration)]</label>
 			</control>
+
+			<control type="label" id="302">
+				<description>Duration</description>			
+				<posx>150</posx>
+				<posy>30</posy>
+				<font>font12_title</font>
+				<textcolor>grey</textcolor>
+				<label>$INFO[Window.Property(RecDate)]</label>
+			</control>
+
+			<control type="textbox" id="303">
+				<description>Record Name</description>			
+				<posx>0</posx>
+				<posy>60</posy>
+				<width>352</width>
+			 	<height>160</height>
+				<font>font12_title</font>
+				<textcolor>grey</textcolor>
+				<label>$INFO[Window.Property(RecName)]</label>
+			</control>
+
+			<!-- component -->
+			<!--
+			<control type="group">
+				<control type="grouplist">
+					<posx>0</posx>
+					<posy>240</posy>
+					<width>190</width>
+					<height>30</height>
+					<itemgap>1</itemgap>
+					<visible>true</visible>
+					<orientation>horizontal</orientation>
+					<control type="group" id="310">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>60</width>
+						<height>30</height>
+						<visible>substring(Window.Property(HasSubtitle),True)</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>60</width>
+							<height>30</height>
+							<texture>IconTeletext.png</texture>
+						</control>
+					</control>
+					<control type="group" id="311">
+						<posx>55</posx>
+						<posy>0</posy>
+						<width>65</width>
+						<height>30</height>
+						<visible>substring(Window.Property(HasDolby),True)</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>65</width>
+							<height>30</height>
+							<texture>dolbydigital.png</texture>
+						</control>
+					</control>
+					<control type="group" id="312">
+						<posx>110</posx>
+						<posy>0</posy>
+						<width>65</width>
+						<height>30</height>
+						<visible>substring(Window.Property(HasHD),True)</visible>
+						<control type="image">
+							<posx>0</posx>
+							<posy>0</posy>
+							<width>65</width>
+							<height>30</height>
+							<texture>OverlayHD.png</texture>
+						</control>
+					</control>
+				</control>
+			</control>
+			-->
 		</control>
-		<include>DefaultCommonDateTime</include>
-		-->
+
+		<!-- Item Position and Page Number for common list-->
+		<control type="label">
+			<posx>60r</posx>
+			<posy>50r</posy>
+			<width>300</width>
+			<height>20</height>
+			<font>font12</font>
+			<textcolor>grey</textcolor>
+			<scroll>false</scroll>
+			<align>right</align>
+			<aligny>center</aligny>
+			<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3400).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3400).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3400).CurrentPage]/$INFO[Container(3400).NumPages][/COLOR])</label>
+			<visible>substring(Window.Property(ViewMode),common) </visible>						
+		</control>
+
+		<!-- Item Position and Page Number for thumbnail list-->
+		<control type="label">
+			<posx>60r</posx>
+			<posy>50r</posy>
+			<width>300</width>
+			<height>20</height>
+			<font>font12</font>
+			<textcolor>grey</textcolor>
+			<scroll>false</scroll>
+			<align>right</align>
+			<aligny>center</aligny>
+			<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3410).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3410).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3410).CurrentPage]/$INFO[Container(3410).NumPages][/COLOR])</label>
+			<visible>substring(Window.Property(ViewMode),thumbnail) </visible>						
+		</control>
+
+		<!-- Item Position and Page Number for posterwrap list-->
+		<control type="label">
+			<posx>60r</posx>
+			<posy>50r</posy>
+			<width>300</width>
+			<height>20</height>
+			<font>font12</font>
+			<textcolor>grey</textcolor>
+			<scroll>false</scroll>
+			<align>right</align>
+			<aligny>center</aligny>
+			<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3420).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3420).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3420).CurrentPage]/$INFO[Container(3420).NumPages][/COLOR])</label>
+			<visible>substring(Window.Property(ViewMode),posterwrap) </visible>						
+		</control>
+
+		<!-- Item Position and Page Number for panart list-->
+		<control type="label">
+			<posx>60r</posx>
+			<posy>50r</posy>
+			<width>300</width>
+			<height>20</height>
+			<font>font12</font>
+			<textcolor>grey</textcolor>
+			<scroll>false</scroll>
+			<align>right</align>
+			<aligny>center</aligny>
+			<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3430).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3430).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3430).CurrentPage]/$INFO[Container(3430).NumPages][/COLOR])</label>
+			<visible>substring(Window.Property(ViewMode),panart) </visible>						
+		</control>
+		
 	</controls>
 </window>
