@@ -42,6 +42,13 @@ class MainMenu( BaseWindow ) :
 			WinMgr.GetInstance().CheckGUISettings( )
 			self.mStartMediaCenter = False
 
+			#current channel re-zapping
+			iChannel = self.mDataCache.Channel_GetCurrent()
+			if iChannel :
+				self.mDataCache.Channel_InvalidateCurrent()
+				self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
+				print 're-zapping ch[%s] type[%s]'% (iChannel.mNumber, iChannel.mServiceType ) 
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )

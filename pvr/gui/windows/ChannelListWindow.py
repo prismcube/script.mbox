@@ -1576,9 +1576,9 @@ class ChannelListWindow( BaseWindow ) :
 				self.mCtrlRdoTV.setEnabled( aValue )
 
 		elif aCtrlID == self.mCtrlRdoRadio.getId( ) :
-			if aExtra :
+			if aExtra == E_TAG_SELECT :
 				self.mCtrlRdoRadio.setSelected( aValue )
-			else :
+			elif aExtra == E_TAG_ENABLE :
 				self.mCtrlRdoRadio.setEnabled( aValue )
 
 		elif aCtrlID == self.mCtrlBtnEdit.getId( ) :

@@ -908,6 +908,8 @@ class DataCacheMgr( object ):
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			return self.mCommander.Channel_GetZappingList( aSync )
 
+	def Channel_InvalidateCurrent( self ) :
+		return self.mCommander.Channel_InvalidateCurrent( )
 
 	def Audiotrack_GetCount( self ) :
 		return self.mCommander.Audiotrack_GetCount( )
