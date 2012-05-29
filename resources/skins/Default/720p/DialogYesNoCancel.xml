@@ -14,7 +14,7 @@
 				<posy>0</posy>
 				<width>600</width>
 				<height>230</height>
-				<texture border="40">confluence/DialogBack.png</texture>
+				<texture border="40">DialogBack.png</texture>
 			</control>
 			<control type="image">
 				<posx>40</posx>
@@ -22,7 +22,7 @@
 				<width>530</width>
 				<height>90</height>
 				<aspectratio>stretch</aspectratio>
-				<texture>confluence/GlassTitleBar.png</texture>
+				<texture>GlassTitleBar.png</texture>
 			</control>
 			<control type="label" id="100">
 				<description>header label</description>
@@ -56,8 +56,8 @@
 				<textcolor>white</textcolor>
 				<focusedcolor>white</focusedcolor>
 				<align>center</align>
-				<texturenofocus border="5">confluence/MenuItemNF.png</texturenofocus>
-				<texturefocus border="5">confluence/button-focus.png</texturefocus>
+				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+				<texturefocus border="5">button-focus.png</texturefocus>
 				<label>Yes</label>
 				<onleft>302</onleft>
 				<onright>302</onright>
@@ -74,8 +74,8 @@
 				<textcolor>white</textcolor>
 				<focusedcolor>white</focusedcolor>
 				<align>center</align>
-				<texturenofocus border="5">confluence/MenuItemNF.png</texturenofocus>
-				<texturefocus border="5">confluence/button-focus.png</texturefocus>
+				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+				<texturefocus border="5">button-focus.png</texturefocus>
 				<label>No</label>
 				<onleft>301</onleft>
 				<onright>301</onright>
@@ -91,8 +91,8 @@
 				<label>-</label>
 				<font>-</font>
 				<onclick>PreviousMenu</onclick>
-				<texturefocus>confluence/DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>confluence/DialogCloseButton.png</texturenofocus>
+				<texturefocus>DialogCloseButton-focus.png</texturefocus>
+				<texturenofocus>DialogCloseButton.png</texturenofocus>
 				<onleft>301</onleft>
 				<onright>302</onright>
 				<onup>301</onup>

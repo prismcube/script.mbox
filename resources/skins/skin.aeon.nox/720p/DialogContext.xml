@@ -28,8 +28,8 @@
 				<label>-</label>
 				<font>-</font>
 				<onclick>PreviousMenu</onclick>
-				<texturefocus>confluence/DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>confluence/DialogCloseButton.png</texturenofocus>
+				<texturefocus>DialogCloseButton-focus.png</texturefocus>
+				<texturenofocus>DialogCloseButton.png</texturenofocus>
 			</control>
 			<control type="image" id="100">
 				<description>background image</description>

@@ -10,7 +10,7 @@
 				<posy>540</posy>
 				<width>1320</width>
 				<height>256</height>
-				<texture>confluence/MediaInfoBackLower.png</texture>
+				<texture>MediaInfoBackLower.png</texture>
 			</control>
 
 
@@ -28,7 +28,7 @@
 						<posy>0</posy>
 						<width>200</width>
 						<height>35</height>
-						<texture border="0,0,32,0">confluence/header.png</texture>
+						<texture border="0,0,32,0">header.png</texture>
 					</control>
 
 					<control type="label">
@@ -236,8 +236,8 @@
 					<width>45</width>
 					<height>35</height>
 					<textcolor>grey3</textcolor>
-					<texturefocus>confluence/DefaultIconWarning.png</texturefocus>
-					<texturenofocus>confluence/DefaultIconInfo.png</texturenofocus>
+					<texturefocus>DefaultIconWarning.png</texturefocus>
+					<texturenofocus>DefaultIconInfo.png</texturenofocus>
 					<onleft>627</onleft>
 					<onright>622</onright>
 					<onup></onup>
@@ -251,8 +251,8 @@
 					<width>45</width>
 					<height>35</height>
 					<textcolor>grey3</textcolor>
-					<texturefocus>confluence/OSDBookmarksFO.png</texturefocus>
-					<texturenofocus>confluence/OSDBookmarksNF.png</texturenofocus>
+					<texturefocus>OSDBookmarksFO.png</texturefocus>
+					<texturenofocus>OSDBookmarksNF.png</texturenofocus>
 					<onleft>621</onleft>
 					<onright>624</onright>
 					<onup></onup>
@@ -265,8 +265,8 @@
 					<width>45</width>
 					<height>35</height>
 					<textcolor>grey3</textcolor>
-					<texturefocus>confluence/OSDRecord2.png</texturefocus>
-					<texturenofocus>confluence/OSDRecordNF.png</texturenofocus>
+					<texturefocus>OSDRecord2.png</texturefocus>
+					<texturenofocus>OSDRecordNF.png</texturenofocus>
 					<onleft>622</onleft>
 					<onright>625</onright>
 					<onup></onup>
@@ -280,8 +280,8 @@
 					<height>35</height>
 					<label></label>
 					<textcolor>grey3</textcolor>
-					<texturefocus>confluence/OSDAudioFO.png</texturefocus>
-					<texturenofocus>confluence/OSDAudioNF.png</texturenofocus>
+					<texturefocus>OSDAudioFO.png</texturefocus>
+					<texturenofocus>OSDAudioNF.png</texturenofocus>
 					<onleft>624</onleft>
 					<onright>627</onright>
 					<onup></onup>
@@ -296,8 +296,8 @@
 					<width>45</width>
 					<height>35</height>
 					<textcolor>grey3</textcolor>
-					<texturefocus>confluence/OSDPresetSettingsFO.png</texturefocus>
-					<texturenofocus>confluence/OSDPresetSettingsNF.png</texturenofocus>
+					<texturefocus>OSDPresetSettingsFO.png</texturefocus>
+					<texturenofocus>OSDPresetSettingsNF.png</texturenofocus>
 					<onleft>625</onleft>
 					<onright>621</onright>
 					<onup></onup>
@@ -389,7 +389,7 @@
 					<posy>45</posy>
 					<width>90</width>
 					<height>40</height>
-					<texture>confluence/OverlayHD.png$INFO[Control.GetLabel]</texture>
+					<texture>OverlayHD.png$INFO[Control.GetLabel]</texture>
 					<description>video HD</description>
 				</control>
 			</control>
@@ -416,8 +416,8 @@
 					<height>35</height>
 					<label>210</label>
 					<font></font>
-					<texturefocus>confluence/scroll-left-focus.png</texturefocus>
-					<texturenofocus>confluence/scroll-left.png</texturenofocus>
+					<texturefocus>scroll-left-focus.png</texturefocus>
+					<texturenofocus>scroll-left.png</texturenofocus>
 					<onleft></onleft>
 					<onright>706</onright>
 					<onup>620</onup>
@@ -448,9 +448,9 @@
 					<posy>15</posy>
 					<width>250</width>
 					<height>8</height>
-					<texturebg border="6,0,6,0">confluence/OSDProgressBack.png</texturebg>
+					<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
 					<lefttexture></lefttexture>
-					<midtexture border="6,0,6,0">confluence/OSDProgressMid.png</midtexture>
+					<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
 					<righttexture></righttexture>
 					<overlaytexture></overlaytexture>
 				</control>
@@ -469,8 +469,8 @@
 					<height>35</height>
 					<label>31354</label>
 					<font></font>
-					<texturefocus>confluence/scroll-right-focus.png</texturefocus>
-					<texturenofocus>confluence/scroll-right.png</texturenofocus>
+					<texturefocus>scroll-right-focus.png</texturefocus>
+					<texturenofocus>scroll-right.png</texturenofocus>
 					<onleft>702</onleft>
 					<onright></onright>
 					<onup>620</onup>
@@ -487,7 +487,7 @@
 					<posy>0</posy>
 					<width>200</width>
 					<height>35</height>
-					<texture flipx="true" border="32,0,0,0">confluence/header.png</texture>
+					<texture flipx="true" border="32,0,0,0">header.png</texture>
 				</control>
 				<control type="label" id="711">
 					<description>time label</description>
@@ -518,7 +518,7 @@
 						<posy>0</posy>
 						<width>250</width>
 						<height>35</height>
-						<texture flipx="true" border="50,0,32,0">confluence/header.png</texture>
+						<texture flipx="true" border="50,0,32,0">header.png</texture>
 						<visible>Control.IsVisible(110)</visible>
 					</control>
 					<control type="image" id="110">
@@ -544,7 +544,7 @@
 						<posy>7</posy>
 						<width>250</width>
 						<height>35</height>
-						<texture flipx="true" border="50,0,32,0">confluence/header.png</texture>
+						<texture flipx="true" border="50,0,32,0">header.png</texture>
 						<visible>Control.IsVisible(115)</visible>
 					</control>
 					<control type="image" id="115">
@@ -575,7 +575,7 @@
 				<posy>0</posy>
 				<width>1100</width>
 				<height>500</height>
-				<texture border="20">confluence/DialogBack.png</texture>
+				<texture border="20">DialogBack.png</texture>
 			</control>
 			<control type="textbox" id="801">
 				  <description>EPG Description</description>
@@ -652,7 +652,7 @@
 				<posy>0</posy>
 				<width>1320</width>
 				<height>100</height>
-				<texture>confluence/MediaInfoBackUpper.png</texture>
+				<texture>MediaInfoBackUpper.png</texture>
 			</control>
 			<control type="group">
 				<posx>0</posx>
@@ -663,7 +663,7 @@
 					<posy>0</posy>
 					<width>200</width>
 					<height>35</height>
-					<texture border="32,0,0,0">confluence/header.png</texture>
+					<texture border="32,0,0,0">header.png</texture>
 				</control>
 				<control type="label" id="203">
 					<description>mode</description>
@@ -685,7 +685,7 @@
 					<posy>0</posy>
 					<width>200</width>
 					<height>35</height>
-					<texture flipx="true" border="32,0,0,0">confluence/header.png</texture>
+					<texture flipx="true" border="32,0,0,0">header.png</texture>
 				</control>
 				<control type="label">
 					<posx>30</posx>
@@ -717,8 +717,8 @@
 					<posy>0</posy>
 					<width>45</width>
 					<height>40</height>
-					<texturefocus>confluence/OSDPrevTrackFO.png</texturefocus>
-					<texturenofocus>confluence/OSDPrevTrackNF.png</texturenofocus>
+					<texturefocus>OSDPrevTrackFO.png</texturefocus>
+					<texturenofocus>OSDPrevTrackNF.png</texturenofocus>
 					<onleft>410</onleft>
 					<onright>404</onright>
 					<onup>400</onup>
@@ -732,8 +732,8 @@
 					<height>40</height>
 					<label>31354</label>
 					<font></font>
-					<texturefocus>confluence/OSDRewindFO.png</texturefocus>
-					<texturenofocus>confluence/OSDRewindNF.png</texturenofocus>
+					<texturefocus>OSDRewindFO.png</texturefocus>
+					<texturenofocus>OSDRewindNF.png</texturenofocus>
 					<onleft>409</onleft>
 					<onright>450</onright>
 					<onup>400</onup>
@@ -748,8 +748,8 @@
 						<label>31351</label>
 						<altlabel>208</altlabel>
 						<font>-</font>
-						<texturefocus>confluence/OSDPlayFO.png</texturefocus>
-						<texturenofocus>confluence/OSDPlayNF.png</texturenofocus>
+						<texturefocus>OSDPlayFO.png</texturefocus>
+						<texturenofocus>OSDPlayNF.png</texturenofocus>
 						<onleft>404</onleft>
 						<onright>407</onright>
 						<onup>400</onup>
@@ -763,8 +763,8 @@
 						<label>31351</label>
 						<altlabel>208</altlabel>
 						<font>-</font>
-						<texturefocus>confluence/OSDPauseFO.png</texturefocus>
-						<texturenofocus>confluence/OSDPauseNF.png</texturenofocus>
+						<texturefocus>OSDPauseFO.png</texturefocus>
+						<texturenofocus>OSDPauseNF.png</texturenofocus>
 						<onleft>404</onleft>
 						<onright>407</onright>
 						<onup>400</onup>
@@ -779,8 +779,8 @@
 					<height>40</height>
 					<label>31352</label>
 					<font>-</font>
-					<texturefocus>confluence/OSDStopFO.png</texturefocus>
-					<texturenofocus>confluence/OSDStopNF.png</texturenofocus>
+					<texturefocus>OSDStopFO.png</texturefocus>
+					<texturenofocus>OSDStopNF.png</texturenofocus>
 					<onleft>450</onleft>
 					<onright>408</onright>
 					<onup>400</onup>
@@ -793,8 +793,8 @@
 					<height>40</height>
 					<label>31353</label>
 					<font>-</font>
-					<texturefocus>confluence/OSDForwardFO.png</texturefocus>
-					<texturenofocus>confluence/OSDForwardNF.png</texturenofocus>
+					<texturefocus>OSDForwardFO.png</texturefocus>
+					<texturenofocus>OSDForwardNF.png</texturenofocus>
 					<onleft>407</onleft>
 					<onright>410</onright>
 					<onup>400</onup>
@@ -806,8 +806,8 @@
 					<posy>0</posy>
 					<width>45</width>
 					<height>40</height>
-					<texturefocus>confluence/OSDNextTrackFO.png</texturefocus>
-					<texturenofocus>confluence/OSDNextTrackNF.png</texturenofocus>
+					<texturefocus>OSDNextTrackFO.png</texturefocus>
+					<texturenofocus>OSDNextTrackNF.png</texturenofocus>
 					<onleft>408</onleft>
 					<onright>409</onright>
 					<onup>400</onup>
@@ -826,9 +826,9 @@
 					<posy>0</posy>
 					<width>630</width>
 					<height>16</height>
-					<texturebg border="6,0,6,0">confluence/OSDProgressBack.png</texturebg>
+					<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
 					<lefttexture>-</lefttexture>
-					<midtexture border="6,0,6,0">confluence/OSDProgressMid.png</midtexture>
+					<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
 					<righttexture>-</righttexture>
 					<overlaytexture>-</overlaytexture>
 				</control>
@@ -903,7 +903,7 @@
 						<posy>-5</posy>
 						<width>100</width>
 						<height>50</height>
-						<texture>confluence/OSDSeekFrame.png</texture>
+						<texture>OSDSeekFrame.png</texture>
 					</control>
 					<control type="image" id="231">
 						<posx>0</posx>
@@ -917,14 +917,14 @@
 						<posy>-2</posy>
 						<width>20</width>
 						<height>45</height>
-						<texture>confluence/OSDSeekRewind.png</texture>
+						<texture>OSDSeekRewind.png</texture>
 					</control>
 					<control type="image" id="233">
 						<posx>65</posx>
 						<posy>-2</posy>
 						<width>20</width>
 						<height>45</height>
-						<texture>confluence/OSDSeekForward.png</texture>
+						<texture>OSDSeekForward.png</texture>
 					</control>
 				</control>
 

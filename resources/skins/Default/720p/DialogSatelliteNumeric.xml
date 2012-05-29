@@ -13,7 +13,7 @@
 				<posy>0</posy>
 				<width>320</width>
 				<height>430</height>
-				<texture border="40">confluence/DialogBack.png</texture>
+				<texture border="40">DialogBack.png</texture>
 			</control>
 			<control type="image">
 				<posx>10</posx>
@@ -21,7 +21,7 @@
 				<width>300</width>
 				<height>70</height>
 				<aspectratio>stretch</aspectratio>
-				<texture>confluence/GlassTitleBar.png</texture>
+				<texture>GlassTitleBar.png</texture>
 			</control>
 			<control type="image">
 				<posx>30</posx>
@@ -29,7 +29,7 @@
 				<width>260</width>
 				<height>50</height>
 				<aspectratio>stretch</aspectratio>
-				<texture border="20">confluence/KeyboardEditArea.png</texture>
+				<texture border="20">KeyboardEditArea.png</texture>
 			</control>
 			<control type="label" id="4">
 				<description>Edit Text</description>
@@ -49,7 +49,7 @@
 				<width>240</width>
 				<height>30</height>
 				<aspectratio>stretch</aspectratio>
-				<texture>confluence/GlassTitleBar.png</texture>
+				<texture>GlassTitleBar.png</texture>
 			</control>
 			<control type="label" id="1">
 				<description>dialog Heading</description>
@@ -71,7 +71,7 @@
 				<height>40</height>
 				<aspectratio>stretch</aspectratio>
 				<colordiffuse>AAFFFFFF</colordiffuse>
-				<texture flipy="true">confluence/GlassTitleBar.png</texture>
+				<texture flipy="true">GlassTitleBar.png</texture>
 			</control>
 			<control type="group">
 				<posx>40</posx>
@@ -85,8 +85,8 @@
 					<font>font13</font>
 					<align>center</align>
 					<aligny>center</aligny>
-					<texturenofocus border="25,25,5,5">confluence/KeyboardCornerTopNF.png</texturenofocus>
-					<texturefocus border="25,25,5,5">confluence/KeyboardCornerTop.png</texturefocus>
+					<texturenofocus border="25,25,5,5">KeyboardCornerTopNF.png</texturenofocus>
+					<texturefocus border="25,25,5,5">KeyboardCornerTop.png</texturefocus>
 					<focusedcolor>black</focusedcolor>
 					<onleft>200</onleft>
 					<onright>102</onright>
@@ -102,8 +102,8 @@
 					<font>font13</font>
 					<align>center</align>
 					<aligny>center</aligny>
-					<texturenofocus border="3">confluence/KeyboardKeyNF.png</texturenofocus>
-					<texturefocus border="5">confluence/KeyboardKey.png</texturefocus>
+					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
+					<texturefocus border="5">KeyboardKey.png</texturefocus>
 					<focusedcolor>black</focusedcolor>
 					<onleft>101</onleft>
 					<onright>103</onright>
@@ -119,8 +119,8 @@
 					<font>font13</font>
 					<align>center</align>
 					<aligny>center</aligny>
-					<texturenofocus border="3">confluence/KeyboardKeyNF.png</texturenofocus>
-					<texturefocus border="5">confluence/KeyboardKey.png</texturefocus>
+					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
+					<texturefocus border="5">KeyboardKey.png</texturefocus>
 					<focusedcolor>black</focusedcolor>
 					<onleft>102</onleft>
 					<onright>200</onright>
@@ -136,8 +136,8 @@
 					<font>font12</font>
 					<align>center</align>
 					<aligny>center</aligny>
-					<texturenofocus flipx="true" border="5,25,25,5">confluence/KeyboardCornerTopNF.png</texturenofocus>
-					<texturefocus flipx="true" border="5,35,25,5">confluence/KeyboardCornerTop.png</texturefocus>
+					<texturenofocus flipx="true" border="5,25,25,5">KeyboardCornerTopNF.png</texturenofocus>
+					<texturefocus flipx="true" border="5,35,25,5">KeyboardCornerTop.png</texturefocus>
 					<textwidth>120</textwidth>
 					<label>20181</label>
 					<focusedcolor>black</focusedcolor>
@@ -156,8 +156,8 @@
 					<font>font13</font>
 					<align>center</align>
 					<aligny>center</aligny>
-					<texturenofocus border="3">confluence/KeyboardKeyNF.png</texturenofocus>
-					<texturefocus border="5">confluence/KeyboardKey.png</texturefocus>
+					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
+					<texturefocus border="5">KeyboardKey.png</texturefocus>
 					<focusedcolor>black</focusedcolor>
 					<onleft>200</onleft>
 					<onright>105</onright>
@@ -173,8 +173,8 @@
 					<font>font13</font>
 					<align>center</align>
 					<aligny>center</aligny>
-					<texturenofocus border="3">confluence/KeyboardKeyNF.png</texturenofocus>
-					<texturefocus border="5">confluence/KeyboardKey.png</texturefocus>
+					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
+					<texturefocus border="5">KeyboardKey.png</texturefocus>
 					<focusedcolor>black</focusedcolor>
 					<onleft>104</onleft>
 					<onright>106</onright>
@@ -190,8 +190,8 @@
 					<font>font13</font>
 					<align>center</align>
 					<aligny>center</aligny>
-					<texturenofocus border="3">confluence/KeyboardKeyNF.png</texturenofocus>
-					<texturefocus border="5">confluence/KeyboardKey.png</texturefocus>
+					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
+					<texturefocus border="5">KeyboardKey.png</texturefocus>
 					<focusedcolor>black</focusedcolor>
 					<onleft>105</onleft>
 					<onright>200</onright>
@@ -207,8 +207,8 @@
 					<font>font13</font>
 					<align>center</align>
 					<aligny>center</aligny>
-					<texturenofocus border="3">confluence/KeyboardKeyNF.png</texturenofocus>
-					<texturefocus border="5">confluence/KeyboardKey.png</texturefocus>
+					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
+					<texturefocus border="5">KeyboardKey.png</texturefocus>
 					<focusedcolor>black</focusedcolor>
 					<onleft>201</onleft>
 					<onright>108</onright>
@@ -224,8 +224,8 @@
 					<font>font13</font>
 					<align>center</align>
 					<aligny>center</aligny>
-					<texturenofocus border="3">confluence/KeyboardKeyNF.png</texturenofocus>
-					<texturefocus border="5">confluence/KeyboardKey.png</texturefocus>
+					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
+					<texturefocus border="5">KeyboardKey.png</texturefocus>
 					<focusedcolor>black</focusedcolor>
 					<onleft>107</onleft>
 					<onright>109</onright>
@@ -241,8 +241,8 @@
 					<font>font13</font>
 					<align>center</align>
 					<aligny>center</aligny>
-					<texturenofocus border="3">confluence/KeyboardKeyNF.png</texturenofocus>
-					<texturefocus border="5">confluence/KeyboardKey.png</texturefocus>
+					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
+					<texturefocus border="5">KeyboardKey.png</texturefocus>
 					<focusedcolor>black</focusedcolor>
 					<onleft>108</onleft>
 					<onright>201</onright>
@@ -258,8 +258,8 @@
 					<font>font12</font>
 					<align>center</align>
 					<aligny>center</aligny>
-					<texturenofocus flipx="true" border="5,5,25,25">confluence/KeyboardCornerBottomNF.png</texturenofocus>
-					<texturefocus flipx="true" border="5,30,25,25">confluence/KeyboardCornerBottom.png</texturefocus>
+					<texturenofocus flipx="true" border="5,5,25,25">KeyboardCornerBottomNF.png</texturenofocus>
+					<texturefocus flipx="true" border="5,30,25,25">KeyboardCornerBottom.png</texturefocus>
 					<textwidth>120</textwidth>
 					<label>20177</label>
 					<focusedcolor>black</focusedcolor>
@@ -280,8 +280,8 @@
 					<focusedcolor>black</focusedcolor>
 					<align>center</align>
 					<aligny>center</aligny>
-					<texturenofocus border="25,5,25,5">confluence/KeyboardCornerBottomNF.png</texturenofocus>
-					<texturefocus border="25,5,25,5">confluence/KeyboardCornerBottom.png</texturefocus>
+					<texturenofocus border="25,5,25,5">KeyboardCornerBottomNF.png</texturenofocus>
+					<texturefocus border="25,5,25,5">KeyboardCornerBottom.png</texturefocus>
 					<onleft>201</onleft>
 					<onright>100</onright>
 					<onup>107</onup>
@@ -296,8 +296,8 @@
 					<font>font13</font>
 					<align>center</align>
 					<aligny>center</aligny>
-					<texturenofocus border="3">confluence/KeyboardKeyNF.png</texturenofocus>
-					<texturefocus border="5">confluence/KeyboardKey.png</texturefocus>
+					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
+					<texturefocus border="5">KeyboardKey.png</texturefocus>
 					<focusedcolor>black</focusedcolor>
 					<onleft>202</onleft>
 					<onright>203</onright>
@@ -315,8 +315,8 @@
 					<focusedcolor>black</focusedcolor>
 					<align>center</align>
 					<aligny>center</aligny>
-					<texturenofocus border="3">confluence/KeyboardKeyNF.png</texturenofocus>
-					<texturefocus border="5">confluence/KeyboardKey.png</texturefocus>
+					<texturenofocus border="3">KeyboardKeyNF.png</texturenofocus>
+					<texturefocus border="5">KeyboardKey.png</texturefocus>
 					<onleft>100</onleft>
 					<onright>201</onright>
 					<onup>109</onup>

@@ -15,7 +15,7 @@
 				<posy>100</posy>
 				<width>610</width>
 				<height>230</height>
-				<texture border="40">confluence/DialogBack.png</texture>
+				<texture border="40">DialogBack.png</texture>
 			</control>
 			<control type="group">
 				<posy>100</posy>
@@ -79,8 +79,8 @@
 				<textcolor>white</textcolor>
 				<focusedcolor>white</focusedcolor>
 				<align>center</align>
-				<texturenofocus border="5">confluence/MenuItemNF.png</texturenofocus>
-				<texturefocus border="5">confluence/button-focus.png</texturefocus>
+				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+				<texturefocus border="5">button-focus.png</texturefocus>
 				<onleft>201</onleft>
 				<onright>201</onright>
 				<onup>-</onup>
@@ -97,8 +97,8 @@
 				<textcolor>white</textcolor>
 				<focusedcolor>white</focusedcolor>
 				<align>center</align>
-				<texturenofocus border="5">confluence/MenuItemNF.png</texturenofocus>
-				<texturefocus border="5">confluence/button-focus.png</texturefocus>
+				<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+				<texturefocus border="5">button-focus.png</texturefocus>
 				<onleft>200</onleft>
 				<onright>200</onright>
 				<onup>-</onup>					

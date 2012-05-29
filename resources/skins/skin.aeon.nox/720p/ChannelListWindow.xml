@@ -942,11 +942,11 @@
 						<posy>0</posy>
 						<width>15</width>
 						<height>401</height>
-						<texturesliderbackground border="0,14,0,14">confluence/ScrollBarV.png</texturesliderbackground>
-						<texturesliderbar border="0,14,0,14">confluence/ScrollBarV_bar.png</texturesliderbar>
-						<texturesliderbarfocus border="0,14,0,14">confluence/ScrollBarV_bar_focus.png</texturesliderbarfocus>
-						<textureslidernib>confluence/ScrollBarNib.png</textureslidernib>
-						<textureslidernibfocus>confluence/ScrollBarNib.png</textureslidernibfocus>
+						<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+						<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
+						<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
+						<textureslidernib>ScrollBarNib.png</textureslidernib>
+						<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
 						<showonepage>false</showonepage>
 						<orientation>vertical</orientation>
 					</control-->

@@ -15,7 +15,7 @@
 				<posy>0</posy>
 				<width>480</width>
 				<height>230</height>
-				<texture border="40">confluence/DialogBack.png</texture>
+				<texture border="40">DialogBack.png</texture>
 			</control>
 			<control type="label" id="210">
 				<description>Channel Number</description>
@@ -53,8 +53,8 @@
 				<posy>170</posy>
 				<width>400</width>
 				<height>15</height>
-				<texturebg border="6,0,6,0">confluence/OSDProgressBack.png</texturebg>
-				<midtexture border="6,0,6,0">confluence/OSDProgressMid.png</midtexture>
+				<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+				<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
 			</control>
 		</control>
 	</controls>

@@ -13,7 +13,7 @@
                     <posy>0</posy>
                     <width>1</width>
                     <height>720</height>
-                    <texture>confluence/HomeBladeSub_Part1.png</texture>
+                    <texture>HomeBladeSub_Part1.png</texture>
                     <animation effect="zoom" start="379,0,1,720" end="379,0,229,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
                 </control>
                 <control type="image">
@@ -21,7 +21,7 @@
                     <posy>0</posy>
                     <width>12</width>
                     <height>720</height>
-                    <texture>confluence/HomeBladeSub_Part2.png</texture>
+                    <texture>HomeBladeSub_Part2.png</texture>
                     <animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
                 </control>
             </control>
@@ -31,7 +31,7 @@
                 <width>846</width>
                 <height>720</height>
                 <colordiffuse>DAFFFFFF</colordiffuse>
-                <texture>confluence/HomeBlade_bottom.png</texture>
+                <texture>HomeBlade_bottom.png</texture>
             </control>
             <control type="list" id="9000">
 				<hitrect x="100" y="100" w="530" h="620"></hitrect>
@@ -81,7 +81,7 @@
 						<posy>63</posy>
 						<width>18</width>
 						<height>18</height>
-						<texture>confluence/HomeHasSub.png</texture>
+						<texture>HomeHasSub.png</texture>
 						<visible>Container(9000).HasFocus(1) | Container(9000).HasFocus(5) </visible>
 						<animation effect="fade" start="0" end="100" time="200">Focus</animation>
 						<animation effect="fade" start="100" end="0" time="200">UnFocus</animation>
@@ -130,7 +130,7 @@
                 <posy>0</posy>
                 <width>846</width>
                 <height>720</height>
-                <texture>confluence/HomeBlade_top.png</texture>
+                <texture>HomeBlade_top.png</texture>
             </control>
 			<control type="image">
 				<description>LOGO</description>
@@ -138,7 +138,7 @@
 				<posy>10</posy>
 				<width>140</width>
 				<height>40</height>
-				<texture>confluence/XBMC_Logo.png</texture>
+				<texture>XBMC_Logo.png</texture>
 			</control>
 			<control type="image">
 				<description>LOGO Mirror</description>
@@ -146,7 +146,7 @@
 				<posy>42</posy>
 				<width>140</width>
 				<height>40</height>
-				<texture diffuse="confluence/diffuse_mirror.png" flipy="true">confluence/XBMC_Logo.png</texture>
+				<texture diffuse="diffuse_mirror.png" flipy="true">XBMC_Logo.png</texture>
 			</control>
 			<!--power button-->
 			<control type="group" id="10">
@@ -408,7 +408,7 @@
                 <posy>0</posy>
                 <width>860</width>
                 <height>35</height>
-                <texture border="32,0,0,0">confluence/Rss_Back.png</texture>
+                <texture border="32,0,0,0">Rss_Back.png</texture>
                 <!--<visible>system.getbool(lookandfeel.enablerssfeeds)</visible>-->
             </control>
             <control type="label">
