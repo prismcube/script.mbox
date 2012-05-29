@@ -3,551 +3,293 @@
 	<controls>
 		<control type="group" id="9000">
 			<control type="image">
-	            <posx>379</posx>
-	            <posy>0</posy>
-	            <width>1</width>
-	            <height>720</height>
-	            <texture>HomeBladeSub_Part1.png</texture>           
+	            <texture>dialogs/scan_blank.png</texture>           
 	        </control>
 	        <control type="image">
-	            <posx>380</posx>
-	            <posy>0</posy>
-	            <width>12</width>
-	            <height>720</height>
-	            <texture>HomeBladeSub_Part2.png</texture>
+	            <texture>dialogs/scan_fill.png</texture>
 	        </control>
 	        <control type="image">
-	            <posx>-450</posx>
-	            <posy>0</posy>
-	            <width>846</width>
-	            <height>720</height>
-	            <colordiffuse>DAFFFFFF</colordiffuse>
-	            <texture>HomeBlade_bottom.png</texture>
+	            <texture>common/blank.png</texture>
 	        </control>
 	        <control type="image">
-				<posx>370</posx>
-				<posy>63</posy>
-				<width>18</width>
-				<height>18</height>
-				<texture>HomeHasSub.png</texture>
+				<texture>osd/seek/progress_back_long.png</texture>
 			</control>
 			<control type="image">
-	            <posx>-450</posx>
-	            <posy>0</posy>
-	            <width>846</width>
-	            <height>720</height>
-	            <texture>HomeBlade_top.png</texture>
+	            <texture>osd/seek/progress_mid.png</texture>
 	        </control>
 	        <control type="image">
-				<description>LOGO</description>
-				<posx>10</posx>
-				<posy>10</posy>
-				<width>140</width>
-				<height>40</height>
+				<texture>osd/seek/progress_right.png</texture>
+			</control>
+			<control type="image">
+				<texture>osd/seek/progress_left.png</texture>
+			</control>
+			<control type="image">
+	            <texture>osd/info/osd_progress_back.png</texture>
+	        </control>
+	        <control type="image">
+				<texture>osd/info/osd_progress_mid.png</texture>
+			</control>
+			<control type="image">
+				<texture>osd/info/osd_progress_right.png</texture>
+			</control>
+			<control type="image">
+				<texture>osd/info/osd_progress_left.png</texture>
+			</control>
+			<control type="image">
+				<texture>osd/osd_progress_clear.png</texture>
+			</control>
+			<control type="image">
+				<texture>osd/osd_progressmid.png</texture>
+			</control>
+			<control type="image">
+				<texture>osd/osd_back.png</texture>
+			</control>
+			<control type="image">
+				<texture>home/homemenu_gradient.png</texture>
+			</control>
+			<control type="image">
+				<texture>home/timepanel_mid.png</texture>
+			</control>
+			<control type="image">
+				<texture>home/rssbar_mid_fade.png</texture>
+			</control>
+			<control type="image">
 				<texture>XBMC_Logo.png</texture>
 			</control>
 			<control type="image">
-				<description>LOGO Mirror</description>
-				<posx>10</posx>
-				<posy>42</posy>
-				<width>140</width>
-				<height>40</height>
-				<texture diffuse="diffuse_mirror.png" flipy="true">XBMC_Logo.png</texture>
-			</control>
-			<control type="image">
-	            <posx>0</posx>
-	            <posy>0</posy>
-	            <width>440</width>
-	            <height>35</height>
-	            <texture flipx="true" border="32,0,0,0">header.png</texture>
-	        </control>
-	        <control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>250</width>
-				<height>35</height>
-				<texture border="0,0,32,0">header.png</texture>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1100</width>
-				<height>640</height>
-				<texture border="20">DialogBack.png</texture>
-			</control>
-			<control type="image">
-				<description>LOGO</description>
-				<posx>30</posx>
-				<posy>15</posy>
-				<width>220</width>
-				<height>80</height>
-				<aspectratio>keep</aspectratio>
-				<texture>Confluence_Logo.png</texture>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>260</width>
-				<height>60</height>
-				<texture border="5">MenuItemNF.png</texture>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>260</width>
-				<height>60</height>
-				<texture border="5">MenuItemFO.png</texture>
-			</control>
-			<control type="image">
-				<posx>268</posx>
-				<posy>10</posy>
-				<width>790</width>
-				<height>618</height>
-				<texture border="5">black-back2.png</texture>
-			</control>
-			<control type="image">
-				<posx>268</posx>
-				<posy>10</posy>
-				<width>804</width>
-				<height>100</height>
-				<aspectratio>stretch</aspectratio>
-				<texture>GlassTitleBar.png</texture>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1200</width>
-				<height>640</height>
-				<texture border="20">DialogBack.png</texture>
-			</control>
-			<control type="image">
-				<posx>30</posx>
-				<posy>10</posy>
-				<width>765</width>
-				<height>618</height>
-				<texture border="5">black-back2.png</texture>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>10</posy>
-				<width>804</width>
-				<height>100</height>
-				<aspectratio>stretch</aspectratio>
-				<texture>GlassTitleBar.png</texture>
-			</control>
-			<control type="image">
-				<description>LOGO</description>
-				<posx>887</posx>
-				<posy>15</posy>
-				<width>220</width>
-				<height>80</height>
-				<aspectratio>keep</aspectratio>
-				<texture>Confluence_Logo.png</texture>
-			</control>
-			<control type="button">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-down-2.png</texturenofocus>
-				<texturefocus>scroll-down-focus-2.png</texturefocus>
-			</control>
-			<control type="button">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>33</width>
-				<height>22</height>
-				<texturenofocus>scroll-up-2.png</texturenofocus>
-				<texturefocus>scroll-up-focus-2.png</texturefocus>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>750</width>
-				<height>40</height>
-				<texture border="0,2,0,2">MenuItemNF.png</texture>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>750</width>
-				<height>40</height>
-				<texture border="0,2,0,2">MenuItemFO.png</texture>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>750</width>
-				<height>41</height>
-				<texture border="0,2,0,2">MenuItemFO.png</texture>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>750</width>
-				<height>41</height>
-				<texture border="0,2,0,2">MenuItemNF.png</texture>
-			</control>
-			<control type="button">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>750</width>
-				<height>40</height>
-				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>550</width>
-				<height>40</height>
-				<texture border="0,2,0,2">MenuItemNF.png</texture>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>550</width>
-				<height>40</height>
-				<texture border="0,2,0,2">MenuItemFO.png</texture>
-			</control>
-			<control type="button" id="6241">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>550</width>
-				<height>40</height>
-				<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
-				<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
-			</control>
-			<control type="image">
-	            <description>time background</description>
-	            <posx>0</posx>
-	            <posy>0</posy>
-	            <width>440</width>
-	            <height>35</height>
-	            <texture flipx="true" border="32,0,0,0">header.png</texture>
-	        </control>
-	        <control type="image">
-				<posx>0</posx>
-				<posy>128r</posy>
-				<width>1280</width>
-				<height>128</height>
-				<texture>floor.png</texture>
-			</control>
-			<control type="image">
-				<posx>40</posx>
-				<posy>645</posy>
-				<width>1200</width>
-				<height>600</height>
-				<aspectratio aligny="top">keep</aspectratio>
-				<texture diffuse="diffuse_mirror3.png" flipy="true" border="20">ContentPanel.png</texture>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
-				<height>720</height>
-				<texture border="20">black-back.png</texture>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
-				<height>720</height>
-				<texture border="20">ContentPanel2.png</texture>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>730</width>
-				<height>71</height>
-				<texture border="0,2,0,2">MenuItemNF.png</texture>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>730</width>
-				<height>71</height>
-				<texture border="0,2,0,2">MenuItemFO.png</texture>
-			</control>
-			<control type="image">
-				<posx>530</posx>
-				<posy>5</posy>
-				<width>200</width>
-				<height>61</height>
-				<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
-			</control>
-			<control type="image">
-				<posx>1</posx>
-				<posy>0</posy>
-				<width>256</width>
-				<height>144</height>
-				<bordertexture border="5">button-nofocus.png</bordertexture>
-				<bordersize>5</bordersize>
-			</control>
-			<control type="image">
-				<posx>1</posx>
-				<posy>0</posy>
-				<width>256</width>
-				<height>144</height>
-				<bordertexture border="5">folder-focus.png</bordertexture>
-				<bordersize>5</bordersize>
-				<fadetime>100</fadetime>
-			</control>
-			<control type="image">
-				<posx>240</posx>
-				<posy>420</posy>
-				<width>800</width>
-				<height>70</height>
-				<aspectratio>stretch</aspectratio>
-				<texture>GlassTitleBar.png</texture>
-			</control>
-			<control type="scrollbar">
-				<posx>800</posx>
-				<posy>70</posy>
-				<width>25</width>
-				<height>565</height>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
-				<onleft>3400</onleft>
-				<onright>100</onright>
-				<showonepage>false</showonepage>
-				<orientation>vertical</orientation>
-			</control>
-			<control type="scrollbar">
-				<posx>800</posx>
-				<posy>110</posy>
-				<width>25</width>
-				<height>525</height>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
-				<onleft>3500</onleft>
-				<onright>100</onright>
-				<showonepage>false</showonepage>
-				<orientation>vertical</orientation>
-			</control>
-			<control type="scrollbar" id="3501">
-				<posx>800</posx>
-				<posy>70</posy>
-				<width>25</width>
-				<height>565</height>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
-				<onleft>3500</onleft>
-				<onright>100</onright>
-				<showonepage>false</showonepage>
-				<orientation>vertical</orientation>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1</width>
-				<height>720</height>
-				<texture>MediaBladeSub_Part1.png</texture>
-				<animation effect="zoom" start="0,0,1,720" end="0,0,229,720" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(104) | ControlGroup(9001).HasFocus">Conditional</animation>
-			</control>
-			<control type="image">
-				<posx>1</posx>
-				<posy>0</posy>
-				<width>12</width>
-				<height>720</height>
-				<texture>MediaBladeSub_Part2.png</texture>
-				<animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(104) | ControlGroup(9001).HasFocus">Conditional</animation>
-			</control>
-			<control type="image">
-				<posx>-820</posx>
-				<posy>0</posy>
-				<width>846</width>
-				<height>720</height>
-				<texture>HomeBlade.png</texture>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
-				<height>720</height>
 				<texture>black-back.png</texture>
 			</control>
 			<control type="image">
-				<posx>40</posx>
-				<posy>40</posy>
-				<width>1200</width>
-				<height>620</height>
-				<texture border="20">ContentPanel.png</texture>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
-				<height>720</height>
 				<texture>black-back_noAlpha.png</texture>
 			</control>
 			<control type="image">
-				<posx>620</posx>
-				<posy>5</posy>
-				<width>30</width>
-				<height>30</height>
 				<texture>DI_Ok.png</texture>
 			</control>
-			<control type="scrollbar">
-				<posx>770</posx>
-				<posy>125</posy>
-				<width>25</width>
-				<height>521</height>
-				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
-				<orientation>vertical</orientation>
+			<control type="image">
+				<texture>aeon.nox/OSDInfoFO.png</texture>
 			</control>
 			<control type="image">
-				<posx>0</posx>
-				<posy>199</posy>
-				<width>352</width>
-				<height>18</height>
-				<texture border="20">StackNF.png</texture>
-				<!--<texture border="20">media-overlay.png</texture>-->
+				<texture>aeon.nox/OSDInfoNF.png</texture>
 			</control>
 			<control type="image">
-	            <posx>-250</posx>
-	            <posy>0</posy>
-	            <width>250</width>
-	            <height>720</height>
-	            <colordiffuse>DAFFFFFF</colordiffuse>
-	            <texture>MediaBladeSub_Part1.png</texture>
+				<texture>osd/buttons/OSDBookMarksFO.png</texture>
+			</control>
+			<control type="image">
+				<texture>osd/buttons/OSDBookMarksNF.png</texture>
+			</control>
+			<control type="image">
+	            <texture>osd/buttons/OSDSubtitlesFO.png</texture>
 	        </control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>260</width>
-				<height>55</height>
-				<texture border="5">MenuItemNF.png</texture>
+	        <control type="image">
+				<texture>osd/buttons/OSDSubtitlesNF.png</texture>
 			</control>
 			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>260</width>
-				<height>55</height>
-				<texture border="5">MenuItemFO.png</texture>
+				<texture>aeon.nox/OSDRecordFO.png</texture>
 			</control>
 			<control type="image">
-				<posx>268</posx>
-				<posy>10</posy>
-				<width>804</width>
-				<height>50</height>
-				<texture border="5">black-back2.png</texture>
+				<texture>aeon.nox/OSDRecordNF.png</texture>
 			</control>
 			<control type="image">
-				<posx>268</posx>
-				<posy>10</posy>
-				<width>804</width>
-				<height>70</height>
-				<aspectratio>stretch</aspectratio>
-				<texture>GlassTitleBar.png</texture>
+				<texture>osd/buttons/OSDStopFO.png</texture>
 			</control>
 			<control type="image">
-				<posx>270</posx>
-				<posy>60</posy>
-				<width>800</width>
-				<height>450</height>
-				<texture border="5">button-nofocus.png</texture>
+				<texture>osd/buttons/OSDStopNF.png</texture>
 			</control>
 			<control type="image">
-				<posx>270</posx>
-				<posy>60</posy>
-				<width>800</width>
-				<height>450</height>
-				<texture border="5">button-focus.png</texture>
+	            <texture>osd/buttons/OSDAudioFO.png</texture>           
+	        </control>
+	        <control type="image">
+	            <texture>osd/buttons/OSDAudioNF.png</texture>
+	        </control>
+	        <control type="image">
+	            <texture>osd/buttons/OSDSkinNF.png</texture>
+	        </control>
+	        <control type="image">
+				<texture>osd/buttons/OSDSkinFO.png</texture>
 			</control>
 			<control type="image">
-				<posx>272</posx>
-				<posy>62</posy>
-				<width>600</width>
-				<height>340</height>
-				<aspectratio>stretch</aspectratio>
-				<texture>GlassOverlay.png</texture>
-				<colordiffuse>AAFFFFFF</colordiffuse>
+	            <texture>views/multiplex_arrowfocus2.png</texture>
+	        </control>
+	        <control type="image">
+				<texture>views/multiplex_arrow2.png</texture>
 			</control>
 			<control type="image">
-				<posx>268</posx>
-				<posy>510</posy>
-				<width>804</width>
-				<height>118</height>
-				<texture border="5">black-back2.png</texture>
+				<texture>views/multiplex_arrowfocus.png</texture>
 			</control>
 			<control type="image">
-				<description>media info background image</description>
-				<posx>0</posx>
-				<posy>540</posy>
-				<width>1280</width>
-				<height>256</height>
-				<texture>MediaInfoBackLower.png</texture>
+	            <texture>views/multiplex_arrow.png</texture>
+	        </control>
+	        <control type="image">
+				<texture>tv.png</texture>
 			</control>
 			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>200</width>
-				<height>35</height>
-				<texture border="0,0,32,0">header.png</texture>
+				<texture>OverlayHD.png</texture>
 			</control>
 			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1100</width>
-				<height>500</height>
-				<texture border="20">DialogBack.png</texture>
+				<texture>dialogs/context_highlight.png</texture>
 			</control>
 			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
-				<height>720</height>
-				<texture background="true">backgrounds/videos.jpg</texture>
+				<texture>dialogs/context_nofocus.png</texture>
 			</control>
 			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
-				<height>720</height>
-				<texture background="true">backgrounds/pictures.jpg</texture>
+				<texture>views/scrollbarbacklist.png</texture>
 			</control>
 			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
-				<height>720</height>
-				<texture background="true">backgrounds/settings.jpg</texture>
+				<texture>views/scrollbarnub-nofocus.png</texture>
 			</control>
 			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
-				<height>720</height>
-				<texture background="true">backgrounds/weather.jpg</texture>
+				<texture>views/scrollbarnub-focus.png</texture>
 			</control>
 			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
-				<height>720</height>
-				<texture>black-back_noAlpha.png</texture>
+				<texture>views/scrollBarH.png</texture>
 			</control>
 			<control type="image">
-				<posx>90</posx>
-				<posy>50</posy>
-				<width>1100</width>
-				<height>500</height>
-				<texture border="20">DialogBack.png</texture>
+				<texture>views/scrollBarH_bar.png</texture>
 			</control>
+			<control type="image">
+				<texture>views/scrollBarH_bar_focus.png</texture>
+			</control>
+			<control type="image">
+				<texture>views/scrollBarNib.png</texture>
+			</control>
+			<control type="image">
+				<texture>settings/listselect.png</texture>
+			</control>
+			<control type="image">
+				<texture>settings/settings_radiobuttononfocus.png</texture>
+			</control>
+			<control type="image">
+				<texture>settings/settings_radiobuttonon.png</texture>
+			</control>
+			<control type="image">
+				<texture>video_pig_overlay.png</texture>
+			</control>
+			<control type="image">
+				<texture>views/showcase_floor.png</texture>
+			</control>
+			<control type="image">
+				<texture>views/showcase_spot.png</texture>
+			</control>
+			<control type="image">
+	            <texture>common/topbar_left.png</texture>
+	        </control>
+	        <control type="image">
+				<texture>common/topbar_right.png</texture>
+			</control>
+			<control type="image">
+				<texture>views/showcase_vignette.png</texture>
+			</control>
+			<control type="image">
+				<texture>views/showcase_gradient.png</texture>
+			</control>
+			<control type="image">
+				<texture>views/listpanel_black.png</texture>
+			</control>
+			<control type="image">
+				<texture>views/listpanel_back_noreflect.png</texture>
+			</control>
+			<control type="image">
+	            <texture>views/listpanel_back.png</texture>           
+	        </control>
+	        <control type="image">
+	            <texture>views/listpanel_detailwide.png</texture>
+	        </control>
+	        <control type="image">
+	            <texture>settings/settings_panelback.png</texture>
+	        </control>
+	        <control type="image">
+				<texture>views/listpanel_line.png</texture>
+			</control>
+			<control type="image">
+	            <texture>RecIconSample.jpg</texture>
+	        </control>
+	        <control type="image">
+				<texture>views/listpanel_selectbar.png</texture>
+			</control>
+			<control type="image">
+				<texture>settings/settings_intframe_bottom.png</texture>
+			</control>
+			<control type="image">
+	            <texture>settings/settings_panelfront.png</texture>
+	        </control>
+	        <control type="image">
+				<texture>IconTeletext.png</texture>
+			</control>
+			<control type="image">
+				<texture>osd/buttons/OSDSettingsFO.png</texture>
+			</control>
+			<control type="image">
+				<texture>osd/buttons/OSDSettingsNF.png</texture>
+			</control>
+			<control type="image">
+				<texture>common/black.png</texture>
+			</control>
+			<control type="image">
+				<texture>OverlayLocked.png</texture>
+			</control>
+			<control type="image">
+				<texture>aeon.nox/HomeHasSub.png</texture>
+			</control>
+			<control type="image">
+				<texture>osd/seek/progress_back.png</texture>
+			</control>
+			<control type="image">
+				<texture>settings/settings_intframe_top.png</texture>
+			</control>
+			<control type="image">
+				<texture>settings/settings_radiobuttonofffocus.png</texture>
+			</control>
+			<control type="image">
+				<texture>settings/settings_radiobuttonoff.png</texture>
+			</control>
+			<control type="image">
+				<texture>settings/spin-up.png</texture>
+			</control>
+			<control type="image">
+				<texture>settings/spin-up-focus.png</texture>
+			</control>
+			<control type="image">
+				<texture>settings/spin-down.png</texture>
+			</control>
+			<control type="image">
+				<texture>settings/spin-down-focus.png</texture>
+			</control>
+			<control type="image">
+				<texture>home/nowplaying/nowplayline.png</texture>
+			</control>
+			<control type="image">
+				<texture>scrapersettings_back.png</texture>
+			</control>
+			<control type="image">
+				<texture>dialogs/scan_backg.png</texture>
+			</control>
+			<control type="image">
+	            <texture>dialogs/exclam_icon.png</texture>
+	        </control>
+	        <control type="image">
+				<texture>dialogs/busy.png</texture>
+			</control>
+			<control type="image">
+				<texture>dialogs/setcontent_scraper_focus.png</texture>
+			</control>
+			<control type="image">
+				<texture>osd/osd_settings_back.png</texture>
+			</control>
+			<control type="image">
+				<texture>keyboard/keyboard_singlenf.png</texture>
+			</control>
+			<control type="image">
+				<texture>keyboard/keyboard_singlef.png</texture>
+			</control>
+			<control type="image">
+	            <texture>keyboard/numeric_back.png</texture>           
+	        </control>
+	        <control type="image">
+	            <texture>i_record.png</texture>
+	        </control>
+	        <control type="image">
+	            <texture>IconPlateRec.png</texture>
+	        </control>
 		</control>
 	</controls>
 </window>

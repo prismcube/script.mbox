@@ -28,11 +28,12 @@ E_SORT_END						= 4
 CONTEXT_PLAY					= 0
 CONTEXT_PLAY_FROM_BEGINNIG		= 1
 CONTEXT_DELETE					= 2
-CONTEXT_LOCK					= 3
-CONTEXT_UNLOCK					= 4
-CONTEXT_RENAME					= 5
-CONTEXT_START_MARK				= 6
-CONTEXT_CLEAR_MARK				= 7
+CONTEXT_DELETE_ALL				= 3
+CONTEXT_LOCK					= 4
+CONTEXT_UNLOCK					= 5
+CONTEXT_RENAME					= 6
+CONTEXT_START_MARK				= 7
+CONTEXT_CLEAR_MARK				= 8
 
 
 
@@ -130,24 +131,6 @@ class ArchiveWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_CONTEXT_MENU:
 			self.ShowContextMenu( )
-
-		#testcode remove all archive
-		elif actionId == Action.REMOTE_0 :
-			LOG_TRACE('----------- Remove All Archive --------------')
-			recordCount = self.mDataCache.Record_GetCount( self.mServiceType )
-			
-			self.OpenBusyDialog( )
-
-			for i in range( recordCount ) :
-				recInfo = self.mDataCache.Record_GetRecordInfo( 0, self.mServiceType )
-				self.mDataCache.Record_DeleteRecord( recInfo.mRecordKey, self.mServiceType )
-
-
-			self.CloseBusyDialog( )
-
-			self.Flush( )
-			self.Load( )
-			self.UpdateList( )
 
 	
 	def onClick( self, aControlId ) :
@@ -484,6 +467,7 @@ class ArchiveWindow( BaseWindow ) :
 			
 			if markedList and len( markedList ) > 0 :
 				context.append( ContextItem( 'Delete', CONTEXT_DELETE ) )
+				context.append( ContextItem( 'Delete All', CONTEXT_DELETE_ALL ) )
 				context.append( ContextItem( 'Lock', CONTEXT_LOCK ) )
 				context.append( ContextItem( 'Unlock', CONTEXT_UNLOCK ) )	
 				context.append( ContextItem( 'Clear Marked Items', CONTEXT_CLEAR_MARK ) )	
@@ -493,6 +477,7 @@ class ArchiveWindow( BaseWindow ) :
 				context.append( ContextItem( 'Play', CONTEXT_PLAY ) )
 				context.append( ContextItem( 'Play from beginning', CONTEXT_PLAY_FROM_BEGINNIG ) )
 				context.append( ContextItem( 'Delete', CONTEXT_DELETE ) )
+				context.append( ContextItem( 'Delete All', CONTEXT_DELETE_ALL ) )				
 				if recordInfo.mLocked:
 					context.append( ContextItem( 'Unlock', CONTEXT_UNLOCK ) )
 				else :
@@ -528,6 +513,9 @@ class ArchiveWindow( BaseWindow ) :
 
 		elif aContextAction == CONTEXT_DELETE :
 			self.ShowDeleteConfirm()
+
+		elif aContextAction == CONTEXT_DELETE_ALL :
+			self.ShowDeleteAllConfirm()
 
 		elif aContextAction == CONTEXT_LOCK :
 			self.DoLockUnlock( True )
@@ -577,6 +565,41 @@ class ArchiveWindow( BaseWindow ) :
 						return False
 
 				self.DoDelete( markedList )
+
+
+	def ShowDeleteAllConfirm( self ) :
+		if self.mRecordList == None or len( self.mRecordList  ) <= 0 :
+			return
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+		dialog.SetDialogProperty( 'Confirm', 'Do you want to delete all records?' )
+		dialog.doModal( )
+
+		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+
+			hasLocked = False
+
+			# Check Locked Item
+			for recInfo in self.mRecordList :
+				if recInfo.mLocked == True :
+					hasLocked = True
+					break
+		
+			if hasLocked == True :
+				if self.CheckPincode() == False :
+					return False
+
+			self.OpenBusyDialog( )
+
+			for recInfo in self.mRecordList :
+				self.mDataCache.Record_DeleteRecord( recInfo.mRecordKey, self.mServiceType )
+
+
+			self.CloseBusyDialog( )
+
+			self.Flush( )
+			self.Load( )
+			self.UpdateList( )
 
 
 	def ShowRenameDialog( self ) :

@@ -854,7 +854,7 @@ class EPGWindow( BaseWindow ) :
 		self.OpenBusyDialog( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			for timer in self.mTimerList:
-				timer.printdebug()
+				#timer.printdebug()
 				self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
 
 			self.StopEPGUpdateTimer( )

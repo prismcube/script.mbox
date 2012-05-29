@@ -132,7 +132,7 @@ class DialogStartRecord( BaseDialog ) :
 		self.mRecordStartTime = self.mLocalTime - self.mLocalOffset
 		
 		if self.mEPG != None and self.mEPG.mError == 0:
-			self.mEPG.printdebug( )		
+			#self.mEPG.printdebug( )		
 
 			startTime =  self.mEPG.mStartTime + self.mLocalOffset
 			endTime = startTime + self.mEPG.mDuration
