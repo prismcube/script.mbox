@@ -2,7 +2,7 @@
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>no</allowoverlay>
 	<controls>
-		<include>DefaultSettingHeaderWindow</include>	
+		<include>DefaultSettingHeaderWindow</include>
 		<control type="group">
 			<include>DefaultSettingWindowEffect</include>
 			<include>DefaultSettingMainWindow</include>
@@ -57,5 +57,6 @@
 				</focusedlayout>
 			</control>
 		</control>
+		<include>DefaultSettingWindowPigScreen</include>
 	</controls>
 </window>

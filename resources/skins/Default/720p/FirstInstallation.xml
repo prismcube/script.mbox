@@ -31,5 +31,6 @@
 			</control>
 		</control>
 		<include>DefaultFakeButton</include>
+		<include>DefaultSettingWindowPigScreen</include>
 	</controls>
 </window>

@@ -14,5 +14,6 @@
 				<include>Input02</include>
 			</control>
 		</control>
+		<include>DefaultSettingWindowPigScreen</include>
 	</controls>
 </window>

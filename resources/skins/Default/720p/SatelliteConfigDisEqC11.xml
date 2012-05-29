@@ -2,7 +2,7 @@
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>no</allowoverlay>
 	<controls>
-		<include>DefaultSettingHeaderWindow</include>	
+		<include>DefaultSettingHeaderWindow</include>
 		<control type="group" id="9000">
 			<posx>80</posx>
 			<posy>110</posy>
@@ -10,5 +10,6 @@
 			<include>DefaultSettingMainWindow</include>
 			<include>DefaultSatelliteConfigGroup</include>			
 		</control>
+		<include>DefaultSettingWindowPigScreen</include>
 	</controls>
 </window>

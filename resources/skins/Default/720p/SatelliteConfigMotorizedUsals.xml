@@ -2,7 +2,7 @@
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>no</allowoverlay>
 	<controls>
-		<include>DefaultSettingHeaderWindow</include>	
+		<include>DefaultSettingHeaderWindow</include>
 		<control type="group" id="9000">
 			<posx>80</posx>
 			<posy>110</posy>
@@ -18,5 +18,6 @@
 				<include>Input04</include>
 			</control>
 		</control>
+		<include>DefaultSettingWindowPigScreen</include>
 	</controls>
 </window>

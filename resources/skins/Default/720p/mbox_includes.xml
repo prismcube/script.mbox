@@ -144,14 +144,18 @@
 				<align>left</align>
 				<aligny>center</aligny>
 			</control>
-			<control type="image" id="8899">
-				<posx>857</posx>
-				<posy>160</posy>
-				<width>352</width>
-				<height>198</height>
-				<texture>video_pig_overlay.png</texture>
-			</control>
+			
 			<include>DefaultScanHelperStatusProgress</include>
+		</control>
+	</include>
+
+	<include name="DefaultSettingWindowPigScreen">
+		<control type="image" id="8899">
+			<posx>857</posx>
+			<posy>170</posy>
+			<width>352</width>
+			<height>198</height>
+			<texture>video_pig_overlay.png</texture>
 		</control>
 	</include>
 

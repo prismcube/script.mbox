@@ -52,9 +52,9 @@
 				</control>
 			</control>
 			<control type="image" id="8899">
-				<posx>845</posx>
+				<posx>849</posx>
 				<posy>118</posy>
-				<width>352</width>
+				<width>350</width>
 				<height>198</height>
 				<texture>video_pig_overlay.png</texture>
 			</control>
