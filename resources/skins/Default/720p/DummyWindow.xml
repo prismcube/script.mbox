@@ -511,28 +511,28 @@
 				<posy>0</posy>
 				<width>1280</width>
 				<height>720</height>
-				<texture background="true">confluence/backgrounds/videos.jpg</texture>
+				<texture>confluence/backgrounds/videos.jpg</texture>
 			</control>
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>1280</width>
 				<height>720</height>
-				<texture background="true">confluence/backgrounds/pictures.jpg</texture>
+				<texture>confluence/backgrounds/pictures.jpg</texture>
 			</control>
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>1280</width>
 				<height>720</height>
-				<texture background="true">confluence/backgrounds/settings.jpg</texture>
+				<texture>confluence/backgrounds/settings.jpg</texture>
 			</control>
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>1280</width>
 				<height>720</height>
-				<texture background="true">confluence/backgrounds/weather.jpg</texture>
+				<texture>confluence/backgrounds/weather.jpg</texture>
 			</control>
 			<control type="image">
 				<posx>0</posx>
@@ -542,6 +542,193 @@
 				<texture>black-back_noAlpha.png</texture>
 			</control>
 		</control>
+
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>black-back_noAlpha.png</texture>
+		</control>
+
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>confluence/DefaultIconWarning.png</texture>
+		</control>
+
+
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>confluence/DefaultIconInfo.png</texture>
+		</control>
+
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>confluence/OSDPlaylistFO.png</texture>
+		</control>
+
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>confluence/OSDPlaylistNF.png</texture>
+		</control>
+
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>45</width>
+			<height>35</height>
+			<texture>confluence/OSDSubtitlesFO.png</texture>
+		</control>
+
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>confluence/OSDSubtitlesNF.png</texture>
+		</control>
+
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>confluence/OSDRecord2.png</texture>
+		</control>
+
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>confluence/OSDRecordNF.png</texture>
+		</control>
+
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>confluence/OSDStopFO.png</texture>
+		</control>
+
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>confluence/OSDStopNF.png</texture>
+		</control>
+		
+
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>confluence/OSDAudioFO.png</texture>
+		</control>
+ 
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>confluence/OSDAudioNF.png</texture>
+		</control>
+
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>confluence/OSDPresetSettingsFO.png</texture>
+		</control>
+
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>confluence/OSDPresetSettingsNF.png</texture>
+		</control>
+
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>confluence/scroll-left-focus.png</texture>
+		</control>
+			
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>confluence/scroll-left.png</texture>
+		</control>
+
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>confluence/OSDProgressBack.png</texture>
+		</control>
+
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>confluence/OSDProgressMid.png</texture>
+		</control>
+
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>confluence/scroll-right-focus.png</texture>
+		</control>
+
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>confluence/scroll-right.png</texture>
+		</control>
+
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>confluence/dolbydigital.png</texture>
+		</control>
+
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>confluence/tv.png</texture>
+		</control>
+
 	</controls>
 </window>
 
