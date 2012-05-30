@@ -21,7 +21,8 @@ class NullWindow( BaseWindow ) :
 		if self.mInitialized == False :
 			self.mInitialized = True
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TEST2 )
 
 		self.mEventBus.Register( self )
 
@@ -200,6 +201,11 @@ class NullWindow( BaseWindow ) :
 			else :
 				self.RecordingStop()
 
+		#test
+		elif actionId == Action.ACTION_MOVE_RIGHT :
+			print 'youn check ation right'
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TEST2 )
+
 		else:
 			print 'lael98 check ation unknown id=%d' %actionId
 
@@ -368,5 +374,9 @@ class NullWindow( BaseWindow ) :
 
 		if E_SUPPROT_HBBTV == True :
 			self.mCommander.AppHBBTV_Ready( 0 )
+
+
+	def GetKeyDisabled( self ) :
+		return False
 		
 

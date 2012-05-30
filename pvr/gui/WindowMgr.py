@@ -50,7 +50,7 @@ WIN_ID_DUMMY_WINDOW					= 100
 WIN_ID_TIMESHIFT_INFO_PLATE			= 101
 WIN_ID_TIMESHIFT_INFO_PLATE1		= 102
 WIN_ID_TIMESHIFT_INFO_PLATE2		= 103
-
+WIN_ID_TEST2 						= 104
 gWindowMgr = None
 
 def GetInstance():
@@ -271,6 +271,9 @@ class WindowMgr(object):
 			from pvr.gui.windows.test1 import Test1
 			Test1('MyPics.xml', self.mScriptDir ).doModal()
 			"""
+
+			from pvr.gui.windows.Test2 import Test2
+			self.mWindows[WIN_ID_TEST2]=Test2('Test2.xml', self.mScriptDir )
 
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
