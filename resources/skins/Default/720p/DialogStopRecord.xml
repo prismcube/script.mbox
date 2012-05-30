@@ -14,7 +14,7 @@
 				<posy>100</posy>
 				<width>610</width>
 				<height>310</height>
-				<texture border="40">confluence/DialogBack.png</texture>
+				<texture border="40">DialogBack.png</texture>
 			</control>
 			<control type="group">
 				<posy>90</posy>
@@ -45,8 +45,8 @@
 					<posy>0</posy>
 					<width>550</width>
 					<height>71</height>
-					<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
-					<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
+					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
 					<onleft>-</onleft>
 					<onright>-</onright>
 				</control>
@@ -55,7 +55,7 @@
 					<posy>0</posy>
 					<width>200</width>
 					<height>71</height>
-					<texture border="0,0,14,0">confluence/MediaItemDetailBG.png</texture>
+					<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
 					<visible>Control.HasFocus(501)</visible>
 				</control>
 				<control type="label" id="502">
@@ -113,8 +113,8 @@
 					<posy>0</posy>
 					<width>550</width>
 					<height>71</height>
-					<texturenofocus border="0,2,0,2">confluence/MenuItemNF.png</texturenofocus>
-					<texturefocus border="0,2,0,2">confluence/MenuItemFO.png</texturefocus>
+					<texturenofocus border="0,2,0,2">MenuItemNF.png</texturenofocus>
+					<texturefocus border="0,2,0,2">MenuItemFO.png</texturefocus>
 					<onleft>-</onleft>
 					<onright>-</onright>
 				</control>
@@ -123,7 +123,7 @@
 					<posy>0</posy>
 					<width>200</width>
 					<height>71</height>
-					<texture border="0,0,14,0">confluence/MediaItemDetailBG.png</texture>
+					<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
 					<visible>Control.HasFocus(511)</visible>
 				</control>
 				<control type="label" id="512">
@@ -184,8 +184,8 @@
 					<textcolor>white</textcolor>
 					<focusedcolor>white</focusedcolor>
 					<align>center</align>
-					<texturenofocus border="5">confluence/MenuItemNF.png</texturenofocus>
-					<texturefocus border="5">confluence/button-focus.png</texturefocus>
+					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
+					<texturefocus border="5">button-focus.png</texturefocus>
 					<label>[B]Cancel[/B]</label>
 				</control>
 			</control>

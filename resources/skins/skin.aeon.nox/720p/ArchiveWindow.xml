@@ -214,5 +214,165 @@
 			</control>
 		</control>
 		<include>DefaultMiniTitle</include>
+
+		<!-- Right smoll Box -->
+		<control type="group">
+			<include>Animation_CommonFade</include>
+			<posx>30</posx>
+			<posy>0</posy>
+			<visible>substring(Window.Property(ViewMode),common)</visible>
+			<control type="group">
+				<include>Animation_ListSlideRight</include>
+				<control type="image">
+					<posx>830</posx>
+					<posy>380</posy>
+					<width>360</width>
+					<height>315</height>
+					<texture background="true">views/listpanel_black.png</texture>
+				</control>
+				<control type="image">
+					<posx>830</posx>
+					<posy>380</posy>
+					<width>360</width>
+					<height>315</height>
+					<texture>views/listpanel_back.png</texture>
+				</control>
+				<control type="image">
+					<posx>811</posx>
+					<posy>333</posy>
+					<width>392</width>
+					<height>18</height>
+					<texture border="20">settings/settings_panelback.png</texture>
+				</control>
+				<control type="label" id="401">
+					<description>Current Channel</description>			
+					<posx>838</posx>
+					<posy>329</posy>
+					<width>352</width>
+					<height>18</height>
+					<font>Font_Reg20</font>
+				</control>
+
+				<control type="group" id="9020">
+					<posx>850</posx>
+					<posy>400</posy>
+					<visible>substring(Window.Property(ViewMode),common) </visible>
+					
+
+					<control type="label" id="300">
+						<description>Channel Name</description>			
+						<posx>0</posx>
+						<posy>0</posy>
+						<font>font12_title</font>
+						<textcolor>grey</textcolor>
+						<label>$INFO[Window.Property(ChannelName)]</label>
+					</control>
+
+					<control type="label" id="301">
+						<description>Date</description>
+						<posx>0</posx>
+						<posy>30</posy>
+						<font>font12_title</font>
+						<textcolor>grey</textcolor>
+						<label>$INFO[Window.Property(RecDuration)]</label>
+					</control>
+
+					<control type="label" id="302">
+						<description>Duration</description>			
+						<posx>150</posx>
+						<posy>30</posy>
+						<font>font12_title</font>
+						<textcolor>grey</textcolor>
+						<label>$INFO[Window.Property(RecDate)]</label>
+					</control>
+
+					<control type="textbox" id="303">
+						<description>Record Name</description>			
+						<posx>0</posx>
+						<posy>60</posy>
+						<width>352</width>
+					 	<height>160</height>
+						<font>font12_title</font>
+						<textcolor>grey</textcolor>
+						<label>$INFO[Window.Property(RecName)]</label>
+					</control>
+				</control>
+			</control>
+		</control>
+ 
+		<!-- Item Position and Page Number for common list-->
+		<control type="label">
+			<posx>105</posx>
+			<posy>75r</posy>
+			<width>300</width>
+			<height>20</height>
+			<font>font12</font>
+			<textcolor>grey</textcolor>
+			<scroll>false</scroll>
+			<align>left</align>
+			<aligny>center</aligny>
+			<label>[COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3400).NumItems][/COLOR] $LOCALIZE[31025]</label>
+			<visible>substring(Window.Property(ViewMode),common)</visible>						
+		</control>
+		<control type="label">
+			<posx>760</posx>
+			<posy>75r</posy>
+			<width>300</width>
+			<height>20</height>
+			<font>font12</font>
+			<textcolor>grey</textcolor>
+			<scroll>false</scroll>
+			<align>right</align>
+			<aligny>center</aligny>
+			<label>$LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3400).CurrentPage]/$INFO[Container(3400).NumPages][/COLOR])</label>
+			<visible>substring(Window.Property(ViewMode),common)</visible>						
+		</control>
+		
+
+		<!-- Item Position and Page Number for thumbnail list-->
+		<control type="label">
+			<posx>60r</posx>
+			<posy>50r</posy>
+			<width>300</width>
+			<height>20</height>
+			<font>font12</font>
+			<textcolor>grey</textcolor>
+			<scroll>false</scroll>
+			<align>right</align>
+			<aligny>center</aligny>
+			<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3410).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3410).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3410).CurrentPage]/$INFO[Container(3410).NumPages][/COLOR])</label>
+			<visible>substring(Window.Property(ViewMode),thumbnail)</visible>						
+		</control>
+
+		<!-- Item Position and Page Number for posterwrap list-->
+		<control type="label">
+			<posx>60r</posx>
+			<posy>50r</posy>
+			<width>300</width>
+			<height>20</height>
+			<font>font12</font>
+			<textcolor>grey</textcolor>
+			<scroll>false</scroll>
+			<align>right</align>
+			<aligny>center</aligny>
+			<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3420).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3420).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3420).CurrentPage]/$INFO[Container(3420).NumPages][/COLOR])</label>
+			<visible>substring(Window.Property(ViewMode),posterwrap)</visible>						
+		</control>
+
+		<!-- Item Position and Page Number for panart list-->
+		<control type="label">
+			<posx>60r</posx>
+			<posy>50r</posy>
+			<width>300</width>
+			<height>20</height>
+			<font>font12</font>
+			<textcolor>grey</textcolor>
+			<scroll>false</scroll>
+			<align>right</align>
+			<aligny>center</aligny>
+			<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3430).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3430).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3430).CurrentPage]/$INFO[Container(3430).NumPages][/COLOR])</label>
+			<visible>substring(Window.Property(ViewMode),panart)</visible>						
+		</control>
+
 	</controls>
 </window>

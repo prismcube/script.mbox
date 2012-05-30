@@ -45,8 +45,8 @@ E_IMG_ICON_LOCK   = 'IconLockFocus.png'
 E_IMG_ICON_ICAS   = 'IconCas.png'
 E_IMG_ICON_TV     = 'tv.png'
 E_IMG_ICON_RADIO  = 'icon_radio.png'
-E_IMG_ICON_PLAY   = 'confluence/OSDPlay.png'
-E_IMG_ICON_PAUSE  = 'confluence/OSDPause.png'
+E_IMG_ICON_PLAY   = 'OSDPlay.png'
+E_IMG_ICON_PAUSE  = 'OSDPause.png'
 
 E_TAG_COLOR_WHITE = '[COLOR white]'
 E_TAG_COLOR_RED   = '[COLOR red]'
@@ -941,7 +941,7 @@ class TimeShiftInfoPlate2(BaseWindow):
 		flagFF = False
 		if nextSpeed != 100 :
 			imgName = nextSpeed / 100
-			imgFile = 'confluence/OSD%sx.png'% abs(imgName)
+			imgFile = 'OSD%sx.png'% abs(imgName)
 			imgPos = imgName
 			if imgName < -16 : imgPos = -16
 			elif imgName > 16 : imgPos = 16
@@ -1372,7 +1372,7 @@ class TimeShiftInfoPlate2(BaseWindow):
 			iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mTsid, ch.mOnid )
 			if iEPG and iEPG.mEventName != 'No Name':
 				LOG_TRACE('-----------------------')
-				iEPG.printdebug()
+				#iEPG.printdebug()
 
 				if not self.mEventCopy or \
 				iEPG.mEventId != self.mEventCopy.mEventId or \

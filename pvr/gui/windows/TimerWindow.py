@@ -223,7 +223,7 @@ class TimerWindow(BaseWindow):
 					weeklyStarTime = dateLeft*24*3600 + timer.mStartTime + weeklyTimer.mStartTime - secondsNow
 
 					channel = self.mDataCache.Channel_GetByNumber( timer.mChannelNo )
-					channel.printdebug()
+					#channel.printdebug()
 					tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
 
 					listItem = xbmcgui.ListItem( tempChannelName, timer.mName )							
@@ -250,7 +250,7 @@ class TimerWindow(BaseWindow):
 				for i in range( len( self.mTimerList ) ) :
 					timer = self.mTimerList[i]
 					channel = self.mDataCache.Channel_GetByNumber( timer.mChannelNo )
-					channel.printdebug()
+					#channel.printdebug()
 					tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
 
 					listItem = xbmcgui.ListItem( tempChannelName, timer.mName )	
@@ -394,7 +394,7 @@ class TimerWindow(BaseWindow):
 				self.mDataCache.Timer_DeleteTimer( self.mSelectedWeeklyTimer )
 			else :
 				for timer in self.mTimerList:
-					timer.printdebug()
+					#timer.printdebug()
 					self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
 
 			self.UpdateList( True )

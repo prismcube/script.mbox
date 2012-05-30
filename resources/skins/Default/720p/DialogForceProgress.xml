@@ -67,8 +67,8 @@
 				<posy>120</posy>
 				<width>560</width>
 				<height>12</height>
-				<texturebg border="6,0,6,0">confluence/OSDProgressBack.png</texturebg>
-				<midtexture border="6,0,6,0">confluence/OSDProgressMid.png</midtexture>
+				<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+				<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
 			</control>
 		</control>
 	</controls>

@@ -22,7 +22,7 @@
 				<width>530</width>
 				<height>90</height>
 				<aspectratio>stretch</aspectratio>
-				<texture>confluence/GlassTitleBar.png</texture>
+				<texture>GlassTitleBar.png</texture>
 			</control>
 
 			
@@ -52,8 +52,8 @@
 				<label>-</label>
 				<font>-</font>
 				<onclick>PreviousMenu</onclick>
-				<texturefocus>confluence/DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>confluence/DialogCloseButton.png</texturenofocus>
+				<texturefocus>DialogCloseButton-focus.png</texturefocus>
+				<texturenofocus>DialogCloseButton.png</texturenofocus>
 				<onleft>10</onleft>
 				<onright>10</onright>
 				<onup>10</onup>
@@ -133,8 +133,8 @@
 					<posy>0</posy>
 					<width>550</width>
 					<height>40</height>
-					<texturenofocus>confluence/MenuItemNF.png</texturenofocus>
-					<texturefocus>confluence/MenuItemFO.png</texturefocus>
+					<texturenofocus>MenuItemNF.png</texturenofocus>
+					<texturefocus>MenuItemFO.png</texturefocus>
 					<onup>200</onup>
 					<ondown>200</ondown>
 					<onleft>-</onleft>
@@ -204,8 +204,8 @@
 					<posy>10</posy>
 					<width>35</width>
 					<height>35</height>
-					<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
-					<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
+					<texturenofocus>OSDRepeatNF.png</texturenofocus>
+					<texturefocus>OSDRepeatFO.png</texturefocus>
 					<onup>500</onup>
 					<ondown>500</ondown>
 					<onleft>300</onleft>
@@ -252,8 +252,8 @@
 					<width>35</width>
 					<height>35</height>
 					<hitrect x="30" y="10" w="120" h="40"></hitrect>
-					<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
-					<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
+					<texturenofocus>OSDRepeatNF.png</texturenofocus>
+					<texturefocus>OSDRepeatFO.png</texturefocus>
 					<onup>500</onup>
 					<ondown>500</ondown>
 					<onleft>200</onleft>

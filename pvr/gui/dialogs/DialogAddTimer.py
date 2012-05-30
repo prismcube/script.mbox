@@ -105,7 +105,7 @@ class DialogAddTimer( BaseDialog ) :
 
 		try :
 			if self.mEPG != None and self.mEPG.mError == 0:
-				self.mEPG.printdebug( )		
+				#self.mEPG.printdebug( )		
 
 				localOffset = self.mDataCache.Datetime_GetLocalOffset()
 				localTime = self.mDataCache.Datetime_GetLocalTime( )

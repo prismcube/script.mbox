@@ -1048,9 +1048,6 @@ class DataCacheMgr( object ):
 
 	def Timer_AddEPGTimer( self, aForceDecrypt, aForceThisEvent, aEPG  ) : 
 		#ToDO : Change as AddEPGTimer
-		LOG_TRACE('')
-		aEPG.printdebug()
-		LOG_TRACE('')
 		epgList = []
 		epgList.append( aEPG )
 		return self.mCommander.Timer_AddEPGTimer( aForceDecrypt, aForceThisEvent, epgList )

@@ -1355,7 +1355,7 @@ class TimeShiftInfoPlate(BaseWindow):
 			iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mTsid, ch.mOnid )
 			if iEPG and iEPG.mEventName != 'No Name':
 				LOG_TRACE('-----------------------')
-				iEPG.printdebug()
+				#iEPG.printdebug()
 
 				if not self.mEventCopy or \
 				iEPG.mEventId != self.mEventCopy.mEventId or \

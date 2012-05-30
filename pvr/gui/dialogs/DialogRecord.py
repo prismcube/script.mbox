@@ -30,7 +30,7 @@ class DialogRecord( BaseDialog ) :
 		self.mRecordName = 'RecordName'
 
 		epg=self.mCommander.Epgevent_GetPresent( )
-		epg.printdebug( )
+		#epg.printdebug( )
 
 		self.mHasEPG = False
 		

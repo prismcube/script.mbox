@@ -159,6 +159,7 @@
 				<height>651</height>
 				<texture>settings/settings_panelfront.png</texture>
 			</control>
+			<!--
 			<control type="image" id="8899">
 				<posx>362</posx>
 				<posy>112</posy>
@@ -166,6 +167,7 @@
 				<height>446</height>
 				<texture>video_pig_overlay.png</texture>
 			</control>
+			-->
 		</control>			
 	</controls>
 </window>

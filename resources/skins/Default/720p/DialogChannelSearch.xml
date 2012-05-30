@@ -14,7 +14,7 @@
 				<posy>0</posy>
 				<width>1100</width>
 				<height>640</height>
-				<texture border="40">confluence/DialogBack.png</texture>
+				<texture border="40">DialogBack.png</texture>
 			</control>
 			<control type="image">
 				<posx>40</posx>
@@ -22,7 +22,7 @@
 				<width>1020</width>
 				<height>90</height>
 				<aspectratio>stretch</aspectratio>
-				<texture>confluence/GlassTitleBar.png</texture>
+				<texture>GlassTitleBar.png</texture>
 			</control>
 			<control type="button" id="104">
 				<description>Close Window button</description>
@@ -33,8 +33,8 @@
 				<label>-</label>
 				<font>-</font>
 				<onclick>-</onclick>
-				<texturefocus>confluence/DialogCloseButton-focus.png</texturefocus>
-				<texturenofocus>confluence/DialogCloseButton.png</texturenofocus>
+				<texturefocus>DialogCloseButton-focus.png</texturefocus>
+				<texturenofocus>DialogCloseButton.png</texturenofocus>
 				<onleft>-</onleft>
 				<onright>-</onright>
 				<onup>-</onup>
@@ -98,7 +98,7 @@
 						<posy>0</posy>
 						<width>449</width>
 						<height>41</height>
-						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
+						<texture border="0,2,0,2">MenuItemNF.png</texture>
 					</control>
 					<control type="label">
 						<posx>0</posx>
@@ -130,7 +130,7 @@
 						<posy>0</posy>
 						<width>499</width>
 						<height>41</height>
-						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
+						<texture border="0,2,0,2">MenuItemFO.png</texture>
 					</control>
 					<control type="label">
 						<posx>0</posx>
@@ -163,11 +163,11 @@
 				<posy>95</posy>
 				<width>25</width>
 				<height>375</height>
-				<texturesliderbackground border="0,14,0,14">confluence/ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">confluence/ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">confluence/ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>confluence/ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>confluence/ScrollBarNib.png</textureslidernibfocus>
+				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
+				<textureslidernib>ScrollBarNib.png</textureslidernib>
+				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
 				<onleft>400</onleft>
 				<onright>402</onright>
 				<ondown>300</ondown>
@@ -207,7 +207,7 @@
 						<posy>0</posy>
 						<width>449</width>
 						<height>41</height>
-						<texture border="0,2,0,2">confluence/MenuItemNF.png</texture>
+						<texture border="0,2,0,2">MenuItemNF.png</texture>
 					</control>
 					<control type="label">
 						<posx>0</posx>
@@ -239,7 +239,7 @@
 						<posy>0</posy>
 						<width>499</width>
 						<height>41</height>
-						<texture border="0,2,0,2">confluence/MenuItemFO.png</texture>
+						<texture border="0,2,0,2">MenuItemFO.png</texture>
 					</control>
 					<control type="label">
 						<posx>0</posx>
@@ -272,11 +272,11 @@
 				<posy>95</posy>
 				<width>25</width>
 				<height>375</height>
-				<texturesliderbackground border="0,14,0,14">confluence/ScrollBarV.png</texturesliderbackground>
-				<texturesliderbar border="0,14,0,14">confluence/ScrollBarV_bar.png</texturesliderbar>
-				<texturesliderbarfocus border="0,14,0,14">confluence/ScrollBarV_bar_focus.png</texturesliderbarfocus>
-				<textureslidernib>confluence/ScrollBarNib.png</textureslidernib>
-				<textureslidernibfocus>confluence/ScrollBarNib.png</textureslidernibfocus>
+				<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+				<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
+				<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
+				<textureslidernib>ScrollBarNib.png</textureslidernib>
+				<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
 				<onleft>402</onleft>
 				<onright>400</onright>
 				<ondown>300</ondown>
@@ -332,8 +332,8 @@
 				<posy>585</posy>
 				<width>35</width>
 				<height>35</height>
-				<texturenofocus>confluence/OSDRepeatNF.png</texturenofocus>
-				<texturefocus>confluence/OSDRepeatFO.png</texturefocus>
+				<texturenofocus>OSDRepeatNF.png</texturenofocus>
+				<texturefocus>OSDRepeatFO.png</texturefocus>
 				<onleft>-</onleft>
 				<onright>-</onright>
 				<onup>400</onup>

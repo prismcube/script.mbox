@@ -2,11 +2,12 @@
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>no</allowoverlay>
 	<controls>
-		<include>DefaultSettingHeaderWindow</include>	
+		<include>DefaultSettingHeaderWindow</include>
 		<control type="group" id="9000">
 			<include>DefaultSettingWindowEffect</include>
 			<include>DefaultSettingMainWindow</include>
 			<include>DefaultSatelliteConfigGroup</include>
 		</control>	
+		<include>DefaultSettingWindowPigScreen</include>
 	</controls>
 </window>

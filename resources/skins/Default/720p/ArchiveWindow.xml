@@ -7,7 +7,7 @@
 			<posy>0</posy>
 			<width>1280</width>
 			<height>720</height>
-			<texture background="true">confluence/backgrounds/videos.jpg</texture>
+			<texture background="true">backgrounds/videos.jpg</texture>
 			<include>DefaultBackgroundFade</include>
 			<fadetime>FanartCrossfadeTime</fadetime>
 			<visible>false</visible>
@@ -19,7 +19,7 @@
 				<posy>0</posy>
 				<width>1280</width>
 				<height>720</height>
-				<texture border="20">confluence/black-back.png</texture>
+				<texture border="20">black-back.png</texture>
 				<include>DefaultVisibleFadeEffect</include>
 				<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)</visible>
 			</control>
@@ -28,7 +28,7 @@
 				<posy>128r</posy>
 				<width>1280</width>
 				<height>128</height>
-				<texture>confluence/floor.png</texture>
+				<texture>floor.png</texture>
 				<include>DefaultVisibleFadeEffect</include>
 				<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail) | substring(Window.Property(ViewMode),panart)</visible>				
 			</control>
@@ -40,7 +40,7 @@
 					<posy>40</posy>
 					<width>1200</width>
 					<height>620</height>
-					<texture border="20">confluence/ContentPanel.png</texture>
+					<texture border="20">ContentPanel.png</texture>
 				</control>
 				<control type="image">
 					<posx>40</posx>
@@ -48,7 +48,7 @@
 					<width>1200</width>
 					<height>600</height>
 					<aspectratio aligny="top">keep</aspectratio>
-					<texture diffuse="confluence/diffuse_mirror3.png" flipy="true" border="20">confluence/ContentPanel.png</texture>
+					<texture diffuse="diffuse_mirror3.png" flipy="true" border="20">ContentPanel.png</texture>
 				</control>
 			</control>
 			<control type="image">
@@ -56,12 +56,12 @@
 				<posy>0</posy>
 				<width>1280</width>
 				<height>720</height>
-				<texture border="20">confluence/ContentPanel2.png</texture>
+				<texture border="20">ContentPanel2.png</texture>
 				<visible>substring(Window.Property(ViewMode),posterwrap)</visible>
 			</control>
 
 			<control type="image" id="8899">
-				<posx>845</posx>
+				<posx>850</posx>
 				<posy>118</posy>
 				<width>352</width>
 				<height>198</height>
@@ -87,7 +87,7 @@
 					<posy>0</posy>
 					<width>1</width>
 					<height>720</height>
-					<texture>confluence/MediaBladeSub_Part1.png</texture>
+					<texture>MediaBladeSub_Part1.png</texture>
 					<animation effect="zoom" start="0,0,1,720" end="0,0,229,720" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(104) | ControlGroup(9001).HasFocus">Conditional</animation>
 				</control>
 				<control type="image">
@@ -95,7 +95,7 @@
 					<posy>0</posy>
 					<width>12</width>
 					<height>720</height>
-					<texture>confluence/MediaBladeSub_Part2.png</texture>
+					<texture>MediaBladeSub_Part2.png</texture>
 					<animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(104) | ControlGroup(9001).HasFocus">Conditional</animation>
 				</control>
 			</control>
@@ -125,7 +125,7 @@
 					<posy>160</posy>
 					<width>40</width>
 					<height>40</height>
-					<texture>confluence/MediaSubSet.png</texture>
+					<texture>MediaSubSet.png</texture>
 				</control>
 				<control type="grouplist" id="9010">
 					<posx>10</posx>
@@ -164,7 +164,7 @@
 				<width>220</width>
 				<height>80</height>
 				<aspectratio>keep</aspectratio>
-				<texture>confluence/Confluence_Logo.png</texture>
+				<texture>Confluence_Logo.png</texture>
 			</control>
 			<control type="group" id="9000">
 				<posx>-250</posx>
@@ -214,8 +214,8 @@
 					<radioheight>18</radioheight>
 					<radioposx>222</radioposx>
 					<radioposy>12</radioposy>
-					<textureradiofocus>confluence/HomeHasSub.png</textureradiofocus>
-					<textureradionofocus>confluence/HomeHasSub.png</textureradionofocus>
+					<textureradiofocus>HomeHasSub.png</textureradiofocus>
+					<textureradionofocus>HomeHasSub.png</textureradionofocus>
 					<label>31026</label>
 					<onleft>9003</onleft>
 					<onright>9010</onright>

@@ -12,7 +12,7 @@
 				<posy>0</posy>
 				<width>610</width>
 				<height>380</height>
-				<texture border="40">confluence/DialogBack.png</texture>
+				<texture border="40">DialogBack.png</texture>
 			</control>
 			<include>DefaultDialogCommonSetting</include>
 			<control type="group" id="9000">

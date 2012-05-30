@@ -81,7 +81,7 @@ class DialogStopRecord( BaseDialog ) :
 		for i in range( self.mRunningRecordCount ) :
 			recordInfo = self.mCommander.Record_GetRunningRecordInfo( i )
 			if recordInfo :
-				recordInfo.printdebug()
+				#recordInfo.printdebug()
 				self.mRunnigRecordInfoList.append( recordInfo )
 		
 		self.DrawItem( )
@@ -169,7 +169,7 @@ class DialogStopRecord( BaseDialog ) :
 		if aControlId == BUTTON_ID_RECORD_1 :
 			LOG_TRACE('---------------------------------------->')		
 			recInfo = self.mRunnigRecordInfoList[0]
-			recInfo.printdebug()
+			#recInfo.printdebug()
 			self.mCommander.Timer_StopRecordingByRecordKey( recInfo.mRecordKey )
 			#self.mCommander.Record_StopRecord( recInfo.mChannelNo, recInfo.mServiceType, recInfo.mRecordKey  )
 			self.mIsOk = E_DIALOG_STATE_YES
