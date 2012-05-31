@@ -21,14 +21,10 @@ class NullWindow( BaseWindow ) :
 
 		if self.mInitialized == False :
 			self.mInitialized = True
-<<<<<<< HEAD
 			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
 			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-=======
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
-			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TEST2 )
->>>>>>> e935af2fef3ee65ed69d6d1d4edf8eefda26052d
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TEST2 )
+
 
 		self.mEventBus.Register( self )
 
