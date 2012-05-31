@@ -10,13 +10,15 @@ class RootWindow( BaseWindow ):
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		LOG_TRACE('')
-		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )		
+		if self.mInitialized == False :
+			self.mInitialized = True
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )		
 
 
 	def onAction( self, aAction ) :
 		LOG_TRACE('')
-		id = aAction.getId( )
-		focusId = self.getFocusId( )
+		actionId = aAction.getId( )
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR:
 			LOG_ERR( '------------- Root Window -------------' )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )

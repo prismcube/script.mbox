@@ -67,7 +67,7 @@ class Launcher(object):
 
 
 	def InitWindowMgr(self):
-		pvr.gui.WindowMgr.GetInstance().ShowWindow( WindowMgr.WIN_ID_ROOTWINDOW )
+		pvr.gui.WindowMgr.GetInstance().ShowRootWindow( )
 
 
 	def PowerOff( self ) :

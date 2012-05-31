@@ -1191,8 +1191,9 @@ class LivePlate( BaseWindow ) :
 
 	
 	def AsyncAutomaticHide( self ) :
-		LOG_TRACE( '-----------------------AsyncAutomaticHide-----------------------------')			
-		self.Close()
+		LOG_TRACE( '-----------------------AsyncAutomaticHide-----------------------------')
+		xbmc.executebuiltin('xbmc.Action(previousmenu)')		
+		#self.Close()
 
 
 	def RestartAutomaticHide( self ) :
