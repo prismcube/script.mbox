@@ -504,8 +504,8 @@
 					<height>35</height>
 					<label>210</label>
 					<font></font>
-					<texturefocus>scroll-left-focus.png</texturefocus>
-					<texturenofocus>scroll-left.png</texturenofocus>
+					<texturefocus>Arrow-left-focus.png</texturefocus>
+					<texturenofocus>Arrow-left.png</texturenofocus>
 					<onleft></onleft>
 					<onright>SetFocus(706)</onright>
 					<onup>SetFocus(621)</onup>
@@ -513,7 +513,7 @@
 				</control>
 				<control type="label" id="703">
 					<posx>290</posx>
-					<posy>2</posy>
+					<posy>7</posy>
 					<width>400</width>
 					<textcolor>9f9c9f9b</textcolor>
 					<label>$INFO[Control.GetLabel]</label>
@@ -521,7 +521,7 @@
 				</control>
 				<control type="label" id="704">
 					<posx>710</posx>
-					<posy>2</posy>
+					<posy>7</posy>
 					<align>left</align>
 					<font>font13_title</font>
 					<label>$INFO[Control.GetLabel]</label>
@@ -530,7 +530,7 @@
 				<control type="progress" id="707">
 					<description>progress control</description>
 					<posx>780</posx>
-					<posy>15</posy>
+					<posy>17</posy>
 					<width>250</width>
 					<height>8</height>
 					<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
@@ -541,7 +541,7 @@
 				</control>
 				<control type="label" id="705">
 					<posx>1040</posx>
-					<posy>2</posy>
+					<posy>7</posy>
 					<font>font13_title</font>
 					<label>$INFO[Control.GetLabel]</label>
 					<description>EPG ETime</description>
@@ -554,8 +554,8 @@
 					<height>35</height>
 					<label>31354</label>
 					<font></font>
-					<texturefocus>scroll-right-focus.png</texturefocus>
-					<texturenofocus>scroll-right.png</texturenofocus>
+					<texturefocus>Arrow-right-focus.png</texturefocus>
+					<texturenofocus>Arrow-right.png</texturenofocus>
 					<onleft>SetFocus(702)</onleft>
 					<onright></onright>
 					<onup>SetFocus(621)</onup>
