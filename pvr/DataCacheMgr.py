@@ -932,6 +932,9 @@ class DataCacheMgr( object ):
 	def Player_AVBlank( self, aBlank, aForce ) :
 		return self.mCommander.Player_AVBlank( aBlank, aForce )
 
+	def Player_SetMute( self, aMute ) :
+		return self.mCommander.Player_SetMute( aMute )
+
 	def Player_GetStatus( self ) :
 		return self.mCommander.Player_GetStatus( )
 
