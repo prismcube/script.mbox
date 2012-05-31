@@ -73,14 +73,14 @@ class Configure( SettingWindow ) :
 		self.mPassWord 			= None
 		self.mReLoadWifi		= False
 		
-
 		for i in range( len( leftGroupItems ) ) :
 			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i], descriptionList[i] ) )
 
 
 	def onInit( self ) :
-		LOG_TRACE('')
 		self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( False )
+		self.mDataCache.Player_VideoBlank( True, False )
+		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
@@ -101,7 +101,6 @@ class Configure( SettingWindow ) :
 		self.mInitialized = True
 		self.mVisibleParental = False
 		self.mReLoadIp = False
-		LOG_TRACE('')
 		
 
 	def onAction( self, aAction ) :
@@ -113,15 +112,17 @@ class Configure( SettingWindow ) :
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.mInitialized = False
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_INSTALLATION )			
+			self.mDataCache.Player_VideoBlank( False, False )
+			WinMgr.GetInstance().CloseWindow( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.mInitialized = False
+			self.mDataCache.Player_VideoBlank( False, False )
 			WinMgr.GetInstance().CloseWindow( )
-			
+
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == E_SUBMENU_LIST_ID and selectedId != self.mPrevListItemID :
 				self.mPrevListItemID = selectedId
@@ -804,7 +805,7 @@ class Configure( SettingWindow ) :
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
-				dialog.SetDialogProperty( 10, 'Setting Time...', ElisEventTimeReceived.getName( ) )
+				dialog.SetDialogProperty( 15, 'Setting Time...', ElisEventTimeReceived.getName( ) )
 				dialog.doModal( )
 
 				if dialog.GetResult( ) == False :
