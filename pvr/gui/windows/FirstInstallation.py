@@ -1,5 +1,5 @@
 from pvr.gui.WindowImport import *
-
+import pvr.TunerConfigMgr as ConfigMgr
 
 E_MAIN_GROUP_ID		=	9000
 E_FAKE_BUTTON		=	999
@@ -21,8 +21,7 @@ class FirstInstallation( SettingWindow ) :
 		self.mHasChannel		= False
 
 		self.mStepImage			= []
-		self.mIsAlreadyClose 	= False
-		self.mIsNextAntenna		= True
+
 
 	def onInit( self ) :
 		self.getControl( E_MAIN_GROUP_ID ).setVisible( False )
@@ -35,6 +34,7 @@ class FirstInstallation( SettingWindow ) :
 		self.SetListControl( self.mStepNum )
 		self.mInitialized = True
 		self.getControl( E_MAIN_GROUP_ID ).setVisible( True )
+		ConfigMgr.GetInstance().SetFristInstallation( True )
 
 		
 	def onAction( self, aAction ) :
@@ -136,38 +136,30 @@ class FirstInstallation( SettingWindow ) :
 		self.ResetAllControl( )
 		self.SetVideoRestore( )
 		self.mStepNum = E_STEP_SELECT_LANGUAGE
-		self.close( )
+		ConfigMgr.GetInstance().SetFristInstallation( False )		
+		WinMgr.GetInstance().CloseWindow( )
 
 
 	def OpenAntennaSetupWindow( self ) :
-		WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_ANTENNA_SETUP ).SetWindowType( True )
 		WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
-		WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_ANTENNA_SETUP ).SetWindowType( False )
+
+		"""
 		if self.GetResultAntennaStep( ) == True :
 			self.SetListControl( E_STEP_CHANNEL_SEARCH_CONFIG )
 		else :
 			self.SetListControl( E_STEP_VIDEO_AUDIO )
 		if self.GetAlreadyClose( ) == True :
 			self.getControl( E_MAIN_GROUP_ID ).setVisible( False )
-			self.SetAlreadyClose( False ) 
 			self.Close( )
 			self.getControl( E_MAIN_GROUP_ID ).setVisible( True )
+		"""
 
 
-	def GetAlreadyClose( self ) :
-		return self.mIsAlreadyClose
-
-
-	def SetAlreadyClose( self, aFlag ) :
-		self.mIsAlreadyClose = aFlag
-
-
-	def SetResultAntennaStep( self, aFlag ) :
-		self.mIsNextAntenna = aFlag
-
-
-	def GetResultAntennaStep( self ) :
-		return self.mIsNextAntenna
+	def SetResultAntennaStep( self, aResult ) :
+		if aResult == True :
+			self.mStepNum = E_STEP_CHANNEL_SEARCH_CONFIG
+		else :
+			self.mStepNum = E_STEP_VIDEO_AUDIO		
 
 
 	def SetListControl( self, aStep ) :
@@ -216,7 +208,7 @@ class FirstInstallation( SettingWindow ) :
 
 		elif self.mStepNum == E_STEP_CHANNEL_SEARCH_CONFIG :
 			self.mPrevStepNum = E_STEP_VIDEO_AUDIO
-			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( 'Channal Search Setup' )
+			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( 'Channel Search Setup' )
 			self.LoadFormattedSatelliteNameList( )
 			self.AddUserEnumControl( E_SpinEx01, 'Channel Search', USER_ENUM_LIST_YES_NO, self.mIsChannelSearch, 'Select Search Option' )
 			self.AddInputControl( E_Input01, 'Satellite', self.mFormattedList[ self.mSatelliteIndex ] )

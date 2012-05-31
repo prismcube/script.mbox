@@ -218,7 +218,7 @@ class EPGWindow( BaseWindow ) :
 
 		self.StopEPGUpdateTimer( )
 		self.SetVideoRestore( )
-		self.close( )
+		WinMgr.GetInstance().CloseWindow( )
 
 
 	def InitControl( self ) :
@@ -866,7 +866,6 @@ class EPGWindow( BaseWindow ) :
 
 	def ShowAllTimers( self ) :
 		LOG_TRACE('ShowAllTimers')
-		#self.Close( )
 		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMER_WINDOW )
 	
 

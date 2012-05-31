@@ -38,13 +38,13 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 		self.GlobalAction( actionId )				
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			self.onClose( )
+			self.Close( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			self.onClose( )
+			self.Close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )
@@ -94,7 +94,7 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 	def onFocus( self, aControlId ) :
 		pass
 
-	def onClose( self ) :
+	def Close( self ) :
 		if self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
 			if self.GetSelectedIndex( E_SpinEx02 ) == self.GetSelectedIndex( E_SpinEx04 ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -121,7 +121,7 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 			return
 			
 		self.mLoadConfig = True
-		self.close( )
+		WinMgr.GetInstance().CloseWindow( )
 
 
 	def InitConfig( self ) :

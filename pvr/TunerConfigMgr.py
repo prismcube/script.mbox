@@ -52,6 +52,8 @@ class TunerConfigMgr( object ) :
 		self.mOriginalTunerConfig = []
 		self.mOnecableSatelliteCount = 0
 
+		self.mFirstInstallation	 = False
+
 
 	def GetCurrentTunerIndex( self ) :
 		return self.mCurrentTuner
@@ -369,3 +371,13 @@ class TunerConfigMgr( object ) :
 
 	def GetNeedLoad( self ) :
 		return self.mNeedLoad
+
+
+	def SetFristInstallation( self, aEnable ) :
+		self.mFirstInstallation = aEnable
+
+
+	def GetFristInstallation( self ) :
+		return self.mFirstInstallation
+
+

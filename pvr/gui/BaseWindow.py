@@ -86,10 +86,20 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
+		self.mParentID = -1
+
 
 	@classmethod
 	def GetName(cls):
 		return cls.__name__
+
+
+	def SetParentID( self, aWindowID ) :
+		self.mParentID = aWindowID
+
+
+	def GetParentID( self ) :
+		return self.mParentID
 
 
 	def GetFocusId( self ) :

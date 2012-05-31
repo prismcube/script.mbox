@@ -60,7 +60,6 @@ class MainMenu( BaseWindow ) :
 			pass
 
 		elif actionId == Action.ACTION_PARENT_DIR :
-			self.close( )
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 
@@ -112,7 +111,6 @@ class MainMenu( BaseWindow ) :
 		elif aControlId == 20 :
 			pass
 			"""
-			self.close()
 			import pvr.Launcher
 			pvr.Launcher.GetInstance().PowerOff()
 			"""
@@ -123,5 +121,7 @@ class MainMenu( BaseWindow ) :
 		pass
 
 	def Close( self ) :
-		self.close()
+		LOG_TRACE('')	
+		pass
+
 

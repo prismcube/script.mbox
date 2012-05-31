@@ -10,7 +10,7 @@ class DummyWindow( BaseWindow ):
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		time.sleep( 0.5 )
-		self.close( )
+		WinMgr.GetInstance().CloseWindow( )
 
 	def onAction( self, aAction ) :
 		id = aAction.getId( )

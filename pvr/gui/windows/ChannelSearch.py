@@ -29,14 +29,14 @@ class ChannelSearch( SettingWindow ) :
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.ResetAllControl( )
 			self.SetVideoRestore( )
-			self.close( )
+			WinMgr.GetInstance().CloseWindow( )			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
 			self.SetVideoRestore( )
-			self.close( )
+			WinMgr.GetInstance().CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )

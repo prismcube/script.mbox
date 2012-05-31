@@ -33,7 +33,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 			self.SetLongitude( )
 			self.SetLatitude( )
 			self.ResetAllControl( )
-			self.close( )
+			WinMgr.GetInstance().CloseWindow( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -42,7 +42,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 			self.SetLongitude( )
 			self.SetLatitude( )
 			self.ResetAllControl( )
-			self.close( )
+			WinMgr.GetInstance().CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )

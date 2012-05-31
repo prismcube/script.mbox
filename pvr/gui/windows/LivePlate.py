@@ -53,7 +53,7 @@ class LivePlate( BaseWindow ) :
 		self.mAutomaticHideTimer = None	
 		self.mAsyncEPGTimer = None
 		self.mAsyncTuneTimer = None	
-		self.mAutomaticHide = True
+		self.mAutomaticHide = False
 
 
 	"""
@@ -1173,8 +1173,9 @@ class LivePlate( BaseWindow ) :
 		
 		self.StopAsyncTune()
 		self.StopAutomaticHide()
-
-		self.close()
+		LOG_TRACE( '----------------------BEFORE------------------------------')
+		WinMgr.GetInstance().CloseWindow( )
+		LOG_TRACE( '-----------------------ATRER-----------------------------')		
 
 
 	def SetLastChannelCertificationPinCode( self, aCertification ) :
@@ -1190,6 +1191,7 @@ class LivePlate( BaseWindow ) :
 
 	
 	def AsyncAutomaticHide( self ) :
+		LOG_TRACE( '-----------------------AsyncAutomaticHide-----------------------------')			
 		self.Close()
 
 

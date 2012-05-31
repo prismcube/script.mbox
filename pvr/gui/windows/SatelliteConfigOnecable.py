@@ -62,7 +62,7 @@ class SatelliteConfigOnecable( SettingWindow ) :
 					satellite.mOneCableUBFreq = self.mCurrentSatellite.mOneCableUBFreq
 
 			self.ResetAllControl( )
-			self.close( )
+			WinMgr.GetInstance().CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )
@@ -126,4 +126,4 @@ class SatelliteConfigOnecable( SettingWindow ) :
 			dialog.SetDialogProperty( 'ERROR', 'Save Configuration Fail' )
  			dialog.doModal( )
  			self.ResetAllControl( )
-			self.close( )
+			WinMgr.GetInstance().CloseWindow( )

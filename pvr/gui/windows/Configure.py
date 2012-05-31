@@ -79,6 +79,7 @@ class Configure( SettingWindow ) :
 
 
 	def onInit( self ) :
+		LOG_TRACE('')
 		self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( False )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
@@ -100,7 +101,8 @@ class Configure( SettingWindow ) :
 		self.mInitialized = True
 		self.mVisibleParental = False
 		self.mReLoadIp = False
-
+		LOG_TRACE('')
+		
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -111,15 +113,15 @@ class Configure( SettingWindow ) :
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.mInitialized = False
-			self.close( )
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_INSTALLATION )			
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.mInitialized = False
-			self.close( )
-
+			WinMgr.GetInstance().CloseWindow( )
+			
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == E_SUBMENU_LIST_ID and selectedId != self.mPrevListItemID :
 				self.mPrevListItemID = selectedId

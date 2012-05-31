@@ -101,7 +101,6 @@ class ArchiveWindow( BaseWindow ) :
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.SetVideoRestore( )
-			self.close( )
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -110,12 +109,10 @@ class ArchiveWindow( BaseWindow ) :
 					self.DoMarkToggle()
 				else :
 					self.StartRecordPlayback()
-				#self.close()
 
 
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.SetVideoRestore( )
-			self.close( )				
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 
@@ -416,7 +413,6 @@ class ArchiveWindow( BaseWindow ) :
 			else :
 				self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )			
 
-		#self.close()
 		self.mDataCache.SetKeyDisabled( True, recInfo )
 
 		self.RestoreLastRecordKey( )
@@ -748,7 +744,7 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def Close( self ) :
-		self.close( )
+		pass
 
 
 	def UpdateSelectedPosition( self ) :

@@ -17,20 +17,25 @@ class NullWindow( BaseWindow ) :
 		self.mGotoWinID = None
 		self.mOnEventing= False
 
+		LOG_TRACE('')
 
 		if self.mInitialized == False :
 			self.mInitialized = True
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 		self.mEventBus.Register( self )
 
 		if E_SUPPROT_HBBTV == True :
 			self.mCommander.AppHBBTV_Ready( 1 )
 
+		LOG_TRACE('')
+		
 	def onAction(self, aAction) :		
+		LOG_TRACE('')	
 		actionId = aAction.getId( )
-		self.GlobalAction( actionId )		
+		self.GlobalAction( actionId )
+		LOG_TRACE('actionId=%d' %actionId)		
 
 		if actionId == Action.ACTION_PREVIOUS_MENU:
 			if self.mGotoWinID :
@@ -61,6 +66,7 @@ class NullWindow( BaseWindow ) :
 			
 				
 		elif actionId == Action.ACTION_PARENT_DIR:
+			LOG_TRACE('')		
 			try :
 				ch = self.mDataCache.mOldChannel
 				self.mDataCache.Channel_SetCurrent( ch.mNumber, ch.mServiceType )
@@ -118,8 +124,8 @@ class NullWindow( BaseWindow ) :
 				#self.mCommander.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )
 			
 				window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE )
+				self.Close( )
 				window.SetAutomaticHide( True )
-				self.Close( )				
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 
@@ -136,8 +142,8 @@ class NullWindow( BaseWindow ) :
 				#self.mCommander.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
 
 				window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE )
+				self.Close( )
 				window.SetAutomaticHide( True )
-				self.Close( )				
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 			
 	

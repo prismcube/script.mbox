@@ -18,7 +18,7 @@ class EditSatellite( SettingWindow ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( 'Error', 'Satellite Infomation is empty. Please Reset STB' )
 			dialog.doModal( )
-			self.close( )
+			WinMgr.GetInstance().CloseWindow( )
 			return
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -40,7 +40,7 @@ class EditSatellite( SettingWindow ) :
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.ResetAllControl( )
 			self.SetVideoRestore( )
-			self.close( )
+			WinMgr.GetInstance().CloseWindow( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -48,7 +48,7 @@ class EditSatellite( SettingWindow ) :
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
 			self.SetVideoRestore( )
-			self.close( )
+			WinMgr.GetInstance().CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			pass

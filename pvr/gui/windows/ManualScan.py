@@ -44,7 +44,8 @@ class ManualScan( SettingWindow ) :
 			self.mInitialized = True
 			self.SetFocusControl( E_Input01 )
 			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
-
+			self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True )
+		
 		else :
 			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
 			self.SetVisibleControls( hideControlIds, False )
@@ -52,9 +53,8 @@ class ManualScan( SettingWindow ) :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( 'ERROR', 'Has No Configurd Satellite' )
  			dialog.doModal( )
- 			self.close( )
-
-		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True )
+			self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True ) 			
+			WinMgr.GetInstance().CloseWindow( )
 
 		
 	def onAction( self, aAction ) :
@@ -66,14 +66,14 @@ class ManualScan( SettingWindow ) :
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.ResetAllControl( )
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
-			self.close( )
+			WinMgr.GetInstance().CloseWindow( )
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
-			self.close( )
+			WinMgr.GetInstance().CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )

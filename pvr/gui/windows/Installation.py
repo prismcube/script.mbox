@@ -21,19 +21,24 @@ class Installation( BaseWindow ):
 		
 		
 	def onInit( self ):
+		LOG_TRACE('')
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Installation' )
 		
 		groupItems = []
+
+		LOG_TRACE('')
 		
 		for i in range( len( self.leftGroupItems ) ) :
 			#groupItems.append( xbmcgui.ListItem( self.leftGroupItems[i], self.descriptionList[i], self.icon[i] ) )
 			groupItems.append( xbmcgui.ListItem( self.leftGroupItems[i], self.descriptionList[i] ) )
-			
+
+		LOG_TRACE('')			
 		self.mCtrlLeftGroup = self.getControl( 9000 )
 		self.mCtrlLeftGroup.addItems( groupItems )
+		LOG_TRACE('')		
 
 		self.SetPipScreen( )
 		
@@ -44,14 +49,14 @@ class Installation( BaseWindow ):
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.SetVideoRestore( )
-			self.close( )
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.SetVideoRestore( )
-			self.close( )
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 
 	def onClick( self, aControlId ) :

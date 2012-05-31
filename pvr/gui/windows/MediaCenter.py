@@ -31,14 +31,14 @@ class MediaCenter( BaseWindow ) :
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.SetVideoRestore( )
-			self.close( )
+			WinMgr.GetInstance().CloseWindow( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			self.SetVideoRestore( )
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.SetVideoRestore( )
-			self.close( )
+			WinMgr.GetInstance().CloseWindow( )
 
 
 	def onClick( self, aControlId ) :

@@ -52,7 +52,7 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
-			self.close( )
+			WinMgr.GetInstance().CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )

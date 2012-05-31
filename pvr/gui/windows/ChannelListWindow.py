@@ -2385,7 +2385,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.StopAsyncEPG( )
 
 		self.SetVideoRestore( )
-		self.close( )
+		WinMgr.GetInstance().CloseWindow( )
 
 
 	def RestartAsyncEPG( self ) :

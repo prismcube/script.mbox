@@ -1,5 +1,5 @@
 from pvr.gui.WindowImport import *
-
+import pvr.TunerConfigMgr as ConfigMgr
 
 E_DEFAULT_GOURP_ID		= 9000
 
@@ -7,7 +7,7 @@ E_DEFAULT_GOURP_ID		= 9000
 class AntennaSetup( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mFirstInstallationType = False
+
 
 	def onInit( self ) :
 		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( False )
@@ -16,13 +16,13 @@ class AntennaSetup( SettingWindow ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( 'Error', 'Satellite Infomation is empty. Please Reset STB' )
 			dialog.doModal( )
-			self.close( )
+			WinMgr.GetInstance().CloseWindow( )
 			return
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		if self.mFirstInstallationType == True :
+		if ConfigMgr.GetInstance().GetFristInstallation( ) == True :
 			self.DrawFirstTimeInstallationStep( E_STEP_ANTENNA )
 		else :
 			self.DrawFirstTimeInstallationStep( None )
@@ -43,7 +43,7 @@ class AntennaSetup( SettingWindow ) :
 		self.AddInputControl( E_Input01, ' - Tuner 1 Configuration', '', 'Go to Tuner 1 Configure.' )
 		self.AddEnumControl( E_SpinEx04, 'Tuner2 Type', None, 'Setup tuner 2.' )
 		self.AddInputControl( E_Input02, ' - Tuner 2 Configuration','', 'Go to Tuner 2 Configure.' )
-		if self.mFirstInstallationType == True :
+		if ConfigMgr.GetInstance().GetFristInstallation( ) == True :
 			self.AddPrevNextButton( )
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( 'Next' )
 		self.setVisibleButton( )
@@ -68,7 +68,7 @@ class AntennaSetup( SettingWindow ) :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			if self.mFirstInstallationType == True :
+			if ConfigMgr.GetInstance().GetFristInstallation( ) == True :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( 'Are you sure?', 'Do you want to stop first time installation?' )
 				dialog.doModal( )
@@ -79,9 +79,9 @@ class AntennaSetup( SettingWindow ) :
 						self.CancelConfiguration( )
 					self.mTunerMgr.SetNeedLoad( True )
 					self.ResetAllControl( )
-					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).SetAlreadyClose( True )
-					self.close( )
+#					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).SetAlreadyClose( True )
 					self.CloseBusyDialog( )
+					WinMgr.GetInstance().CloseWindow( )
 				elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 					return	
 				elif dialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
@@ -109,8 +109,8 @@ class AntennaSetup( SettingWindow ) :
 
 				self.ResetAllControl( )
 				self.SetVideoRestore( )
-				self.close( )
 				self.CloseBusyDialog( )
+				WinMgr.GetInstance().CloseWindow( )
 			
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
@@ -191,9 +191,9 @@ class AntennaSetup( SettingWindow ) :
 				WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).SetResultAntennaStep( True )
 			else :
 				WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).SetResultAntennaStep( False )
-			self.close( )
 			self.mTunerMgr.SetNeedLoad( True )
 			self.CloseBusyDialog( )
+			WinMgr.GetInstance().CloseWindow( )			
 
 		
 	def onFocus( self, aControlId ) :
@@ -253,16 +253,13 @@ class AntennaSetup( SettingWindow ) :
 
 
 	def setVisibleButton( self ) :
-		if self.mFirstInstallationType == True :
+		if ConfigMgr.GetInstance().GetFristInstallation( ) == True :
 			self.SetVisibleControl( E_FIRST_TIME_INSTALLATION_NEXT, True )
 			self.SetVisibleControl( E_FIRST_TIME_INSTALLATION_PREV, True )
 		else :
 			self.SetVisibleControl( E_FIRST_TIME_INSTALLATION_NEXT, False )
 			self.SetVisibleControl( E_FIRST_TIME_INSTALLATION_PREV, False )			
 
-
-	def SetWindowType( self, aType ) :
-		self.mFirstInstallationType = aType
 
 
 	def ReTune( self ) :

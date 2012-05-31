@@ -13,6 +13,7 @@ from elementtree import ElementTree
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
 
+WIN_ID_ROOTWINDOW 					= 0
 WIN_ID_NULLWINDOW 					= 1
 WIN_ID_MAINMENU 					= 2
 WIN_ID_CHANNEL_LIST_WINDOW			= 3
@@ -92,7 +93,8 @@ class WindowMgr(object):
 		self.AddDefaultFont( )		
 		self.CopyIncludeFile( )
 
-		self.DefaultWindows( )
+		self.RootWindow( )
+		
 		self.CreateAllWindows( )
 
 
@@ -110,20 +112,52 @@ class WindowMgr(object):
 			return None
 	
 
-	def ShowWindow( self, aWindowId ):
-		LOG_TRACE('ShowWindow ID=%d' %aWindowId )
+	def ShowWindow( self, aWindowId, aParentId=0 ):
 		try :
+			LOG_ERR('ShowWindow ID=%s' %self.mWindows[aWindowId].GetName( ) )		
+			if self.mLastId  >= 0 :
+				LOG_ERR('LastWindow=%s' %self.mWindows[self.mLastId].GetName( ) )		
+				self.mWindows[self.mLastId].close( )
+
+				if aParentId > 0 :
+					self.mWindows[aWindowId].SetParentID( aParentId )
+				else :
+					self.mWindows[aWindowId].SetParentID( self.mLastId )
+			self.mLastId = aWindowId
 			self.mWindows[aWindowId].doModal( )
+
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
+			self.mLastId = 0
 
-		self.mLastId = aWindowId
 
+	def CloseWindow( self ):
+		try :	
+			if self.mLastId  > 0 :
+				parentId = self.mWindows[self.mLastId].GetParentID( )			
+				LOG_ERR('LastWindow=%s' %self.mWindows[self.mLastId].GetName( ) )		
+				self.mWindows[self.mLastId].close( )
+				if parentId <= 0 :
+					LOG_ERR('ShowWindow=%s' %self.mWindows[WIN_ID_NULLWINDOW].GetName( ) )	
+					self.mLastId = WIN_ID_NULLWINDOW					
+					self.mWindows[WIN_ID_NULLWINDOW].doModal( )	
+				else :
+					self.mLastId = parentId
+					LOG_ERR('ShowWindow=%s' %self.mWindows[parentId].GetName( ) )									
+					self.mWindows[parentId].doModal( )
+			else :
+				LOG_ERR( 'Invaild Window ID' )
 
-	def DefaultWindows( self ) :
-		from pvr.gui.windows.NullWindow import NullWindow
-		self.mWindows[WIN_ID_NULLWINDOW] = NullWindow('NullWindow.xml', self.mScriptDir )
-		LOG_ERR('---------------- self.mWindows[WIN_ID_NULLWINDOW] id=%s' %self.mWindows[WIN_ID_NULLWINDOW] )
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)
+			self.mLastId = 0
+		
+
+	def RootWindow( self ) :
+		from pvr.gui.windows.RootWindow import RootWindow
+		self.mWindows[WIN_ID_ROOTWINDOW] = RootWindow('RootWindow.xml', self.mScriptDir )
+		LOG_ERR('---------------- self.mWindows[WIN_ID_ROOTWINDOW] id=%s' %self.mWindows[WIN_ID_ROOTWINDOW] )
+
 
 
 	def CreateAllWindows( self ):
@@ -138,6 +172,9 @@ class WindowMgr(object):
 			for member in inspect.getmembers( self.mWindows[WIN_ID_NULLWINDOW] ) :
 				LOG_TRACE('member=%s' %member[0] )
 			"""				
+			from pvr.gui.windows.NullWindow import NullWindow
+			self.mWindows[WIN_ID_NULLWINDOW] = NullWindow('NullWindow.xml', self.mScriptDir )
+			LOG_ERR('---------------- self.mWindows[WIN_ID_NULLWINDOW] id=%s' %self.mWindows[WIN_ID_NULLWINDOW] )
 				
 
 			from pvr.gui.windows.MainMenu import MainMenu

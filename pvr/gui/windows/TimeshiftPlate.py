@@ -142,9 +142,12 @@ class TimeShiftPlate(BaseWindow):
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
 			LOG_TRACE( 'esc close : [%s] [%s]'% (aAction, id) )
 			self.Close()
+			"""
 			WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).Close()
 			WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_MAINMENU ).Close()
-			#WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+			"""
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+
 
 		elif id >= Action.REMOTE_0 and id <= Action.REMOTE_9 :
 			self.KeySearch( id-Action.REMOTE_0 )
@@ -904,7 +907,6 @@ class TimeShiftPlate(BaseWindow):
 		self.StopAsyncMove()
 		self.StopAutomaticHide()
 
-		self.close()
 		LOG_TRACE('Leave')
 
 
