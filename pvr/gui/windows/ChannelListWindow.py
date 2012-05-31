@@ -553,6 +553,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.CurrentTimeThread( ).join( )
 				self.mCtrlListCHList.reset( )
 				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_ROOTWINDOW )				
 
 			LOG_TRACE( 'go out Cancel' )
 
@@ -725,9 +726,8 @@ class ChannelListWindow( BaseWindow ) :
 					self.CurrentTimeThread( ).join( )
 					self.Close( )
 
-					window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE )
-					window.SetAutomaticHide( True )
-					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )				
 					return
 
 				LOG_TRACE( 'go out Cancel' )
@@ -2385,7 +2385,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.StopAsyncEPG( )
 
 		self.SetVideoRestore( )
-		WinMgr.GetInstance().CloseWindow( )
+		#WinMgr.GetInstance().CloseWindow( )
 
 
 	def RestartAsyncEPG( self ) :
