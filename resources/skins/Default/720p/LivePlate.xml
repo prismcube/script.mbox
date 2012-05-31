@@ -259,8 +259,8 @@
 						<width>45</width>
 						<height>35</height>
 						<textcolor>grey3</textcolor>
-						<texturefocus>DefaultIconWarning.png</texturefocus>
-						<texturenofocus>DefaultIconInfo.png</texturenofocus>
+						<texturefocus>OSDIconWarning.png</texturefocus>
+						<texturenofocus>OSDIconInfo.png</texturenofocus>
 						<onleft>627</onleft>
 						<onright>622</onright>
 						<onup></onup>
