@@ -265,21 +265,22 @@
 			<height>600</height>
 			<allowoverlay>yes</allowoverlay>
 			<control type="group">
-				<posx>0</posx>
-				<posy>-20</posy>
-				<control type="image">
+				<posx>5</posx>
+				<posy>-40</posy>
+				<!--control type="image">
 					<posx>0</posx>
 					<posy>210</posy>
 					<width>352</width>
 					<height>18</height>
 					<texture border="20">StackNF.png</texture>
-				</control>
+				</control-->
 				<control type="label" id="303">
 					<posx>0</posx>
-					<posy>209</posy>
+					<posy>207</posy>
 					<width>367</width>
 					<height>10</height>
 					<font>font12_title</font>
+					<textcolor>grey</textcolor>
 					<label>$INFO[Control.GetLabel]</label>
 					<description>ch name</description>
 				</control>
