@@ -113,7 +113,7 @@ class ChannelListWindow( BaseWindow ) :
 		# end thread
 		self.mEnableThread = False
 
-
+ 
 	def onAction(self, aAction):
 		id = aAction.getId()
 		
@@ -122,7 +122,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif id == 104 : #scroll up
 			xbmc.executebuiltin('XBMC.ReloadSkin()')
-		elif id == Action.REMOTE_0 : 
+		elif id == Action.ACTION_SELECT_ITEM : 
 			xbmc.executebuiltin('XBMC.ReloadSkin()')
 
 	def SetAutomaticHide( self, aHide=True ) :
@@ -131,7 +131,7 @@ class ChannelListWindow( BaseWindow ) :
 	def GetAutomaticHide( self ) :
 		return self.mAutomaticHide
 	"""
-
+ 
 	def onInit(self):
 		LOG_TRACE( 'Enter' )
 
@@ -2512,5 +2512,5 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 		LOG_TRACE('Leave')
-
+ 
 
