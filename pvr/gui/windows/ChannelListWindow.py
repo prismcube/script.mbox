@@ -554,7 +554,8 @@ class ChannelListWindow( BaseWindow ) :
 				self.CurrentTimeThread( ).join( )
 				self.mCtrlListCHList.reset( )
 				self.Close( )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_ROOTWINDOW )
+				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_ROOTWINDOW )
+				WinMgr.GetInstance().CloseWindow( )
 
 			LOG_TRACE( 'go out Cancel' )
 

@@ -64,13 +64,16 @@ class NullWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 			
 		elif actionId == Action.ACTION_PARENT_DIR:
-			LOG_TRACE('')		
+			pass
+			"""
+			LOG_TRACE('previous channel')
 			try :
 				ch = self.mDataCache.mOldChannel
 				self.mDataCache.Channel_SetCurrent( ch.mNumber, ch.mServiceType )
 
 			except Exception, ex:
 				print 'ERR prev channel'
+			"""
 
 		elif actionId == Action.ACTION_SELECT_ITEM:
 			LOG_TRACE('key ok')

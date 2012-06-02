@@ -13,6 +13,8 @@ FLAG_STOP  = 0
 FLAG_PLAY  = 1
 FLAG_PAUSE = 2
 
+E_ONINIT = None
+
 E_CONTROL_ENABLE  = 'enable'
 E_CONTROL_VISIBLE = 'visible'
 E_CONTROL_LABEL   = 'label'
@@ -116,11 +118,15 @@ class TimeShiftPlate(BaseWindow):
 
 		label = self.GetModeValue( )
 		self.UpdateLabelGUI( self.mCtrlLblMode.getId(), label )
+
+		self.GetNextSpeed( E_ONINIT )
 		
 		if self.mSpeed != 0 :
-			self.TimeshiftAction( self.mCtrlBtnPlay.getId() )
+			self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), False )
+			self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), True )
 		else :
-			self.TimeshiftAction( self.mCtrlBtnPause.getId() )
+			self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True )
+			self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
 		self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
 
 		self.mEventBus.Register( self )
@@ -335,7 +341,7 @@ class TimeShiftPlate(BaseWindow):
 		LOG_TRACE( 'Leave' )
 
 
-	def TimeshiftAction(self, aFocusId, aClose = None):
+	def TimeshiftAction( self, aFocusId ):
 		LOG_TRACE( 'Enter' )
 
 		ret = False
@@ -365,7 +371,7 @@ class TimeShiftPlate(BaseWindow):
 				self.UpdateLabelGUI( self.mCtrlLblMode.getId(), label )
 				# toggle
 				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), False )
-				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), True, True )
+				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), True )
 				self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
 
 		elif aFocusId == self.mCtrlBtnPause.getId() :
@@ -382,7 +388,7 @@ class TimeShiftPlate(BaseWindow):
 				self.mIsPlay = FLAG_PLAY
 
 				# toggle
-				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True, True )
+				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True )
 				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
 				self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
 
@@ -393,6 +399,7 @@ class TimeShiftPlate(BaseWindow):
 				if self.mMode == ElisEnum.E_MODE_LIVE :
 					ret = self.mDataCache.Player_Stop()
 					gobackID = WinMgr.WIN_ID_LIVE_PLATE
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 
 				elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 					ret = self.mDataCache.Player_Stop()
@@ -522,17 +529,9 @@ class TimeShiftPlate(BaseWindow):
 
 		elif aCtrlID == self.mCtrlBtnPlay.getId( ) :
 			self.mCtrlBtnPlay.setVisible( aValue )
-			if aExtra :
-				pass
-				#xbmc.sleep(50)
-				#self.setFocusId( aCtrlID )
 
 		elif aCtrlID == self.mCtrlBtnPause.getId( ) :
 			self.mCtrlBtnPause.setVisible( aValue )
-			if aExtra :
-				pass
-				#xbmc.sleep(50)
-				#self.setFocusId( aCtrlID )
 
 		elif aCtrlID == self.mCtrlBtnStop.getId( ) :
 			self.mCtrlBtnStop.setVisible( aValue )
@@ -731,6 +730,10 @@ class TimeShiftPlate(BaseWindow):
 				ret = 12800
 			elif self.mSpeed == 12800 :
 				ret = 12800
+
+		elif aFocusId == E_ONINIT :
+			ret = self.mSpeed
+
 		else:
 			ret = 100 #default
 
