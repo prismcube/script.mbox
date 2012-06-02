@@ -267,40 +267,32 @@
 			<height>600</height>
 			<allowoverlay>yes</allowoverlay>
 			<control type="group">
-				<posx>0</posx>
-				<posy>-20</posy>
-				<control type="image">
+				<posx>5</posx>
+				<posy>-40</posy>
+				<!--control type="image">
 					<posx>0</posx>
 					<posy>210</posy>
 					<width>352</width>
 					<height>18</height>
 					<texture border="20">StackNF.png</texture>
-				</control>
+				</control-->
 				<control type="label" id="303">
 					<posx>0</posx>
-					<posy>209</posy>
-					<width>367</width>
+					<posy>207</posy>
+					<width>350</width>
 					<height>10</height>
 					<font>font12_title</font>
-					<label>$INFO[Control.GetLabel]</label>
+					<textcolor>grey</textcolor>
+					<label> $INFO[Control.GetLabel]</label>
 					<description>ch name</description>
 				</control>
 			</control>
 			<control type="group">
 				<posx>0</posx>
-				<posy>300</posy>
+				<posy>200</posy>
 				<width>390</width>
-				<control type="label" id="304">
-					<description>EPG Info</description>
-					<posx>0</posx>
-					<posy>0</posy>
-					<font>font12_title</font>
-					<textcolor>grey</textcolor>
-					<label>$INFO[Control.GetLabel]</label>
-				</control>
 
 				<control type="group">
-				<description>EPG Info</description>
 					<control type="label" id="305">
 						<posx>0</posx>
 						<posy>20</posy>
@@ -310,7 +302,7 @@
 					</control>
 					<control type="progress" id="306">
 						<posx>200</posx>
-						<posy>20</posy>
+						<posy>25</posy>
 						<width>150</width>
 						<height>15</height>
 						<color>grey</color>
@@ -322,10 +314,21 @@
 						<overlaytexture>-</overlaytexture>
 					</control>
 				</control>
+
+				<control type="label" id="304">
+					<description>EPG Info</description>
+					<posx>0</posx>
+					<posy>50</posy>
+					<width>350</width>
+					<font>font13caps</font>
+					<textcolor>grey</textcolor>
+					<label>$INFO[Control.GetLabel]</label>
+				</control>
+
 				<control type="label" id="307">
 					<description>satellite info</description>
 					<posx>0</posx>
-					<posy>40</posy>
+					<posy>110</posy>
 					<font>font12_title</font>
 					<textcolor>grey</textcolor>
 					<label>$INFO[Control.GetLabel]</label>
@@ -333,12 +336,14 @@
 				<control type="label" id="308">
 					<description>career info</description>
 					<posx>0</posx>
-					<posy>60</posy>
+					<posy>130</posy>
 					<font>font12_title</font>
 					<textcolor>grey</textcolor>
 					<label>$INFO[Control.GetLabel]</label>
 				</control>
 				<control type="group" id="309">
+					<posx>0</posx>
+					<posy>80</posy>
 					<control type="image">
 						<posx>0</posx>
 						<posy>75</posy>
@@ -357,6 +362,8 @@
 				</control>
 				<!-- component -->
 				<control type="group">
+					<posx>0</posx>
+					<posy>110</posy>
 					<control type="grouplist">
 						<posx>0</posx>
 						<posy>100</posy>

@@ -888,13 +888,13 @@ class LivePlate( BaseWindow ) :
 			b = c= d =e = 'test'
 			starttime = time.time( )
 			#for i in range(1000):
-			d = a + b + c + d + e + "</test>"
+			d = a + b + c + d + e + '</test>'
 			endtime = time.time( )
 			print '==================== TEST TIME[string1]     loading[%s]'% (endtime - starttime )
 			
 			starttime = time.time( )
 			#for i in range(1000):
-			d = "%s%s%s%s%s</test>"% (a,b,c,d,e)
+			d = '%s%s%s%s%s</test>'% (a,b,c,d,e)
 			endtime = time.time( )
 			print '==================== TEST TIME[string2]     loading[%s]'% (endtime - starttime )
 			"""
@@ -907,7 +907,7 @@ class LivePlate( BaseWindow ) :
 			"""
 			starttime = time.time( )			
 			import sqlite3
-			db = sqlite3.connect("/tmp/channel.db")
+			db = sqlite3.connect('/tmp/channel.db')
 			cursor =db.cursor()
 
 			query = 'select * from tblChannel where ServiceType = 1 order by Number'
@@ -1191,8 +1191,9 @@ class LivePlate( BaseWindow ) :
 
 	
 	def AsyncAutomaticHide( self ) :
-		LOG_TRACE( '-----------------------AsyncAutomaticHide-----------------------------')			
-		self.Close()
+		LOG_TRACE( '-----------------------AsyncAutomaticHide-----------------------------')
+		xbmc.executebuiltin('xbmc.Action(previousmenu)')		
+		#self.Close()
 
 
 	def RestartAutomaticHide( self ) :

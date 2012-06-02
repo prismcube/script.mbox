@@ -316,6 +316,7 @@
 					<ondown>9050</ondown>
 					<itemgap>0</itemgap>
 					<visible>Container(9000).HasFocus(5)</visible>
+					<enable>substring(Window.Property(IsPVR),true)</enable>
 					<control type="button" id="90500">
 						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>MediaCenter</label>

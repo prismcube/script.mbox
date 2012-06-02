@@ -111,8 +111,8 @@ class TimeShiftPlate(BaseWindow):
 		
 		self.mTimeShiftExcuteTime = self.mDataCache.Datetime_GetLocalTime()
 
-		self.InitLabelInfo()
-		self.InitTimeShift()
+		self.InitLabelInfo( )
+		self.InitTimeShift( )
 
 		label = self.GetModeValue( )
 		self.UpdateLabelGUI( self.mCtrlLblMode.getId(), label )
@@ -213,8 +213,11 @@ class TimeShiftPlate(BaseWindow):
 				self.onClick( self.mCtrlBtnStop.getId() )
 
 		elif id == Action.ACTION_CONTEXT_MENU:
-			self.Close( )
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+			if self.mMode == ElisEnum.E_MODE_PVR :
+				pass
+			else :
+				self.Close( )
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif id == Action.ACTION_STOP :
 			self.onClick( self.mCtrlBtnStop.getId() )
@@ -371,7 +374,7 @@ class TimeShiftPlate(BaseWindow):
 
 			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				ret = self.mDataCache.Player_Pause()
-			elif self.mMode == ElisEnum.E_MODE_PVR:
+			elif self.mMode == ElisEnum.E_MODE_PVR :
 				ret = self.mDataCache.Player_Pause()
 
 			LOG_TRACE( 'play_pause() ret[%s]'% ret )

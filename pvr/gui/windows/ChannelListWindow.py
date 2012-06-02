@@ -113,7 +113,7 @@ class ChannelListWindow( BaseWindow ) :
 		# end thread
 		self.mEnableThread = False
 
-
+ 
 	def onAction(self, aAction):
 		id = aAction.getId()
 		
@@ -122,7 +122,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif id == 104 : #scroll up
 			xbmc.executebuiltin('XBMC.ReloadSkin()')
-		elif id == Action.REMOTE_0 : 
+		elif id == Action.ACTION_SELECT_ITEM : 
 			xbmc.executebuiltin('XBMC.ReloadSkin()')
 
 	def SetAutomaticHide( self, aHide=True ) :
@@ -131,7 +131,7 @@ class ChannelListWindow( BaseWindow ) :
 	def GetAutomaticHide( self ) :
 		return self.mAutomaticHide
 	"""
-
+ 
 	def onInit(self):
 		LOG_TRACE( 'Enter' )
 
@@ -554,6 +554,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.CurrentTimeThread( ).join( )
 				self.mCtrlListCHList.reset( )
 				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_ROOTWINDOW )				
 
 			LOG_TRACE( 'go out Cancel' )
 
@@ -726,9 +727,8 @@ class ChannelListWindow( BaseWindow ) :
 					self.CurrentTimeThread( ).join( )
 					self.Close( )
 
-					window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE )
-					window.SetAutomaticHide( True )
-					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )				
 					return
 
 				LOG_TRACE( 'go out Cancel' )
@@ -2386,7 +2386,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.StopAsyncEPG( )
 
 		self.SetVideoRestore( )
-		WinMgr.GetInstance().CloseWindow( )
+		#WinMgr.GetInstance().CloseWindow( )
 
 
 	def RestartAsyncEPG( self ) :
@@ -2513,5 +2513,5 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 		LOG_TRACE('Leave')
-
+ 
 

@@ -51,7 +51,7 @@ WIN_ID_DUMMY_WINDOW					= 100
 WIN_ID_TIMESHIFT_INFO_PLATE			= 101
 WIN_ID_TIMESHIFT_INFO_PLATE1		= 102
 WIN_ID_TIMESHIFT_INFO_PLATE2		= 103
-WIN_ID_TEST2 						= 104
+
 gWindowMgr = None
 
 def GetInstance():
@@ -105,19 +105,33 @@ class WindowMgr(object):
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
 			return None
-	
+
+
+	def ShowRootWindow( self ):
+		LOG_TRACE( '------------------------ START ROOT WINDOW --------------------------' )	
+		self.mWindows[WIN_ID_ROOTWINDOW].doModal( )
+		LOG_TRACE( '------------------------ END ROOT WINDOW --------------------------' )	
+
 
 	def ShowWindow( self, aWindowId, aParentId=0 ):
 		try :
-			LOG_ERR('ShowWindow ID=%s' %self.mWindows[aWindowId].GetName( ) )		
-			if self.mLastId  >= 0 :
-				LOG_ERR('LastWindow=%s' %self.mWindows[self.mLastId].GetName( ) )		
+			if aWindowId <= 0 :
+				LOG_ERR( 'Invalid Window ID=%d' %aWindowId )
+				
+			if self.mLastId > 0 :
+				LOG_TRACE('LastWindow=%s' %self.mWindows[self.mLastId].GetName( ) )		
 				self.mWindows[self.mLastId].close( )
-
-				if aParentId > 0 :
-					self.mWindows[aWindowId].SetParentID( aParentId )
-				else :
+				if aParentId == 0 :
 					self.mWindows[aWindowId].SetParentID( self.mLastId )
+				elif aParentId > 0 :
+					self.mWindows[aWindowId].SetParentID( aParentId )				
+				else:
+					LOG_ERR( 'Invalid Parent Window ID=%d' %aParentId )
+					self.mWindows[aWindowId].SetParentID( WIN_ID_NULLWINDOW )
+			else :
+				LOG_ERR( 'Has no valid last window id=%d' %self.mLastId )
+
+			LOG_ERR('ShowWindow ID=%s' %self.mWindows[aWindowId].GetName( ) )
 			self.mLastId = aWindowId
 			self.mWindows[aWindowId].doModal( )
 
@@ -127,21 +141,22 @@ class WindowMgr(object):
 
 
 	def CloseWindow( self ):
-		try :	
+		try :
 			if self.mLastId  > 0 :
 				parentId = self.mWindows[self.mLastId].GetParentID( )			
 				LOG_ERR('LastWindow=%s' %self.mWindows[self.mLastId].GetName( ) )		
 				self.mWindows[self.mLastId].close( )
-				if parentId <= 0 :
-					LOG_ERR('ShowWindow=%s' %self.mWindows[WIN_ID_NULLWINDOW].GetName( ) )	
-					self.mLastId = WIN_ID_NULLWINDOW					
-					self.mWindows[WIN_ID_NULLWINDOW].doModal( )	
-				else :
+				if parentId > 0 :
 					self.mLastId = parentId
 					LOG_ERR('ShowWindow=%s' %self.mWindows[parentId].GetName( ) )									
 					self.mWindows[parentId].doModal( )
+				else :				
+					LOG_ERR('ShowWindow=%s' %self.mWindows[WIN_ID_NULLWINDOW].GetName( ) )	
+					self.mLastId = WIN_ID_NULLWINDOW					
+					self.mWindows[WIN_ID_NULLWINDOW].doModal( )	
+
 			else :
-				LOG_ERR( 'Invaild Window ID' )
+				LOG_ERR( 'Invaild Window ID=%d' %self.mLastId )
 
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
@@ -308,9 +323,6 @@ class WindowMgr(object):
 			from pvr.gui.windows.test1 import Test1
 			Test1('MyPics.xml', self.mScriptDir ).doModal()
 			"""
-
-			from pvr.gui.windows.Test2 import Test2
-			self.mWindows[WIN_ID_TEST2]=Test2('Test2.xml', self.mScriptDir )
 
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
