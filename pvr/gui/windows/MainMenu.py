@@ -7,6 +7,8 @@ BUTTON_ID_EPG					= 90300
 BUTTON_ID_CHANNEL_LIST			= 90400
 BUTTON_ID_MEDIA_CENTER			= 90500
 BUTTON_ID_SYSTEM_INFO			= 90600
+BUTTON_ID_BACK					= 90700
+BUTTON_ID_HIDDEN_TEST			= 90800
 
 BUTTON_ID_MEDIA_WEATHER	        = 90501
 BUTTON_ID_MEDIA_PICTURES        = 90502
@@ -106,6 +108,9 @@ class MainMenu( BaseWindow ) :
 
 		elif aControlId == BUTTON_ID_SYSTEM_INFO :
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_SYSTEM_INFO )
+
+		elif aControlId == BUTTON_ID_HIDDEN_TEST :
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_HIDDEN_TEST )
 
 		elif aControlId == 20 :
 			pass

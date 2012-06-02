@@ -10,7 +10,6 @@ class ChannelSearch( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
-		self.SetPipScreen( )
 		self.SetSettingWindowLabel( 'Channel Scan' )
 
 		self.AddInputControl( E_Input01, 'Automatic Scan', '', 'Running automatic scan.' )
@@ -19,6 +18,7 @@ class ChannelSearch( SettingWindow ) :
 		self.InitControl( )
 		self.mInitialized = True
 		self.SetFocusControl( E_Input01 )
+		self.SetPipScreen( )
 
 
 	def onAction( self, aAction ) :

@@ -26,8 +26,6 @@ class AntennaSetup( SettingWindow ) :
 			self.DrawFirstTimeInstallationStep( E_STEP_ANTENNA )
 		else :
 			self.DrawFirstTimeInstallationStep( None )
-
-		self.SetPipScreen( )
 		
 		if self.mTunerMgr.GetNeedLoad( ) == True : 
 			self.mTunerMgr.LoadOriginalTunerConfig( )
@@ -52,6 +50,7 @@ class AntennaSetup( SettingWindow ) :
 		self.DisableControl( )
 		self.mInitialized = True
 		self.SetFocusControl( E_SpinEx01 )
+		self.SetPipScreen( )
 		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True )
 
 		

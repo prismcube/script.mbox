@@ -112,16 +112,16 @@ class Configure( SettingWindow ) :
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.mInitialized = False
-			self.mDataCache.Player_VideoBlank( False, False )
 			WinMgr.GetInstance().CloseWindow( )
+			self.mDataCache.Player_VideoBlank( False, False )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.mInitialized = False
-			self.mDataCache.Player_VideoBlank( False, False )
 			WinMgr.GetInstance().CloseWindow( )
+			self.mDataCache.Player_VideoBlank( False, False )			
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == E_SUBMENU_LIST_ID and selectedId != self.mPrevListItemID :

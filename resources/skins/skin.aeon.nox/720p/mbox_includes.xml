@@ -125,20 +125,16 @@
 	</include>
 
 	<include name="DefaultSettingWindowPigScreen">
-		<control type="group">
-			<animation type="WindowOpen" reversible="false">
-				<effect type="fade" start="0" end="100" time="300" />
-			</animation>
-			<animation type="WindowClose" reversible="false">
-				<effect type="fade" start="100" end="0" time="300" />
-			</animation>
-			<control type="image" id="8899">
-				<posx>880</posx>
-				<posy>150</posy>
-				<width>352</width>
-				<height>198</height>
-				<texture>video_pig_overlay.png</texture>
-			</control>
+		<control type="image" id="8899">
+			<posx>878</posx>
+			<posy>150</posy>
+			<width>352</width>
+			<height>198</height>
+			<animation effect="zoom" start="0" end="100" center="auto" time="500" tween="quadratic" easing="out">WindowOpen</animation>
+			<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			<animation effect="zoom" start="0" end="100" center="auto" time="500" tween="quadratic" easing="out" condition="!Control.HasFocus(999)">Conditional</animation>
+			<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in" condition="Control.HasFocus(999)">Conditional</animation>
+			<texture>video_pig_overlay.png</texture>
 		</control>
 	</include>
 

@@ -123,6 +123,11 @@
 						<onclick>ParentDir</onclick>
 						<visible>true</visible>
 					</item>
+					<item id="8">
+						<label>Test</label>
+						<onclick>SendClick(90800)</onclick>
+						<visible>False</visible>
+					</item>
 				</content>
 			</control>
 			<control type="image">
@@ -299,7 +304,6 @@
 					</control>
 				</control>
 
-
 				<!-- Media Center -->
 				<control type="grouplist" id="9050">
 					<posx>10</posx>
@@ -393,8 +397,27 @@
 						<visible>false</visible>
 					</control>
 				</control>
+
+				<!-- Test Mode -->
+				<control type="grouplist" id="9080">
+					<posx>10</posx>
+					<posy>300</posy>
+					<width>240</width>
+					<height>360</height>
+					<align>center</align>
+					<onleft>9000</onleft>
+					<onup>9070</onup>
+					<ondown>9070</ondown>
+					<itemgap>0</itemgap>
+					<visible>Container(9000).HasFocus(8)</visible>
+					<control type="button" id="90800">
+						<include>DefaultButtonHomeSubCommonValues</include>
+						<label>Hidden Test</label>
+						<onclick>-</onclick>
+						<visible>false</visible>
+					</control>
+				</control>
 			</control>
-			
 		</control>
 		<!--Sub Script-->
 		<control type="group">

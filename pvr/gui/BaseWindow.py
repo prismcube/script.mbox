@@ -131,11 +131,16 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		
 		x, y, w, h = pvr.GuiHelper.GetInstanceSkinPosition( ).GetPipPosition( x, y, w, h )
 
-		self.mDataCache.Player_SetVIdeoSize( x, y, w, h )
+		self.mDataCache.Player_SetVIdeoSize( x, y + 1, w, h - 2 )
 
 
 	def SetVideoRestore( self ) :
-		ret = self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
+		delay = threading.Timer( 0.5, self.SetVideoRestoreDelay )			
+		delay.start( )
+
+
+	def SetVideoRestoreDelay( self ) :
+		self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
 
 
 	#@GuiLock

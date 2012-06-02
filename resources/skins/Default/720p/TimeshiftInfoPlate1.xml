@@ -4,7 +4,7 @@
 	<backgroundcolor>0x00ffffff</backgroundcolor>
 	<controls>
 		<control type="group">
-			<include>Window_OpenClose_Animation</include>
+			<include>DefaultWindowFade</include>
 			<control type="image">
 				<posx>0</posx>
 				<posy>540</posy>

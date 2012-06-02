@@ -4,6 +4,8 @@ from pvr.gui.WindowImport import *
 CONTEXT_ACTION_VIDEO_SETTING = 1
 CONTEXT_ACTION_AUDIO_SETTING = 2
 
+MAIN_GROUP_ID = 8000
+
 class DialogSetLivePlate( SettingDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingDialog.__init__( self, *args, **kwargs )
@@ -69,6 +71,7 @@ class DialogSetLivePlate( SettingDialog ) :
 
 
 	def DrawItem( self ) :
+		self.getControl( MAIN_GROUP_ID ).setVisible( False )
 		self.ResetAllControl( )
 
 		if self.mMode == CONTEXT_ACTION_VIDEO_SETTING :
@@ -82,8 +85,6 @@ class DialogSetLivePlate( SettingDialog ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			#self.getControl( E_SUBMENU_LIST_ID ).setVisible( True )
-
 		elif self.mMode == CONTEXT_ACTION_AUDIO_SETTING :
 			LOG_TRACE('list audio[%s]'% self.mAudioTrack)
 			self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG('Audio HDMI'), self.mAudioTrack, 0)
@@ -96,10 +97,9 @@ class DialogSetLivePlate( SettingDialog ) :
 			hideControlIds = [ E_DialogSpinEx02, E_DialogSpinEx03, E_DialogSpinEx04 ]
 			self.SetVisibleControls( hideControlIds, False )
 
-		#self.AddOkCanelButton( )
 		self.SetAutoHeight( True )
 		self.InitControl( )
-
+		self.getControl( MAIN_GROUP_ID ).setVisible( True )
 
 	def IsOK( self ) :
 		return self.mIsOk

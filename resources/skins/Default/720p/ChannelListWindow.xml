@@ -17,9 +17,7 @@
 			<width>1280</width>
 			<height>720</height>
 			<texture background="true">backgrounds/pictures.jpg</texture>
-			<include>DefaultBackgroundFade</include>
-			<fadetime>FanartCrossfadeTime</fadetime>
-			<visible>true</visible>
+			<include>DefaultWindowFade</include>
 		</control>
 
 		<control type="group">
@@ -46,6 +44,18 @@
 
 <!--  local time -->
 		<include>DefaultCommonDateTime</include>
+
+		<!-- PIP -->
+		<control type="image" id="8899">
+			<posx>835</posx>
+			<posy>133</posy>
+			<width>352</width>
+			<height>198</height>
+			<animation effect="zoom" start="0" end="100" center="auto" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+			<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			<texture>video_pig_overlay.png</texture>
+		</control>
+
 
 <!-- middle left -->
 		<control type="group" id="49">
@@ -250,14 +260,6 @@
 		</control>
 
 <!-- middle right -->
-		<control type="image" id="8899">
-			<posx>835</posx>
-			<posy>133</posy>
-			<width>352</width>
-			<height>198</height>
-			<texture>video_pig_overlay.png</texture>
-		</control>
-
 		<control type="group" id="300">
 			<posx>835</posx>
 			<posy>142</posy>

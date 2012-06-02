@@ -13,6 +13,7 @@
 			    <height>638</height>
 			    <texture>settings/settings_intframe_bottom.png</texture>
 				<include>Animation_SettingsInternalPanel</include>
+				<animation effect="fade" start="100" end="50" condition="true">Conditional</animation>
 			</control>
 			<control type="image">
 				<posx>70</posx>

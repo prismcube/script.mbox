@@ -1,293 +1,106 @@
 <window>
-	<defaultcontrol always="true">9000</defaultcontrol>
-	<allowoverlay>no</allowoverlay>
+	<defaultcontrol always="true">102</defaultcontrol>
+	<onload>SetProperty(ItemHeight,38)</onload>					<!--Input Item Height-->
+	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<include>DefaultBehindDialogFadeOut</include>
-		<control type="group">
-			<posx>280</posx>
-			<posy>150</posy>
+		<control type="group" id="9000">
+			<posx>600</posx>
+			<posy>200</posy>
             <include>DefaultDialogCloseEffect</include>
 			<control type="image">
-				<description>background image</description>
+				<description>background top image</description>
 				<posx>0</posx>
-				<posy>100</posy>
-				<width>720</width>
-				<height>220</height>
-				<texture border="40">DialogBack.png</texture>
+				<posy>-54</posy>
+				<width>370</width>
+				<height>54</height>
+				<texture border="45,45,45,0">DialogContextTop.png</texture>
 			</control>
-			<control type="image">
-				<posx>100</posx>
-				<posy>110</posy>
-				<width>530</width>
-				<height>90</height>
-				<aspectratio>stretch</aspectratio>
-				<texture>GlassTitleBar.png</texture>
-			</control>
-			<control type="button" id="101">
+			<control type="button" id="103">
 				<description>Close Window button</description>
-				<posx>630</posx>
-				<posy>109</posy>
+				<posx>260</posx>
+				<posy>-24</posy>
 				<width>64</width>
 				<height>32</height>
+				<onup>102</onup>
+				<ondown>102</ondown>
+				<onleft>102</onleft>
+				<onright>102</onright>
 				<label>-</label>
 				<font>-</font>
 				<onclick>PreviousMenu</onclick>
 				<texturefocus>DialogCloseButton-focus.png</texturefocus>
 				<texturenofocus>DialogCloseButton.png</texturenofocus>
-				<onleft>9101</onleft>
-				<onright>9101</onright>
-				<onup>9101</onup>
-				<ondown>9101</ondown>
-				<visible>system.getbool(input.enablemouse)</visible>
 			</control>
-			<control type="label" id="100">
-				<description>header label</description>
-				<posx>80</posx>
-				<posy>118</posy>
-				<width>570</width>
-				<height>30</height>
-				<font>font13_title</font>
-				<align>center</align>
-				<aligny>center</aligny>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
-				<label>Move Antenna</label>
+			<control type="image">
+				<posx>34</posx>
+				<posy>-6</posy>
+				<width>297</width>
+				<height>4</height>
+				<texture>separator.png</texture>
 			</control>
-			<control type="grouplist" id="9000">
-				<visible>true</visible>
-				<posx>50</posx>
-				<posy>140</posy>
-				<width>700</width>
-				<height>120</height>
-				<itemgap>10</itemgap>
-				<onleft></onleft>
-				<onright></onright>
-				<onup></onup>
-				<ondown></ondown>
-				<orientation>horizontal</orientation>
-				<!-- Button 1 -->
-				<control type="group" id="9100">
-					<visible></visible>
-					<width>120</width>
-					<height>40</height>
-					<defaultcontrol always="true">9101</defaultcontrol>
-					<control type="button" id="9101">
-						<description>Button Icon</description>
-						<posx>35</posx>
-						<posy>75</posy>
-						<width>35</width>
-						<height>35</height>
-						<texturenofocus>OSDRewindNF.png</texturenofocus>
-						<texturefocus>OSDRewindFO.png</texturefocus>
-						<onleft>9501</onleft>
-						<onright>9201</onright>
-						<onup>101</onup>
-						<ondown>101</ondown>
-					</control>
+			<control type="image" id="100">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>370</width>
+				<texture border="45,0,45,0">DialogContextMiddle.png</texture>
+			</control>
+			<control type="image" id="101">
+				<description>background bottom image</description>
+				<posx>0</posx>
+				<width>370</width>
+				<height>50</height>
+				<texture border="45,0,45,49">DialogContextBottom.png</texture>
+			</control>
+			<control type="list" id="102">
+				<posx>34</posx>
+				<posy>0</posy>
+				<width>297</width>
+				<height>380</height>						<!--Change ProPerty ItemHeight * 10 -->
+				<onup>102</onup>
+				<ondown>102</ondown>
+				<onleft>103</onleft>
+				<onright>103</onright>
+				<itemlayout width="297" height="38" >		<!--Change ProPerty ItemHeight-->
 					<control type="label">
-						<posx>10</posx>
-						<posy>40</posy>
-						<width>120</width>
-						<height>40</height>
-						<font>font12</font>
+						<posx>150</posx>
+						<posy>0</posy>
+						<width>297</width>
+						<height>38</height>					<!--Change ProPerty ItemHeight-->
+						<font>fontContextMenu</font>
+						<align>center</align>
+						<aligny>center</aligny>
 						<textcolor>grey2</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Move West[/B]</label>
-						<visible>![Control.HasFocus(9101)]</visible>
+						<label>$INFO[ListItem.Label]</label>
+					</control>		
+				</itemlayout>
+				<focusedlayout width="297" height="38">		<!--Change ProPerty ItemHeight-->
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>297</width>
+						<height>38</height>					<!--Change ProPerty ItemHeight-->
+						<texture border="5">button-focus.png</texture>
+						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
 					</control>
 					<control type="label">
-						<posx>10</posx>
-						<posy>40</posy>
-						<width>120</width>
-						<height>40</height>
-						<font>font12</font>
+						<posx>150</posx>
+						<posy>0</posy>
+						<width>297</width>
+						<height>38</height>					<!--Change ProPerty ItemHeight-->
+						<font>fontContextMenu</font>
+						<align>center</align>
+						<aligny>center</aligny>
 						<textcolor>white</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Move West[/B]</label>
-						<visible>[Control.HasFocus(9101)]</visible>
+						<label>$INFO[ListItem.Label]</label>
+						<scroll>true</scroll>
 					</control>
-				</control>
-				<!-- Button 2 -->
-				<control type="group" id="9200">
-					<visible></visible>
-					<width>120</width>
-					<height>40</height>
-					<defaultcontrol always="true">9201</defaultcontrol>
-					<control type="button" id="9201">
-						<description>Button Icon</description>
-						<posx>35</posx>
-						<posy>75</posy>
-						<width>35</width>
-						<height>35</height>
-						<texturenofocus>OSDRewindPlayNF.png</texturenofocus>
-						<texturefocus>OSDRewindPlayFO.png</texturefocus>
-						<onleft>9101</onleft>
-						<onright>9301</onright>
-						<onup>101</onup>
-						<ondown>101</ondown>
-					</control>
-					<control type="label">
-						<posx>10</posx>
-						<posy>40</posy>
-						<width>120</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>grey2</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Step West[/B]</label>
-						<visible>![Control.HasFocus(9201)]</visible>
-					</control>
-					<control type="label">
-						<posx>10</posx>
-						<posy>40</posy>
-						<width>120</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>white</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Step West[/B]</label>
-						<visible>[Control.HasFocus(9201)]</visible>
-					</control>
-				</control>
-				<!-- Button 3 -->
-				<control type="group" id="9300">
-					<visible></visible>
-					<width>120</width>
-					<height>40</height>
-					<defaultcontrol always="true">9301</defaultcontrol>
-					<control type="button" id="9301">
-						<description>Button Icon</description>
-						<posx>35</posx>
-						<posy>75</posy>
-						<width>35</width>
-						<height>35</height>
-						<texturenofocus>OSDStopNF.png</texturenofocus>
-						<texturefocus>OSDStopFO.png</texturefocus>
-						<onleft>9201</onleft>
-						<onright>9401</onright>
-						<onup>101</onup>
-						<ondown>101</ondown>
-					</control>
-					<control type="label">
-						<posx>30</posx>
-						<posy>40</posy>
-						<width>120</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>grey2</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Stop[/B]</label>
-						<visible>![Control.HasFocus(9301)]</visible>
-					</control>
-					<control type="label">
-						<posx>30</posx>
-						<posy>40</posy>
-						<width>120</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>white</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Stop[/B]</label>
-						<visible>[Control.HasFocus(9301)]</visible>
-					</control>
-				</control>
-				<!-- Button 4 -->
-				<control type="group" id="9400">
-					<visible></visible>
-					<width>120</width>
-					<height>40</height>
-					<defaultcontrol always="true">9401</defaultcontrol>
-					<control type="button" id="9401">
-						<description>Button Icon</description>
-						<posx>35</posx>
-						<posy>75</posy>
-						<width>35</width>
-						<height>35</height>
-						<texturenofocus>OSDPlayNF.png</texturenofocus>
-						<texturefocus>OSDPlayFO.png</texturefocus>
-						<onleft>9301</onleft>
-						<onright>9501</onright>
-						<onup>101</onup>
-						<ondown>101</ondown>
-					</control>
-					<control type="label">
-						<posx>10</posx>
-						<posy>40</posy>
-						<width>120</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>grey2</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Step East[/B]</label>
-						<visible>![Control.HasFocus(9401)]</visible>
-					</control>
-					<control type="label">
-						<posx>10</posx>
-						<posy>40</posy>
-						<width>120</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>white</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Step East[/B]</label>
-						<visible>[Control.HasFocus(9401)]</visible>
-					</control>
-				</control>
-				<!-- Button 5 -->
-				<control type="group" id="9500">
-					<visible></visible>
-					<width>120</width>
-					<height>40</height>
-					<defaultcontrol always="true">9501</defaultcontrol>
-					<control type="button" id="9501">
-						<description>Button Icon</description>
-						<posx>35</posx>
-						<posy>75</posy>
-						<width>35</width>
-						<height>35</height>
-						<texturenofocus>OSDForwardNF.png</texturenofocus>
-						<texturefocus>OSDForwardFO.png</texturefocus>
-						<onleft>9401</onleft>
-						<onright>9101</onright>
-						<onup>101</onup>
-						<ondown>101</ondown>
-					</control>
-					<control type="label">
-						<posx>10</posx>
-						<posy>40</posy>
-						<width>120</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>grey2</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Move East[/B]</label>
-						<visible>![Control.HasFocus(9501)]</visible>
-					</control>
-					<control type="label">
-						<posx>10</posx>
-						<posy>40</posy>
-						<width>120</width>
-						<height>40</height>
-						<font>font12</font>
-						<textcolor>white</textcolor>
-						<align>left</align>
-						<aligny>center</aligny>
-						<label>[B]Move East[/B]</label>
-						<visible>[Control.HasFocus(9501)]</visible>
-					</control>
-				</control>
+				</focusedlayout>
 			</control>
 		</control>
 	</controls>
 </window>
+
 
