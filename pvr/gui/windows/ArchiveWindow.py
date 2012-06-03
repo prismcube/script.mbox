@@ -56,6 +56,7 @@ class ArchiveWindow( BaseWindow ) :
 		self.mRecordList = [] 
 		self.mSortList = [] 		
 		self.mRecordListItems = []
+		self.mLastFocusItem = -1
 
 		self.mServiceType =  self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( ).mServiceType
 
@@ -415,7 +416,7 @@ class ArchiveWindow( BaseWindow ) :
 
 	def StartRecordPlayback( self, aResume=True ) :
 		selectedPos = self.GetSelectedPosition( )
-		if self.mSelectRecordKey == self.mRecordList[selectedPos].mRecordKey :
+		if self.mLastFocusItem == selectedPos :
 			self.SetVideoRestore( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 		else :		
@@ -433,6 +434,7 @@ class ArchiveWindow( BaseWindow ) :
 
 			self.mDataCache.SetKeyDisabled( True, recInfo )
 			self.RestoreLastRecordKey( )
+			self.mLastFocusItem = selectedPos
 
 
 	def GetSelectedPosition( self ) :
