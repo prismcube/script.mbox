@@ -4,6 +4,7 @@ from pvr.gui.WindowImport import *
 CAS_SLOT_NUM_1					= 0
 CAS_SLOT_NUM_2					= 1
 
+
 class ConditionalAccess( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
@@ -11,7 +12,7 @@ class ConditionalAccess( SettingWindow ) :
 			
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId  )
+		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.SetSettingWindowLabel( 'Conditional Access' )
 

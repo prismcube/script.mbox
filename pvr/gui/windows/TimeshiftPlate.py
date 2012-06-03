@@ -1,6 +1,4 @@
 from pvr.gui.WindowImport import *
-from pvr.GuiHelper import ClassToList
-
 
 FLAG_CLOCKMODE_ADMYHM  = 1
 FLAG_CLOCKMODE_AHM     = 2

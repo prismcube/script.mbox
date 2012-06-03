@@ -2,9 +2,6 @@ from pvr.gui.WindowImport import *
 import pvr.ScanHelper as ScanHelper
 
 
-E_DEFAULT_GOURP_ID		= 9000
-
-
 class ManualScan( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
@@ -19,8 +16,6 @@ class ManualScan( SettingWindow ) :
 
 
 	def onInit( self ) :
-		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( False )
-
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
@@ -36,16 +31,15 @@ class ManualScan( SettingWindow ) :
 		
 		self.LoadFormattedSatelliteNameList( )
 		if len( self.mConfiguredSatelliteList ) > 0 :
+			if self.getControl( E_SETTING_DESCRIPTION ).getLabel( ) == 'Has no configured satellite' :
+				hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
+				self.SetVisibleControls( hideControlIds, True )
 			self.LoadTransponderList( )
 			self.SetConfigTransponder( )
-
 			self.InitConfig( )
-
 			self.mInitialized = True
 			self.SetFocusControl( E_Input01 )
 			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
-			self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True )
-		
 		else :
 			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
 			self.SetVisibleControls( hideControlIds, False )
@@ -53,7 +47,6 @@ class ManualScan( SettingWindow ) :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( 'ERROR', 'Has No Configurd Satellite' )
  			dialog.doModal( )
-			self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True ) 			
 			WinMgr.GetInstance().CloseWindow( )
 
 		
