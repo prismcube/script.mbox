@@ -2,7 +2,6 @@
 	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
-		<include>DefaultBehindDialogFadeOut</include>
 		<control type="group">
 		<include>DefaultDialogCloseEffect</include>			
 			<posx>90</posx>

@@ -4,7 +4,6 @@
 	<include>DefaultDialogOpenEffect</include>
 	<defaultcontrol always="true">200</defaultcontrol>	
 	<controls>
-		<include>DefaultBehindDialogFadeOut</include>
 		<control type="group">
 			<posx>335</posx>
 			<posy>100</posy>

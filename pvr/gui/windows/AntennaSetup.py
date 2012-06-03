@@ -8,15 +8,19 @@ class AntennaSetup( SettingWindow ) :
 
 
 	def onInit( self ) :
+		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWin = xbmcgui.Window( self.mWinId )
+
+		self.SetSettingWindowLabel( 'Antenna & Satellite Setup' )
+
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
+			self.getControl( E_SUBMENU_LIST_ID ).setVisible( False )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( 'Error', 'Satellite Infomation is empty. Please Reset STB' )
 			dialog.doModal( )
 			WinMgr.GetInstance().CloseWindow( )
-			return
-
-		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
+		self.getControl( E_SUBMENU_LIST_ID ).setVisible( True )
+		
 
 		if ConfigMgr.GetInstance().GetFristInstallation( ) == True :
 			self.DrawFirstTimeInstallationStep( E_STEP_ANTENNA )
@@ -28,9 +32,6 @@ class AntennaSetup( SettingWindow ) :
 			self.mTunerMgr.Load( )
 			self.mTunerMgr.SetNeedLoad( False )
 
-		self.SetSettingWindowLabel( 'Antenna & Satellite Setup' )
-
-
 		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', None, 'Select tuner 2 connection type.' )
 		self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', None, 'Select tuner 2 configuration.' )
 		self.AddEnumControl( E_SpinEx03, 'Tuner1 Type', None, 'Setup tuner 1.' )
@@ -41,7 +42,6 @@ class AntennaSetup( SettingWindow ) :
 			self.AddPrevNextButton( )
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( 'Next' )
 		self.setVisibleButton( )
-
 		self.InitControl( )
 		self.DisableControl( )
 		self.mInitialized = True

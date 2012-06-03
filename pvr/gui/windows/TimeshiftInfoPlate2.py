@@ -6,8 +6,6 @@ import pvr.gui.WindowMgr as WinMgr
 import pvr.gui.DialogMgr as DiaMgr
 import pvr.DataCacheMgr as CacheMgr
 from pvr.gui.WindowImport import *
-from pvr.GuiHelper import GetImageByEPGComponent, GetSelectedLongitudeString, ClassToList
-
 
 FLAG_CLOCKMODE_ADMYHM  = 1
 FLAG_CLOCKMODE_AHM     = 2

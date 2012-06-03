@@ -35,7 +35,7 @@ class Installation( BaseWindow ):
 		self.mCtrlLeftGroup = self.getControl( 9000 )
 		self.mCtrlLeftGroup.addItems( groupItems )
 		self.SetPipScreen( )
-		print 'dhkim test ######################'
+
 	
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )

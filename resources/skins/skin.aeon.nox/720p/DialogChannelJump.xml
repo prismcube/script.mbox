@@ -4,7 +4,6 @@
 	<backgroundcolor>0x00ffffff</backgroundcolor>
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
-		<include>DefaultBehindDialogFadeOut</include>
 		<control type="group">
 			<posx>400</posx>
 			<posy>245</posy>

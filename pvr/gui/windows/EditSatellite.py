@@ -1,9 +1,6 @@
 from pvr.gui.WindowImport import *
 
 
-E_DEFAULT_GOURP_ID		= 9000
-
-
 class EditSatellite( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
@@ -11,26 +8,30 @@ class EditSatellite( SettingWindow ) :
 		self.mLongitude			= 0
 		self.mBand				= 0
 		self.mName				= 'Unkown'
-			
+
+
 	def onInit( self ) :
-		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( False )	
+		self.mWinId = xbmcgui.getCurrentWindowId( )
+		self.mWin = xbmcgui.Window( self.mWinId )
+
+		self.SetSettingWindowLabel( 'Edit Satellite' )
+
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
+			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
+			self.SetVisibleControls( hideControlIds, False )
+			self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Has no configured satellite' )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( 'Error', 'Satellite Infomation is empty. Please Reset STB' )
 			dialog.doModal( )
 			WinMgr.GetInstance().CloseWindow( )
-			return
-
-		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
-		
-		self.InitConfig( )
-		self.SetSettingWindowLabel( 'Edit Satellite' )
-		self.mInitialized = True
-		self.SetFocusControl( E_Input01 )
-		self.SetPipScreen( )
-
-		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True )
+		else :
+			if self.getControl( E_SETTING_DESCRIPTION ).getLabel( ) == 'Has no configured satellite' :
+				hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
+				self.SetVisibleControls( hideControlIds, True )
+			self.InitConfig( )
+			self.mInitialized = True
+			self.SetFocusControl( E_Input01 )
+			self.SetPipScreen( )
 		
 		
 	def onAction( self, aAction ) :

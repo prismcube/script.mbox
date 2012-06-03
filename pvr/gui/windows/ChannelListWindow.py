@@ -1,6 +1,4 @@
 from pvr.gui.WindowImport import *
-from pvr.GuiHelper import GetSelectedLongitudeString, GetImageByEPGComponent, EnumToString, ClassToList, AgeLimit, MR_LANG
-from copy import deepcopy
 
 FLAG_MASK_ADD    = 0x01
 FLAG_MASK_NONE   = 0x00

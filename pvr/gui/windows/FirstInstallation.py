@@ -1,7 +1,7 @@
 from pvr.gui.WindowImport import *
 import pvr.TunerConfigMgr as ConfigMgr
 
-E_MAIN_GROUP_ID		=	9000
+
 E_FAKE_BUTTON		=	999
 
 
@@ -24,18 +24,14 @@ class FirstInstallation( SettingWindow ) :
 
 
 	def onInit( self ) :
-		self.getControl( E_MAIN_GROUP_ID ).setVisible( False )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
-		
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'First Installation' )
 		self.SetListControl( self.mStepNum )
 		self.mInitialized = True
 		self.SetPipScreen( )
-
-		self.getControl( E_MAIN_GROUP_ID ).setVisible( True )
 		ConfigMgr.GetInstance().SetFristInstallation( True )
-
+		print 'dhkim test #############'
 		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
