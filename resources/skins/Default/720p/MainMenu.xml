@@ -315,7 +315,6 @@
 					<ondown>9050</ondown>
 					<itemgap>0</itemgap>
 					<visible>Container(9000).HasFocus(5)</visible>
-					<enable>substring(Window.Property(IsPVR),true)</enable>
 					<control type="button" id="90500">
 						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>MediaCenter</label>
@@ -326,18 +325,21 @@
 						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Weather</label>
 						<onclick>ActivateWindow(Weather)</onclick>
+						<enable>substring(Window.Property(IsPVR),false)</enable>
 						<visible>true</visible>
 					</control>
 					<control type="button" id="90502">
 						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Pictures</label>
 						<onclick>ActivateWindow(Pictures)</onclick>
+						<enable>Control.IsEnabled(90501)</enable>
 						<visible>true</visible>
 					</control>
 					<control type="button" id="90503">
 						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Music</label>
 						<onclick>ActivateWindow(Music)</onclick>
+						<enable>Control.IsEnabled(90501)</enable>
 						<visible>true</visible>
 					</control>
 					<control type="button" id="90504">
@@ -345,35 +347,41 @@
 						<label>Videos</label>
 						<onclick>ActivateWindow(Videos)</onclick>
 						<visible>true</visible>
+						<enable>Control.IsEnabled(90501)</enable>
 					</control>
 					<control type="button" id="90505">
 						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Programs</label>
 						<onclick>ActivateWindow(Programs,Addons,return)</onclick>
+						<enable>Control.IsEnabled(90501)</enable>
 						<visible>true</visible>
 					</control>
 					<control type="button" id="90506">
 						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Settings</label>
 						<onclick>ActivateWindow(Settings)</onclick>
+						<enable>Control.IsEnabled(90501)</enable>
 						<visible>true</visible>
 					</control>
 					<control type="button" id="90507">
 						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>File Manager</label>
 						<onclick>ActivateWindow(FileManager)</onclick>
+						<enable>Control.IsEnabled(90501)</enable>
 						<visible>true</visible>
 					</control>
 					<control type="button" id="90508">
 						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>Profiles</label>
 						<onclick>ActivateWindow(Profiles)</onclick>
+						<enable>Control.IsEnabled(90501)</enable>
 						<visible>true</visible>
 					</control>
 					<control type="button" id="90509">
 						<include>DefaultButtonHomeSubCommonValues</include>
 						<label>System Info</label>
 						<onclick>ActivateWindow(SystemInfo)</onclick>
+						<enable>Control.IsEnabled(90501)</enable>
 						<visible>true</visible>
 					</control>
 				</control>
