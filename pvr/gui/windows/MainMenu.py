@@ -139,4 +139,3 @@ class MainMenu( BaseWindow ) :
 		LOG_TRACE('')	
 		pass
 
-
