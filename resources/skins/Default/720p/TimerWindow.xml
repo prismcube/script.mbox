@@ -199,7 +199,7 @@
 		<control type="group" id="9020">
 			<posx>850</posx>
 			<posy>400</posy>
-
+			<include>DefaultWindowFade</include>
 			<control type="label" id="300">
 				<posx>0</posx>
 				<posy>0</posy>

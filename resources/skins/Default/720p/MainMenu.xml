@@ -82,9 +82,8 @@
 						<width>18</width>
 						<height>18</height>
 						<texture>HomeHasSub.png</texture>
-						<visible>Container(9000).HasFocus(1) | Container(9000).HasFocus(5) </visible>
-						<animation effect="fade" start="0" end="100" time="200">Focus</animation>
-						<animation effect="fade" start="100" end="0" time="200">UnFocus</animation>
+						<visible>Container(9000).HasFocus(1) | Container(9000).HasFocus(5)</visible>
+						<animation effect="fade" start="0" end="100" time="200" delay="200">Visible</animation>
 					</control>
 				</focusedlayout>
 				<content>
@@ -407,8 +406,8 @@
 					<height>360</height>
 					<align>center</align>
 					<onleft>9000</onleft>
-					<onup>9070</onup>
-					<ondown>9070</ondown>
+					<onup>9080</onup>
+					<ondown>9080</ondown>
 					<itemgap>0</itemgap>
 					<visible>Container(9000).HasFocus(8)</visible>
 					<control type="button" id="90800">

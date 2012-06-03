@@ -6,17 +6,17 @@
 	</include>
 
 	<include name="DefaultSettingsBackground">
-		<control type="multiimage">
+		<control type="image">
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>1280</width>
 			<height>720</height>
-			<imagepath>backgrounds/settings.jpg</imagepath>
-			<timeperimage>5000</timeperimage>
-			<fadetime>2000</fadetime>
-			<pauseatend>10000</pauseatend>
-			<randomize>true</randomize>
-			<loop>no</loop>
+			<texture>backgrounds/settings.jpg</texture>
+			<include>DefaultSettingWindowEffect</include>
+			<animation effect="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" condition="!Control.HasFocus(999)">Conditional</animation>
+			<animation effect="fade" start="0" end="100" time="300" condition="!Control.HasFocus(999)">Conditional</animation>
+			<animation effect="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" condition="Control.HasFocus(999)">Conditional</animation>
+			<animation effect="fade" start="100" end="0" time="300" condition="Control.HasFocus(999)">Conditional</animation>
 		</control>
 	</include>
 
@@ -473,8 +473,8 @@
 	</include>
 
 	<include name="DefaultBackgroundFade">
-		 <animation effect="fade" time="600">Visible</animation>
-		 <animation effect="fade" time="600">Hidden</animation>
+		 <animation effect="fade" time="300">Visible</animation>
+		 <animation effect="fade" time="300">Hidden</animation>
 	</include>
 	
 	<include name="DefaultVisibleFadeEffect">
@@ -484,7 +484,7 @@
 	
 	<include name="DefaultDialogOpenEffect">
 		<onload>SetProperty(AnimationWaitingDialogOnClose,true)</onload>
-		<animation effect="fade" time="200">WindowOpen</animation>
+		<animation effect="fade" time="300">WindowOpen</animation>
 	</include>
 
 	<include name="DefaultDialogCloseEffect">
@@ -536,7 +536,7 @@
 		<texturefocus border="5">button-focus.png</texturefocus>
 		<texturenofocus border="5">button-nofocus.png</texturenofocus>
 		<pulseonselect>false</pulseonselect>
-		<textcolor>white</textcolor>
+		<textcolor>grey2</textcolor>
 		<focusedcolor>white</focusedcolor>
 	</include>
 

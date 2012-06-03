@@ -785,7 +785,7 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def RestoreLastRecordKey( self ):
-		selectedPos = self.GetSelectedPosition()
+		selectedPos = self.GetSelectedPosition( )
 
 		if selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
 			recInfo = self.mRecordList[selectedPos]

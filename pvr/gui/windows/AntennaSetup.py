@@ -1,8 +1,6 @@
 from pvr.gui.WindowImport import *
 import pvr.TunerConfigMgr as ConfigMgr
 
-E_DEFAULT_GOURP_ID		= 9000
-
 
 class AntennaSetup( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -10,8 +8,6 @@ class AntennaSetup( SettingWindow ) :
 
 
 	def onInit( self ) :
-		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( False )
-		
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( 'Error', 'Satellite Infomation is empty. Please Reset STB' )
@@ -51,7 +47,6 @@ class AntennaSetup( SettingWindow ) :
 		self.mInitialized = True
 		self.SetFocusControl( E_SpinEx01 )
 		self.SetPipScreen( )
-		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True )
 
 		
 	def onAction( self, aAction ) :

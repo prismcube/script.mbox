@@ -3,22 +3,32 @@
 	<allowoverlay>no</allowoverlay>
 	<controls>
 		<!-- Background -->
-		<control type="multiimage">
+		<control type="image">
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>1280</width>
 			<height>720</height>
-			<imagepath>special://skin/backgrounds/curtains.jpg</imagepath>
-			<timeperimage>5000</timeperimage>
-			<fadetime>2000</fadetime>
-			<pauseatend>10000</pauseatend>
-			<randomize>true</randomize>
-			<loop>no</loop>
+			<texture>special://skin/backgrounds/curtains.jpg</texture>
 			<include>DefaultSettingWindowEffect</include>
 		</control>
 
 		<!-- Bottom Gradation Image -->
-		<include>Furniture_Showcase</include>
+		<control type="image">
+			<posx>0</posx>
+			<posy>315</posy>
+			<width>1280</width>
+			<height>405</height>
+			<texture>views/showcase_floor.png</texture>
+			<include>DefaultSettingWindowEffect</include>
+		</control>
+		<control type="image">
+			<posx>144</posx>
+			<posy>583</posy>
+			<width>993</width>
+			<height>137</height>
+			<texture>views/showcase_spot.png</texture>
+			<include>DefaultSettingWindowEffect</include>
+		</control>
 
 		<!-- PIP -->
 		<control type="image" id="8899">
