@@ -131,7 +131,7 @@ class ChannelListWindow( BaseWindow ) :
 	def GetAutomaticHide( self ) :
 		return self.mAutomaticHide
 	"""
- 
+
 	def onInit(self):
 		LOG_TRACE( 'Enter' )
 
@@ -2514,5 +2514,5 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 		LOG_TRACE('Leave')
- 
+
 

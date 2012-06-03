@@ -79,7 +79,7 @@
 			<control type="group" id="600">
 				<posx>50</posx>
 				<posy>600</posy>
-
+				<include>DefaultWindowFade</include>
 				<control type="label" id="601">
 					<posx>0</posx>
 					<posy>10</posy>
@@ -488,6 +488,7 @@
 			<control type="group" id="700">
 				<posx>50</posx>
 				<posy>660</posy>
+				<include>DefaultWindowFade</include>
 				<control type="label" id="701">
 					<posx>-50</posx>
 					<posy>10</posy>
