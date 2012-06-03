@@ -156,6 +156,7 @@
 						</item>
 						<item id="6">
 							<label>Settings</label>
+							<onclick>SendClick(90506)</onclick>							
 							<onclick>ActivateWindow(Settings)</onclick>
 							<visible>Container(9000).HasFocus(5)</visible>
 						</item>
@@ -358,5 +359,11 @@
 			<onclick>-</onclick>
 			<visible>false</visible>
 		</control>
+		<control type="button" id="90506">
+			<label>CAS</label>
+			<onclick>-</onclick>
+			<visible>false</visible>
+		</control>
+		
 	</controls>
 </window>

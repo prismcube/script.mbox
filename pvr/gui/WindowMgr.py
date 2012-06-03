@@ -52,6 +52,11 @@ WIN_ID_TIMESHIFT_INFO_PLATE			= 101
 WIN_ID_TIMESHIFT_INFO_PLATE1		= 102
 WIN_ID_TIMESHIFT_INFO_PLATE2		= 103
 WIN_ID_TEST2 						= 104
+
+
+E_NONE_NEXT_COMMAND					= 0
+E_SKIN_CHECK_COMMAND				= 1
+
 gWindowMgr = None
 
 def GetInstance():
@@ -84,7 +89,7 @@ class WindowMgr(object):
 		self.mSkinDir			= []
 		self.mListDir			= []
 		self.mWindows			= {}
-
+		self.mRootWindow		= None
 		self.LoadSkinPosition( )
 
 		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
@@ -114,7 +119,7 @@ class WindowMgr(object):
 
 	def ShowRootWindow( self ):
 		LOG_TRACE( '------------------------ START ROOT WINDOW --------------------------' )	
-		self.mWindows[WIN_ID_ROOTWINDOW].doModal( )
+		self.mRootWindow.doModal( )
 		LOG_TRACE( '------------------------ END ROOT WINDOW --------------------------' )	
 
 
@@ -170,8 +175,7 @@ class WindowMgr(object):
 
 	def RootWindow( self ) :
 		from pvr.gui.windows.RootWindow import RootWindow
-		self.mWindows[WIN_ID_ROOTWINDOW] = RootWindow('RootWindow.xml', self.mScriptDir )
-		LOG_ERR('---------------- self.mWindows[WIN_ID_ROOTWINDOW] id=%s' %self.mWindows[WIN_ID_ROOTWINDOW] )
+		self.mRootWindow = RootWindow('RootWindow.xml', self.mScriptDir )
 
 
 
@@ -329,20 +333,10 @@ class WindowMgr(object):
 
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
-			
-
-	def Reset( self ) :
-		import pvr.Platform 
-		self.mScriptDir = pvr.Platform.GetPlatform().GetScriptDir()
-	
-		self.CopyIncludeFile( )
-		self.AddDefaultFont( )
-		self.ResetAllWindows( )
-		self.ShowWindow( WIN_ID_MAINMENU )
 
 
 	def ResetAllWindows( self ) :
-		self.mWindows[ WIN_ID_MAINMENU ].close( )
+		#self.mWindows[ WIN_ID_MAINMENU ].close( )
 		self.mWindows.clear( )
 		self.CreateAllWindows( )
 
@@ -350,7 +344,14 @@ class WindowMgr(object):
 	def CheckGUISettings( self ) :
 		self.LoadSkinPosition( )
 		if self.CheckSkinChange( ) or self.CheckFontChange( ) :
-			self.Reset( )
+			LOG_TRACE( '----------------- Reset -------------- #0' )		
+			self.CopyIncludeFile( )
+			LOG_TRACE( '----------------- Reset -------------- #1' )		
+			self.AddDefaultFont( )
+			LOG_TRACE( '----------------- Reset -------------- #3' )
+			return True
+
+		return False
 			
 
 	def CheckSkinChange( self ) :

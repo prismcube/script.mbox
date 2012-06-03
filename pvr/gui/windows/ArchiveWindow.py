@@ -59,36 +59,54 @@ class ArchiveWindow( BaseWindow ) :
 		self.mRecordListItems = []
 
 		self.mServiceType =  self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( ).mServiceType
-		
-		self.mViewMode = int( GetSetting( 'VIEW_MODE' ) )
-		self.mCtrlViewMode = self.getControl( BUTTON_ID_VIEW_MODE )
 
-		self.mSortMode = int( GetSetting( 'SORT_MODE' ) )		
-		self.mCtrlSortMode = self.getControl( BUTTON_ID_SORT_MODE )
+		try :		
+			self.mViewMode = int( GetSetting( 'VIEW_MODE' ) )
+			self.mCtrlViewMode = self.getControl( BUTTON_ID_VIEW_MODE )
 
-		self.mAscending = []
-		self.mAscending = [False,False,False,False,False]
+			LOG_TRACE('LAEL98 self.mCtrlViewMode =%s' %self.mCtrlViewMode )			
 
-		self.mAscending[E_SORT_DATE] = False
-		self.mAscending[E_SORT_CHANNEL] = True
-		self.mAscending[E_SORT_TITLE] = True
-		self.mAscending[E_SORT_DURATION] = False
+			self.mSortMode = int( GetSetting( 'SORT_MODE' ) )		
+			self.mCtrlSortMode = self.getControl( BUTTON_ID_SORT_MODE )
+
+			self.mAscending = []
+			self.mAscending = [False,False,False,False,False]
+
+			self.mAscending[E_SORT_DATE] = False
+			self.mAscending[E_SORT_CHANNEL] = True
+			self.mAscending[E_SORT_TITLE] = True
+			self.mAscending[E_SORT_DURATION] = False
 
 
-		self.mCtrlCommonList = self.getControl( LIST_ID_COMMON_RECORD )
-		self.mCtrlThumbnailList = self.getControl( LIST_ID_THUMBNAIL_RECORD )
-		self.mCtrlPosterwrapList = self.getControl( LIST_ID_POSTERWRAP_RECORD )
-		self.mCtrlFanartList = self.getControl( LIST_ID_FANART_RECORD )
+			self.mCtrlCommonList = self.getControl( LIST_ID_COMMON_RECORD )
+			self.mCtrlThumbnailList = self.getControl( LIST_ID_THUMBNAIL_RECORD )
+			self.mCtrlPosterwrapList = self.getControl( LIST_ID_POSTERWRAP_RECORD )
+			self.mCtrlFanartList = self.getControl( LIST_ID_FANART_RECORD )
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)
 
+
+		LOG_TRACE('LAEL98')
 		self.UpdateAscending()
+		LOG_TRACE('LAEL98')
 		self.UpdateViewMode( )
+		LOG_TRACE('LAEL98')		
 		
 		self.InitControl()
 
+		LOG_TRACE('LAEL98')		
+
 		self.Load( )
+		
+		LOG_TRACE('LAEL98')
+			
 		self.UpdateList( )
 
+		LOG_TRACE('LAEL98')		
+
 		self.SelectLastRecordKey( )
+
+		LOG_TRACE('LAEL98')		
 
 		self.mInitialized = True
 
@@ -189,8 +207,10 @@ class ArchiveWindow( BaseWindow ) :
 
 	def InitControl( self ) :
 
+		LOG_TRACE('LAEL98')		
 		if self.mViewMode == E_VIEW_LIST :
 			self.mCtrlViewMode.setLabel('VIEW: LIST')
+			LOG_TRACE('LAEL98')		
 		elif self.mViewMode == E_VIEW_THUMBNAIL :			
 			self.mCtrlViewMode.setLabel('VIEW: THUMBNAIL')		
 		elif self.mViewMode == E_VIEW_POSTER_WRAP :			
@@ -199,8 +219,10 @@ class ArchiveWindow( BaseWindow ) :
 			self.mCtrlViewMode.setLabel('VIEW: FANART')		
 		else :
 			LOG_WARN('Unknown view mode')
-			
+
+		LOG_TRACE('LAEL98')					
 		if self.mSortMode == E_SORT_DATE :
+			LOG_TRACE('LAEL98')				
 			self.mCtrlSortMode.setLabel('SORT: DATE')
 		elif self.mSortMode == E_SORT_CHANNEL :			
 			self.mCtrlSortMode.setLabel('SORT: CHANNEL')		
@@ -211,11 +233,15 @@ class ArchiveWindow( BaseWindow ) :
 		else :
 			LOG_WARN('Unknown sort mode')
 
+		LOG_TRACE('LAEL98')					
+
 
 	def UpdateViewMode( self ) :
-		LOG_TRACE('---------------------')
+		LOG_TRACE('--------------------- self.mViewMode=%d' %self.mViewMode)
 		if self.mViewMode == E_VIEW_LIST :
+			LOG_TRACE('LAEL98')
 			self.mWin.setProperty( 'ViewMode', 'common' )
+			LOG_TRACE('LAEL98')
 		elif self.mViewMode == E_VIEW_THUMBNAIL :			
 			self.mWin.setProperty( 'ViewMode', 'thumbnail' )
 		elif self.mViewMode == E_VIEW_POSTER_WRAP :			
