@@ -76,10 +76,12 @@ class NullWindow( BaseWindow ) :
 			"""
 
 		elif actionId == Action.ACTION_SELECT_ITEM:
+			"""
 			LOG_TRACE('key ok')
 			if self.mDataCache.mStatusIsArchive :
 				LOG_TRACE('Archive playing now')
 				return -1
+			"""
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
