@@ -444,9 +444,14 @@ class TimeShiftPlate(BaseWindow):
 				LOG_TRACE( 'play_rewind() ret[%s], player_SetSpeed[%s]'% (ret, nextSpeed) )
 
 			#resume by toggle
+			"""
 			if self.mIsPlay == FLAG_PLAY :
 				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True )
 				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
+			"""
+			self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True )
+			self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
+
 
 		elif aFocusId == self.mCtrlBtnForward.getId() :
 			nextSpeed = 100
@@ -466,9 +471,14 @@ class TimeShiftPlate(BaseWindow):
 				LOG_TRACE( 'play_forward() ret[%s] player_SetSpeed[%s]'% (ret, nextSpeed) )
 
 			#resume by toggle
+			"""
 			if self.mIsPlay == FLAG_PLAY :
 				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True )
 				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
+			"""
+			self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True )
+			self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
+
 
 		elif aFocusId == self.mCtrlBtnJumpRR.getId() :
 			prevJump = self.mTimeshift_playTime - 10000
@@ -822,7 +832,7 @@ class TimeShiftPlate(BaseWindow):
 				self.mProgress_idx = (curTime / float(totTime))  * 100.0
 
 				LOG_TRACE( 'curTime[%s] totTime[%s]'% ( curTime,totTime ) )
-				LOG_TRACE( 'curTime[%s] idx[%s] endTime[%s]'% ( self.mTimeshift_staTime, self.mProgress_idx, self.mTimeshift_endTime ) )
+				LOG_TRACE( 'curTime[%s] idx[%s] endTime[%s]'% ( self.mTimeshift_curTime, self.mProgress_idx, self.mTimeshift_endTime ) )
 
 				if self.mProgress_idx > 100 :
 					self.mProgress_idx = 100

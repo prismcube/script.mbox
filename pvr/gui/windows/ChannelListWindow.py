@@ -229,13 +229,19 @@ class ChannelListWindow( BaseWindow ) :
 		try :
 			#first get is used cache, reason by fast load
 			iChannel = self.mDataCache.Channel_GetCurrent( )
-			if iChannel :
-				self.mNavChannel = iChannel
-				self.mCurrentChannel = iChannel.mNumber
 
-				strType = self.UpdateServiceType( iChannel.mServiceType )
-				label = '%s - %s'% (strType, iChannel.mName)
-				self.UpdateLabelGUI( self.mCtrlChannelName.getId( ), label )
+			label = ''
+			if self.mDataCache.mStatusIsArchive :
+				if self.mDataCache.mRecInfo :
+					label = 'PVR - P%04d.%s' %(self.mDataCache.mRecInfo.mChannelNo, self.mDataCache.mRecInfo.mChannelName )
+			else :
+				if iChannel :
+					self.mNavChannel = iChannel
+					self.mCurrentChannel = iChannel.mNumber
+
+					strType = self.UpdateServiceType( iChannel.mServiceType )
+					label = '%s - %s'% (strType, iChannel.mName)
+			self.UpdateLabelGUI( self.mCtrlChannelName.getId( ), label )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -710,6 +716,11 @@ class ChannelListWindow( BaseWindow ) :
 			if iChannel.mServiceType == FLAG_MODE_RADIO : 	isBlank = True
 			else : 											isBlank = False
 			self.mDataCache.Player_VideoBlank( isBlank, False )
+
+
+		if self.mDataCache.mStatusIsArchive :
+			self.mDataCache.mStatusIsArchive = False
+			self.mDataCache.Player_Stop()
 
 		ret = False
 		ret = self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
