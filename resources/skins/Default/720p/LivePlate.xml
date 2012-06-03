@@ -403,7 +403,7 @@
 
 				<control type="group">
 					<control type="grouplist">
-						<posx>720</posx>
+						<posx>750</posx>
 						<posy>18</posy>
 						<width>340</width>
 						<height>40</height>
