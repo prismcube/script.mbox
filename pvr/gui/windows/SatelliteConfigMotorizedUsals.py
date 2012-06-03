@@ -8,7 +8,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 		self.mIsSouth = 0
 		self.mLongitude	= 0
 		self.mLatitude	= 0
-		self.tunerIndex = 0
+		self.tunerIndex = E_TUNER_1
 
 
 	def onInit( self ) :

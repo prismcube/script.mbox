@@ -7,6 +7,8 @@ BUTTON_ID_EPG					= 90300
 BUTTON_ID_CHANNEL_LIST			= 90400
 BUTTON_ID_MEDIA_CENTER			= 90500
 BUTTON_ID_SYSTEM_INFO			= 90600
+BUTTON_ID_BACK					= 90700
+BUTTON_ID_HIDDEN_TEST			= 90800
 
 BUTTON_ID_MEDIA_WEATHER	        = 90501
 BUTTON_ID_MEDIA_PICTURES        = 90502
@@ -49,6 +51,12 @@ class MainMenu( BaseWindow ) :
 				self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
 				print 're-zapping ch[%s] type[%s]'% (iChannel.mNumber, iChannel.mServiceType ) 
 
+		status = self.mDataCache.Player_GetStatus()
+		self.mMode = status.mMode
+		if self.mMode == ElisEnum.E_MODE_PVR :
+			self.mWin.setProperty( 'IsPVR', 'True' )
+		else :
+			self.mWin.setProperty( 'IsPVR', 'False' )
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -98,14 +106,22 @@ class MainMenu( BaseWindow ) :
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
 		elif aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO :
-			self.mStartMediaCenter = True
-			self.mCommander.AppMediaPlayer_Control( 1 )
-			if aControlId == BUTTON_ID_MEDIA_CENTER :
-				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
-			#WinMgr.GetInstance().Reset( )
+			if self.mMode == ElisEnum.E_MODE_PVR :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'Confirm', 'Now PVR Playing...' )
+	 			dialog.doModal( )
+			else:
+				self.mStartMediaCenter = True
+				self.mCommander.AppMediaPlayer_Control( 1 )
+				if aControlId == BUTTON_ID_MEDIA_CENTER :
+					WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
+				#WinMgr.GetInstance().Reset( )
 
 		elif aControlId == BUTTON_ID_SYSTEM_INFO :
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_SYSTEM_INFO )
+
+		elif aControlId == BUTTON_ID_HIDDEN_TEST :
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_HIDDEN_TEST )
 
 		elif aControlId == 20 :
 			pass

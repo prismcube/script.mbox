@@ -220,6 +220,11 @@ class LivePlate( BaseWindow ) :
 			self.SetAutomaticHide( False )
 
 			self.Close()
+			status = self.mDataCache.Player_GetStatus()
+			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE, WinMgr.WIN_ID_NULLWINDOW )
+			else :
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_ROOTWINDOW )
 
 		elif id == Action.ACTION_SELECT_ITEM:
 			self.StopAutomaticHide()
@@ -888,13 +893,13 @@ class LivePlate( BaseWindow ) :
 			b = c= d =e = 'test'
 			starttime = time.time( )
 			#for i in range(1000):
-			d = a + b + c + d + e + "</test>"
+			d = a + b + c + d + e + '</test>'
 			endtime = time.time( )
 			print '==================== TEST TIME[string1]     loading[%s]'% (endtime - starttime )
 			
 			starttime = time.time( )
 			#for i in range(1000):
-			d = "%s%s%s%s%s</test>"% (a,b,c,d,e)
+			d = '%s%s%s%s%s</test>'% (a,b,c,d,e)
 			endtime = time.time( )
 			print '==================== TEST TIME[string2]     loading[%s]'% (endtime - starttime )
 			"""
@@ -907,7 +912,7 @@ class LivePlate( BaseWindow ) :
 			"""
 			starttime = time.time( )			
 			import sqlite3
-			db = sqlite3.connect("/tmp/channel.db")
+			db = sqlite3.connect('/tmp/channel.db')
 			cursor =db.cursor()
 
 			query = 'select * from tblChannel where ServiceType = 1 order by Number'

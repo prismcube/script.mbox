@@ -26,11 +26,12 @@ class EditTransponder( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.SetPipScreen( )
 		self.InitConfig( )
 		self.SetSettingWindowLabel( 'Edit Transponder' )
 		self.mInitialized = True
 		self.SetFocusControl( E_Input01 )
+		self.SetPipScreen( )
+
 		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True )
 		
 

@@ -113,7 +113,7 @@ class ChannelListWindow( BaseWindow ) :
 		# end thread
 		self.mEnableThread = False
 
-
+ 
 	def onAction(self, aAction):
 		id = aAction.getId()
 		
@@ -122,7 +122,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif id == 104 : #scroll up
 			xbmc.executebuiltin('XBMC.ReloadSkin()')
-		elif id == Action.REMOTE_0 : 
+		elif id == Action.ACTION_SELECT_ITEM : 
 			xbmc.executebuiltin('XBMC.ReloadSkin()')
 
 	def SetAutomaticHide( self, aHide=True ) :
@@ -207,7 +207,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.mMoveFlag = False
 		self.mMoveItem = []
 
-		self.SetPipScreen( )
 		self.UpdateLabelGUI( self.mCtrlBtnDelAll.getId( ), MR_LANG('Delete All Channel') )
 
 		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
@@ -232,13 +231,19 @@ class ChannelListWindow( BaseWindow ) :
 		try :
 			#first get is used cache, reason by fast load
 			iChannel = self.mDataCache.Channel_GetCurrent( )
-			if iChannel :
-				self.mNavChannel = iChannel
-				self.mCurrentChannel = iChannel.mNumber
 
-				strType = self.UpdateServiceType( iChannel.mServiceType )
-				label = '%s - %s'% (strType, iChannel.mName)
-				self.UpdateLabelGUI( self.mCtrlChannelName.getId( ), label )
+			label = ''
+			if self.mDataCache.mStatusIsArchive :
+				if self.mDataCache.mRecInfo :
+					label = 'PVR - P%04d.%s' %(self.mDataCache.mRecInfo.mChannelNo, self.mDataCache.mRecInfo.mChannelName )
+			else :
+				if iChannel :
+					self.mNavChannel = iChannel
+					self.mCurrentChannel = iChannel.mNumber
+
+					strType = self.UpdateServiceType( iChannel.mServiceType )
+					label = '%s - %s'% (strType, iChannel.mName)
+			self.UpdateLabelGUI( self.mCtrlChannelName.getId( ), label )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -260,6 +265,8 @@ class ChannelListWindow( BaseWindow ) :
 		self.CurrentTimeThread( )
 
 		self.mAsyncTuneTimer = None
+
+		self.SetPipScreen( )
 
 		#endtime = time.time( )
 		#print '==================== TEST TIME[ONINIT] END[%s] loading[%s]'% (endtime, endtime-starttime )
@@ -553,7 +560,8 @@ class ChannelListWindow( BaseWindow ) :
 				self.CurrentTimeThread( ).join( )
 				self.mCtrlListCHList.reset( )
 				self.Close( )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_ROOTWINDOW )				
+				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_ROOTWINDOW )
+				WinMgr.GetInstance().CloseWindow( )
 
 			LOG_TRACE( 'go out Cancel' )
 
@@ -710,6 +718,11 @@ class ChannelListWindow( BaseWindow ) :
 			if iChannel.mServiceType == FLAG_MODE_RADIO : 	isBlank = True
 			else : 											isBlank = False
 			self.mDataCache.Player_VideoBlank( isBlank, False )
+
+
+		if self.mDataCache.mStatusIsArchive :
+			self.mDataCache.mStatusIsArchive = False
+			self.mDataCache.Player_Stop()
 
 		ret = False
 		ret = self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )

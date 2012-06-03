@@ -31,7 +31,6 @@ class TimerWindow(BaseWindow):
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.SetPipScreen( )
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Timer' )
 		self.mSelectedWeeklyTimer = 0
 
@@ -74,6 +73,7 @@ class TimerWindow(BaseWindow):
 
 		
 		self.mEventBus.Register( self )	
+		self.SetPipScreen( )
 		
 		self.mInitialized = True
 

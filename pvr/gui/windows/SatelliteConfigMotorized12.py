@@ -9,7 +9,7 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 		self.mTransponderList = None
 		self.mSelectedIndexLnbType = None
 		self.mSelectedTransponderIndex = 0
-		self.tunerIndex = 0
+		self.tunerIndex = E_TUNER_1
 		self.mHasTransponder = False
 		
 			

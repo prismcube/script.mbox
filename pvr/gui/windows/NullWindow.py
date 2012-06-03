@@ -21,10 +21,6 @@ class NullWindow( BaseWindow ) :
 
 		if self.mInitialized == False :
 			self.mInitialized = True
-			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_DUMMY_WINDOW )
-			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TEST2 )
-
 
 		self.mEventBus.Register( self )
 
@@ -63,30 +59,29 @@ class NullWindow( BaseWindow ) :
 						dialog.SetDialogProperty( 'ERROR', 'ERROR PIN Code' )
 			 			dialog.doModal( )
 			 	return
+
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 			
-				
 		elif actionId == Action.ACTION_PARENT_DIR:
-			LOG_TRACE('')		
+			pass
+			"""
+			LOG_TRACE('previous channel')
 			try :
 				ch = self.mDataCache.mOldChannel
 				self.mDataCache.Channel_SetCurrent( ch.mNumber, ch.mServiceType )
 
-				#lastChannel = WinMgr.GetInstance( ).getWindow(WinMgr.WIN_ID_LIVE_PLATE).getLastChannel( )
-				#if lastChannel > 0 and lastchannel != currentChannel :
-				#	self.mCommander.channel_SetCurrent( lastChannel )
-				#	WinMgr.GetInstance( ).getWindow(WinMgr.WIN_ID_LIVE_PLATE).setLastChannel( currentChannel )
-				#	WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-
 			except Exception, ex:
 				print 'ERR prev channel'
+			"""
 
 		elif actionId == Action.ACTION_SELECT_ITEM:
+			"""
 			LOG_TRACE('key ok')
 			if self.mDataCache.mStatusIsArchive :
 				LOG_TRACE('Archive playing now')
 				return -1
+			"""
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
@@ -110,7 +105,7 @@ class NullWindow( BaseWindow ) :
 
 			window = WinMgr.GetInstance( ).GetWindow( gotoWinId )
 			window.SetAutomaticHide( False )
-			self.Close( )			
+			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( gotoWinId )
 
 		elif actionId == Action.ACTION_PAGE_DOWN:
@@ -123,7 +118,6 @@ class NullWindow( BaseWindow ) :
 			prevChannel = self.mDataCache.Channel_GetPrev( self.mDataCache.Channel_GetCurrent( ) ) #self.mCommander.Channel_GetPrev( )
 			if prevChannel :
 				self.mDataCache.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )			
-				#self.mCommander.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )
 			
 				window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE )
 				self.Close( )
@@ -141,7 +135,6 @@ class NullWindow( BaseWindow ) :
 			nextChannel = self.mDataCache.Channel_GetNext( self.mDataCache.Channel_GetCurrent( ) )
 			if nextChannel :
 				self.mDataCache.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
-				#self.mCommander.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
 
 				window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE )
 				self.Close( )
@@ -207,11 +200,6 @@ class NullWindow( BaseWindow ) :
 
 			else :
 				self.RecordingStop()
-
-		#test
-		elif actionId == Action.ACTION_MOVE_RIGHT :
-			print 'youn check ation right'
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TEST2 )
 
 		else:
 			print 'lael98 check ation unknown id=%d' %actionId

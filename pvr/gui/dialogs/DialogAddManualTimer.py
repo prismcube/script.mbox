@@ -16,7 +16,7 @@ E_WEEKLY					= 2
 WEEKLY_DEFALUT_EXPIRE_DAYS	= 7
 
 LIST_RECORDING_MODE	= [ 'Once', 'Daily', 'Weekly' ]
-LIST_WEEKLY = ['Sun','Mon','Tue', 'Wed', 'The', 'Fri', 'Sat' ]
+LIST_WEEKLY = ['Sun', 'Mon','Tue', 'Wed', 'The', 'Fri', 'Sat' ]
 
 MININUM_KEYWORD_SIZE  		= 3
 

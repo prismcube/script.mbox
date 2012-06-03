@@ -4,7 +4,7 @@
 	<backgroundcolor>0x00ffffff</backgroundcolor>
 	<controls>
 		<control type="group">
-			<include>Window_OpenClose_Animation</include>
+			<include>DefaultWindowFade</include>
 			<control type="image">
 				<description>media info background image</description>
 				<posx>0</posx>
@@ -79,7 +79,7 @@
 			<control type="group" id="600">
 				<posx>50</posx>
 				<posy>600</posy>
-
+				<include>DefaultWindowFade</include>
 				<control type="label" id="601">
 					<posx>0</posx>
 					<posy>10</posy>
@@ -488,6 +488,7 @@
 			<control type="group" id="700">
 				<posx>50</posx>
 				<posy>660</posy>
+				<include>DefaultWindowFade</include>
 				<control type="label" id="701">
 					<posx>-50</posx>
 					<posy>10</posy>
@@ -499,13 +500,13 @@
 				</control>
 				<control type="button" id="702">
 					<posx>250</posx>
-					<posy>0</posy>
-					<width>40</width>
-					<height>35</height>
+					<posy>10</posy>
+					<width>30</width>
+					<height>25</height>
 					<label>210</label>
 					<font></font>
-					<texturefocus>Arrow-left-focus.png</texturefocus>
-					<texturenofocus>Arrow-left.png</texturenofocus>
+					<texturefocus>scroll-left-focus.png</texturefocus>
+					<texturenofocus>scroll-left.png</texturenofocus>
 					<onleft></onleft>
 					<onright>SetFocus(706)</onright>
 					<onup>SetFocus(621)</onup>
@@ -548,14 +549,14 @@
 				</control>
 				<control type="button" id="706">
 					<posx>1110</posx>
-					<posy>0</posy>
+					<posy>10</posy>
 					<align>right</align>
-					<width>40</width>
-					<height>35</height>
+					<width>30</width>
+					<height>25</height>
 					<label>31354</label>
 					<font></font>
-					<texturefocus>Arrow-right-focus.png</texturefocus>
-					<texturenofocus>Arrow-right.png</texturenofocus>
+					<texturefocus>scroll-right-focus.png</texturefocus>
+					<texturenofocus>scroll-right.png</texturenofocus>
 					<onleft>SetFocus(702)</onleft>
 					<onright></onright>
 					<onup>SetFocus(621)</onup>

@@ -27,12 +27,12 @@ class FirstInstallation( SettingWindow ) :
 		self.getControl( E_MAIN_GROUP_ID ).setVisible( False )
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
-
-		self.SetPipScreen( )
 		
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'First Installation' )
 		self.SetListControl( self.mStepNum )
 		self.mInitialized = True
+		self.SetPipScreen( )
+
 		self.getControl( E_MAIN_GROUP_ID ).setVisible( True )
 		ConfigMgr.GetInstance().SetFristInstallation( True )
 

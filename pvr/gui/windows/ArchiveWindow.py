@@ -86,52 +86,44 @@ class ArchiveWindow( BaseWindow ) :
 			LOG_ERR( "Exception %s" %ex)
 
 
-		LOG_TRACE('LAEL98')
 		self.UpdateAscending()
-		LOG_TRACE('LAEL98')
 		self.UpdateViewMode( )
-		LOG_TRACE('LAEL98')		
 		
-		self.InitControl()
-
-		LOG_TRACE('LAEL98')		
+		self.InitControl( )
 
 		self.Load( )
 		
-		LOG_TRACE('LAEL98')
 			
 		self.UpdateList( )
 
-		LOG_TRACE('LAEL98')		
 
 		self.SelectLastRecordKey( )
-
-		LOG_TRACE('LAEL98')		
+		self.UpdateList( )
 
 		self.mInitialized = True
-
+		
 
 	def onAction( self, aAction ) :
-		focusId = self.GetFocusId()
+		focusId = self.GetFocusId( )
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )		
 
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.SetVideoRestore( )
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			if focusId  == LIST_ID_COMMON_RECORD or focusId  == LIST_ID_THUMBNAIL_RECORD or focusId  == LIST_ID_POSTERWRAP_RECORD or focusId  == LIST_ID_FANART_RECORD:
 				if	self.mMarkMode == True	:
-					self.DoMarkToggle()
+					self.DoMarkToggle( )
 				else :
-					self.StartRecordPlayback()
+					self.StartRecordPlayback( )
 
 
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.SetVideoRestore( )
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 
 		elif actionId == Action.ACTION_MOVE_RIGHT or actionId == Action.ACTION_MOVE_LEFT :
@@ -159,9 +151,9 @@ class ArchiveWindow( BaseWindow ) :
 
 			SetSetting( 'VIEW_MODE','%d' %self.mViewMode )
 			self.UpdateViewMode( )
-			self.InitControl()			
-			self.UpdateList( )
+			self.InitControl( )
 			self.SelectLastRecordKey( )			
+			self.UpdateList( )
 		
 		elif aControlId == BUTTON_ID_SORT_MODE :
 			self.RestoreLastRecordKey( )		
@@ -171,10 +163,10 @@ class ArchiveWindow( BaseWindow ) :
 				
 			SetSetting( 'SORT_MODE','%d' %self.mSortMode ) 								
 			self.UpdateSortMode( )
-			self.InitControl()			
+			self.InitControl( )			
 			self.UpdateAscending( )
-			self.UpdateList( )
 			self.SelectLastRecordKey( )
+			self.UpdateList( )
 			
 		elif aControlId == TOGGLEBUTTON_ID_ASC :
 			self.RestoreLastRecordKey( )
@@ -186,8 +178,8 @@ class ArchiveWindow( BaseWindow ) :
 				self.mAscending[self.mSortMode] = True
 
 			self.UpdateAscending( )
-			self.UpdateList( )
 			self.SelectLastRecordKey( )			
+			self.UpdateList( )
 
 		elif aControlId == RADIIOBUTTON_ID_EXTRA :
 			pass
@@ -812,7 +804,7 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def RestoreLastRecordKey( self ):
-		selectedPos = self.GetSelectedPosition()
+		selectedPos = self.GetSelectedPosition( )
 
 		if selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
 			recInfo = self.mRecordList[selectedPos]

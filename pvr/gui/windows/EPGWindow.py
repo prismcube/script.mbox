@@ -1,7 +1,6 @@
 from pvr.gui.WindowImport import *
-from pvr.GuiHelper import GetSetting, SetSetting, GetSelectedLongitudeString, EnumToString, ClassToList, AgeLimit
-import time
-import thread
+import pvr.HiddenTestMgr as TestMgr
+
 
 BUTTON_ID_EPG_MODE				= 100
 RADIIOBUTTON_ID_EXTRA			= 101
@@ -56,7 +55,6 @@ class EPGWindow( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.SetPipScreen( )
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'EPG' )
 
 		self.mEPGCount = 0
@@ -111,7 +109,7 @@ class EPGWindow( BaseWindow ) :
 		self.StartEPGUpdateTimer( )
 		
 		self.mInitialized = True
-
+		self.SetPipScreen( )
 
 	def onAction( self, aAction ) :
 		self.GetFocusId()
@@ -214,6 +212,7 @@ class EPGWindow( BaseWindow ) :
 
 
 	def Close( self ) :
+		TestMgr.GetInstance( ).CheckAndStopTest( )
 		self.mEventBus.Deregister( self )	
 
 		self.StopEPGUpdateTimer( )
