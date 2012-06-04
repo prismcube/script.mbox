@@ -31,7 +31,7 @@ class FirstInstallation( SettingWindow ) :
 		self.mInitialized = True
 		self.SetPipScreen( )
 		ConfigMgr.GetInstance().SetFristInstallation( True )
-		print 'dhkim test #############'
+
 		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )

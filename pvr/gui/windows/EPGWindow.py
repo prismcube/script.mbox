@@ -171,7 +171,7 @@ class EPGWindow( BaseWindow ) :
 			self.InitControl( )
 			self.Load( )
 			
-			#self.UpdateListWithGUILock( )
+			self.UpdateListWithGUILock( )
 			self.UpdateList( )	
 			self.UpdateSelectedChannel( )
 			self.FocusCurrentChannel( )			
@@ -956,7 +956,7 @@ class EPGWindow( BaseWindow ) :
 			
 			self.Load( )
 			self.UpdateList( )			
-			#self.UpdateListWithGUILock( )
+			self.UpdateListWithGUILock( )
 			self.UpdateSelectedChannel( )
 			self.FocusCurrentChannel( )			
 			self.UpdateEPGInfomation()
@@ -1112,9 +1112,6 @@ class EPGWindow( BaseWindow ) :
 			
 
 	def Tune( self ) :
-
-		LOG_TRACE('###########################')
-
 		if self.mEPGMode == E_VIEW_CHANNEL :
 			channel = self.mDataCache.Channel_GetCurrent( )
 			self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType ) 

@@ -1,10 +1,11 @@
 <window type="windows" id="3004">
-	<defaultcontrol always="true">620</defaultcontrol>
+	<defaultcontrol always="true">621</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
 	<backgroundcolor>0x00ffffff</backgroundcolor>
 	<controls>
 		<control type="group">
-			<include>DefaultWindowFade</include>
+			<animation effect="fade" start="0" end="100" time="400">WindowOpen</animation>
+			<animation effect="fade" start="100" end="0" time="400">WindowClose</animation>
 			<control type="image">
 				<description>media info background image</description>
 				<posx>0</posx>
