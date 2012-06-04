@@ -9,6 +9,9 @@ class NullWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mAsyncShowTimer = None
+		if E_SUPPROT_HBBTV == True :
+			self.mHBBTVReady = False
+			self.mMediaPlayerStarted = False
 
 
 	def onInit( self ) :
@@ -25,7 +28,12 @@ class NullWindow( BaseWindow ) :
 		self.mEventBus.Register( self )
 
 		if E_SUPPROT_HBBTV == True :
-			self.mCommander.AppHBBTV_Ready( 1 )
+			if self.mHBBTVReady == False :
+				LOG_TRACE('----------HBB Tv Ready')
+				self.mCommander.AppHBBTV_Ready( 1 )
+				self.mHBBTVReady = True
+			elif self.mMediaPlayerStarted == True :
+				self.mCommander.AppMediaPlayer_Control( 0 )
 
 		LOG_TRACE('')
 		
@@ -272,11 +280,30 @@ class NullWindow( BaseWindow ) :
 					xbmc.executebuiltin('xbmc.Action(stop)')
 
 				self.mOnEventing = False
+			elif E_SUPPROT_HBBTV == True :
+				if aEvent.getName() == ElisEventChannelChangeResult.getName() :
+					ch = self.mDataCache.Channel_GetCurrent( )
+					if ch.mLocked :
+						self.PincodeDialogLimit( self.mDataCache.mPropertyPincode )
 
-			elif aEvent.getName() == ElisEventChannelChangeResult.getName() :
-				ch = self.mDataCache.Channel_GetCurrent( )
-				if ch.mLocked :
-					self.PincodeDialogLimit( self.mDataCache.mPropertyPincode )
+				elif aEvent.getName() == ElisEventExternalMediaPlayerStart.getName() :
+					LOG_TRACE('HBBTEST URL=%s' %aEvent.mUrl )
+					self.mCommander.AppMediaPlayer_Control( 1 )
+					xbmc.executebuiltin('XBMC.PlayMedia(%s, noresume )' %aEvent.mUrl )
+					#xbmc.executebuiltin('XBMC.PlayMedia(/tmp/bd/BDMV/index.bdmv)')
+					self.mMediaPlayerStarted = True 
+					self.mCommander.ExternalMediaPlayer_Started( 1 )
+
+				elif aEvent.getName() == ElisEventExternalMediaPlayerSetSpeed.getName() :
+					pass
+			
+				elif aEvent.getName() == ElisEventExternalMediaPlayerSeekStream.getName() :
+					pass
+			
+				elif aEvent.getName() == ElisEventExternalMediaPlayerStopPlay.getName() :
+					LOG_TRACE('HBBTEST ElisEventExternalMediaPlayerStopPlay.getName' )
+					xbmc.executebuiltin('XBMC.PlayerControl(Stop)' )
+					#self.mCommander.AppMediaPlayer_Control( 0 )
 
 		else:
 			LOG_TRACE( 'NullWindow winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
@@ -363,8 +390,11 @@ class NullWindow( BaseWindow ) :
 		self.mEventBus.Deregister( self )
 
 		if E_SUPPROT_HBBTV == True :
-			self.mCommander.AppHBBTV_Ready( 0 )
-
+			if self.mHBBTVReady == True :
+				LOG_TRACE('----------HBB Tv Not Ready')
+				self.mCommander.AppHBBTV_Ready( 0 )
+				self.mHBBTVReady = False 
+		
 
 	def GetKeyDisabled( self ) :
 		return False
