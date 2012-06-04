@@ -1,5 +1,4 @@
 from pvr.gui.WindowImport import *
-from pvr.GuiHelper import GetSetting, SetSetting, GetSelectedLongitudeString, EnumToString, ClassToList, AgeLimit
  
 
 BUTTON_ID_VIEW_MODE				= 100
@@ -57,48 +56,64 @@ class ArchiveWindow( BaseWindow ) :
 		self.mRecordList = [] 
 		self.mSortList = [] 		
 		self.mRecordListItems = []
+		self.mLastFocusItem = -1
 
 		self.mServiceType =  self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( ).mServiceType
-		
-		self.mViewMode = int( GetSetting( 'VIEW_MODE' ) )
-		self.mCtrlViewMode = self.getControl( BUTTON_ID_VIEW_MODE )
 
-		self.mSortMode = int( GetSetting( 'SORT_MODE' ) )		
-		self.mCtrlSortMode = self.getControl( BUTTON_ID_SORT_MODE )
+		try :		
+			self.mViewMode = int( GetSetting( 'VIEW_MODE' ) )
+			self.mCtrlViewMode = self.getControl( BUTTON_ID_VIEW_MODE )
 
-		self.mAscending = []
-		self.mAscending = [False,False,False,False,False]
+			LOG_TRACE('LAEL98 self.mCtrlViewMode =%s' %self.mCtrlViewMode )			
 
-		self.mAscending[E_SORT_DATE] = False
-		self.mAscending[E_SORT_CHANNEL] = True
-		self.mAscending[E_SORT_TITLE] = True
-		self.mAscending[E_SORT_DURATION] = False
+			self.mSortMode = int( GetSetting( 'SORT_MODE' ) )		
+			self.mCtrlSortMode = self.getControl( BUTTON_ID_SORT_MODE )
+
+			self.mAscending = []
+			self.mAscending = [False,False,False,False,False]
+
+			self.mAscending[E_SORT_DATE] = False
+			self.mAscending[E_SORT_CHANNEL] = True
+			self.mAscending[E_SORT_TITLE] = True
+			self.mAscending[E_SORT_DURATION] = False
 
 
-		self.mCtrlCommonList = self.getControl( LIST_ID_COMMON_RECORD )
-		self.mCtrlThumbnailList = self.getControl( LIST_ID_THUMBNAIL_RECORD )
-		self.mCtrlPosterwrapList = self.getControl( LIST_ID_POSTERWRAP_RECORD )
-		self.mCtrlFanartList = self.getControl( LIST_ID_FANART_RECORD )
+			self.mCtrlCommonList = self.getControl( LIST_ID_COMMON_RECORD )
+			self.mCtrlThumbnailList = self.getControl( LIST_ID_THUMBNAIL_RECORD )
+			self.mCtrlPosterwrapList = self.getControl( LIST_ID_POSTERWRAP_RECORD )
+			self.mCtrlFanartList = self.getControl( LIST_ID_FANART_RECORD )
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)
+
+
+		self.Load( )
+		if self.mRecordCount == 0 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( 'Error', 'Play list is Empty' )
+			dialog.doModal( )
+			self.SetVideoRestore( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 		self.UpdateAscending()
 		self.UpdateViewMode( )
 		
 		self.InitControl( )
 
-		self.Load( )
-
 		self.SelectLastRecordKey( )
 		self.UpdateList( )
+
 		self.mInitialized = True
 		
 
 	def onAction( self, aAction ) :
+		if self.mRecordCount == 0 :
+			return
 		focusId = self.GetFocusId( )
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )		
 
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.SetVideoRestore( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
@@ -106,14 +121,8 @@ class ArchiveWindow( BaseWindow ) :
 			if focusId  == LIST_ID_COMMON_RECORD or focusId  == LIST_ID_THUMBNAIL_RECORD or focusId  == LIST_ID_POSTERWRAP_RECORD or focusId  == LIST_ID_FANART_RECORD:
 				if	self.mMarkMode == True	:
 					self.DoMarkToggle( )
-				else :
+				else :			
 					self.StartRecordPlayback( )
-
-
-		elif actionId == Action.ACTION_PARENT_DIR :
-			self.SetVideoRestore( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
-
 
 		elif actionId == Action.ACTION_MOVE_RIGHT or actionId == Action.ACTION_MOVE_LEFT :
 			if focusId == LIST_ID_POSTERWRAP_RECORD or focusId  == LIST_ID_FANART_RECORD or focusId  == LIST_ID_THUMBNAIL_RECORD:
@@ -122,7 +131,7 @@ class ArchiveWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
 			if focusId  == LIST_ID_COMMON_RECORD or focusId  == LIST_ID_THUMBNAIL_RECORD :
 				self.UpdateSelectedPosition( )
-				if focusId  == LIST_ID_COMMON_RECORD	 :
+				if focusId  == LIST_ID_COMMON_RECORD :
 					self.UpdateArchiveInfomation( )
 
 		elif actionId == Action.ACTION_CONTEXT_MENU:
@@ -130,6 +139,8 @@ class ArchiveWindow( BaseWindow ) :
 
 	
 	def onClick( self, aControlId ) :
+		if self.mRecordCount == 0 :
+			return
 		LOG_TRACE( 'aControlId=%d' % aControlId )
 
 		if aControlId == BUTTON_ID_VIEW_MODE :
@@ -188,8 +199,10 @@ class ArchiveWindow( BaseWindow ) :
 
 	def InitControl( self ) :
 
+		LOG_TRACE('LAEL98')		
 		if self.mViewMode == E_VIEW_LIST :
 			self.mCtrlViewMode.setLabel('VIEW: LIST')
+			LOG_TRACE('LAEL98')		
 		elif self.mViewMode == E_VIEW_THUMBNAIL :			
 			self.mCtrlViewMode.setLabel('VIEW: THUMBNAIL')		
 		elif self.mViewMode == E_VIEW_POSTER_WRAP :			
@@ -198,8 +211,10 @@ class ArchiveWindow( BaseWindow ) :
 			self.mCtrlViewMode.setLabel('VIEW: FANART')		
 		else :
 			LOG_WARN('Unknown view mode')
-			
+
+		LOG_TRACE('LAEL98')					
 		if self.mSortMode == E_SORT_DATE :
+			LOG_TRACE('LAEL98')				
 			self.mCtrlSortMode.setLabel('SORT: DATE')
 		elif self.mSortMode == E_SORT_CHANNEL :			
 			self.mCtrlSortMode.setLabel('SORT: CHANNEL')		
@@ -210,11 +225,15 @@ class ArchiveWindow( BaseWindow ) :
 		else :
 			LOG_WARN('Unknown sort mode')
 
+		LOG_TRACE('LAEL98')					
+
 
 	def UpdateViewMode( self ) :
-		LOG_TRACE('---------------------')
+		LOG_TRACE('--------------------- self.mViewMode=%d' %self.mViewMode)
 		if self.mViewMode == E_VIEW_LIST :
+			LOG_TRACE('LAEL98')
 			self.mWin.setProperty( 'ViewMode', 'common' )
+			LOG_TRACE('LAEL98')
 		elif self.mViewMode == E_VIEW_THUMBNAIL :			
 			self.mWin.setProperty( 'ViewMode', 'thumbnail' )
 		elif self.mViewMode == E_VIEW_POSTER_WRAP :			
@@ -396,27 +415,26 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def StartRecordPlayback( self, aResume=True ) :
-		#(self ,  recordKey,  serviceType,  offsetms,  speed) :
-		selectedPos = self.GetSelectedPosition()
-		LOG_TRACE('selectedPos=%d' %selectedPos)
-		
-		if selectedPos >= 0 and selectedPos < len( self.mRecordList ):
-			recInfo = self.mRecordList[selectedPos]
-			if recInfo.mLocked == True :
-				if self.CheckPincode() == False :
-					return False
-			
-			if aResume == True :
-				#ToDO
-				self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
-			else :
-				self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )			
+		selectedPos = self.GetSelectedPosition( )
+		if self.mLastFocusItem == selectedPos :
+			self.SetVideoRestore( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+		else :		
+			if selectedPos >= 0 and selectedPos < len( self.mRecordList ):
+				recInfo = self.mRecordList[selectedPos]
+				if recInfo.mLocked == True :
+					if self.CheckPincode() == False :
+						return False
+				
+				if aResume == True :
+					#ToDO
+					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
+				else :
+					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )			
 
-		self.mDataCache.SetKeyDisabled( True, recInfo )
-
-		self.RestoreLastRecordKey( )
-		self.SetVideoRestore( )
-		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )				
+			self.mDataCache.SetKeyDisabled( True, recInfo )
+			self.RestoreLastRecordKey( )
+			self.mLastFocusItem = selectedPos
 
 
 	def GetSelectedPosition( self ) :
@@ -785,7 +803,7 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def RestoreLastRecordKey( self ):
-		selectedPos = self.GetSelectedPosition()
+		selectedPos = self.GetSelectedPosition( )
 
 		if selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
 			recInfo = self.mRecordList[selectedPos]
@@ -794,7 +812,6 @@ class ArchiveWindow( BaseWindow ) :
 			self.mSelectRecordKey = -1
 
 
-	
 	def SelectLastRecordKey( self ) :
 		selectedPos = 0
 		for i in range( len( self.mRecordList ) ) :

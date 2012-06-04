@@ -1,5 +1,4 @@
 from pvr.gui.WindowImport import *
-from pvr.GuiHelper import GetImageByEPGComponent, GetSelectedLongitudeString, EnumToString, ClassToList, AgeLimit, MR_LANG
 
 FLAG_MASK_ADD  = 0x01
 FLAG_MASK_NONE = 0x00
@@ -220,6 +219,11 @@ class LivePlate( BaseWindow ) :
 			self.SetAutomaticHide( False )
 
 			self.Close()
+			status = self.mDataCache.Player_GetStatus()
+			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE, WinMgr.WIN_ID_NULLWINDOW )
+			else :
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_ROOTWINDOW )
 
 		elif id == Action.ACTION_SELECT_ITEM:
 			self.StopAutomaticHide()

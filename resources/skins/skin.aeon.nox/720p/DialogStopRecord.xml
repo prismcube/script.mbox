@@ -3,7 +3,6 @@
 	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
-		<include>DefaultBehindDialogFadeOut</include>
 		<control type="group">
 			<posx>335</posx>
 			<posy>90</posy>

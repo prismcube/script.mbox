@@ -4,7 +4,6 @@
 	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
-		<include>DefaultBehindDialogFadeOut</include>
 		<control type="group" id="9000">
 			<posx>600</posx>
 			<posy>200</posy>

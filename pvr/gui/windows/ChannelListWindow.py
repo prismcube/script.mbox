@@ -1,6 +1,4 @@
 from pvr.gui.WindowImport import *
-from pvr.GuiHelper import GetSelectedLongitudeString, GetImageByEPGComponent, EnumToString, ClassToList, AgeLimit, MR_LANG
-from copy import deepcopy
 
 FLAG_MASK_ADD    = 0x01
 FLAG_MASK_NONE   = 0x00
@@ -131,7 +129,7 @@ class ChannelListWindow( BaseWindow ) :
 	def GetAutomaticHide( self ) :
 		return self.mAutomaticHide
 	"""
- 
+
 	def onInit(self):
 		LOG_TRACE( 'Enter' )
 
@@ -231,13 +229,19 @@ class ChannelListWindow( BaseWindow ) :
 		try :
 			#first get is used cache, reason by fast load
 			iChannel = self.mDataCache.Channel_GetCurrent( )
-			if iChannel :
-				self.mNavChannel = iChannel
-				self.mCurrentChannel = iChannel.mNumber
 
-				strType = self.UpdateServiceType( iChannel.mServiceType )
-				label = '%s - %s'% (strType, iChannel.mName)
-				self.UpdateLabelGUI( self.mCtrlChannelName.getId( ), label )
+			label = ''
+			if self.mDataCache.mStatusIsArchive :
+				if self.mDataCache.mRecInfo :
+					label = 'PVR - P%04d.%s' %(self.mDataCache.mRecInfo.mChannelNo, self.mDataCache.mRecInfo.mChannelName )
+			else :
+				if iChannel :
+					self.mNavChannel = iChannel
+					self.mCurrentChannel = iChannel.mNumber
+
+					strType = self.UpdateServiceType( iChannel.mServiceType )
+					label = '%s - %s'% (strType, iChannel.mName)
+			self.UpdateLabelGUI( self.mCtrlChannelName.getId( ), label )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -554,7 +558,8 @@ class ChannelListWindow( BaseWindow ) :
 				self.CurrentTimeThread( ).join( )
 				self.mCtrlListCHList.reset( )
 				self.Close( )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_ROOTWINDOW )
+				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_ROOTWINDOW )
+				WinMgr.GetInstance().CloseWindow( )
 
 			LOG_TRACE( 'go out Cancel' )
 
@@ -711,6 +716,11 @@ class ChannelListWindow( BaseWindow ) :
 			if iChannel.mServiceType == FLAG_MODE_RADIO : 	isBlank = True
 			else : 											isBlank = False
 			self.mDataCache.Player_VideoBlank( isBlank, False )
+
+
+		if self.mDataCache.mStatusIsArchive :
+			self.mDataCache.mStatusIsArchive = False
+			self.mDataCache.Player_Stop()
 
 		ret = False
 		ret = self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
@@ -2513,5 +2523,5 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 		LOG_TRACE('Leave')
- 
+
 

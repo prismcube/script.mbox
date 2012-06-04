@@ -1,9 +1,6 @@
 from pvr.gui.WindowImport import *
 
 
-E_DEFAULT_GOURP_ID		= 9000
-
-
 class AutomaticScan( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
@@ -13,8 +10,6 @@ class AutomaticScan( SettingWindow ) :
 
 
 	def onInit(self) :
-		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( False )
-
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
@@ -27,6 +22,9 @@ class AutomaticScan( SettingWindow ) :
 		self.LoadFormattedSatelliteNameList( )
 
 		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
+			if self.getControl( E_SETTING_DESCRIPTION ).getLabel( ) == 'Has no configured satellite' :
+				hideControlIds = [ E_Input01, E_Input02, E_SpinEx01, E_SpinEx02 ]
+				self.SetVisibleControls( hideControlIds, True )
 			self.InitConfig( )
 			self.mInitialized = True
 			self.SetFocusControl( E_Input01 )
@@ -38,7 +36,6 @@ class AutomaticScan( SettingWindow ) :
 			dialog.SetDialogProperty( 'ERROR', 'Has No Configurd Satellite' )
  			dialog.doModal( )
 			WinMgr.GetInstance().CloseWindow( )
-		self.getControl( E_DEFAULT_GOURP_ID ).setVisible( True )
 
 
 	def onAction( self, aAction ) :
@@ -119,17 +116,11 @@ class AutomaticScan( SettingWindow ) :
 
 		else :
 			try :
-				print 'dhkim test #1'
 				self.AddInputControl( E_Input01, 'Satellite', self.mFormattedList[self.mSatelliteIndex], 'Select satellite' )
-				print 'dhkim test #2'
 				self.AddEnumControl( E_SpinEx01, 'Network Search', None, 'Network Search' )
-				print 'dhkim test #3'
 				self.AddEnumControl( E_SpinEx02, 'Channel Search Mode', None, 'Channel Search Mode' )
-				print 'dhkim test #4'
 				self.AddInputControl( E_Input02, 'Start Search', '','Start Search' )
-				print 'dhkim test #5'
 				self.InitControl( )
-				print 'dhkim test #6'
 			except Exception, ex :
 				LOG_TRACE('Error exception[%s]'% ex)
 	

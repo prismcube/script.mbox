@@ -5,74 +5,28 @@
 	</include>
 
 	<include name="DefaultSettingsBackground">
-		<control type="multiimage">
+		<control type="image">
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>1280</width>
 			<height>720</height>
-			<imagepath>special://skin/backgrounds/system.jpg</imagepath>
-			<timeperimage>5000</timeperimage>
-			<fadetime>2000</fadetime>
-			<pauseatend>10000</pauseatend>
-			<randomize>true</randomize>
-			<loop>no</loop>
+			<texture>special://skin/backgrounds/system.jpg</texture>
+			<include>DefaultSettingWindowEffect</include>
+			<animation effect="zoom" start="150" end="100" center="640,360" time="500" tween="cubic" easing="out" condition="!Control.HasFocus(999)">Conditional</animation>
+			<animation effect="fade" start="0" end="100" time="500" condition="!Control.HasFocus(999)">Conditional</animation>
+			<animation effect="zoom" start="100" end="130" center="640,360" time="500" tween="cubic" easing="in" condition="Control.HasFocus(999)">Conditional</animation>
+			<animation effect="fade" start="100" end="0" time="500" condition="Control.HasFocus(999)">Conditional</animation>
 		</control>
 	</include>
 
 	<include name="DefaultMiniTitle">
-		<control type="group">
-			<posx>60</posx>
+		<control type="label" id="1001">
+			<visible>false</visible>
+			<posx>0</posx>
 			<posy>0</posy>
-			<animation effect="slide" end="-310,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
-			<animation effect="slide" start="-310,0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
-			<animation effect="slide" end="-310,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(999)">Conditional</animation>
-			<animation effect="slide" start="-310,0" time="300" tween="quadratic" easing="out" condition="!Control.HasFocus(999)">Conditional</animation>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>250</width>
-				<height>35</height>
-				<!--<texture border="0,0,32,0">header.png</texture>-->
-			</control>
-			<control type="label" id="1001">
-				<visible>false</visible>
-				<include>DefaultWindowTitleCommons</include>
-				<posx>220</posx>
-			</control>
+			<width>1</width>
+			<height>1</height>
 		</control>
-	</include>
-
-	<include name="DefaultCommonDateTime">
-		<control type="group">
-            <posx>390r</posx>
-            <posy>0</posy>
-            <animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
-            <animation effect="slide" start="0,0" end="420,0" delay="0" time="300">WindowClose</animation>
-            <animation effect="slide" start="420,0" end="0,0" delay="0" time="300">WindowOpen</animation>
-            <animation effect="slide" start="0,0" end="420,0" delay="0" time="300" condition="Control.HasFocus(999)">Conditional</animation>
-			<animation effect="slide" start="420,0" end="0,0" delay="0" time="300" condition="!Control.HasFocus(999)">Conditional</animation>
-			<control type="image">
-                <description>time background</description>
-                <posx>0</posx>
-                <posy>0</posy>
-                <width>440</width>
-                <height>35</height>
-				<texture flipy="true" border="32,0,0,0">home/timepanel_mid.png</texture>
-            </control>
-            <control type="label">
-                <description>time label</description>
-                <posx>30</posx>
-                <posy>0</posy>
-                <width>400</width>
-                <height>28</height>
-                <align>left</align>
-                <aligny>center</aligny>
-                <font>font12</font>
-                <textcolor>white</textcolor>
-                <shadowcolor>black</shadowcolor>
-                <label>[COLOR=grey]$INFO[System.Date][/COLOR] | $INFO[System.Time]</label>
-            </control>
-        </control>
 	</include>
 
 	<include name="DefaultFakeButton">
@@ -220,8 +174,8 @@
         	<effect type="fade" start="0" end="100" time="500"/>
 		</animation>
 		<animation type="WindowClose" reversible="false">
-			<effect type="fade" start="100" end="0" time="300"/>
-			<effect type="zoom" start="100" end="130" center="640,360" time="300" tween="cubic" easing="in"/>
+			<effect type="fade" start="100" end="0" time="500"/>
+			<effect type="zoom" start="100" end="130" center="640,360" time="500" tween="cubic" easing="in"/>
 		</animation>
 	</include>
 
@@ -442,7 +396,6 @@
 			<height>30</height>
 			<texture border="0,1,0,1">views/scrollbarnub-focus.png</texture>
 		</control>
-		
 	</include>
 
 	<include name="DefaultBackgroundFade">
@@ -481,6 +434,7 @@
 		<animation effect="zoom" start="100" end="130" center="640,360" time="300" tween="cubic" easing="in" condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional">Conditional</animation>
 	</include>
 
+	<!--
 	<include name="DefaultBehindDialogFadeOut">
 		<control type="image">
 			<posx>0</posx>
@@ -491,6 +445,7 @@
 			<animation effect="fade" start="100" end="0" time="200" condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional">Conditional</animation>
 		</control>
 	</include>
+	-->
 	<!--
 	<include name="DefaultDialogBusyBackgroud">
 		<control type="image">

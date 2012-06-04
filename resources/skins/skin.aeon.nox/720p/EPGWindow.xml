@@ -3,22 +3,35 @@
 	<allowoverlay>no</allowoverlay>
 	<controls>
 		<!-- Background -->
-		<control type="multiimage">
+		<control type="image">
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>1280</width>
 			<height>720</height>
-			<imagepath>special://skin/backgrounds/curtains.jpg</imagepath>
-			<timeperimage>5000</timeperimage>
-			<fadetime>2000</fadetime>
-			<pauseatend>10000</pauseatend>
-			<randomize>true</randomize>
-			<loop>no</loop>
+			<texture>special://skin/backgrounds/curtains.jpg</texture>
 			<include>DefaultSettingWindowEffect</include>
 		</control>
 
+		<!--  local time -->
+		<include>timepanelhigh</include>
+
 		<!-- Bottom Gradation Image -->
-		<include>Furniture_Showcase</include>
+		<control type="image">
+			<posx>0</posx>
+			<posy>315</posy>
+			<width>1280</width>
+			<height>405</height>
+			<texture>views/showcase_floor.png</texture>
+			<include>DefaultSettingWindowEffect</include>
+		</control>
+		<control type="image">
+			<posx>144</posx>
+			<posy>583</posy>
+			<width>993</width>
+			<height>137</height>
+			<texture>views/showcase_spot.png</texture>
+			<include>DefaultSettingWindowEffect</include>
+		</control>
 
 		<!-- Channel Name on TOP side -->
 		<control type="label" id="400">
@@ -197,20 +210,13 @@
 					<height>315</height>
 					<texture>views/listpanel_back.png</texture>
 				</control>
-				<control type="image">
-					<posx>811</posx>
-					<posy>333</posy>
-					<width>392</width>
-					<height>18</height>
-					<texture border="20">settings/settings_panelback.png</texture>
-				</control>
 				<control type="label" id="401">
 					<description>Current Channel</description>			
 					<posx>838</posx>
-					<posy>329</posy>
-					<width>352</width>
+					<posy>310</posy>
+					<width>350</width>
 					<height>18</height>
-					<font>Font_Reg20</font>
+					<font>Font_Reg18</font>
 				</control>
 
 				<control type="group" id="9020">
@@ -311,61 +317,66 @@
 			</control>
 		</control>
 
-		<!-- Item Position and Page Number for common list-->
-		<control type="label">
-			<posx>105</posx>
-			<posy>75r</posy>
-			<width>300</width>
-			<height>20</height>
-			<font>font12</font>
-			<textcolor>grey</textcolor>
-			<scroll>false</scroll>
-			<align>left</align>
-			<aligny>center</aligny>
-			<label>[COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3500).NumItems][/COLOR] $LOCALIZE[31025]</label>
-			<visible>substring(Window.Property(EPGMode),channel)</visible>
-		</control>
-		<control type="label">
-			<posx>760</posx>
-			<posy>75r</posy>
-			<width>300</width>
-			<height>20</height>
-			<font>font12</font>
-			<textcolor>grey</textcolor>
-			<scroll>false</scroll>
-			<align>right</align>
-			<aligny>center</aligny>
-			<label>$LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3500).CurrentPage]/$INFO[Container(3500).NumPages][/COLOR])</label>
-			<visible>substring(Window.Property(EPGMode),channel)</visible>			
-		</control>
+		<control type="group">
+ 			<animation effect="slide" time="700" start="-800,0" end="0,0" tween="cubic" easing="out">WindowOpen</animation>
+			<animation effect="slide" time="700" start="0,0" end="-800,0" tween="cubic" easing="out">WindowClose</animation>
+			<include>Animation_CommonFade</include>
+			<!-- Item Position and Page Number for common list-->
+			<control type="label">
+				<posx>105</posx>
+				<posy>75r</posy>
+				<width>300</width>
+				<height>20</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<scroll>false</scroll>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>[COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3500).NumItems][/COLOR] $LOCALIZE[31025]</label>
+				<visible>substring(Window.Property(EPGMode),channel)</visible>
+			</control>
+			<control type="label">
+				<posx>760</posx>
+				<posy>75r</posy>
+				<width>300</width>
+				<height>20</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
+				<label>$LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3500).CurrentPage]/$INFO[Container(3500).NumPages][/COLOR])</label>
+				<visible>substring(Window.Property(EPGMode),channel)</visible>			
+			</control>
 
 
-		<!-- Item Position and Page Number for big list-->
-		<control type="label">
-			<posx>105</posx>
-			<posy>75r</posy>
-			<width>300</width>
-			<height>20</height>
-			<font>font12</font>
-			<textcolor>grey</textcolor>
-			<scroll>false</scroll>
-			<align>left</align>
-			<aligny>center</aligny>
-			<label>[COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3510).NumItems][/COLOR] $LOCALIZE[31025]</label>
-			<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>
-		</control>
-		<control type="label">
-			<posx>760</posx>
-			<posy>75r</posy>
-			<width>300</width>
-			<height>20</height>
-			<font>font12</font>
-			<textcolor>grey</textcolor>
-			<scroll>false</scroll>
-			<align>right</align>
-			<aligny>center</aligny>
-			<label>$LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3510).CurrentPage]/$INFO[Container(3510).NumPages][/COLOR])</label>
-			<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>			
+			<!-- Item Position and Page Number for big list-->
+			<control type="label">
+				<posx>105</posx>
+				<posy>75r</posy>
+				<width>300</width>
+				<height>20</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<scroll>false</scroll>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>[COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3510).NumItems][/COLOR] $LOCALIZE[31025]</label>
+				<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>
+			</control>
+			<control type="label">
+				<posx>760</posx>
+				<posy>75r</posy>
+				<width>300</width>
+				<height>20</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
+				<label>$LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3510).CurrentPage]/$INFO[Container(3510).NumPages][/COLOR])</label>
+				<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>			
+			</control>
 		</control>
 	</controls>
 </window>

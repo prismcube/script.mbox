@@ -114,8 +114,8 @@ class Configure( SettingWindow ) :
 			self.mInitialized = False
 			self.mDataCache.Player_VideoBlank( False, False )
 			WinMgr.GetInstance().CloseWindow( )
-			print 'dhkim test ######################'
 
+			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
@@ -123,6 +123,7 @@ class Configure( SettingWindow ) :
 			self.mInitialized = False
 			self.mDataCache.Player_VideoBlank( False, False )
 			WinMgr.GetInstance().CloseWindow( )
+
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == E_SUBMENU_LIST_ID and selectedId != self.mPrevListItemID :

@@ -21,27 +21,21 @@ class Installation( BaseWindow ):
 		
 		
 	def onInit( self ):
-		LOG_TRACE('')
 		self.mWinId = xbmcgui.getCurrentWindowId()
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Installation' )
 		
 		groupItems = []
-
-		LOG_TRACE('')
 		
 		for i in range( len( self.leftGroupItems ) ) :
 			#groupItems.append( xbmcgui.ListItem( self.leftGroupItems[i], self.descriptionList[i], self.icon[i] ) )
 			groupItems.append( xbmcgui.ListItem( self.leftGroupItems[i], self.descriptionList[i] ) )
-
-		LOG_TRACE('')			
+		
 		self.mCtrlLeftGroup = self.getControl( 9000 )
 		self.mCtrlLeftGroup.addItems( groupItems )
-		LOG_TRACE('')		
-
 		self.SetPipScreen( )
-		
+
 	
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )

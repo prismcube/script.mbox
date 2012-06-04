@@ -54,6 +54,8 @@ class MainMenu( BaseWindow ) :
 		status = self.mDataCache.Player_GetStatus()
 		self.mMode = status.mMode
 		if self.mMode == ElisEnum.E_MODE_PVR :
+			self.mWin.setProperty( 'IsPVR', 'True' )
+		else :
 			self.mWin.setProperty( 'IsPVR', 'False' )
 
 	def onAction( self, aAction ) :
@@ -136,5 +138,4 @@ class MainMenu( BaseWindow ) :
 	def Close( self ) :
 		LOG_TRACE('')	
 		pass
-
 
