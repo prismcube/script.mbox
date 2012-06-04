@@ -1,6 +1,4 @@
 from pvr.gui.WindowImport import *
-from pvr.GuiHelper import GetSetting, SetSetting, GetSelectedLongitudeString, EnumToString, ClassToList, AgeLimit
-
 
 BUTTON_ID_GO_PARENT				= 100
 LIST_ID_BIG_EPG					= 3510

@@ -1,6 +1,4 @@
 from pvr.gui.WindowImport import *
-from pvr.GuiHelper import ClassToList
-
 
 E_CHANNEL_NUM_ID	= 210
 E_CHANNEL_NAME_ID	= 211

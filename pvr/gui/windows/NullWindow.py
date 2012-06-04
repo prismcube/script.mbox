@@ -17,8 +17,6 @@ class NullWindow( BaseWindow ) :
 		self.mGotoWinID = None
 		self.mOnEventing= False
 
-		LOG_TRACE('')
-
 		if self.mInitialized == False :
 			self.mInitialized = True
 
@@ -27,13 +25,10 @@ class NullWindow( BaseWindow ) :
 		if E_SUPPROT_HBBTV == True :
 			self.mCommander.AppHBBTV_Ready( 1 )
 
-		LOG_TRACE('')
 		
 	def onAction(self, aAction) :		
-		LOG_TRACE('')	
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )
-		LOG_TRACE('actionId=%d' %actionId)		
 
 		if actionId == Action.ACTION_PREVIOUS_MENU:
 			if self.mGotoWinID :
@@ -109,9 +104,8 @@ class NullWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( gotoWinId )
 
 		elif actionId == Action.ACTION_PAGE_DOWN:
-			LOG_TRACE('key down')
 			if self.mDataCache.mStatusIsArchive :
-				LOG_TRACE('Archive playing now')
+				#LOG_TRACE('Archive playing now')
 				return -1
 
 			prevChannel = None
@@ -126,9 +120,8 @@ class NullWindow( BaseWindow ) :
 
 
 		elif actionId == Action.ACTION_PAGE_UP:
-			LOG_TRACE('key up')
 			if self.mDataCache.mStatusIsArchive :
-				LOG_TRACE('Archive playing now')
+				#LOG_TRACE('Archive playing now')
 				return -1
 
 			nextChannel = None
@@ -150,7 +143,7 @@ class NullWindow( BaseWindow ) :
 				aKey = actionId - Action.REMOTE_0
 
 			if self.mDataCache.mStatusIsArchive :
-				LOG_TRACE('Archive playing now')
+				#LOG_TRACE('Archive playing now')
 				return -1
 
 			if aKey == 0 :
@@ -169,7 +162,6 @@ class NullWindow( BaseWindow ) :
 			isOK = dialog.IsOK()
 			if isOK == E_DIALOG_STATE_YES :
 				inputNumber = dialog.GetChannelLast()
-				LOG_TRACE('=========== Jump chNum[%s]'% inputNumber)
 
 				iCurrentCh = self.mDataCache.Channel_GetCurrent( )
 				if iCurrentCh.mNumber != int(inputNumber) :
@@ -182,19 +174,19 @@ class NullWindow( BaseWindow ) :
 			status = self.mDataCache.Player_GetStatus()
 			if status.mMode :
 				ret = self.mDataCache.Player_Stop()
-				LOG_TRACE('----------mode[%s] stop[%s] up/down[%s]'% (status.mMode, ret, self.mDataCache.mStatusIsArchive) )
+				#LOG_TRACE('----------mode[%s] stop[%s] up/down[%s]'% (status.mMode, ret, self.mDataCache.mStatusIsArchive) )
 				if ret :
 					if status.mMode == ElisEnum.E_MODE_PVR :
 						if self.mDataCache.mStatusIsArchive :
 							self.mGotoWinID = WinMgr.WIN_ID_ARCHIVE_WINDOW
 							self.mDataCache.mStatusIsArchive = False
-							LOG_TRACE('archive play, stop to go Archive')
+							#LOG_TRACE('archive play, stop to go Archive')
 						else :
 							self.mGotoWinID = None
 							self.mDataCache.mStatusIsArchive = False
-							LOG_TRACE('recording play, stop only(NullWindow)')
+							#LOG_TRACE('recording play, stop only(NullWindow)')
 
-						LOG_TRACE('up/down key released, goto win[%s]'% self.mGotoWinID)
+						#LOG_TRACE('up/down key released, goto win[%s]'% self.mGotoWinID)
 						if self.mGotoWinID :
 							xbmc.executebuiltin('xbmc.Action(previousmenu)')
 
@@ -258,22 +250,17 @@ class NullWindow( BaseWindow ) :
 
 	@GuiLock
 	def onEvent(self, aEvent):
-		LOG_TRACE( 'Enter' )
-
 		if self.mWinId == xbmcgui.getCurrentWindowId():
-			LOG_TRACE( 'NullWindow winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
+			#LOG_TRACE( 'NullWindow winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
 			if aEvent.getName() == ElisEventPlaybackEOF.getName() :
-				#aEvent.printdebug()
-				LOG_TRACE( 'mType[%d]' %(aEvent.mType ) )
-
 				if self.mOnEventing :
-					LOG_TRACE('ignore event, mFlag_OnEvent[%s]'% self.mOnEventing)
+					#LOG_TRACE('ignore event, mFlag_OnEvent[%s]'% self.mOnEventing)
 					return -1
 
 				self.mOnEventing = True
 
 				if aEvent.mType == ElisEnum.E_EOF_END :
-					LOG_TRACE( 'EventRecv EOF_STOP' )
+					#LOG_TRACE( 'EventRecv EOF_STOP' )
 					xbmc.executebuiltin('xbmc.Action(stop)')
 
 				self.mOnEventing = False
@@ -284,14 +271,11 @@ class NullWindow( BaseWindow ) :
 					self.PincodeDialogLimit( self.mDataCache.mPropertyPincode )
 
 		else:
-			LOG_TRACE( 'NullWindow winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
-
-		LOG_TRACE( 'Leave' )
+			pass
+			#LOG_TRACE( 'NullWindow winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
 
 
 	def PincodeDialogLimit( self, aPincode ) :
-		LOG_TRACE( 'Enter' )
-
 		isUnlock = False
 		try :
 			self.mDataCache.Player_AVBlank( True, False )
@@ -317,7 +301,6 @@ class NullWindow( BaseWindow ) :
 			if inputPin == str('%s'% aPincode ) :
 				isUnlock = True
 				self.mDataCache.Player_AVBlank( False, False )
-				LOG_TRACE( 'Pincode success' ) 
 
 			else:
 				msg1 = MR_LANG('Error')
@@ -330,15 +313,11 @@ class NullWindow( BaseWindow ) :
 		except Exception, e:
 			LOG_TRACE( 'Error exception[%s]'% e )
 
-		LOG_TRACE( 'Leave' )
 		return isUnlock
 
 
 	def RecordingStop( self ) :
-		LOG_TRACE('Enter')
-
 		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
-		LOG_TRACE( 'runningCount[%s]'% isRunRec )
 
 		if isRunRec > 0 :
 			GuiLock2( True )
@@ -360,8 +339,6 @@ class NullWindow( BaseWindow ) :
 						self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
 						self.mDataCache.LoadChannelList( )
 						self.mDataCache.mCacheReload = True
-
-		LOG_TRACE('Leave')
 
 
 	def Close( self ) :

@@ -1,6 +1,4 @@
 from pvr.gui.WindowImport import *
-from pvr.GuiHelper import GetImageByEPGComponent, GetSelectedLongitudeString, EnumToString, ClassToList, AgeLimit, MR_LANG
-#import time
 
 NEXT_EPG		= 0
 PREV_EPG 		= 1
