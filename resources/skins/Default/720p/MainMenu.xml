@@ -125,7 +125,7 @@
 					<item id="8">
 						<label>Test</label>
 						<onclick>SendClick(90800)</onclick>
-						<visible>False</visible>
+						<visible>true</visible>
 					</item>
 				</content>
 			</control>

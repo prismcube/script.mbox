@@ -63,7 +63,8 @@ class MainMenu( BaseWindow ) :
 		self.GlobalAction( actionId )
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			pass
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 
