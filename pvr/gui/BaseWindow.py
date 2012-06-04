@@ -137,6 +137,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 	def SetVideoRestore( self ) :
 		delay = threading.Timer( 0.5, self.SetVideoRestoreDelay )			
 		delay.start( )
+		del delay
 
 
 	def SetVideoRestoreDelay( self ) :

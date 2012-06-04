@@ -138,9 +138,9 @@ class DialogChannelJump( BaseDialog ) :
 			LOG_TRACE('No search Channel[%s]'% self.mChannelNumber)
 			return
 
-		retList = []
-		retList.append(fChannel)
-		LOG_TRACE('======= Search Channel[%s]'% ClassToList('convert', retList) )
+		#retList = []
+		#retList.append(fChannel)
+		#LOG_TRACE('======= Search Channel[%s]'% ClassToList('convert', retList) )
 
 		self.SetLabelChannelName( fChannel.mName )
 		self.GetEPGInfo( fChannel )

@@ -205,8 +205,6 @@ class DataCacheMgr( object ):
 		if self.mAllSatelliteList and self.mAllSatelliteList[0].mError == 0 :
 			count =  len( self.mAllSatelliteList )
 			LOG_TRACE( 'satellite count = %d' % count )
-			from pvr.GuiHelper import ClassToList
-			LOG_TRACE( 'satellite[%s]' % ClassToList( 'convert', self.mAllSatelliteList ) )
 			if count == 0 :
 				self.SetEmptySatelliteInfo( True )
 			else :

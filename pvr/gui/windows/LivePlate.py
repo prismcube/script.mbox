@@ -387,8 +387,8 @@ class LivePlate( BaseWindow ) :
 										self.mEPGListIdx = idx
 										#LOG_TRACE('Received ONEvent : EPGList idx moved(current idx)')
 
-										iEPGList=[]
-										iEPGList.append(item)
+										#iEPGList=[]
+										#iEPGList.append(item)
 										#LOG_TRACE('1.Aready Exist: NOW EPG idx[%s] [%s]'% (idx, ClassToList('convert', iEPGList)) )
 										break
 
@@ -479,8 +479,8 @@ class LivePlate( BaseWindow ) :
 
 				self.UpdateONEvent( iEPG )
 
-				retList = []
-				retList.append( iEPG )
+				#retList = []
+				#retList.append( iEPG )
 				#LOG_TRACE( 'idx[%s] epg[%s]'% (self.mEPGListIdx, ClassToList( 'convert', retList )) )
 
 		except Exception, e :
@@ -549,9 +549,6 @@ class LivePlate( BaseWindow ) :
 					#LOG_TRACE('EPGList is None\nLeave')
 					return -1
 
-				retList=[]
-				retList.append(self.mCurrentEvent)
-				#LOG_TRACE('EPGList len[%s] [%s]'% (len(self.mEPGList), ClassToList('convert', self.mEPGList)) )
 				idx = 0
 				self.mEPGListIdx = -1
 				for item in self.mEPGList :
@@ -653,9 +650,6 @@ class LivePlate( BaseWindow ) :
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
-
-		else:
-			LOG_TRACE( 'aEvent null' )
 
 
 	@RunThread
@@ -809,128 +803,12 @@ class LivePlate( BaseWindow ) :
 			msg1 = 'Teletext'
 			msg2 = 'test'
 			#xbmc.executebuiltin('Custom.SetLanguage(French)')
-			"""
-			from ElisChannelDB import ElisChannelDB
-			starttime = time.time( )
-			channelDB = ElisChannelDB()
-			openclose = time.time( ) - starttime
-			
-			retdb = channelDB.Channel_GetList( 1, 0, 3 )
-			
-			starttime = time.time( )
-			channelDB.Close()
-			openclose += time.time( ) - starttime
-			print '==================== TEST TIME[close]     loading[%s]'% (openclose )
-			
-			#1.string
-			a = '<string add>'
-			b = c= d =e = 'test'
-			starttime = time.time( )
-			#for i in range(1000):
-			d = a + b + c + d + e + '</test>'
-			endtime = time.time( )
-			print '==================== TEST TIME[string1]     loading[%s]'% (endtime - starttime )
-			
-			starttime = time.time( )
-			#for i in range(1000):
-			d = '%s%s%s%s%s</test>'% (a,b,c,d,e)
-			endtime = time.time( )
-			print '==================== TEST TIME[string2]     loading[%s]'% (endtime - starttime )
-			"""
 			
 
 		elif aFocusId == self.mCtrlBtnSubtitle.getId() :
 			msg1 = 'Subtitle'
 			msg2 = 'test'
 			#xbmc.executebuiltin('Custom.SetLanguage(English)')
-			"""
-			starttime = time.time( )			
-			import sqlite3
-			db = sqlite3.connect('/tmp/channel.db')
-			cursor =db.cursor()
-
-			query = 'select * from tblChannel where ServiceType = 1 order by Number'
-
-			reply = cursor.execute(query)
-			endtime = time.time( )
-			#reply = cursor.fetchall()
-			#print 'len[%s] '% (len(reply) )
-			print '==================== TEST TIME[query]    loading[%s]'% (endtime-starttime )
-
-			starttime = time.time( )			
-			result = []
-			idx = 0
-			iChannel = ElisIChannel()
-			for aIChannel in reply :
-				iChannel.mNumber							= aIChannel[1+idx]
-				iChannel.mPresentationNumber				= aIChannel[2+idx]
-				iChannel.mName								= aIChannel[3+idx].encode('utf-8')
-				iChannel.mServiceType						= aIChannel[4+idx]
-				iChannel.mLocked							= aIChannel[5+idx]
-				iChannel.mSkipped							= aIChannel[6+idx]
-				iChannel.mIsBlank							= aIChannel[7+idx]
-				iChannel.mIsCA								= aIChannel[8+idx]
-				iChannel.mIsHD								= aIChannel[9+idx]
-				#iChannel.mLockStartTime					= aIChannel[10+idx]
-				#iChannel.mLockEndTime						= aIChannel[11+idx]
-				iChannel.mCarrierType						= aIChannel[12+idx]
-				result.append( iChannel )				
-			endtime = time.time( )
-			#print 'result[%s]'% ClassToList('convert', result)
-			print 'len[%s]'% len(result)
-			print '==================== TEST TIME[mapping1]    parse[%s]'% (endtime-starttime )
-
-			cursor.close()
-			db.commit()
-			db.close()
-			"""
-
-
-			"""
-			db = sqlite3.connect(':memory:')
-			cursor =db.cursor()
-
-			query = 'create table tblChannel ( Number INTEGER, Name VARCHAR(32), ServiceType INTEGER)'
-			ret =cursor.execute(query)
-			for i in range(3000) :
-				name='test_%s'% i
-				query = 'insert into tblChannel (Number, Name, ServiceType) values (%s,\'%s\',1)'% (i,name)
-				ret =cursor.execute(query)
-			print 'make db on memory'
-
-			starttime = time.time( )
-			
-			query = 'select * from tblChannel where ServiceType = 1 order by Number'
-
-			retdb = cursor.execute(query)
-			endtime = time.time( )
-			reply = cursor.fetchall()
-			print 'len[%s]'% (len(reply) )
-			print '==================== TEST TIME[memory db]    loading[%s]'% (endtime-starttime )
-			cursor.close()
-			db.commit()
-			db.close()
-			"""
-			
-			
-			"""
-			starttime = time.time( )
-			for i in range(15):
-				print '[%s]'% xbmc.getLocalizedString(i)
-
-			endtime = time.time( )
-			print '==================== TEST TIME[localized] END[system] loading[%s]'% (endtime-starttime )
-
-			import xbmcaddon
-			addon = xbmcaddon.Addon(id = 'script.mbox')
-			starttime = time.time( )
-			for i in range(15):
-				print '[%s]'% addon.getLocalizedString(i)
-
-			endtime = time.time( )
-			print '==================== TEST TIME[localized] END[addon] loading[%s]'% (endtime-starttime )
-			"""
-
 
 
 		elif aFocusId == self.mCtrlBtnExInfo.getId() :

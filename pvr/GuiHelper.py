@@ -6,7 +6,6 @@ gSettings = xbmcaddon.Addon(id="script.mbox")
 
 def GetSetting( aID ) :
 	global gSettings
-	LOG_TRACE('')
 	return gSettings.getSetting( aID )
 
 
@@ -60,7 +59,7 @@ def GetPropertyByEPGComponent( aEPG ) :
 	bitCount += GetImageByEPGComponent( aEPG, ElisEnum.E_HasSubtitles )
 	bitCount += GetImageByEPGComponent( aEPG, ElisEnum.E_HasDolbyDigital )
 	bitCount += GetImageByEPGComponent( aEPG, ElisEnum.E_HasHDVideo )
-	LOG_TRACE('component bitCount[%s]'% bitCount)
+	#LOG_TRACE('component bitCount[%s]'% bitCount)
 
 	if bitCount == ElisEnum.E_HasDolbyDigital + ElisEnum.E_HasHDVideo:
 		setPropertyData  = 'False'
@@ -135,8 +134,6 @@ def HasEPGComponent( aEPG, aFlag ) :
 
 
 def GetSelectedLongitudeString( aLongitude, aName ) :
-	LOG_TRACE( 'Enter' )
-
 	ret = ''
 
 	if aLongitude < 1800 :
@@ -150,7 +147,6 @@ def GetSelectedLongitudeString( aLongitude, aName ) :
 		log2 = aLongitude - (log1 * 10)
 		ret = str('%d.%d W %s'% (log1, log2, aName) )
 
-	LOG_TRACE( 'Leave[%s]'% ret )
 	return ret
 
 
@@ -284,7 +280,7 @@ class CacheMRLanguage( object ) :
 
 		scriptDir = xbmcaddon.Addon('script.mbox').getAddonInfo('path')
 		xmlFile = '%s/pvr/gui/windows/Strings.xml'% scriptDir
-		print 'xmlFile[%s]'% xmlFile
+		#LOG_TRACE( 'xmlFile[%s]'% xmlFile )
 		fp = open(xmlFile)
 		xml = fp.read()
 		fp.close()
@@ -296,14 +292,14 @@ class CacheMRLanguage( object ) :
 		for node in self.mStrLanguage.findAll('string'):
 			gMRStringHash[ node.string ] = int(node['id'])
 
-		LOG_ERR('============cache Language')
+		#LOG_ERR('============cache Language')
 
 	def StringTranslate(self, string = None):
 		strId = gMRStringHash.get(string, None)
 		
 		if strId :
 			xmlString = Strings( strId )
-			LOG_TRACE('xml_string[%s] parse[%s]'% (string, xmlString) )
+			#LOG_TRACE('xml_string[%s] parse[%s]'% (string, xmlString) )
 			return xmlString.encode('utf-8')
 
 		else:
