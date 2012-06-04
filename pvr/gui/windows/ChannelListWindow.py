@@ -226,14 +226,14 @@ class ChannelListWindow( BaseWindow ) :
 		self.InitSlideMenuHeader( )
 
 		try :
-			#first get is used cache, reason by fast load
-			iChannel = self.mDataCache.Channel_GetCurrent( )
-
 			label = ''
 			if self.mDataCache.mStatusIsArchive :
 				if self.mDataCache.mRecInfo :
 					label = 'PVR - P%04d.%s' %(self.mDataCache.mRecInfo.mChannelNo, self.mDataCache.mRecInfo.mChannelName )
 			else :
+				#first get is used cache, reason by fast load
+				iChannel = self.mDataCache.Channel_GetCurrent( )
+
 				if iChannel :
 					self.mNavChannel = iChannel
 					self.mCurrentChannel = iChannel.mNumber
@@ -335,6 +335,12 @@ class ChannelListWindow( BaseWindow ) :
 		elif id == Action.ACTION_STOP :
 			self.mDataCache.SetKeyDisabled( False )
 			ret = self.mDataCache.Player_Stop()
+
+			iChannel = self.mDataCache.Channel_GetCurrent( )
+			if iChannel :
+				self.mNavChannel = iChannel
+				self.mCurrentChannel = iChannel.mNumber
+
 			self.UpdateLabelInfo()
 
 
