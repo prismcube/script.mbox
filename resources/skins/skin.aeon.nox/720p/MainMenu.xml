@@ -6,14 +6,12 @@
 		<control type="group">
 			<posx>0</posx>
 			<posy>0</posy>
-			<width>1280</width>
-			<height>720</height>
 			<animation effect="slide" start="0,0" end="0,225" time="500" condition="Skin.HasSetting(lowermainmenu)|Skin.HasSetting(Lockhomemenulow)">Conditional</animation>
 			<include>Animation_OpenCloseZoom</include>
-			<!-- Time Panel-->
-			<include>DefaultMainWindowTime</include>
 			<!-- RSS -->
 			<include>DefaultMainDescription</include>
+			<!-- Time Panel-->
+			<include>DefaultMainWindowTime</include>
 			<!-- Invisible Buttons -->
 			<control type="button" id="330">
 				<description>INVISIBLE button: Submenu</description>
