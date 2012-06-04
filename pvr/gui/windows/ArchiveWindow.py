@@ -43,6 +43,7 @@ class ArchiveWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mSelectRecordKey = -1
+		self.mExitByPlay = False
 
 	
 	def onInit( self ) :
@@ -99,8 +100,8 @@ class ArchiveWindow( BaseWindow ) :
 		
 		self.InitControl( )
 
-		self.SelectLastRecordKey( )
 		self.UpdateList( )
+		self.SelectLastRecordKey( )		
 
 		self.mInitialized = True
 		
@@ -152,8 +153,8 @@ class ArchiveWindow( BaseWindow ) :
 			SetSetting( 'VIEW_MODE','%d' %self.mViewMode )
 			self.UpdateViewMode( )
 			self.InitControl( )
-			self.SelectLastRecordKey( )			
 			self.UpdateList( )
+			self.SelectLastRecordKey( )						
 		
 		elif aControlId == BUTTON_ID_SORT_MODE :
 			self.RestoreLastRecordKey( )		
@@ -165,8 +166,8 @@ class ArchiveWindow( BaseWindow ) :
 			self.UpdateSortMode( )
 			self.InitControl( )			
 			self.UpdateAscending( )
-			self.SelectLastRecordKey( )
 			self.UpdateList( )
+			self.SelectLastRecordKey( )			
 			
 		elif aControlId == TOGGLEBUTTON_ID_ASC :
 			self.RestoreLastRecordKey( )
@@ -178,8 +179,8 @@ class ArchiveWindow( BaseWindow ) :
 				self.mAscending[self.mSortMode] = True
 
 			self.UpdateAscending( )
-			self.SelectLastRecordKey( )			
 			self.UpdateList( )
+			self.SelectLastRecordKey( )						
 
 		elif aControlId == RADIIOBUTTON_ID_EXTRA :
 			pass
@@ -819,7 +820,9 @@ class ArchiveWindow( BaseWindow ) :
 			if recInfo.mRecordKey == self.mSelectRecordKey  :
 				break;
 			selectedPos += 1
-				
+
+		LOG_TRACE('SelectPos=%d' %selectedPos )
+
 		if self.mViewMode == E_VIEW_LIST :
 			self.mCtrlCommonList.selectItem( selectedPos )
 		elif self.mViewMode == E_VIEW_THUMBNAIL :

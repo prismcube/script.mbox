@@ -22,8 +22,9 @@ class NullWindow( BaseWindow ) :
 
 		self.mEventBus.Register( self )
 
-		if E_SUPPROT_HBBTV == True :
-			self.mCommander.AppHBBTV_Ready( 1 )
+		if E_SUPPROT_HBBTV == True:
+			if self.mDataCache.Player_GetStatus() == ElisEnum.E_MODE_LIVE :
+				self.mCommander.AppHBBTV_Ready( 1 )
 
 		
 	def onAction(self, aAction) :		
