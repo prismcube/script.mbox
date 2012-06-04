@@ -796,7 +796,7 @@ class LivePlate( BaseWindow ) :
 
 	@GuiLock
 	def UpdateLabelGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
-		LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
+		#LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
 
 		if aCtrlID == self.mCtrlLblChannelNumber.getId( ) :
 			self.mCtrlLblChannelNumber.setLabel( aValue )
