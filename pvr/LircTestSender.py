@@ -6,12 +6,12 @@ import struct, threading
 #from socket import socket, AF_INET, SOCK_STREAM
 import socket, fcntl, select
 
-from testScene1 import *
+from TestScene import *
 
 SIOCGIFNETMASK = 0x891b
 PORT = 56892
 #HOST = '192.168.101.169'
-HOST = '192.168.101.206'
+#HOST = '192.168.101.206'
 #HOST = '127.0.0.1'
 
 class KeyCode( object ):
@@ -124,7 +124,7 @@ class _VKey(object):
 		self.mFlag=0
 
 def send(aMsg = None):
-	#HOST = get_ip_address('eth0')
+	HOST = get_ip_address('eth0')
 	try:
 		sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	except socket.error, msg:
@@ -172,10 +172,9 @@ def get_ip_address(ifname) :
 		struct.pack('256s', ifname[:15]) )[20:24])
 
 if __name__ == "__main__":
-
-	#cmd = sys.argv[1:]
-	send()
 	#print get_ip_address('eth0')
+
+	send()
 
 
 
