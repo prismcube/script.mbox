@@ -77,16 +77,17 @@ class EPGWindow( BaseWindow ) :
 		self.mCtrlCurrentChannelLabel = self.getControl( LABEL_ID_CURRNET_CHANNEL_NAME )
 
 		self.ResetEPGInfomation( )
-
 		self.UpdateViewMode( )
 		self.InitControl()
-
 		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
 		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 		LOG_TRACE('ZeppingMode(%d,%d,%d)' %( self.mCurrentMode.mServiceType, self.mCurrentMode.mMode, self.mCurrentMode.mSortingMode ) )
 		self.mChannelList = self.mDataCache.Channel_GetList( )
 
-		LOG_TRACE("ChannelList=%d" %len(self.mChannelList) )
+		if self.mChannelList == None :
+			LOG_WARN('No Channel List')
+		else:
+			LOG_TRACE("ChannelList=%d" %len(self.mChannelList) )
 		
 		self.mSelectChannel = self.mCurrentChannel
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
@@ -278,6 +279,12 @@ class EPGWindow( BaseWindow ) :
 	def LoadByChannel( self ) :
 		gmtFrom =  self.mGMTTime 
 		gmtUntil = self.mGMTTime + E_MAX_SCHEDULE_DAYS*3600*24
+
+		LOG_ERR('START : localoffset=%d' %self.mLocalOffset )
+		LOG_ERR('START : %s' %TimeToString( gmtFrom+self.mLocalOffset, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
+		LOG_ERR('START : %d : %d %d' %(self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid) )
+
+		
 		try :
 			self.mEPGList = self.mDataCache.Epgevent_GetListByChannel(  self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid,  gmtFrom,  gmtUntil,  E_MAX_EPG_COUNT)
 
@@ -291,7 +298,7 @@ class EPGWindow( BaseWindow ) :
 		if self.mEPGList == None or len ( self.mEPGList ) <= 0 :
 			return
 
-		LOG_TRACE('self.mEPGList COUNT=%d' %len(self.mEPGList ))
+		LOG_ERR('self.mEPGList COUNT=%d' %len(self.mEPGList ))
 
 		for epg in self.mEPGList :
 			self.mEPGListHash[ '%d:%d:%d' %( epg.mSid, epg.mTsid, epg.mOnid) ] = epg
