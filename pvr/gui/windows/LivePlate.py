@@ -533,7 +533,8 @@ class LivePlate( BaseWindow ) :
 
 				#Live EPG
 				#gmtime = self.mDataCache.Datetime_GetGMTTime()
-				gmtFrom  = self.mCurrentEvent.mStartTime
+				#gmtFrom  = self.mCurrentEvent.mStartTime
+				gmtFrom  = self.mDataCache.Datetime_GetGMTTime()
 				gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
 				maxCount = 100
 				iEPGList = None
@@ -543,6 +544,7 @@ class LivePlate( BaseWindow ) :
 				if iEPGList :
 					self.mEPGList = iEPGList
 					self.mFlag_ChannelChanged = False
+
 				else :
 					#receive onEvent
 					self.mFlag_OnEvent = True
@@ -627,9 +629,9 @@ class LivePlate( BaseWindow ) :
 				self.UpdateLabelGUI( self.mCtrlLblEventName.getId(), deepcopy(aEvent.mEventName) )
 
 				#start,end
-				label = TimeToString( aEvent.mStartTime, TimeFormatEnum.E_HH_MM )
+				label = TimeToString( aEvent.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
 				self.UpdateLabelGUI( self.mCtrlLblEventStartTime.getId(), label )
-				label = TimeToString( aEvent.mStartTime + aEvent.mDuration, TimeFormatEnum.E_HH_MM )
+				label = TimeToString( aEvent.mStartTime + aEvent.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
 				self.UpdateLabelGUI( self.mCtrlLblEventEndTime.getId(),   label )
 
 				#component
@@ -978,7 +980,7 @@ class LivePlate( BaseWindow ) :
 		self.mEventBus.Deregister( self )
 
 		self.mEnableThread = False
-		self.CurrentTimeThread().join()
+		#self.CurrentTimeThread().join()
 		
 		self.StopAsyncTune()
 		self.StopAutomaticHide()
