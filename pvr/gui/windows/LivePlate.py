@@ -1,4 +1,5 @@
 from pvr.gui.WindowImport import *
+import sys, inspect
 
 FLAG_MASK_ADD  = 0x01
 FLAG_MASK_NONE = 0x00
@@ -63,29 +64,30 @@ class LivePlate( BaseWindow ) :
 		self.mEnableThread = False
 
 	def onInit ( self ) :
-		self.tt1 = self.getControl( 605 )
-		self.tt2 = self.getControl( 606 )
+		currentStack = inspect.stack()
+		print '+++++getrecursionlimit[%s] currentStack[%s]'% (sys.getrecursionlimit(), len(currentStack))
+		print '+++++currentStackInfo[%s]'% (currentStack) 
+	
 
 	def onAction(self, aAction):
 		id = aAction.getId()
 		
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )			
+			#WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+			#WinMgr.GetInstance().CloseWindow( WinMgr.WIN_ID_LIVE_PLATE )
+			#self.close()
+
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+
 
 		elif id == Action.REMOTE_0 : 
 			xbmc.executebuiltin('XBMC.ReloadSkin()')
 
 		elif id == 104 : #scroll up
 			xbmc.executebuiltin('XBMC.ReloadSkin()')
-			aa1 = self.tt1.getPosition()
-			aa2 = self.tt2.getPosition()
-			print '-----aa1[%s] aa1[%s], aa2[%s] aa2[%s]'% (aa1[0],aa1[1],aa2[0],aa2[1])
-			self.tt1.setPosition(aa2[0],aa2[1])
-			self.tt2.setPosition(aa1[0],aa1[1])
 
 	def onFocus(self, aControlId):
 		pass
-
 
 	def SetAutomaticHide( self, aHide=True ) :
 		self.mAutomaticHide = aHide
@@ -201,6 +203,10 @@ class LivePlate( BaseWindow ) :
 		if self.mAutomaticHide == True :
 			self.StartAutomaticHide()
 
+		currentStack = inspect.stack()
+		LOG_TRACE( '+++++getrecursionlimit[%s] currentStack[%s]'% (sys.getrecursionlimit(), len(currentStack)) )
+		LOG_TRACE( '+++++currentStackInfo[%s]'% (currentStack) )
+
 
 	def onAction(self, aAction):
 		id = aAction.getId()
@@ -222,6 +228,7 @@ class LivePlate( BaseWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 			else :
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_ROOTWINDOW )
+
 
 		elif id == Action.ACTION_SELECT_ITEM:
 			self.StopAutomaticHide()
@@ -414,12 +421,16 @@ class LivePlate( BaseWindow ) :
 				self.mDataCache.mCacheReload = True
 
 			elif aEvent.getName() == ElisEventChannelChangeResult.getName() :
+				pass
+				#ToDO : do not db open in thread
+				"""
 				isLimit = False
 				if self.mCurrentEvent :
 					isLimit = AgeLimit( self.mPropertyAge, self.mCurrentEvent.mAgeRating )
 
 				if ch.mLocked or isLimit :
 					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mDataCache.mPropertyPincode )
+				"""
 
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
@@ -805,6 +816,14 @@ class LivePlate( BaseWindow ) :
 			msg1 = 'Teletext'
 			msg2 = 'test'
 			#xbmc.executebuiltin('Custom.SetLanguage(French)')
+
+			startTime = time.time()
+			for i in range(50000):
+				dummy = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
+
+			endTime = time.time()
+			LOG_TRACE('--------------DBtestCount[%s] time[%s]'% (i, endTime-startTime ) )
+
 			
 
 		elif aFocusId == self.mCtrlBtnSubtitle.getId() :
@@ -984,7 +1003,7 @@ class LivePlate( BaseWindow ) :
 		
 		self.StopAsyncTune()
 		self.StopAutomaticHide()
-		WinMgr.GetInstance().CloseWindow( )
+		#WinMgr.GetInstance().CloseWindow( )
 
 
 	def SetLastChannelCertificationPinCode( self, aCertification ) :

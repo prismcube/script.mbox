@@ -2,6 +2,7 @@ import os, sys, time
 import xbmc
 import xbmcgui
 import xbmcaddon
+from threading import Thread
 
 from decorator import decorator
 from odict import odict
@@ -75,9 +76,9 @@ def GuiLock2( aEnable ):
 
 @decorator
 def RunThread(func, *args, **kwargs):
-	from threading import Thread
 	worker = Thread(target = func, name=func.__name__, args = args, kwargs = kwargs)
 	gThreads[worker.getName()] = worker
+	#print '=======================thread worker[%s] len[%s]'% (worker.getName(), len(gThreads) )
 	worker.start()
 	return worker
 

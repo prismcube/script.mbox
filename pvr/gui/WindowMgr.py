@@ -133,7 +133,7 @@ class WindowMgr(object):
 
 			LOG_ERR('ShowWindow ID=%s' %self.mWindows[aWindowId].GetName( ) )
 			self.mLastId = aWindowId
-			self.mWindows[aWindowId].doModal( )
+			#self.mWindows[aWindowId].doModal( )
 
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
@@ -153,7 +153,7 @@ class WindowMgr(object):
 				else :				
 					LOG_ERR('ShowWindow=%s' %self.mWindows[WIN_ID_NULLWINDOW].GetName( ) )	
 					self.mLastId = WIN_ID_NULLWINDOW					
-					self.mWindows[WIN_ID_NULLWINDOW].doModal( )	
+					#self.mWindows[WIN_ID_NULLWINDOW].doModal( )	
 
 			else :
 				LOG_ERR( 'Invaild Window ID=%d' %self.mLastId )

@@ -142,6 +142,8 @@ class DataCacheMgr( object ):
 			"""
 
 		self.mPropertyPincode = ElisPropertyEnum( 'PinCode', self.mCommander ).GetProp( )
+		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
+
 		self.Load( )
 
 
@@ -733,6 +735,24 @@ class DataCacheMgr( object ):
  			self.mEpgDB = ElisEPGDB()
  			eventList = self.mEpgDB.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
  			self.mEpgDB.Close()
+
+			"""
+			from pvr.GuiHelper import ClassToList
+			#test
+			for iEPG in eventList :
+				ret=[]
+				ret.append(iEPG)
+				LOG_TRACE('iEPG_DB[%s]'% ClassToList('convert', ret) )
+
+			#test
+			ElisListCMD = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
+			if ElisListCMD :
+				for iEPG in ElisListCMD :
+					ret=[]
+					ret.append(iEPG)
+					LOG_TRACE('iEPG_CMD[%s]'% ClassToList('convert', ret) )
+			"""
+
 		else:
 			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
 
@@ -764,6 +784,7 @@ class DataCacheMgr( object ):
 			self.mEpgDB = ElisEPGDB()
 			eventList = self.mEpgDB.Epgevent_GetCurrentList( self.Datetime_GetGMTTime() )
 			self.mEpgDB.Close()
+
 		else:
 			return None
 
