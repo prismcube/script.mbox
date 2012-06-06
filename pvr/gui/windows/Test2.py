@@ -10,14 +10,6 @@ CURR_CHANNEL	= 2
 CONTEXT_ACTION_VIDEO_SETTING = 1 
 CONTEXT_ACTION_AUDIO_SETTING = 2
 
-#db
-E_SYNCHRONIZED  = 0
-E_ASYNCHRONIZED = 1
-E_TABLE_ALLCHANNEL = 0
-E_TABLE_ZAPPING = 1
-
-
-
 
 class Test2( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :

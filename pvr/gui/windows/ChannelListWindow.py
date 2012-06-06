@@ -53,11 +53,6 @@ E_XML_PROPERTY_CAS       = 'icas'
 E_XML_PROPERTY_LOCK      = 'lock'
 E_XML_PROPERTY_RECORDING = 'rec'
 
-#db
-E_SYNCHRONIZED  = 0
-E_ASYNCHRONIZED = 1
-E_TABLE_ALLCHANNEL = 0
-E_TABLE_ZAPPING = 1
 
 #dialog menu
 CONTEXT_ACTION_LOCK				= 1 
@@ -612,7 +607,7 @@ class ChannelListWindow( BaseWindow ) :
 						sid  = self.mNavChannel.mSid
 						tsid = self.mNavChannel.mTsid
 						onid = self.mNavChannel.mOnid
-						iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid, True )
+						iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
 						if iEPG and iEPG.mEventName != 'No Name':
 							self.mEventId = aEvent.mEventId
 
@@ -639,6 +634,18 @@ class ChannelListWindow( BaseWindow ) :
 				self.mDataCache.mCacheReload = True
 				self.mListItems = None
 				self.InitChannelList( )
+
+				#ToDo
+				"""
+				if aEvent.getName() == ElisEventRecordingStarted.getName() :
+					msg1 = MR_LANG('Recording Started')
+				else :
+					msg1 = MR_LANG('Recording Ended')
+
+				msg2 = MR_LANG('Reload Channel List...')
+				
+				self.AlarmDialog( msg1, msg2 )
+				"""
 
 			if aEvent.getName() == ElisEventPlaybackEOF.getName() :
 				if aEvent.mType == ElisEnum.E_EOF_END :
@@ -1436,7 +1443,7 @@ class ChannelListWindow( BaseWindow ) :
 				tsid = self.mNavChannel.mTsid
 				onid = self.mNavChannel.mOnid
 				iEPG = None
-				iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid, True )
+				iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
 				if iEPG and iEPG.mEventName != 'No Name':
 					self.mNavEpg = iEPG
 					#iEPG.printdebug( )
@@ -1455,7 +1462,7 @@ class ChannelListWindow( BaseWindow ) :
 							tsid = iChannel.mTsid
 							onid = iChannel.mOnid
 							iEPGList = None
-							iEPGList = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid, True )
+							iEPGList = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
 							if iEPGList :
 								self.mNavEpg = iEPGList
 							else :
@@ -1594,8 +1601,8 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mNavEpg :
 			try :
 
-				startTime = TimeToString( self.mNavEpg.mStartTime, TimeFormatEnum.E_HH_MM )
-				endTime   = TimeToString( self.mNavEpg.mStartTime + self.mNavEpg.mDuration, TimeFormatEnum.E_HH_MM )
+				startTime = TimeToString( self.mNavEpg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
+				endTime   = TimeToString( self.mNavEpg.mStartTime + self.mNavEpg.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
 				label = '%s - %s'% (startTime, endTime)
 				self.UpdateLabelGUI( self.mCtrlEventTime.getId( ), label )
 				self.UpdateLabelGUI( self.mCtrlEventName.getId( ), self.mNavEpg.mEventName )
@@ -1643,7 +1650,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mLocalTime = self.mDataCache.Datetime_GetGMTTime( )
 
 			if self.mNavEpg :
-				startTime = self.mNavEpg.mStartTime# + self.mLocalOffset
+				startTime = self.mNavEpg.mStartTime + self.mLocalOffset
 				endTime   = startTime + self.mNavEpg.mDuration
 				pastDuration = endTime - self.mLocalTime
 
@@ -2311,6 +2318,24 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
+	"""
+	def AlarmDialog( self, aMsg1='', aMsg2='' ) :
+		prop = ElisPropertyEnum( 'Channel Banner Duration', self.mCommander )
+		bannerTimeout = prop.GetProp()
+		self.mAsyncDialogShowTimer = threading.Timer( bannerTimeout, self.ShowInfoDialog( aMsg1, aMsg2 ) )
+		self.mAsyncDialogShowTimer.start( )
+
+
+	def ShowInfoDialog( self, aMsg1='', aMsg2='' ) :
+		self.ALARM = int( params.get( "alarm", "0" ) )	
+		xbmc.executebuiltin( "AlarmClock(LatestAdded,%s,%d,true)" % ( command, self.ALARM, ) )
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( aMsg1, aMsg2 )
+		dialog.doModal( )
+	"""
+
+
 	def KeySearch( self, aKey ) :
 		if self.mChannelList == None:
 			return -1
@@ -2348,7 +2373,6 @@ class ChannelListWindow( BaseWindow ) :
 						self.ResetLabel( )
 						self.UpdateLabelInfo( )
 
-
 				else :
 					self.SetChannelTune( int(inputNumber) )
 
@@ -2383,14 +2407,14 @@ class ChannelListWindow( BaseWindow ) :
 				if isRunRec > 0 :
 					self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), False, E_TAG_ENABLE )
 					#use zapping table, in recording
-					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ZAPPING )
+					self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
 					self.mDataCache.Channel_GetZappingList( )
 					self.mDataCache.LoadChannelList( )
 					LOG_TRACE ('Recording changed: cache re-load')
 				else :
 					self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), True, E_TAG_ENABLE )
 					#use all channel table, not recording
-					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
+					self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
 
 
 		except Exception, e :

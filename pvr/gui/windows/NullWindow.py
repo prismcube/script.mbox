@@ -1,9 +1,5 @@
 from pvr.gui.WindowImport import *
-
-
-E_TABLE_ALLCHANNEL = 0
-E_TABLE_ZAPPING = 1
-
+import sys, inspect, time
 
 class NullWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -24,6 +20,16 @@ class NullWindow( BaseWindow ) :
 
 		if E_SUPPROT_HBBTV == True :
 			self.mCommander.AppHBBTV_Ready( 1 )
+
+		currentStack = inspect.stack()
+		LOG_TRACE( '+++++getrecursionlimit[%s] currentStack[%s]'% (sys.getrecursionlimit(), len(currentStack)) )
+		LOG_TRACE( '+++++currentStackInfo[%s]'% (currentStack) )
+
+		lastTime = time.time() + 7200
+		lblStart = time.strftime('%H:%M:%S', time.localtime(WinMgr.GetInstance( ).mXbmcStartTime) )
+		lblLast  = time.strftime('%H:%M:%S', time.localtime(lastTime) )
+		lblTest  = time.strftime('%H:%M:%S', time.gmtime(lastTime - WinMgr.GetInstance( ).mXbmcStartTime) )
+		LOG_TRACE( 'startTime[%s] lastTime[%s] TestTime[%s]'% (lblStart, lblLast, lblTest) )
 
 		
 	def onAction(self, aAction) :		
@@ -332,11 +338,11 @@ class NullWindow( BaseWindow ) :
 					isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 					if isRunRec > 0 :
 						#use zapping table, in recording
-						self.mDataCache.SetChangeDBTableChannel( E_TABLE_ZAPPING )
+						self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
 						self.mDataCache.Channel_GetZappingList( )
 						self.mDataCache.LoadChannelList( )
 					else :
-						self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
+						self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
 						self.mDataCache.LoadChannelList( )
 						self.mDataCache.mCacheReload = True
 

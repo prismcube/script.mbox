@@ -1,5 +1,4 @@
 from pvr.gui.WindowImport import *
-import sys, inspect
 
 FLAG_MASK_ADD  = 0x01
 FLAG_MASK_NONE = 0x00
@@ -26,13 +25,6 @@ CURR_CHANNEL	= 2
 
 CONTEXT_ACTION_VIDEO_SETTING = 1 
 CONTEXT_ACTION_AUDIO_SETTING = 2
-
-#db
-E_SYNCHRONIZED  = 0
-E_ASYNCHRONIZED = 1
-E_TABLE_ALLCHANNEL = 0
-E_TABLE_ZAPPING = 1
-
 
 class LivePlate( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -203,10 +195,6 @@ class LivePlate( BaseWindow ) :
 		if self.mAutomaticHide == True :
 			self.StartAutomaticHide()
 
-		currentStack = inspect.stack()
-		LOG_TRACE( '+++++getrecursionlimit[%s] currentStack[%s]'% (sys.getrecursionlimit(), len(currentStack)) )
-		LOG_TRACE( '+++++currentStackInfo[%s]'% (currentStack) )
-
 
 	def onAction(self, aAction):
 		id = aAction.getId()
@@ -367,7 +355,7 @@ class LivePlate( BaseWindow ) :
 
 				if aEvent.mEventId != self.mEventID :
 					iEPG = None
-					iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mOnid, True )
+					iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mOnid )
 					if iEPG and iEPG.mEventName != 'No Name':
 						if not self.mCurrentEvent or \
 						iEPG.mEventId != self.mCurrentEvent.mEventId or \
@@ -386,7 +374,9 @@ class LivePlate( BaseWindow ) :
 								idx = 0
 								self.mEPGListIdx = -1
 								for item in self.mEPGList :
-									if 	item.mEventId == self.mCurrentEvent.mEventId and \
+									#LOG_TRACE('idx[%s] item[%s]'% (idx, item) )
+									if item and \
+									 	item.mEventId == self.mCurrentEvent.mEventId and \
 										item.mSid == self.mCurrentEvent.mSid and \
 										item.mTsid == self.mCurrentEvent.mTsid and \
 										item.mOnid == self.mCurrentEvent.mOnid :
@@ -530,7 +520,7 @@ class LivePlate( BaseWindow ) :
 					return
 
 				iEPG = None
-				iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mOnid, True )
+				iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mOnid )
 				if iEPG and iEPG.mEventName != 'No Name':
 					self.mCurrentEvent = iEPG
 
@@ -549,7 +539,7 @@ class LivePlate( BaseWindow ) :
 				gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
 				maxCount = 100
 				iEPGList = None
-				iEPGList = self.mDataCache.Epgevent_GetListByChannel( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount, True )
+				iEPGList = self.mDataCache.Epgevent_GetListByChannel( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount )
 				time.sleep(0.05)
 				#LOG_TRACE('iEPGList[%s] ch[%d] sid[%d] tid[%d] oid[%d] from[%s] until[%s]'% (iEPGList, ch.mNumber, ch.mSid, ch.mTsid, ch.mOnid, time.asctime(time.localtime(gmtFrom)), time.asctime(time.localtime(gmtUntil))) )
 				if iEPGList :
@@ -566,15 +556,16 @@ class LivePlate( BaseWindow ) :
 				self.mEPGListIdx = -1
 				for item in self.mEPGList :
 					#LOG_TRACE('idx[%s] item[%s]'% (idx, item) )
-					if 	item.mEventId == self.mCurrentEvent.mEventId and \
+					if item and \
+					 	item.mEventId == self.mCurrentEvent.mEventId and \
 						item.mSid == self.mCurrentEvent.mSid and \
 						item.mTsid == self.mCurrentEvent.mTsid and \
 						item.mOnid == self.mCurrentEvent.mOnid :
 
 						self.mEPGListIdx = idx
 
-						retList=[]
-						retList.append(item)
+						#retList=[]
+						#retList.append(item)
 						#LOG_TRACE('SAME NOW EPG idx[%s] [%s]'% (idx, ClassToList('convert', retList)) )
 
 						break
@@ -958,22 +949,25 @@ class LivePlate( BaseWindow ) :
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
 				strLabelRecord2 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
 
+
 			if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
 				if isRunRec > 0 :
 					#use zapping table, in recording
-					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ZAPPING )
+					self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
 					self.mDataCache.Channel_GetZappingList( )
 					#### data cache re-load ####
-					self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, True  )
+					self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, E_REOPEN_TRUE  )
 
 				else :
-					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
+					self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
 					if self.mDataCache.mCacheReload :
 						self.mDataCache.mCacheReload = False
 						#### data cache re-load ####
-						self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, True  )
+						self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, E_REOPEN_TRUE  )
 
-				ret = self.mDataCache.GetChangeDBTableChannel( )
+
+				self.mFakeChannel = self.mCurrentChannel
+				self.mLastChannel = self.mCurrentChannel
 				#LOG_TRACE('table[%s]'% ret)
 
 
