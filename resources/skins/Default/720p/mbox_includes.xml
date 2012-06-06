@@ -354,7 +354,7 @@
 			<onright>7001</onright>
 		</control>
 		<control type="label" id="7004">
-			<posx>645</posx>
+			<posx>637</posx>
 			<posy>478</posy>
 			<width>200</width>
 			<height>40</height>
@@ -366,7 +366,7 @@
 			<visible>Control.IsVisible(7003) + !Control.HasFocus(7003)</visible>
 		</control>
 		<control type="label">
-			<posx>645</posx>
+			<posx>637</posx>
 			<posy>478</posy>
 			<width>200</width>
 			<height>40</height>
@@ -382,87 +382,87 @@
 	<include name="DefaultFirstTimeInstallationStepImage">
 		<control type="image" id="8110">
 			<posx>260</posx>
-			<posy>489</posy>
-			<width>20</width>
-			<height>20</height>
-			<texture border="0,1,0,1">OSDProgressBack.png</texture>
+			<posy>485</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture border="0,1,0,1">StepNF.png</texture>
 		</control>
 		<control type="image" id="8111">
 			<posx>300</posx>
-			<posy>489</posy>
-			<width>20</width>
-			<height>20</height>
-			<texture border="0,1,0,1">OSDProgressBack.png</texture>
+			<posy>485</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture border="0,1,0,1">StepNF.png</texture>
 		</control>
 		<control type="image" id="8112">
 			<posx>340</posx>
-			<posy>489</posy>
-			<width>20</width>
-			<height>20</height>
-			<texture border="0,1,0,1">OSDProgressBack.png</texture>
+			<posy>485</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture border="0,1,0,1">StepNF.png</texture>
 		</control>
 		<control type="image" id="8113">
 			<posx>380</posx>
-			<posy>489</posy>
-			<width>20</width>
-			<height>20</height>
-			<texture border="0,1,0,1">OSDProgressBack.png</texture>
+			<posy>485</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture border="0,1,0,1">StepNF.png</texture>
 		</control>
 		<control type="image" id="8114">
 			<posx>420</posx>
-			<posy>489</posy>
-			<width>20</width>
-			<height>20</height>
-			<texture border="0,1,0,1">OSDProgressBack.png</texture>
+			<posy>485</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture border="0,1,0,1">StepNF.png</texture>
 		</control>
 		<control type="image" id="8115">
 			<posx>460</posx>
-			<posy>489</posy>
-			<width>20</width>
-			<height>20</height>
-			<texture border="0,1,0,1">OSDProgressBack.png</texture>
+			<posy>485</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture border="0,1,0,1">StepNF.png</texture>
 		</control>	
 		<control type="image" id="8100">
 			<posx>260</posx>
-			<posy>489</posy>
-			<width>20</width>
-			<height>20</height>
-			<texture border="0,1,0,1">OSDProgressMid.png</texture>
+			<posy>485</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture border="0,1,0,1">StepFO.png</texture>
 		</control>
 		<control type="image" id="8101">
 			<posx>300</posx>
-			<posy>489</posy>
-			<width>20</width>
-			<height>20</height>
-			<texture border="0,1,0,1">OSDProgressMid.png</texture>
+			<posy>485</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture border="0,1,0,1">StepFO.png</texture>
 		</control>
 		<control type="image" id="8102">
 			<posx>340</posx>
-			<posy>489</posy>
-			<width>20</width>
-			<height>20</height>
-			<texture border="0,1,0,1">OSDProgressMid.png</texture>
+			<posy>485</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture border="0,1,0,1">StepFO.png</texture>
 		</control>
 		<control type="image" id="8103">
 			<posx>380</posx>
-			<posy>489</posy>
-			<width>20</width>
-			<height>20</height>
-			<texture border="0,1,0,1">OSDProgressMid.png</texture>
+			<posy>485</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture border="0,1,0,1">StepFO.png</texture>
 		</control>
 		<control type="image" id="8104">
 			<posx>420</posx>
-			<posy>489</posy>
-			<width>20</width>
-			<height>20</height>
-			<texture border="0,1,0,1">OSDProgressMid.png</texture>
+			<posy>485</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture border="0,1,0,1">StepFO.png</texture>
 		</control>
 		<control type="image" id="8105">
 			<posx>460</posx>
-			<posy>489</posy>
-			<width>20</width>
-			<height>20</height>
-			<texture border="0,1,0,1">OSDProgressMid.png</texture>
+			<posy>485</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture border="0,1,0,1">StepFO.png</texture>
 		</control>
 	</include>
 

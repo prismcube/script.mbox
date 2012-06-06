@@ -11,6 +11,8 @@ class AntennaSetup( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
+		self.getControl( E_SUBMENU_LIST_ID ).setVisible( False )
+
 		self.SetSettingWindowLabel( 'Antenna & Satellite Setup' )
 
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
@@ -46,8 +48,10 @@ class AntennaSetup( SettingWindow ) :
 		self.DisableControl( )
 		self.mInitialized = True
 		self.SetFocusControl( E_SpinEx01 )
+		self.getControl( E_SUBMENU_LIST_ID ).setVisible( True )
 		self.SetPipScreen( )
 
+		
 		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )

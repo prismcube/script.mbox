@@ -58,6 +58,7 @@ class ArchiveWindow( BaseWindow ) :
 		self.mSortList = [] 		
 		self.mRecordListItems = []
 		self.mLastFocusItem = -1
+		self.mEventBus.Register( self )	
 
 		self.mServiceType =  self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( ).mServiceType
 
@@ -93,6 +94,7 @@ class ArchiveWindow( BaseWindow ) :
 			dialog.SetDialogProperty( 'Error', 'Play list is Empty' )
 			dialog.doModal( )
 			self.SetVideoRestore( )
+			self.mEventBus.Deregister( self )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 		self.UpdateAscending()
@@ -119,6 +121,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.mDataCache.Player_Stop( )
 				self.mDataCache.mStatusIsArchive = False
 			self.SetVideoRestore( )
+			self.mEventBus.Deregister( self )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -140,6 +143,11 @@ class ArchiveWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_CONTEXT_MENU:
 			self.ShowContextMenu( )
+
+		elif actionId == Action.ACTION_STOP :
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode :
+				ret = self.mDataCache.Player_Stop( )
 
 	
 	def onClick( self, aControlId ) :
@@ -190,15 +198,17 @@ class ArchiveWindow( BaseWindow ) :
 		
 
 
-	def onFocus(self, controlId):
-
+	def onFocus( self, controlId ) :
 		if self.mInitialized == False :
 			return
 
 
 	@GuiLock
-	def onEvent(self, aEvent):
-		pass
+	def onEvent( self, aEvent ) :
+		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
+			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
+				if aEvent.mType == ElisEnum.E_EOF_END :
+					xbmc.executebuiltin( 'xbmc.Action(stop)' )
 
 
 	def InitControl( self ) :
@@ -422,6 +432,7 @@ class ArchiveWindow( BaseWindow ) :
 		selectedPos = self.GetSelectedPosition( )
 		if self.mLastFocusItem == selectedPos :
 			self.SetVideoRestore( )
+			self.mEventBus.Deregister( self )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 		else :		
 			if selectedPos >= 0 and selectedPos < len( self.mRecordList ) :

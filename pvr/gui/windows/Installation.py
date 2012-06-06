@@ -25,7 +25,8 @@ class Installation( BaseWindow ):
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Installation' )
-		
+		self.SetPipScreen( )		
+
 		groupItems = []
 		
 		for i in range( len( self.leftGroupItems ) ) :
@@ -34,7 +35,7 @@ class Installation( BaseWindow ):
 		
 		self.mCtrlLeftGroup = self.getControl( 9000 )
 		self.mCtrlLeftGroup.addItems( groupItems )
-		self.SetPipScreen( )
+
 
 	
 	def onAction( self, aAction ) :
