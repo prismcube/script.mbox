@@ -85,6 +85,7 @@ class WindowMgr(object):
 		self.mListDir			= []
 		self.mWindows			= {}
 		self.mRootWindow		= None
+		self.mXbmcStartTime 	= time.time() + 7200
 		self.LoadSkinPosition( )
 
 		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()

@@ -612,7 +612,7 @@ class ChannelListWindow( BaseWindow ) :
 						sid  = self.mNavChannel.mSid
 						tsid = self.mNavChannel.mTsid
 						onid = self.mNavChannel.mOnid
-						iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid, True )
+						iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
 						if iEPG and iEPG.mEventName != 'No Name':
 							self.mEventId = aEvent.mEventId
 
@@ -1436,7 +1436,7 @@ class ChannelListWindow( BaseWindow ) :
 				tsid = self.mNavChannel.mTsid
 				onid = self.mNavChannel.mOnid
 				iEPG = None
-				iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid, True )
+				iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
 				if iEPG and iEPG.mEventName != 'No Name':
 					self.mNavEpg = iEPG
 					#iEPG.printdebug( )
@@ -1455,7 +1455,7 @@ class ChannelListWindow( BaseWindow ) :
 							tsid = iChannel.mTsid
 							onid = iChannel.mOnid
 							iEPGList = None
-							iEPGList = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid, True )
+							iEPGList = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
 							if iEPGList :
 								self.mNavEpg = iEPGList
 							else :
@@ -1594,8 +1594,8 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mNavEpg :
 			try :
 
-				startTime = TimeToString( self.mNavEpg.mStartTime, TimeFormatEnum.E_HH_MM )
-				endTime   = TimeToString( self.mNavEpg.mStartTime + self.mNavEpg.mDuration, TimeFormatEnum.E_HH_MM )
+				startTime = TimeToString( self.mNavEpg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
+				endTime   = TimeToString( self.mNavEpg.mStartTime + self.mNavEpg.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
 				label = '%s - %s'% (startTime, endTime)
 				self.UpdateLabelGUI( self.mCtrlEventTime.getId( ), label )
 				self.UpdateLabelGUI( self.mCtrlEventName.getId( ), self.mNavEpg.mEventName )
@@ -1643,7 +1643,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mLocalTime = self.mDataCache.Datetime_GetGMTTime( )
 
 			if self.mNavEpg :
-				startTime = self.mNavEpg.mStartTime# + self.mLocalOffset
+				startTime = self.mNavEpg.mStartTime + self.mLocalOffset
 				endTime   = startTime + self.mNavEpg.mDuration
 				pastDuration = endTime - self.mLocalTime
 

@@ -367,7 +367,7 @@ class LivePlate( BaseWindow ) :
 
 				if aEvent.mEventId != self.mEventID :
 					iEPG = None
-					iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mOnid, True )
+					iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mOnid )
 					if iEPG and iEPG.mEventName != 'No Name':
 						if not self.mCurrentEvent or \
 						iEPG.mEventId != self.mCurrentEvent.mEventId or \
@@ -417,7 +417,7 @@ class LivePlate( BaseWindow ) :
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
 				time.sleep(1.5)
-				self.ShowRecording()
+				#self.ShowRecording()
 				self.mDataCache.mCacheReload = True
 
 			elif aEvent.getName() == ElisEventChannelChangeResult.getName() :
@@ -530,7 +530,7 @@ class LivePlate( BaseWindow ) :
 					return
 
 				iEPG = None
-				iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mOnid, True )
+				iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mOnid )
 				if iEPG and iEPG.mEventName != 'No Name':
 					self.mCurrentEvent = iEPG
 
@@ -549,7 +549,7 @@ class LivePlate( BaseWindow ) :
 				gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
 				maxCount = 100
 				iEPGList = None
-				iEPGList = self.mDataCache.Epgevent_GetListByChannel( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount, True )
+				iEPGList = self.mDataCache.Epgevent_GetListByChannel( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount )
 				time.sleep(0.05)
 				#LOG_TRACE('iEPGList[%s] ch[%d] sid[%d] tid[%d] oid[%d] from[%s] until[%s]'% (iEPGList, ch.mNumber, ch.mSid, ch.mTsid, ch.mOnid, time.asctime(time.localtime(gmtFrom)), time.asctime(time.localtime(gmtUntil))) )
 				if iEPGList :
@@ -965,6 +965,7 @@ class LivePlate( BaseWindow ) :
 					self.mDataCache.Channel_GetZappingList( )
 					#### data cache re-load ####
 					self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, True  )
+					LOG_TRACE('-zappingTable--------------------reLoad- table[%s]----------'% self.mDataCache.GetChangeDBTableChannel( ))
 
 				else :
 					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
@@ -972,8 +973,17 @@ class LivePlate( BaseWindow ) :
 						self.mDataCache.mCacheReload = False
 						#### data cache re-load ####
 						self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, True  )
+						LOG_TRACE('-channelTable--------------------reLoad- table[%s]----------'% self.mDataCache.GetChangeDBTableChannel( ))
 
-				ret = self.mDataCache.GetChangeDBTableChannel( )
+				#prevChannel = self.mDataCache.Channel_GetPrev( self.mFakeChannel )
+				#nextChannel = self.mDataCache.Channel_GetNext( self.mFakeChannel )
+				#channelList = self.mDataCache.Channel_GetList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
+				#LOG_TRACE('prevCh[%s] nextCh[%s] len[%s] list[%s]'% (prevChannel.mNumber, nextChannel.mNumber, len(channelList), ClassToList('convert', channelList)) )
+				
+
+				self.mFakeChannel = self.mCurrentChannel
+				self.mLastChannel = self.mCurrentChannel
+
 				#LOG_TRACE('table[%s]'% ret)
 
 
