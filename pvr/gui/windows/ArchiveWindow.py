@@ -115,6 +115,9 @@ class ArchiveWindow( BaseWindow ) :
 
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
+			if self.mDataCache.mStatusIsArchive :
+				self.mDataCache.Player_Stop( )
+				self.mDataCache.mStatusIsArchive = False
 			self.SetVideoRestore( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
@@ -421,7 +424,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.SetVideoRestore( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 		else :		
-			if selectedPos >= 0 and selectedPos < len( self.mRecordList ):
+			if selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
 				recInfo = self.mRecordList[selectedPos]
 				if recInfo.mLocked == True :
 					if self.CheckPincode() == False :

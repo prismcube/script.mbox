@@ -57,14 +57,18 @@ class DialogContext( BaseDialog ) :
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.mSelectedIndex = -1
-			self.CloseDialog( )
+			self.clearProperty( 'AnimationWaitingDialogOnClose' )
+			time.sleep( 0.3 )
+			self.close( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 			
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.mSelectedIndex = -1
-			self.CloseDialog( )
+			self.clearProperty( 'AnimationWaitingDialogOnClose' )
+			time.sleep( 0.3 )
+			self.close( )
 			
 
 	def onClick( self, aControlId ) :

@@ -40,23 +40,23 @@ class MainMenu( BaseWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		if self.mStartMediaCenter == True :
-			ret = self.mCommander.AppMediaPlayer_Control( 0 )
-			WinMgr.GetInstance().CheckGUISettings( )
+			self.mCommander.AppMediaPlayer_Control( 0 )
+			WinMgr.GetInstance( ).CheckGUISettings( )
+
 			self.mStartMediaCenter = False
-
 			#current channel re-zapping
-			iChannel = self.mDataCache.Channel_GetCurrent()
+			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if iChannel :
-				self.mDataCache.Channel_InvalidateCurrent()
+				self.mDataCache.Channel_InvalidateCurrent( )
 				self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
-				print 're-zapping ch[%s] type[%s]'% (iChannel.mNumber, iChannel.mServiceType ) 
 
-		status = self.mDataCache.Player_GetStatus()
+		status = self.mDataCache.Player_GetStatus( )
 		self.mMode = status.mMode
 		if self.mMode == ElisEnum.E_MODE_PVR :
 			self.mWin.setProperty( 'IsPVR', 'True' )
 		else :
 			self.mWin.setProperty( 'IsPVR', 'False' )
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )

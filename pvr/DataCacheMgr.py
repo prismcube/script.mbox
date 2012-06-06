@@ -1009,8 +1009,10 @@ class DataCacheMgr( object ):
 
 	def Timer_GetTimerList( self ) :
 		if SUPPORT_TIMER_DATABASE == True :
-			self.mTimerDB = ElisTimerDB( )
-			return self.mTimerDB.Timer_GetTimerList()
+			timerDB = ElisTimerDB( )
+			timerList = timerDB.Timer_GetTimerList( )
+			timerDB.Close( )
+			return timerList
 		else :
 			timerList = []
 			timerCount = self.Timer_GetTimerCount( )
@@ -1031,7 +1033,10 @@ class DataCacheMgr( object ):
 
 	def Timer_GetById( self, aTimderId ) :
 		if SUPPORT_TIMER_DATABASE == True :
-			return self.mTimerDB.Timer_GetById( aTimderId )
+			timerDB = ElisTimerDB( )
+			timer = timerDB.Timer_GetById( aTimderId )
+			timerDB.Close( )
+			return timer
 		else :	
 			return self.mCommander.Timer_GetById( aTimderId )
 
@@ -1052,6 +1057,22 @@ class DataCacheMgr( object ):
 		epgList = []
 		epgList.append( aEPG )
 		return self.mCommander.Timer_AddEPGTimer( aForceDecrypt, aForceThisEvent, epgList )
+
+
+	def Timer_AddManualTimer( self ,  aChannelNo,  aServiceType,  aStartTime,  aDuration,  aTimerName,  aForceDecrypt ) :
+		return self.mCommander.Timer_AddManualTimer( aChannelNo,  aServiceType,  aStartTime,  aDuration,  aTimerName,  aForceDecrypt )
+
+
+	def Timer_AddWeeklyTimer( self ,  aChannelNo,  aServiceType,  aStartTime,  aExpiryTime,  aTimerName,  aWeeklyTimerCount,  aWeeklyTimer ) :
+		return self.mCommander.Timer_AddWeeklyTimer( aChannelNo,  aServiceType,  aStartTime,  aExpiryTime,  aTimerName,  aWeeklyTimerCount,  aWeeklyTimer )
+
+
+	def Timer_AddSeriesTimer( self ,  aEPGEvent ) :
+		return self.mCommander.Timer_AddSeriesTimer( aEPGEvent )
+
+
+	def Timer_AddKeywordTimer( self ,  aChannelNo,  aServiceType,  aKeyword,  aTitleOnly,  aForceDecrypt ) :
+		return self.mCommander.Timer_AddKeywordTimer( aChannelNo,  aServiceType,  aKeyword,  aTitleOnly,  aForceDecrypt )
 
 
 	def Timer_DeleteTimer( self, aTimerId ) :
