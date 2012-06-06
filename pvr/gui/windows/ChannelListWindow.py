@@ -227,13 +227,21 @@ class ChannelListWindow( BaseWindow ) :
 
 		try :
 			label = ''
-			if self.mDataCache.mStatusIsArchive :
+			#first get is used cache, reason by fast load
+			iChannel = self.mDataCache.Channel_GetCurrent( )
+
+			status = self.mDataCache.Player_GetStatus()
+			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
+				if iChannel :
+					self.mNavChannel = iChannel
+					self.mCurrentChannel = iChannel.mNumber
+					label = 'TIMESHIFT - P%04d.%s' %(iChannel.mNumber, iChannel.mName )
+
+			elif status.mMode == ElisEnum.E_MODE_PVR :
 				if self.mDataCache.mRecInfo :
 					label = 'PVR - P%04d.%s' %(self.mDataCache.mRecInfo.mChannelNo, self.mDataCache.mRecInfo.mChannelName )
 			else :
-				#first get is used cache, reason by fast load
-				iChannel = self.mDataCache.Channel_GetCurrent( )
-
+				#Live
 				if iChannel :
 					self.mNavChannel = iChannel
 					self.mCurrentChannel = iChannel.mNumber
@@ -333,15 +341,19 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		elif id == Action.ACTION_STOP :
-			self.mDataCache.SetKeyDisabled( False )
-			ret = self.mDataCache.Player_Stop()
+			status = self.mDataCache.Player_GetStatus()
+			if status.mMode :
+				self.mDataCache.SetKeyDisabled( False )
+				ret = self.mDataCache.Player_Stop()
 
-			iChannel = self.mDataCache.Channel_GetCurrent( )
-			if iChannel :
-				self.mNavChannel = iChannel
-				self.mCurrentChannel = iChannel.mNumber
+				iChannel = self.mDataCache.Channel_GetCurrent( )
+				LOG_TRACE('-------------------iChannel[%s]'% iChannel )
+				if iChannel :
+					self.mNavChannel = iChannel
+					self.mCurrentChannel = iChannel.mNumber
 
-			self.UpdateLabelInfo()
+				self.mIsSelect == True
+				self.UpdateLabelInfo()
 
 
 		elif id == 13: #'x'
@@ -546,7 +558,7 @@ class ChannelListWindow( BaseWindow ) :
 			ret = self.SaveSlideMenuHeader( )
 			if ret != E_DIALOG_STATE_CANCEL :
 				self.mEnableThread = False
-				self.CurrentTimeThread( ).join( )
+				#self.CurrentTimeThread( ).join( )
 				self.mCtrlListCHList.reset( )
 				self.Close( )
 				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_ROOTWINDOW )
@@ -712,7 +724,7 @@ class ChannelListWindow( BaseWindow ) :
 				ret = self.SaveSlideMenuHeader( )
 				if ret != E_DIALOG_STATE_CANCEL :
 					self.mEnableThread = False
-					self.CurrentTimeThread( ).join( )
+					#self.CurrentTimeThread( ).join( )
 					self.Close( )
 
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )

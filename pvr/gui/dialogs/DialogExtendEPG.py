@@ -41,8 +41,9 @@ class DialogExtendEPG( BaseDialog ) :
 		self.mCtrlDescription = self.getControl( TEXTBOX_ID_DESCRIPTION )
 		self.mCtrlDate = self.getControl( LABEL_ID_DATE )
 
-		sTime = TimeToString( self.mEPG.mStartTime, TimeFormatEnum.E_HH_MM )
-		eTime = TimeToString( self.mEPG.mStartTime + self.mEPG.mDuration, TimeFormatEnum.E_HH_MM )
+		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
+		sTime = TimeToString( self.mEPG.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
+		eTime = TimeToString( self.mEPG.mStartTime + self.mEPG.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
 		self.mWin.setProperty( 'EPGTime', '%s - %s'% (sTime, eTime) )
 	
 
