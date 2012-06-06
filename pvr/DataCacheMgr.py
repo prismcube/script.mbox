@@ -96,6 +96,7 @@ class DataCacheMgr( object ):
 		self.mTransponderListHash				= {}
 		self.mEPGListHash						= {}
 
+		self.mChannelListDBTable				= E_TABLE_ALLCHANNEL
 		self.mEpgDB = None
 		self.mChannelDB = None
 		self.mTimerDB = None
@@ -407,15 +408,10 @@ class DataCacheMgr( object ):
 		return None
 
 
-	def SetChangeDBTableChannel( self, aChannelTable ) :
-		if SUPPORT_CHANNEL_DATABASE	== True :
-			self.mChannelDB.mDBChTable = aChannelTable
-
-
 	def GetChangeDBTableChannel( self ) :
 		ret = -1
 		if SUPPORT_CHANNEL_DATABASE	== True :
-			ret = self.mChannelDB.mDBChTable
+			ret = self.mChannelListDBTable
 
 		return ret
 
@@ -459,20 +455,22 @@ class DataCacheMgr( object ):
 			tmpChannelList = self.mCommander.Channel_GetList( self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
 
 
-		mCount = 0
-		tCount = 0
+		oldCount = 0
+		newCount = 0
 		if self.mChannelList :
-			mCount = len(self.mChannelList)
+			oldCount = len( self.mChannelList )
 		if tmpChannelList :
-			tCount = len(tmpChannelList)
-		if mCount != tCount or aReopen:
+			newCount = len( tmpChannelList )
+		if oldCount != newCount :
 			self.mCacheReload = True
 
 
 		prevChannel = None
 		nextChannel = None
 
-		#LOG_TRACE('oldcount[%d] newcount[%s]'% (len(self.mChannelList), len(tmpChannelList)) )
+		if self.mChannelList and tmpChannelList :
+			LOG_TRACE('oldcount[%d] newcount[%s]'% (len(self.mChannelList), len(tmpChannelList)) )
+
 		self.mChannelList = tmpChannelList
 		if self.mChannelList and self.mChannelList[0].mError == 0 :
 			count = len( self.mChannelList )
@@ -577,11 +575,11 @@ class DataCacheMgr( object ):
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				if aReopen :
 					channelDB = ElisChannelDB()
-					chList = channelDB.Channel_GetList( aType, aMode, aSort, -1, -1, -1, '', self.mSkip )
+					chList = channelDB.Channel_GetList( aType, aMode, aSort, -1, -1, -1, '', self.mSkip, self.mChannelListDBTable )
 					channelDB.Close()
 					return chList
 				else :
-					return self.mChannelDB.Channel_GetList( aType, aMode, aSort, -1, -1, -1, '', self.mSkip )
+					return self.mChannelDB.Channel_GetList( aType, aMode, aSort, -1, -1, -1, '', self.mSkip, self.mChannelListDBTable )
 			else :
 				return self.mCommander.Channel_GetList( aType, aMode, aSort )
 
@@ -852,11 +850,11 @@ class DataCacheMgr( object ):
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			if aReopen :
 				channelDB = ElisChannelDB()
-				chList = channelDB.Channel_GetList( aType, aMode, aSort, aLongitude, aBand, -1, '', self.mSkip )
+				chList = channelDB.Channel_GetList( aType, aMode, aSort, aLongitude, aBand, -1, '', self.mSkip, self.mChannelListDBTable )
 				channelDB.Close()
 				return chList
 			else :
-				return self.mChannelDB.Channel_GetList( aType, aMode, aSort, aLongitude, aBand, -1, '', self.mSkip )
+				return self.mChannelDB.Channel_GetList( aType, aMode, aSort, aLongitude, aBand, -1, '', self.mSkip, self.mChannelListDBTable )
 		else :
 			return self.mCommander.Channel_GetListBySatellite( aType, aMode, aSort, aLongitude, aBand )
 
@@ -864,11 +862,11 @@ class DataCacheMgr( object ):
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			if aReopen :
 				channelDB = ElisChannelDB()
-				chList = channelDB.Channel_GetList( aType, aMode, aSort, None, None, aCAid, '', self.mSkip )
+				chList = channelDB.Channel_GetList( aType, aMode, aSort, None, None, aCAid, '', self.mSkip, self.mChannelListDBTable )
 				channelDB.Close()
 				return chList
 			else :
-				return self.mChannelDB.Channel_GetList( aType, aMode, aSort, None, None, aCAid, '', self.mSkip )
+				return self.mChannelDB.Channel_GetList( aType, aMode, aSort, None, None, aCAid, '', self.mSkip, self.mChannelListDBTable )
 		else :
 			return self.mCommander.Channel_GetListByFTACas( aType, aMode, aSort, aCAid )
 
@@ -876,11 +874,11 @@ class DataCacheMgr( object ):
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			if aReopen :
 				channelDB = ElisChannelDB()
-				chList = channelDB.Channel_GetList( aType, aMode, aSort, None, None, None, aFavName, self.mSkip )
+				chList = channelDB.Channel_GetList( aType, aMode, aSort, None, None, None, aFavName, self.mSkip, self.mChannelListDBTable )
 				channelDB.Close()
 				return chList
 			else :
-				return self.mChannelDB.Channel_GetList( aType, aMode, aSort, None, None, None, aFavName, self.mSkip )
+				return self.mChannelDB.Channel_GetList( aType, aMode, aSort, None, None, None, aFavName, self.mSkip, self.mChannelListDBTable )
 		else :
 			return self.mCommander.Channel_GetListByFavorite( aType, aMode, aSort, aFavName )
 

@@ -1,11 +1,6 @@
 from pvr.gui.WindowImport import *
 import sys, inspect, time
 
-
-E_TABLE_ALLCHANNEL = 0
-E_TABLE_ZAPPING = 1
-
-
 class NullWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
@@ -343,11 +338,11 @@ class NullWindow( BaseWindow ) :
 					isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 					if isRunRec > 0 :
 						#use zapping table, in recording
-						self.mDataCache.SetChangeDBTableChannel( E_TABLE_ZAPPING )
+						self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
 						self.mDataCache.Channel_GetZappingList( )
 						self.mDataCache.LoadChannelList( )
 					else :
-						self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
+						self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
 						self.mDataCache.LoadChannelList( )
 						self.mDataCache.mCacheReload = True
 
