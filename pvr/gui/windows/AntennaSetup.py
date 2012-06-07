@@ -14,6 +14,7 @@ class AntennaSetup( SettingWindow ) :
 		self.getControl( E_SUBMENU_LIST_ID ).setVisible( False )
 
 		self.SetSettingWindowLabel( 'Antenna & Satellite Setup' )
+		self.SetPipScreen( )
 
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
 			self.getControl( E_SUBMENU_LIST_ID ).setVisible( False )
@@ -49,8 +50,6 @@ class AntennaSetup( SettingWindow ) :
 		self.mInitialized = True
 		self.SetFocusControl( E_SpinEx01 )
 		self.getControl( E_SUBMENU_LIST_ID ).setVisible( True )
-		self.SetPipScreen( )
-
 		
 		
 	def onAction( self, aAction ) :

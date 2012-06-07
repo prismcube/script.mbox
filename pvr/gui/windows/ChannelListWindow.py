@@ -200,6 +200,8 @@ class ChannelListWindow( BaseWindow ) :
 		self.mMoveFlag = False
 		self.mMoveItem = []
 
+		self.SetPipScreen( )
+
 		self.UpdateLabelGUI( self.mCtrlBtnDelAll.getId( ), MR_LANG('Delete All Channel') )
 
 		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
@@ -265,9 +267,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.CurrentTimeThread( )
 
 		self.mAsyncTuneTimer = None
-
-		self.SetPipScreen( )
-
 		#endtime = time.time( )
 		#print '==================== TEST TIME[ONINIT] END[%s] loading[%s]'% (endtime, endtime-starttime )
 

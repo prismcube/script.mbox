@@ -12,13 +12,14 @@ class ChannelSearch( SettingWindow ) :
 
 		self.SetSettingWindowLabel( 'Channel Scan' )
 
+		self.SetPipScreen( )
+
 		self.AddInputControl( E_Input01, 'Automatic Scan', '', 'Running automatic scan.' )
 		self.AddInputControl( E_Input02, 'Manual Scan', '', 'Running manual scan.' )
 
 		self.InitControl( )
 		self.mInitialized = True
 		self.SetFocusControl( E_Input01 )
-		self.SetPipScreen( )
 
 
 	def onAction( self, aAction ) :

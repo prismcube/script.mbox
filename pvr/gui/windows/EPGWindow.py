@@ -55,9 +55,8 @@ class EPGWindow( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.SetPipScreen( )
-
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'EPG' )
+		self.SetPipScreen( )
 
 		self.mEPGCount = 0
 		self.mSelectedIndex = 0
