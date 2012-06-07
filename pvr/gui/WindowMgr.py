@@ -54,6 +54,8 @@ WIN_ID_TIMESHIFT_INFO_PLATE2		= 103
 
 gWindowMgr = None
 
+E_ADD_XBMC_HTTP_FUNCTION			= True
+
 def GetInstance():
 	global gWindowMgr
 	if not gWindowMgr:
@@ -363,27 +365,54 @@ class WindowMgr(object):
 
 
 	def LoadSkinPosition( self ) :
-		try :
+		if E_ADD_XBMC_HTTP_FUNCTION == True :
 			import pvr.Platform
 			from pvr.GuiHelper import GetInstanceSkinPosition
-			from BeautifulSoup import BeautifulSoup
-			userDatePath	= pvr.Platform.GetPlatform( ).GetUserDataDir( ) + 'guisettings.xml'
-			fp				= open( userDatePath )			
-			xml				= fp.read( )
-			resolutionInfo	= BeautifulSoup( xml )
-			resolution		= resolutionInfo.findAll('resolution')
-			left			= int( resolution[1].find('left').string )
-			top				= int( resolution[1].find('top').string )
-			right			= int( resolution[1].find('right').string )
-			bottom			= int( resolution[1].find('bottom').string )
-			zoom			= int( resolutionInfo.find('skinzoom').string )
-			pvr.GuiHelper.GetInstanceSkinPosition( ).SetPosition( left, top, right, bottom, zoom )
-			fp.close( )
+	 		LOG_TRACE('--------------')		
+			strResolution = xbmc.executehttpapi("getresolution( )")
+			LOG_TRACE('--------------#2')
+			LOG_TRACE('strResolution=%s' %strResolution	)
+			resInfo = strResolution[4:].split(':')
+			LOG_TRACE('resInfo=%s' %resInfo	)		
+			width = int( resInfo[0] )
+			height = int( resInfo[1] )
+			fixelRate=  float( resInfo[2] )
+			left = int( resInfo[3] )
+			top = int( resInfo[4] )
+			right = int( resInfo[5] )
+			bottom = int( resInfo[6] )
 
-		except Exception, e :
-			if fp.closed == False :
+			LOG_TRACE('width=%d height=%d fixelRate=%f left=%d topt=%d right=%d bottom=%d' %(width, height, fixelRate, left, top, right, bottom ) )
+			
+			strZoom = xbmc.executehttpapi("GetGUISetting(0, lookandfeel.skinzoom)")
+			skinzoom = int( strZoom[4:] )
+			
+			LOG_TRACE('zoom=%d' %skinzoom )
+
+			pvr.GuiHelper.GetInstanceSkinPosition( ).SetPosition( left, top, right, bottom, skinzoom )
+		else :		
+
+			try :
+				import pvr.Platform
+				from pvr.GuiHelper import GetInstanceSkinPosition
+				from BeautifulSoup import BeautifulSoup
+				userDatePath	= pvr.Platform.GetPlatform( ).GetUserDataDir( ) + 'guisettings.xml'
+				fp				= open( userDatePath )			
+				xml				= fp.read( )
+				resolutionInfo	= BeautifulSoup( xml )
+				resolution		= resolutionInfo.findAll('resolution')
+				left			= int( resolution[1].find('left').string )
+				top				= int( resolution[1].find('top').string )
+				right			= int( resolution[1].find('right').string )
+				bottom			= int( resolution[1].find('bottom').string )
+				zoom			= int( resolutionInfo.find('skinzoom').string )
+				pvr.GuiHelper.GetInstanceSkinPosition( ).SetPosition( left, top, right, bottom, zoom )
 				fp.close( )
-			LOG_ERR( 'Error exception[%s]' % e )
+
+			except Exception, e :
+				if fp.closed == False :
+					fp.close( )
+				LOG_ERR( 'Error exception[%s]' % e )
 
 
 	def CopyIncludeFile( self ):
