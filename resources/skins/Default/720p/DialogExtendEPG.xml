@@ -6,7 +6,6 @@
 		<include>DefaultDialogCloseEffect</include>			
 			<posx>90</posx>
 			<posy>50</posy>
-
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>

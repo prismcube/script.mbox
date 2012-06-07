@@ -145,7 +145,8 @@ def send(aMsg = None):
 	loop = 0
 	while (1) :
 		for key in testScene :
-			print 'Moving %d : %s ... ' % ( loop, key[0] )
+			timeStr = time.strftime('%H:%M:%S', time.localtime() )
+			print '[time:%s] %d : %s ... ' % ( timeStr, loop, key[0] )
 
 			msg = struct.pack("3i",*[1, key[0], 0])
 			print 'send[%s] size[%s] '% (key[0], len(msg) )
@@ -153,7 +154,7 @@ def send(aMsg = None):
 			sock.send( msg )
 			time.sleep(key[1])
 
-		loop += 1
+			loop += 1
 
 
 def stringfor(command, data, accesskey='\0'*6, tid=1):

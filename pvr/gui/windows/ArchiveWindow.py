@@ -57,7 +57,7 @@ class ArchiveWindow( BaseWindow ) :
 		self.mRecordList = [] 
 		self.mSortList = [] 		
 		self.mRecordListItems = []
-		self.mLastFocusItem = -1
+		self.mLastFocusItem = -1	
 
 		self.mServiceType =  self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( ).mServiceType
 
@@ -85,6 +85,8 @@ class ArchiveWindow( BaseWindow ) :
 			self.mCtrlFanartList = self.getControl( LIST_ID_FANART_RECORD )
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
+
+		self.mEventBus.Register( self )
 
 
 		self.Load( )
@@ -115,6 +117,9 @@ class ArchiveWindow( BaseWindow ) :
 
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
+			if self.mDataCache.mStatusIsArchive :
+				self.mDataCache.Player_Stop( )
+				self.mDataCache.mStatusIsArchive = False
 			self.SetVideoRestore( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
@@ -137,6 +142,11 @@ class ArchiveWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_CONTEXT_MENU:
 			self.ShowContextMenu( )
+
+		elif actionId == Action.ACTION_STOP :
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode :
+				ret = self.mDataCache.Player_Stop( )
 
 	
 	def onClick( self, aControlId ) :
@@ -187,15 +197,17 @@ class ArchiveWindow( BaseWindow ) :
 		
 
 
-	def onFocus(self, controlId):
-
+	def onFocus( self, controlId ) :
 		if self.mInitialized == False :
 			return
 
 
 	@GuiLock
-	def onEvent(self, aEvent):
-		pass
+	def onEvent( self, aEvent ) :
+		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
+			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
+				if aEvent.mType == ElisEnum.E_EOF_END :
+					xbmc.executebuiltin( 'xbmc.Action(stop)' )
 
 
 	def InitControl( self ) :
@@ -421,7 +433,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.SetVideoRestore( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 		else :		
-			if selectedPos >= 0 and selectedPos < len( self.mRecordList ):
+			if selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
 				recInfo = self.mRecordList[selectedPos]
 				if recInfo.mLocked == True :
 					if self.CheckPincode() == False :

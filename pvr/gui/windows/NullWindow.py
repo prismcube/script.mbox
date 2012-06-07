@@ -1,9 +1,5 @@
 from pvr.gui.WindowImport import *
-
-
-E_TABLE_ALLCHANNEL = 0
-E_TABLE_ZAPPING = 1
-
+import sys, inspect, time
 
 class NullWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -46,12 +42,21 @@ class NullWindow( BaseWindow ) :
 					#if self.mMediaPlayerStarted == True :
 					LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %(self.mHBBTVReady, self.mMediaPlayerStarted) )
 					self.mForceSetCurrent = True
-
 		
-	def onAction(self, aAction) :		
+		currentStack = inspect.stack()
+		LOG_TRACE( '+++++getrecursionlimit[%s] currentStack[%s]'% (sys.getrecursionlimit(), len(currentStack)) )
+		LOG_TRACE( '+++++currentStackInfo[%s]'% (currentStack) )
+
+		lastTime = time.time() + 7200
+		lblStart = time.strftime('%H:%M:%S', time.localtime(WinMgr.GetInstance( ).mXbmcStartTime) )
+		lblLast  = time.strftime('%H:%M:%S', time.localtime(lastTime) )
+		lblTest  = time.strftime('%H:%M:%S', time.gmtime(lastTime - WinMgr.GetInstance( ).mXbmcStartTime) )
+		LOG_TRACE( 'startTime[%s] lastTime[%s] TestTime[%s]'% (lblStart, lblLast, lblTest) )
+		
+	def onAction(self, aAction) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )
-		LOG_ERR("Action ID = %s" %actionId )
+
 		if actionId == Action.ACTION_PREVIOUS_MENU:
 			if self.mGotoWinID :
 				if self.mGotoWinID == WinMgr.WIN_ID_ARCHIVE_WINDOW :
@@ -125,7 +130,7 @@ class NullWindow( BaseWindow ) :
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( gotoWinId )
 
-		elif actionId == Action.ACTION_PAGE_DOWN:
+		elif actionId == Action.ACTION_PAGE_DOWN :
 			if self.mDataCache.mStatusIsArchive :
 				#LOG_TRACE('Archive playing now')
 				return -1
@@ -286,11 +291,12 @@ class NullWindow( BaseWindow ) :
 					xbmc.executebuiltin('xbmc.Action(stop)')
 
 				self.mOnEventing = False
-			
+
 			elif aEvent.getName() == ElisEventChannelChangeResult.getName() :
-					ch = self.mDataCache.Channel_GetCurrent( )
-					if ch.mLocked :
-						self.PincodeDialogLimit( self.mDataCache.mPropertyPincode )
+				ch = self.mDataCache.Channel_GetCurrent( )
+				if ch.mLocked :
+					self.PincodeDialogLimit( self.mDataCache.mPropertyPincode )
+
 			elif E_SUPPROT_HBBTV == True :
 				if aEvent.getName() == ElisEventExternalMediaPlayerStart.getName() :
 					LOG_ERR('HBBTEST URL=%s' %aEvent.mUrl )
@@ -420,11 +426,11 @@ class NullWindow( BaseWindow ) :
 					isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 					if isRunRec > 0 :
 						#use zapping table, in recording
-						self.mDataCache.SetChangeDBTableChannel( E_TABLE_ZAPPING )
+						self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
 						self.mDataCache.Channel_GetZappingList( )
 						self.mDataCache.LoadChannelList( )
 					else :
-						self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
+						self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
 						self.mDataCache.LoadChannelList( )
 						self.mDataCache.mCacheReload = True
 

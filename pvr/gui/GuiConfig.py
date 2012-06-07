@@ -144,6 +144,14 @@ USE_HIDDEN_SSID					= 1
 NETWORK_ETHERNET				= 0
 NETWORK_WIRELESS				= 1
 
+# db table
+E_SYNCHRONIZED  				= 0
+E_ASYNCHRONIZED 				= 1
+E_TABLE_ALLCHANNEL 				= 0
+E_TABLE_ZAPPING 				= 1
+E_REOPEN_FALSE					= 0
+E_REOPEN_TRUE					= 1
+E_EPG_DB_CF						= 1
 
 
 # Tuner Config String Define

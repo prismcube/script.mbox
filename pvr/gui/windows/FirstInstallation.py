@@ -27,11 +27,11 @@ class FirstInstallation( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'First Installation' )
+		self.SetPipScreen( )
 		self.SetListControl( self.mStepNum )
 		self.mInitialized = True
-		self.SetPipScreen( )
 		ConfigMgr.GetInstance().SetFristInstallation( True )
-		print 'dhkim test #############'
+
 		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )

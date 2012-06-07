@@ -20,9 +20,9 @@ LIST_WEEKLY = ['Sun', 'Mon','Tue', 'Wed', 'The', 'Fri', 'Sat' ]
 
 MININUM_KEYWORD_SIZE  		= 3
 
-class UsedWeeklyTimer( ElisIWeeklyTimer ):
-	def __init__( self ):
-		self.mUsed=False
+class UsedWeeklyTimer( ElisIWeeklyTimer ) :
+	def __init__( self ) :
+		self.mUsed = False
 
 
 class DialogAddManualTimer( SettingDialog ) :
@@ -39,7 +39,7 @@ class DialogAddManualTimer( SettingDialog ) :
 		self.mErrorMessage = 'Unknown Error'		
 		self.mWeeklyStart = 0
 		self.mWekklyEnd = 0
-		
+		self.mConflictTimer = None
 
 
 	def onInit( self ):
@@ -57,7 +57,6 @@ class DialogAddManualTimer( SettingDialog ) :
 			self.mRecordName = self.mChannel.mName
 
 		self.Reload( )
-		#self.mEventBus.Register( self )
 
 		self.mIsOk = E_DIALOG_STATE_CANCEL
 
@@ -139,7 +138,7 @@ class DialogAddManualTimer( SettingDialog ) :
 
 		if groupId == E_SETTING_DIALOG_BUTTON_OK_ID :			
 			if self.DoAddTimer() == False :
-				self.mIsOk = E_DIALOG_STATE_ERROR			
+				self.mIsOk = E_DIALOG_STATE_ERROR
 			
 			self.ResetAllControl( )
 			self.Close( )
@@ -186,6 +185,10 @@ class DialogAddManualTimer( SettingDialog ) :
 
 	def IsOK( self ) :
 		return self.mIsOk
+
+
+	def GetConflictTimer( self ) :
+		return self.mConflictTimer
 
 
 	def Close( self ):
@@ -397,8 +400,15 @@ class DialogAddManualTimer( SettingDialog ) :
 					if  startTime + self.mUsedWeeklyList[0].mDuration < self.mDataCache.Datetime_GetLocalTime() :
 						self.mErrorMessage = 'Already Passed'
 						return False
-					self.mCommander.Timer_AddManualTimer( self.mChannel.mNumber, self.mChannel.mServiceType, startTime,	self.mUsedWeeklyList[0].mDuration, self.mRecordName, 0 )
-					return True
+					ret = self.mDataCache.Timer_AddManualTimer( self.mChannel.mNumber, self.mChannel.mServiceType, startTime,	self.mUsedWeeklyList[0].mDuration, self.mRecordName, 0 )
+
+					if ret[0].mParam == -1 or ret[0].mError == -1 :
+						self.mConflictTimer = ret
+						self.mErrorMessage = 'Conflict'
+						return False
+					else :
+						self.mConflictTimer = None
+						return True
 				else :
 					count = len( self.mUsedWeeklyList )
 					weeklyTimerList = []
@@ -414,9 +424,15 @@ class DialogAddManualTimer( SettingDialog ) :
 						self.mErrorMessage = 'Has no valid Timer'
 						return False
 
-					self.mCommander.Timer_AddWeeklyTimer( self.mChannel.mNumber, self.mChannel.mServiceType, 0, 0, self.mRecordName, len( weeklyTimerList ), weeklyTimerList )
+					ret = self.mDataCache.Timer_AddWeeklyTimer( self.mChannel.mNumber, self.mChannel.mServiceType, 0, 0, self.mRecordName, len( weeklyTimerList ), weeklyTimerList )
 
-					return True
+					if ret[0].mParam == -1 or ret[0].mError == -1 :
+						self.mConflictTimer = ret
+						self.mErrorMessage = 'Conflict'
+						return False
+					else :
+						self.mConflictTimer = None
+						return True
 
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)	
@@ -512,4 +528,3 @@ class DialogAddManualTimer( SettingDialog ) :
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex)
 
-	

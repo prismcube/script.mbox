@@ -1,16 +1,8 @@
 <window id="3003">
-	<type>window</type>
-	<coordinates>
-		<system>1</system>
-		<posx>0</posx>
-		<posy>0</posy>
-	</coordinates>
 	<defaultcontrol always="true">49</defaultcontrol>
 	<allowoverlay>no</allowoverlay>
-
 	<controls>
-
-<!-- bg design -->
+		<!-- Background -->
 		<control type="image">
 			<posx>0</posx>
 			<posy>0</posy>
@@ -19,6 +11,9 @@
 			<texture>special://skin/backgrounds/curtains.jpg</texture>
 			<include>DefaultSettingWindowEffect</include>
 		</control>
+
+		<!--  local time -->
+		<include>timepanelhigh</include>
 
 		<!-- Bottom Gradation Image -->
 		<control type="image">
@@ -38,14 +33,11 @@
 			<include>DefaultSettingWindowEffect</include>
 		</control>
 
-		<!--  local time -->
-		<include>timepanelhigh</include>
-
-		<!-- pip -->
+		<!-- PIP -->
 		<control type="image" id="8899">
-			<posx>862</posx>
+			<posx>863</posx>
 			<posy>133</posy>
-			<width>353</width>
+			<width>350</width>
 			<height>198</height>
 			<animation effect="zoom" start="0" end="100" center="auto" time="500" tween="quadratic" easing="out">WindowOpen</animation>
 			<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in">WindowClose</animation>
@@ -77,33 +69,38 @@
 			</control>
 		</control>
 
-<!-- Left Big Box -->
+		<!-- Left Big Box -->
 		<control type="group">
-			<include>Animation_CommonFade</include>
+			<control type="image">
+				<posx>394</posx>
+				<posy>655</posy>
+				<width>1280</width>
+				<height>68</height>
+				<texture background="true">views/showcase_gradient.png</texture>
+				<include>Animation_CommonFade</include>
+				<include>Animation_HideMultiplex</include>
+			</control>
 			<control type="group">
-				<include>Animation_ListSlideLeft</include>
+				<animation effect="slide" time="700" start="-800,0" end="0,0" tween="cubic" easing="out">WindowOpen</animation>
+				<animation effect="slide" time="700" start="0,0" end="-800,0" tween="cubic" easing="out">WindowClose</animation>
 				<control type="image">
-					<posx>394</posx>
-					<posy>655</posy>
-					<width>1280</width>
-					<height>68</height>
-					<texture background="true">views/showcase_gradient.png</texture>
-					<include>Animation_HideMultiplex</include>
-				</control>
-				<control type="image">
+					<include>Animation_CommonFade</include>
 					<posx>60</posx>
 					<posy>40</posy>
 					<width>759</width>
 					<height>682</height>
 					<texture background="true">views/listpanel_black.png</texture>
 				</control>
+
 				<control type="image">
+					<include>Animation_CommonFade</include>
 					<posx>60</posx>
 					<posy>40</posy>
 					<width>759</width>
 					<height>682</height>
 					<texture>views/listpanel_back.png</texture>
 				</control>
+
 				<control type="image">
 					<posx>669</posx>
 					<posy>49</posy>
@@ -113,13 +110,11 @@
 				</control>
 
 				<control type="group" id="49">
-					<posx>75</posx>
-					<posy>34</posy>
 					<control type="list" id="50">
-						<posx>0</posx>
-						<posy>40</posy>
-						<width>740</width>
-						<height>565</height>
+						<posx>60</posx>
+						<posy>74</posy>
+						<width>771</width>
+						<height>560</height>
 						<onleft>102</onleft>
 						<onright>61</onright>
 						<onup>50</onup>
@@ -127,22 +122,20 @@
 						<viewtype label="535">list</viewtype>
 						<pagecontrol>61</pagecontrol>
 						<scrolltime>200</scrolltime>
-						<movement>2</movement>
 						<visible>true</visible>
 						<enable>!Control.HasFocus(101) | !Control.HasFocus(102) | !ControlGroup(9001).HasFocus</enable>
-						<animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(61)">Conditional</animation>
-						<itemlayout height="40" width="740">
+						<itemlayout height="40" width="610">
 							<control type="image">
 								<posx>0</posx>
 								<posy>0</posy>
-								<width>735</width>
+								<width>730</width>
 								<height>1</height>
 								<texture background="true">views/listpanel_line.png</texture>
 							</control>
 							<!-- is cas? -->
 							<control type="image">
 								<posx>650</posx>
-								<posy>5</posy>
+								<posy>6</posy>
 								<width>30</width>
 								<height>30</height>
 								<texture>IconCas.png</texture>
@@ -150,16 +143,16 @@
 							</control>
 							<!-- is lock? -->
 							<control type="image">
-								<posx>0</posx>
+								<posx>5</posx>
 								<posy>5</posy>
-								<width>30</width>
+								<width>35</width>
 								<height>30</height>
 								<texture>OverlayLocked.png</texture>
 								<visible>substring(ListItem.Property(lock),true)</visible>
 							</control>
 							<!-- is mark? -->
 							<control type="image">
-								<posx>0</posx>
+								<posx>5</posx>
 								<posy>5</posy>
 								<width>30</width>
 								<height>30</height>
@@ -168,16 +161,15 @@
 							</control>
 							<!-- is recording? -->
 							<control type="image">
-								<posx>0</posx>
+								<posx>5</posx>
 								<posy>5</posy>
 								<width>30</width>
 								<height>30</height>
 								<texture>IconPlateRec.png</texture>
 								<visible>substring(ListItem.Property(rec),true)</visible>
 							</control>
-
 							<control type="label">
-								<posx>30</posx>
+								<posx>40</posx>
 								<posy>0</posy>
 								<width>660</width>
 								<height>40</height>
@@ -192,7 +184,7 @@
 								<posy>0</posy>
 								<width>400</width>
 								<height>40</height>
-								<font>Font_Reg20</font>
+								<font>Font_Bold20</font>
 								<include>listcolornofocus</include>
 								<align>right</align>
 								<aligny>center</aligny>
@@ -200,23 +192,22 @@
 								<visible>false</visible>
 							</control>	
 						</itemlayout>
-						<focusedlayout height="40" width="740">
+						<focusedlayout height="40" width="610">
 							<control type="image">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>735</width>
+								<posx>12</posx>
+								<posy>39</posy>
+								<width>739</width>
 								<height>1</height>
 								<texture background="true">views/listpanel_line.png</texture>
 							</control>
 							<control type="image">
-								<posx>0</posx>
-								<posy>0</posy>
-								<width>736</width>
-								<height>40</height>
+								<posx>7</posx>
+								<posy>-4</posy>
+								<width>743</width>
+								<height>47</height>
 								<texture background="true">views/listpanel_selectbar.png</texture>
 								<animation effect="fade" start="100" end="50" time="100" condition="!Control.HasFocus(50)">Conditional</animation>
 							</control>
-
 							<control type="image">
 								<posx>620</posx>
 								<posy>5</posy>
@@ -227,7 +218,7 @@
 							<!-- is cas? -->
 							<control type="image">
 								<posx>650</posx>
-								<posy>5</posy>
+								<posy>6</posy>
 								<width>30</width>
 								<height>30</height>
 								<texture>IconCas.png</texture>
@@ -235,16 +226,16 @@
 							</control>
 							<!-- is lock? -->
 							<control type="image">
-								<posx>0</posx>
+								<posx>5</posx>
 								<posy>5</posy>
-								<width>30</width>
+								<width>35</width>
 								<height>30</height>
 								<texture>OverlayLocked.png</texture>
 								<visible>substring(ListItem.Property(lock),true)</visible>
 							</control>
 							<!-- is mark? -->
 							<control type="image">
-								<posx>0</posx>
+								<posx>5</posx>
 								<posy>5</posy>
 								<width>30</width>
 								<height>30</height>
@@ -253,7 +244,7 @@
 							</control>
 							<!-- is recording? -->
 							<control type="image">
-								<posx>0</posx>
+								<posx>5</posx>
 								<posy>5</posy>
 								<width>30</width>
 								<height>30</height>
@@ -261,7 +252,7 @@
 								<visible>substring(ListItem.Property(rec),true)</visible>
 							</control>
 							<control type="label">
-								<posx>30</posx>
+								<posx>40</posx>
 								<posy>0</posy>
 								<width>660</width>
 								<height>40</height>
@@ -276,7 +267,7 @@
 								<posy>0</posy>
 								<width>400</width>
 								<height>40</height>
-								<font>Font_Reg20</font>
+								<font>Font_Bold20</font>
 								<include>listcolorfocus</include>
 								<align>right</align>
 								<aligny>center</aligny>
@@ -290,8 +281,8 @@
 
 				<!-- Scrollbar -->
 				<control type="scrollbar" id="61">
-					<posx>825</posx>
-					<posy>74</posy>
+					<posx>820</posx>
+					<posy>70</posy>
 					<width>25</width>
 					<height>565</height>
 					<texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
@@ -317,7 +308,6 @@
 						<scroll>false</scroll>
 						<align>right</align>
 						<aligny>center</aligny>
-						<!--label>([COLOR=blue]$INFO[Control.GetLabel][/COLOR])</label-->
 						<label>$INFO[Control.GetLabel]</label>
 						<visible>false</visible>
 					</control>
@@ -331,7 +321,6 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<!--label>([COLOR=blue]$INFO[Control.GetLabel(401)] / $INFO[Container(50).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(50).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(50).CurrentPage]/$INFO[Container(50).NumPages][/COLOR])</label-->
 						<label>[COLOR=blue]$INFO[Control.GetLabel(401)] / $INFO[Container(50).NumItems][/COLOR] $LOCALIZE[31025]</label>
 					</control>
 					<control type="label">
@@ -344,16 +333,13 @@
 						<scroll>false</scroll>
 						<align>right</align>
 						<aligny>center</aligny>
-						<!--label>[COLOR=blue] / $INFO[Container(50).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(50).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(50).CurrentPage]/$INFO[Container(50).NumPages][/COLOR])</label-->
 						<label>$LOCALIZE[31024] ([COLOR=blue]$INFO[Container(50).CurrentPage]/$INFO[Container(50).NumPages][/COLOR])</label>
 					</control>
 				</control>
-
 			</control>
 		</control>
 
-
-<!-- Right smoll Box -->
+		<!-- Right smoll Box -->
 		<control type="group">
 			<include>Animation_ListSlideRight</include>
 			<include>Animation_CommonFade</include>
@@ -361,16 +347,16 @@
 			<posy>0</posy>
 			<control type="image">
 				<posx>830</posx>
-				<posy>405</posy>
+				<posy>380</posy>
 				<width>360</width>
-				<height>290</height>
+				<height>315</height>
 				<texture background="true">views/listpanel_black.png</texture>
 			</control>
 			<control type="image">
 				<posx>830</posx>
-				<posy>405</posy>
+				<posy>380</posy>
 				<width>360</width>
-				<height>290</height>
+				<height>315</height>
 				<texture>views/listpanel_back.png</texture>
 			</control>
 
@@ -401,6 +387,7 @@
 						<description>EPG Info</description>
 						<posx>0</posx>
 						<posy>0</posy>
+						<width>310</width>
 						<font>Font_Reg20</font>
 						<textcolor>grey</textcolor>
 						<label>$INFO[Control.GetLabel]</label>

@@ -97,10 +97,19 @@ class Configure( SettingWindow ) :
 			self.LoadIp( )
 			self.LoadWifi( )
 			SetCurrentNetworkType( self.mUseNetworkType )
-		self.SetListControl( )
-		self.mInitialized = True
+
 		self.mVisibleParental = False
 		self.mReLoadIp = False
+		self.SetListControl( )
+		self.mInitialized = True
+
+
+	def Close( self ) :
+		self.mInitialized = False
+		if self.mCtrlLeftGroup.getSelectedPosition( ) == E_TIME_SETTING :
+			self.getControl( E_SpinEx01 + 3 ).selectItem( ElisPropertyEnum( 'Time Mode', self.mCommander ).GetPropIndex( ) )
+		self.mDataCache.Player_VideoBlank( False, False )
+		WinMgr.GetInstance( ).CloseWindow( )
 		
 
 	def onAction( self, aAction ) :
@@ -111,25 +120,18 @@ class Configure( SettingWindow ) :
 		self.GlobalAction( actionId )
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			self.mInitialized = False
-			self.mDataCache.Player_VideoBlank( False, False )
-			WinMgr.GetInstance().CloseWindow( )
-
+			self.Close( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			self.mInitialized = False
-			self.mDataCache.Player_VideoBlank( False, False )
-			WinMgr.GetInstance().CloseWindow( )
-
+			self.Close( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == E_SUBMENU_LIST_ID and selectedId != self.mPrevListItemID :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
-				self.mReLoadTime = True
 				self.mVisibleParental = False
 				self.SetListControl( )
 			elif focusId != E_SUBMENU_LIST_ID :
@@ -139,7 +141,6 @@ class Configure( SettingWindow ) :
 			if focusId == E_SUBMENU_LIST_ID and selectedId != self.mPrevListItemID :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
-				self.mReLoadTime = True
 				self.mVisibleParental = False
 				self.SetListControl( )
 			elif focusId != E_SUBMENU_LIST_ID :

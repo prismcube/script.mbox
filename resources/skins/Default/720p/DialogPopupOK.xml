@@ -45,6 +45,26 @@
 				<aligny>center</aligny>
 				<font>font13</font>
 			</control>
+			<control type="label" id="300">
+				<description>dialog message</description>
+				<posx>20</posx>
+				<posy>90</posy>
+				<width>560</width>
+				<height>30</height>
+				<align>left</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+			</control>
+			<control type="label" id="400">
+				<description>dialog message</description>
+				<posx>20</posx>
+				<posy>120</posy>
+				<width>560</width>
+				<height>30</height>
+				<align>left</align>
+				<aligny>center</aligny>
+				<font>font13</font>
+			</control>
 			<control type="button" id="301">
 				<description>OK button</description>
 				<posx>200</posx>

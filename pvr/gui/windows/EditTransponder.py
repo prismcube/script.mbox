@@ -105,6 +105,7 @@ class EditTransponder( SettingWindow ) :
  			dialog.doModal( )
 
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+ 				self.OpenBusyDialog( )
 				frequency, fec, polarization, simbolrate = dialog.GetValue( )
 
 				# check Already Exist Transponder
@@ -125,7 +126,9 @@ class EditTransponder( SettingWindow ) :
 		 			dialog.doModal( )
 		 			return
  				self.mTransponderIndex = 0
+ 				self.mDataCache.LoadConfiguredTransponder( )
 				self.InitConfig( )
+				self.CloseBusyDialog( )
 			else :
 				return
 
@@ -137,9 +140,7 @@ class EditTransponder( SettingWindow ) :
 	 			dialog.doModal( )
 
 	 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-
-					# check Already Exist Transponder
-					# Delete
+					self.OpenBusyDialog( )
 					tmplist = []
 			 		tmplist.append( self.mTransponderList[self.mTransponderIndex] )
 			 		ret = self.mCommander.Transponder_Delete( self.mLongitude, self.mBand, tmplist )
@@ -169,7 +170,9 @@ class EditTransponder( SettingWindow ) :
 			 			dialog.doModal( )
 			 			return
 	 				self.mTransponderIndex = 0
+	 				self.mDataCache.LoadConfiguredTransponder( )
 					self.InitConfig( )
+					self.CloseBusyDialog( )
 				else :
 					return
 
@@ -186,6 +189,7 @@ class EditTransponder( SettingWindow ) :
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					self.OpenBusyDialog( )				
 			 		tmplist = []
 			 		tmplist.append( self.mTransponderList[self.mTransponderIndex] )
 			 		ret = self.mCommander.Transponder_Delete( self.mLongitude, self.mBand, tmplist )
@@ -195,7 +199,9 @@ class EditTransponder( SettingWindow ) :
 			 			dialog.doModal( )
 			 			return
 			 		self.mTransponderIndex = 0
+	 				self.mDataCache.LoadConfiguredTransponder( )			 		
 					self.InitConfig( )
+					self.CloseBusyDialog( )					
 				else :
 					return
 	 			

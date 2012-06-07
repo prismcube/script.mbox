@@ -56,14 +56,13 @@ class TimeShiftInfoPlate1(BaseWindow):
 		self.mAutomaticHideTimer = None	
 		self.mAutomaticHide = True
 
-
+	"""
 	def __del__(self):
 		LOG_TRACE( 'destroyed TimeshiftPlate' )
 
 		# end thread CurrentTimeThread()
 		self.mEnableThread = False
 
-	"""
 	def onAction(self, aAction):
 		id = aAction.getId()
 		
@@ -202,14 +201,13 @@ class TimeShiftInfoPlate1(BaseWindow):
 		if self.mAutomaticHide == True :
 			self.StartAutomaticHide()
 
-		LOG_TRACE( 'Leave' )
 
 	def onAction(self, aAction):
 		id = aAction.getId()
 		self.GlobalAction( id )				
 		
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
-			LOG_TRACE( 'esc close : [%s] [%s]'% (aAction, id) )
+			#LOG_TRACE( 'esc close : [%s] [%s]'% (aAction, id) )
 			if self.mShowExtendInfo ==  True :
 				self.ShowDialog( self.mCtrlBtnExInfo.getId(), False )
 				return
@@ -225,7 +223,7 @@ class TimeShiftInfoPlate1(BaseWindow):
 			self.KeySearch( rKey )
 
 		elif id == Action.ACTION_SELECT_ITEM:
-			LOG_TRACE( '===== select [%s]' % id )
+			pass
 
 		elif id == Action.ACTION_MOVE_LEFT :
 			self.GetFocusId()
@@ -237,7 +235,7 @@ class TimeShiftInfoPlate1(BaseWindow):
 				#	self.mAutomaticHide = False
 				self.StopAutomaticHide()
 				self.RestartAsyncMove()
-				LOG_TRACE('left moveTime[%s]'% self.mUserMoveTime )
+				#LOG_TRACE('left moveTime[%s]'% self.mUserMoveTime )
 
 			if self.mFocusId == self.mCtrlBtnPrevEpg.getId():			
 				self.EPGNavigation( PREV_EPG )
@@ -255,7 +253,7 @@ class TimeShiftInfoPlate1(BaseWindow):
 				#	self.mAutomaticHide = False
 				self.StopAutomaticHide()
 				self.RestartAsyncMove()
-				LOG_TRACE('right moveTime[%s]'% self.mUserMoveTime )
+				#LOG_TRACE('right moveTime[%s]'% self.mUserMoveTime )
 
 			elif self.mFocusId == self.mCtrlBtnNextEpg.getId():
 				self.EPGNavigation( NEXT_EPG )
@@ -264,12 +262,10 @@ class TimeShiftInfoPlate1(BaseWindow):
 				self.RestartAutomaticHide()
 
 		elif id == Action.ACTION_PAGE_UP:
-			LOG_TRACE('key up')
 			self.ChannelTune( NEXT_CHANNEL )
 
 
 		elif id == Action.ACTION_PAGE_DOWN:
-			LOG_TRACE('key down')
 			self.ChannelTune( PREV_CHANNEL )
 
 			
@@ -292,7 +288,7 @@ class TimeShiftInfoPlate1(BaseWindow):
 
 
 	def onClick(self, aControlId):
-		LOG_TRACE( 'control %d' % aControlId )
+		#LOG_TRACE( 'control %d' % aControlId )
 
 		if aControlId >= self.mCtrlBtnRewind.getId() and aControlId <= self.mCtrlBtnJumpFF.getId() :
 
@@ -313,7 +309,7 @@ class TimeShiftInfoPlate1(BaseWindow):
 		
 		elif aControlId == self.mCtrlBtnStartRec.getId() :
 			runningCount = self.ShowRecording()
-			LOG_TRACE( 'runningCount[%s]' %runningCount)
+			#LOG_TRACE( 'runningCount[%s]' %runningCount)
 
 			isOK = False
 			GuiLock2(True)
@@ -356,25 +352,23 @@ class TimeShiftInfoPlate1(BaseWindow):
 
 	#@GuiLock
 	def onEvent(self, aEvent):
-		LOG_TRACE( 'Enter' )
-
 		if self.mWinId == xbmcgui.getCurrentWindowId():
 
 			if self.mFlag_OnEvent != True :
-				LOG_TRACE('ignore event, mFlag_OnEvent[%s]'% self.mFlag_OnEvent)
+				#LOG_TRACE('ignore event, mFlag_OnEvent[%s]'% self.mFlag_OnEvent)
 				return -1
 
 			if aEvent.getName() == ElisEventPlaybackEOF.getName() :
-				#aEvent.printdebug()
-				LOG_TRACE( 'mType[%d]' %(aEvent.mType ) )
+				#LOG_TRACE( 'mType[%d]' %(aEvent.mType ) )
 
 				if aEvent.mType == ElisEnum.E_EOF_START :
 					#self.TimeshiftAction( self.mCtrlBtnPlay.getId() )
-					LOG_TRACE( 'EventRecv EOF_START' )
+					pass
 
 				elif aEvent.mType == ElisEnum.E_EOF_END :
 					#self.TimeshiftAction( self.mCtrlBtnStop.getId() )
-					LOG_TRACE( 'EventRecv EOF_STOP' )
+					if self.mMode == ElisEnum.E_MODE_PVR :
+						xbmc.executebuiltin('xbmc.Action(stop)')
 
 			elif aEvent.getName() == ElisEventCurrentEITReceived.getName() :
 				self.UpdateEPGList( aEvent )
@@ -384,17 +378,13 @@ class TimeShiftInfoPlate1(BaseWindow):
 				time.sleep(1.5)
 				self.ShowRecording()
 				self.mDataCache.mCacheReload = True
-				LOG_TRACE('Receive Event[%s]'% aEvent.getName() )
+				#LOG_TRACE('Receive Event[%s]'% aEvent.getName() )
 
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
 
-		LOG_TRACE( 'Leave' )
-
 
 	def TimeshiftAction(self, aFocusId, aClose = None):
-		LOG_TRACE( 'Enter' )
-
 		ret = False
 
 		if aFocusId == self.mCtrlBtnPlay.getId() :
@@ -408,7 +398,7 @@ class TimeShiftInfoPlate1(BaseWindow):
 			elif self.mMode == ElisEnum.E_MODE_PVR:
 				ret = self.mDataCache.Player_Resume()
 
-			LOG_TRACE( 'play_resume() ret[%s]'% ret )
+			#LOG_TRACE( 'play_resume() ret[%s]'% ret )
 			if ret :
 				if self.mSpeed != 100:
 					#_self.mDataCache.Player_SetSpeed( 100 )
@@ -434,7 +424,7 @@ class TimeShiftInfoPlate1(BaseWindow):
 			elif self.mMode == ElisEnum.E_MODE_PVR:
 				ret = self.mDataCache.Player_Pause()
 
-			LOG_TRACE( 'play_pause() ret[%s]'% ret )
+			#LOG_TRACE( 'play_pause() ret[%s]'% ret )
 			if ret :
 				self.mIsPlay = FLAG_PLAY
 
@@ -464,7 +454,7 @@ class TimeShiftInfoPlate1(BaseWindow):
 					self.mDataCache.SetKeyDisabled( False )
 
 				third -= 1
-				LOG_TRACE( 'play_stop() ret[%s] try[%d]'% (ret,third) )
+				#LOG_TRACE( 'play_stop() ret[%s] try[%d]'% (ret,third) )
 				if ret :
 					break
 				else:
@@ -494,7 +484,8 @@ class TimeShiftInfoPlate1(BaseWindow):
 				ret = self.mDataCache.Player_SetSpeed( nextSpeed )
 
 			if ret :
-				LOG_TRACE( 'play_rewind() ret[%s], player_SetSpeed[%s]'% (ret, nextSpeed) )
+				pass
+				#LOG_TRACE( 'play_rewind() ret[%s], player_SetSpeed[%s]'% (ret, nextSpeed) )
 
 			#resume by toggle
 			if self.mIsPlay == FLAG_PLAY :
@@ -516,7 +507,8 @@ class TimeShiftInfoPlate1(BaseWindow):
 				ret = self.mDataCache.Player_SetSpeed( nextSpeed )
 
 			if ret :
-				LOG_TRACE( 'play_forward() ret[%s] player_SetSpeed[%s]'% (ret, nextSpeed) )
+				pass
+				#LOG_TRACE( 'play_forward() ret[%s] player_SetSpeed[%s]'% (ret, nextSpeed) )
 
 			#resume by toggle
 			if self.mIsPlay == FLAG_PLAY :
@@ -528,19 +520,17 @@ class TimeShiftInfoPlate1(BaseWindow):
 			if prevJump < self.mTimeshift_staTime :
 				prevJump = self.mTimeshift_staTime + 1000
 			ret = self.mDataCache.Player_JumpToIFrame( prevJump )
-			LOG_TRACE('JumpRR ret[%s]'% ret )
+			#LOG_TRACE('JumpRR ret[%s]'% ret )
 
 		elif aFocusId == self.mCtrlBtnJumpFF.getId() :
 			nextJump = self.mTimeshift_playTime + 10000
 			if nextJump > self.mTimeshift_endTime :
 				nextJump = self.mTimeshift_endTime - 1000
 			ret = self.mDataCache.Player_JumpToIFrame( nextJump )
-			LOG_TRACE('JumpFF ret[%s]'% ret )
+			#LOG_TRACE('JumpFF ret[%s]'% ret )
 
 		time.sleep(0.5)
 		self.InitTimeShift()
-
-		LOG_TRACE( 'Leave' )
 
 
 	def InitLabelInfo(self) :
@@ -581,8 +571,6 @@ class TimeShiftInfoPlate1(BaseWindow):
 
 	@GuiLock
 	def UpdateLabelGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
-		LOG_TRACE( 'Enter' )
-
 		if aCtrlID == self.mCtrlBtnMute.getId( ) :
 			self.mCtrlBtnMute.setVisible( aValue )
 
@@ -702,17 +690,10 @@ class TimeShiftInfoPlate1(BaseWindow):
 		elif aCtrlID == self.mCtrlLblTest.getId( ) :
 			self.mCtrlLblTest.setLabel( aValue )
 
-		LOG_TRACE( 'Leave' )
 
 	def InitTimeShift( self, loop = 0 ) :
-		LOG_TRACE('Enter')
-
 		status = None
 		status = self.mDataCache.Player_GetStatus()
-		LOG_TRACE('----------------------------------play[%s]'% self.mIsPlay)
-		retList = []
-		retList.append( status )
-		LOG_TRACE( 'player_GetStatus[%s]'% ClassToList( 'convert', retList ) )
 
 		if status :
 			flag_Rewind  = False
@@ -766,12 +747,7 @@ class TimeShiftInfoPlate1(BaseWindow):
 				self.UpdateLabelGUI( self.mCtrlLblTSEndTime.getId(), lbl_timeE )
 
 
-		LOG_TRACE('Leave')
-
 	def GetNextSpeed(self, aFocusId):
-		LOG_TRACE('Enter')
-
-		LOG_TRACE( 'mSpeed[%s]'% self.mSpeed )
 		ret = 0
 		if aFocusId == self.mCtrlBtnRewind.getId():
 
@@ -867,12 +843,10 @@ class TimeShiftInfoPlate1(BaseWindow):
 		self.UpdateLabelGUI( self.mCtrlImgForward.getId(), flagFF )
 		self.UpdateLabelGUI( self.mCtrlLblSpeed.getId(), lspeed )
 
-		LOG_TRACE('Leave')
 		return ret
 
-	def GetModeValue( self ) :
-		LOG_TRACE('Enter')
 
+	def GetModeValue( self ) :
 		labelMode = ''
 		buttonHide= True
 		if self.mMode == ElisEnum.E_MODE_LIVE :
@@ -890,14 +864,12 @@ class TimeShiftInfoPlate1(BaseWindow):
 			labelMode = 'UNKNOWN'
 
 		self.UpdateLabelGUI( self.mCtrlBtnStartRec.getId(), buttonHide, 'visible' )
-		LOG_TRACE('Leave')
 
 		return labelMode
 
+
 	@RunThread
 	def CurrentTimeThread(self):
-		LOG_TRACE( 'begin_start thread' )
-
 		loop = 0
 		while self.mEnableThread:
 			#LOG_TRACE( 'repeat <<<<' )
@@ -920,11 +892,7 @@ class TimeShiftInfoPlate1(BaseWindow):
 			time.sleep(self.mRepeatTimeout)
 			
 
-		LOG_TRACE( 'leave_end thread' )
-
 	def UpdateLocalTime(self, loop = 0):
-		LOG_TRACE( 'Enter' )
-
 		try :
 			lbl_timeE = ''
 			lbl_timeP = ''
@@ -936,8 +904,8 @@ class TimeShiftInfoPlate1(BaseWindow):
 			if totTime > 0 and curTime >= 0 :
 				self.mProgress_idx = (curTime / float(totTime))  * 100.0
 
-				LOG_TRACE( 'curTime[%s] totTime[%s]'% ( curTime,totTime ) )
-				LOG_TRACE( 'curTime[%s] idx[%s] endTime[%s]'% ( self.mTimeshift_staTime, self.mProgress_idx, self.mTimeshift_endTime ) )
+				#LOG_TRACE( 'curTime[%s] totTime[%s]'% ( curTime,totTime ) )
+				#LOG_TRACE( 'curTime[%s] idx[%s] endTime[%s]'% ( self.mTimeshift_staTime, self.mProgress_idx, self.mTimeshift_endTime ) )
 
 				if self.mProgress_idx > 100 :
 					self.mProgress_idx = 100
@@ -948,22 +916,19 @@ class TimeShiftInfoPlate1(BaseWindow):
 				posx = int( self.mProgress_idx * self.mProgressbarWidth / 100 )
 				self.UpdateLabelGUI( self.mCtrlBtnCurrent.getId(), posx, 'pos' )
 				self.UpdateLabelGUI( self.mCtrlProgress.getId(), self.mProgress_idx )
-				LOG_TRACE( 'progress endTime[%s] idx[%s] posx[%s]'% (self.mTimeshift_endTime, self.mProgress_idx, posx) )
+				#LOG_TRACE( 'progress endTime[%s] idx[%s] posx[%s]'% (self.mTimeshift_endTime, self.mProgress_idx, posx) )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
-		LOG_TRACE( 'leave' )
-
 
 	def updateServiceType(self, aTvType):
-		LOG_TRACE( 'serviceType[%s]' % aTvType )
+		pass
+
 
 	def ShowRecording( self ) :
-		LOG_TRACE('Enter')
-
 		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
-		LOG_TRACE('isRunRecCount[%s]'% isRunRec)
+		#LOG_TRACE('isRunRecCount[%s]'% isRunRec)
 
 		recLabel1 = ''
 		recLabel2 = ''
@@ -996,11 +961,8 @@ class TimeShiftInfoPlate1(BaseWindow):
 
 		return isRunRec
 
-		LOG_TRACE('Leave')
 
 	def RecordingStopAll( self ) :
-		LOG_TRACE('Enter')
-
 		RunningRecordCount = self.mCommander.Record_GetRunningRecorderCount()
 		LOG_ERR('RunningRecordCount=%s'% RunningRecordCount )
 
@@ -1009,20 +971,17 @@ class TimeShiftInfoPlate1(BaseWindow):
 			if recInfo :
 				#recInfo.printdebug()
 				ret = self.mDataCache.Timer_StopRecordingByRecordKey( recInfo.mRecordKey )
-				LOG_TRACE('record key[%s] stop[%s]'% (recInfo.mRecordKey, ret) )
+				#LOG_TRACE('record key[%s] stop[%s]'% (recInfo.mRecordKey, ret) )
 
 		if RunningRecordCount :
 			self.mDataCache.mCacheReload = True
 
-		LOG_TRACE('Leave')
-
 
 	#----------------------------- Channel, EPG ---------------------------
 	def ChannelTune(self, aDir):
-		LOG_TRACE( 'Enter' )
-
 		if self.mDataCache.mStatusIsArchive :
-			LOG_TRACE('Archive playing now')
+			pass
+			#LOG_TRACE('Archive playing now')
 
 		else:
 			isStop = False
@@ -1043,33 +1002,25 @@ class TimeShiftInfoPlate1(BaseWindow):
 			if isStop :
 				self.onClick( self.mCtrlBtnStop.getId() )
 
-		LOG_TRACE('Leave')
-
 
 	def EPGListMove( self ) :
-		LOG_TRACE( 'Enter' )
-
 		try :
-			LOG_TRACE('ch[%s] len[%s] idx[%s]'% (self.mCurrentChannel.mNumber, len(self.mEPGList),self.mEPGListIdx) )
+			#LOG_TRACE('ch[%s] len[%s] idx[%s]'% (self.mCurrentChannel.mNumber, len(self.mEPGList),self.mEPGListIdx) )
 			iEPG = self.mEPGList[self.mEPGListIdx]
 
 			if ret :
 				self.mEventCopy = iEPG
 				self.UpdateONEvent( iEPG )
 
-				retList = []
-				retList.append( iEPG )
-				LOG_TRACE( 'idx[%s] epg[%s]'% (self.mEPGListIdx, ClassToList( 'convert', retList )) )
+				#retList = []
+				#retList.append( iEPG )
+				#LOG_TRACE( 'idx[%s] epg[%s]'% (self.mEPGListIdx, ClassToList( 'convert', retList )) )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
-		LOG_TRACE( 'Leave' )
-
 
 	def EPGNavigation(self, aDir ):
-		LOG_TRACE('Enter')
-
 		if self.mEPGList :
 			lastIdx = len(self.mEPGList) - 1
 			if aDir == NEXT_EPG:
@@ -1087,12 +1038,8 @@ class TimeShiftInfoPlate1(BaseWindow):
 
 			self.EPGListMove()
 
-		LOG_TRACE('Leave')
-
 
 	def GetEPGList( self ) :
-		LOG_TRACE( 'Enter' )
-
 		#stop onEvent
 		self.mFlag_OnEvent = False
 
@@ -1101,11 +1048,11 @@ class TimeShiftInfoPlate1(BaseWindow):
 
 			if self.mEventCopy == None :
 				if not ch :
-					LOG_TRACE('No Channels')
+					#LOG_TRACE('No Channels')
 					return
 
 				iEPG = None
-				iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mOnid, True )
+				iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mOnid )
 				if iEPG and iEPG.mEventName != 'No Name':
 					self.mEventCopy = iEPG
 
@@ -1123,26 +1070,20 @@ class TimeShiftInfoPlate1(BaseWindow):
 				gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
 				maxCount = 100
 				iEPGList = None
-				iEPGList = self.mDataCache.Epgevent_GetListByChannel( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount, True )
+				iEPGList = self.mDataCache.Epgevent_GetListByChannel( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount )
 				time.sleep(0.05)
-				LOG_TRACE('==================')
-				LOG_TRACE('iEPGList[%s] ch[%d] sid[%d] tid[%d] oid[%d] from[%s] until[%s]'% (iEPGList, ch.mNumber, ch.mSid, ch.mTsid, ch.mOnid, time.asctime(time.localtime(gmtFrom)), time.asctime(time.localtime(gmtUntil))) )
+				#LOG_TRACE('iEPGList[%s] ch[%d] sid[%d] tid[%d] oid[%d] from[%s] until[%s]'% (iEPGList, ch.mNumber, ch.mSid, ch.mTsid, ch.mOnid, time.asctime(time.localtime(gmtFrom)), time.asctime(time.localtime(gmtUntil))) )
 				#LOG_TRACE('=============epg len[%s] list[%s]'% (len(ret),ClassToList('convert', ret )) )
 				if iEPGList :
 					self.mEPGList = iEPGList
 					self.mFlag_ChannelChanged = False
 				else :
-					LOG_TRACE('EPGList is None\nLeave')
+					#LOG_TRACE('EPGList is None\nLeave')
+
 					#receive onEvent
 					self.mFlag_OnEvent = True
 					return -1
 
-				LOG_TRACE('event[%s]'% self.mEventCopy )
-				retList=[]
-				retList.append(self.mEventCopy)
-				LOG_TRACE('==========[%s]'% ClassToList('convert', retList) )
-				LOG_TRACE('EPGList len[%s] [%s]'% (len(self.mEPGList), ClassToList('convert', self.mEPGList)) )
-				LOG_TRACE('onEvent[%s] list[%s]'% (self.mEventCopy, self.mEPGList))
 				idx = 0
 				self.mEPGListIdx = -1
 				for item in self.mEPGList :
@@ -1154,9 +1095,9 @@ class TimeShiftInfoPlate1(BaseWindow):
 
 						self.mEPGListIdx = idx
 
-						retList=[]
-						retList.append(item)
-						LOG_TRACE('SAME NOW EPG idx[%s] [%s]'% (idx, ClassToList('convert', retList)) )
+						#retList=[]
+						#retList.append(item)
+						#LOG_TRACE('SAME NOW EPG idx[%s] [%s]'% (idx, ClassToList('convert', retList)) )
 
 						break
 
@@ -1165,7 +1106,7 @@ class TimeShiftInfoPlate1(BaseWindow):
 				#search not current epg
 				if self.mEPGListIdx == -1 : 
 					self.mEPGListIdx = 0
-					LOG_TRACE('SEARCH NOT CURRENT EPG, idx=0')
+					#LOG_TRACE('SEARCH NOT CURRENT EPG, idx=0')
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -1173,11 +1114,8 @@ class TimeShiftInfoPlate1(BaseWindow):
 		#receive onEvent
 		self.mFlag_OnEvent = True
 
-		LOG_TRACE( 'Leave' )
 
 	def UpdateONEvent(self, aEvent = None):
-		LOG_TRACE( 'Enter' )
-
 		ch = self.mCurrentChannel
 
 		if ch :
@@ -1202,7 +1140,8 @@ class TimeShiftInfoPlate1(BaseWindow):
 				elif ch.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO:	imgfile = E_IMG_ICON_RADIO
 				elif ch.mServiceType == ElisEnum.E_SERVICE_TYPE_DATA:	pass
 				else:
-					LOG_TRACE( 'unknown ElisEnum tvType[%s]'% ch.mServiceType )
+					pass
+					#LOG_TRACE( 'unknown ElisEnum tvType[%s]'% ch.mServiceType )
 				self.UpdateLabelGUI( self.mCtrlImgServiceType.getId(), imgfile )
 
 			except Exception, e :
@@ -1219,7 +1158,7 @@ class TimeShiftInfoPlate1(BaseWindow):
 				label = TimeToString( aEvent.mStartTime + aEvent.mDuration, TimeFormatEnum.E_HH_MM )
 				self.UpdateLabelGUI( self.mCtrlLblEventEndTime.getId(),   label )
 
-				LOG_TRACE( 'mStartTime[%s] mDuration[%s]'% (aEvent.mStartTime, aEvent.mDuration) )
+				#LOG_TRACE( 'mStartTime[%s] mDuration[%s]'% (aEvent.mStartTime, aEvent.mDuration) )
 
 
 				#component
@@ -1255,38 +1194,30 @@ class TimeShiftInfoPlate1(BaseWindow):
 		else:
 			LOG_TRACE( 'aEvent null' )
 
-		LOG_TRACE( 'Leave' )
-
 
 	def UpdateEPGList(self, aEvent):
-		#LOG_TRACE( 'Enter' )
-
 		ch = self.mCurrentChannel	
 
 		if ch == None :
-			LOG_TRACE('ignore event, currentChannel None, [%s]'% ch)
+			#LOG_TRACE('ignore event, currentChannel None, [%s]'% ch)
 			return -1
 		
 		if ch.mSid != aEvent.mSid or ch.mTsid != aEvent.mTsid or ch.mOnid != aEvent.mOnid :
 			#LOG_TRACE('ignore event, same event')
 			return -1
 
-		LOG_TRACE( 'eventid:new[%d] old[%d]' %(aEvent.mEventId, self.mEventID ) )
-		#aEvent.printdebug()
+		#LOG_TRACE( 'eventid:new[%d] old[%d]' %(aEvent.mEventId, self.mEventID ) )
 
 		if aEvent.mEventId != self.mEventID :
 			iEPG = None
 			iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mTsid, ch.mOnid )
 			if iEPG and iEPG.mEventName != 'No Name':
-				LOG_TRACE('-----------------------')
-				#iEPG.printdebug()
-
 				if not self.mEventCopy or \
 				iEPG.mEventId != self.mEventCopy.mEventId or \
 				iEPG.mSid != self.mEventCopy.mSid or \
 				iEPG.mTsid != self.mEventCopy.mTsid or \
 				iEPG.mOnid != self.mEventCopy.mOnid :
-					LOG_TRACE('epg DIFFER, id[%s]'% iEPG.mEventId)
+					#LOG_TRACE('epg DIFFER, id[%s]'% iEPG.mEventId)
 					self.mEventID = aEvent.mEventId
 					self.mEventCopy = iEPG
 					#update label
@@ -1304,18 +1235,18 @@ class TimeShiftInfoPlate1(BaseWindow):
 								item.mOnid == self.mEventCopy.mOnid :
 
 								self.mEPGListIdx = idx
-								LOG_TRACE('Received ONEvent : EPGList idx moved(current idx)')
+								#LOG_TRACE('Received ONEvent : EPGList idx moved(current idx)')
 
-								iEPGList=[]
-								iEPGList.append(item)
-								LOG_TRACE('1.Aready Exist: NOW EPG idx[%s] [%s]'% (idx, ClassToList('convert', iEPGList)) )
+								#iEPGList=[]
+								#iEPGList.append(item)
+								#LOG_TRACE('1.Aready Exist: NOW EPG idx[%s] [%s]'% (idx, ClassToList('convert', iEPGList)) )
 								break
 
 							idx += 1
 
 						#2. new epg, append to EPGList
 						if self.mEPGListIdx == -1 :
-							LOG_TRACE('new EPG received, not exist in EPGList')
+							#LOG_TRACE('new EPG received, not exist in EPGList')
 							oldLen = len(self.mEPGList)
 							idx = 0
 							for idx in range(len(self.mEPGList)) :
@@ -1324,15 +1255,11 @@ class TimeShiftInfoPlate1(BaseWindow):
 
 							self.mEPGListIdx = idx
 							self.mEPGList = self.mEPGList[:idx]+[self.mEventCopy]+self.mEPGList[idx:]
-							LOG_TRACE('append new idx[%s], epgTotal:oldlen[%s] newlen[%s]'% (idx, oldLen, len(self.mEPGList)) )
-							LOG_TRACE('list[%s]'% ClassToList('convert',self.mEPGList) )
+							#LOG_TRACE('append new idx[%s], epgTotal:oldlen[%s] newlen[%s]'% (idx, oldLen, len(self.mEPGList)) )
+							#LOG_TRACE('list[%s]'% ClassToList('convert',self.mEPGList) )
 
 
-		#LOG_TRACE( 'Leave' )
-		
 	def ShowDialog( self, aFocusId, aVisible = False ) :
-		LOG_TRACE( 'Enter' )
-
 		head = ''
 		line1= ''
 		if aFocusId == self.mCtrlBtnBookMark.getId( ) :
@@ -1345,20 +1272,18 @@ class TimeShiftInfoPlate1(BaseWindow):
 
 		elif aFocusId == self.mCtrlBtnExInfo.getId() :
 			if aVisible == True :
-				LOG_TRACE('')
 				if self.mEventCopy :
 					self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText1.getId(), epgName )
 					self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText2.getId(), epgDesc )
 					self.UpdateLabelGUI( self.mCtrlGropEventDescGroup.getId(),  True )
 					
 				else:
-					LOG_TRACE( 'event is None' )
+					#LOG_TRACE( 'event is None' )
 					self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText1.getId(), '' )
 					self.UpdateLabelGUI( self.mCtrlTxtBoxEventDescText2.getId(), '' )
 					self.UpdateLabelGUI( self.mCtrlGropEventDescGroup.getId(),  True )
 
 			else :
-				LOG_TRACE('')		
 				self.mCtrlTxtBoxEventDescText1.reset()
 				self.mCtrlTxtBoxEventDescText2.reset()
 				self.UpdateLabelGUI( self.mCtrlGropEventDescGroup.getId(),  False )
@@ -1379,7 +1304,7 @@ class TimeShiftInfoPlate1(BaseWindow):
 
 			selectAction = dialog.GetSelectedAction( )
 			if selectAction == -1 :
-				LOG_TRACE('CANCEL by context dialog')
+				#LOG_TRACE('CANCEL by context dialog')
 				return
 
 			GuiLock2( True )
@@ -1389,13 +1314,7 @@ class TimeShiftInfoPlate1(BaseWindow):
  			GuiLock2( False )
 
 
-		LOG_TRACE( 'Leave' )
-
-
-		
 	def Close( self ):
-		LOG_TRACE('Enter')
-
 		self.mEventBus.Deregister( self )
 
 		self.mEnableThread = False
@@ -1405,7 +1324,7 @@ class TimeShiftInfoPlate1(BaseWindow):
 		self.StopAutomaticHide()
 
 		WinMgr.GetInstance().CloseWindow( )
-		LOG_TRACE('Leave')
+
 
 	def SetAutomaticHide( self, aHide=True ) :
 		self.mAutomaticHide = aHide
@@ -1416,9 +1335,9 @@ class TimeShiftInfoPlate1(BaseWindow):
 
 	
 	def AsyncAutomaticHide( self ) :
-		pass
-		#if self.mSpeed == 100 :
-		#	xbmc.executebuiltin('xbmc.Action(previousmenu)')
+		#pass
+		if self.mSpeed == 100 :
+			xbmc.executebuiltin('xbmc.Action(previousmenu)')
 		#	LOG_TRACE('HIDE : TimeShiftPlate')
 
 	def RestartAutomaticHide( self ) :
@@ -1450,7 +1369,7 @@ class TimeShiftInfoPlate1(BaseWindow):
 
 		self.mFlagUserMove = False
 		self.mAccelator += 1
-		LOG_TRACE('1================Accelator[%s]'% self.mAccelator )
+
 
 	def StopAsyncMove( self ) :
 		if self.mAsyncShiftTimer and self.mAsyncShiftTimer.isAlive() :
@@ -1458,6 +1377,7 @@ class TimeShiftInfoPlate1(BaseWindow):
 			del self.mAsyncShiftTimer
 
 		self.mAsyncShiftTimer  = None
+
 
 	#TODO : must be need timeout schedule
 	def AsyncUpdateCurrentMove( self ) :
@@ -1474,7 +1394,7 @@ class TimeShiftInfoPlate1(BaseWindow):
 					frameJump = self.mTimeshift_staTime + 1000
 
 				ret = self.mDataCache.Player_JumpToIFrame( frameJump )
-				LOG_TRACE('2============frameJump[%s] accelator[%s] MoveSec[%s] ret[%s]'% (frameJump,self.mAccelator,(self.mUserMoveTime/10000),ret) )
+				#LOG_TRACE('2============frameJump[%s] accelator[%s] MoveSec[%s] ret[%s]'% (frameJump,self.mAccelator,(self.mUserMoveTime/10000),ret) )
 
 				self.mFlagUserMove = False
 				self.mAccelator = 0
@@ -1483,9 +1403,8 @@ class TimeShiftInfoPlate1(BaseWindow):
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
-	def KeySearch( self, aKey ) :
-		LOG_TRACE( 'Enter' )
 
+	def KeySearch( self, aKey ) :
 		if aKey == 0 :
 			return -1
 
@@ -1503,9 +1422,8 @@ class TimeShiftInfoPlate1(BaseWindow):
 		if isOK == E_DIALOG_STATE_YES :
 
 			move = dialog.GetMoveToJump()
-			LOG_TRACE('=========== MoveToJump[%s]'% move)
+			#LOG_TRACE('=========== MoveToJump[%s]'% move)
 			if move :
 				ret = self.mDataCache.Player_JumpToIFrame( int(move) )
 
-		LOG_TRACE( 'Leave' )
 

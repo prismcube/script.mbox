@@ -16,7 +16,7 @@
 				<texture border="40">DialogBack.png</texture>
 			</control>
 			<control type="group">
-				<posy>90</posy>
+				<posy>100</posy>
 				<include>DefaultDialogCommonSetting</include>
 			</control>
 		</control>
@@ -24,8 +24,8 @@
 		<control type="grouplist" id="9000">		
 			<onleft>9000</onleft>
 			<itemgap>0</itemgap>
-			<posx>375</posx>
-			<posy>250</posy>
+			<posx>365</posx>
+			<posy>270</posy>
 			<onup>9000</onup>
 			<ondown>9000</ondown>
 			<defaultcontrol always="true">500</defaultcontrol>
@@ -176,7 +176,7 @@
 				<control type="button" id="521">
 					<description>Yes button</description>
 					<posx>160</posx>
-					<posy>20</posy>				
+					<posy>17</posy>				
 					<width>250</width>
 					<height>40</height>
 					<font>font12_title</font>

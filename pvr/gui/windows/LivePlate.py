@@ -26,13 +26,6 @@ CURR_CHANNEL	= 2
 CONTEXT_ACTION_VIDEO_SETTING = 1 
 CONTEXT_ACTION_AUDIO_SETTING = 2
 
-#db
-E_SYNCHRONIZED  = 0
-E_ASYNCHRONIZED = 1
-E_TABLE_ALLCHANNEL = 0
-E_TABLE_ZAPPING = 1
-
-
 class LivePlate( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
@@ -63,29 +56,30 @@ class LivePlate( BaseWindow ) :
 		self.mEnableThread = False
 
 	def onInit ( self ) :
-		self.tt1 = self.getControl( 605 )
-		self.tt2 = self.getControl( 606 )
+		currentStack = inspect.stack()
+		print '+++++getrecursionlimit[%s] currentStack[%s]'% (sys.getrecursionlimit(), len(currentStack))
+		print '+++++currentStackInfo[%s]'% (currentStack) 
+	
 
 	def onAction(self, aAction):
 		id = aAction.getId()
 		
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )			
+			#WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+			#WinMgr.GetInstance().CloseWindow( WinMgr.WIN_ID_LIVE_PLATE )
+			#self.close()
+
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+
 
 		elif id == Action.REMOTE_0 : 
 			xbmc.executebuiltin('XBMC.ReloadSkin()')
 
 		elif id == 104 : #scroll up
 			xbmc.executebuiltin('XBMC.ReloadSkin()')
-			aa1 = self.tt1.getPosition()
-			aa2 = self.tt2.getPosition()
-			print '-----aa1[%s] aa1[%s], aa2[%s] aa2[%s]'% (aa1[0],aa1[1],aa2[0],aa2[1])
-			self.tt1.setPosition(aa2[0],aa2[1])
-			self.tt2.setPosition(aa1[0],aa1[1])
 
 	def onFocus(self, aControlId):
 		pass
-
 
 	def SetAutomaticHide( self, aHide=True ) :
 		self.mAutomaticHide = aHide
@@ -202,8 +196,8 @@ class LivePlate( BaseWindow ) :
 			self.StartAutomaticHide()
 
 
-	def onAction(self, aAction):
-		id = aAction.getId()
+	def onAction( self, aAction ) :
+		id = aAction.getId( )
 		self.GlobalAction( id )
 		if id >= Action.REMOTE_0 and id <= Action.REMOTE_9 :
 			self.KeySearch( id-Action.REMOTE_0 )
@@ -223,6 +217,7 @@ class LivePlate( BaseWindow ) :
 			else :
 				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_ROOTWINDOW )
 
+
 		elif id == Action.ACTION_SELECT_ITEM:
 			self.StopAutomaticHide()
 			self.SetAutomaticHide( False )
@@ -239,10 +234,10 @@ class LivePlate( BaseWindow ) :
 			self.SetAutomaticHide( False )
 		
 			self.GetFocusId()
-			if self.mFocusId == self.mCtrlBtnPrevEpg.getId():			
+			if self.mFocusId == self.mCtrlBtnPrevEpg.getId( ) :			
 				self.EPGNavigation( PREV_EPG )
 
-		elif id == Action.ACTION_MOVE_RIGHT:
+		elif id == Action.ACTION_MOVE_RIGHT :
 			self.StopAutomaticHide()
 			self.SetAutomaticHide( False )
 		
@@ -257,7 +252,7 @@ class LivePlate( BaseWindow ) :
 
 			self.ChannelTune( NEXT_CHANNEL )
 
-		elif id == Action.ACTION_PAGE_DOWN:
+		elif id == Action.ACTION_PAGE_DOWN :
 			if self.mDataCache.mStatusIsArchive :
 				#LOG_TRACE('Archive playing now')
 				return -1
@@ -360,7 +355,7 @@ class LivePlate( BaseWindow ) :
 
 				if aEvent.mEventId != self.mEventID :
 					iEPG = None
-					iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mOnid, True )
+					iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mOnid )
 					if iEPG and iEPG.mEventName != 'No Name':
 						if not self.mCurrentEvent or \
 						iEPG.mEventId != self.mCurrentEvent.mEventId or \
@@ -379,7 +374,9 @@ class LivePlate( BaseWindow ) :
 								idx = 0
 								self.mEPGListIdx = -1
 								for item in self.mEPGList :
-									if 	item.mEventId == self.mCurrentEvent.mEventId and \
+									#LOG_TRACE('idx[%s] item[%s]'% (idx, item) )
+									if item and \
+									 	item.mEventId == self.mCurrentEvent.mEventId and \
 										item.mSid == self.mCurrentEvent.mSid and \
 										item.mTsid == self.mCurrentEvent.mTsid and \
 										item.mOnid == self.mCurrentEvent.mOnid :
@@ -387,8 +384,8 @@ class LivePlate( BaseWindow ) :
 										self.mEPGListIdx = idx
 										#LOG_TRACE('Received ONEvent : EPGList idx moved(current idx)')
 
-										iEPGList=[]
-										iEPGList.append(item)
+										#iEPGList=[]
+										#iEPGList.append(item)
 										#LOG_TRACE('1.Aready Exist: NOW EPG idx[%s] [%s]'% (idx, ClassToList('convert', iEPGList)) )
 										break
 
@@ -414,12 +411,16 @@ class LivePlate( BaseWindow ) :
 				self.mDataCache.mCacheReload = True
 
 			elif aEvent.getName() == ElisEventChannelChangeResult.getName() :
+				pass
+				#ToDO : do not db open in thread
+				"""
 				isLimit = False
 				if self.mCurrentEvent :
 					isLimit = AgeLimit( self.mPropertyAge, self.mCurrentEvent.mAgeRating )
 
 				if ch.mLocked or isLimit :
 					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mDataCache.mPropertyPincode )
+				"""
 
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
@@ -479,8 +480,8 @@ class LivePlate( BaseWindow ) :
 
 				self.UpdateONEvent( iEPG )
 
-				retList = []
-				retList.append( iEPG )
+				#retList = []
+				#retList.append( iEPG )
 				#LOG_TRACE( 'idx[%s] epg[%s]'% (self.mEPGListIdx, ClassToList( 'convert', retList )) )
 
 		except Exception, e :
@@ -519,7 +520,7 @@ class LivePlate( BaseWindow ) :
 					return
 
 				iEPG = None
-				iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mOnid, True )
+				iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mOnid )
 				if iEPG and iEPG.mEventName != 'No Name':
 					self.mCurrentEvent = iEPG
 
@@ -533,38 +534,38 @@ class LivePlate( BaseWindow ) :
 
 				#Live EPG
 				#gmtime = self.mDataCache.Datetime_GetGMTTime()
-				gmtFrom  = self.mCurrentEvent.mStartTime
+				#gmtFrom  = self.mCurrentEvent.mStartTime
+				gmtFrom  = self.mDataCache.Datetime_GetGMTTime()
 				gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
 				maxCount = 100
 				iEPGList = None
-				iEPGList = self.mDataCache.Epgevent_GetListByChannel( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount, True )
+				iEPGList = self.mDataCache.Epgevent_GetListByChannel( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount )
 				time.sleep(0.05)
 				#LOG_TRACE('iEPGList[%s] ch[%d] sid[%d] tid[%d] oid[%d] from[%s] until[%s]'% (iEPGList, ch.mNumber, ch.mSid, ch.mTsid, ch.mOnid, time.asctime(time.localtime(gmtFrom)), time.asctime(time.localtime(gmtUntil))) )
 				if iEPGList :
 					self.mEPGList = iEPGList
 					self.mFlag_ChannelChanged = False
+
 				else :
 					#receive onEvent
 					self.mFlag_OnEvent = True
 					#LOG_TRACE('EPGList is None\nLeave')
 					return -1
 
-				retList=[]
-				retList.append(self.mCurrentEvent)
-				#LOG_TRACE('EPGList len[%s] [%s]'% (len(self.mEPGList), ClassToList('convert', self.mEPGList)) )
 				idx = 0
 				self.mEPGListIdx = -1
 				for item in self.mEPGList :
 					#LOG_TRACE('idx[%s] item[%s]'% (idx, item) )
-					if 	item.mEventId == self.mCurrentEvent.mEventId and \
+					if item and \
+					 	item.mEventId == self.mCurrentEvent.mEventId and \
 						item.mSid == self.mCurrentEvent.mSid and \
 						item.mTsid == self.mCurrentEvent.mTsid and \
 						item.mOnid == self.mCurrentEvent.mOnid :
 
 						self.mEPGListIdx = idx
 
-						retList=[]
-						retList.append(item)
+						#retList=[]
+						#retList.append(item)
 						#LOG_TRACE('SAME NOW EPG idx[%s] [%s]'% (idx, ClassToList('convert', retList)) )
 
 						break
@@ -630,9 +631,9 @@ class LivePlate( BaseWindow ) :
 				self.UpdateLabelGUI( self.mCtrlLblEventName.getId(), deepcopy(aEvent.mEventName) )
 
 				#start,end
-				label = TimeToString( aEvent.mStartTime, TimeFormatEnum.E_HH_MM )
+				label = TimeToString( aEvent.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
 				self.UpdateLabelGUI( self.mCtrlLblEventStartTime.getId(), label )
-				label = TimeToString( aEvent.mStartTime + aEvent.mDuration, TimeFormatEnum.E_HH_MM )
+				label = TimeToString( aEvent.mStartTime + aEvent.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
 				self.UpdateLabelGUI( self.mCtrlLblEventEndTime.getId(),   label )
 
 				#component
@@ -653,9 +654,6 @@ class LivePlate( BaseWindow ) :
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
-
-		else:
-			LOG_TRACE( 'aEvent null' )
 
 
 	@RunThread
@@ -809,128 +807,20 @@ class LivePlate( BaseWindow ) :
 			msg1 = 'Teletext'
 			msg2 = 'test'
 			#xbmc.executebuiltin('Custom.SetLanguage(French)')
-			"""
-			from ElisChannelDB import ElisChannelDB
-			starttime = time.time( )
-			channelDB = ElisChannelDB()
-			openclose = time.time( ) - starttime
-			
-			retdb = channelDB.Channel_GetList( 1, 0, 3 )
-			
-			starttime = time.time( )
-			channelDB.Close()
-			openclose += time.time( ) - starttime
-			print '==================== TEST TIME[close]     loading[%s]'% (openclose )
-			
-			#1.string
-			a = '<string add>'
-			b = c= d =e = 'test'
-			starttime = time.time( )
-			#for i in range(1000):
-			d = a + b + c + d + e + '</test>'
-			endtime = time.time( )
-			print '==================== TEST TIME[string1]     loading[%s]'% (endtime - starttime )
-			
-			starttime = time.time( )
-			#for i in range(1000):
-			d = '%s%s%s%s%s</test>'% (a,b,c,d,e)
-			endtime = time.time( )
-			print '==================== TEST TIME[string2]     loading[%s]'% (endtime - starttime )
-			"""
+
+			startTime = time.time()
+			for i in range(50000):
+				dummy = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
+
+			endTime = time.time()
+			LOG_TRACE('--------------DBtestCount[%s] time[%s]'% (i, endTime-startTime ) )
+
 			
 
 		elif aFocusId == self.mCtrlBtnSubtitle.getId() :
 			msg1 = 'Subtitle'
 			msg2 = 'test'
 			#xbmc.executebuiltin('Custom.SetLanguage(English)')
-			"""
-			starttime = time.time( )			
-			import sqlite3
-			db = sqlite3.connect('/tmp/channel.db')
-			cursor =db.cursor()
-
-			query = 'select * from tblChannel where ServiceType = 1 order by Number'
-
-			reply = cursor.execute(query)
-			endtime = time.time( )
-			#reply = cursor.fetchall()
-			#print 'len[%s] '% (len(reply) )
-			print '==================== TEST TIME[query]    loading[%s]'% (endtime-starttime )
-
-			starttime = time.time( )			
-			result = []
-			idx = 0
-			iChannel = ElisIChannel()
-			for aIChannel in reply :
-				iChannel.mNumber							= aIChannel[1+idx]
-				iChannel.mPresentationNumber				= aIChannel[2+idx]
-				iChannel.mName								= aIChannel[3+idx].encode('utf-8')
-				iChannel.mServiceType						= aIChannel[4+idx]
-				iChannel.mLocked							= aIChannel[5+idx]
-				iChannel.mSkipped							= aIChannel[6+idx]
-				iChannel.mIsBlank							= aIChannel[7+idx]
-				iChannel.mIsCA								= aIChannel[8+idx]
-				iChannel.mIsHD								= aIChannel[9+idx]
-				#iChannel.mLockStartTime					= aIChannel[10+idx]
-				#iChannel.mLockEndTime						= aIChannel[11+idx]
-				iChannel.mCarrierType						= aIChannel[12+idx]
-				result.append( iChannel )				
-			endtime = time.time( )
-			#print 'result[%s]'% ClassToList('convert', result)
-			print 'len[%s]'% len(result)
-			print '==================== TEST TIME[mapping1]    parse[%s]'% (endtime-starttime )
-
-			cursor.close()
-			db.commit()
-			db.close()
-			"""
-
-
-			"""
-			db = sqlite3.connect(':memory:')
-			cursor =db.cursor()
-
-			query = 'create table tblChannel ( Number INTEGER, Name VARCHAR(32), ServiceType INTEGER)'
-			ret =cursor.execute(query)
-			for i in range(3000) :
-				name='test_%s'% i
-				query = 'insert into tblChannel (Number, Name, ServiceType) values (%s,\'%s\',1)'% (i,name)
-				ret =cursor.execute(query)
-			print 'make db on memory'
-
-			starttime = time.time( )
-			
-			query = 'select * from tblChannel where ServiceType = 1 order by Number'
-
-			retdb = cursor.execute(query)
-			endtime = time.time( )
-			reply = cursor.fetchall()
-			print 'len[%s]'% (len(reply) )
-			print '==================== TEST TIME[memory db]    loading[%s]'% (endtime-starttime )
-			cursor.close()
-			db.commit()
-			db.close()
-			"""
-			
-			
-			"""
-			starttime = time.time( )
-			for i in range(15):
-				print '[%s]'% xbmc.getLocalizedString(i)
-
-			endtime = time.time( )
-			print '==================== TEST TIME[localized] END[system] loading[%s]'% (endtime-starttime )
-
-			import xbmcaddon
-			addon = xbmcaddon.Addon(id = 'script.mbox')
-			starttime = time.time( )
-			for i in range(15):
-				print '[%s]'% addon.getLocalizedString(i)
-
-			endtime = time.time( )
-			print '==================== TEST TIME[localized] END[addon] loading[%s]'% (endtime-starttime )
-			"""
-
 
 
 		elif aFocusId == self.mCtrlBtnExInfo.getId() :
@@ -1059,22 +949,25 @@ class LivePlate( BaseWindow ) :
 				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
 				strLabelRecord2 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
 
+
 			if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
 				if isRunRec > 0 :
 					#use zapping table, in recording
-					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ZAPPING )
+					self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
 					self.mDataCache.Channel_GetZappingList( )
 					#### data cache re-load ####
-					self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, True  )
+					self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, E_REOPEN_TRUE  )
 
 				else :
-					self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
+					self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
 					if self.mDataCache.mCacheReload :
 						self.mDataCache.mCacheReload = False
 						#### data cache re-load ####
-						self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, True  )
+						self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, E_REOPEN_TRUE  )
 
-				ret = self.mDataCache.GetChangeDBTableChannel( )
+
+				self.mFakeChannel = self.mCurrentChannel
+				self.mLastChannel = self.mCurrentChannel
 				#LOG_TRACE('table[%s]'% ret)
 
 
@@ -1100,11 +993,11 @@ class LivePlate( BaseWindow ) :
 		self.mEventBus.Deregister( self )
 
 		self.mEnableThread = False
-		self.CurrentTimeThread().join()
+		#self.CurrentTimeThread().join()
 		
 		self.StopAsyncTune()
 		self.StopAutomaticHide()
-		WinMgr.GetInstance().CloseWindow( )
+		#WinMgr.GetInstance().CloseWindow( )
 
 
 	def SetLastChannelCertificationPinCode( self, aCertification ) :

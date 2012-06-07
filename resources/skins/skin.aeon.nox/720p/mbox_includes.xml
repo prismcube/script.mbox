@@ -40,6 +40,102 @@
 			<texturefocus>black-back.png</texturefocus>
 		</control>
 	</include>
+
+	<include name="DefaultMainWindowTime">
+		<control type="group">
+			<posx>330r</posx>
+			<posy>316</posy>
+			<animation effect="slide" start="0,0" end="490,0" time="300">WindowClose</animation>
+			<animation effect="slide" start="490,0" end="0,0" delay="200" time="400">WindowOpen</animation>
+			<visible>!Control.HasFocus(9010) | Control.HasFocus(9010)</visible>
+			<control type="image">
+				<posx>-161</posx>
+				<posy>0</posy>
+				<width>490</width>
+				<height>27</height>
+				<texture>home/timepanel_mid.png</texture>
+				<include>Animation_CommonFade</include>
+			</control>
+			<control type="label">
+				<description>time label</description>
+				<posx>320</posx>
+				<posy>-3</posy>
+				<width>400</width>
+				<height>28</height>
+				<align>right</align>
+				<aligny>center</aligny>
+				<font>Font_Reg17_Caps</font>
+				<textcolor>white</textcolor>
+				<label>[UPPERCASE]$INFO[System.Date] | [COLOR=ffaaaaaa]$INFO[System.Time][/COLOR][/UPPERCASE]</label>
+			</control>
+			<control type="group">
+				<posx>-140</posx>
+				<visible>!Skin.HasSetting(homepageWeatherinfo) + Weather.IsFetched</visible>
+				<include>weathericon</include>
+				<control type="label">
+					<description>time label</description>
+					<posx>41</posx>
+					<posy>-3</posy>
+					<width>200</width>
+					<height>28</height>
+					<align>left</align>
+					<aligny>center</aligny>
+					<font>Font_Reg17</font>
+					<textcolor>white2</textcolor>
+					<label>$INFO[Window(weather).Property(Current.Temperature)] $INFO[System.TemperatureUnits]</label>
+				</control>
+			</control>
+		</control>
+	</include>
+
+	<include name="DefaultMainDescription">
+		<control type="group">
+			<posx>0</posx>
+			<posy>406</posy>
+			<animation effect="slide" start="0,0" end="1253,0" time="300">WindowClose</animation>
+			<animation effect="slide" start="1253,0" end="0,0" delay="200" time="400">WindowOpen</animation>
+			<animation type="Visible" reversible="false">
+				<effect type="slide" start="0,-40" end="0,0" time="400" tween="cubic" easing="inout"/>
+				<effect type="fade" start="0" end="100" time="300"/>
+			</animation>
+			<animation type="Hidden" reversible="false">
+				<effect type="slide" start="0,0" end="0,-40" time="400" tween="cubic" easing="inout"/>
+				<effect type="fade" start="100" end="0" time="400"/>
+			</animation>
+			<visible>!Control.HasFocus(9010)</visible>
+			<control type="image">
+				<posx>54</posx>
+				<posy>0</posy>
+				<width>1253</width>
+				<height>57</height>
+				<texture>home/rssbar_mid.png</texture>
+				<include>Animation_CommonFade</include>
+			</control>
+			<control type="label">
+				<posx>100</posx>
+				<posy>3</posy>
+				<width>1180</width>
+				<height>20</height>
+				<font>Font_Info</font>
+				<align>left</align>
+				<textcolor>a9000000</textcolor>
+				<textoffsetx>0</textoffsetx>
+				<label>[COLOR blue]           Tuned to your Life!  [/COLOR]Marusys has been a pioneer in developing embedded solutions with leading hardware and software technologies. Ever since Marusys developed one of the world's first generation internet set top boxes and a proprietary web browser, Sojourner in 1997, Marusys has been successfully introducing a variety of consumer electronics to the market</label>
+				<scroll>true</scroll>
+				<wrapmultiline>false</wrapmultiline>
+				<scrollspeed>50</scrollspeed>
+			</control>
+			<control type="image">
+				<posx>77</posx>
+				<posy>0</posy>
+				<width>133</width>
+				<height>27</height>
+				<texture>home/rssbar_mid_fade.png</texture>
+				<colordiffuse>e3FFFFFF</colordiffuse>
+				<include>Animation_CommonFade</include>
+			</control>
+		</control>
+	</include>
 		
 	<include name="DefaultSettingMainWindow">
 		<control type="group">
@@ -179,7 +275,7 @@
 		</animation>
 	</include>
 
-	<include name="DefaultDialogCommonSetting">
+	<include name="DefaultDialogCloseButton">
 		<control type="button" id="6995">
 			<description>Close Window button</description>
 			<posx>455</posx>
@@ -198,6 +294,7 @@
 			<shadowcolor>black</shadowcolor>
 			<label>Go to back</label>
 			<font>Font_Bold18</font>
+			<visible>true</visible>
 		</control>
 		<control type="label" id="3005">
 			<description>header label</description>
@@ -224,6 +321,7 @@
 			<align>center</align>
 			<texturenofocus border="5">dialogs/context_nofocus.png</texturenofocus>
 			<texturefocus border="5">dialogs/context_highlight.png</texturefocus>
+			<animation effect="fade" start="100" end="70">Focus</animation>
 			<onleft>6999</onleft>
 			<onright>6999</onright>
 		</control>
@@ -237,6 +335,7 @@
 			<align>center</align>
 			<texturenofocus border="5">dialogs/context_nofocus.png</texturenofocus>
 			<texturefocus border="5">dialogs/context_highlight.png</texturefocus>
+			<animation effect="fade" start="100" end="70">Focus</animation>
 			<onleft>6997</onleft>
 			<onright>6997</onright>
 		</control>
@@ -411,27 +510,14 @@
 	<include name="DefaultDialogOpenEffect">
 		<onload>SetProperty(AnimationWaitingDialogOnClose,true)</onload>
 		<animation type="WindowOpen" reversible="false">
-			<effect type="zoom" start="80" end="100" center="640,360" delay="200" easing="out" tween="back" time="300" />
-			<effect type="fade" delay="200" start="0" end="100" time="200" />
+			<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
+			<effect type="fade" delay="200" start="0" end="100" time="300" />
 		</animation>
 	</include>
 
 	<include name="DefaultDialogCloseEffect">
-		<animation effect="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="200" condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional">Conditional</animation>
-		<animation effect="fade" start="100" end="0" time="200" condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional">Conditional</animation>
-	</include>
-
-	<include name="DefaultDialogOpenZoomEffect">
-		<onload>SetProperty(AnimationWaitingDialogOnClose,true)</onload>
-		<animation type="WindowOpen" reversible="false">
-			<effect type="zoom" start="150" end="100" center="640,360" time="900" tween="cubic" easing="out"/>
-			<effect type="fade" start="0" end="100" time="900"/>
-		</animation>
-	</include>
-
-	<include name="DefaultDialogCloseZoomEffect">
-		<animation effect="fade" start="100" end="0" time="300"/>
-		<animation effect="zoom" start="100" end="130" center="640,360" time="300" tween="cubic" easing="in" condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional">Conditional</animation>
+		<animation effect="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional">Conditional</animation>
+		<animation effect="fade" start="100" end="0" time="300" condition="IsEmpty(window.property(AnimationWaitingDialogOnClose))" type="conditional">Conditional</animation>
 	</include>
 
 	<!--
@@ -5063,7 +5149,7 @@
 						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
 					</control>
 					<!-- progress Bar -->
-					<control type="progress" >
+					<control type="progress">
 						<description>EPG progress control</description>
 						<posx>590</posx>
 						<posy>50</posy>

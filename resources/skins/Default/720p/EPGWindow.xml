@@ -59,7 +59,7 @@
 			<align>left</align>
 			<aligny>center</aligny>
 			<label></label>
-			<visible>substring(Window.Property(EPGMode),channel) </visible>			
+			<visible>substring(Window.Property(EPGMode),channel)</visible>
 		</control>
 
 		<control type="group" id="9003">
