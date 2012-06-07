@@ -18,7 +18,7 @@
 			</control>
 			<control type="group">
 				<posy>100</posy>
-				<include>DefaultDialogCommonSetting</include>
+				<include>DefaultDialogCloseButton</include>
 			</control>
 
 			<!-- Record Name -->
@@ -80,6 +80,7 @@
 				<align>center</align>
 				<texturenofocus border="5">dialogs/context_nofocus.png</texturenofocus>
 				<texturefocus border="5">dialogs/context_highlight.png</texturefocus>
+				<animation effect="fade" start="100" end="70">Focus</animation>
 				<onleft>201</onleft>
 				<onright>201</onright>
 				<onup>-</onup>
@@ -98,6 +99,7 @@
 				<align>center</align>
 				<texturenofocus border="5">dialogs/context_nofocus.png</texturenofocus>
 				<texturefocus border="5">dialogs/context_highlight.png</texturefocus>
+				<animation effect="fade" start="100" end="70">Focus</animation>
 				<onleft>200</onleft>
 				<onright>200</onright>
 				<onup>-</onup>					

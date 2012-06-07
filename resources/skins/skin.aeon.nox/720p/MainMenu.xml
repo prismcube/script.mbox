@@ -3,7 +3,7 @@
 	<allowoverlay>yes</allowoverlay>
 	<backgroundcolor>0x00ffffff</backgroundcolor>
 	<controls>
-		<control type="group">
+		<control type="group" id="9100">
 			<posx>0</posx>
 			<posy>0</posy>
 			<animation effect="slide" start="0,0" end="0,225" time="500" condition="Skin.HasSetting(lowermainmenu)|Skin.HasSetting(Lockhomemenulow)">Conditional</animation>
@@ -22,7 +22,7 @@
 				<texturefocus>-</texturefocus>
 				<texturenofocus>-</texturenofocus>
 				<onfocus>SetFocus(9010)</onfocus>
-				<visible>[ Container(9000).HasFocus(1) | Container(9000).HasFocus(5) | Container(9000).HasFocus(7)]</visible>
+				<visible>[ Container(9000).HasFocus(1) | Container(9000).HasFocus(7) ] | [ Container(9000).HasFocus(5) + substring(Window.Property(IsPVR),false) ]</visible>
 			</control>
 			<control type="button" id="330">
 				<description>INVISIBLE button: No Submenu</description>
@@ -33,7 +33,7 @@
 				<texturefocus>-</texturefocus>
 				<texturenofocus>-</texturenofocus>
 				<onfocus>SetFocus(9000)</onfocus>
-				<visible>![ Container(9000).HasFocus(1) | Container(9000).HasFocus(5) | Container(9000).HasFocus(7)]</visible>
+				<visible>![ Container(9000).HasFocus(1) | Container(9000).HasFocus(5) | Container(9000).HasFocus(7) ]</visible>
 			</control>
 			<include condition="Skin.HasSetting(Lockhomemenulow)">HomeButton10_MenuLow</include>
 			<include condition="!Skin.HasSetting(Lockhomemenulow)+!Skin.HasSetting(Lockhomemenu)">HomeButton10_MenuNormal</include>
@@ -427,6 +427,5 @@
 			<onclick>-</onclick>
 			<visible>false</visible>
 		</control>
-		
 	</controls>
 </window>

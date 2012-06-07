@@ -17,16 +17,16 @@ class DialogStartRecord( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 
-	def onInit( self ):
+	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
 		self.SetHeaderLabel( 'Record' )
 
 		self.mCtrlProgress = self.getControl( E_PROGRESS_EPG )
-		self.mLocalOffset = self.mCommander.Datetime_GetLocalOffset()
+		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		
-		self.mLocalTime = self.mCommander.Datetime_GetLocalTime( )
+		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 		self.mRecordName = 'RecordName'
 
 		self.mHasEPG = False
@@ -42,7 +42,7 @@ class DialogStartRecord( BaseDialog ) :
 		self.CurrentTimeThread( )
 
 
-	def onAction( self, aAction ):
+	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		self.GlobalAction( actionId )		
@@ -75,12 +75,10 @@ class DialogStartRecord( BaseDialog ) :
 			LOG_WARN( 'Unknown Action' )
 
 
-	def onClick( self, aControlId ):
+	def onClick( self, aControlId ) :
 		focusId = self.getFocusId( )
 
-		LOG_TRACE( 'DialogRecord focusId=%d' %focusId )
 		if focusId == E_BUTTON_START :
-			self.mIsOk = E_DIALOG_STATE_YES
 			self.StartRecord( )			
 
 		elif focusId == E_BUTTON_CANCEL :
@@ -88,52 +86,43 @@ class DialogStartRecord( BaseDialog ) :
 			self.Close( )
 
 		elif focusId == E_BUTTON_DURATION :
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( 'Duration(Min)', '%d' %int(self.mRecordDuration/60) , 3 )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog.SetDialogProperty( 'Duration(Min)', '%d' % int( self.mRecordDuration / 60 ) , 3 )
  			dialog.doModal( )
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				duration = int( dialog.GetString( ) )
-				LOG_TRACE('Duration=%d' %duration )
+				LOG_TRACE('Duration = %d' % duration )
 
 				if duration > 0 :
-					self.mRecordDuration = duration*60
-					self.UpdateEPGTime()
-
-			
+					self.mRecordDuration = duration * 60
+					self.UpdateEPGTime( )
 
 
-	def onFocus( self, aControlId ):
+	def onFocus( self, aControlId ) :
 		pass
 
 
 	@GuiLock	
-	def onEvent( self, aEvent ):
+	def onEvent( self, aEvent ) :
 		pass
-		"""
-		if xbmcgui.getCurrentWindowDialogId() == self.winId :
-			print 'Do Event'
-			pass
-		"""
+
 
 	def IsOK( self ) :
 		return self.mIsOk
 
+
 	def Close( self ):
 		self.mEventBus.Deregister( self )
 		self.mEnableThread = False
-		self.CurrentTimeThread().join()
+		self.CurrentTimeThread( ).join( )
 		self.CloseDialog( )
 
 
 	def Reload ( self ) :
-
-		self.mEPG=self.mCommander.Epgevent_GetPresent( )
-
+		self.mEPG = self.mDataCache.Epgevent_GetPresent( )
 		self.mRecordStartTime = self.mLocalTime - self.mLocalOffset
 		
-		if self.mEPG != None and self.mEPG.mError == 0:
-			#self.mEPG.printdebug( )		
-
+		if self.mEPG != None and self.mEPG.mError == 0 :
 			startTime =  self.mEPG.mStartTime + self.mLocalOffset
 			endTime = startTime + self.mEPG.mDuration
 
@@ -147,68 +136,60 @@ class DialogStartRecord( BaseDialog ) :
 			#Check Valid EPG
 			if startTime < self.mLocalTime and self.mLocalTime < endTime :
 				self.mHasEPG = True
-				self.getControl( E_LABEL_RECORD_NAME ).setLabel( '(%s~%s)%s' %(TimeToString( startTime, TimeFormatEnum.E_HH_MM ), TimeToString( endTime, TimeFormatEnum.E_HH_MM ) , self.mRecordName) )
-				
-
-
+				self.getControl( E_LABEL_RECORD_NAME ).setLabel( '(%s~%s) %s' % ( TimeToString( startTime, TimeFormatEnum.E_HH_MM ), TimeToString( endTime, TimeFormatEnum.E_HH_MM ) , self.mRecordName) )
 
 		if self.mHasEPG == False :
 			prop = ElisPropertyEnum( 'Default Rec Duration', self.mCommander )
 			self.mRecordDuration = prop.GetProp( )
-			channel = self.mCommander.Channel_GetCurrent( )
+			channel = self.mDataCache.Channel_GetCurrent( )
 			self.mRecordName = channel.mName
 			self.getControl( E_LABEL_RECORD_NAME ).setLabel( self.mRecordName )
 		
 	
-	def StartRecord( self ):
-		LOG_TRACE('')
+	def StartRecord( self ) :
+		current = self.mDataCache.Channel_GetCurrent( )
+		ret = self.mDataCache.Timer_AddOTRTimer( self.mHasEPG, self.mRecordDuration, 0,  self.mRecordName,  0,  0,  0,  0,  0 )
 
-		current = self.mCommander.Channel_GetCurrent( )
-		ret = self.mCommander.Timer_AddOTRTimer( self.mHasEPG, self.mRecordDuration, 0,  self.mRecordName,  0,  0,  0,  0,  0)
-					
-		self.Close( )
-
-		if ret == False :
+		if ret[0].mParam == -1 or ret[0].mError == -1 :
+			self.RecordConflict( ret )
 			self.mIsOk = E_DIALOG_STATE_CANCEL
-			xbmcgui.Dialog().ok('Failure', 'Start Record Fail' )
-
+		else :
+			self.mIsOk = E_DIALOG_STATE_YES
+		self.Close( )
 
 
 	@RunThread
-	def CurrentTimeThread(self):
+	def CurrentTimeThread( self ) :
 		loop = 0
 
-		while self.mEnableThread:
-			if  ( loop % 10 ) == 0 :
-				LOG_TRACE( 'loop=%d' %loop )
-				self.mLocalTime = self.mCommander.Datetime_GetLocalTime( )
+		while self.mEnableThread :
+			if ( loop % 10 ) == 0 :
+				LOG_TRACE( 'loop=%d' % loop )
+				self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 
-				
 			self.UpdateEPGTime( )
 
-			time.sleep(1)
+			time.sleep( 1 )
 			self.mLocalTime += 1			
 			loop += 1
 
 
 	@GuiLock	
-	def UpdateEPGTime( self ):
+	def UpdateEPGTime( self ) :
 		self.UpdateProgress( )
 
 
-	def UpdateProgress( self ):
-
-		startTime = self.mRecordStartTime+ self.mLocalOffset
-		endTime =  startTime  + self.mRecordDuration
+	def UpdateProgress( self ) :
+		startTime = self.mRecordStartTime + self.mLocalOffset
+		endTime =  startTime + self.mRecordDuration
 
 		passDuration = self.mLocalTime - startTime
 
-		LOG_TRACE( 'UpdateProgress=%d' %passDuration )
+		LOG_TRACE( 'UpdateProgress=%d' % passDuration )
 
 		self.getControl( E_LABEL_EPG_START_TIME ).setLabel( TimeToString( startTime, TimeFormatEnum.E_HH_MM ) )
 		self.getControl( E_LABEL_EPG_END_TIME ).setLabel( TimeToString( endTime, TimeFormatEnum.E_HH_MM ) )
-		self.getControl( E_LABEL_DURATION ).setLabel( '%d(Min)' % int( self.mRecordDuration/(60) ) )			
-
+		self.getControl( E_LABEL_DURATION ).setLabel( '%d(Min)' % int( self.mRecordDuration / ( 60 ) ) )			
 
 		if endTime < self.mLocalTime : #Already past
 			self.mCtrlProgress.setPercent( 100 )
@@ -220,7 +201,7 @@ class DialogStartRecord( BaseDialog ) :
 			passDuration = 0
 
 		if self.mRecordDuration > 0 :
-			percent = passDuration * 100/self.mRecordDuration
+			percent = passDuration * 100 / self.mRecordDuration
 		else :
 			percent = 0
 
@@ -229,3 +210,27 @@ class DialogStartRecord( BaseDialog ) :
 		self.mCtrlProgress.setPercent( percent )
 
 
+	def RecordConflict( self, aInfo ) :	
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( 'Conflict', 'Conflict' )
+		dialog.doModal( )
+
+
+	def RecordConflict( self, aInfo ) :
+		label = [ '', '', '' ]
+		if aInfo[0].mError == -1 :
+			label[0] = 'Error EPG'
+			label[1] = 'Can not found EPG Information'
+		else :
+			conflictNum = len( aInfo ) - 1
+			if conflictNum > 3 :
+				conflictNum = 3
+			for i in range( conflictNum ) :
+				timer = self.mDataCache.Timer_GetById( aInfo[ i + 1 ].mParam )
+				time = '%s~%s' % ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( timer.mStartTime + timer.mDuration, TimeFormatEnum.E_HH_MM ) )
+				channelNum = '%04d' % timer.mChannelNo
+				epgNAme = timer.mName
+				label[i] = time + ' ' + channelNum + ' ' + epgNAme
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( 'Conflict', label[0], label[1], label[2] )
+		dialog.doModal( )
