@@ -470,7 +470,7 @@
 					<posy>30</posy>
 					<control type="progress" id="201">
 						<description>progress control</description>
-						<posx>50</posx>
+						<posx>55</posx>
 						<posy>17</posy>
 						<width>980</width>
 						<height>16</height>
