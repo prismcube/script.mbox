@@ -6,8 +6,8 @@ from pvr.gui.BaseWindow import Action
 from pvr.Util import RunThread, GuiLock, GuiLock2
  
 
-class BaseDialog( xbmcgui.WindowXMLDialog, Property ):
-	def __init__( self, *args, **kwargs ):
+class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
+	def __init__( self, *args, **kwargs ) :
 		xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
 		self.mWin = None
 		self.mWinId = 0
@@ -15,14 +15,15 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ):
 		self.mLastFocused = -1
 		self.mInitialized = False
 		
-		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
-		self.mEventBus = pvr.ElisMgr.GetInstance().GetEventBus()
-		self.mDataCache = pvr.DataCacheMgr.GetInstance()		
+		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
+		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
+		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		
 
 	@classmethod
-	def GetName(cls):
+	def GetName( cls ) :
 		return cls.__name__
+
 
 	def SetHeaderLabel( self, aLabel ):
 		self.getControl( G_DIALOG_HEADER_LABEL_ID ).setLabel( aLabel )

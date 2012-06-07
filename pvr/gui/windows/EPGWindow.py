@@ -55,6 +55,8 @@ class EPGWindow( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
+		self.SetPipScreen( )
+
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'EPG' )
 
 		self.mEPGCount = 0
@@ -110,7 +112,7 @@ class EPGWindow( BaseWindow ) :
 		self.StartEPGUpdateTimer( )
 		
 		self.mInitialized = True
-		self.SetPipScreen( )
+
 
 	def onAction( self, aAction ) :
 		self.GetFocusId()
@@ -283,8 +285,8 @@ class EPGWindow( BaseWindow ) :
 		gmtUntil = self.mGMTTime + E_MAX_SCHEDULE_DAYS*3600*24
 
 		LOG_ERR('START : localoffset=%d' %self.mLocalOffset )
-		LOG_ERR('START : %s' %TimeToString( gmtFrom+self.mLocalOffset, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
-		LOG_ERR('START : %d : %d %d' %(self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid) )
+		LOG_ERR('START : %s' % TimeToString( gmtFrom+self.mLocalOffset, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
+		LOG_ERR('START : %d : %d %d' % ( self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid) )
 
 		
 		try :
@@ -369,9 +371,7 @@ class EPGWindow( BaseWindow ) :
 					break
 				fucusIndex += 1
 
-			GuiLock2( True )
 			self.mCtrlBigList.selectItem( fucusIndex )
-			GuiLock2( False )
 
 
 	def UpdateSelectedChannel( self ) :
@@ -396,9 +396,9 @@ class EPGWindow( BaseWindow ) :
 
 		try :
 			if epg :
-				self.mCtrlTimeLabel.setLabel( '%s~%s' %( TimeToString( epg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM ), TimeToString( epg.mStartTime + self.mLocalOffset+ epg.mDuration, TimeFormatEnum.E_HH_MM ) ) )
-				self.mCtrlDateLabel.setLabel( '%s' %TimeToString( epg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
-				self.mCtrlDurationLabel.setLabel( '%dMin' %( epg.mDuration/60) )
+				self.mCtrlTimeLabel.setLabel( '%s~%s' % ( TimeToString( epg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM ), TimeToString( epg.mStartTime + self.mLocalOffset+ epg.mDuration, TimeFormatEnum.E_HH_MM ) ) )
+				self.mCtrlDateLabel.setLabel( '%s' % TimeToString( epg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
+				self.mCtrlDurationLabel.setLabel( '%dMin' % ( epg.mDuration / 60 ) )
 
 				if epg.mEventDescription and epg.mEventDescription.upper() != '(NULL)' :
 					self.mCtrlEPGDescription.setText( epg.mEventDescription )
@@ -433,9 +433,7 @@ class EPGWindow( BaseWindow ) :
 			return
 
 		self.mIsUpdateEnable = False
-		GuiLock2( True )
 		self.UpdateList( True )
-		GuiLock2( False )
 		self.mIsUpdateEnable = True
 
 	def UpdateList( self, aUpdateOnly=False ) :
@@ -501,7 +499,7 @@ class EPGWindow( BaseWindow ) :
 							listItem = self.mListItems[i]
 
 						epgStart = epgEvent.mStartTime + self.mLocalOffset
-						tempName = '%s~%s' %(TimeToString( epgStart, TimeFormatEnum.E_HH_MM ), TimeToString( epgStart + epgEvent.mDuration, TimeFormatEnum.E_HH_MM ) )
+						tempName = '%s~%s' % ( TimeToString( epgStart, TimeFormatEnum.E_HH_MM ), TimeToString( epgStart + epgEvent.mDuration, TimeFormatEnum.E_HH_MM ) )
 						listItem.setProperty( 'StartTime', tempName )
 						listItem.setProperty( 'Duration', '' )
 						listItem.setProperty( 'HasEvent', 'true' )
@@ -573,7 +571,7 @@ class EPGWindow( BaseWindow ) :
 							listItem = self.mListItems[i]
 
 						epgStart = epgEvent.mStartTime + self.mLocalOffset
-						tempName = '%s~%s' %(TimeToString( epgStart, TimeFormatEnum.E_HH_MM ), TimeToString( epgStart + epgEvent.mDuration, TimeFormatEnum.E_HH_MM ) )
+						tempName = '%s~%s' % ( TimeToString( epgStart, TimeFormatEnum.E_HH_MM ), TimeToString( epgStart + epgEvent.mDuration, TimeFormatEnum.E_HH_MM ) )
 						listItem.setProperty( 'StartTime', tempName )
 						listItem.setProperty( 'Duration', '' )						
 						listItem.setProperty( 'HasEvent', 'true' )
@@ -644,6 +642,7 @@ class EPGWindow( BaseWindow ) :
 
 
 	def ShowContextMenu( self ) :
+		GuiLock2( True )
 		context = []
 		
 		selectedEPG = self.GetSelectedEPG( )
@@ -694,14 +693,13 @@ class EPGWindow( BaseWindow ) :
 
 			context.append( ContextItem( 'Search', CONTEXT_SEARCH ) )
 
-		GuiLock2( True )
 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
 		dialog.doModal( )
-		GuiLock2( False )
-		
+
 		contextAction = dialog.GetSelectedAction()
 		self.DoContextAction( contextAction ) 
+		GuiLock2( False )
 
 
 	def DoContextAction( self, aContextAction ) :
@@ -746,19 +744,21 @@ class EPGWindow( BaseWindow ) :
 
 	def ShowEPGTimer( self, aEPG ) :
 		LOG_TRACE('ShowEPGTimer')
-		GuiLock2( True )
 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_TIMER )
 		dialog.SetEPG( aEPG )
 		dialog.doModal( )
-		GuiLock2( False )
 
 		try :
 			if dialog.IsOK() == E_DIALOG_STATE_YES :
 				LOG_TRACE('')
-				self.mDataCache.Timer_AddEPGTimer( 0, 0, aEPG )
-				self.StopEPGUpdateTimer( )
-				self.UpdateListWithGUILock( )
-				self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
+				ret = self.mDataCache.Timer_AddEPGTimer( 0, 0, aEPG )
+
+				if ret[0].mParam == -1 or ret[0].mError == -1 :
+					self.RecordConflict( ret )
+				else :
+					self.StopEPGUpdateTimer( )
+					self.UpdateListWithGUILock( )
+					self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
 
 			else :
 				LOG_TRACE('')
@@ -773,7 +773,6 @@ class EPGWindow( BaseWindow ) :
 		else :
 			LOG_TRACE('ShowManualTimer EPG=None IsEdit=%d' %aIsEdit )
 
-		GuiLock2( True )
 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
 
 		if aIsEdit :
@@ -783,7 +782,6 @@ class EPGWindow( BaseWindow ) :
 			
 			if timerId < 0 :
 				LOG_ERR('Can not find Timer')
-				GuiLock2( False )				
 				return
 
 		else :
@@ -801,16 +799,19 @@ class EPGWindow( BaseWindow ) :
 					channel = self.mChannelList[ selectedPos ]
 				else :
 					LOG_ERR('Can not find channel')
-					GuiLock2( False )
 					return
 		
 			dialog.SetChannel( channel )			
 
 		dialog.doModal( )
-		GuiLock2( False )
 
 		if dialog.IsOK( ) == E_DIALOG_STATE_ERROR :
-			xbmcgui.Dialog( ).ok('Error', dialog.GetErrorMessage() )
+			if dialog.GetConflictTimer( ) == None :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'Error', dialog.GetErrorMessage( ) )
+				dialog.doModal( )
+			else :
+				self.RecordConflict( dialog.GetConflictTimer( ) )
 			return
 
 		self.StopEPGUpdateTimer( )
@@ -929,11 +930,9 @@ class EPGWindow( BaseWindow ) :
 		epg = self.GetSelectedEPG( )
 
 		if epg :
-			GuiLock2( True )
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_EXTEND_EPG )
 			dialog.SetEPG( epg )
 			dialog.doModal( )
-			GuiLock2( False )
 
 
 	def ShowSelectChannel( self ) :
@@ -1139,13 +1138,13 @@ class EPGWindow( BaseWindow ) :
 	def StartEPGUpdateTimer( self, aTimeout=E_NOMAL_UPDATE_TIME ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Start' )	
 		self.mEPGUpdateTimer = threading.Timer( aTimeout, self.AsyncEPGUpdateTimer )
-		self.mEPGUpdateTimer.start()
+		self.mEPGUpdateTimer.start( )
 	
 
 	def StopEPGUpdateTimer( self ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )	
 		if self.mEPGUpdateTimer and self.mEPGUpdateTimer.isAlive( ) :
-			self.mEPGUpdateTimer.cancel()
+			self.mEPGUpdateTimer.cancel( )
 			del self.mEPGUpdateTimer
 			
 		self.mEPGUpdateTimer = None
@@ -1170,4 +1169,23 @@ class EPGWindow( BaseWindow ) :
 
 				self.RestartEPGUpdateTimer( )
 
+
+	def RecordConflict( self, aInfo ) :
+		label = [ '', '', '' ]
+		if aInfo[0].mError == -1 :
+			label[0] = 'Error EPG'
+			label[1] = 'Can not found EPG Information'
+		else :
+			conflictNum = len( aInfo ) - 1
+			if conflictNum > 3 :
+				conflictNum = 3
+			for i in range( conflictNum ) :
+				timer = self.mDataCache.Timer_GetById( aInfo[ i + 1 ].mParam )
+				time = '%s~%s' % ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( timer.mStartTime + timer.mDuration, TimeFormatEnum.E_HH_MM ) )
+				channelNum = '%04d' % timer.mChannelNo
+				epgNAme = timer.mName
+				label[i] = time + ' ' + channelNum + ' ' + epgNAme
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( 'Conflict', label[0], label[1], label[2] )
+		dialog.doModal( )
 

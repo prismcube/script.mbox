@@ -70,7 +70,7 @@ class DialogStopRecord( BaseDialog ) :
 
 		self.SetHeaderLabel( 'Stop Record' )
 
-		self.mLocalTime = self.mCommander.Datetime_GetLocalTime( )		
+		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )		
 		self.mRunningRecordCount = self.mCommander.Record_GetRunningRecorderCount()
 
 		LOG_ERR("self.mRunningRecordCount=%d" %self.mRunningRecordCount )
@@ -198,7 +198,7 @@ class DialogStopRecord( BaseDialog ) :
 		while self.mEnableThread:
 			if  ( loop % 10 ) == 0 :
 				LOG_TRACE(  'loop=%d' %loop )
-				self.mLocalTime = self.mCommander.Datetime_GetLocalTime( )
+				self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 
 			self.UpdateProgress( )
 

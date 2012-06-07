@@ -12,6 +12,7 @@ class RootWindow( BaseWindow ):
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		if self.mInitialized == False :
+			self.SendLocalOffsetToXBMC( )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).doModal()
@@ -38,6 +39,12 @@ class RootWindow( BaseWindow ):
 		LOG_TRACE('')
 		pass
 
-	def SetNextCommand( self, aCommand) :
-		self.mNextCommand = aCommand
+
+	def SendLocalOffsetToXBMC( self ) :
+		LOG_TRACE( '--------------' )
+		if WinMgr.E_ADD_XBMC_HTTP_FUNCTION == True :
+			localOffset = self.mDataCache.Datetime_GetLocalOffset( )
+			xbmc.executehttpapi( 'setlocaloffset(%d)' %localOffset )
+
+		LOG_TRACE( '--------------' )
 
