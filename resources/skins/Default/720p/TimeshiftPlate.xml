@@ -536,8 +536,8 @@
 				</control>
 
 				<control type="group">
-					<posx>50</posx>
-					<posy>40</posy>
+					<posx>44</posx>
+					<posy>37</posy>
 					<width>150</width>
 					<control type="label" id="221">
 						<description>start</description>
