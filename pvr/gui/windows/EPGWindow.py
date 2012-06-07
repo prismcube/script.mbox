@@ -161,7 +161,7 @@ class EPGWindow( BaseWindow ) :
 				self.mEPGMode = 0 
 
 			self.mSelectChannel = self.mCurrentChannel
-			
+
 			SetSetting( 'EPG_MODE','%d' %self.mEPGMode )
 
 			self.mEventBus.Deregister( self )
@@ -193,9 +193,11 @@ class EPGWindow( BaseWindow ) :
 
 
 	def onFocus( self, aControlId ) :
+		pass
+		"""
 		if self.mInitialized == False :
 			return
-
+		"""
 
 	@GuiLock
 	def onEvent( self, aEvent ) :
@@ -307,7 +309,8 @@ class EPGWindow( BaseWindow ) :
 	def LoadByCurrent( self ) :
 	
 		try :
-			self.mEPGList=self.mDataCache.Epgevent_GetCurrentList()
+			#self.mEPGList=self.mDataCache.Epgevent_GetCurrentList()
+			self.mEPGList = self.mDataCache.Epgevent_GetCurrentListByEpgCF( )
 
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
@@ -320,12 +323,11 @@ class EPGWindow( BaseWindow ) :
 		for epg in self.mEPGList :
 			self.mEPGListHash[ '%d:%d:%d' %( epg.mSid, epg.mTsid, epg.mOnid) ] = epg
 
-	
-
 
 	def LoadByFollowing( self ) :		
 		try :
-			self.mEPGList=self.mDataCache.Epgevent_GetFollowingList()
+			#self.mEPGList=self.mDataCache.Epgevent_GetFollowingList()
+			self.mEPGList = self.mDataCache.Epgevent_GetFollowingListByEpgCF( )
 
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
@@ -1154,6 +1156,7 @@ class EPGWindow( BaseWindow ) :
 		if self.mEPGUpdateTimer == None :
 			LOG_WARN( 'EPG Update timer expired' )
 			return
+
 
 		if self.mUpdateLocked == False :	
 			if self.mEPGMode == E_VIEW_FOLLOWING : # Following is not support until now.

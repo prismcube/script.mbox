@@ -570,6 +570,7 @@ class DataCacheMgr( object ):
 		else :
 			return self.mListFavorite
 
+
 	def Channel_GetList( self, aRequestChanged = 0, aType = 0, aMode = 0, aSort = 0, aReopen = False, aSkip = False ) :
 		if aRequestChanged :
 			if SUPPORT_CHANNEL_DATABASE	== True :
@@ -795,6 +796,24 @@ class DataCacheMgr( object ):
 		return eventList
 
 
+	def Epgevent_GetCurrentListByEpgCF( self ) :
+		eventList = None
+
+		if SUPPORT_EPG_DATABASE	== True :
+			tvType = self.Zappingmode_GetCurrent( )
+			epgStart = 0 #end - start = 0 : all channel following
+			epgEnd = 0
+
+			ret = self.mCommander.Epgevnt_GetCurrentDB( tvType.mServiceType, epgStart, epgEnd )
+			if ret :
+				self.mEpgDB = ElisEPGDB( E_EPG_DB_CF )
+				eventList = self.mEpgDB.Epgevent_GetCurrentListByEpgCF( )
+				self.mEpgDB.Close()
+
+		return eventList
+
+
+
 #	@DataLock
 	def Epgevent_GetFollowing( self, aSid, aTsid, aOnid ) :
 
@@ -811,7 +830,7 @@ class DataCacheMgr( object ):
 
 
 #	@DataLock
-	def Epgevent_GetFollowingList( self  ) :
+	def Epgevent_GetFollowingList( self ) :
 
 		eventList = None
 
@@ -824,6 +843,23 @@ class DataCacheMgr( object ):
 
 		return eventList
 
+
+
+	def Epgevent_GetFollowingListByEpgCF( self ) :
+		eventList = None
+
+		if SUPPORT_EPG_DATABASE	== True :
+			tvType = self.Zappingmode_GetCurrent( )
+			epgStart = 0 #end - start = 0 : all channel following
+			epgEnd = 0
+
+			ret = self.mCommander.Epgevent_GetFollowingDB( tvType.mServiceType, epgStart, epgEnd )
+			if ret :
+				self.mEpgDB = ElisEPGDB( E_EPG_DB_CF )
+				eventList = self.mEpgDB.Epgevent_GetFollowingListByEpgCF( )
+				self.mEpgDB.Close()
+
+		return eventList
 
 
 	#@DataLock
