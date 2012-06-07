@@ -18,6 +18,8 @@ LABEL_ID_EVENT_NAME				= 303
 LABEL_ID_EPG_CHANNEL_NAME		= 400
 LABEL_ID_CURRNET_CHANNEL_NAME	= 401
 
+LABEL_ID_TEST					= 450
+
 E_VIEW_CHANNEL					= 0
 E_VIEW_CURRENT					= 1
 E_VIEW_FOLLOWING				= 2
@@ -77,6 +79,9 @@ class EPGWindow( BaseWindow ) :
 		self.mCtrlEPGDescription = self.getControl( LABEL_ID_EVENT_NAME )
 		self.mCtrlEPGChannelLabel = self.getControl( LABEL_ID_EPG_CHANNEL_NAME )
 		self.mCtrlCurrentChannelLabel = self.getControl( LABEL_ID_CURRNET_CHANNEL_NAME )
+
+		#test
+		self.mCtrlTestLabel = self.getControl( LABEL_ID_TEST )
 
 		self.ResetEPGInfomation( )
 		self.UpdateViewMode( )
@@ -290,7 +295,8 @@ class EPGWindow( BaseWindow ) :
 
 		
 		try :
-			self.mEPGList = self.mDataCache.Epgevent_GetListByChannel(  self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid,  gmtFrom,  gmtUntil,  E_MAX_EPG_COUNT)
+			#self.mEPGList = self.mDataCache.Epgevent_GetListByChannel(  self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid,  gmtFrom,  gmtUntil,  E_MAX_EPG_COUNT)
+			self.mEPGList = self.mDataCache.Epgevent_GetListByChannelFromEpgCF(  self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid )
 
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
@@ -400,6 +406,8 @@ class EPGWindow( BaseWindow ) :
 				self.mCtrlDateLabel.setLabel( '%s' % TimeToString( epg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
 				self.mCtrlDurationLabel.setLabel( '%dMin' % ( epg.mDuration / 60 ) )
 
+				self.mCtrlTestLabel.setLabel('eid[%s] sid[%s] tsid[%s] onid[%s]'% (epg.mEventId, epg.mSid, epg.mTsid, epg.mOnid) )
+
 				if epg.mEventDescription and epg.mEventDescription.upper() != '(NULL)' :
 					self.mCtrlEPGDescription.setText( epg.mEventDescription )
 				elif epg.mEventName :
@@ -495,8 +503,10 @@ class EPGWindow( BaseWindow ) :
 						hasEpg = True
 						if aUpdateOnly == False :
 							listItem = xbmcgui.ListItem( tempChannelName, epgEvent.mEventName )
-						else:
+						else :
 							listItem = self.mListItems[i]
+							listItem.setLabel( tempChannelName )
+							listItem.setLabel2( epgEvent.mEventName )
 
 						epgStart = epgEvent.mStartTime + self.mLocalOffset
 						tempName = '%s~%s' % ( TimeToString( epgStart, TimeFormatEnum.E_HH_MM ), TimeToString( epgStart + epgEvent.mDuration, TimeFormatEnum.E_HH_MM ) )
@@ -569,6 +579,8 @@ class EPGWindow( BaseWindow ) :
 							listItem = xbmcgui.ListItem( tempChannelName, epgEvent.mEventName )
 						else :
 							listItem = self.mListItems[i]
+							listItem.setLabel( tempChannelName )
+							listItem.setLabel2( epgEvent.mEventName )
 
 						epgStart = epgEvent.mStartTime + self.mLocalOffset
 						tempName = '%s~%s' % ( TimeToString( epgStart, TimeFormatEnum.E_HH_MM ), TimeToString( epgStart + epgEvent.mDuration, TimeFormatEnum.E_HH_MM ) )
@@ -1166,6 +1178,7 @@ class EPGWindow( BaseWindow ) :
 				self.Load( )
 				self.mLock.release( )
 				self.UpdateListWithGUILock( )
+				self.UpdateEPGInfomation( )
 
 				self.RestartEPGUpdateTimer( )
 

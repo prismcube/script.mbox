@@ -15,6 +15,38 @@
 				<texture>osd/osd_back.png</texture>
 			</control>
 
+<!-- common date time -->
+			<control type="group">
+	            <posx>190r</posx>
+	            <posy>563</posy>
+	            <animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
+	            <animation effect="slide" start="0,0" end="220,0" delay="0" time="300">WindowClose</animation>
+	            <animation effect="slide" start="220,0" end="0,0" delay="0" time="300">WindowOpen</animation>
+	            <animation effect="slide" start="0,0" end="220,0" delay="0" time="300" condition="Control.HasFocus(999)">Conditional</animation>
+				<animation effect="slide" start="220,0" end="0,0" delay="0" time="300" condition="!Control.HasFocus(999)">Conditional</animation>
+				<control type="image">
+	                <description>time background</description>
+	                <posx>0</posx>
+	                <posy>0</posy>
+	                <width>240</width>
+	                <height>35</height>
+	                <texture flipx="true" border="32,0,0,0">header.png</texture>
+	            </control>
+	            <control type="label">
+	                <description>time label</description>
+	                <posx>60</posx>
+	                <posy>0</posy>
+	                <width>200</width>
+	                <height>28</height>
+	                <align>left</align>
+	                <aligny>center</aligny>
+	                <font>font12</font>
+	                <textcolor>white</textcolor>
+	                <shadowcolor>black</shadowcolor>
+	                <label>$INFO[System.Time]</label>
+	            </control>
+	        </control>
+
 <!-- Rec info -->
 			<control type="group">
 				<posx>300r</posx>
@@ -456,7 +488,7 @@
 					</control>
 				</control>
 
-				<control type="group">
+				<!--control type="group">
 					<posx>200r</posx>
 					<posy>-37</posy>
 					<control type="image">
@@ -479,7 +511,7 @@
 						<label>$INFO[Control.GetLabel]</label>
 						<description>EPG Clock</description>
 					</control>
-				</control>
+				</control-->
 			</control>
 
 <!-- epg section -->			

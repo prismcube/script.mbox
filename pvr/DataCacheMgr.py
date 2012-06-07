@@ -605,7 +605,7 @@ class DataCacheMgr( object ):
 				ret = True
 
 		channel = self.Channel_GetCurrent( )
-		self.mCommander.Frontdisplay_SetMessage( channel.mName )
+		self.Frontdisplay_SetMessage( channel.mName )
 		return ret
 
 
@@ -796,23 +796,6 @@ class DataCacheMgr( object ):
 		return eventList
 
 
-	def Epgevent_GetCurrentListByEpgCF( self ) :
-		eventList = None
-
-		if SUPPORT_EPG_DATABASE	== True :
-			tvType = self.Zappingmode_GetCurrent( )
-			epgStart = 0 #end - start = 0 : all channel following
-			epgEnd = 0
-
-			ret = self.mCommander.Epgevnt_GetCurrentDB( tvType.mServiceType, epgStart, epgEnd )
-			if ret :
-				self.mEpgDB = ElisEPGDB( E_EPG_DB_CF )
-				eventList = self.mEpgDB.Epgevent_GetCurrentListByEpgCF( )
-				self.mEpgDB.Close()
-
-		return eventList
-
-
 
 #	@DataLock
 	def Epgevent_GetFollowing( self, aSid, aTsid, aOnid ) :
@@ -844,6 +827,48 @@ class DataCacheMgr( object ):
 		return eventList
 
 
+	def Epgevent_GetCurrentByChannelFromEpgCF( self, aSid, aTsid, aOnid ) :
+		eventList = None
+
+		if SUPPORT_EPG_DATABASE	== True :
+			ret = self.mCommander.Epgevent_GetChannelDB( aSid, aTsid, aOnid )
+			if ret :
+				self.mEpgDB = ElisEPGDB( E_EPG_DB_CF )
+				eventList = self.mEpgDB.Epgevent_GetCurrentByChannelFromEpgCF( E_EPG_DB_CF_GET_BY_CHANNEL )
+				self.mEpgDB.Close()
+
+		return eventList
+
+
+	def Epgevent_GetListByChannelFromEpgCF( self, aSid, aTsid, aOnid ) :
+		eventList = None
+
+		if SUPPORT_EPG_DATABASE	== True :
+			ret = self.mCommander.Epgevent_GetChannelDB( aSid, aTsid, aOnid )
+			if ret :
+				self.mEpgDB = ElisEPGDB( E_EPG_DB_CF )
+				eventList = self.mEpgDB.Epgevent_GetListFromEpgCF( E_EPG_DB_CF_GET_BY_CHANNEL )
+				self.mEpgDB.Close()
+
+		return eventList
+
+
+	def Epgevent_GetCurrentListByEpgCF( self ) :
+		eventList = None
+
+		if SUPPORT_EPG_DATABASE	== True :
+			tvType = self.Zappingmode_GetCurrent( )
+			epgStart = 0 #end - start = 0 : all channel following
+			epgEnd = 0
+
+			ret = self.mCommander.Epgevnt_GetCurrentDB( tvType.mServiceType, epgStart, epgEnd )
+			if ret :
+				self.mEpgDB = ElisEPGDB( E_EPG_DB_CF )
+				eventList = self.mEpgDB.Epgevent_GetListFromEpgCF( E_EPG_DB_CF_GET_BY_CURRENT )
+				self.mEpgDB.Close()
+
+		return eventList
+
 
 	def Epgevent_GetFollowingListByEpgCF( self ) :
 		eventList = None
@@ -856,7 +881,7 @@ class DataCacheMgr( object ):
 			ret = self.mCommander.Epgevent_GetFollowingDB( tvType.mServiceType, epgStart, epgEnd )
 			if ret :
 				self.mEpgDB = ElisEPGDB( E_EPG_DB_CF )
-				eventList = self.mEpgDB.Epgevent_GetFollowingListByEpgCF( )
+				eventList = self.mEpgDB.Epgevent_GetListFromEpgCF( E_EPG_DB_CF_GET_BY_FOLLOWING )
 				self.mEpgDB.Close()
 
 		return eventList
@@ -1149,6 +1174,10 @@ class DataCacheMgr( object ):
 
 	def Timer_DeleteOneWeeklyTimer( self, aTimerId, aDate, aStartTime, aDuration ) :
 		return self.mCommander.Timer_EditWeeklyTimer( aTimerId, aDate, aStartTime, aDuration, aStartTime, 0 ) 
+
+
+	def Frontdisplay_SetMessage( self, aName ) :
+		self.mCommander.Frontdisplay_SetMessage( aName )
 
 
 	def SetKeyDisabled( self, aDisable = False, aRecInfo = None ) :

@@ -254,7 +254,16 @@ class ChannelListWindow( BaseWindow ) :
 		self.ResetLabel( )
 
 		#initialize get epg event
-		self.InitEPGEvent( )
+		#self.InitEPGEvent( )
+		try :
+			iEPG = None
+			iEPG = self.mDataCache.Epgevent_GetPresent()
+			if iEPG and iEPG.mEventName != 'No Name':
+				self.mNavEpg = iEPG
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
+
 		self.UpdateLabelInfo( )
 
 		#Event Register
@@ -466,6 +475,9 @@ class ChannelListWindow( BaseWindow ) :
 			isBackup = self.mDataCache.Channel_Backup( )
 			isDelete = self.mDataCache.Channel_DeleteAll( )
 			if isDelete :
+				self.mDataCache.Player_AVBlank( True, False )
+				self.mDataCache.Channel_InvalidateCurrent( )
+				self.mDataCache.Frontdisplay_SetMessage('NoChannel')
 				self.mFlag_DeleteAll = True
 
 		return ret
@@ -608,21 +620,23 @@ class ChannelListWindow( BaseWindow ) :
 						tsid = self.mNavChannel.mTsid
 						onid = self.mNavChannel.mOnid
 						iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
-						if iEPG and iEPG.mEventName != 'No Name':
-							self.mEventId = aEvent.mEventId
+						if iEPG == None or iEPG.mError != 0 :
+							return -1
 
-							if not self.mNavEpg or \
-							   iEPG.mEventId != self.mNavEpg.mEventId or \
-							   iEPG.mSid != self.mNavEpg.mSid or \
-							   iEPG.mTsid != self.mNavEpg.mTsid or \
-							   iEPG.mOnid != self.mNavEpg.mOnid :
+						self.mEventId = aEvent.mEventId
 
-								#LOG_TRACE('epg DIFFER')
-								self.mNavEpg = iEPG
+						if not self.mNavEpg or \
+						   iEPG.mEventId != self.mNavEpg.mEventId or \
+						   iEPG.mSid != self.mNavEpg.mSid or \
+						   iEPG.mTsid != self.mNavEpg.mTsid or \
+						   iEPG.mOnid != self.mNavEpg.mOnid :
 
-								#update label
-								self.ResetLabel( )
-								self.UpdateLabelInfo( )
+							#LOG_TRACE('epg DIFFER')
+							self.mNavEpg = iEPG
+
+							#update label
+							self.ResetLabel( )
+							self.UpdateLabelInfo( )
 
 
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
@@ -1108,7 +1122,7 @@ class ChannelListWindow( BaseWindow ) :
 					if iChannel.mNumber != self.mCurrentChannel or iChannel.mServiceType != self.mChannelListServiceType :
 						self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
 
-					if iChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
+					if iChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_TV or self.mFlag_DeleteAll == True :
 						self.mDataCache.Player_AVBlank( False, False )
 
 					elif iChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
@@ -1444,9 +1458,11 @@ class ChannelListWindow( BaseWindow ) :
 				onid = self.mNavChannel.mOnid
 				iEPG = None
 				iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
-				if iEPG and iEPG.mEventName != 'No Name':
-					self.mNavEpg = iEPG
-					#iEPG.printdebug( )
+				if iEPG == None or iEPG.mError != 0 :
+					return
+
+				self.mNavEpg = iEPG
+				#iEPG.printdebug( )
 
 			else :
 				if self.mChannelList :
@@ -1463,6 +1479,7 @@ class ChannelListWindow( BaseWindow ) :
 							onid = iChannel.mOnid
 							iEPGList = None
 							iEPGList = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
+							#iEPGList = self.mDataCache.Epgevent_GetCurrentByChannelFromEpgCF( sid, tsid, onid )
 							if iEPGList :
 								self.mNavEpg = iEPGList
 							else :
@@ -1647,7 +1664,7 @@ class ChannelListWindow( BaseWindow ) :
 	@GuiLock
 	def UpdateLocalTime( self ) :
 		try:
-			self.mLocalTime = self.mDataCache.Datetime_GetGMTTime( )
+			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 
 			if self.mNavEpg :
 				startTime = self.mNavEpg.mStartTime + self.mLocalOffset
@@ -1666,7 +1683,7 @@ class ChannelListWindow( BaseWindow ) :
 					pastDuration = 0
 
 				if self.mNavEpg.mDuration > 0 :
-					percent = 100 - (pastDuration * 100.0/self.mNavEpg.mDuration )
+					percent = 100 - ( pastDuration * 100.0 / self.mNavEpg.mDuration )
 				else :
 					percent = 0
 
