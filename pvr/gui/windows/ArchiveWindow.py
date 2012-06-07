@@ -144,8 +144,8 @@ class ArchiveWindow( BaseWindow ) :
 			self.ShowContextMenu( )
 
 		elif actionId == Action.ACTION_STOP :
-			status = self.mDataCache.Player_GetStatus( )
-			if status.mMode :
+			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+				self.mLastFocusItem = -1	
 				ret = self.mDataCache.Player_Stop( )
 
 	

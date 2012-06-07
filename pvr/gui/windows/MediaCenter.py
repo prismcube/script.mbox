@@ -30,14 +30,12 @@ class MediaCenter( BaseWindow ) :
 		self.GlobalAction( actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			self.SetVideoRestore( )
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			self.SetVideoRestore( )
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			self.SetVideoRestore( )
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 
