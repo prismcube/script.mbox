@@ -48,7 +48,7 @@ class MainMenu( BaseWindow ) :
 			iChannel = self.mDataCache.Channel_GetCurrent()
 			if iChannel :
 				self.mDataCache.Channel_InvalidateCurrent()
-				self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
+				self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
 				print 're-zapping ch[%s] type[%s]'% (iChannel.mNumber, iChannel.mServiceType ) 
 
 		status = self.mDataCache.Player_GetStatus()
