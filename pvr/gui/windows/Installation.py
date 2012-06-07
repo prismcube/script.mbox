@@ -21,7 +21,7 @@ class Installation( BaseWindow ):
 		
 		
 	def onInit( self ):
-		self.mWinId = xbmcgui.getCurrentWindowId()
+		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Installation' )

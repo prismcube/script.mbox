@@ -3,7 +3,7 @@
 	<allowoverlay>yes</allowoverlay>
 	<backgroundcolor>0x00ffffff</backgroundcolor>
 	<controls>
-		<control type="group">
+		<control type="group" id="9100">
 			<posx>0</posx>
 			<posy>0</posy>
 			<animation effect="slide" start="0,0" end="0,225" time="500" condition="Skin.HasSetting(lowermainmenu)|Skin.HasSetting(Lockhomemenulow)">Conditional</animation>
@@ -427,6 +427,5 @@
 			<onclick>-</onclick>
 			<visible>false</visible>
 		</control>
-		
 	</controls>
 </window>

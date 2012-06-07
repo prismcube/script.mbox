@@ -1,5 +1,6 @@
 from pvr.gui.WindowImport import *
 
+MAIN_GROUP_ID					= 9100
 
 BUTTON_ID_INSTALLATION			= 90100
 BUTTON_ID_ARCHIVE				= 90200
@@ -50,12 +51,7 @@ class MainMenu( BaseWindow ) :
 				self.mDataCache.Channel_InvalidateCurrent( )
 				self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
 
-		status = self.mDataCache.Player_GetStatus( )
-		self.mMode = status.mMode
-		if self.mMode == ElisEnum.E_MODE_PVR :
-			self.mWin.setProperty( 'IsPVR', 'True' )
-		else :
-			self.mWin.setProperty( 'IsPVR', 'False' )
+		self.getPlayerStatus( )
 
 
 	def onAction( self, aAction ) :
@@ -76,9 +72,11 @@ class MainMenu( BaseWindow ) :
 		LOG_TRACE("MainMenu onclick(): control %d" % aControlId )
 		if aControlId >= BUTTON_ID_INSTALLATION and aControlId <= BUTTON_ID_CAS :
 			if self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
+				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'Warning', 'Now recording...' )
 				dialog.doModal( )
+				self.getControl( MAIN_GROUP_ID ).setVisible( True )
 			else :
 				if aControlId == BUTTON_ID_INSTALLATION :
 					WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_INSTALLATION )
@@ -107,10 +105,12 @@ class MainMenu( BaseWindow ) :
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
 		elif aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO :
-			if self.mMode == ElisEnum.E_MODE_PVR :
+			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Confirm', 'Now PVR Playing...' )
+				dialog.SetDialogProperty( 'Warning', 'Now PVR Playing...' )
 	 			dialog.doModal( )
+	 			self.getControl( MAIN_GROUP_ID ).setVisible( True )
 			else:
 				self.mStartMediaCenter = True
 				self.mCommander.AppMediaPlayer_Control( 1 )
@@ -132,11 +132,13 @@ class MainMenu( BaseWindow ) :
 			"""
 
  
-	def onFocus( self, aControlId ):
+	def onFocus( self, aControlId ) :
 		LOG_TRACE('')
 		pass
 
-	def Close( self ) :
-		LOG_TRACE('')	
-		pass
 
+	def getPlayerStatus( self ) :
+		if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+			self.mWin.setProperty( 'IsPVR', 'True' )
+		else :
+			self.mWin.setProperty( 'IsPVR', 'False' )		
