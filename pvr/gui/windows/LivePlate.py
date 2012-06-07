@@ -196,8 +196,8 @@ class LivePlate( BaseWindow ) :
 			self.StartAutomaticHide()
 
 
-	def onAction(self, aAction):
-		id = aAction.getId()
+	def onAction( self, aAction ) :
+		id = aAction.getId( )
 		self.GlobalAction( id )
 		if id >= Action.REMOTE_0 and id <= Action.REMOTE_9 :
 			self.KeySearch( id-Action.REMOTE_0 )
@@ -234,10 +234,10 @@ class LivePlate( BaseWindow ) :
 			self.SetAutomaticHide( False )
 		
 			self.GetFocusId()
-			if self.mFocusId == self.mCtrlBtnPrevEpg.getId():			
+			if self.mFocusId == self.mCtrlBtnPrevEpg.getId( ) :			
 				self.EPGNavigation( PREV_EPG )
 
-		elif id == Action.ACTION_MOVE_RIGHT:
+		elif id == Action.ACTION_MOVE_RIGHT :
 			self.StopAutomaticHide()
 			self.SetAutomaticHide( False )
 		
@@ -252,7 +252,7 @@ class LivePlate( BaseWindow ) :
 
 			self.ChannelTune( NEXT_CHANNEL )
 
-		elif id == Action.ACTION_PAGE_DOWN:
+		elif id == Action.ACTION_PAGE_DOWN :
 			if self.mDataCache.mStatusIsArchive :
 				#LOG_TRACE('Archive playing now')
 				return -1

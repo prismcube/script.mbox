@@ -32,7 +32,7 @@ class NullWindow( BaseWindow ) :
 		LOG_TRACE( 'startTime[%s] lastTime[%s] TestTime[%s]'% (lblStart, lblLast, lblTest) )
 
 		
-	def onAction(self, aAction) :		
+	def onAction(self, aAction) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )
 
@@ -109,7 +109,7 @@ class NullWindow( BaseWindow ) :
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( gotoWinId )
 
-		elif actionId == Action.ACTION_PAGE_DOWN:
+		elif actionId == Action.ACTION_PAGE_DOWN :
 			if self.mDataCache.mStatusIsArchive :
 				#LOG_TRACE('Archive playing now')
 				return -1

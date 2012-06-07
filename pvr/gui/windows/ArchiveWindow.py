@@ -57,8 +57,7 @@ class ArchiveWindow( BaseWindow ) :
 		self.mRecordList = [] 
 		self.mSortList = [] 		
 		self.mRecordListItems = []
-		self.mLastFocusItem = -1
-		self.mEventBus.Register( self )	
+		self.mLastFocusItem = -1	
 
 		self.mServiceType =  self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( ).mServiceType
 
@@ -87,6 +86,8 @@ class ArchiveWindow( BaseWindow ) :
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
 
+		self.mEventBus.Register( self )
+
 
 		self.Load( )
 		if self.mRecordCount == 0 :
@@ -94,7 +95,6 @@ class ArchiveWindow( BaseWindow ) :
 			dialog.SetDialogProperty( 'Error', 'Play list is Empty' )
 			dialog.doModal( )
 			self.SetVideoRestore( )
-			self.mEventBus.Deregister( self )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 		self.UpdateAscending()
@@ -121,7 +121,6 @@ class ArchiveWindow( BaseWindow ) :
 				self.mDataCache.Player_Stop( )
 				self.mDataCache.mStatusIsArchive = False
 			self.SetVideoRestore( )
-			self.mEventBus.Deregister( self )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -432,7 +431,6 @@ class ArchiveWindow( BaseWindow ) :
 		selectedPos = self.GetSelectedPosition( )
 		if self.mLastFocusItem == selectedPos :
 			self.SetVideoRestore( )
-			self.mEventBus.Deregister( self )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 		else :		
 			if selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
