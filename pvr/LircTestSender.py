@@ -141,15 +141,22 @@ def send(aMsg = None):
 	VKey = KeyCode()
 
 	#testScene = [VKey.VKEY_MENU, VKey.VKEY_BACK]
-	testScene = test2()
+	testScene = test4()
 	loop = 0
+
+	startTime = time.time()
+	lblStart = time.strftime('%H:%M:%S', time.localtime(startTime) )
+
 	while (1) :
 		for key in testScene :
-			timeStr = time.strftime('%H:%M:%S', time.localtime() )
-			print '[time:%s] %d : %s ... ' % ( timeStr, loop, key[0] )
+
+			lastTime = time.time()
+			lblLast  = time.strftime('%H:%M:%S', time.localtime(lastTime) )
+			lblTest  = time.strftime('%H:%M:%S', time.gmtime(lastTime - startTime) )
+			print '[start[%s] current[%s] TestTime[%s] count[%d] key[%s]' % ( lblStart, lblLast, lblTest, loop, key[0] )
 
 			msg = struct.pack("3i",*[1, key[0], 0])
-			print 'send[%s] size[%s] '% (key[0], len(msg) )
+			#print 'send[%s] size[%s] '% (key[0], len(msg) )
 
 			sock.send( msg )
 			time.sleep(key[1])

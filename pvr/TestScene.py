@@ -43,3 +43,19 @@ def test2():
 	]
 	return testScene
 
+def test3():
+	testScene =[
+		#live
+		[ key.VKEY_INFO, 10],
+		[ key.VKEY_BACK, 5]
+	]
+	return testScene
+
+def test4():
+	testScene =[
+		#live
+		[ key.VKEY_PROG_UP, 10]
+	]
+	return testScene
+
+

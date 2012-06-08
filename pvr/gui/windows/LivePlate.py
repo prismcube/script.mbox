@@ -30,7 +30,7 @@ class LivePlate( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 
-		self.mGMTTime = 0
+		self.mLocalTime = 0
 		self.mEventID = 0
 		self.mPincodeEnter = FLAG_MASK_NONE
 		self.mCurrentChannel = None
@@ -101,7 +101,7 @@ class LivePlate( BaseWindow ) :
 		self.mCtrlGroupComponentData   = self.getControl( 605 )
 		self.mCtrlGroupComponentDolby  = self.getControl( 606 )
 		self.mCtrlGroupComponentHD     = self.getControl( 607 )
-		self.mCtrlLblEventClock        = self.getControl( 610 )
+		#self.mCtrlLblEventClock        = self.getControl( 610 )
 		self.mCtrlLblLongitudeInfo     = self.getControl( 701 )
 		self.mCtrlLblEventName         = self.getControl( 703 )
 		self.mCtrlLblEventStartTime    = self.getControl( 704 )
@@ -137,11 +137,12 @@ class LivePlate( BaseWindow ) :
 		self.mJumpNumber = 0
 		self.mZappingMode = None
 
+		self.mEnableThread = True
 		self.mAsyncEPGTimer = None
 		self.mAsyncTuneTimer = None
 		self.mAutomaticHideTimer = None
 
-		self.UpdateLabelGUI( self.mCtrlLblEventClock.getId(), '' )
+		#self.UpdateLabelGUI( self.mCtrlLblEventClock.getId(), '' )
 
 		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
 		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
@@ -154,43 +155,43 @@ class LivePlate( BaseWindow ) :
 		self.ShowRecording( )
 
 		#get channel
-		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
-		self.mFakeChannel =	self.mCurrentChannel
-		self.mLastChannel =	self.mCurrentChannel
+		iChannel = self.mDataCache.Channel_GetCurrent( )
+		if iChannel == None or iChannel.mError != 0 :
+			self.mCurrentChannel = None
+			self.mFakeChannel =	None
+			self.mLastChannel =	None
+		else :
+			self.mCurrentChannel = iChannel
+			self.mFakeChannel =	self.mCurrentChannel
+			self.mLastChannel =	self.mCurrentChannel
 
 		self.InitLabelInfo()
 		self.GetEPGList()
 
 		try :
-			iEPG = None
-			iEPG = self.mDataCache.Epgevent_GetPresent()
-			if iEPG and iEPG.mEventName != 'No Name':
-				self.mCurrentEvent = iEPG
-				self.UpdateONEvent( iEPG )
+			if self.mCurrentChannel :
+				iEPG = None
+				iEPG = self.mDataCache.Epgevent_GetPresent()
+				if iEPG and iEPG.mEventName != 'No Name':
+					self.mCurrentEvent = iEPG
+					self.UpdateONEvent( iEPG )
+
+				if self.mCurrentChannel.mLocked :
+					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mDataCache.mPropertyPincode )
+
+				#get epg event right now, as this windows open
+				self.mEventBus.Register( self )
+
+				#run thread
+				self.mEnableThread = True
+				self.CurrentTimeThread()
+
+			else :
+				self.mEnableThread = False
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
-		#if not self.mCertification :
-		if self.mCurrentChannel.mLocked :
-			WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mDataCache.mPropertyPincode )
-
-		"""
-		else :
-			if self.mZappingMode.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
-				self.mDataCache.Player_AVBlank( False, False )
-				LOG_TRACE('------------- type[%s] avBlank False'% self.mZappingMode.mServiceType)
-			else :
-				self.mDataCache.Player_AVBlank( True, False )
-				LOG_TRACE('------------- type[%s] avBlank True'% self.mZappingMode.mServiceType)
-		"""
-
-		#get epg event right now, as this windows open
-		self.mEventBus.Register( self )
-
-		#run thread
-		self.mEnableThread = True
-		self.CurrentTimeThread()
 
 		if self.mAutomaticHide == True :
 			self.StartAutomaticHide()
@@ -356,57 +357,58 @@ class LivePlate( BaseWindow ) :
 				if aEvent.mEventId != self.mEventID :
 					iEPG = None
 					iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mOnid )
-					if iEPG and iEPG.mEventName != 'No Name':
-						if not self.mCurrentEvent or \
-						iEPG.mEventId != self.mCurrentEvent.mEventId or \
-						iEPG.mSid != self.mCurrentEvent.mSid or \
-						iEPG.mTsid != self.mCurrentEvent.mTsid or \
-						iEPG.mOnid != self.mCurrentEvent.mOnid :
-							#LOG_TRACE('epg DIFFER, id[%s]'% iEPG.mEventId)
-							self.mEventID = aEvent.mEventId
-							self.mCurrentEvent = iEPG
-							#update label
-							self.UpdateONEvent( iEPG )
+					if iEPG == None or iEPG.mError != 0 :
+						return -1
 
-							#check : new event?
-							if self.mEPGList :
-								#1. aready exist? search in EPGList
-								idx = 0
-								self.mEPGListIdx = -1
-								for item in self.mEPGList :
-									#LOG_TRACE('idx[%s] item[%s]'% (idx, item) )
-									if item and \
-									 	item.mEventId == self.mCurrentEvent.mEventId and \
-										item.mSid == self.mCurrentEvent.mSid and \
-										item.mTsid == self.mCurrentEvent.mTsid and \
-										item.mOnid == self.mCurrentEvent.mOnid :
+					if not self.mCurrentEvent or \
+					iEPG.mEventId != self.mCurrentEvent.mEventId or \
+					iEPG.mSid != self.mCurrentEvent.mSid or \
+					iEPG.mTsid != self.mCurrentEvent.mTsid or \
+					iEPG.mOnid != self.mCurrentEvent.mOnid :
+						#LOG_TRACE('epg DIFFER, id[%s]'% iEPG.mEventId)
+						self.mEventID = aEvent.mEventId
+						self.mCurrentEvent = iEPG
+						#update label
+						self.UpdateONEvent( iEPG )
 
-										self.mEPGListIdx = idx
-										#LOG_TRACE('Received ONEvent : EPGList idx moved(current idx)')
-
-										#iEPGList=[]
-										#iEPGList.append(item)
-										#LOG_TRACE('1.Aready Exist: NOW EPG idx[%s] [%s]'% (idx, ClassToList('convert', iEPGList)) )
-										break
-
-									idx += 1
-
-								#2. new epg, append to EPGList
-								if self.mEPGListIdx == -1 :
-									#LOG_TRACE('new EPG received, not exist in EPGList')
-									oldLen = len(self.mEPGList)
-									idx = 0
-									for idx in range(len(self.mEPGList)) :
-										if self.mCurrentEvent.mStartTime < self.mEPGList[idx].mStartTime :
-											break
+						#check : new event?
+						if self.mEPGList :
+							#1. aready exist? search in EPGList
+							idx = 0
+							self.mEPGListIdx = -1
+							for item in self.mEPGList :
+								#LOG_TRACE('idx[%s] item[%s]'% (idx, item) )
+								if item and \
+								 	item.mEventId == self.mCurrentEvent.mEventId and \
+									item.mSid == self.mCurrentEvent.mSid and \
+									item.mTsid == self.mCurrentEvent.mTsid and \
+									item.mOnid == self.mCurrentEvent.mOnid :
 
 									self.mEPGListIdx = idx
-									self.mEPGList = self.mEPGList[:idx]+[self.mCurrentEvent]+self.mEPGList[idx:]
-									#LOG_TRACE('append new idx[%s], epgTotal:oldlen[%s] newlen[%s]'% (idx, oldLen, len(self.mEPGList)) )
+									#LOG_TRACE('Received ONEvent : EPGList idx moved(current idx)')
+
+									#iEPGList=[]
+									#iEPGList.append(item)
+									#LOG_TRACE('1.Aready Exist: NOW EPG idx[%s] [%s]'% (idx, ClassToList('convert', iEPGList)) )
+									break
+
+								idx += 1
+
+							#2. new epg, append to EPGList
+							if self.mEPGListIdx == -1 :
+								#LOG_TRACE('new EPG received, not exist in EPGList')
+								oldLen = len(self.mEPGList)
+								idx = 0
+								for idx in range(len(self.mEPGList)) :
+									if self.mCurrentEvent.mStartTime < self.mEPGList[idx].mStartTime :
+										break
+
+								self.mEPGListIdx = idx
+								self.mEPGList = self.mEPGList[:idx]+[self.mCurrentEvent]+self.mEPGList[idx:]
+								#LOG_TRACE('append new idx[%s], epgTotal:oldlen[%s] newlen[%s]'% (idx, oldLen, len(self.mEPGList)) )
 
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
-				time.sleep(1.5)
 				self.ShowRecording()
 				self.mDataCache.mCacheReload = True
 
@@ -514,61 +516,55 @@ class LivePlate( BaseWindow ) :
 		try :
 			ch = self.mCurrentChannel
 
-			if self.mCurrentEvent == None :
+			if self.mCurrentEvent == None or self.mCurrentEvent.mError != 0 :
 				if not ch :
 					#LOG_TRACE('No Channels')
 					return
 
 				iEPG = None
 				iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mOnid )
-				if iEPG and iEPG.mEventName != 'No Name':
-					self.mCurrentEvent = iEPG
-
-				else :
+				if iEPG == None or iEPG.mError != 0 :
 					#receive onEvent
 					self.mFlag_OnEvent = True
 					return -1
+				else :
+					self.mCurrentEvent = iEPG
 
 			if ch :
 				self.mEPGList = None
+				iEPGList = None
 
 				#Live EPG
-				#gmtime = self.mDataCache.Datetime_GetGMTTime()
+				"""
 				#gmtFrom  = self.mCurrentEvent.mStartTime
 				gmtFrom  = self.mDataCache.Datetime_GetGMTTime()
 				gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
 				maxCount = 100
-				iEPGList = None
 				iEPGList = self.mDataCache.Epgevent_GetListByChannel( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount )
-				time.sleep(0.05)
 				#LOG_TRACE('iEPGList[%s] ch[%d] sid[%d] tid[%d] oid[%d] from[%s] until[%s]'% (iEPGList, ch.mNumber, ch.mSid, ch.mTsid, ch.mOnid, time.asctime(time.localtime(gmtFrom)), time.asctime(time.localtime(gmtUntil))) )
-				if iEPGList :
-					self.mEPGList = iEPGList
-					self.mFlag_ChannelChanged = False
+				"""
 
-				else :
-					#receive onEvent
+				self.mEPGList = self.mDataCache.Epgevent_GetListByChannelFromEpgCF(  ch.mSid,  ch.mTsid,  ch.mOnid )
+				if self.mEPGList == None or self.mEPGList[0].mError != 0 or len ( self.mEPGList ) <= 0 :
 					self.mFlag_OnEvent = True
 					#LOG_TRACE('EPGList is None\nLeave')
 					return -1
 
+				self.mFlag_ChannelChanged = False
+
 				idx = 0
 				self.mEPGListIdx = -1
 				for item in self.mEPGList :
-					#LOG_TRACE('idx[%s] item[%s]'% (idx, item) )
-					if item and \
-					 	item.mEventId == self.mCurrentEvent.mEventId and \
-						item.mSid == self.mCurrentEvent.mSid and \
-						item.mTsid == self.mCurrentEvent.mTsid and \
-						item.mOnid == self.mCurrentEvent.mOnid :
+					LOG_TRACE('idx[%s] item[%s] event[%s]'% (idx, item, self.mCurrentEvent) )
+					if item != None or item.mError == 0 :
+						if item.mEventId == self.mCurrentEvent.mEventId and \
+							item.mSid == self.mCurrentEvent.mSid and \
+							item.mTsid == self.mCurrentEvent.mTsid and \
+							item.mOnid == self.mCurrentEvent.mOnid :
 
-						self.mEPGListIdx = idx
+							self.mEPGListIdx = idx
 
-						#retList=[]
-						#retList.append(item)
-						#LOG_TRACE('SAME NOW EPG idx[%s] [%s]'% (idx, ClassToList('convert', retList)) )
-
-						break
+							break
 
 					idx += 1
 
@@ -660,11 +656,11 @@ class LivePlate( BaseWindow ) :
 	def CurrentTimeThread(self):
 		while self.mEnableThread:
 			#LOG_TRACE( 'repeat <<<<' )
-			self.mGMTTime = self.mDataCache.Datetime_GetGMTTime()
-			lbl_localTime = TimeToString( self.mGMTTime, TimeFormatEnum.E_HH_MM )
-			self.UpdateLabelGUI( self.mCtrlLblEventClock.getId(), lbl_localTime )
+			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
+			#lbl_localTime = TimeToString( self.mLocalTime, TimeFormatEnum.E_HH_MM )
+			#self.UpdateLabelGUI( self.mCtrlLblEventClock.getId(), lbl_localTime )
 
-			if  ( self.mGMTTime % 10 ) == 0 :
+			if  ( self.mLocalTime % 10 ) == 0 :
 				if self.mFlag_ChannelChanged :
 					self.GetEPGList( )
 				self.UpdateLocalTime( )
@@ -677,26 +673,33 @@ class LivePlate( BaseWindow ) :
 			if self.mCurrentEvent :
 				startTime = self.mCurrentEvent.mStartTime + self.mLocalOffset
 				endTime   = startTime + self.mCurrentEvent.mDuration
-				pastDuration = endTime - self.mGMTTime
-				#LOG_TRACE('past[%s] time[%s] start[%s] duration[%s] offset[%s]'% (pastDuration,self.mGMTTime, self.mCurrentEvent.mStartTime, self.mCurrentEvent.mDuration,self.mLocalOffset ) )
+				pastDuration = endTime - self.mLocalTime
 
-				if self.mGMTTime > endTime: #Already past
-					self.UpdateLabelGUI( self.mCtrlProgress.getId(), 100 )
+				#LOG_TRACE('startTime[%s] duration[%s] endTime[%s] past[%s] currentTime[%s]'% \
+				#( TimeToString( startTime, TimeFormatEnum.E_HH_MM_SS ), \
+				# TimeToString( self.mCurrentEvent.mDuration, TimeFormatEnum.E_HH_MM_SS ), \
+				# TimeToString( endTime, TimeFormatEnum.E_HH_MM_SS ), \
+				# TimeToString( pastDuration, TimeFormatEnum.E_HH_MM_SS ), \
+				# TimeToString( self.mLocalTime, TimeFormatEnum.E_HH_MM_SS ) ) )
+
+				if self.mLocalTime > endTime : #Already past
+					self.mCtrlProgress.setPercent( 100 )
 					return
 
-				elif self.mGMTTime < startTime :
-					self.UpdateLabelGUI( self.mCtrlProgress.getId(), 0 )
+				elif self.mLocalTime < startTime :
+					self.mCtrlProgress.setPercent( 0 )
 					return
 
 				if pastDuration < 0 : #Already past
 					pastDuration = 0
 
 				if self.mCurrentEvent.mDuration > 0 :
-					percent = 100 - (pastDuration * 100.0/self.mCurrentEvent.mDuration)
+					percent = 100 - ( pastDuration * 100.0 / self.mCurrentEvent.mDuration )
 				else :
 					percent = 0
 
-				self.UpdateLabelGUI( self.mCtrlProgress.getId(), percent )
+				self.mCtrlProgress.setPercent( percent )
+				#LOG_TRACE('progress percent[%s]'% percent)
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -705,30 +708,29 @@ class LivePlate( BaseWindow ) :
 	def InitLabelInfo(self):
 		if self.mFakeChannel :
 			self.mCurrentEvent = None
-			self.UpdateLabelGUI( self.mCtrlProgress.getId(),                  0 )
 			self.UpdateLabelGUI( self.mCtrlLblChannelNumber.getId(), ('%s'% self.mFakeChannel.mNumber) )
 			self.UpdateLabelGUI( self.mCtrlLblChannelName.getId(), self.mFakeChannel.mName )
-			self.UpdateLabelGUI( self.mCtrlLblLongitudeInfo.getId(),         '' )
-			self.UpdateLabelGUI( self.mCtrlLblEventName.getId(),             '' )
-			self.UpdateLabelGUI( self.mCtrlLblEventStartTime.getId(),        '' )
-			self.UpdateLabelGUI( self.mCtrlLblEventEndTime.getId(),          '' )
-			self.UpdateLabelGUI( self.mCtrlImgServiceTypeTV.getId(),     'True' )
-			self.UpdateLabelGUI( self.mCtrlImgServiceTypeRadio.getId(), 'False' )
-			self.UpdateLabelGUI( self.mCtrlImgLocked.getId(),           'False' )
-			self.UpdateLabelGUI( self.mCtrlImgICas.getId(),             'False' )
-
-			self.UpdateLabelGUI( self.mCtrlGroupComponentData.getId(),  'False' )
-			self.UpdateLabelGUI( self.mCtrlGroupComponentDolby.getId(), 'False' )
-			self.UpdateLabelGUI( self.mCtrlGroupComponentHD.getId(),    'False' )
-			self.UpdateLabelGUI( self.mCtrlLblLongitudeInfo.getId(),         '' )
-
 		else:
+			self.UpdateLabelGUI( self.mCtrlLblChannelNumber.getId(), '' )
+			self.UpdateLabelGUI( self.mCtrlLblChannelName.getId(), MR_LANG('No Channel') )
 			pass
 			#LOG_TRACE( 'has no channel' )
-		
-			# todo 
-			# show message box : has no channnel
 
+		self.UpdateLabelGUI( self.mCtrlProgress.getId(),                  0 )
+		self.UpdateLabelGUI( self.mCtrlLblLongitudeInfo.getId(),         '' )
+		self.UpdateLabelGUI( self.mCtrlLblEventName.getId(),             '' )
+		self.UpdateLabelGUI( self.mCtrlLblEventStartTime.getId(),        '' )
+		self.UpdateLabelGUI( self.mCtrlLblEventEndTime.getId(),          '' )
+		self.UpdateLabelGUI( self.mCtrlImgServiceTypeTV.getId(),     'True' )
+		self.UpdateLabelGUI( self.mCtrlImgServiceTypeRadio.getId(), 'False' )
+		self.UpdateLabelGUI( self.mCtrlImgLocked.getId(),           'False' )
+		self.UpdateLabelGUI( self.mCtrlImgICas.getId(),             'False' )
+
+		self.UpdateLabelGUI( self.mCtrlGroupComponentData.getId(),  'False' )
+		self.UpdateLabelGUI( self.mCtrlGroupComponentDolby.getId(), 'False' )
+		self.UpdateLabelGUI( self.mCtrlGroupComponentHD.getId(),    'False' )
+		self.UpdateLabelGUI( self.mCtrlLblLongitudeInfo.getId(),         '' )
+		
 
 	@GuiLock
 	def UpdateLabelGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
@@ -754,9 +756,6 @@ class LivePlate( BaseWindow ) :
 
 		elif aCtrlID == self.mCtrlGroupComponentHD.getId( ) :
 			self.mWin.setProperty( 'HasHD', aValue )
-
-		elif aCtrlID == self.mCtrlLblEventClock.getId( ) :
-			self.mCtrlLblEventClock.setLabel( aValue )
 
 		elif aCtrlID == self.mCtrlLblLongitudeInfo.getId( ) :
 			self.mCtrlLblLongitudeInfo.setLabel( aValue )
@@ -794,6 +793,9 @@ class LivePlate( BaseWindow ) :
 		elif aCtrlID == self.mCtrlBtnStartRec.getId( ) :
 			self.mCtrlBtnStartRec.setEnabled( aValue )
 
+		#elif aCtrlID == self.mCtrlLblEventClock.getId( ) :
+		#	self.mCtrlLblEventClock.setLabel( aValue )
+
 
 	def ShowDialog( self, aFocusId, aVisible = False ):
 		msg1 = ''
@@ -808,14 +810,6 @@ class LivePlate( BaseWindow ) :
 			msg2 = 'test'
 			#xbmc.executebuiltin('Custom.SetLanguage(French)')
 
-			startTime = time.time()
-			for i in range(50000):
-				dummy = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
-
-			endTime = time.time()
-			LOG_TRACE('--------------DBtestCount[%s] time[%s]'% (i, endTime-startTime ) )
-
-			
 
 		elif aFocusId == self.mCtrlBtnSubtitle.getId() :
 			msg1 = 'Subtitle'
@@ -852,7 +846,6 @@ class LivePlate( BaseWindow ) :
 			GuiLock2(False)
 
 			if isOK :
-				time.sleep(1.5)
 				self.ShowRecording()
 				self.mDataCache.mCacheReload = True
 
@@ -872,7 +865,6 @@ class LivePlate( BaseWindow ) :
 				GuiLock2( False )
 
 			if isOK :
-				time.sleep(1.5)
 				self.ShowRecording( )
 				self.mDataCache.mCacheReload = True
 

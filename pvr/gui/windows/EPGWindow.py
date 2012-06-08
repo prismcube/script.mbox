@@ -176,7 +176,8 @@ class EPGWindow( BaseWindow ) :
 			self.UpdateListWithGUILock( )
 			self.UpdateList( )	
 			self.UpdateSelectedChannel( )
-			self.FocusCurrentChannel( )			
+			self.FocusCurrentChannel( )
+			time.sleep( 0.2 )
 			self.UpdateEPGInfomation()
 
 			self.mLock.acquire( )
@@ -290,7 +291,8 @@ class EPGWindow( BaseWindow ) :
 
 		
 		try :
-			self.mEPGList = self.mDataCache.Epgevent_GetListByChannel(  self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid,  gmtFrom,  gmtUntil,  E_MAX_EPG_COUNT)
+			#self.mEPGList = self.mDataCache.Epgevent_GetListByChannel(  self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid,  gmtFrom,  gmtUntil,  E_MAX_EPG_COUNT)
+			self.mEPGList = self.mDataCache.Epgevent_GetListByChannelFromEpgCF(  self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid )
 
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
@@ -453,14 +455,18 @@ class EPGWindow( BaseWindow ) :
 					if aUpdateOnly == False :
 						listItem = xbmcgui.ListItem( TimeToString( epgEvent.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM ), epgEvent.mEventName )					
 					else :
-						listItem = self.mListItems[i]					
+						listItem = self.mListItems[i]
+						listItem.setLabel( TimeToString( epgEvent.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM ) )
+						listItem.setLabel2( epgEvent.mEventName )
+
+					listItem.setProperty( 'EPGDate', TimeToString( epgEvent.mStartTime + self.mLocalOffset, TimeFormatEnum.E_AW_HH_MM ) )
 
 					timerId = self.GetTimerByEPG( epgEvent )
 					if timerId > 0 :
 						if self.IsRunningTimer( timerId ) == True :
 							listItem.setProperty( 'TimerType', 'Running' )
 						else :
-							listItem.setProperty( 'TimerType', 'Schedule' )						
+							listItem.setProperty( 'TimerType', 'Schedule' )
 					else :
 						listItem.setProperty( 'TimerType', 'None' )
 
@@ -495,8 +501,10 @@ class EPGWindow( BaseWindow ) :
 						hasEpg = True
 						if aUpdateOnly == False :
 							listItem = xbmcgui.ListItem( tempChannelName, epgEvent.mEventName )
-						else:
+						else :
 							listItem = self.mListItems[i]
+							listItem.setLabel( tempChannelName )
+							listItem.setLabel2( epgEvent.mEventName )
 
 						epgStart = epgEvent.mStartTime + self.mLocalOffset
 						tempName = '%s~%s' % ( TimeToString( epgStart, TimeFormatEnum.E_HH_MM ), TimeToString( epgStart + epgEvent.mDuration, TimeFormatEnum.E_HH_MM ) )
@@ -569,6 +577,8 @@ class EPGWindow( BaseWindow ) :
 							listItem = xbmcgui.ListItem( tempChannelName, epgEvent.mEventName )
 						else :
 							listItem = self.mListItems[i]
+							listItem.setLabel( tempChannelName )
+							listItem.setLabel2( epgEvent.mEventName )
 
 						epgStart = epgEvent.mStartTime + self.mLocalOffset
 						tempName = '%s~%s' % ( TimeToString( epgStart, TimeFormatEnum.E_HH_MM ), TimeToString( epgStart + epgEvent.mDuration, TimeFormatEnum.E_HH_MM ) )
@@ -677,7 +687,7 @@ class EPGWindow( BaseWindow ) :
 
 			if self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :				
 				selectedPos = self.mCtrlBigList.getSelectedPosition()
-				if selectedPos >= 0 and selectedPos < len( self.mChannelList ) :
+				if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 					channel = self.mChannelList[ selectedPos ]
 					timerId = self.GetTimerByChannel( channel )					
 
@@ -795,7 +805,7 @@ class EPGWindow( BaseWindow ) :
 				channel = self.mDataCache.Channel_GetCurrent( )
 			else :
 				selectedPos = self.mCtrlBigList.getSelectedPosition()
-				if selectedPos >= 0 and selectedPos < len( self.mChannelList ) :
+				if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 					channel = self.mChannelList[ selectedPos ]
 				else :
 					LOG_ERR('Can not find channel')
@@ -833,7 +843,7 @@ class EPGWindow( BaseWindow ) :
 		else :
 			if self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :				
 				selectedPos = self.mCtrlBigList.getSelectedPosition()
-				if selectedPos >= 0 and selectedPos < len( self.mChannelList ) :
+				if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 					channel = self.mChannelList[ selectedPos ]
 					timerId = self.GetTimerByChannel( channel )					
 		
@@ -973,12 +983,12 @@ class EPGWindow( BaseWindow ) :
 		if self.mEPGMode == E_VIEW_CHANNEL :
 			selectedPos = self.mCtrlList.getSelectedPosition()
 			LOG_TRACE('selectedPos=%d' %selectedPos )
-			if selectedPos >= 0 and selectedPos < len( self.mEPGList ) :
+			if selectedPos >= 0 and self.mEPGList  and selectedPos < len( self.mEPGList ) :
 				selectedEPG = self.mEPGList[selectedPos]
 
 		else :
 			selectedPos = self.mCtrlBigList.getSelectedPosition()
-			if selectedPos >= 0 and selectedPos < len( self.mChannelList ) :
+			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 				channel = self.mChannelList[ selectedPos ]
 				selectedEPG = self.GetEPGByIds( channel.mSid, channel.mTsid, channel.mOnid )
 			
@@ -1120,7 +1130,7 @@ class EPGWindow( BaseWindow ) :
 
 		else : #self.mEPGMode == E_VIEW_CURRENT  or self.mEPGMode == E_VIEW_FOLLOWING
 			selectedPos = self.mCtrlBigList.getSelectedPosition()		
-			if selectedPos >= 0 and selectedPos < len( self.mChannelList ) :
+			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 				channel = self.mChannelList[ selectedPos ]
 				LOG_TRACE('--------------- number=%d ----------------' %channel.mNumber )
 				self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
@@ -1166,6 +1176,7 @@ class EPGWindow( BaseWindow ) :
 				self.Load( )
 				self.mLock.release( )
 				self.UpdateListWithGUILock( )
+				self.UpdateEPGInfomation( )
 
 				self.RestartEPGUpdateTimer( )
 
