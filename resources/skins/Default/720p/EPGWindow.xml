@@ -61,13 +61,6 @@
 			<label></label>
 			<visible>substring(Window.Property(EPGMode),channel)</visible>
 		</control>
-		<control type="label" id="450">
-			<posx>115</posx>
-			<posy>62</posy>
-			<align>left</align>
-			<aligny>center</aligny>
-			<label>$INFO[Control.GetLabel]</label>
-		</control>
 
 		<control type="group" id="9003">
 			<include>DefaultWindowFade</include>		

@@ -857,11 +857,11 @@ class DataCacheMgr( object ):
 		eventList = None
 
 		if SUPPORT_EPG_DATABASE	== True :
-			tvType = self.Zappingmode_GetCurrent( )
+			zappingMode = self.Zappingmode_GetCurrent( )
 			epgStart = 0 #end - start = 0 : all channel following
 			epgEnd = 0
 
-			ret = self.mCommander.Epgevnt_GetCurrentDB( tvType.mServiceType, epgStart, epgEnd )
+			ret = self.mCommander.Epgevnt_GetCurrentDB( zappingMode.mServiceType, epgStart, epgEnd )
 			if ret :
 				self.mEpgDB = ElisEPGDB( E_EPG_DB_CF )
 				eventList = self.mEpgDB.Epgevent_GetListFromEpgCF( E_EPG_DB_CF_GET_BY_CURRENT )
@@ -874,11 +874,11 @@ class DataCacheMgr( object ):
 		eventList = None
 
 		if SUPPORT_EPG_DATABASE	== True :
-			tvType = self.Zappingmode_GetCurrent( )
+			zappingMode = self.Zappingmode_GetCurrent( )
 			epgStart = 0 #end - start = 0 : all channel following
 			epgEnd = 0
 
-			ret = self.mCommander.Epgevent_GetFollowingDB( tvType.mServiceType, epgStart, epgEnd )
+			ret = self.mCommander.Epgevent_GetFollowingDB( zappingMode.mServiceType, epgStart, epgEnd )
 			if ret :
 				self.mEpgDB = ElisEPGDB( E_EPG_DB_CF )
 				eventList = self.mEpgDB.Epgevent_GetListFromEpgCF( E_EPG_DB_CF_GET_BY_FOLLOWING )

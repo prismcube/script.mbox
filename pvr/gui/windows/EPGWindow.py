@@ -18,8 +18,6 @@ LABEL_ID_EVENT_NAME				= 303
 LABEL_ID_EPG_CHANNEL_NAME		= 400
 LABEL_ID_CURRNET_CHANNEL_NAME	= 401
 
-LABEL_ID_TEST					= 450
-
 E_VIEW_CHANNEL					= 0
 E_VIEW_CURRENT					= 1
 E_VIEW_FOLLOWING				= 2
@@ -80,8 +78,6 @@ class EPGWindow( BaseWindow ) :
 		self.mCtrlEPGChannelLabel = self.getControl( LABEL_ID_EPG_CHANNEL_NAME )
 		self.mCtrlCurrentChannelLabel = self.getControl( LABEL_ID_CURRNET_CHANNEL_NAME )
 
-		#test
-		self.mCtrlTestLabel = self.getControl( LABEL_ID_TEST )
 
 		self.ResetEPGInfomation( )
 		self.UpdateViewMode( )
@@ -461,14 +457,18 @@ class EPGWindow( BaseWindow ) :
 					if aUpdateOnly == False :
 						listItem = xbmcgui.ListItem( TimeToString( epgEvent.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM ), epgEvent.mEventName )					
 					else :
-						listItem = self.mListItems[i]					
+						listItem = self.mListItems[i]
+						listItem.setLabel( TimeToString( epgEvent.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM ) )
+						listItem.setLabel2( epgEvent.mEventName )
+
+					listItem.setProperty( 'EPGDate', TimeToString( epgEvent.mStartTime + self.mLocalOffset, TimeFormatEnum.E_AW_HH_MM ) )
 
 					timerId = self.GetTimerByEPG( epgEvent )
 					if timerId > 0 :
 						if self.IsRunningTimer( timerId ) == True :
 							listItem.setProperty( 'TimerType', 'Running' )
 						else :
-							listItem.setProperty( 'TimerType', 'Schedule' )						
+							listItem.setProperty( 'TimerType', 'Schedule' )
 					else :
 						listItem.setProperty( 'TimerType', 'None' )
 
@@ -689,7 +689,7 @@ class EPGWindow( BaseWindow ) :
 
 			if self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :				
 				selectedPos = self.mCtrlBigList.getSelectedPosition()
-				if selectedPos >= 0 and selectedPos < len( self.mChannelList ) :
+				if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 					channel = self.mChannelList[ selectedPos ]
 					timerId = self.GetTimerByChannel( channel )					
 
@@ -807,7 +807,7 @@ class EPGWindow( BaseWindow ) :
 				channel = self.mDataCache.Channel_GetCurrent( )
 			else :
 				selectedPos = self.mCtrlBigList.getSelectedPosition()
-				if selectedPos >= 0 and selectedPos < len( self.mChannelList ) :
+				if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 					channel = self.mChannelList[ selectedPos ]
 				else :
 					LOG_ERR('Can not find channel')
@@ -845,7 +845,7 @@ class EPGWindow( BaseWindow ) :
 		else :
 			if self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :				
 				selectedPos = self.mCtrlBigList.getSelectedPosition()
-				if selectedPos >= 0 and selectedPos < len( self.mChannelList ) :
+				if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 					channel = self.mChannelList[ selectedPos ]
 					timerId = self.GetTimerByChannel( channel )					
 		
@@ -985,12 +985,12 @@ class EPGWindow( BaseWindow ) :
 		if self.mEPGMode == E_VIEW_CHANNEL :
 			selectedPos = self.mCtrlList.getSelectedPosition()
 			LOG_TRACE('selectedPos=%d' %selectedPos )
-			if selectedPos >= 0 and selectedPos < len( self.mEPGList ) :
+			if selectedPos >= 0 and self.mEPGList  and selectedPos < len( self.mEPGList ) :
 				selectedEPG = self.mEPGList[selectedPos]
 
 		else :
 			selectedPos = self.mCtrlBigList.getSelectedPosition()
-			if selectedPos >= 0 and selectedPos < len( self.mChannelList ) :
+			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 				channel = self.mChannelList[ selectedPos ]
 				selectedEPG = self.GetEPGByIds( channel.mSid, channel.mTsid, channel.mOnid )
 			
@@ -1132,7 +1132,7 @@ class EPGWindow( BaseWindow ) :
 
 		else : #self.mEPGMode == E_VIEW_CURRENT  or self.mEPGMode == E_VIEW_FOLLOWING
 			selectedPos = self.mCtrlBigList.getSelectedPosition()		
-			if selectedPos >= 0 and selectedPos < len( self.mChannelList ) :
+			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 				channel = self.mChannelList[ selectedPos ]
 				LOG_TRACE('--------------- number=%d ----------------' %channel.mNumber )
 				self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
