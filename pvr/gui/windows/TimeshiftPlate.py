@@ -284,7 +284,7 @@ class TimeShiftPlate(BaseWindow):
 		if self.mWinId == xbmcgui.getCurrentWindowId():
 			if aEvent.getName() == ElisEventPlaybackEOF.getName() :
 				#aEvent.printdebug()
-				#LOG_TRACE( 'mType[%d]' %(aEvent.mType ) )
+				LOG_TRACE( 'ElisEventPlaybackEOF mType[%d]' %(aEvent.mType ) )
 
 				if self.mFlag_OnEvent != True :
 					return -1
@@ -850,11 +850,26 @@ class TimeShiftPlate(BaseWindow):
 			recInfo = self.mDataCache.Record_GetRunningRecordInfo( E_INDEX_SECOND_RECORDING )
 			strLabelRecord2 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
 
+		if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
+			if isRunRec > 0 :
+				#use zapping table, in recording
+				self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
+				self.mDataCache.Channel_GetZappingList( )
+
+			else :
+				self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
+				if self.mDataCache.mCacheReload :
+					self.mDataCache.mCacheReload = False
+
+			#### data cache re-load ####
+			self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, ElisEnum.E_SERVICE_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER, E_REOPEN_TRUE )
+
 		btnValue = False
 		if isRunRec >= 1 :
 			btnValue = False
 		else :
 			btnValue = True
+
 
 		self.UpdateLabelGUI( self.mCtrlLblRec1.getId(), strLabelRecord1 )
 		self.UpdateLabelGUI( self.mCtrlLblRec2.getId(), strLabelRecord2 )

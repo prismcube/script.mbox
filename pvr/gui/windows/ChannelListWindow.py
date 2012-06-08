@@ -17,8 +17,6 @@ FLAG_CLOCKMODE_AHM      = 2
 FLAG_CLOCKMODE_HMS      = 3
 FLAG_CLOCKMODE_HHMM     = 4
 FLAG_MODE_JUMP      = True
-FLAG_ZAPPING_LOAD   = 0
-FLAG_ZAPPING_CHANGE = 1
 
 #slide index
 E_SLIDE_ACTION_MAIN     = 0
@@ -1476,13 +1474,13 @@ class ChannelListWindow( BaseWindow ) :
 							sid  = iChannel.mSid
 							tsid = iChannel.mTsid
 							onid = iChannel.mOnid
-							iEPGList = None
-							iEPGList = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
+							iEPG = None
+							iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
 							#iEPGList = self.mDataCache.Epgevent_GetCurrentByChannelFromEpgCF( sid, tsid, onid )
-							if iEPGList :
-								self.mNavEpg = iEPGList
-							else :
+							if iEPG == None or iEPG.mError != 0 :
 								self.mNavEpg = 0
+
+							self.mNavEpg = iEPG
 							
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )

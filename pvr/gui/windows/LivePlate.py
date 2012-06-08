@@ -8,9 +8,6 @@ FLAG_CLOCKMODE_HMS     = 3
 FLAG_CLOCKMODE_HHMM    = 4
 FLAG_CLOCKMODE_INTTIME = 5
 
-FLAG_ZAPPING_LOAD   = 0
-FLAG_ZAPPING_CHANGE = 1
-
 E_TAG_COLOR_WHITE = '[COLOR white]'
 E_TAG_COLOR_GREY  = '[COLOR grey]'
 E_TAG_COLOR_GREY3 = '[COLOR grey3]'
@@ -535,16 +532,14 @@ class LivePlate( BaseWindow ) :
 				iEPGList = None
 
 				#Live EPG
-				"""
 				#gmtFrom  = self.mCurrentEvent.mStartTime
 				gmtFrom  = self.mDataCache.Datetime_GetGMTTime()
 				gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
 				maxCount = 100
 				iEPGList = self.mDataCache.Epgevent_GetListByChannel( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount )
 				#LOG_TRACE('iEPGList[%s] ch[%d] sid[%d] tid[%d] oid[%d] from[%s] until[%s]'% (iEPGList, ch.mNumber, ch.mSid, ch.mTsid, ch.mOnid, time.asctime(time.localtime(gmtFrom)), time.asctime(time.localtime(gmtUntil))) )
-				"""
 
-				self.mEPGList = self.mDataCache.Epgevent_GetListByChannelFromEpgCF(  ch.mSid,  ch.mTsid,  ch.mOnid )
+				#self.mEPGList = self.mDataCache.Epgevent_GetListByChannelFromEpgCF(  ch.mSid,  ch.mTsid,  ch.mOnid )
 				if self.mEPGList == None or self.mEPGList[0].mError != 0 or len ( self.mEPGList ) <= 0 :
 					self.mFlag_OnEvent = True
 					#LOG_TRACE('EPGList is None\nLeave')
