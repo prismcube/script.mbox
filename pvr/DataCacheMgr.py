@@ -588,6 +588,16 @@ class DataCacheMgr( object ):
 			return self.mChannelList
 
 
+	def Channel_GetListByAllChannel( self ) :
+		channelList = []
+		if SUPPORT_CHANNEL_DATABASE	== True :
+			channelDB = ElisChannelDB()
+			channelList = channelDB.Channel_GetList( self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
+			channelDB.Close()
+
+		return channelList
+
+
 	def Channel_GetCurrent( self, aRequestChanged = 0 ) :
 		if aRequestChanged :
 			return self.mCommander.Channel_GetCurrent( )

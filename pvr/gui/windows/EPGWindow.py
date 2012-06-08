@@ -84,7 +84,8 @@ class EPGWindow( BaseWindow ) :
 		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
 		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 		LOG_TRACE('ZeppingMode(%d,%d,%d)' %( self.mCurrentMode.mServiceType, self.mCurrentMode.mMode, self.mCurrentMode.mSortingMode ) )
-		self.mChannelList = self.mDataCache.Channel_GetList( )
+		#self.mChannelList = self.mDataCache.Channel_GetList( )
+		self.mChannelList = self.mDataCache.Channel_GetListByAllChannel( )
 
 		if self.mChannelList == None :
 			LOG_WARN('No Channel List')
