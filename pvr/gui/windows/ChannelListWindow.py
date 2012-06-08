@@ -641,7 +641,6 @@ class ChannelListWindow( BaseWindow ) :
 
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
-				time.sleep(1.5)
 				self.mRecChannel1 = []
 				self.mRecChannel2 = []
 				self.ShowRecording()

@@ -118,13 +118,20 @@ class TimeShiftPlate(BaseWindow):
 		self.UpdateLabelGUI( self.mCtrlLblMode.getId(), label )
 
 		self.GetNextSpeed( E_ONINIT )
-		
-		if self.mSpeed != 0 :
-			self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), False )
-			self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), True )
-		else :
+
+		"""
+		if self.getProperty('IsXpeeding') == 'False' :
 			self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True )
 			self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
+		else :
+			if self.mSpeed != 0 :
+				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), False )
+				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), True )
+			else :
+				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True )
+				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
+		"""
+
 		self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
 
 		self.mEventBus.Register( self )
@@ -143,10 +150,6 @@ class TimeShiftPlate(BaseWindow):
 		
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
 			self.Close()
-			"""
-			WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).Close()
-			WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_MAINMENU ).Close()
-			"""
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 
@@ -264,7 +267,6 @@ class TimeShiftPlate(BaseWindow):
 			GuiLock2(False)
 
 			if isOK :
-				time.sleep(1.5)
 				self.ShowRecording()
 				self.mDataCache.mCacheReload = True
 
@@ -289,16 +291,16 @@ class TimeShiftPlate(BaseWindow):
 
 				if aEvent.mType == ElisEnum.E_EOF_START :
 					#self.TimeshiftAction( self.mCtrlBtnPlay.getId() )
-					#LOG_TRACE( 'EventRecv EOF_START' )
+					LOG_TRACE( 'EventRecv EOF_START' )
 					pass
 
 				elif aEvent.mType == ElisEnum.E_EOF_END :
+					LOG_TRACE( 'EventRecv EOF_END' )
 					if self.mMode == ElisEnum.E_MODE_PVR :
 						xbmc.executebuiltin('xbmc.Action(stop)')
 
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
-				time.sleep(1.5)
 				self.ShowRecording()
 				self.mDataCache.mCacheReload = True
 
@@ -347,7 +349,10 @@ class TimeShiftPlate(BaseWindow):
 				# toggle
 				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), False )
 				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), True )
+				self.mWin.setProperty( 'IsXpeeding', 'True' )
+
 				self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
+
 
 		elif aFocusId == self.mCtrlBtnPause.getId() :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
@@ -366,6 +371,8 @@ class TimeShiftPlate(BaseWindow):
 				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True )
 				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
 				self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
+				self.mWin.setProperty( 'IsXpeeding', 'True' )
+
 
 		elif aFocusId == self.mCtrlBtnStop.getId() :
 			third = 3
@@ -392,8 +399,6 @@ class TimeShiftPlate(BaseWindow):
 				#LOG_TRACE( 'play_stop() ret[%s] try[%d]'% (ret,third) )
 				if ret :
 					break
-				else:
-					time.sleep(0.5)
 
 			self.UpdateLabelGUI( self.mCtrlProgress.getId(), 0 )
 			self.mProgress_idx = 0.0
@@ -468,6 +473,7 @@ class TimeShiftPlate(BaseWindow):
 			ret = self.mDataCache.Player_JumpToIFrame( prevJump )
 			#LOG_TRACE('JumpRR ret[%s]'% ret )
 
+
 		elif aFocusId == self.mCtrlBtnJumpFF.getId() :
 			nextJump = self.mTimeshift_playTime + 10000
 			if nextJump > self.mTimeshift_endTime :
@@ -475,7 +481,6 @@ class TimeShiftPlate(BaseWindow):
 			ret = self.mDataCache.Player_JumpToIFrame( nextJump )
 			#LOG_TRACE('JumpFF ret[%s]'% ret )
 
-		time.sleep(0.5)
 		self.InitTimeShift()
 
 
@@ -539,6 +544,8 @@ class TimeShiftPlate(BaseWindow):
 				self.mCtrlBtnCurrent.setLabel( aValue )
 			elif aExtra == E_CONTROL_POSY:
 				self.mCtrlBtnCurrent.setPosition( aValue, E_DEFAULT_POSY )
+			elif aExtra == E_CONTROL_ENABLE:
+				self.mCtrlBtnCurrent.setEnabled( aValue )
 
 		elif aCtrlID == self.mCtrlLblTSStartTime.getId( ) :
 			self.mCtrlLblTSStartTime.setLabel( aValue )
@@ -564,9 +571,18 @@ class TimeShiftPlate(BaseWindow):
 		elif aCtrlID == self.mCtrlLblMode.getId( ) :
 			self.mCtrlLblMode.setLabel( aValue )
 
-
 		elif aCtrlID == self.mCtrlLblTest.getId( ) :
 			self.mCtrlLblTest.setLabel( aValue )
+
+		"""
+		elif aCtrlID == self.mCtrlBtnJumpRR.getId( ) :
+			if aExtra == E_CONTROL_ENABLE:
+				self.mCtrlBtnJumpRR.setEnabled( aValue )
+
+		elif aCtrlID == self.mCtrlBtnJumpFF.getId( ) :
+			if aExtra == E_CONTROL_ENABLE:
+				self.mCtrlBtnJumpFF.setEnabled( aValue )
+		"""
 
 
 	def InitTimeShift( self, loop = 0 ) :
@@ -733,9 +749,12 @@ class TimeShiftPlate(BaseWindow):
 		if ret == 100 :
 			self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), False )
 			self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), True )
+			self.mWin.setProperty( 'IsXpeeding', 'True' )
+
 		else :
 			self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True )
 			self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
+			self.mWin.setProperty( 'IsXpeeding', 'False' )
 
 		return ret
 
