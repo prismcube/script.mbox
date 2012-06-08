@@ -422,7 +422,6 @@ class NullWindow( BaseWindow ) :
 			isOK = dialog.IsOK()
 			if isOK == E_DIALOG_STATE_YES :
 				if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
-					time.sleep(1.5)
 					isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 					if isRunRec > 0 :
 						#use zapping table, in recording
@@ -433,6 +432,33 @@ class NullWindow( BaseWindow ) :
 						self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
 						self.mDataCache.LoadChannelList( )
 						self.mDataCache.mCacheReload = True
+
+	def ShowRecording( self ) :
+		try:
+			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+			#LOG_TRACE('isRunRecCount[%s]'% isRunRec)
+
+			if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
+				if isRunRec > 0 :
+					#use zapping table, in recording
+					self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
+					self.mDataCache.Channel_GetZappingList( )
+					#### data cache re-load ####
+					self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, E_REOPEN_TRUE  )
+
+				else :
+					self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
+					if self.mDataCache.mCacheReload :
+						self.mDataCache.mCacheReload = False
+						#### data cache re-load ####
+						self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, E_REOPEN_TRUE  )
+
+				#LOG_TRACE('table[%s]'% ret)
+
+			return isRunRec
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
 
 
 	def Close( self ) :
