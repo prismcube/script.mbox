@@ -176,7 +176,8 @@ class EPGWindow( BaseWindow ) :
 			self.UpdateListWithGUILock( )
 			self.UpdateList( )	
 			self.UpdateSelectedChannel( )
-			self.FocusCurrentChannel( )			
+			self.FocusCurrentChannel( )
+			time.sleep( 0.2 )
 			self.UpdateEPGInfomation()
 
 			self.mLock.acquire( )
