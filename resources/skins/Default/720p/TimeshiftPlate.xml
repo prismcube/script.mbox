@@ -429,6 +429,7 @@
 						<onright>410</onright>
 						<onup>202</onup>
 						<ondown>202</ondown>
+						<enable>substring(Window.Property(IsXpeeding),true)</enable>
 					</control>
 					<control type="button" id="410">
 						<posx>250</posx>
@@ -443,6 +444,7 @@
 						<onright>411</onright>
 						<onup>202</onup>
 						<ondown>202</ondown>
+						<enable>substring(Window.Property(IsXpeeding),true)</enable>
 					</control>
 					<control type="button" id="411">
 						<posx>300</posx>
@@ -496,6 +498,7 @@
 						<onright>202</onright>
 						<onup>450</onup>
 						<ondown>450</ondown>
+						<enable>substring(Window.Property(IsXpeeding),true)</enable>
 					</control>
 					<control type="label" id="203">
 						<description>mode</description>
