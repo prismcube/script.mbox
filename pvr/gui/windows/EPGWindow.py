@@ -78,7 +78,6 @@ class EPGWindow( BaseWindow ) :
 		self.mCtrlEPGChannelLabel = self.getControl( LABEL_ID_EPG_CHANNEL_NAME )
 		self.mCtrlCurrentChannelLabel = self.getControl( LABEL_ID_CURRNET_CHANNEL_NAME )
 
-
 		self.ResetEPGInfomation( )
 		self.UpdateViewMode( )
 		self.InitControl()
@@ -401,8 +400,6 @@ class EPGWindow( BaseWindow ) :
 				self.mCtrlTimeLabel.setLabel( '%s~%s' % ( TimeToString( epg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM ), TimeToString( epg.mStartTime + self.mLocalOffset+ epg.mDuration, TimeFormatEnum.E_HH_MM ) ) )
 				self.mCtrlDateLabel.setLabel( '%s' % TimeToString( epg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
 				self.mCtrlDurationLabel.setLabel( '%dMin' % ( epg.mDuration / 60 ) )
-
-				#self.mCtrlTestLabel.setLabel('eid[%s] sid[%s] tsid[%s] onid[%s]'% (epg.mEventId, epg.mSid, epg.mTsid, epg.mOnid) )
 
 				if epg.mEventDescription and epg.mEventDescription.upper() != '(NULL)' :
 					self.mCtrlEPGDescription.setText( epg.mEventDescription )
