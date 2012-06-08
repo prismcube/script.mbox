@@ -56,6 +56,8 @@ class NullWindow( BaseWindow ) :
 	def onAction(self, aAction) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )
+		
+		LOG_ERR( 'ACTION_TEST actionID=%d' %actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU:
 			if self.mGotoWinID :
@@ -87,23 +89,8 @@ class NullWindow( BaseWindow ) :
 			
 		elif actionId == Action.ACTION_PARENT_DIR:
 			pass
-			"""
-			LOG_TRACE('previous channel')
-			try :
-				ch = self.mDataCache.mOldChannel
-				self.mDataCache.Channel_SetCurrent( ch.mNumber, ch.mServiceType )
-
-			except Exception, ex:
-				print 'ERR prev channel'
-			"""
 
 		elif actionId == Action.ACTION_SELECT_ITEM:
-			"""
-			LOG_TRACE('key ok')
-			if self.mDataCache.mStatusIsArchive :
-				LOG_TRACE('Archive playing now')
-				return -1
-			"""
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
@@ -219,6 +206,55 @@ class NullWindow( BaseWindow ) :
 
 			else :
 				self.RecordingStop()
+
+		elif actionId == Action.ACTION_MBOX_XBMC :
+			self.Close( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
+
+		elif actionId == Action.ACTION_MBOX_TVRADIO :
+			#zappingMode= self.mDataCache.Zappingmode_GetCurrent( )
+			pass
+
+		elif actionId == Action.ACTION_MBOX_RECORD :
+			runningCount = self.mCommander.Record_GetRunningRecorderCount( )		
+			if  runningCount < E_MAX_RECORD_COUNT :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+				dialog.doModal( )
+			else:
+				msg = 'Already %d recording(s) running' %runningCount
+				xbmcgui.Dialog( ).ok('Infomation', msg )
+		
+		elif actionId == Action.ACTION_PAUSE :
+			status = self.mDataCache.Player_GetStatus()
+			if status.mMode == ElisEnum.E_MODE_TIMESHIFT or status.mMode == ElisEnum.E_MODE_PVR :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+		
+		elif actionId == Action.ACTION_MBOX_REWIND :
+			status = self.mDataCache.Player_GetStatus()
+			if status.mMode == ElisEnum.E_MODE_TIMESHIFT or status.mMode == ElisEnum.E_MODE_PVR :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+		
+		elif actionId == Action.ACTION_MBOX_FF :
+			status = self.mDataCache.Player_GetStatus()		
+			if status.mMode == ElisEnum.E_MODE_TIMESHIFT or status.mMode == ElisEnum.E_MODE_PVR :
+				self.Close( )			
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+
+		elif actionId == Action.ACTION_MBOX_ARCHIVE :
+			self.Close( )		
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+
+		elif actionId == Action.ACTION_MBOX_TEXT :
+			pass
+
+		elif actionId == Action.ACTION_MBOX_SUBTITLE :
+			pass
+
+		elif actionId == Action.ACTION_MBOX_NUMLOCK :
+			LOG_TRACE( 'Numlock is not support until now' )
+			pass
 
 		else:
 			print 'lael98 check ation unknown id=%d' %actionId

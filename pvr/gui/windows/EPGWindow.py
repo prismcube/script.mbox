@@ -459,7 +459,7 @@ class EPGWindow( BaseWindow ) :
 						listItem.setLabel( TimeToString( epgEvent.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM ) )
 						listItem.setLabel2( epgEvent.mEventName )
 
-					listItem.setProperty( 'EPGDate', TimeToString( epgEvent.mStartTime + self.mLocalOffset, TimeFormatEnum.E_AW_HH_MM ) )
+					listItem.setProperty( 'EPGDate', TimeToString( epgEvent.mStartTime + self.mLocalOffset, TimeFormatEnum.E_AW_DD_MON ) )
 
 					timerId = self.GetTimerByEPG( epgEvent )
 					if timerId > 0 :
