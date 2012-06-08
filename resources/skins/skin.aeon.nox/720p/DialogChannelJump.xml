@@ -38,9 +38,9 @@
 			</control>		
 			<control type="label" id="212">
 				<description>EPG Name</description>			
-				<posx>0</posx>
+				<posx>40</posx>
 				<posy>125</posy>
-				<width>480</width>
+				<width>400</width>
 				<height>30</height>
 				<align>center</align>
 				<aligny>center</aligny>
