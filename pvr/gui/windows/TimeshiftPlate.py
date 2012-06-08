@@ -404,6 +404,9 @@ class TimeShiftPlate(BaseWindow):
 			return
 
 		elif aFocusId == self.mCtrlBtnRewind.getId() :
+			if self.mSpeed <= -6400 :
+				return
+
 			nextSpeed = 100
 			nextSpeed = self.GetNextSpeed( aFocusId )
 
@@ -430,6 +433,9 @@ class TimeShiftPlate(BaseWindow):
 
 
 		elif aFocusId == self.mCtrlBtnForward.getId() :
+			if self.mSpeed >= 6400 :
+				return
+
 			nextSpeed = 100
 			nextSpeed = self.GetNextSpeed( aFocusId )
 
@@ -626,9 +632,6 @@ class TimeShiftPlate(BaseWindow):
 		#LOG_TRACE( 'mSpeed[%s]'% self.mSpeed )
 		ret = 0
 		if aFocusId == self.mCtrlBtnRewind.getId():
-			if self.mSpeed <= -6400 :
-				return
-
 			#if self.mSpeed == -12800 :
 			#	ret = -12800
 			if self.mSpeed == -6400 :
@@ -666,9 +669,6 @@ class TimeShiftPlate(BaseWindow):
 			#	ret = 6400
 
 		elif aFocusId == self.mCtrlBtnForward.getId():
-			if self.mSpeed >= 6400 :
-				return
-
 			#if self.mSpeed == -12800 :
 			#	ret = -6400
 			if self.mSpeed == -6400 :
