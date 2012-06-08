@@ -406,7 +406,7 @@ class EPGWindow( BaseWindow ) :
 				self.mCtrlDateLabel.setLabel( '%s' % TimeToString( epg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
 				self.mCtrlDurationLabel.setLabel( '%dMin' % ( epg.mDuration / 60 ) )
 
-				self.mCtrlTestLabel.setLabel('eid[%s] sid[%s] tsid[%s] onid[%s]'% (epg.mEventId, epg.mSid, epg.mTsid, epg.mOnid) )
+				#self.mCtrlTestLabel.setLabel('eid[%s] sid[%s] tsid[%s] onid[%s]'% (epg.mEventId, epg.mSid, epg.mTsid, epg.mOnid) )
 
 				if epg.mEventDescription and epg.mEventDescription.upper() != '(NULL)' :
 					self.mCtrlEPGDescription.setText( epg.mEventDescription )

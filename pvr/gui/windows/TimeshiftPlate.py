@@ -427,8 +427,6 @@ class TimeShiftPlate(BaseWindow):
 				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True )
 				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
 			"""
-			self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True )
-			self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
 
 
 		elif aFocusId == self.mCtrlBtnForward.getId() :
@@ -455,8 +453,6 @@ class TimeShiftPlate(BaseWindow):
 				self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True )
 				self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
 			"""
-			self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True )
-			self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
 
 
 		elif aFocusId == self.mCtrlBtnJumpRR.getId() :
@@ -630,11 +626,14 @@ class TimeShiftPlate(BaseWindow):
 		#LOG_TRACE( 'mSpeed[%s]'% self.mSpeed )
 		ret = 0
 		if aFocusId == self.mCtrlBtnRewind.getId():
+			if self.mSpeed <= -6400 :
+				return
 
-			if self.mSpeed == -12800 :
-				ret = -12800
-			elif self.mSpeed == -6400 :
-				ret = -12800
+			#if self.mSpeed == -12800 :
+			#	ret = -12800
+			if self.mSpeed == -6400 :
+				#ret = -12800
+				ret = -6400
 			elif self.mSpeed == -3200 :
 				ret = -6400
 			elif self.mSpeed == -1600 :
@@ -663,13 +662,16 @@ class TimeShiftPlate(BaseWindow):
 				ret = 1600
 			elif self.mSpeed == 6400 :
 				ret = 3200
-			elif self.mSpeed == 12800 :
-				ret = 6400
+			#elif self.mSpeed == 12800 :
+			#	ret = 6400
 
 		elif aFocusId == self.mCtrlBtnForward.getId():
-			if self.mSpeed == -12800 :
-				ret = -6400
-			elif self.mSpeed == -6400 :
+			if self.mSpeed >= 6400 :
+				return
+
+			#if self.mSpeed == -12800 :
+			#	ret = -6400
+			if self.mSpeed == -6400 :
 				ret = -3200
 			elif self.mSpeed == -3200 :
 				ret = -1600
@@ -698,9 +700,10 @@ class TimeShiftPlate(BaseWindow):
 			elif self.mSpeed == 3200 :
 				ret = 6400
 			elif self.mSpeed == 6400 :
-				ret = 12800
-			elif self.mSpeed == 12800 :
-				ret = 12800
+				#ret = 12800
+				ret = 6400
+			#elif self.mSpeed == 12800 :
+			#	ret = 12800
 
 		elif aFocusId == E_ONINIT :
 			ret = self.mSpeed
@@ -726,6 +729,13 @@ class TimeShiftPlate(BaseWindow):
 		self.UpdateLabelGUI( self.mCtrlImgRewind.getId(), flagRR )
 		self.UpdateLabelGUI( self.mCtrlImgForward.getId(), flagFF )
 		self.UpdateLabelGUI( self.mCtrlLblSpeed.getId(), lspeed )
+
+		if ret == 100 :
+			self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), False )
+			self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), True )
+		else :
+			self.UpdateLabelGUI( self.mCtrlBtnPlay.getId(), True )
+			self.UpdateLabelGUI( self.mCtrlBtnPause.getId(), False )
 
 		return ret
 
