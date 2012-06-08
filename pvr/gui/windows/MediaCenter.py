@@ -30,12 +30,11 @@ class MediaCenter( BaseWindow ) :
 		self.GlobalAction( actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
+			xbmc.executebuiltin('PlayerControl(Stop)')
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
-			
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			self.SetVideoRestore( )
-				
+
 		elif actionId == Action.ACTION_PARENT_DIR :
+			xbmc.executebuiltin('PlayerControl(Stop)')
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 
