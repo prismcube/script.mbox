@@ -40,6 +40,7 @@ class DialogStartRecord( BaseDialog ) :
 		
 		self.mEnableThread = True
 		self.CurrentTimeThread( )
+		self.mDurationChanged = False
 
 
 	def onAction( self, aAction ) :
@@ -87,13 +88,16 @@ class DialogStartRecord( BaseDialog ) :
 
 		elif focusId == E_BUTTON_DURATION :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( 'Duration(Min)', '%d' % int( self.mRecordDuration / 60 ) , 3 )
+			tempDuration = int( self.mRecordDuration / 60 )
+			dialog.SetDialogProperty( 'Duration(Min)', '%d' %tempDuration  , 3 )
  			dialog.doModal( )
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				duration = int( dialog.GetString( ) )
 				LOG_TRACE('Duration = %d' % duration )
 
 				if duration > 0 :
+					if tempDuration != duration :
+						self.mDurationChanged = True
 					self.mRecordDuration = duration * 60
 					self.UpdateEPGTime( )
 
@@ -148,8 +152,11 @@ class DialogStartRecord( BaseDialog ) :
 	
 	def StartRecord( self ) :
 		current = self.mDataCache.Channel_GetCurrent( )
-		ret = self.mDataCache.Timer_AddOTRTimer( self.mHasEPG, self.mRecordDuration, 0,  self.mRecordName,  0,  0,  0,  0,  0 )
-
+		if self.mDurationChanged == True :
+			ret = self.mDataCache.Timer_AddOTRTimer( False, self.mRecordDuration, 0,  self.mRecordName,  0,  0,  0,  0,  0 )
+		else :	
+			ret = self.mDataCache.Timer_AddOTRTimer( self.mHasEPG, self.mRecordDuration, 0,  self.mRecordName,  0,  0,  0,  0,  0 )
+			
 		if ret[0].mParam == -1 or ret[0].mError == -1 :
 			self.RecordConflict( ret )
 			self.mIsOk = E_DIALOG_STATE_CANCEL
