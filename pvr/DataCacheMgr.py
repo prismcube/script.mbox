@@ -608,6 +608,20 @@ class DataCacheMgr( object ):
 		self.Frontdisplay_SetMessage( channel.mName )
 		return ret
 
+	def Channel_SetCurrentSync( self, aChannelNumber, aServiceType ) :
+		ret = False
+		self.mCurrentEvent = None
+		self.mOldChannel = self.Channel_GetCurrent( )
+		if self.mCommander.Channel_SetCurrentAsync( aChannelNumber, aServiceType, 0 ) == True :
+			cacheChannel = self.mChannelListHash.get( aChannelNumber, None )
+			if cacheChannel :		
+				self.mCurrentChannel = cacheChannel.mChannel
+				ret = True
+
+		channel = self.Channel_GetCurrent( )
+		self.Frontdisplay_SetMessage( channel.mName )
+		return ret
+
 
 	@DataLock
 	def Channel_GetPrev( self, aChannel ) :
