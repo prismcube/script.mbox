@@ -115,6 +115,7 @@
 				<include>Input06</include>
 			</control>
 		</control>
+		<include>DefaultEmptyScreen</include>
 	</controls>
 </window>
 

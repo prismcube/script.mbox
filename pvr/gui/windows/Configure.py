@@ -79,7 +79,6 @@ class Configure( SettingWindow ) :
 
 	def onInit( self ) :
 		self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( False )
-		self.mDataCache.Player_VideoBlank( True, False )
 		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
@@ -88,6 +87,7 @@ class Configure( SettingWindow ) :
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Configure' )
+		self.SetPipScreen( )
 
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
@@ -108,7 +108,7 @@ class Configure( SettingWindow ) :
 		self.mInitialized = False
 		if self.mCtrlLeftGroup.getSelectedPosition( ) == E_TIME_SETTING :
 			self.getControl( E_SpinEx01 + 3 ).selectItem( ElisPropertyEnum( 'Time Mode', self.mCommander ).GetPropIndex( ) )
-		self.mDataCache.Player_VideoBlank( False, False )
+		self.SetVideoRestore( )
 		WinMgr.GetInstance( ).CloseWindow( )
 		
 
@@ -294,7 +294,6 @@ class Configure( SettingWindow ) :
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-					#self.mDataCache.Player_AVBlank( True, True )
 					ret1 = True
 					ret2 = True
 					ret3 = True
@@ -332,7 +331,6 @@ class Configure( SettingWindow ) :
 						from ElisProperty import ResetHash
 						ResetHash( )
 				 		self.SetListControl( )
-				 	#self.mDataCache.Player_AVBlank( False, True )
 
 		else :
 			self.ControlSelect( )

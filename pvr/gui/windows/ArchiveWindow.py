@@ -341,10 +341,10 @@ class ArchiveWindow( BaseWindow ) :
 					recItem.setProperty('RecIcon', 'IconNotAvailable.png')
 				else :
 					recItem.setProperty('Locked', 'False')
-					thumbnail = '/mnt/hdd0/pvr/thumbnail/record_thumbnail_%d.jpg' %recInfo.mRecordKey
-					LOG_ERR( 'thumbnail=%s' %thumbnail )
+					thumbnail = '/mnt/hdd0/pvr/thumbnail/record_thumbnail_%d.jpg' % recInfo.mRecordKey
+					LOG_ERR( 'thumbnail=%s' % thumbnail )
 					
-					if os.path.exists(thumbnail) == True :					
+					if os.path.exists( thumbnail ) == True :					
 						recItem.setProperty('RecIcon', thumbnail )
 					else:
 						recItem.setProperty('RecIcon', 'RecIconSample.png')					
@@ -360,17 +360,17 @@ class ArchiveWindow( BaseWindow ) :
 			self.mCtrlCommonList.addItems( self.mRecordListItems )		
 			#self.setFocusId( LIST_ID_COMMON_RECORD )
 		elif self.mViewMode == E_VIEW_THUMBNAIL :
-			self.SetPipScreen( )		
+			self.mDataCache.Player_SetVIdeoSize( 1230, 0, 50, 50 )
 			#self.SetVideoRestore( )		
 			self.mCtrlThumbnailList.addItems( self.mRecordListItems )		
 			#self.setFocusId( LIST_ID_THUMBNAIL_RECORD )
 		elif self.mViewMode == E_VIEW_POSTER_WRAP :
-			self.SetPipScreen( )		
+			self.mDataCache.Player_SetVIdeoSize( 1230, 0, 50, 50 )
 			#self.SetVideoRestore( )		
 			self.mCtrlPosterwrapList.addItems( self.mRecordListItems )		
 			#self.setFocusId( LIST_ID_POSTERWRAP_RECORD )
 		elif self.mViewMode == E_VIEW_FANART :
-			self.SetPipScreen( )		
+			self.mDataCache.Player_SetVIdeoSize( 1230, 0, 50, 50 )
 			#self.SetVideoRestore( )		
 			self.mCtrlFanartList.addItems( self.mRecordListItems )		
 			#self.setFocusId( LIST_ID_FANART_RECORD )

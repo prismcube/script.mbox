@@ -72,7 +72,7 @@
 			<include>DefaultFanartArchiveView</include> <!-- Default Fanart View id = 3430 -->						
 		</control>
 
-		<!-- PIP -->
+		<!-- PIP COMMON ARCHIVE-->
 		<control type="image" id="8899">
 			<posx>850</posx>
 			<posy>118</posy>

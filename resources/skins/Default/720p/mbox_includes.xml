@@ -149,6 +149,17 @@
 		</control>
 	</include>
 
+	<include name="DefaultEmptyScreen">
+		<control type="image" id="8899">
+			<posx>1300</posx>
+			<posy>0</posy>
+			<width>50</width>
+			<height>50</height>
+			<texture>video_pig_overlay.png</texture>
+			<visible>substring(Window.Property(Empty),Empty)</visible>
+		</control>
+	</include>
+
 	<include name="DefaultSettingWindowPigScreen">
 		<control type="image" id="8899">
 			<posx>857</posx>
