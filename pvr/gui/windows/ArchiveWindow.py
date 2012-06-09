@@ -319,7 +319,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.mRecordList.sort( self.ByDate )
 
 			if self.mAscending[self.mSortMode] == False :
-				self.mRecordList.reverse()
+				self.mRecordList.reverse( )
 
 			self.mCtrlCommonList.reset( )
 			self.mCtrlThumbnailList.reset( )
