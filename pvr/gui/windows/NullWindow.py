@@ -364,6 +364,13 @@ class NullWindow( BaseWindow ) :
 				if ch.mLocked :
 					self.PincodeDialogLimit( self.mDataCache.mPropertyPincode )
 
+			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
+				 aEvent.getName() == ElisEventRecordingStopped.getName() :
+				self.ShowRecording()
+				self.mDataCache.mCacheReload = True
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+
 			elif E_SUPPROT_HBBTV == True :
 				if aEvent.getName() == ElisEventExternalMediaPlayerStart.getName() :
 					LOG_ERR('HBBTEST URL=%s' %aEvent.mUrl )

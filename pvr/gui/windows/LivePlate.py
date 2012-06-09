@@ -259,7 +259,7 @@ class LivePlate( BaseWindow ) :
 
 		elif id == Action.ACTION_PAUSE:
 			self.Close( )
-			winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_TIMESHIFT_PLATE )
+			WinMgr.GetInstance().ShowWindow( winmgr.WIN_ID_TIMESHIFT_PLATE )
 
 		elif id == Action.ACTION_STOP :
 			status = None
