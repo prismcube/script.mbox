@@ -357,6 +357,15 @@ class ChannelListWindow( BaseWindow ) :
 				self.UpdateLabelInfo()
 
 
+		elif id == Action.ACTION_MBOX_XBMC :
+			self.SetGoBackWindow( WinMgr.WIN_ID_MEDIACENTER )
+
+		elif id == Action.ACTION_MBOX_ARCHIVE :
+			#self.Close( )
+			self.SetGoBackWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+
+
 		elif id == 13: #'x'
 			#this is test
 			LOG_TRACE( 'language[%s]'% xbmc.getLanguage( ) )
@@ -556,7 +565,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.SetGoBackWindow( )
 
 
-	def SetGoBackWindow( self ) :
+	def SetGoBackWindow( self, aGoToWindow = None ) :
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			ret = False
 			ret = self.SaveSlideMenuHeader( )
@@ -565,8 +574,11 @@ class ChannelListWindow( BaseWindow ) :
 				#self.CurrentTimeThread( ).join( )
 				self.mCtrlListCHList.reset( )
 				self.Close( )
-				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_ROOTWINDOW )
-				WinMgr.GetInstance().CloseWindow( )
+
+				if aGoToWindow :
+					WinMgr.GetInstance( ).ShowWindow( aGoToWindow )
+				else :
+					WinMgr.GetInstance().CloseWindow( )
 
 			LOG_TRACE( 'go out Cancel' )
 

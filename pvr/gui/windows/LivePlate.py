@@ -268,6 +268,14 @@ class LivePlate( BaseWindow ) :
 			else :
 				self.ShowDialog( self.mCtrlBtnStopRec.getId() )
 
+		elif id == Action.ACTION_MBOX_XBMC :
+			self.Close( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
+
+		elif id == Action.ACTION_MBOX_ARCHIVE :
+			self.Close( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+
 		#test
 		elif id == 13: #'x'
 			LOG_TRACE( 'cwd[%s]'% xbmc.getLanguage() )

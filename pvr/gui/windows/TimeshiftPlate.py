@@ -224,6 +224,16 @@ class TimeShiftPlate(BaseWindow):
 		elif id == Action.ACTION_STOP :
 			self.onClick( self.mCtrlBtnStop.getId() )
 
+		elif id == Action.ACTION_MBOX_XBMC :
+			pass
+			#self.Close( )
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
+
+		elif id == Action.ACTION_MBOX_ARCHIVE :
+			self.Close( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+
+
 		#test
 		elif id == 104 : #scroll up
 			self.ShowRecording()
