@@ -227,7 +227,7 @@ class NullWindow( BaseWindow ) :
 				msg = 'Already %d recording(s) running' %runningCount
 				xbmcgui.Dialog( ).ok('Infomation', msg )
 		
-		elif actionId == Action.ACTION_PAUSE or Action.ACTION_PLAYER_PLAY:
+		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			status = self.mDataCache.Player_GetStatus()
 			if status.mMode == ElisEnum.E_MODE_LIVE :
 				window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
@@ -253,6 +253,7 @@ class NullWindow( BaseWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
+			LOG_TRACE('-------------------- archive action[%s]------------'% actionId)
 			self.Close( )		
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
