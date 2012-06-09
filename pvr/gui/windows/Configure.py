@@ -294,6 +294,7 @@ class Configure( SettingWindow ) :
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					#self.mDataCache.Player_AVBlank( True, True )
 					ret1 = True
 					ret2 = True
 					ret3 = True
@@ -327,6 +328,7 @@ class Configure( SettingWindow ) :
 						from ElisProperty import ResetHash
 						ResetHash( )
 				 		self.SetListControl( )
+				 	#self.mDataCache.Player_AVBlank( False, True )
 
 		else :
 			self.ControlSelect( )

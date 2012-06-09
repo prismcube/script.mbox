@@ -252,7 +252,7 @@
 	 			<texture>ScrollBarH_bar_focus.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>RecIconSample.jpg</texture>
+	 			<texture>RecIconSample.png</texture>
 			</control>
 		</control>			
 	</controls>

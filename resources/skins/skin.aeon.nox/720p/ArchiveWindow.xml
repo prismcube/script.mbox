@@ -53,8 +53,8 @@
 				<include>Animation_CommonFade</include>
 			</control>
 			<control type="group">
-				<animation effect="slide" time="700" start="-800,0" end="0,0" tween="cubic" easing="out">WindowOpen</animation>
-				<animation effect="slide" time="700" start="0,0" end="-800,0" tween="cubic" easing="out">WindowClose</animation>
+				<animation effect="slide" time="700" start="-1200,0" end="0,0" tween="cubic" easing="out">WindowOpen</animation>
+				<animation effect="slide" time="700" start="0,0" end="-1200,0" tween="cubic" easing="out">WindowClose</animation>
 				<control type="image">
 					<include>Animation_CommonFade</include>
 					<posx>60</posx>
@@ -139,7 +139,6 @@
 				<onright>9003</onright>
 				<onup>9000</onup>
 				<ondown>9000</ondown>
-
 				<control type="button" id="1111">
 					<height>26</height>
 					<width>265</width>
@@ -250,9 +249,7 @@
 				<control type="group" id="9020">
 					<posx>850</posx>
 					<posy>400</posy>
-					<visible>substring(Window.Property(ViewMode),common) </visible>
-					
-
+					<visible>substring(Window.Property(ViewMode),common)</visible>
 					<control type="label" id="300">
 						<description>Channel Name</description>			
 						<posx>0</posx>
@@ -261,7 +258,6 @@
 						<textcolor>grey</textcolor>
 						<label>$INFO[Window.Property(ChannelName)]</label>
 					</control>
-
 					<control type="label" id="301">
 						<description>Date</description>
 						<posx>0</posx>
@@ -270,7 +266,6 @@
 						<textcolor>grey</textcolor>
 						<label>$INFO[Window.Property(RecDuration)]</label>
 					</control>
-
 					<control type="label" id="302">
 						<description>Duration</description>			
 						<posx>150</posx>
@@ -279,7 +274,6 @@
 						<textcolor>grey</textcolor>
 						<label>$INFO[Window.Property(RecDate)]</label>
 					</control>
-
 					<control type="textbox" id="303">
 						<description>Record Name</description>			
 						<posx>0</posx>
@@ -297,9 +291,9 @@
  		<control type="group">
  			<animation effect="slide" time="700" start="-800,0" end="0,0" tween="cubic" easing="out">WindowOpen</animation>
 			<animation effect="slide" time="700" start="0,0" end="-800,0" tween="cubic" easing="out">WindowClose</animation>
-			<include>Animation_CommonFade</include>
 			<!-- Item Position and Page Number for common list-->
 			<control type="label">
+				<include>Animation_CommonFade</include>
 				<posx>105</posx>
 				<posy>75r</posy>
 				<width>300</width>
@@ -313,6 +307,7 @@
 				<visible>substring(Window.Property(ViewMode),common)</visible>						
 			</control>
 			<control type="label">
+				<include>Animation_CommonFade</include>
 				<posx>760</posx>
 				<posy>75r</posy>
 				<width>300</width>
@@ -325,10 +320,9 @@
 				<label>$LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3400).CurrentPage]/$INFO[Container(3400).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(ViewMode),common)</visible>						
 			</control>
-			
-
 			<!-- Item Position and Page Number for thumbnail list-->
 			<control type="label">
+				<include>Animation_CommonFade</include>
 				<posx>60r</posx>
 				<posy>50r</posy>
 				<width>300</width>
@@ -341,9 +335,9 @@
 				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3410).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3410).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3410).CurrentPage]/$INFO[Container(3410).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(ViewMode),thumbnail)</visible>						
 			</control>
-
 			<!-- Item Position and Page Number for posterwrap list-->
 			<control type="label">
+			<include>Animation_CommonFade</include>
 				<posx>60r</posx>
 				<posy>50r</posy>
 				<width>300</width>
@@ -356,9 +350,9 @@
 				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3420).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3420).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3420).CurrentPage]/$INFO[Container(3420).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(ViewMode),posterwrap)</visible>						
 			</control>
-
 			<!-- Item Position and Page Number for panart list-->
 			<control type="label">
+				<include>Animation_CommonFade</include>
 				<posx>60r</posx>
 				<posy>50r</posy>
 				<width>300</width>
