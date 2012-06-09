@@ -90,12 +90,6 @@ class ArchiveWindow( BaseWindow ) :
 
 
 		self.Load( )
-		if self.mRecordCount == 0 :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( 'Error', 'Play list is Empty' )
-			dialog.doModal( )
-			self.SetVideoRestore( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 		self.UpdateAscending()
 		self.UpdateViewMode( )
@@ -106,6 +100,13 @@ class ArchiveWindow( BaseWindow ) :
 		self.SelectLastRecordKey( )		
 
 		self.mInitialized = True
+
+		if self.mRecordCount == 0 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( 'Error', 'Play list is Empty' )
+			dialog.doModal( )
+			self.SetVideoRestore( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 		
 
 	def onAction( self, aAction ) :
