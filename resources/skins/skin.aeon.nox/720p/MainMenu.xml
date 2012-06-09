@@ -172,7 +172,8 @@
 							<label>Profiles</label>
 							<onclick>SendClick(90508)</onclick>							
 							<onclick>ActivateWindow(Profiles)</onclick>
-							<visible>Container(9000).HasFocus(5)</visible>
+							<!--<visible>Container(9000).HasFocus(5)</visible>-->
+							<visible>false</visible>
 						</item>
 						<item id="9">
 							<label>System Info</label>

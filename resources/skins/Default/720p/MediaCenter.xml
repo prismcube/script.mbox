@@ -122,6 +122,7 @@
 						<label>Profiles</label>
 						<label2>Desc Profiles</label2>						
 						<onclick>ActivateWindow(Profiles)</onclick>
+						<visible>false</visible>
 						<!--<icon>special://skin/backgrounds/profiles.jpg</icon>-->
 					</item>
 					<item id="9">

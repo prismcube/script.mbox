@@ -376,7 +376,7 @@
 							<label>Profiles</label>
 							<onclick>ActivateWindow(Profiles)</onclick>
 							<enable>Control.IsEnabled(90501)</enable>
-							<visible>true</visible>
+							<visible>false</visible>
 						</control>
 						<control type="button" id="90509">
 							<include>DefaultButtonHomeSubCommonValues</include>

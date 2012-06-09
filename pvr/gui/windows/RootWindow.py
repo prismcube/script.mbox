@@ -12,6 +12,8 @@ class RootWindow( BaseWindow ):
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		if self.mInitialized == False :
+			if E_SUPPROT_HBBTV == True :
+				self.mCommander.AppHBBTV_Ready( 0 )
 			self.SendLocalOffsetToXBMC( )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )

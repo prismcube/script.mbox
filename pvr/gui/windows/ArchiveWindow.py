@@ -347,7 +347,7 @@ class ArchiveWindow( BaseWindow ) :
 					if os.path.exists(thumbnail) == True :					
 						recItem.setProperty('RecIcon', thumbnail )
 					else:
-						recItem.setProperty('RecIcon', 'RecIconSample.jpg')					
+						recItem.setProperty('RecIcon', 'RecIconSample.png')					
 
 				recItem.setProperty('Marked', 'False')
 				self.mRecordListItems.append( recItem )
@@ -715,7 +715,7 @@ class ArchiveWindow( BaseWindow ) :
 					if os.path.exists(thumbnail) == True :					
 						recItem.setProperty('RecIcon', thumbnail )
 					else:
-						recItem.setProperty('RecIcon', 'RecIconSample.jpg')					
+						recItem.setProperty('RecIcon', 'RecIconSample.png')					
 
 			self.DoClearMark()
 			xbmc.executebuiltin('container.update')
