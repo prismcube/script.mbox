@@ -1,5 +1,5 @@
 from pvr.gui.WindowImport import *
-
+import time
 #control ids
 E_CONTROL_ID_IMAGE_RECORDING1 		= 10
 E_CONTROL_ID_LABEL_RECORDING1 		= 11
@@ -263,7 +263,11 @@ class TimeShiftPlate(BaseWindow):
 			self.onClick( E_CONTROL_ID_BUTTON_FORWARD )
 
 		elif id == Action.ACTION_MBOX_RECORD :
-			self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
+			if self.mMode == ElisEnum.E_MODE_PVR :
+				msg = 'Now PVR Playing...'
+				xbmcgui.Dialog( ).ok('Warning', msg )
+			else :
+				self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
 
 		elif id == Action.ACTION_MBOX_XBMC :
 			pass
@@ -341,9 +345,11 @@ class TimeShiftPlate(BaseWindow):
 					return -1
 
 				if aEvent.mType == ElisEnum.E_EOF_START :
-					#self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
+					self.mCtrlImgRewind.setVisible( False )
+					self.mCtrlImgForward.setVisible( False )
+					self.mCtrlLblSpeed.setLabel( '' )
+					self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
 					LOG_TRACE( 'EventRecv EOF_START' )
-					pass
 
 				elif aEvent.mType == ElisEnum.E_EOF_END :
 					LOG_TRACE( 'EventRecv EOF_END' )
@@ -639,9 +645,9 @@ class TimeShiftPlate(BaseWindow):
 	def InitTimeShift( self, loop = 0 ) :
 		status = None
 		status = self.mDataCache.Player_GetStatus()
-		retList = []
-		retList.append( status )
-		LOG_TRACE( 'player_GetStatus[%s]'% ClassToList( 'convert', retList ) )
+		#retList = []
+		#retList.append( status )
+		#LOG_TRACE( 'player_GetStatus[%s]'% ClassToList( 'convert', retList ) )
 
 		if status :
 			flag_Rewind  = False
@@ -673,6 +679,17 @@ class TimeShiftPlate(BaseWindow):
 			if status.mEndTimeInMs :
 				self.mTimeshift_endTime = status.mEndTimeInMs   #/ 1000.0
 
+			tempStartTime   = self.mTimeshift_staTime / 1000
+			tempCurrentTime = self.mTimeshift_curTime / 1000
+			tempEndTime     = self.mTimeshift_endTime / 1000
+
+
+			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
+				localTime = self.mDataCache.Datetime_GetLocalTime()
+				duration = (self.mTimeshift_endTime - self.mTimeshift_staTime) / 1000
+				tempStartTime = localTime - duration
+				tempCurrentTime = tempStartTime + (self.mTimeshift_curTime / 1000 )
+				tempEndTime =  localTime
 
 			#Speed label
 			self.mSpeed  = status.mSpeed
@@ -682,10 +699,9 @@ class TimeShiftPlate(BaseWindow):
 				if self.mRepeatTimeout < 0.1 :
 					self.mRepeatTimeout = 0.1
 
-
-			lbl_timeS = TimeToString( (self.mTimeshift_staTime/1000.0), TimeFormatEnum.E_HH_MM_SS)
-			lbl_timeP = TimeToString( (self.mTimeshift_curTime/1000.0), TimeFormatEnum.E_HH_MM_SS)
-			lbl_timeE = TimeToString( (self.mTimeshift_endTime/1000.0), TimeFormatEnum.E_HH_MM_SS)
+			lbl_timeS = TimeToString( tempStartTime  , TimeFormatEnum.E_HH_MM_SS)
+			lbl_timeP = TimeToString( tempCurrentTime, TimeFormatEnum.E_HH_MM_SS)
+			lbl_timeE = TimeToString( tempEndTime    , TimeFormatEnum.E_HH_MM_SS)
 
 			if lbl_timeS != '' :
 				self.UpdateLabelGUI( E_CONTROL_ID_LABEL_TS_START_TIME, lbl_timeS )
