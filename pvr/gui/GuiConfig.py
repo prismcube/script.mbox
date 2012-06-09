@@ -4,7 +4,7 @@ from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
 
 ####### HBBTV SUPPOERT #############
-E_SUPPROT_HBBTV		= False
+E_SUPPROT_HBBTV		= True
 
 
 E_WINDOW_WIDTH		= 1280
@@ -152,6 +152,11 @@ E_TABLE_ZAPPING 				= 1
 E_REOPEN_FALSE					= 0
 E_REOPEN_TRUE					= 1
 E_EPG_DB_CF						= 1
+E_EPG_DB_CF_GET_BY_CHANNEL		= 0
+E_EPG_DB_CF_GET_BY_CURRENT		= 1
+E_EPG_DB_CF_GET_BY_FOLLOWING	= 2
+FLAG_ZAPPING_LOAD   			= 0
+FLAG_ZAPPING_CHANGE 			= 1
 
 
 # Tuner Config String Define

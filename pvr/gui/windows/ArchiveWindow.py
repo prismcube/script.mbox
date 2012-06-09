@@ -341,7 +341,13 @@ class ArchiveWindow( BaseWindow ) :
 					recItem.setProperty('RecIcon', 'IconNotAvailable.png')
 				else :
 					recItem.setProperty('Locked', 'False')
-					recItem.setProperty('RecIcon', 'RecIconSample.png')
+					thumbnail = '/mnt/hdd0/pvr/thumbnail/record_thumbnail_%d.jpg' %recInfo.mRecordKey
+					LOG_ERR( 'thumbnail=%s' %thumbnail )
+					
+					if os.path.exists(thumbnail) == True :					
+						recItem.setProperty('RecIcon', thumbnail )
+					else:
+						recItem.setProperty('RecIcon', 'RecIconSample.jpg')					
 
 				recItem.setProperty('Marked', 'False')
 				self.mRecordListItems.append( recItem )
@@ -702,7 +708,14 @@ class ArchiveWindow( BaseWindow ) :
 					self.mRecordList[ position ].mLocked = False
 					self.mDataCache.Record_SetLock( self.mRecordList[position].mRecordKey, self.mServiceType, False )				
 					listItem.setProperty('Locked', 'False')
-					listItem.setProperty('RecIcon', 'RecIconSample.png')
+
+					thumbnail = '/mnt/hdd0/pvr/thumbnail/record_thumbnail_%d.jpg' %recInfo.mRecordKey
+					LOG_ERR( 'thumbnail=%s' %thumbnail )
+					
+					if os.path.exists(thumbnail) == True :					
+						recItem.setProperty('RecIcon', thumbnail )
+					else:
+						recItem.setProperty('RecIcon', 'RecIconSample.jpg')					
 
 			self.DoClearMark()
 			xbmc.executebuiltin('container.update')

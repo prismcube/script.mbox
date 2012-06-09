@@ -5,6 +5,11 @@ class NullWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mAsyncShowTimer = None
+		if E_SUPPROT_HBBTV == True :
+			self.mHBBTVReady = False
+			self.mMediaPlayerStarted = False
+			self.mForceSetCurrent = True
+			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %(self.mHBBTVReady, self.mMediaPlayerStarted) )
 
 
 	def onInit( self ) :
@@ -19,8 +24,25 @@ class NullWindow( BaseWindow ) :
 		self.mEventBus.Register( self )
 
 		if E_SUPPROT_HBBTV == True :
-			self.mCommander.AppHBBTV_Ready( 1 )
-
+			status = self.mDataCache.Player_GetStatus()
+			LOG_ERR("self.mDataCache.Player_GetStatus() = %d" %status.mMode)
+			if status.mMode == ElisEnum.E_MODE_LIVE :
+				if self.mHBBTVReady == False :
+					LOG_TRACE('----------HBB Tv Ready')
+					self.mCommander.AppHBBTV_Ready( 1 )
+					self.mHBBTVReady = True
+					LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %(self.mHBBTVReady, self.mMediaPlayerStarted) )
+				elif self.mForceSetCurrent == True :
+					self.mCommander.AppMediaPlayer_Control( 0 )
+					self.mCommander.AppHBBTV_Ready( 1 )
+					LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %(self.mHBBTVReady, self.mMediaPlayerStarted) )
+					self.mMediaPlayerStarted = False
+					self.ForceSetCurrent()
+				elif self.mForceSetCurrent == False :
+					#if self.mMediaPlayerStarted == True :
+					LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %(self.mHBBTVReady, self.mMediaPlayerStarted) )
+					self.mForceSetCurrent = True
+		
 		currentStack = inspect.stack()
 		LOG_TRACE( '+++++getrecursionlimit[%s] currentStack[%s]'% (sys.getrecursionlimit(), len(currentStack)) )
 		LOG_TRACE( '+++++currentStackInfo[%s]'% (currentStack) )
@@ -30,11 +52,12 @@ class NullWindow( BaseWindow ) :
 		lblLast  = time.strftime('%H:%M:%S', time.localtime(lastTime) )
 		lblTest  = time.strftime('%H:%M:%S', time.gmtime(lastTime - WinMgr.GetInstance( ).mXbmcStartTime) )
 		LOG_TRACE( 'startTime[%s] lastTime[%s] TestTime[%s]'% (lblStart, lblLast, lblTest) )
-
 		
 	def onAction(self, aAction) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )
+		
+		LOG_ERR( 'ACTION_TEST actionID=%d' %actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU:
 			if self.mGotoWinID :
@@ -66,23 +89,8 @@ class NullWindow( BaseWindow ) :
 			
 		elif actionId == Action.ACTION_PARENT_DIR:
 			pass
-			"""
-			LOG_TRACE('previous channel')
-			try :
-				ch = self.mDataCache.mOldChannel
-				self.mDataCache.Channel_SetCurrent( ch.mNumber, ch.mServiceType )
-
-			except Exception, ex:
-				print 'ERR prev channel'
-			"""
 
 		elif actionId == Action.ACTION_SELECT_ITEM:
-			"""
-			LOG_TRACE('key ok')
-			if self.mDataCache.mStatusIsArchive :
-				LOG_TRACE('Archive playing now')
-				return -1
-			"""
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
@@ -199,6 +207,55 @@ class NullWindow( BaseWindow ) :
 			else :
 				self.RecordingStop()
 
+		elif actionId == Action.ACTION_MBOX_XBMC :
+			self.Close( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
+
+		elif actionId == Action.ACTION_MBOX_TVRADIO :
+			#zappingMode= self.mDataCache.Zappingmode_GetCurrent( )
+			pass
+
+		elif actionId == Action.ACTION_MBOX_RECORD :
+			runningCount = self.mCommander.Record_GetRunningRecorderCount( )		
+			if  runningCount < E_MAX_RECORD_COUNT :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+				dialog.doModal( )
+			else:
+				msg = 'Already %d recording(s) running' %runningCount
+				xbmcgui.Dialog( ).ok('Infomation', msg )
+		
+		elif actionId == Action.ACTION_PAUSE :
+			status = self.mDataCache.Player_GetStatus()
+			if status.mMode == ElisEnum.E_MODE_TIMESHIFT or status.mMode == ElisEnum.E_MODE_PVR :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+		
+		elif actionId == Action.ACTION_MBOX_REWIND :
+			status = self.mDataCache.Player_GetStatus()
+			if status.mMode == ElisEnum.E_MODE_TIMESHIFT or status.mMode == ElisEnum.E_MODE_PVR :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+		
+		elif actionId == Action.ACTION_MBOX_FF :
+			status = self.mDataCache.Player_GetStatus()		
+			if status.mMode == ElisEnum.E_MODE_TIMESHIFT or status.mMode == ElisEnum.E_MODE_PVR :
+				self.Close( )			
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+
+		elif actionId == Action.ACTION_MBOX_ARCHIVE :
+			self.Close( )		
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+
+		elif actionId == Action.ACTION_MBOX_TEXT :
+			pass
+
+		elif actionId == Action.ACTION_MBOX_SUBTITLE :
+			pass
+
+		elif actionId == Action.ACTION_MBOX_NUMLOCK :
+			LOG_TRACE( 'Numlock is not support until now' )
+			pass
+
 		else:
 			print 'lael98 check ation unknown id=%d' %actionId
 
@@ -276,9 +333,76 @@ class NullWindow( BaseWindow ) :
 				if ch.mLocked :
 					self.PincodeDialogLimit( self.mDataCache.mPropertyPincode )
 
+			elif E_SUPPROT_HBBTV == True :
+				if aEvent.getName() == ElisEventExternalMediaPlayerStart.getName() :
+					LOG_ERR('HBBTEST URL=%s' %aEvent.mUrl )
+					if self.mMediaPlayerStarted == True :
+						self.mForceSetCurrent = False
+						self.mMediaPlayerStarted = True 
+						xbmc.executebuiltin('XBMC.PlayerControl(Stop)' )
+						xbmc.executebuiltin('XBMC.PlayMedia(%s, noresume )' %aEvent.mUrl )		
+						self.mCommander.ExternalMediaPlayer_Started( 1 )
+						LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %(self.mHBBTVReady, self.mMediaPlayerStarted) )
+					else:
+						self.mForceSetCurrent = True
+						self.mCommander.AppMediaPlayer_Control( 1 )
+						xbmc.executebuiltin('XBMC.PlayMedia(%s, noresume )' %aEvent.mUrl )
+						self.mMediaPlayerStarted = True 
+						self.mCommander.ExternalMediaPlayer_Started( 1 )
+						LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %(self.mHBBTVReady, self.mMediaPlayerStarted) )
+
+				elif aEvent.getName() == ElisEventExternalMediaPlayerSetSpeed.getName() :
+					pass
+			
+				elif aEvent.getName() == ElisEventExternalMediaPlayerSeekStream.getName() :
+					pass
+			
+				elif aEvent.getName() == ElisEventExternalMediaPlayerStopPlay.getName() :
+					LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %(self.mHBBTVReady, self.mMediaPlayerStarted) )
+					LOG_ERR('HBBTEST ElisEventExternalMediaPlayerStopPlay.getName' )
+					if self.mMediaPlayerStarted == True :
+						self.mMediaPlayerStarted = False
+						self.mForceSetCurrent = False
+						xbmc.executebuiltin('XBMC.PlayerControl(Stop)' )
+						self.mCommander.ExternalMediaPlayer_StopPlay( 1 )
+						self.mCommander.AppMediaPlayer_Control( 0 )
+						self.ForceSetCurrent()
+						LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %(self.mHBBTVReady, self.mMediaPlayerStarted) )
+
 		else:
-			pass
-			#LOG_TRACE( 'NullWindow winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
+			if aEvent.getName() == ElisEventExternalMediaPlayerStopPlay.getName() :
+				LOG_TRACE('HBBTEST ElisEventExternalMediaPlayerStopPlay.getName' )
+				LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %(self.mHBBTVReady, self.mMediaPlayerStarted) )
+				if self.mMediaPlayerStarted == True :
+					self.mForceSetCurrent = False
+					self.mMediaPlayerStarted = False
+					xbmc.executebuiltin('XBMC.PlayerControl(Stop)' )
+					self.mCommander.ExternalMediaPlayer_StopPlay( 1 )
+					self.mCommander.AppMediaPlayer_Control( 0 )					
+					self.ForceSetCurrent()
+					LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %(self.mHBBTVReady, self.mMediaPlayerStarted) )
+			elif aEvent.getName() == ElisEventExternalMediaPlayerStart.getName() :
+				LOG_TRACE('HBBTEST URL=%s' %aEvent.mUrl )
+				LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %(self.mHBBTVReady, self.mMediaPlayerStarted) )
+				if self.mMediaPlayerStarted == True :
+					self.mMediaPlayerStarted = False
+					self.mForceSetCurrent = False
+					xbmc.executebuiltin('XBMC.PlayerControl(Stop)' )
+					xbmc.executebuiltin('XBMC.PlayMedia(%s, noresume )' %aEvent.mUrl )
+					self.mMediaPlayerStarted = True 
+					self.mCommander.ExternalMediaPlayer_Started( 1 )
+					LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %(self.mHBBTVReady, self.mMediaPlayerStarted) )
+				else:
+					self.mForceSetCurrent = True
+					self.mCommander.AppMediaPlayer_Control( 1 )
+					xbmc.executebuiltin('XBMC.PlayMedia(%s, noresume )' %aEvent.mUrl )
+					self.mMediaPlayerStarted = True 
+					self.mCommander.ExternalMediaPlayer_Started( 1 )
+					LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %(self.mHBBTVReady, self.mMediaPlayerStarted) )
+
+			else:
+				pass 
+				#LOG_TRACE( 'NullWindow winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
 
 
 	def PincodeDialogLimit( self, aPincode ) :
@@ -334,7 +458,6 @@ class NullWindow( BaseWindow ) :
 			isOK = dialog.IsOK()
 			if isOK == E_DIALOG_STATE_YES :
 				if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
-					time.sleep(1.5)
 					isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 					if isRunRec > 0 :
 						#use zapping table, in recording
@@ -346,15 +469,62 @@ class NullWindow( BaseWindow ) :
 						self.mDataCache.LoadChannelList( )
 						self.mDataCache.mCacheReload = True
 
+	def ShowRecording( self ) :
+		try:
+			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+			#LOG_TRACE('isRunRecCount[%s]'% isRunRec)
+
+			if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
+				if isRunRec > 0 :
+					#use zapping table, in recording
+					self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
+					self.mDataCache.Channel_GetZappingList( )
+					#### data cache re-load ####
+					self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, E_REOPEN_TRUE  )
+
+				else :
+					self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
+					if self.mDataCache.mCacheReload :
+						self.mDataCache.mCacheReload = False
+						#### data cache re-load ####
+						self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, E_REOPEN_TRUE  )
+
+				#LOG_TRACE('table[%s]'% ret)
+
+			return isRunRec
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
+
 
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
 
 		if E_SUPPROT_HBBTV == True :
-			self.mCommander.AppHBBTV_Ready( 0 )
-
+			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %(self.mHBBTVReady, self.mMediaPlayerStarted) )
+			if self.mHBBTVReady == True :
+				if self.mMediaPlayerStarted == True :
+					xbmc.executebuiltin('XBMC.PlayerControl(Stop)' )
+					self.mCommander.AppMediaPlayer_Control( 0 )
+					self.mMediaPlayerStarted = False;
+					self.ForceSetCurrent()
+				LOG_TRACE('----------HBB Tv Not Ready')
+				self.mCommander.AppHBBTV_Ready( 0 )
+				self.mHBBTVReady = False 
+				LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %(self.mHBBTVReady, self.mMediaPlayerStarted) )
+			
+		
 
 	def GetKeyDisabled( self ) :
 		return False
+	
+	def ForceSetCurrent( self ) :
+		pass
+		#current channel re-zapping
+		#iChannel = self.mDataCache.Channel_GetCurrent()
+		#if iChannel :
+			#self.mDataCache.Channel_InvalidateCurrent()
+			#self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
+			#print 're-zapping ch[%s] type[%s]'% (iChannel.mNumber, iChannel.mServiceType ) 
 		
 
