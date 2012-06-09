@@ -67,6 +67,12 @@ class MainMenu( BaseWindow ) :
 		elif actionId == Action.ACTION_PARENT_DIR :
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
+		elif actionId == Action.ACTION_MBOX_XBMC :
+			self.onClick( BUTTON_ID_MEDIA_CENTER )
+
+		elif actionId == Action.ACTION_MBOX_ARCHIVE :
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+
 
 	def onClick( self, aControlId ) :
 		LOG_TRACE("MainMenu onclick(): control %d" % aControlId )

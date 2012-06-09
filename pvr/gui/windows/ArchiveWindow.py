@@ -121,7 +121,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.mDataCache.Player_Stop( )
 				self.mDataCache.mStatusIsArchive = False
 			self.SetVideoRestore( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
+			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			if focusId  == LIST_ID_COMMON_RECORD or focusId  == LIST_ID_THUMBNAIL_RECORD or focusId  == LIST_ID_POSTERWRAP_RECORD or focusId  == LIST_ID_FANART_RECORD:
