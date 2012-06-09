@@ -781,7 +781,7 @@ class TimeShiftPlate(BaseWindow):
 		lspeed = ''
 		flagFF = False
 		flagRR = False
-		if ret == 100 :
+		if ret == 100 or ret == 0 :
 			lspeed = ''
 		else :
 			lspeed = '%sx'% ( abs(ret) / 100)
