@@ -4204,10 +4204,8 @@
 				<onright>3401</onright>
 				<onup>3400</onup>
 				<ondown>3400</ondown>
-				<viewtype label="535">list</viewtype>
 				<pagecontrol>3401</pagecontrol>
-				<scrolltime>200</scrolltime>
-				<visible>substring(Window.Property(ViewMode),common)</visible>
+				<scrolltime>300</scrolltime>
 				<itemlayout height="70" width="610">
 					<control type="image">
 						<posx>12</posx>
@@ -4218,9 +4216,9 @@
 					</control>
 					<!-- Thumbnail  and  Lock -->					
 					<control type="image">
-						<posx>12</posx>
+						<posx>17</posx>
 						<posy>2</posy>
-						<width>118</width>
+						<width>112</width>
 						<height>63</height>
 						<texture>$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
@@ -4300,9 +4298,9 @@
 					</control>
 					<!-- Thumbnail  and  Lock -->
 					<control type="image">
-						<posx>12</posx>
+						<posx>17</posx>
 						<posy>2</posy>
-						<width>118</width>
+						<width>112</width>
 						<height>63</height>
 						<texture>$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
@@ -4387,6 +4385,7 @@
 	<include name="DefaultThumbnailArchiveView">
 		<control type="group">
 			<visible>substring(Window.Property(ViewMode),thumbnail)</visible>
+			<!--
 			<control type="image">
 				<posx>115</posx>
 				<posy>69</posy>
@@ -4394,6 +4393,7 @@
 				<height>516</height>
 				<texture background="true">wall/wall_squares.png</texture>
 			</control>
+			-->
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
@@ -4404,7 +4404,7 @@
 			</control>
 			<control type="image">
 				<posx>57</posx>
-				<posy>60</posy>
+				<posy>42</posy>
 				<width>20</width>
 				<height>524</height>
 				<texture>wall/wall_arrow.png</texture>
@@ -4412,94 +4412,76 @@
 			</control>
 			<control type="image">
 				<posx>1203</posx>
-				<posy>60</posy>
+				<posy>42</posy>
 				<width>20</width>
 				<height>524</height>
 				<texture flipx="true">wall/wall_arrow.png</texture>
 				<animation effect="slide" start="100" end="0" delay="800" time="400" easing="out" tween="cubic">WindowOpen</animation>
 			</control>
 			<control type="panel" id="3410">
-				<posx>108</posx>
-				<width>1067</width>
-				<posy>60</posy>
-				<height>540</height>
+				<posx>160</posx>
+				<width>965</width>
+				<posy>70</posy>
+				<height>480</height>
 				<pagecontrol>65</pagecontrol>
 				<scrolltime>300</scrolltime>
 				<onleft>3410</onleft>
 				<onright>3410</onright>
 				<onup>SetFocus(9000)</onup>
 				<ondown>65</ondown>
+				<scrolltime>300</scrolltime>
+				<preloaditems>2</preloaditems>
 				<orientation>horizontal</orientation>
-				<itemlayout width="133" height="133">
+				<itemlayout width="192" height="108">
 					<control type="image">
-						<include>WallIconDimensions</include>
-						<texture background="true" diffuse="wall/wall_mask.png">$INFO[ListItem.Property(RecIcon)]</texture>
-					</control>
-						<control type="image">
-						<include>WallIconDimensions</include>
-						<bordertexture border="-3">wall/wall_nfborder.png</bordertexture>
-						<texture background="true">wall/wall_nfoverlay.png</texture>
+						<posx>3</posx>
+						<posy>3</posy>
+						<width>192</width>
+						<height>108</height>
+						<aspectratio>stretch</aspectratio>
+						<bordertexture border="8">aeon.nox/ThumbBorder.png</bordertexture>
+						<bordersize>8</bordersize>
+						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
 					<control type="image">
-						<posx>0</posx>
+						<posx>2</posx>
 						<posy>0</posy>
 						<width>32</width>
 						<height>32</height>
 						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
+					<control type="image">
+						<posx>3</posx>
+						<posy>3</posy>
+						<width>192</width>
+						<height>108</height>
+						<aspectratio>stretch</aspectratio>
+						<texture>black-back.png</texture>
+						<colordiffuse>AAFFFFFF</colordiffuse>
+					</control>
 				</itemlayout>
-				<focusedlayout width="133" height="133">
+				<focusedlayout width="192" height="108">
 					<control type="image">
-						<include>WallIconDimensions</include>
-						<texture background="true" diffuse="wall/wall_mask.png">$INFO[ListItem.Property(RecIcon)]</texture>
-						<animation type="Focus" condition="Container(3410).Row(3)" reversible="false">
-							<effect type="zoom" center="66,100" start="100" end="190" time="300" easing="out" tween="cubic" reversible="false"/>
-						</animation>
-						<animation type="Focus" condition="Container(3410).Row(1) | Container(3410).Row(2) | Container(3410).Row(0)" reversible="false">
-							<effect type="zoom" center="66,66" start="100" end="190" time="300" easing="out" tween="cubic" reversible="false"/>
-						</animation>
+						<posx>3</posx>
+						<posy>3</posy>
+						<width>192</width>
+						<height>108</height>
+						<aspectratio>stretch</aspectratio>
+						<bordertexture border="8">aeon.nox/ThumbBorder.png</bordertexture>
+						<bordersize>8</bordersize>
+						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
+						<animation reversible="false" effect="zoom" start="3,3,192,108" end="-45,-24,288,162" time="300">focus</animation>
+						<animation reversible="false" effect="zoom" end="3,3,192,108" start="-45,-24,288,162" time="300">unfocus</animation>
 					</control>
 					<control type="image">
-						<include>WallIconDimensions</include>
-						<bordertexture border="-3">wall/wall_nfborder.png</bordertexture>
-						<texture background="true">wall/wall_nfoverlay.png</texture>
-						<animation type="Focus" condition="Container(3410).Row(3)" reversible="false">
-							<effect type="fade" start="100" end="0" time="300" reversible="false" />
-							<effect type="zoom" center="66,100" start="100" end="190" time="300" easing="out" tween="cubic" reversible="false"/>
-						</animation>
-						<animation type="Focus" condition="Container(3410).Row(1) | Container(3410).Row(2) | Container(3410).Row(0)" reversible="false">
-							<effect type="fade" start="100" end="0" time="300" reversible="false" />
-							<effect type="zoom" center="66,66" start="100" end="190" time="300" easing="out" tween="cubic" reversible="false"/>
-						</animation>
-					</control>
-					<control type="image">
-						<include>WallIconDimensions</include>
-						<bordertexture border="-8">wall/wall_fborder.png</bordertexture>
-						<texture>common/blank.png</texture>
-						<animation type="Focus" condition="Container(3410).Row(3)" reversible="false">
-							<effect type="fade" start="0" end="100" time="300" reversible="false" />
-							<effect type="zoom" center="66,100" start="100" end="190" time="300" easing="out" tween="cubic" reversible="false"/>
-						</animation>
-						<animation type="Focus" condition="Container(3410).Row(1) | Container(3410).Row(2) | Container(3410).Row(0)" reversible="false">
-							<effect type="fade" start="0" end="100" time="300" reversible="false" />
-							<effect type="zoom" center="66,66" start="100" end="190" time="300" easing="out" tween="cubic" reversible="false"/>
-						</animation>
-					</control>
-					<control type="image">
-						<posx>0</posx>
+						<posx>2</posx>
 						<posy>0</posy>
 						<width>32</width>
 						<height>32</height>
 						<texture>OverlayWatched.png</texture>
-						<animation type="Focus" condition="Container(3410).Row(3)" reversible="false">
-							<effect type="fade" start="0" end="100" time="300" reversible="false" />
-							<effect type="zoom" center="66,100" start="100" end="190" time="300" easing="out" tween="cubic" reversible="false"/>
-						</animation>
-						<animation type="Focus" condition="Container(3410).Row(1) | Container(3410).Row(2) | Container(3410).Row(0)" reversible="false">
-							<effect type="fade" start="0" end="100" time="300" reversible="false" />
-							<effect type="zoom" center="66,66" start="100" end="190" time="300" easing="out" tween="cubic" reversible="false"/>
-						</animation>
+						<animation reversible="true" effect="zoom" start="2,0,32,32" end="-46,-27,50,50" time="300">focus</animation>
+						<animation reversible="true" effect="zoom" end="2,0,32,32" start="-46,-27,50,50" time="300">unfocus</animation>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 				</focusedlayout>
@@ -4566,8 +4548,7 @@
 			<posx>0</posx>
 			<posy>80</posy>
 			<control type="wraplist" id="3420">
-				<visible>true</visible>							
-				<posx>-123</posx>
+				<posx>-100</posx>
 				<posy>0</posy>
 				<width>1526</width>
 				<height>460</height>
@@ -4575,18 +4556,17 @@
 				<onright>3420</onright>
 				<onup>100</onup>
 				<ondown>3421</ondown>
-				<viewtype label="31028">bigwrap</viewtype>
 				<pagecontrol>3421</pagecontrol>
 				<scrolltime>300</scrolltime>
 				<focusposition>3</focusposition>
 				<orientation>horizontal</orientation>
 				<preloaditems>4</preloaditems>
-				<itemlayout height="310" width="214">
+				<itemlayout height="117" width="208">
 					<control type="image">
-						<posx>2</posx>
-						<posy>40</posy>
-						<width>214</width>
-						<height>310</height>
+						<posx>0</posx>
+						<posy>250</posy>
+						<width>208</width>
+						<height>117</height>
 						<aspectratio>stretch</aspectratio>
 						<bordertexture border="8">aeon.nox/ThumbBorder.png</bordertexture>
 						<bordersize>8</bordersize>
@@ -4594,37 +4574,46 @@
 					</control>
 					<!-- Mark -->
 					<control type="image">
-						<posx>15</posx>
-						<posy>53</posy>
-						<width>40</width>
-						<height>40</height>
+						<posx>3</posx>
+						<posy>256</posy>
+						<width>26</width>
+						<height>26</height>
 						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
+					</control>
+					<control type="image">
+						<posx>4</posx>
+						<posy>254</posy>
+						<width>200</width>
+						<height>109</height>
+						<aspectratio>stretch</aspectratio>
+						<texture>black-back.png</texture>
+						<colordiffuse>AAFFFFFF</colordiffuse>
 					</control>
 				</itemlayout>
-				<focusedlayout height="310" width="214">
+				<focusedlayout height="117" width="208">
 					<control type="image">
-						<posx>2</posx>
-						<posy>40</posy>
-						<width>214</width>
-						<height>310</height>
+						<posx>0</posx>
+						<posy>250</posy>
+						<width>208</width>
+						<height>117</height>
 						<aspectratio>stretch</aspectratio>
 						<bordertexture border="8">aeon.nox/ThumbBorder.png</bordertexture>
 						<bordersize>8</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
-						<animation reversible="false" effect="zoom" start="2,40,214,310" end="-33,0,284,390" time="300">focus</animation>
-						<animation reversible="false" effect="zoom" end="2,40,214,310" start="-33,0,284,390" time="300">unfocus</animation>
+						<animation reversible="false" effect="zoom" start="0,250,208,117" end="-72,120,352,198" time="300">focus</animation>
+						<animation reversible="false" effect="zoom" end="0,250,208,117" start="-72,120,352,198" time="300">unfocus</animation>
 					</control>
 					<!-- Mark -->
 					<control type="image">
-						<posx>15</posx>
-						<posy>53</posy>
-						<width>40</width>
-						<height>40</height>
+						<posx>3</posx>
+						<posy>256</posy>
+						<width>26</width>
+						<height>26</height>
 						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
-						<animation reversible="false" effect="zoom" start="15,53,40,40" end="-20,13,60,60" time="300">focus</animation>
-						<animation reversible="false" effect="zoom" end="15,53,40,40" start="-20,13,60,60" time="300">unfocus</animation>						
+						<animation reversible="true" effect="zoom" start="3,256,26,26" end="-69,126,40,40" time="300">focus</animation>
+						<animation reversible="true" effect="zoom" end="3,256,26,26" start="-69,126,40,40" time="300">unfocus</animation>
 					</control>
 				</focusedlayout>
 			</control>
@@ -4694,8 +4683,7 @@
 			<visible>substring(Window.Property(ViewMode),panart)</visible>
 			<posx>0</posx>
 			<posy>440</posy>
-			<control type="fixedlist" id="3430">
-				<visible>true</visible>							
+			<control type="fixedlist" id="3430">			
 				<posx>-20</posx>
 				<posy>0</posy>
 				<width>1320</width>
@@ -4709,12 +4697,12 @@
 				<focusposition>5</focusposition>
 				<orientation>horizontal</orientation>
 				<preloaditems>4</preloaditems>
-				<itemlayout height="200" width="120">
+				<itemlayout height="81" width="144">
 					<control type="image">
-						<posx>2</posx>
-						<posy>20</posy>
-						<width>120</width>
-						<height>160</height>
+						<posx>0</posx>
+						<posy>100</posy>
+						<width>144</width>
+						<height>81</height>
 						<aspectratio>stretch</aspectratio>
 						<bordertexture border="8">aeon.nox/ThumbBorder.png</bordertexture>
 						<bordersize>8</bordersize>
@@ -4722,38 +4710,47 @@
 					</control>
 					<!-- Mark -->
 					<control type="image">
-						<posx>10</posx>
-						<posy>29</posy>
-						<width>32</width>
-						<height>32</height>
+						<posx>5</posx>
+						<posy>105</posy>
+						<width>22</width>
+						<height>22</height>
 						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
-				</itemlayout>
-				<focusedlayout height="200" width="120">
 					<control type="image">
-						<posx>2</posx>
-						<posy>20</posy>
-						<width>120</width>
-						<height>160</height>
+						<posx>4</posx>
+						<posy>104</posy>
+						<width>136</width>
+						<height>73</height>
+						<aspectratio>stretch</aspectratio>
+						<texture>black-back.png</texture>
+						<colordiffuse>AAFFFFFF</colordiffuse>
+					</control>
+				</itemlayout>
+				<focusedlayout height="81" width="144">
+					<control type="image">
+						<posx>0</posx>
+						<posy>100</posy>
+						<width>144</width>
+						<height>81</height>
 						<aspectratio>stretch</aspectratio>
 						<bordertexture border="8">aeon.nox/ThumbBorder.png</bordertexture>
 						<bordersize>8</bordersize>
 						<fadetime>300</fadetime>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
-						<animation reversible="false" effect="zoom" start="2,20,120,160" end="-20,-15,164,210" time="300">focus</animation>
-						<animation reversible="false" effect="zoom" end="2,20,120,160" start="-20,-15,164,210" time="300">unfocus</animation>
+						<animation reversible="false" effect="zoom" start="0,100,144,81" end="-32,40,208,117" time="300">focus</animation>
+						<animation reversible="false" effect="zoom" end="0,100,144,81" start="-32,40,208,117" time="300">unfocus</animation>
 					</control>
 					<!-- Mark -->
 					<control type="image">
-						<posx>10</posx>
-						<posy>29</posy>
-						<width>32</width>
-						<height>32</height>
+						<posx>5</posx>
+						<posy>105</posy>
+						<width>22</width>
+						<height>22</height>
 						<texture>OverlayWatched.png</texture>
-						<animation reversible="false" effect="zoom" start="10,29,32,32" end="-12,-6,50,50" time="300">focus</animation>
-						<animation reversible="false" effect="zoom" end="10,29,32,32" start="-12,-6,50,50" time="300">unfocus</animation>
-					<visible>substring(ListItem.Property(Marked),True)</visible>
+						<animation reversible="true" effect="zoom" start="5,105,22,22" end="-27,45,32,32" time="300">focus</animation>
+						<animation reversible="true" effect="zoom" end="5,105,22,22" start="-27,45,32,32" time="300">unfocus</animation>
+						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 				</focusedlayout>
 			</control>
