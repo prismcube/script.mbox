@@ -360,15 +360,18 @@ class ArchiveWindow( BaseWindow ) :
 			self.mCtrlCommonList.addItems( self.mRecordListItems )		
 			#self.setFocusId( LIST_ID_COMMON_RECORD )
 		elif self.mViewMode == E_VIEW_THUMBNAIL :
-			self.SetVideoRestore( )		
+			self.SetPipScreen( )		
+			#self.SetVideoRestore( )		
 			self.mCtrlThumbnailList.addItems( self.mRecordListItems )		
 			#self.setFocusId( LIST_ID_THUMBNAIL_RECORD )
 		elif self.mViewMode == E_VIEW_POSTER_WRAP :
-			self.SetVideoRestore( )		
+			self.SetPipScreen( )		
+			#self.SetVideoRestore( )		
 			self.mCtrlPosterwrapList.addItems( self.mRecordListItems )		
 			#self.setFocusId( LIST_ID_POSTERWRAP_RECORD )
 		elif self.mViewMode == E_VIEW_FANART :
-			self.SetVideoRestore( )		
+			self.SetPipScreen( )		
+			#self.SetVideoRestore( )		
 			self.mCtrlFanartList.addItems( self.mRecordListItems )		
 			#self.setFocusId( LIST_ID_FANART_RECORD )
 		else :
