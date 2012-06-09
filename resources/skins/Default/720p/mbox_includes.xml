@@ -4619,7 +4619,7 @@
 						<aspectratio>stretch</aspectratio>
 						<texture>black-back.png</texture>
 						<colordiffuse>AAFFFFFF</colordiffuse>
-					</control>					
+					</control>
 				</itemlayout>
 				<focusedlayout height="81" width="144">
 					<control type="image">

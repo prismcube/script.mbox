@@ -115,7 +115,6 @@ class ArchiveWindow( BaseWindow ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )		
 
-
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			if self.mDataCache.mStatusIsArchive :
 				self.mDataCache.Player_Stop( )
@@ -124,24 +123,24 @@ class ArchiveWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
-			if focusId  == LIST_ID_COMMON_RECORD or focusId  == LIST_ID_THUMBNAIL_RECORD or focusId  == LIST_ID_POSTERWRAP_RECORD or focusId  == LIST_ID_FANART_RECORD:
+			if focusId == LIST_ID_COMMON_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD or focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD :
 				if	self.mMarkMode == True	:
 					self.DoMarkToggle( )
-				else :			
+				else :
 					self.StartRecordPlayback( )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT or actionId == Action.ACTION_MOVE_LEFT :
-			if focusId == LIST_ID_POSTERWRAP_RECORD or focusId  == LIST_ID_FANART_RECORD or focusId  == LIST_ID_THUMBNAIL_RECORD :
+			if focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD :
 				self.UpdateSelectedPosition( )
 
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
-			if focusId  == LIST_ID_COMMON_RECORD or focusId == LIST_ID_POSTERWRAP_RECORD or focusId  == LIST_ID_FANART_RECORD or focusId  == LIST_ID_THUMBNAIL_RECORD :
+			if focusId == LIST_ID_COMMON_RECORD or focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD :
 				self.UpdateSelectedPosition( )
 				if focusId  == LIST_ID_COMMON_RECORD :
 					self.UpdateArchiveInfomation( )
 
-		elif actionId == Action.ACTION_PAGE_UP  or actionId == Action.ACTION_PAGE_DOWN :
-			if focusId == LIST_ID_POSTERWRAP_RECORD or focusId  == LIST_ID_FANART_RECORD or focusId  == LIST_ID_THUMBNAIL_RECORD :
+		elif actionId == Action.ACTION_PAGE_UP or actionId == Action.ACTION_PAGE_DOWN :
+			if focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD :
 				self.UpdateSelectedPosition( )
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
@@ -347,7 +346,7 @@ class ArchiveWindow( BaseWindow ) :
 					if os.path.exists( thumbnail ) == True :					
 						recItem.setProperty('RecIcon', thumbnail )
 					else:
-						recItem.setProperty('RecIcon', 'RecIconSample.png')					
+						recItem.setProperty('RecIcon', 'RecIconSample.png')
 
 				recItem.setProperty('Marked', 'False')
 				self.mRecordListItems.append( recItem )
@@ -378,7 +377,6 @@ class ArchiveWindow( BaseWindow ) :
 			LOG_WARN('Unknown view mode')
 
 		LOG_TRACE('UpdateList END')
-
 
 	def ByDate( self, aRec1, aRec2 ) :
 		return cmp( aRec1.mStartTime, aRec2.mStartTime )
@@ -712,10 +710,10 @@ class ArchiveWindow( BaseWindow ) :
 					self.mDataCache.Record_SetLock( self.mRecordList[position].mRecordKey, self.mServiceType, False )				
 					listItem.setProperty('Locked', 'False')
 
-					thumbnail = '/mnt/hdd0/pvr/thumbnail/record_thumbnail_%d.jpg' %recInfo.mRecordKey
+					thumbnail = '/mnt/hdd0/pvr/thumbnail/record_thumbnail_%d.jpg' % recInfo.mRecordKey
 					LOG_ERR( 'thumbnail=%s' %thumbnail )
 					
-					if os.path.exists(thumbnail) == True :					
+					if os.path.exists( thumbnail ) == True :					
 						recItem.setProperty('RecIcon', thumbnail )
 					else:
 						recItem.setProperty('RecIcon', 'RecIconSample.png')					
@@ -759,8 +757,8 @@ class ArchiveWindow( BaseWindow ) :
 		if selectedPos >= 0 and selectedPos < len( self.mRecordListItems ) :
 			if self.mViewMode == E_VIEW_LIST :
 				self.mCtrlCommonList.selectItem( selectedPos )
-			elif self.mViewMode == E_VIEW_THUMBNAIL :
-				self.mCtrlThumbnailList.selectItem( selectedPos )
+			#elif self.mViewMode == E_VIEW_THUMBNAIL :
+				#self.mCtrlThumbnailList.selectItem( selectedPos )
 			#elif self.mViewMode == E_VIEW_POSTER_WRAP :
 				#self.mCtrlPosterwrapList.selectItem( selectedPos )
 			#elif self.mViewMode == E_VIEW_FANART :
