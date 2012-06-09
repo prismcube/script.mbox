@@ -4274,28 +4274,22 @@
 				<onup>3410</onup>
 				<ondown>3410</ondown>
 				<pagecontrol>3411</pagecontrol>
-				<scrolltime>200</scrolltime>
+				<scrolltime>300</scrolltime>
 				<preloaditems>2</preloaditems>
-				<itemgap>5</itemgap>
 				<itemlayout height="275" width="256">
 					<control type="image">
 						<posx>1</posx>
 						<posy>0</posy>
 						<width>256</width>
 						<height>144</height>
-						<!--
-						<bordertexture border="5">button-nofocus.png</bordertexture>
-						<bordersize>5</bordersize>
-						<fadetime>100</fadetime>
-						-->
 						<aspectratio>stretch</aspectratio>
 						<bordertexture border="5">button-nofocus.png</bordertexture>
 						<bordersize>4</bordersize>
-						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
+						<texture>$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
 					<!-- Channel Name -->
 					<control type="label">
-						<posx>132</posx>
+						<posx>130</posx>
 						<posy>150</posy>
 						<width>250</width>
 						<height>25</height>
@@ -4308,7 +4302,7 @@
 					</control>
 					<!-- Record Name -->
 					<control type="label">
-						<posx>132</posx>
+						<posx>130</posx>
 						<posy>180</posy>
 						<width>250</width>
 						<height>25</height>
@@ -4321,7 +4315,7 @@
 					</control>
 					<!-- Date and Duration -->
 					<control type="label">
-						<posx>132</posx>
+						<posx>130</posx>
 						<posy>210</posy>
 						<width>250</width>
 						<height>25</height>
@@ -4342,27 +4336,22 @@
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 				</itemlayout>
-				<focusedlayout height="275" width="270">
+				<focusedlayout height="275" width="256">
 					<control type="image">
 						<posx>1</posx>
 						<posy>0</posy>
-						<width>250</width>
+						<width>256</width>
 						<height>144</height>
-						<!--
-						<bordertexture border="5">folder-focus.png</bordertexture>
-						<bordersize>5</bordersize>
-						<fadetime>100</fadetime>
-						-->
 						<aspectratio>stretch</aspectratio>
-						<bordertexture border="8">ThumbBorder.png</bordertexture>
-						<bordersize>8</bordersize>
+						<bordertexture border="5">folder-focus.png</bordertexture>
+						<bordersize>4</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
 					<!--Chanel Name-->
 					<control type="label">
-						<posx>132</posx>
+						<posx>130</posx>
 						<posy>150</posy>
-						<width>256</width>
+						<width>250</width>
 						<height>25</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
@@ -4373,7 +4362,7 @@
 					</control>
 					<!-- Record Name -->
 					<control type="label">
-						<posx>132</posx>
+						<posx>130</posx>
 						<posy>180</posy>
 						<width>250</width>
 						<height>25</height>
@@ -4386,7 +4375,7 @@
 					</control>
 					<!-- Date and Duration -->
 					<control type="label">
-						<posx>132</posx>
+						<posx>130</posx>
 						<posy>210</posy>
 						<width>250</width>
 						<height>25</height>
