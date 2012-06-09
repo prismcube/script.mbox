@@ -276,6 +276,9 @@ class LivePlate( BaseWindow ) :
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
+		elif id == Action.ACTION_MBOX_RECORD :
+			self.onClick( self.mCtrlBtnStartRec.getId() )
+
 		#test
 		elif id == 13: #'x'
 			LOG_TRACE( 'cwd[%s]'% xbmc.getLanguage() )
