@@ -131,21 +131,25 @@ class ArchiveWindow( BaseWindow ) :
 					self.StartRecordPlayback( )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT or actionId == Action.ACTION_MOVE_LEFT :
-			if focusId == LIST_ID_POSTERWRAP_RECORD or focusId  == LIST_ID_FANART_RECORD or focusId  == LIST_ID_THUMBNAIL_RECORD:
+			if focusId == LIST_ID_POSTERWRAP_RECORD or focusId  == LIST_ID_FANART_RECORD or focusId  == LIST_ID_THUMBNAIL_RECORD :
 				self.UpdateSelectedPosition( )
 
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
-			if focusId  == LIST_ID_COMMON_RECORD or focusId  == LIST_ID_THUMBNAIL_RECORD :
+			if focusId  == LIST_ID_COMMON_RECORD or focusId == LIST_ID_POSTERWRAP_RECORD or focusId  == LIST_ID_FANART_RECORD or focusId  == LIST_ID_THUMBNAIL_RECORD :
 				self.UpdateSelectedPosition( )
 				if focusId  == LIST_ID_COMMON_RECORD :
 					self.UpdateArchiveInfomation( )
 
-		elif actionId == Action.ACTION_CONTEXT_MENU:
+		elif actionId == Action.ACTION_PAGE_UP  or actionId == Action.ACTION_PAGE_DOWN :
+			if focusId == LIST_ID_POSTERWRAP_RECORD or focusId  == LIST_ID_FANART_RECORD or focusId  == LIST_ID_THUMBNAIL_RECORD :
+				self.UpdateSelectedPosition( )
+
+		elif actionId == Action.ACTION_CONTEXT_MENU :
 			self.ShowContextMenu( )
 
 		elif actionId == Action.ACTION_STOP :
-			status = self.mDataCache.Player_GetStatus( )
-			if status.mMode :
+			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+				self.mLastFocusItem = -1	
 				ret = self.mDataCache.Player_Stop( )
 
 	
@@ -329,11 +333,8 @@ class ArchiveWindow( BaseWindow ) :
 				channelName = 'P%04d.%s' %(recInfo.mChannelNo, recInfo.mChannelName,)
 				#recItem = xbmcgui.ListItem( '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz', '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz' )
 				recItem = xbmcgui.ListItem( channelName, recInfo.mRecordName )
-				#if i == 0 :
-				#	recItem.setProperty('RecIcon', 'test.png')
-				#else :
-				recItem.setProperty('RecDate', TimeToString( recInfo.mStartTime ))
-				recItem.setProperty('RecDuration', '%dm' %( recInfo.mDuration/60 ) )
+				recItem.setProperty('RecDate', TimeToString( recInfo.mStartTime ) )
+				recItem.setProperty('RecDuration', '%dm' % ( recInfo.mDuration / 60 ) )
 				
 				if recInfo.mLocked :
 					recItem.setProperty('Locked', 'True')
@@ -346,10 +347,9 @@ class ArchiveWindow( BaseWindow ) :
 					if os.path.exists(thumbnail) == True :					
 						recItem.setProperty('RecIcon', thumbnail )
 					else:
-						recItem.setProperty('RecIcon', 'RecIconSample.jpg')					
+						recItem.setProperty('RecIcon', 'RecIconSample.png')					
 
 				recItem.setProperty('Marked', 'False')
-					
 				self.mRecordListItems.append( recItem )
 
 		except Exception, ex:
@@ -454,6 +454,9 @@ class ArchiveWindow( BaseWindow ) :
 			self.mDataCache.SetKeyDisabled( True, recInfo )
 			self.RestoreLastRecordKey( )
 			self.mLastFocusItem = selectedPos
+			if self.mViewMode != E_VIEW_LIST :
+				self.SetVideoRestore( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
 
 	def GetSelectedPosition( self ) :
@@ -712,7 +715,7 @@ class ArchiveWindow( BaseWindow ) :
 					if os.path.exists(thumbnail) == True :					
 						recItem.setProperty('RecIcon', thumbnail )
 					else:
-						recItem.setProperty('RecIcon', 'RecIconSample.jpg')					
+						recItem.setProperty('RecIcon', 'RecIconSample.png')					
 
 			self.DoClearMark()
 			xbmc.executebuiltin('container.update')
@@ -752,13 +755,13 @@ class ArchiveWindow( BaseWindow ) :
 			
 		if selectedPos >= 0 and selectedPos < len( self.mRecordListItems ) :
 			if self.mViewMode == E_VIEW_LIST :
-				self.mCtrlCommonList.selectItem( selectedPos )		
+				self.mCtrlCommonList.selectItem( selectedPos )
 			elif self.mViewMode == E_VIEW_THUMBNAIL :
-				self.mCtrlThumbnailList.selectItem( selectedPos )		
-			elif self.mViewMode == E_VIEW_POSTER_WRAP :
-				self.mCtrlPosterwrapList.addselectItemItems( selectedPos )		
-			elif self.mViewMode == E_VIEW_FANART :
-				self.mCtrlFanartList.selectItem( selectedPos )		
+				self.mCtrlThumbnailList.selectItem( selectedPos )
+			#elif self.mViewMode == E_VIEW_POSTER_WRAP :
+				#self.mCtrlPosterwrapList.selectItem( selectedPos )
+			#elif self.mViewMode == E_VIEW_FANART :
+				#self.mCtrlFanartList.selectItem( selectedPos )
 			else :
 				LOG_WARN('Unknown view mode')
 			
@@ -795,8 +798,8 @@ class ArchiveWindow( BaseWindow ) :
 		if selectedPos < 0 :
 			self.mWin.setProperty( 'SelectedPosition', '0' )
 		else :
-			self.mWin.setProperty( 'SelectedPosition', '%d' %(selectedPos+1) )		
-				
+			self.mWin.setProperty( 'SelectedPosition', '%d' % ( selectedPos + 1 ) )
+
 
 	def UpdateArchiveInfomation( self ) :
 		selectedPos = self.GetSelectedPosition()

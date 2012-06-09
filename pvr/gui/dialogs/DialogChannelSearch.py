@@ -241,7 +241,7 @@ class DialogChannelSearch( BaseDialog ) :
 		elif aEvent.mIChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			self.mNewRadioChannelList.append( aEvent.mIChannel.mName )
 		else : 
-			LOG_ERR('Unknown service type')
+			LOG_ERR('Unknown service type = %s' % aEvent.mIChannel.mServiceType )
 		self.DrawItem( )
 
 

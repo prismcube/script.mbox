@@ -35,14 +35,14 @@ class DialogAddTimer( BaseDialog ) :
 			
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
-			self.Close()		
+			self.Close( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
-			self.Close()
+			self.Close( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			pass
@@ -94,7 +94,7 @@ class DialogAddTimer( BaseDialog ) :
 		return self.mIsOk
 
 
-	def Close( self ):
+	def Close( self ) :
 		self.mEventBus.Deregister( self )
 		self.CloseDialog( )
 

@@ -4022,7 +4022,6 @@
 	<include name="DefaultCommonArchiveView">
 		<control type="group">
 			<visible>substring(Window.Property(ViewMode),common)</visible>
-			<include>DefaultVisibleFadeEffect</include>
 			<control type="list" id="3400">
 				<posx>75</posx>
 				<posy>70</posy>
@@ -4032,10 +4031,7 @@
 				<onright>3401</onright>
 				<onup>3400</onup>
 				<ondown>3400</ondown>
-				<viewtype label="535">list</viewtype>
 				<pagecontrol>3401</pagecontrol>
-				<scrolltime>200</scrolltime>
-				<visible>substring(Window.Property(ViewMode),common)</visible>
 				<itemlayout height="70" width="610">
 					<control type="image">
 						<posx>0</posx>
@@ -4043,6 +4039,32 @@
 						<width>730</width>
 						<height>71</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
+					</control>
+					<!-- Thumbnail  and  Lock -->					
+					<control type="image">
+						<posx>5</posx>
+						<posy>5</posy>
+						<width>112</width>
+						<height>63</height>
+						<texture>$INFO[ListItem.Property(RecIcon)]</texture>
+					</control>
+					<!-- Mark -->					
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture>OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(Marked),True)</visible>
+					</control>
+					<control type="image">
+						<posx>5</posx>
+						<posy>5</posy>
+						<width>112</width>
+						<height>63</height>
+						<aspectratio>stretch</aspectratio>
+						<texture>black-back.png</texture>
+						<colordiffuse>AAFFFFFF</colordiffuse>
 					</control>
 					<!-- Channel Name-->
 					<control type="label">
@@ -4082,7 +4104,6 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
-						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
 					</control>
 					<!-- Duration -->	
 					<control type="label">
@@ -4096,32 +4117,6 @@
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(RecDuration)]</label>
-						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
-					</control>
-					<!-- Thumbnail  and  Lock -->					
-					<control type="image">
-						<posx>5</posx>
-						<posy>5</posy>
-						<width>112</width>
-						<height>63</height>
-						<texture>$INFO[ListItem.Property(RecIcon)]</texture>
-					</control>
-					<control type="image">
-						<posx>665</posx>
-						<posy>14</posy>
-						<width>20</width>
-						<height>16</height>
-						<texture>$INFO[ListItem.Overlay]</texture>
-						<visible>true</visible>
-					</control>
-					<!-- Mark -->					
-					<control type="image">
-						<posx>0</posx>
-						<posy>5</posy>
-						<width>32</width>
-						<height>32</height>
-						<texture>OverlayWatched.png</texture>
-						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 				</itemlayout>
 				<focusedlayout height="70" width="610">
@@ -4140,21 +4135,14 @@
 						<width>730</width>
 						<height>71</height>
 						<texture border="0,2,0,2">MenuItemFO.png</texture>
-						<!--
-						<visible>Control.HasFocus(3400)+substring(Window.Property(ViewMode),common)</visible>
-						-->
 						<include>DefaultVisibleFadeEffect</include>
 					</control>
-
 					<control type="image">
 						<posx>530</posx>
 						<posy>5</posy>
 						<width>200</width>
 						<height>61</height>
 						<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
-						<!--
-						<visible>Control.HasFocus(3400)+substring(Window.Property(ViewMode),common)</visible>
-						-->
 					</control>
 					<!-- Thumbnail  and  Lock -->
 					<control type="image">
@@ -4163,6 +4151,15 @@
 						<width>112</width>
 						<height>63</height>
 						<texture>$INFO[ListItem.Property(RecIcon)]</texture>
+					</control>
+					<!-- Mark -->
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>32</width>
+						<height>32</height>
+						<texture>OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 					<!-- Channel Name-->
 					<control type="label">
@@ -4218,26 +4215,6 @@
 						<label>$INFO[ListItem.Property(RecDuration)]</label>
 						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
 					</control>
-					
-					<control type="image">
-						<posx>695</posx>
-						<posy>14</posy>
-						<width>20</width>
-						<height>16</height>
-						<texture>$INFO[ListItem.Overlay]</texture>
-						<!--
-						<visible>substring(Window.Property(ViewMode),common)</visible>
-						-->
-					</control>
-					<!-- Mark -->
-					<control type="image">
-						<posx>0</posx>
-						<posy>5</posy>
-						<width>32</width>
-						<height>32</height>
-						<texture>OverlayWatched.png</texture>
-						<visible>substring(ListItem.Property(Marked),True)</visible>
-					</control>
 				</focusedlayout>
 			</control>
 			<control type="scrollbar" id="3401">
@@ -4287,7 +4264,6 @@
 	<include name="DefaultThumbnailArchiveView">
 		<control type="group">
 			<visible>substring(Window.Property(ViewMode),thumbnail)</visible>
-			<include>DefaultVisibleFadeEffect</include>
 			<control type="panel" id="3410">
 				<posx>90</posx>
 				<posy>80</posy>
@@ -4297,27 +4273,31 @@
 				<onright>3411</onright>
 				<onup>3410</onup>
 				<ondown>3410</ondown>
-				<viewtype label="21371">list</viewtype>
 				<pagecontrol>3411</pagecontrol>
 				<scrolltime>200</scrolltime>
 				<preloaditems>2</preloaditems>
-				<visible>substring(Window.Property(ViewMode),thumbnail)</visible>
-				<itemlayout height="275" width="270">
+				<itemgap>5</itemgap>
+				<itemlayout height="275" width="256">
 					<control type="image">
 						<posx>1</posx>
 						<posy>0</posy>
 						<width>256</width>
 						<height>144</height>
+						<!--
 						<bordertexture border="5">button-nofocus.png</bordertexture>
 						<bordersize>5</bordersize>
 						<fadetime>100</fadetime>
+						-->
+						<aspectratio>stretch</aspectratio>
+						<bordertexture border="5">button-nofocus.png</bordertexture>
+						<bordersize>4</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
 					<!-- Channel Name -->
 					<control type="label">
-						<posx>135</posx>
+						<posx>132</posx>
 						<posy>150</posy>
-						<width>256</width>
+						<width>250</width>
 						<height>25</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
@@ -4328,9 +4308,9 @@
 					</control>
 					<!-- Record Name -->
 					<control type="label">
-						<posx>135</posx>
+						<posx>132</posx>
 						<posy>180</posy>
-						<width>256</width>
+						<width>250</width>
 						<height>25</height>
 						<font>font12</font>
 						<textcolor>grey2</textcolor>
@@ -4341,9 +4321,9 @@
 					</control>
 					<!-- Date and Duration -->
 					<control type="label">
-						<posx>135</posx>
+						<posx>132</posx>
 						<posy>210</posy>
-						<width>256</width>
+						<width>250</width>
 						<height>25</height>
 						<font>font12</font>
 						<textcolor>grey2</textcolor>
@@ -4351,14 +4331,6 @@
 						<align>center</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(RecDate)]($INFO[ListItem.Property(RecDuration)])</label>
-					</control>
-					<control type="image">
-						<posx>230</posx>
-						<posy>200</posy>
-						<width>35</width>
-						<height>35</height>
-						<aspectratio>keep</aspectratio>
-						<texture>$INFO[ListItem.Overlay]</texture>
 					</control>
 					<!-- Mark -->
 					<control type="image">
@@ -4374,16 +4346,21 @@
 					<control type="image">
 						<posx>1</posx>
 						<posy>0</posy>
-						<width>256</width>
+						<width>250</width>
 						<height>144</height>
+						<!--
 						<bordertexture border="5">folder-focus.png</bordertexture>
 						<bordersize>5</bordersize>
 						<fadetime>100</fadetime>
+						-->
+						<aspectratio>stretch</aspectratio>
+						<bordertexture border="8">ThumbBorder.png</bordertexture>
+						<bordersize>8</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
 					<!--Chanel Name-->
 					<control type="label">
-						<posx>135</posx>
+						<posx>132</posx>
 						<posy>150</posy>
 						<width>256</width>
 						<height>25</height>
@@ -4396,9 +4373,9 @@
 					</control>
 					<!-- Record Name -->
 					<control type="label">
-						<posx>135</posx>
+						<posx>132</posx>
 						<posy>180</posy>
-						<width>256</width>
+						<width>250</width>
 						<height>25</height>
 						<font>font12</font>
 						<textcolor>grey2</textcolor>
@@ -4409,9 +4386,9 @@
 					</control>
 					<!-- Date and Duration -->
 					<control type="label">
-						<posx>135</posx>
+						<posx>132</posx>
 						<posy>210</posy>
-						<width>256</width>
+						<width>250</width>
 						<height>25</height>
 						<font>font12</font>
 						<textcolor>grey2</textcolor>
@@ -4420,14 +4397,6 @@
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(RecDate)]($INFO[ListItem.Property(RecDuration)])</label>
 					</control>					
-					<control type="image">
-						<posx>230</posx>
-						<posy>200</posy>
-						<width>35</width>
-						<height>35</height>
-						<aspectratio>keep</aspectratio>
-						<texture>$INFO[ListItem.Overlay]</texture>
-					</control>
 					<!-- Mark -->
 					<control type="image">
 						<posx>0</posx>
@@ -4461,10 +4430,8 @@
 	<include name="DefaultPosterWrapArchiveView">
 		<control type="group">
 			<visible>substring(Window.Property(ViewMode),posterwrap)</visible>
-			<include>DefaultVisibleFadeEffect</include>
 			<posx>0</posx>
 			<posy>80</posy>
-
 			<control type="image">
 				<posx>240</posx>
 				<posy>420</posy>
@@ -4473,11 +4440,9 @@
 				<aspectratio>stretch</aspectratio>
 				<texture>GlassTitleBar.png</texture>
 			</control>
-
 			<control type="wraplist" id="3420">
-				<visible>substring(Window.Property(ViewMode),posterwrap)</visible>			
 				<visible>true</visible>							
-				<posx>-123</posx>
+				<posx>-100</posx>
 				<posy>0</posy>
 				<width>1526</width>
 				<height>460</height>
@@ -4485,18 +4450,17 @@
 				<onright>3420</onright>
 				<onup>100</onup>
 				<ondown>3421</ondown>
-				<viewtype label="31028">bigwrap</viewtype>
 				<pagecontrol>3421</pagecontrol>
-				<scrolltime>200</scrolltime>
+				<scrolltime>300</scrolltime>
 				<focusposition>3</focusposition>
 				<orientation>horizontal</orientation>
 				<preloaditems>4</preloaditems>
-				<itemlayout height="310" width="218">
+				<itemlayout height="117" width="208">
 					<control type="image">
-						<posx>2</posx>
-						<posy>40</posy>
-						<width>214</width>
-						<height>310</height>
+						<posx>0</posx>
+						<posy>250</posy>
+						<width>208</width>
+						<height>117</height>
 						<aspectratio>stretch</aspectratio>
 						<bordertexture border="5">button-nofocus.png</bordertexture>
 						<bordersize>4</bordersize>
@@ -4504,61 +4468,46 @@
 					</control>
 					<!-- Mark -->
 					<control type="image">
-						<posx>0</posx>
-						<posy>45</posy>
-						<width>32</width>
-						<height>32</height>
+						<posx>3</posx>
+						<posy>256</posy>
+						<width>26</width>
+						<height>26</height>
 						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
-				</itemlayout>
-				<focusedlayout height="310" width="218">
 					<control type="image">
-						<posx>-2</posx>
-						<posy>36</posy>
-						<width>222</width>
-						<height>318</height>
+						<posx>4</posx>
+						<posy>254</posy>
+						<width>200</width>
+						<height>109</height>
+						<aspectratio>stretch</aspectratio>
+						<texture>black-back.png</texture>
+						<colordiffuse>AAFFFFFF</colordiffuse>
+					</control>
+				</itemlayout>
+				<focusedlayout height="117" width="208">
+					<control type="image">
+						<posx>0</posx>
+						<posy>250</posy>
+						<width>208</width>
+						<height>117</height>
 						<aspectratio>stretch</aspectratio>
 						<bordertexture border="8">ThumbBorder.png</bordertexture>
 						<bordersize>8</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
-						<animation reversible="false" effect="zoom" start="-2,36,222,318" end="-28,0,284,390" time="200">focus</animation>
-						<animation reversible="false" effect="zoom" end="-2,36,222,318" start="-28,0,284,390" time="200">unfocus</animation>
-					</control>
-					<control type="image">
-						<posx>6</posx>
-						<posy>44</posy>
-						<width>170</width>
-						<height>180</height>
-						<aspectratio>stretch</aspectratio>
-						<texture>GlassOverlay.png</texture>
-						<animation reversible="false" effect="zoom" start="6,44,170,180" end="-24,4,240,250" time="200">focus</animation>
-						<animation reversible="false" effect="zoom" end="6,44,170,180" start="-24,4,240,250" time="200">unfocus</animation>
-					</control>
-					<control type="image">
-						<posx>205</posx>
-						<posy>310</posy>
-						<width>35</width>
-						<height>35</height>
-						<aspectratio>keep</aspectratio>
-						<texture>$INFO[ListItem.Overlay]</texture>
-						<animation type="focus">
-							<effect type="fade" start="0" end="100" time="200" />
-							<effect type="slide" start="0,0" end="40,40" time="200" />
-						</animation>
-						<animation type="unfocus">
-							<effect type="fade" start="100" end="0" time="200" />
-							<effect type="slide" end="0,0" start="40,40" time="200" />
-						</animation>
+						<animation reversible="false" effect="zoom" start="0,250,208,117" end="-72,120,352,198" time="300">focus</animation>
+						<animation reversible="false" effect="zoom" end="0,250,208,117" start="-72,120,352,198" time="300">unfocus</animation>
 					</control>
 					<!-- Mark -->
 					<control type="image">
-						<posx>0</posx>
-						<posy>45</posy>
-						<width>32</width>
-						<height>32</height>
+						<posx>3</posx>
+						<posy>256</posy>
+						<width>26</width>
+						<height>26</height>
 						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
+						<animation reversible="true" effect="zoom" start="3,256,26,26" end="-69,126,40,40" time="300">focus</animation>
+						<animation reversible="true" effect="zoom" end="3,256,26,26" start="-69,126,40,40" time="300">unfocus</animation>
 					</control>
 				</focusedlayout>
 			</control>
@@ -4626,13 +4575,9 @@
 	<include name="DefaultFanartArchiveView">
 		<control type="group">
 			<visible>substring(Window.Property(ViewMode),panart)</visible>
-			<include>DefaultVisibleFadeEffect</include>
 			<posx>0</posx>
 			<posy>440</posy>
-
 			<control type="fixedlist" id="3430">
-				<visible>substring(Window.Property(ViewMode),panart)</visible>			
-				<visible>true</visible>							
 				<posx>-20</posx>
 				<posy>0</posy>
 				<width>1320</width>
@@ -4641,95 +4586,67 @@
 				<onright>3430</onright>
 				<onup>100</onup>
 				<ondown>3431</ondown>
-				<viewtype label="31028">bigwrap</viewtype>
 				<pagecontrol>3431</pagecontrol>
-				<scrolltime>200</scrolltime>
+				<scrolltime>300</scrolltime>
 				<focusposition>3</focusposition>
 				<orientation>horizontal</orientation>
 				<preloaditems>4</preloaditems>
-				<itemlayout height="200" width="120">
+				<itemlayout height="81" width="144">
 					<control type="image">
-						<posx>2</posx>
-						<posy>40</posy>
-						<width>120</width>
-						<height>160</height>
+						<posx>0</posx>
+						<posy>100</posy>
+						<width>144</width>
+						<height>81</height>
 						<aspectratio>stretch</aspectratio>
 						<bordertexture border="5">button-nofocus.png</bordertexture>
 						<bordersize>4</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
+					<!-- Mark -->
 					<control type="image">
-						<posx>6</posx>
-						<posy>24</posy>
-						<width>112</width>
-						<height>152</height>
+						<posx>5</posx>
+						<posy>105</posy>
+						<width>22</width>
+						<height>22</height>
+						<texture>OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(Marked),True)</visible>
+					</control>
+					<control type="image">
+						<posx>4</posx>
+						<posy>104</posy>
+						<width>136</width>
+						<height>73</height>
 						<aspectratio>stretch</aspectratio>
 						<texture>black-back.png</texture>
 						<colordiffuse>AAFFFFFF</colordiffuse>
-					</control>
-					<control type="image">
-						<posx>2</posx>
-						<posy>180</posy>
-						<width>120</width>
-						<height>160</height>
-						<aspectratio>stretch</aspectratio>
-						<bordertexture border="5" diffuse="diffuse_mirror2.png">button-nofocus.png</bordertexture>
-						<bordersize>4</bordersize>
-						<fadetime>200</fadetime>
-						<texture background="true" flipy="true" diffuse="diffuse_mirror2.png">$INFO[ListItem.Icon]</texture>
-					</control>
-					<!-- Mark -->
-					<control type="image">
-						<posx>0</posx>
-						<posy>45</posy>
-						<width>32</width>
-						<height>32</height>
-						<texture>OverlayWatched.png</texture>
-						<visible>substring(ListItem.Property(Marked),True)</visible>
-					</control>
+					</control>					
 				</itemlayout>
-				<focusedlayout height="310" width="120">
+				<focusedlayout height="81" width="144">
 					<control type="image">
-						<posx>-2</posx>
-						<posy>16</posy>
-						<width>128</width>
-						<height>168</height>
+						<posx>0</posx>
+						<posy>100</posy>
+						<width>144</width>
+						<height>81</height>
 						<aspectratio>stretch</aspectratio>
-						<bordertexture border="8">ThumbBorder.png</bordertexture>
-						<bordersize>8</bordersize>
-						<fadetime>200</fadetime>
+						<bordertexture border="5">button-nofocus.png</bordertexture>
+						<bordersize>4</bordersize>
 						<texture background="true">$INFO[ListItem.Property(RecIcon)]</texture>
-						<animation reversible="false" effect="zoom" start="-2,16,128,168" end="-12,-10,148,198" time="200">focus</animation>
-						<animation reversible="false" effect="zoom" end="-2,16,128,168" start="-12,-10,148,198" time="200">unfocus</animation>
-					</control>
-					<control type="image">
-						<posx>90</posx>
-						<posy>150</posy>
-						<width>35</width>
-						<height>35</height>
-						<aspectratio>keep</aspectratio>
-						<texture>$INFO[ListItem.Overlay]</texture>
-						<animation type="focus">
-							<effect type="fade" start="0" end="100" time="200" />
-							<effect type="slide" start="0,0" end="10,5" time="200" />
-						</animation>
-						<animation type="unfocus">
-							<effect type="fade" start="100" end="0" time="200" />
-							<effect type="slide" end="0,0" start="10,5" time="200" />
-						</animation>
+						<animation reversible="false" effect="zoom" start="0,100,144,81" end="-32,40,208,117" time="300">focus</animation>
+						<animation reversible="false" effect="zoom" end="0,100,144,81" start="-32,40,208,117" time="300">unfocus</animation>
 					</control>
 					<!-- Mark -->
 					<control type="image">
-						<posx>0</posx>
-						<posy>45</posy>
-						<width>32</width>
-						<height>32</height>
+						<posx>5</posx>
+						<posy>105</posy>
+						<width>22</width>
+						<height>22</height>
 						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
+						<animation reversible="true" effect="zoom" start="5,105,22,22" end="-27,45,32,32" time="300">focus</animation>
+						<animation reversible="true" effect="zoom" end="5,105,22,22" start="-27,45,32,32" time="300">unfocus</animation>
 					</control>
 				</focusedlayout>
 			</control>
-
 			<control type="label">
 				<posx>40</posx>
 				<posy>195</posy>
@@ -4777,8 +4694,7 @@
 
 	<include name="DefaultCommonEPGView">
 		<control type="group">
-			<visible>substring(Window.Property(EPGMode),channel) </visible>
-			<include>DefaultVisibleFadeEffect</include>
+			<visible>substring(Window.Property(EPGMode),channel)</visible>
 			<control type="list" id="3500">
 				<posx>75</posx>
 				<posy>110</posy>
@@ -4791,7 +4707,6 @@
 				<viewtype label="535">list</viewtype>
 				<pagecontrol>3501</pagecontrol>
 				<scrolltime>200</scrolltime>
-				<visible>substring(Window.Property(EPGMode),channel)</visible>
 				<itemlayout height="40" width="610">
 					<control type="image">
 						<posx>0</posx>
@@ -4800,7 +4715,6 @@
 						<height>41</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 					</control>
-
 					<!-- Running Recording Icon-->
 					<control type="image">
 						<posx>0</posx>
@@ -4810,7 +4724,6 @@
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Running)</visible>						
 					</control>
-
 					<!-- Schedule Recording Icon-->
 					<control type="image">
 						<posx>20</posx>
@@ -4820,8 +4733,6 @@
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>						
 					</control>
-					
-					
 					<!-- Start Time-->
 					<control type="label">
 						<posx>40</posx>
@@ -4849,7 +4760,6 @@
 						<label>$INFO[ListItem.Label2]</label>
 						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
 					</control>
-					
 					<!-- EPG Date -->
 					<control type="label">
 						<posx>700</posx>
@@ -4864,7 +4774,6 @@
 						<label>$INFO[ListItem.Property(EPGDate)]</label>
 						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
 					</control>
-					
 					<control type="image">
 						<posx>665</posx>
 						<posy>14</posy>
@@ -4890,12 +4799,8 @@
 						<width>730</width>
 						<height>41</height>
 						<texture border="0,2,0,2">MenuItemFO.png</texture>
-						<!--
-						<visible>Control.HasFocus(3400)+substring(Window.Property(ViewMode),common)</visible>
-						-->
 						<include>DefaultVisibleFadeEffect</include>
 					</control>
-
 					<!-- Running Recording Icon-->
 					<control type="image">
 						<posx>0</posx>
@@ -4905,7 +4810,6 @@
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Running)</visible>						
 					</control>
-
 					<!-- Schedule Recording Icon-->
 					<control type="image">
 						<posx>20</posx>
@@ -4915,7 +4819,6 @@
 						<texture>IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>						
 					</control>
-
 					<!-- Start Time-->
 					<control type="label">
 						<posx>40</posx>
@@ -4943,7 +4846,6 @@
 						<label>$INFO[ListItem.Label2]</label>
 						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
 					</control>
-
 					<!-- EPG Date -->
 					<control type="label">
 						<posx>700</posx>
@@ -4958,7 +4860,6 @@
 						<label>$INFO[ListItem.Property(EPGDate)]</label>
 						<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
 					</control>
-					
 					<control type="image">
 						<posx>695</posx>
 						<posy>14</posy>
@@ -5018,7 +4919,6 @@
 	<include name="DefaultBigEPGView">
 		<control type="group">
 			<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(TimerMode),true)</visible>
-			<include>DefaultVisibleFadeEffect</include>
 			<control type="list" id="3510">
 				<posx>75</posx>
 				<posy>70</posy>
@@ -5031,7 +4931,6 @@
 				<viewtype label="535">list</viewtype>
 				<pagecontrol>3511</pagecontrol>
 				<scrolltime>200</scrolltime>
-				<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following) | substring(Window.Property(TimerMode),true)</visible>
 				<itemlayout height="70" width="610">
 					<control type="image">
 						<posx>0</posx>
@@ -5040,7 +4939,6 @@
 						<height>71</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 					</control>
-					
 					<!-- Running Recording Icon-->
 					<control type="image">
 						<posx>0</posx>
@@ -5050,7 +4948,6 @@
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Running)</visible>						
 					</control>
-
 					<!-- Schedule Recording Icon-->
 					<control type="image">
 						<posx>20</posx>
@@ -5060,7 +4957,6 @@
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>						
 					</control>
-					
 					<!-- Channel Name-->
 					<control type="label">
 						<posx>40</posx>
@@ -5128,14 +5024,6 @@
 						<label>$INFO[ListItem.Property(Duration)]</label>
 						<visible>substring(Window.Property(TimerMode),true)</visible>						
 					</control>
-					<control type="image">
-						<posx>665</posx>
-						<posy>14</posy>
-						<width>20</width>
-						<height>16</height>
-						<texture>$INFO[ListItem.Overlay]</texture>
-						<visible>true</visible>
-					</control>
 				</itemlayout>
 				<focusedlayout height="70" width="610">
 					<control type="image">
@@ -5155,7 +5043,6 @@
 						<texture border="0,2,0,2">MenuItemFO.png</texture>
 						<include>DefaultVisibleFadeEffect</include>
 					</control>
-
 					<control type="image">
 						<posx>530</posx>
 						<posy>5</posy>
@@ -5163,7 +5050,6 @@
 						<height>61</height>
 						<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
 					</control>
-					
 					<!-- Running Recording Icon-->
 					<control type="image">
 						<posx>0</posx>
@@ -5173,7 +5059,6 @@
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Running)</visible>						
 					</control>
-
 					<!-- Schedule Recording Icon-->
 					<control type="image">
 						<posx>20</posx>
@@ -5183,7 +5068,6 @@
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>						
 					</control>
-
 					<!-- Channel Name-->
 					<control type="label">
 						<posx>40</posx>
@@ -5246,16 +5130,6 @@
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(Duration)]</label>
 						<visible>substring(Window.Property(TimerMode),true)</visible>						
-					</control>
-					<control type="image">
-						<posx>695</posx>
-						<posy>14</posy>
-						<width>20</width>
-						<height>16</height>
-						<texture>$INFO[ListItem.Overlay]</texture>
-						<!--
-						<visible>substring(Window.Property(ViewMode),common)</visible>
-						-->
 					</control>
 				</focusedlayout>
 			</control>

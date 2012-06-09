@@ -108,6 +108,7 @@
 						<label2>Desc Profiles</label2>						
 						<onclick>ActivateWindow(Profiles)</onclick>
 						<icon>special://skin/backgrounds/favourites.jpg</icon>
+						<visible>false</visible>
 					</item>
 					<item id="9">
 						<label>System Info</label>

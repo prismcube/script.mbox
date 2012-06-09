@@ -25,7 +25,7 @@ class Installation( BaseWindow ):
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Installation' )
-		self.SetPipScreen( )		
+		self.SetPipScreen( ) 
 
 		groupItems = []
 		

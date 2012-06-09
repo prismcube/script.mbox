@@ -67,7 +67,7 @@ class DialogAddManualTimer( SettingDialog ) :
 
 		
 
-	def onAction( self, aAction ):
+	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.GetFocusId( )
 		self.GlobalAction( actionId )		
@@ -75,37 +75,37 @@ class DialogAddManualTimer( SettingDialog ) :
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.ResetAllControl( )
-			self.Close()		
+			self.Close( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			groupId = self.GetGroupId( focusId )
 
 			if groupId == E_DialogInput01 :
-				self.ShowRecordName()
-				self.DrawItem()
+				self.ShowRecordName( )
+				self.DrawItem( )
 			
 			elif groupId == E_DialogSpinEx01 :
 				self.mRecordingMode = self.GetSelectedIndex( E_DialogSpinEx01 )
-				self.Reload()
-				self.DrawItem()
+				self.Reload( )
+				self.DrawItem( )
 
 			elif groupId == E_DialogSpinDay :
-				self.SelectWeeklyDay()
-				self.DrawItem()
+				self.SelectWeeklyDay( )
+				self.DrawItem( )
 
 			elif groupId == E_DialogInput03 :
 				self.ShowStartTime( )
-				self.DrawItem()
+				self.DrawItem( )
 
 			elif groupId == E_DialogInput04 :
 				self.ShowEndTime( )
-				self.DrawItem()
+				self.DrawItem( )
 
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.ResetAllControl( )
-			self.Close()		
+			self.Close( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
@@ -191,7 +191,7 @@ class DialogAddManualTimer( SettingDialog ) :
 		return self.mConflictTimer
 
 
-	def Close( self ):
+	def Close( self ) :
 		#self.mEventBus.Deregister( self )
 		self.CloseDialog( )
 

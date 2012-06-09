@@ -15,6 +15,7 @@ class ConditionalAccess( SettingWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.SetSettingWindowLabel( 'Conditional Access' )
+		self.SetPipScreen( )
 
 		smartCard = self.mCommander.Conax_GetInformation( CAS_SLOT_NUM_1 )
 		smartCardName = 'Not inserted'
@@ -39,7 +40,6 @@ class ConditionalAccess( SettingWindow ) :
 		self.InitControl( )
 		self.mInitialized = True
 		self.SetFocusControl( E_Input01 )
-		self.SetPipScreen( )
 
 		
 	def onAction( self, aAction ) :

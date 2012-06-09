@@ -29,10 +29,10 @@ class EditTransponder( SettingWindow ) :
 			if self.getControl( E_SETTING_DESCRIPTION ).getLabel( ) == 'Has no configured satellite' :
 				hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 				self.SetVisibleControls( hideControlIds, True )
+			self.SetPipScreen( )
 			self.InitConfig( )
 			self.mInitialized = True
 			self.SetFocusControl( E_Input01 )
-			self.SetPipScreen( )
 		
 
 	def onAction( self, aAction ) :

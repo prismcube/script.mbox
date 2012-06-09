@@ -97,14 +97,14 @@ class DialogStopRecord( BaseDialog ) :
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
-			self.Close()
+			self.Close( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 					
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
-			self.Close()
+			self.Close( )
 		
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == BUTTON_ID_RECORD_1 :
@@ -159,8 +159,8 @@ class DialogStopRecord( BaseDialog ) :
 			LOG_TRACE('')
 			pass
 
-	def Close( self ):
-		self.close( )
+	def Close( self ) :
+		self.CloseDialog( )
 
 
 	def StopRecord( self, aControlId ):
@@ -173,7 +173,7 @@ class DialogStopRecord( BaseDialog ) :
 			self.mCommander.Timer_StopRecordingByRecordKey( recInfo.mRecordKey )
 			#self.mCommander.Record_StopRecord( recInfo.mChannelNo, recInfo.mServiceType, recInfo.mRecordKey  )
 			self.mIsOk = E_DIALOG_STATE_YES
-			self.Close( )			
+			self.Close( )
 
 		elif aControlId == BUTTON_ID_RECORD_2 :
 			LOG_TRACE('---------------------------------------->')

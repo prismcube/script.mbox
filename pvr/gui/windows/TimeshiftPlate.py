@@ -219,7 +219,7 @@ class TimeShiftPlate(BaseWindow):
 				pass
 			else :
 				self.Close( )
-				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif id == Action.ACTION_STOP :
 			self.onClick( self.mCtrlBtnStop.getId() )
@@ -404,7 +404,7 @@ class TimeShiftPlate(BaseWindow):
 			self.mProgress_idx = 0.0
 
 			#self.RecordingStopAll( )
-			self.Close()
+			self.Close( )
 			WinMgr.GetInstance().ShowWindow( gobackID )
 			return
 
@@ -895,7 +895,7 @@ class TimeShiftPlate(BaseWindow):
 			self.mDataCache.mCacheReload = True
 
 
-	def Close( self ):
+	def Close( self ) :
 		self.mEventBus.Deregister( self )
 
 		self.mEnableThread = False

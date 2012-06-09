@@ -52,6 +52,8 @@ class TimerWindow(BaseWindow):
 		self.mCtrlHDImage.setImage('')
 		self.mCtrlDolbyImage.setImage('')
 		self.mCtrlSubtitleImage.setImage('')
+
+		self.SetPipScreen( )
 		
 		self.UpdateTimerMode( )
 
@@ -64,15 +66,11 @@ class TimerWindow(BaseWindow):
 		
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		self.mGMTTime = 0
-
 		
 		self.Load( )
 		self.UpdateList( )
 
-		
 		self.mEventBus.Register( self )	
-		self.SetPipScreen( )
-		
 		self.mInitialized = True
 
 	def onAction( self, aAction ) :
@@ -457,6 +455,6 @@ class TimerWindow(BaseWindow):
 			self.UpdateList()
 
 		else :
-			self.Close()
+			self.Close( )
 
 
