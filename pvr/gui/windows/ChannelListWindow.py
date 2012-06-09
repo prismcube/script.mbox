@@ -342,20 +342,23 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		elif id == Action.ACTION_STOP :
-			status = self.mDataCache.Player_GetStatus()
-			if status.mMode :
-				self.mDataCache.SetKeyDisabled( False )
-				ret = self.mDataCache.Player_Stop()
+			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 
-				iChannel = self.mDataCache.Channel_GetCurrent( )
-				LOG_TRACE('-------------------iChannel[%s]'% iChannel )
-				if iChannel :
-					self.mNavChannel = iChannel
-					self.mCurrentChannel = iChannel.mNumber
+				status = self.mDataCache.Player_GetStatus()
+				if status.mMode :
+					self.mDataCache.SetKeyDisabled( False )
+					ret = self.mDataCache.Player_Stop()
 
-				self.mIsSelect == True
-				self.UpdateLabelInfo()
+					iChannel = self.mDataCache.Channel_GetCurrent( )
+					LOG_TRACE('-------------------iChannel[%s]'% iChannel )
+					if iChannel :
+						self.mNavChannel = iChannel
+						self.mCurrentChannel = iChannel.mNumber
 
+					self.mIsSelect == True
+					self.UpdateLabelInfo()
+				else :
+					self.RecordingStop()
 
 		elif id == Action.ACTION_MBOX_XBMC :
 			self.SetGoBackWindow( WinMgr.WIN_ID_MEDIACENTER )
@@ -364,6 +367,13 @@ class ChannelListWindow( BaseWindow ) :
 			#self.Close( )
 			self.SetGoBackWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+
+		elif id == Action.ACTION_MBOX_RECORD :
+			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+				if self.mChannelList or len(self.mChannelList) > 0 :
+					self.RecordingStart()
+
+
 
 
 		elif id == 13: #'x'
@@ -1226,7 +1236,7 @@ class ChannelListWindow( BaseWindow ) :
 				else :
 					zappingMode = self.mDataCache.Zappingmode_GetCurrent( )
 
-				if zappingMode :
+				if zappingMode != None and zappingMode.mError == 0 :
 					self.mZappingMode            = zappingMode.mMode
 					self.mChannelListSortMode    = zappingMode.mSortingMode
 					self.mChannelListServiceType = zappingMode.mServiceType
@@ -2402,6 +2412,64 @@ class ChannelListWindow( BaseWindow ) :
 					self.SetChannelTune( int(inputNumber) )
 
 
+	def RecordingStop( self ) :
+		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+
+		isOK = False
+		defaultType = ElisEnum.E_SERVICE_TYPE_TV
+		defaultMode = ElisEnum.E_MODE_ALL
+		defaultSort = ElisEnum.E_SORT_BY_NUMBER
+		if isRunRec > 0 :
+			GuiLock2( True )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
+			dialog.doModal( )
+			GuiLock2( False )
+
+			isOK = dialog.IsOK()
+			if isOK == E_DIALOG_STATE_YES :
+				isOK = True
+				if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
+					isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+					self.mDataCache.Channel_GetZappingList( )
+
+					if isRunRec > 0 :
+						#use zapping table, in recording
+						self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
+						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
+
+					else :
+						self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
+						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
+
+		if isOK == True :
+			self.mDataCache.mCacheReload = True
+			self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
+			self.ShowRecording( )
+			self.ReloadChannelList( )
+
+
+	def RecordingStart( self ) :
+		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
+
+		isOK = False
+		GuiLock2(True)
+		if runningCount < 2 :
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+			dialog.doModal()
+
+			isOK = dialog.IsOK()
+			if isOK == E_DIALOG_STATE_YES :
+				isOK = True
+		else:
+			msg = 'Already [%s] recording(s) running' %runningCount
+			xbmcgui.Dialog().ok('Infomation', msg )
+		GuiLock2(False)
+
+		if isOK :
+			self.ShowRecording()
+			self.ReloadChannelList( )
+
+
 	def ShowRecording( self ) :
 		try:
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
@@ -2429,20 +2497,54 @@ class ChannelListWindow( BaseWindow ) :
 				self.mRecChannel2.append( recName )
 
 			if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
+				defaultType = ElisEnum.E_SERVICE_TYPE_TV
+				defaultMode = ElisEnum.E_MODE_ALL
+				defaultSort = ElisEnum.E_SORT_BY_NUMBER
+				self.mDataCache.Channel_GetZappingList( )
+				time.sleep(0.5)
 				if isRunRec > 0 :
 					self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), False, E_TAG_ENABLE )
 					#use zapping table, in recording
 					self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
-					self.mDataCache.Channel_GetZappingList( )
-					self.mDataCache.LoadChannelList( )
-					LOG_TRACE ('Recording changed: cache re-load')
+					self.mDataCache.mCacheReload = True
+					self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
+
 				else :
 					self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), True, E_TAG_ENABLE )
 					#use all channel table, not recording
 					self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
+					self.mDataCache.mCacheReload = True
+					self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
+					#LOG_TRACE('--------------load channel len[%s]'% len(self.mChannelList) )
 
+
+			return isRunRec
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
+
+	def ReloadChannelList( self ) :
+		time.sleep(0.5)
+		self.mListItems = None
+		self.mCtrlListCHList.reset( )
+		self.InitSlideMenuHeader( FLAG_ZAPPING_CHANGE )
+		self.RefreshSlideMenu( E_SLIDE_ALLCHANNEL, ElisEnum.E_MODE_ALL, True )
+		self.InitChannelList( )
+
+		"""
+		#initialize get epg event
+		self.mIsSelect = False
+		self.InitEPGEvent( )
+
+		#clear label
+		self.ResetLabel( )
+		self.UpdateLabelInfo( )
+		"""
+		self.mFlag_EditChanged = False
+		self.mMoveFlag = False
+
+		#slide close
+		self.mCtrlListCHList.setEnabled(True)
+		self.setFocusId( self.mCtrlGroupCHList.getId( ) )
 

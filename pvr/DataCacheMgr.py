@@ -455,21 +455,25 @@ class DataCacheMgr( object ):
 			tmpChannelList = self.mCommander.Channel_GetList( self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
 
 
-		oldCount = 0
-		newCount = 0
-		if self.mChannelList :
-			oldCount = len( self.mChannelList )
-		if tmpChannelList :
-			newCount = len( tmpChannelList )
-		if oldCount != newCount :
+		if aReopen :
 			self.mCacheReload = True
+
+		else :
+			oldCount = 0
+			newCount = 0
+			if self.mChannelList :
+				oldCount = len( self.mChannelList )
+			if tmpChannelList :
+				newCount = len( tmpChannelList )
+			if oldCount != newCount :
+				self.mCacheReload = True
 
 
 		prevChannel = None
 		nextChannel = None
 
-		if self.mChannelList and tmpChannelList :
-			LOG_TRACE('oldcount[%d] newcount[%s]'% (len(self.mChannelList), len(tmpChannelList)) )
+		#if self.mChannelList and tmpChannelList :
+		#	LOG_TRACE('oldcount[%d] newcount[%s]'% (len(self.mChannelList), len(tmpChannelList)) )
 
 		self.mChannelList = tmpChannelList
 		if self.mChannelList and self.mChannelList[0].mError == 0 :
