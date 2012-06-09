@@ -96,10 +96,13 @@ class NullWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_LEFT:
 			print 'youn check ation left'
+			pass
+			"""
 			window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 			window.SetAutomaticHide( True )
 			self.Close( )			
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+			"""
 
 		elif actionId == Action.ACTION_SHOW_INFO:
 			self.Close( )		
@@ -224,9 +227,16 @@ class NullWindow( BaseWindow ) :
 				msg = 'Already %d recording(s) running' %runningCount
 				xbmcgui.Dialog( ).ok('Infomation', msg )
 		
-		elif actionId == Action.ACTION_PAUSE :
+		elif actionId == Action.ACTION_PAUSE or Action.ACTION_PLAYER_PLAY:
 			status = self.mDataCache.Player_GetStatus()
-			if status.mMode == ElisEnum.E_MODE_TIMESHIFT or status.mMode == ElisEnum.E_MODE_PVR :
+			if status.mMode == ElisEnum.E_MODE_LIVE :
+				window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+				window.SetAutomaticHide( True )
+				self.Close( )
+				self.mDataCache.Player_StartTimeshiftPlayback( ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE, 0 )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+				
+			elif status.mMode == ElisEnum.E_MODE_TIMESHIFT or status.mMode == ElisEnum.E_MODE_PVR :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 		
