@@ -4764,7 +4764,7 @@
 					<control type="label">
 						<posx>700</posx>
 						<posy>0</posy>
-						<width>150</width>
+						<width>180</width>
 						<height>40</height>
 						<font>font13_title</font>
 						<textcolor>grey2</textcolor>
@@ -4850,7 +4850,7 @@
 					<control type="label">
 						<posx>700</posx>
 						<posy>0</posy>
-						<width>150</width>
+						<width>180</width>
 						<height>40</height>
 						<font>font13_title</font>
 						<textcolor>white</textcolor>
