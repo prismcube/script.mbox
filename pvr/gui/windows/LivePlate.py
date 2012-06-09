@@ -258,6 +258,7 @@ class LivePlate( BaseWindow ) :
 			self.ChannelTune( PREV_CHANNEL )
 
 		elif id == Action.ACTION_PAUSE:
+			self.Close( )
 			winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_TIMESHIFT_PLATE )
 
 		elif id == Action.ACTION_STOP :
