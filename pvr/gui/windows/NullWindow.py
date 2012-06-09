@@ -238,7 +238,6 @@ class NullWindow( BaseWindow ) :
 			window.SetAutomaticHide( True )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
 				self.Close( )
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).SetAutomaticHide( True )
 				self.mDataCache.Player_StartTimeshiftPlayback( ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE, 0 )
 
 			else:
