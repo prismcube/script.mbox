@@ -258,7 +258,8 @@ class LivePlate( BaseWindow ) :
 			self.ChannelTune( PREV_CHANNEL )
 
 		elif id == Action.ACTION_PAUSE:
-			winmgr.GetInstance().ShowWindow( winmgr.WIN_ID_TIMESHIFT_PLATE )
+			self.Close( )
+			WinMgr.GetInstance().ShowWindow( winmgr.WIN_ID_TIMESHIFT_PLATE )
 
 		elif id == Action.ACTION_STOP :
 			status = None
@@ -275,6 +276,9 @@ class LivePlate( BaseWindow ) :
 		elif id == Action.ACTION_MBOX_ARCHIVE :
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+
+		elif id == Action.ACTION_MBOX_RECORD :
+			self.onClick( self.mCtrlBtnStartRec.getId() )
 
 		#test
 		elif id == 13: #'x'

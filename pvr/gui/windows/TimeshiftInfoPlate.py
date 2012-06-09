@@ -1473,7 +1473,7 @@ class TimeShiftInfoPlate(BaseWindow):
 		self.StopAsyncMove()
 		self.StopAutomaticHide()
 
-		WinMgr.GetInstance().CloseWindow( )
+		#WinMgr.GetInstance().CloseWindow( )
 
 
 	def SetAutomaticHide( self, aHide=True ) :

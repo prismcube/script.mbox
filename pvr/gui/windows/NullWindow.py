@@ -246,6 +246,27 @@ class NullWindow( BaseWindow ) :
 			self.Close( )		
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
+		elif actionId == Action.ACTION_MBOX_RECORD :
+			runningCount = self.ShowRecording()
+
+			isOK = False
+			GuiLock2(True)
+			if  runningCount < 1 :
+				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+				dialog.doModal()
+
+				isOK = dialog.IsOK()
+				if isOK == E_DIALOG_STATE_YES :
+					isOK = True
+			else:
+				msg = 'Already [%s] recording(s) running' %runningCount
+				xbmcgui.Dialog().ok('Infomation', msg )
+			GuiLock2(False)
+
+			if isOK :
+				self.ShowRecording()
+				self.mDataCache.mCacheReload = True
+
 		elif actionId == Action.ACTION_MBOX_TEXT :
 			pass
 
@@ -332,6 +353,13 @@ class NullWindow( BaseWindow ) :
 				ch = self.mDataCache.Channel_GetCurrent( )
 				if ch.mLocked :
 					self.PincodeDialogLimit( self.mDataCache.mPropertyPincode )
+
+			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
+				 aEvent.getName() == ElisEventRecordingStopped.getName() :
+				self.ShowRecording()
+				self.mDataCache.mCacheReload = True
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 			elif E_SUPPROT_HBBTV == True :
 				if aEvent.getName() == ElisEventExternalMediaPlayerStart.getName() :
@@ -459,15 +487,19 @@ class NullWindow( BaseWindow ) :
 			if isOK == E_DIALOG_STATE_YES :
 				if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
 					isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+					defaultType = ElisEnum.E_SERVICE_TYPE_TV
+					defaultMode = ElisEnum.E_MODE_ALL
+					defaultSort = ElisEnum.E_SORT_BY_NUMBER
 					if isRunRec > 0 :
 						#use zapping table, in recording
 						self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
 						self.mDataCache.Channel_GetZappingList( )
-						self.mDataCache.LoadChannelList( )
+						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
 					else :
 						self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
-						self.mDataCache.LoadChannelList( )
+						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
 						self.mDataCache.mCacheReload = True
+
 
 	def ShowRecording( self ) :
 		try:
@@ -475,19 +507,22 @@ class NullWindow( BaseWindow ) :
 			#LOG_TRACE('isRunRecCount[%s]'% isRunRec)
 
 			if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
+				defaultType = ElisEnum.E_SERVICE_TYPE_TV
+				defaultMode = ElisEnum.E_MODE_ALL
+				defaultSort = ElisEnum.E_SORT_BY_NUMBER
 				if isRunRec > 0 :
 					#use zapping table, in recording
 					self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
 					self.mDataCache.Channel_GetZappingList( )
 					#### data cache re-load ####
-					self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, E_REOPEN_TRUE  )
+					self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
 
 				else :
 					self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
 					if self.mDataCache.mCacheReload :
 						self.mDataCache.mCacheReload = False
 						#### data cache re-load ####
-						self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, E_REOPEN_TRUE  )
+						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
 
 				#LOG_TRACE('table[%s]'% ret)
 
