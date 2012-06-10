@@ -185,7 +185,7 @@ class DataCacheMgr( object ):
 		# Channel
 		self.Channel_GetZappingList( )
 		self.LoadChannelList( )
-		#self.LoadGetListEpgByChannel( )
+		self.LoadGetListEpgByChannel( )
 		
 		self.mRecordingCount = self.Record_GetRunningRecorderCount()		
 

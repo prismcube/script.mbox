@@ -165,6 +165,11 @@ class LivePlate( BaseWindow ) :
 
 		self.InitLabelInfo()
 		#self.GetEPGList()
+		self.mEPGList = self.mDataCache.mEPGList
+		if self.mEPGList :
+			self.mFlag_ChannelChanged = True
+		else :
+			self.mFlag_ChannelChanged = False
 
 		try :
 			if self.mCurrentChannel :
