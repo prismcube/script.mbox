@@ -145,6 +145,8 @@ class DataCacheMgr( object ):
 		self.mPropertyPincode = ElisPropertyEnum( 'PinCode', self.mCommander ).GetProp( )
 		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
 
+		self.mRecordingCount = 0
+		
 		self.Load( )
 
 
@@ -181,6 +183,8 @@ class DataCacheMgr( object ):
 		# Channel
 		self.Channel_GetZappingList( )
 		self.LoadChannelList( )
+		
+		self.mRecordingCount = self.Record_GetRunningRecorderCount()		
 
 		# DATE
 		self.LoadTime( )
@@ -423,6 +427,7 @@ class DataCacheMgr( object ):
 
 	def LoadChannelList( self, aSync = 0, aType = ElisEnum.E_SERVICE_TYPE_TV, aMode = ElisEnum.E_MODE_ALL, aSort = ElisEnum.E_SORT_BY_NUMBER, aReopen = False ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
+			self.Channel_GetZappingList( )
 			mType = aType
 			mMode = aMode
 			mSort = aSort
@@ -1021,6 +1026,14 @@ class DataCacheMgr( object ):
 
 	def Channel_GetZappingList( self, aSync = 0 ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
+			recCount = self.Record_GetRunningRecorderCount( )
+			LOG_TRACE('%d : %d' %(self.mRecordingCount, recCount))
+			if self.mRecordingCount != recCount :
+				self.mRecordingCount = recCount
+			else :
+				LOG_TRACE('skip getzapping list')
+				return
+ 
 			return self.mCommander.Channel_GetZappingList( aSync )
 
 	def Channel_InvalidateCurrent( self ) :

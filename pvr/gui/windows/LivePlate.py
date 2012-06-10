@@ -971,7 +971,7 @@ class LivePlate( BaseWindow ) :
 				if isRunRec > 0 :
 					#use zapping table, in recording
 					self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
-					self.mDataCache.Channel_GetZappingList( )
+					#self.mDataCache.Channel_GetZappingList( )
 					#### data cache re-load ####
 					self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, E_REOPEN_TRUE  )
 
