@@ -138,6 +138,7 @@ class LivePlate( BaseWindow ) :
 		self.mAsyncEPGTimer = None
 		self.mAsyncTuneTimer = None
 		self.mAutomaticHideTimer = None
+		self.mLoopCount = 0
 
 		#self.UpdateLabelGUI( self.mCtrlLblEventClock.getId(), '' )
 
@@ -163,7 +164,7 @@ class LivePlate( BaseWindow ) :
 			self.mLastChannel =	self.mCurrentChannel
 
 		self.InitLabelInfo()
-		self.GetEPGList()
+		#self.GetEPGList()
 
 		try :
 			if self.mCurrentChannel :
@@ -275,6 +276,7 @@ class LivePlate( BaseWindow ) :
 
 		elif id == Action.ACTION_MBOX_ARCHIVE :
 			self.Close( )
+			self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
 		elif id == Action.ACTION_MBOX_RECORD :
@@ -685,12 +687,13 @@ class LivePlate( BaseWindow ) :
 			#lbl_localTime = TimeToString( self.mLocalTime, TimeFormatEnum.E_HH_MM )
 			#self.UpdateLabelGUI( self.mCtrlLblEventClock.getId(), lbl_localTime )
 
-			if  ( self.mLocalTime % 10 ) == 0 :
+			if  ( self.mLocalTime % 10 ) == 0 or self.mLoopCount == 3:
 				if self.mFlag_ChannelChanged :
 					self.GetEPGList( )
 				self.UpdateLocalTime( )
 
 			time.sleep(1)
+			self.mLoopCount += 1
 
 
 	def UpdateLocalTime( self ) :
@@ -1056,6 +1059,7 @@ class LivePlate( BaseWindow ) :
 
 	def RestartAsyncTune( self ) :
 		self.mFlag_ChannelChanged = True
+		self.mLoopCount = 0
 		self.StopAsyncTune( )
 		self.StartAsyncTune( )
 

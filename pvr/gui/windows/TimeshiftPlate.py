@@ -248,6 +248,7 @@ class TimeShiftPlate(BaseWindow):
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif id == Action.ACTION_PLAYER_PLAY :
+			self.mWin.setProperty( 'IsXpeeding', 'False' )
 			if self.mIsPlay == FLAG_PAUSE :
 				self.onClick( E_CONTROL_ID_BUTTON_PAUSE )
 			else :
@@ -276,7 +277,7 @@ class TimeShiftPlate(BaseWindow):
 
 		elif id == Action.ACTION_MBOX_ARCHIVE :
 			self.Close( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, self.mDataCache.mSetFromParentWindow )
 
 
 		#test
@@ -353,8 +354,9 @@ class TimeShiftPlate(BaseWindow):
 
 				elif aEvent.mType == ElisEnum.E_EOF_END :
 					LOG_TRACE( 'EventRecv EOF_END' )
-					if self.mMode == ElisEnum.E_MODE_PVR :
-						xbmc.executebuiltin('xbmc.Action(stop)')
+					#if self.mMode == ElisEnum.E_MODE_PVR :
+					#	xbmc.executebuiltin('xbmc.Action(stop)')
+					self.TimeshiftAction( E_CONTROL_ID_BUTTON_STOP )
 
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
@@ -446,10 +448,7 @@ class TimeShiftPlate(BaseWindow):
 
 				elif self.mMode == ElisEnum.E_MODE_PVR :
 					ret = self.mDataCache.Player_Stop()
-					if self.mDataCache.mStatusIsArchive :
-						gobackID = WinMgr.WIN_ID_ARCHIVE_WINDOW
-					else :
-						gobackID = WinMgr.WIN_ID_LIVE_PLATE
+					gobackID = WinMgr.WIN_ID_ARCHIVE_WINDOW
 					self.mDataCache.SetKeyDisabled( False )
 
 				third -= 1
@@ -462,7 +461,7 @@ class TimeShiftPlate(BaseWindow):
 
 			#self.RecordingStopAll( )
 			self.Close( )
-			WinMgr.GetInstance().ShowWindow( gobackID )
+			WinMgr.GetInstance().ShowWindow( gobackID, self.mDataCache.mSetFromParentWindow )
 			return
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_REWIND :

@@ -71,6 +71,7 @@ class MainMenu( BaseWindow ) :
 			self.onClick( BUTTON_ID_MEDIA_CENTER )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
+			self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_MAINMENU
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
 
@@ -102,6 +103,7 @@ class MainMenu( BaseWindow ) :
 					WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONDITIONAL_ACCESS )
 
 		elif aControlId == BUTTON_ID_ARCHIVE :
+			self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_MAINMENU
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 			
 		elif aControlId == BUTTON_ID_EPG :
