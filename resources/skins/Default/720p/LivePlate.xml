@@ -20,11 +20,6 @@
 			<control type="group">
 	            <posx>190r</posx>
 	            <posy>563</posy>
-	            <animation effect="slide" start="0,0" end="-60,0" delay="0" time="300" condition="Window.IsVisible(MuteBug)">conditional</animation>
-	            <animation effect="slide" start="0,0" end="220,0" delay="0" time="300">WindowClose</animation>
-	            <animation effect="slide" start="220,0" end="0,0" delay="0" time="300">WindowOpen</animation>
-	            <animation effect="slide" start="0,0" end="220,0" delay="0" time="300" condition="Control.HasFocus(999)">Conditional</animation>
-				<animation effect="slide" start="220,0" end="0,0" delay="0" time="300" condition="!Control.HasFocus(999)">Conditional</animation>
 				<control type="image">
 	                <description>time background</description>
 	                <posx>0</posx>
