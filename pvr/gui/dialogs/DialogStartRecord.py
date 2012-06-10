@@ -217,12 +217,6 @@ class DialogStartRecord( BaseDialog ) :
 		self.mCtrlProgress.setPercent( percent )
 
 
-	def RecordConflict( self, aInfo ) :	
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		dialog.SetDialogProperty( 'Conflict', 'Conflict' )
-		dialog.doModal( )
-
-
 	def RecordConflict( self, aInfo ) :
 		label = [ '', '', '' ]
 		if aInfo[0].mError == -1 :
