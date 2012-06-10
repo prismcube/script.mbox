@@ -263,8 +263,8 @@ class NullWindow( BaseWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
-			LOG_TRACE('-------------------- archive action[%s]------------'% actionId)
-			self.Close( )		
+			self.Close( )
+			self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
 		elif actionId == Action.ACTION_MBOX_RECORD :

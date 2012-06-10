@@ -95,6 +95,7 @@ class DataCacheMgr( object ):
 		self.mAllSatelliteListHash				= {}
 		self.mTransponderListHash				= {}
 		self.mEPGListHash						= {}
+		self.mEPGList 							= None
 
 		self.mChannelListDBTable				= E_TABLE_ALLCHANNEL
 		self.mEpgDB = None
@@ -105,6 +106,7 @@ class DataCacheMgr( object ):
 		self.mStatusIsArchive = False
 		self.mRecInfo = None
 		self.mSkip = False
+		self.mSetFromParentWindow = 1
 
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
@@ -183,6 +185,7 @@ class DataCacheMgr( object ):
 		# Channel
 		self.Channel_GetZappingList( )
 		self.LoadChannelList( )
+		#self.LoadGetListEpgByChannel( )
 		
 		self.mRecordingCount = self.Record_GetRunningRecorderCount()		
 
@@ -286,7 +289,31 @@ class DataCacheMgr( object ):
 				self.mTransponderListHash[hashKey] = transponderList
 		else :
 			LOG_WARN('Has no Configured Satellite')
-		
+
+
+	def LoadGetListEpgByChannel( self ) :
+		if SUPPORT_EPG_DATABASE	== True :
+			#Live EPG
+			gmtFrom  = self.Datetime_GetLocalTime()
+			#gmtFrom  = self.mTimeshift_curTime
+			gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
+			maxCount = 100
+			LOG_TRACE('-------------------------------------------')
+			LOG_TRACE('ch.mNumber[%s] sid[%s] tsid[%s] onid[%s]'% ( self.mCurrentChannel.mNumber, self.mCurrentChannel.mSid, self.mCurrentChannel.mTsid, self.mCurrentChannel.mOnid ) )
+			if self.mCurrentChannel == None or self.mCurrentChannel.mError != 0 :
+				return None
+
+			self.mEPGList = self.Epgevent_GetListByChannel( self.mCurrentChannel.mSid, self.mCurrentChannel.mTsid, self.mCurrentChannel.mOnid, gmtFrom, gmtUntil, maxCount )
+
+			"""
+			from pvr.GuiHelper import ClassToList 
+			if self.mEPGList != None and len(self.mEPGList) > 0 :
+				LOG_TRACE('epgList len[%s] [%s]'% (len(self.mEPGList), ClassToList('convert', self.mEPGList) ) )
+			else :
+				LOG_TRACE('epgList None')
+			"""
+
+
 	@DataLock
 	def GetAllSatelliteList( self ) :
 		return self.mAllSatelliteList

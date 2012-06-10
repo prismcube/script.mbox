@@ -435,7 +435,7 @@ class ArchiveWindow( BaseWindow ) :
 		selectedPos = self.GetSelectedPosition( )
 		if self.mLastFocusItem == selectedPos :
 			self.SetVideoRestore( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 		else :		
 			if selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
 				recInfo = self.mRecordList[selectedPos]

@@ -365,6 +365,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif id == Action.ACTION_MBOX_ARCHIVE :
 			#self.Close( )
+			self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
 			self.SetGoBackWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
