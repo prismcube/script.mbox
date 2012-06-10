@@ -43,6 +43,7 @@ class LivePlate( BaseWindow ) :
 		self.mAsyncEPGTimer = None
 		self.mAsyncTuneTimer = None	
 		self.mAutomaticHide = False
+		self.mInitializeEPG = False
 
 
 	"""
@@ -127,7 +128,7 @@ class LivePlate( BaseWindow ) :
 		self.mCtrlBtnNextEpg           = self.getControl( 706 )
 
 		self.mFlag_OnEvent = True
-		self.mFlag_ChannelChanged = True
+		self.mFlag_ChannelChanged = False
 		self.mCurrentEvent = None
 		self.mEPGList = None
 		self.mEPGListIdx = 0
@@ -165,11 +166,21 @@ class LivePlate( BaseWindow ) :
 
 		self.InitLabelInfo()
 		#self.GetEPGList()
-		self.mEPGList = self.mDataCache.mEPGList
-		if self.mEPGList :
-			self.mFlag_ChannelChanged = True
-		else :
-			self.mFlag_ChannelChanged = False
+
+		"""
+		if self.mInitializeEPG :
+			self.mEPGList = self.mDataCache.mEPGList
+			if self.mEPGList != None and len(self.mEPGList) > 0 :
+				self.mFlag_ChannelChanged = True
+			else :
+				self.mFlag_ChannelChanged = False
+
+			if self.mEPGList != None and len(self.mEPGList) > 0 :
+				LOG_TRACE('epgList len[%s] [%s]'% (len(self.mEPGList), ClassToList('convert', self.mEPGList) ) )
+			else :
+				LOG_TRACE('epgList None')
+			self.mInitializeEPG = False
+		"""
 
 		try :
 			if self.mCurrentChannel :
@@ -556,7 +567,8 @@ class LivePlate( BaseWindow ) :
 					return
 
 				iEPG = None
-				iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mOnid )
+				#iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mOnid )
+				iEPG = self.mDataCache.Epgevent_GetPresent()
 				if iEPG == None or iEPG.mError != 0 :
 					#receive onEvent
 					self.mFlag_OnEvent = True
