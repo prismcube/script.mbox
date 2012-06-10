@@ -91,7 +91,7 @@ class ArchiveWindow( BaseWindow ) :
 
 		self.Load( )
 
-		self.UpdateAscending()
+		self.UpdateAscending( )
 		self.UpdateViewMode( )
 		
 		self.InitControl( )
@@ -110,8 +110,6 @@ class ArchiveWindow( BaseWindow ) :
 		
 
 	def onAction( self, aAction ) :
-		if self.mRecordCount == 0 :
-			return
 		focusId = self.GetFocusId( )
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )		
@@ -154,8 +152,6 @@ class ArchiveWindow( BaseWindow ) :
 
 	
 	def onClick( self, aControlId ) :
-		if self.mRecordCount == 0 :
-			return
 		LOG_TRACE( 'aControlId=%d' % aControlId )
 
 		if aControlId == BUTTON_ID_VIEW_MODE :
@@ -330,7 +326,7 @@ class ArchiveWindow( BaseWindow ) :
 			for i in range( len( self.mRecordList ) ) :
 				recInfo = self.mRecordList[i]
 				#recInfo.printdebug()
-				channelName = 'P%04d.%s' %(recInfo.mChannelNo, recInfo.mChannelName,)
+				channelName = 'P%04d.%s' % ( recInfo.mChannelNo, recInfo.mChannelName )
 				#recItem = xbmcgui.ListItem( '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz', '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz' )
 				recItem = xbmcgui.ListItem( channelName, recInfo.mRecordName )
 				recItem.setProperty('RecDate', TimeToString( recInfo.mStartTime ) )

@@ -335,7 +335,7 @@
 
 		<!-- Item Position and Page Number for common list-->
 		<control type="group">
-			<include>DefaultWindowFade</include>		
+			<include>DefaultWindowFade</include>
 			<control type="label">		
 				<posx>60r</posx>
 				<posy>50r</posy>
