@@ -2430,7 +2430,7 @@ class ChannelListWindow( BaseWindow ) :
 				isOK = True
 				if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
 					isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
-					self.mDataCache.Channel_GetZappingList( )
+					#self.mDataCache.Channel_GetZappingList( )
 
 					if isRunRec > 0 :
 						#use zapping table, in recording
@@ -2500,8 +2500,8 @@ class ChannelListWindow( BaseWindow ) :
 				defaultType = ElisEnum.E_SERVICE_TYPE_TV
 				defaultMode = ElisEnum.E_MODE_ALL
 				defaultSort = ElisEnum.E_SORT_BY_NUMBER
-				self.mDataCache.Channel_GetZappingList( )
-				time.sleep(0.5)
+				#self.mDataCache.Channel_GetZappingList( )
+				#time.sleep(0.5)
 				if isRunRec > 0 :
 					self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), False, E_TAG_ENABLE )
 					#use zapping table, in recording

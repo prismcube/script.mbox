@@ -921,7 +921,7 @@ class TimeShiftPlate(BaseWindow):
 			if isRunRec > 0 :
 				#use zapping table, in recording
 				self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
-				self.mDataCache.Channel_GetZappingList( )
+				#self.mDataCache.Channel_GetZappingList( )
 
 			else :
 				self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
