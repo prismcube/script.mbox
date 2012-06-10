@@ -379,8 +379,11 @@ class NullWindow( BaseWindow ) :
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
 				self.ShowRecording()
 				self.mDataCache.mCacheReload = True
+				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
+				"""
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+				"""
 
 			elif E_SUPPROT_HBBTV == True :
 				if aEvent.getName() == ElisEventExternalMediaPlayerStart.getName() :
@@ -514,7 +517,7 @@ class NullWindow( BaseWindow ) :
 					if isRunRec > 0 :
 						#use zapping table, in recording
 						self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
-						self.mDataCache.Channel_GetZappingList( )
+						#self.mDataCache.Channel_GetZappingList( )
 						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
 					else :
 						self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
@@ -534,7 +537,7 @@ class NullWindow( BaseWindow ) :
 				if isRunRec > 0 :
 					#use zapping table, in recording
 					self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
-					self.mDataCache.Channel_GetZappingList( )
+					#self.mDataCache.Channel_GetZappingList( )
 					#### data cache re-load ####
 					self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
 
