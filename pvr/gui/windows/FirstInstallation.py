@@ -272,7 +272,7 @@ class FirstInstallation( SettingWindow ) :
 		elif self.mStepNum == E_STEP_RESULT :
 			self.mPrevStepNum = E_STEP_DATE_TIME
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( 'Result' )
-			self.AddInputControl( E_Input01, 'Language', 'test', 'Check Result' )
+			self.AddInputControl( E_Input01, 'Language', 'English', 'Check Result' )
 			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
 			self.AddInputControl( E_Input02, 'Date', self.mDate )
 			self.mTime = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_HH_MM )

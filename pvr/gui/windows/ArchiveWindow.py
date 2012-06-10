@@ -112,7 +112,7 @@ class ArchiveWindow( BaseWindow ) :
 	def onAction( self, aAction ) :
 		focusId = self.GetFocusId( )
 		actionId = aAction.getId( )
-		self.GlobalAction( actionId )		
+		self.GlobalAction( actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			if self.mDataCache.mStatusIsArchive :
@@ -123,7 +123,7 @@ class ArchiveWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_SELECT_ITEM or actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			if focusId == LIST_ID_COMMON_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD or focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD :
-				if	self.mMarkMode == True	:
+				if	self.mMarkMode == True :
 					self.DoMarkToggle( )
 				else :
 					self.StartRecordPlayback( )

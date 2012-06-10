@@ -682,7 +682,7 @@ class Configure( SettingWindow ) :
 
 	def SaveIp( self ) :
 		SetCurrentNetworkType( self.mUseNetworkType )
-		self.ShowProgress( 'Setting Network...', 15 )
+		self.ShowProgress( 'Setting Network...', 25 )
 		ret = self.mIpParser.SetNetwork( self.mTempNetworkType, self.mTempIpAddr, self.mTempSubNet, self.mTempGateway, self.mTempDns )
 		if ret == False :
 			try :
@@ -866,7 +866,7 @@ class Configure( SettingWindow ) :
 			self.mPasswordType	= self.GetSelectedIndex( E_SpinEx04 )
 
 		elif aControlId == E_Input01 :
-			self.ShowProgress( 'Scan Ap...', 30 )
+			self.ShowProgress( 'Scan Ap...', 25 )
 			time.sleep( 1 )
 			dev = self.mWireless.getWlandevice( )
 			if dev == None :
