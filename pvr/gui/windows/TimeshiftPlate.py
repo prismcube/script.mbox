@@ -73,6 +73,8 @@ class TimeShiftPlate(BaseWindow):
 		self.mAutomaticHideTimer = None	
 		self.mAutomaticHide = True
 
+		self.mPrekey = None
+
 
 	"""
 	def __del__(self):
@@ -158,7 +160,7 @@ class TimeShiftPlate(BaseWindow):
 				self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
 		"""
 
-		self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
+		#self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
 
 		self.mEventBus.Register( self )
 
@@ -168,6 +170,14 @@ class TimeShiftPlate(BaseWindow):
 
 		if self.mAutomaticHide == True :
 			self.StartAutomaticHide()
+
+		if self.mPrekey :
+			if self.mPrekey == Action.ACTION_MBOX_REWIND :
+				self.onClick( E_CONTROL_ID_BUTTON_REWIND )
+			elif self.mPrekey == Action.ACTION_MBOX_FF :
+				self.onClick( E_CONTROL_ID_BUTTON_FORWARD )
+
+			self.mPrekey = None
 
 
 	def onAction(self, aAction):
@@ -818,8 +828,8 @@ class TimeShiftPlate(BaseWindow):
 			self.mWin.setProperty( 'IsXpeeding', 'True' )
 
 		else :
-			self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PLAY, True )
 			self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
+			self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PLAY, True )			
 			self.mWin.setProperty( 'IsXpeeding', 'False' )
 
 		return ret
@@ -1071,5 +1081,6 @@ class TimeShiftPlate(BaseWindow):
 			move = dialog.GetMoveToJump()
 			if move :
 				ret = self.mDataCache.Player_JumpToIFrame( int(move) )
+
 
 

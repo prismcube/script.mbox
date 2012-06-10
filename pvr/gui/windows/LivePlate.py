@@ -164,6 +164,16 @@ class LivePlate( BaseWindow ) :
 			self.mFakeChannel =	self.mCurrentChannel
 			self.mLastChannel =	self.mCurrentChannel
 
+		if self.mFakeChannel :
+			self.mCurrentEvent = None
+			self.UpdateLabelGUI( self.mCtrlLblChannelNumber.getId(), ('%s'% self.mFakeChannel.mNumber) )
+			self.UpdateLabelGUI( self.mCtrlLblChannelName.getId(), self.mFakeChannel.mName )
+		else:
+			self.UpdateLabelGUI( self.mCtrlLblChannelNumber.getId(), '' )
+			self.UpdateLabelGUI( self.mCtrlLblChannelName.getId(), MR_LANG('No Channel') )
+			pass
+			#LOG_TRACE( 'has no channel' )
+
 		self.InitLabelInfo()
 		#self.GetEPGList()
 
@@ -274,10 +284,6 @@ class LivePlate( BaseWindow ) :
 
 			self.ChannelTune( PREV_CHANNEL )
 
-		elif id == Action.ACTION_PAUSE:
-			self.Close( )
-			WinMgr.GetInstance().ShowWindow( winmgr.WIN_ID_TIMESHIFT_PLATE )
-
 		elif id == Action.ACTION_STOP :
 			status = None
 			status = self.mDataCache.Player_GetStatus()
@@ -314,6 +320,20 @@ class LivePlate( BaseWindow ) :
 
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+
+		elif id == Action.ACTION_MBOX_REWIND :
+			status = self.mDataCache.Player_GetStatus()
+			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
+				self.Close( )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+
+		elif id == Action.ACTION_MBOX_FF :
+			status = self.mDataCache.Player_GetStatus()		
+			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
+				self.Close( )			
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
 
 		#test
@@ -582,13 +602,13 @@ class LivePlate( BaseWindow ) :
 
 				#Live EPG
 				#gmtFrom  = self.mCurrentEvent.mStartTime
-				gmtFrom  = self.mDataCache.Datetime_GetGMTTime()
-				gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
-				maxCount = 100
-				iEPGList = self.mDataCache.Epgevent_GetListByChannel( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount )
+				#gmtFrom  = self.mDataCache.Datetime_GetGMTTime()
+				#gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
+				#maxCount = 100
+				#iEPGList = self.mDataCache.Epgevent_GetListByChannel( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount )
 				#LOG_TRACE('iEPGList[%s] ch[%d] sid[%d] tid[%d] oid[%d] from[%s] until[%s]'% (iEPGList, ch.mNumber, ch.mSid, ch.mTsid, ch.mOnid, time.asctime(time.localtime(gmtFrom)), time.asctime(time.localtime(gmtUntil))) )
 
-				#self.mEPGList = self.mDataCache.Epgevent_GetListByChannelFromEpgCF(  ch.mSid,  ch.mTsid,  ch.mOnid )
+				self.mEPGList = self.mDataCache.Epgevent_GetListByChannelFromEpgCF(  ch.mSid,  ch.mTsid,  ch.mOnid )
 				if self.mEPGList == None or self.mEPGList[0].mError != 0 or len ( self.mEPGList ) <= 0 :
 					self.mFlag_OnEvent = True
 					#LOG_TRACE('EPGList is None\nLeave')
@@ -751,6 +771,7 @@ class LivePlate( BaseWindow ) :
 
 
 	def InitLabelInfo(self):
+		"""
 		if self.mFakeChannel :
 			self.mCurrentEvent = None
 			self.UpdateLabelGUI( self.mCtrlLblChannelNumber.getId(), ('%s'% self.mFakeChannel.mNumber) )
@@ -760,6 +781,7 @@ class LivePlate( BaseWindow ) :
 			self.UpdateLabelGUI( self.mCtrlLblChannelName.getId(), MR_LANG('No Channel') )
 			pass
 			#LOG_TRACE( 'has no channel' )
+		"""
 
 		self.UpdateLabelGUI( self.mCtrlProgress.getId(),                  0 )
 		self.UpdateLabelGUI( self.mCtrlLblLongitudeInfo.getId(),         '' )
@@ -1002,9 +1024,10 @@ class LivePlate( BaseWindow ) :
 						#### data cache re-load ####
 						self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, E_REOPEN_TRUE  )
 
-
+				"""
 				self.mFakeChannel = self.mCurrentChannel
 				self.mLastChannel = self.mCurrentChannel
+				"""
 				#LOG_TRACE('table[%s]'% ret)
 
 
