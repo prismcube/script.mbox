@@ -355,8 +355,8 @@ class TimeShiftPlate(BaseWindow):
 				elif aEvent.mType == ElisEnum.E_EOF_END :
 					LOG_TRACE( 'EventRecv EOF_END' )
 					#if self.mMode == ElisEnum.E_MODE_PVR :
-					#	xbmc.executebuiltin('xbmc.Action(stop)')
-					self.TimeshiftAction( E_CONTROL_ID_BUTTON_STOP )
+					xbmc.executebuiltin('xbmc.Action(stop)')
+					#self.TimeshiftAction( E_CONTROL_ID_BUTTON_STOP )
 
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
@@ -965,7 +965,7 @@ class TimeShiftPlate(BaseWindow):
 		self.mEventBus.Deregister( self )
 
 		self.mEnableThread = False
-		self.CurrentTimeThread().join()
+		#self.CurrentTimeThread().join()
 
 		self.StopAsyncMove()
 		self.StopAutomaticHide()
