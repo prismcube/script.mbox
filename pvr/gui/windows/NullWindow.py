@@ -219,25 +219,36 @@ class NullWindow( BaseWindow ) :
 			pass
 
 		elif actionId == Action.ACTION_MBOX_RECORD :
-			runningCount = self.mCommander.Record_GetRunningRecorderCount( )		
-			if  runningCount < E_MAX_RECORD_COUNT :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
-				dialog.doModal( )
-			else:
-				msg = 'Already %d recording(s) running' %runningCount
-				xbmcgui.Dialog( ).ok('Infomation', msg )
+			status = self.mDataCache.Player_GetStatus()
+			if status.mMode == ElisEnum.E_MODE_PVR :
+				msg = 'Now PVR Playing...'
+				xbmcgui.Dialog( ).ok('Warning', msg )
+			else :
+				runningCount = self.mCommander.Record_GetRunningRecorderCount( )		
+				if  runningCount < E_MAX_RECORD_COUNT :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+					dialog.doModal( )
+				else:
+					msg = 'Already %d recording(s) running' %runningCount
+					xbmcgui.Dialog( ).ok('Infomation', msg )
 		
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			status = self.mDataCache.Player_GetStatus()
+			window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+			window.SetAutomaticHide( True )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
 				self.Close( )
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).SetAutomaticHide( True )
 				self.mDataCache.Player_StartTimeshiftPlayback( ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE, 0 )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+
+			else:
+				if status.mSpeed == 0 :
+					self.mDataCache.Player_Resume()
+				else :
+					self.mDataCache.Player_Pause()
+
+			self.Close( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 				
-			elif status.mMode == ElisEnum.E_MODE_TIMESHIFT or status.mMode == ElisEnum.E_MODE_PVR :
-				self.Close( )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 		
 		elif actionId == Action.ACTION_MBOX_REWIND :
 			status = self.mDataCache.Player_GetStatus()

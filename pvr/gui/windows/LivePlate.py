@@ -280,6 +280,24 @@ class LivePlate( BaseWindow ) :
 		elif id == Action.ACTION_MBOX_RECORD :
 			self.onClick( self.mCtrlBtnStartRec.getId() )
 
+		elif id == Action.ACTION_PAUSE or id == Action.ACTION_PLAYER_PLAY :
+			status = self.mDataCache.Player_GetStatus()
+			window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+			window.SetAutomaticHide( True )
+			if status.mMode == ElisEnum.E_MODE_LIVE :
+				window.SetAutomaticHide( True )
+				self.mDataCache.Player_StartTimeshiftPlayback( ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE, 0 )
+
+			else:
+				if status.mSpeed == 0 :
+					self.mDataCache.Player_Resume()
+				else :
+					self.mDataCache.Player_Pause()
+
+			self.Close( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+
+
 		#test
 		elif id == 13: #'x'
 			LOG_TRACE( 'cwd[%s]'% xbmc.getLanguage() )
