@@ -43,7 +43,6 @@ class LivePlate( BaseWindow ) :
 		self.mAsyncEPGTimer = None
 		self.mAsyncTuneTimer = None	
 		self.mAutomaticHide = False
-		self.mInitializeEPG = False
 
 
 	"""
@@ -140,6 +139,7 @@ class LivePlate( BaseWindow ) :
 		self.mAsyncTuneTimer = None
 		self.mAutomaticHideTimer = None
 		self.mLoopCount = 0
+		self.mInitializeCheck = False
 
 		#self.UpdateLabelGUI( self.mCtrlLblEventClock.getId(), '' )
 
@@ -152,6 +152,7 @@ class LivePlate( BaseWindow ) :
 			self.mZappingMode = ElisIZappingMode( )
 
 		self.ShowRecording( )
+		self.mInitializeCheck = True
 
 		#get channel
 		iChannel = self.mDataCache.Channel_GetCurrent( )
@@ -178,7 +179,7 @@ class LivePlate( BaseWindow ) :
 		#self.GetEPGList()
 
 		"""
-		if self.mInitializeEPG :
+		if self.mInitializeCheck :
 			self.mEPGList = self.mDataCache.mEPGList
 			if self.mEPGList != None and len(self.mEPGList) > 0 :
 				self.mFlag_ChannelChanged = True
@@ -189,7 +190,7 @@ class LivePlate( BaseWindow ) :
 				LOG_TRACE('epgList len[%s] [%s]'% (len(self.mEPGList), ClassToList('convert', self.mEPGList) ) )
 			else :
 				LOG_TRACE('epgList None')
-			self.mInitializeEPG = False
+			self.mInitializeCheck = False
 		"""
 
 		try :
@@ -1009,7 +1010,7 @@ class LivePlate( BaseWindow ) :
 				strLabelRecord2 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
 
 
-			if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
+			if self.mDataCache.GetChangeDBTableChannel( ) != -1 and self.mInitializeCheck == True :
 				if isRunRec > 0 :
 					#use zapping table, in recording
 					self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
