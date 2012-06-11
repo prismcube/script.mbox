@@ -895,7 +895,7 @@ class LivePlate( BaseWindow ) :
 
 
 		elif aFocusId == self.mCtrlBtnStartRec.getId() :
-			runningCount = self.ShowRecording()
+			runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 			#LOG_TRACE( 'runningCount[%s]' %runningCount)
 
 			isOK = False
@@ -914,11 +914,11 @@ class LivePlate( BaseWindow ) :
 			GuiLock2(False)
 
 			if isOK :
-				self.ShowRecording()
+				#self.ShowRecording()
 				self.mDataCache.mCacheReload = True
 
 		elif aFocusId == self.mCtrlBtnStopRec.getId() :
-			runningCount = self.ShowRecording()
+			runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 			#LOG_TRACE( 'runningCount[%s]' %runningCount )
 
 			isOK = False
@@ -933,7 +933,7 @@ class LivePlate( BaseWindow ) :
 				GuiLock2( False )
 
 			if isOK :
-				self.ShowRecording( )
+				#self.ShowRecording( )
 				self.mDataCache.mCacheReload = True
 
 		elif aFocusId == self.mCtrlBtnSettingFormat.getId() :
