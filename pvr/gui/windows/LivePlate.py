@@ -77,8 +77,8 @@ class LivePlate( BaseWindow ) :
 	def __del__(self):
 		LOG_TRACE( 'destroyed LivePlate' )
 
-		# end thread CurrentTimeThread()
-		self.mEnableThread = False
+		# end thread LocalThreadDisplayedEPG()
+		self.mEnableLocalThread = False
 
 	def onInit ( self ) :
 		currentStack = inspect.stack()
@@ -159,7 +159,7 @@ class LivePlate( BaseWindow ) :
 		self.mJumpNumber = 0
 		self.mZappingMode = None
 
-		self.mEnableThread = True
+		self.mEnableLocalThread = True
 		self.mAsyncEPGTimer = None
 		self.mAsyncTuneTimer = None
 		self.mAutomaticHideTimer = None
@@ -174,7 +174,7 @@ class LivePlate( BaseWindow ) :
 		if not self.mZappingMode :
 			self.mZappingMode = ElisIZappingMode( )
 
-		self.ShowRecording( )
+		self.DisplayInfoByRecording( )
 
 		#get channel
 		iChannel = self.mDataCache.Channel_GetCurrent( )
@@ -189,16 +189,16 @@ class LivePlate( BaseWindow ) :
 
 		if self.mFakeChannel :
 			self.mCurrentEvent = None
-			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ('%s'% self.mFakeChannel.mNumber) )
-			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ('%s'% self.mFakeChannel.mNumber) )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
 		else:
-			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, '' )
-			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, MR_LANG('No Channel') )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, '' )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, MR_LANG('No Channel') )
 			pass
 			#LOG_TRACE( 'has no channel' )
 
-		self.InitLabelInfo()
-		#self.GetEPGList()
+		self.InitControlGUI()
+		#self.GetEPGListByChannel()
 
 		try :
 			if self.mCurrentChannel :
@@ -206,7 +206,7 @@ class LivePlate( BaseWindow ) :
 				iEPG = self.mDataCache.Epgevent_GetPresent()
 				if iEPG and iEPG.mError == 0 :
 					self.mCurrentEvent = iEPG
-					self.UpdateONEvent( iEPG )
+					self.UpdateDisplay( iEPG )
 
 				if self.mCurrentChannel.mLocked :
 					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mDataCache.mPropertyPincode )
@@ -220,8 +220,8 @@ class LivePlate( BaseWindow ) :
 		self.mEventBus.Register( self )
 
 		#run thread
-		self.mEnableThread = True
-		self.CurrentTimeThread()
+		self.mEnableLocalThread = True
+		self.LocalThreadDisplayedEPG()
 
 
 		if self.mAutomaticHide == True :
@@ -232,11 +232,11 @@ class LivePlate( BaseWindow ) :
 		id = aAction.getId( )
 		self.GlobalAction( id )
 		if id >= Action.REMOTE_0 and id <= Action.REMOTE_9 :
-			self.KeySearch( id-Action.REMOTE_0 )
+			self.SetTuneByNumber( id-Action.REMOTE_0 )
 
 		elif id >= Action.ACTION_JUMP_SMS2 and id <= Action.ACTION_JUMP_SMS9 :
 			rKey = id - (Action.ACTION_JUMP_SMS2 - 2)
-			self.KeySearch( rKey )
+			self.SetTuneByNumber( rKey )
 
 		elif id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
 			self.StopAutomaticHide()
@@ -441,7 +441,7 @@ class LivePlate( BaseWindow ) :
 						self.mEventID = aEvent.mEventId
 						self.mCurrentEvent = iEPG
 						#update label
-						self.UpdateONEvent( iEPG )
+						self.UpdateDisplay( iEPG )
 
 						#check : new event?
 						if self.mEPGList :
@@ -481,20 +481,14 @@ class LivePlate( BaseWindow ) :
 
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
-				self.ShowRecording()
-				self.mDataCache.mCacheReload = True
+ 
+				self.DisplayInfoByRecording( )
+				self.SetChangeChannelDBbyRecording( )
+
 
 			elif aEvent.getName() == ElisEventChannelChangeResult.getName() :
 				pass
 				#ToDO : do not db open in thread
-				"""
-				isLimit = False
-				if self.mCurrentEvent :
-					isLimit = AgeLimit( self.mPropertyAge, self.mCurrentEvent.mAgeRating )
-
-				if ch.mLocked or isLimit :
-					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mDataCache.mPropertyPincode )
-				"""
 
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
@@ -510,9 +504,9 @@ class LivePlate( BaseWindow ) :
 				return
 
 			self.mFakeChannel = prevChannel
-			#self.InitLabelInfo()
-			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ('%s'% self.mFakeChannel.mNumber) )
-			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
+			#self.InitControlGUI()
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ('%s'% self.mFakeChannel.mNumber) )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
 			self.RestartAsyncTune()
 
 		elif aDir == NEXT_CHANNEL:
@@ -522,9 +516,9 @@ class LivePlate( BaseWindow ) :
 				return
 
 			self.mFakeChannel = nextChannel
-			#self.InitLabelInfo()
-			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ('%s'% self.mFakeChannel.mNumber) )
-			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
+			#self.InitControlGUI()
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ('%s'% self.mFakeChannel.mNumber) )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
 			self.RestartAsyncTune()
 
 		elif aDir == CURR_CHANNEL:
@@ -534,29 +528,26 @@ class LivePlate( BaseWindow ) :
 				return
 
 			self.mFakeChannel = jumpChannel
-			self.InitLabelInfo()
+			self.InitControlGUI()
 			self.RestartAsyncTune()
 
 		if self.mAutomaticHide == True :
 			self.RestartAutomaticHide()
 
 
-	def EPGListMove( self ) :
+	def EPGListMoveToIndex( self ) :
 		try :
 			iEPG = self.mEPGList[self.mEPGListIdx]
 
 			if iEPG :
-				self.InitLabelInfo()
+				self.InitControlGUI()
 				GuiLock2(True)
 				self.mCurrentEvent = iEPG
 				self.mFlag_OnEvent = False
 				GuiLock2(False)
 
-				self.UpdateONEvent( iEPG )
+				self.UpdateDisplay( iEPG )
 
-				#retList = []
-				#retList.append( iEPG )
-				#LOG_TRACE( 'idx[%s] epg[%s]'% (self.mEPGListIdx, ClassToList( 'convert', retList )) )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -578,10 +569,10 @@ class LivePlate( BaseWindow ) :
 				else :
 					self.mEPGListIdx -= 1
 
-			self.EPGListMove()
+			self.EPGListMoveToIndex()
 
 
-	def GetEPGList( self ) :
+	def GetEPGListByChannel( self ) :
 		#stop onEvent
 		self.mFlag_OnEvent = False
 
@@ -606,14 +597,6 @@ class LivePlate( BaseWindow ) :
 			if ch :
 				self.mEPGList = None
 				iEPGList = None
-
-				#Live EPG
-				#gmtFrom  = self.mCurrentEvent.mStartTime
-				#gmtFrom  = self.mDataCache.Datetime_GetGMTTime()
-				#gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
-				#maxCount = 100
-				#iEPGList = self.mDataCache.Epgevent_GetListByChannel( ch.mSid, ch.mTsid, ch.mOnid, gmtFrom, gmtUntil, maxCount )
-				#LOG_TRACE('iEPGList[%s] ch[%d] sid[%d] tid[%d] oid[%d] from[%s] until[%s]'% (iEPGList, ch.mNumber, ch.mSid, ch.mTsid, ch.mOnid, time.asctime(time.localtime(gmtFrom)), time.asctime(time.localtime(gmtUntil))) )
 
 				self.mEPGList = self.mDataCache.Epgevent_GetListByChannelFromEpgCF(  ch.mSid,  ch.mTsid,  ch.mOnid )
 				if self.mEPGList == None or self.mEPGList[0].mError != 0 or len ( self.mEPGList ) <= 0 :
@@ -651,7 +634,7 @@ class LivePlate( BaseWindow ) :
 		self.mFlag_OnEvent = True
 
 
-	def UpdateONEvent(self, aEvent = None):
+	def UpdateDisplay(self, aEpg = None):
 		ch = self.mCurrentChannel
 		if ch :
 			try :
@@ -660,16 +643,14 @@ class LivePlate( BaseWindow ) :
 				satellite = self.mDataCache.Satellite_GetByChannelNumber( ch.mNumber, -1, True )
 				if satellite :
 					label = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
-				self.UpdateLabelGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, label )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, label )
 
 				#lock,cas
 				if ch.mLocked :
-					self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_LOCKED, 'True' )
-					#if self.mFlag_OnEvent == True :
-					#	self.mPincodeEnter |= FLAG_MASK_ADD
+					self.UpdateControlGUI( E_CONTROL_ID_IMAGE_LOCKED, 'True' )
 
 				if ch.mIsCA :
-					self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_ICAS, 'True' )
+					self.UpdateControlGUI( E_CONTROL_ID_IMAGE_ICAS, 'True' )
 
 				#type
 				setPropertyTV    = 'False'
@@ -685,35 +666,35 @@ class LivePlate( BaseWindow ) :
 				else:
 					pass
 					#LOG_TRACE( 'unknown ElisEnum tvType[%s]'% ch.mServiceType )
-				self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_TV,    setPropertyTV )
-				self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO, setPropertyRadio )
+				self.UpdateControlGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_TV,    setPropertyTV )
+				self.UpdateControlGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO, setPropertyRadio )
 
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
 
 
-		if aEvent :
+		if aEpg :
 			try :
 				#epg name
-				self.UpdateLabelGUI( E_CONTROL_ID_LABEL_EPG_NAME, deepcopy(aEvent.mEventName) )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_NAME, deepcopy(aEpg.mEventName) )
 
 				#start,end
-				label = TimeToString( aEvent.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
-				self.UpdateLabelGUI( E_CONTROL_ID_LABEL_EPG_STARTTIME, label )
-				label = TimeToString( aEvent.mStartTime + aEvent.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
-				self.UpdateLabelGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,   label )
+				label = TimeToString( aEpg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_STARTTIME, label )
+				label = TimeToString( aEpg.mStartTime + aEpg.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,   label )
 
 				#component
 				setPropertyList = []
-				setPropertyList = GetPropertyByEPGComponent( aEvent )
-				self.UpdateLabelGUI( E_CONTROL_ID_GROUP_COMPONENT_DATA,  setPropertyList[0] )
-				self.UpdateLabelGUI( E_CONTROL_ID_GROUP_COMPONENT_DOLBY, setPropertyList[1] )
-				self.UpdateLabelGUI( E_CONTROL_ID_GROUP_COMPONENT_HD,    setPropertyList[2] )
+				setPropertyList = GetPropertyByEPGComponent( aEpg )
+				self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_DATA,  setPropertyList[0] )
+				self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_DOLBY, setPropertyList[1] )
+				self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_HD,    setPropertyList[2] )
 
 				"""
 				#is Age? agerating check
 				if self.mFlag_OnEvent == True :
-					isLimit = AgeLimit( self.mPropertyAge, aEvent.mAgeRating )
+					isLimit = AgeLimit( self.mPropertyAge, aEpg.mAgeRating )
 					if isLimit == True :
 						self.mPincodeEnter |= FLAG_MASK_ADD
 						LOG_TRACE( 'AgeLimit[%s]'% isLimit )
@@ -724,43 +705,36 @@ class LivePlate( BaseWindow ) :
 
 
 	@RunThread
-	def CurrentTimeThread(self):
-		while self.mEnableThread:
+	def LocalThreadDisplayedEPG( self ):
+		while self.mEnableLocalThread :
 			#LOG_TRACE( 'repeat <<<<' )
 			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
 
 			if  ( self.mLocalTime % 10 ) == 0 or self.mLoopCount == 3:
 				if self.mFlag_ChannelChanged :
-					self.GetEPGList( )
-				self.UpdateLocalTime( )
+					self.GetEPGListByChannel( )
+				self.UpdateProgress( )
 
 			time.sleep(1)
 			self.mLoopCount += 1
 
 
-	def UpdateLocalTime( self ) :
+	def UpdateProgress( self ) :
 		try:
 			if self.mCurrentEvent :
 				startTime = self.mCurrentEvent.mStartTime + self.mLocalOffset
 				endTime   = startTime + self.mCurrentEvent.mDuration
 				pastDuration = endTime - self.mLocalTime
 
-				#LOG_TRACE('startTime[%s] duration[%s] endTime[%s] past[%s] currentTime[%s]'% \
-				#( TimeToString( startTime, TimeFormatEnum.E_HH_MM_SS ), \
-				# TimeToString( self.mCurrentEvent.mDuration, TimeFormatEnum.E_HH_MM_SS ), \
-				# TimeToString( endTime, TimeFormatEnum.E_HH_MM_SS ), \
-				# TimeToString( pastDuration, TimeFormatEnum.E_HH_MM_SS ), \
-				# TimeToString( self.mLocalTime, TimeFormatEnum.E_HH_MM_SS ) ) )
-
-				if self.mLocalTime > endTime : #Already past
+				if self.mLocalTime > endTime : #past
 					self.mCtrlProgress.setPercent( 100 )
 					return
 
-				elif self.mLocalTime < startTime :
+				elif self.mLocalTime < startTime : #future
 					self.mCtrlProgress.setPercent( 0 )
 					return
 
-				if pastDuration < 0 : #Already past
+				if pastDuration < 0 : #past
 					pastDuration = 0
 
 				if self.mCurrentEvent.mDuration > 0 :
@@ -775,37 +749,25 @@ class LivePlate( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-	def InitLabelInfo(self):
-		"""
-		if self.mFakeChannel :
-			self.mCurrentEvent = None
-			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ('%s'% self.mFakeChannel.mNumber) )
-			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
-		else:
-			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, '' )
-			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, MR_LANG('No Channel') )
-			pass
-			#LOG_TRACE( 'has no channel' )
-		"""
+	def InitControlGUI( self ):
+		self.UpdateControlGUI( E_CONTROL_ID_PROGRESS_EPG,                  0 )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO,         '' )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_NAME,             '' )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_STARTTIME,        '' )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,          '' )
+		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_TV,     'True' )
+		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO, 'False' )
+		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_LOCKED,           'False' )
+		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_ICAS,             'False' )
 
-		self.UpdateLabelGUI( E_CONTROL_ID_PROGRESS_EPG,                  0 )
-		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO,         '' )
-		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_EPG_NAME,             '' )
-		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_EPG_STARTTIME,        '' )
-		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,          '' )
-		self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_TV,     'True' )
-		self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO, 'False' )
-		self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_LOCKED,           'False' )
-		self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_ICAS,             'False' )
-
-		self.UpdateLabelGUI( E_CONTROL_ID_GROUP_COMPONENT_DATA,  'False' )
-		self.UpdateLabelGUI( E_CONTROL_ID_GROUP_COMPONENT_DOLBY, 'False' )
-		self.UpdateLabelGUI( E_CONTROL_ID_GROUP_COMPONENT_HD,    'False' )
-		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO,         '' )
+		self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_DATA,  'False' )
+		self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_DOLBY, 'False' )
+		self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_HD,    'False' )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO,         '' )
 		
 
 	@GuiLock
-	def UpdateLabelGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
+	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		#LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
 
 		if aCtrlID == E_CONTROL_ID_LABEL_CHANNEL_NUMBER :
@@ -877,13 +839,11 @@ class LivePlate( BaseWindow ) :
 		elif aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
 			msg1 = 'Teletext'
 			msg2 = 'test'
-			#xbmc.executebuiltin('Custom.SetLanguage(French)')
 
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
 			msg1 = 'Subtitle'
 			msg2 = 'test'
-			#xbmc.executebuiltin('Custom.SetLanguage(English)')
 
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
@@ -896,51 +856,95 @@ class LivePlate( BaseWindow ) :
 
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_START_RECORDING :
-			runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
-			#LOG_TRACE( 'runningCount[%s]' %runningCount)
-
-			isOK = False
-			GuiLock2(True)
-			if runningCount < 2 :
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
-				dialog.doModal()
-
-				isOK = dialog.IsOK()
-				if isOK == E_DIALOG_STATE_YES :
-					isOK = True
-
-			else:
-				msg = 'Already [%s] recording(s) running' %runningCount
-				xbmcgui.Dialog().ok('Infomation', msg )
-			GuiLock2(False)
-
-			if isOK :
-				#self.ShowRecording()
-				self.mDataCache.mCacheReload = True
+			self.SetRecordingOnStart( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_STOP_RECORDING :
-			runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
-			#LOG_TRACE( 'runningCount[%s]' %runningCount )
-
-			isOK = False
-			if runningCount > 0 :
-				GuiLock2( True )
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
-				dialog.doModal( )
-
-				isOK = dialog.IsOK()
-				if isOK == E_DIALOG_STATE_YES :
-					isOK = True
-				GuiLock2( False )
-
-			if isOK :
-				#self.ShowRecording( )
-				self.mDataCache.mCacheReload = True
+			self.SetRecordingOnStop( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SETTING_FORMAT :
+			self.SetAudioVideoContext( )
+
+
+	def SetRecordingOnStart( self ) :
+		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
+		#LOG_TRACE( 'runningCount[%s]' %runningCount)
+
+		isOK = False
+		GuiLock2(True)
+		if runningCount < 2 :
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+			dialog.doModal()
+
+			isOK = dialog.IsOK()
+			if isOK == E_DIALOG_STATE_YES :
+				isOK = True
+
+		else:
+			msg = 'Already [%s] recording(s) running' %runningCount
+			xbmcgui.Dialog().ok('Infomation', msg )
+		GuiLock2(False)
+
+		if isOK :
+			self.mDataCache.mCacheReload = True
+
+
+	def SetRecordingOnStop( self ) :
+		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
+		#LOG_TRACE( 'runningCount[%s]' %runningCount )
+
+		isOK = False
+		if runningCount > 0 :
+			GuiLock2( True )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
+			dialog.doModal( )
+
+			isOK = dialog.IsOK()
+			if isOK == E_DIALOG_STATE_YES :
+				isOK = True
+			GuiLock2( False )
+
+		if isOK :
+			self.mDataCache.mCacheReload = True
+
+
+	def SetAudioVideoContext( self ) :
+		context = []
+		context.append( ContextItem( 'Video Format', CONTEXT_ACTION_VIDEO_SETTING ) )
+		context.append( ContextItem( 'Audio Track',  CONTEXT_ACTION_AUDIO_SETTING ) )
+
+		GuiLock2( True )
+		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+		dialog.SetProperty( context )
+		dialog.doModal( )
+		GuiLock2( False )
+
+		selectAction = dialog.GetSelectedAction( )
+		if selectAction == -1 :
+			return
+
+		if selectAction == CONTEXT_ACTION_VIDEO_SETTING :
+			GuiLock2( True )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_LIVE_PLATE )
+			dialog.SetValue( selectAction )
+ 			dialog.doModal( )
+ 			GuiLock2( False )
+
+ 		else :
+			getCount = self.mDataCache.Audiotrack_GetCount( )
+			selectIdx= self.mDataCache.Audiotrack_GetSelectedIndex( )
+
 			context = []
-			context.append( ContextItem( 'Video Format', CONTEXT_ACTION_VIDEO_SETTING ) )
-			context.append( ContextItem( 'Audio Track',  CONTEXT_ACTION_AUDIO_SETTING ) )
+			iSelectAction = 0
+			for idx in range(getCount) :
+				idxTrack = self.mDataCache.Audiotrack_Get( idx )
+				#LOG_TRACE('getTrack name[%s] lang[%s]'% (idxTrack.mName, idxTrack.mLang) )
+				if selectIdx == idx :
+					label = '%s%s-%s%s' % (E_TAG_COLOR_WHITE,idxTrack.mName,idxTrack.mLang,E_TAG_COLOR_END)
+				else :
+					label = '%s%s-%s%s' % (E_TAG_COLOR_GREY,idxTrack.mName,idxTrack.mLang,E_TAG_COLOR_END)
+
+				context.append( ContextItem( label, iSelectAction ) )
+				iSelectAction += 1
 
 			GuiLock2( True )
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
@@ -948,47 +952,13 @@ class LivePlate( BaseWindow ) :
 			dialog.doModal( )
 			GuiLock2( False )
 
-			selectAction = dialog.GetSelectedAction( )
-			if selectAction == -1 :
-				return
+			selectIdx2 = dialog.GetSelectedAction( )
+			self.mDataCache.Audiotrack_select( selectIdx2 )
 
-			if selectAction == CONTEXT_ACTION_VIDEO_SETTING :
-				GuiLock2( True )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_LIVE_PLATE )
-				dialog.SetValue( selectAction )
-	 			dialog.doModal( )
-	 			GuiLock2( False )
-
-	 		else :
-				getCount = self.mDataCache.Audiotrack_GetCount( )
-				selectIdx= self.mDataCache.Audiotrack_GetSelectedIndex( )
-
-				context = []
-				iSelectAction = 0
-				for idx in range(getCount) :
-					idxTrack = self.mDataCache.Audiotrack_Get( idx )
-					#LOG_TRACE('getTrack name[%s] lang[%s]'% (idxTrack.mName, idxTrack.mLang) )
-					if selectIdx == idx :
-						label = '%s%s-%s%s' % (E_TAG_COLOR_WHITE,idxTrack.mName,idxTrack.mLang,E_TAG_COLOR_END)
-					else :
-						label = '%s%s-%s%s' % (E_TAG_COLOR_GREY,idxTrack.mName,idxTrack.mLang,E_TAG_COLOR_END)
-
-					context.append( ContextItem( label, iSelectAction ) )
-					iSelectAction += 1
-
-				GuiLock2( True )
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-				dialog.SetProperty( context )
-				dialog.doModal( )
-				GuiLock2( False )
-
-				selectIdx2 = dialog.GetSelectedAction( )
-				self.mDataCache.Audiotrack_select( selectIdx2 )
-
-				#LOG_TRACE('Select[%s --> %s]'% (selectAction, selectIdx2) )
+			#LOG_TRACE('Select[%s --> %s]'% (selectAction, selectIdx2) )
 
 
-	def ShowRecording( self ) :
+ 	def DisplayInfoByRecording( self ) :
 		try:
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			#LOG_TRACE('isRunRecCount[%s]'% isRunRec)
@@ -1011,51 +981,36 @@ class LivePlate( BaseWindow ) :
 				strLabelRecord2 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
 
 
-			if self.mDataCache.GetChangeDBTableChannel( ) != -1 and self.mInitializeCheck == True :
-				if isRunRec > 0 :
-					#use zapping table, in recording
-					self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
-					#self.mDataCache.Channel_GetZappingList( )
-					#### data cache re-load ####
-					self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, E_REOPEN_TRUE  )
-
-				else :
-					self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
-					if self.mDataCache.mCacheReload :
-						self.mDataCache.mCacheReload = False
-						#### data cache re-load ####
-						self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, E_REOPEN_TRUE  )
-
-				"""
-				self.mFakeChannel = self.mCurrentChannel
-				self.mLastChannel = self.mCurrentChannel
-				"""
-				#LOG_TRACE('table[%s]'% ret)
-
-
 			btnValue = False
 			if isRunRec >= 2 :
 				btnValue = False
 			else :
 				btnValue = True
 
-			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_RECORDING1, strLabelRecord1 )
-			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_RECORDING2, strLabelRecord2 )
-			self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_RECORDING1, setPropertyRecord1 )
-			self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_RECORDING2, setPropertyRecord2 )
-			self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_START_RECORDING, btnValue )
-
-			return isRunRec
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_RECORDING1, strLabelRecord1 )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_RECORDING2, strLabelRecord2 )
+			self.UpdateControlGUI( E_CONTROL_ID_IMAGE_RECORDING1, setPropertyRecord1 )
+			self.UpdateControlGUI( E_CONTROL_ID_IMAGE_RECORDING2, setPropertyRecord2 )
+			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_START_RECORDING, btnValue )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
+	def SetChangeChannelDBbyRecording( self ) :
+		if isRunRec > 0 :
+			#use zapping table 
+			self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
+ 
+		else :
+			self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
+
+		self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, E_REOPEN_TRUE  )
+	
+
 	def Close( self ):
 		self.mEventBus.Deregister( self )
-
-		self.mEnableThread = False
-		#self.CurrentTimeThread().join()
+		self.mEnableLocalThread = False
 		
 		self.StopAsyncTune()
 		self.StopAutomaticHide()
@@ -1128,8 +1083,8 @@ class LivePlate( BaseWindow ) :
 				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent()
 				self.mFakeChannel = self.mCurrentChannel
 				self.mLastChannel = self.mCurrentChannel
-				self.InitLabelInfo()
-				self.UpdateONEvent()
+				self.InitControlGUI()
+				self.UpdateDisplay()
 
 			else :
 				LOG_ERR('Tune Fail')
@@ -1138,7 +1093,7 @@ class LivePlate( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-	def KeySearch( self, aKey ) :
+	def SetTuneByNumber( self, aKey ) :
 		if self.mDataCache.mStatusIsArchive :
 			#LOG_TRACE('Archive playing now')
 			return -1
