@@ -306,19 +306,8 @@ class LivePlate( BaseWindow ) :
 			self.onClick( self.mCtrlBtnStartRec.getId() )
 
 		elif id == Action.ACTION_PAUSE or id == Action.ACTION_PLAYER_PLAY :
-			status = self.mDataCache.Player_GetStatus()
-			window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
-			window.SetAutomaticHide( True )
-			if status.mMode == ElisEnum.E_MODE_LIVE :
-				window.SetAutomaticHide( True )
-				self.mDataCache.Player_StartTimeshiftPlayback( ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE, 0 )
-
-			else:
-				if status.mSpeed == 0 :
-					self.mDataCache.Player_Resume()
-				else :
-					self.mDataCache.Player_Pause()
-
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).SetAutomaticHide( True )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = id
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
@@ -326,14 +315,14 @@ class LivePlate( BaseWindow ) :
 			status = self.mDataCache.Player_GetStatus()
 			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				self.Close( )
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = id
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
 		elif id == Action.ACTION_MBOX_FF :
 			status = self.mDataCache.Player_GetStatus()		
 			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				self.Close( )			
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = id
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
 

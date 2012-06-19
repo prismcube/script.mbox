@@ -168,16 +168,24 @@ class TimeShiftPlate(BaseWindow):
 		self.mEnableThread = True
 		self.CurrentTimeThread()
 
-		if self.mAutomaticHide == True :
-			self.StartAutomaticHide()
-
 		if self.mPrekey :
 			if self.mPrekey == Action.ACTION_MBOX_REWIND :
 				self.onClick( E_CONTROL_ID_BUTTON_REWIND )
+
 			elif self.mPrekey == Action.ACTION_MBOX_FF :
 				self.onClick( E_CONTROL_ID_BUTTON_FORWARD )
 
+			elif self.mPrekey == Action.ACTION_PAUSE or self.mPrekey == Action.ACTION_PLAYER_PLAY :
+				if self.mSpeed == 0 :
+					self.onClick( E_CONTROL_ID_BUTTON_PLAY )
+				else :
+					self.onClick( E_CONTROL_ID_BUTTON_PAUSE )
+
 			self.mPrekey = None
+
+
+		if self.mAutomaticHide == True :
+			self.StartAutomaticHide()
 
 
 	def onAction(self, aAction):
@@ -426,9 +434,11 @@ class TimeShiftPlate(BaseWindow):
 		elif aFocusId == E_CONTROL_ID_BUTTON_PAUSE :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
 				ret = self.mDataCache.Player_StartTimeshiftPlayback( ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE, 0 )
+				self.WaitToBuffering( )
 
 			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				ret = self.mDataCache.Player_Pause()
+
 			elif self.mMode == ElisEnum.E_MODE_PVR :
 				ret = self.mDataCache.Player_Pause()
 
@@ -969,6 +979,16 @@ class TimeShiftPlate(BaseWindow):
 
 		if RunningRecordCount :
 			self.mDataCache.mCacheReload = True
+
+
+	def WaitToBuffering( self ) :
+		waitTime = 0
+		self.OpenBusyDialog( )
+		while waitTime < 5 :
+			time.sleep(1)
+			waitTime += 1
+
+		self.CloseBusyDialog( )				
 
 
 	def Close( self ) :
