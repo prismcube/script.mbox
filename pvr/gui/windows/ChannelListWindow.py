@@ -1,5 +1,33 @@
 from pvr.gui.WindowImport import *
 
+E_CONTROL_ID_LABEL_CHANNEL_PATH			= 21
+E_CONTROL_ID_GROUP_OPT					= 500
+E_CONTROL_ID_BUTTON_OPT					= 501
+E_CONTROL_ID_LABEL_OPT1					= 502
+E_CONTROL_ID_LABEL_OPT2					= 503
+E_CONTROL_ID_GROUP_MAINMENU 			= 100
+E_CONTROL_ID_BUTTON_MAINMENU 			= 101
+E_CONTROL_ID_LIST_MAINMENU				= 102
+E_CONTROL_ID_GROUP_SUBMENU				= 9001
+E_CONTROL_ID_LIST_SUBMENU				= 112
+E_CONTROL_ID_RADIO_SERVICETYPE_TV		= 113
+E_CONTROL_ID_RADIO_SERVICETYPE_RADIO	= 114
+E_CONTROL_ID_BUTTON_EDITMODE			= 115
+E_CONTROL_ID_BUTTON_DELETEALL			= 116
+E_CONTROL_ID_GROUP_CHANNEL_LIST			= 49
+E_CONTROL_ID_LIST_CHANNEL_LIST			= 50
+E_CONTROL_ID_LABEL_CHANNEL_NAME			= 303
+E_CONTROL_ID_LABEL_EPG_NAME				= 304
+E_CONTROL_ID_LABEL_EPG_TIME				= 305
+E_CONTROL_ID_PROGRESS_EPG				= 306
+E_CONTROL_ID_LABEL_LONGITUDE_INFO		= 307
+E_CONTROL_ID_LABEL_CAREER_INFO			= 308
+E_CONTROL_ID_GROUP_LOCKED_INFO			= 309
+E_CONTROL_ID_GROUP_COMPONENT_DATA		= 310
+E_CONTROL_ID_GROUP_COMPONENT_DOLBY		= 311
+E_CONTROL_ID_GROUP_COMPONENT_HD			= 312
+E_CONTROL_ID_LABEL_SELECT_ITEM			= 401
+
 FLAG_MASK_ADD    = 0x01
 FLAG_MASK_NONE   = 0x00
 FLAG_MODE_TV     = ElisEnum.E_SERVICE_TYPE_TV
@@ -102,11 +130,11 @@ class ChannelListWindow( BaseWindow ) :
 		LOG_TRACE( 'destroyed ChannelList' )
 
 		# end thread
-		self.mEnableThread = False
+		self.mEnableLocalThread = False
 
  
 	def onAction(self, aAction):
-		id = aAction.getId()
+		id = aAction.getId( )
 		
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )			
@@ -134,43 +162,43 @@ class ChannelListWindow( BaseWindow ) :
 		#print '==================== TEST TIME[ONINIT] START[%s]'% starttime
 
 		#header
-		self.mCtrlLblPath1            = self.getControl( 21 )
-		self.mCtrlGroupOpt            = self.getControl( 500 )
-		self.mCtrlBtnOpt              = self.getControl( 501 )
-		self.mCtrlLblOpt1             = self.getControl( 502 )
-		self.mCtrlLblOpt2             = self.getControl( 503 )
+		self.mCtrlLabelChannelPath       = self.getControl( E_CONTROL_ID_LABEL_CHANNEL_PATH )
+		self.mCtrlGroupOpt               = self.getControl( E_CONTROL_ID_GROUP_OPT )
+		self.mCtrlButtonOpt              = self.getControl( E_CONTROL_ID_BUTTON_OPT )
+		self.mCtrlLabelOpt1              = self.getControl( E_CONTROL_ID_LABEL_OPT1 )
+		self.mCtrlLabelOpt2              = self.getControl( E_CONTROL_ID_LABEL_OPT2 )
 
 		#main menu
-		self.mCtrlGroupMainmenu       = self.getControl( 100 )
-		self.mCtrlBtnMenu             = self.getControl( 101 )
-		self.mCtrlListMainmenu        = self.getControl( 102 )
+		self.mCtrlGroupMainmenu          = self.getControl( E_CONTROL_ID_GROUP_MAINMENU )
+		self.mCtrlButtonMainMenu         = self.getControl( E_CONTROL_ID_BUTTON_MAINMENU )
+		self.mCtrlListMainmenu           = self.getControl( E_CONTROL_ID_LIST_MAINMENU )
 
 		#sub menu list
-		self.mCtrlGroupSubmenu        = self.getControl( 9001 )
-		self.mCtrlListSubmenu         = self.getControl( 112 )
+		self.mCtrlGroupSubmenu           = self.getControl( E_CONTROL_ID_GROUP_SUBMENU )
+		self.mCtrlListSubmenu            = self.getControl( E_CONTROL_ID_LIST_SUBMENU )
 
 		#sub menu btn
-		self.mCtrlRdoTV               = self.getControl( 113 )
-		self.mCtrlRdoRadio            = self.getControl( 114 )
-		self.mCtrlBtnEdit             = self.getControl( 115 )
-		self.mCtrlBtnDelAll           = self.getControl( 116 )
+		self.mCtrlRadioServiceTypeTV     = self.getControl( E_CONTROL_ID_RADIO_SERVICETYPE_TV )
+		self.mCtrlRadioServiceTypeRadio  = self.getControl( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO )
+		self.mCtrlButtonEdit             = self.getControl( E_CONTROL_ID_BUTTON_EDITMODE )
+		self.mCtrlButtonDelAll           = self.getControl( E_CONTROL_ID_BUTTON_DELETEALL )
 
 		#ch list
-		self.mCtrlGroupCHList         = self.getControl( 49 )
-		self.mCtrlListCHList          = self.getControl( 50 )
+		self.mCtrlGroupCHList            = self.getControl( E_CONTROL_ID_GROUP_CHANNEL_LIST )
+		self.mCtrlListCHList             = self.getControl( E_CONTROL_ID_LIST_CHANNEL_LIST )
 
 		#info
-		self.mCtrlChannelName         = self.getControl( 303 )
-		self.mCtrlEventName           = self.getControl( 304 )
-		self.mCtrlEventTime           = self.getControl( 305 )
-		self.mCtrlProgress            = self.getControl( 306 )
-		self.mCtrlLongitudeInfo       = self.getControl( 307 )
-		self.mCtrlCareerInfo          = self.getControl( 308 )
-		self.mCtrlLockedInfo          = self.getControl( 309 )
-		self.mCtrlGroupComponentData  = self.getControl( 310 )
-		self.mCtrlGroupComponentDolby = self.getControl( 311 )
-		self.mCtrlGroupComponentHD    = self.getControl( 312 )
-		self.mCtrlSelectItem          = self.getControl( 401 )
+		self.mCtrlLabelChannelName       = self.getControl( E_CONTROL_ID_LABEL_CHANNEL_NAME )
+		self.mCtrlLabelEPGName           = self.getControl( E_CONTROL_ID_LABEL_EPG_NAME )
+		self.mCtrlLabelEPGTime           = self.getControl( E_CONTROL_ID_LABEL_EPG_TIME )
+		self.mCtrlProgress               = self.getControl( E_CONTROL_ID_PROGRESS_EPG )
+		self.mCtrlLabelLongitudeInfo     = self.getControl( E_CONTROL_ID_LABEL_LONGITUDE_INFO )
+		self.mCtrlLabelCareerInfo        = self.getControl( E_CONTROL_ID_LABEL_CAREER_INFO )
+		self.mCtrlLabelLockedInfo        = self.getControl( E_CONTROL_ID_GROUP_LOCKED_INFO )
+		self.mCtrlGroupComponentData     = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_DATA )
+		self.mCtrlGroupComponentDolby    = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_DOLBY )
+		self.mCtrlGroupComponentHD       = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_HD )
+		self.mCtrlLabelSelectItem        = self.getControl( E_CONTROL_ID_LABEL_SELECT_ITEM )
 
 		self.mIsSelect = False
 		self.mIsMark = True
@@ -200,7 +228,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.SetPipScreen( )
 
-		self.UpdateLabelGUI( self.mCtrlBtnDelAll.getId( ), MR_LANG('Delete All Channel') )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_DELETEALL, MR_LANG('Delete All Channel') )
 
 		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
 		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
@@ -215,7 +243,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mElisSetZappingModeInfo = deepcopy( zappingmode )
 		else :
 			self.mElisSetZappingModeInfo = ElisIZappingMode()
-		self.ShowRecording( )
+		self.DisplayInfoByRecording( )
 
 		#initialize get channel list
 		self.InitSlideMenuHeader( )
@@ -243,7 +271,7 @@ class ChannelListWindow( BaseWindow ) :
 
 					strType = self.UpdateServiceType( iChannel.mServiceType )
 					label = '%s - %s'% (strType, iChannel.mName)
-			self.UpdateLabelGUI( self.mCtrlChannelName.getId( ), label )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -264,14 +292,14 @@ class ChannelListWindow( BaseWindow ) :
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
-		self.UpdateLabelInfo( )
+		self.UpdateDisplay( )
 
 		#Event Register
 		self.mEventBus.Register( self )
 
 		#run thread
-		self.mEnableThread = True
-		self.CurrentTimeThread( )
+		self.mEnableLocalThread = True
+		self.LocalThreadDisplayedEPG( )
 
 		self.mAsyncTuneTimer = None
 		#endtime = time.time( )
@@ -283,11 +311,11 @@ class ChannelListWindow( BaseWindow ) :
 		self.GlobalAction( id )		
 
 		if id >= Action.REMOTE_0 and id <= Action.REMOTE_9:
-			self.KeySearch( id-Action.REMOTE_0 )
+			self.SetTuneByNumber( id-Action.REMOTE_0 )
 
 		elif id >= Action.ACTION_JUMP_SMS2 and id <= Action.ACTION_JUMP_SMS9 :
 			rKey = id - (Action.ACTION_JUMP_SMS2 - 2)
-			self.KeySearch( rKey )
+			self.SetTuneByNumber( rKey )
 
 		elif id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
 			#LOG_TRACE( 'goto previous menu' )
@@ -297,12 +325,12 @@ class ChannelListWindow( BaseWindow ) :
 			self.GetFocusId( )
 			#LOG_TRACE( 'item select, action ID[%s]'% id )
 
-			if self.mFocusId == self.mCtrlListMainmenu.getId( ) :
+			if self.mFocusId == E_CONTROL_ID_LIST_MAINMENU :
 				position = self.mCtrlListMainmenu.getSelectedPosition( )
 
 				if position == E_SLIDE_MENU_BACK :
 					self.mCtrlListCHList.setEnabled(True)
-					self.setFocusId( self.mCtrlGroupCHList.getId( ) )
+					self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 
 				else :
 					self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
@@ -312,14 +340,14 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif id == Action.ACTION_MOVE_LEFT :
 			self.GetFocusId( )
-			if self.mFocusId == self.mCtrlListCHList.getId( ) :
+			if self.mFocusId == E_CONTROL_ID_LIST_CHANNEL_LIST :
 				self.GetSlideMenuHeader( FLAG_SLIDE_OPEN )
 				self.mSlideOpenFlag = True
 
 		elif id == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN or \
 			 id == Action.ACTION_PAGE_UP or id == Action.ACTION_PAGE_DOWN :
 			self.GetFocusId( )
-			if self.mFocusId == self.mCtrlListCHList.getId( ) or self.mFocusId == E_CONTROL_ID_SCROLLBAR :
+			if self.mFocusId == E_CONTROL_ID_LIST_CHANNEL_LIST or self.mFocusId == E_CONTROL_ID_SCROLLBAR :
 				if self.mMoveFlag :
 					self.SetEditChanneltoMove( FLAG_OPT_MOVE_UPDOWN, id )
 					return
@@ -327,13 +355,13 @@ class ChannelListWindow( BaseWindow ) :
 				else :
 					self.RestartAsyncEPG( )
 
-			if self.mFocusId == self.mCtrlListMainmenu.getId( ) :
+			if self.mFocusId == E_CONTROL_ID_LIST_MAINMENU :
 				position = self.mCtrlListMainmenu.getSelectedPosition( )
 				self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
 
-			elif self.mFocusId == self.mCtrlBtnOpt :
+			elif self.mFocusId == self.mCtrlButtonOpt :
 				self.mCtrlListCHList.setEnabled( True )
-				self.setFocusId( self.mCtrlGroupCHList.getId( ) )
+				self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 
 
 		elif id == Action.ACTION_CONTEXT_MENU :
@@ -356,9 +384,9 @@ class ChannelListWindow( BaseWindow ) :
 						self.mCurrentChannel = iChannel.mNumber
 
 					self.mIsSelect == True
-					self.UpdateLabelInfo()
+					self.UpdateDisplay()
 				else :
-					self.RecordingStop()
+					self.SetRecordingOnStop()
 
 		elif id == Action.ACTION_MBOX_XBMC :
 			self.SetGoBackWindow( WinMgr.WIN_ID_MEDIACENTER )
@@ -372,7 +400,7 @@ class ChannelListWindow( BaseWindow ) :
 		elif id == Action.ACTION_MBOX_RECORD :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 				if self.mChannelList or len(self.mChannelList) > 0 :
-					self.RecordingStart()
+					self.SetRecordingOnStart()
 
 
 
@@ -385,7 +413,7 @@ class ChannelListWindow( BaseWindow ) :
 	def onClick(self, aControlId):
 		#LOG_TRACE( 'onclick focusID[%d]'% aControlId )
 
-		if aControlId == self.mCtrlListCHList.getId( ) :
+		if aControlId == E_CONTROL_ID_LIST_CHANNEL_LIST :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
 				try:
 					if self.mMoveFlag :
@@ -398,11 +426,11 @@ class ChannelListWindow( BaseWindow ) :
 						self.SetEditMarkupGUI( idx )
 
 						GuiLock2( True )
-						self.setFocusId( self.mCtrlGroupCHList.getId( ) )
+						self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 						self.mCtrlListCHList.selectItem( idx+1 )
 						GuiLock2( False )
 
-						self.mCtrlSelectItem.setLabel( str('%s'% (idx+1) ) )
+						self.mCtrlLabelSelectItem.setLabel( str('%s'% (idx+1) ) )
 
 					#Turn mode
 					#else :
@@ -415,11 +443,11 @@ class ChannelListWindow( BaseWindow ) :
 				if self.mChannelList :
 					self.SetChannelTune( )
 
-		elif aControlId == self.mCtrlBtnMenu.getId( ) or aControlId == self.mCtrlListMainmenu.getId( ) :
+		elif aControlId == E_CONTROL_ID_BUTTON_MAINMENU or aControlId == E_CONTROL_ID_LIST_MAINMENU :
 			#list view
 			pass
 
-		elif aControlId == self.mCtrlListSubmenu.getId( ) :
+		elif aControlId == E_CONTROL_ID_LIST_SUBMENU :
 			#list action
 			position = self.mZappingMode
 			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
@@ -427,16 +455,16 @@ class ChannelListWindow( BaseWindow ) :
 			#slide close
 			GuiLock2( True )
 			self.mCtrlListCHList.setEnabled(True)
-			self.setFocusId( self.mCtrlGroupCHList.getId( ) )
+			self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 			GuiLock2( False )
 
-		elif aControlId == self.mCtrlBtnOpt.getId( ):
+		elif aControlId == E_CONTROL_ID_BUTTON_OPT:
 			self.PopupOpt( )
 
-		elif aControlId == self.mCtrlBtnEdit.getId( ):
+		elif aControlId == E_CONTROL_ID_BUTTON_EDITMODE:
 			self.SetGoBackEdit( )
 
-		elif aControlId == self.mCtrlBtnDelAll.getId( ):
+		elif aControlId == E_CONTROL_ID_BUTTON_DELETEALL:
 			ret = self.SetDeleteAll( )
 
 			if ret == E_DIALOG_STATE_YES :
@@ -452,19 +480,19 @@ class ChannelListWindow( BaseWindow ) :
 
 				#clear label
 				self.ResetLabel( )
-				self.UpdateLabelInfo( )
+				self.UpdateDisplay( )
 
 				#slide close
 				GuiLock2( True )
 				self.mCtrlListCHList.setEnabled(True)
-				self.setFocusId( self.mCtrlGroupCHList.getId( ) )
+				self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 				GuiLock2( False )
 
 
-		elif aControlId == self.mCtrlRdoTV.getId( ):
+		elif aControlId == E_CONTROL_ID_RADIO_SERVICETYPE_TV:
 			self.SetModeChanged( FLAG_MODE_TV )
 
-		elif aControlId == self.mCtrlRdoRadio.getId( ):
+		elif aControlId == E_CONTROL_ID_RADIO_SERVICETYPE_RADIO:
 			self.SetModeChanged( FLAG_MODE_RADIO )
 
 
@@ -531,15 +559,15 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		if aType == FLAG_MODE_TV :
-			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ),   True, E_TAG_SELECT )
-			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ),False, E_TAG_SELECT )
+			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV,   True, E_TAG_SELECT )
+			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO,False, E_TAG_SELECT )
 		else :
-			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ),   False, E_TAG_SELECT )
-			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ),True, E_TAG_SELECT )
+			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV,   False, E_TAG_SELECT )
+			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO,True, E_TAG_SELECT )
 
 		#slide close
 		self.mCtrlListCHList.setEnabled(True)
-		self.setFocusId( self.mCtrlGroupCHList.getId( ) )
+		self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 
 
 
@@ -555,7 +583,7 @@ class ChannelListWindow( BaseWindow ) :
 
 				#clear label
 				self.ResetLabel( )
-				self.UpdateLabelInfo( )
+				self.UpdateDisplay( )
 
 				self.mCtrlListCHList.reset( )
 				self.InitChannelList( )
@@ -566,7 +594,7 @@ class ChannelListWindow( BaseWindow ) :
 				#slide close
 				GuiLock2( True )
 				self.mCtrlListCHList.setEnabled(True)
-				self.setFocusId( self.mCtrlGroupCHList.getId( ) )
+				self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 				GuiLock2( False )
 
 			except Exception, e :
@@ -581,8 +609,8 @@ class ChannelListWindow( BaseWindow ) :
 			ret = False
 			ret = self.SaveSlideMenuHeader( )
 			if ret != E_DIALOG_STATE_CANCEL :
-				self.mEnableThread = False
-				#self.CurrentTimeThread( ).join( )
+				self.mEnableLocalThread = False
+				#self.LocalThreadDisplayedEPG( ).join( )
 				self.mCtrlListCHList.reset( )
 				self.Close( )
 
@@ -609,14 +637,14 @@ class ChannelListWindow( BaseWindow ) :
 
 				#clear label
 				self.ResetLabel( )
-				self.UpdateLabelInfo( )
+				self.UpdateDisplay( )
 				self.mFlag_EditChanged = False
 				self.mMoveFlag = False
 
 				#slide close
 				GuiLock2( True )
 				self.mCtrlListCHList.setEnabled(True)
-				self.setFocusId( self.mCtrlGroupCHList.getId( ) )
+				self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 				GuiLock2( False )
 
 	@GuiLock
@@ -656,17 +684,20 @@ class ChannelListWindow( BaseWindow ) :
 
 							#update label
 							self.ResetLabel( )
-							self.UpdateLabelInfo( )
+							self.UpdateDisplay( )
 
 
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
 				self.mRecChannel1 = []
 				self.mRecChannel2 = []
-				self.ShowRecording()
-				self.mDataCache.mCacheReload = True
-				self.mListItems = None
-				self.InitChannelList( )
+				self.SetChangeChannelDBbyRecording( )
+				self.DisplayInfoByRecording( )
+				self.ReloadChannelList( )
+
+				#self.mDataCache.mCacheReload = True
+				#self.mListItems = None
+				#self.InitChannelList( )
 
 				#ToDo
 				"""
@@ -709,13 +740,13 @@ class ChannelListWindow( BaseWindow ) :
 				if ch.mNumber == aJumpNumber :
 					self.mNavChannel = ch
 					self.ResetLabel( )
-					self.UpdateLabelInfo( )
+					self.UpdateDisplay( )
 					break
 				chindex += 1
 
 			if self.mChannelList == None:
 				label = MR_LANG('Empty Channels')
-				self.UpdateLabelGUI( self.mCtrlChannelName.getId( ), label )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 				return 
 
 			GuiLock2( True )
@@ -734,7 +765,7 @@ class ChannelListWindow( BaseWindow ) :
 		else:
 			if self.mChannelList == None:
 				label = MR_LANG('Empty Channels')
-				self.UpdateLabelGUI( self.mCtrlChannelName.getId( ), label )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 				return 
 
 			idx = self.mCtrlListCHList.getSelectedPosition( )
@@ -763,8 +794,8 @@ class ChannelListWindow( BaseWindow ) :
 				ret = False
 				ret = self.SaveSlideMenuHeader( )
 				if ret != E_DIALOG_STATE_CANCEL :
-					self.mEnableThread = False
-					#self.CurrentTimeThread( ).join( )
+					self.mEnableLocalThread = False
+					#self.LocalThreadDisplayedEPG( ).join( )
 					self.Close( )
 
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
@@ -780,11 +811,11 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCurrentChannel = self.mNavChannel.mNumber
 			self.mCurrentPosition = self.mCtrlListCHList.getSelectedPosition( )
 			pos = self.mCurrentPosition + 1
-			self.mCtrlSelectItem.setLabel( str('%s'% pos ) )
+			self.mCtrlLabelSelectItem.setLabel( str('%s'% pos ) )
 			#LOG_TRACE('chinfo: num[%s] type[%s] name[%s] pos[%s]'% (ch.mNumber, ch.mServiceType, ch.mName, pos) )
 
 			self.ResetLabel( )
-			self.UpdateLabelInfo( )
+			self.UpdateDisplay( )
 
 
 	def RefreshSlideMenu( self, aMainIndex = E_SLIDE_ALLCHANNEL, aSubIndex = ElisEnum.E_MODE_ALL, aForce = None ) :
@@ -930,7 +961,7 @@ class ChannelListWindow( BaseWindow ) :
 				label = '%s [COLOR grey3]>[/COLOR] sort by %s'% (label1.upper( ),label3.title( ) )
 			else :
 				label = '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% (label1.upper( ),label2.title( ),label3.title( ) )
-			self.mCtrlLblPath1.setLabel( label )
+			self.mCtrlLabelChannelPath.setLabel( label )
 
 			#current zapping backup
 			#self.mDataCache.Channel_Backup( )
@@ -1027,7 +1058,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlListMainmenu.selectItem( idx1 )
 		self.SubMenuAction(E_SLIDE_ACTION_MAIN, idx1)
 		self.mCtrlListSubmenu.selectItem( idx2 )
-		#self.setFocusId( self.mCtrlListSubmenu.getId( ) )
+		#self.setFocusId( E_CONTROL_ID_LIST_SUBMENU )
 
 
 	def SaveSlideMenuHeader( self ) :
@@ -1197,18 +1228,18 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			self.mDataCache.SetSkipChannelToDBTable( False )
 			#opt btn blind
-			self.UpdateLabelGUI( self.mCtrlGroupOpt.getId( ), False )
-			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ), True, E_TAG_ENABLE )
-			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ), True, E_TAG_ENABLE )
-			self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), MR_LANG('Edit Channel'), E_TAG_LABEL )
+			self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, False )
+			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV, True, E_TAG_ENABLE )
+			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO, True, E_TAG_ENABLE )
+			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_EDITMODE, MR_LANG('Edit Channel'), E_TAG_LABEL )
 
 		else :
 			self.mDataCache.SetSkipChannelToDBTable( True )
 			#opt btn visible
-			self.UpdateLabelGUI( self.mCtrlGroupOpt.getId( ), True )
-			self.UpdateLabelGUI( self.mCtrlRdoTV.getId( ), False, E_TAG_ENABLE )
-			self.UpdateLabelGUI( self.mCtrlRdoRadio.getId( ), False, E_TAG_ENABLE )
-			self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), MR_LANG('Save Channel'), E_TAG_LABEL )
+			self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, True )
+			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV, False, E_TAG_ENABLE )
+			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO, False, E_TAG_ENABLE )
+			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_EDITMODE, MR_LANG('Save Channel'), E_TAG_LABEL )
 			return
 
 		if self.mFlag_DeleteAll :
@@ -1339,7 +1370,7 @@ class ChannelListWindow( BaseWindow ) :
 			label = '%s [COLOR grey3]>[/COLOR] sort by %s'% ( label1.upper( ),label3.title( ) )
 		else :
 			label = '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% ( label1.upper( ),label2.title( ),label3.title( ) )
-		self.UpdateLabelGUI( self.mCtrlLblPath1.getId( ), label )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_PATH, label )
 
 		#get channel list by last on zapping mode, sorting, service type
 		self.mNavChannel = None
@@ -1369,7 +1400,7 @@ class ChannelListWindow( BaseWindow ) :
 		#no channel is set Label comment
 		if self.mChannelList == None:
 			label = MR_LANG('Empty Channels')
-			self.UpdateLabelGUI( self.mCtrlChannelName.getId( ), label )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 			return 
 
 		lblColorS = E_TAG_COLOR_GREY
@@ -1435,7 +1466,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		#select item idx, print GUI of 'current / total'
 		self.mCurrentPosition = iChannelIdx
-		self.mCtrlSelectItem.setLabel( str('%s'% (iChannelIdx+1) ) )
+		self.mCtrlLabelSelectItem.setLabel( str('%s'% (iChannelIdx+1) ) )
 		GuiLock2( False )
 
 		#endtime = time.time( )
@@ -1444,22 +1475,22 @@ class ChannelListWindow( BaseWindow ) :
 
 	def ResetLabel(self):
 		if self.mChannelListServiceType == ElisEnum.E_SERVICE_TYPE_TV:
-			self.mCtrlRdoTV.setSelected( True )
-			self.mCtrlRdoRadio.setSelected( False )
+			self.mCtrlRadioServiceTypeTV.setSelected( True )
+			self.mCtrlRadioServiceTypeRadio.setSelected( False )
 		elif self.mChannelListServiceType == ElisEnum.E_SERVICE_TYPE_RADIO:
-			self.mCtrlRdoTV.setSelected( False )
-			self.mCtrlRdoRadio.setSelected( True )
+			self.mCtrlRadioServiceTypeTV.setSelected( False )
+			self.mCtrlRadioServiceTypeRadio.setSelected( True )
 
 		self.mCtrlProgress.setPercent(0)
 		self.mCtrlProgress.setVisible(False)
 		self.mPincodeEnter = FLAG_MASK_NONE
 
-		self.mCtrlSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition( )+1) ) )
-		self.mCtrlEventName.setLabel('')
-		self.mCtrlEventTime.setLabel('')
-		self.mCtrlLongitudeInfo.setLabel('')
-		self.mCtrlCareerInfo.setLabel('')
-		self.mCtrlLockedInfo.setVisible(False)
+		self.mCtrlLabelSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition( )+1) ) )
+		self.mCtrlLabelEPGName.setLabel('')
+		self.mCtrlLabelEPGTime.setLabel('')
+		self.mCtrlLabelLongitudeInfo.setLabel('')
+		self.mCtrlLabelCareerInfo.setLabel('')
+		self.mCtrlLabelLockedInfo.setVisible(False)
 		self.mWin.setProperty( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
 		self.mWin.setProperty( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
 		self.mWin.setProperty( E_XML_PROPERTY_HD,       E_TAG_FALSE )
@@ -1524,71 +1555,71 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	@GuiLock
-	def UpdateLabelGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
+	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		#LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
 
-		if aCtrlID == self.mCtrlChannelName.getId( ) :
-			self.mCtrlChannelName.setLabel( aValue )
+		if aCtrlID == E_CONTROL_ID_LABEL_CHANNEL_NAME :
+			self.mCtrlLabelChannelName.setLabel( aValue )
 
-		elif aCtrlID == self.mCtrlLongitudeInfo.getId( ) :
-			self.mCtrlLongitudeInfo.setLabel( aValue )
+		elif aCtrlID == E_CONTROL_ID_LABEL_LONGITUDE_INFO :
+			self.mCtrlLabelLongitudeInfo.setLabel( aValue )
 
-		elif aCtrlID == self.mCtrlCareerInfo.getId( ) :
-			self.mCtrlCareerInfo.setLabel( aValue )
+		elif aCtrlID == E_CONTROL_ID_LABEL_CAREER_INFO :
+			self.mCtrlLabelCareerInfo.setLabel( aValue )
 
-		elif aCtrlID == self.mCtrlEventName.getId( ) :
-			self.mCtrlEventName.setLabel( aValue )
+		elif aCtrlID == E_CONTROL_ID_LABEL_EPG_NAME :
+			self.mCtrlLabelEPGName.setLabel( aValue )
 
-		elif aCtrlID == self.mCtrlEventTime.getId( ) :
-			self.mCtrlEventTime.setLabel( aValue )
+		elif aCtrlID == E_CONTROL_ID_LABEL_EPG_TIME :
+			self.mCtrlLabelEPGTime.setLabel( aValue )
 
-		elif aCtrlID == self.mCtrlLockedInfo.getId( ) :
-			self.mCtrlLockedInfo.setVisible( aValue )
+		elif aCtrlID == E_CONTROL_ID_GROUP_LOCKED_INFO :
+			self.mCtrlLabelLockedInfo.setVisible( aValue )
 
-		elif aCtrlID == self.mCtrlGroupComponentData.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_GROUP_COMPONENT_DATA :
 			self.mWin.setProperty( E_XML_PROPERTY_SUBTITLE, aValue )
 
-		elif aCtrlID == self.mCtrlGroupComponentDolby.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_GROUP_COMPONENT_DOLBY :
 			self.mWin.setProperty( E_XML_PROPERTY_DOLBY, aValue )
 
-		elif aCtrlID == self.mCtrlGroupComponentHD.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_GROUP_COMPONENT_HD :
 			self.mWin.setProperty( E_XML_PROPERTY_HD, aValue )
 
-		elif aCtrlID == self.mCtrlGroupOpt.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_GROUP_OPT :
 			self.mCtrlGroupOpt.setVisible( aValue )
 
-		elif aCtrlID == self.mCtrlLblPath1.getId( ) :
-			self.mCtrlLblPath1.setLabel( aValue )
+		elif aCtrlID == E_CONTROL_ID_LABEL_CHANNEL_PATH :
+			self.mCtrlLabelChannelPath.setLabel( aValue )
 
-		elif aCtrlID == self.mCtrlRdoTV.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_RADIO_SERVICETYPE_TV :
 			if aExtra == E_TAG_SELECT :
-				self.mCtrlRdoTV.setSelected( aValue )
+				self.mCtrlRadioServiceTypeTV.setSelected( aValue )
 			elif aExtra == E_TAG_ENABLE :
-				self.mCtrlRdoTV.setEnabled( aValue )
+				self.mCtrlRadioServiceTypeTV.setEnabled( aValue )
 
-		elif aCtrlID == self.mCtrlRdoRadio.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_RADIO_SERVICETYPE_RADIO :
 			if aExtra == E_TAG_SELECT :
-				self.mCtrlRdoRadio.setSelected( aValue )
+				self.mCtrlRadioServiceTypeRadio.setSelected( aValue )
 			elif aExtra == E_TAG_ENABLE :
-				self.mCtrlRdoRadio.setEnabled( aValue )
+				self.mCtrlRadioServiceTypeRadio.setEnabled( aValue )
 
-		elif aCtrlID == self.mCtrlBtnEdit.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_BUTTON_EDITMODE :
 			if aExtra == E_TAG_ENABLE :
-				self.mCtrlBtnEdit.setEnabled( aValue )
+				self.mCtrlButtonEdit.setEnabled( aValue )
 			elif aExtra == E_TAG_LABEL :
-				self.mCtrlBtnEdit.setLabel( aValue )
+				self.mCtrlButtonEdit.setLabel( aValue )
 
-		elif aCtrlID == self.mCtrlBtnDelAll.getId( ) :
-			self.mCtrlBtnDelAll.setLabel( aValue )
+		elif aCtrlID == E_CONTROL_ID_BUTTON_DELETEALL :
+			self.mCtrlButtonDelAll.setLabel( aValue )
 
 
-	def UpdateLabelInfo( self ):
+	def UpdateDisplay( self ) :
 		if self.mNavChannel :
 			#update channel name
 			if self.mIsSelect == True :
 				strType = self.UpdateServiceType( self.mNavChannel.mServiceType )
 				label = '%s - %s'% (strType, self.mNavChannel.mName)
-				self.UpdateLabelGUI( self.mCtrlChannelName.getId( ), label )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 
 			#update longitude info
 			satellite = self.mDataCache.Satellite_GetByChannelNumber( self.mNavChannel.mNumber, -1, True )
@@ -1598,14 +1629,14 @@ class ChannelListWindow( BaseWindow ) :
 
 			if satellite :
 				label = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
-				self.UpdateLabelGUI( self.mCtrlLongitudeInfo.getId( ), label )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, label )
 			else :
-				self.UpdateLabelGUI( self.mCtrlLongitudeInfo.getId( ), '' )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, '' )
 
 			#update lock-icon visible
 			if self.mNavChannel.mLocked :
 				#self.mPincodeEnter |= FLAG_MASK_ADD
-				self.UpdateLabelGUI( self.mCtrlLockedInfo.getId( ), True )
+				self.UpdateControlGUI( E_CONTROL_ID_GROUP_LOCKED_INFO, True )
 
 
 			#update career info
@@ -1616,7 +1647,7 @@ class ChannelListWindow( BaseWindow ) :
 
 				polarization = EnumToString( 'Polarization', value1 )
 				careerLabel = '%s MHz, %s KS/S, %s'% (value2, value3, polarization)
-				self.UpdateLabelGUI( self.mCtrlCareerInfo.getId( ), careerLabel )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CAREER_INFO, careerLabel )
 
 			elif self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBT:
 				pass
@@ -1640,16 +1671,16 @@ class ChannelListWindow( BaseWindow ) :
 				startTime = TimeToString( self.mNavEpg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
 				endTime   = TimeToString( self.mNavEpg.mStartTime + self.mNavEpg.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
 				label = '%s - %s'% (startTime, endTime)
-				self.UpdateLabelGUI( self.mCtrlEventTime.getId( ), label )
-				self.UpdateLabelGUI( self.mCtrlEventName.getId( ), self.mNavEpg.mEventName )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_TIME, label )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_NAME, self.mNavEpg.mEventName )
 				self.mCtrlProgress.setVisible( True )
 
 				#component
 				setPropertyList = []
 				setPropertyList = GetPropertyByEPGComponent( self.mNavEpg )
-				self.UpdateLabelGUI( self.mCtrlGroupComponentData.getId(),  setPropertyList[0] )
-				self.UpdateLabelGUI( self.mCtrlGroupComponentDolby.getId(), setPropertyList[1] )
-				self.UpdateLabelGUI( self.mCtrlGroupComponentHD.getId(),    setPropertyList[2] )
+				self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_DATA,  setPropertyList[0] )
+				self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_DOLBY, setPropertyList[1] )
+				self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_HD,    setPropertyList[2] )
 
 
 				"""
@@ -1669,19 +1700,19 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	@RunThread
-	def CurrentTimeThread( self ) :
+	def LocalThreadDisplayedEPG( self ) :
 		loop = 0
-		while self.mEnableThread:
+		while self.mEnableLocalThread :
 			#LOG_TRACE( 'repeat <<<<' )
 			if  ( loop % 10 ) == 0 :
-				self.UpdateLocalTime( )
+				self.UpdateProgress( )
 
 			time.sleep(1)
 			loop += 1
 
 
 	@GuiLock
-	def UpdateLocalTime( self ) :
+	def UpdateProgress( self ) :
 		try:
 			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 
@@ -1872,18 +1903,18 @@ class ChannelListWindow( BaseWindow ) :
 				listItem.setProperty(E_XML_PROPERTY_MARK, E_TAG_TRUE)
 
 			self.mCtrlListCHList.selectItem(self.mMarkList[0])
-			self.setFocusId( self.mCtrlGroupCHList.getId( ) )
+			self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 
-			self.mCtrlLblOpt1.setLabel('[B]OK[/B]')
-			self.mCtrlLblOpt2.setLabel('[B]OK[/B]')
+			self.mCtrlLabelOpt1.setLabel('[B]OK[/B]')
+			self.mCtrlLabelOpt2.setLabel('[B]OK[/B]')
 			GuiLock2( False )
 
 			#LOG_TRACE ('========= move Init ===' )
 
 		elif aMode == FLAG_OPT_MOVE_OK :
 			self.mMoveFlag = False
-			self.mCtrlLblOpt1.setLabel('[B]Opt Edit[/B]')
-			self.mCtrlLblOpt2.setLabel('[B]Opt Edit[/B]')
+			self.mCtrlLabelOpt1.setLabel('[B]Opt Edit[/B]')
+			self.mCtrlLabelOpt2.setLabel('[B]Opt Edit[/B]')
 
 			self.mMarkList = []
 			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
@@ -1997,7 +2028,7 @@ class ChannelListWindow( BaseWindow ) :
 				listItem = self.mCtrlListCHList.getListItem(oldmark)
 				xbmc.sleep( 50 )
 				listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_FALSE )
-				self.setFocusId( self.mCtrlGroupCHList.getId( ) )
+				self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 
 			else:
 				for idx in range(len(self.mMarkList) ) :
@@ -2007,7 +2038,7 @@ class ChannelListWindow( BaseWindow ) :
 						continue
 					listItem = self.mCtrlListCHList.getListItem( idxOld )
 					listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_FALSE )
-					self.setFocusId( self.mCtrlGroupCHList.getId( ) )
+					self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 					xbmc.sleep( 50 )
 			GuiLock2( False )
 
@@ -2090,8 +2121,8 @@ class ChannelListWindow( BaseWindow ) :
 
 				self.mMarkList = []
 				GuiLock2( True )
-				self.setFocusId( self.mCtrlGroupCHList.getId( ) )
-				self.mCtrlSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition( )+1) ) )
+				self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
+				self.mCtrlLabelSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition( )+1) ) )
 				GuiLock2( False )
 
 				return
@@ -2116,7 +2147,7 @@ class ChannelListWindow( BaseWindow ) :
 				xbmc.sleep( 50 )
 				self.mCtrlListCHList.selectItem(idx)
 				
-				self.setFocusId( self.mCtrlGroupCHList.getId( ) )
+				self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 				GuiLock2( False )
 			return
 
@@ -2150,7 +2181,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.mMarkList = []
 		GuiLock2( True )
-		self.setFocusId( self.mCtrlGroupCHList.getId( ) )
+		self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 		GuiLock2( False )
 
 
@@ -2348,31 +2379,14 @@ class ChannelListWindow( BaseWindow ) :
 			self.mIsSelect = False
 			self.InitEPGEvent( )
 			self.ResetLabel( )
-			self.UpdateLabelInfo( )
+			self.UpdateDisplay( )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-	"""
-	def AlarmDialog( self, aMsg1='', aMsg2='' ) :
-		prop = ElisPropertyEnum( 'Channel Banner Duration', self.mCommander )
-		bannerTimeout = prop.GetProp()
-		self.mAsyncDialogShowTimer = threading.Timer( bannerTimeout, self.ShowInfoDialog( aMsg1, aMsg2 ) )
-		self.mAsyncDialogShowTimer.start( )
 
-
-	def ShowInfoDialog( self, aMsg1='', aMsg2='' ) :
-		self.ALARM = int( params.get( "alarm", "0" ) )	
-		xbmc.executebuiltin( "AlarmClock(LatestAdded,%s,%d,true)" % ( command, self.ALARM, ) )
-
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		dialog.SetDialogProperty( aMsg1, aMsg2 )
-		dialog.doModal( )
-	"""
-
-
-	def KeySearch( self, aKey ) :
+	def SetTuneByNumber( self, aKey ) :
 		if self.mChannelList == None:
 			return -1
 
@@ -2405,21 +2419,18 @@ class ChannelListWindow( BaseWindow ) :
 						self.mCtrlListCHList.selectItem(pos)
 						xbmc.sleep( 20 )
 
-						self.mCtrlSelectItem.setLabel( str('%s'% pos ) )
+						self.mCtrlLabelSelectItem.setLabel( str('%s'% pos ) )
 						self.ResetLabel( )
-						self.UpdateLabelInfo( )
+						self.UpdateDisplay( )
 
 				else :
 					self.SetChannelTune( int(inputNumber) )
 
 
-	def RecordingStop( self ) :
+	def SetRecordingOnStop( self ) :
 		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 
 		isOK = False
-		defaultType = ElisEnum.E_SERVICE_TYPE_TV
-		defaultMode = ElisEnum.E_MODE_ALL
-		defaultSort = ElisEnum.E_SORT_BY_NUMBER
 		if isRunRec > 0 :
 			GuiLock2( True )
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
@@ -2429,27 +2440,12 @@ class ChannelListWindow( BaseWindow ) :
 			isOK = dialog.IsOK()
 			if isOK == E_DIALOG_STATE_YES :
 				isOK = True
-				if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
-					isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
-					#self.mDataCache.Channel_GetZappingList( )
-
-					if isRunRec > 0 :
-						#use zapping table, in recording
-						self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
-						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
-
-					else :
-						self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
-						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
 
 		if isOK == True :
 			self.mDataCache.mCacheReload = True
-			self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
-			self.ShowRecording( )
-			self.ReloadChannelList( )
 
 
-	def RecordingStart( self ) :
+	def SetRecordingOnStart( self ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 
 		isOK = False
@@ -2467,11 +2463,11 @@ class ChannelListWindow( BaseWindow ) :
 		GuiLock2(False)
 
 		if isOK :
-			self.ShowRecording()
-			self.ReloadChannelList( )
+			self.mDataCache.mCacheReload = True
 
 
-	def ShowRecording( self ) :
+
+	def DisplayInfoByRecording( self ) :
 		try:
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			#LOG_TRACE('isRunRecCount[%s]'% isRunRec)
@@ -2497,55 +2493,40 @@ class ChannelListWindow( BaseWindow ) :
 				self.mRecChannel2.append( recNum )
 				self.mRecChannel2.append( recName )
 
-			if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
-				defaultType = ElisEnum.E_SERVICE_TYPE_TV
-				defaultMode = ElisEnum.E_MODE_ALL
-				defaultSort = ElisEnum.E_SORT_BY_NUMBER
-				#self.mDataCache.Channel_GetZappingList( )
-				#time.sleep(0.5)
-				if isRunRec > 0 :
-					self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), False, E_TAG_ENABLE )
-					#use zapping table, in recording
-					self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
-					self.mDataCache.mCacheReload = True
-					self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
-
-				else :
-					self.UpdateLabelGUI( self.mCtrlBtnEdit.getId( ), True, E_TAG_ENABLE )
-					#use all channel table, not recording
-					self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
-					self.mDataCache.mCacheReload = True
-					self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
-					#LOG_TRACE('--------------load channel len[%s]'% len(self.mChannelList) )
-
-
-			return isRunRec
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
+	def SetChangeChannelDBbyRecording( self ) :
+		defaultType = ElisEnum.E_SERVICE_TYPE_TV
+		defaultMode = ElisEnum.E_MODE_ALL
+		defaultSort = ElisEnum.E_SORT_BY_NUMBER
+
+		self.mDataCache.mCacheReload = True
+		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+		if isRunRec > 0 :
+			#use zapping table 
+			self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
+ 
+		else :
+			self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
+
+		self.mDataCache.Channel_GetZappingList( )
+		self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
+
+
 	def ReloadChannelList( self ) :
-		time.sleep(0.5)
 		self.mListItems = None
 		self.mCtrlListCHList.reset( )
 		self.InitSlideMenuHeader( FLAG_ZAPPING_CHANGE )
 		self.RefreshSlideMenu( E_SLIDE_ALLCHANNEL, ElisEnum.E_MODE_ALL, True )
 		self.InitChannelList( )
 
-		"""
-		#initialize get epg event
-		self.mIsSelect = False
-		self.InitEPGEvent( )
-
-		#clear label
-		self.ResetLabel( )
-		self.UpdateLabelInfo( )
-		"""
 		self.mFlag_EditChanged = False
 		self.mMoveFlag = False
 
 		#slide close
 		self.mCtrlListCHList.setEnabled(True)
-		self.setFocusId( self.mCtrlGroupCHList.getId( ) )
+		self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 

@@ -1005,8 +1005,9 @@ class LivePlate( BaseWindow ) :
 		else :
 			self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
 
+		self.mDataCache.Channel_GetZappingList( )
 		self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, E_REOPEN_TRUE  )
-	
+
 
 	def Close( self ):
 		self.mEventBus.Deregister( self )

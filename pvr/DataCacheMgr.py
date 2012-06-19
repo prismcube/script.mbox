@@ -454,7 +454,7 @@ class DataCacheMgr( object ):
 
 	def LoadChannelList( self, aSync = 0, aType = ElisEnum.E_SERVICE_TYPE_TV, aMode = ElisEnum.E_MODE_ALL, aSort = ElisEnum.E_SORT_BY_NUMBER, aReopen = False ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
-			self.Channel_GetZappingList( )
+			#self.Channel_GetZappingList( )
 			mType = aType
 			mMode = aMode
 			mSort = aSort
