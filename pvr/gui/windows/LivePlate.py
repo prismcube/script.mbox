@@ -1,5 +1,33 @@
 from pvr.gui.WindowImport import *
 
+E_CONTROL_ID_IMAGE_RECORDING1 			= 10
+E_CONTROL_ID_LABEL_RECORDING1 			= 11
+E_CONTROL_ID_IMAGE_RECORDING2 			= 15
+E_CONTROL_ID_LABEL_RECORDING2 			= 16
+E_CONTROL_ID_BUTTON_DESCRIPTION_INFO 	= 621
+E_CONTROL_ID_BUTTON_TELETEXT 			= 622
+E_CONTROL_ID_BUTTON_SUBTITLE 			= 623
+E_CONTROL_ID_BUTTON_START_RECORDING 	= 624
+E_CONTROL_ID_BUTTON_STOP_RECORDING 		= 625
+E_CONTROL_ID_BUTTON_MUTE 				= 626
+E_CONTROL_ID_BUTTON_SETTING_FORMAT 		= 627
+E_CONTROL_ID_BUTTON_PREV_EPG 			= 702
+E_CONTROL_ID_BUTTON_NEXT_EPG 			= 706
+E_CONTROL_ID_LABEL_CHANNEL_NUMBER		= 601
+E_CONTROL_ID_LABEL_CHANNEL_NAME			= 602
+E_CONTROL_ID_IMAGE_SERVICETYPE_TV		= 603
+E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO	= 604
+E_CONTROL_ID_GROUP_COMPONENT_DATA		= 605
+E_CONTROL_ID_GROUP_COMPONENT_DOLBY 		= 606
+E_CONTROL_ID_GROUP_COMPONENT_HD			= 607
+E_CONTROL_ID_IMAGE_LOCKED 				= 651
+E_CONTROL_ID_IMAGE_ICAS 				= 652
+E_CONTROL_ID_LABEL_LONGITUDE_INFO		= 701
+E_CONTROL_ID_LABEL_EPG_NAME				= 703
+E_CONTROL_ID_LABEL_EPG_STARTTIME		= 704
+E_CONTROL_ID_LABEL_EPG_ENDTIME			= 705
+E_CONTROL_ID_PROGRESS_EPG 				= 707
+
 FLAG_MASK_ADD  = 0x01
 FLAG_MASK_NONE = 0x00
 FLAG_CLOCKMODE_ADMYHM  = 1
@@ -59,7 +87,7 @@ class LivePlate( BaseWindow ) :
 	
 
 	def onAction(self, aAction):
-		id = aAction.getId()
+		id = aAction.getId( )
 		
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
 			#WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
@@ -90,41 +118,38 @@ class LivePlate( BaseWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
 
-		self.mCtrlLblChannelNumber     = self.getControl( 601 )
-		self.mCtrlLblChannelName       = self.getControl( 602 )
-		self.mCtrlImgServiceTypeTV     = self.getControl( 603 )
-		self.mCtrlImgServiceTypeRadio  = self.getControl( 604 )
+		#rec info
+		self.mCtrlImgRec1              = self.getControl( E_CONTROL_ID_IMAGE_RECORDING1 )
+		self.mCtrlLblRec1              = self.getControl( E_CONTROL_ID_LABEL_RECORDING1 )
+		self.mCtrlImgRec2              = self.getControl( E_CONTROL_ID_IMAGE_RECORDING2 )
+		self.mCtrlLblRec2              = self.getControl( E_CONTROL_ID_LABEL_RECORDING2 )
 
-		self.mCtrlGroupComponentData   = self.getControl( 605 )
-		self.mCtrlGroupComponentDolby  = self.getControl( 606 )
-		self.mCtrlGroupComponentHD     = self.getControl( 607 )
-		#self.mCtrlLblEventClock        = self.getControl( 610 )
-		self.mCtrlLblLongitudeInfo     = self.getControl( 701 )
-		self.mCtrlLblEventName         = self.getControl( 703 )
-		self.mCtrlLblEventStartTime    = self.getControl( 704 )
-		self.mCtrlLblEventEndTime      = self.getControl( 705 )
-		self.mCtrlProgress             = self.getControl( 707 )
-		#self.mCtrlProgress = xbmcgui.ControlProgress(100, 250, 125, 75)
-		#self.mCtrlProgress(self.Progress)
+		#channel, epg info
+		self.mCtrlLblChannelNumber     = self.getControl( E_CONTROL_ID_LABEL_CHANNEL_NUMBER )
+		self.mCtrlLblChannelName       = self.getControl( E_CONTROL_ID_LABEL_CHANNEL_NAME )
+		self.mCtrlImgServiceTypeTV     = self.getControl( E_CONTROL_ID_IMAGE_SERVICETYPE_TV )
+		self.mCtrlImgServiceTypeRadio  = self.getControl( E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO )
+		self.mCtrlGroupComponentData   = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_DATA )
+		self.mCtrlGroupComponentDolby  = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_DOLBY )
+		self.mCtrlGroupComponentHD     = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_HD )
+		self.mCtrlImgLocked            = self.getControl( E_CONTROL_ID_IMAGE_LOCKED )
+		self.mCtrlImgICas              = self.getControl( E_CONTROL_ID_IMAGE_ICAS )
+		self.mCtrlLblLongitudeInfo     = self.getControl( E_CONTROL_ID_LABEL_LONGITUDE_INFO )
+		self.mCtrlLblEventName         = self.getControl( E_CONTROL_ID_LABEL_EPG_NAME )
+		self.mCtrlLblEventStartTime    = self.getControl( E_CONTROL_ID_LABEL_EPG_STARTTIME )
+		self.mCtrlLblEventEndTime      = self.getControl( E_CONTROL_ID_LABEL_EPG_ENDTIME )
+		self.mCtrlProgress             = self.getControl( E_CONTROL_ID_PROGRESS_EPG )
 
 		#button icon
-		self.mCtrlImgRec1              = self.getControl(  10 )
-		self.mCtrlLblRec1              = self.getControl(  11 )
-		self.mCtrlImgRec2              = self.getControl(  15 )
-		self.mCtrlLblRec2              = self.getControl(  16 )
-		self.mCtrlBtnExInfo            = self.getControl( 621 )
-		self.mCtrlBtnTeletext          = self.getControl( 622 )
-		self.mCtrlBtnSubtitle          = self.getControl( 623 )
-		self.mCtrlBtnStartRec          = self.getControl( 624 )
-		self.mCtrlBtnStopRec           = self.getControl( 625 )
-		self.mCtrlBtnMute              = self.getControl( 626 )
-		self.mCtrlBtnSettingFormat     = self.getControl( 627 )
-		self.mCtrlImgLocked            = self.getControl( 651 )
-		self.mCtrlImgICas              = self.getControl( 652 )
-		#self.mCtrlBtnTSbanner          = self.getControl( 630 )
-
-		self.mCtrlBtnPrevEpg           = self.getControl( 702 )
-		self.mCtrlBtnNextEpg           = self.getControl( 706 )
+		self.mCtrlBtnExInfo            = self.getControl( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO )
+		self.mCtrlBtnTeletext          = self.getControl( E_CONTROL_ID_BUTTON_TELETEXT )
+		self.mCtrlBtnSubtitle          = self.getControl( E_CONTROL_ID_BUTTON_SUBTITLE )
+		self.mCtrlBtnStartRec          = self.getControl( E_CONTROL_ID_BUTTON_START_RECORDING )
+		self.mCtrlBtnStopRec           = self.getControl( E_CONTROL_ID_BUTTON_STOP_RECORDING )
+		self.mCtrlBtnMute              = self.getControl( E_CONTROL_ID_BUTTON_MUTE )
+		self.mCtrlBtnSettingFormat     = self.getControl( E_CONTROL_ID_BUTTON_SETTING_FORMAT )
+		self.mCtrlBtnPrevEpg           = self.getControl( E_CONTROL_ID_BUTTON_PREV_EPG )
+		self.mCtrlBtnNextEpg           = self.getControl( E_CONTROL_ID_BUTTON_NEXT_EPG )
 
 		self.mFlag_OnEvent = True
 		self.mFlag_ChannelChanged = False
@@ -141,8 +166,6 @@ class LivePlate( BaseWindow ) :
 		self.mLoopCount = 0
 		self.mInitializeCheck = False
 
-		#self.UpdateLabelGUI( self.mCtrlLblEventClock.getId(), '' )
-
 		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
 		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
@@ -152,7 +175,6 @@ class LivePlate( BaseWindow ) :
 			self.mZappingMode = ElisIZappingMode( )
 
 		self.ShowRecording( )
-		self.mInitializeCheck = True
 
 		#get channel
 		iChannel = self.mDataCache.Channel_GetCurrent( )
@@ -167,55 +189,39 @@ class LivePlate( BaseWindow ) :
 
 		if self.mFakeChannel :
 			self.mCurrentEvent = None
-			self.UpdateLabelGUI( self.mCtrlLblChannelNumber.getId(), ('%s'% self.mFakeChannel.mNumber) )
-			self.UpdateLabelGUI( self.mCtrlLblChannelName.getId(), self.mFakeChannel.mName )
+			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ('%s'% self.mFakeChannel.mNumber) )
+			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
 		else:
-			self.UpdateLabelGUI( self.mCtrlLblChannelNumber.getId(), '' )
-			self.UpdateLabelGUI( self.mCtrlLblChannelName.getId(), MR_LANG('No Channel') )
+			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, '' )
+			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, MR_LANG('No Channel') )
 			pass
 			#LOG_TRACE( 'has no channel' )
 
 		self.InitLabelInfo()
 		#self.GetEPGList()
 
-		"""
-		if self.mInitializeCheck :
-			self.mEPGList = self.mDataCache.mEPGList
-			if self.mEPGList != None and len(self.mEPGList) > 0 :
-				self.mFlag_ChannelChanged = True
-			else :
-				self.mFlag_ChannelChanged = False
-
-			if self.mEPGList != None and len(self.mEPGList) > 0 :
-				LOG_TRACE('epgList len[%s] [%s]'% (len(self.mEPGList), ClassToList('convert', self.mEPGList) ) )
-			else :
-				LOG_TRACE('epgList None')
-			self.mInitializeCheck = False
-		"""
-
 		try :
 			if self.mCurrentChannel :
 				iEPG = None
 				iEPG = self.mDataCache.Epgevent_GetPresent()
-				if iEPG and iEPG.mEventName != 'No Name':
+				if iEPG and iEPG.mError == 0 :
 					self.mCurrentEvent = iEPG
 					self.UpdateONEvent( iEPG )
 
 				if self.mCurrentChannel.mLocked :
 					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mDataCache.mPropertyPincode )
 
-				#get epg event right now, as this windows open
-				self.mEventBus.Register( self )
-
-				#run thread
-				self.mEnableThread = True
-				self.CurrentTimeThread()
-
-			else :
-				self.mEnableThread = False
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
+
+
+		#get epg event right now, as this windows open
+		self.mEventBus.Register( self )
+
+		#run thread
+		self.mEnableThread = True
+		self.CurrentTimeThread()
 
 
 		if self.mAutomaticHide == True :
@@ -252,7 +258,7 @@ class LivePlate( BaseWindow ) :
 		elif id == Action.ACTION_CONTEXT_MENU :
 			self.StopAutomaticHide()
 			self.SetAutomaticHide( False )
-			self.onClick( self.mCtrlBtnExInfo.getId() )
+			self.onClick( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO )
 
 
 		elif id == Action.ACTION_MOVE_LEFT:
@@ -260,7 +266,7 @@ class LivePlate( BaseWindow ) :
 			self.SetAutomaticHide( False )
 		
 			self.GetFocusId()
-			if self.mFocusId == self.mCtrlBtnPrevEpg.getId( ) :			
+			if self.mFocusId == E_CONTROL_ID_BUTTON_PREV_EPG :			
 				self.EPGNavigation( PREV_EPG )
 
 		elif id == Action.ACTION_MOVE_RIGHT :
@@ -268,7 +274,7 @@ class LivePlate( BaseWindow ) :
 			self.SetAutomaticHide( False )
 		
 			self.GetFocusId()
-			if self.mFocusId == self.mCtrlBtnNextEpg.getId():
+			if self.mFocusId == E_CONTROL_ID_BUTTON_NEXT_EPG:
 				self.EPGNavigation( NEXT_EPG )
 
 		elif id == Action.ACTION_PAGE_UP:
@@ -291,7 +297,7 @@ class LivePlate( BaseWindow ) :
 			if status.mMode :
 				ret = self.mDataCache.Player_Stop()
 			else :
-				self.ShowDialog( self.mCtrlBtnStopRec.getId() )
+				self.ShowDialog( E_CONTROL_ID_BUTTON_STOP_RECORDING )
 
 		elif id == Action.ACTION_MBOX_XBMC :
 			self.Close( )
@@ -303,7 +309,7 @@ class LivePlate( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
 		elif id == Action.ACTION_MBOX_RECORD :
-			self.onClick( self.mCtrlBtnStartRec.getId() )
+			self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
 
 		elif id == Action.ACTION_PAUSE or id == Action.ACTION_PLAYER_PLAY :
 			status = self.mDataCache.Player_GetStatus()
@@ -343,48 +349,48 @@ class LivePlate( BaseWindow ) :
 
 
 	def onClick(self, aControlId):
-		if aControlId == self.mCtrlBtnMute.getId():
+		if aControlId == E_CONTROL_ID_BUTTON_MUTE:
 			self.StopAutomaticHide()
 			self.SetAutomaticHide( False )
 		
 			self.GlobalAction( Action.ACTION_MUTE  )
 
-		elif aControlId == self.mCtrlBtnExInfo.getId() :
+		elif aControlId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
 			self.StopAutomaticHide()
 			self.SetAutomaticHide( False )
 			self.ShowDialog( aControlId )
 
-		elif aControlId == self.mCtrlBtnTeletext.getId() :
+		elif aControlId == E_CONTROL_ID_BUTTON_TELETEXT :
 			self.StopAutomaticHide()
 			self.SetAutomaticHide( False )
 			self.ShowDialog( aControlId )
 
-		elif aControlId == self.mCtrlBtnSubtitle.getId() :
+		elif aControlId == E_CONTROL_ID_BUTTON_SUBTITLE :
 			self.StopAutomaticHide()
 			self.SetAutomaticHide( False )
 			self.ShowDialog( aControlId )
 
-		elif aControlId == self.mCtrlBtnStartRec.getId() :
+		elif aControlId == E_CONTROL_ID_BUTTON_START_RECORDING :
 			self.StopAutomaticHide()
 			self.SetAutomaticHide( False )
 			self.ShowDialog( aControlId )
 
-		elif aControlId == self.mCtrlBtnStopRec.getId() :
+		elif aControlId == E_CONTROL_ID_BUTTON_STOP_RECORDING :
 			self.StopAutomaticHide()
 			self.SetAutomaticHide( False )
 			self.ShowDialog( aControlId )
 
-		elif aControlId == self.mCtrlBtnSettingFormat.getId() :
+		elif aControlId == E_CONTROL_ID_BUTTON_SETTING_FORMAT :
 			self.StopAutomaticHide()
 			self.SetAutomaticHide( False )
 			self.ShowDialog( aControlId )
 
-		elif aControlId == self.mCtrlBtnPrevEpg.getId() :
+		elif aControlId == E_CONTROL_ID_BUTTON_PREV_EPG :
 			self.StopAutomaticHide()
 			self.SetAutomaticHide( False )
 			self.EPGNavigation( PREV_EPG )
 
-		elif aControlId == self.mCtrlBtnNextEpg.getId() :
+		elif aControlId == E_CONTROL_ID_BUTTON_NEXT_EPG :
 			self.StopAutomaticHide()
 			self.SetAutomaticHide( False )
 			self.EPGNavigation( NEXT_EPG )
@@ -505,8 +511,8 @@ class LivePlate( BaseWindow ) :
 
 			self.mFakeChannel = prevChannel
 			#self.InitLabelInfo()
-			self.UpdateLabelGUI( self.mCtrlLblChannelNumber.getId(), ('%s'% self.mFakeChannel.mNumber) )
-			self.UpdateLabelGUI( self.mCtrlLblChannelName.getId(), self.mFakeChannel.mName )
+			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ('%s'% self.mFakeChannel.mNumber) )
+			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
 			self.RestartAsyncTune()
 
 		elif aDir == NEXT_CHANNEL:
@@ -517,8 +523,8 @@ class LivePlate( BaseWindow ) :
 
 			self.mFakeChannel = nextChannel
 			#self.InitLabelInfo()
-			self.UpdateLabelGUI( self.mCtrlLblChannelNumber.getId(), ('%s'% self.mFakeChannel.mNumber) )
-			self.UpdateLabelGUI( self.mCtrlLblChannelName.getId(), self.mFakeChannel.mName )
+			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ('%s'% self.mFakeChannel.mNumber) )
+			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
 			self.RestartAsyncTune()
 
 		elif aDir == CURR_CHANNEL:
@@ -654,16 +660,16 @@ class LivePlate( BaseWindow ) :
 				satellite = self.mDataCache.Satellite_GetByChannelNumber( ch.mNumber, -1, True )
 				if satellite :
 					label = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
-				self.UpdateLabelGUI( self.mCtrlLblLongitudeInfo.getId(), label )
+				self.UpdateLabelGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, label )
 
 				#lock,cas
 				if ch.mLocked :
-					self.UpdateLabelGUI( self.mCtrlImgLocked.getId(), 'True' )
+					self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_LOCKED, 'True' )
 					#if self.mFlag_OnEvent == True :
 					#	self.mPincodeEnter |= FLAG_MASK_ADD
 
 				if ch.mIsCA :
-					self.UpdateLabelGUI( self.mCtrlImgICas.getId(), 'True' )
+					self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_ICAS, 'True' )
 
 				#type
 				setPropertyTV    = 'False'
@@ -679,8 +685,8 @@ class LivePlate( BaseWindow ) :
 				else:
 					pass
 					#LOG_TRACE( 'unknown ElisEnum tvType[%s]'% ch.mServiceType )
-				self.UpdateLabelGUI( self.mCtrlImgServiceTypeTV.getId(),    setPropertyTV )
-				self.UpdateLabelGUI( self.mCtrlImgServiceTypeRadio.getId(), setPropertyRadio )
+				self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_TV,    setPropertyTV )
+				self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO, setPropertyRadio )
 
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -689,20 +695,20 @@ class LivePlate( BaseWindow ) :
 		if aEvent :
 			try :
 				#epg name
-				self.UpdateLabelGUI( self.mCtrlLblEventName.getId(), deepcopy(aEvent.mEventName) )
+				self.UpdateLabelGUI( E_CONTROL_ID_LABEL_EPG_NAME, deepcopy(aEvent.mEventName) )
 
 				#start,end
 				label = TimeToString( aEvent.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
-				self.UpdateLabelGUI( self.mCtrlLblEventStartTime.getId(), label )
+				self.UpdateLabelGUI( E_CONTROL_ID_LABEL_EPG_STARTTIME, label )
 				label = TimeToString( aEvent.mStartTime + aEvent.mDuration + self.mLocalOffset, TimeFormatEnum.E_HH_MM )
-				self.UpdateLabelGUI( self.mCtrlLblEventEndTime.getId(),   label )
+				self.UpdateLabelGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,   label )
 
 				#component
 				setPropertyList = []
 				setPropertyList = GetPropertyByEPGComponent( aEvent )
-				self.UpdateLabelGUI( self.mCtrlGroupComponentData.getId(),  setPropertyList[0] )
-				self.UpdateLabelGUI( self.mCtrlGroupComponentDolby.getId(), setPropertyList[1] )
-				self.UpdateLabelGUI( self.mCtrlGroupComponentHD.getId(),    setPropertyList[2] )
+				self.UpdateLabelGUI( E_CONTROL_ID_GROUP_COMPONENT_DATA,  setPropertyList[0] )
+				self.UpdateLabelGUI( E_CONTROL_ID_GROUP_COMPONENT_DOLBY, setPropertyList[1] )
+				self.UpdateLabelGUI( E_CONTROL_ID_GROUP_COMPONENT_HD,    setPropertyList[2] )
 
 				"""
 				#is Age? agerating check
@@ -722,8 +728,6 @@ class LivePlate( BaseWindow ) :
 		while self.mEnableThread:
 			#LOG_TRACE( 'repeat <<<<' )
 			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
-			#lbl_localTime = TimeToString( self.mLocalTime, TimeFormatEnum.E_HH_MM )
-			#self.UpdateLabelGUI( self.mCtrlLblEventClock.getId(), lbl_localTime )
 
 			if  ( self.mLocalTime % 10 ) == 0 or self.mLoopCount == 3:
 				if self.mFlag_ChannelChanged :
@@ -775,117 +779,114 @@ class LivePlate( BaseWindow ) :
 		"""
 		if self.mFakeChannel :
 			self.mCurrentEvent = None
-			self.UpdateLabelGUI( self.mCtrlLblChannelNumber.getId(), ('%s'% self.mFakeChannel.mNumber) )
-			self.UpdateLabelGUI( self.mCtrlLblChannelName.getId(), self.mFakeChannel.mName )
+			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ('%s'% self.mFakeChannel.mNumber) )
+			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
 		else:
-			self.UpdateLabelGUI( self.mCtrlLblChannelNumber.getId(), '' )
-			self.UpdateLabelGUI( self.mCtrlLblChannelName.getId(), MR_LANG('No Channel') )
+			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, '' )
+			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, MR_LANG('No Channel') )
 			pass
 			#LOG_TRACE( 'has no channel' )
 		"""
 
-		self.UpdateLabelGUI( self.mCtrlProgress.getId(),                  0 )
-		self.UpdateLabelGUI( self.mCtrlLblLongitudeInfo.getId(),         '' )
-		self.UpdateLabelGUI( self.mCtrlLblEventName.getId(),             '' )
-		self.UpdateLabelGUI( self.mCtrlLblEventStartTime.getId(),        '' )
-		self.UpdateLabelGUI( self.mCtrlLblEventEndTime.getId(),          '' )
-		self.UpdateLabelGUI( self.mCtrlImgServiceTypeTV.getId(),     'True' )
-		self.UpdateLabelGUI( self.mCtrlImgServiceTypeRadio.getId(), 'False' )
-		self.UpdateLabelGUI( self.mCtrlImgLocked.getId(),           'False' )
-		self.UpdateLabelGUI( self.mCtrlImgICas.getId(),             'False' )
+		self.UpdateLabelGUI( E_CONTROL_ID_PROGRESS_EPG,                  0 )
+		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO,         '' )
+		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_EPG_NAME,             '' )
+		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_EPG_STARTTIME,        '' )
+		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,          '' )
+		self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_TV,     'True' )
+		self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO, 'False' )
+		self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_LOCKED,           'False' )
+		self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_ICAS,             'False' )
 
-		self.UpdateLabelGUI( self.mCtrlGroupComponentData.getId(),  'False' )
-		self.UpdateLabelGUI( self.mCtrlGroupComponentDolby.getId(), 'False' )
-		self.UpdateLabelGUI( self.mCtrlGroupComponentHD.getId(),    'False' )
-		self.UpdateLabelGUI( self.mCtrlLblLongitudeInfo.getId(),         '' )
+		self.UpdateLabelGUI( E_CONTROL_ID_GROUP_COMPONENT_DATA,  'False' )
+		self.UpdateLabelGUI( E_CONTROL_ID_GROUP_COMPONENT_DOLBY, 'False' )
+		self.UpdateLabelGUI( E_CONTROL_ID_GROUP_COMPONENT_HD,    'False' )
+		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO,         '' )
 		
 
 	@GuiLock
 	def UpdateLabelGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		#LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
 
-		if aCtrlID == self.mCtrlLblChannelNumber.getId( ) :
+		if aCtrlID == E_CONTROL_ID_LABEL_CHANNEL_NUMBER :
 			self.mCtrlLblChannelNumber.setLabel( aValue )
 
-		elif aCtrlID == self.mCtrlLblChannelName.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_LABEL_CHANNEL_NAME :
 			self.mCtrlLblChannelName.setLabel( aValue )
 
-		elif aCtrlID == self.mCtrlImgServiceTypeTV.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_IMAGE_SERVICETYPE_TV :
 			self.mWin.setProperty( 'ServiceTypeTV', aValue )
 
-		elif aCtrlID == self.mCtrlImgServiceTypeRadio.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO :
 			self.mWin.setProperty( 'ServiceTypeRadio', aValue )
 
-		elif aCtrlID == self.mCtrlGroupComponentData.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_GROUP_COMPONENT_DATA :
 			self.mWin.setProperty( 'HasSubtitle', aValue )
 
-		elif aCtrlID == self.mCtrlGroupComponentDolby.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_GROUP_COMPONENT_DOLBY :
 			self.mWin.setProperty( 'HasDolby', aValue )
 
-		elif aCtrlID == self.mCtrlGroupComponentHD.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_GROUP_COMPONENT_HD :
 			self.mWin.setProperty( 'HasHD', aValue )
 
-		elif aCtrlID == self.mCtrlLblLongitudeInfo.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_LABEL_LONGITUDE_INFO :
 			self.mCtrlLblLongitudeInfo.setLabel( aValue )
 
-		elif aCtrlID == self.mCtrlLblEventName.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_LABEL_EPG_NAME :
 			self.mCtrlLblEventName.setLabel( aValue )
 
-		elif aCtrlID == self.mCtrlLblEventStartTime.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_LABEL_EPG_STARTTIME :
 			self.mCtrlLblEventStartTime.setLabel( aValue )
 
-		elif aCtrlID == self.mCtrlLblEventEndTime.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_LABEL_EPG_ENDTIME :
 			self.mCtrlLblEventEndTime.setLabel( aValue )
 
-		elif aCtrlID == self.mCtrlProgress.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_PROGRESS_EPG :
 			self.mCtrlProgress.setPercent( aValue )
 
-		elif aCtrlID == self.mCtrlImgLocked.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_IMAGE_LOCKED :
 			self.mWin.setProperty( 'iLock', aValue )
 
-		elif aCtrlID == self.mCtrlImgICas.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_IMAGE_ICAS :
 			self.mWin.setProperty( 'iCas', aValue )
 
-		elif aCtrlID == self.mCtrlImgRec1.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_IMAGE_RECORDING1 :
 			self.mWin.setProperty( 'ViewRecord1', aValue )
 
-		elif aCtrlID == self.mCtrlImgRec2.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_IMAGE_RECORDING2 :
 			self.mWin.setProperty( 'ViewRecord2', aValue )
 
-		elif aCtrlID == self.mCtrlLblRec1.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_LABEL_RECORDING1 :
 			self.mCtrlLblRec1.setLabel( aValue )
 
-		elif aCtrlID == self.mCtrlLblRec2.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_LABEL_RECORDING2 :
 			self.mCtrlLblRec2.setLabel( aValue )
 
-		elif aCtrlID == self.mCtrlBtnStartRec.getId( ) :
+		elif aCtrlID == E_CONTROL_ID_BUTTON_START_RECORDING :
 			self.mCtrlBtnStartRec.setEnabled( aValue )
-
-		#elif aCtrlID == self.mCtrlLblEventClock.getId( ) :
-		#	self.mCtrlLblEventClock.setLabel( aValue )
 
 
 	def ShowDialog( self, aFocusId, aVisible = False ):
 		msg1 = ''
 		msg2 = ''
 
-		if aFocusId == self.mCtrlBtnMute.getId():
+		if aFocusId == E_CONTROL_ID_BUTTON_MUTE:
 			msg1 = 'Mute'
 			msg2 = 'test'
 
-		elif aFocusId == self.mCtrlBtnTeletext.getId() :
+		elif aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
 			msg1 = 'Teletext'
 			msg2 = 'test'
 			#xbmc.executebuiltin('Custom.SetLanguage(French)')
 
 
-		elif aFocusId == self.mCtrlBtnSubtitle.getId() :
+		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
 			msg1 = 'Subtitle'
 			msg2 = 'test'
 			#xbmc.executebuiltin('Custom.SetLanguage(English)')
 
 
-		elif aFocusId == self.mCtrlBtnExInfo.getId() :
+		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
 			if self.mCurrentEvent :
 				GuiLock2( True )
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_EXTEND_EPG )
@@ -894,7 +895,7 @@ class LivePlate( BaseWindow ) :
 				GuiLock2( False )
 
 
-		elif aFocusId == self.mCtrlBtnStartRec.getId() :
+		elif aFocusId == E_CONTROL_ID_BUTTON_START_RECORDING :
 			runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 			#LOG_TRACE( 'runningCount[%s]' %runningCount)
 
@@ -917,7 +918,7 @@ class LivePlate( BaseWindow ) :
 				#self.ShowRecording()
 				self.mDataCache.mCacheReload = True
 
-		elif aFocusId == self.mCtrlBtnStopRec.getId() :
+		elif aFocusId == E_CONTROL_ID_BUTTON_STOP_RECORDING :
 			runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 			#LOG_TRACE( 'runningCount[%s]' %runningCount )
 
@@ -936,7 +937,7 @@ class LivePlate( BaseWindow ) :
 				#self.ShowRecording( )
 				self.mDataCache.mCacheReload = True
 
-		elif aFocusId == self.mCtrlBtnSettingFormat.getId() :
+		elif aFocusId == E_CONTROL_ID_BUTTON_SETTING_FORMAT :
 			context = []
 			context.append( ContextItem( 'Video Format', CONTEXT_ACTION_VIDEO_SETTING ) )
 			context.append( ContextItem( 'Audio Track',  CONTEXT_ACTION_AUDIO_SETTING ) )
@@ -1038,11 +1039,11 @@ class LivePlate( BaseWindow ) :
 			else :
 				btnValue = True
 
-			self.UpdateLabelGUI( self.mCtrlLblRec1.getId(), strLabelRecord1 )
-			self.UpdateLabelGUI( self.mCtrlLblRec2.getId(), strLabelRecord2 )
-			self.UpdateLabelGUI( self.mCtrlImgRec1.getId(), setPropertyRecord1 )
-			self.UpdateLabelGUI( self.mCtrlImgRec2.getId(), setPropertyRecord2 )
-			self.UpdateLabelGUI( self.mCtrlBtnStartRec.getId(), btnValue )
+			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_RECORDING1, strLabelRecord1 )
+			self.UpdateLabelGUI( E_CONTROL_ID_LABEL_RECORDING2, strLabelRecord2 )
+			self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_RECORDING1, setPropertyRecord1 )
+			self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_RECORDING2, setPropertyRecord2 )
+			self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_START_RECORDING, btnValue )
 
 			return isRunRec
 
