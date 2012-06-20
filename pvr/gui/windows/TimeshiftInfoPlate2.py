@@ -1275,7 +1275,7 @@ class TimeShiftInfoPlate2(BaseWindow):
 				if self.mMode == ElisEnum.E_MODE_PVR :
 					label = 'Archive'
 				else :
-					satellite = self.mDataCache.Satellite_GetByChannelNumber( ch.mNumber, -1, True )
+					satellite = self.mDataCache.Satellite_GetByChannelNumber( ch.mNumber, -1 )
 					if satellite :
 						label = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
 				self.UpdateLabelGUI( self.mCtrlLblLongitudeInfo.getId(), label )

@@ -135,7 +135,7 @@ class TimeShiftPlate(BaseWindow):
 		self.mAsyncShiftTimer = None
 		self.mAutomaticHideTimer = None
 
-		self.ShowRecording( )
+		self.DisplayInfoByRecording( )
 		
 		self.mTimeShiftExcuteTime = self.mDataCache.Datetime_GetLocalTime()
 
@@ -292,7 +292,7 @@ class TimeShiftPlate(BaseWindow):
 
 		#test
 		elif id == 104 : #scroll up
-			self.ShowRecording()
+			self.DisplayInfoByRecording()
 			#self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_RECORDING1, True )
 		elif id == 105 :
 			#self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_RECORDING2, False )
@@ -316,7 +316,7 @@ class TimeShiftPlate(BaseWindow):
 			self.StopAutomaticHide()
 		
 		elif aControlId == E_CONTROL_ID_BUTTON_START_RECORDING :
-			runningCount = self.ShowRecording()
+			runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 
 			isOK = False
 			GuiLock2(True)
@@ -333,7 +333,6 @@ class TimeShiftPlate(BaseWindow):
 			GuiLock2(False)
 
 			if isOK :
-				self.ShowRecording()
 				self.mDataCache.mCacheReload = True
 
 		elif aControlId == E_CONTROL_ID_BUTTON_BOOKMARK:
@@ -370,7 +369,8 @@ class TimeShiftPlate(BaseWindow):
 
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
-				self.ShowRecording()
+				self.DisplayInfoByRecording()
+				self.SetChangeChannelDBbyRecording( )
 				self.mDataCache.mCacheReload = True
 
 		else:
@@ -906,7 +906,7 @@ class TimeShiftPlate(BaseWindow):
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-	def ShowRecording( self ) :
+	def DisplayInfoByRecording( self ) :
 		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 
 		strLabelRecord1 = ''
@@ -926,26 +926,11 @@ class TimeShiftPlate(BaseWindow):
 			recInfo = self.mDataCache.Record_GetRunningRecordInfo( E_INDEX_SECOND_RECORDING )
 			strLabelRecord2 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
 
-		if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
-			if isRunRec > 0 :
-				#use zapping table, in recording
-				self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
-				#self.mDataCache.Channel_GetZappingList( )
-
-			else :
-				self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
-				if self.mDataCache.mCacheReload :
-					self.mDataCache.mCacheReload = False
-
-			#### data cache re-load ####
-			self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, ElisEnum.E_SERVICE_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER, E_REOPEN_TRUE )
-
 		btnValue = False
 		if isRunRec >= 1 :
 			btnValue = False
 		else :
 			btnValue = True
-
 
 		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_RECORDING1, strLabelRecord1 )
 		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_RECORDING2, strLabelRecord2 )
@@ -953,7 +938,18 @@ class TimeShiftPlate(BaseWindow):
 		self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_RECORDING2, setPropertyRecord2 )
 		self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_START_RECORDING, btnValue, E_CONTROL_ENABLE )
 
-		return isRunRec
+
+	def SetChangeChannelDBbyRecording( self ) :
+		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+		if isRunRec > 0 :
+			#use zapping table 
+			self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
+ 
+		else :
+			self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
+
+		self.mDataCache.Channel_GetZappingList( )
+		self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, ElisEnum.E_SERVICE_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER )
 
 
 	def RecordingStopAll( self ) :

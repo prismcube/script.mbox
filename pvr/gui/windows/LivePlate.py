@@ -640,7 +640,7 @@ class LivePlate( BaseWindow ) :
 			try :
 				#satellite
 				label = ''
-				satellite = self.mDataCache.Satellite_GetByChannelNumber( ch.mNumber, -1, True )
+				satellite = self.mDataCache.Satellite_GetByChannelNumber( ch.mNumber, -1 )
 				if satellite :
 					label = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, label )
@@ -998,6 +998,7 @@ class LivePlate( BaseWindow ) :
 
 
 	def SetChangeChannelDBbyRecording( self ) :
+		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 		if isRunRec > 0 :
 			#use zapping table 
 			self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
@@ -1006,7 +1007,7 @@ class LivePlate( BaseWindow ) :
 			self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
 
 		self.mDataCache.Channel_GetZappingList( )
-		self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode, E_REOPEN_TRUE  )
+		self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
 
 
 	def Close( self ):

@@ -519,10 +519,10 @@ class NullWindow( BaseWindow ) :
 						#use zapping table, in recording
 						self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
 						#self.mDataCache.Channel_GetZappingList( )
-						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
+						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort )
 					else :
 						self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
-						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
+						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort )
 						self.mDataCache.mCacheReload = True
 
 
@@ -540,14 +540,14 @@ class NullWindow( BaseWindow ) :
 					self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
 					#self.mDataCache.Channel_GetZappingList( )
 					#### data cache re-load ####
-					self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
+					self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort )
 
 				else :
 					self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
 					if self.mDataCache.mCacheReload :
 						self.mDataCache.mCacheReload = False
 						#### data cache re-load ####
-						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
+						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort )
 
 				#LOG_TRACE('table[%s]'% ret)
 

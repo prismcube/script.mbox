@@ -1622,10 +1622,10 @@ class ChannelListWindow( BaseWindow ) :
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 
 			#update longitude info
-			satellite = self.mDataCache.Satellite_GetByChannelNumber( self.mNavChannel.mNumber, -1, True )
+			satellite = self.mDataCache.Satellite_GetByChannelNumber( self.mNavChannel.mNumber, -1 )
 			if not satellite :
 				#LOG_TRACE('Fail GetByChannelNumber by Cache')
-				satellite = self.mDataCache.Satellite_GetByChannelNumber( self.mNavChannel.mNumber, self.mNavChannel.mServiceType, True )
+				satellite = self.mDataCache.Satellite_GetByChannelNumber( self.mNavChannel.mNumber, self.mNavChannel.mServiceType )
 
 			if satellite :
 				label = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
@@ -2513,7 +2513,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
 
 		self.mDataCache.Channel_GetZappingList( )
-		self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
+		self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort )
 
 
 	def ReloadChannelList( self ) :
