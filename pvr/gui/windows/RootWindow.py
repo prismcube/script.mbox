@@ -19,6 +19,7 @@ class RootWindow( BaseWindow ):
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).doModal()
 			self.mInitialized = True
+			self.mEventBus.Register( self )			
 		else :
 			WinMgr.GetInstance( ).GetWindow(WinMgr.GetInstance( ).mLastId).doModal( )
 
@@ -40,6 +41,10 @@ class RootWindow( BaseWindow ):
 	def onFocus( self, aControlId ):
 		LOG_TRACE('')
 		pass
+
+	def onEvent(self, aEvent):
+		if aEvent.getName() == ElisEventTimeReceived.getName( ) :
+			self.SendLocalOffsetToXBMC( )
 
 
 	def SendLocalOffsetToXBMC( self ) :
