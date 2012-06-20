@@ -44,9 +44,10 @@ E_TAG_COLOR_END   = '[/COLOR]'
 NEXT_EPG		= 0
 PREV_EPG 		= 1
 
-NEXT_CHANNEL	= 0
-PREV_CHANNEL	= 1
-CURR_CHANNEL	= 2
+CURR_CHANNEL	= 0
+NEXT_CHANNEL	= 1
+PREV_CHANNEL	= 2
+
 
 CONTEXT_ACTION_VIDEO_SETTING = 1 
 CONTEXT_ACTION_AUDIO_SETTING = 2
@@ -71,13 +72,14 @@ class LivePlate( BaseWindow ) :
 		self.mAsyncEPGTimer = None
 		self.mAsyncTuneTimer = None	
 		self.mAutomaticHide = False
+		self.mEnableLocalThread = False		
 
 
 	"""
 	def __del__(self):
 		LOG_TRACE( 'destroyed LivePlate' )
 
-		# end thread LocalThreadDisplayedEPG()
+		# end thread EPGProgressThread()
 		self.mEnableLocalThread = False
 
 	def onInit ( self ) :
@@ -159,12 +161,10 @@ class LivePlate( BaseWindow ) :
 		self.mJumpNumber = 0
 		self.mZappingMode = None
 
-		self.mEnableLocalThread = True
 		self.mAsyncEPGTimer = None
 		self.mAsyncTuneTimer = None
 		self.mAutomaticHideTimer = None
 		self.mLoopCount = 0
-		self.mInitializeCheck = False
 
 		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
 		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
@@ -174,7 +174,7 @@ class LivePlate( BaseWindow ) :
 		if not self.mZappingMode :
 			self.mZappingMode = ElisIZappingMode( )
 
-		self.DisplayInfoByRecording( )
+		self.ShowRecordingInfo( )
 
 		#get channel
 		iChannel = self.mDataCache.Channel_GetCurrent( )
@@ -206,7 +206,7 @@ class LivePlate( BaseWindow ) :
 				iEPG = self.mDataCache.Epgevent_GetPresent()
 				if iEPG and iEPG.mError == 0 :
 					self.mCurrentEvent = iEPG
-					self.UpdateDisplay( iEPG )
+					self.UpdateChannelAndEPG( iEPG )
 
 				if self.mCurrentChannel.mLocked :
 					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mDataCache.mPropertyPincode )
@@ -215,13 +215,12 @@ class LivePlate( BaseWindow ) :
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
-
 		#get epg event right now, as this windows open
 		self.mEventBus.Register( self )
 
 		#run thread
 		self.mEnableLocalThread = True
-		self.LocalThreadDisplayedEPG()
+		self.EPGProgressThread()
 
 
 		if self.mAutomaticHide == True :
@@ -441,7 +440,7 @@ class LivePlate( BaseWindow ) :
 						self.mEventID = aEvent.mEventId
 						self.mCurrentEvent = iEPG
 						#update label
-						self.UpdateDisplay( iEPG )
+						self.UpdateChannelAndEPG( iEPG )
 
 						#check : new event?
 						if self.mEPGList :
@@ -482,8 +481,8 @@ class LivePlate( BaseWindow ) :
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
  
-				self.DisplayInfoByRecording( )
-				self.SetChangeChannelDBbyRecording( )
+				self.ShowRecordingInfo( )
+				self.LoadChannelListByRecording( )
 
 
 			elif aEvent.getName() == ElisEventChannelChangeResult.getName() :
@@ -546,7 +545,7 @@ class LivePlate( BaseWindow ) :
 				self.mFlag_OnEvent = False
 				GuiLock2(False)
 
-				self.UpdateDisplay( iEPG )
+				self.UpdateChannelAndEPG( iEPG )
 
 
 		except Exception, e :
@@ -634,7 +633,7 @@ class LivePlate( BaseWindow ) :
 		self.mFlag_OnEvent = True
 
 
-	def UpdateDisplay(self, aEpg = None):
+	def UpdateChannelAndEPG(self, aEpg = None):
 		ch = self.mCurrentChannel
 		if ch :
 			try :
@@ -705,7 +704,7 @@ class LivePlate( BaseWindow ) :
 
 
 	@RunThread
-	def LocalThreadDisplayedEPG( self ):
+	def EPGProgressThread( self ):
 		while self.mEnableLocalThread :
 			#LOG_TRACE( 'repeat <<<<' )
 			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
@@ -856,16 +855,16 @@ class LivePlate( BaseWindow ) :
 
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_START_RECORDING :
-			self.SetRecordingOnStart( )
+			self.ShowRecordingStartDialog( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_STOP_RECORDING :
-			self.SetRecordingOnStop( )
+			self.ShowRecordingStopDialog( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SETTING_FORMAT :
 			self.SetAudioVideoContext( )
 
 
-	def SetRecordingOnStart( self ) :
+	def ShowRecordingStartDialog( self ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		#LOG_TRACE( 'runningCount[%s]' %runningCount)
 
@@ -888,7 +887,7 @@ class LivePlate( BaseWindow ) :
 			self.mDataCache.mCacheReload = True
 
 
-	def SetRecordingOnStop( self ) :
+	def ShowRecordingStopDialog( self ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		#LOG_TRACE( 'runningCount[%s]' %runningCount )
 
@@ -958,7 +957,7 @@ class LivePlate( BaseWindow ) :
 			#LOG_TRACE('Select[%s --> %s]'% (selectAction, selectIdx2) )
 
 
- 	def DisplayInfoByRecording( self ) :
+ 	def ShowRecordingInfo( self ) :
 		try:
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			#LOG_TRACE('isRunRecCount[%s]'% isRunRec)
@@ -997,7 +996,7 @@ class LivePlate( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-	def SetChangeChannelDBbyRecording( self ) :
+	def LoadChannelListByRecording( self ) :
 		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 		if isRunRec > 0 :
 			#use zapping table 
@@ -1086,7 +1085,7 @@ class LivePlate( BaseWindow ) :
 				self.mFakeChannel = self.mCurrentChannel
 				self.mLastChannel = self.mCurrentChannel
 				self.InitControlGUI()
-				self.UpdateDisplay()
+				self.UpdateChannelAndEPG()
 
 			else :
 				LOG_ERR('Tune Fail')
