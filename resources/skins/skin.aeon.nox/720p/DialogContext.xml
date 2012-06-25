@@ -70,7 +70,7 @@
 					</control>
 					<!-- is mark? -->
 					<control type="image">
-						<posx>5</posx>
+						<posx>20</posx>
 						<posy>10</posy>
 						<width>20</width>
 						<height>20</height>
@@ -100,7 +100,7 @@
 					</control>
 					<!-- is mark? -->
 					<control type="image">
-						<posx>5</posx>
+						<posx>20</posx>
 						<posy>10</posy>
 						<width>20</width>
 						<height>20</height>

@@ -176,6 +176,13 @@ class TimeShiftPlate(BaseWindow):
 				self.onClick( E_CONTROL_ID_BUTTON_REWIND )
 			elif self.mPrekey == Action.ACTION_MBOX_FF :
 				self.onClick( E_CONTROL_ID_BUTTON_FORWARD )
+			elif self.mPrekey == Action.ACTION_PAUSE or self.mPrekey == Action.ACTION_PLAYER_PLAY :
+				self.mWin.setProperty( 'IsXpeeding', 'False' )
+				if self.mSpeed == 0 :
+					self.onClick( E_CONTROL_ID_BUTTON_PLAY )
+				else :
+					self.onClick( E_CONTROL_ID_BUTTON_PAUSE )
+
 
 			self.mPrekey = None
 
@@ -187,7 +194,6 @@ class TimeShiftPlate(BaseWindow):
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
 			self.Close()
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-
 
 		elif id >= Action.REMOTE_0 and id <= Action.REMOTE_9 :
 			self.KeySearch( id-Action.REMOTE_0 )
@@ -826,11 +832,13 @@ class TimeShiftPlate(BaseWindow):
 			self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PLAY, False )
 			self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
 			self.mWin.setProperty( 'IsXpeeding', 'True' )
+			LOG_TRACE('-------Play----------------------speed[%s]'% ret)
 
 		else :
-			self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
 			self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PLAY, True )			
+			self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
 			self.mWin.setProperty( 'IsXpeeding', 'False' )
+			LOG_TRACE('-------Pause----------------------speed[%s]'% ret)
 
 		return ret
 
