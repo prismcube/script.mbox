@@ -63,6 +63,15 @@
 				<onleft>103</onleft>
 				<onright>103</onright>
 				<itemlayout width="297" height="38" >		<!--Change ProPerty ItemHeight-->
+					<!-- is mark? -->
+					<control type="image">
+						<posx>5</posx>
+						<posy>10</posy>
+						<width>20</width>
+						<height>20</height>
+						<texture>OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(mark),true)</visible>
+					</control>
 					<control type="label">
 						<posx>150</posx>
 						<posy>0</posy>
@@ -83,6 +92,15 @@
 						<height>38</height>					<!--Change ProPerty ItemHeight-->
 						<texture border="5">button-focus.png</texture>
 						<animation effect="fade" start="100" end="20" time="100" condition="!Control.HasFocus(102)">Conditional</animation>
+					</control>
+					<!-- is mark? -->
+					<control type="image">
+						<posx>5</posx>
+						<posy>10</posy>
+						<width>20</width>
+						<height>20</height>
+						<texture>OverlayWatched.png</texture>
+						<visible>substring(ListItem.Property(mark),true)</visible>
 					</control>
 					<control type="label">
 						<posx>150</posx>

@@ -243,7 +243,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mElisSetZappingModeInfo = deepcopy( zappingmode )
 		else :
 			self.mElisSetZappingModeInfo = ElisIZappingMode()
-		self.DisplayInfoByRecording( )
+		self.ShowRecordingInfo( )
 
 		#initialize get channel list
 		self.InitSlideMenuHeader( )
@@ -292,14 +292,14 @@ class ChannelListWindow( BaseWindow ) :
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
-		self.UpdateDisplay( )
+		self.UpdateChannelAndEPG( )
 
 		#Event Register
 		self.mEventBus.Register( self )
 
 		#run thread
 		self.mEnableLocalThread = True
-		self.LocalThreadDisplayedEPG( )
+		self.EPGProgressThread( )
 
 		self.mAsyncTuneTimer = None
 		#endtime = time.time( )
@@ -384,9 +384,9 @@ class ChannelListWindow( BaseWindow ) :
 						self.mCurrentChannel = iChannel.mNumber
 
 					self.mIsSelect == True
-					self.UpdateDisplay()
+					self.UpdateChannelAndEPG()
 				else :
-					self.SetRecordingOnStop()
+					self.ShowRecordingStopDialog()
 
 		elif id == Action.ACTION_MBOX_XBMC :
 			self.SetGoBackWindow( WinMgr.WIN_ID_MEDIACENTER )
@@ -400,7 +400,7 @@ class ChannelListWindow( BaseWindow ) :
 		elif id == Action.ACTION_MBOX_RECORD :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 				if self.mChannelList or len(self.mChannelList) > 0 :
-					self.SetRecordingOnStart()
+					self.ShowRecordingStartDialog()
 
 
 
@@ -480,7 +480,7 @@ class ChannelListWindow( BaseWindow ) :
 
 				#clear label
 				self.ResetLabel( )
-				self.UpdateDisplay( )
+				self.UpdateChannelAndEPG( )
 
 				#slide close
 				GuiLock2( True )
@@ -583,7 +583,7 @@ class ChannelListWindow( BaseWindow ) :
 
 				#clear label
 				self.ResetLabel( )
-				self.UpdateDisplay( )
+				self.UpdateChannelAndEPG( )
 
 				self.mCtrlListCHList.reset( )
 				self.InitChannelList( )
@@ -610,7 +610,7 @@ class ChannelListWindow( BaseWindow ) :
 			ret = self.SaveSlideMenuHeader( )
 			if ret != E_DIALOG_STATE_CANCEL :
 				self.mEnableLocalThread = False
-				#self.LocalThreadDisplayedEPG( ).join( )
+				#self.EPGProgressThread( ).join( )
 				self.mCtrlListCHList.reset( )
 				self.Close( )
 
@@ -637,7 +637,7 @@ class ChannelListWindow( BaseWindow ) :
 
 				#clear label
 				self.ResetLabel( )
-				self.UpdateDisplay( )
+				self.UpdateChannelAndEPG( )
 				self.mFlag_EditChanged = False
 				self.mMoveFlag = False
 
@@ -684,15 +684,15 @@ class ChannelListWindow( BaseWindow ) :
 
 							#update label
 							self.ResetLabel( )
-							self.UpdateDisplay( )
+							self.UpdateChannelAndEPG( )
 
 
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
 				self.mRecChannel1 = []
 				self.mRecChannel2 = []
-				self.SetChangeChannelDBbyRecording( )
-				self.DisplayInfoByRecording( )
+				self.LoadChannelListByRecording( )
+				self.ShowRecordingInfo( )
 				self.ReloadChannelList( )
 
 				#self.mDataCache.mCacheReload = True
@@ -740,7 +740,7 @@ class ChannelListWindow( BaseWindow ) :
 				if ch.mNumber == aJumpNumber :
 					self.mNavChannel = ch
 					self.ResetLabel( )
-					self.UpdateDisplay( )
+					self.UpdateChannelAndEPG( )
 					break
 				chindex += 1
 
@@ -795,7 +795,7 @@ class ChannelListWindow( BaseWindow ) :
 				ret = self.SaveSlideMenuHeader( )
 				if ret != E_DIALOG_STATE_CANCEL :
 					self.mEnableLocalThread = False
-					#self.LocalThreadDisplayedEPG( ).join( )
+					#self.EPGProgressThread( ).join( )
 					self.Close( )
 
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
@@ -815,7 +815,7 @@ class ChannelListWindow( BaseWindow ) :
 			#LOG_TRACE('chinfo: num[%s] type[%s] name[%s] pos[%s]'% (ch.mNumber, ch.mServiceType, ch.mName, pos) )
 
 			self.ResetLabel( )
-			self.UpdateDisplay( )
+			self.UpdateChannelAndEPG( )
 
 
 	def RefreshSlideMenu( self, aMainIndex = E_SLIDE_ALLCHANNEL, aSubIndex = ElisEnum.E_MODE_ALL, aForce = None ) :
@@ -1613,7 +1613,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlButtonDelAll.setLabel( aValue )
 
 
-	def UpdateDisplay( self ) :
+	def UpdateChannelAndEPG( self ) :
 		if self.mNavChannel :
 			#update channel name
 			if self.mIsSelect == True :
@@ -1700,7 +1700,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	@RunThread
-	def LocalThreadDisplayedEPG( self ) :
+	def EPGProgressThread( self ) :
 		loop = 0
 		while self.mEnableLocalThread :
 			#LOG_TRACE( 'repeat <<<<' )
@@ -2379,7 +2379,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mIsSelect = False
 			self.InitEPGEvent( )
 			self.ResetLabel( )
-			self.UpdateDisplay( )
+			self.UpdateChannelAndEPG( )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -2421,31 +2421,13 @@ class ChannelListWindow( BaseWindow ) :
 
 						self.mCtrlLabelSelectItem.setLabel( str('%s'% pos ) )
 						self.ResetLabel( )
-						self.UpdateDisplay( )
+						self.UpdateChannelAndEPG( )
 
 				else :
 					self.SetChannelTune( int(inputNumber) )
 
 
-	def SetRecordingOnStop( self ) :
-		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
-
-		isOK = False
-		if isRunRec > 0 :
-			GuiLock2( True )
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
-			dialog.doModal( )
-			GuiLock2( False )
-
-			isOK = dialog.IsOK()
-			if isOK == E_DIALOG_STATE_YES :
-				isOK = True
-
-		if isOK == True :
-			self.mDataCache.mCacheReload = True
-
-
-	def SetRecordingOnStart( self ) :
+	def ShowRecordingStartDialog( self ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 
 		isOK = False
@@ -2466,8 +2448,26 @@ class ChannelListWindow( BaseWindow ) :
 			self.mDataCache.mCacheReload = True
 
 
+	def ShowRecordingStopDialog( self ) :
+		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 
-	def DisplayInfoByRecording( self ) :
+		isOK = False
+		if isRunRec > 0 :
+			GuiLock2( True )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
+			dialog.doModal( )
+			GuiLock2( False )
+
+			isOK = dialog.IsOK()
+			if isOK == E_DIALOG_STATE_YES :
+				isOK = True
+
+		if isOK == True :
+			self.mDataCache.mCacheReload = True
+
+
+
+	def ShowRecordingInfo( self ) :
 		try:
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			#LOG_TRACE('isRunRecCount[%s]'% isRunRec)
@@ -2498,7 +2498,7 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-	def SetChangeChannelDBbyRecording( self ) :
+	def LoadChannelListByRecording( self ) :
 		defaultType = ElisEnum.E_SERVICE_TYPE_TV
 		defaultMode = ElisEnum.E_MODE_ALL
 		defaultSort = ElisEnum.E_SORT_BY_NUMBER

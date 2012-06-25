@@ -242,20 +242,8 @@ class NullWindow( BaseWindow ) :
 					xbmcgui.Dialog( ).ok('Infomation', msg )
 		
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
-			status = self.mDataCache.Player_GetStatus()
-			window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
-			window.SetAutomaticHide( True )
-			if status.mMode == ElisEnum.E_MODE_LIVE :
-				self.Close( )
-				self.mDataCache.Player_StartTimeshiftPlayback( ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE, 0 )
-
-			else:
-				if status.mSpeed == 0 :
-					self.mDataCache.Player_Resume()
-				else :
-					self.mDataCache.Player_Pause()
-
 			self.Close( )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 		
 		elif actionId == Action.ACTION_MBOX_REWIND :

@@ -31,8 +31,16 @@ class DialogContext( BaseDialog ) :
 		itemHeight = int( self.getProperty( 'ItemHeight' ) )
 		self.mCtrlList = self.getControl( DIALOG_LIST_ID )
 
+		listItems = []
 		for i in range( self.mItemCount ) :
-			self.mCtrlList.addItem( self.mItemList[i].mDescription )
+			listItem = xbmcgui.ListItem( '%s'% self.mItemList[i].mDescription )
+			if i == self.mSelectedIndex :
+				listItem.setProperty( 'mark', 'True' )
+
+			listItems.append(listItem)
+
+		self.mCtrlList.addItems( listItems )
+
 
 		# Set Dialog Size
 		realcnt = self.mItemCount
@@ -85,11 +93,13 @@ class DialogContext( BaseDialog ) :
 		pass
 
 
-	def SetProperty( self, aItemList ) :
+	def SetProperty( self, aItemList, aSelectedIndex = -1 ) :
 		self.mItemList = aItemList
 		if len( self.mItemList ) == 0 :
 			self.mItemList.append( ContextItem( 'None' ) )
 		self.mItemCount = len( self.mItemList )
+
+		self.mSelectedIndex = aSelectedIndex
 
 	def GetSelectedAction( self ) :
 		if self.mSelectedIndex <  0 :
