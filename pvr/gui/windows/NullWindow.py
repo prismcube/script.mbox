@@ -224,7 +224,16 @@ class NullWindow( BaseWindow ) :
 				msg = 'Now PVR Playing...'
 				xbmcgui.Dialog( ).ok('Warning', msg )
 			else :
-				runningCount = self.mCommander.Record_GetRunningRecorderCount( )		
+				runningCount = self.mCommander.Record_GetRunningRecorderCount( )
+
+				if runningCount > 0 :
+					runningTimer = self.mDataCache.GetRunnigTimerByChannel( )
+					if runningTimer :
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+						dialog.SetTimer( runningTimer )
+						dialog.doModal( )
+						return
+				
 				if  runningCount < E_MAX_RECORD_COUNT :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 					dialog.doModal( )
@@ -267,27 +276,6 @@ class NullWindow( BaseWindow ) :
 			self.Close( )
 			self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
-
-		elif actionId == Action.ACTION_MBOX_RECORD :
-			runningCount = self.ShowRecording()
-
-			isOK = False
-			GuiLock2(True)
-			if  runningCount < 1 :
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
-				dialog.doModal()
-
-				isOK = dialog.IsOK()
-				if isOK == E_DIALOG_STATE_YES :
-					isOK = True
-			else:
-				msg = 'Already [%s] recording(s) running' %runningCount
-				xbmcgui.Dialog().ok('Infomation', msg )
-			GuiLock2(False)
-
-			if isOK :
-				self.ShowRecording()
-				self.mDataCache.mCacheReload = True
 
 		elif actionId == Action.ACTION_MBOX_TEXT :
 			pass
@@ -500,9 +488,9 @@ class NullWindow( BaseWindow ) :
 
 
 	def RecordingStop( self ) :
-		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
-
-		if isRunRec > 0 :
+		runningRecordingCount = self.mDataCache.Record_GetRunningRecorderCount( )
+		
+		if runningRecordingCount > 0 :
 			GuiLock2( True )
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
 			dialog.doModal( )
@@ -511,11 +499,11 @@ class NullWindow( BaseWindow ) :
 			isOK = dialog.IsOK()
 			if isOK == E_DIALOG_STATE_YES :
 				if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
-					isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+					runningRecordingCount = self.mDataCache.Record_GetRunningRecorderCount( )
 					defaultType = ElisEnum.E_SERVICE_TYPE_TV
 					defaultMode = ElisEnum.E_MODE_ALL
 					defaultSort = ElisEnum.E_SORT_BY_NUMBER
-					if isRunRec > 0 :
+					if runningRecordingCount > 0 :
 						#use zapping table, in recording
 						self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
 						#self.mDataCache.Channel_GetZappingList( )

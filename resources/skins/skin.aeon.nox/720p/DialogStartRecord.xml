@@ -145,7 +145,7 @@
 						<label>Duration</label>
 						<visible>Control.HasFocus(501)</visible>
 					</control>
-					<control type="label" id="502">
+					<control type="label">
 						<posx>380</posx>
 						<posy>0</posy>
 						<width>200</width>
@@ -154,10 +154,10 @@
 						<textcolor>grey2</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
-						<label>120 Min</label>
+						<label>$INFO[Window.Property(Duration)]</label>
 						<visible>!Control.HasFocus(501)</visible>
 					</control>
-					<control type="label" id="502">
+					<control type="label">
 						<posx>380</posx>
 						<posy>0</posy>
 						<width>200</width>
@@ -166,7 +166,7 @@
 						<textcolor>white</textcolor>
 						<align>center</align>
 						<aligny>center</aligny>
-						<label>120 Min</label>
+						<label>$INFO[Window.Property(Duration)]</label>
 						<visible>Control.HasFocus(501)</visible>
 					</control>
 				</control>				

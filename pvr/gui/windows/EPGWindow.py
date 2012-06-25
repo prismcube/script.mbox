@@ -1,5 +1,4 @@
 from pvr.gui.WindowImport import *
-import pvr.HiddenTestMgr as TestMgr
 
 
 BUTTON_ID_EPG_MODE				= 100
@@ -218,7 +217,6 @@ class EPGWindow( BaseWindow ) :
 
 
 	def Close( self ) :
-		TestMgr.GetInstance( ).CheckAndStopTest( )
 		self.mEventBus.Deregister( self )	
 
 		self.StopEPGUpdateTimer( )

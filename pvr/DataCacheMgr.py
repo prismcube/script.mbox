@@ -1163,6 +1163,10 @@ class DataCacheMgr( object ):
 			return self.mCommander.Timer_GetTimerCount()
 
 
+	def Timer_EditRunningTimer(self , aTimerId, aNewEndTime) :
+			return self.mCommander.Timer_EditRunningTimer( aTimerId, aNewEndTime )
+	
+
 	def Timer_GetById( self, aTimderId ) :
 		if SUPPORT_TIMER_DATABASE == True :
 			timerDB = ElisTimerDB( )
@@ -1178,6 +1182,10 @@ class DataCacheMgr( object ):
 			return self.mTimerDB.Timer_GetByIndex( aIndex )
 		else :	
 			return self.mCommander.Timer_GetByIndex( aIndex )
+
+
+	def Timer_GetOTRInfo( self ) :
+		return self.mCommander.Timer_GetOTRInfo( )
 
 
 	def Timer_AddOTRTimer( self, aFromEPG, aFixedDuration, aCopyTimeshift, aTimerName, aForceDecrypt, aEventId, aSid, aTsid, aOnid) : 
@@ -1226,5 +1234,22 @@ class DataCacheMgr( object ):
 	def SetKeyDisabled( self, aDisable = False, aRecInfo = None ) :
 		self.mStatusIsArchive = aDisable
 		self.mRecInfo = aRecInfo
+
+
+	def GetRunnigTimerByChannel( self, aChannel=None ) :
+		if aChannel == None :
+			aChannel = self.Channel_GetCurrent( )
+
+		runningTimers = self.Timer_GetRunningTimers( )
+
+		findTimer = None
+
+		if runningTimers :
+			for timer in runningTimers :
+				if aChannel.mSid == timer.mSid and aChannel.mTsid == timer.mTsid and aChannel.mOnid == timer.mOnid :
+					findTimer = timer
+					break
+
+		return findTimer
 
 

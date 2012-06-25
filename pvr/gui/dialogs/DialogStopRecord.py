@@ -30,6 +30,7 @@ class DialogStopRecord( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 		self.mBackgroundHeight = -1
+		self.mEnableThread = False
 
 	def onInit( self ):
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
@@ -85,6 +86,8 @@ class DialogStopRecord( BaseDialog ) :
 				self.mRunnigRecordInfoList.append( recordInfo )
 		
 		self.DrawItem( )
+		self.mEnableThread = True
+		self.RecordingProgressThread( )		
 		#self.setFocusId( self.mCtrlGropCHList.getId( ) )
 		
 	def onAction( self, aAction ):
@@ -160,6 +163,7 @@ class DialogStopRecord( BaseDialog ) :
 			pass
 
 	def Close( self ) :
+		self.mEnableThread = False
 		self.CloseDialog( )
 
 
@@ -192,7 +196,7 @@ class DialogStopRecord( BaseDialog ) :
 
 
 	@RunThread
-	def CurrentTimeThread(self):
+	def RecordingProgressThread(self):
 		loop = 0
 
 		while self.mEnableThread:
@@ -208,57 +212,11 @@ class DialogStopRecord( BaseDialog ) :
 
 
 	def UpdateProgress( self ):
-		pass
-
-		"""
 		for i in range( self.mRunningRecordCount ) :
 			recordInfo = self.mRunnigRecordInfoList[i]
-			startTime = recordInfo.mStartTime + self.mLocalOffset
-			endTime =  startTime  + recordInfo.mDuration
+			self.mCtrlDuration[i].setLabel( '%d Min' %int(recordInfo.mDuration/60) )
+			self.mCtrlProgress[i].setPercent( 0 )
 
-			LOG_TRACE('START : %s' %TimeToString( startTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
-			LOG_TRACE('CUR : %s' %TimeToString( self.mLocalTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
-			LOG_TRACE('END : %s' %TimeToString( endTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
-		"""
-
-		"""
-		self.mCommander.Record_StopRecord( recInfo.mChannelNo, recInfo.mServiceType, recInfo.mRecordKey  )
-
-
-		startTime = self.mEPGStartTime+ self.mLocalOffset
-		endTime =  startTime  + self.mEPGDuration
-
-		passDuration = self.mLocalTime - startTime
-
-		#self.getControl( E_LABEL_EPG_START_TIME ).setLabel(  TimeToString( startTime, TimeFormatEnum.E_HH_MM ) )
-		#self.getControl( E_LABEL_EPG_END_TIME ).setLabel(  TimeToString( endTime, TimeFormatEnum.E_HH_MM ) )
-
-		if self.mHasEPG == True :
-			recordDuration = endTime - self.mLocalTime
-			if recordDuration < 0 :
-				recordDuration = 0
-			self.getControl( E_LABEL_DURATION ).setLabel( '%d' %int( recordDuration/(60) )  )
-		else :
-			self.getControl( E_LABEL_DURATION ).setLabel( '%d' % int( self.mEPGDuration/(60) ) )			
-
-
-		if endTime < self.mLocalTime : #Already past
-			passDuration = 100
-		elif self.mLocalTime < startTime :
-			passDuration = 0
-
-		if passDuration < 0 :
-			passDuration = 0
-
-		if self.mEPGDuration > 0 :
-			percent = passDuration * 100/self.mEPGDuration
-		else :
-			percent = 0
-
-		LOG_TRACE( 'percent=%d' %percent )
-		
-		self.mCtrlProgress.setPercent( percent )
-		"""		
 
 	def DrawItem( self ) :
 		LOG_TRACE('')
@@ -274,7 +232,7 @@ class DialogStopRecord( BaseDialog ) :
 
 		for i in range( self.mRunningRecordCount ) :
 			recordInfo = self.mRunnigRecordInfoList[i]
-			LOG_TRACE('i=%d recordInfo.mChannelNo=%d, recordInfo.mChannelName=%s' %( i, recordInfo.mChannelNo, recordInfo.mChannelName ) )
+			LOG_ERR('i=%d recordInfo.mChannelNo=%d, recordInfo.mChannelName=%s' %( i, recordInfo.mChannelNo, recordInfo.mChannelName ) )
 			"""
 			self.mCtrlChannelName[i].setLabel( '1234567890123456789012345678901234567890' )
 			self.mCtrlRecordName[i].setLabel( '1234567890123456789012345678901234567890' )
@@ -284,8 +242,8 @@ class DialogStopRecord( BaseDialog ) :
 
 			self.mCtrlChannelName[i].setLabel( 'P%04d %s' %(recordInfo.mChannelNo, recordInfo.mChannelName) )
 			self.mCtrlRecordName[i].setLabel( '%s' %recordInfo.mRecordName )
-			self.mCtrlDuration[i].setLabel( '%d Min' %int(recordInfo.mDuration/60) )
-			self.mCtrlProgress[i].setPercent( 0 )
+			#self.mCtrlDuration[i].setLabel( '%d Min' %int(recordInfo.mDuration/60) )
+			#self.mCtrlProgress[i].setPercent( 0 )
 
 	def IsOK( self ) :
 		return self.mIsOk
