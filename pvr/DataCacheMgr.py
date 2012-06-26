@@ -1125,6 +1125,10 @@ class DataCacheMgr( object ):
 			return self.mCommander.Record_GetRecordInfo( aIndex, aServiceType )
 
 
+	def Record_GetRecordInfoByKey( self, aKey ) :
+		return self.mCommander.Record_GetRecordInfoByKey( aKey )	
+
+
 	def Record_DeleteRecord( self, aKey, aServiceType ) :
 		return self.mCommander.Record_DeleteRecord( aKey, aServiceType )
 
