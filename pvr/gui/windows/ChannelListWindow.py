@@ -393,9 +393,15 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif id == Action.ACTION_MBOX_ARCHIVE :
 			#self.Close( )
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 			self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
 			self.SetGoBackWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
-			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+
+		elif id == Action.ACTION_SHOW_INFO :
+			#self.Close( )
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
+			self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
+			self.SetGoBackWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
 		elif id == Action.ACTION_MBOX_RECORD :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
@@ -699,17 +705,15 @@ class ChannelListWindow( BaseWindow ) :
 				#self.mListItems = None
 				#self.InitChannelList( )
 
-				#ToDo
-				"""
 				if aEvent.getName() == ElisEventRecordingStarted.getName() :
 					msg1 = MR_LANG('Recording Started')
 				else :
 					msg1 = MR_LANG('Recording Ended')
 
 				msg2 = MR_LANG('Reload Channel List...')
-				
-				self.AlarmDialog( msg1, msg2 )
-				"""
+
+				self.AlarmDialog(msg1, msg2)
+
 
 			if aEvent.getName() == ElisEventPlaybackEOF.getName() :
 				if aEvent.mType == ElisEnum.E_EOF_END :

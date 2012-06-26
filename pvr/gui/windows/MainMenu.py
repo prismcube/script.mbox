@@ -74,6 +74,9 @@ class MainMenu( BaseWindow ) :
 			self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_MAINMENU
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
+		elif actionId == Action.ACTION_SHOW_INFO :
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
+
 
 	def onClick( self, aControlId ) :
 		LOG_TRACE("MainMenu onclick(): control %d" % aControlId )
