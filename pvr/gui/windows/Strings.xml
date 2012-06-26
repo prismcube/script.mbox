@@ -37,6 +37,7 @@
 	<string id="35">Recording Started</string>
 	<string id="36">Recording Ended</string>
 	<string id="37">Reload Channel List...</string>
+	<string id="38">No Channel</string>
 </strings>
 <property>
 	<string id="1001">Last ServiceType</string>

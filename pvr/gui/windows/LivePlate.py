@@ -66,7 +66,7 @@ class LivePlate( BaseWindow ) :
 		self.mAsyncEPGTimer = None
 		self.mAsyncTuneTimer = None	
 		self.mAutomaticHide = False
-		self.mEnableLocalThread = False		
+		self.mEnableLocalThread = False
 
 
 	"""
@@ -154,6 +154,7 @@ class LivePlate( BaseWindow ) :
 		self.mEPGListIdx = 0
 		self.mJumpNumber = 0
 		self.mZappingMode = None
+		self.mEventId = 0
 
 		self.mAsyncEPGTimer = None
 		self.mAsyncTuneTimer = None
@@ -168,7 +169,7 @@ class LivePlate( BaseWindow ) :
 		if not self.mZappingMode :
 			self.mZappingMode = ElisIZappingMode( )
 
-		self.ShowRecordingInfo( )
+		#self.ShowRecordingInfo( )
 
 		#get channel
 		iChannel = self.mDataCache.Channel_GetCurrent( )
@@ -191,6 +192,7 @@ class LivePlate( BaseWindow ) :
 			pass
 			#LOG_TRACE( 'has no channel' )
 
+		"""
 		self.InitControlGUI()
 		#self.GetEPGListByChannel()
 
@@ -208,14 +210,15 @@ class LivePlate( BaseWindow ) :
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
+		"""
 
 		#get epg event right now, as this windows open
 		self.mEventBus.Register( self )
 
 		#run thread
+		self.LoadingThread()
 		self.mEnableLocalThread = True
 		self.EPGProgressThread()
-
 
 		if self.mAutomaticHide == True :
 			self.StartAutomaticHide()
@@ -300,6 +303,11 @@ class LivePlate( BaseWindow ) :
 			self.Close( )
 			self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+
+		elif id == Action.ACTION_SHOW_INFO :
+			self.Close( )
+			self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
 		elif id == Action.ACTION_MBOX_RECORD :
 			self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
@@ -387,75 +395,33 @@ class LivePlate( BaseWindow ) :
 	def onEvent(self, aEvent):
 		if self.mWinId == xbmcgui.getCurrentWindowId():
 			channel = self.mCurrentChannel
-			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
+			if self.mFlag_OnEvent != True :
+				#LOG_TRACE('ignore event, mFlag_OnEvent[%s]'% self.mFlag_OnEvent)
+				return -1
 
-				if channel == None :
-					#LOG_TRACE('ignore event, currentChannel None, [%s]'% channel)
-					return -1
-				
-				if channel.mSid != aEvent.mSid or channel.mTsid != aEvent.mTsid or channel.mOnid != aEvent.mOnid :
-					#LOG_TRACE('ignore event, same event')
-					return -1
+			if channel == None :
+				#LOG_TRACE('ignore event, currentChannel None, [%s]'% channel)
+				return -1
+
+
+			if aEvent.getName() == ElisEventCurrentEITReceived.getName() :
 
 				if channel.mNumber != self.mFakeChannel.mNumber :
 					#LOG_TRACE('ignore event, Channel: current[%s] fake[%s]'% (channel.mNumber, self.mFakeChannel.mNumber) )
 					return -1
 
-				if self.mFlag_OnEvent != True :
-					#LOG_TRACE('ignore event, mFlag_OnEvent[%s]'% self.mFlag_OnEvent)
+				if channel.mSid != aEvent.mSid or channel.mTsid != aEvent.mTsid or channel.mOnid != aEvent.mOnid :
+					#LOG_TRACE('ignore event, same event')
 					return -1
 
-				#LOG_TRACE( 'eventid:new[%d] old[%d]' %(aEvent.mEventId, self.mCurrentEPG.mEventId) )
+				if self.mCurrentEPG == None or aEvent.mEventId != self.mEventId :
+					#LOG_TRACE('id[%s] old[%s] currentEpg[%s]'% ( aEvent.mEventId, self.mEventId, self.mCurrentEPG) )
+					self.mEventId = aEvent.mEventId
+					self.Epgevent_GetCurrent( channel.mSid, channel.mTsid, channel.mOnid )
 
-				if not self.mCurrentEPG or aEvent.mEventId != self.mCurrentEPG.mEventId :
-					iEPG = None
-					iEPG = self.mDataCache.Epgevent_GetCurrent( channel.mSid, channel.mTsid, channel.mOnid )
-					if iEPG == None or iEPG.mError != 0 :
-						return -1
-
-					if iEPG.mSid != self.mCurrentEPG.mSid or \
-					   iEPG.mTsid != self.mCurrentEPG.mTsid or \
-					   iEPG.mOnid != self.mCurrentEPG.mOnid :
-						#LOG_TRACE('epg DIFFER, event id[%s] current id[%s]'% (iEPG.mEventId, self.mCurrentEPG.mEventId) )
-						self.mCurrentEPG = iEPG
-						#update label
-						self.UpdateChannelAndEPG( iEPG )
-
-						#check : new event?
-						if self.mEPGList :
-							#1. aready exist? search in EPGList
-							idx = 0
-							self.mEPGListIdx = -1
-							for item in self.mEPGList :
-								#LOG_TRACE('idx[%s] item[%s]'% (idx, item) )
-								if item and \
-								 	item.mEventId == self.mCurrentEPG.mEventId and \
-									item.mSid == self.mCurrentEPG.mSid and \
-									item.mTsid == self.mCurrentEPG.mTsid and \
-									item.mOnid == self.mCurrentEPG.mOnid :
-
-									self.mEPGListIdx = idx
-									#LOG_TRACE('Received ONEvent : EPGList idx moved(current idx)')
-
-									#iEPGList=[]
-									#iEPGList.append(item)
-									#LOG_TRACE('1.Aready Exist: NOW EPG idx[%s] [%s]'% (idx, ClassToList('convert', iEPGList)) )
-									break
-
-								idx += 1
-
-							#2. new epg, append to EPGList
-							if self.mEPGListIdx == -1 :
-								#LOG_TRACE('new EPG received, not exist in EPGList')
-								oldLen = len(self.mEPGList)
-								idx = 0
-								for idx in range(len(self.mEPGList)) :
-									if self.mCurrentEPG.mStartTime < self.mEPGList[idx].mStartTime :
-										break
-
-								self.mEPGListIdx = idx
-								self.mEPGList = self.mEPGList[:idx]+[self.mCurrentEPG]+self.mEPGList[idx:]
-								#LOG_TRACE('append new idx[%s], epgTotal:oldlen[%s] newlen[%s]'% (idx, oldLen, len(self.mEPGList)) )
+			#elif aEvent.getName() == ElisEventChannelChangeResult.getName() :
+			#	self.Epgevent_GetCurrent( channel.mSid, channel.mTsid, channel.mOnid )
+			#	LOG_TRACE('----------------------------receive epg')
 
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
@@ -463,10 +429,15 @@ class LivePlate( BaseWindow ) :
 				self.ShowRecordingInfo( )
 				self.LoadChannelListByRecording( )
 
+				if aEvent.getName() == ElisEventRecordingStarted.getName() :
+					msg1 = MR_LANG('Recording Started')
+				else :
+					msg1 = MR_LANG('Recording Ended')
 
-			elif aEvent.getName() == ElisEventChannelChangeResult.getName() :
-				pass
-				#ToDO : do not db open in thread
+				msg2 = MR_LANG('Reload Channel List...')
+
+				self.AlarmDialog(msg1, msg2)
+
 
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
@@ -506,7 +477,9 @@ class LivePlate( BaseWindow ) :
 				return
 
 			self.mFakeChannel = jumpChannel
-			self.InitControlGUI()
+			#self.InitControlGUI()
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ('%s'% self.mFakeChannel.mNumber) )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
 			self.RestartAsyncTune()
 
 		if self.mAutomaticHide == True :
@@ -550,20 +523,80 @@ class LivePlate( BaseWindow ) :
 			self.EPGListMoveToIndex()
 
 
+	def Epgevent_GetCurrent( self, aSid, aTsid, aOnid ) :
+		iEPG = None
+		#iEPG = self.mDataCache.Epgevent_GetCurrent( aSid, aTsid, aOnid )
+		iEPG = self.mDataCache.Epgevent_GetPresent( )
+		if iEPG == None or iEPG.mError != 0 :
+			return -1
+
+		self.UpdateChannelAndEPG( iEPG )
+
+
+		if not self.mCurrentEPG or \
+		   iEPG.mEventId != self.mCurrentEPG.mEventId or \
+		   iEPG.mSid != self.mCurrentEPG.mSid or \
+		   iEPG.mTsid != self.mCurrentEPG.mTsid or \
+		   iEPG.mOnid != self.mCurrentEPG.mOnid or \
+		   iEPG.mAgeRating != self.mCurrentEPG.mAgeRating or \
+		   iEPG.mStartTime != self.mCurrentEPG.mStartTime or \
+		   iEPG.mDuration != self.mCurrentEPG.mDuration :
+			#update label
+			self.mCurrentEPG = iEPG
+			#LOG_TRACE('epg DIFFER, event id[%s] current id[%s]'% (iEPG.mEventId, self.mCurrentEPG.mEventId) )
+			#LOG_TRACE('-----------------------update epg[%s]'% iEPG.mEventName)
+
+			#check : new event?
+			if self.mEPGList :
+				#1. aready exist? search in EPGList
+				idx = 0
+				self.mEPGListIdx = -1
+				for item in self.mEPGList :
+					#LOG_TRACE('idx[%s] item[%s]'% (idx, item) )
+					if item and \
+					 	item.mEventId == self.mCurrentEPG.mEventId and \
+						item.mSid == self.mCurrentEPG.mSid and \
+						item.mTsid == self.mCurrentEPG.mTsid and \
+						item.mOnid == self.mCurrentEPG.mOnid :
+
+						self.mEPGListIdx = idx
+						#LOG_TRACE('Received ONEvent : EPGList idx moved(current idx)')
+
+						#iEPGList=[]
+						#iEPGList.append(item)
+						#LOG_TRACE('1.Aready Exist: NOW EPG idx[%s] [%s]'% (idx, ClassToList('convert', iEPGList)) )
+						break
+
+					idx += 1
+
+				#2. new epg, append to EPGList
+				if self.mEPGListIdx == -1 :
+					#LOG_TRACE('new EPG received, not exist in EPGList')
+					oldLen = len(self.mEPGList)
+					idx = 0
+					for idx in range(len(self.mEPGList)) :
+						if self.mCurrentEPG.mStartTime < self.mEPGList[idx].mStartTime :
+							break
+
+					self.mEPGListIdx = idx
+					self.mEPGList = self.mEPGList[:idx]+[self.mCurrentEPG]+self.mEPGList[idx:]
+					#LOG_TRACE('append new idx[%s], epgTotal:oldlen[%s] newlen[%s]'% (idx, oldLen, len(self.mEPGList)) )
+
+
 	def GetEPGListByChannel( self ) :
 		#stop onEvent
 		self.mFlag_OnEvent = False
 
 		try :
-			ch = self.mCurrentChannel
+			channel = self.mCurrentChannel
 
 			if self.mCurrentEPG == None or self.mCurrentEPG.mError != 0 :
-				if not ch :
+				if not channel :
 					#LOG_TRACE('No Channels')
 					return
 
 				iEPG = None
-				#iEPG = self.mDataCache.Epgevent_GetCurrent( ch.mSid, ch.mTsid, ch.mOnid )
+				#iEPG = self.mDataCache.Epgevent_GetCurrent( channel.mSid, channel.mTsid, channel.mOnid )
 				iEPG = self.mDataCache.Epgevent_GetPresent()
 				if iEPG == None or iEPG.mError != 0 :
 					#receive onEvent
@@ -572,14 +605,14 @@ class LivePlate( BaseWindow ) :
 				else :
 					self.mCurrentEPG = iEPG
 
-			if ch :
+			if channel :
 				self.mEPGList = None
 				iEPGList = None
 
-				self.mEPGList = self.mDataCache.Epgevent_GetListByChannelFromEpgCF(  ch.mSid,  ch.mTsid,  ch.mOnid )
-				if self.mEPGList == None or self.mEPGList[0].mError != 0 or len ( self.mEPGList ) <= 0 :
+				self.mEPGList = self.mDataCache.Epgevent_GetListByChannelFromEpgCF(  channel.mSid,  channel.mTsid,  channel.mOnid )
+				if self.mEPGList == None or self.mEPGList[0].mError != 0 :
 					self.mFlag_OnEvent = True
-					#LOG_TRACE('EPGList is None\nLeave')
+					LOG_TRACE('EPGList is None\nLeave [%s]'% self.mEPGList)
 					return -1
 
 				self.mFlag_ChannelChanged = False
@@ -588,7 +621,8 @@ class LivePlate( BaseWindow ) :
 				self.mEPGListIdx = -1
 				for item in self.mEPGList :
 					LOG_TRACE('idx[%s] item[%s] event[%s]'% (idx, item, self.mCurrentEPG) )
-					if item != None or item.mError == 0 :
+					if item != None and item.mError == 0 and \
+					   self.mCurrentEPG != None and self.mCurrentEPG.mError == 0 :
 						if item.mEventId == self.mCurrentEPG.mEventId and \
 							item.mSid == self.mCurrentEPG.mSid and \
 							item.mTsid == self.mCurrentEPG.mTsid and \
@@ -727,20 +761,42 @@ class LivePlate( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
+	@RunThread
+	def LoadingThread( self ):
+		self.ShowRecordingInfo( )
+		self.InitControlGUI()
+		#self.GetEPGListByChannel()
+
+		try :
+			if self.mCurrentChannel :
+				iEPG = None
+				iEPG = self.mDataCache.Epgevent_GetPresent()
+				if iEPG and iEPG.mError == 0 :
+					self.mCurrentEPG = iEPG
+					self.UpdateChannelAndEPG( iEPG )
+
+				if self.mCurrentChannel.mLocked :
+					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mDataCache.mPropertyPincode )
+
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
+
+
 	def InitControlGUI( self ):
 		self.UpdateControlGUI( E_CONTROL_ID_PROGRESS_EPG,                  0 )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO,         '' )
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_NAME,             '' )
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_STARTTIME,        '' )
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,          '' )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_NAME,               '' )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_STARTTIME,          '' )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,            '' )
 		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_TV,     'True' )
 		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO, 'False' )
-		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_LOCKED,           'False' )
-		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_ICAS,             'False' )
+		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_LOCKED,            'False' )
+		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_ICAS,              'False' )
 
-		self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_DATA,  'False' )
-		self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_DOLBY, 'False' )
-		self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_HD,    'False' )
+		self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_DATA,    'False' )
+		self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_DOLBY,   'False' )
+		self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_HD,      'False' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO,         '' )
 		
 
@@ -825,7 +881,7 @@ class LivePlate( BaseWindow ) :
 
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
-			if self.mCurrentEPG :
+			if self.mCurrentEPG and self.mCurrentEPG.mError == 0 :
 				GuiLock2( True )
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_EXTEND_EPG )
 				dialog.SetEPG( self.mCurrentEPG )
@@ -1057,10 +1113,11 @@ class LivePlate( BaseWindow ) :
 			ret = self.mDataCache.Channel_SetCurrent( self.mFakeChannel.mNumber, self.mFakeChannel.mServiceType )
 			#self.mFakeChannel.printdebug()
 			if ret == True :
+				self.mCurrentEPG = None
+				self.InitControlGUI()
 				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent()
 				self.mFakeChannel = self.mCurrentChannel
 				self.mLastChannel = self.mCurrentChannel
-				self.InitControlGUI()
 				self.UpdateChannelAndEPG()
 
 			else :

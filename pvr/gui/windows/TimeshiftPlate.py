@@ -295,6 +295,10 @@ class TimeShiftPlate(BaseWindow):
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, self.mDataCache.mSetFromParentWindow )
 
+		elif id == Action.ACTION_SHOW_INFO :
+			self.Close( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW, self.mDataCache.mSetFromParentWindow )
+
 
 		#test
 		elif id == 104 : #scroll up
@@ -378,6 +382,15 @@ class TimeShiftPlate(BaseWindow):
 				self.ShowRecordingInfo()
 				self.LoadChannelListByRecording( )
 				self.mDataCache.mCacheReload = True
+
+				if aEvent.getName() == ElisEventRecordingStarted.getName() :
+					msg1 = MR_LANG('Recording Started')
+				else :
+					msg1 = MR_LANG('Recording Ended')
+
+				msg2 = MR_LANG('Reload Channel List...')
+
+				self.AlarmDialog(msg1, msg2)
 
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )

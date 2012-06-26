@@ -17,6 +17,7 @@ class NullWindow( BaseWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 		self.mGotoWinID = None
 		self.mOnEventing= False
+		self.mRecordingAlarm = False
 
 		if self.mInitialized == False :
 			self.mInitialized = True
@@ -116,9 +117,11 @@ class NullWindow( BaseWindow ) :
 				gotoWinId = WinMgr.WIN_ID_TIMESHIFT_PLATE
 
 			window = WinMgr.GetInstance( ).GetWindow( gotoWinId )
-			window.SetAutomaticHide( False )
+			window.SetAutomaticHide( self.mRecordingAlarm )
+			self.mRecordingAlarm = False
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( gotoWinId )
+
 
 		elif actionId == Action.ACTION_PAGE_DOWN :
 			if self.mDataCache.mStatusIsArchive :
@@ -356,6 +359,7 @@ class NullWindow( BaseWindow ) :
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
 				self.ShowRecording()
 				self.mDataCache.mCacheReload = True
+				self.mRecordingAlarm = True
 				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 				"""
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
