@@ -31,6 +31,9 @@ class DialogStopRecord( BaseDialog ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 		self.mBackgroundHeight = -1
 		self.mEnableThread = False
+		self.mRecordingProgressThread = None
+		self.mLock = thread.allocate_lock()
+
 
 	def onInit( self ):
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
@@ -63,33 +66,24 @@ class DialogStopRecord( BaseDialog ) :
 			self.mCtrlCancelGroup = self.getControl( GROUP_ID_CANCEL )					
 			self.mCtrlBackgroundImage = self.getControl( IMAGE_ID_BACKGROUND )
 
+
+			if self.mBackgroundHeight <  0 :
+				self.mBackgroundHeight = self.mCtrlBackgroundImage.getHeight()
+
+			self.SetHeaderLabel( 'Stop Record' )
+
+			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
+			
+			self.Update( )
+
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
-
-		if self.mBackgroundHeight <  0 :
-			self.mBackgroundHeight = self.mCtrlBackgroundImage.getHeight()
-
-		self.SetHeaderLabel( 'Stop Record' )
-
-		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )		
-		self.mRunningRecordCount = self.mCommander.Record_GetRunningRecorderCount()
-
-		LOG_ERR("self.mRunningRecordCount=%d" %self.mRunningRecordCount )
-
-		self.mRunnigRecordInfoList = []
-		LOG_TRACE( 'recordcount=%d' %self.mRunningRecordCount )
-
-		for i in range( self.mRunningRecordCount ) :
-			recordInfo = self.mCommander.Record_GetRunningRecordInfo( i )
-			if recordInfo :
-				#recordInfo.printdebug()
-				self.mRunnigRecordInfoList.append( recordInfo )
-		
-		self.DrawItem( )
+			
 		self.mEnableThread = True
-		self.RecordingProgressThread( )		
-		#self.setFocusId( self.mCtrlGropCHList.getId( ) )
-		
+		self.RecordingProgressThread( )
+		self.mEventBus.Register( self )
+
+
 	def onAction( self, aAction ):
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
@@ -159,10 +153,13 @@ class DialogStopRecord( BaseDialog ) :
 	@GuiLock	
 	def onEvent( self, aEvent ):
 		if xbmcgui.getCurrentWindowDialogId() == self.mWinId :
-			LOG_TRACE('')
-			pass
+			if aEvent.getName() == ElisEventRecordingStarted.getName() or \
+				aEvent.getName() == ElisEventRecordingStopped.getName() :
+				self.Update( )
+
 
 	def Close( self ) :
+		self.mEventBus.Deregister( self )
 		self.mEnableThread = False
 		self.CloseDialog( )
 
@@ -171,24 +168,18 @@ class DialogStopRecord( BaseDialog ) :
 
 		LOG_TRACE('aControlId=%d' %aControlId)
 		if aControlId == BUTTON_ID_RECORD_1 :
-			LOG_TRACE('---------------------------------------->')		
-			recInfo = self.mRunnigRecordInfoList[0]
-			#recInfo.printdebug()
-			self.mCommander.Timer_StopRecordingByRecordKey( recInfo.mRecordKey )
-			#self.mCommander.Record_StopRecord( recInfo.mChannelNo, recInfo.mServiceType, recInfo.mRecordKey  )
+			timer = self.mRunningTimerList[0]
+			self.mDataCache.Timer_DeleteTimer( timer.mTimerId )			
 			self.mIsOk = E_DIALOG_STATE_YES
 			self.Close( )
 
 		elif aControlId == BUTTON_ID_RECORD_2 :
-			LOG_TRACE('---------------------------------------->')
-			recInfo = self.mRunnigRecordInfoList[1]
-			self.mCommander.Timer_StopRecordingByRecordKey( recInfo.mRecordKey )			
-			#self.mCommander.Record_StopRecord( recInfo.mChannelNo, recInfo.mServiceType, recInfo.mRecordKey  )
+			timer = self.mRunningTimerList[1]
+			self.mDataCache.Timer_DeleteTimer( timer.mTimerId )			
 			self.mIsOk = E_DIALOG_STATE_YES
 			self.Close( )
 
 		elif aControlId == BUTTON_ID_CANCEL :
-			LOG_TRACE('')		
 			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.Close( )
 		else :
@@ -201,7 +192,6 @@ class DialogStopRecord( BaseDialog ) :
 
 		while self.mEnableThread:
 			if  ( loop % 10 ) == 0 :
-				LOG_TRACE(  'loop=%d' %loop )
 				self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 
 			self.UpdateProgress( )
@@ -212,10 +202,29 @@ class DialogStopRecord( BaseDialog ) :
 
 
 	def UpdateProgress( self ):
+		self.mLock.acquire( )
+
 		for i in range( self.mRunningRecordCount ) :
-			recordInfo = self.mRunnigRecordInfoList[i]
-			self.mCtrlDuration[i].setLabel( '%d Min' %int(recordInfo.mDuration/60) )
-			self.mCtrlProgress[i].setPercent( 0 )
+			timer = self.mRunningTimerList[i]
+			"""
+			timer.printdebug()
+			LOG_TRACE('START : %s' %TimeToString( timer.mStartTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
+			LOG_TRACE('CUR : %s' %TimeToString( self.mLocalTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
+			LOG_TRACE('END : %s' %TimeToString( timer.mStartTime + timer.mDuration, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
+			"""
+
+			expectedRecording = self.mLocalTime - timer.mStartTime
+			if expectedRecording < 0 :
+				expectedRecording = 0
+
+			if timer.mDuration < 0 :
+				timer.mDuration = 1
+
+			#self.mCtrlDuration[i].setLabel( '%d/%d Min' %(int(expectedRecording/60) , int(timer.mDuration/60) ) )
+			self.mCtrlDuration[i].setLabel( '%s' %(TimeToString( expectedRecording, TimeFormatEnum.E_HH_MM_SS ) ) )			
+			self.mCtrlProgress[i].setPercent( int( expectedRecording*100/timer.mDuration ) )
+
+		self.mLock.release( )
 
 
 	def DrawItem( self ) :
@@ -231,21 +240,40 @@ class DialogStopRecord( BaseDialog ) :
 
 
 		for i in range( self.mRunningRecordCount ) :
-			recordInfo = self.mRunnigRecordInfoList[i]
-			LOG_ERR('i=%d recordInfo.mChannelNo=%d, recordInfo.mChannelName=%s' %( i, recordInfo.mChannelNo, recordInfo.mChannelName ) )
-			"""
-			self.mCtrlChannelName[i].setLabel( '1234567890123456789012345678901234567890' )
-			self.mCtrlRecordName[i].setLabel( '1234567890123456789012345678901234567890' )
-			self.mCtrlDuration[i].setLabel( '999 Min' )
-			self.mCtrlProgress[i].setPercent( 0 )
-			"""
+			timer = self.mRunningTimerList[i]
+			channel = self.mDataCache.Channel_GetByNumber( timer.mChannelNo )
+			if channel :
+				self.mCtrlChannelName[i].setLabel( 'P%04d %s' %( channel.mNumber,channel.mName ) )			
+			else :
+				self.mCtrlChannelName[i].setLabel( 'P%04d' %( timer.mChannelNo ) )
+			self.mCtrlRecordName[i].setLabel( '%s' %timer.mName )
 
-			self.mCtrlChannelName[i].setLabel( 'P%04d %s' %(recordInfo.mChannelNo, recordInfo.mChannelName) )
-			self.mCtrlRecordName[i].setLabel( '%s' %recordInfo.mRecordName )
-			#self.mCtrlDuration[i].setLabel( '%d Min' %int(recordInfo.mDuration/60) )
-			#self.mCtrlProgress[i].setPercent( 0 )
 
 	def IsOK( self ) :
 		return self.mIsOk
 
-	
+
+	def Update( self ) :
+		self.mLock.acquire( ) 
+
+		self.mRunningRecordCount = 0
+		
+		self.mRunningTimerList = self.mDataCache.Timer_GetRunningTimers( )
+
+		if self.mRunningTimerList :
+			self.mRunningRecordCount = len( self.mRunningTimerList )
+			
+		LOG_TRACE("self.mRunningRecordCount=%d" %self.mRunningRecordCount )
+
+		if self.mRunningRecordCount <= 0 :
+			self.mLock.release( )			
+			xbmc.executebuiltin('xbmc.Action(previousmenu)')
+			return
+
+		else :
+			self.DrawItem( )
+
+		self.mLock.release( )
+
+
+

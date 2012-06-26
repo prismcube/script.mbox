@@ -76,7 +76,7 @@ class DialogStartRecord( BaseDialog ) :
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			pass
 		else :
-			LOG_WARN( 'Unknown Action' )
+			LOG_WARN( 'Unknown Action actionId=%d' %actionId )
 
 
 	def onClick( self, aControlId ) :
@@ -214,11 +214,13 @@ class DialogStartRecord( BaseDialog ) :
 
 			else :
 				current = self.mDataCache.Channel_GetCurrent( )
+				ret = self.mDataCache.Timer_AddOTRTimer( False, self.mRecordDuration, 0,  self.mRecordName,  0,  0,  0,  0,  0 )
+				"""
 				if self.mDurationChanged == True :
 					ret = self.mDataCache.Timer_AddOTRTimer( False, self.mRecordDuration, 0,  self.mRecordName,  0,  0,  0,  0,  0 )
 				else :	
 					ret = self.mDataCache.Timer_AddOTRTimer( self.mHasEPG, self.mRecordDuration, 0,  self.mRecordName,  0,  0,  0,  0,  0 )
-					
+				"""	
 				if ret[0].mParam == -1 or ret[0].mError == -1 :
 					self.RecordConflict( ret )
 					self.mIsOk = E_DIALOG_STATE_CANCEL
