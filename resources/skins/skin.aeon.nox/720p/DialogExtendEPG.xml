@@ -4,7 +4,7 @@
 	<controls>
 		<control type="group">
 			<include>DefaultDialogCloseEffect</include>
-			<posx>50</posx>
+			<posx>90</posx>
 			<posy>30</posy>
 
 			<control type="image">
