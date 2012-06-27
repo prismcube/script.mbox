@@ -452,6 +452,20 @@ class DataCacheMgr( object ):
 			self.mSkip = aSkip
 
 
+	def ReLoadChannelListByRecording( self ) :
+		self.mCacheReload = True
+		isRunRec = self.Record_GetRunningRecorderCount( )
+		if isRunRec > 0 :
+			#use zapping table 
+			self.mChannelListDBTable = E_TABLE_ZAPPING
+ 
+		else :
+			self.mChannelListDBTable = E_TABLE_ALLCHANNEL
+
+		self.Channel_GetZappingList( )
+		self.LoadChannelList( FLAG_ZAPPING_LOAD )
+
+
 	def LoadChannelList( self, aSync = 0, aType = ElisEnum.E_SERVICE_TYPE_TV, aMode = ElisEnum.E_MODE_ALL, aSort = ElisEnum.E_SORT_BY_NUMBER ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			#self.Channel_GetZappingList( )

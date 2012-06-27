@@ -54,10 +54,11 @@ class NullWindow( BaseWindow ) :
 		lblTest  = time.strftime('%H:%M:%S', time.gmtime(lastTime - WinMgr.GetInstance( ).mXbmcStartTime) )
 		LOG_TRACE( 'startTime[%s] lastTime[%s] TestTime[%s]'% (lblStart, lblLast, lblTest) )
 		
+
 	def onAction(self, aAction) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )
-		
+
 		LOG_ERR( 'ACTION_TEST actionID=%d' %actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU:
@@ -96,7 +97,6 @@ class NullWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
 		elif actionId == Action.ACTION_MOVE_LEFT:
-			print 'youn check ation left'
 			pass
 			"""
 			window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
@@ -278,8 +278,9 @@ class NullWindow( BaseWindow ) :
 			LOG_TRACE( 'Numlock is not support until now' )
 			pass
 
-		else:
-			print 'lael98 check ation unknown id=%d' %actionId
+		else :
+			LOG_TRACE( 'unknown key[%s]'% actionId )
+
 
 
 		"""
@@ -553,7 +554,6 @@ class NullWindow( BaseWindow ) :
 				self.mHBBTVReady = False 
 				LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %(self.mHBBTVReady, self.mMediaPlayerStarted) )
 			
-		
 
 	def GetKeyDisabled( self ) :
 		return False

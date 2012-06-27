@@ -692,28 +692,13 @@ class ChannelListWindow( BaseWindow ) :
 							self.ResetLabel( )
 							self.UpdateChannelAndEPG( )
 
-
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
 				self.mRecChannel1 = []
 				self.mRecChannel2 = []
-				self.LoadChannelListByRecording( )
+				LOG_TRACE('<<<<<<<<<<<<<<<<<<<<< ChannelList <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
 				self.ShowRecordingInfo( )
 				self.ReloadChannelList( )
-
-				#self.mDataCache.mCacheReload = True
-				#self.mListItems = None
-				#self.InitChannelList( )
-
-				if aEvent.getName() == ElisEventRecordingStarted.getName() :
-					msg1 = MR_LANG('Recording Started')
-				else :
-					msg1 = MR_LANG('Recording Ended')
-
-				msg2 = MR_LANG('Reload Channel List...')
-
-				self.AlarmDialog(msg1, msg2)
-
 
 			if aEvent.getName() == ElisEventPlaybackEOF.getName() :
 				if aEvent.mType == ElisEnum.E_EOF_END :
@@ -2502,28 +2487,10 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-	def LoadChannelListByRecording( self ) :
-		defaultType = ElisEnum.E_SERVICE_TYPE_TV
-		defaultMode = ElisEnum.E_MODE_ALL
-		defaultSort = ElisEnum.E_SORT_BY_NUMBER
-
-		self.mDataCache.mCacheReload = True
-		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
-		if isRunRec > 0 :
-			#use zapping table 
-			self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
- 
-		else :
-			self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
-
-		self.mDataCache.Channel_GetZappingList( )
-		self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort )
-
-
 	def ReloadChannelList( self ) :
 		self.mListItems = None
 		self.mCtrlListCHList.reset( )
-		self.InitSlideMenuHeader( FLAG_ZAPPING_CHANGE )
+		self.InitSlideMenuHeader( )
 		self.RefreshSlideMenu( E_SLIDE_ALLCHANNEL, ElisEnum.E_MODE_ALL, True )
 		self.InitChannelList( )
 

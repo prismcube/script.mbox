@@ -425,18 +425,7 @@ class LivePlate( BaseWindow ) :
 
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
- 
-				self.ShowRecordingInfo( )
-				self.LoadChannelListByRecording( )
-
-				if aEvent.getName() == ElisEventRecordingStarted.getName() :
-					msg1 = MR_LANG('Recording Started')
-				else :
-					msg1 = MR_LANG('Recording Ended')
-
-				msg2 = MR_LANG('Reload Channel List...')
-
-				self.AlarmDialog(msg1, msg2)
+ 				self.ShowRecordingInfo( )
 
 
 		else:
@@ -1026,19 +1015,6 @@ class LivePlate( BaseWindow ) :
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
-
-
-	def LoadChannelListByRecording( self ) :
-		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
-		if isRunRec > 0 :
-			#use zapping table 
-			self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
- 
-		else :
-			self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
-
-		self.mDataCache.Channel_GetZappingList( )
-		self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
 
 
 	def Close( self ):

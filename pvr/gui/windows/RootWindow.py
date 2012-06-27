@@ -46,6 +46,22 @@ class RootWindow( BaseWindow ):
 		if aEvent.getName() == ElisEventTimeReceived.getName( ) :
 			self.SendLocalOffsetToXBMC( )
 
+		elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
+			 aEvent.getName() == ElisEventRecordingStopped.getName() :
+
+			LOG_TRACE('<<<<<<<<<<<<<<<<<<<<< RootWindow <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
+
+			self.mDataCache.ReLoadChannelListByRecording( )
+
+			if aEvent.getName() == ElisEventRecordingStarted.getName() :
+				msg1 = MR_LANG('Recording Started')
+			else :
+				msg1 = MR_LANG('Recording Ended')
+
+			msg2 = MR_LANG('Reload Channel List...')
+
+			self.AlarmDialog(msg1, msg2)
+
 
 	def SendLocalOffsetToXBMC( self ) :
 		LOG_TRACE( '--------------' )
