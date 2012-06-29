@@ -94,6 +94,7 @@ CONTEXT_ACTION_ADD_TO_FAV		= 7
 CONTEXT_ACTION_CREATE_GROUP_FAV	= 10
 CONTEXT_ACTION_RENAME_FAV		= 11
 CONTEXT_ACTION_DELETE_FAV		= 12
+CONTEXT_ACTION_ADD_TO_CHANNEL	= 13
 
 #xml control id
 E_CONTROL_ID_SCROLLBAR = 61
@@ -228,6 +229,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mIsSave = FLAG_MASK_NONE
 		self.mMarkList = []
 		self.mEditFavorite = []
+		self.mEditChannelList = []
 		self.mMoveFlag = False
 		self.mMoveItem = []
 
@@ -2028,7 +2030,17 @@ class ChannelListWindow( BaseWindow ) :
 				self.mEditFavorite.append( item.mGroupName )
 
 
-	def DoContextAdtion( self, aMode, aContextAction, aGroupName = '' ) :
+	def GetChannelListName( self ) :
+		allChannel = self.mDataCache.Channel_GetList( FLAG_ZAPPING_CHANGE, self.mChannelListServiceType, ElisEnum.E_MODE_ALL, self.mChannelListSortMode, True )
+		self.mEditChannelList = []
+		if allChannel :
+			for item in allChannel:
+				#copy to ChannelList
+				label = '%04d %s'% ( item.mNumber, item.mName )
+				self.mEditChannelList.append( label )
+
+
+	def DoContextAdtion( self, aMode, aContextAction, aGroupName = '', aNumber = -1 ) :
 		if aContextAction == CONTEXT_ACTION_LOCK :
 			cmd = 'lock'
 			self.SetEditDoAction( cmd, True )
@@ -2101,13 +2113,19 @@ class ChannelListWindow( BaseWindow ) :
 			cmd = 'add'
 			self.SetEditDoAction( cmd, True, aGroupName )
 
+		elif aContextAction == CONTEXT_ACTION_ADD_TO_CHANNEL :
+			cmd = 'addChannel'
+			if aGroupName and aNumber != -1 :
+				ret = self.mDataCache.Favoritegroup_AddChannel( aGroupName, aNumber, self.mChannelListServiceType )
+				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
+
 		elif aContextAction == CONTEXT_ACTION_CREATE_GROUP_FAV :
 			cmd = 'Create'
 			if aGroupName :
 				ret = self.mDataCache.Favoritegroup_Create( aGroupName, self.mChannelListServiceType )	#default : ElisEnum.E_SERVICE_TYPE_TV
 				if ret :
 					self.GetFavoriteGroup( )
-				self.RefreshSlideMenu( E_SLIDE_MENU_FAVORITE, E_SLIDE_ACTION_SUB, True )
+				self.RefreshSlideMenu( self.mSelectMainSlidePosition, self.mSelectSubSlidePosition, True )
 
 		elif aContextAction == CONTEXT_ACTION_RENAME_FAV :
 			cmd = 'Rename'
@@ -2116,7 +2134,7 @@ class ChannelListWindow( BaseWindow ) :
 				ret = self.mDataCache.Favoritegroup_ChangeName( name[1], self.mChannelListServiceType, name[2] )
 				if ret :
 					self.GetFavoriteGroup( )
-				self.RefreshSlideMenu( E_SLIDE_MENU_FAVORITE, E_SLIDE_ACTION_SUB, True )
+				self.RefreshSlideMenu( self.mSelectMainSlidePosition, self.mSelectSubSlidePosition, True )
 
 		elif aContextAction == CONTEXT_ACTION_DELETE_FAV :
 			cmd = 'Remove'
@@ -2125,7 +2143,7 @@ class ChannelListWindow( BaseWindow ) :
 				if ret :
 					self.GetFavoriteGroup( )
 
-				self.RefreshSlideMenu( E_SLIDE_ALLCHANNEL, ElisEnum.E_MODE_ALL, True )
+				self.RefreshSlideMenu( self.mSelectMainSlidePosition, self.mSelectSubSlidePosition, True )
 
 		self.mMarkList = []
 		self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_GROUP_CHANNEL_LIST )
@@ -2174,11 +2192,10 @@ class ChannelListWindow( BaseWindow ) :
 			if not self.mChannelList :
 				context = []
 
-			context.append( ContextItem( MR_LANG('Create New Group'), CONTEXT_ACTION_CREATE_GROUP_FAV ) )
-
-			if self.mEditFavorite:
-				context.append( ContextItem( '%s'% MR_LANG('Rename Fav. Group'), CONTEXT_ACTION_RENAME_FAV ) )
-				context.append( ContextItem( '%s'% MR_LANG('Delete Fav. Group'), CONTEXT_ACTION_DELETE_FAV ) )
+			labelString = '%s - %s -'% ( MR_LANG('Add to Channel'), self.mEditFavorite[self.mSelectSubSlidePosition] )
+			context.append( ContextItem( labelString, CONTEXT_ACTION_ADD_TO_CHANNEL ) )
+			context.append( ContextItem( '%s'% MR_LANG('Create New Group'), CONTEXT_ACTION_CREATE_GROUP_FAV ) )
+			context.append( ContextItem( '%s'% MR_LANG('Rename Fav. Group'), CONTEXT_ACTION_RENAME_FAV ) )
 
 
 		GuiLock2( True )
@@ -2192,7 +2209,8 @@ class ChannelListWindow( BaseWindow ) :
 			#LOG_TRACE('CANCEL by context dialog')
 			return
 
-		if ( (not self.mEditFavorite) and (selectedAction == CONTEXT_ACTION_ADD_TO_FAV) ) or \
+		if ( (not self.mChannelList)  and (selectedAction == CONTEXT_ACTION_ADD_TO_CHANNEL) ) or \
+		   ( (not self.mEditFavorite) and (selectedAction == CONTEXT_ACTION_ADD_TO_FAV) ) or \
 		   ( (not self.mEditFavorite) and (selectedAction == CONTEXT_ACTION_RENAME_FAV) ) or \
 		   ( (not self.mEditFavorite) and (selectedAction == CONTEXT_ACTION_DELETE_FAV) ) :
 			return
@@ -2201,6 +2219,18 @@ class ChannelListWindow( BaseWindow ) :
 		#--------------------------------------------------------------- dialog 2
 		grpIdx = -1
 		groupName = None
+		addNumber = -2
+
+		if selectedAction == CONTEXT_ACTION_ADD_TO_CHANNEL :
+			self.GetChannelListName( )
+			grpIdx = xbmcgui.Dialog().select( labelString, self.mEditChannelList )
+			groupName = self.mEditFavorite[self.mSelectSubSlidePosition]
+			if grpIdx == -1 :
+				#LOG_TRACE('CANCEL by context dialog')
+				return
+
+			addNumber = grpIdx + 1
+
 
 		# add Fav, Ren Fav, Del Fav ==> popup select group
 		if selectedAction == CONTEXT_ACTION_ADD_TO_FAV or \
@@ -2211,7 +2241,7 @@ class ChannelListWindow( BaseWindow ) :
  			elif selectedAction == CONTEXT_ACTION_RENAME_FAV : title = MR_LANG('Rename Fav. Group')
  			elif selectedAction == CONTEXT_ACTION_DELETE_FAV : title = MR_LANG('Delete Fav. Group')
 
- 			grpIdx = xbmcgui.Dialog().select(title, self.mEditFavorite)
+ 			grpIdx = xbmcgui.Dialog().select( title, self.mEditFavorite )
  			groupName = self.mEditFavorite[grpIdx]
  			#LOG_TRACE('---------------grpIdx[%s] fav[%s]'% (grpIdx,groupName) )
 
@@ -2264,7 +2294,7 @@ class ChannelListWindow( BaseWindow ) :
 		#LOG_TRACE('mode[%s] btn[%s] groupName[%s]'% (aMode, selectedAction, groupName) )
 		#--------------------------------------------------------------- context end
 
-		self.DoContextAdtion( aMode, selectedAction, groupName )
+		self.DoContextAdtion( aMode, selectedAction, groupName, addNumber )
 		self.mIsSave |= FLAG_MASK_ADD
 
 		if selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV or \
