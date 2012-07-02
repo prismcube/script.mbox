@@ -229,6 +229,7 @@ class NullWindow( BaseWindow ) :
 			else :
 				runningCount = self.mCommander.Record_GetRunningRecorderCount( )
 
+				"""
 				if runningCount > 0 :
 					runningTimer = self.mDataCache.GetRunnigTimerByChannel( )
 					if runningTimer :
@@ -236,7 +237,7 @@ class NullWindow( BaseWindow ) :
 						dialog.SetTimer( runningTimer )
 						dialog.doModal( )
 						return
-				
+				"""
 				if  runningCount < E_MAX_RECORD_COUNT :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 					dialog.doModal( )

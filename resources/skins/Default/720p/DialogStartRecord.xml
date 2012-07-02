@@ -41,6 +41,7 @@
 				<posy>203</posy>
 				<width>370</width>
 				<height>20</height>
+				<visible>substring(Window.Property(EnableProgress),EPG) | substring(Window.Property(EnableProgress),REC)</visible>
 			</control>
 
 			<!-- Start Time -->
@@ -56,6 +57,7 @@
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 				<label>00:00</label>
+				<visible>substring(Window.Property(EnableProgress),EPG) | substring(Window.Property(EnableProgress),REC)</visible>
 			</control>
 
 
@@ -72,6 +74,7 @@
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 				<label>00:00</label>
+				<visible>substring(Window.Property(EnableProgress),EPG) | substring(Window.Property(EnableProgress),REC)</visible>				
 			</control>
 
 		

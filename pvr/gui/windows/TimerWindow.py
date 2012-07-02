@@ -62,7 +62,8 @@ class TimerWindow(BaseWindow):
 		LOG_TRACE('ZeppingMode(%d,%d,%d)' %( self.mCurrentMode.mServiceType, self.mCurrentMode.mMode, self.mCurrentMode.mSortingMode ) )
 		self.mChannelList = self.mDataCache.Channel_GetList( )
 
-		LOG_TRACE("ChannelList=%d" %len(self.mChannelList) )
+		if self.mChannelList :
+			LOG_TRACE("ChannelList=%d" %len(self.mChannelList) )
 		
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		self.mGMTTime = 0
