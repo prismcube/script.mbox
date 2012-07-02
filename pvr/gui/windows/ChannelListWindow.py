@@ -13,8 +13,8 @@ E_CONTROL_ID_GROUP_SUBMENU				= 9001
 E_CONTROL_ID_LIST_SUBMENU				= 112
 E_CONTROL_ID_RADIO_SERVICETYPE_TV		= 113
 E_CONTROL_ID_RADIO_SERVICETYPE_RADIO	= 114
-E_CONTROL_ID_BUTTON_EDITMODE			= 115
-E_CONTROL_ID_BUTTON_DELETEALL			= 116
+#E_CONTROL_ID_BUTTON_EDITMODE			= 115
+#E_CONTROL_ID_BUTTON_DELETEALL			= 116
 E_CONTROL_ID_GROUP_CHANNEL_LIST			= 49
 E_CONTROL_ID_LIST_CHANNEL_LIST			= 50
 E_CONTROL_ID_LABEL_CHANNEL_NAME			= 303
@@ -95,6 +95,9 @@ CONTEXT_ACTION_CREATE_GROUP_FAV	= 10
 CONTEXT_ACTION_RENAME_FAV		= 11
 CONTEXT_ACTION_DELETE_FAV		= 12
 CONTEXT_ACTION_ADD_TO_CHANNEL	= 13
+CONTEXT_ACTION_SAVE_EXIT		= 14
+CONTEXT_ACTION_MENU_EDIT_MODE	= 20
+CONTEXT_ACTION_MENU_DELETEALL	= 22
 
 #xml control id
 E_CONTROL_ID_SCROLLBAR = 61
@@ -186,8 +189,8 @@ class ChannelListWindow( BaseWindow ) :
 		#sub menu btn
 		self.mCtrlRadioServiceTypeTV     = self.getControl( E_CONTROL_ID_RADIO_SERVICETYPE_TV )
 		self.mCtrlRadioServiceTypeRadio  = self.getControl( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO )
-		self.mCtrlButtonEdit             = self.getControl( E_CONTROL_ID_BUTTON_EDITMODE )
-		self.mCtrlButtonDelAll           = self.getControl( E_CONTROL_ID_BUTTON_DELETEALL )
+		#self.mCtrlButtonEdit             = self.getControl( E_CONTROL_ID_BUTTON_EDITMODE )
+		#self.mCtrlButtonDelAll           = self.getControl( E_CONTROL_ID_BUTTON_DELETEALL )
 
 		#ch list
 		self.mCtrlGroupCHList            = self.getControl( E_CONTROL_ID_GROUP_CHANNEL_LIST )
@@ -235,7 +238,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.SetPipScreen( )
 
-		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_DELETEALL, MR_LANG('Delete All Channel') )
+		#self.UpdateControlGUI( E_CONTROL_ID_BUTTON_DELETEALL, MR_LANG('Delete All Channel') )
 
 		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
 		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
@@ -322,7 +325,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		elif id == Action.ACTION_CONTEXT_MENU :
-			self.PopupOpt( )
+			self.ShowContextMenu( )
 
 
 		elif id == Action.ACTION_STOP :
@@ -406,29 +409,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateControlGUI( E_SLIDE_CLOSE )
 
 		elif aControlId == E_CONTROL_ID_BUTTON_OPT:
-			self.PopupOpt( )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_EDITMODE:
-			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
-			if isRunRec > 0 :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Warning', 'Now recording...' )
-	 			dialog.doModal( )
-
-	 		else :
-				self.SetGoBackEdit( )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_DELETEALL:
-			ret = self.SetDeleteAll( )
-
-			if ret == E_DIALOG_STATE_YES :
-				self.mChannelList = None
-				self.mNavEpg = None
-				self.mNavChannel = None
-				self.ReloadChannelList( )
-				#clear label
-				self.ResetLabel( )
-				self.UpdateChannelAndEPG( )
+			self.ShowContextMenu( )
 
 		elif aControlId == E_CONTROL_ID_RADIO_SERVICETYPE_TV:
 			self.SetModeChanged( FLAG_MODE_TV )
@@ -1198,7 +1179,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, False )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV, True, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO, True, E_TAG_ENABLE )
-			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_EDITMODE, MR_LANG('Edit Channel'), E_TAG_LABEL )
+			#self.UpdateControlGUI( E_CONTROL_ID_BUTTON_EDITMODE, MR_LANG('Edit Channel'), E_TAG_LABEL )
 
 		else :
 			#opt btn visible
@@ -1206,7 +1187,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, True )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV, False, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO, False, E_TAG_ENABLE )
-			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_EDITMODE, MR_LANG('Save Channel'), E_TAG_LABEL )
+			#self.UpdateControlGUI( E_CONTROL_ID_BUTTON_EDITMODE, MR_LANG('Save Channel'), E_TAG_LABEL )
 
 		if self.mFlag_DeleteAll :
 			self.mZappingMode            = ElisEnum.E_MODE_ALL
@@ -1264,7 +1245,7 @@ class ChannelListWindow( BaseWindow ) :
 		list_Mainmenu.append( MR_LANG('FTA/CAS')      )
 		list_Mainmenu.append( MR_LANG('FAVORITE')     )
 		list_Mainmenu.append( MR_LANG('MODE') )
-		list_Mainmenu.append( MR_LANG('Back') )
+		#list_Mainmenu.append( MR_LANG('Back') )
 		testlistItems = []
 		for item in range( len(list_Mainmenu) ) :
 			testlistItems.append( xbmcgui.ListItem(list_Mainmenu[item]) )
@@ -1549,15 +1530,6 @@ class ChannelListWindow( BaseWindow ) :
 			elif aExtra == E_TAG_ENABLE :
 				self.mCtrlRadioServiceTypeRadio.setEnabled( aValue )
 
-		elif aCtrlID == E_CONTROL_ID_BUTTON_EDITMODE :
-			if aExtra == E_TAG_ENABLE :
-				self.mCtrlButtonEdit.setEnabled( aValue )
-			elif aExtra == E_TAG_LABEL :
-				self.mCtrlButtonEdit.setLabel( aValue )
-
-		elif aCtrlID == E_CONTROL_ID_BUTTON_DELETEALL :
-			self.mCtrlButtonDelAll.setLabel( aValue )
-
 		elif aCtrlID == E_CONTROL_ID_LABEL_SELECT_NUMBER :
 			self.mCtrlLabelSelectItem.setLabel( aValue )
 
@@ -1578,6 +1550,17 @@ class ChannelListWindow( BaseWindow ) :
 		elif aCtrlID == E_SLIDE_CLOSE :
 			self.mCtrlListCHList.setEnabled( True )
 			self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
+
+		"""
+		elif aCtrlID == E_CONTROL_ID_BUTTON_EDITMODE :
+			if aExtra == E_TAG_ENABLE :
+				self.mCtrlButtonEdit.setEnabled( aValue )
+			elif aExtra == E_TAG_LABEL :
+				self.mCtrlButtonEdit.setLabel( aValue )
+
+		elif aCtrlID == E_CONTROL_ID_BUTTON_DELETEALL :
+			self.mCtrlButtonDelAll.setLabel( aValue )
+		"""
 
 
 	def UpdateChannelAndEPG( self ) :
@@ -2152,6 +2135,43 @@ class ChannelListWindow( BaseWindow ) :
 
 				self.RefreshSlideMenu( self.mSelectMainSlidePosition, self.mSelectSubSlidePosition, True )
 
+		elif aContextAction == CONTEXT_ACTION_SAVE_EXIT :
+			self.SetGoBackWindow( )
+			return
+
+		elif aContextAction == CONTEXT_ACTION_MENU_EDIT_MODE :
+			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+			if isRunRec > 0 :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG('Warning'), MR_LANG('Now recording...') )
+	 			dialog.doModal( )
+
+	 		else :
+				self.SetGoBackEdit( )
+
+			return
+
+		elif aContextAction == CONTEXT_ACTION_MENU_DELETEALL :
+			if self.mFlag_DeleteAll :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG('Warning'), MR_LANG('Already Delete All') )
+	 			dialog.doModal( )
+
+	 		else :
+				ret = self.SetDeleteAll( )
+
+				if ret == E_DIALOG_STATE_YES :
+					self.mChannelList = None
+					self.mNavEpg = None
+					self.mNavChannel = None
+					self.ReloadChannelList( )
+					#clear label
+					self.ResetLabel( )
+					self.UpdateChannelAndEPG( )
+
+			return
+
+
 		self.mMarkList = []
 		self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_GROUP_CHANNEL_LIST )
 
@@ -2203,6 +2223,8 @@ class ChannelListWindow( BaseWindow ) :
 			context.append( ContextItem( labelString, CONTEXT_ACTION_ADD_TO_CHANNEL ) )
 			context.append( ContextItem( '%s'% MR_LANG('Create New Group'), CONTEXT_ACTION_CREATE_GROUP_FAV ) )
 			context.append( ContextItem( '%s'% MR_LANG('Rename Fav. Group'), CONTEXT_ACTION_RENAME_FAV ) )
+
+		context.append( ContextItem( '%s'% MR_LANG('Save Exit'), CONTEXT_ACTION_SAVE_EXIT ) )
 
 
 		GuiLock2( True )
@@ -2314,14 +2336,30 @@ class ChannelListWindow( BaseWindow ) :
 				self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE )
 
 
-	def PopupOpt( self ) :
-		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
-			mode = FLAG_OPT_LIST
-			if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
-				mode = FLAG_OPT_GROUP
-			else :
-				mode = FLAG_OPT_LIST
+	def ShowContextMenu( self ) :
+		mode = FLAG_OPT_LIST
+		if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
+			mode = FLAG_OPT_GROUP
 
+		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+			context = []
+			context.append( ContextItem( MR_LANG('Edit Channel'), CONTEXT_ACTION_MENU_EDIT_MODE ) )
+			context.append( ContextItem( MR_LANG('Delete All Channel'), CONTEXT_ACTION_MENU_DELETEALL ) )
+
+			GuiLock2( True )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+			dialog.SetProperty( context )
+	 		dialog.doModal( )
+	 		GuiLock2( False )
+
+			selectedAction = dialog.GetSelectedAction( )
+			if selectedAction == -1 :
+				#LOG_TRACE('CANCEL by context dialog')
+				return
+
+			self.DoContextAdtion( mode, selectedAction )
+
+		else :
 			self.EditSettingWindowContext( mode )
 
 

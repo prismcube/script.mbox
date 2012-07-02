@@ -181,13 +181,6 @@ class TimeShiftPlate(BaseWindow):
 				else :
 					self.onClick( E_CONTROL_ID_BUTTON_PAUSE )
 
-
-			elif self.mPrekey == Action.ACTION_PAUSE or self.mPrekey == Action.ACTION_PLAYER_PLAY :
-				if self.mSpeed == 0 :
-					self.onClick( E_CONTROL_ID_BUTTON_PLAY )
-				else :
-					self.onClick( E_CONTROL_ID_BUTTON_PAUSE )
-
 			self.mPrekey = None
 
 

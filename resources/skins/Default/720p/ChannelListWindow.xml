@@ -628,11 +628,11 @@
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
-						<item id="6">
+						<!--item id="6">
 							<label>SCRIPT27</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
-						</item>
+						</item-->
 					</content>
 				</control>
 
@@ -741,8 +741,6 @@
 								<label>SCRIPT33</label>
 								<onleft>102</onleft>
 								<onright>113</onright>
-								<onup>116</onup>
-								<ondown>114</ondown>
 							</control>
 							<control type="radiobutton" id="114">
 								<posx>0</posx>
@@ -755,10 +753,8 @@
 								<label>SCRIPT34</label>
 								<onleft>102</onleft>
 								<onright>114</onright>
-								<onup>113</onup>
-								<ondown>115</ondown>
 							</control>
-							<control type="button" id="115">
+							<!--control type="button" id="115">
 								<posx>0</posx>
 								<posy>130</posy>
 								<width>230</width>
@@ -785,7 +781,7 @@
 								<onright>116</onright>
 								<onup>115</onup>
 								<ondown>113</ondown>
-							</control>
+							</control-->
 						</control>
 					</control>
 					<!-- Scrollbar -->
