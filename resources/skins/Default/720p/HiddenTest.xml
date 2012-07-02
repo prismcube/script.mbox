@@ -13,6 +13,7 @@
 			<aligny>center</aligny>
 			<textcolor>white</textcolor>
 			<shadowcolor>black</shadowcolor>
+			<visible>false</visible>
 		</control>
 	</controls>
 </window>
