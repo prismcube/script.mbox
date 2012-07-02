@@ -129,9 +129,6 @@ class MainMenu( BaseWindow ) :
 		elif aControlId == BUTTON_ID_SYSTEM_INFO :
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_SYSTEM_INFO )
 
-		elif aControlId == BUTTON_ID_HIDDEN_TEST :
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_HIDDEN_TEST )
-
 		elif aControlId == 20 :
 			pass
 			"""

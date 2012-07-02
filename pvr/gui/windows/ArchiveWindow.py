@@ -690,32 +690,34 @@ class ArchiveWindow( BaseWindow ) :
 				markedList.append( selectedPos )
 				
 		if len( markedList ) > 0 :
-			if self.CheckPincode() == False :
+			if self.CheckPincode( ) == False :
 				return False
 
 			count = len( markedList )
 			for i in range( count ) :
-				position =  markedList[i]
-				listItem = self.mRecordListItems[position]
+				position = markedList[i]
+				listItem = self.mRecordListItems[ position ]
 				if aLock == True :
 					self.mRecordList[ position ].mLocked = True
-					self.mDataCache.Record_SetLock( self.mRecordList[position].mRecordKey, self.mServiceType, True )
+					self.mDataCache.Record_SetLock( self.mRecordList[ position ].mRecordKey, self.mServiceType, True )
 					listItem.setProperty('Locked', 'True')
 					listItem.setProperty('RecIcon', 'IconNotAvailable.png')
+					print 'dhkim test #1'
 				else :
 					self.mRecordList[ position ].mLocked = False
-					self.mDataCache.Record_SetLock( self.mRecordList[position].mRecordKey, self.mServiceType, False )				
+					self.mDataCache.Record_SetLock( self.mRecordList[ position ].mRecordKey, self.mServiceType, False )
 					listItem.setProperty('Locked', 'False')
-
+					print 'dhkim test #2'
 					thumbnail = '/mnt/hdd0/pvr/thumbnail/record_thumbnail_%d.jpg' % recInfo.mRecordKey
-					LOG_ERR( 'thumbnail=%s' %thumbnail )
+					LOG_ERR( 'thumbnail=%s' % thumbnail )
 					
-					if os.path.exists( thumbnail ) == True :					
+					if os.path.exists( thumbnail ) == True :
 						recItem.setProperty('RecIcon', thumbnail )
 					else:
-						recItem.setProperty('RecIcon', 'RecIconSample.png')					
+						recItem.setProperty('RecIcon', 'RecIconSample.png')
+						print 'dhkim test #3'
 
-			self.DoClearMark()
+			self.DoClearMark( )
 			xbmc.executebuiltin('container.update')
 
 

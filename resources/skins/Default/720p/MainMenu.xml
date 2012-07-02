@@ -123,11 +123,6 @@
 							<onclick>ParentDir</onclick>
 							<visible>true</visible>
 						</item>
-						<item id="8">
-							<label>Test</label>
-							<onclick>SendClick(90800)</onclick>
-							<visible>false</visible>
-						</item>
 					</content>
 				</control>
 				<control type="image">
