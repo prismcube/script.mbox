@@ -34,6 +34,15 @@
 	<string id="32">Souhaitez-vous le supprimer?</string>
 	<string id="33">NONE_View: TV</string>
 	<string id="34">NONE_View: RADIO</string>
+	<string id="35">NONE_Recording Started</string>
+	<string id="36">NONE_Recording Ended</string>
+	<string id="37">NONE_Reload Channel List...</string>
+	<string id="38">NONE_No Channel</string>
+	<string id="39">NONE_Add to Channel</string>
+	<string id="40">NONE_Warning</string>
+	<string id="41">NONE_Now recording...</string>
+	<string id="42">NONE_Already Delete All</string>
+	<string id="43">NONE_Save Exit</string>
 	<string id="1001">NONE_Last ServiceType</string>
 	<string id="1002">TV</string>
 	<string id="1003">Radio</string>

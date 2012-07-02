@@ -266,9 +266,9 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 	def ReLoadChannelList( self ) :
-		self.mDataCache.LoadZappingmode( True )
-		self.mDataCache.LoadZappingList( True )
-		self.mDataCache.LoadChannelList( 0, ElisEnum.E_SERVICE_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER, True )
+		self.mDataCache.LoadZappingmode( )
+		self.mDataCache.LoadZappingList( )
+		self.mDataCache.LoadChannelList( 0, ElisEnum.E_SERVICE_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER )
 
 
 	def ReTune( self ) :

@@ -11,12 +11,21 @@
 	<controls>
 
 <!-- bg design -->
-		<control type="image">
+		<control type="image" id="10">
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>1280</width>
 			<height>720</height>
 			<texture background="true">backgrounds/pictures.jpg</texture>
+			<include>DefaultWindowFade</include>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<texture background="true">backgrounds/settings.jpg</texture>
+			<visible>!Control.IsVisible(10)</visible>
 			<include>DefaultWindowFade</include>
 		</control>
 
@@ -108,9 +117,9 @@
 					<!-- is mark? -->
 					<control type="image">
 						<posx>0</posx>
-						<posy>5</posy>
-						<width>30</width>
-						<height>30</height>
+						<posy>10</posy>
+						<width>20</width>
+						<height>20</height>
 						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(mark),true)</visible>
 					</control>
@@ -122,6 +131,15 @@
 						<height>30</height>
 						<texture>IconPlateRec.png</texture>
 						<visible>substring(ListItem.Property(rec),true)</visible>
+					</control>
+					<!-- is skip? -->
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>IconNotAvailable.png</texture>
+						<visible>substring(ListItem.Property(skip),true)</visible>
 					</control>
 
 					<control type="label">
@@ -197,9 +215,9 @@
 					<!-- is mark? -->
 					<control type="image">
 						<posx>0</posx>
-						<posy>5</posy>
-						<width>30</width>
-						<height>30</height>
+						<posy>10</posy>
+						<width>20</width>
+						<height>20</height>
 						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(mark),true)</visible>
 					</control>
@@ -211,6 +229,15 @@
 						<height>30</height>
 						<texture>IconPlateRec.png</texture>
 						<visible>substring(ListItem.Property(rec),true)</visible>
+					</control>
+					<!-- is skip? -->
+					<control type="image">
+						<posx>0</posx>
+						<posy>5</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>IconNotAvailable.png</texture>
+						<visible>substring(ListItem.Property(skip),true)</visible>
 					</control>
 					<control type="label">
 						<posx>30</posx>
@@ -601,11 +628,11 @@
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
-						<item id="6">
+						<!--item id="6">
 							<label>SCRIPT27</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
-						</item>
+						</item-->
 					</content>
 				</control>
 
@@ -714,8 +741,6 @@
 								<label>SCRIPT33</label>
 								<onleft>102</onleft>
 								<onright>113</onright>
-								<onup>116</onup>
-								<ondown>114</ondown>
 							</control>
 							<control type="radiobutton" id="114">
 								<posx>0</posx>
@@ -728,10 +753,8 @@
 								<label>SCRIPT34</label>
 								<onleft>102</onleft>
 								<onright>114</onright>
-								<onup>113</onup>
-								<ondown>115</ondown>
 							</control>
-							<control type="button" id="115">
+							<!--control type="button" id="115">
 								<posx>0</posx>
 								<posy>130</posy>
 								<width>230</width>
@@ -758,7 +781,7 @@
 								<onright>116</onright>
 								<onup>115</onup>
 								<ondown>113</ondown>
-							</control>
+							</control-->
 						</control>
 					</control>
 					<!-- Scrollbar -->

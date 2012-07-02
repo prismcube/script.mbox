@@ -2,5 +2,4 @@
 	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
 	<backgroundcolor>0x00ffffff</backgroundcolor>	
-	<include file="mbox_includes.xml">"mbox_includes.xml"</include>
 </window>

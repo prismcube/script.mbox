@@ -16,7 +16,7 @@
 
 			<control type="label" id="100">
 				  <description>EPG Title</description>
-				  <posx>100</posx>
+				  <posx>80</posx>
 				  <posy>30</posy>
 				  <width>950</width>
 				  <height>100</height>
@@ -29,20 +29,21 @@
 
 			<control type="textbox" id="101">
 				  <description>EPG Description</description>
-				  <posx>100</posx>
+				  <posx>80</posx>
 				  <posy>135</posy>
 				  <width>950</width>
-				  <height>600</height>
+				  <height>350</height>
 				  <visible>true</visible>
 				  <colordiffuse>FFFFFFFF</colordiffuse>
 				  <font>font13</font>
 				  <textcolor>FFFFFFFF</textcolor>
 				  <wrapmultiline>true</wrapmultiline>
+				  <autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
 				  <label>$INFO[Window.Property(EPGDescription)]</label>
 			</control>
 
 			<control type="label" id="102">
-				<posx>900</posx>
+				<posx>880</posx>
 				<posy>102</posy>
 				<description>start time</description>
 				<font>font13</font>
@@ -52,7 +53,7 @@
 
 			<control type="image" id="201">
 				<posx>520</posx>
-				<posy>100</posy>
+				<posy>90</posy>
 				<width>60</width>
 				<height>40</height>
 				<texture>IconTeletext.png</texture>
@@ -62,7 +63,7 @@
 
 			<control type="image" id="202">
 				<posx>575</posx>
-				<posy>100</posy>
+				<posy>90</posy>
 				<width>90</width>
 				<height>40</height>
 				<texture>dolbydigital.png</texture>
@@ -72,7 +73,7 @@
 
 			<control type="image" id="203">
 				<posx>655</posx>
-				<posy>100</posy>
+				<posy>90</posy>
 				<width>90</width>
 				<height>40</height>
 				<texture>OverlayHD.png</texture>

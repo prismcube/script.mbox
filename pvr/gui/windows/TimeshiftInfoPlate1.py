@@ -1122,7 +1122,7 @@ class TimeShiftInfoPlate1(BaseWindow):
 			try :
 				#satellite
 				label = ''
-				satellite = self.mDataCache.Satellite_GetByChannelNumber( ch.mNumber, -1, True )
+				satellite = self.mDataCache.Satellite_GetByChannelNumber( ch.mNumber, -1 )
 				if satellite :
 					label = GetSelectedLongitudeString( satellite.mLongitude, satellite.mName )
 				self.UpdateLabelGUI( self.mCtrlLblLongitudeInfo.getId(), label )

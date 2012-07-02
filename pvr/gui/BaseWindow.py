@@ -180,6 +180,11 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 
 
+	def AlarmDialog( self, aMsg1, aMsg2 ) :
+		command = 'Notification(%s,%s,2000)'% ( aMsg1, aMsg2 )
+		xbmc.executebuiltin( command )
+
+
 class ControlItem :
 	# Setting Window
 	E_UNDEFINE								= 0
