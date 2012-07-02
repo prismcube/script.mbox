@@ -17,6 +17,7 @@ class NullWindow( BaseWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 		self.mGotoWinID = None
 		self.mOnEventing= False
+		self.mRecordingAlarm = False
 
 		if self.mInitialized == False :
 			self.mInitialized = True
@@ -116,9 +117,11 @@ class NullWindow( BaseWindow ) :
 				gotoWinId = WinMgr.WIN_ID_TIMESHIFT_PLATE
 
 			window = WinMgr.GetInstance( ).GetWindow( gotoWinId )
-			window.SetAutomaticHide( False )
+			window.SetAutomaticHide( self.mRecordingAlarm )
+			self.mRecordingAlarm = False
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( gotoWinId )
+
 
 		elif actionId == Action.ACTION_PAGE_DOWN :
 			if self.mDataCache.mStatusIsArchive :
@@ -224,7 +227,17 @@ class NullWindow( BaseWindow ) :
 				msg = 'Now PVR Playing...'
 				xbmcgui.Dialog( ).ok('Warning', msg )
 			else :
-				runningCount = self.mCommander.Record_GetRunningRecorderCount( )		
+				runningCount = self.mCommander.Record_GetRunningRecorderCount( )
+
+				"""
+				if runningCount > 0 :
+					runningTimer = self.mDataCache.GetRunnigTimerByChannel( )
+					if runningTimer :
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+						dialog.SetTimer( runningTimer )
+						dialog.doModal( )
+						return
+				"""
 				if  runningCount < E_MAX_RECORD_COUNT :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 					dialog.doModal( )
@@ -236,7 +249,6 @@ class NullWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).SetAutomaticHide( True )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
 			self.Close( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 		
 		elif actionId == Action.ACTION_MBOX_REWIND :
 			status = self.mDataCache.Player_GetStatus()
@@ -256,27 +268,6 @@ class NullWindow( BaseWindow ) :
 			self.Close( )
 			self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
-
-		elif actionId == Action.ACTION_MBOX_RECORD :
-			runningCount = self.ShowRecording()
-
-			isOK = False
-			GuiLock2(True)
-			if  runningCount < 1 :
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
-				dialog.doModal()
-
-				isOK = dialog.IsOK()
-				if isOK == E_DIALOG_STATE_YES :
-					isOK = True
-			else:
-				msg = 'Already [%s] recording(s) running' %runningCount
-				xbmcgui.Dialog().ok('Infomation', msg )
-			GuiLock2(False)
-
-			if isOK :
-				self.ShowRecording()
-				self.mDataCache.mCacheReload = True
 
 		elif actionId == Action.ACTION_MBOX_TEXT :
 			pass
@@ -369,6 +360,7 @@ class NullWindow( BaseWindow ) :
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
 				self.ShowRecording()
 				self.mDataCache.mCacheReload = True
+				self.mRecordingAlarm = True
 				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 				"""
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
@@ -489,9 +481,9 @@ class NullWindow( BaseWindow ) :
 
 
 	def RecordingStop( self ) :
-		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
-
-		if isRunRec > 0 :
+		runningRecordingCount = self.mDataCache.Record_GetRunningRecorderCount( )
+		
+		if runningRecordingCount > 0 :
 			GuiLock2( True )
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
 			dialog.doModal( )
@@ -500,18 +492,18 @@ class NullWindow( BaseWindow ) :
 			isOK = dialog.IsOK()
 			if isOK == E_DIALOG_STATE_YES :
 				if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
-					isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+					runningRecordingCount = self.mDataCache.Record_GetRunningRecorderCount( )
 					defaultType = ElisEnum.E_SERVICE_TYPE_TV
 					defaultMode = ElisEnum.E_MODE_ALL
 					defaultSort = ElisEnum.E_SORT_BY_NUMBER
-					if isRunRec > 0 :
+					if runningRecordingCount > 0 :
 						#use zapping table, in recording
 						self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
 						#self.mDataCache.Channel_GetZappingList( )
-						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
+						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort )
 					else :
 						self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
-						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
+						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort )
 						self.mDataCache.mCacheReload = True
 
 
@@ -529,14 +521,14 @@ class NullWindow( BaseWindow ) :
 					self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
 					#self.mDataCache.Channel_GetZappingList( )
 					#### data cache re-load ####
-					self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
+					self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort )
 
 				else :
 					self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
 					if self.mDataCache.mCacheReload :
 						self.mDataCache.mCacheReload = False
 						#### data cache re-load ####
-						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort, E_REOPEN_TRUE  )
+						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort )
 
 				#LOG_TRACE('table[%s]'% ret)
 

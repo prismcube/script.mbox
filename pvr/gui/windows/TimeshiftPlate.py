@@ -80,8 +80,8 @@ class TimeShiftPlate(BaseWindow):
 	def __del__(self):
 		LOG_TRACE( 'destroyed TimeshiftPlate' )
 
-		# end thread CurrentTimeThread()
-		self.mEnableThread = False
+		# end thread PlayProgressThread()
+		self.mEnableLocalThread = False
 	"""
 	
 
@@ -135,7 +135,7 @@ class TimeShiftPlate(BaseWindow):
 		self.mAsyncShiftTimer = None
 		self.mAutomaticHideTimer = None
 
-		self.ShowRecording( )
+		self.ShowRecordingInfo( )
 		
 		self.mTimeShiftExcuteTime = self.mDataCache.Datetime_GetLocalTime()
 
@@ -165,8 +165,8 @@ class TimeShiftPlate(BaseWindow):
 		self.mEventBus.Register( self )
 
 		#run thread
-		self.mEnableThread = True
-		self.CurrentTimeThread()
+		self.mEnableLocalThread = True
+		self.PlayProgressThread()
 
 		if self.mPrekey :
 			if self.mPrekey == Action.ACTION_MBOX_REWIND :
@@ -174,6 +174,13 @@ class TimeShiftPlate(BaseWindow):
 
 			elif self.mPrekey == Action.ACTION_MBOX_FF :
 				self.onClick( E_CONTROL_ID_BUTTON_FORWARD )
+			elif self.mPrekey == Action.ACTION_PAUSE or self.mPrekey == Action.ACTION_PLAYER_PLAY :
+				self.mWin.setProperty( 'IsXpeeding', 'False' )
+				if self.mSpeed == 0 :
+					self.onClick( E_CONTROL_ID_BUTTON_PLAY )
+				else :
+					self.onClick( E_CONTROL_ID_BUTTON_PAUSE )
+
 
 			elif self.mPrekey == Action.ACTION_PAUSE or self.mPrekey == Action.ACTION_PLAYER_PLAY :
 				if self.mSpeed == 0 :
@@ -195,7 +202,6 @@ class TimeShiftPlate(BaseWindow):
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
 			self.Close()
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-
 
 		elif id >= Action.REMOTE_0 and id <= Action.REMOTE_9 :
 			self.KeySearch( id-Action.REMOTE_0 )
@@ -297,10 +303,14 @@ class TimeShiftPlate(BaseWindow):
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, self.mDataCache.mSetFromParentWindow )
 
+		elif id == Action.ACTION_SHOW_INFO :
+			self.Close( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW, self.mDataCache.mSetFromParentWindow )
+
 
 		#test
 		elif id == 104 : #scroll up
-			self.ShowRecording()
+			self.ShowRecordingInfo()
 			#self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_RECORDING1, True )
 		elif id == 105 :
 			#self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_RECORDING2, False )
@@ -324,7 +334,7 @@ class TimeShiftPlate(BaseWindow):
 			self.StopAutomaticHide()
 		
 		elif aControlId == E_CONTROL_ID_BUTTON_START_RECORDING :
-			runningCount = self.ShowRecording()
+			runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 
 			isOK = False
 			GuiLock2(True)
@@ -341,7 +351,6 @@ class TimeShiftPlate(BaseWindow):
 			GuiLock2(False)
 
 			if isOK :
-				self.ShowRecording()
 				self.mDataCache.mCacheReload = True
 
 		elif aControlId == E_CONTROL_ID_BUTTON_BOOKMARK:
@@ -378,8 +387,18 @@ class TimeShiftPlate(BaseWindow):
 
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
-				self.ShowRecording()
+				self.ShowRecordingInfo()
+				self.LoadChannelListByRecording( )
 				self.mDataCache.mCacheReload = True
+
+				if aEvent.getName() == ElisEventRecordingStarted.getName() :
+					msg1 = MR_LANG('Recording Started')
+				else :
+					msg1 = MR_LANG('Recording Ended')
+
+				msg2 = MR_LANG('Reload Channel List...')
+
+				self.AlarmDialog(msg1, msg2)
 
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
@@ -836,11 +855,13 @@ class TimeShiftPlate(BaseWindow):
 			self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PLAY, False )
 			self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
 			self.mWin.setProperty( 'IsXpeeding', 'True' )
+			LOG_TRACE('-------Play----------------------speed[%s]'% ret)
 
 		else :
-			self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
 			self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PLAY, True )			
+			self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
 			self.mWin.setProperty( 'IsXpeeding', 'False' )
+			LOG_TRACE('-------Pause----------------------speed[%s]'% ret)
 
 		return ret
 
@@ -868,9 +889,9 @@ class TimeShiftPlate(BaseWindow):
 
 
 	@RunThread
-	def CurrentTimeThread(self):
+	def PlayProgressThread(self):
 		loop = 0
-		while self.mEnableThread:
+		while self.mEnableLocalThread:
 			#LOG_TRACE( 'repeat <<<<' )
 
 			#update localTime
@@ -880,12 +901,12 @@ class TimeShiftPlate(BaseWindow):
 
 			if self.mIsPlay != FLAG_STOP :
 				self.InitTimeShift( )
-				self.UpdateLocalTime( loop )
+				self.UpdateProgress( loop )
 
 			time.sleep(self.mRepeatTimeout)
 			
 
-	def UpdateLocalTime(self, loop = 0):
+	def UpdateProgress(self, loop = 0):
 		try :
 			lbl_timeE = ''
 			lbl_timeP = ''
@@ -916,7 +937,7 @@ class TimeShiftPlate(BaseWindow):
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-	def ShowRecording( self ) :
+	def ShowRecordingInfo( self ) :
 		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 
 		strLabelRecord1 = ''
@@ -936,26 +957,11 @@ class TimeShiftPlate(BaseWindow):
 			recInfo = self.mDataCache.Record_GetRunningRecordInfo( E_INDEX_SECOND_RECORDING )
 			strLabelRecord2 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
 
-		if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
-			if isRunRec > 0 :
-				#use zapping table, in recording
-				self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
-				#self.mDataCache.Channel_GetZappingList( )
-
-			else :
-				self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
-				if self.mDataCache.mCacheReload :
-					self.mDataCache.mCacheReload = False
-
-			#### data cache re-load ####
-			self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, ElisEnum.E_SERVICE_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER, E_REOPEN_TRUE )
-
 		btnValue = False
 		if isRunRec >= 1 :
 			btnValue = False
 		else :
 			btnValue = True
-
 
 		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_RECORDING1, strLabelRecord1 )
 		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_RECORDING2, strLabelRecord2 )
@@ -963,7 +969,18 @@ class TimeShiftPlate(BaseWindow):
 		self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_RECORDING2, setPropertyRecord2 )
 		self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_START_RECORDING, btnValue, E_CONTROL_ENABLE )
 
-		return isRunRec
+
+	def LoadChannelListByRecording( self ) :
+		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+		if isRunRec > 0 :
+			#use zapping table 
+			self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
+ 
+		else :
+			self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
+
+		self.mDataCache.Channel_GetZappingList( )
+		self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, ElisEnum.E_SERVICE_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER )
 
 
 	def RecordingStopAll( self ) :
@@ -994,8 +1011,8 @@ class TimeShiftPlate(BaseWindow):
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
 
-		self.mEnableThread = False
-		#self.CurrentTimeThread().join()
+		self.mEnableLocalThread = False
+		#self.PlayProgressThread().join()
 
 		self.StopAsyncMove()
 		self.StopAutomaticHide()

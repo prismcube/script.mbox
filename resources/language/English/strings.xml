@@ -34,6 +34,10 @@
 	<string id="32">Do you want to delete?</string>
 	<string id="33">View: TV</string>
 	<string id="34">View: RADIO</string>
+	<string id="35">Recording Started</string>
+	<string id="36">Recording Ended</string>
+	<string id="37">Reload Channel List...</string>
+	<string id="38">No Channel</string>
 	<string id="1001">Last ServiceType</string>
 	<string id="1002">TV</string>
 	<string id="1003">Radio</string>
