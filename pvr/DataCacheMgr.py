@@ -183,10 +183,13 @@ class DataCacheMgr( object ):
 		self.LoadConfiguredTransponder( )
 
 		# Channel
-		#self.Channel_GetZappingList( )
-		self.LoadChannelList( )
-		#self.LoadGetListEpgByChannel( )
-		
+		#self.LoadChannelList( )
+		self.ReLoadChannelListByRecording( )
+		if self.mChannelList :
+			LOG_TRACE('recCount[%s] ChannelCount[%s]'% (self.mRecordingCount, len(self.mChannelList) ) )
+		else :
+			LOG_TRACE('recCount[%s] ChannelCount[None]'% self.mRecordingCount )
+
 		self.mRecordingCount = self.Record_GetRunningRecorderCount()		
 
 		# DATE
@@ -447,6 +450,11 @@ class DataCacheMgr( object ):
 		return ret
 
 
+	def SetChangeDBTableChannel( self, aTable ) :
+		if SUPPORT_CHANNEL_DATABASE	== True :
+			self.mChannelListDBTable = aTable
+
+
 	def SetSkipChannelToDBTable( self, aSkip ) :
 		if SUPPORT_CHANNEL_DATABASE :
 			self.mSkip = aSkip
@@ -457,10 +465,10 @@ class DataCacheMgr( object ):
 		isRunRec = self.Record_GetRunningRecorderCount( )
 		if isRunRec > 0 :
 			#use zapping table 
-			self.mChannelListDBTable = E_TABLE_ZAPPING
+			self.SetChangeDBTableChannel( E_TABLE_ZAPPING )
  
 		else :
-			self.mChannelListDBTable = E_TABLE_ALLCHANNEL
+			self.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
 
 		self.Channel_GetZappingList( )
 		self.LoadChannelList( FLAG_ZAPPING_LOAD )
