@@ -13,8 +13,6 @@ E_CONTROL_ID_GROUP_SUBMENU				= 9001
 E_CONTROL_ID_LIST_SUBMENU				= 112
 E_CONTROL_ID_RADIO_SERVICETYPE_TV		= 113
 E_CONTROL_ID_RADIO_SERVICETYPE_RADIO	= 114
-#E_CONTROL_ID_BUTTON_EDITMODE			= 115
-#E_CONTROL_ID_BUTTON_DELETEALL			= 116
 E_CONTROL_ID_GROUP_CHANNEL_LIST			= 49
 E_CONTROL_ID_LIST_CHANNEL_LIST			= 50
 E_CONTROL_ID_LABEL_CHANNEL_NAME			= 303
@@ -28,6 +26,7 @@ E_CONTROL_ID_GROUP_COMPONENT_DATA		= 310
 E_CONTROL_ID_GROUP_COMPONENT_DOLBY		= 311
 E_CONTROL_ID_GROUP_COMPONENT_HD			= 312
 E_CONTROL_ID_LABEL_SELECT_NUMBER		= 401
+E_CONTROL_ID_GROUP_PIPBOX				= 8899
 
 FLAG_MASK_ADD    = 0x01
 FLAG_MASK_NONE   = 0x00
@@ -54,8 +53,6 @@ E_SLIDE_ALLCHANNEL      = 0
 E_SLIDE_MENU_SATELLITE  = 1
 E_SLIDE_MENU_FTACAS     = 2
 E_SLIDE_MENU_FAVORITE   = 3
-#E_SLIDE_MENU_EDITMODE  = 4
-#E_SLIDE_MENU_DELETEALL = 5
 E_SLIDE_MENU_BACK       = 5
 
 E_CONTROL_FOCUSED       = 9991
@@ -132,7 +129,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
 
 
-	"""		
+	"""
 	def __del__(self):
 		LOG_TRACE( 'destroyed ChannelList' )
 
@@ -189,8 +186,6 @@ class ChannelListWindow( BaseWindow ) :
 		#sub menu btn
 		self.mCtrlRadioServiceTypeTV     = self.getControl( E_CONTROL_ID_RADIO_SERVICETYPE_TV )
 		self.mCtrlRadioServiceTypeRadio  = self.getControl( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO )
-		#self.mCtrlButtonEdit             = self.getControl( E_CONTROL_ID_BUTTON_EDITMODE )
-		#self.mCtrlButtonDelAll           = self.getControl( E_CONTROL_ID_BUTTON_DELETEALL )
 
 		#ch list
 		self.mCtrlGroupCHList            = self.getControl( E_CONTROL_ID_GROUP_CHANNEL_LIST )
@@ -208,6 +203,8 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlGroupComponentDolby    = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_DOLBY )
 		self.mCtrlGroupComponentHD       = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_HD )
 		self.mCtrlLabelSelectItem        = self.getControl( E_CONTROL_ID_LABEL_SELECT_NUMBER )
+		self.mCtrlGroupHelpBox           = self.getControl( E_CONTROL_ID_GROUP_PIPBOX )
+
 
 		self.mIsSelect = False
 		self.mIsMark = True
@@ -270,7 +267,7 @@ class ChannelListWindow( BaseWindow ) :
 	def onAction(self, aAction):
 		id = aAction.getId( )
 
-		self.GlobalAction( id )		
+		self.GlobalAction( id )
 
 		if id >= Action.REMOTE_0 and id <= Action.REMOTE_9:
 			self.SetTuneByNumber( id-Action.REMOTE_0 )
@@ -289,12 +286,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			if self.mFocusId == E_CONTROL_ID_LIST_MAINMENU :
 				position = self.mCtrlListMainmenu.getSelectedPosition( )
-
-				if position == E_SLIDE_MENU_BACK :
-					self.UpdateControlGUI( E_SLIDE_CLOSE )
-
-				else :
-					self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
+				self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
 
 		elif id == Action.ACTION_MOVE_RIGHT :
 			pass
@@ -351,12 +343,14 @@ class ChannelListWindow( BaseWindow ) :
 			self.SetGoBackWindow( WinMgr.WIN_ID_MEDIACENTER )
 
 		elif id == Action.ACTION_MBOX_ARCHIVE :
-			self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
-			self.SetGoBackWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+				self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
+				self.SetGoBackWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
 		elif id == Action.ACTION_SHOW_INFO :
-			self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
-			self.SetGoBackWindow( WinMgr.WIN_ID_EPG_WINDOW )
+			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+				self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
+				self.SetGoBackWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
 		elif id == Action.ACTION_MBOX_RECORD :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
@@ -1105,6 +1099,7 @@ class ChannelListWindow( BaseWindow ) :
 					if self.mFlag_DeleteAll : 
 						#restore backup zapping
 						isRestore = self.mDataCache.Channel_Restore( True )
+						self.mDataCache.Channel_Save( )
 						LOG_TRACE( 'Restore[%s]'% isRestore )
 
 
@@ -1179,7 +1174,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, False )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV, True, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO, True, E_TAG_ENABLE )
-			#self.UpdateControlGUI( E_CONTROL_ID_BUTTON_EDITMODE, MR_LANG('Edit Channel'), E_TAG_LABEL )
+			self.UpdateControlGUI( E_CONTROL_ID_GROUP_PIPBOX, True )
 
 		else :
 			#opt btn visible
@@ -1187,7 +1182,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, True )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV, False, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO, False, E_TAG_ENABLE )
-			#self.UpdateControlGUI( E_CONTROL_ID_BUTTON_EDITMODE, MR_LANG('Save Channel'), E_TAG_LABEL )
+			self.UpdateControlGUI( E_CONTROL_ID_GROUP_PIPBOX, False )
 
 		if self.mFlag_DeleteAll :
 			self.mZappingMode            = ElisEnum.E_MODE_ALL
@@ -1551,16 +1546,8 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlListCHList.setEnabled( True )
 			self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 
-		"""
-		elif aCtrlID == E_CONTROL_ID_BUTTON_EDITMODE :
-			if aExtra == E_TAG_ENABLE :
-				self.mCtrlButtonEdit.setEnabled( aValue )
-			elif aExtra == E_TAG_LABEL :
-				self.mCtrlButtonEdit.setLabel( aValue )
-
-		elif aCtrlID == E_CONTROL_ID_BUTTON_DELETEALL :
-			self.mCtrlButtonDelAll.setLabel( aValue )
-		"""
+		elif aCtrlID == E_CONTROL_ID_GROUP_PIPBOX :
+			self.mCtrlGroupHelpBox.setVisible( aValue )
 
 
 	def UpdateChannelAndEPG( self ) :
