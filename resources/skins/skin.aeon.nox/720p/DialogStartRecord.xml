@@ -63,6 +63,7 @@
 				<lefttexture>osd/seek/progress_left.png</lefttexture>
 				<midtexture>osd/seek/progress_mid.png</midtexture>
 				<righttexture>osd/seek/progress_right.png</righttexture>
+				<visible>substring(Window.Property(EnableProgress),EPG) | substring(Window.Property(EnableProgress),REC)</visible>				
 			</control>
 
 			<!-- Start Time -->
@@ -78,6 +79,7 @@
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 				<label>00:00</label>
+				<visible>substring(Window.Property(EnableProgress),EPG) | substring(Window.Property(EnableProgress),REC)</visible>				
 			</control>
 
 
@@ -94,6 +96,7 @@
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 				<label>00:00</label>
+				<visible>substring(Window.Property(EnableProgress),EPG) | substring(Window.Property(EnableProgress),REC)</visible>								
 			</control>
 
 		

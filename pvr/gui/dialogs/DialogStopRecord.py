@@ -80,7 +80,7 @@ class DialogStopRecord( BaseDialog ) :
 			LOG_ERR( "Exception %s" %ex)
 			
 		self.mEnableThread = True
-		self.RecordingProgressThread( )
+		self.mRecordingProgressThread = self.RecordingProgressThread( )
 		self.mEventBus.Register( self )
 
 
@@ -161,6 +161,10 @@ class DialogStopRecord( BaseDialog ) :
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
 		self.mEnableThread = False
+
+		if self.mRecordingProgressThread :
+			self.mRecordingProgressThread.join( )
+
 		self.CloseDialog( )
 
 
