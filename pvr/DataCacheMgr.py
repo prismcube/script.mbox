@@ -587,8 +587,8 @@ class DataCacheMgr( object ):
 		return ret
 
 
-	def Zappingmode_GetCurrent( self, aRequestChanged = 0 ) :
-		if aRequestChanged :
+	def Zappingmode_GetCurrent( self, aReload = 0 ) :
+		if aReload :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				channelDB = ElisChannelDB()
 				self.mZappingMode = channelDB.Zappingmode_GetCurrent( )
@@ -606,8 +606,8 @@ class DataCacheMgr( object ):
 			return self.mListCasList
 
 
-	def Favorite_GetList( self, aRequestChanged = 0, aServiceType = ElisEnum.E_SERVICE_TYPE_INVALID ) :
-		if aRequestChanged :
+	def Favorite_GetList( self, aTemporaryReload = 0, aServiceType = ElisEnum.E_SERVICE_TYPE_INVALID ) :
+		if aTemporaryReload :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				channelDB = ElisChannelDB()
 				favList = channelDB.Favorite_GetList( aServiceType )
@@ -619,8 +619,8 @@ class DataCacheMgr( object ):
 			return self.mListFavorite
 
 
-	def Channel_GetList( self, aRequestChanged = 0, aType = 0, aMode = 0, aSort = 0, aSkip = False ) :
-		if aRequestChanged :
+	def Channel_GetList( self, aTemporaryReload = 0, aType = 0, aMode = 0, aSort = 0, aSkip = False ) :
+		if aTemporaryReload :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				channelDB = ElisChannelDB()
 				chList = channelDB.Channel_GetList( aType, aMode, aSort, -1, -1, -1, '', self.mSkip, self.mChannelListDBTable )
@@ -643,8 +643,8 @@ class DataCacheMgr( object ):
 		return channelList
 
 
-	def Channel_GetCurrent( self, aRequestChanged = 0 ) :
-		if aRequestChanged :
+	def Channel_GetCurrent( self, aTemporaryReload = 0 ) :
+		if aTemporaryReload :
 			return self.mCommander.Channel_GetCurrent( )
 
 		return self.mCurrentChannel

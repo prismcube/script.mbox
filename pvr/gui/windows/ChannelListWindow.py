@@ -409,7 +409,14 @@ class ChannelListWindow( BaseWindow ) :
 			self.PopupOpt( )
 
 		elif aControlId == E_CONTROL_ID_BUTTON_EDITMODE:
-			self.SetGoBackEdit( )
+			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+			if isRunRec > 0 :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'Warning', 'Now recording...' )
+	 			dialog.doModal( )
+
+	 		else :
+				self.SetGoBackEdit( )
 
 		elif aControlId == E_CONTROL_ID_BUTTON_DELETEALL:
 			ret = self.SetDeleteAll( )
