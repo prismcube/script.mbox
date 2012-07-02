@@ -388,17 +388,8 @@ class TimeShiftPlate(BaseWindow):
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
 				self.ShowRecordingInfo()
-				self.LoadChannelListByRecording( )
 				self.mDataCache.mCacheReload = True
 
-				if aEvent.getName() == ElisEventRecordingStarted.getName() :
-					msg1 = MR_LANG('Recording Started')
-				else :
-					msg1 = MR_LANG('Recording Ended')
-
-				msg2 = MR_LANG('Reload Channel List...')
-
-				self.AlarmDialog(msg1, msg2)
 
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
@@ -968,19 +959,6 @@ class TimeShiftPlate(BaseWindow):
 		self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_RECORDING1, setPropertyRecord1 )
 		self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_RECORDING2, setPropertyRecord2 )
 		self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_START_RECORDING, btnValue, E_CONTROL_ENABLE )
-
-
-	def LoadChannelListByRecording( self ) :
-		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
-		if isRunRec > 0 :
-			#use zapping table 
-			self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
- 
-		else :
-			self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
-
-		self.mDataCache.Channel_GetZappingList( )
-		self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, ElisEnum.E_SERVICE_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER )
 
 
 	def RecordingStopAll( self ) :

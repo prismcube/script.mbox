@@ -54,10 +54,11 @@ class NullWindow( BaseWindow ) :
 		lblTest  = time.strftime('%H:%M:%S', time.gmtime(lastTime - WinMgr.GetInstance( ).mXbmcStartTime) )
 		LOG_TRACE( 'startTime[%s] lastTime[%s] TestTime[%s]'% (lblStart, lblLast, lblTest) )
 		
+
 	def onAction(self, aAction) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )
-		
+
 		LOG_ERR( 'ACTION_TEST actionID=%d' %actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU:
@@ -96,7 +97,6 @@ class NullWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
 		elif actionId == Action.ACTION_MOVE_LEFT:
-			print 'youn check ation left'
 			pass
 			"""
 			window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
@@ -211,7 +211,7 @@ class NullWindow( BaseWindow ) :
 							xbmc.executebuiltin('xbmc.Action(previousmenu)')
 
 			else :
-				self.RecordingStop()
+				self.ShowRecordingStopDialog()
 
 		elif actionId == Action.ACTION_MBOX_XBMC :
 			self.Close( )
@@ -227,23 +227,7 @@ class NullWindow( BaseWindow ) :
 				msg = 'Now PVR Playing...'
 				xbmcgui.Dialog( ).ok('Warning', msg )
 			else :
-				runningCount = self.mCommander.Record_GetRunningRecorderCount( )
-
-				"""
-				if runningCount > 0 :
-					runningTimer = self.mDataCache.GetRunnigTimerByChannel( )
-					if runningTimer :
-						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
-						dialog.SetTimer( runningTimer )
-						dialog.doModal( )
-						return
-				"""
-				if  runningCount < E_MAX_RECORD_COUNT :
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
-					dialog.doModal( )
-				else:
-					msg = 'Already %d recording(s) running' %runningCount
-					xbmcgui.Dialog( ).ok('Infomation', msg )
+				self.ShowRecordingStartDialog( )
 		
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).SetAutomaticHide( True )
@@ -279,8 +263,9 @@ class NullWindow( BaseWindow ) :
 			LOG_TRACE( 'Numlock is not support until now' )
 			pass
 
-		else:
-			print 'lael98 check ation unknown id=%d' %actionId
+		else :
+			LOG_TRACE( 'unknown key[%s]'% actionId )
+
 
 
 		"""
@@ -358,7 +343,6 @@ class NullWindow( BaseWindow ) :
 
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
-				self.ShowRecording()
 				self.mDataCache.mCacheReload = True
 				self.mRecordingAlarm = True
 				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
@@ -480,10 +464,34 @@ class NullWindow( BaseWindow ) :
 		return isUnlock
 
 
-	def RecordingStop( self ) :
-		runningRecordingCount = self.mDataCache.Record_GetRunningRecorderCount( )
+	def ShowRecordingStartDialog( self ) :
+		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
+		#LOG_TRACE( 'runningCount[%s]' %runningCount)
+
+		isOK = False
+		GuiLock2(True)
+		if runningCount < 2 :
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+			dialog.doModal()
+
+			isOK = dialog.IsOK()
+			if isOK == E_DIALOG_STATE_YES :
+				isOK = True
+
+		else:
+			msg = 'Already [%s] recording(s) running' %runningCount
+			xbmcgui.Dialog().ok('Infomation', msg )
+		GuiLock2(False)
+
+		if isOK :
+			self.mDataCache.mCacheReload = True
+
+
+	def ShowRecordingStopDialog( self ) :
+		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		
-		if runningRecordingCount > 0 :
+		isOK = False
+		if runningCount > 0 :
 			GuiLock2( True )
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
 			dialog.doModal( )
@@ -491,51 +499,10 @@ class NullWindow( BaseWindow ) :
 
 			isOK = dialog.IsOK()
 			if isOK == E_DIALOG_STATE_YES :
-				if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
-					runningRecordingCount = self.mDataCache.Record_GetRunningRecorderCount( )
-					defaultType = ElisEnum.E_SERVICE_TYPE_TV
-					defaultMode = ElisEnum.E_MODE_ALL
-					defaultSort = ElisEnum.E_SORT_BY_NUMBER
-					if runningRecordingCount > 0 :
-						#use zapping table, in recording
-						self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
-						#self.mDataCache.Channel_GetZappingList( )
-						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort )
-					else :
-						self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
-						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort )
-						self.mDataCache.mCacheReload = True
+				isOK = True
 
-
-	def ShowRecording( self ) :
-		try:
-			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
-			#LOG_TRACE('isRunRecCount[%s]'% isRunRec)
-
-			if self.mDataCache.GetChangeDBTableChannel( ) != -1 :
-				defaultType = ElisEnum.E_SERVICE_TYPE_TV
-				defaultMode = ElisEnum.E_MODE_ALL
-				defaultSort = ElisEnum.E_SORT_BY_NUMBER
-				if isRunRec > 0 :
-					#use zapping table, in recording
-					self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
-					#self.mDataCache.Channel_GetZappingList( )
-					#### data cache re-load ####
-					self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort )
-
-				else :
-					self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
-					if self.mDataCache.mCacheReload :
-						self.mDataCache.mCacheReload = False
-						#### data cache re-load ####
-						self.mDataCache.LoadChannelList( FLAG_ZAPPING_LOAD, defaultType, defaultMode, defaultSort )
-
-				#LOG_TRACE('table[%s]'% ret)
-
-			return isRunRec
-
-		except Exception, e :
-			LOG_TRACE( 'Error exception[%s]'% e )
+		if isOK :
+			self.mDataCache.mCacheReload = True
 
 
 	def Close( self ) :
@@ -554,7 +521,6 @@ class NullWindow( BaseWindow ) :
 				self.mHBBTVReady = False 
 				LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %(self.mHBBTVReady, self.mMediaPlayerStarted) )
 			
-		
 
 	def GetKeyDisabled( self ) :
 		return False

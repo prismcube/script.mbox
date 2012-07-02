@@ -183,10 +183,13 @@ class DataCacheMgr( object ):
 		self.LoadConfiguredTransponder( )
 
 		# Channel
-		#self.Channel_GetZappingList( )
-		self.LoadChannelList( )
-		#self.LoadGetListEpgByChannel( )
-		
+		#self.LoadChannelList( )
+		self.ReLoadChannelListByRecording( )
+		if self.mChannelList :
+			LOG_TRACE('recCount[%s] ChannelCount[%s]'% (self.mRecordingCount, len(self.mChannelList) ) )
+		else :
+			LOG_TRACE('recCount[%s] ChannelCount[None]'% self.mRecordingCount )
+
 		self.mRecordingCount = self.Record_GetRunningRecorderCount()		
 
 		# DATE
@@ -447,9 +450,28 @@ class DataCacheMgr( object ):
 		return ret
 
 
+	def SetChangeDBTableChannel( self, aTable ) :
+		if SUPPORT_CHANNEL_DATABASE	== True :
+			self.mChannelListDBTable = aTable
+
+
 	def SetSkipChannelToDBTable( self, aSkip ) :
 		if SUPPORT_CHANNEL_DATABASE :
 			self.mSkip = aSkip
+
+
+	def ReLoadChannelListByRecording( self ) :
+		self.mCacheReload = True
+		isRunRec = self.Record_GetRunningRecorderCount( )
+		if isRunRec > 0 :
+			#use zapping table 
+			self.SetChangeDBTableChannel( E_TABLE_ZAPPING )
+ 
+		else :
+			self.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
+
+		self.Channel_GetZappingList( )
+		self.LoadChannelList( FLAG_ZAPPING_LOAD )
 
 
 	def LoadChannelList( self, aSync = 0, aType = ElisEnum.E_SERVICE_TYPE_TV, aMode = ElisEnum.E_MODE_ALL, aSort = ElisEnum.E_SORT_BY_NUMBER ) :
@@ -565,8 +587,8 @@ class DataCacheMgr( object ):
 		return ret
 
 
-	def Zappingmode_GetCurrent( self, aRequestChanged = 0 ) :
-		if aRequestChanged :
+	def Zappingmode_GetCurrent( self, aReload = 0 ) :
+		if aReload :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				channelDB = ElisChannelDB()
 				self.mZappingMode = channelDB.Zappingmode_GetCurrent( )
@@ -584,8 +606,8 @@ class DataCacheMgr( object ):
 			return self.mListCasList
 
 
-	def Favorite_GetList( self, aRequestChanged = 0, aServiceType = ElisEnum.E_SERVICE_TYPE_INVALID ) :
-		if aRequestChanged :
+	def Favorite_GetList( self, aTemporaryReload = 0, aServiceType = ElisEnum.E_SERVICE_TYPE_INVALID ) :
+		if aTemporaryReload :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				channelDB = ElisChannelDB()
 				favList = channelDB.Favorite_GetList( aServiceType )
@@ -597,8 +619,8 @@ class DataCacheMgr( object ):
 			return self.mListFavorite
 
 
-	def Channel_GetList( self, aRequestChanged = 0, aType = 0, aMode = 0, aSort = 0, aSkip = False ) :
-		if aRequestChanged :
+	def Channel_GetList( self, aTemporaryReload = 0, aType = 0, aMode = 0, aSort = 0, aSkip = False ) :
+		if aTemporaryReload :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				channelDB = ElisChannelDB()
 				chList = channelDB.Channel_GetList( aType, aMode, aSort, -1, -1, -1, '', self.mSkip, self.mChannelListDBTable )
@@ -621,8 +643,8 @@ class DataCacheMgr( object ):
 		return channelList
 
 
-	def Channel_GetCurrent( self, aRequestChanged = 0 ) :
-		if aRequestChanged :
+	def Channel_GetCurrent( self, aTemporaryReload = 0 ) :
+		if aTemporaryReload :
 			return self.mCommander.Channel_GetCurrent( )
 
 		return self.mCurrentChannel

@@ -3,12 +3,21 @@
 	<allowoverlay>no</allowoverlay>
 	<controls>
 		<!-- Background -->
-		<control type="image">
+		<control type="image" id="10">
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>1280</width>
 			<height>720</height>
 			<texture>special://skin/backgrounds/curtains.jpg</texture>
+			<include>DefaultSettingWindowEffect</include>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<texture>special://skin/backgrounds/system.jpg</texture>
+			<visible>!Control.IsVisible(10)</visible>
 			<include>DefaultSettingWindowEffect</include>
 		</control>
 
@@ -168,6 +177,15 @@
 								<texture>IconPlateRec.png</texture>
 								<visible>substring(ListItem.Property(rec),true)</visible>
 							</control>
+							<!-- is skip? -->
+							<control type="image">
+								<posx>5</posx>
+								<posy>5</posy>
+								<width>30</width>
+								<height>30</height>
+								<texture>IconNotAvailable.png</texture>
+								<visible>substring(ListItem.Property(skip),true)</visible>
+							</control>
 							<control type="label">
 								<posx>40</posx>
 								<posy>0</posy>
@@ -250,6 +268,15 @@
 								<height>30</height>
 								<texture>IconPlateRec.png</texture>
 								<visible>substring(ListItem.Property(rec),true)</visible>
+							</control>
+							<!-- is skip? -->
+							<control type="image">
+								<posx>5</posx>
+								<posy>5</posy>
+								<width>30</width>
+								<height>30</height>
+								<texture>IconNotAvailable.png</texture>
+								<visible>substring(ListItem.Property(skip),true)</visible>
 							</control>
 							<control type="label">
 								<posx>40</posx>

@@ -169,51 +169,27 @@ class LivePlate( BaseWindow ) :
 		if not self.mZappingMode :
 			self.mZappingMode = ElisIZappingMode( )
 
-		#self.ShowRecordingInfo( )
 
 		#get channel
+		channelNumber = ''
+		channelName = MR_LANG('No Channel')
 		iChannel = self.mDataCache.Channel_GetCurrent( )
 		if iChannel == None or iChannel.mError != 0 :
 			self.mCurrentChannel = None
 			self.mFakeChannel =	None
 			self.mLastChannel =	None
+			self.mCurrentEPG = None
 		else :
 			self.mCurrentChannel = iChannel
 			self.mFakeChannel =	self.mCurrentChannel
 			self.mLastChannel =	self.mCurrentChannel
+			channelNumber = '%s'% self.mFakeChannel.mNumber
+			channelName = self.mFakeChannel.mName
+			self.mEventBus.Register( self )
 
-		if self.mFakeChannel :
-			self.mCurrentEPG = None
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ('%s'% self.mFakeChannel.mNumber) )
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
-		else:
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, '' )
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, MR_LANG('No Channel') )
-			pass
-			#LOG_TRACE( 'has no channel' )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, channelNumber )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, channelName )
 
-		"""
-		self.InitControlGUI()
-		#self.GetEPGListByChannel()
-
-		try :
-			if self.mCurrentChannel :
-				iEPG = None
-				iEPG = self.mDataCache.Epgevent_GetPresent()
-				if iEPG and iEPG.mError == 0 :
-					self.mCurrentEPG = iEPG
-					self.UpdateChannelAndEPG( iEPG )
-
-				if self.mCurrentChannel.mLocked :
-					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mDataCache.mPropertyPincode )
-
-
-		except Exception, e :
-			LOG_TRACE( 'Error exception[%s]'% e )
-		"""
-
-		#get epg event right now, as this windows open
-		self.mEventBus.Register( self )
 
 		#run thread
 		self.LoadingThread()
@@ -425,18 +401,7 @@ class LivePlate( BaseWindow ) :
 
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
- 
-				self.ShowRecordingInfo( )
-				self.LoadChannelListByRecording( )
-
-				if aEvent.getName() == ElisEventRecordingStarted.getName() :
-					msg1 = MR_LANG('Recording Started')
-				else :
-					msg1 = MR_LANG('Recording Ended')
-
-				msg2 = MR_LANG('Reload Channel List...')
-
-				self.AlarmDialog(msg1, msg2)
+ 				self.ShowRecordingInfo( )
 
 
 		else:
@@ -1026,19 +991,6 @@ class LivePlate( BaseWindow ) :
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
-
-
-	def LoadChannelListByRecording( self ) :
-		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
-		if isRunRec > 0 :
-			#use zapping table 
-			self.mDataCache.mChannelListDBTable = E_TABLE_ZAPPING
- 
-		else :
-			self.mDataCache.mChannelListDBTable = E_TABLE_ALLCHANNEL
-
-		self.mDataCache.Channel_GetZappingList( )
-		self.mDataCache.LoadChannelList( FLAG_ZAPPING_CHANGE, self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
 
 
 	def Close( self ):
