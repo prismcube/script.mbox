@@ -8,7 +8,7 @@
 			<posy>0</posy>
 			<width>1280</width>
 			<height>720</height>
-			<texture>special://skin/backgrounds/curtains.jpg</texture>
+			<texture>special://skin/backgrounds/pictures.jpg</texture>
 			<include>DefaultSettingWindowEffect</include>
 		</control>
 		<control type="image">
@@ -16,7 +16,7 @@
 			<posy>0</posy>
 			<width>1280</width>
 			<height>720</height>
-			<texture>special://skin/backgrounds/system.jpg</texture>
+			<texture>special://skin/backgrounds/curtains.jpg</texture>
 			<visible>!Control.IsVisible(10)</visible>
 			<include>DefaultSettingWindowEffect</include>
 		</control>
@@ -54,7 +54,7 @@
 		</control>
 
 		<!-- Right Help box -->
-		<control type="group">
+		<!--control type="group">
 			<include>Animation_ListSlideRight</include>
 			<include>Animation_CommonFade</include>
 			<posx>860</posx>
@@ -88,7 +88,6 @@
 				<height>1</height>
 				<texture>views/listpanel_line.png</texture>
 			</control>
-
 			<control type="group">
 				<posx>20</posx>
 				<posy>70</posy>
@@ -161,9 +160,99 @@
 					<label>Exit</label>
 				</control>
 			</control>
+		</control-->
 
+		<control type="group" id="600">
+			<include>Animation_CommonFade</include>
+			<visible>substring(Window.Property(helpbox),true)</visible>
+			<control type="group">
+				<include>Animation_ListSlideRight</include>
+				<control type="label">
+					<posx>860</posx>
+					<posy>62</posy>
+					<font>Font_Bold28_Caps</font>
+					<textcolor>red</textcolor>
+					<label>Edit Channel Settings</label>
+				</control>
+			</control>
+			<control type="group">
+				<posx>65</posx>
+				<posy>685</posy>
+				<include>Animation_ListSlideLeft</include>
+				<control type="group">
+					<posx>10</posx>
+					<posy>5</posy>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>30</width>
+						<height>25</height>
+						<texture>DI_Ok.png</texture>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>5</posy>
+						<font>Font_Reg14</font>
+						<textcolor>grey</textcolor>
+						<label>Select</label>
+					</control>
+				</control>
+				<control type="group">
+					<posx>200</posx>
+					<posy>5</posy>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>30</width>
+						<height>25</height>
+						<texture>DI_Info.png</texture>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>5</posy>
+						<font>Font_Reg14</font>
+						<textcolor>grey</textcolor>
+						<label>Memu popup</label>
+					</control>
+				</control>
+				<control type="group">
+					<posx>400</posx>
+					<posy>5</posy>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>30</width>
+						<height>25</height>
+						<texture>DI_Back.png</texture>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>5</posy>
+						<font>Font_Reg14</font>
+						<textcolor>grey</textcolor>
+						<label>Exit</label>
+					</control>
+				</control>
+				<control type="group">
+					<posx>600</posx>
+					<posy>5</posy>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>30</width>
+						<height>25</height>
+						<texture>DI_Menu.png</texture>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>5</posy>
+						<font>Font_Reg14</font>
+						<textcolor>grey</textcolor>
+						<label>Exit</label>
+					</control>
+				</control>
+			</control>
 		</control>
-
 
 		<!--  Path Info -->
 		<control type="group" id="20">
@@ -295,7 +384,7 @@
 								<posy>5</posy>
 								<width>30</width>
 								<height>30</height>
-								<texture>IconNotAvailable.png</texture>
+								<texture>DI_Skip.png</texture>
 								<visible>substring(ListItem.Property(skip),true)</visible>
 							</control>
 							<control type="label">
@@ -335,14 +424,32 @@
 								<posy>-4</posy>
 								<width>743</width>
 								<height>47</height>
+								<visible>!Control.IsVisible(600)</visible>
 								<texture background="true">views/listpanel_selectbar.png</texture>
 								<animation effect="fade" start="100" end="50" time="100" condition="!Control.HasFocus(50)">Conditional</animation>
+							</control>
+							<control type="image">
+								<posx>7</posx>
+								<posy>-4</posy>
+								<width>743</width>
+								<height>47</height>
+								<visible>Control.IsVisible(600)</visible>
+								<texture>listpanel_selectbar.png</texture>
+							</control>
+							<control type="image">
+								<posx>620</posx>
+								<posy>7</posy>
+								<width>35</width>
+								<height>25</height>
+								<visible>Control.IsVisible(600)</visible>
+								<texture>IconOpt.png</texture>
 							</control>
 							<control type="image">
 								<posx>620</posx>
 								<posy>5</posy>
 								<width>30</width>
 								<height>30</height>
+								<visible>!Control.IsVisible(600)</visible>
 								<texture>DI_Ok.png</texture>
 							</control>
 							<!-- is cas? -->
@@ -387,7 +494,7 @@
 								<posy>5</posy>
 								<width>30</width>
 								<height>30</height>
-								<texture>IconNotAvailable.png</texture>
+								<texture>DI_Skip.png</texture>
 								<visible>substring(ListItem.Property(skip),true)</visible>
 							</control>
 							<control type="label">

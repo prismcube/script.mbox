@@ -26,7 +26,7 @@ E_CONTROL_ID_GROUP_COMPONENT_DATA		= 310
 E_CONTROL_ID_GROUP_COMPONENT_DOLBY		= 311
 E_CONTROL_ID_GROUP_COMPONENT_HD			= 312
 E_CONTROL_ID_LABEL_SELECT_NUMBER		= 401
-E_CONTROL_ID_GROUP_PIPBOX				= 8899
+E_CONTROL_ID_GROUP_HELPBOX				= 600
 
 FLAG_MASK_ADD    = 0x01
 FLAG_MASK_NONE   = 0x00
@@ -44,7 +44,7 @@ FLAG_CLOCKMODE_ADMYHM   = 1
 FLAG_CLOCKMODE_AHM      = 2
 FLAG_CLOCKMODE_HMS      = 3
 FLAG_CLOCKMODE_HHMM     = 4
-FLAG_MODE_JUMP      = True
+FLAG_MODE_JUMP         = True
 
 #slide index
 E_SLIDE_ACTION_MAIN     = 0
@@ -78,7 +78,7 @@ E_XML_PROPERTY_CAS       = 'icas'
 E_XML_PROPERTY_LOCK      = 'lock'
 E_XML_PROPERTY_RECORDING = 'rec'
 E_XML_PROPERTY_SKIP      = 'skip'
-
+E_XML_PROPERTY_EDITINFO  = 'helpbox'
 
 #dialog menu
 CONTEXT_ACTION_LOCK				= 1 
@@ -203,7 +203,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlGroupComponentDolby    = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_DOLBY )
 		self.mCtrlGroupComponentHD       = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_HD )
 		self.mCtrlLabelSelectItem        = self.getControl( E_CONTROL_ID_LABEL_SELECT_NUMBER )
-		self.mCtrlGroupHelpBox           = self.getControl( E_CONTROL_ID_GROUP_PIPBOX )
+		#self.mCtrlGroupHelpBox           = self.getControl( E_CONTROL_ID_GROUP_HELPBOX )
 
 
 		self.mIsSelect = False
@@ -377,12 +377,13 @@ class ChannelListWindow( BaseWindow ) :
 
 					#Mark mode
 					if self.mIsMark == True :
-						idx = self.mCtrlListCHList.getSelectedPosition( )
-						self.SetEditMarkupGUI( idx )
+						if self.mChannelList :
+							idx = self.mCtrlListCHList.getSelectedPosition( )
+							self.SetEditMarkupGUI( idx )
 
-						self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_GROUP_CHANNEL_LIST )
-						self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, idx+1, E_TAG_SET_SELECT_POSITION )
-						self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, str('%s'% (idx+1) ) )
+							self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_GROUP_CHANNEL_LIST )
+							self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, idx+1, E_TAG_SET_SELECT_POSITION )
+							self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, str('%s'% (idx+1) ) )
 
 				except Exception, e:
 					LOG_TRACE( 'Error except[%s]'% e )
@@ -546,7 +547,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			try :
 				self.mEventBus.Deregister( self )
-				self.mDataCache.SetSkipChannelToDBTable( True )
+				self.mDataCache.SetSkipChannelView( True )
 				self.ReloadChannelList( )
 
 				#clear label
@@ -586,7 +587,7 @@ class ChannelListWindow( BaseWindow ) :
 			if ret != E_DIALOG_STATE_CANCEL :
 				self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
 				self.mEventBus.Register( self )
-				self.mDataCache.SetSkipChannelToDBTable( False )
+				self.mDataCache.SetSkipChannelView( False )
 				self.ReloadChannelList( )
 				self.mFlag_EditChanged = False
 				self.mMoveFlag = False
@@ -1152,7 +1153,7 @@ class ChannelListWindow( BaseWindow ) :
 				isSave = self.mDataCache.Channel_Save( )
 
 				#### data cache re-load ####
-				self.mDataCache.SetSkipChannelToDBTable( False )
+				self.mDataCache.SetSkipChannelView( False )
 				self.mDataCache.LoadZappingmode( )
 				self.mDataCache.LoadZappingList( )
 				self.mDataCache.LoadChannelList( )
@@ -1161,8 +1162,8 @@ class ChannelListWindow( BaseWindow ) :
 			elif answer == E_DIALOG_STATE_NO :
 				self.mIsSave = FLAG_MASK_NONE
 				isSave = self.mDataCache.Channel_Restore( True )
+				self.mDataCache.Channel_Save( )
 				LOG_TRACE( 'Restore[%s]'% isSave )
-
 
 		return answer
 
@@ -1174,7 +1175,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, False )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV, True, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO, True, E_TAG_ENABLE )
-			self.UpdateControlGUI( E_CONTROL_ID_GROUP_PIPBOX, True )
+			self.UpdateControlGUI( E_CONTROL_ID_GROUP_HELPBOX, E_TAG_FALSE )
 
 		else :
 			#opt btn visible
@@ -1182,7 +1183,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, True )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV, False, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO, False, E_TAG_ENABLE )
-			self.UpdateControlGUI( E_CONTROL_ID_GROUP_PIPBOX, False )
+			self.UpdateControlGUI( E_CONTROL_ID_GROUP_HELPBOX, E_TAG_TRUE )
 
 		if self.mFlag_DeleteAll :
 			self.mZappingMode            = ElisEnum.E_MODE_ALL
@@ -1546,8 +1547,8 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlListCHList.setEnabled( True )
 			self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 
-		elif aCtrlID == E_CONTROL_ID_GROUP_PIPBOX :
-			self.mCtrlGroupHelpBox.setVisible( aValue )
+		elif aCtrlID == E_CONTROL_ID_GROUP_HELPBOX :
+			self.mWin.setProperty( E_XML_PROPERTY_EDITINFO, aValue )
 
 
 	def UpdateChannelAndEPG( self ) :

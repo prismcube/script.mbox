@@ -455,7 +455,7 @@ class DataCacheMgr( object ):
 			self.mChannelListDBTable = aTable
 
 
-	def SetSkipChannelToDBTable( self, aSkip ) :
+	def SetSkipChannelView( self, aSkip ) :
 		if SUPPORT_CHANNEL_DATABASE :
 			self.mSkip = aSkip
 
@@ -487,7 +487,7 @@ class DataCacheMgr( object ):
 				mSort = self.mZappingMode.mSortingMode
 
 			if mMode == ElisEnum.E_MODE_ALL :
-				tmpChannelList = self.Channel_GetList( True, mType, mMode, mSort, self.mSkip )
+				tmpChannelList = self.Channel_GetList( True, mType, mMode, mSort )
 
 			elif mMode == ElisEnum.E_MODE_SATELLITE :
 				mLongitude = self.mZappingMode.mSatelliteInfo.mLongitude
@@ -578,7 +578,7 @@ class DataCacheMgr( object ):
 			self.mListCasList   = self.mCommander.Fta_cas_GetList( serviceType )
 			self.mListFavorite  = self.mCommander.Favorite_GetList( serviceType )
 
-	def Zappingmode_SetCurrent( self , aZappingMode, aSync = 0 ) :
+	def Zappingmode_SetCurrent( self, aZappingMode ) :
 		ret = False
 		ret = self.mCommander.Zappingmode_SetCurrent( aZappingMode )
 		if ret == True :
@@ -619,7 +619,7 @@ class DataCacheMgr( object ):
 			return self.mListFavorite
 
 
-	def Channel_GetList( self, aTemporaryReload = 0, aType = 0, aMode = 0, aSort = 0, aSkip = False ) :
+	def Channel_GetList( self, aTemporaryReload = 0, aType = 0, aMode = 0, aSort = 0 ) :
 		if aTemporaryReload :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				channelDB = ElisChannelDB()
