@@ -759,7 +759,7 @@ class EPGWindow( BaseWindow ) :
 		try :
 			if dialog.IsOK() == E_DIALOG_STATE_YES :
 				LOG_TRACE('')
-				ret = self.mDataCache.Timer_AddEPGTimer( 0, 0, aEPG )
+				ret = self.mDataCache.Timer_AddEPGTimer( True, 0, aEPG )
 
 				if ret[0].mParam == -1 or ret[0].mError == -1 :
 					self.RecordConflict( ret )

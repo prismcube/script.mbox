@@ -1,5 +1,65 @@
 <window>
 	<defaultcontrol always="true">9000</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<control type="group" id="8000">
+			<include>DefaultDialogCloseEffect</include>
+			<control type="image" id="9001">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>610</width>
+				<height>340</height>
+				<texture border="40">osd/osd_settings_back.png</texture>
+			</control>
+			<include>DefaultDialogCloseButton</include>
+			<control type="group" id="9000">
+				<posx>25</posx>
+				<posy>5</posy>
+
+				<!-- Recording Name -->
+				<control type="label" id ="101">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>560</width>
+					<height>40</height>
+					<font>font13</font>
+					<textcolor>grey3</textcolor>
+					<align>center</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label]</label>
+				</control>
+
+				<!--
+				<include>DialogInput01</include>
+				-->
+
+				<!-- Recording -->
+				<include>DialogSpinEx01</include>
+				
+				<!--StartTime -->
+				<include>DialogInput01</include>
+
+				<!--EndTim -->
+				<include>DialogInput02</include>
+
+				<!-- Duration -->
+				<include>DialogInput03</include>
+
+				<!-- OK/Cancel -->
+				<include>DefaultSettingDialogButtonOKCancel</include>
+
+			</control>
+		</control>
+	</controls>
+</window>
+
+
+
+<!--
+<window>
+	<defaultcontrol always="true">9000</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
 	<defaultcontrol always="true">200</defaultcontrol>	
@@ -37,7 +97,6 @@
 				<shadowcolor>black</shadowcolor>
 			</control>
 
-			<!-- Record Name -->
 			<control type="label" id="101">
 				<description>Record Name</description>
 				<posx>20</posx>
@@ -52,7 +111,6 @@
 				<label>RecordName</label>
 			</control>
 
-			<!-- Progress Bar -->
 			<control type="progress" id="400">
 				<description>Progressbar</description>
 				<posx>120</posx>
@@ -66,7 +124,6 @@
 				<visible>substring(Window.Property(EnableProgress),EPG) | substring(Window.Property(EnableProgress),REC)</visible>				
 			</control>
 
-			<!-- Start Time -->
 			<control type="label" id="102">
 				<description>EPG Start Time</description>
 				<posx>110l</posx>
@@ -83,7 +140,6 @@
 			</control>
 
 
-			<!-- EndTime -->
 			<control type="label" id="103">
 				<description>EPG End Time</description>
 				<posx>500</posx>
@@ -103,7 +159,6 @@
 			<control type="group" id="9000">
 				<posx>40</posx>
 				<posy>250</posy>
-				<!-- Duration -->
 				<control type="group" id="500">		
 					<posx>0</posx>
 					<posy>10</posy>
@@ -214,3 +269,4 @@
 		</control>
 	</controls>
 </window>
+-->

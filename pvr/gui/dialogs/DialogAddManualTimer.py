@@ -400,7 +400,7 @@ class DialogAddManualTimer( SettingDialog ) :
 					if  startTime + self.mUsedWeeklyList[0].mDuration < self.mDataCache.Datetime_GetLocalTime() :
 						self.mErrorMessage = 'Already Passed'
 						return False
-					ret = self.mDataCache.Timer_AddManualTimer( self.mChannel.mNumber, self.mChannel.mServiceType, startTime,	self.mUsedWeeklyList[0].mDuration, self.mRecordName, 0 )
+					ret = self.mDataCache.Timer_AddManualTimer( self.mChannel.mNumber, self.mChannel.mServiceType, startTime,	self.mUsedWeeklyList[0].mDuration, self.mRecordName, True )
 
 					if ret[0].mParam == -1 or ret[0].mError == -1 :
 						self.mConflictTimer = ret
