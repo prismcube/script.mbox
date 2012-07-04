@@ -2207,9 +2207,7 @@ class ChannelListWindow( BaseWindow ) :
 			if not self.mChannelList :
 				context = []
 
-			labelString = '%s - %s -'% ( MR_LANG('Add to Channel'), self.mEditFavorite[self.mSelectSubSlidePosition] )
-			context.append( ContextItem( labelString, CONTEXT_ACTION_ADD_TO_CHANNEL ) )
-			context.append( ContextItem( '%s'% MR_LANG('Create New Group'), CONTEXT_ACTION_CREATE_GROUP_FAV ) )
+			context.append( ContextItem( '%s'% MR_LANG('Add Channel Fav. Group'), CONTEXT_ACTION_ADD_TO_CHANNEL ) )
 			context.append( ContextItem( '%s'% MR_LANG('Rename Fav. Group'), CONTEXT_ACTION_RENAME_FAV ) )
 
 		context.append( ContextItem( '%s'% MR_LANG('Save Exit'), CONTEXT_ACTION_SAVE_EXIT ) )
