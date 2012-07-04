@@ -42,6 +42,7 @@ PREV_EPG 		= 1
 CURR_CHANNEL	= 0
 NEXT_CHANNEL	= 1
 PREV_CHANNEL	= 2
+INIT_CHANNEL	= 3
 
 
 CONTEXT_ACTION_VIDEO_SETTING = 1 
@@ -171,33 +172,29 @@ class LivePlate( BaseWindow ) :
 
 
 		#get channel
-		channelNumber = ''
-		channelName = MR_LANG('No Channel')
-		iChannel = self.mDataCache.Channel_GetCurrent( )
-		if iChannel == None or iChannel.mError != 0 :
-			self.mCurrentChannel = None
-			self.mFakeChannel =	None
-			self.mLastChannel =	None
-			self.mCurrentEPG = None
-		else :
-			self.mCurrentChannel = iChannel
-			self.mFakeChannel =	self.mCurrentChannel
-			self.mLastChannel =	self.mCurrentChannel
-			channelNumber = '%s'% self.mFakeChannel.mNumber
-			channelName = self.mFakeChannel.mName
-			self.mEventBus.Register( self )
+		self.ChannelTune( INIT_CHANNEL )
 
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, channelNumber )
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, channelName )
+
+		"""
+		flag = 'False'
+		#if i % 2 : flag = 'True'
+		self.mDataCache.Record_GetRunningRecorderCount( )
+		#self.mWin.setProperty( 'ViewRecord1', flag )
+		#self.mWin.setProperty( 'ViewRecord1', flag )
+		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_RECORDING1, flag )
+		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_RECORDING2, flag )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_START_RECORDING, True )
+		"""
 
 
 		#run thread
-		self.LoadingThread()
+		self.LoadingThread( )
+		self.mEventBus.Register( self )
 		self.mEnableLocalThread = True
-		self.EPGProgressThread()
+		self.EPGProgressThread( )
 
 		if self.mAutomaticHide == True :
-			self.StartAutomaticHide()
+			self.StartAutomaticHide( )
 
 
 	def onAction( self, aAction ) :
@@ -211,15 +208,15 @@ class LivePlate( BaseWindow ) :
 			self.SetTuneByNumber( rKey )
 
 		elif id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
-			self.StopAutomaticHide()
-			self.SetAutomaticHide( False )
+			#self.StopAutomaticHide()
+			#self.SetAutomaticHide( False )
 
 			self.Close()
 			status = self.mDataCache.Player_GetStatus()
 			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 			else :
-				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_ROOTWINDOW )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 
 		elif id == Action.ACTION_SELECT_ITEM:
@@ -408,14 +405,14 @@ class LivePlate( BaseWindow ) :
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
 
 
-	def ChannelTune(self, aDir):
+	def ChannelTune( self, aDir, aInitChannel = 0 ):
 
 		if aDir == PREV_CHANNEL:
 		
 			prevChannel = self.mDataCache.Channel_GetPrev( self.mFakeChannel )
 
 			if prevChannel == None or prevChannel.mError != 0 :
-				return
+				return -1
 
 			self.mFakeChannel = prevChannel
 			#self.InitControlGUI()
@@ -427,7 +424,7 @@ class LivePlate( BaseWindow ) :
 			nextChannel = self.mDataCache.Channel_GetNext( self.mFakeChannel )
 
 			if nextChannel == None or nextChannel.mError != 0 :
-				return
+				return -1
 
 			self.mFakeChannel = nextChannel
 			#self.InitControlGUI()
@@ -439,13 +436,33 @@ class LivePlate( BaseWindow ) :
 			jumpChannel = self.mDataCache.Channel_GetCurr( self.mJumpNumber )
 
 			if jumpChannel == None or jumpChannel.mError != 0 :
-				return
+				return -1
 
 			self.mFakeChannel = jumpChannel
 			#self.InitControlGUI()
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ('%s'% self.mFakeChannel.mNumber) )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
 			self.RestartAsyncTune()
+
+		elif aDir == INIT_CHANNEL :
+			currNumber = ''
+			currName = MR_LANG('No Channel')
+			iChannel = self.mDataCache.Channel_GetCurrent( )
+			if iChannel == None or iChannel.mError != 0 :
+				self.mCurrentChannel = None
+				self.mFakeChannel =	None
+				self.mLastChannel =	None
+				self.mCurrentEPG = None
+			else :
+				self.mCurrentChannel = iChannel
+				self.mFakeChannel    = iChannel
+				self.mLastChannel    = iChannel
+				currNumber = '%s'% self.mFakeChannel.mNumber
+				currName = self.mFakeChannel.mName
+
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, currNumber )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, currName )
+			return
 
 		if self.mAutomaticHide == True :
 			self.RestartAutomaticHide()
@@ -585,7 +602,7 @@ class LivePlate( BaseWindow ) :
 				idx = 0
 				self.mEPGListIdx = -1
 				for item in self.mEPGList :
-					LOG_TRACE('idx[%s] item[%s] event[%s]'% (idx, item, self.mCurrentEPG) )
+					#LOG_TRACE('idx[%s] item[%s] event[%s]'% (idx, item, self.mCurrentEPG) )
 					if item != None and item.mError == 0 and \
 					   self.mCurrentEPG != None and self.mCurrentEPG.mError == 0 :
 						if item.mEventId == self.mCurrentEPG.mEventId and \
@@ -726,10 +743,12 @@ class LivePlate( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-	@RunThread
+	#@RunThread
 	def LoadingThread( self ):
 		self.ShowRecordingInfo( )
+		LOG_TRACE('------------------------------------')
 		self.InitControlGUI()
+		LOG_TRACE('------------------------------------')
 		#self.GetEPGListByChannel()
 
 		try :
@@ -740,12 +759,14 @@ class LivePlate( BaseWindow ) :
 					self.mCurrentEPG = iEPG
 					self.UpdateChannelAndEPG( iEPG )
 
-				if self.mCurrentChannel.mLocked :
-					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mDataCache.mPropertyPincode )
+				#if self.mCurrentChannel.mLocked :
+				#	WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mPropertyPincode )
 
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
+
+		LOG_TRACE('------------------------------------')
 
 
 	def InitControlGUI( self ):
@@ -977,17 +998,22 @@ class LivePlate( BaseWindow ) :
 				strLabelRecord2 = '%04d %s'% ( int(recInfo.mChannelNo), recInfo.mChannelName )
 
 
-			btnValue = False
+			btnValue = True
 			if isRunRec >= 2 :
 				btnValue = False
-			else :
-				btnValue = True
 
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_RECORDING1, strLabelRecord1 )
+			LOG_TRACE('------------------------------------')
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_RECORDING2, strLabelRecord2 )
-			self.UpdateControlGUI( E_CONTROL_ID_IMAGE_RECORDING1, setPropertyRecord1 )
-			self.UpdateControlGUI( E_CONTROL_ID_IMAGE_RECORDING2, setPropertyRecord2 )
+			LOG_TRACE('------------------------------------')
+			#self.UpdateControlGUI( E_CONTROL_ID_IMAGE_RECORDING1, setPropertyRecord1 )
+			self.mWin.setProperty( 'ViewRecord1', setPropertyRecord1 )
+			LOG_TRACE('------------------------------------')
+			#self.UpdateControlGUI( E_CONTROL_ID_IMAGE_RECORDING2, setPropertyRecord2 )
+			self.mWin.setProperty( 'ViewRecord2', setPropertyRecord2 )
+			LOG_TRACE('------------------------------------')
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_START_RECORDING, btnValue )
+			LOG_TRACE('------------------------------------')
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
