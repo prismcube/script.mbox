@@ -42,6 +42,39 @@
 			<visible>substring(Window.Property(ViewMode),common)</visible>
 		</control>
 
+
+		<control type="group">
+			<include>Animation_CommonFade</include>		
+			<posx>862</posx>
+			<posy>310</posy>
+
+			<control type="label" id="401">
+				<description>Archive Name or Live Channel Name</description>			
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>352</width>
+				<height>18</height>
+				<align>center</align>				
+				<font>font12</font>
+				<visible>substring(Window.Property(ViewMode),common)</visible>				
+			</control>
+
+			<control type="progress" id="402">
+				<description>Progressbar</description>
+				<posx>0</posx>
+				<posy>22</posy>
+				<width>352</width>
+				<height>10</height>
+				<texturebg>osd/seek/progress_back_long.png</texturebg>
+				<lefttexture>osd/seek/progress_left.png</lefttexture>
+				<midtexture>osd/seek/progress_mid.png</midtexture>
+				<righttexture>osd/seek/progress_right.png</righttexture>
+				<visible>substring(Window.Property(ViewMode),common)</visible>
+			</control>
+
+		</control>
+
+
 		<!-- Left big Box -->
 		<control type="group">
 			<control type="image">
