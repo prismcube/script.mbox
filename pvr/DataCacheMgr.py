@@ -580,9 +580,11 @@ class DataCacheMgr( object ):
 
 	def Zappingmode_SetCurrent( self, aZappingMode ) :
 		ret = False
-		ret = self.mCommander.Zappingmode_SetCurrent( aZappingMode )
+		zappingList = []
+		zappingList.append( aZappingMode )
+		ret = self.mCommander.Zappingmode_SetCurrent( zappingList )
 		if ret == True :
-			self.mZappingMode = aZappingMode[0]
+			self.mZappingMode = aZappingMode
 
 		return ret
 
@@ -1277,5 +1279,56 @@ class DataCacheMgr( object ):
 					break
 
 		return findTimer
+
+
+	def ToggleTVRadio( self ) :
+
+		try :
+			LOG_TRACE( 'LAEL98 - TVRADIO' )
+
+			zappingMode= self.Zappingmode_GetCurrent( )
+			LOG_TRACE( 'LAEL98 Current ZappingMode' )
+			zappingMode.printdebug( )
+
+			LOG_TRACE( 'LAEL98' )
+			newZappingMode = ElisIZappingMode( )
+			LOG_TRACE( 'LAEL98 create ZappingMode' )
+			newZappingMode.printdebug( )
+
+			if zappingMode.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
+				newZappingMode.mServiceType = ElisEnum.E_SERVICE_TYPE_RADIO 
+			else :
+				newZappingMode.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
+
+			LOG_TRACE( 'LAEL98 new ZappingMode' )
+			newZappingMode.printdebug( )
+
+			self.Zappingmode_SetCurrent( newZappingMode )
+
+			self.LoadZappingmode( )
+			self.LoadZappingList( )
+			self.LoadChannelList( )
+
+			zappingMode= self.Zappingmode_GetCurrent( )
+			zappingMode.printdebug( )
+			self.Channel_InvalidateCurrent( )
+
+			if zappingMode.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
+				lastChannelNumber = ElisPropertyInt( 'Last TV Number', self.mCommander ).GetProp( )
+				self.Channel_SetCurrent( lastChannelNumber, ElisEnum.E_SERVICE_TYPE_TV )				
+			else :
+				lastChannelNumber = ElisPropertyInt( 'Last Radio Number', self.mCommander ).GetProp( )
+				self.Channel_SetCurrent( lastChannelNumber, ElisEnum.E_SERVICE_TYPE_RADIO )				
+
+
+			channel = self.Channel_GetCurrent( )
+			LOG_TRACE( 'LAEL98 get Current Channel after zappingMode channge' )
+			if channel :
+				channel.printdebug( )
+			elif self.mChannelList and len( self.mChannelList ) > 0 :
+				self.Channel_SetCurrent( 1, zappingMode.mServiceType )							
+
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)
 
 

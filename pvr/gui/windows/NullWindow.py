@@ -90,8 +90,10 @@ class NullWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 			
 		elif actionId == Action.ACTION_PARENT_DIR:
-			pass
-
+			status = self.mDataCache.Player_GetStatus( )		
+			if status.mMode == ElisEnum.E_MODE_PVR :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )			
+		
 		elif actionId == Action.ACTION_SELECT_ITEM:
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
@@ -218,8 +220,9 @@ class NullWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
 
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
-			#zappingMode= self.mDataCache.Zappingmode_GetCurrent( )
-			pass
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode == ElisEnum.E_MODE_LIVE :
+				self.mDataCache.ToggleTVRadio( )
 
 		elif actionId == Action.ACTION_MBOX_RECORD :
 			status = self.mDataCache.Player_GetStatus()

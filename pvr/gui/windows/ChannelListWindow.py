@@ -1071,8 +1071,6 @@ class ChannelListWindow( BaseWindow ) :
 						groupInfo = self.mListFavorite[self.mSelectSubSlidePosition]
 						self.mElisSetZappingModeInfo.mFavoriteGroup = groupInfo
 
-					iZappingList = []
-					iZappingList.append( self.mElisSetZappingModeInfo )
 					"""
 					LOG_TRACE( '1. zappingMode[%s] sortMode[%s] serviceType[%s]'%  \
 						( EnumToString('mode', self.mZappingMode),                 \
@@ -1086,7 +1084,7 @@ class ChannelListWindow( BaseWindow ) :
 
 					#save zapping mode
 					self.mDataCache.Channel_Save( )
-					ret = self.mDataCache.Zappingmode_SetCurrent( iZappingList )
+					ret = self.mDataCache.Zappingmode_SetCurrent( self.mElisSetZappingModeInfo )
 					if ret :
 						#### data cache re-load ####
 						self.mDataCache.LoadZappingmode( )

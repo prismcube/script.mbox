@@ -207,8 +207,8 @@
 
 		<control type="group">
 			<include>DefaultWindowFade</include>				
-			<posx>848</posx>
-			<posy>317</posy>
+			<posx>850</posx>
+			<posy>295</posy>
 			<control type="label" id="401">
 				<description>Current Channel</description>			
 				<posx>0</posx>
