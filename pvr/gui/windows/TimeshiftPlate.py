@@ -193,7 +193,7 @@ class TimeShiftPlate(BaseWindow):
 		self.GlobalAction( id )
 		
 		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
-			self.Close()
+			self.Close( )
 			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 		elif id >= Action.REMOTE_0 and id <= Action.REMOTE_9 :

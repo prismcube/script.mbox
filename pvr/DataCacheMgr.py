@@ -73,6 +73,7 @@ class DataCacheMgr( object ):
 
 		self.mZappingMode						= None
 		self.mChannelList						= None
+		self.AllmChannelList					= None
 		self.mCurrentChannel					= None
 		self.mOldChannel						= None
 		self.mLocalOffset						= 0
@@ -635,14 +636,27 @@ class DataCacheMgr( object ):
 			return self.mChannelList
 
 
-	def Channel_GetListByAllChannel( self ) :
-		channelList = []
+	def Channel_GetListByAllChannel( self, aReload = True, aType = ElisEnum.E_SERVICE_TYPE_TV, aMode = ElisEnum.E_MODE_ALL, aSort = ElisEnum.E_SORT_BY_NUMBER ) :
+		tempList = []
 		if SUPPORT_CHANNEL_DATABASE	== True :
-			channelDB = ElisChannelDB()
-			channelList = channelDB.Channel_GetList( self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
-			channelDB.Close()
+			if aReload :
+				if self.mZappingMode :
+					aType = self.mZappingMode.mServiceType
+					aMode = self.mZappingMode.mMode
+					aSort = self.mZappingMode.mSortingMode
 
-		return channelList
+				channelDB = ElisChannelDB()
+				tempList = channelDB.Channel_GetList( aType, aMode, aSort )
+				channelDB.Close()
+
+			else :
+				return self.mAllChannelList
+
+		else :
+			tempList = self.mCommander.Channel_GetList( aType, aMode, aSort )
+
+		self.mAllChannelList = tempList
+		return self.mAllChannelList
 
 
 	def Channel_GetCurrent( self, aTemporaryReload = 0 ) :

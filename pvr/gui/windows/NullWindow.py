@@ -90,10 +90,19 @@ class NullWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 			
 		elif actionId == Action.ACTION_PARENT_DIR:
+<<<<<<< HEAD
 			status = self.mDataCache.Player_GetStatus( )		
 			if status.mMode == ElisEnum.E_MODE_PVR :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )			
 		
+=======
+			status = None
+			status = self.mDataCache.Player_GetStatus()
+			if status.mMode == ElisEnum.E_MODE_PVR :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+
+>>>>>>> 76d461e46343ec91b318b9e95481f9154343cbea
 		elif actionId == Action.ACTION_SELECT_ITEM:
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
@@ -124,7 +133,6 @@ class NullWindow( BaseWindow ) :
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( gotoWinId )
 
-
 		elif actionId == Action.ACTION_PAGE_DOWN :
 			if self.mDataCache.mStatusIsArchive :
 				#LOG_TRACE('Archive playing now')
@@ -134,12 +142,9 @@ class NullWindow( BaseWindow ) :
 			prevChannel = self.mDataCache.Channel_GetPrev( self.mDataCache.Channel_GetCurrent( ) ) #self.mCommander.Channel_GetPrev( )
 			if prevChannel :
 				self.mDataCache.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )			
-			
-				window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE )
 				self.Close( )
-				window.SetAutomaticHide( True )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-
 
 		elif actionId == Action.ACTION_PAGE_UP:
 			if self.mDataCache.mStatusIsArchive :
@@ -150,13 +155,10 @@ class NullWindow( BaseWindow ) :
 			nextChannel = self.mDataCache.Channel_GetNext( self.mDataCache.Channel_GetCurrent( ) )
 			if nextChannel :
 				self.mDataCache.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
-
-				window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE )
 				self.Close( )
-				window.SetAutomaticHide( True )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-			
-	
+
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 or \
 			actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 :
 
