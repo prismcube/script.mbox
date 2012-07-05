@@ -381,6 +381,29 @@ class LivePlate( BaseWindow ) :
 		pass
 
 
+	#@RunThread
+	def LoadingThread( self ):
+		self.ShowRecordingInfo( )
+		self.InitControlGUI()
+		#self.GetEPGListByChannel()
+
+		try :
+			if self.mCurrentChannel :
+				iEPG = None
+				iEPG = self.mDataCache.Epgevent_GetPresent()
+				if iEPG and iEPG.mError == 0 :
+					self.mCurrentEPG = iEPG
+
+				self.UpdateChannelAndEPG( iEPG )
+
+				#if self.mCurrentChannel.mLocked :
+				#	WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mPropertyPincode )
+
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
+
+
 	@GuiLock
 	def onEvent(self, aEvent):
 		if self.mWinId == xbmcgui.getCurrentWindowId():
@@ -477,6 +500,7 @@ class LivePlate( BaseWindow ) :
 				currNumber = '%s'% self.mFakeChannel.mNumber
 				currName = self.mFakeChannel.mName
 
+			self.InitControlGUI()
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, currNumber )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, currName )
 			return
@@ -663,15 +687,6 @@ class LivePlate( BaseWindow ) :
 				if ch.mIsCA :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, 'True' )
 
-				#type
-				setPropertyTV = 'True'
-				if ch.mServiceType == ElisEnum.E_SERVICE_TYPE_TV:      setPropertyTV = 'True'
-				elif ch.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO: setPropertyTV = 'False'
-				elif ch.mServiceType == ElisEnum.E_SERVICE_TYPE_DATA: pass
-				else: pass
-				self.UpdatePropertyGUI( E_XML_PROPERTY_TV, setPropertyTV )
-				LOG_TRACE( 'tvType[%s]'% ch.mServiceType )
-
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
 
@@ -752,36 +767,26 @@ class LivePlate( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-	#@RunThread
-	def LoadingThread( self ):
-		self.ShowRecordingInfo( )
-		self.InitControlGUI()
-		#self.GetEPGListByChannel()
-
-		try :
-			if self.mCurrentChannel :
-				iEPG = None
-				iEPG = self.mDataCache.Epgevent_GetPresent()
-				if iEPG and iEPG.mError == 0 :
-					self.mCurrentEPG = iEPG
-					self.UpdateChannelAndEPG( iEPG )
-
-				#if self.mCurrentChannel.mLocked :
-				#	WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mPropertyPincode )
-
-
-		except Exception, e :
-			LOG_TRACE( 'Error exception[%s]'% e )
-
-
-	def InitControlGUI( self ):
+	def InitControlGUI( self ) :
 		self.UpdateControlGUI( E_CONTROL_ID_PROGRESS_EPG,          0 )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_NAME,       '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_STARTTIME,  '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,    '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, '' )
-		#self.UpdatePropertyGUI( E_XML_PROPERTY_TV,       'True' )
+
+		tvValue = 'True'
+		raValue = 'False'
+		if self.mCurrentChannel :
+			if self.mCurrentChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
+				tvValue = 'False'
+				raValue = 'True'
+		else :
+			tvValue = 'False'
+			raValue = 'False'
+
+		self.UpdatePropertyGUI( E_XML_PROPERTY_TV,      tvValue )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_RADIO,   raValue )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK,    'False' )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_CAS,     'False' )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE,'False' )
