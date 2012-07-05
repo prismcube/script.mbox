@@ -28,6 +28,17 @@ E_CONTROL_ID_LABEL_EPG_STARTTIME		= 704
 E_CONTROL_ID_LABEL_EPG_ENDTIME			= 705
 E_CONTROL_ID_PROGRESS_EPG 				= 707
 
+#xml property name
+E_XML_PROPERTY_TV         = 'ServiceTypeTV'
+E_XML_PROPERTY_RADIO      = 'ServiceTypeRadio'
+E_XML_PROPERTY_SUBTITLE   = 'HasSubtitle'
+E_XML_PROPERTY_DOLBY      = 'HasDolby'
+E_XML_PROPERTY_HD         = 'HasHD'
+E_XML_PROPERTY_LOCK       = 'iLock'
+E_XML_PROPERTY_CAS        = 'iCas'
+E_XML_PROPERTY_RECORDING1 = 'ViewRecord1'
+E_XML_PROPERTY_RECORDING2 = 'ViewRecord2'
+
 FLAG_MASK_ADD  = 0x01
 FLAG_MASK_NONE = 0x00
 FLAG_CLOCKMODE_ADMYHM  = 1
@@ -116,21 +127,21 @@ class LivePlate( BaseWindow ) :
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
 
 		#rec info
-		self.mCtrlImgRec1              = self.getControl( E_CONTROL_ID_IMAGE_RECORDING1 )
+		#self.mCtrlImgRec1              = self.getControl( E_CONTROL_ID_IMAGE_RECORDING1 )
 		self.mCtrlLblRec1              = self.getControl( E_CONTROL_ID_LABEL_RECORDING1 )
-		self.mCtrlImgRec2              = self.getControl( E_CONTROL_ID_IMAGE_RECORDING2 )
+		#self.mCtrlImgRec2              = self.getControl( E_CONTROL_ID_IMAGE_RECORDING2 )
 		self.mCtrlLblRec2              = self.getControl( E_CONTROL_ID_LABEL_RECORDING2 )
 
 		#channel, epg info
 		self.mCtrlLblChannelNumber     = self.getControl( E_CONTROL_ID_LABEL_CHANNEL_NUMBER )
 		self.mCtrlLblChannelName       = self.getControl( E_CONTROL_ID_LABEL_CHANNEL_NAME )
-		self.mCtrlImgServiceTypeTV     = self.getControl( E_CONTROL_ID_IMAGE_SERVICETYPE_TV )
-		self.mCtrlImgServiceTypeRadio  = self.getControl( E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO )
-		self.mCtrlGroupComponentData   = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_DATA )
-		self.mCtrlGroupComponentDolby  = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_DOLBY )
-		self.mCtrlGroupComponentHD     = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_HD )
-		self.mCtrlImgLocked            = self.getControl( E_CONTROL_ID_IMAGE_LOCKED )
-		self.mCtrlImgICas              = self.getControl( E_CONTROL_ID_IMAGE_ICAS )
+		#self.mCtrlImgServiceTypeTV     = self.getControl( E_CONTROL_ID_IMAGE_SERVICETYPE_TV )
+		#self.mCtrlImgServiceTypeRadio  = self.getControl( E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO )
+		#self.mCtrlGroupComponentData   = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_DATA )
+		#self.mCtrlGroupComponentDolby  = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_DOLBY )
+		#self.mCtrlGroupComponentHD     = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_HD )
+		#self.mCtrlImgLocked            = self.getControl( E_CONTROL_ID_IMAGE_LOCKED )
+		#self.mCtrlImgICas              = self.getControl( E_CONTROL_ID_IMAGE_ICAS )
 		self.mCtrlLblLongitudeInfo     = self.getControl( E_CONTROL_ID_LABEL_LONGITUDE_INFO )
 		self.mCtrlLblEventName         = self.getControl( E_CONTROL_ID_LABEL_EPG_NAME )
 		self.mCtrlLblEventStartTime    = self.getControl( E_CONTROL_ID_LABEL_EPG_STARTTIME )
@@ -181,8 +192,8 @@ class LivePlate( BaseWindow ) :
 		self.mDataCache.Record_GetRunningRecorderCount( )
 		#self.mWin.setProperty( 'ViewRecord1', flag )
 		#self.mWin.setProperty( 'ViewRecord1', flag )
-		self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_RECORDING1, flag )
-		self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_RECORDING2, flag )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_RECORDING1, flag )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_RECORDING2, flag )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_START_RECORDING, True )
 		"""
 
@@ -303,6 +314,12 @@ class LivePlate( BaseWindow ) :
 				self.Close( )			
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = id
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+
+		elif id == Action.ACTION_MBOX_TVRADIO :
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode == ElisEnum.E_MODE_LIVE :
+				self.mDataCache.ToggleTVRadio( )
+				self.ChannelTune( INIT_CHANNEL )
 
 
 		#test
@@ -641,27 +658,19 @@ class LivePlate( BaseWindow ) :
 
 				#lock,cas
 				if ch.mLocked :
-					self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_LOCKED, 'True' )
+					self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK, 'True' )
 
 				if ch.mIsCA :
-					self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_ICAS, 'True' )
+					self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, 'True' )
 
 				#type
-				setPropertyTV    = 'False'
-				setPropertyRadio = 'False'
-				if ch.mServiceType == ElisEnum.E_SERVICE_TYPE_TV:
-					setPropertyTV    = 'True'
-					setPropertyRadio = 'False'
-				elif ch.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO:
-					setPropertyTV    = 'False'
-					setPropertyRadio = 'True'
-				elif ch.mServiceType == ElisEnum.E_SERVICE_TYPE_DATA:
-					pass
-				else:
-					pass
-					#LOG_TRACE( 'unknown ElisEnum tvType[%s]'% ch.mServiceType )
-				self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_TV,    setPropertyTV )
-				self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO, setPropertyRadio )
+				setPropertyTV = 'True'
+				if ch.mServiceType == ElisEnum.E_SERVICE_TYPE_TV:      setPropertyTV = 'True'
+				elif ch.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO: setPropertyTV = 'False'
+				elif ch.mServiceType == ElisEnum.E_SERVICE_TYPE_DATA: pass
+				else: pass
+				self.UpdatePropertyGUI( E_XML_PROPERTY_TV, setPropertyTV )
+				LOG_TRACE( 'tvType[%s]'% ch.mServiceType )
 
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -681,9 +690,9 @@ class LivePlate( BaseWindow ) :
 				#component
 				setPropertyList = []
 				setPropertyList = GetPropertyByEPGComponent( aEpg )
-				self.UpdatePropertyGUI( E_CONTROL_ID_GROUP_COMPONENT_DATA,  setPropertyList[0] )
-				self.UpdatePropertyGUI( E_CONTROL_ID_GROUP_COMPONENT_DOLBY, setPropertyList[1] )
-				self.UpdatePropertyGUI( E_CONTROL_ID_GROUP_COMPONENT_HD,    setPropertyList[2] )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE,  setPropertyList[0] )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY, setPropertyList[1] )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,    setPropertyList[2] )
 
 				"""
 				#is Age? agerating check
@@ -746,9 +755,7 @@ class LivePlate( BaseWindow ) :
 	#@RunThread
 	def LoadingThread( self ):
 		self.ShowRecordingInfo( )
-		LOG_TRACE('------------------------------------')
 		self.InitControlGUI()
-		LOG_TRACE('------------------------------------')
 		#self.GetEPGListByChannel()
 
 		try :
@@ -766,24 +773,21 @@ class LivePlate( BaseWindow ) :
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
-		LOG_TRACE('------------------------------------')
-
 
 	def InitControlGUI( self ):
-		self.UpdateControlGUI( E_CONTROL_ID_PROGRESS_EPG,                  0 )
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO,         '' )
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_NAME,               '' )
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_STARTTIME,          '' )
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,            '' )
-		self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_TV,     'True' )
-		self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO, 'False' )
-		self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_LOCKED,            'False' )
-		self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_ICAS,              'False' )
-		self.UpdatePropertyGUI( E_CONTROL_ID_GROUP_COMPONENT_DATA,    'False' )
-		self.UpdatePropertyGUI( E_CONTROL_ID_GROUP_COMPONENT_DOLBY,   'False' )
-		self.UpdatePropertyGUI( E_CONTROL_ID_GROUP_COMPONENT_HD,      'False' )
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO,         '' )
-		
+		self.UpdateControlGUI( E_CONTROL_ID_PROGRESS_EPG,          0 )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, '' )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_NAME,       '' )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_STARTTIME,  '' )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,    '' )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, '' )
+		#self.UpdatePropertyGUI( E_XML_PROPERTY_TV,       'True' )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK,    'False' )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_CAS,     'False' )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE,'False' )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,   'False' )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,      'False' )
+
 
 	@GuiLock
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
@@ -820,35 +824,12 @@ class LivePlate( BaseWindow ) :
 			self.mCtrlBtnStartRec.setEnabled( aValue )
 
 
-	def UpdatePropertyGUI( self, aCtrlID = None, aValue = None ) :
-		#LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
+	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :
+		#LOG_TRACE( 'Enter property[%s] value[%s]'% (aPropertyID, aValue) )
+		if aPropertyID == None :
+			return
 
-		if aCtrlID == E_CONTROL_ID_IMAGE_SERVICETYPE_TV :
-			self.mWin.setProperty( 'ServiceTypeTV', aValue )
-
-		elif aCtrlID == E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO :
-			self.mWin.setProperty( 'ServiceTypeRadio', aValue )
-
-		elif aCtrlID == E_CONTROL_ID_GROUP_COMPONENT_DATA :
-			self.mWin.setProperty( 'HasSubtitle', aValue )
-
-		elif aCtrlID == E_CONTROL_ID_GROUP_COMPONENT_DOLBY :
-			self.mWin.setProperty( 'HasDolby', aValue )
-
-		elif aCtrlID == E_CONTROL_ID_GROUP_COMPONENT_HD :
-			self.mWin.setProperty( 'HasHD', aValue )
-
-		elif aCtrlID == E_CONTROL_ID_IMAGE_LOCKED :
-			self.mWin.setProperty( 'iLock', aValue )
-
-		elif aCtrlID == E_CONTROL_ID_IMAGE_ICAS :
-			self.mWin.setProperty( 'iCas', aValue )
-
-		elif aCtrlID == E_CONTROL_ID_IMAGE_RECORDING1 :
-			self.mWin.setProperty( 'ViewRecord1', aValue )
-
-		elif aCtrlID == E_CONTROL_ID_IMAGE_RECORDING2 :
-			self.mWin.setProperty( 'ViewRecord2', aValue )
+		self.mWin.setProperty( aPropertyID, aValue )
 
 
 	def ShowDialog( self, aFocusId, aVisible = False ):
@@ -1006,15 +987,10 @@ class LivePlate( BaseWindow ) :
 				btnValue = False
 
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_RECORDING1, strLabelRecord1 )
-			LOG_TRACE('------------------------------------')
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_RECORDING2, strLabelRecord2 )
-			LOG_TRACE('------------------------------------')
-			self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_RECORDING1, setPropertyRecord1 )
-			LOG_TRACE('------------------------------------')
-			self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_RECORDING2, setPropertyRecord2 )
-			LOG_TRACE('------------------------------------')
+			self.UpdatePropertyGUI( E_XML_PROPERTY_RECORDING1, setPropertyRecord1 )
+			self.UpdatePropertyGUI( E_XML_PROPERTY_RECORDING2, setPropertyRecord2 )
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_START_RECORDING, btnValue )
-			LOG_TRACE('------------------------------------')
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )

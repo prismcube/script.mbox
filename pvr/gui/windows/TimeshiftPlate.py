@@ -25,6 +25,10 @@ E_CONTROL_ID_BUTTON_JUMP_RR 		= 409
 E_CONTROL_ID_BUTTON_JUMP_FF 		= 410
 E_CONTROL_ID_BUTTON_BOOKMARK 		= 411
 
+#xml property name
+E_XML_PROPERTY_RECORDING1 = 'ViewRecord1'
+E_XML_PROPERTY_RECORDING2 = 'ViewRecord2'
+
 #value enum
 E_CONTROL_ENABLE  = 'enable'
 E_CONTROL_VISIBLE = 'visible'
@@ -143,21 +147,21 @@ class TimeShiftPlate(BaseWindow):
 		self.InitTimeShift( )
 
 		label = self.GetModeValue( )
-		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_MODE, label )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE, label )
 
 		self.GetNextSpeed( E_ONINIT )
 
 		"""
 		if self.getProperty('IsXpeeding') == 'False' :
-			self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PLAY, True )
-			self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
+			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )
+			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
 		else :
 			if self.mSpeed != 0 :
-				self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PLAY, False )
-				self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, False )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
 			else :
-				self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PLAY, True )
-				self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
 		"""
 
 		#self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
@@ -305,9 +309,9 @@ class TimeShiftPlate(BaseWindow):
 		#test
 		elif id == 104 : #scroll up
 			self.ShowRecordingInfo()
-			#self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_RECORDING1, True )
+			#self.UpdatePropertyGUI( E_XML_PROPERTY_RECORDING1, 'True' )
 		elif id == 105 :
-			#self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_RECORDING2, False )
+			#self.UpdatePropertyGUI( E_XML_PROPERTY_RECORDING2, 'False' )
 			pass
 
 
@@ -419,17 +423,17 @@ class TimeShiftPlate(BaseWindow):
 			if ret :
 				if self.mSpeed != 100:
 					#_self.mDataCache.Player_SetSpeed( 100 )
-					self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_REWIND, False )
-					self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_FORWARD, False )
-					self.UpdateLabelGUI( E_CONTROL_ID_LABEL_SPEED, '' )
+					self.UpdateControlGUI( E_CONTROL_ID_IMAGE_REWIND, False )
+					self.UpdateControlGUI( E_CONTROL_ID_IMAGE_FORWARD, False )
+					self.UpdateControlGUI( E_CONTROL_ID_LABEL_SPEED, '' )
 
 				self.mIsPlay = FLAG_PAUSE
 
 				label = self.GetModeValue( )
-				self.UpdateLabelGUI( E_CONTROL_ID_LABEL_MODE, label )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE, label )
 				# toggle
-				self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PLAY, False )
-				self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, False )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
 				self.mWin.setProperty( 'IsXpeeding', 'True' )
 
 				self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
@@ -451,8 +455,8 @@ class TimeShiftPlate(BaseWindow):
 				self.mIsPlay = FLAG_PLAY
 
 				# toggle
-				self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PLAY, True )
-				self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
 				self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
 				self.mWin.setProperty( 'IsXpeeding', 'True' )
 
@@ -480,7 +484,7 @@ class TimeShiftPlate(BaseWindow):
 				if ret :
 					break
 
-			self.UpdateLabelGUI( E_CONTROL_ID_PROGRESS, 0 )
+			self.UpdateControlGUI( E_CONTROL_ID_PROGRESS, 0 )
 			self.mProgress_idx = 0.0
 
 			#self.RecordingStopAll( )
@@ -512,8 +516,8 @@ class TimeShiftPlate(BaseWindow):
 			#resume by toggle
 			"""
 			if self.mIsPlay == FLAG_PLAY :
-				self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PLAY, True )
-				self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
 			"""
 
 
@@ -541,8 +545,8 @@ class TimeShiftPlate(BaseWindow):
 			#resume by toggle
 			"""
 			if self.mIsPlay == FLAG_PLAY :
-				self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PLAY, True )
-				self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
 			"""
 
 
@@ -567,22 +571,22 @@ class TimeShiftPlate(BaseWindow):
 	def InitLabelInfo(self) :
 		self.mEventCopy = []
 
-		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_MODE,        '' )
-		self.UpdateLabelGUI( E_CONTROL_ID_EVENT_CLOCK,     '' )
-		self.UpdateLabelGUI( E_CONTROL_ID_PROGRESS,        0 )
-		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_TS_START_TIME, '' )
-		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_TS_END_TIME,   '' )
-		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_SPEED,       '' )
-		self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_REWIND,   False )
-		self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_FORWARD,  False )
-		self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_CURRENT,     '', E_CONTROL_LABEL )
-		self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_CURRENT,      0, E_CONTROL_POSY )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE,        '' )
+		self.UpdateControlGUI( E_CONTROL_ID_EVENT_CLOCK,     '' )
+		self.UpdateControlGUI( E_CONTROL_ID_PROGRESS,        0 )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, '' )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_END_TIME,   '' )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SPEED,       '' )
+		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_REWIND,   False )
+		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_FORWARD,  False )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,     '', E_CONTROL_LABEL )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,      0, E_CONTROL_POSY )
 
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
 
 
 	@GuiLock
-	def UpdateLabelGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
+	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		if aCtrlID == E_CONTROL_ID_BUTTON_VOLUME :
 			self.mCtrlBtnVolume.setVisible( aValue )
 
@@ -636,12 +640,6 @@ class TimeShiftPlate(BaseWindow):
 		elif aCtrlID == E_CONTROL_ID_LABEL_SPEED :
 			self.mCtrlLblSpeed.setLabel( aValue )
 
-		elif aCtrlID == E_CONTROL_ID_IMAGE_RECORDING1 :
-			self.mWin.setProperty( 'ViewRecord1', aValue )
-
-		elif aCtrlID == E_CONTROL_ID_IMAGE_RECORDING2 :
-			self.mWin.setProperty( 'ViewRecord2', aValue )
-
 		elif aCtrlID == E_CONTROL_ID_LABEL_RECORDING1 :
 			self.mCtrlLblRec1.setLabel( aValue )
 
@@ -665,6 +663,14 @@ class TimeShiftPlate(BaseWindow):
 		"""
 
 
+	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :
+		#LOG_TRACE( 'Enter property[%s] value[%s]'% (aPropertyID, aValue) )
+		if aPropertyID == None :
+			return
+
+		self.mWin.setProperty( aPropertyID, aValue )
+
+
 	def InitTimeShift( self, loop = 0 ) :
 		status = None
 		status = self.mDataCache.Player_GetStatus()
@@ -686,7 +692,7 @@ class TimeShiftPlate(BaseWindow):
 			#test label
 			#test = TimeToString(status.mPlayTimeInMs/1000, TimeFormatEnum.E_HH_MM_SS)
 			#lblTest = 'current:[%s] currentToTime[%s] timeout[%s]'% (status.mPlayTimeInMs, test, self.mRepeatTimeout)
-			#self.UpdateLabelGUI( self.mCtrlLblTest.getId(), lblTest )
+			#self.UpdateControlGUI( self.mCtrlLblTest.getId(), lblTest )
 
 
 			#progress data
@@ -731,11 +737,11 @@ class TimeShiftPlate(BaseWindow):
 			lbl_timeE = TimeToString( tempEndTime    , timeFormat )
 
 			if lbl_timeS != '' :
-				self.UpdateLabelGUI( E_CONTROL_ID_LABEL_TS_START_TIME, lbl_timeS )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, lbl_timeS )
 			if lbl_timeP != '' :
-				self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_CONTROL_LABEL )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_CONTROL_LABEL )
 			if lbl_timeE != '' :
-				self.UpdateLabelGUI( E_CONTROL_ID_LABEL_TS_END_TIME, lbl_timeE )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_END_TIME, lbl_timeE )
 
 
 	def GetNextSpeed(self, aFocusId):
@@ -836,19 +842,19 @@ class TimeShiftPlate(BaseWindow):
 				flagFF = False
 				flagRR = True
 
-		self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_REWIND, flagRR )
-		self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_FORWARD, flagFF )
-		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_SPEED, lspeed )
+		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_REWIND, flagRR )
+		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_FORWARD, flagFF )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SPEED, lspeed )
 
 		if ret == 100 :
-			self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PLAY, False )
-			self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
+			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, False )
+			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
 			self.mWin.setProperty( 'IsXpeeding', 'True' )
 			LOG_TRACE('-------Play----------------------speed[%s]'% ret)
 
 		else :
-			self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PLAY, True )			
-			self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
+			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )			
+			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
 			self.mWin.setProperty( 'IsXpeeding', 'False' )
 			LOG_TRACE('-------Pause----------------------speed[%s]'% ret)
 
@@ -872,7 +878,7 @@ class TimeShiftPlate(BaseWindow):
 		else :
 			labelMode = 'UNKNOWN'
 
-		self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_START_RECORDING, buttonHide, E_CONTROL_VISIBLE )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_START_RECORDING, buttonHide, E_CONTROL_VISIBLE )
 
 		return labelMode
 
@@ -886,7 +892,7 @@ class TimeShiftPlate(BaseWindow):
 			#update localTime
 			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
 			lbl_localTime = TimeToString( self.mLocalTime, TimeFormatEnum.E_AW_HH_MM)
-			self.UpdateLabelGUI( E_CONTROL_ID_EVENT_CLOCK, lbl_localTime )
+			self.UpdateControlGUI( E_CONTROL_ID_EVENT_CLOCK, lbl_localTime )
 
 			if self.mIsPlay != FLAG_STOP :
 				self.InitTimeShift( )
@@ -918,8 +924,8 @@ class TimeShiftPlate(BaseWindow):
 
 				#progress drawing
 				posx = int( self.mProgress_idx * self.mProgressbarWidth / 100 )
-				self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_CURRENT, posx, E_CONTROL_POSY )
-				self.UpdateLabelGUI( E_CONTROL_ID_PROGRESS, self.mProgress_idx )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, posx, E_CONTROL_POSY )
+				self.UpdateControlGUI( E_CONTROL_ID_PROGRESS, self.mProgress_idx )
 				#LOG_TRACE( 'progress endTime[%s] idx[%s] posx[%s]'% (self.mTimeshift_endTime, self.mProgress_idx, posx) )
 
 		except Exception, e :
@@ -952,11 +958,11 @@ class TimeShiftPlate(BaseWindow):
 		else :
 			btnValue = True
 
-		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_RECORDING1, strLabelRecord1 )
-		self.UpdateLabelGUI( E_CONTROL_ID_LABEL_RECORDING2, strLabelRecord2 )
-		self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_RECORDING1, setPropertyRecord1 )
-		self.UpdateLabelGUI( E_CONTROL_ID_IMAGE_RECORDING2, setPropertyRecord2 )
-		self.UpdateLabelGUI( E_CONTROL_ID_BUTTON_START_RECORDING, btnValue, E_CONTROL_ENABLE )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_RECORDING1, strLabelRecord1 )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_RECORDING2, strLabelRecord2 )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_START_RECORDING, btnValue, E_CONTROL_ENABLE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_RECORDING1, setPropertyRecord1 )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_RECORDING2, setPropertyRecord2 )
 
 
 	def RecordingStopAll( self ) :

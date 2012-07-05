@@ -368,7 +368,7 @@
 							</control>
 							<!-- is skip? -->
 							<control type="image">
-								<posx>5</posx>
+								<posx>8</posx>
 								<posy>5</posy>
 								<width>30</width>
 								<height>30</height>
@@ -478,7 +478,7 @@
 							</control>
 							<!-- is skip? -->
 							<control type="image">
-								<posx>5</posx>
+								<posx>8</posx>
 								<posy>5</posy>
 								<width>30</width>
 								<height>30</height>

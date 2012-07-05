@@ -17,7 +17,7 @@ class NullWindow( BaseWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 		self.mGotoWinID = None
 		self.mOnEventing= False
-		self.mRecordingAlarm = False
+		self.mSetAutomaticHide = False
 
 		if self.mInitialized == False :
 			self.mInitialized = True
@@ -98,7 +98,11 @@ class NullWindow( BaseWindow ) :
 		
 		elif actionId == Action.ACTION_SELECT_ITEM:
 			self.Close( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
+			status = self.mDataCache.Player_GetStatus( )		
+			if status.mMode == ElisEnum.E_MODE_PVR :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+			else :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
 		elif actionId == Action.ACTION_MOVE_LEFT:
 			pass
@@ -120,9 +124,8 @@ class NullWindow( BaseWindow ) :
 			if status.mMode != ElisEnum.E_MODE_LIVE :
 				gotoWinId = WinMgr.WIN_ID_TIMESHIFT_PLATE
 
-			window = WinMgr.GetInstance( ).GetWindow( gotoWinId )
-			window.SetAutomaticHide( self.mRecordingAlarm )
-			self.mRecordingAlarm = False
+			WinMgr.GetInstance( ).GetWindow( gotoWinId ).SetAutomaticHide( self.mSetAutomaticHide )
+			self.mSetAutomaticHide = False
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( gotoWinId )
 
@@ -218,6 +221,9 @@ class NullWindow( BaseWindow ) :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
 				self.mDataCache.ToggleTVRadio( )
+				self.Close( )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif actionId == Action.ACTION_MBOX_RECORD :
 			status = self.mDataCache.Player_GetStatus()
@@ -342,7 +348,7 @@ class NullWindow( BaseWindow ) :
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
 				self.mDataCache.mCacheReload = True
-				self.mRecordingAlarm = True
+				self.mSetAutomaticHide = True
 				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 				"""
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
