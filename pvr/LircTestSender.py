@@ -144,6 +144,7 @@ def send(aMsg = None):
 	testScene = test4()
 	loop = 0
 
+	testTime = 0
 	startTime = time.time()
 	lblStart = time.strftime('%H:%M:%S', time.localtime(startTime) )
 
@@ -151,8 +152,9 @@ def send(aMsg = None):
 		for key in testScene :
 
 			lastTime = time.time()
+			testTime += int(key[1])
 			lblLast  = time.strftime('%H:%M:%S', time.localtime(lastTime) )
-			lblTest  = time.strftime('%H:%M:%S', time.gmtime(lastTime - startTime) )
+			lblTest  = '%02d:%s'% ( testTime / 3600, time.strftime('%M:%S', time.gmtime(testTime) ) )
 			print '[start[%s] current[%s] TestTime[%s] count[%d] key[%s]' % ( lblStart, lblLast, lblTest, loop, key[0] )
 
 			msg = struct.pack("3i",*[1, key[0], 0])

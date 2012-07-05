@@ -181,8 +181,8 @@ class LivePlate( BaseWindow ) :
 		self.mDataCache.Record_GetRunningRecorderCount( )
 		#self.mWin.setProperty( 'ViewRecord1', flag )
 		#self.mWin.setProperty( 'ViewRecord1', flag )
-		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_RECORDING1, flag )
-		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_RECORDING2, flag )
+		self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_RECORDING1, flag )
+		self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_RECORDING2, flag )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_START_RECORDING, True )
 		"""
 
@@ -641,10 +641,10 @@ class LivePlate( BaseWindow ) :
 
 				#lock,cas
 				if ch.mLocked :
-					self.UpdateControlGUI( E_CONTROL_ID_IMAGE_LOCKED, 'True' )
+					self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_LOCKED, 'True' )
 
 				if ch.mIsCA :
-					self.UpdateControlGUI( E_CONTROL_ID_IMAGE_ICAS, 'True' )
+					self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_ICAS, 'True' )
 
 				#type
 				setPropertyTV    = 'False'
@@ -660,8 +660,8 @@ class LivePlate( BaseWindow ) :
 				else:
 					pass
 					#LOG_TRACE( 'unknown ElisEnum tvType[%s]'% ch.mServiceType )
-				self.UpdateControlGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_TV,    setPropertyTV )
-				self.UpdateControlGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO, setPropertyRadio )
+				self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_TV,    setPropertyTV )
+				self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO, setPropertyRadio )
 
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
@@ -681,9 +681,9 @@ class LivePlate( BaseWindow ) :
 				#component
 				setPropertyList = []
 				setPropertyList = GetPropertyByEPGComponent( aEpg )
-				self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_DATA,  setPropertyList[0] )
-				self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_DOLBY, setPropertyList[1] )
-				self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_HD,    setPropertyList[2] )
+				self.UpdatePropertyGUI( E_CONTROL_ID_GROUP_COMPONENT_DATA,  setPropertyList[0] )
+				self.UpdatePropertyGUI( E_CONTROL_ID_GROUP_COMPONENT_DOLBY, setPropertyList[1] )
+				self.UpdatePropertyGUI( E_CONTROL_ID_GROUP_COMPONENT_HD,    setPropertyList[2] )
 
 				"""
 				#is Age? agerating check
@@ -775,14 +775,13 @@ class LivePlate( BaseWindow ) :
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_NAME,               '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_STARTTIME,          '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,            '' )
-		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_TV,     'True' )
-		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO, 'False' )
-		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_LOCKED,            'False' )
-		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_ICAS,              'False' )
-
-		self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_DATA,    'False' )
-		self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_DOLBY,   'False' )
-		self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_HD,      'False' )
+		self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_TV,     'True' )
+		self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO, 'False' )
+		self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_LOCKED,            'False' )
+		self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_ICAS,              'False' )
+		self.UpdatePropertyGUI( E_CONTROL_ID_GROUP_COMPONENT_DATA,    'False' )
+		self.UpdatePropertyGUI( E_CONTROL_ID_GROUP_COMPONENT_DOLBY,   'False' )
+		self.UpdatePropertyGUI( E_CONTROL_ID_GROUP_COMPONENT_HD,      'False' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO,         '' )
 		
 
@@ -795,21 +794,6 @@ class LivePlate( BaseWindow ) :
 
 		elif aCtrlID == E_CONTROL_ID_LABEL_CHANNEL_NAME :
 			self.mCtrlLblChannelName.setLabel( aValue )
-
-		elif aCtrlID == E_CONTROL_ID_IMAGE_SERVICETYPE_TV :
-			self.mWin.setProperty( 'ServiceTypeTV', aValue )
-
-		elif aCtrlID == E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO :
-			self.mWin.setProperty( 'ServiceTypeRadio', aValue )
-
-		elif aCtrlID == E_CONTROL_ID_GROUP_COMPONENT_DATA :
-			self.mWin.setProperty( 'HasSubtitle', aValue )
-
-		elif aCtrlID == E_CONTROL_ID_GROUP_COMPONENT_DOLBY :
-			self.mWin.setProperty( 'HasDolby', aValue )
-
-		elif aCtrlID == E_CONTROL_ID_GROUP_COMPONENT_HD :
-			self.mWin.setProperty( 'HasHD', aValue )
 
 		elif aCtrlID == E_CONTROL_ID_LABEL_LONGITUDE_INFO :
 			self.mCtrlLblLongitudeInfo.setLabel( aValue )
@@ -826,6 +810,34 @@ class LivePlate( BaseWindow ) :
 		elif aCtrlID == E_CONTROL_ID_PROGRESS_EPG :
 			self.mCtrlProgress.setPercent( aValue )
 
+		elif aCtrlID == E_CONTROL_ID_LABEL_RECORDING1 :
+			self.mCtrlLblRec1.setLabel( aValue )
+
+		elif aCtrlID == E_CONTROL_ID_LABEL_RECORDING2 :
+			self.mCtrlLblRec2.setLabel( aValue )
+
+		elif aCtrlID == E_CONTROL_ID_BUTTON_START_RECORDING :
+			self.mCtrlBtnStartRec.setEnabled( aValue )
+
+
+	def UpdatePropertyGUI( self, aCtrlID = None, aValue = None ) :
+		#LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
+
+		if aCtrlID == E_CONTROL_ID_IMAGE_SERVICETYPE_TV :
+			self.mWin.setProperty( 'ServiceTypeTV', aValue )
+
+		elif aCtrlID == E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO :
+			self.mWin.setProperty( 'ServiceTypeRadio', aValue )
+
+		elif aCtrlID == E_CONTROL_ID_GROUP_COMPONENT_DATA :
+			self.mWin.setProperty( 'HasSubtitle', aValue )
+
+		elif aCtrlID == E_CONTROL_ID_GROUP_COMPONENT_DOLBY :
+			self.mWin.setProperty( 'HasDolby', aValue )
+
+		elif aCtrlID == E_CONTROL_ID_GROUP_COMPONENT_HD :
+			self.mWin.setProperty( 'HasHD', aValue )
+
 		elif aCtrlID == E_CONTROL_ID_IMAGE_LOCKED :
 			self.mWin.setProperty( 'iLock', aValue )
 
@@ -837,15 +849,6 @@ class LivePlate( BaseWindow ) :
 
 		elif aCtrlID == E_CONTROL_ID_IMAGE_RECORDING2 :
 			self.mWin.setProperty( 'ViewRecord2', aValue )
-
-		elif aCtrlID == E_CONTROL_ID_LABEL_RECORDING1 :
-			self.mCtrlLblRec1.setLabel( aValue )
-
-		elif aCtrlID == E_CONTROL_ID_LABEL_RECORDING2 :
-			self.mCtrlLblRec2.setLabel( aValue )
-
-		elif aCtrlID == E_CONTROL_ID_BUTTON_START_RECORDING :
-			self.mCtrlBtnStartRec.setEnabled( aValue )
 
 
 	def ShowDialog( self, aFocusId, aVisible = False ):
@@ -1006,11 +1009,9 @@ class LivePlate( BaseWindow ) :
 			LOG_TRACE('------------------------------------')
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_RECORDING2, strLabelRecord2 )
 			LOG_TRACE('------------------------------------')
-			#self.UpdateControlGUI( E_CONTROL_ID_IMAGE_RECORDING1, setPropertyRecord1 )
-			self.mWin.setProperty( 'ViewRecord1', setPropertyRecord1 )
+			self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_RECORDING1, setPropertyRecord1 )
 			LOG_TRACE('------------------------------------')
-			#self.UpdateControlGUI( E_CONTROL_ID_IMAGE_RECORDING2, setPropertyRecord2 )
-			self.mWin.setProperty( 'ViewRecord2', setPropertyRecord2 )
+			self.UpdatePropertyGUI( E_CONTROL_ID_IMAGE_RECORDING2, setPropertyRecord2 )
 			LOG_TRACE('------------------------------------')
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_START_RECORDING, btnValue )
 			LOG_TRACE('------------------------------------')

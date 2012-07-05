@@ -174,6 +174,7 @@ class TimeShiftPlate(BaseWindow):
 
 			elif self.mPrekey == Action.ACTION_MBOX_FF :
 				self.onClick( E_CONTROL_ID_BUTTON_FORWARD )
+
 			elif self.mPrekey == Action.ACTION_PAUSE or self.mPrekey == Action.ACTION_PLAYER_PLAY :
 				self.mWin.setProperty( 'IsXpeeding', 'False' )
 				if self.mSpeed == 0 :
@@ -721,9 +722,13 @@ class TimeShiftPlate(BaseWindow):
 				if self.mRepeatTimeout < 0.1 :
 					self.mRepeatTimeout = 0.1
 
-			lbl_timeS = TimeToString( tempStartTime  , TimeFormatEnum.E_HH_MM_SS)
-			lbl_timeP = TimeToString( tempCurrentTime, TimeFormatEnum.E_HH_MM_SS)
-			lbl_timeE = TimeToString( tempEndTime    , TimeFormatEnum.E_HH_MM_SS)
+			timeFormat = TimeFormatEnum.E_HH_MM_SS
+			if status.mMode == ElisEnum.E_MODE_PVR :
+				timeFormat = TimeFormatEnum.E_AH_MM_SS
+
+			lbl_timeS = TimeToString( tempStartTime  , TimeFormatEnum.E_HH_MM_SS )
+			lbl_timeP = TimeToString( tempCurrentTime, timeFormat )
+			lbl_timeE = TimeToString( tempEndTime    , timeFormat )
 
 			if lbl_timeS != '' :
 				self.UpdateLabelGUI( E_CONTROL_ID_LABEL_TS_START_TIME, lbl_timeS )

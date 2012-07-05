@@ -48,10 +48,11 @@ class NullWindow( BaseWindow ) :
 		LOG_TRACE( '+++++getrecursionlimit[%s] currentStack[%s]'% (sys.getrecursionlimit(), len(currentStack)) )
 		LOG_TRACE( '+++++currentStackInfo[%s]'% (currentStack) )
 
+		startTime= WinMgr.GetInstance( ).mXbmcStartTime
 		lastTime = time.time() + 7200
-		lblStart = time.strftime('%H:%M:%S', time.localtime(WinMgr.GetInstance( ).mXbmcStartTime) )
+		lblStart = time.strftime('%H:%M:%S', time.localtime(startTime) )
 		lblLast  = time.strftime('%H:%M:%S', time.localtime(lastTime) )
-		lblTest  = time.strftime('%H:%M:%S', time.gmtime(lastTime - WinMgr.GetInstance( ).mXbmcStartTime) )
+		lblTest  = '%02d:%s'% ( (lastTime - startTime)/3600, time.strftime('%M:%S', time.gmtime(lastTime - startTime) ) )
 		LOG_TRACE( 'startTime[%s] lastTime[%s] TestTime[%s]'% (lblStart, lblLast, lblTest) )
 		
 
