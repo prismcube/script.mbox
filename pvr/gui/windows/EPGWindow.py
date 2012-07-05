@@ -47,6 +47,7 @@ class EPGWindow( BaseWindow ) :
 
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
+		self.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
 		self.mLock = thread.allocate_lock()		
 
 	
@@ -80,10 +81,11 @@ class EPGWindow( BaseWindow ) :
 		self.UpdateViewMode( )
 		self.InitControl()
 		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
+		self.mServiceType = self.mCurrentMode.mServiceType
 		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 		LOG_TRACE('ZeppingMode(%d,%d,%d)' %( self.mCurrentMode.mServiceType, self.mCurrentMode.mMode, self.mCurrentMode.mSortingMode ) )
 		#self.mChannelList = self.mDataCache.Channel_GetList( )
-		self.mChannelList = self.mDataCache.Channel_GetListByAllChannel( )
+		self.mChannelList = self.mDataCache.Channel_GetAllChannels( self.mServiceType )
 
 		if self.mChannelList == None :
 			LOG_WARN('No Channel List')
@@ -148,6 +150,9 @@ class EPGWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_CONTEXT_MENU:
 			self.ShowContextMenu( )
 
+		elif actionId == Action.ACTION_MBOX_TVRADIO :
+			self.ToggleTVRadio( )
+
 
 	def onClick( self, aControlId ) :
 		LOG_TRACE( 'aControlId=%d' %aControlId )
@@ -172,7 +177,6 @@ class EPGWindow( BaseWindow ) :
 			self.InitControl( )
 			self.Load( )
 			
-			self.UpdateListWithGUILock( )
 			self.UpdateList( )	
 			self.UpdateSelectedChannel( )
 			self.FocusCurrentChannel( )
@@ -289,7 +293,6 @@ class EPGWindow( BaseWindow ) :
 
 		
 		try :
-			#self.mEPGList = self.mDataCache.Epgevent_GetListByChannel(  self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid,  gmtFrom,  gmtUntil,  E_MAX_EPG_COUNT)
 			self.mEPGList = self.mDataCache.Epgevent_GetListByChannelFromEpgCF(  self.mSelectChannel.mSid,  self.mSelectChannel.mTsid,  self.mSelectChannel.mOnid )
 
 		except Exception, ex:
@@ -311,8 +314,7 @@ class EPGWindow( BaseWindow ) :
 	def LoadByCurrent( self ) :
 	
 		try :
-			#self.mEPGList=self.mDataCache.Epgevent_GetCurrentList()
-			self.mEPGList = self.mDataCache.Epgevent_GetCurrentListByEpgCF( )
+			self.mEPGList = self.mDataCache.Epgevent_GetCurrentListByEpgCF( self.mServiceType )
 
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
@@ -328,8 +330,7 @@ class EPGWindow( BaseWindow ) :
 
 	def LoadByFollowing( self ) :		
 		try :
-			#self.mEPGList=self.mDataCache.Epgevent_GetFollowingList()
-			self.mEPGList = self.mDataCache.Epgevent_GetFollowingListByEpgCF( )
+			self.mEPGList = self.mDataCache.Epgevent_GetFollowingListByEpgCF( self.mServiceType )
 
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
@@ -1197,4 +1198,52 @@ class EPGWindow( BaseWindow ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( 'Conflict', label[0], label[1], label[2] )
 		dialog.doModal( )
+
+
+	def ToggleTVRadio( self ) :
+		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
+			self.mServiceType = ElisEnum.E_SERVICE_TYPE_RADIO
+		else :
+			self.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
+
+		self.mLock.acquire( )
+		self.mUpdateLocked = True
+		self.mLock.release( )
+
+		self.mEventBus.Deregister( self )
+		self.StopEPGUpdateTimer( )
+
+		self.mChannelList = self.mDataCache.Channel_GetAllChannels( self.mServiceType )
+
+		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
+			lastChannelNumber = ElisPropertyInt( 'Last TV Number', self.mCommander ).GetProp( )
+		else :
+			lastChannelNumber = ElisPropertyInt( 'Last Radio Number', self.mCommander ).GetProp( )
+
+		self.mCurrentChannel = None
+		if lastChannelNumber < len( self.mChannelList ) :
+			channelIndex = lastChannelNumber - 1
+			if channelIndex >= 0:
+				self.mCurrentChannel = self.mChannelList[channelIndex]
+
+
+		LOG_ERR( 'LAEL98 TOGGLE TVRADIO' )
+		self.mCurrentChannel.printdebug()
+
+		self.mSelectChannel = self.mCurrentChannel			
+
+		self.Load( )
+		
+		self.UpdateList( )	
+		self.UpdateSelectedChannel( )
+		self.FocusCurrentChannel( )
+		time.sleep( 0.2 )
+		self.UpdateEPGInfomation()
+
+		self.mLock.acquire( )
+		self.mUpdateLocked = False
+		self.mLock.release( )
+
+		self.mEventBus.Register( self )
+		self.StartEPGUpdateTimer( )
 

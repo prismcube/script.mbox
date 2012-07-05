@@ -73,7 +73,7 @@ class DataCacheMgr( object ):
 
 		self.mZappingMode						= None
 		self.mChannelList						= None
-		self.AllmChannelList					= None
+		self.mAllChannelList					= None
 		self.mCurrentChannel					= None
 		self.mOldChannel						= None
 		self.mLocalOffset						= 0
@@ -636,27 +636,32 @@ class DataCacheMgr( object ):
 			return self.mChannelList
 
 
-	def Channel_GetListByAllChannel( self, aReload = True, aType = ElisEnum.E_SERVICE_TYPE_TV, aMode = ElisEnum.E_MODE_ALL, aSort = ElisEnum.E_SORT_BY_NUMBER ) :
-		tempList = []
+	#ToDO : Call this function when channels are added or deleted. ( aServiceType = CurrentServieType, aUseCache=False )
+	def Channel_GetAllChannels( self, aServiceType, aUseCache=True ) :
+		LOG_TRACE( 'Reload AllChannels')
 		if SUPPORT_CHANNEL_DATABASE	== True :
-			if aReload :
-				if self.mZappingMode :
-					aType = self.mZappingMode.mServiceType
-					aMode = self.mZappingMode.mMode
-					aSort = self.mZappingMode.mSortingMode
+			LOG_TRACE( 'Reload AllChannels')		
+			if aUseCache :
+				LOG_TRACE( 'Reload AllChannels')			
+				if self.mAllChannelList and len( self.mAllChannelList ) > 0 :
+					LOG_TRACE( 'Reload AllChannels')				
+					channel =  self.mAllChannelList[0]
+					if channel.mServiceType == aServiceType :
+						LOG_TRACE( 'Reload AllChannels')					
+						return self.mAllChannelList
 
-				channelDB = ElisChannelDB()
-				tempList = channelDB.Channel_GetList( aType, aMode, aSort )
-				channelDB.Close()
+			LOG_TRACE( 'Reload AllChannels')
 
-			else :
-				return self.mAllChannelList
+			channelDB = ElisChannelDB()
+			self.mAllChannelList = channelDB.Channel_GetList( aServiceType, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER )
+			channelDB.Close()
+			return self.mAllChannelList
 
 		else :
-			tempList = self.mCommander.Channel_GetList( aType, aMode, aSort )
+			return self.mCommander.Channel_GetList( aType, aMode, aSort )
 
-		self.mAllChannelList = tempList
-		return self.mAllChannelList
+		LOG_TRACE( 'Reload AllChannels')
+		return None
 
 
 	def Channel_GetCurrent( self, aTemporaryReload = 0 ) :
@@ -935,15 +940,14 @@ class DataCacheMgr( object ):
 		return eventList
 
 
-	def Epgevent_GetCurrentListByEpgCF( self ) :
+	def Epgevent_GetCurrentListByEpgCF( self, aSerciveType ) :
 		eventList = None
 
 		if SUPPORT_EPG_DATABASE	== True :
-			zappingMode = self.Zappingmode_GetCurrent( )
 			epgStart = 0 #end - start = 0 : all channel following
 			epgEnd = 0
 
-			ret = self.mCommander.Epgevnt_GetCurrentDB( zappingMode.mServiceType, epgStart, epgEnd )
+			ret = self.mCommander.Epgevnt_GetCurrentDB( aSerciveType, epgStart, epgEnd )
 			if ret :
 				self.mEpgDB = ElisEPGDB( E_EPG_DB_CF )
 				eventList = self.mEpgDB.Epgevent_GetListFromEpgCF( E_EPG_DB_CF_GET_BY_CURRENT )
@@ -952,15 +956,14 @@ class DataCacheMgr( object ):
 		return eventList
 
 
-	def Epgevent_GetFollowingListByEpgCF( self ) :
+	def Epgevent_GetFollowingListByEpgCF( self, aSerciveType ) :
 		eventList = None
 
 		if SUPPORT_EPG_DATABASE	== True :
-			zappingMode = self.Zappingmode_GetCurrent( )
 			epgStart = 0 #end - start = 0 : all channel following
 			epgEnd = 0
 
-			ret = self.mCommander.Epgevent_GetFollowingDB( zappingMode.mServiceType, epgStart, epgEnd )
+			ret = self.mCommander.Epgevent_GetFollowingDB( aSerciveType, epgStart, epgEnd )
 			if ret :
 				self.mEpgDB = ElisEPGDB( E_EPG_DB_CF )
 				eventList = self.mEpgDB.Epgevent_GetListFromEpgCF( E_EPG_DB_CF_GET_BY_FOLLOWING )
