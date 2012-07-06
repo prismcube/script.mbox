@@ -1320,6 +1320,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_PATH, label )
 
 
+		"""
 		lblSkip = 'skipped'
 		lblTable= 'all'
 		if self.mDataCache.mSkip :
@@ -1336,7 +1337,7 @@ class ChannelListWindow( BaseWindow ) :
 			#LOG_TRACE( 'len[%s] ch[%s]'% (len(self.mChannelList),ClassToList( 'convert', self.mChannelList ) ) )
 		else :
 			LOG_TRACE('>>>>>>>>>>>>>>>>>>>>>>>>>flag_editChange[%s] len[%s] datachche[%s]'% (self.mFlag_EditChanged, self.mChannelList, self.mDataCache.mChannelList ))
-
+		"""
 
 
 	def InitChannelList(self):
