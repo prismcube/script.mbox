@@ -24,7 +24,7 @@
 			<posy>0</posy>
 			<width>1280</width>
 			<height>720</height>
-			<texture background="true">backgrounds/settings.jpg</texture>
+			<texture background="true">backgrounds/music.jpg</texture>
 			<visible>!Control.IsVisible(10)</visible>
 			<include>DefaultWindowFade</include>
 		</control>
@@ -66,6 +66,171 @@
 			<texture>video_pig_overlay.png</texture>
 		</control>
 
+		<!-- Right Help box -->
+		<!--control type="group">
+			<include>DefaultVisibleFadeEffect</include>
+			<posx>810</posx>
+			<posy>70</posy>
+			<visible>!Control.IsVisible(8899)</visible>
+			<control type="label">
+				<posx>20</posx>
+				<posy>20</posy>
+				<font>font13caps</font>
+				<textcolor>red</textcolor>
+				<label>Edit Channel Settings</label>
+			</control>
+			<control type="group">
+				<posx>20</posx>
+				<posy>70</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>45</width>
+					<height>35</height>
+					<texture>DI_Ok.png</texture>
+				</control>
+				<control type="label">
+					<posx>50</posx>
+					<posy>5</posy>
+					<font>font12_title</font>
+					<textcolor>grey</textcolor>
+					<label>Select</label>
+				</control>
+			</control>
+			<control type="group">
+				<posx>20</posx>
+				<posy>110</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>45</width>
+					<height>35</height>
+					<texture>DI_Info.png</texture>
+				</control>
+				<control type="label">
+					<posx>50</posx>
+					<posy>5</posy>
+					<font>font12_title</font>
+					<textcolor>grey</textcolor>
+					<label>Memu popup</label>
+				</control>
+			</control>
+			<control type="group">
+				<posx>20</posx>
+				<posy>150</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>45</width>
+					<height>35</height>
+					<texture>DI_Back.png</texture>
+				</control>
+				<control type="label">
+					<posx>50</posx>
+					<posy>5</posy>
+					<font>font12_title</font>
+					<textcolor>grey</textcolor>
+					<label>Exit</label>
+				</control>
+			</control>
+			<control type="group">
+				<posx>20</posx>
+				<posy>190</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>45</width>
+					<height>35</height>
+					<texture>DI_Menu.png</texture>
+				</control>
+				<control type="label">
+					<posx>50</posx>
+					<posy>5</posy>
+					<font>font12_title</font>
+					<textcolor>grey</textcolor>
+					<label>Exit</label>
+				</control>
+			</control>
+		</control-->
+		<control type="group" id="600">
+			<include>Animation_CommonFade</include>
+			<visible>substring(Window.Property(helpbox),true)</visible>
+			<posx>65</posx>
+			<posy>685</posy>
+			<include>Animation_ListSlideLeft</include>
+			<control type="group">
+				<posx>10</posx>
+				<posy>5</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>30</width>
+					<height>25</height>
+					<texture>DI_Ok.png</texture>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<font>font12</font>
+					<textcolor>grey</textcolor>
+					<label>Select</label>
+				</control>
+			</control>
+			<control type="group">
+				<posx>200</posx>
+				<posy>5</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>30</width>
+					<height>25</height>
+					<texture>DI_Info.png</texture>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<font>font12</font>
+					<textcolor>grey</textcolor>
+					<label>Memu popup</label>
+				</control>
+			</control>
+			<control type="group">
+				<posx>400</posx>
+				<posy>5</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>30</width>
+					<height>25</height>
+					<texture>DI_Back.png</texture>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<font>font12</font>
+					<textcolor>grey</textcolor>
+					<label>Exit</label>
+				</control>
+			</control>
+			<control type="group">
+				<posx>600</posx>
+				<posy>5</posy>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>30</width>
+					<height>25</height>
+					<texture>DI_Menu.png</texture>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<font>font12</font>
+					<textcolor>grey</textcolor>
+					<label>Exit</label>
+				</control>
+			</control>
+		</control>
 
 <!-- middle left -->
 		<control type="group" id="49">
@@ -138,7 +303,7 @@
 						<posy>5</posy>
 						<width>30</width>
 						<height>30</height>
-						<texture>IconNotAvailable.png</texture>
+						<texture>DI_Skip.png</texture>
 						<visible>substring(ListItem.Property(skip),true)</visible>
 					</control>
 
@@ -183,15 +348,31 @@
 						<posy>0</posy>
 						<width>700</width>
 						<height>41</height>
+						<visible>!Control.IsVisible(600)</visible>
 						<texture border="0,2,0,2">MenuItemFO.png</texture>
-						<animation effect="fade" time="300">Visible</animation>
-						<animation effect="fade" time="300">Hidden</animation>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>700</width>
+						<height>41</height>
+						<visible>Control.IsVisible(600)</visible>
+						<texture border="0,2,0,2">MenuItemFO_edit.png</texture>
+					</control>
+					<control type="image">
+						<posx>605</posx>
+						<posy>5</posy>
+						<width>45</width>
+						<height>30</height>
+						<visible>Control.IsVisible(600)</visible>
+						<texture>IconOpt.png</texture>
 					</control>
 					<control type="image">
 						<posx>620</posx>
 						<posy>5</posy>
 						<width>30</width>
 						<height>30</height>
+						<visible>!Control.IsVisible(600)</visible>
 						<texture>DI_Ok.png</texture>
 					</control>
 					<!-- is cas? -->
@@ -236,7 +417,7 @@
 						<posy>5</posy>
 						<width>30</width>
 						<height>30</height>
-						<texture>IconNotAvailable.png</texture>
+						<texture>DI_Skip.png</texture>
 						<visible>substring(ListItem.Property(skip),true)</visible>
 					</control>
 					<control type="label">
@@ -300,13 +481,7 @@
 			<control type="group">
 				<posx>5</posx>
 				<posy>-40</posy>
-				<!--control type="image">
-					<posx>0</posx>
-					<posy>210</posy>
-					<width>352</width>
-					<height>18</height>
-					<texture border="20">StackNF.png</texture>
-				</control-->
+				<visible>Control.IsVisible(8899)</visible>
 				<control type="label" id="303">
 					<posx>0</posx>
 					<posy>207</posy>
@@ -628,11 +803,6 @@
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
-						<!--item id="6">
-							<label>SCRIPT27</label>
-							<onclick>right</onclick>
-							<visible>true</visible>
-						</item-->
 					</content>
 				</control>
 
@@ -741,6 +911,8 @@
 								<label>SCRIPT33</label>
 								<onleft>102</onleft>
 								<onright>113</onright>
+								<onup>114</onup>
+								<ondown>114</ondown>
 							</control>
 							<control type="radiobutton" id="114">
 								<posx>0</posx>
@@ -753,35 +925,9 @@
 								<label>SCRIPT34</label>
 								<onleft>102</onleft>
 								<onright>114</onright>
-							</control>
-							<!--control type="button" id="115">
-								<posx>0</posx>
-								<posy>130</posy>
-								<width>230</width>
-								<height>40</height>
-								<include>DefaultButtonMediaSubCommonValues</include>
-								<textcolor>grey3</textcolor>
-								<focusedcolor>white</focusedcolor>
-								<label>$INFO[Control.GetLabel]</label>
-								<onleft>102</onleft>
-								<onright>115</onright>
-								<onup>114</onup>
-								<ondown>116</ondown>
-							</control>
-							<control type="button" id="116">
-								<posx>0</posx>
-								<posy>170</posy>
-								<width>230</width>
-								<height>40</height>
-								<include>DefaultButtonMediaSubCommonValues</include>
-								<textcolor>grey3</textcolor>
-								<focusedcolor>white</focusedcolor>
-								<label>$INFO[Control.GetLabel]</label>
-								<onleft>102</onleft>
-								<onright>116</onright>
-								<onup>115</onup>
+								<onup>113</onup>
 								<ondown>113</ondown>
-							</control-->
+							</control>
 						</control>
 					</control>
 					<!-- Scrollbar -->

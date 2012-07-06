@@ -63,6 +63,7 @@ class RootWindow( BaseWindow ):
 			self.AlarmDialog(msg1, msg2)
 			"""
 
+
 	def GetRecordingInfo( self ) :
 		labelInfo = MR_LANG('Reload Channel List...')
 		try:

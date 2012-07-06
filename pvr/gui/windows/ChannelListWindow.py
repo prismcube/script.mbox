@@ -13,8 +13,6 @@ E_CONTROL_ID_GROUP_SUBMENU				= 9001
 E_CONTROL_ID_LIST_SUBMENU				= 112
 E_CONTROL_ID_RADIO_SERVICETYPE_TV		= 113
 E_CONTROL_ID_RADIO_SERVICETYPE_RADIO	= 114
-#E_CONTROL_ID_BUTTON_EDITMODE			= 115
-#E_CONTROL_ID_BUTTON_DELETEALL			= 116
 E_CONTROL_ID_GROUP_CHANNEL_LIST			= 49
 E_CONTROL_ID_LIST_CHANNEL_LIST			= 50
 E_CONTROL_ID_LABEL_CHANNEL_NAME			= 303
@@ -28,6 +26,18 @@ E_CONTROL_ID_GROUP_COMPONENT_DATA		= 310
 E_CONTROL_ID_GROUP_COMPONENT_DOLBY		= 311
 E_CONTROL_ID_GROUP_COMPONENT_HD			= 312
 E_CONTROL_ID_LABEL_SELECT_NUMBER		= 401
+E_CONTROL_ID_GROUP_HELPBOX				= 600
+
+#xml property name
+E_XML_PROPERTY_SUBTITLE  = 'HasSubtitle'
+E_XML_PROPERTY_DOLBY     = 'HasDolby'
+E_XML_PROPERTY_HD        = 'HasHD'
+E_XML_PROPERTY_MARK      = 'mark'
+E_XML_PROPERTY_CAS       = 'icas'
+E_XML_PROPERTY_LOCK      = 'lock'
+E_XML_PROPERTY_RECORDING = 'rec'
+E_XML_PROPERTY_SKIP      = 'skip'
+E_XML_PROPERTY_EDITINFO  = 'helpbox'
 
 FLAG_MASK_ADD    = 0x01
 FLAG_MASK_NONE   = 0x00
@@ -45,17 +55,15 @@ FLAG_CLOCKMODE_ADMYHM   = 1
 FLAG_CLOCKMODE_AHM      = 2
 FLAG_CLOCKMODE_HMS      = 3
 FLAG_CLOCKMODE_HHMM     = 4
-FLAG_MODE_JUMP      = True
+FLAG_MODE_JUMP         = True
 
 #slide index
 E_SLIDE_ACTION_MAIN     = 0
 E_SLIDE_ACTION_SUB      = 1
-E_SLIDE_ALLCHANNEL      = 0
+E_SLIDE_MENU_ALLCHANNEL = 0
 E_SLIDE_MENU_SATELLITE  = 1
 E_SLIDE_MENU_FTACAS     = 2
 E_SLIDE_MENU_FAVORITE   = 3
-#E_SLIDE_MENU_EDITMODE  = 4
-#E_SLIDE_MENU_DELETEALL = 5
 E_SLIDE_MENU_BACK       = 5
 
 E_CONTROL_FOCUSED       = 9991
@@ -71,17 +79,6 @@ E_TAG_FALSE   = 'False'
 E_TAG_SET_SELECT_POSITION = 'selectItem'
 E_TAG_GET_SELECT_POSITION = 'getItem'
 E_TAG_ADD_ITEM = 'addItem'
-
-#xml property name
-E_XML_PROPERTY_SUBTITLE  = 'HasSubtitle'
-E_XML_PROPERTY_DOLBY     = 'HasDolby'
-E_XML_PROPERTY_HD        = 'HasHD'
-E_XML_PROPERTY_MARK      = 'mark'
-E_XML_PROPERTY_CAS       = 'icas'
-E_XML_PROPERTY_LOCK      = 'lock'
-E_XML_PROPERTY_RECORDING = 'rec'
-E_XML_PROPERTY_SKIP      = 'skip'
-
 
 #dialog menu
 CONTEXT_ACTION_LOCK				= 1 
@@ -132,7 +129,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
 
 
-	"""		
+	"""
 	def __del__(self):
 		LOG_TRACE( 'destroyed ChannelList' )
 
@@ -189,8 +186,6 @@ class ChannelListWindow( BaseWindow ) :
 		#sub menu btn
 		self.mCtrlRadioServiceTypeTV     = self.getControl( E_CONTROL_ID_RADIO_SERVICETYPE_TV )
 		self.mCtrlRadioServiceTypeRadio  = self.getControl( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO )
-		#self.mCtrlButtonEdit             = self.getControl( E_CONTROL_ID_BUTTON_EDITMODE )
-		#self.mCtrlButtonDelAll           = self.getControl( E_CONTROL_ID_BUTTON_DELETEALL )
 
 		#ch list
 		self.mCtrlGroupCHList            = self.getControl( E_CONTROL_ID_GROUP_CHANNEL_LIST )
@@ -204,10 +199,12 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlLabelLongitudeInfo     = self.getControl( E_CONTROL_ID_LABEL_LONGITUDE_INFO )
 		self.mCtrlLabelCareerInfo        = self.getControl( E_CONTROL_ID_LABEL_CAREER_INFO )
 		self.mCtrlLabelLockedInfo        = self.getControl( E_CONTROL_ID_GROUP_LOCKED_INFO )
-		self.mCtrlGroupComponentData     = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_DATA )
-		self.mCtrlGroupComponentDolby    = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_DOLBY )
-		self.mCtrlGroupComponentHD       = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_HD )
+		#self.mCtrlGroupComponentData     = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_DATA )
+		#self.mCtrlGroupComponentDolby    = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_DOLBY )
+		#self.mCtrlGroupComponentHD       = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_HD )
 		self.mCtrlLabelSelectItem        = self.getControl( E_CONTROL_ID_LABEL_SELECT_NUMBER )
+		#self.mCtrlGroupHelpBox           = self.getControl( E_CONTROL_ID_GROUP_HELPBOX )
+
 
 		self.mIsSelect = False
 		self.mIsMark = True
@@ -270,7 +267,7 @@ class ChannelListWindow( BaseWindow ) :
 	def onAction(self, aAction):
 		id = aAction.getId( )
 
-		self.GlobalAction( id )		
+		self.GlobalAction( id )
 
 		if id >= Action.REMOTE_0 and id <= Action.REMOTE_9:
 			self.SetTuneByNumber( id-Action.REMOTE_0 )
@@ -289,12 +286,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			if self.mFocusId == E_CONTROL_ID_LIST_MAINMENU :
 				position = self.mCtrlListMainmenu.getSelectedPosition( )
-
-				if position == E_SLIDE_MENU_BACK :
-					self.UpdateControlGUI( E_SLIDE_CLOSE )
-
-				else :
-					self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
+				self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
 
 		elif id == Action.ACTION_MOVE_RIGHT :
 			pass
@@ -351,18 +343,25 @@ class ChannelListWindow( BaseWindow ) :
 			self.SetGoBackWindow( WinMgr.WIN_ID_MEDIACENTER )
 
 		elif id == Action.ACTION_MBOX_ARCHIVE :
-			self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
-			self.SetGoBackWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+				self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
+				self.SetGoBackWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
 		elif id == Action.ACTION_SHOW_INFO :
-			self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
-			self.SetGoBackWindow( WinMgr.WIN_ID_EPG_WINDOW )
+			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+				self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
+				self.SetGoBackWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
 		elif id == Action.ACTION_MBOX_RECORD :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 				if self.mChannelList or len(self.mChannelList) > 0 :
 					self.ShowRecordingStartDialog()
 
+		elif id == Action.ACTION_MBOX_TVRADIO :
+			if self.mChannelListServiceType == FLAG_MODE_TV :
+				self.SetModeChanged( FLAG_MODE_RADIO )
+			else :
+				self.SetModeChanged( FLAG_MODE_TV )
 
 
 
@@ -383,12 +382,13 @@ class ChannelListWindow( BaseWindow ) :
 
 					#Mark mode
 					if self.mIsMark == True :
-						idx = self.mCtrlListCHList.getSelectedPosition( )
-						self.SetEditMarkupGUI( idx )
+						if self.mChannelList :
+							idx = self.mCtrlListCHList.getSelectedPosition( )
+							self.SetEditMarkupGUI( idx )
 
-						self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_GROUP_CHANNEL_LIST )
-						self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, idx+1, E_TAG_SET_SELECT_POSITION )
-						self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, str('%s'% (idx+1) ) )
+							self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_GROUP_CHANNEL_LIST )
+							self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, idx+1, E_TAG_SET_SELECT_POSITION )
+							self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, str('%s'% (idx+1) ) )
 
 				except Exception, e:
 					LOG_TRACE( 'Error except[%s]'% e )
@@ -405,16 +405,15 @@ class ChannelListWindow( BaseWindow ) :
 			#list action
 			position = self.mZappingMode
 			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
-
 			self.UpdateControlGUI( E_SLIDE_CLOSE )
 
-		elif aControlId == E_CONTROL_ID_BUTTON_OPT:
+		elif aControlId == E_CONTROL_ID_BUTTON_OPT :
 			self.ShowContextMenu( )
 
-		elif aControlId == E_CONTROL_ID_RADIO_SERVICETYPE_TV:
+		elif aControlId == E_CONTROL_ID_RADIO_SERVICETYPE_TV :
 			self.SetModeChanged( FLAG_MODE_TV )
 
-		elif aControlId == E_CONTROL_ID_RADIO_SERVICETYPE_RADIO:
+		elif aControlId == E_CONTROL_ID_RADIO_SERVICETYPE_RADIO :
 			self.SetModeChanged( FLAG_MODE_RADIO )
 
 
@@ -423,7 +422,7 @@ class ChannelListWindow( BaseWindow ) :
 		pass
 
 
-	@RunThread
+	#@RunThread
 	def LoadingThread( self ):
 		self.ShowRecordingInfo( )
 
@@ -513,7 +512,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mElisZappingModeInfo.mServiceType = aType
 
 			self.InitSlideMenuHeader( FLAG_ZAPPING_CHANGE )
-			self.RefreshSlideMenu( E_SLIDE_ALLCHANNEL, ElisEnum.E_MODE_ALL, True )
+			self.RefreshSlideMenu( E_SLIDE_MENU_ALLCHANNEL, ElisEnum.E_MODE_ALL, True )
 
 			self.mCtrlListCHList.reset( )
 			self.InitChannelList( )
@@ -552,7 +551,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			try :
 				self.mEventBus.Deregister( self )
-				self.mDataCache.SetSkipChannelToDBTable( True )
+				self.mDataCache.SetSkipChannelView( True )
 				self.ReloadChannelList( )
 
 				#clear label
@@ -592,7 +591,7 @@ class ChannelListWindow( BaseWindow ) :
 			if ret != E_DIALOG_STATE_CANCEL :
 				self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
 				self.mEventBus.Register( self )
-				self.mDataCache.SetSkipChannelToDBTable( False )
+				self.mDataCache.SetSkipChannelView( False )
 				self.ReloadChannelList( )
 				self.mFlag_EditChanged = False
 				self.mMoveFlag = False
@@ -741,9 +740,7 @@ class ChannelListWindow( BaseWindow ) :
 				ret = self.SaveSlideMenuHeader( )
 				if ret != E_DIALOG_STATE_CANCEL :
 					self.mEnableLocalThread = False
-					#self.EPGProgressThread( ).join( )
 					self.Close( )
-
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )				
 					return
@@ -764,7 +761,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateChannelAndEPG( )
 
 
-	def RefreshSlideMenu( self, aMainIndex = E_SLIDE_ALLCHANNEL, aSubIndex = ElisEnum.E_MODE_ALL, aForce = None ) :
+	def RefreshSlideMenu( self, aMainIndex = E_SLIDE_MENU_ALLCHANNEL, aSubIndex = ElisEnum.E_MODE_ALL, aForce = None ) :
 		self.mCtrlListMainmenu.selectItem( aMainIndex )
 		xbmc.sleep( 50 )
 		self.SubMenuAction( E_SLIDE_ACTION_MAIN, aMainIndex, aForce )
@@ -1076,8 +1073,6 @@ class ChannelListWindow( BaseWindow ) :
 						groupInfo = self.mListFavorite[self.mSelectSubSlidePosition]
 						self.mElisSetZappingModeInfo.mFavoriteGroup = groupInfo
 
-					iZappingList = []
-					iZappingList.append( self.mElisSetZappingModeInfo )
 					"""
 					LOG_TRACE( '1. zappingMode[%s] sortMode[%s] serviceType[%s]'%  \
 						( EnumToString('mode', self.mZappingMode),                 \
@@ -1091,7 +1086,7 @@ class ChannelListWindow( BaseWindow ) :
 
 					#save zapping mode
 					self.mDataCache.Channel_Save( )
-					ret = self.mDataCache.Zappingmode_SetCurrent( iZappingList )
+					ret = self.mDataCache.Zappingmode_SetCurrent( self.mElisSetZappingModeInfo )
 					if ret :
 						#### data cache re-load ####
 						self.mDataCache.LoadZappingmode( )
@@ -1105,6 +1100,7 @@ class ChannelListWindow( BaseWindow ) :
 					if self.mFlag_DeleteAll : 
 						#restore backup zapping
 						isRestore = self.mDataCache.Channel_Restore( True )
+						self.mDataCache.Channel_Save( )
 						LOG_TRACE( 'Restore[%s]'% isRestore )
 
 
@@ -1157,7 +1153,7 @@ class ChannelListWindow( BaseWindow ) :
 				isSave = self.mDataCache.Channel_Save( )
 
 				#### data cache re-load ####
-				self.mDataCache.SetSkipChannelToDBTable( False )
+				self.mDataCache.SetSkipChannelView( False )
 				self.mDataCache.LoadZappingmode( )
 				self.mDataCache.LoadZappingList( )
 				self.mDataCache.LoadChannelList( )
@@ -1166,20 +1162,20 @@ class ChannelListWindow( BaseWindow ) :
 			elif answer == E_DIALOG_STATE_NO :
 				self.mIsSave = FLAG_MASK_NONE
 				isSave = self.mDataCache.Channel_Restore( True )
+				self.mDataCache.Channel_Save( )
 				LOG_TRACE( 'Restore[%s]'% isSave )
-
 
 		return answer
 
 
-	def InitSlideMenuHeader( self, aZappingMode = FLAG_ZAPPING_LOAD ) :
+	def InitSlideMenuHeader( self, aInitLoad = FLAG_ZAPPING_LOAD ) :
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			#opt btn blind
 			self.UpdateControlGUI( E_CONTROL_ID_IMAGE_LISTMODE, True )
 			self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, False )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV, True, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO, True, E_TAG_ENABLE )
-			#self.UpdateControlGUI( E_CONTROL_ID_BUTTON_EDITMODE, MR_LANG('Edit Channel'), E_TAG_LABEL )
+			self.UpdatePropertyGUI( E_XML_PROPERTY_EDITINFO, E_TAG_FALSE )
 
 		else :
 			#opt btn visible
@@ -1187,7 +1183,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, True )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV, False, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO, False, E_TAG_ENABLE )
-			#self.UpdateControlGUI( E_CONTROL_ID_BUTTON_EDITMODE, MR_LANG('Save Channel'), E_TAG_LABEL )
+			self.UpdatePropertyGUI( E_XML_PROPERTY_EDITINFO, E_TAG_TRUE )
 
 		if self.mFlag_DeleteAll :
 			self.mZappingMode            = ElisEnum.E_MODE_ALL
@@ -1208,7 +1204,7 @@ class ChannelListWindow( BaseWindow ) :
 		GuiLock2( False )
 
 		#get last zapping mode
-		if aZappingMode == FLAG_ZAPPING_LOAD :
+		if aInitLoad == FLAG_ZAPPING_LOAD :
 			try:
 				if self.mFlag_EditChanged :
 					zappingMode = self.mDataCache.Zappingmode_GetCurrent( FLAG_ZAPPING_CHANGE )
@@ -1308,6 +1304,16 @@ class ChannelListWindow( BaseWindow ) :
 		self.mLastMainSlidePosition = self.mSelectMainSlidePosition
 		self.mLastSubSlidePosition = self.mSelectSubSlidePosition
 
+		#get channel list by last on zapping mode, sorting, service type
+		self.mNavChannel = None
+		self.mChannelList = None
+
+		#self.mChannelList = self.mDataCache.Channel_GetList( True, self.mChannelListServiceType, self.mZappingMode, self.mChannelListSortMode )
+		if self.mFlag_EditChanged :
+			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mSelectSubSlidePosition, True )
+		else :
+			self.mChannelList = self.mDataCache.Channel_GetList( FLAG_ZAPPING_LOAD, self.mChannelListServiceType, self.mZappingMode, self.mChannelListSortMode )
+
 		#path tree, Mainmenu/Submanu
 		label = ''
 		label1 = EnumToString('mode', self.mZappingMode)
@@ -1319,25 +1325,24 @@ class ChannelListWindow( BaseWindow ) :
 			label = '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% ( label1.upper( ),label2.title( ),label3.title( ) )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_PATH, label )
 
-		#get channel list by last on zapping mode, sorting, service type
-		self.mNavChannel = None
-		self.mChannelList = None
 
-		self.mChannelList = self.mDataCache.Channel_GetList( True, self.mChannelListServiceType, self.mZappingMode, self.mChannelListSortMode )
-
-		"""
-		LOG_TRACE('>>>>>>>>>>>>>>>>>>>>>>>>>flag_editChange[%s] len[%s] datachche[%s]'% (self.mFlag_EditChanged, len(self.mChannelList), len(self.mDataCache.mChannelList) ))
 		lblSkip = 'skipped'
+		lblTable= 'all'
 		if self.mDataCache.mSkip :
 			lblSkip = 'all'
-		LOG_TRACE( '>>>>>>>>>>>>>>>>>>>>>>>>>> table[%s]'% lblSkip)
+		if self.mDataCache.mChannelListDBTable :
+			lblTable = 'zapping'
+		LOG_TRACE( '>>>>>>>>>>>>>>>>>>>>>>>>>> skip[%s] table[%s]'% (lblSkip, lblTable) )
+		LOG_TRACE( 'zappingMode[%s] sortMode[%s] serviceType[%s]'% \
+			( EnumToString('mode', self.mZappingMode),             \
+			  EnumToString('sort', self.mChannelListSortMode),     \
+			  EnumToString('type', self.mChannelListServiceType) ) )
 		if self.mChannelList :
-			LOG_TRACE( 'zappingMode[%s] sortMode[%s] serviceType[%s]'% \
-				( EnumToString('mode', self.mZappingMode),             \
-				  EnumToString('sort', self.mChannelListSortMode),     \
-				  EnumToString('type', self.mChannelListServiceType) ) )
-			LOG_TRACE( 'len[%s] ch[%s]'% (len(self.mChannelList),ClassToList( 'convert', self.mChannelList ) ) )
-		"""
+			LOG_TRACE('>>>>>>>>>>>>>>>>>>>>>>>>>flag_editChange[%s] len[%s] datachche[%s]'% (self.mFlag_EditChanged, len(self.mChannelList), len(self.mDataCache.mChannelList) ))
+			#LOG_TRACE( 'len[%s] ch[%s]'% (len(self.mChannelList),ClassToList( 'convert', self.mChannelList ) ) )
+		else :
+			LOG_TRACE('>>>>>>>>>>>>>>>>>>>>>>>>>flag_editChange[%s] len[%s] datachche[%s]'% (self.mFlag_EditChanged, self.mChannelList, self.mDataCache.mChannelList ))
+
 
 
 	def InitChannelList(self):
@@ -1348,6 +1353,7 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mChannelList == None:
 			label = MR_LANG('Empty Channels')
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, '0' )
 			return 
 
 		if self.mListItems == None :
@@ -1384,10 +1390,15 @@ class ChannelListWindow( BaseWindow ) :
 
 		#detected to last focus
 		iChannelIdx = 0
+		isFind = True
 		for iChannel in self.mChannelList:
 			if iChannel.mNumber == self.mCurrentChannel :
+				isFind = False
 				break
 			iChannelIdx += 1
+
+		if isFind == False :
+			iChannelIdx = 0
 
 		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, iChannelIdx, E_TAG_SET_SELECT_POSITION )
 		xbmc.sleep( 50 )
@@ -1418,9 +1429,9 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlLabelLongitudeInfo.setLabel('')
 		self.mCtrlLabelCareerInfo.setLabel('')
 		self.mCtrlLabelLockedInfo.setVisible(False)
-		self.mWin.setProperty( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
-		self.mWin.setProperty( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
-		self.mWin.setProperty( E_XML_PROPERTY_HD,       E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE,  E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY, E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,    E_TAG_FALSE )
 
 
 	def InitEPGEvent( self ) :
@@ -1503,15 +1514,6 @@ class ChannelListWindow( BaseWindow ) :
 		elif aCtrlID == E_CONTROL_ID_GROUP_LOCKED_INFO :
 			self.mCtrlLabelLockedInfo.setVisible( aValue )
 
-		elif aCtrlID == E_CONTROL_ID_GROUP_COMPONENT_DATA :
-			self.mWin.setProperty( E_XML_PROPERTY_SUBTITLE, aValue )
-
-		elif aCtrlID == E_CONTROL_ID_GROUP_COMPONENT_DOLBY :
-			self.mWin.setProperty( E_XML_PROPERTY_DOLBY, aValue )
-
-		elif aCtrlID == E_CONTROL_ID_GROUP_COMPONENT_HD :
-			self.mWin.setProperty( E_XML_PROPERTY_HD, aValue )
-
 		elif aCtrlID == E_CONTROL_ID_GROUP_OPT :
 			self.mCtrlGroupOpt.setVisible( aValue )
 
@@ -1551,16 +1553,13 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlListCHList.setEnabled( True )
 			self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
 
-		"""
-		elif aCtrlID == E_CONTROL_ID_BUTTON_EDITMODE :
-			if aExtra == E_TAG_ENABLE :
-				self.mCtrlButtonEdit.setEnabled( aValue )
-			elif aExtra == E_TAG_LABEL :
-				self.mCtrlButtonEdit.setLabel( aValue )
 
-		elif aCtrlID == E_CONTROL_ID_BUTTON_DELETEALL :
-			self.mCtrlButtonDelAll.setLabel( aValue )
-		"""
+	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :
+		#LOG_TRACE( 'Enter property[%s] value[%s]'% (aPropertyID, aValue) )
+		if aPropertyID == None :
+			return
+
+		self.mWin.setProperty( aPropertyID, aValue )
 
 
 	def UpdateChannelAndEPG( self ) :
@@ -1628,9 +1627,9 @@ class ChannelListWindow( BaseWindow ) :
 				#component
 				setPropertyList = []
 				setPropertyList = GetPropertyByEPGComponent( self.mNavEpg )
-				self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_DATA,  setPropertyList[0] )
-				self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_DOLBY, setPropertyList[1] )
-				self.UpdateControlGUI( E_CONTROL_ID_GROUP_COMPONENT_HD,    setPropertyList[2] )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, setPropertyList[0] )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    setPropertyList[1] )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       setPropertyList[2] )
 
 
 				"""
@@ -2173,7 +2172,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		self.mMarkList = []
-		self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_GROUP_CHANNEL_LIST )
+		#self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_GROUP_CHANNEL_LIST )
 
 
 	def EditSettingWindowContext( self, aMode, aMove = None ) :
@@ -2219,9 +2218,7 @@ class ChannelListWindow( BaseWindow ) :
 			if not self.mChannelList :
 				context = []
 
-			labelString = '%s - %s -'% ( MR_LANG('Add to Channel'), self.mEditFavorite[self.mSelectSubSlidePosition] )
-			context.append( ContextItem( labelString, CONTEXT_ACTION_ADD_TO_CHANNEL ) )
-			context.append( ContextItem( '%s'% MR_LANG('Create New Group'), CONTEXT_ACTION_CREATE_GROUP_FAV ) )
+			context.append( ContextItem( '%s'% MR_LANG('Add Channel Fav. Group'), CONTEXT_ACTION_ADD_TO_CHANNEL ) )
 			context.append( ContextItem( '%s'% MR_LANG('Rename Fav. Group'), CONTEXT_ACTION_RENAME_FAV ) )
 
 		context.append( ContextItem( '%s'% MR_LANG('Save Exit'), CONTEXT_ACTION_SAVE_EXIT ) )
@@ -2517,7 +2514,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mListItems = None
 		self.mCtrlListCHList.reset( )
 		self.InitSlideMenuHeader( aInit )
-		self.RefreshSlideMenu( E_SLIDE_ALLCHANNEL, ElisEnum.E_MODE_ALL, True )
+		self.RefreshSlideMenu( E_SLIDE_MENU_ALLCHANNEL, ElisEnum.E_MODE_ALL, True )
 		self.InitChannelList( )
 		self.UpdateControlGUI( E_SLIDE_CLOSE )
 

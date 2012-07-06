@@ -73,6 +73,7 @@ class DataCacheMgr( object ):
 
 		self.mZappingMode						= None
 		self.mChannelList						= None
+		self.mAllChannelList					= None
 		self.mCurrentChannel					= None
 		self.mOldChannel						= None
 		self.mLocalOffset						= 0
@@ -455,7 +456,7 @@ class DataCacheMgr( object ):
 			self.mChannelListDBTable = aTable
 
 
-	def SetSkipChannelToDBTable( self, aSkip ) :
+	def SetSkipChannelView( self, aSkip ) :
 		if SUPPORT_CHANNEL_DATABASE :
 			self.mSkip = aSkip
 
@@ -487,7 +488,7 @@ class DataCacheMgr( object ):
 				mSort = self.mZappingMode.mSortingMode
 
 			if mMode == ElisEnum.E_MODE_ALL :
-				tmpChannelList = self.Channel_GetList( True, mType, mMode, mSort, self.mSkip )
+				tmpChannelList = self.Channel_GetList( True, mType, mMode, mSort )
 
 			elif mMode == ElisEnum.E_MODE_SATELLITE :
 				mLongitude = self.mZappingMode.mSatelliteInfo.mLongitude
@@ -578,11 +579,13 @@ class DataCacheMgr( object ):
 			self.mListCasList   = self.mCommander.Fta_cas_GetList( serviceType )
 			self.mListFavorite  = self.mCommander.Favorite_GetList( serviceType )
 
-	def Zappingmode_SetCurrent( self , aZappingMode, aSync = 0 ) :
+	def Zappingmode_SetCurrent( self, aZappingMode ) :
 		ret = False
-		ret = self.mCommander.Zappingmode_SetCurrent( aZappingMode )
+		zappingList = []
+		zappingList.append( aZappingMode )
+		ret = self.mCommander.Zappingmode_SetCurrent( zappingList )
 		if ret == True :
-			self.mZappingMode = aZappingMode[0]
+			self.mZappingMode = aZappingMode
 
 		return ret
 
@@ -619,7 +622,7 @@ class DataCacheMgr( object ):
 			return self.mListFavorite
 
 
-	def Channel_GetList( self, aTemporaryReload = 0, aType = 0, aMode = 0, aSort = 0, aSkip = False ) :
+	def Channel_GetList( self, aTemporaryReload = 0, aType = 0, aMode = 0, aSort = 0 ) :
 		if aTemporaryReload :
 			if SUPPORT_CHANNEL_DATABASE	== True :
 				channelDB = ElisChannelDB()
@@ -633,14 +636,32 @@ class DataCacheMgr( object ):
 			return self.mChannelList
 
 
-	def Channel_GetListByAllChannel( self ) :
-		channelList = []
+	#ToDO : Call this function when channels are added or deleted. ( aServiceType = CurrentServieType, aUseCache=False )
+	def Channel_GetAllChannels( self, aServiceType, aUseCache=True ) :
+		LOG_TRACE( 'Reload AllChannels')
 		if SUPPORT_CHANNEL_DATABASE	== True :
-			channelDB = ElisChannelDB()
-			channelList = channelDB.Channel_GetList( self.mZappingMode.mServiceType, self.mZappingMode.mMode, self.mZappingMode.mSortingMode )
-			channelDB.Close()
+			LOG_TRACE( 'Reload AllChannels')		
+			if aUseCache :
+				LOG_TRACE( 'Reload AllChannels')			
+				if self.mAllChannelList and len( self.mAllChannelList ) > 0 :
+					LOG_TRACE( 'Reload AllChannels')				
+					channel =  self.mAllChannelList[0]
+					if channel.mServiceType == aServiceType :
+						LOG_TRACE( 'Reload AllChannels')					
+						return self.mAllChannelList
 
-		return channelList
+			LOG_TRACE( 'Reload AllChannels')
+
+			channelDB = ElisChannelDB()
+			self.mAllChannelList = channelDB.Channel_GetList( aServiceType, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER )
+			channelDB.Close()
+			return self.mAllChannelList
+
+		else :
+			return self.mCommander.Channel_GetList( aType, aMode, aSort )
+
+		LOG_TRACE( 'Reload AllChannels')
+		return None
 
 
 	def Channel_GetCurrent( self, aTemporaryReload = 0 ) :
@@ -919,15 +940,14 @@ class DataCacheMgr( object ):
 		return eventList
 
 
-	def Epgevent_GetCurrentListByEpgCF( self ) :
+	def Epgevent_GetCurrentListByEpgCF( self, aSerciveType ) :
 		eventList = None
 
 		if SUPPORT_EPG_DATABASE	== True :
-			zappingMode = self.Zappingmode_GetCurrent( )
 			epgStart = 0 #end - start = 0 : all channel following
 			epgEnd = 0
 
-			ret = self.mCommander.Epgevnt_GetCurrentDB( zappingMode.mServiceType, epgStart, epgEnd )
+			ret = self.mCommander.Epgevnt_GetCurrentDB( aSerciveType, epgStart, epgEnd )
 			if ret :
 				self.mEpgDB = ElisEPGDB( E_EPG_DB_CF )
 				eventList = self.mEpgDB.Epgevent_GetListFromEpgCF( E_EPG_DB_CF_GET_BY_CURRENT )
@@ -936,15 +956,14 @@ class DataCacheMgr( object ):
 		return eventList
 
 
-	def Epgevent_GetFollowingListByEpgCF( self ) :
+	def Epgevent_GetFollowingListByEpgCF( self, aSerciveType ) :
 		eventList = None
 
 		if SUPPORT_EPG_DATABASE	== True :
-			zappingMode = self.Zappingmode_GetCurrent( )
 			epgStart = 0 #end - start = 0 : all channel following
 			epgEnd = 0
 
-			ret = self.mCommander.Epgevent_GetFollowingDB( zappingMode.mServiceType, epgStart, epgEnd )
+			ret = self.mCommander.Epgevent_GetFollowingDB( aSerciveType, epgStart, epgEnd )
 			if ret :
 				self.mEpgDB = ElisEPGDB( E_EPG_DB_CF )
 				eventList = self.mEpgDB.Epgevent_GetListFromEpgCF( E_EPG_DB_CF_GET_BY_FOLLOWING )
@@ -1277,5 +1296,56 @@ class DataCacheMgr( object ):
 					break
 
 		return findTimer
+
+
+	def ToggleTVRadio( self ) :
+
+		try :
+			LOG_TRACE( 'LAEL98 - TVRADIO' )
+
+			zappingMode= self.Zappingmode_GetCurrent( )
+			LOG_TRACE( 'LAEL98 Current ZappingMode' )
+			zappingMode.printdebug( )
+
+			LOG_TRACE( 'LAEL98' )
+			newZappingMode = ElisIZappingMode( )
+			LOG_TRACE( 'LAEL98 create ZappingMode' )
+			newZappingMode.printdebug( )
+
+			if zappingMode.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
+				newZappingMode.mServiceType = ElisEnum.E_SERVICE_TYPE_RADIO 
+			else :
+				newZappingMode.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
+
+			LOG_TRACE( 'LAEL98 new ZappingMode' )
+			newZappingMode.printdebug( )
+
+			self.Zappingmode_SetCurrent( newZappingMode )
+
+			self.LoadZappingmode( )
+			self.LoadZappingList( )
+			self.LoadChannelList( )
+
+			zappingMode= self.Zappingmode_GetCurrent( )
+			zappingMode.printdebug( )
+			self.Channel_InvalidateCurrent( )
+
+			if zappingMode.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
+				lastChannelNumber = ElisPropertyInt( 'Last TV Number', self.mCommander ).GetProp( )
+				self.Channel_SetCurrent( lastChannelNumber, ElisEnum.E_SERVICE_TYPE_TV )				
+			else :
+				lastChannelNumber = ElisPropertyInt( 'Last Radio Number', self.mCommander ).GetProp( )
+				self.Channel_SetCurrent( lastChannelNumber, ElisEnum.E_SERVICE_TYPE_RADIO )				
+
+
+			channel = self.Channel_GetCurrent( )
+			LOG_TRACE( 'LAEL98 get Current Channel after zappingMode channge' )
+			if channel :
+				channel.printdebug( )
+			elif self.mChannelList and len( self.mChannelList ) > 0 :
+				self.Channel_SetCurrent( 1, zappingMode.mServiceType )							
+
+		except Exception, ex:
+			LOG_ERR( "Exception %s" %ex)
 
 

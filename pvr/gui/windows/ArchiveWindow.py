@@ -5,6 +5,10 @@ BUTTON_ID_VIEW_MODE				= 100
 BUTTON_ID_SORT_MODE				= 101
 TOGGLEBUTTON_ID_ASC				= 102
 RADIIOBUTTON_ID_EXTRA			= 103
+
+LABEL_ID_PLAY_NAME				= 401
+PROGRESS_ID_PLAY_PROGRESS		= 402
+
 LIST_ID_COMMON_RECORD			= 3400
 LIST_ID_THUMBNAIL_RECORD		= 3410
 LIST_ID_POSTERWRAP_RECORD		= 3420
@@ -44,12 +48,20 @@ class ArchiveWindow( BaseWindow ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mSelectRecordKey = -1
 		self.mExitByPlay = False
-
+		self.mPlayingRecord = None
+		self.mPlayProgressThread = None
+		self.mEnableThread = False
 	
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
+		if self.mPlayingRecord :
+			self.mEventBus.Register( self )
+			self.UpdatePlayStatus( )
+			self.CheckVideoSize( )
+			return
+			
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Archive' )
 
 		self.mRecordCount = 0
@@ -78,11 +90,16 @@ class ArchiveWindow( BaseWindow ) :
 			self.mAscending[E_SORT_TITLE] = True
 			self.mAscending[E_SORT_DURATION] = False
 
-
 			self.mCtrlCommonList = self.getControl( LIST_ID_COMMON_RECORD )
 			self.mCtrlThumbnailList = self.getControl( LIST_ID_THUMBNAIL_RECORD )
 			self.mCtrlPosterwrapList = self.getControl( LIST_ID_POSTERWRAP_RECORD )
 			self.mCtrlFanartList = self.getControl( LIST_ID_FANART_RECORD )
+
+			self.mCtrlPlayName = self.getControl( LABEL_ID_PLAY_NAME )
+			self.mCtrlPlayProgress = self.getControl( PROGRESS_ID_PLAY_PROGRESS )
+			self.mPlayPerent = 0
+			self.mCtrlPlayProgress.setPercent( self.mPlayPerent ) 			
+
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
 
@@ -98,6 +115,7 @@ class ArchiveWindow( BaseWindow ) :
 
 		self.UpdateList( )
 		self.SelectLastRecordKey( )		
+		self.UpdatePlayStatus( )
 
 		self.mInitialized = True
 
@@ -118,6 +136,9 @@ class ArchiveWindow( BaseWindow ) :
 			if self.mDataCache.mStatusIsArchive :
 				self.mDataCache.Player_Stop( )
 				self.mDataCache.mStatusIsArchive = False
+
+			self.mPlayingRecord	= None
+			self.Close( )
 			self.SetVideoRestore( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
@@ -126,7 +147,7 @@ class ArchiveWindow( BaseWindow ) :
 				if	self.mMarkMode == True :
 					self.DoMarkToggle( )
 				else :
-					self.StartRecordPlayback( )
+					self.StartRecordPlayback( True )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT or actionId == Action.ACTION_MOVE_LEFT :
 			if focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD :
@@ -146,9 +167,22 @@ class ArchiveWindow( BaseWindow ) :
 			self.ShowContextMenu( )
 
 		elif actionId == Action.ACTION_STOP :
-			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
-				self.mLastFocusItem = -1	
-				ret = self.mDataCache.Player_Stop( )
+			self.StopRecordPlayback( )
+
+		elif actionId == Action.ACTION_MBOX_TVRADIO :
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode == ElisEnum.E_MODE_LIVE :
+				if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
+					self.mServiceType = ElisEnum.E_SERVICE_TYPE_RADIO
+				else :
+					self.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
+
+				self.Flush( )
+				self.Load( )
+				self.UpdateList( )
+					
+			else :
+				xbmcgui.Dialog( ).ok('Infomation', 'Now playing. Try again after stop player' )
 
 	
 	def onClick( self, aControlId ) :
@@ -212,10 +246,8 @@ class ArchiveWindow( BaseWindow ) :
 
 	def InitControl( self ) :
 
-		LOG_TRACE('LAEL98')		
 		if self.mViewMode == E_VIEW_LIST :
 			self.mCtrlViewMode.setLabel('VIEW: LIST')
-			LOG_TRACE('LAEL98')		
 		elif self.mViewMode == E_VIEW_THUMBNAIL :			
 			self.mCtrlViewMode.setLabel('VIEW: THUMBNAIL')		
 		elif self.mViewMode == E_VIEW_POSTER_WRAP :			
@@ -225,9 +257,7 @@ class ArchiveWindow( BaseWindow ) :
 		else :
 			LOG_WARN('Unknown view mode')
 
-		LOG_TRACE('LAEL98')					
 		if self.mSortMode == E_SORT_DATE :
-			LOG_TRACE('LAEL98')				
 			self.mCtrlSortMode.setLabel('SORT: DATE')
 		elif self.mSortMode == E_SORT_CHANNEL :			
 			self.mCtrlSortMode.setLabel('SORT: CHANNEL')		
@@ -238,15 +268,11 @@ class ArchiveWindow( BaseWindow ) :
 		else :
 			LOG_WARN('Unknown sort mode')
 
-		LOG_TRACE('LAEL98')					
-
 
 	def UpdateViewMode( self ) :
 		LOG_TRACE('--------------------- self.mViewMode=%d' %self.mViewMode)
 		if self.mViewMode == E_VIEW_LIST :
-			LOG_TRACE('LAEL98')
 			self.mWin.setProperty( 'ViewMode', 'common' )
-			LOG_TRACE('LAEL98')
 		elif self.mViewMode == E_VIEW_THUMBNAIL :			
 			self.mWin.setProperty( 'ViewMode', 'thumbnail' )
 		elif self.mViewMode == E_VIEW_POSTER_WRAP :			
@@ -351,6 +377,11 @@ class ArchiveWindow( BaseWindow ) :
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
 
+		self.CheckVideoSize( )
+		LOG_TRACE('UpdateList END')
+
+
+	def CheckVideoSize( self ) :
 		if self.mViewMode == E_VIEW_LIST :
 			self.SetPipScreen( )		
 			self.mCtrlCommonList.addItems( self.mRecordListItems )		
@@ -373,7 +404,6 @@ class ArchiveWindow( BaseWindow ) :
 		else :
 			LOG_WARN('Unknown view mode')
 
-		LOG_TRACE('UpdateList END')
 
 	def ByDate( self, aRec1, aRec2 ) :
 		return cmp( aRec1.mStartTime, aRec2.mStartTime )
@@ -431,9 +461,17 @@ class ArchiveWindow( BaseWindow ) :
 		"""
 
 
+	def StopRecordPlayback( self ) :
+		if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+			self.mLastFocusItem = -1	
+			ret = self.mDataCache.Player_Stop( )
+			self.UpdatePlayStatus( )
+
+
 	def StartRecordPlayback( self, aResume=True ) :
 		selectedPos = self.GetSelectedPosition( )
 		if self.mLastFocusItem == selectedPos :
+			self.Close( )
 			self.SetVideoRestore( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 		else :		
@@ -442,17 +480,24 @@ class ArchiveWindow( BaseWindow ) :
 				if recInfo.mLocked == True :
 					if self.CheckPincode() == False :
 						return False
-				
+
+				LOG_TRACE( 'played offset=%d' %recInfo.mPlayedOffset )
+				self.mPlayingRecord = recInfo
+
 				if aResume == True :
 					#ToDO
 					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
+					#self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, recInfo.mPlayedOffset, 100 )
 				else :
-					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )			
+					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
 
+				self.UpdatePlayStatus( )
+				
 			self.mDataCache.SetKeyDisabled( True, recInfo )
 			self.RestoreLastRecordKey( )
 			self.mLastFocusItem = selectedPos
 			if self.mViewMode != E_VIEW_LIST :
+				self.Close( )
 				self.SetVideoRestore( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
@@ -492,6 +537,12 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def ShowContextMenu( self ) :
+
+		status = self.mDataCache.Player_GetStatus( )
+		if status.mMode == ElisEnum.E_MODE_PVR :
+			xbmcgui.Dialog( ).ok('Infomation', 'Now playing. Try again after stop player' )
+			return
+	
 		try :
 			selectedPos = self.GetSelectedPosition()
 			context = []
@@ -790,7 +841,9 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def Close( self ) :
-		pass
+		self.mEnableThread = False
+		if self.mPlayProgressThread :
+			self.mPlayProgressThread.join( )
 
 
 	def UpdateSelectedPosition( self ) :
@@ -864,4 +917,67 @@ class ArchiveWindow( BaseWindow ) :
 
 		self.UpdateSelectedPosition( )
 		self.UpdateArchiveInfomation( )
-	
+
+
+	def UpdatePlayStatus( self ) :
+		status = self.mDataCache.Player_GetStatus( )
+
+		#Playing Name
+		if status.mMode == ElisEnum.E_MODE_PVR :
+			if self.mPlayingRecord :
+				self.mCtrlPlayName.setLabel( self.mPlayingRecord.mRecordName )
+
+				if self.mEnableThread == True and self.mPlayProgressThread :
+					self.mEnableThread = False				
+					self.mPlayProgressThread.join( )
+				
+				self.mEnableThread = True
+				self.mPlayProgressThread = self.PlayProgressThread( )
+				
+			else :
+				if self.mEnableThread == True and self.mPlayProgressThread :
+					self.mEnableThread = False
+					self.mPlayProgressThread.join( )
+
+				self.mCtrlPlayProgress.setPercent( 0 ) 
+				self.mCtrlPlayName.setLabel( '' )
+				
+		else :
+			self.mPlayingRecord = None
+			if self.mEnableThread == True and self.mPlayProgressThread :
+				self.mEnableThread = False			
+				self.mPlayProgressThread.join( )
+
+			self.mCtrlPlayProgress.setPercent( 0 )			
+			channel = self.mDataCache.Channel_GetCurrent( )
+			if channel :
+				self.mCtrlPlayName.setLabel( channel.mName )
+			else :
+				self.mCtrlPlayName.setLabel( '' )				
+
+
+	@RunThread
+	def PlayProgressThread( self ):
+		while self.mEnableThread:
+			self.UpdatePlayProgress( )
+			time.sleep(1)
+
+
+	@GuiLock
+	def UpdatePlayProgress( self ) :
+		status = self.mDataCache.Player_GetStatus( )
+		if status == None or status.mError != 0 :
+			LOG_ERR( 'Player_GetStatus fail')
+			return
+
+		self.mPlayPerent = 0
+		if status.mMode == ElisEnum.E_MODE_PVR and status.mEndTimeInMs > 0 :
+			self.mPlayPerent = int ( (status.mPlayTimeInMs - status.mStartTimeInMs)*100 / status.mEndTimeInMs )
+			if self.mPlayPerent < 1 :
+				self.mPlayPerent = 1
+
+		LOG_TRACE( 'Update PlayProgress = %d [%d,%d,%d]' %(self.mPlayPerent, status.mPlayTimeInMs, status.mStartTimeInMs, status.mEndTimeInMs ) )
+		
+		self.mCtrlPlayProgress.setPercent( self.mPlayPerent ) 
+
+

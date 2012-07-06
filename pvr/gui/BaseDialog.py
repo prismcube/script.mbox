@@ -85,6 +85,8 @@ class ControlItem:
 	E_SETTING_OK_CANCEL_BUTTON				= 4
 	E_SETTING_CLOSE_BUTTON					= 5
 	E_SETTING_LIST_CONTROL					= 6
+	E_LABEL_CONTROL							= 7
+	E_CUSTOM_CONTROL						= 99
 	
 
 	def __init__( self, aControlType, aControlId, aProperty, aListItems, aSelecteItem, aDescription ):	
@@ -92,7 +94,10 @@ class ControlItem:
 		self.mControlId  = aControlId
 		self.mProperty = aProperty		# E_SETTING_ENUM_CONTROL : propery, E_SETTING_INPUT_CONTROL : input type
 		self.mListItems = aListItems
-		self.mEnable	= True
+		if self.mControlType == self.E_LABEL_CONTROL :
+			self.mEnable	= False
+		else:
+			self.mEnable	= True
 		self.mDescription = aDescription
 		self.mSelecteItem = aSelecteItem
 	
@@ -209,6 +214,14 @@ class SettingDialog( BaseDialog ):
 		self.mIsOkCancelType = True
 
 
+	def AddLabelControl( self, aControlId, aDescription=None ):
+		self.mControlList.append( ControlItem( ControlItem.E_LABEL_CONTROL, aControlId, None, None, None, aDescription ) )
+
+
+	def AddCustomControl( self, aControlId, aDescription=None ):
+		self.mControlList.append( ControlItem( ControlItem.E_CUSTOM_CONTROL, aControlId, None, None, None, aDescription ) )
+
+
 	def HasControlItem( self, aCtrlItem, aContgrolId  ):
 		if aCtrlItem.mControlType == aCtrlItem.E_SETTING_ENUM_CONTROL or aCtrlItem.mControlType == aCtrlItem.E_SETTING_USER_ENUM_CONTROL :
 			if aCtrlItem.mControlId == aContgrolId or aCtrlItem.mControlId + 1 == aContgrolId or aCtrlItem.mControlId + 2 == aContgrolId or aCtrlItem.mControlId + 3 == aContgrolId  :
@@ -310,6 +323,8 @@ class SettingDialog( BaseDialog ):
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
 					return self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).getLabel( )
+				elif ctrlItem.mControlType == ctrlItem.E_LABEL_CONTROL :
+					return self.getControl( ctrlItem.mControlId ).getLabel( )				
 
 		return -1
 
@@ -336,6 +351,8 @@ class SettingDialog( BaseDialog ):
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
 					self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).setLabel( aLabel )
+				elif ctrlItem.mControlType == ctrlItem.E_LABEL_CONTROL :
+					self.getControl( ctrlItem.mControlId ).setLabel( aLabel )				
 
 		return -1
 
@@ -392,6 +409,19 @@ class SettingDialog( BaseDialog ):
 				return True
 
 		return False
+
+
+	def GetEnableControl( self, aControlId ) :
+
+		count = len( self.mControlList )
+
+		for i in range( count ) :
+			ctrlItem = self.mControlList[i]
+			if aControlId == ctrlItem.mControlId :
+				return ctrlItem.mEnable
+
+		return False
+
 
 	def SetEnableControls( self, aControlIds, mEnable ) :
 		for controlId in aControlIds :
