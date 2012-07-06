@@ -219,7 +219,7 @@ class LivePlate( BaseWindow ) :
 			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 			else :
-				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_ROOTWINDOW )
+				WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 
 		elif id == Action.ACTION_SELECT_ITEM:
@@ -726,7 +726,7 @@ class LivePlate( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-	@RunThread
+	#@RunThread
 	def LoadingThread( self ):
 		self.ShowRecordingInfo( )
 		self.InitControlGUI()
