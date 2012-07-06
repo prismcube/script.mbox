@@ -83,6 +83,7 @@ class SystemInfo( SettingWindow ) :
 				self.mCheckHiddenPattern2	= False
 				self.mCheckHiddenPattern3	= False
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_HIDDEN_TEST, WinMgr.WIN_ID_NULLWINDOW )
+				return
 			self.mCheckHiddenPattern3 = True
 		else :
 			self.mCheckHiddenPattern1	= False

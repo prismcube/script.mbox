@@ -1,5 +1,5 @@
 from pvr.gui.WindowImport import *
-import pvr.HiddenTestMgr as TestMgr
+from pvr.HiddenTestMgr import *
 
 
 FILE_NAME_TEST	=	'/home/root/elmo_test.xml'
@@ -8,10 +8,11 @@ FILE_NAME_TEST	=	'/home/root/elmo_test.xml'
 class HiddenTest( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
-		self.mSoup = None
+		self.mRoot = None
 
 
 	def onInit( self ) :
+		print 'dhkim test #1'
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		self.CheckTestFile( )
@@ -28,13 +29,14 @@ class HiddenTest( BaseWindow ) :
 
 	def onClick( self, aControlId ) :
 		pass
-		
+
  
 	def onFocus( self, aControlId ) :
 		pass
 
 
 	def CheckTestFile( self ) :
+		print 'dhkim test check test file'
 		if os.path.exists( FILE_NAME_TEST ) == True :
 			self.ShowContextMenu( )
 		else :
@@ -45,17 +47,17 @@ class HiddenTest( BaseWindow ) :
 
 
 	def ShowContextMenu( self ) :
-		from BeautifulSoup import BeautifulSoup
-		fp = open( FILE_NAME_TEST )
-		xml = fp.read( )
-		fp.close( )
-		self.mSoup = BeautifulSoup( xml )
-
+		print 'dhkim test show context'
+		from elementtree import ElementTree
+		tree = ElementTree.parse( FILE_NAME_TEST )
+		self.mRoot = tree.getroot( )
+		
 		context = []
 		menuCount = 0
 
-		for node in self.mSoup.findAll( 'name' ) :
-			context.append( ContextItem( node.string.encode( 'utf-8' ), menuCount ) )
+		for scenario in self.mRoot.findall( 'scenario' ) :
+			for name in scenario.findall( 'name' ) :
+				context.append( ContextItem( name.text.encode( 'utf-8' ), menuCount ) )
 			menuCount = menuCount + 1
 
 		if menuCount == 0 :
@@ -75,37 +77,39 @@ class HiddenTest( BaseWindow ) :
 		if aContextAction == -1 :
 			WinMgr.GetInstance( ).CloseWindow( )
 		else :
-			scenario = []
-			soup = self.mSoup.findAll( 'scenario' )[ aContextAction ]
-			node = soup.findNext( ).findNext( )
-			while node != None :
-				scenario.append( self.MakeAction( node ) )
-				node = node.findNextSibling( )
-			LOG_TRACE( scenario )
-			TestMgr.GetInstance( ).StartTest( scenario )
+			#scenario = []
+			print 'dhkim test #1'
+			scenario = TestScenario( 'scenario', 'scenario' )
+			print 'dhkim test #2'
+			item = self.mRoot.getchildren( )[ aContextAction ]
+			for node in item :
+				print 'root node  = %s' % node
+				scenario.AddChild( self.MakeChild( node ) )
+			pvr.HiddenTestMgr.StartTest( scenario )
 
 
-	def MakeAction( self, aNode ) :
-		if aNode.name.lower( ) == 'loop' :
-			return self.MakeActionLoop( aNode )
-		else :
-			return ( aNode.name, aNode.string )
+	def MakeChild( self, aNode ) :
+		if aNode.tag.lower( ) == 'loop' :
+			print 'dhkim test make loop!'
+			return self.MakeChildLoop( aNode )
+		elif aNode.tag.lower( ) == 'sendkey' :
+			print 'dhkim test make sendkey!'
+			return SendKeySuite( aNode.tag, aNode.text )
+		elif aNode.tag.lower( ) == 'sleep' :
+			print 'dhkim test make sleep!'
+			return SleepSuite( aNode.tag, aNode.text )
+		elif aNode.tag.lower( ) == 'waitevent' :
+			return WaitEventSuite( aNode.tag, aNode.text )
 
 
-	def MakeActionLoop( self, aNode ) :
-		loop 		= []
-		count		= 1
+	def MakeChildLoop( self, aNode ) :
+		print 'dhkim test Make loop!!!!!!!!!!!!!'
+		count = 1
 		if aNode.get( 'repeat' ) != None :
 			count = aNode.get( 'repeat' )
-		loop.append( ( 'loop', count ) )
-		if aNode.find( ) != None :
-			firstchild	= aNode.find( )
-			childaction	= firstchild.name
-			childvalue	= firstchild.string
-			loop.append( ( childaction, childvalue ) )
-			while firstchild.findNextSibling( ) != None :
-				firstchild = firstchild.findNextSibling( )
-				childaction	= firstchild.name
-				childvalue	= firstchild.string
-				loop.append( ( childaction, childvalue ) )
+		print 'dhkim test repeat = %s' % count
+		loop = LoopSuite( 'loop', count )
+		for node in aNode :
+			loop.AddChild( self.MakeChild( node ) )
 		return loop
+
