@@ -3,21 +3,12 @@
 	<allowoverlay>no</allowoverlay>
 	<controls>
 		<!-- Background -->
-		<control type="image" id="10">
-			<posx>0</posx>
-			<posy>0</posy>
-			<width>1280</width>
-			<height>720</height>
-			<texture>special://skin/backgrounds/pictures.jpg</texture>
-			<include>DefaultSettingWindowEffect</include>
-		</control>
 		<control type="image">
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>1280</width>
 			<height>720</height>
-			<texture>special://skin/backgrounds/curtains.jpg</texture>
-			<visible>!Control.IsVisible(10)</visible>
+			<texture>special://skin/backgrounds/pictures.jpg</texture>
 			<include>DefaultSettingWindowEffect</include>
 		</control>
 
@@ -288,8 +279,8 @@
 					<width>759</width>
 					<height>682</height>
 					<texture background="true">views/listpanel_black.png</texture>
+					<visible>!Control.IsVisible(600)</visible>
 				</control>
-
 				<control type="image">
 					<include>Animation_CommonFade</include>
 					<posx>60</posx>
@@ -297,6 +288,16 @@
 					<width>759</width>
 					<height>682</height>
 					<texture>views/listpanel_back.png</texture>
+					<visible>!Control.IsVisible(600)</visible>
+				</control>
+				<control type="image">
+					<include>Animation_CommonFade</include>
+					<posx>60</posx>
+					<posy>40</posy>
+					<width>759</width>
+					<height>682</height>
+					<texture>listpanel_backRed.png</texture>
+					<visible>Control.IsVisible(600)</visible>
 				</control>
 
 				<control type="image">

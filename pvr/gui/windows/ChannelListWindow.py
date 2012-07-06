@@ -1,6 +1,6 @@
 from pvr.gui.WindowImport import *
 
-E_CONTROL_ID_IMAGE_LISTMODE				= 10
+#E_CONTROL_ID_IMAGE_LISTMODE				= 10
 E_CONTROL_ID_LABEL_CHANNEL_PATH			= 21
 E_CONTROL_ID_GROUP_OPT					= 500
 E_CONTROL_ID_BUTTON_OPT					= 501
@@ -164,8 +164,6 @@ class ChannelListWindow( BaseWindow ) :
 
 		#starttime = time.time( )
 		#print '==================== TEST TIME[ONINIT] START[%s]'% starttime
-
-		self.mCtrlImageListMode          = self.getControl( E_CONTROL_ID_IMAGE_LISTMODE )
 
 		#header
 		self.mCtrlLabelChannelPath       = self.getControl( E_CONTROL_ID_LABEL_CHANNEL_PATH )
@@ -1171,7 +1169,6 @@ class ChannelListWindow( BaseWindow ) :
 	def InitSlideMenuHeader( self, aInitLoad = FLAG_ZAPPING_LOAD ) :
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			#opt btn blind
-			self.UpdateControlGUI( E_CONTROL_ID_IMAGE_LISTMODE, True )
 			self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, False )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV, True, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO, True, E_TAG_ENABLE )
@@ -1179,7 +1176,6 @@ class ChannelListWindow( BaseWindow ) :
 
 		else :
 			#opt btn visible
-			self.UpdateControlGUI( E_CONTROL_ID_IMAGE_LISTMODE, False )
 			self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, True )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV, False, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO, False, E_TAG_ENABLE )
@@ -1534,9 +1530,6 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aCtrlID == E_CONTROL_ID_LABEL_SELECT_NUMBER :
 			self.mCtrlLabelSelectItem.setLabel( aValue )
-
-		elif aCtrlID == E_CONTROL_ID_IMAGE_LISTMODE :
-			self.mCtrlImageListMode.setVisible( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_LIST_CHANNEL_LIST :
 			if aExtra == E_TAG_SET_SELECT_POSITION :
