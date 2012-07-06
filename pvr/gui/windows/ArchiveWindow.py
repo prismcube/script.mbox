@@ -468,7 +468,7 @@ class ArchiveWindow( BaseWindow ) :
 
 	def StartRecordPlayback( self, aResume=True ) :
 		selectedPos = self.GetSelectedPosition( )
-		if self.mLastFocusItem == selectedPos :
+		if self.mLastFocusItem == selectedPos and self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 			self.Close( )
 			self.SetVideoRestore( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE, WinMgr.WIN_ID_NULLWINDOW )

@@ -666,6 +666,9 @@ class DataCacheMgr( object ):
 
 		return self.mCurrentChannel
 
+	def Channel_GetOldChannel( self ) :
+		return self.mOldChannel
+
 	def Channel_SetCurrent( self, aChannelNumber, aServiceType ) :
 		ret = False
 		self.mCurrentEvent = None

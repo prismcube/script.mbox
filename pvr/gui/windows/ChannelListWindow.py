@@ -728,8 +728,10 @@ class ChannelListWindow( BaseWindow ) :
 		#LOG_TRACE( 'MASK[%s] ret[%s]'% (self.mPincodeEnter, ret) )
 		if ret == True :
 			#if self.mCurrentChannel == iChannel.mNumber :
-			if self.mDataCache.mOldChannel.mNumber == iChannel.mNumber and \
-			   self.mDataCache.mOldChannel.mServiceType == iChannel.mServiceType :
+			oldChannel = self.mDataCache.Channel_GetOldChannel( )
+			if oldChannel and \
+			   oldChannel.mNumber == iChannel.mNumber and \
+			   oldChannel.mServiceType == iChannel.mServiceType :
 				ret = False
 				ret = self.SaveSlideMenuHeader( )
 				if ret != E_DIALOG_STATE_CANCEL :
@@ -1381,11 +1383,11 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCurrentChannel = self.mNavChannel.mNumber
 
 		#detected to last focus
+		isFind = False
 		iChannelIdx = 0
-		isFind = True
 		for iChannel in self.mChannelList:
 			if iChannel.mNumber == self.mCurrentChannel :
-				isFind = False
+				isFind = True
 				break
 			iChannelIdx += 1
 
@@ -1397,7 +1399,8 @@ class ChannelListWindow( BaseWindow ) :
 
 		#select item idx, print GUI of 'current / total'
 		self.mCurrentPosition = iChannelIdx
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, str('%s'% (iChannelIdx+1) ) )
+		pos = '%s'% ( iChannelIdx + 1 )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, pos )
 
 		#endtime = time.time( )
 		#print '==================== TEST TIME[LIST] END[%s] loading[%s]'% (endtime, endtime-starttime )
