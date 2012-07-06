@@ -53,7 +53,7 @@ class RootWindow( BaseWindow ):
 
 			#LOG_TRACE('<<<<<<<<<<<<<<<<<<<<< RootWindow <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
 			self.mDataCache.ReLoadChannelListByRecording( )
-
+			"""
 			if aEvent.getName() == ElisEventRecordingStarted.getName() :
 				msg1 = MR_LANG('Recording Started')
 			else :
@@ -61,7 +61,7 @@ class RootWindow( BaseWindow ):
 			msg2 = self.GetRecordingInfo( )
 
 			self.AlarmDialog(msg1, msg2)
-
+			"""
 
 	def GetRecordingInfo( self ) :
 		labelInfo = MR_LANG('Reload Channel List...')
