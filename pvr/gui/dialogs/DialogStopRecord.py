@@ -218,7 +218,7 @@ class DialogStopRecord( BaseDialog ) :
 			LOG_TRACE('END : %s' %TimeToString( timer.mStartTime + timer.mDuration, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
 
 
-			expectedRecording = self.mLocalTime - timer.mStartTime
+			expectedRecording = self.mLocalTime - timer.mRecordStartedTime
 			if expectedRecording < 0 :
 				expectedRecording = 0
 
