@@ -134,14 +134,11 @@ class ArchiveWindow( BaseWindow ) :
 		self.GlobalAction( actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			if self.mDataCache.mStatusIsArchive :
-				self.mDataCache.Player_Stop( )
-				self.mDataCache.mStatusIsArchive = False
-
+			self.mDataCache.Player_Stop( )
 			self.mPlayingRecord	= None
 			self.Close( )
 			self.SetVideoRestore( )
-			WinMgr.GetInstance( ).CloseWindow( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_SELECT_ITEM or actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			if focusId == LIST_ID_COMMON_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD or focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD :
@@ -494,13 +491,12 @@ class ArchiveWindow( BaseWindow ) :
 
 				self.UpdatePlayStatus( )
 				
-			self.mDataCache.SetKeyDisabled( True, recInfo )
 			self.RestoreLastRecordKey( )
 			self.mLastFocusItem = selectedPos
 			if self.mViewMode != E_VIEW_LIST :
 				self.Close( )
 				self.SetVideoRestore( )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 
 
 	def GetSelectedPosition( self ) :

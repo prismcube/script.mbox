@@ -323,7 +323,6 @@ class ChannelListWindow( BaseWindow ) :
 
 				status = self.mDataCache.Player_GetStatus()
 				if status.mMode :
-					self.mDataCache.SetKeyDisabled( False )
 					ret = self.mDataCache.Player_Stop()
 
 					iChannel = self.mDataCache.Channel_GetCurrent( )
@@ -342,12 +341,10 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif id == Action.ACTION_MBOX_ARCHIVE :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
-				self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
 				self.SetGoBackWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
 		elif id == Action.ACTION_SHOW_INFO :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
-				self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
 				self.SetGoBackWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
 		elif id == Action.ACTION_MBOX_RECORD :
@@ -440,8 +437,9 @@ class ChannelListWindow( BaseWindow ) :
 					label = 'TIMESHIFT - P%04d.%s' %(iChannel.mNumber, iChannel.mName )
 
 			elif status.mMode == ElisEnum.E_MODE_PVR :
-				if self.mDataCache.mRecInfo :
-					label = 'PVR - P%04d.%s' %(self.mDataCache.mRecInfo.mChannelNo, self.mDataCache.mRecInfo.mChannelName )
+				#ToDO : youn			
+				pass
+
 			else :
 				#Live
 				if iChannel :
@@ -717,14 +715,12 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mFlag_ModeChanged :
 			self.mFlag_ModeChanged = False
 			isBlank = False
-			if iChannel.mServiceType == FLAG_MODE_RADIO : 	isBlank = True
-			else : 											isBlank = False
+			if iChannel.mServiceType == FLAG_MODE_RADIO :
+				isBlank = True
+			else :
+				isBlank = False
 			self.mDataCache.Player_VideoBlank( isBlank, False )
 
-
-		if self.mDataCache.mStatusIsArchive :
-			self.mDataCache.mStatusIsArchive = False
-			self.mDataCache.Player_Stop()
 
 		ret = False
 		ret = self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )

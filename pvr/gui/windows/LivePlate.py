@@ -225,6 +225,7 @@ class LivePlate( BaseWindow ) :
 			self.Close()
 			status = self.mDataCache.Player_GetStatus()
 			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).SetAutomaticHide( True )			
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 			else :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
@@ -258,16 +259,9 @@ class LivePlate( BaseWindow ) :
 				self.EPGNavigation( NEXT_EPG )
 
 		elif id == Action.ACTION_PAGE_UP:
-			if self.mDataCache.mStatusIsArchive :
-				#LOG_TRACE('Archive playing now')
-				return -1
-
 			self.ChannelTune( NEXT_CHANNEL )
 
 		elif id == Action.ACTION_PAGE_DOWN :
-			if self.mDataCache.mStatusIsArchive :
-				#LOG_TRACE('Archive playing now')
-				return -1
 
 			self.ChannelTune( PREV_CHANNEL )
 
@@ -285,12 +279,10 @@ class LivePlate( BaseWindow ) :
 
 		elif id == Action.ACTION_MBOX_ARCHIVE :
 			self.Close( )
-			self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
 		elif id == Action.ACTION_SHOW_INFO :
 			self.Close( )
-			self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
 		elif id == Action.ACTION_MBOX_RECORD :
@@ -1088,9 +1080,6 @@ class LivePlate( BaseWindow ) :
 
 
 	def SetTuneByNumber( self, aKey ) :
-		if self.mDataCache.mStatusIsArchive :
-			#LOG_TRACE('Archive playing now')
-			return -1
 
 		if aKey == 0 :
 			return -1
