@@ -238,7 +238,7 @@ class TimeShiftPlate(BaseWindow):
 				self.RestartAutomaticHide()
 
 		elif id == Action.ACTION_PAGE_DOWN:
-			if self.mDataCache.mStatusIsArchive :
+			if self.mMode == ElisEnum.E_MODE_PVR :
 				#LOG_TRACE('Archive playing now')
 				return -1
 
@@ -251,7 +251,7 @@ class TimeShiftPlate(BaseWindow):
 				
 			
 		elif id == Action.ACTION_PAGE_UP:
-			if self.mDataCache.mStatusIsArchive :
+			if self.mMode == ElisEnum.E_MODE_PVR :
 				#LOG_TRACE('Archive playing now')
 				return -1
 
@@ -264,7 +264,8 @@ class TimeShiftPlate(BaseWindow):
 
 		elif id == Action.ACTION_CONTEXT_MENU:
 			if self.mMode == ElisEnum.E_MODE_PVR :
-				pass
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 			else :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
@@ -293,17 +294,18 @@ class TimeShiftPlate(BaseWindow):
 				self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
 
 		elif id == Action.ACTION_MBOX_XBMC :
+			#ToDO : 
 			pass
 			#self.Close( )
 			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
 
 		elif id == Action.ACTION_MBOX_ARCHIVE :
 			self.Close( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, self.mDataCache.mSetFromParentWindow )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
-		elif id == Action.ACTION_SHOW_INFO :
+		elif id == Action.ACTION_SHOW_INFO : # ToDO : change the action after remote bug fixed
 			self.Close( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW, self.mDataCache.mSetFromParentWindow )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 
 		#test
@@ -462,34 +464,23 @@ class TimeShiftPlate(BaseWindow):
 
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_STOP :
-			third = 3
-			gobackID = WinMgr.WIN_ID_NULLWINDOW
-			while third :
-				if self.mMode == ElisEnum.E_MODE_LIVE :
-					ret = self.mDataCache.Player_Stop()
-					gobackID = WinMgr.WIN_ID_LIVE_PLATE
-					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+			if self.mMode == ElisEnum.E_MODE_LIVE :
+				ret = self.mDataCache.Player_Stop()
+				self.Close( )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
+				
 
-				elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
-					ret = self.mDataCache.Player_Stop()
-					gobackID = WinMgr.WIN_ID_LIVE_PLATE
+			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
+				ret = self.mDataCache.Player_Stop()
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 
-				elif self.mMode == ElisEnum.E_MODE_PVR :
-					ret = self.mDataCache.Player_Stop()
-					gobackID = WinMgr.WIN_ID_ARCHIVE_WINDOW
-					self.mDataCache.SetKeyDisabled( False )
+			elif self.mMode == ElisEnum.E_MODE_PVR :
+				ret = self.mDataCache.Player_Stop()
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
-				third -= 1
-				#LOG_TRACE( 'play_stop() ret[%s] try[%d]'% (ret,third) )
-				if ret :
-					break
-
-			self.UpdateControlGUI( E_CONTROL_ID_PROGRESS, 0 )
-			self.mProgress_idx = 0.0
-
-			#self.RecordingStopAll( )
-			self.Close( )
-			WinMgr.GetInstance().ShowWindow( gobackID, self.mDataCache.mSetFromParentWindow )
 			return
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_REWIND :
@@ -499,9 +490,9 @@ class TimeShiftPlate(BaseWindow):
 			nextSpeed = 100
 			nextSpeed = self.GetNextSpeed( aFocusId )
 
+			ret = 0
 			if self.mMode == ElisEnum.E_MODE_LIVE :
-				ret = self.mDataCache.Player_StartTimeshiftPlayback( ElisEnum.E_PLAYER_TIMESHIFT_START_REWIND, 0 )
-				#ret = self.mDataCache.Player_SetSpeed( nextSpeed )
+				ret = self.mDataCache.Player_SetSpeed( nextSpeed )
 
 			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				ret = self.mDataCache.Player_SetSpeed( nextSpeed )
@@ -510,15 +501,7 @@ class TimeShiftPlate(BaseWindow):
 				ret = self.mDataCache.Player_SetSpeed( nextSpeed )
 
 			if ret :
-				pass
-				#LOG_TRACE( 'play_rewind() ret[%s], player_SetSpeed[%s]'% (ret, nextSpeed) )
-
-			#resume by toggle
-			"""
-			if self.mIsPlay == FLAG_PLAY :
-				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )
-				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
-			"""
+				LOG_WARN( 'status =%d ret[%s], player_SetSpeed[%s]'% ( self.mMode , ret, nextSpeed ) )
 
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_FORWARD :
@@ -529,7 +512,6 @@ class TimeShiftPlate(BaseWindow):
 			nextSpeed = self.GetNextSpeed( aFocusId )
 
 			if self.mMode == ElisEnum.E_MODE_LIVE :
-				#ret = self.mDataCache.Player_StartTimeshiftPlayback( ElisEnum.E_PLAYER_TIMESHIFT_START_REWIND, 0 )
 				ret = self.mDataCache.Player_SetSpeed( nextSpeed )
 
 			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
@@ -539,15 +521,7 @@ class TimeShiftPlate(BaseWindow):
 				ret = self.mDataCache.Player_SetSpeed( nextSpeed )
 
 			if ret :
-				pass
-				#LOG_TRACE( 'play_forward() ret[%s] player_SetSpeed[%s]'% (ret, nextSpeed) )
-
-			#resume by toggle
-			"""
-			if self.mIsPlay == FLAG_PLAY :
-				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )
-				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
-			"""
+				LOG_WARN( 'status =%d ret[%s], player_SetSpeed[%s]'% ( self.mMode , ret, nextSpeed ) )
 
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_JUMP_RR :

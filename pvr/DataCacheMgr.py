@@ -104,11 +104,7 @@ class DataCacheMgr( object ):
 		self.mTimerDB = None
 		self.mRecordDB = None		
 
-		self.mStatusIsArchive = False
-		self.mRecInfo = None
 		self.mSkip = False
-		self.mSetFromParentWindow = 1
-
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
@@ -1274,11 +1270,6 @@ class DataCacheMgr( object ):
 
 	def Frontdisplay_SetMessage( self, aName ) :
 		self.mCommander.Frontdisplay_SetMessage( aName )
-
-
-	def SetKeyDisabled( self, aDisable = False, aRecInfo = None ) :
-		self.mStatusIsArchive = aDisable
-		self.mRecInfo = aRecInfo
 
 
 	def GetRunnigTimerByChannel( self, aChannel=None ) :

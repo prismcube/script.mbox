@@ -225,7 +225,7 @@ class EPGWindow( BaseWindow ) :
 
 		self.StopEPGUpdateTimer( )
 		self.SetVideoRestore( )
-		WinMgr.GetInstance().CloseWindow( )
+		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 
 	def InitControl( self ) :

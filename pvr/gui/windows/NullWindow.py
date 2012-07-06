@@ -9,15 +9,13 @@ class NullWindow( BaseWindow ) :
 			self.mHBBTVReady = False
 			self.mMediaPlayerStarted = False
 			self.mForceSetCurrent = True
+			self.mStartTimeForTest = time.time( ) + 7200
 			LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %(self.mHBBTVReady, self.mMediaPlayerStarted) )
 
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
-		self.mGotoWinID = None
-		self.mOnEventing= False
-		self.mSetAutomaticHide = False
 
 		if self.mInitialized == False :
 			self.mInitialized = True
@@ -48,7 +46,7 @@ class NullWindow( BaseWindow ) :
 		LOG_TRACE( '+++++getrecursionlimit[%s] currentStack[%s]'% (sys.getrecursionlimit(), len(currentStack)) )
 		LOG_TRACE( '+++++currentStackInfo[%s]'% (currentStack) )
 
-		startTime= WinMgr.GetInstance( ).mXbmcStartTime
+		startTime= self.mStartTimeForTest
 		lastTime = time.time() + 7200
 		lblStart = time.strftime('%H:%M:%S', time.localtime(startTime) )
 		lblLast  = time.strftime('%H:%M:%S', time.localtime(lastTime) )
@@ -63,12 +61,6 @@ class NullWindow( BaseWindow ) :
 		LOG_ERR( 'ACTION_TEST actionID=%d' %actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU:
-			if self.mGotoWinID :
-				if self.mGotoWinID == WinMgr.WIN_ID_ARCHIVE_WINDOW :
-					self.mGotoWinID = None
-					self.Close( )
-					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
-				return
 				
 			if ElisPropertyEnum( 'Lock Mainmenu', self.mCommander ).GetProp( ) == 0 :
 				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -100,9 +92,9 @@ class NullWindow( BaseWindow ) :
 			self.Close( )
 			status = self.mDataCache.Player_GetStatus( )		
 			if status.mMode == ElisEnum.E_MODE_PVR :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 			else :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_MOVE_LEFT:
 			pass
@@ -118,20 +110,19 @@ class NullWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
 		elif actionId == Action.ACTION_CONTEXT_MENU:
-			status = None
 			status = self.mDataCache.Player_GetStatus()
-			gotoWinId = WinMgr.WIN_ID_LIVE_PLATE
-			if status.mMode != ElisEnum.E_MODE_LIVE :
-				gotoWinId = WinMgr.WIN_ID_TIMESHIFT_PLATE
-
-			WinMgr.GetInstance( ).GetWindow( gotoWinId ).SetAutomaticHide( self.mSetAutomaticHide )
-			self.mSetAutomaticHide = False
 			self.Close( )
-			WinMgr.GetInstance( ).ShowWindow( gotoWinId )
+			if status.mMode == ElisEnum.E_MODE_LIVE :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+
+			else :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE, WinMgr.WIN_ID_NULLWINDOW )			
+
 
 		elif actionId == Action.ACTION_PAGE_DOWN :
-			if self.mDataCache.mStatusIsArchive :
-				#LOG_TRACE('Archive playing now')
+			status = self.mDataCache.Player_GetStatus()
+			if status.mMode == ElisEnum.E_MODE_PVR :
 				return -1
 
 			prevChannel = None
@@ -143,8 +134,8 @@ class NullWindow( BaseWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif actionId == Action.ACTION_PAGE_UP:
-			if self.mDataCache.mStatusIsArchive :
-				#LOG_TRACE('Archive playing now')
+			status = self.mDataCache.Player_GetStatus()
+			if status.mMode == ElisEnum.E_MODE_PVR :
 				return -1
 
 			nextChannel = None
@@ -162,8 +153,11 @@ class NullWindow( BaseWindow ) :
 			if actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9:
 				aKey = actionId - Action.REMOTE_0
 
-			if self.mDataCache.mStatusIsArchive :
-				#LOG_TRACE('Archive playing now')
+			#ToDO : youn
+			status = self.mDataCache.Player_GetStatus()
+			if status.mMode == ElisEnum.E_MODE_PVR :
+				return -1
+			elif status.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				return -1
 
 			if aKey == 0 :
@@ -190,32 +184,27 @@ class NullWindow( BaseWindow ) :
 						self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType )
 
 		elif actionId == Action.ACTION_STOP :
-			status = None
+
 			status = self.mDataCache.Player_GetStatus()
-			if status.mMode :
+			if status.mMode == ElisEnum.E_MODE_LIVE:
+				self.ShowRecordingStopDialog()			
+			else :
 				ret = self.mDataCache.Player_Stop()
-				#LOG_TRACE('----------mode[%s] stop[%s] up/down[%s]'% (status.mMode, ret, self.mDataCache.mStatusIsArchive) )
 				if ret :
 					if status.mMode == ElisEnum.E_MODE_PVR :
-						if self.mDataCache.mStatusIsArchive :
-							self.mGotoWinID = WinMgr.WIN_ID_ARCHIVE_WINDOW
-							self.mDataCache.mStatusIsArchive = False
-							#LOG_TRACE('archive play, stop to go Archive')
-						else :
-							self.mGotoWinID = None
-							self.mDataCache.mStatusIsArchive = False
-							#LOG_TRACE('recording play, stop only(NullWindow)')
+						self.Close( )
+						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW  )
+					elif status.mMode == ElisEnum.E_MODE_TIMESHIFT :
+						self.Close( )
+						WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
-						#LOG_TRACE('up/down key released, goto win[%s]'% self.mGotoWinID)
-						if self.mGotoWinID :
-							xbmc.executebuiltin('xbmc.Action(previousmenu)')
-
-			else :
-				self.ShowRecordingStopDialog()
 
 		elif actionId == Action.ACTION_MBOX_XBMC :
-			self.Close( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
+			#ToDO : youn 
+			pass
+			#self.Close( )
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
 
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
 			status = self.mDataCache.Player_GetStatus( )
@@ -254,8 +243,7 @@ class NullWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
 			self.Close( )
-			self.mDataCache.mSetFromParentWindow = WinMgr.WIN_ID_NULLWINDOW
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_MBOX_TEXT :
 			pass
@@ -328,17 +316,9 @@ class NullWindow( BaseWindow ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId():
 			#LOG_TRACE( 'NullWindow winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
 			if aEvent.getName() == ElisEventPlaybackEOF.getName() :
-				if self.mOnEventing :
-					#LOG_TRACE('ignore event, mFlag_OnEvent[%s]'% self.mOnEventing)
-					return -1
-
-				self.mOnEventing = True
-
 				if aEvent.mType == ElisEnum.E_EOF_END :
 					#LOG_TRACE( 'EventRecv EOF_STOP' )
 					xbmc.executebuiltin('xbmc.Action(stop)')
-
-				self.mOnEventing = False
 
 			elif aEvent.getName() == ElisEventChannelChangeResult.getName() :
 				ch = self.mDataCache.Channel_GetCurrent( )
@@ -348,7 +328,6 @@ class NullWindow( BaseWindow ) :
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
 				self.mDataCache.mCacheReload = True
-				self.mSetAutomaticHide = True
 				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 				"""
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
