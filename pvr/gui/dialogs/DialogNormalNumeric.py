@@ -15,12 +15,15 @@ class DialogNormalNumeric( BaseDialog ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 		self.mInputLabel = ''
 		self.mTitleLabel = ''
+		self.mOriginalString = ''
 		self.mCtrlEditLabel = None
 		self.mCtrlTitleLabel = None
 		self.mMaxLength = 0
+		self.mCheckFirstInput = False
+		self.mInputString = ''
 		self.mType = False
 		self.mIsOk = E_DIALOG_STATE_NO
-		self.mInputKey = None
+
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
@@ -29,7 +32,9 @@ class DialogNormalNumeric( BaseDialog ) :
 		self.mIsOk = E_DIALOG_STATE_NO
 		self.getControl( E_HEADER_LABEL ).setLabel( self.mTitleLabel )
 		self.mCtrlEditLabel = self.getControl( E_INPUT_LABEL )
+		self.mCheckFirstInput = True
 		self.SetInputLabel( )
+		self.mCheckFirstInput = False
 		self.DrawKeyboard( )
 		
 		
@@ -44,46 +49,46 @@ class DialogNormalNumeric( BaseDialog ) :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			if len(self.mInputLabel) < 1 :
+			if len( self.mInputLabel ) < 1 :
 				self.mIsOk = E_DIALOG_STATE_CANCEL
-				self.mInputKey = aAction
 				self.CloseDialog( )
 			else :
 				self.mInputLabel = self.mInputLabel[ : len( self.mInputLabel ) - 1 ]
+				self.mInputString = ''
 				self.SetInputLabel( )
 
-		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 and ( len( self.mInputLabel ) < self.mMaxLength ) :
-			inputString ='%d' %(actionId - Action.REMOTE_0 )
-			self.mInputLabel += inputString
+		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
+			self.mInputString = '%d' % ( actionId - Action.REMOTE_0 )
+			self.mInputLabel += self.mInputString
 			self.SetInputLabel( )
 
-		elif actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 and ( len( self.mInputLabel ) < self.mMaxLength ) :
+		elif actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 :
 			inputNum =  actionId - Action.ACTION_JUMP_SMS2 + 2
 			if inputNum >= 2 and inputNum <= 9 :
-				inputString ='%d' %inputNum
-				self.mInputLabel += inputString
+				self.mInputString = '%d' % inputNum
+				self.mInputLabel += self.mInputString
 				self.SetInputLabel( )
 
 		elif actionId == Action.ACTION_PAGE_UP or actionId == Action.ACTION_PAGE_DOWN :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
-			self.mInputKey = aAction
-			self.CloseDialog()
+			self.CloseDialog( )
 
 
 	def onClick( self, aControlId ) :
 		focusId = self.getFocusId( )
 
-		LOG_TRACE('focus=%d' %focusId )
+		LOG_TRACE( 'focus=%d' % focusId )
 			
-		if focusId >= E_START_ID_NUMBER and focusId <= E_START_ID_NUMBER + 9 and ( len( self.mInputLabel ) < self.mMaxLength ) :
-			LOG_TRACE('focus=%d' %focusId )
-			inputString ='%d' % (focusId - E_START_ID_NUMBER )
-			self.mInputLabel += inputString
+		if focusId >= E_START_ID_NUMBER and focusId <= E_START_ID_NUMBER + 9 :
+			LOG_TRACE( 'focus=%d' % focusId )
+			self.mInputString ='%d' % ( focusId - E_START_ID_NUMBER )
+			self.mInputLabel += self.mInputString
 			self.SetInputLabel( )
 
 		elif focusId == E_BUTTON_BACK_SPACE :
 			if len( self.mInputLabel ) > 0 :
 				self.mInputLabel = self.mInputLabel[ : len( self.mInputLabel ) - 1 ]
+			self.mInputString = ''
 			self.SetInputLabel( )
 		
 		elif focusId == E_BUTTON_PREV :
@@ -104,8 +109,6 @@ class DialogNormalNumeric( BaseDialog ) :
 	def IsOK( self ) :
 		return self.mIsOk
 
-	def GetInputKey( self ) :
-		return self.mInputKey
 
 	def SetDialogProperty( self, aTitle, aString, aMaxLength, aType=False ) :
 		self.mInputLabel = aString
@@ -129,6 +132,11 @@ class DialogNormalNumeric( BaseDialog ) :
 
 	@GuiLock
 	def SetInputLabel( self ) :
+		if self.mCheckFirstInput == False :
+			self.mCheckFirstInput = True
+			self.mInputLabel = self.mInputString
+		if len( self.mInputLabel ) > self.mMaxLength :
+			self.mInputLabel = self.mInputLabel[0:self.mMaxLength]
 		if self.mType == True :
 			hideString = '*' * len( self.mInputLabel )
 			self.mCtrlEditLabel.setLabel( hideString )
