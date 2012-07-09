@@ -43,6 +43,7 @@ class MainMenu( BaseWindow ) :
 		if self.mStartMediaCenter == True :
 			self.mCommander.AppMediaPlayer_Control( 0 )
 			WinMgr.GetInstance( ).CheckGUISettings( )
+			self.UpdateVolume( )
 
 			self.mStartMediaCenter = False
 			#current channel re-zapping

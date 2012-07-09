@@ -7,14 +7,20 @@ class SystemInfo( SettingWindow ) :
  
 		leftGroupItems			= [ 'STB Infomation' ]
 	
-		self.mCtrlLeftGroup 	= None
-		self.mGroupItems 		= []
-		self.mInitialized 		= False
-		self.mLastFocused 		= E_SUBMENU_LIST_ID
-		self.mPrevListItemID 	= 0
+		self.mCtrlLeftGroup 			= None
+		self.mGroupItems 				= []
+		self.mInitialized 				= False
+		self.mLastFocused 				= E_SUBMENU_LIST_ID
+		self.mPrevListItemID 			= 0
+
+		self.mCheckHiddenPattern1	= False
+		self.mCheckHiddenPattern2	= False
+		self.mCheckHiddenPattern3	= False
 
 		for i in range( len( leftGroupItems ) ) :
 			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i] ) )
+
+		
 			
 	def onInit( self )  :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -30,11 +36,12 @@ class SystemInfo( SettingWindow ) :
 		self.SetListControl( )
 		self.mInitialized = True
 
-	def onAction( self, aAction ) :
 
+	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
-		self.GlobalAction( actionId )				
+		self.GlobalAction( actionId )
+		self.CheckHiddenAction( actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass
@@ -65,9 +72,29 @@ class SystemInfo( SettingWindow ) :
 				self.setFocusId( E_SETUPMENU_GROUP_ID )
 
 
+	def CheckHiddenAction( self, aAction ) :
+		if aAction == Action.ACTION_MOVE_LEFT :
+			if self.mCheckHiddenPattern1 == True :
+				self.mCheckHiddenPattern2 = True
+			self.mCheckHiddenPattern1 = True
+		elif aAction == Action.ACTION_MOVE_RIGHT and self.mCheckHiddenPattern2 :
+			if self.mCheckHiddenPattern3 == True :
+				self.mCheckHiddenPattern1	= False
+				self.mCheckHiddenPattern2	= False
+				self.mCheckHiddenPattern3	= False
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_HIDDEN_TEST, WinMgr.WIN_ID_NULLWINDOW )
+				return
+			self.mCheckHiddenPattern3 = True
+		else :
+			self.mCheckHiddenPattern1	= False
+			self.mCheckHiddenPattern2	= False
+			self.mCheckHiddenPattern3	= False
+
+
 	def onClick( self, aControlId ) :
 		pass
-		
+
+
 	def onFocus( self, aControlId ) :
 		if self.mInitialized == False :
 			return

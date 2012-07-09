@@ -759,6 +759,27 @@ class LivePlate( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
+	#@RunThread
+	def LoadingThread( self ):
+		self.ShowRecordingInfo( )
+		self.InitControlGUI()
+		#self.GetEPGListByChannel()
+
+		try :
+			if self.mCurrentChannel :
+				iEPG = None
+				iEPG = self.mDataCache.Epgevent_GetPresent()
+				if iEPG and iEPG.mError == 0 :
+					self.mCurrentEPG = iEPG
+					self.UpdateChannelAndEPG( iEPG )
+
+				if self.mCurrentChannel.mLocked :
+					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mDataCache.mPropertyPincode )
+
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
+
 	def InitControlGUI( self ) :
 		self.UpdateControlGUI( E_CONTROL_ID_PROGRESS_EPG,          0 )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, '' )
