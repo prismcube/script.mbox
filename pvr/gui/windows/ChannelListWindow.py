@@ -1,11 +1,9 @@
 from pvr.gui.WindowImport import *
 
-#E_CONTROL_ID_IMAGE_LISTMODE				= 10
 E_CONTROL_ID_LABEL_CHANNEL_PATH			= 21
 E_CONTROL_ID_GROUP_OPT					= 500
 E_CONTROL_ID_BUTTON_OPT					= 501
 E_CONTROL_ID_LABEL_OPT1					= 502
-E_CONTROL_ID_LABEL_OPT2					= 503
 E_CONTROL_ID_GROUP_MAINMENU 			= 100
 E_CONTROL_ID_BUTTON_MAINMENU 			= 101
 E_CONTROL_ID_LIST_MAINMENU				= 102
@@ -38,6 +36,7 @@ E_XML_PROPERTY_LOCK      = 'lock'
 E_XML_PROPERTY_RECORDING = 'rec'
 E_XML_PROPERTY_SKIP      = 'skip'
 E_XML_PROPERTY_EDITINFO  = 'helpbox'
+E_XML_PROPERTY_MOVE      = 'isMove'
 
 FLAG_MASK_ADD    = 0x01
 FLAG_MASK_NONE   = 0x00
@@ -170,7 +169,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlGroupOpt               = self.getControl( E_CONTROL_ID_GROUP_OPT )
 		self.mCtrlButtonOpt              = self.getControl( E_CONTROL_ID_BUTTON_OPT )
 		self.mCtrlLabelOpt1              = self.getControl( E_CONTROL_ID_LABEL_OPT1 )
-		self.mCtrlLabelOpt2              = self.getControl( E_CONTROL_ID_LABEL_OPT2 )
 
 		#main menu
 		self.mCtrlGroupMainmenu          = self.getControl( E_CONTROL_ID_GROUP_MAINMENU )
@@ -230,10 +228,12 @@ class ChannelListWindow( BaseWindow ) :
 		self.mEditChannelList = []
 		self.mMoveFlag = False
 		self.mMoveItem = []
+		self.mItemCount = 0
 
 		self.SetPipScreen( )
 
 		#self.UpdateControlGUI( E_CONTROL_ID_BUTTON_DELETEALL, MR_LANG('Delete All Channel') )
+		self.mItemHeight = int( self.getProperty( 'ItemHeight' ) )
 
 		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
 		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
@@ -312,7 +312,6 @@ class ChannelListWindow( BaseWindow ) :
 
 			elif self.mFocusId == self.mCtrlButtonOpt :
 				self.UpdateControlGUI( E_SLIDE_CLOSE )
-
 
 		elif id == Action.ACTION_CONTEXT_MENU :
 			self.ShowContextMenu( )
@@ -1539,6 +1538,9 @@ class ChannelListWindow( BaseWindow ) :
 			elif aExtra == E_TAG_ADD_ITEM :
 				self.mCtrlListCHList.addItems( aValue )
 
+		elif aCtrlID == E_CONTROL_ID_LABEL_OPT1 :
+			self.mCtrlLabelOpt1.setLabel( aValue )
+
 		elif aCtrlID == E_CONTROL_FOCUSED :
 			self.setFocusId( aValue )
 
@@ -1788,195 +1790,153 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( 'Error except[%s]'% e )
 
 
+	def ShowMoveToGUI(self, aStart, aEnd, aSelectPosition = 0 ) :
+		self.mListItems = []
+		for i in range( aStart, aEnd ):
+			iChannel = self.mNewChannelList[i]
+			if iChannel == None : continue
+
+			listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ) )
+			if iChannel.mLocked  : listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
+			if iChannel.mIsCA    : listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
+			if iChannel.mSkipped : listItem.setProperty( E_XML_PROPERTY_SKIP, E_TAG_TRUE )
+
+			for item in self.mMoveList :
+				if iChannel.mNumber == item.mNumber : listItem.setProperty(E_XML_PROPERTY_MARK, E_TAG_TRUE)
+
+			#LOG_TRACE('move idx[%s] [%04d %s]'% ( i, iChannel.mNumber, iChannel.mName ) )
+
+			self.mListItems.append(listItem)
+
+		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
+		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, aSelectPosition, E_TAG_SET_SELECT_POSITION )
+		self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_GROUP_CHANNEL_LIST )
+
+
 	def SetEditChanneltoMove(self, aMode, aMove = None, aGroupName = None ) :
 		if aMode == FLAG_OPT_MOVE :
-		
-			number = 0
-			retList = []
-			markList= []
+			self.OpenBusyDialog( )
+			try :
+				self.mMoveList = []
+				self.mNewChannelList = deepcopy(self.mChannelList)
+				listHeight = self.mCtrlListCHList.getHeight( )
+				self.mItemCount = listHeight / self.mItemHeight
+				#LOG_TRACE('listHeight[%d] itemHeight[%d] itemCount[%d]'% (listHeight, self.mItemHeight, self.mItemCount) )
 
-			if not self.mMarkList :
-				lastPos = self.mCtrlListCHList.getSelectedPosition( )
-				self.mMarkList.append( lastPos )
-				#LOG_TRACE('last position[%s]'% lastPos )
-			
-			self.mMarkList.sort( )
+				if not self.mMarkList :
+					lastPos = self.mCtrlListCHList.getSelectedPosition( )
+					self.mMarkList.append( lastPos )
+					#LOG_TRACE('last position[%s]'% lastPos )
+				
+				self.mMarkList.sort( )
+				#LOG_TRACE('1====mark[%s]'% self.mMarkList )
 
-			chidx = int(self.mMarkList[0])
-			number = self.mChannelList[chidx].mNumber
+				#2. make listing of ichannel in marked idx
+				idxFirst = int(self.mMarkList[0])
+				self.mMoveList.append( self.mNewChannelList[idxFirst] )
+				for idx in range( 1, len(self.mMarkList) ) :
+					i = int( self.mMarkList[idx] )
+					item = self.mNewChannelList.pop(i)
+					self.mNewChannelList.insert(idxFirst+idx, item)
+					self.mMoveList.append( item )
 
-			#LOG_TRACE('1====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList) ) )
+				self.mMoveFlag = True
+				self.mListItems = []
+				self.mViewFirst = idxFirst
+				self.mViewEnd = idxFirst + self.mItemCount
 
-			#2. make listing of ichannel in marked idx
-			for idx in self.mMarkList :
-				i = int(idx)
-				retList.append( self.mChannelList[i] )
+				self.ShowMoveToGUI( self.mViewFirst, self.mViewEnd )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_OPT1, '[B]OK[/B]' )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_MOVE, E_TAG_TRUE )
 
-			#3. update mark list (sorted)
-			for i in range(len(self.mMarkList) ) :
-				markList.append( int(self.mMarkList[0])+i )
-			#LOG_TRACE('mark: new[%s] old[%s]'% (markList, self.mMarkList) )
+			except Exception, e:
+				LOG_TRACE( 'Error except[%s]'% e )
 
-			#4. init channel list
-			ret = False
-			if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
-				if aGroupName :
-					ret = self.mDataCache.FavoriteGroup_MoveChannels( aGroupName, chidx, self.mChannelListServiceType, retList )
-					#LOG_TRACE( '==========group========' )
-			else :
-				ret = self.mDataCache.Channel_Move( self.mChannelListServiceType, number, retList )
-
-			if ret :
-				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
-
-			self.mMarkList = []
-			self.mMarkList = deepcopy(markList)
-
-			#LOG_TRACE('2====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList) ) )
-			self.mMoveFlag = True
-
-			for idx in self.mMarkList :
-				i = int(idx)
-				listItem = self.mCtrlListCHList.getListItem( i )
-				listItem.setProperty(E_XML_PROPERTY_MARK, E_TAG_TRUE)
-
-			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mMarkList[0], E_TAG_SET_SELECT_POSITION )
-			self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_GROUP_CHANNEL_LIST )
-
-			self.mCtrlLabelOpt1.setLabel('[B]OK[/B]')
-			self.mCtrlLabelOpt2.setLabel('[B]OK[/B]')
-
-			#LOG_TRACE ('========= move Init ===' )
+			self.CloseBusyDialog( )
 
 		elif aMode == FLAG_OPT_MOVE_OK :
 			self.mMoveFlag = False
-			self.mCtrlLabelOpt1.setLabel('[B]Opt Edit[/B]')
-			self.mCtrlLabelOpt2.setLabel('[B]Opt Edit[/B]')
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_OPT1, '[B]Opt Edit[/B]' )
+			self.UpdatePropertyGUI( E_XML_PROPERTY_MOVE, E_TAG_FALSE )
 
+			chidx  = self.mMarkList[len(self.mMarkList)-1]
+			number = self.mChannelList[chidx].mNumber 
+
+			ret = False
+			if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
+				if aGroupName :
+					ret = self.mDataCache.FavoriteGroup_MoveChannels( aGroupName, chidx, self.mChannelListServiceType, self.mMoveList )
+					#LOG_TRACE( '==========group========' )
+			else :
+				ret = self.mDataCache.Channel_Move( self.mChannelListServiceType, number, self.mMoveList )
+
+			if ret :
+				self.mDataCache.Channel_Save( )
+				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 			self.mMarkList = []
-			self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 
 			#LOG_TRACE ('========= move End ===' )
 
+
 		elif aMode == FLAG_OPT_MOVE_UPDOWN :
 			updown= 0
-			loopS = 0
-			loopE = 0
-			retList = []
+			moveidx = 0
 			markList= []
-			lastmark = len(self.mMarkList) - 1
-			oldmark = 0
+			lastidx = len(self.mMarkList) - 1
 
-			#1. get number
+			#1. moving
 			if aMove == Action.ACTION_MOVE_UP :	
 				updown = -1
-				chidx = self.mMarkList[0] + updown
-				loopS = chidx
-				loopE = self.mMarkList[lastmark]
-				oldmark = loopE
+				moveidx = self.mMarkList[0] + updown
 
 			elif aMove == Action.ACTION_MOVE_DOWN :	
 				updown = 1
-				chidx = self.mMarkList[0] + updown
-				loopS = self.mMarkList[0]
-				loopE = self.mMarkList[lastmark] + updown
-				oldmark = loopS
+				moveidx = self.mMarkList[lastidx] + updown
 
 			elif aMove == Action.ACTION_PAGE_UP :	
-				updown = -13
-				chidx = self.mMarkList[0] + updown
-				loopS = chidx
-				loopE = self.mMarkList[lastmark] + updown
-				oldmark = self.mMarkList[0]
+				updown = -self.mItemCount
+				moveidx = self.mMarkList[0] + updown
 
 			elif aMove == Action.ACTION_PAGE_DOWN :	
-				updown = 13
-				chidx = self.mMarkList[0] + updown
-				loopS = self.mMarkList[0] + updown
-				loopE = self.mMarkList[lastmark] + updown
-				oldmark = self.mMarkList[0]
+				updown = self.mItemCount
+				moveidx = self.mMarkList[lastidx] + updown
 
-
-			if chidx < 0 or chidx > ( (len(self.mListItems)-1) - len(self.mMarkList) ) :
-				#LOG_TRACE('list limit, do not PAGE MOVE!! idx[%s]'% chidx)
+			if moveidx < 0 or moveidx > len(self.mNewChannelList) - 1 :
+				LOG_TRACE('list limit, do not PAGE MOVE!! moveidx[%s]'% moveidx)
 				return
-			number = self.mChannelList[chidx].mNumber
 
-			if loopS < 0 : loopS = 0
-			elif loopE > (len(self.mListItems) )-1 : loopE = len(self.mListItems)-1
-			#LOG_TRACE('1====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList) ) )
+			#pop moveList
+			popidx = self.mMarkList[0]
+			for idx in self.mMoveList :
+				item = self.mNewChannelList.pop(popidx)
+				#LOG_TRACE('pop idx[%s] item[%s] len[%s]'% (popidx, item.mNumber, len(self.mNewChannelList)) )
 
-			#2. get retList
-			for idx in self.mMarkList :
-				i = int(idx)
-				retList.append( self.mChannelList[i] )
 
-			#3. update mark list
-			if (int(self.mMarkList[0]) + updown) > (len(self.mListItems) )-1 :
-				#LOG_TRACE('list limit, do not PAGE MOVE!! idx[%s]'% (int(self.mMarkList[0]) + updown) )
-				return
+			#update index in moveList
 			for idx in self.mMarkList :
 				idxNew = int(idx) + updown
 				markList.append( idxNew )
 			self.mMarkList = []
 			self.mMarkList = markList
+			insertPos = self.mMarkList[0]
 
-			#4. init channel list
-			answer = False
-			if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
-				if aGroupName :
-					answer = self.mDataCache.FavoriteGroup_MoveChannels( aGroupName, chidx, self.mChannelListServiceType, retList )
-					#LOG_TRACE( '==========group========' )
-			else :
-				answer = self.mDataCache.Channel_Move( self.mChannelListServiceType, number, retList )
-
-			if answer :
-				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
-			#LOG_TRACE('2====mark[%s] ch[%s]'% (self.mMarkList, ClassToList('convert',self.mChannelList) ) )
-			#LOG_TRACE('loopS[%s] loopE[%s]'% (loopS, loopE) )
-
-			#5. refresh section, label move
-			for i in range(loopS, loopE+1) :
-				number = self.mChannelList[i].mNumber
-				name = self.mChannelList[i].mName
-				icas = self.mChannelList[i].mIsCA
-				lock = self.mChannelList[i].mLocked
-				skip = self.mChannelList[i].mSkipped
-
-				GuiLock2( True )
-				listItem = self.mCtrlListCHList.getListItem( i )
-				xbmc.sleep( 50 )
-
-				#listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_FALSE )
-				#listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_FALSE )
-
-				if skip : listItem.setProperty( E_XML_PROPERTY_SKIP, E_TAG_TRUE )
-				if lock : listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
-				if icas : listItem.setProperty( E_XML_PROPERTY_CAS, E_TAG_TRUE )
-				listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_TRUE )
-				xbmc.sleep( 50 )
-				GuiLock2( False )
+			#insert moveList
+			for i in range(len(self.mMoveList)) :
+				idx = lastidx - i
+				self.mNewChannelList.insert(insertPos, self.mMoveList[idx])
 
 
-			#6. erase old mark
-			if aMove == Action.ACTION_MOVE_UP or aMove == Action.ACTION_MOVE_DOWN :
-				listItem = self.mCtrlListCHList.getListItem(oldmark)
-				xbmc.sleep( 50 )
-				listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_FALSE )
-				self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_GROUP_CHANNEL_LIST )
+			#show from ~ until
+			if self.mMarkList[0] <= self.mViewFirst or self.mMarkList[lastidx] >= self.mViewEnd :
+				self.mViewFirst = self.mViewFirst + updown
+				self.mViewEnd   = self.mViewEnd   + updown
+				#LOG_TRACE('changed view item')
 
-			else:
-				for idx in range(len(self.mMarkList) ) :
-					idxOld = oldmark + idx
-					if idxOld > (len(self.mListItems) )-1 : 
-						#LOG_TRACE('old idx[%s] i[%s]'% (oldmark, idx) )
-						continue
-					listItem = self.mCtrlListCHList.getListItem( idxOld )
-					listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_FALSE )
-					self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_GROUP_CHANNEL_LIST )
-					xbmc.sleep( 50 )
+			self.ShowMoveToGUI( self.mViewFirst, self.mViewEnd, insertPos )
 
-		#LOG_TRACE( 'Leave' )
+			#select item idx, print GUI of 'current / total'
+			pos = '%s'% ( self.mViewFirst + 1 )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, pos )
 
 
 	def SetEditMarkupGUI( self, aPos ) :
@@ -2165,6 +2125,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		self.mMarkList = []
+		self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 		#self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_GROUP_CHANNEL_LIST )
 
 

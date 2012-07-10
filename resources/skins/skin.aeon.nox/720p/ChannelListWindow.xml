@@ -1,5 +1,6 @@
 <window id="3003">
 	<defaultcontrol always="true">49</defaultcontrol>
+	<onload>SetProperty(ItemHeight,40)</onload>
 	<allowoverlay>no</allowoverlay>
 	<controls>
 		<!-- Background -->
@@ -774,7 +775,7 @@
 					<label>[B]Opt Edit[/B]</label>
 					<visible>![Control.HasFocus(501) | Control.HasFocus(501)]</visible>
 				</control>
-				<control type="label" id="503">
+				<control type="label">
 					<posx>52</posx>
 					<posy>5</posy>
 					<width>150</width>
@@ -783,7 +784,7 @@
 					<textcolor>white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
-					<label>[B]Opt Edit[/B]</label>
+					<label>$INFO[Control.GetLabel(502)]</label>
 					<visible>[Control.HasFocus(501) | Control.HasFocus(501)]</visible>
 				</control>
 			</control>
