@@ -157,7 +157,9 @@ class DialogEditChannelList( SettingDialog ) :
 
 		#self.AddOkCanelButton( )
 		self.SetAutoHeight( True )
-		self.InitControl()
+		self.InitControl( )
+		self.UpdateLocation( )
+
 
 	def SetDialogGroup( self, aFocusId ) :
 		LOG_TRACE( 'Enter' )

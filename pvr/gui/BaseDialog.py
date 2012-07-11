@@ -100,6 +100,7 @@ class ControlItem:
 			self.mEnable	= True
 		self.mDescription = aDescription
 		self.mSelecteItem = aSelecteItem
+		self.mVisible = True		
 	
 
 class SettingDialog( BaseDialog ):
@@ -112,8 +113,8 @@ class SettingDialog( BaseDialog ):
 
 
 	def InitControl( self ):
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_CLOSE_BUTTON, E_SETTING_DIALOG_BUTTON_CLOSE, None, None, None, None ) )	
 		self.getControl( E_SETTING_DIALOG_MAIN_GOURP_ID ).setVisible( False )
-		pos = 0
 		for ctrlItem in self.mControlList:
 			if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL :
 				selectedItem = ctrlItem.mProperty.GetPropIndex()
@@ -132,6 +133,13 @@ class SettingDialog( BaseDialog ):
 				control.addItems( ctrlItem.mListItems )
 				control.selectItem( ctrlItem.mSelecteItem )
 
+
+	def UpdateLocation( self ) :
+		pos = 0	
+		for ctrlItem in self.mControlList:
+			if ctrlItem.mVisible == False or ctrlItem.mControlId == E_SETTING_DIALOG_BUTTON_CLOSE:
+				continue
+
 			if ctrlItem.mControlId == E_SETTING_DIALOG_BUTTON_OK_ID :
 				self.getControl( ctrlItem.mControlId ).setPosition( 57,  pos + 93 )
 			elif ctrlItem.mControlId == E_SETTING_DIALOG_BUTTON_CANCEL_ID :
@@ -140,20 +148,19 @@ class SettingDialog( BaseDialog ):
 				pos += self.getControl( ctrlItem.mControlId ).getHeight( )
 				self.getControl( ctrlItem.mControlId ).setPosition( 0, pos + 33)
 
+	
 		if self.mIsAutomaicHeight == True :
 			if self.mIsOkCancelType == True :
 				self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).setHeight( pos + 165 )
 			else :
 				self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).setHeight( pos + 135 )
 
-		self.mControlList.append( ControlItem( ControlItem.E_SETTING_CLOSE_BUTTON, E_SETTING_DIALOG_BUTTON_CLOSE, None, None, None, None ) )
-
 		height = self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).getHeight()
 		start_x = E_WINDOW_WIDTH / 2 - 610 / 2
 		start_y = E_WINDOW_HEIGHT / 2 - height / 2
 		self.getControl( E_SETTING_DIALOG_MAIN_GOURP_ID ).setPosition( start_x, start_y )
 		self.getControl( E_SETTING_DIALOG_MAIN_GOURP_ID ).setVisible( True )
-
+	
 
 	def SetAutoHeight( self, mMode ) :
 		self.mIsAutomaicHeight = mMode
@@ -337,7 +344,7 @@ class SettingDialog( BaseDialog ):
 			ctrlItem = self.mControlList[i]		
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
-					self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).setLabel2( aLabel )
+					self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).setLabel2( aLabel )					
 
 		return -1
 
@@ -429,8 +436,14 @@ class SettingDialog( BaseDialog ):
 
 
 	def SetVisibleControl( self, aControlId, aVisible ) :
-		control = self.getControl( aControlId )
-		control.setVisible( aVisible )
+		count = len( self.mControlList )
+
+		for i in range( count ) :
+			ctrlItem = self.mControlList[i]
+			if aControlId == ctrlItem.mControlId :
+				ctrlItem.mVisible = aVisible
+				control = self.getControl( aControlId )
+				control.setVisible( aVisible )
 
 
 	def SetVisibleControls( self, aControlIds, aVisible ) :
@@ -452,6 +465,12 @@ class SettingDialog( BaseDialog ):
 					return True
 					
 		return False
+
+
+	def SetFocus( self, aFocusId ) :
+		groupId = self.GetGroupId( aFocusId )
+		if groupId >= 0 :
+			self.setFocusId( groupId )		
 
 
 	def ControlUp( self ) :	

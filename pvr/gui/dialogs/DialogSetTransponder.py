@@ -177,6 +177,7 @@ class DialogSetTransponder( SettingDialog ) :
 		self.SetAutoHeight( True )
 
 		self.InitControl( )
+		self.UpdateLocation( )
 		self.DisableControl( )
 
 

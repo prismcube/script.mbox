@@ -243,6 +243,7 @@ class DialogStartRecord( SettingDialog ) :
 		self.SetAutoHeight( True )
 
 		self.InitControl( )
+		self.UpdateLocation( )
 		self.setFocusId( E_DialogInput03 )
 
 
