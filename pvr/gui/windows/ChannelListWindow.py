@@ -1796,24 +1796,31 @@ class ChannelListWindow( BaseWindow ) :
 			iChannel = self.mNewChannelList[i]
 			if iChannel == None : continue
 
-			listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ) )
+			#listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ) )
+			isFind = False
+			for item in self.mMoveList :
+				if iChannel.mNumber == item.mNumber : 
+					listItem = xbmcgui.ListItem( '[COLOR white]%04d %s[/COLOR]'%( iChannel.mNumber, iChannel.mName ), 'MOVE' )
+					listItem.setProperty(E_XML_PROPERTY_MARK, E_TAG_TRUE)
+					#LOG_TRACE('move idx[%s] [%04d %s]'% ( i, iChannel.mNumber, iChannel.mName ) )
+					isFind = True
+					break
+
+			if not isFind :
+				listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ) )
 			if iChannel.mLocked  : listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 			if iChannel.mIsCA    : listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
 			if iChannel.mSkipped : listItem.setProperty( E_XML_PROPERTY_SKIP, E_TAG_TRUE )
-
-			for item in self.mMoveList :
-				if iChannel.mNumber == item.mNumber : listItem.setProperty(E_XML_PROPERTY_MARK, E_TAG_TRUE)
-
 			#LOG_TRACE('move idx[%s] [%04d %s]'% ( i, iChannel.mNumber, iChannel.mName ) )
 
 			self.mListItems.append(listItem)
 
 		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
-		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, aSelectPosition, E_TAG_SET_SELECT_POSITION )
-		self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_GROUP_CHANNEL_LIST )
+		#self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, aSelectPosition, E_TAG_SET_SELECT_POSITION )
+		#self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_GROUP_CHANNEL_LIST )
 
 
-	def SetEditChanneltoMove(self, aMode, aMove = None, aGroupName = None ) :
+	def SetEditChanneltoMove(self, aMode, aMove = None ) :
 		if aMode == FLAG_OPT_MOVE :
 			self.OpenBusyDialog( )
 			try :
@@ -1836,14 +1843,18 @@ class ChannelListWindow( BaseWindow ) :
 				self.mMoveList.append( self.mNewChannelList[idxFirst] )
 				for idx in range( 1, len(self.mMarkList) ) :
 					i = int( self.mMarkList[idx] )
+					nextIdx = idxFirst + idx
 					item = self.mNewChannelList.pop(i)
-					self.mNewChannelList.insert(idxFirst+idx, item)
+					self.mNewChannelList.insert(nextIdx, item)
 					self.mMoveList.append( item )
+					self.mMarkList[idx] = nextIdx
 
 				self.mMoveFlag = True
 				self.mListItems = []
 				self.mViewFirst = idxFirst
 				self.mViewEnd = idxFirst + self.mItemCount
+
+				#LOG_TRACE('2====mark[%s] view[%s]~[%s]'% (self.mMarkList, self.mViewFirst, self.mViewEnd) )
 
 				self.ShowMoveToGUI( self.mViewFirst, self.mViewEnd )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_OPT1, '[B]OK[/B]' )
@@ -1855,25 +1866,43 @@ class ChannelListWindow( BaseWindow ) :
 			self.CloseBusyDialog( )
 
 		elif aMode == FLAG_OPT_MOVE_OK :
-			self.mMoveFlag = False
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_OPT1, '[B]Opt Edit[/B]' )
-			self.UpdatePropertyGUI( E_XML_PROPERTY_MOVE, E_TAG_FALSE )
+			self.OpenBusyDialog( )
+			try :
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_OPT1, '[B]Opt Edit[/B]' )
+				self.UpdatePropertyGUI( E_XML_PROPERTY_MOVE, E_TAG_FALSE )
 
-			chidx  = self.mMarkList[len(self.mMarkList)-1]
-			number = self.mChannelList[chidx].mNumber 
+				idxFirst = self.mMarkList[0]
+				idxLast  = len(self.mMarkList) - 1
 
-			ret = False
-			if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
-				if aGroupName :
-					ret = self.mDataCache.FavoriteGroup_MoveChannels( aGroupName, chidx, self.mChannelListServiceType, self.mMoveList )
-					#LOG_TRACE( '==========group========' )
-			else :
-				ret = self.mDataCache.Channel_Move( self.mChannelListServiceType, number, self.mMoveList )
+				makeNumber = idxFirst + 1
+				makeFavidx = idxFirst + 1
+				#LOG_TRACE('insert makeFavidx[%s], makeNumber[%s]'% (makeFavidx, makeNumber) )
+				#LOG_TRACE('mark[%s]'% self.mMarkList )
 
-			if ret :
-				self.mDataCache.Channel_Save( )
+
+				ret = False
+				if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
+					groupName = self.mEditFavorite[self.mSelectSubSlidePosition]
+					if groupName :
+						ret = self.mDataCache.FavoriteGroup_MoveChannels( groupName, makeFavidx, self.mChannelListServiceType, self.mMoveList )
+						#LOG_TRACE( '==========group========[%s]'% groupName )
+				else :
+					ret = self.mDataCache.Channel_Move( self.mChannelListServiceType, makeNumber, self.mMoveList )
+				#LOG_TRACE('move[%s]'% ret )
+
+				if ret :
+					ret = self.mDataCache.Channel_Save( )
+					#LOG_TRACE('save[%s]'% ret )
+
+				self.mMarkList = []
+				self.mMoveFlag = False
 				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
-			self.mMarkList = []
+
+			except Exception, e:
+				LOG_TRACE( 'Error except[%s]'% e )
+
+
+			self.CloseBusyDialog( )
 
 			#LOG_TRACE ('========= move End ===' )
 
@@ -1973,7 +2002,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def GetChannelListName( self ) :
-		allChannel = self.mDataCache.Channel_GetList( FLAG_ZAPPING_CHANGE, self.mChannelListServiceType, ElisEnum.E_MODE_ALL, self.mChannelListSortMode, True )
+		allChannel = self.mDataCache.Channel_GetList( FLAG_ZAPPING_CHANGE, self.mChannelListServiceType, ElisEnum.E_MODE_ALL, self.mChannelListSortMode )
 		self.mEditChannelList = []
 		if allChannel :
 			for item in allChannel:
@@ -2040,7 +2069,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aContextAction == CONTEXT_ACTION_MOVE :
 			cmd = 'move'
-			self.SetEditChanneltoMove(FLAG_OPT_MOVE, None, aGroupName )
+			self.SetEditChanneltoMove(FLAG_OPT_MOVE, None )
 			if self.mMarkList :
 				idx = int(self.mMarkList[0])
 				#xbmc.executebuiltin('xbmc.Container.SetViewMode(50)')
@@ -2203,6 +2232,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		if selectedAction == CONTEXT_ACTION_ADD_TO_CHANNEL :
 			self.GetChannelListName( )
+			labelString = '%s'% MR_LANG('Add Channel Fav. Group')
 			grpIdx = xbmcgui.Dialog().select( labelString, self.mEditChannelList )
 			groupName = self.mEditFavorite[self.mSelectSubSlidePosition]
 			if grpIdx == -1 :
