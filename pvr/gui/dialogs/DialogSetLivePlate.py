@@ -101,6 +101,7 @@ class DialogSetLivePlate( SettingDialog ) :
 
 		self.SetAutoHeight( True )
 		self.InitControl( )
+		self.UpdateLocation( )
 		self.getControl( MAIN_GROUP_ID ).setVisible( True )
 
 	def IsOK( self ) :

@@ -42,6 +42,7 @@ CONTEXT_SELECT_CHANNEL			= 8
 
 MININUM_KEYWORD_SIZE			= 3
 
+E_USE_FIXED_INTERVAL			= False
 
 class EPGWindow( BaseWindow ) :
 
@@ -105,9 +106,6 @@ class EPGWindow( BaseWindow ) :
 		self.UpdateEPGInfomation( )
 
 
-		self.mUpdateLocked = False
-		self.mIsUpdateEnable = True
-
 		self.mEventBus.Register( self )
 
 		self.StartEPGUpdateTimer( )
@@ -141,26 +139,74 @@ class EPGWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
 			if self.mFocusId == LIST_ID_COMMON_EPG or self.mFocusId == LIST_ID_BIG_EPG or self.mFocusId == SCROLL_ID_COMMON_EPG or self.mFocusId == SCROLL_ID_BIG_EPG:
+				GuiLock2( True )			
 				self.UpdateEPGInfomation( )
+				GuiLock2( False )				
 
 		elif actionId == Action.ACTION_PAGE_UP  or actionId == Action.ACTION_PAGE_DOWN :
 			if self.mFocusId == LIST_ID_COMMON_EPG or self.mFocusId == LIST_ID_BIG_EPG or self.mFocusId == SCROLL_ID_COMMON_EPG or self.mFocusId == SCROLL_ID_BIG_EPG:
+				GuiLock2( True )			
 				self.UpdateEPGInfomation( )
+				GuiLock2( False )				
 
 		elif actionId == Action.ACTION_CONTEXT_MENU:
+			self.mEventBus.Deregister( self )
+			self.StopEPGUpdateTimer( )
+
+			GuiLock2( True )
 			self.ShowContextMenu( )
+			GuiLock2( False )			
+			
+			self.StartEPGUpdateTimer( )
+			self.mEventBus.Register( self )			
 
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
-			self.ToggleTVRadio( )
+			self.mEventBus.Deregister( self )
+			self.StopEPGUpdateTimer( )
 
+			GuiLock2( True )			
+			self.ToggleTVRadio( )
+			GuiLock2( False )			
+			
+			self.StartEPGUpdateTimer( )
+			self.mEventBus.Register( self )			
+			
+
+		elif actionId == Action.ACTION_MBOX_RECORD :
+			self.mEventBus.Deregister( self )
+			self.StopEPGUpdateTimer( )
+
+			GuiLock2( True )			
+			self.RecordByHotKey( )
+			GuiLock2( False )			
+
+			self.StartEPGUpdateTimer( )
+			self.mEventBus.Register( self )			
+			
+
+		elif actionId == Action.ACTION_STOP :
+			self.mEventBus.Deregister( self )
+			self.StopEPGUpdateTimer( )
+
+			GuiLock2( True )
+			self.StopByHotKey( )
+			GuiLock2( False )
+			
+			self.StartEPGUpdateTimer( )
+			self.mEventBus.Register( self )			
+			
+		
 
 	def onClick( self, aControlId ) :
 		LOG_TRACE( 'aControlId=%d' %aControlId )
 
 		if aControlId == BUTTON_ID_EPG_MODE :
-			self.mLock.acquire( )
-			self.mUpdateLocked = True
-			self.mLock.release( )
+			self.mEventBus.Deregister( self )
+			self.StopEPGUpdateTimer( )
+
+			GuiLock2( True )			
+		
+			#self.mLock.acquire( )
 
 			self.mEPGMode += 1
 			if self.mEPGMode >= E_VIEW_END :
@@ -169,9 +215,6 @@ class EPGWindow( BaseWindow ) :
 			self.mSelectChannel = self.mCurrentChannel
 
 			SetSetting( 'EPG_MODE','%d' %self.mEPGMode )
-
-			self.mEventBus.Deregister( self )
-			self.StopEPGUpdateTimer( )
 
 			self.UpdateViewMode( )
 			self.InitControl( )
@@ -183,9 +226,9 @@ class EPGWindow( BaseWindow ) :
 			time.sleep( 0.2 )
 			self.UpdateEPGInfomation()
 
-			self.mLock.acquire( )
-			self.mUpdateLocked = False
-			self.mLock.release( )
+			#self.mLock.release( )
+
+			GuiLock2( False )			
 
 			self.mEventBus.Register( self )
 			self.StartEPGUpdateTimer( )
@@ -209,10 +252,10 @@ class EPGWindow( BaseWindow ) :
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
 			if aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
-				if self.mIsUpdateEnable == True	:
-					self.StopEPGUpdateTimer( )
-					self.UpdateListWithGUILock( )
-					self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
+				#if self.mIsUpdateEnable == True	:
+				self.StopEPGUpdateTimer( )
+				self.UpdateListUpdateOnly( )
+				self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
 
 			"""
 			elif aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
@@ -264,6 +307,8 @@ class EPGWindow( BaseWindow ) :
 
 		LOG_TRACE('----------------------------------->')
 		self.mDebugStart = time.time( )
+
+		self.mLock.acquire( )		
 		
 		self.mGMTTime = self.mDataCache.Datetime_GetGMTTime( )
 
@@ -278,6 +323,8 @@ class EPGWindow( BaseWindow ) :
 		else :
 			self.mEPGMode = E_VIEW_CHANNEL 		
 			self.LoadByChannel( )
+
+		self.mLock.release( )
 			
 		self.mDebugEnd = time.time( )
 		print 'epg loading test time =%s' %( self.mDebugEnd  - self.mDebugStart )
@@ -429,15 +476,12 @@ class EPGWindow( BaseWindow ) :
 		self.mWin.setProperty( 'HasHD', 'False' )
 
 
-	def UpdateListWithGUILock( self ) :
-		if self.mUpdateLocked == True :
-			return
-
-		self.mIsUpdateEnable = False
+	def UpdateListUpdateOnly( self ) :
 		self.UpdateList( True )
-		self.mIsUpdateEnable = True
+
 
 	def UpdateList( self, aUpdateOnly=False ) :
+		#self.mLock.acquire( )	
 		if aUpdateOnly == False :
 			self.mListItems = []
 		self.LoadTimerList( )
@@ -460,9 +504,9 @@ class EPGWindow( BaseWindow ) :
 
 					listItem.setProperty( 'EPGDate', TimeToString( epgEvent.mStartTime + self.mLocalOffset, TimeFormatEnum.E_AW_DD_MON ) )
 
-					timerId = self.GetTimerByEPG( epgEvent )
-					if timerId > 0 :
-						if self.IsRunningTimer( timerId ) == True :
+					timer = self.GetTimerByEPG( epgEvent )
+					if timer :
+						if self.IsRunningTimer( timer ) == True :
 							listItem.setProperty( 'TimerType', 'Running' )
 						else :
 							listItem.setProperty( 'TimerType', 'Schedule' )
@@ -510,16 +554,17 @@ class EPGWindow( BaseWindow ) :
 						listItem.setProperty( 'StartTime', tempName )
 						listItem.setProperty( 'Duration', '' )
 						listItem.setProperty( 'HasEvent', 'true' )
- 
-						timerId = self.GetTimerByEPG( epgEvent )
-						if timerId > 0 :
-							if self.IsRunningTimer( timerId ) == True :
+
+						timer= self.GetTimerByEPG( epgEvent )
+
+						if timer :
+							if self.IsRunningTimer( timer ) == True :
 								listItem.setProperty( 'TimerType', 'Running' )
 							else :
 								listItem.setProperty( 'TimerType', 'Schedule' )						
 						else :
 							listItem.setProperty( 'TimerType', 'None' )
-						
+
 					else :
 						if aUpdateOnly == False :					
 							listItem = xbmcgui.ListItem( tempChannelName, 'No Event' )
@@ -529,10 +574,11 @@ class EPGWindow( BaseWindow ) :
 						listItem.setProperty( 'StartTime', '' )
 						listItem.setProperty( 'Duration', '' )						
 						listItem.setProperty( 'HasEvent', 'false' )
-						timerId = self.GetTimerByChannel( channel )
- 
-						if timerId > 0 :
-							if self.IsRunningTimer( timerId ) == True :
+
+						timer = self.GetTimerByChannel( channel )
+
+						if timer :
+							if self.IsRunningTimer( timer ) == True :
 								listItem.setProperty( 'TimerType', 'Running' )
 							else :
 								listItem.setProperty( 'TimerType', 'Schedule' )						
@@ -585,9 +631,9 @@ class EPGWindow( BaseWindow ) :
 						listItem.setProperty( 'Duration', '' )						
 						listItem.setProperty( 'HasEvent', 'true' )
  
-						timerId = self.GetTimerByEPG( epgEvent )
-						if timerId > 0 :
-							if self.IsRunningTimer( timerId ) == True :
+						timer = self.GetTimerByEPG( epgEvent )
+						if timer:
+							if self.IsRunningTimer( timer ) == True :
 								listItem.setProperty( 'TimerType', 'Running' )
 							else :
 								listItem.setProperty( 'TimerType', 'Schedule' )						
@@ -595,14 +641,21 @@ class EPGWindow( BaseWindow ) :
 							listItem.setProperty( 'TimerType', 'None' )
 						
 					else :
-						listItem = xbmcgui.ListItem( tempChannelName, 'No Event' )
+						if aUpdateOnly == False :
+							listItem = xbmcgui.ListItem( tempChannelName, 'No Event' )
+						else :
+							listItem = self.mListItems[i]
+							listItem.setLabel( tempChannelName )
+							listItem.setLabel2( 'No Event' )
+						
 						listItem.setProperty( 'StartTime', '' )
 						listItem.setProperty( 'Duration', '' )						
 						listItem.setProperty( 'HasEvent', 'false' )
- 						timerId = self.GetTimerByChannel( channel )
 
-						if timerId > 0 :
-							if self.IsRunningTimer( timerId ) == True :
+ 						timer = self.GetTimerByChannel( channel )
+
+						if timer :
+							if self.IsRunningTimer( timer ) == True :
 								listItem.setProperty( 'TimerType', 'Running' )
 							else :
 								listItem.setProperty( 'TimerType', 'Schedule' )						
@@ -621,11 +674,10 @@ class EPGWindow( BaseWindow ) :
 				#self.setFocusId( LIST_ID_BIG_EPG )
 			else :
 				xbmc.executebuiltin('container.update')			
-				#xbmc.executebuiltin('xbmc.Container.SetViewMode(%d)' %E_VIEW_FOLLOWING)				
+				#xbmc.executebuiltin('xbmc.Container.SetViewMode(%d)' %E_VIEW_FOLLOWING)
 
 
 	def GetEPGByIds( self, aSid, aTsid, aOnid ) :
-
 		return self.mEPGListHash.get( '%d:%d:%d' %( aSid, aTsid, aOnid ), None )
 		"""
 		if self.mEPGList == None :
@@ -651,7 +703,7 @@ class EPGWindow( BaseWindow ) :
 
 
 	def ShowContextMenu( self ) :
-		GuiLock2( True )
+
 		context = []
 		
 		selectedEPG = self.GetSelectedEPG( )
@@ -664,8 +716,8 @@ class EPGWindow( BaseWindow ) :
 				context.append( ContextItem( 'Edit Timer', CONTEXT_EDIT_TIMER ) )
 				context.append( ContextItem( 'Delete Timer', CONTEXT_DELETE_TIMER ) )
 			else :
-				timerId = self.GetTimerByEPG( selectedEPG )
-				if timerId > 0 :
+				timer = self.GetTimerByEPG( selectedEPG )
+				if timer :
 					context.append( ContextItem( 'Edit Timer', CONTEXT_EDIT_TIMER ) )
 					context.append( ContextItem( 'Delete Timer', CONTEXT_DELETE_TIMER ) )
 				else:
@@ -682,15 +734,15 @@ class EPGWindow( BaseWindow ) :
 			
 
 		else :
-			timerId = 0
+			timer = None
 
 			if self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :				
 				selectedPos = self.mCtrlBigList.getSelectedPosition()
 				if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 					channel = self.mChannelList[ selectedPos ]
-					timerId = self.GetTimerByChannel( channel )					
+					timer = self.GetTimerByChannel( channel )					
 
-			if timerId > 0 :
+			if timer :
 				context.append( ContextItem( 'Edit Timer', CONTEXT_EDIT_TIMER ) )
 				context.append( ContextItem( 'Delete Timer', CONTEXT_DELETE_TIMER ) )
 			else :
@@ -708,7 +760,6 @@ class EPGWindow( BaseWindow ) :
 
 		contextAction = dialog.GetSelectedAction()
 		self.DoContextAction( contextAction ) 
-		GuiLock2( False )
 
 
 	def DoContextAction( self, aContextAction ) :
@@ -724,12 +775,7 @@ class EPGWindow( BaseWindow ) :
 			self.ShowManualTimer( epg )
 
 		elif aContextAction == CONTEXT_EDIT_TIMER :
-			pass
-			"""
-			#ToDO
-			epg = self.GetSelectedEPG( )		
-			self.ShowManualTimer( epg, True )		
-			"""
+			self.ShowEditTimer( )
 
 		elif aContextAction == CONTEXT_DELETE_TIMER :
 			self.ShowDeleteConfirm( )
@@ -759,15 +805,10 @@ class EPGWindow( BaseWindow ) :
 
 		try :
 			if dialog.IsOK() == E_DIALOG_STATE_YES :
-				LOG_TRACE('')
 				ret = self.mDataCache.Timer_AddEPGTimer( True, 0, aEPG )
 
 				if ret[0].mParam == -1 or ret[0].mError == -1 :
 					self.RecordConflict( ret )
-				else :
-					self.StopEPGUpdateTimer( )
-					self.UpdateListWithGUILock( )
-					self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
 
 			else :
 				LOG_TRACE('')
@@ -776,86 +817,107 @@ class EPGWindow( BaseWindow ) :
 			LOG_ERR( "Exception %s" %ex)
 
 
-	def ShowManualTimer( self, aEPG, aIsEdit=False ) :
-		if aEPG :
-			LOG_TRACE('ShowManualTimer EPG=%d IsEdit=%d' %( aEPG.mEventId, aIsEdit) )
-		else :
-			LOG_TRACE('ShowManualTimer EPG=None IsEdit=%d' %aIsEdit )
+	def ShowEditTimer( self ) :
+		selectedEPG = self.GetSelectedEPG( )
 
-		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
+		timer = None
 
-		if aIsEdit :
-			dialog.SetEditMode( True )		
-			timerId = self.GetTimerByEPG( aEPG )		
-			dialolg.SetTimer( timerId )
-			
-			if timerId < 0 :
-				LOG_ERR('Can not find Timer')
-				return
+		if selectedEPG :
+			timer = self.GetTimerByEPG( selectedEPG )
+			if timer and timer.mTimerId > 0 :	# Edit Mode
+				self.ShowManualTimer( selectedEPG, timer )
 
 		else :
-			dialog.SetEditMode( False )
-
-			if aEPG :
-				dialog.SetEPG( aEPG )
-
-			channel = None
-			if self.mEPGMode == E_VIEW_CHANNEL  :
-				channel = self.mDataCache.Channel_GetCurrent( )
-			else :
+			if self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :
 				selectedPos = self.mCtrlBigList.getSelectedPosition()
 				if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 					channel = self.mChannelList[ selectedPos ]
-				else :
-					LOG_ERR('Can not find channel')
-					return
+					timer = self.GetTimerByChannel( channel )					
 		
-			dialog.SetChannel( channel )			
+			if timer and timer.mTimerId > 0 :	# Edit Mode
+				self.ShowManualTimer( None, timer )				
+	
+
+	def ShowManualTimer( self, aEPG=None, aTimer=None ) :
+
+		if aTimer :
+			if self.IsRunningTimer( aTimer ) == True :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( 'WARN', 'Recording is running' )
+	 			dialog.doModal( )
+				return
+
+		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
+
+
+		if aTimer :
+			dialog.SetTimer( aTimer )
+
+		if aEPG :
+			dialog.SetEPG( aEPG )
+
+		channel = None
+		if self.mEPGMode == E_VIEW_CHANNEL  :
+			channel = self.mDataCache.Channel_GetCurrent( )
+		else :
+			selectedPos = self.mCtrlBigList.getSelectedPosition()
+			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
+				channel = self.mChannelList[ selectedPos ]
+			else :
+				LOG_ERR('Can not find channel')
+				return
+	
+		dialog.SetChannel( channel )			
 
 		dialog.doModal( )
 
 		if dialog.IsOK( ) == E_DIALOG_STATE_ERROR :
 			if dialog.GetConflictTimer( ) == None :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Error', dialog.GetErrorMessage( ) )
-				dialog.doModal( )
+				infoDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				infoDialog.SetDialogProperty( 'Error', dialog.GetErrorMessage( ) )
+				infoDialog.doModal( )
 			else :
 				self.RecordConflict( dialog.GetConflictTimer( ) )
 			return
 
-		self.StopEPGUpdateTimer( )
-		self.UpdateListWithGUILock( )
-		self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
+		#self.StopEPGUpdateTimer( )
+		self.UpdateListUpdateOnly( )
+		#self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
+
 
 
 
 	def ShowDeleteConfirm( self ) :
 		LOG_TRACE('ShowDeleteConfirm')
 
-		timerId = 0
+		timer = None
 		
 		epg = self.GetSelectedEPG( )
 
 		if epg :
-			timerId = self.GetTimerByEPG( epg )
+			timer = self.GetTimerByEPG( epg )
 
 		else :
 			if self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :				
 				selectedPos = self.mCtrlBigList.getSelectedPosition()
 				if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 					channel = self.mChannelList[ selectedPos ]
-					timerId = self.GetTimerByChannel( channel )					
-		
-		if timerId > 0 :		
+					timer = self.GetTimerByChannel( channel )					
+
+			elif self.mEPGMode == E_VIEW_CHANNEL :
+				timer = self.GetTimerByChannel( self.mCurrentChannel )
+
+		if timer :		
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( 'Confirm', 'Do you want to delete timer?' )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				self.mDataCache.Timer_DeleteTimer( timerId )
-				self.StopEPGUpdateTimer( )
-				self.UpdateListWithGUILock( )
-				self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
+				self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
+				#self.StopEPGUpdateTimer( )
+				self.UpdateListUpdateOnly( )
+				#self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
+
 
 
 
@@ -875,9 +937,9 @@ class EPGWindow( BaseWindow ) :
 				#timer.printdebug()
 				self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
 
-			self.StopEPGUpdateTimer( )
-			self.UpdateListWithGUILock( )
-			self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
+			#self.StopEPGUpdateTimer( )
+			self.UpdateListUpdateOnly( )
+			#self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
 
 		self.CloseBusyDialog( )
 
@@ -961,18 +1023,22 @@ class EPGWindow( BaseWindow ) :
 		if ret >= 0 :
 			self.mSelectChannel = self.mChannelList[ ret ]
 
+			"""
 			self.mEventBus.Deregister( self )
 			self.StopEPGUpdateTimer( )
+			"""
 			
 			self.Load( )
 			self.UpdateList( )			
-			self.UpdateListWithGUILock( )
+			self.UpdateListUpdateOnly( )
 			self.UpdateSelectedChannel( )
 			self.FocusCurrentChannel( )			
 			self.UpdateEPGInfomation()
 
+			"""
 			self.mEventBus.Register( self )
 			self.StartEPGUpdateTimer( )
+			"""
 
 
 	def	GetSelectedEPG( self ) :
@@ -1006,33 +1072,40 @@ class EPGWindow( BaseWindow ) :
 		if self.mTimerList :
 			LOG_TRACE('self.mTimerList len=%d' %len( self.mTimerList ) )
 
-		"""
-		self.mTimerList = []
-		timerCount = self.mDataCache.Timer_GetTimerCount( )
-
-		for i in range( timerCount ) :
-			timer = self.mDataCache.Timer_GetByIndex( i )
-			self.mTimerList.append( timer )
-		"""
-
 
 	def GetTimerByChannel( self, aChannel ) :
+
 		if self.mTimerList == None :
-			return 0
+			return None
 
-		for i in range( len( self.mTimerList ) ) :
-			timer =  self.mTimerList[i]
-			#if timer.mTimerType == 1 and aChannel.mSid == timer.mSid and aChannel.mTsid == timer.mTsid and aChannel.mOnid == timer.mOnid :						
-			#if timer.mTimerType == ElisEnum.E_ITIMER_MANUAL and aChannel.mSid == timer.mSid and aChannel.mTsid == timer.mTsid and aChannel.mOnid == timer.mOnid :
-			if aChannel.mSid == timer.mSid and aChannel.mTsid == timer.mTsid and aChannel.mOnid == timer.mOnid :			
-				return timer.mTimerId
+		try :		
+			if E_USE_FIXED_INTERVAL == True :
+				startTime = self.mDataCache.Datetime_GetLocalTime( )
+				endTime = self.mDataCache.Datetime_GetLocalTime( ) + 3600*24
 
-		return 0
+				for i in range( len( self.mTimerList ) ) :
+					timer =  self.mTimerList[i]
+					if aChannel.mSid == timer.mSid and aChannel.mTsid == timer.mTsid and aChannel.mOnid == timer.mOnid :
+						if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY	:
+							if self.HasMachedWeeklyTimer( timer, startTime, endTime ) == True :
+								return timer
+						elif self.HasOverlapped( startTime, endTime, timer.mStartTime, timer.mStartTime + timer.mDuration ) == True :
+							return timer
+			else :
+				for i in range( len( self.mTimerList ) ) :
+					timer =  self.mTimerList[i]
+					if aChannel.mSid == timer.mSid and aChannel.mTsid == timer.mTsid and aChannel.mOnid == timer.mOnid :
+						return timer
+
+		except Exception, ex :
+			LOG_ERR( "Exception %s" %ex)
+
+		return None
 
 
 	def GetTimerByEPG( self, aEPG ) :
 		if self.mTimerList == None :
-			return 0
+			return None
 
 		try :	
 			for i in range( len( self.mTimerList ) ) :
@@ -1055,67 +1128,79 @@ class EPGWindow( BaseWindow ) :
 				"""				
 
 				if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY and timer.mWeeklyTimer and timer.mWeeklyTimerCount > 0 :
-
-
-					struct_time = time.gmtime( timer.mStartTime )
-					# tm_wday is different between Python and C++
-					LOG_TRACE('time.struct_time[6]=%d' %struct_time[6] )
-					if struct_time[6] == 6 : #tm_wday
-						weekday = 0
-					elif struct_time[6] == 0 :
-						weekday = 6
-					else  :
-						weekday = struct_time[6] + 1
-
+					if aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid :
+						if self.HasMachedWeeklyTimer( timer, startTime, endTime ) == True :
+							return timer
 						
-					# hour*3600 + min*60 + sec
-					secondsNow = struct_time[3]*3600 + struct_time[4]*60 + struct_time[5]
-
-					LOG_TRACE('weekday=%d'  %weekday )
-
-					for weeklyTimer in timer.mWeeklyTimer :
-						dateLeft = weeklyTimer.mDate - weekday
-						if dateLeft < 0 :
-							dateLeft += 7
-						elif dateLeft == 0 :
-							if weeklyTimer.mStartTime < secondsNow :
-								dateLeft += 7
-
-						weeklyStarTime = dateLeft*24*3600 + timer.mStartTime + weeklyTimer.mStartTime - secondsNow
-
-						#LOG_TRACE('weeklyTimer date==%d time=%s duration=%d' %(weeklyTimer.mDate, TimeToString( weeklyStarTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ), weeklyTimer.mDuration ) )
-						if ( aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid ) and \
-							(( startTime >= weeklyStarTime and startTime < (weeklyStarTime + weeklyTimer.mDuration) ) or \
-							( endTime > weeklyStarTime and endTime < (weeklyStarTime + weeklyTimer.mDuration) ) ) :
-							LOG_TRACE('------------------- find by weekly timer -------------------------')
-							return timer.mTimerId
-								
 				else :
 					if timer.mFromEPG :
 						if  timer.mEventId > 0  and aEPG.mEventId == timer.mEventId and aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid :
-							LOG_TRACE('------------------- find by event id -------------------------')					
-							return timer.mTimerId
+							LOG_TRACE('------------------- find by event id -------------------------')
+							return timer
 
 					else :
-						if ( aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid ) and \
-							(( startTime >= timer.mStartTime and startTime < (timer.mStartTime + timer.mDuration) ) or \
-							( endTime > timer.mStartTime and endTime < (timer.mStartTime + timer.mDuration) ) ) :
-							LOG_TRACE('------------------- find by manual timer-------------------------')
-							return timer.mTimerId
+						if aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid :
+							if self.HasOverlapped( startTime, endTime, timer.mStartTime, timer.mStartTime + timer.mDuration ) == True :
+								LOG_TRACE('------------------- find by manual timer-------------------------')
+								return timer
 
+						
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex)
 
-		return 0
+		return None
 
 
-	def IsRunningTimer( self, aTimerId ) :
+	def HasOverlapped( self, aStartTime, aEndTime, aStartTime2, aEndTime2 ) :
+		if ( aStartTime >= aStartTime2 and aStartTime < aEndTime2 ) or \
+			( aEndTime >= aStartTime2 and aEndTime < aEndTime2 )  or \
+			( aStartTime >= aStartTime2 and aEndTime < aEndTime2 ) or \
+			( aStartTime2 >= aStartTime and aEndTime2 < aEndTime ) :
+			return True
+
+		return False
+
+
+	def HasMachedWeeklyTimer( self, aTimer, aStartTime, aEndTime ) :
+		struct_time = time.gmtime( aTimer.mStartTime )
+		# tm_wday is different between Python and C++
+		weekday = struct_time[6] + 1
+		if weekday > 6 :
+			weekday = 0
+			
+		# hour*3600 + min*60 + sec
+		secondsNow = struct_time[3]*3600 + struct_time[4]*60 + struct_time[5]
+
+		#LOG_TRACE('weekday=%d'  %weekday )
+
+		for weeklyTimer in aTimer.mWeeklyTimer :
+			dateLeft = weeklyTimer.mDate - weekday
+			if dateLeft < 0 :
+				dateLeft += 7
+			elif dateLeft == 0 :
+				if weeklyTimer.mStartTime < secondsNow :
+					dateLeft += 7
+
+			weeklyStartTime = dateLeft*24*3600 + aTimer.mStartTime + weeklyTimer.mStartTime - secondsNow
+
+			if self.HasOverlapped( aStartTime, aEndTime, weeklyStartTime, weeklyStartTime + weeklyTimer.mDuration ) == True :
+				LOG_TRACE('------------------- find by weekly timer -------------------------')
+				return True
+
+		return False
+
+	
+
+	def IsRunningTimer( self, aTimer ) :
+		if aTimer == None :
+			return False
+
 		runningTimers = self.mDataCache.Timer_GetRunningTimers( )
 		if runningTimers == None :
 			return False
 			
 		for timer in runningTimers :
-			if timer.mTimerId == aTimerId :
+			if timer.mTimerId == aTimer.mTimerId :
 				return True
 
 		return False
@@ -1166,18 +1251,12 @@ class EPGWindow( BaseWindow ) :
 			return
 
 
-		if self.mUpdateLocked == False :	
-			if self.mEPGMode == E_VIEW_FOLLOWING : # Following is not support until now.
-				LOG_TRACE("ToDO : DocurrentEITReceived is not support until now.")
-				self.RestartEPGUpdateTimer( )
-			else :
-				self.mLock.acquire( )
-				self.Load( )
-				self.mLock.release( )
-				self.UpdateListWithGUILock( )
-				self.UpdateEPGInfomation( )
+		self.Load( )
 
-				self.RestartEPGUpdateTimer( )
+		self.UpdateListUpdateOnly( )
+		self.UpdateEPGInfomation( )
+
+		self.RestartEPGUpdateTimer( )
 
 
 	def RecordConflict( self, aInfo ) :
@@ -1191,10 +1270,11 @@ class EPGWindow( BaseWindow ) :
 				conflictNum = 3
 			for i in range( conflictNum ) :
 				timer = self.mDataCache.Timer_GetById( aInfo[ i + 1 ].mParam )
-				time = '%s~%s' % ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( timer.mStartTime + timer.mDuration, TimeFormatEnum.E_HH_MM ) )
-				channelNum = '%04d' % timer.mChannelNo
-				epgNAme = timer.mName
-				label[i] = time + ' ' + channelNum + ' ' + epgNAme
+				if timer :
+					time = '%s~%s' % ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( timer.mStartTime + timer.mDuration, TimeFormatEnum.E_HH_MM ) )
+					channelNum = '%04d' % timer.mChannelNo
+					epgNAme = timer.mName
+					label[i] = time + ' ' + channelNum + ' ' + epgNAme
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( 'Conflict', label[0], label[1], label[2] )
 		dialog.doModal( )
@@ -1206,12 +1286,6 @@ class EPGWindow( BaseWindow ) :
 		else :
 			self.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
 
-		self.mLock.acquire( )
-		self.mUpdateLocked = True
-		self.mLock.release( )
-
-		self.mEventBus.Deregister( self )
-		self.StopEPGUpdateTimer( )
 
 		self.mChannelList = self.mDataCache.Channel_GetAllChannels( self.mServiceType )
 
@@ -1232,7 +1306,9 @@ class EPGWindow( BaseWindow ) :
 
 		self.mSelectChannel = self.mCurrentChannel			
 
+		self.mLock.acquire( )
 		self.Load( )
+		self.mLock.release( )
 		
 		self.UpdateList( )	
 		self.UpdateSelectedChannel( )
@@ -1240,10 +1316,39 @@ class EPGWindow( BaseWindow ) :
 		time.sleep( 0.2 )
 		self.UpdateEPGInfomation()
 
-		self.mLock.acquire( )
-		self.mUpdateLocked = False
-		self.mLock.release( )
 
-		self.mEventBus.Register( self )
-		self.StartEPGUpdateTimer( )
+	def RecordByHotKey( self ) :
+		selectedEPG = self.GetSelectedEPG( )
+
+		timer = None
+
+		if selectedEPG :
+			timer = self.GetTimerByEPG( selectedEPG )
+			if timer :
+				timer.printdebug( )
+			if timer and timer.mTimerId > 0 :	# Edit Mode
+				self.ShowManualTimer( selectedEPG, timer )
+			else: # Add EPG Timer
+				self.ShowEPGTimer( selectedEPG )
+
+		else :
+			if self.mEPGMode == E_VIEW_CURRENT or self.mEPGMode == E_VIEW_FOLLOWING :
+				selectedPos = self.mCtrlBigList.getSelectedPosition()
+				if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
+					channel = self.mChannelList[ selectedPos ]
+					timer = self.GetTimerByChannel( channel )					
+
+			if timer :
+				timer.printdebug( )
+			
+			if timer and timer.mTimerId > 0 :	# Edit Mode
+				self.ShowManualTimer( None, timer )				
+			else :	# Add Manual Timer
+				self.ShowManualTimer( None )
+
+
+	def	StopByHotKey( self ) :
+		self.ShowDeleteConfirm( )	
+
+
 

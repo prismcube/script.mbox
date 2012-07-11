@@ -116,3 +116,5 @@ class DialogLnbFrequency( SettingDialog ) :
 		self.SetAutoHeight( True )
 		
 		self.InitControl( )
+		self.UpdateLocation( )
+

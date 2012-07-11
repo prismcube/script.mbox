@@ -121,4 +121,5 @@ class DialogAddNewSatellite( SettingDialog ) :
 		self.SetAutoHeight( True )
 
 		self.InitControl( )
+		self.UpdateLocation( )
 		
