@@ -13,7 +13,7 @@ DIALOG_ID_STOP_RECORD				= 4
 DIALOG_ID_SATELLITE_NUMERIC			= 5
 DIALOG_ID_MOVE_ANTENNA				= 6
 DIALOG_ID_ADD_NEW_SATELLITE			= 7
-DIALOG_ID_SET_LIVE_PLATE			= 8
+DIALOG_ID_SET_AUDIOVIDEO			= 8
 DIALOG_ID_SET_TRANSPONDER			= 9
 DIALOG_ID_YES_NO_CANCEL				= 10
 DIALOG_ID_NUMERIC_KEYBOARD			= 11
@@ -120,9 +120,9 @@ class DialogMgr(object):
 				from pvr.gui.dialogs.DialogAddManualTimer import DialogAddManualTimer
 				return DialogAddManualTimer('DialogAddManualTimer.xml', self.scriptDir)
 
-			elif aDialogId == DIALOG_ID_SET_LIVE_PLATE :
-				from pvr.gui.dialogs.DialogSetLivePlate import DialogSetLivePlate
-				return DialogSetLivePlate('DialogSetLivePlate.xml', self.scriptDir)
+			elif aDialogId == DIALOG_ID_SET_AUDIOVIDEO :
+				from pvr.gui.dialogs.DialogSetAudioVideo import DialogSetAudioVideo
+				return DialogSetAudioVideo('DialogSetAudioVideo.xml', self.scriptDir)
 
 			elif aDialogId == DIALOG_ID_TIMESHIFT_JUMP :
 				from pvr.gui.dialogs.DialogTimeshiftJump import DialogTimeshiftJump

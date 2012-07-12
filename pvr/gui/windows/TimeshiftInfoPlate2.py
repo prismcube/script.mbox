@@ -1475,7 +1475,7 @@ class TimeShiftInfoPlate2(BaseWindow):
 
 			if selectAction == CONTEXT_ACTION_AUDIO_SETTING :
 				GuiLock2( True )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_LIVE_PLATE )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO )
 				dialog.SetValue( selectAction )
 	 			dialog.doModal( )
 	 			GuiLock2( False )

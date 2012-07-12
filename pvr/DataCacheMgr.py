@@ -1021,14 +1021,26 @@ class DataCacheMgr( object ):
 	def Channel_Lock( self, aLock, aIChannel ) :
 		return self.mCommander.Channel_Lock( aLock, aIChannel )
 
+	def Channel_LockByNumber( self, aLock, aType, aNumList ) :
+		return self.mCommander.Channel_LockByNumber( aLock, aType, aNumList )
+
 	def Channel_Skip( self, aSet, aIChannel ) :
 		return self.mCommander.Channel_Skip( aSet, aIChannel )
+
+	def Channel_SkipByNumber( self, aSet, aType, aNumList ) :
+		return self.mCommander.Channel_SkipByNumber( aSet, aType, aNumList )
 
 	def Favoritegroup_AddChannel( self, aGroupName, aNumber, aServieType ) :
 		return self.mCommander.Favoritegroup_AddChannel( aGroupName, aNumber, aServieType )
 
+	def Favoritegroup_AddChannelByNumber( self, aGroupName, aServieType, aNumList ) :
+		return self.mCommander.Favoritegroup_AddChannelByNumber( aGroupName, aServieType, aNumList )
+
 	def Favoritegroup_RemoveChannel( self, aGroupName, aNumber, aServieType ) :
 		return self.mCommander.Favoritegroup_RemoveChannel( aGroupName, aNumber, aServieType )
+
+	def Favoritegroup_RemoveChannelByNumber( self, aGroupName, aServieType, aNumList ) :
+		return self.mCommander.Favoritegroup_RemoveChannelByNumber( aGroupName, aServieType, aNumList )
 
 	def FavoriteGroup_MoveChannels( self, aGroupName, aInsertPosition, aServieType, aIChannel ) :
 		return self.mCommander.FavoriteGroup_MoveChannels( aGroupName, aInsertPosition, aServieType, aIChannel )

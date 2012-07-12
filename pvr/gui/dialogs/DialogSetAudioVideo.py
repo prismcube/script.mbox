@@ -8,7 +8,7 @@ CONTEXT_ACTION_AUDIO_SETTING = 2
 MAIN_GROUP_ID = 8000
 
 
-class DialogSetLivePlate( SettingDialog ) :
+class DialogSetAudioVideo( SettingDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingDialog.__init__( self, *args, **kwargs )
 		LOG_TRACE( 'args[0]=[%s]' % args[0] )

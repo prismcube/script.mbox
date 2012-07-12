@@ -1308,7 +1308,7 @@ class TimeShiftInfoPlate1(BaseWindow):
 				return
 
 			GuiLock2( True )
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_LIVE_PLATE )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO )
 			dialog.SetValue( selectAction )
  			dialog.doModal( )
  			GuiLock2( False )
