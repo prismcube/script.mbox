@@ -1267,6 +1267,14 @@ class DataCacheMgr( object ):
 		return self.mCommander.Timer_GetRunningTimers( )
 
 
+	def Timer_EditOneWeeklyTimer( self, aTimerId, aDate, aStartTime, aDuration, aNewStartTime, aNewDuration) :
+		return self.mCommander.Timer_EditWeeklyTimer( aTimerId, aDate, aStartTime, aDuration, aNewStartTime, aNewDuration )
+
+
+	def Timer_AddOneWeeklyTimer( self, aTimerId, aDate, aStartTime, aDuration) :	
+		return self.mCommander.Timer_AddWeeklyTimerItem( aTimerId, aDate, aStartTime, aDuration )
+
+		
 	def Timer_DeleteOneWeeklyTimer( self, aTimerId, aDate, aStartTime, aDuration ) :
 		return self.mCommander.Timer_EditWeeklyTimer( aTimerId, aDate, aStartTime, aDuration, aStartTime, 0 ) 
 

@@ -712,17 +712,19 @@ class EPGWindow( BaseWindow ) :
 			context.append( ContextItem( 'Select Channel', CONTEXT_SELECT_CHANNEL ) )
 
 		if selectedEPG :
+			"""
 			if selectedEPG.mHasTimer :
 				context.append( ContextItem( 'Edit Timer', CONTEXT_EDIT_TIMER ) )
 				context.append( ContextItem( 'Delete Timer', CONTEXT_DELETE_TIMER ) )
 			else :
-				timer = self.GetTimerByEPG( selectedEPG )
-				if timer :
-					context.append( ContextItem( 'Edit Timer', CONTEXT_EDIT_TIMER ) )
-					context.append( ContextItem( 'Delete Timer', CONTEXT_DELETE_TIMER ) )
-				else:
-					context.append( ContextItem( 'Add Timer', CONTEXT_ADD_EPG_TIMER ) )
-					context.append( ContextItem( 'Add Manual Timer', CONTEXT_ADD_MANUAL_TIMER ) )
+			"""
+			timer = self.GetTimerByEPG( selectedEPG )
+			if timer :
+				context.append( ContextItem( 'Edit Timer', CONTEXT_EDIT_TIMER ) )
+				context.append( ContextItem( 'Delete Timer', CONTEXT_DELETE_TIMER ) )
+			else:
+				context.append( ContextItem( 'Add Timer', CONTEXT_ADD_EPG_TIMER ) )
+				context.append( ContextItem( 'Add Manual Timer', CONTEXT_ADD_MANUAL_TIMER ) )
 
 			if 	self.mTimerList and len( self.mTimerList ) > 0 :
 				context.append( ContextItem( 'Delete All Timers', CONTEXT_DELETE_ALL_TIMERS ) )
@@ -840,18 +842,20 @@ class EPGWindow( BaseWindow ) :
 
 	def ShowManualTimer( self, aEPG=None, aTimer=None ) :
 
+		"""
 		if aTimer :
 			if self.IsRunningTimer( aTimer ) == True :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'WARN', 'Recording is running' )
 	 			dialog.doModal( )
 				return
+		"""
 
 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
 
 
 		if aTimer :
-			dialog.SetTimer( aTimer )
+			dialog.SetTimer( aTimer, self.IsRunningTimer( aTimer ) )
 
 		if aEPG :
 			dialog.SetEPG( aEPG )
