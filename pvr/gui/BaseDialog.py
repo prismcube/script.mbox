@@ -247,6 +247,7 @@ class SettingDialog( BaseDialog ):
 
 		return False
 
+
 	def GetPrevId( self, aControlId ):
 		count = len( self.mControlList )
 		prevId = -1
@@ -261,10 +262,11 @@ class SettingDialog( BaseDialog ):
 					return prevId
 				continue
 
-			if ctrlItem.mEnable :
+			if ctrlItem.mEnable and ctrlItem.mVisible :
 				prevId = ctrlItem.mControlId
 
 		return prevId
+
 
 	def GetNextId( self, aControlId ):			
 		count = len( self.mControlList )
@@ -275,7 +277,7 @@ class SettingDialog( BaseDialog ):
 		for i in range( count ) :
 			ctrlItem = self.mControlList[i]
 
-			if ctrlItem.mEnable and nextId <= 0 :
+			if ctrlItem.mEnable and nextId <= 0  and ctrlItem.mVisible:
 				nextId = ctrlItem.mControlId
 
 			if ctrlItem.mEnable and found == True :
@@ -535,7 +537,7 @@ class SettingDialog( BaseDialog ):
 					control.selectItem( aPosition )
 					return True
 				elif ctrlItem.mControlType == ctrlItem.E_SETTING_LIST_CONTROL :
-					control = self.getControl( ctrlItem.mControlId + 1 )
+					control = self.getControl( ctrlItem.mControlId + 2 )
 					control.selectItem( aPosition )
 					return True
 					

@@ -188,14 +188,10 @@ class TimerWindow(BaseWindow):
 				struct_time = time.gmtime( timer.mStartTime )
 				# tm_wday is different between Python and C++
 				LOG_TRACE('time.struct_time[6]=%d' %struct_time[6] )
-				if struct_time[6] == 6 : #tm_wday
+				weekday = struct_time[6] + 1
+				if weekday > 6 :
 					weekday = 0
-				elif struct_time[6] == 0 :
-					weekday = 6
-				else  :
-					weekday = struct_time[6] + 1
-
-					
+				
 				# hour*3600 + min*60 + sec
 				secondsNow = struct_time[3]*3600 + struct_time[4]*60 + struct_time[5]
 
