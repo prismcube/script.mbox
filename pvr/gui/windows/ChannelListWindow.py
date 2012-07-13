@@ -20,9 +20,9 @@ E_CONTROL_ID_PROGRESS_EPG				= 306
 E_CONTROL_ID_LABEL_LONGITUDE_INFO		= 307
 E_CONTROL_ID_LABEL_CAREER_INFO			= 308
 E_CONTROL_ID_GROUP_LOCKED_INFO			= 309
-E_CONTROL_ID_GROUP_COMPONENT_DATA		= 310
-E_CONTROL_ID_GROUP_COMPONENT_DOLBY		= 311
-E_CONTROL_ID_GROUP_COMPONENT_HD			= 312
+#E_CONTROL_ID_GROUP_COMPONENT_DATA		= 310
+#E_CONTROL_ID_GROUP_COMPONENT_DOLBY		= 311
+#E_CONTROL_ID_GROUP_COMPONENT_HD		= 312
 E_CONTROL_ID_LABEL_SELECT_NUMBER		= 401
 E_CONTROL_ID_GROUP_HELPBOX				= 600
 
@@ -117,6 +117,8 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCurrentPosition = 0
 		self.mLastChannel = None
 		self.mListItems = None
+		self.mPlayProgressThread = None
+		self.mEnableLocalThread = False
 
 		self.mEventId = 0
 		self.mLocalTime = 0
@@ -202,7 +204,7 @@ class ChannelListWindow( BaseWindow ) :
 		#self.mCtrlGroupHelpBox           = self.getControl( E_CONTROL_ID_GROUP_HELPBOX )
 
 
-		self.mIsSelect = False
+		self.mIsTune = False
 		self.mIsMark = True
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		self.mChannelListServiceType = ElisEnum.E_SERVICE_TYPE_INVALID
@@ -230,6 +232,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mMoveItem = []
 		self.mItemCount = 0
 
+		self.mEventBus.Register( self )
 		self.SetPipScreen( )
 
 		#self.UpdateControlGUI( E_CONTROL_ID_BUTTON_DELETEALL, MR_LANG('Delete All Channel') )
@@ -250,12 +253,13 @@ class ChannelListWindow( BaseWindow ) :
 			self.mElisSetZappingModeInfo = ElisIZappingMode()
 
 
-		self.mEventBus.Register( self )
+		#initialize get channel list
+		self.InitSlideMenuHeader( )
 
 		#run thread
 		self.LoadingThread( )
 		self.mEnableLocalThread = True
-		self.EPGProgressThread( )
+		self.mPlayProgressThread = self.EPGProgressThread( )
 
 		self.mAsyncTuneTimer = None
 		#endtime = time.time( )
@@ -330,7 +334,7 @@ class ChannelListWindow( BaseWindow ) :
 						self.mNavChannel = iChannel
 						self.mCurrentChannel = iChannel.mNumber
 
-					self.mIsSelect == True
+					self.mIsTune == True
 					self.UpdateChannelAndEPG()
 				else :
 					self.ShowRecordingStopDialog()
@@ -420,9 +424,6 @@ class ChannelListWindow( BaseWindow ) :
 	def LoadingThread( self ):
 		self.ShowRecordingInfo( )
 
-		#initialize get channel list
-		self.InitSlideMenuHeader( )
-
 		try :
 			label = ''
 			#first get is used cache, reason by fast load
@@ -458,11 +459,11 @@ class ChannelListWindow( BaseWindow ) :
 		self.ResetLabel( )
 
 		#initialize get epg event
-		#self.InitEPGEvent( )
+		#self.Epgevent_GetCurrent( )
 		try :
 			iEPG = None
 			iEPG = self.mDataCache.Epgevent_GetPresent()
-			if iEPG and iEPG.mEventName != 'No Name':
+			if iEPG and iEPG.mError == 0:
 				self.mNavEpg = iEPG
 
 		except Exception, e :
@@ -525,8 +526,8 @@ class ChannelListWindow( BaseWindow ) :
 					self.mLastChannel = self.mCurrentChannel
 
 			#initialize get epg event
-			self.mIsSelect = False
-			self.InitEPGEvent( )
+			self.mIsTune = False
+			self.Epgevent_GetCurrent( )
 
 
 		if aType == FLAG_MODE_TV :
@@ -545,7 +546,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mViewMode = WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW
 
 			try :
-				self.mEventBus.Deregister( self )
+				#self.mEventBus.Deregister( self )
 				self.mDataCache.SetSkipChannelView( True )
 				self.ReloadChannelList( )
 
@@ -569,14 +570,13 @@ class ChannelListWindow( BaseWindow ) :
 			ret = False
 			ret = self.SaveSlideMenuHeader( )
 			if ret != E_DIALOG_STATE_CANCEL :
-				self.mEnableLocalThread = False
-				self.mCtrlListCHList.reset( )
+				#self.mCtrlListCHList.reset( )
 				self.Close( )
 
 				if aGoToWindow :
-					WinMgr.GetInstance( ).ShowWindow( aGoToWindow )
+					WinMgr.GetInstance( ).ShowWindow( aGoToWindow, WinMgr.WIN_ID_NULLWINDOW )
 				else :
-					WinMgr.GetInstance().CloseWindow( )
+					WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 			LOG_TRACE( 'go out Cancel' )
 
@@ -587,13 +587,13 @@ class ChannelListWindow( BaseWindow ) :
 				self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
 				self.mFlag_EditChanged = False
 				self.mMoveFlag = False
-				self.mEventBus.Register( self )
+				#self.mEventBus.Register( self )
 				self.mDataCache.SetSkipChannelView( False )
 				self.ReloadChannelList( )
 
 				#initialize get epg event
-				self.mIsSelect = False
-				self.InitEPGEvent( )
+				self.mIsTune = False
+				self.Epgevent_GetCurrent( )
 
 				#clear label
 				self.ResetLabel( )
@@ -614,13 +614,14 @@ class ChannelListWindow( BaseWindow ) :
 					return -1
 		
 				if aEvent.mEventId != self.mEventId :
-					if self.mIsSelect == True :
+					if self.mIsTune == True :
 						#on select, clicked
 						iEPG = None
-						sid  = self.mNavChannel.mSid
-						tsid = self.mNavChannel.mTsid
-						onid = self.mNavChannel.mOnid
-						iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
+						#sid  = self.mNavChannel.mSid
+						#tsid = self.mNavChannel.mTsid
+						#onid = self.mNavChannel.mOnid
+						#iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
+						iEPG = self.mDataCache.Epgevent_GetPresent( )
 						if iEPG == None or iEPG.mError != 0 :
 							return -1
 
@@ -669,7 +670,7 @@ class ChannelListWindow( BaseWindow ) :
 
 	def SetChannelTune( self, aJumpNumber = None ) :
 		#Turn in
-		self.mIsSelect = True
+		self.mIsTune = True
 
 		if aJumpNumber:
 			#detected to jump focus
@@ -688,17 +689,9 @@ class ChannelListWindow( BaseWindow ) :
 				return 
 
 			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, chindex, E_TAG_SET_SELECT_POSITION )
-			xbmc.sleep( 50 )
+			#time.sleep( 0.02 )
 
-			#chNumber = aJumpNumber
-			"""
-			iChannel = ElisIChannel( )
-			iChannel.reset()
-			iChannel.mNumber = int(aJumpNumber)
-			iChannel.mServiceType = deepcopy(self.mChannelListServiceType)
-			"""
 			iChannel = self.mChannelList[int(aJumpNumber)]
-
 			#LOG_TRACE('JumpChannel: num[%s] type[%s]'% (iChannel.mNumber, iChannel.mServiceType) )
 
 		else:
@@ -734,7 +727,6 @@ class ChannelListWindow( BaseWindow ) :
 				ret = False
 				ret = self.SaveSlideMenuHeader( )
 				if ret != E_DIALOG_STATE_CANCEL :
-					self.mEnableLocalThread = False
 					self.Close( )
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )				
@@ -758,15 +750,15 @@ class ChannelListWindow( BaseWindow ) :
 
 	def RefreshSlideMenu( self, aMainIndex = E_SLIDE_MENU_ALLCHANNEL, aSubIndex = ElisEnum.E_MODE_ALL, aForce = None ) :
 		self.mCtrlListMainmenu.selectItem( aMainIndex )
-		xbmc.sleep( 50 )
+		time.sleep( 0.02 )
 		self.SubMenuAction( E_SLIDE_ACTION_MAIN, aMainIndex, aForce )
 
 		self.mCtrlListSubmenu.selectItem( 0 )
-		xbmc.sleep( 50 )
+		time.sleep( 0.02 )
 		self.SubMenuAction( E_SLIDE_ACTION_SUB, aSubIndex, aForce )
 
 
-	@GuiLock
+	#@GuiLock
 	def SubMenuAction(self, aAction, aMenuIndex, aForce = None):
 		if self.mFlag_DeleteAll :
 			return
@@ -1191,10 +1183,8 @@ class ChannelListWindow( BaseWindow ) :
 			return
 
 		#main/sub menu init
-		GuiLock2( True )
 		self.mCtrlListMainmenu.reset( )
 		self.mCtrlListSubmenu.reset( )
-		GuiLock2( False )
 
 		#get last zapping mode
 		if aInitLoad == FLAG_ZAPPING_LOAD :
@@ -1395,12 +1385,11 @@ class ChannelListWindow( BaseWindow ) :
 			iChannelIdx = 0
 
 		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, iChannelIdx, E_TAG_SET_SELECT_POSITION )
-		xbmc.sleep( 50 )
+		time.sleep( 0.02 )
 
 		#select item idx, print GUI of 'current / total'
 		self.mCurrentPosition = iChannelIdx
-		pos = '%s'% ( iChannelIdx + 1 )
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, pos )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, '%s'% ( iChannelIdx + 1 ) )
 
 		#endtime = time.time( )
 		#print '==================== TEST TIME[LIST] END[%s] loading[%s]'% (endtime, endtime-starttime )
@@ -1424,14 +1413,14 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlLabelLongitudeInfo.setLabel('')
 		self.mCtrlLabelCareerInfo.setLabel('')
 		self.mCtrlLabelLockedInfo.setVisible(False)
-		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE,  E_TAG_FALSE )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY, E_TAG_FALSE )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,    E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
 
 
-	def InitEPGEvent( self ) :
+	def Epgevent_GetCurrent( self ) :
 		try :
-			if self.mIsSelect == True :
+			if self.mIsTune == True :
 				if not self.mNavChannel :
 					LOG_TRACE('No Channels')
 					return
@@ -1560,7 +1549,7 @@ class ChannelListWindow( BaseWindow ) :
 	def UpdateChannelAndEPG( self ) :
 		if self.mNavChannel :
 			#update channel name
-			if self.mIsSelect == True :
+			if self.mIsTune == True :
 				strType = self.UpdateServiceType( self.mNavChannel.mServiceType )
 				label = '%s - %s'% (strType, self.mNavChannel.mName)
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
@@ -1653,7 +1642,6 @@ class ChannelListWindow( BaseWindow ) :
 
 			time.sleep(1)
 			loop += 1
-
 
 	@GuiLock
 	def UpdateProgress( self ) :
@@ -2253,8 +2241,11 @@ class ChannelListWindow( BaseWindow ) :
 
 	def Close( self ):
 		self.mEventBus.Deregister( self )
-		self.StopAsyncEPG( )
+		if self.mEnableLocalThread == True and self.mPlayProgressThread :
+			self.mEnableLocalThread = False				
+			self.mPlayProgressThread.join( )
 
+		self.StopAsyncEPG( )
 		self.SetVideoRestore( )
 		#WinMgr.GetInstance().CloseWindow( )
 
@@ -2279,8 +2270,8 @@ class ChannelListWindow( BaseWindow ) :
 
 	def AsyncUpdateCurrentEPG( self ) :
 		try :
-			self.mIsSelect = False
-			self.InitEPGEvent( )
+			self.mIsTune = False
+			self.Epgevent_GetCurrent( )
 			self.ResetLabel( )
 			self.UpdateChannelAndEPG( )
 
@@ -2296,38 +2287,39 @@ class ChannelListWindow( BaseWindow ) :
 		if aKey == 0 :
 			return -1
 
-		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW:
+		if self.mViewMode != WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
+			return -1
 
-			GuiLock2( True )
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
-			if self.mNavEpg:
-				dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, self.mChannelList, self.mNavEpg.mStartTime )
+		GuiLock2( True )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
+		if self.mNavEpg:
+			dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, self.mChannelList, self.mNavEpg.mStartTime )
+		else :
+			dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, self.mChannelList )
+		dialog.doModal( )
+		GuiLock2( False )
+
+		isOK = dialog.IsOK( )
+		if isOK == E_DIALOG_STATE_YES :
+			inputNumber = dialog.GetChannelLast( )
+			#LOG_TRACE( 'Jump chNum[%s] currentCh[%s]'% (inputNumber,self.mCurrentChannel) )
+
+			if int(self.mCurrentChannel) == int(inputNumber) :
+				ch = None
+				ch = self.mDataCache.Channel_GetCurrent( )
+				if ch :
+					self.mNavChannel = ch
+					self.mCurrentChannel = self.mNavChannel.mNumber
+					pos = self.mCurrentPosition
+					self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, pos, E_TAG_SET_SELECT_POSITION )
+					#time.sleep( 0.02 )
+
+					self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, str('%s'% pos ) )
+					self.ResetLabel( )
+					self.UpdateChannelAndEPG( )
+
 			else :
-				dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, self.mChannelList )
-			dialog.doModal( )
-			GuiLock2( False )
-
-			isOK = dialog.IsOK( )
-			if isOK == E_DIALOG_STATE_YES :
-				inputNumber = dialog.GetChannelLast( )
-				#LOG_TRACE( 'Jump chNum[%s] currentCh[%s]'% (inputNumber,self.mCurrentChannel) )
-
-				if int(self.mCurrentChannel) == int(inputNumber) :
-					ch = None
-					ch = self.mDataCache.Channel_GetCurrent( )
-					if ch :
-						self.mNavChannel = ch
-						self.mCurrentChannel = self.mNavChannel.mNumber
-						pos = self.mCurrentPosition
-						self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, pos, E_TAG_SET_SELECT_POSITION )
-						xbmc.sleep( 20 )
-
-						self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, str('%s'% pos ) )
-						self.ResetLabel( )
-						self.UpdateChannelAndEPG( )
-
-				else :
-					self.SetChannelTune( int(inputNumber) )
+				self.SetChannelTune( int(inputNumber) )
 
 
 	def ShowRecordingStartDialog( self ) :
