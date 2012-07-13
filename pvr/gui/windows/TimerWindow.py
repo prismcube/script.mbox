@@ -132,7 +132,7 @@ class TimerWindow(BaseWindow):
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
 			if aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
 				LOG_TRACE('Record Status chanaged')
-				self.UpdateList( True )
+				self.UpdateList( )
 
 
 	def Close( self ) :
@@ -314,7 +314,7 @@ class TimerWindow(BaseWindow):
 			self.GoParentTimer()
 
 		elif aContextAction == CONTEXT_EDIT_TIMER :
-			pass
+			self.ShowEditTimer( )
 
 		elif aContextAction == CONTEXT_DELETE_TIMER :
 			self.ShowDeleteConfirm( )
@@ -323,6 +323,72 @@ class TimerWindow(BaseWindow):
 			self.ShowDeleteAllConfirm( )
 
 
+	def ShowEditTimer( self ) :
+
+		try :
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
+
+			timerId = 0
+			selectedPos = self.mCtrlBigList.getSelectedPosition()
+
+			LOG_TRACE( 'selectedPos=%d' %selectedPos )
+
+			LOG_TRACE( 'self.mSelectedWeeklyTimer=%d' %self.mSelectedWeeklyTimer )
+			if self.mSelectedWeeklyTimer > 0 :			
+				timer = None
+				for i in range( len( self.mTimerList ) ) :
+					if self.mTimerList[i].mTimerId == self.mSelectedWeeklyTimer :
+						timer = self.mTimerList[i]
+						break
+
+				if timer == None or timer.mWeeklyTimerCount <= 0 :
+					LOG_WARN('Can not find weeklytimer')
+					return
+
+				if selectedPos > 0 and selectedPos <= timer.mWeeklyTimerCount :
+					LOG_TRACE( ' ' )
+					timer.printdebug( )
+					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
+					LOG_TRACE( ' ' )
+					dialog.SetTimer( timer, self.IsRunningTimer( timer.mTimerId ) )
+					LOG_TRACE( ' ' )					
+					dialog.doModal( )
+					LOG_TRACE( ' ' )					
+
+					if dialog.IsOK( ) == E_DIALOG_STATE_ERROR :
+						if dialog.GetConflictTimer( ) == None :
+							infoDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+							infoDialog.SetDialogProperty( 'Error', dialog.GetErrorMessage( ) )
+							infoDialog.doModal( )
+						else :
+							self.RecordConflict( dialog.GetConflictTimer( ) )
+
+			else :
+				if selectedPos >= 0 and selectedPos < len( self.mTimerList ) :
+					timer = self.mTimerList[selectedPos]
+
+					if timer == None :
+						LOG_WARN('Can not find weeklytimer')
+						return
+		
+					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
+					dialog.SetTimer( timer, self.IsRunningTimer( timer.mTimerId ) )
+					dialog.doModal( )
+
+					if dialog.IsOK( ) == E_DIALOG_STATE_ERROR :
+						if dialog.GetConflictTimer( ) == None :
+							infoDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+							infoDialog.SetDialogProperty( 'Error', dialog.GetErrorMessage( ) )
+							infoDialog.doModal( )
+						else :
+							self.RecordConflict( dialog.GetConflictTimer( ) )
+
+			self.UpdateList( )
+
+		except Exception, ex :
+			LOG_ERR( "Exception %s" %ex)
+
+		
 	def ShowDeleteConfirm( self ) :
 		LOG_TRACE('ShowDeleteConfirm')
 
@@ -334,16 +400,17 @@ class TimerWindow(BaseWindow):
 
 		if self.mSelectedWeeklyTimer > 0 :
 			LOG_TRACE('LAEL98 EPG Delete debug : selected weekly timer')		
-			if selectedPos > 0 and selectedPos <= len( self.mTimerList ) :
-				timer = None
-				for i in range( len( self.mTimerList ) ) :
-					if self.mTimerList[i].mTimerId == self.mSelectedWeeklyTimer :
-						timer = self.mTimerList[i]
-						break
+			timer = None
+			for i in range( len( self.mTimerList ) ) :
+				if self.mTimerList[i].mTimerId == self.mSelectedWeeklyTimer :
+					timer = self.mTimerList[i]
+					break
 
-				if timer == None :
-					LOG_WARN('Can not find weeklytimer')
-					return
+			if timer == None or timer.mWeeklyTimerCount <= 0 :
+				LOG_WARN('Can not find weeklytimer')
+				return
+
+			if selectedPos > 0 and selectedPos <= timer.mWeeklyTimerCount :
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( 'Confirm', 'Do you want to delete timer?' )
@@ -352,7 +419,7 @@ class TimerWindow(BaseWindow):
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					weeklyTimer = timer.mWeeklyTimer[selectedPos-1]
 					self.mDataCache.Timer_DeleteOneWeeklyTimer( self.mSelectedWeeklyTimer, weeklyTimer.mDate, weeklyTimer.mStartTime, weeklyTimer.mDuration ) 
-					self.UpdateList( True )
+					self.UpdateList( )
 
 
 		else :
@@ -368,7 +435,7 @@ class TimerWindow(BaseWindow):
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					self.mDataCache.Timer_DeleteTimer( timerId )
-					self.UpdateList( True )
+					self.UpdateList( )
 
 
 	def ShowDeleteAllConfirm( self ) :
@@ -390,9 +457,30 @@ class TimerWindow(BaseWindow):
 					#timer.printdebug()
 					self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
 
-			self.UpdateList( True )
+			self.UpdateList( )
 	
 		self.CloseBusyDialog( )
+
+
+	def RecordConflict( self, aInfo ) :
+		label = [ '', '', '' ]
+		if aInfo[0].mError == -1 :
+			label[0] = 'Error EPG'
+			label[1] = 'Can not found EPG Information'
+		else :
+			conflictNum = len( aInfo ) - 1
+			if conflictNum > 3 :
+				conflictNum = 3
+			for i in range( conflictNum ) :
+				timer = self.mDataCache.Timer_GetById( aInfo[ i + 1 ].mParam )
+				if timer :
+					time = '%s~%s' % ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( timer.mStartTime + timer.mDuration, TimeFormatEnum.E_HH_MM ) )
+					channelNum = '%04d' % timer.mChannelNo
+					epgNAme = timer.mName
+					label[i] = time + ' ' + channelNum + ' ' + epgNAme
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( 'Conflict', label[0], label[1], label[2] )
+		dialog.doModal( )
 
 
 	def LoadTimerList( self ) :
@@ -443,13 +531,13 @@ class TimerWindow(BaseWindow):
 
 			if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY and timer.mWeeklyTimerCount > 0 :
 				self.mSelectedWeeklyTimer = timer.mTimerId
-				self.UpdateList()
+				self.UpdateList( )
 		
 
 	def GoParentTimer( self ) :
 		if self.mSelectedWeeklyTimer > 0 :
 			self.mSelectedWeeklyTimer = 0
-			self.UpdateList()
+			self.UpdateList( )
 
 		else :
 			self.Close( )
