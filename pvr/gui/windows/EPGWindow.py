@@ -121,7 +121,7 @@ class EPGWindow( BaseWindow ) :
 		
 		#LOG_TRACE('onAction=%d' %actionId )
 
-		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR or Action.ACTION_SHOW_INFO:
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR or actionId == Action.ACTION_SHOW_INFO:
 			self.Close( )
 
 		elif  actionId == Action.ACTION_SELECT_ITEM :
