@@ -1315,13 +1315,9 @@ class EPGWindow( BaseWindow ) :
 
 		LOG_ERR( 'LAEL98 TOGGLE TVRADIO' )
 		self.mCurrentChannel.printdebug()
-
 		self.mSelectChannel = self.mCurrentChannel			
 
-		self.mLock.acquire( )
 		self.Load( )
-		self.mLock.release( )
-		
 		self.UpdateList( )	
 		self.UpdateSelectedChannel( )
 		self.FocusCurrentChannel( )

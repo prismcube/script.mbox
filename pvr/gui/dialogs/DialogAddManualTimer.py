@@ -510,25 +510,19 @@ class DialogAddManualTimer( SettingDialog ) :
 				else :
 					self.SetEnableControl( E_DialogInput02, True )
 					self.SetEnableControl( E_DialogInput03, True )
-					self.SetFocus( E_DialogInput02 )							
 			
 			return
 
 
 	def ChangeStartDay( self, aIsNext ) :
 
-		LOG_TRACE( '' )
 		days = int( self.mDataCache.Datetime_GetLocalTime( )/ONE_DAY_SECONDS )
-		LOG_TRACE( '' )		
 		currentWeeekyStart = days * ONE_DAY_SECONDS
-		LOG_TRACE( '' )
 
 		if aIsNext == True :
 			newWeekyStart = self.mWeeklyStart + ONE_DAY_SECONDS
 		else :
 			newWeekyStart = self.mWeeklyStart - ONE_DAY_SECONDS		
-
-		LOG_TRACE( '' )
 
 		if newWeekyStart < currentWeeekyStart :
 			self.mWeeklyStart = currentWeeekyStart
