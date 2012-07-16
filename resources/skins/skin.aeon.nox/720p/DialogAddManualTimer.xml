@@ -28,13 +28,13 @@
 				<include>DialogSpinDay</include>
 
 				<!-- Date -->
-				<include>DialogInput02</include>
+				<include>DialogSpinEx02</include>
 				
 				<!--StartTime -->
-				<include>DialogInput03</include>
+				<include>DialogInput02</include>
 
 				<!--EndTim -->
-				<include>DialogInput04</include>
+				<include>DialogInput03</include>
 
 				<!-- OK/Cancel -->
 				<include>DefaultSettingDialogButtonOKCancel</include>

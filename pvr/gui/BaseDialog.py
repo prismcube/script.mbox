@@ -373,8 +373,24 @@ class SettingDialog( BaseDialog ):
 
 			ctrlItem = self.mControlList[i]		
 			if self.HasControlItem( ctrlItem, aControlId ) :
-				if ctrlItem.mControlType == ctrlItem.E_SETTING_LIST_CONTROL :
+				if ctrlItem.mControlType == ctrlItem.E_SETTING_LIST_CONTROL or \
+				ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 					self.getControl( ctrlItem.mControlId + 1 ).setLabel( aLabel )
+
+		return -1
+
+
+	def SetListControlItemLabel( self, aControlId, aLabel ) :
+		count = len( self.mControlList )
+
+		for i in range( count ) :
+
+			ctrlItem = self.mControlList[i]		
+			if self.HasControlItem( ctrlItem, aControlId ) :
+				if ctrlItem.mControlType == ctrlItem.E_SETTING_LIST_CONTROL :
+					self.getControl( ctrlItem.mControlId + 2 ).getSelectedItem( ).setLabel( aLabel )
+				elif ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
+					self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).setLabel2( aLabel )
 
 		return -1
 

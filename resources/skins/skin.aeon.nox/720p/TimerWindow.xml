@@ -12,6 +12,9 @@
 			<include>DefaultSettingWindowEffect</include>
 		</control>
 
+		<!--  local time -->
+		<include>timepanelhigh</include>
+
 		<!-- Bottom Gradation Image -->
 		<control type="image">
 			<posx>0</posx>

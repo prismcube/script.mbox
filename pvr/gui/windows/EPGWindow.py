@@ -154,11 +154,14 @@ class EPGWindow( BaseWindow ) :
 			self.StopEPGUpdateTimer( )
 
 			GuiLock2( True )
-			self.ShowContextMenu( )
-			GuiLock2( False )			
-			
-			self.StartEPGUpdateTimer( )
-			self.mEventBus.Register( self )			
+			contextAction = self.ShowContextMenu( )
+			GuiLock2( False )
+			if contextAction == CONTEXT_SHOW_ALL_TIMERS :
+				self.DoContextAction( contextAction ) 
+			else :
+				self.DoContextAction( contextAction ) 
+				self.StartEPGUpdateTimer( )
+				self.mEventBus.Register( self )			
 
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
 			self.mEventBus.Deregister( self )
@@ -570,6 +573,8 @@ class EPGWindow( BaseWindow ) :
 							listItem = xbmcgui.ListItem( tempChannelName, 'No Event' )
 						else:
 							listItem = self.mListItems[i]
+							listItem.setLabel( tempChannelName )
+							listItem.setLabel2( 'No Event' )
 
 						listItem.setProperty( 'StartTime', '' )
 						listItem.setProperty( 'Duration', '' )						
@@ -761,7 +766,8 @@ class EPGWindow( BaseWindow ) :
 		dialog.doModal( )
 
 		contextAction = dialog.GetSelectedAction()
-		self.DoContextAction( contextAction ) 
+
+		return contextAction
 
 
 	def DoContextAction( self, aContextAction ) :
@@ -950,6 +956,8 @@ class EPGWindow( BaseWindow ) :
 
 	def ShowAllTimers( self ) :
 		LOG_TRACE('ShowAllTimers')
+		self.mEventBus.Deregister( self )	
+		self.StopEPGUpdateTimer( )
 		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMER_WINDOW )
 	
 
