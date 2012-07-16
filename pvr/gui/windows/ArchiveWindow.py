@@ -133,7 +133,7 @@ class ArchiveWindow( BaseWindow ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )
 
-		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR or Action.ACTION_MBOX_ARCHIVE  :
 			self.mDataCache.Player_Stop( )
 			self.mPlayingRecord	= None
 			self.Close( )
