@@ -26,7 +26,7 @@ class RootWindow( BaseWindow ):
 
 		
 	def onAction( self, aAction ) :
-		pass
+		LOG_TRACE( '' )
 		"""
 		actionId = aAction.getId( )
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR:
@@ -36,12 +36,11 @@ class RootWindow( BaseWindow ):
 			
 				
 	def onClick( self, aControlId ):
-		pass
+		LOG_TRACE( '' )	
 		
  
 	def onFocus( self, aControlId ):
 		LOG_TRACE('')
-		pass
 
 
 	@GuiLock

@@ -969,11 +969,11 @@ class ArchiveWindow( BaseWindow ) :
 
 		self.mPlayPerent = 0
 		if status.mMode == ElisEnum.E_MODE_PVR and status.mEndTimeInMs > 0 :
-			self.mPlayPerent = int ( (status.mPlayTimeInMs - status.mStartTimeInMs)*100 / status.mEndTimeInMs )
+			self.mPlayPerent = int ( ( status.mPlayTimeInMs - status.mStartTimeInMs ) * 100 / status.mEndTimeInMs )
 			if self.mPlayPerent < 1 :
 				self.mPlayPerent = 1
 
-		LOG_TRACE( 'Update PlayProgress = %d [%d,%d,%d]' %(self.mPlayPerent, status.mPlayTimeInMs, status.mStartTimeInMs, status.mEndTimeInMs ) )
+		LOG_TRACE( 'Update PlayProgress = %d [%d,%d,%d]' %( self.mPlayPerent, status.mPlayTimeInMs, status.mStartTimeInMs, status.mEndTimeInMs ) )
 		
 		self.mCtrlPlayProgress.setPercent( self.mPlayPerent ) 
 
