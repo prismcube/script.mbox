@@ -121,16 +121,13 @@ class EPGWindow( BaseWindow ) :
 		
 		#LOG_TRACE('onAction=%d' %actionId )
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR or actionId == Action.ACTION_SHOW_INFO:
 			self.Close( )
 
 		elif  actionId == Action.ACTION_SELECT_ITEM :
 			if self.mFocusId == LIST_ID_COMMON_EPG or self.mFocusId == LIST_ID_BIG_EPG :
 				self.Tune( )
 	
-		elif actionId == Action.ACTION_PARENT_DIR :
-			self.Close( )
-			
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			pass
 
