@@ -154,6 +154,15 @@
 				<textcolor>white</textcolor>
 				<label>Record Free Size :</label>
 			</control>
+			<control type="label" id="302">
+				<posx>290</posx>
+				<posy>310</posy>
+				<width>500</width>
+				<height>35</height>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<label>HDD Temperature :</label>
+			</control>
 		</control>
 	</controls>
 </window>
