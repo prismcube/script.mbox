@@ -17,28 +17,28 @@ import pvr.DataCacheMgr
 
 gLauncher = None
 
-def GetInstance():
+def GetInstance( ):
 	global gLauncher
 	if not gLauncher:
 		gLauncher = Launcher()
 	return gLauncher
 
-class Launcher(object):
+class Launcher( object ):
 
-	def __init__(self):
+	def __init__( self ):
 		self.mShutdownReceived = False
 		self.mShutdowning = False
 		self.mLoadCount = 0
 
-	def Run(self):
+	def Run( self ):
 		try:
 			try:
-				time.sleep(1)
-				self.InitElisMgr()
-				self.DoElisTest()
-				self.InitCacheMgr()
-				self.InitWindowMgr()
-				self.WaitShutdown()
+				time.sleep( 1 )
+				self.InitElisMgr( )
+				self.DoElisTest( )
+				self.InitCacheMgr( )
+				self.InitWindowMgr( )
+				self.WaitShutdown( )
 			except Exception, ex:
 				#dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				#dialog.SetDialogProperty( 'Error', 'Exception: %s' % str( ex ) )
@@ -48,62 +48,77 @@ class Launcher(object):
 	 			self.mLoadCount += 1
 	 			LOG_TRACE('==============>retry run[%s]'% self.mLoadCount)
 	 			self.mShutdowning = False
-	 			self.Shutdown()
-	 			time.sleep(5)
-	 			self.Run()
+	 			self.Shutdown( )
+	 			time.sleep( 5 )
+	 			self.Run( )
 		finally:
 			print 'Launcher end'
 
 
-	def InitElisMgr(self):
-		pvr.ElisMgr.GetInstance().Run()
+	def InitElisMgr( self ):
+		pvr.ElisMgr.GetInstance( ).Run( )
 		print 'test lael98'
-		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
-		self.mCommander.SetElisReady( NetConfig.myIp)
+		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
+		self.mCommander.SetElisReady( NetConfig.myIp )
 
 
 	def InitCacheMgr( self ) :
 		pvr.DataCacheMgr.GetInstance( )
 
 
-	def InitWindowMgr(self):
-		pvr.gui.WindowMgr.GetInstance().ShowRootWindow( )
+	def InitWindowMgr( self ):
+		if self.CheckFactoryTest( ) == True :
+			strFactoryPath = '/home/root/.xbmc/addons/script.factorytest'
+			print 'FactoryTest : strFactoryPath=%s' %strFactoryPath
+			sys.path.append( strFactoryPath )
+			sys.path.append(os.path.join( strFactoryPath, 'resources' ) )
+			
+			import FactoryTestMgr
+			FactoryTestMgr.GetInstance( ).Start( strFactoryPath )
+			
+		else :
+			pvr.gui.WindowMgr.GetInstance( ).ShowRootWindow( )
 
 
 	def PowerOff( self ) :
-		self.Shutdown()
-		xbmc.executebuiltin('xbmc.Quit')
+		self.Shutdown( )
+		xbmc.executebuiltin( 'xbmc.Quit' )
 
 
-	def Shutdown(self):
+	def Shutdown( self ):
 		print '------------->shut down %d' %self.mShutdowning
 		if not self.mShutdowning:
 			self.mShutdowning = True
-			print '------------->shut mShutdowning=%d abortRequested=%d' %(self.mShutdowning,xbmc.abortRequested)
+			print '------------->shut mShutdowning=%d abortRequested=%d' %( self.mShutdowning, xbmc.abortRequested )
 			
-			pvr.ElisMgr.GetInstance().Shutdown()
+			pvr.ElisMgr.GetInstance().Shutdown( )
 
-			if HasPendingThreads():
-				WaitUtileThreadsJoin(10.0) # in seconds
+			if HasPendingThreads( ):
+				WaitUtileThreadsJoin( 10.0 ) # in seconds
 			
 			print '------------->shut do end'
 		print '<-------------shut down'
 
-	def WaitShutdown(self):
+	def WaitShutdown( self ):
 		cnt = 0
 		print '<-------------> wait shutdown'		
 		while not xbmc.abortRequested :
-			time.sleep(1)
+			time.sleep( 1 )
 			cnt += 1
 
 		print '<-------------> wait before shutdown'
-		self.Shutdown()
+		self.Shutdown( )
 		print '<-------------> wait after shutdown'		
 
-	def DoElisTest(self):
+	def DoElisTest( self ):
 		pass
 		"""
 		test = ElisTest()
 		test.testAll()
 		"""
 
+	def CheckFactoryTest( self ) :
+		# ToDO
+		#check from /var/
+		return False
+		
