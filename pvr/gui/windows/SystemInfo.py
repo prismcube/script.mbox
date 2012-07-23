@@ -1,6 +1,9 @@
 from pvr.gui.WindowImport import *
 
 
+LABEL_ID_RECORD_FREE_SIZE	=	301
+
+
 class SystemInfo( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
@@ -8,6 +11,7 @@ class SystemInfo( SettingWindow ) :
 		leftGroupItems			= [ 'STB Infomation' ]
 	
 		self.mCtrlLeftGroup 			= None
+		self.mCtrlRecordFreeSize		= None
 		self.mGroupItems 				= []
 		self.mInitialized 				= False
 		self.mLastFocused 				= E_SUBMENU_LIST_ID
@@ -28,11 +32,13 @@ class SystemInfo( SettingWindow ) :
 
 		self.mCtrlLeftGroup = self.getControl( E_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
+		self.mCtrlRecordFreeSize = self.getControl( LABEL_ID_RECORD_FREE_SIZE )
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'System Information' )
 
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
+		self.ShowRecordFreeSize( )
 		self.SetListControl( )
 		self.mInitialized = True
 
@@ -113,3 +119,10 @@ class SystemInfo( SettingWindow ) :
 		
 		if selectedId == 0 :
 			pass
+
+
+	def ShowRecordFreeSize( self ) :
+		size = ''
+		if self.mCommander.Record_GetFreeMBSize( ) != -1 :
+			size = '%s' % self.mCommander.Record_GetFreeMBSize( )
+		self.mCtrlRecordFreeSize.setLabel( 'Record Free Size : %s MB' % size )

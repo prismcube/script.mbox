@@ -125,7 +125,7 @@
 				<height>35</height>
 				<font>font13</font>
 				<textcolor>white</textcolor>
-				<label>Software version: Beta-0.0.3</label>
+				<label>Software version: Beta-0.1</label>
 			</control>
 			<control type="label">
 				<posx>290</posx>
@@ -144,6 +144,15 @@
 				<font>font13</font>
 				<textcolor>white</textcolor>
 				<label>Product name: Prism Cube</label>
+			</control>
+			<control type="label" id="301">
+				<posx>290</posx>
+				<posy>275</posy>
+				<width>500</width>
+				<height>35</height>
+				<font>font13</font>
+				<textcolor>white</textcolor>
+				<label>Record Free Size :</label>
 			</control>
 		</control>
 	</controls>
