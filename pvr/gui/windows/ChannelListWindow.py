@@ -50,6 +50,7 @@ FLAG_OPT_GROUP   = 1
 FLAG_OPT_MOVE    = 2
 FLAG_OPT_MOVE_OK = 3
 FLAG_OPT_MOVE_UPDOWN = 4
+FLAG_OPT_MOVE_EXIT = 5
 FLAG_CLOCKMODE_ADMYHM   = 1
 FLAG_CLOCKMODE_AHM      = 2
 FLAG_CLOCKMODE_HMS      = 3
@@ -232,10 +233,10 @@ class ChannelListWindow( BaseWindow ) :
 		self.mMoveItem = []
 		self.mItemCount = 0
 
+
 		self.mEventBus.Register( self )
 		self.SetPipScreen( )
 
-		#self.UpdateControlGUI( E_CONTROL_ID_BUTTON_DELETEALL, MR_LANG('Delete All Channel') )
 		self.mItemHeight = int( self.getProperty( 'ItemHeight' ) )
 
 		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
@@ -278,9 +279,12 @@ class ChannelListWindow( BaseWindow ) :
 			rKey = id - (Action.ACTION_JUMP_SMS2 - 2)
 			self.SetTuneByNumber( rKey )
 
-		elif id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
+		elif id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR :
 			#LOG_TRACE( 'goto previous menu' )
-			self.SetGoBackWindow( )
+			if self.mMoveFlag :
+				self.SetEditChanneltoMove( FLAG_OPT_MOVE_OK, id )
+			else :
+				self.SetGoBackWindow( )
 
 		elif id == Action.ACTION_SELECT_ITEM:
 			self.GetFocusId( )
@@ -419,7 +423,7 @@ class ChannelListWindow( BaseWindow ) :
 		#LOG_TRACE( 'control %d' % controlId )
 		pass
 
-
+		
 	#@RunThread
 	def LoadingThread( self ):
 		self.ShowRecordingInfo( )
@@ -581,23 +585,29 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( 'go out Cancel' )
 
 		else :
-			ret = False
-			ret = self.SaveEditList( )
-			if ret != E_DIALOG_STATE_CANCEL :
-				self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
-				self.mFlag_EditChanged = False
-				self.mMoveFlag = False
-				#self.mEventBus.Register( self )
-				self.mDataCache.SetSkipChannelView( False )
-				self.ReloadChannelList( )
+			if self.mMarkList :
+				self.mMarkList = []
+				self.mListItems = None
+				self.InitChannelList( )
 
-				#initialize get epg event
-				self.mIsTune = False
-				self.Epgevent_GetCurrent( )
+			else :
+				ret = False
+				ret = self.SaveEditList( )
+				if ret != E_DIALOG_STATE_CANCEL :
+					self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
+					self.mFlag_EditChanged = False
+					self.mMoveFlag = False
+					#self.mEventBus.Register( self )
+					self.mDataCache.SetSkipChannelView( False )
+					self.ReloadChannelList( )
 
-				#clear label
-				self.ResetLabel( )
-				self.UpdateChannelAndEPG( )
+					#initialize get epg event
+					self.mIsTune = False
+					self.Epgevent_GetCurrent( )
+
+					#clear label
+					self.ResetLabel( )
+					self.UpdateChannelAndEPG( )
 
 
 	@GuiLock
@@ -649,6 +659,10 @@ class ChannelListWindow( BaseWindow ) :
 				self.ReloadChannelList( )
 				self.mFlag_EditChanged = False
 				self.mMoveFlag = False
+
+				if aEvent.getName() == ElisEventRecordingStopped.getName() and aEvent.mHDDFull :
+					LOG_TRACE('----------hddfull[%s]'% aEvent.mHDDFull)
+					xbmcgui.Dialog().ok( MR_LANG('Infomation'), MR_LANG('HDD Full!!! Cannot Recording...') )
 
 			if aEvent.getName() == ElisEventPlaybackEOF.getName() :
 				if aEvent.mType == ElisEnum.E_EOF_END :
@@ -1789,19 +1803,34 @@ class ChannelListWindow( BaseWindow ) :
 					ret = self.mDataCache.Channel_Save( )
 					#LOG_TRACE('save[%s]'% ret )
 
-				self.mMarkList = []
+				if aMove == Action.ACTION_PREVIOUS_MENU or aMove == Action.ACTION_PARENT_DIR :
+					self.mNewChannelList = deepcopy(self.mChannelList)
+					self.ShowMoveToGUI( 0, len(self.mNewChannelList) )
+					LOG_TRACE ('========= move exit ===mark[%s] view[%s]~[%s]'% (self.mMarkList, self.mViewStart, self.mViewEnd) )
+				else :
+					self.mMarkList = []
+					self.mListItems = None
+					self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
+
 				self.mMoveFlag = False
-				self.mListItems = None
-				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
+				self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, idxFirst, E_TAG_SET_SELECT_POSITION )
 
 			except Exception, e:
 				LOG_TRACE( 'Error except[%s]'% e )
 
 
 			self.CloseBusyDialog( )
+			#LOG_TRACE ('========= move End ===')
 
-			#LOG_TRACE ('========= move End ===' )
+		elif aMode == FLAG_OPT_MOVE_EXIT :
+			self.mMoveFlag = False
+			self.mListItems = None
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_OPT1, '[B]Opt Edit[/B]' )
+			self.UpdatePropertyGUI( E_XML_PROPERTY_MOVE, E_TAG_FALSE )
 
+			self.mNewChannelList = self.mChannelList
+			self.ShowMoveToGUI( 0, len(self.mChannelList) )
+			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mLastPos, E_TAG_SET_SELECT_POSITION )
 
 		elif aMode == FLAG_OPT_MOVE_UPDOWN :
 			updown= 0
@@ -1870,6 +1899,7 @@ class ChannelListWindow( BaseWindow ) :
 			#select item idx, print GUI of 'current / total'
 			pos = '%s'% ( self.mViewFirst + 1 )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, pos )
+
 
 
 	def SetEditMarkupGUI( self, aPos ) :
@@ -1973,6 +2003,7 @@ class ChannelListWindow( BaseWindow ) :
 					ret = 'group None'
 
 		elif aContextAction == CONTEXT_ACTION_MOVE :
+			self.mLastPos = lastPos
 			self.SetEditChanneltoMove(FLAG_OPT_MOVE, None )
 			return
 
@@ -2002,10 +2033,6 @@ class ChannelListWindow( BaseWindow ) :
 
 				self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE, True )
 				#LOG_TRACE('pos main[%s] sub[%s]'% (self.mSelectMainSlidePosition, self.mSelectSubSlidePosition ) )
-
-		elif aContextAction == CONTEXT_ACTION_SAVE_EXIT :
-			self.SetGoBackWindow( )
-			return
 
 		elif aContextAction == CONTEXT_ACTION_MENU_EDIT_MODE :
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
@@ -2116,6 +2143,9 @@ class ChannelListWindow( BaseWindow ) :
 		   ( (not self.mEditFavorite) and (selectedAction == CONTEXT_ACTION_DELETE_FAV) ) :
 			return
 
+		if selectedAction == CONTEXT_ACTION_SAVE_EXIT :
+			self.SetGoBackWindow( )
+			return
 
 		#--------------------------------------------------------------- dialog 2
 		grpIdx = -1
