@@ -1,4 +1,9 @@
 from pvr.gui.WindowImport import *
+from subprocess import *
+
+
+LABEL_ID_RECORD_FREE_SIZE	=	301
+LABEL_ID_HDD_TEMEPERATURE	=	302
 
 
 class SystemInfo( SettingWindow ) :
@@ -8,8 +13,11 @@ class SystemInfo( SettingWindow ) :
 		leftGroupItems			= [ 'STB Infomation' ]
 	
 		self.mCtrlLeftGroup 			= None
+		self.mCtrlRecordFreeSize		= None
+		self.mCtrlHDDTemperature		= None
 		self.mGroupItems 				= []
 		self.mInitialized 				= False
+		self.mCheckEndThread			= True
 		self.mLastFocused 				= E_SUBMENU_LIST_ID
 		self.mPrevListItemID 			= 0
 
@@ -28,13 +36,18 @@ class SystemInfo( SettingWindow ) :
 
 		self.mCtrlLeftGroup = self.getControl( E_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
+		self.mCtrlRecordFreeSize = self.getControl( LABEL_ID_RECORD_FREE_SIZE )
+		self.mCtrlHDDTemperature = self.getControl( LABEL_ID_HDD_TEMEPERATURE )
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'System Information' )
 
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
+		self.ShowRecordFreeSize( )
+		self.ShowHDDTemperature( )
 		self.SetListControl( )
 		self.mInitialized = True
+		self.mCheckEndThread = True
 
 
 	def onAction( self, aAction ) :
@@ -51,6 +64,7 @@ class SystemInfo( SettingWindow ) :
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.mInitialized = False
+			self.mCheckEndThread = False
 			WinMgr.GetInstance().CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
@@ -82,6 +96,7 @@ class SystemInfo( SettingWindow ) :
 				self.mCheckHiddenPattern1	= False
 				self.mCheckHiddenPattern2	= False
 				self.mCheckHiddenPattern3	= False
+				self.mCheckEndThread = False
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_HIDDEN_TEST, WinMgr.WIN_ID_NULLWINDOW )
 				return
 			self.mCheckHiddenPattern3 = True
@@ -113,3 +128,32 @@ class SystemInfo( SettingWindow ) :
 		
 		if selectedId == 0 :
 			pass
+
+
+	def ShowRecordFreeSize( self ) :
+		size = ''
+		if self.mCommander.Record_GetFreeMBSize( ) != -1 :
+			size = '%s' % self.mCommander.Record_GetFreeMBSize( )
+		self.mCtrlRecordFreeSize.setLabel( 'Record Free Size : %s MB' % size )
+
+
+	@RunThread
+	def ShowHDDTemperature( self ) :
+		tem = ''
+		cmd = 'hddtemp /dev/sda -n -q'
+		while( self.mCheckEndThread ) :
+			tem = Popen( cmd, shell=True, stdout=PIPE )
+			tem = tem.stdout.read( ).strip( )			
+			if self.IsNumber( tem ) == False :
+				tem = 'Unknown'
+			LOG_TRACE( 'HDD Temperature = %s' % tem )
+			self.mCtrlHDDTemperature.setLabel( 'HDD Temperature : %s' % tem )
+			time.sleep( 10 )
+
+
+	def IsNumber( self, aString ) :
+		try :
+			float( aString )
+			return True
+		except ValueError :
+			return False

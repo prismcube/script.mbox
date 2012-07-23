@@ -178,6 +178,7 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 		# Store Position and Exit
 		elif groupId == E_Input06 :
 			self.mCommander.Motorized_SavePosition( self.tunerIndex, self.mTunerMgr.GetCurrentConfigIndex( ) + 1 )
+			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
 			self.ResetAllControl( )
 			WinMgr.GetInstance().CloseWindow( )
 			return

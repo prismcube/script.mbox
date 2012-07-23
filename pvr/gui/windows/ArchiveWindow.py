@@ -750,12 +750,10 @@ class ArchiveWindow( BaseWindow ) :
 					self.mDataCache.Record_SetLock( self.mRecordList[ position ].mRecordKey, self.mServiceType, True )
 					listItem.setProperty('Locked', 'True')
 					listItem.setProperty('RecIcon', 'IconNotAvailable.png')
-					print 'dhkim test #1'
 				else :
 					self.mRecordList[ position ].mLocked = False
 					self.mDataCache.Record_SetLock( self.mRecordList[ position ].mRecordKey, self.mServiceType, False )
 					listItem.setProperty('Locked', 'False')
-					print 'dhkim test #2'
 					thumbnail = '/mnt/hdd0/pvr/thumbnail/record_thumbnail_%d.jpg' % recInfo.mRecordKey
 					LOG_ERR( 'thumbnail=%s' % thumbnail )
 					
@@ -763,7 +761,6 @@ class ArchiveWindow( BaseWindow ) :
 						recItem.setProperty('RecIcon', thumbnail )
 					else:
 						recItem.setProperty('RecIcon', 'RecIconSample.png')
-						print 'dhkim test #3'
 
 			self.DoClearMark( )
 			xbmc.executebuiltin('container.update')
@@ -969,11 +966,11 @@ class ArchiveWindow( BaseWindow ) :
 
 		self.mPlayPerent = 0
 		if status.mMode == ElisEnum.E_MODE_PVR and status.mEndTimeInMs > 0 :
-			self.mPlayPerent = int ( (status.mPlayTimeInMs - status.mStartTimeInMs)*100 / status.mEndTimeInMs )
+			self.mPlayPerent = int ( ( status.mPlayTimeInMs - status.mStartTimeInMs ) * 100 / status.mEndTimeInMs )
 			if self.mPlayPerent < 1 :
 				self.mPlayPerent = 1
 
-		LOG_TRACE( 'Update PlayProgress = %d [%d,%d,%d]' %(self.mPlayPerent, status.mPlayTimeInMs, status.mStartTimeInMs, status.mEndTimeInMs ) )
+		LOG_TRACE( 'Update PlayProgress = %d [%d,%d,%d]' %( self.mPlayPerent, status.mPlayTimeInMs, status.mStartTimeInMs, status.mEndTimeInMs ) )
 		
 		self.mCtrlPlayProgress.setPercent( self.mPlayPerent ) 
 
