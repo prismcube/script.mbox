@@ -143,8 +143,7 @@ class SystemInfo( SettingWindow ) :
 		cmd = 'hddtemp /dev/sda -n -q'
 		while( self.mCheckEndThread ) :
 			tem = Popen( cmd, shell=True, stdout=PIPE )
-			tem = tem.stdout.read( ).strip( )
-			
+			tem = tem.stdout.read( ).strip( )			
 			if self.IsNumber( tem ) == False :
 				tem = 'Unknown'
 			LOG_TRACE( 'HDD Temperature = %s' % tem )

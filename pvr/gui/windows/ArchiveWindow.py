@@ -750,12 +750,10 @@ class ArchiveWindow( BaseWindow ) :
 					self.mDataCache.Record_SetLock( self.mRecordList[ position ].mRecordKey, self.mServiceType, True )
 					listItem.setProperty('Locked', 'True')
 					listItem.setProperty('RecIcon', 'IconNotAvailable.png')
-					print 'dhkim test #1'
 				else :
 					self.mRecordList[ position ].mLocked = False
 					self.mDataCache.Record_SetLock( self.mRecordList[ position ].mRecordKey, self.mServiceType, False )
 					listItem.setProperty('Locked', 'False')
-					print 'dhkim test #2'
 					thumbnail = '/mnt/hdd0/pvr/thumbnail/record_thumbnail_%d.jpg' % recInfo.mRecordKey
 					LOG_ERR( 'thumbnail=%s' % thumbnail )
 					
@@ -763,7 +761,6 @@ class ArchiveWindow( BaseWindow ) :
 						recItem.setProperty('RecIcon', thumbnail )
 					else:
 						recItem.setProperty('RecIcon', 'RecIconSample.png')
-						print 'dhkim test #3'
 
 			self.DoClearMark( )
 			xbmc.executebuiltin('container.update')

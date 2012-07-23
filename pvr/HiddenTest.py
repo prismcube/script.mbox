@@ -12,7 +12,6 @@ class HiddenTest( BaseWindow ) :
 
 
 	def onInit( self ) :
-		print 'dhkim test #1'
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		self.CheckTestFile( )
@@ -36,7 +35,6 @@ class HiddenTest( BaseWindow ) :
 
 
 	def CheckTestFile( self ) :
-		print 'dhkim test check test file'
 		if os.path.exists( FILE_NAME_TEST ) == True :
 			self.ShowContextMenu( )
 		else :
@@ -47,7 +45,6 @@ class HiddenTest( BaseWindow ) :
 
 
 	def ShowContextMenu( self ) :
-		print 'dhkim test show context'
 		from elementtree import ElementTree
 		tree = ElementTree.parse( FILE_NAME_TEST )
 		self.mRoot = tree.getroot( )
@@ -78,36 +75,30 @@ class HiddenTest( BaseWindow ) :
 			WinMgr.GetInstance( ).CloseWindow( )
 		else :
 			#scenario = []
-			print 'dhkim test #1'
 			scenario = TestScenario( 'scenario', 'scenario' )
-			print 'dhkim test #2'
 			item = self.mRoot.getchildren( )[ aContextAction ]
 			for node in item :
-				print 'root node  = %s' % node
+				LOG_TRACE( 'TEST MGR root node  = %s' % node )
 				scenario.AddChild( self.MakeChild( node ) )
 			pvr.HiddenTestMgr.StartTest( scenario )
 
 
 	def MakeChild( self, aNode ) :
 		if aNode.tag.lower( ) == 'loop' :
-			print 'dhkim test make loop!'
 			return self.MakeChildLoop( aNode )
 		elif aNode.tag.lower( ) == 'sendkey' :
-			print 'dhkim test make sendkey!'
 			return SendKeySuite( aNode.tag, aNode.text )
 		elif aNode.tag.lower( ) == 'sleep' :
-			print 'dhkim test make sleep!'
 			return SleepSuite( aNode.tag, aNode.text )
 		elif aNode.tag.lower( ) == 'waitevent' :
 			return WaitEventSuite( aNode.tag, aNode.text )
 
 
 	def MakeChildLoop( self, aNode ) :
-		print 'dhkim test Make loop!!!!!!!!!!!!!'
 		count = 1
 		if aNode.get( 'repeat' ) != None :
 			count = aNode.get( 'repeat' )
-		print 'dhkim test repeat = %s' % count
+		LOG_TRACE( 'TEST MGR test repeat = %s' % count )
 		loop = LoopSuite( 'loop', count )
 		for node in aNode :
 			loop.AddChild( self.MakeChild( node ) )

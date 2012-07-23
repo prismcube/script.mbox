@@ -93,7 +93,7 @@ class WaitEventSuite( TestSuite ) :
 		self.mEventBus.Register( self )
 		LOG_TRACE( 'Start Wait Event !!!! ' )
 		while self.mEndEvent == False :
-			print 'dhkim test wait event.....'
+			LOG_TRACE( 'TEST MGR wait event...')
 			time.sleep(1)
 		self.mEventBus.Deregister( self )
 		LOG_TRACE( 'End Wait Event !!!! ' )
@@ -112,7 +112,6 @@ class WaitEventSuite( TestSuite ) :
 
 	def MappingEventName( self, aValue ) :
 		if aValue == 'stoprecord' :
-			print 'dhkim test event name mapping record'
 			return ElisEventRecordingStopped.getName( )
 
 			
