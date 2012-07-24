@@ -141,12 +141,14 @@ def send(aMsg = None):
 	VKey = KeyCode()
 
 	#testScene = [VKey.VKEY_MENU, VKey.VKEY_BACK]
-	testScene = test4()
+	testScene = test3()
 	loop = 0
 
 	testTime = 0
 	startTime = time.time()
 	lblStart = time.strftime('%H:%M:%S', time.localtime(startTime) )
+	freeM = show_memory()
+	fp_lircLog = open('/home/root/.xbmc/temp/lirc.log', 'w')
 
 	while (1) :
 		for key in testScene :
@@ -155,7 +157,12 @@ def send(aMsg = None):
 			testTime += int(key[1])
 			lblLast  = time.strftime('%H:%M:%S', time.localtime(lastTime) )
 			lblTest  = '%02d:%s'% ( testTime / 3600, time.strftime('%M:%S', time.gmtime(testTime) ) )
-			print '[start[%s] current[%s] TestTime[%s] count[%d] key[%s]' % ( lblStart, lblLast, lblTest, loop, key[0] )
+			checkMem = show_memory()
+			printLines = '[start[%s] current[%s] TestTime[%s] count[%d] key[%s] freeM[%s]' % ( lblStart, lblLast, lblTest, loop, key[0], freeM - checkMem )
+			print printLines
+			fp_lircLog.writelines(printLines+'\n')
+			if loop % 30 == 0 :
+				subprocess.call('free')
 
 			msg = struct.pack("3i",*[1, key[0], 0])
 			#print 'send[%s] size[%s] '% (key[0], len(msg) )
@@ -165,13 +172,14 @@ def send(aMsg = None):
 
 			loop += 1
 
+	fp_lircLog.close()
+
 
 def stringfor(command, data, accesskey='\0'*6, tid=1):
 	length = 16 + len(data)
 	prefix = struct.pack('>BBIBB6s', 6, 2, length, tid, command, accesskey)
 	checksum = sum( ord(c) for c in prefix ) #& 0xFF   
 	return prefix + chr(checksum) + chr(3)
-
 
 
 def get_ip_address(ifname) : 
@@ -181,10 +189,70 @@ def get_ip_address(ifname) :
 		0x8915, # SIOCGIFADDR \
 		struct.pack('256s', ifname[:15]) )[20:24])
 
+
+#import popen2
+import subprocess
+def execute(cmd):
+	ret = 0
+	stderr = None
+	stdout = None
+
+	p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	p.wait()
+
+	ret = p.returncode
+	stderr = p.stderr.read()
+	stdout = p.stdout.read()
+
+	return (ret, stdout, stderr)
+
+def show_memory( aFree = 0 ) :
+	totalPysicalMem = 0
+	usedPysicalMem = 0
+	freePysicalMem = 0
+	cmd = "free | head -n 2 | tail -n 1 | awk '{print $2, $3, $4, $6, $7}'"
+	ret, stdout, stderr = execute(cmd)
+	if ret == 0 :
+		vlst = stdout.split()
+		#totalPysicalMem = int(vlst[0])
+		freePhysicalMem = int(vlst[2]) + int(vlst[3]) + int(vlst[4])
+		#print 'used[%s] free[%s]'% ( vlst[1], aFree - int(vlst[2]) )
+		return freePhysicalMem
+		#print 'Physical Memory (Used/Total) : %.2f GB/ %.2f GB = %d %%' % (float(totalPysicalMem - freePhysicalMem) / pow(1024, 2), float(totalPysicalMem) / pow(1024, 2), float((totalPysicalMem - freePhysicalMem)) / totalPysicalMem * 100)
+		#print 'Current memory use (GB) = (%d + (%d * %d))  = %.2f GByte' % (sharedMemoryTot, eachThreadsMemoryTot, threadsConnected, float(sharedMemoryTot + (eachThreadsMemoryTot * threadsConnected)) / pow(1024,3))
+		#print 'Recent max (GB) = (%d + (%d * %d)) = %.2f GByte' % (sharedMemoryTot, eachThreadsMemoryTot, maxUsedConnections, float(sharedMemoryTot + (eachThreadsMemoryTot * maxUsedConnections)) / pow(1024,3))
+		#print 'Availiable max (GB) = (%d + (%d * %d)) = %.2f GByte' % (sharedMemoryTot, eachThreadsMemoryTot, maxConnections, float(sharedMemoryTot + (eachThreadsMemoryTot * maxConnections)) / pow(1024,3))
+
+
+def memTest( ) :
+	loop = 0
+	testTime = 0
+	delay = 2
+	for i in range(15) :
+		firstMem = show_memory( )
+		testTime += delay
+		loopTime  = '%02d:%s'% ( testTime / 3600, time.strftime('%M:%S', time.gmtime(testTime) ) )
+		print 'testTime[%s] count[%s] memLeak[%s]'% (loopTime, loop, firstMem)
+		time.sleep(delay)
+
+	subprocess.call('free')
+	while 1 :
+		useMem = show_memory( )
+		testTime += delay
+		loopTime  = '%02d:%s'% ( testTime / 3600, time.strftime('%M:%S', time.gmtime(testTime) ) )
+		print 'testTime[%s] count[%s] memLeak[%s]'% (loopTime, loop, firstMem - useMem)
+		if loop % 30 == 0 :
+			subprocess.call('free')
+
+		loop += 1
+		time.sleep(delay)
+
+
 if __name__ == "__main__":
 	#print get_ip_address('eth0')
 
-	send()
+	#send()
+	memTest()
 
 
 

@@ -390,6 +390,9 @@ class TimeShiftPlate(BaseWindow):
 				self.ShowRecordingInfo()
 				self.mDataCache.mCacheReload = True
 
+				if aEvent.getName() == ElisEventRecordingStopped.getName() and aEvent.mHDDFull :
+					LOG_TRACE('----------hddfull[%s]'% aEvent.mHDDFull)
+					xbmcgui.Dialog().ok( MR_LANG('Infomation'), MR_LANG('HDD Full!!! Cannot Recording...') )
 
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )

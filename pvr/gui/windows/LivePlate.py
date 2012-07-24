@@ -432,6 +432,10 @@ class LivePlate( BaseWindow ) :
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
  				self.ShowRecordingInfo( )
 
+				if aEvent.getName() == ElisEventRecordingStopped.getName() and aEvent.mHDDFull :
+					LOG_TRACE('----------hddfull[%s]'% aEvent.mHDDFull)
+					xbmcgui.Dialog().ok( MR_LANG('Infomation'), MR_LANG('HDD Full!!! Cannot Recording...') )
+
 
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
