@@ -814,6 +814,7 @@ class EPGWindow( BaseWindow ) :
 
 				if ret[0].mParam == -1 or ret[0].mError == -1 :
 					self.RecordConflict( ret )
+					return
 
 			else :
 				LOG_TRACE('')
@@ -821,6 +822,8 @@ class EPGWindow( BaseWindow ) :
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
 
+		self.UpdateListUpdateOnly( )
+		
 
 	def ShowEditTimer( self ) :
 		selectedEPG = self.GetSelectedEPG( )
