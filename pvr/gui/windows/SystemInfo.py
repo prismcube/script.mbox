@@ -131,10 +131,14 @@ class SystemInfo( SettingWindow ) :
 
 
 	def ShowRecordFreeSize( self ) :
-		size = ''
-		if self.mCommander.Record_GetFreeMBSize( ) != -1 :
-			size = '%s' % self.mCommander.Record_GetFreeMBSize( )
-		self.mCtrlRecordFreeSize.setLabel( 'Record Free Size : %s MB' % size )
+		size = None
+		percent = None
+		if self.mCommander.Record_GetPartitionSize( ) != -1 and self.mCommander.Record_GetFreeMBSize( ) != -1 :
+			size	= self.mCommander.Record_GetFreeMBSize( )
+			percent = int( size / float( self.mCommander.Record_GetPartitionSize( ) ) * 100 )
+		else :
+			LOG_ERR( 'Get Record_GetPartitionSize or Record_GetFreeMBSize Fail!!!' )
+		self.mCtrlRecordFreeSize.setLabel( 'Record Free Size : %s MB ( %s%% )' % ( size, percent ) )
 
 
 	@RunThread
