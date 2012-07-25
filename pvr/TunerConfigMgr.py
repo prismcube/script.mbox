@@ -32,6 +32,9 @@ class TunerConfigMgr( object ) :
 		self.mCurrentTunerType = 0
 		self.mNeedLoad = True
 
+		self.mOrgConfiguredList1 = []
+		self.mOrgConfiguredList2 = []
+
 		self.mOrgTuner2ConnectType = 0
 		self.mOrgTuner2Config = 0
 		self.mOrgTuner1Type = 0
@@ -229,14 +232,19 @@ class TunerConfigMgr( object ) :
 		ElisPropertyInt( 'MyLongitude', self.mCommander ).SetProp( self.mOrgMyLongitude )
 		ElisPropertyInt( 'MyLatitude', self.mCommander ).SetProp( self.mOrgMyLatitude )
 
+		self.mCommander.Satelliteconfig_SaveList( self.mOrgConfiguredList1 )
+		self.mCommander.Satelliteconfig_SaveList( self.mOrgConfiguredList2 )
+
 
 	def SatelliteConfigSaveList( self ) :
+		LOG_TRACE( 'Save Satellite Config List!!' )
 		self.mCommander.Satelliteconfig_DeleteAll( ) 
 		
 		tuner1Type = ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( )
 		configuredList1 = self.GetConfiguredSatellitebyTunerIndex( E_TUNER_1 )
 		for i in range( len( configuredList1 ) ) :
 			configuredList1[i].mSlotNumber = i
+			self.mTunerMgr.SetTunerTypeFlag( configuredList1[i], tuner1Type )
 			if tuner1Type == E_MOTORIZE_1_2 :
 				configuredList1[i].mMotorizedData = configuredList1[i].mSlotNumber + 1
 		
@@ -251,18 +259,19 @@ class TunerConfigMgr( object ) :
 			configuredList2 = self.GetConfiguredSatellitebyTunerIndex( E_TUNER_2 )
 			for i in range( len( configuredList2 ) ) :
 				configuredList2[i].mSlotNumber = i
+				self.mTunerMgr.SetTunerTypeFlag( configuredList2[i], tuner2Type )
 				if tuner2Type == E_MOTORIZE_1_2 :
 					configuredList2[i].mMotorizedData = configuredList2[i].mSlotNumber + 1
 
 		ret1 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList1 )
 		ret2 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList2 )
 
-		"""
+
 		for satellite in self.mConfiguredList1 :
-			satellite.printdebug()
+			satellite.printdebug( )
 		for satellite in self.mConfiguredList2 :
-			satellite.printdebug()
-		"""
+			satellite.printdebug( )
+
 
 		if ret1 == True and ret2 == True :
 			return True
@@ -293,6 +302,19 @@ class TunerConfigMgr( object ) :
 			self.mConfiguredList2 = []
 			config = self.GetDefaultConfig( )
 			self.mConfiguredList2.append( config )
+
+		self.mOrgConfiguredList1 = deepcopy( self.mConfiguredList1 )
+		self.mOrgConfiguredList2 = deepcopy( self.mConfiguredList2 )
+
+
+	def LoadOriginalSatelliteConfigListByTunerNumber( self, aTunerNumber ) :
+		if aTunerNumber == E_TUNER_1 :
+			return self.mOrgConfiguredList1
+		elif aTunerNumber == E_TUNER_2 :
+			return self.mOrgConfiguredList2
+		else :
+			LOG_ERR( 'Invalid Tuner Number : %s' % aTunerNumber )
+			return self.mOrgConfiguredList1
 
 
 	def LoadOriginalTunerConfig( self ) :

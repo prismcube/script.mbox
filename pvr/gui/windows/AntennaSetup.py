@@ -21,11 +21,11 @@ class AntennaSetup( SettingWindow ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( 'Error', 'Satellite Infomation is empty. Please Reset STB' )
 			dialog.doModal( )
-			WinMgr.GetInstance().CloseWindow( )
+			WinMgr.GetInstance( ).CloseWindow( )
 		self.getControl( E_SUBMENU_LIST_ID ).setVisible( True )
 		
 
-		if ConfigMgr.GetInstance().GetFristInstallation( ) == True :
+		if ConfigMgr.GetInstance( ).GetFristInstallation( ) == True :
 			self.DrawFirstTimeInstallationStep( E_STEP_ANTENNA )
 		else :
 			self.DrawFirstTimeInstallationStep( None )
@@ -41,7 +41,7 @@ class AntennaSetup( SettingWindow ) :
 		self.AddInputControl( E_Input01, ' - Tuner 1 Configuration', '', 'Go to Tuner 1 Configure.' )
 		self.AddEnumControl( E_SpinEx04, 'Tuner2 Type', None, 'Setup tuner 2.' )
 		self.AddInputControl( E_Input02, ' - Tuner 2 Configuration','', 'Go to Tuner 2 Configure.' )
-		if ConfigMgr.GetInstance().GetFristInstallation( ) == True :
+		if ConfigMgr.GetInstance( ).GetFristInstallation( ) == True :
 			self.AddPrevNextButton( )
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( 'Next' )
 		self.setVisibleButton( )
@@ -65,7 +65,7 @@ class AntennaSetup( SettingWindow ) :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			if ConfigMgr.GetInstance().GetFristInstallation( ) == True :
+			if ConfigMgr.GetInstance( ).GetFristInstallation( ) == True :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( 'Are you sure?', 'Do you want to stop first time installation?' )
 				dialog.doModal( )
@@ -76,9 +76,9 @@ class AntennaSetup( SettingWindow ) :
 						self.CancelConfiguration( )
 					self.mTunerMgr.SetNeedLoad( True )
 					self.ResetAllControl( )
-#					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).SetAlreadyClose( True )
+#					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).SetAlreadyClose( True )
 					self.CloseBusyDialog( )
-					WinMgr.GetInstance().CloseWindow( )
+					WinMgr.GetInstance( ).CloseWindow( )
 				elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 					return	
 				elif dialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
@@ -102,12 +102,11 @@ class AntennaSetup( SettingWindow ) :
 					self.OpenBusyDialog( )
 					if self.CompareConfigurationSatellite( ) == False or self.CompareConfigurationProperty( ) == False :
 						self.CancelConfiguration( )
-					self.mTunerMgr.SetNeedLoad( True )
-
+				self.mTunerMgr.SetNeedLoad( True )
 				self.ResetAllControl( )
 				self.SetVideoRestore( )
 				self.CloseBusyDialog( )
-				WinMgr.GetInstance().CloseWindow( )
+				WinMgr.GetInstance( ).CloseWindow( )
 			
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
@@ -133,12 +132,21 @@ class AntennaSetup( SettingWindow ) :
 			elif groupId == E_Input02 :
 				self.mTunerMgr.SetCurrentTunerIndex( E_TUNER_2 )
 				configcontrol = E_SpinEx04
-		
+
+			"""
 			configuredList = self.mTunerMgr.GetConfiguredSatelliteList( )
 			if configuredList and configuredList[0].mError == 0 :
 				pass
 			else :
 				self.mTunerMgr.AddConfiguredSatellite( 0 )
+			"""
+
+			if self.CompareConfigurationProperty( ) == False :
+				self.OpenBusyDialog( )
+				self.mTunerMgr.SatelliteConfigSaveList( )
+				self.CloseBusyDialog( )
+
+
 
 			if self.GetSelectedIndex( configcontrol ) == E_SIMPLE_LNB :
 				self.mTunerMgr.SetCurrentConfigIndex( 0 )
@@ -164,19 +172,23 @@ class AntennaSetup( SettingWindow ) :
 		elif groupId == E_SpinEx03 :
 			self.ControlSelect( )
 			self.DisableControl( groupId )
+			"""
 			configuredList = self.mTunerMgr.GetConfiguredSatellitebyTunerIndex( E_TUNER_1 ) 
 			if configuredList :
 				tunertype = self.GetSelectedIndex( E_SpinEx03 )
 				for satellite in configuredList :
 					self.mTunerMgr.SetTunerTypeFlag( satellite, tunertype )
+			"""
 
 		elif groupId == E_SpinEx04 :
 			self.ControlSelect( )
+			"""
 			configuredList = self.mTunerMgr.GetConfiguredSatellitebyTunerIndex( E_TUNER_2 )
 			if configuredList :
 				tunertype = self.GetSelectedIndex( E_SpinEx04 )
 				for satellite in configuredList :
 					self.mTunerMgr.SetTunerTypeFlag( satellite, tunertype )
+			"""
 
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT or aControlId == E_FIRST_TIME_INSTALLATION_PREV :
 			self.OpenBusyDialog( )
@@ -185,12 +197,12 @@ class AntennaSetup( SettingWindow ) :
 				self.ReTune( )
 			self.ResetAllControl( )
 			if aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
-				WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).SetResultAntennaStep( True )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).SetResultAntennaStep( True )
 			else :
-				WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).SetResultAntennaStep( False )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).SetResultAntennaStep( False )
 			self.mTunerMgr.SetNeedLoad( True )
 			self.CloseBusyDialog( )
-			WinMgr.GetInstance().CloseWindow( )			
+			WinMgr.GetInstance( ).CloseWindow( )			
 
 		
 	def onFocus( self, aControlId ) :
@@ -202,15 +214,14 @@ class AntennaSetup( SettingWindow ) :
 
 
 	def SaveConfiguration( self ) :
-		ret = self.mTunerMgr.SatelliteConfigSaveList( )
-		self.mTunerMgr.SetNeedLoad( True )
+		self.mTunerMgr.SatelliteConfigSaveList( )
 		self.mDataCache.LoadConfiguredSatellite( )
 		self.mDataCache.LoadConfiguredTransponder( )
 
 
 	def CancelConfiguration( self ) :
 		self.mTunerMgr.Restore( )
-	
+
 
 	def DisableControl( self, aControlID = None ) :
 		if aControlID == None or aControlID == E_SpinEx01 :
@@ -250,7 +261,7 @@ class AntennaSetup( SettingWindow ) :
 
 
 	def setVisibleButton( self ) :
-		if ConfigMgr.GetInstance().GetFristInstallation( ) == True :
+		if ConfigMgr.GetInstance( ).GetFristInstallation( ) == True :
 			self.SetVisibleControl( E_FIRST_TIME_INSTALLATION_NEXT, True )
 			self.SetVisibleControl( E_FIRST_TIME_INSTALLATION_PREV, True )
 		else :
@@ -270,9 +281,9 @@ class AntennaSetup( SettingWindow ) :
 
 	def CompareConfigurationSatellite( self ) :
 		configuredList1		= self.mTunerMgr.GetConfiguredSatellitebyTunerIndex( E_TUNER_1 )	
-		oriconfiguredList1	= self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_1 )
+		oriconfiguredList1	= self.mTunerMgr.LoadOriginalSatelliteConfigListByTunerNumber( E_TUNER_1 )
 		configuredList2		= self.mTunerMgr.GetConfiguredSatellitebyTunerIndex( E_TUNER_2 ) 
-		oriconfiguredList2	= self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_2 )
+		oriconfiguredList2	= self.mTunerMgr.LoadOriginalSatelliteConfigListByTunerNumber( E_TUNER_2 )
 		if oriconfiguredList1 == None or oriconfiguredList2 == None :
 			return False
 		
@@ -280,6 +291,8 @@ class AntennaSetup( SettingWindow ) :
 			if len( configuredList1 ) != len( oriconfiguredList1 ) :
 				return False
 		else :
+			if len( configuredList1 ) != len( oriconfiguredList1 ) :
+				return False
 			if len( configuredList2 ) != len( oriconfiguredList2 ) :
 				return False
 
@@ -287,8 +300,10 @@ class AntennaSetup( SettingWindow ) :
 			for i in range( len( configuredList1 ) ) :
 				if configuredList1[i].__dict__ != oriconfiguredList1[i].__dict__ :
 					return False
-
 		else :
+			for i in range( len( configuredList1 ) ) :
+				if configuredList1[i].__dict__ != oriconfiguredList1[i].__dict__ :
+					return False
 			for i in range( len( configuredList2 ) ) :
 				if configuredList2[i].__dict__ != oriconfiguredList2[i].__dict__ :
 					return False
