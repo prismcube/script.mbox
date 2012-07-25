@@ -685,8 +685,12 @@ class ArchiveWindow( BaseWindow ) :
 
 	def ShowRenameDialog( self ) :
 		selectedPos = self.GetSelectedPosition( )	
+		if self.mRecordList[ selectedPos ].mLocked == True :
+			if self.CheckPincode() == False :
+				return False
+		
 		try :
-			kb = xbmc.Keyboard( '', 'Rename', False )
+			kb = xbmc.Keyboard( self.mRecordList[ selectedPos ].mRecordName, 'Rename', False )
 			kb.doModal( )
 			if kb.isConfirmed( ) :
 				newName = kb.getText( )
@@ -695,9 +699,6 @@ class ArchiveWindow( BaseWindow ) :
 					xbmcgui.Dialog( ).ok('Infomation', 'Input more than %d characters' %MININUM_KEYWORD_SIZE )
 					return
 				else :
-					if self.mRecordList[ selectedPos ].mLocked == True :
-						if self.CheckPincode() == False :
-							return False
 
 					LOG_TRACE('Key=%d ServiceType=%d Name=%s %s' %(self.mRecordList[ selectedPos ].mRecordKey,  self.mServiceType, self.mRecordList[ selectedPos ].mRecordName, newName ) )
 					self.mDataCache.Record_Rename( self.mRecordList[ selectedPos ].mRecordKey, self.mServiceType, newName )
@@ -744,18 +745,17 @@ class ArchiveWindow( BaseWindow ) :
 			count = len( markedList )
 			for i in range( count ) :
 				position = markedList[i]
-				listItem = self.mRecordListItems[ position ]
+				recItem = self.mRecordListItems[ position ]
 				if aLock == True :
 					self.mRecordList[ position ].mLocked = True
 					self.mDataCache.Record_SetLock( self.mRecordList[ position ].mRecordKey, self.mServiceType, True )
-					listItem.setProperty('Locked', 'True')
-					listItem.setProperty('RecIcon', 'IconNotAvailable.png')
+					recItem.setProperty('Locked', 'True')
+					recItem.setProperty('RecIcon', 'IconNotAvailable.png')
 				else :
 					self.mRecordList[ position ].mLocked = False
 					self.mDataCache.Record_SetLock( self.mRecordList[ position ].mRecordKey, self.mServiceType, False )
-					listItem.setProperty('Locked', 'False')
-					thumbnail = '/mnt/hdd0/pvr/thumbnail/record_thumbnail_%d.jpg' % recInfo.mRecordKey
-					LOG_ERR( 'thumbnail=%s' % thumbnail )
+					recItem.setProperty('Locked', 'False')
+					thumbnail = '/mnt/hdd0/pvr/thumbnail/record_thumbnail_%d.jpg' % self.mRecordList[ position ].mRecordKey
 					
 					if os.path.exists( thumbnail ) == True :
 						recItem.setProperty('RecIcon', thumbnail )
