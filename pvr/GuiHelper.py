@@ -14,6 +14,40 @@ def SetSetting( aID, aValue ) :
 	gSettings.setSetting( aID, aValue )
 
 
+def RecordConflict( aInfo ) :
+	import pvr.DataCacheMgr
+	dataCache = pvr.DataCacheMgr.GetInstance( )
+	import pvr.gui.DialogMgr as DiaMgr
+	from pvr.Util import TimeToString, TimeFormatEnum
+
+	label = [ '', '', '' ]
+	
+	try :		
+		if aInfo[0].mError == -1 :
+			label[0] = 'Error EPG'
+			label[1] = 'Can not found EPG Information'
+		else :
+			conflictNum = len( aInfo ) - 1
+			if conflictNum > 3 :
+				conflictNum = 3
+
+			for i in range( conflictNum ) :
+				timer = dataCache.Timer_GetById( aInfo[ i + 1 ].mParam )
+				if timer :
+					timer.printdebug( )
+					time = '%s~%s' % ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( timer.mStartTime + timer.mDuration, TimeFormatEnum.E_HH_MM ) )
+					channelNum = '%04d' % timer.mChannelNo
+					epgName = timer.mName
+					label[i] = channelNum + ' ' + time + ' ' +  epgName
+
+	except Exception, ex :
+		print "Exception %s" %ex
+					
+	dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+	dialog.SetDialogProperty( 'Conflict', label[0], label[1], label[2] )
+	dialog.doModal( )
+
+
 def GetImageByEPGComponent( aEPG, aFlag ) :
 	if aFlag == ElisEnum.E_HasHDVideo and aEPG.mHasHDVideo :
 		#return 'OverlayHD.png' #ToDO -> support multi skin
