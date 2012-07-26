@@ -1,6 +1,5 @@
 from pvr.gui.WindowImport import *
 
-
 # Control IDs
 """
 E_LABEL_RECORD_NAME			= 101
@@ -36,6 +35,7 @@ class DialogStartRecord( SettingDialog ) :
 		self.mStartTime = 0
 		self.mEndTime = 0
 		self.mCopyMode = E_FROM_NOW
+		self.mConflictTimer = None		
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
@@ -53,6 +53,7 @@ class DialogStartRecord( SettingDialog ) :
 		self.mEnableThread = True
 		#self.mRecordingProgressThread = self.RecordingProgressThread( )
 		self.mDurationChanged = False
+		self.mConflictTimer = None		
 
 
 	def onAction( self, aAction ) :
@@ -126,6 +127,8 @@ class DialogStartRecord( SettingDialog ) :
 	def IsOK( self ) :
 		return self.mIsOk
 
+	def GetConflictTimer( self ) :
+		return self.mConflictTimer
 
 	def Close( self ):
 		self.mEventBus.Deregister( self )
@@ -421,9 +424,12 @@ class DialogStartRecord( SettingDialog ) :
 
 				ret = self.mDataCache.Timer_AddOTRTimer( False, expectedDuration, copyTimeshift, self.mOTRInfo.mEventName, True, 0, 0,  0, 0 )
 
-				if ret[0].mParam == -1 or ret[0].mError == -1 :
-					self.RecordConflict( ret )
-					self.mIsOk = E_DIALOG_STATE_CANCEL
+				#if ret[0].mParam == -1 or ret[0].mError == -1 :
+				LOG_ERR( 'StartDialog ret=%s ' %ret )
+				if ret and ( ret[0].mParam == -1 or ret[0].mError == -1 ) :	
+					LOG_ERR( 'StartDialog ' )				
+					self.mConflictTimer = ret
+					self.mIsOk = E_DIALOG_STATE_ERROR
 				else :
 					self.mIsOk = E_DIALOG_STATE_YES
 		except Exception, ex:
@@ -485,24 +491,5 @@ class DialogStartRecord( SettingDialog ) :
 		self.mCtrlProgress.setPercent( percent )
 	"""
 
-
-	def RecordConflict( self, aInfo ) :
-		label = [ '', '', '' ]
-		if aInfo[0].mError == -1 :
-			label[0] = 'Error EPG'
-			label[1] = 'Can not found EPG Information'
-		else :
-			conflictNum = len( aInfo ) - 1
-			if conflictNum > 3 :
-				conflictNum = 3
-			for i in range( conflictNum ) :
-				timer = self.mDataCache.Timer_GetById( aInfo[ i + 1 ].mParam )
-				time = '%s~%s' % ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( timer.mStartTime + timer.mDuration, TimeFormatEnum.E_HH_MM ) )
-				channelNum = '%04d' % timer.mChannelNo
-				epgNAme = timer.mName
-				label[i] = time + ' ' + channelNum + ' ' + epgNAme
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		dialog.SetDialogProperty( 'Conflict', label[0], label[1], label[2] )
-		dialog.doModal( )
 
 

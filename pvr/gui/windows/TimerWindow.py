@@ -361,7 +361,8 @@ class TimerWindow(BaseWindow):
 							infoDialog.SetDialogProperty( 'Error', dialog.GetErrorMessage( ) )
 							infoDialog.doModal( )
 						else :
-							self.RecordConflict( dialog.GetConflictTimer( ) )
+							from pvr.GuiHelper import RecordConflict
+							RecordConflict( dialog.GetConflictTimer( ) )
 
 			else :
 				if selectedPos >= 0 and selectedPos < len( self.mTimerList ) :
@@ -381,7 +382,8 @@ class TimerWindow(BaseWindow):
 							infoDialog.SetDialogProperty( 'Error', dialog.GetErrorMessage( ) )
 							infoDialog.doModal( )
 						else :
-							self.RecordConflict( dialog.GetConflictTimer( ) )
+							from pvr.GuiHelper import RecordConflict
+							RecordConflict( dialog.GetConflictTimer( ) )
 
 			self.UpdateList( )
 
@@ -460,27 +462,6 @@ class TimerWindow(BaseWindow):
 			self.UpdateList( )
 	
 		self.CloseBusyDialog( )
-
-
-	def RecordConflict( self, aInfo ) :
-		label = [ '', '', '' ]
-		if aInfo[0].mError == -1 :
-			label[0] = 'Error EPG'
-			label[1] = 'Can not found EPG Information'
-		else :
-			conflictNum = len( aInfo ) - 1
-			if conflictNum > 3 :
-				conflictNum = 3
-			for i in range( conflictNum ) :
-				timer = self.mDataCache.Timer_GetById( aInfo[ i + 1 ].mParam )
-				if timer :
-					time = '%s~%s' % ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( timer.mStartTime + timer.mDuration, TimeFormatEnum.E_HH_MM ) )
-					channelNum = '%04d' % timer.mChannelNo
-					epgNAme = timer.mName
-					label[i] = time + ' ' + channelNum + ' ' + epgNAme
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		dialog.SetDialogProperty( 'Conflict', label[0], label[1], label[2] )
-		dialog.doModal( )
 
 
 	def LoadTimerList( self ) :
