@@ -1034,6 +1034,7 @@
 						<posy>170</posy>
 						<width>25</width>
 						<height>401</height>
+						<visible>!Container(102).HasFocus(5)</visible>
 						<texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
 						<texturesliderbar></texturesliderbar>
 						<texturesliderbarfocus></texturesliderbarfocus>

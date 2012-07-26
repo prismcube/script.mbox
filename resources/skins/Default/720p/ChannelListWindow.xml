@@ -972,6 +972,7 @@
 						<posy>170</posy>
 						<width>20</width>
 						<height>401</height>
+						<visible>!Container(102).HasFocus(5)</visible>
 						<include>DefaultWindowFade</include>
 						<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 						<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>

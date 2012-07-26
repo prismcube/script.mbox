@@ -1086,14 +1086,30 @@ class ChannelListWindow( BaseWindow ) :
 					"""
 
 					#save zapping mode
-					self.mDataCache.Channel_Save( )
 					ret = self.mDataCache.Zappingmode_SetCurrent( self.mElisSetZappingModeInfo )
+					self.mDataCache.Channel_Save( )
 					if ret :
 						#### data cache re-load ####
 						self.mDataCache.LoadZappingmode( )
 						self.mDataCache.LoadZappingList( )
 						self.mDataCache.LoadChannelList( )
 						#LOG_TRACE ('===================== save yes: cache re-load')
+
+						if self.mFlag_ModeChanged :
+							isBlank = False
+							lastServiceType = 'Last TV Number'
+							if self.mChannelListServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
+								isBlank = True
+								lastServiceType = 'Last Radio Number'
+
+							self.mDataCache.Player_VideoBlank( isBlank, False )
+							lastChannelNumber = ElisPropertyInt( lastServiceType, self.mCommander ).GetProp( )
+							ret = self.mDataCache.Channel_SetCurrent( lastChannelNumber, self.mChannelListServiceType )
+
+							LOG_TRACE( 'last Channel[%s]'% lastChannelNumber )
+							if not ret :
+								if self.mChannelList and len( self.mChannelList ) > 0 :
+									self.mDataCache.Channel_SetCurrent( 1, self.mChannelListServiceType )
 
 				elif answer == E_DIALOG_STATE_NO :
 					#zapping changed then will re-paint list items for cache
@@ -1349,6 +1365,8 @@ class ChannelListWindow( BaseWindow ) :
 
 		#no channel is set Label comment
 		if self.mChannelList == None:
+			self.mListItems = None
+			self.mCtrlListCHList.reset( )
 			label = MR_LANG('Empty Channels')
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, '0' )
