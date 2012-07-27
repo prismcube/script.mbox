@@ -2405,6 +2405,10 @@ class ChannelListWindow( BaseWindow ) :
 			isOK = dialog.IsOK()
 			if isOK == E_DIALOG_STATE_YES :
 				isOK = True
+
+			if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
+				from pvr.GuiHelper import RecordConflict
+				RecordConflict( dialog.GetConflictTimer( ) )
 		else:
 			msg = 'Already [%s] recording(s) running' %runningCount
 			xbmcgui.Dialog().ok('Infomation', msg )
