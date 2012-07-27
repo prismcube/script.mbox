@@ -134,7 +134,7 @@ class TimeShiftPlate(BaseWindow):
 		self.mUserMoveTimeBack = 0
 		self.mFlagUserMove = False
 		self.mAccelator = 0
-		self.mINSTime = 0
+		self.mInitialized = True
 		self.mRepeatTimeout = 1
 		self.mAsyncShiftTimer = None
 		self.mAutomaticHideTimer = None
@@ -441,6 +441,9 @@ class TimeShiftPlate(BaseWindow):
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
 				self.mWin.setProperty( 'IsXpeeding', 'True' )
 
+				#blocking release
+				self.SetBlockingButtonEnable( True )
+
 				self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
 
 
@@ -465,6 +468,9 @@ class TimeShiftPlate(BaseWindow):
 				self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
 				self.mWin.setProperty( 'IsXpeeding', 'True' )
 
+				#blocking
+				self.SetBlockingButtonEnable( False )
+
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_STOP :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
@@ -487,6 +493,9 @@ class TimeShiftPlate(BaseWindow):
 			return
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_REWIND :
+			if self.mSpeed == 0 :
+				return 
+
 			if self.mSpeed <= -6400 :
 				return
 
@@ -508,6 +517,9 @@ class TimeShiftPlate(BaseWindow):
 
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_FORWARD :
+			if self.mSpeed == 0 :
+				return
+
 			if self.mSpeed >= 6400 :
 				return
 
@@ -528,6 +540,9 @@ class TimeShiftPlate(BaseWindow):
 
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_JUMP_RR :
+			if self.mSpeed == 0 :
+				return
+
 			prevJump = self.mTimeshift_playTime - 10000
 			if prevJump < self.mTimeshift_staTime :
 				prevJump = self.mTimeshift_staTime + 1000
@@ -536,6 +551,9 @@ class TimeShiftPlate(BaseWindow):
 
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_JUMP_FF :
+			if self.mSpeed == 0 :
+				return
+
 			nextJump = self.mTimeshift_playTime + 10000
 			if nextJump > self.mTimeshift_endTime :
 				nextJump = self.mTimeshift_endTime - 1000
@@ -562,8 +580,16 @@ class TimeShiftPlate(BaseWindow):
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
 
 
+	def SetBlockingButtonEnable( self, aValue ) :
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_REWIND, aValue, E_CONTROL_ENABLE )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_FORWARD, aValue, E_CONTROL_ENABLE )
+		strValue = '%s'% aValue
+		self.mWin.setProperty( 'IsXpeeding', strValue )
+
+
 	@GuiLock
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
+		#LOG_TRACE( 'Enter control[%s] value[%s] extra[%s]'% (aCtrlID, aValue, aExtra) )
 		if aCtrlID == E_CONTROL_ID_BUTTON_VOLUME :
 			self.mCtrlBtnVolume.setVisible( aValue )
 
@@ -572,9 +598,6 @@ class TimeShiftPlate(BaseWindow):
 				self.mCtrlBtnStartRec.setEnabled( aValue )
 			elif aExtra == E_CONTROL_VISIBLE :
 				self.mCtrlBtnStartRec.setVisible( aValue )
-
-		elif aCtrlID == E_CONTROL_ID_BUTTON_REWIND :
-			self.mCtrlBtnRewind.setVisible( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_BUTTON_PLAY :
 			self.mCtrlBtnPlay.setVisible( aValue )
@@ -585,8 +608,17 @@ class TimeShiftPlate(BaseWindow):
 		elif aCtrlID == E_CONTROL_ID_BUTTON_STOP :
 			self.mCtrlBtnStop.setVisible( aValue )
 
+		elif aCtrlID == E_CONTROL_ID_BUTTON_REWIND :
+			if aExtra == E_CONTROL_ENABLE :
+				self.mCtrlBtnRewind.setEnabled( aValue )
+			elif aExtra == E_CONTROL_VISIBLE :
+				self.mCtrlBtnRewind.setVisible( aValue )
+
 		elif aCtrlID == E_CONTROL_ID_BUTTON_FORWARD :
-			self.mCtrlBtnForward.setVisible( aValue )
+			if aExtra == E_CONTROL_ENABLE :
+				self.mCtrlBtnForward.setEnabled( aValue )
+			elif aExtra == E_CONTROL_VISIBLE :
+				self.mCtrlBtnForward.setVisible( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_IMAGE_REWIND :
 			self.mCtrlImgRewind.setVisible( aValue )
@@ -689,13 +721,13 @@ class TimeShiftPlate(BaseWindow):
 			tempCurrentTime = self.mTimeshift_curTime / 1000
 			tempEndTime     = self.mTimeshift_endTime / 1000
 
-
 			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				localTime = self.mDataCache.Datetime_GetLocalTime()
 				duration = (self.mTimeshift_endTime - self.mTimeshift_staTime) / 1000
 				tempStartTime = localTime - duration
 				tempCurrentTime = tempStartTime + (self.mTimeshift_curTime / 1000 )
 				tempEndTime =  localTime
+
 
 			#Speed label
 			self.mSpeed  = status.mSpeed
@@ -714,11 +746,16 @@ class TimeShiftPlate(BaseWindow):
 			lbl_timeE = TimeToString( tempEndTime    , timeFormat )
 
 			if lbl_timeS != '' :
-				self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, lbl_timeS )
+				if self.mInitialized :
+					self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, lbl_timeS )
+
 			if lbl_timeP != '' :
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_CONTROL_LABEL )
 			if lbl_timeE != '' :
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_END_TIME, lbl_timeE )
+
+			if tempStartTime > 0 :
+				self.mInitialized = False
 
 
 	def GetNextSpeed(self, aFocusId):
