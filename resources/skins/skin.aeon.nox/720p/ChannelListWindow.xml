@@ -326,10 +326,10 @@
 							<control type="image">
 								<posx>620</posx>
 								<posy>7</posy>
-								<width>35</width>
-								<height>25</height>
+								<width>30</width>
+								<height>30</height>
 								<visible>Control.IsVisible(600) + !Control.IsVisible(601)</visible>
-								<texture>IconOpt.png</texture>
+								<texture>DI_Info.png</texture>
 							</control>
 							<control type="image">
 								<posx>620</posx>
@@ -1034,6 +1034,7 @@
 						<posy>170</posy>
 						<width>25</width>
 						<height>401</height>
+						<visible>!Container(102).HasFocus(5)</visible>
 						<texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
 						<texturesliderbar></texturesliderbar>
 						<texturesliderbarfocus></texturesliderbarfocus>

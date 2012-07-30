@@ -373,10 +373,10 @@
 					<control type="image">
 						<posx>605</posx>
 						<posy>5</posy>
-						<width>45</width>
+						<width>30</width>
 						<height>30</height>
 						<visible>Control.IsVisible(600) + !Control.IsVisible(601)</visible>
-						<texture>IconOpt.png</texture>
+						<texture>DI_Info.png</texture>
 					</control>
 					<control type="image">
 						<posx>620</posx>
@@ -972,6 +972,7 @@
 						<posy>170</posy>
 						<width>20</width>
 						<height>401</height>
+						<visible>!Container(102).HasFocus(5)</visible>
 						<include>DefaultWindowFade</include>
 						<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 						<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>

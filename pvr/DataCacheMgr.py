@@ -518,6 +518,15 @@ class DataCacheMgr( object ):
 
 		prevChannel = None
 		nextChannel = None
+		self.mChannelListHash = {}
+
+		if newCount < 1 :
+			LOG_TRACE('count=%d'% newCount)
+			self.mCacheReload = True
+			self.Player_AVBlank( True, False )
+			#self.Channel_InvalidateCurrent( )
+			self.Frontdisplay_SetMessage('NoChannel')
+			LOG_TRACE('-------------------------------------------')
 
 		#if self.mChannelList and tmpChannelList :
 		#	LOG_TRACE('oldcount[%d] newcount[%s]'% (len(self.mChannelList), len(tmpChannelList)) )
@@ -552,8 +561,8 @@ class DataCacheMgr( object ):
 					LOG_ERR( "Exception %s" %ex)
 				
 				prevChannel = channel
-		
-	
+
+
 	def LoadZappingmode( self ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			self.mZappingMode = self.Zappingmode_GetCurrent( True )

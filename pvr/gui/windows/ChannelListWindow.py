@@ -585,29 +585,31 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( 'go out Cancel' )
 
 		else :
+			"""
 			if self.mMarkList :
+				for idx in self.mMarkList :
+					self.SetEditMarkupGUI( idx )
 				self.mMarkList = []
-				self.mListItems = None
-				self.InitChannelList( )
 
 			else :
-				ret = False
-				ret = self.SaveEditList( )
-				if ret != E_DIALOG_STATE_CANCEL :
-					self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
-					self.mFlag_EditChanged = False
-					self.mMoveFlag = False
-					#self.mEventBus.Register( self )
-					self.mDataCache.SetSkipChannelView( False )
-					self.ReloadChannelList( )
+			"""
+			ret = False
+			ret = self.SaveEditList( )
+			if ret != E_DIALOG_STATE_CANCEL :
+				self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
+				self.mFlag_EditChanged = False
+				self.mMoveFlag = False
+				#self.mEventBus.Register( self )
+				self.mDataCache.SetSkipChannelView( False )
+				self.ReloadChannelList( )
 
-					#initialize get epg event
-					self.mIsTune = False
-					self.Epgevent_GetCurrent( )
+				#initialize get epg event
+				self.mIsTune = False
+				self.Epgevent_GetCurrent( )
 
-					#clear label
-					self.ResetLabel( )
-					self.UpdateChannelAndEPG( )
+				#clear label
+				self.ResetLabel( )
+				self.UpdateChannelAndEPG( )
 
 
 	@GuiLock
@@ -1087,13 +1089,39 @@ class ChannelListWindow( BaseWindow ) :
 
 					#save zapping mode
 					self.mDataCache.Channel_Save( )
-					ret = self.mDataCache.Zappingmode_SetCurrent( self.mElisSetZappingModeInfo )
-					if ret :
+					self.mDataCache.Channel_GetAllChannels( self.mChannelListServiceType, False )
+
+					if self.mChannelList == None or len(self.mChannelList) < 1 :
 						#### data cache re-load ####
 						self.mDataCache.LoadZappingmode( )
 						self.mDataCache.LoadZappingList( )
 						self.mDataCache.LoadChannelList( )
-						#LOG_TRACE ('===================== save yes: cache re-load')
+
+					else :
+						ret = self.mDataCache.Zappingmode_SetCurrent( self.mElisSetZappingModeInfo )
+						if ret :
+							#### data cache re-load ####
+							self.mDataCache.LoadZappingmode( )
+							self.mDataCache.LoadZappingList( )
+							self.mDataCache.LoadChannelList( )
+							#LOG_TRACE ('===================== save yes: cache re-load')
+
+							if self.mFlag_ModeChanged :
+								isBlank = False
+								lastServiceType = 'Last TV Number'
+								if self.mChannelListServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
+									isBlank = True
+									lastServiceType = 'Last Radio Number'
+
+								self.mDataCache.Player_VideoBlank( isBlank, False )
+								lastChannelNumber = ElisPropertyInt( lastServiceType, self.mCommander ).GetProp( )
+								ret = self.mDataCache.Channel_SetCurrent( lastChannelNumber, self.mChannelListServiceType )
+
+								LOG_TRACE( 'last Channel[%s]'% lastChannelNumber )
+								if not ret :
+									if self.mChannelList and len( self.mChannelList ) > 0 :
+										self.mDataCache.Channel_SetCurrent( 1, self.mChannelListServiceType )
+
 
 				elif answer == E_DIALOG_STATE_NO :
 					#zapping changed then will re-paint list items for cache
@@ -1152,6 +1180,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.mIsSave = FLAG_MASK_NONE
 				self.mFlag_EditChanged = True
 				isSave = self.mDataCache.Channel_Save( )
+				self.mDataCache.Channel_GetAllChannels( self.mChannelListServiceType, False )
 
 				#### data cache re-load ####
 				self.mDataCache.SetSkipChannelView( False )
@@ -1172,14 +1201,14 @@ class ChannelListWindow( BaseWindow ) :
 	def InitSlideMenuHeader( self, aInitLoad = FLAG_ZAPPING_LOAD ) :
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			#opt btn blind
-			self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, False )
+			#self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, False )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV, True, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO, True, E_TAG_ENABLE )
 			self.UpdatePropertyGUI( E_XML_PROPERTY_EDITINFO, E_TAG_FALSE )
 
 		else :
 			#opt btn visible
-			self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, True )
+			#self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, True )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV, False, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO, False, E_TAG_ENABLE )
 			self.UpdatePropertyGUI( E_XML_PROPERTY_EDITINFO, E_TAG_TRUE )
@@ -1349,6 +1378,8 @@ class ChannelListWindow( BaseWindow ) :
 
 		#no channel is set Label comment
 		if self.mChannelList == None:
+			self.mListItems = None
+			self.mCtrlListCHList.reset( )
 			label = MR_LANG('Empty Channels')
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, '0' )
@@ -1691,10 +1722,15 @@ class ChannelListWindow( BaseWindow ) :
 			#self.mLocalTime = 0
 
 
-	def ShowMoveToGUI(self, aStart, aEnd, aSelectPosition = 0 ) :
+	def ShowMoveToGUI(self, aStart, aEnd, aInit = False ) :
 		self.mListItems = []
+		showList = self.mNewChannelList
+		if aInit :
+			showList = self.mChannelList
+			self.mCtrlListCHList.reset( )
+
 		for i in range( aStart, aEnd ):
-			iChannel = self.mNewChannelList[i]
+			iChannel = showList[i]
 			if iChannel == None : continue
 
 			#listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ) )
@@ -1803,17 +1839,22 @@ class ChannelListWindow( BaseWindow ) :
 					ret = self.mDataCache.Channel_Save( )
 					#LOG_TRACE('save[%s]'% ret )
 
-				if aMove == Action.ACTION_PREVIOUS_MENU or aMove == Action.ACTION_PARENT_DIR :
-					self.mNewChannelList = deepcopy(self.mChannelList)
-					self.ShowMoveToGUI( 0, len(self.mNewChannelList) )
-					LOG_TRACE ('========= move exit ===mark[%s] view[%s]~[%s]'% (self.mMarkList, self.mViewStart, self.mViewEnd) )
-				else :
-					self.mMarkList = []
-					self.mListItems = None
-					self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
-
+				self.mMarkList = []
+				self.mMoveList = []
+				self.mListItems = None
+				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 				self.mMoveFlag = False
+
+				self.ShowMoveToGUI( 0, len(self.mChannelList), True )
+				#LOG_TRACE ('========= move exit ===mark[%s] view[%s]~[%s]'% (self.mMarkList, self.mViewFirst, self.mViewEnd) )
+
+
+				self.mCtrlListCHList.setVisible( False )
+
+				self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mViewEnd - 1, E_TAG_SET_SELECT_POSITION )
 				self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, idxFirst, E_TAG_SET_SELECT_POSITION )
+				time.sleep(0.1)
+				self.mCtrlListCHList.setVisible( True )
 
 			except Exception, e:
 				LOG_TRACE( 'Error except[%s]'% e )
@@ -1883,7 +1924,7 @@ class ChannelListWindow( BaseWindow ) :
 			#LOG_TRACE('insert idx[%s] item[%s] len[%s]'% (insertPos, self.mNewChannelList[insertPos].mNumber, len(self.mNewChannelList)) )
 
 			#show top ~ bottom
-			if self.mMarkList[0] < self.mViewFirst or self.mMarkList[lastidx] > self.mViewEnd :
+			if self.mMarkList[0] < self.mViewFirst or self.mMarkList[lastidx] >= self.mViewEnd :
 				self.mViewFirst = self.mViewFirst + updown
 				self.mViewEnd   = self.mViewEnd   + updown
 				#LOG_TRACE('changed view item')
@@ -1894,7 +1935,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.mViewEnd = bottom
 
 			#LOG_TRACE('view Top[%s]~Bot[%s] insertPos[%s]'% (self.mViewFirst, self.mViewEnd, insertPos) )
-			self.ShowMoveToGUI( self.mViewFirst, self.mViewEnd, insertPos )
+			self.ShowMoveToGUI( self.mViewFirst, self.mViewEnd )
 
 			#select item idx, print GUI of 'current / total'
 			pos = '%s'% ( self.mViewFirst + 1 )
