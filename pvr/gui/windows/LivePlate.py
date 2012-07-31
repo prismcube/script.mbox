@@ -428,6 +428,13 @@ class LivePlate( BaseWindow ) :
 			#	self.Epgevent_GetCurrent( channel.mSid, channel.mTsid, channel.mOnid )
 			#	LOG_TRACE('----------------------------receive epg')
 
+			elif aEvent.getName() == ElisEventTuningStatus.getName() :
+				LOG_TRACE('TunerNo[%s] locked[%s] quality[%s] strength[%s] frequency[%s]'% ( \
+						aEvent.mTunerNo, aEvent.mIsLocked, aEvent.mSignalQuality, aEvent.mSignalStrength, aEvent.mFrequency ) )
+
+				#xbmcgui.Dialog().ok( MR_LANG('Infomation'), MR_LANG('No Signal') )
+
+
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
  				self.ShowRecordingInfo( )
@@ -1023,6 +1030,7 @@ class LivePlate( BaseWindow ) :
 
 
 	def Close( self ):
+		self.mEPGList = []
 		self.mEventBus.Deregister( self )
 		self.mEnableLocalThread = False
 		
