@@ -41,7 +41,7 @@ class NullWindow( BaseWindow ) :
 					#if self.mMediaPlayerStarted == True :
 					LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s' %(self.mHBBTVReady, self.mMediaPlayerStarted) )
 					self.mForceSetCurrent = True
-		
+		"""
 		currentStack = inspect.stack()
 		LOG_TRACE( '+++++getrecursionlimit[%s] currentStack[%s]'% (sys.getrecursionlimit(), len(currentStack)) )
 		LOG_TRACE( '+++++currentStackInfo[%s]'% (currentStack) )
@@ -52,7 +52,7 @@ class NullWindow( BaseWindow ) :
 		lblLast  = time.strftime('%H:%M:%S', time.localtime(lastTime) )
 		lblTest  = '%02d:%s'% ( (lastTime - startTime)/3600, time.strftime('%M:%S', time.gmtime(lastTime - startTime) ) )
 		LOG_TRACE( 'startTime[%s] lastTime[%s] TestTime[%s]'% (lblStart, lblLast, lblTest) )
-		
+		"""
 
 	def onAction(self, aAction) :
 		actionId = aAction.getId( )
