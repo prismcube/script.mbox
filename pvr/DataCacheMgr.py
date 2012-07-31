@@ -1137,27 +1137,37 @@ class DataCacheMgr( object ):
 		return self.mCommander.Player_GetStatus( )
 
 	def Player_Resume( self ) :
-		return self.mCommander.Player_Resume( )
+		ret = self.mCommander.Player_Resume( )
+		self.Frontdisplay_PlayPause( )
+		return ret
 
 	def Player_Pause( self ) :
-		return self.mCommander.Player_Pause( )
+		ret = self.mCommander.Player_Pause( )
+		self.Frontdisplay_PlayPause( )
+		return ret
 
 	def Player_Stop( self ) :
-		return self.mCommander.Player_Stop( )
+		ret = self.mCommander.Player_Stop( )
+		self.Frontdisplay_PlayPause( False )
+		return ret
 
 	def Player_SetSpeed( self, aSpeed ) :
-		return self.mCommander.Player_SetSpeed( aSpeed )
+		ret = self.mCommander.Player_SetSpeed( aSpeed )
+		self.Frontdisplay_PlayPause( )
+		return ret
 
 	def Player_JumpToIFrame( self, aMiliSec ) :
 		return self.mCommander.Player_JumpToIFrame( aMiliSec )
 
-
 	def Player_StartTimeshiftPlayback( self, aPlayBackMode, aData ) :
-		return self.mCommander.Player_StartTimeshiftPlayback( aPlayBackMode, aData )
-
+		ret = self.mCommander.Player_StartTimeshiftPlayback( aPlayBackMode, aData )
+		self.Frontdisplay_PlayPause( )
+		return ret
 
 	def Player_StartInternalRecordPlayback( self, aRecordKey, aServiceType, aOffsetMS, aSpeed ) :
-		return self.mCommander.Player_StartInternalRecordPlayback( aRecordKey, aServiceType, aOffsetMS, aSpeed )
+		ret = self.mCommander.Player_StartInternalRecordPlayback( aRecordKey, aServiceType, aOffsetMS, aSpeed )
+		self.Frontdisplay_PlayPause( )
+		return ret
 
 	def RecordItem_GetEventInfo( self, aKey ) :
 		return self.mCommander.RecordItem_GetEventInfo( aKey )
@@ -1309,6 +1319,28 @@ class DataCacheMgr( object ):
 
 	def Frontdisplay_SetMessage( self, aName ) :
 		self.mCommander.Frontdisplay_SetMessage( aName )
+
+
+	def Frontdisplay_SetIcon( self, aIconIndex,  aOnOff ) :
+		self.mCommander.Frontdisplay_SetIcon( aIconIndex, aOnOff )
+
+
+	def Frontdisplay_PlayPause( self, aIcon = True ) :
+		play = 1	#on
+		pause= 0	#off
+
+		if aIcon :
+			status = self.Player_GetStatus( )
+			if status.mSpeed == 0 :
+				play = 0
+				pause= 1
+		else :
+			play = 0
+			pause= 0
+
+
+		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_PLAY, play )
+		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_PAUSE, pause )
 
 
 	def GetRunnigTimerByChannel( self, aChannel=None ) :

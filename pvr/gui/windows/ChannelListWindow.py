@@ -1815,7 +1815,7 @@ class ChannelListWindow( BaseWindow ) :
 				#LOG_TRACE('insert makeFavidx[%s], makeNumber[%s]'% (makeFavidx, makeNumber) )
 				#LOG_TRACE('mark[%s]'% self.mMarkList )
 
-
+				idxCurrent = -1
 				ret = False
 				if self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
 					groupName = self.mEditFavorite[self.mSelectSubSlidePosition]
@@ -1824,12 +1824,11 @@ class ChannelListWindow( BaseWindow ) :
 						#LOG_TRACE( '==========group========[%s]'% groupName )
 				else :
 					ret = self.mDataCache.Channel_Move( self.mChannelListServiceType, makeNumber, self.mMoveList )
-					"""
+
 					if ret and self.mRefreshCurrentIdx != -1 :
-						idx = self.mMarkList[self.mRefreshCurrentIdx]
-						self.mRefreshCurrentChannel = idx
-						LOG_TRACE('move idx[%s] num[%s] name[%s]'% ( idx, self.mNewChannelList[idx].mNumber, self.mNewChannelList[idx].mName) )
-					"""
+						idxCurrent = self.mMarkList[self.mRefreshCurrentIdx]
+						#LOG_TRACE('move idx[%s] num[%s] name[%s]'% ( idxCurrent, self.mNewChannelList[idxCurrent].mNumber, self.mNewChannelList[idxCurrent].mName) )
+
 
 				#LOG_TRACE('move[%s]'% ret )
 
@@ -1842,6 +1841,10 @@ class ChannelListWindow( BaseWindow ) :
 				self.mListItems = None
 				self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mZappingMode )
 				self.mMoveFlag = False
+
+				if idxCurrent != -1 :
+					self.mRefreshCurrentChannel = self.mChannelList[idxCurrent].mNumber
+					#LOG_TRACE('after idx[%s] num[%s] name[%s]'% ( idxCurrent, self.mChannelList[idxCurrent].mNumber, self.mChannelList[idxCurrent].mName) )
 
 				self.ShowMoveToGUI( 0, len(self.mChannelList), True )
 				#LOG_TRACE ('========= move exit ===mark[%s] view[%s]~[%s]'% (self.mMarkList, self.mViewFirst, self.mViewEnd) )
@@ -2045,9 +2048,19 @@ class ChannelListWindow( BaseWindow ) :
 		elif aContextAction == CONTEXT_ACTION_DELETE :
 			if aMode == FLAG_OPT_LIST :
 				ret = self.mDataCache.Channel_DeleteByNumber( int(self.mChannelListServiceType), numList )
+
+				#reset Tune by Next Channel
 				if ret and isRefreshCurrentChannel :
-					self.mRefreshCurrentChannel = self.mCurrentChannel
-					#ToDO setTune by Last Channel ??? ----------- 2012.07.30 youn
+					afterCount = len(self.mChannelList) - len(numList)
+					if afterCount < 1 :
+						self.mRefreshCurrentChannel = False
+					else :
+						if self.mCurrentChannel < afterCount :
+							self.mRefreshCurrentChannel = self.mCurrentChannel
+						elif self.mCurrentChannel == afterCount :
+							self.mRefreshCurrentChannel = int(self.mCurrentChannel) - 1
+						else :
+							self.mRefreshCurrentChannel = afterCount
 
 			else :
 				aGroupName = self.mEditFavorite[self.mSelectSubSlidePosition]
