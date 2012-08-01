@@ -19,7 +19,7 @@ class RootWindow( BaseWindow ):
 			
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).doModal()
 			
-			""""
+			"""
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).doModal()
