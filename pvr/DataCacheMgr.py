@@ -1172,6 +1172,15 @@ class DataCacheMgr( object ):
 	def RecordItem_GetEventInfo( self, aKey ) :
 		return self.mCommander.RecordItem_GetEventInfo( aKey )
 
+
+	def RecordItem_GetCurrentPosByKey( self, aRecordKey ) :
+		return self.mCommander.RecordItem_GetCurrentPosByKey( aRecordKey )
+
+
+	def RecordItem_GetCurrentPosByIndex( self, aRecordIndex ) :
+		return self.mCommander.RecordItem_GetCurrentPosByIndex( aRecordIndex )
+		
+
 	def Record_GetRunningRecorderCount( self ) :
 		return self.mCommander.Record_GetRunningRecorderCount( )
 

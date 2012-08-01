@@ -51,6 +51,8 @@ class ArchiveWindow( BaseWindow ) :
 		self.mPlayingRecord = None
 		self.mPlayProgressThread = None
 		self.mEnableThread = False
+		self.mViewMode = E_VIEW_LIST
+
 	
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -58,8 +60,12 @@ class ArchiveWindow( BaseWindow ) :
 
 		if self.mPlayingRecord :
 			self.mEventBus.Register( self )
+			self.mSelectRecordKey = self.mPlayingRecord.mRecordKey 
+			self.SelectLastRecordKey( )
 			self.UpdatePlayStatus( )
-			self.CheckVideoSize( )
+
+			if self.mViewMode == E_VIEW_LIST :
+				self.SetPipScreen( )
 			return
 			
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Archive' )
@@ -479,12 +485,14 @@ class ArchiveWindow( BaseWindow ) :
 					if self.CheckPincode() == False :
 						return False
 
-				LOG_TRACE( 'played offset=%d' %recInfo.mPlayedOffset )
 				self.mPlayingRecord = recInfo
 
 				if aResume == True :
-					#ToDO
-					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
+					playOffset = self.mDataCache.RecordItem_GetCurrentPosByKey( self.mPlayingRecord.mRecordKey )
+					LOG_TRACE( 'RecKey=%d PlayOffset=%s' %( self.mPlayingRecord.mRecordKey, playOffset) )
+					if playOffset < 0 :
+						playOffset = 0
+					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, playOffset, 100 )
 					#self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, recInfo.mPlayedOffset, 100 )
 				else :
 					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
@@ -952,9 +960,11 @@ class ArchiveWindow( BaseWindow ) :
 
 	@RunThread
 	def PlayProgressThread( self ):
+		self.mCtrlPlayProgress.setPercent( 0 ) 	
 		while self.mEnableThread:
+			time.sleep(1)		
 			self.UpdatePlayProgress( )
-			time.sleep(1)
+
 
 
 	@GuiLock
