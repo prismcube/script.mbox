@@ -151,8 +151,11 @@ class ArchiveWindow( BaseWindow ) :
 				if	self.mMarkMode == True :
 					self.DoMarkToggle( )
 				else :
-					self.StartRecordPlayback( True )
-
+					if actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
+						self.StartRecordPlayback( False )
+					else :
+						self.StartRecordPlayback( True )
+						
 		elif actionId == Action.ACTION_MOVE_RIGHT or actionId == Action.ACTION_MOVE_LEFT :
 			if focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD :
 				self.UpdateSelectedPosition( )
