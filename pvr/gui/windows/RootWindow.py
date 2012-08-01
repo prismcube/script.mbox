@@ -16,9 +16,15 @@ class RootWindow( BaseWindow ):
 				self.mCommander.AppHBBTV_Ready( 0 )
 			self.UpdateVolume( )
 			self.SendLocalOffsetToXBMC( )
+			
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).doModal()
+			
+			""""
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).doModal()
+			"""
+			
 			self.mInitialized = True
 			self.mEventBus.Register( self )			
 		else :

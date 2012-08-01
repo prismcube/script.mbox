@@ -111,6 +111,7 @@ class WindowMgr(object):
 
 	def ShowRootWindow( self ):
 		LOG_TRACE( '------------------------ START ROOT WINDOW --------------------------' )	
+		self.mLastId = WIN_ID_NULLWINDOW		
 		self.mRootWindow.doModal( )
 		LOG_TRACE( '------------------------ END ROOT WINDOW --------------------------' )	
 
@@ -119,10 +120,10 @@ class WindowMgr(object):
 		try :
 			if aWindowId <= 0 :
 				LOG_ERR( 'Invalid Window ID=%d' %aWindowId )
+				return
 				
 			if self.mLastId > 0 :
 				LOG_TRACE('LastWindow=%s' %self.mWindows[self.mLastId].GetName( ) )		
-				self.mWindows[self.mLastId].close( )
 				if aParentId == 0 :
 					self.mWindows[aWindowId].SetParentID( self.mLastId )
 				elif aParentId > 0 :
@@ -130,6 +131,7 @@ class WindowMgr(object):
 				else:
 					LOG_ERR( 'Invalid Parent Window ID=%d' %aParentId )
 					self.mWindows[aWindowId].SetParentID( WIN_ID_NULLWINDOW )
+				self.mWindows[self.mLastId].close( )
 			else :
 				LOG_ERR( 'Has no valid last window id=%d' %self.mLastId )
 
