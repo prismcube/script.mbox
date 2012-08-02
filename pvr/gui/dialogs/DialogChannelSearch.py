@@ -148,7 +148,6 @@ class DialogChannelSearch( BaseDialog ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'Error', 'Channel Search Failed' )
 				dialog.doModal( )
-				self.ReTune( )
 
 		elif self.mScanMode == E_SCAN_TRANSPONDER :
 			ret = self.mCommander.Channel_SearchByCarrier( self.mLongitude, self.mBand, self.mTransponderList )
@@ -259,10 +258,6 @@ class DialogChannelSearch( BaseDialog ) :
 		dialog.SetDialogProperty( 'Infomation', searchResult )
 		dialog.doModal( )
 		self.mIsFinished = True
-
-		#if tvCount > 0 or radioCount > 0 :
-			#### data cache re-load ####
-			#self.ReLoadChannelList( )
 
 
 	def ReLoadChannelList( self ) :

@@ -57,15 +57,19 @@ class ManualScan( SettingWindow ) :
 		self.GlobalAction( actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
+			self.OpenBusyDialog( )
 			self.ResetAllControl( )
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
+			self.CloseBusyDialog( )
 			WinMgr.GetInstance().CloseWindow( )
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
+			self.OpenBusyDialog( )
 			self.ResetAllControl( )
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
+			self.CloseBusyDialog( )
 			WinMgr.GetInstance().CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
@@ -152,12 +156,14 @@ class ManualScan( SettingWindow ) :
 
 		# Start Search
 		elif groupId == E_Input04 : #ToDO : Have to support manual input
+			self.OpenBusyDialog( )
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin, False )
+			
 			transponderList = []
  			config = self.mConfiguredSatelliteList[ self.mSatelliteIndex ]
-
 			transponderList.append( self.mConfigTransponder )
 
+			self.CloseBusyDialog( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 			dialog.SetTransponder( config.mSatelliteLongitude, config.mBandType, transponderList )
 			dialog.doModal( )

@@ -100,23 +100,23 @@ class WindowMgr(object):
 		self.CreateAllWindows( )
 
 
-	def GetWindow( self, aWindowId ):
-		LOG_TRACE('GetWindow ID=%d' %aWindowId )
+	def GetWindow( self, aWindowId ) :
+		LOG_TRACE( 'GetWindow ID=%d' % aWindowId )
 		try :
 			return weakref.proxy( self.mWindows[aWindowId] )
-		except Exception, ex:
-			LOG_ERR( "Exception %s" %ex)
+		except Exception, ex :
+			LOG_ERR( 'Exception %s' % ex)
 			return None
 
 
-	def ShowRootWindow( self ):
+	def ShowRootWindow( self ) :
 		LOG_TRACE( '------------------------ START ROOT WINDOW --------------------------' )	
 		self.mLastId = WIN_ID_NULLWINDOW		
 		self.mRootWindow.doModal( )
 		LOG_TRACE( '------------------------ END ROOT WINDOW --------------------------' )	
 
 
-	def ShowWindow( self, aWindowId, aParentId=0 ):
+	def ShowWindow( self, aWindowId, aParentId=0 ) :
 		try :
 			if aWindowId <= 0 :
 				LOG_ERR( 'Invalid Window ID=%d' %aWindowId )

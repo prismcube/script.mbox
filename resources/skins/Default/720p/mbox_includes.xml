@@ -172,6 +172,20 @@
 			<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in" condition="Control.HasFocus(999)">Conditional</animation>
 			<texture>video_pig_overlay.png</texture>
 		</control>
+		<!--
+		<control type="label" id="8898">
+			<posx>1100</posx>
+			<posy>250</posy>
+			<width>100</width>
+			<height>40</height>
+			<label>No Signal</label>
+			<font>font12_title</font>
+			<align>right</align>
+			<aligny>center</aligny>
+			<textcolor>white</textcolor>
+			<visible>substring(Window.Property(Signal),True)</visible>
+		</control>
+		-->
 	</include>
 
 	<include name="DefaultScanHelperStatusProgress">

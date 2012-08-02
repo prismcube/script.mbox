@@ -1,14 +1,11 @@
 from pvr.gui.WindowImport import *
 
 
-MAX_SATELLITE_CNT = 4
-
-
 class SatelliteConfigOnecable( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
 		self.mSatelliteCount = 0
-		self.mSatellitelist = []
+		self.mSatelliteNamelist = []
 		self.mCurrentSatellite = None
 		
 
@@ -19,20 +16,20 @@ class SatelliteConfigOnecable( SettingWindow ) :
 		self.SetSettingWindowLabel( 'OneCable Configuration' )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'OneCable configuration' )
 
-		self.mCurrentSatellite = self.mTunerMgr.GetConfiguredSatellitebyIndex( 0 )
 		self.LoadConfigedSatellite( )
-
+		self.mCurrentSatellite = self.mTunerMgr.GetConfiguredSatellitebyIndex( 0 )
+		
 		self.AddInputControl( E_Input01, 'Configure System', '' )
 		
 		listitem = []
-		for i in range( self.mSatelliteCount ) :
+		for i in range( MAX_SATELLITE_CNT_ONECABLE ) :
 			listitem.append( '%d' % ( i + 1 ) )
 
 		self.AddUserEnumControl( E_SpinEx01, 'Number of Satellite', listitem, 0 )
 
 		startId = E_Input02
-		for i in range( MAX_SATELLITE_CNT ) :
-			self.AddInputControl( startId, 'Satellite %d' % ( i + 1 ), self.mSatellitelist[i] )
+		for i in range( MAX_SATELLITE_CNT_ONECABLE ) :
+			self.AddInputControl( startId, 'Satellite %d' % ( i + 1 ), self.mSatelliteNamelist[i] )
 			startId += 100
 		
 		self.InitControl( )
@@ -61,8 +58,13 @@ class SatelliteConfigOnecable( SettingWindow ) :
 					satellite.mOneCableUBSlot = self.mCurrentSatellite.mOneCableUBSlot
 					satellite.mOneCableUBFreq = self.mCurrentSatellite.mOneCableUBFreq
 
+			if self.mTunerMgr.GetOneCableSatelliteCount( ) < self.mSatelliteCount :
+				for i in range( self.mSatelliteCount ) :
+					if self.mTunerMgr.GetOneCableSatelliteCount( ) < ( i + 1 ) :
+						self.mTunerMgr.DeleteConfiguredSatellitebyIndex( i )
+
 			self.ResetAllControl( )
-			WinMgr.GetInstance().CloseWindow( )
+			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )
@@ -81,8 +83,8 @@ class SatelliteConfigOnecable( SettingWindow ) :
 		groupId = self.GetGroupId( aControlId )
 
 		if groupId == E_Input01 :
-			position = self.GetSelectedIndex( E_SpinEx01 ) + 1
-			self.mTunerMgr.SetOnecableSatelliteCount( position )
+			#position = self.GetSelectedIndex( E_SpinEx01 ) + 1
+			#self.mTunerMgr.SetOnecableSatelliteCount( position )
 			self.ResetAllControl( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_ONECABLE_2 )
 		
@@ -93,6 +95,8 @@ class SatelliteConfigOnecable( SettingWindow ) :
 			position = self.GetControlIdToListIndex( groupId ) - 2
 			self.mTunerMgr.SetCurrentConfigIndex( position )
 			self.ResetAllControl( )
+			if self.mSatelliteNamelist[position] == 'None' :
+				self.mTunerMgr.AddConfiguredSatellite( 0 )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_SIMPLE )
 			
 	def onFocus( self, aControlId ) :
@@ -100,7 +104,9 @@ class SatelliteConfigOnecable( SettingWindow ) :
 
 
 	def DisableControl( self ) : 
-		for i in range( MAX_SATELLITE_CNT ) :
+		position = self.GetSelectedIndex( E_SpinEx01 ) + 1
+		self.mTunerMgr.SetOnecableSatelliteCount( position )
+		for i in range( MAX_SATELLITE_CNT_ONECABLE ) :
 			if ( self.GetSelectedIndex( E_SpinEx01 ) + 1 ) > i :
 				self.SetEnableControl( self.GetListIndextoControlId( 2 + i ), True )
 				self.SetVisibleControl( self.GetListIndextoControlId( 2 + i ), True )
@@ -110,20 +116,17 @@ class SatelliteConfigOnecable( SettingWindow ) :
 		
 		
 	def LoadConfigedSatellite( self ) :
-		configuredList = []
+		self.mSatelliteNamelist = []
 
 		configuredList = self.mTunerMgr.GetConfiguredSatelliteList( )
-		if configuredList and configuredList[0].mError == 0 :
+		if configuredList :
 			self.mSatelliteCount = len( configuredList )
-
-			for i in range( MAX_SATELLITE_CNT ) :
-				if i < self.mSatelliteCount :
-					self.mSatellitelist.append( self.mDataCache.GetFormattedSatelliteName( configuredList[i].mSatelliteLongitude, configuredList[i].mBandType ) )
-				else :
-					self.mSatellitelist.append( '' ) # dummy Data
 		else :
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( 'ERROR', 'Save Configuration Fail' )
- 			dialog.doModal( )
- 			self.ResetAllControl( )
-			WinMgr.GetInstance().CloseWindow( )
+			self.mSatelliteCount = 0
+
+		for i in range( MAX_SATELLITE_CNT_ONECABLE ) :
+			if i < self.mSatelliteCount :
+				self.mSatelliteNamelist.append( self.mDataCache.GetFormattedSatelliteName( configuredList[i].mSatelliteLongitude, configuredList[i].mBandType ) )
+			else :
+				self.mSatelliteNamelist.append( 'None' )
+
