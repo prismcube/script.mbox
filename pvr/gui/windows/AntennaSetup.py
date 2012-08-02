@@ -17,18 +17,17 @@ class AntennaSetup( SettingWindow ) :
 		self.SetPipScreen( )
 
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
-			self.getControl( E_SUBMENU_LIST_ID ).setVisible( False )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( 'Error', 'Satellite Infomation is empty. Please Reset STB' )
 			dialog.doModal( )
 			WinMgr.GetInstance( ).CloseWindow( )
-		self.getControl( E_SUBMENU_LIST_ID ).setVisible( True )
-		
 
 		if ConfigMgr.GetInstance( ).GetFristInstallation( ) == True :
 			self.DrawFirstTimeInstallationStep( E_STEP_ANTENNA )
 		else :
 			self.DrawFirstTimeInstallationStep( None )
+
+		self.getControl( E_SUBMENU_LIST_ID ).setVisible( True )
 		
 		if self.mTunerMgr.GetNeedLoad( ) == True : 
 			self.mTunerMgr.LoadOriginalTunerConfig( )
@@ -49,7 +48,6 @@ class AntennaSetup( SettingWindow ) :
 		self.DisableControl( )
 		self.mInitialized = True
 		self.SetFocusControl( E_SpinEx01 )
-		self.getControl( E_SUBMENU_LIST_ID ).setVisible( True )
 		
 		
 	def onAction( self, aAction ) :
@@ -74,10 +72,13 @@ class AntennaSetup( SettingWindow ) :
 					self.OpenBusyDialog( )
 					if self.CompareConfigurationSatellite( ) == False or self.CompareConfigurationProperty( ) == False :
 						self.CancelConfiguration( )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).mStepNum = E_STEP_SELECT_LANGUAGE
+					self.SetParentID( WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).GetParentID( ) )
 					self.mTunerMgr.SetNeedLoad( True )
-					self.ResetAllControl( )
-#					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).SetAlreadyClose( True )
+					ConfigMgr.GetInstance( ).SetFristInstallation( False )
 					self.CloseBusyDialog( )
+					self.ResetAllControl( )
+					self.SetVideoRestore( )
 					WinMgr.GetInstance( ).CloseWindow( )
 				elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 					return	
@@ -94,9 +95,8 @@ class AntennaSetup( SettingWindow ) :
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					self.OpenBusyDialog( )
-					if self.CompareConfigurationSatellite( ) == False or self.CompareConfigurationProperty( ) == False :
+					if self.CompareCurrentConfiguredState( ) == False or self.CompareConfigurationProperty( ) == False :
 						self.SaveConfiguration( )
-						self.ReTune( )
 					
 				elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 					self.OpenBusyDialog( )
@@ -133,20 +133,12 @@ class AntennaSetup( SettingWindow ) :
 				self.mTunerMgr.SetCurrentTunerIndex( E_TUNER_2 )
 				configcontrol = E_SpinEx04
 
-			"""
-			configuredList = self.mTunerMgr.GetConfiguredSatelliteList( )
-			if configuredList and configuredList[0].mError == 0 :
-				pass
-			else :
-				self.mTunerMgr.AddConfiguredSatellite( 0 )
-			"""
-
-			if self.CompareConfigurationProperty( ) == False :
+			#if self.CompareConfigurationSatellite( ) == False or self.CompareConfigurationProperty( ) == False :
+			if self.CompareCurrentConfiguredState( ) == False :
 				self.OpenBusyDialog( )
-				self.mTunerMgr.SatelliteConfigSaveList( )
+				self.SaveConfiguration( )
+				self.ReTune( )
 				self.CloseBusyDialog( )
-
-
 
 			if self.GetSelectedIndex( configcontrol ) == E_SIMPLE_LNB :
 				self.mTunerMgr.SetCurrentConfigIndex( 0 )
@@ -172,29 +164,17 @@ class AntennaSetup( SettingWindow ) :
 		elif groupId == E_SpinEx03 :
 			self.ControlSelect( )
 			self.DisableControl( groupId )
-			"""
-			configuredList = self.mTunerMgr.GetConfiguredSatellitebyTunerIndex( E_TUNER_1 ) 
-			if configuredList :
-				tunertype = self.GetSelectedIndex( E_SpinEx03 )
-				for satellite in configuredList :
-					self.mTunerMgr.SetTunerTypeFlag( satellite, tunertype )
-			"""
+			self.mTunerMgr.SelectCurrentSatelliteList( E_TUNER_1, ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( ) )
 
 		elif groupId == E_SpinEx04 :
 			self.ControlSelect( )
-			"""
-			configuredList = self.mTunerMgr.GetConfiguredSatellitebyTunerIndex( E_TUNER_2 )
-			if configuredList :
-				tunertype = self.GetSelectedIndex( E_SpinEx04 )
-				for satellite in configuredList :
-					self.mTunerMgr.SetTunerTypeFlag( satellite, tunertype )
-			"""
+			self.mTunerMgr.SelectCurrentSatelliteList( E_TUNER_2, ElisPropertyEnum( 'Tuner2 Type', self.mCommander ).GetProp( ) )
+			
 
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT or aControlId == E_FIRST_TIME_INSTALLATION_PREV :
 			self.OpenBusyDialog( )
 			if self.CompareConfigurationSatellite( ) == False or self.CompareConfigurationProperty( ) == False :
 				self.SaveConfiguration( )
-				self.ReTune( )
 			self.ResetAllControl( )
 			if aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).SetResultAntennaStep( True )
@@ -217,32 +197,34 @@ class AntennaSetup( SettingWindow ) :
 		self.mTunerMgr.SatelliteConfigSaveList( )
 		self.mDataCache.LoadConfiguredSatellite( )
 		self.mDataCache.LoadConfiguredTransponder( )
+		self.ReTune( )
 
 
 	def CancelConfiguration( self ) :
 		self.mTunerMgr.Restore( )
+		self.ReTune( )
 
 
 	def DisableControl( self, aControlID = None ) :
 		if aControlID == None or aControlID == E_SpinEx01 :
-			selectedIndex = self.GetSelectedIndex( E_SpinEx01 )
+			selectedIndex = ElisPropertyEnum( 'Tuner2 Connect Type', self.mCommander ).GetProp( )
 			if selectedIndex == E_TUNER_LOOPTHROUGH :
 				control = self.getControl( E_SpinEx02 + 3 )
-				time.sleep( 0.01 )
+				time.sleep( 0.02 )
 				control.selectItem( E_SAMEWITH_TUNER )
 				self.SetProp( E_SpinEx02, E_SAMEWITH_TUNER )
 				self.SetEnableControl( E_SpinEx02, False )
 			else :
 				self.SetEnableControl( E_SpinEx02, True )
 
-		if aControlID == None or aControlID == E_SpinEx02 :
-			selectedIndex = self.GetSelectedIndex( E_SpinEx02 )	
+		if aControlID == None or aControlID == E_SpinEx02 or aControlID == E_SpinEx01 :
+			selectedIndex = ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander ).GetProp( )
 			if selectedIndex == E_SAMEWITH_TUNER :
 				if self.GetSelectedIndex( E_SpinEx03 ) != self.GetSelectedIndex( E_SpinEx04 ) :
 					control = self.getControl( E_SpinEx04 + 3 )
-					time.sleep( 0.01 )
-					control.selectItem( self.GetSelectedIndex( E_SpinEx03 ) )
-					self.SetProp( E_SpinEx04, self.GetSelectedIndex( E_SpinEx03 ) )
+					prop = ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( )
+					control.selectItem( prop )
+					self.SetProp( E_SpinEx04, prop )
 				self.SetEnableControl( E_SpinEx04, False )
 				self.SetEnableControl( E_Input02, False )
 			else :
@@ -250,12 +232,12 @@ class AntennaSetup( SettingWindow ) :
 				self.SetEnableControl( E_Input02, True )
 
 		if aControlID == E_SpinEx03 :
-			selectedIndex = self.GetSelectedIndex( E_SpinEx02 )	
+			selectedIndex = ElisPropertyEnum( 'Tuner2 Signal Config', self.mCommander ).GetProp( )
 			if selectedIndex == E_SAMEWITH_TUNER :
 				control = self.getControl( E_SpinEx04 + 3 )
-				time.sleep( 0.01 )
-				control.selectItem( self.GetSelectedIndex( E_SpinEx03 ) )
-				self.SetProp( E_SpinEx04, self.GetSelectedIndex( E_SpinEx03 ) )
+				prop = ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( )
+				control.selectItem( prop )
+				self.SetProp( E_SpinEx04, prop )
 				self.SetEnableControl( E_SpinEx04, False )
 				self.SetEnableControl( E_Input02, False )
 
@@ -285,33 +267,85 @@ class AntennaSetup( SettingWindow ) :
 		configuredList2		= self.mTunerMgr.GetConfiguredSatellitebyTunerIndex( E_TUNER_2 ) 
 		oriconfiguredList2	= self.mTunerMgr.LoadOriginalSatelliteConfigListByTunerNumber( E_TUNER_2 )
 		if oriconfiguredList1 == None or oriconfiguredList2 == None :
+			print 'dhkim test CompareConfigurationSatellite False!!!!'
 			return False
-		
+
 		if self.mTunerMgr.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
 			if len( configuredList1 ) != len( oriconfiguredList1 ) :
+				print 'dhkim test CompareConfigurationSatellite False!!!!'
 				return False
 		else :
 			if len( configuredList1 ) != len( oriconfiguredList1 ) :
+				print 'dhkim test CompareConfigurationSatellite False!!!!'
 				return False
 			if len( configuredList2 ) != len( oriconfiguredList2 ) :
+				print 'dhkim test CompareConfigurationSatellite False!!!!'
 				return False
-
+			
 		if self.mTunerMgr.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
 			for i in range( len( configuredList1 ) ) :
 				if configuredList1[i].__dict__ != oriconfiguredList1[i].__dict__ :
+					print 'dhkim test CompareConfigurationSatellite False!!!!'
 					return False
 		else :
 			for i in range( len( configuredList1 ) ) :
 				if configuredList1[i].__dict__ != oriconfiguredList1[i].__dict__ :
+					print 'dhkim test CompareConfigurationSatellite False!!!!'
 					return False
 			for i in range( len( configuredList2 ) ) :
 				if configuredList2[i].__dict__ != oriconfiguredList2[i].__dict__ :
+					print 'dhkim test CompareConfigurationSatellite False!!!!'
 					return False
+		print 'dhkim test CompareConfigurationSatellite True!!!!'
+		return True
 
+
+	def CompareCurrentConfiguredState( self ) :
+		configuredList1		= self.mTunerMgr.GetConfiguredSatellitebyTunerIndex( E_TUNER_1 )	
+		currentconfiguredList1	= self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_1 )
+		configuredList2		= self.mTunerMgr.GetConfiguredSatellitebyTunerIndex( E_TUNER_2 ) 
+		currentconfiguredList2	= self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_2 )
+		if currentconfiguredList1 == None or currentconfiguredList2 == None :
+			print 'dhkim test CompareCurrentConfiguredState False 1 !!!!'
+			return False
+
+		if self.mTunerMgr.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
+			if len( configuredList1 ) != len( currentconfiguredList1 ) :
+				print 'dhkim test CompareCurrentConfiguredState False 2 !!!!'
+				return False
+		else :
+			if len( configuredList1 ) != len( currentconfiguredList1 ) :
+				print 'dhkim test CompareCurrentConfiguredState False 3 !!!!'
+				return False
+			if len( configuredList2 ) != len( currentconfiguredList2 ) :
+				print 'dhkim test CompareCurrentConfiguredState False 4 !!!'
+				return False
+			
+		if self.mTunerMgr.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
+			for i in range( len( configuredList1 ) ) :
+				if configuredList1[i].__dict__ != currentconfiguredList1[i].__dict__ :
+					print 'dhkim test diff!!!!!!!!!!!!!!!!!'
+					configuredList1[i].printdebug( )
+					print 'dhkim test ---------------------'
+					currentconfiguredList1[i].printdebug( )
+					print 'dhkim test CompareCurrentConfiguredState  5 False!!!!'
+					return False
+		else :
+			for i in range( len( configuredList1 ) ) :
+				if configuredList1[i].__dict__ != currentconfiguredList1[i].__dict__ :
+					print 'dhkim test CompareCurrentConfiguredState  6 False!!!!'
+					return False
+			for i in range( len( configuredList2 ) ) :
+				if configuredList2[i].__dict__ != currentconfiguredList2[i].__dict__ :
+					print 'dhkim test CompareCurrentConfiguredState  7 False!!!!'
+					return False
+		print 'dhkim test CompareCurrentConfiguredState True!!!!'
 		return True
 
 
 	def CompareConfigurationProperty( self ) :
 		if self.mTunerMgr.GetOriginalTunerConfig( ) != self.mTunerMgr.GetCurrentTunerConfig( ) :
+			print 'dhkim test CompareConfigurationProperty False!!!!'
 			return False
+		print 'dhkim test CompareConfigurationProperty True!!!!'
 		return True

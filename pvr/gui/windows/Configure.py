@@ -306,7 +306,6 @@ class Configure( SettingWindow ) :
 				 		if self.mDataCache.mChannelList and len( self.mDataCache.mChannelList ) >= 0 :
 					 		self.mDataCache.Channel_SetCurrent( self.mDataCache.mChannelList[0].mNumber, ElisEnum.E_SERVICE_TYPE_TV )
 
-
 				 	if resetFavoriteAddons == 1 :
 				 		pass
 

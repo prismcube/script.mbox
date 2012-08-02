@@ -386,6 +386,8 @@ class WirelessParser :
 
 	def LoadWpaSupplicant( self ) :
 		self.ResetInfo( )
+		if os.path.exists( FILE_WPA_SUPPLICANT ) == False :
+			return False
 		try :
 			openFile = open( FILE_WPA_SUPPLICANT, 'r' )
 			inputline = openFile.readlines( )

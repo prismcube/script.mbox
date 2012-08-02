@@ -326,7 +326,7 @@ class CacheMRLanguage( object ) :
 		for node in self.mStrLanguage.findAll('string'):
 			gMRStringHash[ node.string ] = int(node['id'])
 
-		#LOG_ERR('============cache Language')
+		#LOG_ERR('============cache Language'!
 
 	def StringTranslate(self, string = None):
 		strId = gMRStringHash.get(string, None)

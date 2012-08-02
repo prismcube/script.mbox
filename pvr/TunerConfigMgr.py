@@ -25,6 +25,20 @@ class TunerConfigMgr( object ) :
 	def __init__( self ) :
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
+
+		self.mDiseqc10List1 = []
+		self.mDiseqc10List2 = []
+		self.mDiseqc11List1 = []
+		self.mDiseqc11List2 = []
+		self.mMotorizeList1 = []
+		self.mMotorizeList2 = []
+		self.mMotorizeUsalsList1 = []
+		self.mMotorizeUsalsList2 = []
+		self.mOneCableList1 = []
+		self.mOneCableList2 = []
+		self.mSimpleLnbList1 = []
+		self.mSimpleLnbList2 = []
+		
 		self.mConfiguredList1 = []
 		self.mConfiguredList2 = []		
 		self.mCurrentTuner = 0
@@ -74,20 +88,37 @@ class TunerConfigMgr( object ) :
 			return self.mConfiguredList2[ self.mCurrentConfigIndex ]
 			
 		else :
-			print 'ERROR : can not find configured satellite'
+			LOG_ERR( 'ERROR : can not find configured satellite' )
 	
 		return None
 
 
-	def GetConfiguredSatellitebyIndex( self, aSatelliteIndex ) :
-		if self.mCurrentTuner == E_TUNER_1 :	
-			return self.mConfiguredList1[ aSatelliteIndex ]
+	def GetConfiguredSatelliteList( self ) :
+		if self.mCurrentTuner == E_TUNER_1 :
+			return self.mConfiguredList1
 
-		elif self.mCurrentTuner == E_TUNER_2:
-			return self.mConfiguredList2[ aSatelliteIndex ]		
+		elif self.mCurrentTuner == E_TUNER_2 :
+			return self.mConfiguredList2
 
 		else :
-			print 'ERROR : can not find configured satellite'
+			LOG_ERR( 'ERROR : unknown tuner' )
+			return self.mConfiguredList1
+
+
+	def GetConfiguredSatellitebyIndex( self, aSatelliteIndex ) :
+		if self.mCurrentTuner == E_TUNER_1 :
+			if self.mConfiguredList1 :
+				return self.mConfiguredList1[ aSatelliteIndex ]
+			else :
+				return None
+
+		elif self.mCurrentTuner == E_TUNER_2:
+			if self.mConfiguredList2 :
+				return self.mConfiguredList2[ aSatelliteIndex ]	
+			else :
+				return None
+		else :
+			LOG_ERR( 'ERROR : can not find configured satellite' )
 	
 		return None
 
@@ -119,18 +150,6 @@ class TunerConfigMgr( object ) :
 	def GetCurrentConfigIndex( self ) :
 		return self.mCurrentConfigIndex
 
-	
-	def GetConfiguredSatelliteList( self ) :
-		if self.mCurrentTuner == E_TUNER_1 :
-			return self.mConfiguredList1
-
-		elif self.mCurrentTuner == E_TUNER_2 :
-			return self.mConfiguredList2
-
-		else :
-			print 'ERROR : unknown tuner'
-			return self.mConfiguredList1
-
 
 	def GetConfiguredSatellitebyTunerIndex( self, aTunerIndex ) :
 		if aTunerIndex == E_TUNER_1 :
@@ -140,7 +159,7 @@ class TunerConfigMgr( object ) :
 			return self.mConfiguredList2
 
 		else :
-			print 'ERROR : unknown tuner'
+			LOG_ERR( 'ERROR : unknown tuner' )
 			return self.mConfiguredList1
 			
 
@@ -157,14 +176,19 @@ class TunerConfigMgr( object ) :
 		config.mSatelliteLongitude = self.mAllSatelliteList[ aIndex ].mLongitude
 		config.mBandType = self.mAllSatelliteList[ aIndex ].mBand
 
+		if self.mConfiguredList1 == None :
+			self.mConfiguredList1 = []
+
+		if self.mConfiguredList2 == None :
+			self.mConfiguredList2 = []
+
 		if self.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
 			self.mConfiguredList1.append( config )
-		
+
 		elif self.GetCurrentTunerConfigType( ) == E_DIFFERENT_TUNER :
-		
 			if self.GetCurrentTunerIndex( ) == E_TUNER_1 :
 				self.mConfiguredList1.append( config )
-				
+
 			elif self.GetCurrentTunerIndex( ) == E_TUNER_2 :
 				config.mTunerIndex = 1
 				self.mConfiguredList2.append( config )
@@ -173,36 +197,14 @@ class TunerConfigMgr( object ) :
 	def DeleteConfiguredSatellitebyIndex( self, aIndex ) :
 		if self.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
 			del self.mConfiguredList1[ aIndex ]
-		
+
 		elif self.GetCurrentTunerConfigType( ) == E_DIFFERENT_TUNER :
-		
+
 			if self.GetCurrentTunerIndex( ) == E_TUNER_1 :
 				del self.mConfiguredList1[ aIndex ]
-				
+
 			elif self.GetCurrentTunerIndex( ) == E_TUNER_2 :
 				del self.mConfiguredList2[ aIndex ]
-
-
-	def SetTunerTypeFlag( self, aSatellite, aType ) :
-		if aType == E_SIMPLE_LNB or aType == E_DISEQC_1_0 or aType == E_DISEQC_1_1 :
-			aSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_OFF
-			aSatellite.mIsOneCable = 0
-			aSatellite.mMotorizedData = 0
-			
-		elif aType == E_MOTORIZE_1_2 :
-			aSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_ON
-			aSatellite.mIsOneCable = 0
-
-
-		elif aType == E_MOTORIZE_USALS :
-			aSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_USALS
-			aSatellite.mIsOneCable = 0
-			aSatellite.mMotorizedData = 0
-			
-		elif aType == E_ONE_CABLE :
-			aSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_OFF
-			aSatellite.mIsOneCable = 1
-			aSatellite.mMotorizedData = 0
 
 
 	def Reset( self ) :
@@ -232,79 +234,205 @@ class TunerConfigMgr( object ) :
 		ElisPropertyInt( 'MyLongitude', self.mCommander ).SetProp( self.mOrgMyLongitude )
 		ElisPropertyInt( 'MyLatitude', self.mCommander ).SetProp( self.mOrgMyLatitude )
 
-		self.mCommander.Satelliteconfig_SaveList( self.mOrgConfiguredList1 )
-		self.mCommander.Satelliteconfig_SaveList( self.mOrgConfiguredList2 )
+		self.mCommander.Satelliteconfig_DeleteAll( ) 
+		if self.mOrgConfiguredList1 :
+			self.mCommander.Satelliteconfig_SaveList( self.mOrgConfiguredList1 )
+			
+		if self.mOrgConfiguredList2 :
+			self.mCommander.Satelliteconfig_SaveList( self.mOrgConfiguredList2 )
+
+
+	def SetTunerTypeFlag( self, aSatellite, aType ) :
+		if aType == E_DISEQC_1_0 :
+			aSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_OFF
+			aSatellite.mIsOneCable = 0
+			aSatellite.mMotorizedData = 0
+			if aSatellite.mSlotNumber > 3 :
+				aSatellite.mIsConfigUsed = 0
+			else :
+				aSatellite.mIsConfigUsed = 1
+
+		elif aType == E_DISEQC_1_1 :
+			aSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_OFF
+			aSatellite.mIsOneCable = 0
+			aSatellite.mMotorizedData = 0
+			aSatellite.mIsConfigUsed = 1
+			
+		elif aType == E_SIMPLE_LNB :
+			aSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_OFF
+			aSatellite.mIsOneCable = 0
+			aSatellite.mMotorizedData = 0
+			
+		elif aType == E_MOTORIZE_1_2 :
+			aSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_ON
+			aSatellite.mIsOneCable = 0
+			aSatellite.mMotorizedData = aSatellite.mSlotNumber + 1
+			aSatellite.mIsConfigUsed = 1
+
+		elif aType == E_MOTORIZE_USALS :
+			aSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_USALS
+			aSatellite.mIsOneCable = 0
+			aSatellite.mMotorizedData = 0
+			aSatellite.mIsConfigUsed = 1
+			
+		elif aType == E_ONE_CABLE :
+			aSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_OFF
+			aSatellite.mIsOneCable = 1
+			aSatellite.mMotorizedData = 0
+			aSatellite.mIsConfigUsed = 1
+
+
+	def SatelliteSetFlag( self, aSatelliteList, aTunerType ) :
+		if aSatelliteList :
+			for i in range( len( aSatelliteList ) ) :
+				aSatelliteList[i].mSlotNumber = i
+				self.SetTunerTypeFlag( aSatelliteList[i], aTunerType )
 
 
 	def SatelliteConfigSaveList( self ) :
-		LOG_TRACE( 'Save Satellite Config List!!' )
+		LOG_TRACE( 'Save Satellite Config List!' )
 		self.mCommander.Satelliteconfig_DeleteAll( ) 
-		
 		tuner1Type = ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( )
-		configuredList1 = self.GetConfiguredSatellitebyTunerIndex( E_TUNER_1 )
-		for i in range( len( configuredList1 ) ) :
-			configuredList1[i].mSlotNumber = i
-			self.mTunerMgr.SetTunerTypeFlag( configuredList1[i], tuner1Type )
-			if tuner1Type == E_MOTORIZE_1_2 :
-				configuredList1[i].mMotorizedData = configuredList1[i].mSlotNumber + 1
-		
-		if self.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER and tuner1Type != E_ONE_CABLE :
+		#self.mConfiguredList1 = self.GetConfiguredSatellitebyTunerIndex( E_TUNER_1 )
+		if self.mConfiguredList1 :
+			self.SatelliteSetFlag( self.mConfiguredList1, tuner1Type )
+
+		if self.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
 			self.mConfiguredList2 = deepcopy( self.mConfiguredList1 )
-			count = len ( self.mConfiguredList2 )
-			for i in range( count ) :
-				self.mConfiguredList2[i].mTunerIndex = E_TUNER_2
+			if self.mConfiguredList2 :
+				for i in range( len( self.mConfiguredList2 ) ) :
+					self.mConfiguredList2[i].mTunerIndex = E_TUNER_2
 
 		else :
 			tuner2Type = ElisPropertyEnum( 'Tuner2 Type', self.mCommander ).GetProp( )
-			configuredList2 = self.GetConfiguredSatellitebyTunerIndex( E_TUNER_2 )
-			for i in range( len( configuredList2 ) ) :
-				configuredList2[i].mSlotNumber = i
-				self.mTunerMgr.SetTunerTypeFlag( configuredList2[i], tuner2Type )
-				if tuner2Type == E_MOTORIZE_1_2 :
-					configuredList2[i].mMotorizedData = configuredList2[i].mSlotNumber + 1
+			#configuredList2 = self.GetConfiguredSatellitebyTunerIndex( E_TUNER_2 )
+			if self.mConfiguredList2 :
+				self.SatelliteSetFlag( self.mConfiguredList2, tuner2Type )
 
-		ret1 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList1 )
-		ret2 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList2 )
-
-
-		for satellite in self.mConfiguredList1 :
-			satellite.printdebug( )
-		for satellite in self.mConfiguredList2 :
-			satellite.printdebug( )
+		ret1 = False
+		ret2 = False
+		if self.mConfiguredList1 :
+			ret1 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList1 )
+		if self.mConfiguredList2 :
+			ret2 = self.mCommander.Satelliteconfig_SaveList( self.mConfiguredList2 )
 
 
-		if ret1 == True and ret2 == True :
-			return True
-		elif ret1 == False or ret2 == False :
-			self.mCommander.Satelliteconfig_SaveList( self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_1 ) )
-			self.mCommander.Satelliteconfig_SaveList( self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_2 ) )
-			return False
-			
+		if self.mConfiguredList1 and ret1 :
+			for satellite in self.mConfiguredList1 :
+				satellite.printdebug( )
+		if self.mConfiguredList2 and ret2 :
+			for satellite in self.mConfiguredList2 :
+				satellite.printdebug( )
+
 
 	def Load( self ) :
+		print 'dhkim test Start Tuner Load!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 		# Get All Satellite List ( mLongitude, mBand, mName )
 		self.mAllSatelliteList = self.mDataCache.GetAllSatelliteList( )
 		
 		# Get Configured Satellite List Tuner 1
 		self.mConfiguredList1 = deepcopy( self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_1 ) )
-		if self.mConfiguredList1 and self.mConfiguredList1[0].mError == 0 :
-			pass
-		else :	# If empty list to return, add one default satellite
-			self.mConfiguredList1 = []
-			config = self.GetDefaultConfig( )
-			self.mConfiguredList1.append( config )
-		
+
 		# Get Configured Satellite List Tuner 2
 		self.mConfiguredList2 = deepcopy( self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_2 ) )
-		if self.mConfiguredList2 and self.mConfiguredList2[0].mError == 0 :
-			pass
-		else :	# If empty list to return, add one default satellite
-			self.mConfiguredList2 = []
-			config = self.GetDefaultConfig( )
-			self.mConfiguredList2.append( config )
+
+		self.mDiseqc10List1			= deepcopy( self.mConfiguredList1 )
+		self.SatelliteSetFlag( self.mDiseqc10List1, E_DISEQC_1_0 )
+		self.mDiseqc10List2			= deepcopy( self.mConfiguredList2 )
+		self.SatelliteSetFlag( self.mDiseqc10List2, E_DISEQC_1_0 )
+		self.mDiseqc11List1			= deepcopy( self.mConfiguredList1 )
+		self.SatelliteSetFlag( self.mDiseqc11List1, E_DISEQC_1_1 )
+		self.mDiseqc11List2			= deepcopy( self.mConfiguredList2 )
+		self.SatelliteSetFlag( self.mDiseqc11List2, E_DISEQC_1_1 )
+		self.mMotorizeList1			= deepcopy( self.mConfiguredList1 )
+		self.SatelliteSetFlag( self.mMotorizeList1, E_MOTORIZE_1_2 )
+		self.mMotorizeList2			= deepcopy( self.mConfiguredList2 )
+		self.SatelliteSetFlag( self.mMotorizeList2, E_MOTORIZE_1_2 )
+		self.mMotorizeUsalsList1	= deepcopy( self.mConfiguredList1 )
+		self.SatelliteSetFlag( self.mMotorizeUsalsList1, E_MOTORIZE_USALS )
+		self.mMotorizeUsalsList2	= deepcopy( self.mConfiguredList2 )
+		self.SatelliteSetFlag( self.mMotorizeUsalsList2, E_MOTORIZE_USALS )
+
+		self.mOneCableList1			= []
+		self.mOneCableList2			= []
+		
+		if self.mConfiguredList1 :
+			self.mOneCableList1 = deepcopy( self.mConfiguredList1 )
+			if len( self.mOneCableList1 ) > MAX_SATELLITE_CNT_ONECABLE :
+				self.mOneCableList1 = self.mOneCableList1[0:2]
+		else :
+			self.mOneCableList1.append( self.GetDefaultConfig( ) )
+		self.SatelliteSetFlag( self.mOneCableList1, E_ONE_CABLE )
+
+		if self.mConfiguredList2 :
+			self.mOneCableList2 = deepcopy( self.mConfiguredList2 )
+			if len( self.mOneCableList2 ) > MAX_SATELLITE_CNT_ONECABLE :
+				self.mOneCableList2 = self.mOneCableList2[0:2]
+		else :
+			self.mOneCableList2.append( self.GetDefaultConfig( ) )
+		self.SatelliteSetFlag( self.mOneCableList2, E_ONE_CABLE )
+
+		self.mSimpleLnbList1		= []
+		self.mSimpleLnbList2		= []
+		if self.mConfiguredList1 :
+			self.mSimpleLnbList1.append( self.mConfiguredList1[0] )
+		else :
+			self.mSimpleLnbList1.append( self.GetDefaultConfig( ) )
+		self.SatelliteSetFlag( self.mSimpleLnbList1, E_SIMPLE_LNB )
+
+		if self.mConfiguredList2 :
+			self.mSimpleLnbList2.append( self.mConfiguredList2[0] )
+		else :
+			self.mSimpleLnbList2.append( self.GetDefaultConfig( ) )
+		self.SatelliteSetFlag( self.mSimpleLnbList2, E_SIMPLE_LNB )
+
+		self.SelectCurrentSatelliteList( E_TUNER_1, ElisPropertyEnum( 'Tuner1 Type', self.mCommander ).GetProp( ) )
+		self.SelectCurrentSatelliteList( E_TUNER_2, ElisPropertyEnum( 'Tuner2 Type', self.mCommander ).GetProp( ) )
 
 		self.mOrgConfiguredList1 = deepcopy( self.mConfiguredList1 )
 		self.mOrgConfiguredList2 = deepcopy( self.mConfiguredList2 )
+
+		if self.mConfiguredList1 :
+			print 'dhkim test loaded tuner current list!!!!!!!!!!!!!!!!!!'
+			for satellite in self.mConfiguredList1 :
+				satellite.printdebug( )
+
+		if self.mConfiguredList2 :
+			print 'dhkim test loaded tuner current list!!!!!!!!!!!!!!!!!!'
+			for satellite in self.mConfiguredList2 :
+				satellite.printdebug( )
+		print 'dhkim test End Tuner Load!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+
+
+	def SelectCurrentSatelliteList( self, aTunerNumber, aTunerType ) :
+		if aTunerNumber == E_TUNER_1 :
+			if aTunerType == E_DISEQC_1_0 :
+				self.mConfiguredList1 = self.mDiseqc10List1
+			elif aTunerType == E_DISEQC_1_1 :
+				self.mConfiguredList1 = self.mDiseqc11List1
+			elif aTunerType == E_MOTORIZE_1_2 :
+				self.mConfiguredList1 = self.mMotorizeList1
+			elif aTunerType == E_MOTORIZE_USALS :
+				self.mConfiguredList1 = self.mMotorizeUsalsList1
+			elif aTunerType == E_ONE_CABLE :
+				self.mConfiguredList1 = self.mOneCableList1
+			elif aTunerType == E_SIMPLE_LNB :
+				self.mConfiguredList1 = self.mSimpleLnbList1
+		elif aTunerNumber == E_TUNER_2 :
+			if aTunerType == E_DISEQC_1_0 :
+				self.mConfiguredList2 = self.mDiseqc10List2
+			elif aTunerType == E_DISEQC_1_1 :
+				self.mConfiguredList2 = self.mDiseqc11List2
+			elif aTunerType == E_MOTORIZE_1_2 :
+				self.mConfiguredList2 = self.mMotorizeList2
+			elif aTunerType == E_MOTORIZE_USALS :
+				self.mConfiguredList2 = self.mMotorizeUsalsList2
+			elif aTunerType == E_ONE_CABLE :
+				self.mConfiguredList2 = self.mOneCableList2
+			elif aTunerType == E_SIMPLE_LNB :
+				self.mConfiguredList2 = self.mSimpleLnbList2
+		else :
+			LOG_ERR( 'Invalid Tuner Number : %s' % aTunerNumber )
 
 
 	def LoadOriginalSatelliteConfigListByTunerNumber( self, aTunerNumber ) :

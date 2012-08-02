@@ -31,7 +31,7 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 		elif tunerIndex == E_TUNER_2 : 
 			property = ElisPropertyEnum( 'Tuner2 Type', self.mCommander )
 		else :
-			print 'Error : unknown Tuner'
+			LOG_ERR( 'Error : unknown Tuner' )
 			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
  				
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %d - %s' % ( tunerIndex + 1, property.GetPropString( ) ) )
@@ -51,8 +51,10 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
+			self.OpenBusyDialog( )
 			self.ResetAllControl( )
-			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )			
+			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
+			self.CloseBusyDialog( )
 			WinMgr.GetInstance().CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
