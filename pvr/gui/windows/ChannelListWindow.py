@@ -245,9 +245,9 @@ class ChannelListWindow( BaseWindow ) :
 
 		#initialize get channel list
 		self.InitSlideMenuHeader( )
+		self.LoadInit( )
 
 		#run thread
-		self.LoadingThread( )
 		self.mEnableLocalThread = True
 		self.mPlayProgressThread = self.EPGProgressThread( )
 
@@ -408,8 +408,7 @@ class ChannelListWindow( BaseWindow ) :
 		pass
 
 		
-	#@RunThread
-	def LoadingThread( self ):
+	def LoadInit( self ):
 		self.ShowRecordingInfo( )
 
 		try :
