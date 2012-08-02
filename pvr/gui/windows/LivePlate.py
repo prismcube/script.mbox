@@ -605,7 +605,12 @@ class LivePlate( BaseWindow ) :
 				self.mEPGList = None
 				iEPGList = None
 
-				self.mEPGList = self.mDataCache.Epgevent_GetListByChannelFromEpgCF(  channel.mSid,  channel.mTsid,  channel.mOnid )
+				#self.mEPGList = self.mDataCache.Epgevent_GetListByChannelFromEpgCF(  channel.mSid,  channel.mTsid,  channel.mOnid )
+				gmtFrom  = self.mDataCache.Datetime_GetLocalTime()
+				gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
+				maxCount = 100
+				self.mEPGList = self.mDataCache.Epgevent_GetListByChannel( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil, maxCount )
+
 				if self.mEPGList == None or self.mEPGList[0].mError != 0 :
 					self.mFlag_OnEvent = True
 					LOG_TRACE('EPGList is None\nLeave [%s]'% self.mEPGList)
