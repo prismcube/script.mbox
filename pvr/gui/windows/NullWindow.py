@@ -19,6 +19,8 @@ class NullWindow( BaseWindow ) :
 
 		if self.mInitialized == False :
 			self.mInitialized = True
+			xbmc.executebuiltin('xbmc.Action(contextmenu)')
+			return
 
 		self.mEventBus.Register( self )
 
