@@ -202,6 +202,8 @@ class AntennaSetup( SettingWindow ) :
 
 	def CancelConfiguration( self ) :
 		self.mTunerMgr.Restore( )
+		self.mDataCache.LoadConfiguredSatellite( )
+		self.mDataCache.LoadConfiguredTransponder( )
 		self.ReTune( )
 
 
