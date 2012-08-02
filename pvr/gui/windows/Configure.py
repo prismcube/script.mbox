@@ -891,7 +891,7 @@ class Configure( SettingWindow ) :
 			else :
 				apNameList = []
 				for ap in self.apList :
-					apNameList.append( ap[0] + ' -   quality:%s Encrypt:%s' % ( ap[1], ap[2] ) )
+					apNameList.append( ap[0] + ' -   quality : %s Encrypt : %s' % ( ap[1], ap[2] ) )
 				dialog = xbmcgui.Dialog( )
 	 			ret = dialog.select( 'Select Ap', apNameList )
 				if ret >= 0 :
