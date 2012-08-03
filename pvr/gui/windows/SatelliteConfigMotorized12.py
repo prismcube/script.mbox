@@ -52,8 +52,10 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
+			self.OpenBusyDialog( )
 			self.ResetAllControl( )
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
+			self.CloseBusyDialog( )
 			WinMgr.GetInstance().CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
@@ -177,9 +179,11 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 
 		# Store Position and Exit
 		elif groupId == E_Input06 :
+			self.OpenBusyDialog( )
 			self.mCommander.Motorized_SavePosition( self.tunerIndex, self.mTunerMgr.GetCurrentConfigIndex( ) + 1 )
-			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
 			self.ResetAllControl( )
+			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
+			self.CloseBusyDialog( )
 			WinMgr.GetInstance().CloseWindow( )
 			return
 

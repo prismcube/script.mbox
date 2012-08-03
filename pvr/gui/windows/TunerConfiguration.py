@@ -7,7 +7,8 @@ E_MAIN_LIST_ID = 9000
 class TunerConfiguration( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs)
-		self.listItems = []
+		self.mListItems = []
+		self.mConfiguredCount = 0
 
 			
 	def onInit( self ) :
@@ -62,32 +63,45 @@ class TunerConfiguration( SettingWindow ) :
 			
 			configuredList = self.mTunerMgr.GetConfiguredSatelliteList( )
 
-			if len( configuredList ) == position :
-				dialog = xbmcgui.Dialog( )
-				satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
-	 			ret = dialog.select( 'Select satellite', satelliteList )
+			if self.mConfiguredCount == position :
+				if self.mTunerMgr.GetCurrentTunerType( ) == E_DISEQC_1_0 and self.mConfiguredCount > 3 :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( 'ERROR', 'Alreay 4 Satellite Configured' )
+		 			dialog.doModal( )
+				else :
+					dialog = xbmcgui.Dialog( )
+					satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
+		 			ret = dialog.select( 'Select satellite', satelliteList )
 
-	 			if ret >= 0 :
-					self.mTunerMgr.AddConfiguredSatellite( ret )
-	 				self.ReloadConfigedSatellite( )
+		 			if ret >= 0 :
+		 				self.OpenBusyDialog( )
+						self.mTunerMgr.AddConfiguredSatellite( ret )
+						self.mTunerMgr.SatelliteConfigSaveList( )
+		 				self.ReloadConfigedSatellite( )
+		 				self.ReTune( )
+		 				self.CloseBusyDialog( )
 
-	 		elif len( configuredList ) + 1 == position :
-	 			if len( configuredList ) <= 0 :
+	 		elif self.mConfiguredCount + 1 == position :
+	 			if self.mConfiguredCount <= 0 :
 	 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( 'ERROR', 'Empty Configured Satellite' )
 		 			dialog.doModal( )
 	 				return
 	 			else :
 					dialog = xbmcgui.Dialog( )
-		 			ret = dialog.select( 'delete satellite', self.listItems[ 0 : len( configuredList ) ] )
+		 			ret = dialog.select( 'delete satellite', self.mListItems[ 0 : self.mConfiguredCount ] )
  
 		 			if ret >= 0 :
 		 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-						dialog.SetDialogProperty( 'Configure', 'Delete Satellite : %s' % self.listItems[ ret ] )
+						dialog.SetDialogProperty( 'Configure', 'Delete Satellite : %s' % self.mListItems[ ret ] )
 						dialog.doModal( )
 
 						if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+							self.OpenBusyDialog( )
 			 				self.mTunerMgr.DeleteConfiguredSatellitebyIndex( ret )
+			 				self.mTunerMgr.SatelliteConfigSaveList( )
+			 				self.ReTune( )
+			 				self.CloseBusyDialog( )
 			 				self.ReloadConfigedSatellite( )
 
 			else :		
@@ -110,7 +124,7 @@ class TunerConfiguration( SettingWindow ) :
 						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED_USALS2 )
 
 				else :
-					print 'ERR : Can not find configured satellite'
+					LOG_ERR( 'ERR : Can not find configured satellite' )
 
 
 	def onFocus( self, aControlId ) :
@@ -123,15 +137,25 @@ class TunerConfiguration( SettingWindow ) :
 
 	def ReloadConfigedSatellite( self ) :
 		configuredList = []
-		self.listItems = []
+		self.mListItems = []
 
 		configuredList = self.mTunerMgr.GetConfiguredSatelliteList( )
+		self.mConfiguredCount = 0
 
-		for config in configuredList :
-			self.listItems.append( '%s' % self.mDataCache.GetFormattedSatelliteName( config.mSatelliteLongitude, config.mBandType ) )
+		if configuredList :
+			for config in configuredList :
+				if config.mIsConfigUsed == 1 :
+					self.mConfiguredCount = self.mConfiguredCount + 1
+					self.mListItems.append( '%s' % self.mDataCache.GetFormattedSatelliteName( config.mSatelliteLongitude, config.mBandType ) )
 
-		self.listItems.append( 'Add New Satellite' )
-		self.listItems.append( 'Delete Satellite' )
-		self.getControl( E_MAIN_LIST_ID ).addItems( self.listItems )
+		self.mListItems.append( 'Add New Satellite' )
+		self.mListItems.append( 'Delete Satellite' )
+		self.getControl( E_MAIN_LIST_ID ).addItems( self.mListItems )
 
+
+	def ReTune( self ) :
+		iChannel = self.mDataCache.Channel_GetCurrent( )
+		if iChannel :
+			self.mDataCache.Channel_InvalidateCurrent( )
+			self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
 		

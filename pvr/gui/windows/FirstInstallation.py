@@ -30,7 +30,7 @@ class FirstInstallation( SettingWindow ) :
 		self.SetPipScreen( )
 		self.SetListControl( self.mStepNum )
 		self.mInitialized = True
-		ConfigMgr.GetInstance().SetFristInstallation( True )
+		ConfigMgr.GetInstance( ).SetFristInstallation( True )
 
 		
 	def onAction( self, aAction ) :
@@ -132,23 +132,12 @@ class FirstInstallation( SettingWindow ) :
 		self.ResetAllControl( )
 		self.SetVideoRestore( )
 		self.mStepNum = E_STEP_SELECT_LANGUAGE
-		ConfigMgr.GetInstance().SetFristInstallation( False )		
-		WinMgr.GetInstance().CloseWindow( )
+		ConfigMgr.GetInstance( ).SetFristInstallation( False )		
+		WinMgr.GetInstance( ).CloseWindow( )
 
 
 	def OpenAntennaSetupWindow( self ) :
-		WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
-
-		"""
-		if self.GetResultAntennaStep( ) == True :
-			self.SetListControl( E_STEP_CHANNEL_SEARCH_CONFIG )
-		else :
-			self.SetListControl( E_STEP_VIDEO_AUDIO )
-		if self.GetAlreadyClose( ) == True :
-			self.getControl( E_MAIN_GROUP_ID ).setVisible( False )
-			self.Close( )
-			self.getControl( E_MAIN_GROUP_ID ).setVisible( True )
-		"""
+		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
 
 
 	def SetResultAntennaStep( self, aResult ) :
@@ -335,10 +324,14 @@ class FirstInstallation( SettingWindow ) :
 	def LoadFormattedSatelliteNameList( self ) :
 		self.mConfiguredSatelliteList = self.mDataCache.Satellite_GetConfiguredList( )
 		self.mFormattedList = []
-		self.mFormattedList.append( 'All' )
+		if self.mConfiguredSatelliteList == None :
+			self.mFormattedList.append( 'None' )
+		else :
+			self.mFormattedList.append( 'All' )
 
-		for config in self.mConfiguredSatelliteList :
-			self.mFormattedList.append( self.mDataCache.GetFormattedSatelliteName( config.mLongitude, config.mBand ) )
+			for config in self.mConfiguredSatelliteList :
+				self.mFormattedList.append( self.mDataCache.GetFormattedSatelliteName( config.mLongitude, config.mBand ) )
+
 
 	def ChannelSearchConfig( self, aControlId ) :
 		if aControlId == E_Input01 :
@@ -351,19 +344,23 @@ class FirstInstallation( SettingWindow ) :
 			
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
 			if self.mIsChannelSearch == True :
-				if self.mSatelliteIndex == 0 :
-					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
-					dialog.SetConfiguredSatellite( self.mConfiguredSatelliteList )
-					dialog.doModal( )
+				if self.mConfiguredSatelliteList :
+					if self.mSatelliteIndex == 0 :
+						dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
+						dialog.SetConfiguredSatellite( self.mConfiguredSatelliteList )
+						dialog.doModal( )
+					else :
+						configuredSatelliteList = []
+						config = self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ]
 
+						configuredSatelliteList.append( config )
+						dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
+						dialog.SetConfiguredSatellite( configuredSatelliteList )				
+						dialog.doModal( )
 				else :
-					configuredSatelliteList = []
-					config = self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ]
-
-					configuredSatelliteList.append( config )
-					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
-					dialog.SetConfiguredSatellite( configuredSatelliteList )				
-					dialog.doModal( )
+					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( 'ERROR', 'Has No Configurd Satellite' )
+		 			dialog.doModal( )
 
 				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )

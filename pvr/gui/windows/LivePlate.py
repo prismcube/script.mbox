@@ -126,22 +126,12 @@ class LivePlate( BaseWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 		LOG_TRACE( 'winID[%d]'% self.mWinId)
 
-		#rec info
-		#self.mCtrlImgRec1              = self.getControl( E_CONTROL_ID_IMAGE_RECORDING1 )
 		self.mCtrlLblRec1              = self.getControl( E_CONTROL_ID_LABEL_RECORDING1 )
-		#self.mCtrlImgRec2              = self.getControl( E_CONTROL_ID_IMAGE_RECORDING2 )
 		self.mCtrlLblRec2              = self.getControl( E_CONTROL_ID_LABEL_RECORDING2 )
 
 		#channel, epg info
 		self.mCtrlLblChannelNumber     = self.getControl( E_CONTROL_ID_LABEL_CHANNEL_NUMBER )
 		self.mCtrlLblChannelName       = self.getControl( E_CONTROL_ID_LABEL_CHANNEL_NAME )
-		#self.mCtrlImgServiceTypeTV     = self.getControl( E_CONTROL_ID_IMAGE_SERVICETYPE_TV )
-		#self.mCtrlImgServiceTypeRadio  = self.getControl( E_CONTROL_ID_IMAGE_SERVICETYPE_RADIO )
-		#self.mCtrlGroupComponentData   = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_DATA )
-		#self.mCtrlGroupComponentDolby  = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_DOLBY )
-		#self.mCtrlGroupComponentHD     = self.getControl( E_CONTROL_ID_GROUP_COMPONENT_HD )
-		#self.mCtrlImgLocked            = self.getControl( E_CONTROL_ID_IMAGE_LOCKED )
-		#self.mCtrlImgICas              = self.getControl( E_CONTROL_ID_IMAGE_ICAS )
 		self.mCtrlLblLongitudeInfo     = self.getControl( E_CONTROL_ID_LABEL_LONGITUDE_INFO )
 		self.mCtrlLblEventName         = self.getControl( E_CONTROL_ID_LABEL_EPG_NAME )
 		self.mCtrlLblEventStartTime    = self.getControl( E_CONTROL_ID_LABEL_EPG_STARTTIME )
@@ -181,25 +171,11 @@ class LivePlate( BaseWindow ) :
 		if not self.mZappingMode :
 			self.mZappingMode = ElisIZappingMode( )
 
-
 		#get channel
 		self.ChannelTune( INIT_CHANNEL )
-
-
-		"""
-		flag = 'False'
-		#if i % 2 : flag = 'True'
-		self.mDataCache.Record_GetRunningRecorderCount( )
-		#self.mWin.setProperty( 'ViewRecord1', flag )
-		#self.mWin.setProperty( 'ViewRecord1', flag )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_RECORDING1, flag )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_RECORDING2, flag )
-		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_START_RECORDING, True )
-		"""
-
+		self.LoadInit( )
 
 		#run thread
-		self.LoadingThread( )
 		self.mEventBus.Register( self )
 		self.mEnableLocalThread = True
 		self.EPGProgressThread( )
@@ -221,9 +197,6 @@ class LivePlate( BaseWindow ) :
 			self.SetTuneByNumber( rKey )
 
 		elif id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
-			#self.StopAutomaticHide()
-			#self.SetAutomaticHide( False )
-
 			self.Close()
 			status = self.mDataCache.Player_GetStatus()
 			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
@@ -369,15 +342,11 @@ class LivePlate( BaseWindow ) :
 			self.EPGNavigation( NEXT_EPG )
 
 
-
 	def onFocus(self, aControlId):
-		#LOG_TRACE( 'control %d' % controlId )
 		pass
 
 
-	#@RunThread
-	"""
-	def LoadingThread( self ):
+	def LoadInit( self ):
 		self.ShowRecordingInfo( )
 		self.InitControlGUI()
 		#self.GetEPGListByChannel()
@@ -397,7 +366,6 @@ class LivePlate( BaseWindow ) :
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
-	"""
 
 
 	@GuiLock
@@ -641,7 +609,12 @@ class LivePlate( BaseWindow ) :
 				self.mEPGList = None
 				iEPGList = None
 
-				self.mEPGList = self.mDataCache.Epgevent_GetListByChannelFromEpgCF(  channel.mSid,  channel.mTsid,  channel.mOnid )
+				#self.mEPGList = self.mDataCache.Epgevent_GetListByChannelFromEpgCF(  channel.mSid,  channel.mTsid,  channel.mOnid )
+				gmtFrom  = self.mDataCache.Datetime_GetLocalTime()
+				gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
+				maxCount = 100
+				self.mEPGList = self.mDataCache.Epgevent_GetListByChannel( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil, maxCount )
+
 				if self.mEPGList == None or self.mEPGList[0].mError != 0 :
 					self.mFlag_OnEvent = True
 					LOG_TRACE('EPGList is None\nLeave [%s]'% self.mEPGList)
@@ -775,28 +748,6 @@ class LivePlate( BaseWindow ) :
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
-
-	#@RunThread
-	def LoadingThread( self ):
-		self.ShowRecordingInfo( )
-		self.InitControlGUI()
-		#self.GetEPGListByChannel()
-
-		try :
-			if self.mCurrentChannel :
-				iEPG = None
-				iEPG = self.mDataCache.Epgevent_GetPresent()
-				if iEPG and iEPG.mError == 0 :
-					self.mCurrentEPG = iEPG
-					self.UpdateChannelAndEPG( iEPG )
-
-				if self.mCurrentChannel.mLocked :
-					pass
-					#WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mDataCache.mPropertyPincode )
-
-
-		except Exception, e :
-			LOG_TRACE( 'Error exception[%s]'% e )
 
 	def InitControlGUI( self ) :
 		self.UpdateControlGUI( E_CONTROL_ID_PROGRESS_EPG,          0 )

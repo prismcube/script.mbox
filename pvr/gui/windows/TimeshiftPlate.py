@@ -181,10 +181,10 @@ class TimeShiftPlate(BaseWindow):
 
 			elif self.mPrekey == Action.ACTION_PAUSE or self.mPrekey == Action.ACTION_PLAYER_PLAY :
 				self.mWin.setProperty( 'IsXpeeding', 'False' )
-				if self.mSpeed == 0 :
-					self.onClick( E_CONTROL_ID_BUTTON_PLAY )
-				else :
+				if self.mSpeed == 100 :
 					self.onClick( E_CONTROL_ID_BUTTON_PAUSE )
+				else :
+					self.onClick( E_CONTROL_ID_BUTTON_PLAY )
 
 			self.mPrekey = None
 
@@ -327,6 +327,8 @@ class TimeShiftPlate(BaseWindow):
 
 
 			self.TimeshiftAction( aControlId )
+			if aControlId != E_CONTROL_ID_BUTTON_PLAY and aControlId != E_CONTROL_ID_BUTTON_PAUSE :
+				self.setFocusId( aControlId )
 
 
 		elif aControlId == E_CONTROL_ID_BUTTON_VOLUME:
@@ -429,7 +431,7 @@ class TimeShiftPlate(BaseWindow):
 			elif self.mMode == ElisEnum.E_MODE_PVR:
 				ret = self.mDataCache.Player_Resume()
 
-			#LOG_TRACE( 'play_resume() ret[%s]'% ret )
+			LOG_TRACE( 'play_resume() ret[%s]'% ret )
 			if ret :
 				if self.mSpeed != 100:
 					#_self.mDataCache.Player_SetSpeed( 100 )
@@ -518,7 +520,8 @@ class TimeShiftPlate(BaseWindow):
 				ret = self.mDataCache.Player_SetSpeed( nextSpeed )
 
 			if ret :
-				LOG_WARN( 'status =%d ret[%s], player_SetSpeed[%s]'% ( self.mMode , ret, nextSpeed ) )
+				self.mIsPlay = FLAG_PLAY
+				#LOG_WARN( 'status =%d ret[%s], player_SetSpeed[%s]'% ( self.mMode , ret, nextSpeed ) )
 
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_FORWARD :
@@ -541,7 +544,8 @@ class TimeShiftPlate(BaseWindow):
 				ret = self.mDataCache.Player_SetSpeed( nextSpeed )
 
 			if ret :
-				LOG_WARN( 'status =%d ret[%s], player_SetSpeed[%s]'% ( self.mMode , ret, nextSpeed ) )
+				self.mIsPlay = FLAG_PLAY
+				#LOG_WARN( 'status =%d ret[%s], player_SetSpeed[%s]'% ( self.mMode , ret, nextSpeed ) )
 
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_JUMP_RR :
@@ -564,8 +568,6 @@ class TimeShiftPlate(BaseWindow):
 				nextJump = self.mTimeshift_endTime - 1000
 			ret = self.mDataCache.Player_JumpToIFrame( nextJump )
 			#LOG_TRACE('JumpFF ret[%s]'% ret )
-
-		self.InitTimeShift()
 
 
 	def InitLabelInfo(self) :
@@ -762,6 +764,7 @@ class TimeShiftPlate(BaseWindow):
 			if tempStartTime > 0 :
 				self.mInitialized = False
 
+			self.GetNextSpeed( E_ONINIT )
 
 	def GetNextSpeed(self, aFocusId):
 		#LOG_TRACE( 'mSpeed[%s]'% self.mSpeed )

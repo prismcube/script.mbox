@@ -50,8 +50,10 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
+			self.OpenBusyDialog( )
 			self.ResetAllControl( )
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
+			self.CloseBusyDialog( )
 			WinMgr.GetInstance().CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
