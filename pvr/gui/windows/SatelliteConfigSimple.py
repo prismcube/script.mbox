@@ -25,6 +25,7 @@ class SatelliteConfigSimple( SettingWindow ) :
 		self.mSelectedTransponderIndex = 0
 
 		self.SetSettingWindowLabel( 'Satellite Configuration' )
+		self.LoadNoSignalState( )
 				
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %d - %s' % ( tunerIndex + 1, self.mTunerMgr.GetCurrentTunerTypeString( ) ) )
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType

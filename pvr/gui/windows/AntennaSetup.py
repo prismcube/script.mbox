@@ -15,6 +15,7 @@ class AntennaSetup( SettingWindow ) :
 
 		self.SetSettingWindowLabel( 'Antenna & Satellite Setup' )
 		self.SetPipScreen( )
+		self.LoadNoSignalState( )
 
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )

@@ -26,6 +26,7 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 		self.mSelectedTransponderIndex = 0
 
 		self.SetSettingWindowLabel( 'Satellite Configuration' )
+		self.LoadNoSignalState( )
 
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %d - Motorized, DiSEqC 1.2' % ( self.tunerIndex + 1 ) )
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType

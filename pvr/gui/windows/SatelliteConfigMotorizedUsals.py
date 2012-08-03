@@ -19,6 +19,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'USALS configuration : Tuner %s' % ( self.tunerIndex + 1 ) )
 
 		self.SetSettingWindowLabel( 'Motorize Configuration' )
+		self.LoadNoSignalState( )
 		
 		self.GetLongitude( )
 		self.GetLatitude( )

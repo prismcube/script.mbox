@@ -102,7 +102,9 @@ class DataCacheMgr( object ):
 		self.mEpgDB = None
 		self.mChannelDB = None
 		self.mTimerDB = None
-		self.mRecordDB = None		
+		self.mRecordDB = None
+
+		self.mLockStatus = True
 
 		self.mSkip = False
 
@@ -1421,4 +1423,11 @@ class DataCacheMgr( object ):
 		except Exception, ex:
 			LOG_ERR( "Exception %s" %ex)
 
+
+	def SetLockedState( self, aIsLock ) :
+		self.mLockStatus = aIsLock
+
+
+	def GetLockedState( self ) :
+		return self.mLockStatus
 

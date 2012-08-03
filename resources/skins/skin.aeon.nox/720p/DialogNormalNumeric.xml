@@ -41,7 +41,7 @@
 					<control type="button" id="111">
 						<description>1 button</description>
 						<posx>0</posx>
-						<onleft>123</onleft>
+						<onleft>113</onleft>
 						<onright>112</onright>
 						<onup>123</onup>
 						<ondown>114</ondown>

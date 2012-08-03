@@ -14,6 +14,7 @@ class AutomaticScan( SettingWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
 		self.SetSettingWindowLabel( 'Automatic Scan' )
+		self.LoadNoSignalState( )
 
 		self.mSatelliteIndex = 0
 		self.mFormattedList = None

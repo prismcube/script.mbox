@@ -29,6 +29,7 @@ class EditSatellite( SettingWindow ) :
 				hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 				self.SetVisibleControls( hideControlIds, True )
 			self.SetPipScreen( )
+			self.LoadNoSignalState( )
 			self.InitConfig( )
 			self.mInitialized = True
 			self.SetFocusControl( E_Input01 )

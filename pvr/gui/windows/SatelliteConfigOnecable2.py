@@ -20,6 +20,7 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 
 	def onInit( self ) :
 		self.SetSettingWindowLabel( 'OneCable Configuration' )
+		self.LoadNoSignalState( )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'OneCable configuration' )
 		self.mOneCablesatelliteCount = self.mTunerMgr.GetOneCableSatelliteCount( )
 

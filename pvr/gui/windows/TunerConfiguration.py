@@ -18,6 +18,7 @@ class TunerConfiguration( SettingWindow ) :
 		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )	
 		headerLabel = 'Tuner %d Configuration' % ( self.tunerIndex + 1 )
 		self.SetSettingWindowLabel( headerLabel )
+		self.LoadNoSignalState( )
 		
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Tuner %d Configuration : %s' % ( self.tunerIndex + 1, self.mTunerMgr.GetCurrentTunerTypeString( ) ) )
 		self.LoadConfigedSatellite( )

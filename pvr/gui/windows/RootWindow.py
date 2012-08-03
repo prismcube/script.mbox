@@ -68,19 +68,14 @@ class RootWindow( BaseWindow ):
 
 			self.AlarmDialog(msg1, msg2)
 			"""
-		"""
 		elif aEvent.getName() == ElisEventTuningStatus.getName() :
 			LOG_TRACE('No Signal TEST TunerNo[%s] locked[%s]' % ( aEvent.mTunerNo, aEvent.mIsLocked ) )
 			if aEvent.mIsLocked :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).setProperty('Signal', 'False')
-			else :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).setProperty('Signal', 'True')
-
-			import inspect
-			currentStack = inspect.stack()
-			LOG_TRACE( '+++++getrecursionlimit[%s] currentStack[%s]'% (sys.getrecursionlimit(), len(currentStack)) )
-			LOG_TRACE( '+++++currentStackInfo[%s]'% (currentStack) )
-		"""
+				self.mDataCache.SetLockedState( True )
+			else :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).setProperty('Signal', 'False')
+				self.mDataCache.SetLockedState( False )
 
 
 	def GetRecordingInfo( self ) :

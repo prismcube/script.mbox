@@ -14,6 +14,7 @@ class SatelliteConfigOnecable( SettingWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 		
 		self.SetSettingWindowLabel( 'OneCable Configuration' )
+		self.LoadNoSignalState( )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'OneCable configuration' )
 
 		self.LoadConfigedSatellite( )

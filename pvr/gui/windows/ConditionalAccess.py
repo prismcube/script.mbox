@@ -16,6 +16,7 @@ class ConditionalAccess( SettingWindow ) :
 
 		self.SetSettingWindowLabel( 'Conditional Access' )
 		self.SetPipScreen( )
+		self.LoadNoSignalState( )
 
 		smartCard = self.mCommander.Conax_GetInformation( CAS_SLOT_NUM_1 )
 		smartCardName = 'Not inserted'

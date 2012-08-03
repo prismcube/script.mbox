@@ -87,7 +87,6 @@ class Configure( SettingWindow ) :
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Configure' )
-		self.SetPipScreen( )
 
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )

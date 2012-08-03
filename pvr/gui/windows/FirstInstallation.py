@@ -28,6 +28,7 @@ class FirstInstallation( SettingWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'First Installation' )
 		self.SetPipScreen( )
+		self.LoadNoSignalState( )
 		self.SetListControl( self.mStepNum )
 		self.mInitialized = True
 		ConfigMgr.GetInstance( ).SetFristInstallation( True )

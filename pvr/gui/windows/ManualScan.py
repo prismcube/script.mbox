@@ -23,6 +23,7 @@ class ManualScan( SettingWindow ) :
 		ScanHelper.GetInstance( ).ScanHelper_Start( self.mWin )
 
 		self.SetSettingWindowLabel( 'Manual Scan' )
+		self.LoadNoSignalState( )
 		self.mIsManualSetup = 0
 		
 		self.mSatelliteIndex = 0

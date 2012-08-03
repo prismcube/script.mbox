@@ -8,7 +8,7 @@
 			<posy>110</posy>
 			<include>DefaultSettingWindowEffect</include>
 			<include>DefaultSettingMainWindow</include>
-			<include>DefaultSatelliteConfigGroup</include>			
+			<include>DefaultSatelliteConfigGroup</include>
 		</control>
 		<include>DefaultSettingWindowPigScreen</include>
 	</controls>	

@@ -596,3 +596,10 @@ class SettingWindow( BaseWindow ) :
 					self.getControl( E_FIRST_TIME_INSTALLATION_STEP_IMAGE + i ).setVisible( False )
 				self.getControl( E_FIRST_TIME_INSTALLATION_STEP_IMAGE_BACK + i ).setVisible( True )
 
+
+	def LoadNoSignalState( self ) :
+		if self.mDataCache.GetLockedState( ) == True :
+			self.setProperty('Signal', 'True')
+		else :
+			self.setProperty('Signal', 'False')
+			

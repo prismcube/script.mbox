@@ -25,6 +25,7 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 		self.mSelectedTransponderIndex = 0
 
 		self.SetSettingWindowLabel( 'Satellite Configuration' )
+		self.LoadNoSignalState( )
 		
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %d - Motorized, USALS' % ( tunerIndex + 1 ) )
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType

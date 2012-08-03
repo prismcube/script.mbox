@@ -25,6 +25,7 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 		self.mSelectedTransponderIndex = 0
 
 		self.SetSettingWindowLabel( 'Satellite Configuration' )
+		self.LoadNoSignalState( )
 				
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %d - DiSEqC 1.0' % ( tunerIndex + 1 ) )
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
