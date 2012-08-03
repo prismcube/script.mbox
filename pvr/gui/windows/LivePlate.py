@@ -80,6 +80,8 @@ class LivePlate( BaseWindow ) :
 		self.mAutomaticHide = False
 		self.mEnableLocalThread = False
 
+		self.test_count = 0
+		self.test_load = []
 
 	"""
 	def __del__(self):
@@ -358,7 +360,7 @@ class LivePlate( BaseWindow ) :
 				if iEPG and iEPG.mError == 0 :
 					self.mCurrentEPG = iEPG
 
-				self.UpdateChannelAndEPG( iEPG )
+				self.UpdateChannelAndEPG( self.mCurrentEPG )
 
 				#if self.mCurrentChannel.mLocked :
 				#	WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mPropertyPincode )
@@ -1010,6 +1012,10 @@ class LivePlate( BaseWindow ) :
 
 	
 	def AsyncAutomaticHide( self ) :
+		LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++ DO')
+
+		LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++ DO WinId=%s' %xbmcgui.getCurrentWindowId( ))
+		LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++ DO DlgWinId=%s' %xbmcgui.getCurrentWindowDialogId( ))					
 		xbmc.executebuiltin('xbmc.Action(previousmenu)')		
 		#self.Close()
 
@@ -1019,6 +1025,7 @@ class LivePlate( BaseWindow ) :
 
 	
 	def StartAutomaticHide( self ) :
+		LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++START')		
 		prop = ElisPropertyEnum( 'Channel Banner Duration', self.mCommander )
 		bannerTimeout = prop.GetProp()
 		self.mAutomaticHideTimer = threading.Timer( bannerTimeout, self.AsyncAutomaticHide )
@@ -1026,6 +1033,7 @@ class LivePlate( BaseWindow ) :
 
 
 	def StopAutomaticHide( self ) :
+		LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++STOP')		
 		if self.mAutomaticHideTimer and self.mAutomaticHideTimer.isAlive() :
 			self.mAutomaticHideTimer.cancel()
 			del self.mAutomaticHideTimer
@@ -1104,34 +1112,31 @@ class LivePlate( BaseWindow ) :
 
 
 	def ShowPincodeDialog( self ) :
+		LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')	
+		self.mEventBus.Deregister( self )
+		
 		if self.mCurrentChannel and self.mCurrentChannel.mLocked :
-			LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')
 
 			if self.mAutomaticHide == True :
 				self.StopAutomaticHide( )
 
-			LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')
-			
+		
 			GuiLock2( True )
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
 			dialog.SetTitleLabel( 'Input Pincode' )
 			dialog.doModal( )
 			GuiLock2( False )
 
-			LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')	
-
 			if dialog.GetNextAction( ) == dialog.E_TUNE_NEXT_CHANNEL :
-				LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')				
 				self.ChannelTune( NEXT_CHANNEL )
 
 			elif dialog.GetNextAction( ) == dialog.E_TUNE_PREV_CHANNEL :
-				LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')				
 				self.ChannelTune( PREV_CHANNEL )				
 			else :
 				LOG_TRACE( 'Has no next action' )
+				if self.mAutomaticHide == True :
+					self.RestartAutomaticHide( )
 
-			LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')					
-			if self.mAutomaticHide == True :
-				self.StartAutomaticHide( )
-
+		if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE : # Still showing 
+			self.mEventBus.Register( self )
 

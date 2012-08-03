@@ -1223,14 +1223,21 @@ class EPGWindow( BaseWindow ) :
 	def Tune( self ) :
 		if self.mEPGMode == E_VIEW_CHANNEL :
 			channel = self.mDataCache.Channel_GetCurrent( )
+			if channel.mLocked == True :
+				if self.ShowPincodeDialog( ) == False :
+					return
 			self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType ) 
 			self.RestartEPGUpdateTimer( 5 )			
 
 		else : #self.mEPGMode == E_VIEW_CURRENT  or self.mEPGMode == E_VIEW_FOLLOWING
 			selectedPos = self.mCtrlBigList.getSelectedPosition()		
 			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
+				LOG_TRACE('')
 				channel = self.mChannelList[ selectedPos ]
-				LOG_TRACE('--------------- number=%d ----------------' %channel.mNumber )
+				if channel.mLocked == True :				
+					if self.ShowPincodeDialog( ) == False :
+						return
+					
 				self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
 				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 				self.UpdateCurrentChannel( )
@@ -1340,4 +1347,21 @@ class EPGWindow( BaseWindow ) :
 		self.ShowDeleteConfirm( )	
 
 
+	def ShowPincodeDialog( self ) :
+		self.mEventBus.Deregister( self )
+		
+		GuiLock2( True )
+		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
+		dialog.SetTitleLabel( 'Input Pincode' )
+		dialog.doModal( )
+		GuiLock2( False )
+
+		ret = False
+		
+		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			ret = True
+
+		self.mEventBus.Register( self )
+		
+		return ret
 
