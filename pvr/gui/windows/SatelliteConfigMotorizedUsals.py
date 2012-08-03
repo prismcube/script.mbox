@@ -15,7 +15,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.tunerIndex = self.mTunerMgr.GetCurrentTunerIndex( )
+		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'USALS configuration : Tuner %s' % ( self.tunerIndex + 1 ) )
 
 		self.SetSettingWindowLabel( 'Motorize Configuration' )

@@ -119,10 +119,7 @@ class SatelliteConfigOnecable( SettingWindow ) :
 		self.mSatelliteNamelist = []
 
 		configuredList = self.mTunerMgr.GetConfiguredSatelliteList( )
-		if configuredList :
-			self.mSatelliteCount = len( configuredList )
-		else :
-			self.mSatelliteCount = 0
+		self.mSatelliteCount = len( configuredList )
 
 		for i in range( MAX_SATELLITE_CNT_ONECABLE ) :
 			if i < self.mSatelliteCount :

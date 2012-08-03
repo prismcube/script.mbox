@@ -6,8 +6,6 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 		SettingWindow.__init__( self, *args, **kwargs )
 
 		self.mTunerIndex				= 0
-		self.mCurrentSatellite			= []
-		self.mCurrentSatellite2			= []
 		self.mOneCablesatelliteCount	= 0
 
 		self.mLoadConfig				= True
@@ -24,8 +22,6 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 		self.SetSettingWindowLabel( 'OneCable Configuration' )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'OneCable configuration' )
 		self.mOneCablesatelliteCount = self.mTunerMgr.GetOneCableSatelliteCount( )
-		self.mCurrentSatellite = []
-		self.mCurrentSatellite2 = []
 
 		if self.mLoadConfig == True :
 			self.LoadConfig( )
@@ -171,7 +167,7 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 
 	def LoadConfig( self ) :
 		if self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
-			self.mTunerIndex = self.mTunerMgr.GetCurrentTunerIndex( )
+			self.mTunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
 			
 			self.mSavedTunerPin[self.mTunerIndex] = ElisPropertyInt( 'Tuner%d Pin Code' % ( self.mTunerIndex + 1 ), self.mCommander ).GetProp( )
 			self.mTempTunerPin[self.mTunerIndex] = self.mSavedTunerPin[self.mTunerIndex]
@@ -230,8 +226,6 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 				satellite.mOneCableUBSlot = self.GetSelectedIndex( E_SpinEx02 )
 				satellite.mOneCableUBFreq = int( E_LIST_ONE_CABLE_TUNER_FREQUENCY[ self.GetSelectedIndex( E_SpinEx03 ) ] )
 
-				self.mCurrentSatellite.append( satellite )
-
 		elif self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
 			ElisPropertyInt( 'Tuner1 Pin Code', self.mCommander ).SetProp( self.mTempTunerPin[0] )
 			ElisPropertyInt( 'Tuner1 SCR', self.mCommander ).SetProp( self.GetSelectedIndex( E_SpinEx02 ) ) 
@@ -241,16 +235,16 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 			ElisPropertyInt( 'Tuner2 SCR', self.mCommander ).SetProp( self.GetSelectedIndex( E_SpinEx04 ) ) 
 			ElisPropertyInt( 'Tuner2 SCR Frequency', self.mCommander ).SetProp( int( E_LIST_ONE_CABLE_TUNER_FREQUENCY[ self.GetSelectedIndex( E_SpinEx05 ) ] ) )
 
-			self.mCurrentSatellite1 = self.mTunerMgr.GetConfiguredSatellitebyTunerIndex( E_TUNER_1 )
+			tuner1ConfigList = self.mTunerMgr.GetConfiguredSatelliteListbyTunerIndex( E_TUNER_1 )
 			for i in range( self.mOneCablesatelliteCount ) :
-				self.mCurrentSatellite1[i].mOneCableMDU = self.GetSelectedIndex( E_SpinEx01 )
-				self.mCurrentSatellite1[i].mOneCablePin = int( self.GetControlLabel2String( E_Input01 ) )
-				self.mCurrentSatellite1[i].mOneCableUBSlot = self.GetSelectedIndex( E_SpinEx02 )
-				self.mCurrentSatellite1[i].mOneCableUBFreq = int( E_LIST_ONE_CABLE_TUNER_FREQUENCY[ self.GetSelectedIndex( E_SpinEx03 ) ] )
+				tuner1ConfigList[i].mOneCableMDU = self.GetSelectedIndex( E_SpinEx01 )
+				tuner1ConfigList[i].mOneCablePin = int( self.GetControlLabel2String( E_Input01 ) )
+				tuner1ConfigList[i].mOneCableUBSlot = self.GetSelectedIndex( E_SpinEx02 )
+				tuner1ConfigList[i].mOneCableUBFreq = int( E_LIST_ONE_CABLE_TUNER_FREQUENCY[ self.GetSelectedIndex( E_SpinEx03 ) ] )
 
-			self.mCurrentSatellite2 = self.mTunerMgr.GetConfiguredSatellitebyTunerIndex( E_TUNER_2 )
+			tuner2ConfigList = self.mTunerMgr.GetConfiguredSatelliteListbyTunerIndex( E_TUNER_2 )
 			for i in range( self.mOneCablesatelliteCount ) :
-				self.mCurrentSatellite2[i].mOneCableMDU = self.GetSelectedIndex( E_SpinEx03 )
-				self.mCurrentSatellite2[i].mOneCablePin = int( self.GetControlLabel2String( E_Input02 ) )
-				self.mCurrentSatellite2[i].mOneCableUBSlot = self.GetSelectedIndex( E_SpinEx04 )
-				self.mCurrentSatellite2[i].mOneCableUBFreq = int( E_LIST_ONE_CABLE_TUNER_FREQUENCY[ self.GetSelectedIndex( E_SpinEx05 ) ] )
+				tuner2ConfigList[i].mOneCableMDU = self.GetSelectedIndex( E_SpinEx03 )
+				tuner2ConfigList[i].mOneCablePin = int( self.GetControlLabel2String( E_Input02 ) )
+				tuner2ConfigList[i].mOneCableUBSlot = self.GetSelectedIndex( E_SpinEx04 )
+				tuner2ConfigList[i].mOneCableUBFreq = int( E_LIST_ONE_CABLE_TUNER_FREQUENCY[ self.GetSelectedIndex( E_SpinEx05 ) ] )

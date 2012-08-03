@@ -20,22 +20,14 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 		self.mEventBus.Register( self )
 		ScanHelper.GetInstance( ).ScanHelper_Start( self.mWin )
 		
-		self.tunerIndex = self.mTunerMgr.GetCurrentTunerIndex( )
+		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
 		self.mCurrentSatellite = self.mTunerMgr.GetCurrentConfiguredSatellite( )
 		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 		self.mSelectedTransponderIndex = 0
 
 		self.SetSettingWindowLabel( 'Satellite Configuration' )
-		
-		if self.tunerIndex == E_TUNER_1 :
-			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
-		elif self.tunerIndex == E_TUNER_2 : 
-			property = ElisPropertyEnum( 'Tuner2 Type', self.mCommander )
-		else :
-			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
- 
-		
-		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %d - %s' % ( self.tunerIndex + 1, property.GetPropString( ) ) )
+
+		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %d - Motorized, DiSEqC 1.2' % ( self.tunerIndex + 1 ) )
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.InitConfig( )
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
@@ -83,7 +75,6 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 			if ret >= 0 :
 	 			satellite = self.mDataCache.GetSatelliteByIndex( ret )
 
-				self.mCurrentSatellite.reset( )
 				self.mCurrentSatellite.mSatelliteLongitude 	= satellite.mLongitude		# Longitude
 				self.mCurrentSatellite.mBandType 			= satellite.mBand			# Band
 				self.mCurrentSatellite.mIsConfigUsed 		= 1							# IsUsed
@@ -156,7 +147,6 @@ class SatelliteConfigMotorized12( SettingWindow ) :
  			dialog.doModal( )
  			return
 
-			
 		# Action
 		elif groupId == E_SpinEx04 :
 			return
@@ -233,7 +223,7 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 		self.AddInputControl( E_Input05, ' - Action Start', '' )
 		self.AddInputControl( E_Input06, 'Store Position and Exit', '' )
 
-		if( self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
+		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input01, E_Input03, E_Input04, E_Input05, E_Input06 ]
 			hideControlIds = [ E_SpinEx05, E_SpinEx06, E_Input02 ]
 		else :

@@ -358,7 +358,6 @@ class Configure( SettingWindow ) :
 		self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( False )
 		
 		if selectedId == E_LANGUAGE :
-
 			self.AddEnumControl( E_SpinEx01, 'Language' )
 			self.AddEnumControl( E_SpinEx02, 'Audio Language' )
 			self.AddEnumControl( E_SpinEx03, 'Subtitle Language' )
@@ -398,17 +397,17 @@ class Configure( SettingWindow ) :
 
 
 		elif selectedId == E_RECORDING_OPTION :
-
 			self.AddEnumControl( E_SpinEx01, 'Automatic Timeshift' )
-			self.AddEnumControl( E_SpinEx02, 'Default Rec Duration' )
-			self.AddEnumControl( E_SpinEx03, 'Pre-Rec Time' )
-			self.AddEnumControl( E_SpinEx04, 'Post-Rec Time' )
+			self.AddEnumControl( E_SpinEx02, 'Timeshift Buffer Size' )
+			self.AddEnumControl( E_SpinEx03, 'Default Rec Duration' )
+			self.AddEnumControl( E_SpinEx04, 'Pre-Rec Time' )
+			self.AddEnumControl( E_SpinEx05, 'Post-Rec Time' )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
+			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )

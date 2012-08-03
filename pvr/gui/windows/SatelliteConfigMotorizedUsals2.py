@@ -19,22 +19,14 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 		self.mEventBus.Register( self )
 		ScanHelper.GetInstance( ).ScanHelper_Start( self.mWin )
 
-		tunerIndex = self.mTunerMgr.GetCurrentTunerIndex( )
+		tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
 		self.mCurrentSatellite = self.mTunerMgr.GetCurrentConfiguredSatellite( )
 		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 		self.mSelectedTransponderIndex = 0
 
 		self.SetSettingWindowLabel( 'Satellite Configuration' )
 		
-		if tunerIndex == E_TUNER_1 :
-			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
-		elif tunerIndex == E_TUNER_2 : 
-			property = ElisPropertyEnum( 'Tuner2 Type', self.mCommander )
-		else :
-			LOG_ERR( 'Error : unknown Tuner' )
-			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
- 				
-		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %d - %s' % ( tunerIndex + 1, property.GetPropString( ) ) )
+		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %d - Motorized, USALS' % ( tunerIndex + 1 ) )
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.InitConfig( )
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
@@ -82,7 +74,6 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 			if ret >= 0 :
 	 			satellite = self.mDataCache.GetSatelliteByIndex( ret )
 
-				self.mCurrentSatellite.reset( )
 				self.mCurrentSatellite.mSatelliteLongitude 	= satellite.mLongitude		# Longitude
 				self.mCurrentSatellite.mBandType 			= satellite.mBand			# Band
 				self.mCurrentSatellite.mIsConfigUsed 		= 1							# IsUsed
@@ -198,7 +189,7 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 
 		self.AddInputControl( E_Input04, 'Go to the Position', '' )
 
-		if( self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE ) :
+		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input03, E_Input04 ]
 			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input02, E_Input05 ]
 		else :
