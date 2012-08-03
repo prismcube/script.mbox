@@ -14,6 +14,21 @@ def SetSetting( aID, aValue ) :
 	gSettings.setSetting( aID, aValue )
 
 
+def CheckPincode( ) :
+	import pvr.gui.DialogMgr as DiaMgr
+	from pvr.Util import GuiLock, GuiLock2
+	GuiLock2(True)
+	dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
+	dialog.SetTitleLabel( 'Input Pincode' )
+	dialog.doModal()
+	GuiLock2(False)
+
+	if dialog.mIsOk == E_DIALOG_STATE_YES :
+		return True
+
+	return False
+
+
 def RecordConflict( aInfo ) :
 	import pvr.DataCacheMgr
 	dataCache = pvr.DataCacheMgr.GetInstance( )

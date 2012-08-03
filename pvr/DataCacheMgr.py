@@ -1104,6 +1104,7 @@ class DataCacheMgr( object ):
 				LOG_TRACE('skip getzapping list')
 				return
  
+			self.Frontdisplay_SetIcon( ElisEnum.E_ICON_REC, recCount )
 			return self.mCommander.Channel_GetZappingList( aSync )
 
 	def Channel_InvalidateCurrent( self ) :
@@ -1204,6 +1205,7 @@ class DataCacheMgr( object ):
 				recInfo = self.Record_GetRecordInfo( i, aServiceType )
 				recordList.append( recInfo )
 			return recordList
+
 
 	def Record_GetRecordInfo( self, aIndex, aServiceType ) :
 		if SUPPORT_RECORD_DATABASE == True :	
