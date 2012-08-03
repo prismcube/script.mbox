@@ -19,21 +19,14 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 		self.mEventBus.Register( self )
 		ScanHelper.GetInstance( ).ScanHelper_Start( self.mWin )
 
-		tunerIndex = self.mTunerMgr.GetCurrentTunerIndex( )
+		tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
 		self.mCurrentSatellite = self.mTunerMgr.GetCurrentConfiguredSatellite( )
 		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 		self.mSelectedTransponderIndex = 0
 
 		self.SetSettingWindowLabel( 'Satellite Configuration' )
-		
-		if tunerIndex == E_TUNER_1 :
-			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
-		elif tunerIndex == E_TUNER_2 : 
-			property = ElisPropertyEnum( 'Tuner2 Type', self.mCommander )
-		else :
-			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
  				
-		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %d - %s' % ( tunerIndex + 1, property.GetPropString( ) ) )
+		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %d - DiSEqC 1.1' % ( tunerIndex + 1 ) )
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.InitConfig( )
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
@@ -81,7 +74,6 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 			if ret >= 0 :
 	 			satellite = self.mDataCache.GetSatelliteByIndex( ret )
 
-				self.mCurrentSatellite.reset( )
 				self.mCurrentSatellite.mSatelliteLongitude 	= satellite.mLongitude		# Longitude
 				self.mCurrentSatellite.mBandType 			= satellite.mBand			# Band
 				self.mCurrentSatellite.mIsConfigUsed 		= 1							# IsUsed

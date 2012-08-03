@@ -27,7 +27,7 @@ class DialogMoveAntenna( BaseDialog ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId )	
 
-		self.tunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerIndex( )
+		self.tunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerNumber( )
 
 		context = [ 'MOVE WEST', 'STEP WEST', 'STOP', 'STEP EAST', 'MOVE EAST', 'CLOSE' ]
 

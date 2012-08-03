@@ -15,21 +15,12 @@ class TunerConfiguration( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.tunerIndex = self.mTunerMgr.GetCurrentTunerIndex( )
-
-		if self.tunerIndex == E_TUNER_1 :
-			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
-		elif self.tunerIndex == E_TUNER_2 : 
-			property = ElisPropertyEnum( 'Tuner2 Type', self.mCommander )
-		else :
-			property = ElisPropertyEnum( 'Tuner1 Type', self.mCommander )
-			
+		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )	
 		headerLabel = 'Tuner %d Configuration' % ( self.tunerIndex + 1 )
-
 		self.SetSettingWindowLabel( headerLabel )
 		
-		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Tuner %d Configuration : %s' % ( self.tunerIndex + 1, property.GetPropString( ) ) )
-		self.InitConfig( )
+		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Tuner %d Configuration : %s' % ( self.tunerIndex + 1, self.mTunerMgr.GetCurrentTunerTypeString( ) ) )
+		self.LoadConfigedSatellite( )
 
 
 	def onAction( self, aAction ) :
@@ -60,13 +51,11 @@ class TunerConfiguration( SettingWindow ) :
 	def onClick( self, aControlId ) :
 		if aControlId == E_MAIN_LIST_ID : 
 			position = self.getControl( E_MAIN_LIST_ID ).getSelectedPosition( )
-			
-			configuredList = self.mTunerMgr.GetConfiguredSatelliteList( )
 
 			if self.mConfiguredCount == position :
 				if self.mTunerMgr.GetCurrentTunerType( ) == E_DISEQC_1_0 and self.mConfiguredCount > 3 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( 'ERROR', 'Alreay 4 Satellite Configured' )
+					dialog.SetDialogProperty( 'ERROR', 'Already 4 Satellite Configured' )
 		 			dialog.doModal( )
 				else :
 					dialog = xbmcgui.Dialog( )
@@ -76,10 +65,7 @@ class TunerConfiguration( SettingWindow ) :
 		 			if ret >= 0 :
 		 				self.OpenBusyDialog( )
 						self.mTunerMgr.AddConfiguredSatellite( ret )
-						self.mTunerMgr.SatelliteConfigSaveList( )
-		 				self.ReloadConfigedSatellite( )
-		 				self.ReTune( )
-		 				self.CloseBusyDialog( )
+						self.AfterAction( )
 
 	 		elif self.mConfiguredCount + 1 == position :
 	 			if self.mConfiguredCount <= 0 :
@@ -99,16 +85,12 @@ class TunerConfiguration( SettingWindow ) :
 						if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 							self.OpenBusyDialog( )
 			 				self.mTunerMgr.DeleteConfiguredSatellitebyIndex( ret )
-			 				self.mTunerMgr.SatelliteConfigSaveList( )
-			 				self.ReTune( )
-			 				self.CloseBusyDialog( )
-			 				self.ReloadConfigedSatellite( )
+			 				self.AfterAction( )
 
 			else :		
-				config = configuredList[ position ]
+				config = self.mTunerMgr.GetConfiguredSatelliteList( )[ position ]
 				if config :
 					self.mTunerMgr.SetCurrentConfigIndex( position )
-					self.ResetAllControl( )
 					tunertype = self.mTunerMgr.GetCurrentTunerType( )
 					
 					if tunertype == E_DISEQC_1_0 :
@@ -131,26 +113,30 @@ class TunerConfiguration( SettingWindow ) :
 		pass
 
 
-	def InitConfig( self ) :
-		self.ReloadConfigedSatellite( )
-
-
-	def ReloadConfigedSatellite( self ) :
+	def LoadConfigedSatellite( self ) :
 		configuredList = []
 		self.mListItems = []
 
 		configuredList = self.mTunerMgr.GetConfiguredSatelliteList( )
 		self.mConfiguredCount = 0
 
-		if configuredList :
-			for config in configuredList :
-				if config.mIsConfigUsed == 1 :
-					self.mConfiguredCount = self.mConfiguredCount + 1
-					self.mListItems.append( '%s' % self.mDataCache.GetFormattedSatelliteName( config.mSatelliteLongitude, config.mBandType ) )
+		for config in configuredList :
+			if config.mIsConfigUsed == 1 :
+				self.mConfiguredCount = self.mConfiguredCount + 1
+				self.mListItems.append( '%s' % self.mDataCache.GetFormattedSatelliteName( config.mSatelliteLongitude, config.mBandType ) )
 
 		self.mListItems.append( 'Add New Satellite' )
 		self.mListItems.append( 'Delete Satellite' )
 		self.getControl( E_MAIN_LIST_ID ).addItems( self.mListItems )
+
+
+	def AfterAction( self ) :
+		self.mTunerMgr.SatelliteConfigSaveList( )
+		self.ReTune( )
+		self.mDataCache.LoadConfiguredSatellite( )
+		self.mDataCache.LoadConfiguredTransponder( )
+		self.LoadConfigedSatellite( )
+		self.CloseBusyDialog( )
 
 
 	def ReTune( self ) :
