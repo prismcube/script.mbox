@@ -109,7 +109,7 @@ class WindowMgr(object):
 			return None
 
 
-	def GetLastWindowID( ):
+	def GetLastWindowID( self ):
 		return self.mLastId
 
 

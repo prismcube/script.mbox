@@ -1028,6 +1028,10 @@ class LivePlate( BaseWindow ) :
 
 	
 	def AsyncAutomaticHide( self ) :
+		LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++ DO')
+
+		LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++ DO WinId=%s' %xbmcgui.getCurrentWindowId( ))
+		LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++ DO DlgWinId=%s' %xbmcgui.getCurrentWindowDialogId( ))					
 		xbmc.executebuiltin('xbmc.Action(previousmenu)')		
 		#self.Close()
 
@@ -1037,6 +1041,7 @@ class LivePlate( BaseWindow ) :
 
 	
 	def StartAutomaticHide( self ) :
+		LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++START')		
 		prop = ElisPropertyEnum( 'Channel Banner Duration', self.mCommander )
 		bannerTimeout = prop.GetProp()
 		self.mAutomaticHideTimer = threading.Timer( bannerTimeout, self.AsyncAutomaticHide )
@@ -1044,6 +1049,7 @@ class LivePlate( BaseWindow ) :
 
 
 	def StopAutomaticHide( self ) :
+		LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++STOP')		
 		if self.mAutomaticHideTimer and self.mAutomaticHideTimer.isAlive() :
 			self.mAutomaticHideTimer.cancel()
 			del self.mAutomaticHideTimer
@@ -1122,17 +1128,31 @@ class LivePlate( BaseWindow ) :
 
 
 	def ShowPincodeDialog( self ) :
+		LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')	
+		self.mEventBus.Deregister( self )
+		
 		if self.mCurrentChannel and self.mCurrentChannel.mLocked :
 
 			if self.mAutomaticHide == True :
 				self.StopAutomaticHide( )
-				
-			if CheckPincode( ) == True :
-				LOG_TRACE( 'Pincode Success' )
-			else :
-				LOG_TRACE( 'Pincode Fail' )
-				
-			if self.mAutomaticHide == True :
-				self.StartAutomaticHide( )
 
+		
+			GuiLock2( True )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
+			dialog.SetTitleLabel( 'Input Pincode' )
+			dialog.doModal( )
+			GuiLock2( False )
+
+			if dialog.GetNextAction( ) == dialog.E_TUNE_NEXT_CHANNEL :
+				self.ChannelTune( NEXT_CHANNEL )
+
+			elif dialog.GetNextAction( ) == dialog.E_TUNE_PREV_CHANNEL :
+				self.ChannelTune( PREV_CHANNEL )				
+			else :
+				LOG_TRACE( 'Has no next action' )
+				if self.mAutomaticHide == True :
+					self.RestartAutomaticHide( )
+
+		if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE : # Still showing 
+			self.mEventBus.Register( self )
 
