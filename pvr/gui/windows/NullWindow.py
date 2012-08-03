@@ -19,6 +19,8 @@ class NullWindow( BaseWindow ) :
 
 		if self.mInitialized == False :
 			self.mInitialized = True
+			self.mCommander.AppHBBTV_Ready( 1 )
+			self.mHBBTVReady = True
 			xbmc.executebuiltin('xbmc.Action(contextmenu)')
 			return
 
