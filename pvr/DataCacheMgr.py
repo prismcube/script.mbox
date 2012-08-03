@@ -1000,7 +1000,11 @@ class DataCacheMgr( object ):
 		return self.mCurrentEvent
 		"""
 
-		return	self.mCommander.Epgevent_GetPresent( )
+		iEPG = self.mCommander.Epgevent_GetPresent( )
+		if iEPG == None or iEPG.mError != 0 :
+			iEPG = None
+
+		return iEPG
 
 
 	#Aready declared : _Elis, request direct command 

@@ -201,6 +201,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mZappingMode = ElisEnum.E_MODE_ALL
 		self.mZappingName = ''
 		self.mChannelList = []
+		self.mChannelListHash = {}
 		self.mRecCount = 0
 		self.mRecChannel1 = []
 		self.mRecChannel2 = []
@@ -407,7 +408,16 @@ class ChannelListWindow( BaseWindow ) :
 		#LOG_TRACE( 'control %d' % controlId )
 		pass
 
-		
+
+	def HashInit( self ) :
+		self.mChannelListHash = {}
+		if self.mChannelList and len(self.mChannelList) > 0 :
+			for i in range(len(self.mChannelList)) :
+				self.mChannelListHash[i] = self.mChannelList[i]
+
+		#LOG_TRACE('-------------------hash len[%s]'% len(self.mChannelListHash) )
+
+
 	def LoadInit( self ):
 		self.ShowRecordingInfo( )
 
@@ -915,6 +925,8 @@ class ChannelListWindow( BaseWindow ) :
 			elif aMode == ElisEnum.E_MODE_NETWORK :
 				pass
 
+			self.HashInit( )
+
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -1328,6 +1340,8 @@ class ChannelListWindow( BaseWindow ) :
 		else :
 			self.mChannelList = self.mDataCache.Channel_GetList( FLAG_ZAPPING_LOAD, self.mChannelListServiceType, self.mZappingMode, self.mChannelListSortMode )
 
+		self.HashInit( )
+
 		#path tree, Mainmenu/Submanu
 		label = ''
 		label1 = EnumToString('mode', self.mZappingMode)
@@ -1472,21 +1486,24 @@ class ChannelListWindow( BaseWindow ) :
 					idx = self.mCtrlListCHList.getSelectedPosition( )
 					chNumber = self.mChannelList[idx].mNumber
 
-					for iChannel in self.mChannelList:
-						if iChannel.mNumber == chNumber :
-							self.mNavChannel = None
-							self.mNavChannel = iChannel
+					#for iChannel in self.mChannelList:
+					#	if iChannel.mNumber == chNumber :
+					iChannel = self.mChannelListHash.get(idx)
+					if iChannel and iChannel.mNumber == chNumber :
+						self.mNavChannel = None
+						self.mNavChannel = iChannel
 
-							sid  = iChannel.mSid
-							tsid = iChannel.mTsid
-							onid = iChannel.mOnid
-							iEPG = None
-							iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
-							#iEPGList = self.mDataCache.Epgevent_GetCurrentByChannelFromEpgCF( sid, tsid, onid )
-							if iEPG == None or iEPG.mError != 0 :
-								self.mNavEpg = 0
+						sid  = iChannel.mSid
+						tsid = iChannel.mTsid
+						onid = iChannel.mOnid
+						iEPG = None
+						iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
+						#iEPGList = self.mDataCache.Epgevent_GetCurrentByChannelFromEpgCF( sid, tsid, onid )
+						#LOG_TRACE('----chNum[%s] chName[%s] sid[%s] tsid[%s] onid[%s]'% (iChannel.mNumber, iChannel.mName, sid, tsid, onid) )
+						if iEPG == None or iEPG.mError != 0 :
+							self.mNavEpg = 0
 
-							self.mNavEpg = iEPG
+						self.mNavEpg = iEPG
 							
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -1575,6 +1592,9 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def UpdateChannelAndEPG( self ) :
+		if self.mChannelList == None or len(self.mChannelList) < 1 :
+			return
+
 		if self.mNavChannel :
 			#update channel name
 			if self.mIsTune == True :
@@ -1967,7 +1987,8 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def SetClearToMarkGUI( self ) :
-		if self.mMarkList == None or len(self.mMarkList) < 1 :
+		if self.mMarkList == None or len(self.mMarkList) < 1 or \
+		   self.mChannelList == None or len(self.mChannelList) < 1 :
 			return
 
 		for pos in self.mMarkList :

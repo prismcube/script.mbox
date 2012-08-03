@@ -175,22 +175,6 @@ class LivePlate( BaseWindow ) :
 
 		#get channel
 		self.ChannelTune( INIT_CHANNEL )
-
-		starttime = time.time( )
-		self.GetEPGListByChannel( )
-		endtime = time.time( )
-		print '==================== TEST TIME[Epgevent_GetListByChannelFromEpgCF()] dbload[%s]'% (endtime - starttime)
-		self.test_count += 1
-		self.test_load.append( endtime - starttime )
-		if self.test_count % 10 == 0 :
-			tot = 0.0
-			for item in self.test_load :
-				tot += item
-			aver = tot / self.test_count
-			print 'EPG DB : TEST TIME [average] count[%s] dbload[%s]'% (self.test_count, aver )
-			self.test_count = 0
-			self.test_load = []
-
 		self.LoadInit( )
 
 		#run thread
