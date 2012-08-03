@@ -1105,15 +1105,32 @@ class LivePlate( BaseWindow ) :
 
 	def ShowPincodeDialog( self ) :
 		if self.mCurrentChannel and self.mCurrentChannel.mLocked :
+			LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')
 
 			if self.mAutomaticHide == True :
 				self.StopAutomaticHide( )
-				
-			if CheckPincode( ) == True :
-				LOG_TRACE( 'Pincode Success' )
+
+			LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')
+			
+			GuiLock2( True )
+			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
+			dialog.SetTitleLabel( 'Input Pincode' )
+			dialog.doModal( )
+			GuiLock2( False )
+
+			LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')	
+
+			if dialog.GetNextAction( ) == dialog.E_TUNE_NEXT_CHANNEL :
+				LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')				
+				self.ChannelTune( NEXT_CHANNEL )
+
+			elif dialog.GetNextAction( ) == dialog.E_TUNE_PREV_CHANNEL :
+				LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')				
+				self.ChannelTune( PREV_CHANNEL )				
 			else :
-				LOG_TRACE( 'Pincode Fail' )
-				
+				LOG_TRACE( 'Has no next action' )
+
+			LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')					
 			if self.mAutomaticHide == True :
 				self.StartAutomaticHide( )
 
