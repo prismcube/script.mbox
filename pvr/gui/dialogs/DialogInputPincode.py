@@ -7,25 +7,28 @@ E_DIALOG_HEADER			= 1
 E_START_ID_NUMBER		= 100
 MAX_PINCODE_LENGTH		= 4
 
-NEXT_CHANNEL			= 1
-PREV_CHANNEL			= 2
-
 
 class DialogInputPincode( BaseDialog ) :
+	E_TUNE_NEXT_CHANNEL     = 1
+	E_TUNE_PREV_CHANNEL		= 2
+
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
-		
+	
 		self.mTitleLabel = ''
 		self.mCtrlInputLabel = None
 		self.mInputNumber = ''
+		self.mNextAction = 0
 
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
+		LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')			
 		LOG_TRACE( '---------------- lael98 -----------------' )
 
 		self.mIsOk = E_DIALOG_STATE_CANCEL
+		self.mNextAction = 0		
 
 		self.DrawKeyboard( )
 		
@@ -33,7 +36,7 @@ class DialogInputPincode( BaseDialog ) :
 		self.mCtrlInputLabel = self.getControl( E_INPUT_LABEL )
 		self.mInputNumber = ''		
 		self.mCtrlInputLabel.setLabel( self.mInputNumber )
-		LOG_TRACE( '---------------- EndInit -----------------' )			
+		LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')	
 
 
 	def onAction( self, aAction ) :
@@ -63,29 +66,29 @@ class DialogInputPincode( BaseDialog ) :
 		elif actionId == Action.ACTION_PARENT_DIR : 							# back space
 			self.DeleteValue( )
 
-		elif id == Action.ACTION_PAGE_UP:
-			LOG_TRACE( '---------------- lael98 -----------------' )		
+		elif actionId == Action.ACTION_PAGE_UP:
+			LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')	
+			LOG_TRACE( '---------------- lael98 LastID=%d-----------------' %WinMgr.GetInstance( ).GetLastWindowID( )  )					
 			try :
-				if WinMgr.GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
-					LOG_TRACE( '---------------- lael98 -----------------' )						
+				if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE :
+					LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')	
+					self.mNextAction =  self.E_TUNE_NEXT_CHANNEL					
 					self.CloseDialog( )
-					LOG_TRACE( '---------------- lael98 -----------------' )							
-					nullWindow = WinMgr.GetWindow( WinMgr.WIN_ID_NULLWINDOW )
-					LOG_TRACE( '---------------- lael98 -----------------' )							
-					nullWindow.ChannelTune( nullWindow.NEXT_CHANNEL )
-					LOG_TRACE( '---------------- lael98 -----------------' )							
+					
 			except Exception, e :
 				LOG_TRACE( 'Exception %s' %e )
 			
-		elif id == Action.ACTION_PAGE_DOWN :
+		elif actionId == Action.ACTION_PAGE_DOWN :
+			LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')	
+			LOG_TRACE( '---------------- lael98 LastID=%d-----------------' %WinMgr.GetInstance( ).GetLastWindowID( )  )					
 			try :
-				if WinMgr.GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
+				if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE :
+					LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')	
+					self.mNextAction =  self.E_TUNE_PREV_CHANNEL										
 					self.CloseDialog( )
-					nullWindow = WinMgr.GetWindow( WinMgr.WIN_ID_NULLWINDOW )
-					nullWindow.ChannelTune( nullWindow.PREV_CHANNEL )
+
 			except Exception, e :
 				LOG_TRACE( 'Exception %s' %e )
-
 
 
 	def onClick( self, aControlId ) :
@@ -95,6 +98,10 @@ class DialogInputPincode( BaseDialog ) :
 
 	def IsOK( self ) :
 		return self.mIsOk
+
+
+	def GetNextAction( self ) :
+		return self.mNextAction
 
 
 	def onFocus( self, aControlId ):
