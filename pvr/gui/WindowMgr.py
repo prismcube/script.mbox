@@ -109,6 +109,10 @@ class WindowMgr(object):
 			return None
 
 
+	def GetLastWindowID( ):
+		return self.mLastId
+
+
 	def ShowRootWindow( self ):
 		LOG_TRACE( '------------------------ START ROOT WINDOW --------------------------' )	
 		self.mLastId = WIN_ID_NULLWINDOW		

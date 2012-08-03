@@ -207,6 +207,8 @@ class LivePlate( BaseWindow ) :
 		if self.mAutomaticHide == True :
 			self.StartAutomaticHide( )
 
+		self.ShowPincodeDialog( )
+
 
 	def onAction( self, aAction ) :
 		id = aAction.getId( )
@@ -374,6 +376,7 @@ class LivePlate( BaseWindow ) :
 
 
 	#@RunThread
+	"""
 	def LoadingThread( self ):
 		self.ShowRecordingInfo( )
 		self.InitControlGUI()
@@ -394,6 +397,7 @@ class LivePlate( BaseWindow ) :
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
+	"""
 
 
 	@GuiLock
@@ -434,6 +438,8 @@ class LivePlate( BaseWindow ) :
 
 				#xbmcgui.Dialog().ok( MR_LANG('Infomation'), MR_LANG('No Signal') )
 
+			elif aEvent.getName() == ElisEventChannelChangeResult.getName() :
+				pass
 
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
@@ -785,7 +791,8 @@ class LivePlate( BaseWindow ) :
 					self.UpdateChannelAndEPG( iEPG )
 
 				if self.mCurrentChannel.mLocked :
-					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mDataCache.mPropertyPincode )
+					pass
+					#WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mDataCache.mPropertyPincode )
 
 
 		except Exception, e :
@@ -1055,7 +1062,6 @@ class LivePlate( BaseWindow ) :
 		xbmc.executebuiltin('xbmc.Action(previousmenu)')		
 		#self.Close()
 
-
 	def RestartAutomaticHide( self ) :
 		self.StopAutomaticHide()
 		self.StartAutomaticHide()
@@ -1066,7 +1072,7 @@ class LivePlate( BaseWindow ) :
 		bannerTimeout = prop.GetProp()
 		self.mAutomaticHideTimer = threading.Timer( bannerTimeout, self.AsyncAutomaticHide )
 		self.mAutomaticHideTimer.start()
-		
+
 
 	def StopAutomaticHide( self ) :
 		if self.mAutomaticHideTimer and self.mAutomaticHideTimer.isAlive() :
@@ -1108,6 +1114,7 @@ class LivePlate( BaseWindow ) :
 				self.mFakeChannel = self.mCurrentChannel
 				self.mLastChannel = self.mCurrentChannel
 				self.UpdateChannelAndEPG()
+				self.ShowPincodeDialog( )
 
 			else :
 				LOG_ERR('Tune Fail')
@@ -1143,5 +1150,20 @@ class LivePlate( BaseWindow ) :
 			if self.mCurrentChannel.mNumber != int(inputNumber) :
 				self.mJumpNumber = int(inputNumber)
 				self.ChannelTune(CURR_CHANNEL)
+
+
+	def ShowPincodeDialog( self ) :
+		if self.mCurrentChannel and self.mCurrentChannel.mLocked :
+
+			if self.mAutomaticHide == True :
+				self.StopAutomaticHide( )
+				
+			if CheckPincode( ) == True :
+				LOG_TRACE( 'Pincode Success' )
+			else :
+				LOG_TRACE( 'Pincode Fail' )
+				
+			if self.mAutomaticHide == True :
+				self.StartAutomaticHide( )
 
 

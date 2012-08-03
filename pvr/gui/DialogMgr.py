@@ -25,6 +25,7 @@ DIALOG_ID_EXTEND_EPG				= 16
 DIALOG_ID_ADD_TIMER					= 17
 DIALOG_ID_ADD_MANUAL_TIMER			= 18
 DIALOG_ID_TIMESHIFT_JUMP			= 19
+DIALOG_ID_INPUT_PINCODE				= 20
 
 
 gDialogMgr = None
@@ -128,7 +129,10 @@ class DialogMgr(object):
 				from pvr.gui.dialogs.DialogTimeshiftJump import DialogTimeshiftJump
 				return DialogTimeshiftJump('DialogChannelJump.xml', self.scriptDir)
 
-				
+			elif aDialogId == DIALOG_ID_INPUT_PINCODE :
+				from pvr.gui.dialogs.DialogInputPincode import DialogInputPincode
+				return DialogInputPincode('DialogInputPincode.xml', self.scriptDir)
+
 			else :
 				LOG_ERR( 'can not find dialog' )
 

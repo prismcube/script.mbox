@@ -323,9 +323,15 @@ class NullWindow( BaseWindow ) :
 					xbmc.executebuiltin('xbmc.Action(stop)')
 
 			elif aEvent.getName() == ElisEventChannelChangeResult.getName() :
+				pass
+				"""
 				ch = self.mDataCache.Channel_GetCurrent( )
 				if ch.mLocked :
-					self.PincodeDialogLimit( self.mDataCache.mPropertyPincode )
+					LOG_TRACE( 'LAEL98 CHECK PINCODE' )				
+					CheckPincode( )
+					LOG_TRACE( 'LAEL98 CHECK PINCODE' )					
+					#self.PincodeDialogLimit( self.mDataCache.mPropertyPincode )
+				"""
 
 			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
 				 aEvent.getName() == ElisEventRecordingStopped.getName() :
