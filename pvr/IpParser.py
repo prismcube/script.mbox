@@ -19,6 +19,7 @@ gWifiDevName		= 'wlan0'
 gEthernetDevName	= 'eth0'
 gNetworkType		= NETWORK_ETHERNET
 
+
 def SetCurrentNetworkType( aType ) :
 	global gNetworkType
 	gNetworkType = aType
