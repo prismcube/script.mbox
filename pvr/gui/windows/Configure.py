@@ -91,11 +91,12 @@ class Configure( SettingWindow ) :
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
 		if sys.platform != 'win32' :
+			LoadNetworkType( )
 			self.mIpParser = IpParser( )
 			self.mWireless = WirelessParser( )
 			self.LoadIp( )
 			self.LoadWifi( )
-			SetCurrentNetworkType( self.mUseNetworkType )
+			self.mUseNetworkType = GetCurrentNetworkType( )
 
 		self.mVisibleParental = False
 		self.mReLoadIp = False
@@ -132,6 +133,7 @@ class Configure( SettingWindow ) :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
 				self.mVisibleParental = False
+				self.mUseNetworkType = GetCurrentNetworkType( )
 				self.SetListControl( )
 			elif focusId != E_SUBMENU_LIST_ID :
 				self.ControlUp( )
@@ -141,6 +143,7 @@ class Configure( SettingWindow ) :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
 				self.mVisibleParental = False
+				self.mUseNetworkType = GetCurrentNetworkType( )
 				self.SetListControl( )
 			elif focusId != E_SUBMENU_LIST_ID :
 				self.ControlDown( )
@@ -178,6 +181,7 @@ class Configure( SettingWindow ) :
 	 			return
 			if groupId == E_SpinEx05 :
 				self.mUseNetworkType = self.GetSelectedIndex( E_SpinEx05 )
+				#SetCurrentNetworkType( self.GetSelectedIndex( E_SpinEx05 ) )
 				self.SetListControl( )
 			elif groupId == E_Input06 :
 				context = []
@@ -645,12 +649,12 @@ class Configure( SettingWindow ) :
 
 
 	def LoadIp( self ) :
-		self.LoadNetworkType( )
+		self.LoadEthernetType( )
 		self.LoadNetworkAddress( )
 
 
-	def LoadNetworkType( self ) :
-		ret = self.mIpParser.LoadNetworkType( )
+	def LoadEthernetType( self ) :
+		ret = self.mIpParser.LoadEthernetType( )
 		if ret == True :
 			self.mSavedNetworkType	= self.mIpParser.GetNetworkType( )
 			self.mTempNetworkType	= self.mIpParser.GetNetworkType( )
@@ -679,9 +683,9 @@ class Configure( SettingWindow ) :
 
 
 	def SaveIp( self ) :
-		SetCurrentNetworkType( self.mUseNetworkType )
 		self.ShowProgress( 'Setting Network...', 25 )
 		ret = self.mIpParser.SetNetwork( self.mTempNetworkType, self.mTempIpAddr, self.mTempSubNet, self.mTempGateway, self.mTempDns )
+		SetCurrentNetworkType( NETWORK_ETHERNET )
 		if ret == False :
 			try :
 				self.mProgress.SetResult( True )
@@ -732,7 +736,8 @@ class Configure( SettingWindow ) :
 				self.mTempNetworkType = NET_STATIC
 			else :
 				self.mTempNetworkType = NET_DHCP
-			self.SetListControl( )
+			#self.SetListControl( )
+			self.DisableControl( E_ETHERNET )
 			
 		elif aControlId == E_Input01 :
 			self.mTempIpAddr = self.ShowIpInputDialog( self.mTempIpAddr )
@@ -866,7 +871,7 @@ class Configure( SettingWindow ) :
 		elif aControlId == E_Input01 :
 			self.ShowProgress( 'Scan Ap...', 25 )
 			time.sleep( 1 )
-			dev = self.mWireless.getWlandevice( )
+			dev = self.mWireless.GetWlandevice( )
 			if dev == None :
 				try :
 					self.mProgress.SetResult( True )
@@ -905,18 +910,18 @@ class Configure( SettingWindow ) :
 			self.SetControlLabel2String( E_Input03, StringToHidden( self.mPassWord ) )
 
 	 	elif aControlId == E_Input04 :
-			SetCurrentNetworkType( self.mUseNetworkType )
-			dev = self.mWireless.getWlandevice( )
+			dev = self.mWireless.GetWlandevice( )
 	 		if self.apList == None or dev == None :
 	 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( 'Error', 'Can not found Ap or device' )
 	 			dialog.doModal( )
 	 			return
 
-	 		self.ShowProgress( 'Setting Wifi...', 20 )
+	 		self.ShowProgress( 'Setting Wifi...', 30 )
 	 		time.sleep( 1 )
 	 		ret1 = self.mWireless.WriteWpaSupplicant( self.mUseHiddenId, self.mHiddenSsid, self.mCurrentSsid, self.mUseEncrypt, self.mEncriptType, self.mPasswordType, self.mPassWord )
 			ret2 = self.mWireless.ConnectWifi( dev )
+			SetCurrentNetworkType( NETWORK_WIRELESS )
 			try :
 				self.mProgress.SetResult( True )
 				time.sleep( 1.5 )
