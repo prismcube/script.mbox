@@ -151,21 +151,6 @@ class TimeShiftPlate(BaseWindow):
 
 		self.GetNextSpeed( E_ONINIT )
 
-		"""
-		if self.getProperty('IsXpeeding') == 'False' :
-			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )
-			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
-		else :
-			if self.mSpeed != 0 :
-				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, False )
-				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
-			else :
-				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )
-				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
-		"""
-
-		#self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
-
 		self.mEventBus.Register( self )
 
 		#run thread
