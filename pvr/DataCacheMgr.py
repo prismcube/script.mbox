@@ -1334,6 +1334,14 @@ class DataCacheMgr( object ):
 		return self.mCommander.Timer_EditWeeklyTimer( aTimerId, aDate, aStartTime, aDuration, aStartTime, 0 ) 
 
 
+	def Teletext_Show( self ) :
+		return self.mCommander.Teletext_Show( )
+
+
+	def Teletext_NotifyHide( self ) :
+		return self.mCommander.Teletext_NotifyHide( )
+
+
 	def Frontdisplay_SetMessage( self, aName ) :
 		self.mCommander.Frontdisplay_SetMessage( aName )
 
