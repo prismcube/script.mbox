@@ -8,8 +8,8 @@ from ElisEventClass import *
 
 @RunThread
 def StartTest( aScenario ) :
-	time.sleep(0.5)
-	xbmc.executebuiltin('xbmc.Action(previousmenu)')
+	time.sleep( 0.5 )
+	xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 	aScenario.DoCommand( )
 
 
@@ -83,20 +83,15 @@ class WaitEventSuite( TestSuite ) :
 
 	def DoCommand( self ) :
 		self.PrintStartTime( )
-		LOG_TRACE( '' )
 		otrinfo = self.mDataCache.Timer_GetOTRInfo( )
-		LOG_TRACE('====================================')
-		LOG_TRACE('====================================')
 		otrinfo.printdebug( )
-		LOG_TRACE('====================================')
-		LOG_TRACE('====================================')
 		self.mEventBus.Register( self )
 		LOG_TRACE( 'Start Wait Event !!!! ' )
 		while self.mEndEvent == False :
 			LOG_TRACE( 'TEST MGR wait event...')
-			time.sleep(1)
+			time.sleep( 1 )
 		self.mEventBus.Deregister( self )
-		LOG_TRACE( 'End Wait Event !!!! ' )
+		LOG_TRACE( 'End Wait Event !!!!' )
 		otrinfo.printdebug( )
 
 

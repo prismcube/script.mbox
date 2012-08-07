@@ -194,14 +194,14 @@ class ControlItem :
 	E_SETTING_PREV_NEXT_BUTTON				= 4
 
 
-	def __init__( self, aControlType, aControlId, aProperty, aListItems, aSelecteItem, aDescription ) :	
+	def __init__( self, aControlType, aControlId, aProperty, aListItems, aSelecteItem, aDescription ) :
+		self.mEnable	= True
 		self.mControlType = aControlType	
 		self.mControlId  = aControlId
 		self.mProperty = aProperty		# E_SETTING_ENUM_CONTROL : propery, E_SETTING_INPUT_CONTROL : input type
 		self.mListItems = aListItems
-		self.mEnable	= True
-		self.mDescription = aDescription
 		self.mSelecteItem = aSelecteItem
+		self.mDescription = aDescription
 	
 
 class SettingWindow( BaseWindow ) :
@@ -293,13 +293,13 @@ class SettingWindow( BaseWindow ) :
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_INPUT_CONTROL, aControlId, None, listItems, None, aDescription ) )
 
 
-	def AddPrevNextButton( self ) :
-		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_NEXT, None, None, None, None ) )
-		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_PREV, None, None, None, None ) ) 		
+	def AddPrevNextButton( self, aDescriptionNext, aDescriptionPrev ) :
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_NEXT, None, None, None, aDescriptionNext ) )
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_PREV, None, None, None, aDescriptionPrev ) ) 		
 
 
-	def AddNextButton( self ) :
-		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_NEXT, None, None, None, None ) )
+	def AddNextButton( self, aDescriptionNext ) :
+		self.mControlList.append( ControlItem( ControlItem.E_SETTING_PREV_NEXT_BUTTON, E_FIRST_TIME_INSTALLATION_NEXT, None, None, None, aDescriptionNext ) )
 
 
 	def ShowDescription( self, aFocusId ) :

@@ -55,7 +55,6 @@ def GetDefaultGateway( ) :
 			addr = None
 		inputFile.close( )
 		return addr
-			
 
 	except Exception, e :
 		if inputFile.closed == False :
@@ -301,7 +300,7 @@ class IpParser :
 			os.system( 'ifdown %s' % gEthernetDevName )
 			
 			time.sleep( 1 )
-			os.system( 'ifup %s'% gEthernetDevName )	
+			os.system( 'ifup %s' % gEthernetDevName )	
 			status = True
 			inputFile.close( )
 			outputFile.close( )

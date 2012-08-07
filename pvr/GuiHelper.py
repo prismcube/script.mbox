@@ -1,6 +1,5 @@
 import xbmcaddon
 from ElisEnum import ElisEnum
-from pvr.gui.GuiConfig import *
 
 gSettings = xbmcaddon.Addon(id="script.mbox")
 
@@ -364,6 +363,7 @@ class GuiSkinPosition( object ) :
 
 
 	def GetPipPosition( self, aX, aY, aWidth, aHeight ) :
+		from pvr.gui.GuiConfig import E_WINDOW_HEIGHT, E_WINDOW_WIDTH
 		if self.mZoom != 0 :
 			w = aWidth  / float( 100 ) * ( 100 + self.mZoom )
 			h = aHeight / float( 100 ) * ( 100 + self.mZoom )
