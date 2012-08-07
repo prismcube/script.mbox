@@ -44,7 +44,8 @@ class FirstInstallation( SettingWindow ) :
 			if self.mStepNum == E_STEP_RESULT :
 				return
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( 'Are you sure?', 'Do you want to stop first time installation?' )
+#			dialog.SetDialogProperty( 'Are you sure?', 'Do you want to stop first time installation?' )
+			dialog.SetDialogProperty( 'Abort installation', 'Do you want to cancel first time installation?' )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -61,7 +62,8 @@ class FirstInstallation( SettingWindow ) :
 			if self.mStepNum == E_STEP_RESULT :
 				return
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( 'Are you sure?', 'Do you want to stop first time installation?' )
+#			dialog.SetDialogProperty( 'Are you sure?', 'Do you want to stop first time installation?' )
+			dialog.SetDialogProperty( 'Abort installation', 'Do you want to cancel first time installation?' )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -155,9 +157,12 @@ class FirstInstallation( SettingWindow ) :
 
 		if self.mStepNum == E_STEP_SELECT_LANGUAGE :
 			self.mPrevStepNum = E_STEP_SELECT_LANGUAGE
-			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( 'Select Language' )
-			self.AddEnumControl( E_SpinEx01, 'Language', None, 'Select Language & Location' )
-			self.AddEnumControl( E_SpinEx02, 'Audio Language' )
+#			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( 'Select Language' )
+#			self.AddEnumControl( E_SpinEx01, 'Language', None, 'Select Language & Location' )
+#           self.AddEnumControl( E_SpinEx02, 'Audio Language' )
+			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( 'Language Setup' )
+			self.AddEnumControl( E_SpinEx01, 'Language', None, 'Set the language you want the menu to be in' )
+			self.AddEnumControl( E_SpinEx02, 'Audio Language', None, 'Select the language that you wish to listen to')
 			self.AddNextButton( )
 			self.SetPrevNextButtonLabel( )
 
@@ -175,9 +180,12 @@ class FirstInstallation( SettingWindow ) :
 		elif self.mStepNum == E_STEP_VIDEO_AUDIO :
 			self.mPrevStepNum = E_STEP_SELECT_LANGUAGE
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( 'Video & Audio Setup' )
-			self.AddEnumControl( E_SpinEx01, 'Show 4:3', 'TV Screen Format', 'Select Video & Audio Type' )
-			self.AddEnumControl( E_SpinEx02, 'Audio Dolby' )
-			self.AddEnumControl( E_SpinEx03, 'HDMI Format' )
+#			self.AddEnumControl( E_SpinEx01, 'Show 4:3', 'TV Screen Format', 'Select Video & Audio Type' )
+#			self.AddEnumControl( E_SpinEx02, 'Audio Dolby' )
+#			self.AddEnumControl( E_SpinEx03, 'HDMI Format' )
+			self.AddEnumControl( E_SpinEx01, 'Show 4:3', 'TV Screen Format', 'Select the display format for TV screen' )
+			self.AddEnumControl( E_SpinEx02, 'Audio Dolby', None, 'Set the STB to select the Dolby audio automatically' )
+			self.AddEnumControl( E_SpinEx03, 'HDMI Format', None, "Set the display's HDMI resolution" )
 			self.AddPrevNextButton( )
 			self.SetPrevNextButtonLabel( )
 
@@ -196,10 +204,10 @@ class FirstInstallation( SettingWindow ) :
 			self.mPrevStepNum = E_STEP_VIDEO_AUDIO
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( 'Channel Search Setup' )
 			self.LoadFormattedSatelliteNameList( )
-			self.AddUserEnumControl( E_SpinEx01, 'Channel Search', USER_ENUM_LIST_YES_NO, self.mIsChannelSearch, 'Select Search Option' )
-			self.AddInputControl( E_Input01, 'Satellite', self.mFormattedList[ self.mSatelliteIndex ] )
-			self.AddEnumControl( E_SpinEx02, 'Network Search' )
-			self.AddEnumControl( E_SpinEx03, 'Channel Search Mode' )
+			self.AddUserEnumControl( E_SpinEx01, 'Channel Search', USER_ENUM_LIST_YES_NO, self.mIsChannelSearch, 'Do you want to scan channels in this installation?' )
+			self.AddInputControl( E_Input01, 'Satellite', self.mFormattedList[ self.mSatelliteIndex ], 'Select the satellite(s) you wish to search from' )
+			self.AddEnumControl( E_SpinEx02, 'Network Search', None, 'Set your STB to scan channels from multiple TPs' )
+			self.AddEnumControl( E_SpinEx03, 'Channel Search Mode', None, 'Select the type of channel you want to search for' )
 			self.AddPrevNextButton( )
 			self.SetPrevNextButtonLabel( )
 			
@@ -216,7 +224,8 @@ class FirstInstallation( SettingWindow ) :
 
 		elif self.mStepNum == E_STEP_DATE_TIME :
 			self.mPrevStepNum = E_STEP_CHANNEL_SEARCH_CONFIG
-			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( 'Time Setting' )
+#			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( 'Time Setting' )
+			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( 'Time & Date Setup' )
 			setupChannelNumber = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
 			self.mSetupChannel = self.mDataCache.Channel_GetSearch( setupChannelNumber )
 			if self.mSetupChannel :
@@ -232,15 +241,24 @@ class FirstInstallation( SettingWindow ) :
 					channelName = 'None'
 					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
 
-			self.AddEnumControl( E_SpinEx01, 'Time Mode', None, 'Select Time Setting Option')			
-			self.AddInputControl( E_Input01, 'Channel', channelName )
+#			self.AddEnumControl( E_SpinEx01, 'Time Mode', None, 'Select Time Setting Option')			
+#			self.AddInputControl( E_Input01, 'Channel', channelName )
+#			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
+#			self.AddInputControl( E_Input02, 'Date', self.mDate )
+#			self.mTime = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_HH_MM )
+#			self.AddInputControl( E_Input03, 'Time', self.mTime )
+#			self.AddEnumControl( E_SpinEx02, 'Local Time Offset' )
+#			self.AddEnumControl( E_SpinEx03, 'Summer Time' )
+#			self.AddInputControl( E_Input04, 'Apply', '' )
+			self.AddEnumControl( E_SpinEx01, 'Time Mode', None, 'Select automatic or manual for the Time Mode')			
+			self.AddInputControl( E_Input01, 'Channel', channelName, 'Select a channel you want to set your time and date by' )
 			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
-			self.AddInputControl( E_Input02, 'Date', self.mDate )
+			self.AddInputControl( E_Input02, 'Date', self.mDate, "Enter today's date" )
 			self.mTime = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_HH_MM )
-			self.AddInputControl( E_Input03, 'Time', self.mTime )
-			self.AddEnumControl( E_SpinEx02, 'Local Time Offset' )
-			self.AddEnumControl( E_SpinEx03, 'Summer Time' )
-			self.AddInputControl( E_Input04, 'Apply', '' )
+			self.AddInputControl( E_Input03, 'Time', self.mTime, 'Set the local time' )
+			self.AddEnumControl( E_SpinEx02, 'Local Time Offset', None, 'Select your Time Zone' )
+			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, 'Set automatic or manual for Daylight Savings' )
+			self.AddInputControl( E_Input04, 'Apply Now', '', 'Press the OK button to save settings')
 			self.AddPrevNextButton( )
 			self.SetPrevNextButtonLabel( )
 
@@ -261,8 +279,14 @@ class FirstInstallation( SettingWindow ) :
 
 		elif self.mStepNum == E_STEP_RESULT :
 			self.mPrevStepNum = E_STEP_DATE_TIME
-			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( 'Result' )
-			self.AddInputControl( E_Input01, 'Language', 'English', 'Check Result' )
+#			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( 'Result' )
+#			self.AddInputControl( E_Input01, 'Language', 'English', 'Check Result' )
+#			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
+#			self.AddInputControl( E_Input02, 'Date', self.mDate )
+#			self.mTime = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_HH_MM )
+#			self.AddInputControl( E_Input03, 'Time', self.mTime )
+			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( 'Summary of First Installation' )
+			self.AddInputControl( E_Input01, 'Menu Language', 'English', 'First Installation can be summarized as follows :' )
 			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
 			self.AddInputControl( E_Input02, 'Date', self.mDate )
 			self.mTime = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_HH_MM )
@@ -276,8 +300,10 @@ class FirstInstallation( SettingWindow ) :
 						cntChannel = cntChannel + 1
 					elif channel.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 						cntRadio = cntRadio + 1
-			self.AddInputControl( E_Input04, 'TV Channels', '%d' % cntChannel )
-			self.AddInputControl( E_Input05, 'Radio Channels', '%d' % cntRadio )
+#			self.AddInputControl( E_Input04, 'TV Channels', '%d' % cntChannel )
+#			self.AddInputControl( E_Input05, 'Radio Channels', '%d' % cntRadio )
+			self.AddInputControl( E_Input04, 'Number of your TV Channels', '%d' % cntChannel )
+			self.AddInputControl( E_Input05, 'Number of your Radio Channels', '%d' % cntRadio )
 			self.AddPrevNextButton( )
 			self.SetPrevNextButtonLabel( )
 			
@@ -337,7 +363,8 @@ class FirstInstallation( SettingWindow ) :
 	def ChannelSearchConfig( self, aControlId ) :
 		if aControlId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
-			select =  dialog.select( 'Select satellite', self.mFormattedList )
+#			select =  dialog.select( 'Select satellite', self.mFormattedList )
+			select =  dialog.select( 'Select a satellite you want to scan channels', self.mFormattedList )
 
 			if select >= 0 and select != self.mSatelliteIndex :
 				self.mSatelliteIndex = select
@@ -391,18 +418,21 @@ class FirstInstallation( SettingWindow ) :
 			channelNameList = []
 			for channel in channelList :
 				channelNameList.append( channel.mName )
- 			ret = dialog.select( 'Select Channel', channelNameList )
+# 			ret = dialog.select( 'Select Channel', channelNameList )
+ 			ret = dialog.select( 'Select a channel you want to set your time by', channelNameList )
 
 			if ret >= 0 :
 				self.mSetupChannel = channelList[ ret ]
 				self.SetControlLabel2String( E_Input01, self.mSetupChannel.mName )
 
 		elif aControlId == E_Input02 :
-			self.mDate = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_DATE, 'Input Date', self.mDate )
+#			self.mDate = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_DATE, 'Input Date', self.mDate )
+			self.mDate = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_DATE, "Today's date", self.mDate )
 			self.SetControlLabel2String( E_Input02, self.mDate )
 			
 		elif aControlId == E_Input03 :
-			self.mTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Input Time', self.mTime )
+#			self.mTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Input Time', self.mTime )
+			self.mTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Local time', self.mTime )
 			self.SetControlLabel2String( E_Input03, self.mTime )		
 
 		elif aControlId == E_Input04 :
