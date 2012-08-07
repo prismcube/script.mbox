@@ -70,7 +70,8 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 		if groupId == E_Input01 :
 			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog()
- 			ret = dialog.select('Select satellite', satelliteList )
+# 			ret = dialog.select('Select satellite', satelliteList )
+ 			ret = dialog.select('Select a satellite you want to edit', satelliteList )
 
 			if ret >= 0 :
 	 			satellite = self.mDataCache.GetSatelliteByIndex( ret )
@@ -147,7 +148,8 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
  		elif groupId == E_Input03 :
  			if self.mTransponderList :
 	 			dialog = xbmcgui.Dialog( )
-	 			tempIndex = dialog.select( 'Select Transponder', self.mTransponderList )
+#	 			tempIndex = dialog.select( 'Select Transponder', self.mTransponderList )
+	 			tempIndex = dialog.select( 'Select a transponder you want to use', self.mTransponderList )
 	 			if tempIndex != -1 :
 	 				self.mSelectedTransponderIndex = tempIndex
 	 				self.InitConfig( )
@@ -189,7 +191,8 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 		self.AddUserEnumControl( E_SpinEx03, '22KHz Control', USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mFrequencyLevel )
 		self.AddUserEnumControl( E_SpinEx04, 'Committed Switch', E_LIST_COMMITTED_SWITCH, getCommittedSwitchindex( self.mCurrentSatellite.mDisEqcMode ) )
 		self.AddUserEnumControl( E_SpinEx05, 'Uncommitted Switch', E_LIST_UNCOMMITTED_SWITCH, self.mCurrentSatellite.mDisEqc11 )
-		self.AddUserEnumControl( E_SpinEx06, 'DiSEqC Repeat', USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mDisEqcRepeat )
+#		self.AddUserEnumControl( E_SpinEx06, 'DiSEqC Repeat', USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mDisEqcRepeat )
+		self.AddUserEnumControl( E_SpinEx06, 'DiSEqC Repeats', USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mDisEqcRepeat )
 		if self.mTransponderList :
 			self.AddInputControl( E_Input03, 'Transponder', self.mTransponderList[ self.mSelectedTransponderIndex ] )
 			self.mHasTransponder = True

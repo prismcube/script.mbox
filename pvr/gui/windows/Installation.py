@@ -13,8 +13,16 @@ class Installation( BaseWindow ):
 	def __init__( self, *args, **kwargs ):
 		BaseWindow.__init__( self, *args, **kwargs )
 
-		self.leftGroupItems = [ 'First Installation', 'Antenna Setup', 'Channel Search', 'Edit Satellite', 'Edit Transponder', 'Configure', 'CAS' ]
-		self.descriptionList	 = [ 'Desc First Installation', 'Desc Antenna Setup', 'Desc Channel Search', 'Desc Edit Satellite', 'Desc Edit Transponder', 'Desc Configure', 'Desc CAS' ]
+#		self.leftGroupItems = [ 'First Installation', 'Antenna Setup', 'Channel Search', 'Edit Satellite', 'Edit Transponder', 'Configure', 'CAS' ]
+		self.leftGroupItems = [ 'First Installation', 'Antenna Setup', 'Channel Search', 'Edit Satellite', 'Edit Transponder', 'Configuration', 'CAS' ]
+#		self.descriptionList	 = [ 'Desc First Installation', 'Desc Antenna Setup', 'Desc Channel Search', 'Desc Edit Satellite', 'Desc Edit Transponder', 'Desc Configure', 'Desc CAS' ]
+		self.descriptionList	 = [ 'You can setup Language, Video, Audio, Antenna, Satellite, Channel, Time and Date in the First Installation', \
+		'Antenna Setup enables you to configure Tuner 1 and Tuner 2', \
+		'Channel Search menu allows you to scan channels automatically or manually', \
+		'You can add or delete a satellite here', \
+		'Here you can add or delete a transponder', \
+		'Most of STB settings can be configured via the GUI under Configuration', \
+		'The Conditional Access System allows you to setup subscription configurations including Smartcard' ]
 		#self.icon = [ 'special://skin/backgrounds/appearance.jpg', 'special://skin/backgrounds/videos.jpg', 'special://skin/backgrounds/music.jpg', 'special://skin/backgrounds/pictures.jpg', 'special://skin/backgrounds/weather.jpg', 'special://skin/backgrounds/addons.jpg', 'special://skin/backgrounds/network.jpg' ]
 
 		self.mCtrlLeftGroup = 0
