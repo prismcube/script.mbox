@@ -17,7 +17,8 @@ class DialogAddNewSatellite( SettingDialog ) :
 		
 	def onInit( self ) :
 		self.mLongitude = 0
-		self.SetHeaderLabel( 'Add New Satellite' )
+#		self.SetHeaderLabel( 'Add New Satellite' )
+		self.SetHeaderLabel( 'Configure new satellite' )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, 'Confirm' )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, 'Cancel' )
 		self.DrawItem( )
@@ -60,7 +61,8 @@ class DialogAddNewSatellite( SettingDialog ) :
 
 		elif groupId == E_DialogInput02 :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
- 			dialog.SetDialogProperty( 'Set Longitude', self.mLongitude )
+ #			dialog.SetDialogProperty( 'Set Longitude', self.mLongitude )
+ 			dialog.SetDialogProperty( 'Longitude degree', self.mLongitude )
  			dialog.doModal( )
 
  			if dialog.IsOK() == E_DIALOG_STATE_YES :
@@ -71,7 +73,8 @@ class DialogAddNewSatellite( SettingDialog ) :
 			self.mIsCBand = self.GetSelectedIndex( E_DialogSpinEx02 )
 
 		elif groupId == E_DialogInput01 :
-			self.mSatelliteName = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, 'Satellite Name', self.mSatelliteName, 15 )
+#			self.mSatelliteName = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, 'Satellite Name', self.mSatelliteName, 15 )
+			self.mSatelliteName = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, 'Enter a new satellite name', self.mSatelliteName, 15 )
 			self.DrawItem( )
 
 		elif groupId == E_SETTING_DIALOG_BUTTON_OK_ID :
