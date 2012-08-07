@@ -25,8 +25,8 @@ def RecordConflict( aInfo ) :
 	
 	try :		
 		if aInfo[0].mError == -1 :
-			label[0] = 'Error EPG'
-			label[1] = 'Can not found EPG Information'
+			label[0] = MR_LANG( 'Error EPG' )
+			label[1] = MR_LANG( 'Can not found EPG Information' )
 		else :
 			conflictNum = len( aInfo ) - 1
 			if conflictNum > 3 :
@@ -45,7 +45,7 @@ def RecordConflict( aInfo ) :
 		print "Exception %s" %ex
 					
 	dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-	dialog.SetDialogProperty( 'Conflict', label[0], label[1], label[2] )
+	dialog.SetDialogProperty( MR_LANG( 'Conflict' ), label[0], label[1], label[2] )
 	dialog.doModal( )
 
 
@@ -287,6 +287,7 @@ def ParseLabelToCh( aMode, aLabel ) :
 
 gLanguage = xbmcaddon.Addon(id = 'script.mbox')
 
+
 def Strings( aStringID, aReplacements = None ) :
 	#string = xbmcaddon.Addon(id = 'script.mbox').getLocalizedString(aStringID)
 	string = gLanguage.getLocalizedString(aStringID)
@@ -299,6 +300,7 @@ def Strings( aStringID, aReplacements = None ) :
 gMRStringHash = {}
 gCacheMRLanguage = None
 
+
 def GetInstance( ) :
 	global gCacheMRLanguage
 	if not gCacheMRLanguage:
@@ -309,6 +311,7 @@ def GetInstance( ) :
 
 	return gCacheMRLanguage
 
+
 class CacheMRLanguage( object ) :
 	def __init__( self ):
 		self.mStrLanguage = None
@@ -316,32 +319,35 @@ class CacheMRLanguage( object ) :
 		scriptDir = xbmcaddon.Addon('script.mbox').getAddonInfo('path')
 		xmlFile = '%s/pvr/gui/windows/Strings.xml'% scriptDir
 		#LOG_TRACE( 'xmlFile[%s]'% xmlFile )
-		fp = open(xmlFile)
-		xml = fp.read()
-		fp.close()
+		fp = open( xmlFile )
+		xml = fp.read( )
+		fp.close( )
 
 		from BeautifulSoup import BeautifulSoup
-		self.mStrLanguage = BeautifulSoup(xml)
+		self.mStrLanguage = BeautifulSoup( xml )
 
 		global gMRStringHash
-		for node in self.mStrLanguage.findAll('string'):
-			gMRStringHash[ node.string ] = int(node['id'])
+		for node in self.mStrLanguage.findAll( 'string' ):
+			gMRStringHash[ node.string ] = int( node['id'] )
 
 		#LOG_ERR('============cache Language')
 
-	def StringTranslate(self, string = None):
-		strId = gMRStringHash.get(string, None)
+
+	def StringTranslate( self, string = None ) :
+		strId = gMRStringHash.get( string, None )
 		
 		if strId :
 			xmlString = Strings( strId )
 			#LOG_TRACE('xml_string[%s] parse[%s]'% (string, xmlString) )
-			return xmlString.encode('utf-8')
+			return xmlString.encode( 'utf-8' )
 
 		else:
 			return string
 
 
-gStrLanguage = GetInstance()
+gStrLanguage = GetInstance( )
+
+
 def MR_LANG( aString ) :
 	return gStrLanguage.StringTranslate(aString)
 	#return aString
@@ -354,6 +360,7 @@ def GetInstanceSkinPosition( ):
 	if not gSkinPosition:
 		gSkinPosition = GuiSkinPosition( )
 	return gSkinPosition
+
 
 class GuiSkinPosition( object ) :
 	def __init__( self ) :
