@@ -168,15 +168,9 @@ class NullWindow( BaseWindow ) :
 			if aKey == 0 :
 				return -1
 
-			GuiLock2(True)
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
-			event = self.mDataCache.Epgevent_GetPresent()
-			if event:
-				dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, None, event.mStartTime)
-			else :
-				dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, None)
+			dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, None)
 			dialog.doModal()
-			GuiLock2(False)
 
 			isOK = dialog.IsOK()
 			if isOK == E_DIALOG_STATE_YES :

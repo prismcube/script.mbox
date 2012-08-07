@@ -2407,14 +2407,9 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mViewMode != WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			return -1
 
-		GuiLock2( True )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
-		if self.mNavEpg:
-			dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, self.mChannelList, self.mNavEpg.mStartTime )
-		else :
-			dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, self.mChannelList )
+		dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, self.mChannelList )
 		dialog.doModal( )
-		GuiLock2( False )
 
 		isOK = dialog.IsOK( )
 		if isOK == E_DIALOG_STATE_YES :
