@@ -79,11 +79,13 @@ class DialogForceProgress( BaseDialog ) :
 			time.sleep( 1 )			
 
 			if self.mFinish == True :
-				self.mCtrlLabelString.setLabel( '%s Set complete' % self.mTitle )
+#				self.mCtrlLabelString.setLabel( '%s Set complete' % self.mTitle )
+				self.mCtrlLabelString.setLabel( '%s completed' % self.mTitle )				
 				self.Close( )
 				break
 
-		self.mCtrlLabelString.setLabel( '%s Progress Time Over' % self.mTitle )
+#		self.mCtrlLabelString.setLabel( '%s Progress Time Over' % self.mTitle )
+		self.mCtrlLabelString.setLabel( '%s timed out' % self.mTitle )
 		self.Close( )
 
 

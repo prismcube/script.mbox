@@ -29,7 +29,8 @@ class DialogMoveAntenna( BaseDialog ) :
 
 		self.tunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerNumber( )
 
-		context = [ 'MOVE WEST', 'STEP WEST', 'STOP', 'STEP EAST', 'MOVE EAST', 'CLOSE' ]
+#		context = [ 'MOVE WEST', 'STEP WEST', 'STOP', 'STEP EAST', 'MOVE EAST', 'CLOSE' ]
+		context = [ 'Rotate to West', 'One Step to West', 'Stop', 'One Step to East', 'Rotate to East', 'Close' ]
 
 		itemHeight = int( self.getProperty( 'ItemHeight' ) )
 		self.mCtrlList = self.getControl( DIALOG_LIST_ID )
