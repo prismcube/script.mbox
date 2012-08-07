@@ -8,82 +8,84 @@ from decorator import decorator
 from odict import odict
 from ElisEnum import ElisEnum
 
-gThreads = odict()
+gThreads = odict( )
 
-def ClearThreads( ):
-	gThreads.clear()
+def ClearThreads( ) :
+	gThreads.clear( )
 
 
-def HasPendingThreads():
-	for threadName, worker in gThreads.items():
+def HasPendingThreads( ) :
+	for threadName, worker in gThreads.items( ) :
 		print 'worker name=%s' %threadName
-		if worker:
-			if worker.isAlive():
+		if worker :
+			if worker.isAlive( ) :
 				print 'worker is live'
 				return True
 	return False
  
 
-def WaitUtileThreadsJoin(timeout=None):
-	print 'Total threads = %d' % len(gThreads)
-	for threadName, worker in gThreads.items():
-		if worker:
-			if worker.isAlive():
+def WaitUtileThreadsJoin( timeout=None ) :
+	print 'Total threads = %d' % len( gThreads )
+	for threadName, worker in gThreads.items( ) :
+		if worker :
+			if worker.isAlive( ) :
 				print 'wait until %s to join' % threadName
-				worker.join(timeout)
-				if worker.isAlive():
+				worker.join( timeout )
+				if worker.isAlive( ):
 					print 'Thread %s still alive after timeout' %threadName
 	print 'Done waiting for threads to die'
 
-def MakeDir(dir):
-	if not os.path.exists(dir):
-		os.makedirs(dir)
+
+def MakeDir( dir ) :
+	if not os.path.exists( dir ) :
+		os.makedirs( dir )
 	return dir
 
 
 gGuiLock = False
 
-@decorator
-def GuiLock(func, *args, **kw):
-	global gGuiLock
-	if gGuiLock: # prevent nested locks / double lock
-		return func(*args, **kw)    
-	else:
-		try:
-			gGuiLock = True
-			xbmcgui.lock()
-			result = func(*args, **kw)
 
-		finally:
-			xbmcgui.unlock()
+@decorator
+def GuiLock( func, *args, **kw ) :
+	global gGuiLock
+	if gGuiLock : # prevent nested locks / double lock
+		return func( *args, **kw )    
+	else :
+		try :
+			gGuiLock = True
+			xbmcgui.lock( )
+			result = func( *args, **kw )
+
+		finally :
+			xbmcgui.unlock( )
 			gGuiLock = False
 		return result
 
 
-def GuiLock2( aEnable ):
+def GuiLock2( aEnable ) :
 	global gGuiLock
-	if gGuiLock: # prevent nested locks / double lock
+	if gGuiLock : # prevent nested locks / double lock
 		return
 	else:
-		try:
+		try :
 			gGuiLock = aEnable
-			xbmcgui.lock()
-		finally:
-			xbmcgui.unlock()
+			xbmcgui.lock( )
+		finally :
+			xbmcgui.unlock( )
 			gGuiLock = aEnable
 		return
 
 
 @decorator
-def RunThread(func, *args, **kwargs):
-	worker = Thread(target = func, name=func.__name__, args = args, kwargs = kwargs)
-	gThreads[worker.getName()] = worker
+def RunThread( func, *args, **kwargs ) :
+	worker = Thread( target = func, name=func.__name__, args = args, kwargs = kwargs )
+	gThreads[ worker.getName( ) ] = worker
 	#print '=======================thread worker[%s] len[%s]'% (worker.getName(), len(gThreads) )
-	worker.start()
+	worker.start( )
 	return worker
 
 
-class TimeFormatEnum(object):
+class TimeFormatEnum( object ) :
 	E_AW_DD_MM_YYYY			= 0
 	E_HH_MM					= 1
 	E_DD_MM_YYYY_HH_MM		= 2

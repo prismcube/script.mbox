@@ -13,8 +13,8 @@ class DialogExtendEPG( BaseDialog ) :
 		
 
 	def onInit( self ) :
-		LOG_TRACE('')
-		self.mWinId = xbmcgui.getCurrentWindowDialogId()
+		LOG_TRACE( '' )
+		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.WindowDialog( self.mWinId )
 
 
@@ -63,8 +63,8 @@ class DialogExtendEPG( BaseDialog ) :
 		elif actionId == Action.ACTION_CONTEXT_MENU :
 			self.CloseDialog( )
 
+
 	def onClick( self, aControlId ) :
-		LOG_TRACE('')	
 		pass
 
 
@@ -73,7 +73,6 @@ class DialogExtendEPG( BaseDialog ) :
 		
 
 	def SetEPG( self, aEPG ) :
-		LOG_TRACE('')	
 		self.mEPG = aEPG
 		
 		

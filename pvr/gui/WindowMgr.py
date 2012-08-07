@@ -56,28 +56,28 @@ gWindowMgr = None
 
 E_ADD_XBMC_HTTP_FUNCTION			= True
 
-def GetInstance():
+
+def GetInstance( ) :
 	global gWindowMgr
-	if not gWindowMgr:
-		print 'lael98 check create instance'
-		gWindowMgr = WindowMgr()
-	else:
+	if not gWindowMgr :
+		print 'Create instance'
+		gWindowMgr = WindowMgr( )
+	else :
 		pass
-		#print 'lael98 check already windowmgr is created'
 
 	return gWindowMgr
 
 
-class WindowMgr(object):
-	def __init__(self):
-		print 'lael98 check %d %s' %(currentframe().f_lineno, currentframe().f_code.co_filename)
+class WindowMgr( object ) :
+	def __init__( self ) :
+		#print 'check %d %s' %( currentframe().f_lineno, currentframe().f_code.co_filename )
 
 		import pvr.Platform 
-		self.mScriptDir = pvr.Platform.GetPlatform().GetScriptDir()
-		print 'lael98 test scriptDir= %s' %self.mScriptDir
+		self.mScriptDir = pvr.Platform.GetPlatform( ).GetScriptDir( )
+		print 'scriptDir= %s' %self.mScriptDir
 
-		self.mDefaultLanguage = xbmc.getLanguage()
-		currentSkinName = xbmc.executehttpapi("GetGUISetting(3, lookandfeel.skin)")
+		self.mDefaultLanguage = xbmc.getLanguage( )
+		currentSkinName = xbmc.executehttpapi( "GetGUISetting(3, lookandfeel.skin)" )
 		self.mSkinName = currentSkinName[4:]
 
 		self.mLastId			= -1
@@ -89,7 +89,7 @@ class WindowMgr(object):
 		self.mRootWindow		= None
 		self.LoadSkinPosition( )
 
-		self.mCommander = pvr.ElisMgr.GetInstance().GetCommander()
+		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
 
 		self.AddDefaultFont( )		
@@ -105,11 +105,11 @@ class WindowMgr(object):
 		try :
 			return weakref.proxy( self.mWindows[aWindowId] )
 		except Exception, ex :
-			LOG_ERR( 'Exception %s' % ex)
+			LOG_ERR( 'Exception %s' % ex )
 			return None
 
 
-	def GetLastWindowID( self ):
+	def GetLastWindowID( self ) :
 		return self.mLastId
 
 
@@ -127,212 +127,185 @@ class WindowMgr(object):
 				return
 				
 			if self.mLastId > 0 :
-				LOG_TRACE('LastWindow=%s' %self.mWindows[self.mLastId].GetName( ) )		
+				LOG_TRACE( 'LastWindow=%s' %self.mWindows[self.mLastId].GetName( ) )		
 				if aParentId == 0 :
 					self.mWindows[aWindowId].SetParentID( self.mLastId )
 				elif aParentId > 0 :
 					self.mWindows[aWindowId].SetParentID( aParentId )				
-				else:
+				else :
 					LOG_ERR( 'Invalid Parent Window ID=%d' %aParentId )
 					self.mWindows[aWindowId].SetParentID( WIN_ID_NULLWINDOW )
 				self.mWindows[self.mLastId].close( )
 			else :
 				LOG_ERR( 'Has no valid last window id=%d' %self.mLastId )
 
-			LOG_ERR('ShowWindow ID=%s' %self.mWindows[aWindowId].GetName( ) )
+			LOG_ERR( 'ShowWindow ID=%s' %self.mWindows[aWindowId].GetName( ) )
 			self.mLastId = aWindowId
 			#self.mWindows[aWindowId].doModal( )
 
-		except Exception, ex:
-			LOG_ERR( "Exception %s" %ex)
+		except Exception, ex :
+			LOG_ERR( "Exception %s" %ex )
 			self.mLastId = 0
 
 
-	def CloseWindow( self ):
+	def CloseWindow( self ) :
 		try :
 			if self.mLastId  > 0 :
 				parentId = self.mWindows[self.mLastId].GetParentID( )			
-				LOG_ERR('LastWindow=%s' %self.mWindows[self.mLastId].GetName( ) )		
+				LOG_ERR( 'LastWindow=%s' %self.mWindows[self.mLastId].GetName( ) )		
 				self.mWindows[self.mLastId].close( )
 				if parentId > 0 :
 					self.mLastId = parentId
-					LOG_ERR('ShowWindow=%s' %self.mWindows[parentId].GetName( ) )									
+					LOG_ERR( 'ShowWindow=%s' %self.mWindows[parentId].GetName( ) )									
 					self.mWindows[parentId].doModal( )
 				else :				
-					LOG_ERR('ShowWindow=%s' %self.mWindows[WIN_ID_NULLWINDOW].GetName( ) )	
+					LOG_ERR( 'ShowWindow=%s' %self.mWindows[WIN_ID_NULLWINDOW].GetName( ) )	
 					self.mLastId = WIN_ID_NULLWINDOW					
 					#self.mWindows[WIN_ID_NULLWINDOW].doModal( )	
 
 			else :
 				LOG_ERR( 'Invaild Window ID=%d' %self.mLastId )
 
-		except Exception, ex:
-			LOG_ERR( "Exception %s" %ex)
+		except Exception, ex :
+			LOG_ERR( "Exception %s" %ex )
 			self.mLastId = 0
 		
 
 	def RootWindow( self ) :
 		from pvr.gui.windows.RootWindow import RootWindow
-		self.mRootWindow = RootWindow('RootWindow.xml', self.mScriptDir )
+		self.mRootWindow = RootWindow( 'RootWindow.xml', self.mScriptDir )
 
 
-
-	def CreateAllWindows( self ):
-		LOG_TRACE('Create All Windows mScriptDir=%s' %self.mScriptDir)
+	def CreateAllWindows( self ) :
+		LOG_TRACE( 'Create All Windows mScriptDir=%s' %self.mScriptDir )
 		try:
 			
 			"""
-			for attr, val in self.mWindows[WIN_ID_NULLWINDOW].__dict__.items() :
+			for attr, val in self.mWindows[WIN_ID_NULLWINDOW].__dict__.items( ) :
 				LOG_TRACE('NAME=%s type=%s' %(attr, type(val) ) )
 			
 			import inspect
 			for member in inspect.getmembers( self.mWindows[WIN_ID_NULLWINDOW] ) :
-				LOG_TRACE('member=%s' %member[0] )
+				LOG_TRACE( 'member=%s' %member[0] )
 			"""				
 			from pvr.gui.windows.NullWindow import NullWindow
-			self.mWindows[WIN_ID_NULLWINDOW] = NullWindow('NullWindow.xml', self.mScriptDir )
-			LOG_ERR('---------------- self.mWindows[WIN_ID_NULLWINDOW] id=%s' %self.mWindows[WIN_ID_NULLWINDOW] )
-				
+			self.mWindows[WIN_ID_NULLWINDOW] = NullWindow( 'NullWindow.xml', self.mScriptDir )
+			LOG_ERR( '---------------- self.mWindows[WIN_ID_NULLWINDOW] id=%s' %self.mWindows[WIN_ID_NULLWINDOW] )
 
 			from pvr.gui.windows.MainMenu import MainMenu
-			self.mWindows[WIN_ID_MAINMENU]=MainMenu('MainMenu.xml', self.mScriptDir)
+			self.mWindows[WIN_ID_MAINMENU]=MainMenu( 'MainMenu.xml', self.mScriptDir )
 
 			from pvr.gui.windows.ChannelListWindow import ChannelListWindow
-			self.mWindows[WIN_ID_CHANNEL_LIST_WINDOW]=ChannelListWindow('ChannelListWindow.xml', self.mScriptDir )
+			self.mWindows[WIN_ID_CHANNEL_LIST_WINDOW]=ChannelListWindow( 'ChannelListWindow.xml', self.mScriptDir )
 			#ChannelListWindow('ChannelListWindow_b.xml', self.mScriptDir ).doModal()
 
 			from pvr.gui.windows.LivePlate import LivePlate
-			self.mWindows[WIN_ID_LIVE_PLATE]=LivePlate('LivePlate.xml', self.mScriptDir )
+			self.mWindows[WIN_ID_LIVE_PLATE]=LivePlate( 'LivePlate.xml', self.mScriptDir )
 
 			from pvr.gui.windows.TimeshiftPlate import TimeShiftPlate
-			self.mWindows[WIN_ID_TIMESHIFT_PLATE]=TimeShiftPlate('TimeshiftPlate.xml', self.mScriptDir )
-
+			self.mWindows[WIN_ID_TIMESHIFT_PLATE]=TimeShiftPlate( 'TimeshiftPlate.xml', self.mScriptDir )
 
 			from pvr.gui.windows.Configure import Configure	
-			self.mWindows[WIN_ID_CONFIGURE]=Configure('Configure.xml', self.mScriptDir)
-
+			self.mWindows[WIN_ID_CONFIGURE]=Configure( 'Configure.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.Installation import Installation	
-			self.mWindows[WIN_ID_INSTALLATION]=Installation('Installation.xml', self.mScriptDir)
-
+			self.mWindows[WIN_ID_INSTALLATION]=Installation( 'Installation.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.AntennaSetup import AntennaSetup
-			self.mWindows[WIN_ID_ANTENNA_SETUP]=AntennaSetup('AntennaSetup.xml', self.mScriptDir)
-
+			self.mWindows[WIN_ID_ANTENNA_SETUP]=AntennaSetup( 'AntennaSetup.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.TunerConfiguration import TunerConfiguration
-			self.mWindows[WIN_ID_TUNER_CONFIGURATION]=TunerConfiguration('TunerConfiguration.xml', self.mScriptDir)
-
+			self.mWindows[WIN_ID_TUNER_CONFIGURATION]=TunerConfiguration( 'TunerConfiguration.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.SatelliteConfigSimple import SatelliteConfigSimple
-			self.mWindows[WIN_ID_CONFIG_SIMPLE]=SatelliteConfigSimple('SatelliteConfigSimple.xml', self.mScriptDir)
-
+			self.mWindows[WIN_ID_CONFIG_SIMPLE]=SatelliteConfigSimple( 'SatelliteConfigSimple.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.SatelliteConfigMotorizedUsals import SatelliteConfigMotorizedUsals
-			self.mWindows[WIN_ID_CONFIG_MOTORIZED_USALS]=SatelliteConfigMotorizedUsals('SatelliteConfigMotorizedUsals.xml', self.mScriptDir)
-
+			self.mWindows[WIN_ID_CONFIG_MOTORIZED_USALS]=SatelliteConfigMotorizedUsals( 'SatelliteConfigMotorizedUsals.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.SatelliteConfigMotorizedUsals2 import SatelliteConfigMotorizedUsals2
-			self.mWindows[WIN_ID_CONFIG_MOTORIZED_USALS2]=SatelliteConfigMotorizedUsals2('SatelliteConfigMotorizedUsals2.xml', self.mScriptDir)
-
+			self.mWindows[WIN_ID_CONFIG_MOTORIZED_USALS2]=SatelliteConfigMotorizedUsals2( 'SatelliteConfigMotorizedUsals2.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.SatelliteConfigMotorized12 import SatelliteConfigMotorized12
-			self.mWindows[WIN_ID_CONFIG_MOTORIZED_12]=SatelliteConfigMotorized12('SatelliteConfigMotorized12.xml', self.mScriptDir)
+			self.mWindows[WIN_ID_CONFIG_MOTORIZED_12]=SatelliteConfigMotorized12( 'SatelliteConfigMotorized12.xml', self.mScriptDir )
 
-			
 			from pvr.gui.windows.SatelliteConfigOnecable import SatelliteConfigOnecable
-			self.mWindows[WIN_ID_CONFIG_ONECABLE]=SatelliteConfigOnecable('SatelliteConfigOnecable.xml', self.mScriptDir)
-
+			self.mWindows[WIN_ID_CONFIG_ONECABLE]=SatelliteConfigOnecable( 'SatelliteConfigOnecable.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.SatelliteConfigOnecable2 import SatelliteConfigOnecable2
-			self.mWindows[WIN_ID_CONFIG_ONECABLE_2]=SatelliteConfigOnecable2('SatelliteConfigOnecable2.xml', self.mScriptDir)
-
+			self.mWindows[WIN_ID_CONFIG_ONECABLE_2]=SatelliteConfigOnecable2( 'SatelliteConfigOnecable2.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.SatelliteConfigDisEqc10 import SatelliteConfigDisEqC10
-			self.mWindows[WIN_ID_CONFIG_DISEQC_10]=SatelliteConfigDisEqC10('SatelliteConfigDisEqC10.xml', self.mScriptDir)
-
+			self.mWindows[WIN_ID_CONFIG_DISEQC_10]=SatelliteConfigDisEqC10( 'SatelliteConfigDisEqC10.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.SatelliteConfigDisEqc11 import SatelliteConfigDisEqC11
-			self.mWindows[WIN_ID_CONFIG_DISEQC_11]=SatelliteConfigDisEqC11('SatelliteConfigDisEqC11.xml', self.mScriptDir)
-
+			self.mWindows[WIN_ID_CONFIG_DISEQC_11]=SatelliteConfigDisEqC11( 'SatelliteConfigDisEqC11.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.ChannelSearch import ChannelSearch
-			self.mWindows[WIN_ID_CHANNEL_SEARCH]=ChannelSearch('ChannelSearch.xml', self.mScriptDir)
-
+			self.mWindows[WIN_ID_CHANNEL_SEARCH]=ChannelSearch( 'ChannelSearch.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.AutomaticScan import AutomaticScan	
-			self.mWindows[WIN_ID_AUTOMATIC_SCAN]=AutomaticScan('AutomaticScan.xml', self.mScriptDir)
-
+			self.mWindows[WIN_ID_AUTOMATIC_SCAN]=AutomaticScan( 'AutomaticScan.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.ManualScan import ManualScan
-			self.mWindows[WIN_ID_MANUAL_SCAN]=ManualScan('ManualScan.xml', self.mScriptDir)
-
+			self.mWindows[WIN_ID_MANUAL_SCAN]=ManualScan( 'ManualScan.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.EditSatellite import EditSatellite
-			self.mWindows[WIN_ID_EDIT_SATELLITE]=EditSatellite('EditSatellite.xml', self.mScriptDir)
-
+			self.mWindows[WIN_ID_EDIT_SATELLITE]=EditSatellite( 'EditSatellite.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.EditTransponder import EditTransponder
-			self.mWindows[WIN_ID_EDIT_TRANSPONDER]=EditTransponder('EditTransponder.xml', self.mScriptDir)
+			self.mWindows[WIN_ID_EDIT_TRANSPONDER]=EditTransponder( 'EditTransponder.xml', self.mScriptDir )
 
 			"""
 			#from pvr.gui.windows.channeleditwindow import ChannelEditWindow
-			#ChannelEditWindow('channeleditwindow.xml', self.mScriptDir )
+			#ChannelEditWindow( 'channeleditwindow.xml', self.mScriptDir )
 			"""
 
 			from pvr.gui.windows.SystemInfo import SystemInfo
-			self.mWindows[WIN_ID_SYSTEM_INFO]=SystemInfo('SystemInfo.xml', self.mScriptDir )
-
+			self.mWindows[WIN_ID_SYSTEM_INFO]=SystemInfo( 'SystemInfo.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.ArchiveWindow import ArchiveWindow
-			self.mWindows[WIN_ID_ARCHIVE_WINDOW]=ArchiveWindow('ArchiveWindow.xml', self.mScriptDir )
-
+			self.mWindows[WIN_ID_ARCHIVE_WINDOW]=ArchiveWindow( 'ArchiveWindow.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.EPGWindow import EPGWindow
-			self.mWindows[WIN_ID_EPG_WINDOW]=EPGWindow('EPGWindow.xml', self.mScriptDir )
-
+			self.mWindows[WIN_ID_EPG_WINDOW]=EPGWindow( 'EPGWindow.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.MediaCenter import MediaCenter
-			self.mWindows[WIN_ID_MEDIACENTER]=MediaCenter('MediaCenter.xml', self.mScriptDir )
-
+			self.mWindows[WIN_ID_MEDIACENTER]=MediaCenter( 'MediaCenter.xml', self.mScriptDir )
 
 			from pvr.gui.windows.DummyWindow import DummyWindow
-			self.mWindows[WIN_ID_DUMMY_WINDOW]=DummyWindow('DummyWindow.xml', self.mScriptDir ) 
-
+			self.mWindows[WIN_ID_DUMMY_WINDOW]=DummyWindow( 'DummyWindow.xml', self.mScriptDir ) 
 
 			from pvr.gui.windows.ConditionalAccess import ConditionalAccess
-			self.mWindows[WIN_ID_CONDITIONAL_ACCESS]=ConditionalAccess('ConditionalAccess.xml', self.mScriptDir ) 
-
+			self.mWindows[WIN_ID_CONDITIONAL_ACCESS]=ConditionalAccess( 'ConditionalAccess.xml', self.mScriptDir ) 
 
 			from pvr.gui.windows.FirstInstallation import FirstInstallation
-			self.mWindows[WIN_ID_FIRST_INSTALLATION]=FirstInstallation('FirstInstallation.xml', self.mScriptDir )
+			self.mWindows[WIN_ID_FIRST_INSTALLATION]=FirstInstallation( 'FirstInstallation.xml', self.mScriptDir )
 
 			from pvr.gui.windows.TimerWindow import TimerWindow
-			self.mWindows[WIN_ID_TIMER_WINDOW]=TimerWindow('TimerWindow.xml', self.mScriptDir )
+			self.mWindows[WIN_ID_TIMER_WINDOW]=TimerWindow( 'TimerWindow.xml', self.mScriptDir )
 
 			from pvr.HiddenTest import HiddenTest
-			self.mWindows[WIN_ID_HIDDEN_TEST]=HiddenTest('HiddenTest.xml', self.mScriptDir )
-
-			
+			self.mWindows[WIN_ID_HIDDEN_TEST]=HiddenTest( 'HiddenTest.xml', self.mScriptDir )
 
 			"""
 			#test
 			from pvr.gui.windows.TimeshiftInfoPlate import TimeShiftInfoPlate
-			self.mWindows[WIN_ID_TIMESHIFT_INFO_PLATE]=TimeShiftInfoPlate('TimeshiftInfoPlate.xml', self.mScriptDir )
+			self.mWindows[WIN_ID_TIMESHIFT_INFO_PLATE]=TimeShiftInfoPlate( 'TimeshiftInfoPlate.xml', self.mScriptDir )
 
 			from pvr.gui.windows.TimeshiftInfoPlate1 import TimeShiftInfoPlate1
-			self.mWindows[WIN_ID_TIMESHIFT_INFO_PLATE1]=TimeShiftInfoPlate1('TimeshiftInfoPlate1.xml', self.mScriptDir )
+			self.mWindows[WIN_ID_TIMESHIFT_INFO_PLATE1]=TimeShiftInfoPlate1( 'TimeshiftInfoPlate1.xml', self.mScriptDir )
 
 			from pvr.gui.windows.TimeshiftInfoPlate2 import TimeShiftInfoPlate2
-			self.mWindows[WIN_ID_TIMESHIFT_INFO_PLATE2]=TimeShiftInfoPlate2('TimeshiftInfoPlate2.xml', self.mScriptDir )
+			self.mWindows[WIN_ID_TIMESHIFT_INFO_PLATE2]=TimeShiftInfoPlate2( 'TimeshiftInfoPlate2.xml', self.mScriptDir )
 			
 
 			from pvr.gui.windows.test1 import Test1
-			Test1('MyPics.xml', self.mScriptDir ).doModal()
+			Test1('MyPics.xml', self.mScriptDir ).doModal( )
 			"""
 
-		except Exception, ex:
-			LOG_ERR( "Exception %s" %ex)
+		except Exception, ex :
+			LOG_ERR( "Exception %s" %ex )
 
 
 	def ResetAllWindows( self ) :
@@ -355,11 +328,11 @@ class WindowMgr(object):
 			
 
 	def CheckSkinChange( self ) :
-		currentSkinName = xbmc.executehttpapi("GetGUISetting(3, lookandfeel.skin)")
+		currentSkinName = xbmc.executehttpapi( "GetGUISetting(3, lookandfeel.skin)" )
 		print 'skin name=%s : %s' %( self.mSkinName, currentSkinName[4:] )
 
 		if self.mSkinName != currentSkinName[4:] :
-			LOG_TRACE('change skin name')
+			LOG_TRACE( 'change skin name' )
 			self.mSkinName = currentSkinName[4:]
 			return True
 		return False
@@ -373,12 +346,12 @@ class WindowMgr(object):
 		if E_ADD_XBMC_HTTP_FUNCTION == True :
 			import pvr.Platform
 			from pvr.GuiHelper import GetInstanceSkinPosition
-	 		LOG_TRACE('--------------')		
-			strResolution = xbmc.executehttpapi("getresolution( )")
-			LOG_TRACE('--------------#2')
-			LOG_TRACE('strResolution=%s' %strResolution	)
-			resInfo = strResolution[4:].split(':')
-			LOG_TRACE('resInfo=%s' %resInfo	)		
+	 		LOG_TRACE( '--------------')		
+			strResolution = xbmc.executehttpapi( "getresolution( )" )
+			LOG_TRACE( '--------------#2')
+			LOG_TRACE( 'strResolution=%s' %strResolution )
+			resInfo = strResolution[4:].split( ':' )
+			LOG_TRACE( 'resInfo=%s' %resInfo )		
 			width = int( resInfo[0] )
 			height = int( resInfo[1] )
 			fixelRate=  float( resInfo[2] )
@@ -387,12 +360,12 @@ class WindowMgr(object):
 			right = int( resInfo[5] )
 			bottom = int( resInfo[6] )
 
-			LOG_TRACE('width=%d height=%d fixelRate=%f left=%d topt=%d right=%d bottom=%d' %(width, height, fixelRate, left, top, right, bottom ) )
+			LOG_TRACE( 'width=%d height=%d fixelRate=%f left=%d topt=%d right=%d bottom=%d' %( width, height, fixelRate, left, top, right, bottom ) )
 			
-			strZoom = xbmc.executehttpapi("GetGUISetting(0, lookandfeel.skinzoom)")
+			strZoom = xbmc.executehttpapi( "GetGUISetting(0, lookandfeel.skinzoom)" )
 			skinzoom = int( strZoom[4:] )
 			
-			LOG_TRACE('zoom=%d' %skinzoom )
+			LOG_TRACE( 'zoom=%d' %skinzoom )
 
 			pvr.GuiHelper.GetInstanceSkinPosition( ).SetPosition( left, top, right, bottom, skinzoom )
 		else :		
@@ -405,12 +378,12 @@ class WindowMgr(object):
 				fp				= open( userDatePath )			
 				xml				= fp.read( )
 				resolutionInfo	= BeautifulSoup( xml )
-				resolution		= resolutionInfo.findAll('resolution')
-				left			= int( resolution[1].find('left').string )
-				top				= int( resolution[1].find('top').string )
-				right			= int( resolution[1].find('right').string )
-				bottom			= int( resolution[1].find('bottom').string )
-				zoom			= int( resolutionInfo.find('skinzoom').string )
+				resolution		= resolutionInfo.findAll( 'resolution' )
+				left			= int( resolution[1].find( 'left' ).string )
+				top				= int( resolution[1].find( 'top' ).string )
+				right			= int( resolution[1].find( 'right' ).string )
+				bottom			= int( resolution[1].find( 'bottom' ).string )
+				zoom			= int( resolutionInfo.find( 'skinzoom' ).string )
 				pvr.GuiHelper.GetInstanceSkinPosition( ).SetPosition( left, top, right, bottom, zoom )
 				fp.close( )
 
@@ -420,7 +393,7 @@ class WindowMgr(object):
 				LOG_ERR( 'Error exception[%s]' % e )
 
 
-	def CopyIncludeFile( self ):
+	def CopyIncludeFile( self ) :
 		import pvr.Platform 
 
 		skinName = self.mSkinName
@@ -428,47 +401,47 @@ class WindowMgr(object):
 		print 'skinName=%s' %skinName
 
 		import pvr.Platform 
-		self.mScriptDir = pvr.Platform.GetPlatform().GetScriptDir()
+		self.mScriptDir = pvr.Platform.GetPlatform().GetScriptDir( )
 
 		
 		if skinName.lower() == 'default' or skinName.lower() == 'skin.confluence' :
-			mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir(), 'resources', 'skins', 'Default', '720p', 'mbox_includes.xml')
+			mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'skins', 'Default', '720p', 'mbox_includes.xml' )
 
 		else : 
-			mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir(), 'resources', 'skins', skinName, '720p', 'mbox_includes.xml')
+			mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'skins', skinName, '720p', 'mbox_includes.xml' )
 
-			if not os.path.isfile(mboxIncludePath) :
-				mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir(), 'resources', 'skins', 'Default', '720p', 'mbox_includes.xml')			
+			if not os.path.isfile( mboxIncludePath ) :
+				mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'skins', 'Default', '720p', 'mbox_includes.xml' )			
 			
 		print 'mboxIncludePath=%s' %mboxIncludePath	
 
-		skinIncludePath = os.path.join( pvr.Platform.GetPlatform().GetSkinDir(), '720p', 'mbox_includes.xml')
+		skinIncludePath = os.path.join( pvr.Platform.GetPlatform().GetSkinDir( ), '720p', 'mbox_includes.xml' )
 		print 'skinIncludePath=%s' %skinIncludePath	
 		shutil.copyfile( mboxIncludePath, skinIncludePath )
 
 
 	def AddDefaultFont( self ) :
-		self.mSkinFontPath = xbmc.translatePath("special://skin/fonts/")
-		self.mScriptFontPath = os.path.join(os.getcwd() , "resources" , "fonts")
-		self.mSkinDir = xbmc.translatePath("special://skin/")
+		self.mSkinFontPath = xbmc.translatePath( "special://skin/fonts/" )
+		self.mScriptFontPath = os.path.join( os.getcwd() , "resources" , "fonts" )
+		self.mSkinDir = xbmc.translatePath( "special://skin/" )
 		self.mListDir = os.listdir( self.mSkinDir )
 
 		self.AddFont( "font35_title", "DejaVuSans-Bold.ttf", "35" )
 		self.AddFont( "font12_title", "DejaVuSans-Bold.ttf", "16" )
 
 
-	def GetFontsXML( self ):
+	def GetFontsXML( self ) :
 
 		fontPaths = []
 
 		try:
-			for subDir in self.mListDir:
+			for subDir in self.mListDir :
 				subDir = os.path.join( self.mSkinDir, subDir )
 				
-				if os.path.isdir( subDir ):
+				if os.path.isdir( subDir ) :
 					fontXml = os.path.join( subDir, "Font.xml" )
 					
-					if os.path.exists( fontXml ):
+					if os.path.exists( fontXml ) :
 						fontPaths.append( fontXml )
 
 		except:
@@ -478,10 +451,10 @@ class WindowMgr(object):
 		return fontPaths
 
 
-	def HasFontInstalled( self, aFontXMLPath, aFontName ):
+	def HasFontInstalled( self, aFontXMLPath, aFontName ) :
 		name = "<name>%s</name>" % aFontName
 
-		if not name in file( aFontXMLPath, "r" ).read():
+		if not name in file( aFontXMLPath, "r" ).read( ) :
 			print '%s font is not installed!' %aFontName
 			return False
 			
@@ -491,19 +464,19 @@ class WindowMgr(object):
 		return True
 
 
-	def AddFont( self, aFontName, aFileName, aSize, aStyle="", aAspect="" ):
+	def AddFont( self, aFontName, aFileName, aSize, aStyle="", aAspect="" ) :
 
-		try:
+		try :
 			needReloadSkin = False
 			fontPaths = self.GetFontsXML( )
 
 			if fontPaths:
-				for fontXMLPath in fontPaths:
-					if not self.HasFontInstalled( fontXMLPath, aFontName ):
+				for fontXMLPath in fontPaths :
+					if not self.HasFontInstalled( fontXMLPath, aFontName ) :
 						tree = ElementTree.parse( fontXMLPath )
 						root = tree.getroot( )
 
-						for sets in root.getchildren( ):
+						for sets in root.getchildren( ) :
 							sets.findall( "font" )[ -1 ].tail = "\n\t\t"
 							new = ElementTree.SubElement( sets, "font" )
 							new.text, new.tail = "\n\t\t\t", "\n\t"
@@ -519,25 +492,25 @@ class WindowMgr(object):
 							subNew3.tail = "\n\t\t\t"
 							lastElement = subNew3
 
-							if aStyle in [ "normal", "bold", "italics", "bolditalics" ]:
-								subNew4=ElementTree.SubElement(new ,"style")
+							if aStyle in [ "normal", "bold", "italics", "bolditalics" ] :
+								subNew4=ElementTree.SubElement( new ,"style" )
 								subNew4.text = aStyle
 								subNew4.tail = "\n\t\t\t"
 								lastElement = subNew4
-							if aAspect:    
-								subNew5=ElementTree.SubElement(new ,"aspect")
+							if aAspect :    
+								subNew5=ElementTree.SubElement( new, "aspect" )
 								subNew5.text = aAspect
 								subNew5.tail = "\n\t\t\t"
 								lastElement = subNew5
 							needReloadSkin = True
 
 							lastElement.tail = "\n\t\t"
-						tree.write(fontXMLPath)
+						tree.write( fontXMLPath )
 						needReloadSkin = True
-		except:
+		except :
 			print 'Error AddFontErr'
 
-		if needReloadSkin:
+		if needReloadSkin :
  			if not os.path.exists( os.path.join( self.mSkinFontPath, aFileName ) ) and os.path.exists( os.path.join( self.mScriptFontPath, aFileName ) ):
 				shutil.copyfile( os.path.join( self.mScriptFontPath, aFileName ), os.path.join( self.mSkinFontPath, aFileName ) )
 

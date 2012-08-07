@@ -38,12 +38,11 @@ class DialogInputPincode( BaseDialog ) :
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-		self.GlobalAction( actionId )		
+		self.GlobalAction( actionId )
 
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
-			LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')			
 			self.CloseDialog( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -59,7 +58,6 @@ class DialogInputPincode( BaseDialog ) :
 			self.DeleteValue( )
 
 		elif actionId == Action.ACTION_PAGE_UP:
-			LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')		
 			try :
 				if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE :
 					self.mNextAction =  self.E_TUNE_NEXT_CHANNEL					
@@ -69,7 +67,6 @@ class DialogInputPincode( BaseDialog ) :
 				LOG_TRACE( 'Exception %s' %e )
 			
 		elif actionId == Action.ACTION_PAGE_DOWN :
-			LOG_TRACE('+++++++++++++++++++++++++++++++++++++++++++++')		
 			try :
 				if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE :
 					self.mNextAction =  self.E_TUNE_PREV_CHANNEL										
@@ -122,7 +119,6 @@ class DialogInputPincode( BaseDialog ) :
 
 		try :
 			if length >= MAX_PINCODE_LENGTH :
-				LOG_TRACE( '' )
 				#CheckPineCode
 				savedPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
 				LOG_TRACE( 'pinValue = %d : %d' %( savedPincode, int( self.mInputNumber ) ) )
@@ -132,7 +128,7 @@ class DialogInputPincode( BaseDialog ) :
 				else : #Wrong PinCode
 					self.mInputNumber = ''
 					self.mCtrlInputLabel.setLabel( self.mInputNumber )					
-					self.getControl( E_DIALOG_HEADER ).setLabel( 'Wrong Pincode' )								
+					self.getControl( E_DIALOG_HEADER ).setLabel( MR_LANG( 'Wrong pincode' )	)
 			else :
 				temp = '*'
 				self.mCtrlInputLabel.setLabel( temp*length )

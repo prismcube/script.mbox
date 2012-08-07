@@ -67,19 +67,19 @@ class Action(object) :
 	
 	
 
-class Property(object) :
+class Property( object ) :
 
-	def GetListItemProperty(self, aListItem, aName) :
-		p = aListItem.getProperty(aName)
-		if p is not None:
-			return p.decode('utf-8')
+	def GetListItemProperty( self, aListItem, aName ) :
+		p = aListItem.getProperty( aName )
+		if p is not None :
+			return p.decode( 'utf-8' )
 
 
-	def SetListItemProperty(self, aListItem, aName, aValue) :
-		if aListItem and aName and not aValue is None:
-			aListItem.setProperty(aName, aValue)
+	def SetListItemProperty( self, aListItem, aName, aValue ) :
+		if aListItem and aName and not aValue is None :
+			aListItem.setProperty( aName, aValue )
 		else:
-			log.debug('ERR listItem=%s name=%s value=%s' % (aListItem, aName, aValue))
+			log.debug('ERR listItem=%s name=%s value=%s' % ( aListItem, aName, aValue ) )
 
 
 class BaseWindow( xbmcgui.WindowXML, Property ) :
@@ -101,7 +101,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	@classmethod
-	def GetName(cls):
+	def GetName( cls ):
 		return cls.__name__
 
 
@@ -152,11 +152,11 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 	#@GuiLock
 	def UpdateVolume( self ) :
 
-		GuiLock2(True)
-		retVolume = xbmc.executehttpapi('getvolume()')
-		GuiLock2(False)
+		GuiLock2( True )
+		retVolume = xbmc.executehttpapi( 'getvolume()' )
+		GuiLock2( False )
 		volume = int( retVolume[4:] )
-		LOG_TRACE('GET VOLUME=%d' %volume )
+		LOG_TRACE( 'GET VOLUME=%d' %volume )
 
 		if volume > MAX_VOLUME :
 			volume = MAX_VOLUME
@@ -206,14 +206,14 @@ class ControlItem :
 
 class SettingWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
-		BaseWindow.__init__(self, *args, **kwargs)
+		BaseWindow.__init__( self, *args, **kwargs )
 		self.mControlList = []
 		self.mTunerMgr = pvr.TunerConfigMgr.GetInstance( )
 
 
 	def InitControl( self ) :
 		pos = 0
-		for ctrlItem in self.mControlList:
+		for ctrlItem in self.mControlList :
 			if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL :
 				selectedItem = ctrlItem.mProperty.GetPropIndex( )
 				control = self.getControl( ctrlItem.mControlId + 3 )
@@ -268,9 +268,9 @@ class SettingWindow( BaseWindow ) :
 	def AddEnumControl( self, aControlId, aPropName, aTitleLabel=None, aDescription=None ) :
 		property = ElisPropertyEnum( aPropName, self.mCommander )
 		listItems = []
-		for i in range( property.GetIndexCount() ) :
+		for i in range( property.GetIndexCount( ) ) :
 			if aTitleLabel == None :
-				listItem = xbmcgui.ListItem( property.GetName(), property.GetPropStringByIndex( i ) )
+				listItem = xbmcgui.ListItem( property.GetName( ), property.GetPropStringByIndex( i ) )
 			else :
 				listItem = xbmcgui.ListItem( aTitleLabel, property.GetPropStringByIndex( i ) )
 			listItems.append( listItem )
@@ -327,6 +327,7 @@ class SettingWindow( BaseWindow ) :
 
 		return False
 
+
 	def GetPrevId( self, aControlId ) :
 		count = len( self.mControlList )
 		prevId = -1
@@ -345,6 +346,7 @@ class SettingWindow( BaseWindow ) :
 				prevId = ctrlItem.mControlId
 
 		return prevId
+
 
 	def GetNextId( self, aControlId ) :
 		count = len( self.mControlList )
@@ -381,6 +383,7 @@ class SettingWindow( BaseWindow ) :
 					return control.getSelectedPosition( )
 
 		return -1
+
 
 	def GetControlLabel2String( self, aControlId ) :
 		count = len( self.mControlList )
@@ -466,6 +469,7 @@ class SettingWindow( BaseWindow ) :
 				return True
 
 		return False
+
 
 	def SetEnableControls( self, aControlIds, mEnable ) :
 		for controlId in aControlIds :
@@ -571,6 +575,7 @@ class SettingWindow( BaseWindow ) :
 					return True
 
 		return False
+
 
 	def SetProp( self, aControlId, aValue ) :
 		count = len( self.mControlList )

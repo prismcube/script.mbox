@@ -60,9 +60,9 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 
 	@GuiLock
 	def UpdateVolume( self ) :
-		retVolume = xbmc.executehttpapi("getvolume()")
+		retVolume = xbmc.executehttpapi( "getvolume()" )
 		volume = int( retVolume[4:] )
-		LOG_TRACE('GET VOLUME=%d' %volume )
+		LOG_TRACE( 'GET VOLUME=%d' %volume )
 
 		if volume > MAX_VOLUME :
 			volume = MAX_VOLUME
@@ -94,28 +94,30 @@ class ControlItem:
 		self.mControlId  = aControlId
 		self.mProperty = aProperty		# E_SETTING_ENUM_CONTROL : propery, E_SETTING_INPUT_CONTROL : input type
 		self.mListItems = aListItems
+		
 		if self.mControlType == self.E_LABEL_CONTROL :
 			self.mEnable	= False
-		else:
+		else :
 			self.mEnable	= True
+			
 		self.mDescription = aDescription
 		self.mSelecteItem = aSelecteItem
 		self.mVisible = True		
 	
 
-class SettingDialog( BaseDialog ):
-	def __init__(self, *args, **kwargs):
-		BaseDialog.__init__(self, *args, **kwargs)
+class SettingDialog( BaseDialog ) :
+	def __init__( self, *args, **kwargs ) :
+		BaseDialog.__init__( self, *args, **kwargs )
 		self.mControlList = []
 		self.mFocusId = -1
 		self.mIsAutomaicHeight = False
 		self.mIsOkCancelType = False
 
 
-	def InitControl( self ):
+	def InitControl( self ) :
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_CLOSE_BUTTON, E_SETTING_DIALOG_BUTTON_CLOSE, None, None, None, None ) )	
 		self.getControl( E_SETTING_DIALOG_MAIN_GOURP_ID ).setVisible( False )
-		for ctrlItem in self.mControlList:
+		for ctrlItem in self.mControlList :
 			if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL :
 				selectedItem = ctrlItem.mProperty.GetPropIndex()
 				control = self.getControl( ctrlItem.mControlId + 3 )
@@ -136,8 +138,8 @@ class SettingDialog( BaseDialog ):
 
 	def UpdateLocation( self ) :
 		pos = 0	
-		for ctrlItem in self.mControlList:
-			if ctrlItem.mVisible == False or ctrlItem.mControlId == E_SETTING_DIALOG_BUTTON_CLOSE:
+		for ctrlItem in self.mControlList :
+			if ctrlItem.mVisible == False or ctrlItem.mControlId == E_SETTING_DIALOG_BUTTON_CLOSE :
 				continue
 
 			if ctrlItem.mControlId == E_SETTING_DIALOG_BUTTON_OK_ID :
@@ -147,7 +149,6 @@ class SettingDialog( BaseDialog ):
 			else :
 				pos += self.getControl( ctrlItem.mControlId ).getHeight( )
 				self.getControl( ctrlItem.mControlId ).setPosition( 0, pos + 33)
-
 	
 		if self.mIsAutomaicHeight == True :
 			if self.mIsOkCancelType == True :
@@ -155,7 +156,7 @@ class SettingDialog( BaseDialog ):
 			else :
 				self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).setHeight( pos + 135 )
 
-		height = self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).getHeight()
+		height = self.getControl( E_SETTING_DIALOG_BACKGROUND_IMAGE_ID ).getHeight( )
 		start_x = E_WINDOW_WIDTH / 2 - 610 / 2
 		start_y = E_WINDOW_HEIGHT / 2 - height / 2
 		self.getControl( E_SETTING_DIALOG_MAIN_GOURP_ID ).setPosition( start_x, start_y )
@@ -166,7 +167,7 @@ class SettingDialog( BaseDialog ):
 		self.mIsAutomaicHeight = mMode
 
 
-	def ResetAllControl( self ):
+	def ResetAllControl( self ) :
 		del self.mControlList[:]
 
 
@@ -179,10 +180,10 @@ class SettingDialog( BaseDialog ):
 		print 'Unkown ControlId'
 
 		
-	def AddEnumControl( self, aControlId, aPropName, aTitleLabel=None, aDescription=None ):
+	def AddEnumControl( self, aControlId, aPropName, aTitleLabel=None, aDescription=None ) :
 		property = ElisPropertyEnum( aPropName, self.mCommander )
 		listItems = []
-		for i in range( property.GetIndexCount() ):
+		for i in range( property.GetIndexCount( ) ) :
 			if aTitleLabel == None :
 				listItem = xbmcgui.ListItem( property.GetName(), property.GetPropStringByIndex( i ) )
 			else :
@@ -191,24 +192,24 @@ class SettingDialog( BaseDialog ):
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_ENUM_CONTROL, aControlId, property, listItems, None, aDescription ) )
 
 	
-	def AddUserEnumControl( self, aControlId, aTitleLabel, aInputType, aSelectItem, aDescription=None ):	
+	def AddUserEnumControl( self, aControlId, aTitleLabel, aInputType, aSelectItem, aDescription=None ) :	
 		listItems = []
 
-		for i in range( len( aInputType ) ):
+		for i in range( len( aInputType ) ) :
 			listItem = xbmcgui.ListItem( aTitleLabel, aInputType[i] )
 			listItems.append( listItem )
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_USER_ENUM_CONTROL, aControlId, None, listItems, int( aSelectItem ), aDescription ) )
 
 
-	def AddListControl( self, aControlId, aItemList, aSelectItem, aDescription=None ):	
+	def AddListControl( self, aControlId, aItemList, aSelectItem, aDescription=None ) :	
 		listItems = []
-		for i in range( len( aItemList ) ):
+		for i in range( len( aItemList ) ) :
 			listItem = xbmcgui.ListItem( aItemList[i] )
 			listItems.append( listItem )
 		self.mControlList.append( ControlItem( ControlItem.E_SETTING_LIST_CONTROL, aControlId, None, listItems, int( aSelectItem ), aDescription ) )
 
 
-	def AddInputControl( self, aControlId , aTitleLabel, aInputLabel, aDescription=None ):
+	def AddInputControl( self, aControlId , aTitleLabel, aInputLabel, aDescription=None ) :
 		listItems = []
 		listItem = xbmcgui.ListItem( aTitleLabel, aInputLabel )
 		listItems.append( listItem )
@@ -221,21 +222,21 @@ class SettingDialog( BaseDialog ):
 		self.mIsOkCancelType = True
 
 
-	def AddLabelControl( self, aControlId, aDescription=None ):
+	def AddLabelControl( self, aControlId, aDescription=None ) :
 		self.mControlList.append( ControlItem( ControlItem.E_LABEL_CONTROL, aControlId, None, None, None, aDescription ) )
 
 
-	def AddCustomControl( self, aControlId, aDescription=None ):
+	def AddCustomControl( self, aControlId, aDescription=None ) :
 		self.mControlList.append( ControlItem( ControlItem.E_CUSTOM_CONTROL, aControlId, None, None, None, aDescription ) )
 
 
-	def HasControlItem( self, aCtrlItem, aContgrolId  ):
+	def HasControlItem( self, aCtrlItem, aContgrolId  ) :
 		if aCtrlItem.mControlType == aCtrlItem.E_SETTING_ENUM_CONTROL or aCtrlItem.mControlType == aCtrlItem.E_SETTING_USER_ENUM_CONTROL :
 			if aCtrlItem.mControlId == aContgrolId or aCtrlItem.mControlId + 1 == aContgrolId or aCtrlItem.mControlId + 2 == aContgrolId or aCtrlItem.mControlId + 3 == aContgrolId  :
 				return True
 
 		if aCtrlItem.mControlType == aCtrlItem.E_SETTING_LIST_CONTROL :
-			if aCtrlItem.mControlId == aContgrolId or aCtrlItem.mControlId + 1 == aContgrolId or aCtrlItem.mControlId + 2 == aContgrolId:
+			if aCtrlItem.mControlId == aContgrolId or aCtrlItem.mControlId + 1 == aContgrolId or aCtrlItem.mControlId + 2 == aContgrolId :
 				return True
 				
 		elif aCtrlItem.mControlType == aCtrlItem.E_SETTING_INPUT_CONTROL :
@@ -248,7 +249,7 @@ class SettingDialog( BaseDialog ):
 		return False
 
 
-	def GetPrevId( self, aControlId ):
+	def GetPrevId( self, aControlId ) :
 		count = len( self.mControlList )
 		prevId = -1
 		found = False
@@ -268,16 +269,15 @@ class SettingDialog( BaseDialog ):
 		return prevId
 
 
-	def GetNextId( self, aControlId ):			
+	def GetNextId( self, aControlId ) :
 		count = len( self.mControlList )
 		nextId = -1
 		found = False
-
 		
 		for i in range( count ) :
 			ctrlItem = self.mControlList[i]
 
-			if ctrlItem.mEnable and nextId <= 0  and ctrlItem.mVisible:
+			if ctrlItem.mEnable and nextId <= 0  and ctrlItem.mVisible :
 				nextId = ctrlItem.mControlId
 
 			if ctrlItem.mEnable and found == True :
@@ -301,14 +301,14 @@ class SettingDialog( BaseDialog ):
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 					control = self.getControl( ctrlItem.mControlId + 3 )
 					time.sleep( 0.02 )
-					return control.getSelectedPosition()
+					return control.getSelectedPosition( )
 				elif ctrlItem.mControlType == ctrlItem.E_SETTING_LIST_CONTROL :
 					control = self.getControl( ctrlItem.mControlId + 2 )
 					time.sleep( 0.02 )
-					return control.getSelectedPosition()
-				
+					return control.getSelectedPosition( )
 
 		return -1
+
 
 	def GetControlLabel2String( self, aControlId ) :
 		count = len( self.mControlList )
@@ -479,7 +479,7 @@ class SettingDialog( BaseDialog ):
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL :
 					control = self.getControl( ctrlItem.mControlId + 3 )
 					time.sleep( 0.02 )
-					ctrlItem.mProperty.SetPropIndex( control.getSelectedPosition() )
+					ctrlItem.mProperty.SetPropIndex( control.getSelectedPosition( ) )
 					return True
 					
 		return False
@@ -504,7 +504,7 @@ class SettingDialog( BaseDialog ):
 		return False
 
 
-	def ControlDown( self ):
+	def ControlDown( self ) :
 		self.GetFocusId( )
 
 		groupId = self.GetGroupId( self.mFocusId )
@@ -516,7 +516,8 @@ class SettingDialog( BaseDialog ):
 
 		return False
 
-	def ControlLeft( self ):
+
+	def ControlLeft( self ) :
 		self.GetFocusId( )
 		count = len( self.mControlList )
 
@@ -529,7 +530,7 @@ class SettingDialog( BaseDialog ):
 						return
 
 
-	def ControlRight( self ):
+	def ControlRight( self ) :
 		self.GetFocusId( )
 		count = len( self.mControlList )
 
@@ -556,11 +557,11 @@ class SettingDialog( BaseDialog ):
 					control = self.getControl( ctrlItem.mControlId + 2 )
 					control.selectItem( aPosition )
 					return True
-					
 
 		return False
 
-	def SetProp( self, aControlId, aValue ):
+
+	def SetProp( self, aControlId, aValue ) :
 		count = len( self.mControlList )
 
 		for i in range( count ) :
@@ -571,14 +572,13 @@ class SettingDialog( BaseDialog ):
 					return True
 
 
-
 	def GetListItems( self, aControlId ) :
 
 		count = len( self.mControlList )
 
 		for i in range( count ) :
 
-			ctrlItem = self.mControlList[i]		
+			ctrlItem = self.mControlList[i]
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 					return ctrlItem.mListItems

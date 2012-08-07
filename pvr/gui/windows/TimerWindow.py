@@ -19,17 +19,17 @@ CONTEXT_DELETE_ALL_TIMERS		= 4
 
 
 
-class TimerWindow(BaseWindow):
+class TimerWindow( BaseWindow ) :
 
-	def __init__(self, *args, **kwargs):
-		BaseWindow.__init__(self, *args, **kwargs)
+	def __init__( self, *args, **kwargs ) :
+		BaseWindow.__init__( self, *args, **kwargs )
 
 	
-	def onInit(self):
-		self.mWinId = xbmcgui.getCurrentWindowId()
+	def onInit( self ) :
+		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Timer' )
+		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Timer' ) )
 		self.mSelectedWeeklyTimer = 0
 
 		self.mListItems = []
@@ -39,19 +39,19 @@ class TimerWindow(BaseWindow):
 
 		self.mCtrlTimeLabel = self.getControl( LABEL_ID_TIME )
 		self.mCtrlDateLabel = self.getControl( LABEL_ID_DATE )
-		self.mCtrlDurationLabel = self.getControl( LABEL_ID_DURATION )		
+		self.mCtrlDurationLabel = self.getControl( LABEL_ID_DURATION )
 
 		self.mCtrlHDImage = self.getControl( IMAMGE_ID_HD )
 		self.mCtrlDolbyImage = self.getControl( IMAMGE_ID_DOLBY )
 		self.mCtrlSubtitleImage = self.getControl( IMAMGE_ID_SUBTITLE )		
 
-		self.mCtrlTimeLabel.setLabel('')
-		self.mCtrlDateLabel.setLabel('')
-		self.mCtrlDurationLabel.setLabel('')
+		self.mCtrlTimeLabel.setLabel( '' )
+		self.mCtrlDateLabel.setLabel( '' )
+		self.mCtrlDurationLabel.setLabel( '' )
 
-		self.mCtrlHDImage.setImage('')
-		self.mCtrlDolbyImage.setImage('')
-		self.mCtrlSubtitleImage.setImage('')
+		self.mCtrlHDImage.setImage( '' )
+		self.mCtrlDolbyImage.setImage( '' )
+		self.mCtrlSubtitleImage.setImage( '' )
 
 		self.SetPipScreen( )
 		
@@ -59,11 +59,11 @@ class TimerWindow(BaseWindow):
 
 		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
 		self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
-		LOG_TRACE('ZeppingMode(%d,%d,%d)' %( self.mCurrentMode.mServiceType, self.mCurrentMode.mMode, self.mCurrentMode.mSortingMode ) )
+		LOG_TRACE( 'ZeppingMode(%d,%d,%d)' %( self.mCurrentMode.mServiceType, self.mCurrentMode.mMode, self.mCurrentMode.mSortingMode ) )
 		self.mChannelList = self.mDataCache.Channel_GetList( )
 
 		if self.mChannelList :
-			LOG_TRACE("ChannelList=%d" %len(self.mChannelList) )
+			LOG_TRACE( "ChannelList=%d" %len( self.mChannelList ) )
 		
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		self.mGMTTime = 0
@@ -74,27 +74,25 @@ class TimerWindow(BaseWindow):
 		self.mEventBus.Register( self )	
 		self.mInitialized = True
 
+
 	def onAction( self, aAction ) :
-		self.GetFocusId()
+		self.GetFocusId( )
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )
 
-		
 		#LOG_TRACE('onAction=%d' %actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			self.GoParentTimer()
-
+			self.GoParentTimer( )
 
 		elif  actionId == Action.ACTION_SELECT_ITEM :
 			if self.mSelectedWeeklyTimer == 0 :
-				self.GoChildTimer()
+				self.GoChildTimer( )
 			else :
-				selectedPos = self.mCtrlBigList.getSelectedPosition()		
+				selectedPos = self.mCtrlBigList.getSelectedPosition( )
 				if self.mSelectedWeeklyTimer > 0 and selectedPos == 0 :
-					self.GoParentTimer()
+					self.GoParentTimer( )
 				return
-
 	
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.GoParentTimer( )
@@ -117,26 +115,26 @@ class TimerWindow(BaseWindow):
 			self.ShowContextMenu( )
 
 
-	def onClick(self, aControlId):
+	def onClick( self, aControlId ) :
 		LOG_TRACE( 'aControlId=%d' %aControlId )
 		if aControlId == BUTTON_ID_GO_PARENT :
-			self.GoParentTimer()
+			self.GoParentTimer( )
 
 
-	def onFocus(self, aControlId):
+	def onFocus( self, aControlId ) :
 		pass
 
 
 	@GuiLock
-	def onEvent(self, aEvent):
+	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
 			if aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
-				LOG_TRACE('Record Status chanaged')
+				LOG_TRACE( 'Record status chanaged' )
 				self.UpdateList( )
 
 
 	def Close( self ) :
-		self.mEventBus.Deregister( self )	
+		self.mEventBus.Deregister( self )
 		self.SetVideoRestore( )
 		WinMgr.GetInstance().CloseWindow( )
 
@@ -151,31 +149,31 @@ class TimerWindow(BaseWindow):
 
 	def Load( self ) :
 
-		LOG_TRACE('----------------------------------->')
+		LOG_TRACE( '----------------------------------->' )
 		self.mGMTTime = self.mDataCache.Datetime_GetGMTTime( )
 
 		self.mTimerList = []
 		try :
 			self.mTimerList = self.mDataCache.Timer_GetTimerList( )
 		except Exception, ex :
-			LOG_ERR( "Exception %s" %ex)
+			LOG_ERR( "Exception %s" %ex )
 
 		if self.mTimerList :
-			LOG_TRACE('self.mTimerList len=%d' %len( self.mTimerList ) )
+			LOG_TRACE( 'self.mTimerList len=%d' %len( self.mTimerList ) )
 
 
 	def UpdateList( self, aUpdateOnly=False ) :
 		self.mListItems = []
 		self.LoadTimerList( )
 
-		self.mCtrlBigList.reset()
+		self.mCtrlBigList.reset( )
 		self.mListItems = []
 		if self.mTimerList== None or len( self.mTimerList ) <= 0 :
 			return
 			
 		try :
 			if self.mSelectedWeeklyTimer > 0 :
-				LOG_TRACE('')			
+				LOG_TRACE( '' )			
 				timer = None
 				for i in range( len( self.mTimerList ) ) :
 					if self.mTimerList[i].mTimerId == self.mSelectedWeeklyTimer :
@@ -187,7 +185,7 @@ class TimerWindow(BaseWindow):
 
 				struct_time = time.gmtime( timer.mStartTime )
 				# tm_wday is different between Python and C++
-				LOG_TRACE('time.struct_time[6]=%d' %struct_time[6] )
+				LOG_TRACE( 'time.struct_time[6]=%d' %struct_time[6] )
 				weekday = struct_time[6] + 1
 				if weekday > 6 :
 					weekday = 0
@@ -195,7 +193,7 @@ class TimerWindow(BaseWindow):
 				# hour*3600 + min*60 + sec
 				secondsNow = struct_time[3]*3600 + struct_time[4]*60 + struct_time[5]
 
-				LOG_TRACE('weekday=%d'  %weekday )
+				LOG_TRACE( 'weekday=%d'  %weekday )
 
 				listItem = xbmcgui.ListItem( '..' )
 				listItem.setProperty( 'StartTime', '' )
@@ -224,11 +222,11 @@ class TimerWindow(BaseWindow):
 					tempName = '%s' %(TimeToString( weeklyStarTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )						
 					listItem.setProperty( 'StartTime', tempName )
 
-					tempDuration = '%s~%s' %(TimeToString( weeklyStarTime, TimeFormatEnum.E_HH_MM ), TimeToString( weeklyStarTime + weeklyTimer.mDuration, TimeFormatEnum.E_HH_MM )) 
+					tempDuration = '%s~%s' %(TimeToString( weeklyStarTime, TimeFormatEnum.E_HH_MM ), TimeToString( weeklyStarTime + weeklyTimer.mDuration, TimeFormatEnum.E_HH_MM ) ) 
 					listItem.setProperty( 'Duration', tempDuration )
 
 					if self.IsRunningTimer( timer.mTimerId ) == True and \
-						weeklyStarTime < self.mDataCache.Datetime_GetLocalTime() and self.mDataCache.Datetime_GetLocalTime() < weeklyStarTime + weeklyTimer.mDuration :
+						weeklyStarTime < self.mDataCache.Datetime_GetLocalTime( ) and self.mDataCache.Datetime_GetLocalTime( ) < weeklyStarTime + weeklyTimer.mDuration :
 						listItem.setProperty( 'TimerType', 'Running' )
 					else :
 						listItem.setProperty( 'TimerType', 'None' )
@@ -249,7 +247,7 @@ class TimerWindow(BaseWindow):
 					listItem = xbmcgui.ListItem( tempChannelName, timer.mName )	
 
 					if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY :
-						tempName = 'Weekly'
+						tempName = MR_LANG( 'Weekly' )
 						listItem.setProperty( 'Duration', '' )
 						tempDuration = ''
 					else :
@@ -268,17 +266,18 @@ class TimerWindow(BaseWindow):
 
 					self.mListItems.append( listItem )
 
-					LOG_TRACE('---------- self.mListItems COUNT=%d' %len(self.mListItems))
+					LOG_TRACE( '---------- self.mListItems COUNT=%d' %len( self.mListItems ) )
 					
 				self.mCtrlBigList.addItems( self.mListItems )
 
-				xbmc.executebuiltin('container.update')
+				xbmc.executebuiltin( 'container.update' )
 
 		except Exception, ex :
-			LOG_ERR( "Exception %s" %ex)
+			LOG_ERR( "Exception %s" %ex )
+
 
 	@RunThread
-	def CurrentTimeThread(self):
+	def CurrentTimeThread( self ) :
 		pass
 
 
@@ -290,12 +289,12 @@ class TimerWindow(BaseWindow):
 	def ShowContextMenu( self ) :
 		context = []
 
-		context.append( ContextItem( 'Go Parent', CONTEXT_GO_PARENT ) )
+		context.append( ContextItem( MR_LANG( 'Go Parent' ), CONTEXT_GO_PARENT ) )
 		
 		if self.mListItems and len( self.mListItems ) > 0 :
-			context.append( ContextItem( 'Edit Timer', CONTEXT_EDIT_TIMER ) )
-			context.append( ContextItem( 'Delete Timer', CONTEXT_DELETE_TIMER ) )
-			context.append( ContextItem( 'Delete All Timers', CONTEXT_DELETE_ALL_TIMERS ) )			
+			context.append( ContextItem( MR_LANG( 'Edit Timer' ), CONTEXT_EDIT_TIMER ) )
+			context.append( ContextItem( MR_LANG( 'Delete Timer' ), CONTEXT_DELETE_TIMER ) )
+			context.append( ContextItem( MR_LANG( 'Delete All Timers' ), CONTEXT_DELETE_ALL_TIMERS ) )			
 
 		GuiLock2( True )
 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
@@ -303,15 +302,15 @@ class TimerWindow(BaseWindow):
 		dialog.doModal( )
 		GuiLock2( False )
 		
-		contextAction = dialog.GetSelectedAction()
+		contextAction = dialog.GetSelectedAction( )
 		self.DoContextAction( contextAction ) 
 
 
 	def DoContextAction( self, aContextAction ) :
-		LOG_TRACE('aContextAction=%d' %aContextAction )
+		LOG_TRACE( 'aContextAction=%d' %aContextAction )
 
 		if aContextAction == CONTEXT_GO_PARENT :
-			self.GoParentTimer()
+			self.GoParentTimer( )
 
 		elif aContextAction == CONTEXT_EDIT_TIMER :
 			self.ShowEditTimer( )
@@ -329,12 +328,12 @@ class TimerWindow(BaseWindow):
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
 
 			timerId = 0
-			selectedPos = self.mCtrlBigList.getSelectedPosition()
+			selectedPos = self.mCtrlBigList.getSelectedPosition( )
 
 			LOG_TRACE( 'selectedPos=%d' %selectedPos )
 
 			LOG_TRACE( 'self.mSelectedWeeklyTimer=%d' %self.mSelectedWeeklyTimer )
-			if self.mSelectedWeeklyTimer > 0 :			
+			if self.mSelectedWeeklyTimer > 0 :
 				timer = None
 				for i in range( len( self.mTimerList ) ) :
 					if self.mTimerList[i].mTimerId == self.mSelectedWeeklyTimer :
@@ -342,23 +341,23 @@ class TimerWindow(BaseWindow):
 						break
 
 				if timer == None or timer.mWeeklyTimerCount <= 0 :
-					LOG_WARN('Can not find weeklytimer')
+					LOG_WARN( 'Can not find weeklytimer' )
 					return
 
 				if selectedPos > 0 and selectedPos <= timer.mWeeklyTimerCount :
-					LOG_TRACE( ' ' )
+					LOG_TRACE( '' )
 					timer.printdebug( )
-					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
-					LOG_TRACE( ' ' )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
+					LOG_TRACE( '' )
 					dialog.SetTimer( timer, self.IsRunningTimer( timer.mTimerId ) )
-					LOG_TRACE( ' ' )					
+					LOG_TRACE( '' )					
 					dialog.doModal( )
-					LOG_TRACE( ' ' )					
+					LOG_TRACE( '' )					
 
 					if dialog.IsOK( ) == E_DIALOG_STATE_ERROR :
 						if dialog.GetConflictTimer( ) == None :
 							infoDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-							infoDialog.SetDialogProperty( 'Error', dialog.GetErrorMessage( ) )
+							infoDialog.SetDialogProperty( MR_LANG( 'Error' ), dialog.GetErrorMessage( ) )
 							infoDialog.doModal( )
 						else :
 							from pvr.GuiHelper import RecordConflict
@@ -369,7 +368,7 @@ class TimerWindow(BaseWindow):
 					timer = self.mTimerList[selectedPos]
 
 					if timer == None :
-						LOG_WARN('Can not find weeklytimer')
+						LOG_WARN( 'Can not find weeklytimer' )
 						return
 		
 					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
@@ -379,7 +378,7 @@ class TimerWindow(BaseWindow):
 					if dialog.IsOK( ) == E_DIALOG_STATE_ERROR :
 						if dialog.GetConflictTimer( ) == None :
 							infoDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-							infoDialog.SetDialogProperty( 'Error', dialog.GetErrorMessage( ) )
+							infoDialog.SetDialogProperty( MR_LANG( 'Error' ), dialog.GetErrorMessage( ) )
 							infoDialog.doModal( )
 						else :
 							from pvr.GuiHelper import RecordConflict
@@ -388,20 +387,20 @@ class TimerWindow(BaseWindow):
 			self.UpdateList( )
 
 		except Exception, ex :
-			LOG_ERR( "Exception %s" %ex)
+			LOG_ERR( "Exception %s" %ex )
 
 		
 	def ShowDeleteConfirm( self ) :
-		LOG_TRACE('ShowDeleteConfirm')
+		LOG_TRACE( 'ShowDeleteConfirm' )
 
 		timerId = 0
 
-		selectedPos = self.mCtrlBigList.getSelectedPosition()
+		selectedPos = self.mCtrlBigList.getSelectedPosition( )
 		
-		LOG_TRACE('LAEL98 EPG Delete debug selectedPos=%d' %selectedPos)
+		LOG_TRACE( 'EPG Delete debug selectedPos=%d' %selectedPos )
 
 		if self.mSelectedWeeklyTimer > 0 :
-			LOG_TRACE('LAEL98 EPG Delete debug : selected weekly timer')		
+			LOG_TRACE( 'EPG Delete debug : selected weekly timer' )
 			timer = None
 			for i in range( len( self.mTimerList ) ) :
 				if self.mTimerList[i].mTimerId == self.mSelectedWeeklyTimer :
@@ -409,30 +408,28 @@ class TimerWindow(BaseWindow):
 					break
 
 			if timer == None or timer.mWeeklyTimerCount <= 0 :
-				LOG_WARN('Can not find weeklytimer')
+				LOG_WARN( 'Can not find weeklytimer' )
 				return
 
 			if selectedPos > 0 and selectedPos <= timer.mWeeklyTimerCount :
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( 'Confirm', 'Do you want to delete timer?' )
+				dialog.SetDialogProperty( MR_LANG( 'Confirm' ), MR_LANG( 'Do you want to delete timer?' ) )
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-					weeklyTimer = timer.mWeeklyTimer[selectedPos-1]
+					weeklyTimer = timer.mWeeklyTimer[ selectedPos-1 ]
 					self.mDataCache.Timer_DeleteOneWeeklyTimer( self.mSelectedWeeklyTimer, weeklyTimer.mDate, weeklyTimer.mStartTime, weeklyTimer.mDuration ) 
 					self.UpdateList( )
 
-
 		else :
 			if selectedPos >= 0 and selectedPos < len( self.mTimerList ) :
-				timer = self.mTimerList[selectedPos]
+				timer = self.mTimerList[ selectedPos ]
 				timerId = timer.mTimerId
-
 	
 			if timerId > 0 :		
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( 'Confirm', 'Do you want to delete this timer?' )
+				dialog.SetDialogProperty( MR_LANG( 'Confirm' ), MR_LANG( 'Do you want to delete this timer?'  ) )
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -441,13 +438,13 @@ class TimerWindow(BaseWindow):
 
 
 	def ShowDeleteAllConfirm( self ) :
-		LOG_TRACE('ShowDeleteConfirm')
+		LOG_TRACE( 'ShowDeleteAllConfirm' )
 		if self.mTimerList == None or len(self.mTimerList) <= 0 :
-			LOG_WARN('Has no Timer')
+			LOG_WARN( 'Has no timer' )
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( 'Confirm', 'Do you really want to delete all your timers?' )
+		dialog.SetDialogProperty( MR_LANG( 'Confirm' ), MR_LANG( 'Do you really want to delete all your timers?' ) )
 		dialog.doModal( )
 
 		self.OpenBusyDialog( )
@@ -466,12 +463,12 @@ class TimerWindow(BaseWindow):
 
 	def LoadTimerList( self ) :
 		self.mTimerList = []
-		LOG_TRACE('')
+		LOG_TRACE( '' )
 
 		try :
 			self.mTimerList = self.mDataCache.Timer_GetTimerList( )
 		except Exception, ex :
-			LOG_ERR( "Exception %s" %ex)
+			LOG_ERR( "Exception %s" %ex )
 
 		if self.mTimerList :
 			LOG_TRACE('self.mTimerList len=%d' %len( self.mTimerList ) )
@@ -505,15 +502,15 @@ class TimerWindow(BaseWindow):
 		if self.mSelectedWeeklyTimer > 0 :
 			return
 
-		selectedPos = self.mCtrlBigList.getSelectedPosition()
+		selectedPos = self.mCtrlBigList.getSelectedPosition( )
 		
 		if selectedPos >= 0 and selectedPos < len( self.mTimerList ) :
-			timer = self.mTimerList[selectedPos]
+			timer = self.mTimerList[ selectedPos ]
 
 			if timer.mTimerType == ElisEnum.E_ITIMER_WEEKLY and timer.mWeeklyTimerCount > 0 :
 				self.mSelectedWeeklyTimer = timer.mTimerId
 				self.UpdateList( )
-		
+
 
 	def GoParentTimer( self ) :
 		if self.mSelectedWeeklyTimer > 0 :

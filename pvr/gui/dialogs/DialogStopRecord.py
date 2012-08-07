@@ -32,10 +32,10 @@ class DialogStopRecord( BaseDialog ) :
 		self.mBackgroundHeight = -1
 		self.mEnableThread = False
 		self.mRecordingProgressThread = None
-		self.mLock = thread.allocate_lock()
+		self.mLock = thread.allocate_lock( )
 
 
-	def onInit( self ):
+	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
@@ -70,25 +70,25 @@ class DialogStopRecord( BaseDialog ) :
 			if self.mBackgroundHeight <  0 :
 				self.mBackgroundHeight = self.mCtrlBackgroundImage.getHeight()
 
-			self.SetHeaderLabel( 'Stop Record' )
+			self.SetHeaderLabel( MR_LANG( 'Stop Record' ) )
 
 			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 			
 			self.Update( )
 
-		except Exception, ex:
-			LOG_ERR( "Exception %s" %ex)
+		except Exception, ex :
+			LOG_ERR( "Exception %s" %ex )
 			
 		self.mEnableThread = True
 		self.mRecordingProgressThread = self.RecordingProgressThread( )
 		self.mEventBus.Register( self )
 
 
-	def onAction( self, aAction ):
+	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
-		LOG_TRACE('action=%d' %actionId )
-		LOG_TRACE('focusId=%d' %focusId )
+		LOG_TRACE( 'action=%d' %actionId )
+		LOG_TRACE( 'focusId=%d' %focusId )
 		
 		self.GlobalAction( actionId )
 		
@@ -139,22 +139,22 @@ class DialogStopRecord( BaseDialog ) :
 			LOG_WARN( 'Unknown Action' )
 
 
-	def onClick( self, aControlId ):
+	def onClick( self, aControlId ) :
 
-		LOG_TRACE('DialogRecord aControlId=%d' %aControlId )
+		LOG_TRACE( 'DialogRecord aControlId=%d' %aControlId )
 		if aControlId == BUTTON_ID_RECORD_1 or aControlId == BUTTON_ID_RECORD_2 or aControlId == BUTTON_ID_CANCEL :
 			self.StopRecord( aControlId )
 
 
-	def onFocus( self, aControlId ):
+	def onFocus( self, aControlId ) :
 		pass
 
 
 	@GuiLock	
-	def onEvent( self, aEvent ):
+	def onEvent( self, aEvent ) :
 		if xbmcgui.getCurrentWindowDialogId() == self.mWinId :
-			if aEvent.getName() == ElisEventRecordingStarted.getName() or \
-				aEvent.getName() == ElisEventRecordingStopped.getName() :
+			if aEvent.getName() == ElisEventRecordingStarted.getName( ) or \
+				aEvent.getName() == ElisEventRecordingStopped.getName( ) :
 				self.Update( )
 
 
@@ -168,12 +168,12 @@ class DialogStopRecord( BaseDialog ) :
 		self.CloseDialog( )
 
 
-	def StopRecord( self, aControlId ):
+	def StopRecord( self, aControlId ) :
 
-		LOG_TRACE('aControlId=%d' %aControlId)
+		LOG_TRACE( 'aControlId=%d' %aControlId)
 		if aControlId == BUTTON_ID_RECORD_1 :
 			timer = self.mRunningTimerList[0]
-			self.mDataCache.Timer_DeleteTimer( timer.mTimerId )			
+			self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
 			self.mIsOk = E_DIALOG_STATE_YES
 			self.Close( )
 
@@ -187,35 +187,35 @@ class DialogStopRecord( BaseDialog ) :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.Close( )
 		else :
-			LOG_ERR('Can not find control')
+			LOG_ERR( 'Can not find control' )
 
 
 	@RunThread
-	def RecordingProgressThread(self):
+	def RecordingProgressThread( self ) :
 		loop = 0
 
-		while self.mEnableThread:
+		while self.mEnableThread :
 			if  ( loop % 10 ) == 0 :
 				self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 
 			self.UpdateProgress( )
 
-			time.sleep(1)
+			time.sleep( 1 )
 			self.mLocalTime += 1			
 			loop += 1
 
 
-	def UpdateProgress( self ):
+	def UpdateProgress( self ) :
 		self.mLock.acquire( )
 
 		for i in range( self.mRunningRecordCount ) :
 			timer = self.mRunningTimerList[i]
 
-			timer.printdebug()
-			LOG_TRACE('START REC: %s' %TimeToString( timer.mRecordStartedTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
-			LOG_TRACE('START : %s' %TimeToString( timer.mStartTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
-			LOG_TRACE('CUR : %s' %TimeToString( self.mLocalTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
-			LOG_TRACE('END : %s' %TimeToString( timer.mStartTime + timer.mDuration, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
+			timer.printdebug( )
+			LOG_TRACE( 'START REC: %s' %TimeToString( timer.mRecordStartedTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
+			LOG_TRACE( 'START : %s' %TimeToString( timer.mStartTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
+			LOG_TRACE( 'CUR : %s' %TimeToString( self.mLocalTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
+			LOG_TRACE( 'END : %s' %TimeToString( timer.mStartTime + timer.mDuration, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
 
 
 			expectedRecording = self.mLocalTime - timer.mRecordStartedTime
@@ -233,16 +233,14 @@ class DialogStopRecord( BaseDialog ) :
 
 
 	def DrawItem( self ) :
-		LOG_TRACE('')
 		if self.mRunningRecordCount < 2 :
-			newHeight = self.mBackgroundHeight - self.mCtrlRecordGroup[0].getHeight()
+			newHeight = self.mBackgroundHeight - self.mCtrlRecordGroup[0].getHeight( )
 			self.mCtrlBackgroundImage.setHeight( newHeight )
 			self.mCtrlRecordGroup[1].setVisible( False )
 			
 		else :
 			self.mCtrlBackgroundImage.setHeight( self.mBackgroundHeight )		
 			self.mCtrlRecordGroup[1].setVisible( True )
-
 
 		for i in range( self.mRunningRecordCount ) :
 			timer = self.mRunningTimerList[i]
@@ -268,17 +266,16 @@ class DialogStopRecord( BaseDialog ) :
 		if self.mRunningTimerList :
 			self.mRunningRecordCount = len( self.mRunningTimerList )
 			
-		LOG_TRACE("self.mRunningRecordCount=%d" %self.mRunningRecordCount )
+		LOG_TRACE( "self.mRunningRecordCount=%d" %self.mRunningRecordCount )
 
 		if self.mRunningRecordCount <= 0 :
 			self.mLock.release( )			
-			xbmc.executebuiltin('xbmc.Action(previousmenu)')
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 			return
 
 		else :
 			self.DrawItem( )
 
 		self.mLock.release( )
-
 
 

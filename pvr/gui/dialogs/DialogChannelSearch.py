@@ -24,7 +24,7 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mConfiguredSatelliteList = []
 		self.mLongitude = 0
 		self.mBand = 0
-		self.mSatelliteFormatedName = 'Unknown'		
+		self.mSatelliteFormatedName = MR_LANG( 'Unknown' )
 
 
 	def onInit( self ) :
@@ -55,7 +55,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 		self.AbortDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 #		self.AbortDialog.SetDialogProperty( 'Confirm', 'Do you want abort channel scan?' )
-		self.AbortDialog.SetDialogProperty( 'Abort channel search', 'Do you want to stop channel scan?' )		
+		self.AbortDialog.SetDialogProperty( MR_LANG( 'Abort channel search' ), MR_LANG( 'Do you want to stop channel scan?' ) )
 
 
 	def onAction( self, aAction ) :
@@ -97,7 +97,7 @@ class DialogChannelSearch( BaseDialog ) :
 	def DrawItem( self ) :
 		count = len( self.mNewTVChannelList )
 		for i in range( count ) :
-			listItem = xbmcgui.ListItem( self.mNewTVChannelList[i], "TV" )
+			listItem = xbmcgui.ListItem( self.mNewTVChannelList[i], MR_LANG( "TV" ) )
 			self.mTvListItems.append( listItem )
 
 		if count > 0 :
@@ -107,7 +107,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 		count = len( self.mNewRadioChannelList )
 		for i in range( count ) :
-			listItem = xbmcgui.ListItem( self.mNewRadioChannelList[i], "Radio" )
+			listItem = xbmcgui.ListItem( self.mNewRadioChannelList[i], MR_LANG( "Radio" ) )
 			self.mRadioListItems.append( listItem )
 
 		if count > 0 :
@@ -147,7 +147,7 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mDataCache.Player_AVBlank( False, True )
 				self.ReLoadChannelList( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Error', 'Channel Search Failed' )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Channel search failed' ) )
 				dialog.doModal( )
 
 		elif self.mScanMode == E_SCAN_TRANSPONDER :
@@ -158,10 +158,10 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mDataCache.Player_AVBlank( False, True )
 				self.ReLoadChannelList( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Error', 'Channel Search Failed' )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Channel search failed' ) )
 				dialog.doModal( )
 		else :
-			self.mIsFinished == True
+			self.mIsFinished = True
 
 
 	def ScanAbort( self ) :
@@ -211,9 +211,9 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 		if aEvent.mCarrier.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBS :
-			strPol = 'Vertical'
+			strPol = MR_LANG( 'Vertical' )
 			if aEvent.mCarrier.mDVBS.mPolarization == ElisEnum.E_LNB_HORIZONTAL or aEvent.mCarrier.mDVBS.mPolarization == ElisEnum.E_LNB_LEFT :
-				strPol = 'Horizontal'
+				strPol = MR_LANG( 'Horizontal' )
 
 			if self.mLongitude != aEvent.mCarrier.mDVBS.mSatelliteLongitude or self.mBand != aEvent.mCarrier.mDVBS.mSatelliteBand :
 				self.mLongitude = aEvent.mCarrier.mDVBS.mSatelliteLongitude
@@ -235,28 +235,28 @@ class DialogChannelSearch( BaseDialog ) :
 			self.mTimer.start( )
 
 
-	def UpdateAddChannel(self, aEvent ) :
+	def UpdateAddChannel( self, aEvent ) :
 		if aEvent.mIChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
 			self.mNewTVChannelList.append( aEvent.mIChannel.mName )
 		elif aEvent.mIChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			self.mNewRadioChannelList.append( aEvent.mIChannel.mName )
 		else : 
-			LOG_ERR('Unknown service type = %s' % aEvent.mIChannel.mServiceType )
+			LOG_ERR( 'Unknown service type = %s' % aEvent.mIChannel.mServiceType )
 		self.DrawItem( )
 
 
 	def ShowResult( self ) :
 		tvCount = len( self.mTvListItems )
 		radioCount = len( self.mRadioListItems )
-		searchResult = 'TV Channels : %d \nRadio Channels : %d' %( tvCount, radioCount )
+		searchResult = MR_LANG( 'TV Channels : %d \nRadio Channels : %d' ) %( tvCount, radioCount )
 
 		try :
 			self.AbortDialog.close( )
-		except Exception, ex:
+		except Exception, ex :
 			LOG_TRACE( 'except close dialog' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		dialog.SetDialogProperty( 'Infomation', searchResult )
+		dialog.SetDialogProperty( MR_LANG( 'Infomation' ), searchResult )
 		dialog.doModal( )
 		self.mIsFinished = True
 
@@ -274,3 +274,4 @@ class DialogChannelSearch( BaseDialog ) :
 		else :
 			self.mCommander.Channel_InvalidateCurrent( )
 			self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
+

@@ -30,108 +30,108 @@ DIALOG_ID_INPUT_PINCODE				= 20
 
 gDialogMgr = None
 
-def GetInstance():
+def GetInstance( ) :
 	global gDialogMgr
-	if not gDialogMgr:
-		gDialogMgr = DialogMgr()
+	if not gDialogMgr :
+		gDialogMgr = DialogMgr( )
 	else:
-		print 'lael98 check already DialogMgr is created'
+		print 'Already DialogMgr is created'
 
 	return gDialogMgr
 
 
-class DialogMgr(object):
-	def __init__(self):
+class DialogMgr( object ) :
+	def __init__( self ) :
 		self.mDialogs = {}
 
 
 	def GetDialog( self, aDialogId ) :
 		import pvr.Platform 
 
-		self.scriptDir = pvr.Platform.GetPlatform().GetScriptDir()
+		self.scriptDir = pvr.Platform.GetPlatform().GetScriptDir( )
 
 		try :	#
 			if aDialogId == DIALOG_ID_LNB_FREQUENCY :
 				from pvr.gui.dialogs.DialogLnbFrequency import DialogLnbFrequency		
-				return DialogLnbFrequency('DialogLnbFrequency.xml', self.scriptDir)	
+				return DialogLnbFrequency( 'DialogLnbFrequency.xml', self.scriptDir )	
 
 			elif aDialogId == DIALOG_ID_CHANNEL_SEARCH :
 				from pvr.gui.dialogs.DialogChannelSearch import DialogChannelSearch
-				return DialogChannelSearch('DialogChannelSearch.xml', self.scriptDir)	
+				return DialogChannelSearch( 'DialogChannelSearch.xml', self.scriptDir )	
 
 			elif aDialogId == DIALOG_ID_START_RECORD :
 				LOG_TRACE( '---------------- create start record' )
 				from pvr.gui.dialogs.DialogStartRecord import DialogStartRecord
-				return DialogStartRecord('DialogStartRecord.xml', self.scriptDir)	
+				return DialogStartRecord( 'DialogStartRecord.xml', self.scriptDir )	
 
 			elif aDialogId == DIALOG_ID_STOP_RECORD :
 				LOG_TRACE( '---------------- create stop record')
 				from pvr.gui.dialogs.DialogStopRecord import DialogStopRecord
-				return DialogStopRecord('DialogStopRecord.xml', self.scriptDir)	
+				return DialogStopRecord( 'DialogStopRecord.xml', self.scriptDir )	
 
 			elif aDialogId == DIALOG_ID_SATELLITE_NUMERIC :
 				from pvr.gui.dialogs.DialogSatelliteNumeric import DialogSatelliteNumeric
-				return DialogSatelliteNumeric('DialogSatelliteNumeric.xml', self.scriptDir)
+				return DialogSatelliteNumeric( 'DialogSatelliteNumeric.xml', self.scriptDir )
 
 			elif aDialogId == DIALOG_ID_MOVE_ANTENNA :
 				from pvr.gui.dialogs.DialogMoveAntenna import DialogMoveAntenna
-				return DialogMoveAntenna('DialogMoveAntenna.xml', self.scriptDir)
+				return DialogMoveAntenna( 'DialogMoveAntenna.xml', self.scriptDir )
 
 			elif aDialogId == DIALOG_ID_ADD_NEW_SATELLITE :
 				from pvr.gui.dialogs.DialogAddNewSatellite import DialogAddNewSatellite
-				return DialogAddNewSatellite('DialogAddNewSatellite.xml', self.scriptDir)
+				return DialogAddNewSatellite( 'DialogAddNewSatellite.xml', self.scriptDir )
 
 			elif aDialogId == DIALOG_ID_SET_TRANSPONDER :
 				from pvr.gui.dialogs.DialogSetTransponder import DialogSetTransponder
-				return DialogSetTransponder('DialogSetTransponder.xml', self.scriptDir)
+				return DialogSetTransponder( 'DialogSetTransponder.xml', self.scriptDir )
 
 			elif aDialogId == DIALOG_ID_YES_NO_CANCEL :
 				from pvr.gui.dialogs.DialogYesNoCancel import DialogYesNoCancel
-				return DialogYesNoCancel('DialogYesNoCancel.xml', self.scriptDir)
+				return DialogYesNoCancel( 'DialogYesNoCancel.xml', self.scriptDir )
 
 			elif aDialogId == DIALOG_ID_NUMERIC_KEYBOARD :
 				from pvr.gui.dialogs.DialogNormalNumeric import DialogNormalNumeric
-				return DialogNormalNumeric('DialogNormalNumeric.xml', self.scriptDir)
+				return DialogNormalNumeric( 'DialogNormalNumeric.xml', self.scriptDir )
 
 			elif aDialogId == DIALOG_ID_POPUP_OK :
 				from pvr.gui.dialogs.DialogPopupOK import DialogPopupOK
-				return DialogPopupOK('DialogPopupOK.xml', self.scriptDir)
+				return DialogPopupOK( 'DialogPopupOK.xml', self.scriptDir )
 
 			elif aDialogId == DIALOG_ID_CONTEXT :
 				from pvr.gui.dialogs.DialogContext import DialogContext
-				return DialogContext('DialogContext.xml', self.scriptDir)
+				return DialogContext( 'DialogContext.xml', self.scriptDir )
 
 			elif aDialogId == DIALOG_ID_CHANNEL_JUMP :
 				from pvr.gui.dialogs.DialogChannelJump import DialogChannelJump
-				return DialogChannelJump('DialogChannelJump.xml', self.scriptDir)
+				return DialogChannelJump( 'DialogChannelJump.xml', self.scriptDir )
 
 			elif aDialogId == DIALOG_ID_FORCE_PROGRESS :
 				from pvr.gui.dialogs.DialogForceProgress import DialogForceProgress
-				return DialogForceProgress('DialogForceProgress.xml', self.scriptDir)
+				return DialogForceProgress( 'DialogForceProgress.xml', self.scriptDir )
 
 			elif aDialogId == DIALOG_ID_EXTEND_EPG :
 				from pvr.gui.dialogs.DialogExtendEPG import DialogExtendEPG
-				return DialogExtendEPG('DialogExtendEPG.xml', self.scriptDir)
+				return DialogExtendEPG( 'DialogExtendEPG.xml', self.scriptDir )
 
 			elif aDialogId == DIALOG_ID_ADD_TIMER :
 				from pvr.gui.dialogs.DialogAddTimer import DialogAddTimer
-				return DialogAddTimer('DialogAddTimer.xml', self.scriptDir)
+				return DialogAddTimer( 'DialogAddTimer.xml', self.scriptDir )
 
 			elif aDialogId == DIALOG_ID_ADD_MANUAL_TIMER :
 				from pvr.gui.dialogs.DialogAddManualTimer import DialogAddManualTimer
-				return DialogAddManualTimer('DialogAddManualTimer.xml', self.scriptDir)
+				return DialogAddManualTimer( 'DialogAddManualTimer.xml', self.scriptDir )
 
 			elif aDialogId == DIALOG_ID_SET_AUDIOVIDEO :
 				from pvr.gui.dialogs.DialogSetAudioVideo import DialogSetAudioVideo
-				return DialogSetAudioVideo('DialogSetAudioVideo.xml', self.scriptDir)
+				return DialogSetAudioVideo ( 'DialogSetAudioVideo.xml', self.scriptDir )
 
 			elif aDialogId == DIALOG_ID_TIMESHIFT_JUMP :
 				from pvr.gui.dialogs.DialogTimeshiftJump import DialogTimeshiftJump
-				return DialogTimeshiftJump('DialogChannelJump.xml', self.scriptDir)
+				return DialogTimeshiftJump( 'DialogChannelJump.xml', self.scriptDir )
 
 			elif aDialogId == DIALOG_ID_INPUT_PINCODE :
 				from pvr.gui.dialogs.DialogInputPincode import DialogInputPincode
-				return DialogInputPincode('DialogInputPincode.xml', self.scriptDir)
+				return DialogInputPincode( 'DialogInputPincode.xml', self.scriptDir )
 
 			else :
 				LOG_ERR( 'can not find dialog' )

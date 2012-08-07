@@ -15,19 +15,19 @@ class DialogAddTimer( BaseDialog ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 		self.mEPG = None
 
-	def onInit( self ):
+	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
 #		self.SetHeaderLabel( 'Add Recording' )
-		self.SetHeaderLabel( 'Add recording' )		
+		self.SetHeaderLabel( MR_LANG( 'Add recording' ) )		
 		self.mIsOk = E_DIALOG_STATE_CANCEL		
 
 		self.Reload( )
 		self.mEventBus.Register( self )
 		
 
-	def onAction( self, aAction ):
+	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.GetFocusId( )
 		self.GlobalAction( actionId )		
@@ -73,21 +73,21 @@ class DialogAddTimer( BaseDialog ) :
 			self.Close( )
 
 
-	def onFocus( self, aControlId ):
+	def onFocus( self, aControlId ) :
 		pass
 
 
 	@GuiLock	
-	def onEvent( self, aEvent ):
+	def onEvent( self, aEvent ) :
 		pass
 		"""
-		if xbmcgui.getCurrentWindowDialogId() == self.winId :
+		if xbmcgui.getCurrentWindowDialogId( ) == self.winId :
 			print 'Do Event'
 			pass
 		"""
 
 
-	def SetEPG( self, aEPG ):
+	def SetEPG( self, aEPG ) :
 		self.mEPG = aEPG
 
 
@@ -100,31 +100,29 @@ class DialogAddTimer( BaseDialog ) :
 		self.CloseDialog( )
 
 
-	def Reload ( self ) :
-		LOG_TRACE('')
-
+	def Reload( self ) :
 
 		try :
-			if self.mEPG != None and self.mEPG.mError == 0:
+			if self.mEPG != None and self.mEPG.mError == 0 :
 				#self.mEPG.printdebug( )		
 
-				localOffset = self.mDataCache.Datetime_GetLocalOffset()
+				localOffset = self.mDataCache.Datetime_GetLocalOffset( )
 				localTime = self.mDataCache.Datetime_GetLocalTime( )
 
 				startTime = self.mEPG.mStartTime + localOffset
 				endTime =  startTime  + self.mEPG.mDuration
 			
 
-				LOG_TRACE('START : %s' %TimeToString( startTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
-				LOG_TRACE('CUR : %s' %TimeToString( localTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
-				LOG_TRACE('END : %s' %TimeToString( endTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
+				LOG_TRACE( 'START : %s' %TimeToString( startTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )
+				LOG_TRACE( 'CUR : %s' %TimeToString( localTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
+				LOG_TRACE( 'END : %s' %TimeToString( endTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
 				self.getControl( E_LABEL_RECORD_NAME ).setLabel( '%s' %self.mEPG.mEventName )
 
-				self.getControl( E_LABEL_EPG_START_TIME ).setLabel( 'Start : %s' %TimeToString( startTime, TimeFormatEnum.E_HH_MM ) )
-				self.getControl( E_LABEL_EPG_END_TIME ).setLabel( 'End : %s' %TimeToString( endTime, TimeFormatEnum.E_HH_MM ) )
+				self.getControl( E_LABEL_EPG_START_TIME ).setLabel( MR_LANG( 'Start' ) + ': %s' %TimeToString( startTime, TimeFormatEnum.E_HH_MM ) )
+				self.getControl( E_LABEL_EPG_END_TIME ).setLabel( MR_LANG( 'End' ) + ': %s' %TimeToString( endTime, TimeFormatEnum.E_HH_MM ) )
 			
 		except Exception, ex :
-			LOG_ERR( "Exception %s" %ex)
+			LOG_ERR( "Exception %s" %ex )
 
 
 	"""

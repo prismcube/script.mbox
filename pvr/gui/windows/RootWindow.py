@@ -1,13 +1,14 @@
 from pvr.gui.WindowImport import *
 
 
-class RootWindow( BaseWindow ):
-	def __init__( self, *args, **kwargs ):
+class RootWindow( BaseWindow ) :
+	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 
 		self.mInitialized = False
 
-	def onInit( self ):
+
+	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
@@ -17,16 +18,16 @@ class RootWindow( BaseWindow ):
 			self.UpdateVolume( )
 			self.SendLocalOffsetToXBMC( )
 			
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).doModal()
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).doModal( )
 			
 			"""
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
-			WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).doModal()
+			WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).doModal( )
 			"""
 			
 			self.mInitialized = True
-			self.mEventBus.Register( self )			
+			self.mEventBus.Register( self )
 		else :
 			WinMgr.GetInstance( ).GetWindow(WinMgr.GetInstance( ).mLastId).doModal( )
 
@@ -41,21 +42,21 @@ class RootWindow( BaseWindow ):
 		"""
 			
 				
-	def onClick( self, aControlId ):
+	def onClick( self, aControlId ) :
 		LOG_TRACE( '' )	
 		
  
-	def onFocus( self, aControlId ):
-		LOG_TRACE('')
+	def onFocus( self, aControlId ) :
+		LOG_TRACE( '' )
 
 
 	@GuiLock
 	def onEvent(self, aEvent) :
-		if aEvent.getName() == ElisEventTimeReceived.getName( ) :
+		if aEvent.getName( ) == ElisEventTimeReceived.getName( ) :
 			self.SendLocalOffsetToXBMC( )
 
-		elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
-			 aEvent.getName() == ElisEventRecordingStopped.getName() :
+		elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
+			 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
 
 			#LOG_TRACE('<<<<<<<<<<<<<<<<<<<<< RootWindow <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
 			self.mDataCache.ReLoadChannelListByRecording( )
@@ -68,18 +69,18 @@ class RootWindow( BaseWindow ):
 
 			self.AlarmDialog(msg1, msg2)
 			"""
-		elif aEvent.getName() == ElisEventTuningStatus.getName() :
-			LOG_TRACE('No Signal TEST TunerNo[%s] locked[%s]' % ( aEvent.mTunerNo, aEvent.mIsLocked ) )
+		elif aEvent.getName( ) == ElisEventTuningStatus.getName( ) :
+			LOG_TRACE( 'No signal test TunerNo[%s] locked[%s]' % ( aEvent.mTunerNo, aEvent.mIsLocked ) )
 			if aEvent.mIsLocked :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).setProperty('Signal', 'True')
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).setProperty( 'Signal', 'True' )
 				self.mDataCache.SetLockedState( True )
 			else :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).setProperty('Signal', 'False')
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).setProperty( 'Signal', 'False' )
 				self.mDataCache.SetLockedState( False )
 
 
 	def GetRecordingInfo( self ) :
-		labelInfo = MR_LANG('Reload Channel List...')
+		labelInfo = MR_LANG( 'Reloading channel list...' )
 		try:
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			#LOG_TRACE('isRunRecCount[%s]'% isRunRec)

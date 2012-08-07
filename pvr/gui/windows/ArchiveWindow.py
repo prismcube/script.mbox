@@ -68,7 +68,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.SetPipScreen( )
 			return
 			
-		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Archive' )
+		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Archive' ) )
 
 		self.mRecordCount = 0
 		self.mSelectedIndex = 0
@@ -83,7 +83,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.mViewMode = int( GetSetting( 'VIEW_MODE' ) )
 			self.mCtrlViewMode = self.getControl( BUTTON_ID_VIEW_MODE )
 
-			LOG_TRACE('LAEL98 self.mCtrlViewMode =%s' %self.mCtrlViewMode )			
+			LOG_TRACE( 'self.mCtrlViewMode =%s' %self.mCtrlViewMode )			
 
 			self.mSortMode = int( GetSetting( 'SORT_MODE' ) )		
 			self.mCtrlSortMode = self.getControl( BUTTON_ID_SORT_MODE )
@@ -106,11 +106,10 @@ class ArchiveWindow( BaseWindow ) :
 			self.mPlayPerent = 0
 			self.mCtrlPlayProgress.setPercent( self.mPlayPerent ) 			
 
-		except Exception, ex:
-			LOG_ERR( "Exception %s" %ex)
+		except Exception, ex :
+			LOG_ERR( "Exception %s" %ex )
 
 		self.mEventBus.Register( self )
-
 
 		self.Load( )
 
@@ -125,14 +124,6 @@ class ArchiveWindow( BaseWindow ) :
 
 		self.mInitialized = True
 
-		"""
-		if self.mRecordCount == 0 :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( 'Error', 'Play list is Empty' )
-			dialog.doModal( )
-			self.SetVideoRestore( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
-		"""
 
 	def onAction( self, aAction ) :
 		focusId = self.GetFocusId( )
@@ -189,7 +180,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.UpdateList( )
 					
 			else :
-				xbmcgui.Dialog( ).ok('Infomation', 'Now playing. Try again after stop player' )
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Infomation' ), MR_LANG( 'Now playing. Try again after stop player' ) )
 
 	
 	def onClick( self, aControlId ) :
@@ -222,8 +213,8 @@ class ArchiveWindow( BaseWindow ) :
 			
 		elif aControlId == TOGGLEBUTTON_ID_ASC :
 			self.RestoreLastRecordKey( )
-			LOG_TRACE('Mode=%d' % self.mSortMode )
-			LOG_TRACE('mAscending=%d' %self.mAscending[self.mSortMode] )
+			LOG_TRACE( 'Mode=%d' % self.mSortMode )
+			LOG_TRACE( 'mAscending=%d' %self.mAscending[self.mSortMode] )
 			if self.mAscending[self.mSortMode] == True :
 				self.mAscending[self.mSortMode] = False
 			else :
@@ -235,7 +226,6 @@ class ArchiveWindow( BaseWindow ) :
 
 		elif aControlId == RADIIOBUTTON_ID_EXTRA :
 			pass
-		
 
 
 	def onFocus( self, controlId ) :
@@ -254,30 +244,30 @@ class ArchiveWindow( BaseWindow ) :
 	def InitControl( self ) :
 
 		if self.mViewMode == E_VIEW_LIST :
-			self.mCtrlViewMode.setLabel('VIEW: LIST')
+			self.mCtrlViewMode.setLabel( '%s: %s' %( MR_LANG( 'VIEW' ), MR_LANG( 'LIST' ) ) )
 		elif self.mViewMode == E_VIEW_THUMBNAIL :			
-			self.mCtrlViewMode.setLabel('VIEW: THUMBNAIL')		
+			self.mCtrlViewMode.setLabel( '%s: %s' %( MR_LANG( 'VIEW' ), MR_LANG( 'THUMBNAIL' ) ) )		
 		elif self.mViewMode == E_VIEW_POSTER_WRAP :			
-			self.mCtrlViewMode.setLabel('VIEW: POSTER_WRAP')		
-		elif self.mViewMode == E_VIEW_FANART :			
-			self.mCtrlViewMode.setLabel('VIEW: FANART')		
+			self.mCtrlViewMode.setLabel( '%s: %s' %( MR_LANG( 'VIEW' ), MR_LANG( 'POSTER_WRAP' ) ) )		
+		elif self.mViewMode == E_VIEW_FANART :
+			self.mCtrlViewMode.setLabel( '%s: %s' %( MR_LANG( 'VIEW' ), MR_LANG( 'FANART' ) ) )		
 		else :
-			LOG_WARN('Unknown view mode')
+			LOG_WARN( 'Unknown view mode' )
 
 		if self.mSortMode == E_SORT_DATE :
-			self.mCtrlSortMode.setLabel('SORT: DATE')
-		elif self.mSortMode == E_SORT_CHANNEL :			
-			self.mCtrlSortMode.setLabel('SORT: CHANNEL')		
-		elif self.mSortMode == E_SORT_TITLE :			
-			self.mCtrlSortMode.setLabel('SORT: TITLE')		
-		elif self.mSortMode == E_SORT_DURATION :			
-			self.mCtrlSortMode.setLabel('SORT: DURATION')		
+			self.mCtrlSortMode.setLabel( '%s: %s' %( MR_LANG( 'SORT' ), MR_LANG( 'DATE' ) ) )
+		elif self.mSortMode == E_SORT_CHANNEL :
+			self.mCtrlSortMode.setLabel( '%s: %s' %( MR_LANG( 'SORT' ), MR_LANG( 'CHANNEL' ) ) )		
+		elif self.mSortMode == E_SORT_TITLE :
+			self.mCtrlSortMode.setLabel( '%s: %s' %( MR_LANG( 'SORT' ), MR_LANG( 'TITLE' ) ) )		
+		elif self.mSortMode == E_SORT_DURATION :
+			self.mCtrlSortMode.setLabel( '%s: %s' %( MR_LANG( 'SORT' ), MR_LANG( 'DURATION') ) )
 		else :
-			LOG_WARN('Unknown sort mode')
+			LOG_WARN( 'Unknown sort mode' )
 
 
 	def UpdateViewMode( self ) :
-		LOG_TRACE('--------------------- self.mViewMode=%d' %self.mViewMode)
+		LOG_TRACE( '--------------------- self.mViewMode=%d' %self.mViewMode)
 		if self.mViewMode == E_VIEW_LIST :
 			self.mWin.setProperty( 'ViewMode', 'common' )
 		elif self.mViewMode == E_VIEW_THUMBNAIL :			
@@ -292,11 +282,11 @@ class ArchiveWindow( BaseWindow ) :
 		
 
 	def UpdateSortMode( self ) :
-		LOG_TRACE('---------------------')
+		LOG_TRACE( '---------------------' )
 
 
 	def UpdateAscending( self ) :
-		LOG_TRACE('--------------------- %d ' %self.mAscending[self.mSortMode])	
+		LOG_TRACE( '--------------------- %d' %self.mAscending[self.mSortMode] )	
 		if self.mAscending[self.mSortMode] == True :
 			self.mWin.setProperty( 'Ascending', 'true' )
 		else :
@@ -313,7 +303,7 @@ class ArchiveWindow( BaseWindow ) :
 
 		self.mMarkMode = False
 
-		LOG_TRACE('----------------------------------->')
+		LOG_TRACE( '----------------------------------->' )
 		try :
 			self.mRecordList = self.mDataCache.Record_GetList( self.mServiceType )
 			if self.mRecordList == None :
@@ -321,13 +311,12 @@ class ArchiveWindow( BaseWindow ) :
 			else :
 				self.mRecordCount = len( self.mRecordList  )
 
-		except Exception, ex:
-			LOG_ERR( "Exception %s" %ex)
-
+		except Exception, ex :
+			LOG_ERR( "Exception %s" %ex )
 
 
 	def UpdateList( self ) :
-		LOG_TRACE('UpdateList Start')
+		LOG_TRACE( 'UpdateList Start' )
 		try :
 			if not self.mRecordList or self.mRecordList == None :
 				self.mRecordList = []
@@ -343,7 +332,7 @@ class ArchiveWindow( BaseWindow ) :
 			elif self.mSortMode == E_SORT_DURATION :
 				self.mRecordList.sort( self.ByDuration )
 			else :
-				LOG_WARN('Unknown sort mode')		
+				LOG_WARN( 'Unknown sort mode' )		
 				self.mSortMode = 0
 				self.mRecordList.sort( self.ByDate )
 
@@ -358,34 +347,33 @@ class ArchiveWindow( BaseWindow ) :
 			self.mRecordListItems = []
 			for i in range( len( self.mRecordList ) ) :
 				recInfo = self.mRecordList[i]
-				#recInfo.printdebug()
 				channelName = 'P%04d.%s' % ( recInfo.mChannelNo, recInfo.mChannelName )
 				#recItem = xbmcgui.ListItem( '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz', '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz' )
 				recItem = xbmcgui.ListItem( channelName, recInfo.mRecordName )
-				recItem.setProperty('RecDate', TimeToString( recInfo.mStartTime ) )
-				recItem.setProperty('RecDuration', '%dm' % ( recInfo.mDuration / 60 ) )
+				recItem.setProperty( 'RecDate', TimeToString( recInfo.mStartTime ) )
+				recItem.setProperty( 'RecDuration', '%dm' % ( recInfo.mDuration / 60 ) )
 				
 				if recInfo.mLocked :
-					recItem.setProperty('Locked', 'True')
-					recItem.setProperty('RecIcon', 'IconNotAvailable.png')
+					recItem.setProperty( 'Locked', 'True' )
+					recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
 				else :
-					recItem.setProperty('Locked', 'False')
+					recItem.setProperty( 'Locked', 'False' )
 					thumbnail = '/mnt/hdd0/pvr/thumbnail/record_thumbnail_%d.jpg' % recInfo.mRecordKey
 					LOG_ERR( 'thumbnail=%s' % thumbnail )
 					
 					if os.path.exists( thumbnail ) == True :					
-						recItem.setProperty('RecIcon', thumbnail )
+						recItem.setProperty( 'RecIcon', thumbnail )
 					else:
-						recItem.setProperty('RecIcon', 'RecIconSample.png')
+						recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
 
-				recItem.setProperty('Marked', 'False')
+				recItem.setProperty( 'Marked', 'False' )
 				self.mRecordListItems.append( recItem )
 
-		except Exception, ex:
-			LOG_ERR( "Exception %s" %ex)
+		except Exception, ex :
+			LOG_ERR( "Exception %s" %ex )
 
 		self.CheckVideoSize( )
-		LOG_TRACE('UpdateList END')
+		LOG_TRACE( 'UpdateList END' )
 
 
 	def CheckVideoSize( self ) :
@@ -409,7 +397,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.mCtrlFanartList.addItems( self.mRecordListItems )		
 			#self.setFocusId( LIST_ID_FANART_RECORD )
 		else :
-			LOG_WARN('Unknown view mode')
+			LOG_WARN( 'Unknown view mode' )
 
 
 	def ByDate( self, aRec1, aRec2 ) :
@@ -429,14 +417,13 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	@RunThread
-	def CurrentTimeThread(self):
+	def CurrentTimeThread(self) :
 		pass
 
 
 	@GuiLock
 	def UpdateLocalTime( self ) :
 		pass
-
 
 		"""
 		try:
@@ -492,7 +479,7 @@ class ArchiveWindow( BaseWindow ) :
 
 				if aResume == True :
 					playOffset = self.mDataCache.RecordItem_GetCurrentPosByKey( self.mPlayingRecord.mRecordKey )
-					LOG_TRACE( 'RecKey=%d PlayOffset=%s' %( self.mPlayingRecord.mRecordKey, playOffset) )
+					LOG_TRACE( 'RecKey=%d PlayOffset=%s' %( self.mPlayingRecord.mRecordKey, playOffset ) )
 					if playOffset < 0 :
 						playOffset = 0
 					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, playOffset, 100 )
@@ -538,7 +525,7 @@ class ArchiveWindow( BaseWindow ) :
 
 		for i in range( count ) :
 			listItem = self.mRecordListItems[i]
-			if listItem.getProperty('Marked') == 'True' :
+			if listItem.getProperty( 'Marked' ) == 'True' :
 				markedList.append( i )
 
 		return markedList
@@ -548,55 +535,55 @@ class ArchiveWindow( BaseWindow ) :
 
 		status = self.mDataCache.Player_GetStatus( )
 		if status.mMode == ElisEnum.E_MODE_PVR :
-			xbmcgui.Dialog( ).ok('Infomation', 'Now playing. Try again after stop player' )
+			xbmcgui.Dialog( ).ok( MR_LANG( 'Infomation' ), MR_LANG( 'Now playing. Try again after stop player' ) )
 			return
 	
 		try :
-			selectedPos = self.GetSelectedPosition()
+			selectedPos = self.GetSelectedPosition( )
 			context = []
 
-			markedList = self.GetMarkedList()
+			markedList = self.GetMarkedList( )
 			
 			if markedList and len( markedList ) > 0 :
-				context.append( ContextItem( 'Delete', CONTEXT_DELETE ) )
-				context.append( ContextItem( 'Delete All', CONTEXT_DELETE_ALL ) )
-				context.append( ContextItem( 'Lock', CONTEXT_LOCK ) )
-				context.append( ContextItem( 'Unlock', CONTEXT_UNLOCK ) )	
-				context.append( ContextItem( 'Clear Marked Items', CONTEXT_CLEAR_MARK ) )	
+				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_DELETE ) )
+				context.append( ContextItem( MR_LANG( 'Delete All' ), CONTEXT_DELETE_ALL ) )
+				context.append( ContextItem( MR_LANG( 'Lock' ), CONTEXT_LOCK ) )
+				context.append( ContextItem( MR_LANG( 'Unlock' ), CONTEXT_UNLOCK ) )	
+				context.append( ContextItem( MR_LANG( 'Clear Marked Items' ), CONTEXT_CLEAR_MARK ) )	
 				
 			elif selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
 				recordInfo = self.mRecordList[ selectedPos ]		
-				context.append( ContextItem( 'Play', CONTEXT_PLAY ) )
-				context.append( ContextItem( 'Play from beginning', CONTEXT_PLAY_FROM_BEGINNIG ) )
-				context.append( ContextItem( 'Delete', CONTEXT_DELETE ) )
-				context.append( ContextItem( 'Delete All', CONTEXT_DELETE_ALL ) )				
+				context.append( ContextItem( MR_LANG( 'Play' ), CONTEXT_PLAY ) )
+				context.append( ContextItem( MR_LANG( 'Play from beginning' ), CONTEXT_PLAY_FROM_BEGINNIG ) )
+				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_DELETE ) )
+				context.append( ContextItem( MR_LANG( 'Delete All' ), CONTEXT_DELETE_ALL ) )				
 				if recordInfo.mLocked:
-					context.append( ContextItem( 'Unlock', CONTEXT_UNLOCK ) )
+					context.append( ContextItem( MR_LANG( 'Unlock' ), CONTEXT_UNLOCK ) )
 				else :
-					context.append( ContextItem( 'Lock', CONTEXT_LOCK ) )
+					context.append( ContextItem( MR_LANG( 'Lock' ), CONTEXT_LOCK ) )
 
-				context.append( ContextItem( 'Rename', CONTEXT_RENAME ) )
+				context.append( ContextItem( MR_LANG( 'Rename' ), CONTEXT_RENAME ) )
 #				context.append( ContextItem( 'Start Mark', CONTEXT_START_MARK ) )
-				context.append( ContextItem( 'Multi-Selection', CONTEXT_START_MARK ) )
+				context.append( ContextItem( MR_LANG( 'Multi-Selection' ), CONTEXT_START_MARK ) )
 
 			else :
 				return
 				
 			GuiLock2( True )
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 			dialog.SetProperty( context )
 			dialog.doModal( )
 			GuiLock2( False )
 			
-			contextAction = dialog.GetSelectedAction()
+			contextAction = dialog.GetSelectedAction( )
 			self.DoContextAction( contextAction ) 
 
-		except Exception, ex:
-			LOG_ERR( "Exception %s" %ex)
+		except Exception, ex :
+			LOG_ERR( "Exception %s" %ex )
 
 
 	def DoContextAction( self, aContextAction ) :
-		LOG_TRACE('aContextAction=%d' %aContextAction )
+		LOG_TRACE( 'aContextAction=%d' %aContextAction )
 
 		if aContextAction == CONTEXT_PLAY :
 			self.StartRecordPlayback( True )
@@ -625,11 +612,11 @@ class ArchiveWindow( BaseWindow ) :
 		elif aContextAction == CONTEXT_CLEAR_MARK :
 			self.DoClearMark( )
 		else :
-			LOG_ERR('Unknown Context Action')
+			LOG_ERR( 'Unknown Context Action' )
 
 
 	def ShowDeleteConfirm( self ) :
-		markedList = self.GetMarkedList()
+		markedList = self.GetMarkedList( )
 		selectedPos = self.GetSelectedPosition( )
 
 		if markedList == None or len( markedList ) <= 0 :
@@ -650,12 +637,12 @@ class ArchiveWindow( BaseWindow ) :
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 #			dialog.SetDialogProperty( 'Confirm', 'Do you want to delete record(s)?' )
-			dialog.SetDialogProperty( 'Delete recorded file(s)', 'Do you want to delete recording(s)?' )
+			dialog.SetDialogProperty( MR_LANG( 'Delete recorded file(s)' ), MR_LANG( 'Do you want to delete recording(s)?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				if hasLocked == True :
-					if self.CheckPincode() == False :
+					if self.CheckPincode( ) == False :
 						return False
 
 				self.DoDelete( markedList )
@@ -667,7 +654,7 @@ class ArchiveWindow( BaseWindow ) :
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 #		dialog.SetDialogProperty( 'Confirm', 'Do you want to delete all records?' )
-		dialog.SetDialogProperty( 'Delete all your recorded file(s)', 'Do you really want to delete all your recordings?' )
+		dialog.SetDialogProperty( MR_LANG( 'Delete all your recorded file(s)' ), MR_LANG( 'Do you really want to delete all your recordings?' ) )
 		dialog.doModal( )
 
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -681,14 +668,13 @@ class ArchiveWindow( BaseWindow ) :
 					break
 		
 			if hasLocked == True :
-				if self.CheckPincode() == False :
+				if self.CheckPincode( ) == False :
 					return False
 
 			self.OpenBusyDialog( )
 
 			for recInfo in self.mRecordList :
 				self.mDataCache.Record_DeleteRecord( recInfo.mRecordKey, self.mServiceType )
-
 
 			self.CloseBusyDialog( )
 
@@ -705,27 +691,25 @@ class ArchiveWindow( BaseWindow ) :
 		
 		try :
 #			kb = xbmc.Keyboard( self.mRecordList[ selectedPos ].mRecordName, 'Rename', False )
-			kb = xbmc.Keyboard( self.mRecordList[ selectedPos ].mRecordName, 'Enter a new filename', False )			
+			kb = xbmc.Keyboard( self.mRecordList[ selectedPos ].mRecordName, MR_LANG( 'Enter a new filename' ), False )			
 			kb.doModal( )
 			if kb.isConfirmed( ) :
 				newName = kb.getText( )
-				LOG_TRACE('newName len=%d' %len( newName ) )
+				LOG_TRACE( 'newName len=%d' %len( newName ) )
 				if len( newName ) < MININUM_KEYWORD_SIZE :
 #					xbmcgui.Dialog( ).ok('Infomation', 'Input more than %d characters' %MININUM_KEYWORD_SIZE )
-					xbmcgui.Dialog( ).ok('Unable to change filename', 'At least %d characters are required' %MININUM_KEYWORD_SIZE )
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Unable to change filename' ), MR_LANG( 'At least %d characters are required' ) %MININUM_KEYWORD_SIZE )
 					return
 				else :
 
-					LOG_TRACE('Key=%d ServiceType=%d Name=%s %s' %(self.mRecordList[ selectedPos ].mRecordKey,  self.mServiceType, self.mRecordList[ selectedPos ].mRecordName, newName ) )
+					LOG_TRACE( 'Key=%d ServiceType=%d Name=%s %s' %(self.mRecordList[ selectedPos ].mRecordKey,  self.mServiceType, self.mRecordList[ selectedPos ].mRecordName, newName ) )
 					self.mDataCache.Record_Rename( self.mRecordList[ selectedPos ].mRecordKey, self.mServiceType, newName )
-					self.mRecordListItems[selectedPos].setLabel2( newName )	
+					self.mRecordListItems[ selectedPos ].setLabel2( newName )	
 					self.mRecordList[ selectedPos ].mRecordName = newName
-					xbmc.executebuiltin('container.update')
+					xbmc.executebuiltin( 'container.update' )
 
-					
-
-		except Exception, ex:
-			LOG_ERR( "Exception %s" %ex)
+		except Exception, ex :
+			LOG_ERR( "Exception %s" %ex )
 
 
 	def DoDelete( self, aDeleteList ) :
@@ -736,7 +720,7 @@ class ArchiveWindow( BaseWindow ) :
 			count = len( aDeleteList )
 			for i in range( count ) :
 				position = aDeleteList[i]
-				LOG_TRACE('i=%d serviceType=%d key=%d' %(position, self.mServiceType, self.mRecordList[position].mRecordKey ) )
+				LOG_TRACE( 'i=%d serviceType=%d key=%d' %( position, self.mServiceType, self.mRecordList[position].mRecordKey ) )
 				self.mDataCache.Record_DeleteRecord( self.mRecordList[position].mRecordKey, self.mServiceType )
 
 			self.CloseBusyDialog( )
@@ -746,7 +730,7 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def DoLockUnlock( self, aLock=False ) :
-		markedList = self.GetMarkedList()
+		markedList = self.GetMarkedList( )
 		selectedPos = self.GetSelectedPosition( )
 
 		if markedList == None or len( markedList ) <= 0 :
@@ -765,21 +749,21 @@ class ArchiveWindow( BaseWindow ) :
 				if aLock == True :
 					self.mRecordList[ position ].mLocked = True
 					self.mDataCache.Record_SetLock( self.mRecordList[ position ].mRecordKey, self.mServiceType, True )
-					recItem.setProperty('Locked', 'True')
-					recItem.setProperty('RecIcon', 'IconNotAvailable.png')
+					recItem.setProperty( 'Locked', 'True' )
+					recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
 				else :
 					self.mRecordList[ position ].mLocked = False
 					self.mDataCache.Record_SetLock( self.mRecordList[ position ].mRecordKey, self.mServiceType, False )
-					recItem.setProperty('Locked', 'False')
+					recItem.setProperty( 'Locked', 'False' )
 					thumbnail = '/mnt/hdd0/pvr/thumbnail/record_thumbnail_%d.jpg' % self.mRecordList[ position ].mRecordKey
 					
 					if os.path.exists( thumbnail ) == True :
-						recItem.setProperty('RecIcon', thumbnail )
+						recItem.setProperty( 'RecIcon', thumbnail )
 					else:
-						recItem.setProperty('RecIcon', 'RecIconSample.png')
+						recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
 
 			self.DoClearMark( )
-			xbmc.executebuiltin('container.update')
+			xbmc.executebuiltin( 'container.update' )
 
 
 	def DoStartMark( self ) :
@@ -792,8 +776,8 @@ class ArchiveWindow( BaseWindow ) :
 		if self.mRecordListItems == None :
 			return
  
-		for listItem in self.mRecordListItems:
-			listItem.setProperty('Marked', 'False')
+		for listItem in self.mRecordListItems :
+			listItem.setProperty( 'Marked', 'False' )
 
 
 	def DoMarkToggle( self ) :
@@ -803,12 +787,11 @@ class ArchiveWindow( BaseWindow ) :
 		selectedPos = self.GetSelectedPosition( )
 
 		if selectedPos >= 0 and selectedPos < len( self.mRecordListItems ) :
-			listItem = self.mRecordListItems[selectedPos]
-			if listItem.getProperty('Marked') == 'True' :
-				listItem.setProperty('Marked', 'False')
+			listItem = self.mRecordListItems[ selectedPos ]
+			if listItem.getProperty( 'Marked' ) == 'True' :
+				listItem.setProperty( 'Marked', 'False' )
 			else :
-				listItem.setProperty('Marked', 'True')			
-
+				listItem.setProperty( 'Marked', 'True' )			
 
 		selectedPos = selectedPos + 1	
 		if selectedPos >= len( self.mRecordListItems ) :
@@ -824,7 +807,7 @@ class ArchiveWindow( BaseWindow ) :
 			#elif self.mViewMode == E_VIEW_FANART :
 				#self.mCtrlFanartList.selectItem( selectedPos )
 			else :
-				LOG_WARN('Unknown view mode')
+				LOG_WARN( 'Unknown view mode' )
 			
 		#xbmc.executebuiltin('container.update')
 
@@ -834,18 +817,18 @@ class ArchiveWindow( BaseWindow ) :
 		GuiLock2( True )
 		pincodeDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 #		pincodeDialog.SetDialogProperty( 'Input Pincode', '', 4, True )
-		pincodeDialog.SetDialogProperty( 'Enter PIN code', '', 4, True )
+		pincodeDialog.SetDialogProperty( MR_LANG( 'Enter PIN code' ), '', 4, True )
 		pincodeDialog.doModal( )
 		GuiLock2( False )
 		
 		if pincodeDialog.IsOK( ) == E_DIALOG_STATE_YES :
 			inputPincode = int( pincodeDialog.GetString( ) )
-			LOG_TRACE('Input pincode=%d savedPincode=%d' %( savedPincode, inputPincode) )
+			LOG_TRACE( 'Input pincode=%d savedPincode=%d' %( savedPincode, inputPincode) )
 			if inputPincode == savedPincode :
 				return True
 			else :
 				infoDialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				infoDialog.SetDialogProperty( 'ERROR', 'New PIN codes do not match' )
+				infoDialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'New PIN codes do not match' ) )
 	 			infoDialog.doModal( )
 
 		return False
@@ -866,10 +849,10 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def UpdateArchiveInfomation( self ) :
-		selectedPos = self.GetSelectedPosition()
+		selectedPos = self.GetSelectedPosition( )
 		
 		if selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
-			recInfo = self.mRecordList[selectedPos]
+			recInfo = self.mRecordList[ selectedPos ]
 			"""
 			LOG_TRACE( 'Archive Info --> ChannelName=%s' %recInfo.mChannelName )
 			LOG_TRACE( 'Archive Info --> RecDate=%s' %TimeToString( recInfo.mStartTime ) )
@@ -895,11 +878,11 @@ class ArchiveWindow( BaseWindow ) :
 		self.mWin.setProperty( 'RecName', '' )				
 
 
-	def RestoreLastRecordKey( self ):
+	def RestoreLastRecordKey( self ) :
 		selectedPos = self.GetSelectedPosition( )
 
 		if selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
-			recInfo = self.mRecordList[selectedPos]
+			recInfo = self.mRecordList[ selectedPos ]
 			self.mSelectRecordKey = recInfo.mRecordKey
 		else :
 			self.mSelectRecordKey = -1
@@ -913,7 +896,7 @@ class ArchiveWindow( BaseWindow ) :
 				break;
 			selectedPos += 1
 
-		LOG_TRACE('SelectPos=%d' %selectedPos )
+		LOG_TRACE( 'SelectPos=%d' %selectedPos )
 
 		if self.mViewMode == E_VIEW_LIST :
 			self.mCtrlCommonList.selectItem( selectedPos )
@@ -968,19 +951,18 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	@RunThread
-	def PlayProgressThread( self ):
+	def PlayProgressThread( self ) :
 		self.mCtrlPlayProgress.setPercent( 0 ) 	
-		while self.mEnableThread:
-			time.sleep(1)		
+		while self.mEnableThread :
+			time.sleep(1)
 			self.UpdatePlayProgress( )
-
 
 
 	@GuiLock
 	def UpdatePlayProgress( self ) :
 		status = self.mDataCache.Player_GetStatus( )
 		if status == None or status.mError != 0 :
-			LOG_ERR( 'Player_GetStatus fail')
+			LOG_ERR( 'Player_GetStatus fail' )
 			return
 
 		self.mPlayPerent = 0

@@ -2,7 +2,7 @@ import xbmcaddon
 from ElisEnum import ElisEnum
 from pvr.gui.GuiConfig import *
 
-gSettings = xbmcaddon.Addon(id="script.mbox")
+gSettings = xbmcaddon.Addon( id="script.mbox" )
 
 
 def GetSetting( aID ) :
@@ -96,12 +96,12 @@ def GetPropertyByEPGComponent( aEPG ) :
 	bitCount += GetImageByEPGComponent( aEPG, ElisEnum.E_HasHDVideo )
 	#LOG_TRACE('component bitCount[%s]'% bitCount)
 
-	if bitCount == ElisEnum.E_HasDolbyDigital + ElisEnum.E_HasHDVideo:
+	if bitCount == ElisEnum.E_HasDolbyDigital + ElisEnum.E_HasHDVideo :
 		setPropertyData  = 'False'
 		setPropertyDolby = 'True'
 		setPropertyHD    = 'True'
 
-	elif bitCount == ElisEnum.E_HasHDVideo:
+	elif bitCount == ElisEnum.E_HasHDVideo :
 		setPropertyData  = 'False'
 		setPropertyDolby = 'False'
 		setPropertyHD    = 'True'
@@ -116,7 +116,7 @@ def GetPropertyByEPGComponent( aEPG ) :
 		setPropertyDolby = 'False'
 		setPropertyHD    = 'False'
 
-	elif bitCount == ElisEnum.E_HasSubtitles + ElisEnum.E_HasDolbyDigital + ElisEnum.E_HasHDVideo:
+	elif bitCount == ElisEnum.E_HasSubtitles + ElisEnum.E_HasDolbyDigital + ElisEnum.E_HasHDVideo :
 		setPropertyData  = 'True'
 		setPropertyDolby = 'True'
 		setPropertyHD    = 'True'
@@ -131,11 +131,11 @@ def GetPropertyByEPGComponent( aEPG ) :
 		setPropertyDolby = 'False'
 		setPropertyHD    = 'True'
 
-	return [setPropertyData, setPropertyDolby, setPropertyHD]
+	return [ setPropertyData, setPropertyDolby, setPropertyHD ]
 
 
 def HasEPGComponent( aEPG, aFlag ) :
-	if aFlag == ElisEnum.E_HasHDVideo:
+	if aFlag == ElisEnum.E_HasHDVideo :
 		return ( 'True', 'False' ) [ aEPG.mHasHDVideo == 0 ]
 
 	elif aFlag == ElisEnum.E_Has16_9Video :
@@ -174,13 +174,13 @@ def GetSelectedLongitudeString( aLongitude, aName ) :
 	if aLongitude < 1800 :
 		log1 = aLongitude / 10
 		log2 = aLongitude - (log1 * 10)
-		ret = str( '%d.%d E %s'% (log1, log2, aName) )
+		ret = str( '%d.%d E %s'% (log1, log2, aName ) )
 
 	else:
 		aLongitude = 3600 - aLongitude
 		log1 = aLongitude / 10
 		log2 = aLongitude - (log1 * 10)
-		ret = str('%d.%d W %s'% (log1, log2, aName) )
+		ret = str( '%d.%d W %s' %( log1, log2, aName) )
 
 	return ret
 
@@ -232,7 +232,7 @@ def EnumToString( aType, aValue ) :
 		elif aValue == ElisEnum.E_LNB_RIGHT :
 			ret = 'Righ'
 
-	return ret.upper()
+	return ret.upper( )
 
 
 def AgeLimit( aPropertyAge, aEPGAge ) :
@@ -274,23 +274,23 @@ def ParseLabelToCh( aMode, aLabel ) :
 	parse2 = 0
 
 	if aMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
-		parse2 = re.findall('[0-9]\w*', aLabel)
+		parse2 = re.findall( '[0-9]\w*', aLabel )
 
 	else :
-		parse1 = re.split(' ', aLabel)
-		parse2 = re.findall('[0-9]\w*', parse1[1])
+		parse1 = re.split( ' ', aLabel )
+		parse2 = re.findall( '[0-9]\w*', parse1[1] )
 
 	#LOG_TRACE('===========aLabel[%s] parse2[%s]'% (aLabel,parse2[0]) )
 
-	return int(parse2[0])
+	return int( parse2[0] )
 
 
-gLanguage = xbmcaddon.Addon(id = 'script.mbox')
+gLanguage = xbmcaddon.Addon( id = 'script.mbox' )
 
 
 def Strings( aStringID, aReplacements = None ) :
 	#string = xbmcaddon.Addon(id = 'script.mbox').getLocalizedString(aStringID)
-	string = gLanguage.getLocalizedString(aStringID)
+	string = gLanguage.getLocalizedString( aStringID )
 	if aReplacements is not None :
 		return string % aReplacements
 	else :
@@ -303,8 +303,8 @@ gCacheMRLanguage = None
 
 def GetInstance( ) :
 	global gCacheMRLanguage
-	if not gCacheMRLanguage:
-		gCacheMRLanguage = CacheMRLanguage()
+	if not gCacheMRLanguage :
+		gCacheMRLanguage = CacheMRLanguage( )
 	else:
 		pass
 		#print 'youn check already windowmgr is created'
@@ -313,11 +313,11 @@ def GetInstance( ) :
 
 
 class CacheMRLanguage( object ) :
-	def __init__( self ):
+	def __init__( self ) :
 		self.mStrLanguage = None
 
-		scriptDir = xbmcaddon.Addon('script.mbox').getAddonInfo('path')
-		xmlFile = '%s/pvr/gui/windows/Strings.xml'% scriptDir
+		scriptDir = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' )
+		xmlFile = '%s/pvr/gui/windows/Strings.xml' %scriptDir
 		#LOG_TRACE( 'xmlFile[%s]'% xmlFile )
 		fp = open( xmlFile )
 		xml = fp.read( )
@@ -327,7 +327,7 @@ class CacheMRLanguage( object ) :
 		self.mStrLanguage = BeautifulSoup( xml )
 
 		global gMRStringHash
-		for node in self.mStrLanguage.findAll( 'string' ):
+		for node in self.mStrLanguage.findAll( 'string' ) :
 			gMRStringHash[ node.string ] = int( node['id'] )
 
 		#LOG_ERR('============cache Language'!
@@ -349,15 +349,16 @@ gStrLanguage = GetInstance( )
 
 
 def MR_LANG( aString ) :
-	return gStrLanguage.StringTranslate(aString)
+	return gStrLanguage.StringTranslate( aString )
 	#return aString
 
 
 gSkinPosition = None
 
+
 def GetInstanceSkinPosition( ):
 	global gSkinPosition
-	if not gSkinPosition:
+	if not gSkinPosition :
 		gSkinPosition = GuiSkinPosition( )
 	return gSkinPosition
 
