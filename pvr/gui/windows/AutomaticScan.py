@@ -73,7 +73,8 @@ class AutomaticScan( SettingWindow ) :
 		# Satellite
 		if groupId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
-			select =  dialog.select( 'Select satellite', self.mFormattedList )
+#			select =  dialog.select( 'Select satellite', self.mFormattedList )
+			select =  dialog.select( 'Select a satellite you want to scan channels', self.mFormattedList )			
 
 			if select >= 0 and select != self.mSatelliteIndex :
 				self.mSatelliteIndex = select
@@ -117,10 +118,14 @@ class AutomaticScan( SettingWindow ) :
 
 		else :
 			try :
-				self.AddInputControl( E_Input01, 'Satellite', self.mFormattedList[self.mSatelliteIndex], 'Select satellite' )
-				self.AddEnumControl( E_SpinEx01, 'Network Search', None, 'Network Search' )
-				self.AddEnumControl( E_SpinEx02, 'Channel Search Mode', None, 'Channel Search Mode' )
-				self.AddInputControl( E_Input02, 'Start Search', '','Start Search' )
+#				self.AddInputControl( E_Input01, 'Satellite', self.mFormattedList[self.mSatelliteIndex], 'Select satellite' )
+#				self.AddEnumControl( E_SpinEx01, 'Network Search', None, 'Network Search' )
+#				self.AddEnumControl( E_SpinEx02, 'Channel Search Mode', None, 'Channel Search Mode' )
+#				self.AddInputControl( E_Input02, 'Start Search', '','Start Search' )
+				self.AddInputControl( E_Input01, 'Satellite', self.mFormattedList[self.mSatelliteIndex], 'Select Satellite(s) you wish to search from' )
+				self.AddEnumControl( E_SpinEx01, 'Network Search', None, 'Set your STB to scan channels from multiple TPs' )
+				self.AddEnumControl( E_SpinEx02, 'Channel Search Mode', None, 'Select the type of channels you want to search for' )
+				self.AddInputControl( E_Input02, 'Search Now', '','Perform an automatic channel search' )
 				self.InitControl( )
 			except Exception, ex :
 				LOG_TRACE('Error exception[%s]'% ex)

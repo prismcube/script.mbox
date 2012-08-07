@@ -576,7 +576,8 @@ class ArchiveWindow( BaseWindow ) :
 					context.append( ContextItem( 'Lock', CONTEXT_LOCK ) )
 
 				context.append( ContextItem( 'Rename', CONTEXT_RENAME ) )
-				context.append( ContextItem( 'Start Mark', CONTEXT_START_MARK ) )
+#				context.append( ContextItem( 'Start Mark', CONTEXT_START_MARK ) )
+				context.append( ContextItem( 'Multi-Selection', CONTEXT_START_MARK ) )
 
 			else :
 				return
@@ -648,7 +649,8 @@ class ArchiveWindow( BaseWindow ) :
 					break
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( 'Confirm', 'Do you want to delete record(s)?' )
+#			dialog.SetDialogProperty( 'Confirm', 'Do you want to delete record(s)?' )
+			dialog.SetDialogProperty( 'Delete recorded file(s)', 'Do you want to delete recording(s)?' )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -664,7 +666,8 @@ class ArchiveWindow( BaseWindow ) :
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( 'Confirm', 'Do you want to delete all records?' )
+#		dialog.SetDialogProperty( 'Confirm', 'Do you want to delete all records?' )
+		dialog.SetDialogProperty( 'Delete all your recorded file(s)', 'Do you really want to delete all your recordings?' )
 		dialog.doModal( )
 
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -701,13 +704,15 @@ class ArchiveWindow( BaseWindow ) :
 				return False
 		
 		try :
-			kb = xbmc.Keyboard( self.mRecordList[ selectedPos ].mRecordName, 'Rename', False )
+#			kb = xbmc.Keyboard( self.mRecordList[ selectedPos ].mRecordName, 'Rename', False )
+			kb = xbmc.Keyboard( self.mRecordList[ selectedPos ].mRecordName, 'Enter a new filename', False )			
 			kb.doModal( )
 			if kb.isConfirmed( ) :
 				newName = kb.getText( )
 				LOG_TRACE('newName len=%d' %len( newName ) )
 				if len( newName ) < MININUM_KEYWORD_SIZE :
-					xbmcgui.Dialog( ).ok('Infomation', 'Input more than %d characters' %MININUM_KEYWORD_SIZE )
+#					xbmcgui.Dialog( ).ok('Infomation', 'Input more than %d characters' %MININUM_KEYWORD_SIZE )
+					xbmcgui.Dialog( ).ok('Unable to change filename', 'At least %d characters are required' %MININUM_KEYWORD_SIZE )
 					return
 				else :
 
@@ -828,7 +833,8 @@ class ArchiveWindow( BaseWindow ) :
 		savedPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
 		GuiLock2( True )
 		pincodeDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-		pincodeDialog.SetDialogProperty( 'Input Pincode', '', 4, True )
+#		pincodeDialog.SetDialogProperty( 'Input Pincode', '', 4, True )
+		pincodeDialog.SetDialogProperty( 'Enter PIN code', '', 4, True )
 		pincodeDialog.doModal( )
 		GuiLock2( False )
 		
