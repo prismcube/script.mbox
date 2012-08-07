@@ -50,7 +50,7 @@ class AntennaSetup( SettingWindow ) :
 		self.AddEnumControl( E_SpinEx04, 'Tuner2 Type', None, 'Select a digital control method for Tuner 2' )
 		self.AddInputControl( E_Input02, ' - Tuner 2 Configuration', '', 'You can add, delete or setup satellite(s) here' )
 		if ConfigMgr.GetInstance().GetFristInstallation( ) == True :
-			self.AddPrevNextButton( )
+			self.AddPrevNextButton( MR_LANG( 'Go to Next' ), MR_LANG( 'Go to Back' ) )
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( 'Next' )
 		self.setVisibleButton( )
 		self.InitControl( )

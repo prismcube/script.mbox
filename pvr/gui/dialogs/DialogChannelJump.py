@@ -21,7 +21,6 @@ class DialogChannelJump( BaseDialog ) :
 		self.mAsyncTuneTimer    = None
 		self.mFakeChannel       = None
 		self.mFakeEPG           = None
-		self.mTestTime          = 0
 
 		self.mMaxChannelNum		= E_INPUT_MAX
 		self.mIsOk              = E_DIALOG_STATE_CANCEL
@@ -94,14 +93,10 @@ class DialogChannelJump( BaseDialog ) :
 		pass
 
 		
-	def SetDialogProperty( self, aChannelFirstNum, aMaxChannelNum, aChannelList, testTime = None ) :
+	def SetDialogProperty( self, aChannelFirstNum, aMaxChannelNum, aChannelList ) :
 		self.mChannelNumber	= aChannelFirstNum
 		self.mMaxChannelNum = aMaxChannelNum
 		self.mChannelList = aChannelList
-
-		if testTime:
-			self.mTestTime = testTime
-
 
 	def SetLabelChannelNumber( self ) :
 		self.mFlagFind = False
@@ -129,7 +124,7 @@ class DialogChannelJump( BaseDialog ) :
 		return iChannel
 
 	def SearchChannel( self ) :
-		if self.mChannelList:
+		if self.mChannelList and len(self.mChannelList) > 0 :
 			fChannel = self.ChannelList_GetSearch( int(self.mChannelNumber) )
 		else:
 			fChannel = self.mDataCache.Channel_GetSearch( int(self.mChannelNumber) )

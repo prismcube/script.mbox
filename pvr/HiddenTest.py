@@ -39,8 +39,7 @@ class HiddenTest( BaseWindow ) :
 			self.ShowContextMenu( )
 		else :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-#			dialog.SetDialogProperty( 'Error', 'No file : %s' % FILE_NAME_TEST )
-			dialog.SetDialogProperty( 'Unable to load test file', 'File not found : %s' % FILE_NAME_TEST )			
+			dialog.SetDialogProperty( MR_LANG( 'Unable to load test file' ), MR_LANG( 'File not found : %s' ) % FILE_NAME_TEST )			
 			dialog.doModal( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
@@ -60,8 +59,7 @@ class HiddenTest( BaseWindow ) :
 
 		if menuCount == 0 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-#			dialog.SetDialogProperty( 'Error', 'No test scenario in file : %s' % FILE_NAME_TEST )
-			dialog.SetDialogProperty( 'Unable to start test', 'Test scenario not available : %s' % FILE_NAME_TEST )			
+			dialog.SetDialogProperty( MR_LANG( 'Unable to start test' ), MR_LANG( 'Test scenario not available : %s' ) % FILE_NAME_TEST )			
 			dialog.doModal( )
 			WinMgr.GetInstance( ).CloseWindow( )
 		else :
@@ -76,7 +74,6 @@ class HiddenTest( BaseWindow ) :
 		if aContextAction == -1 :
 			WinMgr.GetInstance( ).CloseWindow( )
 		else :
-			#scenario = []
 			scenario = TestScenario( 'scenario', 'scenario' )
 			item = self.mRoot.getchildren( )[ aContextAction ]
 			for node in item :

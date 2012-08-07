@@ -12,12 +12,7 @@ gTunerConfigMgr = None
 def GetInstance( ) :
 	global gTunerConfigMgr
 	if not gTunerConfigMgr :
-		print 'lael98 check create instance'
 		gTunerConfigMgr = TunerConfigMgr( )
-		
-	else :
-		print 'lael98 check already TunerConfigMgr is created'
-		
 	return gTunerConfigMgr
 
 

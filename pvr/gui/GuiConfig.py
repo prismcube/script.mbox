@@ -1,15 +1,14 @@
 import xbmc, xbmcgui, time, sys, threading, os, re, shutil, string, thread
 from copy import deepcopy
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+from pvr.GuiHelper import MR_LANG
 
 
 ####### HBBTV SUPPOERT #############
 E_SUPPROT_HBBTV		= True
 
-
 E_WINDOW_WIDTH		= 1280
 E_WINDOW_HEIGHT		= 720
-
 
 ############################ Windows ############################
 # Setting Window Control Ids
@@ -161,28 +160,25 @@ E_EPG_DB_CF_GET_BY_FOLLOWING	= 2
 FLAG_ZAPPING_LOAD   			= 0
 FLAG_ZAPPING_CHANGE 			= 1
 
-
 # Tuner Config String Define
-USER_ENUM_LIST_ON_OFF				= [ 'Off', 'On' ]
-USER_ENUM_LIST_YES_NO				= [ 'No', 'Yes' ]
-USER_ENUM_LIST_DHCP_STATIC			= [ 'DHCP', 'Static' ]
-USER_ENUM_LIST_NETWORK_TYPE			= [ 'Ethernet', 'Wireless' ]
+USER_ENUM_LIST_ON_OFF				= [ MR_LANG( 'Off' ), MR_LANG( 'On' ) ]
+USER_ENUM_LIST_YES_NO				= [ MR_LANG( 'No' ), MR_LANG( 'Yes' ) ]
+USER_ENUM_LIST_DHCP_STATIC			= [ MR_LANG( 'DHCP' ), MR_LANG( 'Static' ) ]
+USER_ENUM_LIST_NETWORK_TYPE			= [ MR_LANG( 'Ethernet' ), MR_LANG( 'Wireless' ) ]
 USER_ENUM_LIST_ENCRIPT_TYPE			= [ 'WEP', 'WPA', 'WPA2', 'WPA/WPA2' ]
 USER_ENUM_LIST_PASSWORD_TYPE		= [ 'Ascii', 'Hex' ]
 
-E_LIST_LNB_TYPE						= [ 'Universal' , 'Single', 'Userdefined' ]
+E_LIST_LNB_TYPE						= [ MR_LANG( 'Universal' ), MR_LANG( 'Single' ), MR_LANG( 'Userdefined' ) ]
 E_LIST_SINGLE_FREQUENCY 			= [ '5150', '9750', '10600', '10750', '11300' ]
 E_LIST_DISEQC_MODE					= [ 'Disable', '1 of 4', '2 of 4', '3 of 4', '4 of 4', 'Mini A', 'Mini B' ]
 E_LIST_COMMITTED_SWITCH				= [ 'Disable', '1', '2', '3', '4' ]
 E_LIST_UNCOMMITTED_SWITCH			= [ 'Disable', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16' ]
-E_LIST_MOTORIZE_ACTION				= [ 'Reset Limits', 'Set Current Position for East Limit', 'Set Current Position for West Limit' ]
+E_LIST_MOTORIZE_ACTION				= [ MR_LANG( 'Reset Limits' ), MR_LANG( 'Set Current Position for East Limit' ), MR_LANG( 'Set Current Position for West Limit' ) ]
 E_LIST_ONE_CABLE_TUNER_FREQUENCY	= [ '1284', '1400', '1516', '1632', '1748', '1864', '1980', '2096' ]
 E_LIST_ONE_CABLE_SCR				= [ 'SCR(0)', 'SCR(1)', 'SCR(2)', 'SCR(3)', 'SCR(4)', 'SCR(5)', 'SCR(6)', 'SCR(7)' ]
 
-
-E_LIST_MY_LONGITUDE = [ 'East', 'West' ]
-E_LIST_MY_LATITUDE  = [ 'North', 'South' ]
-
+E_LIST_MY_LONGITUDE = [ MR_LANG( 'East' ), MR_LANG( 'West' ) ]
+E_LIST_MY_LATITUDE  = [ MR_LANG( 'North' ), MR_LANG( 'South' ) ]
 
 ############################ Dialog ############################
 
@@ -237,6 +233,7 @@ E_DIALOG_STATE_ERROR	= 4
 
 
 ############################ Global Function For GUI ############################
+
 
 def getSingleFrequenceIndex( selectedItem ) :
 	for i in range( len ( E_LIST_SINGLE_FREQUENCY )	) :
@@ -332,39 +329,13 @@ def StringToHidden( aString=None ) :
 	for i in range( length ) :
 		result += '*'
 	return result
+
 	
 ############################ Global Class ############################
 
 
-
 class ContextItem :
-
 	def __init__( self, aDescription = 'None', aContextAction = -1 ) :
 		self.mDescription = aDescription
 		self.mContextAction = aContextAction
 
-
-class Progress :
-
-	def __init__( self, aDescription = 'Wait...' ) :
-		self.mDescription = aDescription
-		self.progress = xbmcgui.DialogProgress( )
-		self.progress.create('Wait', self.mDescription )
-
-
-	def Close( self ) :
-		time.sleep( 0.5 )
-		self.progress.close( )
-
-
-	def Update( self, aPercent , aLabel=None ) :
-		if aLabel != None :
-			self.progress.update( aPercent, aLabel ) 
-		else :
-			self.progress.update( aPercent )
-
-	def IsCanceled( self ) :
-		if self.progress.iscanceled() == True :
-			return True
-		else :
-			return False
