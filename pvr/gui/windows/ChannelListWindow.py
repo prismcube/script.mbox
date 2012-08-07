@@ -125,32 +125,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
 
 
-	"""
-	def __del__(self):
-		LOG_TRACE( 'destroyed ChannelList' )
-
-		# end thread
-		self.mEnableLocalThread = False
-
- 
-	def onAction(self, aAction):
-		id = aAction.getId( )
-		
-		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )			
-
-		elif id == 104 : #scroll up
-			xbmc.executebuiltin('XBMC.ReloadSkin()')
-		elif id == Action.ACTION_SELECT_ITEM : 
-			xbmc.executebuiltin('XBMC.ReloadSkin()')
-
-	def SetAutomaticHide( self, aHide=True ) :
-		self.mAutomaticHide = aHide
-
-	def GetAutomaticHide( self ) :
-		return self.mAutomaticHide
-	"""
-
 	def onInit(self):
 		LOG_TRACE( 'Enter' )
 
@@ -223,7 +197,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.mMoveItem = []
 		self.mItemCount = 0
 
-
 		self.mEventBus.Register( self )
 		self.SetPipScreen( )
 
@@ -241,7 +214,7 @@ class ChannelListWindow( BaseWindow ) :
 		if zappingmode :
 			self.mElisSetZappingModeInfo = deepcopy( zappingmode )
 		else :
-			self.mElisSetZappingModeInfo = ElisIZappingMode()
+			self.mElisSetZappingModeInfo = ElisIZappingMode( )
 
 
 		#initialize get channel list
@@ -316,20 +289,20 @@ class ChannelListWindow( BaseWindow ) :
 		elif id == Action.ACTION_STOP :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 
-				status = self.mDataCache.Player_GetStatus()
+				status = self.mDataCache.Player_GetStatus( )
 				if status.mMode :
-					ret = self.mDataCache.Player_Stop()
+					ret = self.mDataCache.Player_Stop( )
 
 					iChannel = self.mDataCache.Channel_GetCurrent( )
-					LOG_TRACE('-------------------iChannel[%s]'% iChannel )
+					LOG_TRACE( '-------------------iChannel[%s]'% iChannel )
 					if iChannel :
 						self.mNavChannel = iChannel
 						self.mCurrentChannel = iChannel.mNumber
 
 					self.mIsTune == True
-					self.UpdateChannelAndEPG()
+					self.UpdateChannelAndEPG( )
 				else :
-					self.ShowRecordingStopDialog()
+					self.ShowRecordingStopDialog( )
 
 		elif id == Action.ACTION_MBOX_XBMC :
 			self.SetGoBackWindow( WinMgr.WIN_ID_MEDIACENTER )
@@ -345,7 +318,7 @@ class ChannelListWindow( BaseWindow ) :
 		elif id == Action.ACTION_MBOX_RECORD :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 				if self.mChannelList or len(self.mChannelList) > 0 :
-					self.ShowRecordingStartDialog()
+					self.ShowRecordingStartDialog( )
 
 		elif id == Action.ACTION_MBOX_TVRADIO :
 			if self.mChannelListServiceType == FLAG_MODE_TV :
@@ -378,7 +351,7 @@ class ChannelListWindow( BaseWindow ) :
 
 							self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_GROUP_CHANNEL_LIST )
 							self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, idx+1, E_TAG_SET_SELECT_POSITION )
-							self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, str('%s'% (idx+1) ) )
+							self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, str( '%s'% (idx+1) ) )
 
 				except Exception, e:
 					LOG_TRACE( 'Error except[%s]'% e )
@@ -411,11 +384,11 @@ class ChannelListWindow( BaseWindow ) :
 
 	def HashInit( self ) :
 		self.mChannelListHash = {}
-		if self.mChannelList and len(self.mChannelList) > 0 :
-			for i in range(len(self.mChannelList)) :
+		if self.mChannelList and len( self.mChannelList ) > 0 :
+			for i in range( len( self.mChannelList ) ) :
 				self.mChannelListHash[i] = self.mChannelList[i]
 
-		#LOG_TRACE('-------------------hash len[%s]'% len(self.mChannelListHash) )
+		#LOG_TRACE( '-------------------hash len[%s]'% len(self.mChannelListHash) )
 
 
 	def LoadInit( self ):
@@ -426,7 +399,7 @@ class ChannelListWindow( BaseWindow ) :
 			#first get is used cache, reason by fast load
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 
-			status = self.mDataCache.Player_GetStatus()
+			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				if iChannel :
 					self.mNavChannel = iChannel
@@ -444,7 +417,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mCurrentChannel = iChannel.mNumber
 
 					strType = self.UpdateServiceType( iChannel.mServiceType )
-					label = '%s - %s'% (strType, iChannel.mName)
+					label = '%s - %s'% ( strType, iChannel.mName )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 
 		except Exception, e :
@@ -459,7 +432,7 @@ class ChannelListWindow( BaseWindow ) :
 		#self.Epgevent_GetCurrent( )
 		try :
 			iEPG = None
-			iEPG = self.mDataCache.Epgevent_GetPresent()
+			iEPG = self.mDataCache.Epgevent_GetPresent( )
 			if iEPG and iEPG.mError == 0:
 				self.mNavEpg = iEPG
 
@@ -473,8 +446,8 @@ class ChannelListWindow( BaseWindow ) :
 		ret = E_DIALOG_STATE_NO
 
 		#ask save question
-		head =  MR_LANG('Confirm')
-		line1 = MR_LANG('Delete All Channel')
+		head =  MR_LANG( 'Confirm' )
+		line1 = MR_LANG( 'Delete All Channel' )
 
 		GuiLock2( True )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -491,7 +464,7 @@ class ChannelListWindow( BaseWindow ) :
 			if isDelete :
 				self.mDataCache.Player_AVBlank( True, False )
 				self.mDataCache.Channel_InvalidateCurrent( )
-				self.mDataCache.Frontdisplay_SetMessage('NoChannel')
+				self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
 				self.mFlag_DeleteAll = True
 
 		return ret
@@ -573,13 +546,13 @@ class ChannelListWindow( BaseWindow ) :
 				if aGoToWindow :
 					WinMgr.GetInstance( ).ShowWindow( aGoToWindow, WinMgr.WIN_ID_NULLWINDOW )
 				else :
-					WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_NULLWINDOW )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 			LOG_TRACE( 'go out Cancel' )
 
 		else :
 			if self.mMarkList :
-				LOG_TRACE('-------marklist[%s]'% self.mMarkList )
+				LOG_TRACE( '-------marklist[%s]'% self.mMarkList )
 				self.SetClearToMarkGUI( )
 				self.mMarkList = []
 
@@ -606,7 +579,7 @@ class ChannelListWindow( BaseWindow ) :
 	@GuiLock
 	def onEvent(self, aEvent):
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
-			#LOG_TRACE('Receive Event[%s]'% aEvent.getName() )
+			#LOG_TRACE( 'Receive Event[%s]'% aEvent.getName( ) )
 
 			if aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
 
@@ -636,40 +609,40 @@ class ChannelListWindow( BaseWindow ) :
 						   iEPG.mTsid != self.mNavEpg.mTsid or \
 						   iEPG.mOnid != self.mNavEpg.mOnid :
 
-							#LOG_TRACE('epg DIFFER')
+							#LOG_TRACE( 'epg DIFFER' )
 							self.mNavEpg = iEPG
 
 							#update label
 							self.ResetLabel( )
 							self.UpdateChannelAndEPG( )
 
-			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
-				 aEvent.getName() == ElisEventRecordingStopped.getName() :
+			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
+				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
 				self.mRecChannel1 = []
 				self.mRecChannel2 = []
-				#LOG_TRACE('<<<<<<<<<<<<<<<<<<<<< ChannelList <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
+				#LOG_TRACE( '<<<<<<<<<<<<<<<<<<<<< ChannelList <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<' )
 				self.ShowRecordingInfo( )
 				self.ReloadChannelList( )
 				self.mFlag_EditChanged = False
 				self.mMoveFlag = False
 
-				if aEvent.getName() == ElisEventRecordingStopped.getName() and aEvent.mHDDFull :
-					LOG_TRACE('----------hddfull[%s]'% aEvent.mHDDFull)
-					xbmcgui.Dialog().ok( MR_LANG('Infomation'), MR_LANG('HDD Full!!! Cannot Recording...') )
+				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
+					LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull)
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Infomation' ), MR_LANG( 'HDD Full!!! Cannot Recording...' ) )
 
-			if aEvent.getName() == ElisEventPlaybackEOF.getName() :
+			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				if aEvent.mType == ElisEnum.E_EOF_END :
 					#LOG_TRACE( 'EventRecv EOF_STOP' )
-					xbmc.executebuiltin('xbmc.Action(stop)')
+					xbmc.executebuiltin( 'xbmc.Action(stop)' )
 
-			elif aEvent.getName() == ElisEventChannelChangeResult.getName() :
+			elif aEvent.getName( ) == ElisEventChannelChangeResult.getName( ) :
 				ch = self.mDataCache.Channel_GetCurrent( )
 				isLimit = False
 				if self.mNavEpg :
 					isLimit = AgeLimit( self.mPropertyAge, self.mNavEpg.mAgeRating )
 
 				if ch.mLocked or isLimit :
-					WinMgr.GetInstance().GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mPropertyPincode )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mPropertyPincode )
 
 		else:
 			LOG_TRACE( 'channellist winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
@@ -692,7 +665,7 @@ class ChannelListWindow( BaseWindow ) :
 					chindex += 1
 
 			if self.mChannelList == None:
-				label = MR_LANG('Empty Channels')
+				label = MR_LANG( 'Empty Channels' )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 				return 
 
@@ -700,11 +673,11 @@ class ChannelListWindow( BaseWindow ) :
 			#time.sleep( 0.02 )
 
 			iChannel = self.mChannelList[int(aJumpNumber)-1]
-			LOG_TRACE('JumpChannel: num[%s] Name[%s] type[%s] aNum[%s]'% (iChannel.mNumber, iChannel.mName, iChannel.mServiceType, aJumpNumber) )
+			LOG_TRACE( 'JumpChannel: num[%s] Name[%s] type[%s] aNum[%s]'% (iChannel.mNumber, iChannel.mName, iChannel.mServiceType, aJumpNumber) )
 
 		else:
 			if self.mChannelList == None:
-				label = MR_LANG('Empty Channels')
+				label = MR_LANG( 'Empty Channels' )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 				return 
 
@@ -720,7 +693,6 @@ class ChannelListWindow( BaseWindow ) :
 			else :
 				isBlank = False
 			self.mDataCache.Player_VideoBlank( isBlank, False )
-
 
 		ret = False
 		ret = self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
@@ -743,16 +715,17 @@ class ChannelListWindow( BaseWindow ) :
 
 				LOG_TRACE( 'go out Cancel' )
 
-		ch = None
-		ch = self.mDataCache.Channel_GetCurrent( )
-		LOG_TRACE('getCurrent num[%s] name[%s]'% (ch.mNumber, ch.mName) )
-		if ch :
-			self.mNavChannel = ch
+		#ch = None
+		#ch = self.mDataCache.Channel_GetCurrent( )
+		#LOG_TRACE( 'getCurrent num[%s] name[%s]'% ( ch.mNumber, ch.mName ) )
+		#if ch :
+		if iChannel :
+			self.mNavChannel = iChannel
 			self.mCurrentChannel = self.mNavChannel.mNumber
 			self.mCurrentPosition = self.mCtrlListCHList.getSelectedPosition( )
 			pos = self.mCurrentPosition + 1
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, str('%s'% pos ) )
-			#LOG_TRACE('chinfo: num[%s] type[%s] name[%s] pos[%s]'% (ch.mNumber, ch.mServiceType, ch.mName, pos) )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, str( '%s'% pos ) )
+			#LOG_TRACE( 'chinfo: num[%s] type[%s] name[%s] pos[%s]'% (ch.mNumber, ch.mServiceType, ch.mName, pos) )
 
 			self.ResetLabel( )
 			self.UpdateChannelAndEPG( )
@@ -768,8 +741,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.SubMenuAction( E_SLIDE_ACTION_SUB, aSubIndex, aForce )
 
 
-	#@GuiLock
-	def SubMenuAction(self, aAction, aMenuIndex, aForce = None):
+	def SubMenuAction( self, aAction, aMenuIndex, aForce = None ) :
 		if self.mFlag_DeleteAll :
 			return
 
@@ -779,7 +751,7 @@ class ChannelListWindow( BaseWindow ) :
 			testlistItems = []
 			if aMenuIndex == 0 :
 				self.mZappingMode = ElisEnum.E_MODE_ALL
-				for itemList in range( len(self.mListAllChannel) ) :
+				for itemList in range( len( self.mListAllChannel ) ) :
 					testlistItems.append( xbmcgui.ListItem(self.mListAllChannel[itemList]) )
 
 			elif aMenuIndex == 1 :
@@ -787,22 +759,22 @@ class ChannelListWindow( BaseWindow ) :
 				if self.mListSatellite :
 					for itemClass in self.mListSatellite:
 						ret = GetSelectedLongitudeString( itemClass.mLongitude, itemClass.mName )
-						testlistItems.append( xbmcgui.ListItem(ret) )
+						testlistItems.append( xbmcgui.ListItem( ret ) )
 
 			elif aMenuIndex == 2 :
 				self.mZappingMode = ElisEnum.E_MODE_CAS
 				if self.mListCasList :
 					for itemClass in self.mListCasList:
 						ret = '%s(%s)'% ( itemClass.mName, itemClass.mChannelCount )
-						testlistItems.append( xbmcgui.ListItem(ret) )
+						testlistItems.append( xbmcgui.ListItem( ret ) )
 
 			elif aMenuIndex == 3 :
 				self.mZappingMode = ElisEnum.E_MODE_FAVORITE
 				if self.mListFavorite :
-					for itemClass in self.mListFavorite:
-						testlistItems.append( xbmcgui.ListItem(itemClass.mGroupName) )
+					for itemClass in self.mListFavorite :
+						testlistItems.append( xbmcgui.ListItem( itemClass.mGroupName ) )
 				else:
-					testlistItems.append( xbmcgui.ListItem( MR_LANG('None') ) )
+					testlistItems.append( xbmcgui.ListItem( MR_LANG( 'None' ) ) )
 
 			if testlistItems != [] :
 				#submenu update
@@ -812,7 +784,7 @@ class ChannelListWindow( BaseWindow ) :
 				if aMenuIndex == self.mSelectMainSlidePosition :
 					self.mCtrlListSubmenu.selectItem( self.mSelectSubSlidePosition )
 
-		elif aAction == E_SLIDE_ACTION_SUB:
+		elif aAction == E_SLIDE_ACTION_SUB :
 			if aForce == None and self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 				if self.mSelectMainSlidePosition == self.mCtrlListMainmenu.getSelectedPosition( ) and \
 				   self.mSelectSubSlidePosition == self.mCtrlListSubmenu.getSelectedPosition( ) :
@@ -822,11 +794,11 @@ class ChannelListWindow( BaseWindow ) :
 			zappingName = ''
 			if aMenuIndex == ElisEnum.E_MODE_ALL :
 				position   = self.mCtrlListSubmenu.getSelectedPosition( )
-				if position == 0:
+				if position == 0 :
 					sortingMode = ElisEnum.E_SORT_BY_NUMBER
-				elif position == 1:
+				elif position == 1 :
 					sortingMode = ElisEnum.E_SORT_BY_ALPHABET
-				elif position == 2:
+				elif position == 2 :
 					sortingMode = ElisEnum.E_SORT_BY_HD
 
 				self.mChannelListSortMode = sortingMode
@@ -840,7 +812,7 @@ class ChannelListWindow( BaseWindow ) :
 					retPass = self.GetChannelList( self.mChannelListServiceType, self.mZappingMode, self.mChannelListSortMode, item.mLongitude, item.mBand, 0, '' )
 					#LOG_TRACE( 'cmd[channel_GetListBySatellite] idx_Satellite[%s] mLongitude[%s] band[%s]'% ( idx_Satellite, item.mLongitude, item.mBand ) )
 
-			elif aMenuIndex == ElisEnum.E_MODE_CAS:
+			elif aMenuIndex == ElisEnum.E_MODE_CAS :
 				if self.mListCasList :
 					idxFtaCas = self.mCtrlListSubmenu.getSelectedPosition( )
 					zappingName = self.mListCasList[idxFtaCas].mName
@@ -868,7 +840,7 @@ class ChannelListWindow( BaseWindow ) :
 					retPass = self.GetChannelList( self.mChannelListServiceType, self.mZappingMode, self.mChannelListSortMode, 0, 0, caid, '' )
 					#LOG_TRACE( 'cmd[channel_GetListByFTACas] idxFtaCas[%s]'% idxFtaCas )
 
-			elif aMenuIndex == ElisEnum.E_MODE_FAVORITE:
+			elif aMenuIndex == ElisEnum.E_MODE_FAVORITE :
 				if self.mListFavorite : 
 					idx_Favorite = self.mCtrlListSubmenu.getSelectedPosition( )
 					item = self.mListFavorite[idx_Favorite]
@@ -894,21 +866,21 @@ class ChannelListWindow( BaseWindow ) :
 			self.mSelectSubSlidePosition = self.mCtrlListSubmenu.getSelectedPosition( )
 
 			label = ''
-			label1 = EnumToString('mode', self.mZappingMode)
+			label1 = EnumToString( 'mode', self.mZappingMode)
 			label2 = zappingName
-			label3 = EnumToString('sort', self.mChannelListSortMode)
+			label3 = EnumToString( 'sort', self.mChannelListSortMode)
 
 			if self.mZappingMode == ElisEnum.E_MODE_ALL :
-				label = '%s [COLOR grey3]>[/COLOR] sort by %s'% (label1.upper( ),label3.title( ) )
+				label = '%s [COLOR grey3]>[/COLOR] sort by %s'% ( label1.upper( ),label3.title( ) )
 			else :
-				label = '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% (label1.upper( ),label2.title( ),label3.title( ) )
+				label = '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% ( label1.upper( ), label2.title( ), label3.title( ) )
 			self.mCtrlLabelChannelPath.setLabel( label )
 
 			#current zapping backup
 			#self.mDataCache.Channel_Backup( )
 
 
-	def GetChannelList(self, aType, aMode, aSort, aLongitude, aBand, aCAid, aFavName ):
+	def GetChannelList( self, aType, aMode, aSort, aLongitude, aBand, aCAid, aFavName ):
 		try :
 			if aMode == ElisEnum.E_MODE_ALL :
 				self.mChannelList = self.mDataCache.Channel_GetList( FLAG_ZAPPING_CHANGE, aType, aMode, aSort )
@@ -935,7 +907,7 @@ class ChannelListWindow( BaseWindow ) :
 		return True
 
 
-	def GetSlideMenuHeader(self, aMode) :
+	def GetSlideMenuHeader( self, aMode ) :
 		idx1 = 0
 		idx2 = 0
 
@@ -999,7 +971,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		self.mCtrlListMainmenu.selectItem( idx1 )
-		self.SubMenuAction(E_SLIDE_ACTION_MAIN, idx1)
+		self.SubMenuAction( E_SLIDE_ACTION_MAIN, idx1 )
 		self.mCtrlListSubmenu.selectItem( idx2 )
 		#self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_LIST_SUBMENU )
 
@@ -1040,13 +1012,13 @@ class ChannelListWindow( BaseWindow ) :
 				label1 = EnumToString( 'mode', self.mZappingMode )
 				label2 = self.mCtrlListSubmenu.getSelectedItem( ).getLabel( )
 
-				head =  MR_LANG('Setting - to change zapping mode')
+				head =  MR_LANG( 'Setting - to change zapping mode' )
 				line1 = '%s / %s'% ( label1.title( ), label2.title( ) )
-				line2 = MR_LANG('Do you want to save channels?')
-				posLine = abs( 100 - len(line1) )
+				line2 = MR_LANG( 'Do you want to save channels?' )
+				posLine = abs( 100 - len( line1 ) )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( head, str('%s\n\n%s'% (line1.center(posLine), line2) ) )
+				dialog.SetDialogProperty( head, str( '%s\n\n%s'% ( line1.center( posLine ), line2 ) ) )
 				dialog.doModal( )
 				GuiLock2( False )
 
@@ -1074,20 +1046,20 @@ class ChannelListWindow( BaseWindow ) :
 
 					"""
 					LOG_TRACE( '1. zappingMode[%s] sortMode[%s] serviceType[%s]'%  \
-						( EnumToString('mode', self.mZappingMode),                 \
-						  EnumToString('sort', self.mChannelListSortMode),         \
-						  EnumToString('type', self.mChannelListServiceType) ) )
+						( EnumToString( 'mode', self.mZappingMode),                 \
+						  EnumToString( 'sort', self.mChannelListSortMode),         \
+						  EnumToString( 'type', self.mChannelListServiceType) ) )
 					LOG_TRACE( '2. zappingMode[%s] sortMode[%s] serviceType[%s]'%          \
-						( EnumToString('mode', self.mElisSetZappingModeInfo.mMode),        \
-						  EnumToString('sort', self.mElisSetZappingModeInfo.mSortingMode), \
-						  EnumToString('type', self.mElisSetZappingModeInfo.mServiceType) ) )
+						( EnumToString( 'mode', self.mElisSetZappingModeInfo.mMode),        \
+						  EnumToString( 'sort', self.mElisSetZappingModeInfo.mSortingMode), \
+						  EnumToString( 'type', self.mElisSetZappingModeInfo.mServiceType) ) )
 					"""
 
 					#save zapping mode
 					self.mDataCache.Channel_Save( )
 					self.mDataCache.Channel_GetAllChannels( self.mChannelListServiceType, False )
 
-					if self.mChannelList == None or len(self.mChannelList) < 1 :
+					if self.mChannelList == None or len( self.mChannelList ) < 1 :
 						#### data cache re-load ####
 						self.mDataCache.LoadZappingmode( )
 						self.mDataCache.LoadZappingList( )
@@ -1100,7 +1072,7 @@ class ChannelListWindow( BaseWindow ) :
 							self.mDataCache.LoadZappingmode( )
 							self.mDataCache.LoadZappingList( )
 							self.mDataCache.LoadChannelList( )
-							#LOG_TRACE ('===================== save yes: cache re-load')
+							#LOG_TRACE ( '===================== save yes: cache re-load' )
 
 							if self.mFlag_ModeChanged :
 								isBlank = False
@@ -1134,7 +1106,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mDataCache.LoadZappingmode( )
 					self.mDataCache.LoadZappingList( )
 					self.mDataCache.LoadChannelList( )
-					#LOG_TRACE ('===================== save no: cache re-load')
+					#LOG_TRACE ( '===================== save no: cache re-load' )
 
 					iChannel = self.mDataCache.Channel_GetCurrent( )
 					if iChannel.mNumber != self.mCurrentChannel or iChannel.mServiceType != self.mChannelListServiceType :
@@ -1160,8 +1132,8 @@ class ChannelListWindow( BaseWindow ) :
 		#is change?
 		if self.mIsSave :
 			#ask save question
-			head =  MR_LANG('Confirm')
-			line1 = MR_LANG('Do you want to save channels?')
+			head =  MR_LANG( 'Confirm' )
+			line1 = MR_LANG( 'Do you want to save channels?' )
 
 			GuiLock2( True )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -1183,7 +1155,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.mDataCache.LoadZappingmode( )
 				self.mDataCache.LoadZappingList( )
 				self.mDataCache.LoadChannelList( )
-				LOG_TRACE ('save[%s] cache re-load'% isSave)
+				LOG_TRACE ( 'save[%s] cache re-load'% isSave)
 
 				if self.mRefreshCurrentChannel :
 					self.SetChannelTune( self.mRefreshCurrentChannel )
@@ -1220,7 +1192,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			self.mCtrlListSubmenu.reset( )
 			testlistItems = []
-			testlistItems.append(xbmcgui.ListItem( MR_LANG('None') ) )
+			testlistItems.append(xbmcgui.ListItem( MR_LANG( 'None' ) ) )
 			self.mCtrlListSubmenu.addItems( testlistItems )
 
 			return
@@ -1247,7 +1219,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mZappingMode            = ElisEnum.E_MODE_ALL
 					self.mChannelListSortMode    = ElisEnum.E_SORT_BY_DEFAULT
 					self.mChannelListServiceType = ElisEnum.E_SERVICE_TYPE_TV
-					zappingMode                  = ElisIZappingMode()
+					zappingMode                  = ElisIZappingMode( )
 					self.mElisZappingModeInfo    = zappingMode
 					LOG_TRACE( 'Fail GetCurrent!!! [set default ZappingMode]' )
 
@@ -1256,18 +1228,18 @@ class ChannelListWindow( BaseWindow ) :
 				self.mZappingMode            = ElisEnum.E_MODE_ALL
 				self.mChannelListSortMode    = ElisEnum.E_SORT_BY_DEFAULT
 				self.mChannelListServiceType = ElisEnum.E_SERVICE_TYPE_TV
-				zappingMode                  = ElisIZappingMode()
+				zappingMode                  = ElisIZappingMode( )
 				self.mElisZappingModeInfo    = zappingMode
 				LOG_TRACE( 'Error exception[%s] [set default ZappingMode]'% e )
 
 
 		list_Mainmenu = []
-		list_Mainmenu.append( MR_LANG('All CHANNELS') )
-		list_Mainmenu.append( MR_LANG('SATELLITE')    )
-		list_Mainmenu.append( MR_LANG('FTA/CAS')      )
-		list_Mainmenu.append( MR_LANG('FAVORITE')     )
-		list_Mainmenu.append( MR_LANG('MODE') )
-		#list_Mainmenu.append( MR_LANG('Back') )
+		list_Mainmenu.append( MR_LANG( 'All CHANNELS' ) )
+		list_Mainmenu.append( MR_LANG( 'SATELLITE' )    )
+		list_Mainmenu.append( MR_LANG( 'FTA/CAS' )      )
+		list_Mainmenu.append( MR_LANG( 'FAVORITE' )     )
+		list_Mainmenu.append( MR_LANG( 'MODE' ) )
+		#list_Mainmenu.append( MR_LANG( 'Back' ) )
 		testlistItems = []
 		for item in range( len(list_Mainmenu) ) :
 			testlistItems.append( xbmcgui.ListItem(list_Mainmenu[item]) )
@@ -1290,7 +1262,7 @@ class ChannelListWindow( BaseWindow ) :
 				self.mListCasList = self.mDataCache.Fta_cas_GetList( self.mChannelListServiceType )
 
 				#Favorite list
-				self.mListFavorite = self.mDataCache.Favorite_GetList(FLAG_ZAPPING_CHANGE, self.mChannelListServiceType )
+				self.mListFavorite = self.mDataCache.Favorite_GetList( FLAG_ZAPPING_CHANGE, self.mChannelListServiceType )
 
 			else:
 				self.mListSatellite = self.mDataCache.Satellite_GetConfiguredList( )
@@ -1303,24 +1275,24 @@ class ChannelListWindow( BaseWindow ) :
 
 		testlistItems = []
 		if self.mZappingMode == ElisEnum.E_MODE_ALL :
-			for item in range(len(self.mListAllChannel) ) :
-				testlistItems.append(xbmcgui.ListItem(self.mListAllChannel[item]) )
+			for item in range( len( self.mListAllChannel ) ) :
+				testlistItems.append( xbmcgui.ListItem( self.mListAllChannel[item] ) )
 
 		elif self.mZappingMode == ElisEnum.E_MODE_SATELLITE :
 			if self.mListSatellite :
 				for item in self.mListSatellite:
 					ret = GetSelectedLongitudeString( item.mLongitude, item.mName )
-					testlistItems.append(xbmcgui.ListItem(ret) )
+					testlistItems.append(xbmcgui.ListItem( ret ) )
 
 		elif self.mZappingMode == ElisEnum.E_MODE_CAS :
 			if self.mListCasList :
-				for item in self.mListCasList:
+				for item in self.mListCasList :
 					ret = '%s(%s)'% ( item.mName, item.mChannelCount )
 					testlistItems.append(xbmcgui.ListItem( ret ) )
 
 		elif self.mZappingMode == ElisEnum.E_MODE_FAVORITE :
 			if self.mListFavorite :
-				for item in self.mListFavorite:
+				for item in self.mListFavorite :
 					testlistItems.append(xbmcgui.ListItem( item.mGroupName ) )
 
 		self.mCtrlListSubmenu.addItems( testlistItems )
@@ -1344,9 +1316,9 @@ class ChannelListWindow( BaseWindow ) :
 
 		#path tree, Mainmenu/Submanu
 		label = ''
-		label1 = EnumToString('mode', self.mZappingMode)
+		label1 = EnumToString( 'mode', self.mZappingMode )
 		label2 = self.mZappingName
-		label3 = EnumToString('sort', self.mChannelListSortMode)
+		label3 = EnumToString( 'sort', self.mChannelListSortMode )
 		if self.mZappingMode == ElisEnum.E_MODE_ALL :
 			label = '%s [COLOR grey3]>[/COLOR] sort by %s'% ( label1.upper( ),label3.title( ) )
 		else :
@@ -1363,14 +1335,14 @@ class ChannelListWindow( BaseWindow ) :
 			lblTable = 'zapping'
 		LOG_TRACE( '>>>>>>>>>>>>>>>>>>>>>>>>>> skip[%s] table[%s]'% (lblSkip, lblTable) )
 		LOG_TRACE( 'zappingMode[%s] sortMode[%s] serviceType[%s]'% \
-			( EnumToString('mode', self.mZappingMode),             \
-			  EnumToString('sort', self.mChannelListSortMode),     \
-			  EnumToString('type', self.mChannelListServiceType) ) )
+			( EnumToString( 'mode', self.mZappingMode),             \
+			  EnumToString( 'sort', self.mChannelListSortMode),     \
+			  EnumToString( 'type', self.mChannelListServiceType) ) )
 		if self.mChannelList :
-			LOG_TRACE('>>>>>>>>>>>>>>>>>>>>>>>>>flag_editChange[%s] len[%s] datachche[%s]'% (self.mFlag_EditChanged, len(self.mChannelList), len(self.mDataCache.mChannelList) ))
+			LOG_TRACE( '>>>>>>>>>>>>>>>>>>>>>>>>>flag_editChange[%s] len[%s] datachche[%s]'% (self.mFlag_EditChanged, len(self.mChannelList), len(self.mDataCache.mChannelList) ))
 			#LOG_TRACE( 'len[%s] ch[%s]'% (len(self.mChannelList),ClassToList( 'convert', self.mChannelList ) ) )
 		else :
-			LOG_TRACE('>>>>>>>>>>>>>>>>>>>>>>>>>flag_editChange[%s] len[%s] datachche[%s]'% (self.mFlag_EditChanged, self.mChannelList, self.mDataCache.mChannelList ))
+			LOG_TRACE( '>>>>>>>>>>>>>>>>>>>>>>>>>flag_editChange[%s] len[%s] datachche[%s]'% (self.mFlag_EditChanged, self.mChannelList, self.mDataCache.mChannelList ))
 		"""
 
 
@@ -1382,7 +1354,7 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mChannelList == None:
 			self.mListItems = None
 			self.mCtrlListCHList.reset( )
-			label = MR_LANG('Empty Channels')
+			label = MR_LANG( 'Empty Channels' )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, '0' )
 			return 
@@ -1392,23 +1364,27 @@ class ChannelListWindow( BaseWindow ) :
 			self.mListItems = []
 			reloadPos = True
 
-			for iChannel in self.mChannelList:
+			for iChannel in self.mChannelList :
 				listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ) )
 
-				if iChannel.mLocked  : listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
-				if iChannel.mIsCA    : listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
+				if iChannel.mLocked : 
+					listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
+				if iChannel.mIsCA : 
+					listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
 				if self.mRecCount :
 					if self.mRecChannel1 :
-						if iChannel.mNumber == self.mRecChannel1[0] : listItem.setProperty(E_XML_PROPERTY_RECORDING, E_TAG_TRUE)
+						if iChannel.mNumber == self.mRecChannel1[0] : 
+							listItem.setProperty( E_XML_PROPERTY_RECORDING, E_TAG_TRUE )
 					if self.mRecChannel2 :
-						if iChannel.mNumber == self.mRecChannel2[0] : listItem.setProperty(E_XML_PROPERTY_RECORDING, E_TAG_TRUE)
+						if iChannel.mNumber == self.mRecChannel2[0] : 
+							listItem.setProperty( E_XML_PROPERTY_RECORDING, E_TAG_TRUE )
 
-				if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW and iChannel.mSkipped == True : listItem.setProperty( E_XML_PROPERTY_SKIP, E_TAG_TRUE )
+				if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW and iChannel.mSkipped == True : 
+					listItem.setProperty( E_XML_PROPERTY_SKIP, E_TAG_TRUE )
 
-				self.mListItems.append(listItem)
+				self.mListItems.append( listItem )
 
 		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
-
 
 		#get last channel
 		iChannel = None
@@ -1441,10 +1417,10 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def ResetLabel(self):
-		if self.mChannelListServiceType == ElisEnum.E_SERVICE_TYPE_TV:
+		if self.mChannelListServiceType == ElisEnum.E_SERVICE_TYPE_TV :
 			self.mCtrlRadioServiceTypeTV.setSelected( True )
 			self.mCtrlRadioServiceTypeRadio.setSelected( False )
-		elif self.mChannelListServiceType == ElisEnum.E_SERVICE_TYPE_RADIO:
+		elif self.mChannelListServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			self.mCtrlRadioServiceTypeTV.setSelected( False )
 			self.mCtrlRadioServiceTypeRadio.setSelected( True )
 
@@ -1452,11 +1428,11 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlProgress.setVisible(False)
 		self.mPincodeEnter = FLAG_MASK_NONE
 
-		self.mCtrlLabelSelectItem.setLabel( str('%s'% (self.mCtrlListCHList.getSelectedPosition( )+1) ) )
-		self.mCtrlLabelEPGName.setLabel('')
-		self.mCtrlLabelEPGTime.setLabel('')
-		self.mCtrlLabelLongitudeInfo.setLabel('')
-		self.mCtrlLabelCareerInfo.setLabel('')
+		self.mCtrlLabelSelectItem.setLabel( str( '%s'% ( self.mCtrlListCHList.getSelectedPosition( ) + 1 ) ) )
+		self.mCtrlLabelEPGName.setLabel( '' )
+		self.mCtrlLabelEPGTime.setLabel( '' )
+		self.mCtrlLabelLongitudeInfo.setLabel( '' )
+		self.mCtrlLabelCareerInfo.setLabel( '' )
 		self.mCtrlLabelLockedInfo.setVisible(False)
 		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
@@ -1467,7 +1443,7 @@ class ChannelListWindow( BaseWindow ) :
 		try :
 			if self.mIsTune == True :
 				if not self.mNavChannel :
-					LOG_TRACE('No Channels')
+					LOG_TRACE( 'No Channels' )
 					return
 
 				sid  = self.mNavChannel.mSid
@@ -1488,7 +1464,7 @@ class ChannelListWindow( BaseWindow ) :
 
 					#for iChannel in self.mChannelList:
 					#	if iChannel.mNumber == chNumber :
-					iChannel = self.mChannelListHash.get(idx)
+					iChannel = self.mChannelListHash.get( idx )
 					if iChannel and iChannel.mNumber == chNumber :
 						self.mNavChannel = None
 						self.mNavChannel = iChannel
@@ -1499,7 +1475,7 @@ class ChannelListWindow( BaseWindow ) :
 						iEPG = None
 						iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
 						#iEPGList = self.mDataCache.Epgevent_GetCurrentByChannelFromEpgCF( sid, tsid, onid )
-						#LOG_TRACE('----chNum[%s] chName[%s] sid[%s] tsid[%s] onid[%s]'% (iChannel.mNumber, iChannel.mName, sid, tsid, onid) )
+						#LOG_TRACE( '----chNum[%s] chName[%s] sid[%s] tsid[%s] onid[%s]'% (iChannel.mNumber, iChannel.mName, sid, tsid, onid) )
 						if iEPG == None or iEPG.mError != 0 :
 							self.mNavEpg = 0
 
@@ -1509,13 +1485,13 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-	def UpdateServiceType( self, aTvType ):
+	def UpdateServiceType( self, aTvType ) :
 		label = ''
-		if aTvType == ElisEnum.E_SERVICE_TYPE_TV:
+		if aTvType == ElisEnum.E_SERVICE_TYPE_TV :
 			label = 'TV'
-		elif aTvType == ElisEnum.E_SERVICE_TYPE_RADIO:
+		elif aTvType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			label = 'RADIO'
-		elif aTvType == ElisEnum.E_SERVICE_TYPE_DATA:
+		elif aTvType == ElisEnum.E_SERVICE_TYPE_DATA :
 			label = 'DATA'
 		else:
 			label = 'etc'
@@ -1605,7 +1581,7 @@ class ChannelListWindow( BaseWindow ) :
 			#update longitude info
 			satellite = self.mDataCache.Satellite_GetByChannelNumber( self.mNavChannel.mNumber, -1 )
 			if not satellite :
-				#LOG_TRACE('Fail GetByChannelNumber by Cache')
+				#LOG_TRACE( 'Fail GetByChannelNumber by Cache' )
 				satellite = self.mDataCache.Satellite_GetByChannelNumber( self.mNavChannel.mNumber, self.mNavChannel.mServiceType )
 
 			if satellite :
@@ -1630,11 +1606,11 @@ class ChannelListWindow( BaseWindow ) :
 				careerLabel = '%s MHz, %s KS/S, %s'% (value2, value3, polarization)
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CAREER_INFO, careerLabel )
 
-			elif self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBT:
+			elif self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBT :
 				pass
-			elif self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBC:
+			elif self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBC :
 				pass
-			elif self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_INVALID:
+			elif self.mNavChannel.mCarrierType == ElisEnum.E_CARRIER_TYPE_INVALID :
 				pass
 				
 			"""
@@ -1688,8 +1664,9 @@ class ChannelListWindow( BaseWindow ) :
 			if  ( loop % 10 ) == 0 :
 				self.UpdateProgress( )
 
-			time.sleep(1)
+			time.sleep( 1 )
 			loop += 1
+
 
 	@GuiLock
 	def UpdateProgress( self ) :
@@ -1725,14 +1702,14 @@ class ChannelListWindow( BaseWindow ) :
 			#self.mLocalTime = 0
 
 
-	def ShowMoveToGUI(self, aStart, aEnd, aInit = False ) :
+	def ShowMoveToGUI( self, aStart, aEnd, aInit = False ) :
 		self.mListItems = []
 		showList = self.mNewChannelList
 		if aInit :
 			showList = self.mChannelList
 			#self.mCtrlListCHList.reset( )
 
-		for i in range( aStart, aEnd ):
+		for i in range( aStart, aEnd ) :
 			iChannel = showList[i]
 			if iChannel == None : continue
 
@@ -1740,42 +1717,42 @@ class ChannelListWindow( BaseWindow ) :
 			isFind = False
 			for item in self.mMoveList :
 				if iChannel.mNumber == item.mNumber : 
-					listItem = xbmcgui.ListItem( '[COLOR white]%04d %s[/COLOR]'%( iChannel.mNumber, iChannel.mName ), 'MOVE' )
+					listItem = xbmcgui.ListItem( '[COLOR white]%04d %s[/COLOR]'% ( iChannel.mNumber, iChannel.mName ), 'MOVE' )
 					listItem.setProperty(E_XML_PROPERTY_MARK, E_TAG_TRUE)
-					#LOG_TRACE('move idx[%s] [%04d %s]'% ( i, iChannel.mNumber, iChannel.mName ) )
+					#LOG_TRACE( 'move idx[%s] [%04d %s]'% ( i, iChannel.mNumber, iChannel.mName ) )
 					isFind = True
 					break
 
 			if not isFind :
-				listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ) )
+				listItem = xbmcgui.ListItem( '%04d %s'% ( iChannel.mNumber, iChannel.mName ) )
 			if iChannel.mLocked  : listItem.setProperty( E_XML_PROPERTY_LOCK, E_TAG_TRUE )
 			if iChannel.mIsCA    : listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
 			if iChannel.mSkipped : listItem.setProperty( E_XML_PROPERTY_SKIP, E_TAG_TRUE )
-			#LOG_TRACE('move idx[%s] [%04d %s]'% ( i, iChannel.mNumber, iChannel.mName ) )
+			#LOG_TRACE( 'move idx[%s] [%04d %s]'% ( i, iChannel.mNumber, iChannel.mName ) )
 
 			self.mListItems.append(listItem)
 
 		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
 
 
-	def SetEditChanneltoMove(self, aMode, aMove = None ) :
+	def SetEditChanneltoMove( self, aMode, aMove = None ) :
 		if aMode == FLAG_OPT_MOVE :
 			self.OpenBusyDialog( )
 			try :
 				self.mMoveList = []
 				self.mRefreshCurrentIdx = -1
-				self.mNewChannelList = deepcopy(self.mChannelList)
+				self.mNewChannelList = deepcopy( self.mChannelList )
 				listHeight = self.mCtrlListCHList.getHeight( )
 				self.mItemCount = listHeight / self.mItemHeight
-				#LOG_TRACE('listHeight[%d] itemHeight[%d] itemCount[%d]'% (listHeight, self.mItemHeight, self.mItemCount) )
+				#LOG_TRACE( 'listHeight[%d] itemHeight[%d] itemCount[%d]'% (listHeight, self.mItemHeight, self.mItemCount) )
 
 				if not self.mMarkList :
 					lastPos = self.mCtrlListCHList.getSelectedPosition( )
 					self.mMarkList.append( lastPos )
-					LOG_TRACE('last position[%s]'% lastPos )
+					LOG_TRACE( 'last position[%s]'% lastPos )
 				
 				self.mMarkList.sort( )
-				#LOG_TRACE('1====mark[%s]'% self.mMarkList )
+				#LOG_TRACE( '1====mark[%s]'% self.mMarkList )
 
 				#2. make listing of ichannel in marked idx
 				idxFirst = int(self.mMarkList[0])
@@ -1783,17 +1760,17 @@ class ChannelListWindow( BaseWindow ) :
 				for idx in range( 1, len(self.mMarkList) ) :
 					i = int( self.mMarkList[idx] )
 					nextIdx = idxFirst + idx
-					item = self.mNewChannelList.pop(i)
-					self.mNewChannelList.insert(nextIdx, item)
+					item = self.mNewChannelList.pop( i )
+					self.mNewChannelList.insert( nextIdx, item )
 					self.mMoveList.append( item )
 					self.mMarkList[idx] = nextIdx
 
 				#find current channel
-				for i in range(len(self.mMarkList)) :
+				for i in range( len( self.mMarkList ) ) :
 					idx = self.mMarkList[i]
 					if self.mNewChannelList[idx].mNumber == self.mCurrentChannel :
 						self.mRefreshCurrentIdx = i
-				LOG_TRACE('mRefreshCurrentIdx[%s]'% self.mRefreshCurrentIdx)
+				LOG_TRACE( 'mRefreshCurrentIdx[%s]'% self.mRefreshCurrentIdx )
 
 
 				self.mMoveFlag = True
@@ -1812,7 +1789,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mViewEnd = chCount
 
 
-				#LOG_TRACE('2====mark[%s] view[%s]~[%s]'% (self.mMarkList, self.mViewFirst, self.mViewEnd) )
+				#LOG_TRACE( '2====mark[%s] view[%s]~[%s]'% (self.mMarkList, self.mViewFirst, self.mViewEnd) )
 
 				self.ShowMoveToGUI( self.mViewFirst, self.mViewEnd )
 				self.UpdatePropertyGUI( E_XML_PROPERTY_MOVE, E_TAG_TRUE )
@@ -1831,8 +1808,8 @@ class ChannelListWindow( BaseWindow ) :
 
 				makeNumber = idxFirst + 1
 				makeFavidx = idxFirst + 1
-				#LOG_TRACE('insert makeFavidx[%s], makeNumber[%s]'% (makeFavidx, makeNumber) )
-				#LOG_TRACE('mark[%s]'% self.mMarkList )
+				#LOG_TRACE( 'insert makeFavidx[%s], makeNumber[%s]'% (makeFavidx, makeNumber) )
+				#LOG_TRACE( 'mark[%s]'% self.mMarkList )
 
 				idxCurrent = -1
 				ret = False
@@ -1846,14 +1823,14 @@ class ChannelListWindow( BaseWindow ) :
 
 					if ret and self.mRefreshCurrentIdx != -1 :
 						idxCurrent = self.mMarkList[self.mRefreshCurrentIdx]
-						#LOG_TRACE('move idx[%s] num[%s] name[%s]'% ( idxCurrent, self.mNewChannelList[idxCurrent].mNumber, self.mNewChannelList[idxCurrent].mName) )
+						#LOG_TRACE( 'move idx[%s] num[%s] name[%s]'% ( idxCurrent, self.mNewChannelList[idxCurrent].mNumber, self.mNewChannelList[idxCurrent].mName) )
 
 
-				#LOG_TRACE('move[%s]'% ret )
+				#LOG_TRACE( 'move[%s]'% ret )
 
 				if ret :
 					ret = self.mDataCache.Channel_Save( )
-					#LOG_TRACE('save[%s]'% ret )
+					#LOG_TRACE( 'save[%s]'% ret )
 
 				self.mMarkList = []
 				self.mMoveList = []
@@ -1863,25 +1840,24 @@ class ChannelListWindow( BaseWindow ) :
 
 				if idxCurrent != -1 :
 					self.mRefreshCurrentChannel = self.mChannelList[idxCurrent].mNumber
-					#LOG_TRACE('after idx[%s] num[%s] name[%s]'% ( idxCurrent, self.mChannelList[idxCurrent].mNumber, self.mChannelList[idxCurrent].mName) )
+					#LOG_TRACE( 'after idx[%s] num[%s] name[%s]'% ( idxCurrent, self.mChannelList[idxCurrent].mNumber, self.mChannelList[idxCurrent].mName) )
 
-				self.ShowMoveToGUI( 0, len(self.mChannelList), True )
-				#LOG_TRACE ('========= move exit ===mark[%s] view[%s]~[%s]'% (self.mMarkList, self.mViewFirst, self.mViewEnd) )
+				self.ShowMoveToGUI( 0, len( self.mChannelList ), True )
+				#LOG_TRACE ( '========= move exit ===mark[%s] view[%s]~[%s]'% (self.mMarkList, self.mViewFirst, self.mViewEnd) )
 
 
 				self.mCtrlListCHList.setVisible( False )
 
 				self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mViewEnd - 1, E_TAG_SET_SELECT_POSITION )
 				self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, idxFirst, E_TAG_SET_SELECT_POSITION )
-				time.sleep(0.15)
+				time.sleep( 0.15 )
 				self.mCtrlListCHList.setVisible( True )
 
 			except Exception, e:
 				LOG_TRACE( 'Error except[%s]'% e )
 
-
 			self.CloseBusyDialog( )
-			#LOG_TRACE ('========= move End ===')
+			#LOG_TRACE ( '========= move End ===' )
 
 		elif aMode == FLAG_OPT_MOVE_EXIT :
 			self.mMoveFlag = False
@@ -1889,7 +1865,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdatePropertyGUI( E_XML_PROPERTY_MOVE, E_TAG_FALSE )
 
 			self.mNewChannelList = self.mChannelList
-			self.ShowMoveToGUI( 0, len(self.mChannelList) )
+			self.ShowMoveToGUI( 0, len( self.mChannelList ) )
 			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mLastPos, E_TAG_SET_SELECT_POSITION )
 
 		elif aMode == FLAG_OPT_MOVE_UPDOWN :
@@ -1916,15 +1892,15 @@ class ChannelListWindow( BaseWindow ) :
 				moveidx = self.mMarkList[lastidx] + updown
 
 			# barrier blocking
-			if moveidx < 0 or moveidx > len(self.mNewChannelList) - 1:
-				LOG_TRACE('list limit, do not MOVE!! moveidx[%s]'% moveidx)
+			if moveidx < 0 or moveidx > len( self.mNewChannelList ) - 1 :
+				LOG_TRACE( 'list limit, do not MOVE!! moveidx[%s]'% moveidx)
 				return
 
 			#pop moveList
 			popidx = self.mMarkList[0]
 			for idx in self.mMoveList :
-				item = self.mNewChannelList.pop(popidx)
-				#LOG_TRACE('pop idx[%s] item[%s] len[%s]'% (popidx, item.mNumber, len(self.mNewChannelList)) )
+				item = self.mNewChannelList.pop( popidx )
+				#LOG_TRACE( 'pop idx[%s] item[%s] len[%s]'% (popidx, item.mNumber, len(self.mNewChannelList)) )
 
 
 			#update index in moveList
@@ -1940,20 +1916,20 @@ class ChannelListWindow( BaseWindow ) :
 				idx = lastidx - i
 				self.mNewChannelList.insert(insertPos, self.mMoveList[idx])
 
-			#LOG_TRACE('insert idx[%s] item[%s] len[%s]'% (insertPos, self.mNewChannelList[insertPos].mNumber, len(self.mNewChannelList)) )
+			#LOG_TRACE( 'insert idx[%s] item[%s] len[%s]'% (insertPos, self.mNewChannelList[insertPos].mNumber, len(self.mNewChannelList)) )
 
 			#show top ~ bottom
 			if self.mMarkList[0] < self.mViewFirst or self.mMarkList[lastidx] >= self.mViewEnd :
 				self.mViewFirst = self.mViewFirst + updown
 				self.mViewEnd   = self.mViewEnd   + updown
-				#LOG_TRACE('changed view item')
+				#LOG_TRACE( 'changed view item' )
 
 			bottom = len(self.mNewChannelList)
 			if self.mViewEnd > bottom :
 				self.mViewFirst = bottom - self.mItemCount
 				self.mViewEnd = bottom
 
-			#LOG_TRACE('view Top[%s]~Bot[%s] insertPos[%s]'% (self.mViewFirst, self.mViewEnd, insertPos) )
+			#LOG_TRACE( 'view Top[%s]~Bot[%s] insertPos[%s]'% (self.mViewFirst, self.mViewEnd, insertPos) )
 			self.ShowMoveToGUI( self.mViewFirst, self.mViewEnd )
 
 			#select item idx, print GUI of 'current / total'
@@ -1987,19 +1963,19 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def SetClearToMarkGUI( self ) :
-		if self.mMarkList == None or len(self.mMarkList) < 1 or \
-		   self.mChannelList == None or len(self.mChannelList) < 1 :
+		if self.mMarkList == None or len( self.mMarkList ) < 1 or \
+		   self.mChannelList == None or len( self.mChannelList ) < 1 :
 			return
 
 		for pos in self.mMarkList :
-			self.mCtrlListCHList.getListItem(pos).setProperty(E_XML_PROPERTY_MARK, E_TAG_FALSE)
+			self.mCtrlListCHList.getListItem( pos ).setProperty( E_XML_PROPERTY_MARK, E_TAG_FALSE )
 
 
 	def GetFavoriteGroup( self ) :
 		self.mListFavorite = self.mDataCache.Favorite_GetList( FLAG_ZAPPING_CHANGE, self.mChannelListServiceType )
 		self.mEditFavorite = []
 		if self.mListFavorite :
-			for item in self.mListFavorite:
+			for item in self.mListFavorite :
 				#copy to favoriteGroup
 				self.mEditFavorite.append( item.mGroupName )
 
@@ -2008,7 +1984,7 @@ class ChannelListWindow( BaseWindow ) :
 		allChannel = self.mDataCache.Channel_GetList( FLAG_ZAPPING_CHANGE, self.mChannelListServiceType, ElisEnum.E_MODE_ALL, self.mChannelListSortMode )
 		self.mEditChannelList = []
 		if allChannel :
-			for item in allChannel:
+			for item in allChannel :
 				#copy to ChannelList
 				label = '%04d %s'% ( item.mNumber, item.mName )
 				self.mEditChannelList.append( label )
@@ -2019,7 +1995,7 @@ class ChannelListWindow( BaseWindow ) :
 		ret = ''
 		numList = []
 		lastPos = self.mCtrlListCHList.getSelectedPosition( )
-		#LOG_TRACE('groupName[%s] lastPos[%s]'% ( aGroupName, lastPos) )
+		#LOG_TRACE( 'groupName[%s] lastPos[%s]'% ( aGroupName, lastPos) )
 
 		if self.mChannelList :
 			#1.no mark : set current position item
@@ -2037,7 +2013,7 @@ class ChannelListWindow( BaseWindow ) :
 					isRefreshCurrentChannel = True
 
 			if not numList or len(numList) < 1 :
-				LOG_TRACE('MarkList Fail!!!')
+				LOG_TRACE( 'MarkList Fail!!!' )
 				return
 
 
@@ -2060,25 +2036,25 @@ class ChannelListWindow( BaseWindow ) :
 					chNum = ElisEInteger( )
 					chNum.mParam = aNumber
 					numList.append( chNum )
-					#LOG_TRACE('add number[%s]'% aNumber )
+					#LOG_TRACE( 'add number[%s]'% aNumber )
 				ret = self.mDataCache.Favoritegroup_AddChannelByNumber( aGroupName, self.mChannelListServiceType, numList )
 			else :
 				ret = 'group None'
 
 		elif aContextAction == CONTEXT_ACTION_DELETE :
 			if aMode == FLAG_OPT_LIST :
-				ret = self.mDataCache.Channel_DeleteByNumber( int(self.mChannelListServiceType), numList )
+				ret = self.mDataCache.Channel_DeleteByNumber( int( self.mChannelListServiceType ), numList )
 
 				#reset Tune by Next Channel
 				if ret and isRefreshCurrentChannel :
-					afterCount = len(self.mChannelList) - len(numList)
+					afterCount = len( self.mChannelList ) - len( numList )
 					if afterCount < 1 :
 						self.mRefreshCurrentChannel = False
 					else :
 						if self.mCurrentChannel < afterCount :
 							self.mRefreshCurrentChannel = self.mCurrentChannel
 						elif self.mCurrentChannel == afterCount :
-							self.mRefreshCurrentChannel = int(self.mCurrentChannel) - 1
+							self.mRefreshCurrentChannel = int( self.mCurrentChannel ) - 1
 						else :
 							self.mRefreshCurrentChannel = afterCount
 
@@ -2103,29 +2079,29 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aContextAction == CONTEXT_ACTION_RENAME_FAV :
 			if aGroupName :
-				name = re.split(':', aGroupName)
+				name = re.split( ':', aGroupName)
 				ret = self.mDataCache.Favoritegroup_ChangeName( name[1], self.mChannelListServiceType, name[2] )
 				if ret :
 					self.GetFavoriteGroup( )
 
 				self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE, True )
-				#LOG_TRACE('pos main[%s] sub[%s]'% (self.mSelectMainSlidePosition, self.mSelectSubSlidePosition ) )
+				#LOG_TRACE( 'pos main[%s] sub[%s]'% (self.mSelectMainSlidePosition, self.mSelectSubSlidePosition ) )
 
 		elif aContextAction == CONTEXT_ACTION_DELETE_FAV :
 			if aGroupName :
 				ret = self.mDataCache.Favoritegroup_Remove( aGroupName, self.mChannelListServiceType )
 				if ret :
 					self.GetFavoriteGroup( )
-					LOG_TRACE('favRemove after favList ori[%s] edit[%s]'% (self.mListFavorite, self.mEditFavorite))
+					LOG_TRACE( 'favRemove after favList ori[%s] edit[%s]'% (self.mListFavorite, self.mEditFavorite))
 
 				self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE, True )
-				#LOG_TRACE('pos main[%s] sub[%s]'% (self.mSelectMainSlidePosition, self.mSelectSubSlidePosition ) )
+				#LOG_TRACE( 'pos main[%s] sub[%s]'% (self.mSelectMainSlidePosition, self.mSelectSubSlidePosition ) )
 
 		elif aContextAction == CONTEXT_ACTION_MENU_EDIT_MODE :
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			if isRunRec > 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG('Warning'), MR_LANG('Now recording...') )
+				dialog.SetDialogProperty( MR_LANG( 'Warning' ), MR_LANG( 'Now recording...' ) )
 	 			dialog.doModal( )
 
 	 		else :
@@ -2136,7 +2112,7 @@ class ChannelListWindow( BaseWindow ) :
 		elif aContextAction == CONTEXT_ACTION_MENU_DELETEALL :
 			if self.mFlag_DeleteAll :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG('Warning'), MR_LANG('Already Delete All') )
+				dialog.SetDialogProperty( MR_LANG( 'Warning' ), MR_LANG( 'Already Delete All' ) )
 	 			dialog.doModal( )
 
 	 		else :
@@ -2153,7 +2129,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			return
 
-		LOG_TRACE('contextAction ret[%s]'% ret )
+		LOG_TRACE( 'contextAction ret[%s]'% ret )
 
 		self.mMarkList = []
 		self.mListItems = None
@@ -2170,36 +2146,36 @@ class ChannelListWindow( BaseWindow ) :
 			return
 
 		self.GetFavoriteGroup( )
-		LOG_TRACE('favList ori[%s] edit[%s]'% (self.mListFavorite, self.mEditFavorite))
+		LOG_TRACE( 'favList ori[%s] edit[%s]'% (self.mListFavorite, self.mEditFavorite))
 
 		#default context item
 		context = []
 		if self.mChannelList :
-			context.append( ContextItem( MR_LANG('Lock'),   CONTEXT_ACTION_LOCK ) )
-			context.append( ContextItem( MR_LANG('Unlock'), CONTEXT_ACTION_UNLOCK ) )
-			context.append( ContextItem( MR_LANG('Skip'),   CONTEXT_ACTION_SKIP ) )
-			context.append( ContextItem( MR_LANG('Unskip'), CONTEXT_ACTION_UNSKIP  ) )
-			context.append( ContextItem( MR_LANG('Delete'), CONTEXT_ACTION_DELETE ) )
-			context.append( ContextItem( MR_LANG('Move'),   CONTEXT_ACTION_MOVE ) )
+			context.append( ContextItem( MR_LANG( 'Lock' ),   CONTEXT_ACTION_LOCK ) )
+			context.append( ContextItem( MR_LANG( 'Unlock' ), CONTEXT_ACTION_UNLOCK ) )
+			context.append( ContextItem( MR_LANG( 'Skip' ),   CONTEXT_ACTION_SKIP ) )
+			context.append( ContextItem( MR_LANG( 'Unskip' ), CONTEXT_ACTION_UNSKIP  ) )
+			context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
+			context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )
 
 
 		if aMode == FLAG_OPT_LIST :
 
 			if self.mChannelList :
 
-				if self.mEditFavorite:
-					context.append( ContextItem( '%s'% MR_LANG('Add to Fav. Group'), CONTEXT_ACTION_ADD_TO_FAV  ) )
-					context.append( ContextItem( '%s'% MR_LANG('Create New Group'), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
-					context.append( ContextItem( '%s'% MR_LANG('Rename Fav. Group'), CONTEXT_ACTION_RENAME_FAV ) )
-					context.append( ContextItem( '%s'% MR_LANG('Delete Fav. Group'), CONTEXT_ACTION_DELETE_FAV ) )
+				if self.mEditFavorite :
+					context.append( ContextItem( '%s'% MR_LANG( 'Add to Fav. Group' ), CONTEXT_ACTION_ADD_TO_FAV  ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Create New Group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Rename Fav. Group' ), CONTEXT_ACTION_RENAME_FAV ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Delete Fav. Group' ), CONTEXT_ACTION_DELETE_FAV ) )
 				else:
-					context.append( ContextItem( '%s'% MR_LANG('Create New Group'), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Create New Group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
 
 			else :
-				head =  MR_LANG('Infomation')
-				line1 = MR_LANG('Empty Channels')
+				head =  MR_LANG( 'Infomation' )
+				line1 = MR_LANG( 'Empty Channels' )
 
-				xbmcgui.Dialog( ).ok(head, line1)
+				xbmcgui.Dialog( ).ok( head, line1 )
 				return
 
 
@@ -2207,10 +2183,10 @@ class ChannelListWindow( BaseWindow ) :
 			if not self.mChannelList :
 				context = []
 
-			context.append( ContextItem( '%s'% MR_LANG('Add Channel Fav. Group'), CONTEXT_ACTION_ADD_TO_CHANNEL ) )
-			context.append( ContextItem( '%s'% MR_LANG('Rename Fav. Group'), CONTEXT_ACTION_RENAME_FAV ) )
+			context.append( ContextItem( '%s'% MR_LANG( 'Add Channel Fav. Group' ), CONTEXT_ACTION_ADD_TO_CHANNEL ) )
+			context.append( ContextItem( '%s'% MR_LANG( 'Rename Fav. Group' ), CONTEXT_ACTION_RENAME_FAV ) )
 
-		context.append( ContextItem( '%s'% MR_LANG('Save Exit'), CONTEXT_ACTION_SAVE_EXIT ) )
+		context.append( ContextItem( '%s'% MR_LANG( 'Save Exit' ), CONTEXT_ACTION_SAVE_EXIT ) )
 
 
 		GuiLock2( True )
@@ -2221,7 +2197,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		selectedAction = dialog.GetSelectedAction( )
 		if selectedAction == -1 :
-			#LOG_TRACE('CANCEL by context dialog')
+			#LOG_TRACE( 'CANCEL by context dialog' )
 			return
 
 		if ( (not self.mEditFavorite) and (selectedAction == CONTEXT_ACTION_ADD_TO_CHANNEL) ) or \
@@ -2242,11 +2218,11 @@ class ChannelListWindow( BaseWindow ) :
 
 		if selectedAction == CONTEXT_ACTION_ADD_TO_CHANNEL :
 			self.GetChannelListName( )
-			labelString = '%s'% MR_LANG('Add Channel Fav. Group')
-			grpIdx = xbmcgui.Dialog().select( labelString, self.mEditChannelList )
+			labelString = '%s'% MR_LANG( 'Add Channel Fav. Group' )
+			grpIdx = xbmcgui.Dialog( ).select( labelString, self.mEditChannelList )
 			groupName = self.mEditFavorite[self.mSelectSubSlidePosition]
 			if grpIdx == -1 :
-				#LOG_TRACE('CANCEL by context dialog')
+				#LOG_TRACE( 'CANCEL by context dialog' )
 				return
 
 			addNumber = grpIdx + 1
@@ -2257,26 +2233,26 @@ class ChannelListWindow( BaseWindow ) :
 		   selectedAction == CONTEXT_ACTION_RENAME_FAV or \
 		   selectedAction == CONTEXT_ACTION_DELETE_FAV :
  			title = ''
- 			if selectedAction == CONTEXT_ACTION_ADD_TO_FAV :   title = MR_LANG('Add to Fav. Group')
- 			elif selectedAction == CONTEXT_ACTION_RENAME_FAV : title = MR_LANG('Rename Fav. Group')
- 			elif selectedAction == CONTEXT_ACTION_DELETE_FAV : title = MR_LANG('Delete Fav. Group')
+ 			if selectedAction == CONTEXT_ACTION_ADD_TO_FAV :   title = MR_LANG( 'Add to Fav. Group' )
+ 			elif selectedAction == CONTEXT_ACTION_RENAME_FAV : title = MR_LANG( 'Rename Fav. Group' )
+ 			elif selectedAction == CONTEXT_ACTION_DELETE_FAV : title = MR_LANG( 'Delete Fav. Group' )
 
- 			grpIdx = xbmcgui.Dialog().select( title, self.mEditFavorite )
+ 			grpIdx = xbmcgui.Dialog( ).select( title, self.mEditFavorite )
  			groupName = self.mEditFavorite[grpIdx]
- 			#LOG_TRACE('---------------grpIdx[%s] fav[%s]'% (grpIdx,groupName) )
+ 			#LOG_TRACE( '---------------grpIdx[%s] fav[%s]'% (grpIdx,groupName) )
 
 			if grpIdx == -1 :
-				#LOG_TRACE('CANCEL by context dialog')
+				#LOG_TRACE( 'CANCEL by context dialog' )
 				return
 
 			if selectedAction == CONTEXT_ACTION_DELETE_FAV :
-				head = MR_LANG('Delete Fav. Group')
+				head = MR_LANG( 'Delete Fav. Group' )
 				line1 = '%s'% groupName
-				line2 = '%s'% MR_LANG('Do you want to delete?')
+				line2 = '%s'% MR_LANG( 'Do you want to delete?' )
 				posLine = abs( 100 - len(line1) )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( head, str('%s\n\n%s'% (line1.center(posLine), line2)) )
+				dialog.SetDialogProperty( head, str( '%s\n\n%s'% ( line1.center( posLine ), line2 ) ) )
 				dialog.doModal( )
 
 				answer = dialog.IsOK( )
@@ -2295,13 +2271,13 @@ class ChannelListWindow( BaseWindow ) :
 			if selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV :
 				#create
 				result = ''
-				label = MR_LANG('Create New Group')
+				label = MR_LANG( 'Create New Group' )
 
 			elif selectedAction == CONTEXT_ACTION_RENAME_FAV :
 				#rename
 				default = groupName
 				result = '%d'%grpIdx + ':' + groupName + ':'
-				label = MR_LANG('Rename Fav. Group')
+				label = MR_LANG( 'Rename Fav. Group' )
 
 			kb = xbmc.Keyboard( default, label, False )
 			kb.doModal( )
@@ -2311,7 +2287,7 @@ class ChannelListWindow( BaseWindow ) :
 			if name :
 				groupName = result + name
 
-		#LOG_TRACE('mode[%s] btn[%s] groupName[%s]'% (aMode, selectedAction, groupName) )
+		#LOG_TRACE( 'mode[%s] btn[%s] groupName[%s]'% (aMode, selectedAction, groupName) )
 		#--------------------------------------------------------------- context end
 
 		self.DoContextAdtion( aMode, selectedAction, groupName, addNumber )
@@ -2336,8 +2312,8 @@ class ChannelListWindow( BaseWindow ) :
 
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			context = []
-			context.append( ContextItem( MR_LANG('Edit Channel'), CONTEXT_ACTION_MENU_EDIT_MODE ) )
-			context.append( ContextItem( MR_LANG('Delete All Channel'), CONTEXT_ACTION_MENU_DELETEALL ) )
+			context.append( ContextItem( MR_LANG( 'Edit Channel' ), CONTEXT_ACTION_MENU_EDIT_MODE ) )
+			context.append( ContextItem( MR_LANG( 'Delete All Channel' ), CONTEXT_ACTION_MENU_DELETEALL ) )
 
 			GuiLock2( True )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
@@ -2347,7 +2323,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			selectedAction = dialog.GetSelectedAction( )
 			if selectedAction == -1 :
-				#LOG_TRACE('CANCEL by context dialog')
+				#LOG_TRACE( 'CANCEL by context dialog' )
 				return
 
 			self.DoContextAdtion( mode, selectedAction )
@@ -2364,7 +2340,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.StopAsyncEPG( )
 		self.SetVideoRestore( )
-		#WinMgr.GetInstance().CloseWindow( )
+		#WinMgr.GetInstance( ).CloseWindow( )
 
 
 	def RestartAsyncEPG( self ) :
@@ -2398,7 +2374,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def SetTuneByNumber( self, aKey ) :
-		if self.mChannelList == None:
+		if self.mChannelList == None :
 			return -1
 
 		if aKey == 0 :
@@ -2408,7 +2384,7 @@ class ChannelListWindow( BaseWindow ) :
 			return -1
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
-		dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, self.mChannelList )
+		dialog.SetDialogProperty( str( aKey ), E_INPUT_MAX, self.mChannelList )
 		dialog.doModal( )
 
 		isOK = dialog.IsOK( )
@@ -2416,10 +2392,10 @@ class ChannelListWindow( BaseWindow ) :
 			inputNumber = dialog.GetChannelLast( )
 			#LOG_TRACE( 'Jump chNum[%s] currentCh[%s]'% (inputNumber,self.mCurrentChannel) )
 
-			if int(self.mCurrentChannel) == int(inputNumber) :
+			if int( self.mCurrentChannel ) == int( inputNumber ) :
 				ch = None
 				ch = self.mDataCache.Channel_GetCurrent( )
-				LOG_TRACE('aJump num[%s] name[%s] current[%s]'% (ch.mNumber, ch.mName, self.mCurrentChannel) )
+				LOG_TRACE( 'aJump num[%s] name[%s] current[%s]'% ( ch.mNumber, ch.mName, self.mCurrentChannel ) )
 				if ch :
 					self.mNavChannel = ch
 					#self.mCurrentChannel = self.mNavChannel.mNumber
@@ -2427,7 +2403,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, pos, E_TAG_SET_SELECT_POSITION )
 					#time.sleep( 0.02 )
 
-					self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, str('%s'% (int(pos) + 1) ) )
+					self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, str( '%s'% (int( pos ) + 1 ) ) )
 					self.ResetLabel( )
 					self.UpdateChannelAndEPG( )
 
@@ -2441,10 +2417,10 @@ class ChannelListWindow( BaseWindow ) :
 		isOK = False
 		GuiLock2(True)
 		if runningCount < 2 :
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
-			dialog.doModal()
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+			dialog.doModal( )
 
-			isOK = dialog.IsOK()
+			isOK = dialog.IsOK( )
 			if isOK == E_DIALOG_STATE_YES :
 				isOK = True
 
@@ -2453,7 +2429,7 @@ class ChannelListWindow( BaseWindow ) :
 				RecordConflict( dialog.GetConflictTimer( ) )
 		else:
 			msg = 'Already [%s] recording(s) running' %runningCount
-			xbmcgui.Dialog().ok('Infomation', msg )
+			xbmcgui.Dialog( ).ok( 'Infomation', msg )
 		GuiLock2(False)
 
 		if isOK :
@@ -2466,11 +2442,11 @@ class ChannelListWindow( BaseWindow ) :
 		isOK = False
 		if isRunRec > 0 :
 			GuiLock2( True )
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
 			dialog.doModal( )
 			GuiLock2( False )
 
-			isOK = dialog.IsOK()
+			isOK = dialog.IsOK( )
 			if isOK == E_DIALOG_STATE_YES :
 				isOK = True
 
@@ -2478,11 +2454,10 @@ class ChannelListWindow( BaseWindow ) :
 			self.mDataCache.mCacheReload = True
 
 
-
 	def ShowRecordingInfo( self ) :
 		try:
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
-			#LOG_TRACE('isRunRecCount[%s]'% isRunRec)
+			#LOG_TRACE( 'isRunRecCount[%s]'% isRunRec)
 			self.mRecCount = isRunRec
 
 			if isRunRec == 1 :

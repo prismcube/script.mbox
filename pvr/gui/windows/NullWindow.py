@@ -179,8 +179,9 @@ class NullWindow( BaseWindow ) :
 				iCurrentCh = self.mDataCache.Channel_GetCurrent( )
 				if iCurrentCh.mNumber != int(inputNumber) :
 					jumpChannel = self.mDataCache.Channel_GetCurr( int(inputNumber) )
-					if jumpChannel :
+					if jumpChannel != None and jumpChannel.mError == 0 :
 						self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType )
+					#self.mDataCache.Channel_SetCurrent( inputNumber, self.mDataCache.Zappingmode_GetCurrent( ).mServiceType )
 
 		elif actionId == Action.ACTION_STOP :
 
