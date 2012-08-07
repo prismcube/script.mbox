@@ -4,6 +4,7 @@ from pvr.gui.GuiConfig import *
 
 gSettings = xbmcaddon.Addon(id="script.mbox")
 
+
 def GetSetting( aID ) :
 	global gSettings
 	return gSettings.getSetting( aID )
