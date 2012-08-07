@@ -1089,14 +1089,9 @@ class LivePlate( BaseWindow ) :
 
 		self.mFlag_OnEvent = False
 
-		GuiLock2(True)
 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
-		if self.mCurrentEPG:
-			dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, None, self.mCurrentEPG.mStartTime)
-		else :
-			dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, None)
+		dialog.SetDialogProperty( str(aKey), E_INPUT_MAX, None)
 		dialog.doModal()
-		GuiLock2(False)
 
 		self.mFlag_OnEvent = True
 
