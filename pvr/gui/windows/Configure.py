@@ -181,6 +181,7 @@ class Configure( SettingWindow ) :
 	 			return
 			if groupId == E_SpinEx05 :
 				self.mUseNetworkType = self.GetSelectedIndex( E_SpinEx05 )
+				#SetCurrentNetworkType( self.GetSelectedIndex( E_SpinEx05 ) )
 				self.SetListControl( )
 			elif groupId == E_Input06 :
 				context = []
