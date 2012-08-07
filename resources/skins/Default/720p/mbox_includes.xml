@@ -1,6 +1,5 @@
 <includes>
 	<include name="DefaultSettingHeaderWindow">
-		<onload>SetProperty(Signal,True)</onload>
 		<include>DefaultSettingsBackground</include>
 		<include>DefaultMiniTitle</include>
 		<include>DefaultCommonDateTime</include>

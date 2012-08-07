@@ -15,9 +15,9 @@ SYSTEM_COMMAND_GET_GATEWAY		=	"route -n | awk '/^0.0.0.0/ {print $2}'"
 COMMAND_COPY_INTERFACES_RESTORE	=	"cp " + FILE_NAME_INTERFACES_BAK + " " + FILE_NAME_INTERFACES
 COMMAND_COPY_INTERFACES			=	"cp " + FILE_NAME_TEMP_INTERFACES + " " + FILE_NAME_INTERFACES
 
-gWifiDevName		= 'wlan0'
 gEthernetDevName	= 'eth0'
 gNetworkType		= NETWORK_ETHERNET
+
 
 def SetCurrentNetworkType( aType ) :
 	global gNetworkType
@@ -135,6 +135,25 @@ def CheckIsIptype( aAddress ) :
 		return False
 
 
+def LoadNetworkType( ) :
+	try :
+		inputFile = open( FILE_NAME_INTERFACES, 'r' )
+		inputline = inputFile.readlines( )
+		inputFile.close( )
+		for line in inputline :
+			if line.startswith( 'auto ra0' ) or line.startswith( 'auto wlan0' ) :
+				SetCurrentNetworkType( NETWORK_WIRELESS )
+				break
+			elif line.startswith( 'auto eth0' ) :
+				SetCurrentNetworkType( NETWORK_ETHERNET )
+				break
+	except Exception, e :
+			if inputFile.closed == False :
+				inputFile.close( )
+			LOG_ERR( 'Error exception[%s]' % e )
+			SetCurrentNetworkType( NETWORK_ETHERNET )
+
+
 class IpParser :
 
 	def __init__( self ) :
@@ -153,7 +172,7 @@ class IpParser :
 		return None	
 
 
-	def LoadNetworkType( self ) :
+	def LoadEthernetType( self ) :
 		global gEthernetDevName
 		status = False
 		try :
@@ -175,7 +194,7 @@ class IpParser :
 					os.system( COMMAND_COPY_INTERFACES_RESTORE )
 
 			else :
-				LOG_ERR( 'LoadNetworkType Load Fail!!!' )
+				LOG_ERR( 'LoadEthernetType Load Fail!!!' )
 
 			inputFile.close( )
 			return status
@@ -251,14 +270,15 @@ class IpParser :
 
 	def SetNetwork( self, aType, aIpAddress=None, aMaskAddress=None, aGatewayAddress=None, aNameAddress=None ) :
 		global gEthernetDevName
-		global gWifiDevName
 		status = False
 		try :
 			inputFile = open( FILE_NAME_INTERFACES, 'r' )
 			outputFile = open( FILE_NAME_TEMP_INTERFACES, 'w+' )
 			inputline = inputFile.readlines( )
 			for line in inputline :
-				if line.startswith( 'iface ' + gEthernetDevName + ' inet' ) :
+				if line.startswith( 'auto ra0' ) or line.startswith( 'auto wlan0' ) or line.startswith( 'auto eth0' ) :
+					outputFile.writelines( 'auto ' + gEthernetDevName + '\n' )
+				elif line.startswith( 'iface ' + gEthernetDevName + ' inet' ) :
 					if aType == NET_DHCP :
 						outputFile.writelines( 'iface ' + gEthernetDevName + ' inet' + ' ' + 'dhcp\n' )
 					else :
@@ -276,7 +296,8 @@ class IpParser :
 
 			self.SetNameServer( aType, aNameAddress )
 			os.system( COMMAND_COPY_INTERFACES )
-			os.system( 'ifdown %s' % gWifiDevName )
+			wifi = WirelessParser( )
+			os.system( 'ifdown %s' %  wifi.GetWlandevice( ) )
 			os.system( 'ifdown %s' % gEthernetDevName )
 			
 			time.sleep( 1 )
@@ -333,13 +354,11 @@ class WirelessParser :
 		self.mEncriptType	= ENCRIPT_TYPE_WEP
 	
 
-	def getWlandevice( self ) :
-		global gWifiDevName	
+	def GetWlandevice( self ) :
 		for dev in GetInstalledAdapters( ) :
 			if dev.startswith( 'eth' ) or dev == 'lo':
 				continue
 			if GetAdapterState( dev ) == True :
-				gWifiDevName = dev
 				return dev
 		return None	
 
@@ -470,6 +489,7 @@ class WirelessParser :
 			words += "}\n"
 			openFile.write( words )
 			openFile.close( )
+			self.WriteInterfaces( )
 			return True
 
 		except Exception, e :
@@ -479,13 +499,36 @@ class WirelessParser :
 			return False
 
 
+	def WriteInterfaces( self ) :
+		try :
+			inputFile = open( FILE_NAME_INTERFACES, 'r' )
+			outputFile = open( FILE_NAME_TEMP_INTERFACES, 'w+' )
+			inputline = inputFile.readlines( )
+			for line in inputline :
+				if line.startswith( 'auto ra0' ) or line.startswith( 'auto wlan0' ) or line.startswith( 'auto eth0' ) :
+					outputFile.writelines( 'auto ' + self.GetWlandevice( ) + '\n')
+				else :
+					outputFile.writelines( line )
+
+			inputFile.close( )
+			outputFile.close( )
+			os.system( COMMAND_COPY_INTERFACES )
+
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			if inputFile.closed == False :
+				inputFile.close( )
+			if outputFile.closed == False :
+				outputFile.close( )
+
+
 	def ConnectWifi( self, aDev ) :
 		global gEthernetDevName	
 		try :
 			os.system( 'ifdown %s' % aDev )
-			time.sleep( 0.5 )
+			time.sleep( 1 )
 			os.system( 'ifdown %s' % gEthernetDevName )
-			time.sleep( 0.5 )
+			time.sleep( 1 )
 			os.system( 'ifup %s' % aDev )			
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]' % e )

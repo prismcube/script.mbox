@@ -174,17 +174,6 @@
 		</control>
 	</include>
 
-	<include name="DefaultEmptyScreen">
-		<control type="image" id="8899">
-			<posx>1300</posx>
-			<posy>0</posy>
-			<width>50</width>
-			<height>50</height>
-			<texture>video_pig_overlay.png</texture>
-			<visible>substring(Window.Property(Empty),Empty)</visible>
-		</control>
-	</include>
-
 	<include name="DefaultSettingWindowPigScreen">
 		<control type="image" id="8899">
 			<posx>878</posx>
@@ -196,6 +185,23 @@
 			<animation effect="zoom" start="0" end="100" center="auto" time="500" tween="quadratic" easing="out" condition="!Control.HasFocus(999)">Conditional</animation>
 			<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in" condition="Control.HasFocus(999)">Conditional</animation>
 			<texture>video_pig_overlay.png</texture>
+		</control>
+		<control type="group">
+			<include>Animation_CommonFade</include>
+			<animation effect="fade" start="100" end="0" time="300" condition="Control.HasFocus(999)" type="conditional">Conditional</animation>
+			<animation effect="fade" start="0" end="100" time="300" condition="!Control.HasFocus(999)" type="conditional">Conditional</animation>
+			<control type="label">
+				<posx>1095</posx>
+				<posy>230</posy>
+				<width>100</width>
+				<height>40</height>
+				<label>No Signal</label>
+				<font>Font_Reg20</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<visible>substring(Window.Property(Signal),False)</visible>
+			</control>
 		</control>
 	</include>
 
