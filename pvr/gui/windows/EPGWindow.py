@@ -965,13 +965,15 @@ class EPGWindow( BaseWindow ) :
 
 	def ShowSearchDialog( self ) :
 		try :
-			kb = xbmc.Keyboard( '', 'Search', False )
+#			kb = xbmc.Keyboard( '', 'Search', False )
+			kb = xbmc.Keyboard( '', 'Enter a filename you want to find', False )			
 			kb.doModal( )
 			if kb.isConfirmed( ) :
 				keyword = kb.getText( )
 				LOG_TRACE('keyword len=%d' %len( keyword ) )
 				if len( keyword ) < MININUM_KEYWORD_SIZE :
-					xbmcgui.Dialog( ).ok('Infomation', 'Input more than %d characters' %MININUM_KEYWORD_SIZE )
+#					xbmcgui.Dialog( ).ok('Infomation', 'Input more than %d characters' %MININUM_KEYWORD_SIZE )
+					xbmcgui.Dialog( ).ok('Unable to change the filename', 'At least %d characters are required' %MININUM_KEYWORD_SIZE )					
 					return
 					
 				searchList = []

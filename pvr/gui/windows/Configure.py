@@ -24,9 +24,9 @@ class Configure( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
  
-		leftGroupItems			= [ 'Language', 'Parental', 'Recording Option', 'Audio Setting', 'HDMI Setting', 'Network Setting', 'Time Setting', 'Format HDD', 'Factory Reset', 'Etc' ]
-		descriptionList			= [ 'DESC Language', 'DESC Parental', 'DESC Recording Option', 'DESC Audio Setting', 'DESC HDMI Setting', 'DESC Network Setting', 'DESC Time Setting', 'DESC Format HDD', 'DESC Factory Reset', 'DESC Etc' ]
-	
+		leftGroupItems			= [ 'Language', 'Parental Control', 'Recording Option', 'Audio Setting', 'HDMI Setting', 'Network Setting', 'Time Setting', 'Format HDD', 'Factory Reset', 'Etc' ]
+		descriptionList			= [ 'DESC Language', 'DESC Parental', 'DESC Recording Option', 'DESC Audio Setting', 'DESC HDMI Setting', 'DESC Network Setting', 'DESC Time Setting', 'DESC Format HDD', 'DESC Factory Reset', 'DESC Etc' ]	
+
 		self.mCtrlLeftGroup 	= None
 		self.mGroupItems 		= []
 		self.mLastFocused 		= E_SUBMENU_LIST_ID
@@ -86,7 +86,8 @@ class Configure( SettingWindow ) :
 		self.mCtrlLeftGroup = self.getControl( E_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
 
-		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Configure' )
+#		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Configure' )
+		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Configuration' )
 
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
@@ -185,8 +186,10 @@ class Configure( SettingWindow ) :
 				self.SetListControl( )
 			elif groupId == E_Input06 :
 				context = []
-				context.append( ContextItem( 'Internal Test', PING_TEST_INTERNAL ) )
-				context.append( ContextItem( 'External Test', PING_TEST_EXTERNAL ) )
+#				context.append( ContextItem( 'Internal Test', PING_TEST_INTERNAL ) )
+#				context.append( ContextItem( 'External Test', PING_TEST_EXTERNAL ) )
+				context.append( ContextItem( 'Internal Network Test', PING_TEST_INTERNAL ) )
+				context.append( ContextItem( 'External Network Test', PING_TEST_EXTERNAL ) )				
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 				dialog.SetProperty( context )
 				dialog.doModal( )
@@ -194,18 +197,24 @@ class Configure( SettingWindow ) :
 				if contextAction < 0 :
 					return
 				if contextAction == PING_TEST_INTERNAL :
-					self.ShowProgress( 'Now Test...', 10 )
+#					self.ShowProgress( 'Now Test...', 10 )
+					self.ShowProgress( 'Testing...', 10 )
 					time.sleep( 1 )
 					if PingTestInternal( ) == True :
-						state = 'Connected Default Rauter'
+#						state = 'Connected Default Rauter'
+						state = 'Connected to the default router'
 					else :
-						state = 'Disconnected Default Rauter'
+#						state = 'Disconnected Default Rauter'
+						state = 'Disconnected from the default router'
 				else :
-					addr = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, 'Address', '', 30 )
-					self.ShowProgress( 'Now Test...', 10 )
+#					addr = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, 'Address', '', 30 )
+					addr = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, 'Enter an IP address for external ping test', '', 30 )
+#					self.ShowProgress( 'Now Test...', 10 )
+					self.ShowProgress( 'Testing...', 10 )
 					time.sleep( 1 )
 					if PingTestExternal( addr ) == True :
-						state = 'External ping test success'
+#						state = 'External ping test success'
+						state = 'External ping test passed'
 					else :
 						state = 'External ping test failed'
 				try :		
@@ -214,7 +223,8 @@ class Configure( SettingWindow ) :
 					LOG_ERR( 'Error exception[%s]' % e )
 				time.sleep( 1.5 )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Complete', 'Network State : %s' % state )
+#				dialog.SetDialogProperty( 'Complete', 'Network State : %s' % state )
+				dialog.SetDialogProperty( 'Test Result', 'Network State : %s' % state )
 	 			dialog.doModal( )
 
 			elif self.mUseNetworkType == NETWORK_ETHERNET :
@@ -228,7 +238,8 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_PARENTAL and self.mVisibleParental == False and groupId == E_Input01 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( 'PIN Code 4 digit', '', 4, True )
+#			dialog.SetDialogProperty( 'PIN Code 4 digit', '', 4, True )
+			dialog.SetDialogProperty( 'Enter 4-digit PIN code', '', 4, True )			
  			dialog.doModal( )
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
  				tempval = dialog.GetString( )
@@ -239,20 +250,23 @@ class Configure( SettingWindow ) :
 					self.DisableControl( E_PARENTAL )
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( 'ERROR', 'ERROR PIN Code' )
+#					dialog.SetDialogProperty( 'ERROR', 'ERROR PIN Code' )
+					dialog.SetDialogProperty( 'Try again', 'Sorry, that PIN code does not match' )					
 		 			dialog.doModal( )
 			return
 
 		elif selectedId == E_PARENTAL and groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( 'New PIN Code', '', 4, True )
+#			dialog.SetDialogProperty( 'New PIN Code', '', 4, True )
+			dialog.SetDialogProperty( 'Enter new PIN code', '', 4, True )			
  			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				newpin = dialog.GetString( )
 				if newpin == '' or len( newpin ) != 4 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( 'ERROR', 'Input 4 digit' )
+#					dialog.SetDialogProperty( 'ERROR', 'Input 4 digit' )					
+					dialog.SetDialogProperty( 'Unable to change PIN code', '4-digit PIN code is required' )
 		 			dialog.doModal( )
 					return
 			else :
@@ -266,12 +280,14 @@ class Configure( SettingWindow ) :
  				confirm = dialog.GetString( )
  				if confirm == '' :
  					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( 'ERROR', 'New PIN codes do not match' )
+#					dialog.SetDialogProperty( 'ERROR', 'New PIN codes do not match' )
+					dialog.SetDialogProperty( 'Unable to change new PIN code', 'New PIN code does not match' )					
 		 			dialog.doModal( )
  					return
 				if int( newpin ) != int( confirm ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( 'ERROR', 'New PIN codes do not match' )
+#					dialog.SetDialogProperty( 'ERROR', 'New PIN codes do not match' )
+					dialog.SetDialogProperty( 'Unable to change new PIN code', 'New PIN code does not match' )
 		 			dialog.doModal( )
 					return
 			else :
@@ -279,7 +295,8 @@ class Configure( SettingWindow ) :
 				
 			ElisPropertyInt( 'PinCode', self.mCommander ).SetProp( int( newpin ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( 'Success', 'Pin codes change success' )
+#			dialog.SetDialogProperty( 'Success', 'Pin codes change success' )
+			dialog.SetDialogProperty( 'Success', 'Your PIN code has been changed successfully' )
  			dialog.doModal( )
 
  		elif selectedId == E_FACTORY_RESET and groupId == E_Input01 :
@@ -288,19 +305,22 @@ class Configure( SettingWindow ) :
  			resetSystem = ElisPropertyEnum( 'Reset Configure Setting', self.mCommander ).GetProp( )
  			if ( resetChannel | resetFavoriteAddons | resetSystem ) == 0 :
  				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'ERROR', 'No selected reset' )
+#				dialog.SetDialogProperty( 'ERROR', 'No selected reset' )
+				dialog.SetDialogProperty( 'Unable to start factory reset', 'Select reset option(s) before performing a factory reset' )				
 		 		dialog.doModal( )
 		 		return
 		 	else :
 		 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( 'Reset', 'Are you sure?' )
+#				dialog.SetDialogProperty( 'Reset', 'Are you sure?' )
+				dialog.SetDialogProperty( 'WARNING', 'THIS WILL RESTORE YOUR SETTINGS TO THE \n FACTORY SETTINGS. DO YOU WANT TO CONTINUE?' )				
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					ret1 = True
 					ret2 = True
 					ret3 = True
-					self.ShowProgress( 'Now Reset...', 30 )
+#					self.ShowProgress( 'Now Reset...', 30 )
+					self.ShowProgress( 'Now restoring...', 30 )
 				 	if resetChannel == 1 :
 				 		ret = self.mCommander.System_SetDefaultChannelList( )
 				 		self.mDataCache.LoadChannelList( )
@@ -454,17 +474,29 @@ class Configure( SettingWindow ) :
 
 
 		elif selectedId == E_NETWORK_SETTING :
-			self.AddUserEnumControl( E_SpinEx05, 'Select Network', USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType )
-			self.AddInputControl( E_Input06, ' - Network Test', '' )
+#			self.AddUserEnumControl( E_SpinEx05, 'Select Network', USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType )
+#			self.AddInputControl( E_Input06, ' - Network Test', '' )
+#			if self.mUseNetworkType == NETWORK_WIRELESS :
+#				self.AddInputControl( E_Input01, 'Search and Select AP', self.mCurrentSsid )
+#				self.AddUserEnumControl( E_SpinEx01, 'Use hidden ssid', USER_ENUM_LIST_ON_OFF, self.mUseHiddenId )
+#				self.AddInputControl( E_Input02, ' - hidden ssid', self.mHiddenSsid )
+#				self.AddUserEnumControl( E_SpinEx02, 'Use Encrypt', USER_ENUM_LIST_ON_OFF, self.mUseEncrypt )
+#				self.AddUserEnumControl( E_SpinEx03, ' - Encrypt Type', USER_ENUM_LIST_ENCRIPT_TYPE, self.mEncriptType )
+#				self.AddUserEnumControl( E_SpinEx04, 'Password Type', USER_ENUM_LIST_PASSWORD_TYPE, self.mPasswordType )
+#				self.AddInputControl( E_Input03, 'Password', StringToHidden( self.mPassWord ) )
+#				self.AddInputControl( E_Input04, 'Connect Current Ap', '' )
+
+			self.AddUserEnumControl( E_SpinEx05, 'Network Connection', USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType )
+			self.AddInputControl( E_Input06, ' - Connection Test', '' )
 			if self.mUseNetworkType == NETWORK_WIRELESS :
-				self.AddInputControl( E_Input01, 'Search and Select AP', self.mCurrentSsid )
-				self.AddUserEnumControl( E_SpinEx01, 'Use hidden ssid', USER_ENUM_LIST_ON_OFF, self.mUseHiddenId )
-				self.AddInputControl( E_Input02, ' - hidden ssid', self.mHiddenSsid )
-				self.AddUserEnumControl( E_SpinEx02, 'Use Encrypt', USER_ENUM_LIST_ON_OFF, self.mUseEncrypt )
-				self.AddUserEnumControl( E_SpinEx03, ' - Encrypt Type', USER_ENUM_LIST_ENCRIPT_TYPE, self.mEncriptType )
-				self.AddUserEnumControl( E_SpinEx04, 'Password Type', USER_ENUM_LIST_PASSWORD_TYPE, self.mPasswordType )
-				self.AddInputControl( E_Input03, 'Password', StringToHidden( self.mPassWord ) )
-				self.AddInputControl( E_Input04, 'Connect Current Ap', '' )
+				self.AddInputControl( E_Input01, 'Search AP', self.mCurrentSsid )
+				self.AddUserEnumControl( E_SpinEx01, 'Hidden SSID', USER_ENUM_LIST_ON_OFF, self.mUseHiddenId )
+				self.AddInputControl( E_Input02, ' - Set Hidden SSID', self.mHiddenSsid )
+				self.AddUserEnumControl( E_SpinEx02, 'Encryption', USER_ENUM_LIST_ON_OFF, self.mUseEncrypt )
+				self.AddUserEnumControl( E_SpinEx03, ' - Encryption Method', USER_ENUM_LIST_ENCRIPT_TYPE, self.mEncriptType )
+				self.AddUserEnumControl( E_SpinEx04, ' - Encryption Key Type', USER_ENUM_LIST_PASSWORD_TYPE, self.mPasswordType )
+				self.AddInputControl( E_Input03, ' - Set Encryption Key', StringToHidden( self.mPassWord ) )
+				self.AddInputControl( E_Input04, 'Connect to the current AP', '' )
 
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input06 ]
 				self.SetVisibleControls( visibleControlIds, True )
@@ -482,12 +514,14 @@ class Configure( SettingWindow ) :
 					self.ReLoadIp( )
 					self.mReLoadIp = False
 					
-				self.AddUserEnumControl( E_SpinEx01, 'Network Type', USER_ENUM_LIST_DHCP_STATIC, self.mTempNetworkType )
+#				self.AddUserEnumControl( E_SpinEx01, 'Network Type', USER_ENUM_LIST_DHCP_STATIC, self.mTempNetworkType )
+				self.AddUserEnumControl( E_SpinEx01, 'Assign IP Address', USER_ENUM_LIST_DHCP_STATIC, self.mTempNetworkType )
 				self.AddInputControl( E_Input01, 'IP Address', self.mTempIpAddr )
 				self.AddInputControl( E_Input02, 'Subnet Mask', self.mTempSubNet )
 				self.AddInputControl( E_Input03, 'Gateway', self.mTempGateway )
 				self.AddInputControl( E_Input04, 'DNS', self.mTempDns )
-				self.AddInputControl( E_Input05, 'Apply', '' )
+#				self.AddInputControl( E_Input05, 'Apply', '' )
+				self.AddInputControl( E_Input05, 'Apply Now', '' )
 
 				visibleControlIds = [ E_SpinEx01, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
 				self.SetVisibleControls( visibleControlIds, True )
@@ -525,7 +559,8 @@ class Configure( SettingWindow ) :
 			self.AddInputControl( E_Input03, 'Time', self.mTime )
 			self.AddEnumControl( E_SpinEx02, 'Local Time Offset' )
 			self.AddEnumControl( E_SpinEx03, 'Summer Time' )
-			self.AddInputControl( E_Input04, 'Apply', '' )
+#			self.AddInputControl( E_Input04, 'Apply', '' )
+			self.AddInputControl( E_Input04, 'Apply Now', '' )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03, E_Input04 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -542,7 +577,8 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FORMAT_HDD :	
 			self.AddEnumControl( E_SpinEx01, 'Disk Format Type' )
-			self.AddInputControl( E_Input01, 'Start HDD Format', '' )
+#			self.AddInputControl( E_Input01, 'Start HDD Format', '' )
+			self.AddInputControl( E_Input01, 'Format HDD Now', '' )
 			
 			visibleControlIds = [ E_SpinEx01, E_Input01 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -560,8 +596,10 @@ class Configure( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx01, 'Reset Channel List' )
 			self.AddEnumControl( E_SpinEx02, 'Reset Favorite Add-ons' )
 			self.AddEnumControl( E_SpinEx03, 'Reset Configure Setting' )
+#			self.AddEnumControl( E_SpinEx03, 'Reset Configuration Setting' )
 		
-			self.AddInputControl( E_Input01, 'Start Reset', '' )
+#			self.AddInputControl( E_Input01, 'Start Reset', '' )
+			self.AddInputControl( E_Input01, 'Factory Reset Now', '' )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -761,10 +799,12 @@ class Configure( SettingWindow ) :
 
 	def ShowIpInputDialog( self, aIpAddr ) :
 		if aIpAddr == 'None' :
-			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Input Ip', '0.0.0.0' )
+#			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Input Ip', '0.0.0.0' )
+			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Enter IP address', '0.0.0.0' )			
 		else :
-			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Input Ip', aIpAddr )
-
+#			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Input Ip', aIpAddr )
+			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, 'Enter IP address', aIpAddr )
+			
 		return aIpAddr
 
 
@@ -787,7 +827,8 @@ class Configure( SettingWindow ) :
 			channelNameList = []
 			for channel in channelList :
 				channelNameList.append( channel.mName )
- 			ret = dialog.select( 'Select Channel', channelNameList )
+# 			ret = dialog.select( 'Select Channel', channelNameList )
+ 			ret = dialog.select( 'Select a channel you want to set your time by', channelNameList )
 
 			if ret >= 0 :
 				self.mSetupChannel = channelList[ ret ]
@@ -902,11 +943,13 @@ class Configure( SettingWindow ) :
 	 				self.SetControlLabel2String( E_Input01, self.mCurrentSsid )
 
 	 	elif aControlId == E_Input02 :
-			self.mHiddenSsid = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, 'SSID', self.mHiddenSsid, 30 )
+#			self.mHiddenSsid = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, 'SSID', self.mHiddenSsid, 30 )
+			self.mHiddenSsid = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, 'Enter your SSID', self.mHiddenSsid, 30 )			
 			self.SetControlLabel2String( E_Input02, self.mHiddenSsid )
 
 	 	elif aControlId == E_Input03 :
-	 		self.mPassWord = InputKeyboard( E_INPUT_KEYBOARD_TYPE_HIDE, 'Password', self.mPassWord, 30 )
+# 			self.mPassWord = InputKeyboard( E_INPUT_KEYBOARD_TYPE_HIDE, 'Password', self.mPassWord, 30 )
+	 		self.mPassWord = InputKeyboard( E_INPUT_KEYBOARD_TYPE_HIDE, 'Enter encryption key', self.mPassWord, 30 )	 		
 			self.SetControlLabel2String( E_Input03, StringToHidden( self.mPassWord ) )
 
 	 	elif aControlId == E_Input04 :
