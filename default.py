@@ -1,6 +1,5 @@
 from elementtree import ElementTree
 
-
 if __name__ == '__main__':
 	import os, sys, xbmcaddon, shutil
 	scriptDir = xbmcaddon.Addon('script.mbox').getAddonInfo('path')
