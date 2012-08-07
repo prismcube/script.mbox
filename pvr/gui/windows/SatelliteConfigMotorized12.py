@@ -71,7 +71,8 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 		if groupId == E_Input01 :
 			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog()
- 			ret = dialog.select('Select satellite', satelliteList )
+ #			ret = dialog.select('Select satellite', satelliteList )
+ 			ret = dialog.select('Select a satellite you want to edit', satelliteList )
 
 			if ret >= 0 :
 	 			satellite = self.mDataCache.GetSatelliteByIndex( ret )
@@ -135,14 +136,15 @@ class SatelliteConfigMotorized12( SettingWindow ) :
  		elif groupId == E_Input03 :
  			if self.mTransponderList :
 	 			dialog = xbmcgui.Dialog( )
-	 			tempIndex = dialog.select( 'Select Transponder', self.mTransponderList )
+#	 			tempIndex = dialog.select( 'Select Transponder', self.mTransponderList )
+	 			tempIndex = dialog.select( 'Select a transponder you want to use', self.mTransponderList )
 	 			if tempIndex != -1 :
 	 				self.mSelectedTransponderIndex = tempIndex
 	 				self.InitConfig( )
 	 			else :
 	 				return
 
-		# Move Antenna
+		# Rotate Satellite Dish
 		elif groupId == E_Input04 :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_MOVE_ANTENNA )
  			dialog.doModal( )
@@ -155,7 +157,8 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 		# Antenna Action
 		elif groupId == E_Input05 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( 'Configure', 'Are Yor Sure?' )
+#			dialog.SetDialogProperty( 'Configure', 'Are Yor Sure?' )
+			dialog.SetDialogProperty( 'Position Limit', 'Are you sure to apply the position limit you have just set' )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -219,9 +222,12 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 			self.AddInputControl( E_Input03, 'Transponder', 'None' )			
 			self.mHasTransponder = False
 
-		self.AddInputControl( E_Input04, 'Move Antenna', '' )
-		self.AddUserEnumControl( E_SpinEx04, 'Action', E_LIST_MOTORIZE_ACTION, 0 )
-		self.AddInputControl( E_Input05, ' - Action Start', '' )
+#		self.AddInputControl( E_Input04, 'Move Antenna', '' )
+		self.AddInputControl( E_Input04, 'Rotate Satellite Dish', '' )
+#		self.AddUserEnumControl( E_SpinEx04, 'Action', E_LIST_MOTORIZE_ACTION, 0 )
+		self.AddUserEnumControl( E_SpinEx04, 'Position Limit', E_LIST_MOTORIZE_ACTION, 0 )
+#		self.AddInputControl( E_Input05, ' - Action Start', '' )
+		self.AddInputControl( E_Input05, ' - Apply Now', '' )
 		self.AddInputControl( E_Input06, 'Store Position and Exit', '' )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :

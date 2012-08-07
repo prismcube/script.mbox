@@ -105,7 +105,8 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 				return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( 'Configure', 'Save Configuration?' )
+#		dialog.SetDialogProperty( 'Configure', 'Save Configuration?' )
+		dialog.SetDialogProperty( 'Save configuration', 'Do you want to save changes?' )	
 		dialog.doModal( )
 	
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -126,8 +127,10 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 		tunertype = self.mTunerMgr.GetCurrentTunerConnectionType( )
 		if tunertype == E_TUNER_SEPARATED :
 			self.AddEnumControl( E_SpinEx01, 'MDU' )
-			self.AddInputControl( E_Input01, 'Tuner %d PIN-Code' % ( self.mTunerIndex + 1 ), '%03d' % self.mTempTunerPin[self.mTunerIndex] )
-			self.AddUserEnumControl( E_SpinEx02, 'Tuner %d' % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[self.mTunerIndex] )
+#			self.AddInputControl( E_Input01, 'Tuner %d PIN-Code' % ( self.mTunerIndex + 1 ), '%03d' % self.mTempTunerPin[self.mTunerIndex] )
+			self.AddInputControl( E_Input01, 'Tuner %d PIN Code' % ( self.mTunerIndex + 1 ), '%03d' % self.mTempTunerPin[self.mTunerIndex] )
+#			self.AddUserEnumControl( E_SpinEx02, 'Tuner %d' % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[self.mTunerIndex] )
+			self.AddUserEnumControl( E_SpinEx02, 'Tuner %d SCR' % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[self.mTunerIndex] )
 			self.AddUserEnumControl( E_SpinEx03, 'Tuner %d Frequency' % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[self.mTunerIndex] ) )
 
 			disableControls = [ E_Input02, E_SpinEx04, E_SpinEx05 ]
@@ -136,12 +139,16 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 
 		elif tunertype == E_TUNER_LOOPTHROUGH :
 			self.AddEnumControl( E_SpinEx01, 'MDU' )
-			self.AddInputControl( E_Input01, 'Tuner 1 PIN-Code', '%03d' % self.mTempTunerPin[0] )
-			self.AddUserEnumControl( E_SpinEx02, 'Tuner 1', E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[0] )
+#			self.AddInputControl( E_Input01, 'Tuner 1 PIN-Code', '%03d' % self.mTempTunerPin[0] )
+			self.AddInputControl( E_Input01, 'Tuner 1 PIN Code', '%03d' % self.mTempTunerPin[0] )
+#			self.AddUserEnumControl( E_SpinEx02, 'Tuner 1', E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[0] )
+			self.AddUserEnumControl( E_SpinEx02, 'Tuner 1 SCR', E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[0] )
 			self.AddUserEnumControl( E_SpinEx03, 'Tuner 1 Frequency', E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[0] ) )
 
-			self.AddInputControl( E_Input02, 'Tuner 2 PIN-Code', '%03d' % self.mTempTunerPin[1] )
-			self.AddUserEnumControl( E_SpinEx04, 'Tuner 2', E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[1] )
+#			self.AddInputControl( E_Input02, 'Tuner 2 PIN-Code', '%03d' % self.mTempTunerPin[1] )
+			self.AddInputControl( E_Input02, 'Tuner 2 PIN Code', '%03d' % self.mTempTunerPin[1] )			
+#			self.AddUserEnumControl( E_SpinEx04, 'Tuner 2', E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[1] )
+			self.AddUserEnumControl( E_SpinEx04, 'Tuner 2 SCR', E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[1] )			
 			self.AddUserEnumControl( E_SpinEx05, 'Tuner 2 Frequency', E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[1] ) )
 
 			disableControls = [ E_Input02, E_SpinEx04, E_SpinEx05 ]

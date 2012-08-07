@@ -10,7 +10,8 @@ class SystemInfo( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
  
-		leftGroupItems			= [ 'STB Infomation' ]
+#		leftGroupItems			= [ 'STB Infomation' ]
+		leftGroupItems			= [ 'Version' ]
 	
 		self.mCtrlLeftGroup 			= None
 		self.mCtrlRecordFreeSize		= None
@@ -39,7 +40,8 @@ class SystemInfo( SettingWindow ) :
 		self.mCtrlRecordFreeSize = self.getControl( LABEL_ID_RECORD_FREE_SIZE )
 		self.mCtrlHDDTemperature = self.getControl( LABEL_ID_HDD_TEMEPERATURE )
 
-		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'System Information' )
+#		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'System Information' )
+		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'STB Information' )
 
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
