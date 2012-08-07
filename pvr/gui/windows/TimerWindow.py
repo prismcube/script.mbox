@@ -432,7 +432,7 @@ class TimerWindow(BaseWindow):
 	
 			if timerId > 0 :		
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( 'Confirm', 'Do you want to delete timer?' )
+				dialog.SetDialogProperty( 'Confirm', 'Do you want to delete this timer?' )
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -447,7 +447,7 @@ class TimerWindow(BaseWindow):
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( 'Confirm', 'Do you want to delete all timers?' )
+		dialog.SetDialogProperty( 'Confirm', 'Do you really want to delete all your timers?' )
 		dialog.doModal( )
 
 		self.OpenBusyDialog( )

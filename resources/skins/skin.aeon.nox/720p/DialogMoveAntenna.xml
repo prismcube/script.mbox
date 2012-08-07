@@ -25,7 +25,8 @@
 				<align>left</align>
 				<font>Font_Info</font>
 				<scroll>true</scroll>
-				<label>Move Antenna</label>
+				<!--label>Move Antenna</label-->
+				<label>Rotate Satellite Dish</label>
 			</control>
 				<control type="label" id="200">
 				<posy>26</posy>
