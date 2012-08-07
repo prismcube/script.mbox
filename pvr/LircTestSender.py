@@ -14,6 +14,7 @@ PORT = 56892
 #HOST = '192.168.101.206'
 #HOST = '127.0.0.1'
 
+
 class KeyCode( object ):
 	KEY_FROM_NONE = 0
 	KEY_FROM_RCU = 1
