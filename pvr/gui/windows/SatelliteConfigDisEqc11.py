@@ -112,7 +112,7 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 		# LNB Frequency - Inputcontrol
  		elif groupId == E_Input02 :
 
- 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_LNB_FREQUENCY )
+ 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_LNB_FREQUENCY )
  			dialog.SetFrequency( self.mCurrentSatellite.mLowLNB, self.mCurrentSatellite.mHighLNB, self.mCurrentSatellite.mLNBThreshold )
  			dialog.doModal( )
 
@@ -177,7 +177,7 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 	def InitConfig( self ) :
 		self.ResetAllControl( )
 
-		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ) , self.mDataCache.GetFormattedSatelliteName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ) )
+		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mDataCache.GetFormattedSatelliteName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ) )
 		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'LNB Type' ), E_LIST_LNB_TYPE, self.mSelectedIndexLnbType )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :

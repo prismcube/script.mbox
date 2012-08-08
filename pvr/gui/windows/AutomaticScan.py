@@ -33,7 +33,7 @@ class AutomaticScan( SettingWindow ) :
 			hideControlIds = [ E_Input01, E_Input02, E_SpinEx01, E_SpinEx02 ]
 			self.SetVisibleControls( hideControlIds, False )
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Has no configured satellite' )
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( 'ERROR', 'Has No Configurd Satellite' )
  			dialog.doModal( )
 			WinMgr.GetInstance( ).CloseWindow( )
@@ -83,7 +83,7 @@ class AutomaticScan( SettingWindow ) :
 		# Start Search
 		if groupId == E_Input02 :
 			if self.mSatelliteIndex == 0 :
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 				dialog.SetConfiguredSatellite( self.mConfiguredSatelliteList )
 				dialog.doModal( )
 
@@ -92,7 +92,7 @@ class AutomaticScan( SettingWindow ) :
 				config = self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ]
 
 				configuredSatelliteList.append( config )
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 				dialog.SetConfiguredSatellite( configuredSatelliteList )				
 				dialog.doModal( )
 					

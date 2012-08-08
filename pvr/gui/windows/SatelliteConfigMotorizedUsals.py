@@ -71,7 +71,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 
 		# Set Longitude
 		if groupId == E_Input01 :
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
  			dialog.SetDialogProperty( MR_LANG( 'Longitude degree' ), self.mLongitude )
  			dialog.doModal( )
 
@@ -81,7 +81,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 
 		# Set Latitude
 		elif groupId == E_Input02 :
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
  			dialog.SetDialogProperty( MR_LANG( 'Latitude degree' ), self.mLatitude )
  			dialog.doModal( )
 

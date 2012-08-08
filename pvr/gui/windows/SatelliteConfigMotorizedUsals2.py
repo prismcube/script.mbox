@@ -111,7 +111,7 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 
 		# LNB Frequency - Inputcontrol
  		elif groupId == E_Input02 :
- 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_LNB_FREQUENCY )
+ 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_LNB_FREQUENCY )
  			dialog.SetFrequency( self.mCurrentSatellite.mLowLNB, self.mCurrentSatellite.mHighLNB, self.mCurrentSatellite.mLNBThreshold )
  			dialog.doModal( )
 

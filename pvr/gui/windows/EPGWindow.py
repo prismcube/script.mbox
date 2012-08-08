@@ -845,7 +845,7 @@ class EPGWindow( BaseWindow ) :
 				return
 		"""
 
-		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
 
 
 		if aTimer :
@@ -1000,7 +1000,7 @@ class EPGWindow( BaseWindow ) :
 		epg = self.GetSelectedEPG( )
 
 		if epg :
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_EXTEND_EPG )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_EXTEND_EPG )
 			dialog.SetEPG( epg )
 			dialog.doModal( )
 
@@ -1331,7 +1331,7 @@ class EPGWindow( BaseWindow ) :
 		self.mEventBus.Deregister( self )
 		
 		GuiLock2( True )
-		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
 		dialog.SetTitleLabel( MR_LANG( 'Input pincode' ) )
 		dialog.doModal( )
 		GuiLock2( False )

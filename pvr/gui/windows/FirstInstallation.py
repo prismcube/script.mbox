@@ -345,7 +345,7 @@ class FirstInstallation( SettingWindow ) :
 			if self.mIsChannelSearch == True :
 				if self.mConfiguredSatelliteList :
 					if self.mSatelliteIndex == 0 :
-						dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 						dialog.SetConfiguredSatellite( self.mConfiguredSatelliteList )
 						dialog.doModal( )
 					else :
@@ -353,11 +353,11 @@ class FirstInstallation( SettingWindow ) :
 						config = self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ]
 
 						configuredSatelliteList.append( config )
-						dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 						dialog.SetConfiguredSatellite( configuredSatelliteList )				
 						dialog.doModal( )
 				else :
-					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Has No Configurd Satellite' ) )
 		 			dialog.doModal( )
 
@@ -420,7 +420,7 @@ class FirstInstallation( SettingWindow ) :
 				self.mDataCache.Channel_SetCurrent( self.mSetupChannel.mNumber, self.mSetupChannel.mServiceType ) # Todo After : using ServiceType to different way
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
 
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
 				dialog.SetDialogProperty( 10, MR_LANG( 'Setting Time...' ), ElisEventTimeReceived.getName( ) )
 				dialog.doModal( )
 

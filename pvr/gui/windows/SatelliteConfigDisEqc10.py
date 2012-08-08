@@ -171,7 +171,7 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 	def InitConfig( self ) :
 		self.ResetAllControl( )
 
-		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ) , self.mDataCache.GetFormattedSatelliteName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ) )
+		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mDataCache.GetFormattedSatelliteName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ) )
 		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'LNB Type' ), E_LIST_LNB_TYPE, self.mSelectedIndexLnbType )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :

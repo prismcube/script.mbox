@@ -42,7 +42,7 @@ class AntennaSetup( SettingWindow ) :
 		self.AddInputControl( E_Input01, MR_LANG( ' - Tuner 1 Configuration' ), '', MR_LANG( 'You can add, delete or setup satellite(s) here' ) )
 		self.AddEnumControl( E_SpinEx04, 'Tuner2 Type', None, MR_LANG( 'Select a digital control method for Tuner 2' ) )
 		self.AddInputControl( E_Input02, MR_LANG( ' - Tuner 2 Configuration' ), '', MR_LANG( 'You can add, delete or setup satellite(s) here' ) )
-		if ConfigMgr.GetInstance().GetFristInstallation( ) == True :
+		if ConfigMgr.GetInstance( ).GetFristInstallation( ) == True :
 			self.AddPrevNextButton( MR_LANG( 'Go to Next' ), MR_LANG( 'Go to Back' ) )
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( MR_LANG( 'Next' ) )
 		self.setVisibleButton( )
