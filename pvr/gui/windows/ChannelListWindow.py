@@ -386,7 +386,8 @@ class ChannelListWindow( BaseWindow ) :
 		self.mChannelListHash = {}
 		if self.mChannelList and len( self.mChannelList ) > 0 :
 			for i in range( len( self.mChannelList ) ) :
-				self.mChannelListHash[i] = self.mChannelList[i]
+				chNumber = self.mChannelList[i].mNumber
+				self.mChannelListHash[chNumber] = self.mChannelList[i]
 
 		#LOG_TRACE( '-------------------hash len[%s]'% len(self.mChannelListHash) )
 
@@ -672,7 +673,9 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, chindex, E_TAG_SET_SELECT_POSITION )
 			#time.sleep( 0.02 )
 
-			iChannel = self.mChannelList[int(aJumpNumber)-1]
+			iChannel = self.mChannelListHash.get( int(aJumpNumber), None ) 
+			if iChannel == None :
+				return
 			LOG_TRACE( 'JumpChannel: num[%s] Name[%s] type[%s] aNum[%s]'% (iChannel.mNumber, iChannel.mName, iChannel.mServiceType, aJumpNumber) )
 
 		else:
@@ -1464,7 +1467,7 @@ class ChannelListWindow( BaseWindow ) :
 
 					#for iChannel in self.mChannelList:
 					#	if iChannel.mNumber == chNumber :
-					iChannel = self.mChannelListHash.get( idx )
+					iChannel = self.mChannelListHash.get( chNumber )
 					if iChannel and iChannel.mNumber == chNumber :
 						self.mNavChannel = None
 						self.mNavChannel = iChannel
@@ -2384,7 +2387,7 @@ class ChannelListWindow( BaseWindow ) :
 			return -1
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
-		dialog.SetDialogProperty( str( aKey ), E_INPUT_MAX, self.mChannelList )
+		dialog.SetDialogProperty( str( aKey ), E_INPUT_MAX, self.mChannelListHash, True )
 		dialog.doModal( )
 
 		isOK = dialog.IsOK( )
