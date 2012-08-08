@@ -16,11 +16,9 @@ class TunerConfiguration( SettingWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )	
-		headerLabel = 'Tuner %d Configuration' % ( self.tunerIndex + 1 )
+		headerLabel = MR_LANG( 'Tuner %d Configuration : %s' ) % ( self.tunerIndex + 1, self.mTunerMgr.GetCurrentTunerTypeString( ) )
 		self.SetSettingWindowLabel( headerLabel )
 		self.LoadNoSignalState( )
-		
-		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Tuner %d Configuration : %s' % ( self.tunerIndex + 1, self.mTunerMgr.GetCurrentTunerTypeString( ) ) )
 		self.LoadConfigedSatellite( )
 
 
@@ -56,14 +54,12 @@ class TunerConfiguration( SettingWindow ) :
 			if self.mConfiguredCount == position :
 				if self.mTunerMgr.GetCurrentTunerType( ) == E_DISEQC_1_0 and self.mConfiguredCount > 3 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-#					dialog.SetDialogProperty( 'ERROR', 'Already 4 Satellite Configured' )
-					dialog.SetDialogProperty( 'Unable to add more satellite', 'You can have only 4 satellites in DiSEqC 1.0' )
+					dialog.SetDialogProperty(  MR_LANG( 'Unable to add more satellite' ),  MR_LANG( 'You can have only 4 satellites in DiSEqC 1.0' ) )
 		 			dialog.doModal( )
 				else :
 					dialog = xbmcgui.Dialog( )
 					satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
-#	 				ret = dialog.select( 'Select satellite', satelliteList )
-	 				ret = dialog.select( 'Select satellite you want to add', satelliteList )
+	 				ret = dialog.select(  MR_LANG( 'Select satellite you want to add' ), satelliteList )
 
 		 			if ret >= 0 :
 		 				self.OpenBusyDialog( )
@@ -73,18 +69,19 @@ class TunerConfiguration( SettingWindow ) :
 	 		elif self.mConfiguredCount + 1 == position :
 	 			if self.mConfiguredCount <= 0 :
 	 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-#					dialog.SetDialogProperty( 'ERROR', 'Empty Configured Satellite' )
-					dialog.SetDialogProperty( 'Unable to remove satellite', "There is no satellite left in the list" )
+					dialog.SetDialogProperty(  MR_LANG( 'Unable to remove satellite' ),  MR_LANG( 'here is no satellite left in the list' ) )
 		 			dialog.doModal( )
-	 				return
 	 			else :
 					dialog = xbmcgui.Dialog( )
-		 			ret = dialog.select( 'Select satellite you want to remove', self.mListItems[ 0 : self.mConfiguredCount ] )
+					satelliteList = []
+					for i in range( len( self.mListItems ) ) :
+						satelliteList.append( self.mListItems[i].getLabel( ) )
+						
+		 			ret = dialog.select(  MR_LANG( 'Select satellite you want to remove' ), satelliteList[ 0 : self.mConfiguredCount ] )
  
 		 			if ret >= 0 :
 		 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-#						dialog.SetDialogProperty( 'Configure', 'Delete Satellite : %s' % self.mListItems[ ret ] )
-						dialog.SetDialogProperty( 'Delete satellite', 'Is it ok to remove %s from the list' % self.mListItems[ ret ] )						
+						dialog.SetDialogProperty(  MR_LANG( 'Delete satellite' ),  MR_LANG( 'Is it ok to remove %s from the list' ) % satelliteList[ ret ] )						
 						dialog.doModal( )
 
 						if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -128,10 +125,11 @@ class TunerConfiguration( SettingWindow ) :
 		for config in configuredList :
 			if config.mIsConfigUsed == 1 :
 				self.mConfiguredCount = self.mConfiguredCount + 1
-				self.mListItems.append( '%s' % self.mDataCache.GetFormattedSatelliteName( config.mSatelliteLongitude, config.mBandType ) )
+				satelliteName = self.mDataCache.GetFormattedSatelliteName( config.mSatelliteLongitude, config.mBandType )
+				self.mListItems.append( xbmcgui.ListItem( '%s' % satelliteName, MR_LANG( 'Go To Configure Satellte : %s' ) % satelliteName ) )
 
-		self.mListItems.append( 'Add Satellite' )
-		self.mListItems.append( 'Delete Satellite' )
+		self.mListItems.append( xbmcgui.ListItem( MR_LANG( 'Add Satellite' ), MR_LANG( 'Add New Satellite' ) ) )
+		self.mListItems.append( xbmcgui.ListItem( MR_LANG( 'Delete Satellite' ), MR_LANG( 'Delete Satellite' ) ) )
 		self.getControl( E_MAIN_LIST_ID ).addItems( self.mListItems )
 
 

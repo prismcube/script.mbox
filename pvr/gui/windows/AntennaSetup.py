@@ -13,14 +13,13 @@ class AntennaSetup( SettingWindow ) :
 
 		self.getControl( E_SUBMENU_LIST_ID ).setVisible( False )
 
-		self.SetSettingWindowLabel( 'Antenna & Satellite Setup' )
+		self.SetSettingWindowLabel( MR_LANG( 'Antenna & Satellite Setup' ) )
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )
 
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-#			dialog.SetDialogProperty( 'Error', 'Satellite Infomation is empty. Please Reset STB' )
-			dialog.SetDialogProperty( 'Unable to load satellite information', 'Satellite information is not available. Please reset your STB' )			
+			dialog.SetDialogProperty( MR_LANG( 'Unable to load satellite information' ), MR_LANG( 'Satellite information is not available. Please reset your STB' )	)
 			dialog.doModal( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
@@ -36,22 +35,15 @@ class AntennaSetup( SettingWindow ) :
 			self.mTunerMgr.Load( )
 			self.mTunerMgr.SetNeedLoad( False )
 
-#		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', None, 'Select tuner 2 connection type.' )
-#		self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', None, 'Select tuner 2 configuration.' )
-#		self.AddEnumControl( E_SpinEx03, 'Tuner1 Type', None, 'Setup tuner 1.' )
-#		self.AddInputControl( E_Input01, ' - Tuner 1 Configuration', '', 'Go to Tuner 1 Configure.' )
-#		self.AddEnumControl( E_SpinEx04, 'Tuner2 Type', None, 'Setup tuner 2.' )
-#		self.AddInputControl( E_Input02, ' - Tuner 2 Configuration','', 'Go to Tuner 2 Configure.' )
-
-		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', None, 'Select the type of connection for Tuner 2' )
-		self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', None, "Set Tuner 2's signal configuration" )
-		self.AddEnumControl( E_SpinEx03, 'Tuner1 Type', None, 'Select a digital control method for Tuner 1' )
-		self.AddInputControl( E_Input01, ' - Tuner 1 Configuration', '', 'You can add, delete or setup satellite(s) here' )
-		self.AddEnumControl( E_SpinEx04, 'Tuner2 Type', None, 'Select a digital control method for Tuner 2' )
-		self.AddInputControl( E_Input02, ' - Tuner 2 Configuration', '', 'You can add, delete or setup satellite(s) here' )
+		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', None, MR_LANG( 'Select the type of connection for Tuner 2' ) )
+		self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', None, MR_LANG( 'Set Tuner 2\'s signal configuration' ) )
+		self.AddEnumControl( E_SpinEx03, 'Tuner1 Type', None, MR_LANG( 'Select a digital control method for Tuner 1' ) )
+		self.AddInputControl( E_Input01, MR_LANG( ' - Tuner 1 Configuration' ), '', MR_LANG( 'You can add, delete or setup satellite(s) here' ) )
+		self.AddEnumControl( E_SpinEx04, 'Tuner2 Type', None, MR_LANG( 'Select a digital control method for Tuner 2' ) )
+		self.AddInputControl( E_Input02, MR_LANG( ' - Tuner 2 Configuration' ), '', MR_LANG( 'You can add, delete or setup satellite(s) here' ) )
 		if ConfigMgr.GetInstance().GetFristInstallation( ) == True :
 			self.AddPrevNextButton( MR_LANG( 'Go to Next' ), MR_LANG( 'Go to Back' ) )
-			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( 'Next' )
+			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( MR_LANG( 'Next' ) )
 		self.setVisibleButton( )
 		self.InitControl( )
 		self.DisableControl( )
@@ -73,8 +65,7 @@ class AntennaSetup( SettingWindow ) :
 		elif actionId == Action.ACTION_PARENT_DIR :
 			if ConfigMgr.GetInstance( ).GetFristInstallation( ) == True :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-#				dialog.SetDialogProperty( 'Are you sure?', 'Do you want to stop first time installation?' )
-				dialog.SetDialogProperty( 'Abort installation', 'Do you want to cancel first time installation?' )
+				dialog.SetDialogProperty( MR_LANG( 'Abort installation' ), MR_LANG( 'Do you want to cancel first time installation?' ) )
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -88,8 +79,7 @@ class AntennaSetup( SettingWindow ) :
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-#				dialog.SetDialogProperty( 'Configure', 'Save Configuration?' )
-				dialog.SetDialogProperty( 'Save configuration', 'Do you want to save changes?' )
+				dialog.SetDialogProperty( MR_LANG( 'Save configuration' ), MR_LANG( 'Do you want to save changes?' ) )
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
