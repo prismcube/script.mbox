@@ -20,7 +20,8 @@ class DialogYesNoCancel( BaseDialog ) :
 		self.mIsOk = E_DIALOG_STATE_NO
 		self.getControl( E_HEADER ).setLabel( self.mTitle )
 		self.getControl( E_BODY_LABEL_1 ).setLabel( self.mLabel )		
-		
+
+
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )		
@@ -61,3 +62,4 @@ class DialogYesNoCancel( BaseDialog ) :
 	def SetDialogProperty( self, aTitle='', aLabel='' ) :
 		self.mTitle = aTitle
 		self.mLabel = aLabel
+

@@ -22,7 +22,8 @@
 				<texturefocus>-</texturefocus>
 				<texturenofocus>-</texturenofocus>
 				<onfocus>SetFocus(9010)</onfocus>
-				<visible>[ Container(9000).HasFocus(1) | Container(9000).HasFocus(7) ] | [ Container(9000).HasFocus(5) + substring(Window.Property(IsPVR),false) ]</visible>
+				<!--<visible>[ Container(9000).HasFocus(1) | Container(9000).HasFocus(7) ] | [ Container(9000).HasFocus(5) + substring(Window.Property(IsPVR),false) ]</visible>-->
+				<visible>[ Container(9000).HasFocus(1) ] | [ Container(9000).HasFocus(5) + substring(Window.Property(IsPVR),false) ]</visible>
 			</control>
 			<control type="button" id="330">
 				<description>INVISIBLE button: No Submenu</description>
@@ -33,7 +34,8 @@
 				<texturefocus>-</texturefocus>
 				<texturenofocus>-</texturenofocus>
 				<onfocus>SetFocus(9000)</onfocus>
-				<visible>![ Container(9000).HasFocus(1) | Container(9000).HasFocus(5) | Container(9000).HasFocus(7) ]</visible>
+				<!--<visible>![ Container(9000).HasFocus(1) | Container(9000).HasFocus(5) | Container(9000).HasFocus(7) ]</visible>-->
+				<visible>![ Container(9000).HasFocus(1) | Container(9000).HasFocus(5) ]</visible>
 			</control>
 			<include condition="Skin.HasSetting(Lockhomemenulow)">HomeButton10_MenuLow</include>
 			<include condition="!Skin.HasSetting(Lockhomemenulow)+!Skin.HasSetting(Lockhomemenu)">HomeButton10_MenuNormal</include>
@@ -181,7 +183,7 @@
 							<onclick>ActivateWindow(SystemInfo)</onclick>
 							<visible>Container(9000).HasFocus(5)</visible>
 						</item>
-
+						<!--
 						<item id="1">
 							<description>Restart Button</description>
 							<label>Reset</label>
@@ -200,6 +202,7 @@
 							<onclick>Quit</onclick>
 							<visible>Container(9000).HasFocus(7)</visible>
 						</item>
+						-->
 					</content>
 				</control>
 			</control>
@@ -268,11 +271,13 @@
 					</control>
 				</focusedlayout>
 				<content>
+					<!--
 					<item id="7">
 						<label>Shutdown</label>
 						<onclick>-</onclick>
 						<visible>true</visible>
 					</item>
+					-->
 					<item id="8">
 						<label>Back</label>
 						<onclick>ParentDir</onclick>

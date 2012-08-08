@@ -10,10 +10,10 @@ E_BUTTON_NEXT			= 203
 
 E_START_ID_NUMBER		= 100
 
+
 class DialogSatelliteNumeric( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
-		
 		self.mTitleLabel = ''
 		self.mCursor = 0
 		self.mCtrlEditLabel = 0
@@ -34,7 +34,8 @@ class DialogSatelliteNumeric( BaseDialog ) :
 		self.mCtrlEditLabel = self.getControl( E_INPUT_LABEL )
 		self.SetInputLabel( )
 		self.DrawKeyboard( )
-		
+
+
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )		
@@ -56,6 +57,7 @@ class DialogSatelliteNumeric( BaseDialog ) :
 		elif actionId == Action.ACTION_PARENT_DIR : 							# back space
 			self.DeleteValue( )
 			self.SetInputLabel( )
+
 
 	def onClick( self, aControlId ) :
 		if aControlId >= E_START_ID_NUMBER and aControlId <= 109 :
@@ -81,24 +83,27 @@ class DialogSatelliteNumeric( BaseDialog ) :
 	def IsOK( self ) :
 		return self.mIsOk
 
-	def onFocus( self, aControlId ):
+
+	def onFocus( self, aControlId ) :
 		pass
 
 
-	def DrawKeyboard( self ):
+	def DrawKeyboard( self ) :
 		for i in range( 10 ) :
 			self.getControl( E_START_ID_NUMBER + i ).setLabel( '%s' % i )
+
 
 	def GetNumber( self ) :
 		value = self.mInput1 * 1000 + self.mInput2 * 100 + self.mInput3 * 10 + self.mInput4
 		return value
 
+
 	def GetTitleLabel( self ) :
 		return self.mTitleLabel
-		
+
+
 	def SetDialogProperty( self, aTitle, aValue ) :
 		self.mTitleLabel = aTitle
-		
 		self.mInput4 = aValue % 10
 		aValue = aValue / 10
 		self.mInput3 = aValue % 10
@@ -183,7 +188,6 @@ class DialogSatelliteNumeric( BaseDialog ) :
 			return
 
 
-
 	def NextCursor( self ) :
 		if self.mCursor == 3 :
 				self.mCursor = 0
@@ -196,5 +200,4 @@ class DialogSatelliteNumeric( BaseDialog ) :
 				self.mCursor = 3
 		else :
 			self.mCursor = self.mCursor - 1
-
 		

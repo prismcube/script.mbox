@@ -16,9 +16,9 @@ class DialogSetTransponder( SettingDialog ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		
-		self.SetHeaderLabel( 'Set Transponder' )
-		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, 'Confirm' )
-		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, 'Cancel' )
+		self.SetHeaderLabel( MR_LANG( 'Set Transponder' ) )
+		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Confirm' ) )
+		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, MR_LANG( 'Cancel' ) )
 		self.DrawItem( )
 		self.mIsOk = E_DIALOG_STATE_NO
 
@@ -57,7 +57,7 @@ class DialogSetTransponder( SettingDialog ) :
 		# Frequency
 		if groupId == E_DialogInput01 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( 'Frequency', '%d' % self.mFrequency, 5 )
+			dialog.SetDialogProperty( MR_LANG( 'Frequency' ), '%d' % self.mFrequency, 5 )
  			dialog.doModal( )
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
  				tempval = dialog.GetString( )
@@ -66,13 +66,13 @@ class DialogSetTransponder( SettingDialog ) :
 				
 				if self.mSatelliteBand == ElisEnum.E_BAND_KU and int( tempval ) < 5150 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( 'ERROR', 'Please input Ku Band Satellite' )
+					dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Please input Ku Band Satellite' ) )
 		 			dialog.doModal( )
 					return
 
 				if self.mSatelliteBand == ElisEnum.E_BAND_C and int( tempval ) > 10000 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( 'ERROR', 'Please input C Band Satellite' )
+					dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Please input C Band Satellite' ) )
 		 			dialog.doModal( )
 					return
 					
@@ -107,7 +107,7 @@ class DialogSetTransponder( SettingDialog ) :
 		# Symbol Rate
 		elif groupId == E_DialogInput02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( 'Symbol Rate', '%d' % self.mSimbolicRate, 5 )
+			dialog.SetDialogProperty( MR_LANG( 'Symbol Rate' ), '%d' % self.mSimbolicRate, 5 )
  			dialog.doModal( )
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
  				tempval = dialog.GetString( )
@@ -138,7 +138,7 @@ class DialogSetTransponder( SettingDialog ) :
 		return self.mIsOk
 		
 
-	def onFocus( self, aControlId ):
+	def onFocus( self, aControlId ) :
 		pass
 
 
@@ -157,7 +157,7 @@ class DialogSetTransponder( SettingDialog ) :
 	def DrawItem( self ) :
 		self.ResetAllControl( )
 		
-		self.AddInputControl( E_DialogInput01, 'Frequency', '%d MHz' % self.mFrequency )
+		self.AddInputControl( E_DialogInput01, MR_LANG( 'Frequency' ), '%d MHz' % self.mFrequency )
 		
 		self.AddEnumControl( E_DialogSpinEx01, 'DVB Type' )
 		if self.mFec == ElisEnum.E_FEC_UNDEFINED :
@@ -172,7 +172,7 @@ class DialogSetTransponder( SettingDialog ) :
 		self.SetProp( E_DialogSpinEx03, self.mPolarization )
 
 		
-		self.AddInputControl( E_DialogInput02, 'Symbol Rate', '%d KS/s' % self.mSimbolicRate )
+		self.AddInputControl( E_DialogInput02, MR_LANG( 'Symbol Rate' ), '%d KS/s' % self.mSimbolicRate )
 		self.AddOkCanelButton( )
 		self.SetAutoHeight( True )
 
@@ -183,9 +183,9 @@ class DialogSetTransponder( SettingDialog ) :
 
 	def DisableControl( self ) :
 		if self.mFec == ElisEnum.E_FEC_UNDEFINED :
-			self.getControl( E_DialogSpinEx02 + 3 ).getListItem( 0 ).setLabel2( 'Automatic' )
+			self.getControl( E_DialogSpinEx02 + 3 ).getListItem( 0 ).setLabel2( MR_LANG( 'Automatic' ) )
 			self.getControl( E_DialogSpinEx02 + 3 ).selectItem( 0 )
 			self.SetEnableControl( E_DialogSpinEx02, False )
 		else :
-			self.getControl( E_DialogSpinEx02 + 3 ).getListItem( 0 ).setLabel2( 'QPSK 1/2' )
+			self.getControl( E_DialogSpinEx02 + 3 ).getListItem( 0 ).setLabel2( MR_LANG( 'QPSK 1/2' ) )
 			self.SetEnableControl( E_DialogSpinEx02, True )
