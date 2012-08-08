@@ -1,4 +1,3 @@
-
 import datetime
 import socket
 import time
@@ -18,78 +17,71 @@ import select
 gElisMgr = None
 
 
-def GetInstance():
+def GetInstance( ) :
 	global gElisMgr
-	if not gElisMgr:
-		print 'lael98 check create instance'
-		gElisMgr = ElisMgr()
-	else:
+	if not gElisMgr :
+		gElisMgr = ElisMgr( )
+	else :
 		pass
-		#print 'lael98 check already windowmgr is created'
-
 	return gElisMgr
 
 
-class ElisEventHandler( EventHandler ):
-	def handle( self ):
-		print 'lael98 check handle ElisEventHandler'
-		cur_thread = threading.currentThread()
-		print "lael98 check threadname %s" % cur_thread.getName()
+class ElisEventHandler( EventHandler ) :
+	def handle( self ) :
+		cur_thread = threading.currentThread( )
+		LOG_TRACE( 'check threadname %s' % cur_thread.getName( ) )
 
 		request = EventRequest( self.request )
-		self.mEventBus = GetInstance().GetEventBus()
+		self.mEventBus = GetInstance( ).GetEventBus( )
 		
-		while 1:
-			#print 'handle --->!!!!!!!!!!!!!!!!!'
-
-			fd_sets = select.select([self.request], [], [], 0.5 )
-			if not fd_sets[0]:
-				if GetInstance().mShutdowning:
+		while 1 :
+			fd_sets = select.select( [ self.request ], [], [], 0.5 )
+			if not fd_sets[0] :
+				if GetInstance( ).mShutdowning :
 					break
 				else :
 					continue
 
-			read = request.ReadMsg()
-			event  = ElisEvent.ParseElisEvent( read )
+			read = request.ReadMsg( )
+			event = ElisEvent.ParseElisEvent( read )
 			self.AddEvent( event )
-			#print 'handle end --->!!!!!!!!!!!!!!!!!'
 	
 
-	def AddEvent( self, aEvent ):
+	def AddEvent( self, aEvent ) :
 		self.mEventBus.AddEvent( aEvent )
 
 
-class ElisEventRecevier( EventServer ): pass
+class ElisEventRecevier( EventServer ) :
+	pass
 
 
-class ElisMgr( object ):
-	def __init__( self ):
-		print 'lael98 check ElisMgr init'
+class ElisMgr( object ) :
+	def __init__( self ) :
 		self.mShutdowning = False
-		self.mEventBus = ElisEventBus()
-		print 'check test'
-		print 'check test netconfig.receiverPort=%d' %NetConfig.receiverPort		
-		self.mReceiver = ElisEventRecevier(('', NetConfig.receiverPort), ElisEventHandler )
-		print 'check test netconfig.targetIp=%s netconfig.commanderPort=%d' %(NetConfig.targetIp, NetConfig.commanderPort)
-		self.mCommander = ElisCommander( (NetConfig.targetIp, NetConfig.commanderPort) )		
-		print 'check test'
+		self.mEventBus = ElisEventBus( )
+		LOG_TRACE( 'check test netconfig.receiverPort = %d' % NetConfig.receiverPort )		
+		self.mReceiver = ElisEventRecevier( ( '', NetConfig.receiverPort ), ElisEventHandler )
+		LOG_TRACE( 'check test netconfig.targetIp = %s netconfig.commanderPort = %d' % ( NetConfig.targetIp, NetConfig.commanderPort ) )
+		self.mCommander = ElisCommander( ( NetConfig.targetIp, NetConfig.commanderPort ) )
+		
 
-	def GetCommander( self ):
+	def GetCommander( self ) :
 		return self.mCommander
 
-	def GetEventBus( self ):
+
+	def GetEventBus( self ) :
 		return self.mEventBus
 	
 
 	@RunThread
-	def Run( self ):
-		print 'lael98 check ElisMgr run...'
+	def Run( self ) :
+		LOG_TRACE( 'lael98 check ElisMgr run1...' )
 		self.mReceiver.serve_forever()
-		print 'lael98 check ElisMgr run2...'
+		LOG_TRACE( 'lael98 check ElisMgr run2...' )
 
-	def Shutdown( self ):
-		print 'lael98 check ElisMgr shutdown...'
+
+	def Shutdown( self ) :
+		LOG_TRACE( 'lael98 check ElisMgr shutdown...' )
 		self.mShutdowning = True
-		self.mReceiver.shutdown()
-
+		self.mReceiver.shutdown( )
 
