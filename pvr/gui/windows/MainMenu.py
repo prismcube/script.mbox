@@ -60,13 +60,13 @@ class MainMenu( BaseWindow ) :
 		self.GlobalAction( actionId )
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 
 		elif actionId == Action.ACTION_PARENT_DIR :
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_MBOX_XBMC :
 			self.onClick( BUTTON_ID_MEDIA_CENTER )
@@ -89,30 +89,30 @@ class MainMenu( BaseWindow ) :
 				self.getControl( MAIN_GROUP_ID ).setVisible( True )
 			else :
 				if aControlId == BUTTON_ID_INSTALLATION :
-					WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_INSTALLATION )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_INSTALLATION )
 				elif aControlId == BUTTON_ID_FIRSTINSTALLATION :
-					WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION )
 				elif aControlId == BUTTON_ID_ANTENNA_SETUP :
-					WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP )
 				elif aControlId == BUTTON_ID_CHANNEL_SEARCH :
-					WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_SEARCH )
 				elif aControlId == BUTTON_ID_EDIT_SATELLITE :
-					WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_EDIT_SATELLITE )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EDIT_SATELLITE )
 				elif aControlId == BUTTON_ID_EDIT_TRANSPONDER :
-					WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_EDIT_TRANSPONDER )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EDIT_TRANSPONDER )
 				elif aControlId == BUTTON_ID_CONFIGURE :
-					WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONFIGURE )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE )
 				elif aControlId == BUTTON_ID_CAS :
-					WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CONDITIONAL_ACCESS )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONDITIONAL_ACCESS )
 
 		elif aControlId == BUTTON_ID_ARCHIVE :
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 			
 		elif aControlId == BUTTON_ID_EPG :
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
 		elif aControlId == BUTTON_ID_CHANNEL_LIST : #Channel List
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
 		elif aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO :
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
@@ -125,17 +125,17 @@ class MainMenu( BaseWindow ) :
 				self.mStartMediaCenter = True
 				self.mCommander.AppMediaPlayer_Control( 1 )
 				if aControlId == BUTTON_ID_MEDIA_CENTER :
-					WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
-				#WinMgr.GetInstance().Reset( )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
+				#WinMgr.GetInstance( ).Reset( )
 
 		elif aControlId == BUTTON_ID_SYSTEM_INFO :
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_SYSTEM_INFO )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_INFO )
 
 		elif aControlId == 20 :
 			pass
 			"""
 			import pvr.Launcher
-			pvr.Launcher.GetInstance().PowerOff()
+			pvr.Launcher.GetInstance( ).PowerOff()
 			"""
 
  

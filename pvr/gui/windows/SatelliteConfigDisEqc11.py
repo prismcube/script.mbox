@@ -24,10 +24,10 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 		self.mSelectedTransponderIndex = 0
 
-		self.SetSettingWindowLabel( 'Satellite Configuration' )
+		self.SetSettingWindowLabel( MR_LANG( 'Satellite Configuration' ) )
 		self.LoadNoSignalState( )
  				
-		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Satellite Config : Tuner %d - DiSEqC 1.1' % ( tunerIndex + 1 ) )
+		self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Satellite Config : Tuner %d - DiSEqC 1.1' ) % ( tunerIndex + 1 ) )
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.InitConfig( )
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
@@ -48,7 +48,7 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 			self.ResetAllControl( )
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
 			self.CloseBusyDialog( )
-			WinMgr.GetInstance().CloseWindow( )
+			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )
@@ -70,8 +70,7 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 		if groupId == E_Input01 :
 			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog()
-# 			ret = dialog.select('Select satellite', satelliteList )
- 			ret = dialog.select('Select a satellite you want to edit', satelliteList )
+ 			ret = dialog.select( MR_LANG( 'Select a satellite you want to edit' ), satelliteList )
 
 			if ret >= 0 :
 	 			satellite = self.mDataCache.GetSatelliteByIndex( ret )
@@ -113,7 +112,7 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 		# LNB Frequency - Inputcontrol
  		elif groupId == E_Input02 :
 
- 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_LNB_FREQUENCY )
+ 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_LNB_FREQUENCY )
  			dialog.SetFrequency( self.mCurrentSatellite.mLowLNB, self.mCurrentSatellite.mHighLNB, self.mCurrentSatellite.mLNBThreshold )
  			dialog.doModal( )
 
@@ -148,8 +147,7 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
  		elif groupId == E_Input03 :
  			if self.mTransponderList :
 	 			dialog = xbmcgui.Dialog( )
-#	 			tempIndex = dialog.select( 'Select Transponder', self.mTransponderList )
-	 			tempIndex = dialog.select( 'Select a transponder you want to use', self.mTransponderList )
+	 			tempIndex = dialog.select( MR_LANG( 'Select a transponder you want to use' ), self.mTransponderList )
 	 			if tempIndex != -1 :
 	 				self.mSelectedTransponderIndex = tempIndex
 	 				self.InitConfig( )
@@ -179,25 +177,24 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 	def InitConfig( self ) :
 		self.ResetAllControl( )
 
-		self.AddInputControl( E_Input01, 'Satellite' , self.mDataCache.GetFormattedSatelliteName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ) )
-		self.AddUserEnumControl( E_SpinEx01, 'LNB Type', E_LIST_LNB_TYPE, self.mSelectedIndexLnbType )
+		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mDataCache.GetFormattedSatelliteName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ) )
+		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'LNB Type' ), E_LIST_LNB_TYPE, self.mSelectedIndexLnbType )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
-			self.AddUserEnumControl( E_SpinEx02, 'LNB Frequency', E_LIST_SINGLE_FREQUENCY, getSingleFrequenceIndex( self.mCurrentSatellite.mLowLNB ) )
+			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'LNB Frequency' ), E_LIST_SINGLE_FREQUENCY, getSingleFrequenceIndex( self.mCurrentSatellite.mLowLNB ) )
 		else :
 			lnbFrequency = '%d / %d / %d' % ( self.mCurrentSatellite.mLowLNB, self.mCurrentSatellite.mHighLNB, self.mCurrentSatellite.mLNBThreshold )
-			self.AddInputControl( E_Input02, 'LNB Frequency', lnbFrequency )
+			self.AddInputControl( E_Input02, MR_LANG( 'LNB Frequency' ), lnbFrequency )
 
-		self.AddUserEnumControl( E_SpinEx03, '22KHz Control', USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mFrequencyLevel )
-		self.AddUserEnumControl( E_SpinEx04, 'Committed Switch', E_LIST_COMMITTED_SWITCH, getCommittedSwitchindex( self.mCurrentSatellite.mDisEqcMode ) )
-		self.AddUserEnumControl( E_SpinEx05, 'Uncommitted Switch', E_LIST_UNCOMMITTED_SWITCH, self.mCurrentSatellite.mDisEqc11 )
-#		self.AddUserEnumControl( E_SpinEx06, 'DiSEqC Repeat', USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mDisEqcRepeat )
-		self.AddUserEnumControl( E_SpinEx06, 'DiSEqC Repeats', USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mDisEqcRepeat )
+		self.AddUserEnumControl( E_SpinEx03, MR_LANG( '22KHz Control' ), USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mFrequencyLevel )
+		self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Committed Switch' ), E_LIST_COMMITTED_SWITCH, getCommittedSwitchindex( self.mCurrentSatellite.mDisEqcMode ) )
+		self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Uncommitted Switch' ), E_LIST_UNCOMMITTED_SWITCH, self.mCurrentSatellite.mDisEqc11 )
+		self.AddUserEnumControl( E_SpinEx06, MR_LANG( 'DiSEqC Repeats' ), USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mDisEqcRepeat )
 		if self.mTransponderList :
-			self.AddInputControl( E_Input03, 'Transponder', self.mTransponderList[ self.mSelectedTransponderIndex ] )
+			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), self.mTransponderList[ self.mSelectedTransponderIndex ] )
 			self.mHasTransponder = True
 		else :
-			self.AddInputControl( E_Input03, 'Transponder', 'None' )			
+			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), MR_LANG( 'None' ) )			
 			self.mHasTransponder = False
 		
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :

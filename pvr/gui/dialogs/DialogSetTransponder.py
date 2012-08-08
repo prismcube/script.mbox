@@ -56,7 +56,7 @@ class DialogSetTransponder( SettingDialog ) :
 
 		# Frequency
 		if groupId == E_DialogInput01 :
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( 'Frequency', '%d' % self.mFrequency, 5 )
  			dialog.doModal( )
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -65,13 +65,13 @@ class DialogSetTransponder( SettingDialog ) :
 					return
 				
 				if self.mSatelliteBand == ElisEnum.E_BAND_KU and int( tempval ) < 5150 :
-					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( 'ERROR', 'Please input Ku Band Satellite' )
 		 			dialog.doModal( )
 					return
 
 				if self.mSatelliteBand == ElisEnum.E_BAND_C and int( tempval ) > 10000 :
-					dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( 'ERROR', 'Please input C Band Satellite' )
 		 			dialog.doModal( )
 					return
@@ -106,7 +106,7 @@ class DialogSetTransponder( SettingDialog ) :
 
 		# Symbol Rate
 		elif groupId == E_DialogInput02 :
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( 'Symbol Rate', '%d' % self.mSimbolicRate, 5 )
  			dialog.doModal( )
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :

@@ -7,28 +7,26 @@ class EditSatellite( SettingWindow ) :
 		self.mSatelliteIndex	= 0
 		self.mLongitude			= 0
 		self.mBand				= 0
-		self.mName				= 'Unkown'
+		self.mName				= MR_LANG( 'Unkown' )
 
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.SetSettingWindowLabel( 'Edit Satellite' )
+		self.SetSettingWindowLabel( MR_LANG( 'Edit Satellite' ) )
 
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
 			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 			self.SetVisibleControls( hideControlIds, False )
-			self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Has no configured satellite' )
+			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Has no configured satellite' ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-#			dialog.SetDialogProperty( 'Error', 'Satellite Infomation is empty. Please Reset STB' )
-			dialog.SetDialogProperty( 'Unable to load satellites', 'No satellite infomation is available. Please reset your STB' )			
+			dialog.SetDialogProperty( MR_LANG( 'Unable to load satellites' ), MR_LANG( 'No satellite infomation is available. Please reset your STB' ) )
 			dialog.doModal( )
-			WinMgr.GetInstance().CloseWindow( )
+			WinMgr.GetInstance( ).CloseWindow( )
 		else :
-			if self.getControl( E_SETTING_DESCRIPTION ).getLabel( ) == 'Has no configured satellite' :
-				hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
-				self.SetVisibleControls( hideControlIds, True )
+			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
+			self.SetVisibleControls( hideControlIds, True )
 			self.SetPipScreen( )
 			self.LoadNoSignalState( )
 			self.InitConfig( )
@@ -44,7 +42,7 @@ class EditSatellite( SettingWindow ) :
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.ResetAllControl( )
 			self.SetVideoRestore( )
-			WinMgr.GetInstance().CloseWindow( )
+			WinMgr.GetInstance( ).CloseWindow( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -52,7 +50,7 @@ class EditSatellite( SettingWindow ) :
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
 			self.SetVideoRestore( )
-			WinMgr.GetInstance().CloseWindow( )
+			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			pass
@@ -74,8 +72,7 @@ class EditSatellite( SettingWindow ) :
 		if groupId == E_Input01 :
 			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog( )
-# 			select = dialog.select( 'Select satellite', satelliteList )
- 			select = dialog.select( 'Select satellite you want to edit', satelliteList ) 			
+ 			select = dialog.select( MR_LANG( 'Select satellite you want to edit' ), satelliteList ) 			
 
 			if select >= 0 and select != self.mSatelliteIndex :
 	 			self.mSatelliteIndex = select
@@ -83,15 +80,14 @@ class EditSatellite( SettingWindow ) :
 
 	 	# Edit Satellite Name
 		elif groupId == E_Input03 :
-#			kb = xbmc.Keyboard( self.mName, 'Satellite Name', False )
-			kb = xbmc.Keyboard( self.mName, "Change satellite's name", False )			
+			kb = xbmc.Keyboard( self.mName, MR_LANG( 'Change satellite\s name' ), False )			
 			kb.setHiddenInput( False )
 			kb.doModal( )
 			if kb.isConfirmed( ) :
 				ret = self.mCommander.Satellite_ChangeName( self.mLongitude, self.mBand, kb.getText( ) )
 				if ret != True :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( 'ERROR', 'Satellite Edit Name Fail' )
+					dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Satellite Edit Name Fail' ) )
 		 			dialog.doModal( )
 		 			return
  				self.mDataCache.LoadAllSatellite( )
@@ -107,7 +103,7 @@ class EditSatellite( SettingWindow ) :
 				ret = self.mCommander.Satellite_Add( longitude, band, satelliteName )
 				if ret != True :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( 'ERROR', 'Satellite Add Fail' )
+					dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Satellite Add Fail' ) )
 		 			dialog.doModal( )
 		 			return
  				self.mDataCache.LoadAllSatellite( )
@@ -118,15 +114,14 @@ class EditSatellite( SettingWindow ) :
 		# Delete Satellite
 		elif groupId == E_Input05 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-#			dialog.SetDialogProperty( 'Confirm', 'Do you want to delete satellite?' )
-			dialog.SetDialogProperty( 'Delete satellite', 'Do you want to remove this satellite?' )
+			dialog.SetDialogProperty( MR_LANG( 'Delete satellite' ), MR_LANG( 'Do you want to remove this satellite?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				ret = self.mCommander.Satellite_Delete( self.mLongitude, self.mBand )
 				if ret != True :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( 'ERROR', 'Satellite Delete Fail' )
+					dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Satellite Delete Fail' ) )
 		 			dialog.doModal( )
 		 			return
 				self.mSatelliteIndex = 0
@@ -134,7 +129,8 @@ class EditSatellite( SettingWindow ) :
 				self.InitConfig( )
 			else :
 				return
-		
+
+
 	def onFocus( self, aControlId ):
 		if self.mInitialized == False :
 			return
@@ -147,19 +143,13 @@ class EditSatellite( SettingWindow ) :
 		self.ResetAllControl( )
 		self.GetSatelliteInfo( self.mSatelliteIndex )
 		satellitename = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand )
-#		self.AddInputControl( E_Input01, 'Satellite', satellitename, 'Select satellite.' )
-#		longitude = self.GetFormattedLongitude( self.mLongitude , self.mBand )
-#		self.AddInputControl( E_Input02, 'Longitude', longitude )
-#		self.AddInputControl( E_Input03, 'Edit Satellite Name', '', 'Edit satellite name.' )
-#		self.AddInputControl( E_Input04, 'Add New Satellite', '', 'Add new satellite.' )
-#		self.AddInputControl( E_Input05, 'Delete Satellite', '', 'Delete satellite.' )
 
-		self.AddInputControl( E_Input01, 'Satellite', satellitename, 'Select a satellite you want to change settings' )
+		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), satellitename, MR_LANG( 'Select a satellite you want to change settings' ) )
 		longitude = self.GetFormattedLongitude( self.mLongitude , self.mBand )
-		self.AddInputControl( E_Input02, 'Longitude', longitude )
-		self.AddInputControl( E_Input03, 'Change Satellite Name', '', "You can change a satellite's name here" )
-		self.AddInputControl( E_Input04, 'Add Satellite', '', 'You can add a new satellite here' )
-		self.AddInputControl( E_Input05, 'Delete Satellite', '', 'Here you can delete a satellite' )
+		self.AddInputControl( E_Input02, MR_LANG( 'Longitude' ), longitude )
+		self.AddInputControl( E_Input03, MR_LANG( 'Change Satellite Name' ), '', MR_LANG( 'You can change a satellite\'s name here' ) )
+		self.AddInputControl( E_Input04, MR_LANG( 'Add Satellite' ), '', MR_LANG( 'You can add a new satellite here' ) )
+		self.AddInputControl( E_Input05, MR_LANG( 'Delete Satellite' ), '', MR_LANG( 'Here you can delete a satellite' ) )
 		
 		self.InitControl( )
 		self.SetEnableControl( E_Input02, False )
@@ -182,7 +172,6 @@ class EditSatellite( SettingWindow ) :
 
 	def GetFormattedLongitude( self, aLongitude, aBand ) :
 		dir = 'E'
-
 		tmpLongitude  = aLongitude
 		if tmpLongitude > 1800 :
 			dir = 'W'

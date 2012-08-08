@@ -67,7 +67,7 @@ class SystemInfo( SettingWindow ) :
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.mInitialized = False
 			self.mCheckEndThread = False
-			WinMgr.GetInstance().CloseWindow( )
+			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == E_SUBMENU_LIST_ID and self.mCtrlLeftGroup.getSelectedPosition() != self.mPrevListItemID :

@@ -16,9 +16,9 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
-		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'USALS configuration : Tuner %s' % ( self.tunerIndex + 1 ) )
+		self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'USALS configuration : Tuner %s' ) % ( self.tunerIndex + 1 ) )
 
-		self.SetSettingWindowLabel( 'Motorize Configuration' )
+		self.SetSettingWindowLabel( MR_LANG( 'Motorize Configuration' ) )
 		self.LoadNoSignalState( )
 		
 		self.GetLongitude( )
@@ -34,7 +34,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 			self.SetLongitude( )
 			self.SetLatitude( )
 			self.ResetAllControl( )
-			WinMgr.GetInstance().CloseWindow( )
+			WinMgr.GetInstance( ).CloseWindow( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -43,7 +43,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 			self.SetLongitude( )
 			self.SetLatitude( )
 			self.ResetAllControl( )
-			WinMgr.GetInstance().CloseWindow( )
+			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )
@@ -71,8 +71,8 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 
 		# Set Longitude
 		if groupId == E_Input01 :
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
- 			dialog.SetDialogProperty( 'Longitude degree', self.mLongitude )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
+ 			dialog.SetDialogProperty( MR_LANG( 'Longitude degree' ), self.mLongitude )
  			dialog.doModal( )
 
  			if dialog.IsOK() == E_DIALOG_STATE_YES :
@@ -81,8 +81,8 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 
 		# Set Latitude
 		elif groupId == E_Input02 :
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
- 			dialog.SetDialogProperty( 'Latitude degree', self.mLatitude )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
+ 			dialog.SetDialogProperty( MR_LANG( 'Latitude degree' ), self.mLatitude )
  			dialog.doModal( )
 
  			if dialog.IsOK() == E_DIALOG_STATE_YES :
@@ -99,7 +99,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 			self.SetLongitude( )
 			self.SetLatitude( )
 			self.ResetAllControl( )
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_TUNER_CONFIGURATION )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TUNER_CONFIGURATION )
 
 			
 	def onFocus( self, controlId ) :
@@ -109,17 +109,16 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 	def InitConfig( self ) :
 		self.ResetAllControl( )
 
-		self.AddUserEnumControl( E_SpinEx01, 'My Longitude Direction', E_LIST_MY_LONGITUDE, self.mIsWest )
+		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'My Longitude Direction' ), E_LIST_MY_LONGITUDE, self.mIsWest )
 		tmplongitude = '%03d.%d' % ( ( self.mLongitude / 10 ), self.mLongitude % 10 )
-		self.AddInputControl( E_Input01, 'My Longitude Angle',  tmplongitude)
+		self.AddInputControl( E_Input01, MR_LANG( 'My Longitude Angle' ),  tmplongitude)
 		
-		self.AddUserEnumControl( E_SpinEx02, 'My Latitude Direction', E_LIST_MY_LATITUDE, self.mIsSouth )
+		self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'My Latitude Direction' ), E_LIST_MY_LATITUDE, self.mIsSouth )
 		tmplatitude = '%03d.%d' % ( ( self.mLatitude / 10 ), self.mLatitude % 10 )
-		self.AddInputControl( E_Input02, 'My Latitude Angle',  tmplatitude)
+		self.AddInputControl( E_Input02, MR_LANG( 'My Latitude Angle' ),  tmplatitude)
 		
-		self.AddInputControl( E_Input03, 'Reference Position to Null', '' )
-#		self.AddInputControl( E_Input04, 'Configure Satellites', '' )
-		self.AddInputControl( E_Input04, 'Edit Satellite', '' )
+		self.AddInputControl( E_Input03, MR_LANG( 'Reference Position to Null' ), '' )
+		self.AddInputControl( E_Input04, MR_LANG( 'Edit Satellite' ), '' )
 
 		self.InitControl( )
 

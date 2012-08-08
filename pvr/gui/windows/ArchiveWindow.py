@@ -827,7 +827,7 @@ class ArchiveWindow( BaseWindow ) :
 			if inputPincode == savedPincode :
 				return True
 			else :
-				infoDialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				infoDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				infoDialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'New PIN codes do not match' ) )
 	 			infoDialog.doModal( )
 

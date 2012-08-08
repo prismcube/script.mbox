@@ -60,7 +60,7 @@ class DialogAddNewSatellite( SettingDialog ) :
 			self.mIsWest = self.GetSelectedIndex( E_DialogSpinEx01 )
 
 		elif groupId == E_DialogInput02 :
-			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
  #			dialog.SetDialogProperty( 'Set Longitude', self.mLongitude )
  			dialog.SetDialogProperty( 'Longitude degree', self.mLongitude )
  			dialog.doModal( )

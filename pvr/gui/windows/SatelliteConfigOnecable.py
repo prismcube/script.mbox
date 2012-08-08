@@ -13,24 +13,24 @@ class SatelliteConfigOnecable( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		
-		self.SetSettingWindowLabel( 'OneCable Configuration' )
+		self.SetSettingWindowLabel( MR_LANG( 'OneCable Configuration' ) )
 		self.LoadNoSignalState( )
-		self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'OneCable configuration' )
+		self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'OneCable configuration' ) )
 
 		self.LoadConfigedSatellite( )
 		self.mCurrentSatellite = self.mTunerMgr.GetConfiguredSatellitebyIndex( 0 )
 		
-		self.AddInputControl( E_Input01, 'Configure System', '' )
+		self.AddInputControl( E_Input01, MR_LANG( 'Configure System' ), '' )
 		
 		listitem = []
 		for i in range( MAX_SATELLITE_CNT_ONECABLE ) :
 			listitem.append( '%d' % ( i + 1 ) )
 
-		self.AddUserEnumControl( E_SpinEx01, 'Number of Satellite', listitem, 0 )
+		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Number of Satellite' ), listitem, 0 )
 
 		startId = E_Input02
 		for i in range( MAX_SATELLITE_CNT_ONECABLE ) :
-			self.AddInputControl( startId, 'Satellite %d' % ( i + 1 ), self.mSatelliteNamelist[i] )
+			self.AddInputControl( startId, MR_LANG( 'Satellite %d' ) % ( i + 1 ), self.mSatelliteNamelist[i] )
 			startId += 100
 		
 		self.InitControl( )
@@ -84,8 +84,6 @@ class SatelliteConfigOnecable( SettingWindow ) :
 		groupId = self.GetGroupId( aControlId )
 
 		if groupId == E_Input01 :
-			#position = self.GetSelectedIndex( E_SpinEx01 ) + 1
-			#self.mTunerMgr.SetOnecableSatelliteCount( position )
 			self.ResetAllControl( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_ONECABLE_2 )
 		
@@ -96,10 +94,11 @@ class SatelliteConfigOnecable( SettingWindow ) :
 			position = self.GetControlIdToListIndex( groupId ) - 2
 			self.mTunerMgr.SetCurrentConfigIndex( position )
 			self.ResetAllControl( )
-			if self.mSatelliteNamelist[position] == 'None' :
+			if self.mSatelliteNamelist[position] == MR_LANG( 'None' ) :
 				self.mTunerMgr.AddConfiguredSatellite( 0 )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_SIMPLE )
-			
+
+
 	def onFocus( self, aControlId ) :
 		pass
 
@@ -126,5 +125,5 @@ class SatelliteConfigOnecable( SettingWindow ) :
 			if i < self.mSatelliteCount :
 				self.mSatelliteNamelist.append( self.mDataCache.GetFormattedSatelliteName( configuredList[i].mSatelliteLongitude, configuredList[i].mBandType ) )
 			else :
-				self.mSatelliteNamelist.append( 'None' )
+				self.mSatelliteNamelist.append( MR_LANG( 'None' ) )
 
