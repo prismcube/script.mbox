@@ -498,7 +498,6 @@
 			<posy>142</posy>
 			<width>430</width>
 			<height>600</height>
-			<allowoverlay>yes</allowoverlay>
 			<include>DefaultWindowFade</include>
 			<control type="group">
 				<posx>5</posx>

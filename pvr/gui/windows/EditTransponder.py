@@ -15,20 +15,19 @@ class EditTransponder( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.SetSettingWindowLabel( 'Edit Transponder' )	
+		self.SetSettingWindowLabel( MR_LANG( 'Edit Transponder' ) )
 
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
 			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
-			self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Has no configured satellite' )
+			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Has no configured satellite' ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( 'Error', 'Satellite Infomation is empty. Please Reset STB' )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Satellite Infomation is empty. Please Reset STB' ) )
 			dialog.doModal( )
-			WinMgr.GetInstance().CloseWindow( )
+			WinMgr.GetInstance( ).CloseWindow( )
 		else :
-			if self.getControl( E_SETTING_DESCRIPTION ).getLabel( ) == 'Has no configured satellite' :
-				hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
-				self.SetVisibleControls( hideControlIds, True )
+			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			self.SetVisibleControls( hideControlIds, True )
 			self.SetPipScreen( )
 			self.LoadNoSignalState( )
 			self.InitConfig( )
@@ -44,7 +43,7 @@ class EditTransponder( SettingWindow ) :
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.ResetAllControl( )
 			self.SetVideoRestore( )
-			WinMgr.GetInstance().CloseWindow( )
+			WinMgr.GetInstance( ).CloseWindow( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -52,7 +51,7 @@ class EditTransponder( SettingWindow ) :
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
 			self.SetVideoRestore( )
-			WinMgr.GetInstance().CloseWindow( )
+			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			pass
@@ -74,8 +73,7 @@ class EditTransponder( SettingWindow ) :
 		if groupId == E_Input01 :
 			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog( )
-#			select = dialog.select( 'Select Satellite', satelliteList )
- 			select = dialog.select( 'Select satellite you want to edit', satelliteList )
+ 			select = dialog.select( MR_LANG( 'Select satellite you want to edit' ), satelliteList )
 
 			if select >= 0 and select != self.mSatelliteIndex :
 	 			self.mSatelliteIndex = select
@@ -89,8 +87,7 @@ class EditTransponder( SettingWindow ) :
 		 			frequencylist.append( '%d MHz' % self.mTransponderList[i].mFrequency )
 
 		 		dialog = xbmcgui.Dialog( )
-#	 			select = dialog.select( 'Select Transponder', frequencylist )
-	 			select = dialog.select( 'Select frequency you want to set to', frequencylist )
+	 			select = dialog.select( MR_LANG( 'Select frequency you want to set to' ), frequencylist )
 
 	 			if select >= 0 and select != self.mTransponderIndex :
 		 			self.mTransponderIndex = select
@@ -98,7 +95,7 @@ class EditTransponder( SettingWindow ) :
 
 	 		else :
 		 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Information', 'Satellite has no transponder info.\nFirst add new transponder' )
+				dialog.SetDialogProperty( MR_LANG( 'Information' ), MR_LANG( 'Satellite has no transponder info.\nFirst add new transponder' ) )
 	 			dialog.doModal( )
 
 		# Add Transponder
@@ -111,8 +108,6 @@ class EditTransponder( SettingWindow ) :
  				self.OpenBusyDialog( )
 				frequency, fec, polarization, simbolrate = dialog.GetValue( )
 
-				# check Already Exist Transponder
- 			
  				newTransponder = ElisITransponderInfo( )
  				newTransponder.reset( )
  				newTransponder.mFrequency = frequency
@@ -125,7 +120,7 @@ class EditTransponder( SettingWindow ) :
  				ret = self.mCommander.Transponder_Add( self.mLongitude, self.mBand, tmplist )
  				if ret != True :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( 'ERROR', 'Transponder Add Fail' )
+					dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Transponder Add Fail' ) )
 		 			dialog.doModal( )
 		 			return
  				self.mTransponderIndex = 0
@@ -149,7 +144,7 @@ class EditTransponder( SettingWindow ) :
 			 		ret = self.mCommander.Transponder_Delete( self.mLongitude, self.mBand, tmplist )
 			 		if ret != True :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						dialog.SetDialogProperty( 'ERROR', 'Transponder Edit Fail' )
+						dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Transponder Edit Fail' ) )
 			 			dialog.doModal( )
 			 			return
 					
@@ -169,7 +164,7 @@ class EditTransponder( SettingWindow ) :
 	 				ret = self.mCommander.Transponder_Add( self.mLongitude, self.mBand, tmplist )
 	 				if ret != True :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						dialog.SetDialogProperty( 'ERROR', 'Transponder Edit Fail' )
+						dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Transponder Edit Fail' ) )
 			 			dialog.doModal( )
 			 			return
 	 				self.mTransponderIndex = 0
@@ -181,15 +176,14 @@ class EditTransponder( SettingWindow ) :
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Information', 'Satellite has no transponder info.\nFirst add new transponder' )
+				dialog.SetDialogProperty( MR_LANG( 'Information' ), MR_LANG( 'Satellite has no transponder info.\nFirst add new transponder' ) )
 	 			dialog.doModal( )
 
 	 	# Delete Transponder
 	 	elif groupId == E_Input06 :
 	 		if self.mTransponderList and self.mTransponderList[0].mError == 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-#				dialog.SetDialogProperty( 'Confirm', 'Do you want to delete transponder?' )
-				dialog.SetDialogProperty( 'Delete transpnder', 'Do you want to remove this transponder?' )
+				dialog.SetDialogProperty( MR_LANG( 'Delete transpnder' ), MR_LANG( 'Do you want to remove this transponder?' ) )
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -199,7 +193,7 @@ class EditTransponder( SettingWindow ) :
 			 		ret = self.mCommander.Transponder_Delete( self.mLongitude, self.mBand, tmplist )
 			 		if ret != True :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						dialog.SetDialogProperty( 'ERROR', 'Transponder Delete Fail' )
+						dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Transponder Delete Fail' ) )
 			 			dialog.doModal( )
 			 			return
 			 		self.mTransponderIndex = 0
@@ -211,7 +205,7 @@ class EditTransponder( SettingWindow ) :
 	 			
 	 		else :
 		 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Information', 'Satellite has no transponder info.\nFirst add new transponder' )
+				dialog.SetDialogProperty( MR_LANG( 'Information' ), MR_LANG( 'Satellite has no transponder info.\nFirst add new transponder' ) )
 	 			dialog.doModal( )
 
 		
@@ -227,24 +221,24 @@ class EditTransponder( SettingWindow ) :
 		self.ResetAllControl( )
 		self.GetSatelliteInfo( self.mSatelliteIndex )
 		satellitename = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand )
-		self.AddInputControl( E_Input01, 'Satellite', satellitename, 'Choose a satellite from the list' )
+		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), satellitename, MR_LANG( 'Choose a satellite from the list' ) )
 
 		self.mTransponderList = self.mDataCache.GetTransponderListBySatellite( self.mLongitude, self.mBand )
 
 		if self.mTransponderList and self.mTransponderList[0].mError == 0 :
-			self.AddInputControl( E_Input02, 'Frequency', '%d MHz' % self.mTransponderList[self.mTransponderIndex].mFrequency, 'Select a frequency from the list' )
-			self.AddInputControl( E_Input03, 'Symbol Rate', '%d KS/s' % self.mTransponderList[self.mTransponderIndex].mSymbolRate )
+			self.AddInputControl( E_Input02, MR_LANG( 'Frequency' ), '%d MHz' % self.mTransponderList[self.mTransponderIndex].mFrequency, MR_LANG( 'Select a frequency from the list' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'Symbol Rate' ), '%d KS/s' % self.mTransponderList[self.mTransponderIndex].mSymbolRate )
 
 			property = ElisPropertyEnum( 'Polarisation', self.mCommander )
-			self.AddInputControl( E_Input04, 'Polarization', property.GetPropStringByIndex( self.mTransponderList[self.mTransponderIndex].mPolarization ) )
+			self.AddInputControl( E_Input04, MR_LANG( 'Polarization' ), property.GetPropStringByIndex( self.mTransponderList[self.mTransponderIndex].mPolarization ) )
 		else :
-			self.AddInputControl( E_Input02, 'Frequency', 'None', 'Select a frequency from the list' )
-			self.AddInputControl( E_Input03, 'Symbol Rate', 'None' )
-			self.AddInputControl( E_Input04, 'Polarization', 'None' )
+			self.AddInputControl( E_Input02, MR_LANG( 'Frequency' ), MR_LANG( 'None' ), MR_LANG( 'Select a frequency from the list' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'Symbol Rate' ), MR_LANG( 'None' ) )
+			self.AddInputControl( E_Input04, MR_LANG( 'Polarization' ), MR_LANG( 'None' ) )
 
-		self.AddInputControl( E_Input05, 'Add Transponder', '', 'Here you can add a new transponder' )
-		self.AddInputControl( E_Input06, 'Delete Transponder', '', 'You can delete a selected transponder here' )
-		self.AddInputControl( E_Input07, 'Edit Transponder', '', 'Configure your transponder' )
+		self.AddInputControl( E_Input05, MR_LANG( 'Add Transponder' ), '', MR_LANG( 'Here you can add a new transponder' ) )
+		self.AddInputControl( E_Input06, MR_LANG( 'Delete Transponder' ), '', MR_LANG( 'You can delete a selected transponder here' ) )
+		self.AddInputControl( E_Input07, MR_LANG( 'Edit Transponder' ), '', MR_LANG( 'Configure your transponder' ) )
 		
 		self.InitControl( )
 		self.SetEnableControl( E_Input03, False )

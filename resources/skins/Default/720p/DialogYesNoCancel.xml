@@ -1,6 +1,6 @@
 <window>
 	<defaultcontrol always="true">302</defaultcontrol>
-	<allowoverlay>no</allowoverlay>
+	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group">

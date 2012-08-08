@@ -49,7 +49,7 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 			self.ResetAllControl( )
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
 			self.CloseBusyDialog( )
-			WinMgr.GetInstance().CloseWindow( )
+			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )
@@ -178,7 +178,7 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 			self.ResetAllControl( )
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
 			self.CloseBusyDialog( )
-			WinMgr.GetInstance().CloseWindow( )
+			WinMgr.GetInstance( ).CloseWindow( )
 			return
 
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )

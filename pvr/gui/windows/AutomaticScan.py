@@ -36,7 +36,7 @@ class AutomaticScan( SettingWindow ) :
 			dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( 'ERROR', 'Has No Configurd Satellite' )
  			dialog.doModal( )
-			WinMgr.GetInstance().CloseWindow( )
+			WinMgr.GetInstance( ).CloseWindow( )
 
 
 	def onAction( self, aAction ) :
@@ -46,13 +46,13 @@ class AutomaticScan( SettingWindow ) :
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.ResetAllControl( )
-			WinMgr.GetInstance().CloseWindow( )
+			WinMgr.GetInstance( ).CloseWindow( )
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
-			WinMgr.GetInstance().CloseWindow( )
+			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )

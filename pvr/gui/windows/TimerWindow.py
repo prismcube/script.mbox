@@ -136,7 +136,7 @@ class TimerWindow( BaseWindow ) :
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
 		self.SetVideoRestore( )
-		WinMgr.GetInstance().CloseWindow( )
+		WinMgr.GetInstance( ).CloseWindow( )
 
 
 	def UpdateTimerMode( self ) :

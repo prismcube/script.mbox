@@ -119,7 +119,7 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 			return
 			
 		self.mLoadConfig = True
-		WinMgr.GetInstance().CloseWindow( )
+		WinMgr.GetInstance( ).CloseWindow( )
 
 
 	def InitConfig( self ) :

@@ -37,7 +37,7 @@ class TunerConfiguration( SettingWindow ) :
 
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.getControl( E_MAIN_LIST_ID ).reset( )
-			WinMgr.GetInstance().CloseWindow( )
+			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT or actionId == Action.ACTION_MOVE_RIGHT :			
 			pass

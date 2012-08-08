@@ -34,7 +34,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 			self.SetLongitude( )
 			self.SetLatitude( )
 			self.ResetAllControl( )
-			WinMgr.GetInstance().CloseWindow( )
+			WinMgr.GetInstance( ).CloseWindow( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -43,7 +43,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 			self.SetLongitude( )
 			self.SetLatitude( )
 			self.ResetAllControl( )
-			WinMgr.GetInstance().CloseWindow( )
+			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )
@@ -99,7 +99,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 			self.SetLongitude( )
 			self.SetLatitude( )
 			self.ResetAllControl( )
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_TUNER_CONFIGURATION )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TUNER_CONFIGURATION )
 
 			
 	def onFocus( self, controlId ) :
