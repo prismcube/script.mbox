@@ -14,29 +14,27 @@ class ConditionalAccess( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.SetSettingWindowLabel( 'Conditional Access' )
+		self.SetSettingWindowLabel( MR_LANG( 'Conditional Access' ) )
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )
 
 		smartCard = self.mCommander.Conax_GetInformation( CAS_SLOT_NUM_1 )
-		smartCardName = 'Not inserted'
+		smartCardName = MR_LANG( 'Not inserted' )
 		if smartCard and smartCard.mError == 0 :
 			smartCardName = 'CONAX - %s' % smartCard.card_number
 		else :
-			smartCardName = 'Not inserted'			
-		self.AddInputControl( E_Input01, 'Smartcard Information', '%s' % smartCardName, 'View smartcard information' )
+			smartCardName = MR_LANG( 'Not inserted' )
+		self.AddInputControl( E_Input01, MR_LANG( 'Smartcard Information' ), '%s' % smartCardName, MR_LANG( 'View smartcard information' ) )
 
-		camName = 'Not inserted'
+		camName = MR_LANG( 'Not inserted' )
 		if self.mCommander.Cicam_IsInserted( CAS_SLOT_NUM_1 ) == True :
 			cardinfo = self.mCommander.Cicam_GetInfo( CAS_SLOT_NUM_1 )
 			camName = cardinfo.mName
-		self.AddInputControl( E_Input02, 'CAM Information', '%s' % camName, 'View CAM information' )
+		self.AddInputControl( E_Input02, MR_LANG( 'CAM Information' ), '%s' % camName, MR_LANG( 'View CAM information' ) )
 		
-		self.AddInputControl( E_Input03, 'PIN Code Modification', '', 'Change pin code' )
-		self.AddInputControl( E_Input04, 'Maturity Rating', '', 'Access maturity rating' )
-		self.AddInputControl( E_Input05, 'Rights Consultation', '', 'View rights consultation' )
-		self.AddInputControl( E_Input06, 'Purchase List Consultation', '', 'View purchase list consultation' )
-		self.AddInputControl( E_Input07, 'Operator Message', '', 'View operator message' )
+		self.AddInputControl( E_Input03, MR_LANG( 'PIN Code Modification' ), '', MR_LANG( 'Change pin code' ) )
+		self.AddInputControl( E_Input04, MR_LANG( 'Maturity Rating' ), '', MR_LANG( 'Access maturity rating' ) )
+		self.AddInputControl( E_Input05, MR_LANG( 'Operator Message' ), '', MR_LANG( 'View operator message' ) )
 		
 		self.InitControl( )
 		self.mInitialized = True
@@ -86,12 +84,6 @@ class ConditionalAccess( SettingWindow ) :
 
 		elif groupId == E_Input05 :
 			pass
-
-		elif groupId == E_Input06 :
-			pass
-
-		elif groupId == E_Input06 :
-			pass
 				
 
 	def onFocus( self, aControlId ) :
@@ -101,3 +93,4 @@ class ConditionalAccess( SettingWindow ) :
 		if self.mLastFocused != aControlId :
 			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId
+

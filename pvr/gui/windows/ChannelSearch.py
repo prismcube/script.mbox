@@ -10,20 +10,17 @@ class ChannelSearch( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
-#		self.SetSettingWindowLabel( 'Channel Scan' )
-		self.SetSettingWindowLabel( 'Channel Search' )
+		self.SetSettingWindowLabel( MR_LANG( 'Channel Search' ) )
 
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )
 
-#		self.AddInputControl( E_Input01, 'Automatic Scan', '', 'Running automatic scan.' )
-#		self.AddInputControl( E_Input02, 'Manual Scan', '', 'Running manual scan.' )
-		self.AddInputControl( E_Input01, 'Automatic Scan', '', 'Search TV & Radio channels automatically' )
-		self.AddInputControl( E_Input02, 'Manual Scan', '', 'Scan channels of the selected satellite by TP' )
+		self.AddInputControl( E_Input01, MR_LANG( 'Automatic Scan' ), '', MR_LANG( 'Search TV & Radio channels automatically' ) )
+		self.AddInputControl( E_Input02, MR_LANG( 'Manual Scan' ), '', MR_LANG( 'Scan channels of the selected satellite by TP' ) )
 
 		self.InitControl( )
-		self.mInitialized = True
 		self.SetFocusControl( E_Input01 )
+		self.mInitialized = True
 
 
 	def onAction( self, aAction ) :
@@ -74,3 +71,4 @@ class ChannelSearch( SettingWindow ) :
 		if self.mLastFocused != aControlId :
 			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId
+

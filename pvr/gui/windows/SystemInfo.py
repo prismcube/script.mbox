@@ -9,15 +9,12 @@ LABEL_ID_HDD_TEMEPERATURE	=	302
 class SystemInfo( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
- 
-#		leftGroupItems			= [ 'STB Infomation' ]
 		leftGroupItems			= [ 'Version' ]
 	
 		self.mCtrlLeftGroup 			= None
 		self.mCtrlRecordFreeSize		= None
 		self.mCtrlHDDTemperature		= None
 		self.mGroupItems 				= []
-		self.mInitialized 				= False
 		self.mCheckEndThread			= True
 		self.mLastFocused 				= E_SUBMENU_LIST_ID
 		self.mPrevListItemID 			= 0

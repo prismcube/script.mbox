@@ -5,7 +5,6 @@ import pvr.TunerConfigMgr as ConfigMgr
 class AntennaSetup( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mInitialized = False
 
 
 	def onInit( self ) :

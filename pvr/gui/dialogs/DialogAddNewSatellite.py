@@ -14,13 +14,13 @@ class DialogAddNewSatellite( SettingDialog ) :
 		property = ElisPropertyEnum( 'Band', self.mCommander )
 		self.mListBand.append( property.GetPropStringByIndex( 0 ) )
 		self.mListBand.append( property.GetPropStringByIndex( 1 ) )
-		
+
+
 	def onInit( self ) :
 		self.mLongitude = 0
-#		self.SetHeaderLabel( 'Add New Satellite' )
-		self.SetHeaderLabel( 'Configure new satellite' )
-		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, 'Confirm' )
-		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, 'Cancel' )
+		self.SetHeaderLabel( MR_LANG( 'Configure new satellite' ) )
+		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Confirm' ) )
+		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, MR_LANG( 'Cancel' ) )
 		self.DrawItem( )
 		self.mIsOk = E_DIALOG_STATE_NO
 
@@ -61,11 +61,10 @@ class DialogAddNewSatellite( SettingDialog ) :
 
 		elif groupId == E_DialogInput02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
- #			dialog.SetDialogProperty( 'Set Longitude', self.mLongitude )
- 			dialog.SetDialogProperty( 'Longitude degree', self.mLongitude )
+ 			dialog.SetDialogProperty( MR_LANG( 'Longitude degree' ), self.mLongitude )
  			dialog.doModal( )
 
- 			if dialog.IsOK() == E_DIALOG_STATE_YES :
+ 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 	 			self.mLongitude  = dialog.GetNumber( )
 	 			self.DrawItem( )
 
@@ -73,8 +72,7 @@ class DialogAddNewSatellite( SettingDialog ) :
 			self.mIsCBand = self.GetSelectedIndex( E_DialogSpinEx02 )
 
 		elif groupId == E_DialogInput01 :
-#			self.mSatelliteName = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, 'Satellite Name', self.mSatelliteName, 15 )
-			self.mSatelliteName = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, 'Enter a new satellite name', self.mSatelliteName, 15 )
+			self.mSatelliteName = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, MR_LANG( 'Enter a new satellite name' ), self.mSatelliteName, 15 )
 			self.DrawItem( )
 
 		elif groupId == E_SETTING_DIALOG_BUTTON_OK_ID :
@@ -92,7 +90,7 @@ class DialogAddNewSatellite( SettingDialog ) :
 		return self.mIsOk
 		
 
-	def onFocus( self, aControlId ):
+	def onFocus( self, aControlId ) :
 		pass
 
 
@@ -105,7 +103,7 @@ class DialogAddNewSatellite( SettingDialog ) :
 		else :
 			self.mBand = ElisEnum.E_BAND_C
 
-		LOG_TRACE('Add New Satellite Longitude = %d Band = %d' % ( self.mLongitude, self.mBand ) )
+		LOG_TRACE( 'Add New Satellite Longitude = %d Band = %d' % ( self.mLongitude, self.mBand ) )
 		return self.mLongitude, self.mBand, self.mSatelliteName
 
 
@@ -114,12 +112,12 @@ class DialogAddNewSatellite( SettingDialog ) :
 	
 		if self.mSatelliteName == None :
 			self.mSatelliteName = ''
-		self.AddInputControl( E_DialogInput01, 'Satellite Name', self.mSatelliteName )
-		self.AddUserEnumControl( E_DialogSpinEx01, 'Longitude Direction', E_LIST_MY_LONGITUDE, self.mIsWest )
+		self.AddInputControl( E_DialogInput01, MR_LANG( 'Satellite Name' ), self.mSatelliteName )
+		self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Longitude Direction' ), E_LIST_MY_LONGITUDE, self.mIsWest )
 
 		tmplongitude = '%03d.%d' % ( ( self.mLongitude / 10 ), self.mLongitude % 10 )
-		self.AddInputControl( E_DialogInput02, 'Longitude Angle',  tmplongitude )
-		self.AddUserEnumControl( E_DialogSpinEx02, 'Band Type', self.mListBand, self.mIsCBand )
+		self.AddInputControl( E_DialogInput02, MR_LANG( 'Longitude Angle' ),  tmplongitude )
+		self.AddUserEnumControl( E_DialogSpinEx02, MR_LANG( 'Band Type' ), self.mListBand, self.mIsCBand )
 		self.AddOkCanelButton( )
 		self.SetAutoHeight( True )
 

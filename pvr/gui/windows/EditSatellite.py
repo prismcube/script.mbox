@@ -16,8 +16,8 @@ class EditSatellite( SettingWindow ) :
 
 		self.SetSettingWindowLabel( MR_LANG( 'Edit Satellite' ) )
 
+		hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
-			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 			self.SetVisibleControls( hideControlIds, False )
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Has no configured satellite' ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -25,7 +25,6 @@ class EditSatellite( SettingWindow ) :
 			dialog.doModal( )
 			WinMgr.GetInstance( ).CloseWindow( )
 		else :
-			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 			self.SetVisibleControls( hideControlIds, True )
 			self.SetPipScreen( )
 			self.LoadNoSignalState( )

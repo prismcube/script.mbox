@@ -9,7 +9,7 @@ class AutomaticScan( SettingWindow ) :
 		self.mConfiguredSatelliteList = None
 
 
-	def onInit(self) :
+	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
@@ -22,19 +22,17 @@ class AutomaticScan( SettingWindow ) :
 
 		self.LoadFormattedSatelliteNameList( )
 
+		hideControlIds = [ E_Input01, E_Input02, E_SpinEx01, E_SpinEx02 ]
 		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
-			if self.getControl( E_SETTING_DESCRIPTION ).getLabel( ) == 'Has no configured satellite' :
-				hideControlIds = [ E_Input01, E_Input02, E_SpinEx01, E_SpinEx02 ]
-				self.SetVisibleControls( hideControlIds, True )
+			self.SetVisibleControls( hideControlIds, True )
 			self.InitConfig( )
 			self.mInitialized = True
 			self.SetFocusControl( E_Input01 )
 		else :
-			hideControlIds = [ E_Input01, E_Input02, E_SpinEx01, E_SpinEx02 ]
 			self.SetVisibleControls( hideControlIds, False )
-			self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Has no configured satellite' )
+			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Has no configured satellite' ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( 'ERROR', 'Has No Configurd Satellite' )
+			dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Has No Configurd Satellite' ) )
  			dialog.doModal( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
@@ -73,8 +71,7 @@ class AutomaticScan( SettingWindow ) :
 		# Satellite
 		if groupId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
-#			select =  dialog.select( 'Select satellite', self.mFormattedList )
-			select =  dialog.select( 'Select a satellite you want to scan channels', self.mFormattedList )			
+			select =  dialog.select( MR_LANG( 'Select a satellite you want to scan channels' ), self.mFormattedList )			
 
 			if select >= 0 and select != self.mSatelliteIndex :
 				self.mSatelliteIndex = select
@@ -102,7 +99,6 @@ class AutomaticScan( SettingWindow ) :
 	def onFocus( self, aControlId ) :
 		if self.mInitialized == False :
 			return
-
 		if self.mLastFocused != aControlId :
 			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId
@@ -114,21 +110,14 @@ class AutomaticScan( SettingWindow ) :
 		if count <= 1 :
 			hideControlIds = [ E_Input01, E_SpinEx01, E_SpinEx02, E_Input02 ]
 			self.SetVisibleControls( hideControlIds, False )
-			self.getControl( E_SETTING_DESCRIPTION ).setLabel( 'Has no configured satellite' )
-
+			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Has no configured satellite' ) )
 		else :
-			try :
-#				self.AddInputControl( E_Input01, 'Satellite', self.mFormattedList[self.mSatelliteIndex], 'Select satellite' )
-#				self.AddEnumControl( E_SpinEx01, 'Network Search', None, 'Network Search' )
-#				self.AddEnumControl( E_SpinEx02, 'Channel Search Mode', None, 'Channel Search Mode' )
-#				self.AddInputControl( E_Input02, 'Start Search', '','Start Search' )
-				self.AddInputControl( E_Input01, 'Satellite', self.mFormattedList[self.mSatelliteIndex], 'Select Satellite(s) you wish to search from' )
-				self.AddEnumControl( E_SpinEx01, 'Network Search', None, 'Set your STB to scan channels from multiple TPs' )
-				self.AddEnumControl( E_SpinEx02, 'Channel Search Mode', None, 'Select the type of channels you want to search for' )
-				self.AddInputControl( E_Input02, 'Search Now', '','Perform an automatic channel search' )
-				self.InitControl( )
-			except Exception, ex :
-				LOG_TRACE('Error exception[%s]'% ex)
+			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[self.mSatelliteIndex], MR_LANG( 'Select Satellite(s) you wish to search from' ) )
+			self.AddEnumControl( E_SpinEx01, 'Network Search', None, MR_LANG( 'Set your STB to scan channels from multiple TPs' ) )
+			self.AddEnumControl( E_SpinEx02, 'Channel Search Mode', None, MR_LANG( 'Select the type of channels you want to search for' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Search Now' ), '', MR_LANG( 'Perform an automatic channel search' ) )
+			self.InitControl( )
+
 	
 	def LoadFormattedSatelliteNameList( self ) :
 		self.mConfiguredSatelliteList = self.mDataCache.Satellite_GetConfiguredList( )
@@ -137,7 +126,7 @@ class AutomaticScan( SettingWindow ) :
 		else :
  			return
 		self.mFormattedList = []
-		self.mFormattedList.append( 'All' )
+		self.mFormattedList.append( MR_LANG( 'All' ) )
 
 		for config in self.mConfiguredSatelliteList :
 			self.mFormattedList.append( self.mDataCache.GetFormattedSatelliteName( config.mLongitude, config.mBand ) )
