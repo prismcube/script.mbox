@@ -151,7 +151,7 @@ class SystemInfo( SettingWindow ) :
 				tem = 'Unknown'
 			LOG_TRACE( 'HDD Temperature = %s' % tem )
 			self.mCtrlHDDTemperature.setLabel( 'HDD Temperature : %s' % tem )
-			time.sleep( 10 )
+			time.sleep( 1 )
 
 
 	def IsNumber( self, aString ) :

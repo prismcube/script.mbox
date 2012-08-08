@@ -15,7 +15,6 @@ MAX_ITEM					= 10
 
 
 class DialogContext( BaseDialog ) :
-
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )	
 		self.mItemList = []
@@ -33,14 +32,12 @@ class DialogContext( BaseDialog ) :
 
 		listItems = []
 		for i in range( self.mItemCount ) :
-			listItem = xbmcgui.ListItem( '%s'% self.mItemList[i].mDescription )
+			listItem = xbmcgui.ListItem( '%s' % self.mItemList[i].mDescription )
 			if i == self.mSelectedIndex :
 				listItem.setProperty( 'mark', 'True' )
-
-			listItems.append(listItem)
+			listItems.append( listItem )
 
 		self.mCtrlList.addItems( listItems )
-
 
 		# Set Dialog Size
 		realcnt = self.mItemCount
@@ -96,10 +93,11 @@ class DialogContext( BaseDialog ) :
 	def SetProperty( self, aItemList, aSelectedIndex = -1 ) :
 		self.mItemList = aItemList
 		if len( self.mItemList ) == 0 :
-			self.mItemList.append( ContextItem( 'None' ) )
+			self.mItemList.append( ContextItem( MR_LANG( 'None' ) ) )
 		self.mItemCount = len( self.mItemList )
 
 		self.mSelectedIndex = aSelectedIndex
+
 
 	def GetSelectedAction( self ) :
 		if self.mSelectedIndex <  0 :
@@ -109,5 +107,4 @@ class DialogContext( BaseDialog ) :
 			return -1
 		
 		return self.mItemList[ self.mSelectedIndex ].mContextAction
-		
-	
+

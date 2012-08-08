@@ -4,7 +4,6 @@ from pvr.gui.WindowImport import *
 class DialogLnbFrequency( SettingDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingDialog.__init__( self, *args, **kwargs )
-
 		self.mLowFreq = 0
 		self.mHighFreq = 0
 		self.mThreshFreq = 0
@@ -15,9 +14,9 @@ class DialogLnbFrequency( SettingDialog ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		
-		self.SetHeaderLabel( 'LNB Frequency' )
-		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, 'Confirm' )
-		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, 'Cancel' )
+		self.SetHeaderLabel( MR_LANG( 'LNB Frequency' ) )
+		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Confirm' ) )
+		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, MR_LANG( 'Cancel' ) )
 		self.DrawItem( )
 		self.mIsOk = E_DIALOG_STATE_NO		
 
@@ -65,7 +64,7 @@ class DialogLnbFrequency( SettingDialog ) :
 			
 		elif groupId == E_DialogInput01 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( 'Low Frequency', self.mLowFreq, 5 )
+			dialog.SetDialogProperty( MR_LANG( 'Low Frequency' ), self.mLowFreq, 5 )
  			dialog.doModal( )
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.mLowFreq = dialog.GetString( )
@@ -73,7 +72,7 @@ class DialogLnbFrequency( SettingDialog ) :
 
 		elif groupId == E_DialogInput02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( 'High Frequency', self.mHighFreq, 5 )
+			dialog.SetDialogProperty( MR_LANG( 'High Frequency' ), self.mHighFreq, 5 )
  			dialog.doModal( )
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.mHighFreq = dialog.GetString( )
@@ -81,7 +80,7 @@ class DialogLnbFrequency( SettingDialog ) :
 
 		elif groupId == E_DialogInput03 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( 'Switch Frequency', self.mThreshFreq, 5 )
+			dialog.SetDialogProperty( MR_LANG( 'Switch Frequency' ), self.mThreshFreq, 5 )
  			dialog.doModal( )
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.mThreshFreq = dialog.GetString( )
@@ -109,9 +108,9 @@ class DialogLnbFrequency( SettingDialog ) :
 	def DrawItem( self ) :
 		self.ResetAllControl( )
 	
-		self.AddInputControl( E_DialogInput01, 'Low Frequency' , '%d' % int( self.mLowFreq ) )
-		self.AddInputControl( E_DialogInput02, 'High Frequency' , '%d' % int( self.mHighFreq ) )
-		self.AddInputControl( E_DialogInput03, 'Switch Frequency' , '%d' % int( self.mThreshFreq ) )
+		self.AddInputControl( E_DialogInput01, MR_LANG( 'Low Frequency' ), '%d' % int( self.mLowFreq ) )
+		self.AddInputControl( E_DialogInput02, MR_LANG( 'High Frequency' ), '%d' % int( self.mHighFreq ) )
+		self.AddInputControl( E_DialogInput03, MR_LANG( 'Switch Frequency' ), '%d' % int( self.mThreshFreq ) )
 		self.AddOkCanelButton( )
 		self.SetAutoHeight( True )
 		

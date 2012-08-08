@@ -21,16 +21,16 @@ DIALOG_BUTTON_CLOSE_ID		= 103
 class DialogMoveAntenna( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
-		self.tunerIndex = E_TUNER_1
-		
+		self.mTunerIndex = E_TUNER_1
+
+
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId )	
 
-		self.tunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerNumber( )
+		self.mTunerIndex = ConfigMgr.GetInstance( ).GetCurrentTunerNumber( )
 
-#		context = [ 'MOVE WEST', 'STEP WEST', 'STOP', 'STEP EAST', 'MOVE EAST', 'CLOSE' ]
-		context = [ 'Rotate to West', 'One Step to West', 'Stop', 'One Step to East', 'Rotate to East', 'Close' ]
+		context = [ MR_LANG( 'Rotate to West' ), MR_LANG( 'One Step to West' ), MR_LANG( 'Stop' ), MR_LANG( 'One Step to East' ), MR_LANG( 'Rotate to East' ), MR_LANG( 'Close' ) ]
 
 		itemHeight = int( self.getProperty( 'ItemHeight' ) )
 		self.mCtrlList = self.getControl( DIALOG_LIST_ID )
@@ -71,19 +71,19 @@ class DialogMoveAntenna( BaseDialog ) :
 	def onClick( self, aControlId ) :
 		selectedIndex = self.mCtrlList.getSelectedPosition( )
  		if selectedIndex == E_MOVE_WEST :
- 			self.mCommander.Motorized_GoWest( self.tunerIndex )
+ 			self.mCommander.Motorized_GoWest( self.mTunerIndex )
 
  		elif selectedIndex == E_STEP_WEST :
- 			self.mCommander.Motorized_StepWest( self.tunerIndex )
+ 			self.mCommander.Motorized_StepWest( self.mTunerIndex )
 
  		elif selectedIndex == E_STOP :
- 			self.mCommander.Motorized_Stop( self.tunerIndex )
+ 			self.mCommander.Motorized_Stop( self.mTunerIndex )
 
  		elif selectedIndex == E_STEP_EAST :
- 			self.mCommander.Motorized_StepEast( self.tunerIndex )
+ 			self.mCommander.Motorized_StepEast( self.mTunerIndex )
 
  		elif selectedIndex == E_MOVE_EAST :
-			self.mCommander.Motorized_GoEast( self.tunerIndex )
+			self.mCommander.Motorized_GoEast( self.mTunerIndex )
 
 		elif selectedIndex == E_CLOSE :
 			self.CloseDialog( )
