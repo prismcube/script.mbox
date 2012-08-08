@@ -218,14 +218,14 @@ class FirstInstallation( SettingWindow ) :
 			self.mPrevStepNum = E_STEP_CHANNEL_SEARCH_CONFIG
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Time & Date Setup' ) )
 			setupChannelNumber = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
-			self.mSetupChannel = self.mDataCache.Channel_GetSearch( setupChannelNumber )
-			if self.mSetupChannel :
+			self.mSetupChannel = self.mDataCache.Channel_GetByNumber( setupChannelNumber )
+			if self.mSetupChannel and self.mSetupChannel.mError == 0 :
 				self.mHasChannel = True
 				channelName = self.mSetupChannel.mName
 			else :
-				channellist = self.mDataCache.Channel_GetList( )
-				if channellist :
-					self.mSetupChannel = channellist[0]
+				channelList = self.mDataCache.Channel_GetList( )
+				if channelList and len( channelList ) > 0 :
+					self.mSetupChannel = channelList[0]
 					channelName = self.mSetupChannel.mName
 				else :
 					self.mHasChannel = False

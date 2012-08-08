@@ -763,6 +763,7 @@ class DataCacheMgr( object ) :
 		#channel.printdebug( )
 		return channel.mChannel
 
+
 	@DataLock
 	def Channel_GetCurr( self, aJumpNumber ) :
 		if aJumpNumber == None :
@@ -773,7 +774,7 @@ class DataCacheMgr( object ) :
 			return None
 
 		channel =  cacheChannel.mChannel
-		LOG_TRACE('------------ get Channel-------------------[%s %s]'% ( channel.mNumber, channel.mName ) )
+		#LOG_TRACE('------------ get Channel-------------------[%s %s]'% ( channel.mNumber, channel.mName ) )
 		#channel.printdebug( )
 		return channel
 
@@ -787,26 +788,6 @@ class DataCacheMgr( object ) :
 
 		channel = cacheChannel.mChannel
 		return channel
-
-
-	@DataLock
-	def Channel_GetSearch( self, aNumber ) :
-
-		fChannel = None
-		if self.mChannelList and self.mChannelList[0].mError == 0 :
-			findCh = False
-			for iChannel in self.mChannelList :
-				#LOG_TRACE('searching[%s] [%s]'% (iChannel.mNumber, aChannel.mNumber) )
-				if iChannel.mNumber == aNumber :
-					fChannel = iChannel
-					findCh = True
-					LOG_TRACE('------- Success to searched[%s]'% iChannel.mNumber)
-					break
-			if findCh == False:
-				LOG_TRACE('------- Fail to searched[%s]'% aNumber)
-				return None
-
-		return fChannel
 
 
 	@DataLock
