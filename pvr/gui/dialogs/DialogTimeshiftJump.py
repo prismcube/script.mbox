@@ -1,6 +1,5 @@
 from pvr.gui.WindowImport import *
 
-
 E_MOVETOJUMP_NUM_ID  = 210
 E_RESERVED_ID        = 211
 E_MOVETOJUMP_TIME_ID = 212
@@ -18,9 +17,6 @@ class DialogTimeshiftJump( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )	
 		self.mMoveToNumber		= ''
-		#self.mChannelName		= 'No channel'
-		#self.mEPGName			= ''
-
 		self.mAsyncMoveTimer    = None
 		self.mTestTime          = 0
 
@@ -37,7 +33,7 @@ class DialogTimeshiftJump( BaseDialog ) :
 		self.mCtrlLblMoveToTime	= self.getControl( E_MOVETOJUMP_TIME_ID )
 		self.mCtrlProgress      = self.getControl( E_PROGRESS_ID )
 
-		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset()
+		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		self.mJumpIFrame = 0
 
 		self.SetLabelMoveToTime( )
@@ -46,6 +42,7 @@ class DialogTimeshiftJump( BaseDialog ) :
 		self.SetLabelMoveToNumber( )
 		self.GetPreviewMove( )
 		self.RestartAsyncMove( )
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -67,22 +64,26 @@ class DialogTimeshiftJump( BaseDialog ) :
 			self.mMoveToNumber = '%d' % int( self.mMoveToNumber )
 			if int( self.mMoveToNumber ) > self.mMaxMoveNum :
 				self.mMoveToNumber = inputString
+
 			self.SetLabelMoveToNumber( )
 			self.GetPreviewMove( )
 			self.RestartAsyncMove( )
 
-
 		elif actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 :
-			inputNum = actionId - (Action.ACTION_JUMP_SMS2 - 2)
+			inputNum = actionId - ( Action.ACTION_JUMP_SMS2 - 2 )
+
 			if inputNum >= 2 and inputNum <= 9 :
 				inputString = '%d' % inputNum
 				self.mMoveToNumber += inputString
 				self.mMoveToNumber = '%d' % int( self.mMoveToNumber )
+
 				if int( self.mMoveToNumber ) > self.mMaxMoveNum :
 					self.mMoveToNumber = inputString
+
 				self.SetLabelMoveToNumber( )
 				self.GetPreviewMove( )
 				self.RestartAsyncMove( )
+
 
 	def onClick( self, aControlId ) :
 		if aControlId == E_BUTTON_OK :
@@ -105,49 +106,55 @@ class DialogTimeshiftJump( BaseDialog ) :
 		label = '%s%%'% self.mMoveToNumber
 		self.mCtrlLblMoveToNum.setLabel( label )
 
-	def SetLabelMoveToName( self, aMoveName='' ) :
+
+	def SetLabelMoveToName( self, aMoveName = '' ) :
 		self.mCtrlLblMoveToName.setLabel( aMoveName )
 
-	def SetLabelMoveToTime( self, aMoveTime='' ) :
+
+	def SetLabelMoveToTime( self, aMoveTime = '' ) :
 		self.mCtrlLblMoveToTime.setLabel( aMoveTime )
 
-	def SetPogress( self, aPercent=0 ) :
+
+	def SetPogress( self, aPercent = 0 ) :
 		self.mCtrlProgress.setPercent( aPercent )
+
 
 	def GetPreviewMove( self ):
 		status = None
-		status = self.mDataCache.Player_GetStatus()
+		status = self.mDataCache.Player_GetStatus( )
 
 		if not status :
 			return -1
 
 		#calculate current position
-		moveTime = (status.mEndTimeInMs - status.mStartTimeInMs) * (int(self.mMoveToNumber) / 100.0)
+		moveTime = (status.mEndTimeInMs - status.mStartTimeInMs) * ( int( self.mMoveToNumber ) / 100.0)
 		self.mJumpIFrame = status.mStartTimeInMs + moveTime
 
 		if self.mJumpIFrame > status.mEndTimeInMs:
-			#self.mJumpIFrame = status.mEndTimeInMs
 			self.mJumpIFrame = 0
+
 		elif self.mJumpIFrame < status.mStartTimeInMs :
-			#self.mJumpIFrame = status.mStartTimeInMs
 			self.mJumpIFrame = 0
 
 
 		lbl_timeP = ''
 		if self.mJumpIFrame :
-			lbl_timeP = TimeToString( (self.mJumpIFrame/1000.0), TimeFormatEnum.E_HH_MM_SS)
-			LOG_TRACE('move time[%s] iframe[%s] progress[%s]'% (lbl_timeP, self.mJumpIFrame, self.mMoveToNumber) )
+			lbl_timeP = TimeToString( ( self.mJumpIFrame / 1000.0 ), TimeFormatEnum.E_HH_MM_SS )
+			#LOG_TRACE('move time[%s] iframe[%s] progress[%s]'% (lbl_timeP, self.mJumpIFrame, self.mMoveToNumber) )
 		else :
-			lbl_timeP = 'Move Fail'
+			lbl_timeP = MR_LANG( 'Move Fail' )
 
 		self.SetLabelMoveToTime( lbl_timeP )
-		self.SetPogress( int(self.mMoveToNumber) )
+		self.SetPogress( int( self.mMoveToNumber ) )
+
 
 	def GetMoveToJump( self ):
 		return self.mJumpIFrame
 
+
 	def IsOK( self ) :
 		return self.mIsOk
+
 
 	def RestartAsyncMove( self ) :
 		self.StopAsyncMove( )
@@ -156,12 +163,12 @@ class DialogTimeshiftJump( BaseDialog ) :
 
 	def StartAsyncMove( self ) :
 		self.mAsyncMoveTimer = threading.Timer( 3, self.AsyncToMove ) 				
-		self.mAsyncMoveTimer.start()
+		self.mAsyncMoveTimer.start( )
 
 
 	def StopAsyncMove( self ) :
-		if self.mAsyncMoveTimer	and self.mAsyncMoveTimer.isAlive() :
-			self.mAsyncMoveTimer.cancel()
+		if self.mAsyncMoveTimer	and self.mAsyncMoveTimer.isAlive( ) :
+			self.mAsyncMoveTimer.cancel( )
 			del self.mAsyncMoveTimer
 
 		self.mAsyncMoveTimer  = None

@@ -1,6 +1,5 @@
 from pvr.gui.WindowImport import *
 
-
 MENU_ID_WEATHER					= 0
 MENU_ID_PICTURE					= 1
 MENU_ID_MUSIC					= 2
@@ -22,19 +21,19 @@ class MediaCenter( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.getControl( E_SETTING_MINI_TITLE ).setLabel( 'Media Center' )
+		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Media Center' ) )
 
-		
+
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			xbmc.executebuiltin('PlayerControl(Stop)')
+			xbmc.executebuiltin( 'PlayerControl(Stop)' )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 		elif actionId == Action.ACTION_PARENT_DIR :
-			xbmc.executebuiltin('PlayerControl(Stop)')
+			xbmc.executebuiltin( 'PlayerControl(Stop)' )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 
@@ -44,3 +43,4 @@ class MediaCenter( BaseWindow ) :
  
 	def onFocus( self, aControlId ) :
 		pass
+
