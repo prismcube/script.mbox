@@ -1,12 +1,5 @@
 from pvr.gui.WindowImport import *
 
-
-"""
-E_DIALOG_HEADER			= 100
-
-E_BUTTON_OK_ID			= 501
-E_BUTTON_CANCEL_ID		= 601
-"""
 FLAG_OPT_LIST  = 0
 FLAG_OPT_GROUP = 1
 
@@ -24,12 +17,11 @@ class DialogEditChannelList( SettingDialog ) :
 		self.mDialogTitle = ''
 		self.mMode = FLAG_OPT_LIST
 
+
 	def onInit( self ) :
-
-		self.mCtrlImgBox            = self.getControl( 9001 )
-
+		self.mCtrlImgBox = self.getControl( 9001 )
 		self.SetHeaderLabel( self.mDialogTitle )
-		self.DrawItem()
+		self.DrawItem( )
 		self.mIsOk = False
 
 
@@ -38,27 +30,27 @@ class DialogEditChannelList( SettingDialog ) :
 		self.GlobalAction( actionId )		
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			self.ResetAllControl()
-			self.CloseDialog()
+			self.ResetAllControl( )
+			self.CloseDialog( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			self.ResetAllControl()
-			self.CloseDialog()
+			self.ResetAllControl( )
+			self.CloseDialog( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
-			self.ControlLeft()
+			self.ControlLeft( )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			self.ControlRight()
+			self.ControlRight( )
 			
 		elif actionId == Action.ACTION_MOVE_UP :
-			self.ControlUp()
+			self.ControlUp( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
-			self.ControlDown()
+			self.ControlDown( )
 
 
 	def onClick( self, aControlId ) :
@@ -77,20 +69,8 @@ class DialogEditChannelList( SettingDialog ) :
 					self.SetDialogGroup( id )
 
 			self.mIsOk = True
-			self.ResetAllControl()
-			self.CloseDialog()
-
-		"""
-		elif id == E_SettingDialogOk :
-			self.mIsOk = True
-			self.ResetAllControl()
-			self.CloseDialog()
-
-		elif id == E_SettingDialogCancel :
-			self.mIsOk = False
-			self.ResetAllControl()
-			self.CloseDialog()
-		"""
+			self.ResetAllControl( )
+			self.CloseDialog( )
 
  				
 	def onFocus( self, aControlId ):
@@ -154,7 +134,6 @@ class DialogEditChannelList( SettingDialog ) :
 				self.SetVisibleControl( E_DialogSpinEx01, False )
 				self.SetVisibleControl( E_DialogSpinEx02, False )
 
-
 		#self.AddOkCanelButton( )
 		self.SetAutoHeight( True )
 		self.InitControl( )
@@ -162,8 +141,6 @@ class DialogEditChannelList( SettingDialog ) :
 
 
 	def SetDialogGroup( self, aFocusId ) :
-		LOG_TRACE( 'Enter' )
-
 		label = ''
 		if aFocusId == E_DialogInput09 :
 			#delete
@@ -193,24 +170,24 @@ class DialogEditChannelList( SettingDialog ) :
 				label = 'rename'
 
 			kb = xbmc.Keyboard( default, title, False )
-			kb.doModal()
+			kb.doModal( )
 
 			name = ''
 			name = kb.getText()
 			if name :
 				self.mFavoriteName = result + name
 
-		LOG_TRACE( '========%s[%s]'% (label,self.mFavoriteName) )
-		LOG_TRACE( 'Leave' )
+		#LOG_TRACE( '========%s[%s]'% (label,self.mFavoriteName) )
 
 
 	def IsOK( self ) :
 		return self.mIsOk
 
-	def GetValue( self, aFlag ) :
 
-		LOG_TRACE('FavoriteName[%s] isOk[%s]' % ( self.mFavoriteName, self.mIsOk ) )
+	def GetValue( self, aFlag ) :
+		#LOG_TRACE('FavoriteName[%s] isOk[%s]' % ( self.mFavoriteName, self.mIsOk ) )
 		return self.mIdxDialog, self.mFavoriteName, self.mIsOk
+
 
 	def SetValue( self, aMode, aTitle, aChannelList = [], aFavoriteGroup = [] ) :
 		self.mMode = aMode
@@ -221,5 +198,5 @@ class DialogEditChannelList( SettingDialog ) :
 		else :
 			self.mChannelExist = False
 
-		LOG_TRACE( 'title[%s] channelList[%s] favoriteList[%s]'% (self.mDialogTitle, self.mChannelExist, self.mFavoriteList) )
+		#LOG_TRACE( 'title[%s] channelList[%s] favoriteList[%s]'% ( self.mDialogTitle, self.mChannelExist, self.mFavoriteList ) )
 		

@@ -1,5 +1,6 @@
 from pvr.gui.WindowImport import *
 import time
+
 #control ids
 E_CONTROL_ID_IMAGE_RECORDING1 		= 10
 E_CONTROL_ID_LABEL_RECORDING1 		= 11
@@ -60,9 +61,9 @@ E_TAG_COLOR_RED   = '[COLOR red]'
 E_TAG_COLOR_GREEN = '[COLOR green]'
 E_TAG_COLOR_END   = '[/COLOR]'
 
-class TimeShiftPlate(BaseWindow):
-	def __init__(self, *args, **kwargs):
-		BaseWindow.__init__(self, *args, **kwargs)
+class TimeShiftPlate( BaseWindow ) :
+	def __init__( self, *args, **kwargs ) :
+		BaseWindow.__init__( self, *args, **kwargs )
 
 		#default
 		self.mProgressbarWidth = E_PROGRESS_WIDTH_MAX
@@ -80,17 +81,8 @@ class TimeShiftPlate(BaseWindow):
 		self.mPrekey = None
 
 
-	"""
-	def __del__(self):
-		LOG_TRACE( 'destroyed TimeshiftPlate' )
-
-		# end thread PlayProgressThread()
-		self.mEnableLocalThread = False
-	"""
-	
-
-	def onInit(self):
-		self.mWinId = xbmcgui.getCurrentWindowId()
+	def onInit( self ) :
+		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		LOG_TRACE( 'winID[%d]'% self.mWinId )
 
@@ -140,8 +132,7 @@ class TimeShiftPlate(BaseWindow):
 		self.mAutomaticHideTimer = None
 
 		self.ShowRecordingInfo( )
-		
-		self.mTimeShiftExcuteTime = self.mDataCache.Datetime_GetLocalTime()
+		self.mTimeShiftExcuteTime = self.mDataCache.Datetime_GetLocalTime( )
 
 		self.InitLabelInfo( )
 		self.InitTimeShift( )
@@ -151,11 +142,10 @@ class TimeShiftPlate(BaseWindow):
 
 		self.GetNextSpeed( E_ONINIT )
 
-		self.mEventBus.Register( self )
-
 		#run thread
 		self.mEnableLocalThread = True
-		self.PlayProgressThread()
+		self.PlayProgressThread( )
+		self.mEventBus.Register( self )
 
 		if self.mPrekey :
 			if self.mPrekey == Action.ACTION_MBOX_REWIND :
@@ -173,16 +163,15 @@ class TimeShiftPlate(BaseWindow):
 
 			self.mPrekey = None
 
-
 		if self.mAutomaticHide == True :
-			self.StartAutomaticHide()
+			self.StartAutomaticHide( )
 
 
-	def onAction(self, aAction):
-		id = aAction.getId()
+	def onAction( self, aAction ) :
+		id = aAction.getId( )
 		self.GlobalAction( id )
 		
-		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
+		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR :
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
@@ -190,52 +179,49 @@ class TimeShiftPlate(BaseWindow):
 			self.KeySearch( id-Action.REMOTE_0 )
 
 		elif id >= Action.ACTION_JUMP_SMS2 and id <= Action.ACTION_JUMP_SMS9 :
-			rKey = id - (Action.ACTION_JUMP_SMS2 - 2)
+			rKey = id - ( Action.ACTION_JUMP_SMS2 - 2 )
 			self.KeySearch( rKey )
 
-		elif id == Action.ACTION_SELECT_ITEM:
+		elif id == Action.ACTION_SELECT_ITEM :
 			pass
 
 		elif id == Action.ACTION_MOVE_LEFT :
-			self.GetFocusId()
+			self.GetFocusId( )
 			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
 				self.mUserMoveTimeBack = self.mUserMoveTime
 				self.mUserMoveTime = -10
 				self.mFlagUserMove = True
-				self.StopAutomaticHide()
-				self.RestartAsyncMove()
-
+				self.StopAutomaticHide( )
+				self.RestartAsyncMove( )
 				#LOG_TRACE('left moveTime[%s]'% self.mUserMoveTime )
 			else :
-				self.RestartAutomaticHide()
+				self.RestartAutomaticHide( )
 
-		elif id == Action.ACTION_MOVE_RIGHT:
-			self.GetFocusId()
+		elif id == Action.ACTION_MOVE_RIGHT :
+			self.GetFocusId( )
 			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
 				self.mUserMoveTimeBack = self.mUserMoveTime
 				self.mUserMoveTime = 10
 				self.mFlagUserMove = True
-				self.StopAutomaticHide()
-				self.RestartAsyncMove()
-
+				self.StopAutomaticHide( )
+				self.RestartAsyncMove( )
 				#LOG_TRACE('right moveTime[%s]'% self.mUserMoveTime )
 			else :
-				self.RestartAutomaticHide()
+				self.RestartAutomaticHide( )
 
-		elif id == Action.ACTION_PAGE_DOWN:
+		elif id == Action.ACTION_PAGE_DOWN :
 			if self.mMode == ElisEnum.E_MODE_PVR :
 				#LOG_TRACE('Archive playing now')
 				return -1
 
 			prevChannel = None
-			prevChannel = self.mDataCache.Channel_GetPrev( self.mDataCache.Channel_GetCurrent( ) ) #self.mCommander.Channel_GetPrev( )
+			prevChannel = self.mDataCache.Channel_GetPrev( self.mDataCache.Channel_GetCurrent( ) )
 			if prevChannel :
 				self.mDataCache.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )			
-				#self.mCommander.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )
 				self.onClick( E_CONTROL_ID_BUTTON_STOP )
 				
 			
-		elif id == Action.ACTION_PAGE_UP:
+		elif id == Action.ACTION_PAGE_UP :
 			if self.mMode == ElisEnum.E_MODE_PVR :
 				#LOG_TRACE('Archive playing now')
 				return -1
@@ -244,10 +230,9 @@ class TimeShiftPlate(BaseWindow):
 			nextChannel = self.mDataCache.Channel_GetNext( self.mDataCache.Channel_GetCurrent( ) )
 			if nextChannel :
 				self.mDataCache.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
-				#self.mCommander.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
 				self.onClick( E_CONTROL_ID_BUTTON_STOP )
 
-		elif id == Action.ACTION_CONTEXT_MENU:
+		elif id == Action.ACTION_CONTEXT_MENU :
 			if self.mMode == ElisEnum.E_MODE_PVR :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
@@ -273,8 +258,7 @@ class TimeShiftPlate(BaseWindow):
 
 		elif id == Action.ACTION_MBOX_RECORD :
 			if self.mMode == ElisEnum.E_MODE_PVR :
-				msg = 'Now PVR Playing...'
-				xbmcgui.Dialog( ).ok('Warning', msg )
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Warning' ), MR_LANG( 'Now PVR Playing...' ) )
 			else :
 				self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
 
@@ -288,48 +272,47 @@ class TimeShiftPlate(BaseWindow):
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
-		elif id == Action.ACTION_SHOW_INFO : # ToDO : change the action after remote bug fixed
+		elif id == Action.ACTION_SHOW_INFO :
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
-
+		"""
 		#test
 		elif id == 104 : #scroll up
-			self.ShowRecordingInfo()
+			self.ShowRecordingInfo( )
 			#self.UpdatePropertyGUI( E_XML_PROPERTY_RECORDING1, 'True' )
+
 		elif id == 105 :
 			#self.UpdatePropertyGUI( E_XML_PROPERTY_RECORDING2, 'False' )
 			pass
+		"""
 
 
-	def onClick(self, aControlId):
+	def onClick( self, aControlId ):
 		if aControlId >= E_CONTROL_ID_BUTTON_REWIND and aControlId <= E_CONTROL_ID_BUTTON_JUMP_FF :
-
 			if aControlId == E_CONTROL_ID_BUTTON_PLAY :
-				self.RestartAutomaticHide()
+				self.RestartAutomaticHide( )
 			else :
-				self.StopAutomaticHide()
+				self.StopAutomaticHide( )
 
 
 			self.TimeshiftAction( aControlId )
 			if aControlId != E_CONTROL_ID_BUTTON_PLAY and aControlId != E_CONTROL_ID_BUTTON_PAUSE :
 				self.setFocusId( aControlId )
 
-
-		elif aControlId == E_CONTROL_ID_BUTTON_VOLUME:
+		elif aControlId == E_CONTROL_ID_BUTTON_VOLUME :
 			self.GlobalAction( Action.ACTION_MUTE )
-			self.StopAutomaticHide()
+			self.StopAutomaticHide( )
 		
 		elif aControlId == E_CONTROL_ID_BUTTON_START_RECORDING :
 			runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 
 			isOK = False
-			GuiLock2(True)
 			if  runningCount < 1 :
-				dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
-				dialog.doModal()
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
+				dialog.doModal( )
 
-				isOK = dialog.IsOK()
+				isOK = dialog.IsOK( )
 				if isOK == E_DIALOG_STATE_YES :
 					isOK = True
 
@@ -337,29 +320,26 @@ class TimeShiftPlate(BaseWindow):
 					from pvr.GuiHelper import RecordConflict
 					RecordConflict( dialog.GetConflictTimer( ) )
 					
-			else:
-				msg = 'Already [%s] recording(s) running' %runningCount
-				xbmcgui.Dialog().ok('Infomation', msg )
-			GuiLock2(False)
+			else :
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Infomation' ), MR_LANG( 'Already 2 recording(s) running' ) )
 
 			if isOK :
 				self.mDataCache.mCacheReload = True
 
-		elif aControlId == E_CONTROL_ID_BUTTON_BOOKMARK:
+		elif aControlId == E_CONTROL_ID_BUTTON_BOOKMARK :
 			self.ShowDialog( aControlId )
 
 
-	def onFocus(self, aControlId):
+	def onFocus( self, aControlId ):
 		#LOG_TRACE( 'control %d' % controlId )
 		pass
 
 
 	@GuiLock
-	def onEvent(self, aEvent):
-		if self.mWinId == xbmcgui.getCurrentWindowId():
-			if aEvent.getName() == ElisEventPlaybackEOF.getName() :
-				#aEvent.printdebug()
-				LOG_TRACE( 'ElisEventPlaybackEOF mType[%d]' %(aEvent.mType ) )
+	def onEvent( self, aEvent ) :
+		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
+			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
+				LOG_TRACE( 'ElisEventPlaybackEOF mType[%d]'% ( aEvent.mType ) )
 
 				if self.mFlag_OnEvent != True :
 					return -1
@@ -373,52 +353,49 @@ class TimeShiftPlate(BaseWindow):
 
 				elif aEvent.mType == ElisEnum.E_EOF_END :
 					LOG_TRACE( 'EventRecv EOF_END' )
-					#if self.mMode == ElisEnum.E_MODE_PVR :
 					xbmc.executebuiltin('xbmc.Action(stop)')
 					#self.TimeshiftAction( E_CONTROL_ID_BUTTON_STOP )
 
-			elif aEvent.getName() == ElisEventRecordingStarted.getName() or \
-				 aEvent.getName() == ElisEventRecordingStopped.getName() :
-				self.ShowRecordingInfo()
+			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
+				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
+				self.ShowRecordingInfo( )
 				self.mDataCache.mCacheReload = True
 
-				if aEvent.getName() == ElisEventRecordingStopped.getName() and aEvent.mHDDFull :
+				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					LOG_TRACE('----------hddfull[%s]'% aEvent.mHDDFull)
-					xbmcgui.Dialog().ok( MR_LANG('Infomation'), MR_LANG('HDD Full!!! Cannot Recording...') )
+					xbmcgui.Dialog( ).ok( MR_LANG('Infomation'), MR_LANG( 'HDD Full!!! Cannot Recording...' ) )
 
 		else:
-			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId()) )
+			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
 
 
 	def ShowDialog( self, aFocusId ) :
 		head = ''
 		line1= ''
 		if aFocusId == E_CONTROL_ID_BUTTON_BOOKMARK :
-			head = 'BookMark'
+			head = MR_LANG( 'BookMark' )
 			line1= 'test'
 
-		GuiLock2(True)
-		dialog = xbmcgui.Dialog().ok( head, line1 )
-		GuiLock2(False)
+		dialog = xbmcgui.Dialog( ).ok( head, line1 )
 
 
-	def TimeshiftAction( self, aFocusId ):
+	def TimeshiftAction( self, aFocusId ) :
 		ret = False
 
 		if aFocusId == E_CONTROL_ID_BUTTON_PLAY :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
 				#ret = self.mDataCache.Player_StartTimeshiftPlayback( ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE, 0 )
-				ret = self.mDataCache.Player_Resume()
+				ret = self.mDataCache.Player_Resume( )
 
 			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
-				ret = self.mDataCache.Player_Resume()
+				ret = self.mDataCache.Player_Resume( )
 
-			elif self.mMode == ElisEnum.E_MODE_PVR:
-				ret = self.mDataCache.Player_Resume()
+			elif self.mMode == ElisEnum.E_MODE_PVR :
+				ret = self.mDataCache.Player_Resume( )
 
-			LOG_TRACE( 'play_resume() ret[%s]'% ret )
+			LOG_TRACE( 'play_resume( ) ret[%s]'% ret )
 			if ret :
-				if self.mSpeed != 100:
+				if self.mSpeed != 100 :
 					#_self.mDataCache.Player_SetSpeed( 100 )
 					self.UpdateControlGUI( E_CONTROL_ID_IMAGE_REWIND, False )
 					self.UpdateControlGUI( E_CONTROL_ID_IMAGE_FORWARD, False )
@@ -435,9 +412,7 @@ class TimeShiftPlate(BaseWindow):
 
 				#blocking release
 				self.SetBlockingButtonEnable( True )
-
 				self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
-
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_PAUSE :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
@@ -445,12 +420,12 @@ class TimeShiftPlate(BaseWindow):
 				self.WaitToBuffering( )
 
 			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
-				ret = self.mDataCache.Player_Pause()
+				ret = self.mDataCache.Player_Pause( )
 
 			elif self.mMode == ElisEnum.E_MODE_PVR :
-				ret = self.mDataCache.Player_Pause()
+				ret = self.mDataCache.Player_Pause( )
 
-			#LOG_TRACE( 'play_pause() ret[%s]'% ret )
+			#LOG_TRACE( 'play_pause( ) ret[%s]'% ret )
 			if ret :
 				self.mIsPlay = FLAG_PLAY
 
@@ -463,22 +438,20 @@ class TimeShiftPlate(BaseWindow):
 				#blocking
 				self.SetBlockingButtonEnable( False )
 
-
 		elif aFocusId == E_CONTROL_ID_BUTTON_STOP :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
-				ret = self.mDataCache.Player_Stop()
+				ret = self.mDataCache.Player_Stop( )
 				self.Close( )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 				
-
 			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
-				ret = self.mDataCache.Player_Stop()
+				ret = self.mDataCache.Player_Stop( )
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 
 			elif self.mMode == ElisEnum.E_MODE_PVR :
-				ret = self.mDataCache.Player_Stop()
+				ret = self.mDataCache.Player_Stop( )
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
@@ -508,7 +481,6 @@ class TimeShiftPlate(BaseWindow):
 				self.mIsPlay = FLAG_PLAY
 				#LOG_WARN( 'status =%d ret[%s], player_SetSpeed[%s]'% ( self.mMode , ret, nextSpeed ) )
 
-
 		elif aFocusId == E_CONTROL_ID_BUTTON_FORWARD :
 			if self.mSpeed == 0 :
 				return
@@ -532,7 +504,6 @@ class TimeShiftPlate(BaseWindow):
 				self.mIsPlay = FLAG_PLAY
 				#LOG_WARN( 'status =%d ret[%s], player_SetSpeed[%s]'% ( self.mMode , ret, nextSpeed ) )
 
-
 		elif aFocusId == E_CONTROL_ID_BUTTON_JUMP_RR :
 			if self.mSpeed == 0 :
 				return
@@ -542,7 +513,6 @@ class TimeShiftPlate(BaseWindow):
 				prevJump = self.mTimeshift_staTime + 1000
 			ret = self.mDataCache.Player_JumpToIFrame( prevJump )
 			#LOG_TRACE('JumpRR ret[%s]'% ret )
-
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_JUMP_FF :
 			if self.mSpeed == 0 :
@@ -557,19 +527,17 @@ class TimeShiftPlate(BaseWindow):
 
 	def InitLabelInfo(self) :
 		self.mEventCopy = []
-
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE,        '' )
-		self.UpdateControlGUI( E_CONTROL_ID_EVENT_CLOCK,     '' )
-		self.UpdateControlGUI( E_CONTROL_ID_PROGRESS,        0 )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE,          '' )
+		self.UpdateControlGUI( E_CONTROL_ID_EVENT_CLOCK,         '' )
+		self.UpdateControlGUI( E_CONTROL_ID_PROGRESS,             0 )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_END_TIME,   '' )
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SPEED,       '' )
-		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_REWIND,   False )
-		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_FORWARD,  False )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SPEED,         '' )
+		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_REWIND,     False )
+		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_FORWARD,    False )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,     '', E_CONTROL_LABEL )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,      0, E_CONTROL_POSY )
-
-		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
+		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 
 
 	def SetBlockingButtonEnable( self, aValue ) :
@@ -674,7 +642,7 @@ class TimeShiftPlate(BaseWindow):
 
 	def InitTimeShift( self, loop = 0 ) :
 		status = None
-		status = self.mDataCache.Player_GetStatus()
+		status = self.mDataCache.Player_GetStatus( )
 		#retList = []
 		#retList.append( status )
 		#LOG_TRACE( 'player_GetStatus[%s]'% ClassToList( 'convert', retList ) )
@@ -693,7 +661,7 @@ class TimeShiftPlate(BaseWindow):
 			#test label
 			#test = TimeToString(status.mPlayTimeInMs/1000, TimeFormatEnum.E_HH_MM_SS)
 			#lblTest = 'current:[%s] currentToTime[%s] timeout[%s]'% (status.mPlayTimeInMs, test, self.mRepeatTimeout)
-			#self.UpdateControlGUI( self.mCtrlLblTest.getId(), lblTest )
+			#self.UpdateControlGUI( self.mCtrlLblTest.getId( ), lblTest )
 
 
 			#progress data
@@ -714,7 +682,7 @@ class TimeShiftPlate(BaseWindow):
 			tempEndTime     = self.mTimeshift_endTime / 1000
 
 			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
-				localTime = self.mDataCache.Datetime_GetLocalTime()
+				localTime = self.mDataCache.Datetime_GetLocalTime( )
 				duration = (self.mTimeshift_endTime - self.mTimeshift_staTime) / 1000
 				tempStartTime = localTime - duration
 				tempCurrentTime = tempStartTime + (self.mTimeshift_curTime / 1000 )
@@ -751,10 +719,11 @@ class TimeShiftPlate(BaseWindow):
 
 			self.GetNextSpeed( E_ONINIT )
 
-	def GetNextSpeed(self, aFocusId):
+
+	def GetNextSpeed( self, aFocusId ) :
 		#LOG_TRACE( 'mSpeed[%s]'% self.mSpeed )
 		ret = 0
-		if aFocusId == E_CONTROL_ID_BUTTON_REWIND:
+		if aFocusId == E_CONTROL_ID_BUTTON_REWIND :
 			#if self.mSpeed == -12800 :
 			#	ret = -12800
 			if self.mSpeed == -6400 :
@@ -791,7 +760,7 @@ class TimeShiftPlate(BaseWindow):
 			#elif self.mSpeed == 12800 :
 			#	ret = 6400
 
-		elif aFocusId == E_CONTROL_ID_BUTTON_FORWARD:
+		elif aFocusId == E_CONTROL_ID_BUTTON_FORWARD :
 			#if self.mSpeed == -12800 :
 			#	ret = -6400
 			if self.mSpeed == -6400 :
@@ -831,7 +800,7 @@ class TimeShiftPlate(BaseWindow):
 		elif aFocusId == E_ONINIT :
 			ret = self.mSpeed
 
-		else:
+		else :
 			ret = 100 #default
 
 		lspeed = ''
@@ -841,7 +810,6 @@ class TimeShiftPlate(BaseWindow):
 			lspeed = ''
 		else :
 			lspeed = '%sx'% ( abs(ret) / 100)
-
 			if ret > 100 :
 				flagFF = True
 				flagRR = False
@@ -849,21 +817,21 @@ class TimeShiftPlate(BaseWindow):
 				flagFF = False
 				flagRR = True
 
-		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_REWIND, flagRR )
+		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_REWIND,  flagRR )
 		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_FORWARD, flagFF )
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SPEED, lspeed )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SPEED,   lspeed )
 
 		if ret == 100 :
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, False )
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
 			self.mWin.setProperty( 'IsXpeeding', 'True' )
-			LOG_TRACE('-------Play----------------------speed[%s]'% ret)
+			LOG_TRACE( '-------Play----------------------speed[%s]'% ret)
 
 		else :
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )			
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
 			self.mWin.setProperty( 'IsXpeeding', 'False' )
-			LOG_TRACE('-------Pause----------------------speed[%s]'% ret)
+			LOG_TRACE( '-------Pause----------------------speed[%s]'% ret)
 
 		return ret
 
@@ -884,19 +852,18 @@ class TimeShiftPlate(BaseWindow):
 			labelMode = 'UNKNOWN'
 
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_START_RECORDING, buttonHide, E_CONTROL_VISIBLE )
-
 		return labelMode
 
 
 	@RunThread
-	def PlayProgressThread(self):
+	def PlayProgressThread( self ) :
 		loop = 0
-		while self.mEnableLocalThread:
+		while self.mEnableLocalThread :
 			#LOG_TRACE( 'repeat <<<<' )
 
 			#update localTime
-			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime()
-			lbl_localTime = TimeToString( self.mLocalTime, TimeFormatEnum.E_AW_HH_MM)
+			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
+			lbl_localTime = TimeToString( self.mLocalTime, TimeFormatEnum.E_AW_HH_MM )
 			self.UpdateControlGUI( E_CONTROL_ID_EVENT_CLOCK, lbl_localTime )
 
 			if self.mIsPlay != FLAG_STOP :
@@ -906,7 +873,7 @@ class TimeShiftPlate(BaseWindow):
 			time.sleep(self.mRepeatTimeout)
 			
 
-	def UpdateProgress(self, loop = 0):
+	def UpdateProgress( self, loop = 0 ):
 		try :
 			lbl_timeE = ''
 			lbl_timeP = ''
@@ -947,15 +914,15 @@ class TimeShiftPlate(BaseWindow):
 		if isRunRec == 1 :
 			setPropertyRecord1 = 'True'
 			recInfo = self.mDataCache.Record_GetRunningRecordInfo( E_INDEX_FIRST_RECORDING )
-			strLabelRecord1 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
+			strLabelRecord1 = '%04d %s'% ( int( recInfo.mChannelNo ), recInfo.mChannelName )
 
 		elif isRunRec == 2 :
 			setPropertyRecord1 = 'True'
 			setPropertyRecord2 = 'True'
 			recInfo = self.mDataCache.Record_GetRunningRecordInfo( E_INDEX_FIRST_RECORDING )
-			strLabelRecord1 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
+			strLabelRecord1 = '%04d %s'% ( int( recInfo.mChannelNo ), recInfo.mChannelName )
 			recInfo = self.mDataCache.Record_GetRunningRecordInfo( E_INDEX_SECOND_RECORDING )
-			strLabelRecord2 = '%04d %s'% (int(recInfo.mChannelNo), recInfo.mChannelName)
+			strLabelRecord2 = '%04d %s'% ( int( recInfo.mChannelNo ), recInfo.mChannelName )
 
 		btnValue = False
 		if isRunRec >= 1 :
@@ -971,13 +938,13 @@ class TimeShiftPlate(BaseWindow):
 
 
 	def RecordingStopAll( self ) :
-		RunningRecordCount = self.mCommander.Record_GetRunningRecorderCount()
-		LOG_ERR('RunningRecordCount=%s'% RunningRecordCount )
+		RunningRecordCount = self.mCommander.Record_GetRunningRecorderCount( )
+		LOG_ERR( 'RunningRecordCount=%s'% RunningRecordCount )
 
 		for i in range( int(RunningRecordCount) ) :
 			recInfo = self.mDataCache.Record_GetRunningRecordInfo( i )
 			if recInfo :
-				#recInfo.printdebug()
+				#recInfo.printdebug( )
 				ret = self.mDataCache.Timer_StopRecordingByRecordKey( recInfo.mRecordKey )
 				#LOG_TRACE('record key[%s] stop[%s]'% (recInfo.mRecordKey, ret) )
 
@@ -989,7 +956,7 @@ class TimeShiftPlate(BaseWindow):
 		waitTime = 0
 		self.OpenBusyDialog( )
 		while waitTime < 5 :
-			time.sleep(1)
+			time.sleep( 1 )
 			waitTime += 1
 
 		self.CloseBusyDialog( )				
@@ -997,12 +964,11 @@ class TimeShiftPlate(BaseWindow):
 
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
-
 		self.mEnableLocalThread = False
-		#self.PlayProgressThread().join()
+		#self.PlayProgressThread( ).join( )
 
-		self.StopAsyncMove()
-		self.StopAutomaticHide()
+		self.StopAsyncMove( )
+		self.StopAutomaticHide( )
 
 
 	def SetAutomaticHide( self, aHide=True ) :
@@ -1015,25 +981,25 @@ class TimeShiftPlate(BaseWindow):
 	
 	def AsyncAutomaticHide( self ) :
 		if self.mSpeed == 100 :
-			xbmc.executebuiltin('xbmc.Action(previousmenu)')
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 			#LOG_TRACE('HIDE : TimeShiftPlate')
 
 
 	def RestartAutomaticHide( self ) :
-		self.StopAutomaticHide()
-		self.StartAutomaticHide()
+		self.StopAutomaticHide( )
+		self.StartAutomaticHide( )
 
 	
 	def StartAutomaticHide( self ) :
 		prop = ElisPropertyEnum( 'Playback Banner Duration', self.mCommander )
-		bannerTimeout = prop.GetProp()
+		bannerTimeout = prop.GetProp( )
 		self.mAutomaticHideTimer = threading.Timer( bannerTimeout, self.AsyncAutomaticHide )
-		self.mAutomaticHideTimer.start()
+		self.mAutomaticHideTimer.start( )
 
 
 	def StopAutomaticHide( self ) :
-		if self.mAutomaticHideTimer and self.mAutomaticHideTimer.isAlive() :
-			self.mAutomaticHideTimer.cancel()
+		if self.mAutomaticHideTimer and self.mAutomaticHideTimer.isAlive( ) :
+			self.mAutomaticHideTimer.cancel( )
 			del self.mAutomaticHideTimer
 			
 		self.mAutomaticHideTimer = None
@@ -1046,15 +1012,15 @@ class TimeShiftPlate(BaseWindow):
 
 	def StartAsyncMove( self ) :
 		self.mAsyncShiftTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentMove ) 				
-		self.mAsyncShiftTimer.start()
+		self.mAsyncShiftTimer.start( )
 
 		self.mFlagUserMove = False
 		self.mAccelator += 1
 
 
 	def StopAsyncMove( self ) :
-		if self.mAsyncShiftTimer and self.mAsyncShiftTimer.isAlive() :
-			self.mAsyncShiftTimer.cancel()
+		if self.mAsyncShiftTimer and self.mAsyncShiftTimer.isAlive( ) :
+			self.mAsyncShiftTimer.cancel( )
 			del self.mAsyncShiftTimer
 
 		self.mAsyncShiftTimer  = None
@@ -1065,17 +1031,17 @@ class TimeShiftPlate(BaseWindow):
 		try :
 			if self.mFlagUserMove != True :
 				#if self.mAccelator > 2 :
-					#self.mUserMoveTime = int( self.mUserMoveTime * (1.5 ** self.mAccelator) / 10000 )
+					#self.mUserMoveTime = int( self.mUserMoveTime * ( 1.5 ** self.mAccelator) / 10000 )
 
 				self.mUserMoveTime = self.mUserMoveTime * self.mAccelator
-				frameJump = self.mTimeshift_playTime + (self.mUserMoveTime * 1000)
+				frameJump = self.mTimeshift_playTime + ( self.mUserMoveTime * 1000 )
 				if frameJump > self.mTimeshift_endTime :
 					frameJump = self.mTimeshift_endTime - 1000
 				elif frameJump < self.mTimeshift_staTime :
 					frameJump = self.mTimeshift_staTime + 1000
 
 				ret = self.mDataCache.Player_JumpToIFrame( frameJump )
-				#LOG_TRACE('2============frameJump[%s] accelator[%s] MoveSec[%s] ret[%s]'% (frameJump,self.mAccelator,(self.mUserMoveTime/10000),ret) )
+				#LOG_TRACE('2============frameJump[%s] accelator[%s] MoveSec[%s] ret[%s]'% ( frameJump, self.mAccelator, ( self.mUserMoveTime / 10000 ), ret ) )
 
 				self.mFlagUserMove = False
 				self.mAccelator = 0
@@ -1091,20 +1057,18 @@ class TimeShiftPlate(BaseWindow):
 
 		self.mFlag_OnEvent = False
 
-		GuiLock2(True)
-		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_TIMESHIFT_JUMP )
-		dialog.SetDialogProperty( str(aKey), E_INDEX_JUMP_MAX, None )
-		dialog.doModal()
-		GuiLock2(False)
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TIMESHIFT_JUMP )
+		dialog.SetDialogProperty( str( aKey ), E_INDEX_JUMP_MAX, None )
+		dialog.doModal( )
 
 		self.mFlag_OnEvent = True
 
-		isOK = dialog.IsOK()
+		isOK = dialog.IsOK( )
 		if isOK == E_DIALOG_STATE_YES :
 
-			move = dialog.GetMoveToJump()
+			move = dialog.GetMoveToJump( )
 			if move :
-				ret = self.mDataCache.Player_JumpToIFrame( int(move) )
+				ret = self.mDataCache.Player_JumpToIFrame( int( move ) )
 
 
 

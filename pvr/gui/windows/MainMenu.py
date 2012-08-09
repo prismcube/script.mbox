@@ -87,6 +87,7 @@ class MainMenu( BaseWindow ) :
 				dialog.SetDialogProperty( 'Warning', 'Now recording...' )
 				dialog.doModal( )
 				self.getControl( MAIN_GROUP_ID ).setVisible( True )
+
 			else :
 				if aControlId == BUTTON_ID_INSTALLATION :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_INSTALLATION )
@@ -118,9 +119,10 @@ class MainMenu( BaseWindow ) :
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Warning', 'Now PVR Playing...' )
+				dialog.SetDialogProperty( MR_LANG( 'Warning' ), MR_LANG( 'Now PVR Playing...' ) )
 	 			dialog.doModal( )
 	 			self.getControl( MAIN_GROUP_ID ).setVisible( True )
+
 			else:
 				self.mStartMediaCenter = True
 				self.mCommander.AppMediaPlayer_Control( 1 )
@@ -148,4 +150,5 @@ class MainMenu( BaseWindow ) :
 		if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 			self.mWin.setProperty( 'IsPVR', 'True' )
 		else :
-			self.mWin.setProperty( 'IsPVR', 'False' )		
+			self.mWin.setProperty( 'IsPVR', 'False' )
+

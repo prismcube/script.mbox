@@ -450,11 +450,9 @@ class ChannelListWindow( BaseWindow ) :
 		head =  MR_LANG( 'Confirm' )
 		line1 = MR_LANG( 'Delete All Channel' )
 
-		GuiLock2( True )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 		dialog.SetDialogProperty( head, line1 )
 		dialog.doModal( )
-		GuiLock2( False )
 
 		ret = dialog.IsOK( )
 
@@ -1010,7 +1008,6 @@ class ChannelListWindow( BaseWindow ) :
 		#is change?
 		if changed :
 			try :
-				GuiLock2( True )
 				#ask save question
 				label1 = EnumToString( 'mode', self.mZappingMode )
 				label2 = self.mCtrlListSubmenu.getSelectedItem( ).getLabel( )
@@ -1023,7 +1020,6 @@ class ChannelListWindow( BaseWindow ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( head, str( '%s\n\n%s'% ( line1.center( posLine ), line2 ) ) )
 				dialog.doModal( )
-				GuiLock2( False )
 
 				answer = dialog.IsOK( )
 
@@ -1138,11 +1134,9 @@ class ChannelListWindow( BaseWindow ) :
 			head =  MR_LANG( 'Confirm' )
 			line1 = MR_LANG( 'Do you want to save channels?' )
 
-			GuiLock2( True )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( head, line1 )
 			dialog.doModal( )
-			GuiLock2( False )
 
 			answer = dialog.IsOK( )
 
@@ -2192,11 +2186,9 @@ class ChannelListWindow( BaseWindow ) :
 		context.append( ContextItem( '%s'% MR_LANG( 'Save Exit' ), CONTEXT_ACTION_SAVE_EXIT ) )
 
 
-		GuiLock2( True )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
  		dialog.doModal( )
- 		GuiLock2( False )
 
 		selectedAction = dialog.GetSelectedAction( )
 		if selectedAction == -1 :
@@ -2318,11 +2310,9 @@ class ChannelListWindow( BaseWindow ) :
 			context.append( ContextItem( MR_LANG( 'Edit Channel' ), CONTEXT_ACTION_MENU_EDIT_MODE ) )
 			context.append( ContextItem( MR_LANG( 'Delete All Channel' ), CONTEXT_ACTION_MENU_DELETEALL ) )
 
-			GuiLock2( True )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 			dialog.SetProperty( context )
 	 		dialog.doModal( )
-	 		GuiLock2( False )
 
 			selectedAction = dialog.GetSelectedAction( )
 			if selectedAction == -1 :
@@ -2444,10 +2434,8 @@ class ChannelListWindow( BaseWindow ) :
 
 		isOK = False
 		if isRunRec > 0 :
-			GuiLock2( True )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_STOP_RECORD )
 			dialog.doModal( )
-			GuiLock2( False )
 
 			isOK = dialog.IsOK( )
 			if isOK == E_DIALOG_STATE_YES :

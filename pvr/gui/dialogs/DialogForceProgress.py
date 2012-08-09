@@ -1,18 +1,14 @@
 from pvr.gui.WindowImport import *
 
-
-# Control IDs
-
 PROGRESS_SCAN		= 400
 LABEL_PERCENT		= 100
 LABEL_STRING		= 200
-
 
 class DialogForceProgress( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )	
 		self.mLimitTime 		= 10
-		self.mTitle				= 'Wait'
+		self.mTitle				= MR_LANG( 'Wait' )
 		self.mEventName			= None
 		self.mFinish			= False
 
@@ -64,7 +60,7 @@ class DialogForceProgress( BaseDialog ) :
 				self.mFinish = True
 
 	
-	def SetDialogProperty( self, aLimitTime=10, aTitle='Wait', aEventName=None ) :
+	def SetDialogProperty( self, aLimitTime = 10, aTitle = MR_LANG( 'Wait' ), aEventName = None ) :
 		self.mLimitTime = aLimitTime
 		self.mTitle		= aTitle
 		self.mEventName = aEventName
@@ -79,13 +75,11 @@ class DialogForceProgress( BaseDialog ) :
 			time.sleep( 1 )			
 
 			if self.mFinish == True :
-#				self.mCtrlLabelString.setLabel( '%s Set complete' % self.mTitle )
-				self.mCtrlLabelString.setLabel( '%s completed' % self.mTitle )				
+				self.mCtrlLabelString.setLabel( MR_LANG( '%s completed' ) % self.mTitle )				
 				self.Close( )
 				break
 
-#		self.mCtrlLabelString.setLabel( '%s Progress Time Over' % self.mTitle )
-		self.mCtrlLabelString.setLabel( '%s timed out' % self.mTitle )
+		self.mCtrlLabelString.setLabel( MR_LANG( '%s timed out' ) % self.mTitle )
 		self.Close( )
 
 

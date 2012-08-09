@@ -808,7 +808,6 @@ class DataCacheMgr( object ) :
 		return  time.mktime( localTime )
 
 
-#	@DataLock
 	def Satellite_GetByChannelNumber( self, aNumber, aRequestType = -1 ) :
 		if aRequestType == -1 :
 			cacheChannel = self.mChannelListHash.get(aNumber, None)
@@ -835,32 +834,12 @@ class DataCacheMgr( object ) :
 		return None
 
 
-#	@DataLock
 	def Epgevent_GetListByChannel( self, aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount ) :
-
 		eventList = None
-		
 		if SUPPORT_EPG_DATABASE	== True :
  			self.mEpgDB = ElisEPGDB( )
  			eventList = self.mEpgDB.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
  			self.mEpgDB.Close( )
-
-			"""
-			from pvr.GuiHelper import ClassToList
-			#test
-			for iEPG in eventList :
-				ret=[]
-				ret.append(iEPG)
-				LOG_TRACE('iEPG_DB[%s]'% ClassToList('convert', ret) )
-
-			#test
-			ElisListCMD = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
-			if ElisListCMD :
-				for iEPG in ElisListCMD :
-					ret=[]
-					ret.append(iEPG)
-					LOG_TRACE('iEPG_CMD[%s]'% ClassToList('convert', ret) )
-			"""
 
 		else:
 			eventList = self.mCommander.Epgevent_GetList( aSid, aTsid, aOnid, aGmtFrom, aGmtUntil, aMaxCount )
@@ -868,11 +847,8 @@ class DataCacheMgr( object ) :
 		return eventList
 
 
-#	@DataLock
 	def Epgevent_GetCurrent( self, aSid, aTsid, aOnid ) :
-
 		eventList = None
-		
 		if SUPPORT_EPG_DATABASE	== True :
 			self.mEpgDB = ElisEPGDB( )
 			eventList = self.mEpgDB.Epgevent_GetCurrent( aSid, aTsid, aOnid, self.Datetime_GetGMTTime( ) )
@@ -885,27 +861,18 @@ class DataCacheMgr( object ) :
 		return eventList
 
 
-	def Epgevent_GetCurrentList( self  ) :
-
+	def Epgevent_GetCurrentList( self ) :
 		eventList = None
-
 		if SUPPORT_EPG_DATABASE	== True :
 			self.mEpgDB = ElisEPGDB( )
 			eventList = self.mEpgDB.Epgevent_GetCurrentList( self.Datetime_GetGMTTime( ) )
 			self.mEpgDB.Close( )
 
-		else:
-			return None
-
 		return eventList
 
 
-
-#	@DataLock
 	def Epgevent_GetFollowing( self, aSid, aTsid, aOnid ) :
-
 		eventList = None
-
 		if SUPPORT_EPG_DATABASE	== True :
 			self.mEpgDB = ElisEPGDB( )
 			eventList = self.mEpgDB.Epgevent_GetFollowing( aSid, aTsid, aOnid, self.Datetime_GetGMTTime( ) )
@@ -916,24 +883,18 @@ class DataCacheMgr( object ) :
 		return eventList
 
 
-#	@DataLock
 	def Epgevent_GetFollowingList( self ) :
-
 		eventList = None
-
 		if SUPPORT_EPG_DATABASE	== True :
 			self.mEpgDB = ElisEPGDB( )
 			eventList = self.mEpgDB.Epgevent_GetFollowingList( self.Datetime_GetGMTTime( ) )
 			self.mEpgDB.Close( )
-		else:
-			return None
 
 		return eventList
 
 
 	def Epgevent_GetCurrentByChannelFromEpgCF( self, aSid, aTsid, aOnid ) :
 		eventList = None
-
 		if SUPPORT_EPG_DATABASE	== True :
 			ret = self.mCommander.Epgevent_GetChannelDB( aSid, aTsid, aOnid )
 			if ret :
@@ -946,7 +907,6 @@ class DataCacheMgr( object ) :
 
 	def Epgevent_GetListByChannelFromEpgCF( self, aSid, aTsid, aOnid ) :
 		eventList = None
-
 		if SUPPORT_EPG_DATABASE	== True :
 			ret = self.mCommander.Epgevent_GetChannelDB( aSid, aTsid, aOnid )
 			if ret :
@@ -959,11 +919,9 @@ class DataCacheMgr( object ) :
 
 	def Epgevent_GetCurrentListByEpgCF( self, aSerciveType ) :
 		eventList = None
-
 		if SUPPORT_EPG_DATABASE	== True :
 			epgStart = 0 #end - start = 0 : all channel following
 			epgEnd = 0
-
 			ret = self.mCommander.Epgevnt_GetCurrentDB( aSerciveType, epgStart, epgEnd )
 			if ret :
 				self.mEpgDB = ElisEPGDB( E_EPG_DB_CF )
@@ -975,11 +933,9 @@ class DataCacheMgr( object ) :
 
 	def Epgevent_GetFollowingListByEpgCF( self, aSerciveType ) :
 		eventList = None
-
 		if SUPPORT_EPG_DATABASE	== True :
 			epgStart = 0 #end - start = 0 : all channel following
 			epgEnd = 0
-
 			ret = self.mCommander.Epgevent_GetFollowingDB( aSerciveType, epgStart, epgEnd )
 			if ret :
 				self.mEpgDB = ElisEPGDB( E_EPG_DB_CF )
@@ -989,19 +945,8 @@ class DataCacheMgr( object ) :
 		return eventList
 
 
-	#@DataLock
 	def Epgevent_GetPresent( self ) :
-		#Todo later
-		""" 
-		if self.mCurrentEvent :
-			LOG_TRACE('currentEvent' )
-			self.mCurrentEvent.printdebug( )
-		else :
-			 self.mCurrentEvent = self.mCommander.Epgevent_GetPresent( )
-
-		return self.mCurrentEvent
-		"""
-
+		iEPG = None
 		iEPG = self.mCommander.Epgevent_GetPresent( )
 		if iEPG == None or iEPG.mError != 0 :
 			iEPG = None
@@ -1009,172 +954,209 @@ class DataCacheMgr( object ) :
 		return iEPG
 
 
-	#Aready declared : _Elis, request direct command 
-
-
-	#New declared : request direct command 
 	def Channel_GetListBySatellite( self, aType, aMode, aSort, aLongitude, aBand ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			channelDB = ElisChannelDB( )
-			chList = channelDB.Channel_GetList( aType, aMode, aSort, aLongitude, aBand, -1, '', self.mSkip, self.mChannelListDBTable )
+			channelList = channelDB.Channel_GetList( aType, aMode, aSort, aLongitude, aBand, -1, '', self.mSkip, self.mChannelListDBTable )
 			channelDB.Close( )
-			return chList
+			return channelList
 		else :
 			return self.mCommander.Channel_GetListBySatellite( aType, aMode, aSort, aLongitude, aBand )
+
 
 	def Channel_GetListByFTACas( self, aType, aMode, aSort, aCAid ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			channelDB = ElisChannelDB( )
-			chList = channelDB.Channel_GetList( aType, aMode, aSort, None, None, aCAid, '', self.mSkip, self.mChannelListDBTable )
+			channelList = channelDB.Channel_GetList( aType, aMode, aSort, None, None, aCAid, '', self.mSkip, self.mChannelListDBTable )
 			channelDB.Close( )
-			return chList
+			return channelList
 		else :
 			return self.mCommander.Channel_GetListByFTACas( aType, aMode, aSort, aCAid )
+
 
 	def Channel_GetListByFavorite( self, aType, aMode, aSort, aFavName ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			channelDB = ElisChannelDB( )
-			chList = channelDB.Channel_GetList( aType, aMode, aSort, None, None, None, aFavName, self.mSkip, self.mChannelListDBTable )
+			channelList = channelDB.Channel_GetList( aType, aMode, aSort, None, None, None, aFavName, self.mSkip, self.mChannelListDBTable )
 			channelDB.Close( )
-			return chList
+			return channelList
 		else :
 			return self.mCommander.Channel_GetListByFavorite( aType, aMode, aSort, aFavName )
+
 
 	def Channel_Lock( self, aLock, aIChannel ) :
 		return self.mCommander.Channel_Lock( aLock, aIChannel )
 
+
 	def Channel_LockByNumber( self, aLock, aType, aNumList ) :
 		return self.mCommander.Channel_LockByNumber( aLock, aType, aNumList )
+
 
 	def Channel_Skip( self, aSet, aIChannel ) :
 		return self.mCommander.Channel_Skip( aSet, aIChannel )
 
+
 	def Channel_SkipByNumber( self, aSet, aType, aNumList ) :
 		return self.mCommander.Channel_SkipByNumber( aSet, aType, aNumList )
+
 
 	def Favoritegroup_AddChannel( self, aGroupName, aNumber, aServieType ) :
 		return self.mCommander.Favoritegroup_AddChannel( aGroupName, aNumber, aServieType )
 
+
 	def Favoritegroup_AddChannelByNumber( self, aGroupName, aServieType, aNumList ) :
 		return self.mCommander.Favoritegroup_AddChannelByNumber( aGroupName, aServieType, aNumList )
+
 
 	def Favoritegroup_RemoveChannel( self, aGroupName, aNumber, aServieType ) :
 		return self.mCommander.Favoritegroup_RemoveChannel( aGroupName, aNumber, aServieType )
 
+
 	def Favoritegroup_RemoveChannelByNumber( self, aGroupName, aServieType, aNumList ) :
 		return self.mCommander.Favoritegroup_RemoveChannelByNumber( aGroupName, aServieType, aNumList )
+
 
 	def FavoriteGroup_MoveChannels( self, aGroupName, aInsertPosition, aServieType, aIChannel ) :
 		return self.mCommander.FavoriteGroup_MoveChannels( aGroupName, aInsertPosition, aServieType, aIChannel )
 
+
 	def Favoritegroup_Create( self, aGroupName, aServieType ) :
 		return self.mCommander.Favoritegroup_Create( aGroupName, aServieType )
+
 
 	def Favoritegroup_ChangeName( self, aGroupName, aServieType, aGroupNewName ) :
 		return self.mCommander.Favoritegroup_ChangeName( aGroupName, aServieType, aGroupNewName )
 
+
 	def Favoritegroup_Remove( self, aGroupName, aServieType ) :
 		return self.mCommander.Favoritegroup_Remove( aGroupName, aServieType )
+
 
 	def Channel_Move( self, aServieType, aNumber, aIChannel ) :
 		return self.mCommander.Channel_Move( aServieType, aNumber, aIChannel )
 
+
 	def Channel_Save( self ) :
 		return self.mCommander.Channel_Save( )
+
 
 	def Channel_Backup( self ) :
 		return self.mCommander.Channel_Backup( )
 
+
 	def Channel_Restore( self, aRestore ) :
 		return self.mCommander.Channel_Restore( aRestore )
+
 
 	def Channel_Delete( self, aIChannel ) :
 		return self.mCommander.Channel_Delete( aIChannel )
 
+
 	def Channel_DeleteByNumber( self, aType, aNumList ) :
 		return self.mCommander.Channel_DeleteByNumber( aType, aNumList )
+
 
 	def Channel_DeleteAll( self ) :
 		return self.mCommander.Channel_DeleteAll( )
 
+
 	def Channel_SetInitialBlank( self, aBlank ) :
 		return self.mCommander.Channel_SetInitialBlank( aBlank )
+
 
 	def Channel_GetZappingList( self, aSync = 0 ) :
 		if SUPPORT_CHANNEL_DATABASE	== True :
 			recCount = self.Record_GetRunningRecorderCount( )
-			LOG_TRACE('%d : %d' %(self.mRecordingCount, recCount))
+			LOG_TRACE( '%d : %d' %( self.mRecordingCount, recCount ) )
 			if self.mRecordingCount != recCount :
 				self.mRecordingCount = recCount
 			else :
-				LOG_TRACE('skip getzapping list')
+				LOG_TRACE( 'skip getzapping list' )
 				return
  
 			self.Frontdisplay_SetIcon( ElisEnum.E_ICON_REC, recCount )
 			return self.mCommander.Channel_GetZappingList( aSync )
 
+
 	def Channel_InvalidateCurrent( self ) :
 		return self.mCommander.Channel_InvalidateCurrent( )
+
 
 	def Audiotrack_GetCount( self ) :
 		return self.mCommander.Audiotrack_GetCount( )
 
+
 	def Audiotrack_GetSelectedIndex( self ) :
 		return self.mCommander.Audiotrack_GetSelectedIndex( )
+
 
 	def Audiotrack_select( self, aIndex ) :
 		return self.mCommander.Audiotrack_select( aIndex )
 
+
 	def Audiotrack_Get( self, aIndex ) :
 		return self.mCommander.Audiotrack_Get( aIndex )
+
 
 	def Player_SetVIdeoSize( self, aX, aY, aW, aH ) :
 		return self.mCommander.Player_SetVIdeoSize( aX, aY, aW, aH ) 
 
+
 	def Player_VideoBlank( self, aBlank, aForce ) :
 		return self.mCommander.Player_VideoBlank( aBlank, aForce )
+
 
 	def Player_AVBlank( self, aBlank, aForce ) :
 		return self.mCommander.Player_AVBlank( aBlank, aForce )
 
+
 	def Player_SetMute( self, aMute ) :
 		return self.mCommander.Player_SetMute( aMute )
 
+
 	def Player_GetStatus( self ) :
 		return self.mCommander.Player_GetStatus( )
+
 
 	def Player_Resume( self ) :
 		ret = self.mCommander.Player_Resume( )
 		self.Frontdisplay_PlayPause( )
 		return ret
 
+
 	def Player_Pause( self ) :
 		ret = self.mCommander.Player_Pause( )
 		self.Frontdisplay_PlayPause( )
 		return ret
+
 
 	def Player_Stop( self ) :
 		ret = self.mCommander.Player_Stop( )
 		self.Frontdisplay_PlayPause( False )
 		return ret
 
+
 	def Player_SetSpeed( self, aSpeed ) :
 		ret = self.mCommander.Player_SetSpeed( aSpeed )
 		self.Frontdisplay_PlayPause( )
 		return ret
 
+
 	def Player_JumpToIFrame( self, aMiliSec ) :
 		return self.mCommander.Player_JumpToIFrame( aMiliSec )
+
 
 	def Player_StartTimeshiftPlayback( self, aPlayBackMode, aData ) :
 		ret = self.mCommander.Player_StartTimeshiftPlayback( aPlayBackMode, aData )
 		self.Frontdisplay_PlayPause( )
 		return ret
 
+
 	def Player_StartInternalRecordPlayback( self, aRecordKey, aServiceType, aOffsetMS, aSpeed ) :
 		ret = self.mCommander.Player_StartInternalRecordPlayback( aRecordKey, aServiceType, aOffsetMS, aSpeed )
 		self.Frontdisplay_PlayPause( )
 		return ret
+
 
 	def RecordItem_GetEventInfo( self, aKey ) :
 		return self.mCommander.RecordItem_GetEventInfo( aKey )
@@ -1191,19 +1173,29 @@ class DataCacheMgr( object ) :
 	def Record_GetRunningRecorderCount( self ) :
 		return self.mCommander.Record_GetRunningRecorderCount( )
 
+
 	def Record_GetRunningRecordInfo( self, aIndex ) :
 		return self.mCommander.Record_GetRunningRecordInfo( aIndex )
 
+
 	def Record_GetCount( self, aServiceType ) :
-		if SUPPORT_RECORD_DATABASE == True :	
-			return self.mRecordDB.Record_GetCount( aServiceType )
+		if SUPPORT_RECORD_DATABASE == True :
+			recordDB = ElisRecordDB( )
+			recordCount = recordDB.Record_GetCount( aServiceType )
+			recordDB.Close( )
+			return recordCount
+
 		else :
 			return self.mCommander.Record_GetCount( aServiceType )
 
 
 	def Record_GetList( self, aServiceType ) :
 		if SUPPORT_RECORD_DATABASE == True :	
-			return self.mRecordDB.Record_GetList( aServiceType )		
+			recordDB = ElisRecordDB( )
+			recordList = recordDB.Record_GetList( aServiceType )		
+			recordDB.Close( )
+			return recordList
+
 		else :
 			recordList = []
 			count = self.Record_GetCount( aServiceType )
@@ -1215,7 +1207,11 @@ class DataCacheMgr( object ) :
 
 	def Record_GetRecordInfo( self, aIndex, aServiceType ) :
 		if SUPPORT_RECORD_DATABASE == True :	
-			return self.mRecordDB.Record_GetRecordInfo( aIndex, aServiceType )
+			recordDB = ElisRecordDB( )
+			recInfo = recordDB.Record_GetRecordInfo( aIndex, aServiceType )
+			recordDB.Close( )
+			return recInfo
+
 		else :
 			return self.mCommander.Record_GetRecordInfo( aIndex, aServiceType )
 
@@ -1235,8 +1231,10 @@ class DataCacheMgr( object ) :
 	def Record_Rename(self, aKey, aServiceType, aNewName ) :
 		return self.mCommander.Record_Rename( aKey, aServiceType, aNewName )
 
+
 	def Timer_StopRecordingByRecordKey( self, aKey ) :
 		return self.mCommander.Timer_StopRecordingByRecordKey( aKey )
+
 
 	def Timer_GetTimerList( self ) :
 		if SUPPORT_TIMER_DATABASE == True :
@@ -1244,10 +1242,10 @@ class DataCacheMgr( object ) :
 			timerList = timerDB.Timer_GetTimerList( )
 			timerDB.Close( )
 			return timerList
+
 		else :
 			timerList = []
 			timerCount = self.Timer_GetTimerCount( )
-
 			for i in range( timerCount ) :
 				timer = self.Timer_GetByIndex( i )
 				timerList.append( timer )
@@ -1257,29 +1255,38 @@ class DataCacheMgr( object ) :
 
 	def Timer_GetTimerCount( self ) :
 		if SUPPORT_TIMER_DATABASE == True :
-			return self.mTimerDB.Timer_GetTimerCount( )
+			timerDB = ElisTimerDB( )
+			timerCount = timerDB.Timer_GetTimerCount( )
+			timerDB.Close( )
+			return timerCount
+
 		else :
 			return self.mCommander.Timer_GetTimerCount( )
 
 
-	def Timer_EditRunningTimer(self , aTimerId, aNewEndTime) :
-			return self.mCommander.Timer_EditRunningTimer( aTimerId, aNewEndTime )
+	def Timer_EditRunningTimer( self, aTimerId, aNewEndTime) :
+		return self.mCommander.Timer_EditRunningTimer( aTimerId, aNewEndTime )
 	
 
 	def Timer_GetById( self, aTimderId ) :
 		if SUPPORT_TIMER_DATABASE == True :
 			timerDB = ElisTimerDB( )
-			timer = timerDB.Timer_GetById( aTimderId )
+			timerId = timerDB.Timer_GetById( aTimderId )
 			timerDB.Close( )
-			return timer
-		else :	
+			return timerId
+
+		else :
 			return self.mCommander.Timer_GetById( aTimderId )
 
 
 	def Timer_GetByIndex( self, aIndex ) :
 		if SUPPORT_TIMER_DATABASE == True :
-			return self.mTimerDB.Timer_GetByIndex( aIndex )
-		else :	
+			timerDB = ElisTimerDB( )
+			timerIdx = timerDB.Timer_GetByIndex( aIndex )
+			timerDB.Close( )
+			return timerIdx
+
+		else :
 			return self.mCommander.Timer_GetByIndex( aIndex )
 
 
@@ -1287,7 +1294,7 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Timer_GetOTRInfo( )
 
 
-	def Timer_AddOTRTimer( self, aFromEPG, aFixedDuration, aCopyTimeshift, aTimerName, aForceDecrypt, aEventId, aSid, aTsid, aOnid) : 
+	def Timer_AddOTRTimer( self, aFromEPG, aFixedDuration, aCopyTimeshift, aTimerName, aForceDecrypt, aEventId, aSid, aTsid, aOnid ) : 
 		return self.mCommander.Timer_AddOTRTimer( aFromEPG, aFixedDuration, aCopyTimeshift, aTimerName, aForceDecrypt, aEventId, aSid, aTsid, aOnid )
 
 
@@ -1298,20 +1305,20 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Timer_AddEPGTimer( aForceDecrypt, aForceThisEvent, epgList )
 
 
-	def Timer_AddManualTimer( self ,  aChannelNo,  aServiceType,  aStartTime,  aDuration,  aTimerName,  aForceDecrypt ) :
-		return self.mCommander.Timer_AddManualTimer( aChannelNo,  aServiceType,  aStartTime,  aDuration,  aTimerName,  aForceDecrypt )
+	def Timer_AddManualTimer( self, aChannelNo, aServiceType, aStartTime, aDuration, aTimerName, aForceDecrypt ) :
+		return self.mCommander.Timer_AddManualTimer( aChannelNo, aServiceType, aStartTime, aDuration, aTimerName, aForceDecrypt )
 
 
-	def Timer_AddWeeklyTimer( self ,  aChannelNo,  aServiceType,  aStartTime,  aExpiryTime,  aTimerName,  aWeeklyTimerCount,  aWeeklyTimer ) :
-		return self.mCommander.Timer_AddWeeklyTimer( aChannelNo,  aServiceType,  aStartTime,  aExpiryTime,  aTimerName,  aWeeklyTimerCount,  aWeeklyTimer )
+	def Timer_AddWeeklyTimer( self, aChannelNo, aServiceType, aStartTime, aExpiryTime, aTimerName, aWeeklyTimerCount, aWeeklyTimer ) :
+		return self.mCommander.Timer_AddWeeklyTimer( aChannelNo, aServiceType, aStartTime, aExpiryTime, aTimerName, aWeeklyTimerCount, aWeeklyTimer )
 
 
-	def Timer_AddSeriesTimer( self ,  aEPGEvent ) :
+	def Timer_AddSeriesTimer( self, aEPGEvent ) :
 		return self.mCommander.Timer_AddSeriesTimer( aEPGEvent )
 
 
-	def Timer_AddKeywordTimer( self ,  aChannelNo,  aServiceType,  aKeyword,  aTitleOnly,  aForceDecrypt ) :
-		return self.mCommander.Timer_AddKeywordTimer( aChannelNo,  aServiceType,  aKeyword,  aTitleOnly,  aForceDecrypt )
+	def Timer_AddKeywordTimer( self, aChannelNo, aServiceType, aKeyword, aTitleOnly, aForceDecrypt ) :
+		return self.mCommander.Timer_AddKeywordTimer( aChannelNo, aServiceType, aKeyword, aTitleOnly, aForceDecrypt )
 
 
 	def Timer_DeleteTimer( self, aTimerId ) :
@@ -1322,11 +1329,11 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Timer_GetRunningTimers( )
 
 
-	def Timer_EditOneWeeklyTimer( self, aTimerId, aDate, aStartTime, aDuration, aNewStartTime, aNewDuration) :
+	def Timer_EditOneWeeklyTimer( self, aTimerId, aDate, aStartTime, aDuration, aNewStartTime, aNewDuration ) :
 		return self.mCommander.Timer_EditWeeklyTimer( aTimerId, aDate, aStartTime, aDuration, aNewStartTime, aNewDuration )
 
 
-	def Timer_AddOneWeeklyTimer( self, aTimerId, aDate, aStartTime, aDuration) :	
+	def Timer_AddOneWeeklyTimer( self, aTimerId, aDate, aStartTime, aDuration ) :	
 		return self.mCommander.Timer_AddWeeklyTimerItem( aTimerId, aDate, aStartTime, aDuration )
 
 		
@@ -1346,14 +1353,13 @@ class DataCacheMgr( object ) :
 		self.mCommander.Frontdisplay_SetMessage( aName )
 
 
-	def Frontdisplay_SetIcon( self, aIconIndex,  aOnOff ) :
+	def Frontdisplay_SetIcon( self, aIconIndex, aOnOff ) :
 		self.mCommander.Frontdisplay_SetIcon( aIconIndex, aOnOff )
 
 
 	def Frontdisplay_PlayPause( self, aIcon = True ) :
 		play = 1	#on
 		pause= 0	#off
-
 		if aIcon :
 			status = self.Player_GetStatus( )
 			if status.mSpeed == 0 :
@@ -1363,19 +1369,17 @@ class DataCacheMgr( object ) :
 			play = 0
 			pause= 0
 
-
 		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_PLAY, play )
 		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_PAUSE, pause )
 
 
-	def GetRunnigTimerByChannel( self, aChannel=None ) :
+	def GetRunnigTimerByChannel( self, aChannel = None ) :
 		if aChannel == None :
 			aChannel = self.Channel_GetCurrent( )
 
 		runningTimers = self.Timer_GetRunningTimers( )
 
 		findTimer = None
-
 		if runningTimers :
 			for timer in runningTimers :
 				if aChannel.mSid == timer.mSid and aChannel.mTsid == timer.mTsid and aChannel.mOnid == timer.mOnid :
@@ -1386,35 +1390,23 @@ class DataCacheMgr( object ) :
 
 
 	def ToggleTVRadio( self ) :
-
 		try :
-			LOG_TRACE( 'LAEL98 - TVRADIO' )
+			zappingMode = self.Zappingmode_GetCurrent( )
+			#zappingMode.printdebug( )
 
-			zappingMode= self.Zappingmode_GetCurrent( )
-			LOG_TRACE( 'LAEL98 Current ZappingMode' )
-			zappingMode.printdebug( )
-
-			LOG_TRACE( 'LAEL98' )
 			newZappingMode = ElisIZappingMode( )
-			LOG_TRACE( 'LAEL98 create ZappingMode' )
-			newZappingMode.printdebug( )
-
 			if zappingMode.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
 				newZappingMode.mServiceType = ElisEnum.E_SERVICE_TYPE_RADIO 
 			else :
 				newZappingMode.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
-
-			LOG_TRACE( 'LAEL98 new ZappingMode' )
-			newZappingMode.printdebug( )
+			#newZappingMode.printdebug( )
 
 			self.Zappingmode_SetCurrent( newZappingMode )
-
 			self.LoadZappingmode( )
 			self.LoadZappingList( )
 			self.LoadChannelList( )
 
-			zappingMode= self.Zappingmode_GetCurrent( )
-			zappingMode.printdebug( )
+			zappingMode = self.Zappingmode_GetCurrent( )
 			self.Channel_InvalidateCurrent( )
 
 			if zappingMode.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
@@ -1424,9 +1416,8 @@ class DataCacheMgr( object ) :
 				lastChannelNumber = ElisPropertyInt( 'Last Radio Number', self.mCommander ).GetProp( )
 				self.Channel_SetCurrent( lastChannelNumber, ElisEnum.E_SERVICE_TYPE_RADIO )				
 
-
 			channel = self.Channel_GetCurrent( )
-			LOG_TRACE( 'LAEL98 get Current Channel after zappingMode channge' )
+			#LOG_TRACE( '----- get Current Channel after zappingMode channge' )
 			if channel :
 				channel.printdebug( )
 			elif self.mChannelList and len( self.mChannelList ) > 0 :
