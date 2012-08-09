@@ -29,7 +29,7 @@ E_XML_PROPERTY_CAS       = 'icas'
 E_XML_PROPERTY_LOCK      = 'lock'
 E_XML_PROPERTY_RECORDING = 'rec'
 E_XML_PROPERTY_SKIP      = 'skip'
-E_XML_PROPERTY_EDITINFO  = 'helpbox'
+E_XML_PROPERTY_EDITINFO  = 'isEdit'
 E_XML_PROPERTY_MOVE      = 'isMove'
 
 FLAG_MASK_ADD    = 0x01
@@ -165,6 +165,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlLabelLockedInfo        = self.getControl( E_CONTROL_ID_GROUP_LOCKED_INFO )
 		self.mCtrlLabelSelectItem        = self.getControl( E_CONTROL_ID_LABEL_SELECT_NUMBER )
 		#self.mCtrlGroupHelpBox           = self.getControl( E_CONTROL_ID_GROUP_HELPBOX )
+		self.mCtrlLabelMiniTitle         = self.getControl( E_SETTING_MINI_TITLE )
 
 
 		self.mIsTune = False
@@ -866,7 +867,8 @@ class ChannelListWindow( BaseWindow ) :
 			self.mSelectMainSlidePosition = self.mCtrlListMainmenu.getSelectedPosition( )
 			self.mSelectSubSlidePosition = self.mCtrlListSubmenu.getSelectedPosition( )
 
-			label = ''
+			label = MR_LANG( 'sort by %s' ) % EnumToString( 'sort', self.mChannelListSortMode )
+			"""
 			label1 = EnumToString( 'mode', self.mZappingMode)
 			label2 = zappingName
 			label3 = EnumToString( 'sort', self.mChannelListSortMode)
@@ -875,6 +877,7 @@ class ChannelListWindow( BaseWindow ) :
 				label = '%s [COLOR grey3]>[/COLOR] sort by %s'% ( label1.upper( ),label3.title( ) )
 			else :
 				label = '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% ( label1.upper( ), label2.title( ), label3.title( ) )
+			"""
 			self.mCtrlLabelChannelPath.setLabel( label )
 
 			#current zapping backup
@@ -1171,6 +1174,7 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			#opt btn blind
 			#self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, False )
+			self.UpdateControlGUI( E_SETTING_MINI_TITLE, MR_LANG( 'Channel List' ) )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV, True, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO, True, E_TAG_ENABLE )
 			self.UpdatePropertyGUI( E_XML_PROPERTY_EDITINFO, E_TAG_FALSE )
@@ -1178,6 +1182,7 @@ class ChannelListWindow( BaseWindow ) :
 		else :
 			#opt btn visible
 			#self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, True )
+			self.UpdateControlGUI( E_SETTING_MINI_TITLE, MR_LANG( 'Channel Edit' ) )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV, False, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO, False, E_TAG_ENABLE )
 			self.UpdatePropertyGUI( E_XML_PROPERTY_EDITINFO, E_TAG_TRUE )
@@ -1312,7 +1317,8 @@ class ChannelListWindow( BaseWindow ) :
 		self.HashInit( )
 
 		#path tree, Mainmenu/Submanu
-		label = ''
+		label = MR_LANG( 'sort by %s' ) % EnumToString( 'sort', self.mChannelListSortMode )
+		"""
 		label1 = EnumToString( 'mode', self.mZappingMode )
 		label2 = self.mZappingName
 		label3 = EnumToString( 'sort', self.mChannelListSortMode )
@@ -1320,6 +1326,7 @@ class ChannelListWindow( BaseWindow ) :
 			label = '%s [COLOR grey3]>[/COLOR] sort by %s'% ( label1.upper( ),label3.title( ) )
 		else :
 			label = '%s [COLOR grey3]>[/COLOR] %s [COLOR grey2]/ sort by %s[/COLOR]'% ( label1.upper( ),label2.title( ),label3.title( ) )
+		"""
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_PATH, label )
 
 
@@ -1554,6 +1561,9 @@ class ChannelListWindow( BaseWindow ) :
 		elif aCtrlID == E_SLIDE_CLOSE :
 			self.mCtrlListCHList.setEnabled( True )
 			self.setFocusId( E_CONTROL_ID_GROUP_CHANNEL_LIST )
+
+		elif aCtrlID == E_SETTING_MINI_TITLE :
+			self.mCtrlLabelMiniTitle.setLabel( aValue )
 
 
 	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :

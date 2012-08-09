@@ -647,7 +647,7 @@ class TimeShiftPlate( BaseWindow ) :
 		#retList.append( status )
 		#LOG_TRACE( 'player_GetStatus[%s]'% ClassToList( 'convert', retList ) )
 
-		if status :
+		if status and status.mError == 0 :
 			flag_Rewind  = False
 			flag_Forward = False
 			lbl_speed = ''
@@ -708,7 +708,6 @@ class TimeShiftPlate( BaseWindow ) :
 			if lbl_timeS != '' :
 				if self.mInitialized :
 					self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, lbl_timeS )
-
 			if lbl_timeP != '' :
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_CONTROL_LABEL )
 			if lbl_timeE != '' :
@@ -825,13 +824,13 @@ class TimeShiftPlate( BaseWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, False )
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
 			self.mWin.setProperty( 'IsXpeeding', 'True' )
-			LOG_TRACE( '-------Play----------------------speed[%s]'% ret)
+			#LOG_TRACE( '-------Play----------------------speed[%s]'% ret)
 
 		else :
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )			
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
 			self.mWin.setProperty( 'IsXpeeding', 'False' )
-			LOG_TRACE( '-------Pause----------------------speed[%s]'% ret)
+			#LOG_TRACE( '-------Pause----------------------speed[%s]'% ret)
 
 		return ret
 

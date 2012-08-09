@@ -417,17 +417,33 @@
 						<height>40</height>
 						<texture>OverlayLocked.png</texture>
 						<visible>substring(Window.Property(iLock),true)</visible>
-						<description>lock</description>
 					</control>
 					<control type="image" id="652">
-						<posx>35</posx>
+						<posx>40</posx>
 						<posy>1</posy>
 						<width>30</width>
 						<height>30</height>
 						<texture>IconCas.png</texture>
 						<visible>substring(Window.Property(iCas),true)</visible>
-						<description>icas</description>
 					</control>
+					<control type="image">
+						<posx>75</posx>
+						<posy>1</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>IconFavFocus.png</texture>
+						<visible>substring(Window.Property(iFav),true)</visible>
+					</control>
+					<!--control type="label">
+						<posx>70</posx>
+						<posy>1</posy>
+						<width>50</width>
+						<height>30</height>
+						<font>font12</font>
+						<textcolor>green</textcolor>
+						<label>Fav.</label>
+						<visible>substring(Window.Property(iFav),true)</visible>
+					</control-->
 				</control>
 
 				<control type="group">
