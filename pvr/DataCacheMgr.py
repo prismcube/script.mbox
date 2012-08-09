@@ -2,13 +2,15 @@ import thread, sys
 from decorator import decorator
 from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
-from pvr.gui.GuiConfig import *
 import pvr.ElisMgr
 
 if sys.platform == 'win32' :
+	from pvr.gui.GuiConfig import *
 	gFlagUseDB = False
 else :
 	gFlagUseDB = True
+	from pvr.IpParser import *
+
 print 'mBox----------------use db[%s]'% gFlagUseDB
 
 SUPPORT_EPG_DATABASE     = gFlagUseDB
@@ -187,6 +189,18 @@ class DataCacheMgr( object ) :
 
 		# DATE
 		self.LoadTime( )
+
+		# SetPropertyNetworkAddress
+		LoadNetworkType( )
+		dev = GetCurrentNetworkType( )
+		if dev == NETWORK_ETHERNET :
+			addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( gEthernetDevName )
+		elif dev == NETWORK_WIRELESS :
+			wifi = WirelessParser( )
+			addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( wifi.GetWifidevice( ) )
+		else :
+			LOG_ERR( 'Error Network Setting' )
+		SetIpAddressProperty( addressIp, addressMask, addressGateway, addressNameServer )
 
 
 	def LoadVolumeToSetGUI( self ) :

@@ -121,7 +121,6 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def GlobalAction( self, aActionId ) :
-	
 		if aActionId == Action.ACTION_MUTE:
 			self.UpdateVolume( )
 

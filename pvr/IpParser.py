@@ -2,7 +2,6 @@ from pvr.gui.GuiConfig import *
 
 
 FILE_NAME_INTERFACES	 		=	'/etc/network/interfaces'
-FILE_NAME_INTERFACES_BAK 		=	'/etc/network/interfaces.bak'
 FILE_NAME_TEMP_INTERFACES		= 	'/tmp/interface'
 FILE_NAME_RESOLV_CONF			=	'/etc/resolv.conf'
 FILE_NAME_AUTO_RESOLV_CONF		=	'/etc/init.d/update-resolv.sh'
@@ -12,7 +11,6 @@ FILE_WPA_SUPPLICANT				=	'/etc/wpa_supplicant/wpa_supplicant.conf'
 
 SYSTEM_COMMAND_GET_GATEWAY		=	"route -n | awk '/^0.0.0.0/ {print $2}'"
 
-COMMAND_COPY_INTERFACES_RESTORE	=	"cp " + FILE_NAME_INTERFACES_BAK + " " + FILE_NAME_INTERFACES
 COMMAND_COPY_INTERFACES			=	"cp " + FILE_NAME_TEMP_INTERFACES + " " + FILE_NAME_INTERFACES
 
 gEthernetDevName	= 'eth0'
@@ -153,8 +151,104 @@ def LoadNetworkType( ) :
 			SetCurrentNetworkType( NETWORK_ETHERNET )
 
 
-class IpParser :
+def GetNetworkAddress( aDeviceName ) :
+	addressIp = 'None'
+	addressMask = 'None'
+	addressGateway = 'None'
+	addressNameServer = 'None'
+	try :
+		osCommand = [ "ifconfig %s | awk '/inet / {print $2}' | awk -F: '{print $2}'" % aDeviceName + ' > ' + FILE_TEMP, "ifconfig %s | awk '/inet / {print $4}' | awk -F: '{print $2}'" % aDeviceName + ' >> ' + FILE_TEMP, SYSTEM_COMMAND_GET_GATEWAY + ' >> ' + FILE_TEMP ]
+		
+		for command in osCommand :
+			time.sleep( 0.01 )
+			os.system( command )
+		
+		time.sleep( 0.02 )
+		inputFile = open( FILE_TEMP, 'r' )
+		addressIp = inputFile.readline( )
+		addressMask = inputFile.readline( )
+		addressGateway = inputFile.readline( )
+		addressNameServer = GetNameServer( )
 
+		if CheckIsIptype( addressIp ) == False :
+			addressIp = 'None'
+
+		if CheckIsIptype( addressMask ) == False :
+			addressMask = 'None'
+
+		if CheckIsIptype( addressGateway ) == False :
+			addressGateway = 'None'
+
+		if CheckIsIptype( addressNameServer ) == False :
+			addressNameServer = 'None'
+
+		inputFile.close( )
+		return addressIp, addressMask, addressGateway, addressNameServer
+
+	except Exception, e :
+		if inputFile.closed == False :
+			inputFile.close( )
+		LOG_ERR( 'Error exception[%s]' % e )
+		return 'None', 'None', 'None', 'None'
+
+
+def GetNameServer( ) :
+	addressNameServer = 'None'
+	try :
+		inputFile = open( FILE_NAME_RESOLV_CONF, 'r' )
+		inputline = inputFile.readline( )
+		words = string.split( inputline )
+		addressNameServer = words[1]
+		inputFile.close( )
+		return addressNameServer
+
+	except Exception, e :
+		if inputFile.closed == False :
+			inputFile.close( )
+		addressNameServer = 'None'
+		LOG_ERR( 'Error exception[%s]' % e )
+		return addressNameServer
+
+
+def SetIpAddressProperty( aAddressIp, aAddressMask, aAddressGateway, aAddressNameServer ) :
+	from ElisProperty import ElisPropertyInt
+	import pvr.ElisMgr
+	command = pvr.ElisMgr.GetInstance( ).GetCommander( )
+	if CheckIsIptype( aAddressIp ) == True :
+		ElisPropertyInt( 'IpAddress' , command ).SetProp( MakeStringToHex( aAddressIp ) )
+		make = ElisPropertyInt( 'IpAddress' , command ).GetProp( )
+		make_1, make_2, make_3, make_4 = MakeHexToIpAddr( make )
+		LOG_TRACE( 'make_1 = %d' % make_1 )
+		LOG_TRACE( 'make_2 = %d' % make_2 )
+		LOG_TRACE( 'make_3 = %d' % make_3 )
+		LOG_TRACE( 'make_4 = %d' % make_4 )
+	if CheckIsIptype( aAddressMask ) == True :
+		ElisPropertyInt( 'SubNet' , command ).SetProp( MakeStringToHex( aAddressMask ) )
+		make = ElisPropertyInt( 'SubNet' , command ).GetProp( )
+		make_1, make_2, make_3, make_4 = MakeHexToIpAddr( make )
+		LOG_TRACE( 'make_1 = %d' % make_1 )
+		LOG_TRACE( 'make_2 = %d' % make_2 )
+		LOG_TRACE( 'make_3 = %d' % make_3 )
+		LOG_TRACE( 'make_4 = %d' % make_4 )
+	if CheckIsIptype( aAddressGateway ) == True :
+		ElisPropertyInt( 'Gateway' , command ).SetProp( MakeStringToHex( aAddressGateway ) )
+		make = ElisPropertyInt( 'Gateway' , command ).GetProp( )
+		make_1, make_2, make_3, make_4 = MakeHexToIpAddr( make )
+		LOG_TRACE( 'make_1 = %d' % make_1 )
+		LOG_TRACE( 'make_2 = %d' % make_2 )
+		LOG_TRACE( 'make_3 = %d' % make_3 )
+		LOG_TRACE( 'make_4 = %d' % make_4 )
+	if CheckIsIptype( aAddressNameServer ) == True :
+		ElisPropertyInt( 'DNS' , command ).SetProp( MakeStringToHex( aAddressNameServer ) )
+		make = ElisPropertyInt( 'DNS' , command ).GetProp( )
+		make_1, make_2, make_3, make_4 = MakeHexToIpAddr( make )
+		LOG_TRACE( 'make_1 = %d' % make_1 )
+		LOG_TRACE( 'make_2 = %d' % make_2 )
+		LOG_TRACE( 'make_3 = %d' % make_3 )
+		LOG_TRACE( 'make_4 = %d' % make_4 )
+
+
+class IpParser :
 	def __init__( self ) :
 		self.mEthType			= None
 		self.mAddressIp			= '255.255.255.255'
@@ -163,22 +257,21 @@ class IpParser :
 		self.mAddressNameServer	= '255.255.255.255'
 
 
+	"""	
 	def GetEthdevice( self ) :
 		for dev in GetInstalledAdapters( ) :
 			if dev.startswith( 'eth' ) :
 				if GetAdapterState( dev ) == True :
 					return dev
-		return None	
+		return None
+	"""
 
 
 	def LoadEthernetType( self ) :
 		global gEthernetDevName
 		status = False
 		try :
-			gEthernetDevName = self.GetEthdevice( )
 			if gEthernetDevName != None :
-				if os.path.isfile( FILE_NAME_INTERFACES ) == False :
-					os.system( COMMAND_COPY_INTERFACES_RESTORE )
 				inputFile = open( FILE_NAME_INTERFACES, 'r' )
 				inputline = inputFile.readlines( )
 				for line in inputline :
@@ -189,9 +282,6 @@ class IpParser :
 						else :
 							self.mEthType = NET_DHCP
 						status = True
-				if status == False :
-					os.system( COMMAND_COPY_INTERFACES_RESTORE )
-
 			else :
 				LOG_ERR( 'LoadEthernetType Load Fail!!!' )
 
@@ -206,68 +296,20 @@ class IpParser :
 			return status
 
 
-	def LoadNetworkAddress( self ) :
+	def LoadEthernetAddress( self ) :
 		global gEthernetDevName
-		try :
-			osCommand = [ "ifconfig %s | awk '/inet / {print $2}' | awk -F: '{print $2}'" % gEthernetDevName + ' > ' + FILE_TEMP, "ifconfig %s | awk '/inet / {print $4}' | awk -F: '{print $2}'" % gEthernetDevName + ' >> ' + FILE_TEMP, SYSTEM_COMMAND_GET_GATEWAY + ' >> ' + FILE_TEMP ]
-			
-			for command in osCommand :
-				time.sleep( 0.01 )
-				os.system( command )
-			
-			time.sleep( 0.02 )
-			inputFile = open( FILE_TEMP, 'r' )
-			self.mAddressIp = inputFile.readline( ).strip( )
-			self.mAddressMask = inputFile.readline( ).strip( )
-			self.mAddressGateway = inputFile.readline( ).strip( )
-			self.LoadNameServer( )
-
-			if CheckIsIptype( self.mAddressIp ) == False :
-				self.mAddressIp = 'None'
-
-			if CheckIsIptype( self.mAddressMask ) == False :
-				self.mAddressMask = 'None'
-
-			if CheckIsIptype( self.mAddressGateway ) == False :
-				self.mAddressGateway = 'None'
-
-			if CheckIsIptype( self.mAddressNameServer ) == False :
-				self.mAddressNameServer = 'None'
-
-			inputFile.close( )
-			return True
-
-		except Exception, e :
-			if inputFile.closed == False :
-				inputFile.close( )
-			LOG_ERR( 'Error exception[%s]' % e )
-			return False
+		self.mAddressIp, self.mAddressMask, self.mAddressGateway, self.mAddressNameServer = GetNetworkAddress( gEthernetDevName )
 
 
-	def LoadNameServer( self ) :
-		try :
-			inputFile = open( FILE_NAME_RESOLV_CONF, 'r' )
-			inputline = inputFile.readline( )
-			words = string.split( inputline )
-			self.mAddressNameServer = words[1]
-			inputFile.close( )
-
-		except Exception, e :
-			if inputFile.closed == False :
-				inputFile.close( )
-			self.mAddressNameServer = 'None'
-			LOG_ERR( 'Error exception[%s]' % e )
-
-
-	def GetNetworkType( self ) :
+	def GetEthernetType( self ) :
 		return self.mEthType
 
 
-	def GetNetworkAddress( self ) :
+	def GetEthernetAddress( self ) :
 		return self.mAddressIp, self.mAddressMask, self.mAddressGateway, self.mAddressNameServer
 
 
-	def SetNetwork( self, aType, aIpAddress=None, aMaskAddress=None, aGatewayAddress=None, aNameAddress=None ) :
+	def SetEthernet( self, aType, aIpAddress=None, aMaskAddress=None, aGatewayAddress=None, aNameAddress=None ) :
 		global gEthernetDevName
 		status = False
 		try :
@@ -293,10 +335,10 @@ class IpParser :
 			inputFile.close( )
 			outputFile.close( )
 
-			self.SetNameServer( aType, aNameAddress )
+			self.SetEthernetNameServer( aType, aNameAddress )
 			os.system( COMMAND_COPY_INTERFACES )
 			wifi = WirelessParser( )
-			os.system( 'ifdown %s' %  wifi.GetWlandevice( ) )
+			os.system( 'ifdown %s' %  wifi.GetWifidevice( ) )
 			os.system( 'ifdown %s' % gEthernetDevName )
 			
 			time.sleep( 1 )
@@ -316,7 +358,7 @@ class IpParser :
 			return status
 
 
-	def SetNameServer( self, aType, aNameAddress ) :
+	def SetEthernetNameServer( self, aType, aNameAddress ) :
 		try :
 			if aType == NET_DHCP :
 				os.system( 'rm -rf ' + FILE_NAME_AUTO_RESOLV_CONF )
@@ -334,7 +376,6 @@ class IpParser :
 
 
 class WirelessParser :
-
 	def __init__( self ) :
 		self.mCurrentSsid	= None
 		self.mPasswordType	= PASSWORD_TYPE_ASCII
@@ -353,7 +394,7 @@ class WirelessParser :
 		self.mEncriptType	= ENCRIPT_TYPE_WEP
 	
 
-	def GetWlandevice( self ) :
+	def GetWifidevice( self ) :
 		for dev in GetInstalledAdapters( ) :
 			if dev.startswith( 'eth' ) or dev == 'lo':
 				continue
@@ -362,7 +403,7 @@ class WirelessParser :
 		return None	
 
 
-	def ScanAp( self, aDev ) :
+	def ScanWifiAP( self, aDev ) :
 		from pythonwifi.iwlibs import Wireless
 		import pythonwifi.flags
 		status = None
@@ -505,7 +546,7 @@ class WirelessParser :
 			inputline = inputFile.readlines( )
 			for line in inputline :
 				if line.startswith( 'auto ra0' ) or line.startswith( 'auto wlan0' ) or line.startswith( 'auto eth0' ) :
-					outputFile.writelines( 'auto ' + self.GetWlandevice( ) + '\n')
+					outputFile.writelines( 'auto ' + self.GetWifidevice( ) + '\n')
 				else :
 					outputFile.writelines( line )
 
@@ -524,6 +565,7 @@ class WirelessParser :
 	def ConnectWifi( self, aDev ) :
 		global gEthernetDevName	
 		try :
+			os.system( 'rm -rf ' + FILE_NAME_AUTO_RESOLV_CONF )
 			os.system( 'ifdown %s' % aDev )
 			time.sleep( 1 )
 			os.system( 'ifdown %s' % gEthernetDevName )
@@ -573,3 +615,4 @@ class WirelessParser :
 			self.mEncriptType = ENCRIPT_TYPE_WEP
 			
 		return self.mEncriptType
+

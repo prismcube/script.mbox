@@ -168,7 +168,7 @@ class DialogSetTransponder( SettingDialog ) :
 		self.AddEnumControl( E_DialogSpinEx02, 'FEC' )
 		self.SetProp( E_DialogSpinEx02, self.mFec )
 		
-		self.AddEnumControl( E_DialogSpinEx03, 'Polarisation' )
+		self.AddEnumControl( E_DialogSpinEx03, 'Polarisation', 'Polarization' )
 		self.SetProp( E_DialogSpinEx03, self.mPolarization )
 
 		

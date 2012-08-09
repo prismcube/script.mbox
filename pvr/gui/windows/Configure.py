@@ -109,10 +109,10 @@ class Configure( SettingWindow ) :
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
 		if sys.platform != 'win32' :
-			LoadNetworkType( )
+			#LoadNetworkType( )
 			self.mIpParser = IpParser( )
 			self.mWireless = WirelessParser( )
-			self.LoadIp( )
+			self.LoadEhternetInformation( )
 			self.LoadWifi( )
 			self.mUseNetworkType = GetCurrentNetworkType( )
 
@@ -237,7 +237,7 @@ class Configure( SettingWindow ) :
 	 			dialog.doModal( )
 
 			elif self.mUseNetworkType == NETWORK_ETHERNET :
-				self.IpSetting( groupId )
+				self.EthernetSetting( groupId )
 			elif self.mUseNetworkType == NETWORK_WIRELESS :
 				self.WifiSetting( groupId )
 
@@ -497,7 +497,7 @@ class Configure( SettingWindow ) :
 
 			else :
 				if self.mReLoadIp == True :
-					self.ReLoadIp( )
+					self.ReLoadEthernetIp( )
 					self.mReLoadIp = False
 					
 				self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Assign IP Address' ), USER_ENUM_LIST_DHCP_STATIC, self.mTempNetworkType )
@@ -665,65 +665,47 @@ class Configure( SettingWindow ) :
 					self.SetEnableControl( E_Input03, True )
 
 
-	def LoadIp( self ) :
+	def LoadEhternetInformation( self ) :
 		self.LoadEthernetType( )
-		self.LoadNetworkAddress( )
+		self.LoadEthernetAddress( )
 
 
 	def LoadEthernetType( self ) :
 		ret = self.mIpParser.LoadEthernetType( )
 		if ret == True :
-			self.mSavedNetworkType	= self.mIpParser.GetNetworkType( )
-			self.mTempNetworkType	= self.mIpParser.GetNetworkType( )
+			self.mSavedNetworkType	= self.mIpParser.GetEthernetType( )
+			self.mTempNetworkType	= self.mIpParser.GetEthernetType( )
 		else :
 			self.mSavedNetworkType	= NET_DHCP
 			self.mTempNetworkType	= NET_DHCP
-			LOG_ERR( 'Can not read network type(dhcp/static)' )
+			LOG_ERR( 'Can not read network type( dhcp/static )' )
 
 
-	def LoadNetworkAddress( self ) :		
-		ret = self.mIpParser.LoadNetworkAddress( )
-
-		if ret == True :
-			self.mSavedIpAddr, self.mSavedSubNet, self.mSavedGateway, self.mSavedDns = self.mIpParser.GetNetworkAddress( )
-			self.mTempIpAddr,  self.mTempSubNet,  self.mTempGateway,  self.mTempDns  = self.mIpParser.GetNetworkAddress( )
+	def LoadEthernetAddress( self ) :
+		self.mIpParser.LoadEthernetAddress( )
+		if GetCurrentNetworkType( ) != NETWORK_ETHERNET :
+			self.mSavedIpAddr, self.mSavedSubNet, self.mSavedGateway, self.mSavedDns = 'None', 'None', 'None', 'None'
+			self.mTempIpAddr,  self.mTempSubNet,  self.mTempGateway,  self.mTempDns  = 'None', 'None', 'None', 'None'
 		else :
-			self.mSavedIpAddr	= 'None'
-			self.mTempIpAddr	= 'None'
-			self.mSavedSubNet	= 'None'
-			self.mTempSubNet	= 'None'
-			self.mSavedGateway	= 'None'
-			self.mTempGateway	= 'None'
-			self.mSavedDns		= 'None'
-			self.mTempDns		= 'None'
-			LOG_ERR( 'Can not read ip address' )
+			self.mSavedIpAddr, self.mSavedSubNet, self.mSavedGateway, self.mSavedDns = self.mIpParser.GetEthernetAddress( )
+			self.mTempIpAddr,  self.mTempSubNet,  self.mTempGateway,  self.mTempDns  = self.mIpParser.GetEthernetAddress( )
 
 
-	def SaveIp( self ) :
-		self.ShowProgress( MR_LANG( 'Setting Network...' ), 25 )
-		ret = self.mIpParser.SetNetwork( self.mTempNetworkType, self.mTempIpAddr, self.mTempSubNet, self.mTempGateway, self.mTempDns )
+	def ConnectEthernet( self ) :
+		self.OpenBusyDialog( )
+		ret = self.mIpParser.SetEthernet( self.mTempNetworkType, self.mTempIpAddr, self.mTempSubNet, self.mTempGateway, self.mTempDns )
 		SetCurrentNetworkType( NETWORK_ETHERNET )
 		if ret == False :
-			try :
-				self.mProgress.SetResult( True )
-				time.sleep( 1.5 )
-
-			except Exception, e :
-				LOG_ERR( 'Error exception[%s]' % e )
-
+			self.CloseBusyDialog( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Network Set Fail' ) )
  			dialog.doModal( )
 		else :
 			if self.mTempNetworkType == NET_DHCP :
 				self.mSavedNetworkType = self.mTempNetworkType
-				self.LoadNetworkAddress( )
-				try :
-					self.mProgress.SetResult( True )
-					time.sleep( 1.5 )
-
-				except Exception, e :
-					LOG_ERR( 'Error exception[%s]' % e )
+				self.LoadEthernetAddress( )
+				SetIpAddressProperty( self.mSavedIpAddr, self.mSavedSubNet, self.mSavedGateway, self.mSavedDns )
+				self.CloseBusyDialog( )
 				self.SetListControl( )
 			else :
 				self.mSavedIpAddr = self.mTempIpAddr
@@ -731,15 +713,11 @@ class Configure( SettingWindow ) :
 				self.mSavedGateway = self.mTempGateway
 				self.mSavedDns = self.mTempDns
 				self.mSavedNetworkType = self.mTempNetworkType
-	 			try :
-					self.mProgress.SetResult( True )
-					time.sleep( 1.5 )
-
-				except Exception, e :
-					LOG_ERR( 'Error exception[%s]' % e )
+				SetIpAddressProperty( self.mSavedIpAddr, self.mSavedSubNet, self.mSavedGateway, self.mSavedDns )
+				self.CloseBusyDialog( )
 
 
-	def ReLoadIp( self ) :
+	def ReLoadEthernetIp( self ) :
 		self.mTempIpAddr			= self.mSavedIpAddr
 		self.mTempSubNet			= self.mSavedSubNet
 		self.mTempGateway			= self.mSavedGateway
@@ -747,13 +725,12 @@ class Configure( SettingWindow ) :
 		self.mTempNetworkType		= self.mSavedNetworkType
 
 
-	def IpSetting( self, aControlId ) :
+	def EthernetSetting( self, aControlId ) :
 		if aControlId == E_SpinEx01 :
 			if self.mTempNetworkType == NET_DHCP :
 				self.mTempNetworkType = NET_STATIC
 			else :
 				self.mTempNetworkType = NET_DHCP
-			#self.SetListControl( )
 			self.DisableControl( E_ETHERNET )
 			
 		elif aControlId == E_Input01 :
@@ -773,7 +750,90 @@ class Configure( SettingWindow ) :
 			self.SetListControl( )
 
 		elif aControlId == E_Input05 :
-			self.SaveIp( )
+			if self.mTempNetworkType == NET_STATIC :
+				if self.mTempIpAddr == 'None' or self.mTempSubNet == 'None' or self.mTempGateway == 'None' or self.mTempDns == 'None' :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough information' ) )
+		 			dialog.doModal( )
+		 			return
+			self.ConnectEthernet( )
+
+
+	def WifiSetting( self, aControlId ) :
+		apList = []
+		if aControlId == E_SpinEx01 or aControlId == E_SpinEx02 :
+			self.mUseHiddenId = self.GetSelectedIndex( E_SpinEx01 )
+			self.mUseEncrypt = self.GetSelectedIndex( E_SpinEx02 )
+			self.DisableControl( E_WIFI )
+
+		elif aControlId == E_SpinEx03 or aControlId == E_SpinEx04 :
+			self.mEncriptType	= self.GetSelectedIndex( E_SpinEx03 )
+			self.mPasswordType	= self.GetSelectedIndex( E_SpinEx04 )
+
+		elif aControlId == E_Input01 :
+			self.OpenBusyDialog( )
+			dev = self.mWireless.GetWifidevice( )
+			if dev == None :
+				self.CloseBusyDialog( )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Can not found device' ) )
+	 			dialog.doModal( )
+	 			return
+
+			apList = self.mWireless.ScanWifiAP( dev )
+			self.CloseBusyDialog( )
+			dialog = xbmcgui.Dialog( )
+			if apList == None :
+				ret = dialog.select( MR_LANG( 'Select Ap' ), [ MR_LANG( 'No Ap list' ) ] )
+			else :
+				apNameList = []
+				for ap in apList :
+					apNameList.append( ap[0] + MR_LANG( ' -   quality : %s Encrypt : %s' ) % ( ap[1], ap[2] ) )
+				dialog = xbmcgui.Dialog( )
+	 			ret = dialog.select( MR_LANG( 'Select Ap' ), apNameList )
+				if ret >= 0 :
+	 				self.mCurrentSsid = apList[ret][0]
+	 				self.SetControlLabel2String( E_Input01, self.mCurrentSsid )
+
+	 	elif aControlId == E_Input02 :
+			self.mHiddenSsid = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, MR_LANG( 'Enter your SSID' ), self.mHiddenSsid, 30 )			
+			self.SetControlLabel2String( E_Input02, self.mHiddenSsid )
+
+	 	elif aControlId == E_Input03 :
+	 		self.mPassWord = InputKeyboard( E_INPUT_KEYBOARD_TYPE_HIDE, MR_LANG( 'Enter encryption key' ), self.mPassWord, 30 )	 		
+			self.SetControlLabel2String( E_Input03, StringToHidden( self.mPassWord ) )
+
+	 	elif aControlId == E_Input04 :
+			dev = self.mWireless.GetWifidevice( )
+	 		if apList == None or dev == None :
+	 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Can not found Ap or device' ) )
+	 			dialog.doModal( )
+	 			return
+
+	 		self.OpenBusyDialog( )
+	 		ret1 = self.mWireless.WriteWpaSupplicant( self.mUseHiddenId, self.mHiddenSsid, self.mCurrentSsid, self.mUseEncrypt, self.mEncriptType, self.mPasswordType, self.mPassWord )
+			ret2 = self.mWireless.ConnectWifi( dev )
+			SetCurrentNetworkType( NETWORK_WIRELESS )
+			addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( dev )
+			SetIpAddressProperty( addressIp, addressMask, addressGateway, addressNameServer )
+			self.CloseBusyDialog( )
+			if ret1 == False :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'WriteWpaSupplicant write fail' ) )
+	 			dialog.doModal( )
+
+
+	def LoadWifi( self ) :
+		if self.mWireless.LoadWpaSupplicant( ) == True :
+			self.mCurrentSsid		= self.mWireless.GetCurrentSsid( )
+			self.mUseEncrypt		= self.mWireless.GetUseEncrypt( )
+			if self.mUseEncrypt == True :
+				self.mEncriptType	= self.mWireless.GetEncryptType( )
+			self.mPasswordType		= self.mWireless.GetPasswordType( )
+			self.mPassWord 			= self.mWireless.GetPassword( )
+		else :
+			LOG_ERR( 'Load Wpa Supplicant Fail' )
 
 
 	def ShowIpInputDialog( self, aIpAddr ) :
@@ -874,91 +934,3 @@ class Configure( SettingWindow ) :
 		self.getControl( E_SpinEx03 + 3 ).selectItem( ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetPropIndex( ) )
 		self.mCommander.Datetime_SetLocalOffset( self.mSavedLocalOffset )
 
-
-	def WifiSetting( self, aControlId ) :
-		apList = []
-		if aControlId == E_SpinEx01 or aControlId == E_SpinEx02 :
-			self.mUseHiddenId = self.GetSelectedIndex( E_SpinEx01 )
-			self.mUseEncrypt = self.GetSelectedIndex( E_SpinEx02 )
-			self.DisableControl( E_WIFI )
-
-		elif aControlId == E_SpinEx03 or aControlId == E_SpinEx04 :
-			self.mEncriptType	= self.GetSelectedIndex( E_SpinEx03 )
-			self.mPasswordType	= self.GetSelectedIndex( E_SpinEx04 )
-
-		elif aControlId == E_Input01 :
-			self.ShowProgress( MR_LANG( 'Scan Ap...' ), 25 )
-			time.sleep( 1 )
-			dev = self.mWireless.GetWlandevice( )
-			if dev == None :
-				try :
-					self.mProgress.SetResult( True )
-				except Exception, e :
-					LOG_ERR( 'Error exception[%s]' % e )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Can not found device' ) )
-	 			dialog.doModal( )
-	 			return
-
-			apList = self.mWireless.ScanAp( dev )
-			try :
-				self.mProgress.SetResult( True )
-			except Exception, e :
-				LOG_ERR( 'Error exception[%s]' % e )
-			time.sleep( 1 )
-			dialog = xbmcgui.Dialog( )
-			if apList == None :
-				ret = dialog.select( MR_LANG( 'Select Ap' ), [ MR_LANG( 'No Ap list' ) ] )
-			else :
-				apNameList = []
-				for ap in apList :
-					apNameList.append( ap[0] + MR_LANG( ' -   quality : %s Encrypt : %s' ) % ( ap[1], ap[2] ) )
-				dialog = xbmcgui.Dialog( )
-	 			ret = dialog.select( MR_LANG( 'Select Ap' ), apNameList )
-				if ret >= 0 :
-	 				self.mCurrentSsid = apList[ret][0]
-	 				self.SetControlLabel2String( E_Input01, self.mCurrentSsid )
-
-	 	elif aControlId == E_Input02 :
-			self.mHiddenSsid = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, MR_LANG( 'Enter your SSID' ), self.mHiddenSsid, 30 )			
-			self.SetControlLabel2String( E_Input02, self.mHiddenSsid )
-
-	 	elif aControlId == E_Input03 :
-	 		self.mPassWord = InputKeyboard( E_INPUT_KEYBOARD_TYPE_HIDE, MR_LANG( 'Enter encryption key' ), self.mPassWord, 30 )	 		
-			self.SetControlLabel2String( E_Input03, StringToHidden( self.mPassWord ) )
-
-	 	elif aControlId == E_Input04 :
-			dev = self.mWireless.GetWlandevice( )
-	 		if apList == None or dev == None :
-	 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Can not found Ap or device' ) )
-	 			dialog.doModal( )
-	 			return
-
-	 		self.ShowProgress( MR_LANG( 'Setting Wifi...' ), 30 )
-	 		time.sleep( 1 )
-	 		ret1 = self.mWireless.WriteWpaSupplicant( self.mUseHiddenId, self.mHiddenSsid, self.mCurrentSsid, self.mUseEncrypt, self.mEncriptType, self.mPasswordType, self.mPassWord )
-			ret2 = self.mWireless.ConnectWifi( dev )
-			SetCurrentNetworkType( NETWORK_WIRELESS )
-			try :
-				self.mProgress.SetResult( True )
-				time.sleep( 1.5 )
-			except Exception, e :
-				LOG_ERR( 'Error exception[%s]' % e )
-			if ret1 == False :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'WriteWpaSupplicant write fail' ) )
-	 			dialog.doModal( )
-
-
-	def LoadWifi( self ) :
-		if self.mWireless.LoadWpaSupplicant( ) == True :
-			self.mCurrentSsid		= self.mWireless.GetCurrentSsid( )
-			self.mUseEncrypt		= self.mWireless.GetUseEncrypt( )
-			if self.mUseEncrypt == True :
-				self.mEncriptType	= self.mWireless.GetEncryptType( )
-			self.mPasswordType		= self.mWireless.GetPasswordType( )
-			self.mPassWord 			= self.mWireless.GetPassword( )
-		else :
-			LOG_ERR( 'Load Wpa Supplicant Fail' )
-			
