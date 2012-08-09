@@ -336,7 +336,7 @@
 			<onleft>7003</onleft>
 			<onright>7003</onright>
 		</control>
-		<control type="label">
+		<control type="label" id="7005">
 			<posx>60</posx>
 			<posy>478</posy>
 			<width>200</width>
@@ -345,7 +345,6 @@
 			<textcolor>grey2</textcolor>
 			<align>left</align>
 			<aligny>center</aligny>
-			<label>Back</label>
 			<visible>Control.IsVisible(7001) + !Control.HasFocus(7001)</visible>
 		</control>
 		<control type="label">
@@ -357,7 +356,7 @@
 			<textcolor>white</textcolor>
 			<align>left</align>
 			<aligny>center</aligny>
-			<label>Back</label>
+			<label>$INFO[Control.GetLabel(7005)]</label>
 			<visible>Control.IsVisible(7001) + Control.HasFocus(7001)</visible>
 		</control>
 		<control type="button" id="7003">
@@ -369,7 +368,7 @@
 			<onleft>7001</onleft>
 			<onright>7001</onright>
 		</control>
-		<control type="label" id="7004">
+		<control type="label" id="7008">
 			<posx>637</posx>
 			<posy>478</posy>
 			<width>200</width>
@@ -378,7 +377,6 @@
 			<textcolor>grey2</textcolor>
 			<align>left</align>
 			<aligny>center</aligny>
-			<label></label>
 			<visible>Control.IsVisible(7003) + !Control.HasFocus(7003)</visible>
 		</control>
 		<control type="label">
@@ -390,7 +388,7 @@
 			<textcolor>white</textcolor>
 			<align>left</align>
 			<aligny>center</aligny>
-			<label>$INFO[Control.GetLabel(7004)]</label>
+			<label>$INFO[Control.GetLabel(7008)]</label>
 			<visible>Control.IsVisible(7003) + Control.HasFocus(7003)</visible>
 		</control>
 	</include>

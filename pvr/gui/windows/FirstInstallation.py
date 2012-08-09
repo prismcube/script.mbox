@@ -156,7 +156,7 @@ class FirstInstallation( SettingWindow ) :
 		if self.mStepNum == E_STEP_SELECT_LANGUAGE :
 			self.mPrevStepNum = E_STEP_SELECT_LANGUAGE
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Language Setup' ) )
-			self.AddEnumControl( E_SpinEx01, 'Language', None, MR_LANG( 'Set the language you want the menu to be in' ) )
+			self.AddEnumControl( E_SpinEx01, 'Language', MR_LANG( 'Menu Language' ), MR_LANG( 'Set the language you want the menu to be in' ) )
 			self.AddEnumControl( E_SpinEx02, 'Audio Language', None, MR_LANG( 'Select the language that you wish to listen to' ) )
 			self.AddNextButton( MR_LANG( 'Go to Next' ) )
 			self.SetPrevNextButtonLabel( )
@@ -298,10 +298,12 @@ class FirstInstallation( SettingWindow ) :
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( MR_LANG( 'Next' ) )
 
 		elif self.mStepNum == E_STEP_RESULT :
+			self.getControl( E_FIRST_TIME_INSTALLATION_PREV_LABEL ).setLabel( MR_LANG( 'Previous' ) )
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( MR_LANG( 'Finish' ) )
 
 		else :
 			self.SetVisibleControl( E_FIRST_TIME_INSTALLATION_PREV, True )
+			self.getControl( E_FIRST_TIME_INSTALLATION_PREV_LABEL ).setLabel( MR_LANG( 'Previous' ) )
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( MR_LANG( 'Next' ) )
 
 

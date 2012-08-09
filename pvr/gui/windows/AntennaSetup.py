@@ -44,6 +44,7 @@ class AntennaSetup( SettingWindow ) :
 		if ConfigMgr.GetInstance( ).GetFristInstallation( ) == True :
 			self.AddPrevNextButton( MR_LANG( 'Go to Next' ), MR_LANG( 'Go to Back' ) )
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( MR_LANG( 'Next' ) )
+			self.getControl( E_FIRST_TIME_INSTALLATION_PREV_LABEL ).setLabel( MR_LANG( 'Previous' ) )
 		self.setVisibleButton( )
 		self.InitControl( )
 		self.DisableControl( )

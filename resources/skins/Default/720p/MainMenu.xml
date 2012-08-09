@@ -4,6 +4,7 @@
 	<backgroundcolor>0x00ffffff</backgroundcolor>
 	<controls>
 		<control type="group" id="9100">
+			<posx>-50</posx>
 			<control type="group">
 				<animation effect="slide" end="-400,0" time="500" tween="quadratic" easing="out">WindowClose</animation>
 	            <animation effect="slide" start="-400,0" time="500" tween="quadratic" easing="out">WindowOpen</animation>
@@ -113,7 +114,7 @@
 							<visible>true</visible>
 						</item>
 						<item id="6">
-							<label>STB Information</label>
+							<label>STB Info</label>
 							<onclick>SendClick(90600)</onclick>
 							<visible>true</visible>
 						</item>
@@ -404,7 +405,7 @@
 			</control>
 			<!--Sub Script-->
 			<control type="group">
-	            <posx>420</posx>
+	            <posx>470</posx>
 	            <posy>35r</posy>
 	            <animation effect="slide" end="0,35" time="500" tween="quadratic" easing="out">WindowClose</animation>
 	            <animation effect="slide" start="0,35" time="500" tween="quadratic" easing="out">WindowOpen</animation>
