@@ -30,29 +30,29 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 
 		self.InitConfig( )
 
-		
+
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )				
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.Close( )
-			
+
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-				
+
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.Close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )
-			
+
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			self.ControlRight( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			
+
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
 
@@ -63,32 +63,31 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 		if groupId == E_SpinEx01 :
 			self.ControlSelect( )
 			self.DisableControl( )
-			
+
 		elif groupId == E_Input01 or groupId == E_Input02 :
 			if self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 				dialog.SetDialogProperty( MR_LANG( 'Tuner%d Pin Code' ) % ( self.mTunerIndex + 1 ), '%03d' % self.mTempTunerPin[self.mTunerIndex], 3 )
-	 			dialog.doModal( )
-	 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-	 				self.mTempTunerPin[self.mTunerIndex] = int( dialog.GetString( ) )
+				dialog.doModal( )
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					self.mTempTunerPin[self.mTunerIndex] = int( dialog.GetString( ) )
 
 			elif self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
 				if groupId == E_Input01 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 					dialog.SetDialogProperty( MR_LANG( 'Tuner1 Pin Code' ), '%03d' % self.mTempTunerPin[0], 3 )
-		 			dialog.doModal( )
-		 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					dialog.doModal( )
+					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 						self.mTempTunerPin[0] = int( dialog.GetString( ) )
-					
+
 				elif groupId == E_Input02 :					
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 					dialog.SetDialogProperty( MR_LANG( 'Tuner2 Pin Code' ), '%03d' % self.mTempTunerPin[1], 3 )
-		 			dialog.doModal( )
-		 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					dialog.doModal( )
+					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 						self.mTempTunerPin[1] = int( dialog.GetString( ) )
 
 			self.InitConfig( )
-
 
 	def onFocus( self, aControlId ) :
 		pass
@@ -99,27 +98,27 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 			if self.GetSelectedIndex( E_SpinEx02 ) == self.GetSelectedIndex( E_SpinEx04 ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Please set a different value for each tuner.' ) )
-	 			dialog.doModal( )
+				dialog.doModal( )
 				return
 			if self.GetSelectedIndex( E_SpinEx03 ) == self.GetSelectedIndex( E_SpinEx05 ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Please set a different value for each tuner.' ) )
-	 			dialog.doModal( )
+				dialog.doModal( )
 				return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 		dialog.SetDialogProperty( MR_LANG( 'Save configuration' ), MR_LANG( 'Do you want to save changes?' ) )
 		dialog.doModal( )
-	
+
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			self.SaveConfig( )
-			
+
 		elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 			self.ReLoadConfig( )
 
 		elif dialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
 			return
-			
+
 		self.mLoadConfig = True
 		WinMgr.GetInstance( ).CloseWindow( )
 
@@ -174,13 +173,13 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 	def LoadConfig( self ) :
 		if self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
 			self.mTunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
-			
+
 			self.mSavedTunerPin[self.mTunerIndex] = ElisPropertyInt( 'Tuner%d Pin Code' % ( self.mTunerIndex + 1 ), self.mCommander ).GetProp( )
 			self.mTempTunerPin[self.mTunerIndex] = self.mSavedTunerPin[self.mTunerIndex]
-			
+
 			self.mSavedTunerScr[self.mTunerIndex] =  ElisPropertyInt( 'Tuner%d SCR' % ( self.mTunerIndex + 1 ), self.mCommander ).GetProp( )
 			self.mTempTunerScr[self.mTunerIndex] = self.mSavedTunerScr[self.mTunerIndex]
-			
+
 			self.mSavedTunerFreq[self.mTunerIndex] = ElisPropertyInt( 'Tuner%d SCR Frequency' % ( self.mTunerIndex + 1 ), self.mCommander ).GetProp( )
 			self.mTempTunerFreq[self.mTunerIndex] = self.mSavedTunerFreq[self.mTunerIndex]
 
@@ -203,7 +202,7 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 			self.mSavedTunerFreq[1] = ElisPropertyInt( 'Tuner2 SCR Frequency', self.mCommander ).GetProp( )
 			self.mTempTunerFreq[1] = self.mSavedTunerFreq[1]
 
-		
+
 	def ReLoadConfig( self ) :
 		if self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
 			ElisPropertyInt( 'Tuner%d Pin Code' % ( self.mTunerIndex + 1 ), self.mCommander ).SetProp( self.mSavedTunerPin[self.mTunerIndex] )
@@ -227,7 +226,7 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 
 			for i in range( self.mOneCablesatelliteCount ) :
 				satellite = self.mTunerMgr.GetConfiguredSatellitebyIndex( i )
-				
+
 				satellite.mOneCableMDU = self.GetSelectedIndex( E_SpinEx01 )
 				satellite.mOneCablePin = int( self.GetControlLabel2String( E_Input01 ) )
 				satellite.mOneCableUBSlot = self.GetSelectedIndex( E_SpinEx02 )

@@ -10,8 +10,8 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 		self.mSelectedTransponderIndex = 0
 		self.mSelectedIndexLnbType = 0
 		self.mHasTransponder = False
-		
-		
+
+
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
@@ -26,23 +26,23 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 
 		self.SetSettingWindowLabel( MR_LANG( 'Satellite Configuration' ) )
 		self.LoadNoSignalState( )
- 				
+
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Satellite Config : Tuner %d - DiSEqC 1.1' ) % ( tunerIndex + 1 ) )
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.InitConfig( )
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
-		
-		
+
+
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )		
-		
+
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass
-			
+
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-				
+
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.OpenBusyDialog( )
 			self.ResetAllControl( )
@@ -55,25 +55,25 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			self.ControlRight( )
-			
+
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			
+
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
 
 
 	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
-		
+
 		#Satellite
 		if groupId == E_Input01 :
 			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog()
- 			ret = dialog.select( MR_LANG( 'Select a satellite you want to edit' ), satelliteList )
+			ret = dialog.select( MR_LANG( 'Select a satellite you want to edit' ), satelliteList )
 
 			if ret >= 0 :
-	 			satellite = self.mDataCache.GetSatelliteByIndex( ret )
+				satellite = self.mDataCache.GetSatelliteByIndex( ret )
 
 				self.mCurrentSatellite.mSatelliteLongitude 	= satellite.mLongitude		# Longitude
 				self.mCurrentSatellite.mBandType 			= satellite.mBand			# Band
@@ -105,19 +105,19 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 			self.InitConfig( )
 
 		# LNB Frequency - Spincontrol
- 		elif groupId == E_SpinEx02 :
- 			position = self.GetSelectedIndex( E_SpinEx02 )
+		elif groupId == E_SpinEx02 :
+			position = self.GetSelectedIndex( E_SpinEx02 )
 			self.mCurrentSatellite.mLowLNB = int( E_LIST_SINGLE_FREQUENCY[ position ] )
 
 		# LNB Frequency - Inputcontrol
- 		elif groupId == E_Input02 :
+		elif groupId == E_Input02 :
 
- 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_LNB_FREQUENCY )
- 			dialog.SetFrequency( self.mCurrentSatellite.mLowLNB, self.mCurrentSatellite.mHighLNB, self.mCurrentSatellite.mLNBThreshold )
- 			dialog.doModal( )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_LNB_FREQUENCY )
+			dialog.SetFrequency( self.mCurrentSatellite.mLowLNB, self.mCurrentSatellite.mHighLNB, self.mCurrentSatellite.mLNBThreshold )
+			dialog.doModal( )
 
 			if dialog.IsOK() == E_DIALOG_STATE_YES :
-	 			lowFreq, highFreq, threshFreq  = dialog.GetFrequency( )
+				lowFreq, highFreq, threshFreq  = dialog.GetFrequency( )
 
 				self.mCurrentSatellite.mLowLNB = int ( lowFreq )
 				self.mCurrentSatellite.mHighLNB = int ( highFreq )
@@ -128,7 +128,7 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 				return
 
 		# 22Khz
- 		elif groupId == E_SpinEx03 :
+		elif groupId == E_SpinEx03 :
 			self.mCurrentSatellite.mFrequencyLevel = self.GetSelectedIndex( E_SpinEx03 )
 
 		# Committed Switch
@@ -143,18 +143,18 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 		elif groupId == E_SpinEx06 :
 			self.mCurrentSatellite.mDisEqcRepeat = self.GetSelectedIndex( E_SpinEx06 )
 
- 		# Transponer
- 		elif groupId == E_Input03 :
- 			if self.mTransponderList :
-	 			dialog = xbmcgui.Dialog( )
-	 			tempIndex = dialog.select( MR_LANG( 'Select a transponder you want to use' ), self.mTransponderList )
-	 			if tempIndex != -1 :
-	 				self.mSelectedTransponderIndex = tempIndex
-	 				self.InitConfig( )
-	 			else :
-	 				return
+		# Transponer
+		elif groupId == E_Input03 :
+			if self.mTransponderList :
+				dialog = xbmcgui.Dialog( )
+				tempIndex = dialog.select( MR_LANG( 'Select a transponder you want to use' ), self.mTransponderList )
+				if tempIndex != -1 :
+					self.mSelectedTransponderIndex = tempIndex
+					self.InitConfig( )
+				else :
+					return
 
-	 	ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
+		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
 
 
 	def onFocus( self, aControlId ) :
@@ -211,7 +211,7 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 
 		self.InitControl( )
 		self.disableControl( )
-		
+
 
 	def disableControl( self ) :
 		enableControlIds = [ E_Input02, E_SpinEx02, E_SpinEx03 ]

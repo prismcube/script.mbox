@@ -22,7 +22,7 @@ PING_TEST_EXTERNAL		= 1
 class Configure( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
- 
+
 		leftGroupItems			= [
 		MR_LANG( 'Language' ),
 		MR_LANG( 'Parental Control' ),
@@ -195,8 +195,8 @@ class Configure( SettingWindow ) :
 			if sys.platform == 'win32' :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not support win32' ) )
-	 			dialog.doModal( )
-	 			return
+				dialog.doModal( )
+				return
 
 			if groupId == E_SpinEx05 :
 				self.mUseNetworkType = self.GetSelectedIndex( E_SpinEx05 )
@@ -234,7 +234,7 @@ class Configure( SettingWindow ) :
 				time.sleep( 1.5 )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Test Result' ), MR_LANG( 'Network State : %s' ) % state )
-	 			dialog.doModal( )
+				dialog.doModal( )
 
 			elif self.mUseNetworkType == NETWORK_ETHERNET :
 				self.EthernetSetting( groupId )
@@ -248,50 +248,50 @@ class Configure( SettingWindow ) :
 		elif selectedId == E_PARENTAL and self.mVisibleParental == False and groupId == E_Input01 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( MR_LANG( 'Enter 4-digit PIN code' ), '', 4, True )			
- 			dialog.doModal( )
- 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
- 				tempval = dialog.GetString( )
- 				if tempval == '' :
- 					return
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				tempval = dialog.GetString( )
+				if tempval == '' :
+					return
 				if int( tempval ) == ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( ) :
 					self.mVisibleParental = True
 					self.DisableControl( E_PARENTAL )
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Try again' ), MR_LANG( 'Sorry, that PIN code does not match' ) )					
-		 			dialog.doModal( )
+					dialog.doModal( )
 			return
 
 		elif selectedId == E_PARENTAL and groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( MR_LANG( 'Enter new PIN code' ), '', 4, True )			
- 			dialog.doModal( )
+			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				newpin = dialog.GetString( )
 				if newpin == '' or len( newpin ) != 4 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Unable to change PIN code' ), MR_LANG( '4-digit PIN code is required' ) )
-		 			dialog.doModal( )
+					dialog.doModal( )
 					return
 			else :
 				return
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( MR_LANG( 'Confirm PIN Code' ), '', 4, True )
- 			dialog.doModal( )
+			dialog.doModal( )
 
- 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
- 				confirm = dialog.GetString( )
- 				if confirm == '' :
- 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				confirm = dialog.GetString( )
+				if confirm == '' :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Unable to change new PIN code' ), MR_LANG( 'New PIN code does not match' ) )
-		 			dialog.doModal( )
- 					return
+					dialog.doModal( )
+					return
 				if int( newpin ) != int( confirm ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Unable to change new PIN code' ), MR_LANG( 'New PIN code does not match' ) )
-		 			dialog.doModal( )
+					dialog.doModal( )
 					return
 			else :
 				return
@@ -299,19 +299,19 @@ class Configure( SettingWindow ) :
 			ElisPropertyInt( 'PinCode', self.mCommander ).SetProp( int( newpin ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Success' ), MR_LANG( 'Your PIN code has been changed successfully' ) )
- 			dialog.doModal( )
+			dialog.doModal( )
 
- 		elif selectedId == E_FACTORY_RESET and groupId == E_Input01 :
- 			resetChannel = ElisPropertyEnum( 'Reset Channel List', self.mCommander ).GetProp( )
- 			resetFavoriteAddons = ElisPropertyEnum( 'Reset Favorite Add-ons', self.mCommander ).GetProp( )
- 			resetSystem = ElisPropertyEnum( 'Reset Configure Setting', self.mCommander ).GetProp( )
- 			if ( resetChannel | resetFavoriteAddons | resetSystem ) == 0 :
- 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		elif selectedId == E_FACTORY_RESET and groupId == E_Input01 :
+			resetChannel = ElisPropertyEnum( 'Reset Channel List', self.mCommander ).GetProp( )
+			resetFavoriteAddons = ElisPropertyEnum( 'Reset Favorite Add-ons', self.mCommander ).GetProp( )
+			resetSystem = ElisPropertyEnum( 'Reset Configure Setting', self.mCommander ).GetProp( )
+			if ( resetChannel | resetFavoriteAddons | resetSystem ) == 0 :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Unable to start factory reset' ), MR_LANG( 'Select reset option(s) before performing a factory reset' ) )
-		 		dialog.doModal( )
-		 		return
-		 	else :
-		 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.doModal( )
+				return
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'THIS WILL RESTORE YOUR SETTINGS TO THE \n FACTORY SETTINGS. DO YOU WANT TO CONTINUE?' ) )
 				dialog.doModal( )
 
@@ -320,30 +320,30 @@ class Configure( SettingWindow ) :
 					ret2 = True
 					ret3 = True
 					self.ShowProgress( MR_LANG( 'Now restoring...' ), 30 )
-				 	if resetChannel == 1 :
-				 		ret = self.mCommander.System_SetDefaultChannelList( )
-				 		self.mDataCache.LoadChannelList( )
-				 		self.mDataCache.LoadAllSatellite( )
+					if resetChannel == 1 :
+						ret = self.mCommander.System_SetDefaultChannelList( )
+						self.mDataCache.LoadChannelList( )
+						self.mDataCache.LoadAllSatellite( )
 
-				 		if self.mDataCache.mChannelList and len( self.mDataCache.mChannelList ) >= 0 :
-					 		self.mDataCache.Channel_SetCurrent( self.mDataCache.mChannelList[0].mNumber, ElisEnum.E_SERVICE_TYPE_TV )
+						if self.mDataCache.mChannelList and len( self.mDataCache.mChannelList ) >= 0 :
+							self.mDataCache.Channel_SetCurrent( self.mDataCache.mChannelList[0].mNumber, ElisEnum.E_SERVICE_TYPE_TV )
 
-				 	if resetFavoriteAddons == 1 :
-				 		pass
+					if resetFavoriteAddons == 1 :
+						pass
 
-				 	if resetSystem == 1 :
-				 		ret1 = self.mCommander.System_FactoryReset( )	
-			 		try :
-			 			if ret1 == True and ret2 == True and ret3 == True :
+					if resetSystem == 1 :
+						ret1 = self.mCommander.System_FactoryReset( )	
+					try :
+						if ret1 == True and ret2 == True and ret3 == True :
 							self.mProgress.SetResult( True )
 							time.sleep( 1 )
 							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 							dialog.SetDialogProperty( MR_LANG( 'Confirm' ), MR_LANG( 'Reset system Success' ) )
-				 			dialog.doModal( )
+							dialog.doModal( )
 						else :
 							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 							dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Reset system Fail' ) )
-				 			dialog.doModal( )
+							dialog.doModal( )
 							
 					except Exception, e :
 						LOG_ERR( 'Error exception[%s]' % e )
@@ -351,7 +351,7 @@ class Configure( SettingWindow ) :
 					if resetSystem == 1 :	
 						from ElisProperty import ResetHash
 						ResetHash( )
-				 		self.SetListControl( )
+						self.SetListControl( )
 
 		else :
 			self.ControlSelect( )
@@ -699,7 +699,7 @@ class Configure( SettingWindow ) :
 			self.CloseBusyDialog( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Network Set Fail' ) )
- 			dialog.doModal( )
+			dialog.doModal( )
 		else :
 			if self.mTempNetworkType == NET_DHCP :
 				self.mSavedNetworkType = self.mTempNetworkType
@@ -754,8 +754,8 @@ class Configure( SettingWindow ) :
 				if self.mTempIpAddr == 'None' or self.mTempSubNet == 'None' or self.mTempGateway == 'None' or self.mTempDns == 'None' :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough information' ) )
-		 			dialog.doModal( )
-		 			return
+					dialog.doModal( )
+					return
 			self.ConnectEthernet( )
 
 
@@ -777,8 +777,8 @@ class Configure( SettingWindow ) :
 				self.CloseBusyDialog( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Can not found device' ) )
-	 			dialog.doModal( )
-	 			return
+				dialog.doModal( )
+				return
 
 			apList = self.mWireless.ScanWifiAP( dev )
 			self.CloseBusyDialog( )
@@ -790,29 +790,29 @@ class Configure( SettingWindow ) :
 				for ap in apList :
 					apNameList.append( ap[0] + MR_LANG( ' -   quality : %s Encrypt : %s' ) % ( ap[1], ap[2] ) )
 				dialog = xbmcgui.Dialog( )
-	 			ret = dialog.select( MR_LANG( 'Select Ap' ), apNameList )
+				ret = dialog.select( MR_LANG( 'Select Ap' ), apNameList )
 				if ret >= 0 :
-	 				self.mCurrentSsid = apList[ret][0]
-	 				self.SetControlLabel2String( E_Input01, self.mCurrentSsid )
+					self.mCurrentSsid = apList[ret][0]
+					self.SetControlLabel2String( E_Input01, self.mCurrentSsid )
 
-	 	elif aControlId == E_Input02 :
+		elif aControlId == E_Input02 :
 			self.mHiddenSsid = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, MR_LANG( 'Enter your SSID' ), self.mHiddenSsid, 30 )			
 			self.SetControlLabel2String( E_Input02, self.mHiddenSsid )
 
-	 	elif aControlId == E_Input03 :
-	 		self.mPassWord = InputKeyboard( E_INPUT_KEYBOARD_TYPE_HIDE, MR_LANG( 'Enter encryption key' ), self.mPassWord, 30 )	 		
+		elif aControlId == E_Input03 :
+			self.mPassWord = InputKeyboard( E_INPUT_KEYBOARD_TYPE_HIDE, MR_LANG( 'Enter encryption key' ), self.mPassWord, 30 )	 		
 			self.SetControlLabel2String( E_Input03, StringToHidden( self.mPassWord ) )
 
-	 	elif aControlId == E_Input04 :
+		elif aControlId == E_Input04 :
 			dev = self.mWireless.GetWifidevice( )
-	 		if apList == None or dev == None :
-	 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			if apList == None or dev == None :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Can not found Ap or device' ) )
-	 			dialog.doModal( )
-	 			return
+				dialog.doModal( )
+				return
 
-	 		self.OpenBusyDialog( )
-	 		ret1 = self.mWireless.WriteWpaSupplicant( self.mUseHiddenId, self.mHiddenSsid, self.mCurrentSsid, self.mUseEncrypt, self.mEncriptType, self.mPasswordType, self.mPassWord )
+			self.OpenBusyDialog( )
+			ret1 = self.mWireless.WriteWpaSupplicant( self.mUseHiddenId, self.mHiddenSsid, self.mCurrentSsid, self.mUseEncrypt, self.mEncriptType, self.mPasswordType, self.mPassWord )
 			ret2 = self.mWireless.ConnectWifi( dev )
 			SetCurrentNetworkType( NETWORK_WIRELESS )
 			addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( dev )
@@ -821,7 +821,7 @@ class Configure( SettingWindow ) :
 			if ret1 == False :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'WriteWpaSupplicant write fail' ) )
-	 			dialog.doModal( )
+			dialog.doModal( )
 
 
 	def LoadWifi( self ) :
@@ -864,7 +864,7 @@ class Configure( SettingWindow ) :
 			channelNameList = []
 			for channel in channelList :
 				channelNameList.append( channel.mName )
- 			ret = dialog.select( MR_LANG( 'Select a channel you want to set your time by' ), channelNameList )
+			ret = dialog.select( MR_LANG( 'Select a channel you want to set your time by' ), channelNameList )
 
 			if ret >= 0 :
 				self.mSetupChannel = channelList[ ret ]
@@ -884,8 +884,8 @@ class Configure( SettingWindow ) :
 		elif aControlId == E_Input04 :
 			self.LoadSavedTime( )
 			oriChannel = self.mDataCache.Channel_GetCurrent( )
-		 	self.SetTimeProperty( )	
- 			
+			self.SetTimeProperty( )	
+			
 			if ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( ) == TIME_AUTOMATIC :
 				ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( self.mSetupChannel.mNumber )
 				self.mDataCache.Channel_SetCurrent( self.mSetupChannel.mNumber, self.mSetupChannel.mServiceType ) # Todo After : using ServiceType to different way

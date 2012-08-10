@@ -38,14 +38,14 @@ class DialogSatelliteNumeric( BaseDialog ) :
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-		self.GlobalAction( actionId )		
+		self.GlobalAction( actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.CloseDialog( )
-			
+
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-				
+
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :		# number
 			self.InputControl( actionId, 1 )
 			self.SetInputLabel( )
@@ -128,14 +128,13 @@ class DialogSatelliteNumeric( BaseDialog ) :
 
 		else :
 			return
-				
 		self.mCtrlEditLabel.setLabel( tmp )
 
 
 	def InputControl( self, aControlId, aInputtype ) :
 		if aInputtype == 0 :
 			value = int( self.getControl( aControlId ).getLabel( ) )
-			
+
 		elif aInputtype == 1 :
 			tmp = chr( aControlId - 10 )
 			value = int( tmp )
@@ -146,7 +145,7 @@ class DialogSatelliteNumeric( BaseDialog ) :
 
 		else :
 			return
-			
+
 		if self.mCursor == 0 and value < 2 :
 			self.mInput1 = value
 			self.NextCursor( )
@@ -158,11 +157,11 @@ class DialogSatelliteNumeric( BaseDialog ) :
 		elif self.mCursor == 2 :
 			self.mInput3 = value
 			self.NextCursor( )
- 
+
 		elif self.mCursor == 3 :
 			self.mInput4 = value
 			self.NextCursor( )
- 
+
 		else :
 			return
 
@@ -179,11 +178,11 @@ class DialogSatelliteNumeric( BaseDialog ) :
 		elif self.mCursor == 2 :
 			self.mInput3 = 0
 			self.PrevCursor( )
- 
+
 		elif self.mCursor == 3 :
 			self.mInput4 = 0
 			self.PrevCursor( )
- 
+
 		else :
 			return
 
@@ -200,4 +199,4 @@ class DialogSatelliteNumeric( BaseDialog ) :
 				self.mCursor = 3
 		else :
 			self.mCursor = self.mCursor - 1
-		
+

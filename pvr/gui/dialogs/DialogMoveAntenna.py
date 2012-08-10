@@ -57,37 +57,37 @@ class DialogMoveAntenna( BaseDialog ) :
 		actionId = aAction.getId( )
 
 		self.GlobalAction( actionId )
-		
+
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.CloseDialog( )
-			
+
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-				
+
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.CloseDialog( )
 
 
 	def onClick( self, aControlId ) :
 		selectedIndex = self.mCtrlList.getSelectedPosition( )
- 		if selectedIndex == E_MOVE_WEST :
- 			self.mCommander.Motorized_GoWest( self.mTunerIndex )
+		if selectedIndex == E_MOVE_WEST :
+			self.mCommander.Motorized_GoWest( self.mTunerIndex )
 
- 		elif selectedIndex == E_STEP_WEST :
- 			self.mCommander.Motorized_StepWest( self.mTunerIndex )
+		elif selectedIndex == E_STEP_WEST :
+			self.mCommander.Motorized_StepWest( self.mTunerIndex )
 
- 		elif selectedIndex == E_STOP :
- 			self.mCommander.Motorized_Stop( self.mTunerIndex )
+		elif selectedIndex == E_STOP :
+			self.mCommander.Motorized_Stop( self.mTunerIndex )
 
- 		elif selectedIndex == E_STEP_EAST :
- 			self.mCommander.Motorized_StepEast( self.mTunerIndex )
+		elif selectedIndex == E_STEP_EAST :
+			self.mCommander.Motorized_StepEast( self.mTunerIndex )
 
- 		elif selectedIndex == E_MOVE_EAST :
+		elif selectedIndex == E_MOVE_EAST :
 			self.mCommander.Motorized_GoEast( self.mTunerIndex )
 
 		elif selectedIndex == E_CLOSE :
 			self.CloseDialog( )
-	
+
 
 	def onFocus( self, aControlId ) :
 		pass

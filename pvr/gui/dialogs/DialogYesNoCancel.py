@@ -10,33 +10,33 @@ E_BODY_LABEL_1	= 200
 
 class DialogYesNoCancel( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
-		BaseDialog.__init__( self, *args, **kwargs )	
+		BaseDialog.__init__( self, *args, **kwargs )
 		self.mIsOk = E_DIALOG_STATE_NO
 		self.mTitle = ''
 		self.mLabel = ''
-		
+
 
 	def onInit( self ) :
 		self.mIsOk = E_DIALOG_STATE_NO
 		self.getControl( E_HEADER ).setLabel( self.mTitle )
-		self.getControl( E_BODY_LABEL_1 ).setLabel( self.mLabel )		
+		self.getControl( E_BODY_LABEL_1 ).setLabel( self.mLabel )
 
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-		self.GlobalAction( actionId )		
+		self.GlobalAction( actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.CloseDialog( )
-			
+
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-			
+
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.CloseDialog( )
-			
+
 
 	def onClick( self, aControlId ) :
 		if aControlId == E_BUTTON_YES :
@@ -57,7 +57,7 @@ class DialogYesNoCancel( BaseDialog ) :
 
 	def onFocus( self, aControlId ) :
 		pass
-		
+
 
 	def SetDialogProperty( self, aTitle='', aLabel='' ) :
 		self.mTitle = aTitle

@@ -6,7 +6,7 @@
 		<control type="group" id="9000">
 			<include>DefaultSettingWindowEffect</include>
 			<include>DefaultSettingMainWindow</include>
-			<include>DefaultSatelliteConfigGroup</include>			
+			<include>DefaultSatelliteConfigGroup</include>
 		</control>
 		<include>DefaultSettingWindowPigScreen</include>
 	</controls>	

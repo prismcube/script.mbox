@@ -279,14 +279,14 @@ class FirstInstallation( SettingWindow ) :
 			self.AddInputControl( E_Input05, MR_LANG( 'Number of your Radio Channels' ), '%d' % cntRadio )
 			self.AddPrevNextButton( MR_LANG( 'Exit' ), MR_LANG( 'Go to Back' ) )
 			self.SetPrevNextButtonLabel( )
-			
+
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
 			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
 			self.SetVisibleControls( hideControlIds, False )
-			
+
 			self.InitControl( )
 			self.SetFocusControl( E_Input01 )
 			return
@@ -342,7 +342,7 @@ class FirstInstallation( SettingWindow ) :
 			if select >= 0 and select != self.mSatelliteIndex :
 				self.mSatelliteIndex = select
 			self.SetControlLabel2String( E_Input01, self.mFormattedList[ self.mSatelliteIndex ] )
-			
+
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
 			if self.mIsChannelSearch == True :
 				if self.mConfiguredSatelliteList :
@@ -361,7 +361,7 @@ class FirstInstallation( SettingWindow ) :
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Has No Configurd Satellite' ) )
-		 			dialog.doModal( )
+					dialog.doModal( )
 
 				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )
@@ -376,7 +376,7 @@ class FirstInstallation( SettingWindow ) :
 				self.mIsChannelSearch = False
 			else :
 				self.mIsChannelSearch = True
-				
+
 		elif aControlId == E_SpinEx02 or aControlId == E_SpinEx03 :
 			self.ControlSelect( )
 
@@ -384,14 +384,14 @@ class FirstInstallation( SettingWindow ) :
 	def TimeSetting( self, aControlId ) :
 		if aControlId == E_SpinEx01 :
 			self.DisableControl( self.mStepNum )
-				
+
 		elif aControlId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
 			channelList = self.mDataCache.Channel_GetList( )
 			channelNameList = []
 			for channel in channelList :
 				channelNameList.append( channel.mName )
- 			ret = dialog.select( MR_LANG( 'Select a channel you want to set your time by' ), channelNameList )
+			ret = dialog.select( MR_LANG( 'Select a channel you want to set your time by' ), channelNameList )
 			if ret >= 0 :
 				self.mSetupChannel = channelList[ ret ]
 				self.SetControlLabel2String( E_Input01, self.mSetupChannel.mName )
@@ -399,7 +399,7 @@ class FirstInstallation( SettingWindow ) :
 		elif aControlId == E_Input02 :
 			self.mDate = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_DATE, MR_LANG( 'Today\'s date' ), self.mDate )
 			self.SetControlLabel2String( E_Input02, self.mDate )
-			
+
 		elif aControlId == E_Input03 :
 			self.mTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Local time' ), self.mTime )
 			self.SetControlLabel2String( E_Input03, self.mTime )		
@@ -410,7 +410,7 @@ class FirstInstallation( SettingWindow ) :
 			oriLocalTimeOffset = ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetProp( )
 			oriSummerTime = ElisPropertyEnum( 'Summer Time', self.mCommander ).GetProp( )
 			oriChannel = self.mDataCache.Channel_GetCurrent( )
-		 		
+	
 			ElisPropertyEnum( 'Time Mode', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx01 ) )
 			ElisPropertyEnum( 'Local Time Offset', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx02) )
 			ElisPropertyEnum( 'Summer Time', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx03 ) )

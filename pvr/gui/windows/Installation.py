@@ -32,9 +32,9 @@ class Installation( BaseWindow ) :
 		MR_LANG( 'Most of STB settings can be configured via the GUI under Configuration' ),
 		MR_LANG( 'The Conditional Access System allows you to setup subscription configurations including Smartcard' ) ]
 
-		self.mCtrlLeftGroup = None		
+		self.mCtrlLeftGroup = None
 
-		
+
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
@@ -42,14 +42,14 @@ class Installation( BaseWindow ) :
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Installation' ) )
 		self.SetPipScreen( ) 
 		groupItems = []
-		
+
 		for i in range( len( self.mLeftGroupItems ) ) :
 			groupItems.append( xbmcgui.ListItem( self.mLeftGroupItems[i], self.mDescriptionList[i] ) )
-		
+
 		self.mCtrlLeftGroup = self.getControl( MAIN_LIST_ID )
 		self.mCtrlLeftGroup.addItems( groupItems )
 
-	
+
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )
@@ -57,10 +57,10 @@ class Installation( BaseWindow ) :
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.SetVideoRestore( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
-			
+
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-				
+
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.SetVideoRestore( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
@@ -68,7 +68,7 @@ class Installation( BaseWindow ) :
 
 	def onClick( self, aControlId ) :
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
-		
+
 		if selectedId == MENU_ID_FIRSTINSTALLATION :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION )
 
@@ -80,7 +80,7 @@ class Installation( BaseWindow ) :
 
 		elif selectedId == MENU_ID_EDIT_SATELLITE :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EDIT_SATELLITE )
-			
+
 		elif selectedId == MENU_ID_EDIT_TRANSPONDER :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EDIT_TRANSPONDER )
 
@@ -90,7 +90,7 @@ class Installation( BaseWindow ) :
 		elif selectedId == MENU_ID_CAS :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONDITIONAL_ACCESS )
 
- 
+
 	def onFocus( self, aControlId ) :
 		pass
 

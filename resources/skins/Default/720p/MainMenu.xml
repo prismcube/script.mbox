@@ -7,37 +7,36 @@
 			<posx>-50</posx>
 			<control type="group">
 				<animation effect="slide" end="-400,0" time="500" tween="quadratic" easing="out">WindowClose</animation>
-	            <animation effect="slide" start="-400,0" time="500" tween="quadratic" easing="out">WindowOpen</animation>
-	            <control type="group">
-	                <animation effect="slide" end="-228,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
-	                <control type="image">
-	                    <posx>379</posx>
-	                    <posy>0</posy>
-	                    <width>1</width>
-	                    <height>720</height>
-	                    <texture>HomeBladeSub_Part1.png</texture>
-	                    <!--<animation effect="zoom" start="379,0,1,720" end="379,0,229,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>-->
-	                    <animation effect="zoom" start="379,0,1,720" end="379,0,205,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
-	                </control>
-	                <control type="image">
-	                    <posx>380</posx>
-	                    <posy>0</posy>
-	                    <width>12</width>
-	                    <height>720</height>
-	                    <texture>HomeBladeSub_Part2.png</texture>
-	                    <animation effect="slide" end="205,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
+				<animation effect="slide" start="-400,0" time="500" tween="quadratic" easing="out">WindowOpen</animation>
+				<control type="group">
+					<animation effect="slide" end="-228,0" time="300" tween="quadratic" easing="out">WindowClose</animation>
+					<control type="image">
+						<posx>379</posx>
+						<posy>0</posy>
+						<width>1</width>
+						<height>720</height>
+						<texture>HomeBladeSub_Part1.png</texture>
+						<animation effect="zoom" start="379,0,1,720" end="379,0,205,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
+					</control>
+					<control type="image">
+						<posx>380</posx>
+						<posy>0</posy>
+						<width>12</width>
+						<height>720</height>
+						<texture>HomeBladeSub_Part2.png</texture>
+						<animation effect="slide" end="205,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
 						<!--<animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>-->
-	                </control>
-	            </control>
-	            <control type="image">
-	                <posx>-450</posx>
-	                <posy>0</posy>
-	                <width>846</width>
-	                <height>720</height>
-	                <colordiffuse>DAFFFFFF</colordiffuse>
-	                <texture>HomeBlade_bottom.png</texture>
-	            </control>
-	            <control type="list" id="9000">
+					</control>
+				</control>
+				<control type="image">
+					<posx>-450</posx>
+					<posy>0</posy>
+					<width>846</width>
+					<height>720</height>
+					<colordiffuse>DAFFFFFF</colordiffuse>
+					<texture>HomeBlade_bottom.png</texture>
+				</control>
+				<control type="list" id="9000">
 					<hitrect x="100" y="100" w="530" h="620"></hitrect>
 					<posx>-20</posx>
 					<posy>80</posy>
@@ -128,13 +127,13 @@
 					</content>
 				</control>
 				<control type="image">
-	                <posx>-450</posx>
-	                <posy>0</posy>
-	                <width>846</width>
-	                <height>720</height>
-	                <texture>HomeBlade_top.png</texture>
-	            </control>
-	            <!--
+					<posx>-450</posx>
+					<posy>0</posy>
+					<width>846</width>
+					<height>720</height>
+					<texture>HomeBlade_top.png</texture>
+				</control>
+				<!--
 				<control type="image">
 					<description>LOGO</description>
 					<posx>10</posx>
@@ -260,7 +259,7 @@
 							<visible>false</visible>
 						</control>
 					</control>
-					
+
 					<!-- Channel List-->
 					<control type="grouplist" id="9040">
 						<posx>10</posx>
@@ -363,7 +362,7 @@
 							<visible>true</visible>
 						</control>
 					</control>
-					
+
 					<!-- System Info-->
 					<control type="grouplist" id="9060">
 						<posx>10</posx>
@@ -387,125 +386,125 @@
 			</control>
 			<!--Sub Script-->
 			<control type="group">
-	            <posx>470</posx>
-	            <posy>35r</posy>
-	            <animation effect="slide" end="0,35" time="500" tween="quadratic" easing="out">WindowClose</animation>
-	            <animation effect="slide" start="0,35" time="500" tween="quadratic" easing="out">WindowOpen</animation>
-	            <control type="image">
-	                <description>RSS background</description>
-	                <posx>0</posx>
-	                <posy>0</posy>
-	                <width>860</width>
-	                <height>35</height>
-	                <texture border="32,0,0,0">Rss_Back.png</texture>
-	                <!--<visible>system.getbool(lookandfeel.enablerssfeeds)</visible>-->
-	            </control>
-	            <control type="label">
-	                <description>MainMenuDescription</description>
-	                <!--posx>100</posx-->
-	                <posx>70</posx>
-	                <posy>6</posy>
-	                <width>825</width>
-	                <height>35</height>
-	                <font>font12</font>
-	                <!--label>Installation</label-->
-	                <label>Installation enables you to setup your STB - Antenna, Channel, Satellite, TP, CAS, etc</label>
-	                <align>left</align>
-	                <textcolor>white</textcolor>                
-	                <shadowcolor>black</shadowcolor>	                
-	                <visible>Container(9000).HasFocus(1)</visible>
-	            </control>
-	            <control type="label">
-	                <description>MainMenuDescription</description>
-	                <!--posx>100</posx-->
-	                <posx>70</posx>
-	                <posy>6</posy>
-	                <width>825</width>
-	                <height>35</height>
-	                <font>font12</font>
-	                <!--label>Go to Archive Window</label-->
-	                <label>The Archive allows you to playback or remove the programmes you have recorded</label>
-	                <align>left</align>
-	                <textcolor>white</textcolor>                
-	                <shadowcolor>black</shadowcolor>
-	                <visible>Container(9000).HasFocus(2)</visible>
-	            </control>
-	            <control type="label">
-	                <description>MainMenuDescription</description>
-	                <!--posx>100</posx-->
-	                <posx>70</posx>
-	                <posy>6</posy>
-	                <width>825</width>
-	                <height>35</height>
-	                <font>font12</font>
-	                <!--label>Go to EPG Window</label-->
-	                <label>You can record programmes, view detailed contents information or view the channel list by time</label>
-	                <align>left</align>
-	                <textcolor>white</textcolor>                
-	                <shadowcolor>black</shadowcolor>
-	                <visible>Container(9000).HasFocus(3)</visible>
-	            </control>
-	            <control type="label">
-	                <description>MainMenuDescription</description>
-	                <!--posx>100</posx-->
-	                <posx>70</posx>
-	                <posy>6</posy>
-	                <width>825</width>
-	                <height>35</height>
-	                <font>font12</font>
-	                <!--label>Go to Channel List</label-->
-	                <label>The Channel List provides you with functions such as locking, skipping and deleting channels</label>
-	                <align>left</align>
-	                <textcolor>white</textcolor>                
-	                <shadowcolor>black</shadowcolor>
-	                <visible>Container(9000).HasFocus(4)</visible>
-	            </control>
-	            <control type="label">
-	                <description>MainMenuDescription</description>
-	                <!--posx>100</posx-->
-	                <posx>70</posx>
-	                <posy>6</posy>
-	                <width>825</width>
-	                <height>35</height>
-	                <font>font12</font>
-	                <!--label>Go to Media Center</label-->
-	                <label>The Media Center allows you to browse and view videos, photos, and music from your storage</label>
-	                <align>left</align>
-	                <textcolor>white</textcolor>                
-	                <shadowcolor>black</shadowcolor>
-	                <visible>Container(9000).HasFocus(5)</visible>
-	            </control>
-	            <control type="label">
-	                <description>MainMenuDescription</description>
-	                <!--posx>100</posx-->
-	                <posx>70</posx>
-	                <posy>6</posy>
-	                <width>825</width>
-	                <height>35</height>
-	                <font>font12</font>
-	                <!--label>System Information</label-->
-	                <label>STB Info provides STB system status including system version, free HDD space, etc</label>
-	                <align>left</align>
-	                <textcolor>white</textcolor>                
-	                <shadowcolor>black</shadowcolor>
-	                <visible>Container(9000).HasFocus(6)</visible>
-	            </control>
-	            <control type="label">
-	                <description>MainMenuDescription</description>
-	                <!--posx>100</posx-->
-	                <posx>70</posx>
-	                <posy>6</posy>
-	                <width>825</width>
-	                <height>35</height>
-	                <font>font12</font>
-	                <!--label>Hide</label-->
-	                <label>Close the main menu and return to the screen</label>
-	                <align>left</align>
-	                <textcolor>white</textcolor>                
-	                <shadowcolor>black</shadowcolor>
-	                <visible>Container(9000).HasFocus(7)</visible>
-	            </control>
-        	</control>
+				<posx>470</posx>
+				<posy>35r</posy>
+				<animation effect="slide" end="0,35" time="500" tween="quadratic" easing="out">WindowClose</animation>
+				<animation effect="slide" start="0,35" time="500" tween="quadratic" easing="out">WindowOpen</animation>
+				<control type="image">
+					<description>RSS background</description>
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>860</width>
+					<height>35</height>
+					<texture border="32,0,0,0">Rss_Back.png</texture>
+					<!--<visible>system.getbool(lookandfeel.enablerssfeeds)</visible>-->
+				</control>
+				<control type="label">
+					<description>MainMenuDescription</description>
+					<!--posx>100</posx-->
+					<posx>70</posx>
+					<posy>6</posy>
+					<width>825</width>
+					<height>35</height>
+					<font>font12</font>
+					<!--label>Installation</label-->
+					<label>Installation enables you to setup your STB - Antenna, Channel, Satellite, TP, CAS, etc</label>
+					<align>left</align>
+					<textcolor>white</textcolor>                
+					<shadowcolor>black</shadowcolor>	                
+					<visible>Container(9000).HasFocus(1)</visible>
+				</control>
+				<control type="label">
+					<description>MainMenuDescription</description>
+					<!--posx>100</posx-->
+					<posx>70</posx>
+					<posy>6</posy>
+					<width>825</width>
+					<height>35</height>
+					<font>font12</font>
+					<!--label>Go to Archive Window</label-->
+					<label>The Archive allows you to playback or remove the programmes you have recorded</label>
+					<align>left</align>
+					<textcolor>white</textcolor>                
+					<shadowcolor>black</shadowcolor>
+					<visible>Container(9000).HasFocus(2)</visible>
+				</control>
+				<control type="label">
+					<description>MainMenuDescription</description>
+					<!--posx>100</posx-->
+					<posx>70</posx>
+					<posy>6</posy>
+					<width>825</width>
+					<height>35</height>
+					<font>font12</font>
+					<!--label>Go to EPG Window</label-->
+					<label>You can record programmes, view detailed contents information or view the channel list by time</label>
+					<align>left</align>
+					<textcolor>white</textcolor>                
+					<shadowcolor>black</shadowcolor>
+					<visible>Container(9000).HasFocus(3)</visible>
+				</control>
+				<control type="label">
+					<description>MainMenuDescription</description>
+					<!--posx>100</posx-->
+					<posx>70</posx>
+					<posy>6</posy>
+					<width>825</width>
+					<height>35</height>
+					<font>font12</font>
+					<!--label>Go to Channel List</label-->
+					<label>The Channel List provides you with functions such as locking, skipping and deleting channels</label>
+					<align>left</align>
+					<textcolor>white</textcolor>                
+					<shadowcolor>black</shadowcolor>
+					<visible>Container(9000).HasFocus(4)</visible>
+				</control>
+				<control type="label">
+					<description>MainMenuDescription</description>
+					<!--posx>100</posx-->
+					<posx>70</posx>
+					<posy>6</posy>
+					<width>825</width>
+					<height>35</height>
+					<font>font12</font>
+					<!--label>Go to Media Center</label-->
+					<label>The Media Center allows you to browse and view videos, photos, and music from your storage</label>
+					<align>left</align>
+					<textcolor>white</textcolor>                
+					<shadowcolor>black</shadowcolor>
+					<visible>Container(9000).HasFocus(5)</visible>
+				</control>
+				<control type="label">
+					<description>MainMenuDescription</description>
+					<!--posx>100</posx-->
+					<posx>70</posx>
+					<posy>6</posy>
+					<width>825</width>
+					<height>35</height>
+					<font>font12</font>
+					<!--label>System Information</label-->
+					<label>STB Info provides STB system status including system version, free HDD space, etc</label>
+					<align>left</align>
+					<textcolor>white</textcolor>                
+					<shadowcolor>black</shadowcolor>
+					<visible>Container(9000).HasFocus(6)</visible>
+				</control>
+				<control type="label">
+					<description>MainMenuDescription</description>
+					<!--posx>100</posx-->
+					<posx>70</posx>
+					<posy>6</posy>
+					<width>825</width>
+					<height>35</height>
+					<font>font12</font>
+					<!--label>Hide</label-->
+					<label>Close the main menu and return to the screen</label>
+					<align>left</align>
+					<textcolor>white</textcolor>                
+					<shadowcolor>black</shadowcolor>
+					<visible>Container(9000).HasFocus(7)</visible>
+				</control>
+			</control>
 			<!--Date, Time Info-->
 			<include>DefaultCommonDateTime</include>
 		</control>

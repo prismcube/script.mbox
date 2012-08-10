@@ -6,7 +6,7 @@
 		<control type="group">
 			<posx>90</posx>
 			<posy>50</posy>
-			<include>DefaultSettingWindowEffect</include>		
+			<include>DefaultSettingWindowEffect</include>
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>

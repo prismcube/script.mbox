@@ -29,13 +29,13 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def onInit( self ) :
 		self.mDataCache.Player_AVBlank( True, True )
-	
+
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
-		
+
 		self.mIsFinished = False	
 		self.mTimer = None
-		
+
 		self.mNewTVChannelList = []
 		self.mNewRadioChannelList = []
 
@@ -61,25 +61,25 @@ class DialogChannelSearch( BaseDialog ) :
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )
-			
+
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.ScanAbort( )
-			
+
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-				
+
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.ScanAbort( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			pass
-	
+
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			pass
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			pass
-				
+
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			pass
 
@@ -134,7 +134,7 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mBand = aBand		
 		self.mTransponderList = aTransponderList
 		self.mSatelliteFormatedName = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand  )
-		
+
 
 	def ScanStart( self ) :
 		if self.mScanMode == E_SCAN_SATELLITE :
@@ -219,7 +219,7 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mLongitude = aEvent.mCarrier.mDVBS.mSatelliteLongitude
 				self.mBand = aEvent.mCarrier.mDVBS.mSatelliteBand
 				self.mSatelliteFormatedName = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand  )
-			
+
 			strTransponderInfo = '%s - %d Mhz - %s - %d MS/s ' %( self.mSatelliteFormatedName, aEvent.mCarrier.mDVBS.mFrequency, strPol, aEvent.mCarrier.mDVBS.mSymbolRate )
 			self.mCtrlTransponderInfo.setLabel( strTransponderInfo )
 
@@ -231,7 +231,7 @@ class DialogChannelSearch( BaseDialog ) :
 
 		if aEvent.mFinished and aEvent.mCurrentIndex >= aEvent.mAllCount :
 			self.mCtrlProgress.setPercent( 100 )
-			self.mTimer = threading.Timer( 0.5, self.ShowResult )			
+			self.mTimer = threading.Timer( 0.5, self.ShowResult )
 			self.mTimer.start( )
 
 

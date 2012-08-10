@@ -6,7 +6,7 @@ LABEL_STRING		= 200
 
 class DialogForceProgress( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
-		BaseDialog.__init__( self, *args, **kwargs )	
+		BaseDialog.__init__( self, *args, **kwargs )
 		self.mLimitTime 		= 10
 		self.mTitle				= MR_LANG( 'Wait' )
 		self.mEventName			= None
@@ -15,7 +15,7 @@ class DialogForceProgress( BaseDialog ) :
 		self.mCtrlLabelPercent	= None
 		self.mCtrlLabelString	= None
 		self.mCtrlProgress		= None
-		
+
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
@@ -30,20 +30,20 @@ class DialogForceProgress( BaseDialog ) :
 		self.mCtrlLabelString.setLabel( self.mTitle	)
 		self.mCtrlLabelPercent.setLabel( '0' )
 		self.DrawProgress( )
-		
-		
+
+
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.CloseDialog( )
-			
+
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-			
+
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.CloseDialog( )
-			
+
 
 	def onClick( self, aControlId ) :
 		pass
@@ -59,7 +59,7 @@ class DialogForceProgress( BaseDialog ) :
 			if aEvent.getName( ) == self.mEventName :
 				self.mFinish = True
 
-	
+
 	def SetDialogProperty( self, aLimitTime = 10, aTitle = MR_LANG( 'Wait' ), aEventName = None ) :
 		self.mLimitTime = aLimitTime
 		self.mTitle		= aTitle
@@ -72,10 +72,10 @@ class DialogForceProgress( BaseDialog ) :
 			percent = 100 / self.mLimitTime * i
 			self.mCtrlLabelPercent.setLabel( '%d' % percent )
 			self.mCtrlProgress.setPercent( percent )
-			time.sleep( 1 )			
+			time.sleep( 1 )
 
 			if self.mFinish == True :
-				self.mCtrlLabelString.setLabel( MR_LANG( '%s completed' ) % self.mTitle )				
+				self.mCtrlLabelString.setLabel( MR_LANG( '%s completed' ) % self.mTitle )
 				self.Close( )
 				break
 

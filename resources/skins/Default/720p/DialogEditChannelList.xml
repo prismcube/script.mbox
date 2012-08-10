@@ -4,7 +4,7 @@
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group" id="8000">
-            <include>DefaultDialogCloseEffect</include>
+			<include>DefaultDialogCloseEffect</include>
 			<control type="image" id="9001">
 				<description>background image</description>
 				<posx>0</posx>

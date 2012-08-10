@@ -6,7 +6,7 @@
 		<control type="group">
 			<posx>340</posx>
 			<posy>235</posy>
-            <include>DefaultDialogCloseEffect</include>
+			<include>DefaultDialogCloseEffect</include>
 			<control type="image" id="9001">
 				<description>background image</description>
 				<posx>0</posx>

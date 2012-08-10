@@ -7,7 +7,7 @@ E_PROGRESS_ID		= 213
 
 class DialogChannelJump( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
-		BaseDialog.__init__( self, *args, **kwargs )	
+		BaseDialog.__init__( self, *args, **kwargs )
 		self.mChannelNumber		= ''
 		#self.mChannelName		= 'No channel'
 		#self.mEPGName			= ''
@@ -41,7 +41,7 @@ class DialogChannelJump( BaseDialog ) :
 		self.SetLabelChannelNumber( )
 		self.SetLabelChannelName( )
 		self.SearchChannel( )
-				
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -49,10 +49,10 @@ class DialogChannelJump( BaseDialog ) :
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.CloseDialog( )
-			
+
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-			
+
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.CloseDialog( )
@@ -223,7 +223,7 @@ class DialogChannelJump( BaseDialog ) :
 
 
 	def StartAsyncTune( self ) :
-		self.mAsyncTuneTimer = threading.Timer( 1.2, self.AsyncTuneChannel ) 				
+		self.mAsyncTuneTimer = threading.Timer( 1.2, self.AsyncTuneChannel )
 		self.mAsyncTuneTimer.start()
 
 

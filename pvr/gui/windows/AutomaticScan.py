@@ -33,7 +33,7 @@ class AutomaticScan( SettingWindow ) :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Has no configured satellite' ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Has No Configurd Satellite' ) )
- 			dialog.doModal( )
+			dialog.doModal( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
 
@@ -124,7 +124,7 @@ class AutomaticScan( SettingWindow ) :
 		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
 			pass
 		else :
- 			return
+			return
 		self.mFormattedList = []
 		self.mFormattedList.append( MR_LANG( 'All' ) )
 

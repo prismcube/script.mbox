@@ -26,7 +26,7 @@
 				<width>1280</width>
 				<height>128</height>
 				<texture>floor.png</texture>
-				<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)</visible>				
+				<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)</visible>
 			</control>
 			<control type="group">
 				<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)</visible>
@@ -65,11 +65,11 @@
 		</control>
 		
 		<control type="group" id="9003">
-			<include>DefaultWindowFade</include>		
+			<include>DefaultWindowFade</include>
 			<include>DefaultCommonArchiveView</include> <!-- Default common View id = 3400 -->
 			<include>DefaultThumbnailArchiveView</include> <!-- Default thumbnail View id = 3410 -->
-			<include>DefaultPosterWrapArchiveView</include> <!-- Default poster wrapView id = 3420 -->						
-			<include>DefaultFanartArchiveView</include> <!-- Default Fanart View id = 3430 -->						
+			<include>DefaultPosterWrapArchiveView</include> <!-- Default poster wrapView id = 3420 -->
+			<include>DefaultFanartArchiveView</include> <!-- Default Fanart View id = 3430 -->
 		</control>
 
 		<!-- PIP COMMON ARCHIVE-->
@@ -236,18 +236,18 @@
 		<include>DefaultCommonDateTime</include>
 
 		<control type="group">
-			<include>DefaultWindowFade</include>				
+			<include>DefaultWindowFade</include>
 			<posx>850</posx>
 			<posy>295</posy>
 			<control type="label" id="401">
-				<description>Archive Name or Live Channel Name</description>			
+				<description>Archive Name or Live Channel Name</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>352</width>
 				<height>18</height>
-				<align>center</align>				
+				<align>center</align>
 				<font>font12</font>
-				<visible>substring(Window.Property(ViewMode),common)</visible>				
+				<visible>substring(Window.Property(ViewMode),common)</visible>
 			</control>
 			<control type="progress" id="402">
 				<description>Progressbar</description>
@@ -261,12 +261,12 @@
 		</control>
 
 		<control type="group" id="9020">
-			<include>DefaultWindowFade</include>		
+			<include>DefaultWindowFade</include>
 			<posx>850</posx>
 			<posy>360</posy>
 			<visible>substring(Window.Property(ViewMode),common)</visible>
 			<control type="label" id="300">
-				<description>Channel Name</description>			
+				<description>Channel Name</description>
 				<posx>0</posx>
 				<posy>0</posy>
 				<font>font12_title</font>
@@ -282,7 +282,7 @@
 				<label>$INFO[Window.Property(RecDuration)]</label>
 			</control>
 			<control type="label" id="302">
-				<description>Duration</description>			
+				<description>Duration</description>
 				<posx>150</posx>
 				<posy>30</posy>
 				<font>font12_title</font>
@@ -290,11 +290,11 @@
 				<label>$INFO[Window.Property(RecDate)]</label>
 			</control>
 			<control type="textbox" id="303">
-				<description>Record Name</description>			
+				<description>Record Name</description>
 				<posx>0</posx>
 				<posy>60</posy>
 				<width>352</width>
-			 	<height>160</height>
+				<height>160</height>
 				<font>font12_title</font>
 				<textcolor>grey</textcolor>
 				<label>$INFO[Window.Property(RecName)]</label>
@@ -372,7 +372,7 @@
 				<align>right</align>
 				<aligny>center</aligny>
 				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3400).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3400).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3400).CurrentPage]/$INFO[Container(3400).NumPages][/COLOR])</label>
-				<visible>substring(Window.Property(ViewMode),common) </visible>						
+				<visible>substring(Window.Property(ViewMode),common) </visible>
 			</control>
 
 			<!-- Item Position and Page Number for thumbnail list-->
@@ -387,7 +387,7 @@
 				<align>right</align>
 				<aligny>center</aligny>
 				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3410).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3410).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3410).CurrentPage]/$INFO[Container(3410).NumPages][/COLOR])</label>
-				<visible>substring(Window.Property(ViewMode),thumbnail) </visible>						
+				<visible>substring(Window.Property(ViewMode),thumbnail) </visible>
 			</control>
 
 			<!-- Item Position and Page Number for posterwrap list-->
@@ -402,7 +402,7 @@
 				<align>right</align>
 				<aligny>center</aligny>
 				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3420).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3420).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3420).CurrentPage]/$INFO[Container(3420).NumPages][/COLOR])</label>
-				<visible>substring(Window.Property(ViewMode),posterwrap) </visible>						
+				<visible>substring(Window.Property(ViewMode),posterwrap) </visible>
 			</control>
 
 			<!-- Item Position and Page Number for panart list-->
@@ -417,7 +417,7 @@
 				<align>right</align>
 				<aligny>center</aligny>
 				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3430).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3430).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3430).CurrentPage]/$INFO[Container(3430).NumPages][/COLOR])</label>
-				<visible>substring(Window.Property(ViewMode),panart) </visible>						
+				<visible>substring(Window.Property(ViewMode),panart) </visible>
 			</control>
 		</control>
 	</controls>

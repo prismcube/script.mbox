@@ -58,7 +58,7 @@ class MainMenu( BaseWindow ) :
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )
-		
+
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
@@ -108,7 +108,7 @@ class MainMenu( BaseWindow ) :
 
 		elif aControlId == BUTTON_ID_ARCHIVE :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
-			
+
 		elif aControlId == BUTTON_ID_EPG :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
@@ -120,8 +120,8 @@ class MainMenu( BaseWindow ) :
 				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Warning' ), MR_LANG( 'Now PVR Playing...' ) )
-	 			dialog.doModal( )
-	 			self.getControl( MAIN_GROUP_ID ).setVisible( True )
+				dialog.doModal( )
+				self.getControl( MAIN_GROUP_ID ).setVisible( True )
 
 			else:
 				self.mStartMediaCenter = True
@@ -140,7 +140,7 @@ class MainMenu( BaseWindow ) :
 			pvr.Launcher.GetInstance( ).PowerOff()
 			"""
 
- 
+
 	def onFocus( self, aControlId ) :
 		LOG_TRACE('')
 		pass

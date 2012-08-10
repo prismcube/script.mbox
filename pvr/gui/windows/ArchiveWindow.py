@@ -1,5 +1,5 @@
 from pvr.gui.WindowImport import *
- 
+
 
 BUTTON_ID_VIEW_MODE				= 100
 BUTTON_ID_SORT_MODE				= 101

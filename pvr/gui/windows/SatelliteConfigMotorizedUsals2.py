@@ -26,23 +26,23 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 
 		self.SetSettingWindowLabel( MR_LANG( 'Satellite Configuration' ) )
 		self.LoadNoSignalState( )
-		
+
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Satellite Config : Tuner %d - Motorized, USALS' ) % ( tunerIndex + 1 ) )
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.InitConfig( )
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
 
-		
+
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )		
-		
+
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass
-			
+
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-				
+
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.OpenBusyDialog( )
 			self.ResetAllControl( )
@@ -70,10 +70,10 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 		if groupId == E_Input01 :
 			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog()
- 			ret = dialog.select( MR_LANG( 'Select satellite' ), satelliteList )
+			ret = dialog.select( MR_LANG( 'Select satellite' ), satelliteList )
 
 			if ret >= 0 :
-	 			satellite = self.mDataCache.GetSatelliteByIndex( ret )
+				satellite = self.mDataCache.GetSatelliteByIndex( ret )
 
 				self.mCurrentSatellite.mSatelliteLongitude 	= satellite.mLongitude		# Longitude
 				self.mCurrentSatellite.mBandType 			= satellite.mBand			# Band
@@ -105,18 +105,18 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 			self.InitConfig( )
 
 		# LNB Frequency - Spincontrol
- 		elif groupId == E_SpinEx02 :
- 			position = self.GetSelectedIndex( E_SpinEx02 )
+		elif groupId == E_SpinEx02 :
+			position = self.GetSelectedIndex( E_SpinEx02 )
 			self.mCurrentSatellite.mLowLNB = int( E_LIST_SINGLE_FREQUENCY[ position ] )
 
 		# LNB Frequency - Inputcontrol
- 		elif groupId == E_Input02 :
- 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_LNB_FREQUENCY )
- 			dialog.SetFrequency( self.mCurrentSatellite.mLowLNB, self.mCurrentSatellite.mHighLNB, self.mCurrentSatellite.mLNBThreshold )
- 			dialog.doModal( )
+		elif groupId == E_Input02 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_LNB_FREQUENCY )
+			dialog.SetFrequency( self.mCurrentSatellite.mLowLNB, self.mCurrentSatellite.mHighLNB, self.mCurrentSatellite.mLNBThreshold )
+			dialog.doModal( )
 
 			if dialog.IsOK() == E_DIALOG_STATE_YES :
-	 			lowFreq, highFreq, threshFreq  = dialog.GetFrequency( )
+				lowFreq, highFreq, threshFreq  = dialog.GetFrequency( )
 
 				self.mCurrentSatellite.mLowLNB = int ( lowFreq )
 				self.mCurrentSatellite.mHighLNB = int ( highFreq )
@@ -125,21 +125,21 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 				self.InitConfig( )
 			else :
 				return
-
+				
 		# 22Khz
- 		elif groupId == E_SpinEx03 :
+		elif groupId == E_SpinEx03 :
 			self.mCurrentSatellite.mFrequencyLevel = self.GetSelectedIndex( E_SpinEx03 )
 
 		# Transponer
- 		elif groupId == E_Input03 :
- 			if self.mTransponderList :
-	 			dialog = xbmcgui.Dialog( )
-	 			tempIndex = dialog.select( MR_LANG( 'Select Transponder' ), self.mTransponderList )
-	 			if tempIndex != -1 :
-	 				self.mSelectedTransponderIndex = tempIndex
-	 				self.InitConfig( )
-	 			else :
-	 				return
+		elif groupId == E_Input03 :
+			if self.mTransponderList :
+				dialog = xbmcgui.Dialog( )
+				tempIndex = dialog.select( MR_LANG( 'Select Transponder' ), self.mTransponderList )
+				if tempIndex != -1 :
+					self.mSelectedTransponderIndex = tempIndex
+					self.InitConfig( )
+				else :
+					return
 
 		# Go to the Position
 		elif groupId == E_Input04 :
@@ -196,7 +196,7 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 		else :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx03, E_Input01, E_Input02, E_Input03, E_Input04 ]
 			hideControlIds = [ E_SpinEx02, E_SpinEx04, E_SpinEx05, E_SpinEx06, E_Input05 ]
-			
+
 		self.SetVisibleControls( visibleControlIds, True )
 		self.SetEnableControls( visibleControlIds, True )
 
@@ -204,7 +204,7 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 
 		self.InitControl( )
 		self.DisableControl( )
-		
+
 
 	def DisableControl( self ) :
 		enableControlIds = [ E_Input02, E_SpinEx02, E_SpinEx03 ]

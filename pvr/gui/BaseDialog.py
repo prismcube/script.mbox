@@ -4,7 +4,7 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 from pvr.gui.BaseWindow import Action
 from pvr.Util import RunThread, GuiLock, GuiLock2
- 
+
 
 class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 	def __init__( self, *args, **kwargs ) :

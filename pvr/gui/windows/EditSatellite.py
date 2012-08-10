@@ -71,13 +71,13 @@ class EditSatellite( SettingWindow ) :
 		if groupId == E_Input01 :
 			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog( )
- 			select = dialog.select( MR_LANG( 'Select satellite you want to edit' ), satelliteList ) 			
+			select = dialog.select( MR_LANG( 'Select satellite you want to edit' ), satelliteList ) 			
 
 			if select >= 0 and select != self.mSatelliteIndex :
-	 			self.mSatelliteIndex = select
-	 			self.InitConfig( )
+				self.mSatelliteIndex = select
+				self.InitConfig( )
 
-	 	# Edit Satellite Name
+		# Edit Satellite Name
 		elif groupId == E_Input03 :
 			kb = xbmc.Keyboard( self.mName, MR_LANG( 'Change satellite\s name' ), False )			
 			kb.setHiddenInput( False )
@@ -87,15 +87,15 @@ class EditSatellite( SettingWindow ) :
 				if ret != True :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Satellite Edit Name Fail' ) )
-		 			dialog.doModal( )
-		 			return
- 				self.mDataCache.LoadAllSatellite( )
+					dialog.doModal( )
+					return
+				self.mDataCache.LoadAllSatellite( )
 				self.InitConfig( )
 
 		# Add New Satellite
 		elif groupId == E_Input04 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ADD_NEW_SATELLITE )
- 			dialog.doModal( )
+			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				longitude, band, satelliteName = dialog.GetValue( )
@@ -103,9 +103,9 @@ class EditSatellite( SettingWindow ) :
 				if ret != True :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Satellite Add Fail' ) )
-		 			dialog.doModal( )
-		 			return
- 				self.mDataCache.LoadAllSatellite( )
+					dialog.doModal( )
+					return
+				self.mDataCache.LoadAllSatellite( )
 				self.InitConfig( )
 			else :
 				return
@@ -121,8 +121,8 @@ class EditSatellite( SettingWindow ) :
 				if ret != True :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Satellite Delete Fail' ) )
-		 			dialog.doModal( )
-		 			return
+					dialog.doModal( )
+					return
 				self.mSatelliteIndex = 0
 				self.mDataCache.LoadAllSatellite( )
 				self.InitConfig( )

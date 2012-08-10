@@ -511,7 +511,7 @@ class WindowMgr( object ) :
 			print 'Error AddFontErr'
 
 		if needReloadSkin :
- 			if not os.path.exists( os.path.join( self.mSkinFontPath, aFileName ) ) and os.path.exists( os.path.join( self.mScriptFontPath, aFileName ) ):
+			if not os.path.exists( os.path.join( self.mSkinFontPath, aFileName ) ) and os.path.exists( os.path.join( self.mScriptFontPath, aFileName ) ):
 				shutil.copyfile( os.path.join( self.mScriptFontPath, aFileName ), os.path.join( self.mSkinFontPath, aFileName ) )
 
 			xbmc.executebuiltin( "XBMC.ReloadSkin()" )

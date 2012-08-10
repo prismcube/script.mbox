@@ -284,7 +284,7 @@
 	<include name="DefaultSettingWindowEffect">
 		<animation type="WindowOpen" reversible="false">
 			<effect type="zoom" start="150" end="100" center="640,360" time="500" tween="cubic" easing="out"/>
-        	<effect type="fade" start="0" end="100" time="500"/>
+			<effect type="fade" start="0" end="100" time="500"/>
 		</animation>
 		<animation type="WindowClose" reversible="false">
 			<effect type="fade" start="100" end="0" time="500"/>
@@ -409,7 +409,6 @@
 			<textcolor>grey2</textcolor>
 			<align>left</align>
 			<aligny>center</aligny>
-			<label></label>
 			<visible>Control.IsVisible(7003) + !Control.HasFocus(7003)</visible>
 		</control>
 		<control type="label">
@@ -618,7 +617,7 @@
 			</control>
 			<control type="button" id="1102">
 				<description>Menu Item Prev Button</description>
-				<visible>Control(1100).IsVisible()</visible>				
+				<visible>Control(1100).IsVisible()</visible>
 				<posx>705</posx>
 				<posy>-6</posy>
 				<width>45</width>
@@ -633,7 +632,7 @@
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>750</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="0" width="720">
 				</itemlayout>
@@ -753,7 +752,7 @@
 			<control type="button" id="1202">
 				<description>Menu Item Prev Button</description>
 				<visible>Control(1200).IsVisible()</visible>
-				<description>Menu Item Prev Button</description>				
+				<description>Menu Item Prev Button</description>
 				<posx>705</posx>
 				<posy>-6</posy>
 				<width>45</width>
@@ -768,7 +767,7 @@
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>750</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="0" width="720">
 				</itemlayout>
@@ -874,7 +873,7 @@
 			<control type="button" id="1301">
 				<description>Menu Item Next Button</description>
 				<visible>Control(1300).IsVisible()</visible>
-				<hitrect x="0" y="0" w="705" h="40" />	
+				<hitrect x="0" y="0" w="705" h="40" />
 				<posx>660</posx>
 				<posy>-6</posy>
 				<width>45</width>
@@ -902,7 +901,7 @@
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>750</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -1036,7 +1035,7 @@
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>750</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -1170,7 +1169,7 @@
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>750</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -1276,7 +1275,7 @@
 			<control type="button" id="1601">
 				<description>Menu Item Next Button</description>
 				<visible>Control(1600).IsVisible()</visible>
-				<hitrect x="0" y="0" w="705" h="40" />	
+				<hitrect x="0" y="0" w="705" h="40" />
 				<posx>660</posx>
 				<posy>-6</posy>
 				<width>45</width>
@@ -1304,7 +1303,7 @@
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>750</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -1438,7 +1437,7 @@
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>750</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -1572,7 +1571,7 @@
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>750</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -1706,7 +1705,7 @@
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>750</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -1822,7 +1821,7 @@
 			<control type="list" id="2103">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>750</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -1922,7 +1921,7 @@
 			<control type="list" id="2203">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>750</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -2022,7 +2021,7 @@
 			<control type="list" id="2303">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>750</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -2122,7 +2121,7 @@
 			<control type="list" id="2403">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>750</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -2222,7 +2221,7 @@
 			<control type="list" id="2503">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>750</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -2322,7 +2321,7 @@
 			<control type="list" id="2603">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>750</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -2422,7 +2421,7 @@
 			<control type="list" id="2703">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>750</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="720">
 				</itemlayout>
@@ -2525,7 +2524,7 @@
 			</control>
 			<control type="button" id="6112">
 				<description>Menu Item Prev Button</description>
-				<visible>Control(6110).IsVisible()</visible>				
+				<visible>Control(6110).IsVisible()</visible>
 				<posx>515</posx>
 				<posy>-6</posy>
 				<width>45</width>
@@ -2540,7 +2539,7 @@
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>640</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="640">
 				</itemlayout>
@@ -2646,7 +2645,7 @@
 			<control type="button" id="6121">
 				<description>Menu Item Next Button</description>
 				<visible>Control(6120).IsVisible()</visible>
-				<hitrect x="0" y="0" w="515" h="40" />	
+				<hitrect x="0" y="0" w="515" h="40" />
 				<posx>470</posx>
 				<posy>-6</posy>
 				<width>45</width>
@@ -2659,7 +2658,7 @@
 			</control>
 			<control type="button" id="6122">
 				<description>Menu Item Prev Button</description>
-				<visible>Control(6120).IsVisible()</visible>				
+				<visible>Control(6120).IsVisible()</visible>
 				<posx>515</posx>
 				<posy>-6</posy>
 				<width>45</width>
@@ -2674,7 +2673,7 @@
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>640</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="640">
 				</itemlayout>
@@ -2793,7 +2792,7 @@
 			</control>
 			<control type="button" id="6132">
 				<description>Menu Item Prev Button</description>
-				<visible>Control(6130).IsVisible()</visible>				
+				<visible>Control(6130).IsVisible()</visible>
 				<posx>515</posx>
 				<posy>-6</posy>
 				<width>45</width>
@@ -2808,7 +2807,7 @@
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>640</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="640">
 				</itemlayout>
@@ -2914,7 +2913,7 @@
 			<control type="button" id="6141">
 				<description>Menu Item Next Button</description>
 				<visible>Control(6140).IsVisible()</visible>
-				<hitrect x="0" y="0" w="515" h="40" />	
+				<hitrect x="0" y="0" w="515" h="40" />
 				<posx>470</posx>
 				<posy>-6</posy>
 				<width>45</width>
@@ -2927,7 +2926,7 @@
 			</control>
 			<control type="button" id="6142">
 				<description>Menu Item Prev Button</description>
-				<visible>Control(6140).IsVisible()</visible>				
+				<visible>Control(6140).IsVisible()</visible>
 				<posx>515</posx>
 				<posy>-6</posy>
 				<width>45</width>
@@ -2942,7 +2941,7 @@
 				<hitrect x="0" y="0" w="0" h="0" />
 				<posx>0</posx>
 				<width>640</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="640">
 				</itemlayout>
@@ -3074,7 +3073,7 @@
 			<control type="list" id="6213">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>640</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="640">
 				</itemlayout>
@@ -3190,7 +3189,7 @@
 			<control type="list" id="6223">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>640</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="640">
 				</itemlayout>
@@ -3306,7 +3305,7 @@
 			<control type="list" id="6233">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>640</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="640">
 				</itemlayout>
@@ -3422,7 +3421,7 @@
 			<control type="list" id="6243">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>640</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="640">
 				</itemlayout>
@@ -3538,7 +3537,7 @@
 			<control type="list" id="6253">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>640</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="640">
 				</itemlayout>
@@ -3654,7 +3653,7 @@
 			<control type="list" id="6263">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>640</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="640">
 				</itemlayout>
@@ -3770,7 +3769,7 @@
 			<control type="list" id="6273">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>640</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="640">
 				</itemlayout>
@@ -3886,7 +3885,7 @@
 			<control type="list" id="6283">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>640</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="640">
 				</itemlayout>
@@ -4002,7 +4001,7 @@
 			<control type="list" id="6293">
 				<hitrect x="0" y="0" w="0" h="0" />
 				<width>640</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<itemlayout height="1" width="640">
 				</itemlayout>
@@ -4105,10 +4104,10 @@
 			<control type="panel" id="6302">
 				<posx>130</posx>
 				<width>420</width>
-				<height>40</height>						
+				<height>40</height>
 				<scrolltime>0</scrolltime>
 				<orientation>horizontal</orientation>
-				<visible>Control(6300).IsVisible()</visible>				
+				<visible>Control(6300).IsVisible()</visible>
 				<itemlayout height="40" width="60">
 					<control type="image">
 						<posx>1</posx>
@@ -4118,42 +4117,6 @@
 						<bordertexture border="5">dialogs/context_nofocus.png</bordertexture>
 						<bordersize>5</bordersize>
 						<fadetime>100</fadetime>
-					</control>
-					<control type="label">
-						<posx>30</posx>
-						<posy>0</posy>
-						<width>60</width>
-						<height>40</height>
-						<font>Font_Reg20</font>
-						<textcolor>grey3</textcolor>
-						<align>center</align>
-						<aligny>center</aligny>
-						<label>$INFO[ListItem.Label]</label>
-						<visible>substring(ListItem.Property(Used),False)</visible>						
-					</control>
-					<control type="label">
-						<posx>30</posx>
-						<posy>0</posy>
-						<width>60</width>
-						<height>40</height>
-						<font>Font_Reg20</font>
-						<textcolor>FFFF0000</textcolor>
-						<align>center</align>
-						<aligny>center</aligny>
-						<label>$INFO[ListItem.Label]</label>
-						<visible>substring(ListItem.Property(Used),True)</visible>
-					</control>
-				</itemlayout>
-				<focusedlayout height="40" width="60">
-					<control type="image">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>62</width>
-						<height>42</height>
-						<bordertexture border="4">wall/wall_fborder.png</bordertexture>
-						<bordersize>4</bordersize>
-						<fadetime>100</fadetime>
-						<texture background="true">dialogs/context_nofocus.png</texture>						
 					</control>
 					<control type="label">
 						<posx>30</posx>
@@ -4177,7 +4140,43 @@
 						<align>center</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-						<visible>substring(ListItem.Property(Used),True)</visible>						
+						<visible>substring(ListItem.Property(Used),True)</visible>
+					</control>
+				</itemlayout>
+				<focusedlayout height="40" width="60">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>62</width>
+						<height>42</height>
+						<bordertexture border="4">wall/wall_fborder.png</bordertexture>
+						<bordersize>4</bordersize>
+						<fadetime>100</fadetime>
+						<texture background="true">dialogs/context_nofocus.png</texture>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>60</width>
+						<height>40</height>
+						<font>Font_Reg20</font>
+						<textcolor>grey3</textcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>substring(ListItem.Property(Used),False)</visible>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>60</width>
+						<height>40</height>
+						<font>Font_Reg20</font>
+						<textcolor>FFFF0000</textcolor>
+						<align>center</align>
+						<aligny>center</aligny>
+						<label>$INFO[ListItem.Label]</label>
+						<visible>substring(ListItem.Property(Used),True)</visible>
 					</control>
 				</focusedlayout>
 			</control>
@@ -4230,7 +4229,7 @@
 						<height>1</height>
 						<texture background="true">views/listpanel_line.png</texture>
 					</control>
-					<!-- Thumbnail  and  Lock -->					
+					<!-- Thumbnail  and  Lock -->
 					<control type="image">
 						<posx>17</posx>
 						<posy>2</posy>
@@ -4238,7 +4237,7 @@
 						<height>63</height>
 						<texture>$INFO[ListItem.Property(RecIcon)]</texture>
 					</control>
-					<!-- Mark -->					
+					<!-- Mark -->
 					<control type="image">
 						<posx>10</posx>
 						<posy>1</posy>
@@ -4353,7 +4352,7 @@
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(RecDate)]</label>
 					</control>
-					<!-- Record Name -->					
+					<!-- Record Name -->
 					<control type="label">
 						<posx>140</posx>
 						<posy>30</posy>
@@ -4365,7 +4364,7 @@
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label2]</label>
 					</control>
-					<!-- Duration -->	
+					<!-- Duration -->
 					<control type="label">
 						<posx>710</posx>
 						<posy>30</posy>
@@ -4689,7 +4688,7 @@
 				<scroll>true</scroll>
 				<align>center</align>
 				<aligny>center</aligny>
-				<info>Container(3420).ListItem(0).Label2</info>				
+				<info>Container(3420).ListItem(0).Label2</info>
 			</control>
 		</control>
 	</include>
@@ -4699,7 +4698,7 @@
 			<visible>substring(Window.Property(ViewMode),panart)</visible>
 			<posx>0</posx>
 			<posy>440</posy>
-			<control type="fixedlist" id="3430">			
+			<control type="fixedlist" id="3430">
 				<posx>-20</posx>
 				<posy>0</posy>
 				<width>1320</width>
@@ -4847,7 +4846,7 @@
 						<width>32</width>
 						<height>32</height>
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
-						<visible>substring(ListItem.Property(TimerType),Running)</visible>						
+						<visible>substring(ListItem.Property(TimerType),Running)</visible>
 					</control>
 					<!-- Schedule Recording Icon-->
 					<control type="image">
@@ -4856,7 +4855,7 @@
 						<width>16</width>
 						<height>16</height>
 						<texture border="0,2,0,2">IconTimer.png</texture>
-						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>						
+						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
 					<!-- Start Time-->
 					<control type="label">
@@ -4920,7 +4919,7 @@
 						<width>32</width>
 						<height>32</height>
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
-						<visible>substring(ListItem.Property(TimerType),Running)</visible>						
+						<visible>substring(ListItem.Property(TimerType),Running)</visible>
 					</control>
 					<!-- Schedule Recording Icon-->
 					<control type="image">
@@ -4929,7 +4928,7 @@
 						<width>16</width>
 						<height>16</height>
 						<texture>IconTimer.png</texture>
-						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>						
+						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
 					<!-- Start Time-->
 					<control type="label">
@@ -4943,7 +4942,7 @@
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 					</control>
-					<!-- EPG Name -->					
+					<!-- EPG Name -->
 					<control type="label">
 						<posx>120</posx>
 						<posy>0</posy>
@@ -5021,7 +5020,7 @@
 						<width>32</width>
 						<height>32</height>
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
-						<visible>substring(ListItem.Property(TimerType),Running)</visible>						
+						<visible>substring(ListItem.Property(TimerType),Running)</visible>
 					</control>
 					<!-- Schedule Recording Icon-->
 					<control type="image">
@@ -5030,7 +5029,7 @@
 						<width>16</width>
 						<height>16</height>
 						<texture border="0,2,0,2">IconTimer.png</texture>
-						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>						
+						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
 					<!-- Channel Name-->
 					<control type="label">
@@ -5093,7 +5092,7 @@
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(Duration)]</label>
-						<visible>substring(Window.Property(TimerMode),true)</visible>						
+						<visible>substring(Window.Property(TimerMode),true)</visible>
 					</control>
 				</itemlayout>
 				<focusedlayout height="70" width="610">
@@ -5119,7 +5118,7 @@
 						<width>32</width>
 						<height>32</height>
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
-						<visible>substring(ListItem.Property(TimerType),Running)</visible>						
+						<visible>substring(ListItem.Property(TimerType),Running)</visible>
 					</control>
 					<!-- Schedule Recording Icon-->
 					<control type="image">
@@ -5128,7 +5127,7 @@
 						<width>16</width>
 						<height>16</height>
 						<texture border="0,2,0,2">IconTimer.png</texture>
-						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>						
+						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
 					<!-- Channel Name-->
 					<control type="label">
@@ -5154,7 +5153,7 @@
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(StartTime)]</label>
 					</control>
-					<!-- Record Name -->					
+					<!-- Record Name -->
 					<control type="label">
 						<posx>40</posx>
 						<posy>30</posy>
@@ -5179,7 +5178,7 @@
 						<midtexture>osd/seek/progress_mid.png</midtexture>
 						<righttexture>osd/seek/progress_right.png</righttexture>
 						<visible>substring(ListItem.Property(HasEvent),true) + substring(Window.Property(EPGMode),current) </visible>
-					</control>					
+					</control>
 					<!-- Duration -->
 					<control type="label">
 						<posx>720</posx>
@@ -5191,7 +5190,7 @@
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Property(Duration)]</label>
-						<visible>substring(Window.Property(TimerMode),true)</visible>						
+						<visible>substring(Window.Property(TimerMode),true)</visible>
 					</control>
 				</focusedlayout>
 			</control>

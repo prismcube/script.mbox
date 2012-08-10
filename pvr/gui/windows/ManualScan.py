@@ -25,11 +25,11 @@ class ManualScan( SettingWindow ) :
 		self.SetSettingWindowLabel( MR_LANG( 'Manual Scan' ) )
 		self.LoadNoSignalState( )
 		self.mIsManualSetup = 0
-		
+
 		self.mSatelliteIndex = 0
 		self.mTransponderIndex = 0		
 		self.mConfiguredSatelliteList = []
-		
+
 		self.LoadFormattedSatelliteNameList( )
 
 		hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
@@ -49,7 +49,6 @@ class ManualScan( SettingWindow ) :
  			dialog.doModal( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
-		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
@@ -63,7 +62,7 @@ class ManualScan( SettingWindow ) :
 			WinMgr.GetInstance( ).CloseWindow( )
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-				
+
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.OpenBusyDialog( )
 			self.ResetAllControl( )
@@ -79,10 +78,10 @@ class ManualScan( SettingWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			
+
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
-			
+
 
 	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
@@ -120,9 +119,9 @@ class ManualScan( SettingWindow ) :
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 				dialog.SetDialogProperty( MR_LANG( 'Enter frequency' ), '%d' % self.mConfigTransponder.mFrequency, 5 )
-	 			dialog.doModal( )
-	 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-	 				tempval = dialog.GetString( )
+				dialog.doModal( )
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					tempval = dialog.GetString( )
 					if int( tempval ) > 13000 :
 						self.mConfigTransponder.mFrequency = 13000
 					elif int( tempval ) < 3000 :
@@ -138,9 +137,9 @@ class ManualScan( SettingWindow ) :
 		elif groupId == E_Input03 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 			dialog.SetDialogProperty( MR_LANG( 'Enter symbol rate' ), '%d' % self.mConfigTransponder.mSymbolRate, 5 )
- 			dialog.doModal( )
- 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
- 				tempval = dialog.GetString( )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				tempval = dialog.GetString( )
 				if int( tempval ) > 60000 :
 					self.mConfigTransponder.mSymbolRate = 60000
 				elif int( tempval ) < 1000 :

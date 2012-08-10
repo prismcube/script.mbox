@@ -3,7 +3,7 @@
 	<controls>
 		<control type="group" id="9000">
 			<control type="image">
-				<texture>HomeBladeSub_Part1.png</texture>           
+				<texture>HomeBladeSub_Part1.png</texture>
 			</control>
 			<control type="image">
 				<texture>HomeBladeSub_Part2.png</texture>
@@ -47,7 +47,7 @@
 			<control type="image">
 				<texture>GlassTitleBar.png</texture>
 			</control>
-  			<control type="image">
+			<control type="image">
 				<texture>Confluence_Logo.png</texture>
 			</control>
 			<control type="image">
@@ -71,7 +71,7 @@
 			<control type="image">
 				<texture>ContentPanel.png</texture>
 			</control>
- 			<control type="image">
+			<control type="image">
 				<texture>ContentPanel2.png</texture>
 			</control>
 			<control type="image">
@@ -83,7 +83,7 @@
 			<control type="image">
 				<texture>folder-focus.png</texture>
 			</control>
- 			<control type="image">
+			<control type="image">
 				<texture>ScrollBarNib.png</texture>
 			</control>
 			<control type="image">
@@ -95,166 +95,166 @@
 			<control type="image">
 				<texture>ScrollBarV_bar_focus.png</texture>
 			</control>
- 			<control type="image">
- 				<texture>MediaBladeSub_Part2.png</texture>
+			<control type="image">
+				<texture>MediaBladeSub_Part2.png</texture>
 			</control>
 			<control type="image">
- 				<texture>HomeBlade.png</texture>
+				<texture>HomeBlade.png</texture>
 			</control>
 			<control type="image">
- 				<texture>black-back.png</texture>
-			</control>
- 			<control type="image">
- 				<texture>black-back_noAlpha.png</texture>
+				<texture>black-back.png</texture>
 			</control>
 			<control type="image">
- 				<texture>DI_Ok.png</texture>
+				<texture>black-back_noAlpha.png</texture>
 			</control>
- 			<control type="image">
- 				<texture >StackNF.png</texture>
+			<control type="image">
+				<texture>DI_Ok.png</texture>
+			</control>
+			<control type="image">
+				<texture >StackNF.png</texture>
 			</control>
 			<control type="image">
 				<texture>MediaBladeSub_Part1.png</texture>
 			</control>
-  			<control type="image">
- 				<texture>GlassOverlay.png</texture>
-			</control>
- 			<control type="image">
- 				<texture>MediaInfoBackLower.png</texture>
-			</control>
- 			<control type="image">
- 				<texture>backgrounds/videos.jpg</texture>
+			<control type="image">
+				<texture>GlassOverlay.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>DefaultIconWarning.png</texture>
+				<texture>MediaInfoBackLower.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>DefaultIconInfo.png</texture>
+				<texture>backgrounds/videos.jpg</texture>
 			</control>
 			<control type="image">
-	 			<texture>OSDPlaylistFO.png</texture>
+				<texture>DefaultIconWarning.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>OSDPlaylistNF.png</texture>
+				<texture>DefaultIconInfo.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>OSDSubtitlesFO.png</texture>
+				<texture>OSDPlaylistFO.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>OSDSubtitlesNF.png</texture>
+				<texture>OSDPlaylistNF.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>OSDRecord2.png</texture>
+				<texture>OSDSubtitlesFO.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>OSDRecordNF.png</texture>
+				<texture>OSDSubtitlesNF.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>OSDStopFO.png</texture>
+				<texture>OSDRecord2.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>OSDStopNF.png</texture>
-			</control>
-	 		<control type="image">
-	 			<texture>OSDAudioFO.png</texture>
+				<texture>OSDRecordNF.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>OSDAudioNF.png</texture>
+				<texture>OSDStopFO.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>OSDPresetSettingsFO.png</texture>
+				<texture>OSDStopNF.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>OSDPresetSettingsNF.png</texture>
+				<texture>OSDAudioFO.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>scroll-left-focus.png</texture>
+				<texture>OSDAudioNF.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>scroll-left.png</texture>
+				<texture>OSDPresetSettingsFO.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>OSDProgressBack.png</texture>
+				<texture>OSDPresetSettingsNF.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>OSDProgressMid.png</texture>
+				<texture>scroll-left-focus.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>scroll-right-focus.png</texture>
+				<texture>scroll-left.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>scroll-right.png</texture>
+				<texture>OSDProgressBack.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>dolbydigital.png</texture>
+				<texture>OSDProgressMid.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>tv.png</texture>
+				<texture>scroll-right-focus.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>ScrollBarV_bar.png</texture>
-			</control>
-	 		<control type="image">
-	 			<texture>radiobutton-focus.png</texture>
+				<texture>scroll-right.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>radiobutton-nofocus.png</texture>
+				<texture>dolbydigital.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>diffuse_mirror3.png</texture>
+				<texture>tv.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>video_pig_overlay.png</texture>
+				<texture>ScrollBarV_bar.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>MediaSubSet.png</texture>
+				<texture>radiobutton-focus.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>ThumbShadow.png</texture>
+				<texture>radiobutton-nofocus.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>ScrollBarH.png</texture>
+				<texture>diffuse_mirror3.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>ScrollBarH_bar.png</texture>
+				<texture>video_pig_overlay.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>ScrollBarH_bar_focus.pn</texture>
+				<texture>MediaSubSet.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>scroll-up-focus.png</texture>
+				<texture>ThumbShadow.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>scroll-up.png</texture>
+				<texture>ScrollBarH.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>scroll-down-focus.png</texture>
+				<texture>ScrollBarH_bar.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>scroll-down.png</texture>
-			</control>
-	 		<control type="image">
-	 			<texture>DialogCloseButton-focus.png</texture>
+				<texture>ScrollBarH_bar_focus.pn</texture>
 			</control>
 			<control type="image">
-	 			<texture>DialogCloseButton.png</texture>
+				<texture>scroll-up-focus.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>OSDVizFO.png</texture>
+				<texture>scroll-up.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>OSDVizNF.png</texture>
+				<texture>scroll-down-focus.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>OverlayLocked.png</texture>
-			</control>
-	 		<control type="image">
-	 			<texture>ScrollBarH_bar_focus.png</texture>
+				<texture>scroll-down.png</texture>
 			</control>
 			<control type="image">
-	 			<texture>RecIconSample.png</texture>
+				<texture>DialogCloseButton-focus.png</texture>
 			</control>
-		</control>			
+			<control type="image">
+				<texture>DialogCloseButton.png</texture>
+			</control>
+			<control type="image">
+				<texture>OSDVizFO.png</texture>
+			</control>
+			<control type="image">
+				<texture>OSDVizNF.png</texture>
+			</control>
+			<control type="image">
+				<texture>OverlayLocked.png</texture>
+			</control>
+			<control type="image">
+				<texture>ScrollBarH_bar_focus.png</texture>
+			</control>
+			<control type="image">
+				<texture>RecIconSample.png</texture>
+			</control>
+		</control>
 	</controls>
 </window>
 

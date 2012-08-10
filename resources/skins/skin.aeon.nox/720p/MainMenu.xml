@@ -142,44 +142,44 @@
 						</item>
 						<item id="3">
 							<label>Music</label>
-							<onclick>SendClick(90503)</onclick>							
+							<onclick>SendClick(90503)</onclick>
 							<onclick>ActivateWindow(Music)</onclick>
 							<visible>Container(9000).HasFocus(5)</visible>
 						</item>
 						<item id="4">
 							<label>Videos</label>
-							<onclick>SendClick(90504)</onclick>							
+							<onclick>SendClick(90504)</onclick>
 							<onclick>ActivateWindow(Videos)</onclick>
 							<visible>Container(9000).HasFocus(5)</visible>
 						</item>
 						<item id="5">
 							<label>Programs</label>
-							<onclick>SendClick(90505)</onclick>							
+							<onclick>SendClick(90505)</onclick>
 							<onclick>ActivateWindow(Programs,Addons,return)</onclick>
 							<visible>Container(9000).HasFocus(5)</visible>
 						</item>
 						<item id="6">
 							<label>Settings</label>
-							<onclick>SendClick(90506)</onclick>							
+							<onclick>SendClick(90506)</onclick>
 							<onclick>ActivateWindow(Settings)</onclick>
 							<visible>Container(9000).HasFocus(5)</visible>
 						</item>
 						<item id="7">
 							<label>File Manager</label>
-							<onclick>SendClick(90507)</onclick>							
+							<onclick>SendClick(90507)</onclick>
 							<onclick>ActivateWindow(FileManager)</onclick>
 							<visible>Container(9000).HasFocus(5)</visible>
 						</item>
 						<item id="8">
 							<label>Profiles</label>
-							<onclick>SendClick(90508)</onclick>							
+							<onclick>SendClick(90508)</onclick>
 							<onclick>ActivateWindow(Profiles)</onclick>
 							<!--<visible>Container(9000).HasFocus(5)</visible>-->
 							<visible>false</visible>
 						</item>
 						<item id="9">
 							<label>System Info</label>
-							<onclick>SendClick(90509)</onclick>							
+							<onclick>SendClick(90509)</onclick>
 							<onclick>ActivateWindow(SystemInfo)</onclick>
 							<visible>Container(9000).HasFocus(5)</visible>
 						</item>

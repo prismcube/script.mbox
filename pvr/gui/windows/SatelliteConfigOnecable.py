@@ -32,21 +32,21 @@ class SatelliteConfigOnecable( SettingWindow ) :
 		for i in range( MAX_SATELLITE_CNT_ONECABLE ) :
 			self.AddInputControl( startId, MR_LANG( 'Satellite %d' ) % ( i + 1 ), self.mSatelliteNamelist[i] )
 			startId += 100
-		
+
 		self.InitControl( )
 		self.getControl( E_SpinEx01 + 3 ).selectItem( self.mSatelliteCount - 1 )
 		self.DisableControl( )
 
-				
+
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )		
-		
+
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-				
+
 		elif actionId == Action.ACTION_PARENT_DIR :
 			if self.mSatelliteCount > 1 :
 				for i in range( self.mSatelliteCount - 1 ) :
@@ -113,8 +113,8 @@ class SatelliteConfigOnecable( SettingWindow ) :
 			else :
 				self.SetEnableControl( self.GetListIndextoControlId( 2 + i ), False )
 				self.SetVisibleControl( self.GetListIndextoControlId( 2 + i ), False ) 
-		
-		
+
+
 	def LoadConfigedSatellite( self ) :
 		self.mSatelliteNamelist = []
 

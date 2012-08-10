@@ -16,7 +16,7 @@ MAX_ITEM					= 10
 
 class DialogContext( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
-		BaseDialog.__init__( self, *args, **kwargs )	
+		BaseDialog.__init__( self, *args, **kwargs )
 		self.mItemList = []
 		self.mSelectedIndex = -1
 		self.mCtrlList = None
@@ -65,16 +65,16 @@ class DialogContext( BaseDialog ) :
 			self.clearProperty( 'AnimationWaitingDialogOnClose' )
 			time.sleep( 0.3 )
 			self.close( )
-			
+
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-			
+
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.mSelectedIndex = -1
 			self.clearProperty( 'AnimationWaitingDialogOnClose' )
 			time.sleep( 0.3 )
 			self.close( )
-			
+
 
 	def onClick( self, aControlId ) :
 		if aControlId == DIALOG_BUTTON_CLOSE_ID :
@@ -102,9 +102,9 @@ class DialogContext( BaseDialog ) :
 	def GetSelectedAction( self ) :
 		if self.mSelectedIndex <  0 :
 			return -1
-			
+
 		if self.mItemList == None or self.mItemCount <= 0 :
 			return -1
-		
+
 		return self.mItemList[ self.mSelectedIndex ].mContextAction
 

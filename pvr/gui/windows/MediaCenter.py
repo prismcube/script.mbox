@@ -39,7 +39,7 @@ class MediaCenter( BaseWindow ) :
 
 	def onClick( self, aControlId ) :
 		pass
-		
+
  
 	def onFocus( self, aControlId ) :
 		pass

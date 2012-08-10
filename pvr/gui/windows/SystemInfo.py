@@ -26,8 +26,7 @@ class SystemInfo( SettingWindow ) :
 		for i in range( len( leftGroupItems ) ) :
 			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i] ) )
 
-		
-			
+
 	def onInit( self )  :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
@@ -57,10 +56,10 @@ class SystemInfo( SettingWindow ) :
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			pass
-			
+
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-				
+
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.mInitialized = False
 			self.mCheckEndThread = False
@@ -70,7 +69,7 @@ class SystemInfo( SettingWindow ) :
 			if focusId == E_SUBMENU_LIST_ID and self.mCtrlLeftGroup.getSelectedPosition() != self.mPrevListItemID :
 				self.mPrevListItemID = self.mCtrlLeftGroup.getSelectedPosition( )
 				self.SetListControl( )
-	
+
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			if focusId == E_SUBMENU_LIST_ID and self.mCtrlLeftGroup.getSelectedPosition() != self.mPrevListItemID :
 				self.mPrevListItemID = self.mCtrlLeftGroup.getSelectedPosition( )
@@ -79,7 +78,7 @@ class SystemInfo( SettingWindow ) :
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			if focusId != E_SUBMENU_LIST_ID and ( ( focusId % 10 ) == 1 ) :
 				self.setFocusId( E_SUBMENU_LIST_ID )
-				
+
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			if focusId == E_SUBMENU_LIST_ID :
 				self.setFocusId( E_SETUPMENU_GROUP_ID )
@@ -119,12 +118,12 @@ class SystemInfo( SettingWindow ) :
 					self.mLastFocused = aControlId
 				if self.mCtrlLeftGroup.getSelectedPosition( ) != self.mPrevListItemID :
 					self.mPrevListItemID = self.mCtrlLeftGroup.getSelectedPosition( )
-		
+
 
 	def SetListControl( self ) :
 		#self.ResetAllControl( )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
-		
+
 		if selectedId == 0 :
 			pass
 

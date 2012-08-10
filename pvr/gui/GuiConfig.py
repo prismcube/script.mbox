@@ -284,7 +284,7 @@ def Hex2signed( s ) :
 		value = value - 2L * sys.maxint - 2
 	#assert -sys.maxint-1 <= value <= sys.maxint
 	return int( value )
- 
+
 
 def NumericKeyboard( aKeyType, aTitle, aString, aMaxLength=None ) :
 	dialog = xbmcgui.Dialog( )		

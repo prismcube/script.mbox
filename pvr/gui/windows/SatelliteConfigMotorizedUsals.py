@@ -20,22 +20,22 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 
 		self.SetSettingWindowLabel( MR_LANG( 'Motorize Configuration' ) )
 		self.LoadNoSignalState( )
-		
+
 		self.GetLongitude( )
 		self.GetLatitude( )
 		self.InitConfig( )
 
-		
+
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )		
-		
+
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.SetLongitude( )
 			self.SetLatitude( )
 			self.ResetAllControl( )
 			WinMgr.GetInstance( ).CloseWindow( )
-			
+
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 
@@ -47,13 +47,13 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )
-			
+
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			self.ControlRight( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			
+
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
 
@@ -72,28 +72,28 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 		# Set Longitude
 		if groupId == E_Input01 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
- 			dialog.SetDialogProperty( MR_LANG( 'Longitude degree' ), self.mLongitude )
- 			dialog.doModal( )
+			dialog.SetDialogProperty( MR_LANG( 'Longitude degree' ), self.mLongitude )
+			dialog.doModal( )
 
- 			if dialog.IsOK() == E_DIALOG_STATE_YES :
-	 			self.mLongitude  = dialog.GetNumber( )
-	 			self.InitConfig( )
+			if dialog.IsOK() == E_DIALOG_STATE_YES :
+				self.mLongitude = dialog.GetNumber( )
+				self.InitConfig( )
 
 		# Set Latitude
 		elif groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
- 			dialog.SetDialogProperty( MR_LANG( 'Latitude degree' ), self.mLatitude )
- 			dialog.doModal( )
+			dialog.SetDialogProperty( MR_LANG( 'Latitude degree' ), self.mLatitude )
+			dialog.doModal( )
 
- 			if dialog.IsOK() == E_DIALOG_STATE_YES :
-	 			self.mLatitude  = dialog.GetNumber( )
-	 			self.InitConfig( )
-			
+			if dialog.IsOK() == E_DIALOG_STATE_YES :
+				self.mLatitude = dialog.GetNumber( )
+				self.InitConfig( )
+
 		# Reference Position to Null
 		elif groupId == E_Input03 :
 			self.mCommander.Motorized_GotoNull( self.tunerIndex )
 
-			
+
 		# Configure Satellites
 		elif groupId == E_Input04 :
 			self.SetLongitude( )
@@ -101,7 +101,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 			self.ResetAllControl( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TUNER_CONFIGURATION )
 
-			
+
 	def onFocus( self, controlId ) :
 		pass
 

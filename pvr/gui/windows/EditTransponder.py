@@ -72,58 +72,58 @@ class EditTransponder( SettingWindow ) :
 		if groupId == E_Input01 :
 			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog( )
- 			select = dialog.select( MR_LANG( 'Select satellite you want to edit' ), satelliteList )
+			select = dialog.select( MR_LANG( 'Select satellite you want to edit' ), satelliteList )
 
 			if select >= 0 and select != self.mSatelliteIndex :
-	 			self.mSatelliteIndex = select
-	 			self.InitConfig( )
+				self.mSatelliteIndex = select
+				self.InitConfig( )
 
-	 	# Select frequency
-	 	elif groupId == E_Input02 :
-	 		if self.mTransponderList and self.mTransponderList[0].mError == 0 :
+		# Select frequency
+		elif groupId == E_Input02 :
+			if self.mTransponderList and self.mTransponderList[0].mError == 0 :
 				frequencylist = []
-		 		for i in range( len( self.mTransponderList ) ) :
-		 			frequencylist.append( '%d MHz' % self.mTransponderList[i].mFrequency )
+				for i in range( len( self.mTransponderList ) ) :
+					frequencylist.append( '%d MHz' % self.mTransponderList[i].mFrequency )
 
-		 		dialog = xbmcgui.Dialog( )
-	 			select = dialog.select( MR_LANG( 'Select frequency you want to set to' ), frequencylist )
+				dialog = xbmcgui.Dialog( )
+				select = dialog.select( MR_LANG( 'Select frequency you want to set to' ), frequencylist )
 
-	 			if select >= 0 and select != self.mTransponderIndex :
-		 			self.mTransponderIndex = select
-		 			self.InitConfig( )
+				if select >= 0 and select != self.mTransponderIndex :
+					self.mTransponderIndex = select
+					self.InitConfig( )
 
-	 		else :
-		 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Information' ), MR_LANG( 'Satellite has no transponder info.\nFirst add new transponder' ) )
-	 			dialog.doModal( )
+				dialog.doModal( )
 
 		# Add Transponder
 		elif groupId == E_Input05 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_TRANSPONDER )
- 			dialog.SetDefaultValue( 0, 0, 0, 0, self.mBand )
- 			dialog.doModal( )
+			dialog.SetDefaultValue( 0, 0, 0, 0, self.mBand )
+			dialog.doModal( )
 
- 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
- 				self.OpenBusyDialog( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				self.OpenBusyDialog( )
 				frequency, fec, polarization, simbolrate = dialog.GetValue( )
 
- 				newTransponder = ElisITransponderInfo( )
- 				newTransponder.reset( )
- 				newTransponder.mFrequency = frequency
+				newTransponder = ElisITransponderInfo( )
+				newTransponder.reset( )
+				newTransponder.mFrequency = frequency
 				newTransponder.mSymbolRate = simbolrate
 				newTransponder.mPolarization = polarization
 				newTransponder.mFECMode = fec
- 				
- 				tmplist = []
-		 		tmplist.append( newTransponder )
- 				ret = self.mCommander.Transponder_Add( self.mLongitude, self.mBand, tmplist )
- 				if ret != True :
+
+				tmplist = []
+				tmplist.append( newTransponder )
+				ret = self.mCommander.Transponder_Add( self.mLongitude, self.mBand, tmplist )
+				if ret != True :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Transponder Add Fail' ) )
-		 			dialog.doModal( )
-		 			return
- 				self.mTransponderIndex = 0
- 				self.mDataCache.LoadConfiguredTransponder( )
+					dialog.doModal( )
+					return
+				self.mTransponderIndex = 0
+				self.mDataCache.LoadConfiguredTransponder( )
 				self.InitConfig( )
 				self.CloseBusyDialog( )
 			else :
@@ -133,41 +133,41 @@ class EditTransponder( SettingWindow ) :
 		elif groupId == E_Input07 :
 			if self.mTransponderList and self.mTransponderList[0].mError == 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_TRANSPONDER )
-	 			dialog.SetDefaultValue( self.mTransponderList[self.mTransponderIndex].mFrequency, self.mTransponderList[self.mTransponderIndex].mFECMode, self.mTransponderList[self.mTransponderIndex].mPolarization, self.mTransponderList[self.mTransponderIndex].mSymbolRate, self.mBand )
-	 			dialog.doModal( )
+				dialog.SetDefaultValue( self.mTransponderList[self.mTransponderIndex].mFrequency, self.mTransponderList[self.mTransponderIndex].mFECMode, self.mTransponderList[self.mTransponderIndex].mPolarization, self.mTransponderList[self.mTransponderIndex].mSymbolRate, self.mBand )
+				dialog.doModal( )
 
-	 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					self.OpenBusyDialog( )
 					tmplist = []
-			 		tmplist.append( self.mTransponderList[self.mTransponderIndex] )
-			 		ret = self.mCommander.Transponder_Delete( self.mLongitude, self.mBand, tmplist )
-			 		if ret != True :
+					tmplist.append( self.mTransponderList[self.mTransponderIndex] )
+					ret = self.mCommander.Transponder_Delete( self.mLongitude, self.mBand, tmplist )
+					if ret != True :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Transponder Edit Fail' ) )
-			 			dialog.doModal( )
-			 			return
-					
-	 				# ADD
+						dialog.doModal( )
+						return
+
+					# ADD
 					frequency, fec, polarization, simbolrate = dialog.GetValue( )
-	 			
-	 				newTransponder = ElisITransponderInfo( )
-	 				newTransponder.reset( )
-	 				newTransponder.mFrequency = frequency
+
+					newTransponder = ElisITransponderInfo( )
+					newTransponder.reset( )
+					newTransponder.mFrequency = frequency
 					newTransponder.mSymbolRate = simbolrate
 					newTransponder.mPolarization = polarization
 					newTransponder.mFECMode = fec
-	 				
-	 				tmplist = []
-			 		tmplist.append( newTransponder )
-			 		
-	 				ret = self.mCommander.Transponder_Add( self.mLongitude, self.mBand, tmplist )
-	 				if ret != True :
+
+					tmplist = []
+					tmplist.append( newTransponder )
+
+					ret = self.mCommander.Transponder_Add( self.mLongitude, self.mBand, tmplist )
+					if ret != True :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Transponder Edit Fail' ) )
-			 			dialog.doModal( )
-			 			return
-	 				self.mTransponderIndex = 0
-	 				self.mDataCache.LoadConfiguredTransponder( )
+						dialog.doModal( )
+						return
+					self.mTransponderIndex = 0
+					self.mDataCache.LoadConfiguredTransponder( )
 					self.InitConfig( )
 					self.CloseBusyDialog( )
 				else :
@@ -176,36 +176,36 @@ class EditTransponder( SettingWindow ) :
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Information' ), MR_LANG( 'Satellite has no transponder info.\nFirst add new transponder' ) )
-	 			dialog.doModal( )
+				dialog.doModal( )
 
-	 	# Delete Transponder
-	 	elif groupId == E_Input06 :
-	 		if self.mTransponderList and self.mTransponderList[0].mError == 0 :
+		# Delete Transponder
+		elif groupId == E_Input06 :
+			if self.mTransponderList and self.mTransponderList[0].mError == 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( MR_LANG( 'Delete transpnder' ), MR_LANG( 'Do you want to remove this transponder?' ) )
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					self.OpenBusyDialog( )				
-			 		tmplist = []
-			 		tmplist.append( self.mTransponderList[self.mTransponderIndex] )
-			 		ret = self.mCommander.Transponder_Delete( self.mLongitude, self.mBand, tmplist )
-			 		if ret != True :
+					tmplist = []
+					tmplist.append( self.mTransponderList[self.mTransponderIndex] )
+					ret = self.mCommander.Transponder_Delete( self.mLongitude, self.mBand, tmplist )
+					if ret != True :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Transponder Delete Fail' ) )
-			 			dialog.doModal( )
-			 			return
-			 		self.mTransponderIndex = 0
-	 				self.mDataCache.LoadConfiguredTransponder( )			 		
+						dialog.doModal( )
+						return
+					self.mTransponderIndex = 0
+					self.mDataCache.LoadConfiguredTransponder( )			 		
 					self.InitConfig( )
 					self.CloseBusyDialog( )					
 				else :
 					return
-	 			
-	 		else :
-		 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Information' ), MR_LANG( 'Satellite has no transponder info.\nFirst add new transponder' ) )
-	 			dialog.doModal( )
+				dialog.doModal( )
 
 		
 	def onFocus( self, aControlId ) :

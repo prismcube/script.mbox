@@ -32,10 +32,10 @@ class DialogAddNewSatellite( SettingDialog ) :
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.ResetAllControl( )
 			self.CloseDialog( )
-			
+
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-				
+
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
 			self.CloseDialog( )
@@ -45,10 +45,10 @@ class DialogAddNewSatellite( SettingDialog ) :
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			self.ControlRight( )
-			
+
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
-			
+
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
 
@@ -61,12 +61,12 @@ class DialogAddNewSatellite( SettingDialog ) :
 
 		elif groupId == E_DialogInput02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
- 			dialog.SetDialogProperty( MR_LANG( 'Longitude degree' ), self.mLongitude )
- 			dialog.doModal( )
+			dialog.SetDialogProperty( MR_LANG( 'Longitude degree' ), self.mLongitude )
+			dialog.doModal( )
 
- 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-	 			self.mLongitude  = dialog.GetNumber( )
-	 			self.DrawItem( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				self.mLongitude  = dialog.GetNumber( )
+				self.DrawItem( )
 
 		elif groupId == E_DialogSpinEx02 :
 			self.mIsCBand = self.GetSelectedIndex( E_DialogSpinEx02 )
@@ -85,10 +85,10 @@ class DialogAddNewSatellite( SettingDialog ) :
 			self.ResetAllControl( )
 			self.CloseDialog( )
 
- 				
+
 	def IsOK( self ) :
 		return self.mIsOk
-		
+
 
 	def onFocus( self, aControlId ) :
 		pass
@@ -109,7 +109,7 @@ class DialogAddNewSatellite( SettingDialog ) :
 
 	def DrawItem( self ) :
 		self.ResetAllControl( )
-	
+
 		if self.mSatelliteName == None :
 			self.mSatelliteName = ''
 		self.AddInputControl( E_DialogInput01, MR_LANG( 'Satellite Name' ), self.mSatelliteName )

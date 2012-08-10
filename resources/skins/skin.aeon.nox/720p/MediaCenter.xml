@@ -99,20 +99,20 @@
 					</item>
 					<item id="7">
 						<label>File Manager</label>
-						<label2>Desc File Manager</label2>						
+						<label2>Desc File Manager</label2>
 						<onclick>ActivateWindow(FileManager)</onclick>
 						<icon>special://skin/backgrounds/play_disc.jpg</icon>
 					</item>
 					<item id="8">
 						<label>Profiles</label>
-						<label2>Desc Profiles</label2>						
+						<label2>Desc Profiles</label2>
 						<onclick>ActivateWindow(Profiles)</onclick>
 						<icon>special://skin/backgrounds/favourites.jpg</icon>
 						<visible>false</visible>
 					</item>
 					<item id="9">
 						<label>System Info</label>
-						<label2>Desc System Info</label2>						
+						<label2>Desc System Info</label2>
 						<onclick>ActivateWindow(SystemInfo)</onclick>
 						<icon>special://skin/backgrounds/systeminfo.jpg</icon>
 					</item>
@@ -160,6 +160,6 @@
 				<height>651</height>
 				<texture>settings/settings_panelfront.png</texture>
 			</control>
-		</control>			
+		</control>
 	</controls>
 </window>

@@ -36,18 +36,18 @@ class DialogNormalNumeric( BaseDialog ) :
 		self.SetInputLabel( )
 		self.mCheckFirstInput = False
 		self.DrawKeyboard( )
-		
-		
+
+
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-		
+
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.mInputLabel = self.mOriginalString
 			self.CloseDialog( )
-			
+
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-				
+
 		elif actionId == Action.ACTION_PARENT_DIR :
 			if len( self.mInputLabel ) < 1 :
 				self.mIsOk = E_DIALOG_STATE_CANCEL
@@ -78,7 +78,7 @@ class DialogNormalNumeric( BaseDialog ) :
 		focusId = self.getFocusId( )
 
 		LOG_TRACE( 'focus=%d' % focusId )
-			
+
 		if focusId >= E_START_ID_NUMBER and focusId <= E_START_ID_NUMBER + 9 :
 			LOG_TRACE( 'focus=%d' % focusId )
 			self.mInputString ='%d' % ( focusId - E_START_ID_NUMBER )
@@ -90,7 +90,7 @@ class DialogNormalNumeric( BaseDialog ) :
 				self.mInputLabel = self.mInputLabel[ : len( self.mInputLabel ) - 1 ]
 			self.mInputString = ''
 			self.SetInputLabel( )
-		
+
 		elif focusId == E_BUTTON_PREV :
 			pass
 
@@ -98,7 +98,7 @@ class DialogNormalNumeric( BaseDialog ) :
 			pass
 
 		elif focusId == E_BUTTON_DONE :
-			self.mIsOk = E_DIALOG_STATE_YES		
+			self.mIsOk = E_DIALOG_STATE_YES
 			self.CloseDialog( )
 
 
@@ -129,6 +129,7 @@ class DialogNormalNumeric( BaseDialog ) :
 	def DrawKeyboard( self ):
 		for i in range( 10 ) :
 			self.getControl( E_START_ID_NUMBER + i ).setLabel( '%d' % i )
+
 
 	@GuiLock
 	def SetInputLabel( self ) :

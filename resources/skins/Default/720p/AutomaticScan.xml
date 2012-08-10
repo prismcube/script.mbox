@@ -13,7 +13,7 @@
 				<include>Input01</include>
 				<include>Input02</include>
 				<include>SpinEx01</include>
-				<include>SpinEx02</include>				
+				<include>SpinEx02</include>
 			</control>
 		</control>
 		<include>DefaultSettingWindowPigScreen</include>

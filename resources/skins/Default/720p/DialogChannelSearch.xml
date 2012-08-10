@@ -6,7 +6,7 @@
 		<control type="group">
 			<posx>90</posx>
 			<posy>40</posy>
-            <include>DefaultDialogCloseEffect</include>
+			<include>DefaultDialogCloseEffect</include>
 			<control type="image">
 				<description>background image</description>
 				<posx>0</posx>
@@ -156,7 +156,7 @@
 				</focusedlayout>
 			</control>
 
-	        <!-- TV Scrollbar -->
+            <!-- TV Scrollbar -->
 			<control type="scrollbar" id="401">
 				<posx>510</posx>
 				<posy>95</posy>
