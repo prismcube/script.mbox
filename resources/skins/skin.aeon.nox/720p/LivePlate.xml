@@ -426,6 +426,14 @@
 						<visible>substring(Window.Property(iCas),true)</visible>
 						<description>icas</description>
 					</control>
+					<control type="image">
+						<posx>100</posx>
+						<posy>5</posy>
+						<width>30</width>
+						<height>30</height>
+						<texture>IconFavFocus.png</texture>
+						<visible>substring(Window.Property(iFav),true)</visible>
+					</control>
 				</control>
 
 				<control type="group">

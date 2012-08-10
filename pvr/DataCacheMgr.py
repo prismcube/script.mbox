@@ -1,4 +1,4 @@
-import thread, sys
+import thread, sys, copy
 from decorator import decorator
 from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
@@ -69,6 +69,7 @@ class DataCacheMgr( object ) :
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 
 		self.mZappingMode						= None
+		self.mLastZappingMode					= ElisIZappingMode( )
 		self.mChannelList						= None
 		self.mAllChannelList					= None
 		self.mCurrentChannel					= None
@@ -1404,22 +1405,35 @@ class DataCacheMgr( object ) :
 
 
 	def ToggleTVRadio( self ) :
+		ret = True
 		try :
 			zappingMode = self.Zappingmode_GetCurrent( )
 			#zappingMode.printdebug( )
 
-			newZappingMode = ElisIZappingMode( )
+			modeStr = ''
+			newZappingMode = copy.deepcopy( self.mLastZappingMode )
 			if zappingMode.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
-				newZappingMode.mServiceType = ElisEnum.E_SERVICE_TYPE_RADIO 
+				modeStr = 'TV'
+				newZappingMode.mServiceType = ElisEnum.E_SERVICE_TYPE_RADIO
 			else :
+				modeStr = 'Radio'
 				newZappingMode.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
-			#newZappingMode.printdebug( )
 
+			#newZappingMode.printdebug( )
 			self.Zappingmode_SetCurrent( newZappingMode )
 			self.LoadZappingmode( )
 			self.LoadZappingList( )
 			self.LoadChannelList( )
 
+			if self.mChannelList == None or len( self.mChannelList ) < 1 :
+				self.Zappingmode_SetCurrent( zappingMode )
+				self.LoadZappingmode( )
+				self.LoadZappingList( )
+				self.LoadChannelList( )
+				LOG_TRACE('Can not change [%s], channel is None'% modeStr )
+				return False
+
+			self.mLastZappingMode = copy.deepcopy( zappingMode )
 			zappingMode = self.Zappingmode_GetCurrent( )
 			self.Channel_InvalidateCurrent( )
 
@@ -1432,13 +1446,16 @@ class DataCacheMgr( object ) :
 
 			channel = self.Channel_GetCurrent( )
 			#LOG_TRACE( '----- get Current Channel after zappingMode channge' )
-			if channel :
-				channel.printdebug( )
-			elif self.mChannelList and len( self.mChannelList ) > 0 :
+
+			#is last channel tune fail then no1. tune
+			if not channel and self.mChannelList and len( self.mChannelList ) > 0 :
 				self.Channel_SetCurrent( 1, zappingMode.mServiceType )							
 
-		except Exception, ex:
-			LOG_ERR( "Exception %s" %ex)
+		except Exception, e :
+			LOG_ERR( 'Exception [%s]'% e )
+			ret = False
+
+		return ret
 
 
 	def SetLockedState( self, aIsLock ) :

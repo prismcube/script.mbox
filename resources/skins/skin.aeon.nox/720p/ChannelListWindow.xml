@@ -14,6 +14,7 @@
 		</control>
 
 		<!--  local time -->
+		<include>DefaultMiniTitle</include>
 		<include>timepanelhigh</include>
 
 		<!-- Bottom Gradation Image -->
@@ -47,82 +48,7 @@
 
 		<control type="group" id="600">
 			<include>Animation_CommonFade</include>
-			<visible>substring(Window.Property(helpbox),true)</visible>
-			<posx>65</posx>
-			<posy>685</posy>
-			<include>Animation_ListSlideLeft</include>
-			<control type="group">
-				<posx>10</posx>
-				<posy>5</posy>
-				<control type="image">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>30</width>
-					<height>25</height>
-					<texture>DI_Ok.png</texture>
-				</control>
-				<control type="label">
-					<posx>30</posx>
-					<posy>5</posy>
-					<font>Font_Reg14</font>
-					<textcolor>grey</textcolor>
-					<label>Select</label>
-				</control>
-			</control>
-			<control type="group">
-				<posx>200</posx>
-				<posy>5</posy>
-				<control type="image">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>30</width>
-					<height>25</height>
-					<texture>DI_Info.png</texture>
-				</control>
-				<control type="label">
-					<posx>30</posx>
-					<posy>5</posy>
-					<font>Font_Reg14</font>
-					<textcolor>grey</textcolor>
-					<label>Memu popup</label>
-				</control>
-			</control>
-			<control type="group">
-				<posx>400</posx>
-				<posy>5</posy>
-				<control type="image">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>30</width>
-					<height>25</height>
-					<texture>DI_Back.png</texture>
-				</control>
-				<control type="label">
-					<posx>30</posx>
-					<posy>5</posy>
-					<font>Font_Reg14</font>
-					<textcolor>grey</textcolor>
-					<label>Exit</label>
-				</control>
-			</control>
-			<control type="group">
-				<posx>600</posx>
-				<posy>5</posy>
-				<control type="image">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>30</width>
-					<height>25</height>
-					<texture>DI_Menu.png</texture>
-				</control>
-				<control type="label">
-					<posx>30</posx>
-					<posy>5</posy>
-					<font>Font_Reg14</font>
-					<textcolor>grey</textcolor>
-					<label>Exit</label>
-				</control>
-			</control>
+			<visible>substring(Window.Property(isEdit),true)</visible>
 		</control>
 		<control type="label" id="601">
 			<posx>30</posx>
@@ -130,31 +56,6 @@
 			<font>font12</font>
 			<textcolor>grey</textcolor>
 			<visible>substring(Window.Property(isMove),true)</visible>
-		</control>
-
-		<!--  Path Info -->
-		<control type="group" id="20">
-			<include>Animation_ListSlideLeft</include>
-			<posx>0</posx>
-			<posy>0</posy>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>510</width>
-				<height>27</height>
-				<texture flipx="true" flipy="true" border="0,0,32,0">home/timepanel_mid.png</texture>
-			</control>
-			<control type="label" id="21">
-				<posx>105</posx>
-				<posy>-2</posy>
-				<width>400</width>
-				<height>28</height>
-				<font>Font_Reg17_Caps</font>
-				<textcolor>white2</textcolor>
-				<align>left</align>
-				<aligny>center</aligny>
-				<label>$INFO[ListItem.Label]</label>
-			</control>
 		</control>
 
 		<!-- Left Big Box -->
@@ -323,7 +224,7 @@
 								<visible>Control.IsVisible(600) + !Control.IsVisible(601)</visible>
 								<texture>listpanel_selectbar.png</texture>
 							</control>
-							<control type="image">
+							<!--control type="image">
 								<posx>620</posx>
 								<posy>7</posy>
 								<width>30</width>
@@ -338,7 +239,7 @@
 								<height>30</height>
 								<visible>!Control.IsVisible(600)</visible>
 								<texture>DI_Ok.png</texture>
-							</control>
+							</control-->
 							<!-- is cas? -->
 							<control type="image">
 								<posx>650</posx>
@@ -438,6 +339,30 @@
 					<onright>49</onright>
 					<showonepage>false</showonepage>
 					<orientation>vertical</orientation>
+				</control>
+
+				<!--  Path Info -->
+				<control type="group" id="20">
+					<include>Animation_ListSlideLeft</include>
+					<posx>0</posx>
+					<posy>0</posy>
+					<!--control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>510</width>
+						<height>27</height>
+						<texture flipx="true" flipy="true" border="0,0,32,0">home/timepanel_mid.png</texture>
+					</control-->
+					<control type="label" id="21">
+						<posx>760</posx>
+						<posy>50</posy>
+						<width>200</width>
+						<height>28</height>
+						<font>Font_Reg17_Caps</font>
+						<textcolor>blue</textcolor>
+						<align>right</align>
+						<label>$INFO[ListItem.Label]</label>
+					</control>
 				</control>
 
 				<!--  page -->

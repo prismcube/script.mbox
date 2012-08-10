@@ -36,6 +36,7 @@ E_XML_PROPERTY_DOLBY      = 'HasDolby'
 E_XML_PROPERTY_HD         = 'HasHD'
 E_XML_PROPERTY_LOCK       = 'iLock'
 E_XML_PROPERTY_CAS        = 'iCas'
+E_XML_PROPERTY_FAV        = 'iFav'
 E_XML_PROPERTY_RECORDING1 = 'ViewRecord1'
 E_XML_PROPERTY_RECORDING2 = 'ViewRecord2'
 
@@ -244,8 +245,10 @@ class LivePlate( BaseWindow ) :
 		elif id == Action.ACTION_MBOX_TVRADIO :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
-				self.mDataCache.ToggleTVRadio( )
-				self.ChannelTune( INIT_CHANNEL )
+				ret = self.mDataCache.ToggleTVRadio( )
+				if ret :
+					self.mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
+					self.ChannelTune( INIT_CHANNEL )
 
 		#test
 		elif id == 13: #'x'
@@ -611,6 +614,9 @@ class LivePlate( BaseWindow ) :
 				if ch.mIsCA :
 					self.UpdatePropertyGUI( E_XML_PROPERTY_CAS, 'True' )
 
+				if self.mZappingMode.mMode == ElisEnum.E_MODE_FAVORITE :
+					self.UpdatePropertyGUI( E_XML_PROPERTY_FAV, 'True' )
+
 			except Exception, e :
 				LOG_TRACE( 'Error exception[%s]'% e )
 
@@ -713,6 +719,7 @@ class LivePlate( BaseWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_RADIO,   raValue )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_LOCK,    'False' )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_CAS,     'False' )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_FAV,     'False' )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE,'False' )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,   'False' )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,      'False' )
