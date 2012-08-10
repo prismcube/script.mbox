@@ -109,7 +109,6 @@ class Configure( SettingWindow ) :
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
 		if sys.platform != 'win32' :
-			#LoadNetworkType( )
 			self.mIpParser = IpParser( )
 			self.mWireless = WirelessParser( )
 			self.LoadEhternetInformation( )

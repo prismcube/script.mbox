@@ -89,68 +89,95 @@
 			</control>
 			<control type="group">
 				<posy>40</posy>
-				<control type="label">
+				<!-- VERSION -->
+				<control type="label" id="2500">
 					<posx>350</posx>
 					<posy>100</posy>
 					<width>500</width>
 					<height>35</height>
 					<font>Font_Reg18</font>
 					<textcolor>white</textcolor>
-					<label>Hardware version: 1.00</label>
 				</control>
-				<control type="label">
+				<control type="label" id="2501">
 					<posx>350</posx>
 					<posy>135</posy>
 					<width>500</width>
 					<height>35</height>
 					<font>Font_Reg18</font>
 					<textcolor>white</textcolor>
-					<label>Bootloader version: 1.00</label>
 				</control>
-				<control type="label">
+				<control type="label" id="2502">
 					<posx>350</posx>
 					<posy>170</posy>
 					<width>500</width>
 					<height>35</height>
 					<font>Font_Reg18</font>
 					<textcolor>white</textcolor>
-					<label>Software version: Beta-0.0.3</label>
 				</control>
-				<control type="label">
+				<control type="label" id="2503">
 					<posx>350</posx>
 					<posy>205</posy>
 					<width>500</width>
 					<height>35</height>
 					<font>Font_Reg18</font>
 					<textcolor>white</textcolor>
-					<label>Product Number : 000003127</label>
 				</control>
-				<control type="label">
+				<control type="label" id="2504">
 					<posx>350</posx>
 					<posy>240</posy>
 					<width>500</width>
 					<height>35</height>
 					<font>Font_Reg18</font>
 					<textcolor>white</textcolor>
-					<label>Product name: Prism Cube</label>
 				</control>
-				<control type="label" id="301">
+				<!-- HDD -->
+				<control type="label" id="2600">
+					<posx>350</posx>
+					<posy>100</posy>
+					<width>500</width>
+					<height>35</height>
+					<font>Font_Reg18</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="label" id="2601">
+					<posx>350</posx>
+					<posy>135</posy>
+					<width>500</width>
+					<height>35</height>
+					<font>Font_Reg18</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="label" id="2602">
+					<posx>350</posx>
+					<posy>170</posy>
+					<width>500</width>
+					<height>35</height>
+					<font>Font_Reg18</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="label" id="2603">
+					<posx>350</posx>
+					<posy>205</posy>
+					<width>500</width>
+					<height>35</height>
+					<font>Font_Reg18</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="label" id="2604">
+					<posx>350</posx>
+					<posy>240</posy>
+					<width>500</width>
+					<height>35</height>
+					<font>Font_Reg18</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="label" id="2605">
 					<posx>350</posx>
 					<posy>275</posy>
 					<width>500</width>
 					<height>35</height>
 					<font>Font_Reg18</font>
 					<textcolor>white</textcolor>
-					<label>Record Free Size :</label>
-				</control>
-				<control type="label" id="302">
-					<posx>350</posx>
-					<posy>310</posy>
-					<width>500</width>
-					<height>35</height>
-					<font>Font_Reg18</font>
-					<textcolor>white</textcolor>
-					<label>HDD Temperature :</label>
 				</control>
 			</control>
 		</control>

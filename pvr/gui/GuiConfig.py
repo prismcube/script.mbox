@@ -331,6 +331,15 @@ def StringToHidden( aString=None ) :
 		result += '*'
 	return result
 
+
+def IsNumber( aString ) :
+	try :
+		float( aString )
+		return True
+	except ValueError :
+		return False
+
+
 	
 ############################ Global Class ############################
 
