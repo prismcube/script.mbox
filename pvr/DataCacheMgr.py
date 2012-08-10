@@ -533,7 +533,7 @@ class DataCacheMgr( object ) :
 		if newCount < 1 :
 			LOG_TRACE('count=%d'% newCount)
 			self.mCacheReload = True
-			self.Player_AVBlank( True, False )
+			self.Player_AVBlank( True )
 			#self.Channel_InvalidateCurrent( )
 			self.Frontdisplay_SetMessage('NoChannel')
 			LOG_TRACE('-------------------------------------------')
@@ -699,15 +699,22 @@ class DataCacheMgr( object ) :
 		return self.mOldChannel
 
 
-	def Channel_SetCurrent( self, aChannelNumber, aServiceType ) :
+	def Channel_SetCurrent( self, aChannelNumber, aServiceType, aTemporaryHash = None ) :
 		ret = False
 		self.mCurrentEvent = None
 		self.mOldChannel = self.Channel_GetCurrent( )
 		if self.mCommander.Channel_SetCurrent( aChannelNumber, aServiceType ) == True :
-			cacheChannel = self.mChannelListHash.get( aChannelNumber, None )
-			if cacheChannel :
-				self.mCurrentChannel = cacheChannel.mChannel
-				ret = True
+			if aTemporaryHash :
+				iChannel = aTemporaryHash.get( aChannelNumber, None ) 
+				if iChannel :
+					self.mCurrentChannel = iChannel
+					ret = True
+
+			else :
+				cacheChannel = self.mChannelListHash.get( aChannelNumber, None )
+				if cacheChannel :
+					self.mCurrentChannel = cacheChannel.mChannel
+					ret = True
 
 		channel = self.Channel_GetCurrent( not ret )
 		self.Frontdisplay_SetMessage( channel.mName )
@@ -1117,11 +1124,11 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Player_SetVIdeoSize( aX, aY, aW, aH ) 
 
 
-	def Player_VideoBlank( self, aBlank, aForce ) :
+	def Player_VideoBlank( self, aBlank, aForce = False ) :
 		return self.mCommander.Player_VideoBlank( aBlank, aForce )
 
 
-	def Player_AVBlank( self, aBlank, aForce ) :
+	def Player_AVBlank( self, aBlank, aForce = False ) :
 		return self.mCommander.Player_AVBlank( aBlank, aForce )
 
 

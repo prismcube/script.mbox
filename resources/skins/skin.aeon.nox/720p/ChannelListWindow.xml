@@ -354,7 +354,7 @@
 						<texture flipx="true" flipy="true" border="0,0,32,0">home/timepanel_mid.png</texture>
 					</control-->
 					<control type="label" id="21">
-						<posx>760</posx>
+						<posx>765</posx>
 						<posy>50</posy>
 						<width>200</width>
 						<height>28</height>

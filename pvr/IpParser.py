@@ -116,7 +116,12 @@ def CheckIsIptype( aAddress ) :
 	try :
 		if aAddress == None or len( aAddress ) < 1 :
 			return False
+
+		string = None
 		string = aAddress.split( '.', 3 )
+		if string == None or len( string ) < 4 :
+			return False
+
 		if int( string[0] ) < 0 or int( string[0] ) > 255 :
 			return False
 		if int( string[1] ) < 0 or int( string[1] ) > 255 :

@@ -311,6 +311,28 @@
 				</focusedlayout>
 			</control>
 		</control>
+<!--  Path Info -->
+		<control type="group" id="20">
+			<posx>0</posx>
+			<posy>0</posy>
+			<include>DefaultWindowFade</include>
+			<!--control type="image">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>310</width>
+				<height>35</height>
+				<texture border="0,0,32,0">header.png</texture>
+			</control-->
+			<control type="label" id="21">
+				<posx>120</posx>
+				<posy>110</posy>
+				<width>200</width>
+				<height>28</height>
+				<font>font12</font>
+				<textcolor>blue</textcolor>
+				<label>$INFO[ListItem.Label]</label>
+			</control>
+		</control>
 
 		<!-- Scrollbar -->
 		<control type="scrollbar" id="61">
@@ -826,29 +848,6 @@
 						<onup>203</onup>
 					</control>
 				</control>
-			</control>
-		</control>
-
-<!--  Path Info -->
-		<control type="group" id="20">
-			<posx>0</posx>
-			<posy>0</posy>
-			<include>DefaultWindowFade</include>
-			<!--control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>310</width>
-				<height>35</height>
-				<texture border="0,0,32,0">header.png</texture>
-			</control-->
-			<control type="label" id="21">
-				<posx>120</posx>
-				<posy>110</posy>
-				<width>200</width>
-				<height>28</height>
-				<font>font12</font>
-				<textcolor>blue</textcolor>
-				<label>$INFO[ListItem.Label]</label>
 			</control>
 		</control>
 

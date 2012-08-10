@@ -301,8 +301,8 @@
 					<height>45</height>
 					<label>13396</label>
 					<font>-</font>
-					<texturefocus>OSDAudioFO.png</texturefocus>
-					<texturenofocus>OSDAudioNF.png</texturenofocus>
+					<texturefocus>OSDVolumeMuteFO.png</texturefocus>
+					<texturenofocus>OSDVolumeMuteNF.png</texturenofocus>
 					<onclick>Mute</onclick>
 					<onleft>411</onleft>
 					<onright>402</onright>

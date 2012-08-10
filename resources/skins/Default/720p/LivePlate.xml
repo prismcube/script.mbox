@@ -364,8 +364,8 @@
 							<height>35</height>
 							<label></label>
 							<textcolor>grey3</textcolor>
-							<texturefocus>OSDAudioFO.png</texturefocus>
-							<texturenofocus>OSDAudioNF.png</texturenofocus>
+							<texturefocus>OSDVolumeMuteFO.png</texturefocus>
+							<texturenofocus>OSDVolumeMuteNF.png</texturenofocus>
 							<onleft>625</onleft>
 							<onright>627</onright>
 							<onup></onup>
