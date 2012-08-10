@@ -90,13 +90,13 @@
 				<!--<animation effect="fade" start="100" end="0" time="500" condition="Container(9000).OnNext" type="conditional">Conditional</animation>-->
 				<posx>370</posx>
 				<posy>120</posy>
-				<control type="label" id="100">
+				<control type="label" id="1003">
 					<posx>0</posx>
 					<posy>-5</posy>
 					<width>750</width>
 					<height>45</height>
 					<font>Font_Bold20</font>
-					<label>$INFO[Container(9000).ListItem.Label2]</label>
+					<!--<label>$INFO[Container(9000).ListItem.Label2]</label>-->
 					<textcolor>blue</textcolor>
 					<shadowcolor>black</shadowcolor>
 					<align>left</align>

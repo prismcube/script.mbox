@@ -305,12 +305,22 @@ class SettingWindow( BaseWindow ) :
 		count = len( self.mControlList )
 
 		for i in range( count ) :
-			ctrlItem = self.mControlList[i]		
+			ctrlItem = self.mControlList[i]
 			if self.HasControlItem( ctrlItem, aFocusId ) :
 				if ctrlItem.mDescription == None :
 					return False
 				self.getControl( E_SETTING_DESCRIPTION ).setLabel( ctrlItem.mDescription )
 		return False
+
+
+	def setDefaultControl( self ) :
+		if self.mControlList[0].mEnable :
+			self.setFocusId( self.mControlList[0].mControlId )
+		else :
+			for i in range( self.GetControlListSize( ) ) :
+				if self.mControlList[i].mEnable :
+					self.setFocusId( self.mControlList[i].mControlId )
+					break
 
 
 	def HasControlItem( self, aCtrlItem, aContgrolId  ) :

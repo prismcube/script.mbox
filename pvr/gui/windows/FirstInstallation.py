@@ -169,7 +169,7 @@ class FirstInstallation( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
-			self.SetFocusControl( E_SpinEx01 )
+			self.setDefaultControl( )
 			return
 
 		elif self.mStepNum == E_STEP_VIDEO_AUDIO :
@@ -189,7 +189,7 @@ class FirstInstallation( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
-			self.SetFocusControl( E_SpinEx01 )
+			self.setDefaultControl( )
 			return
 
 		elif self.mStepNum == E_STEP_CHANNEL_SEARCH_CONFIG :
@@ -211,7 +211,7 @@ class FirstInstallation( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
-			self.SetFocusControl( E_SpinEx01 )
+			self.setDefaultControl( )
 			return
 
 		elif self.mStepNum == E_STEP_DATE_TIME :
@@ -229,8 +229,9 @@ class FirstInstallation( SettingWindow ) :
 					channelName = self.mSetupChannel.mName
 				else :
 					self.mHasChannel = False
-					channelName = 'None'
+					channelName = MR_LANG( 'None' )
 					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
+
 			self.AddEnumControl( E_SpinEx01, 'Time Mode', None, MR_LANG( 'Select automatic or manual for the Time Mode') )
 			self.AddInputControl( E_Input01, MR_LANG( 'Channel' ), channelName, MR_LANG( 'Select a channel you want to set your time and date by' ) )
 			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
@@ -251,11 +252,8 @@ class FirstInstallation( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
-			if self.mHasChannel == False :
-				self.SetFocusControl( E_Input02 )
-			else :
-				self.SetFocusControl( E_SpinEx01 )
 			self.DisableControl( self.mStepNum )
+			self.setDefaultControl( )
 			return
 
 		elif self.mStepNum == E_STEP_RESULT :
@@ -288,7 +286,7 @@ class FirstInstallation( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
-			self.SetFocusControl( E_Input01 )
+			self.setDefaultControl( )
 			return
 
 

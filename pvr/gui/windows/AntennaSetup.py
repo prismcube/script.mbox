@@ -49,7 +49,7 @@ class AntennaSetup( SettingWindow ) :
 		self.InitControl( )
 		self.DisableControl( )
 		self.mInitialized = True
-		self.SetFocusControl( E_SpinEx01 )
+		self.setDefaultControl( )
 		
 		
 	def onAction( self, aAction ) :
