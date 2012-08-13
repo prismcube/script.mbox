@@ -19,7 +19,7 @@ class DialogRecord( BaseDialog ) :
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
 		self.SetHeaderLabel( 'Record' )
-		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, 'Start Record' )
+		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, 'Start' )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, 'Cancel' )
 
 		self.mCtrlProgress = self.getControl( E_PROGRESS_EPG )
