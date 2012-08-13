@@ -84,7 +84,7 @@ class MainMenu( BaseWindow ) :
 			if self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
 				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Warning', 'Now recording...' )
+				dialog.SetDialogProperty( 'Attention', 'Now recording in progress...' )
 				dialog.doModal( )
 				self.getControl( MAIN_GROUP_ID ).setVisible( True )
 
@@ -119,7 +119,7 @@ class MainMenu( BaseWindow ) :
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Warning' ), MR_LANG( 'Now PVR Playing...' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Now PVR(Personal Video Recording) mode is on' ) )
 				dialog.doModal( )
 				self.getControl( MAIN_GROUP_ID ).setVisible( True )
 

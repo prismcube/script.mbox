@@ -97,12 +97,12 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 		if self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
 			if self.GetSelectedIndex( E_SpinEx02 ) == self.GetSelectedIndex( E_SpinEx04 ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Please set a different value for each tuner.' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Please set a different value for each tuner.' ) )
 				dialog.doModal( )
 				return
 			if self.GetSelectedIndex( E_SpinEx03 ) == self.GetSelectedIndex( E_SpinEx05 ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Please set a different value for each tuner.' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Please set a different value for each tuner.' ) )
 				dialog.doModal( )
 				return
 

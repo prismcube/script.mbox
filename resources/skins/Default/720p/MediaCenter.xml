@@ -121,7 +121,7 @@
 					<item id="7">
 						<label>File Manager</label>
 						<!--label2>Desc File Manager</label2-->
-						<label2>The File Manager lets you transfer, copy, delete and rename files and folders on your HDD, FTP-shares, etc</label2>
+						<label2>The File Manager lets you transfer, copy, delete and rename files and folders on your hard drive, FTP-shares, etc</label2>
 						<onclick>ActivateWindow(FileManager)</onclick>
 						<icon>special://skin/backgrounds/appearance.jpg</icon>
 					</item>
@@ -172,8 +172,7 @@
 				<width>740</width>
 				<height>30</height>
 				<font>font16caps</font>
-				<!--label>Installation - $INFO[Container(9000).ListItem.Label]</label-->
-				<label>Media Center - $INFO[Container(9000).ListItem.Label]</label>
+				<label>entertainment hub for digital media</label>				
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
@@ -202,10 +201,22 @@
 				<height>118</height>
 				<texture border="5">black-back2.png</texture>
 			</control>
-			<control type="textbox">
+			<control type="label">
 				<description>Appearance Description</description>
 				<posx>300</posx>
 				<posy>520</posy>
+				<width>740</width>
+				<height>30</height>
+				<font>font12caps</font>
+				<label>$INFO[Container(9000).ListItem.Label]</label>
+				<align>left</align>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<control type="textbox">
+				<description>Appearance Description</description>
+				<posx>300</posx>
+				<posy>558</posy>
 				<width>740</width>
 				<height>100</height>
 				<font>font12</font>

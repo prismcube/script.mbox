@@ -189,9 +189,9 @@ class Configure( SettingWindow ) :
 		elif selectedId == E_NETWORK_SETTING :
 			if sys.platform == 'win32' :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not support win32' ) )
-				dialog.doModal( )
-				return
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not support Win32' ) )
+	 			dialog.doModal( )
+	 			return
 
 			if groupId == E_SpinEx05 :
 				self.mUseNetworkType = self.GetSelectedIndex( E_SpinEx05 )
@@ -216,7 +216,7 @@ class Configure( SettingWindow ) :
 					else :
 						state = MR_LANG( 'Disconnected from the default router' )
 				else :
-					addr = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, MR_LANG( 'Enter an IP address for external ping test' ), '', 30 )
+					addr = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, MR_LANG( 'Enter an IP address for ping test' ), '', 30 )
 					self.ShowProgress( MR_LANG( 'Testing...' ), 10 )
 					time.sleep( 1 )
 					if PingTestExternal( addr ) == True :
@@ -254,21 +254,21 @@ class Configure( SettingWindow ) :
 					self.DisableControl( E_PARENTAL )
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Try again' ), MR_LANG( 'Sorry, that PIN code does not match' ) )
-					dialog.doModal( )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Sorry, that PIN code does not match' ) )					
+		 			dialog.doModal( )
 			return
 
 		elif selectedId == E_PARENTAL and groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Enter new PIN code' ), '', 4, True )
-			dialog.doModal( )
+			dialog.SetDialogProperty( MR_LANG( 'Enter a new PIN code' ), '', 4, True )			
+ 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				newpin = dialog.GetString( )
 				if newpin == '' or len( newpin ) != 4 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Unable to change PIN code' ), MR_LANG( '4-digit PIN code is required' ) )
-					dialog.doModal( )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( '4-digit PIN code is required' ) )
+		 			dialog.doModal( )
 					return
 			else :
 				return
@@ -277,37 +277,37 @@ class Configure( SettingWindow ) :
 			dialog.SetDialogProperty( MR_LANG( 'Confirm PIN Code' ), '', 4, True )
 			dialog.doModal( )
 
-			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				confirm = dialog.GetString( )
-				if confirm == '' :
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Unable to change new PIN code' ), MR_LANG( 'New PIN code does not match' ) )
-					dialog.doModal( )
-					return
+ 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+ 				confirm = dialog.GetString( )
+ 				if confirm == '' :
+ 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'New PIN code does not match' ) )
+		 			dialog.doModal( )
+ 					return
 				if int( newpin ) != int( confirm ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Unable to change new PIN code' ), MR_LANG( 'New PIN code does not match' ) )
-					dialog.doModal( )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'New PIN code does not match' ) )
+		 			dialog.doModal( )
 					return
 			else :
 				return
 
 			ElisPropertyInt( 'PinCode', self.mCommander ).SetProp( int( newpin ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Success' ), MR_LANG( 'Your PIN code has been changed successfully' ) )
-			dialog.doModal( )
+			dialog.SetDialogProperty( MR_LANG( 'New PIN code' ), MR_LANG( 'Your PIN code has been changed successfully' ) )
+ 			dialog.doModal( )
 
-		elif selectedId == E_FACTORY_RESET and groupId == E_Input01 :
-			resetChannel = ElisPropertyEnum( 'Reset Channel List', self.mCommander ).GetProp( )
-			resetFavoriteAddons = ElisPropertyEnum( 'Reset Favorite Add-ons', self.mCommander ).GetProp( )
-			resetSystem = ElisPropertyEnum( 'Reset Configure Setting', self.mCommander ).GetProp( )
-			if ( resetChannel | resetFavoriteAddons | resetSystem ) == 0 :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Unable to start factory reset' ), MR_LANG( 'Select reset option(s) before performing a factory reset' ) )
-				dialog.doModal( )
-				return
-			else :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+ 		elif selectedId == E_FACTORY_RESET and groupId == E_Input01 :
+ 			resetChannel = ElisPropertyEnum( 'Reset Channel List', self.mCommander ).GetProp( )
+ 			resetFavoriteAddons = ElisPropertyEnum( 'Reset Favorite Add-ons', self.mCommander ).GetProp( )
+ 			resetSystem = ElisPropertyEnum( 'Reset Configure Setting', self.mCommander ).GetProp( )
+ 			if ( resetChannel | resetFavoriteAddons | resetSystem ) == 0 :
+ 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Select the options before performing a factory reset' ) )
+		 		dialog.doModal( )
+		 		return
+		 	else :
+		 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'THIS WILL RESTORE YOUR SETTINGS TO THE \n FACTORY SETTINGS. DO YOU WANT TO CONTINUE?' ) )
 				dialog.doModal( )
 
@@ -334,13 +334,13 @@ class Configure( SettingWindow ) :
 							self.mProgress.SetResult( True )
 							time.sleep( 1 )
 							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-							dialog.SetDialogProperty( MR_LANG( 'Confirm' ), MR_LANG( 'Reset system Success' ) )
-							dialog.doModal( )
+							dialog.SetDialogProperty( MR_LANG( 'Reset your STB Settings' ), MR_LANG( 'Settings have been restored to factory default' ) )
+				 			dialog.doModal( )
 						else :
 							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-							dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Reset system Fail' ) )
-							dialog.doModal( )
-
+							dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Factory reset failed to complete' ) )
+				 			dialog.doModal( )
+							
 					except Exception, e :
 						LOG_ERR( 'Error exception[%s]' % e )
 
@@ -701,8 +701,8 @@ class Configure( SettingWindow ) :
 		if ret == False :
 			self.CloseBusyDialog( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Network Set Fail' ) )
-			dialog.doModal( )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Network setup failed to complete' ) )
+ 			dialog.doModal( )
 		else :
 			if self.mTempNetworkType == NET_DHCP :
 				self.mSavedNetworkType = self.mTempNetworkType
@@ -841,10 +841,10 @@ class Configure( SettingWindow ) :
 
 	def ShowIpInputDialog( self, aIpAddr ) :
 		if aIpAddr == 'None' :
-			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, MR_LANG( 'Enter IP address' ), '0.0.0.0' )
+			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, MR_LANG( 'Enter an IP address' ), '0.0.0.0' )			
 		else :
-			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, MR_LANG( 'Enter IP address' ), aIpAddr )
-
+			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, MR_LANG( 'Enter an IP address' ), aIpAddr )
+			
 		return aIpAddr
 
 
@@ -866,18 +866,21 @@ class Configure( SettingWindow ) :
 			channelNameList = []
 			for channel in channelList :
 				channelNameList.append( channel.mName )
-			ret = dialog.select( MR_LANG( 'Select a channel you want to set your time by' ), channelNameList )
+
+			ret = dialog.select( MR_LANG( 'Select a channel to set your time by' ), channelNameList )
+
 			if ret >= 0 :
 				self.mSetupChannel = channelList[ ret ]
 				self.SetControlLabel2String( E_Input01, self.mSetupChannel.mName )
 
 		elif aControlId == E_Input02 :
-			self.mDate = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_DATE, MR_LANG( 'Input Date' ), self.mDate )
+			self.mDate = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_DATE, MR_LANG( 'Enter today\'s date' ), self.mDate )
 			self.SetControlLabel2String( E_Input02, self.mDate )
 
 		elif aControlId == E_Input03 :
-			self.mTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Input Time' ), self.mTime )
-			self.SetControlLabel2String( E_Input03, self.mTime )
+			self.mTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter your local time' ), self.mTime )
+			self.SetControlLabel2String( E_Input03, self.mTime )		
+			return
 
 		elif aControlId == E_Input04 :
 			self.LoadSavedTime( )

@@ -907,7 +907,7 @@ class EPGWindow( BaseWindow ) :
 
 		if timer :		
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Confirm' ), MR_LANG( 'Do you want to delete timer?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Delete Timer' ), MR_LANG( 'Do you want to remove this timer?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -924,7 +924,7 @@ class EPGWindow( BaseWindow ) :
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Confirm' ), MR_LANG( 'Do you want to delete all timers?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU REALLY WANT TO DELETE ALL YOUR TIMERS?' ) )
 		dialog.doModal( )
 
 		self.OpenBusyDialog( )
@@ -950,14 +950,14 @@ class EPGWindow( BaseWindow ) :
 	def ShowSearchDialog( self ) :
 		try :
 #			kb = xbmc.Keyboard( '', 'Search', False )
-			kb = xbmc.Keyboard( '', MR_LANG( 'Enter a filename you want to find' ), False )			
+			kb = xbmc.Keyboard( '', MR_LANG( 'Enter the filename you are looking for' ), False )			
 			kb.doModal( )
 			if kb.isConfirmed( ) :
 				keyword = kb.getText( )
 				LOG_TRACE( 'keyword len=%d' %len( keyword ) )
 				if len( keyword ) < MININUM_KEYWORD_SIZE :
 #					xbmcgui.Dialog( ).ok('Infomation', 'Input more than %d characters' %MININUM_KEYWORD_SIZE )
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Unable to change the filename' ), MR_LANG( 'At least %d characters are required' ) %MININUM_KEYWORD_SIZE )
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Name must be at least %d characters long' ) %MININUM_KEYWORD_SIZE )
 					return
 					
 				searchList = []
@@ -977,11 +977,12 @@ class EPGWindow( BaseWindow ) :
 				LOG_TRACE( 'Result =%d' %len( searchList ) )
 
 				if len( searchList ) <= 0 :
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Infomation' ), MR_LANG( 'Can not find matched result' ) )
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No matched result found' ) )
 		 			return
 		 		else :
 					dialog = xbmcgui.Dialog( )
-		 			select = dialog.select( 'Select event', searchList )
+#					select = dialog.select( 'Select event', searchList )
+		 			select = dialog.select( 'Select Event', searchList )
 
 					if select >= 0 and select < len( searchList ) :
 						LOG_TRACE( 'selectIndex=%d' %indexList[ select ] )
@@ -1009,7 +1010,8 @@ class EPGWindow( BaseWindow ) :
 	def ShowSelectChannel( self ) :
 		if self.mChannelList == None or len( self.mChannelList ) <= 0 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Has no channel' ) )
+#			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Has no channel' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channel was available' ) )			
  			dialog.doModal( )
 			return
 	
@@ -1018,7 +1020,7 @@ class EPGWindow( BaseWindow ) :
 		for channel in self.mChannelList :
 			channelNameList.append( '%04d %s' %( channel.mNumber, channel.mName ) )
 
-		ret = dialog.select( MR_LANG( 'Select channel' ), channelNameList )
+		ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList )
 
 		if ret >= 0 :
 			self.mSelectChannel = self.mChannelList[ ret ]
@@ -1333,7 +1335,7 @@ class EPGWindow( BaseWindow ) :
 		
 		GuiLock2( True )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
-		dialog.SetTitleLabel( MR_LANG( 'Input pincode' ) )
+		dialog.SetTitleLabel( MR_LANG( 'Enter a PIN code' ) )
 		dialog.doModal( )
 		GuiLock2( False )
 

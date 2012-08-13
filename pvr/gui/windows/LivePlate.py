@@ -373,7 +373,7 @@ class LivePlate( BaseWindow ) :
 
 				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					#LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull )
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Infomation' ), MR_LANG( 'HDD Full!!! Cannot Recording...' ) )
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'STB stopped recording, because your disk space is full' ) )
 
 
 		else:
@@ -817,7 +817,7 @@ class LivePlate( BaseWindow ) :
 				RecordConflict( dialog.GetConflictTimer( ) )
 
 		else :
-			xbmcgui.Dialog( ).ok( MR_LANG( 'Infomation' ), MR_LANG( 'Already 2 recording(s) running' ) )
+			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'You are already recordings 2 programmes' ) )
 
 		if isOK :
 			self.mDataCache.mCacheReload = True

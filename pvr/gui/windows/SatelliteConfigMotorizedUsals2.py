@@ -70,7 +70,7 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 		if groupId == E_Input01 :
 			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog()
-			ret = dialog.select( MR_LANG( 'Select satellite' ), satelliteList )
+ 			ret = dialog.select( MR_LANG( 'Select Satellite' ), satelliteList )
 
 			if ret >= 0 :
 				satellite = self.mDataCache.GetSatelliteByIndex( ret )

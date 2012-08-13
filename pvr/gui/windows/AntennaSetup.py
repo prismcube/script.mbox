@@ -19,7 +19,7 @@ class AntennaSetup( SettingWindow ) :
 
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Unable to load satellite information' ), MR_LANG( 'Satellite information is not available. Please reset your STB' )	)
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No satellite information is available. Please reset your STB' )	)
 			dialog.doModal( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
@@ -35,14 +35,15 @@ class AntennaSetup( SettingWindow ) :
 			self.mTunerMgr.Load( )
 			self.mTunerMgr.SetNeedLoad( False )
 
-		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', None, MR_LANG( 'Select the type of connection for Tuner 2' ) )
-		self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', None, MR_LANG( 'Set Tuner 2\'s signal configuration' ) )
+		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', None, MR_LANG( 'Select Separated if linked to separately to satellites' ) )
+		self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', None, MR_LANG( 'Set how Tuner 2 gets its digital signal' ) )
 		self.AddEnumControl( E_SpinEx03, 'Tuner1 Type', None, MR_LANG( 'Select a digital control method for Tuner 1' ) )
-		self.AddInputControl( E_Input01, MR_LANG( ' - Tuner 1 Configuration' ), '', MR_LANG( 'You can add, delete or setup satellite(s) here' ) )
+		self.AddInputControl( E_Input01, MR_LANG( ' - Tuner 1 Configuration' ), '', MR_LANG( 'You can add, delete or configure satellites here' ) )
 		self.AddEnumControl( E_SpinEx04, 'Tuner2 Type', None, MR_LANG( 'Select a digital control method for Tuner 2' ) )
-		self.AddInputControl( E_Input02, MR_LANG( ' - Tuner 2 Configuration' ), '', MR_LANG( 'You can add, delete or setup satellite(s) here' ) )
-		if ConfigMgr.GetInstance( ).GetFristInstallation( ) == True :
-			self.AddPrevNextButton( MR_LANG( 'Go to Next' ), MR_LANG( 'Go to Back' ) )
+		self.AddInputControl( E_Input02, MR_LANG( ' - Tuner 2 Configuration' ), '', MR_LANG( 'You can add, delete or configure satellites here' ) )
+
+		if ConfigMgr.GetInstance().GetFristInstallation( ) == True :
+			self.AddPrevNextButton( MR_LANG( 'Go to Channel Search Setup' ), MR_LANG( 'Go back to Video & Audio Setup' ) )
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( MR_LANG( 'Next' ) )
 			self.getControl( E_FIRST_TIME_INSTALLATION_PREV_LABEL ).setLabel( MR_LANG( 'Previous' ) )
 		self.setVisibleButton( )
@@ -66,7 +67,7 @@ class AntennaSetup( SettingWindow ) :
 		elif actionId == Action.ACTION_PARENT_DIR :
 			if ConfigMgr.GetInstance( ).GetFristInstallation( ) == True :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Abort installation' ), MR_LANG( 'Do you want to cancel first time installation?' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Abort Installation' ), MR_LANG( 'Do you want to exit the first installation?' ) )
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -80,7 +81,7 @@ class AntennaSetup( SettingWindow ) :
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Save configuration' ), MR_LANG( 'Do you want to save changes?' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Save Configuration' ), MR_LANG( 'Do you want to save changes?' ) )
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :

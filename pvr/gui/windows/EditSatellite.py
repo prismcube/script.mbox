@@ -21,7 +21,7 @@ class EditSatellite( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Has no configured satellite' ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Unable to load satellites' ), MR_LANG( 'No satellite infomation is available. Please reset your STB' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No satellite infomation is available. Please reset your STB' ) )
 			dialog.doModal( )
 			WinMgr.GetInstance( ).CloseWindow( )
 		else :
@@ -71,7 +71,7 @@ class EditSatellite( SettingWindow ) :
 		if groupId == E_Input01 :
 			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog( )
-			select = dialog.select( MR_LANG( 'Select satellite you want to edit' ), satelliteList ) 			
+ 			select = dialog.select( MR_LANG( 'Select Satellite' ), satelliteList ) 			
 
 			if select >= 0 and select != self.mSatelliteIndex :
 				self.mSatelliteIndex = select
@@ -79,17 +79,17 @@ class EditSatellite( SettingWindow ) :
 
 		# Edit Satellite Name
 		elif groupId == E_Input03 :
-			kb = xbmc.Keyboard( self.mName, MR_LANG( 'Change satellite\s name' ), False )			
+			kb = xbmc.Keyboard( self.mName, MR_LANG( 'Enter a new name' ), False )			
 			kb.setHiddenInput( False )
 			kb.doModal( )
 			if kb.isConfirmed( ) :
 				ret = self.mCommander.Satellite_ChangeName( self.mLongitude, self.mBand, kb.getText( ) )
 				if ret != True :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Satellite Edit Name Fail' ) )
-					dialog.doModal( )
-					return
-				self.mDataCache.LoadAllSatellite( )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You were unable to change the satellite name' ) )
+		 			dialog.doModal( )
+		 			return
+ 				self.mDataCache.LoadAllSatellite( )
 				self.InitConfig( )
 
 		# Add New Satellite
@@ -102,10 +102,10 @@ class EditSatellite( SettingWindow ) :
 				ret = self.mCommander.Satellite_Add( longitude, band, satelliteName )
 				if ret != True :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Satellite Add Fail' ) )
-					dialog.doModal( )
-					return
-				self.mDataCache.LoadAllSatellite( )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You were unable to add a new satellite in the list' ) )
+		 			dialog.doModal( )
+		 			return
+ 				self.mDataCache.LoadAllSatellite( )
 				self.InitConfig( )
 			else :
 				return
@@ -120,9 +120,9 @@ class EditSatellite( SettingWindow ) :
 				ret = self.mCommander.Satellite_Delete( self.mLongitude, self.mBand )
 				if ret != True :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Satellite Delete Fail' ) )
-					dialog.doModal( )
-					return
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You were unable to remove the satellite from the list' ) )
+		 			dialog.doModal( )
+		 			return
 				self.mSatelliteIndex = 0
 				self.mDataCache.LoadAllSatellite( )
 				self.InitConfig( )
@@ -146,9 +146,9 @@ class EditSatellite( SettingWindow ) :
 		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), satellitename, MR_LANG( 'Select a satellite you want to change settings' ) )
 		longitude = self.GetFormattedLongitude( self.mLongitude , self.mBand )
 		self.AddInputControl( E_Input02, MR_LANG( 'Longitude' ), longitude )
-		self.AddInputControl( E_Input03, MR_LANG( 'Change Satellite Name' ), '', MR_LANG( 'You can change a satellite\'s name here' ) )
-		self.AddInputControl( E_Input04, MR_LANG( 'Add Satellite' ), '', MR_LANG( 'You can add a new satellite here' ) )
-		self.AddInputControl( E_Input05, MR_LANG( 'Delete Satellite' ), '', MR_LANG( 'Here you can delete a satellite' ) )
+		self.AddInputControl( E_Input03, MR_LANG( 'Change Satellite Name' ), '', MR_LANG( 'Change the satellite name in the list' ) )
+		self.AddInputControl( E_Input04, MR_LANG( 'Add Satellite' ), '', MR_LANG( 'Add a new satellite to the list' ) )
+		self.AddInputControl( E_Input05, MR_LANG( 'Delete Satellite' ), '', MR_LANG( 'Delete a satellite from the list' ) )
 		
 		self.InitControl( )
 		self.SetEnableControl( E_Input02, False )

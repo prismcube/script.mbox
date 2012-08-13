@@ -32,7 +32,7 @@ class AutomaticScan( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Has no configured satellite' ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Has No Configurd Satellite' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is no configured satellite in the list' ) )
 			dialog.doModal( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
@@ -71,7 +71,7 @@ class AutomaticScan( SettingWindow ) :
 		# Satellite
 		if groupId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
-			select =  dialog.select( MR_LANG( 'Select a satellite you want to scan channels' ), self.mFormattedList )			
+			select =  dialog.select( MR_LANG( 'Select Satellite' ), self.mFormattedList )			
 
 			if select >= 0 and select != self.mSatelliteIndex :
 				self.mSatelliteIndex = select
@@ -112,7 +112,7 @@ class AutomaticScan( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Has no configured satellite' ) )
 		else :
-			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[self.mSatelliteIndex], MR_LANG( 'Select Satellite(s) you wish to search from' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[self.mSatelliteIndex], MR_LANG( 'Select satellites you wish to search from' ) )
 			self.AddEnumControl( E_SpinEx01, 'Network Search', None, MR_LANG( 'Set your STB to scan channels from multiple TPs' ) )
 			self.AddEnumControl( E_SpinEx02, 'Channel Search Mode', None, MR_LANG( 'Select the type of channels you want to search for' ) )
 			self.AddInputControl( E_Input02, MR_LANG( 'Search Now' ), '', MR_LANG( 'Perform an automatic channel search' ) )

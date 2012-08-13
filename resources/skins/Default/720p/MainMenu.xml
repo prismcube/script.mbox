@@ -483,7 +483,7 @@
 					<height>35</height>
 					<font>font12</font>
 					<!--label>System Information</label-->
-					<label>STB Info provides STB system status including system version, free HDD space, etc</label>
+					<label>STB Info provides STB system status including system version, free hard drive space, etc</label>
 					<align>left</align>
 					<textcolor>white</textcolor>                
 					<shadowcolor>black</shadowcolor>

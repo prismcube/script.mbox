@@ -71,7 +71,7 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 		if groupId == E_Input01 :
 			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog()
-			ret = dialog.select( MR_LANG( 'Select a satellite you want to edit' ), satelliteList )
+ 			ret = dialog.select( MR_LANG( 'Edit Satellite' ), satelliteList )
 
 			if ret >= 0 :
 				satellite = self.mDataCache.GetSatelliteByIndex( ret )
@@ -132,15 +132,15 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 			self.mCurrentSatellite.mFrequencyLevel = self.GetSelectedIndex( E_SpinEx03 )
 
 		# Transponer
-		elif groupId == E_Input03 :
-			if self.mTransponderList :
-				dialog = xbmcgui.Dialog( )
-				tempIndex = dialog.select( MR_LANG( 'Select a transponder you want to use' ), self.mTransponderList )
-				if tempIndex != -1 :
-					self.mSelectedTransponderIndex = tempIndex
-					self.InitConfig( )
-				else :
-					return
+ 		elif groupId == E_Input03 :
+ 			if self.mTransponderList :
+	 			dialog = xbmcgui.Dialog( )
+	 			tempIndex = dialog.select( MR_LANG( 'Select Transponder' ), self.mTransponderList )
+	 			if tempIndex != -1 :
+	 				self.mSelectedTransponderIndex = tempIndex
+	 				self.InitConfig( )
+	 			else :
+	 				return
 
 		# Rotate Satellite Dish
 		elif groupId == E_Input04 :
@@ -155,7 +155,7 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 		# Antenna Action
 		elif groupId == E_Input05 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Position Limit' ), MR_LANG( 'Are you sure to apply the position limit you have just set' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Position Limit' ), MR_LANG( 'Are you sure to apply the position limit above?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :

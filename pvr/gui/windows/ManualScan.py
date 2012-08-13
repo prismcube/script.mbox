@@ -45,7 +45,7 @@ class ManualScan( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Has no configured satellite' ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Has No Configurd Satellite' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is no configured satellite in the list' ) )
  			dialog.doModal( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
@@ -89,7 +89,7 @@ class ManualScan( SettingWindow ) :
 		# Satellite		
 		if groupId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
-			select = dialog.select( MR_LANG( 'Select a satellite you want to scan channels' ), self.mFormattedList )
+			select = dialog.select( MR_LANG( 'Select Satellite' ), self.mFormattedList )
 
 			if select >= 0 :
 				self.mSatelliteIndex = select
@@ -107,7 +107,7 @@ class ManualScan( SettingWindow ) :
 				for i in range( len( self.mTransponderList ) ) :			
 					formattedTransponderList.append( '%d' % self.mTransponderList[i].mFrequency + ' MHz' )
 				dialog = xbmcgui.Dialog( )
-				select = dialog.select( MR_LANG( 'Select a transponder you want to use' ), formattedTransponderList )
+				select = dialog.select( MR_LANG( 'Select Transponder' ), formattedTransponderList )
 
 				if select >=0 :
 					self.mTransponderIndex = select
@@ -118,7 +118,7 @@ class ManualScan( SettingWindow ) :
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-				dialog.SetDialogProperty( MR_LANG( 'Enter frequency' ), '%d' % self.mConfigTransponder.mFrequency, 5 )
+				dialog.SetDialogProperty( MR_LANG( 'Enter Frequency' ), '%d' % self.mConfigTransponder.mFrequency, 5 )
 				dialog.doModal( )
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					tempval = dialog.GetString( )
@@ -136,7 +136,7 @@ class ManualScan( SettingWindow ) :
 		# Symbol Rate
 		elif groupId == E_Input03 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Enter symbol rate' ), '%d' % self.mConfigTransponder.mSymbolRate, 5 )
+			dialog.SetDialogProperty( MR_LANG( 'Enter Symbol Rate' ), '%d' % self.mConfigTransponder.mSymbolRate, 5 )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				tempval = dialog.GetString( )
@@ -221,13 +221,13 @@ class ManualScan( SettingWindow ) :
 	def InitConfig( self ) :
 		self.ResetAllControl( )	
 
-		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select Satellite(s) you wish to search channels from' ) )
+		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select satellites you wish to search channels from' ) )
 		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Custom Setup' ), USER_ENUM_LIST_ON_OFF, self.mIsManualSetup, MR_LANG( 'Configure custom setup' ) )
 
 		if self.mIsManualSetup == 0 :
 			self.AddInputControl( E_Input02, MR_LANG( ' - Select Transponder Frequency' ), '%d MHz' % self.mConfigTransponder.mFrequency, MR_LANG( 'Set a transponder frequency for channel search' ) )
 		else :
-			self.AddInputControl( E_Input02, MR_LANG( ' - Set Frequency' ), '%d MHz' % self.mConfigTransponder.mFrequency, MR_LANG( 'Enter value for transponder frequency' ) )
+			self.AddInputControl( E_Input02, MR_LANG( ' - Set Frequency' ), '%d MHz' % self.mConfigTransponder.mFrequency, MR_LANG( 'Enter the value for transponder frequency' ) )
 
 		# DVB Type
 		self.AddEnumControl( E_SpinEx02, 'DVB Type', MR_LANG( ' - DVB Type' ), MR_LANG( 'Select the Digital Video Broadcasting type' ) )
@@ -246,7 +246,7 @@ class ManualScan( SettingWindow ) :
 		self.SetProp( E_SpinEx04, self.mConfigTransponder.mPolarization )
 
 		# Symbolrate
-		self.AddInputControl( E_Input03, MR_LANG( ' - Symbol Rate' ), '%d KS/s' % self.mConfigTransponder.mSymbolRate , MR_LANG( 'Select Symbol Rate' ) )
+		self.AddInputControl( E_Input03, MR_LANG( ' - Symbol Rate' ), '%d KS/s' % self.mConfigTransponder.mSymbolRate , MR_LANG( 'Select a symbol rate' ) )
 		
 		self.AddEnumControl( E_SpinEx05, 'Network Search', None, MR_LANG( 'Set your STB to scan channels from multiple TPs' ) )
 		self.AddEnumControl( E_SpinEx06, 'Channel Search Mode', None, MR_LANG( 'Select the type of channels you want to search for' ) )

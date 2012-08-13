@@ -363,8 +363,8 @@ class TimeShiftPlate( BaseWindow ) :
 
 				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					LOG_TRACE('----------hddfull[%s]'% aEvent.mHDDFull)
-					xbmcgui.Dialog( ).ok( MR_LANG('Infomation'), MR_LANG( 'HDD Full!!! Cannot Recording...' ) )
-
+					xbmcgui.Dialog().ok( MR_LANG('Infomation'), MR_LANG('Hard disk space is full. You cannot record anymore') )
+					
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
 
@@ -373,7 +373,7 @@ class TimeShiftPlate( BaseWindow ) :
 		head = ''
 		line1= ''
 		if aFocusId == E_CONTROL_ID_BUTTON_BOOKMARK :
-			head = MR_LANG( 'BookMark' )
+			head = MR_LANG( 'Bookmark' )
 			line1= 'test'
 
 		dialog = xbmcgui.Dialog( ).ok( head, line1 )
