@@ -58,6 +58,7 @@ class EPGWindow( BaseWindow ) :
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'EPG' ) )
 		self.SetPipScreen( )
+		self.LoadNoSignalState( )
 
 		self.mEPGCount = 0
 		self.mSelectedIndex = 0

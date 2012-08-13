@@ -212,6 +212,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.mEventBus.Register( self )
 		self.SetPipScreen( )
+		self.LoadNoSignalState( )
 
 		self.mItemHeight = int( self.getProperty( 'ItemHeight' ) )
 

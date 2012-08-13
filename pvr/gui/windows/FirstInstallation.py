@@ -10,6 +10,8 @@ class FirstInstallation( SettingWindow ) :
 		SettingWindow.__init__( self, *args, **kwargs )
 		self.mStepNum					= 	E_STEP_SELECT_LANGUAGE
 		self.mPrevStepNum				= 	E_STEP_SELECT_LANGUAGE
+		self.mMenuLanguageList			=	[]
+		self.mAudioLanguageList			=	[]
 		self.mIsChannelSearch			=	False
 		self.mConfiguredSatelliteList 	=	[]
 		self.mFormattedList				=	[]
@@ -21,6 +23,12 @@ class FirstInstallation( SettingWindow ) :
 		self.mHasChannel		= False
 
 		self.mStepImage			= []
+
+		for i in range( ElisPropertyEnum( 'Language', self.mCommander ).GetIndexCount( ) ) :
+			self.mMenuLanguageList.append( ElisPropertyEnum( 'Language', self.mCommander ).GetPropStringByIndex( i ) )
+
+		for i in range( ElisPropertyEnum( 'Audio Language', self.mCommander ).GetIndexCount( ) ) :
+			self.mAudioLanguageList.append( ElisPropertyEnum( 'Audio Language', self.mCommander ).GetPropStringByIndex( i ) )
 
 
 	def onInit( self ) :
@@ -93,7 +101,18 @@ class FirstInstallation( SettingWindow ) :
 				time.sleep( 0.3 )
 				self.SetListControl( E_STEP_VIDEO_AUDIO )
 			else :
-				self.ControlSelect( )
+				if groupId == E_Input01 :
+					dialog = xbmcgui.Dialog( )
+					ret = dialog.select( MR_LANG( 'Select a menu language you want to edit' ), self.mMenuLanguageList )
+					if ret >= 0 :
+						ElisPropertyEnum( 'Language', self.mCommander ).SetPropIndex( ret )
+						self.SetControlLabel2String( E_Input01, self.mMenuLanguageList[ ret ] )
+				elif groupId == E_Input02 :
+					dialog = xbmcgui.Dialog( )
+					ret = dialog.select( MR_LANG( 'Select a audio language you want to edit' ), self.mAudioLanguageList )
+					if ret >= 0 :
+						ElisPropertyEnum( 'Audio Language', self.mCommander ).SetPropIndex( ret )
+						self.SetControlLabel2String( E_Input02, self.mAudioLanguageList[ ret ] )
 			return
 
 		elif self.mStepNum == E_STEP_VIDEO_AUDIO :
@@ -156,16 +175,16 @@ class FirstInstallation( SettingWindow ) :
 		if self.mStepNum == E_STEP_SELECT_LANGUAGE :
 			self.mPrevStepNum = E_STEP_SELECT_LANGUAGE
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Language Setup' ) )
-			self.AddEnumControl( E_SpinEx01, 'Language', MR_LANG( 'Menu Language' ), MR_LANG( 'Set the language you want the menu to be in' ) )
-			self.AddEnumControl( E_SpinEx02, 'Audio Language', None, MR_LANG( 'Select the language that you wish to listen to' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), self.mMenuLanguageList[ ElisPropertyEnum( 'Language', self.mCommander ).GetPropIndex( ) ], MR_LANG( 'Set the language you want the menu to be in' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Audio Language' ), self.mAudioLanguageList[ ElisPropertyEnum( 'Audio Language', self.mCommander ).GetPropIndex( ) ], MR_LANG( 'Select the language that you wish to listen to' ) )
 			self.AddNextButton( MR_LANG( 'Go to Video & Audio Setup' ) )
 			self.SetPrevNextButtonLabel( )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02 ]
+			visibleControlIds = [ E_Input01, E_Input02 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_SpinEx03 ]
+			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_Input03, E_Input04, E_Input05, E_SpinEx03 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
@@ -219,8 +238,8 @@ class FirstInstallation( SettingWindow ) :
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Time & Date Setup' ) )
 			setupChannelNumber = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
 			self.mSetupChannel = self.mDataCache.Channel_GetByNumber( setupChannelNumber )
+			self.mHasChannel = True
 			if self.mSetupChannel and self.mSetupChannel.mError == 0 :
-				self.mHasChannel = True
 				channelName = self.mSetupChannel.mName
 			else :
 				channelList = self.mDataCache.Channel_GetList( )
@@ -252,6 +271,7 @@ class FirstInstallation( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
+			
 			self.DisableControl( self.mStepNum )
 			self.setDefaultControl( )
 			return
@@ -280,7 +300,7 @@ class FirstInstallation( SettingWindow ) :
 
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 			self.SetVisibleControls( visibleControlIds, True )
-			self.SetEnableControls( visibleControlIds, True )
+			self.SetEnableControls( visibleControlIds, False )
 
 			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
 			self.SetVisibleControls( hideControlIds, False )
@@ -448,3 +468,4 @@ class FirstInstallation( SettingWindow ) :
 				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )
 				self.SetListControl( E_STEP_RESULT )
+

@@ -123,8 +123,6 @@ class Configure( SettingWindow ) :
 
 	def Close( self ) :
 		self.mInitialized = False
-		if self.mCtrlLeftGroup.getSelectedPosition( ) == E_TIME_SETTING :
-			self.getControl( E_SpinEx01 + 3 ).selectItem( ElisPropertyEnum( 'Time Mode', self.mCommander ).GetPropIndex( ) )
 		self.ResetAllControl( )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( '' )
 		self.SetVideoRestore( )
@@ -528,8 +526,8 @@ class Configure( SettingWindow ) :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			setupChannelNumber = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
 			self.mSetupChannel = self.mDataCache.Channel_GetByNumber( setupChannelNumber )
+			self.mHasChannel = True
 			if self.mSetupChannel and self.mSetupChannel.mError == 0 :
-				self.mHasChannel = True
 				channelName = self.mSetupChannel.mName
 			else :
 				channelList = self.mDataCache.Channel_GetList( )
@@ -861,7 +859,6 @@ class Configure( SettingWindow ) :
 	def TimeSetting( self, aControlId ) :
 		if aControlId == E_SpinEx01 :
 			self.DisableControl( E_TIME_SETTING )
-			return
 
 		elif aControlId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
@@ -869,17 +866,16 @@ class Configure( SettingWindow ) :
 			channelNameList = []
 			for channel in channelList :
 				channelNameList.append( channel.mName )
- 			ret = dialog.select( MR_LANG( 'Select a channel to set your time by' ), channelNameList )
+
+			ret = dialog.select( MR_LANG( 'Select a channel to set your time by' ), channelNameList )
 
 			if ret >= 0 :
 				self.mSetupChannel = channelList[ ret ]
 				self.SetControlLabel2String( E_Input01, self.mSetupChannel.mName )
-			return
 
 		elif aControlId == E_Input02 :
 			self.mDate = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_DATE, MR_LANG( 'Enter today\'s date' ), self.mDate )
 			self.SetControlLabel2String( E_Input02, self.mDate )
-			return
 
 		elif aControlId == E_Input03 :
 			self.mTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter your local time' ), self.mTime )

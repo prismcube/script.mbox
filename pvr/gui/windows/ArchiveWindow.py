@@ -66,6 +66,7 @@ class ArchiveWindow( BaseWindow ) :
 
 			if self.mViewMode == E_VIEW_LIST :
 				self.SetPipScreen( )
+				self.LoadNoSignalState( )
 			return
 			
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Archive' ) )
@@ -378,7 +379,8 @@ class ArchiveWindow( BaseWindow ) :
 
 	def CheckVideoSize( self ) :
 		if self.mViewMode == E_VIEW_LIST :
-			self.SetPipScreen( )		
+			self.SetPipScreen( )
+			self.LoadNoSignalState( )
 			self.mCtrlCommonList.addItems( self.mRecordListItems )		
 			#self.setFocusId( LIST_ID_COMMON_RECORD )
 		elif self.mViewMode == E_VIEW_THUMBNAIL :

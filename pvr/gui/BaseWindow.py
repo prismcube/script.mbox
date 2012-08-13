@@ -148,6 +148,13 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
 
 
+	def LoadNoSignalState( self ) :
+		if self.mDataCache.GetLockedState( ) == True :
+			self.setProperty('Signal', 'True')
+		else :
+			self.setProperty('Signal', 'False')
+
+
 	#@GuiLock
 	def UpdateVolume( self ) :
 
@@ -383,12 +390,11 @@ class SettingWindow( BaseWindow ) :
 		count = len( self.mControlList )
 
 		for i in range( count ) :
-
 			ctrlItem = self.mControlList[i]		
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 					control = self.getControl( ctrlItem.mControlId + 3 )
-					time.sleep( 0.02 )
+					time.sleep( 0.2 )
 					return control.getSelectedPosition( )
 
 		return -1
@@ -398,7 +404,6 @@ class SettingWindow( BaseWindow ) :
 		count = len( self.mControlList )
 
 		for i in range( count ) :
-
 			ctrlItem = self.mControlList[i]		
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
@@ -516,7 +521,7 @@ class SettingWindow( BaseWindow ) :
 			if self.HasControlItem( ctrlItem, self.mFocusId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL :
 					control = self.getControl( ctrlItem.mControlId + 3 )
-					time.sleep( 0.02 )
+					time.sleep( 0.2 )
 					ctrlItem.mProperty.SetPropIndex( control.getSelectedPosition( ) )
 					return True
 					
@@ -610,10 +615,3 @@ class SettingWindow( BaseWindow ) :
 					self.getControl( E_FIRST_TIME_INSTALLATION_STEP_IMAGE + i ).setVisible( False )
 				self.getControl( E_FIRST_TIME_INSTALLATION_STEP_IMAGE_BACK + i ).setVisible( True )
 
-
-	def LoadNoSignalState( self ) :
-		if self.mDataCache.GetLockedState( ) == True :
-			self.setProperty('Signal', 'True')
-		else :
-			self.setProperty('Signal', 'False')
-			
