@@ -52,7 +52,7 @@ class FirstInstallation( SettingWindow ) :
 			if self.mStepNum == E_STEP_RESULT :
 				return
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Abort Installation' ), MR_LANG( 'Do you want to exit the first installation?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Abort Installation' ), MR_LANG( 'Do you want to quit the first installation?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -69,7 +69,7 @@ class FirstInstallation( SettingWindow ) :
 			if self.mStepNum == E_STEP_RESULT :
 				return
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Abort Installation' ), MR_LANG( 'Do you want to exit the first installation?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Abort Installation' ), MR_LANG( 'Do you want to quit the first installation?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -258,7 +258,7 @@ class FirstInstallation( SettingWindow ) :
 			self.mTime = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_HH_MM )
 			self.AddInputControl( E_Input03, MR_LANG( 'Time' ), self.mTime, MR_LANG( 'Enter the local time' ) )
 			self.AddEnumControl( E_SpinEx02, 'Local Time Offset', None, MR_LANG( 'Select your Time Zone' ) )
-			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, MR_LANG( 'Set automatic or manual for Daylight Savings' ) )
+			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, MR_LANG( 'Set Automatic or Manual for Daylight Savings' ) )
 			self.AddInputControl( E_Input04, MR_LANG( 'Apply Changes' ), '', MR_LANG( 'Press the OK button to save settings' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to Summary of First Installation' ), MR_LANG( 'Go back to Channel Search Setup' ) )
 			self.SetPrevNextButtonLabel( )
