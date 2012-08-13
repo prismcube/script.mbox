@@ -364,7 +364,7 @@
 			<width>30</width>
 			<height>30</height>
 			<texturenofocus border="5">views/multiplex_arrow2.png</texturenofocus>
-			<texturefocus border="5">views/multiplex_arrowfocus2.png</texturefocus>
+			<texturefocus border="5">aeon.nox/multiplex_arrowfocus2.png</texturefocus>
 			<onleft>7003</onleft>
 			<onright>7003</onright>
 		</control>
@@ -384,7 +384,7 @@
 			<posy>464</posy>
 			<width>200</width>
 			<height>40</height>
-			<font>Font_Bold20</font>
+			<font>Font_Reg20</font>
 			<textcolor>white</textcolor>
 			<align>left</align>
 			<aligny>center</aligny>
@@ -396,7 +396,7 @@
 			<width>30</width>
 			<height>30</height>
 			<texturenofocus border="5">views/multiplex_arrow.png</texturenofocus>
-			<texturefocus border="5">views/multiplex_arrowfocus.png</texturefocus>
+			<texturefocus border="5">aeon.nox/multiplex_arrowfocus.png</texturefocus>
 			<onleft>7001</onleft>
 			<onright>7001</onright>
 		</control>
@@ -416,7 +416,7 @@
 			<posy>464</posy>
 			<width>200</width>
 			<height>40</height>
-			<font>Font_Bold20</font>
+			<font>Font_Reg20</font>
 			<textcolor>white</textcolor>
 			<align>left</align>
 			<aligny>center</aligny>
