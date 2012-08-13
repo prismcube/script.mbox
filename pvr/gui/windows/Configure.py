@@ -597,7 +597,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_ETC :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Deep Standby', None, MR_LANG( 'Set the STB to deep standby' ) )
+			self.AddEnumControl( E_SpinEx01, 'Deep Standby', None, MR_LANG( 'Set On/Off for deep standby mode' ) )
 			self.AddEnumControl( E_SpinEx02, 'Fan Control', None, MR_LANG( 'Select the fan speed level for your STB' ) )
 			self.AddEnumControl( E_SpinEx03, 'Channel Banner Duration', None, MR_LANG( 'Set the time the channel info is to be displayed when zapping' ) )		#	Erase channel list yes/no
 			self.AddEnumControl( E_SpinEx04, 'Playback Banner Duration', None, MR_LANG( 'Set the time for the playback info to be displayed on the screen' ) )	#	Erase custom menu yes/no
