@@ -20,7 +20,7 @@ class DialogAddTimer( BaseDialog ) :
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
 #		self.SetHeaderLabel( 'Add Recording' )
-		self.SetHeaderLabel( MR_LANG( 'Add recording' ) )		
+		self.SetHeaderLabel( MR_LANG( 'Add Timer' ) )		
 		self.mIsOk = E_DIALOG_STATE_CANCEL		
 
 		self.Reload( )

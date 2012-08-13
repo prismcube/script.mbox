@@ -16,7 +16,7 @@ E_WEEKLY					= 2
 WEEKLY_DEFALUT_EXPIRE_DAYS	= 7
 
 LIST_RECORDING_MODE	= [ MR_LANG( 'Once' ), MR_LANG( 'Daily' ), MR_LANG( 'Weekly' ) ]
-LIST_WEEKLY = [ MR_LANG( 'Sun' ), MR_LANG( 'Mon'), MR_LANG( 'Tue' ), MR_LANG( 'Wed' ), MR_LANG( 'The' ), MR_LANG( 'Fri' ), MR_LANG( 'Sat' ) ]
+LIST_WEEKLY = [ MR_LANG( 'Sun' ), MR_LANG( 'Mon'), MR_LANG( 'Tue' ), MR_LANG( 'Wed' ), MR_LANG( 'Thu' ), MR_LANG( 'Fri' ), MR_LANG( 'Sat' ) ]
 
 MININUM_KEYWORD_SIZE  		= 3
 ONE_DAY_SECONDS				= 3600*24
@@ -51,10 +51,9 @@ class DialogAddManualTimer( SettingDialog ) :
 
 		if self.mTimer :
 #			self.SetHeaderLabel( 'Edit Recording' )		
-			self.SetHeaderLabel( MR_LANG( 'Edit recording' ) )
+			self.SetHeaderLabel( MR_LANG( 'Edit Timer' ) )
 		else :
-#			self.SetHeaderLabel( 'Add Manual Recording' )
-			self.SetHeaderLabel( MR_LANG( 'Add manual recording' ) )
+			self.SetHeaderLabel( MR_LANG( 'Add Manual Timer' ) )
 
 		if self.mTimer :
 			self.mRecordName = self.mTimer.mName
@@ -534,14 +533,14 @@ class DialogAddManualTimer( SettingDialog ) :
 	def ShowRecordName( self ) :
 		try :
 #			kb = xbmc.Keyboard( self.mRecordName, 'Change Record Name', False )
-			kb = xbmc.Keyboard( self.mRecordName, MR_LANG( 'Enter a new name for recorded file' ), False )			
+			kb = xbmc.Keyboard( self.mRecordName, MR_LANG( 'Enter a new name' ), False )			
 			kb.doModal( )
 			if kb.isConfirmed( ) :
 				keyword = kb.getText( )
 				LOG_TRACE( 'keyword len=%d' %len( keyword ) )
 				if len( keyword ) < MININUM_KEYWORD_SIZE :
 #					xbmcgui.Dialog( ).ok('Infomation', 'Input more than %d characters' %MININUM_KEYWORD_SIZE )
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Unable to change the filename' ), MR_LANG( 'At least %d characters are required' ) %MININUM_KEYWORD_SIZE )					
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Name must be at least %d characters long' ) %MININUM_KEYWORD_SIZE )					
 					return
 
 				self.mRecordName = keyword
@@ -761,7 +760,7 @@ class DialogAddManualTimer( SettingDialog ) :
 					strStartTime = TimeToString( self.mUsedWeeklyList[0].mStartTime, TimeFormatEnum.E_HH_MM )			
 
 #			strStartTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Input Time', strStartTime )
-			strStartTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter start time' ), strStartTime )			
+			strStartTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter a start time' ), strStartTime )			
 
 			tempList = strStartTime.split( ':', 1 )
 
@@ -817,7 +816,7 @@ class DialogAddManualTimer( SettingDialog ) :
 					strEndTime = TimeToString( self.mUsedWeeklyList[0].mStartTime + self.mUsedWeeklyList[0].mDuration, TimeFormatEnum.E_HH_MM )			
 
 #			strEndTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Input Time', strEndTime )		
-			strEndTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Enter end time', strEndTime )	
+			strEndTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Enter an end time', strEndTime )	
 
 			tempList = strEndTime.split( ':', 1 )
 
