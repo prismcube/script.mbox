@@ -178,7 +178,7 @@ class SystemInfo( SettingWindow ) :
 			self.mCtrlHDDSizeTotal.setLabel(	MR_LANG( 'HDD Total Size : ' ) )
 			self.mCtrlHDDSizeMedia.setLabel(	MR_LANG( 'HDD Media Size : ' ) )
 			self.mCtrlHDDSizeProgram.setLabel(	MR_LANG( 'HDD Program Size : ' ) )
-			self.mCtrlHDDSizeRecord.setLabel(	MR_LANG( 'Record Free Size : %s MB ( %s%% )' ) % self.GetRecordFreeSize( ) )
+			self.mCtrlHDDSizeRecord.setLabel(	MR_LANG( 'Free Recording Space : %s MB ( %s%% )' ) % self.GetRecordFreeSize( ) )
 
 
 	def GetRecordFreeSize( self ) :

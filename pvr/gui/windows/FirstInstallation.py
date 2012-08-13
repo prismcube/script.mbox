@@ -103,13 +103,13 @@ class FirstInstallation( SettingWindow ) :
 			else :
 				if groupId == E_Input01 :
 					dialog = xbmcgui.Dialog( )
-					ret = dialog.select( MR_LANG( 'Select a menu language you want to edit' ), self.mMenuLanguageList )
+					ret = dialog.select( MR_LANG( 'Select Menu Language' ), self.mMenuLanguageList )
 					if ret >= 0 :
 						ElisPropertyEnum( 'Language', self.mCommander ).SetPropIndex( ret )
 						self.SetControlLabel2String( E_Input01, self.mMenuLanguageList[ ret ] )
 				elif groupId == E_Input02 :
 					dialog = xbmcgui.Dialog( )
-					ret = dialog.select( MR_LANG( 'Select a audio language you want to edit' ), self.mAudioLanguageList )
+					ret = dialog.select( MR_LANG( 'Select Audio Language' ), self.mAudioLanguageList )
 					if ret >= 0 :
 						ElisPropertyEnum( 'Audio Language', self.mCommander ).SetPropIndex( ret )
 						self.SetControlLabel2String( E_Input02, self.mAudioLanguageList[ ret ] )
@@ -259,7 +259,7 @@ class FirstInstallation( SettingWindow ) :
 			self.AddInputControl( E_Input03, MR_LANG( 'Time' ), self.mTime, MR_LANG( 'Enter the local time' ) )
 			self.AddEnumControl( E_SpinEx02, 'Local Time Offset', None, MR_LANG( 'Select your Time Zone' ) )
 			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, MR_LANG( 'Set automatic or manual for Daylight Savings' ) )
-			self.AddInputControl( E_Input04, MR_LANG( 'Apply Now' ), '', MR_LANG( 'Press the OK button to save settings' ) )
+			self.AddInputControl( E_Input04, MR_LANG( 'Apply Changes' ), '', MR_LANG( 'Press the OK button to save settings' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to Summary of First Installation' ), MR_LANG( 'Go back to Channel Search Setup' ) )
 			self.SetPrevNextButtonLabel( )
 
