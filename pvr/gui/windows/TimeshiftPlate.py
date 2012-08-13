@@ -258,7 +258,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		elif id == Action.ACTION_MBOX_RECORD :
 			if self.mMode == ElisEnum.E_MODE_PVR :
-				xbmcgui.Dialog( ).ok( MR_LANG( 'Warning' ), MR_LANG( 'Now PVR Playing...' ) )
+				xbmcgui.Dialog( ).ok( MR_LANG( 'WARNING' ), MR_LANG( 'Now Personal Video Recording mode is on' ) )
 			else :
 				self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
 
