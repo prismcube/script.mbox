@@ -462,8 +462,8 @@ class ChannelListWindow( BaseWindow ) :
 		ret = E_DIALOG_STATE_NO
 
 		#ask save question
-		head =  MR_LANG( 'Confirm' )
-		line1 = MR_LANG( 'Delete All Channel' )
+		head =  MR_LANG( 'WARNING' )
+		line1 = MR_LANG( 'DO YOU REALLY WANT TO REMOVE ALL YOUR CHANNELS?' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 		dialog.SetDialogProperty( head, line1 )
@@ -649,7 +649,8 @@ class ChannelListWindow( BaseWindow ) :
 
 				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull)
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Infomation' ), MR_LANG( 'HDD Full!!! Cannot Recording...' ) )
+#					xbmcgui.Dialog( ).ok( MR_LANG( 'Infomation' ), MR_LANG( 'HDD Full!!! Cannot Recording...' ) )
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'STB stopped recording, because your disk space is full' ) )
 
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				if aEvent.mType == ElisEnum.E_EOF_END :
@@ -700,7 +701,8 @@ class ChannelListWindow( BaseWindow ) :
 
 		else:
 			if self.mChannelList == None:
-				label = MR_LANG( 'Empty Channels' )
+#				label = MR_LANG( 'Empty Channels' )
+				label = MR_LANG( 'No Channels' )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 				return 
 
@@ -1381,7 +1383,8 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mChannelList == None :
 			self.mListItems = None
 			self.mCtrlListCHList.reset( )
-			label = MR_LANG( 'Empty Channels' )
+#			label = MR_LANG( 'Empty Channels' )
+			label = MR_LANG( 'No Channels' )			
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, '0' )
 			return 
@@ -2131,7 +2134,7 @@ class ChannelListWindow( BaseWindow ) :
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			if isRunRec > 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Warning' ), MR_LANG( 'Now recording...' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Now recording in progress...' ) )
 	 			dialog.doModal( )
 
 	 		else :
@@ -2142,7 +2145,8 @@ class ChannelListWindow( BaseWindow ) :
 		elif aContextAction == CONTEXT_ACTION_MENU_DELETEALL :
 			if self.mFlag_DeleteAll :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Warning' ), MR_LANG( 'Already Delete All' ) )
+#				dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'Already Delete All' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is nothing in the channel list' ) )				
 	 			dialog.doModal( )
 
 	 		else :
@@ -2194,16 +2198,17 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mChannelList :
 
 				if self.mEditFavorite :
-					context.append( ContextItem( '%s'% MR_LANG( 'Add to Fav. Group' ), CONTEXT_ACTION_ADD_TO_FAV  ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Add to Favorite Group' ), CONTEXT_ACTION_ADD_TO_FAV  ) )
 					context.append( ContextItem( '%s'% MR_LANG( 'Create New Group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
-					context.append( ContextItem( '%s'% MR_LANG( 'Rename Fav. Group' ), CONTEXT_ACTION_RENAME_FAV ) )
-					context.append( ContextItem( '%s'% MR_LANG( 'Delete Fav. Group' ), CONTEXT_ACTION_DELETE_FAV ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Change Favorite Group Name' ), CONTEXT_ACTION_RENAME_FAV ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Delete Favorite Group' ), CONTEXT_ACTION_DELETE_FAV ) )
 				else:
 					context.append( ContextItem( '%s'% MR_LANG( 'Create New Group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
 
 			else :
-				head =  MR_LANG( 'Infomation' )
-				line1 = MR_LANG( 'Empty Channels' )
+#				head =  MR_LANG( 'Infomation' )
+				head =  MR_LANG( 'Error' )
+				line1 = MR_LANG( 'The channel list is empty' )
 
 				xbmcgui.Dialog( ).ok( head, line1 )
 				return
@@ -2213,10 +2218,10 @@ class ChannelListWindow( BaseWindow ) :
 			if not self.mChannelList :
 				context = []
 
-			context.append( ContextItem( '%s'% MR_LANG( 'Add Channel Fav. Group' ), CONTEXT_ACTION_ADD_TO_CHANNEL ) )
-			context.append( ContextItem( '%s'% MR_LANG( 'Rename Fav. Group' ), CONTEXT_ACTION_RENAME_FAV ) )
+			context.append( ContextItem( '%s'% MR_LANG( 'Add Favorite Channel Group' ), CONTEXT_ACTION_ADD_TO_CHANNEL ) )
+			context.append( ContextItem( '%s'% MR_LANG( 'Change Favorite Group Name' ), CONTEXT_ACTION_RENAME_FAV ) )
 
-		context.append( ContextItem( '%s'% MR_LANG( 'Save Exit' ), CONTEXT_ACTION_SAVE_EXIT ) )
+		context.append( ContextItem( '%s'% MR_LANG( 'Save and Exit' ), CONTEXT_ACTION_SAVE_EXIT ) )
 
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
@@ -2246,7 +2251,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		if selectedAction == CONTEXT_ACTION_ADD_TO_CHANNEL :
 			self.GetChannelListName( )
-			labelString = '%s'% MR_LANG( 'Add Channel Fav. Group' )
+			labelString = '%s'% MR_LANG( 'Add Favorite Channel Group' )
 			grpIdx = xbmcgui.Dialog( ).select( labelString, self.mEditChannelList )
 			groupName = self.mEditFavorite[self.mUserSlidePos.mSub]
 			if grpIdx == -1 :
@@ -2261,9 +2266,9 @@ class ChannelListWindow( BaseWindow ) :
 		   selectedAction == CONTEXT_ACTION_RENAME_FAV or \
 		   selectedAction == CONTEXT_ACTION_DELETE_FAV :
  			title = ''
- 			if selectedAction == CONTEXT_ACTION_ADD_TO_FAV :   title = MR_LANG( 'Add to Fav. Group' )
- 			elif selectedAction == CONTEXT_ACTION_RENAME_FAV : title = MR_LANG( 'Rename Fav. Group' )
- 			elif selectedAction == CONTEXT_ACTION_DELETE_FAV : title = MR_LANG( 'Delete Fav. Group' )
+ 			if selectedAction == CONTEXT_ACTION_ADD_TO_FAV :   title = MR_LANG( 'Add to Favorite Group' )
+ 			elif selectedAction == CONTEXT_ACTION_RENAME_FAV : title = MR_LANG( 'Change Favorite Group Name' )
+ 			elif selectedAction == CONTEXT_ACTION_DELETE_FAV : title = MR_LANG( 'Delete Favorite Group' )
 
  			grpIdx = xbmcgui.Dialog( ).select( title, self.mEditFavorite )
  			groupName = self.mEditFavorite[grpIdx]
@@ -2274,9 +2279,9 @@ class ChannelListWindow( BaseWindow ) :
 				return
 
 			if selectedAction == CONTEXT_ACTION_DELETE_FAV :
-				head = MR_LANG( 'Delete Fav. Group' )
+				head = MR_LANG( 'Delete Favorite Group' )
 				line1 = '%s'% groupName
-				line2 = '%s'% MR_LANG( 'Do you want to delete?' )
+				line2 = '%s'% MR_LANG( 'Do you want to delete this favorite group?' )
 				posLine = abs( 100 - len(line1) )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -2305,7 +2310,7 @@ class ChannelListWindow( BaseWindow ) :
 				#rename
 				default = groupName
 				result = '%d'%grpIdx + ':' + groupName + ':'
-				label = MR_LANG( 'Rename Fav. Group' )
+				label = MR_LANG( 'Change Favorite Group Name' )
 
 			kb = xbmc.Keyboard( default, label, False )
 			kb.doModal( )
@@ -2340,8 +2345,8 @@ class ChannelListWindow( BaseWindow ) :
 
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			context = []
-			context.append( ContextItem( MR_LANG( 'Edit Channel' ), CONTEXT_ACTION_MENU_EDIT_MODE ) )
-			context.append( ContextItem( MR_LANG( 'Delete All Channel' ), CONTEXT_ACTION_MENU_DELETEALL ) )
+			context.append( ContextItem( MR_LANG( 'Edit Channels' ), CONTEXT_ACTION_MENU_EDIT_MODE ) )
+			context.append( ContextItem( MR_LANG( 'Delete All Channels' ), CONTEXT_ACTION_MENU_DELETEALL ) )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 			dialog.SetProperty( context )
@@ -2454,8 +2459,10 @@ class ChannelListWindow( BaseWindow ) :
 				from pvr.GuiHelper import RecordConflict
 				RecordConflict( dialog.GetConflictTimer( ) )
 		else:
-			msg = 'Already [%s] recording(s) running' %runningCount
-			xbmcgui.Dialog( ).ok( 'Infomation', msg )
+#			msg = 'Already [%s] recording(s) running' %runningCount
+			msg = 'You are already recordings [%s] programmes' %runningCount			
+#			xbmcgui.Dialog( ).ok( 'Infomation', msg )
+			xbmcgui.Dialog( ).ok( 'Attention', msg )			
 		GuiLock2(False)
 
 		if isOK :

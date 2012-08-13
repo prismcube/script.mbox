@@ -180,7 +180,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.UpdateList( )
 					
 			else :
-				xbmcgui.Dialog( ).ok( MR_LANG( 'Infomation' ), MR_LANG( 'Now playing. Try again after stop player' ) )
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the clip' ) )
 
 	
 	def onClick( self, aControlId ) :
@@ -535,7 +535,7 @@ class ArchiveWindow( BaseWindow ) :
 
 		status = self.mDataCache.Player_GetStatus( )
 		if status.mMode == ElisEnum.E_MODE_PVR :
-			xbmcgui.Dialog( ).ok( MR_LANG( 'Infomation' ), MR_LANG( 'Now playing. Try again after stop player' ) )
+			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the clip' ) )
 			return
 	
 		try :
@@ -549,12 +549,13 @@ class ArchiveWindow( BaseWindow ) :
 				context.append( ContextItem( MR_LANG( 'Delete All' ), CONTEXT_DELETE_ALL ) )
 				context.append( ContextItem( MR_LANG( 'Lock' ), CONTEXT_LOCK ) )
 				context.append( ContextItem( MR_LANG( 'Unlock' ), CONTEXT_UNLOCK ) )	
-				context.append( ContextItem( MR_LANG( 'Clear Marked Items' ), CONTEXT_CLEAR_MARK ) )	
+#				context.append( ContextItem( MR_LANG( 'Clear Marked Items' ), CONTEXT_CLEAR_MARK ) )	
+				context.append( ContextItem( MR_LANG( 'Remove Selections' ), CONTEXT_CLEAR_MARK ) )	
 				
 			elif selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
 				recordInfo = self.mRecordList[ selectedPos ]		
 				context.append( ContextItem( MR_LANG( 'Play' ), CONTEXT_PLAY ) )
-				context.append( ContextItem( MR_LANG( 'Play from beginning' ), CONTEXT_PLAY_FROM_BEGINNIG ) )
+				context.append( ContextItem( MR_LANG( 'Play from the Start' ), CONTEXT_PLAY_FROM_BEGINNIG ) )
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_DELETE ) )
 				context.append( ContextItem( MR_LANG( 'Delete All' ), CONTEXT_DELETE_ALL ) )				
 				if recordInfo.mLocked:
@@ -564,7 +565,7 @@ class ArchiveWindow( BaseWindow ) :
 
 				context.append( ContextItem( MR_LANG( 'Rename' ), CONTEXT_RENAME ) )
 #				context.append( ContextItem( 'Start Mark', CONTEXT_START_MARK ) )
-				context.append( ContextItem( MR_LANG( 'Multi-Selection' ), CONTEXT_START_MARK ) )
+				context.append( ContextItem( MR_LANG( 'Multi-Select' ), CONTEXT_START_MARK ) )
 
 			else :
 				return
@@ -637,7 +638,7 @@ class ArchiveWindow( BaseWindow ) :
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 #			dialog.SetDialogProperty( 'Confirm', 'Do you want to delete record(s)?' )
-			dialog.SetDialogProperty( MR_LANG( 'Delete recorded file(s)' ), MR_LANG( 'Do you want to delete recording(s)?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Delete Record' ), MR_LANG( 'Do you want to remove this recording?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -654,7 +655,7 @@ class ArchiveWindow( BaseWindow ) :
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 #		dialog.SetDialogProperty( 'Confirm', 'Do you want to delete all records?' )
-		dialog.SetDialogProperty( MR_LANG( 'Delete all your recorded file(s)' ), MR_LANG( 'Do you really want to delete all your recordings?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU REALLY WANT TO REMOVE ALL YOUR RECORDINGS?' ) )
 		dialog.doModal( )
 
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -691,14 +692,14 @@ class ArchiveWindow( BaseWindow ) :
 		
 		try :
 #			kb = xbmc.Keyboard( self.mRecordList[ selectedPos ].mRecordName, 'Rename', False )
-			kb = xbmc.Keyboard( self.mRecordList[ selectedPos ].mRecordName, MR_LANG( 'Enter a new filename' ), False )			
+			kb = xbmc.Keyboard( self.mRecordList[ selectedPos ].mRecordName, MR_LANG( 'Enter a new name' ), False )			
 			kb.doModal( )
 			if kb.isConfirmed( ) :
 				newName = kb.getText( )
 				LOG_TRACE( 'newName len=%d' %len( newName ) )
 				if len( newName ) < MININUM_KEYWORD_SIZE :
 #					xbmcgui.Dialog( ).ok('Infomation', 'Input more than %d characters' %MININUM_KEYWORD_SIZE )
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Unable to change filename' ), MR_LANG( 'At least %d characters are required' ) %MININUM_KEYWORD_SIZE )
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Name must be at least %d characters long' ) %MININUM_KEYWORD_SIZE )
 					return
 				else :
 
@@ -817,7 +818,7 @@ class ArchiveWindow( BaseWindow ) :
 		GuiLock2( True )
 		pincodeDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 #		pincodeDialog.SetDialogProperty( 'Input Pincode', '', 4, True )
-		pincodeDialog.SetDialogProperty( MR_LANG( 'Enter PIN code' ), '', 4, True )
+		pincodeDialog.SetDialogProperty( MR_LANG( 'Enter your PIN code' ), '', 4, True )
 		pincodeDialog.doModal( )
 		GuiLock2( False )
 		
@@ -828,7 +829,7 @@ class ArchiveWindow( BaseWindow ) :
 				return True
 			else :
 				infoDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				infoDialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'New PIN codes do not match' ) )
+				infoDialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Sorry, that PIN code does not match' ) )
 	 			infoDialog.doModal( )
 
 		return False
