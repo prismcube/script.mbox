@@ -60,7 +60,8 @@ class ArchiveWindow( BaseWindow ) :
 
 		if self.mPlayingRecord :
 			self.mEventBus.Register( self )
-			self.mSelectRecordKey = self.mPlayingRecord.mRecordKey 
+			self.mSelectRecordKey = self.mPlayingRecord.mRecordKey
+			self.UpdateStopThumbnail( self.mPlayingRecord.mRecordKey )
 			self.SelectLastRecordKey( )
 			self.UpdatePlayStatus( )
 
@@ -84,7 +85,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.mViewMode = int( GetSetting( 'VIEW_MODE' ) )
 			self.mCtrlViewMode = self.getControl( BUTTON_ID_VIEW_MODE )
 
-			LOG_TRACE( 'self.mCtrlViewMode =%s' %self.mCtrlViewMode )			
+			LOG_TRACE( 'self.mCtrlViewMode =%s' % self.mCtrlViewMode )			
 
 			self.mSortMode = int( GetSetting( 'SORT_MODE' ) )		
 			self.mCtrlSortMode = self.getControl( BUTTON_ID_SORT_MODE )
@@ -387,7 +388,7 @@ class ArchiveWindow( BaseWindow ) :
 
 		recItem = self.mRecordListItems[ listindex ]
 		thumbnaillist = []
-		thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%s_*.jpg' % aRecordKey ) )
+		thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % aRecordKey ) )
 		print 'dhkim test thubnaillist = %s' % thumbnaillist
 		if len( thumbnaillist ) > 0 :
 			recItem.setProperty( 'RecIcon', thumbnaillist[0] )
