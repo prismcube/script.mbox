@@ -18,7 +18,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'USALS configuration : Tuner %s' ) % ( self.tunerIndex + 1 ) )
 
-		self.SetSettingWindowLabel( MR_LANG( 'Motorize Configuration' ) )
+		self.SetSettingWindowLabel( MR_LANG( 'Motorized Configuration' ) )
 		self.LoadNoSignalState( )
 
 		self.GetLongitude( )

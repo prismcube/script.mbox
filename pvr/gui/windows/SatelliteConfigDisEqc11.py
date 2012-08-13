@@ -70,7 +70,7 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 		if groupId == E_Input01 :
 			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog()
-			ret = dialog.select( MR_LANG( 'Select a satellite you want to edit' ), satelliteList )
+ 			ret = dialog.select( MR_LANG( 'Edit Satellite' ), satelliteList )
 
 			if ret >= 0 :
 				satellite = self.mDataCache.GetSatelliteByIndex( ret )
@@ -143,16 +143,16 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 		elif groupId == E_SpinEx06 :
 			self.mCurrentSatellite.mDisEqcRepeat = self.GetSelectedIndex( E_SpinEx06 )
 
-		# Transponer
-		elif groupId == E_Input03 :
-			if self.mTransponderList :
-				dialog = xbmcgui.Dialog( )
-				tempIndex = dialog.select( MR_LANG( 'Select a transponder you want to use' ), self.mTransponderList )
-				if tempIndex != -1 :
-					self.mSelectedTransponderIndex = tempIndex
-					self.InitConfig( )
-				else :
-					return
+ 		# Transponer
+ 		elif groupId == E_Input03 :
+ 			if self.mTransponderList :
+	 			dialog = xbmcgui.Dialog( )
+	 			tempIndex = dialog.select( MR_LANG( 'Select Transponder' ), self.mTransponderList )
+	 			if tempIndex != -1 :
+	 				self.mSelectedTransponderIndex = tempIndex
+	 				self.InitConfig( )
+	 			else :
+	 				return
 
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
 
