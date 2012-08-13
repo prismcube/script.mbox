@@ -15,8 +15,8 @@ class TunerConfiguration( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
-		headerLabel = MR_LANG( 'Tuner %d Configuration : %s' ) % ( self.tunerIndex + 1, self.mTunerMgr.GetCurrentTunerTypeString( ) )
+		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )	
+		headerLabel = MR_LANG( 'Tuner %d Config : %s' ) % ( self.tunerIndex + 1, self.mTunerMgr.GetCurrentTunerTypeString( ) )		
 		self.SetSettingWindowLabel( headerLabel )
 		self.LoadNoSignalState( )
 		self.LoadConfigedSatellite( )
@@ -54,34 +54,34 @@ class TunerConfiguration( SettingWindow ) :
 			if self.mConfiguredCount == position :
 				if self.mTunerMgr.GetCurrentTunerType( ) == E_DISEQC_1_0 and self.mConfiguredCount > 3 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty(  MR_LANG( 'Unable to add more satellite' ),  MR_LANG( 'You can have only 4 satellites in DiSEqC 1.0' ) )
-					dialog.doModal( )
+					dialog.SetDialogProperty(  MR_LANG( 'Attention' ),  MR_LANG( 'You can only have 4 satellites in DiSEqC 1.0' ) )
+		 			dialog.doModal( )
 				else :
 					dialog = xbmcgui.Dialog( )
 					satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
-					ret = dialog.select(  MR_LANG( 'Select satellite you want to add' ), satelliteList )
+	 				ret = dialog.select(  MR_LANG( 'Add Satellite' ), satelliteList )
 
 					if ret >= 0 :
 						self.OpenBusyDialog( )
 						self.mTunerMgr.AddConfiguredSatellite( ret )
 						self.AfterAction( )
 
-			elif self.mConfiguredCount + 1 == position :
-				if self.mConfiguredCount <= 0 :
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty(  MR_LANG( 'Unable to remove satellite' ),  MR_LANG( 'here is no satellite left in the list' ) )
-					dialog.doModal( )
-				else :
+	 		elif self.mConfiguredCount + 1 == position :
+	 			if self.mConfiguredCount <= 0 :
+	 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty(  MR_LANG( 'Error' ),  MR_LANG( 'There is no satellite left in the list' ) )
+		 			dialog.doModal( )
+	 			else :
 					dialog = xbmcgui.Dialog( )
 					satelliteList = []
 					for i in range( len( self.mListItems ) ) :
 						satelliteList.append( self.mListItems[i].getLabel( ) )
-
-					ret = dialog.select(  MR_LANG( 'Select satellite you want to remove' ), satelliteList[ 0 : self.mConfiguredCount ] )
-
-					if ret >= 0 :
-						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-						dialog.SetDialogProperty(  MR_LANG( 'Delete satellite' ),  MR_LANG( 'Is it ok to remove %s from the list' ) % satelliteList[ ret ] )
+						
+		 			ret = dialog.select(  MR_LANG( 'Delete Satellite' ), satelliteList[ 0 : self.mConfiguredCount ] )
+ 
+		 			if ret >= 0 :
+		 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+						dialog.SetDialogProperty(  MR_LANG( 'Delete Satellite' ),  MR_LANG( 'Do you want to remove %s?' ) % satelliteList[ ret ] )						
 						dialog.doModal( )
 
 						if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -126,10 +126,10 @@ class TunerConfiguration( SettingWindow ) :
 			if config.mIsConfigUsed == 1 :
 				self.mConfiguredCount = self.mConfiguredCount + 1
 				satelliteName = self.mDataCache.GetFormattedSatelliteName( config.mSatelliteLongitude, config.mBandType )
-				self.mListItems.append( xbmcgui.ListItem( '%s' % satelliteName, MR_LANG( 'Go To Configure Satellte : %s' ) % satelliteName ) )
+				self.mListItems.append( xbmcgui.ListItem( '%s' % satelliteName, MR_LANG( 'Press OK button to setup %s' ) % satelliteName ) )
 
-		self.mListItems.append( xbmcgui.ListItem( MR_LANG( 'Add Satellite' ), MR_LANG( 'Add New Satellite' ) ) )
-		self.mListItems.append( xbmcgui.ListItem( MR_LANG( 'Delete Satellite' ), MR_LANG( 'Delete Satellite' ) ) )
+		self.mListItems.append( xbmcgui.ListItem( MR_LANG( 'Add Satellite' ), MR_LANG( 'Add a satellite to your satellite list' ) ) )
+		self.mListItems.append( xbmcgui.ListItem( MR_LANG( 'Delete Satellite' ), MR_LANG( 'Delete a satellite from your list' ) ) )
 		self.getControl( E_MAIN_LIST_ID ).addItems( self.mListItems )
 
 
