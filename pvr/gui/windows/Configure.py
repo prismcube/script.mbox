@@ -904,10 +904,12 @@ class Configure( SettingWindow ) :
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
 				self.mDataCache.Channel_SetCurrent( oriChannel.mNumber, oriChannel.mServiceType ) # Todo After : using ServiceType to different way
 			else :
+				self.OpenBusyDialog( )
 				sumtime = self.mDate + '.' + self.mTime
 				t = time.strptime( sumtime, '%d.%m.%Y.%H:%M' )
 				ret = self.mCommander.Datetime_SetSystemUTCTime( int( time.mktime( t ) ) )
 				self.mDataCache.LoadTime( )
+				self.CloseBusyDialog( )
 
 
 	def LoadSavedTime( self ) :

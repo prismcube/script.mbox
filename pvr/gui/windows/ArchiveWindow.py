@@ -347,34 +347,54 @@ class ArchiveWindow( BaseWindow ) :
 
 			self.mRecordListItems = []
 			for i in range( len( self.mRecordList ) ) :
-				recInfo = self.mRecordList[i]
-				channelName = 'P%04d.%s' % ( recInfo.mChannelNo, recInfo.mChannelName )
-				#recItem = xbmcgui.ListItem( '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz', '1234567890abcdefghijklmnopqrstuvwxyz123456789abcdefghijklmnopqrstuvwxyz' )
-				recItem = xbmcgui.ListItem( channelName, recInfo.mRecordName )
-				recItem.setProperty( 'RecDate', TimeToString( recInfo.mStartTime ) )
-				recItem.setProperty( 'RecDuration', '%dm' % ( recInfo.mDuration / 60 ) )
-				
-				if recInfo.mLocked :
-					recItem.setProperty( 'Locked', 'True' )
-					recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
-				else :
-					recItem.setProperty( 'Locked', 'False' )
-					thumbnail = '/mnt/hdd0/pvr/thumbnail/record_thumbnail_%d.jpg' % recInfo.mRecordKey
-					LOG_ERR( 'thumbnail=%s' % thumbnail )
-					
-					if os.path.exists( thumbnail ) == True :					
-						recItem.setProperty( 'RecIcon', thumbnail )
-					else:
-						recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
-
-				recItem.setProperty( 'Marked', 'False' )
-				self.mRecordListItems.append( recItem )
+				self.UpdateListItem( self.mRecordList[i] )
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
 
 		self.CheckVideoSize( )
 		LOG_TRACE( 'UpdateList END' )
+
+
+	def UpdateListItem( self, aRecordInfo ) :
+		channelName = 'P%04d.%s' % ( aRecordInfo.mChannelNo, aRecordInfo.mChannelName )
+		recItem = xbmcgui.ListItem( channelName, aRecordInfo.mRecordName )
+		recItem.setProperty( 'RecDate', TimeToString( aRecordInfo.mStartTime ) )
+		recItem.setProperty( 'RecDuration', '%dm' % ( aRecordInfo.mDuration / 60 ) )
+		if aRecordInfo.mLocked :
+			recItem.setProperty( 'Locked', 'True' )
+			recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
+		else :
+			recItem.setProperty( 'Locked', 'False' )
+			thumbnaillist = []
+			thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % aRecordInfo.mRecordKey ) )
+			print 'dhkim test thubnaillist = %s' % thumbnaillist
+			if len( thumbnaillist ) > 0 :
+				recItem.setProperty( 'RecIcon', thumbnaillist[0] )
+			else :
+				recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+
+		recItem.setProperty( 'Marked', 'False' )
+		self.mRecordListItems.append( recItem )
+
+
+	def UpdateStopThumbnail( self, aRecordKey ) :
+		listindex = 0
+		for recInfo in self.mRecordList :
+			if recInfo.mRecordKey == aRecordKey :
+				break
+			listindex = listindex + 1
+
+		recItem = self.mRecordListItems[ listindex ]
+		thumbnaillist = []
+		thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%s_*.jpg' % aRecordKey ) )
+		print 'dhkim test thubnaillist = %s' % thumbnaillist
+		if len( thumbnaillist ) > 0 :
+			recItem.setProperty( 'RecIcon', thumbnaillist[0] )
+		else :
+			recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+
+		xbmc.executebuiltin( 'container.update' )
 
 
 	def CheckVideoSize( self ) :
@@ -459,10 +479,11 @@ class ArchiveWindow( BaseWindow ) :
 
 	def StopRecordPlayback( self ) :
 		if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
-			self.mLastFocusItem = -1	
 			ret = self.mDataCache.Player_Stop( )
+			self.UpdateStopThumbnail( self.mPlayingRecord.mRecordKey )
+			self.mLastFocusItem = -1
 			self.UpdatePlayStatus( )
-
+			
 
 	def StartRecordPlayback( self, aResume=True ) :
 		selectedPos = self.GetSelectedPosition( )
@@ -976,6 +997,5 @@ class ArchiveWindow( BaseWindow ) :
 
 		LOG_TRACE( 'Update PlayProgress = %d [%d,%d,%d]' %( self.mPlayPerent, status.mPlayTimeInMs, status.mStartTimeInMs, status.mEndTimeInMs ) )
 		
-		self.mCtrlPlayProgress.setPercent( self.mPlayPerent ) 
-
+		self.mCtrlPlayProgress.setPercent( self.mPlayPerent )
 
