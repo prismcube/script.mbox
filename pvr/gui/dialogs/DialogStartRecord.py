@@ -361,7 +361,7 @@ class DialogStartRecord( SettingDialog ) :
 					if self.mDataCache.Timer_EditRunningTimer( self.mTimer.mTimerId, endTime ) == True :
 						self.mIsOk = E_DIALOG_STATE_YES
 					else :
-						msg = MR_LANG( 'Can not change duration' )
+						msg = MR_LANG( 'STB could not change the duration' )
 						xbmcgui.Dialog( ).ok( MR_LANG('Error'), msg )
 
 			else :

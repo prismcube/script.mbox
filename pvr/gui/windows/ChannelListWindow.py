@@ -1161,8 +1161,8 @@ class ChannelListWindow( BaseWindow ) :
 		#is change?
 		if self.mIsSave :
 			#ask save question
-			head =  MR_LANG( 'Confirm' )
-			line1 = MR_LANG( 'Do you want to save channels?' )
+			head =  MR_LANG( 'Save Channels' )
+			line1 = MR_LANG( 'Do you want to save the channels?' )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( head, line1 )

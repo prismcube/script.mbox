@@ -220,7 +220,7 @@ class EditTransponder( SettingWindow ) :
 		self.ResetAllControl( )
 		self.GetSatelliteInfo( self.mSatelliteIndex )
 		satellitename = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand )
-		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), satellitename, MR_LANG( 'Choose a satellite from the list to edit' ) )
+		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), satellitename, MR_LANG( 'Choose a satellite from the list' ) )
 
 		self.mTransponderList = self.mDataCache.GetTransponderListBySatellite( self.mLongitude, self.mBand )
 

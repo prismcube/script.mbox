@@ -321,7 +321,7 @@ class TimeShiftPlate( BaseWindow ) :
 					RecordConflict( dialog.GetConflictTimer( ) )
 					
 			else :
-				xbmcgui.Dialog( ).ok( MR_LANG( 'Infomation' ), MR_LANG( 'Already 2 recording(s) running' ) )
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'You are already recording 2 programmes' ) )
 
 			if isOK :
 				self.mDataCache.mCacheReload = True

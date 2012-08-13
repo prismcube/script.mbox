@@ -582,7 +582,7 @@ class Configure( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx01, 'Reset Channel List', None, MR_LANG( 'Your Channel List will be restored to default' ) )
 			self.AddEnumControl( E_SpinEx02, 'Reset Favorite Add-ons', None, MR_LANG( 'All your Favorite Add-ons will be restored to default' ) )
 			self.AddEnumControl( E_SpinEx03, 'Reset Configure Setting', None, MR_LANG( 'User Settings will be restored to default after factory reset' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Factory Reset Now'), '', MR_LANG( 'Restore your STB to the factory default settings as above' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Factory Reset Now'), '', MR_LANG( 'Restore your STB to the factory default settings' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -597,8 +597,8 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_ETC :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Deep Standby', None, MR_LANG( 'Set the STB to deep standby' ) )
-			self.AddEnumControl( E_SpinEx02, 'Fan Control', None, MR_LANG( 'Desc etc Fan Control' ) )
+			self.AddEnumControl( E_SpinEx01, 'Deep Standby', None, MR_LANG( 'Set On/Off for deep standby mode' ) )
+			self.AddEnumControl( E_SpinEx02, 'Fan Control', None, MR_LANG( 'Select the fan speed level for your STB' ) )
 			self.AddEnumControl( E_SpinEx03, 'Channel Banner Duration', None, MR_LANG( 'Set the time the channel info is to be displayed when zapping' ) )		#	Erase channel list yes/no
 			self.AddEnumControl( E_SpinEx04, 'Playback Banner Duration', None, MR_LANG( 'Set the time for the playback info to be displayed on the screen' ) )	#	Erase custom menu yes/no
 
