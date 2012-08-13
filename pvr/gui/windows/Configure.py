@@ -378,14 +378,15 @@ class Configure( SettingWindow ) :
 		self.ResetAllControl( )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( False )
+            ElisPropertyEnum( 'Language', self.mCommander)
 
 		if selectedId == E_LANGUAGE :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Language', None, MR_LANG( 'Desc Language Sub Language' ) )
-			self.AddEnumControl( E_SpinEx02, 'Audio Language', None, MR_LANG( 'Desc Language Sub Audio Language' ) )
-			self.AddEnumControl( E_SpinEx03, 'Subtitle Language', None, MR_LANG( 'Desc Language Sub Subtitle Language' ) )
-			self.AddEnumControl( E_SpinEx04, 'Secondary Subtitle Language', None, MR_LANG( 'Desc Language Sub Secondary Subtitle Language' ) )
-			self.AddEnumControl( E_SpinEx05, 'Hearing Impaired', None, MR_LANG( 'Desc Language Sub Hearing Impaired' ) )
+			self.AddEnumControl( E_SpinEx01, 'Language', None, MR_LANG( 'Select the language for the menu to be in' ) )
+			self.AddEnumControl( E_SpinEx02, 'Audio Language', None, MR_LANG( 'Select the language that you wish to listen to' ) )
+			self.AddEnumControl( E_SpinEx03, 'Subtitle Language', None, MR_LANG( 'Select the language for the subtitle to be in' ) )
+			self.AddEnumControl( E_SpinEx04, 'Secondary Subtitle Language', None, MR_LANG( 'Choose the language for the secondary subtitle to be in' ) )
+			self.AddEnumControl( E_SpinEx05, 'Hearing Impaired', None, MR_LANG( 'Set the hearing impaired function' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -401,10 +402,10 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_PARENTAL :	
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddInputControl( E_Input01, MR_LANG( 'Enable Setting Menu' ), '', MR_LANG( 'Desc Parental Sub Enable Setting Menu' ) )
-			self.AddEnumControl( E_SpinEx01, 'Lock Mainmenu', MR_LANG( ' - Lock Mainmenu' ), MR_LANG( 'Desc Parental Sub Lock Mainmenu' ) )
-			self.AddEnumControl( E_SpinEx02, 'Age Restricted', MR_LANG( ' - Age Restricted'), MR_LANG( 'Desc Parental Sub Age Restricted' ) )
-			self.AddInputControl( E_Input02, MR_LANG( ' - Change PIn Code' ), '', MR_LANG( 'Desc Parental Sub - Change PIn Code' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Enable Setting Menu' ), '', MR_LANG( 'Enter the default PIN code to change the parental settings' ) )
+			self.AddEnumControl( E_SpinEx01, 'Lock Mainmenu', MR_LANG( ' - Lock Mainmenu' ), MR_LANG( 'Set a restriction for the main menu' ) )
+			self.AddEnumControl( E_SpinEx02, 'Age Restricted', MR_LANG( ' - Age Restricted'), MR_LANG( 'Set an access restriction to chosen channels' ) )
+			self.AddInputControl( E_Input02, MR_LANG( ' - Change PIn Code' ), '', MR_LANG( 'Change the current PIN code' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_Input01, E_SpinEx02, E_Input02 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -420,11 +421,11 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_RECORDING_OPTION :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Automatic Timeshift', None, MR_LANG( 'Desc Record Automatic Timeshift' ) )
-			self.AddEnumControl( E_SpinEx02, 'Timeshift Buffer Size', None, MR_LANG( 'Desc Record Timeshift Buffer Size' ) )
-			self.AddEnumControl( E_SpinEx03, 'Default Rec Duration', None, MR_LANG( 'Desc Record Default Rec Duration' ) )
-			self.AddEnumControl( E_SpinEx04, 'Pre-Rec Time', None, MR_LANG( 'Desc Record Pre-Rec Time' ) )
-			self.AddEnumControl( E_SpinEx05, 'Post-Rec Time', None, MR_LANG( 'Desc Record Post-Rec Time' ) )
+			self.AddEnumControl( E_SpinEx01, 'Automatic Timeshift', None, MR_LANG( 'Set On/Off for automatic timeshift' ) )
+			self.AddEnumControl( E_SpinEx02, 'Timeshift Buffer Size', None, MR_LANG( 'Select the preferred size of timeshift buffer' ) )
+			self.AddEnumControl( E_SpinEx03, 'Default Rec Duration', None, MR_LANG( 'Select recording duration for a channel that has no EPG info' ) )
+			self.AddEnumControl( E_SpinEx04, 'Pre-Rec Time', None, MR_LANG( 'Set the pre-recording time for a EPG channel' ) )
+			self.AddEnumControl( E_SpinEx05, 'Post-Rec Time', None, MR_LANG( 'Set the post-recording time for a EPG channel' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -439,9 +440,9 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_AUDIO_SETTING :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Audio Dolby', None, MR_LANG( 'Desc Audio Dolby' ) )
-			self.AddEnumControl( E_SpinEx02, 'Audio HDMI', None, MR_LANG( 'Desc Audio HDMI' ) )
-			self.AddEnumControl( E_SpinEx03, 'Audio Delay', None, MR_LANG( 'Desc Audio Delay' ) )
+			self.AddEnumControl( E_SpinEx01, 'Audio Dolby', None, MR_LANG( 'Set the STB to select the Dolby audio automatically' ) )
+			self.AddEnumControl( E_SpinEx02, 'Audio HDMI', None, MR_LANG( 'Set the Audio HDMI format' ) )
+			self.AddEnumControl( E_SpinEx03, 'Audio Delay', None, MR_LANG( 'Set a delay time for audio' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
 			self.SetEnableControls( visibleControlIds, True )
@@ -456,10 +457,10 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_HDMI_SETTING :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'HDMI Format', None, MR_LANG( 'Desc HDMI Format' ) )
-			self.AddEnumControl( E_SpinEx02, 'Show 4:3', MR_LANG( 'TV Screen Format' ), MR_LANG( 'Desc HDMI TV Screen Format' ) )
-			self.AddEnumControl( E_SpinEx03, 'HDMI Color Space', None, MR_LANG( 'Desc HDMI Color Space' ) )
-			self.AddEnumControl( E_SpinEx04, 'TV System', None, MR_LANG( 'Desc HDMI TV System' ) )
+			self.AddEnumControl( E_SpinEx01, 'HDMI Format', None, MR_LANG( 'Set the display\'s HDMI resolution' ) )
+			self.AddEnumControl( E_SpinEx02, 'Show 4:3', MR_LANG( 'TV Screen Format' ), MR_LANG( 'Select the display format for TV screen' ) )
+			self.AddEnumControl( E_SpinEx03, 'HDMI Color Space', None, MR_LANG( 'Set RGB or YUV for HDMI Color Space' ) )
+			self.AddEnumControl( E_SpinEx04, 'TV System', None, MR_LANG( 'Set your TV system format' ) )
 			
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -473,17 +474,17 @@ class Configure( SettingWindow ) :
 			return
 
 		elif selectedId == E_NETWORK_SETTING :
-			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Desc Network Connection Type' ) )
-			self.AddInputControl( E_Input06, MR_LANG( ' - Connection Test' ), '', MR_LANG( 'Desc Network Connection Test' ) )
+			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Choose Ethernet or Wireless for your network connection' ) )
+			self.AddInputControl( E_Input06, MR_LANG( ' - Connection Test' ), '', MR_LANG( 'Determine your network connection is accessible' ) )
 			if self.mUseNetworkType == NETWORK_WIRELESS :
-				self.AddInputControl( E_Input01, MR_LANG( 'Search AP' ), self.mCurrentSsid, MR_LANG( 'Desc Wifi Search AP' ) )
-				self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Hidden SSID' ), USER_ENUM_LIST_ON_OFF, self.mUseHiddenId, MR_LANG( 'Desc Wifi Hidden SSID' ) )
-				self.AddInputControl( E_Input02, MR_LANG( ' - Set Hidden SSID' ), self.mHiddenSsid, MR_LANG( 'Desc Wifi Set Hidden SSID' ) )
-				self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Encryption' ), USER_ENUM_LIST_ON_OFF, self.mUseEncrypt, MR_LANG( 'Desc Wifi Encryption' ) )
-				self.AddUserEnumControl( E_SpinEx03, MR_LANG( ' - Encryption Method' ), USER_ENUM_LIST_ENCRIPT_TYPE, self.mEncriptType, MR_LANG( 'Desc Wifi Encryption Method' ) )
-				self.AddUserEnumControl( E_SpinEx04, MR_LANG( ' - Encryption Key Type' ), USER_ENUM_LIST_PASSWORD_TYPE, self.mPasswordType, MR_LANG( 'Desc Wifi Encryption Key Type' ) )
-				self.AddInputControl( E_Input03, MR_LANG( ' - Set Encryption Key' ), StringToHidden( self.mPassWord ), MR_LANG( 'Desc Wifi Set Encryption Key' ) )
-				self.AddInputControl( E_Input04, MR_LANG( 'Connect to the current AP' ), '', MR_LANG( 'Desc Wifi Connect' ) )
+				self.AddInputControl( E_Input01, MR_LANG( 'Search AP' ), self.mCurrentSsid, MR_LANG( 'Search Access Points around your STB' ) )
+				self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Hidden SSID' ), USER_ENUM_LIST_ON_OFF, self.mUseHiddenId, MR_LANG( 'Enable hidden Subsystem Identification (SSID)' ) )
+				self.AddInputControl( E_Input02, MR_LANG( ' - Set Hidden SSID' ), self.mHiddenSsid, MR_LANG( 'Enter the hidden SSID you wish to use' ) )
+				self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Encryption' ), USER_ENUM_LIST_ON_OFF, self.mUseEncrypt, MR_LANG( 'Enable encryption for a secure wireless data transmissions' ) )
+				self.AddUserEnumControl( E_SpinEx03, MR_LANG( ' - Encryption Method' ), USER_ENUM_LIST_ENCRIPT_TYPE, self.mEncriptType, MR_LANG( 'Choose an encryption method for your network' ) )
+				self.AddUserEnumControl( E_SpinEx04, MR_LANG( ' - Encryption Key Type' ), USER_ENUM_LIST_PASSWORD_TYPE, self.mPasswordType, MR_LANG( 'Set ASCII/HEX mode for your key' ) )
+				self.AddInputControl( E_Input03, MR_LANG( ' - Set Encryption Key' ), StringToHidden( self.mPassWord ), MR_LANG( 'Enter the encryption key for wireless connection' ) )
+				self.AddInputControl( E_Input04, MR_LANG( 'Connect to the current AP' ), '', MR_LANG( 'Connect to the AP you have chosen' ) )
 
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input06 ]
 				self.SetVisibleControls( visibleControlIds, True )
@@ -501,12 +502,12 @@ class Configure( SettingWindow ) :
 					self.ReLoadEthernetIp( )
 					self.mReLoadIp = False
 					
-				self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Assign IP Address' ), USER_ENUM_LIST_DHCP_STATIC, self.mTempNetworkType, MR_LANG( 'Desc ethernet Assign' ) )
-				self.AddInputControl( E_Input01, MR_LANG( 'IP Address' ), self.mTempIpAddr, MR_LANG( 'Desc ethernet IP' ) )
-				self.AddInputControl( E_Input02, MR_LANG( 'Subnet Mask' ), self.mTempSubNet, MR_LANG( 'Desc ethernet Subnet Mask' ) )
-				self.AddInputControl( E_Input03, MR_LANG( 'Gateway' ), self.mTempGateway, MR_LANG( 'Desc ethernet Gateway' ) )
-				self.AddInputControl( E_Input04, MR_LANG( 'DNS' ), self.mTempDns, MR_LANG( 'Desc ethernet DNS' ) )
-				self.AddInputControl( E_Input05, MR_LANG( 'Apply Now') , '', MR_LANG( 'Desc ethernet Apply Now' ) )
+				self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Assign IP Address' ), USER_ENUM_LIST_DHCP_STATIC, self.mTempNetworkType, MR_LANG( 'Select DHCP to obtain an IP address automatically' ) )
+				self.AddInputControl( E_Input01, MR_LANG( 'IP Address' ), self.mTempIpAddr, MR_LANG( 'Enter your IP address' ) )
+				self.AddInputControl( E_Input02, MR_LANG( 'Subnet Mask' ), self.mTempSubNet, MR_LANG( 'Enter your subnet mask' ) )
+				self.AddInputControl( E_Input03, MR_LANG( 'Gateway' ), self.mTempGateway, MR_LANG( 'Enter your gateway' ) )
+				self.AddInputControl( E_Input04, MR_LANG( 'DNS' ), self.mTempDns, MR_LANG( 'Enter the DNS server address' ) )
+				self.AddInputControl( E_Input05, MR_LANG( 'Apply Changes') , '', MR_LANG( 'Press the OK button to save settings' ) )
 
 				visibleControlIds = [ E_SpinEx01, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
 				self.SetVisibleControls( visibleControlIds, True )
@@ -539,15 +540,15 @@ class Configure( SettingWindow ) :
 					channelName = MR_LANG( 'None' )
 					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
 
-			self.AddEnumControl( E_SpinEx01, 'Time Mode', None, MR_LANG( 'Desc Time Mode' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Channel' ), channelName, MR_LANG( 'Desc Time Channel' ) )
+			self.AddEnumControl( E_SpinEx01, 'Time Mode', None, MR_LANG( 'Select automatic or manual for the time' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Channel' ), channelName, MR_LANG( 'Select a channel you want to set your time and date by' ) )
 			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
-			self.AddInputControl( E_Input02, MR_LANG( 'Date' ), self.mDate, MR_LANG( 'Desc Time Date' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Date' ), self.mDate, MR_LANG( 'Enter today\'s date' ) )
 			self.mTime = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_HH_MM )
-			self.AddInputControl( E_Input03, MR_LANG( 'Time' ), self.mTime, MR_LANG( 'Desc Time Time' ) )
-			self.AddEnumControl( E_SpinEx02, 'Local Time Offset', None, MR_LANG( 'Desc Time Offset' ) )
-			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, MR_LANG( 'Desc Time Summer Time' ) )
-			self.AddInputControl( E_Input04, MR_LANG( 'Apply Now' ), '', MR_LANG( 'Desc Time Apply Now' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'Time' ), self.mTime, MR_LANG( 'Set the local time' ) )
+			self.AddEnumControl( E_SpinEx02, 'Local Time Offset', None, MR_LANG( 'Select your Time Zone' ) )
+			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, MR_LANG( 'Set Automatic or Manual for Daylight savings' ) )
+			self.AddInputControl( E_Input04, MR_LANG( 'Apply Changes' ), '', MR_LANG( 'Press the OK button to save settings' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03, E_Input04 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -563,8 +564,8 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FORMAT_HDD :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Disk Format Type', None, MR_LANG( 'Desc HDD Format Type' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Format HDD Now' ), '', MR_LANG( 'Desc HDD Format Now' ) )
+			self.AddEnumControl( E_SpinEx01, 'Disk Format Type', None, MR_LANG( 'Select a disk file system format for your hard drive' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Format HDD Now' ), '', MR_LANG( 'Press OK button to format your hard drive' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_Input01 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -579,10 +580,10 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FACTORY_RESET :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Reset Channel List', None, MR_LANG( 'Desc Reset Channel' ) )
-			self.AddEnumControl( E_SpinEx02, 'Reset Favorite Add-ons', None, MR_LANG( 'Desc Reset Favorite' ) )
-			self.AddEnumControl( E_SpinEx03, 'Reset Configure Setting', None, MR_LANG( 'Desc Reset Configure' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Factory Reset Now'), '', MR_LANG( 'Desc Reset Now' ) )
+			self.AddEnumControl( E_SpinEx01, 'Reset Channel List', None, MR_LANG( 'Your Channel List will be restored to default' ) )
+			self.AddEnumControl( E_SpinEx02, 'Reset Favorite Add-ons', None, MR_LANG( 'All your Favorite Add-ons will be restored to default' ) )
+			self.AddEnumControl( E_SpinEx03, 'Reset Configure Setting', None, MR_LANG( 'User Settings will be restored to default after factory reset' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Factory Reset Now'), '', MR_LANG( 'Restore your STB to the factory default settings as above' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -597,10 +598,10 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_ETC :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Deep Standby', None, MR_LANG( 'Desc etc Deep Standby' ) )
-			self.AddEnumControl( E_SpinEx02, 'Fan Control', None, MR_LANG( 'Desc etc Fan Control' ) )
-			self.AddEnumControl( E_SpinEx03, 'Channel Banner Duration', None, MR_LANG( 'Desc etc Channel Banner Duration' ) )		#	Erase channel list yes/no
-			self.AddEnumControl( E_SpinEx04, 'Playback Banner Duration', None, MR_LANG( 'Desc etc Playback Banner Duration' ) )	#	Erase custom menu yes/no
+			self.AddEnumControl( E_SpinEx01, 'Deep Standby', None, MR_LANG( 'Set the STB to deep standby' ) )
+			self.AddEnumControl( E_SpinEx02, 'Fan Control', None, MR_LANG( 'Select the speed of the STB\'s fan' ) )
+			self.AddEnumControl( E_SpinEx03, 'Channel Banner Duration', None, MR_LANG( 'Set the time the channel info is to be displayed when zapping' ) )		#	Erase channel list yes/no
+			self.AddEnumControl( E_SpinEx04, 'Playback Banner Duration', None, MR_LANG( 'Set the time for the playback info to be displayed on the screen' ) )	#	Erase custom menu yes/no
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -779,7 +780,7 @@ class Configure( SettingWindow ) :
 			if dev == None :
 				self.CloseBusyDialog( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Can not found device' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'STB could not find devices' ) )
 				dialog.doModal( )
 				return
 
@@ -787,13 +788,13 @@ class Configure( SettingWindow ) :
 			self.CloseBusyDialog( )
 			dialog = xbmcgui.Dialog( )
 			if apList == None :
-				ret = dialog.select( MR_LANG( 'Select Ap' ), [ MR_LANG( 'No Ap list' ) ] )
+				ret = dialog.select( MR_LANG( 'Select AP' ), [ MR_LANG( 'No AP list' ) ] )
 			else :
 				apNameList = []
 				for ap in apList :
 					apNameList.append( ap[0] + MR_LANG( ' -   quality : %s Encrypt : %s' ) % ( ap[1], ap[2] ) )
 				dialog = xbmcgui.Dialog( )
-				ret = dialog.select( MR_LANG( 'Select Ap' ), apNameList )
+				ret = dialog.select( MR_LANG( 'Select AP' ), apNameList )
 				if ret >= 0 :
 					self.mCurrentSsid = apList[ret][0]
 					self.SetControlLabel2String( E_Input01, self.mCurrentSsid )
@@ -803,14 +804,14 @@ class Configure( SettingWindow ) :
 			self.SetControlLabel2String( E_Input02, self.mHiddenSsid )
 
 		elif aControlId == E_Input03 :
-			self.mPassWord = InputKeyboard( E_INPUT_KEYBOARD_TYPE_HIDE, MR_LANG( 'Enter encryption key' ), self.mPassWord, 30 )
+			self.mPassWord = InputKeyboard( E_INPUT_KEYBOARD_TYPE_HIDE, MR_LANG( 'Enter an encryption key' ), self.mPassWord, 30 )
 			self.SetControlLabel2String( E_Input03, StringToHidden( self.mPassWord ) )
 
 		elif aControlId == E_Input04 :
 			dev = self.mWireless.GetWifidevice( )
 			if apList == None or dev == None :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Can not found Ap or device' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'STB could not find AP or devices' ) )
 				dialog.doModal( )
 				return
 
@@ -823,7 +824,7 @@ class Configure( SettingWindow ) :
 			self.CloseBusyDialog( )
 			if ret1 == False :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'WriteWpaSupplicant write fail' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'STB was unable to save the Wifi configuration' ) )
 			dialog.doModal( )
 
 
