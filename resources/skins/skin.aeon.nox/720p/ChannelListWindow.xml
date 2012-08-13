@@ -461,6 +461,18 @@
 						<font>font12_title</font>
 						<label>$INFO[Control.GetLabel]</label>
 						<description>ch name</description>
+						<visible>substring(Window.Property(Signal),True)</visible>
+					</control>
+					<control type="label">
+						<posx>145</posx>
+						<posy>100</posy>
+						<width>100</width>
+						<height>40</height>
+						<label>No Signal</label>
+						<font>font12_title</font>
+						<align>center</align>
+						<textcolor>white</textcolor>
+						<visible>substring(Window.Property(Signal),False)</visible>
 					</control>
 				</control>
 				<control type="group">

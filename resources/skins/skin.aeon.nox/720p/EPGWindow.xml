@@ -217,6 +217,19 @@
 					<width>350</width>
 					<height>18</height>
 					<font>Font_Reg18</font>
+					<visible>substring(Window.Property(Signal),True)</visible>
+				</control>
+
+				<control type="label">
+					<posx>957</posx>
+					<posy>225</posy>
+					<width>100</width>
+					<height>40</height>
+					<label>No Signal</label>
+					<font>font12_title</font>
+					<align>center</align>
+					<textcolor>white</textcolor>
+					<visible>substring(Window.Property(Signal),False)</visible>
 				</control>
 
 				<control type="group" id="9020">
