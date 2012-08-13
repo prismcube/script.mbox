@@ -94,7 +94,8 @@
 				<width>740</width>
 				<height>30</height>
 				<font>font16caps</font>
-				<label>Configure - $INFO[Container(9000).ListItem.Label]</label>
+				<!--label>Configure - $INFO[Container(9000).ListItem.Label]</label-->
+				<label>Configuration - $INFO[Container(9000).ListItem.Label]</label>				
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>

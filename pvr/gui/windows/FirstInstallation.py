@@ -52,7 +52,7 @@ class FirstInstallation( SettingWindow ) :
 			if self.mStepNum == E_STEP_RESULT :
 				return
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Abort Installation' ), MR_LANG( 'Do you want to exit the first installation?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Abort Installation' ), MR_LANG( 'Do you want to quit the first installation?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -69,7 +69,7 @@ class FirstInstallation( SettingWindow ) :
 			if self.mStepNum == E_STEP_RESULT :
 				return
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Abort Installation' ), MR_LANG( 'Do you want to exit the first installation?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Abort Installation' ), MR_LANG( 'Do you want to quit the first installation?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -103,13 +103,13 @@ class FirstInstallation( SettingWindow ) :
 			else :
 				if groupId == E_Input01 :
 					dialog = xbmcgui.Dialog( )
-					ret = dialog.select( MR_LANG( 'Select a menu language you want to edit' ), self.mMenuLanguageList )
+					ret = dialog.select( MR_LANG( 'Select Menu Language' ), self.mMenuLanguageList )
 					if ret >= 0 :
 						ElisPropertyEnum( 'Language', self.mCommander ).SetPropIndex( ret )
 						self.SetControlLabel2String( E_Input01, self.mMenuLanguageList[ ret ] )
 				elif groupId == E_Input02 :
 					dialog = xbmcgui.Dialog( )
-					ret = dialog.select( MR_LANG( 'Select a audio language you want to edit' ), self.mAudioLanguageList )
+					ret = dialog.select( MR_LANG( 'Select Audio Language' ), self.mAudioLanguageList )
 					if ret >= 0 :
 						ElisPropertyEnum( 'Audio Language', self.mCommander ).SetPropIndex( ret )
 						self.SetControlLabel2String( E_Input02, self.mAudioLanguageList[ ret ] )
@@ -251,15 +251,15 @@ class FirstInstallation( SettingWindow ) :
 					channelName = MR_LANG( 'None' )
 					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
 
-			self.AddEnumControl( E_SpinEx01, 'Time Mode', None, MR_LANG( 'Set automatic or manual for the Time Mode') )
+			self.AddEnumControl( E_SpinEx01, 'Time Mode', None, MR_LANG( 'Set Automatic or Manual for the Time Mode') )
 			self.AddInputControl( E_Input01, MR_LANG( 'Channel' ), channelName, MR_LANG( 'Select a channel you want to set your time by' ) )
 			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
 			self.AddInputControl( E_Input02, MR_LANG( 'Date' ), self.mDate, MR_LANG( 'Enter today\'s date' ) )
 			self.mTime = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_HH_MM )
 			self.AddInputControl( E_Input03, MR_LANG( 'Time' ), self.mTime, MR_LANG( 'Enter the local time' ) )
 			self.AddEnumControl( E_SpinEx02, 'Local Time Offset', None, MR_LANG( 'Select your Time Zone' ) )
-			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, MR_LANG( 'Set automatic or manual for Daylight Savings' ) )
-			self.AddInputControl( E_Input04, MR_LANG( 'Apply Now' ), '', MR_LANG( 'Press the OK button to save settings' ) )
+			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, MR_LANG( 'Set Automatic or Manual for Daylight Savings' ) )
+			self.AddInputControl( E_Input04, MR_LANG( 'Apply Changes' ), '', MR_LANG( 'Press the OK button to save settings' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to Summary of First Installation' ), MR_LANG( 'Go back to Channel Search Setup' ) )
 			self.SetPrevNextButtonLabel( )
 
