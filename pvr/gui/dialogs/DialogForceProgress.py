@@ -57,6 +57,7 @@ class DialogForceProgress( BaseDialog ) :
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowDialogId( ) :
 			if aEvent.getName( ) == self.mEventName :
+				time.sleep( 1 )
 				self.mFinish = True
 
 
