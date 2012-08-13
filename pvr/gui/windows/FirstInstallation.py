@@ -44,7 +44,7 @@ class FirstInstallation( SettingWindow ) :
 			if self.mStepNum == E_STEP_RESULT :
 				return
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Abort installation' ), MR_LANG( 'Do you want to cancel first time installation?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Abort Installation' ), MR_LANG( 'Do you want to exit the first installation?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -61,7 +61,7 @@ class FirstInstallation( SettingWindow ) :
 			if self.mStepNum == E_STEP_RESULT :
 				return
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Abort installation' ), MR_LANG( 'Do you want to cancel first time installation?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Abort Installation' ), MR_LANG( 'Do you want to exit the first installation?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -158,7 +158,7 @@ class FirstInstallation( SettingWindow ) :
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Language Setup' ) )
 			self.AddEnumControl( E_SpinEx01, 'Language', MR_LANG( 'Menu Language' ), MR_LANG( 'Set the language you want the menu to be in' ) )
 			self.AddEnumControl( E_SpinEx02, 'Audio Language', None, MR_LANG( 'Select the language that you wish to listen to' ) )
-			self.AddNextButton( MR_LANG( 'Go to Next' ) )
+			self.AddNextButton( MR_LANG( 'Go to Video & Audio Setup' ) )
 			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02 ]
@@ -178,7 +178,7 @@ class FirstInstallation( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx01, 'Show 4:3', MR_LANG( 'TV Screen Format' ), MR_LANG( 'Select the display format for TV screen' ) )
 			self.AddEnumControl( E_SpinEx02, 'Audio Dolby', None, MR_LANG( 'Set the STB to select the Dolby audio automatically' ) )
 			self.AddEnumControl( E_SpinEx03, 'HDMI Format', None, MR_LANG( 'Set the display\'s HDMI resolution' ) )
-			self.AddPrevNextButton( MR_LANG( 'Go to Next' ), MR_LANG( 'Go to Back' ) )
+			self.AddPrevNextButton( MR_LANG( 'Go to Antenna & Satellite Setup' ), MR_LANG( 'Go back to Language Setup' ) )
 			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
@@ -197,10 +197,10 @@ class FirstInstallation( SettingWindow ) :
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Channel Search Setup' ) )
 			self.LoadFormattedSatelliteNameList( )
 			self.AddUserEnumControl( E_SpinEx01, 'Channel Search', USER_ENUM_LIST_YES_NO, self.mIsChannelSearch, MR_LANG( 'Do you want to scan channels in this installation?' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select the satellite(s) you wish to search from' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select the satellite you wish to search from' ) )
 			self.AddEnumControl( E_SpinEx02, 'Network Search', None, MR_LANG( 'Set your STB to scan channels from multiple TPs' ) )
 			self.AddEnumControl( E_SpinEx03, 'Channel Search Mode', None, MR_LANG( 'Select the type of channel you want to search for' ) )
-			self.AddPrevNextButton( MR_LANG( 'Go to Next' ), MR_LANG( 'Go to Back' ) )
+			self.AddPrevNextButton( MR_LANG( 'Go to Time & Date Setup' ), MR_LANG( 'Go back to Antenna & Satellite Setup' ) )
 			self.SetPrevNextButtonLabel( )
 			
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01 ]
@@ -232,16 +232,16 @@ class FirstInstallation( SettingWindow ) :
 					channelName = MR_LANG( 'None' )
 					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
 
-			self.AddEnumControl( E_SpinEx01, 'Time Mode', None, MR_LANG( 'Select automatic or manual for the Time Mode') )
-			self.AddInputControl( E_Input01, MR_LANG( 'Channel' ), channelName, MR_LANG( 'Select a channel you want to set your time and date by' ) )
+			self.AddEnumControl( E_SpinEx01, 'Time Mode', None, MR_LANG( 'Set automatic or manual for the Time Mode') )
+			self.AddInputControl( E_Input01, MR_LANG( 'Channel' ), channelName, MR_LANG( 'Select a channel you want to set your time by' ) )
 			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
 			self.AddInputControl( E_Input02, MR_LANG( 'Date' ), self.mDate, MR_LANG( 'Enter today\'s date' ) )
 			self.mTime = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_HH_MM )
-			self.AddInputControl( E_Input03, MR_LANG( 'Time' ), self.mTime, MR_LANG( 'Set the local time' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'Time' ), self.mTime, MR_LANG( 'Enter the local time' ) )
 			self.AddEnumControl( E_SpinEx02, 'Local Time Offset', None, MR_LANG( 'Select your Time Zone' ) )
 			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, MR_LANG( 'Set automatic or manual for Daylight Savings' ) )
 			self.AddInputControl( E_Input04, MR_LANG( 'Apply Now' ), '', MR_LANG( 'Press the OK button to save settings' ) )
-			self.AddPrevNextButton( MR_LANG( 'Go to Next' ), MR_LANG( 'Go to Back' ) )
+			self.AddPrevNextButton( MR_LANG( 'Go to Summary of First Installation' ), MR_LANG( 'Go back to Channel Search Setup' ) )
 			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03, E_Input04 ]
@@ -273,9 +273,9 @@ class FirstInstallation( SettingWindow ) :
 						cntChannel = cntChannel + 1
 					elif channel.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 						cntRadio = cntRadio + 1
-			self.AddInputControl( E_Input04, MR_LANG( 'Number of your TV Channels' ), '%d' % cntChannel )
-			self.AddInputControl( E_Input05, MR_LANG( 'Number of your Radio Channels' ), '%d' % cntRadio )
-			self.AddPrevNextButton( MR_LANG( 'Exit' ), MR_LANG( 'Go to Back' ) )
+			self.AddInputControl( E_Input04, MR_LANG( 'Number of your TV Channels' ), '%d' % cntChannel, MR_LANG( 'First Installation can be summarized as follows :' ) )
+			self.AddInputControl( E_Input05, MR_LANG( 'Number of your Radio Channels' ), '%d' % cntRadio, MR_LANG( 'First Installation can be summarized as follows :' ) )
+			self.AddPrevNextButton( MR_LANG( 'Return to the Installation page' ), MR_LANG( 'Go back to Time & Date Setup' ) )
 			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
@@ -336,7 +336,7 @@ class FirstInstallation( SettingWindow ) :
 	def ChannelSearchConfig( self, aControlId ) :
 		if aControlId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
-			select =  dialog.select( MR_LANG( 'Select a satellite you want to scan channels' ), self.mFormattedList )
+			select =  dialog.select( MR_LANG( 'Select Satellite' ), self.mFormattedList )
 			if select >= 0 and select != self.mSatelliteIndex :
 				self.mSatelliteIndex = select
 			self.SetControlLabel2String( E_Input01, self.mFormattedList[ self.mSatelliteIndex ] )
@@ -358,7 +358,7 @@ class FirstInstallation( SettingWindow ) :
 						dialog.doModal( )
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Has No Configurd Satellite' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is no configured satellite in the list' ) )
 					dialog.doModal( )
 
 				self.setFocusId( E_FAKE_BUTTON )
