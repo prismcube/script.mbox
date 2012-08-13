@@ -94,7 +94,7 @@ class EditTransponder( SettingWindow ) :
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Satellite has no transponder info.\nFirst add new transponder' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No transponder info is available for the satellite.\nFirst add a new transponder' ) )
 				dialog.doModal( )
 
 		# Add Transponder

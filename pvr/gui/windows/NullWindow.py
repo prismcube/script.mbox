@@ -214,8 +214,8 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_RECORD :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_PVR :
-				msg = 'Now PVR Playing...'
-				xbmcgui.Dialog( ).ok('Warning', msg )
+				msg = 'Now Personal Video Recording mode is on'
+				xbmcgui.Dialog( ).ok('WARNING', msg )
 			else :
 				self.ShowRecordingStartDialog( )
 		

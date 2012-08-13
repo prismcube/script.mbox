@@ -817,7 +817,7 @@ class LivePlate( BaseWindow ) :
 				RecordConflict( dialog.GetConflictTimer( ) )
 
 		else :
-			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'You are already recordings 2 programmes' ) )
+			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'You are already recording 2 programmes' ) )
 
 		if isOK :
 			self.mDataCache.mCacheReload = True
@@ -1040,7 +1040,7 @@ class LivePlate( BaseWindow ) :
 				self.StopAutomaticHide( )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
-			dialog.SetTitleLabel( 'Input Pincode' )
+			dialog.SetTitleLabel( 'Enter a PIN code' )
 			dialog.doModal( )
 
 			if dialog.GetNextAction( ) == dialog.E_TUNE_NEXT_CHANNEL :
