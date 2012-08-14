@@ -369,7 +369,6 @@ class ArchiveWindow( BaseWindow ) :
 			recItem.setProperty( 'Locked', 'False' )
 			thumbnaillist = []
 			thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % aRecordInfo.mRecordKey ) )
-			print 'dhkim test thubnaillist = %s' % thumbnaillist
 			if len( thumbnaillist ) > 0 :
 				recItem.setProperty( 'RecIcon', thumbnaillist[0] )
 			else :
@@ -389,7 +388,6 @@ class ArchiveWindow( BaseWindow ) :
 		recItem = self.mRecordListItems[ listindex ]
 		thumbnaillist = []
 		thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % aRecordKey ) )
-		print 'dhkim test thubnaillist = %s' % thumbnaillist
 		if len( thumbnaillist ) > 0 :
 			recItem.setProperty( 'RecIcon', thumbnaillist[0] )
 		else :
@@ -780,11 +778,11 @@ class ArchiveWindow( BaseWindow ) :
 					self.mRecordList[ position ].mLocked = False
 					self.mDataCache.Record_SetLock( self.mRecordList[ position ].mRecordKey, self.mServiceType, False )
 					recItem.setProperty( 'Locked', 'False' )
-					thumbnail = '/mnt/hdd0/pvr/thumbnail/record_thumbnail_%d.jpg' % self.mRecordList[ position ].mRecordKey
-					
-					if os.path.exists( thumbnail ) == True :
-						recItem.setProperty( 'RecIcon', thumbnail )
-					else:
+					thumbnaillist = []
+					thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % self.mRecordList[ position ].mRecordKey ) )
+					if len( thumbnaillist ) > 0 :
+						recItem.setProperty( 'RecIcon', thumbnaillist[0] )
+					else :
 						recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
 
 			self.DoClearMark( )

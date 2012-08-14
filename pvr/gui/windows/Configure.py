@@ -657,7 +657,7 @@ class Configure( SettingWindow ) :
 				self.SetEnableControl( E_SpinEx01, False )
 				self.SetEnableControl( E_Input01, False )
 			else :
-				selectedIndex = self.GetSelectedIndex( E_SpinEx01 )
+				selectedIndex = ElisPropertyEnum( 'Time Mode', self.mCommander ).GetPropIndex( )
 				if selectedIndex == TIME_AUTOMATIC :
 					self.SetEnableControl( E_Input02, False )
 					self.SetEnableControl( E_Input03, False )
