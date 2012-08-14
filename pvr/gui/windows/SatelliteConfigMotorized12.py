@@ -221,7 +221,7 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 
 		self.AddInputControl( E_Input04, MR_LANG( 'Rotate Satellite Dish' ), '' )
 		self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Position Limit' ), E_LIST_MOTORIZE_ACTION, 0 )
-		self.AddInputControl( E_Input05, MR_LANG( ' - Apply Changes' ), '' )
+		self.AddInputControl( E_Input05, MR_LANG( ' - Set Position Limit' ), '' )
 		self.AddInputControl( E_Input06, MR_LANG( 'Store Position and Exit' ), '' )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
