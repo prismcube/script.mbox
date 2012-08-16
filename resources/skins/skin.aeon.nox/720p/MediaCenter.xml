@@ -63,49 +63,42 @@
 				<content>
 					<item id="1">
 						<label>Weather</label>
-						<!--label2>Desc Weather</label2-->
-						<label2>Get current weather and a four day forcast for thousands of cities around the world</label2>
+						<label2>Get current weather and a four day forecast for thousands of cities around the world</label2>
 						<onclick>ActivateWindow(Weather)</onclick>
 						<icon>special://skin/backgrounds/weather.jpg</icon>
 					</item>
 					<item id="2">
 						<label>Picture</label>
-						<!--label2>Desc Picture</label2-->
 						<label2>View your pictures as a slideshow with nice transition effects</label2>
 						<onclick>ActivateWindow(Pictures)</onclick>
 						<icon>special://skin/backgrounds/pictures.jpg</icon>
 					</item>
 					<item id="3">
 						<label>Music</label>
-						<!--label2>Desc Music</label2-->
 						<label2>Organize your music collection by information stored in your music file ID tag, like title, artist, album, genre and popularity</label2>
 						<onclick>ActivateWindow(Music)</onclick>
 						<icon>special://skin/backgrounds/music.jpg</icon>
 					</item>
 					<item id="4">
 						<label>Video</label>
-						<!--label2>Desc Video</label2-->
 						<label2>Organize your video content by information associated with the video files</label2>	
 						<onclick>ActivateWindow(Videos)</onclick>
 						<icon>special://skin/backgrounds/videos.jpg</icon>
 					</item>
 					<item id="5">
 						<label>Programs</label>
-						<!--label2>Desc Programs</label2-->
 						<label2>Add-ons are packages that add features and functions not normally included with the XBMC Media Center</label2>
 						<onclick>ActivateWindow(Programs,Addons,return)</onclick>
 						<icon>special://skin/backgrounds/programs.jpg</icon>
 					</item>
 					<item id="6">
 						<label>Settings</label>
-						<!--label2>Desc Settings</label2-->
 						<label2>Most of the Media Center's settings can be configured via the GUI under Settings</label2>
 						<onclick>ActivateWindow(Settings)</onclick>
 						<icon>special://skin/backgrounds/system.jpg</icon>
 					</item>
 					<item id="7">
 						<label>File Manager</label>
-						<!--label2>Desc File Manager</label2-->
 						<label2>The File Manager lets you transfer, copy, delete and rename files and folders on your hard drive, FTP-shares, etc</label2>
 						<onclick>ActivateWindow(FileManager)</onclick>
 						<icon>special://skin/backgrounds/play_disc.jpg</icon>
@@ -119,7 +112,6 @@
 					</item>
 					<item id="9">
 						<label>System Info</label>
-						<!--label2>Desc System Info</label2-->
 						<label2>System Info allows you to see your system status</label2>
 						<onclick>ActivateWindow(SystemInfo)</onclick>
 						<icon>special://skin/backgrounds/systeminfo.jpg</icon>
