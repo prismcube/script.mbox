@@ -15,27 +15,29 @@ class SatelliteConfigOnecable( SettingWindow ) :
 		
 		self.SetSettingWindowLabel( MR_LANG( 'OneCable Configuration' ) )
 		self.LoadNoSignalState( )
-		self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'OneCable configuration' ) )
+#		self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'OneCable configuration' ) )
 
 		self.LoadConfigedSatellite( )
 		self.mCurrentSatellite = self.mTunerMgr.GetConfiguredSatellitebyIndex( 0 )
 		
-		self.AddInputControl( E_Input01, MR_LANG( 'Configure System' ), '' )
+		self.AddInputControl( E_Input01, MR_LANG( 'Configure System' ), '', MR_LANG( 'Configure the initial settings for OneCable' ) )
 		
 		listitem = []
 		for i in range( MAX_SATELLITE_CNT_ONECABLE ) :
 			listitem.append( '%d' % ( i + 1 ) )
 
-		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Number of Satellite' ), listitem, 0 )
+		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Number of Satellite' ), listitem, 0, MR_LANG( 'Set number of satellite for OneCable' ) )
 
 		startId = E_Input02
 		for i in range( MAX_SATELLITE_CNT_ONECABLE ) :
-			self.AddInputControl( startId, MR_LANG( 'Satellite %d' ) % ( i + 1 ), self.mSatelliteNamelist[i] )
+			self.AddInputControl( startId, MR_LANG( 'Satellite %d' ) % ( i + 1 ), self.mSatelliteNamelist[i], MR_LANG( 'Satellite #%d' ) % (i + 1) )
 			startId += 100
 
 		self.InitControl( )
 		self.getControl( E_SpinEx01 + 3 ).selectItem( self.mSatelliteCount - 1 )
 		self.DisableControl( )
+		self.mInitialized = True
+		self.setDefaultControl( )
 
 
 	def onAction( self, aAction ) :
@@ -100,7 +102,11 @@ class SatelliteConfigOnecable( SettingWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		pass
+		if self.mInitialized == False :
+			return
+		if self.mLastFocused != aControlId :
+			self.ShowDescription( aControlId )
+			self.mLastFocused = aControlId
 
 
 	def DisableControl( self ) : 
