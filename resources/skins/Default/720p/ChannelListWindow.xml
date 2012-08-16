@@ -377,15 +377,26 @@
 					<visible>substring(Window.Property(Signal),True)</visible>
 				</control>
 				<control type="label">
-					<posx>120</posx>
+					<posx>110</posx>
 					<posy>120</posy>
-					<width>100</width>
+					<width>120</width>
 					<height>40</height>
-					<label>No Signal</label>
+					<label>[I]No Signal [/I]</label>
 					<font>font12_title</font>
 					<align>center</align>
-					<textcolor>white</textcolor>
+					<textcolor>grey2</textcolor>
 					<visible>substring(Window.Property(Signal),False)</visible>
+				</control>
+				<control type="label">
+					<posx>110</posx>
+					<posy>120</posy>
+					<width>120</width>
+					<height>40</height>
+					<label>[I]Scrambled [/I]</label>
+					<font>font12_title</font>
+					<align>center</align>
+					<textcolor>grey2</textcolor>
+					<visible>substring(Window.Property(Signal),Scramble)</visible>
 				</control>
 			</control>
 			<control type="group">

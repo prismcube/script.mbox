@@ -535,7 +535,7 @@ class Configure( SettingWindow ) :
 				channelName = self.mSetupChannel.mName
 			else :
 				channelList = self.mDataCache.Channel_GetList( )
-				if channelList and len( channelList ) > 0 :
+				if channelList :
 					self.mSetupChannel = channelList[0]
 					channelName = self.mSetupChannel.mName
 				else :

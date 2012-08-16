@@ -17,7 +17,7 @@ class RootWindow( BaseWindow ) :
 				self.mCommander.AppHBBTV_Ready( 0 )
 			self.UpdateVolume( )
 			self.SendLocalOffsetToXBMC( )
-			
+
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).doModal( )
 			
 			"""
@@ -69,14 +69,17 @@ class RootWindow( BaseWindow ) :
 
 			self.AlarmDialog(msg1, msg2)
 			"""
-		elif aEvent.getName( ) == ElisEventTuningStatus.getName( ) :
-			LOG_TRACE( 'No signal test TunerNo[%s] locked[%s]' % ( aEvent.mTunerNo, aEvent.mIsLocked ) )
-			if aEvent.mIsLocked :
-				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).setProperty( 'Signal', 'True' )
-				self.mDataCache.SetLockedState( True )
-			else :
+
+		elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
+			if aEvent.mStatus == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).setProperty( 'Signal', 'Scramble' )
+				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL )
+			elif aEvent.mStatus == ElisEnum.E_CC_FAILED_NO_SIGNAL :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).setProperty( 'Signal', 'False' )
-				self.mDataCache.SetLockedState( False )
+				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_NO_SIGNAL )
+			else :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).setProperty( 'Signal', 'True' )
+				self.mDataCache.SetLockedState( ElisEnum.E_CC_SUCCESS )
 
 
 	def GetRecordingInfo( self ) :
