@@ -171,7 +171,7 @@ class FirstInstallation( SettingWindow ) :
 		self.ResetAllControl( )
 		self.mStepNum = aStep
 		self.DrawFirstTimeInstallationStep( self.mStepNum )
-
+		
 		if self.mStepNum == E_STEP_SELECT_LANGUAGE :
 			self.mPrevStepNum = E_STEP_SELECT_LANGUAGE
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Language Setup' ) )
@@ -236,6 +236,7 @@ class FirstInstallation( SettingWindow ) :
 		elif self.mStepNum == E_STEP_DATE_TIME :
 			self.mPrevStepNum = E_STEP_CHANNEL_SEARCH_CONFIG
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Time & Date Setup' ) )
+			
 			setupChannelNumber = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
 			self.mSetupChannel = self.mDataCache.Channel_GetByNumber( setupChannelNumber )
 			self.mHasChannel = True
@@ -270,6 +271,7 @@ class FirstInstallation( SettingWindow ) :
 			hideControlIds = [ E_Input05 ]
 			self.SetVisibleControls( hideControlIds, False )
 			self.InitControl( )
+			time.sleep( 0.2 )
 			self.DisableControl( self.mStepNum )
 			self.setDefaultControl( )
 			
@@ -283,15 +285,12 @@ class FirstInstallation( SettingWindow ) :
 			self.AddInputControl( E_Input02, MR_LANG( 'Date' ), self.mDate, MR_LANG( 'First Installation can be summarized as follows :' ) )
 			self.mTime = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_HH_MM )
 			self.AddInputControl( E_Input03, MR_LANG( 'Time' ), self.mTime, MR_LANG( 'First Installation can be summarized as follows :' ) )
-			channelList = self.mDataCache.Channel_GetList( )
-			cntChannel = 0
-			cntRadio = 0
-			if channelList and channelList[0].mError == 0 :
-				for channel in channelList :
-					if channel.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
-						cntChannel = cntChannel + 1
-					elif channel.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
-						cntRadio = cntRadio + 1
+			cntChannel = self.mDataCache.Channel_GetCount( ElisEnum.E_SERVICE_TYPE_TV )
+			cntRadio = self.mDataCache.Channel_GetCount( ElisEnum.E_SERVICE_TYPE_RADIO )
+			if cntChannel == None :
+				cntChannel = 0
+			if cntRadio == None :
+				cntRadio = 0
 			self.AddInputControl( E_Input04, MR_LANG( 'Number of your TV Channels' ), '%d' % cntChannel, MR_LANG( 'First Installation can be summarized as follows :' ) )
 			self.AddInputControl( E_Input05, MR_LANG( 'Number of your Radio Channels' ), '%d' % cntRadio, MR_LANG( 'First Installation can be summarized as follows :' ) )
 			self.AddPrevNextButton( MR_LANG( 'Return to the Installation page' ), MR_LANG( 'Go back to Time & Date Setup' ) )
@@ -330,7 +329,7 @@ class FirstInstallation( SettingWindow ) :
 				self.SetEnableControl( E_SpinEx01, False )
 				self.SetEnableControl( E_Input01, False )
 			else :
-				selectedIndex = ElisPropertyEnum( 'Time Mode', self.mCommander ).GetPropIndex( )
+				selectedIndex = self.GetSelectedIndex( E_SpinEx01 )
 				if selectedIndex == TIME_AUTOMATIC :
 					self.SetEnableControl( E_Input02, False )
 					self.SetEnableControl( E_Input03, False )

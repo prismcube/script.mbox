@@ -300,11 +300,11 @@ class SettingDialog( BaseDialog ) :
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 					control = self.getControl( ctrlItem.mControlId + 3 )
-					time.sleep( 0.2 )
+					time.sleep( 0.02 )
 					return control.getSelectedPosition( )
 				elif ctrlItem.mControlType == ctrlItem.E_SETTING_LIST_CONTROL :
 					control = self.getControl( ctrlItem.mControlId + 2 )
-					time.sleep( 0.2 )
+					time.sleep( 0.02 )
 					return control.getSelectedPosition( )
 
 		return -1
@@ -478,7 +478,7 @@ class SettingDialog( BaseDialog ) :
 			if self.HasControlItem( ctrlItem, self.mFocusId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL :
 					control = self.getControl( ctrlItem.mControlId + 3 )
-					time.sleep( 0.2 )
+					time.sleep( 0.02 )
 					ctrlItem.mProperty.SetPropIndex( control.getSelectedPosition( ) )
 					return True
 					

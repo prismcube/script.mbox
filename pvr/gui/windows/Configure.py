@@ -395,6 +395,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
+			time.sleep( 0.2 )
 			self.DisableControl( E_LANGUAGE )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
@@ -414,6 +415,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
+			time.sleep( 0.2 )
 			self.DisableControl( E_PARENTAL )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
@@ -493,6 +495,7 @@ class Configure( SettingWindow ) :
 				self.SetVisibleControls( hideControlIds, False )
 				
 				self.InitControl( )
+				time.sleep( 0.2 )
 				self.DisableControl( E_WIFI )
 				self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 
@@ -516,6 +519,7 @@ class Configure( SettingWindow ) :
 				self.SetVisibleControls( hideControlIds, False )
 				
 				self.InitControl( )
+				time.sleep( 0.2 )
 				self.DisableControl( E_ETHERNET )
 				self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 
@@ -557,6 +561,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
+			time.sleep( 0.2 )
 			self.DisableControl( E_TIME_SETTING )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )	
 			return
@@ -657,7 +662,7 @@ class Configure( SettingWindow ) :
 				self.SetEnableControl( E_SpinEx01, False )
 				self.SetEnableControl( E_Input01, False )
 			else :
-				selectedIndex = ElisPropertyEnum( 'Time Mode', self.mCommander ).GetPropIndex( )
+				selectedIndex = self.GetSelectedIndex( E_SpinEx01 )
 				if selectedIndex == TIME_AUTOMATIC :
 					self.SetEnableControl( E_Input02, False )
 					self.SetEnableControl( E_Input03, False )

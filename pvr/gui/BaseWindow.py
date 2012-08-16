@@ -520,7 +520,7 @@ class SettingWindow( BaseWindow ) :
 			if self.HasControlItem( ctrlItem, self.mFocusId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL :
 					control = self.getControl( ctrlItem.mControlId + 3 )
-					time.sleep( 0.2 )
+					time.sleep( 0.02 )
 					ctrlItem.mProperty.SetPropIndex( control.getSelectedPosition( ) )
 					return True
 					
