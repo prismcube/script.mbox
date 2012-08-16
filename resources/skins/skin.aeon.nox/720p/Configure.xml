@@ -72,7 +72,7 @@
 				<width>740</width>
 				<height>30</height>
 				<font>Font_ShowcaseMainLabel2_Caps</font>
-				<label>Configure - $INFO[Container(9000).ListItem.Label]</label>
+				<label>Configuration - $INFO[Container(9000).ListItem.Label]</label>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>

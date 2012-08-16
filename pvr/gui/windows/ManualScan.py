@@ -250,7 +250,7 @@ class ManualScan( SettingWindow ) :
 		
 		self.AddEnumControl( E_SpinEx05, 'Network Search', None, MR_LANG( 'Set your STB to scan channels from multiple TPs' ) )
 		self.AddEnumControl( E_SpinEx06, 'Channel Search Mode', None, MR_LANG( 'Select the type of channels you want to search for' ) )
-		self.AddInputControl( E_Input04, MR_LANG( 'Search Now' ), '', MR_LANG( 'Perform a manual channel search' ) )
+		self.AddInputControl( E_Input04, MR_LANG( 'Search Now' ), '', MR_LANG( 'Press the OK button to search channels' ) )
 
 		self.InitControl( )
 		self.DisableControl( )

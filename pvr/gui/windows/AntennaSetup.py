@@ -19,7 +19,7 @@ class AntennaSetup( SettingWindow ) :
 
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No satellite information is available. Please reset your STB' )	)
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please reset your STB\nNo satellite information is available' )	)
 			dialog.doModal( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
@@ -35,9 +35,9 @@ class AntennaSetup( SettingWindow ) :
 			self.mTunerMgr.Load( )
 			self.mTunerMgr.SetNeedLoad( False )
 
-		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', None, MR_LANG( 'Select Separated if linked to separately to satellites' ) )
-		self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', None, MR_LANG( 'Set how Tuner 2 gets its digital signal' ) )
-		self.AddEnumControl( E_SpinEx03, 'Tuner1 Type', None, MR_LANG( 'Select a digital control method for Tuner 1' ) )
+		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', MR_LANG( 'Tuner 2 Connection' ), MR_LANG( 'Select Separated if linked to separately to satellites' ) )
+		self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', MR_LANG( 'Tuner 2 Signal' ), MR_LANG( 'Set how Tuner 2 gets its digital signal' ) )
+		self.AddEnumControl( E_SpinEx03, 'Tuner1 Type', MR_LANG( 'Tuner 1 Control' ), MR_LANG( 'Select a digital control method for Tuner 1' ) )
 		self.AddInputControl( E_Input01, MR_LANG( ' - Tuner 1 Configuration' ), '', MR_LANG( 'You can add, delete or configure satellites here' ) )
 		self.AddEnumControl( E_SpinEx04, 'Tuner2 Type', None, MR_LANG( 'Select a digital control method for Tuner 2' ) )
 		self.AddInputControl( E_Input02, MR_LANG( ' - Tuner 2 Configuration' ), '', MR_LANG( 'You can add, delete or configure satellites here' ) )

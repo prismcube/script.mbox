@@ -41,7 +41,7 @@
 				<posy>60</posy>
 				<width>560</width>
 				<height>30</height>
-				<align>left</align>
+				<align>center</align>
 				<aligny>center</aligny>
 				<font>font13</font>
 			</control>
@@ -51,7 +51,8 @@
 				<posy>90</posy>
 				<width>560</width>
 				<height>30</height>
-				<align>left</align>
+				<!--align>left</align-->
+				<align>center</align>				
 				<aligny>center</aligny>
 				<font>font13</font>
 			</control>
@@ -61,7 +62,8 @@
 				<posy>120</posy>
 				<width>560</width>
 				<height>30</height>
-				<align>left</align>
+				<!--align>left</align-->
+				<align>center</align>	
 				<aligny>center</aligny>
 				<font>font13</font>
 			</control>
