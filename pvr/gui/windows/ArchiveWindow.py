@@ -659,7 +659,7 @@ class ArchiveWindow( BaseWindow ) :
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 #			dialog.SetDialogProperty( 'Confirm', 'Do you want to delete record(s)?' )
-			dialog.SetDialogProperty( MR_LANG( 'Delete Record' ), MR_LANG( 'Do you want to remove this recording?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Delete Record' ), MR_LANG( 'Do you want to delete this recording?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -676,7 +676,7 @@ class ArchiveWindow( BaseWindow ) :
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 #		dialog.SetDialogProperty( 'Confirm', 'Do you want to delete all records?' )
-		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU REALLY WANT TO REMOVE ALL YOUR RECORDINGS?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU REALLY WANT TO DELETE ALL YOUR RECORDINGS?' ) )
 		dialog.doModal( )
 
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :

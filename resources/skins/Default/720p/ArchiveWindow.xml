@@ -273,15 +273,26 @@
 				<visible>substring(Window.Property(ViewMode),common)</visible>
 			</control>
 			<control type="label">
-				<posx>120</posx>
-				<posy>-80</posy>
-				<width>100</width>
+				<posx>113</posx>
+				<posy>-82</posy>
+				<width>120</width>
 				<height>40</height>
-				<label>No Signal</label>
+				<label>[I]No Signal [/I]</label>
 				<font>font12_title</font>
 				<align>center</align>
-				<textcolor>white</textcolor>
+				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(ViewMode),common) + substring(Window.Property(Signal),False)</visible>
+			</control>
+			<control type="label">
+				<posx>113</posx>
+				<posy>-82</posy>
+				<width>120</width>
+				<height>40</height>
+				<label>[I]Scrambled [/I]</label>
+				<font>font12_title</font>
+				<align>center</align>
+				<textcolor>grey2</textcolor>
+				<visible>substring(Window.Property(ViewMode),common) + substring(Window.Property(Signal),Scramble)</visible>
 			</control>
 		</control>
 

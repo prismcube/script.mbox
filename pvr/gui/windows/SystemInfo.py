@@ -161,7 +161,7 @@ class SystemInfo( SettingWindow ) :
 				self.SetVisibleControl( visibleControlIds[i], True )			
 
 			self.mCtrlVersionProductName.setLabel(		MR_LANG( 'Product Name : %s' ) % PRODUCT_NAME )
-			self.mCtrlVersionProductNymber.setLabel(	MR_LANG( 'Product Nunber : %s' ) % PRODUCT_NUMBER )
+			self.mCtrlVersionProductNymber.setLabel(	MR_LANG( 'Product Number : %s' ) % PRODUCT_NUMBER )
 			self.mCtrlVersionHardware.setLabel( 		MR_LANG( 'Hardware Version : %s' ) % HARDWARE_VERSION )
 			self.mCtrlVersionSoftware.setLabel(			MR_LANG( 'Software Version : %s' ) % SOFTWARE_VERSION )
 			self.mCtrlVersionBootloader.setLabel(		MR_LANG( 'Bootloader Version : %s' ) % BOOTLOADER_VERSION )

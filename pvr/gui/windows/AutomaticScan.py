@@ -30,7 +30,7 @@ class AutomaticScan( SettingWindow ) :
 			self.SetFocusControl( E_Input01 )
 		else :
 			self.SetVisibleControls( hideControlIds, False )
-			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Has no configured satellite' ) )
+			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite is available' ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is no configured satellite in the list' ) )
 			dialog.doModal( )
@@ -110,12 +110,12 @@ class AutomaticScan( SettingWindow ) :
 		if count <= 1 :
 			hideControlIds = [ E_Input01, E_SpinEx01, E_SpinEx02, E_Input02 ]
 			self.SetVisibleControls( hideControlIds, False )
-			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Has no configured satellite' ) )
+			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite is available' ) )
 		else :
 			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[self.mSatelliteIndex], MR_LANG( 'Select satellites you wish to search from' ) )
 			self.AddEnumControl( E_SpinEx01, 'Network Search', None, MR_LANG( 'Set your STB to scan channels from multiple TPs' ) )
 			self.AddEnumControl( E_SpinEx02, 'Channel Search Mode', None, MR_LANG( 'Select the type of channels you want to search for' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Search Now' ), '', MR_LANG( 'Perform an automatic channel search' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Search Now' ), '', MR_LANG( 'Press the OK button to search channels' ) )
 			self.InitControl( )
 
 	

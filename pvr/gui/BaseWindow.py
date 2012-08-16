@@ -2,6 +2,7 @@ from pvr.gui.GuiConfig import *
 from decorator import decorator
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
+from ElisEnum import ElisEnum
 import pvr.DataCacheMgr
 import pvr.TunerConfigMgr 
 from pvr.Util import RunThread, GuiLock, GuiLock2 
@@ -149,10 +150,12 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def LoadNoSignalState( self ) :
-		if self.mDataCache.GetLockedState( ) == True :
-			self.setProperty('Signal', 'True')
-		else :
+		if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
+			self.setProperty('Signal', 'Scramble')
+		elif self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
 			self.setProperty('Signal', 'False')
+		else :
+			self.setProperty('Signal', 'True')
 
 
 	#@GuiLock

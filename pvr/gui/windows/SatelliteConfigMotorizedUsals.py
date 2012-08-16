@@ -16,14 +16,16 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
-		self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'USALS configuration : Tuner %s' ) % ( self.tunerIndex + 1 ) )
+#		self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'USALS configuration : Tuner %s' ) % ( self.tunerIndex + 1 ) )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Motorized Configuration' ) )
 		self.LoadNoSignalState( )
-
+		   
 		self.GetLongitude( )
 		self.GetLatitude( )
 		self.InitConfig( )
+		self.mInitialized = True
+		self.setDefaultControl( )
 
 
 	def onAction( self, aAction ) :
@@ -102,23 +104,27 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TUNER_CONFIGURATION )
 
 
-	def onFocus( self, controlId ) :
-		pass
-
+	def onFocus( self, aControlId ) :
+	     	if self.mInitialized == False :
+			return
+		if self.mLastFocused != aControlId :
+			self.ShowDescription( aControlId )
+			self.mLastFocused = aControlId
+			
 
 	def InitConfig( self ) :
 		self.ResetAllControl( )
 
-		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'My Longitude Direction' ), E_LIST_MY_LONGITUDE, self.mIsWest )
+		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'My Longitude Direction' ), E_LIST_MY_LONGITUDE, self.mIsWest, MR_LANG( 'Set east or west for the longitude direction' ) )
 		tmplongitude = '%03d.%d' % ( ( self.mLongitude / 10 ), self.mLongitude % 10 )
-		self.AddInputControl( E_Input01, MR_LANG( 'My Longitude Angle' ),  tmplongitude)
+		self.AddInputControl( E_Input01, MR_LANG( 'My Longitude Angle' ), tmplongitude, MR_LANG( 'Enter your longitude angle' ) )
 		
-		self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'My Latitude Direction' ), E_LIST_MY_LATITUDE, self.mIsSouth )
+		self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'My Latitude Direction' ), E_LIST_MY_LATITUDE, self.mIsSouth, MR_LANG( 'Set north or south for the latitude direction' ) )
 		tmplatitude = '%03d.%d' % ( ( self.mLatitude / 10 ), self.mLatitude % 10 )
-		self.AddInputControl( E_Input02, MR_LANG( 'My Latitude Angle' ),  tmplatitude)
+		self.AddInputControl( E_Input02, MR_LANG( 'My Latitude Angle' ), tmplatitude, MR_LANG( 'Enter your latitude angle' ) )
 		
-		self.AddInputControl( E_Input03, MR_LANG( 'Reference Position to Null' ), '' )
-		self.AddInputControl( E_Input04, MR_LANG( 'Edit Satellite' ), '' )
+		self.AddInputControl( E_Input03, MR_LANG( 'Reference Position to Null' ), '', MR_LANG( 'Set the reference position to null' ) )
+		self.AddInputControl( E_Input04, MR_LANG( 'Edit Satellite' ), '', MR_LANG( 'Here you can setup satellites for Motorized USALS' ) )
 
 		self.InitControl( )
 
