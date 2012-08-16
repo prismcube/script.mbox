@@ -84,7 +84,7 @@ class MainMenu( BaseWindow ) :
 			if self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
 				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Attention', 'Now recording in progress...' )
+				dialog.SetDialogProperty( 'Attention', 'Please stop the recording first' )
 				dialog.doModal( )
 				self.getControl( MAIN_GROUP_ID ).setVisible( True )
 
