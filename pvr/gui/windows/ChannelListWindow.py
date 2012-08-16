@@ -464,7 +464,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		#ask save question
 		head =  MR_LANG( 'WARNING' )
-		line1 = MR_LANG( 'DO YOU REALLY WANT TO REMOVE ALL YOUR CHANNELS?' )
+		line1 = MR_LANG( 'DO YOU REALLY WANT TO DELETE\nALL YOUR CHANNELS?' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 		dialog.SetDialogProperty( head, line1 )
@@ -1042,13 +1042,18 @@ class ChannelListWindow( BaseWindow ) :
 				label1 = EnumToString( 'mode', self.mUserMode.mMode )
 				label2 = self.mCtrlListSubmenu.getSelectedItem( ).getLabel( )
 
-				head =  MR_LANG( 'Setting - to change zapping mode' )
-				line1 = '%s / %s'% ( label1.title( ), label2.title( ) )
-				line2 = MR_LANG( 'Do you want to save channels?' )
-				posLine = abs( 100 - len( line1 ) )
+#				head =  MR_LANG( 'Setting - to change zapping mode' )
+#				line1 = '%s / %s'% ( label1.title( ), label2.title( ) )
+#				line2 = MR_LANG( 'Do you want to save the channel list?' )
+#				posLine = abs( 100 - len( line1 ) )
+
+				head = MR_LANG( 'Save Zapping Mode' )
+				line1 = MR_LANG( 'Do you want to save the channel list?' )
+				line2 = '- %s / %s'% ( label1.lower( ), label2.lower( ) )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( head, str( '%s\n\n%s'% ( line1.center( posLine ), line2 ) ) )
+#				dialog.SetDialogProperty( head, str( '%s\n\n%s'% ( line1.center( posLine ), line2 ) ) )
+				dialog.SetDialogProperty( head, str( '%s\n\n%s' % ( line1, line2 ) ) )
 				dialog.doModal( )
 
 				answer = dialog.IsOK( )
@@ -1209,7 +1214,7 @@ class ChannelListWindow( BaseWindow ) :
 		else :
 			#opt btn visible
 			#self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, True )
-			self.UpdateControlGUI( E_SETTING_MINI_TITLE, MR_LANG( 'Channel Edit' ) )
+			self.UpdateControlGUI( E_SETTING_MINI_TITLE, MR_LANG( 'Edit Channel List' ) )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV, False, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO, False, E_TAG_ENABLE )
 			self.UpdatePropertyGUI( E_XML_PROPERTY_EDITINFO, E_TAG_TRUE )
@@ -2135,7 +2140,7 @@ class ChannelListWindow( BaseWindow ) :
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			if isRunRec > 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Now recording in progress...' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Please stop the recording first' ) )
 	 			dialog.doModal( )
 
 	 		else :
