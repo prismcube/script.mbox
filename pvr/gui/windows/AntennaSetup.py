@@ -48,6 +48,7 @@ class AntennaSetup( SettingWindow ) :
 			self.getControl( E_FIRST_TIME_INSTALLATION_PREV_LABEL ).setLabel( MR_LANG( 'Previous' ) )
 		self.setVisibleButton( )
 		self.InitControl( )
+		time.sleep( 0.2 )
 		self.DisableControl( )
 		self.mInitialized = True
 		self.setDefaultControl( )
