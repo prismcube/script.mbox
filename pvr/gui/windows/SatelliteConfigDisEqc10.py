@@ -153,7 +153,7 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 
 
 	def onFocus( self, aControlId ):
-	     	if self.mInitialized == False :
+		if self.mInitialized == False :
 			return
 		if self.mLastFocused != aControlId :
 			self.ShowDescription( aControlId )
