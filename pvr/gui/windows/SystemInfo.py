@@ -28,7 +28,7 @@ class SystemInfo( SettingWindow ) :
 		self.mCtrlLeftGroup 			= None
 
 		self.mCtrlVersionProductName	= None
-		self.mCtrlVersionProductNymber	= None
+		self.mCtrlVersionProductNumber	= None
 		self.mCtrlVersionHardware		= None
 		self.mCtrlVersionSoftware		= None
 		self.mCtrlVersionBootloader		= None
@@ -63,7 +63,7 @@ class SystemInfo( SettingWindow ) :
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
 
 		self.mCtrlVersionProductName	= self.getControl( LABEL_ID_PRODUCT_NAME )
-		self.mCtrlVersionProductNymber	= self.getControl( LABEL_ID_PRODUCT_NUMBER )
+		self.mCtrlVersionProductNumber	= self.getControl( LABEL_ID_PRODUCT_NUMBER )
 		self.mCtrlVersionHardware		= self.getControl( LABEL_ID_HARDWARE_VERSION )
 		self.mCtrlVersionSoftware		= self.getControl( LABEL_ID_SOFTWARE_VERSION )
 		self.mCtrlVersionBootloader		= self.getControl( LABEL_ID_BOOTLOADER_VERSION )
@@ -161,7 +161,7 @@ class SystemInfo( SettingWindow ) :
 				self.SetVisibleControl( visibleControlIds[i], True )			
 
 			self.mCtrlVersionProductName.setLabel(		MR_LANG( 'Product Name : %s' ) % PRODUCT_NAME )
-			self.mCtrlVersionProductNymber.setLabel(	MR_LANG( 'Product Number : %s' ) % PRODUCT_NUMBER )
+			self.mCtrlVersionProductNumber.setLabel(	MR_LANG( 'Product Number : %s' ) % PRODUCT_NUMBER )
 			self.mCtrlVersionHardware.setLabel( 		MR_LANG( 'Hardware Version : %s' ) % HARDWARE_VERSION )
 			self.mCtrlVersionSoftware.setLabel(			MR_LANG( 'Software Version : %s' ) % SOFTWARE_VERSION )
 			self.mCtrlVersionBootloader.setLabel(		MR_LANG( 'Bootloader Version : %s' ) % BOOTLOADER_VERSION )
