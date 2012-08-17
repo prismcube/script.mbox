@@ -272,7 +272,7 @@
 						<align>left</align>
 						<width>70</width>
 						<height>30</height>
-						<texture>icon_radio.png</texture>
+						<texture>icon_radio2.png</texture>
 						<visible>substring(Window.Property(ServiceTypeRadio),true)</visible>
 					</control>
 				</control>
