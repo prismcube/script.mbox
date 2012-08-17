@@ -97,7 +97,11 @@ class DialogChannelSearch( BaseDialog ) :
 	def DrawItem( self ) :
 		count = len( self.mNewTVChannelList )
 		for i in range( count ) :
-			listItem = xbmcgui.ListItem( self.mNewTVChannelList[i], MR_LANG( "TV" ) )
+			listItem = xbmcgui.ListItem( self.mNewTVChannelList[i].mName )
+			if self.mNewTVChannelList[i].mIsCA :
+				listItem.setProperty( 'IsCas', 'True' )
+			else :
+				listItem.setProperty( 'IsCas', 'False' )
 			self.mTvListItems.append( listItem )
 
 		if count > 0 :
@@ -107,7 +111,11 @@ class DialogChannelSearch( BaseDialog ) :
 
 		count = len( self.mNewRadioChannelList )
 		for i in range( count ) :
-			listItem = xbmcgui.ListItem( self.mNewRadioChannelList[i], MR_LANG( "Radio" ) )
+			listItem = xbmcgui.ListItem( self.mNewRadioChannelList[i].mName )
+			if self.mNewRadioChannelList[i].mIsCA :
+				listItem.setProperty( 'IsCas', 'True' )
+			else :
+				listItem.setProperty( 'IsCas', 'False' )
 			self.mRadioListItems.append( listItem )
 
 		if count > 0 :
@@ -239,9 +247,9 @@ class DialogChannelSearch( BaseDialog ) :
 
 	def UpdateAddChannel( self, aEvent ) :
 		if aEvent.mIChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
-			self.mNewTVChannelList.append( aEvent.mIChannel.mName )
+			self.mNewTVChannelList.append( aEvent.mIChannel )
 		elif aEvent.mIChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
-			self.mNewRadioChannelList.append( aEvent.mIChannel.mName )
+			self.mNewRadioChannelList.append( aEvent.mIChannel )
 		else : 
 			LOG_ERR( 'Unknown service type = %s' % aEvent.mIChannel.mServiceType )
 		self.DrawItem( )
