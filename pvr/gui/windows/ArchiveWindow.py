@@ -14,7 +14,6 @@ LIST_ID_THUMBNAIL_RECORD		= 3410
 LIST_ID_POSTERWRAP_RECORD		= 3420
 LIST_ID_FANART_RECORD			= 3430
 
-
 E_VIEW_LIST						= 0
 E_VIEW_THUMBNAIL				= 1
 E_VIEW_POSTER_WRAP				= 2
@@ -27,7 +26,6 @@ E_SORT_TITLE					= 2
 E_SORT_DURATION					= 3
 E_SORT_END						= 4
 
-
 CONTEXT_PLAY					= 0
 CONTEXT_PLAY_FROM_BEGINNIG		= 1
 CONTEXT_DELETE					= 2
@@ -37,8 +35,6 @@ CONTEXT_UNLOCK					= 5
 CONTEXT_RENAME					= 6
 CONTEXT_START_MARK				= 7
 CONTEXT_CLEAR_MARK				= 8
-
-
 
 MININUM_KEYWORD_SIZE			= 3
 
@@ -58,6 +54,11 @@ class ArchiveWindow( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
+		if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+			self.mWin.setProperty( 'PvrPlay', 'True' )
+		else :
+			self.mWin.setProperty( 'PvrPlay', 'False' )
+		
 		if self.mPlayingRecord :
 			self.mEventBus.Register( self )
 			self.mSelectRecordKey = self.mPlayingRecord.mRecordKey
@@ -69,7 +70,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.SetPipScreen( )
 				self.LoadNoSignalState( )
 			return
-			
+
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Archive' ) )
 
 		self.mRecordCount = 0
@@ -135,6 +136,7 @@ class ArchiveWindow( BaseWindow ) :
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR or actionId == Action.ACTION_MBOX_ARCHIVE  :
 			self.mDataCache.Player_Stop( )
 			self.mPlayingRecord	= None
+			self.mWin.setProperty( 'PvrPlay', 'False' )
 			self.Close( )
 			self.SetVideoRestore( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
@@ -508,6 +510,7 @@ class ArchiveWindow( BaseWindow ) :
 					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
 
 				self.mPlayingRecord = recInfo
+				self.mWin.setProperty( 'PvrPlay', 'True' )
 				self.UpdatePlayStatus( )
 
 			self.RestoreLastRecordKey( )
@@ -960,6 +963,7 @@ class ArchiveWindow( BaseWindow ) :
 				
 		else :
 			self.mPlayingRecord = None
+			self.mWin.setProperty( 'PvrPlay', 'False' )
 			if self.mEnableThread == True and self.mPlayProgressThread :
 				self.mEnableThread = False			
 				self.mPlayProgressThread.join( )
