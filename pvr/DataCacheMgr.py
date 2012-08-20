@@ -1119,6 +1119,7 @@ class DataCacheMgr( object ) :
 
 		ret = 0
 		try :
+			self.SetSkipChannelView( True )
 			for mType in aTypeAll :
 				tmpChannelList = self.Channel_GetListBySatellite( mType, mMode, mSort, aLongitude, aBand )
 
@@ -1136,6 +1137,7 @@ class DataCacheMgr( object ) :
 				#from pvr.GuiHelper import ClassToList
 				#LOG_TRACE('delete type[%s] channel[%s]'% ( mType, ClassToList('convert', numList) ) )
 
+	`		self.SetSkipChannelView( False )
 			if ret :
 				self.LoadZappingmode( )
 				self.LoadZappingList( )
@@ -1144,6 +1146,7 @@ class DataCacheMgr( object ) :
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
+			self.SetSkipChannelView( False )
 
 		return ret
 
