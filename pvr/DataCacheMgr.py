@@ -102,7 +102,7 @@ class DataCacheMgr( object ) :
 		self.mTimerDB = None
 		self.mRecordDB = None
 
-		self.mLockStatus = True
+		self.mLockStatus = ElisEnum.E_CC_SUCCESS
 		self.mSkip = False
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :

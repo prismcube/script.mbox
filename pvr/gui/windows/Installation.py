@@ -40,7 +40,8 @@ class Installation( BaseWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Installation' ) )
-		self.SetPipScreen( ) 
+		self.SetPipScreen( )
+		self.LoadNoSignalState( )
 		groupItems = []
 
 		for i in range( len( self.mLeftGroupItems ) ) :

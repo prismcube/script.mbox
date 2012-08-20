@@ -191,16 +191,28 @@
 			<animation effect="fade" start="100" end="0" time="300" condition="Control.HasFocus(999)" type="conditional">Conditional</animation>
 			<animation effect="fade" start="0" end="100" time="300" condition="!Control.HasFocus(999)" type="conditional">Conditional</animation>
 			<control type="label">
-				<posx>1095</posx>
+				<posx>950</posx>
 				<posy>230</posy>
-				<width>100</width>
+				<width>200</width>
 				<height>40</height>
-				<label>No Signal</label>
+				<label>[I]No Signal [/I]</label>
 				<font>Font_Reg20</font>
-				<align>right</align>
+				<align>center</align>
 				<aligny>center</aligny>
-				<textcolor>white</textcolor>
+				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),False)</visible>
+			</control>
+			<control type="label">
+				<posx>950</posx>
+				<posy>230</posy>
+				<width>200</width>
+				<height>40</height>
+				<label>[I]Scrambled [/I]</label>
+				<font>Font_Reg20</font>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>grey2</textcolor>
+				<visible>substring(Window.Property(Signal),Scramble)</visible>
 			</control>
 		</control>
 	</include>

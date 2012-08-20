@@ -70,7 +70,7 @@ class DialogStopRecord( BaseDialog ) :
 			if self.mBackgroundHeight <  0 :
 				self.mBackgroundHeight = self.mCtrlBackgroundImage.getHeight()
 
-			self.SetHeaderLabel( MR_LANG( 'Stop Record' ) )
+			self.SetHeaderLabel( MR_LANG( 'Stop Recording' ) )
 
 			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 			

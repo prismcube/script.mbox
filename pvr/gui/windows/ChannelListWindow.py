@@ -231,7 +231,6 @@ class ChannelListWindow( BaseWindow ) :
 		else :
 			self.mLoadMode = deepcopy( ElisIZappingMode( ) )
 
-
 		#initialize get channel list
 		self.InitSlideMenuHeader( )
 		self.LoadInit( )
@@ -245,12 +244,12 @@ class ChannelListWindow( BaseWindow ) :
 		#print '==================== TEST TIME[ONINIT] END[%s] loading[%s]'% (endtime, endtime-starttime )
 
 
-	def onAction(self, aAction):
+	def onAction( self, aAction ) :
 		id = aAction.getId( )
 
 		self.GlobalAction( id )
 
-		if id >= Action.REMOTE_0 and id <= Action.REMOTE_9:
+		if id >= Action.REMOTE_0 and id <= Action.REMOTE_9 :
 			self.SetTuneByNumber( id-Action.REMOTE_0 )
 
 		elif id >= Action.ACTION_JUMP_SMS2 and id <= Action.ACTION_JUMP_SMS9 :
@@ -264,7 +263,7 @@ class ChannelListWindow( BaseWindow ) :
 			else :
 				self.SetGoBackWindow( )
 
-		elif id == Action.ACTION_SELECT_ITEM:
+		elif id == Action.ACTION_SELECT_ITEM :
 			self.GetFocusId( )
 			#LOG_TRACE( 'item select, action ID[%s]'% id )
 
@@ -409,7 +408,10 @@ class ChannelListWindow( BaseWindow ) :
 
 	def LoadInit( self ):
 		self.ShowRecordingInfo( )
-		self.SubMenuAction( E_SLIDE_ACTION_SUB, self.mUserMode.mMode, True )
+
+		#aleady cache load
+		self.mChannelList = self.mDataCache.Channel_GetList( )
+		self.HashInit( )
 
 		try :
 			label = ''
@@ -435,6 +437,7 @@ class ChannelListWindow( BaseWindow ) :
 
 					strType = self.UpdateServiceType( iChannel.mServiceType )
 					label = '%s - %s'% ( strType, iChannel.mName )
+
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 
 		except Exception, e :
@@ -464,7 +467,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		#ask save question
 		head =  MR_LANG( 'WARNING' )
-		line1 = MR_LANG( 'DO YOU REALLY WANT TO REMOVE ALL YOUR CHANNELS?' )
+		line1 = MR_LANG( 'DO YOU REALLY WANT TO DELETE\nALL YOUR CHANNELS?' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 		dialog.SetDialogProperty( head, line1 )
@@ -889,7 +892,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mUserSlidePos.mMain = self.mCtrlListMainmenu.getSelectedPosition( )
 			self.mUserSlidePos.mSub = self.mCtrlListSubmenu.getSelectedPosition( )
 
-			label = MR_LANG( 'sort by %s' ) % EnumToString( 'sort', self.mUserMode.mSortingMode )
+			label = MR_LANG( 'Sort By %s' ) % EnumToString( 'sort', self.mUserMode.mSortingMode )
 			"""
 			label1 = EnumToString( 'mode', self.mUserMode.mMode)
 			label2 = zappingName
@@ -1019,9 +1022,12 @@ class ChannelListWindow( BaseWindow ) :
 		self.mListFavorite[self.mUserSlidePos.mSub].printdebug( )
 		"""
 
+		#self.mLoadMode.printdebug()
+		#LOG_TRACE('--------pos[%s] [%s]'% (self.mLoadSlidePos.debugList(), self.mUserSlidePos.debugList()) )
+		#self.mUserMode.printdebug()
+		
 		changed = False
 		answer = E_DIALOG_STATE_NO
-
 
 		if self.mLoadSlidePos.mMain != self.mUserSlidePos.mMain or \
 		   self.mLoadSlidePos.mSub != self.mUserSlidePos.mSub :
@@ -1042,13 +1048,18 @@ class ChannelListWindow( BaseWindow ) :
 				label1 = EnumToString( 'mode', self.mUserMode.mMode )
 				label2 = self.mCtrlListSubmenu.getSelectedItem( ).getLabel( )
 
-				head =  MR_LANG( 'Setting - to change zapping mode' )
-				line1 = '%s / %s'% ( label1.title( ), label2.title( ) )
-				line2 = MR_LANG( 'Do you want to save channels?' )
-				posLine = abs( 100 - len( line1 ) )
+#				head =  MR_LANG( 'Setting - to change zapping mode' )
+#				line1 = '%s / %s'% ( label1.title( ), label2.title( ) )
+#				line2 = MR_LANG( 'Do you want to save the channel list?' )
+#				posLine = abs( 100 - len( line1 ) )
+
+				head = MR_LANG( 'Save Zapping Mode' )
+				line1 = MR_LANG( 'Do you want to save the channel list?' )
+				line2 = '- %s / %s'% ( label1.lower( ), label2.lower( ) )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( head, str( '%s\n\n%s'% ( line1.center( posLine ), line2 ) ) )
+#				dialog.SetDialogProperty( head, str( '%s\n\n%s'% ( line1.center( posLine ), line2 ) ) )
+				dialog.SetDialogProperty( head, str( '%s\n\n%s' % ( line1, line2 ) ) )
 				dialog.doModal( )
 
 				answer = dialog.IsOK( )
@@ -1209,7 +1220,7 @@ class ChannelListWindow( BaseWindow ) :
 		else :
 			#opt btn visible
 			#self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, True )
-			self.UpdateControlGUI( E_SETTING_MINI_TITLE, MR_LANG( 'Channel Edit' ) )
+			self.UpdateControlGUI( E_SETTING_MINI_TITLE, MR_LANG( 'Edit Channel List' ) )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV, False, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO, False, E_TAG_ENABLE )
 			self.UpdatePropertyGUI( E_XML_PROPERTY_EDITINFO, E_TAG_TRUE )
@@ -1342,7 +1353,7 @@ class ChannelListWindow( BaseWindow ) :
 		"""
 
 		#path tree, Mainmenu/Submanu
-		label = MR_LANG( 'sort by %s' ) % EnumToString( 'sort', self.mUserMode.mSortingMode )
+		label = MR_LANG( 'Sort By %s' ) % EnumToString( 'sort', self.mUserMode.mSortingMode )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_PATH, label )
 
 		"""
@@ -1491,26 +1502,27 @@ class ChannelListWindow( BaseWindow ) :
 			else :
 				if self.mChannelList :
 					idx = self.mCtrlListCHList.getSelectedPosition( )
-					chNumber = self.mChannelList[idx].mNumber
+					iChannel = self.mChannelList[idx]
+					chNumber = iChannel.mNumber
 
 					#for iChannel in self.mChannelList:
 					#	if iChannel.mNumber == chNumber :
-					iChannel = self.mChannelListHash.get( chNumber )
-					if iChannel and iChannel.mNumber == chNumber :
-						self.mNavChannel = None
-						self.mNavChannel = iChannel
+					#iChannel = self.mChannelListHash.get( chNumber )
+					#if iChannel :
+					self.mNavChannel = None
+					self.mNavChannel = iChannel
 
-						sid  = iChannel.mSid
-						tsid = iChannel.mTsid
-						onid = iChannel.mOnid
-						iEPG = None
-						iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
-						#iEPGList = self.mDataCache.Epgevent_GetCurrentByChannelFromEpgCF( sid, tsid, onid )
-						#LOG_TRACE( '----chNum[%s] chName[%s] sid[%s] tsid[%s] onid[%s]'% (iChannel.mNumber, iChannel.mName, sid, tsid, onid) )
-						if iEPG == None or iEPG.mError != 0 :
-							self.mNavEpg = 0
+					sid  = iChannel.mSid
+					tsid = iChannel.mTsid
+					onid = iChannel.mOnid
+					iEPG = None
+					iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
+					#iEPGList = self.mDataCache.Epgevent_GetCurrentByChannelFromEpgCF( sid, tsid, onid )
+					#LOG_TRACE( '----chNum[%s] chName[%s] sid[%s] tsid[%s] onid[%s]'% (iChannel.mNumber, iChannel.mName, sid, tsid, onid) )
+					if iEPG == None or iEPG.mError != 0 :
+						self.mNavEpg = 0
 
-						self.mNavEpg = iEPG
+					self.mNavEpg = iEPG
 							
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -1702,7 +1714,6 @@ class ChannelListWindow( BaseWindow ) :
 			loop += 1
 
 
-	@GuiLock
 	def UpdateProgress( self ) :
 		try:
 			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
@@ -2135,7 +2146,7 @@ class ChannelListWindow( BaseWindow ) :
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			if isRunRec > 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Now recording in progress...' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Please stop the recording first' ) )
 	 			dialog.doModal( )
 
 	 		else :
@@ -2396,8 +2407,8 @@ class ChannelListWindow( BaseWindow ) :
 	def AsyncUpdateCurrentEPG( self ) :
 		try :
 			self.mIsTune = False
-			self.Epgevent_GetCurrent( )
 			self.ResetLabel( )
+			self.Epgevent_GetCurrent( )
 			self.UpdateChannelAndEPG( )
 
 		except Exception, e :

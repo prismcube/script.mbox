@@ -36,16 +36,16 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'Etc' ) ]
 		
 		self.mDescriptionList	= [
-		MR_LANG( 'Group DESC Language' ),
-		MR_LANG( 'Group DESC Parental' ),
-		MR_LANG( 'Group DESC Recording Option' ),
-		MR_LANG( 'Group DESC Audio Setting' ),
-		MR_LANG( 'Group DESC HDMI Setting' ),
-		MR_LANG( 'Group DESC Network Setting' ),
-		MR_LANG( 'Group DESC Time Setting' ),
-		MR_LANG( 'Group DESC Format HDD' ),
-		MR_LANG( 'Group DESC Factory Reset' ),
-		MR_LANG( 'Group DESC Etc' ) ]	
+		MR_LANG( 'Set the STB language preferences' ),
+		MR_LANG( 'Set limits on your kids\' STB use' ),
+		MR_LANG( 'Adjust settings for recording in STB' ),
+		MR_LANG( 'Set the system\'s digital audio output settings' ),
+		MR_LANG( 'Set the output settings for TVs that support HDMI cable' ),
+		MR_LANG( 'Set up or change network connections including wireless' ),
+		MR_LANG( 'Adjust settings related to the system\'s date and time' ),
+		MR_LANG( 'Delete eveything off your hard drive' ),
+		MR_LANG( 'Restore the system software to its default settings' ),
+		MR_LANG( 'Adjust additional settings for STB including fan speed control' ) ]
 
 		self.mCtrlLeftGroup 	= None
 		self.mGroupItems 		= []
@@ -381,7 +381,7 @@ class Configure( SettingWindow ) :
 
 		if selectedId == E_LANGUAGE :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Language', None, MR_LANG( 'Select the language for the menu to be in' ) )
+			self.AddEnumControl( E_SpinEx01, 'Language', MR_LANG( 'Menu Language' ), MR_LANG( 'Select the language for the menu to be in' ) )
 			self.AddEnumControl( E_SpinEx02, 'Audio Language', None, MR_LANG( 'Select the language that you wish to listen to' ) )
 			self.AddEnumControl( E_SpinEx03, 'Subtitle Language', None, MR_LANG( 'Select the language for the subtitle to be in' ) )
 			self.AddEnumControl( E_SpinEx04, 'Secondary Subtitle Language', None, MR_LANG( 'Choose the language for the secondary subtitle to be in' ) )
@@ -395,6 +395,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
+			time.sleep( 0.2 )
 			self.DisableControl( E_LANGUAGE )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
@@ -414,6 +415,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
+			time.sleep( 0.2 )
 			self.DisableControl( E_PARENTAL )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 			return
@@ -493,6 +495,7 @@ class Configure( SettingWindow ) :
 				self.SetVisibleControls( hideControlIds, False )
 				
 				self.InitControl( )
+				time.sleep( 0.2 )
 				self.DisableControl( E_WIFI )
 				self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 
@@ -516,6 +519,7 @@ class Configure( SettingWindow ) :
 				self.SetVisibleControls( hideControlIds, False )
 				
 				self.InitControl( )
+				time.sleep( 0.2 )
 				self.DisableControl( E_ETHERNET )
 				self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 
@@ -531,7 +535,7 @@ class Configure( SettingWindow ) :
 				channelName = self.mSetupChannel.mName
 			else :
 				channelList = self.mDataCache.Channel_GetList( )
-				if channelList and len( channelList ) > 0 :
+				if channelList :
 					self.mSetupChannel = channelList[0]
 					channelName = self.mSetupChannel.mName
 				else :
@@ -557,6 +561,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
+			time.sleep( 0.2 )
 			self.DisableControl( E_TIME_SETTING )
 			self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )	
 			return
@@ -579,10 +584,10 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FACTORY_RESET :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Reset Channel List', None, MR_LANG( 'Your Channel List will be restored to default' ) )
-			self.AddEnumControl( E_SpinEx02, 'Reset Favorite Add-ons', None, MR_LANG( 'All your Favorite Add-ons will be restored to default' ) )
-			self.AddEnumControl( E_SpinEx03, 'Reset Configure Setting', None, MR_LANG( 'User Settings will be restored to default after factory reset' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Factory Reset Now'), '', MR_LANG( 'Restore your STB to the factory default settings' ) )
+			self.AddEnumControl( E_SpinEx01, 'Reset Channel List', None, MR_LANG( 'Your channel list will be restored to default' ) )
+			self.AddEnumControl( E_SpinEx02, 'Reset Favorite Add-ons', None, MR_LANG( 'All your favorite add-ons will be deleted after factory reset' ) )
+			self.AddEnumControl( E_SpinEx03, 'Reset Configure Setting', None, MR_LANG( 'User settings you have set will be restored to default settings' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Factory Reset Now'), '', MR_LANG( 'Restore your STB to the factory default based on settings you configured' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01 ]
 			self.SetVisibleControls( visibleControlIds, True )

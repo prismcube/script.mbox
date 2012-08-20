@@ -241,6 +241,8 @@ class ArchiveWindow( BaseWindow ) :
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				if aEvent.mType == ElisEnum.E_EOF_END :
 					xbmc.executebuiltin( 'xbmc.Action(stop)' )
+			elif aEvent.getName( ) == ElisEventPlaybackStopped.getName( ) :
+				self.UpdateStopThumbnail( self.mPlayingRecord.mRecordKey )
 
 
 	def InitControl( self ) :
@@ -369,7 +371,6 @@ class ArchiveWindow( BaseWindow ) :
 			recItem.setProperty( 'Locked', 'False' )
 			thumbnaillist = []
 			thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % aRecordInfo.mRecordKey ) )
-			print 'dhkim test thubnaillist = %s' % thumbnaillist
 			if len( thumbnaillist ) > 0 :
 				recItem.setProperty( 'RecIcon', thumbnaillist[0] )
 			else :
@@ -389,7 +390,6 @@ class ArchiveWindow( BaseWindow ) :
 		recItem = self.mRecordListItems[ listindex ]
 		thumbnaillist = []
 		thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % aRecordKey ) )
-		print 'dhkim test thubnaillist = %s' % thumbnaillist
 		if len( thumbnaillist ) > 0 :
 			recItem.setProperty( 'RecIcon', thumbnaillist[0] )
 		else :
@@ -481,7 +481,6 @@ class ArchiveWindow( BaseWindow ) :
 	def StopRecordPlayback( self ) :
 		if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 			ret = self.mDataCache.Player_Stop( )
-			self.UpdateStopThumbnail( self.mPlayingRecord.mRecordKey )
 			self.mLastFocusItem = -1
 			self.UpdatePlayStatus( )
 			
@@ -499,20 +498,18 @@ class ArchiveWindow( BaseWindow ) :
 					if self.CheckPincode() == False :
 						return False
 
-				self.mPlayingRecord = recInfo
-
 				if aResume == True :
-					playOffset = self.mDataCache.RecordItem_GetCurrentPosByKey( self.mPlayingRecord.mRecordKey )
-					LOG_TRACE( 'RecKey=%d PlayOffset=%s' %( self.mPlayingRecord.mRecordKey, playOffset ) )
+					playOffset = self.mDataCache.RecordItem_GetCurrentPosByKey( recInfo.mRecordKey )
+					LOG_TRACE( 'RecKey=%d PlayOffset=%s' %( recInfo.mRecordKey, playOffset ) )
 					if playOffset < 0 :
 						playOffset = 0
 					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, playOffset, 100 )
-					#self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, recInfo.mPlayedOffset, 100 )
 				else :
 					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
 
+				self.mPlayingRecord = recInfo
 				self.UpdatePlayStatus( )
-				
+
 			self.RestoreLastRecordKey( )
 			self.mLastFocusItem = selectedPos
 			if self.mViewMode != E_VIEW_LIST :
@@ -662,7 +659,7 @@ class ArchiveWindow( BaseWindow ) :
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 #			dialog.SetDialogProperty( 'Confirm', 'Do you want to delete record(s)?' )
-			dialog.SetDialogProperty( MR_LANG( 'Delete Record' ), MR_LANG( 'Do you want to remove this recording?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Delete Record' ), MR_LANG( 'Do you want to delete this recording?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -679,7 +676,7 @@ class ArchiveWindow( BaseWindow ) :
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 #		dialog.SetDialogProperty( 'Confirm', 'Do you want to delete all records?' )
-		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU REALLY WANT TO REMOVE ALL YOUR RECORDINGS?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU REALLY WANT TO DELETE ALL YOUR RECORDINGS?' ) )
 		dialog.doModal( )
 
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -780,11 +777,11 @@ class ArchiveWindow( BaseWindow ) :
 					self.mRecordList[ position ].mLocked = False
 					self.mDataCache.Record_SetLock( self.mRecordList[ position ].mRecordKey, self.mServiceType, False )
 					recItem.setProperty( 'Locked', 'False' )
-					thumbnail = '/mnt/hdd0/pvr/thumbnail/record_thumbnail_%d.jpg' % self.mRecordList[ position ].mRecordKey
-					
-					if os.path.exists( thumbnail ) == True :
-						recItem.setProperty( 'RecIcon', thumbnail )
-					else:
+					thumbnaillist = []
+					thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % self.mRecordList[ position ].mRecordKey ) )
+					if len( thumbnaillist ) > 0 :
+						recItem.setProperty( 'RecIcon', thumbnaillist[0] )
+					else :
 						recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
 
 			self.DoClearMark( )

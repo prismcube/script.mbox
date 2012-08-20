@@ -148,7 +148,7 @@
 						<align>left</align>
 						<width>70</width>
 						<height>30</height>
-						<texture>icon_radio.png</texture>
+						<texture>icon_radio2.png</texture>
 						<visible>substring(Window.Property(ServiceTypeRadio),true)</visible>
 					</control>
 				</control>
@@ -303,8 +303,8 @@
 						<width>45</width>
 						<height>35</height>
 						<textcolor>grey3</textcolor>
-						<texturefocus>OSDPlaylistFO.png</texturefocus>
-						<texturenofocus>OSDPlaylistNF.png</texturenofocus>
+						<texturefocus>OSDTeletextFO.png</texturefocus>
+						<texturenofocus>OSDTeletextNF.png</texturenofocus>
 						<onleft>621</onleft>
 						<onright>623</onright>
 						<onup></onup>
