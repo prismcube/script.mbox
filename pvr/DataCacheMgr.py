@@ -639,8 +639,35 @@ class DataCacheMgr( object ) :
 
 
 	def Channel_GetList( self, aTemporaryReload = 0, aType = 0, aMode = 0, aSort = 0 ) :
+		"""
+		#Extention Extension TEST
+		import elis
+		import time
+
+		aTemporaryReload = 1
+		
+		commander = elis.Commander( '127.0.0.1', 12345 )
+		req = []
+		req.append( 'SetElisReady' )
+		req.append( '127.0.0.1' )
+		commander.Command( req )
+
+		req = []
+		req.append( 'Channel_GetList' )
+		req.append('0')
+		req.append('0')
+		req.append('0')
+
+
+		start = time.time( )
+		commander.Command( req )
+		end = time.time( )
+		print ' #1 getchannel time =%s' %( end  - start )
+		"""
+		
 		if aTemporaryReload :
 			if SUPPORT_CHANNEL_DATABASE	== True :
+				start = time.time( )			
 				channelDB = ElisChannelDB( )
 				chList = channelDB.Channel_GetList( aType, aMode, aSort, -1, -1, -1, '', self.mSkip, self.mChannelListDBTable )
 				channelDB.Close( )
@@ -650,6 +677,7 @@ class DataCacheMgr( object ) :
 
 		else :
 			return self.mChannelList
+
 
 
 	def Channel_GetCount( self, aType = ElisEnum.E_SERVICE_TYPE_TV ) :
@@ -1080,6 +1108,47 @@ class DataCacheMgr( object ) :
 
 	def Channel_DeleteAll( self ) :
 		return self.mCommander.Channel_DeleteAll( )
+
+
+	def Channel_DeleteBySatellite( self, aLongitude, aBand ) :
+		aTypeAll = []
+		aTypeAll.append( ElisEnum.E_SERVICE_TYPE_TV )
+		aTypeAll.append( ElisEnum.E_SERVICE_TYPE_RADIO )
+		mMode = ElisEnum.E_MODE_ALL
+		mSort = ElisEnum.E_SORT_BY_NUMBER
+
+		ret = 0
+		try :
+			self.SetSkipChannelView( True )
+			for mType in aTypeAll :
+				tmpChannelList = self.Channel_GetListBySatellite( mType, mMode, mSort, aLongitude, aBand )
+
+				if tmpChannelList == None or len( tmpChannelList ) < 1 :
+					LOG_TRACE( 'type[%s] channel None'% mType )
+					continue
+
+				numList = []
+				for idx in range( len ( tmpChannelList ) ) :
+					chNum = ElisEInteger( )
+					chNum.mParam = tmpChannelList[idx].mNumber
+					numList.append( chNum )
+
+				ret |= self.mCommander.Channel_DeleteByNumber( mType, numList )
+				#from pvr.GuiHelper import ClassToList
+				#LOG_TRACE('delete type[%s] channel[%s]'% ( mType, ClassToList('convert', numList) ) )
+
+			self.SetSkipChannelView( False )
+			if ret :
+				self.LoadZappingmode( )
+				self.LoadZappingList( )
+				self.LoadChannelList( )
+				self.Channel_GetAllChannels( self.mZappingMode.mServiceType, False )
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
+			self.SetSkipChannelView( False )
+
+		return ret
 
 
 	def Channel_SetInitialBlank( self, aBlank ) :

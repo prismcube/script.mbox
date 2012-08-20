@@ -892,7 +892,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mUserSlidePos.mMain = self.mCtrlListMainmenu.getSelectedPosition( )
 			self.mUserSlidePos.mSub = self.mCtrlListSubmenu.getSelectedPosition( )
 
-			label = MR_LANG( 'sort by %s' ) % EnumToString( 'sort', self.mUserMode.mSortingMode )
+			label = MR_LANG( 'Sort By %s' ) % EnumToString( 'sort', self.mUserMode.mSortingMode )
 			"""
 			label1 = EnumToString( 'mode', self.mUserMode.mMode)
 			label2 = zappingName
@@ -1022,9 +1022,12 @@ class ChannelListWindow( BaseWindow ) :
 		self.mListFavorite[self.mUserSlidePos.mSub].printdebug( )
 		"""
 
+		#self.mLoadMode.printdebug()
+		#LOG_TRACE('--------pos[%s] [%s]'% (self.mLoadSlidePos.debugList(), self.mUserSlidePos.debugList()) )
+		#self.mUserMode.printdebug()
+		
 		changed = False
 		answer = E_DIALOG_STATE_NO
-
 
 		if self.mLoadSlidePos.mMain != self.mUserSlidePos.mMain or \
 		   self.mLoadSlidePos.mSub != self.mUserSlidePos.mSub :
@@ -1350,7 +1353,7 @@ class ChannelListWindow( BaseWindow ) :
 		"""
 
 		#path tree, Mainmenu/Submanu
-		label = MR_LANG( 'sort by %s' ) % EnumToString( 'sort', self.mUserMode.mSortingMode )
+		label = MR_LANG( 'Sort By %s' ) % EnumToString( 'sort', self.mUserMode.mSortingMode )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_PATH, label )
 
 		"""
