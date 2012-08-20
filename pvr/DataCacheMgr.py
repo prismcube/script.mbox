@@ -639,8 +639,35 @@ class DataCacheMgr( object ) :
 
 
 	def Channel_GetList( self, aTemporaryReload = 0, aType = 0, aMode = 0, aSort = 0 ) :
+		"""
+		#Extention Extension TEST
+		import elis
+		import time
+
+		aTemporaryReload = 1
+		
+		commander = elis.Commander( '127.0.0.1', 12345 )
+		req = []
+		req.append( 'SetElisReady' )
+		req.append( '127.0.0.1' )
+		commander.Command( req )
+
+		req = []
+		req.append( 'Channel_GetList' )
+		req.append('0')
+		req.append('0')
+		req.append('0')
+
+
+		start = time.time( )
+		commander.Command( req )
+		end = time.time( )
+		print ' #1 getchannel time =%s' %( end  - start )
+		"""
+		
 		if aTemporaryReload :
 			if SUPPORT_CHANNEL_DATABASE	== True :
+				start = time.time( )			
 				channelDB = ElisChannelDB( )
 				chList = channelDB.Channel_GetList( aType, aMode, aSort, -1, -1, -1, '', self.mSkip, self.mChannelListDBTable )
 				channelDB.Close( )
@@ -650,6 +677,7 @@ class DataCacheMgr( object ) :
 
 		else :
 			return self.mChannelList
+
 
 
 	def Channel_GetCount( self, aType = ElisEnum.E_SERVICE_TYPE_TV ) :
