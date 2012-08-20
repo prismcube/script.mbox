@@ -50,7 +50,7 @@ class Configure( SettingWindow ) :
 		self.mCtrlLeftGroup 	= None
 		self.mGroupItems 		= []
 		self.mLastFocused 		= E_SUBMENU_LIST_ID
-		self.mPrevListItemID 	= 0
+		self.mPrevListItemID 	= -1
 
 		self.mUseNetworkType	= NETWORK_ETHERNET
 
@@ -119,6 +119,7 @@ class Configure( SettingWindow ) :
 		self.mReLoadIp = False
 		self.SetListControl( )
 		self.mInitialized = True
+		self.mPrevListItemID = -1
 
 
 	def Close( self ) :
