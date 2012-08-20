@@ -1137,7 +1137,7 @@ class DataCacheMgr( object ) :
 				#from pvr.GuiHelper import ClassToList
 				#LOG_TRACE('delete type[%s] channel[%s]'% ( mType, ClassToList('convert', numList) ) )
 
-	`		self.SetSkipChannelView( False )
+			self.SetSkipChannelView( False )
 			if ret :
 				self.LoadZappingmode( )
 				self.LoadZappingList( )
