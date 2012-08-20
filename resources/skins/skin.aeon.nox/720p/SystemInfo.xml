@@ -88,7 +88,7 @@
 				<height>651</height>
 				<texture>settings/settings_panelfront.png</texture>
 			</control>
-			<control type="group">
+			<control type="group" id="3000">
 				<posy>40</posy>
 				<!-- VERSION -->
 				<control type="label" id="2500">
@@ -134,39 +134,7 @@
 				<!-- HDD -->
 				<control type="label" id="2600">
 					<posx>350</posx>
-					<posy>100</posy>
-					<width>500</width>
-					<height>35</height>
-					<font>Font_Reg18</font>
-					<textcolor>white</textcolor>
-				</control>
-				<control type="label" id="2601">
-					<posx>350</posx>
-					<posy>135</posy>
-					<width>500</width>
-					<height>35</height>
-					<font>Font_Reg18</font>
-					<textcolor>white</textcolor>
-				</control>
-				<control type="label" id="2602">
-					<posx>350</posx>
-					<posy>170</posy>
-					<width>500</width>
-					<height>35</height>
-					<font>Font_Reg18</font>
-					<textcolor>white</textcolor>
-				</control>
-				<control type="label" id="2603">
-					<posx>350</posx>
-					<posy>205</posy>
-					<width>500</width>
-					<height>35</height>
-					<font>Font_Reg18</font>
-					<textcolor>white</textcolor>
-				</control>
-				<control type="label" id="2604">
-					<posx>350</posx>
-					<posy>240</posy>
+					<posy>103</posy>
 					<width>500</width>
 					<height>35</height>
 					<font>Font_Reg18</font>
@@ -174,11 +142,68 @@
 				</control>
 				<control type="label" id="2605">
 					<posx>350</posx>
+					<posy>140</posy>
+					<width>500</width>
+					<height>35</height>
+					<font>Font_Reg18</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="label" id="2602">
+					<posx>350</posx>
+					<posy>175</posy>
+					<width>500</width>
+					<height>35</height>
+					<font>Font_Reg18</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="progress" id="2702">
+					<posx>350</posx>
+					<posy>200</posy>
+					<width>350</width>
+					<height>18</height>
+					<texturebg>osd/seek/progress_back.png</texturebg>
+					<lefttexture>osd/seek/progress_left.png</lefttexture>
+					<midtexture>osd/seek/progress_mid.png</midtexture>
+					<righttexture>osd/seek/progress_right.png</righttexture>
+					<visible>Control.IsVisible(2602)</visible>
+				</control>
+				<control type="label" id="2603">
+					<posx>350</posx>
+					<posy>225</posy>
+					<width>500</width>
+					<height>35</height>
+					<font>Font_Reg18</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="progress" id="2703">
+					<posx>350</posx>
+					<posy>250</posy>
+					<width>350</width>
+					<height>18</height>
+					<texturebg>osd/seek/progress_back.png</texturebg>
+					<lefttexture>osd/seek/progress_left.png</lefttexture>
+					<midtexture>osd/seek/progress_mid.png</midtexture>
+					<righttexture>osd/seek/progress_right.png</righttexture>
+					<visible>Control.IsVisible(2603)</visible>
+				</control>
+				<control type="label" id="2604">
+					<posx>350</posx>
 					<posy>275</posy>
 					<width>500</width>
 					<height>35</height>
 					<font>Font_Reg18</font>
 					<textcolor>white</textcolor>
+				</control>
+				<control type="progress" id="2704">
+					<posx>350</posx>
+					<posy>300</posy>
+					<width>350</width>
+					<height>18</height>
+					<texturebg>osd/seek/progress_back.png</texturebg>
+					<lefttexture>osd/seek/progress_left.png</lefttexture>
+					<midtexture>osd/seek/progress_mid.png</midtexture>
+					<righttexture>osd/seek/progress_right.png</righttexture>
+					<visible>Control.IsVisible(2604)</visible>
 				</control>
 			</control>
 		</control>

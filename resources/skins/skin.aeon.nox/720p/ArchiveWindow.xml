@@ -69,7 +69,7 @@
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
-				<visible>substring(Window.Property(ViewMode),common) + substring(Window.Property(Signal),False)</visible>
+				<visible>substring(Window.Property(ViewMode),common) + substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="label">
 				<posx>72</posx>
@@ -81,7 +81,7 @@
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
-				<visible>substring(Window.Property(ViewMode),common) + substring(Window.Property(Signal),Scramble)</visible>
+				<visible>substring(Window.Property(ViewMode),common) + substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 
 			<control type="progress" id="402">

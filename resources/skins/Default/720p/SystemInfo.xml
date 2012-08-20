@@ -101,95 +101,116 @@
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 			</control>
-			<!-- VERSION -->
-			<control type="label" id="2500">
-				<posx>290</posx>
-				<posy>100</posy>
-				<width>500</width>
-				<height>35</height>
-				<font>font13</font>
-				<textcolor>white</textcolor>
-			</control>
-			<control type="label" id="2501">
-				<posx>290</posx>
-				<posy>135</posy>
-				<width>500</width>
-				<height>35</height>
-				<font>font13</font>
-				<textcolor>white</textcolor>
-			</control>
-			<control type="label" id="2502">
-				<posx>290</posx>
-				<posy>170</posy>
-				<width>500</width>
-				<height>35</height>
-				<font>font13</font>
-				<textcolor>white</textcolor>
-			</control>
-			<control type="label" id="2503">
-				<posx>290</posx>
-				<posy>205</posy>
-				<width>500</width>
-				<height>35</height>
-				<font>font13</font>
-				<textcolor>white</textcolor>
-			</control>
-			<control type="label" id="2504">
-				<posx>290</posx>
-				<posy>240</posy>
-				<width>500</width>
-				<height>35</height>
-				<font>font13</font>
-				<textcolor>white</textcolor>
-			</control>
-			<!-- HDD -->
-			<control type="label" id="2600">
-				<posx>290</posx>
-				<posy>100</posy>
-				<width>500</width>
-				<height>35</height>
-				<font>font13</font>
-				<textcolor>white</textcolor>
-			</control>
-			<control type="label" id="2601">
-				<posx>290</posx>
-				<posy>135</posy>
-				<width>500</width>
-				<height>35</height>
-				<font>font13</font>
-				<textcolor>white</textcolor>
-			</control>
-			<control type="label" id="2602">
-				<posx>290</posx>
-				<posy>170</posy>
-				<width>500</width>
-				<height>35</height>
-				<font>font13</font>
-				<textcolor>white</textcolor>
-			</control>
-			<control type="label" id="2603">
-				<posx>290</posx>
-				<posy>205</posy>
-				<width>500</width>
-				<height>35</height>
-				<font>font13</font>
-				<textcolor>white</textcolor>
-			</control>
-			<control type="label" id="2604">
-				<posx>290</posx>
-				<posy>240</posy>
-				<width>500</width>
-				<height>35</height>
-				<font>font13</font>
-				<textcolor>white</textcolor>
-			</control>
-			<control type="label" id="2605">
-				<posx>290</posx>
-				<posy>275</posy>
-				<width>500</width>
-				<height>35</height>
-				<font>font13</font>
-				<textcolor>white</textcolor>
+			<control type="group" id="3000">
+				<!-- VERSION -->
+				<control type="label" id="2500">
+					<posx>290</posx>
+					<posy>100</posy>
+					<width>500</width>
+					<height>35</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="label" id="2501">
+					<posx>290</posx>
+					<posy>135</posy>
+					<width>500</width>
+					<height>35</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="label" id="2502">
+					<posx>290</posx>
+					<posy>170</posy>
+					<width>500</width>
+					<height>35</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="label" id="2503">
+					<posx>290</posx>
+					<posy>205</posy>
+					<width>500</width>
+					<height>35</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="label" id="2504">
+					<posx>290</posx>
+					<posy>240</posy>
+					<width>500</width>
+					<height>35</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+				</control>
+				<!-- HDD -->
+				<control type="label" id="2600">
+					<posx>290</posx>
+					<posy>103</posy>
+					<width>500</width>
+					<height>35</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="label" id="2605">
+					<posx>290</posx>
+					<posy>140</posy>
+					<width>500</width>
+					<height>35</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="label" id="2602">
+					<posx>290</posx>
+					<posy>175</posy>
+					<width>500</width>
+					<height>35</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="progress" id="2702">
+					<posx>290</posx>
+					<posy>206</posy>
+					<width>350</width>
+					<height>18</height>
+					<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+					<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+					<visible>Control.IsVisible(2602)</visible>
+				</control>
+				<control type="label" id="2603">
+					<posx>290</posx>
+					<posy>225</posy>
+					<width>500</width>
+					<height>35</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="progress" id="2703">
+					<posx>290</posx>
+					<posy>256</posy>
+					<width>350</width>
+					<height>18</height>
+					<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+					<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+					<visible>Control.IsVisible(2603)</visible>
+				</control>
+				<control type="label" id="2604">
+					<posx>290</posx>
+					<posy>275</posy>
+					<width>500</width>
+					<height>35</height>
+					<font>font13</font>
+					<textcolor>white</textcolor>
+				</control>
+				<control type="progress" id="2704">
+					<posx>290</posx>
+					<posy>306</posy>
+					<width>350</width>
+					<height>18</height>
+					<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
+					<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+					<visible>Control.IsVisible(2604)</visible>
+				</control>
 			</control>
 		</control>
 	</controls>

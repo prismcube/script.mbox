@@ -83,21 +83,6 @@
 			<texture>video_pig_overlay.png</texture>
 			<visible>substring(Window.Property(ViewMode),common)</visible>
 		</control>
-		<control type="group">
-			<include>DefaultWindowFade</include>
-			<control type="label">
-				<posx>1075</posx>
-				<posy>250</posy>
-				<width>100</width>
-				<height>40</height>
-				<label>No Signal</label>
-				<font>font12_title</font>
-				<align>right</align>
-				<aligny>center</aligny>
-				<textcolor>white</textcolor>
-				<visible>substring(Window.Property(Signal),False) & substring(Window.Property(ViewMode),common)</visible>
-			</control>
-		</control>
 
 		<control type="group">
 			<animation effect="slide" start="0,0" end="250,0" time="400" tween="quadratic" easing="out" condition="ControlGroup(9000).HasFocus | ControlGroup(9001).HasFocus">Conditional</animation>
@@ -283,7 +268,7 @@
 				<font>font12_title</font>
 				<align>center</align>
 				<textcolor>grey2</textcolor>
-				<visible>substring(Window.Property(ViewMode),common) + substring(Window.Property(Signal),False)</visible>
+				<visible>substring(Window.Property(ViewMode),common) + substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 			<control type="label">
 				<posx>113</posx>
@@ -294,7 +279,7 @@
 				<font>font12_title</font>
 				<align>center</align>
 				<textcolor>grey2</textcolor>
-				<visible>substring(Window.Property(ViewMode),common) + substring(Window.Property(Signal),Scramble)</visible>
+				<visible>substring(Window.Property(ViewMode),common) + substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 			</control>
 		</control>
 
