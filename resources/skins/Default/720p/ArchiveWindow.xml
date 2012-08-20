@@ -166,6 +166,7 @@
 						<include>DefaultButtonMediaSubCommonValues</include>
 						<label>Hide Watched</label>
 					</control>
+					<!--
 					<control type="radiobutton" id="201">
 						<description>Folder Type</description>
 						<textwidth>170</textwidth>
@@ -177,6 +178,7 @@
 						<include>DefaultButtonMediaSubCommonValues</include>
 						<label>Search</label>
 					</control>
+					-->
 				</control>
 			</control>
 			<include>DefaultSideBladeLeft</include>
