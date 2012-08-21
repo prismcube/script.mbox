@@ -20,13 +20,13 @@ class SatelliteConfigOnecable( SettingWindow ) :
 		self.LoadConfigedSatellite( )
 		self.mCurrentSatellite = self.mTunerMgr.GetConfiguredSatellitebyIndex( 0 )
 		
-		self.AddInputControl( E_Input01, MR_LANG( 'Configure System' ), '', MR_LANG( 'Configure the initial settings for OneCable' ) )
+		self.AddInputControl( E_Input01, MR_LANG( 'Initial Setup' ), '', MR_LANG( 'Configure the initial settings for OneCable' ) )
 		
 		listitem = []
 		for i in range( MAX_SATELLITE_CNT_ONECABLE ) :
 			listitem.append( '%d' % ( i + 1 ) )
 
-		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Number of Satellite' ), listitem, 0, MR_LANG( 'Set number of satellite for OneCable' ) )
+		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Number of Satellites' ), listitem, 0, MR_LANG( 'Select number of satellites for OneCable' ) )
 
 		startId = E_Input02
 		for i in range( MAX_SATELLITE_CNT_ONECABLE ) :

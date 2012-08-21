@@ -186,14 +186,14 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'LNB Type' ), E_LIST_LNB_TYPE, self.mSelectedIndexLnbType, MR_LANG( 'Select an appropriate LNB for the selected satellite' ) )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
-			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'LNB Frequency' ), E_LIST_SINGLE_FREQUENCY, getSingleFrequenceIndex( self.mCurrentSatellite.mLowLNB ), MR_LANG( 'Set the LNB frequency to the LNB you are using' ) )
+			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'LNB Frequency' ), E_LIST_SINGLE_FREQUENCY, getSingleFrequenceIndex( self.mCurrentSatellite.mLowLNB ), MR_LANG( 'Select the LNB frequency to the LNB you are using' ) )
 		else :
 			lnbFrequency = '%d / %d / %d' % ( self.mCurrentSatellite.mLowLNB, self.mCurrentSatellite.mHighLNB, self.mCurrentSatellite.mLNBThreshold )
 			self.AddInputControl( E_Input02, MR_LANG( 'LNB Frequency' ), lnbFrequency, MR_LANG( 'Select the required LNB frequency to the LNB you are using' ) )
 
 		self.AddUserEnumControl( E_SpinEx03, MR_LANG( '22KHz Control' ), USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mFrequencyLevel, MR_LANG( 'Set On/Off switching between 2 separate LNB feeds' ) )
-		self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Committed Switch' ), E_LIST_COMMITTED_SWITCH, getCommittedSwitchindex( self.mCurrentSatellite.mDisEqcMode ), MR_LANG( 'Select number of committed switch for DiSEqC 1.1' ) )
-		self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Uncommitted Switch' ), E_LIST_UNCOMMITTED_SWITCH, self.mCurrentSatellite.mDisEqc11, MR_LANG( 'Select number of uncommitted switch for DiSEqC 1.1' ) )
+		self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Committed Switch' ), E_LIST_COMMITTED_SWITCH, getCommittedSwitchindex( self.mCurrentSatellite.mDisEqcMode ), MR_LANG( 'Select number of committed switchs for DiSEqC 1.1' ) )
+		self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Uncommitted Switch' ), E_LIST_UNCOMMITTED_SWITCH, self.mCurrentSatellite.mDisEqc11, MR_LANG( 'Select number of uncommitted switchs for DiSEqC 1.1' ) )
 		self.AddUserEnumControl( E_SpinEx06, MR_LANG( 'DiSEqC Repeats' ), USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mDisEqcRepeat, MR_LANG( 'Set On/Off DiSEqC repeats a command' ) )
 		if self.mTransponderList :
 			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), self.mTransponderList[ self.mSelectedTransponderIndex ], MR_LANG( 'Select an appropriate transponder from the list' ) )
