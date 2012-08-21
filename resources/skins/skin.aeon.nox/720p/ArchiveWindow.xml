@@ -96,6 +96,32 @@
 				<righttexture>osd/seek/progress_right.png</righttexture>
 				<visible>substring(Window.Property(ViewMode),common)</visible>
 			</control>
+			<!-- Play Start Time  -->
+			<control type="label" id="403">
+				<posx>0</posx>
+				<posy>32</posy>
+				<width>100</width>
+				<height>20</height>
+				<label>Start Time</label>
+				<font>font12</font>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>grey2</textcolor>
+				<visible>True</visible>
+			</control>
+			<!-- Play End Time  -->
+			<control type="label" id="404">
+				<posx>352</posx>
+				<posy>32</posy>
+				<width>100</width>
+				<height>20</height>
+				<label>End Time</label>
+				<font>font12</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<textcolor>grey2</textcolor>
+				<visible>True</visible>
+			</control>
 
 		</control>
 

@@ -9,6 +9,9 @@ RADIIOBUTTON_ID_EXTRA			= 103
 LABEL_ID_PLAY_NAME				= 401
 PROGRESS_ID_PLAY_PROGRESS		= 402
 
+LABEL_ID_PLAY_START				= 403
+LABEL_ID_PLAY_END				= 404
+
 LIST_ID_COMMON_RECORD			= 3400
 LIST_ID_THUMBNAIL_RECORD		= 3410
 LIST_ID_POSTERWRAP_RECORD		= 3420
@@ -108,6 +111,9 @@ class ArchiveWindow( BaseWindow ) :
 
 			self.mCtrlPlayName = self.getControl( LABEL_ID_PLAY_NAME )
 			self.mCtrlPlayProgress = self.getControl( PROGRESS_ID_PLAY_PROGRESS )
+			self.mCtrlPlayStart = self.getControl( LABEL_ID_PLAY_START )
+			self.mCtrlPlayEnd = self.getControl( LABEL_ID_PLAY_END )
+
 			self.mPlayPerent = 0
 			self.mCtrlPlayProgress.setPercent( self.mPlayPerent ) 			
 
@@ -963,7 +969,7 @@ class ArchiveWindow( BaseWindow ) :
 		if status.mMode == ElisEnum.E_MODE_PVR :
 			if self.mPlayingRecord :
 				self.mCtrlPlayName.setLabel( self.mPlayingRecord.mRecordName )
-
+				
 				if self.mEnableThread == True and self.mPlayProgressThread :
 					self.mEnableThread = False				
 					self.mPlayProgressThread.join( )
@@ -991,7 +997,10 @@ class ArchiveWindow( BaseWindow ) :
 			if channel :
 				self.mCtrlPlayName.setLabel( channel.mName )
 			else :
-				self.mCtrlPlayName.setLabel( '' )				
+				self.mCtrlPlayName.setLabel( '' )
+
+		self.mCtrlPlayStart.setLabel( '' )
+		self.mCtrlPlayEnd.setLabel( '' )
 
 
 	@RunThread
@@ -1018,4 +1027,9 @@ class ArchiveWindow( BaseWindow ) :
 		LOG_TRACE( 'Update PlayProgress = %d [%d,%d,%d]' %( self.mPlayPerent, status.mPlayTimeInMs, status.mStartTimeInMs, status.mEndTimeInMs ) )
 		
 		self.mCtrlPlayProgress.setPercent( self.mPlayPerent )
+		self.mCtrlPlayStart.setLabel( '%s' %(TimeToString( int( status.mPlayTimeInMs / 1000 ), TimeFormatEnum.E_HH_MM_SS ) ) )
+		self.mCtrlPlayEnd.setLabel( '%s' %(TimeToString( int( status.mEndTimeInMs / 1000 ), TimeFormatEnum.E_HH_MM_SS ) ) )
+		
 
+	def GetPlayingRecord( self ) :
+		return self.mPlayingRecord
