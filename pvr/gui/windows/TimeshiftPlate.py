@@ -260,7 +260,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		elif id == Action.ACTION_MBOX_RECORD :
 			if self.mMode == ElisEnum.E_MODE_PVR :
-				xbmcgui.Dialog( ).ok( MR_LANG( 'WARNING' ), MR_LANG( 'Now Personal Video Recording mode is on' ) )
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Please stop the Personal Video Recording first' ) )
 			else :
 				self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
 
@@ -323,7 +323,7 @@ class TimeShiftPlate( BaseWindow ) :
 					RecordConflict( dialog.GetConflictTimer( ) )
 					
 			else :
-				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'You are already recording 2 programmes' ) )
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'You have reached the maximum number of recordings allowed' ) )
 
 			if isOK :
 				self.mDataCache.mCacheReload = True
@@ -365,7 +365,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					LOG_TRACE('----------hddfull[%s]'% aEvent.mHDDFull)
-					xbmcgui.Dialog().ok( MR_LANG('Infomation'), MR_LANG('Hard disk space is full. You cannot record anymore') )
+					xbmcgui.Dialog().ok( MR_LANG( 'Attention' ), MR_LANG( 'The recording has stopped due to insufficient disk space' ) )
 					
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )

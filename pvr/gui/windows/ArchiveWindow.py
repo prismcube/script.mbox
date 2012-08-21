@@ -757,6 +757,8 @@ class ArchiveWindow( BaseWindow ) :
 					self.mRecordListItems[ selectedPos ].setLabel2( newName )	
 					self.mRecordList[ selectedPos ].mRecordName = newName
 					xbmc.executebuiltin( 'container.update' )
+					self.UpdateArchiveInfomation( )
+					
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
@@ -912,7 +914,7 @@ class ArchiveWindow( BaseWindow ) :
 			if recInfo :
 				self.mWin.setProperty( 'ChannelName', recInfo.mChannelName )
 				self.mWin.setProperty( 'RecDate',  TimeToString( recInfo.mStartTime ) )
-				self.mWin.setProperty( 'RecDuration',  '%dm' %( recInfo.mDuration/60 ) )
+				self.mWin.setProperty( 'RecDuration',  '%dMin' %( recInfo.mDuration/60 ) )
 				self.mWin.setProperty( 'RecName', recInfo.mRecordName )
 			else :
 				self.ResetArchiveInfomation( )

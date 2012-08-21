@@ -57,7 +57,7 @@ class DialogSetTransponder( SettingDialog ) :
 		# Frequency
 		if groupId == E_DialogInput01 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Frequency' ), '%d' % self.mFrequency, 5 )
+			dialog.SetDialogProperty( MR_LANG( 'Enter TP frequency' ), '%d' % self.mFrequency, 5 )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				tempval = dialog.GetString( )
@@ -107,7 +107,7 @@ class DialogSetTransponder( SettingDialog ) :
 		# Symbol Rate
 		elif groupId == E_DialogInput02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Symbol Rate' ), '%d' % self.mSimbolicRate, 5 )
+			dialog.SetDialogProperty( MR_LANG( 'Enter symbol rate' ), '%d' % self.mSimbolicRate, 5 )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				tempval = dialog.GetString( )

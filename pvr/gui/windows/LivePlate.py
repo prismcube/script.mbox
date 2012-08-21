@@ -373,7 +373,7 @@ class LivePlate( BaseWindow ) :
 
 				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					#LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull )
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'STB stopped recording, because your disk space is full' ) )
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'The recording has stopped due to insufficient disk space' ) )
 
 
 		else:
@@ -817,7 +817,7 @@ class LivePlate( BaseWindow ) :
 				RecordConflict( dialog.GetConflictTimer( ) )
 
 		else :
-			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'You are already recording 2 programmes' ) )
+			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'You have reached the maximum number of recordings allowed' ) )
 
 		if isOK :
 			self.mDataCache.mCacheReload = True
@@ -1040,7 +1040,7 @@ class LivePlate( BaseWindow ) :
 				self.StopAutomaticHide( )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
-			dialog.SetTitleLabel( 'Enter a PIN code' )
+			dialog.SetTitleLabel( 'Enter your PIN code' )
 			dialog.doModal( )
 
 			if dialog.GetNextAction( ) == dialog.E_TUNE_NEXT_CHANNEL :

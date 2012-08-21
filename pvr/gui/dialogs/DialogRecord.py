@@ -18,7 +18,7 @@ class DialogRecord( BaseDialog ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId()
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
-		self.SetHeaderLabel( 'Record' )
+		self.SetHeaderLabel( 'Start Recording' )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, 'Start' )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, 'Cancel' )
 

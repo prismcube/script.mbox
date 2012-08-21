@@ -204,7 +204,7 @@
 					<font>Font_Bold18</font>
 					<textcolor>grey2</textcolor>
 					<focusedcolor>white</focusedcolor>
-					<label>Start Record</label>
+					<label>Start</label>
 					<align>center</align>
 					<texturenofocus border="5">dialogs/context_nofocus.png</texturenofocus>
 					<texturefocus border="5">dialogs/context_highlight.png</texturefocus>

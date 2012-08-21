@@ -219,7 +219,7 @@
 					<textcolor>grey2</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
-					<label>[B]Start Record[/B]</label>
+					<label>[B]Start[/B]</label>
 					<visible>!Control.HasFocus(200)</visible>
 				</control>
 				<control type="label">

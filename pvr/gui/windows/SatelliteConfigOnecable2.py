@@ -70,7 +70,7 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 		elif groupId == E_Input01 or groupId == E_Input02 :
 			if self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_SEPARATED :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-				dialog.SetDialogProperty( MR_LANG( 'Tuner%d Pin Code' ) % ( self.mTunerIndex + 1 ), '%03d' % self.mTempTunerPin[self.mTunerIndex], 3 )
+				dialog.SetDialogProperty( MR_LANG( 'Tuner %d PIN code' ) % ( self.mTunerIndex + 1 ), '%03d' % self.mTempTunerPin[self.mTunerIndex], 3 )
 				dialog.doModal( )
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					self.mTempTunerPin[self.mTunerIndex] = int( dialog.GetString( ) )
@@ -78,14 +78,14 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 			elif self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
 				if groupId == E_Input01 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-					dialog.SetDialogProperty( MR_LANG( 'Tuner1 Pin Code' ), '%03d' % self.mTempTunerPin[0], 3 )
+					dialog.SetDialogProperty( MR_LANG( 'Tuner 1 PIN code' ), '%03d' % self.mTempTunerPin[0], 3 )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 						self.mTempTunerPin[0] = int( dialog.GetString( ) )
 
 				elif groupId == E_Input02 :					
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-					dialog.SetDialogProperty( MR_LANG( 'Tuner2 Pin Code' ), '%03d' % self.mTempTunerPin[1], 3 )
+					dialog.SetDialogProperty( MR_LANG( 'Tuner 2 PIN code' ), '%03d' % self.mTempTunerPin[1], 3 )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 						self.mTempTunerPin[1] = int( dialog.GetString( ) )
@@ -135,9 +135,9 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 		tunertype = self.mTunerMgr.GetCurrentTunerConnectionType( )
 		if tunertype == E_TUNER_SEPARATED :
 			self.AddEnumControl( E_SpinEx01, 'MDU', None, MR_LANG( 'Set On/Off for Multi-Dwelling Unit' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Tuner %d PIN Code' ) % ( self.mTunerIndex + 1 ), '%03d' % self.mTempTunerPin[self.mTunerIndex], MR_LANG( 'Enter a PIN code for Tuner %d' ) % ( self.mTunerIndex + 1 ) )
-			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Tuner %d SCR' ) % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[self.mTunerIndex], MR_LANG( 'Select number of Single Cable Router for Tuner %d' ) % ( self.mTunerIndex + 1 ) )
-			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner %d Frequency' ) % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[self.mTunerIndex] ), MR_LANG( 'Select a suitable frequency for Tuner %d' ) % ( self.mTunerIndex + 1 ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Tuner %d PIN Code' ) % ( self.mTunerIndex + 1 ), '%03d' % self.mTempTunerPin[self.mTunerIndex], MR_LANG( 'Enter your PIN code for Tuner %d' ) % ( self.mTunerIndex + 1 ) )
+			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Tuner %d SCR' ) % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[self.mTunerIndex], MR_LANG( 'Select number of Single Cable Routers for Tuner %d' ) % ( self.mTunerIndex + 1 ) )
+			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner %d Frequency' ) % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[self.mTunerIndex] ), MR_LANG( 'Select the frequency for Tuner %d' ) % ( self.mTunerIndex + 1 ) )
 
 			disableControls = [ E_Input02, E_SpinEx04, E_SpinEx05 ]
 			self.SetVisibleControls( disableControls, False )
@@ -145,13 +145,13 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 
 		elif tunertype == E_TUNER_LOOPTHROUGH :
 			self.AddEnumControl( E_SpinEx01, 'MDU', None, MR_LANG( 'Set On/Off for Multi-Dwelling Unit' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Tuner 1 PIN Code' ), '%03d' % self.mTempTunerPin[0], MR_LANG( 'Enter a PIN code for Tuner 1' ) )
-			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Tuner 1 SCR' ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[0], MR_LANG( 'Select number of Single Cable Router for Tuner 1' ) )
-			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner 1 Frequency' ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[0] ), MR_LANG( 'Select a suitable frequency for Tuner 1' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Tuner 1 PIN Code' ), '%03d' % self.mTempTunerPin[0], MR_LANG( 'Enter your PIN code for Tuner 1' ) )
+			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Tuner 1 SCR' ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[0], MR_LANG( 'Select number of Single Cable Routers for Tuner 1' ) )
+			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner 1 Frequency' ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[0] ), MR_LANG( 'Select the frequency for Tuner 1' ) )
 
-			self.AddInputControl( E_Input02, MR_LANG( 'Tuner 2 PIN Code' ), '%03d' % self.mTempTunerPin[1], MR_LANG( 'Enter a PIN code for Tuner 2' ) )			
-			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Tuner 2 SCR' ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[1], MR_LANG( 'Select number of Single Cable Router for Tuner 2' ) )			
-			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Tuner 2 Frequency' ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[1] ), MR_LANG( 'Select a suitable frequency for Tuner 2' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Tuner 2 PIN Code' ), '%03d' % self.mTempTunerPin[1], MR_LANG( 'Enter your PIN code for Tuner 2' ) )			
+			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Tuner 2 SCR' ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[1], MR_LANG( 'Select number of Single Cable Routers for Tuner 2' ) )			
+			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Tuner 2 Frequency' ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[1] ), MR_LANG( 'Select the frequency for Tuner 2' ) )
 
 			disableControls = [ E_Input02, E_SpinEx04, E_SpinEx05 ]
 			self.SetVisibleControls( disableControls, True )
