@@ -118,8 +118,8 @@ class DialogAddTimer( BaseDialog ) :
 				LOG_TRACE( 'END : %s' %TimeToString( endTime, TimeFormatEnum.E_DD_MM_YYYY_HH_MM ) )			
 				self.getControl( E_LABEL_RECORD_NAME ).setLabel( '%s' %self.mEPG.mEventName )
 
-				self.getControl( E_LABEL_EPG_START_TIME ).setLabel( MR_LANG( 'Start' ) + ': %s' %TimeToString( startTime, TimeFormatEnum.E_HH_MM ) )
-				self.getControl( E_LABEL_EPG_END_TIME ).setLabel( MR_LANG( 'End' ) + ': %s' %TimeToString( endTime, TimeFormatEnum.E_HH_MM ) )
+				self.getControl( E_LABEL_EPG_START_TIME ).setLabel( MR_LANG( 'Start Time' ) + ': %s' %TimeToString( startTime, TimeFormatEnum.E_HH_MM ) )
+				self.getControl( E_LABEL_EPG_END_TIME ).setLabel( MR_LANG( 'End Time' ) + ': %s' %TimeToString( endTime, TimeFormatEnum.E_HH_MM ) )
 			
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )

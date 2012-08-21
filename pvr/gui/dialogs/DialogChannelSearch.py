@@ -156,7 +156,7 @@ class DialogChannelSearch( BaseDialog ) :
 				self.ReLoadChannelList( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 #				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Channel search is failed' ) )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Channel search was failed to complete' ) )				
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Channel search has failed to complete' ) )				
 				dialog.doModal( )
 
 		elif self.mScanMode == E_SCAN_TRANSPONDER :
@@ -168,7 +168,7 @@ class DialogChannelSearch( BaseDialog ) :
 				self.ReLoadChannelList( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 #				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Channel search is failed' ) )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Channel search was failed to complete' ) )				
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Channel search has failed to complete' ) )				
 				dialog.doModal( )
 		else :
 			self.mIsFinished = True

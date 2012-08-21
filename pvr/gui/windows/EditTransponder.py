@@ -20,9 +20,9 @@ class EditTransponder( SettingWindow ) :
 		hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
 			self.SetVisibleControls( hideControlIds, False )
-			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Has no configured satellite' ) )
+			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite is available' ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No satellite infomation is available. Please reset your STB' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please reset your STB\nNo satellite infomation is available' ) )
 			dialog.doModal( )
 			WinMgr.GetInstance( ).CloseWindow( )
 		else :
@@ -94,7 +94,7 @@ class EditTransponder( SettingWindow ) :
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No transponder info is available for the satellite.\nFirst add a new transponder' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Add a new transponder first\nNo transponder info is available for the satellite' ) )
 				dialog.doModal( )
 
 		# Add Transponder
@@ -119,7 +119,7 @@ class EditTransponder( SettingWindow ) :
 				ret = self.mCommander.Transponder_Add( self.mLongitude, self.mBand, tmplist )
 				if ret != True :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'You were unable to add the transponder' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You were unable to add the transponder' ) )
 					dialog.doModal( )
 					return
 				self.mTransponderIndex = 0
@@ -143,7 +143,7 @@ class EditTransponder( SettingWindow ) :
 					ret = self.mCommander.Transponder_Delete( self.mLongitude, self.mBand, tmplist )
 					if ret != True :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'You were unable to edit the transponder' ) )
+						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You were unable to edit the transponder' ) )
 						dialog.doModal( )
 						return
 
@@ -163,7 +163,7 @@ class EditTransponder( SettingWindow ) :
 					ret = self.mCommander.Transponder_Add( self.mLongitude, self.mBand, tmplist )
 					if ret != True :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'You were unable to edit the transponder' ) )
+						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You were unable to edit the transponder' ) )
 						dialog.doModal( )
 						return
 					self.mTransponderIndex = 0
@@ -175,14 +175,14 @@ class EditTransponder( SettingWindow ) :
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No transponder info is available for the satellite.\nFirst add a new transponder' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Add a new transponder first\nNo transponder info is available for the satellite' ) )
 				dialog.doModal( )
 
 		# Delete Transponder
 		elif groupId == E_Input06 :
 			if self.mTransponderList and self.mTransponderList[0].mError == 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Delete Transpnder' ), MR_LANG( 'Do you want to remove this transponder?' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Delete Transponder' ), MR_LANG( 'Do you want to remove the transponder?' ) )
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -204,7 +204,7 @@ class EditTransponder( SettingWindow ) :
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No transponder info is available for the satellite.\nFirst add a new transponder' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Add a new transponder first\nNo transponder info is available for the satellite' ) )
 				dialog.doModal( )
 
 		
