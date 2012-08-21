@@ -44,6 +44,7 @@ WIN_ID_EPG_WINDOW					= 27
 WIN_ID_CONDITIONAL_ACCESS			= 28
 WIN_ID_FIRST_INSTALLATION			= 29
 WIN_ID_TIMER_WINDOW					= 30
+WIN_ID_INFO_PLATE					= 31
 
 WIN_ID_HIDDEN_TEST					= 99
 WIN_ID_DUMMY_WINDOW					= 100
@@ -284,6 +285,9 @@ class WindowMgr( object ) :
 
 			from pvr.gui.windows.TimerWindow import TimerWindow
 			self.mWindows[WIN_ID_TIMER_WINDOW]=TimerWindow( 'TimerWindow.xml', self.mScriptDir )
+
+			from pvr.gui.windows.InfoPlate import InfoPlate
+			self.mWindows[WIN_ID_INFO_PLATE]=InfoPlate( 'LivePlate.xml', self.mScriptDir )
 
 			from pvr.HiddenTest import HiddenTest
 			self.mWindows[WIN_ID_HIDDEN_TEST]=HiddenTest( 'HiddenTest.xml', self.mScriptDir )
