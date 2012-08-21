@@ -54,7 +54,9 @@ class ArchiveWindow( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+		status = self.mDataCache.Player_GetStatus( )
+		
+		if status.mMode == ElisEnum.E_MODE_PVR :
 			self.mWin.setProperty( 'PvrPlay', 'True' )
 		else :
 			self.mWin.setProperty( 'PvrPlay', 'False' )
@@ -62,7 +64,7 @@ class ArchiveWindow( BaseWindow ) :
 		if self.mPlayingRecord :
 			self.mEventBus.Register( self )
 			self.mSelectRecordKey = self.mPlayingRecord.mRecordKey
-			self.UpdateStopThumbnail( self.mPlayingRecord.mRecordKey )
+			self.UpdatePlayStopThumbnail( self.mPlayingRecord )			
 			self.SelectLastRecordKey( )
 			self.UpdatePlayStatus( )
 
@@ -244,7 +246,8 @@ class ArchiveWindow( BaseWindow ) :
 				if aEvent.mType == ElisEnum.E_EOF_END :
 					xbmc.executebuiltin( 'xbmc.Action(stop)' )
 			elif aEvent.getName( ) == ElisEventPlaybackStopped.getName( ) :
-				self.UpdateStopThumbnail( self.mPlayingRecord.mRecordKey )
+				if self.mPlayingRecord :
+					self.UpdatePlayStopThumbnail( self.mPlayingRecord )
 
 
 	def InitControl( self ) :
@@ -367,10 +370,8 @@ class ArchiveWindow( BaseWindow ) :
 		recItem.setProperty( 'RecDate', TimeToString( aRecordInfo.mStartTime ) )
 		recItem.setProperty( 'RecDuration', '%dm' % ( aRecordInfo.mDuration / 60 ) )
 		if aRecordInfo.mLocked :
-			recItem.setProperty( 'Locked', 'True' )
 			recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
 		else :
-			recItem.setProperty( 'Locked', 'False' )
 			thumbnaillist = []
 			thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % aRecordInfo.mRecordKey ) )
 			if len( thumbnaillist ) > 0 :
@@ -382,20 +383,37 @@ class ArchiveWindow( BaseWindow ) :
 		self.mRecordListItems.append( recItem )
 
 
-	def UpdateStopThumbnail( self, aRecordKey ) :
+	def UpdatePlayStopThumbnail( self, aRecordInfo ) :
+
+		if aRecordInfo == None :
+			LOG_ERR( 'Has no playing record')
+			return
+
 		listindex = 0
 		for recInfo in self.mRecordList :
-			if recInfo.mRecordKey == aRecordKey :
+			if recInfo.mRecordKey == aRecordInfo.mRecordKey :
 				break
 			listindex = listindex + 1
 
 		recItem = self.mRecordListItems[ listindex ]
-		thumbnaillist = []
-		thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % aRecordKey ) )
-		if len( thumbnaillist ) > 0 :
-			recItem.setProperty( 'RecIcon', thumbnaillist[0] )
+
+		status = self.mDataCache.Player_GetStatus( )
+			
+		if recInfo.mLocked == True and status.mMode != ElisEnum.E_MODE_PVR:
+			recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
 		else :
-			recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+			thumbnaillist = []
+			thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % aRecordInfo.mRecordKey ) )
+			if len( thumbnaillist ) > 0 :
+				recItem.setProperty( 'RecIcon', thumbnaillist[0] )
+			else :
+				recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+
+		if status.mMode == ElisEnum.E_MODE_PVR :
+			recItem.setProperty( 'Playing', 'True' )
+		else :
+			recItem.setProperty( 'Playing', 'False' )
+
 
 		xbmc.executebuiltin( 'container.update' )
 
@@ -514,6 +532,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.UpdatePlayStatus( )
 
 			self.RestoreLastRecordKey( )
+			self.UpdatePlayStopThumbnail( self.mPlayingRecord )
 			self.mLastFocusItem = selectedPos
 			if self.mViewMode != E_VIEW_LIST :
 				self.Close( )
@@ -774,12 +793,10 @@ class ArchiveWindow( BaseWindow ) :
 				if aLock == True :
 					self.mRecordList[ position ].mLocked = True
 					self.mDataCache.Record_SetLock( self.mRecordList[ position ].mRecordKey, self.mServiceType, True )
-					recItem.setProperty( 'Locked', 'True' )
 					recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
 				else :
 					self.mRecordList[ position ].mLocked = False
 					self.mDataCache.Record_SetLock( self.mRecordList[ position ].mRecordKey, self.mServiceType, False )
-					recItem.setProperty( 'Locked', 'False' )
 					thumbnaillist = []
 					thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % self.mRecordList[ position ].mRecordKey ) )
 					if len( thumbnaillist ) > 0 :
@@ -860,6 +877,7 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def Close( self ) :
+		self.mEventBus.Deregister( self )	
 		self.mEnableThread = False
 		if self.mPlayProgressThread :
 			self.mPlayProgressThread.join( )

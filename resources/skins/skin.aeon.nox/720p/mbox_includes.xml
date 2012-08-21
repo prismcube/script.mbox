@@ -4258,6 +4258,15 @@
 						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
+					<!-- Playing -->
+					<control type="image">
+						<posx>40</posx>
+						<posy>2</posy>
+						<width>64</width>
+						<height>64</height>
+						<texture>OSDPlayNF.png</texture>
+						<visible>substring(ListItem.Property(Playing),True)</visible>
+					</control>
 					<!-- Channel Name-->
 					<control type="label">
 						<posx>140</posx>
@@ -4339,6 +4348,15 @@
 						<height>25</height>
 						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
+					</control>
+					<!-- Playing -->
+					<control type="image">
+						<posx>40</posx>
+						<posy>2</posy>
+						<width>64</width>
+						<height>64</height>
+						<texture>OSDPlayFO.png</texture>
+						<visible>substring(ListItem.Property(Playing),True)</visible>
 					</control>
 					<!-- Channel Name-->
 					<control type="label">
