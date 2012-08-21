@@ -128,7 +128,7 @@ class TunerConfiguration( SettingWindow ) :
 				satelliteName = self.mDataCache.GetFormattedSatelliteName( config.mSatelliteLongitude, config.mBandType )
 				self.mListItems.append( xbmcgui.ListItem( '%s' % satelliteName, MR_LANG( 'Press the OK button to setup %s' ) % satelliteName ) )
 
-		self.mListItems.append( xbmcgui.ListItem( MR_LANG( 'Add Satellite' ), MR_LANG( 'Add a satellite to your satellite list' ) ) )
+		self.mListItems.append( xbmcgui.ListItem( MR_LANG( 'Add Satellite' ), MR_LANG( 'Add a new satellite to your satellite list' ) ) )
 		self.mListItems.append( xbmcgui.ListItem( MR_LANG( 'Delete Satellite' ), MR_LANG( 'Delete a satellite from your list' ) ) )
 		self.getControl( E_MAIN_LIST_ID ).addItems( self.mListItems )
 

@@ -21,7 +21,7 @@ class Installation( BaseWindow ) :
 		MR_LANG( 'Edit Satellite' ),
 		MR_LANG( 'Edit Transponder' ),
 		MR_LANG( 'Configuration' ),
-		MR_LANG( 'CAS' ) ]
+		MR_LANG( 'Conditional Access' ) ]
 
 		self.mDescriptionList = [
 		MR_LANG( 'You can setup Language, Video, Audio, Antenna, Satellite, Channel, Time and Date in the First Installation' ),
