@@ -4,13 +4,6 @@ E_CONTROL_ID_IMAGE_RECORDING1 			= 10
 E_CONTROL_ID_LABEL_RECORDING1 			= 11
 E_CONTROL_ID_IMAGE_RECORDING2 			= 15
 E_CONTROL_ID_LABEL_RECORDING2 			= 16
-E_CONTROL_ID_BUTTON_DESCRIPTION_INFO 	= 621
-E_CONTROL_ID_BUTTON_TELETEXT 			= 622
-E_CONTROL_ID_BUTTON_SUBTITLE 			= 623
-E_CONTROL_ID_BUTTON_START_RECORDING 	= 624
-E_CONTROL_ID_BUTTON_STOP_RECORDING 		= 625
-E_CONTROL_ID_BUTTON_MUTE 				= 626
-E_CONTROL_ID_BUTTON_SETTING_FORMAT 		= 627
 E_CONTROL_ID_BUTTON_PREV_EPG 			= 702
 E_CONTROL_ID_BUTTON_NEXT_EPG 			= 706
 E_CONTROL_ID_LABEL_CHANNEL_NUMBER		= 601
@@ -27,6 +20,11 @@ E_CONTROL_ID_LABEL_EPG_NAME				= 703
 E_CONTROL_ID_LABEL_EPG_STARTTIME		= 704
 E_CONTROL_ID_LABEL_EPG_ENDTIME			= 705
 E_CONTROL_ID_PROGRESS_EPG 				= 707
+
+E_CONTROL_DEFAULT_HIDE = [ 
+	E_CONTROL_ID_BUTTON_START_RECORDING,
+	E_CONTROL_ID_BUTTON_STOP_RECORDING
+]
 
 #xml property name
 E_XML_PROPERTY_TV         = 'ServiceTypeTV'
@@ -61,9 +59,9 @@ E_INDEX_JUMP_MAX = 100
 CONTEXT_ACTION_VIDEO_SETTING = 1 
 CONTEXT_ACTION_AUDIO_SETTING = 2
 
-class InfoPlate( BaseWindow ) :
+class InfoPlate( LivePlateWindow ) :
 	def __init__( self, *args, **kwargs ) :
-		BaseWindow.__init__( self, *args, **kwargs )
+		LivePlateWindow.__init__( self, *args, **kwargs )
 
 		self.mAutomaticHideTimer = None	
 		self.mAutomaticHide = False
@@ -88,19 +86,14 @@ class InfoPlate( BaseWindow ) :
 		self.mCtrlProgress             = self.getControl( E_CONTROL_ID_PROGRESS_EPG )
 
 		#button icon
-		self.mCtrlBtnExInfo            = self.getControl( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO )
-		self.mCtrlBtnTeletext          = self.getControl( E_CONTROL_ID_BUTTON_TELETEXT )
-		self.mCtrlBtnSubtitle          = self.getControl( E_CONTROL_ID_BUTTON_SUBTITLE )
-		self.mCtrlBtnStartRec          = self.getControl( E_CONTROL_ID_BUTTON_START_RECORDING )
-		self.mCtrlBtnStopRec           = self.getControl( E_CONTROL_ID_BUTTON_STOP_RECORDING )
-		self.mCtrlBtnMute              = self.getControl( E_CONTROL_ID_BUTTON_MUTE )
-		self.mCtrlBtnSettingFormat     = self.getControl( E_CONTROL_ID_BUTTON_SETTING_FORMAT )
 		self.mCtrlBtnPrevEpg           = self.getControl( E_CONTROL_ID_BUTTON_PREV_EPG )
 		self.mCtrlBtnNextEpg           = self.getControl( E_CONTROL_ID_BUTTON_NEXT_EPG )
 
+		self.InitControl( )
+		self.SetVisibleControls( E_CONTROL_DEFAULT_HIDE, False )
+
 		self.mPlayingRecord = None
 		self.mCurrentEPG = None
-
 		self.mAutomaticHideTimer = None
 
 		#get channel
@@ -214,7 +207,7 @@ class InfoPlate( BaseWindow ) :
 			self.ShowDialog( aControlId )
 
 
-	def onFocus(self, aControlId):
+	def onFocus( self, aControlId ) :
 		pass
 
 
@@ -394,8 +387,6 @@ class InfoPlate( BaseWindow ) :
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_LONGITUDE_INFO, '' )
 		self.mCtrlBtnPrevEpg.setVisible( False )
 		self.mCtrlBtnNextEpg.setVisible( False )
-		self.mCtrlBtnStartRec.setVisible( False )
-		self.mCtrlBtnStopRec.setVisible( False )
 
 		tvValue = 'True'
 		raValue = 'False'
@@ -474,9 +465,11 @@ class InfoPlate( BaseWindow ) :
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
 			if self.mCurrentEPG and self.mCurrentEPG.mError == 0 :
+				self.mEventBus.Deregister( self )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_EXTEND_EPG )
 				dialog.SetEPG( self.mCurrentEPG )
 				dialog.doModal( )
+				self.mEventBus.Register( self )
 				ret = dialog.GetCloseStatus( )
 				if ret == Action.ACTION_CONTEXT_MENU :
 					self.Close( )

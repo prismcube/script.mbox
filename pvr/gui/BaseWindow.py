@@ -618,3 +618,30 @@ class SettingWindow( BaseWindow ) :
 					self.getControl( E_FIRST_TIME_INSTALLATION_STEP_IMAGE + i ).setVisible( False )
 				self.getControl( E_FIRST_TIME_INSTALLATION_STEP_IMAGE_BACK + i ).setVisible( True )
 
+
+class LivePlateWindow( BaseWindow ) :
+	def __init__( self, *args, **kwargs ) :
+		BaseWindow.__init__( self, *args, **kwargs )
+		self.mControls = {}
+
+	def InitControl( self ) :
+		for i in range( 1, E_CTRL_BTN_INFO_MAX+1 ) :
+			controlId = E_CTRL_GROUP_INFO + i
+			ctrl = self.getControl( controlId )
+			self.mControls[controlId] = ctrl
+
+
+	def SetVisibleControls( self, aControls, aVisible ) :
+		for controlId in aControls :
+			ctrl = self.mControls.get( controlId, None )
+			if ctrl :
+				ctrl.setVisible( aVisible )
+
+
+	def SetEnableControl( self, aControlId, aEnable ) :
+		ctrl = self.mControls.get( aControlId, None )
+		if ctrl :
+			ctrl.setEnabled( aEnable )
+
+
+

@@ -66,6 +66,12 @@ class DialogExtendEPG( BaseDialog ) :
 		elif actionId == Action.ACTION_CONTEXT_MENU :
 			self.Close( )
 
+		elif actionId == Action.ACTION_STOP :
+			self.Close( )
+
+		elif actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
+			self.Close( )
+
 
 	def onClick( self, aControlId ) :
 		pass
@@ -80,19 +86,15 @@ class DialogExtendEPG( BaseDialog ) :
 		if self.mWinId == xbmcgui.getCurrentWindowDialogId( ) :
 
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
-				LOG_TRACE( 'ElisEventPlaybackEOF mType[%d]'% ( aEvent.mType ) )
+				LOG_TRACE( 'ExtendDialog ElisEventPlaybackEOF mType[%d]'% ( aEvent.mType ) )
 
 				if aEvent.mType == ElisEnum.E_EOF_START :
 					self.mIsOk = Action.ACTION_PLAYER_PLAY
-					#xbmc.executebuiltin('xbmc.Action(play)')
-					self.Close( )
-					LOG_TRACE( 'EventRecv EOF_START' )
+					xbmc.executebuiltin('xbmc.Action(play)')
 
 				elif aEvent.mType == ElisEnum.E_EOF_END :
 					LOG_TRACE( 'EventRecv EOF_END' )
-					#xbmc.executebuiltin('xbmc.Action(stop)')
-					self.mIsOk = Action.ACTION_STOP
-					self.Close( )
+					xbmc.executebuiltin('xbmc.Action(stop)')
 
 
 	def SetEPG( self, aEPG ) :
