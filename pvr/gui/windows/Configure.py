@@ -31,7 +31,7 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'HDMI Setting' ),
 		MR_LANG( 'Network Setting' ),
 		MR_LANG( 'Time Setting' ),
-		MR_LANG( 'Format HDD' ),
+		MR_LANG( 'HDD Format' ),
 		MR_LANG( 'Factory Reset' ),
 		MR_LANG( 'Etc' ) ]
 		
@@ -50,7 +50,7 @@ class Configure( SettingWindow ) :
 		self.mCtrlLeftGroup 	= None
 		self.mGroupItems 		= []
 		self.mLastFocused 		= E_SUBMENU_LIST_ID
-		self.mPrevListItemID 	= 0
+		self.mPrevListItemID 	= -1
 
 		self.mUseNetworkType	= NETWORK_ETHERNET
 
@@ -119,6 +119,7 @@ class Configure( SettingWindow ) :
 		self.mReLoadIp = False
 		self.SetListControl( )
 		self.mInitialized = True
+		self.mPrevListItemID = -1
 
 
 	def Close( self ) :
@@ -402,9 +403,9 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_PARENTAL :	
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddInputControl( E_Input01, MR_LANG( 'Enable Setting Menu' ), '', MR_LANG( 'Enter the default PIN code to change the parental settings' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Edit Parental Settings' ), '', MR_LANG( 'Enter your PIN code to change the parental settings' ) )
 			self.AddEnumControl( E_SpinEx01, 'Lock Mainmenu', MR_LANG( ' - Lock Main Menu' ), MR_LANG( 'Set a restriction for the main menu' ) )
-			self.AddEnumControl( E_SpinEx02, 'Age Restricted', MR_LANG( ' - Age Restriction'), MR_LANG( 'Set an access restriction to chosen channels' ) )
+			self.AddEnumControl( E_SpinEx02, 'Age Restricted', MR_LANG( ' - Age Limit'), MR_LANG( 'Set an access restriction to chosen channels' ) )
 			self.AddInputControl( E_Input02, MR_LANG( ' - Change PIN Code' ), '', MR_LANG( 'Change the current PIN code' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_Input01, E_SpinEx02, E_Input02 ]
@@ -422,7 +423,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_RECORDING_OPTION :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Automatic Timeshift', None, MR_LANG( 'Set On/Off for automatic timeshift' ) )
+			self.AddEnumControl( E_SpinEx01, 'Automatic Timeshift', None, MR_LANG( 'Start a timeshift recording automatically when tuning a channel' ) )
 			self.AddEnumControl( E_SpinEx02, 'Timeshift Buffer Size', None, MR_LANG( 'Select the preferred size of timeshift buffer' ) )
 			self.AddEnumControl( E_SpinEx03, 'Default Rec Duration', None, MR_LANG( 'Select recording duration for a channel that has no EPG info' ) )
 			self.AddEnumControl( E_SpinEx04, 'Pre-Rec Time', None, MR_LANG( 'Set the pre-recording time for a EPG channel' ) )
@@ -485,7 +486,7 @@ class Configure( SettingWindow ) :
 				self.AddUserEnumControl( E_SpinEx03, MR_LANG( ' - Encryption Method' ), USER_ENUM_LIST_ENCRIPT_TYPE, self.mEncriptType, MR_LANG( 'Choose an encryption method for your network' ) )
 				self.AddUserEnumControl( E_SpinEx04, MR_LANG( ' - Encryption Key Type' ), USER_ENUM_LIST_PASSWORD_TYPE, self.mPasswordType, MR_LANG( 'Set ASCII/HEX mode for your key' ) )
 				self.AddInputControl( E_Input03, MR_LANG( ' - Set Encryption Key' ), StringToHidden( self.mPassWord ), MR_LANG( 'Enter the encryption key for wireless connection' ) )
-				self.AddInputControl( E_Input04, MR_LANG( 'Connect to the current AP' ), '', MR_LANG( 'Connect to the AP you have chosen' ) )
+				self.AddInputControl( E_Input04, MR_LANG( 'Apply' ), '', MR_LANG( 'Press the OK button to connect to the AP you have chosen' ) )
 
 				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input06 ]
 				self.SetVisibleControls( visibleControlIds, True )
@@ -509,7 +510,7 @@ class Configure( SettingWindow ) :
 				self.AddInputControl( E_Input02, MR_LANG( 'Subnet Mask' ), self.mTempSubNet, MR_LANG( 'Enter your subnet mask' ) )
 				self.AddInputControl( E_Input03, MR_LANG( 'Gateway' ), self.mTempGateway, MR_LANG( 'Enter your gateway' ) )
 				self.AddInputControl( E_Input04, MR_LANG( 'DNS' ), self.mTempDns, MR_LANG( 'Enter the DNS server address' ) )
-				self.AddInputControl( E_Input05, MR_LANG( 'Apply Changes') , '', MR_LANG( 'Press the OK button to save settings' ) )
+				self.AddInputControl( E_Input05, MR_LANG( 'Apply') , '', MR_LANG( 'Press the OK button to save IP address settings for Static' ) )
 
 				visibleControlIds = [ E_SpinEx01, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
 				self.SetVisibleControls( visibleControlIds, True )
@@ -551,7 +552,7 @@ class Configure( SettingWindow ) :
 			self.AddInputControl( E_Input03, MR_LANG( 'Time' ), self.mTime, MR_LANG( 'Set the local time' ) )
 			self.AddEnumControl( E_SpinEx02, 'Local Time Offset', None, MR_LANG( 'Select your Time Zone' ) )
 			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, MR_LANG( 'Set Automatic or Manual for Daylight savings' ) )
-			self.AddInputControl( E_Input04, MR_LANG( 'Apply Changes' ), '', MR_LANG( 'Press the OK button to save settings' ) )
+			self.AddInputControl( E_Input04, MR_LANG( 'Apply' ), '', MR_LANG( 'Press the OK button to save settings' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03, E_Input04 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -568,7 +569,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FORMAT_HDD :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Disk Format Type', None, MR_LANG( 'Select a disk file system format for your hard drive' ) )
+			self.AddEnumControl( E_SpinEx01, 'Disk Format Type', MR_LANG( 'File System' ), MR_LANG( 'Select a disk file system format for your hard drive' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Format HDD Now' ), '', MR_LANG( 'Press the OK button to format your hard drive' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_Input01 ]

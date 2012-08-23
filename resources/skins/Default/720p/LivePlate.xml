@@ -491,6 +491,23 @@
 				</control>
 			</control>
 		</control>
-
+		<control type="label">
+			<posx>550</posx>
+			<posy>330</posy>
+			<width>500</width>
+			<font>font35_title</font>
+			<label>[I]No Signal [/I]</label>
+			<textcolor>grey2</textcolor>
+			<visible>substring(Window.Property(Signal),False)</visible>
+		</control>
+		<control type="label">
+			<posx>550</posx>
+			<posy>330</posy>
+			<width>500</width>
+			<font>font35_title</font>
+			<label>[I]Scrambled [/I]</label>
+			<textcolor>grey2</textcolor>
+			<visible>substring(Window.Property(Signal),Scramble)</visible>
+		</control>
 	</controls>
 </window>

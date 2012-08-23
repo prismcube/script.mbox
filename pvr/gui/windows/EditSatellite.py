@@ -125,6 +125,8 @@ class EditSatellite( SettingWindow ) :
 		 			return
 				self.mSatelliteIndex = 0
 				self.mDataCache.LoadAllSatellite( )
+				self.mDataCache.LoadConfiguredSatellite( )
+				self.mDataCache.LoadConfiguredTransponder( )
 				self.InitConfig( )
 			else :
 				return
@@ -146,7 +148,7 @@ class EditSatellite( SettingWindow ) :
 		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), satellitename, MR_LANG( 'Select a satellite you want to change settings' ) )
 		longitude = self.GetFormattedLongitude( self.mLongitude , self.mBand )
 		self.AddInputControl( E_Input02, MR_LANG( 'Longitude' ), longitude )
-		self.AddInputControl( E_Input03, MR_LANG( 'Change Satellite Name' ), '', MR_LANG( 'Change the satellite name in the list' ) )
+		self.AddInputControl( E_Input03, MR_LANG( 'Rename Satellite' ), '', MR_LANG( 'Change the satellite name in the list' ) )
 		self.AddInputControl( E_Input04, MR_LANG( 'Add Satellite' ), '', MR_LANG( 'Add a new satellite to the list' ) )
 		self.AddInputControl( E_Input05, MR_LANG( 'Delete Satellite' ), '', MR_LANG( 'Delete a satellite from the list' ) )
 		

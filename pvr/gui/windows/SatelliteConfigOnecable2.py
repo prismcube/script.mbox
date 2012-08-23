@@ -104,12 +104,12 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 		if self.mTunerMgr.GetCurrentTunerConnectionType( ) == E_TUNER_LOOPTHROUGH :
 			if self.GetSelectedIndex( E_SpinEx02 ) == self.GetSelectedIndex( E_SpinEx04 ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Please set a different value for each tuner.' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Please set a different value for each tuner' ) )
 				dialog.doModal( )
 				return
 			if self.GetSelectedIndex( E_SpinEx03 ) == self.GetSelectedIndex( E_SpinEx05 ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Please set a different value for each tuner.' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Please set a different value for each tuner' ) )
 				dialog.doModal( )
 				return
 
@@ -134,7 +134,7 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 		self.ResetAllControl( )
 		tunertype = self.mTunerMgr.GetCurrentTunerConnectionType( )
 		if tunertype == E_TUNER_SEPARATED :
-			self.AddEnumControl( E_SpinEx01, 'MDU', None, MR_LANG( 'Set On/Off for Multi-Dwelling Unit' ) )
+			self.AddEnumControl( E_SpinEx01, 'MDU', None, MR_LANG( 'Set On/Off Multi-Dwelling Unit' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Tuner %d PIN Code' ) % ( self.mTunerIndex + 1 ), '%03d' % self.mTempTunerPin[self.mTunerIndex], MR_LANG( 'Enter your PIN code for Tuner %d' ) % ( self.mTunerIndex + 1 ) )
 			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Tuner %d SCR' ) % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[self.mTunerIndex], MR_LANG( 'Select number of Single Cable Routers for Tuner %d' ) % ( self.mTunerIndex + 1 ) )
 			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner %d Frequency' ) % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[self.mTunerIndex] ), MR_LANG( 'Select the frequency for Tuner %d' ) % ( self.mTunerIndex + 1 ) )
@@ -144,7 +144,7 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 			self.SetEnableControls( disableControls, False )
 
 		elif tunertype == E_TUNER_LOOPTHROUGH :
-			self.AddEnumControl( E_SpinEx01, 'MDU', None, MR_LANG( 'Set On/Off for Multi-Dwelling Unit' ) )
+			self.AddEnumControl( E_SpinEx01, 'MDU', None, MR_LANG( 'Set On/Off Multi-Dwelling Unit' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Tuner 1 PIN Code' ), '%03d' % self.mTempTunerPin[0], MR_LANG( 'Enter your PIN code for Tuner 1' ) )
 			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Tuner 1 SCR' ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[0], MR_LANG( 'Select number of Single Cable Routers for Tuner 1' ) )
 			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner 1 Frequency' ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[0] ), MR_LANG( 'Select the frequency for Tuner 1' ) )
