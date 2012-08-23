@@ -135,6 +135,8 @@ class LivePlate( BaseWindow ) :
 		if not self.mZappingMode :
 			self.mZappingMode = ElisIZappingMode( )
 
+		self.LoadNoSignalState( )
+
 		#get channel
 		self.ChannelTune( INIT_CHANNEL )
 		self.LoadInit( )
@@ -374,7 +376,6 @@ class LivePlate( BaseWindow ) :
 				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					#LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull )
 					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'STB stopped recording, because your disk space is full' ) )
-
 
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
@@ -1040,7 +1041,7 @@ class LivePlate( BaseWindow ) :
 				self.StopAutomaticHide( )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
-			dialog.SetTitleLabel( 'Enter a PIN code' )
+			dialog.SetTitleLabel( MR_LANG( 'Enter a PIN code' ) )
 			dialog.doModal( )
 
 			if dialog.GetNextAction( ) == dialog.E_TUNE_NEXT_CHANNEL :
@@ -1055,4 +1056,3 @@ class LivePlate( BaseWindow ) :
 
 		if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE : # Still showing 
 			self.mEventBus.Register( self )
-

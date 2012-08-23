@@ -4,26 +4,28 @@ from subprocess import *
 import re
 
 
-E_VERSION					=	0
-E_HDD						=	1
+E_VERSION						=	0
+E_HDD							=	1
 
-GROUP_ID_MAIN				=	3000
+GROUP_ID_MAIN					=	3000
 
-LABEL_ID_PRODUCT_NAME		=	2500
-LABEL_ID_PRODUCT_NUMBER		=	2501
-LABEL_ID_HARDWARE_VERSION	=	2502
-LABEL_ID_SOFTWARE_VERSION	=	2503
-LABEL_ID_BOOTLOADER_VERSION	=	2504
+LABEL_ID_PRODUCT_NAME			=	2500
+LABEL_ID_PRODUCT_NUMBER			=	2501
+LABEL_ID_HARDWARE_VERSION		=	2502
+LABEL_ID_SOFTWARE_VERSION		=	2503
+LABEL_ID_BOOTLOADER_VERSION		=	2504
 
-LABEL_ID_HDD_NAME			=	2600
-LABEL_ID_HDD_SIZE_MEDIA		=	2602
-LABEL_ID_HDD_SIZE_PROGRAM	=	2603
-LABEL_ID_HDD_SIZE_RECORD	=	2604
-LABEL_ID_HDD_TEMEPERATURE	=	2605
+LABEL_ID_HDD_NAME				=	2600
+LABEL_ID_HDD_SIZE_MEDIA			=	2602
+LABEL_ID_HDD_SIZE_PROGRAM		=	2603
+LABEL_ID_HDD_SIZE_RECORD		=	2604
+LABEL_ID_HDD_TEMEPERATURE		=	2605
 
 PROGRESS_ID_HDD_SIZE_MEDIA		=	2702
 PROGRESS_ID_HDD_SIZE_PROGRAM	=	2703
 PROGRESS_ID_HDD_SIZE_RECORD		=	2704
+
+TIME_SEC_CHECK_HDD_TEMP			=	1
 
 
 class SystemInfo( SettingWindow ) :
@@ -192,7 +194,7 @@ class SystemInfo( SettingWindow ) :
 				self.SetVisibleControl( visibleControlIds[i], True )
 
 			if self.CheckExistsDisk( ) :
-				self.mCtrlHDDName.setLabel(	MR_LANG( 'Disk name : %s ( %s )' ) % ( self.GetHDDName( ), self.GetTotalSize( ) ) )
+				self.mCtrlHDDName.setLabel(	MR_LANG( 'Model name : %s ( %s )' ) % ( self.GetHDDName( ), self.GetTotalSize( ) ) )
 
 				total_size, used_size, percent = self.GetPartitionSize( 'sda5' )
 				self.mCtrlProgressMedia.setPercent( percent )
@@ -262,7 +264,7 @@ class SystemInfo( SettingWindow ) :
 	def GetHDDName( self ) :
 		name = MR_LANG( 'Unknown' )
 		device = '/dev/sda'
-		cmd = "hddtemp %s -D | awk '/Model:/ {print $2}'" % device
+		cmd = "hddtemp %s -D | awk '/Model:/ {print $2,$3}'" % device
 		name = Popen( cmd, shell=True, stdout=PIPE )
 		name = name.stdout.read( ).strip( )
 		return name
@@ -272,14 +274,11 @@ class SystemInfo( SettingWindow ) :
 		size = MR_LANG( 'Unknown' )
 		unit = ''
 		device = '/dev/sda'
-		cmd = "fdisk -ul %s | awk '/Disk/ {print $3}'" % device
+		cmd = "fdisk -ul %s | awk '/Disk/ {print $3,$4}'" % device
 		size = Popen( cmd, shell=True, stdout=PIPE )
 		size = size.stdout.read( ).strip( )
-		cmd = "fdisk -ul %s | awk '/Disk/ {print $4}'" % device
-		unit = Popen( cmd, shell=True, stdout=PIPE )
-		unit = unit.stdout.read( ).strip( )
-		unit = re.sub( ',', '', unit )
-		return '%s %s' % ( size, unit )
+		size = re.sub( ',', '', size )
+		return size
 
 
 	@RunThread
@@ -298,7 +297,7 @@ class SystemInfo( SettingWindow ) :
 				else :
 					temperature = MR_LANG( 'Unknown' )
 				self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : %s' ) % temperature )
-			time.sleep( 1 )
+			time.sleep( TIME_SEC_CHECK_HDD_TEMP )
 
 
 	def CheckExistsDisk( self ) :
