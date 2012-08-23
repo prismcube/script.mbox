@@ -207,7 +207,7 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 		self.ResetAllControl( )
 
 		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mDataCache.GetFormattedSatelliteName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ), MR_LANG( 'Select the satellite that your receiver is locked into' ) )
-		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'LNB Type' ), E_LIST_LNB_TYPE, self.mSelectedIndexLnbType, MR_LANG( 'Select an appropriate LNB for the selected satellite' ) )
+		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'LNB Type' ), E_LIST_LNB_TYPE, self.mSelectedIndexLnbType, MR_LANG( 'Select the frequency range to the LNB' ) )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
 			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'LNB Frequency' ), E_LIST_SINGLE_FREQUENCY, getSingleFrequenceIndex( self.mCurrentSatellite.mLowLNB ), MR_LANG( 'Select the LNB frequency to the LNB you are using' ) )
@@ -215,19 +215,19 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 			lnbFrequency = '%d / %d / %d' % ( self.mCurrentSatellite.mLowLNB, self.mCurrentSatellite.mHighLNB, self.mCurrentSatellite.mLNBThreshold )
 			self.AddInputControl( E_Input02, MR_LANG( 'LNB Frequency' ), lnbFrequency, MR_LANG( 'Select the LNB frequency to the LNB you are using' ) )
 
-		self.AddUserEnumControl( E_SpinEx03, MR_LANG( '22KHz Control' ), USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mFrequencyLevel, MR_LANG( 'Set On/Off switching between 2 separate LNB feeds' ) )	
+		self.AddUserEnumControl( E_SpinEx03, MR_LANG( '22KHz Tone Control' ), USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mFrequencyLevel, MR_LANG( 'Set On/Off switching between 2 separate LNB feeds' ) )	
 
 		if self.mTransponderList :
-			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), self.mTransponderList[ self.mSelectedTransponderIndex ], MR_LANG( 'Select an appropriate transponder from the list' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), self.mTransponderList[ self.mSelectedTransponderIndex ], MR_LANG( 'Select the transponder from the list' ) )
 			self.mHasTransponder = True			
 		else :
-			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), MR_LANG( 'None' ), MR_LANG( 'Select an appropriate transponder from the list' ) )			
+			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), MR_LANG( 'None' ), MR_LANG( 'Select the transponder from the list' ) )			
 			self.mHasTransponder = False
 
-		self.AddInputControl( E_Input04, MR_LANG( 'Rotate Satellite Dish' ), '', MR_LANG( 'Rotates the antenna to east or west' ) )
-		self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Position Limit' ), E_LIST_MOTORIZE_ACTION, 0, MR_LANG( 'Set the east and west limits of the motor' ) )
-		self.AddInputControl( E_Input05, MR_LANG( ' - Set Position Limit' ), '', MR_LANG( 'Press the OK button to apply the position limit' ) )
-		self.AddInputControl( E_Input06, MR_LANG( 'Store Position and Exit' ), '', MR_LANG( 'Save the antenna\'s position and exit' ) )
+		self.AddInputControl( E_Input04, MR_LANG( 'Rotate Satellite Dish' ), '', MR_LANG( 'Rotate the antenna to East or West' ) )
+		self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Position Limits' ), E_LIST_MOTORIZE_ACTION, 0, MR_LANG( 'Set the East and West limit of the DiSEqC motor' ) )
+		self.AddInputControl( E_Input05, MR_LANG( ' - Set Limits' ), '', MR_LANG( 'Press the OK button to apply the position limits' ) )
+		self.AddInputControl( E_Input06, MR_LANG( 'Store Position and Exit' ), '', MR_LANG( 'Save satellites position and exit' ) )
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input01, E_Input03, E_Input04, E_Input05, E_Input06 ]

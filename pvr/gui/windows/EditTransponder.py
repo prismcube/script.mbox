@@ -220,18 +220,18 @@ class EditTransponder( SettingWindow ) :
 		self.ResetAllControl( )
 		self.GetSatelliteInfo( self.mSatelliteIndex )
 		satellitename = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand )
-		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), satellitename, MR_LANG( 'Choose a satellite from the list' ) )
+		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), satellitename, MR_LANG( 'Select a satellite from the list' ) )
 
 		self.mTransponderList = self.mDataCache.GetTransponderListBySatellite( self.mLongitude, self.mBand )
 
 		if self.mTransponderList and self.mTransponderList[0].mError == 0 :
-			self.AddInputControl( E_Input02, MR_LANG( 'Frequency' ), '%d MHz' % self.mTransponderList[self.mTransponderIndex].mFrequency, MR_LANG( 'Select Frequency' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Frequency' ), '%d MHz' % self.mTransponderList[self.mTransponderIndex].mFrequency, MR_LANG( 'Select the transponder frequency for the satellite' ) )
 			self.AddInputControl( E_Input03, MR_LANG( 'Symbol Rate' ), '%d KS/s' % self.mTransponderList[self.mTransponderIndex].mSymbolRate )
 
 			property = ElisPropertyEnum( 'Polarisation', self.mCommander )
 			self.AddInputControl( E_Input04, MR_LANG( 'Polarization' ), property.GetPropStringByIndex( self.mTransponderList[self.mTransponderIndex].mPolarization ) )
 		else :
-			self.AddInputControl( E_Input02, MR_LANG( 'Frequency' ), MR_LANG( 'None' ), MR_LANG( 'Select Frequency' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Frequency' ), MR_LANG( 'None' ), MR_LANG( 'Select the transponder frequency for the satellite' ) )
 			self.AddInputControl( E_Input03, MR_LANG( 'Symbol Rate' ), MR_LANG( 'None' ) )
 			self.AddInputControl( E_Input04, MR_LANG( 'Polarization' ), MR_LANG( 'None' ) )
 
