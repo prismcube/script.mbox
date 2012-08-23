@@ -116,7 +116,14 @@ class MainMenu( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
 		elif aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO :
-			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+			if self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
+				self.getControl( MAIN_GROUP_ID ).setVisible( False )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Please stop the recordings first' ) )
+				dialog.doModal( )
+				self.getControl( MAIN_GROUP_ID ).setVisible( True )
+
+			elif self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Please stop the Personal Video Recording first' ) )

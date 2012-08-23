@@ -848,11 +848,9 @@ class LivePlate( LivePlateWindow ) :
 			return
 
 		if selectAction == CONTEXT_ACTION_VIDEO_SETTING :
-			GuiLock2( True )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO )
 			dialog.SetValue( selectAction )
  			dialog.doModal( )
- 			GuiLock2( False )
 
  		else :
 			getCount = self.mDataCache.Audiotrack_GetCount( )
