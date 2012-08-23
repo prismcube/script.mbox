@@ -7,7 +7,6 @@ import pvr.DataCacheMgr
 import pvr.TunerConfigMgr 
 from pvr.Util import RunThread, GuiLock, GuiLock2 
 
-
 class Action(object) :
 	ACTION_NONE					= 0
 	ACTION_MOVE_LEFT			= 1		#Left Arrow
@@ -90,6 +89,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mWin = None
 		self.mWinId = 0
 		self.mClosed = False
+		self.mStartMediaCenter = False
 
 		self.mFocusId = -1
 		self.mLastFocused = -1
@@ -158,9 +158,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 			self.setProperty('Signal', 'True')
 
 
-	#@GuiLock
 	def UpdateVolume( self ) :
-
 		GuiLock2( True )
 		retVolume = xbmc.executehttpapi( 'getvolume()' )
 		GuiLock2( False )
@@ -177,6 +175,25 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 			if self.mCommander.Player_GetMute( ) == True :
 				self.mCommander.Player_SetMute( False )
 			self.mCommander.Player_SetVolume( volume )
+
+
+	def SetMediaCenter( self ) :
+		self.mStartMediaCenter = True
+		self.mCommander.AppMediaPlayer_Control( 1 )
+
+
+	def CheckMediaCenter( self ) :
+		if self.mStartMediaCenter == True :
+			self.mCommander.AppMediaPlayer_Control( 0 )
+			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
+			self.UpdateVolume( )
+
+			self.mStartMediaCenter = False
+			#current channel re-zapping
+			iChannel = self.mDataCache.Channel_GetCurrent( )
+			if iChannel :
+				self.mDataCache.Channel_InvalidateCurrent( )
+				self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
 
 
 	def OpenBusyDialog( self ) :

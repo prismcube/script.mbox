@@ -54,8 +54,6 @@ FLAG_CLOCKMODE_INTTIME = 5
 #PREV_CHANNEL	= 2
 #INIT_CHANNEL	= 3
 
-E_INDEX_JUMP_MAX = 100
-
 CONTEXT_ACTION_VIDEO_SETTING = 1 
 CONTEXT_ACTION_AUDIO_SETTING = 2
 
@@ -142,11 +140,6 @@ class InfoPlate( LivePlateWindow ) :
 			if ret :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
-
-
-		elif id == Action.ACTION_MBOX_XBMC :
-			pass
-			#toDo warning msg
 
 		elif id == Action.ACTION_MBOX_ARCHIVE :
 			self.Close( )
@@ -474,14 +467,22 @@ class InfoPlate( LivePlateWindow ) :
 				if ret == Action.ACTION_CONTEXT_MENU :
 					self.Close( )
 					WinMgr.GetInstance( ).CloseWindow( )
-				elif ret == Action.ACTION_PLAYER_PLAY :
-					xbmc.executebuiltin('xbmc.Action(play)')
-
-				elif ret == Action.ACTION_STOP :
-					xbmc.executebuiltin('xbmc.Action(stop)')
+				else:
+					self.DialogEventReceive( dialog )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SETTING_FORMAT :
+			self.mEventBus.Deregister( self )
 			self.SetAudioVideoContext( )
+			self.mEventBus.Register( self )
+
+
+	def DialogEventReceive( self, aDialog ) :
+		ret = aDialog.GetCloseStatus( )
+		if ret == Action.ACTION_PLAYER_PLAY :
+			xbmc.executebuiltin('xbmc.Action(play)')
+
+		elif ret == Action.ACTION_STOP :
+			xbmc.executebuiltin('xbmc.Action(stop)')
 
 
 	def SetAudioVideoContext( self ) :
@@ -493,16 +494,18 @@ class InfoPlate( LivePlateWindow ) :
 		dialog.SetProperty( context )
 		dialog.doModal( )
 
+		self.DialogEventReceive( dialog )
+
 		selectAction = dialog.GetSelectedAction( )
 		if selectAction == -1 :
 			return
 
 		if selectAction == CONTEXT_ACTION_VIDEO_SETTING :
-			GuiLock2( True )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO )
 			dialog.SetValue( selectAction )
  			dialog.doModal( )
- 			GuiLock2( False )
+
+ 			self.DialogEventReceive( dialog )
 
  		else :
 			getCount = self.mDataCache.Audiotrack_GetCount( )
@@ -521,6 +524,8 @@ class InfoPlate( LivePlateWindow ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 			dialog.SetProperty( context, selectIdx )
 			dialog.doModal( )
+
+			self.DialogEventReceive( dialog )
 
 			selectIdx2 = dialog.GetSelectedAction( )
 			self.mDataCache.Audiotrack_select( selectIdx2 )

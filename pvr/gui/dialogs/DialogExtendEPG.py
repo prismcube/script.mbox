@@ -69,7 +69,7 @@ class DialogExtendEPG( BaseDialog ) :
 		elif actionId == Action.ACTION_STOP :
 			self.Close( )
 
-		elif actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
+		elif actionId == Action.ACTION_PLAYER_PLAY or actionId == Action.ACTION_PAUSE :
 			self.Close( )
 
 

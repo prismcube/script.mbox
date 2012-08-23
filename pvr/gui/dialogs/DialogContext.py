@@ -21,11 +21,13 @@ class DialogContext( BaseDialog ) :
 		self.mSelectedIndex = -1
 		self.mCtrlList = None
 		self.mItemCount = 0
+		self.mIsOk = None
 
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
+		self.mEventBus.Register( self )
 
 		itemHeight = int( self.getProperty( 'ItemHeight' ) )
 		self.mCtrlList = self.getControl( DIALOG_LIST_ID )
@@ -59,35 +61,54 @@ class DialogContext( BaseDialog ) :
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
+		self.mIsOk = actionId
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.mSelectedIndex = -1
-			self.clearProperty( 'AnimationWaitingDialogOnClose' )
-			time.sleep( 0.3 )
-			self.close( )
+			self.Close( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.mSelectedIndex = -1
-			self.clearProperty( 'AnimationWaitingDialogOnClose' )
-			time.sleep( 0.3 )
-			self.close( )
+			self.Close( )
+
+		elif actionId == Action.ACTION_STOP :
+			self.Close( )
+
+		elif actionId == Action.ACTION_PLAYER_PLAY or actionId == Action.ACTION_PAUSE :
+			self.Close( )
 
 
 	def onClick( self, aControlId ) :
 		if aControlId == DIALOG_BUTTON_CLOSE_ID :
-			self.CloseDialog( )
+			self.Close( )
 			self.mSelectedIndex = -1
 			return
 
 		self.mSelectedIndex = self.mCtrlList.getSelectedPosition( )
-		self.CloseDialog( )		
+		self.Close( )		
 
 
 	def onFocus( self, aControlId ) :
 		pass
+
+
+	@GuiLock
+	def onEvent( self, aEvent ) :
+		if self.mWinId == xbmcgui.getCurrentWindowDialogId( ) :
+
+			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
+				LOG_TRACE( 'ElisEventPlaybackEOF mType[%d]'% ( aEvent.mType ) )
+
+				if aEvent.mType == ElisEnum.E_EOF_START :
+					self.mIsOk = Action.ACTION_PLAYER_PLAY
+					xbmc.executebuiltin('xbmc.Action(play)')
+
+				elif aEvent.mType == ElisEnum.E_EOF_END :
+					LOG_TRACE( 'EventRecv EOF_END' )
+					xbmc.executebuiltin('xbmc.Action(stop)')
 
 
 	def SetProperty( self, aItemList, aSelectedIndex = -1 ) :
@@ -107,4 +128,13 @@ class DialogContext( BaseDialog ) :
 			return -1
 
 		return self.mItemList[ self.mSelectedIndex ].mContextAction
+
+
+	def GetCloseStatus( self ) :
+		return self.mIsOk
+
+
+	def Close( self ) :
+		self.mEventBus.Deregister( self )
+		self.CloseDialog( )
 

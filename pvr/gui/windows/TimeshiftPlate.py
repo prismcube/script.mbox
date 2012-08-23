@@ -55,7 +55,6 @@ E_BUTTON_GROUP_PLAYPAUSE = 450
 
 E_INDEX_FIRST_RECORDING = 0
 E_INDEX_SECOND_RECORDING = 1
-E_INDEX_JUMP_MAX = 100
 
 E_TAG_COLOR_RED   = '[COLOR red]'
 E_TAG_COLOR_GREEN = '[COLOR green]'
@@ -131,8 +130,6 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mRepeatTimeout = 1
 		self.mAsyncShiftTimer = None
 		self.mAutomaticHideTimer = None
-
-		self.LoadNoSignalState( )
 
 		self.ShowRecordingInfo( )
 		self.mTimeShiftExcuteTime = self.mDataCache.Datetime_GetLocalTime( )
@@ -265,12 +262,6 @@ class TimeShiftPlate( BaseWindow ) :
 				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Please stop the Personal Video Recording first' ) )
 			else :
 				self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
-
-		elif id == Action.ACTION_MBOX_XBMC :
-			#ToDO : 
-			pass
-			#self.Close( )
-			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
 
 		elif id == Action.ACTION_MBOX_ARCHIVE :
 			self.Close( )

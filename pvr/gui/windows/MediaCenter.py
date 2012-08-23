@@ -30,11 +30,11 @@ class MediaCenter( BaseWindow ) :
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			xbmc.executebuiltin( 'PlayerControl(Stop)' )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
+			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_PARENT_DIR :
 			xbmc.executebuiltin( 'PlayerControl(Stop)' )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
+			WinMgr.GetInstance( ).CloseWindow( )
 
 
 	def onClick( self, aControlId ) :

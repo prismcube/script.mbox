@@ -20,26 +20,29 @@ class DialogSetAudioVideo( SettingDialog ) :
 
 
 	def onInit( self ) :
+		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
+		self.mWin = xbmcgui.Window( self.mWinId )
+
 		self.InitProperty( )
 		self.SetHeaderLabel( self.mDialogTitle )
 		self.DrawItem( )
 		self.mIsOk = False
 
+		self.mEventBus.Register( self )
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-		self.GlobalAction( actionId )		
+		self.mIsOk = actionId
+		self.GlobalAction( actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			self.ResetAllControl( )
-			self.CloseDialog( )
+			self.Close( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			self.ResetAllControl( )
-			self.CloseDialog( )
+			self.Close( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )
@@ -53,6 +56,12 @@ class DialogSetAudioVideo( SettingDialog ) :
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
 
+		elif actionId == Action.ACTION_STOP :
+			self.Close( )
+
+		elif actionId == Action.ACTION_PLAYER_PLAY or actionId == Action.ACTION_PAUSE :
+			self.Close( )
+
 
 	def onClick( self, aControlId ) :
 		self.mSelectIdx = id = self.GetGroupId( aControlId )
@@ -65,6 +74,22 @@ class DialogSetAudioVideo( SettingDialog ) :
 
 	def onFocus( self, aControlId ):
 		pass
+
+
+	@GuiLock
+	def onEvent( self, aEvent ) :
+		if self.mWinId == xbmcgui.getCurrentWindowDialogId( ) :
+
+			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
+				LOG_TRACE( 'ExtendDialog ElisEventPlaybackEOF mType[%d]'% ( aEvent.mType ) )
+
+				if aEvent.mType == ElisEnum.E_EOF_START :
+					self.mIsOk = Action.ACTION_PLAYER_PLAY
+					xbmc.executebuiltin('xbmc.Action(play)')
+
+				elif aEvent.mType == ElisEnum.E_EOF_END :
+					LOG_TRACE( 'EventRecv EOF_END' )
+					xbmc.executebuiltin('xbmc.Action(stop)')
 
 
 	def DrawItem( self ) :
@@ -99,7 +124,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 		self.getControl( MAIN_GROUP_ID ).setVisible( True )
 
 
-	def IsOK( self ) :
+	def GetCloseStatus( self ) :
 		return self.mIsOk
 
 
@@ -164,4 +189,9 @@ class DialogSetAudioVideo( SettingDialog ) :
 	def AsyncSetProperty( self ) :
 		self.SetProperty( )
 
+
+	def Close( self ) :
+		self.mEventBus.Deregister( self )
+		self.ResetAllControl( )
+		self.CloseDialog( )
 
