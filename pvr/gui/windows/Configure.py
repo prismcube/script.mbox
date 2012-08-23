@@ -442,7 +442,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_AUDIO_SETTING :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Audio Dolby', None, MR_LANG( 'Set the STB to select the Dolby audio automatically' ) )
+			self.AddEnumControl( E_SpinEx01, 'Audio Dolby', MR_LANG( 'Dolby Audio' ), MR_LANG( 'Set the STB to select the Dolby audio automatically' ) )
 			self.AddEnumControl( E_SpinEx02, 'Audio HDMI', None, MR_LANG( 'Set the Audio HDMI format' ) )
 			self.AddEnumControl( E_SpinEx03, 'Audio Delay', None, MR_LANG( 'Select a delay time for audio' ) )
 
