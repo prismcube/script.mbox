@@ -408,7 +408,7 @@
 					<height>35</height>
 					<font>font12</font>
 					<!--label>Installation</label-->
-					<label>Installation enables you to setup your STB - Antenna, Channel, Satellite, TP, CAS, etc</label>
+					<label>Installation enables you to setup your STB - Antenna, Channel, Satellite, Transponder, CAS, etc</label>
 					<align>left</align>
 					<textcolor>white</textcolor>                
 					<shadowcolor>black</shadowcolor>	                

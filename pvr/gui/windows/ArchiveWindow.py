@@ -598,13 +598,12 @@ class ArchiveWindow( BaseWindow ) :
 				context.append( ContextItem( MR_LANG( 'Delete All' ), CONTEXT_DELETE_ALL ) )
 				context.append( ContextItem( MR_LANG( 'Lock' ), CONTEXT_LOCK ) )
 				context.append( ContextItem( MR_LANG( 'Unlock' ), CONTEXT_UNLOCK ) )	
-#				context.append( ContextItem( MR_LANG( 'Clear Marked Items' ), CONTEXT_CLEAR_MARK ) )	
 				context.append( ContextItem( MR_LANG( 'Remove Selections' ), CONTEXT_CLEAR_MARK ) )	
 				
 			elif selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
 				recordInfo = self.mRecordList[ selectedPos ]		
 				context.append( ContextItem( MR_LANG( 'Play' ), CONTEXT_PLAY ) )
-				context.append( ContextItem( MR_LANG( 'Play from the Start' ), CONTEXT_PLAY_FROM_BEGINNIG ) )
+				context.append( ContextItem( MR_LANG( 'Play from beginning' ), CONTEXT_PLAY_FROM_BEGINNIG ) )
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_DELETE ) )
 				context.append( ContextItem( MR_LANG( 'Delete All' ), CONTEXT_DELETE_ALL ) )				
 				if recordInfo.mLocked:
@@ -613,7 +612,6 @@ class ArchiveWindow( BaseWindow ) :
 					context.append( ContextItem( MR_LANG( 'Lock' ), CONTEXT_LOCK ) )
 
 				context.append( ContextItem( MR_LANG( 'Rename' ), CONTEXT_RENAME ) )
-#				context.append( ContextItem( 'Start Mark', CONTEXT_START_MARK ) )
 				context.append( ContextItem( MR_LANG( 'Multi-Select' ), CONTEXT_START_MARK ) )
 
 			else :
