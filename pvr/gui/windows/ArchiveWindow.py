@@ -602,7 +602,7 @@ class ArchiveWindow( BaseWindow ) :
 				
 			elif selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
 				recordInfo = self.mRecordList[ selectedPos ]		
-				context.append( ContextItem( MR_LANG( 'Play' ), CONTEXT_PLAY ) )
+				context.append( ContextItem( MR_LANG( 'Resume from last point' ), CONTEXT_PLAY ) )
 				context.append( ContextItem( MR_LANG( 'Play from beginning' ), CONTEXT_PLAY_FROM_BEGINNIG ) )
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_DELETE ) )
 				context.append( ContextItem( MR_LANG( 'Delete All' ), CONTEXT_DELETE_ALL ) )				

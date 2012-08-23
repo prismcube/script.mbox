@@ -1180,8 +1180,8 @@ class ChannelListWindow( BaseWindow ) :
 		#is change?
 		if self.mIsSave :
 			#ask save question
-			head =  MR_LANG( 'Save Channels' )
-			line1 = MR_LANG( 'Do you want to save the channels?' )
+			head =  MR_LANG( 'Save Changes' )
+			line1 = MR_LANG( 'Do you want to save changes?' )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( head, line1 )
@@ -2220,7 +2220,7 @@ class ChannelListWindow( BaseWindow ) :
 				if self.mEditFavorite :
 					context.append( ContextItem( '%s'% MR_LANG( 'Add to Favorite Group' ), CONTEXT_ACTION_ADD_TO_FAV  ) )
 					context.append( ContextItem( '%s'% MR_LANG( 'Create New Group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
-					context.append( ContextItem( '%s'% MR_LANG( 'Change Favorite Group Name' ), CONTEXT_ACTION_RENAME_FAV ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Rename Favorite Group' ), CONTEXT_ACTION_RENAME_FAV ) )
 					context.append( ContextItem( '%s'% MR_LANG( 'Delete Favorite Group' ), CONTEXT_ACTION_DELETE_FAV ) )
 				else:
 					context.append( ContextItem( '%s'% MR_LANG( 'Create New Group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
@@ -2239,7 +2239,7 @@ class ChannelListWindow( BaseWindow ) :
 				context = []
 
 			context.append( ContextItem( '%s'% MR_LANG( 'Add Favorite Channel Group' ), CONTEXT_ACTION_ADD_TO_CHANNEL ) )
-			context.append( ContextItem( '%s'% MR_LANG( 'Change Favorite Group Name' ), CONTEXT_ACTION_RENAME_FAV ) )
+			context.append( ContextItem( '%s'% MR_LANG( 'Rename Favorite Group' ), CONTEXT_ACTION_RENAME_FAV ) )
 
 		context.append( ContextItem( '%s'% MR_LANG( 'Save and Exit' ), CONTEXT_ACTION_SAVE_EXIT ) )
 
@@ -2287,7 +2287,7 @@ class ChannelListWindow( BaseWindow ) :
 		   selectedAction == CONTEXT_ACTION_DELETE_FAV :
  			title = ''
  			if selectedAction == CONTEXT_ACTION_ADD_TO_FAV :   title = MR_LANG( 'Add to Favorite Group' )
- 			elif selectedAction == CONTEXT_ACTION_RENAME_FAV : title = MR_LANG( 'Change Favorite Group Name' )
+ 			elif selectedAction == CONTEXT_ACTION_RENAME_FAV : title = MR_LANG( 'Rename Favorite Group' )
  			elif selectedAction == CONTEXT_ACTION_DELETE_FAV : title = MR_LANG( 'Delete Favorite Group' )
 
  			grpIdx = xbmcgui.Dialog( ).select( title, self.mEditFavorite )
