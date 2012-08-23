@@ -125,6 +125,8 @@ class EditSatellite( SettingWindow ) :
 		 			return
 				self.mSatelliteIndex = 0
 				self.mDataCache.LoadAllSatellite( )
+				self.mDataCache.LoadConfiguredSatellite( )
+				self.mDataCache.LoadConfiguredTransponder( )
 				self.InitConfig( )
 			else :
 				return

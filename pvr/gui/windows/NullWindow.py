@@ -18,6 +18,8 @@ class NullWindow( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
+		self.LoadNoSignalState( )
+
 		if self.mInitialized == False :
 			self.mInitialized = True
 			self.mCommander.AppHBBTV_Ready( 1 )

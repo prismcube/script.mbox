@@ -4,26 +4,28 @@ from subprocess import *
 import re
 
 
-E_VERSION					=	0
-E_HDD						=	1
+E_VERSION						=	0
+E_HDD							=	1
 
-GROUP_ID_MAIN				=	3000
+GROUP_ID_MAIN					=	3000
 
-LABEL_ID_PRODUCT_NAME		=	2500
-LABEL_ID_PRODUCT_NUMBER		=	2501
-LABEL_ID_HARDWARE_VERSION	=	2502
-LABEL_ID_SOFTWARE_VERSION	=	2503
-LABEL_ID_BOOTLOADER_VERSION	=	2504
+LABEL_ID_PRODUCT_NAME			=	2500
+LABEL_ID_PRODUCT_NUMBER			=	2501
+LABEL_ID_HARDWARE_VERSION		=	2502
+LABEL_ID_SOFTWARE_VERSION		=	2503
+LABEL_ID_BOOTLOADER_VERSION		=	2504
 
-LABEL_ID_HDD_NAME			=	2600
-LABEL_ID_HDD_SIZE_MEDIA		=	2602
-LABEL_ID_HDD_SIZE_PROGRAM	=	2603
-LABEL_ID_HDD_SIZE_RECORD	=	2604
-LABEL_ID_HDD_TEMEPERATURE	=	2605
+LABEL_ID_HDD_NAME				=	2600
+LABEL_ID_HDD_SIZE_MEDIA			=	2602
+LABEL_ID_HDD_SIZE_PROGRAM		=	2603
+LABEL_ID_HDD_SIZE_RECORD		=	2604
+LABEL_ID_HDD_TEMEPERATURE		=	2605
 
 PROGRESS_ID_HDD_SIZE_MEDIA		=	2702
 PROGRESS_ID_HDD_SIZE_PROGRAM	=	2703
 PROGRESS_ID_HDD_SIZE_RECORD		=	2704
+
+TIME_SEC_CHECK_HDD_TEMP			=	1
 
 
 class SystemInfo( SettingWindow ) :
@@ -95,6 +97,7 @@ class SystemInfo( SettingWindow ) :
 		
 		self.SetListControl( )
 		self.mInitialized = True
+		self.mPrevListItemID = -1
 
 
 	def onAction( self, aAction ) :
@@ -193,17 +196,17 @@ class SystemInfo( SettingWindow ) :
 			if self.CheckExistsDisk( ) :
 				self.mCtrlHDDName.setLabel(	MR_LANG( 'Name & Total Size : %s ( %s )' ) % ( self.GetHDDName( ), self.GetTotalSize( ) ) )
 
-				total_size, free_size, percent = self.GetPartitionSize( 'sda5' )
+				total_size, used_size, percent = self.GetPartitionSize( 'sda5' )
 				self.mCtrlProgressMedia.setPercent( percent )
-				self.mCtrlHDDSizeMedia.setLabel( MR_LANG( 'Media Usage : %s%% ( %s / %s )' ) % ( percent, free_size, total_size ) )
+				self.mCtrlHDDSizeMedia.setLabel( MR_LANG( 'Media usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )
 
-				total_size, free_size, percent = self.GetPartitionSize( 'sda3' )
+				total_size, used_size, percent = self.GetPartitionSize( 'sda3' )
 				self.mCtrlProgressProgram.setPercent( percent )
-				self.mCtrlHDDSizeProgram.setLabel( MR_LANG( 'Program Usage : %s%% ( %s / %s )' ) % ( percent, free_size, total_size ) )
-
-				total_size, free_size, percent = self.GetRecordFreeSize( )
+				self.mCtrlHDDSizeProgram.setLabel( MR_LANG( 'Program usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )
+				
+				total_size, used_size, percent = self.GetRecordFreeSize( )
 				self.mCtrlProgressRecord.setPercent( percent )
-				self.mCtrlHDDSizeRecord.setLabel( MR_LANG( 'Recording Usage : %s%% ( %s / %s )' ) % ( percent, free_size, total_size ) )
+				self.mCtrlHDDSizeRecord.setLabel( MR_LANG( 'Recording usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )
 			else :
 				self.mCtrlHDDName.setLabel( MR_LANG( 'Name & Total Size : Unknown' ) )
 				self.mCtrlHDDSizeMedia.setLabel( MR_LANG( 'Media Usage : Unknown' ) )
@@ -220,46 +223,48 @@ class SystemInfo( SettingWindow ) :
 
 	def GetPartitionSize( self, aName ) :
 		total_size = MR_LANG( 'Unknown' )
-		free_size = MR_LANG( 'Unknown' )
+		used_size = MR_LANG( 'Unknown' )
 		percent = MR_LANG( 'Unknown' )
 		cmd = "df -h | awk '/%s/ {print $2}'" % aName
 		total_size = Popen( cmd, shell=True, stdout=PIPE )
 		total_size = total_size.stdout.read( ).strip( )
-		cmd = "df -h | awk '/%s/ {print $4}'" % aName
-		free_size = Popen( cmd, shell=True, stdout=PIPE )
-		free_size = free_size.stdout.read( ).strip( )
+		cmd = "df -h | awk '/%s/ {print $3}'" % aName
+		used_size = Popen( cmd, shell=True, stdout=PIPE )
+		used_size = used_size.stdout.read( ).strip( )
 		cmd = "df -h | awk '/%s/ {print $5}'" % aName
 		percent = Popen( cmd, shell=True, stdout=PIPE )
 		percent = percent.stdout.read( ).strip( )
 		percent = int( re.sub( '%', '', percent ) )
 
-		return total_size, free_size, percent
+		return total_size, used_size, percent
 
 
 	def GetRecordFreeSize( self ) :
 		total_size = MR_LANG( 'Unknown' )
-		free_size = MR_LANG( 'Unknown' )
+		used_size = MR_LANG( 'Unknown' )
 		percent = MR_LANG( 'Unknown' )
 		if self.mCommander.Record_GetPartitionSize( ) != -1 and self.mCommander.Record_GetFreeMBSize( ) != -1 :
-			free_size	= self.mCommander.Record_GetFreeMBSize( )
 			total_size	= self.mCommander.Record_GetPartitionSize( )
-			percent		= int( free_size / float( self.mCommander.Record_GetPartitionSize( ) ) * 100 )
-			if free_size >= 1024 :
-				free_size	= '%sG' % int( free_size / float( 1024 ) )
-				total_size	= '%sG' % int( total_size / float( 1024 ) )
+			used_size	= total_size - self.mCommander.Record_GetFreeMBSize( )
+			percent		= int( used_size / float( total_size ) * 100 )
+			if used_size >= 1024 :
+				used_size	= '%sG' % int( used_size / float( 1024 ) )
 			else :
-				free_size	= '%sM' % free_size
+				used_size	= '%sM' % used_size
+			if total_size >= 1024 :
+				total_size = '%sG' % int( total_size / float( 1024 ) )
+			else :
 				total_size	= '%sM' % total_size
 		else :
 			LOG_ERR( 'Get Record_GetPartitionSize or Record_GetFreeMBSize Fail!!!' )
 
-		return total_size, free_size, percent
+		return total_size, used_size, percent
 
 
 	def GetHDDName( self ) :
 		name = MR_LANG( 'Unknown' )
 		device = '/dev/sda'
-		cmd = "hddtemp %s -D | awk '/Model:/ {print $2}'" % device
+		cmd = "hddtemp %s -D | awk '/Model:/ {print $2,$3}'" % device
 		name = Popen( cmd, shell=True, stdout=PIPE )
 		name = name.stdout.read( ).strip( )
 		return name
@@ -269,14 +274,11 @@ class SystemInfo( SettingWindow ) :
 		size = MR_LANG( 'Unknown' )
 		unit = ''
 		device = '/dev/sda'
-		cmd = "fdisk -ul %s | awk '/Disk/ {print $3}'" % device
+		cmd = "fdisk -ul %s | awk '/Disk/ {print $3,$4}'" % device
 		size = Popen( cmd, shell=True, stdout=PIPE )
 		size = size.stdout.read( ).strip( )
-		cmd = "fdisk -ul %s | awk '/Disk/ {print $4}'" % device
-		unit = Popen( cmd, shell=True, stdout=PIPE )
-		unit = unit.stdout.read( ).strip( )
-		unit = re.sub( ',', '', unit )
-		return '%s %s' % ( size, unit )
+		size = re.sub( ',', '', size )
+		return size
 
 
 	@RunThread
@@ -295,7 +297,7 @@ class SystemInfo( SettingWindow ) :
 				else :
 					temperature = MR_LANG( 'Unknown' )
 				self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : %s' ) % temperature )
-			time.sleep( 1 )
+			time.sleep( TIME_SEC_CHECK_HDD_TEMP )
 
 
 	def CheckExistsDisk( self ) :
