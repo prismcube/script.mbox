@@ -105,6 +105,7 @@ class LivePlate( LivePlateWindow ) :
 		self.mCtrlBtnNextEpg           = self.getControl( E_CONTROL_ID_BUTTON_NEXT_EPG )
 
 		self.CheckMediaCenter( )
+		self.LoadNoSignalState( )
 
 		self.InitControl( )
 		self.SetVisibleControls( E_CONTROL_DEFAULT_HIDE, False )
@@ -130,8 +131,6 @@ class LivePlate( LivePlateWindow ) :
 		self.mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
 		if not self.mZappingMode :
 			self.mZappingMode = ElisIZappingMode( )
-
-		self.LoadNoSignalState( )
 
 		#get channel
 		self.ChannelTune( INIT_CHANNEL )
@@ -224,6 +223,9 @@ class LivePlate( LivePlateWindow ) :
 			self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
 
 		elif id == Action.ACTION_PAUSE or id == Action.ACTION_PLAYER_PLAY :
+			if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
+				return -1
+
 			self.Close( )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = id
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
