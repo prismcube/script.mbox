@@ -104,7 +104,7 @@ class Configure( SettingWindow ) :
 		self.mCtrlLeftGroup = self.getControl( E_SUBMENU_LIST_ID )
 		self.mCtrlLeftGroup.addItems( self.mGroupItems )
 
-		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Configuration' ) )
+		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Installation' ) )
 
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
@@ -221,9 +221,9 @@ class Configure( SettingWindow ) :
 					self.ShowProgress( MR_LANG( 'Testing...' ), 10 )
 					time.sleep( 1 )
 					if PingTestExternal( addr ) == True :
-						state = MR_LANG( 'External ping test passed' )
+						state = MR_LANG( 'External ping test has passed' )
 					else :
-						state = MR_LANG( 'External ping test failed' )
+						state = MR_LANG( 'External ping test has failed' )
 				try :
 					self.mProgress.SetResult( True )
 				except Exception, e :
@@ -261,7 +261,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_PARENTAL and groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Enter a new PIN code' ), '', 4, True )			
+			dialog.SetDialogProperty( MR_LANG( 'Enter your new PIN code' ), '', 4, True )			
  			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -304,12 +304,12 @@ class Configure( SettingWindow ) :
  			resetSystem = ElisPropertyEnum( 'Reset Configure Setting', self.mCommander ).GetProp( )
  			if ( resetChannel | resetFavoriteAddons | resetSystem ) == 0 :
  				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Select the options before performing a factory reset' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No reset options selected' ) )
 		 		dialog.doModal( )
 		 		return
 		 	else :
 		 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'THIS WILL RESTORE YOUR SETTINGS TO THE \n FACTORY SETTINGS. DO YOU WANT TO CONTINUE?' ) )
+				dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'THIS WILL RESTORE TO FACTORY SETTINGS\nDO YOU WANT TO CONTINUE?' ) )
 				dialog.doModal( )
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -339,7 +339,7 @@ class Configure( SettingWindow ) :
 				 			dialog.doModal( )
 						else :
 							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-							dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Factory reset failed to complete' ) )
+							dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Factory reset has failed to complete' ) )
 				 			dialog.doModal( )
 							
 					except Exception, e :
@@ -404,9 +404,9 @@ class Configure( SettingWindow ) :
 		elif selectedId == E_PARENTAL :	
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddInputControl( E_Input01, MR_LANG( 'Enable Setting Menu' ), '', MR_LANG( 'Enter the default PIN code to change the parental settings' ) )
-			self.AddEnumControl( E_SpinEx01, 'Lock Mainmenu', MR_LANG( ' - Lock Mainmenu' ), MR_LANG( 'Set a restriction for the main menu' ) )
-			self.AddEnumControl( E_SpinEx02, 'Age Restricted', MR_LANG( ' - Age Restricted'), MR_LANG( 'Set an access restriction to chosen channels' ) )
-			self.AddInputControl( E_Input02, MR_LANG( ' - Change PIn Code' ), '', MR_LANG( 'Change the current PIN code' ) )
+			self.AddEnumControl( E_SpinEx01, 'Lock Mainmenu', MR_LANG( ' - Lock Main Menu' ), MR_LANG( 'Set a restriction for the main menu' ) )
+			self.AddEnumControl( E_SpinEx02, 'Age Restricted', MR_LANG( ' - Age Restriction'), MR_LANG( 'Set an access restriction to chosen channels' ) )
+			self.AddInputControl( E_Input02, MR_LANG( ' - Change PIN Code' ), '', MR_LANG( 'Change the current PIN code' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_Input01, E_SpinEx02, E_Input02 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -444,7 +444,7 @@ class Configure( SettingWindow ) :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddEnumControl( E_SpinEx01, 'Audio Dolby', None, MR_LANG( 'Set the STB to select the Dolby audio automatically' ) )
 			self.AddEnumControl( E_SpinEx02, 'Audio HDMI', None, MR_LANG( 'Set the Audio HDMI format' ) )
-			self.AddEnumControl( E_SpinEx03, 'Audio Delay', None, MR_LANG( 'Set a delay time for audio' ) )
+			self.AddEnumControl( E_SpinEx03, 'Audio Delay', None, MR_LANG( 'Select a delay time for audio' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
 			self.SetEnableControls( visibleControlIds, True )
@@ -544,7 +544,7 @@ class Configure( SettingWindow ) :
 					channelName = MR_LANG( 'None' )
 					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
 
-			self.AddEnumControl( E_SpinEx01, 'Time Mode', None, MR_LANG( 'Select automatic or manual for the time' ) )
+			self.AddEnumControl( E_SpinEx01, 'Time Mode', None, MR_LANG( 'Select Automatic or Manual for the Time Mode' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Channel' ), channelName, MR_LANG( 'Select a channel you want to set your time and date by' ) )
 			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
 			self.AddInputControl( E_Input02, MR_LANG( 'Date' ), self.mDate, MR_LANG( 'Enter today\'s date' ) )
@@ -570,7 +570,7 @@ class Configure( SettingWindow ) :
 		elif selectedId == E_FORMAT_HDD :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddEnumControl( E_SpinEx01, 'Disk Format Type', None, MR_LANG( 'Select a disk file system format for your hard drive' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Format HDD Now' ), '', MR_LANG( 'Press OK button to format your hard drive' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Format HDD Now' ), '', MR_LANG( 'Press the OK button to format your hard drive' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_Input01 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -587,8 +587,8 @@ class Configure( SettingWindow ) :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddEnumControl( E_SpinEx01, 'Reset Channel List', None, MR_LANG( 'Your channel list will be restored to default' ) )
 			self.AddEnumControl( E_SpinEx02, 'Reset Favorite Add-ons', None, MR_LANG( 'All your favorite add-ons will be deleted after factory reset' ) )
-			self.AddEnumControl( E_SpinEx03, 'Reset Configure Setting', None, MR_LANG( 'User settings you have set will be restored to default settings' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Factory Reset Now'), '', MR_LANG( 'Restore your STB to the factory default based on settings you configured' ) )
+			self.AddEnumControl( E_SpinEx03, 'Reset Configure Setting', MR_LANG( 'Reset Configuration Setting' ), MR_LANG( 'User settings you have set will be restored to default' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Factory Reset Now'), '', MR_LANG( 'Restore your STB to the default based on settings you configured' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -707,7 +707,7 @@ class Configure( SettingWindow ) :
 		if ret == False :
 			self.CloseBusyDialog( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Network setup failed to complete' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Network setup has failed to complete' ) )
  			dialog.doModal( )
 		else :
 			if self.mTempNetworkType == NET_DHCP :
@@ -762,7 +762,8 @@ class Configure( SettingWindow ) :
 			if self.mTempNetworkType == NET_STATIC :
 				if self.mTempIpAddr == 'None' or self.mTempSubNet == 'None' or self.mTempGateway == 'None' or self.mTempDns == 'None' :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough information' ) )
+#					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough information' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Invalid IP address' ) )					
 					dialog.doModal( )
 					return
 			self.ConnectEthernet( )
@@ -785,7 +786,7 @@ class Configure( SettingWindow ) :
 			if dev == None :
 				self.CloseBusyDialog( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'STB could not find devices' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Devices not found' ) )
 				dialog.doModal( )
 				return
 
@@ -797,7 +798,7 @@ class Configure( SettingWindow ) :
 			else :
 				apNameList = []
 				for ap in apList :
-					apNameList.append( ap[0] + MR_LANG( ' -   quality : %s Encrypt : %s' ) % ( ap[1], ap[2] ) )
+					apNameList.append( ap[0] + MR_LANG( ' -   quality : %s Encryption : %s' ) % ( ap[1], ap[2] ) )
 				dialog = xbmcgui.Dialog( )
 				ret = dialog.select( MR_LANG( 'Select AP' ), apNameList )
 				if ret >= 0 :
@@ -816,7 +817,7 @@ class Configure( SettingWindow ) :
 			dev = self.mWireless.GetWifidevice( )
 			if apList == None or dev == None :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'STB could not find AP or devices' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'AP or devices not found' ) )
 				dialog.doModal( )
 				return
 
@@ -829,7 +830,7 @@ class Configure( SettingWindow ) :
 			self.CloseBusyDialog( )
 			if ret1 == False :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'STB was unable to save the Wifi configuration' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'STB was unable to save the Wifi configuration' ) )
 			dialog.doModal( )
 
 

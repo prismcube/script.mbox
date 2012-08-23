@@ -702,7 +702,7 @@ class EPGWindow( BaseWindow ) :
 		selectedEPG = self.GetSelectedEPG( )
 
 		if self.mEPGMode == E_VIEW_CHANNEL :
-			context.append( ContextItem( MR_LANG( 'Select channel' ), CONTEXT_SELECT_CHANNEL ) )
+			context.append( ContextItem( MR_LANG( 'Select Channel' ), CONTEXT_SELECT_CHANNEL ) )
 
 		if selectedEPG :
 			"""
@@ -907,7 +907,7 @@ class EPGWindow( BaseWindow ) :
 
 		if timer :		
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Delete Timer' ), MR_LANG( 'Do you want to remove this timer?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Delete Timer' ), MR_LANG( 'Do you want to remove the timer?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -924,7 +924,7 @@ class EPGWindow( BaseWindow ) :
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU REALLY WANT TO DELETE ALL YOUR TIMERS?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU REALLY WANT TO REMOVE ALL YOUR TIMERS?' ) )
 		dialog.doModal( )
 
 		self.OpenBusyDialog( )
@@ -950,14 +950,14 @@ class EPGWindow( BaseWindow ) :
 	def ShowSearchDialog( self ) :
 		try :
 #			kb = xbmc.Keyboard( '', 'Search', False )
-			kb = xbmc.Keyboard( '', MR_LANG( 'Enter the filename you are looking for' ), False )			
+			kb = xbmc.Keyboard( '', MR_LANG( 'Enter serach keywords' ), False )			
 			kb.doModal( )
 			if kb.isConfirmed( ) :
 				keyword = kb.getText( )
 				LOG_TRACE( 'keyword len=%d' %len( keyword ) )
 				if len( keyword ) < MININUM_KEYWORD_SIZE :
 #					xbmcgui.Dialog( ).ok('Infomation', 'Input more than %d characters' %MININUM_KEYWORD_SIZE )
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Name must be at least %d characters long' ) %MININUM_KEYWORD_SIZE )
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'A search keyword must be at least %d characters long' ) %MININUM_KEYWORD_SIZE )
 					return
 					
 				searchList = []

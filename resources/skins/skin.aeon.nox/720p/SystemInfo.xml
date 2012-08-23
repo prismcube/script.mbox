@@ -74,7 +74,7 @@
 				<height>30</height>
 				<font>Font_ShowcaseMainLabel2_Caps</font>
 				<!--label>System Information</label-->
-				<label>STB Information</label>				
+				<label>Check your system resource at a glance</label>				
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>

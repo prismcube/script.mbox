@@ -34,7 +34,7 @@ class FirstInstallation( SettingWindow ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
-		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'First Installation' ) )
+		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Installation' ) )
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )
 		self.SetListControl( self.mStepNum )
@@ -175,7 +175,7 @@ class FirstInstallation( SettingWindow ) :
 		if self.mStepNum == E_STEP_SELECT_LANGUAGE :
 			self.mPrevStepNum = E_STEP_SELECT_LANGUAGE
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Language Setup' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), self.mMenuLanguageList[ ElisPropertyEnum( 'Language', self.mCommander ).GetPropIndex( ) ], MR_LANG( 'Set the language you want the menu to be in' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), self.mMenuLanguageList[ ElisPropertyEnum( 'Language', self.mCommander ).GetPropIndex( ) ], MR_LANG( 'Select the language you want the menu to be in' ) )
 			self.AddInputControl( E_Input02, MR_LANG( 'Audio Language' ), self.mAudioLanguageList[ ElisPropertyEnum( 'Audio Language', self.mCommander ).GetPropIndex( ) ], MR_LANG( 'Select the language that you wish to listen to' ) )
 			self.AddNextButton( MR_LANG( 'Go to Video & Audio Setup' ) )
 			self.SetPrevNextButtonLabel( )
@@ -196,7 +196,7 @@ class FirstInstallation( SettingWindow ) :
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Video & Audio Setup' ) )
 			self.AddEnumControl( E_SpinEx01, 'Show 4:3', MR_LANG( 'TV Screen Format' ), MR_LANG( 'Select the display format for TV screen' ) )
 			self.AddEnumControl( E_SpinEx02, 'Audio Dolby', None, MR_LANG( 'Set the STB to select the Dolby audio automatically' ) )
-			self.AddEnumControl( E_SpinEx03, 'HDMI Format', None, MR_LANG( 'Set the display\'s HDMI resolution' ) )
+			self.AddEnumControl( E_SpinEx03, 'HDMI Format', None, MR_LANG( 'Select the display\'s HDMI resolution' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to Antenna & Satellite Setup' ), MR_LANG( 'Go back to Language Setup' ) )
 			self.SetPrevNextButtonLabel( )
 
@@ -280,19 +280,19 @@ class FirstInstallation( SettingWindow ) :
 		elif self.mStepNum == E_STEP_RESULT :
 			self.mPrevStepNum = E_STEP_DATE_TIME
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Summary of First Installation' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), MR_LANG( 'English' ), MR_LANG( 'First Installation can be summarized as follows :' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), MR_LANG( 'English' ) )
 			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
-			self.AddInputControl( E_Input02, MR_LANG( 'Date' ), self.mDate, MR_LANG( 'First Installation can be summarized as follows :' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Date' ), self.mDate )
 			self.mTime = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_HH_MM )
-			self.AddInputControl( E_Input03, MR_LANG( 'Time' ), self.mTime, MR_LANG( 'First Installation can be summarized as follows :' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'Time' ), self.mTime )
 			cntChannel = self.mDataCache.Channel_GetCount( ElisEnum.E_SERVICE_TYPE_TV )
 			cntRadio = self.mDataCache.Channel_GetCount( ElisEnum.E_SERVICE_TYPE_RADIO )
 			if cntChannel == None :
 				cntChannel = 0
 			if cntRadio == None :
 				cntRadio = 0
-			self.AddInputControl( E_Input04, MR_LANG( 'Number of your TV Channels' ), '%d' % cntChannel, MR_LANG( 'First Installation can be summarized as follows :' ) )
-			self.AddInputControl( E_Input05, MR_LANG( 'Number of your Radio Channels' ), '%d' % cntRadio, MR_LANG( 'First Installation can be summarized as follows :' ) )
+			self.AddInputControl( E_Input04, MR_LANG( 'Number of your TV Channels' ), '%d' % cntChannel )
+			self.AddInputControl( E_Input05, MR_LANG( 'Number of your Radio Channels' ), '%d' % cntRadio )
 			self.AddPrevNextButton( MR_LANG( 'Return to the Installation page' ), MR_LANG( 'Go back to Time & Date Setup' ) )
 			self.SetPrevNextButtonLabel( )
 

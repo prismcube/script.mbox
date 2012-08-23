@@ -24,12 +24,15 @@ def RecordConflict( aInfo ) :
 	
 	try :		
 		if aInfo[0].mError == -1 :
-			label[0] = MR_LANG( 'Error EPG' )
-			label[1] = MR_LANG( 'Can not found EPG Information' )
+#			label[0] = MR_LANG( 'Error EPG' )
+			label[0] = MR_LANG( 'No EPG Information is available' )
+#			label[1] = MR_LANG( 'Can not found EPG Information' )
 		else :
 			conflictNum = len( aInfo ) - 1
-			if conflictNum > 3 :
-				conflictNum = 3
+			if conflictNum > 2 :
+				conflictNum = 2
+
+			label[0] = MR_LANG( 'The recording you just requested confilcts with' )
 
 			for i in range( conflictNum ) :
 				timer = dataCache.Timer_GetById( aInfo[ i + 1 ].mParam )
@@ -38,13 +41,13 @@ def RecordConflict( aInfo ) :
 					time = '%s~%s' % ( TimeToString( timer.mStartTime, TimeFormatEnum.E_HH_MM ), TimeToString( timer.mStartTime + timer.mDuration, TimeFormatEnum.E_HH_MM ) )
 					channelNum = '%04d' % timer.mChannelNo
 					epgName = timer.mName
-					label[i] = channelNum + ' ' + time + ' ' +  epgName
+					label[i+1] = channelNum + ' ' + time + ' ' +  epgName
 
 	except Exception, ex :
 		print "Exception %s" %ex
 					
 	dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-	dialog.SetDialogProperty( MR_LANG( 'Conflict' ), label[0], label[1], label[2] )
+	dialog.SetDialogProperty( MR_LANG( 'Attention' ), label[0], label[1], label[2] )
 	dialog.doModal( )
 
 

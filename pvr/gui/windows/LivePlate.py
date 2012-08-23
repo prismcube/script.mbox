@@ -4,13 +4,6 @@ E_CONTROL_ID_IMAGE_RECORDING1 			= 10
 E_CONTROL_ID_LABEL_RECORDING1 			= 11
 E_CONTROL_ID_IMAGE_RECORDING2 			= 15
 E_CONTROL_ID_LABEL_RECORDING2 			= 16
-E_CONTROL_ID_BUTTON_DESCRIPTION_INFO 	= 621
-E_CONTROL_ID_BUTTON_TELETEXT 			= 622
-E_CONTROL_ID_BUTTON_SUBTITLE 			= 623
-E_CONTROL_ID_BUTTON_START_RECORDING 	= 624
-E_CONTROL_ID_BUTTON_STOP_RECORDING 		= 625
-E_CONTROL_ID_BUTTON_MUTE 				= 626
-E_CONTROL_ID_BUTTON_SETTING_FORMAT 		= 627
 E_CONTROL_ID_BUTTON_PREV_EPG 			= 702
 E_CONTROL_ID_BUTTON_NEXT_EPG 			= 706
 E_CONTROL_ID_LABEL_CHANNEL_NUMBER		= 601
@@ -27,6 +20,11 @@ E_CONTROL_ID_LABEL_EPG_NAME				= 703
 E_CONTROL_ID_LABEL_EPG_STARTTIME		= 704
 E_CONTROL_ID_LABEL_EPG_ENDTIME			= 705
 E_CONTROL_ID_PROGRESS_EPG 				= 707
+
+E_CONTROL_DEFAULT_HIDE = [ 
+
+	E_CONTROL_ID_BUTTON_BOOKMARK
+]
 
 #xml property name
 E_XML_PROPERTY_TV         = 'ServiceTypeTV'
@@ -60,9 +58,9 @@ INIT_CHANNEL	= 3
 CONTEXT_ACTION_VIDEO_SETTING = 1 
 CONTEXT_ACTION_AUDIO_SETTING = 2
 
-class LivePlate( BaseWindow ) :
+class LivePlate( LivePlateWindow ) :
 	def __init__( self, *args, **kwargs ) :
-		BaseWindow.__init__( self, *args, **kwargs )
+		LivePlateWindow.__init__( self, *args, **kwargs )
 
 		self.mLocalTime = 0
 		self.mPincodeEnter = FLAG_MASK_NONE
@@ -103,15 +101,11 @@ class LivePlate( BaseWindow ) :
 		self.mCtrlProgress             = self.getControl( E_CONTROL_ID_PROGRESS_EPG )
 
 		#button icon
-		self.mCtrlBtnExInfo            = self.getControl( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO )
-		self.mCtrlBtnTeletext          = self.getControl( E_CONTROL_ID_BUTTON_TELETEXT )
-		self.mCtrlBtnSubtitle          = self.getControl( E_CONTROL_ID_BUTTON_SUBTITLE )
-		self.mCtrlBtnStartRec          = self.getControl( E_CONTROL_ID_BUTTON_START_RECORDING )
-		self.mCtrlBtnStopRec           = self.getControl( E_CONTROL_ID_BUTTON_STOP_RECORDING )
-		self.mCtrlBtnMute              = self.getControl( E_CONTROL_ID_BUTTON_MUTE )
-		self.mCtrlBtnSettingFormat     = self.getControl( E_CONTROL_ID_BUTTON_SETTING_FORMAT )
 		self.mCtrlBtnPrevEpg           = self.getControl( E_CONTROL_ID_BUTTON_PREV_EPG )
 		self.mCtrlBtnNextEpg           = self.getControl( E_CONTROL_ID_BUTTON_NEXT_EPG )
+
+		self.InitControl( )
+		self.SetVisibleControls( E_CONTROL_DEFAULT_HIDE, False )
 
 		self.mFlag_OnEvent = True
 		self.mFlag_ChannelChanged = False
@@ -375,7 +369,7 @@ class LivePlate( BaseWindow ) :
 
 				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					#LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull )
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'STB stopped recording, because your disk space is full' ) )
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'The recording has stopped due to insufficient disk space' ) )
 
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
@@ -756,8 +750,8 @@ class LivePlate( BaseWindow ) :
 		elif aCtrlID == E_CONTROL_ID_LABEL_RECORDING2 :
 			self.mCtrlLblRec2.setLabel( aValue )
 
-		elif aCtrlID == E_CONTROL_ID_BUTTON_START_RECORDING :
-			self.mCtrlBtnStartRec.setEnabled( aValue )
+		#elif aCtrlID == E_CONTROL_ID_BUTTON_START_RECORDING :
+		#	self.mCtrlBtnStartRec.setEnabled( aValue )
 
 
 	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :
@@ -818,7 +812,7 @@ class LivePlate( BaseWindow ) :
 				RecordConflict( dialog.GetConflictTimer( ) )
 
 		else :
-			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'You are already recording 2 programmes' ) )
+			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'You have reached the maximum number of recordings allowed' ) )
 
 		if isOK :
 			self.mDataCache.mCacheReload = True
@@ -914,7 +908,8 @@ class LivePlate( BaseWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_RECORDING2, strLabelRecord2 )
 			self.UpdatePropertyGUI( E_XML_PROPERTY_RECORDING1, setPropertyRecord1 )
 			self.UpdatePropertyGUI( E_XML_PROPERTY_RECORDING2, setPropertyRecord2 )
-			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_START_RECORDING, btnValue )
+			#self.UpdateControlGUI( E_CONTROL_ID_BUTTON_START_RECORDING, btnValue )
+			self.SetEnableControl( E_CONTROL_ID_BUTTON_START_RECORDING, btnValue )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )

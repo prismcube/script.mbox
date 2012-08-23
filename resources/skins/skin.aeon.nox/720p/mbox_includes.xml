@@ -4258,6 +4258,15 @@
 						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
+					<!-- Playing -->
+					<control type="image">
+						<posx>40</posx>
+						<posy>2</posy>
+						<width>64</width>
+						<height>64</height>
+						<texture>OSDPlayNF.png</texture>
+						<visible>substring(ListItem.Property(Playing),True)</visible>
+					</control>
 					<!-- Channel Name-->
 					<control type="label">
 						<posx>140</posx>
@@ -4339,6 +4348,15 @@
 						<height>25</height>
 						<texture>OverlayWatched.png</texture>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
+					</control>
+					<!-- Playing -->
+					<control type="image">
+						<posx>40</posx>
+						<posy>2</posy>
+						<width>64</width>
+						<height>64</height>
+						<texture>OSDPlayFO.png</texture>
+						<visible>substring(ListItem.Property(Playing),True)</visible>
 					</control>
 					<!-- Channel Name-->
 					<control type="label">
@@ -5241,6 +5259,87 @@
 			<include>SpinEx04</include>
 			<include>SpinEx05</include>
 			<include>SpinEx06</include>
+		</control>
+	</include>	
+
+	<include name="DefaultInfoPlateGroup">
+		<control type="grouplist" id="3620">
+			<posx>310</posx>
+			<posy>-40</posy>
+			<width>370</width>
+			<height>65</height>
+			<itemgap>-26</itemgap>
+			<pagecontrol></pagecontrol>
+			<scrolltime tween="sine" easing="out">200</scrolltime>
+			<orientation>horizontal</orientation>
+			<usecontrolcoords>false</usecontrolcoords>
+			<visible>true</visible>
+			<onup></onup>
+			<ondown>702</ondown>
+			<onleft></onleft>
+			<onright></onright>
+			<defaultcontrol always="true">3621</defaultcontrol>
+			<control type="button" id="3621">
+				<width>75</width>
+				<height>65</height>
+				<texturefocus>aeon.nox/OSDInfoFO.png</texturefocus>
+				<texturenofocus>aeon.nox/OSDInfoNF.png</texturenofocus>
+			</control>
+			<control type="button" id="3622">
+				<width>75</width>
+				<height>65</height>
+				<texturefocus>osd/buttons/OSDPlaylistFO.png</texturefocus>
+				<texturenofocus>osd/buttons/OSDPlaylistNF.png</texturenofocus>
+			</control>
+			<control type="button" id="3623">
+				<align>left</align>
+				<width>75</width>
+				<height>65</height>
+				<textcolor>grey3</textcolor>
+				<texturefocus>osd/buttons/OSDSubtitlesFO.png</texturefocus>
+				<texturenofocus>osd/buttons/OSDSubtitlesNF.png</texturenofocus>
+			</control>
+			<control type="button" id="3628">
+				<align>left</align>
+				<width>75</width>
+				<height>65</height>
+				<textcolor>grey3</textcolor>
+				<texturefocus>osd/buttons/OSDBookMarksFO.png</texturefocus>
+				<texturenofocus>osd/buttons/OSDBookMarksNF.png</texturenofocus>
+			</control>
+			<control type="button" id="3624">
+				<align>left</align>
+				<width>75</width>
+				<height>65</height>
+				<textcolor>grey3</textcolor>
+				<texturefocus>aeon.nox/OSDRecordFO.png</texturefocus>
+				<texturenofocus>aeon.nox/OSDRecordNF.png</texturenofocus>
+			</control>
+			<control type="button" id="3625">
+				<align>left</align>
+				<width>75</width>
+				<height>65</height>
+				<textcolor>grey3</textcolor>
+				<texturefocus>osd/buttons/OSDStopFO.png</texturefocus>
+				<texturenofocus>osd/buttons/OSDStopNF.png</texturenofocus>
+			</control>
+			<control type="button" id="3626">
+				<width>75</width>
+				<height>65</height>
+				<label></label>
+				<textcolor>grey3</textcolor>
+				<texturefocus>osd/buttons/OSDAudioFO.png</texturefocus>
+				<texturenofocus>osd/buttons/OSDAudioNF.png</texturenofocus>
+				<onclick>Mute</onclick>
+			</control>
+			<control type="button" id="3627">
+				<align>left</align>
+				<width>75</width>
+				<height>65</height>
+				<textcolor>grey3</textcolor>
+				<texturefocus>osd/buttons/OSDSkinFO.png</texturefocus>
+				<texturenofocus>osd/buttons/OSDSkinNF.png</texturenofocus>
+			</control>
 		</control>
 	</include>	
 </includes>

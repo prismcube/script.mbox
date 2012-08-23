@@ -467,7 +467,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		#ask save question
 		head =  MR_LANG( 'WARNING' )
-		line1 = MR_LANG( 'DO YOU REALLY WANT TO DELETE\nALL YOUR CHANNELS?' )
+		line1 = MR_LANG( 'DO YOU REALLY WANT TO REMOVE\nALL YOUR CHANNELS?' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 		dialog.SetDialogProperty( head, line1 )
@@ -654,7 +654,7 @@ class ChannelListWindow( BaseWindow ) :
 				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull)
 #					xbmcgui.Dialog( ).ok( MR_LANG( 'Infomation' ), MR_LANG( 'HDD Full!!! Cannot Recording...' ) )
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'STB stopped recording, because your disk space is full' ) )
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'The recording has stopped due to insufficient disk space' ) )
 
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				if aEvent.mType == ElisEnum.E_EOF_END :

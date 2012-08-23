@@ -125,10 +125,10 @@ class DialogSetAudioVideo( SettingDialog ) :
 
 	def InitProperty( self ) :
 		if self.mMode == CONTEXT_ACTION_VIDEO_SETTING :
-			self.mDialogTitle = MR_LANG( 'VIDEO SETTING' )
+			self.mDialogTitle = MR_LANG( 'Video Setting' )
 
 		elif self.mMode == CONTEXT_ACTION_AUDIO_SETTING :
-			self.mDialogTitle = MR_LANG( 'AUDIO SETTING' )
+			self.mDialogTitle = MR_LANG( 'Audio Setting' )
 
 			getCount = self.mDataCache.Audiotrack_GetCount( )
 			selectIdx= self.mDataCache.Audiotrack_GetSelectedIndex( )

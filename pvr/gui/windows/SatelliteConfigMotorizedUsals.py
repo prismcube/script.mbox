@@ -74,7 +74,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 		# Set Longitude
 		if groupId == E_Input01 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
-			dialog.SetDialogProperty( MR_LANG( 'Longitude degree' ), self.mLongitude )
+			dialog.SetDialogProperty( MR_LANG( 'Longitude Degree' ), self.mLongitude )
 			dialog.doModal( )
 
 			if dialog.IsOK() == E_DIALOG_STATE_YES :
@@ -84,7 +84,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 		# Set Latitude
 		elif groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SATELLITE_NUMERIC )
-			dialog.SetDialogProperty( MR_LANG( 'Latitude degree' ), self.mLatitude )
+			dialog.SetDialogProperty( MR_LANG( 'Latitude Degree' ), self.mLatitude )
 			dialog.doModal( )
 
 			if dialog.IsOK() == E_DIALOG_STATE_YES :
@@ -105,7 +105,7 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-	     	if self.mInitialized == False :
+		if self.mInitialized == False :
 			return
 		if self.mLastFocused != aControlId :
 			self.ShowDescription( aControlId )
@@ -115,11 +115,11 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 	def InitConfig( self ) :
 		self.ResetAllControl( )
 
-		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'My Longitude Direction' ), E_LIST_MY_LONGITUDE, self.mIsWest, MR_LANG( 'Set east or west for the longitude direction' ) )
+		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'My Longitude Direction' ), E_LIST_MY_LONGITUDE, self.mIsWest, MR_LANG( 'Set the longitude direction for your location' ) )
 		tmplongitude = '%03d.%d' % ( ( self.mLongitude / 10 ), self.mLongitude % 10 )
 		self.AddInputControl( E_Input01, MR_LANG( 'My Longitude Angle' ), tmplongitude, MR_LANG( 'Enter your longitude angle' ) )
 		
-		self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'My Latitude Direction' ), E_LIST_MY_LATITUDE, self.mIsSouth, MR_LANG( 'Set north or south for the latitude direction' ) )
+		self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'My Latitude Direction' ), E_LIST_MY_LATITUDE, self.mIsSouth, MR_LANG( 'Set the latitude direction for your location' ) )
 		tmplatitude = '%03d.%d' % ( ( self.mLatitude / 10 ), self.mLatitude % 10 )
 		self.AddInputControl( E_Input02, MR_LANG( 'My Latitude Angle' ), tmplatitude, MR_LANG( 'Enter your latitude angle' ) )
 		

@@ -1,5 +1,5 @@
 <window type="windows" id="3004">
-	<defaultcontrol always="true">621</defaultcontrol>
+	<defaultcontrol always="true">3621</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
 	<backgroundcolor>0x00ffffff</backgroundcolor>
 	<controls>
@@ -153,7 +153,6 @@
 					</control>
 				</control>
 
-
 				<control type="group">
 					<posx>-50</posx>
 					<posy>-37</posy>
@@ -176,7 +175,7 @@
 						<font>font12</font>
 						<textcolor>white</textcolor>
 						<label>Description</label>
-						<visible>Control.HasFocus(621)</visible>
+						<visible>Control.HasFocus(3621)</visible>
 					</control>
 					<control type="label">
 						<posx>30</posx>
@@ -188,7 +187,7 @@
 						<font>font12</font>
 						<textcolor>white</textcolor>
 						<label>Teletext</label>
-						<visible>Control.HasFocus(622)</visible>
+						<visible>Control.HasFocus(3622)</visible>
 					</control>
 					<control type="label">
 						<posx>30</posx>
@@ -200,7 +199,7 @@
 						<font>font12</font>
 						<textcolor>white</textcolor>
 						<label>Subtitle</label>
-						<visible>Control.HasFocus(623)</visible>
+						<visible>Control.HasFocus(3623)</visible>
 					</control>
 					<control type="label">
 						<posx>30</posx>
@@ -212,7 +211,7 @@
 						<font>font12</font>
 						<textcolor>white</textcolor>
 						<label>Start Recording</label>
-						<visible>Control.HasFocus(624)</visible>
+						<visible>Control.HasFocus(3624)</visible>
 					</control>
 					<control type="label">
 						<posx>30</posx>
@@ -224,7 +223,7 @@
 						<font>font12</font>
 						<textcolor>white</textcolor>
 						<label>Stop Recording</label>
-						<visible>Control.HasFocus(625)</visible>
+						<visible>Control.HasFocus(3625)</visible>
 					</control>
 					<control type="label">
 						<posx>30</posx>
@@ -236,7 +235,7 @@
 						<font>font12</font>
 						<textcolor>white</textcolor>
 						<label>Mute</label>
-						<visible>Control.HasFocus(626)</visible>
+						<visible>Control.HasFocus(3626)</visible>
 					</control>
 					<control type="label">
 						<posx>30</posx>
@@ -248,7 +247,19 @@
 						<font>font12</font>
 						<textcolor>white</textcolor>
 						<label>A/V Setting</label>
-						<visible>Control.HasFocus(627)</visible>
+						<visible>Control.HasFocus(3627)</visible>
+					</control>
+					<control type="label">
+						<posx>30</posx>
+						<posy>0</posy>
+						<width>400</width>
+						<height>28</height>
+						<align>left</align>
+						<aligny>center</aligny>
+						<font>font12</font>
+						<textcolor>white</textcolor>
+						<label>BookMark</label>
+						<visible>Control.HasFocus(3628)</visible>
 					</control>
 					<control type="label">
 						<posx>30</posx>
@@ -278,134 +289,7 @@
 				</control>
 
 <!-- button control -->
-				<control type="group" id="620">
-					<posx>315</posx>
-					<posy>-35</posy>
-					<control type="button" id="621">
-						<posx>0</posx>
-						<posy>0</posy>
-						<align>left</align>
-						<width>45</width>
-						<height>35</height>
-						<textcolor>grey3</textcolor>
-						<texturefocus>OSDIconWarning.png</texturefocus>
-						<texturenofocus>OSDIconInfo.png</texturenofocus>
-						<onleft>627</onleft>
-						<onright>622</onright>
-						<onup></onup>
-						<ondown>702</ondown>
-						<description>expantion info</description>
-					</control>
-					<control type="button" id="622">
-						<posx>45</posx>
-						<posy>0</posy>
-						<align>left</align>
-						<width>45</width>
-						<height>35</height>
-						<textcolor>grey3</textcolor>
-						<texturefocus>OSDTeletextFO.png</texturefocus>
-						<texturenofocus>OSDTeletextNF.png</texturenofocus>
-						<onleft>621</onleft>
-						<onright>623</onright>
-						<onup></onup>
-						<ondown>702</ondown>
-						<description>teletext</description>
-					</control>
-					<control type="button" id="623">
-						<posx>90</posx>
-						<posy>0</posy>
-						<align>left</align>
-						<width>45</width>
-						<height>35</height>
-						<textcolor>grey3</textcolor>
-						<texturefocus>OSDSubtitlesFO.png</texturefocus>
-						<texturenofocus>OSDSubtitlesNF.png</texturenofocus>
-						<onleft>622</onleft>
-						<onright>624</onright>
-						<onup></onup>
-						<ondown>702</ondown>
-						<description>subtitle</description>
-					</control>
-					<control type="button" id="624">
-						<posx>135</posx>
-						<posy>0</posy>
-						<align>left</align>
-						<width>45</width>
-						<height>35</height>
-						<textcolor>grey3</textcolor>
-						<texturefocus>OSDRecord2.png</texturefocus>
-						<texturenofocus>OSDRecordNF.png</texturenofocus>
-						<onleft>623</onleft>
-						<onright>625</onright>
-						<onup></onup>
-						<ondown>702</ondown>
-						<description>start record</description>
-					</control>
-					<control type="button" id="625">
-						<posx>180</posx>
-						<posy>0</posy>
-						<align>left</align>
-						<width>45</width>
-						<height>35</height>
-						<textcolor>grey3</textcolor>
-						<texturefocus>OSDStopFO.png</texturefocus>
-						<texturenofocus>OSDStopNF.png</texturenofocus>
-						<onleft>624</onleft>
-						<onright>629</onright>
-						<onup></onup>
-						<ondown>702</ondown>
-						<description>stop record</description>
-					</control>
-					<control type="group" id="629">
-						<control type="button" id="626">
-							<posx>225</posx>
-							<posy>0</posy>
-							<width>45</width>
-							<height>35</height>
-							<label></label>
-							<textcolor>grey3</textcolor>
-							<texturefocus>OSDVolumeMuteFO.png</texturefocus>
-							<texturenofocus>OSDVolumeMuteNF.png</texturenofocus>
-							<onleft>625</onleft>
-							<onright>627</onright>
-							<onup></onup>
-							<ondown>702</ondown>
-							<onclick>Mute</onclick>
-							<description>mute,audio off</description>
-						</control>
-						<!--control type="button" id="627">
-							<posx>225</posx>
-							<posy>0</posy>
-							<width>45</width>
-							<height>35</height>
-							<label></label>
-							<textcolor>grey3</textcolor>
-							<texturefocus>OSDAudioFO.png</texturefocus>
-							<texturenofocus>OSDAudioNF.png</texturenofocus>
-							<onleft>SetFocus(625)</onleft>
-							<onright>SetFocus(621)</onright>
-							<onup></onup>
-							<ondown>SetFocus(702)</ondown>
-							<description>mute, audio on</description>
-							<visible>!Control.IsVisible(626)</visible>
-						</control-->
-					</control>
-					<control type="button" id="627">
-						<posx>270</posx>
-						<posy>0</posy>
-						<align>left</align>
-						<width>45</width>
-						<height>35</height>
-						<textcolor>grey3</textcolor>
-						<texturefocus>OSDPresetSettingsFO.png</texturefocus>
-						<texturenofocus>OSDPresetSettingsNF.png</texturenofocus>
-						<onleft>629</onleft>
-						<onright>621</onright>
-						<onup></onup>
-						<ondown>702</ondown>
-						<description>setting format</description>
-					</control>
-				</control>
+				<include>DefaultInfoPlateGroup</include>
 
 				<control type="group" id="650">
 					<posx>720</posx>
@@ -552,7 +436,7 @@
 					<texturenofocus>scroll-left.png</texturenofocus>
 					<onleft></onleft>
 					<onright>SetFocus(706)</onright>
-					<onup>SetFocus(621)</onup>
+					<onup>SetFocus(3621)</onup>
 					<ondown></ondown>
 				</control>
 				<control type="label" id="703">
@@ -602,7 +486,7 @@
 					<texturenofocus>scroll-right.png</texturenofocus>
 					<onleft>SetFocus(702)</onleft>
 					<onright></onright>
-					<onup>SetFocus(621)</onup>
+					<onup>SetFocus(3621)</onup>
 					<ondown></ondown>
 				</control>
 			</control>

@@ -113,7 +113,7 @@ class AutomaticScan( SettingWindow ) :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite is available' ) )
 		else :
 			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[self.mSatelliteIndex], MR_LANG( 'Select satellites you wish to search from' ) )
-			self.AddEnumControl( E_SpinEx01, 'Network Search', None, MR_LANG( 'Set your STB to scan channels from multiple TPs' ) )
+			self.AddEnumControl( E_SpinEx01, 'Network Search', None, MR_LANG( 'Set On/Off to scan channels from multiple TPs' ) )
 			self.AddEnumControl( E_SpinEx02, 'Channel Search Mode', None, MR_LANG( 'Select the type of channels you want to search for' ) )
 			self.AddInputControl( E_Input02, MR_LANG( 'Search Now' ), '', MR_LANG( 'Press the OK button to search channels' ) )
 			self.InitControl( )

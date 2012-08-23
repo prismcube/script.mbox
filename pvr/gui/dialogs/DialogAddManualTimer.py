@@ -533,14 +533,14 @@ class DialogAddManualTimer( SettingDialog ) :
 	def ShowRecordName( self ) :
 		try :
 #			kb = xbmc.Keyboard( self.mRecordName, 'Change Record Name', False )
-			kb = xbmc.Keyboard( self.mRecordName, MR_LANG( 'Enter a new name' ), False )			
+			kb = xbmc.Keyboard( self.mRecordName, MR_LANG( 'Change timer name' ), False )			
 			kb.doModal( )
 			if kb.isConfirmed( ) :
 				keyword = kb.getText( )
 				LOG_TRACE( 'keyword len=%d' %len( keyword ) )
 				if len( keyword ) < MININUM_KEYWORD_SIZE :
 #					xbmcgui.Dialog( ).ok('Infomation', 'Input more than %d characters' %MININUM_KEYWORD_SIZE )
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Name must be at least %d characters long' ) %MININUM_KEYWORD_SIZE )					
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Timer name must be at least %d characters long' ) %MININUM_KEYWORD_SIZE )					
 					return
 
 				self.mRecordName = keyword
@@ -584,7 +584,7 @@ class DialogAddManualTimer( SettingDialog ) :
 					ret = self.mDataCache.Timer_EditRunningTimer( self.mTimer.mTimerId, endTime )
 					LOG_TRACE( 'RET=%s' %ret )
 					if ret == False :
-						self.mErrorMessage = MR_LANG( 'Edit timer fail' )
+						self.mErrorMessage = MR_LANG( 'You were unable to edit the timer' )
 						self.mConflictTimer = None
 					return ret
 					"""
@@ -625,7 +625,7 @@ class DialogAddManualTimer( SettingDialog ) :
 
 						if ret[0].mParam == -1 or ret[0].mError == -1 :
 							self.mConflictTimer = ret
-							self.mErrorMessage = MR_LANG( 'Conflict' )
+							self.mErrorMessage = MR_LANG( 'Attention' )
 							return False
 						else :
 							self.mConflictTimer = None
@@ -667,14 +667,15 @@ class DialogAddManualTimer( SettingDialog ) :
 			if self.mRecordingMode == E_ONCE :
 				startTime = self.mWeeklyStart + self.mUsedWeeklyList[0].mStartTime
 				if  startTime + self.mUsedWeeklyList[0].mDuration < self.mDataCache.Datetime_GetLocalTime( ) :
-					self.mErrorMessage = MR_LANG( 'Already Passed' )
+#					self.mErrorMessage = MR_LANG( 'Already Passed' )
+					self.mErrorMessage = MR_LANG( 'The time you entered has already passed' )					
 					return False
 
 				ret = self.mDataCache.Timer_AddManualTimer( self.mChannel.mNumber, self.mChannel.mServiceType, startTime,	self.mUsedWeeklyList[0].mDuration, self.mRecordName, True )
 
 				if ret[0].mParam == -1 or ret[0].mError == -1 :
 					self.mConflictTimer = ret
-					self.mErrorMessage = MR_LANG( 'Conflict' )
+					self.mErrorMessage = MR_LANG( 'Attention' )
 					return False
 				else :
 					self.mConflictTimer = None
@@ -710,7 +711,7 @@ class DialogAddManualTimer( SettingDialog ) :
 						weeklyTimerList.append( timer )
 
 				if len( weeklyTimerList ) <= 0 :
-					self.mErrorMessage = MR_LANG( 'Has no valid timer' )
+					self.mErrorMessage = MR_LANG( 'There is no valid timer' )
 					return False
 
 				"""
@@ -726,7 +727,7 @@ class DialogAddManualTimer( SettingDialog ) :
 
 				if ret and ( ret[0].mParam == -1 or ret[0].mError == -1 ) :
 					self.mConflictTimer = ret
-					self.mErrorMessage = MR_LANG( 'Conflict' )
+					self.mErrorMessage = MR_LANG( 'Attention' )
 					return False
 				else :
 					self.mConflictTimer = None
@@ -760,7 +761,7 @@ class DialogAddManualTimer( SettingDialog ) :
 					strStartTime = TimeToString( self.mUsedWeeklyList[0].mStartTime, TimeFormatEnum.E_HH_MM )			
 
 #			strStartTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Input Time', strStartTime )
-			strStartTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter a start time' ), strStartTime )			
+			strStartTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter the start time' ), strStartTime )			
 
 			tempList = strStartTime.split( ':', 1 )
 
@@ -816,7 +817,7 @@ class DialogAddManualTimer( SettingDialog ) :
 					strEndTime = TimeToString( self.mUsedWeeklyList[0].mStartTime + self.mUsedWeeklyList[0].mDuration, TimeFormatEnum.E_HH_MM )			
 
 #			strEndTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Input Time', strEndTime )		
-			strEndTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Enter an end time', strEndTime )	
+			strEndTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Enter the end time', strEndTime )	
 
 			tempList = strEndTime.split( ':', 1 )
 

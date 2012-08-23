@@ -119,6 +119,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mTimeshift_staTime = 0.0
 		self.mTimeshift_curTime = 0.0
 		self.mTimeshift_endTime = 0.0
+		self.mIsTimeshiftPending = False
 		self.mSpeed = 100	#normal
 		self.mLocalTime = 0
 		self.mTimeShiftExcuteTime = 0
@@ -178,11 +179,11 @@ class TimeShiftPlate( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 		elif id >= Action.REMOTE_0 and id <= Action.REMOTE_9 :
-			self.KeySearch( id-Action.REMOTE_0 )
+			self.MoveToSeekFrame( id-Action.REMOTE_0 )
 
 		elif id >= Action.ACTION_JUMP_SMS2 and id <= Action.ACTION_JUMP_SMS9 :
 			rKey = id - ( Action.ACTION_JUMP_SMS2 - 2 )
-			self.KeySearch( rKey )
+			self.MoveToSeekFrame( rKey )
 
 		elif id == Action.ACTION_SELECT_ITEM :
 			pass
@@ -237,7 +238,8 @@ class TimeShiftPlate( BaseWindow ) :
 		elif id == Action.ACTION_CONTEXT_MENU :
 			if self.mMode == ElisEnum.E_MODE_PVR :
 				self.Close( )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_INFO_PLATE )
 			else :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
@@ -260,7 +262,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		elif id == Action.ACTION_MBOX_RECORD :
 			if self.mMode == ElisEnum.E_MODE_PVR :
-				xbmcgui.Dialog( ).ok( MR_LANG( 'WARNING' ), MR_LANG( 'Now Personal Video Recording mode is on' ) )
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Please stop the Personal Video Recording first' ) )
 			else :
 				self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
 
@@ -323,7 +325,7 @@ class TimeShiftPlate( BaseWindow ) :
 					RecordConflict( dialog.GetConflictTimer( ) )
 					
 			else :
-				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'You are already recording 2 programmes' ) )
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'You have reached the maximum number of recordings allowed' ) )
 
 			if isOK :
 				self.mDataCache.mCacheReload = True
@@ -365,7 +367,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					LOG_TRACE('----------hddfull[%s]'% aEvent.mHDDFull)
-					xbmcgui.Dialog().ok( MR_LANG('Infomation'), MR_LANG('Hard disk space is full. You cannot record anymore') )
+					xbmcgui.Dialog().ok( MR_LANG( 'Attention' ), MR_LANG( 'The recording has stopped due to insufficient disk space' ) )
 					
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
@@ -656,6 +658,8 @@ class TimeShiftPlate( BaseWindow ) :
 			lbl_timeS = ''
 			lbl_timeP = ''
 			lbl_timeE = ''
+
+			self.mIsTimeshiftPending = status.mIsTimeshiftPending
 
 			#play mode
 			self.mMode = status.mMode
@@ -957,6 +961,8 @@ class TimeShiftPlate( BaseWindow ) :
 		waitTime = 0
 		self.OpenBusyDialog( )
 		while waitTime < 5 :
+			if self.mIsTimeshiftPending :
+				break
 			time.sleep( 1 )
 			waitTime += 1
 
@@ -1052,7 +1058,7 @@ class TimeShiftPlate( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-	def KeySearch( self, aKey ) :
+	def MoveToSeekFrame( self, aKey ) :
 		if aKey == 0 :
 			return -1
 

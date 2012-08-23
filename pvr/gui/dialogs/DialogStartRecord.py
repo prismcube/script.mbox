@@ -20,7 +20,7 @@ E_FROM_NOW					= 0
 E_FROM_EPG					= 1
 
 
-LIST_COPY_MODE =[ MR_LANG( 'From Now'), MR_LANG( 'From EPG' ) ]
+LIST_COPY_MODE =[ MR_LANG( 'Now'), MR_LANG( 'from EPG' ) ]
 
 
 class DialogStartRecord( SettingDialog ) :
@@ -40,7 +40,7 @@ class DialogStartRecord( SettingDialog ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
-		self.SetHeaderLabel( MR_LANG( 'Record' ) )
+		self.SetHeaderLabel( MR_LANG( 'Start Recording' ) )
 
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
 		
@@ -180,7 +180,7 @@ class DialogStartRecord( SettingDialog ) :
 				self.AddInputControl( E_DialogInput01, MR_LANG( 'Start Time' ),  TimeToString( self.mTimer.mStartTime, TimeFormatEnum.E_HH_MM ) )
 				self.SetEnableControl( E_DialogInput01, False )									
 				self.AddInputControl( E_DialogInput02, MR_LANG( 'End Time' ),  TimeToString( self.mTimer.mStartTime + self.mTimer.mDuration, TimeFormatEnum.E_HH_MM ) )
-				self.AddInputControl( E_DialogInput03, MR_LANG( 'Duration' ),  '%d(%s)' %( int( self.mTimer.mDuration/60 ), MR_LANG('Min') ) )
+				self.AddInputControl( E_DialogInput03, MR_LANG( 'Duration' ),  '%d(%s)' %( int( self.mTimer.mDuration/60 ), MR_LANG('mins') ) )
 
 			else :
 				LOG_TRACE( 'self.mOTRInfo.mHasEPG=%d' %self.mOTRInfo.mHasEPG )
@@ -199,17 +199,17 @@ class DialogStartRecord( SettingDialog ) :
 							copyTimeshift = timeshiftRecordSec
 	
 						self.mStartTime = self.mLocalTime - copyTimeshift
-						self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Recording' ), LIST_COPY_MODE, E_FROM_EPG)
+						self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Start Recording' ), LIST_COPY_MODE, E_FROM_EPG)
 						self.SetEnableControl( E_DialogSpinEx01, True )						
 					else :
-						self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Recording' ), LIST_COPY_MODE, E_FROM_NOW )
+						self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Start Recording' ), LIST_COPY_MODE, E_FROM_NOW )
 						self.SetEnableControl( E_DialogSpinEx01, False )
 
 				else :
 					self.AddLabelControl( E_LABEL_RECORD_NAME )
 					self.SetControlLabelString(E_LABEL_RECORD_NAME, self.mOTRInfo.mEventName )
 
-					self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Recording' ), LIST_COPY_MODE, E_FROM_NOW )
+					self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Start Recording' ), LIST_COPY_MODE, E_FROM_NOW )
 					self.SetEnableControl( E_DialogSpinEx01, False )
 
 				duration = int( self.mEndTime/60 ) - int( self.mStartTime/60 )
@@ -222,7 +222,7 @@ class DialogStartRecord( SettingDialog ) :
 				self.AddInputControl( E_DialogInput01, MR_LANG( 'Start Time' ),  TimeToString( self.mStartTime, TimeFormatEnum.E_HH_MM ) )
 				self.SetEnableControl( E_DialogInput01, False )									
 				self.AddInputControl( E_DialogInput02, MR_LANG( 'End Time' ),  TimeToString( self.mEndTime, TimeFormatEnum.E_HH_MM ) )
-				self.AddInputControl( E_DialogInput03, MR_LANG( 'Duration' ),  '%d(%s)' %(duration, MR_LANG('Min') ) )
+				self.AddInputControl( E_DialogInput03, MR_LANG( 'Duration' ),  '%d(%s)' %(duration, MR_LANG('mins') ) )
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
@@ -232,7 +232,8 @@ class DialogStartRecord( SettingDialog ) :
 		if self.mTimer :
 			self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Change Duration' ) )
 		else:
-			self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Start Record' ) )
+#			self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Start Record' ) )
+			self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Start' ) )			
 
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, MR_LANG( 'Cancel' ) )
 		
@@ -266,7 +267,7 @@ class DialogStartRecord( SettingDialog ) :
 				duration = int( self.mEndTime/60 ) - int( self.mStartTime/60 )					
 				self.SetControlLabel2String( E_DialogInput01, TimeToString( self.mStartTime, TimeFormatEnum.E_HH_MM ) )
 				self.SetControlLabel2String( E_DialogInput02, TimeToString( self.mEndTime, TimeFormatEnum.E_HH_MM ) )
-				self.SetControlLabel2String( E_DialogInput03, '%d(%s)' %( duration, MR_LANG('Min') ) )
+				self.SetControlLabel2String( E_DialogInput03, '%d(%s)' %( duration, MR_LANG('mins') ) )
 
 
 	def ChangeEndTime( self ) :
@@ -279,7 +280,7 @@ class DialogStartRecord( SettingDialog ) :
 			orgEndHour = int( tempList[0] )
 			orgEndMin = int( tempList[1] )
 			
-			strEndTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'End Time' ), strEndTime )		
+			strEndTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter the end time' ), strEndTime )		
 
 			tempList = strEndTime.split( ':', 1 )
 
@@ -308,7 +309,7 @@ class DialogStartRecord( SettingDialog ) :
 
 			duration = int( self.mEndTime/60 ) - int( self.mStartTime/60 )
 			self.SetControlLabel2String( E_DialogInput02, TimeToString( self.mEndTime, TimeFormatEnum.E_HH_MM ) )
-			self.SetControlLabel2String( E_DialogInput03, '%d(%s)' %( duration, MR_LANG('Min') ) )
+			self.SetControlLabel2String( E_DialogInput03, '%d(%s)' %( duration, MR_LANG('mins') ) )
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
@@ -323,7 +324,7 @@ class DialogStartRecord( SettingDialog ) :
 
 				
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( '%s(%s)' %( MR_LANG( 'Duration' ), MR_LANG( 'Min' ) ), '%d' %tempDuration  , 3 )
+			dialog.SetDialogProperty( '%s(%s)' %( MR_LANG( 'Enter duration' ), MR_LANG( 'in mins' ) ), '%d' %tempDuration  , 3 )
  			dialog.doModal( )
 
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -340,7 +341,7 @@ class DialogStartRecord( SettingDialog ) :
 						self.mEndTime = self.mStartTime + duration * 60
 
 				self.SetControlLabel2String( E_DialogInput02, TimeToString( self.mEndTime, TimeFormatEnum.E_HH_MM ) )
-				self.SetControlLabel2String( E_DialogInput03, '%d(%s)' %( duration, MR_LANG( 'Min' ) ) )
+				self.SetControlLabel2String( E_DialogInput03, '%d(%s)' %( duration, MR_LANG( 'mins' ) ) )
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
@@ -361,7 +362,7 @@ class DialogStartRecord( SettingDialog ) :
 					if self.mDataCache.Timer_EditRunningTimer( self.mTimer.mTimerId, endTime ) == True :
 						self.mIsOk = E_DIALOG_STATE_YES
 					else :
-						msg = MR_LANG( 'STB could not change the duration' )
+						msg = MR_LANG( 'You were unable to change the duration' )
 						xbmcgui.Dialog( ).ok( MR_LANG('Error'), msg )
 
 			else :

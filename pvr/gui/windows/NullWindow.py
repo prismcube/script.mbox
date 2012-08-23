@@ -70,7 +70,7 @@ class NullWindow( BaseWindow ) :
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			if ElisPropertyEnum( 'Lock Mainmenu', self.mCommander ).GetProp( ) == 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-				dialog.SetDialogProperty( MR_LANG( 'PIN Code 4 digit' ), '', 4, True )
+				dialog.SetDialogProperty( MR_LANG( 'Enter your PIN code' ), '', 4, True )
 	 			dialog.doModal( )
 	 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 	 				tempval = dialog.GetString( )
@@ -81,7 +81,7 @@ class NullWindow( BaseWindow ) :
 						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 					else :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'ERROR PIN Code' ) )
+						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Sorry, that PIN code does not match' ) )
 			 			dialog.doModal( )
 			 	return
 
@@ -216,8 +216,8 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_RECORD :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_PVR :
-				msg = 'Now Personal Video Recording mode is on'
-				xbmcgui.Dialog( ).ok('WARNING', msg )
+				msg = MR_LANG( 'Please stop the Personal Video Recording first' )
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), msg )
 			else :
 				self.ShowRecordingStartDialog( )
 		
@@ -417,7 +417,7 @@ class NullWindow( BaseWindow ) :
 		isUnlock = False
 		try :
 			self.mDataCache.Player_AVBlank( True, False )
-			msg = MR_LANG('Input PIN Code')
+			msg = MR_LANG('Enter your PIN code')
 			inputPin = ''
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -439,8 +439,8 @@ class NullWindow( BaseWindow ) :
 				self.mDataCache.Player_AVBlank( False, False )
 
 			else:
-				msg1 = MR_LANG('Error')
-				msg2 = MR_LANG('Wrong PIN Code')
+				msg1 = MR_LANG( 'Error' )
+				msg2 = MR_LANG( 'Sorry, that PIN code does not match' )
 				xbmcgui.Dialog( ).ok( msg1, msg2 )
 
 		except Exception, e:
@@ -467,8 +467,8 @@ class NullWindow( BaseWindow ) :
 				RecordConflict( dialog.GetConflictTimer( ) )
 
 		else:
-			msg = MR_LANG( 'Already 2 recording(s) running' )
-			xbmcgui.Dialog( ).ok( MR_LANG( 'Infomation' ), msg )
+			msg = MR_LANG( 'You have reached the maximum number of recordings allowed' )
+			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), msg )
 
 		if isOK :
 			self.mDataCache.mCacheReload = True

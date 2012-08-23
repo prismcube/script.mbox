@@ -9,6 +9,9 @@ RADIIOBUTTON_ID_EXTRA			= 103
 LABEL_ID_PLAY_NAME				= 401
 PROGRESS_ID_PLAY_PROGRESS		= 402
 
+LABEL_ID_PLAY_START				= 403
+LABEL_ID_PLAY_END				= 404
+
 LIST_ID_COMMON_RECORD			= 3400
 LIST_ID_THUMBNAIL_RECORD		= 3410
 LIST_ID_POSTERWRAP_RECORD		= 3420
@@ -54,7 +57,9 @@ class ArchiveWindow( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+		status = self.mDataCache.Player_GetStatus( )
+		
+		if status.mMode == ElisEnum.E_MODE_PVR :
 			self.mWin.setProperty( 'PvrPlay', 'True' )
 		else :
 			self.mWin.setProperty( 'PvrPlay', 'False' )
@@ -62,7 +67,7 @@ class ArchiveWindow( BaseWindow ) :
 		if self.mPlayingRecord :
 			self.mEventBus.Register( self )
 			self.mSelectRecordKey = self.mPlayingRecord.mRecordKey
-			self.UpdateStopThumbnail( self.mPlayingRecord.mRecordKey )
+			self.UpdatePlayStopThumbnail( self.mPlayingRecord )			
 			self.SelectLastRecordKey( )
 			self.UpdatePlayStatus( )
 
@@ -106,6 +111,9 @@ class ArchiveWindow( BaseWindow ) :
 
 			self.mCtrlPlayName = self.getControl( LABEL_ID_PLAY_NAME )
 			self.mCtrlPlayProgress = self.getControl( PROGRESS_ID_PLAY_PROGRESS )
+			self.mCtrlPlayStart = self.getControl( LABEL_ID_PLAY_START )
+			self.mCtrlPlayEnd = self.getControl( LABEL_ID_PLAY_END )
+
 			self.mPlayPerent = 0
 			self.mCtrlPlayProgress.setPercent( self.mPlayPerent ) 			
 
@@ -244,7 +252,8 @@ class ArchiveWindow( BaseWindow ) :
 				if aEvent.mType == ElisEnum.E_EOF_END :
 					xbmc.executebuiltin( 'xbmc.Action(stop)' )
 			elif aEvent.getName( ) == ElisEventPlaybackStopped.getName( ) :
-				self.UpdateStopThumbnail( self.mPlayingRecord.mRecordKey )
+				if self.mPlayingRecord :
+					self.UpdatePlayStopThumbnail( self.mPlayingRecord )
 
 
 	def InitControl( self ) :
@@ -367,10 +376,8 @@ class ArchiveWindow( BaseWindow ) :
 		recItem.setProperty( 'RecDate', TimeToString( aRecordInfo.mStartTime ) )
 		recItem.setProperty( 'RecDuration', '%dm' % ( aRecordInfo.mDuration / 60 ) )
 		if aRecordInfo.mLocked :
-			recItem.setProperty( 'Locked', 'True' )
 			recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
 		else :
-			recItem.setProperty( 'Locked', 'False' )
 			thumbnaillist = []
 			thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % aRecordInfo.mRecordKey ) )
 			if len( thumbnaillist ) > 0 :
@@ -382,20 +389,37 @@ class ArchiveWindow( BaseWindow ) :
 		self.mRecordListItems.append( recItem )
 
 
-	def UpdateStopThumbnail( self, aRecordKey ) :
+	def UpdatePlayStopThumbnail( self, aRecordInfo ) :
+
+		if aRecordInfo == None :
+			LOG_ERR( 'Has no playing record')
+			return
+
 		listindex = 0
 		for recInfo in self.mRecordList :
-			if recInfo.mRecordKey == aRecordKey :
+			if recInfo.mRecordKey == aRecordInfo.mRecordKey :
 				break
 			listindex = listindex + 1
 
 		recItem = self.mRecordListItems[ listindex ]
-		thumbnaillist = []
-		thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % aRecordKey ) )
-		if len( thumbnaillist ) > 0 :
-			recItem.setProperty( 'RecIcon', thumbnaillist[0] )
+
+		status = self.mDataCache.Player_GetStatus( )
+			
+		if recInfo.mLocked == True and status.mMode != ElisEnum.E_MODE_PVR:
+			recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
 		else :
-			recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+			thumbnaillist = []
+			thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % aRecordInfo.mRecordKey ) )
+			if len( thumbnaillist ) > 0 :
+				recItem.setProperty( 'RecIcon', thumbnaillist[0] )
+			else :
+				recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+
+		if status.mMode == ElisEnum.E_MODE_PVR :
+			recItem.setProperty( 'Playing', 'True' )
+		else :
+			recItem.setProperty( 'Playing', 'False' )
+
 
 		xbmc.executebuiltin( 'container.update' )
 
@@ -514,6 +538,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.UpdatePlayStatus( )
 
 			self.RestoreLastRecordKey( )
+			self.UpdatePlayStopThumbnail( self.mPlayingRecord )
 			self.mLastFocusItem = selectedPos
 			if self.mViewMode != E_VIEW_LIST :
 				self.Close( )
@@ -732,6 +757,8 @@ class ArchiveWindow( BaseWindow ) :
 					self.mRecordListItems[ selectedPos ].setLabel2( newName )	
 					self.mRecordList[ selectedPos ].mRecordName = newName
 					xbmc.executebuiltin( 'container.update' )
+					self.UpdateArchiveInfomation( )
+					
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
@@ -774,12 +801,10 @@ class ArchiveWindow( BaseWindow ) :
 				if aLock == True :
 					self.mRecordList[ position ].mLocked = True
 					self.mDataCache.Record_SetLock( self.mRecordList[ position ].mRecordKey, self.mServiceType, True )
-					recItem.setProperty( 'Locked', 'True' )
 					recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
 				else :
 					self.mRecordList[ position ].mLocked = False
 					self.mDataCache.Record_SetLock( self.mRecordList[ position ].mRecordKey, self.mServiceType, False )
-					recItem.setProperty( 'Locked', 'False' )
 					thumbnaillist = []
 					thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % self.mRecordList[ position ].mRecordKey ) )
 					if len( thumbnaillist ) > 0 :
@@ -860,6 +885,7 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def Close( self ) :
+		self.mEventBus.Deregister( self )	
 		self.mEnableThread = False
 		if self.mPlayProgressThread :
 			self.mPlayProgressThread.join( )
@@ -888,7 +914,7 @@ class ArchiveWindow( BaseWindow ) :
 			if recInfo :
 				self.mWin.setProperty( 'ChannelName', recInfo.mChannelName )
 				self.mWin.setProperty( 'RecDate',  TimeToString( recInfo.mStartTime ) )
-				self.mWin.setProperty( 'RecDuration',  '%dm' %( recInfo.mDuration/60 ) )
+				self.mWin.setProperty( 'RecDuration',  '%dMin' %( recInfo.mDuration/60 ) )
 				self.mWin.setProperty( 'RecName', recInfo.mRecordName )
 			else :
 				self.ResetArchiveInfomation( )
@@ -945,7 +971,7 @@ class ArchiveWindow( BaseWindow ) :
 		if status.mMode == ElisEnum.E_MODE_PVR :
 			if self.mPlayingRecord :
 				self.mCtrlPlayName.setLabel( self.mPlayingRecord.mRecordName )
-
+				
 				if self.mEnableThread == True and self.mPlayProgressThread :
 					self.mEnableThread = False				
 					self.mPlayProgressThread.join( )
@@ -973,7 +999,10 @@ class ArchiveWindow( BaseWindow ) :
 			if channel :
 				self.mCtrlPlayName.setLabel( channel.mName )
 			else :
-				self.mCtrlPlayName.setLabel( '' )				
+				self.mCtrlPlayName.setLabel( '' )
+
+		self.mCtrlPlayStart.setLabel( '' )
+		self.mCtrlPlayEnd.setLabel( '' )
 
 
 	@RunThread
@@ -1000,4 +1029,9 @@ class ArchiveWindow( BaseWindow ) :
 		LOG_TRACE( 'Update PlayProgress = %d [%d,%d,%d]' %( self.mPlayPerent, status.mPlayTimeInMs, status.mStartTimeInMs, status.mEndTimeInMs ) )
 		
 		self.mCtrlPlayProgress.setPercent( self.mPlayPerent )
+		self.mCtrlPlayStart.setLabel( '%s' %(TimeToString( int( status.mPlayTimeInMs / 1000 ), TimeFormatEnum.E_HH_MM_SS ) ) )
+		self.mCtrlPlayEnd.setLabel( '%s' %(TimeToString( int( status.mEndTimeInMs / 1000 ), TimeFormatEnum.E_HH_MM_SS ) ) )
+		
 
+	def GetPlayingRecord( self ) :
+		return self.mPlayingRecord
