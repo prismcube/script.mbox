@@ -226,6 +226,8 @@ class ChannelListWindow( BaseWindow ) :
 		zappingmode = None
 		zappingmode = self.mDataCache.Zappingmode_GetCurrent( )
 		if zappingmode :
+			if zappingmode.mSortingMode == ElisEnum.E_SORT_BY_DEFAULT :
+				zappingmode.mSortingMode = ElisEnum.E_SORT_BY_NUMBER
 			self.mLoadMode = deepcopy( zappingmode )
 			self.mUserMode = deepcopy( zappingmode )
 		else :
@@ -679,23 +681,32 @@ class ChannelListWindow( BaseWindow ) :
 
 			iChannel = self.mChannelListHash.get( int(aJumpNumber), None ) 
 			if iChannel == None :
+				return
+				"""
 				if self.mFlag_ModeChanged :
 					iChannel = self.mChannelList[0]
 				else :
 					return
+				"""
 
 			#LOG_TRACE( 'JumpChannel: num[%s] Name[%s] type[%s] aNum[%s]'% (iChannel.mNumber, iChannel.mName, iChannel.mServiceType, aJumpNumber) )
 
 			#detected to jump focus
 			chindex = 0
+			isFind = False
 			for ch in self.mChannelList :
 				if ch.mNumber == aJumpNumber :
 					self.mNavChannel = ch
+					isFind = True
 					self.ResetLabel( )
 					self.UpdateChannelAndEPG( )
 					break
 				else :
 					chindex += 1
+
+			if isFind == False :
+				chindex = 0
+				iChannel = self.mChannelList[0]
 
 			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, chindex, E_TAG_SET_SELECT_POSITION )
 
@@ -2165,11 +2176,11 @@ class ChannelListWindow( BaseWindow ) :
 					self.mChannelList = None
 					self.mNavEpg = None
 					self.mNavChannel = None
+					self.HashInit( )
 					self.ReloadChannelList( )
 					#clear label
 					self.ResetLabel( )
 					self.UpdateChannelAndEPG( )
-
 			return
 
 		LOG_TRACE( 'contextAction ret[%s]'% ret )

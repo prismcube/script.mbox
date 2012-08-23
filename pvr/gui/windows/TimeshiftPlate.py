@@ -389,6 +389,7 @@ class TimeShiftPlate( BaseWindow ) :
 				ret = self.mDataCache.Player_Resume( )
 
 			LOG_TRACE( 'play_resume( ) ret[%s]'% ret )
+			self.WaitToBuffering( )
 			if ret :
 				if self.mSpeed != 100 :
 					#_self.mDataCache.Player_SetSpeed( 100 )
@@ -412,7 +413,7 @@ class TimeShiftPlate( BaseWindow ) :
 		elif aFocusId == E_CONTROL_ID_BUTTON_PAUSE :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
 				ret = self.mDataCache.Player_StartTimeshiftPlayback( ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE, 0 )
-				self.WaitToBuffering( )
+				#self.WaitToBuffering( )
 
 			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				ret = self.mDataCache.Player_Pause( )
@@ -952,7 +953,7 @@ class TimeShiftPlate( BaseWindow ) :
 		waitTime = 0
 		self.OpenBusyDialog( )
 		while waitTime < 5 :
-			if self.mIsTimeshiftPending :
+			if not self.mIsTimeshiftPending :
 				break
 			time.sleep( 1 )
 			waitTime += 1
