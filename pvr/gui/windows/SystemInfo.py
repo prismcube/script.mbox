@@ -198,15 +198,15 @@ class SystemInfo( SettingWindow ) :
 
 				total_size, used_size, percent = self.GetPartitionSize( 'sda5' )
 				self.mCtrlProgressMedia.setPercent( percent )
-				self.mCtrlHDDSizeMedia.setLabel( MR_LANG( 'Media Usage : %s%% ( %s / %s )' ) % ( percent, free_size, total_size ) )
+				self.mCtrlHDDSizeMedia.setLabel( MR_LANG( 'Media usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )
 
 				total_size, used_size, percent = self.GetPartitionSize( 'sda3' )
 				self.mCtrlProgressProgram.setPercent( percent )
-				self.mCtrlHDDSizeProgram.setLabel( MR_LANG( 'Program Usage : %s%% ( %s / %s )' ) % ( percent, free_size, total_size ) )
-
+				self.mCtrlHDDSizeProgram.setLabel( MR_LANG( 'Program usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )
+				
 				total_size, used_size, percent = self.GetRecordFreeSize( )
 				self.mCtrlProgressRecord.setPercent( percent )
-				self.mCtrlHDDSizeRecord.setLabel( MR_LANG( 'Recording Usage : %s%% ( %s / %s )' ) % ( percent, free_size, total_size ) )
+				self.mCtrlHDDSizeRecord.setLabel( MR_LANG( 'Recording usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )
 			else :
 				self.mCtrlHDDName.setLabel( MR_LANG( 'Name & Total Size : Unknown' ) )
 				self.mCtrlHDDSizeMedia.setLabel( MR_LANG( 'Media Usage : Unknown' ) )

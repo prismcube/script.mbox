@@ -162,13 +162,14 @@
 			</control>
 				<control type="label" id="1003">
 				<posx>60</posx>
-				<posy>110</posy>
-				<width>600</width>
+				<posy>112</posy>
+				<width>740</width>
 				<height>40</height>
 				<font>Font_Bold20</font>
 				<textcolor>blue</textcolor>
 				<align>left</align>
 				<aligny>center</aligny>
+				<scroll>true</scroll>
 			</control>
 			<include>DefaultScanHelperStatusProgress</include>
 		</control>
