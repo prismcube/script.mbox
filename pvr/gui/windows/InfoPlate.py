@@ -54,8 +54,6 @@ FLAG_CLOCKMODE_INTTIME = 5
 #PREV_CHANNEL	= 2
 #INIT_CHANNEL	= 3
 
-E_INDEX_JUMP_MAX = 100
-
 CONTEXT_ACTION_VIDEO_SETTING = 1 
 CONTEXT_ACTION_AUDIO_SETTING = 2
 
@@ -142,11 +140,6 @@ class InfoPlate( LivePlateWindow ) :
 			if ret :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
-
-
-		elif id == Action.ACTION_MBOX_XBMC :
-			pass
-			#toDo warning msg
 
 		elif id == Action.ACTION_MBOX_ARCHIVE :
 			self.Close( )

@@ -218,6 +218,7 @@ E_NUMERIC_KEYBOARD_TYPE_IP		= 3
 E_INPUT_KEYBOARD_TYPE_NO_HIDE	= False
 E_INPUT_KEYBOARD_TYPE_HIDE		= True
 E_INPUT_MAX						= 9999
+E_INDEX_JUMP_MAX				= 100
 
 # Dialog Satatus
 E_DIALOG_STATE_YES		= 1
@@ -333,7 +334,7 @@ def IsNumber( aString ) :
 		return False
 
 
-	
+
 ############################ Global Class ############################
 
 

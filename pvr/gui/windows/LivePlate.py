@@ -104,6 +104,8 @@ class LivePlate( LivePlateWindow ) :
 		self.mCtrlBtnPrevEpg           = self.getControl( E_CONTROL_ID_BUTTON_PREV_EPG )
 		self.mCtrlBtnNextEpg           = self.getControl( E_CONTROL_ID_BUTTON_NEXT_EPG )
 
+		self.CheckMediaCenter( )
+
 		self.InitControl( )
 		self.SetVisibleControls( E_CONTROL_DEFAULT_HIDE, False )
 
@@ -205,8 +207,10 @@ class LivePlate( LivePlateWindow ) :
 				self.ShowDialog( E_CONTROL_ID_BUTTON_STOP_RECORDING )
 
 		elif id == Action.ACTION_MBOX_XBMC :
+			self.SetMediaCenter( )
+
 			self.Close( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif id == Action.ACTION_MBOX_ARCHIVE :
 			self.Close( )

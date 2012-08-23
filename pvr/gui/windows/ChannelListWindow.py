@@ -318,9 +318,6 @@ class ChannelListWindow( BaseWindow ) :
 				else :
 					self.ShowRecordingStopDialog( )
 
-		elif id == Action.ACTION_MBOX_XBMC :
-			self.SetGoBackWindow( WinMgr.WIN_ID_MEDIACENTER )
-
 		elif id == Action.ACTION_MBOX_ARCHIVE :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 				self.SetGoBackWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
