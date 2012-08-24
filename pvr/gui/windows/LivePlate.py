@@ -104,6 +104,9 @@ class LivePlate( LivePlateWindow ) :
 		self.mCtrlBtnPrevEpg           = self.getControl( E_CONTROL_ID_BUTTON_PREV_EPG )
 		self.mCtrlBtnNextEpg           = self.getControl( E_CONTROL_ID_BUTTON_NEXT_EPG )
 
+		self.CheckMediaCenter( )
+		self.LoadNoSignalState( )
+
 		self.InitControl( )
 		self.SetVisibleControls( E_CONTROL_DEFAULT_HIDE, False )
 
@@ -128,8 +131,6 @@ class LivePlate( LivePlateWindow ) :
 		self.mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
 		if not self.mZappingMode :
 			self.mZappingMode = ElisIZappingMode( )
-
-		self.LoadNoSignalState( )
 
 		#get channel
 		self.ChannelTune( INIT_CHANNEL )
@@ -205,8 +206,10 @@ class LivePlate( LivePlateWindow ) :
 				self.ShowDialog( E_CONTROL_ID_BUTTON_STOP_RECORDING )
 
 		elif id == Action.ACTION_MBOX_XBMC :
+			self.SetMediaCenter( )
+
 			self.Close( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif id == Action.ACTION_MBOX_ARCHIVE :
 			self.Close( )
@@ -220,6 +223,9 @@ class LivePlate( LivePlateWindow ) :
 			self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
 
 		elif id == Action.ACTION_PAUSE or id == Action.ACTION_PLAYER_PLAY :
+			if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
+				return -1
+
 			self.Close( )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = id
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
@@ -766,11 +772,7 @@ class LivePlate( LivePlateWindow ) :
 		msg1 = ''
 		msg2 = ''
 
-		if aFocusId == E_CONTROL_ID_BUTTON_MUTE :
-			msg1 = 'Mute'
-			msg2 = 'test'
-
-		elif aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
+		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
 			msg1 = 'Teletext'
 			msg2 = 'test'
 
@@ -849,11 +851,9 @@ class LivePlate( LivePlateWindow ) :
 			return
 
 		if selectAction == CONTEXT_ACTION_VIDEO_SETTING :
-			GuiLock2( True )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SET_AUDIOVIDEO )
 			dialog.SetValue( selectAction )
  			dialog.doModal( )
- 			GuiLock2( False )
 
  		else :
 			getCount = self.mDataCache.Audiotrack_GetCount( )

@@ -33,25 +33,12 @@ BUTTON_ID_CAS					= 90107
 class MainMenu( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
-		self.mStartMediaCenter = False
-
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		if self.mStartMediaCenter == True :
-			self.mCommander.AppMediaPlayer_Control( 0 )
-			WinMgr.GetInstance( ).CheckGUISettings( )
-			self.UpdateVolume( )
-
-			self.mStartMediaCenter = False
-			#current channel re-zapping
-			iChannel = self.mDataCache.Channel_GetCurrent( )
-			if iChannel :
-				self.mDataCache.Channel_InvalidateCurrent( )
-				self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
-
+		self.CheckMediaCenter( )
 		self.getPlayerStatus( )
 
 
@@ -116,7 +103,14 @@ class MainMenu( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
 		elif aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO :
-			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+			if self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
+				self.getControl( MAIN_GROUP_ID ).setVisible( False )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Please stop the recordings first' ) )
+				dialog.doModal( )
+				self.getControl( MAIN_GROUP_ID ).setVisible( True )
+
+			elif self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Please stop the Personal Video Recording first' ) )
@@ -124,8 +118,7 @@ class MainMenu( BaseWindow ) :
 				self.getControl( MAIN_GROUP_ID ).setVisible( True )
 
 			else:
-				self.mStartMediaCenter = True
-				self.mCommander.AppMediaPlayer_Control( 1 )
+				self.SetMediaCenter( )
 				if aControlId == BUTTON_ID_MEDIA_CENTER :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
 				#WinMgr.GetInstance( ).Reset( )

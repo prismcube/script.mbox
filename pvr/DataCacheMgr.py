@@ -1114,7 +1114,7 @@ class DataCacheMgr( object ) :
 		aTypeAll = []
 		aTypeAll.append( ElisEnum.E_SERVICE_TYPE_TV )
 		aTypeAll.append( ElisEnum.E_SERVICE_TYPE_RADIO )
-		mMode = ElisEnum.E_MODE_ALL
+		mMode = ElisEnum.E_MODE_SATELLITE
 		mSort = ElisEnum.E_SORT_BY_NUMBER
 
 		ret = 0
@@ -1135,7 +1135,7 @@ class DataCacheMgr( object ) :
 
 				ret |= self.mCommander.Channel_DeleteByNumber( mType, numList )
 				#from pvr.GuiHelper import ClassToList
-				#LOG_TRACE('delete type[%s] channel[%s]'% ( mType, ClassToList('convert', numList) ) )
+				#LOG_TRACE('delete type[%s] len[%s] channel[%s]'% ( mType, len(tmpChannelList), ClassToList('convert', numList) ) )
 
 			self.SetSkipChannelView( False )
 			if ret :

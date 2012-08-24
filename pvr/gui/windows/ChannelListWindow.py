@@ -226,6 +226,8 @@ class ChannelListWindow( BaseWindow ) :
 		zappingmode = None
 		zappingmode = self.mDataCache.Zappingmode_GetCurrent( )
 		if zappingmode :
+			if zappingmode.mSortingMode == ElisEnum.E_SORT_BY_DEFAULT :
+				zappingmode.mSortingMode = ElisEnum.E_SORT_BY_NUMBER
 			self.mLoadMode = deepcopy( zappingmode )
 			self.mUserMode = deepcopy( zappingmode )
 		else :
@@ -317,9 +319,6 @@ class ChannelListWindow( BaseWindow ) :
 					self.UpdateChannelAndEPG( )
 				else :
 					self.ShowRecordingStopDialog( )
-
-		elif id == Action.ACTION_MBOX_XBMC :
-			self.SetGoBackWindow( WinMgr.WIN_ID_MEDIACENTER )
 
 		elif id == Action.ACTION_MBOX_ARCHIVE :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
@@ -682,23 +681,32 @@ class ChannelListWindow( BaseWindow ) :
 
 			iChannel = self.mChannelListHash.get( int(aJumpNumber), None ) 
 			if iChannel == None :
+				return
+				"""
 				if self.mFlag_ModeChanged :
 					iChannel = self.mChannelList[0]
 				else :
 					return
+				"""
 
 			#LOG_TRACE( 'JumpChannel: num[%s] Name[%s] type[%s] aNum[%s]'% (iChannel.mNumber, iChannel.mName, iChannel.mServiceType, aJumpNumber) )
 
 			#detected to jump focus
 			chindex = 0
+			isFind = False
 			for ch in self.mChannelList :
 				if ch.mNumber == aJumpNumber :
 					self.mNavChannel = ch
+					isFind = True
 					self.ResetLabel( )
 					self.UpdateChannelAndEPG( )
 					break
 				else :
 					chindex += 1
+
+			if isFind == False :
+				chindex = 0
+				iChannel = self.mChannelList[0]
 
 			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, chindex, E_TAG_SET_SELECT_POSITION )
 
@@ -1172,8 +1180,8 @@ class ChannelListWindow( BaseWindow ) :
 		#is change?
 		if self.mIsSave :
 			#ask save question
-			head =  MR_LANG( 'Save Channels' )
-			line1 = MR_LANG( 'Do you want to save the channels?' )
+			head =  MR_LANG( 'Save Changes' )
+			line1 = MR_LANG( 'Do you want to save changes?' )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( head, line1 )
@@ -2168,11 +2176,11 @@ class ChannelListWindow( BaseWindow ) :
 					self.mChannelList = None
 					self.mNavEpg = None
 					self.mNavChannel = None
+					self.HashInit( )
 					self.ReloadChannelList( )
 					#clear label
 					self.ResetLabel( )
 					self.UpdateChannelAndEPG( )
-
 			return
 
 		LOG_TRACE( 'contextAction ret[%s]'% ret )
@@ -2212,7 +2220,7 @@ class ChannelListWindow( BaseWindow ) :
 				if self.mEditFavorite :
 					context.append( ContextItem( '%s'% MR_LANG( 'Add to Favorite Group' ), CONTEXT_ACTION_ADD_TO_FAV  ) )
 					context.append( ContextItem( '%s'% MR_LANG( 'Create New Group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
-					context.append( ContextItem( '%s'% MR_LANG( 'Change Favorite Group Name' ), CONTEXT_ACTION_RENAME_FAV ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Rename Favorite Group' ), CONTEXT_ACTION_RENAME_FAV ) )
 					context.append( ContextItem( '%s'% MR_LANG( 'Delete Favorite Group' ), CONTEXT_ACTION_DELETE_FAV ) )
 				else:
 					context.append( ContextItem( '%s'% MR_LANG( 'Create New Group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
@@ -2231,7 +2239,7 @@ class ChannelListWindow( BaseWindow ) :
 				context = []
 
 			context.append( ContextItem( '%s'% MR_LANG( 'Add Favorite Channel Group' ), CONTEXT_ACTION_ADD_TO_CHANNEL ) )
-			context.append( ContextItem( '%s'% MR_LANG( 'Change Favorite Group Name' ), CONTEXT_ACTION_RENAME_FAV ) )
+			context.append( ContextItem( '%s'% MR_LANG( 'Rename Favorite Group' ), CONTEXT_ACTION_RENAME_FAV ) )
 
 		context.append( ContextItem( '%s'% MR_LANG( 'Save and Exit' ), CONTEXT_ACTION_SAVE_EXIT ) )
 
@@ -2279,7 +2287,7 @@ class ChannelListWindow( BaseWindow ) :
 		   selectedAction == CONTEXT_ACTION_DELETE_FAV :
  			title = ''
  			if selectedAction == CONTEXT_ACTION_ADD_TO_FAV :   title = MR_LANG( 'Add to Favorite Group' )
- 			elif selectedAction == CONTEXT_ACTION_RENAME_FAV : title = MR_LANG( 'Change Favorite Group Name' )
+ 			elif selectedAction == CONTEXT_ACTION_RENAME_FAV : title = MR_LANG( 'Rename Favorite Group' )
  			elif selectedAction == CONTEXT_ACTION_DELETE_FAV : title = MR_LANG( 'Delete Favorite Group' )
 
  			grpIdx = xbmcgui.Dialog( ).select( title, self.mEditFavorite )

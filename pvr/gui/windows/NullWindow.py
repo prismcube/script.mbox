@@ -18,6 +18,7 @@ class NullWindow( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
+		self.CheckMediaCenter( )
 		self.LoadNoSignalState( )
 
 		if self.mInitialized == False :
@@ -158,29 +159,38 @@ class NullWindow( BaseWindow ) :
 			if actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
 				aKey = actionId - Action.REMOTE_0
 
-			#ToDO : youn
-			status = self.mDataCache.Player_GetStatus( )
-			if status.mMode == ElisEnum.E_MODE_PVR :
-				return -1
-			elif status.mMode == ElisEnum.E_MODE_TIMESHIFT :
-				return -1
-
 			if aKey == 0 :
 				return -1
 
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
-			dialog.SetDialogProperty( str( aKey ), E_INPUT_MAX, None )
-			dialog.doModal( )
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode == ElisEnum.E_MODE_LIVE :
 
-			isOK = dialog.IsOK( )
-			if isOK == E_DIALOG_STATE_YES :
-				inputNumber = dialog.GetChannelLast( )
-				iCurrentCh = self.mDataCache.Channel_GetCurrent( )
-				if iCurrentCh.mNumber != int(inputNumber) :
-					jumpChannel = self.mDataCache.Channel_GetCurr( int(inputNumber) )
-					if jumpChannel != None and jumpChannel.mError == 0 :
-						self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType )
-					#self.mDataCache.Channel_SetCurrent( inputNumber, self.mDataCache.Zappingmode_GetCurrent( ).mServiceType )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
+				dialog.SetDialogProperty( str( aKey ), E_INPUT_MAX, None )
+				dialog.doModal( )
+
+				isOK = dialog.IsOK( )
+				if isOK == E_DIALOG_STATE_YES :
+					inputNumber = dialog.GetChannelLast( )
+					iCurrentCh = self.mDataCache.Channel_GetCurrent( )
+					if iCurrentCh.mNumber != int(inputNumber) :
+						jumpChannel = self.mDataCache.Channel_GetCurr( int(inputNumber) )
+						if jumpChannel != None and jumpChannel.mError == 0 :
+							self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType )
+						#self.mDataCache.Channel_SetCurrent( inputNumber, self.mDataCache.Zappingmode_GetCurrent( ).mServiceType )
+
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TIMESHIFT_JUMP )
+				dialog.SetDialogProperty( str( aKey ), E_INDEX_JUMP_MAX, None )
+				dialog.doModal( )
+
+				isOK = dialog.IsOK( )
+				if isOK == E_DIALOG_STATE_YES :
+
+					move = dialog.GetMoveToJump( )
+					if move :
+						ret = self.mDataCache.Player_JumpToIFrame( int( move ) )
+
 
 		elif actionId == Action.ACTION_STOP :
 			status = self.mDataCache.Player_GetStatus( )
@@ -200,10 +210,10 @@ class NullWindow( BaseWindow ) :
 						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif actionId == Action.ACTION_MBOX_XBMC :
-			#ToDO : youn 
-			pass
-			#self.Close( )
-			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
+			self.SetMediaCenter( )
+			self.Close( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
+
 
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
 			status = self.mDataCache.Player_GetStatus( )
@@ -222,6 +232,9 @@ class NullWindow( BaseWindow ) :
 				self.ShowRecordingStartDialog( )
 		
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
+			if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
+				return -1
+
 			self.Close( )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )

@@ -55,7 +55,6 @@ E_BUTTON_GROUP_PLAYPAUSE = 450
 
 E_INDEX_FIRST_RECORDING = 0
 E_INDEX_SECOND_RECORDING = 1
-E_INDEX_JUMP_MAX = 100
 
 E_TAG_COLOR_RED   = '[COLOR red]'
 E_TAG_COLOR_GREEN = '[COLOR green]'
@@ -131,8 +130,6 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mRepeatTimeout = 1
 		self.mAsyncShiftTimer = None
 		self.mAutomaticHideTimer = None
-
-		self.LoadNoSignalState( )
 
 		self.ShowRecordingInfo( )
 		self.mTimeShiftExcuteTime = self.mDataCache.Datetime_GetLocalTime( )
@@ -266,12 +263,6 @@ class TimeShiftPlate( BaseWindow ) :
 			else :
 				self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
 
-		elif id == Action.ACTION_MBOX_XBMC :
-			#ToDO : 
-			pass
-			#self.Close( )
-			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
-
 		elif id == Action.ACTION_MBOX_ARCHIVE :
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
@@ -398,6 +389,7 @@ class TimeShiftPlate( BaseWindow ) :
 				ret = self.mDataCache.Player_Resume( )
 
 			LOG_TRACE( 'play_resume( ) ret[%s]'% ret )
+			self.WaitToBuffering( )
 			if ret :
 				if self.mSpeed != 100 :
 					#_self.mDataCache.Player_SetSpeed( 100 )
@@ -421,7 +413,7 @@ class TimeShiftPlate( BaseWindow ) :
 		elif aFocusId == E_CONTROL_ID_BUTTON_PAUSE :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
 				ret = self.mDataCache.Player_StartTimeshiftPlayback( ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE, 0 )
-				self.WaitToBuffering( )
+				#self.WaitToBuffering( )
 
 			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				ret = self.mDataCache.Player_Pause( )
@@ -961,7 +953,7 @@ class TimeShiftPlate( BaseWindow ) :
 		waitTime = 0
 		self.OpenBusyDialog( )
 		while waitTime < 5 :
-			if self.mIsTimeshiftPending :
+			if not self.mIsTimeshiftPending :
 				break
 			time.sleep( 1 )
 			waitTime += 1
