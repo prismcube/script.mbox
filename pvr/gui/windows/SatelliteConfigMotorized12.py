@@ -20,7 +20,6 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 		self.mEventBus.Register( self )
 		ScanHelper.GetInstance( ).ScanHelper_Start( self.mWin )
 
-		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
 		self.mCurrentSatellite = self.mTunerMgr.GetCurrentConfiguredSatellite( )
 		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 		self.mSelectedTransponderIndex = 0
