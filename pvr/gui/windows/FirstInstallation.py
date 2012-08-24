@@ -195,7 +195,8 @@ class FirstInstallation( SettingWindow ) :
 			self.mPrevStepNum = E_STEP_SELECT_LANGUAGE
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Video & Audio Setup' ) )
 			self.AddEnumControl( E_SpinEx01, 'Show 4:3', MR_LANG( 'TV Screen Format' ), MR_LANG( 'Select the display format for TV screen' ) )
-			self.AddEnumControl( E_SpinEx02, 'Audio Dolby', None, MR_LANG( 'Set the STB to select the Dolby audio automatically' ) )
+#			self.AddEnumControl( E_SpinEx02, 'Audio Dolby', None, MR_LANG( 'Set On, the Dolby Digital audio will be selected automatically' ) )
+			self.AddEnumControl( E_SpinEx02, 'Audio Dolby', MR_LANG('Dolby Audio'), MR_LANG( 'Set to "On", if you want the Dolby Digital audio to be selected automatically when broadcast' ) )
 			self.AddEnumControl( E_SpinEx03, 'HDMI Format', None, MR_LANG( 'Select the display\'s HDMI resolution' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to Antenna & Satellite Setup' ), MR_LANG( 'Go back to Language Setup' ) )
 			self.SetPrevNextButtonLabel( )
@@ -218,7 +219,7 @@ class FirstInstallation( SettingWindow ) :
 			self.AddUserEnumControl( E_SpinEx01, 'Channel Search', USER_ENUM_LIST_YES_NO, self.mIsChannelSearch, MR_LANG( 'Do you want to scan channels in this installation?' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select the satellite you wish to search from' ) )
 			self.AddEnumControl( E_SpinEx02, 'Network Search', None, MR_LANG( 'Set your STB to scan channels from multiple TPs' ) )
-			self.AddEnumControl( E_SpinEx03, 'Channel Search Mode', None, MR_LANG( 'Select the type of channel you want to search for' ) )
+			self.AddEnumControl( E_SpinEx03, 'Channel Search Mode', MR_LANG( 'Search Mode' ), MR_LANG( 'Select the type of channel you want to search for' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to Time & Date Setup' ), MR_LANG( 'Go back to Antenna & Satellite Setup' ) )
 			self.SetPrevNextButtonLabel( )
 			

@@ -385,7 +385,7 @@ class Configure( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx01, 'Language', MR_LANG( 'Menu Language' ), MR_LANG( 'Select the language for the menu to be in' ) )
 			self.AddEnumControl( E_SpinEx02, 'Audio Language', None, MR_LANG( 'Select the language that you wish to listen to' ) )
 			self.AddEnumControl( E_SpinEx03, 'Subtitle Language', None, MR_LANG( 'Select the language for the subtitle to be in' ) )
-			self.AddEnumControl( E_SpinEx04, 'Secondary Subtitle Language', None, MR_LANG( 'Choose the language for the secondary subtitle to be in' ) )
+			self.AddEnumControl( E_SpinEx04, 'Secondary Subtitle Language', None, MR_LANG( 'Select the language for the secondary subtitle to be in' ) )
 			self.AddEnumControl( E_SpinEx05, 'Hearing Impaired', None, MR_LANG( 'Set the hearing impaired function' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
@@ -476,14 +476,14 @@ class Configure( SettingWindow ) :
 			return
 
 		elif selectedId == E_NETWORK_SETTING :
-			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Choose Ethernet or Wireless for your network connection' ) )
+			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select Ethernet or Wireless for your network connection' ) )
 			self.AddInputControl( E_Input06, MR_LANG( ' - Connection Test' ), '', MR_LANG( 'Determine your network connection is accessible' ) )
 			if self.mUseNetworkType == NETWORK_WIRELESS :
 				self.AddInputControl( E_Input01, MR_LANG( 'Search AP' ), self.mCurrentSsid, MR_LANG( 'Search Access Points around your STB' ) )
 				self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Hidden SSID' ), USER_ENUM_LIST_ON_OFF, self.mUseHiddenId, MR_LANG( 'Enable hidden Subsystem Identification (SSID)' ) )
 				self.AddInputControl( E_Input02, MR_LANG( ' - Set Hidden SSID' ), self.mHiddenSsid, MR_LANG( 'Enter the hidden SSID you wish to use' ) )
 				self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Encryption' ), USER_ENUM_LIST_ON_OFF, self.mUseEncrypt, MR_LANG( 'Enable encryption for a secure wireless data transmissions' ) )
-				self.AddUserEnumControl( E_SpinEx03, MR_LANG( ' - Encryption Method' ), USER_ENUM_LIST_ENCRIPT_TYPE, self.mEncriptType, MR_LANG( 'Choose an encryption method for your network' ) )
+				self.AddUserEnumControl( E_SpinEx03, MR_LANG( ' - Encryption Method' ), USER_ENUM_LIST_ENCRIPT_TYPE, self.mEncriptType, MR_LANG( 'Select an encryption method for your network' ) )
 				self.AddUserEnumControl( E_SpinEx04, MR_LANG( ' - Encryption Key Type' ), USER_ENUM_LIST_PASSWORD_TYPE, self.mPasswordType, MR_LANG( 'Set ASCII/HEX mode for your key' ) )
 				self.AddInputControl( E_Input03, MR_LANG( ' - Set Encryption Key' ), StringToHidden( self.mPassWord ), MR_LANG( 'Enter the encryption key for wireless connection' ) )
 				self.AddInputControl( E_Input04, MR_LANG( 'Apply' ), '', MR_LANG( 'Press the OK button to connect to the AP you have chosen' ) )
@@ -510,7 +510,7 @@ class Configure( SettingWindow ) :
 				self.AddInputControl( E_Input02, MR_LANG( 'Subnet Mask' ), self.mTempSubNet, MR_LANG( 'Enter your subnet mask' ) )
 				self.AddInputControl( E_Input03, MR_LANG( 'Gateway' ), self.mTempGateway, MR_LANG( 'Enter your gateway' ) )
 				self.AddInputControl( E_Input04, MR_LANG( 'DNS' ), self.mTempDns, MR_LANG( 'Enter the DNS server address' ) )
-				self.AddInputControl( E_Input05, MR_LANG( 'Apply') , '', MR_LANG( 'Press the OK button to save IP address settings for Static' ) )
+				self.AddInputControl( E_Input05, MR_LANG( 'Apply') , '', MR_LANG( 'Press the OK button to save IP address settings' ) )
 
 				visibleControlIds = [ E_SpinEx01, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
 				self.SetVisibleControls( visibleControlIds, True )
