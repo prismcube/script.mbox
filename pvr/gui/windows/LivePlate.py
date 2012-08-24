@@ -772,11 +772,7 @@ class LivePlate( LivePlateWindow ) :
 		msg1 = ''
 		msg2 = ''
 
-		if aFocusId == E_CONTROL_ID_BUTTON_MUTE :
-			msg1 = 'Mute'
-			msg2 = 'test'
-
-		elif aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
+		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
 			msg1 = 'Teletext'
 			msg2 = 'test'
 

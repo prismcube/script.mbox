@@ -299,56 +299,52 @@ class Configure( SettingWindow ) :
  			dialog.doModal( )
 
  		elif selectedId == E_FACTORY_RESET and groupId == E_Input01 :
- 			resetChannel = ElisPropertyEnum( 'Reset Channel List', self.mCommander ).GetProp( )
- 			resetFavoriteAddons = ElisPropertyEnum( 'Reset Favorite Add-ons', self.mCommander ).GetProp( )
- 			resetSystem = ElisPropertyEnum( 'Reset Configure Setting', self.mCommander ).GetProp( )
+ 			"""
+ 			#resetChannel = ElisPropertyEnum( 'Reset Channel List', self.mCommander ).GetProp( )
+ 			#resetFavoriteAddons = ElisPropertyEnum( 'Reset Favorite Add-ons', self.mCommander ).GetProp( )
+ 			#resetSystem = ElisPropertyEnum( 'Reset Configure Setting', self.mCommander ).GetProp( )
  			if ( resetChannel | resetFavoriteAddons | resetSystem ) == 0 :
  				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No reset options selected' ) )
 		 		dialog.doModal( )
 		 		return
 		 	else :
-		 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'THIS WILL RESTORE TO FACTORY SETTINGS\nDO YOU WANT TO CONTINUE?' ) )
-				dialog.doModal( )
+		 	"""
+	 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'THIS WILL RESTORE TO FACTORY SETTINGS\nDO YOU WANT TO CONTINUE?' ) )
+			dialog.doModal( )
 
-				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-					ret1 = True
-					ret2 = True
-					ret3 = True
-					self.ShowProgress( MR_LANG( 'Now restoring...' ), 30 )
-					if resetChannel == 1 :
-						ret = self.mCommander.System_SetDefaultChannelList( )
-						self.mDataCache.LoadChannelList( )
-						self.mDataCache.LoadAllSatellite( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				self.OpenBusyDialog( )
+				ret1 = False
+				ret2 = False
+				#self.ShowProgress( MR_LANG( 'Now restoring...' ), 30 )
+				ret1 = self.mCommander.System_SetDefaultChannelList( )
+				ret2 = self.mCommander.System_FactoryReset( )
+				self.mDataCache.LoadChannelList( )
+				self.mDataCache.LoadAllSatellite( )
 
-						if self.mDataCache.mChannelList and len( self.mDataCache.mChannelList ) >= 0 :
-							self.mDataCache.Channel_SetCurrent( self.mDataCache.mChannelList[0].mNumber, ElisEnum.E_SERVICE_TYPE_TV )
+				if self.mDataCache.mChannelList and len( self.mDataCache.mChannelList ) >= 0 :
+					self.mDataCache.Channel_SetCurrent( self.mDataCache.mChannelList[0].mNumber, ElisEnum.E_SERVICE_TYPE_TV )
 
-					if resetFavoriteAddons == 1 :
-						pass
+				self.CloseBusyDialog( )
 
-					if resetSystem == 1 :
-						ret1 = self.mCommander.System_FactoryReset( )
-					try :
-						if ret1 == True and ret2 == True and ret3 == True :
-							self.mProgress.SetResult( True )
-							time.sleep( 1 )
-							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-							dialog.SetDialogProperty( MR_LANG( 'Reset your STB Settings' ), MR_LANG( 'Settings have been restored to factory default' ) )
-				 			dialog.doModal( )
-						else :
-							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-							dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Factory reset has failed to complete' ) )
-				 			dialog.doModal( )
-							
-					except Exception, e :
-						LOG_ERR( 'Error exception[%s]' % e )
+				if ret1 == True and ret2 == True :
+					#self.mProgress.SetResult( True )
+					#time.sleep( 1 )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Reset your STB Settings' ), MR_LANG( 'Settings have been restored to factory default' ) )
+		 			dialog.doModal( )
 
-					if resetSystem == 1 :	
-						from ElisProperty import ResetHash
-						ResetHash( )
-						self.SetListControl( )
+		 			from ElisProperty import ResetHash
+					ResetHash( )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
+				else :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Factory reset has failed to complete' ) )
+		 			dialog.doModal( )
+
+				self.SetListControl( )
 
 		else :
 			self.ControlSelect( )
@@ -477,7 +473,8 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_NETWORK_SETTING :
 			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select Ethernet or Wireless for your network connection' ) )
-			self.AddInputControl( E_Input06, MR_LANG( ' - Connection Test' ), '', MR_LANG( 'Determine your network connection is accessible' ) )
+			#self.AddInputControl( E_Input06, MR_LANG( ' - Connection Test' ), '', MR_LANG( 'Determine your network connection is accessible' ) )
+
 			if self.mUseNetworkType == NETWORK_WIRELESS :
 				self.AddInputControl( E_Input01, MR_LANG( 'Search AP' ), self.mCurrentSsid, MR_LANG( 'Search Access Points around your STB' ) )
 				self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Hidden SSID' ), USER_ENUM_LIST_ON_OFF, self.mUseHiddenId, MR_LANG( 'Enable hidden Subsystem Identification (SSID)' ) )
@@ -488,11 +485,11 @@ class Configure( SettingWindow ) :
 				self.AddInputControl( E_Input03, MR_LANG( ' - Set Encryption Key' ), StringToHidden( self.mPassWord ), MR_LANG( 'Enter the encryption key for wireless connection' ) )
 				self.AddInputControl( E_Input04, MR_LANG( 'Apply' ), '', MR_LANG( 'Press the OK button to connect to the AP you have chosen' ) )
 
-				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input06 ]
+				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04 ]
 				self.SetVisibleControls( visibleControlIds, True )
 				self.SetEnableControls( visibleControlIds, True )
 
-				hideControlIds = [ E_Input05 ]
+				hideControlIds = [ E_Input05, E_Input06 ]
 				self.SetVisibleControls( hideControlIds, False )
 				
 				self.InitControl( )
@@ -585,16 +582,16 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FACTORY_RESET :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Reset Channel List', None, MR_LANG( 'Your channel list will be restored to default' ) )
-			self.AddEnumControl( E_SpinEx02, 'Reset Favorite Add-ons', None, MR_LANG( 'All your favorite add-ons will be deleted after factory reset' ) )
-			self.AddEnumControl( E_SpinEx03, 'Reset Configure Setting', MR_LANG( 'Reset Configuration Setting' ), MR_LANG( 'User settings you have set will be restored to default' ) )
+			#self.AddEnumControl( E_SpinEx01, 'Reset Channel List', None, MR_LANG( 'Your channel list will be restored to default' ) )
+			#self.AddEnumControl( E_SpinEx02, 'Reset Favorite Add-ons', None, MR_LANG( 'All your favorite add-ons will be deleted after factory reset' ) )
+			#self.AddEnumControl( E_SpinEx03, 'Reset Configure Setting', MR_LANG( 'Reset Configuration Setting' ), MR_LANG( 'User settings you have set will be restored to default' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Factory Reset Now'), '', MR_LANG( 'Restore your STB to the default based on settings you configured' ) )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01 ]
+			visibleControlIds = [ E_Input01 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx04 , E_SpinEx05, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
+			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 , E_SpinEx05, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )

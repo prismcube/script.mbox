@@ -41,7 +41,7 @@ class FirstInstallation( SettingWindow ) :
 		ConfigMgr.GetInstance( ).SetFristInstallation( True )
 		self.mInitialized = True
 
-		
+
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
@@ -61,10 +61,10 @@ class FirstInstallation( SettingWindow ) :
 				return	
 			elif dialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
 				return
-			
+
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-				
+
 		elif actionId == Action.ACTION_PARENT_DIR :
 			if self.mStepNum == E_STEP_RESULT :
 				return
@@ -83,14 +83,14 @@ class FirstInstallation( SettingWindow ) :
 			self.ControlLeft( )
 
 		elif actionId == Action.ACTION_MOVE_RIGHT :
-			self.ControlRight( )				
+			self.ControlRight( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )
 			
 		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.ControlDown( )
-			
+
 
 	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
@@ -171,7 +171,7 @@ class FirstInstallation( SettingWindow ) :
 		self.ResetAllControl( )
 		self.mStepNum = aStep
 		self.DrawFirstTimeInstallationStep( self.mStepNum )
-		
+
 		if self.mStepNum == E_STEP_SELECT_LANGUAGE :
 			self.mPrevStepNum = E_STEP_SELECT_LANGUAGE
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Language Setup' ) )
@@ -222,7 +222,7 @@ class FirstInstallation( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx03, 'Channel Search Mode', MR_LANG( 'Search Mode' ), MR_LANG( 'Select the type of channel you want to search for' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to Time & Date Setup' ), MR_LANG( 'Go back to Antenna & Satellite Setup' ) )
 			self.SetPrevNextButtonLabel( )
-			
+
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
@@ -231,13 +231,15 @@ class FirstInstallation( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
+			time.sleep( 0.2 )
+			self.DisableControl( self.mStepNum )
 			self.setDefaultControl( )
 			return
 
 		elif self.mStepNum == E_STEP_DATE_TIME :
 			self.mPrevStepNum = E_STEP_CHANNEL_SEARCH_CONFIG
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Time & Date Setup' ) )
-			
+
 			setupChannelNumber = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
 			self.mSetupChannel = self.mDataCache.Channel_GetByNumber( setupChannelNumber )
 			self.mHasChannel = True
@@ -275,7 +277,7 @@ class FirstInstallation( SettingWindow ) :
 			time.sleep( 0.2 )
 			self.DisableControl( self.mStepNum )
 			self.setDefaultControl( )
-			
+
 			return
 
 		elif self.mStepNum == E_STEP_RESULT :
@@ -324,8 +326,15 @@ class FirstInstallation( SettingWindow ) :
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( MR_LANG( 'Next' ) )
 
 
-	def DisableControl( self, aStep ) :			
-		if self.mStepNum == E_STEP_DATE_TIME :
+	def DisableControl( self, aStep ) :
+		if self.mStepNum == E_STEP_CHANNEL_SEARCH_CONFIG :
+			visibleControlIds = [ E_SpinEx02, E_SpinEx03, E_Input01 ]
+			if self.GetSelectedIndex( E_SpinEx01 ) == 0 :
+				self.SetEnableControls( visibleControlIds, False )
+			else :
+				self.SetEnableControls( visibleControlIds, True )
+
+		elif self.mStepNum == E_STEP_DATE_TIME :
 			if self.mHasChannel == False :
 				self.SetEnableControl( E_SpinEx01, False )
 				self.SetEnableControl( E_Input01, False )
@@ -382,7 +391,7 @@ class FirstInstallation( SettingWindow ) :
 
 				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )
-				self.SetListControl( E_STEP_DATE_TIME )				
+				self.SetListControl( E_STEP_DATE_TIME )
 			else :
 				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )
@@ -393,6 +402,7 @@ class FirstInstallation( SettingWindow ) :
 				self.mIsChannelSearch = False
 			else :
 				self.mIsChannelSearch = True
+			self.DisableControl( self.mStepNum )
 
 		elif aControlId == E_SpinEx02 or aControlId == E_SpinEx03 :
 			self.ControlSelect( )
@@ -427,13 +437,13 @@ class FirstInstallation( SettingWindow ) :
 			oriLocalTimeOffset = ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetProp( )
 			oriSummerTime = ElisPropertyEnum( 'Summer Time', self.mCommander ).GetProp( )
 			oriChannel = self.mDataCache.Channel_GetCurrent( )
-	
+
 			ElisPropertyEnum( 'Time Mode', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx01 ) )
 			ElisPropertyEnum( 'Local Time Offset', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx02) )
 			ElisPropertyEnum( 'Summer Time', self.mCommander ).SetPropIndex( self.GetSelectedIndex( E_SpinEx03 ) )
 			localOffset = ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetProp( )
 			self.mCommander.Datetime_SetLocalOffset( localOffset )
- 			
+
 			if ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( ) == TIME_AUTOMATIC :
 				ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( self.mSetupChannel.mNumber )
 				self.mDataCache.Channel_SetCurrent( self.mSetupChannel.mNumber, self.mSetupChannel.mServiceType ) # Todo After : using ServiceType to different way
