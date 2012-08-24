@@ -23,7 +23,8 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 		self.mSelectedTransponderIndex = 0
 
-		self.SetSettingWindowLabel( MR_LANG( 'Satellite Configuration' ) )
+		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
+		self.SetSettingWindowLabel( MR_LANG( 'Satellite Config : Tuner %s - DisEqC 1.0' ) % ( self.tunerIndex + 1 ) )
 		self.LoadNoSignalState( )
 
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType

@@ -19,15 +19,14 @@ class SatelliteConfigMotorizedUsals2( SettingWindow ) :
 		self.mEventBus.Register( self )
 		ScanHelper.GetInstance( ).ScanHelper_Start( self.mWin )
 
-#		tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
 		self.mCurrentSatellite = self.mTunerMgr.GetCurrentConfiguredSatellite( )
 		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 		self.mSelectedTransponderIndex = 0
 
-		self.SetSettingWindowLabel( MR_LANG( 'Satellite Configuration' ) )
+		self.tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
+		self.SetSettingWindowLabel( MR_LANG( 'Satellite Config : Tuner %s - Motorized, Usals' ) % ( self.tunerIndex + 1 ) )
 		self.LoadNoSignalState( )
 
-#		self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Satellite Config : Tuner %d - Motorized, USALS' ) % ( tunerIndex + 1 ) )
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.InitConfig( )
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
