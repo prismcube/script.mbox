@@ -251,7 +251,7 @@ class ManualScan( SettingWindow ) :
 		self.SetProp( E_SpinEx04, self.mConfigTransponder.mPolarization )
 
 		# Symbolrate
-		self.AddInputControl( E_Input03, MR_LANG( ' - Symbol Rate' ), '%d KS/s' % self.mConfigTransponder.mSymbolRate , MR_LANG( 'Set the amount of data, that is transferred per sec' ) )
+		self.AddInputControl( E_Input03, MR_LANG( ' - Symbol Rate' ), '%d KS/s' % self.mConfigTransponder.mSymbolRate , MR_LANG( 'Set the amount of data, that is transferred per second in the data stream' ) )
 		
 		self.AddEnumControl( E_SpinEx05, 'Network Search', None, MR_LANG( 'Set On/Off to scan channels from multiple TPs' ) )
 		self.AddEnumControl( E_SpinEx06, 'Channel Search Mode', None, MR_LANG( 'Select the type of channels you want to search for' ) )

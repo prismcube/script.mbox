@@ -12,11 +12,10 @@ class SatelliteConfigOnecable( SettingWindow ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
-		
-		self.SetSettingWindowLabel( MR_LANG( 'OneCable Configuration' ) )
-		self.LoadNoSignalState( )
-#		self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'OneCable configuration' ) )
 
+		tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
+		self.SetSettingWindowLabel( MR_LANG( 'Tuner %d Config : OneCable' ) % ( tunerIndex + 1 ) )
+		self.LoadNoSignalState( )
 		self.LoadConfigedSatellite( )
 		self.mCurrentSatellite = self.mTunerMgr.GetConfiguredSatellitebyIndex( 0 )
 		
