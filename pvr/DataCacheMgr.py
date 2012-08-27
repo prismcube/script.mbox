@@ -1151,6 +1151,14 @@ class DataCacheMgr( object ) :
 		return ret
 
 
+	def Satellite_GetListByChannel( self ) :
+		if SUPPORT_CHANNEL_DATABASE	== True :
+			channelDB = ElisChannelDB( )
+			satelliteList = channelDB.Satellite_GetListByChannel( )
+			channelDB.Close( )
+			return satelliteList
+
+
 	def Channel_SetInitialBlank( self, aBlank ) :
 		return self.mCommander.Channel_SetInitialBlank( aBlank )
 
