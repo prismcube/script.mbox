@@ -171,6 +171,13 @@
 				<aligny>center</aligny>
 				<scroll>true</scroll>
 			</control>
+			<control type="image">
+				<posx>855</posx>
+				<posy>100</posy>
+				<width>160</width>
+				<height>50</height>
+				<texture>Prismcube_Logo.png</texture>
+			</control>
 			<include>DefaultScanHelperStatusProgress</include>
 		</control>
 	</include>
@@ -227,7 +234,7 @@
 				<posy>360</posy>
 				<width>100</width>
 				<height>40</height>
-				<font>Font_Bold20</font>
+				<font>Font_Reg20</font>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
@@ -239,7 +246,7 @@
 				<posy>360</posy>
 				<width>100</width>
 				<height>40</height>
-				<font>Font_Bold20</font>
+				<font>Font_Reg20</font>
 				<align>right</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
@@ -262,7 +269,7 @@
 				<posy>420</posy>
 				<width>100</width>
 				<height>40</height>
-				<font>Font_Bold20</font>
+				<font>Font_Reg20</font>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
@@ -274,7 +281,7 @@
 				<posy>420</posy>
 				<width>100</width>
 				<height>40</height>
-				<font>Font_Bold20</font>
+				<font>Font_Reg20</font>
 				<align>right</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>

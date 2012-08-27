@@ -54,6 +54,7 @@
 	<texture>settings/settings_panelback.png</texture>
 	<texture>settings/settings_intframe_bottom.png</texture>
 	<texture>Prismcube_Logo.png</texture>
+	<texture>XBMC_Logo.png</texture>
 	<texture>settings/settings_panelfront.png</texture>
 	<texture>video_pig_overlay.png</texture>
 	<texture>views/listpanel_selectbar.png</texture>
