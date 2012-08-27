@@ -125,8 +125,8 @@ class EPGWindow( BaseWindow ) :
 			self.Close( )
 
 		elif  actionId == Action.ACTION_SELECT_ITEM :
-			if self.mFocusId == LIST_ID_COMMON_EPG or self.mFocusId == LIST_ID_BIG_EPG :
-				self.Tune( )
+			#if self.mFocusId == LIST_ID_COMMON_EPG or self.mFocusId == LIST_ID_BIG_EPG :
+			self.Tune( )
 	
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			pass
@@ -1208,12 +1208,28 @@ class EPGWindow( BaseWindow ) :
 
 	def Tune( self ) :
 		if self.mEPGMode == E_VIEW_CHANNEL :
+			#LOG_TRACE( '##################################### channel %d:%d' %(self.mSelectChannel.mNumber, self.mCurrentChannel.mNumber) )	
+			if self.mSelectChannel == None or self.mCurrentChannel == None :
+				LOG_ERR( 'Invalid channel' )
+				return
+
+			if self.mSelectChannel.mNumber != self.mCurrentChannel.mNumber :
+				if self.mSelectChannel.mLocked == True :
+					if self.ShowPincodeDialog( ) == False :
+						return
+
+				self.mDataCache.Channel_SetCurrent( self.mSelectChannel.mNumber, self.mSelectChannel.mServiceType )
+				self.mCurrentChannel = self.mSelectChannel
+				self.UpdateCurrentChannel( )				
+
+			"""
 			channel = self.mDataCache.Channel_GetCurrent( )
 			if channel.mLocked == True :
 				if self.ShowPincodeDialog( ) == False :
 					return
 			self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType ) 
 			self.RestartEPGUpdateTimer( 5 )
+			"""
 
 		else : #self.mEPGMode == E_VIEW_CURRENT  or self.mEPGMode == E_VIEW_FOLLOWING
 			selectedPos = self.mCtrlBigList.getSelectedPosition( )
