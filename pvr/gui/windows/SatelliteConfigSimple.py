@@ -19,7 +19,6 @@ class SatelliteConfigSimple( SettingWindow ) :
 		self.mEventBus.Register( self )
 		ScanHelper.GetInstance( ).ScanHelper_Start( self.mWin )
 
-		tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
 		self.mCurrentSatellite = self.mTunerMgr.GetCurrentConfiguredSatellite( )
 		self.mTransponderList = self.mDataCache.GetFormattedTransponderList( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType )
 		self.mSelectedTransponderIndex = 0
@@ -27,7 +26,6 @@ class SatelliteConfigSimple( SettingWindow ) :
 		self.SetSettingWindowLabel( MR_LANG( 'Satellite Configuration' ) )
 		self.LoadNoSignalState( )
 
-#		self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'Satellite Config : Tuner %d - %s' ) % ( tunerIndex + 1, self.mTunerMgr.GetCurrentTunerTypeString( ) ) )
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.InitConfig( )
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )

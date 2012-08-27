@@ -19,9 +19,9 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 
 
 	def onInit( self ) :
-		self.SetSettingWindowLabel( MR_LANG( 'OneCable Configuration' ) )
+		tunerIndex = self.mTunerMgr.GetCurrentTunerNumber( )
+		self.SetSettingWindowLabel( MR_LANG( 'Tuner %d Config : OneCable' ) % ( tunerIndex + 1 ) )
 		self.LoadNoSignalState( )
-#		self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'OneCable configuration' ) )
 		self.mOneCablesatelliteCount = self.mTunerMgr.GetOneCableSatelliteCount( )
 
 		if self.mLoadConfig == True :
@@ -31,7 +31,6 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 		self.InitConfig( )
 		self.mInitialized = True
 		self.setDefaultControl( )
-
 
 
 	def onAction( self, aAction ) :
@@ -91,6 +90,7 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 						self.mTempTunerPin[1] = int( dialog.GetString( ) )
 
 			self.InitConfig( )
+
 
 	def onFocus( self, aControlId ) :
 		if self.mInitialized == False :

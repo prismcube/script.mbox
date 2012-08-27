@@ -15,16 +15,16 @@ E_CONTROL_ID_LABEL_MODE 			= 203
 E_CONTROL_ID_EVENT_CLOCK 			= 211
 E_CONTROL_ID_LABEL_TS_START_TIME 	= 221
 E_CONTROL_ID_LABEL_TS_END_TIME 		= 222
-E_CONTROL_ID_BUTTON_VOLUME 			= 401
-E_CONTROL_ID_BUTTON_START_RECORDING = 402
-E_CONTROL_ID_BUTTON_REWIND 			= 404
-E_CONTROL_ID_BUTTON_PLAY 			= 405
-E_CONTROL_ID_BUTTON_PAUSE 			= 406
-E_CONTROL_ID_BUTTON_STOP 			= 407
-E_CONTROL_ID_BUTTON_FORWARD 		= 408
-E_CONTROL_ID_BUTTON_JUMP_RR 		= 409
-E_CONTROL_ID_BUTTON_JUMP_FF 		= 410
-E_CONTROL_ID_BUTTON_BOOKMARK 		= 411
+E_CONTROL_ID_BUTTON_VOLUME 			= 3701
+E_CONTROL_ID_BUTTON_START_RECORDING = 3702
+E_CONTROL_ID_BUTTON_REWIND 			= 3704
+E_CONTROL_ID_BUTTON_PLAY 			= 3705
+E_CONTROL_ID_BUTTON_PAUSE 			= 3706
+E_CONTROL_ID_BUTTON_STOP 			= 3707
+E_CONTROL_ID_BUTTON_FORWARD 		= 3708
+E_CONTROL_ID_BUTTON_JUMP_RR 		= 3709
+E_CONTROL_ID_BUTTON_JUMP_FF 		= 3710
+E_CONTROL_ID_BUTTON_BOOKMARK 		= 3711
 
 #xml property name
 E_XML_PROPERTY_RECORDING1 = 'ViewRecord1'
@@ -79,6 +79,22 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.mPrekey = None
 
+	"""
+	def onAction(self, aAction):
+		id = aAction.getId()
+		
+		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
+			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )			
+
+		elif id == 104 or id == Action.ACTION_SELECT_ITEM : #scroll up
+			xbmc.executebuiltin('XBMC.ReloadSkin()')
+
+	def SetAutomaticHide( self, aHide=True ) :
+		self.mAutomaticHide = aHide
+
+	def GetAutomaticHide( self ) :
+		return self.mAutomaticHide
+	"""
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -141,6 +157,11 @@ class TimeShiftPlate( BaseWindow ) :
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE, label )
 
 		self.GetNextSpeed( E_ONINIT )
+		defaultFocus = E_CONTROL_ID_BUTTON_PLAY
+		if self.mSpeed == 100 :
+			defaultFocus = E_CONTROL_ID_BUTTON_PAUSE
+
+		self.setFocusId( defaultFocus )
 
 		#run thread
 		self.mEnableLocalThread = True
@@ -291,10 +312,15 @@ class TimeShiftPlate( BaseWindow ) :
 			else :
 				self.StopAutomaticHide( )
 
-
 			self.TimeshiftAction( aControlId )
-			if aControlId != E_CONTROL_ID_BUTTON_PLAY and aControlId != E_CONTROL_ID_BUTTON_PAUSE :
-				self.setFocusId( aControlId )
+			if aControlId == E_CONTROL_ID_BUTTON_PLAY or aControlId == E_CONTROL_ID_BUTTON_PAUSE :
+				aControlId = E_CONTROL_ID_BUTTON_PLAY
+				if self.mIsPlay == FLAG_PAUSE :
+					time.sleep( 0.02 )
+					aControlId = E_CONTROL_ID_BUTTON_PAUSE
+
+			self.setFocusId( aControlId )
+			#LOG_TRACE('----------focus[%s]'% aControlId )
 
 		elif aControlId == E_CONTROL_ID_BUTTON_VOLUME :
 			self.GlobalAction( Action.ACTION_MUTE )
@@ -408,7 +434,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 				#blocking release
 				self.SetBlockingButtonEnable( True )
-				self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
+				#self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_PAUSE :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
@@ -427,7 +453,7 @@ class TimeShiftPlate( BaseWindow ) :
 				# toggle
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
-				self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
+				#self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
 				self.mWin.setProperty( 'IsXpeeding', 'True' )
 
 				#blocking
@@ -545,6 +571,7 @@ class TimeShiftPlate( BaseWindow ) :
 	@GuiLock
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		#LOG_TRACE( 'Enter control[%s] value[%s] extra[%s]'% (aCtrlID, aValue, aExtra) )
+
 		if aCtrlID == E_CONTROL_ID_BUTTON_VOLUME :
 			self.mCtrlBtnVolume.setVisible( aValue )
 
@@ -1051,6 +1078,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mFlagUserMove = False
 				self.mAccelator = 0
 				self.mUserMoveTime = 0
+				self.InitTimeShift( )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
