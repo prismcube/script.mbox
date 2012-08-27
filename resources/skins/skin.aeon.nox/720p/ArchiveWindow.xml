@@ -102,7 +102,10 @@
 				<posy>32</posy>
 				<width>100</width>
 				<height>20</height>
+<<<<<<< HEAD
 				<label></label>
+=======
+>>>>>>> 43e122b236fc6f297c48e6629748df45d0b96e37
 				<font>font12</font>
 				<align>left</align>
 				<aligny>center</aligny>
@@ -115,7 +118,10 @@
 				<posy>32</posy>
 				<width>100</width>
 				<height>20</height>
+<<<<<<< HEAD
 				<label></label>
+=======
+>>>>>>> 43e122b236fc6f297c48e6629748df45d0b96e37
 				<font>font12</font>
 				<align>right</align>
 				<aligny>center</aligny>

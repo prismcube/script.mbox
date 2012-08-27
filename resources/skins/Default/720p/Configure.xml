@@ -23,6 +23,15 @@
 				<aspectratio>keep</aspectratio>
 				<texture>Confluence_Logo.png</texture>
 			</control>
+			<control type="image">
+				<posx>233</posx>
+				<posy>581</posy>
+				<width>18</width>
+				<height>19</height>
+				<texture>HomeHasSub.png</texture>
+				<colordiffuse>FFFFFFFF</colordiffuse>
+				<animation effect="rotate" end="-90" center="auto" condition="true">conditional</animation>
+			</control>
 			<control type="list" id="9000">
 				<posx>10</posx>
 				<posy>90</posy>
