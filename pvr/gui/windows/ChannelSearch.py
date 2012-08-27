@@ -16,7 +16,7 @@ class ChannelSearch( SettingWindow ) :
 		self.LoadNoSignalState( )
 
 		self.AddInputControl( E_Input01, MR_LANG( 'Automatic Scan' ), '', MR_LANG( 'Search TV & Radio channels automatically' ) )
-		self.AddInputControl( E_Input02, MR_LANG( 'Manual Scan' ), '', MR_LANG( 'Scan channels of the selected satellite by TP' ) )
+		self.AddInputControl( E_Input02, MR_LANG( 'Manual Scan' ), '', MR_LANG( 'Scan channels of the selected satellite by transponder' ) )
 
 		self.InitControl( )
 		self.SetFocusControl( E_Input01 )

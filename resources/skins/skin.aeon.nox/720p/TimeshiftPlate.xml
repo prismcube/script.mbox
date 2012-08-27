@@ -1,5 +1,5 @@
 <window type="windows" id="3019">
-	<defaultcontrol always="true">450</defaultcontrol>
+	<defaultcontrol always="true">3750</defaultcontrol>
 	<allowoverlay>yes</allowoverlay>
 	<backgroundcolor>0x00ffffff</backgroundcolor>		
 	<controls>
@@ -104,7 +104,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>Volume</label>
-						<visible>Control.HasFocus(401)</visible>
+						<visible>Control.HasFocus(3701)</visible>
 					</control>
 					<control type="label">
 						<posx>20</posx>
@@ -117,7 +117,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>Record Start</label>
-						<visible>Control.HasFocus(402)</visible>
+						<visible>Control.HasFocus(3702)</visible>
 					</control>
 					<control type="label">
 						<posx>20</posx>
@@ -130,7 +130,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>Record Stop</label>
-						<visible>Control.HasFocus(403)</visible>
+						<visible>Control.HasFocus(3703)</visible>
 					</control>
 					<control type="label">
 						<posx>50</posx>
@@ -143,7 +143,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>Rewind</label>
-						<visible>Control.HasFocus(404)</visible>
+						<visible>Control.HasFocus(3704)</visible>
 					</control>
 					<control type="label">
 						<posx>50</posx>
@@ -156,7 +156,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>Play</label>
-						<visible>Control.HasFocus(405)</visible>
+						<visible>Control.HasFocus(3705)</visible>
 					</control>
 					<control type="label">
 						<posx>50</posx>
@@ -169,7 +169,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>Pause</label>
-						<visible>Control.HasFocus(406)</visible>
+						<visible>Control.HasFocus(3706)</visible>
 					</control>
 					<control type="label">
 						<posx>50</posx>
@@ -182,7 +182,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>Stop</label>
-						<visible>Control.HasFocus(407)</visible>
+						<visible>Control.HasFocus(3707)</visible>
 					</control>
 					<control type="label">
 						<posx>50</posx>
@@ -195,7 +195,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>Forward</label>
-						<visible>Control.HasFocus(408)</visible>
+						<visible>Control.HasFocus(3708)</visible>
 					</control>
 					<control type="label">
 						<posx>20</posx>
@@ -208,7 +208,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>Jump Rewind</label>
-						<visible>Control.HasFocus(409)</visible>
+						<visible>Control.HasFocus(3709)</visible>
 					</control>
 					<control type="label">
 						<posx>20</posx>
@@ -221,7 +221,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>Jump Forward</label>
-						<visible>Control.HasFocus(410)</visible>
+						<visible>Control.HasFocus(3710)</visible>
 					</control>
 					<control type="label">
 						<posx>40</posx>
@@ -234,7 +234,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>Bookmark</label>
-						<visible>Control.HasFocus(411)</visible>
+						<visible>Control.HasFocus(3711)</visible>
 					</control>
 
 					<control type="label">
@@ -290,178 +290,7 @@
 			</control>
 
 <!-- play section -->
-			<control type="group" id="400">
-				<posx>400</posx>
-				<posy>605</posy>
-				<control type="button" id="401">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>75</width>
-					<height>65</height>
-					<label>13396</label>
-					<font>-</font>
-					<texturefocus>osd/buttons/OSDAudioFO.png</texturefocus>
-					<texturenofocus>osd/buttons/OSDAudioNF.png</texturenofocus>
-					<onclick>Mute</onclick>
-					<onleft>411</onleft>
-					<onright>402</onright>
-					<onup>202</onup>
-					<ondown>202</ondown>
-				</control>
-				<control type="button" id="402">
-					<posx>45</posx>
-					<posy>0</posy>
-					<width>75</width>
-					<height>65</height>
-					<label>13395</label>
-					<font>-</font>
-					<texturefocus>aeon.nox/OSDRecordFO.png</texturefocus>
-					<texturenofocus>aeon.nox/OSDRecordNF.png</texturenofocus>
-					<onleft>401</onleft>
-					<onright>404</onright>
-					<onup>202</onup>
-					<ondown>202</ondown>
-				</control>
-				<!--control type="button" id="403">
-					<posx>90</posx>
-					<posy>0</posy>
-					<width>75</width>
-					<height>65</height>
-					<label>13395</label>
-					<font>-</font>
-					<texturefocus>osd/buttons/OSDStopFO.png</texturefocus>
-					<texturenofocus>osd/buttons/OSDStopNF.png</texturenofocus>
-					<onleft>402</onleft>
-					<onright>404</onright>
-					<onup>202</onup>
-					<ondown>202</ondown>
-				</control-->
-				<control type="group">
-					<posx>90</posx>
-					<posy>-5</posy>
-					<control type="button" id="404">
-						<posx>0</posx>
-						<posy>0</posy>
-						<width>85</width>
-						<height>75</height>
-						<label>31354</label>
-						<font></font>
-						<texturefocus>osd/buttons/OSDRewindFO.png</texturefocus>
-						<texturenofocus>osd/buttons/OSDRewindNF.png</texturenofocus>
-						<onleft>402</onleft>
-						<onright>450</onright>
-						<onup>202</onup>
-						<ondown>202</ondown>
-					</control>
-					<control type="group" id="450">
-						<control type="button" id="405">
-							<posx>50</posx>
-							<posy>0</posy>
-							<width>85</width>
-							<height>75</height>
-							<label>31351</label>
-							<altlabel>208</altlabel>
-							<font>-</font>
-							<texturefocus>osd/buttons/OSDPlayFO.png</texturefocus>
-							<texturenofocus>osd/buttons/OSDPlayNF.png</texturenofocus>
-							<onleft>404</onleft>
-							<onright>407</onright>
-							<onup>202</onup>
-							<ondown>202</ondown>
-							<!--visible>!Control.IsVisible(406)</visible-->
-						</control>
-						<control type="button" id="406">
-							<posx>50</posx>
-							<posy>0</posy>
-							<width>85</width>
-							<height>75</height>
-							<label>31351</label>
-							<altlabel>208</altlabel>
-							<font>-</font>
-							<texturefocus>osd/buttons/OSDPauseFO.png</texturefocus>
-							<texturenofocus>osd/buttons/OSDPauseNF.png</texturenofocus>
-							<onleft>404</onleft>
-							<onright>407</onright>
-							<onup>202</onup>
-							<ondown>202</ondown>
-							<visible>!Control.IsVisible(405)</visible>
-						</control>
-					</control>
-					<control type="button" id="407">
-						<posx>100</posx>
-						<posy>0</posy>
-						<width>85</width>
-						<height>75</height>
-						<label>31352</label>
-						<font>-</font>
-						<texturefocus>osd/buttons/OSDStopFO.png</texturefocus>
-						<texturenofocus>osd/buttons/OSDStopNF.png</texturenofocus>
-						<onleft>450</onleft>
-						<onright>408</onright>
-						<onup>202</onup>
-						<ondown>202</ondown>
-					</control>
-					<control type="button" id="408">
-						<posx>150</posx>
-						<posy>0</posy>
-						<width>85</width>
-						<height>75</height>
-						<label>31353</label>
-						<font>-</font>
-						<texturefocus>osd/buttons/OSDForwardFO.png</texturefocus>
-						<texturenofocus>osd/buttons/OSDForwardNF.png</texturenofocus>
-						<onleft>407</onleft>
-						<onright>409</onright>
-						<onup>202</onup>
-						<ondown>202</ondown>
-					</control>
-					<control type="button" id="409">
-						<posx>200</posx>
-						<posy>0</posy>
-						<width>85</width>
-						<height>75</height>
-						<label></label>
-						<font>-</font>
-						<texturefocus>osd/buttons/OSDPrevTrackFO.png</texturefocus>
-						<texturenofocus>osd/buttons/OSDPrevTrackNF.png</texturenofocus>
-						<onleft>408</onleft>
-						<onright>410</onright>
-						<onup>202</onup>
-						<ondown>202</ondown>
-						<enable>substring(Window.Property(IsXpeeding),true)</enable>
-					</control>
-					<control type="button" id="410">
-						<posx>250</posx>
-						<posy>0</posy>
-						<width>85</width>
-						<height>75</height>
-						<label></label>
-						<font>-</font>
-						<texturefocus>osd/buttons/OSDNextTrackFO.png</texturefocus>
-						<texturenofocus>osd/buttons/OSDNextTrackNF.png</texturenofocus>
-						<onleft>409</onleft>
-						<onright>411</onright>
-						<onup>202</onup>
-						<ondown>202</ondown>
-						<enable>substring(Window.Property(IsXpeeding),true)</enable>
-					</control>
-					<control type="button" id="411">
-						<posx>300</posx>
-						<posy>5</posy>
-						<width>75</width>
-						<height>65</height>
-						<label></label>
-						<font>-</font>
-						<texturefocus>osd/buttons/OSDBookMarksFO.png</texturefocus>
-						<texturenofocus>osd/buttons/OSDBookMarksNF.png</texturenofocus>
-						<onleft>410</onleft>
-						<onright>401</onright>
-						<onup>202</onup>
-						<ondown>202</ondown>
-					</control>
-
-				</control>
-			</control>
+			<include>DefaultTimeshiftPlateGroup</include>
 
 <!-- EPG section -->
 			<control type="group">
@@ -494,8 +323,8 @@
 						<texturenofocus>TSProgressCurrentNF.png</texturenofocus>
 						<onleft>202</onleft>
 						<onright>202</onright>
-						<onup>450</onup>
-						<ondown>450</ondown>
+						<onup>3706</onup>
+						<ondown>3706</ondown>
 						<enable>substring(Window.Property(IsXpeeding),true)</enable>
 					</control>
 					<control type="label" id="203">

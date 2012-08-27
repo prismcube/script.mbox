@@ -5342,5 +5342,89 @@
 				<texturenofocus>osd/buttons/OSDSkinNF.png</texturenofocus>
 			</control>
 		</control>
-	</include>	
+	</include>
+
+	<include name="DefaultTimeshiftPlateGroup">
+		<control type="grouplist" id="3750">
+			<posx>400</posx>
+			<posy>585</posy>
+			<width>490</width>
+			<height>75</height>
+			<itemgap>-35</itemgap>
+			<pagecontrol></pagecontrol>
+			<scrolltime tween="sine" easing="out">200</scrolltime>
+			<orientation>horizontal</orientation>
+			<usecontrolcoords>false</usecontrolcoords>
+			<visible>true</visible>
+			<onup>202</onup>
+			<ondown>202</ondown>
+			<onleft></onleft>
+			<onright></onright>
+			<defaultcontrol always="true">3705</defaultcontrol>
+			<control type="button" id="3711">
+				<width>75</width>
+				<height>65</height>
+				<texturefocus>osd/buttons/OSDBookMarksFO.png</texturefocus>
+				<texturenofocus>osd/buttons/OSDBookMarksNF.png</texturenofocus>
+			</control>
+			<control type="button" id="3701">
+				<width>75</width>
+				<height>65</height>
+				<texturefocus>osd/buttons/OSDAudioFO.png</texturefocus>
+				<texturenofocus>osd/buttons/OSDAudioNF.png</texturenofocus>
+				<onclick>Mute</onclick>
+			</control>
+			<control type="button" id="3702">
+				<width>75</width>
+				<height>65</height>
+				<texturefocus>aeon.nox/OSDRecordFO.png</texturefocus>
+				<texturenofocus>aeon.nox/OSDRecordNF.png</texturenofocus>
+			</control>
+			<control type="button" id="3704">
+				<width>85</width>
+				<height>75</height>
+				<texturefocus>osd/buttons/OSDRewindFO.png</texturefocus>
+				<texturenofocus>osd/buttons/OSDRewindNF.png</texturenofocus>
+			</control>
+			<control type="button" id="3705">
+				<width>85</width>
+				<height>75</height>
+				<texturefocus>osd/buttons/OSDPlayFO.png</texturefocus>
+				<texturenofocus>osd/buttons/OSDPlayNF.png</texturenofocus>
+			</control>
+			<control type="button" id="3706">
+				<width>85</width>
+				<height>75</height>
+				<texturefocus>osd/buttons/OSDPauseFO.png</texturefocus>
+				<texturenofocus>osd/buttons/OSDPauseNF.png</texturenofocus>
+				<visible>!Control.IsVisible(3705)</visible>
+			</control>
+			<control type="button" id="3707">
+				<width>85</width>
+				<height>75</height>
+				<texturefocus>osd/buttons/OSDStopFO.png</texturefocus>
+				<texturenofocus>osd/buttons/OSDStopNF.png</texturenofocus>
+			</control>
+			<control type="button" id="3708">
+				<width>85</width>
+				<height>75</height>
+				<texturefocus>osd/buttons/OSDForwardFO.png</texturefocus>
+				<texturenofocus>osd/buttons/OSDForwardNF.png</texturenofocus>
+			</control>
+			<control type="button" id="3709">
+				<width>85</width>
+				<height>75</height>
+				<texturefocus>osd/buttons/OSDPrevTrackFO.png</texturefocus>
+				<texturenofocus>osd/buttons/OSDPrevTrackNF.png</texturenofocus>
+				<enable>substring(Window.Property(IsXpeeding),true)</enable>
+			</control>
+			<control type="button" id="3710">
+				<width>85</width>
+				<height>75</height>
+				<texturefocus>osd/buttons/OSDNextTrackFO.png</texturefocus>
+				<texturenofocus>osd/buttons/OSDNextTrackNF.png</texturenofocus>
+				<enable>substring(Window.Property(IsXpeeding),true)</enable>
+			</control>
+		</control>
+	</include>
 </includes>

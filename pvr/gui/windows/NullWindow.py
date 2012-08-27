@@ -34,7 +34,12 @@ class NullWindow( BaseWindow ) :
 			status = self.mDataCache.Player_GetStatus( )
 			LOG_ERR('self.mDataCache.Player_GetStatus( ) = %d'% status.mMode )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
-				if self.mHBBTVReady == False :
+				if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL or \
+				self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
+					self.mCommander.AppHBBTV_Ready( 0 )
+					self.mHBBTVReady = False
+			
+				elif self.mHBBTVReady == False :
 					LOG_TRACE('----------HBB Tv Ready')
 					self.mCommander.AppHBBTV_Ready( 1 )
 					self.mHBBTVReady = True
