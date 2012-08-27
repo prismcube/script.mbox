@@ -389,13 +389,36 @@ class ArchiveWindow( BaseWindow ) :
 		self.mRecordListItems.append( recItem )
 
 
-	def UpdatePlayStopThumbnail( self, aRecordInfo ) :
+	def UpdatePlayStopThumbnail( self, aRecordInfo, aPrevRecordInfo=None ) :
+
+		listindex = 0
+
+		if aPrevRecordInfo :
+			for recInfo in self.mRecordList :
+				if recInfo.mRecordKey == aPrevRecordInfo.mRecordKey :
+					break
+				listindex = listindex + 1
+
+			recItem = self.mRecordListItems[ listindex ]				
+
+			if recInfo.mLocked :
+				recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
+			else :
+				thumbnaillist = []
+				thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % aPrevRecordInfo.mRecordKey ) )
+				if len( thumbnaillist ) > 0 :
+					recItem.setProperty( 'RecIcon', thumbnaillist[0] )
+				else :
+					recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+
+			recItem.setProperty( 'Playing', 'False' )
 
 		if aRecordInfo == None :
 			LOG_ERR( 'Has no playing record')
 			return
 
 		listindex = 0
+
 		for recInfo in self.mRecordList :
 			if recInfo.mRecordKey == aRecordInfo.mRecordKey :
 				break
@@ -517,7 +540,8 @@ class ArchiveWindow( BaseWindow ) :
 			self.Close( )
 			self.SetVideoRestore( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE, WinMgr.WIN_ID_NULLWINDOW )
-		else :		
+		else :
+			currentPlayingRecord = self.mPlayingRecord		
 			if selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
 				recInfo = self.mRecordList[selectedPos]
 				if recInfo.mLocked == True :
@@ -538,7 +562,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.UpdatePlayStatus( )
 
 			self.RestoreLastRecordKey( )
-			self.UpdatePlayStopThumbnail( self.mPlayingRecord )
+			self.UpdatePlayStopThumbnail( self.mPlayingRecord, currentPlayingRecord )
 			self.mLastFocusItem = selectedPos
 			if self.mViewMode != E_VIEW_LIST :
 				self.Close( )
@@ -666,6 +690,7 @@ class ArchiveWindow( BaseWindow ) :
 	def ShowDeleteConfirm( self ) :
 		markedList = self.GetMarkedList( )
 		selectedPos = self.GetSelectedPosition( )
+		afterPos = -1
 
 		if markedList == None or len( markedList ) <= 0 :
 			markedList = []
@@ -674,6 +699,7 @@ class ArchiveWindow( BaseWindow ) :
 
 		if len( markedList ) > 0 :
 			hasLocked = False
+			afterPos = markedList[0]
 
 			# Check Locked Item
 			for i in range( len( markedList ) ) :
@@ -694,6 +720,24 @@ class ArchiveWindow( BaseWindow ) :
 						return False
 
 				self.DoDelete( markedList )
+
+
+				if afterPos < 0 or afterPos >= len( self.mRecordList ) :
+					afterPos = 0
+				
+				if self.mViewMode == E_VIEW_LIST :
+					self.mCtrlCommonList.selectItem( afterPos )
+				elif self.mViewMode == E_VIEW_THUMBNAIL :
+					self.mCtrlThumbnailList.selectItem( afterPos )
+				elif self.mViewMode == E_VIEW_POSTER_WRAP :
+					self.mCtrlPosterwrapList.selectItem( afterPos )
+				elif self.mViewMode == E_VIEW_FANART :
+					self.mCtrlFanartList.selectItem( afterPos )
+				else :
+					LOG_WARN( 'Unknown View Mode' )
+
+				self.UpdateSelectedPosition( )
+				self.UpdateArchiveInfomation( )
 
 
 	def ShowDeleteAllConfirm( self ) :
@@ -729,6 +773,8 @@ class ArchiveWindow( BaseWindow ) :
 			self.Flush( )
 			self.Load( )
 			self.UpdateList( )
+			self.UpdateSelectedPosition( )
+			self.UpdateArchiveInfomation( )
 
 
 	def ShowRenameDialog( self ) :
@@ -773,11 +819,11 @@ class ArchiveWindow( BaseWindow ) :
 				LOG_TRACE( 'i=%d serviceType=%d key=%d' %( position, self.mServiceType, self.mRecordList[position].mRecordKey ) )
 				self.mDataCache.Record_DeleteRecord( self.mRecordList[position].mRecordKey, self.mServiceType )
 
-			self.CloseBusyDialog( )
 			self.Flush( )
 			self.Load( )
 			self.UpdateList( )
-
+			self.CloseBusyDialog( )
+			
 
 	def DoLockUnlock( self, aLock=False ) :
 		markedList = self.GetMarkedList( )
