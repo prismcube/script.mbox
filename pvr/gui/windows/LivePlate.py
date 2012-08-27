@@ -775,6 +775,8 @@ class LivePlate( LivePlateWindow ) :
 		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
 			msg1 = 'Teletext'
 			msg2 = 'test'
+			#satelliteList = self.mDataCache.Satellite_GetListByChannel( )
+			#LOG_TRACE('---------satellite[%s]'% ClassToList('convert',satelliteList) )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
 			msg1 = 'Subtitle'
