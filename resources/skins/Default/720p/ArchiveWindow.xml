@@ -265,7 +265,6 @@
 				<posy>32</posy>
 				<width>100</width>
 				<height>20</height>
-				<label>Start Time</label>
 				<font>font12</font>
 				<align>left</align>
 				<aligny>center</aligny>
@@ -278,7 +277,6 @@
 				<posy>32</posy>
 				<width>100</width>
 				<height>20</height>
-				<label>End Time</label>
 				<font>font12</font>
 				<align>right</align>
 				<aligny>center</aligny>

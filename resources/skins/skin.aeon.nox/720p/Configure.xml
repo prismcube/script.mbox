@@ -17,10 +17,10 @@
 			</control>
 			<control type="image">
 				<posx>70</posx>
-				<posy>44</posy>
-				<width>180</width>
-				<height>72</height>
-				<texture>XBMC_Logo.png</texture>
+				<posy>55</posy>
+				<width>160</width>
+				<height>50</height>
+				<texture>Prismcube_Logo.png</texture>
 			</control>
 			<control type="image">
 				<posx>233</posx>

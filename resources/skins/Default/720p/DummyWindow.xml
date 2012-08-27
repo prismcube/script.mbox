@@ -18,13 +18,7 @@
 				<texture>HomeBlade_top.png</texture>
 			</control>
 			<control type="image">
-				<texture>XBMC_Logo.png</texture>
-			</control>
-			<control type="image">
-				<texture>XBMC_Logo.png</texture>
-			</control>
-			<control type="image">
-				<texture>header.png</texture>
+				<texture>Prismcube_Logo.png</texture>
 			</control>
 			<control type="image">
 				<texture>header.png</texture>
@@ -82,9 +76,6 @@
 			</control>
 			<control type="image">
 				<texture>folder-focus.png</texture>
-			</control>
-			<control type="image">
-				<texture>ScrollBarNib.png</texture>
 			</control>
 			<control type="image">
 				<texture>ScrollBarNib.png</texture>

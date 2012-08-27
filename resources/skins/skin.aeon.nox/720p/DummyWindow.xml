@@ -54,7 +54,7 @@
 				<texture>home/rssbar_mid_fade.png</texture>
 			</control>
 			<control type="image">
-				<texture>XBMC_Logo.png</texture>
+				<texture>Prismcube_Logo.png</texture>
 			</control>
 			<control type="image">
 				<texture>black-back.png</texture>

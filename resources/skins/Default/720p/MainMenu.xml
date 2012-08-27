@@ -133,24 +133,22 @@
 					<height>720</height>
 					<texture>HomeBlade_top.png</texture>
 				</control>
-				<!--
 				<control type="image">
 					<description>LOGO</description>
-					<posx>10</posx>
-					<posy>10</posy>
-					<width>140</width>
+					<posx>80</posx>
+					<posy>20</posy>
+					<width>170</width>
 					<height>40</height>
-					<texture>XBMC_Logo.png</texture>
+					<texture>Prismcube_Logo.png</texture>
 				</control>
 				<control type="image">
 					<description>LOGO Mirror</description>
-					<posx>10</posx>
-					<posy>42</posy>
-					<width>140</width>
+					<posx>80</posx>
+					<posy>55</posy>
+					<width>170</width>
 					<height>40</height>
-					<texture diffuse="diffuse_mirror.png" flipy="true">XBMC_Logo.png</texture>
+					<texture diffuse="diffuse_mirror.png" flipy="true">Prismcube_Logo.png</texture>
 				</control>
-				-->
 				<control type="group" id="9001">
 					<posx>380</posx>
 					<posy>-720</posy>
