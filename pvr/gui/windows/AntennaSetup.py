@@ -5,6 +5,7 @@ import pvr.TunerConfigMgr as ConfigMgr
 class AntennaSetup( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
+		self.mOriginalMixConfiguredSatellite = []
 
 
 	def onInit( self ) :
@@ -33,6 +34,7 @@ class AntennaSetup( SettingWindow ) :
 		if self.mTunerMgr.GetNeedLoad( ) == True : 
 			self.mTunerMgr.LoadOriginalTunerConfig( )
 			self.mTunerMgr.Load( )
+			self.mOriginalMixConfiguredSatellite = deepcopy( self.mDataCache.Satellite_GetConfiguredList( ) )
 			self.mTunerMgr.SetNeedLoad( False )
 
 		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', MR_LANG( 'Tuner 2 Connection' ), MR_LANG( 'Select Separated if linked to separately to satellites' ) )
@@ -89,6 +91,7 @@ class AntennaSetup( SettingWindow ) :
 					self.OpenBusyDialog( )
 					if self.CompareCurrentConfiguredState( ) == False or self.CompareConfigurationProperty( ) == False :
 						self.SaveConfiguration( )
+					self.DeleteSatelliteChannel( )
 					
 				elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 					self.OpenBusyDialog( )
@@ -332,3 +335,17 @@ class AntennaSetup( SettingWindow ) :
 		if self.mTunerMgr.GetOriginalTunerConfig( ) != self.mTunerMgr.GetCurrentTunerConfig( ) :
 			return False
 		return True
+
+
+	def DeleteSatelliteChannel( self ) :
+		mMixConfiguredSatellite = self.mDataCache.Satellite_GetConfiguredList( )
+		if self.mOriginalMixConfiguredSatellite :
+			for satellite_original in self.mOriginalMixConfiguredSatellite :
+				find_satellite = False
+				for satellite_new in mMixConfiguredSatellite :
+					if satellite_original.mLongitude == satellite_new.mLongitude and satellite_original.mBand == satellite_new.mBand :
+						find_satellite = True
+				if find_satellite == False :
+					self.mDataCache.Channel_DeleteBySatellite( satellite_original.mLongitude, satellite_original.mBand )
+
+		

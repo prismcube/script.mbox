@@ -230,7 +230,7 @@
 				<font>Font_Bold20</font>
 				<align>left</align>
 				<aligny>center</aligny>
-				<textcolor>white</textcolor>
+				<textcolor>grey2</textcolor>
 				<label>Strength</label>
 			</control>
 			<control type="label" id="1005">
@@ -242,7 +242,7 @@
 				<font>Font_Bold20</font>
 				<align>right</align>
 				<aligny>center</aligny>
-				<textcolor>white</textcolor>
+				<textcolor>grey2</textcolor>
 				<label>0 %</label>
 			</control>
 			<control type="progress" id="1010">
@@ -265,7 +265,7 @@
 				<font>Font_Bold20</font>
 				<align>left</align>
 				<aligny>center</aligny>
-				<textcolor>white</textcolor>
+				<textcolor>grey2</textcolor>
 				<label>Quality</label>
 			</control>
 			<control type="label" id="1006">
@@ -277,7 +277,7 @@
 				<font>Font_Bold20</font>
 				<align>right</align>
 				<aligny>center</aligny>
-				<textcolor>white</textcolor>
+				<textcolor>grey2</textcolor>
 				<label>0 %</label>
 			</control>
 			<control type="progress" id="1011">

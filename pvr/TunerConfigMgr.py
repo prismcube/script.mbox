@@ -21,31 +21,31 @@ class TunerConfigMgr( object ) :
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 
-		self.mAllSatelliteList = []
+		self.mAllSatelliteList			= []
 
-		self.mDiseqc10List1 = []
-		self.mDiseqc10List2 = []
-		self.mDiseqc11List1 = []
-		self.mDiseqc11List2 = []
-		self.mMotorizeList1 = []
-		self.mMotorizeList2 = []
-		self.mMotorizeUsalsList1 = []
-		self.mMotorizeUsalsList2 = []
-		self.mOneCableList1 = []
-		self.mOneCableList2 = []
-		self.mSimpleLnbList1 = []
-		self.mSimpleLnbList2 = []
+		self.mDiseqc10List1				= []
+		self.mDiseqc10List2				= []
+		self.mDiseqc11List1				= []
+		self.mDiseqc11List2				= []
+		self.mMotorizeList1				= []
+		self.mMotorizeList2				= []
+		self.mMotorizeUsalsList1		= []
+		self.mMotorizeUsalsList2		= []
+		self.mOneCableList1				= []
+		self.mOneCableList2				= []
+		self.mSimpleLnbList1			= []
+		self.mSimpleLnbList2			= []
 			
-		self.mCurrentTunerNumber = 0
-		self.mCurrentConfigIndex = 0
-		self.mNeedLoad = True
+		self.mCurrentTunerNumber		= 0
+		self.mCurrentConfigIndex		= 0
+		self.mNeedLoad					= True
 
-		self.mOrgConfiguredList1 = []
-		self.mOrgConfiguredList2 = []
-		self.mOriginalTunerConfig = []
+		self.mOrgConfiguredList1		= []
+		self.mOrgConfiguredList2		= []
+		self.mOriginalTunerConfig		= []
 		
-		self.mOnecableSatelliteCount = 0
-		self.mFirstInstallation	 = False
+		self.mOnecableSatelliteCount	= 0
+		self.mFirstInstallation	 		= False
 
 
 	def GetCurrentTunerNumber( self ) :
