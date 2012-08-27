@@ -14,6 +14,7 @@ E_LABEL_DURATION			= 502
 
 # Control IDs
 E_LABEL_RECORD_NAME			= 101
+E_GROUP_LIST_CONTROL		= 8000
 
 
 E_FROM_NOW					= 0 
@@ -39,7 +40,8 @@ class DialogStartRecord( SettingDialog ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
-
+		
+		self.getControl( E_GROUP_LIST_CONTROL ).setVisible( False )
 		self.SetHeaderLabel( MR_LANG( 'Start Recording' ) )
 
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
@@ -53,6 +55,8 @@ class DialogStartRecord( SettingDialog ) :
 		#self.mRecordingProgressThread = self.RecordingProgressThread( )
 		self.mDurationChanged = False
 		self.mConflictTimer = None		
+
+		self.getControl( E_GROUP_LIST_CONTROL ).setVisible( True )
 
 
 	def onAction( self, aAction ) :
