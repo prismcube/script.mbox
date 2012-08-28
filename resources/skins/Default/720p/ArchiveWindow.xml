@@ -270,7 +270,7 @@
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
-				<visible>True</visible>
+				<visible>substring(Window.Property(ViewMode),common)</visible>
 			</control>
 			<!-- Play End Time  -->
 			<control type="label" id="404">
@@ -283,7 +283,7 @@
 				<align>right</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
-				<visible>True</visible>
+				<visible>substring(Window.Property(ViewMode),common)</visible>
 			</control>
 			<control type="label">
 				<posx>113</posx>
