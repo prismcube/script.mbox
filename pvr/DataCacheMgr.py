@@ -1034,6 +1034,14 @@ class DataCacheMgr( object ) :
 			return self.mCommander.Channel_GetListByFavorite( aType, aMode, aSort, aFavName )
 
 
+	def Channel_GetByOne( self, aSid ) :
+		if SUPPORT_CHANNEL_DATABASE	== True :
+			channelDB = ElisChannelDB( )
+			iChannel = channelDB.Channel_GetByOne( aSid )
+			channelDB.Close( )
+			return iChannel
+
+
 	def Channel_Lock( self, aLock, aIChannel ) :
 		return self.mCommander.Channel_Lock( aLock, aIChannel )
 
@@ -1103,10 +1111,16 @@ class DataCacheMgr( object ) :
 
 
 	def Channel_DeleteByNumber( self, aType, aNumList ) :
+		#ToDo delete timer ID
 		return self.mCommander.Channel_DeleteByNumber( aType, aNumList )
 
 
 	def Channel_DeleteAll( self ) :
+		#delete timer
+		mTimerList = []
+		mTimerList = self.Timer_GetTimerList( )
+		for timer in mTimerList:
+			self.Timer_DeleteTimer( timer.mTimerId )
 		return self.mCommander.Channel_DeleteAll( )
 
 
