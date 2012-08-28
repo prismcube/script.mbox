@@ -113,11 +113,11 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 	def InitConfig( self ) :
 		self.ResetAllControl( )
 
-		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'My Longitude Direction' ), E_LIST_MY_LONGITUDE, self.mIsWest, MR_LANG( 'Set the correct longitude direction for your area' ) )
+		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'My Longitude Direction' ), E_LIST_MY_LONGITUDE, self.mIsWest, MR_LANG( 'Set the longitude direction for your area' ) )
 		tmplongitude = '%03d.%d' % ( ( self.mLongitude / 10 ), self.mLongitude % 10 )
 		self.AddInputControl( E_Input01, MR_LANG( 'My Longitude Angle' ), tmplongitude, MR_LANG( 'Enter the longitude angle for your location' ) )
 		
-		self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'My Latitude Direction' ), E_LIST_MY_LATITUDE, self.mIsSouth, MR_LANG( 'Set the correct latitude direction for your area' ) )
+		self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'My Latitude Direction' ), E_LIST_MY_LATITUDE, self.mIsSouth, MR_LANG( 'Set the latitude direction for your area' ) )
 		tmplatitude = '%03d.%d' % ( ( self.mLatitude / 10 ), self.mLatitude % 10 )
 		self.AddInputControl( E_Input02, MR_LANG( 'My Latitude Angle' ), tmplatitude, MR_LANG( 'Enter the latitude angle for your location' ) )
 		
