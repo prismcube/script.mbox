@@ -19,7 +19,6 @@ class NullWindow( BaseWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.CheckMediaCenter( )
-		self.LoadNoSignalState( )
 
 		if self.mInitialized == False :
 			self.mInitialized = True
@@ -29,6 +28,9 @@ class NullWindow( BaseWindow ) :
 			return
 
 		self.mEventBus.Register( self )
+
+		if self.LoadNoSignalState( self.getProperty( 'Signal' ) ) == False :
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 		if E_SUPPROT_HBBTV == True :
 			status = self.mDataCache.Player_GetStatus( )
@@ -54,6 +56,7 @@ class NullWindow( BaseWindow ) :
 					#if self.mMediaPlayerStarted == True :
 					LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'%( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 					self.mForceSetCurrent = True
+		
 		"""
 		currentStack = inspect.stack( )
 		LOG_TRACE( '+++++getrecursionlimit[%s] currentStack[%s]'% (sys.getrecursionlimit( ), len(currentStack)) )

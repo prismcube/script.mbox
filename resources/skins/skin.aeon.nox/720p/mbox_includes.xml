@@ -171,6 +171,13 @@
 				<aligny>center</aligny>
 				<scroll>true</scroll>
 			</control>
+			<control type="image">
+				<posx>855</posx>
+				<posy>100</posy>
+				<width>160</width>
+				<height>50</height>
+				<texture>Prismcube_Logo.png</texture>
+			</control>
 			<include>DefaultScanHelperStatusProgress</include>
 		</control>
 	</include>
@@ -227,10 +234,10 @@
 				<posy>360</posy>
 				<width>100</width>
 				<height>40</height>
-				<font>Font_Bold20</font>
+				<font>Font_Reg20</font>
 				<align>left</align>
 				<aligny>center</aligny>
-				<textcolor>white</textcolor>
+				<textcolor>grey2</textcolor>
 				<label>Strength</label>
 			</control>
 			<control type="label" id="1005">
@@ -239,10 +246,10 @@
 				<posy>360</posy>
 				<width>100</width>
 				<height>40</height>
-				<font>Font_Bold20</font>
+				<font>Font_Reg20</font>
 				<align>right</align>
 				<aligny>center</aligny>
-				<textcolor>white</textcolor>
+				<textcolor>grey2</textcolor>
 				<label>0 %</label>
 			</control>
 			<control type="progress" id="1010">
@@ -262,10 +269,10 @@
 				<posy>420</posy>
 				<width>100</width>
 				<height>40</height>
-				<font>Font_Bold20</font>
+				<font>Font_Reg20</font>
 				<align>left</align>
 				<aligny>center</aligny>
-				<textcolor>white</textcolor>
+				<textcolor>grey2</textcolor>
 				<label>Quality</label>
 			</control>
 			<control type="label" id="1006">
@@ -274,10 +281,10 @@
 				<posy>420</posy>
 				<width>100</width>
 				<height>40</height>
-				<font>Font_Bold20</font>
+				<font>Font_Reg20</font>
 				<align>right</align>
 				<aligny>center</aligny>
-				<textcolor>white</textcolor>
+				<textcolor>grey2</textcolor>
 				<label>0 %</label>
 			</control>
 			<control type="progress" id="1011">

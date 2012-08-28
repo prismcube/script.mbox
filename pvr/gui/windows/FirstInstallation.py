@@ -149,10 +149,13 @@ class FirstInstallation( SettingWindow ) :
 
 
 	def Close( self ) :
+		self.OpenBusyDialog( )
 		self.ResetAllControl( )
 		self.SetVideoRestore( )
 		self.mStepNum = E_STEP_SELECT_LANGUAGE
-		ConfigMgr.GetInstance( ).SetFristInstallation( False )		
+		ConfigMgr.GetInstance( ).SetFristInstallation( False )
+		self.mTunerMgr.SyncChannelBySatellite( )
+		self.CloseBusyDialog( )
 		WinMgr.GetInstance( ).CloseWindow( )
 
 

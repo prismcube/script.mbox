@@ -21,31 +21,31 @@ class TunerConfigMgr( object ) :
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 
-		self.mAllSatelliteList = []
+		self.mAllSatelliteList			= []
 
-		self.mDiseqc10List1 = []
-		self.mDiseqc10List2 = []
-		self.mDiseqc11List1 = []
-		self.mDiseqc11List2 = []
-		self.mMotorizeList1 = []
-		self.mMotorizeList2 = []
-		self.mMotorizeUsalsList1 = []
-		self.mMotorizeUsalsList2 = []
-		self.mOneCableList1 = []
-		self.mOneCableList2 = []
-		self.mSimpleLnbList1 = []
-		self.mSimpleLnbList2 = []
+		self.mDiseqc10List1				= []
+		self.mDiseqc10List2				= []
+		self.mDiseqc11List1				= []
+		self.mDiseqc11List2				= []
+		self.mMotorizeList1				= []
+		self.mMotorizeList2				= []
+		self.mMotorizeUsalsList1		= []
+		self.mMotorizeUsalsList2		= []
+		self.mOneCableList1				= []
+		self.mOneCableList2				= []
+		self.mSimpleLnbList1			= []
+		self.mSimpleLnbList2			= []
 			
-		self.mCurrentTunerNumber = 0
-		self.mCurrentConfigIndex = 0
-		self.mNeedLoad = True
+		self.mCurrentTunerNumber		= 0
+		self.mCurrentConfigIndex		= 0
+		self.mNeedLoad					= True
 
-		self.mOrgConfiguredList1 = []
-		self.mOrgConfiguredList2 = []
-		self.mOriginalTunerConfig = []
+		self.mOrgConfiguredList1		= []
+		self.mOrgConfiguredList2		= []
+		self.mOriginalTunerConfig		= []
 		
-		self.mOnecableSatelliteCount = 0
-		self.mFirstInstallation	 = False
+		self.mOnecableSatelliteCount	= 0
+		self.mFirstInstallation	 		= False
 
 
 	def GetCurrentTunerNumber( self ) :
@@ -387,3 +387,24 @@ class TunerConfigMgr( object ) :
 	def GetOneCableSatelliteCount( self ) :
 		return self.mOnecableSatelliteCount
 
+
+	def SyncChannelBySatellite( self ) :
+		channelSatelliteList = self.mDataCache.Satellite_GetListByChannel( )
+		configuredSatelliteList = self.mDataCache.Satellite_GetConfiguredList( )
+
+		if channelSatelliteList :
+			if configuredSatelliteList :
+				for channelSatellite in channelSatelliteList :
+					findSatellite = False
+					for configuredSatellite in configuredSatelliteList :
+						if channelSatellite.mLongitude == configuredSatellite.mLongitude and channelSatellite.mBand == configuredSatellite.mBand :
+							findSatellite = True
+							break
+					if findSatellite == False :
+						self.mDataCache.Channel_DeleteBySatellite( channelSatellite.mLongitude, channelSatellite.mBand )
+			else :
+				ret = self.mDataCache.Channel_DeleteAll( )
+				if ret :
+					self.mDataCache.Player_AVBlank( True )
+					self.mDataCache.Channel_InvalidateCurrent( )
+					self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )

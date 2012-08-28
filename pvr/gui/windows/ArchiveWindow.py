@@ -29,7 +29,7 @@ E_SORT_TITLE					= 2
 E_SORT_DURATION					= 3
 E_SORT_END						= 4
 
-CONTEXT_PLAY					= 0
+CONTEXT_RESUME_FROM				= 0
 CONTEXT_PLAY_FROM_BEGINNIG		= 1
 CONTEXT_DELETE					= 2
 CONTEXT_DELETE_ALL				= 3
@@ -625,8 +625,12 @@ class ArchiveWindow( BaseWindow ) :
 				context.append( ContextItem( MR_LANG( 'Remove Selections' ), CONTEXT_CLEAR_MARK ) )	
 				
 			elif selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
-				recordInfo = self.mRecordList[ selectedPos ]		
-				context.append( ContextItem( MR_LANG( 'Resume from last point' ), CONTEXT_PLAY ) )
+				recordInfo = self.mRecordList[ selectedPos ]
+				playOffset = self.mDataCache.RecordItem_GetCurrentPosByKey( recordInfo.mRecordKey )
+				LOG_TRACE('Offset Test =%s' %playOffset )
+				if playOffset < 0 :
+					playOffset = 0
+				context.append( ContextItem( MR_LANG( 'Resume from %s' %(TimeToString( int( playOffset / 1000 ), TimeFormatEnum.E_HH_MM_SS ) )), CONTEXT_RESUME_FROM ) )
 				context.append( ContextItem( MR_LANG( 'Play from beginning' ), CONTEXT_PLAY_FROM_BEGINNIG ) )
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_DELETE ) )
 				context.append( ContextItem( MR_LANG( 'Delete All' ), CONTEXT_DELETE_ALL ) )				
@@ -657,7 +661,7 @@ class ArchiveWindow( BaseWindow ) :
 	def DoContextAction( self, aContextAction ) :
 		LOG_TRACE( 'aContextAction=%d' %aContextAction )
 
-		if aContextAction == CONTEXT_PLAY :
+		if aContextAction == CONTEXT_RESUME_FROM :
 			self.StartRecordPlayback( True )
 
 		elif aContextAction == CONTEXT_PLAY_FROM_BEGINNIG :

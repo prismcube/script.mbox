@@ -5,6 +5,7 @@ import pvr.TunerConfigMgr as ConfigMgr
 class AntennaSetup( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
+		self.mOriginalMixConfiguredSatellite = []
 
 
 	def onInit( self ) :
@@ -33,6 +34,7 @@ class AntennaSetup( SettingWindow ) :
 		if self.mTunerMgr.GetNeedLoad( ) == True : 
 			self.mTunerMgr.LoadOriginalTunerConfig( )
 			self.mTunerMgr.Load( )
+			self.mOriginalMixConfiguredSatellite = deepcopy( self.mDataCache.Satellite_GetConfiguredList( ) )
 			self.mTunerMgr.SetNeedLoad( False )
 
 		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', MR_LANG( 'Tuner 2 Connection' ), MR_LANG( 'Set to "Separated" if you want the Tuner 2 to receive its own signal input or set to "Loopthrough" then the Tuner 2 will receive only the channel level currently being received by the Tuner 1' ) )
@@ -78,6 +80,7 @@ class AntennaSetup( SettingWindow ) :
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).mStepNum = E_STEP_SELECT_LANGUAGE
 					self.SetParentID( WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).GetParentID( ) )
 					ConfigMgr.GetInstance( ).SetFristInstallation( False )
+					self.mTunerMgr.SyncChannelBySatellite( )
 					self.CloseWindow( )
 
 			else :
@@ -89,6 +92,7 @@ class AntennaSetup( SettingWindow ) :
 					self.OpenBusyDialog( )
 					if self.CompareCurrentConfiguredState( ) == False or self.CompareConfigurationProperty( ) == False :
 						self.SaveConfiguration( )
+					self.mTunerMgr.SyncChannelBySatellite( )
 					
 				elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 					self.OpenBusyDialog( )
@@ -332,3 +336,4 @@ class AntennaSetup( SettingWindow ) :
 		if self.mTunerMgr.GetOriginalTunerConfig( ) != self.mTunerMgr.GetCurrentTunerConfig( ) :
 			return False
 		return True
+

@@ -102,12 +102,12 @@
 				<posy>32</posy>
 				<width>100</width>
 				<height>20</height>
-				<label>Start Time</label>
+				<label></label>
 				<font>font12</font>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
-				<visible>True</visible>
+				<visible>substring(Window.Property(ViewMode),common)</visible>
 			</control>
 			<!-- Play End Time  -->
 			<control type="label" id="404">
@@ -115,16 +115,14 @@
 				<posy>32</posy>
 				<width>100</width>
 				<height>20</height>
-				<label>End Time</label>
+				<label></label>
 				<font>font12</font>
 				<align>right</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
-				<visible>True</visible>
+				<visible>substring(Window.Property(ViewMode),common)</visible>
 			</control>
-
 		</control>
-
 
 		<!-- Left big Box -->
 		<control type="group">

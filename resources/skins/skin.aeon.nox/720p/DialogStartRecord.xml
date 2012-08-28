@@ -25,7 +25,7 @@
 					<width>560</width>
 					<height>40</height>
 					<font>font13</font>
-					<textcolor>grey3</textcolor>
+					<textcolor>white</textcolor>
 					<align>center</align>
 					<aligny>center</aligny>
 					<label>$INFO[ListItem.Label]</label>
