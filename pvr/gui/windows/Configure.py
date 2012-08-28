@@ -33,7 +33,7 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'Time Setting' ),
 		MR_LANG( 'HDD Format' ),
 		MR_LANG( 'Factory Reset' ),
-		MR_LANG( 'Etc' ) ]
+		MR_LANG( 'Miscellaneous' ) ]
 		
 		self.mDescriptionList	= [
 		MR_LANG( 'Set the STB language preferences' ),
@@ -295,7 +295,7 @@ class Configure( SettingWindow ) :
 
 			ElisPropertyInt( 'PinCode', self.mCommander ).SetProp( int( newpin ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'New PIN code' ), MR_LANG( 'Your PIN code has been changed successfully' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Change PIN code' ), MR_LANG( 'Your PIN code has been changed successfully' ) )
  			dialog.doModal( )
 
  		elif selectedId == E_FACTORY_RESET and groupId == E_Input01 :
@@ -419,7 +419,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_RECORDING_OPTION :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Automatic Timeshift', None, MR_LANG( 'Start a timeshift recording automatically when tuning a channel' ) )
+			self.AddEnumControl( E_SpinEx01, 'Automatic Timeshift', None, MR_LANG( 'When set to "On", the STB automatically start recording, either the channel that is already selected when the STB was turned on from standby, or when a different channel is selected' ) )
 			self.AddEnumControl( E_SpinEx02, 'Timeshift Buffer Size', None, MR_LANG( 'Select the preferred size of timeshift buffer' ) )
 			self.AddEnumControl( E_SpinEx03, 'Default Rec Duration', None, MR_LANG( 'Select recording duration for a channel that has no EPG info' ) )
 			self.AddEnumControl( E_SpinEx04, 'Pre-Rec Time', None, MR_LANG( 'Set the pre-recording time for a EPG channel' ) )
@@ -438,7 +438,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_AUDIO_SETTING :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Audio Dolby', MR_LANG( 'Dolby Audio' ), MR_LANG( 'Set the STB to select the Dolby audio automatically' ) )
+			self.AddEnumControl( E_SpinEx01, 'Audio Dolby', MR_LANG( 'Dolby Audio' ), MR_LANG( 'When set to "On", Dolby Digital audio will be selected automatically when broadcast' ) )
 			self.AddEnumControl( E_SpinEx02, 'Audio HDMI', None, MR_LANG( 'Set the Audio HDMI format' ) )
 			self.AddEnumControl( E_SpinEx03, 'Audio Delay', None, MR_LANG( 'Select a delay time for audio' ) )
 
@@ -502,12 +502,12 @@ class Configure( SettingWindow ) :
 					self.ReLoadEthernetIp( )
 					self.mReLoadIp = False
 					
-				self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Assign IP Address' ), USER_ENUM_LIST_DHCP_STATIC, self.mTempNetworkType, MR_LANG( 'Select DHCP to obtain an IP address automatically' ) )
+				self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Assign IP Address' ), USER_ENUM_LIST_DHCP_STATIC, self.mTempNetworkType, MR_LANG( 'When set to "DHCP", your IP address will be automatically allocated by the DHCP server' ) )
 				self.AddInputControl( E_Input01, MR_LANG( 'IP Address' ), self.mTempIpAddr, MR_LANG( 'Enter your IP address' ) )
 				self.AddInputControl( E_Input02, MR_LANG( 'Subnet Mask' ), self.mTempSubNet, MR_LANG( 'Enter your subnet mask' ) )
 				self.AddInputControl( E_Input03, MR_LANG( 'Gateway' ), self.mTempGateway, MR_LANG( 'Enter your gateway' ) )
 				self.AddInputControl( E_Input04, MR_LANG( 'DNS' ), self.mTempDns, MR_LANG( 'Enter the DNS server address' ) )
-				self.AddInputControl( E_Input05, MR_LANG( 'Apply') , '', MR_LANG( 'Press the OK button to save IP address settings' ) )
+				self.AddInputControl( E_Input05, MR_LANG( 'Apply') , '', MR_LANG( 'Press the OK button to save the IP address settings' ) )
 
 				visibleControlIds = [ E_SpinEx01, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
 				self.SetVisibleControls( visibleControlIds, True )
@@ -541,14 +541,14 @@ class Configure( SettingWindow ) :
 					channelName = MR_LANG( 'None' )
 					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
 
-			self.AddEnumControl( E_SpinEx01, 'Time Mode', None, MR_LANG( 'Select Automatic or Manual for the Time Mode' ) )
+			self.AddEnumControl( E_SpinEx01, 'Time Mode', MR_LANG( 'Time & Date' ), MR_LANG( 'When set to "Automatic", the time and date will be obtained by the receiver automatically from a specific channel that you select' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Channel' ), channelName, MR_LANG( 'Select a channel you want to set your time and date by' ) )
 			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
 			self.AddInputControl( E_Input02, MR_LANG( 'Date' ), self.mDate, MR_LANG( 'Enter today\'s date' ) )
 			self.mTime = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_HH_MM )
 			self.AddInputControl( E_Input03, MR_LANG( 'Time' ), self.mTime, MR_LANG( 'Set the local time' ) )
-			self.AddEnumControl( E_SpinEx02, 'Local Time Offset', None, MR_LANG( 'Select your Time Zone' ) )
-			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, MR_LANG( 'Set Automatic or Manual for Daylight savings' ) )
+			self.AddEnumControl( E_SpinEx02, 'Local Time Offset', None, MR_LANG( 'Set the time zone that will be the basis for the date and time display' ) )
+			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, MR_LANG( 'When set to "Automatic", the system automatically change over to and from summer and winter time' ) )
 			self.AddInputControl( E_Input04, MR_LANG( 'Apply' ), '', MR_LANG( 'Press the OK button to save settings' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03, E_Input04 ]
@@ -585,7 +585,7 @@ class Configure( SettingWindow ) :
 			#self.AddEnumControl( E_SpinEx01, 'Reset Channel List', None, MR_LANG( 'Your channel list will be restored to default' ) )
 			#self.AddEnumControl( E_SpinEx02, 'Reset Favorite Add-ons', None, MR_LANG( 'All your favorite add-ons will be deleted after factory reset' ) )
 			#self.AddEnumControl( E_SpinEx03, 'Reset Configure Setting', MR_LANG( 'Reset Configuration Setting' ), MR_LANG( 'User settings you have set will be restored to default' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Factory Reset Now'), '', MR_LANG( 'Restore your STB to the default based on settings you configured' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Start Factory Reset'), '', MR_LANG( 'Restore your system to the default based on settings you configured' ) )
 
 			visibleControlIds = [ E_Input01 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -600,10 +600,10 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_ETC :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Deep Standby', None, MR_LANG( 'Set On/Off for deep standby mode' ) )
-			self.AddEnumControl( E_SpinEx02, 'Fan Control', None, MR_LANG( 'Select the fan speed level for your STB' ) )
-			self.AddEnumControl( E_SpinEx03, 'Channel Banner Duration', None, MR_LANG( 'Set the time the channel info is to be displayed when zapping' ) )		#	Erase channel list yes/no
-			self.AddEnumControl( E_SpinEx04, 'Playback Banner Duration', None, MR_LANG( 'Set the time for the playback info to be displayed on the screen' ) )	#	Erase custom menu yes/no
+			self.AddEnumControl( E_SpinEx01, 'Deep Standby', None, MR_LANG( 'When set to "On", the system automatically switches to standby mode after a period of inactivity to help reduce the amount of electricity used' ) )
+			self.AddEnumControl( E_SpinEx02, 'Fan Control', None, MR_LANG( 'Adjust the fan speed level for your system' ) )
+			self.AddEnumControl( E_SpinEx03, 'Channel Banner Duration', MR_LANG( 'Channel Banner Time' ), MR_LANG( 'Set the time the channel info is to be displayed when zapping' ) )		#	Erase channel list yes/no
+			self.AddEnumControl( E_SpinEx04, 'Playback Banner Duration', MR_LANG( 'Playback Banner Time' ), MR_LANG( 'Set the time for the playback info to be displayed on the screen' ) )	#	Erase custom menu yes/no
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
 			self.SetVisibleControls( visibleControlIds, True )

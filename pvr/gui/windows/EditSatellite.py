@@ -90,7 +90,7 @@ class EditSatellite( SettingWindow ) :
 					self.InitConfig( )
 		 		else :
 		 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You were unable to change the satellite name' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You were unable to change satellite name' ) )
 		 			dialog.doModal( )
 		 		self.CloseBusyDialog( )
  				

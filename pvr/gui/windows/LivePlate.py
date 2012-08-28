@@ -375,7 +375,7 @@ class LivePlate( LivePlateWindow ) :
 
 				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					#LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull )
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'The recording has stopped due to insufficient disk space' ) )
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Recording has stopped due to insufficient disk space' ) )
 
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
@@ -1036,7 +1036,7 @@ class LivePlate( LivePlateWindow ) :
 				self.StopAutomaticHide( )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
-			dialog.SetTitleLabel( MR_LANG( 'Enter a PIN code' ) )
+			dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
 			dialog.doModal( )
 
 			if dialog.GetNextAction( ) == dialog.E_TUNE_NEXT_CHANNEL :

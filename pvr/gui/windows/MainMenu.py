@@ -71,7 +71,7 @@ class MainMenu( BaseWindow ) :
 			if self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
 				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( 'Attention', 'Please stop the recordings first' )
+				dialog.SetDialogProperty( 'Attention', 'Please stop recordings first' )
 				dialog.doModal( )
 				self.getControl( MAIN_GROUP_ID ).setVisible( True )
 
@@ -106,7 +106,7 @@ class MainMenu( BaseWindow ) :
 			if self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
 				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Please stop the recordings first' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Please stop recordings first' ) )
 				dialog.doModal( )
 				self.getControl( MAIN_GROUP_ID ).setVisible( True )
 
