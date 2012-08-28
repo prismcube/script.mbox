@@ -197,14 +197,6 @@ class LivePlate( LivePlateWindow ) :
 		elif id == Action.ACTION_PAGE_DOWN :
 			self.ChannelTune( PREV_CHANNEL )
 
-		elif id == Action.ACTION_STOP :
-			status = None
-			status = self.mDataCache.Player_GetStatus( )
-			if status.mMode :
-				ret = self.mDataCache.Player_Stop( )
-			else :
-				self.ShowDialog( E_CONTROL_ID_BUTTON_STOP_RECORDING )
-
 		elif id == Action.ACTION_MBOX_XBMC :
 			self.SetMediaCenter( )
 
@@ -221,6 +213,14 @@ class LivePlate( LivePlateWindow ) :
 
 		elif id == Action.ACTION_MBOX_RECORD :
 			self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
+
+		elif id == Action.ACTION_STOP :
+			status = None
+			status = self.mDataCache.Player_GetStatus( )
+			if status and status.mError == 0 and status.mMode :
+				ret = self.mDataCache.Player_Stop( )
+			else :
+				self.onClick( E_CONTROL_ID_BUTTON_STOP_RECORDING )
 
 		elif id == Action.ACTION_PAUSE or id == Action.ACTION_PLAYER_PLAY :
 			if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
@@ -775,6 +775,8 @@ class LivePlate( LivePlateWindow ) :
 		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
 			msg1 = 'Teletext'
 			msg2 = 'test'
+			#satelliteList = self.mDataCache.Satellite_GetListByChannel( )
+			#LOG_TRACE('---------satellite[%s]'% ClassToList('convert',satelliteList) )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
 			msg1 = 'Subtitle'

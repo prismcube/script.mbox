@@ -149,13 +149,21 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
 
 
-	def LoadNoSignalState( self ) :
+	def LoadNoSignalState( self, aProperty = None ) :
 		if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
-			self.setProperty('Signal', 'Scramble')
+			self.setProperty( 'Signal', 'Scramble' )
+			state = 'Scramble'
 		elif self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
-			self.setProperty('Signal', 'False')
+			self.setProperty( 'Signal', 'False' )
+			state = 'False'
 		else :
-			self.setProperty('Signal', 'True')
+			self.setProperty( 'Signal', 'True' )
+			state = 'True'
+		if aProperty != None :
+			if aProperty == state :
+				return True
+			else :
+				return False
 
 
 	def UpdateVolume( self ) :

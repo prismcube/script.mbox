@@ -47,7 +47,6 @@ WIN_ID_TIMER_WINDOW					= 30
 WIN_ID_INFO_PLATE					= 31
 
 WIN_ID_HIDDEN_TEST					= 99
-WIN_ID_DUMMY_WINDOW					= 100
 
 WIN_ID_TIMESHIFT_INFO_PLATE			= 101
 WIN_ID_TIMESHIFT_INFO_PLATE1		= 102
@@ -273,9 +272,6 @@ class WindowMgr( object ) :
 			
 			from pvr.gui.windows.MediaCenter import MediaCenter
 			self.mWindows[WIN_ID_MEDIACENTER]=MediaCenter( 'MediaCenter.xml', self.mScriptDir )
-
-			from pvr.gui.windows.DummyWindow import DummyWindow
-			self.mWindows[WIN_ID_DUMMY_WINDOW]=DummyWindow( 'DummyWindow.xml', self.mScriptDir ) 
 
 			from pvr.gui.windows.ConditionalAccess import ConditionalAccess
 			self.mWindows[WIN_ID_CONDITIONAL_ACCESS]=ConditionalAccess( 'ConditionalAccess.xml', self.mScriptDir ) 
