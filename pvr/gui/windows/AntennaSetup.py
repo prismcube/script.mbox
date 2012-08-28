@@ -80,6 +80,7 @@ class AntennaSetup( SettingWindow ) :
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).mStepNum = E_STEP_SELECT_LANGUAGE
 					self.SetParentID( WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).GetParentID( ) )
 					ConfigMgr.GetInstance( ).SetFristInstallation( False )
+					self.mTunerMgr.SyncChannelBySatellite( )
 					self.CloseWindow( )
 
 			else :
@@ -91,7 +92,7 @@ class AntennaSetup( SettingWindow ) :
 					self.OpenBusyDialog( )
 					if self.CompareCurrentConfiguredState( ) == False or self.CompareConfigurationProperty( ) == False :
 						self.SaveConfiguration( )
-					self.DeleteSatelliteChannel( )
+					self.mTunerMgr.SyncChannelBySatellite( )
 					
 				elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 					self.OpenBusyDialog( )
@@ -336,16 +337,3 @@ class AntennaSetup( SettingWindow ) :
 			return False
 		return True
 
-
-	def DeleteSatelliteChannel( self ) :
-		mMixConfiguredSatellite = self.mDataCache.Satellite_GetConfiguredList( )
-		if self.mOriginalMixConfiguredSatellite :
-			for satellite_original in self.mOriginalMixConfiguredSatellite :
-				find_satellite = False
-				for satellite_new in mMixConfiguredSatellite :
-					if satellite_original.mLongitude == satellite_new.mLongitude and satellite_original.mBand == satellite_new.mBand :
-						find_satellite = True
-				if find_satellite == False :
-					self.mDataCache.Channel_DeleteBySatellite( satellite_original.mLongitude, satellite_original.mBand )
-
-		
