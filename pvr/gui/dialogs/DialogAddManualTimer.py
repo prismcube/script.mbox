@@ -533,7 +533,7 @@ class DialogAddManualTimer( SettingDialog ) :
 	def ShowRecordName( self ) :
 		try :
 #			kb = xbmc.Keyboard( self.mRecordName, 'Change Record Name', False )
-			kb = xbmc.Keyboard( self.mRecordName, MR_LANG( 'Change timer name' ), False )			
+			kb = xbmc.Keyboard( self.mRecordName, MR_LANG( 'Rename timer' ), False )			
 			kb.doModal( )
 			if kb.isConfirmed( ) :
 				keyword = kb.getText( )
@@ -584,7 +584,7 @@ class DialogAddManualTimer( SettingDialog ) :
 					ret = self.mDataCache.Timer_EditRunningTimer( self.mTimer.mTimerId, endTime )
 					LOG_TRACE( 'RET=%s' %ret )
 					if ret == False :
-						self.mErrorMessage = MR_LANG( 'You were unable to edit the timer' )
+						self.mErrorMessage = MR_LANG( 'You were unable to edit timer' )
 						self.mConflictTimer = None
 					return ret
 					"""
