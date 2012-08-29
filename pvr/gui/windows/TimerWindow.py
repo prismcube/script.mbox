@@ -289,7 +289,7 @@ class TimerWindow( BaseWindow ) :
 	def ShowContextMenu( self ) :
 		context = []
 
-		context.append( ContextItem( MR_LANG( 'Go to the Parent Timers' ), CONTEXT_GO_PARENT ) )
+		context.append( ContextItem( MR_LANG( 'Back to Previous Page' ), CONTEXT_GO_PARENT ) )
 		
 		if self.mListItems and len( self.mListItems ) > 0 :
 			context.append( ContextItem( MR_LANG( 'Edit Timer' ), CONTEXT_EDIT_TIMER ) )

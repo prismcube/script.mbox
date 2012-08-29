@@ -438,7 +438,7 @@ class NullWindow( BaseWindow ) :
 		isUnlock = False
 		try :
 			self.mDataCache.Player_AVBlank( True, False )
-			msg = MR_LANG('Enter your PIN code')
+			msg = MR_LANG( 'Enter your PIN code' )
 			inputPin = ''
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )

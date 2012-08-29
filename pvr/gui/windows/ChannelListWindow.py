@@ -664,7 +664,7 @@ class ChannelListWindow( BaseWindow ) :
 				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull)
 #					xbmcgui.Dialog( ).ok( MR_LANG( 'Infomation' ), MR_LANG( 'HDD Full!!! Cannot Recording...' ) )
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'The recording has stopped due to insufficient disk space' ) )
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Recording has stopped due to insufficient disk space' ) )
 
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				if aEvent.mType == ElisEnum.E_EOF_END :
@@ -2390,7 +2390,7 @@ class ChannelListWindow( BaseWindow ) :
 				#rename
 				default = groupName
 				result = '%d'%grpIdx + ':' + groupName + ':'
-				label = MR_LANG( 'Change Favorite Group Name' )
+				label = MR_LANG( 'Rename Favorite Group' )
 
 			kb = xbmc.Keyboard( default, label, False )
 			kb.doModal( )
