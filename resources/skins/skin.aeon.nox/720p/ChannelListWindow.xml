@@ -9,7 +9,7 @@
 			<posy>0</posy>
 			<width>1280</width>
 			<height>720</height>
-			<texture>special://skin/backgrounds/pictures.jpg</texture>
+			<texture>special://skin/backgrounds/curtains.jpg</texture>
 			<include>DefaultSettingWindowEffect</include>
 		</control>
 
@@ -70,8 +70,8 @@
 				<include>Animation_HideMultiplex</include>
 			</control>
 			<control type="group">
-				<animation effect="slide" time="700" start="-800,0" end="0,0" tween="cubic" easing="out">WindowOpen</animation>
-				<animation effect="slide" time="700" start="0,0" end="-800,0" tween="cubic" easing="out">WindowClose</animation>
+				<animation effect="slide" time="700" start="-1200,0" end="0,0" tween="cubic" easing="out">WindowOpen</animation>
+				<animation effect="slide" time="700" start="0,0" end="-1200,0" tween="cubic" easing="out">WindowClose</animation>
 				<control type="image">
 					<include>Animation_CommonFade</include>
 					<posx>60</posx>
@@ -425,7 +425,6 @@
 
 		<!-- Right smoll Box -->
 		<control type="group">
-			<include>Animation_ListSlideRight</include>
 			<include>Animation_CommonFade</include>
 			<posx>30</posx>
 			<posy>0</posy>
@@ -434,6 +433,7 @@
 				<posy>380</posy>
 				<width>360</width>
 				<height>315</height>
+				<include>Animation_ListSlideRight</include>
 				<texture background="true">views/listpanel_black.png</texture>
 			</control>
 			<control type="image">
@@ -441,6 +441,7 @@
 				<posy>380</posy>
 				<width>360</width>
 				<height>315</height>
+				<include>Animation_ListSlideRight</include>
 				<texture>views/listpanel_back.png</texture>
 			</control>
 
@@ -449,6 +450,7 @@
 				<posy>142</posy>
 				<width>430</width>
 				<height>600</height>
+				<include>Animation_ListSlideRight</include>
 				<control type="group">
 					<posx>-40</posx>
 					<posy>-20</posy>
