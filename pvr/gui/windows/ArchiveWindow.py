@@ -192,7 +192,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.UpdateList( )
 					
 			else :
-				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the clip' ) )
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the PVR clip' ) )
 
 	
 	def onClick( self, aControlId ) :
@@ -608,7 +608,7 @@ class ArchiveWindow( BaseWindow ) :
 
 		status = self.mDataCache.Player_GetStatus( )
 		if status.mMode == ElisEnum.E_MODE_PVR :
-			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the clip' ) )
+			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the PVR clip' ) )
 			return
 	
 		try :
@@ -714,7 +714,7 @@ class ArchiveWindow( BaseWindow ) :
 					break
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Delete Record' ), MR_LANG( 'Do you want to delete this file?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Delete Record' ), MR_LANG( 'Do you want to delete the selected file(s)?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -786,13 +786,13 @@ class ArchiveWindow( BaseWindow ) :
 				return False
 		
 		try :
-			kb = xbmc.Keyboard( self.mRecordList[ selectedPos ].mRecordName, MR_LANG( 'Enter a new name' ), False )			
+			kb = xbmc.Keyboard( self.mRecordList[ selectedPos ].mRecordName, MR_LANG( 'Please enter new filename' ), False )			
 			kb.doModal( )
 			if kb.isConfirmed( ) :
 				newName = kb.getText( )
 				LOG_TRACE( 'newName len=%d' %len( newName ) )
 				if len( newName ) < MININUM_KEYWORD_SIZE :
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Name must be at least %d characters long' ) %MININUM_KEYWORD_SIZE )
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'A filename must be at least %d characters long' ) %MININUM_KEYWORD_SIZE )
 					return
 				else :
 

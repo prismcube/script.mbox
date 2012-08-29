@@ -2223,7 +2223,7 @@ class ChannelListWindow( BaseWindow ) :
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			if isRunRec > 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Please stop the recording first' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Please stop recording first' ) )
 	 			dialog.doModal( )
 
 	 		else :
@@ -2295,9 +2295,8 @@ class ChannelListWindow( BaseWindow ) :
 					context.append( ContextItem( '%s'% MR_LANG( 'Create New Group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
 
 			else :
-#				head =  MR_LANG( 'Infomation' )
 				head =  MR_LANG( 'Error' )
-				line1 = MR_LANG( 'The channel list is empty' )
+				line1 = MR_LANG( 'There is nothing in the channel list' )
 
 				xbmcgui.Dialog( ).ok( head, line1 )
 				return
@@ -2548,7 +2547,7 @@ class ChannelListWindow( BaseWindow ) :
 				RecordConflict( dialog.GetConflictTimer( ) )
 		else:
 #			msg = 'Already [%s] recording(s) running' %runningCount
-			msg = 'You are already recordings [%s] programmes' %runningCount			
+			msg = 'You are already recordings [%s] programs' %runningCount			
 #			xbmcgui.Dialog( ).ok( 'Infomation', msg )
 			xbmcgui.Dialog( ).ok( 'Attention', msg )			
 
