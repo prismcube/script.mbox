@@ -136,7 +136,7 @@ class DialogMgr( object ) :
 
 			elif aDialogId == DIALOG_ID_CHANNEL_SELECT :
 				from pvr.gui.dialogs.DialogChannelSelect import DialogChannelSelect
-				return DialogInputPincode( 'DialogSelect.xml', self.scriptDir )
+				return DialogChannelSelect( 'DialogChannelSelect.xml', self.scriptDir )
 
 			else :
 				LOG_ERR( 'can not find dialog' )

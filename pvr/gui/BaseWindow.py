@@ -144,6 +144,12 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 		self.mDataCache.Player_SetVIdeoSize( x, y + 1, w, h - 2 )
 
+		tvradio = 'False'
+		if self.mDataCache.Zappingmode_GetCurrent( ).mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
+			tvradio = 'True'
+
+		self.mWin.setProperty( 'TVRadio', tvradio )
+
 
 	def SetVideoRestore( self ) :
 		self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
