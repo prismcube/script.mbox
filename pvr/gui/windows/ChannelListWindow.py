@@ -491,6 +491,8 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mUserMode.mServiceType != aType :
 			tmpUserMode = deepcopy( self.mUserMode )
 			self.mUserMode = deepcopy( self.mLastMode )
+			tmpUserSlidePos = deepcopy( self.mUserSlidePos )
+			self.mUserSlidePos = deepcopy( self.mLastSlidePos )
 
 			self.mFlag_EditChanged = True
 			self.mFlag_ModeChanged = True
@@ -498,18 +500,23 @@ class ChannelListWindow( BaseWindow ) :
 			aMode = self.mUserMode.mMode
 			aSort = self.mUserMode.mSortingMode
 
-			self.InitSlideMenuHeader( )
+			self.InitSlideMenuHeader( FLAG_SLIDE_OPEN )
 			self.RefreshSlideMenu( self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, True )
 
 			self.mCtrlListCHList.reset( )
 			self.InitChannelList( )
 			self.mFlag_EditChanged = False
 			self.mLastMode = deepcopy( tmpUserMode )
+			self.mLastSlidePos = deepcopy( tmpUserSlidePos )
 
+
+			tvradio = 'False'
 			propertyName = 'Last TV Number'
 			if aType == ElisEnum.E_SERVICE_TYPE_RADIO :
 				propertyName = 'Last Radio Number'
+				tvradio = 'True'
 
+			self.UpdatePropertyGUI( 'TVRadio', tvradio )
 			lastChannelNumber = ElisPropertyInt( propertyName, self.mCommander ).GetProp( )
 			self.SetChannelTune( lastChannelNumber )
 
@@ -540,6 +547,7 @@ class ChannelListWindow( BaseWindow ) :
 
 				self.mDataCache.SetSkipChannelView( True )
 				self.mPrevMode = deepcopy( self.mUserMode )
+				self.mPrevSlidePos = deepcopy( self.mUserSlidePos )
 				self.ReloadChannelList( )
 
 				#clear label
@@ -593,6 +601,7 @@ class ChannelListWindow( BaseWindow ) :
 
 					self.mDataCache.SetSkipChannelView( False )
 					self.mUserMode = deepcopy( self.mPrevMode )
+					self.mUserSlidePos = deepcopy( self.mPrevSlidePos )
 					self.ReloadChannelList( )
 
 					#initialize get epg event
@@ -1227,7 +1236,7 @@ class ChannelListWindow( BaseWindow ) :
 		return answer
 
 
-	def InitSlideMenuHeader( self, aInitLoad = FLAG_ZAPPING_LOAD ) :
+	def InitSlideMenuHeader( self, aInitLoad = FLAG_SLIDE_INIT ) :
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			#opt btn blind
 			#self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, False )
@@ -1360,7 +1369,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mNavChannel = None
 		self.mChannelList = None
 
-		self.GetSlideMenuHeader( FLAG_SLIDE_INIT )
+		self.GetSlideMenuHeader( aInitLoad )
 
 		"""
 		if self.mFlag_EditChanged :
@@ -2621,7 +2630,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mRecChannel2 = deepcopy( aRecInfo2 )
 
 
-	def ReloadChannelList( self, aInit = FLAG_ZAPPING_LOAD ) :
+	def ReloadChannelList( self, aInit = FLAG_SLIDE_OPEN ) :
 		self.mListItems = None
 		self.mCtrlListCHList.reset( )
 		self.InitSlideMenuHeader( aInit )
