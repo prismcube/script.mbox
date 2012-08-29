@@ -37,7 +37,7 @@ class AntennaSetup( SettingWindow ) :
 			self.mOriginalMixConfiguredSatellite = deepcopy( self.mDataCache.Satellite_GetConfiguredList( ) )
 			self.mTunerMgr.SetNeedLoad( False )
 
-		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', MR_LANG( 'Tuner 2 Connection' ), MR_LANG( 'When set to "Separated", the Tuner 2 receives its own signal input however the Tuner 2 will receive only the channel level currently being received by the Tuner 1 when this is set to "Loopthrough"' ) )
+		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', MR_LANG( 'Tuner 2 Connection' ), MR_LANG( 'When set to "Separated", the Tuner 2 receives its own signal input however it will receive only the channel level currently being received by the Tuner 1 when this is set to "Loopthrough"' ) )
 		self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', MR_LANG( 'Tuner 2 Signal' ), MR_LANG( 'When set to "Same with Tuner 1", both tuners are connected to the same signal source' ) )
 		self.AddEnumControl( E_SpinEx03, 'Tuner1 Type', MR_LANG( 'Tuner 1 Control' ), MR_LANG( 'Select a control method for Tuner 1' ) )
 		self.AddInputControl( E_Input01, MR_LANG( ' - Tuner 1 Configuration' ), '', MR_LANG( 'You can add, delete or configure satellites here' ) )

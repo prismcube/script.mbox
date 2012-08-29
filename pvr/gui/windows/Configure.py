@@ -275,7 +275,7 @@ class Configure( SettingWindow ) :
 				return
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Confirm PIN Code' ), '', 4, True )
+			dialog.SetDialogProperty( MR_LANG( 'Confirm PIN code' ), '', 4, True )
 			dialog.doModal( )
 
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
