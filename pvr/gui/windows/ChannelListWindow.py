@@ -2149,7 +2149,14 @@ class ChannelListWindow( BaseWindow ) :
 					#delete timer
 					for iTimer in mTimerList :
 						self.mDataCache.Timer_DeleteTimer( iTimer.mTimerId )
+				else :
+					#cancel for appended lastpos
+					if self.mMarkList and len( self.mMarkList ) < 2 :
+						self.mMarkList = []
+					return
 
+
+				"""
 				elif answer == E_DIALOG_STATE_NO :
 					#no delete timer and channel
 					for iTimer in mTimerList :
@@ -2157,12 +2164,8 @@ class ChannelListWindow( BaseWindow ) :
 						for idx in range( len( tmpList ) ) :
 							if tmpList[idx].mParam == iTimer.mChannelNo :
 								numList.pop( idx )
+				"""
 
-				else :
-					#cancel for appended lastpos
-					if self.mMarkList and len( self.mMarkList ) < 2 :
-						self.mMarkList = []
-					return
 
 			if aMode == FLAG_OPT_LIST :
 				ret = self.mDataCache.Channel_DeleteByNumber( int( self.mUserMode.mServiceType ), numList )

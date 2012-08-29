@@ -130,6 +130,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mAsyncShiftTimer = None
 		self.mAutomaticHideTimer = None
 
+		self.SetRadioScreen( )
 		self.ShowRecordingInfo( )
 		self.mTimeShiftExcuteTime = self.mDataCache.Datetime_GetLocalTime( )
 

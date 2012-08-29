@@ -249,6 +249,7 @@ class LivePlate( LivePlateWindow ) :
 			if status.mMode == ElisEnum.E_MODE_LIVE :
 				ret = self.mDataCache.ToggleTVRadio( )
 				if ret :
+					self.SetRadioScreen( )
 					self.mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
 					self.ChannelTune( INIT_CHANNEL )
 

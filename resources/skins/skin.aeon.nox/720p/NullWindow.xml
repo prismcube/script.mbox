@@ -3,6 +3,15 @@
 	<allowoverlay>yes</allowoverlay>
 	<backgroundcolor>0x00ffffff</backgroundcolor>
 	<controls>
+		<!--control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<texture background="true">mikeheadphones.jpg</texture>
+			<include>DefaultWindowFade</include>
+			<visible>substring(Window.Property(TVRadio),true)</visible>
+		</control-->
 		<control type="label">
 			<posx>550</posx>
 			<posy>330</posy>

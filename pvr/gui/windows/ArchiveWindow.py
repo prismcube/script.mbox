@@ -186,10 +186,10 @@ class ArchiveWindow( BaseWindow ) :
 					self.mServiceType = ElisEnum.E_SERVICE_TYPE_RADIO
 				else :
 					self.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
-
 				self.Flush( )
 				self.Load( )
 				self.UpdateList( )
+				self.SetRadioScreen( self.mServiceType )
 					
 			else :
 				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the PVR clip' ) )

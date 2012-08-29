@@ -164,8 +164,9 @@ class EPGWindow( BaseWindow ) :
 			self.mEventBus.Deregister( self )
 			self.StopEPGUpdateTimer( )
 
-			GuiLock2( True )			
+			GuiLock2( True )
 			self.ToggleTVRadio( )
+			self.SetRadioScreen( self.mServiceType )
 			GuiLock2( False )			
 			
 			self.StartEPGUpdateTimer( )

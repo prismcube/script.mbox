@@ -144,11 +144,21 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 		self.mDataCache.Player_SetVIdeoSize( x, y + 1, w, h - 2 )
 
+		self.SetRadioScreen( )
+
+
+	def SetRadioScreen( self, aType = -1 ) :
 		tvradio = 'False'
-		if self.mDataCache.Zappingmode_GetCurrent( ).mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
+		boolValue= False
+		if aType == -1 :
+			aType = self.mDataCache.Zappingmode_GetCurrent( ).mServiceType
+
+		if aType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			tvradio = 'True'
+			boolValue = True
 
 		self.mWin.setProperty( 'TVRadio', tvradio )
+		#self.mDataCache.Player_VideoBlank( boolValue )
 
 
 	def SetVideoRestore( self ) :
@@ -208,6 +218,8 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 			if iChannel :
 				self.mDataCache.Channel_InvalidateCurrent( )
 				self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
+
+		self.SetRadioScreen( )
 
 
 	def OpenBusyDialog( self ) :
