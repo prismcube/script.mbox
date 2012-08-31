@@ -510,13 +510,11 @@ class ChannelListWindow( BaseWindow ) :
 			self.mLastSlidePos = deepcopy( tmpUserSlidePos )
 
 
-			tvradio = 'False'
+			self.SetRadioScreen( aType )
 			propertyName = 'Last TV Number'
 			if aType == ElisEnum.E_SERVICE_TYPE_RADIO :
 				propertyName = 'Last Radio Number'
-				tvradio = 'True'
 
-			self.UpdatePropertyGUI( 'TVRadio', tvradio )
 			lastChannelNumber = ElisPropertyInt( propertyName, self.mCommander ).GetProp( )
 			self.SetChannelTune( lastChannelNumber )
 
