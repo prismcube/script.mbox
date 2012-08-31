@@ -5113,6 +5113,7 @@
 						<posy>50</posy>
 						<width>130</width>
 						<height>8</height>
+						<progress>percent</progress>						
 						<texturebg>osd/seek/progress_back.png</texturebg>
 						<lefttexture>osd/seek/progress_left.png</lefttexture>
 						<midtexture>osd/seek/progress_mid.png</midtexture>
@@ -5211,6 +5212,7 @@
 						<posy>50</posy>
 						<width>130</width>
 						<height>8</height>
+						<progress>percent</progress>						
 						<texturebg>osd/seek/progress_back.png</texturebg>
 						<lefttexture>osd/seek/progress_left.png</lefttexture>
 						<midtexture>osd/seek/progress_mid.png</midtexture>
