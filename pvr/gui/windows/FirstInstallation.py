@@ -2,9 +2,6 @@ from pvr.gui.WindowImport import *
 import pvr.TunerConfigMgr as ConfigMgr
 
 
-E_FAKE_BUTTON		=	999
-
-
 class FirstInstallation( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )

@@ -825,10 +825,10 @@ class Configure( SettingWindow ) :
 			addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( dev )
 			SetIpAddressProperty( addressIp, addressMask, addressGateway, addressNameServer )
 			self.CloseBusyDialog( )
-			if ret1 == False :
+			if ret1 == False or ret2 == False :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'STB was unable to save the Wifi configuration' ) )
-			dialog.doModal( )
+				dialog.doModal( )
 
 
 	def LoadWifi( self ) :
