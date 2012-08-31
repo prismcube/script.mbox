@@ -30,7 +30,7 @@ class Installation( BaseWindow ) :
 		MR_LANG( 'You can add or delete a satellite here' ),
 		MR_LANG( 'Here you can add or delete a transponder' ),
 		MR_LANG( 'Most of STB settings can be configured via the GUI under Configuration' ),
-		MR_LANG( 'The Conditional Access System allows you to setup subscription configurations including Smartcard' ) ]
+		MR_LANG( 'The Conditional Access System allows you to setup Smartcard configurations' ) ]
 
 		self.mCtrlLeftGroup = None
 

@@ -149,7 +149,7 @@
 								<width>30</width>
 								<height>30</height>
 								<texture>IconCas.png</texture>
-								<visible>substring(ListItem.Property(icas),true)</visible>
+								<visible>substring(ListItem.Property(iCas),true)</visible>
 							</control>
 							<!-- is lock? -->
 							<control type="image">
@@ -158,7 +158,7 @@
 								<width>35</width>
 								<height>30</height>
 								<texture>OverlayLocked.png</texture>
-								<visible>substring(ListItem.Property(lock),true)</visible>
+								<visible>substring(ListItem.Property(iLock),true)</visible>
 							</control>
 							<!-- is mark? -->
 							<control type="image">
@@ -167,7 +167,7 @@
 								<width>30</width>
 								<height>30</height>
 								<texture>OverlayWatched.png</texture>
-								<visible>substring(ListItem.Property(mark),true)</visible>
+								<visible>substring(ListItem.Property(iMark),true)</visible>
 							</control>
 							<!-- is recording? -->
 							<control type="image">
@@ -176,7 +176,7 @@
 								<width>30</width>
 								<height>30</height>
 								<texture>IconPlateRec.png</texture>
-								<visible>substring(ListItem.Property(rec),true)</visible>
+								<visible>substring(ListItem.Property(iRec),true)</visible>
 							</control>
 							<!-- is skip? -->
 							<control type="image">
@@ -185,7 +185,7 @@
 								<width>30</width>
 								<height>30</height>
 								<texture>DI_Skip.png</texture>
-								<visible>substring(ListItem.Property(skip),true)</visible>
+								<visible>substring(ListItem.Property(iSkip),true)</visible>
 							</control>
 							<control type="label">
 								<posx>40</posx>
@@ -258,7 +258,7 @@
 								<width>30</width>
 								<height>30</height>
 								<texture>IconCas.png</texture>
-								<visible>substring(ListItem.Property(icas),true)</visible>
+								<visible>substring(ListItem.Property(iCas),true)</visible>
 							</control>
 							<!-- is lock? -->
 							<control type="image">
@@ -267,7 +267,7 @@
 								<width>35</width>
 								<height>30</height>
 								<texture>OverlayLocked.png</texture>
-								<visible>substring(ListItem.Property(lock),true)</visible>
+								<visible>substring(ListItem.Property(iLock),true)</visible>
 							</control>
 							<!-- is mark? -->
 							<control type="image">
@@ -276,7 +276,7 @@
 								<width>30</width>
 								<height>30</height>
 								<texture>OverlayWatched.png</texture>
-								<visible>substring(ListItem.Property(mark),true)</visible>
+								<visible>substring(ListItem.Property(iMark),true)</visible>
 							</control>
 							<!-- is recording? -->
 							<control type="image">
@@ -285,7 +285,7 @@
 								<width>30</width>
 								<height>30</height>
 								<texture>IconPlateRec.png</texture>
-								<visible>substring(ListItem.Property(rec),true)</visible>
+								<visible>substring(ListItem.Property(iRec),true)</visible>
 							</control>
 							<!-- is skip? -->
 							<control type="image">

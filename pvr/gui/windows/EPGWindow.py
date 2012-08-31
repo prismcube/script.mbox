@@ -23,7 +23,7 @@ E_VIEW_FOLLOWING				= 2
 E_VIEW_END						= 3
 
 E_NOMAL_UPDATE_TIME				= 30
-E_SHORT_UPDATE_TIME				= 0.5
+E_SHORT_UPDATE_TIME				= 1
 
 E_MAX_EPG_COUNT					= 512
 E_MAX_SCHEDULE_DAYS				= 8
@@ -153,7 +153,7 @@ class EPGWindow( BaseWindow ) :
 				self.DoContextAction( contextAction ) 
 			else :
 				self.DoContextAction( contextAction ) 
-				self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
+				self.StartEPGUpdateTimer( )
 				self.mEventBus.Register( self )			
 
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
@@ -224,7 +224,7 @@ class EPGWindow( BaseWindow ) :
 			GuiLock2( False )			
 
 			self.mEventBus.Register( self )
-			self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
+			self.StartEPGUpdateTimer( )
 		
 		elif aControlId == RADIIOBUTTON_ID_EXTRA :
 			pass
@@ -470,6 +470,7 @@ class EPGWindow( BaseWindow ) :
 
 
 	def UpdateList( self, aUpdateOnly=False ) :
+		LOG_TRACE( '------------------------> Start Update----------' )
 		#self.mLock.acquire( )	
 		if aUpdateOnly == False :
 			self.mListItems = []
@@ -923,7 +924,7 @@ class EPGWindow( BaseWindow ) :
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU REALLY WANT TO REMOVE ALL YOUR TIMERS?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO REMOVE ALL YOUR TIMERS?' ) )
 		dialog.doModal( )
 
 		self.OpenBusyDialog( )
@@ -976,7 +977,7 @@ class EPGWindow( BaseWindow ) :
 				LOG_TRACE( 'Result =%d' %len( searchList ) )
 
 				if len( searchList ) <= 0 :
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No matched result found' ) )
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Search Result' ), MR_LANG( 'No matched result found' ) )
 		 			return
 		 		else :
 					dialog = xbmcgui.Dialog( )
@@ -1236,11 +1237,12 @@ class EPGWindow( BaseWindow ) :
 				if channel.mLocked == True :				
 					if self.ShowPincodeDialog( ) == False :
 						return
-					
+
+				self.StopEPGUpdateTimer( )					
 				self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
 				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 				self.UpdateCurrentChannel( )
-				self.RestartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
+				#self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
 
 
 	def RestartEPGUpdateTimer( self, aTimeout=E_NOMAL_UPDATE_TIME ) :
@@ -1385,7 +1387,8 @@ class EPGWindow( BaseWindow ) :
 
 		try :			
 			nextChannel = self.mChannelList[ index ]
-		except :
+		except Exception, ex :
+			LOG_ERR( "Exception %s" %ex )
 			nextChannel = self.mChannelList[ 0 ]
 			
 		if nextChannel :
@@ -1427,7 +1430,8 @@ class EPGWindow( BaseWindow ) :
 
 		try :			
 			nextChannel = self.mChannelList[ index ]
-		except :
+		except Exception, ex :
+			LOG_ERR( "Exception %s" %ex )
 			nextChannel = self.mChannelList[ 0 ]
 			
 		if nextChannel :

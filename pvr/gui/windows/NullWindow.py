@@ -261,7 +261,7 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_RECORD :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_PVR :
-				msg = MR_LANG( 'Please stop the Personal Video Recording first' )
+				msg = MR_LANG( 'Try again after stopping all your recordings first' )
 				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), msg )
 			else :
 				self.ShowRecordingStartDialog( )
@@ -515,7 +515,7 @@ class NullWindow( BaseWindow ) :
 				RecordConflict( dialog.GetConflictTimer( ) )
 
 		else:
-			msg = MR_LANG( 'You have reached the maximum number of recordings allowed' )
+			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
 			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), msg )
 
 		if isOK :

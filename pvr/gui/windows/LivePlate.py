@@ -26,18 +26,6 @@ E_CONTROL_DEFAULT_HIDE = [
 	E_CONTROL_ID_BUTTON_BOOKMARK
 ]
 
-#xml property name
-E_XML_PROPERTY_TV         = 'ServiceTypeTV'
-E_XML_PROPERTY_RADIO      = 'ServiceTypeRadio'
-E_XML_PROPERTY_SUBTITLE   = 'HasSubtitle'
-E_XML_PROPERTY_DOLBY      = 'HasDolby'
-E_XML_PROPERTY_HD         = 'HasHD'
-E_XML_PROPERTY_LOCK       = 'iLock'
-E_XML_PROPERTY_CAS        = 'iCas'
-E_XML_PROPERTY_FAV        = 'iFav'
-E_XML_PROPERTY_RECORDING1 = 'ViewRecord1'
-E_XML_PROPERTY_RECORDING2 = 'ViewRecord2'
-
 FLAG_MASK_ADD  = 0x01
 FLAG_MASK_NONE = 0x00
 FLAG_CLOCKMODE_ADMYHM  = 1
@@ -376,7 +364,7 @@ class LivePlate( LivePlateWindow ) :
 
 				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					#LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull )
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Recording has stopped due to insufficient disk space' ) )
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
 
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
@@ -776,8 +764,13 @@ class LivePlate( LivePlateWindow ) :
 		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
 			msg1 = 'Teletext'
 			msg2 = 'test'
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SELECT )
+			"""
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
+			dialog.SetDefaultProperty( 0, self.mDataCache.Channel_GetList( ) )
 			dialog.doModal( )
+			tempList = dialog.GetSelectedList( )
+			LOG_TRACE('------------dialog list[%s]'% tempList )
+			"""
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
 			msg1 = 'Subtitle'
@@ -817,7 +810,7 @@ class LivePlate( LivePlateWindow ) :
 				RecordConflict( dialog.GetConflictTimer( ) )
 
 		else :
-			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'You have reached the maximum number of recordings allowed' ) )
+			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'You have reached the maximum number of\nrecordings allowed' ) )
 
 		if isOK :
 			self.mDataCache.mCacheReload = True
@@ -1054,3 +1047,5 @@ class LivePlate( LivePlateWindow ) :
 
 		if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE : # Still showing 
 			self.mEventBus.Register( self )
+
+

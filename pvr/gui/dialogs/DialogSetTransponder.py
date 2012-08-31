@@ -64,15 +64,9 @@ class DialogSetTransponder( SettingDialog ) :
 				if int( tempval ) == self.mFrequency :
 					return
 
-				if self.mSatelliteBand == ElisEnum.E_BAND_KU and int( tempval ) < 5150 :
+				if ( self.mSatelliteBand == ElisEnum.E_BAND_KU and int( tempval ) < 5150 ) or ( self.mSatelliteBand == ElisEnum.E_BAND_C and int( tempval ) > 10000 ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Enter Ku Band satellite frequency' ) )
-					dialog.doModal( )
-					return
-
-				if self.mSatelliteBand == ElisEnum.E_BAND_C and int( tempval ) > 10000 :
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Enter C Band satellite frequency' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Sorry, that\'s an irrelevant transponder frequency' ) )
 					dialog.doModal( )
 					return
 					

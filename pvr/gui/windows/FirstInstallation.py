@@ -217,7 +217,7 @@ class FirstInstallation( SettingWindow ) :
 			self.LoadFormattedSatelliteNameList( )
 			self.AddUserEnumControl( E_SpinEx01, 'Channel Search', USER_ENUM_LIST_YES_NO, self.mIsChannelSearch, MR_LANG( 'Do you want to perform a channel search in the First Installation?' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select the satellite you wish to search from' ) )
-			self.AddEnumControl( E_SpinEx02, 'Network Search', None, MR_LANG( 'When set to "On", the STB searchs among the transponders saved in its memory and adds information of transponders found in the stream however if you set this option to "Off", only the transponders of the satellite(s) you previously selected will be searched for new channels' ) )
+			self.AddEnumControl( E_SpinEx02, 'Network Search', None, MR_LANG( 'When set to "On", new channels are searched from existing transponders and the additional transponders stored by transponder network however if you set this option to "Off", only the transponder you selected will be searched' ) )
 			self.AddEnumControl( E_SpinEx03, 'Channel Search Mode', MR_LANG( 'Search Mode' ), MR_LANG( 'Select the type of channel you want to search for' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to Time & Date Setup' ), MR_LANG( 'Go back to Antenna & Satellite Setup' ) )
 			self.SetPrevNextButtonLabel( )
@@ -255,7 +255,7 @@ class FirstInstallation( SettingWindow ) :
 					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
 
 			self.AddEnumControl( E_SpinEx01, 'Time Mode', MR_LANG( 'Time & Date' ), MR_LANG( 'When set to "Automatic", the time will be obtained by the receiver automatically from a specific channel that you select') )
-			self.AddInputControl( E_Input01, MR_LANG( 'Channel' ), channelName, MR_LANG( 'Select a channel you want to set your time by' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Channel' ), channelName, MR_LANG( 'Select a channel you want to set your time and date by' ) )
 			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
 			self.AddInputControl( E_Input02, MR_LANG( 'Date' ), self.mDate, MR_LANG( 'Enter today\'s date' ) )
 			self.mTime = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_HH_MM )
@@ -417,7 +417,7 @@ class FirstInstallation( SettingWindow ) :
 			channelNameList = []
 			for channel in channelList :
 				channelNameList.append( channel.mName )
-			ret = dialog.select( MR_LANG( 'Select a channel you want to set your time by' ), channelNameList )
+			ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList )
 			if ret >= 0 :
 				self.mSetupChannel = channelList[ ret ]
 				self.SetControlLabel2String( E_Input01, self.mSetupChannel.mName )
@@ -478,7 +478,7 @@ class FirstInstallation( SettingWindow ) :
 			self.CloseBusyDialog( )
 			if mode == TIME_AUTOMATIC and dialog.GetResult( ) == False :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Time Setting Fail' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Automatic time setup has failed because\nno time info was given by the channel you selected' ) )
 				dialog.doModal( )
 
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
