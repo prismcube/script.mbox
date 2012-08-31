@@ -3,6 +3,14 @@
 	<allowoverlay>yes</allowoverlay>
 	<backgroundcolor>0x00ffffff</backgroundcolor>
 	<controls>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<texture>mikeheadphones.jpg</texture>
+			<visible>substring(Window.Property(TVRadio),true)</visible>
+		</control>
 		<control type="group" id="9100">
 			<posx>-50</posx>
 			<control type="group">
@@ -421,7 +429,7 @@
 					<height>35</height>
 					<font>font12</font>
 					<!--label>Go to Archive Window</label-->
-					<label>The Archive allows you to playback or remove the programmes you have recorded</label>
+					<label>The Archive allows you to playback or delete the programs you have recorded</label>
 					<align>left</align>
 					<textcolor>white</textcolor>                
 					<shadowcolor>black</shadowcolor>
@@ -436,7 +444,7 @@
 					<height>35</height>
 					<font>font12</font>
 					<!--label>Go to EPG Window</label-->
-					<label>You can record programmes, view detailed contents information or view the channel list by time</label>
+					<label>You can record programs, view detailed contents information or view the channel list by time</label>
 					<align>left</align>
 					<textcolor>white</textcolor>                
 					<shadowcolor>black</shadowcolor>
@@ -481,7 +489,7 @@
 					<height>35</height>
 					<font>font12</font>
 					<!--label>System Information</label-->
-					<label>STB Info provides STB system status including system version, free hard drive space, etc</label>
+					<label>STB Info provides the system status including system version, free hard drive space, etc</label>
 					<align>left</align>
 					<textcolor>white</textcolor>                
 					<shadowcolor>black</shadowcolor>

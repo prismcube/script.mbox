@@ -79,23 +79,6 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.mPrekey = None
 
-	"""
-	def onAction(self, aAction):
-		id = aAction.getId()
-		
-		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR:
-			WinMgr.GetInstance().ShowWindow( WinMgr.WIN_ID_NULLWINDOW )			
-
-		elif id == 104 or id == Action.ACTION_SELECT_ITEM : #scroll up
-			xbmc.executebuiltin('XBMC.ReloadSkin()')
-
-	def SetAutomaticHide( self, aHide=True ) :
-		self.mAutomaticHide = aHide
-
-	def GetAutomaticHide( self ) :
-		return self.mAutomaticHide
-	"""
-
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
@@ -147,6 +130,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mAsyncShiftTimer = None
 		self.mAutomaticHideTimer = None
 
+		self.SetRadioScreen( )
 		self.ShowRecordingInfo( )
 		self.mTimeShiftExcuteTime = self.mDataCache.Datetime_GetLocalTime( )
 
@@ -385,7 +369,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					LOG_TRACE('----------hddfull[%s]'% aEvent.mHDDFull)
-					xbmcgui.Dialog().ok( MR_LANG( 'Attention' ), MR_LANG( 'The recording has stopped due to insufficient disk space' ) )
+					xbmcgui.Dialog().ok( MR_LANG( 'Attention' ), MR_LANG( 'Recording has stopped due to insufficient disk space' ) )
 					
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
@@ -416,25 +400,25 @@ class TimeShiftPlate( BaseWindow ) :
 				ret = self.mDataCache.Player_Resume( )
 
 			LOG_TRACE( 'play_resume( ) ret[%s]'% ret )
-			if ret :
-				if self.mSpeed != 100 :
-					#_self.mDataCache.Player_SetSpeed( 100 )
-					self.UpdateControlGUI( E_CONTROL_ID_IMAGE_REWIND, False )
-					self.UpdateControlGUI( E_CONTROL_ID_IMAGE_FORWARD, False )
-					self.UpdateControlGUI( E_CONTROL_ID_LABEL_SPEED, '' )
+			#if ret :
+			if self.mSpeed != 100 :
+				#_self.mDataCache.Player_SetSpeed( 100 )
+				self.UpdateControlGUI( E_CONTROL_ID_IMAGE_REWIND, False )
+				self.UpdateControlGUI( E_CONTROL_ID_IMAGE_FORWARD, False )
+				self.UpdateControlGUI( E_CONTROL_ID_LABEL_SPEED, '' )
 
-				self.mIsPlay = FLAG_PAUSE
+			self.mIsPlay = FLAG_PAUSE
 
-				label = self.GetModeValue( )
-				self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE, label )
-				# toggle
-				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, False )
-				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
-				self.mWin.setProperty( 'IsXpeeding', 'True' )
+			label = self.GetModeValue( )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE, label )
+			# toggle
+			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, False )
+			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
+			self.mWin.setProperty( 'IsXpeeding', 'True' )
 
-				#blocking release
-				self.SetBlockingButtonEnable( True )
-				#self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
+			#blocking release
+			self.SetBlockingButtonEnable( True )
+
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_PAUSE :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
@@ -453,7 +437,6 @@ class TimeShiftPlate( BaseWindow ) :
 				# toggle
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
-				#self.setFocusId( E_BUTTON_GROUP_PLAYPAUSE )
 				self.mWin.setProperty( 'IsXpeeding', 'True' )
 
 				#blocking
@@ -529,6 +512,7 @@ class TimeShiftPlate( BaseWindow ) :
 			if self.mSpeed == 0 :
 				return
 
+			self.InitTimeShift( )
 			prevJump = self.mTimeshift_playTime - 10000
 			if prevJump < self.mTimeshift_staTime :
 				prevJump = self.mTimeshift_staTime + 1000
@@ -539,11 +523,14 @@ class TimeShiftPlate( BaseWindow ) :
 			if self.mSpeed == 0 :
 				return
 
+			self.InitTimeShift( )
 			nextJump = self.mTimeshift_playTime + 10000
 			if nextJump > self.mTimeshift_endTime :
 				nextJump = self.mTimeshift_endTime - 1000
 			ret = self.mDataCache.Player_JumpToIFrame( nextJump )
 			#LOG_TRACE('JumpFF ret[%s]'% ret )
+
+		return ret
 
 
 	def InitLabelInfo(self) :
@@ -978,18 +965,17 @@ class TimeShiftPlate( BaseWindow ) :
 	@RunThread
 	def WaitToBuffering( self ) :
 		while self.mEnableLocalThread :
-				
-			if self.mSpeed == 100 :
-				if self.mIsTimeshiftPending :
-					waitTime = 0
-					self.OpenBusyDialog( )
-					while waitTime < 5 :
-						if not self.mIsTimeshiftPending :
-							break
-						time.sleep( 1 )
-						waitTime += 1
-					self.CloseBusyDialog( )
-					continue
+			if self.mIsTimeshiftPending :
+				waitTime = 0
+				self.OpenBusyDialog( )
+				while waitTime < 5 :
+					if not self.mIsTimeshiftPending :
+						break
+					time.sleep( 1 )
+					waitTime += 1
+				self.CloseBusyDialog( )
+				if self.mSpeed == 100 :
+					self.setFocusId( E_CONTROL_ID_BUTTON_PAUSE )
 
 			time.sleep( 1 )
 

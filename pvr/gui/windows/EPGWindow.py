@@ -160,8 +160,9 @@ class EPGWindow( BaseWindow ) :
 			self.mEventBus.Deregister( self )
 			self.StopEPGUpdateTimer( )
 
-			GuiLock2( True )			
+			GuiLock2( True )
 			self.ToggleTVRadio( )
+			self.SetRadioScreen( self.mServiceType )
 			GuiLock2( False )			
 			
 			self.StartEPGUpdateTimer( )
@@ -433,7 +434,8 @@ class EPGWindow( BaseWindow ) :
 			if epg :
 				self.mCtrlTimeLabel.setLabel( '%s~%s' % ( TimeToString( epg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM ), TimeToString( epg.mStartTime + self.mLocalOffset+ epg.mDuration, TimeFormatEnum.E_HH_MM ) ) )
 				self.mCtrlDateLabel.setLabel( '%s' % TimeToString( epg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
-				self.mCtrlDurationLabel.setLabel( '%d%s' %( ( epg.mDuration / 60 ), MR_LANG( 'Min' ) ) )
+#				self.mCtrlDurationLabel.setLabel( '%d%s' %( ( epg.mDuration / 60 ), MR_LANG( 'Min' ) ) )
+				self.mCtrlDurationLabel.setLabel( '%d%s' %( ( epg.mDuration / 60 ), MR_LANG( 'mins' ) ) )				
 
 				if epg.mEventDescription and epg.mEventDescription.upper() != '(NULL)' :
 					self.mCtrlEPGDescription.setText( epg.mEventDescription )
@@ -1341,7 +1343,7 @@ class EPGWindow( BaseWindow ) :
 		
 		GuiLock2( True )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
-		dialog.SetTitleLabel( MR_LANG( 'Enter a PIN code' ) )
+		dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
 		dialog.doModal( )
 		GuiLock2( False )
 

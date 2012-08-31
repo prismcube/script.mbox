@@ -190,8 +190,8 @@ class ChannelListWindow( BaseWindow ) :
 		self.mChannelList = []
 		self.mChannelListHash = {}
 		self.mRecCount = 0
-		self.mRecChannel1 = []
-		self.mRecChannel2 = []
+		self.mRecChannel1 = None
+		self.mRecChannel2 = None
 		self.mNavEpg = None
 		self.mNavChannel = None
 		self.mCurrentChannel = None
@@ -491,6 +491,8 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mUserMode.mServiceType != aType :
 			tmpUserMode = deepcopy( self.mUserMode )
 			self.mUserMode = deepcopy( self.mLastMode )
+			tmpUserSlidePos = deepcopy( self.mUserSlidePos )
+			self.mUserSlidePos = deepcopy( self.mLastSlidePos )
 
 			self.mFlag_EditChanged = True
 			self.mFlag_ModeChanged = True
@@ -498,14 +500,17 @@ class ChannelListWindow( BaseWindow ) :
 			aMode = self.mUserMode.mMode
 			aSort = self.mUserMode.mSortingMode
 
-			self.InitSlideMenuHeader( )
+			self.InitSlideMenuHeader( FLAG_SLIDE_OPEN )
 			self.RefreshSlideMenu( self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, True )
 
 			self.mCtrlListCHList.reset( )
 			self.InitChannelList( )
 			self.mFlag_EditChanged = False
 			self.mLastMode = deepcopy( tmpUserMode )
+			self.mLastSlidePos = deepcopy( tmpUserSlidePos )
 
+
+			self.SetRadioScreen( aType )
 			propertyName = 'Last TV Number'
 			if aType == ElisEnum.E_SERVICE_TYPE_RADIO :
 				propertyName = 'Last Radio Number'
@@ -530,15 +535,17 @@ class ChannelListWindow( BaseWindow ) :
 		self.UpdateControlGUI( E_SLIDE_CLOSE )
 
 
-
 	def SetGoBackEdit( self ) :
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			self.mViewMode = WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW
 
 			try :
 				#self.mEventBus.Deregister( self )
+				self.mDataCache.SetChangeDBTableChannel( E_TABLE_ALLCHANNEL )
+
 				self.mDataCache.SetSkipChannelView( True )
 				self.mPrevMode = deepcopy( self.mUserMode )
+				self.mPrevSlidePos = deepcopy( self.mUserSlidePos )
 				self.ReloadChannelList( )
 
 				#clear label
@@ -585,8 +592,14 @@ class ChannelListWindow( BaseWindow ) :
 					self.mFlag_EditChanged = False
 					self.mMoveFlag = False
 					#self.mEventBus.Register( self )
+					getTable = E_TABLE_ALLCHANNEL
+					if self.mRecCount > 0 :
+						getTable = E_TABLE_ZAPPING
+					self.mDataCache.SetChangeDBTableChannel( getTable )
+
 					self.mDataCache.SetSkipChannelView( False )
 					self.mUserMode = deepcopy( self.mPrevMode )
+					self.mUserSlidePos = deepcopy( self.mPrevSlidePos )
 					self.ReloadChannelList( )
 
 					#initialize get epg event
@@ -642,18 +655,23 @@ class ChannelListWindow( BaseWindow ) :
 
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
-				self.mRecChannel1 = []
-				self.mRecChannel2 = []
-				#LOG_TRACE( '<<<<<<<<<<<<<<<<<<<<< ChannelList <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<' )
-				self.ShowRecordingInfo( )
-				self.ReloadChannelList( )
-				self.mFlag_EditChanged = False
-				self.mMoveFlag = False
+				recInfo1, recInfo2 = self.ShowRecordingInfo( )
+				LOG_TRACE('-----------rec1[%s] rec2[%s]'% (recInfo1, recInfo2) )
+
+				if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW and self.mChannelList and len( self.mChannelList ) > 0 :
+					self.UpdateRecProperty( recInfo1, recInfo2 )
+
+				else :
+					self.mRecChannel1 = deepcopy( recInfo1 )
+					self.mRecChannel2 = deepcopy( recInfo2 )
+					self.ReloadChannelList( )
+					self.mFlag_EditChanged = False
+					self.mMoveFlag = False
 
 				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull)
 #					xbmcgui.Dialog( ).ok( MR_LANG( 'Infomation' ), MR_LANG( 'HDD Full!!! Cannot Recording...' ) )
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'The recording has stopped due to insufficient disk space' ) )
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Recording has stopped due to insufficient disk space' ) )
 
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				if aEvent.mType == ElisEnum.E_EOF_END :
@@ -1216,7 +1234,7 @@ class ChannelListWindow( BaseWindow ) :
 		return answer
 
 
-	def InitSlideMenuHeader( self, aInitLoad = FLAG_ZAPPING_LOAD ) :
+	def InitSlideMenuHeader( self, aInitLoad = FLAG_SLIDE_INIT ) :
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			#opt btn blind
 			#self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, False )
@@ -1349,7 +1367,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mNavChannel = None
 		self.mChannelList = None
 
-		self.GetSlideMenuHeader( FLAG_SLIDE_INIT )
+		self.GetSlideMenuHeader( aInitLoad )
 
 		"""
 		if self.mFlag_EditChanged :
@@ -1423,10 +1441,10 @@ class ChannelListWindow( BaseWindow ) :
 					listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
 				if self.mRecCount :
 					if self.mRecChannel1 :
-						if iChannel.mNumber == self.mRecChannel1[0] : 
+						if iChannel.mSid == self.mRecChannel1.mServiceId :
 							listItem.setProperty( E_XML_PROPERTY_RECORDING, E_TAG_TRUE )
 					if self.mRecChannel2 :
-						if iChannel.mNumber == self.mRecChannel2[0] : 
+						if iChannel.mSid == self.mRecChannel2.mServiceId : 
 							listItem.setProperty( E_XML_PROPERTY_RECORDING, E_TAG_TRUE )
 
 				if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW and iChannel.mSkipped == True : 
@@ -2047,6 +2065,8 @@ class ChannelListWindow( BaseWindow ) :
 	def DoContextAdtion( self, aMode, aContextAction, aGroupName = '', aNumber = -1 ) :
 		ret = ''
 		numList = []
+		isIncludeRec = False
+		isIncludeTimer = False
 		lastPos = self.mCtrlListCHList.getSelectedPosition( )
 		#LOG_TRACE( 'groupName[%s] lastPos[%s]'% ( aGroupName, lastPos) )
 
@@ -2065,7 +2085,14 @@ class ChannelListWindow( BaseWindow ) :
 				if self.mCurrentChannel == self.mChannelList[idx].mNumber :
 					isRefreshCurrentChannel = True
 
-			if not numList or len(numList) < 1 :
+				#check rec item
+				if self.mRecCount :
+					if self.mRecChannel1 and self.mRecChannel1.mServiceId == self.mChannelList[idx].mSid or \
+					   self.mRecChannel2 and self.mRecChannel2.mServiceId == self.mChannelList[idx].mSid :
+						isIncludeRec = True
+				LOG_TRACE('mRecCount[%s] rec1[%s] rec2[%s] isRec[%s]'% (self.mRecCount, self.mRecChannel1, self.mRecChannel2, isIncludeRec) )
+
+			if not numList or len( numList ) < 1 :
 				LOG_TRACE( 'MarkList Fail!!!' )
 				return
 
@@ -2095,6 +2122,49 @@ class ChannelListWindow( BaseWindow ) :
 				ret = 'group None'
 
 		elif aContextAction == CONTEXT_ACTION_DELETE :
+			#check added Timer
+			mTimerList = []
+			timerList = self.mDataCache.Timer_GetTimerList( )
+			if timerList and len( timerList ) > 0 :
+				for iTimer in timerList :
+					for idx in self.mMarkList :
+						if iTimer.mSid == self.mChannelList[idx].mSid and \
+						   iTimer.mTsid == self.mChannelList[idx].mTsid and \
+						   iTimer.mOnid == self.mChannelList[idx].mOnid :
+							isIncludeTimer = True
+							LOG_TRACE('timerCh[%s %s] mark idx[%s] ch[%s %s]'% (iTimer.mChannelNo, iTimer.mName, idx, self.mChannelList[idx].mNumber, self.mChannelList[idx].mName) )
+							mTimerList.append( iTimer )
+
+			LOG_TRACE('isRec[%s] isTimer[%s]'% (isIncludeRec, isIncludeTimer) )
+			if isIncludeRec or isIncludeTimer :
+				msg = MR_LANG( 'Include Recording or Added Timer' )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+				dialog.doModal( )
+
+				answer = dialog.IsOK( )
+				if answer == E_DIALOG_STATE_YES :
+					#delete timer
+					for iTimer in mTimerList :
+						self.mDataCache.Timer_DeleteTimer( iTimer.mTimerId )
+				else :
+					#cancel for appended lastpos
+					if self.mMarkList and len( self.mMarkList ) < 2 :
+						self.mMarkList = []
+					return
+
+
+				"""
+				elif answer == E_DIALOG_STATE_NO :
+					#no delete timer and channel
+					for iTimer in mTimerList :
+						tmpList = deepcopy( numList )
+						for idx in range( len( tmpList ) ) :
+							if tmpList[idx].mParam == iTimer.mChannelNo :
+								numList.pop( idx )
+				"""
+
+
 			if aMode == FLAG_OPT_LIST :
 				ret = self.mDataCache.Channel_DeleteByNumber( int( self.mUserMode.mServiceType ), numList )
 
@@ -2154,7 +2224,7 @@ class ChannelListWindow( BaseWindow ) :
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			if isRunRec > 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Please stop the recording first' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Please stop recording first' ) )
 	 			dialog.doModal( )
 
 	 		else :
@@ -2226,9 +2296,8 @@ class ChannelListWindow( BaseWindow ) :
 					context.append( ContextItem( '%s'% MR_LANG( 'Create New Group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
 
 			else :
-#				head =  MR_LANG( 'Infomation' )
 				head =  MR_LANG( 'Error' )
-				line1 = MR_LANG( 'The channel list is empty' )
+				line1 = MR_LANG( 'There is nothing in the channel list' )
 
 				xbmcgui.Dialog( ).ok( head, line1 )
 				return
@@ -2330,7 +2399,7 @@ class ChannelListWindow( BaseWindow ) :
 				#rename
 				default = groupName
 				result = '%d'%grpIdx + ':' + groupName + ':'
-				label = MR_LANG( 'Change Favorite Group Name' )
+				label = MR_LANG( 'Rename Favorite Group' )
 
 			kb = xbmc.Keyboard( default, label, False )
 			kb.doModal( )
@@ -2466,7 +2535,6 @@ class ChannelListWindow( BaseWindow ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 
 		isOK = False
-		GuiLock2(True)
 		if runningCount < 2 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 			dialog.doModal( )
@@ -2480,10 +2548,9 @@ class ChannelListWindow( BaseWindow ) :
 				RecordConflict( dialog.GetConflictTimer( ) )
 		else:
 #			msg = 'Already [%s] recording(s) running' %runningCount
-			msg = 'You are already recordings [%s] programmes' %runningCount			
+			msg = 'You are already recordings [%s] programs' %runningCount			
 #			xbmcgui.Dialog( ).ok( 'Infomation', msg )
 			xbmcgui.Dialog( ).ok( 'Attention', msg )			
-		GuiLock2(False)
 
 		if isOK :
 			self.mDataCache.mCacheReload = True
@@ -2506,36 +2573,64 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def ShowRecordingInfo( self ) :
+		recInfo1 = None
+		recInfo2 = None
 		try:
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			#LOG_TRACE( 'isRunRecCount[%s]'% isRunRec)
 			self.mRecCount = isRunRec
 
 			if isRunRec == 1 :
-				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
-				recNum  = int(recInfo.mChannelNo)
-				recName = recInfo.mChannelName
-				self.mRecChannel1.append( recNum )
-				self.mRecChannel1.append( recName )
+				recInfo1 = self.mDataCache.Record_GetRunningRecordInfo( 0 )
 
 			elif isRunRec == 2 :
-				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 0 )
-				recNum  = int(recInfo.mChannelNo)
-				recName = recInfo.mChannelName
-				self.mRecChannel1.append( recNum )
-				self.mRecChannel1.append( recName )
-
-				recInfo = self.mDataCache.Record_GetRunningRecordInfo( 1 )
-				recNum  = int(recInfo.mChannelNo)
-				recName = recInfo.mChannelName
-				self.mRecChannel2.append( recNum )
-				self.mRecChannel2.append( recName )
+				recInfo1 = self.mDataCache.Record_GetRunningRecordInfo( 0 )
+				recInfo2 = self.mDataCache.Record_GetRunningRecordInfo( 1 )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
+		return recInfo1, recInfo2
 
-	def ReloadChannelList( self, aInit = FLAG_ZAPPING_LOAD ) :
+
+	def UpdateRecProperty( self, aRecInfo1, aRecInfo2 ) :
+		try :
+			iChannel = None
+
+			if self.mRecChannel1 :
+				iChannel = self.mDataCache.Channel_GetByOne( self.mRecChannel1.mServiceId )
+				LOG_TRACE('num[%s] name[%s]'% (iChannel.mNumber, iChannel.mName) )
+				if iChannel : 
+					pos = int( iChannel.mNumber ) - 1
+					self.mCtrlListCHList.getListItem( pos ).setProperty( E_XML_PROPERTY_RECORDING, E_TAG_FALSE )
+
+			if self.mRecChannel2 :
+				iChannel = self.mDataCache.Channel_GetByOne( self.mRecChannel2.mServiceId )
+				if iChannel : 
+					pos = int( iChannel.mNumber ) - 1
+					self.mCtrlListCHList.getListItem( pos ).setProperty( E_XML_PROPERTY_RECORDING, E_TAG_FALSE )
+
+			if aRecInfo1 :
+				iChannel = self.mDataCache.Channel_GetByOne( aRecInfo1.mServiceId )
+				if iChannel : 
+					LOG_TRACE('num[%s] name[%s] lenList[%s]'% (iChannel.mNumber, iChannel.mName, len(self.mChannelList) ) )
+					pos = int( iChannel.mNumber ) - 1
+					self.mCtrlListCHList.getListItem( pos ).setProperty( E_XML_PROPERTY_RECORDING, E_TAG_TRUE )
+
+			if aRecInfo2 :
+				iChannel = self.mDataCache.Channel_GetByOne( aRecInfo2.mServiceId )
+				if iChannel : 
+					pos = int( iChannel.mNumber ) - 1
+					self.mCtrlListCHList.getListItem( pos ).setProperty( E_XML_PROPERTY_RECORDING, E_TAG_TRUE )
+
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]'% e )
+
+		self.mRecChannel1 = deepcopy( aRecInfo1 )
+		self.mRecChannel2 = deepcopy( aRecInfo2 )
+
+
+	def ReloadChannelList( self, aInit = FLAG_SLIDE_OPEN ) :
 		self.mListItems = None
 		self.mCtrlListCHList.reset( )
 		self.InitSlideMenuHeader( aInit )

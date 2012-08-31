@@ -87,6 +87,7 @@ class InfoPlate( LivePlateWindow ) :
 		self.mCtrlBtnPrevEpg           = self.getControl( E_CONTROL_ID_BUTTON_PREV_EPG )
 		self.mCtrlBtnNextEpg           = self.getControl( E_CONTROL_ID_BUTTON_NEXT_EPG )
 
+		self.SetRadioScreen( )
 		self.InitControl( )
 		self.SetVisibleControls( E_CONTROL_DEFAULT_HIDE, False )
 
@@ -249,7 +250,7 @@ class InfoPlate( LivePlateWindow ) :
 
 				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					#LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull )
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'STB stopped recording, because your disk space is full' ) )
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Recording has stopped due to insufficient disk space' ) )
 
 
 		else:

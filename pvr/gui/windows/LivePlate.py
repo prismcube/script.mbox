@@ -197,14 +197,6 @@ class LivePlate( LivePlateWindow ) :
 		elif id == Action.ACTION_PAGE_DOWN :
 			self.ChannelTune( PREV_CHANNEL )
 
-		elif id == Action.ACTION_STOP :
-			status = None
-			status = self.mDataCache.Player_GetStatus( )
-			if status.mMode :
-				ret = self.mDataCache.Player_Stop( )
-			else :
-				self.ShowDialog( E_CONTROL_ID_BUTTON_STOP_RECORDING )
-
 		elif id == Action.ACTION_MBOX_XBMC :
 			self.SetMediaCenter( )
 
@@ -221,6 +213,14 @@ class LivePlate( LivePlateWindow ) :
 
 		elif id == Action.ACTION_MBOX_RECORD :
 			self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
+
+		elif id == Action.ACTION_STOP :
+			status = None
+			status = self.mDataCache.Player_GetStatus( )
+			if status and status.mError == 0 and status.mMode :
+				ret = self.mDataCache.Player_Stop( )
+			else :
+				self.onClick( E_CONTROL_ID_BUTTON_STOP_RECORDING )
 
 		elif id == Action.ACTION_PAUSE or id == Action.ACTION_PLAYER_PLAY :
 			if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
@@ -249,6 +249,7 @@ class LivePlate( LivePlateWindow ) :
 			if status.mMode == ElisEnum.E_MODE_LIVE :
 				ret = self.mDataCache.ToggleTVRadio( )
 				if ret :
+					self.SetRadioScreen( )
 					self.mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
 					self.ChannelTune( INIT_CHANNEL )
 
@@ -375,7 +376,7 @@ class LivePlate( LivePlateWindow ) :
 
 				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					#LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull )
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'The recording has stopped due to insufficient disk space' ) )
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Recording has stopped due to insufficient disk space' ) )
 
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
@@ -775,8 +776,8 @@ class LivePlate( LivePlateWindow ) :
 		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
 			msg1 = 'Teletext'
 			msg2 = 'test'
-			#satelliteList = self.mDataCache.Satellite_GetListByChannel( )
-			#LOG_TRACE('---------satellite[%s]'% ClassToList('convert',satelliteList) )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SELECT )
+			dialog.doModal( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
 			msg1 = 'Subtitle'
@@ -1038,7 +1039,7 @@ class LivePlate( LivePlateWindow ) :
 				self.StopAutomaticHide( )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
-			dialog.SetTitleLabel( MR_LANG( 'Enter a PIN code' ) )
+			dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
 			dialog.doModal( )
 
 			if dialog.GetNextAction( ) == dialog.E_TUNE_NEXT_CHANNEL :

@@ -37,11 +37,11 @@ class AntennaSetup( SettingWindow ) :
 			self.mOriginalMixConfiguredSatellite = deepcopy( self.mDataCache.Satellite_GetConfiguredList( ) )
 			self.mTunerMgr.SetNeedLoad( False )
 
-		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', MR_LANG( 'Tuner 2 Connection' ), MR_LANG( 'Set to "Separated" if you want the Tuner 2 to receive its own signal input or set to "Loopthrough" then the Tuner 2 will receive only the channel level currently being received by the Tuner 1' ) )
-		self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', MR_LANG( 'Tuner 2 Signal' ), MR_LANG( 'Set to "Same with Tuner 1", if both tuners are connected to the same signal source' ) )
-		self.AddEnumControl( E_SpinEx03, 'Tuner1 Type', MR_LANG( 'Tuner 1 Control' ), MR_LANG( 'Select the control method for Tuner 1' ) )
+		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', MR_LANG( 'Tuner 2 Connection' ), MR_LANG( 'When set to "Separated", the Tuner 2 receives its own signal input however it will receive only the channel level currently being received by the Tuner 1 when this is set to "Loopthrough"' ) )
+		self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', MR_LANG( 'Tuner 2 Signal' ), MR_LANG( 'When set to "Same with Tuner 1", both tuners are connected to the same signal source' ) )
+		self.AddEnumControl( E_SpinEx03, 'Tuner1 Type', MR_LANG( 'Tuner 1 Control' ), MR_LANG( 'Select a control method for Tuner 1' ) )
 		self.AddInputControl( E_Input01, MR_LANG( ' - Tuner 1 Configuration' ), '', MR_LANG( 'You can add, delete or configure satellites here' ) )
-		self.AddEnumControl( E_SpinEx04, 'Tuner2 Type', None, MR_LANG( 'Select the control method for Tuner 2' ) )
+		self.AddEnumControl( E_SpinEx04, 'Tuner2 Type', None, MR_LANG( 'Select a control method for Tuner 2' ) )
 		self.AddInputControl( E_Input02, MR_LANG( ' - Tuner 2 Configuration' ), '', MR_LANG( 'You can add, delete or configure satellites here' ) )
 
 		if ConfigMgr.GetInstance().GetFristInstallation( ) == True :
@@ -80,6 +80,7 @@ class AntennaSetup( SettingWindow ) :
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).mStepNum = E_STEP_SELECT_LANGUAGE
 					self.SetParentID( WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).GetParentID( ) )
 					ConfigMgr.GetInstance( ).SetFristInstallation( False )
+					self.mTunerMgr.SyncChannelBySatellite( )
 					self.CloseWindow( )
 
 			else :
@@ -91,7 +92,7 @@ class AntennaSetup( SettingWindow ) :
 					self.OpenBusyDialog( )
 					if self.CompareCurrentConfiguredState( ) == False or self.CompareConfigurationProperty( ) == False :
 						self.SaveConfiguration( )
-					self.DeleteSatelliteChannel( )
+					self.mTunerMgr.SyncChannelBySatellite( )
 					
 				elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 					self.OpenBusyDialog( )
@@ -336,16 +337,3 @@ class AntennaSetup( SettingWindow ) :
 			return False
 		return True
 
-
-	def DeleteSatelliteChannel( self ) :
-		mMixConfiguredSatellite = self.mDataCache.Satellite_GetConfiguredList( )
-		if self.mOriginalMixConfiguredSatellite :
-			for satellite_original in self.mOriginalMixConfiguredSatellite :
-				find_satellite = False
-				for satellite_new in mMixConfiguredSatellite :
-					if satellite_original.mLongitude == satellite_new.mLongitude and satellite_original.mBand == satellite_new.mBand :
-						find_satellite = True
-				if find_satellite == False :
-					self.mDataCache.Channel_DeleteBySatellite( satellite_original.mLongitude, satellite_original.mBand )
-
-		

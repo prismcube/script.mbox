@@ -26,6 +26,7 @@ DIALOG_ID_ADD_TIMER					= 17
 DIALOG_ID_ADD_MANUAL_TIMER			= 18
 DIALOG_ID_TIMESHIFT_JUMP			= 19
 DIALOG_ID_INPUT_PINCODE				= 20
+DIALOG_ID_CHANNEL_SELECT			= 21
 
 
 gDialogMgr = None
@@ -132,6 +133,10 @@ class DialogMgr( object ) :
 			elif aDialogId == DIALOG_ID_INPUT_PINCODE :
 				from pvr.gui.dialogs.DialogInputPincode import DialogInputPincode
 				return DialogInputPincode( 'DialogInputPincode.xml', self.scriptDir )
+
+			elif aDialogId == DIALOG_ID_CHANNEL_SELECT :
+				from pvr.gui.dialogs.DialogChannelSelect import DialogChannelSelect
+				return DialogChannelSelect( 'DialogChannelSelect.xml', self.scriptDir )
 
 			else :
 				LOG_ERR( 'can not find dialog' )

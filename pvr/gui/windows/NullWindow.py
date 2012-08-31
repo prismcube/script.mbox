@@ -29,8 +29,15 @@ class NullWindow( BaseWindow ) :
 
 		self.mEventBus.Register( self )
 
+		if ( self.getProperty( 'TVRadio' ) == 'True' and self.SetRadioScreen( ) == 'False' and \
+		   self.mDataCache.Zappingmode_GetCurrent( ).mServiceType == ElisEnum.E_SERVICE_TYPE_TV ) or \
+		   ( self.getProperty( 'TVRadio' ) != self.SetRadioScreen( ) and \
+		   self.mDataCache.Zappingmode_GetCurrent( ).mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO ) :
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+
 		if self.LoadNoSignalState( self.getProperty( 'Signal' ) ) == False :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+
 
 		if E_SUPPROT_HBBTV == True :
 			status = self.mDataCache.Player_GetStatus( )
@@ -56,7 +63,8 @@ class NullWindow( BaseWindow ) :
 					#if self.mMediaPlayerStarted == True :
 					LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'%( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 					self.mForceSetCurrent = True
-		
+
+
 		"""
 		currentStack = inspect.stack( )
 		LOG_TRACE( '+++++getrecursionlimit[%s] currentStack[%s]'% (sys.getrecursionlimit( ), len(currentStack)) )
@@ -226,6 +234,7 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
+				self.SetRadioScreen( )
 				self.mDataCache.ToggleTVRadio( )
 				self.Close( )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
@@ -438,7 +447,7 @@ class NullWindow( BaseWindow ) :
 		isUnlock = False
 		try :
 			self.mDataCache.Player_AVBlank( True, False )
-			msg = MR_LANG('Enter your PIN code')
+			msg = MR_LANG( 'Enter your PIN code' )
 			inputPin = ''
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )

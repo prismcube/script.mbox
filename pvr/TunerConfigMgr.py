@@ -387,3 +387,24 @@ class TunerConfigMgr( object ) :
 	def GetOneCableSatelliteCount( self ) :
 		return self.mOnecableSatelliteCount
 
+
+	def SyncChannelBySatellite( self ) :
+		channelSatelliteList = self.mDataCache.Satellite_GetListByChannel( )
+		configuredSatelliteList = self.mDataCache.Satellite_GetConfiguredList( )
+
+		if channelSatelliteList :
+			if configuredSatelliteList :
+				for channelSatellite in channelSatelliteList :
+					findSatellite = False
+					for configuredSatellite in configuredSatelliteList :
+						if channelSatellite.mLongitude == configuredSatellite.mLongitude and channelSatellite.mBand == configuredSatellite.mBand :
+							findSatellite = True
+							break
+					if findSatellite == False :
+						self.mDataCache.Channel_DeleteBySatellite( channelSatellite.mLongitude, channelSatellite.mBand )
+			else :
+				ret = self.mDataCache.Channel_DeleteAll( )
+				if ret :
+					self.mDataCache.Player_AVBlank( True )
+					self.mDataCache.Channel_InvalidateCurrent( )
+					self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )

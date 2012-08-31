@@ -152,12 +152,23 @@
 				<shadowcolor>black</shadowcolor>
 			</control>
 		</control>
+		<control type="image" id="8800">
+			<posx>362</posx>
+			<posy>112</posy>
+			<width>797</width>
+			<height>446</height>
+			<animation effect="zoom" start="0" end="100" center="auto" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+			<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			<texture>mikeheadphones.jpg</texture>
+			<visible>substring(Window.Property(TVRadio),true)</visible>
+		</control>
 		<control type="image" id="8899">
 			<posx>362</posx>
 			<posy>112</posy>
 			<width>797</width>
 			<height>446</height>
 			<texture>video_pig_overlay.png</texture>
+			<visible>!Control.IsVisible(8800)</visible>
 			<animation effect="zoom" start="0" end="100" center="auto" time="300" tween="quadratic" easing="out">WindowOpen</animation>
 			<animation effect="zoom" start="100" end="0" center="auto" time="300" tween="quadratic" easing="in">WindowClose</animation>
 		</control>
