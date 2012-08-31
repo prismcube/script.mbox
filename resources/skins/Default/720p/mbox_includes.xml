@@ -4766,19 +4766,19 @@
 					</control>
 					<!-- Running Recording Icon-->
 					<control type="image">
-						<posx>0</posx>
-						<posy>5</posy>
-						<width>32</width>
-						<height>32</height>
+						<posx>5</posx>
+						<posy>8</posy>
+						<width>28</width>
+						<height>28</height>
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Running)</visible>						
 					</control>
 					<!-- Schedule Recording Icon-->
 					<control type="image">
-						<posx>20</posx>
-						<posy>14</posy>
-						<width>16</width>
-						<height>16</height>
+						<posx>5</posx>
+						<posy>10</posy>
+						<width>25</width>
+						<height>25</height>
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>						
 					</control>
@@ -4844,19 +4844,19 @@
 					</control>
 					<!-- Running Recording Icon-->
 					<control type="image">
-						<posx>0</posx>
-						<posy>5</posy>
-						<width>32</width>
-						<height>32</height>
+						<posx>5</posx>
+						<posy>8</posy>
+						<width>28</width>
+						<height>28</height>
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Running)</visible>						
 					</control>
 					<!-- Schedule Recording Icon-->
 					<control type="image">
-						<posx>20</posx>
-						<posy>14</posy>
-						<width>16</width>
-						<height>16</height>
+						<posx>5</posx>
+						<posy>10</posy>
+						<width>25</width>
+						<height>25</height>
 						<texture>IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>						
 					</control>
@@ -4972,8 +4972,8 @@
 					</control>
 					<!-- Running Recording Icon-->
 					<control type="image">
-						<posx>0</posx>
-						<posy>5</posy>
+						<posx>5</posx>
+						<posy>10</posy>
 						<width>32</width>
 						<height>32</height>
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
@@ -4981,10 +4981,10 @@
 					</control>
 					<!-- Schedule Recording Icon-->
 					<control type="image">
-						<posx>20</posx>
-						<posy>15</posy>
-						<width>16</width>
-						<height>16</height>
+						<posx>5</posx>
+						<posy>10</posy>
+						<width>28</width>
+						<height>28</height>
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>						
 					</control>
@@ -5031,7 +5031,7 @@
 					<!-- progress Bar -->
 					<control type="progress" >
 						<description>EPG progress control</description>
-						<posx>590</posx>
+						<posx>587</posx>
 						<posy>50</posy>
 						<width>130</width>
 						<height>8</height>
@@ -5080,8 +5080,8 @@
 					</control>
 					<!-- Running Recording Icon-->
 					<control type="image">
-						<posx>0</posx>
-						<posy>5</posy>
+						<posx>5</posx>
+						<posy>10</posy>
 						<width>32</width>
 						<height>32</height>
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
@@ -5089,10 +5089,10 @@
 					</control>
 					<!-- Schedule Recording Icon-->
 					<control type="image">
-						<posx>20</posx>
-						<posy>15</posy>
-						<width>16</width>
-						<height>16</height>
+						<posx>5</posx>
+						<posy>10</posy>
+						<width>28</width>
+						<height>28</height>
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>						
 					</control>
@@ -5139,7 +5139,7 @@
 					<!-- progress Bar -->
 					<control type="progress" >
 						<description>EPG progress control</description>
-						<posx>590</posx>
+						<posx>587</posx>
 						<posy>50</posy>
 						<width>130</width>
 						<height>8</height>
