@@ -57,7 +57,6 @@ class DialogForceProgress( BaseDialog ) :
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowDialogId( ) :
 			if aEvent.getName( ) == self.mEventName :
-				time.sleep( 1 )
 				self.mFinish = True
 
 
@@ -87,7 +86,6 @@ class DialogForceProgress( BaseDialog ) :
 	def Close( self ) :
 		self.mCtrlLabelPercent.setLabel( '100' )
 		self.mCtrlProgress.setPercent( 100 )
-		time.sleep( 1 )
 		self.mEventBus.Deregister( self )
 		self.CloseDialog( )
 

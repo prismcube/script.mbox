@@ -221,13 +221,13 @@ class ManualScan( SettingWindow ) :
 	def InitConfig( self ) :
 		self.ResetAllControl( )	
 
-		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select satellites you wish to search channels from' ) )
+		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select a satellite you wish to search channels from' ) )
 		self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Custom Setup' ), USER_ENUM_LIST_ON_OFF, self.mIsManualSetup, MR_LANG( 'Enable/Disable custom setup' ) )
 
 		if self.mIsManualSetup == 0 :
-			self.AddInputControl( E_Input02, MR_LANG( ' - Transponder Frequency' ), '%d MHz' % self.mConfigTransponder.mFrequency, MR_LANG( 'Select the frequency of the data stream, in which the channel is encoded' ) )
+			self.AddInputControl( E_Input02, MR_LANG( ' - Transponder Frequency' ), '%d MHz' % self.mConfigTransponder.mFrequency, MR_LANG( 'Select the transponder frequency for the selected satellite' ) )
 		else :
-			self.AddInputControl( E_Input02, MR_LANG( ' - Transponder Frequency' ), '%d MHz' % self.mConfigTransponder.mFrequency, MR_LANG( 'Enter the frequency of the data stream, in which the channel is encoded' ) )
+			self.AddInputControl( E_Input02, MR_LANG( ' - Transponder Frequency' ), '%d MHz' % self.mConfigTransponder.mFrequency, MR_LANG( 'Enter the transponder frequency for the selected satellite' ) )
 
 		# DVB Type
 		self.AddEnumControl( E_SpinEx02, 'DVB Type', MR_LANG( ' - DVB Type' ), MR_LANG( 'Select the Digital Video Broadcasting type for the selected satellite' ) )
@@ -248,7 +248,7 @@ class ManualScan( SettingWindow ) :
 		# Symbolrate
 		self.AddInputControl( E_Input03, MR_LANG( ' - Symbol Rate' ), '%d KS/s' % self.mConfigTransponder.mSymbolRate , MR_LANG( 'Set the amount of data, that is transferred per second in the data stream' ) )
 		
-		self.AddEnumControl( E_SpinEx05, 'Network Search', None, MR_LANG( 'When set to "On", the STB searchs among the transponders saved in its memory and adds information of transponders found in the stream however if you set this option to "Off", only the transponders of the satellite(s) you previously selected will be searched for new channels' ) )
+		self.AddEnumControl( E_SpinEx05, 'Network Search', None, MR_LANG( 'When set to "On", new channels are searched from existing transponders and the additional transponders stored by transponder network however if you set this option to "Off", only the transponder you selected will be searched' ) )
 		self.AddEnumControl( E_SpinEx06, 'Channel Search Mode', MR_LANG( 'Search Type' ), MR_LANG( 'Select the type of channels you want to search for' ) )
 		self.AddInputControl( E_Input04, MR_LANG( 'Start Search' ), '', MR_LANG( 'Press the OK button to search channels' ) )
 

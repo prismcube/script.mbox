@@ -444,7 +444,7 @@
 					<height>35</height>
 					<font>font12</font>
 					<!--label>Go to EPG Window</label-->
-					<label>You can record programs, view detailed contents information or view the channel list by time</label>
+					<label>The EPG displays program information in time and date order and here you can record them</label>
 					<align>left</align>
 					<textcolor>white</textcolor>                
 					<shadowcolor>black</shadowcolor>
@@ -489,7 +489,7 @@
 					<height>35</height>
 					<font>font12</font>
 					<!--label>System Information</label-->
-					<label>STB Info provides the system status including system version, free hard drive space, etc</label>
+					<label>STB Info provides the system status including system version, free disk space, etc</label>
 					<align>left</align>
 					<textcolor>white</textcolor>                
 					<shadowcolor>black</shadowcolor>

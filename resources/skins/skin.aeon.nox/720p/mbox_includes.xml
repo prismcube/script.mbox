@@ -342,7 +342,7 @@
 			<textcolor>grey2</textcolor>
 			<focusedcolor>white</focusedcolor>
 			<shadowcolor>black</shadowcolor>
-			<label>Go to back</label>
+			<label>Go Back</label>
 			<font>Font_Bold18</font>
 			<visible>true</visible>
 		</control>
@@ -4892,19 +4892,19 @@
 					</control>
 					<!-- Running Recording Icon-->
 					<control type="image">
-						<posx>7</posx>
-						<posy>5</posy>
-						<width>32</width>
-						<height>32</height>
+						<posx>12</posx>
+						<posy>8</posy>
+						<width>28</width>
+						<height>28</height>
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Running)</visible>
 					</control>
 					<!-- Schedule Recording Icon-->
 					<control type="image">
-						<posx>15</posx>
-						<posy>14</posy>
-						<width>16</width>
-						<height>16</height>
+						<posx>12</posx>
+						<posy>10</posy>
+						<width>25</width>
+						<height>25</height>
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
@@ -4965,19 +4965,19 @@
 					</control>
 					<!-- Running Recording Icon-->
 					<control type="image">
-						<posx>7</posx>
-						<posy>5</posy>
-						<width>32</width>
-						<height>32</height>
+						<posx>12</posx>
+						<posy>8</posy>
+						<width>28</width>
+						<height>28</height>
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Running)</visible>
 					</control>
 					<!-- Schedule Recording Icon-->
 					<control type="image">
-						<posx>15</posx>
-						<posy>14</posy>
-						<width>16</width>
-						<height>16</height>
+						<posx>12</posx>
+						<posy>10</posy>
+						<width>25</width>
+						<height>25</height>
 						<texture>IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
@@ -5067,7 +5067,7 @@
 					<!-- Running Recording Icon-->
 					<control type="image">
 						<posx>7</posx>
-						<posy>5</posy>
+						<posy>10</posy>
 						<width>32</width>
 						<height>32</height>
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
@@ -5075,10 +5075,10 @@
 					</control>
 					<!-- Schedule Recording Icon-->
 					<control type="image">
-						<posx>15</posx>
-						<posy>15</posy>
-						<width>16</width>
-						<height>16</height>
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>28</width>
+						<height>28</height>
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
@@ -5122,10 +5122,11 @@
 					<!-- progress Bar -->
 					<control type="progress">
 						<description>EPG progress control</description>
-						<posx>590</posx>
+						<posx>593</posx>
 						<posy>50</posy>
 						<width>130</width>
 						<height>8</height>
+						<progress>percent</progress>						
 						<texturebg>osd/seek/progress_back.png</texturebg>
 						<lefttexture>osd/seek/progress_left.png</lefttexture>
 						<midtexture>osd/seek/progress_mid.png</midtexture>
@@ -5165,7 +5166,7 @@
 					<!-- Running Recording Icon-->
 					<control type="image">
 						<posx>7</posx>
-						<posy>5</posy>
+						<posy>10</posy>
 						<width>32</width>
 						<height>32</height>
 						<texture border="0,2,0,2">IconPlateRec.png</texture>
@@ -5173,10 +5174,10 @@
 					</control>
 					<!-- Schedule Recording Icon-->
 					<control type="image">
-						<posx>15</posx>
-						<posy>15</posy>
-						<width>16</width>
-						<height>16</height>
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>28</width>
+						<height>28</height>
 						<texture border="0,2,0,2">IconTimer.png</texture>
 						<visible>substring(ListItem.Property(TimerType),Schedule)</visible>
 					</control>
@@ -5220,10 +5221,11 @@
 					<!-- progress Bar -->
 					<control type="progress" >
 						<description>EPG progress control</description>
-						<posx>590</posx>
+						<posx>593</posx>
 						<posy>50</posy>
 						<width>130</width>
 						<height>8</height>
+						<progress>percent</progress>						
 						<texturebg>osd/seek/progress_back.png</texturebg>
 						<lefttexture>osd/seek/progress_left.png</lefttexture>
 						<midtexture>osd/seek/progress_mid.png</midtexture>

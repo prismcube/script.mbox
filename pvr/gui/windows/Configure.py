@@ -244,7 +244,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_PARENTAL and self.mVisibleParental == False and groupId == E_Input01 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Enter 4-digit PIN code' ), '', 4, True )
+			dialog.SetDialogProperty( MR_LANG( 'Enter your PIN code' ), '', 4, True )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				tempval = dialog.GetString( )
@@ -268,7 +268,7 @@ class Configure( SettingWindow ) :
 				newpin = dialog.GetString( )
 				if newpin == '' or len( newpin ) != 4 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( '4-digit PIN code is required' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You must enter 4-digit PIN code' ) )
 		 			dialog.doModal( )
 					return
 			else :
@@ -311,7 +311,7 @@ class Configure( SettingWindow ) :
 		 	else :
 		 	"""
 	 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'THIS WILL RESTORE TO FACTORY SETTINGS\nDO YOU WANT TO CONTINUE?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO RESET TO FACTORY SETTINGS?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -333,7 +333,7 @@ class Configure( SettingWindow ) :
 					#self.mProgress.SetResult( True )
 					#time.sleep( 1 )
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Reset your STB Settings' ), MR_LANG( 'Settings have been restored to factory default' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Reset your STB' ), MR_LANG( 'Your system restored the factory default settings' ) )
 		 			dialog.doModal( )
 
 		 			from ElisProperty import ResetHash
@@ -419,7 +419,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_RECORDING_OPTION :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Automatic Timeshift', None, MR_LANG( 'When set to "On", the STB automatically start recording, either the channel that is already selected when the STB was turned on from standby, or when a different channel is selected' ) )
+			self.AddEnumControl( E_SpinEx01, 'Automatic Timeshift', None, MR_LANG( 'When set to "On", the STB automatically start a timeshift recording when a different channel is selected' ) )
 			self.AddEnumControl( E_SpinEx02, 'Timeshift Buffer Size', None, MR_LANG( 'Select the preferred size of timeshift buffer' ) )
 			self.AddEnumControl( E_SpinEx03, 'Default Rec Duration', None, MR_LANG( 'Select recording duration for a channel that has no EPG info' ) )
 			self.AddEnumControl( E_SpinEx04, 'Pre-Rec Time', None, MR_LANG( 'Set the pre-recording time for a EPG channel' ) )
@@ -541,14 +541,14 @@ class Configure( SettingWindow ) :
 					channelName = MR_LANG( 'None' )
 					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
 
-			self.AddEnumControl( E_SpinEx01, 'Time Mode', MR_LANG( 'Time & Date' ), MR_LANG( 'When set to "Automatic", the time and date will be obtained by the receiver automatically from a specific channel that you select' ) )
+			self.AddEnumControl( E_SpinEx01, 'Time Mode', MR_LANG( 'Time & Date' ), MR_LANG( 'When set to "Automatic", the time and date will be obtained automatically from the channel that you select' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Channel' ), channelName, MR_LANG( 'Select a channel you want to set your time and date by' ) )
 			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
 			self.AddInputControl( E_Input02, MR_LANG( 'Date' ), self.mDate, MR_LANG( 'Enter today\'s date' ) )
 			self.mTime = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_HH_MM )
 			self.AddInputControl( E_Input03, MR_LANG( 'Time' ), self.mTime, MR_LANG( 'Set the local time' ) )
 			self.AddEnumControl( E_SpinEx02, 'Local Time Offset', None, MR_LANG( 'Set the time zone that will be the basis for the date and time display' ) )
-			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, MR_LANG( 'When set to "Automatic", the system automatically change over to and from summer and winter time' ) )
+			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, MR_LANG( 'When set to "Automatic", the system automatically change over to summer time' ) )
 			self.AddInputControl( E_Input04, MR_LANG( 'Apply' ), '', MR_LANG( 'Press the OK button to save settings' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03, E_Input04 ]
@@ -567,7 +567,7 @@ class Configure( SettingWindow ) :
 		elif selectedId == E_FORMAT_HDD :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddEnumControl( E_SpinEx01, 'Disk Format Type', MR_LANG( 'File System' ), MR_LANG( 'Select a disk file system format for your hard drive' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Format HDD Now' ), '', MR_LANG( 'Press the OK button to format your hard drive' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Start Format' ), '', MR_LANG( 'Press the OK button to format your hard drive' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_Input01 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -585,7 +585,7 @@ class Configure( SettingWindow ) :
 			#self.AddEnumControl( E_SpinEx01, 'Reset Channel List', None, MR_LANG( 'Your channel list will be restored to default' ) )
 			#self.AddEnumControl( E_SpinEx02, 'Reset Favorite Add-ons', None, MR_LANG( 'All your favorite add-ons will be deleted after factory reset' ) )
 			#self.AddEnumControl( E_SpinEx03, 'Reset Configure Setting', MR_LANG( 'Reset Configuration Setting' ), MR_LANG( 'User settings you have set will be restored to default' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Start Factory Reset'), '', MR_LANG( 'Restore your system to the default based on settings you configured' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Start Factory Reset'), '', MR_LANG( 'Go to First Installation after restoring your system to the factory default' ) )
 
 			visibleControlIds = [ E_Input01 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -600,7 +600,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_ETC :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Deep Standby', None, MR_LANG( 'When set to "On", the system automatically switches to standby mode after a period of inactivity to help reduce the amount of electricity used' ) )
+			self.AddEnumControl( E_SpinEx01, 'Deep Standby', None, MR_LANG( 'When set to "On", the system switches to deep standby mode when you press the "Power" button to help reduce the amount of electricity used' ) )
 			self.AddEnumControl( E_SpinEx02, 'Fan Control', None, MR_LANG( 'Adjust the fan speed level for your system' ) )
 			self.AddEnumControl( E_SpinEx03, 'Channel Banner Duration', MR_LANG( 'Channel Banner Time' ), MR_LANG( 'Set the time the channel info is to be displayed when zapping' ) )		#	Erase channel list yes/no
 			self.AddEnumControl( E_SpinEx04, 'Playback Banner Duration', MR_LANG( 'Playback Banner Time' ), MR_LANG( 'Set the time for the playback info to be displayed on the screen' ) )	#	Erase custom menu yes/no
@@ -783,7 +783,7 @@ class Configure( SettingWindow ) :
 			if dev == None :
 				self.CloseBusyDialog( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Devices not found' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Devices not found' ) )
 				dialog.doModal( )
 				return
 
@@ -814,7 +814,7 @@ class Configure( SettingWindow ) :
 			dev = self.mWireless.GetWifidevice( )
 			if apList == None or dev == None :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'AP or devices not found' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'AP or devices not found' ) )
 				dialog.doModal( )
 				return
 
@@ -871,7 +871,7 @@ class Configure( SettingWindow ) :
 			for channel in channelList :
 				channelNameList.append( channel.mName )
 
-			ret = dialog.select( MR_LANG( 'Select a channel to set your time by' ), channelNameList )
+			ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList )
 
 			if ret >= 0 :
 				self.mSetupChannel = channelList[ ret ]
@@ -889,9 +889,10 @@ class Configure( SettingWindow ) :
 		elif aControlId == E_Input04 :
 			self.LoadSavedTime( )
 			oriChannel = self.mDataCache.Channel_GetCurrent( )
-			self.SetTimeProperty( )	
+			self.SetTimeProperty( )
+			mode = ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( )
 
-			if ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( ) == TIME_AUTOMATIC :
+			if mode == TIME_AUTOMATIC :
 				ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( self.mSetupChannel.mNumber )
 				self.mDataCache.Channel_SetCurrent( self.mSetupChannel.mNumber, self.mSetupChannel.mServiceType ) # Todo After : using ServiceType to different way
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
@@ -899,7 +900,7 @@ class Configure( SettingWindow ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
 				dialog.SetDialogProperty( 15, MR_LANG( 'Setting Time...' ), ElisEventTimeReceived.getName( ) )
 				dialog.doModal( )
-
+				self.OpenBusyDialog( )
 				if dialog.GetResult( ) == False :
 					self.ReLoadTimeSet( )
 
@@ -913,7 +914,12 @@ class Configure( SettingWindow ) :
 				t = time.strptime( sumtime, '%d.%m.%Y.%H:%M' )
 				ret = self.mCommander.Datetime_SetSystemUTCTime( int( time.mktime( t ) ) )
 				self.mDataCache.LoadTime( )
-				self.CloseBusyDialog( )
+
+			self.CloseBusyDialog( )
+			if mode == TIME_AUTOMATIC and dialog.GetResult( ) == False :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Automatic time setup has failed because\nno time info was given by the channel you selected' ) )
+				dialog.doModal( )
 
 
 	def LoadSavedTime( self ) :

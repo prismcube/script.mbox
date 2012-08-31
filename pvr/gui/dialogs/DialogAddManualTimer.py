@@ -540,7 +540,7 @@ class DialogAddManualTimer( SettingDialog ) :
 				LOG_TRACE( 'keyword len=%d' %len( keyword ) )
 				if len( keyword ) < MININUM_KEYWORD_SIZE :
 #					xbmcgui.Dialog( ).ok('Infomation', 'Input more than %d characters' %MININUM_KEYWORD_SIZE )
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Timer name must be at least %d characters long' ) %MININUM_KEYWORD_SIZE )					
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Error' ), MR_LANG( 'A timer name must be at least %d characters long' ) %MININUM_KEYWORD_SIZE )					
 					return
 
 				self.mRecordName = keyword
