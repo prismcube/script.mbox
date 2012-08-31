@@ -5035,11 +5035,8 @@
 						<posy>50</posy>
 						<width>130</width>
 						<height>8</height>
+						<progress>percent</progress>
 						<visible>substring(ListItem.Property(HasEvent),true) + substring(Window.Property(EPGMode),current) </visible>
-						<!--						
-						<info>ListItem.PercentPlayed</info>
-						<info>Player.Volume</info>
-						-->
 					</control>
 					<!-- Duration -->
 					<control type="label">
@@ -5146,6 +5143,7 @@
 						<posy>50</posy>
 						<width>130</width>
 						<height>8</height>
+						<progress>percent</progress>						
 						<visible>substring(ListItem.Property(HasEvent),true) + substring(Window.Property(EPGMode),current) </visible>
 					</control>					
 					<!-- Duration -->

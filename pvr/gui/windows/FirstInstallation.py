@@ -446,7 +446,9 @@ class FirstInstallation( SettingWindow ) :
 			localOffset = ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetProp( )
 			self.mCommander.Datetime_SetLocalOffset( localOffset )
 
-			if ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( ) == TIME_AUTOMATIC :
+			mode = ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( )
+
+			if mode == TIME_AUTOMATIC :
 				ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( self.mSetupChannel.mNumber )
 				self.mDataCache.Channel_SetCurrent( self.mSetupChannel.mNumber, self.mSetupChannel.mServiceType ) # Todo After : using ServiceType to different way
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
@@ -454,7 +456,7 @@ class FirstInstallation( SettingWindow ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
 				dialog.SetDialogProperty( 10, MR_LANG( 'Setting Time...' ), ElisEventTimeReceived.getName( ) )
 				dialog.doModal( )
-
+				self.OpenBusyDialog( )
 				if dialog.GetResult( ) == False :
 					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( oriTimeMode )
 					ElisPropertyEnum( 'Summer Time', self.mCommander ).SetProp( oriSummerTime )
@@ -470,10 +472,17 @@ class FirstInstallation( SettingWindow ) :
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
 				self.mDataCache.Channel_SetCurrent( oriChannel.mNumber, oriChannel.mServiceType) # Todo After : using ServiceType to different way
 			else :
+				self.OpenBusyDialog( )
 				sumtime = self.mDate + '.' + self.mTime
 				t = time.strptime( sumtime, '%d.%m.%Y.%H:%M' )
 				ret = self.mCommander.Datetime_SetSystemUTCTime( int( time.mktime( t ) ) )
 				self.mDataCache.LoadTime( )
+
+			self.CloseBusyDialog( )
+			if mode == TIME_AUTOMATIC and dialog.GetResult( ) == False :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Time Setting Fail' ) )
+				dialog.doModal( )
 
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
 				self.setFocusId( E_FAKE_BUTTON )

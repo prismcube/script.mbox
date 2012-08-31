@@ -23,7 +23,7 @@ E_VIEW_FOLLOWING				= 2
 E_VIEW_END						= 3
 
 E_NOMAL_UPDATE_TIME				= 30
-E_SHORT_UPDATE_TIME				= 10
+E_SHORT_UPDATE_TIME				= 0.5
 
 E_MAX_EPG_COUNT					= 512
 E_MAX_SCHEDULE_DAYS				= 8
@@ -99,12 +99,8 @@ class EPGWindow( BaseWindow ) :
 		self.mGMTTime = 0
 		LOG_TRACE( 'CHANNEL current=%s select=%s' %( self.mCurrentChannel, self.mSelectChannel ) )
 
-		self.Load( )
-		self.UpdateList( )
 		self.UpdateCurrentChannel( )
-		self.UpdateSelectedChannel( )
-		self.FocusCurrentChannel( )		
-		self.UpdateEPGInfomation( )
+		self.UpdateAllEPGList( )
 
 		self.mEventBus.Register( self )
 
@@ -157,7 +153,7 @@ class EPGWindow( BaseWindow ) :
 				self.DoContextAction( contextAction ) 
 			else :
 				self.DoContextAction( contextAction ) 
-				self.StartEPGUpdateTimer( )
+				self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
 				self.mEventBus.Register( self )			
 
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
@@ -193,7 +189,13 @@ class EPGWindow( BaseWindow ) :
 			
 			self.StartEPGUpdateTimer( )
 			self.mEventBus.Register( self )			
-			
+
+		elif actionId == Action.ACTION_MBOX_REWIND :
+			self.SelectPrevChannel( )
+
+		elif actionId == Action.ACTION_MBOX_FF : #no service
+			self.SelectNextChannel( )			
+
 
 	def onClick( self, aControlId ) :
 		LOG_TRACE( 'aControlId=%d' %aControlId )
@@ -216,20 +218,13 @@ class EPGWindow( BaseWindow ) :
 
 			self.UpdateViewMode( )
 			self.InitControl( )
-			self.Load( )
-			
-			self.UpdateList( )	
-			self.UpdateSelectedChannel( )
-			self.FocusCurrentChannel( )
-			time.sleep( 0.2 )
-			self.UpdateEPGInfomation()
-
+			self.UpdateAllEPGList( )
 			#self.mLock.release( )
 
 			GuiLock2( False )			
 
 			self.mEventBus.Register( self )
-			self.StartEPGUpdateTimer( )
+			self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
 		
 		elif aControlId == RADIIOBUTTON_ID_EXTRA :
 			pass
@@ -299,7 +294,7 @@ class EPGWindow( BaseWindow ) :
 
 	def Load( self ) :
 
-		LOG_TRACE( '----------------------------------->' )
+		LOG_TRACE( '----------------------------------->Start' )
 		self.mDebugStart = time.time( )
 
 		self.mLock.acquire( )
@@ -319,7 +314,7 @@ class EPGWindow( BaseWindow ) :
 			self.LoadByChannel( )
 
 		self.mLock.release( )
-			
+		LOG_TRACE( '----------------------------------->End' )			
 		self.mDebugEnd = time.time( )
 		print ' epg loading test time =%s' %( self.mDebugEnd  - self.mDebugStart )
 
@@ -526,6 +521,8 @@ class EPGWindow( BaseWindow ) :
 				self.mCtrlBigList.reset( )
 				return
 
+			currentTime = self.mDataCache.Datetime_GetLocalTime( )
+			
 			for i in range( len( self.mChannelList ) ) :
 				channel = self.mChannelList[i]
 				tempChannelName = '%04d %s' %( channel.mNumber, channel.mName )
@@ -548,7 +545,7 @@ class EPGWindow( BaseWindow ) :
 						listItem.setProperty( 'StartTime', tempName )
 						listItem.setProperty( 'Duration', '' )
 						listItem.setProperty( 'HasEvent', 'true' )
-
+						listItem.setProperty( 'Percent', '%s' %self.CalculateProgress( currentTime, epgStart, epgEvent.mDuration  ) )
 						timer= self.GetTimerByEPG( epgEvent )
 
 						if timer :
@@ -1031,13 +1028,7 @@ class EPGWindow( BaseWindow ) :
 			self.mEventBus.Deregister( self )
 			self.StopEPGUpdateTimer( )
 			"""
-			
-			self.Load( )
-			self.UpdateList( )			
-			self.UpdateListUpdateOnly( )
-			self.UpdateSelectedChannel( )
-			self.FocusCurrentChannel( )			
-			self.UpdateEPGInfomation()
+			self.UpdateAllEPGList( )
 
 			"""
 			self.mEventBus.Register( self )
@@ -1049,10 +1040,12 @@ class EPGWindow( BaseWindow ) :
 		selectedEPG = None
 		selectedPos = -1
 
+		self.mLock.acquire( )
 		if self.mEPGMode == E_VIEW_CHANNEL :
 			selectedPos = self.mCtrlList.getSelectedPosition( )
-			LOG_TRACE( 'selectedPos=%d' %selectedPos )
-			if selectedPos >= 0 and self.mEPGList  and selectedPos < len( self.mEPGList ) :
+			if self.mEPGList == None:
+				LOG_WARN( 'Has no epglist' )
+			if self.mEPGList and selectedPos >= 0 and self.mEPGList  and selectedPos < len( self.mEPGList ) :
 				selectedEPG = self.mEPGList[ selectedPos ]
 
 		else :
@@ -1060,7 +1053,9 @@ class EPGWindow( BaseWindow ) :
 			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 				channel = self.mChannelList[ selectedPos ]
 				selectedEPG = self.GetEPGByIds( channel.mSid, channel.mTsid, channel.mOnid )
-			
+
+		self.mLock.release( )
+		
 		return selectedEPG
 
 
@@ -1245,7 +1240,7 @@ class EPGWindow( BaseWindow ) :
 				self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
 				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 				self.UpdateCurrentChannel( )
-				self.RestartEPGUpdateTimer( 5 )
+				self.RestartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
 
 
 	def RestartEPGUpdateTimer( self, aTimeout=E_NOMAL_UPDATE_TIME ) :
@@ -1306,12 +1301,7 @@ class EPGWindow( BaseWindow ) :
 		self.mCurrentChannel.printdebug()
 		self.mSelectChannel = self.mCurrentChannel			
 
-		self.Load( )
-		self.UpdateList( )	
-		self.UpdateSelectedChannel( )
-		self.FocusCurrentChannel( )
-		time.sleep( 0.2 )
-		self.UpdateEPGInfomation()
+		self.UpdateAllEPGList( )
 
 
 	def RecordByHotKey( self ) :
@@ -1366,3 +1356,121 @@ class EPGWindow( BaseWindow ) :
 		
 		return ret
 
+
+	def SelectNextChannel( self ) :
+		if self.mEPGMode != E_VIEW_CHANNEL :
+			return
+
+		LOG_TRACE( 'Select Channel Number=%d' %self.mSelectChannel.mNumber )
+
+		if self.mChannelList == None :
+			return
+
+		count = len( self.mChannelList )
+
+		if count <= 0 :
+			return
+
+		index = self.mSelectChannel.mNumber
+
+		LOG_TRACE( 'Select Channel count=%d' %count )
+		
+		if index < 0 or index >= count : 
+			index = 0
+
+		LOG_TRACE( 'Select Channel index=%d' %index )
+		
+		self.mEventBus.Deregister( self )
+		self.StopEPGUpdateTimer( )
+
+		try :			
+			nextChannel = self.mChannelList[ index ]
+		except :
+			nextChannel = self.mChannelList[ 0 ]
+			
+		if nextChannel :
+			self.mSelectChannel = nextChannel
+			LOG_TRACE( 'Select Channel Number=%d' %self.mSelectChannel.mNumber )
+			self.UpdateAllEPGList( )
+		else: 
+			LOG_ERR( 'can not find next channel' )
+
+		self.mEventBus.Register( self )
+		self.StartEPGUpdateTimer( 3 )
+
+
+	def SelectPrevChannel( self ) :
+		if self.mEPGMode != E_VIEW_CHANNEL :
+			return
+
+		LOG_TRACE( 'Select Channel Number=%d' %self.mSelectChannel.mNumber )
+
+		if self.mChannelList == None :
+			return
+
+		count = len( self.mChannelList )
+
+		if count <= 0 :
+			return
+
+		index = self.mSelectChannel.mNumber - 2
+
+		LOG_TRACE( 'Select Channel count=%d' %count )
+		
+		if index < 0 or index >= count : 
+			index = 0
+
+		LOG_TRACE( 'Select Channel index=%d' %index )
+		
+		self.mEventBus.Deregister( self )
+		self.StopEPGUpdateTimer( )
+
+		try :			
+			nextChannel = self.mChannelList[ index ]
+		except :
+			nextChannel = self.mChannelList[ 0 ]
+			
+		if nextChannel :
+			self.mSelectChannel = nextChannel
+			LOG_TRACE( 'Select Channel Number=%d' %self.mSelectChannel.mNumber )
+			self.UpdateAllEPGList( )
+		else: 
+			LOG_ERR( 'can not find next channel' )
+
+		self.mEventBus.Register( self )
+		self.StartEPGUpdateTimer( 3 )
+
+
+	def UpdateAllEPGList( self ) :
+		self.Load( )
+		self.UpdateList( )
+		self.UpdateSelectedChannel( )			
+		self.FocusCurrentChannel( )
+		time.sleep( 0.2 )
+		self.UpdateEPGInfomation( )
+
+
+	def CalculateProgress( self, aCurrentTime, aEpgStart, aDuration  ) :
+		startTime = aEpgStart
+		endTime = aEpgStart + aDuration
+		
+		pastDuration = endTime - aCurrentTime
+
+		if aCurrentTime > endTime : #past
+			return 100
+
+		elif aCurrentTime < startTime : #future
+			return 0
+
+		if pastDuration < 0 : #past
+			pastDuration = 0
+
+		if aDuration > 0 :
+			percent = 100 - ( pastDuration * 100.0 / aDuration )
+		else :
+			percent = 0
+
+		LOG_TRACE( 'Percent=%d' %percent )
+		return percent
+
+	
