@@ -17,7 +17,7 @@
 			</control>
 			<control type="button" id="302">
 				<posx>220</posx>
-				<posy>50</posy>
+				<posy>48</posy>
 				<width>98</width>
 				<align>center</align>
 				<textcolor>abFFFFFF</textcolor>
@@ -35,7 +35,7 @@
 			</control>
 			<control type="button" id="301">
 				<posx>220</posx>
-				<posy>50</posy>
+				<posy>48</posy>
 				<width>98</width>
 				<align>center</align>
 				<textcolor>abFFFFFF</textcolor>

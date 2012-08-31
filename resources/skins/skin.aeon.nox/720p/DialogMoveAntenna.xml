@@ -26,7 +26,7 @@
 				<font>Font_Info</font>
 				<scroll>true</scroll>
 				<!--label>Move Antenna</label-->
-				<label>Rotate Satellite Dish</label>
+				<label>Rotate Antenna</label>
 			</control>
 				<control type="label" id="200">
 				<posy>26</posy>
@@ -41,12 +41,12 @@
 			</control>
 			<control type="button" id="9101">
 				<posx>214</posx>
-				<posy>50</posy>
-				<width>110</width>
+				<posy>49</posy>
+				<width>150</width>
 				<align>center</align>
 				<textcolor>abFFFFFF</textcolor>
 				<font>Font_Reg18</font>
-				<label>Move West</label>
+				<label>Rotate to West</label>
 				<scroll>true</scroll>
 				<onleft>9601</onleft>
 				<onright>9201</onright>
@@ -57,12 +57,12 @@
 			</control>
 			<control type="button" id="9201">
 				<posx>214</posx>
-				<posy>50</posy>
-				<width>110</width>
+				<posy>49</posy>
+				<width>150</width>
 				<align>center</align>
 				<textcolor>abFFFFFF</textcolor>
 				<font>Font_Reg18</font>
-				<label>Step West</label>
+				<label>A Step to West</label>
 				<texturefocus>-</texturefocus>
 				<texturenofocus>-</texturenofocus>
 				<scroll>true</scroll>
@@ -73,8 +73,8 @@
 			</control>
 			<control type="button" id="9301">
 				<posx>214</posx>
-				<posy>50</posy>
-				<width>110</width>
+				<posy>49</posy>
+				<width>150</width>
 				<align>center</align>
 				<textcolor>abFFFFFF</textcolor>
 				<font>Font_Reg18</font>
@@ -89,12 +89,12 @@
 			</control>
 			<control type="button" id="9401">
 				<posx>214</posx>
-				<posy>50</posy>
-				<width>110</width>
+				<posy>49</posy>
+				<width>150</width>
 				<align>center</align>
 				<textcolor>abFFFFFF</textcolor>
 				<font>Font_Reg18</font>
-				<label>Step East</label>
+				<label>A Step to East</label>
 				<texturefocus>-</texturefocus>
 				<texturenofocus>-</texturenofocus>
 				<scroll>true</scroll>
@@ -105,12 +105,12 @@
 			</control>
 			<control type="button" id="9501">
 				<posx>214</posx>
-				<posy>50</posy>
-				<width>110</width>
+				<posy>49</posy>
+				<width>150</width>
 				<align>center</align>
 				<textcolor>abFFFFFF</textcolor>
 				<font>Font_Reg18</font>
-				<label>Move East</label>
+				<label>Rotate to East</label>
 				<texturefocus>-</texturefocus>
 				<texturenofocus>-</texturenofocus>
 				<scroll>true</scroll>
@@ -121,12 +121,12 @@
 			</control>
 			<control type="button" id="9601">
 				<posx>214</posx>
-				<posy>50</posy>
-				<width>110</width>
+				<posy>49</posy>
+				<width>150</width>
 				<align>center</align>
 				<textcolor>abFFFFFF</textcolor>
 				<font>Font_Reg18</font>
-				<label>Close Menu</label>
+				<label>Exit</label>
 				<texturefocus>-</texturefocus>
 				<texturenofocus>-</texturenofocus>
 				<scroll>true</scroll>
@@ -147,7 +147,7 @@
 			</control>
 			<control type="image">
 				<description>right arrow</description>
-				<posx>328</posx>
+				<posx>368</posx>
 				<posy>62</posy>
 				<width>20</width>
 				<height>20</height>
