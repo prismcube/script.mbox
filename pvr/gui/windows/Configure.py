@@ -889,9 +889,10 @@ class Configure( SettingWindow ) :
 		elif aControlId == E_Input04 :
 			self.LoadSavedTime( )
 			oriChannel = self.mDataCache.Channel_GetCurrent( )
-			self.SetTimeProperty( )	
+			self.SetTimeProperty( )
+			mode = ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( )
 
-			if ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( ) == TIME_AUTOMATIC :
+			if mode == TIME_AUTOMATIC :
 				ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).SetProp( self.mSetupChannel.mNumber )
 				self.mDataCache.Channel_SetCurrent( self.mSetupChannel.mNumber, self.mSetupChannel.mServiceType ) # Todo After : using ServiceType to different way
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
@@ -899,7 +900,7 @@ class Configure( SettingWindow ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
 				dialog.SetDialogProperty( 15, MR_LANG( 'Setting Time...' ), ElisEventTimeReceived.getName( ) )
 				dialog.doModal( )
-
+				self.OpenBusyDialog( )
 				if dialog.GetResult( ) == False :
 					self.ReLoadTimeSet( )
 
@@ -913,7 +914,12 @@ class Configure( SettingWindow ) :
 				t = time.strptime( sumtime, '%d.%m.%Y.%H:%M' )
 				ret = self.mCommander.Datetime_SetSystemUTCTime( int( time.mktime( t ) ) )
 				self.mDataCache.LoadTime( )
-				self.CloseBusyDialog( )
+
+			self.CloseBusyDialog( )
+			if mode == TIME_AUTOMATIC and dialog.GetResult( ) == False :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Time Setting Fail' ) )
+				dialog.doModal( )
 
 
 	def LoadSavedTime( self ) :
