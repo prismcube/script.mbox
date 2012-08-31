@@ -1,0 +1,87 @@
+<window>
+	<defaultcontrol always="true">3850</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<control type="group">
+			<posx>350</posx>
+			<posy>50</posy>
+
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>610</width>
+				<height>650</height>
+				<texture border="40">DialogBack.png</texture>
+			</control>
+			<control type="image">
+				<posx>40</posx>
+				<posy>10</posy>
+				<width>530</width>
+				<height>90</height>
+				<aspectratio>stretch</aspectratio>
+				<texture>GlassTitleBar.png</texture>
+			</control>
+			<control type="button" id="100">
+				<description>Close Window button</description>
+				<posx>520</posx>
+				<posy>9</posy>
+				<width>64</width>
+				<height>32</height>
+				<label>-</label>
+				<font>-</font>
+				<texturefocus>DialogCloseButton-focus.png</texturefocus>
+				<texturenofocus>DialogCloseButton.png</texturenofocus>
+				<onleft>3850</onleft>
+				<onright>3851</onright>
+				<onup>102</onup>
+				<ondown>3850</ondown>
+			</control>
+			<control type="label" id="101">
+				<description>header label</description>
+				<posx>20</posx>
+				<posy>18</posy>
+				<width>570</width>
+				<height>30</height>
+				<font>font13_title</font>
+				<label>LIST DIALOG</label>
+				<align>center</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<include>DefaultSelectList</include>
+			<control type="label">
+				<posx>580</posx>
+				<posy>592</posy>
+				<width>300</width>
+				<height>35</height>
+				<font>font12</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<scroll>true</scroll>
+				<textcolor>grey</textcolor>
+				<label>([COLOR=blue]$INFO[Container(3850).Position][/COLOR]) $LOCALIZE[31025] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3850).CurrentPage]/$INFO[Container(3850).NumPages][/COLOR])</label>
+				<visible>Control.IsVisible(3850)</visible>
+			</control>
+			<control type="button" id="102">
+				<posx>20</posx>
+				<posy>590</posy>
+				<width>200</width>
+				<height>40</height>
+				<label>186</label>
+				<font>font12_title</font>
+				<textcolor>white</textcolor>
+				<focusedcolor>white</focusedcolor>
+				<align>center</align>
+				<texturenofocus>MenuItemNF.png</texturenofocus>
+				<texturefocus>button-focus.png</texturefocus>
+				<onleft>3850</onleft>
+				<onright>3851</onright>
+				<onup>3850</onup>
+				<ondown>100</ondown>
+			</control>
+		</control>
+	</controls>
+</window>

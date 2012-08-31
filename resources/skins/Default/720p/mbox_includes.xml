@@ -5395,5 +5395,204 @@
 			</control>
 		</control>
 	</include>
+	<include name="DefaultSelectList">
+		<control type="list" id="3850">
+			<posx>10</posx>
+			<posy>60</posy>
+			<width>570</width>
+			<height>521</height>
+			<onleft>102</onleft>
+			<onright>3851</onright>
+			<onup>3850</onup>
+			<ondown>3850</ondown>
+			<pagecontrol>3851</pagecontrol>
+			<scrolltime>200</scrolltime>
+			<focusposition>0</focusposition>
+			<movement>2</movement>
+			<visible>true</visible>
+			<animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(3851)">Conditional</animation>
+			<itemlayout height="40" width="580">
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>590</width>
+					<height>41</height>
+					<texture border="0,2,0,2">MenuItemNF.png</texture>
+				</control>
+				<!-- is cas? -->
+				<control type="image">
+					<posx>500</posx>
+					<posy>5</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture>IconCas.png</texture>
+					<visible>substring(ListItem.Property(iCas),true)</visible>
+				</control>
+				<!-- is lock? -->
+				<control type="image">
+					<posx>0</posx>
+					<posy>7</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture>OverlayLocked.png</texture>
+					<visible>substring(ListItem.Property(iLock),true)</visible>
+				</control>
+				<!-- is mark? -->
+				<control type="image">
+					<posx>0</posx>
+					<posy>10</posy>
+					<width>20</width>
+					<height>20</height>
+					<texture>OverlayWatched.png</texture>
+					<visible>substring(ListItem.Property(iMark),true)</visible>
+				</control>
+				<!-- is recording? -->
+				<control type="image">
+					<posx>0</posx>
+					<posy>5</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture>IconPlateRec.png</texture>
+					<visible>substring(ListItem.Property(iRec),true)</visible>
+				</control>
+				<!-- is skip? -->
+				<control type="image">
+					<posx>0</posx>
+					<posy>5</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture>DI_Skip.png</texture>
+					<visible>substring(ListItem.Property(iSkip),true)</visible>
+				</control>
+
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<width>560</width>
+					<height>40</height>
+					<font>font13</font>
+					<textcolor>grey3</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label]</label>
+					<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+				</control>
+				<control type="label">
+					<posx>500</posx>
+					<posy>0</posy>
+					<width>80</width>
+					<height>40</height>
+					<font>font10_title</font>
+					<textcolor>grey2</textcolor>
+					<selectedcolor>selected</selectedcolor>
+					<align>right</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label2]</label>
+				</control>	
+			</itemlayout>
+			<focusedlayout height="40" width="580">
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>590</width>
+					<height>41</height>
+					<texture border="0,2,0,2">MenuItemNF.png</texture>
+				</control>
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>590</width>
+					<height>41</height>
+					<texture border="0,2,0,2">MenuItemFO.png</texture>
+				</control>
+				<!-- is cas? -->
+				<control type="image">
+					<posx>500</posx>
+					<posy>5</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture>IconCas.png</texture>
+					<visible>substring(ListItem.Property(iCas),true)</visible>
+				</control>
+				<!-- is lock? -->
+				<control type="image">
+					<posx>0</posx>
+					<posy>7</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture>OverlayLocked.png</texture>
+					<visible>substring(ListItem.Property(iLock),true)</visible>
+				</control>
+				<!-- is mark? -->
+				<control type="image">
+					<posx>0</posx>
+					<posy>10</posy>
+					<width>20</width>
+					<height>20</height>
+					<texture>OverlayWatched.png</texture>
+					<visible>substring(ListItem.Property(iMark),true)</visible>
+				</control>
+				<!-- is recording? -->
+				<control type="image">
+					<posx>0</posx>
+					<posy>5</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture>IconPlateRec.png</texture>
+					<visible>substring(ListItem.Property(iRec),true)</visible>
+				</control>
+				<!-- is skip? -->
+				<control type="image">
+					<posx>0</posx>
+					<posy>5</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture>DI_Skip.png</texture>
+					<visible>substring(ListItem.Property(iSkip),true)</visible>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<width>560</width>
+					<height>40</height>
+					<font>font13</font>
+					<textcolor>grey3</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label]</label>
+				</control>
+				<control type="label">
+					<posx>500</posx>
+					<posy>0</posy>
+					<width>80</width>
+					<height>40</height>
+					<font>font10_title</font>
+					<textcolor>grey2</textcolor>
+					<selectedcolor>selected</selectedcolor>
+					<align>right</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label2]</label>
+				</control>
+			</focusedlayout>
+		</control>
+		<control type="scrollbar" id="3851">
+			<posx>580</posx>
+			<posy>80</posy>
+			<width>25</width>
+			<height>521</height>
+			<include>DefaultWindowFade</include>
+			<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
+			<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
+			<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
+			<textureslidernib>ScrollBarNib.png</textureslidernib>
+			<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+			<onleft>3850</onleft>
+			<onright>3850</onright>
+			<ondown></ondown>
+			<onup></onup>
+			<showonepage>false</showonepage>
+			<orientation>vertical</orientation>
+		</control>
+	</include>
 
 </includes>

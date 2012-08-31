@@ -26,10 +26,6 @@ E_CONTROL_ID_BUTTON_JUMP_RR 		= 3709
 E_CONTROL_ID_BUTTON_JUMP_FF 		= 3710
 E_CONTROL_ID_BUTTON_BOOKMARK 		= 3711
 
-#xml property name
-E_XML_PROPERTY_RECORDING1 = 'ViewRecord1'
-E_XML_PROPERTY_RECORDING2 = 'ViewRecord2'
-
 #value enum
 E_CONTROL_ENABLE  = 'enable'
 E_CONTROL_VISIBLE = 'visible'
@@ -55,10 +51,6 @@ E_BUTTON_GROUP_PLAYPAUSE = 450
 
 E_INDEX_FIRST_RECORDING = 0
 E_INDEX_SECOND_RECORDING = 1
-
-E_TAG_COLOR_RED   = '[COLOR red]'
-E_TAG_COLOR_GREEN = '[COLOR green]'
-E_TAG_COLOR_END   = '[/COLOR]'
 
 class TimeShiftPlate( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
