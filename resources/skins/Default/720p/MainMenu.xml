@@ -459,7 +459,7 @@
 					<height>35</height>
 					<font>font12</font>
 					<!--label>Go to Channel List</label-->
-					<label>The Channel List provides you with functions such as locking, skipping and deleting channels</label>
+					<label>The Channel List provides you with functions such as sorting and editing TV & Radio channel list</label>
 					<align>left</align>
 					<textcolor>white</textcolor>                
 					<shadowcolor>black</shadowcolor>
