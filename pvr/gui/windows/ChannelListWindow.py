@@ -2137,9 +2137,9 @@ class ChannelListWindow( BaseWindow ) :
 
 			LOG_TRACE('isRec[%s] isTimer[%s]'% (isIncludeRec, isIncludeTimer) )
 			if isIncludeRec or isIncludeTimer :
-				msg = MR_LANG( 'Include Recording or Added Timer' )
+				msg = MR_LANG( 'DO YOU WANT TO DELETE THE CHANNEL(S)\nTHAT IS CURRENTLY RECORDING OR RESERVED?' )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+				dialog.SetDialogProperty( MR_LANG( 'WARNING' ), msg )
 				dialog.doModal( )
 
 				answer = dialog.IsOK( )
@@ -2224,7 +2224,7 @@ class ChannelListWindow( BaseWindow ) :
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			if isRunRec > 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Please stop recording first' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping all your recordings first' ) )
 	 			dialog.doModal( )
 
 	 		else :
@@ -2548,9 +2548,10 @@ class ChannelListWindow( BaseWindow ) :
 				RecordConflict( dialog.GetConflictTimer( ) )
 		else:
 #			msg = 'Already [%s] recording(s) running' %runningCount
-			msg = 'You are already recordings [%s] programs' %runningCount			
+#			msg = MR_LANG( 'You are already recordings [%s] programs' %runningCount )
+			msg = MR_LANG( 'You have reached the maximum number of recordings allowed' )
 #			xbmcgui.Dialog( ).ok( 'Infomation', msg )
-			xbmcgui.Dialog( ).ok( 'Attention', msg )			
+			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), msg )			
 
 		if isOK :
 			self.mDataCache.mCacheReload = True

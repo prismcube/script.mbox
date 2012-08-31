@@ -265,7 +265,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		elif id == Action.ACTION_MBOX_RECORD :
 			if self.mMode == ElisEnum.E_MODE_PVR :
-				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Please stop the Personal Video Recording first' ) )
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping all your recordings first' ) )
 			else :
 				self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
 

@@ -220,7 +220,7 @@ class FirstInstallation( SettingWindow ) :
 			self.LoadFormattedSatelliteNameList( )
 			self.AddUserEnumControl( E_SpinEx01, 'Channel Search', USER_ENUM_LIST_YES_NO, self.mIsChannelSearch, MR_LANG( 'Do you want to perform a channel search in the First Installation?' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select the satellite you wish to search from' ) )
-			self.AddEnumControl( E_SpinEx02, 'Network Search', None, MR_LANG( 'When set to "On", the STB searchs among the transponders saved in its memory and adds information of transponders found in the stream however if you set this option to "Off", only the transponders of the satellite(s) you previously selected will be searched for new channels' ) )
+			self.AddEnumControl( E_SpinEx02, 'Network Search', None, MR_LANG( 'When set to "On", new channels are searched from existing transponders and the additional transponders stored by transponder network however if you set this option to "Off", only the transponder you selected will be searched' ) )
 			self.AddEnumControl( E_SpinEx03, 'Channel Search Mode', MR_LANG( 'Search Mode' ), MR_LANG( 'Select the type of channel you want to search for' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to Time & Date Setup' ), MR_LANG( 'Go back to Antenna & Satellite Setup' ) )
 			self.SetPrevNextButtonLabel( )
