@@ -164,6 +164,12 @@ class ManualScan( SettingWindow ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 			dialog.SetTransponder( config.mSatelliteLongitude, config.mBandType, transponderList )
 			dialog.doModal( )
+			
+			self.OpenBusyDialog( )
+			zappingMode = self.mDataCache.Zappingmode_GetCurrent( True )		
+			self.mDataCache.Channel_GetAllChannels( zappingMode.mServiceType, False )
+			self.CloseBusyDialog( )				
+			
 			ScanHelper.GetInstance( ).ScanHelper_Start( self.mWin )
 
 		# Manual Setup

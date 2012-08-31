@@ -327,6 +327,9 @@ class Configure( SettingWindow ) :
 				if self.mDataCache.mChannelList and len( self.mDataCache.mChannelList ) >= 0 :
 					self.mDataCache.Channel_SetCurrent( self.mDataCache.mChannelList[0].mNumber, ElisEnum.E_SERVICE_TYPE_TV )
 
+				zappingMode = self.mDataCache.Zappingmode_GetCurrent( True )		
+				self.mDataCache.Channel_GetAllChannels( zappingMode.mServiceType, False )
+
 				self.CloseBusyDialog( )
 
 				if ret1 == True and ret2 == True :
