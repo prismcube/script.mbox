@@ -20,17 +20,6 @@ E_CONTROL_ID_GROUP_LOCKED_INFO			= 309
 E_CONTROL_ID_LABEL_SELECT_NUMBER		= 401
 E_CONTROL_ID_GROUP_HELPBOX				= 600
 
-#xml property name
-E_XML_PROPERTY_SUBTITLE  = 'HasSubtitle'
-E_XML_PROPERTY_DOLBY     = 'HasDolby'
-E_XML_PROPERTY_HD        = 'HasHD'
-E_XML_PROPERTY_MARK      = 'mark'
-E_XML_PROPERTY_CAS       = 'icas'
-E_XML_PROPERTY_LOCK      = 'lock'
-E_XML_PROPERTY_RECORDING = 'rec'
-E_XML_PROPERTY_SKIP      = 'skip'
-E_XML_PROPERTY_EDITINFO  = 'isEdit'
-E_XML_PROPERTY_MOVE      = 'isMove'
 
 FLAG_MASK_ADD    = 0x01
 FLAG_MASK_NONE   = 0x00
@@ -62,17 +51,6 @@ E_SLIDE_MENU_BACK       = 5
 
 E_CONTROL_FOCUSED       = 9991
 E_SLIDE_CLOSE           = 9999
-
-#string tag
-E_TAG_ENABLE  = 'enable'
-E_TAG_VISIBLE = 'visible'
-E_TAG_SELECT  = 'select'
-E_TAG_LABEL   = 'label'
-E_TAG_TRUE    = 'True'
-E_TAG_FALSE   = 'False'
-E_TAG_SET_SELECT_POSITION = 'selectItem'
-E_TAG_GET_SELECT_POSITION = 'getItem'
-E_TAG_ADD_ITEM = 'addItem'
 
 #dialog menu
 CONTEXT_ACTION_LOCK				= 1 
@@ -511,8 +489,12 @@ class ChannelListWindow( BaseWindow ) :
 
 
 			self.SetRadioScreen( aType )
+			tvValue = 'True'
+			raValue = 'False'
 			propertyName = 'Last TV Number'
 			if aType == ElisEnum.E_SERVICE_TYPE_RADIO :
+				tvValue = 'False'
+				raValue = 'True'
 				propertyName = 'Last Radio Number'
 
 			lastChannelNumber = ElisPropertyInt( propertyName, self.mCommander ).GetProp( )
@@ -524,13 +506,15 @@ class ChannelListWindow( BaseWindow ) :
 			self.ResetLabel( )
 			#self.Epgevent_GetCurrent( )
 
-
 		if aType == FLAG_MODE_TV :
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV,   True, E_TAG_SELECT )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO,False, E_TAG_SELECT )
 		else :
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV,   False, E_TAG_SELECT )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO,True, E_TAG_SELECT )
+
+		self.UpdatePropertyGUI( E_XML_PROPERTY_TV,    tvValue )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_RADIO, raValue )
 
 		self.UpdateControlGUI( E_SLIDE_CLOSE )
 
@@ -1485,12 +1469,16 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def ResetLabel( self ) :
+		tvValue = 'True'
+		raValue = 'False'
 		if self.mUserMode.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
 			self.mCtrlRadioServiceTypeTV.setSelected( True )
 			self.mCtrlRadioServiceTypeRadio.setSelected( False )
 		elif self.mUserMode.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			self.mCtrlRadioServiceTypeTV.setSelected( False )
 			self.mCtrlRadioServiceTypeRadio.setSelected( True )
+			tvValue = 'False'
+			raValue = 'True'
 
 		self.mCtrlProgress.setPercent( 0 )
 		self.mCtrlProgress.setVisible( False )
@@ -1505,6 +1493,8 @@ class ChannelListWindow( BaseWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_TV,    tvValue )
+		self.UpdatePropertyGUI( E_XML_PROPERTY_RADIO, raValue )
 
 
 	def Epgevent_GetCurrent( self ) :
@@ -2329,14 +2319,22 @@ class ChannelListWindow( BaseWindow ) :
 			return
 
 		if selectedAction == CONTEXT_ACTION_SAVE_EXIT :
-			self.SetGoBackWindow( )
+			#self.SetGoBackWindow( )
+			#return
+
+			#test
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
+			dialog.SetDefaultProperty( 0, self.mChannelList )
+			dialog.doModal( )
+			tempList = dialog.GetSelectedList( )
+			LOG_TRACE('------------dialog list[%s]'% tempList )
 			return
+
 
 		#--------------------------------------------------------------- dialog 2
 		grpIdx = -1
 		groupName = None
 		addNumber = -2
-
 
 		if selectedAction == CONTEXT_ACTION_ADD_TO_CHANNEL :
 			self.GetChannelListName( )
