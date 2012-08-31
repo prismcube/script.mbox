@@ -1119,8 +1119,11 @@ class DataCacheMgr( object ) :
 		#delete timer
 		mTimerList = []
 		mTimerList = self.Timer_GetTimerList( )
-		for timer in mTimerList:
-			self.Timer_DeleteTimer( timer.mTimerId )
+
+		if mTimerList :
+			for timer in mTimerList:
+				self.Timer_DeleteTimer( timer.mTimerId )
+
 		return self.mCommander.Channel_DeleteAll( )
 
 
