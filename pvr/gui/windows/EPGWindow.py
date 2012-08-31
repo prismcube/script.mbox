@@ -923,7 +923,7 @@ class EPGWindow( BaseWindow ) :
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU REALLY WANT TO REMOVE ALL YOUR TIMERS?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO REMOVE ALL YOUR TIMERS?' ) )
 		dialog.doModal( )
 
 		self.OpenBusyDialog( )
@@ -976,7 +976,7 @@ class EPGWindow( BaseWindow ) :
 				LOG_TRACE( 'Result =%d' %len( searchList ) )
 
 				if len( searchList ) <= 0 :
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No matched result found' ) )
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Search Result' ), MR_LANG( 'No matched result found' ) )
 		 			return
 		 		else :
 					dialog = xbmcgui.Dialog( )

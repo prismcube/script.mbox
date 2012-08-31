@@ -258,7 +258,7 @@ class FirstInstallation( SettingWindow ) :
 					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
 
 			self.AddEnumControl( E_SpinEx01, 'Time Mode', MR_LANG( 'Time & Date' ), MR_LANG( 'When set to "Automatic", the time will be obtained by the receiver automatically from a specific channel that you select') )
-			self.AddInputControl( E_Input01, MR_LANG( 'Channel' ), channelName, MR_LANG( 'Select a channel you want to set your time by' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Channel' ), channelName, MR_LANG( 'Select a channel you want to set your time and date by' ) )
 			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
 			self.AddInputControl( E_Input02, MR_LANG( 'Date' ), self.mDate, MR_LANG( 'Enter today\'s date' ) )
 			self.mTime = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_HH_MM )
@@ -420,7 +420,7 @@ class FirstInstallation( SettingWindow ) :
 			channelNameList = []
 			for channel in channelList :
 				channelNameList.append( channel.mName )
-			ret = dialog.select( MR_LANG( 'Select a channel you want to set your time by' ), channelNameList )
+			ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList )
 			if ret >= 0 :
 				self.mSetupChannel = channelList[ ret ]
 				self.SetControlLabel2String( E_Input01, self.mSetupChannel.mName )
@@ -481,7 +481,7 @@ class FirstInstallation( SettingWindow ) :
 			self.CloseBusyDialog( )
 			if mode == TIME_AUTOMATIC and dialog.GetResult( ) == False :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Time Setting Fail' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Automatic time setup has failed because\nno time info was given by the channel you selected' ) )
 				dialog.doModal( )
 
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :

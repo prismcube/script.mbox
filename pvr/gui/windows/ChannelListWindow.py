@@ -671,7 +671,7 @@ class ChannelListWindow( BaseWindow ) :
 				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull)
 #					xbmcgui.Dialog( ).ok( MR_LANG( 'Infomation' ), MR_LANG( 'HDD Full!!! Cannot Recording...' ) )
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Recording has stopped due to insufficient disk space' ) )
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
 
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				if aEvent.mType == ElisEnum.E_EOF_END :
@@ -2549,7 +2549,7 @@ class ChannelListWindow( BaseWindow ) :
 		else:
 #			msg = 'Already [%s] recording(s) running' %runningCount
 #			msg = MR_LANG( 'You are already recordings [%s] programs' %runningCount )
-			msg = MR_LANG( 'You have reached the maximum number of recordings allowed' )
+			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
 #			xbmcgui.Dialog( ).ok( 'Infomation', msg )
 			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), msg )			
 

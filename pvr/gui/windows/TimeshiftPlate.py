@@ -327,7 +327,7 @@ class TimeShiftPlate( BaseWindow ) :
 					RecordConflict( dialog.GetConflictTimer( ) )
 					
 			else :
-				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'You have reached the maximum number of recordings allowed' ) )
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'You have reached the maximum number of\nrecordings allowed' ) )
 
 			if isOK :
 				self.mDataCache.mCacheReload = True
@@ -369,7 +369,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					LOG_TRACE('----------hddfull[%s]'% aEvent.mHDDFull)
-					xbmcgui.Dialog().ok( MR_LANG( 'Attention' ), MR_LANG( 'Recording has stopped due to insufficient disk space' ) )
+					xbmcgui.Dialog().ok( MR_LANG( 'Attention' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
 					
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )

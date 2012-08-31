@@ -497,7 +497,7 @@ class NullWindow( BaseWindow ) :
 				RecordConflict( dialog.GetConflictTimer( ) )
 
 		else:
-			msg = MR_LANG( 'You have reached the maximum number of recordings allowed' )
+			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
 			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), msg )
 
 		if isOK :
