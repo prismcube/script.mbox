@@ -489,12 +489,8 @@ class ChannelListWindow( BaseWindow ) :
 
 
 			self.SetRadioScreen( aType )
-			tvValue = 'True'
-			raValue = 'False'
 			propertyName = 'Last TV Number'
 			if aType == ElisEnum.E_SERVICE_TYPE_RADIO :
-				tvValue = 'False'
-				raValue = 'True'
 				propertyName = 'Last Radio Number'
 
 			lastChannelNumber = ElisPropertyInt( propertyName, self.mCommander ).GetProp( )
@@ -512,9 +508,6 @@ class ChannelListWindow( BaseWindow ) :
 		else :
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV,   False, E_TAG_SELECT )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO,True, E_TAG_SELECT )
-
-		self.UpdatePropertyGUI( E_XML_PROPERTY_TV,    tvValue )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_RADIO, raValue )
 
 		self.UpdateControlGUI( E_SLIDE_CLOSE )
 
@@ -1469,16 +1462,12 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def ResetLabel( self ) :
-		tvValue = 'True'
-		raValue = 'False'
 		if self.mUserMode.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
 			self.mCtrlRadioServiceTypeTV.setSelected( True )
 			self.mCtrlRadioServiceTypeRadio.setSelected( False )
 		elif self.mUserMode.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			self.mCtrlRadioServiceTypeTV.setSelected( False )
 			self.mCtrlRadioServiceTypeRadio.setSelected( True )
-			tvValue = 'False'
-			raValue = 'True'
 
 		self.mCtrlProgress.setPercent( 0 )
 		self.mCtrlProgress.setVisible( False )
@@ -1493,8 +1482,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE, E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY,    E_TAG_FALSE )
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,       E_TAG_FALSE )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_TV,    tvValue )
-		self.UpdatePropertyGUI( E_XML_PROPERTY_RADIO, raValue )
 
 
 	def Epgevent_GetCurrent( self ) :
