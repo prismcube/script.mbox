@@ -342,7 +342,7 @@
 			<textcolor>grey2</textcolor>
 			<focusedcolor>white</focusedcolor>
 			<shadowcolor>black</shadowcolor>
-			<label>Go to back</label>
+			<label>Go Back</label>
 			<font>Font_Bold18</font>
 			<visible>true</visible>
 		</control>

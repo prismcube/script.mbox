@@ -135,7 +135,7 @@
 				<control type="label" id="2600">
 					<posx>350</posx>
 					<posy>103</posy>
-					<width>500</width>
+					<width>600</width>
 					<height>35</height>
 					<font>Font_Reg18</font>
 					<textcolor>white</textcolor>

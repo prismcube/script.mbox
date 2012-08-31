@@ -21,7 +21,7 @@ E_FROM_NOW					= 0
 E_FROM_EPG					= 1
 
 
-LIST_COPY_MODE =[ MR_LANG( 'Now'), MR_LANG( 'from EPG' ) ]
+LIST_COPY_MODE =[ MR_LANG( 'No'), MR_LANG( 'Yes' ) ]
 
 
 class DialogStartRecord( SettingDialog ) :
@@ -203,17 +203,17 @@ class DialogStartRecord( SettingDialog ) :
 							copyTimeshift = timeshiftRecordSec
 	
 						self.mStartTime = self.mLocalTime - copyTimeshift
-						self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Start Recording' ), LIST_COPY_MODE, E_FROM_EPG)
+						self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'From EPG' ), LIST_COPY_MODE, E_FROM_EPG)
 						self.SetEnableControl( E_DialogSpinEx01, True )						
 					else :
-						self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Start Recording' ), LIST_COPY_MODE, E_FROM_NOW )
+						self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'From EPG' ), LIST_COPY_MODE, E_FROM_NOW )
 						self.SetEnableControl( E_DialogSpinEx01, False )
 
 				else :
 					self.AddLabelControl( E_LABEL_RECORD_NAME )
 					self.SetControlLabelString(E_LABEL_RECORD_NAME, self.mOTRInfo.mEventName )
 
-					self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Start Recording' ), LIST_COPY_MODE, E_FROM_NOW )
+					self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'From EPG' ), LIST_COPY_MODE, E_FROM_NOW )
 					self.SetEnableControl( E_DialogSpinEx01, False )
 
 				duration = int( self.mEndTime/60 ) - int( self.mStartTime/60 )

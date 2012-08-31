@@ -63,7 +63,7 @@
 				<content>
 					<item id="1">
 						<label>Weather</label>
-						<label2>Get current weather and a four day forecast for thousands of cities around the world</label2>
+						<label2>Get current weather and weather forecast for thousands of cities around the world</label2>
 						<onclick>ActivateWindow(Weather)</onclick>
 						<icon>special://skin/backgrounds/weather.jpg</icon>
 					</item>
