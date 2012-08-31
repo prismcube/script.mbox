@@ -226,6 +226,36 @@ E_DIALOG_STATE_NO		= 2
 E_DIALOG_STATE_CANCEL	= 3
 E_DIALOG_STATE_ERROR	= 4
 
+#channel List enum
+E_TAG_ENABLE  				= 'enable'
+E_TAG_VISIBLE 				= 'visible'
+E_TAG_SELECT  				= 'select'
+E_TAG_LABEL   				= 'label'
+E_TAG_TRUE    				= 'True'
+E_TAG_FALSE   				= 'False'
+E_TAG_ADD_ITEM 				= 'addItem'
+E_TAG_COLOR_RED   			= '[COLOR red]'
+E_TAG_COLOR_GREEN 			= '[COLOR green]'
+E_TAG_COLOR_END   			= '[/COLOR]'
+E_TAG_SET_SELECT_POSITION 	= 'selectItem'
+E_TAG_GET_SELECT_POSITION 	= 'getItem'
+
+#xml property name
+E_XML_PROPERTY_SUBTITLE   = 'HasSubtitle'
+E_XML_PROPERTY_DOLBY      = 'HasDolby'
+E_XML_PROPERTY_HD         = 'HasHD'
+E_XML_PROPERTY_MARK       = 'iMark'
+E_XML_PROPERTY_SKIP       = 'iSkip'
+E_XML_PROPERTY_LOCK       = 'iLock'
+E_XML_PROPERTY_CAS        = 'iCas'
+E_XML_PROPERTY_FAV        = 'iFav'
+E_XML_PROPERTY_RECORDING  = 'iRec'
+E_XML_PROPERTY_EDITINFO   = 'isEdit'
+E_XML_PROPERTY_MOVE       = 'isMove'
+E_XML_PROPERTY_TV         = 'ServiceTypeTV'
+E_XML_PROPERTY_RADIO      = 'ServiceTypeRadio'
+E_XML_PROPERTY_RECORDING1 = 'ViewRecord1'
+E_XML_PROPERTY_RECORDING2 = 'ViewRecord2'
 
 ############################ Global Function For GUI ############################
 

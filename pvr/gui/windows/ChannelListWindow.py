@@ -20,17 +20,6 @@ E_CONTROL_ID_GROUP_LOCKED_INFO			= 309
 E_CONTROL_ID_LABEL_SELECT_NUMBER		= 401
 E_CONTROL_ID_GROUP_HELPBOX				= 600
 
-#xml property name
-E_XML_PROPERTY_SUBTITLE  = 'HasSubtitle'
-E_XML_PROPERTY_DOLBY     = 'HasDolby'
-E_XML_PROPERTY_HD        = 'HasHD'
-E_XML_PROPERTY_MARK      = 'mark'
-E_XML_PROPERTY_CAS       = 'icas'
-E_XML_PROPERTY_LOCK      = 'lock'
-E_XML_PROPERTY_RECORDING = 'rec'
-E_XML_PROPERTY_SKIP      = 'skip'
-E_XML_PROPERTY_EDITINFO  = 'isEdit'
-E_XML_PROPERTY_MOVE      = 'isMove'
 
 FLAG_MASK_ADD    = 0x01
 FLAG_MASK_NONE   = 0x00
@@ -62,17 +51,6 @@ E_SLIDE_MENU_BACK       = 5
 
 E_CONTROL_FOCUSED       = 9991
 E_SLIDE_CLOSE           = 9999
-
-#string tag
-E_TAG_ENABLE  = 'enable'
-E_TAG_VISIBLE = 'visible'
-E_TAG_SELECT  = 'select'
-E_TAG_LABEL   = 'label'
-E_TAG_TRUE    = 'True'
-E_TAG_FALSE   = 'False'
-E_TAG_SET_SELECT_POSITION = 'selectItem'
-E_TAG_GET_SELECT_POSITION = 'getItem'
-E_TAG_ADD_ITEM = 'addItem'
 
 #dialog menu
 CONTEXT_ACTION_LOCK				= 1 
@@ -524,7 +502,6 @@ class ChannelListWindow( BaseWindow ) :
 			self.ResetLabel( )
 			#self.Epgevent_GetCurrent( )
 
-
 		if aType == FLAG_MODE_TV :
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV,   True, E_TAG_SELECT )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO,False, E_TAG_SELECT )
@@ -671,7 +648,7 @@ class ChannelListWindow( BaseWindow ) :
 				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull)
 #					xbmcgui.Dialog( ).ok( MR_LANG( 'Infomation' ), MR_LANG( 'HDD Full!!! Cannot Recording...' ) )
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Recording has stopped due to insufficient disk space' ) )
+					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
 
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				if aEvent.mType == ElisEnum.E_EOF_END :
@@ -2329,14 +2306,22 @@ class ChannelListWindow( BaseWindow ) :
 			return
 
 		if selectedAction == CONTEXT_ACTION_SAVE_EXIT :
-			self.SetGoBackWindow( )
+			#self.SetGoBackWindow( )
+			#return
+
+			#test
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
+			dialog.SetDefaultProperty( 0, self.mChannelList )
+			dialog.doModal( )
+			tempList = dialog.GetSelectedList( )
+			LOG_TRACE('------------dialog list[%s]'% tempList )
 			return
+
 
 		#--------------------------------------------------------------- dialog 2
 		grpIdx = -1
 		groupName = None
 		addNumber = -2
-
 
 		if selectedAction == CONTEXT_ACTION_ADD_TO_CHANNEL :
 			self.GetChannelListName( )
@@ -2549,7 +2534,7 @@ class ChannelListWindow( BaseWindow ) :
 		else:
 #			msg = 'Already [%s] recording(s) running' %runningCount
 #			msg = MR_LANG( 'You are already recordings [%s] programs' %runningCount )
-			msg = MR_LANG( 'You have reached the maximum number of recordings allowed' )
+			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
 #			xbmcgui.Dialog( ).ok( 'Infomation', msg )
 			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), msg )			
 

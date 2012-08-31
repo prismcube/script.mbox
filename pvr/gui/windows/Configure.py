@@ -311,7 +311,7 @@ class Configure( SettingWindow ) :
 		 	else :
 		 	"""
 	 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'THIS WILL RESTORE TO FACTORY SETTINGS\nDO YOU WANT TO CONTINUE?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO RESET TO FACTORY SETTINGS?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -336,7 +336,7 @@ class Configure( SettingWindow ) :
 					#self.mProgress.SetResult( True )
 					#time.sleep( 1 )
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Reset your STB Settings' ), MR_LANG( 'Settings have been restored to factory default' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Reset your STB' ), MR_LANG( 'Your system restored the factory default settings' ) )
 		 			dialog.doModal( )
 
 		 			from ElisProperty import ResetHash
@@ -828,10 +828,10 @@ class Configure( SettingWindow ) :
 			addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( dev )
 			SetIpAddressProperty( addressIp, addressMask, addressGateway, addressNameServer )
 			self.CloseBusyDialog( )
-			if ret1 == False :
+			if ret1 == False or ret2 == False :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'STB was unable to save the Wifi configuration' ) )
-			dialog.doModal( )
+				dialog.doModal( )
 
 
 	def LoadWifi( self ) :
@@ -874,7 +874,7 @@ class Configure( SettingWindow ) :
 			for channel in channelList :
 				channelNameList.append( channel.mName )
 
-			ret = dialog.select( MR_LANG( 'Select a channel to set your time by' ), channelNameList )
+			ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList )
 
 			if ret >= 0 :
 				self.mSetupChannel = channelList[ ret ]
@@ -921,7 +921,7 @@ class Configure( SettingWindow ) :
 			self.CloseBusyDialog( )
 			if mode == TIME_AUTOMATIC and dialog.GetResult( ) == False :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Time Setting Fail' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Automatic time setup has failed because\nno time info was given by the channel you selected' ) )
 				dialog.doModal( )
 
 

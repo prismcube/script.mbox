@@ -120,7 +120,25 @@ class NullWindow( BaseWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
-			pass
+			if ElisPropertyEnum( 'Lock Mainmenu', self.mCommander ).GetProp( ) == 0 :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+				dialog.SetDialogProperty( MR_LANG( 'Enter your PIN code' ), '', 4, True )
+	 			dialog.doModal( )
+	 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+	 				tempval = dialog.GetString( )
+	 				if tempval == '' :
+	 					return
+					if int( tempval ) == ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( ) :
+						self.Close( )
+						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
+					else :
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Sorry, that PIN code does not match' ) )
+			 			dialog.doModal( )
+			 	return
+
+			self.Close( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 			"""
 			window = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 			window.SetAutomaticHide( True )
@@ -497,7 +515,7 @@ class NullWindow( BaseWindow ) :
 				RecordConflict( dialog.GetConflictTimer( ) )
 
 		else:
-			msg = MR_LANG( 'You have reached the maximum number of recordings allowed' )
+			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
 			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), msg )
 
 		if isOK :

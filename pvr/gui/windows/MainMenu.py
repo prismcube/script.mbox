@@ -135,8 +135,8 @@ class MainMenu( BaseWindow ) :
 
 
 	def onFocus( self, aControlId ) :
-		LOG_TRACE('')
-		pass
+		if aControlId == E_FAKE_BUTTON :
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 
 	def getPlayerStatus( self ) :
