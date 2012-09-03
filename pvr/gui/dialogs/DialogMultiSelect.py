@@ -3,10 +3,8 @@ from pvr.gui.WindowImport import *
 E_CONTROL_ID_LIST = 3850
 
 DIALOG_BUTTON_CLOSE_ID = 100
-DIALOG_BUTTON_OK_ID = 101
-
-E_MODE_CHANNEL = 0
-E_MODE_BOOKMARK = 1
+DIALOG_HEADER_LABEL_ID = 101
+DIALOG_BUTTON_OK_ID = 102
 
 class DialogMultiSelect( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
@@ -15,7 +13,8 @@ class DialogMultiSelect( BaseDialog ) :
 		self.mCtrlList = None
 		self.mListItems = None
 		self.DefaultList = []
-		self.mMode = E_MODE_CHANNEL
+		self.mTitle = ''
+		self.mMethod = None
 		
 
 	def onInit( self ) :
@@ -26,7 +25,6 @@ class DialogMultiSelect( BaseDialog ) :
 		self.mCtrlList = self.getControl( E_CONTROL_ID_LIST )
 
 		self.InitList( )
-		#self.mEventBus.Register( self )
 
 
 	def onAction( self, aAction ) :
@@ -35,12 +33,14 @@ class DialogMultiSelect( BaseDialog ) :
 		self.GlobalAction( actionId )		
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
+			self.mMarkList = None
 			self.Close( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 			
 		elif actionId == Action.ACTION_PARENT_DIR :
+			self.mMarkList = None
 			self.Close( )
 			
 
@@ -75,16 +75,13 @@ class DialogMultiSelect( BaseDialog ) :
 		self.mCtrlList.reset( )
 		self.mListItems = []
 
-		if self.mMode == E_MODE_CHANNEL :
+		if self.mMethod :
+			self.mMethod( )
+		else :
+			self.mEventBus.Register( self )
 			self.ChannelItems( )
 
-		elif self.mMode == E_MODE_BOOKMARK :
-			self.BookmarkItems( )
-
-		else :
-			LOG_TRACE('unknown list')
-			return
-
+		self.getControl( DIALOG_HEADER_LABEL_ID ).setLabel( self.mTitle )
 		self.mCtrlList.addItems( self.mListItems )
 
 
@@ -101,10 +98,6 @@ class DialogMultiSelect( BaseDialog ) :
 				listItem.setProperty( E_XML_PROPERTY_SKIP, E_TAG_TRUE )
 
 			self.mListItems.append( listItem )
-
-
-	def BookmarkItems( self ) :
-		pass
 
 
 	def SetMarkupGUI( self, aPos ) :
@@ -131,13 +124,13 @@ class DialogMultiSelect( BaseDialog ) :
 			listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_TRUE )
 
 
-	def SetDefaultProperty( self, aMode = E_MODE_CHANNEL, aList = None ) :
-		self.mMode = aMode
+	def SetDefaultProperty( self, aTitle = 'SELECT', aList = None ) :
+		self.mTitle = aTitle
 		self.DefaultList = aList
 
 
 	def GetSelectedList( self ) :
-		self.mMarkList
+		return self.mMarkList
 
 
 	def GetCloseStatus( self ) :
@@ -145,6 +138,7 @@ class DialogMultiSelect( BaseDialog ) :
 
 
 	def Close( self ) :
-		#self.mEventBus.Deregister( self )
+		if self.mMethod == None :
+			self.mEventBus.Deregister( self )
 		self.CloseDialog( )
 		

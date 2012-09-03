@@ -183,7 +183,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.mIsSave = FLAG_MASK_NONE
 		self.mMarkList = []
 		self.mEditFavorite = []
-		self.mEditChannelList = []
 		self.mMoveFlag = False
 		self.mMoveItem = []
 		self.mItemCount = 0
@@ -2028,18 +2027,36 @@ class ChannelListWindow( BaseWindow ) :
 				self.mEditFavorite.append( item.mGroupName )
 
 
-	def GetChannelListName( self ) :
-		allChannel = self.mDataCache.Channel_GetList( FLAG_ZAPPING_CHANGE, self.mUserMode.mServiceType, ElisEnum.E_MODE_ALL, self.mUserMode.mSortingMode )
-		self.mEditChannelList = []
-		if allChannel :
-			for item in allChannel :
-				#copy to ChannelList
-				label = '%04d %s'% ( item.mNumber, item.mName )
-				self.mEditChannelList.append( label )
+	def AddChannelFavorite( self, aChannelList = None, aGroupName = '' ) :
+		if aChannelList == None or len( aChannelList ) < 1 :
+			return self.mDataCache.Channel_GetList( FLAG_ZAPPING_CHANGE, self.mUserMode.mServiceType, ElisEnum.E_MODE_ALL, self.mUserMode.mSortingMode )
+
+		else :
+			if aGroupName == None or aGroupName == '' :
+				self.mMarkList = []
+				return
+
+			numList = []
+			lastPos = self.mCtrlListCHList.getSelectedPosition( )
+			for idx in self.mMarkList :
+				chNum = ElisEInteger( )
+				chNum.mParam = aChannelList[idx].mNumber
+				numList.append( chNum )
+
+			if not numList or len( numList ) < 1 :
+				LOG_TRACE( 'select Fail!!!' )
+				return
+
+			ret = self.mDataCache.Favoritegroup_AddChannelByNumber( aGroupName, self.mUserMode.mServiceType, numList )
+			LOG_TRACE( 'contextAction ret[%s]'% ret )
+
+			self.mMarkList = []
+			self.mListItems = None
+			self.SubMenuAction( E_SLIDE_ACTION_SUB )
+			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, lastPos, E_TAG_SET_SELECT_POSITION )
 
 
-
-	def DoContextAdtion( self, aMode, aContextAction, aGroupName = '', aNumber = -1 ) :
+	def DoContextAction( self, aMode, aContextAction, aGroupName = '' ) :
 		ret = ''
 		numList = []
 		isIncludeRec = False
@@ -2086,14 +2103,8 @@ class ChannelListWindow( BaseWindow ) :
 		elif aContextAction == CONTEXT_ACTION_UNSKIP :
 			ret = self.mDataCache.Channel_SkipByNumber( False, int(self.mUserMode.mServiceType), numList )
 
-		elif aContextAction == CONTEXT_ACTION_ADD_TO_FAV or aContextAction == CONTEXT_ACTION_ADD_TO_CHANNEL :
+		elif aContextAction == CONTEXT_ACTION_ADD_TO_FAV :
 			if aGroupName : 
-				if aContextAction == CONTEXT_ACTION_ADD_TO_CHANNEL and aNumber != -1 :
-					numList = []
-					chNum = ElisEInteger( )
-					chNum.mParam = aNumber
-					numList.append( chNum )
-					#LOG_TRACE( 'add number[%s]'% aNumber )
 				ret = self.mDataCache.Favoritegroup_AddChannelByNumber( aGroupName, self.mUserMode.mServiceType, numList )
 			else :
 				ret = 'group None'
@@ -2306,33 +2317,27 @@ class ChannelListWindow( BaseWindow ) :
 			return
 
 		if selectedAction == CONTEXT_ACTION_SAVE_EXIT :
-			#self.SetGoBackWindow( )
-			#return
-
-			#test
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
-			dialog.SetDefaultProperty( 0, self.mChannelList )
-			dialog.doModal( )
-			tempList = dialog.GetSelectedList( )
-			LOG_TRACE('------------dialog list[%s]'% tempList )
+			self.SetGoBackWindow( )
 			return
-
 
 		#--------------------------------------------------------------- dialog 2
 		grpIdx = -1
 		groupName = None
-		addNumber = -2
 
 		if selectedAction == CONTEXT_ACTION_ADD_TO_CHANNEL :
-			self.GetChannelListName( )
-			labelString = '%s'% MR_LANG( 'Add Favorite Channel Group' )
-			grpIdx = xbmcgui.Dialog( ).select( labelString, self.mEditChannelList )
+			channelList = self.AddChannelFavorite( )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
+			dialog.SetDefaultProperty( MR_LANG( 'Add to Favorite Channel' ), channelList )
+			dialog.doModal( )
 			groupName = self.mEditFavorite[self.mUserSlidePos.mSub]
-			if grpIdx == -1 :
-				#LOG_TRACE( 'CANCEL by context dialog' )
+			self.mMarkList = dialog.GetSelectedList( )
+			#LOG_TRACE('-------add group[%s]-----dialog list[%s]'% ( groupName, self.mMarkList ) )
+
+			if self.mMarkList == None or len( self.mMarkList ) < 1 :
+				LOG_TRACE( 'CANCEL by context dialog' )
 				return
 
-			addNumber = grpIdx + 1
+			groupName = self.mEditFavorite[self.mUserSlidePos.mSub]
 
 
 		# add Fav, Ren Fav, Del Fav ==> popup select group
@@ -2397,7 +2402,11 @@ class ChannelListWindow( BaseWindow ) :
 		#LOG_TRACE( 'mode[%s] btn[%s] groupName[%s]'% (aMode, selectedAction, groupName) )
 		#--------------------------------------------------------------- context end
 
-		self.DoContextAdtion( aMode, selectedAction, groupName, addNumber )
+		if selectedAction == CONTEXT_ACTION_ADD_TO_CHANNEL :
+			self.AddChannelFavorite( channelList, groupName )
+		else :
+			self.DoContextAction( aMode, selectedAction, groupName )
+
 		self.mIsSave |= FLAG_MASK_ADD
 
 		if selectedAction == CONTEXT_ACTION_CREATE_GROUP_FAV or \
@@ -2431,7 +2440,7 @@ class ChannelListWindow( BaseWindow ) :
 				#LOG_TRACE( 'CANCEL by context dialog' )
 				return
 
-			self.DoContextAdtion( mode, selectedAction )
+			self.DoContextAction( mode, selectedAction )
 
 		else :
 			self.EditSettingWindowContext( mode )
