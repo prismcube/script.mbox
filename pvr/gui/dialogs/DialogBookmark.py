@@ -5,7 +5,6 @@ E_CONTROL_ID_LIST = 3850
 DIALOG_BUTTON_CLOSE_ID = 100
 DIALOG_HEADER_LABEL_ID = 101
 DIALOG_BUTTON_OK_ID = 102
-DIALOG_LABEL_POS_ID = 103
 
 class DialogMultiSelect( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
@@ -24,7 +23,6 @@ class DialogMultiSelect( BaseDialog ) :
 
 		self.mMarkList = []
 		self.mCtrlList = self.getControl( E_CONTROL_ID_LIST )
-		self.mCtrlPos =  self.getControl( DIALOG_LABEL_POS_ID )
 
 		self.InitList( )
 
@@ -44,12 +42,7 @@ class DialogMultiSelect( BaseDialog ) :
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.mMarkList = None
 			self.Close( )
-
-		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN or \
-			 actionId == Action.ACTION_PAGE_UP or actionId == Action.ACTION_PAGE_DOWN :
-			idx = self.mCtrlList.getSelectedPosition( )
-			self.mCtrlPos.setLabel( '%s'% ( idx + 1 ) )
-			 
+			
 
 	def onClick( self, aControlId ) :
 		if aControlId == DIALOG_BUTTON_CLOSE_ID :
@@ -67,7 +60,6 @@ class DialogMultiSelect( BaseDialog ) :
 
 	def onFocus( self, aControlId ) :
 		pass
-
 
 
 	@GuiLock

@@ -5449,4 +5449,122 @@
 			</control>
 		</control>
 	</include>
+	<include name="DefaultSelectList">
+		<control type="list" id="3850">
+			<posx>250</posx>
+			<posy>195</posy>
+			<width>781</width>
+			<height>360</height>
+			<onleft>3851</onleft>
+			<onright>102</onright>
+			<onup>3850</onup>
+			<ondown>3850</ondown>
+			<pagecontrol>3851</pagecontrol>
+			<scrolltime>200</scrolltime>
+			<focusposition>0</focusposition>
+			<movement>2</movement>
+			<animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(3851)">Conditional</animation>
+			<itemlayout height="40" width="781">
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>781</width>
+					<height>40</height>
+					<texture background="true">osd/osd_settings_buttonnf.png</texture>
+				</control>
+				<!-- is mark? -->
+				<control type="image">
+					<posx>0</posx>
+					<posy>10</posy>
+					<width>20</width>
+					<height>20</height>
+					<texture>OverlayWatched.png</texture>
+					<visible>substring(ListItem.Property(iMark),true)</visible>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<width>560</width>
+					<height>40</height>
+					<font>Font_Reg19</font>
+					<textcolor>grey2</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label]</label>
+					<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
+				</control>
+				<control type="label">
+					<posx>500</posx>
+					<posy>0</posy>
+					<width>80</width>
+					<height>40</height>
+					<font>Font_Reg19</font>
+					<textcolor>grey2</textcolor>
+					<selectedcolor>selected</selectedcolor>
+					<align>right</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label2]</label>
+				</control>	
+			</itemlayout>
+			<focusedlayout height="40" width="781">
+				<control type="image">
+					<posx>0</posx>
+					<posy>0</posy>
+					<width>781</width>
+					<height>40</height>
+					<texture background="true">osd/osd_settings_buttonf.png</texture>
+				</control>
+				<!-- is mark? -->
+				<control type="image">
+					<posx>0</posx>
+					<posy>10</posy>
+					<width>20</width>
+					<height>20</height>
+					<texture>OverlayWatched.png</texture>
+					<visible>substring(ListItem.Property(iMark),true)</visible>
+				</control>
+				<control type="label">
+					<posx>30</posx>
+					<posy>0</posy>
+					<width>560</width>
+					<height>40</height>
+					<font>Font_Reg19</font>
+					<textcolor>white</textcolor>
+					<selectedcolor>selected</selectedcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label]</label>
+				</control>
+				<control type="label">
+					<posx>500</posx>
+					<posy>0</posy>
+					<width>80</width>
+					<height>40</height>
+					<font>Font_Reg19</font>
+					<textcolor>grey2</textcolor>
+					<selectedcolor>selected</selectedcolor>
+					<align>right</align>
+					<aligny>center</aligny>
+					<label>$INFO[ListItem.Label2]</label>
+				</control>
+			</focusedlayout>
+		</control>
+		<control type="scrollbar" id="3851">
+			<posx>230</posx>
+			<posy>190</posy>
+			<width>28</width>
+			<height>360</height>
+			<texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
+			<texturesliderbar>-</texturesliderbar>
+			<texturesliderbarfocus>-</texturesliderbarfocus>
+			<textureslidernib>views/scrollbarnub-nofocus.png</textureslidernib>
+			<textureslidernibfocus>views/scrollbarnub-focus.png</textureslidernibfocus>
+			<onleft>102</onleft>
+			<onright>3850</onright>
+			<ondown></ondown>
+			<onup></onup>
+			<showonepage>false</showonepage>
+			<orientation>vertical</orientation>
+		</control>
+	</include>
 </includes>

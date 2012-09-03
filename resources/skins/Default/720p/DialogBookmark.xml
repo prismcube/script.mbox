@@ -51,11 +51,7 @@
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
 			</control>
-			<control type="label" id="103">
-				<textcolor>grey2</textcolor>
-				<label>$INFO[Control.GetLabel]</label>
-				<visible>false</visible>
-			</control>
+			<include>DefaultSelectList</include>
 			<control type="label">
 				<posx>580</posx>
 				<posy>592</posy>
@@ -66,7 +62,7 @@
 				<aligny>center</aligny>
 				<scroll>true</scroll>
 				<textcolor>grey</textcolor>
-				<label>([COLOR=blue]$INFO[Control.GetLabel(103)][/COLOR]) $LOCALIZE[31025] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3850).CurrentPage]/$INFO[Container(3850).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Container(3850).Position][/COLOR]) $LOCALIZE[31025] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3850).CurrentPage]/$INFO[Container(3850).NumPages][/COLOR])</label>
 				<visible>Control.IsVisible(3850)</visible>
 			</control>
 			<control type="button" id="102">
@@ -86,9 +82,6 @@
 				<onup>3850</onup>
 				<ondown>100</ondown>
 			</control>
-
-			<include>DefaultSelectList</include>
-
 		</control>
 	</controls>
 </window>
