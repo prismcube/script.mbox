@@ -2,10 +2,10 @@ from pvr.gui.WindowImport import *
 
 E_CONTROL_ID_LIST = 3850
 
-DIALOG_BUTTON_CLOSE_ID = 100
-DIALOG_HEADER_LABEL_ID = 101
-DIALOG_BUTTON_OK_ID = 102
-DIALOG_LABEL_POS_ID = 103
+DIALOG_BUTTON_CLOSE_ID = 3800
+DIALOG_HEADER_LABEL_ID = 3801
+DIALOG_BUTTON_OK_ID = 3802
+DIALOG_LABEL_POS_ID = 3803
 
 class DialogMultiSelect( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
@@ -15,7 +15,6 @@ class DialogMultiSelect( BaseDialog ) :
 		self.mListItems = None
 		self.DefaultList = []
 		self.mTitle = ''
-		self.mMethod = None
 		
 
 	def onInit( self ) :
@@ -27,6 +26,7 @@ class DialogMultiSelect( BaseDialog ) :
 		self.mCtrlPos =  self.getControl( DIALOG_LABEL_POS_ID )
 
 		self.InitList( )
+		self.mEventBus.Register( self )
 
 
 	def onAction( self, aAction ) :
@@ -49,7 +49,13 @@ class DialogMultiSelect( BaseDialog ) :
 			 actionId == Action.ACTION_PAGE_UP or actionId == Action.ACTION_PAGE_DOWN :
 			idx = self.mCtrlList.getSelectedPosition( )
 			self.mCtrlPos.setLabel( '%s'% ( idx + 1 ) )
-			 
+
+		elif actionId == Action.ACTION_STOP :
+			self.Close( )
+
+		elif actionId == Action.ACTION_PLAYER_PLAY or actionId == Action.ACTION_PAUSE :
+			self.Close( )
+
 
 	def onClick( self, aControlId ) :
 		if aControlId == DIALOG_BUTTON_CLOSE_ID :
@@ -73,7 +79,10 @@ class DialogMultiSelect( BaseDialog ) :
 	@GuiLock
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowDialogId( ) :
-			pass
+			if aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
+			   aEvent.getName( ) == ElisEventRecordingStopped.getName( ) or \
+			   aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
+				xbmc.executebuiltin('xbmc.Action(stop)')
 
 
 	def InitList( self ) :
@@ -83,12 +92,7 @@ class DialogMultiSelect( BaseDialog ) :
 		self.mCtrlList.reset( )
 		self.mListItems = []
 
-		if self.mMethod :
-			self.mMethod( )
-		else :
-			self.mEventBus.Register( self )
-			self.ChannelItems( )
-
+		self.ChannelItems( )
 		self.getControl( DIALOG_HEADER_LABEL_ID ).setLabel( self.mTitle )
 		self.mCtrlList.addItems( self.mListItems )
 
@@ -146,7 +150,6 @@ class DialogMultiSelect( BaseDialog ) :
 
 
 	def Close( self ) :
-		if self.mMethod == None :
-			self.mEventBus.Deregister( self )
+		self.mEventBus.Deregister( self )
 		self.CloseDialog( )
 		
