@@ -122,13 +122,13 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def GlobalAction( self, aActionId ) :
-		if aActionId == Action.ACTION_MUTE:
+		if aActionId == Action.ACTION_MUTE :
 			self.UpdateVolume( )
 
-		elif aActionId == Action.ACTION_VOLUME_UP:
+		elif aActionId == Action.ACTION_VOLUME_UP :
 			self.UpdateVolume( )
 
-		elif aActionId == Action.ACTION_VOLUME_DOWN:
+		elif aActionId == Action.ACTION_VOLUME_DOWN :
 			self.UpdateVolume( )
 
 
