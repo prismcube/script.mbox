@@ -205,20 +205,17 @@ class DataCacheMgr( object ) :
 
 
 	def LoadVolumeToSetGUI( self ) :
-		retVolume = xbmc.executehttpapi( 'getvolume()' )
-		volume = int( retVolume[4:] )
 		lastVolume = self.mCommander.Player_GetVolume( )
-		LOG_TRACE( 'last volume UI[%s] mw[%s]'% (volume, lastVolume) )
+		lastMute = self.mCommander.Player_GetMute( )
+		LOG_TRACE( 'last volume[%s] mute[%s]'% ( lastVolume, lastMute) )
 
-		if lastVolume <= 0 :
-			LOG_TRACE( 'last mute[On]' )
+		volumeString = 'setvolume(%s)'% lastVolume
+		xbmc.executehttpapi( volumeString )
+		#LOG_TRACE('set sync lastVolume[%s]'% lastVolume )
+
+		if lastMute or lastVolume <= 0 :
 			volumeString = 'Mute'
 			xbmc.executehttpapi( volumeString )
-
-		else :
-			volumeString = 'setvolume(%s)'% lastVolume
-			xbmc.executehttpapi( volumeString )
-			LOG_TRACE('%s'% volume )
 
 
 	def LoadTime( self ) :
