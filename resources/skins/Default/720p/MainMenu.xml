@@ -489,7 +489,7 @@
 					<height>35</height>
 					<font>font12</font>
 					<!--label>System Information</label-->
-					<label>STB Info provides the system status including system version, free disk space, etc</label>
+					<label>STB Info provides the STB status including product name and number, free disk space, etc</label>
 					<align>left</align>
 					<textcolor>white</textcolor>                
 					<shadowcolor>black</shadowcolor>
@@ -504,7 +504,7 @@
 					<height>35</height>
 					<font>font12</font>
 					<!--label>Hide</label-->
-					<label>Close the main menu and return to the screen</label>
+					<label>Return to the screen after hiding the main menu</label>
 					<align>left</align>
 					<textcolor>white</textcolor>                
 					<shadowcolor>black</shadowcolor>
