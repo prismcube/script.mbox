@@ -2,9 +2,6 @@ from pvr.gui.WindowImport import *
 import pvr.TunerConfigMgr as ConfigMgr
 
 
-E_FAKE_BUTTON		=	999
-
-
 class FirstInstallation( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
@@ -378,6 +375,11 @@ class FirstInstallation( SettingWindow ) :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 						dialog.SetConfiguredSatellite( self.mConfiguredSatelliteList )
 						dialog.doModal( )
+						self.OpenBusyDialog( )
+						zappingMode = self.mDataCache.Zappingmode_GetCurrent( True )		
+						self.mDataCache.Channel_GetAllChannels( zappingMode.mServiceType, False )
+						self.CloseBusyDialog( )				
+						
 					else :
 						configuredSatelliteList = []
 						config = self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ]
@@ -386,6 +388,12 @@ class FirstInstallation( SettingWindow ) :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 						dialog.SetConfiguredSatellite( configuredSatelliteList )				
 						dialog.doModal( )
+						
+						self.OpenBusyDialog( )
+						zappingMode = self.mDataCache.Zappingmode_GetCurrent( True )		
+						self.mDataCache.Channel_GetAllChannels( zappingMode.mServiceType, False )
+						self.CloseBusyDialog( )				
+						
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is no configured satellite in the list' ) )

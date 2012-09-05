@@ -15,7 +15,6 @@ class RootWindow( BaseWindow ) :
 		if self.mInitialized == False :
 			if E_SUPPROT_HBBTV == True :
 				self.mCommander.AppHBBTV_Ready( 0 )
-			self.UpdateVolume( )
 			self.SendLocalOffsetToXBMC( )
 
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).doModal( )

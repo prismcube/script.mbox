@@ -327,6 +327,9 @@ class Configure( SettingWindow ) :
 				if self.mDataCache.mChannelList and len( self.mDataCache.mChannelList ) >= 0 :
 					self.mDataCache.Channel_SetCurrent( self.mDataCache.mChannelList[0].mNumber, ElisEnum.E_SERVICE_TYPE_TV )
 
+				zappingMode = self.mDataCache.Zappingmode_GetCurrent( True )		
+				self.mDataCache.Channel_GetAllChannels( zappingMode.mServiceType, False )
+
 				self.CloseBusyDialog( )
 
 				if ret1 == True and ret2 == True :
@@ -825,10 +828,10 @@ class Configure( SettingWindow ) :
 			addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( dev )
 			SetIpAddressProperty( addressIp, addressMask, addressGateway, addressNameServer )
 			self.CloseBusyDialog( )
-			if ret1 == False :
+			if ret1 == False or ret2 == False :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'STB was unable to save the Wifi configuration' ) )
-			dialog.doModal( )
+				dialog.doModal( )
 
 
 	def LoadWifi( self ) :

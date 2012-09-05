@@ -374,6 +374,23 @@
 						<align>right</align>
 						<label>$INFO[ListItem.Label]</label>
 					</control>
+					<control type="image">
+						<posx>570</posx>
+						<posy>50</posy>
+						<width>50</width>
+						<height>25</height>
+						<texture>tv.png</texture>
+						<visible>!Control.IsVisible(8800)</visible>
+					</control>
+					<control type="image">
+						<posx>570</posx>
+						<posy>50</posy>
+						<width>50</width>
+						<height>25</height>
+						<texture>icon_radio2.png</texture>
+						<visible>Control.IsVisible(8800)</visible>
+					</control>
+
 				</control>
 
 				<!--  page -->

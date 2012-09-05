@@ -3,11 +3,7 @@
 	<allowoverlay>yes</allowoverlay>
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
-		<control type="group">
-			<posx>350</posx>
-			<posy>50</posy>
-			<include>DefaultSelectDialog</include>
-			<include>DefaultSelectList</include>
-		</control>
+		<include>DefaultSelectDialog</include>
+		<include>DefaultSelectList</include>
 	</controls>
 </window>

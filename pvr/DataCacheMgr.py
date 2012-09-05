@@ -205,11 +205,17 @@ class DataCacheMgr( object ) :
 
 
 	def LoadVolumeToSetGUI( self ) :
-		volume = self.mCommander.Player_GetVolume( )
-		LOG_TRACE( 'playerVolume[%s]'% volume)
+		lastVolume = self.mCommander.Player_GetVolume( )
+		lastMute = self.mCommander.Player_GetMute( )
+		LOG_TRACE( 'last volume[%s] mute[%s]'% ( lastVolume, lastMute) )
 
-		volumeString = 'setvolume(%s)'% volume
-		xbmc.executehttpapi(volumeString)
+		volumeString = 'setvolume(%s)'% lastVolume
+		xbmc.executehttpapi( volumeString )
+		#LOG_TRACE('set sync lastVolume[%s]'% lastVolume )
+
+		if lastMute or lastVolume <= 0 :
+			volumeString = 'Mute'
+			xbmc.executehttpapi( volumeString )
 
 
 	def LoadTime( self ) :
@@ -1119,8 +1125,11 @@ class DataCacheMgr( object ) :
 		#delete timer
 		mTimerList = []
 		mTimerList = self.Timer_GetTimerList( )
-		for timer in mTimerList:
-			self.Timer_DeleteTimer( timer.mTimerId )
+
+		if mTimerList :
+			for timer in mTimerList:
+				self.Timer_DeleteTimer( timer.mTimerId )
+
 		return self.mCommander.Channel_DeleteAll( )
 
 

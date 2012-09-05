@@ -120,7 +120,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>0</posy>
-						<width>750</width>
+						<width>700</width>
 						<height>41</height>
 						<texture border="0,2,0,2">MenuItemNF.png</texture>
 					</control>
@@ -335,21 +335,21 @@
 				<textcolor>blue</textcolor>
 				<label>$INFO[ListItem.Label]</label>
 			</control>
-			<control type="image" id="22">
+			<control type="image">
 				<posx>100</posx>
 				<posy>100</posy>
 				<width>50</width>
 				<height>30</height>
 				<texture>tv.png</texture>
-				<visible>substring(Window.Property(ServiceTypeTV),true)</visible>
+				<visible>!Control.IsVisible(8800)</visible>
 			</control>
-			<control type="image" id="23">
+			<control type="image">
 				<posx>100</posx>
-				<posy>100</posy>
+				<posy>98</posy>
 				<width>50</width>
 				<height>30</height>
 				<texture>icon_radio2.png</texture>
-				<visible>substring(Window.Property(ServiceTypeRadio),true)</visible>
+				<visible>Control.IsVisible(8800)</visible>
 			</control>
 
 		</control>

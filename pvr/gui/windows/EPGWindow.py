@@ -143,6 +143,12 @@ class EPGWindow( BaseWindow ) :
 				GuiLock2( False )				
 
 		elif actionId == Action.ACTION_CONTEXT_MENU:
+			if self.mChannelList == None or len( self.mChannelList ) <= 0 :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channel was available' ) )			
+	 			dialog.doModal( )
+				return
+		
 			self.mEventBus.Deregister( self )
 			self.StopEPGUpdateTimer( )
 
@@ -242,6 +248,7 @@ class EPGWindow( BaseWindow ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
 			if aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
 				#if self.mIsUpdateEnable == True	:
+				LOG_TRACE( 'record start/stop event' )
 				self.StopEPGUpdateTimer( )
 				self.UpdateListUpdateOnly( )
 				self.StartEPGUpdateTimer( E_SHORT_UPDATE_TIME )
@@ -411,8 +418,9 @@ class EPGWindow( BaseWindow ) :
 
 
 	def UpdateSelectedChannel( self ) :
-	
-		if self.mSelectChannel :
+		if self.mChannelList == None or len( self.mChannelList ) <= 0 :
+			self.mCtrlEPGChannelLabel.setLabel( MR_LANG( 'No channel' ) )		
+		elif self.mSelectChannel :
 			self.mCtrlEPGChannelLabel.setLabel( '%04d %s' %( self.mSelectChannel.mNumber, self.mSelectChannel.mName ) )
 		else:
 			self.mCtrlEPGChannelLabel.setLabel( MR_LANG( 'No channel' ) )
@@ -1008,12 +1016,6 @@ class EPGWindow( BaseWindow ) :
 
 
 	def ShowSelectChannel( self ) :
-		if self.mChannelList == None or len( self.mChannelList ) <= 0 :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-#			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Has no channel' ) )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channel was available' ) )			
- 			dialog.doModal( )
-			return
 	
 		dialog = xbmcgui.Dialog( )
 		channelNameList = []

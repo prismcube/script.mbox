@@ -47,10 +47,10 @@
 				<control type="list" id="9000">
 					<hitrect x="100" y="100" w="530" h="620"></hitrect>
 					<posx>-20</posx>
-					<posy>80</posy>
+					<posy>95</posy>
 					<width>400</width>
 					<height>720</height>
-					<onleft>10</onleft>
+					<onleft>999</onleft>
 					<onright>9001</onright>
 					<onup>9000</onup>
 					<ondown>9000</ondown>
@@ -151,7 +151,7 @@
 				</control>
 				<control type="image">
 					<description>LOGO Mirror</description>
-					<posx>80</posx>
+					<posx>70</posx>
 					<posy>55</posy>
 					<width>170</width>
 					<height>40</height>
@@ -514,5 +514,6 @@
 			<!--Date, Time Info-->
 			<include>DefaultCommonDateTime</include>
 		</control>
+		<include>DefaultFakeButton</include>
 	</controls>
 </window>

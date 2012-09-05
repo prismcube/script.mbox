@@ -122,13 +122,13 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def GlobalAction( self, aActionId ) :
-		if aActionId == Action.ACTION_MUTE:
+		if aActionId == Action.ACTION_MUTE :
 			self.UpdateVolume( )
 
-		elif aActionId == Action.ACTION_VOLUME_UP:
+		elif aActionId == Action.ACTION_VOLUME_UP :
 			self.UpdateVolume( )
 
-		elif aActionId == Action.ACTION_VOLUME_DOWN:
+		elif aActionId == Action.ACTION_VOLUME_DOWN :
 			self.UpdateVolume( )
 
 
@@ -184,7 +184,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 	def UpdateVolume( self ) :
 		GuiLock2( True )
-		retVolume = xbmc.executehttpapi( 'getvolume()' )
+		retVolume = xbmc.executehttpapi( 'getvolume' )
 		GuiLock2( False )
 		volume = int( retVolume[4:] )
 		LOG_TRACE( 'GET VOLUME=%d' %volume )
@@ -192,11 +192,11 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		if volume > MAX_VOLUME :
 			volume = MAX_VOLUME
 
-		if volume < 0 :
+		if volume <= 0 :
 			volume = 0
 			self.mCommander.Player_SetMute( True )
 		else :
-			if self.mCommander.Player_GetMute( ) == True :
+			if self.mCommander.Player_GetMute( ) :
 				self.mCommander.Player_SetMute( False )
 			self.mCommander.Player_SetVolume( volume )
 
