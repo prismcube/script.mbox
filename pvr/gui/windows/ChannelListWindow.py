@@ -40,6 +40,8 @@ FLAG_CLOCKMODE_HMS      = 3
 FLAG_CLOCKMODE_HHMM     = 4
 FLAG_MODE_JUMP         = True
 
+E_MODE_CHANNEL_LIST = 1
+
 #slide index
 E_SLIDE_ACTION_MAIN     = 0
 E_SLIDE_ACTION_SUB      = 1
@@ -2327,7 +2329,7 @@ class ChannelListWindow( BaseWindow ) :
 		if selectedAction == CONTEXT_ACTION_ADD_TO_CHANNEL :
 			channelList = self.AddChannelFavorite( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
-			dialog.SetDefaultProperty( MR_LANG( 'Add to Favorite Channel' ), channelList )
+			dialog.SetDefaultProperty( MR_LANG( 'Add to Favorite Channel' ), channelList, E_MODE_CHANNEL_LIST )
 			dialog.doModal( )
 			groupName = self.mEditFavorite[self.mUserSlidePos.mSub]
 			self.mMarkList = dialog.GetSelectedList( )
@@ -2336,8 +2338,6 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mMarkList == None or len( self.mMarkList ) < 1 :
 				LOG_TRACE( 'CANCEL by context dialog' )
 				return
-
-			groupName = self.mEditFavorite[self.mUserSlidePos.mSub]
 
 
 		# add Fav, Ren Fav, Del Fav ==> popup select group

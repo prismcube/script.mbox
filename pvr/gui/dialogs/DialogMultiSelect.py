@@ -1,5 +1,8 @@
 from pvr.gui.WindowImport import *
 
+E_MODE_DEFAULT_LIST = 0
+E_MODE_CHANNEL_LIST = 1
+
 E_CONTROL_ID_LIST = 3850
 
 DIALOG_BUTTON_CLOSE_ID = 3800
@@ -13,8 +16,9 @@ class DialogMultiSelect( BaseDialog ) :
 		self.mIsOk = None
 		self.mCtrlList = None
 		self.mListItems = None
-		self.DefaultList = []
+		self.mDefaultList = []
 		self.mTitle = ''
+		self.mMode = E_MODE_DEFAULT_LIST
 		
 
 	def onInit( self ) :
@@ -86,20 +90,30 @@ class DialogMultiSelect( BaseDialog ) :
 
 
 	def InitList( self ) :
-		if self.DefaultList == None or len( self.DefaultList ) < 1 :
+		if self.mDefaultList == None or len( self.mDefaultList ) < 1 :
 			return
 
 		self.mCtrlList.reset( )
 		self.mListItems = []
 
-		self.ChannelItems( )
+		if self.mMode == E_MODE_CHANNEL_LIST :
+			self.ChannelItems( )
+		else :
+			self.ListItems( )
+
 		self.getControl( DIALOG_HEADER_LABEL_ID ).setLabel( self.mTitle )
 		self.mCtrlList.addItems( self.mListItems )
 
 
+	def ListItems( self ) :
+		for item in self.mDefaultList :
+			listItem = xbmcgui.ListItem( '%s'% item )
+			self.mListItems.append( listItem )
+
+
 	def ChannelItems( self ) :
 
-		for iChannel in self.DefaultList :
+		for iChannel in self.mDefaultList :
 			listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ) )
 
 			if iChannel.mLocked : 
@@ -136,9 +150,10 @@ class DialogMultiSelect( BaseDialog ) :
 			listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_TRUE )
 
 
-	def SetDefaultProperty( self, aTitle = 'SELECT', aList = None ) :
+	def SetDefaultProperty( self, aTitle = 'SELECT', aList = None, aMode = E_MODE_DEFAULT_LIST ) :
 		self.mTitle = aTitle
-		self.DefaultList = aList
+		self.mDefaultList = aList
+		self.mMode = aMode
 
 
 	def GetSelectedList( self ) :

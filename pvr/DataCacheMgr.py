@@ -1280,6 +1280,18 @@ class DataCacheMgr( object ) :
 		return ret
 
 
+	def Player_CreateBookmark( self ) :
+		return self.mCommander.Player_CreateBookmark( )
+
+
+	def Player_DeleteBookmark( self, aRecordKey, aOffset ) :
+		return self.mCommander.Player_DeleteBookmark( aRecordKey, aOffset )
+
+
+	def Player_GetBookmarkList( self, aRecordKey ) :
+		return self.mCommander.Player_GetBookmarkList( aRecordKey )
+
+
 	def RecordItem_GetEventInfo( self, aKey ) :
 		return self.mCommander.RecordItem_GetEventInfo( aKey )
 
