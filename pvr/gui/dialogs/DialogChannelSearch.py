@@ -54,7 +54,6 @@ class DialogChannelSearch( BaseDialog ) :
 		self.DrawItem( )
 
 		self.AbortDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-#		self.AbortDialog.SetDialogProperty( 'Confirm', 'Do you want abort channel scan?' )
 		self.AbortDialog.SetDialogProperty( MR_LANG( 'Abort Channel Search' ), MR_LANG( 'Do you want to stop the channel scan?' ) )
 
 
@@ -155,7 +154,6 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mDataCache.Player_AVBlank( False, True )
 				self.ReLoadChannelList( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-#				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Channel search is failed' ) )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Channel search has failed to complete' ) )				
 				dialog.doModal( )
 
@@ -167,7 +165,6 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mDataCache.Player_AVBlank( False, True )
 				self.ReLoadChannelList( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-#				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Channel search is failed' ) )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Channel search has failed to complete' ) )				
 				dialog.doModal( )
 		else :
