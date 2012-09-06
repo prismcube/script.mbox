@@ -255,39 +255,39 @@ class Configure( SettingWindow ) :
 					self.DisableControl( E_PARENTAL )
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Sorry, that PIN code does not match' ) )					
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Sorry, that\'s an incorrect PIN code' ) )					
 		 			dialog.doModal( )
 			return
 
 		elif selectedId == E_PARENTAL and groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Enter your new PIN code' ), '', 4, True )			
+			dialog.SetDialogProperty( MR_LANG( 'Enter new PIN code' ), '', 4, True )			
  			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				newpin = dialog.GetString( )
 				if newpin == '' or len( newpin ) != 4 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You must enter 4-digit PIN code' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'The PIN code must be 4-digit long' ) )
 		 			dialog.doModal( )
 					return
 			else :
 				return
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( MR_LANG( 'Confirm PIN code' ), '', 4, True )
+			dialog.SetDialogProperty( MR_LANG( 'Confirm your PIN code' ), '', 4, True )
 			dialog.doModal( )
 
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
  				confirm = dialog.GetString( )
  				if confirm == '' :
  					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'New PIN code does not match' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Sorry, that PIN code does not match' ) )
 		 			dialog.doModal( )
  					return
 				if int( newpin ) != int( confirm ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'New PIN code does not match' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Sorry, that PIN code does not match' ) )
 		 			dialog.doModal( )
 					return
 			else :
@@ -295,7 +295,7 @@ class Configure( SettingWindow ) :
 
 			ElisPropertyInt( 'PinCode', self.mCommander ).SetProp( int( newpin ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Change PIN code' ), MR_LANG( 'Your PIN code has been changed successfully' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Change PIN code' ), MR_LANG( 'PIN code has been changed successfully' ) )
  			dialog.doModal( )
 
  		elif selectedId == E_FACTORY_RESET and groupId == E_Input01 :
@@ -552,7 +552,7 @@ class Configure( SettingWindow ) :
 			self.AddInputControl( E_Input03, MR_LANG( 'Time' ), self.mTime, MR_LANG( 'Set the local time' ) )
 			self.AddEnumControl( E_SpinEx02, 'Local Time Offset', None, MR_LANG( 'Set the time zone that will be the basis for the date and time display' ) )
 			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, MR_LANG( 'When set to "Automatic", the system automatically change over to summer time' ) )
-			self.AddInputControl( E_Input04, MR_LANG( 'Apply' ), '', MR_LANG( 'Press the OK button to save settings' ) )
+			self.AddInputControl( E_Input04, MR_LANG( 'Apply' ), '', MR_LANG( 'Press the OK button to save time settings' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03, E_Input04 ]
 			self.SetVisibleControls( visibleControlIds, True )

@@ -54,7 +54,7 @@ class TunerConfiguration( SettingWindow ) :
 			if self.mConfiguredCount == position :
 				if self.mTunerMgr.GetCurrentTunerType( ) == E_DISEQC_1_0 and self.mConfiguredCount > 3 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty(  MR_LANG( 'Attention' ),  MR_LANG( 'You can only have 4 satellites in DiSEqC 1.0' ) )
+					dialog.SetDialogProperty(  MR_LANG( 'Attention' ),  MR_LANG( 'You can only have 4 satellites for DiSEqC 1.0' ) )
 		 			dialog.doModal( )
 				else :
 					dialog = xbmcgui.Dialog( )

@@ -150,7 +150,7 @@ class DialogSetAudioVideo( SettingDialog ) :
 
 	def InitProperty( self ) :
 		if self.mMode == CONTEXT_ACTION_VIDEO_SETTING :
-			self.mDialogTitle = MR_LANG( 'Video Setting' )
+			self.mDialogTitle = MR_LANG( 'Video Format' )
 
 		elif self.mMode == CONTEXT_ACTION_AUDIO_SETTING :
 			self.mDialogTitle = MR_LANG( 'Audio Setting' )

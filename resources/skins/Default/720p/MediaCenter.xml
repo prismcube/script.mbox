@@ -114,7 +114,7 @@
 					</item>
 					<item id="7">
 						<label>File Manager</label>
-						<label2>The File Manager lets you transfer, copy, delete and rename files and folders on your hard drive, FTP-shares, etc</label2>
+						<label2>The File Manager lets you transfer, copy, delete and rename files and folders on your disk drive, FTP-shares, etc</label2>
 						<onclick>ActivateWindow(FileManager)</onclick>
 						<icon>special://skin/backgrounds/appearance.jpg</icon>
 					</item>
