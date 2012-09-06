@@ -1,4 +1,5 @@
 from pvr.gui.WindowImport import *
+import time
 
 E_MODE_DEFAULT_LIST = 0
 E_MODE_CHANNEL_LIST = 1
@@ -67,9 +68,7 @@ class DialogMultiSelect( BaseDialog ) :
 			self.Close( )
 
 		elif aControlId == E_CONTROL_ID_LIST :
-			idx = self.mCtrlList.getSelectedPosition( )
-			self.SetMarkupGUI( idx )
-			self.mCtrlList.selectItem( idx + 1 )
+			self.SetMarkupGUI( )
 
 		elif aControlId == DIALOG_BUTTON_OK_ID :
 			self.Close( )		
@@ -104,6 +103,9 @@ class DialogMultiSelect( BaseDialog ) :
 		self.getControl( DIALOG_HEADER_LABEL_ID ).setLabel( self.mTitle )
 		self.mCtrlList.addItems( self.mListItems )
 
+		idx = self.mCtrlList.getSelectedPosition( )
+		self.mCtrlPos.setLabel( '%s'% ( idx + 1 ) )
+
 
 	def ListItems( self ) :
 		for item in self.mDefaultList :
@@ -126,14 +128,20 @@ class DialogMultiSelect( BaseDialog ) :
 			self.mListItems.append( listItem )
 
 
-	def SetMarkupGUI( self, aPos ) :
+	def SetMarkupGUI( self ) :
 		idx = 0
 		isExist = False
+
+		if self.mDefaultList == None or len( self.mDefaultList ) < 1 or \
+		   self.mCtrlList == None or self.mListItems == None or len( self.mListItems ) < 1 :
+			return
+
+		aPos = self.mCtrlList.getSelectedPosition( )
 
 		#aready mark is mark delete
 		for i in self.mMarkList :
 			if i == aPos :
-				self.mMarkList.pop(idx)
+				self.mMarkList.pop( idx )
 				isExist = True
 			idx += 1
 
@@ -141,13 +149,19 @@ class DialogMultiSelect( BaseDialog ) :
 		if isExist == False : 
 			self.mMarkList.append( aPos )
 
-		listItem = self.mCtrlList.getListItem(aPos)
+		listItem = self.mCtrlList.getListItem( aPos )
 
 		#mark toggle: disable/enable
 		if listItem.getProperty( E_XML_PROPERTY_MARK ) == E_TAG_TRUE : 
 			listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_FALSE )
 		else :
 			listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_TRUE )
+
+		self.mCtrlList.selectItem( aPos + 1 )
+		time.sleep( 0.05 )
+
+		aPos = self.mCtrlList.getSelectedPosition( )
+		self.mCtrlPos.setLabel( '%s'% ( aPos + 1 ) )
 
 
 	def SetDefaultProperty( self, aTitle = 'SELECT', aList = None, aMode = E_MODE_DEFAULT_LIST ) :
