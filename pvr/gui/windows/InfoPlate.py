@@ -164,29 +164,13 @@ class InfoPlate( LivePlateWindow ) :
 
 	def onClick( self, aControlId ) :
 		if aControlId == E_CONTROL_ID_BUTTON_MUTE :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.GlobalAction( Action.ACTION_MUTE  )
+			self.GlobalAction( Action.ACTION_MUTE )
 
-		elif aControlId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
+		elif aControlId >= E_CONTROL_ID_BUTTON_DESCRIPTION_INFO and aControlId <= E_CONTROL_ID_BUTTON_BOOKMARK :
 			self.ShowDialog( aControlId )
 
-		elif aControlId == E_CONTROL_ID_BUTTON_TELETEXT :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.ShowDialog( aControlId )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_SUBTITLE :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.ShowDialog( aControlId )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_SETTING_FORMAT :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.ShowDialog( aControlId )
+			if aControlId == E_CONTROL_ID_BUTTON_TELETEXT :
+				self.GlobalAction( Action.ACTION_MUTE )
 
 
 	def onFocus( self, aControlId ) :
@@ -444,6 +428,17 @@ class InfoPlate( LivePlateWindow ) :
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
 			msg1 = 'Subtitle'
 			msg2 = 'test'
+
+		elif aFocusId == E_CONTROL_ID_BUTTON_BOOKMARK :
+			msg1 = 'Bookmark'
+			msg2 = 'test'
+			"""
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_BOOKMARK )
+			dialog.SetDefaultProperty( self.mPlayingRecord )
+			dialog.doModal( )
+			tempList = dialog.GetSelectedList( )
+			LOG_TRACE('------------dialog list[%s]'% tempList )
+			"""
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
 			if self.mCurrentEPG and self.mCurrentEPG.mError == 0 :

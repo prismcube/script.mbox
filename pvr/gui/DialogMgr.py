@@ -27,6 +27,7 @@ DIALOG_ID_ADD_MANUAL_TIMER			= 18
 DIALOG_ID_TIMESHIFT_JUMP			= 19
 DIALOG_ID_INPUT_PINCODE				= 20
 DIALOG_ID_SELECT					= 21
+DIALOG_ID_BOOKMARK					= 22
 
 
 gDialogMgr = None
@@ -137,6 +138,10 @@ class DialogMgr( object ) :
 			elif aDialogId == DIALOG_ID_SELECT :
 				from pvr.gui.dialogs.DialogMultiSelect import DialogMultiSelect
 				return DialogMultiSelect( 'DialogMultiSelect.xml', self.scriptDir )
+
+			elif aDialogId == DIALOG_ID_BOOKMARK :
+				from pvr.gui.dialogs.DialogBookmark import DialogBookmark
+				return DialogBookmark( 'DialogBookmark.xml', self.scriptDir )
 
 			else :
 				LOG_ERR( 'can not find dialog' )
