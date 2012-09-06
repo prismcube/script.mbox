@@ -105,10 +105,10 @@ class DialogEditChannelList( SettingDialog ) :
 			self.SetVisibleControl( E_DialogInput09, False )
 
 			if self.mFavoriteList :
-				self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Add to Favorite Group' ), self.mFavoriteList, 0)
+				self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Add to favorite group' ), self.mFavoriteList, 0)
 				self.AddInputControl( E_DialogInput07, '', MR_LANG( 'Add OK' ) )
 			else :
-				self.AddInputControl( E_DialogInput07, MR_LANG( 'Add to Favorite Group' ), MR_LANG( 'None' ) )
+				self.AddInputControl( E_DialogInput07, MR_LANG( 'Add to favorite group' ), MR_LANG( 'None' ) )
 				self.SetEnableControl( E_DialogInput07, False )
 
 				#unused visible false
@@ -116,17 +116,17 @@ class DialogEditChannelList( SettingDialog ) :
 
 
 		elif self.mMode == FLAG_OPT_GROUP :
-			self.AddInputControl( E_DialogInput07, MR_LANG( 'Create Group' ), '' )
+			self.AddInputControl( E_DialogInput07, MR_LANG( 'Create group' ), '' )
 
 			if self.mFavoriteList :
-				self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Rename Favorite Group' ), self.mFavoriteList, 0)
+				self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Rename favorite group' ), self.mFavoriteList, 0)
 				self.AddInputControl( E_DialogInput08, '', MR_LANG( 'Rename OK' ) )
-				self.AddUserEnumControl( E_DialogSpinEx02, MR_LANG( 'Delete Favorite Group' ), self.mFavoriteList, 0)
+				self.AddUserEnumControl( E_DialogSpinEx02, MR_LANG( 'Delete favorite group' ), self.mFavoriteList, 0)
 				self.AddInputControl( E_DialogInput09, '', MR_LANG( 'Delete OK' ) )
 
 			else :
-				self.AddInputControl( E_DialogInput08, MR_LANG( 'Rename Favorite Group' ), MR_LANG( 'None' ) )
-				self.AddInputControl( E_DialogInput09, MR_LANG( 'Delete Favorite Group' ), MR_LANG( 'None' ) )
+				self.AddInputControl( E_DialogInput08, MR_LANG( 'Rename favorite group' ), MR_LANG( 'None' ) )
+				self.AddInputControl( E_DialogInput09, MR_LANG( 'Delete favorite group' ), MR_LANG( 'None' ) )
 				self.SetEnableControl( E_DialogInput08, False )
 				self.SetEnableControl( E_DialogInput09, False )
 

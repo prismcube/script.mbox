@@ -646,7 +646,6 @@ class ChannelListWindow( BaseWindow ) :
 
 				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull)
-#					xbmcgui.Dialog( ).ok( MR_LANG( 'Infomation' ), MR_LANG( 'HDD Full!!! Cannot Recording...' ) )
 					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
 
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
@@ -707,7 +706,6 @@ class ChannelListWindow( BaseWindow ) :
 
 		else:
 			if self.mChannelList == None:
-#				label = MR_LANG( 'Empty Channels' )
 				label = MR_LANG( 'No Channels' )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 				return 
@@ -894,7 +892,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mUserSlidePos.mMain = self.mCtrlListMainmenu.getSelectedPosition( )
 			self.mUserSlidePos.mSub = self.mCtrlListSubmenu.getSelectedPosition( )
 
-			label = MR_LANG( 'Sort By %s' ) % EnumToString( 'sort', self.mUserMode.mSortingMode )
+			label = MR_LANG( 'SORTED BY %s' ) % EnumToString( 'sort', self.mUserMode.mSortingMode )
 			"""
 			label1 = EnumToString( 'mode', self.mUserMode.mMode)
 			label2 = zappingName
@@ -1050,17 +1048,11 @@ class ChannelListWindow( BaseWindow ) :
 				label1 = EnumToString( 'mode', self.mUserMode.mMode )
 				label2 = self.mCtrlListSubmenu.getSelectedItem( ).getLabel( )
 
-#				head =  MR_LANG( 'Setting - to change zapping mode' )
-#				line1 = '%s / %s'% ( label1.title( ), label2.title( ) )
-#				line2 = MR_LANG( 'Do you want to save the channel list?' )
-#				posLine = abs( 100 - len( line1 ) )
-
 				head = MR_LANG( 'Save Zapping Mode' )
 				line1 = MR_LANG( 'Do you want to save the channel list?' )
 				line2 = '- %s / %s'% ( label1.lower( ), label2.lower( ) )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-#				dialog.SetDialogProperty( head, str( '%s\n\n%s'% ( line1.center( posLine ), line2 ) ) )
 				dialog.SetDialogProperty( head, str( '%s\n\n%s' % ( line1, line2 ) ) )
 				dialog.doModal( )
 
@@ -1174,7 +1166,7 @@ class ChannelListWindow( BaseWindow ) :
 		#is change?
 		if self.mIsSave :
 			#ask save question
-			head =  MR_LANG( 'Save Changes' )
+			head = MR_LANG( 'Save Changes' )
 			line1 = MR_LANG( 'Do you want to save changes?' )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -1292,9 +1284,9 @@ class ChannelListWindow( BaseWindow ) :
 
 		#sort list, This is fixed
 		self.mListAllChannel = []
-		self.mListAllChannel.append( 'sort by Number' )
-		self.mListAllChannel.append( 'sort by Alphabet' )
-		self.mListAllChannel.append( 'sort by HD/SD' )
+		self.mListAllChannel.append( 'SORT BY NUMBER' )
+		self.mListAllChannel.append( 'SORT BY ALPHABET' )
+		self.mListAllChannel.append( 'SORT BY HD/SD' )
 
 		try :
 			if self.mFlag_EditChanged :
@@ -1355,7 +1347,7 @@ class ChannelListWindow( BaseWindow ) :
 		"""
 
 		#path tree, Mainmenu/Submanu
-		label = MR_LANG( 'Sort By %s' ) % EnumToString( 'sort', self.mUserMode.mSortingMode )
+		label = MR_LANG( 'SORTED BY %s' ) % EnumToString( 'sort', self.mUserMode.mSortingMode )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_PATH, label )
 
 		"""
@@ -1397,7 +1389,6 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mChannelList == None :
 			self.mListItems = None
 			self.mCtrlListCHList.reset( )
-#			label = MR_LANG( 'Empty Channels' )
 			label = MR_LANG( 'No Channels' )			
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, '0' )
@@ -2223,7 +2214,6 @@ class ChannelListWindow( BaseWindow ) :
 		elif aContextAction == CONTEXT_ACTION_MENU_DELETEALL :
 			if self.mFlag_DeleteAll :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-#				dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'Already Delete All' ) )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is nothing in the channel list' ) )				
 	 			dialog.doModal( )
 
@@ -2276,12 +2266,12 @@ class ChannelListWindow( BaseWindow ) :
 			if self.mChannelList :
 
 				if self.mEditFavorite :
-					context.append( ContextItem( '%s'% MR_LANG( 'Add to Favorite Group' ), CONTEXT_ACTION_ADD_TO_FAV  ) )
-					context.append( ContextItem( '%s'% MR_LANG( 'Create New Group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
-					context.append( ContextItem( '%s'% MR_LANG( 'Rename Favorite Group' ), CONTEXT_ACTION_RENAME_FAV ) )
-					context.append( ContextItem( '%s'% MR_LANG( 'Delete Favorite Group' ), CONTEXT_ACTION_DELETE_FAV ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Add to favorite group' ), CONTEXT_ACTION_ADD_TO_FAV  ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Create new group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Rename favorite group' ), CONTEXT_ACTION_RENAME_FAV ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Delete favorite group' ), CONTEXT_ACTION_DELETE_FAV ) )
 				else:
-					context.append( ContextItem( '%s'% MR_LANG( 'Create New Group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
+					context.append( ContextItem( '%s'% MR_LANG( 'Create new group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
 
 			else :
 				head =  MR_LANG( 'Error' )
@@ -2295,10 +2285,10 @@ class ChannelListWindow( BaseWindow ) :
 			if not self.mChannelList :
 				context = []
 
-			context.append( ContextItem( '%s'% MR_LANG( 'Add Favorite Channel Group' ), CONTEXT_ACTION_ADD_TO_CHANNEL ) )
-			context.append( ContextItem( '%s'% MR_LANG( 'Rename Favorite Group' ), CONTEXT_ACTION_RENAME_FAV ) )
+			context.append( ContextItem( '%s'% MR_LANG( 'Add favorite channel group' ), CONTEXT_ACTION_ADD_TO_CHANNEL ) )
+			context.append( ContextItem( '%s'% MR_LANG( 'Rename favorite group' ), CONTEXT_ACTION_RENAME_FAV ) )
 
-		context.append( ContextItem( '%s'% MR_LANG( 'Save and Exit' ), CONTEXT_ACTION_SAVE_EXIT ) )
+		context.append( ContextItem( '%s'% MR_LANG( 'Save and exit' ), CONTEXT_ACTION_SAVE_EXIT ) )
 
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
@@ -2428,8 +2418,8 @@ class ChannelListWindow( BaseWindow ) :
 
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			context = []
-			context.append( ContextItem( MR_LANG( 'Edit Channels' ), CONTEXT_ACTION_MENU_EDIT_MODE ) )
-			context.append( ContextItem( MR_LANG( 'Delete All Channels' ), CONTEXT_ACTION_MENU_DELETEALL ) )
+			context.append( ContextItem( MR_LANG( 'Edit channels' ), CONTEXT_ACTION_MENU_EDIT_MODE ) )
+			context.append( ContextItem( MR_LANG( 'Delete all channels' ), CONTEXT_ACTION_MENU_DELETEALL ) )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 			dialog.SetProperty( context )
@@ -2541,10 +2531,7 @@ class ChannelListWindow( BaseWindow ) :
 				from pvr.GuiHelper import RecordConflict
 				RecordConflict( dialog.GetConflictTimer( ) )
 		else:
-#			msg = 'Already [%s] recording(s) running' %runningCount
-#			msg = MR_LANG( 'You are already recordings [%s] programs' %runningCount )
 			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
-#			xbmcgui.Dialog( ).ok( 'Infomation', msg )
 			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), msg )			
 
 		if isOK :

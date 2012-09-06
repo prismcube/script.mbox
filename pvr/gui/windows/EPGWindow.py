@@ -442,7 +442,6 @@ class EPGWindow( BaseWindow ) :
 			if epg :
 				self.mCtrlTimeLabel.setLabel( '%s~%s' % ( TimeToString( epg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_HH_MM ), TimeToString( epg.mStartTime + self.mLocalOffset+ epg.mDuration, TimeFormatEnum.E_HH_MM ) ) )
 				self.mCtrlDateLabel.setLabel( '%s' % TimeToString( epg.mStartTime + self.mLocalOffset, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
-#				self.mCtrlDurationLabel.setLabel( '%d%s' %( ( epg.mDuration / 60 ), MR_LANG( 'Min' ) ) )
 				self.mCtrlDurationLabel.setLabel( '%d%s' %( ( epg.mDuration / 60 ), MR_LANG( 'mins' ) ) )				
 
 				if epg.mEventDescription and epg.mEventDescription.upper() != '(NULL)' :
@@ -710,7 +709,7 @@ class EPGWindow( BaseWindow ) :
 		selectedEPG = self.GetSelectedEPG( )
 
 		if self.mEPGMode == E_VIEW_CHANNEL :
-			context.append( ContextItem( MR_LANG( 'Select Channel' ), CONTEXT_SELECT_CHANNEL ) )
+			context.append( ContextItem( MR_LANG( 'Select channel' ), CONTEXT_SELECT_CHANNEL ) )
 
 		if selectedEPG :
 			"""
@@ -721,18 +720,18 @@ class EPGWindow( BaseWindow ) :
 			"""
 			timer = self.GetTimerByEPG( selectedEPG )
 			if timer :
-				context.append( ContextItem( MR_LANG( 'Edit Timer' ), CONTEXT_EDIT_TIMER ) )
-				context.append( ContextItem( MR_LANG( 'Delete Timer' ), CONTEXT_DELETE_TIMER ) )
+				context.append( ContextItem( MR_LANG( 'Edit timer' ), CONTEXT_EDIT_TIMER ) )
+				context.append( ContextItem( MR_LANG( 'Delete timer' ), CONTEXT_DELETE_TIMER ) )
 			else:
-				context.append( ContextItem( MR_LANG( 'Add Timer' ), CONTEXT_ADD_EPG_TIMER ) )
-				context.append( ContextItem( MR_LANG( 'Add Manual Timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
+				context.append( ContextItem( MR_LANG( 'Add timer' ), CONTEXT_ADD_EPG_TIMER ) )
+				context.append( ContextItem( MR_LANG( 'Add manual timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
 
 			if 	self.mTimerList and len( self.mTimerList ) > 0 :
-				context.append( ContextItem( MR_LANG( 'Delete All Timers' ), CONTEXT_DELETE_ALL_TIMERS ) )
-				context.append( ContextItem( MR_LANG( 'Show All Timers' ), CONTEXT_SHOW_ALL_TIMERS ) )
+				context.append( ContextItem( MR_LANG( 'Delete all timers' ), CONTEXT_DELETE_ALL_TIMERS ) )
+				context.append( ContextItem( MR_LANG( 'Show all timers' ), CONTEXT_SHOW_ALL_TIMERS ) )
 
 			context.append( ContextItem( MR_LANG( 'Search' ), CONTEXT_SEARCH ) )					
-			context.append( ContextItem( MR_LANG( 'Extend Infomation' ), CONTEXT_EXTEND_INFOMATION ) )		
+			context.append( ContextItem( MR_LANG( 'Extend infomation' ), CONTEXT_EXTEND_INFOMATION ) )		
 
 		else :
 			timer = None
@@ -744,14 +743,14 @@ class EPGWindow( BaseWindow ) :
 					timer = self.GetTimerByChannel( channel )
 
 			if timer :
-				context.append( ContextItem( MR_LANG( 'Edit Timer' ), CONTEXT_EDIT_TIMER ) )
-				context.append( ContextItem( MR_LANG( 'Delete Timer' ), CONTEXT_DELETE_TIMER ) )
+				context.append( ContextItem( MR_LANG( 'Edit timer' ), CONTEXT_EDIT_TIMER ) )
+				context.append( ContextItem( MR_LANG( 'Delete timer' ), CONTEXT_DELETE_TIMER ) )
 			else :
-				context.append( ContextItem( MR_LANG( 'Add Manual Timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
+				context.append( ContextItem( MR_LANG( 'Add manual timer' ), CONTEXT_ADD_MANUAL_TIMER ) )
 
 			if 	self.mTimerList and len( self.mTimerList ) > 0 :
-				context.append( ContextItem( MR_LANG( 'Delete All Timers' ), CONTEXT_DELETE_ALL_TIMERS ) )	
-				context.append( ContextItem( MR_LANG( 'Show All Timers' ), CONTEXT_SHOW_ALL_TIMERS ) )				
+				context.append( ContextItem( MR_LANG( 'Delete all timers' ), CONTEXT_DELETE_ALL_TIMERS ) )	
+				context.append( ContextItem( MR_LANG( 'Show all timers' ), CONTEXT_SHOW_ALL_TIMERS ) )				
 
 			context.append( ContextItem( MR_LANG( 'Search' ), CONTEXT_SEARCH ) )
 
@@ -957,14 +956,12 @@ class EPGWindow( BaseWindow ) :
 
 	def ShowSearchDialog( self ) :
 		try :
-#			kb = xbmc.Keyboard( '', 'Search', False )
-			kb = xbmc.Keyboard( '', MR_LANG( 'Enter serach keywords' ), False )			
+			kb = xbmc.Keyboard( '', MR_LANG( 'Enter search keywords here' ), False )			
 			kb.doModal( )
 			if kb.isConfirmed( ) :
 				keyword = kb.getText( )
 				LOG_TRACE( 'keyword len=%d' %len( keyword ) )
 				if len( keyword ) < MININUM_KEYWORD_SIZE :
-#					xbmcgui.Dialog( ).ok('Infomation', 'Input more than %d characters' %MININUM_KEYWORD_SIZE )
 					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'A search keyword must be at least %d characters long' ) %MININUM_KEYWORD_SIZE )
 					return
 					
@@ -989,7 +986,6 @@ class EPGWindow( BaseWindow ) :
 		 			return
 		 		else :
 					dialog = xbmcgui.Dialog( )
-#					select = dialog.select( 'Select event', searchList )
 		 			select = dialog.select( 'Select Event', searchList )
 
 					if select >= 0 and select < len( searchList ) :
