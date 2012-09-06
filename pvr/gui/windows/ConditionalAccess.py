@@ -24,7 +24,7 @@ class ConditionalAccess( SettingWindow ) :
 			smartCardName = 'CONAX - %s' % smartCard.card_number
 		else :
 			smartCardName = MR_LANG( 'Not inserted' )
-		self.AddInputControl( E_Input01, MR_LANG( 'Smartcard Information' ), '%s' % smartCardName, MR_LANG( 'View smartcard information' ) )
+		self.AddInputControl( E_Input01, MR_LANG( 'Smartcard Information' ), '%s' % smartCardName, MR_LANG( 'View Smartcard information' ) )
 
 		camName = MR_LANG( 'Not inserted' )
 		if self.mCommander.Cicam_IsInserted( CAS_SLOT_NUM_1 ) == True :
@@ -32,7 +32,7 @@ class ConditionalAccess( SettingWindow ) :
 			camName = cardinfo.mName
 		self.AddInputControl( E_Input02, MR_LANG( 'CAM Information' ), '%s' % camName, MR_LANG( 'View CAM information' ) )
 		
-		self.AddInputControl( E_Input03, MR_LANG( 'PIN Code Modification' ), '', MR_LANG( 'Change pin code' ) )
+		self.AddInputControl( E_Input03, MR_LANG( 'Change PIN Code' ), '', MR_LANG( 'Change your PIN code' ) )
 		self.AddInputControl( E_Input04, MR_LANG( 'Maturity Rating' ), '', MR_LANG( 'Access maturity rating' ) )
 		self.AddInputControl( E_Input05, MR_LANG( 'Operator Message' ), '', MR_LANG( 'View operator message' ) )
 		

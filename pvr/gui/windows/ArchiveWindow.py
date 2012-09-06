@@ -270,13 +270,13 @@ class ArchiveWindow( BaseWindow ) :
 			LOG_WARN( 'Unknown view mode' )
 
 		if self.mSortMode == E_SORT_DATE :
-			self.mCtrlSortMode.setLabel( '%s: %s' %( MR_LANG( 'SORT' ), MR_LANG( 'DATE' ) ) )
+			self.mCtrlSortMode.setLabel( '%s: %s' %( MR_LANG( 'SORT BY' ), MR_LANG( 'DATE' ) ) )
 		elif self.mSortMode == E_SORT_CHANNEL :
-			self.mCtrlSortMode.setLabel( '%s: %s' %( MR_LANG( 'SORT' ), MR_LANG( 'CHANNEL' ) ) )		
+			self.mCtrlSortMode.setLabel( '%s: %s' %( MR_LANG( 'SORT BY' ), MR_LANG( 'CHANNEL' ) ) )		
 		elif self.mSortMode == E_SORT_TITLE :
-			self.mCtrlSortMode.setLabel( '%s: %s' %( MR_LANG( 'SORT' ), MR_LANG( 'TITLE' ) ) )		
+			self.mCtrlSortMode.setLabel( '%s: %s' %( MR_LANG( 'SORT BY' ), MR_LANG( 'TITLE' ) ) )		
 		elif self.mSortMode == E_SORT_DURATION :
-			self.mCtrlSortMode.setLabel( '%s: %s' %( MR_LANG( 'SORT' ), MR_LANG( 'DURATION') ) )
+			self.mCtrlSortMode.setLabel( '%s: %s' %( MR_LANG( 'SORT BY' ), MR_LANG( 'DURATION') ) )
 		else :
 			LOG_WARN( 'Unknown sort mode' )
 
@@ -619,10 +619,10 @@ class ArchiveWindow( BaseWindow ) :
 			
 			if markedList and len( markedList ) > 0 :
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_DELETE ) )
-				context.append( ContextItem( MR_LANG( 'Delete All' ), CONTEXT_DELETE_ALL ) )
+				context.append( ContextItem( MR_LANG( 'Delete all' ), CONTEXT_DELETE_ALL ) )
 				context.append( ContextItem( MR_LANG( 'Lock' ), CONTEXT_LOCK ) )
 				context.append( ContextItem( MR_LANG( 'Unlock' ), CONTEXT_UNLOCK ) )	
-				context.append( ContextItem( MR_LANG( 'Remove Selections' ), CONTEXT_CLEAR_MARK ) )	
+				context.append( ContextItem( MR_LANG( 'Remove selections' ), CONTEXT_CLEAR_MARK ) )	
 				
 			elif selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
 				recordInfo = self.mRecordList[ selectedPos ]
@@ -633,14 +633,14 @@ class ArchiveWindow( BaseWindow ) :
 				context.append( ContextItem( MR_LANG( 'Resume from %s' %(TimeToString( int( playOffset / 1000 ), TimeFormatEnum.E_HH_MM_SS ) )), CONTEXT_RESUME_FROM ) )
 				context.append( ContextItem( MR_LANG( 'Play from beginning' ), CONTEXT_PLAY_FROM_BEGINNIG ) )
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_DELETE ) )
-				context.append( ContextItem( MR_LANG( 'Delete All' ), CONTEXT_DELETE_ALL ) )				
+				context.append( ContextItem( MR_LANG( 'Delete all' ), CONTEXT_DELETE_ALL ) )				
 				if recordInfo.mLocked:
 					context.append( ContextItem( MR_LANG( 'Unlock' ), CONTEXT_UNLOCK ) )
 				else :
 					context.append( ContextItem( MR_LANG( 'Lock' ), CONTEXT_LOCK ) )
 
 				context.append( ContextItem( MR_LANG( 'Rename' ), CONTEXT_RENAME ) )
-				context.append( ContextItem( MR_LANG( 'Multi-Select' ), CONTEXT_START_MARK ) )
+				context.append( ContextItem( MR_LANG( 'Multi-select' ), CONTEXT_START_MARK ) )
 
 			else :
 				return

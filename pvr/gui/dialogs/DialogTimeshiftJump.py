@@ -141,7 +141,7 @@ class DialogTimeshiftJump( BaseDialog ) :
 			#LOG_TRACE('move time[%s] iframe[%s] progress[%s]'% (lbl_timeP, self.mJumpIFrame, self.mMoveToNumber) )
 		else :
 #			lbl_timeP = MR_LANG( 'Move Fail' )
-			lbl_timeP = MR_LANG( 'Preview move has failed' )			
+			lbl_timeP = MR_LANG( 'Move failed' )			
 
 		self.SetLabelMoveToTime( lbl_timeP )
 		self.SetPogress( int( self.mMoveToNumber ) )

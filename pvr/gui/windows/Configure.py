@@ -295,7 +295,7 @@ class Configure( SettingWindow ) :
 
 			ElisPropertyInt( 'PinCode', self.mCommander ).SetProp( int( newpin ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Change PIN code' ), MR_LANG( 'PIN code has been changed successfully' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Change PIN code' ), MR_LANG( 'Your PIN code has been changed successfully' ) )
  			dialog.doModal( )
 
  		elif selectedId == E_FACTORY_RESET and groupId == E_Input01 :
@@ -405,7 +405,7 @@ class Configure( SettingWindow ) :
 			self.AddInputControl( E_Input01, MR_LANG( 'Edit Parental Settings' ), '', MR_LANG( 'Enter your PIN code to change the parental settings' ) )
 			self.AddEnumControl( E_SpinEx01, 'Lock Mainmenu', MR_LANG( ' - Lock Main Menu' ), MR_LANG( 'Set a restriction for the main menu' ) )
 			self.AddEnumControl( E_SpinEx02, 'Age Restricted', MR_LANG( ' - Age Limit'), MR_LANG( 'Set an access restriction to chosen channels' ) )
-			self.AddInputControl( E_Input02, MR_LANG( ' - Change PIN Code' ), '', MR_LANG( 'Change the current PIN code' ) )
+			self.AddInputControl( E_Input02, MR_LANG( ' - Change PIN Code' ), '', MR_LANG( 'Change your PIN code' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_Input01, E_SpinEx02, E_Input02 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -588,7 +588,7 @@ class Configure( SettingWindow ) :
 			#self.AddEnumControl( E_SpinEx01, 'Reset Channel List', None, MR_LANG( 'Your channel list will be restored to default' ) )
 			#self.AddEnumControl( E_SpinEx02, 'Reset Favorite Add-ons', None, MR_LANG( 'All your favorite add-ons will be deleted after factory reset' ) )
 			#self.AddEnumControl( E_SpinEx03, 'Reset Configure Setting', MR_LANG( 'Reset Configuration Setting' ), MR_LANG( 'User settings you have set will be restored to default' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Start Factory Reset'), '', MR_LANG( 'Go to First Installation after restoring your system to the factory default' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Start Factory Reset'), '', MR_LANG( 'Go to First Installation after restoring system to the factory default' ) )
 
 			visibleControlIds = [ E_Input01 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -762,7 +762,6 @@ class Configure( SettingWindow ) :
 			if self.mTempNetworkType == NET_STATIC :
 				if self.mTempIpAddr == 'None' or self.mTempSubNet == 'None' or self.mTempGateway == 'None' or self.mTempDns == 'None' :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-#					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough information' ) )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Invalid IP address' ) )					
 					dialog.doModal( )
 					return

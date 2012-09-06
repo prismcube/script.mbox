@@ -532,14 +532,12 @@ class DialogAddManualTimer( SettingDialog ) :
 
 	def ShowRecordName( self ) :
 		try :
-#			kb = xbmc.Keyboard( self.mRecordName, 'Change Record Name', False )
 			kb = xbmc.Keyboard( self.mRecordName, MR_LANG( 'Rename timer' ), False )			
 			kb.doModal( )
 			if kb.isConfirmed( ) :
 				keyword = kb.getText( )
 				LOG_TRACE( 'keyword len=%d' %len( keyword ) )
 				if len( keyword ) < MININUM_KEYWORD_SIZE :
-#					xbmcgui.Dialog( ).ok('Infomation', 'Input more than %d characters' %MININUM_KEYWORD_SIZE )
 					xbmcgui.Dialog( ).ok( MR_LANG( 'Error' ), MR_LANG( 'A timer name must be at least %d characters long' ) %MININUM_KEYWORD_SIZE )					
 					return
 
@@ -667,7 +665,6 @@ class DialogAddManualTimer( SettingDialog ) :
 			if self.mRecordingMode == E_ONCE :
 				startTime = self.mWeeklyStart + self.mUsedWeeklyList[0].mStartTime
 				if  startTime + self.mUsedWeeklyList[0].mDuration < self.mDataCache.Datetime_GetLocalTime( ) :
-#					self.mErrorMessage = MR_LANG( 'Already Passed' )
 					self.mErrorMessage = MR_LANG( 'The time you entered has already passed' )					
 					return False
 
@@ -760,7 +757,6 @@ class DialogAddManualTimer( SettingDialog ) :
 				else :
 					strStartTime = TimeToString( self.mUsedWeeklyList[0].mStartTime, TimeFormatEnum.E_HH_MM )			
 
-#			strStartTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Input Time', strStartTime )
 			strStartTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, MR_LANG( 'Enter the start time' ), strStartTime )			
 
 			tempList = strStartTime.split( ':', 1 )
@@ -816,7 +812,6 @@ class DialogAddManualTimer( SettingDialog ) :
 				else :
 					strEndTime = TimeToString( self.mUsedWeeklyList[0].mStartTime + self.mUsedWeeklyList[0].mDuration, TimeFormatEnum.E_HH_MM )			
 
-#			strEndTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Input Time', strEndTime )		
 			strEndTime = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_TIME, 'Enter the end time', strEndTime )	
 
 			tempList = strEndTime.split( ':', 1 )
