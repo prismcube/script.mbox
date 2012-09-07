@@ -196,13 +196,13 @@ class DialogBookmark( BaseDialog ) :
 
 			if markedList and len( markedList ) > 1 :
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_DELETE ) )
-				context.append( ContextItem( MR_LANG( 'Delete All' ), CONTEXT_DELETE_ALL ) )
-				context.append( ContextItem( MR_LANG( 'Remove Selections' ), CONTEXT_CLEAR_MARK ) )	
+				context.append( ContextItem( MR_LANG( 'Delete all' ), CONTEXT_DELETE_ALL ) )
+				context.append( ContextItem( MR_LANG( 'Remove selections' ), CONTEXT_CLEAR_MARK ) )	
 
 			else :
 				context.append( ContextItem( MR_LANG( 'Resume from %s'% ( TimeToString( int( playOffset / 1000 ), TimeFormatEnum.E_AH_MM_SS ) )), CONTEXT_RESUME_FROM ) )
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_DELETE ) )
-				context.append( ContextItem( MR_LANG( 'Multi-Select' ), CONTEXT_START_MARK ) )
+				context.append( ContextItem( MR_LANG( 'Multi-select' ), CONTEXT_START_MARK ) )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 			dialog.SetProperty( context )
