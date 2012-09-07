@@ -43,9 +43,6 @@ PREV_CHANNEL	= 2
 INIT_CHANNEL	= 3
 
 
-CONTEXT_ACTION_VIDEO_SETTING = 1 
-CONTEXT_ACTION_AUDIO_SETTING = 2
-
 class LivePlate( LivePlateWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		LivePlateWindow.__init__( self, *args, **kwargs )
@@ -774,6 +771,8 @@ class LivePlate( LivePlateWindow ) :
 
 			#xbmcgui.Dialog().select( 'CHANNEL LIST', ['test1','test2'] )
 			"""
+
+			
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
 			msg1 = 'Subtitle'
