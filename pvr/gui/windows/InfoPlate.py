@@ -42,8 +42,6 @@ FLAG_CLOCKMODE_INTTIME = 5
 #PREV_CHANNEL	= 2
 #INIT_CHANNEL	= 3
 
-CONTEXT_ACTION_VIDEO_SETTING = 1 
-CONTEXT_ACTION_AUDIO_SETTING = 2
 
 class InfoPlate( LivePlateWindow ) :
 	def __init__( self, *args, **kwargs ) :
