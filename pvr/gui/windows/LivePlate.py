@@ -772,8 +772,6 @@ class LivePlate( LivePlateWindow ) :
 			#xbmcgui.Dialog().select( 'CHANNEL LIST', ['test1','test2'] )
 			"""
 
-			
-
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
 			msg1 = 'Subtitle'
 			msg2 = 'test'
