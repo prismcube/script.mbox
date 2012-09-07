@@ -80,7 +80,7 @@ class DialogBookmark( BaseDialog ) :
 		elif actionId == Action.ACTION_PARENT_DIR :
 			if self.mMarkList and len( self.mMarkList ) > 0 :
 				self.DoClearMark( )
-				self.mMarkList = None
+				self.mMarkList = []
 			else :
 				self.Close( )
 
@@ -106,7 +106,7 @@ class DialogBookmark( BaseDialog ) :
 			self.Close( )
 
 		elif aControlId == E_CONTROL_ID_LIST :
-			if	self.mMarkMode == True :
+			if self.mMarkMode == True :
 				self.DoMarkToggle( )
 			else :
 				self.StartBookmarkPlayback( )
@@ -195,14 +195,14 @@ class DialogBookmark( BaseDialog ) :
 			markedList = self.GetSelectedList( )
 
 			if markedList and len( markedList ) > 1 :
-				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_DELETE ) )
-				context.append( ContextItem( MR_LANG( 'Delete All' ), CONTEXT_DELETE_ALL ) )
-				context.append( ContextItem( MR_LANG( 'Remove Selections' ), CONTEXT_CLEAR_MARK ) )	
+				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
+				context.append( ContextItem( MR_LANG( 'Delete all' ), CONTEXT_ACTION_DELETE_ALL ) )
+				context.append( ContextItem( MR_LANG( 'Remove selections' ), CONTEXT_ACTION_CLEAR_MARK ) )	
 
 			else :
-				context.append( ContextItem( MR_LANG( 'Resume from %s'% ( TimeToString( int( playOffset / 1000 ), TimeFormatEnum.E_AH_MM_SS ) )), CONTEXT_RESUME_FROM ) )
-				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_DELETE ) )
-				context.append( ContextItem( MR_LANG( 'Multi-Select' ), CONTEXT_START_MARK ) )
+				context.append( ContextItem( MR_LANG( 'Resume from %s'% ( TimeToString( int( playOffset / 1000 ), TimeFormatEnum.E_AH_MM_SS ) )), CONTEXT_ACTION_RESUME_FROM ) )
+				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
+				context.append( ContextItem( MR_LANG( 'Multi-select' ), CONTEXT_ACTION_START_MARK ) )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 			dialog.SetProperty( context )
@@ -218,19 +218,19 @@ class DialogBookmark( BaseDialog ) :
 	def DoContextAction( self, aContextAction ) :
 		LOG_TRACE( 'aContextAction=%d' %aContextAction )
 
-		if aContextAction == CONTEXT_RESUME_FROM :
+		if aContextAction == CONTEXT_ACTION_RESUME_FROM :
 			self.StartBookmarkPlayback( )
 
-		elif aContextAction == CONTEXT_DELETE :
+		elif aContextAction == CONTEXT_ACTION_DELETE :
 			self.DoDeleteConfirm()
 
-		elif aContextAction == CONTEXT_DELETE_ALL :
+		elif aContextAction == CONTEXT_ACTION_DELETE_ALL :
 			self.ShowDeleteAllConfirm()
 
-		elif aContextAction == CONTEXT_START_MARK :
+		elif aContextAction == CONTEXT_ACTION_START_MARK :
 			self.DoStartMark( )
 
-		elif aContextAction == CONTEXT_CLEAR_MARK :
+		elif aContextAction == CONTEXT_ACTION_CLEAR_MARK :
 			self.DoClearMark( )
 		else :
 			LOG_ERR( 'Unknown Context Action' )
@@ -285,14 +285,13 @@ class DialogBookmark( BaseDialog ) :
 
 	def DoClearMark( self ) :
 		self.mMarkMode = False
+		self.mMarkList = []
 
 		if self.mListItems == None :
 			return
  
 		for listItem in self.mListItems :
 			listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_FALSE )
-
-		self.mMarkList = []
 
 
 	def DoMarkToggle( self ) :

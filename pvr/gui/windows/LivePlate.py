@@ -43,9 +43,6 @@ PREV_CHANNEL	= 2
 INIT_CHANNEL	= 3
 
 
-CONTEXT_ACTION_VIDEO_SETTING = 1 
-CONTEXT_ACTION_AUDIO_SETTING = 2
-
 class LivePlate( LivePlateWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		LivePlateWindow.__init__( self, *args, **kwargs )

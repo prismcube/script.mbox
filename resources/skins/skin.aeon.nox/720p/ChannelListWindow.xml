@@ -365,8 +365,8 @@
 						<texture flipx="true" flipy="true" border="0,0,32,0">home/timepanel_mid.png</texture>
 					</control-->
 					<control type="label" id="21">
-						<posx>765</posx>
-						<posy>50</posy>
+						<posx>719</posx>
+						<posy>51</posy>
 						<width>200</width>
 						<height>28</height>
 						<font>Font_Reg17_Caps</font>
@@ -375,17 +375,17 @@
 						<label>$INFO[ListItem.Label]</label>
 					</control>
 					<control type="image">
-						<posx>570</posx>
-						<posy>50</posy>
+						<posx>719</posx>
+						<posy>49</posy>
 						<width>50</width>
 						<height>25</height>
 						<texture>tv.png</texture>
 						<visible>!Control.IsVisible(8800)</visible>
 					</control>
 					<control type="image">
-						<posx>570</posx>
-						<posy>50</posy>
-						<width>50</width>
+						<posx>720</posx>
+						<posy>48</posy>
+						<width>46</width>
 						<height>25</height>
 						<texture>icon_radio2.png</texture>
 						<visible>Control.IsVisible(8800)</visible>
@@ -801,7 +801,7 @@
 							<visible>true</visible>
 						</item>
 						<item id="4">
-							<label>FAVORITE</label>
+							<label>FAVORITES</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>

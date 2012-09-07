@@ -1,7 +1,5 @@
 from pvr.gui.WindowImport import *
 
-CONTEXT_ACTION_VIDEO_SETTING = 1
-CONTEXT_ACTION_AUDIO_SETTING = 2
 MAIN_GROUP_ID = 8000
 
 class DialogSetAudioVideo( SettingDialog ) :
