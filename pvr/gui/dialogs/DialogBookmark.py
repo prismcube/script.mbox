@@ -9,6 +9,11 @@ DIALOG_HEADER_LABEL2_ID = 3805
 DIALOG_BUTTON_OK_ID = 3802
 DIALOG_LABEL_POS_ID = 3803
 
+CONTEXT_RESUME_FROM	= 0
+CONTEXT_DELETE		= 1
+CONTEXT_DELETE_ALL	= 2
+CONTEXT_START_MARK	= 3
+CONTEXT_CLEAR_MARK	= 4
 
 class DialogBookmark( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
@@ -190,14 +195,14 @@ class DialogBookmark( BaseDialog ) :
 			markedList = self.GetSelectedList( )
 
 			if markedList and len( markedList ) > 1 :
-				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
-				context.append( ContextItem( MR_LANG( 'Delete All' ), CONTEXT_ACTION_DELETE_ALL ) )
-				context.append( ContextItem( MR_LANG( 'Remove Selections' ), CONTEXT_ACTION_CLEAR_MARK ) )	
+				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_DELETE ) )
+				context.append( ContextItem( MR_LANG( 'Delete all' ), CONTEXT_DELETE_ALL ) )
+				context.append( ContextItem( MR_LANG( 'Remove selections' ), CONTEXT_CLEAR_MARK ) )	
 
 			else :
-				context.append( ContextItem( MR_LANG( 'Resume from %s'% ( TimeToString( int( playOffset / 1000 ), TimeFormatEnum.E_AH_MM_SS ) )), CONTEXT_ACTION_RESUME_FROM ) )
-				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
-				context.append( ContextItem( MR_LANG( 'Multi-Select' ), CONTEXT_ACTION_START_MARK ) )
+				context.append( ContextItem( MR_LANG( 'Resume from %s'% ( TimeToString( int( playOffset / 1000 ), TimeFormatEnum.E_AH_MM_SS ) )), CONTEXT_RESUME_FROM ) )
+				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_DELETE ) )
+				context.append( ContextItem( MR_LANG( 'Multi-select' ), CONTEXT_START_MARK ) )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 			dialog.SetProperty( context )
@@ -213,19 +218,19 @@ class DialogBookmark( BaseDialog ) :
 	def DoContextAction( self, aContextAction ) :
 		LOG_TRACE( 'aContextAction=%d' %aContextAction )
 
-		if aContextAction == CONTEXT_ACTION_RESUME_FROM :
+		if aContextAction == CONTEXT_RESUME_FROM :
 			self.StartBookmarkPlayback( )
 
-		elif aContextAction == CONTEXT_ACTION_DELETE :
+		elif aContextAction == CONTEXT_DELETE :
 			self.DoDeleteConfirm()
 
-		elif aContextAction == CONTEXT_ACTION_DELETE_ALL :
+		elif aContextAction == CONTEXT_DELETE_ALL :
 			self.ShowDeleteAllConfirm()
 
-		elif aContextAction == CONTEXT_ACTION_START_MARK :
+		elif aContextAction == CONTEXT_START_MARK :
 			self.DoStartMark( )
 
-		elif aContextAction == CONTEXT_ACTION_CLEAR_MARK :
+		elif aContextAction == CONTEXT_CLEAR_MARK :
 			self.DoClearMark( )
 		else :
 			LOG_ERR( 'Unknown Context Action' )
