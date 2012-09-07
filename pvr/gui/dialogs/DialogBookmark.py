@@ -39,31 +39,6 @@ class DialogBookmark( BaseDialog ) :
 		self.InitList( )
 		self.mEventBus.Register( self )
 
-		"""
-		thumbnaillist = []
-		thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/bookmark', 'record_thumbnail_%d_*.jpg' % 7692 ) )
-		icon=[]
-		icon.append('IconNotAvailable.png')
-		icon.append('RecIconSample.png')
-		icon.append(thumbnaillist[0])
-
-		self.mListItems = []
-		for i in range(10) :
-			listItem = xbmcgui.ListItem( '%s %d'%( 'Offset', i ) )
-			listItem.setProperty( 'RecIcon',     icon[i%3] )
-			listItem.setProperty( 'RecTotal',    '%s'% (TimeToString( (i+1)*20, TimeFormatEnum.E_AH_MM_SS )) )
-			listItem.setProperty( 'RecDate',     '%s'% (TimeToString( time.time(), TimeFormatEnum.E_AW_DD_MM_YYYY )) )
-			listItem.setProperty( 'RecDuration', '%sm'% i )
-			listItem.setProperty( 'percent', '%s'% ( ((i%3)+1) * 20) )
-			listItem.setProperty( 'iPos', 'True' )
-			self.mListItems.append( listItem )
-
-			self.mBookmarkList.append( icon[ i % 3 ] )
-		self.mCtrlList.addItems( self.mListItems )
-
-		idx = self.mCtrlList.getSelectedPosition( )
-		self.mCtrlPos.setLabel( '%s'% ( idx + 1 ) )
-		"""
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -113,6 +88,7 @@ class DialogBookmark( BaseDialog ) :
 				self.Close( )
 
 		elif aControlId == DIALOG_BUTTON_OK_ID :
+			self.StartBookmarkPlayback( )
 			self.Close( )		
 
 
@@ -150,6 +126,10 @@ class DialogBookmark( BaseDialog ) :
 		self.mCtrlPos.setLabel( '%s'% ( idx + 1 ) )
 
 
+	def SortByOffset( self, aFile1, aFile2 ) :
+		return cmp( aFile1, aFile2 )
+
+	
 	def BookmarkItems( self ) :
 		self.mTitle = 'P%04d.%s'% ( self.mRecordInfo.mChannelNo, self.mRecordInfo.mChannelName )
 		startTime = self.mRecordInfo.mStartTime
@@ -163,14 +143,20 @@ class DialogBookmark( BaseDialog ) :
 		if self.mBookmarkList == None or len( self.mBookmarkList ) < 1 :
 			return 
 
+		#LOG_TRACE('bookmark[%s]'% ClassToList('convert', self.mBookmarkList) )
+
 		thumbnaillist = []
-		thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/bookmark', 'record_thumbnail_%d_*.jpg' % self.mRecordInfo.mRecordKey ) )
+		thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/bookmark/%d'% self.mRecordInfo.mRecordKey, 'record_bookmark_%d_*.jpg' % self.mRecordInfo.mRecordKey ) )
+
+		thumbnaillist.sort( self.SortByOffset )
+		LOG_TRACE('thumnail[%s]'% thumbnaillist )
 
 		for idx in range( len( self.mBookmarkList ) ) :
 			
 			listItem = xbmcgui.ListItem( '%s'% TimeToString( self.mBookmarkList[idx].mTimeMs / 1000, TimeFormatEnum.E_AH_MM_SS ) )
 
-			listItem.setProperty( 'RecIcon',     thumbnaillist[idx] )
+			if thumbnaillist and len( thumbnaillist ) > 0 and idx < len( thumbnaillist ) :
+				listItem.setProperty( 'RecIcon',     thumbnaillist[idx] )
 			listItem.setProperty( 'RecTotal',    '%s'% TimeToString( duration, TimeFormatEnum.E_AH_MM_SS ) )
 			listItem.setProperty( 'RecDate',     TimeToString( self.mRecordInfo.mStartTime ) )
 			listItem.setProperty( 'RecDuration', '%dm' % ( duration / 60 ) )
@@ -251,13 +237,13 @@ class DialogBookmark( BaseDialog ) :
 
 	def DoDeleteConfirm( self ) :
 		selectedPos = self.mCtrlList.getSelectedPosition( )
-		playOffset = self.mBookmarkList[selectedPos].mTimeMs
+		playOffset = self.mBookmarkList[selectedPos].mOffset
 
 		if not self.mMarkList :
 			self.mMarkList.append( selectedPos )
 
 		for idx in self.mMarkList :
-			playOffset = self.mBookmarkList[idx].mTimeMs
+			playOffset = self.mBookmarkList[idx].mOffset
 			ret = self.mDataCache.Player_DeleteBookmark( self.mRecordInfo.mRecordKey, playOffset )
 			LOG_TRACE( 'bookmark delete[%s]'% ret )
 
