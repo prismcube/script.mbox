@@ -80,7 +80,7 @@ class DialogBookmark( BaseDialog ) :
 		elif actionId == Action.ACTION_PARENT_DIR :
 			if self.mMarkList and len( self.mMarkList ) > 0 :
 				self.DoClearMark( )
-				self.mMarkList = None
+				self.mMarkList = []
 			else :
 				self.Close( )
 
@@ -106,7 +106,7 @@ class DialogBookmark( BaseDialog ) :
 			self.Close( )
 
 		elif aControlId == E_CONTROL_ID_LIST :
-			if	self.mMarkMode == True :
+			if self.mMarkMode == True :
 				self.DoMarkToggle( )
 			else :
 				self.StartBookmarkPlayback( )
@@ -285,14 +285,13 @@ class DialogBookmark( BaseDialog ) :
 
 	def DoClearMark( self ) :
 		self.mMarkMode = False
+		self.mMarkList = []
 
 		if self.mListItems == None :
 			return
  
 		for listItem in self.mListItems :
 			listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_FALSE )
-
-		self.mMarkList = []
 
 
 	def DoMarkToggle( self ) :
