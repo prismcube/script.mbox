@@ -81,6 +81,9 @@ class AntennaSetup( SettingWindow ) :
 					self.SetParentID( WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).GetParentID( ) )
 					ConfigMgr.GetInstance( ).SetFristInstallation( False )
 					self.mTunerMgr.SyncChannelBySatellite( )
+					self.mDataCache.Channel_ReLoad( )
+					self.mDataCache.Channel_TuneDefault( )
+					self.mDataCache.Player_AVBlank( False )
 					self.CloseWindow( )
 
 			else :

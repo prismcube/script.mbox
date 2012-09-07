@@ -63,8 +63,14 @@ class TunerConfiguration( SettingWindow ) :
 
 					if ret >= 0 :
 						self.OpenBusyDialog( )
-						self.mTunerMgr.AddConfiguredSatellite( ret )
-						self.AfterAction( )
+						if self.CheckSameSatellite( ret ) :
+							self.mTunerMgr.AddConfiguredSatellite( ret )
+							self.AfterAction( )
+					 	else :
+					 		self.CloseBusyDialog( )
+					 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+							dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Same satellite already configured' ) )
+				 			dialog.doModal( )
 
 	 		elif self.mConfiguredCount + 1 == position :
 	 			if self.mConfiguredCount <= 0 :
@@ -105,7 +111,7 @@ class TunerConfiguration( SettingWindow ) :
 						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED_12 )
 
 					elif tunertype == E_MOTORIZE_USALS :
-						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED_USALS2 )
+						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_SIMPLE )
 
 				else :
 					LOG_ERR( 'ERR : Can not find configured satellite' )
@@ -147,4 +153,12 @@ class TunerConfiguration( SettingWindow ) :
 		if iChannel :
 			self.mDataCache.Channel_InvalidateCurrent( )
 			self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
-		
+
+
+	def CheckSameSatellite( self, aIndex ) :
+		ConfiguredSatelliteList = self.mTunerMgr.GetConfiguredSatelliteList( )
+		AllSatelliteList = self.mDataCache.GetAllSatelliteList( )
+		for satellite in ConfiguredSatelliteList :
+			if satellite.mSatelliteLongitude == AllSatelliteList[aIndex].mLongitude and satellite.mBandType == AllSatelliteList[aIndex].mBand :
+				return False
+		return True

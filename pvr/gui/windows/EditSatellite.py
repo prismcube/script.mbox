@@ -102,15 +102,21 @@ class EditSatellite( SettingWindow ) :
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.OpenBusyDialog( )
 				longitude, band, satelliteName = dialog.GetValue( )
-				ret = self.mCommander.Satellite_Add( longitude, band, satelliteName )
-				if ret :
-					self.mDataCache.LoadAllSatellite( )
-					self.InitConfig( )
-		 		else :
-		 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You were unable to add a new satellite in the list' ) )
+				if self.CheckSameSatellite( longitude, band ) == True :
+					ret = self.mCommander.Satellite_Add( longitude, band, satelliteName )
+					if ret :
+						self.mDataCache.LoadAllSatellite( )
+						self.InitConfig( )
+			 		else :
+			 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You were unable to add a new satellite in the list' ) )
+			 			dialog.doModal( )
+			 		self.CloseBusyDialog( )
+			 	else :
+			 		self.CloseBusyDialog( )
+			 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Same satellite already configured' ) )
 		 			dialog.doModal( )
-		 		self.CloseBusyDialog( )
 				 
 		# Delete Satellite
 		elif groupId == E_Input05 :
@@ -183,3 +189,11 @@ class EditSatellite( SettingWindow ) :
 
 		formattedName = '%d.%d %s' % ( int( tmpLongitude / 10 ), tmpLongitude % 10, dir )
 		return formattedName
+
+
+	def CheckSameSatellite( self, aLongitude, aBand ) :
+		AllSatelliteList = self.mDataCache.GetAllSatelliteList( )
+		for satellite in AllSatelliteList :
+			if satellite.mLongitude == aLongitude and satellite.mBand == aBand :
+				return False
+		return True
