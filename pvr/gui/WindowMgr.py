@@ -24,7 +24,6 @@ WIN_ID_TUNER_CONFIGURATION			= 7
 WIN_ID_CONFIG_SIMPLE				= 8
 WIN_ID_CONFIG_MOTORIZED_12			= 9
 WIN_ID_CONFIG_MOTORIZED_USALS		= 10
-WIN_ID_CONFIG_MOTORIZED_USALS2		= 11
 WIN_ID_CONFIG_ONECABLE				= 12
 WIN_ID_CONFIG_ONECABLE_2			= 13
 WIN_ID_CONFIG_DISEQC_10				= 14
@@ -222,9 +221,6 @@ class WindowMgr( object ) :
 			
 			from pvr.gui.windows.SatelliteConfigMotorizedUsals import SatelliteConfigMotorizedUsals
 			self.mWindows[WIN_ID_CONFIG_MOTORIZED_USALS]=SatelliteConfigMotorizedUsals( 'SatelliteConfigMotorizedUsals.xml', self.mScriptDir )
-			
-			from pvr.gui.windows.SatelliteConfigMotorizedUsals2 import SatelliteConfigMotorizedUsals2
-			self.mWindows[WIN_ID_CONFIG_MOTORIZED_USALS2]=SatelliteConfigMotorizedUsals2( 'SatelliteConfigMotorizedUsals2.xml', self.mScriptDir )
 			
 			from pvr.gui.windows.SatelliteConfigMotorized12 import SatelliteConfigMotorized12
 			self.mWindows[WIN_ID_CONFIG_MOTORIZED_12]=SatelliteConfigMotorized12( 'SatelliteConfigMotorized12.xml', self.mScriptDir )

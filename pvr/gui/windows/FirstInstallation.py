@@ -152,6 +152,9 @@ class FirstInstallation( SettingWindow ) :
 		self.mStepNum = E_STEP_SELECT_LANGUAGE
 		ConfigMgr.GetInstance( ).SetFristInstallation( False )
 		self.mTunerMgr.SyncChannelBySatellite( )
+		self.mDataCache.Channel_ReLoad( )
+		self.mDataCache.Channel_TuneDefault( )
+		self.mDataCache.Player_AVBlank( False )
 		self.CloseBusyDialog( )
 		WinMgr.GetInstance( ).CloseWindow( )
 

@@ -41,6 +41,7 @@ class ManualScan( SettingWindow ) :
 			self.mInitialized = True
 			self.SetFocusControl( E_Input01 )
 			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
+			self.mDataCache.Player_AVBlank( False )
 		else :
 			self.SetVisibleControls( hideControlIds, False )
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite is available' ) )
@@ -48,6 +49,7 @@ class ManualScan( SettingWindow ) :
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is no configured satellite in the list' ) )
  			dialog.doModal( )
 			WinMgr.GetInstance( ).CloseWindow( )
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )

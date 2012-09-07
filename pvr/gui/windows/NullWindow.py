@@ -464,7 +464,7 @@ class NullWindow( BaseWindow ) :
 	def PincodeDialogLimit( self, aPincode ) :
 		isUnlock = False
 		try :
-			self.mDataCache.Player_AVBlank( True, False )
+			self.mDataCache.Player_AVBlank( True )
 			msg = MR_LANG( 'Enter your PIN code' )
 			inputPin = ''
 
@@ -484,7 +484,7 @@ class NullWindow( BaseWindow ) :
 
 			if inputPin == str('%s'% aPincode ) :
 				isUnlock = True
-				self.mDataCache.Player_AVBlank( False, False )
+				self.mDataCache.Player_AVBlank( False )
 
 			else:
 				msg1 = MR_LANG( 'Error' )

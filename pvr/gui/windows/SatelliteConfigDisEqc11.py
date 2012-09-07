@@ -10,6 +10,7 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 		self.mSelectedTransponderIndex = 0
 		self.mSelectedIndexLnbType = 0
 		self.mHasTransponder = False
+		self.mAvBlankStatus = False
 
 
 	def onInit( self ) :
@@ -29,6 +30,8 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.InitConfig( )
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
+		self.mAvBlankStatus = self.mDataCache.Get_Player_AVBlank( )
+		self.mDataCache.Player_AVBlank( False )
 		self.mInitialized = True
 		self.setDefaultControl( )
 
@@ -47,6 +50,8 @@ class SatelliteConfigDisEqC11( SettingWindow ) :
 			self.OpenBusyDialog( )
 			self.ResetAllControl( )
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
+			if self.mAvBlankStatus :
+				self.mDataCache.Player_AVBlank( True )
 			self.CloseBusyDialog( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
