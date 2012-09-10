@@ -142,12 +142,15 @@ class ArchiveWindow( BaseWindow ) :
 		self.GlobalAction( actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR or actionId == Action.ACTION_MBOX_ARCHIVE  :
-			self.mDataCache.Player_Stop( )
-			self.mPlayingRecord	= None
-			self.mWin.setProperty( 'PvrPlay', 'False' )
-			self.Close( )
-			self.SetVideoRestore( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+			if self.mMarkMode :
+				self.DoClearMark( )
+			else :
+				self.mDataCache.Player_Stop( )
+				self.mPlayingRecord	= None
+				self.mWin.setProperty( 'PvrPlay', 'False' )
+				self.Close( )
+				self.SetVideoRestore( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_SELECT_ITEM or actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			if focusId == LIST_ID_COMMON_RECORD or focusId == LIST_ID_THUMBNAIL_RECORD or focusId == LIST_ID_POSTERWRAP_RECORD or focusId == LIST_ID_FANART_RECORD :
