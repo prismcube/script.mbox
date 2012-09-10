@@ -47,7 +47,6 @@ E_ONINIT = None
 
 E_DEFAULT_POSY = 25
 E_PROGRESS_WIDTH_MAX = 980
-E_BUTTON_GROUP_PLAYPAUSE = 450
 
 E_INDEX_FIRST_RECORDING = 0
 E_INDEX_SECOND_RECORDING = 1
@@ -121,10 +120,12 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mRepeatTimeout = 1
 		self.mAsyncShiftTimer = None
 		self.mAutomaticHideTimer = None
+		self.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
 
 		self.SetRadioScreen( )
 		self.ShowRecordingInfo( )
 		self.mTimeShiftExcuteTime = self.mDataCache.Datetime_GetLocalTime( )
+
 
 		self.InitLabelInfo( )
 		self.InitTimeShift( )
@@ -233,7 +234,6 @@ class TimeShiftPlate( BaseWindow ) :
 		elif id == Action.ACTION_CONTEXT_MENU :
 			if self.mMode == ElisEnum.E_MODE_PVR :
 				self.Close( )
-				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_INFO_PLATE )
 			else :
 				self.Close( )
@@ -250,9 +250,15 @@ class TimeShiftPlate( BaseWindow ) :
 			self.onClick( E_CONTROL_ID_BUTTON_STOP )
 
 		elif id == Action.ACTION_MBOX_REWIND :
+			if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO or self.mSpeed == 0 :
+				return
+
 			self.onClick( E_CONTROL_ID_BUTTON_REWIND )
 
 		elif id == Action.ACTION_MBOX_FF : #no service
+			if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO or self.mSpeed == 0 :
+				return
+
 			self.onClick( E_CONTROL_ID_BUTTON_FORWARD )
 
 		elif id == Action.ACTION_MBOX_RECORD :
@@ -325,7 +331,9 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mDataCache.mCacheReload = True
 
 		elif aControlId == E_CONTROL_ID_BUTTON_BOOKMARK :
+			self.StopAutomaticHide( )
 			self.ShowDialog( aControlId )
+			self.RestartAutomaticHide( )
 
 
 	def onFocus( self, aControlId ):
@@ -365,16 +373,6 @@ class TimeShiftPlate( BaseWindow ) :
 					
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
-
-
-	def ShowDialog( self, aFocusId ) :
-		head = ''
-		line1= ''
-		if aFocusId == E_CONTROL_ID_BUTTON_BOOKMARK :
-			head = MR_LANG( 'Bookmark' )
-			line1= 'test'
-
-		dialog = xbmcgui.Dialog( ).ok( head, line1 )
 
 
 	def TimeshiftAction( self, aFocusId ) :
@@ -454,11 +452,8 @@ class TimeShiftPlate( BaseWindow ) :
 			return
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_REWIND :
-			if self.mSpeed == 0 :
+			if self.mSpeed == 0 or self.mSpeed <= -6400 :
 				return 
-
-			if self.mSpeed <= -6400 :
-				return
 
 			nextSpeed = 100
 			nextSpeed = self.GetNextSpeed( aFocusId )
@@ -478,11 +473,8 @@ class TimeShiftPlate( BaseWindow ) :
 				#LOG_WARN( 'status =%d ret[%s], player_SetSpeed[%s]'% ( self.mMode , ret, nextSpeed ) )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_FORWARD :
-			if self.mSpeed == 0 :
-				return
-
-			if self.mSpeed >= 6400 :
-				return
+			if self.mSpeed == 0 or self.mSpeed >= 6400 :
+				return 
 
 			nextSpeed = 100
 			nextSpeed = self.GetNextSpeed( aFocusId )
@@ -538,6 +530,15 @@ class TimeShiftPlate( BaseWindow ) :
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,     '', E_CONTROL_LABEL )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,      0, E_CONTROL_POSY )
 		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
+
+		visible = True
+		zappingMode = self.mDataCache.Zappingmode_GetCurrent( )
+		if zappingMode and zappingMode.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
+			self.mServiceType = ElisEnum.E_SERVICE_TYPE_RADIO
+			visible = False
+
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_REWIND, visible, E_CONTROL_VISIBLE )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_FORWARD , visible, E_CONTROL_VISIBLE )
 
 
 	def SetBlockingButtonEnable( self, aValue ) :
@@ -620,7 +621,9 @@ class TimeShiftPlate( BaseWindow ) :
 			self.mCtrlLblMode.setLabel( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_BUTTON_BOOKMARK :
-			self.mCtrlLblTest.setLabel( aValue )
+			if aExtra == E_CONTROL_VISIBLE :
+				self.mCtrlBtnBookMark.setVisible( aValue )
+
 
 		"""
 		elif aCtrlID == E_CONTROL_ID_BUTTON_JUMP_RR :
@@ -841,6 +844,7 @@ class TimeShiftPlate( BaseWindow ) :
 	def GetModeValue( self ) :
 		labelMode = ''
 		buttonHide= True
+
 		if self.mMode == ElisEnum.E_MODE_LIVE or self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 			labelMode = E_TAG_COLOR_GREEN + 'TIMESHIFT' + E_TAG_COLOR_END
 		elif self.mMode == ElisEnum.E_MODE_PVR :
@@ -853,6 +857,7 @@ class TimeShiftPlate( BaseWindow ) :
 		else :
 			labelMode = 'UNKNOWN'
 
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_BOOKMARK, not buttonHide, E_CONTROL_VISIBLE )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_START_RECORDING, buttonHide, E_CONTROL_VISIBLE )
 		return labelMode
 
@@ -904,6 +909,55 @@ class TimeShiftPlate( BaseWindow ) :
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
+
+
+	def ShowDialog( self, aFocusId ) :
+		head = ''
+		line1= ''
+		if aFocusId == E_CONTROL_ID_BUTTON_BOOKMARK :
+			head = MR_LANG( 'Bookmark' )
+			line1= 'test'
+			#self.BookMarkContext( )
+
+
+		#dialog = xbmcgui.Dialog( ).ok( head, line1 )
+
+
+	def EventReceivedDialog( self, aDialog ) :
+		ret = aDialog.GetCloseStatus( )
+		if ret == Action.ACTION_PLAYER_PLAY :
+			xbmc.executebuiltin('xbmc.Action(play)')
+
+		elif ret == Action.ACTION_STOP :
+			xbmc.executebuiltin('xbmc.Action(stop)')
+
+
+	def BookMarkContext( self ) :
+		context = []
+		context.append( ContextItem( 'Add To Bookmark', CONTEXT_ACTION_ADD_TO_BOOKMARK ) )
+		context.append( ContextItem( 'Show List',  CONTEXT_ACTION_SHOW_LIST ) )
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+		dialog.SetProperty( context )
+		dialog.doModal( )
+
+		self.EventReceivedDialog( dialog )
+
+		selectAction = dialog.GetSelectedAction( )
+		if selectAction == -1 :
+			return
+
+		if selectAction == CONTEXT_ACTION_ADD_TO_BOOKMARK :
+			self.mDataCache.Player_CreateBookmark( )
+
+		elif selectAction == CONTEXT_ACTION_SHOW_LIST :
+			playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
+
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_BOOKMARK )
+			dialog.SetDefaultProperty( playingRecord )
+			dialog.doModal( )
+			tempList = dialog.GetSelectedList( )
+			LOG_TRACE('------------dialog list[%s]'% tempList )
 
 
 	def ShowRecordingInfo( self ) :

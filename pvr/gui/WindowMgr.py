@@ -515,3 +515,21 @@ class WindowMgr( object ) :
 
 		return False
 
+
+	def GetLanguageList( self ) :
+		LOG_TRACE( "\n---------------------ToDO-------------------------");
+		#Get From special://xbmc/language folder
+
+
+	def GetCurrentLanguage( self ) :
+		LOG_TRACE( "\n----------------------------------------------");
+		currentLang = xbmc.executehttpapi( "GetGUISetting(3, locale.language)" )
+		LOG_TRACE( "currentLang=%s" %currentLang[4:] );
+		return currentLang[4:]
+
+
+	def SetCurrentLanguage( self, aLanguage ) :
+		LOG_TRACE( "\n---------------------------------------------- aLanguage=%s" %aLanguage);
+		xbmc.executebuiltin( "Custom.SetLanguage(%s)" %aLanguage )		
+
+	
