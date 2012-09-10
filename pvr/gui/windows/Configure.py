@@ -183,8 +183,18 @@ class Configure( SettingWindow ) :
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 		
 		if selectedId == E_LANGUAGE :
-			self.DisableControl( E_LANGUAGE )
-			self.ControlSelect( )
+			if groupId == E_Input01 :
+				menuLanguageList = WinMgr.GetInstance( ).GetLanguageList( )
+				dialog = xbmcgui.Dialog( )
+				ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList )
+				if ret >= 0 :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'aaaaaaaaaaaaaaaaaaaaaa' ) )
+					dialog.doModal( )
+					WinMgr.GetInstance( ).SetCurrentLanguage( menuLanguageList[ ret ] )
+			else :
+				self.DisableControl( E_LANGUAGE )
+				self.ControlSelect( )
 			return
 
 		elif selectedId == E_NETWORK_SETTING :
@@ -314,17 +324,17 @@ class Configure( SettingWindow ) :
 
 		if selectedId == E_LANGUAGE :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Language', MR_LANG( 'Menu Language' ), MR_LANG( 'Select the language for the menu to be in' ) )
-			self.AddEnumControl( E_SpinEx02, 'Audio Language', None, MR_LANG( 'Select the language that you wish to listen to' ) )
-			self.AddEnumControl( E_SpinEx03, 'Subtitle Language', None, MR_LANG( 'Select the language for the subtitle to be in' ) )
-			self.AddEnumControl( E_SpinEx04, 'Secondary Subtitle Language', None, MR_LANG( 'Select the language for the secondary subtitle to be in' ) )
-			self.AddEnumControl( E_SpinEx05, 'Hearing Impaired', None, MR_LANG( 'Set the hearing impaired function' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), MR_LANG( WinMgr.GetInstance( ).GetCurrentLanguage( ) ), MR_LANG( 'Select the language you want the menu to be in' ) )
+			self.AddEnumControl( E_SpinEx01, 'Audio Language', None, MR_LANG( 'Select the language that you wish to listen to' ) )
+			self.AddEnumControl( E_SpinEx02, 'Subtitle Language', None, MR_LANG( 'Select the language for the subtitle to be in' ) )
+			self.AddEnumControl( E_SpinEx03, 'Secondary Subtitle Language', None, MR_LANG( 'Select the language for the secondary subtitle to be in' ) )
+			self.AddEnumControl( E_SpinEx04, 'Hearing Impaired', None, MR_LANG( 'Set the hearing impaired function' ) )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
+			visibleControlIds = [ E_Input01, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
+			hideControlIds = [ E_SpinEx05, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -555,8 +565,8 @@ class Configure( SettingWindow ) :
 
 	def DisableControl( self, aSelectedItem ) :
 		if aSelectedItem == E_LANGUAGE :
-			selectedIndex = self.GetSelectedIndex( E_SpinEx03 )
-			visibleControlIds = [ E_SpinEx04, E_SpinEx05 ]
+			selectedIndex = self.GetSelectedIndex( E_SpinEx02 )
+			visibleControlIds = [ E_SpinEx03, E_SpinEx04 ]
 			if selectedIndex == 0 :
 				self.SetEnableControls( visibleControlIds, False )
 			else :
