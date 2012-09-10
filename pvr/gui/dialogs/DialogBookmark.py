@@ -116,8 +116,6 @@ class DialogBookmark( BaseDialog ) :
 			return
 
 		self.BookmarkItems( )
-
-
 		self.getControl( DIALOG_HEADER_LABEL_ID ).setLabel( self.mTitle )
 		self.getControl( DIALOG_HEADER_LABEL2_ID ).setLabel( self.mSubTitle )
 		self.mCtrlList.addItems( self.mListItems )
@@ -149,7 +147,7 @@ class DialogBookmark( BaseDialog ) :
 		thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/bookmark/%d'% self.mRecordInfo.mRecordKey, 'record_bookmark_%d_*.jpg' % self.mRecordInfo.mRecordKey ) )
 
 		thumbnaillist.sort( self.SortByOffset )
-		LOG_TRACE('thumnail[%s]'% thumbnaillist )
+		#LOG_TRACE('thumnail[%s]'% thumbnaillist )
 
 		for idx in range( len( self.mBookmarkList ) ) :
 			
@@ -159,9 +157,9 @@ class DialogBookmark( BaseDialog ) :
 				listItem.setProperty( 'RecIcon',     thumbnaillist[idx] )
 			listItem.setProperty( 'RecTotal',    '%s'% TimeToString( duration, TimeFormatEnum.E_AH_MM_SS ) )
 			listItem.setProperty( 'RecDate',     TimeToString( self.mRecordInfo.mStartTime ) )
-			listItem.setProperty( 'RecDuration', '%dm' % ( duration / 60 ) )
 
-			percent = self.mBookmarkList[idx].mTimeMs / ( self.mBookmarkList[idx].mTimeMs + duration * 1000 )
+			percent = ( self.mBookmarkList[idx].mTimeMs / ( duration * 1000.0 ) ) * 100
+			LOG_TRACE('progress[%s] (%s / %s * 1000) * 100'% (percent, self.mBookmarkList[idx].mTimeMs, duration))
 			listItem.setProperty( 'percent', '%s'% percent )
 			listItem.setProperty( 'iPos', E_TAG_TRUE )
 
@@ -182,12 +180,11 @@ class DialogBookmark( BaseDialog ) :
 
 			if markedList and len( markedList ) > 1 :
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
-				context.append( ContextItem( MR_LANG( 'Delete all' ), CONTEXT_ACTION_DELETE_ALL ) )
 				context.append( ContextItem( MR_LANG( 'Remove selections' ), CONTEXT_ACTION_CLEAR_MARK ) )	
-
 			else :
 				context.append( ContextItem( MR_LANG( 'Resume from %s'% ( TimeToString( int( playOffset / 1000 ), TimeFormatEnum.E_AH_MM_SS ) )), CONTEXT_ACTION_RESUME_FROM ) )
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
+				context.append( ContextItem( MR_LANG( 'Delete all' ), CONTEXT_ACTION_DELETE_ALL ) )
 				context.append( ContextItem( MR_LANG( 'Multi-select' ), CONTEXT_ACTION_START_MARK ) )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
@@ -245,7 +242,7 @@ class DialogBookmark( BaseDialog ) :
 		for idx in self.mMarkList :
 			playOffset = self.mBookmarkList[idx].mOffset
 			ret = self.mDataCache.Player_DeleteBookmark( self.mRecordInfo.mRecordKey, playOffset )
-			LOG_TRACE( 'bookmark delete[%s]'% ret )
+			LOG_TRACE( 'bookmark delete[%s %s %s %s] ret[%s]'% (self.mRecordInfo.mRecordKey, idx, playOffset,self.mBookmarkList[selectedPos].mTimeMs,ret ) )
 
 		self.InitList( )
 
