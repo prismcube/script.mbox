@@ -199,40 +199,6 @@ class Configure( SettingWindow ) :
 				self.SetListControl( )
 				self.setDefaultControl( )
 
-			elif groupId == E_Input06 :
-				context = []
-				context.append( ContextItem( MR_LANG( 'Internal Network Test' ), PING_TEST_INTERNAL ) )
-				context.append( ContextItem( MR_LANG( 'External Network Test' ), PING_TEST_EXTERNAL ) )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-				dialog.SetProperty( context )
-				dialog.doModal( )
-				contextAction = dialog.GetSelectedAction( )
-				if contextAction < 0 :
-					return
-				if contextAction == PING_TEST_INTERNAL :
-					self.ShowProgress( MR_LANG( 'Testing...' ), 10 )
-					time.sleep( 1 )
-					if PingTestInternal( ) == True :
-						state = MR_LANG( 'Connected to the default router' )
-					else :
-						state = MR_LANG( 'Disconnected from the default router' )
-				else :
-					addr = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, MR_LANG( 'Enter an IP address for ping test' ), '', 30 )
-					self.ShowProgress( MR_LANG( 'Testing...' ), 10 )
-					time.sleep( 1 )
-					if PingTestExternal( addr ) == True :
-						state = MR_LANG( 'External ping test has passed' )
-					else :
-						state = MR_LANG( 'External ping test has failed' )
-				try :
-					self.mProgress.SetResult( True )
-				except Exception, e :
-					LOG_ERR( 'Error exception[%s]' % e )
-				time.sleep( 1.5 )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Test Result' ), MR_LANG( 'Network State : %s' ) % state )
-				dialog.doModal( )
-
 			elif self.mUseNetworkType == NETWORK_ETHERNET :
 				self.EthernetSetting( groupId )
 			elif self.mUseNetworkType == NETWORK_WIRELESS :
@@ -299,51 +265,23 @@ class Configure( SettingWindow ) :
  			dialog.doModal( )
 
  		elif selectedId == E_FACTORY_RESET and groupId == E_Input01 :
- 			"""
- 			#resetChannel = ElisPropertyEnum( 'Reset Channel List', self.mCommander ).GetProp( )
- 			#resetFavoriteAddons = ElisPropertyEnum( 'Reset Favorite Add-ons', self.mCommander ).GetProp( )
- 			#resetSystem = ElisPropertyEnum( 'Reset Configure Setting', self.mCommander ).GetProp( )
- 			if ( resetChannel | resetFavoriteAddons | resetSystem ) == 0 :
- 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No reset options selected' ) )
-		 		dialog.doModal( )
-		 		return
-		 	else :
-		 	"""
 	 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO RESET TO FACTORY SETTINGS?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				self.OpenBusyDialog( )
-				ret1 = False
-				ret2 = False
-				#self.ShowProgress( MR_LANG( 'Now restoring...' ), 30 )
-				ret1 = self.mCommander.System_SetDefaultChannelList( )
-				ret2 = self.mCommander.System_FactoryReset( )
-				self.mDataCache.LoadChannelList( )
-				self.mDataCache.LoadAllSatellite( )
 				self.mDataCache.Player_AVBlank( True )
-				
-				self.CloseBusyDialog( )
+				self.ShowProgress( MR_LANG( 'Now restoring...' ), 20 )
+				self.mCommander.System_SetDefaultChannelList( )
+				self.mCommander.System_FactoryReset( )
+				self.mDataCache.LoadAllSatellite( )
 
-				if ret1 == True and ret2 == True :
-					#self.mProgress.SetResult( True )
-					#time.sleep( 1 )
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Reset your STB' ), MR_LANG( 'Your system restored the factory default settings' ) )
-		 			dialog.doModal( )
+				self.mProgress.SetResult( True )
+				time.sleep( 2 )
 
-		 			from ElisProperty import ResetHash
-					ResetHash( )
-					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
-				else :
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Factory reset has failed to complete' ) )
-		 			dialog.doModal( )
-
-				self.SetListControl( )
-
+	 			from ElisProperty import ResetHash
+				ResetHash( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 		else :
 			self.ControlSelect( )
 
@@ -580,9 +518,6 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FACTORY_RESET :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			#self.AddEnumControl( E_SpinEx01, 'Reset Channel List', None, MR_LANG( 'Your channel list will be restored to default' ) )
-			#self.AddEnumControl( E_SpinEx02, 'Reset Favorite Add-ons', None, MR_LANG( 'All your favorite add-ons will be deleted after factory reset' ) )
-			#self.AddEnumControl( E_SpinEx03, 'Reset Configure Setting', MR_LANG( 'Reset Configuration Setting' ), MR_LANG( 'User settings you have set will be restored to default' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Start Factory Reset'), '', MR_LANG( 'Go to First Installation after restoring system to the factory default' ) )
 
 			visibleControlIds = [ E_Input01 ]
@@ -696,11 +631,13 @@ class Configure( SettingWindow ) :
 
 
 	def ConnectEthernet( self ) :
-		self.OpenBusyDialog( )
+		self.ShowProgress( MR_LANG( 'Now connecting...' ), 15 )
 		ret = self.mIpParser.SetEthernet( self.mTempNetworkType, self.mTempIpAddr, self.mTempSubNet, self.mTempGateway, self.mTempDns )
 		SetCurrentNetworkType( NETWORK_ETHERNET )
+		self.mProgress.SetResult( True )
 		if ret == False :
-			self.CloseBusyDialog( )
+			self.mProgress.SetResult( True )
+			time.sleep( 1.5 )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Network setup has failed to complete' ) )
  			dialog.doModal( )
@@ -709,7 +646,7 @@ class Configure( SettingWindow ) :
 				self.mSavedNetworkType = self.mTempNetworkType
 				self.LoadEthernetAddress( )
 				SetIpAddressProperty( self.mSavedIpAddr, self.mSavedSubNet, self.mSavedGateway, self.mSavedDns )
-				self.CloseBusyDialog( )
+				self.mProgress.SetResult( True )
 				self.SetListControl( )
 			else :
 				self.mSavedIpAddr = self.mTempIpAddr
@@ -718,7 +655,7 @@ class Configure( SettingWindow ) :
 				self.mSavedDns = self.mTempDns
 				self.mSavedNetworkType = self.mTempNetworkType
 				SetIpAddressProperty( self.mSavedIpAddr, self.mSavedSubNet, self.mSavedGateway, self.mSavedDns )
-				self.CloseBusyDialog( )
+				self.mProgress.SetResult( True )
 
 
 	def ReLoadEthernetIp( self ) :
@@ -775,17 +712,17 @@ class Configure( SettingWindow ) :
 			self.mPasswordType	= self.GetSelectedIndex( E_SpinEx04 )
 
 		elif aControlId == E_Input01 :
-			self.OpenBusyDialog( )
 			dev = self.mWireless.GetWifidevice( )
 			if dev == None :
-				self.CloseBusyDialog( )
+				time.sleep( 1.5 )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Devices not found' ) )
 				dialog.doModal( )
 				return
-
+			self.ShowProgress( MR_LANG( 'Now search...' ), 15 )
 			apList = self.mWireless.ScanWifiAP( dev )
-			self.CloseBusyDialog( )
+			self.mProgress.SetResult( True )
+			time.sleep( 1.5 )
 			dialog = xbmcgui.Dialog( )
 			if apList == None :
 				ret = dialog.select( MR_LANG( 'Select AP' ), [ MR_LANG( 'No AP list' ) ] )
@@ -815,14 +752,15 @@ class Configure( SettingWindow ) :
 				dialog.doModal( )
 				return
 
-			self.OpenBusyDialog( )
+			self.ShowProgress( MR_LANG( 'Now connecting...' ), 30 )
 			ret1 = self.mWireless.WriteWpaSupplicant( self.mUseHiddenId, self.mHiddenSsid, self.mCurrentSsid, self.mUseEncrypt, self.mEncriptType, self.mPasswordType, self.mPassWord )
 			ret2 = self.mWireless.ConnectWifi( dev )
 			SetCurrentNetworkType( NETWORK_WIRELESS )
 			addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( dev )
 			SetIpAddressProperty( addressIp, addressMask, addressGateway, addressNameServer )
-			self.CloseBusyDialog( )
+			self.mProgress.SetResult( True )
 			if ret1 == False or ret2 == False :
+				time.sleep( 1.5 )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'STB was unable to save the Wifi configuration' ) )
 				dialog.doModal( )
@@ -884,6 +822,9 @@ class Configure( SettingWindow ) :
 			return
 
 		elif aControlId == E_Input04 :
+			mute = self.mCommander.Player_GetMute( )
+			self.mCommander.Player_SetMute( True )
+
 			self.LoadSavedTime( )
 			oriChannel = self.mDataCache.Channel_GetCurrent( )
 			self.SetTimeProperty( )
@@ -895,7 +836,7 @@ class Configure( SettingWindow ) :
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
-				dialog.SetDialogProperty( 15, MR_LANG( 'Setting Time...' ), ElisEventTimeReceived.getName( ) )
+				dialog.SetDialogProperty( 14, MR_LANG( 'Setting Time...' ), ElisEventTimeReceived.getName( ) )
 				dialog.doModal( )
 				self.OpenBusyDialog( )
 				if dialog.GetResult( ) == False :
@@ -917,6 +858,9 @@ class Configure( SettingWindow ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Automatic time setup has failed because\nno time info was given by the channel you selected' ) )
 				dialog.doModal( )
+
+			if mute == False :
+				self.mCommander.Player_SetMute( False )
 
 
 	def LoadSavedTime( self ) :

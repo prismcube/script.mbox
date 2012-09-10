@@ -13,11 +13,6 @@
 			<include>Dialogs_HardDrive</include>
 			<control type="label" id="100">
 				<include>Dialogs_Label1</include>
-				<visible>false</visible>
-			</control>
-			<control type="label">
-				<include>Dialogs_Label1</include>
-				<label>Wait - $INFO[Control.GetLabel(100)]%</label>
 			</control>
 			<control type="label" id="200">
 				<include>Dialogs_Label2</include>
