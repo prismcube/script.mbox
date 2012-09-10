@@ -5680,21 +5680,21 @@
 			<description>background image</description>
 			<posx>0</posx>
 			<posy>0</posy>
-			<width>700</width>
+			<width>600</width>
 			<height>550</height>
 			<texture border="40">DialogBack.png</texture>
 		</control>
 		<control type="image">
 			<posx>40</posx>
 			<posy>10</posy>
-			<width>700</width>
+			<width>600</width>
 			<height>120</height>
 			<aspectratio>stretch</aspectratio>
 			<texture>GlassTitleBar.png</texture>
 		</control>
 		<control type="button" id="3800">
 			<description>Close Window button</description>
-			<posx>620</posx>
+			<posx>520</posx>
 			<posy>9</posy>
 			<width>64</width>
 			<height>32</height>
@@ -5711,7 +5711,7 @@
 			<description>header label</description>
 			<posx>20</posx>
 			<posy>20</posy>
-			<width>670</width>
+			<width>570</width>
 			<height>30</height>
 			<font>font13_title</font>
 			<label>$INFO[Control.GetLabel]</label>
@@ -5723,7 +5723,7 @@
 		<control type="label" id="3805">
 			<posx>20</posx>
 			<posy>70</posy>
-			<width>670</width>
+			<width>570</width>
 			<height>30</height>
 			<font>font13</font>
 			<label>$INFO[Control.GetLabel]</label>
@@ -5738,7 +5738,7 @@
 			<visible>false</visible>
 		</control>
 		<control type="label">
-			<posx>670</posx>
+			<posx>570</posx>
 			<posy>500</posy>
 			<width>300</width>
 			<height>35</height>
@@ -5772,7 +5772,7 @@
 		<control type="list" id="3850">
 			<posx>20</posx>
 			<posy>120</posy>
-			<width>700</width>
+			<width>600</width>
 			<height>350</height>
 			<onleft>3802</onleft>
 			<onright>3851</onright>
@@ -5783,15 +5783,15 @@
 			<focusposition>0</focusposition>
 			<movement>2</movement>
 			<animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(3851)">Conditional</animation>
-			<itemlayout height="70" width="690">
+			<itemlayout height="70" width="590">
 				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>650</width>
+					<width>530</width>
 					<height>71</height>
 					<texture border="0,2,0,2">MenuItemNF.png</texture>
 				</control>
-				<!-- Thumbnail  and  Lock -->					
+				<!-- Thumbnail  and  Lock -->
 				<control type="image">
 					<posx>5</posx>
 					<posy>5</posy>
@@ -5846,18 +5846,18 @@
 				</control>
 				<control type="progress">
 					<posx>130</posx>
-					<posy>55</posy>
-					<width>200</width>
-					<height>10</height>
-					<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-					<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+					<posy>45</posy>
+					<width>380</width>
+					<height>18</height>
+					<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
+					<midtexture border="14,0,14,0">OSDProgressMid.png</midtexture>
 					<progress>percent</progress>
 					<visible>substring(ListItem.Property(iPos),true)</visible>
 				</control>
 
 				<!-- Rec date -->
 				<control type="label">
-					<posx>620</posx>
+					<posx>510</posx>
 					<posy>0</posy>
 					<width>210</width>
 					<height>30</height>
@@ -5868,25 +5868,12 @@
 					<aligny>center</aligny>
 					<label>$INFO[ListItem.Property(RecDate)]</label>
 				</control>
-				<!-- Duration -->	
-				<control type="label">
-					<posx>620</posx>
-					<posy>30</posy>
-					<width>100</width>
-					<height>40</height>
-					<font>font13_title</font>
-					<textcolor>grey2</textcolor>
-					<selectedcolor>selected</selectedcolor>
-					<align>right</align>
-					<aligny>center</aligny>
-					<label>$INFO[ListItem.Property(RecDuration)]</label>
-				</control>
 			</itemlayout>
-			<focusedlayout height="70" width="690">
+			<focusedlayout height="70" width="590">
 				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>650</width>
+					<width>530</width>
 					<height>71</height>
 					<texture border="0,2,0,2">MenuItemNF.png</texture>
 					<include>DefaultVisibleFadeEffect</include>
@@ -5894,7 +5881,7 @@
 				<control type="image">
 					<posx>0</posx>
 					<posy>0</posy>
-					<width>650</width>
+					<width>530</width>
 					<height>71</height>
 					<texture border="0,2,0,2">MenuItemFO.png</texture>
 					<include>DefaultVisibleFadeEffect</include>
@@ -5902,7 +5889,7 @@
 				<control type="image">
 					<posx>0</posx>
 					<posy>5</posy>
-					<width>650</width>
+					<width>530</width>
 					<height>61</height>
 					<texture border="0,0,14,0">MediaItemDetailBG.png</texture>
 				</control>
@@ -5953,17 +5940,17 @@
 				<control type="progress">
 					<description>progress control</description>
 					<posx>130</posx>
-					<posy>55</posy>
-					<width>200</width>
-					<height>10</height>
-					<texturebg border="6,0,6,0">OSDProgressBack.png</texturebg>
-					<midtexture border="6,0,6,0">OSDProgressMid.png</midtexture>
+					<posy>45</posy>
+					<width>380</width>
+					<height>18</height>
+					<texturebg border="14,0,14,0">OSDProgressBack.png</texturebg>
+					<midtexture border="14,0,14,0">OSDProgressMid.png</midtexture>
 					<progress>percent</progress>
 					<visible>substring(ListItem.Property(iPos),true)</visible>
 				</control>
 				<!-- Rec date -->
 				<control type="label">
-					<posx>620</posx>
+					<posx>510</posx>
 					<posy>0</posy>
 					<width>210</width>
 					<height>30</height>
@@ -5974,27 +5961,13 @@
 					<aligny>center</aligny>
 					<label>$INFO[ListItem.Property(RecDate)]</label>
 				</control>
-				<!-- Duration -->	
-				<control type="label">
-					<posx>620</posx>
-					<posy>30</posy>
-					<width>100</width>
-					<height>40</height>
-					<font>font13_title</font>
-					<textcolor>white</textcolor>
-					<selectedcolor>selected</selectedcolor>
-					<align>right</align>
-					<aligny>center</aligny>
-					<label>$INFO[ListItem.Property(RecDuration)]</label>
-					<animation effect="slide" start="0,0" end="20,0" delay="0" time="0" condition="false">conditional</animation>
-				</control>
 			</focusedlayout>
 		</control>
 		<control type="scrollbar" id="3851">
-			<posx>580</posx>
-			<posy>80</posy>
+			<posx>560</posx>
+			<posy>120</posy>
 			<width>25</width>
-			<height>521</height>
+			<height>350</height>
 			<include>DefaultWindowFade</include>
 			<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
 			<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
