@@ -260,6 +260,7 @@ class TunerConfigMgr( object ) :
 			aSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_OFF
 			aSatellite.mIsOneCable = 0
 			aSatellite.mMotorizedData = 0
+			aSatellite.mDisEqc11 = 0
 			if aSatellite.mSlotNumber > 3 :
 				aSatellite.mIsConfigUsed = 0
 			else :
@@ -276,24 +277,38 @@ class TunerConfigMgr( object ) :
 			aSatellite.mIsOneCable = 0
 			aSatellite.mMotorizedData = 0
 			aSatellite.mIsConfigUsed = 1
+			aSatellite.mDisEqc11 = 0
+			aSatellite.mDisEqcMode = 0
+			aSatellite.mDisEqcRepeat = 0
 			
 		elif aType == E_MOTORIZE_1_2 :
 			aSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_ON
 			aSatellite.mIsOneCable = 0
 			aSatellite.mMotorizedData = aSatellite.mSlotNumber + 1
 			aSatellite.mIsConfigUsed = 1
+			aSatellite.mFrequencyLevel = 0
+			aSatellite.mDisEqc11 = 0
+			aSatellite.mDisEqcMode = 0
+			aSatellite.mDisEqcRepeat = 0
 
 		elif aType == E_MOTORIZE_USALS :
 			aSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_USALS
 			aSatellite.mIsOneCable = 0
 			aSatellite.mMotorizedData = 0
 			aSatellite.mIsConfigUsed = 1
+			aSatellite.mFrequencyLevel = 0
+			aSatellite.mDisEqc11 = 0
+			aSatellite.mDisEqcMode = 0
+			aSatellite.mDisEqcRepeat = 0
 			
 		elif aType == E_ONE_CABLE :
 			aSatellite.mMotorizedType = ElisEnum.E_MOTORIZED_OFF
 			aSatellite.mIsOneCable = 1
 			aSatellite.mMotorizedData = 0
 			aSatellite.mIsConfigUsed = 1
+			aSatellite.mDisEqc11 = 0
+			aSatellite.mDisEqcMode = 0
+			aSatellite.mDisEqcRepeat = 0
 
 
 	def GetCurrentSatelliteList( self, aTunerNumber ) :

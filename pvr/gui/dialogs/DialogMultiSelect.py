@@ -1,4 +1,8 @@
 from pvr.gui.WindowImport import *
+import time
+
+E_MODE_DEFAULT_LIST = 0
+E_MODE_CHANNEL_LIST = 1
 
 E_CONTROL_ID_LIST = 3850
 
@@ -13,8 +17,9 @@ class DialogMultiSelect( BaseDialog ) :
 		self.mIsOk = None
 		self.mCtrlList = None
 		self.mListItems = None
-		self.DefaultList = []
+		self.mDefaultList = []
 		self.mTitle = ''
+		self.mMode = E_MODE_DEFAULT_LIST
 		
 
 	def onInit( self ) :
@@ -63,9 +68,7 @@ class DialogMultiSelect( BaseDialog ) :
 			self.Close( )
 
 		elif aControlId == E_CONTROL_ID_LIST :
-			idx = self.mCtrlList.getSelectedPosition( )
-			self.SetMarkupGUI( idx )
-			self.mCtrlList.selectItem( idx + 1 )
+			self.SetMarkupGUI( )
 
 		elif aControlId == DIALOG_BUTTON_OK_ID :
 			self.Close( )		
@@ -86,20 +89,33 @@ class DialogMultiSelect( BaseDialog ) :
 
 
 	def InitList( self ) :
-		if self.DefaultList == None or len( self.DefaultList ) < 1 :
+		if self.mDefaultList == None or len( self.mDefaultList ) < 1 :
 			return
 
 		self.mCtrlList.reset( )
 		self.mListItems = []
 
-		self.ChannelItems( )
+		if self.mMode == E_MODE_CHANNEL_LIST :
+			self.ChannelItems( )
+		else :
+			self.ListItems( )
+
 		self.getControl( DIALOG_HEADER_LABEL_ID ).setLabel( self.mTitle )
 		self.mCtrlList.addItems( self.mListItems )
+
+		idx = self.mCtrlList.getSelectedPosition( )
+		self.mCtrlPos.setLabel( '%s'% ( idx + 1 ) )
+
+
+	def ListItems( self ) :
+		for item in self.mDefaultList :
+			listItem = xbmcgui.ListItem( '%s'% item )
+			self.mListItems.append( listItem )
 
 
 	def ChannelItems( self ) :
 
-		for iChannel in self.DefaultList :
+		for iChannel in self.mDefaultList :
 			listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ) )
 
 			if iChannel.mLocked : 
@@ -112,14 +128,20 @@ class DialogMultiSelect( BaseDialog ) :
 			self.mListItems.append( listItem )
 
 
-	def SetMarkupGUI( self, aPos ) :
+	def SetMarkupGUI( self ) :
 		idx = 0
 		isExist = False
+
+		if self.mDefaultList == None or len( self.mDefaultList ) < 1 or \
+		   self.mCtrlList == None or self.mListItems == None or len( self.mListItems ) < 1 :
+			return
+
+		aPos = self.mCtrlList.getSelectedPosition( )
 
 		#aready mark is mark delete
 		for i in self.mMarkList :
 			if i == aPos :
-				self.mMarkList.pop(idx)
+				self.mMarkList.pop( idx )
 				isExist = True
 			idx += 1
 
@@ -127,7 +149,7 @@ class DialogMultiSelect( BaseDialog ) :
 		if isExist == False : 
 			self.mMarkList.append( aPos )
 
-		listItem = self.mCtrlList.getListItem(aPos)
+		listItem = self.mCtrlList.getListItem( aPos )
 
 		#mark toggle: disable/enable
 		if listItem.getProperty( E_XML_PROPERTY_MARK ) == E_TAG_TRUE : 
@@ -135,10 +157,17 @@ class DialogMultiSelect( BaseDialog ) :
 		else :
 			listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_TRUE )
 
+		self.mCtrlList.selectItem( aPos + 1 )
+		time.sleep( 0.05 )
 
-	def SetDefaultProperty( self, aTitle = 'SELECT', aList = None ) :
+		aPos = self.mCtrlList.getSelectedPosition( )
+		self.mCtrlPos.setLabel( '%s'% ( aPos + 1 ) )
+
+
+	def SetDefaultProperty( self, aTitle = 'SELECT', aList = None, aMode = E_MODE_DEFAULT_LIST ) :
 		self.mTitle = aTitle
-		self.DefaultList = aList
+		self.mDefaultList = aList
+		self.mMode = aMode
 
 
 	def GetSelectedList( self ) :

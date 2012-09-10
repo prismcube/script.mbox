@@ -103,6 +103,7 @@ class DataCacheMgr( object ) :
 		self.mRecordDB = None
 
 		self.mLockStatus = ElisEnum.E_CC_SUCCESS
+		self.mAVBlankStatus = False
 		self.mSkip = False
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
@@ -1161,11 +1162,6 @@ class DataCacheMgr( object ) :
 				#LOG_TRACE('delete type[%s] len[%s] channel[%s]'% ( mType, len(tmpChannelList), ClassToList('convert', numList) ) )
 
 			self.SetSkipChannelView( False )
-			if ret :
-				self.LoadZappingmode( )
-				self.LoadZappingList( )
-				self.LoadChannelList( )
-				self.Channel_GetAllChannels( self.mZappingMode.mServiceType, False )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -1200,6 +1196,19 @@ class DataCacheMgr( object ) :
 			return self.mCommander.Channel_GetZappingList( aSync )
 
 
+	def Channel_ReLoad( self ) :
+		self.LoadZappingmode( )
+		self.LoadZappingList( )
+		self.LoadChannelList( )
+		self.Channel_GetAllChannels( self.mZappingMode.mServiceType, False )
+
+
+	def Channel_TuneDefault( self ) :
+		channelList = self.Channel_GetList( )
+		if channelList and len( channelList ) > 0 :
+			self.Channel_SetCurrent( channelList[0].mNumber, channelList[0].mServiceType )
+
+
 	def Channel_InvalidateCurrent( self ) :
 		return self.mCommander.Channel_InvalidateCurrent( )
 
@@ -1229,7 +1238,12 @@ class DataCacheMgr( object ) :
 
 
 	def Player_AVBlank( self, aBlank, aForce = False ) :
+		self.mAVBlankStatus = aBlank
 		return self.mCommander.Player_AVBlank( aBlank, aForce )
+
+
+	def Get_Player_AVBlank( self ) :
+		return self.mAVBlankStatus
 
 
 	def Player_SetMute( self, aMute ) :
@@ -1278,6 +1292,18 @@ class DataCacheMgr( object ) :
 		ret = self.mCommander.Player_StartInternalRecordPlayback( aRecordKey, aServiceType, aOffsetMS, aSpeed )
 		self.Frontdisplay_PlayPause( )
 		return ret
+
+
+	def Player_CreateBookmark( self ) :
+		return self.mCommander.Player_CreateBookmark( )
+
+
+	def Player_DeleteBookmark( self, aRecordKey, aOffset ) :
+		return self.mCommander.Player_DeleteBookmark( aRecordKey, aOffset )
+
+
+	def Player_GetBookmarkList( self, aRecordKey ) :
+		return self.mCommander.Player_GetBookmarkList( aRecordKey )
 
 
 	def RecordItem_GetEventInfo( self, aKey ) :

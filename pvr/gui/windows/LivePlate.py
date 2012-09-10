@@ -43,9 +43,6 @@ PREV_CHANNEL	= 2
 INIT_CHANNEL	= 3
 
 
-CONTEXT_ACTION_VIDEO_SETTING = 1 
-CONTEXT_ACTION_AUDIO_SETTING = 2
-
 class LivePlate( LivePlateWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		LivePlateWindow.__init__( self, *args, **kwargs )
@@ -764,12 +761,15 @@ class LivePlate( LivePlateWindow ) :
 		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
 			msg1 = 'Teletext'
 			msg2 = 'test'
+
 			"""
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
-			dialog.SetDefaultProperty( 0, self.mDataCache.Channel_GetList( ) )
+			dialog.SetDefaultProperty( 'test list', ['test1','test2','test3'] )
 			dialog.doModal( )
 			tempList = dialog.GetSelectedList( )
 			LOG_TRACE('------------dialog list[%s]'% tempList )
+
+			#xbmcgui.Dialog().select( 'CHANNEL LIST', ['test1','test2'] )
 			"""
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :

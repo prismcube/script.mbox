@@ -241,7 +241,7 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>BookMark</label>
+						<label>Bookmark</label>
 						<visible>Control.HasFocus(3711)</visible>
 					</control>
 

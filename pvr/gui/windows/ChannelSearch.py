@@ -4,6 +4,8 @@ from pvr.gui.WindowImport import *
 class ChannelSearch( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
+		self.mIsCloseing = False
+		self.mNoChannel = False
 
 
 	def onInit( self ) :
@@ -20,6 +22,21 @@ class ChannelSearch( SettingWindow ) :
 
 		self.InitControl( )
 		self.SetFocusControl( E_Input01 )
+
+		if self.mIsCloseing == False :
+			if self.CheckNoChannel( ) :
+				self.mNoChannel = True
+			else :
+				self.mNoChannel = False
+		else :
+			if self.mNoChannel == False :
+				if self.CheckNoChannel( ) :
+					self.mDataCache.Channel_TuneDefault( )
+					self.mDataCache.Player_AVBlank( False )
+					self.mNoChannel = False
+				else :
+					self.mDataCache.Player_AVBlank( True )
+		
 		self.mInitialized = True
 
 
@@ -29,6 +46,7 @@ class ChannelSearch( SettingWindow ) :
 		self.GlobalAction( actionId )		
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
+			self.mIsCloseing = False
 			self.ResetAllControl( )
 			self.SetVideoRestore( )
 			WinMgr.GetInstance( ).CloseWindow( )			
@@ -36,6 +54,7 @@ class ChannelSearch( SettingWindow ) :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
+			self.mIsCloseing = False
 			self.ResetAllControl( )
 			self.SetVideoRestore( )
 			WinMgr.GetInstance( ).CloseWindow( )
@@ -56,10 +75,12 @@ class ChannelSearch( SettingWindow ) :
 	def onClick( self, aControlId ) :
 		groupId = self.GetGroupId( aControlId )
 		if groupId == E_Input01 :
+			self.mIsCloseing = True
 			self.ResetAllControl( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_AUTOMATIC_SCAN )
 			
 		elif groupId == E_Input02 :
+			self.mIsCloseing = True
 			self.ResetAllControl( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MANUAL_SCAN )
 				
@@ -72,3 +93,9 @@ class ChannelSearch( SettingWindow ) :
 			self.ShowDescription( aControlId )
 			self.mLastFocused = aControlId
 
+
+	def CheckNoChannel( self ) :
+		if self.mDataCache.Channel_GetList( ) :
+			return True
+		else :
+			return False

@@ -42,8 +42,6 @@ FLAG_CLOCKMODE_INTTIME = 5
 #PREV_CHANNEL	= 2
 #INIT_CHANNEL	= 3
 
-CONTEXT_ACTION_VIDEO_SETTING = 1 
-CONTEXT_ACTION_AUDIO_SETTING = 2
 
 class InfoPlate( LivePlateWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -164,29 +162,13 @@ class InfoPlate( LivePlateWindow ) :
 
 	def onClick( self, aControlId ) :
 		if aControlId == E_CONTROL_ID_BUTTON_MUTE :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.GlobalAction( Action.ACTION_MUTE  )
+			self.GlobalAction( Action.ACTION_MUTE )
 
-		elif aControlId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
+		elif aControlId >= E_CONTROL_ID_BUTTON_DESCRIPTION_INFO and aControlId <= E_CONTROL_ID_BUTTON_BOOKMARK :
 			self.ShowDialog( aControlId )
 
-		elif aControlId == E_CONTROL_ID_BUTTON_TELETEXT :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.ShowDialog( aControlId )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_SUBTITLE :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.ShowDialog( aControlId )
-
-		elif aControlId == E_CONTROL_ID_BUTTON_SETTING_FORMAT :
-			self.StopAutomaticHide( )
-			self.SetAutomaticHide( False )
-			self.ShowDialog( aControlId )
+			if aControlId == E_CONTROL_ID_BUTTON_TELETEXT :
+				self.GlobalAction( Action.ACTION_MUTE )
 
 
 	def onFocus( self, aControlId ) :
@@ -429,7 +411,7 @@ class InfoPlate( LivePlateWindow ) :
 		self.mWin.setProperty( aPropertyID, aValue )
 
 
-	def ShowDialog( self, aFocusId, aVisible = False ) :
+	def ShowDialog( self, aFocusId ) :
 		msg1 = ''
 		msg2 = ''
 
@@ -445,27 +427,21 @@ class InfoPlate( LivePlateWindow ) :
 			msg1 = 'Subtitle'
 			msg2 = 'test'
 
+		elif aFocusId == E_CONTROL_ID_BUTTON_BOOKMARK :
+			msg1 = 'Bookmark'
+			msg2 = 'test'
+			#self.BookMarkContext( )
+
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
-			if self.mCurrentEPG and self.mCurrentEPG.mError == 0 :
-				self.mEventBus.Deregister( self )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_EXTEND_EPG )
-				dialog.SetEPG( self.mCurrentEPG )
-				dialog.doModal( )
-				self.mEventBus.Register( self )
-				ret = dialog.GetCloseStatus( )
-				if ret == Action.ACTION_CONTEXT_MENU :
-					self.Close( )
-					WinMgr.GetInstance( ).CloseWindow( )
-				else:
-					self.DialogEventReceive( dialog )
+			self.ShowEPGDescription( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SETTING_FORMAT :
 			self.mEventBus.Deregister( self )
-			self.SetAudioVideoContext( )
+			self.AudioVideoContext( )
 			self.mEventBus.Register( self )
 
 
-	def DialogEventReceive( self, aDialog ) :
+	def EventReceivedDialog( self, aDialog ) :
 		ret = aDialog.GetCloseStatus( )
 		if ret == Action.ACTION_PLAYER_PLAY :
 			xbmc.executebuiltin('xbmc.Action(play)')
@@ -474,7 +450,35 @@ class InfoPlate( LivePlateWindow ) :
 			xbmc.executebuiltin('xbmc.Action(stop)')
 
 
-	def SetAudioVideoContext( self ) :
+	def BookMarkContext( self ) :
+		context = []
+		context.append( ContextItem( 'Add To Bookmark', CONTEXT_ACTION_ADD_TO_BOOKMARK ) )
+		context.append( ContextItem( 'Show List',  CONTEXT_ACTION_SHOW_LIST ) )
+
+		self.mEventBus.Deregister( self )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+		dialog.SetProperty( context )
+		dialog.doModal( )
+		self.mEventBus.Register( self )
+
+		self.EventReceivedDialog( dialog )
+
+		selectAction = dialog.GetSelectedAction( )
+		if selectAction == -1 :
+			return
+
+		if selectAction == CONTEXT_ACTION_ADD_TO_BOOKMARK :
+			self.mDataCache.Player_CreateBookmark( )
+
+		elif selectAction == CONTEXT_ACTION_SHOW_LIST :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_BOOKMARK )
+			dialog.SetDefaultProperty( self.mPlayingRecord )
+			dialog.doModal( )
+			tempList = dialog.GetSelectedList( )
+			LOG_TRACE('------------dialog list[%s]'% tempList )
+
+
+	def AudioVideoContext( self ) :
 		context = []
 		context.append( ContextItem( 'Video Format', CONTEXT_ACTION_VIDEO_SETTING ) )
 		context.append( ContextItem( 'Audio Track',  CONTEXT_ACTION_AUDIO_SETTING ) )
@@ -483,7 +487,7 @@ class InfoPlate( LivePlateWindow ) :
 		dialog.SetProperty( context )
 		dialog.doModal( )
 
-		self.DialogEventReceive( dialog )
+		self.EventReceivedDialog( dialog )
 
 		selectAction = dialog.GetSelectedAction( )
 		if selectAction == -1 :
@@ -494,7 +498,7 @@ class InfoPlate( LivePlateWindow ) :
 			dialog.SetValue( selectAction )
  			dialog.doModal( )
 
- 			self.DialogEventReceive( dialog )
+ 			self.EventReceivedDialog( dialog )
 
  		else :
 			getCount = self.mDataCache.Audiotrack_GetCount( )
@@ -514,11 +518,29 @@ class InfoPlate( LivePlateWindow ) :
 			dialog.SetProperty( context, selectIdx )
 			dialog.doModal( )
 
-			self.DialogEventReceive( dialog )
+			self.EventReceivedDialog( dialog )
 
 			selectIdx2 = dialog.GetSelectedAction( )
 			self.mDataCache.Audiotrack_select( selectIdx2 )
 			#LOG_TRACE('Select[%s --> %s]'% (selectAction, selectIdx2) )
+
+
+	def ShowEPGDescription( self ) :
+		if self.mCurrentEPG == None or self.mCurrentEPG.mError != 0 :
+			return
+
+		self.mEventBus.Deregister( self )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_EXTEND_EPG )
+		dialog.SetEPG( self.mCurrentEPG )
+		dialog.doModal( )
+		self.mEventBus.Register( self )
+
+		ret = dialog.GetCloseStatus( )
+		if ret == Action.ACTION_CONTEXT_MENU :
+			self.Close( )
+			WinMgr.GetInstance( ).CloseWindow( )
+		else:
+			self.EventReceivedDialog( dialog )
 
 
  	def ShowRecordingInfo( self ) :

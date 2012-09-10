@@ -28,8 +28,6 @@ class DialogChannelSearch( BaseDialog ) :
 
 
 	def onInit( self ) :
-		self.mDataCache.Player_AVBlank( True, True )
-
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
@@ -54,7 +52,6 @@ class DialogChannelSearch( BaseDialog ) :
 		self.DrawItem( )
 
 		self.AbortDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-#		self.AbortDialog.SetDialogProperty( 'Confirm', 'Do you want abort channel scan?' )
 		self.AbortDialog.SetDialogProperty( MR_LANG( 'Abort Channel Search' ), MR_LANG( 'Do you want to stop the channel scan?' ) )
 
 
@@ -147,15 +144,12 @@ class DialogChannelSearch( BaseDialog ) :
 	def ScanStart( self ) :
 		if self.mScanMode == E_SCAN_SATELLITE :
 			ret = self.mCommander.Channelscan_BySatelliteList( self.mConfiguredSatelliteList )
-
 			if ret == False :
 				self.mEventBus.Deregister( self )
 				self.ReTune( )
 				self.CloseDialog( )
-				self.mDataCache.Player_AVBlank( False, True )
-				self.ReLoadChannelList( )
+				self.mDataCache.Channel_ReLoad( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-#				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Channel search is failed' ) )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Channel search has failed to complete' ) )				
 				dialog.doModal( )
 
@@ -164,10 +158,8 @@ class DialogChannelSearch( BaseDialog ) :
 			if ret == False :
 				self.mEventBus.Deregister( self )
 				self.CloseDialog( )
-				self.mDataCache.Player_AVBlank( False, True )
-				self.ReLoadChannelList( )
+				self.mDataCache.Channel_ReLoad( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-#				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Channel search is failed' ) )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Channel search has failed to complete' ) )				
 				dialog.doModal( )
 		else :
@@ -193,8 +185,7 @@ class DialogChannelSearch( BaseDialog ) :
 			if self.mScanMode == E_SCAN_SATELLITE :
 				self.ReTune( )
 			self.CloseDialog( )
-			self.mDataCache.Player_AVBlank( False, False )
-			self.ReLoadChannelList( )
+			self.mDataCache.Channel_ReLoad( )
 
 
 	@GuiLock
@@ -269,12 +260,6 @@ class DialogChannelSearch( BaseDialog ) :
 		dialog.SetDialogProperty( MR_LANG( 'Channel Search Result' ), searchResult )
 		dialog.doModal( )
 		self.mIsFinished = True
-
-
-	def ReLoadChannelList( self ) :
-		self.mDataCache.LoadZappingmode( )
-		self.mDataCache.LoadZappingList( )
-		self.mDataCache.LoadChannelList( 0, ElisEnum.E_SERVICE_TYPE_TV, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER )
 
 
 	def ReTune( self ) :

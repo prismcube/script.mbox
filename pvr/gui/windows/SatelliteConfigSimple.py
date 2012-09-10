@@ -10,6 +10,7 @@ class SatelliteConfigSimple( SettingWindow ) :
 		self.mSelectedTransponderIndex = 0
 		self.mSelectedIndexLnbType = 0
 		self.mHasTransponder = False
+		self.mAvBlankStatus = False
 
 
 	def onInit( self ) :
@@ -29,8 +30,11 @@ class SatelliteConfigSimple( SettingWindow ) :
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.InitConfig( )
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
+		self.mAvBlankStatus = self.mDataCache.Get_Player_AVBlank( )
+		self.mDataCache.Player_AVBlank( False )
 		self.mInitialized = True
 		self.setDefaultControl( )
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -46,6 +50,8 @@ class SatelliteConfigSimple( SettingWindow ) :
 			self.OpenBusyDialog( )
 			self.ResetAllControl( )
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
+			if self.mAvBlankStatus :
+				self.mDataCache.Player_AVBlank( True )
 			self.CloseBusyDialog( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
@@ -110,7 +116,6 @@ class SatelliteConfigSimple( SettingWindow ) :
 
 		# LNB Frequency - Inputcontrol
 		elif groupId == E_Input02 :
-
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_LNB_FREQUENCY )
 			dialog.SetFrequency( self.mCurrentSatellite.mLowLNB, self.mCurrentSatellite.mHighLNB, self.mCurrentSatellite.mLNBThreshold )
 			dialog.doModal( )
@@ -166,10 +171,6 @@ class SatelliteConfigSimple( SettingWindow ) :
 
 
 	def InitConfig( self ) :
-		""" ?????
-		if self.mTunerMgr.GetCurrentTunerType( ) == E_ONE_CABLE :
-			self.mCurrentSatellite.mMotorizedType = 1
-		"""
 		self.ResetAllControl( )
 
 		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mDataCache.GetFormattedSatelliteName( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType ), MR_LANG( 'Select the satellite you want to configure' ) )

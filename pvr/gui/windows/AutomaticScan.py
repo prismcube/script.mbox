@@ -84,11 +84,6 @@ class AutomaticScan( SettingWindow ) :
 				dialog.SetConfiguredSatellite( self.mConfiguredSatelliteList )
 				dialog.doModal( )
 
-				self.OpenBusyDialog( )
-				zappingMode = self.mDataCache.Zappingmode_GetCurrent( True )		
-				self.mDataCache.Channel_GetAllChannels( zappingMode.mServiceType, False )
-				self.CloseBusyDialog( )				
-
 			else :
 				configuredSatelliteList = []
 				config = self.mConfiguredSatelliteList[ self.mSatelliteIndex - 1 ]
@@ -97,15 +92,10 @@ class AutomaticScan( SettingWindow ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 				dialog.SetConfiguredSatellite( configuredSatelliteList )				
 				dialog.doModal( )
-
-				self.OpenBusyDialog( )
-				zappingMode = self.mDataCache.Zappingmode_GetCurrent( True )		
-				self.mDataCache.Channel_GetAllChannels( zappingMode.mServiceType, False )
-				self.CloseBusyDialog( )				
-				
-					
+		
 		if groupId == E_SpinEx01 or groupId == E_SpinEx02 :
 			self.ControlSelect( )
+
 
 	def onFocus( self, aControlId ) :
 		if self.mInitialized == False :

@@ -219,7 +219,7 @@
 					<aligny>center</aligny>
 					<font>Font_Info</font>
 					<textcolor>grey</textcolor>
-					<label>BookMark</label>
+					<label>Bookmark</label>
 					<visible>Control.HasFocus(3628)</visible>
 				</control>
 				<control type="label">
