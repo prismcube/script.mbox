@@ -100,7 +100,7 @@ class FirstInstallation( SettingWindow ) :
 					ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList )
 					if ret >= 0 :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'aaaaaaaaaaaaaaaaaaaaaa' ) )
+						dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Please be patience after pressing the OK button\nIt will take some time to bring up display changes' ) )
 						dialog.doModal( )
 						WinMgr.GetInstance( ).SetCurrentLanguage( menuLanguageList[ ret ] )
 						
