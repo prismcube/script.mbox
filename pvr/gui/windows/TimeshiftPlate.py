@@ -134,11 +134,6 @@ class TimeShiftPlate( BaseWindow ) :
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_MODE, label )
 
 		self.GetNextSpeed( E_ONINIT )
-		defaultFocus = E_CONTROL_ID_BUTTON_PLAY
-		if self.mSpeed == 100 :
-			defaultFocus = E_CONTROL_ID_BUTTON_PAUSE
-
-		self.setFocusId( defaultFocus )
 
 		#run thread
 		self.mEnableLocalThread = True
@@ -161,6 +156,14 @@ class TimeShiftPlate( BaseWindow ) :
 					self.onClick( E_CONTROL_ID_BUTTON_PLAY )
 
 			self.mPrekey = None
+
+		else :
+			defaultFocus = E_CONTROL_ID_BUTTON_PLAY
+			if self.mSpeed == 100 :
+				defaultFocus = E_CONTROL_ID_BUTTON_PAUSE
+
+			self.setFocusId( defaultFocus )
+
 
 		if self.mAutomaticHide == True :
 			self.StartAutomaticHide( )
@@ -302,7 +305,7 @@ class TimeShiftPlate( BaseWindow ) :
 					aControlId = E_CONTROL_ID_BUTTON_PAUSE
 
 			self.setFocusId( aControlId )
-			#LOG_TRACE('----------focus[%s]'% aControlId )
+			LOG_TRACE('----------focus[%s]'% aControlId )
 
 		elif aControlId == E_CONTROL_ID_BUTTON_VOLUME :
 			self.GlobalAction( Action.ACTION_MUTE )
@@ -407,7 +410,8 @@ class TimeShiftPlate( BaseWindow ) :
 			self.mWin.setProperty( 'IsXpeeding', 'True' )
 
 			#blocking release
-			self.SetBlockingButtonEnable( True )
+			if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
+				self.SetBlockingButtonEnable( True )
 
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_PAUSE :
@@ -420,7 +424,7 @@ class TimeShiftPlate( BaseWindow ) :
 			elif self.mMode == ElisEnum.E_MODE_PVR :
 				ret = self.mDataCache.Player_Pause( )
 
-			#LOG_TRACE( 'play_pause( ) ret[%s]'% ret )
+			LOG_TRACE( 'play_pause( ) ret[%s]'% ret )
 			if ret :
 				self.mIsPlay = FLAG_PLAY
 
@@ -430,7 +434,8 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mWin.setProperty( 'IsXpeeding', 'True' )
 
 				#blocking
-				self.SetBlockingButtonEnable( False )
+				if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
+					self.SetBlockingButtonEnable( False )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_STOP :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
@@ -1020,8 +1025,19 @@ class TimeShiftPlate( BaseWindow ) :
 					time.sleep( 1 )
 					waitTime += 1
 				self.CloseBusyDialog( )
-				if self.mSpeed == 100 :
-					self.setFocusId( E_CONTROL_ID_BUTTON_PAUSE )
+
+				#play on
+				if not self.mIsTimeshiftPending :
+					waitTime = 0
+					while waitTime < 5 :
+						ret = self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
+						self.setFocusId( E_CONTROL_ID_BUTTON_PAUSE )
+
+						if self.mSpeed == 100 and ret :
+							break
+						time.sleep( 1 )
+						waitTime += 1
+						#LOG_TRACE('-----------repeat[%s] focused[%s] '% ( waitTime + 1,ret ) )
 
 			time.sleep( 1 )
 

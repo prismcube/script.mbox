@@ -1,5 +1,5 @@
 <window type="windows" id="3019">
-	<defaultcontrol always="true">3705</defaultcontrol>
+	<!--defaultcontrol always="true">3705</defaultcontrol-->
 	<allowoverlay>yes</allowoverlay>
 	<backgroundcolor>0x00ffffff</backgroundcolor>		
 	<controls>
