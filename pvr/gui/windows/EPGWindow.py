@@ -419,11 +419,11 @@ class EPGWindow( BaseWindow ) :
 
 	def UpdateSelectedChannel( self ) :
 		if self.mChannelList == None or len( self.mChannelList ) <= 0 :
-			self.mCtrlEPGChannelLabel.setLabel( MR_LANG( 'No channel' ) )		
+			self.mCtrlEPGChannelLabel.setLabel( MR_LANG( 'No Channel' ) )		
 		elif self.mSelectChannel :
 			self.mCtrlEPGChannelLabel.setLabel( '%04d %s' %( self.mSelectChannel.mNumber, self.mSelectChannel.mName ) )
 		else:
-			self.mCtrlEPGChannelLabel.setLabel( MR_LANG( 'No channel' ) )
+			self.mCtrlEPGChannelLabel.setLabel( MR_LANG( 'No Channel' ) )
 
 
 	def UpdateCurrentChannel( self ) :
