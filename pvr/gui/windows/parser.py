@@ -103,7 +103,11 @@ class TokenEater:
                 #print >> fp, '<string id="__INDEX@HERE__">%s</string>' %(repr(k))
                 ret = repr(k)
                 #print ret[1:len(ret)-1]
-                strings.append(ret[1:len(ret)-1])
+                #strings.append(ret[1:len(ret)-1])
+                if ret[0] == '"' :
+           	        strings.append(ret[1:len(ret)-1])
+                else :
+                    strings.append(repr(k))
 
 
 def main():
@@ -128,7 +132,7 @@ def main():
 
     strings=[]
     eater.exchange(strings)
-    #print strings
+    print strings
 
 if __name__ == '__main__':
     main()

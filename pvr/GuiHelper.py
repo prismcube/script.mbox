@@ -336,15 +336,19 @@ class CacheMRLanguage( object ) :
 
 
 	def StringTranslate( self, string = None ) :
-		strId = gMRStringHash.get( string, None )
+		strId = gMRStringHash.get( repr(string), None )
+
+		print 'strId[%s] string[%s]'% (strId, string)
 		
 		if strId :
 			xmlString = Strings( strId )
-			#LOG_TRACE('xml_string[%s] parse[%s]'% (string, xmlString) )
-			return xmlString.encode( 'utf-8' )
+			#print 'xml_string[%s] parse[%s]'% (string, xmlString)
+			string = xmlString.encode( 'utf-8' )
 
-		else:
-			return string
+			if string[0] == "'" :
+				string = string[1:len(string)-1]
+
+		return string
 
 
 gStrLanguage = GetInstance( )

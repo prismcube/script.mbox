@@ -281,16 +281,23 @@ def readToXML(inFile):
 				csvret2[10]= inID[0]
 				csvret[0] = inStr[0]
 				for i in range(len(wFileList)) :
-					csvret[i+1] = 'NONE_' + inStr[0]
+					#csvret[i+1] = 'NONE_' + inStr[0]
+
+					if inStr[0][0] == "'" :
+						csvret[i+1] = '\'NONE_' + inStr[0][1:]
+					else :
+						csvret[i+1] = 'NONE_' + inStr[0]
+					#print '----------[%s]'% csvret[i+1]
 
 
+			"""
 			#2. parse '%s', '%d', '%%' in list
 			for i in range(len(csvret)):
 				csvret[i] = re.sub('%s', '', csvret[i])
 				csvret[i] = re.sub('%d', '', csvret[i])
 				csvret[i] = re.sub('%%', '%', csvret[i])
 				#csvret[i] = (csvret[i].decode('utf-8')).encode('utf-8', 'xmlcharrefreplace')
-	
+			"""
 	
 			#write string.xml
 			for i in range(len(wFileList)):
@@ -492,6 +499,8 @@ def parseProperty( elisDir, stringXML ):
 				else :
 					element = item
 
+				element = repr(element)
+
 				#filter
 				timeStr  = re.findall(gTimePattern, element)
 				unitStr  = re.findall(gUnitPattern, element)
@@ -690,7 +699,7 @@ def parseSource(sourceFile):
 		gAtot = gAtot + countTot
 		gAnew = gAnew + countNew
 		gArep = gArep + countRepeat
-		print 'MR_LANG Total[%s] countNew[%s] countRepeat[%s]'% (countTot, countNew, countRepeat)
+		print 'MR_LANG Total[%s] \033[1;33m countNew[%s]\033[1;m countRepeat[%s]'% (countTot, countNew, countRepeat)
 		print 'gtot[%s] gnew[%s] grep[%s]'% (gAtot,gAnew,gArep)
 	os.rename(wFile, 'Strings.xml')
 
