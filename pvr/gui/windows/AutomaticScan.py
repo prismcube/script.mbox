@@ -114,7 +114,7 @@ class AutomaticScan( SettingWindow ) :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite is available' ) )
 		else :
 			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[self.mSatelliteIndex], MR_LANG( 'Select satellites you wish to search from' ) )
-			self.AddEnumControl( E_SpinEx01, 'Network Search', None, MR_LANG( 'When set to "On", new channels are searched from existing transponders and the additional transponders that stored by transponder network however if you set this option to "Off", only the transponder you selected will be searched' ) )
+			self.AddEnumControl( E_SpinEx01, 'Network Search', None, MR_LANG( 'When set to \'On\', new channels are searched from existing transponders and the additional transponders that stored by transponder network however if you set this option to \'Off\', only the transponder you selected will be searched' ) )
 			self.AddEnumControl( E_SpinEx02, 'Channel Search Mode', MR_LANG( 'Search Type' ), MR_LANG( 'Select the type of channels you want to search for' ) )
 			self.AddInputControl( E_Input02, MR_LANG( 'Start Search' ), '', MR_LANG( 'Press the OK button to search channels' ) )
 			self.InitControl( )

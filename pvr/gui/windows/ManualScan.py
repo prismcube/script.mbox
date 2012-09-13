@@ -256,7 +256,7 @@ class ManualScan( SettingWindow ) :
 		# Symbolrate
 		self.AddInputControl( E_Input03, MR_LANG( ' - Symbol Rate' ), '%d KS/s' % self.mConfigTransponder.mSymbolRate , MR_LANG( 'Set the amount of data, that is transferred per second in the data stream' ) )
 		
-		self.AddEnumControl( E_SpinEx05, 'Network Search', None, MR_LANG( 'When set to "On", new channels are searched from existing transponders and the additional transponders stored by transponder network however if you set this option to "Off", only the transponder you selected will be searched' ) )
+		self.AddEnumControl( E_SpinEx05, 'Network Search', None, MR_LANG( 'When set to \'On\', new channels are searched from existing transponders and the additional transponders stored by transponder network however if you set this option to \'Off\', only the transponder you selected will be searched' ) )
 		self.AddEnumControl( E_SpinEx06, 'Channel Search Mode', MR_LANG( 'Search Type' ), MR_LANG( 'Select the type of channels you want to search for' ) )
 		self.AddInputControl( E_Input04, MR_LANG( 'Start Search' ), '', MR_LANG( 'Press the OK button to search channels' ) )
 
