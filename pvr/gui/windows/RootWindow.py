@@ -4,9 +4,7 @@ from pvr.gui.WindowImport import *
 class RootWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
-
-		self.mInitialized = False
-
+		
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -28,7 +26,7 @@ class RootWindow( BaseWindow ) :
 			self.mInitialized = True
 			self.mEventBus.Register( self )
 		else :
-			WinMgr.GetInstance( ).GetWindow(WinMgr.GetInstance( ).mLastId).doModal( )
+			WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).doModal( )
 
 		
 	def onAction( self, aAction ) :
@@ -115,4 +113,3 @@ class RootWindow( BaseWindow ) :
 			xbmc.executehttpapi( 'setlocaloffset(%d)' %localOffset )
 
 		LOG_TRACE( '--------------' )
-

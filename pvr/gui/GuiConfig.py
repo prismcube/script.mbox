@@ -119,18 +119,9 @@ NET_DHCP						= 0
 NET_STATIC						= 1
 
 # Wifi Encript Type
-ENCRIPT_TYPE_WEP				= 0
-ENCRIPT_TYPE_WPA				= 1
-ENCRIPT_TYPE_WPA2				= 2
-ENCRIPT_TYPE_WPA_WPA2			= 3
-
-# Wifi Password Type
-PASSWORD_TYPE_ASCII				= 0
-PASSWORD_TYPE_HEX				= 1
-
-# Wifi Use Encrypt
-NOT_USE_PASSWORD_ENCRYPT		= 0
-USE_PASSWORD_ENCRYPT			= 1
+ENCRYPT_OPEN					= 0
+ENCRYPT_TYPE_WEP				= 1
+ENCRYPT_TYPE_WPA				= 2
 
 # Wifi Use Hidden Ssid
 NOT_USE_HIDDEN_SSID				= 0
@@ -159,8 +150,6 @@ USER_ENUM_LIST_ON_OFF				= [ MR_LANG( 'Off' ), MR_LANG( 'On' ) ]
 USER_ENUM_LIST_YES_NO				= [ MR_LANG( 'No' ), MR_LANG( 'Yes' ) ]
 USER_ENUM_LIST_DHCP_STATIC			= [ MR_LANG( 'DHCP' ), MR_LANG( 'Static' ) ]
 USER_ENUM_LIST_NETWORK_TYPE			= [ MR_LANG( 'Ethernet' ), MR_LANG( 'Wireless' ) ]
-USER_ENUM_LIST_ENCRIPT_TYPE			= [ 'WEP', 'WPA', 'WPA2', 'WPA/WPA2' ]
-USER_ENUM_LIST_PASSWORD_TYPE		= [ 'Ascii', 'Hex' ]
 
 E_LIST_LNB_TYPE						= [ MR_LANG( 'Universal' ), MR_LANG( 'Single' ), MR_LANG( 'Userdefined' ) ]
 E_LIST_SINGLE_FREQUENCY 			= [ '5150', '9750', '10600', '10750', '11300' ]

@@ -22,7 +22,7 @@ class EditTransponder( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite is available' ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please reset your STB\nNo satellite infomation is available' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please reset your STB' ), MR_LANG( 'No satellite infomation is available' ) )
 			dialog.doModal( )
 			WinMgr.GetInstance( ).CloseWindow( )
 		else :
@@ -94,7 +94,7 @@ class EditTransponder( SettingWindow ) :
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Add a new transponder first\nNo transponder info is available for the satellite' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Add a new transponder first' ), MR_LANG( 'No transponder info is available for the satellite' ) )
 				dialog.doModal( )
 
 		# Add Transponder
@@ -175,7 +175,7 @@ class EditTransponder( SettingWindow ) :
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Add a new transponder first\nNo transponder info is available for the satellite' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Add a new transponder first' ), MR_LANG( 'No transponder info is available for the satellite' ) )
 				dialog.doModal( )
 
 		# Delete Transponder
@@ -204,7 +204,7 @@ class EditTransponder( SettingWindow ) :
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Add a new transponder first\nNo transponder info is available for the satellite' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Add a new transponder first' ), MR_LANG( 'No transponder info is available for the satellite' ) )
 				dialog.doModal( )
 
 		

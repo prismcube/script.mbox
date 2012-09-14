@@ -100,8 +100,10 @@ class FirstInstallation( SettingWindow ) :
 					ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList )
 					if ret >= 0 :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Please be patience after pressing the OK button\nIt will take some time to bring up display changes' ) )
+						dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Please be patience after pressing the OK button' ), MR_LANG( 'It will take some time to bring up display changes' ) )
 						dialog.doModal( )
+						self.mInitialized = False
+						self.mLastFocused = -1
 						WinMgr.GetInstance( ).SetCurrentLanguage( menuLanguageList[ ret ] )
 						
 				elif groupId == E_Input02 :
@@ -147,6 +149,7 @@ class FirstInstallation( SettingWindow ) :
 
 	def Close( self ) :
 		self.OpenBusyDialog( )
+		self.mLastFocused = -1
 		self.ResetAllControl( )
 		self.SetVideoRestore( )
 		self.mStepNum = E_STEP_SELECT_LANGUAGE
@@ -492,7 +495,7 @@ class FirstInstallation( SettingWindow ) :
 			self.CloseBusyDialog( )
 			if mode == TIME_AUTOMATIC and dialog.GetResult( ) == False :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Automatic time setup has failed because\nno time info was given by the channel you selected' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Automatic time setup has failed because' ), MR_LANG( 'no time info was given by the channel you selected' ) )
 				dialog.doModal( )
 
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :

@@ -15,9 +15,6 @@ E_ETC					= 9
 E_ETHERNET				= 100
 E_WIFI					= 101
 
-PING_TEST_INTERNAL		= 0
-PING_TEST_EXTERNAL		= 1
-
 
 class Configure( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -86,9 +83,7 @@ class Configure( SettingWindow ) :
 		self.mHiddenSsid		= 'None'
 		self.mUseHiddenId		= NOT_USE_HIDDEN_SSID
 		self.mCurrentSsid		= 'None'
-		self.mUseEncrypt		= NOT_USE_PASSWORD_ENCRYPT
-		self.mEncriptType		= ENCRIPT_TYPE_WEP
-		self.mPasswordType		= PASSWORD_TYPE_ASCII
+		self.mEncryptType		= ENCRYPT_TYPE_WEP
 		self.mPassWord 			= None
 
 		for i in range( len( leftGroupItems ) ) :
@@ -130,7 +125,7 @@ class Configure( SettingWindow ) :
 		WinMgr.GetInstance( ).CloseWindow( )
 
 
-	def onAction( self, aAction ) :
+	def onAction( self, aAction ) :		
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
@@ -189,8 +184,9 @@ class Configure( SettingWindow ) :
 				ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList )
 				if ret >= 0 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Please be patience after pressing the OK button\nIt will take some time to bring up display changes' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Please be patience after pressing the OK button' ), MR_LANG( 'It will take some time to bring up display changes' ) )
 					dialog.doModal( )
+					self.mInitialized = False
 					WinMgr.GetInstance( ).SetCurrentLanguage( menuLanguageList[ ret ] )
 			else :
 				self.DisableControl( E_LANGUAGE )
@@ -419,23 +415,19 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_NETWORK_SETTING :
 			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select Ethernet or Wireless for your network connection' ) )
-			#self.AddInputControl( E_Input06, MR_LANG( ' - Connection Test' ), '', MR_LANG( 'Determine your network connection is accessible' ) )
 
 			if self.mUseNetworkType == NETWORK_WIRELESS :
 				self.AddInputControl( E_Input01, MR_LANG( 'Search AP' ), self.mCurrentSsid, MR_LANG( 'Search Access Points around your STB' ) )
 				self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Hidden SSID' ), USER_ENUM_LIST_ON_OFF, self.mUseHiddenId, MR_LANG( 'Enable hidden Subsystem Identification (SSID)' ) )
 				self.AddInputControl( E_Input02, MR_LANG( ' - Set Hidden SSID' ), self.mHiddenSsid, MR_LANG( 'Enter the hidden SSID you wish to use' ) )
-				self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Encryption' ), USER_ENUM_LIST_ON_OFF, self.mUseEncrypt, MR_LANG( 'Enable encryption for a secure wireless data transmissions' ) )
-				self.AddUserEnumControl( E_SpinEx03, MR_LANG( ' - Encryption Method' ), USER_ENUM_LIST_ENCRIPT_TYPE, self.mEncriptType, MR_LANG( 'Select an encryption method for your network' ) )
-				self.AddUserEnumControl( E_SpinEx04, MR_LANG( ' - Encryption Key Type' ), USER_ENUM_LIST_PASSWORD_TYPE, self.mPasswordType, MR_LANG( 'Set ASCII/HEX mode for your key' ) )
-				self.AddInputControl( E_Input03, MR_LANG( ' - Set Encryption Key' ), StringToHidden( self.mPassWord ), MR_LANG( 'Enter the encryption key for wireless connection' ) )
+				self.AddInputControl( E_Input03, MR_LANG( 'Set Encryption Key' ), StringToHidden( self.mPassWord ), MR_LANG( 'Enter the encryption key for wireless connection' ) )
 				self.AddInputControl( E_Input04, MR_LANG( 'Apply' ), '', MR_LANG( 'Press the OK button to connect to the AP you have chosen' ) )
 
-				visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04 ]
+				visibleControlIds = [ E_SpinEx01, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04 ]
 				self.SetVisibleControls( visibleControlIds, True )
 				self.SetEnableControls( visibleControlIds, True )
 
-				hideControlIds = [ E_Input05, E_Input06 ]
+				hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_Input05, E_Input06 ]
 				self.SetVisibleControls( hideControlIds, False )
 				
 				self.InitControl( )
@@ -586,10 +578,10 @@ class Configure( SettingWindow ) :
 				self.SetEnableControl( E_Input01, False )
 				self.SetEnableControl( E_Input02, True )
 
-			if self.mUseEncrypt == NOT_USE_PASSWORD_ENCRYPT :
-				self.SetEnableControl( E_SpinEx03, False )
+			if self.mEncryptType == ENCRYPT_OPEN :
+				self.SetEnableControl( E_Input03, False )
 			else :
-				self.SetEnableControl( E_SpinEx03, True )
+				self.SetEnableControl( E_Input03, True )
 				
 		elif aSelectedItem == E_PARENTAL :
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_Input02 ]
@@ -712,14 +704,9 @@ class Configure( SettingWindow ) :
 
 	def WifiSetting( self, aControlId ) :
 		apList = []
-		if aControlId == E_SpinEx01 or aControlId == E_SpinEx02 :
+		if aControlId == E_SpinEx01 :
 			self.mUseHiddenId = self.GetSelectedIndex( E_SpinEx01 )
-			self.mUseEncrypt = self.GetSelectedIndex( E_SpinEx02 )
 			self.DisableControl( E_WIFI )
-
-		elif aControlId == E_SpinEx03 or aControlId == E_SpinEx04 :
-			self.mEncriptType	= self.GetSelectedIndex( E_SpinEx03 )
-			self.mPasswordType	= self.GetSelectedIndex( E_SpinEx04 )
 
 		elif aControlId == E_Input01 :
 			dev = self.mWireless.GetWifidevice( )
@@ -739,12 +726,14 @@ class Configure( SettingWindow ) :
 			else :
 				apNameList = []
 				for ap in apList :
-					apNameList.append( ap[0] + MR_LANG( ' -   quality : %s Encryption : %s' ) % ( ap[1], ap[2] ) )
+					apNameList.append( ap[0] + MR_LANG( '    - quality : %s Encryption : %s' ) % ( ap[1], ap[2] ) )
 				dialog = xbmcgui.Dialog( )
 				ret = dialog.select( MR_LANG( 'Select AP' ), apNameList )
 				if ret >= 0 :
 					self.mCurrentSsid = apList[ret][0]
+					self.mEncryptType = self.mWireless.ApInfoToEncrypt( apList[ret][2] )
 					self.SetControlLabel2String( E_Input01, self.mCurrentSsid )
+					self.DisableControl( E_WIFI )
 
 		elif aControlId == E_Input02 :
 			self.mHiddenSsid = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, MR_LANG( 'Enter your SSID' ), self.mHiddenSsid, 30 )
@@ -761,9 +750,19 @@ class Configure( SettingWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'AP or devices not found' ) )
 				dialog.doModal( )
 				return
+			if self.mEncryptType == ENCRYPT_TYPE_WPA and ( len( self.mPassWord ) < 8 or len( self.mPassWord ) > 64 ) :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Invalid password length' ) )
+				dialog.doModal( )
+				return
+			if self.mEncryptType == ENCRYPT_TYPE_WEP and  len( self.mPassWord ) < 6 :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Invalid password length' ) )
+				dialog.doModal( )
+				return
 
 			self.ShowProgress( MR_LANG( 'Now connecting...' ), 30 )
-			ret1 = self.mWireless.WriteWpaSupplicant( self.mUseHiddenId, self.mHiddenSsid, self.mCurrentSsid, self.mUseEncrypt, self.mEncriptType, self.mPasswordType, self.mPassWord )
+			ret1 = self.mWireless.WriteWpaSupplicant( self.mUseHiddenId, self.mHiddenSsid, self.mCurrentSsid, self.mEncryptType, self.mPassWord )
 			ret2 = self.mWireless.ConnectWifi( dev )
 			SetCurrentNetworkType( NETWORK_WIRELESS )
 			addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( dev )
@@ -779,10 +778,7 @@ class Configure( SettingWindow ) :
 	def LoadWifi( self ) :
 		if self.mWireless.LoadWpaSupplicant( ) == True :
 			self.mCurrentSsid		= self.mWireless.GetCurrentSsid( )
-			self.mUseEncrypt		= self.mWireless.GetUseEncrypt( )
-			if self.mUseEncrypt == True :
-				self.mEncriptType	= self.mWireless.GetEncryptType( )
-			self.mPasswordType		= self.mWireless.GetPasswordType( )
+			self.mEncryptType		= self.mWireless.GetEncryptType( )
 			self.mPassWord 			= self.mWireless.GetPassword( )
 		else :
 			LOG_ERR( 'Load Wpa Supplicant Fail' )
@@ -793,7 +789,6 @@ class Configure( SettingWindow ) :
 			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, MR_LANG( 'Enter an IP address' ), '0.0.0.0' )			
 		else :
 			aIpAddr = NumericKeyboard( E_NUMERIC_KEYBOARD_TYPE_IP, MR_LANG( 'Enter an IP address' ), aIpAddr )
-			
 		return aIpAddr
 
 
@@ -866,7 +861,7 @@ class Configure( SettingWindow ) :
 			self.CloseBusyDialog( )
 			if mode == TIME_AUTOMATIC and dialog.GetResult( ) == False :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Automatic time setup has failed because\nno time info was given by the channel you selected' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Automatic time setup has failed because' ), MR_LANG( 'no time info was given by the channel you selected' ) )
 				dialog.doModal( )
 
 			if mute == False :

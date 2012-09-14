@@ -383,21 +383,76 @@ class IpParser :
 class WirelessParser :
 	def __init__( self ) :
 		self.mCurrentSsid	= None
-		self.mPasswordType	= PASSWORD_TYPE_ASCII
 		self.mPassWord		= None
 		self.key_mgmt		= None
-		self.proto			= None
-		self.mEncriptType	= ENCRIPT_TYPE_WEP
+		self.mEncryptType	= ENCRYPT_TYPE_WPA
 
 
 	def ResetInfo( self ) :
 		self.mCurrentSsid	= None
-		self.mPasswordType	= PASSWORD_TYPE_ASCII
 		self.mPassWord		= None
 		self.key_mgmt		= None
-		self.proto			= None
-		self.mEncriptType	= ENCRIPT_TYPE_WEP
-	
+		self.mEncryptType	= ENCRYPT_TYPE_WPA
+
+
+	def LoadWpaSupplicant( self ) :
+		self.ResetInfo( )
+		if os.path.exists( FILE_WPA_SUPPLICANT ) == False :
+			return False
+		try :
+			openFile = open( FILE_WPA_SUPPLICANT, 'r' )
+			inputline = openFile.readlines( )
+			for line in inputline :
+				line = line.lstrip( )
+				if line.startswith( 'ssid=' ) and len( line ) > 6 :
+					self.mCurrentSsid = line[ 6 : -2 ]
+				elif line.startswith( 'wep_key0="' ) and len( line ) > 11 :
+					self.mPassWord = line[ 10 : -2 ]
+				elif line.startswith( 'wep_key0=' ) and len( line ) > 9 :
+					self.mPassWord = line[ 9 : -1 ]
+				elif line.startswith( 'psk="' ) and len( line ) > 6 :
+					self.mPassWord = line[ 5 : -2 ]
+				elif line.startswith( '#psk="' ) and len( line ) > 6 :
+					self.mPassWord = line[ 6 : -2 ]
+				elif not self.mPassWord and line.startswith( 'psk=' ) and len( line ) > 4 :
+					self.mPassWord = line[ 4 : -1 ]
+				elif line.startswith( 'key_mgmt=' ) and len( line ) > 9 :
+					self.key_mgmt = line[ 9 : -1 ]
+			openFile.close( )
+			return True
+
+		except Exception, e :
+			if openFile.closed == False :
+				openFile.close( )
+			LOG_ERR( 'Error exception[%s]' % e )
+			return False
+
+
+	def GetCurrentSsid( self ) :
+		if self.mCurrentSsid == None :
+			return 'None'
+		return self.mCurrentSsid
+
+
+	def GetPassword( self ) :
+		if self.mPassWord == None :
+			return ''
+		return self.mPassWord
+
+
+	def GetEncryptType( self ) :
+		if self.key_mgmt == 'NONE' :
+			if self.mPassWord == None :
+				self.mEncryptType = ENCRYPT_OPEN
+			else :
+				self.mEncryptType = ENCRYPT_TYPE_WEP
+		elif self.key_mgmt == "WPA-PSK" :
+			self.mEncryptType = ENCRYPT_TYPE_WPA
+		else :
+			LOG_ERR( 'GetEncryptType Fail!!' )
+
+		return self.mEncryptType
+
 
 	def GetWifidevice( self ) :
 		for dev in GetInstalledAdapters( ) :
@@ -416,20 +471,19 @@ class WirelessParser :
 			scanResult = None
 			if GetCurrentNetworkType( ) != NETWORK_WIRELESS :
 				os.system( 'ifup %s' % aDev )
-			wifi = Wireless( aDev )
 
-			scanResult  = wifi.scan( )
+			os.system( 'iwlist %s scan > %s' % ( aDev, FILE_TEMP ) )
+			from IwlistParser import Get_ApList
+			scanResult = Get_ApList( )
+			
 			if scanResult != None :
 				apList = []
 				for ap in scanResult :
-					if len( ap.essid ) > 0 :
-						apInfoList = []
-						apInfoList.append( ap.essid )
-						apInfoList.append( ap.quality.getSignallevel( ) )
-						if ap.encode.flags & pythonwifi.flags.IW_ENCODE_DISABLED :
-							apInfoList.append( 'No' )
-						else :
-							apInfoList.append( 'Yes' )
+					apInfoList = []
+					if len( ap[0] ) > 0 :
+						apInfoList.append( ap[0] )
+						apInfoList.append( ap[1] )
+						apInfoList.append( ap[2] )
 						apList.append( apInfoList )
 				if apList :
 					status = apList 
@@ -448,48 +502,20 @@ class WirelessParser :
 			return status
 
 
-	def LoadWpaSupplicant( self ) :
-		self.ResetInfo( )
-		if os.path.exists( FILE_WPA_SUPPLICANT ) == False :
-			return False
-		try :
-			openFile = open( FILE_WPA_SUPPLICANT, 'r' )
-			inputline = openFile.readlines( )
-			for line in inputline :
-				line = line.lstrip( )
-				if line.startswith( 'ssid=' ) and len( line ) > 6 :
-					self.mCurrentSsid = line[ 6 : -2 ]
-				elif line.startswith( 'wep_key0="' ) and len( line ) > 11 :
-					self.mPasswordType = PASSWORD_TYPE_ASCII
-					self.mPassWord = line[ 10 : -2 ]
-				elif line.startswith( 'wep_key0=' ) and len( line ) > 9 :
-					self.mPasswordType = PASSWORD_TYPE_HEX
-					self.mPassWord = line[ 9 : -1 ]
-				elif line.startswith( 'psk="' ) and len( line ) > 6 :
-					self.mPasswordType = PASSWORD_TYPE_ASCII
-					self.mPassWord = line[ 5 : -2 ]
-				elif line.startswith( '#psk="' ) and len( line ) > 6 :
-					self.mPasswordType = PASSWORD_TYPE_HEX
-					self.mPassWord = line[ 6 : -2 ]
-				elif not self.mPassWord and line.startswith( 'psk=' ) and len( line ) > 4:
-					self.mPasswordType = PASSWORD_TYPE_HEX
-					self.mPassWord = line[ 4 : -1 ]
-				elif line.startswith( 'key_mgmt=' ) and len( line ) > 9 :
-					self.key_mgmt = line[ 9 : -1 ]
-				elif line.startswith( 'proto=' ) and len( line ) > 6 :
-					self.proto = line[ 6 : -1 ]
-
-			openFile.close( )
-			return True
-
-		except Exception, e :
-			if openFile.closed == False :
-				openFile.close( )
-			LOG_ERR( 'Error exception[%s]' % e )
-			return False
+	def ApInfoToEncrypt( self, aType ) :
+		if aType == 'No' :
+			return ENCRYPT_OPEN
+		elif aType == 'WPA' :
+			return ENCRYPT_TYPE_WPA
+		elif aType == 'WEP' :
+			return ENCRYPT_TYPE_WEP
+		else :
+			LOG_ERR( 'ApInfoToEncrypt Fail!!' )
+			return ENCRYPT_TYPE_WPA
 
 
-	def WriteWpaSupplicant( self, aUseHiddenId, aHiddenSsid, aCurrentSsid, aUseEncrypt, aEncriptType, aPasswordType, aPassWord ) :
+
+	def WriteWpaSupplicant( self, aUseHiddenId, aHiddenSsid, aCurrentSsid, aEncryptType, aPassWord ) :
 		try :
 			openFile = open( FILE_WPA_SUPPLICANT, 'w' )
 			words = "ctrl_interface=/var/run/wpa_supplicant\n"
@@ -503,32 +529,16 @@ class WirelessParser :
 			else :
 				words += "\tssid=\"" + aCurrentSsid + "\"\n"
 				words += "\tscan_ssid=0\n"
-			if aUseEncrypt == USE_PASSWORD_ENCRYPT :
-				if aEncriptType == ENCRIPT_TYPE_WEP :
-					words += "\tkey_mgmt=NONE\n"
-					words += "\twep_key0="
-					if aPasswordType == PASSWORD_TYPE_ASCII :
-						words += "\"" + aPassWord + "\"\n"
-					else:
-						words += aPassWord + "\n"
-				elif aEncriptType == ENCRIPT_TYPE_WPA :
-					words += "\tkey_mgmt=WPA-PSK\n"
-					words += "\tproto=WPA\n"
-					words += "\tpairwise=CCMP TKIP\n"
-					words += "\tgroup=CCMP TKIP\n"
-					words += "\tpsk=\"" + aPassWord + "\"\n"
-				elif aEncriptType == ENCRIPT_TYPE_WPA2 :
-					words += "\tkey_mgmt=WPA-PSK\n"
-					words += "\tproto=RSN\n"
-					words += "\tpairwise=CCMP TKIP\n"
-					words += "\tgroup=CCMP TKIP\n"
-					words += "\tpsk=\"" + aPassWord + "\"\n"
+			if aEncryptType == ENCRYPT_TYPE_WEP :
+				words += "\tkey_mgmt=NONE\n"
+				words += "\twep_key0="
+				if len( aPassWord ) == 10 or len( aPassWord ) == 26 :
+					words += aPassWord + "\n"
 				else:
-					words += "\tkey_mgmt=WPA-PSK\n"
-					words += "\tproto=WPA RSN\n"
-					words += "\tpairwise=CCMP TKIP\n"
-					words += "\tgroup=CCMP TKIP\n"
-					words += "\tpsk=\"" + aPassWord + "\"\n"
+					words += "\"" + aPassWord + "\"\n"
+			elif aEncryptType == ENCRYPT_TYPE_WPA :
+				words += "\tkey_mgmt=WPA-PSK\n"
+				words += "\tpsk=\"" + aPassWord + "\"\n"
 			else:
 				words += "\tkey_mgmt=NONE\n"
 			words += "}\n"
@@ -579,45 +589,4 @@ class WirelessParser :
 		except Exception, e :
 			LOG_ERR( 'Error exception[%s]' % e )
 			return False
-
-
-	def GetCurrentSsid( self ) :
-		if self.mCurrentSsid == None :
-			return 'None'
-		return self.mCurrentSsid
-
-
-	def GetPasswordType( self ) :
-		return self.mPasswordType
-
-
-	def GetPassword( self ) :
-		if self.mPassWord == None :
-			return ''
-		return self.mPassWord
-
-
-	def GetUseEncrypt( self ) :
-		if self.mPassWord == None :
-			return NOT_USE_PASSWORD_ENCRYPT
-		else :
-			return USE_PASSWORD_ENCRYPT
-
-
-	def GetEncryptType( self ) :
-		if self.key_mgmt == 'NONE' :
-			self.mEncriptType = ENCRIPT_TYPE_WEP
-		elif self.key_mgmt == "WPA-PSK" :
-			if self.proto == "WPA" :
-				self.mEncriptType = ENCRIPT_TYPE_WPA
-			elif self.proto == "RSN" :
-				self.mEncriptType = ENCRIPT_TYPE_WPA2
-			elif self.proto in ( "WPA RSN", "WPA WPA2" ) :
-				self.mEncriptType = ENCRIPT_TYPE_WPA_WPA2
-			else :
-				self.mEncriptType = ENCRIPT_TYPE_WPA
-		else :
-			self.mEncriptType = ENCRIPT_TYPE_WEP
-			
-		return self.mEncriptType
 

@@ -526,6 +526,6 @@ class WindowMgr( object ) :
 		return currentLanguage[4:]
 
 
-	def SetCurrentLanguage( self, aLanguage ) :
-		xbmc.executebuiltin( "Custom.SetLanguage(%s)" % aLanguage )		
-	
+	def SetCurrentLanguage( self, aLanguage ) :		
+		xbmc.executebuiltin( "Custom.SetLanguage(%s)" % aLanguage )
+		

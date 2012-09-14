@@ -21,7 +21,7 @@ class EditSatellite( SettingWindow ) :
 			self.SetVisibleControls( hideControlIds, False )
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite is available' ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please reset your STB\nNo satellite infomation is available' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please reset your STB' ), MR_LANG( 'No satellite infomation is available' ) )
 			dialog.doModal( )
 			WinMgr.GetInstance( ).CloseWindow( )
 		else :
@@ -88,11 +88,12 @@ class EditSatellite( SettingWindow ) :
 				if ret :
 					self.mDataCache.LoadAllSatellite( )
 					self.InitConfig( )
+					self.CloseBusyDialog( )
 		 		else :
+		 			self.CloseBusyDialog( )
 		 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You were unable to change satellite name' ) )
 		 			dialog.doModal( )
-		 		self.CloseBusyDialog( )
  				
 		# Add New Satellite
 		elif groupId == E_Input04 :
@@ -100,20 +101,20 @@ class EditSatellite( SettingWindow ) :
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				self.OpenBusyDialog( )
 				longitude, band, satelliteName = dialog.GetValue( )
 				if self.CheckSameSatellite( longitude, band ) == True :
+					self.OpenBusyDialog( )
 					ret = self.mCommander.Satellite_Add( longitude, band, satelliteName )
 					if ret :
 						self.mDataCache.LoadAllSatellite( )
 						self.InitConfig( )
+						self.CloseBusyDialog( )
 			 		else :
+			 			self.CloseBusyDialog( )
 			 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You were unable to add a new satellite in the list' ) )
 			 			dialog.doModal( )
-			 		self.CloseBusyDialog( )
 			 	else :
-			 		self.CloseBusyDialog( )
 			 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'The satellite already exists in the list' ) )
 		 			dialog.doModal( )
@@ -134,11 +135,12 @@ class EditSatellite( SettingWindow ) :
 					self.mDataCache.LoadConfiguredSatellite( )
 					self.mDataCache.LoadConfiguredTransponder( )
 					self.InitConfig( )
+					self.CloseBusyDialog( )
 		 		else :
+		 			self.CloseBusyDialog( )
 		 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You were unable to remove the satellite from the list' ) )
 		 			dialog.doModal( )
-		 		self.CloseBusyDialog( )
 
 
 	def onFocus( self, aControlId ):
