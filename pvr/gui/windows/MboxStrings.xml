@@ -565,6 +565,8 @@
 	<string id="563">File not found : %s</string>
 	<string id="564">Test scenario not available : %s</string>
 	<string id="565">UnKnown</string>
+</strings>
+<property>
 	<string id="3001">Last ServiceType</string>
 	<string id="3002">TV</string>
 	<string id="3003">Radio</string>
@@ -885,4 +887,4 @@
 	<string id="3318">Reset Channel List</string>
 	<string id="3319">Reset Favorite Add-ons</string>
 	<string id="3320">Reset Configure Setting</string>
-</strings>
+</property>

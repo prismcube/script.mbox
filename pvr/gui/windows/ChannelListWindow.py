@@ -878,7 +878,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mUserSlidePos.mMain = self.mCtrlListMainmenu.getSelectedPosition( )
 			self.mUserSlidePos.mSub = self.mCtrlListSubmenu.getSelectedPosition( )
 
-			label = MR_LANG( 'SORTED BY %s' ) % EnumToString( 'sort', self.mUserMode.mSortingMode )
+			label = MR_LANG( 'SORTED BY %s') % EnumToString( 'sort', self.mUserMode.mSortingMode )
 			"""
 			label1 = EnumToString( 'mode', self.mUserMode.mMode)
 			label2 = zappingName
@@ -2333,7 +2333,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			if selectedAction == CONTEXT_ACTION_DELETE_FAV :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Delete Favorites' ), MR_LANG( 'Do you want to remove %s?' % groupName ) )
+				dialog.SetDialogProperty( MR_LANG( 'Delete Favorites' ), MR_LANG( 'Do you want to remove %s?' ) % groupName )
 				dialog.doModal( )
 
 				answer = dialog.IsOK( )

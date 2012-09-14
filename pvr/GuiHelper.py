@@ -319,7 +319,7 @@ class CacheMRLanguage( object ) :
 		self.mStrLanguage = None
 
 		scriptDir = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' )
-		xmlFile = '%s/pvr/gui/windows/Strings.xml' %scriptDir
+		xmlFile = '%s/pvr/gui/windows/MboxStrings.xml' %scriptDir
 		#LOG_TRACE( 'xmlFile[%s]'% xmlFile )
 		fp = open( xmlFile )
 		xml = fp.read( )
@@ -337,14 +337,20 @@ class CacheMRLanguage( object ) :
 
 	def StringTranslate( self, string = None ) :
 		strId = gMRStringHash.get( string, None )
-		
+		#print 'strId[%s] string[%s]'% (strId, string)
 		if strId :
 			xmlString = Strings( strId )
-			#LOG_TRACE('xml_string[%s] parse[%s]'% (string, xmlString) )
-			return xmlString.encode( 'utf-8' )
+			#print 'xml_string[%s] parse[%s]'% (string, xmlString)
+			string = xmlString
 
-		else:
-			return string
+			#convert utf-8 style by property translate
+			if strId > 3000 :
+				string = xmlString.encode( 'utf-8' )
+
+			#if string[0] == "'" :
+			#	string = string[1:len(string)-1]
+
+		return string
 
 
 gStrLanguage = GetInstance( )
