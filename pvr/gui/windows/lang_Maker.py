@@ -528,7 +528,7 @@ def parseProperty( elisDir, stringXML ):
 	#print 'repeatWord[%s]'% repeatWord
 	print 'propertyTotal[%s] countNew[%s] countRepeat[%s]'% (countTot, countNew, countRepeat)
 	
-	os.rename(wFile, 'Strings.xml')
+	os.rename(wFile, 'MboxStrings.xml')
 	
 	return wFile
 
@@ -597,7 +597,7 @@ def parseSource(sourceFile):
 	max = 0
 	nodes = []
 	lines = ''
-	xmlFile = 'Strings.xml'
+	xmlFile = 'MboxStrings.xml'
 	soup, nodes = parseStringInXML(xmlFile, 'strings')
 
 	wFile = 'strings_temp.xml'
@@ -697,7 +697,7 @@ def parseSource(sourceFile):
 		gArep = gArep + countRepeat
 		print 'MR_LANG Total[%s] \033[1;33m countNew[%s]\033[1;m countRepeat[%s]'% (countTot, countNew, countRepeat)
 		print 'gtot[%s] gnew[%s] grep[%s]'% (gAtot,gAnew,gArep)
-	os.rename(wFile, 'Strings.xml')
+	os.rename(wFile, 'MboxStrings.xml')
 
 
 ################# 4. copy to Directory
@@ -727,7 +727,7 @@ def AutoMakeLanguage() :
 	mboxDir = os.path.abspath(currDir + '/../../../../script.mbox')
 	elisDir = os.path.abspath(currDir + '/../../../../script.module.elisinterface')
 	#print elisDir
-	stringFile = mboxDir + '/pvr/gui/windows/Strings.xml'
+	stringFile = mboxDir + '/pvr/gui/windows/MboxStrings.xml'
 	propertyFile = elisDir + '/lib/elisinterface/ElisProperty.py'
 	global gTagString, gTagProperty
 
@@ -735,7 +735,7 @@ def AutoMakeLanguage() :
 	#	os.remove(stringFile)
 
 	###### 1. collection source
-	soup, gTagProperty = parseStringInXML('Strings.xml', 'property')
+	soup, gTagProperty = parseStringInXML('MboxStrings.xml', 'property')
 	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'parse source')
 	findallSource(mboxDir, '[a-zA-Z0-9]\w*.py')
 	print '\nfindAll source[%s]'% gCount
@@ -826,7 +826,7 @@ def test2():
 
 def test3():
 	testDir = '/home/youn/devel/elmo_test/test/elmo-nand-image/home/root/.xbmc/addons/script.mbox'
-	xmlFile = testDir + '/pvr/gui/windows/Strings.xml'
+	xmlFile = testDir + '/pvr/gui/windows/MboxStrings.xml'
 	fp = open(xmlFile)
 	soup = BeautifulSoup(fp)
 	fp.close()
@@ -904,21 +904,21 @@ if __name__ == "__main__":
 	#test4()
 	#test5()
 
-	#findallSource(sourceDir, '[a-zA-Z0-9]\w*.py', 'Strings.xml')
+	#findallSource(sourceDir, '[a-zA-Z0-9]\w*.py', 'MboxStrings.xml')
 	#findallSource(propertyDir, '[a-zA-Z0-9]\w*.py', 'ElisProperty.py')
 	#print 'fname[%s] gcount[%s]'% (gName, gCount)
 
-	#soup, gTagString = parseStringInXML('Strings.xml', 'strings')
-	#soup, gTagProperty = parseStringInXML('Strings.xml', 'property')
+	#soup, gTagString = parseStringInXML('MboxStrings.xml', 'strings')
+	#soup, gTagProperty = parseStringInXML('MboxStrings.xml', 'property')
 	#print type(int(nodes[0][0]))
 
 	#testDir = '/home/youn/devel/elmo_test/test/elmo-nand-image/home/root/.xbmc/addons/script.mbox'
 	#elisDir = '/home/youn/devel/elmo_test/test/elmo-nand-image/home/root/.xbmc/addons/script.module.elisinterface'
 	#findallSource(testDir, '[a-zA-Z0-9]\w*.py')
-	#parseProperty(elisDir, 'Strings.xml')
+	#parseProperty(elisDir, 'MboxStrings.xml')
 
-	#readToXML('Strings.xml')
+	#readToXML('MboxStrings.xml')
 	AutoMakeLanguage()
-	#soup, gTagProperty = parseStringInXML('Strings.xml', 'property')
+	#soup, gTagProperty = parseStringInXML('MboxStrings.xml', 'property')
 	#parseSource('AutomaticScan.py')
 
