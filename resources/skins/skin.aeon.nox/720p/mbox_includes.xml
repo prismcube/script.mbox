@@ -59,7 +59,7 @@
 			<control type="label">
 				<description>time label</description>
 				<posx>320</posx>
-				<posy>-3</posy>
+				<posy>-1</posy>
 				<width>400</width>
 				<height>28</height>
 				<align>right</align>

@@ -179,7 +179,10 @@ class Configure( SettingWindow ) :
 		
 		if selectedId == E_LANGUAGE :
 			if groupId == E_Input01 :
-				menuLanguageList = WinMgr.GetInstance( ).GetLanguageList( )
+				tmpMenuLanguageList = WinMgr.GetInstance( ).GetLanguageList( )
+				menuLanguageList = []
+				for i in range( len( tmpMenuLanguageList ) ) :
+					menuLanguageList.append( MR_LANG( tmpMenuLanguageList[i] ) )
 				dialog = xbmcgui.Dialog( )
 				ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList )
 				if ret >= 0 :
@@ -536,15 +539,16 @@ class Configure( SettingWindow ) :
 		elif selectedId == E_ETC :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddEnumControl( E_SpinEx01, 'Deep Standby', None, MR_LANG( 'When set to "On", the system switches to deep standby mode when you press the "Power" button to help reduce the amount of electricity used' ) )
-			self.AddEnumControl( E_SpinEx02, 'Fan Control', None, MR_LANG( 'Adjust the fan speed level for your system' ) )
-			self.AddEnumControl( E_SpinEx03, 'Channel Banner Duration', MR_LANG( 'Channel Banner Time' ), MR_LANG( 'Set the time the channel info is to be displayed when zapping' ) )		#	Erase channel list yes/no
-			self.AddEnumControl( E_SpinEx04, 'Playback Banner Duration', MR_LANG( 'Playback Banner Time' ), MR_LANG( 'Set the time for the playback info to be displayed on the screen' ) )	#	Erase custom menu yes/no
+			self.AddEnumControl( E_SpinEx02, 'Power Save Mode', None, MR_LANG( 'Power Save Mode' ) )
+			self.AddEnumControl( E_SpinEx03, 'Fan Control', None, MR_LANG( 'Adjust the fan speed level for your system' ) )
+			self.AddEnumControl( E_SpinEx04, 'Channel Banner Duration', MR_LANG( 'Channel Banner Time' ), MR_LANG( 'Set the time the channel info is to be displayed when zapping' ) )		#	Erase channel list yes/no
+			self.AddEnumControl( E_SpinEx05, 'Playback Banner Duration', MR_LANG( 'Playback Banner Time' ), MR_LANG( 'Set the time for the playback info to be displayed on the screen' ) )	#	Erase custom menu yes/no
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
+			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
+			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )

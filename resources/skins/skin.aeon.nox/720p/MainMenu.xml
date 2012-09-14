@@ -31,7 +31,7 @@
 				<texturenofocus>-</texturenofocus>
 				<onfocus>SetFocus(9010)</onfocus>
 				<!--<visible>[ Container(9000).HasFocus(1) | Container(9000).HasFocus(7) ] | [ Container(9000).HasFocus(5) + substring(Window.Property(IsPVR),false) ]</visible>-->
-				<visible>[ Container(9000).HasFocus(1) ] | [ Container(9000).HasFocus(5) + substring(Window.Property(IsPVR),false) ]</visible>
+				<visible>[ Container(9000).HasFocus(1) ] | [ Container(9000).HasFocus(6) + substring(Window.Property(IsPVR),false) ]</visible>
 			</control>
 			<control type="button" id="330">
 				<description>INVISIBLE button: No Submenu</description>
@@ -43,7 +43,7 @@
 				<texturenofocus>-</texturenofocus>
 				<onfocus>SetFocus(9000)</onfocus>
 				<!--<visible>![ Container(9000).HasFocus(1) | Container(9000).HasFocus(5) | Container(9000).HasFocus(7) ]</visible>-->
-				<visible>![ Container(9000).HasFocus(1) | Container(9000).HasFocus(5) ]</visible>
+				<visible>![ Container(9000).HasFocus(1) | Container(9000).HasFocus(6) ]</visible>
 			</control>
 			<include condition="Skin.HasSetting(Lockhomemenulow)">HomeButton10_MenuLow</include>
 			<include condition="!Skin.HasSetting(Lockhomemenulow)+!Skin.HasSetting(Lockhomemenu)">HomeButton10_MenuNormal</include>
@@ -138,79 +138,59 @@
 
 						<item id="1">
 							<label>Weather</label>
-							<onclick>SendClick(90501)</onclick>
+							<onclick>SendClick(90601)</onclick>
 							<onclick>ActivateWindow(Weather)</onclick>
-							<visible>Container(9000).HasFocus(5)</visible>
+							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="2">
 							<label>Pictures</label>
-							<onclick>SendClick(90502)</onclick>
+							<onclick>SendClick(90602)</onclick>
 							<onclick>ActivateWindow(Pictures)</onclick>
-							<visible>Container(9000).HasFocus(5)</visible>
+							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="3">
 							<label>Music</label>
-							<onclick>SendClick(90503)</onclick>
+							<onclick>SendClick(90603)</onclick>
 							<onclick>ActivateWindow(Music)</onclick>
-							<visible>Container(9000).HasFocus(5)</visible>
+							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="4">
 							<label>Videos</label>
-							<onclick>SendClick(90504)</onclick>
+							<onclick>SendClick(90604)</onclick>
 							<onclick>ActivateWindow(Videos)</onclick>
-							<visible>Container(9000).HasFocus(5)</visible>
+							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="5">
 							<label>Programs</label>
-							<onclick>SendClick(90505)</onclick>
+							<onclick>SendClick(90605)</onclick>
 							<onclick>ActivateWindow(Programs,Addons,return)</onclick>
-							<visible>Container(9000).HasFocus(5)</visible>
+							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="6">
 							<label>Settings</label>
-							<onclick>SendClick(90506)</onclick>
+							<onclick>SendClick(90606)</onclick>
 							<onclick>ActivateWindow(Settings)</onclick>
-							<visible>Container(9000).HasFocus(5)</visible>
+							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="7">
 							<label>File Manager</label>
-							<onclick>SendClick(90507)</onclick>
+							<onclick>SendClick(90607)</onclick>
 							<onclick>ActivateWindow(FileManager)</onclick>
-							<visible>Container(9000).HasFocus(5)</visible>
+							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="8">
 							<label>Profiles</label>
-							<onclick>SendClick(90508)</onclick>
+							<onclick>SendClick(90608)</onclick>
 							<onclick>ActivateWindow(Profiles)</onclick>
 							<!--<visible>Container(9000).HasFocus(5)</visible>-->
 							<visible>false</visible>
 						</item>
 						<item id="9">
 							<label>System Info</label>
-							<onclick>SendClick(90509)</onclick>
+							<onclick>SendClick(90609)</onclick>
 							<onclick>ActivateWindow(SystemInfo)</onclick>
-							<visible>Container(9000).HasFocus(5)</visible>
+							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
-						<!--
-						<item id="1">
-							<description>Restart Button</description>
-							<label>Reset</label>
-							<onclick>Reset</onclick>
-							<visible>Container(9000).HasFocus(7)</visible>
-						</item>
-						<item id="2">
-							<description>Logout Button</description>
-							<label>Logout</label>
-							<onclick>System.LogOff</onclick>
-							<visible>Container(9000).HasFocus(7)</visible>
-						</item>
-						<item id="3">
-							<description>Quit</description>
-							<label>Quit</label>
-							<onclick>Quit</onclick>
-							<visible>Container(9000).HasFocus(7)</visible>
-						</item>
-						-->
 					</content>
 				</control>
 			</control>
@@ -279,18 +259,6 @@
 					</control>
 				</focusedlayout>
 				<content>
-					<!--
-					<item id="7">
-						<label>Shutdown</label>
-						<onclick>-</onclick>
-						<visible>true</visible>
-					</item>
-					-->
-					<item id="8">
-						<label>Back</label>
-						<onclick>ParentDir</onclick>
-						<visible>true</visible>
-					</item>
 					<item id="1">
 						<label>Install</label>
 						<onclick>SendClick(90100)</onclick>
@@ -312,13 +280,23 @@
 						<visible>true</visible>
 					</item>
 					<item id="5">
-						<label>Media</label>
+						<label>Addons</label>
 						<onclick>SendClick(90500)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="6">
-						<label>Version</label>
+						<label>Media</label>
 						<onclick>SendClick(90600)</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="7">
+						<label>Version</label>
+						<onclick>SendClick(90700)</onclick>
+						<visible>true</visible>
+					</item>
+					<item id="8">
+						<label>Back</label>
+						<onclick>ParentDir</onclick>
 						<visible>true</visible>
 					</item>
 				</content>
@@ -347,56 +325,61 @@
 			<visible>false</visible>
 		</control>
 		<control type="button" id="90500">
-			<label>Media</label>
-			<onclick>-</onclick>
-			<visible>false</visible>
-		</control>
-		<control type="button" id="90501">
-			<label>Media</label>
-			<onclick>-</onclick>
-			<visible>false</visible>
-		</control>
-		<control type="button" id="90502">
-			<label>Media</label>
-			<onclick>-</onclick>
-			<visible>false</visible>
-		</control>
-		<control type="button" id="90503">
-			<label>Media</label>
-			<onclick>-</onclick>
-			<visible>false</visible>
-		</control>
-		<control type="button" id="90504">
-			<label>Media</label>
-			<onclick>-</onclick>
-			<visible>false</visible>
-		</control>
-		<control type="button" id="90505">
-			<label>Media</label>
-			<onclick>-</onclick>
-			<visible>false</visible>
-		</control>
-		<control type="button" id="90506">
-			<label>Media</label>
-			<onclick>-</onclick>
-			<visible>false</visible>
-		</control>
-		<control type="button" id="90507">
-			<label>Media</label>
-			<onclick>-</onclick>
-			<visible>false</visible>
-		</control>
-		<control type="button" id="90508">
-			<label>Media</label>
-			<onclick>-</onclick>
-			<visible>false</visible>
-		</control>
-		<control type="button" id="90509">
-			<label>Media</label>
+			<label>Addons</label>
 			<onclick>-</onclick>
 			<visible>false</visible>
 		</control>
 		<control type="button" id="90600">
+			<label>Media</label>
+			<onclick>-</onclick>
+			<visible>false</visible>
+		</control>
+		<control type="button" id="90601">
+			<label>Media</label>
+			<onclick>-</onclick>
+			<visible>false</visible>
+		</control>
+		<control type="button" id="90602">
+			<label>Media</label>
+			<onclick>-</onclick>
+			<visible>false</visible>
+		</control>
+		<control type="button" id="90603">
+			<label>Media</label>
+			<onclick>-</onclick>
+			<visible>false</visible>
+		</control>
+		<control type="button" id="90604">
+			<label>Media</label>
+			<onclick>-</onclick>
+			<visible>false</visible>
+		</control>
+		<control type="button" id="90605">
+			<label>Media</label>
+			<onclick>-</onclick>
+			<visible>false</visible>
+		</control>
+		<control type="button" id="90606">
+			<label>Media</label>
+			<onclick>-</onclick>
+			<visible>false</visible>
+		</control>
+		<control type="button" id="90607">
+			<label>Media</label>
+			<onclick>-</onclick>
+			<visible>false</visible>
+		</control>
+		<control type="button" id="90608">
+			<label>Media</label>
+			<onclick>-</onclick>
+			<visible>false</visible>
+		</control>
+		<control type="button" id="90609">
+			<label>Media</label>
+			<onclick>-</onclick>
+			<visible>false</visible>
+		</control>
+		<control type="button" id="90700">
 			<label>Version</label>
 			<onclick>-</onclick>
 			<visible>false</visible>
@@ -432,11 +415,6 @@
 			<visible>false</visible>
 		</control>
 		<control type="button" id="90107">
-			<label>CAS</label>
-			<onclick>-</onclick>
-			<visible>false</visible>
-		</control>
-		<control type="button" id="90506">
 			<label>CAS</label>
 			<onclick>-</onclick>
 			<visible>false</visible>

@@ -47,7 +47,7 @@
 				<control type="list" id="9000">
 					<hitrect x="100" y="100" w="530" h="620"></hitrect>
 					<posx>-20</posx>
-					<posy>95</posy>
+					<posy>70</posy>
 					<width>400</width>
 					<height>720</height>
 					<onleft>999</onleft>
@@ -92,7 +92,7 @@
 							<width>18</width>
 							<height>18</height>
 							<texture>HomeHasSub.png</texture>
-							<visible>Container(9000).HasFocus(1) | Container(9000).HasFocus(5)</visible>
+							<visible>Container(9000).HasFocus(1) | Container(9000).HasFocus(5) | Container(9000).HasFocus(6)</visible>
 							<animation effect="fade" start="0" end="100" time="200" delay="200">Visible</animation>
 						</control>
 					</focusedlayout>
@@ -118,16 +118,21 @@
 							<visible>true</visible>
 						</item>
 						<item id="5">
-							<label>Media Center</label>
+							<label>Fav. Addons</label>
 							<onclick>SendClick(90500)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="6">
-							<label>STB Info</label>
+							<label>Media Center</label>
 							<onclick>SendClick(90600)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="7">
+							<label>STB Info</label>
+							<onclick>SendClick(90700)</onclick>
+							<visible>true</visible>
+						</item>
+						<item id="8">
 							<label>Back</label>
 							<onclick>ParentDir</onclick>
 							<visible>true</visible>
@@ -286,10 +291,10 @@
 						</control>
 					</control>
 
-					<!-- Media Center -->
-					<control type="grouplist" id="9050">
+					<!-- Favorite Addons -->
+					<control type="list" id="9050">
 						<posx>10</posx>
-						<posy>250</posy>
+						<posy>200</posy>
 						<width>215</width>
 						<height>360</height>
 						<align>center</align>
@@ -298,81 +303,54 @@
 						<ondown>9050</ondown>
 						<itemgap>0</itemgap>
 						<visible>Container(9000).HasFocus(5)</visible>
+						<itemlayout height="40" width="195">
+							<control type="image">
+								<width>195</width>
+								<height>40</height>
+								<texture border="5">button-nofocus.png</texture>
+							</control>
+							<control type="label">
+								<posx>20</posx>
+								<posy>0</posy>
+								<width>170</width>
+								<height>40</height>
+								<font>font12_title</font>
+								<textcolor>grey2</textcolor>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label]</label>
+							</control>
+						</itemlayout>
+						<focusedlayout height="40" width="195">
+							<control type="image">
+								<width>195</width>
+								<height>40</height>
+								<texture border="5">button-focus.png</texture>
+							</control>
+							<control type="label">
+								<posx>20</posx>
+								<posy>0</posy>
+								<width>170</width>
+								<height>40</height>
+								<font>font12_title</font>
+								<textcolor>white</textcolor>
+								<aligny>center</aligny>
+								<label>$INFO[ListItem.Label]</label>
+							</control>
+						</focusedlayout>
+						<!--
 						<control type="button" id="90500">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>MediaCenter</label>
+							<label>Favorite Addons</label>
 							<onclick>-</onclick>
 							<visible>false</visible>
 						</control>
-						<control type="button" id="90501">
-							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Weather</label>
-							<onclick>ActivateWindow(Weather)</onclick>
-							<enable>substring(Window.Property(IsPVR),false)</enable>
-							<visible>true</visible>
-						</control>
-						<control type="button" id="90502">
-							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Pictures</label>
-							<onclick>ActivateWindow(Pictures)</onclick>
-							<enable>Control.IsEnabled(90501)</enable>
-							<visible>true</visible>
-						</control>
-						<control type="button" id="90503">
-							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Music</label>
-							<onclick>ActivateWindow(Music)</onclick>
-							<enable>Control.IsEnabled(90501)</enable>
-							<visible>true</visible>
-						</control>
-						<control type="button" id="90504">
-							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Videos</label>
-							<onclick>ActivateWindow(Videos)</onclick>
-							<visible>true</visible>
-							<enable>Control.IsEnabled(90501)</enable>
-						</control>
-						<control type="button" id="90505">
-							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Programs</label>
-							<onclick>ActivateWindow(Programs,Addons,return)</onclick>
-							<enable>Control.IsEnabled(90501)</enable>
-							<visible>true</visible>
-						</control>
-						<control type="button" id="90506">
-							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Settings</label>
-							<onclick>ActivateWindow(Settings)</onclick>
-							<enable>Control.IsEnabled(90501)</enable>
-							<visible>true</visible>
-						</control>
-						<control type="button" id="90507">
-							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>File Manager</label>
-							<onclick>ActivateWindow(FileManager)</onclick>
-							<enable>Control.IsEnabled(90501)</enable>
-							<visible>true</visible>
-						</control>
-						<control type="button" id="90508">
-							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Profiles</label>
-							<onclick>ActivateWindow(Profiles)</onclick>
-							<enable>Control.IsEnabled(90501)</enable>
-							<visible>false</visible>
-						</control>
-						<control type="button" id="90509">
-							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>System Info</label>
-							<onclick>ActivateWindow(SystemInfo)</onclick>
-							<enable>Control.IsEnabled(90501)</enable>
-							<visible>true</visible>
-						</control>
+						-->
 					</control>
 
-					<!-- System Info-->
+					<!-- Media Center -->
 					<control type="grouplist" id="9060">
 						<posx>10</posx>
-						<posy>300</posy>
+						<posy>250</posy>
 						<width>215</width>
 						<height>360</height>
 						<align>center</align>
@@ -382,6 +360,89 @@
 						<itemgap>0</itemgap>
 						<visible>Container(9000).HasFocus(6)</visible>
 						<control type="button" id="90600">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>MediaCenter</label>
+							<onclick>-</onclick>
+							<visible>false</visible>
+						</control>
+						<control type="button" id="90601">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>Weather</label>
+							<onclick>ActivateWindow(Weather)</onclick>
+							<enable>substring(Window.Property(IsPVR),false)</enable>
+							<visible>true</visible>
+						</control>
+						<control type="button" id="90602">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>Pictures</label>
+							<onclick>ActivateWindow(Pictures)</onclick>
+							<enable>Control.IsEnabled(90601)</enable>
+							<visible>true</visible>
+						</control>
+						<control type="button" id="90603">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>Music</label>
+							<onclick>ActivateWindow(Music)</onclick>
+							<enable>Control.IsEnabled(90601)</enable>
+							<visible>true</visible>
+						</control>
+						<control type="button" id="90604">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>Videos</label>
+							<onclick>ActivateWindow(Videos)</onclick>
+							<visible>true</visible>
+							<enable>Control.IsEnabled(90601)</enable>
+						</control>
+						<control type="button" id="90605">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>Programs</label>
+							<onclick>ActivateWindow(Programs,Addons,return)</onclick>
+							<enable>Control.IsEnabled(90601)</enable>
+							<visible>true</visible>
+						</control>
+						<control type="button" id="90606">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>Settings</label>
+							<onclick>ActivateWindow(Settings)</onclick>
+							<enable>Control.IsEnabled(90601)</enable>
+							<visible>true</visible>
+						</control>
+						<control type="button" id="90607">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>File Manager</label>
+							<onclick>ActivateWindow(FileManager)</onclick>
+							<enable>Control.IsEnabled(90601)</enable>
+							<visible>true</visible>
+						</control>
+						<control type="button" id="90608">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>Profiles</label>
+							<onclick>ActivateWindow(Profiles)</onclick>
+							<enable>Control.IsEnabled(90601)</enable>
+							<visible>false</visible>
+						</control>
+						<control type="button" id="90609">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>System Info</label>
+							<onclick>ActivateWindow(SystemInfo)</onclick>
+							<enable>Control.IsEnabled(90601)</enable>
+							<visible>true</visible>
+						</control>
+					</control>
+
+					<!-- System Info-->
+					<control type="grouplist" id="9070">
+						<posx>10</posx>
+						<posy>300</posy>
+						<width>215</width>
+						<height>360</height>
+						<align>center</align>
+						<onleft>9000</onleft>
+						<onup>9070</onup>
+						<ondown>9070</ondown>
+						<itemgap>0</itemgap>
+						<visible>Container(9000).HasFocus(7)</visible>
+						<control type="button" id="90700">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>System Info</label>
 							<onclick>-</onclick>
@@ -478,7 +539,7 @@
 					<align>left</align>
 					<textcolor>white</textcolor>                
 					<shadowcolor>black</shadowcolor>
-					<visible>Container(9000).HasFocus(5)</visible>
+					<visible>Container(9000).HasFocus(6)</visible>
 				</control>
 				<control type="label">
 					<description>MainMenuDescription</description>
@@ -493,7 +554,7 @@
 					<align>left</align>
 					<textcolor>white</textcolor>                
 					<shadowcolor>black</shadowcolor>
-					<visible>Container(9000).HasFocus(6)</visible>
+					<visible>Container(9000).HasFocus(7)</visible>
 				</control>
 				<control type="label">
 					<description>MainMenuDescription</description>
@@ -508,7 +569,7 @@
 					<align>left</align>
 					<textcolor>white</textcolor>                
 					<shadowcolor>black</shadowcolor>
-					<visible>Container(9000).HasFocus(7)</visible>
+					<visible>Container(9000).HasFocus(8)</visible>
 				</control>
 			</control>
 			<!--Date, Time Info-->
