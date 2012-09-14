@@ -347,7 +347,8 @@ class WindowMgr( object ) :
 			LOG_TRACE( '--------------#2')
 			LOG_TRACE( 'strResolution=%s' %strResolution )
 			resInfo = strResolution[4:].split( ':' )
-			LOG_TRACE( 'resInfo=%s' %resInfo )		
+			LOG_TRACE( 'resInfo=%s' %resInfo )
+			#default width=1280 height=720 fixelRate=1.000000 left=0 topt=0 right=1280 bottom=720 zoom=0
 			width = int( resInfo[0] )
 			height = int( resInfo[1] )
 			fixelRate=  float( resInfo[2] )
