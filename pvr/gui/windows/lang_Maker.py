@@ -281,12 +281,7 @@ def readToXML(inFile):
 				csvret2[10]= inID[0]
 				csvret[0] = inStr[0]
 				for i in range(len(wFileList)) :
-					#csvret[i+1] = 'NONE_' + inStr[0]
-
-					if inStr[0][0] == "'" :
-						csvret[i+1] = '\'NONE_' + inStr[0][1:]
-					else :
-						csvret[i+1] = 'NONE_' + inStr[0]
+					csvret[i+1] = 'NONE_' + inStr[0]
 					#print '----------[%s]'% csvret[i+1]
 
 
@@ -499,8 +494,6 @@ def parseProperty( elisDir, stringXML ):
 				else :
 					element = item
 
-				element = repr(element)
-
 				#filter
 				timeStr  = re.findall(gTimePattern, element)
 				unitStr  = re.findall(gUnitPattern, element)
@@ -663,6 +656,9 @@ def parseSource(sourceFile):
 		#unitStr  = re.findall(gUnitPattern, element)
 		digitStr = re.sub(':', '', element)
 		digitStr = re.sub('\s', '', digitStr)
+
+		if element[0] == "'" :
+			element = element[1:len(element)-1]
 
 		if elementHash.get(element) != None or ( soup and findStringInXML(soup, element) == True ) or \
 			element.isdigit() or timeStr or digitStr.isdigit() :

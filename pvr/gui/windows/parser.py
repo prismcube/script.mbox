@@ -107,7 +107,7 @@ class TokenEater:
                 if ret[0] == '"' :
            	        strings.append(ret[1:len(ret)-1])
                 else :
-                    strings.append(repr(k))
+                    strings.append(ret)
 
 
 def main():
