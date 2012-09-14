@@ -11,6 +11,7 @@ class DialogForceProgress( BaseDialog ) :
 		self.mTitle				= MR_LANG( 'Wait' )
 		self.mEventName			= None
 		self.mFinish			= False
+		self.mGetEvent			= False
 
 		self.mCtrlLabelPercent	= None
 		self.mCtrlLabelString	= None
@@ -28,7 +29,7 @@ class DialogForceProgress( BaseDialog ) :
 		self.mCtrlProgress		= self.getControl( PROGRESS_SCAN )
 
 		self.mCtrlLabelString.setLabel( self.mTitle	)
-		self.mCtrlLabelPercent.setLabel( '0' )
+		self.mCtrlLabelPercent.setLabel( MR_LANG( 'Waiting' ) + ' - 0 %' )
 		self.DrawProgress( )
 
 
@@ -57,36 +58,47 @@ class DialogForceProgress( BaseDialog ) :
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowDialogId( ) :
 			if aEvent.getName( ) == self.mEventName :
-				self.mFinish = True
+				self.mFinish	= True
+				self.mGetEvent	= True
 
 
-	def SetDialogProperty( self, aLimitTime = 10, aTitle = MR_LANG( 'Wait' ), aEventName = None ) :
+	def SetDialogProperty( self, aLimitTime, aTitle, aEventName = None ) :
 		self.mLimitTime = aLimitTime
 		self.mTitle		= aTitle
 		self.mEventName = aEventName
 		self.mFinish	= False
+		self.mGetEvent	= False
 
 
 	def DrawProgress( self ) :
-		for i in range( self.mLimitTime ) :
-			percent = 100 / self.mLimitTime * i
-			self.mCtrlLabelPercent.setLabel( '%d' % percent )
-			self.mCtrlProgress.setPercent( percent )
-			time.sleep( 1 )
-
-			if self.mFinish == True :
-				self.mCtrlLabelString.setLabel( MR_LANG( '%s completed' ) % self.mTitle )
-				self.Close( )
+		i = 1
+		while self.mFinish == False :
+			percent = int( 100 / self.mLimitTime * i )
+			if percent < 95 or self.mEventName != None :
+				self.mCtrlLabelPercent.setLabel( MR_LANG( 'Waiting' ) + ' - %d %%' % percent )
+				self.mCtrlProgress.setPercent( percent )
+			
+			if self.mEventName != None and percent > 100 :
+				self.mGetEvent = False
+				self.mCtrlLabelString.setLabel( MR_LANG( '%s timed out' ) % self.mTitle )
 				break
 
-		self.mCtrlLabelString.setLabel( MR_LANG( '%s timed out' ) % self.mTitle )
+			i = i + 1
+			time.sleep( 1 )
+
+		if self.mGetEvent == False and self.mEventName != None :
+			self.mCtrlLabelString.setLabel( MR_LANG( '%s timed out' ) % self.mTitle )
+		else :
+			self.mCtrlLabelString.setLabel( MR_LANG( '%s completed' ) % self.mTitle )
+
 		self.Close( )
 
 
 	def Close( self ) :
-		self.mCtrlLabelPercent.setLabel( '100' )
+		self.mCtrlLabelPercent.setLabel( MR_LANG( 'Waiting' ) + ' - 100 %' )
 		self.mCtrlProgress.setPercent( 100 )
 		self.mEventBus.Deregister( self )
+		time.sleep( 1 )
 		self.CloseDialog( )
 
 

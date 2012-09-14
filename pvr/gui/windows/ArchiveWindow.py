@@ -195,7 +195,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.SetRadioScreen( self.mServiceType )
 					
 			else :
-				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping all your recordings first' ) )
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the PVR or timeshift first' ) )
 
 	
 	def onClick( self, aControlId ) :
@@ -611,7 +611,7 @@ class ArchiveWindow( BaseWindow ) :
 
 		status = self.mDataCache.Player_GetStatus( )
 		if status.mMode == ElisEnum.E_MODE_PVR :
-			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the PVR clip' ) )
+			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the PVR first' ) )
 			return
 	
 		try :

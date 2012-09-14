@@ -183,8 +183,18 @@ class Configure( SettingWindow ) :
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 		
 		if selectedId == E_LANGUAGE :
-			self.DisableControl( E_LANGUAGE )
-			self.ControlSelect( )
+			if groupId == E_Input01 :
+				menuLanguageList = WinMgr.GetInstance( ).GetLanguageList( )
+				dialog = xbmcgui.Dialog( )
+				ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList )
+				if ret >= 0 :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Please be patience after pressing the OK button\nIt will take some time to bring up display changes' ) )
+					dialog.doModal( )
+					WinMgr.GetInstance( ).SetCurrentLanguage( menuLanguageList[ ret ] )
+			else :
+				self.DisableControl( E_LANGUAGE )
+				self.ControlSelect( )
 			return
 
 		elif selectedId == E_NETWORK_SETTING :
@@ -198,40 +208,6 @@ class Configure( SettingWindow ) :
 				self.mUseNetworkType = self.GetSelectedIndex( E_SpinEx05 )
 				self.SetListControl( )
 				self.setDefaultControl( )
-
-			elif groupId == E_Input06 :
-				context = []
-				context.append( ContextItem( MR_LANG( 'Internal Network Test' ), PING_TEST_INTERNAL ) )
-				context.append( ContextItem( MR_LANG( 'External Network Test' ), PING_TEST_EXTERNAL ) )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-				dialog.SetProperty( context )
-				dialog.doModal( )
-				contextAction = dialog.GetSelectedAction( )
-				if contextAction < 0 :
-					return
-				if contextAction == PING_TEST_INTERNAL :
-					self.ShowProgress( MR_LANG( 'Testing...' ), 10 )
-					time.sleep( 1 )
-					if PingTestInternal( ) == True :
-						state = MR_LANG( 'Connected to the default router' )
-					else :
-						state = MR_LANG( 'Disconnected from the default router' )
-				else :
-					addr = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, MR_LANG( 'Enter an IP address for ping test' ), '', 30 )
-					self.ShowProgress( MR_LANG( 'Testing...' ), 10 )
-					time.sleep( 1 )
-					if PingTestExternal( addr ) == True :
-						state = MR_LANG( 'External ping test has passed' )
-					else :
-						state = MR_LANG( 'External ping test has failed' )
-				try :
-					self.mProgress.SetResult( True )
-				except Exception, e :
-					LOG_ERR( 'Error exception[%s]' % e )
-				time.sleep( 1.5 )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Test Result' ), MR_LANG( 'Network State : %s' ) % state )
-				dialog.doModal( )
 
 			elif self.mUseNetworkType == NETWORK_ETHERNET :
 				self.EthernetSetting( groupId )
@@ -299,51 +275,23 @@ class Configure( SettingWindow ) :
  			dialog.doModal( )
 
  		elif selectedId == E_FACTORY_RESET and groupId == E_Input01 :
- 			"""
- 			#resetChannel = ElisPropertyEnum( 'Reset Channel List', self.mCommander ).GetProp( )
- 			#resetFavoriteAddons = ElisPropertyEnum( 'Reset Favorite Add-ons', self.mCommander ).GetProp( )
- 			#resetSystem = ElisPropertyEnum( 'Reset Configure Setting', self.mCommander ).GetProp( )
- 			if ( resetChannel | resetFavoriteAddons | resetSystem ) == 0 :
- 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No reset options selected' ) )
-		 		dialog.doModal( )
-		 		return
-		 	else :
-		 	"""
 	 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO RESET TO FACTORY SETTINGS?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				self.OpenBusyDialog( )
-				ret1 = False
-				ret2 = False
-				#self.ShowProgress( MR_LANG( 'Now restoring...' ), 30 )
-				ret1 = self.mCommander.System_SetDefaultChannelList( )
-				ret2 = self.mCommander.System_FactoryReset( )
-				self.mDataCache.LoadChannelList( )
-				self.mDataCache.LoadAllSatellite( )
 				self.mDataCache.Player_AVBlank( True )
-				
-				self.CloseBusyDialog( )
+				self.ShowProgress( MR_LANG( 'Now restoring...' ), 20 )
+				self.mCommander.System_SetDefaultChannelList( )
+				self.mCommander.System_FactoryReset( )
+				self.mDataCache.LoadAllSatellite( )
 
-				if ret1 == True and ret2 == True :
-					#self.mProgress.SetResult( True )
-					#time.sleep( 1 )
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Reset your STB' ), MR_LANG( 'Your system restored the factory default settings' ) )
-		 			dialog.doModal( )
+				self.mProgress.SetResult( True )
+				time.sleep( 2 )
 
-		 			from ElisProperty import ResetHash
-					ResetHash( )
-					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
-				else :
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Factory reset has failed to complete' ) )
-		 			dialog.doModal( )
-
-				self.SetListControl( )
-
+	 			from ElisProperty import ResetHash
+				ResetHash( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 		else :
 			self.ControlSelect( )
 
@@ -376,17 +324,17 @@ class Configure( SettingWindow ) :
 
 		if selectedId == E_LANGUAGE :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Language', MR_LANG( 'Menu Language' ), MR_LANG( 'Select the language for the menu to be in' ) )
-			self.AddEnumControl( E_SpinEx02, 'Audio Language', None, MR_LANG( 'Select the language that you wish to listen to' ) )
-			self.AddEnumControl( E_SpinEx03, 'Subtitle Language', None, MR_LANG( 'Select the language for the subtitle to be in' ) )
-			self.AddEnumControl( E_SpinEx04, 'Secondary Subtitle Language', None, MR_LANG( 'Select the language for the secondary subtitle to be in' ) )
-			self.AddEnumControl( E_SpinEx05, 'Hearing Impaired', None, MR_LANG( 'Set the hearing impaired function' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), MR_LANG( WinMgr.GetInstance( ).GetCurrentLanguage( ) ), MR_LANG( 'Select the language you want the menu to be in' ) )
+			self.AddEnumControl( E_SpinEx01, 'Audio Language', None, MR_LANG( 'Select the language that you wish to listen to' ) )
+			self.AddEnumControl( E_SpinEx02, 'Subtitle Language', None, MR_LANG( 'Select the language for the subtitle to be in' ) )
+			self.AddEnumControl( E_SpinEx03, 'Secondary Subtitle Language', None, MR_LANG( 'Select the language for the secondary subtitle to be in' ) )
+			self.AddEnumControl( E_SpinEx04, 'Hearing Impaired', None, MR_LANG( 'Set the hearing impaired function' ) )
 
-			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05 ]
+			visibleControlIds = [ E_Input01, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
+			hideControlIds = [ E_SpinEx05, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -417,7 +365,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_RECORDING_OPTION :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Automatic Timeshift', None, MR_LANG( 'When set to "On", the STB automatically start a timeshift recording when a different channel is selected' ) )
+			self.AddEnumControl( E_SpinEx01, 'Automatic Timeshift', None, MR_LANG( 'When set to \'On\', the STB automatically start a timeshift recording when a different channel is selected' ) )
 			self.AddEnumControl( E_SpinEx02, 'Timeshift Buffer Size', None, MR_LANG( 'Select the preferred size of timeshift buffer' ) )
 			self.AddEnumControl( E_SpinEx03, 'Default Rec Duration', None, MR_LANG( 'Select recording duration for a channel that has no EPG info' ) )
 			self.AddEnumControl( E_SpinEx04, 'Pre-Rec Time', None, MR_LANG( 'Set the pre-recording time for a EPG channel' ) )
@@ -436,7 +384,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_AUDIO_SETTING :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Audio Dolby', MR_LANG( 'Dolby Audio' ), MR_LANG( 'When set to "On", Dolby Digital audio will be selected automatically when broadcast' ) )
+			self.AddEnumControl( E_SpinEx01, 'Audio Dolby', MR_LANG( 'Dolby Audio' ), MR_LANG( 'When set to \'On\', Dolby Digital audio will be selected automatically when broadcast' ) )
 			self.AddEnumControl( E_SpinEx02, 'Audio HDMI', None, MR_LANG( 'Set the Audio HDMI format' ) )
 			self.AddEnumControl( E_SpinEx03, 'Audio Delay', None, MR_LANG( 'Select a delay time for audio' ) )
 
@@ -500,7 +448,7 @@ class Configure( SettingWindow ) :
 					self.ReLoadEthernetIp( )
 					self.mReLoadIp = False
 					
-				self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Assign IP Address' ), USER_ENUM_LIST_DHCP_STATIC, self.mTempNetworkType, MR_LANG( 'When set to "DHCP", your IP address will be automatically allocated by the DHCP server' ) )
+				self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Assign IP Address' ), USER_ENUM_LIST_DHCP_STATIC, self.mTempNetworkType, MR_LANG( 'When set to \'DHCP\', your IP address will be automatically allocated by the DHCP server' ) )
 				self.AddInputControl( E_Input01, MR_LANG( 'IP Address' ), self.mTempIpAddr, MR_LANG( 'Enter your IP address' ) )
 				self.AddInputControl( E_Input02, MR_LANG( 'Subnet Mask' ), self.mTempSubNet, MR_LANG( 'Enter your subnet mask' ) )
 				self.AddInputControl( E_Input03, MR_LANG( 'Gateway' ), self.mTempGateway, MR_LANG( 'Enter your gateway' ) )
@@ -539,14 +487,14 @@ class Configure( SettingWindow ) :
 					channelName = MR_LANG( 'None' )
 					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
 
-			self.AddEnumControl( E_SpinEx01, 'Time Mode', MR_LANG( 'Time & Date' ), MR_LANG( 'When set to "Automatic", the time and date will be obtained automatically from the channel that you select' ) )
+			self.AddEnumControl( E_SpinEx01, 'Time Mode', MR_LANG( 'Time & Date' ), MR_LANG( 'When set to \'Automatic\', the time and date will be obtained automatically from the channel that you select' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Channel' ), channelName, MR_LANG( 'Select a channel you want to set your time and date by' ) )
 			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
 			self.AddInputControl( E_Input02, MR_LANG( 'Date' ), self.mDate, MR_LANG( 'Enter today\'s date' ) )
 			self.mTime = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_HH_MM )
 			self.AddInputControl( E_Input03, MR_LANG( 'Time' ), self.mTime, MR_LANG( 'Set the local time' ) )
 			self.AddEnumControl( E_SpinEx02, 'Local Time Offset', None, MR_LANG( 'Set the time zone that will be the basis for the date and time display' ) )
-			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, MR_LANG( 'When set to "Automatic", the system automatically change over to summer time' ) )
+			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, MR_LANG( 'When set to \'Automatic\', the system automatically change over to summer time' ) )
 			self.AddInputControl( E_Input04, MR_LANG( 'Apply' ), '', MR_LANG( 'Press the OK button to save time settings' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03, E_Input04 ]
@@ -580,9 +528,6 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FACTORY_RESET :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			#self.AddEnumControl( E_SpinEx01, 'Reset Channel List', None, MR_LANG( 'Your channel list will be restored to default' ) )
-			#self.AddEnumControl( E_SpinEx02, 'Reset Favorite Add-ons', None, MR_LANG( 'All your favorite add-ons will be deleted after factory reset' ) )
-			#self.AddEnumControl( E_SpinEx03, 'Reset Configure Setting', MR_LANG( 'Reset Configuration Setting' ), MR_LANG( 'User settings you have set will be restored to default' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Start Factory Reset'), '', MR_LANG( 'Go to First Installation after restoring system to the factory default' ) )
 
 			visibleControlIds = [ E_Input01 ]
@@ -598,7 +543,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_ETC :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Deep Standby', None, MR_LANG( 'When set to "On", the system switches to deep standby mode when you press the "Power" button to help reduce the amount of electricity used' ) )
+			self.AddEnumControl( E_SpinEx01, 'Deep Standby', None, MR_LANG( 'When set to \'On\', the system switches to deep standby mode when you press the \'Power\' button to help reduce the amount of electricity used' ) )
 			self.AddEnumControl( E_SpinEx02, 'Fan Control', None, MR_LANG( 'Adjust the fan speed level for your system' ) )
 			self.AddEnumControl( E_SpinEx03, 'Channel Banner Duration', MR_LANG( 'Channel Banner Time' ), MR_LANG( 'Set the time the channel info is to be displayed when zapping' ) )		#	Erase channel list yes/no
 			self.AddEnumControl( E_SpinEx04, 'Playback Banner Duration', MR_LANG( 'Playback Banner Time' ), MR_LANG( 'Set the time for the playback info to be displayed on the screen' ) )	#	Erase custom menu yes/no
@@ -620,8 +565,8 @@ class Configure( SettingWindow ) :
 
 	def DisableControl( self, aSelectedItem ) :
 		if aSelectedItem == E_LANGUAGE :
-			selectedIndex = self.GetSelectedIndex( E_SpinEx03 )
-			visibleControlIds = [ E_SpinEx04, E_SpinEx05 ]
+			selectedIndex = self.GetSelectedIndex( E_SpinEx02 )
+			visibleControlIds = [ E_SpinEx03, E_SpinEx04 ]
 			if selectedIndex == 0 :
 				self.SetEnableControls( visibleControlIds, False )
 			else :
@@ -696,11 +641,13 @@ class Configure( SettingWindow ) :
 
 
 	def ConnectEthernet( self ) :
-		self.OpenBusyDialog( )
+		self.ShowProgress( MR_LANG( 'Now connecting...' ), 15 )
 		ret = self.mIpParser.SetEthernet( self.mTempNetworkType, self.mTempIpAddr, self.mTempSubNet, self.mTempGateway, self.mTempDns )
 		SetCurrentNetworkType( NETWORK_ETHERNET )
+		self.mProgress.SetResult( True )
 		if ret == False :
-			self.CloseBusyDialog( )
+			self.mProgress.SetResult( True )
+			time.sleep( 1.5 )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Network setup has failed to complete' ) )
  			dialog.doModal( )
@@ -709,7 +656,7 @@ class Configure( SettingWindow ) :
 				self.mSavedNetworkType = self.mTempNetworkType
 				self.LoadEthernetAddress( )
 				SetIpAddressProperty( self.mSavedIpAddr, self.mSavedSubNet, self.mSavedGateway, self.mSavedDns )
-				self.CloseBusyDialog( )
+				self.mProgress.SetResult( True )
 				self.SetListControl( )
 			else :
 				self.mSavedIpAddr = self.mTempIpAddr
@@ -718,7 +665,7 @@ class Configure( SettingWindow ) :
 				self.mSavedDns = self.mTempDns
 				self.mSavedNetworkType = self.mTempNetworkType
 				SetIpAddressProperty( self.mSavedIpAddr, self.mSavedSubNet, self.mSavedGateway, self.mSavedDns )
-				self.CloseBusyDialog( )
+				self.mProgress.SetResult( True )
 
 
 	def ReLoadEthernetIp( self ) :
@@ -775,17 +722,17 @@ class Configure( SettingWindow ) :
 			self.mPasswordType	= self.GetSelectedIndex( E_SpinEx04 )
 
 		elif aControlId == E_Input01 :
-			self.OpenBusyDialog( )
 			dev = self.mWireless.GetWifidevice( )
 			if dev == None :
-				self.CloseBusyDialog( )
+				time.sleep( 1.5 )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Devices not found' ) )
 				dialog.doModal( )
 				return
-
+			self.ShowProgress( MR_LANG( 'Now search...' ), 15 )
 			apList = self.mWireless.ScanWifiAP( dev )
-			self.CloseBusyDialog( )
+			self.mProgress.SetResult( True )
+			time.sleep( 1.5 )
 			dialog = xbmcgui.Dialog( )
 			if apList == None :
 				ret = dialog.select( MR_LANG( 'Select AP' ), [ MR_LANG( 'No AP list' ) ] )
@@ -815,14 +762,15 @@ class Configure( SettingWindow ) :
 				dialog.doModal( )
 				return
 
-			self.OpenBusyDialog( )
+			self.ShowProgress( MR_LANG( 'Now connecting...' ), 30 )
 			ret1 = self.mWireless.WriteWpaSupplicant( self.mUseHiddenId, self.mHiddenSsid, self.mCurrentSsid, self.mUseEncrypt, self.mEncriptType, self.mPasswordType, self.mPassWord )
 			ret2 = self.mWireless.ConnectWifi( dev )
 			SetCurrentNetworkType( NETWORK_WIRELESS )
 			addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( dev )
 			SetIpAddressProperty( addressIp, addressMask, addressGateway, addressNameServer )
-			self.CloseBusyDialog( )
+			self.mProgress.SetResult( True )
 			if ret1 == False or ret2 == False :
+				time.sleep( 1.5 )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'STB was unable to save the Wifi configuration' ) )
 				dialog.doModal( )
@@ -884,6 +832,9 @@ class Configure( SettingWindow ) :
 			return
 
 		elif aControlId == E_Input04 :
+			mute = self.mCommander.Player_GetMute( )
+			self.mCommander.Player_SetMute( True )
+
 			self.LoadSavedTime( )
 			oriChannel = self.mDataCache.Channel_GetCurrent( )
 			self.SetTimeProperty( )
@@ -895,7 +846,7 @@ class Configure( SettingWindow ) :
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
-				dialog.SetDialogProperty( 15, MR_LANG( 'Setting Time...' ), ElisEventTimeReceived.getName( ) )
+				dialog.SetDialogProperty( 14, MR_LANG( 'Setting Time...' ), ElisEventTimeReceived.getName( ) )
 				dialog.doModal( )
 				self.OpenBusyDialog( )
 				if dialog.GetResult( ) == False :
@@ -917,6 +868,9 @@ class Configure( SettingWindow ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Automatic time setup has failed because\nno time info was given by the channel you selected' ) )
 				dialog.doModal( )
+
+			if mute == False :
+				self.mCommander.Player_SetMute( False )
 
 
 	def LoadSavedTime( self ) :

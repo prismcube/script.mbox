@@ -115,7 +115,7 @@ class EditSatellite( SettingWindow ) :
 			 	else :
 			 		self.CloseBusyDialog( )
 			 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Same satellite already configured' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'The satellite already exists in the list' ) )
 		 			dialog.doModal( )
 				 
 		# Delete Satellite

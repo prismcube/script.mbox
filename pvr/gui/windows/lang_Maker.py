@@ -37,12 +37,12 @@ def csvToXML():
 
 	df = open(wFile1, 'w')
 
-	"""
+	'''
 	#line = '"Remove, Lock, Set Group, etc.","deplacer, verouiller, grouper, etc.","236",,'
 	line ='"English","French","STRING_INDEX",,"Remark", "1e3"'
 	ret = re.findall('"([^"]*)"', line)
 	print len(ret), ret
-	"""
+	'''
 
 
 
@@ -199,12 +199,12 @@ def readToXML(inFile):
 		return
 
 
-	"""
+	'''
 	#line = '"Remove, Lock, Set Group, etc.","deplacer, verouiller, grouper, etc.","236",,'
 	line ='"English","French","STRING_INDEX",,"Remark", "1e3"'
 	ret = re.findall('"([^"]*)"', line)
 	print len(ret), ret
-	"""
+	'''
 
 
 
@@ -249,7 +249,7 @@ def readToXML(inFile):
 			inStr= ret2
 		"""
 		if inID != [] :
-			#print 'inID[%s] inStr[%s]'% (inID[0], inStr[0])
+			#print 'inID[%s] inStr[%s]'% (inID[0], inStr)
 			searchOn = False
 			for csvline in csvfile:
 				# string list
@@ -281,16 +281,23 @@ def readToXML(inFile):
 				csvret2[10]= inID[0]
 				csvret[0] = inStr[0]
 				for i in range(len(wFileList)) :
-					csvret[i+1] = 'NONE_' + inStr[0]
+					#csvret[i+1] = 'NONE_' + inStr[0]
+
+					if inStr[0][0] == "'" :
+						csvret[i+1] = '\'NONE_' + inStr[0][1:]
+					else :
+						csvret[i+1] = 'NONE_' + inStr[0]
+					#print '----------[%s]'% csvret[i+1]
 
 
+			"""
 			#2. parse '%s', '%d', '%%' in list
 			for i in range(len(csvret)):
 				csvret[i] = re.sub('%s', '', csvret[i])
 				csvret[i] = re.sub('%d', '', csvret[i])
 				csvret[i] = re.sub('%%', '%', csvret[i])
 				#csvret[i] = (csvret[i].decode('utf-8')).encode('utf-8', 'xmlcharrefreplace')
-	
+			"""
 	
 			#write string.xml
 			for i in range(len(wFileList)):
@@ -416,15 +423,15 @@ def parseStringInXML(xmlFile, tagName) :
 	soup = None
 	lines = []
 	nodeAll = ''
-	if os.path.exists(xmlFile) :
 
+	if os.path.exists(xmlFile) :
 		fp = open(xmlFile)
 		soup = BeautifulSoup(fp)
 		fp.close()
 
 		for node in soup.findAll(tagName) :
 			for element in node.findAll('string') :
-				elementry = [ int(element['id']), str(element.string), '%s\r\n'% str(element) ]
+				elementry = [ int(element['id']), repr(element.string), '%s\r\n'% repr(element) ]
 				lines.append(elementry)
 			
 			nodeAll = node
@@ -474,7 +481,7 @@ def parseProperty( elisDir, stringXML ):
 		for line in nodes :
 			wf.writelines('\t%s'% line[2])
 	else :
-		max = 1000
+		max = 3000
 
 	countTot = 0
 	countNew = 0
@@ -491,6 +498,8 @@ def parseProperty( elisDir, stringXML ):
 					element = list(item[1:])[0]
 				else :
 					element = item
+
+				element = repr(element)
 
 				#filter
 				timeStr  = re.findall(gTimePattern, element)
@@ -520,7 +529,7 @@ def parseProperty( elisDir, stringXML ):
 	wf.writelines('</property>\r\n')
 	wf.close()
 
-	wf = open('repeatWord', 'w')
+	wf = open('repeatWord', 'a')
 	wf.writelines(repeatWord)
 	wf.close()
 	#print 'repeatWord[%s]'% repeatWord
@@ -568,6 +577,12 @@ def findallSource(dir, patternStr, reqFile=None):
 
 	return retlist
 
+
+import parser
+default_keywords = ['MR_LANG']
+gAtot = 0
+gAnew = 0
+gArep = 0
 def parseSource(sourceFile):
 	if not sourceFile or os.path.splitext(sourceFile)[1] != '.py':
 		print 'Can not read source file[%s]\n'% sourceFile
@@ -577,8 +592,8 @@ def parseSource(sourceFile):
 	rlines = rFile.readlines()
 	rFile.close()
 
-	functionPattern = 'MR_LANG\s*\(\s*\'[^"\']*\'\s*\)'
-	stringPattern   = '\'([^"]*)\''
+	functionPattern = "MR_LANG\s*\(\s*\'[([^']|[^\\])*]*\'\s*\)"
+	stringPattern   = "'([^\\*]*)'"
 
 	elementHash = {}
 	for element in re.split(' ', gReservedWord) :
@@ -612,12 +627,31 @@ def parseSource(sourceFile):
 
 	#catch MR_LANG('*')
 	strings = []
+
+	class Options:
+		keywords = []
+		docstrings = 0
+		nodocstrings = {}
+
+	options = Options()
+	fpbase = open(sourceFile)
+
+	options.keywords.extend(default_keywords)
+	options.toexclude = []
+
+	eater = parser.TokenEater(options)
+	parser.tokenize.tokenize(fpbase.readline, eater)
+	eater.exchange(strings)
+
+	"""
 	for name in rlines :
 		var = re.findall(functionPattern, name)
 		for i in range(len(var)) : 
 			ret = re.findall(stringPattern, var[i])
 			if ret :
 				strings.append(ret[0])
+	"""
+
 	if len(strings) :
 		print sourceFile
 		print 'len[%s] catch MR_LANG\n%s'% (len(strings), strings)
@@ -626,12 +660,12 @@ def parseSource(sourceFile):
 	for element in strings :
 		#filter
 		timeStr  = re.findall(gTimePattern, element)
-		unitStr  = re.findall(gUnitPattern, element)
+		#unitStr  = re.findall(gUnitPattern, element)
 		digitStr = re.sub(':', '', element)
 		digitStr = re.sub('\s', '', digitStr)
 
-		if elementHash.get(element) != None or ( soup and findStringInXML(soup, element) ) or \
-			element.isdigit() or timeStr or unitStr or digitStr.isdigit() :
+		if elementHash.get(element) != None or ( soup and findStringInXML(soup, element) == True ) or \
+			element.isdigit() or timeStr or digitStr.isdigit() :
 			repeatWord = '%s\n%s'% (repeatWord, element)
 			countRepeat += 1
 
@@ -655,14 +689,18 @@ def parseSource(sourceFile):
 
 	wf.close()
 
-	#wf = open('repeatWord', 'w')
-	#wf.writelines(repeatWord)
-	#wf.close()
+	wf = open('repeatWord', 'w')
+	wf.writelines(repeatWord)
+	wf.close()
 	#print 'repeatWord[%s]'% repeatWord
 	#print 'source[%s]'% sourceFile
+	global gAtot,gAnew,gArep
 	if countTot :
-		print 'MR_LANG Total[%s] countNew[%s] countRepeat[%s]'% (countTot, countNew, countRepeat)
-
+		gAtot = gAtot + countTot
+		gAnew = gAnew + countNew
+		gArep = gArep + countRepeat
+		print 'MR_LANG Total[%s] \033[1;33m countNew[%s]\033[1;m countRepeat[%s]'% (countTot, countNew, countRepeat)
+		print 'gtot[%s] gnew[%s] grep[%s]'% (gAtot,gAnew,gArep)
 	os.rename(wFile, 'Strings.xml')
 
 
@@ -765,20 +803,30 @@ def test2():
 	print var_
 	"""
 
+	#functionPattern = 'MR_LANG\s*\(\s*\'[^"\']*\'\s*\)'
+	#stringPattern   = '\'([^\'*]*)\''
+	#functionPattern = "MR_LANG\s*\(\s*\'[^\\*]*\'\s*\)"
+	#stringPattern   = "'([^\\*]*)'"
 
-	functionPattern = 'MR_LANG\s*\(\s*\'[^"\']*\'\s*\)'
-	stringPattern   = '\'([^"]*)\''
-	var = "MR_LANG   (  'Add to Fav. Group' ), MR_LANG('None')"
-	#var = "MR_LANG('Add to Fav. Group')"
-	var_ = re.findall(functionPattern, var)
-	#print var_
+	#functionPattern = "MR_LANG\s*\(\s*'[([^']|[^\\])*]*'\s*\)"
+	#stringPattern   = "'[([^']|[^\\])*]*'"
+	functionPattern = "MR_LANG\s*\(\s*'*?'\s*\)"
+	stringPattern   = "'[([^']|[^\\])*]*'"
+
+	var = "MR_LANG   (  'Add to Fav., %s _ __ -& \n 's Group' ), aaa, 'bbb',  MR_LANG('None')"
+	#var = "			context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )"
+	#var = "MR_LANG( 'Add to Fav. %s _ __ -& \n \' s '  )"
+	#var_ = re.findall(functionPattern, var)
+	var_ = re.search(functionPattern, var)
+	print var_.group()
+
 	for i in range(len(var_)) :
-		str_ = re.findall(stringPattern, var_[i])[0]
-		print str_
-
+		str_ = re.findall(stringPattern, var_[i])
+		print '[%s]'% repr(str_)
 	
 	#strDic = '[Delete Fav. Group]'
 	#print strDic.find('Delete Fav. Group')
+
 
 def test3():
 	testDir = '/home/youn/devel/elmo_test/test/elmo-nand-image/home/root/.xbmc/addons/script.mbox'
@@ -796,6 +844,40 @@ def test3():
 
 	#print len(node(0))
 	#print node(0)
+
+
+def test4():
+	def stripResult(param):
+		return (param[1:len(param)-1]).strip()
+	#var = "MR_LANG   (  'Add to Fav., %s _ __ -& \n 's Group' ), aaa, 'bbb', MR_LANG('None')"
+	#var = "MR_LANG( 'Add to Fav. %s _ __ -& \n \' s '  )"
+	var = "			context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )"
+
+	ptnAll = "MR_LANG\s*"
+	ptnSub = "^\(.*\)"
+	for x in re.split(ptnAll, repr(var)):
+		l = re.findall(ptnSub, x)
+		if len(l):
+			print stripResult(l[0])
+			
+
+
+def test5():
+	class Options:
+		keywords = []
+		docstrings = 0
+		nodocstrings = {}
+
+	options = Options()
+
+	fpbase = open('tt')
+
+	options.keywords.extend(default_keywords)
+	options.toexclude = []
+
+	eater = parser.TokenEater(options)
+	parser.tokenize.tokenize(fpbase.readline, eater)
+	eater.exchange()
 
 
 import sys
@@ -823,6 +905,8 @@ if __name__ == "__main__":
 	#test()
 	#test2()
 	#test3()
+	#test4()
+	#test5()
 
 	#findallSource(sourceDir, '[a-zA-Z0-9]\w*.py', 'Strings.xml')
 	#findallSource(propertyDir, '[a-zA-Z0-9]\w*.py', 'ElisProperty.py')
@@ -837,6 +921,8 @@ if __name__ == "__main__":
 	#findallSource(testDir, '[a-zA-Z0-9]\w*.py')
 	#parseProperty(elisDir, 'Strings.xml')
 
-
+	#readToXML('Strings.xml')
 	AutoMakeLanguage()
+	#soup, gTagProperty = parseStringInXML('Strings.xml', 'property')
+	#parseSource('AutomaticScan.py')
 
