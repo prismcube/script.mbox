@@ -3,16 +3,34 @@
 #from sys import setdefaultencoding
 #setdefaultencoding('utf-8')
 
-import os, re, shutil
+import os, re, shutil, time, sys
 import sgmllib, string
 from types import *
+import codecs
+
+import parser
+
+def EucToUtf( aSource ) :
+	if aSource == None :
+		return
+
+	try :
+		content = aSource.encode('utf-8')
+
+	except Exception, e :
+		#print 'except utf8[%s]'% aSource
+		#'aSource' is utf-8 string
+		content = aSource
+
+	return content
+
 
 ################# 1.make language/strings.xml of strings.xml, reference language pack Elmo~.csv
 def csvToXML():
 
 	#openFile = os.getcwd() + '/Language_Prime.csv'
 	openFile = os.getcwd() + '/Language_Elmo.csv'
-	wFile1 = 'Define_string.py'
+	wFile1 = 'MboxStringsID.py'
 
 	langPack = ["ENGLISH","DEUTSCH","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"]
 	tag1 = '<string id=\"%s\">'
@@ -122,7 +140,7 @@ def csvToXML():
 				#print 'error string.xml', e
 				pass
 
-		#write Define_string.py in English Name
+		#write MboxStringsID.py in English Name
 		try:
 			strid = re.sub(',', '', ret2[len(ret2)-1])
 			#strid = ('%s'% sidx)
@@ -174,9 +192,10 @@ def readToXML(inFile):
 		print 'can not open file[%s]'% inFile
 		return
 
+	#input document is UTF-8 format only
 	#openFile = os.getcwd() + '/Language_Prime.csv'
 	openFile = os.getcwd() + '/Language_Elmo.csv'
-	wFile1 = 'Define_string.py'
+	wFile1 = 'MboxStringsID.py'
 
 	langPack = ["ENGLISH","DEUTSCH","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"]
 	tag1 = '<string id=\"%s\">'
@@ -232,9 +251,10 @@ def readToXML(inFile):
 				#wFile = wDir + '%s_strings.xml'% ret[i].lower()
 				wFile = wDir + 'strings.xml'
 				wf.append( open( wFile, 'w' ) )
+				#wf.append( codecs.open( wFile, 'w', encoding='utf-8-sig' )
 
-				str = '<?xml version="1.0" encoding="utf-8"?>\r\n<strings>\r\n'
-				wf[i].writelines(str)
+				string = EucToUtf( '<?xml version="1.0" encoding="utf-8"?>\r\n<strings>\r\n' )
+				wf[i].writelines(string)
 	#print wFileList
 
 	sidx = 0
@@ -274,6 +294,7 @@ def readToXML(inFile):
 					searchOn = True
 					csvret = ret
 					csvret2= inID #ret2
+					break
 
 			if searchOn == False:
 				csvret = ['','','','','','','','','','','']	
@@ -300,14 +321,16 @@ def readToXML(inFile):
 					strid = re.sub(',', '', csvret2[len(csvret2)-1])
 					#strid = sidx
 	
-					str = '\t' + (tag1 % strid) + csvret[i] + tag2 +'\r\n'
-					wf[i].writelines( str )
+					string = '\t' + (tag1 % strid) + csvret[i] + tag2 + '\r\n'
+					wf[i].writelines( EucToUtf(string) )
 	
 				except Exception, e:
-					#print 'error string.xml', e
+					#print string
+					#print 'error i[%s] e[%s]'% (i, e)
 					pass
+
 	
-			#write Define_string.py in English Name
+			#write MboxStringsID.py in English Name
 			try:
 				strid = re.sub(',', '', csvret2[len(csvret2)-1])
 				#strid = ('%s'% sidx)
@@ -337,9 +360,9 @@ def readToXML(inFile):
 				else :
 					defineStr = var_[0]
 
-				str = 'LANG_' + defineStr + ' = ' + strid +'\r\n'
+				string = 'LANG_' + defineStr + ' = ' + strid +'\r\n'
 				#print str
-				df.writelines(str)
+				df.writelines(string)
 	
 			except Exception, e:
 				#print 'write error[%s], %s'% (e, wFile1)
@@ -349,7 +372,7 @@ def readToXML(inFile):
 
 
 	for i in range(len(wFileList)):
-		wf[i].writelines('</strings>\r\n')
+		wf[i].writelines(EucToUtf('</strings>\r\n'))
 		wf[i].close()
 
 	rf.close()
@@ -357,7 +380,7 @@ def readToXML(inFile):
 
 
 def verify_defineString():
-	dfile = 'Define_string.py'
+	dfile = 'MboxStringsID.py'
 	try:
 		ef = open(dfile, 'r')
 
@@ -526,7 +549,7 @@ def parseProperty( elisDir, stringXML ):
 	wf.writelines(repeatWord)
 	wf.close()
 	#print 'repeatWord[%s]'% repeatWord
-	print 'propertyTotal[%s] countNew[%s] countRepeat[%s]'% (countTot, countNew, countRepeat)
+	print 'propertyTotal[%s] New[%s] Repeat[%s]'% (countTot, countNew, countRepeat)
 	
 	os.rename(wFile, 'MboxStrings.xml')
 	
@@ -571,11 +594,10 @@ def findallSource(dir, patternStr, reqFile=None):
 	return retlist
 
 
-import parser
-default_keywords = ['MR_LANG']
 gAtot = 0
 gAnew = 0
 gArep = 0
+default_keywords = ['MR_LANG']
 def parseSource(sourceFile):
 	if not sourceFile or os.path.splitext(sourceFile)[1] != '.py':
 		print 'Can not read source file[%s]\n'% sourceFile
@@ -676,7 +698,7 @@ def parseSource(sourceFile):
 
 	wf.writelines('</strings>\r\n')
 
-	global gTagProperty
+	#global gTagProperty
 	if gTagProperty :
 		wf.writelines('<property>\r\n')
 		for line in gTagProperty :
@@ -690,14 +712,18 @@ def parseSource(sourceFile):
 	wf.close()
 	#print 'repeatWord[%s]'% repeatWord
 	#print 'source[%s]'% sourceFile
+
 	global gAtot,gAnew,gArep
 	if countTot :
-		gAtot = gAtot + countTot
-		gAnew = gAnew + countNew
-		gArep = gArep + countRepeat
-		print 'MR_LANG Total[%s] \033[1;33m countNew[%s]\033[1;m countRepeat[%s]'% (countTot, countNew, countRepeat)
+		gAtot += countTot
+		gAnew += countNew
+		gArep += countRepeat
+		print 'MR_LANG Total[%s] \033[1;33m NewLang[%s]\033[1;m Repeat[%s]'% (countTot, countNew, countRepeat)
 		print 'gtot[%s] gnew[%s] grep[%s]'% (gAtot,gAnew,gArep)
+
 	os.rename(wFile, 'MboxStrings.xml')
+	#shutil.copyfile(wFile, 'MboxStrings.xml')
+	#time.sleep(0.01)
 
 
 ################# 4. copy to Directory
@@ -756,7 +782,7 @@ def AutoMakeLanguage() :
 	langDir = mboxDir + '/resources/language'
 	copyLanguage('language', langDir)
 
-	print '\n\033[1;%sm%s\033[1;m\n'% (30, 'Completed..')
+	print '\n\033[1;%sm%s\033[1;m'% (30, 'Completed..')
 
 
 ########## test
@@ -876,7 +902,6 @@ def test5():
 	eater.exchange()
 
 
-import sys
 if __name__ == "__main__":
 
 	nameSelf = os.path.basename(sys.argv[0])
@@ -918,6 +943,7 @@ if __name__ == "__main__":
 	#parseProperty(elisDir, 'MboxStrings.xml')
 
 	#readToXML('MboxStrings.xml')
+	#copyLanguage('language', '../../../resources/language')
 	AutoMakeLanguage()
 	#soup, gTagProperty = parseStringInXML('MboxStrings.xml', 'property')
 	#parseSource('AutomaticScan.py')
