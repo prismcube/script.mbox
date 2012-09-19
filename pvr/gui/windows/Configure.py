@@ -1,5 +1,5 @@
 from pvr.gui.WindowImport import *
-if sys.platform != 'win32' :
+if sys.platform == 'linux2' :
 	from pvr.IpParser import *
 
 E_LANGUAGE				= 0
@@ -103,7 +103,7 @@ class Configure( SettingWindow ) :
 
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
-		if sys.platform != 'win32' :
+		if sys.platform == 'linux2' :
 			self.mIpParser = IpParser( )
 			self.mWireless = WirelessParser( )
 			self.LoadEhternetInformation( )
@@ -197,7 +197,7 @@ class Configure( SettingWindow ) :
 			return
 
 		elif selectedId == E_NETWORK_SETTING :
-			if sys.platform == 'win32' :
+			if sys.platform == 'linux2' :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not support Win32' ) )
 	 			dialog.doModal( )

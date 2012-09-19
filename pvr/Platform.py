@@ -19,6 +19,8 @@ def GetPlatform( ) :
 			gPlatform = WindowsPlatform( )
 		elif 'linux' in sys.platform :
 			gPlatform = LinuxPlatform( )
+		elif 'linux2' in sys.platform :
+			gPlatform = Linux2Platform( )
 		elif 'darwin' in sys.platform :
 		# gotta be a better way to detect ipad/iphone/atv2
 			if 'USER' in os.environ and os.environ[ 'USER'] in ( 'mobile', 'frontrow', ) :
@@ -151,6 +153,19 @@ class LinuxPlatform( Platform ) :
 
 	def GetName( self ) :
 		return "linux"
+
+	def IsLinux( self ) :
+		return True
+
+
+class Linux2Platform( Platform ) :
+
+	def __init__( self, *args, **kwargs ) :
+		Platform.__init__( self, *args, **kwargs )
+
+
+	def GetName( self ) :
+		return "linux2"
 
 	def IsLinux( self ) :
 		return True

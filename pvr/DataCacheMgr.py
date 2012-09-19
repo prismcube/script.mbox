@@ -4,14 +4,16 @@ from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 
-if sys.platform == 'win32' :
-	from pvr.gui.GuiConfig import *
-	gFlagUseDB = False
-else :
+if sys.platform == 'linux2' :
 	gFlagUseDB = True
 	from pvr.IpParser import *
 
-print 'mBox----------------use db[%s]'% gFlagUseDB
+else :
+	from pvr.gui.GuiConfig import *
+	gFlagUseDB = False
+
+
+print 'mBox----------------use db[%s] sys.platform=%s' %( gFlagUseDB, sys.platform )
 
 SUPPORT_EPG_DATABASE     = gFlagUseDB
 SUPPORT_CHANNEL_DATABASE = gFlagUseDB
@@ -193,16 +195,17 @@ class DataCacheMgr( object ) :
 		self.LoadTime( )
 
 		# SetPropertyNetworkAddress
-		LoadNetworkType( )
-		dev = GetCurrentNetworkType( )
-		if dev == NETWORK_ETHERNET :
-			addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( gEthernetDevName )
-		elif dev == NETWORK_WIRELESS :
-			wifi = WirelessParser( )
-			addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( wifi.GetWifidevice( ) )
-		else :
-			LOG_ERR( 'Error Network Setting' )
-		SetIpAddressProperty( addressIp, addressMask, addressGateway, addressNameServer )
+		if sys.platform == 'linux2' :		
+			LoadNetworkType( )
+			dev = GetCurrentNetworkType( )
+			if dev == NETWORK_ETHERNET :
+				addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( gEthernetDevName )
+			elif dev == NETWORK_WIRELESS :
+				wifi = WirelessParser( )
+				addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( wifi.GetWifidevice( ) )
+			else :
+				LOG_ERR( 'Error Network Setting' )
+			SetIpAddressProperty( addressIp, addressMask, addressGateway, addressNameServer )
 
 
 	def LoadVolumeToSetGUI( self ) :
