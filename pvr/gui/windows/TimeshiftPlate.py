@@ -920,10 +920,7 @@ class TimeShiftPlate( BaseWindow ) :
 		head = ''
 		line1= ''
 		if aFocusId == E_CONTROL_ID_BUTTON_BOOKMARK :
-			head = MR_LANG( 'Bookmark' )
-			line1= 'test'
-			#self.BookMarkContext( )
-
+			self.BookMarkContext( )
 
 		#dialog = xbmcgui.Dialog( ).ok( head, line1 )
 
@@ -961,8 +958,8 @@ class TimeShiftPlate( BaseWindow ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_BOOKMARK )
 			dialog.SetDefaultProperty( playingRecord )
 			dialog.doModal( )
-			tempList = dialog.GetSelectedList( )
-			LOG_TRACE('------------dialog list[%s]'% tempList )
+			#tempList = dialog.GetSelectedList( )
+			#LOG_TRACE('------------dialog list[%s]'% tempList )
 
 
 	def ShowRecordingInfo( self ) :
