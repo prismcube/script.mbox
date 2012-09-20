@@ -339,6 +339,9 @@ class WindowMgr( object ) :
 
 
 	def LoadSkinPosition( self ) :
+		if sys.platform != 'linux2' :
+			return
+	
 		if E_ADD_XBMC_HTTP_FUNCTION == True :
 			import pvr.Platform
 			from pvr.GuiHelper import GetInstanceSkinPosition

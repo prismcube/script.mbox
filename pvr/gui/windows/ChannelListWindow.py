@@ -57,7 +57,7 @@ E_SLIDE_CLOSE           = 9999
 #xml control id
 E_CONTROL_ID_SCROLLBAR = 61
 
-class SlidePosition( ) :
+class SlidePosition( object ) :
 	def __init__( self ) :
 		self.mMain = 0
 		self.mSub = 0
