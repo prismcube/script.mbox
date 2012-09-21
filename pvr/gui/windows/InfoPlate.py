@@ -430,7 +430,7 @@ class InfoPlate( LivePlateWindow ) :
 		elif aFocusId == E_CONTROL_ID_BUTTON_BOOKMARK :
 			msg1 = 'Bookmark'
 			msg2 = 'test'
-			#self.BookMarkContext( )
+			self.BookMarkContext( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
 			self.ShowEPGDescription( )
@@ -474,8 +474,8 @@ class InfoPlate( LivePlateWindow ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_BOOKMARK )
 			dialog.SetDefaultProperty( self.mPlayingRecord )
 			dialog.doModal( )
-			tempList = dialog.GetSelectedList( )
-			LOG_TRACE('------------dialog list[%s]'% tempList )
+			#tempList = dialog.GetSelectedList( )
+			#LOG_TRACE('------------dialog list[%s]'% tempList )
 
 
 	def AudioVideoContext( self ) :

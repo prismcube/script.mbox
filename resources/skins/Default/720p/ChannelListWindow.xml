@@ -718,27 +718,27 @@
 					</focusedlayout>
 					<content>
 						<item id="1">
-							<label>SCRIPT22</label>
+							<label>SCRIPT378</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="2">
-							<label>SCRIPT23</label>
+							<label>SCRIPT379</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="3">
-							<label>SCRIPT24</label>
+							<label>SCRIPT380</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="4">
-							<label>SCRIPT25</label>
+							<label>SCRIPT381</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="5">
-							<label>SCRIPT26</label>
+							<label>SCRIPT382</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
@@ -776,7 +776,7 @@
 							<control type="label">
 								<posx>10</posx>
 								<posy>0</posy>
-								<width>180</width>
+								<width>200</width>
 								<height>40</height>
 								<font>font12_title</font>
 								<textcolor>grey3</textcolor>
@@ -805,7 +805,7 @@
 							<control type="label">
 								<posx>10</posx>
 								<posy>0</posy>
-								<width>230</width>
+								<width>200</width>
 								<height>40</height>
 								<font>font12_title</font>
 								<textcolor>white</textcolor>
@@ -848,7 +848,7 @@
 								<include>DefaultButtonMediaSubCommonValues</include>
 								<textcolor>grey3</textcolor>
 								<focusedcolor>white</focusedcolor>
-								<label>SCRIPT33</label>
+								<label>SCRIPT3002</label>
 								<onleft>102</onleft>
 								<onright>113</onright>
 								<onup>114</onup>
@@ -862,7 +862,7 @@
 								<include>DefaultButtonMediaSubCommonValues</include>
 								<textcolor>grey3</textcolor>
 								<focusedcolor>white</focusedcolor>
-								<label>SCRIPT34</label>
+								<label>SCRIPT3003</label>
 								<onleft>102</onleft>
 								<onright>114</onright>
 								<onup>113</onup>

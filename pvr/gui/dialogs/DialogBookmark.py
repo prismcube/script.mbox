@@ -32,6 +32,7 @@ class DialogBookmark( BaseDialog ) :
 		self.mWin = xbmcgui.WindowDialog( self.mWinId )
 
 		self.mMarkList = []
+		self.mThumbnailHash = {}
 		self.mMarkMode = False
 		self.mCtrlList = self.getControl( E_CONTROL_ID_LIST )
 		self.mCtrlPos =  self.getControl( DIALOG_LABEL_POS_ID )
@@ -124,10 +125,24 @@ class DialogBookmark( BaseDialog ) :
 		self.mCtrlPos.setLabel( '%s'% ( idx + 1 ) )
 
 
-	def SortByOffset( self, aFile1, aFile2 ) :
-		return cmp( aFile1, aFile2 )
+	def InitThumbnail( self ) :
+		self.mThumbnailHash = {}
 
-	
+		thumbnaillist = []
+		thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/bookmark/%d'% self.mRecordInfo.mRecordKey, 'record_bookmark_%d_*.jpg' % self.mRecordInfo.mRecordKey ) )
+
+		LOG_TRACE('hash[%s] list[%s]'% (self.mThumbnailHash, thumbnaillist) )
+		if thumbnaillist == None or len( thumbnaillist ) < 1 :
+			return 
+
+		for mfile in thumbnaillist :
+			try :
+				self.mThumbnailHash[int( os.path.basename(mfile).split('_')[3] )] = mfile
+			except Exception, ex :
+				LOG_ERR( 'Exception %s'% ex )
+				continue
+
+
 	def BookmarkItems( self ) :
 		self.mTitle = 'P%04d.%s'% ( self.mRecordInfo.mChannelNo, self.mRecordInfo.mChannelName )
 		startTime = self.mRecordInfo.mStartTime
@@ -138,23 +153,19 @@ class DialogBookmark( BaseDialog ) :
 		self.mSubTitle = '%s (%s ~ %s)'% ( self.mRecordInfo.mRecordName, lblStart, lblEnd )
 
 		self.mBookmarkList = self.mDataCache.Player_GetBookmarkList( self.mRecordInfo.mRecordKey )
-		if self.mBookmarkList == None or len( self.mBookmarkList ) < 1 :
+		if self.mBookmarkList == None or len( self.mBookmarkList ) < 1 or self.mBookmarkList[0].mError != 0 :
 			return 
 
-		#LOG_TRACE('bookmark[%s]'% ClassToList('convert', self.mBookmarkList) )
+		self.InitThumbnail( )
 
-		thumbnaillist = []
-		thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/bookmark/%d'% self.mRecordInfo.mRecordKey, 'record_bookmark_%d_*.jpg' % self.mRecordInfo.mRecordKey ) )
-
-		thumbnaillist.sort( self.SortByOffset )
-		#LOG_TRACE('thumnail[%s]'% thumbnaillist )
+		LOG_TRACE('bookmark[%s]'% ClassToList('convert', self.mBookmarkList) )
+		LOG_TRACE('thumnail[%s]'% self.mThumbnailHash )
 
 		for idx in range( len( self.mBookmarkList ) ) :
 			
 			listItem = xbmcgui.ListItem( '%s'% TimeToString( self.mBookmarkList[idx].mTimeMs / 1000, TimeFormatEnum.E_AH_MM_SS ) )
 
-			if thumbnaillist and len( thumbnaillist ) > 0 and idx < len( thumbnaillist ) :
-				listItem.setProperty( 'RecIcon',     thumbnaillist[idx] )
+			listItem.setProperty( 'RecIcon',     '%s'% self.mThumbnailHash.get( self.mBookmarkList[idx].mTimeMs, None ) )
 			listItem.setProperty( 'RecTotal',    '%s'% TimeToString( duration, TimeFormatEnum.E_AH_MM_SS ) )
 			listItem.setProperty( 'RecDate',     TimeToString( self.mRecordInfo.mStartTime ) )
 
@@ -195,7 +206,7 @@ class DialogBookmark( BaseDialog ) :
 			self.DoContextAction( contextAction ) 
 
 		except Exception, ex :
-			LOG_ERR( "Exception %s" %ex )
+			LOG_ERR( 'Exception %s'% ex )
 
 
 	def DoContextAction( self, aContextAction ) :

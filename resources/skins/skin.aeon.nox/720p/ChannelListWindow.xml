@@ -786,27 +786,27 @@
 					</focusedlayout>
 					<content>
 						<item id="1">
-							<label>All CHANNELS</label>
+							<label>SCRIPT378</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="2">
-							<label>SATELLITE</label>
+							<label>SCRIPT379</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="3">
-							<label>FTA/CAS</label>
+							<label>SCRIPT380</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="4">
-							<label>FAVORITES</label>
+							<label>SCRIPT381</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="5">
-							<label>MODE</label>
+							<label>SCRIPT382</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
@@ -924,7 +924,7 @@
 								<texturenofocus>button-nofocus.png</texturenofocus>
 								<textcolor>grey3</textcolor>
 								<focusedcolor>white</focusedcolor>
-								<label>VIEW: TV</label>
+								<label>SCRIPT3002</label>
 								<onleft>102</onleft>
 								<onright>113</onright>
 								<onup>114</onup>
@@ -946,7 +946,7 @@
 								<texturenofocus>button-nofocus.png</texturenofocus>
 								<textcolor>grey3</textcolor>
 								<focusedcolor>white</focusedcolor>
-								<label>VIEW: RADIO</label>
+								<label>SCRIPT3003</label>
 								<onleft>102</onleft>
 								<onright>114</onright>
 								<onup>113</onup>

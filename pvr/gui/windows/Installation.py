@@ -14,6 +14,12 @@ MAIN_LIST_ID					= 9000
 class Installation( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
+
+		self.mCtrlLeftGroup = None
+
+
+	def onInit( self ) :
+
 		self.mLeftGroupItems = [
 		MR_LANG( 'First Installation' ),
 		MR_LANG( 'Antenna Setup' ),
@@ -31,11 +37,7 @@ class Installation( BaseWindow ) :
 		MR_LANG( 'Here you can add or delete transponders' ),
 		MR_LANG( 'Most of STB settings can be configured via the GUI under Configuration' ),
 		MR_LANG( 'The Conditional Access System allows you to setup Smartcard configurations' ) ]
-
-		self.mCtrlLeftGroup = None
-
-
-	def onInit( self ) :
+	
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
