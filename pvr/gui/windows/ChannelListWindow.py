@@ -773,6 +773,8 @@ class ChannelListWindow( BaseWindow ) :
 					for itemClass in self.mListSatellite:
 						ret = GetSelectedLongitudeString( itemClass.mLongitude, itemClass.mName )
 						testlistItems.append( xbmcgui.ListItem( ret ) )
+				else :
+					testlistItems.append( xbmcgui.ListItem( MR_LANG( 'None' ) ) )
 
 			elif aMenuIndex == 2 :
 				self.mUserMode.mMode = ElisEnum.E_MODE_CAS
@@ -780,6 +782,8 @@ class ChannelListWindow( BaseWindow ) :
 					for itemClass in self.mListCasList:
 						ret = '%s(%s)'% ( itemClass.mName, itemClass.mChannelCount )
 						testlistItems.append( xbmcgui.ListItem( ret ) )
+				else :
+					testlistItems.append( xbmcgui.ListItem( MR_LANG( 'None' ) ) )
 
 			elif aMenuIndex == 3 :
 				self.mUserMode.mMode = ElisEnum.E_MODE_FAVORITE
@@ -1381,9 +1385,11 @@ class ChannelListWindow( BaseWindow ) :
 			return 
 
 		reloadPos = False
-		if self.mListItems == None :
+		if self.mListItems == None or self.mDataCache.GetChannelReloadStatus( ) == True :
 			self.mListItems = []
 			reloadPos = True
+			self.mCtrlListCHList.reset( )
+			self.mDataCache.SetChannelReloadStatus( False )
 
 			for iChannel in self.mChannelList :
 				listItem = xbmcgui.ListItem( '%04d %s'%( iChannel.mNumber, iChannel.mName ) )

@@ -475,7 +475,7 @@ class DataCacheMgr( object ) :
 
 
 	def ReLoadChannelListByRecording( self ) :
-		self.mCacheReload = True
+		self.SetChannelReloadStatus( True )
 		isRunRec = self.Record_GetRunningRecorderCount( )
 		if isRunRec > 0 :
 			#use zapping table 
@@ -530,7 +530,7 @@ class DataCacheMgr( object ) :
 		if tmpChannelList :
 			newCount = len( tmpChannelList )
 		if oldCount != newCount :
-			self.mCacheReload = True
+			self.SetChannelReloadStatus( True )
 
 
 		prevChannel = None
@@ -539,7 +539,7 @@ class DataCacheMgr( object ) :
 
 		if newCount < 1 :
 			LOG_TRACE('count=%d'% newCount)
-			self.mCacheReload = True
+			self.SetChannelReloadStatus( True )
 			self.Player_AVBlank( True )
 			#self.Channel_InvalidateCurrent( )
 			self.Frontdisplay_SetMessage('NoChannel')
@@ -1162,6 +1162,8 @@ class DataCacheMgr( object ) :
 				#LOG_TRACE('delete type[%s] len[%s] channel[%s]'% ( mType, len(tmpChannelList), ClassToList('convert', numList) ) )
 
 			self.SetSkipChannelView( False )
+			if ret :
+				self.SetChannelReloadStatus( True )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -1196,11 +1198,20 @@ class DataCacheMgr( object ) :
 			return self.mCommander.Channel_GetZappingList( aSync )
 
 
+	def GetChannelReloadStatus( self ) :
+		return self.mCacheReload
+
+
+	def SetChannelReloadStatus( self, aReload = False ) :
+		self.mCacheReload = aReload
+
+
 	def Channel_ReLoad( self ) :
 		self.LoadZappingmode( )
 		self.LoadZappingList( )
 		self.LoadChannelList( )
 		self.Channel_GetAllChannels( self.mZappingMode.mServiceType, False )
+		self.SetChannelReloadStatus( True )
 
 
 	def Channel_TuneDefault( self ) :
