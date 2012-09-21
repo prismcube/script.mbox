@@ -292,6 +292,12 @@
 					</control>
 
 					<!-- Favorite Addons -->
+					<control type="button" id="90500">
+						<include>DefaultButtonHomeSubCommonValues</include>
+						<label>Favorite Addons</label>
+						<onclick>-</onclick>
+						<visible>false</visible>
+					</control>
 					<control type="list" id="9050">
 						<posx>10</posx>
 						<posy>200</posy>
@@ -337,14 +343,6 @@
 								<label>$INFO[ListItem.Label]</label>
 							</control>
 						</focusedlayout>
-						<!--
-						<control type="button" id="90500">
-							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Favorite Addons</label>
-							<onclick>-</onclick>
-							<visible>false</visible>
-						</control>
-						-->
 					</control>
 
 					<!-- Media Center -->

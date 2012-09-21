@@ -41,6 +41,7 @@
 				<shadowcolor>black</shadowcolor>
 				<align>center</align>
 				<aligny>center</aligny>
+				<scroll>true</scroll>
 			</control>
 			<control type="label" id="102">
 				<description>Edit Text</description>

@@ -82,6 +82,7 @@ class AntennaSetup( SettingWindow ) :
 					ConfigMgr.GetInstance( ).SetFristInstallation( False )
 					self.mTunerMgr.SyncChannelBySatellite( )
 					self.mDataCache.Channel_ReLoad( )
+					#TODO : Channel_TuneDefault -> parent window is configure
 					self.mDataCache.Channel_TuneDefault( )
 					self.mDataCache.Player_AVBlank( False )
 					self.CloseWindow( )
@@ -96,6 +97,7 @@ class AntennaSetup( SettingWindow ) :
 					if self.CompareCurrentConfiguredState( ) == False or self.CompareConfigurationProperty( ) == False :
 						self.SaveConfiguration( )
 					self.mTunerMgr.SyncChannelBySatellite( )
+					self.mDataCache.Channel_ReLoad( )
 					
 				elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 					self.OpenBusyDialog( )

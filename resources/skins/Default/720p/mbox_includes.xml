@@ -589,6 +589,7 @@
 		<aligny>center</aligny>
 		<font>font13caps</font>
 		<texturefocus border="5">button-focus.png</texturefocus>
+		<texturenofocus>-</texturenofocus>
 		<pulseonselect>false</pulseonselect>
 	</include>
 	

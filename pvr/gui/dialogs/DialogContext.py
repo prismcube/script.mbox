@@ -121,7 +121,7 @@ class DialogContext( BaseDialog ) :
 
 
 	def GetSelectedAction( self ) :
-		if self.mSelectedIndex <  0 :
+		if self.mSelectedIndex < 0 :
 			return -1
 
 		if self.mItemList == None or self.mItemCount <= 0 :

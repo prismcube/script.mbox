@@ -4,6 +4,7 @@
 	<include>DefaultDialogOpenEffect</include>
 	<controls>
 		<control type="group">
+			<include>DefaultDialogCloseEffect</include>
 			<posx>350</posx>
 			<posy>50</posy>
 			<include>DefaultBookmarkDialog</include>

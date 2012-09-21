@@ -6,7 +6,7 @@ BUTTON_ID_INSTALLATION			= 90100
 BUTTON_ID_ARCHIVE				= 90200
 BUTTON_ID_EPG					= 90300
 BUTTON_ID_CHANNEL_LIST			= 90400
-BUTTON_ID_FAVORITE_ADDON		= 90500
+BUTTON_ID_FAVORITE_ADDONS		= 90500
 BUTTON_ID_MEDIA_CENTER			= 90600
 BUTTON_ID_SYSTEM_INFO			= 90700
 BUTTON_ID_BACK					= 90800
@@ -117,6 +117,9 @@ class MainMenu( BaseWindow ) :
 				dialog.doModal( )
 			else :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
+
+		elif aControlId == BUTTON_ID_FAVORITE_ADDONS :
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FAVORITE_ADDONS )
 
 		elif aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO :
 			if self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :

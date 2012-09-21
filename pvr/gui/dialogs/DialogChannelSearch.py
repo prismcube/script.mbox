@@ -46,7 +46,7 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mCtrlProgress = self.getControl( PROGRESS_ID_SCAN )
 		self.mCtrlTransponderInfo = self.getControl( LABEL_ID_TRANSPONDER_INFO )		
 
-		self.mEventBus.Register( self )	
+		self.mEventBus.Register( self )
 
 		self.ScanStart( )
 		self.DrawItem( )
