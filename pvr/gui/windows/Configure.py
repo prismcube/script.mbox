@@ -20,29 +20,6 @@ class Configure( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
 
-		leftGroupItems			= [
-		MR_LANG( 'Language' ),
-		MR_LANG( 'Parental Control' ),
-		MR_LANG( 'Recording Option' ),
-		MR_LANG( 'Audio Setting' ),
-		MR_LANG( 'HDMI Setting' ),
-		MR_LANG( 'Network Setting' ),
-		MR_LANG( 'Time Setting' ),
-		MR_LANG( 'HDD Format' ),
-		MR_LANG( 'Factory Reset' ),
-		MR_LANG( 'Miscellaneous' ) ]
-		
-		self.mDescriptionList	= [
-		MR_LANG( 'Set the STB language preferences' ),
-		MR_LANG( 'Set limits on your kids\' STB use' ),
-		MR_LANG( 'Adjust settings for recording in STB' ),
-		MR_LANG( 'Set the system\'s digital audio output settings' ),
-		MR_LANG( 'Set the output settings for TVs that support HDMI cable' ),
-		MR_LANG( 'Set up or change network connections including wireless' ),
-		MR_LANG( 'Adjust settings related to the system\'s date and time' ),
-		MR_LANG( 'Delete eveything off your hard drive' ),
-		MR_LANG( 'Restore the system software to its default settings' ),
-		MR_LANG( 'Adjust additional settings for STB including fan speed control' ) ]
 
 		self.mCtrlLeftGroup 	= None
 		self.mGroupItems 		= []
@@ -86,11 +63,37 @@ class Configure( SettingWindow ) :
 		self.mEncryptType		= ENCRYPT_TYPE_WEP
 		self.mPassWord 			= None
 
-		for i in range( len( leftGroupItems ) ) :
-			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i] ) )
-
 
 	def onInit( self ) :
+
+		leftGroupItems			= [
+		MR_LANG( 'Language' ),
+		MR_LANG( 'Parental Control' ),
+		MR_LANG( 'Recording Option' ),
+		MR_LANG( 'Audio Setting' ),
+		MR_LANG( 'HDMI Setting' ),
+		MR_LANG( 'Network Setting' ),
+		MR_LANG( 'Time Setting' ),
+		MR_LANG( 'HDD Format' ),
+		MR_LANG( 'Factory Reset' ),
+		MR_LANG( 'Miscellaneous' ) ]
+		
+		self.mDescriptionList	= [
+		MR_LANG( 'Set the STB language preferences' ),
+		MR_LANG( 'Set limits on your kids\' STB use' ),
+		MR_LANG( 'Adjust settings for recording in STB' ),
+		MR_LANG( 'Set the system\'s digital audio output settings' ),
+		MR_LANG( 'Set the output settings for TVs that support HDMI cable' ),
+		MR_LANG( 'Set up or change network connections including wireless' ),
+		MR_LANG( 'Adjust settings related to the system\'s date and time' ),
+		MR_LANG( 'Delete eveything off your hard drive' ),
+		MR_LANG( 'Restore the system software to its default settings' ),
+		MR_LANG( 'Adjust additional settings for STB including fan speed control' ) ]
+
+		self.mGroupItems 		= []
+		for i in range( len( leftGroupItems ) ) :
+			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i] ) )
+	
 		self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( False )
 
 		self.mWinId = xbmcgui.getCurrentWindowId( )
