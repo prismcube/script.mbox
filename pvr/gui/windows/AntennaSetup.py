@@ -96,6 +96,7 @@ class AntennaSetup( SettingWindow ) :
 					if self.CompareCurrentConfiguredState( ) == False or self.CompareConfigurationProperty( ) == False :
 						self.SaveConfiguration( )
 					self.mTunerMgr.SyncChannelBySatellite( )
+					self.mDataCache.Channel_ReLoad( )
 					
 				elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 					self.OpenBusyDialog( )
