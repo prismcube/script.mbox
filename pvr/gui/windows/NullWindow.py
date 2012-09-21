@@ -29,15 +29,16 @@ class NullWindow( BaseWindow ) :
 
 		self.mEventBus.Register( self )
 
+
 		if ( self.getProperty( 'TVRadio' ) == 'True' and self.SetRadioScreen( ) == 'False' and \
 		   self.mDataCache.Zappingmode_GetCurrent( ).mServiceType == ElisEnum.E_SERVICE_TYPE_TV ) or \
 		   ( self.getProperty( 'TVRadio' ) != self.SetRadioScreen( ) and \
 		   self.mDataCache.Zappingmode_GetCurrent( ).mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-
+		"""
 		if self.LoadNoSignalState( self.getProperty( 'Signal' ) ) == False :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-
+		"""
 
 		if E_SUPPROT_HBBTV == True :
 			status = self.mDataCache.Player_GetStatus( )

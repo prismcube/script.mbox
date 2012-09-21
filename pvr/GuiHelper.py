@@ -339,14 +339,14 @@ class CacheMRLanguage( object ) :
 
 	def StringTranslate( self, string = None ) :
 		strId = gMRStringHash.get( string, None )
-		print 'strId[%s] string[%s]'% (strId, string)
+		#print 'strId[%s] string[%s]'% (strId, string)
 		if strId :
 			xmlString = Strings( strId )
-			print 'xml_string[%s] parse[%s]'% (string, xmlString)
-
+			#print 'xml_string[%s] parse[%s]'% (string, xmlString)
 			try :
 				#xmlString = repr(xmlString)
-				string = xmlString.encode( self.mDefaultCodec )
+				if sys.platform != 'linux2' :
+					string = xmlString.encode( 'utf-8' )
 				#if string[0] == "'" :
 				#	string = string[1:len(string)-1]
 			except Exception, ex :

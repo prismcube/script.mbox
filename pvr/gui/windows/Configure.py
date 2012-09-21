@@ -145,7 +145,8 @@ class Configure( SettingWindow ) :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
 				self.mVisibleParental = False
-				self.mUseNetworkType = GetCurrentNetworkType( )
+				if sys.platform == 'linux2' :
+					self.mUseNetworkType = GetCurrentNetworkType( )
 				self.SetListControl( )
 			elif focusId != E_SUBMENU_LIST_ID :
 				self.ControlUp( )
@@ -155,7 +156,8 @@ class Configure( SettingWindow ) :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
 				self.mVisibleParental = False
-				self.mUseNetworkType = GetCurrentNetworkType( )
+				if sys.platform == 'linux2' :
+					self.mUseNetworkType = GetCurrentNetworkType( )
 				self.SetListControl( )
 			elif focusId != E_SUBMENU_LIST_ID :
 				self.ControlDown( )

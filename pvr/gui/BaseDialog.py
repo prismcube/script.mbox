@@ -49,19 +49,34 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 	def GlobalAction( self, aActionId ) :
 	
 		if aActionId == Action.ACTION_MUTE:
-			self.UpdateVolume( )
+			self.UpdateVolume( 0 )
 
 		elif aActionId == Action.ACTION_VOLUME_UP:
-			self.UpdateVolume( )
+			self.UpdateVolume( VOLUME_STEP )
 
 		elif aActionId == Action.ACTION_VOLUME_DOWN:
-			self.UpdateVolume( )		
+			self.UpdateVolume( -VOLUME_STEP )		
 
 
 	@GuiLock
-	def UpdateVolume( self ) :
-		retVolume = xbmc.executehttpapi( "getvolume()" )
-		volume = int( retVolume[4:] )
+	def UpdateVolume( self, aVolumeStep = -1 ) :
+		if sys.platform != 'linux2' :
+			volume = self.mCommander.Player_GetVolume( )
+			if aVolumeStep != -1 :
+				if aVolumeStep == 0 :
+					if self.mCommander.Player_GetMute( ) :
+						self.mCommander.Player_SetMute( False )
+						return
+					else :
+						volume = aVolumeStep
+
+				else :
+					volume += aVolumeStep / 2
+
+		else :
+			retVolume = xbmc.executehttpapi( 'getvolume' )
+			volume = int( retVolume[4:] )
+
 		LOG_TRACE( 'GET VOLUME=%d' %volume )
 
 		if volume > MAX_VOLUME :

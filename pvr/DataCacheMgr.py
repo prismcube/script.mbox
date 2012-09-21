@@ -720,7 +720,7 @@ class DataCacheMgr( object ) :
 			return self.mAllChannelList
 
 		else :
-			return self.mCommander.Channel_GetList( aType, aMode, aSort )
+			return self.mCommander.Channel_GetList( aServiceType, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER )
 
 		LOG_TRACE( 'Reload AllChannels')
 		return None

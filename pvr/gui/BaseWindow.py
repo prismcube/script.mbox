@@ -19,13 +19,13 @@ class Action(object) :
 	ACTION_HIGHLIGHT_ITEM		= 8	
 	ACTION_PARENT_DIR			= 9		#Back
 	ACTION_PREVIOUS_MENU		= 10 	#ESC
-	ACTION_SHOW_INFO			= 11	# i
+	ACTION_SHOW_INFO			= 11	# i(epg)
 	ACTION_PAUSE				= 12	#space
-	ACTION_STOP					= 13
+	ACTION_STOP					= 13	#x
 	ACTION_NEXT_ITEM			= 14
 	ACTION_PREV_ITEM			= 15
-	ACTION_FORWARD				= 16 
-	ACTION_REWIND				= 17 
+	ACTION_FORWARD				= 16 	#f
+	ACTION_REWIND				= 17 	#r
 	REMOTE_0					= 58	#0
 	REMOTE_1					= 59	#1
 	REMOTE_2					= 60	#2
@@ -38,7 +38,7 @@ class Action(object) :
 	REMOTE_9					= 67	#9
 	ACTION_PLAYER_FORWARD		= 77
 	ACTION_PLAYER_REWIND		= 78
-	ACTION_PLAYER_PLAY			= 79
+	ACTION_PLAYER_PLAY			= 79	#p 
 	
 	ACTION_VOLUME_UP			= 88	#Plus
 	ACTION_VOLUME_DOWN			= 89	#Minus
@@ -123,13 +123,13 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 	def GlobalAction( self, aActionId ) :
 		if aActionId == Action.ACTION_MUTE :
-			self.UpdateVolume( )
+			self.UpdateVolume( 0 )
 
 		elif aActionId == Action.ACTION_VOLUME_UP :
-			self.UpdateVolume( )
+			self.UpdateVolume( VOLUME_STEP )
 
 		elif aActionId == Action.ACTION_VOLUME_DOWN :
-			self.UpdateVolume( )
+			self.UpdateVolume( -VOLUME_STEP )
 
 
 	def SetPipScreen( self ) :
@@ -182,11 +182,24 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 				return False
 
 
-	def UpdateVolume( self ) :
-		GuiLock2( True )
-		retVolume = xbmc.executehttpapi( 'getvolume' )
-		GuiLock2( False )
-		volume = int( retVolume[4:] )
+	def UpdateVolume( self, aVolumeStep = -1 ) :
+		if sys.platform != 'linux2' :
+			volume = self.mCommander.Player_GetVolume( )
+			if aVolumeStep != -1 :
+				if aVolumeStep == 0 :
+					if self.mCommander.Player_GetMute( ) :
+						self.mCommander.Player_SetMute( False )
+						return
+					else :
+						volume = aVolumeStep
+
+				else :
+					volume += aVolumeStep / 2
+
+		else :
+			retVolume = xbmc.executehttpapi( 'getvolume' )
+			volume = int( retVolume[4:] )
+
 		LOG_TRACE( 'GET VOLUME=%d' %volume )
 
 		if volume > MAX_VOLUME :
