@@ -4,6 +4,7 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 from pvr.gui.BaseWindow import Action
 from pvr.Util import RunThread, GuiLock, GuiLock2
+import pvr.Platform 
 
 
 class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
@@ -18,6 +19,7 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
+		self.mIsElmoPlatform = pvr.Platform.GetPlatform( ).IsLinux( )
 		
 
 	@classmethod
@@ -60,7 +62,7 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 
 	@GuiLock
 	def UpdateVolume( self, aVolumeStep = -1 ) :
-		if sys.platform != 'linux2' :
+		if not self.mIsElmoPlatform :
 			volume = self.mCommander.Player_GetVolume( )
 			if aVolumeStep != -1 :
 				if aVolumeStep == 0 :

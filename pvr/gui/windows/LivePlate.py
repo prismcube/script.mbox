@@ -238,10 +238,6 @@ class LivePlate( LivePlateWindow ) :
 					self.mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
 					self.ChannelTune( INIT_CHANNEL )
 
-		#test
-		elif id == 13: #'x'
-			LOG_TRACE( 'cwd[%s]'% xbmc.getLanguage( ) )
-
 
 	def onClick( self, aControlId ) :
 		if aControlId == E_CONTROL_ID_BUTTON_MUTE :
@@ -756,11 +752,11 @@ class LivePlate( LivePlateWindow ) :
 
 	def ShowDialog( self, aFocusId, aVisible = False ) :
 		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
-			if sys.platform != 'linux2' :
+			if not self.mIsElmoPlatform :
 				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% sys.platform )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
-			if sys.platform != 'linux2' :
+			if not self.mIsElmoPlatform :
 				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% sys.platform )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :

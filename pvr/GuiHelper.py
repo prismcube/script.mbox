@@ -1,5 +1,6 @@
 import xbmcaddon, sys
 from ElisEnum import ElisEnum
+import pvr.Platform
 
 gSettings = xbmcaddon.Addon( id="script.mbox" )
 
@@ -345,7 +346,7 @@ class CacheMRLanguage( object ) :
 			#print 'xml_string[%s] parse[%s]'% (string, xmlString)
 			try :
 				#xmlString = repr(xmlString)
-				if sys.platform != 'linux2' :
+				if not pvr.Platform.GetPlatform( ).IsLinux( ) :
 					string = xmlString.encode( 'utf-8' )
 				#if string[0] == "'" :
 				#	string = string[1:len(string)-1]

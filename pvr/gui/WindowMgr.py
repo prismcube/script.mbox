@@ -310,6 +310,19 @@ class WindowMgr( object ) :
 		self.CreateAllWindows( )
 
 
+	def ReloadWindow( self, aWindowId = WIN_ID_LIVE_PLATE, aParentId = WIN_ID_NULLWINDOW ) :
+		LOG_TRACE('-----------------------------last[%s] reload[%s]'% (self.mLastId, aWindowId) )
+		for id in self.mWindows :
+			self.mWindows[id].close( )
+
+		self.AddDefaultFont( )		
+		self.CopyIncludeFile( )
+		xbmc.executebuiltin('XBMC.ReloadSkin()')		
+		self.ResetAllWindows( )
+		#self.RootWindow( )
+		self.ShowWindow( aWindowId, aParentId )
+
+
 	def CheckGUISettings( self ) :
 		self.LoadSkinPosition( )
 		if self.CheckSkinChange( ) or self.CheckFontChange( ) :
@@ -339,7 +352,9 @@ class WindowMgr( object ) :
 
 
 	def LoadSkinPosition( self ) :
-		if sys.platform != 'linux2' :
+		import pvr.Platform
+
+		if not pvr.Platform.GetPlatform( ).IsLinux( ) :
 			return
 	
 		if E_ADD_XBMC_HTTP_FUNCTION == True :

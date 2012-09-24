@@ -6,6 +6,8 @@ from ElisEnum import ElisEnum
 import pvr.DataCacheMgr
 import pvr.TunerConfigMgr 
 from pvr.Util import RunThread, GuiLock, GuiLock2 
+import pvr.Platform
+
 
 class Action(object) :
 	ACTION_NONE					= 0
@@ -99,6 +101,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mParentID = -1
+		self.mIsElmoPlatform = pvr.Platform.GetPlatform( ).IsLinux( )
 
 
 	@classmethod
@@ -130,6 +133,10 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 		elif aActionId == Action.ACTION_VOLUME_DOWN :
 			self.UpdateVolume( -VOLUME_STEP )
+
+		elif aActionId == 34 or aActionId == 104 : #'q' or scroll up
+			import pvr.gui.WindowMgr as WinMgr
+			WinMgr.GetInstance( ).ReloadWindow( WinMgr.GetInstance( ).mLastId, WinMgr.WIN_ID_NULLWINDOW )
 
 
 	def SetPipScreen( self ) :
@@ -183,7 +190,11 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def UpdateVolume( self, aVolumeStep = -1 ) :
-		if sys.platform != 'linux2' :
+		if self.mIsElmoPlatform :
+			retVolume = xbmc.executehttpapi( 'getvolume' )
+			volume = int( retVolume[4:] )
+
+		else :
 			volume = self.mCommander.Player_GetVolume( )
 			if aVolumeStep != -1 :
 				if aVolumeStep == 0 :
@@ -195,10 +206,6 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 				else :
 					volume += aVolumeStep / 2
-
-		else :
-			retVolume = xbmc.executehttpapi( 'getvolume' )
-			volume = int( retVolume[4:] )
 
 		LOG_TRACE( 'GET VOLUME=%d' %volume )
 

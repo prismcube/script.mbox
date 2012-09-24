@@ -1,5 +1,7 @@
 from pvr.gui.WindowImport import *
-if sys.platform == 'linux2' :
+import pvr.Platform
+
+if pvr.Platform.GetPlatform( ).IsLinux( ) :
 	from pvr.IpParser import *
 
 E_LANGUAGE				= 0
@@ -103,7 +105,7 @@ class Configure( SettingWindow ) :
 
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
-		if sys.platform == 'linux2' :
+		if self.mIsElmoPlatform :
 			self.mIpParser = IpParser( )
 			self.mWireless = WirelessParser( )
 			self.LoadEhternetInformation( )
@@ -145,7 +147,7 @@ class Configure( SettingWindow ) :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
 				self.mVisibleParental = False
-				if sys.platform == 'linux2' :
+				if self.mIsElmoPlatform :
 					self.mUseNetworkType = GetCurrentNetworkType( )
 				self.SetListControl( )
 			elif focusId != E_SUBMENU_LIST_ID :
@@ -156,7 +158,7 @@ class Configure( SettingWindow ) :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
 				self.mVisibleParental = False
-				if sys.platform == 'linux2' :
+				if self.mIsElmoPlatform :
 					self.mUseNetworkType = GetCurrentNetworkType( )
 				self.SetListControl( )
 			elif focusId != E_SUBMENU_LIST_ID :
@@ -199,7 +201,7 @@ class Configure( SettingWindow ) :
 			return
 
 		elif selectedId == E_NETWORK_SETTING :
-			if sys.platform == 'linux2' :
+			if self.mIsElmoPlatform :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not support Win32' ) )
 	 			dialog.doModal( )

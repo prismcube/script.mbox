@@ -80,6 +80,7 @@ class NullWindow( BaseWindow ) :
 		"""
 
 
+
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )

@@ -410,19 +410,19 @@ class InfoPlate( LivePlateWindow ) :
 
 	def ShowDialog( self, aFocusId ) :
 		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
-			if sys.platform != 'linux2' :
+			if not self.mIsElmoPlatform :
 				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% sys.platform )
 				return
 
 			self.GlobalAction( Action.ACTION_MUTE )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
-			if sys.platform != 'linux2' :
+			if not self.mIsElmoPlatform :
 				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% sys.platform )
 				return
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_BOOKMARK :
-			if sys.platform != 'linux2' :
+			if not self.mIsElmoPlatform :
 				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% sys.platform )
 				return
 

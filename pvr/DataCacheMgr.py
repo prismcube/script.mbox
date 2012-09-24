@@ -3,8 +3,9 @@ from decorator import decorator
 from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
+import pvr.Platform
 
-if sys.platform == 'linux2' :
+if pvr.Platform.GetPlatform( ).IsLinux( ) :
 	gFlagUseDB = True
 	from pvr.IpParser import *
 
@@ -13,7 +14,7 @@ else :
 	gFlagUseDB = False
 
 
-print 'mBox----------------use db[%s] sys.platform=%s' %( gFlagUseDB, sys.platform )
+print 'mBox----------------use db[%s] sys.platform=%s' %( gFlagUseDB, pvr.Platform.GetPlatform( ).GetName( ) )
 
 SUPPORT_EPG_DATABASE     = gFlagUseDB
 SUPPORT_CHANNEL_DATABASE = gFlagUseDB
@@ -195,7 +196,7 @@ class DataCacheMgr( object ) :
 		self.LoadTime( )
 
 		# SetPropertyNetworkAddress
-		if sys.platform == 'linux2' :		
+		if pvr.Platform.GetPlatform( ).IsLinux( ) :		
 			LoadNetworkType( )
 			dev = GetCurrentNetworkType( )
 			if dev == NETWORK_ETHERNET :
@@ -1611,4 +1612,5 @@ class DataCacheMgr( object ) :
 
 	def GetLockedState( self ) :
 		return self.mLockStatus
+
 

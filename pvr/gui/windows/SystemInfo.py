@@ -301,7 +301,7 @@ class SystemInfo( SettingWindow ) :
 
 
 	def CheckExistsDisk( self ) :
-		if sys.platform != 'linux2' :
+		if not self.mIsElmoPlatform :
 			return False
 
 		cmd = 'df'
