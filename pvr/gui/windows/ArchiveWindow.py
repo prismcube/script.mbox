@@ -852,12 +852,18 @@ class ArchiveWindow( BaseWindow ) :
 				else :
 					self.mRecordList[ position ].mLocked = False
 					self.mDataCache.Record_SetLock( self.mRecordList[ position ].mRecordKey, self.mServiceType, False )
-					thumbnaillist = []
-					thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % self.mRecordList[ position ].mRecordKey ) )
-					if len( thumbnaillist ) > 0 :
-						recItem.setProperty( 'RecIcon', thumbnaillist[0] )
+
+					if sys.platform == 'linux2' :
+						thumbnaillist = []
+						thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % self.mRecordList[ position ].mRecordKey ) )
+						if len( thumbnaillist ) > 0 :
+							recItem.setProperty( 'RecIcon', thumbnaillist[0] )
+						else :
+							recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+
 					else :
 						recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
+						
 
 			self.DoClearMark( )
 			xbmc.executebuiltin( 'container.update' )

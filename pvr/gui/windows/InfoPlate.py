@@ -167,9 +167,6 @@ class InfoPlate( LivePlateWindow ) :
 		elif aControlId >= E_CONTROL_ID_BUTTON_DESCRIPTION_INFO and aControlId <= E_CONTROL_ID_BUTTON_BOOKMARK :
 			self.ShowDialog( aControlId )
 
-			if aControlId == E_CONTROL_ID_BUTTON_TELETEXT :
-				self.GlobalAction( Action.ACTION_MUTE )
-
 
 	def onFocus( self, aControlId ) :
 		pass
@@ -412,24 +409,23 @@ class InfoPlate( LivePlateWindow ) :
 
 
 	def ShowDialog( self, aFocusId ) :
-		msg1 = ''
-		msg2 = ''
+		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
+			if sys.platform != 'linux2' :
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% sys.platform )
+				return
 
-		if aFocusId == E_CONTROL_ID_BUTTON_MUTE :
-			msg1 = 'Mute'
-			msg2 = 'test'
-
-		elif aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
-			msg1 = 'Teletext'
-			msg2 = 'test'
+			self.GlobalAction( Action.ACTION_MUTE )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
-			msg1 = 'Subtitle'
-			msg2 = 'test'
+			if sys.platform != 'linux2' :
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% sys.platform )
+				return
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_BOOKMARK :
-			msg1 = 'Bookmark'
-			msg2 = 'test'
+			if sys.platform != 'linux2' :
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% sys.platform )
+				return
+
 			self.BookMarkContext( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
