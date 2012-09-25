@@ -312,15 +312,22 @@ class WindowMgr( object ) :
 
 	def ReloadWindow( self, aWindowId = WIN_ID_LIVE_PLATE, aParentId = WIN_ID_NULLWINDOW ) :
 		LOG_TRACE('-----------------------------last[%s] reload[%s]'% (self.mLastId, aWindowId) )
-		for id in self.mWindows :
-			self.mWindows[id].close( )
 
-		self.AddDefaultFont( )		
-		self.CopyIncludeFile( )
-		xbmc.executebuiltin('XBMC.ReloadSkin()')		
-		self.ResetAllWindows( )
-		#self.RootWindow( )
-		self.ShowWindow( aWindowId, aParentId )
+		import pvr.Platform
+		if pvr.Platform.GetPlatform( ).IsLinux( ) :
+			self.CopyIncludeFile( )
+			xbmc.executebuiltin('XBMC.ReloadSkin()')		
+
+		else :
+			for id in self.mWindows :
+				self.mWindows[id].close( )
+
+			self.AddDefaultFont( )		
+			self.CopyIncludeFile( )
+			xbmc.executebuiltin('XBMC.ReloadSkin()')		
+			self.ResetAllWindows( )
+			#self.RootWindow( )
+			self.ShowWindow( aWindowId, aParentId )
 
 
 	def CheckGUISettings( self ) :
