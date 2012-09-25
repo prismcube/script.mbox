@@ -536,6 +536,7 @@ class WirelessParser :
 					words += aPassWord + "\n"
 				else:
 					words += "\"" + aPassWord + "\"\n"
+				words += "auth_alg=SHARED\n"
 			elif aEncryptType == ENCRYPT_TYPE_WPA :
 				words += "\tkey_mgmt=WPA-PSK\n"
 				words += "\tpsk=\"" + aPassWord + "\"\n"

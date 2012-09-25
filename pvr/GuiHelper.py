@@ -344,6 +344,10 @@ class CacheMRLanguage( object ) :
 			xmlString = Strings( strId )
 			print 'xml_string[%s] parse[%s]'% (string, xmlString)
 
+			if xmlString == "" or xmlString == None :
+				LOG_ERR( 'Can not find string' )
+				return string
+
 			try :
 				#xmlString = repr(xmlString)
 				string = xmlString.encode( self.mDefaultCodec )
@@ -352,6 +356,7 @@ class CacheMRLanguage( object ) :
 			except Exception, ex :
 				print 'except[%s]'% ex
 
+		#print 'strId[%s]trans[%s]'% (strId, string)
 		return string
 
 

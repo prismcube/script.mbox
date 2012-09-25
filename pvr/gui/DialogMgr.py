@@ -28,6 +28,7 @@ DIALOG_ID_TIMESHIFT_JUMP			= 19
 DIALOG_ID_INPUT_PINCODE				= 20
 DIALOG_ID_SELECT					= 21
 DIALOG_ID_BOOKMARK					= 22
+DIALOG_ID_CAS_EVENT					= 23
 
 
 gDialogMgr = None
@@ -142,6 +143,10 @@ class DialogMgr( object ) :
 			elif aDialogId == DIALOG_ID_BOOKMARK :
 				from pvr.gui.dialogs.DialogBookmark import DialogBookmark
 				return DialogBookmark( 'DialogBookmark.xml', self.scriptDir )
+
+			elif aDialogId == DIALOG_ID_CAS_EVENT :
+				from pvr.gui.dialogs.DialogCasEvent import DialogCasEvent
+				return DialogCasEvent( 'DialogCasEvent.xml', self.scriptDir )
 
 			else :
 				LOG_ERR( 'can not find dialog' )

@@ -7,6 +7,10 @@
 
 	<!-- EPG -->
 	<setting id="EPG_MODE" type="enum" label="EPGMode" values="0|1|2" default="0" />
+
+	<!-- Favorite Addons -->
+	<setting id="ADDON_VIEW_MODE" type="enum" label="ViewMode" values="0|1" default="0" />
+	<setting id="ADDON_SORT_MODE" type="enum" label="SortMode" values="0|1" default="1" />
 	
 	<!--
 	<setting id="Username" type="text" label="config" default="default" />
