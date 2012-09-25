@@ -24,10 +24,10 @@ class Action(object) :
 	ACTION_SHOW_INFO			= 11	# i(epg)
 	ACTION_PAUSE				= 12	#space
 	ACTION_STOP					= 13	#x
-	ACTION_NEXT_ITEM			= 14
-	ACTION_PREV_ITEM			= 15
-	ACTION_FORWARD				= 16 	#f
-	ACTION_REWIND				= 17 	#r
+	ACTION_NEXT_ITEM			= 14	#>
+	ACTION_PREV_ITEM			= 15	#<
+	ACTION_FORWARD				= 16 
+	ACTION_REWIND				= 17 
 	REMOTE_0					= 58	#0
 	REMOTE_1					= 59	#1
 	REMOTE_2					= 60	#2
@@ -38,8 +38,8 @@ class Action(object) :
 	REMOTE_7					= 65	#7
 	REMOTE_8					= 66	#8
 	REMOTE_9					= 67	#9
-	ACTION_PLAYER_FORWARD		= 77
-	ACTION_PLAYER_REWIND		= 78
+	ACTION_PLAYER_FORWARD		= 77	#f
+	ACTION_PLAYER_REWIND		= 78	#r
 	ACTION_PLAYER_PLAY			= 79	#p 
 	
 	ACTION_VOLUME_UP			= 88	#Plus
@@ -66,8 +66,21 @@ class Action(object) :
 	ACTION_MBOX_SUBTITLE		= 406
 	ACTION_MBOX_NUMLOCK			= 407
 	ACTION_MBOX_TEXT			= 408
-	
-	
+
+	ACTION_RELOAD_SKIN			= 34	#q
+	ACTION_BUILT_IN_FUNCTION	= 122	#m
+	ACTION_SHOW_GUI				= 18	#tab --> xbmc
+
+
+	# re defined for another platform
+	if not pvr.Platform.GetPlatform( ).IsLinux( ) :
+		ACTION_MBOX_XBMC			= ACTION_SHOW_GUI
+		ACTION_MBOX_TVRADIO			= ACTION_BUILT_IN_FUNCTION
+		ACTION_MBOX_RECORD			= ACTION_PLAYER_REWIND
+		ACTION_MBOX_REWIND			= ACTION_PREV_ITEM
+		ACTION_MBOX_FF				= ACTION_NEXT_ITEM
+		ACTION_MBOX_ARCHIVE			= ACTION_PLAYER_FORWARD
+
 
 class Property( object ) :
 
@@ -134,7 +147,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		elif aActionId == Action.ACTION_VOLUME_DOWN :
 			self.UpdateVolume( -VOLUME_STEP )
 
-		elif aActionId == 34 or aActionId == 104 : #'q' or scroll up
+		elif aActionId == Action.ACTION_RELOAD_SKIN :
 			import pvr.gui.WindowMgr as WinMgr
 			WinMgr.GetInstance( ).ReloadWindow( WinMgr.GetInstance( ).mLastId, WinMgr.WIN_ID_NULLWINDOW )
 
