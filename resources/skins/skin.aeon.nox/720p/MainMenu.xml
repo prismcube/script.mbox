@@ -155,7 +155,7 @@
 							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="4">
-							<label>Videos</label>
+							<label>Video</label>
 							<onclick>SendClick(90604)</onclick>
 							<onclick>ActivateWindow(Videos)</onclick>
 							<visible>Container(9000).HasFocus(6)</visible>

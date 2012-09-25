@@ -219,7 +219,7 @@
 						</control>
 						<control type="button" id="90106">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Configure</label>
+							<label>Configuration</label>
 							<onclick>-</onclick>
 							<visible>true</visible>
 						</control>
@@ -388,7 +388,7 @@
 						</control>
 						<control type="button" id="90604">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Videos</label>
+							<label>Video</label>
 							<onclick>ActivateWindow(Videos)</onclick>
 							<visible>true</visible>
 							<enable>Control.IsEnabled(90601)</enable>
