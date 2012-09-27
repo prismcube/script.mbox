@@ -345,11 +345,10 @@ class CacheMRLanguage( object ) :
 			xmlString = Strings( strId )
 			#print 'xml_string[%s] parse[%s]'% (string, xmlString)
 			try :
-				#xmlString = repr(xmlString)
+				string = xmlString
 				if not pvr.Platform.GetPlatform( ).IsLinux( ) :
 					string = xmlString.encode( 'utf-8' )
-				#if string[0] == "'" :
-				#	string = string[1:len(string)-1]
+
 			except Exception, ex :
 				print 'except[%s]'% ex
 
