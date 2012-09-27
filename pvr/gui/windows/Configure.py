@@ -1,7 +1,7 @@
 from pvr.gui.WindowImport import *
 import pvr.Platform
 
-if pvr.Platform.GetPlatform( ).IsLinux( ) :
+if pvr.Platform.GetPlatform( ).IsLinux2( ) :
 	from pvr.IpParser import *
 
 E_LANGUAGE				= 0
@@ -190,6 +190,10 @@ class Configure( SettingWindow ) :
 				dialog = xbmcgui.Dialog( )
 				ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList )
 				if ret >= 0 :
+					if not self.mIsElmoPlatform :
+						xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% sys.platform )
+						return
+
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Please be patience after pressing the OK button' ), MR_LANG( 'It will take some time to bring up display changes' ) )
 					dialog.doModal( )

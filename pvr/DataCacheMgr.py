@@ -5,7 +5,7 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 import pvr.Platform
 
-if pvr.Platform.GetPlatform( ).IsLinux( ) :
+if pvr.Platform.GetPlatform( ).IsLinux2( ) :
 	gFlagUseDB = True
 	from pvr.IpParser import *
 
@@ -196,7 +196,7 @@ class DataCacheMgr( object ) :
 		self.LoadTime( )
 
 		# SetPropertyNetworkAddress
-		if pvr.Platform.GetPlatform( ).IsLinux( ) :		
+		if pvr.Platform.GetPlatform( ).IsLinux2( ) :		
 			LoadNetworkType( )
 			dev = GetCurrentNetworkType( )
 			if dev == NETWORK_ETHERNET :

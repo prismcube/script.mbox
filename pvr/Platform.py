@@ -7,21 +7,28 @@ import xbmcaddon
 import xbmcgui
 import urllib
 import stat
+from subprocess import *
 
 
 gPlatform = None
+try :
+	gPlatformName = Popen( "awk '/Hardware/ {print $3,$4}' /proc/cpuinfo", shell=True, stdout=PIPE )
+except Exception, e :
+	print 'except[%s]'% e
+	gPlatformName = sys.platform
 
+print '------------------------------platform[%s]'% gPlatformName
 
 def GetPlatform( ) :
 	global gPlatform
 	if not gPlatform :
-		if 'win32' in sys.platform :
+		if 'win32' == gPlatformName :
 			gPlatform = WindowsPlatform( )
-		elif 'linux' in sys.platform :
+		elif 'linux' == gPlatformName or 'linux2' == gPlatformName :
 			gPlatform = LinuxPlatform( )
-		elif 'linux2' in sys.platform :
+		elif 'NXP BL-STB' in gPlatformName :
 			gPlatform = Linux2Platform( )
-		elif 'darwin' in sys.platform :
+		elif 'darwin' in gPlatformName :
 		# gotta be a better way to detect ipad/iphone/atv2
 			if 'USER' in os.environ and os.environ[ 'USER'] in ( 'mobile', 'frontrow', ) :
 				gPlatform = IOSPlatform( )
@@ -140,6 +147,10 @@ class Platform( object ) :
 		return False
 
 
+	def IsLinux2( self ) :
+		return False
+
+
 	def GetMediaPath( self, aMediaFile ) :
 		# TODO: Fix when we support multiple skins
 		return os.path.join( self.GetScriptDir( ), 'resources', 'skins', 'Default', 'media', aMediaFile )
@@ -168,6 +179,10 @@ class Linux2Platform( Platform ) :
 		return "linux2"
 
 	def IsLinux( self ) :
+		return True
+
+
+	def IsLinux2( self ) :
 		return True
 
 

@@ -19,7 +19,7 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
-		self.mIsElmoPlatform = pvr.Platform.GetPlatform( ).IsLinux( )
+		self.mIsElmoPlatform = pvr.Platform.GetPlatform( ).IsLinux2( )
 		
 
 	@classmethod

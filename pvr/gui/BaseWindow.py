@@ -73,7 +73,7 @@ class Action(object) :
 
 
 	# re defined for another platform
-	if not pvr.Platform.GetPlatform( ).IsLinux( ) :
+	if not pvr.Platform.GetPlatform( ).IsLinux2( ) :
 		ACTION_MBOX_XBMC			= ACTION_SHOW_GUI
 		ACTION_MBOX_TVRADIO			= ACTION_BUILT_IN_FUNCTION
 		ACTION_MBOX_RECORD			= ACTION_PLAYER_REWIND
@@ -114,7 +114,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mParentID = -1
-		self.mIsElmoPlatform = pvr.Platform.GetPlatform( ).IsLinux( )
+		self.mIsElmoPlatform = pvr.Platform.GetPlatform( ).IsLinux2( )
 
 
 	@classmethod
@@ -242,6 +242,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 	def CheckMediaCenter( self ) :
 		if self.mStartMediaCenter == True :
 			self.mCommander.AppMediaPlayer_Control( 0 )
+
 			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
 			self.UpdateVolume( )
 
@@ -251,6 +252,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 			if iChannel :
 				self.mDataCache.Channel_InvalidateCurrent( )
 				self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
+
 
 		#do not execute only nullwindow 
 		if self.GetName( ) != 'NullWindow' :
