@@ -14,7 +14,7 @@ else :
 	gFlagUseDB = False
 
 
-print 'mBox----------------use db[%s] sys.platform=%s' %( gFlagUseDB, pvr.Platform.GetPlatform( ).GetName( ) )
+print 'mBox----------------use db[%s] platform[%s]' %( gFlagUseDB, pvr.Platform.GetPlatform( ).GetName( ) )
 
 SUPPORT_EPG_DATABASE     = gFlagUseDB
 SUPPORT_CHANNEL_DATABASE = gFlagUseDB

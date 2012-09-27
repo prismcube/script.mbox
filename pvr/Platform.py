@@ -12,7 +12,8 @@ from subprocess import *
 
 gPlatform = None
 try :
-	gPlatformName = Popen( "awk '/Hardware/ {print $3,$4}' /proc/cpuinfo", shell=True, stdout=PIPE )
+	getPlatformName = Popen( "awk '/Hardware/ {print $3,$4}' /proc/cpuinfo", shell=True, stdout=PIPE )
+	gPlatformName = getPlatformName.stdout.read( ).strip( )
 except Exception, e :
 	print 'except[%s]'% e
 	gPlatformName = sys.platform
@@ -26,9 +27,9 @@ def GetPlatform( ) :
 			gPlatform = WindowsPlatform( )
 		elif 'linux' == gPlatformName or 'linux2' == gPlatformName :
 			gPlatform = LinuxPlatform( )
-		elif 'NXP BL-STB' in gPlatformName :
+		elif 'NXP BL-STB' == gPlatformName :
 			gPlatform = Linux2Platform( )
-		elif 'darwin' in gPlatformName :
+		elif 'darwin' == gPlatformName :
 		# gotta be a better way to detect ipad/iphone/atv2
 			if 'USER' in os.environ and os.environ[ 'USER'] in ( 'mobile', 'frontrow', ) :
 				gPlatform = IOSPlatform( )
