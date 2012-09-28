@@ -301,7 +301,7 @@ class SystemInfo( SettingWindow ) :
 
 
 	def CheckExistsDisk( self ) :
-		if not self.mIsElmoPlatform :
+		if not self.mPlatform.IsPrismCube( ) :
 			return False
 
 		cmd = 'df'

@@ -73,7 +73,7 @@ class Action(object) :
 
 
 	# re defined for another platform
-	if not pvr.Platform.GetPlatform( ).IsLinux2( ) :
+	if not pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 		ACTION_MBOX_XBMC			= ACTION_SHOW_GUI
 		ACTION_MBOX_TVRADIO			= ACTION_BUILT_IN_FUNCTION
 		ACTION_MBOX_RECORD			= ACTION_PLAYER_REWIND
@@ -114,7 +114,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mParentID = -1
-		self.mIsElmoPlatform = pvr.Platform.GetPlatform( ).IsLinux2( )
+		self.mPlatform = pvr.Platform.GetPlatform( )
 
 
 	@classmethod
@@ -203,7 +203,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def UpdateVolume( self, aVolumeStep = -1 ) :
-		if self.mIsElmoPlatform :
+		if self.mPlatform.IsPrismCube( ) :
 			retVolume = xbmc.executehttpapi( 'getvolume' )
 			volume = int( retVolume[4:] )
 

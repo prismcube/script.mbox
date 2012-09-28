@@ -312,7 +312,7 @@ class WindowMgr( object ) :
 	def ReloadWindow( self, aWindowId = WIN_ID_LIVE_PLATE, aParentId = WIN_ID_NULLWINDOW ) :
 		LOG_TRACE('-----------------------------last[%s] reload[%s]'% (self.mLastId, aWindowId) )
 
-		if pvr.Platform.GetPlatform( ).IsLinux2( ) :
+		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 			self.CopyIncludeFile( )
 			xbmc.executebuiltin('XBMC.ReloadSkin()')		
 
@@ -332,7 +332,7 @@ class WindowMgr( object ) :
 	def CheckGUISettings( self ) :
 		self.LoadSkinPosition( )
 		if self.CheckSkinChange( ) or self.CheckFontChange( ) :
-			if not pvr.Platform.GetPlatform( ).IsLinux2( ) :
+			if not pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 				self.ReloadWindow( self.mLastId, WIN_ID_NULLWINDOW )
 				LOG_TRACE( '----------------------- reload for platform[%s]'% pvr.Platform.GetPlatform( ).GetName( ) )
 				return True
@@ -364,7 +364,7 @@ class WindowMgr( object ) :
 
 
 	def LoadSkinPosition( self ) :
-		if not pvr.Platform.GetPlatform( ).IsLinux2( ) :
+		if not pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 			return
 	
 		if E_ADD_XBMC_HTTP_FUNCTION == True :

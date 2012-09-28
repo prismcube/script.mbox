@@ -1,7 +1,7 @@
 from pvr.gui.WindowImport import *
 import pvr.Platform
 
-if pvr.Platform.GetPlatform( ).IsLinux2( ) :
+if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	from pvr.IpParser import *
 
 E_LANGUAGE				= 0
@@ -105,7 +105,7 @@ class Configure( SettingWindow ) :
 
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
-		if self.mIsElmoPlatform :
+		if self.mPlatform.IsPrismCube( ) :
 			self.mIpParser = IpParser( )
 			self.mWireless = WirelessParser( )
 			self.LoadEhternetInformation( )
@@ -147,7 +147,7 @@ class Configure( SettingWindow ) :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
 				self.mVisibleParental = False
-				if self.mIsElmoPlatform :
+				if self.mPlatform.IsPrismCube( ) :
 					self.mUseNetworkType = GetCurrentNetworkType( )
 				self.SetListControl( )
 			elif focusId != E_SUBMENU_LIST_ID :
@@ -158,7 +158,7 @@ class Configure( SettingWindow ) :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
 				self.mVisibleParental = False
-				if self.mIsElmoPlatform :
+				if self.mPlatform.IsPrismCube( ) :
 					self.mUseNetworkType = GetCurrentNetworkType( )
 				self.SetListControl( )
 			elif focusId != E_SUBMENU_LIST_ID :
@@ -190,8 +190,8 @@ class Configure( SettingWindow ) :
 				dialog = xbmcgui.Dialog( )
 				ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList )
 				if ret >= 0 :
-					if not self.mIsElmoPlatform :
-						xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% sys.platform )
+					if not self.mPlatform.IsPrismCube( ) :
+						xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% self.mPlatform.GetName( ) )
 						return
 
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -205,7 +205,7 @@ class Configure( SettingWindow ) :
 			return
 
 		elif selectedId == E_NETWORK_SETTING :
-			if self.mIsElmoPlatform :
+			if self.mPlatform.IsPrismCube( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not support Win32' ) )
 	 			dialog.doModal( )

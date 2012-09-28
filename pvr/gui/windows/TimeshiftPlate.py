@@ -918,8 +918,8 @@ class TimeShiftPlate( BaseWindow ) :
 
 	def ShowDialog( self, aFocusId ) :
 		if aFocusId == E_CONTROL_ID_BUTTON_BOOKMARK :
-			if not self.mIsElmoPlatform :
-				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% sys.platform )
+			if not self.mPlatform.IsPrismCube( ) :
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% self.mPlatform.GetName( ) )
 				return
 
 			self.BookMarkContext( )

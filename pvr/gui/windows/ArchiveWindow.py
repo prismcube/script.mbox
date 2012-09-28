@@ -853,7 +853,7 @@ class ArchiveWindow( BaseWindow ) :
 					self.mRecordList[ position ].mLocked = False
 					self.mDataCache.Record_SetLock( self.mRecordList[ position ].mRecordKey, self.mServiceType, False )
 
-					if self.mIsElmoPlatform :
+					if self.mPlatform.IsPrismCube( ) :
 						thumbnaillist = []
 						thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % self.mRecordList[ position ].mRecordKey ) )
 						if len( thumbnaillist ) > 0 :

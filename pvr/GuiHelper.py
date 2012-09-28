@@ -346,7 +346,7 @@ class CacheMRLanguage( object ) :
 			#print 'xml_string[%s] parse[%s]'% (string, xmlString)
 			try :
 				string = xmlString
-				if not pvr.Platform.GetPlatform( ).IsLinux2( ) :
+				if not pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 					string = xmlString.encode( 'utf-8' )
 
 			except Exception, ex :

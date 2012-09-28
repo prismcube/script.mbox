@@ -752,12 +752,12 @@ class LivePlate( LivePlateWindow ) :
 
 	def ShowDialog( self, aFocusId, aVisible = False ) :
 		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
-			if not self.mIsElmoPlatform :
-				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% sys.platform )
+			if not self.mPlatform.IsPrismCube( ) :
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% self.mPlatform.GetName( ) )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
-			if not self.mIsElmoPlatform :
-				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% sys.platform )
+			if not self.mPlatform.IsPrismCube( ) :
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% self.mPlatform.GetName( ) )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
 			if self.mCurrentEPG and self.mCurrentEPG.mError == 0 :

@@ -28,7 +28,7 @@ def GetPlatform( ) :
 		elif 'linux' == gPlatformName or 'linux2' == gPlatformName :
 			gPlatform = LinuxPlatform( )
 		elif 'NXP BL-STB' == gPlatformName :
-			gPlatform = Linux2Platform( )
+			gPlatform = PrismCubePlatform( )
 		elif 'darwin' == gPlatformName :
 		# gotta be a better way to detect ipad/iphone/atv2
 			if 'USER' in os.environ and os.environ[ 'USER'] in ( 'mobile', 'frontrow', ) :
@@ -148,7 +148,7 @@ class Platform( object ) :
 		return False
 
 
-	def IsLinux2( self ) :
+	def IsPrismCube( self ) :
 		return False
 
 
@@ -170,20 +170,20 @@ class LinuxPlatform( Platform ) :
 		return True
 
 
-class Linux2Platform( Platform ) :
+class PrismCubePlatform( Platform ) :
 
 	def __init__( self, *args, **kwargs ) :
 		Platform.__init__( self, *args, **kwargs )
 
 
 	def GetName( self ) :
-		return "linux2"
+		return "PrismCube"
 
 	def IsLinux( self ) :
 		return True
 
 
-	def IsLinux2( self ) :
+	def IsPrismCube( self ) :
 		return True
 
 
