@@ -19,7 +19,7 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
-		self.mIsElmoPlatform = pvr.Platform.GetPlatform( ).IsLinux2( )
+		self.mPlatform = pvr.Platform.GetPlatform( )
 		
 
 	@classmethod
@@ -62,7 +62,11 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 
 	@GuiLock
 	def UpdateVolume( self, aVolumeStep = -1 ) :
-		if not self.mIsElmoPlatform :
+		if self.mPlatform.IsPrismCube( ) :
+			retVolume = xbmc.executehttpapi( 'getvolume' )
+			volume = int( retVolume[4:] )
+
+		else :
 			volume = self.mCommander.Player_GetVolume( )
 			if aVolumeStep != -1 :
 				if aVolumeStep == 0 :
@@ -74,10 +78,6 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 
 				else :
 					volume += aVolumeStep / 2
-
-		else :
-			retVolume = xbmc.executehttpapi( 'getvolume' )
-			volume = int( retVolume[4:] )
 
 		LOG_TRACE( 'GET VOLUME=%d' %volume )
 
