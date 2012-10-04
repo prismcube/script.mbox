@@ -151,7 +151,6 @@ class FirstInstallation( SettingWindow ) :
 		self.OpenBusyDialog( )
 		self.mLastFocused = -1
 		self.ResetAllControl( )
-		self.SetVideoRestore( )
 		self.mStepNum = E_STEP_SELECT_LANGUAGE
 		ConfigMgr.GetInstance( ).SetFristInstallation( False )
 		self.mTunerMgr.SyncChannelBySatellite( )
@@ -160,6 +159,7 @@ class FirstInstallation( SettingWindow ) :
 		self.mDataCache.Channel_TuneDefault( )
 		self.mDataCache.Player_AVBlank( False )
 		self.CloseBusyDialog( )
+		self.SetVideoRestore( )
 		WinMgr.GetInstance( ).CloseWindow( )
 
 
