@@ -83,7 +83,7 @@ class AntennaSetup( SettingWindow ) :
 					self.mTunerMgr.SyncChannelBySatellite( )
 					self.mDataCache.Channel_ReLoad( )
 					#TODO : Channel_TuneDefault -> parent window is configure
-					self.mDataCache.Channel_TuneDefault( )
+					#self.mDataCache.Channel_TuneDefault( )
 					self.mDataCache.Player_AVBlank( False )
 					self.CloseWindow( )
 
