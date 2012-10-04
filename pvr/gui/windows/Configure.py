@@ -291,6 +291,7 @@ class Configure( SettingWindow ) :
 
 	 			from ElisProperty import ResetHash
 				ResetHash( )
+				self.mDataCache.Channel_ReLoad( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 		else :
 			self.ControlSelect( )
