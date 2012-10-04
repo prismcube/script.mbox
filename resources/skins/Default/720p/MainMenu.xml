@@ -24,7 +24,7 @@
 						<width>1</width>
 						<height>720</height>
 						<texture>HomeBladeSub_Part1.png</texture>
-						<animation effect="zoom" start="379,0,1,720" end="379,0,205,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
+						<animation effect="zoom" start="379,0,1,720" end="379,0,229,720" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
 					</control>
 					<control type="image">
 						<posx>380</posx>
@@ -32,8 +32,8 @@
 						<width>12</width>
 						<height>720</height>
 						<texture>HomeBladeSub_Part2.png</texture>
-						<animation effect="slide" end="205,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
-						<!--<animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>-->
+						<!--<animation effect="slide" end="205,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>-->
+						<animation effect="slide" end="228,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(9001).HasFocus">Conditional</animation>
 					</control>
 				</control>
 				<control type="image">
@@ -47,7 +47,8 @@
 				<control type="list" id="9000">
 					<hitrect x="100" y="100" w="530" h="620"></hitrect>
 					<posx>-20</posx>
-					<posy>70</posy>
+					<!--<posy>70</posy>   Fav -->
+					<posy>95</posy>
 					<width>400</width>
 					<height>720</height>
 					<onleft>999</onleft>
@@ -173,7 +174,7 @@
 					<control type="grouplist" id="9010">
 						<posx>10</posx>
 						<posy>20</posy>
-						<width>200</width>
+						<width>240</width>
 						<height>280</height>
 						<align>center</align>
 						<onleft>9000</onleft>
@@ -235,7 +236,7 @@
 					<control type="grouplist" id="9020">
 						<posx>10</posx>
 						<posy>20</posy>
-						<width>215</width>
+						<width>240</width>
 						<height>360</height>
 						<align>center</align>
 						<onleft>9000</onleft>
@@ -255,7 +256,7 @@
 					<control type="grouplist" id="9030">
 						<posx>10</posx>
 						<posy>80</posy>
-						<width>215</width>
+						<width>240</width>
 						<height>360</height>
 						<align>center</align>
 						<onleft>9000</onleft>
@@ -275,7 +276,7 @@
 					<control type="grouplist" id="9040">
 						<posx>10</posx>
 						<posy>160</posy>
-						<width>215</width>
+						<width>240</width>
 						<height>360</height>
 						<align>center</align>
 						<onleft>9000</onleft>
@@ -301,7 +302,7 @@
 					<control type="list" id="9050">
 						<posx>10</posx>
 						<posy>200</posy>
-						<width>215</width>
+						<width>240</width>
 						<height>360</height>
 						<align>center</align>
 						<onleft>9000</onleft>
@@ -349,7 +350,7 @@
 					<control type="grouplist" id="9060">
 						<posx>10</posx>
 						<posy>250</posy>
-						<width>215</width>
+						<width>240</width>
 						<height>360</height>
 						<align>center</align>
 						<onleft>9000</onleft>
@@ -432,7 +433,7 @@
 					<control type="grouplist" id="9070">
 						<posx>10</posx>
 						<posy>300</posy>
-						<width>215</width>
+						<width>240</width>
 						<height>360</height>
 						<align>center</align>
 						<onleft>9000</onleft>

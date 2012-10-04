@@ -569,9 +569,9 @@
 
 	<include name="DefaultButtonHomeSubCommonValues">
 		<height>40</height>
-		<width>195</width>
+		<width>221</width>
 		<textoffsetx>20</textoffsetx>
-		<textwidth>180</textwidth>
+		<textwidth>195</textwidth>
 		<aligny>center</aligny>
 		<font>font12_title</font>
 		<texturefocus border="5">button-focus.png</texturefocus>
