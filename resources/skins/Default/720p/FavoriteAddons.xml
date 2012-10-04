@@ -378,32 +378,20 @@
 					<posx>0</posx>
 					<posy>0</posy>
 					<include>DefaultButtonCommonValues</include>
-					<label>VIEW:</label>
-					<onleft>9003</onleft>
-					<onright>9003</onright>
-					<onup>104</onup>
-					<ondown>101</ondown>
-				</control>
-				<control type="button" id="101">
-					<description>Sort by button</description>
-					<posx>0</posx>
-					<posy>40</posy>
-					<include>DefaultButtonCommonValues</include>
-					<label>SORT:</label>
 					<onleft>9003</onleft>
 					<onright>102</onright>
-					<onup>100</onup>
+					<onup>104</onup>
 					<ondown>104</ondown>
 				</control>
 				
 				<control type="togglebutton" id="102">
 					<description>Sort asc</description>
-					<posx>220</posx>
-					<posy>53</posy>
+					<posx>222</posx>
+					<posy>13</posy>
 					<label>-</label>
-					<onleft>101</onleft>
+					<onleft>100</onleft>
 					<onright>9003</onright>
-					<onup>101</onup>
+					<onup>104</onup>
 					<ondown>104</ondown>
 					<usealttexture>substring(Window.Property(Ascending),true)</usealttexture>
 				</control>
@@ -412,18 +400,18 @@
 					<description>Extra Options</description>
 					<hitrect x="0" y="120" w="265" h="40" />
 					<posx>0</posx>
-					<posy>80</posy>
+					<posy>42</posy>
 					<include>DefaultButtonCommonValues</include>
 					<radiowidth>18</radiowidth>
 					<radioheight>18</radioheight>
 					<radioposx>222</radioposx>
-					<radioposy>12</radioposy>
+					<radioposy>11</radioposy>
 					<textureradiofocus>HomeHasSub.png</textureradiofocus>
 					<textureradionofocus>HomeHasSub.png</textureradionofocus>
-					<label>31026</label>
+					<label>MISC OPTIONS</label>
 					<onleft>9003</onleft>
 					<onright>9010</onright>
-					<onup>101</onup>
+					<onup>100</onup>
 					<ondown>100</ondown>
 				</control>
 			</control>

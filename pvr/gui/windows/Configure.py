@@ -182,10 +182,7 @@ class Configure( SettingWindow ) :
 		
 		if selectedId == E_LANGUAGE :
 			if groupId == E_Input01 :
-				tmpMenuLanguageList = WinMgr.GetInstance( ).GetLanguageList( )
-				menuLanguageList = []
-				for i in range( len( tmpMenuLanguageList ) ) :
-					menuLanguageList.append( MR_LANG( tmpMenuLanguageList[i] ) )
+				menuLanguageList = WinMgr.GetInstance( ).GetLanguageList( )
 				dialog = xbmcgui.Dialog( )
 				ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList )
 				if ret >= 0 :
@@ -193,6 +190,7 @@ class Configure( SettingWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Please be patience after pressing the OK button' ), MR_LANG( 'It will take some time to bring up display changes' ) )
 					dialog.doModal( )
 					self.mInitialized = False
+					self.mLastFocused = -1
 					WinMgr.GetInstance( ).SetCurrentLanguage( menuLanguageList[ ret ] )
 			else :
 				self.DisableControl( E_LANGUAGE )

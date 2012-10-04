@@ -347,7 +347,7 @@
 						<width>400</width>
 						<height>230</height>
 						<font>Font_Reg18</font>
-						<label fallback="312577">test description</label>
+						<label>$INFO[Container(3500).ListItem.Property(Description)]</label>
 						<textcolor>d0FFFFFF</textcolor>
 						<autoscroll delay="8000" time="2000" repeat="8000">Skin.HasSetting(AutoScroll)</autoscroll>
 					</control>
@@ -460,10 +460,6 @@
 					<include>Animation_CommonFade</include>
 					<enable>no</enable>
 					<label>Select Sort Order</label>
-				</control>
-				<control type="button" id="101">
-					<include>Objects_MediaMenuButtonAlt</include>
-					<label>SORT:</label>
 				</control>
 				<control type="togglebutton" id="102">
 					<description>Sort asc</description>
