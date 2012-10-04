@@ -128,7 +128,7 @@ class DialogInputPincode( BaseDialog ) :
 				else : #Wrong PinCode
 					self.mInputNumber = ''
 					self.mCtrlInputLabel.setLabel( self.mInputNumber )					
-					self.getControl( E_DIALOG_HEADER ).setLabel( MR_LANG( 'Wrong PIN code' ) )
+					self.getControl( E_DIALOG_HEADER ).setLabel( MR_LANG( 'Please try again' ) )
 			else :
 				temp = '*'
 				self.mCtrlInputLabel.setLabel( temp*length )
