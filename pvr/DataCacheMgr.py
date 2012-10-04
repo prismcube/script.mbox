@@ -694,6 +694,17 @@ class DataCacheMgr( object ) :
 			channelDB.Close( )
 			return chCount
 
+		else :
+			chCount = 0
+			try :
+				chCount = len( self.mChannelList )
+
+			except Exception, e:
+				LOG_TRACE( 'Error except[%s]'% e )
+				chCount = 0
+
+			return chCount
+
 
 	#ToDO : Call this function when channels are added or deleted. ( aServiceType = CurrentServieType, aUseCache=False )
 	def Channel_GetAllChannels( self, aServiceType, aUseCache = True ) :
@@ -1207,17 +1218,30 @@ class DataCacheMgr( object ) :
 
 
 	def Channel_ReLoad( self ) :
+		mCurrentChannel = self.Channel_GetCurrent( )
+
 		self.LoadZappingmode( )
 		self.LoadZappingList( )
 		self.LoadChannelList( )
 		self.Channel_GetAllChannels( self.mZappingMode.mServiceType, False )
 		self.SetChannelReloadStatus( True )
 
+		self.Channel_TuneDefault( mCurrentChannel )
 
-	def Channel_TuneDefault( self ) :
-		channelList = self.Channel_GetList( )
-		if channelList and len( channelList ) > 0 :
-			self.Channel_SetCurrent( channelList[0].mNumber, channelList[0].mServiceType )
+
+	def Channel_TuneDefault( self, aCurrentChannel = None ) :
+		isCurrentChannelDelete = True
+		if aCurrentChannel and aCurrentChannel.mError == 0 :
+			if self.Channel_GetCount( ) :
+				for iChannel in self.Channel_GetList( ) :
+					if aCurrentChannel.mName == iChannel.mName :
+						isCurrentChannelDelete = False
+						break
+
+		if aCurrentChannel == None or isCurrentChannelDelete :
+			channelList = self.Channel_GetList( )
+			if channelList and len( channelList ) > 0 :
+				self.Channel_SetCurrent( channelList[0].mNumber, channelList[0].mServiceType )
 
 
 	def Channel_InvalidateCurrent( self ) :
