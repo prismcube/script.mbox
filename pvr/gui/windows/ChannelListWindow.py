@@ -1872,6 +1872,7 @@ class ChannelListWindow( BaseWindow ) :
 					self.mRefreshCurrentChannel = self.mChannelList[idxCurrent].mNumber
 					#LOG_TRACE( 'after idx[%s] num[%s] name[%s]'% ( idxCurrent, self.mChannelList[idxCurrent].mNumber, self.mChannelList[idxCurrent].mName) )
 
+				self.mCtrlListCHList.reset( )
 				self.ShowMoveToGUI( 0, len( self.mChannelList ), True )
 				#LOG_TRACE ( '========= move exit ===mark[%s] view[%s]~[%s]'% (self.mMarkList, self.mViewFirst, self.mViewEnd) )
 
