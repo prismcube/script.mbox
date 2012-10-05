@@ -176,11 +176,13 @@ class InfoPlate( LivePlateWindow ) :
 		self.ShowRecordingInfo( )
 		self.mPlayingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
 		if self.mPlayingRecord :
-			self.mCurrentEPG = ElisIEPGEvent()
-			self.mCurrentEPG.mEventName = self.mPlayingRecord.mRecordName
-			self.mCurrentEPG.mEventDescription = ''
-			self.mCurrentEPG.mStartTime = self.mPlayingRecord.mStartTime - self.mDataCache.Datetime_GetLocalOffset( )
-			self.mCurrentEPG.mDuration = self.mPlayingRecord.mDuration
+			self.mCurrentEPG = self.mDataCache.RecordItem_GetEventInfo( self.mPlayingRecord.mRecordKey )
+			if self.mCurrentEPG == None or self.mCurrentEPG.mError != 0 :
+				self.mCurrentEPG = ElisIEPGEvent()
+				self.mCurrentEPG.mEventName = self.mPlayingRecord.mRecordName
+				self.mCurrentEPG.mEventDescription = ''
+				self.mCurrentEPG.mStartTime = self.mPlayingRecord.mStartTime - self.mDataCache.Datetime_GetLocalOffset( )
+				self.mCurrentEPG.mDuration = self.mPlayingRecord.mDuration
 
 		self.InitControlGUI( )
 		self.UpdateChannelAndEPG( )
