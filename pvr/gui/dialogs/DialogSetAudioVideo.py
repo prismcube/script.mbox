@@ -166,6 +166,13 @@ class DialogSetAudioVideo( SettingDialog ) :
 					self.mAudioTrack.append( label )
 
 
+	def SetFrontHDMI( self ) :
+		if self.mMode != CONTEXT_ACTION_VIDEO_SETTING :
+			return
+
+		self.mDataCache.Frontdisplay_HdmiFormat( )
+
+
 	def RestartAsyncSet( self ) :
 		self.StopAsyncSet( )
 		self.StartAsyncSet( )
@@ -191,5 +198,6 @@ class DialogSetAudioVideo( SettingDialog ) :
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
 		self.ResetAllControl( )
+		self.SetFrontHDMI( )
 		self.CloseDialog( )
 

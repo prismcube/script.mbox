@@ -1019,10 +1019,16 @@ class DataCacheMgr( object ) :
 
 	def Epgevent_GetPresent( self ) :
 		iEPG = None
+		iconHd = True
 		iEPG = self.mCommander.Epgevent_GetPresent( )
 		if iEPG == None or iEPG.mError != 0 :
 			iEPG = None
+			iconHd = False
 
+		else :
+			iconHd = iEPG.mHasHDVideo
+
+		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iconHd )
 		return iEPG
 
 
@@ -1537,11 +1543,36 @@ class DataCacheMgr( object ) :
 
 
 	def Frontdisplay_SetMessage( self, aName ) :
+		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, False )
 		self.mCommander.Frontdisplay_SetMessage( aName )
 
 
 	def Frontdisplay_SetIcon( self, aIconIndex, aOnOff ) :
 		self.mCommander.Frontdisplay_SetIcon( aIconIndex, aOnOff )
+
+
+	def Frontdisplay_HdmiFormat( self, aIcon = None ) :
+		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_1080i, False )
+		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_1080p, False )
+		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_720p, False )
+
+		#LOG_TRACE('---------1.Front hdmi[%s]'% aIcon )
+		if aIcon == -1 :
+			return
+
+		elif aIcon == None :
+			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+			if hdmiFormat == 'Automatic' :
+				return
+
+			aIcon = ElisEnum.E_ICON_1080i
+			if hdmiFormat == '720p' :
+				aIcon = ElisEnum.E_ICON_720p
+			elif hdmiFormat == '576p' :
+				return
+
+		#LOG_TRACE('---------2.Front hdmi[%s]'% aIcon )
+		self.Frontdisplay_SetIcon( aIcon, True )
 
 
 	def Frontdisplay_PlayPause( self, aIcon = True ) :

@@ -579,7 +579,6 @@ class ChannelListWindow( BaseWindow ) :
 			#LOG_TRACE( 'Receive Event[%s]'% aEvent.getName( ) )
 
 			if aEvent.getName( ) == ElisEventCurrentEITReceived.getName( ) :
-
 				if self.mNavChannel == None:
 					#LOG_TRACE('--epg not------ch none')
 					return -1
@@ -587,10 +586,9 @@ class ChannelListWindow( BaseWindow ) :
 				if self.mNavChannel.mSid != aEvent.mSid or self.mNavChannel.mTsid != aEvent.mTsid or self.mNavChannel.mOnid != aEvent.mOnid :
 					#LOG_TRACE('--epg not------eventid no match')
 					return -1
-		
+
 				if aEvent.mEventId != self.mEventId :
 					if self.mIsTune == True :
-						#on select, clicked
 						iEPG = None
 						#sid  = self.mNavChannel.mSid
 						#tsid = self.mNavChannel.mTsid

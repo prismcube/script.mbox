@@ -83,6 +83,21 @@ class RootWindow( BaseWindow ) :
 			#if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
 			#	WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
+		elif aEvent.getName( ) == ElisEventVideoIdentified( ).getName( ) :
+			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+			#LOG_TRACE('-----------------event[%s] height[%s] CurrentProperty[%s]'% ( aEvent.getName( ), aEvent.mVideoHeight, hdmiFormat ) )
+
+			if hdmiFormat != 'Automatic' :
+				return
+
+			iconIndex = ElisEnum.E_ICON_1080i
+			if aEvent.mVideoHeight <= 576 :
+				iconIndex = -1
+			elif aEvent.mVideoHeight <= 720 :
+				iconIndex = ElisEnum.E_ICON_720p
+
+			self.mDataCache.Frontdisplay_HdmiFormat( iconIndex )
+
 
 	def GetRecordingInfo( self ) :
 		labelInfo = MR_LANG( 'Reloading channel list...' )
