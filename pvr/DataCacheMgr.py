@@ -3,15 +3,18 @@ from decorator import decorator
 from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
+import pvr.Platform
 
-if sys.platform == 'win32' :
-	from pvr.gui.GuiConfig import *
-	gFlagUseDB = False
-else :
+if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
 	from pvr.IpParser import *
 
-print 'mBox----------------use db[%s]'% gFlagUseDB
+else :
+	from pvr.gui.GuiConfig import *
+	gFlagUseDB = False
+
+
+print 'mBox----------------use db[%s] platform[%s]' %( gFlagUseDB, pvr.Platform.GetPlatform( ).GetName( ) )
 
 SUPPORT_EPG_DATABASE     = gFlagUseDB
 SUPPORT_CHANNEL_DATABASE = gFlagUseDB
@@ -193,16 +196,17 @@ class DataCacheMgr( object ) :
 		self.LoadTime( )
 
 		# SetPropertyNetworkAddress
-		LoadNetworkType( )
-		dev = GetCurrentNetworkType( )
-		if dev == NETWORK_ETHERNET :
-			addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( gEthernetDevName )
-		elif dev == NETWORK_WIRELESS :
-			wifi = WirelessParser( )
-			addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( wifi.GetWifidevice( ) )
-		else :
-			LOG_ERR( 'Error Network Setting' )
-		SetIpAddressProperty( addressIp, addressMask, addressGateway, addressNameServer )
+		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :		
+			LoadNetworkType( )
+			dev = GetCurrentNetworkType( )
+			if dev == NETWORK_ETHERNET :
+				addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( gEthernetDevName )
+			elif dev == NETWORK_WIRELESS :
+				wifi = WirelessParser( )
+				addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( wifi.GetWifidevice( ) )
+			else :
+				LOG_ERR( 'Error Network Setting' )
+			SetIpAddressProperty( addressIp, addressMask, addressGateway, addressNameServer )
 
 
 	def LoadVolumeToSetGUI( self ) :
@@ -728,7 +732,7 @@ class DataCacheMgr( object ) :
 			return self.mAllChannelList
 
 		else :
-			return self.mCommander.Channel_GetList( aType, aMode, aSort )
+			return self.mCommander.Channel_GetList( aServiceType, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER )
 
 		LOG_TRACE( 'Reload AllChannels')
 		return None
@@ -1632,4 +1636,5 @@ class DataCacheMgr( object ) :
 
 	def GetLockedState( self ) :
 		return self.mLockStatus
+
 

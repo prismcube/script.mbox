@@ -917,12 +917,12 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def ShowDialog( self, aFocusId ) :
-		head = ''
-		line1= ''
 		if aFocusId == E_CONTROL_ID_BUTTON_BOOKMARK :
-			self.BookMarkContext( )
+			if not self.mPlatform.IsPrismCube( ) :
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% self.mPlatform.GetName( ) )
+				return
 
-		#dialog = xbmcgui.Dialog( ).ok( head, line1 )
+			self.BookMarkContext( )
 
 
 	def EventReceivedDialog( self, aDialog ) :

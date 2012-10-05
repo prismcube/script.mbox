@@ -7,19 +7,29 @@ import xbmcaddon
 import xbmcgui
 import urllib
 import stat
+from subprocess import *
 
 
 gPlatform = None
+try :
+	getPlatformName = Popen( "awk '/Hardware/ {print $3,$4}' /proc/cpuinfo", shell=True, stdout=PIPE )
+	gPlatformName = getPlatformName.stdout.read( ).strip( )
+except Exception, e :
+	print 'except[%s]'% e
+	gPlatformName = sys.platform
 
+print '------------------------------platform[%s]'% gPlatformName
 
 def GetPlatform( ) :
 	global gPlatform
 	if not gPlatform :
-		if 'win32' in sys.platform :
+		if 'win32' == gPlatformName :
 			gPlatform = WindowsPlatform( )
-		elif 'linux' in sys.platform :
+		elif 'linux' == gPlatformName or 'linux2' == gPlatformName :
 			gPlatform = LinuxPlatform( )
-		elif 'darwin' in sys.platform :
+		elif 'NXP BL-STB' == gPlatformName :
+			gPlatform = PrismCubePlatform( )
+		elif 'darwin' == gPlatformName :
 		# gotta be a better way to detect ipad/iphone/atv2
 			if 'USER' in os.environ and os.environ[ 'USER'] in ( 'mobile', 'frontrow', ) :
 				gPlatform = IOSPlatform( )
@@ -138,6 +148,10 @@ class Platform( object ) :
 		return False
 
 
+	def IsPrismCube( self ) :
+		return False
+
+
 	def GetMediaPath( self, aMediaFile ) :
 		# TODO: Fix when we support multiple skins
 		return os.path.join( self.GetScriptDir( ), 'resources', 'skins', 'Default', 'media', aMediaFile )
@@ -153,6 +167,23 @@ class LinuxPlatform( Platform ) :
 		return "linux"
 
 	def IsLinux( self ) :
+		return True
+
+
+class PrismCubePlatform( Platform ) :
+
+	def __init__( self, *args, **kwargs ) :
+		Platform.__init__( self, *args, **kwargs )
+
+
+	def GetName( self ) :
+		return "PrismCube"
+
+	def IsLinux( self ) :
+		return True
+
+
+	def IsPrismCube( self ) :
 		return True
 
 

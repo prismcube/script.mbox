@@ -1,5 +1,7 @@
 from pvr.gui.WindowImport import *
-if sys.platform != 'win32' :
+import pvr.Platform
+
+if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	from pvr.IpParser import *
 
 E_LANGUAGE				= 0
@@ -106,7 +108,7 @@ class Configure( SettingWindow ) :
 
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
-		if sys.platform != 'win32' :
+		if self.mPlatform.IsPrismCube( ) :
 			self.mIpParser = IpParser( )
 			self.mWireless = WirelessParser( )
 			self.LoadEhternetInformation( )
@@ -148,7 +150,8 @@ class Configure( SettingWindow ) :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
 				self.mVisibleParental = False
-				self.mUseNetworkType = GetCurrentNetworkType( )
+				if self.mPlatform.IsPrismCube( ) :
+					self.mUseNetworkType = GetCurrentNetworkType( )
 				self.SetListControl( )
 			elif focusId != E_SUBMENU_LIST_ID :
 				self.ControlUp( )
@@ -158,7 +161,8 @@ class Configure( SettingWindow ) :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
 				self.mVisibleParental = False
-				self.mUseNetworkType = GetCurrentNetworkType( )
+				if self.mPlatform.IsPrismCube( ) :
+					self.mUseNetworkType = GetCurrentNetworkType( )
 				self.SetListControl( )
 			elif focusId != E_SUBMENU_LIST_ID :
 				self.ControlDown( )
@@ -186,6 +190,10 @@ class Configure( SettingWindow ) :
 				dialog = xbmcgui.Dialog( )
 				ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList )
 				if ret >= 0 :
+					if not self.mPlatform.IsPrismCube( ) :
+						xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% self.mPlatform.GetName( ) )
+						return
+
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Please be patience after pressing the OK button' ), MR_LANG( 'It will take some time to bring up display changes' ) )
 					dialog.doModal( )
@@ -198,7 +206,7 @@ class Configure( SettingWindow ) :
 			return
 
 		elif selectedId == E_NETWORK_SETTING :
-			if sys.platform == 'win32' :
+			if self.mPlatform.IsPrismCube( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not support Win32' ) )
 	 			dialog.doModal( )

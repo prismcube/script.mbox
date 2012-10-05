@@ -301,6 +301,9 @@ class SystemInfo( SettingWindow ) :
 
 
 	def CheckExistsDisk( self ) :
+		if not self.mPlatform.IsPrismCube( ) :
+			return False
+
 		cmd = 'df'
 		parsing = Popen( cmd, shell=True, stdout=PIPE )
 		parsing = parsing.stdout.read( ).strip( )
@@ -308,3 +311,5 @@ class SystemInfo( SettingWindow ) :
 			return True
 		else :
 			return False
+
+

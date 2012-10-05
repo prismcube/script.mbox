@@ -6,6 +6,8 @@ from ElisEnum import ElisEnum
 import pvr.DataCacheMgr
 import pvr.TunerConfigMgr 
 from pvr.Util import RunThread, GuiLock, GuiLock2 
+import pvr.Platform
+
 
 class Action(object) :
 	ACTION_NONE					= 0
@@ -19,11 +21,11 @@ class Action(object) :
 	ACTION_HIGHLIGHT_ITEM		= 8	
 	ACTION_PARENT_DIR			= 9		#Back
 	ACTION_PREVIOUS_MENU		= 10 	#ESC
-	ACTION_SHOW_INFO			= 11	# i
+	ACTION_SHOW_INFO			= 11	# i(epg)
 	ACTION_PAUSE				= 12	#space
-	ACTION_STOP					= 13
-	ACTION_NEXT_ITEM			= 14
-	ACTION_PREV_ITEM			= 15
+	ACTION_STOP					= 13	#x
+	ACTION_NEXT_ITEM			= 14	#>
+	ACTION_PREV_ITEM			= 15	#<
 	ACTION_FORWARD				= 16 
 	ACTION_REWIND				= 17 
 	REMOTE_0					= 58	#0
@@ -36,9 +38,9 @@ class Action(object) :
 	REMOTE_7					= 65	#7
 	REMOTE_8					= 66	#8
 	REMOTE_9					= 67	#9
-	ACTION_PLAYER_FORWARD		= 77
-	ACTION_PLAYER_REWIND		= 78
-	ACTION_PLAYER_PLAY			= 79
+	ACTION_PLAYER_FORWARD		= 77	#f
+	ACTION_PLAYER_REWIND		= 78	#r
+	ACTION_PLAYER_PLAY			= 79	#p 
 	
 	ACTION_VOLUME_UP			= 88	#Plus
 	ACTION_VOLUME_DOWN			= 89	#Minus
@@ -64,8 +66,21 @@ class Action(object) :
 	ACTION_MBOX_SUBTITLE		= 406
 	ACTION_MBOX_NUMLOCK			= 407
 	ACTION_MBOX_TEXT			= 408
-	
-	
+
+	ACTION_RELOAD_SKIN			= 34	#q
+	ACTION_BUILT_IN_FUNCTION	= 122	#m
+	ACTION_SHOW_GUI				= 18	#tab --> xbmc
+
+
+	# re defined for another platform
+	if not pvr.Platform.GetPlatform( ).IsPrismCube( ) :
+		ACTION_MBOX_XBMC			= ACTION_SHOW_GUI
+		ACTION_MBOX_TVRADIO			= ACTION_BUILT_IN_FUNCTION
+		ACTION_MBOX_RECORD			= ACTION_PLAYER_REWIND
+		ACTION_MBOX_REWIND			= ACTION_PREV_ITEM
+		ACTION_MBOX_FF				= ACTION_NEXT_ITEM
+		ACTION_MBOX_ARCHIVE			= ACTION_PLAYER_FORWARD
+
 
 class Property( object ) :
 
@@ -99,6 +114,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mParentID = -1
+		self.mPlatform = pvr.Platform.GetPlatform( )
 
 
 	@classmethod
@@ -123,13 +139,17 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 	def GlobalAction( self, aActionId ) :
 		if aActionId == Action.ACTION_MUTE :
-			self.UpdateVolume( )
+			self.UpdateVolume( 0 )
 
 		elif aActionId == Action.ACTION_VOLUME_UP :
-			self.UpdateVolume( )
+			self.UpdateVolume( VOLUME_STEP )
 
 		elif aActionId == Action.ACTION_VOLUME_DOWN :
-			self.UpdateVolume( )
+			self.UpdateVolume( -VOLUME_STEP )
+
+		elif aActionId == Action.ACTION_RELOAD_SKIN :
+			import pvr.gui.WindowMgr as WinMgr
+			WinMgr.GetInstance( ).ReloadWindow( WinMgr.GetInstance( ).mLastId, WinMgr.WIN_ID_NULLWINDOW )
 
 
 	def SetPipScreen( self ) :
@@ -182,11 +202,24 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 				return False
 
 
-	def UpdateVolume( self ) :
-		GuiLock2( True )
-		retVolume = xbmc.executehttpapi( 'getvolume' )
-		GuiLock2( False )
-		volume = int( retVolume[4:] )
+	def UpdateVolume( self, aVolumeStep = -1 ) :
+		if self.mPlatform.IsPrismCube( ) :
+			retVolume = xbmc.executehttpapi( 'getvolume' )
+			volume = int( retVolume[4:] )
+
+		else :
+			volume = self.mCommander.Player_GetVolume( )
+			if aVolumeStep != -1 :
+				if aVolumeStep == 0 :
+					if self.mCommander.Player_GetMute( ) :
+						self.mCommander.Player_SetMute( False )
+						return
+					else :
+						volume = aVolumeStep
+
+				else :
+					volume += aVolumeStep / 2
+
 		LOG_TRACE( 'GET VOLUME=%d' %volume )
 
 		if volume > MAX_VOLUME :
@@ -209,6 +242,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 	def CheckMediaCenter( self ) :
 		if self.mStartMediaCenter == True :
 			self.mCommander.AppMediaPlayer_Control( 0 )
+
 			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
 			self.UpdateVolume( )
 
@@ -218,6 +252,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 			if iChannel :
 				self.mDataCache.Channel_InvalidateCurrent( )
 				self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
+
 
 		#do not execute only nullwindow 
 		if self.GetName( ) != 'NullWindow' :

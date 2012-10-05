@@ -238,10 +238,6 @@ class LivePlate( LivePlateWindow ) :
 					self.mZappingMode = self.mDataCache.Zappingmode_GetCurrent( )
 					self.ChannelTune( INIT_CHANNEL )
 
-		#test
-		elif id == 13: #'x'
-			LOG_TRACE( 'cwd[%s]'% xbmc.getLanguage( ) )
-
 
 	def onClick( self, aControlId ) :
 		if aControlId == E_CONTROL_ID_BUTTON_MUTE :
@@ -755,26 +751,13 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def ShowDialog( self, aFocusId, aVisible = False ) :
-		msg1 = ''
-		msg2 = ''
-
 		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
-			msg1 = 'Teletext'
-			msg2 = 'test'
-
-			"""
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
-			dialog.SetDefaultProperty( 'test list', ['test1','test2','test3'] )
-			dialog.doModal( )
-			tempList = dialog.GetSelectedList( )
-			LOG_TRACE('------------dialog list[%s]'% tempList )
-
-			#xbmcgui.Dialog().select( 'CHANNEL LIST', ['test1','test2'] )
-			"""
+			if not self.mPlatform.IsPrismCube( ) :
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% self.mPlatform.GetName( ) )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
-			msg1 = 'Subtitle'
-			msg2 = 'test'
+			if not self.mPlatform.IsPrismCube( ) :
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% self.mPlatform.GetName( ) )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
 			if self.mCurrentEPG and self.mCurrentEPG.mError == 0 :

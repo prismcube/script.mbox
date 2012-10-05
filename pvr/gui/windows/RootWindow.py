@@ -10,11 +10,13 @@ class RootWindow( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
+		LOG_TRACE('LAEL98 TEST self.mInitialized' )
+		print 'self.mInitialized=%s' %self.mInitialized
 		if self.mInitialized == False :
 			if E_SUPPROT_HBBTV == True :
 				self.mCommander.AppHBBTV_Ready( 0 )
 			self.SendLocalOffsetToXBMC( )
-
+			self.mInitialized = True
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).doModal( )
 			
 			"""
@@ -23,7 +25,7 @@ class RootWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).doModal( )
 			"""
 			
-			self.mInitialized = True
+
 			self.mEventBus.Register( self )
 		else :
 			WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).doModal( )
