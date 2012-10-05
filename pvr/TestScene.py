@@ -46,7 +46,7 @@ def test2():
 def test3():
 	testScene =[
 		#live
-		[ key.VKEY_INFO, 10],
+		[ key.VKEY_INFO, 3],
 		[ key.VKEY_BACK, 5]
 	]
 	return testScene
