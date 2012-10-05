@@ -138,6 +138,8 @@ class DialogSetAudioVideo( SettingDialog ) :
 	def SetProperty( self ) : 
 		if self.mMode == CONTEXT_ACTION_VIDEO_SETTING :
 			self.ControlSelect( )
+			if self.mSelectIdx == E_DialogSpinEx01 :
+				self.mDataCache.Frontdisplay_HdmiFormat( )
 
 		elif self.mMode == CONTEXT_ACTION_AUDIO_SETTING :
 			idx = self.GetSelectedIndex( E_DialogSpinEx01 )
@@ -166,13 +168,6 @@ class DialogSetAudioVideo( SettingDialog ) :
 					self.mAudioTrack.append( label )
 
 
-	def SetFrontHDMI( self ) :
-		if self.mMode != CONTEXT_ACTION_VIDEO_SETTING :
-			return
-
-		self.mDataCache.Frontdisplay_HdmiFormat( )
-
-
 	def RestartAsyncSet( self ) :
 		self.StopAsyncSet( )
 		self.StartAsyncSet( )
@@ -198,6 +193,5 @@ class DialogSetAudioVideo( SettingDialog ) :
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
 		self.ResetAllControl( )
-		self.SetFrontHDMI( )
 		self.CloseDialog( )
 

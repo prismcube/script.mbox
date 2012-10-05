@@ -301,6 +301,11 @@ class Configure( SettingWindow ) :
 				ResetHash( )
 				self.mDataCache.Channel_ReLoad( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
+
+		elif selectedId == E_HDMI_SETTING and groupId == E_SpinEx01 :
+			self.ControlSelect( )
+			self.mDataCache.Frontdisplay_HdmiFormat( )
+
 		else :
 			self.ControlSelect( )
 
