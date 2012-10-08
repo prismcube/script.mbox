@@ -137,7 +137,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>7</posy>
-						<width>30</width>
+						<width>40</width>
 						<height>30</height>
 						<texture>OverlayLocked.png</texture>
 						<visible>substring(ListItem.Property(iLock),true)</visible>
@@ -249,7 +249,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>7</posy>
-						<width>30</width>
+						<width>40</width>
 						<height>30</height>
 						<texture>OverlayLocked.png</texture>
 						<visible>substring(ListItem.Property(iLock),true)</visible>
@@ -479,7 +479,7 @@
 					<control type="image">
 						<posx>0</posx>
 						<posy>75</posy>
-						<width>30</width>
+						<width>40</width>
 						<height>30</height>
 						<texture>OverlayLocked.png</texture>
 						<description>lock</description>
