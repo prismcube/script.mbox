@@ -767,6 +767,7 @@ class DataCacheMgr( object ) :
 					ret = True
 
 		channel = self.Channel_GetCurrent( not ret )
+		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, channel.mIsHD )
 		self.Frontdisplay_SetMessage( channel.mName )
 		return ret
 
@@ -782,6 +783,7 @@ class DataCacheMgr( object ) :
 				ret = True
 
 		channel = self.Channel_GetCurrent( )
+		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, channel.mIsHD )
 		self.Frontdisplay_SetMessage( channel.mName )
 		return ret
 
@@ -1023,12 +1025,7 @@ class DataCacheMgr( object ) :
 		iEPG = self.mCommander.Epgevent_GetPresent( )
 		if iEPG == None or iEPG.mError != 0 :
 			iEPG = None
-			iconHd = False
 
-		else :
-			iconHd = iEPG.mHasHDVideo
-
-		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iconHd )
 		return iEPG
 
 
@@ -1543,7 +1540,6 @@ class DataCacheMgr( object ) :
 
 
 	def Frontdisplay_SetMessage( self, aName ) :
-		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, False )
 		self.mCommander.Frontdisplay_SetMessage( aName )
 
 
@@ -1551,28 +1547,18 @@ class DataCacheMgr( object ) :
 		self.mCommander.Frontdisplay_SetIcon( aIconIndex, aOnOff )
 
 
-	def Frontdisplay_HdmiFormat( self, aIcon = None ) :
+	def Frontdisplay_Resolution( self, aResolution = None ) :
 		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_1080i, False )
 		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_1080p, False )
 		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_720p, False )
 
-		#LOG_TRACE('---------1.Front hdmi[%s]'% aIcon )
-		if aIcon == -1 :
-			return
+		mIsHD = False
+		if aResolution == ElisEnum.E_ICON_1080i or aResolution == ElisEnum.E_ICON_720p :
+			mIsHD = True
+			self.Frontdisplay_SetIcon( aResolution, True )
 
-		elif aIcon == None :
-			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
-			if hdmiFormat == 'Automatic' :
-				return
-
-			aIcon = ElisEnum.E_ICON_1080i
-			if hdmiFormat == '720p' :
-				aIcon = ElisEnum.E_ICON_720p
-			elif hdmiFormat == '576p' :
-				return
-
-		#LOG_TRACE('---------2.Front hdmi[%s]'% aIcon )
-		self.Frontdisplay_SetIcon( aIcon, True )
+		#LOG_TRACE('---------Front aResolution[%s] mIsHD[%s]'% ( aResolution, mIsHD ) )
+		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, mIsHD )
 
 
 	def Frontdisplay_PlayPause( self, aIcon = True ) :

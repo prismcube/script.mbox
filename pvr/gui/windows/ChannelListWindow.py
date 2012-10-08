@@ -417,6 +417,7 @@ class ChannelListWindow( BaseWindow ) :
 			iEPG = self.mDataCache.Epgevent_GetPresent( )
 			if iEPG and iEPG.mError == 0:
 				self.mNavEpg = iEPG
+				self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iEPG.mHasHDVideo )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -608,6 +609,7 @@ class ChannelListWindow( BaseWindow ) :
 
 							#LOG_TRACE( 'epg DIFFER' )
 							self.mNavEpg = iEPG
+							self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iEPG.mHasHDVideo )
 
 							#update label
 							self.ResetLabel( )

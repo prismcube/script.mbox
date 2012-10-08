@@ -301,6 +301,7 @@ class LivePlate( LivePlateWindow ) :
 				iEPG = self.mDataCache.Epgevent_GetPresent( )
 				if iEPG and iEPG.mError == 0 :
 					self.mCurrentEPG = iEPG
+					self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iEPG.mHasHDVideo )
 
 				self.UpdateChannelAndEPG( self.mCurrentEPG )
 
@@ -473,6 +474,7 @@ class LivePlate( LivePlateWindow ) :
 		   iEPG.mDuration != self.mCurrentEPG.mDuration :
 			#update label
 			self.mCurrentEPG = iEPG
+			self.mDataCache.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iEPG.mHasHDVideo )
 			#LOG_TRACE('epg DIFFER, event id[%s] current id[%s]'% (iEPG.mEventId, self.mCurrentEPG.mEventId) )
 			#LOG_TRACE('-----------------------update epg[%s]'% iEPG.mEventName)
 

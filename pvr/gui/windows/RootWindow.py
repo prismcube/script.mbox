@@ -72,9 +72,11 @@ class RootWindow( BaseWindow ) :
 		elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
 			if aEvent.mStatus == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).setProperty( 'Signal', 'Scramble' )
+				self.mDataCache.Frontdisplay_Resolution( )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL )
 			elif aEvent.mStatus == ElisEnum.E_CC_FAILED_NO_SIGNAL :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).setProperty( 'Signal', 'False' )
+				self.mDataCache.Frontdisplay_Resolution( )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_FAILED_NO_SIGNAL )
 			else :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).setProperty( 'Signal', 'True' )
@@ -87,16 +89,13 @@ class RootWindow( BaseWindow ) :
 			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
 			#LOG_TRACE('-----------------event[%s] height[%s] CurrentProperty[%s]'% ( aEvent.getName( ), aEvent.mVideoHeight, hdmiFormat ) )
 
-			if hdmiFormat != 'Automatic' :
-				return
-
 			iconIndex = ElisEnum.E_ICON_1080i
 			if aEvent.mVideoHeight <= 576 :
 				iconIndex = -1
 			elif aEvent.mVideoHeight <= 720 :
 				iconIndex = ElisEnum.E_ICON_720p
 
-			self.mDataCache.Frontdisplay_HdmiFormat( iconIndex )
+			self.mDataCache.Frontdisplay_Resolution( iconIndex )
 
 
 	def GetRecordingInfo( self ) :
