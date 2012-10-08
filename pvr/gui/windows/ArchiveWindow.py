@@ -145,9 +145,9 @@ class ArchiveWindow( BaseWindow ) :
 			if self.mMarkMode :
 				self.DoClearMark( )
 			else :
-				self.mDataCache.Player_Stop( )
-				self.mPlayingRecord	= None
-				self.mWin.setProperty( 'PvrPlay', 'False' )
+				#self.mDataCache.Player_Stop( )
+				#self.mPlayingRecord	= None
+				#self.mWin.setProperty( 'PvrPlay', 'False' )
 				self.Close( )
 				self.SetVideoRestore( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
