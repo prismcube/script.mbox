@@ -37,6 +37,10 @@ class FavoriteAddons( BaseWindow ) :
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Favorite Add-ons' ) )
 
+		if pvr.Platform.GetPlatform( ).IsPrismCube( ) == False :
+			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
+
 		self.mCtrlCommonList 	= self.getControl( LIST_ID_COMMOM_LIST )
 		self.mCtrlThumbnailList	= self.getControl( LIST_ID_COMMOM_THUMBNAIL )
 
@@ -63,12 +67,6 @@ class FavoriteAddons( BaseWindow ) :
 			if self.mSelectedIndex != -2 :
 				self.ShowContextMenu( )
 
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			self.mSelectedIndex = self.GetSelectedPosition( )
-			if self.mSelectedIndex != -1 :
-				self.SetMediaCenter( )
-				xbmc.executebuiltin( "runaddon(%s)" % self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' ) )
-
 
 	def onClick( self, aControlId ) :
 		if aControlId == BUTTON_ID_VIEW_MODE :	
@@ -93,6 +91,12 @@ class FavoriteAddons( BaseWindow ) :
 		elif aControlId == RADIIOBUTTON_ID_EXTRA :
 			pass
 
+		elif aControlId == LIST_ID_COMMOM_LIST or aControlId == LIST_ID_COMMOM_THUMBNAIL :
+			self.mSelectedIndex = self.GetSelectedPosition( )
+			if self.mSelectedIndex != -1 :
+				self.SetMediaCenter( )
+				xbmc.executebuiltin( "runaddon(%s)" % self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' ) )
+
 
 	def onFocus( self, aControlId ) :
 		pass
@@ -102,12 +106,10 @@ class FavoriteAddons( BaseWindow ) :
 		self.mFavoriteAddonsIdList = []
 		tmpList = xbmc.executehttpapi( "getfavourites()" )
 		if tmpList == '<li>' :
-			print 'dhkim test Non Fav'
 			self.mCtrlCommonList.reset( )
 			self.mCtrlThumbnailList.reset( )
 
 		else :
-			print 'dhkim test exist Fav'
 			tmpList = tmpList[4:].split( ':' )
 			if tmpList and len( tmpList ) > 0 :
 				for i in range( len( tmpList ) ) :
@@ -184,7 +186,6 @@ class FavoriteAddons( BaseWindow ) :
 				ret = dialog.select( MR_LANG( 'Select Addon' ), addonList )
 				if ret >= 0 :
 					ret1 = xbmc.executehttpapi( "addfavourite(%s)" % addonList[ret] )
-					print 'dhkim test add fav = %s' % ret1
 					self.UpdateListItem( )
 
 		elif aContextAction == CONTEXT_DELETE_FAVORITE :
@@ -193,11 +194,9 @@ class FavoriteAddons( BaseWindow ) :
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				ret = xbmc.executehttpapi( "removefavourite(%s)" % self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' ) )
-				print 'dhkim test delete fav = %s' % ret
 				self.UpdateListItem( )
 
 		elif aContextAction == CONTEXT_RUN_FAVORITE :
-			print 'dhkim run %s' % self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' )
 			self.SetMediaCenter( )
 			xbmc.executebuiltin( "runaddon(%s)" % self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' ) )
 			
@@ -208,13 +207,11 @@ class FavoriteAddons( BaseWindow ) :
 	def GetSelectedPosition( self ) :
 		position  = -1
 
-		print 'dhkim test focus id = %s' % self.GetFocusId( )
-
 		if self.GetFocusId( ) == LIST_ID_COMMOM_LIST or self.GetFocusId( ) == LIST_ID_COMMOM_THUMBNAIL :
 			if self.mViewMode == E_VIEW_MODE_LIST :
-				position = self.mCtrlCommonList.getSelectedPosition( )		
+				position = self.mCtrlCommonList.getSelectedPosition( )
 			elif self.mViewMode == E_VIEW_MODE_THUMBNAIL :
-				position = self.mCtrlThumbnailList.getSelectedPosition( )				
+				position = self.mCtrlThumbnailList.getSelectedPosition( )
 			else :
 				position = -1
 		else :
