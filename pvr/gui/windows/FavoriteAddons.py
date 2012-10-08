@@ -48,6 +48,11 @@ class FavoriteAddons( BaseWindow ) :
 		self.UpdateAscending( )
 		self.UpdateListItem( )
 
+		fav1 = xbmc.executehttpapi( "getaddons()" )
+		print 'dhkim test getaddons = %s' % fav1
+		fav2 = xbmc.executehttpapi( "getfavourites()" )
+		print 'dhkim test getfavourites = %s' % fav2
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
