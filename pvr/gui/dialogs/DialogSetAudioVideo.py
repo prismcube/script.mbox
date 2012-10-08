@@ -138,6 +138,8 @@ class DialogSetAudioVideo( SettingDialog ) :
 	def SetProperty( self ) : 
 		if self.mMode == CONTEXT_ACTION_VIDEO_SETTING :
 			self.ControlSelect( )
+			if self.mSelectIdx == E_DialogSpinEx01 :
+				self.mDataCache.Frontdisplay_HdmiFormat( )
 
 		elif self.mMode == CONTEXT_ACTION_AUDIO_SETTING :
 			idx = self.GetSelectedIndex( E_DialogSpinEx01 )

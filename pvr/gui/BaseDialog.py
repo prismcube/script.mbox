@@ -4,6 +4,7 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 from pvr.gui.BaseWindow import Action
 from pvr.Util import RunThread, GuiLock, GuiLock2
+import pvr.Platform 
 
 
 class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
@@ -18,6 +19,7 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
+		self.mPlatform = pvr.Platform.GetPlatform( )
 		
 
 	@classmethod
@@ -49,19 +51,34 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 	def GlobalAction( self, aActionId ) :
 	
 		if aActionId == Action.ACTION_MUTE:
-			self.UpdateVolume( )
+			self.UpdateVolume( 0 )
 
 		elif aActionId == Action.ACTION_VOLUME_UP:
-			self.UpdateVolume( )
+			self.UpdateVolume( VOLUME_STEP )
 
 		elif aActionId == Action.ACTION_VOLUME_DOWN:
-			self.UpdateVolume( )		
+			self.UpdateVolume( -VOLUME_STEP )		
 
 
 	@GuiLock
-	def UpdateVolume( self ) :
-		retVolume = xbmc.executehttpapi( "getvolume()" )
-		volume = int( retVolume[4:] )
+	def UpdateVolume( self, aVolumeStep = -1 ) :
+		if self.mPlatform.IsPrismCube( ) :
+			retVolume = xbmc.executehttpapi( 'getvolume' )
+			volume = int( retVolume[4:] )
+
+		else :
+			volume = self.mCommander.Player_GetVolume( )
+			if aVolumeStep != -1 :
+				if aVolumeStep == 0 :
+					if self.mCommander.Player_GetMute( ) :
+						self.mCommander.Player_SetMute( False )
+						return
+					else :
+						volume = aVolumeStep
+
+				else :
+					volume += aVolumeStep / 2
+
 		LOG_TRACE( 'GET VOLUME=%d' %volume )
 
 		if volume > MAX_VOLUME :

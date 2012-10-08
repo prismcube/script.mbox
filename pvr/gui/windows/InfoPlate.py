@@ -167,9 +167,6 @@ class InfoPlate( LivePlateWindow ) :
 		elif aControlId >= E_CONTROL_ID_BUTTON_DESCRIPTION_INFO and aControlId <= E_CONTROL_ID_BUTTON_BOOKMARK :
 			self.ShowDialog( aControlId )
 
-			if aControlId == E_CONTROL_ID_BUTTON_TELETEXT :
-				self.GlobalAction( Action.ACTION_MUTE )
-
 
 	def onFocus( self, aControlId ) :
 		pass
@@ -179,11 +176,13 @@ class InfoPlate( LivePlateWindow ) :
 		self.ShowRecordingInfo( )
 		self.mPlayingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
 		if self.mPlayingRecord :
-			self.mCurrentEPG = ElisIEPGEvent()
-			self.mCurrentEPG.mEventName = self.mPlayingRecord.mRecordName
-			self.mCurrentEPG.mEventDescription = ''
-			self.mCurrentEPG.mStartTime = self.mPlayingRecord.mStartTime - self.mDataCache.Datetime_GetLocalOffset( )
-			self.mCurrentEPG.mDuration = self.mPlayingRecord.mDuration
+			self.mCurrentEPG = self.mDataCache.RecordItem_GetEventInfo( self.mPlayingRecord.mRecordKey )
+			if self.mCurrentEPG == None or self.mCurrentEPG.mError != 0 :
+				self.mCurrentEPG = ElisIEPGEvent()
+				self.mCurrentEPG.mEventName = self.mPlayingRecord.mRecordName
+				self.mCurrentEPG.mEventDescription = ''
+				self.mCurrentEPG.mStartTime = self.mPlayingRecord.mStartTime - self.mDataCache.Datetime_GetLocalOffset( )
+				self.mCurrentEPG.mDuration = self.mPlayingRecord.mDuration
 
 		self.InitControlGUI( )
 		self.UpdateChannelAndEPG( )
@@ -412,24 +411,23 @@ class InfoPlate( LivePlateWindow ) :
 
 
 	def ShowDialog( self, aFocusId ) :
-		msg1 = ''
-		msg2 = ''
+		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
+			if not self.mPlatform.IsPrismCube( ) :
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% self.mPlatform.GetName( ) )
+				return
 
-		if aFocusId == E_CONTROL_ID_BUTTON_MUTE :
-			msg1 = 'Mute'
-			msg2 = 'test'
-
-		elif aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
-			msg1 = 'Teletext'
-			msg2 = 'test'
+			self.GlobalAction( Action.ACTION_MUTE )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
-			msg1 = 'Subtitle'
-			msg2 = 'test'
+			if not self.mPlatform.IsPrismCube( ) :
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% self.mPlatform.GetName( ) )
+				return
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_BOOKMARK :
-			msg1 = 'Bookmark'
-			msg2 = 'test'
+			if not self.mPlatform.IsPrismCube( ) :
+				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% self.mPlatform.GetName( ) )
+				return
+
 			self.BookMarkContext( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :

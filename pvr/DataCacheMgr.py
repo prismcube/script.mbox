@@ -3,15 +3,18 @@ from decorator import decorator
 from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
+import pvr.Platform
 
-if sys.platform == 'win32' :
-	from pvr.gui.GuiConfig import *
-	gFlagUseDB = False
-else :
+if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
 	from pvr.IpParser import *
 
-print 'mBox----------------use db[%s]'% gFlagUseDB
+else :
+	from pvr.gui.GuiConfig import *
+	gFlagUseDB = False
+
+
+print 'mBox----------------use db[%s] platform[%s]' %( gFlagUseDB, pvr.Platform.GetPlatform( ).GetName( ) )
 
 SUPPORT_EPG_DATABASE     = gFlagUseDB
 SUPPORT_CHANNEL_DATABASE = gFlagUseDB
@@ -193,16 +196,17 @@ class DataCacheMgr( object ) :
 		self.LoadTime( )
 
 		# SetPropertyNetworkAddress
-		LoadNetworkType( )
-		dev = GetCurrentNetworkType( )
-		if dev == NETWORK_ETHERNET :
-			addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( gEthernetDevName )
-		elif dev == NETWORK_WIRELESS :
-			wifi = WirelessParser( )
-			addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( wifi.GetWifidevice( ) )
-		else :
-			LOG_ERR( 'Error Network Setting' )
-		SetIpAddressProperty( addressIp, addressMask, addressGateway, addressNameServer )
+		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :		
+			LoadNetworkType( )
+			dev = GetCurrentNetworkType( )
+			if dev == NETWORK_ETHERNET :
+				addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( gEthernetDevName )
+			elif dev == NETWORK_WIRELESS :
+				wifi = WirelessParser( )
+				addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( wifi.GetWifidevice( ) )
+			else :
+				LOG_ERR( 'Error Network Setting' )
+			SetIpAddressProperty( addressIp, addressMask, addressGateway, addressNameServer )
 
 
 	def LoadVolumeToSetGUI( self ) :
@@ -728,7 +732,7 @@ class DataCacheMgr( object ) :
 			return self.mAllChannelList
 
 		else :
-			return self.mCommander.Channel_GetList( aType, aMode, aSort )
+			return self.mCommander.Channel_GetList( aServiceType, ElisEnum.E_MODE_ALL, ElisEnum.E_SORT_BY_NUMBER )
 
 		LOG_TRACE( 'Reload AllChannels')
 		return None
@@ -1015,10 +1019,16 @@ class DataCacheMgr( object ) :
 
 	def Epgevent_GetPresent( self ) :
 		iEPG = None
+		iconHd = True
 		iEPG = self.mCommander.Epgevent_GetPresent( )
 		if iEPG == None or iEPG.mError != 0 :
 			iEPG = None
+			iconHd = False
 
+		else :
+			iconHd = iEPG.mHasHDVideo
+
+		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, iconHd )
 		return iEPG
 
 
@@ -1533,11 +1543,36 @@ class DataCacheMgr( object ) :
 
 
 	def Frontdisplay_SetMessage( self, aName ) :
+		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_HD, False )
 		self.mCommander.Frontdisplay_SetMessage( aName )
 
 
 	def Frontdisplay_SetIcon( self, aIconIndex, aOnOff ) :
 		self.mCommander.Frontdisplay_SetIcon( aIconIndex, aOnOff )
+
+
+	def Frontdisplay_HdmiFormat( self, aIcon = None ) :
+		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_1080i, False )
+		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_1080p, False )
+		self.Frontdisplay_SetIcon( ElisEnum.E_ICON_720p, False )
+
+		#LOG_TRACE('---------1.Front hdmi[%s]'% aIcon )
+		if aIcon == -1 :
+			return
+
+		elif aIcon == None :
+			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+			if hdmiFormat == 'Automatic' :
+				return
+
+			aIcon = ElisEnum.E_ICON_1080i
+			if hdmiFormat == '720p' :
+				aIcon = ElisEnum.E_ICON_720p
+			elif hdmiFormat == '576p' :
+				return
+
+		#LOG_TRACE('---------2.Front hdmi[%s]'% aIcon )
+		self.Frontdisplay_SetIcon( aIcon, True )
 
 
 	def Frontdisplay_PlayPause( self, aIcon = True ) :
@@ -1632,4 +1667,5 @@ class DataCacheMgr( object ) :
 
 	def GetLockedState( self ) :
 		return self.mLockStatus
+
 

@@ -11,7 +11,7 @@ from gui.BaseWindow import BaseWindow
 from inspect import currentframe
 from elementtree import ElementTree
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-
+import pvr.Platform
 
 WIN_ID_ROOTWINDOW 					= 0
 WIN_ID_NULLWINDOW 					= 1
@@ -72,7 +72,6 @@ class WindowMgr( object ) :
 	def __init__( self ) :
 		#print 'check %d %s' %( currentframe().f_lineno, currentframe().f_code.co_filename )
 
-		import pvr.Platform 
 		self.mScriptDir = pvr.Platform.GetPlatform( ).GetScriptDir( )
 		print 'scriptDir= %s' %self.mScriptDir
 
@@ -314,14 +313,40 @@ class WindowMgr( object ) :
 		self.CreateAllWindows( )
 
 
+	def ReloadWindow( self, aWindowId = WIN_ID_LIVE_PLATE, aParentId = WIN_ID_NULLWINDOW ) :
+		LOG_TRACE('-----------------------------last[%s] reload[%s]'% (self.mLastId, aWindowId) )
+
+		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
+			self.CopyIncludeFile( )
+			xbmc.executebuiltin('XBMC.ReloadSkin()')		
+
+		else :
+			for id in self.mWindows :
+				self.mWindows[id].close( )
+
+			self.CheckSkinChange( )
+			self.CopyIncludeFile( )
+			self.AddDefaultFont( )		
+			xbmc.executebuiltin('XBMC.ReloadSkin()')		
+			self.ResetAllWindows( )
+			#self.RootWindow( )
+			self.ShowWindow( aWindowId, aParentId )
+
+
 	def CheckGUISettings( self ) :
 		self.LoadSkinPosition( )
 		if self.CheckSkinChange( ) or self.CheckFontChange( ) :
+			if not pvr.Platform.GetPlatform( ).IsPrismCube( ) :
+				self.ReloadWindow( self.mLastId, WIN_ID_NULLWINDOW )
+				LOG_TRACE( '----------------------- reload for platform[%s]'% pvr.Platform.GetPlatform( ).GetName( ) )
+				return True
+
 			LOG_TRACE( '----------------- Reset -------------- #0' )		
 			self.CopyIncludeFile( )
 			LOG_TRACE( '----------------- Reset -------------- #1' )		
 			self.AddDefaultFont( )
 			LOG_TRACE( '----------------- Reset -------------- #3' )
+
 			return True
 
 		return False
@@ -343,8 +368,10 @@ class WindowMgr( object ) :
 
 
 	def LoadSkinPosition( self ) :
+		if not pvr.Platform.GetPlatform( ).IsPrismCube( ) :
+			return
+	
 		if E_ADD_XBMC_HTTP_FUNCTION == True :
-			import pvr.Platform
 			from pvr.GuiHelper import GetInstanceSkinPosition
 	 		LOG_TRACE( '--------------')		
 			strResolution = xbmc.executehttpapi( "getresolution( )" )
@@ -372,7 +399,6 @@ class WindowMgr( object ) :
 		else :		
 
 			try :
-				import pvr.Platform
 				from pvr.GuiHelper import GetInstanceSkinPosition
 				from BeautifulSoup import BeautifulSoup
 				userDatePath	= pvr.Platform.GetPlatform( ).GetUserDataDir( ) + 'guisettings.xml'
@@ -395,15 +421,10 @@ class WindowMgr( object ) :
 
 
 	def CopyIncludeFile( self ) :
-		import pvr.Platform 
-
 		skinName = self.mSkinName
-
 		print 'skinName=%s' %skinName
 
-		import pvr.Platform 
 		self.mScriptDir = pvr.Platform.GetPlatform().GetScriptDir( )
-
 		
 		if skinName.lower() == 'default' or skinName.lower() == 'skin.confluence' :
 			mboxIncludePath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'skins', 'Default', '720p', 'mbox_includes.xml' )

@@ -1,5 +1,6 @@
 import xbmcaddon, sys
 from ElisEnum import ElisEnum
+import pvr.Platform
 
 gSettings = xbmcaddon.Addon( id="script.mbox" )
 
@@ -339,22 +340,22 @@ class CacheMRLanguage( object ) :
 
 	def StringTranslate( self, string = None ) :
 		strId = gMRStringHash.get( string, None )
-		print 'strId[%s] string[%s]'% (strId, string)
+		#print 'strId[%s] string[%s]'% (strId, string)
 		if strId :
 			xmlString = Strings( strId )
-			print 'xml_string[%s] parse[%s]'% (string, xmlString)
-
-			if xmlString == "" or xmlString == None :
-				LOG_ERR( 'Can not find string' )
-				return string
 
 			try :
-				#xmlString = repr(xmlString)
-				string = xmlString.encode( self.mDefaultCodec )
-				#if string[0] == "'" :
-				#	string = string[1:len(string)-1]
-			except Exception, ex :
-				print 'except[%s]'% ex
+				#print 'xml_string[%s] parse[%s]'% (string, xmlString)
+				if xmlString == "" or xmlString == None :
+					LOG_ERR( 'Can not find string' )
+					return string
+
+				string = xmlString
+				if not pvr.Platform.GetPlatform( ).IsPrismCube( ) :
+					string = xmlString.encode( 'utf-8' )
+
+			except Exception, e :
+				print 'except[%s]'% e
 
 		#print 'strId[%s]trans[%s]'% (strId, string)
 		return string

@@ -10,11 +10,13 @@ class RootWindow( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
+		LOG_TRACE('LAEL98 TEST self.mInitialized' )
+		print 'self.mInitialized=%s' %self.mInitialized
 		if self.mInitialized == False :
 			if E_SUPPROT_HBBTV == True :
 				self.mCommander.AppHBBTV_Ready( 0 )
 			self.SendLocalOffsetToXBMC( )
-
+			self.mInitialized = True
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).doModal( )
 			
 			"""
@@ -23,7 +25,7 @@ class RootWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).doModal( )
 			"""
 			
-			self.mInitialized = True
+
 			self.mEventBus.Register( self )
 		else :
 			WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).doModal( )
@@ -80,6 +82,21 @@ class RootWindow( BaseWindow ) :
 
 			#if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
 			#	WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
+
+		elif aEvent.getName( ) == ElisEventVideoIdentified( ).getName( ) :
+			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+			#LOG_TRACE('-----------------event[%s] height[%s] CurrentProperty[%s]'% ( aEvent.getName( ), aEvent.mVideoHeight, hdmiFormat ) )
+
+			if hdmiFormat != 'Automatic' :
+				return
+
+			iconIndex = ElisEnum.E_ICON_1080i
+			if aEvent.mVideoHeight <= 576 :
+				iconIndex = -1
+			elif aEvent.mVideoHeight <= 720 :
+				iconIndex = ElisEnum.E_ICON_720p
+
+			self.mDataCache.Frontdisplay_HdmiFormat( iconIndex )
 
 
 	def GetRecordingInfo( self ) :
