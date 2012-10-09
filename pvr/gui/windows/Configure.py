@@ -17,6 +17,8 @@ E_ETC					= 9
 E_ETHERNET				= 100
 E_WIFI					= 101
 
+TIME_SEC_CHECK_NET_STATUS = 3
+
 
 class Configure( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
@@ -64,6 +66,8 @@ class Configure( SettingWindow ) :
 		self.mCurrentSsid		= 'None'
 		self.mEncryptType		= ENCRYPT_TYPE_WEP
 		self.mPassWord 			= None
+
+		self.mCheckEndThread	= False
 
 
 	def onInit( self ) :
@@ -117,12 +121,14 @@ class Configure( SettingWindow ) :
 
 		self.mVisibleParental = False
 		self.mReLoadIp = False
+
 		self.SetListControl( )
 		self.mInitialized = True
 		self.mPrevListItemID = -1
 
 
 	def Close( self ) :
+		self.mCheckEndThread = False
 		self.mInitialized = False
 		self.ResetAllControl( )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( '' )
@@ -150,6 +156,7 @@ class Configure( SettingWindow ) :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
 				self.mVisibleParental = False
+				self.mCheckEndThread = False
 				if self.mPlatform.IsPrismCube( ) :
 					self.mUseNetworkType = GetCurrentNetworkType( )
 				self.SetListControl( )
@@ -161,6 +168,7 @@ class Configure( SettingWindow ) :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
 				self.mVisibleParental = False
+				self.mCheckEndThread = False
 				if self.mPlatform.IsPrismCube( ) :
 					self.mUseNetworkType = GetCurrentNetworkType( )
 				self.SetListControl( )
@@ -300,11 +308,11 @@ class Configure( SettingWindow ) :
 	 			from ElisProperty import ResetHash
 				ResetHash( )
 				self.mDataCache.Channel_ReLoad( )
+				self.mCheckEndThread = False
+				self.mInitialized = False
+				self.ResetAllControl( )
+				self.getControl( E_SETTING_DESCRIPTION ).setLabel( '' )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
-
-		#elif selectedId == E_HDMI_SETTING and groupId == E_SpinEx01 :
-		#	self.ControlSelect( )
-		#	self.mDataCache.Frontdisplay_Resolution( )
 
 		else :
 			self.ControlSelect( )
@@ -328,6 +336,7 @@ class Configure( SettingWindow ) :
 					self.mPrevListItemID =selectedId
 					self.mReLoadIp = True
 					self.mVisibleParental = False
+					self.mCheckEndThread = False
 				self.SetListControl( )
 
 
@@ -475,6 +484,8 @@ class Configure( SettingWindow ) :
 				self.InitControl( )
 				time.sleep( 0.2 )
 				self.DisableControl( E_ETHERNET )
+				self.mCheckEndThread = False
+				self.CheckNetworkStatus( )
 				self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 
 			if self.GetGroupId( self.getFocusId( ) ) != E_SpinEx05 :
@@ -912,3 +923,10 @@ class Configure( SettingWindow ) :
 		self.getControl( E_SpinEx03 + 3 ).selectItem( ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetPropIndex( ) )
 		self.mCommander.Datetime_SetLocalOffset( self.mSavedLocalOffset )
 
+
+	@RunThread
+	def CheckNetworkStatus( self ) :
+		while( self.mCheckEndThread ) :
+			state = xbmc.executehttpapi( "getinternetstate()" )
+			print 'dhkim test stat = %s' % state[4:]
+			time.sleep( TIME_SEC_CHECK_NET_STATUS )
