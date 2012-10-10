@@ -30,6 +30,7 @@ class Configure( SettingWindow ) :
 		self.mLastFocused 		= E_SUBMENU_LIST_ID
 		self.mPrevListItemID 	= -1
 
+		self.mRunningNetwork	= False
 		self.mUseNetworkType	= NETWORK_ETHERNET
 
 		self.mSavedNetworkType	= NET_DHCP
@@ -67,7 +68,8 @@ class Configure( SettingWindow ) :
 		self.mEncryptType		= ENCRYPT_TYPE_WEP
 		self.mPassWord 			= None
 
-		self.mCheckEndThread	= False
+		self.mCheckNetworkTimer	= None
+		self.mStateNetLink		= 'Busy'
 
 
 	def onInit( self ) :
@@ -128,7 +130,7 @@ class Configure( SettingWindow ) :
 
 
 	def Close( self ) :
-		self.mCheckEndThread = False
+		self.StopCheckNetworkTimer( )
 		self.mInitialized = False
 		self.ResetAllControl( )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( '' )
@@ -156,7 +158,7 @@ class Configure( SettingWindow ) :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
 				self.mVisibleParental = False
-				self.mCheckEndThread = False
+				self.StopCheckNetworkTimer( )
 				if self.mPlatform.IsPrismCube( ) :
 					self.mUseNetworkType = GetCurrentNetworkType( )
 				self.SetListControl( )
@@ -168,7 +170,7 @@ class Configure( SettingWindow ) :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
 				self.mVisibleParental = False
-				self.mCheckEndThread = False
+				self.StopCheckNetworkTimer( )
 				if self.mPlatform.IsPrismCube( ) :
 					self.mUseNetworkType = GetCurrentNetworkType( )
 				self.SetListControl( )
@@ -214,7 +216,7 @@ class Configure( SettingWindow ) :
 			return
 
 		elif selectedId == E_NETWORK_SETTING :
-			if self.mPlatform.IsPrismCube( ) :
+			if not self.mPlatform.IsPrismCube( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not support Win32' ) )
 	 			dialog.doModal( )
@@ -308,7 +310,6 @@ class Configure( SettingWindow ) :
 	 			from ElisProperty import ResetHash
 				ResetHash( )
 				self.mDataCache.Channel_ReLoad( )
-				self.mCheckEndThread = False
 				self.mInitialized = False
 				self.ResetAllControl( )
 				self.getControl( E_SETTING_DESCRIPTION ).setLabel( '' )
@@ -336,7 +337,7 @@ class Configure( SettingWindow ) :
 					self.mPrevListItemID =selectedId
 					self.mReLoadIp = True
 					self.mVisibleParental = False
-					self.mCheckEndThread = False
+					self.StopCheckNetworkTimer( )
 				self.SetListControl( )
 
 
@@ -357,7 +358,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx05, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
+			hideControlIds = [ E_SpinEx05, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -377,7 +378,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input03, E_Input04, E_Input05, E_Input06 ]
+			hideControlIds = [ E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
@@ -398,7 +399,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
+			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 			
 			self.InitControl( )
@@ -415,7 +416,7 @@ class Configure( SettingWindow ) :
 			self.SetEnableControls( visibleControlIds, True )
 			self.SetVisibleControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx04, E_SpinEx05,  E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
+			hideControlIds = [ E_SpinEx04, E_SpinEx05,  E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -433,7 +434,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
+			hideControlIds = [ E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -442,7 +443,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_NETWORK_SETTING :
 			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select Ethernet or Wireless for your network connection' ) )
-
+			self.AddInputControl( E_Input07, MR_LANG( 'Network Link' ), self.mStateNetLink, MR_LANG( 'Show network link status' ) )
 			if self.mUseNetworkType == NETWORK_WIRELESS :
 				self.AddInputControl( E_Input01, MR_LANG( 'Search AP' ), self.mCurrentSsid, MR_LANG( 'Search Access Points around your STB' ) )
 				self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Hidden SSID' ), USER_ENUM_LIST_ON_OFF, self.mUseHiddenId, MR_LANG( 'Enable hidden Subsystem Identification (SSID)' ) )
@@ -450,7 +451,7 @@ class Configure( SettingWindow ) :
 				self.AddInputControl( E_Input03, MR_LANG( 'Set Encryption Key' ), StringToHidden( self.mPassWord ), MR_LANG( 'Enter the encryption key for wireless connection' ) )
 				self.AddInputControl( E_Input04, MR_LANG( 'Apply' ), '', MR_LANG( 'Press the OK button to connect to the AP you have chosen' ) )
 
-				visibleControlIds = [ E_SpinEx01, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04 ]
+				visibleControlIds = [ E_SpinEx01, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input07 ]
 				self.SetVisibleControls( visibleControlIds, True )
 				self.SetEnableControls( visibleControlIds, True )
 
@@ -474,7 +475,7 @@ class Configure( SettingWindow ) :
 				self.AddInputControl( E_Input04, MR_LANG( 'DNS' ), self.mTempDns, MR_LANG( 'Enter the DNS server address' ) )
 				self.AddInputControl( E_Input05, MR_LANG( 'Apply') , '', MR_LANG( 'Press the OK button to save the IP address settings' ) )
 
-				visibleControlIds = [ E_SpinEx01, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
+				visibleControlIds = [ E_SpinEx01, E_SpinEx05, E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 				self.SetVisibleControls( visibleControlIds, True )
 				self.SetEnableControls( visibleControlIds, True )
 
@@ -484,10 +485,10 @@ class Configure( SettingWindow ) :
 				self.InitControl( )
 				time.sleep( 0.2 )
 				self.DisableControl( E_ETHERNET )
-				self.mCheckEndThread = False
-				self.CheckNetworkStatus( )
 				self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 
+			self.SetEnableControl( E_Input07, False )
+			self.StartCheckNetworkTimer( )
 			if self.GetGroupId( self.getFocusId( ) ) != E_SpinEx05 :
 				self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 
@@ -522,7 +523,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_Input05, E_Input06 ]
+			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -540,7 +541,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
+			hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -555,7 +556,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 , E_SpinEx05, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
+			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 , E_SpinEx05, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -574,7 +575,7 @@ class Configure( SettingWindow ) :
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06 ]
+			hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
@@ -729,7 +730,9 @@ class Configure( SettingWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Invalid IP address' ) )					
 					dialog.doModal( )
 					return
+			self.mRunningNetwork = True
 			self.ConnectEthernet( )
+			self.mRunningNetwork = False
 
 
 	def WifiSetting( self, aControlId ) :
@@ -739,12 +742,14 @@ class Configure( SettingWindow ) :
 			self.DisableControl( E_WIFI )
 
 		elif aControlId == E_Input01 :
+			self.mRunningNetwork = True
 			dev = self.mWireless.GetWifidevice( )
 			if dev == None :
 				time.sleep( 1.5 )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Devices not found' ) )
 				dialog.doModal( )
+				self.mRunningNetwork = False
 				return
 			self.ShowProgress( MR_LANG( 'Now search...' ), 15 )
 			apList = self.mWireless.ScanWifiAP( dev )
@@ -764,6 +769,7 @@ class Configure( SettingWindow ) :
 					self.mEncryptType = self.mWireless.ApInfoToEncrypt( apList[ret][2] )
 					self.SetControlLabel2String( E_Input01, self.mCurrentSsid )
 					self.DisableControl( E_WIFI )
+			self.mRunningNetwork = False
 
 		elif aControlId == E_Input02 :
 			self.mHiddenSsid = InputKeyboard( E_INPUT_KEYBOARD_TYPE_NO_HIDE, MR_LANG( 'Enter your SSID' ), self.mHiddenSsid, 30 )
@@ -790,7 +796,7 @@ class Configure( SettingWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'The password length is invalid' ) )
 				dialog.doModal( )
 				return
-
+			self.mRunningNetwork = True
 			self.ShowProgress( MR_LANG( 'Now connecting...' ), 30 )
 			ret1 = self.mWireless.WriteWpaSupplicant( self.mUseHiddenId, self.mHiddenSsid, self.mCurrentSsid, self.mEncryptType, self.mPassWord )
 			ret2 = self.mWireless.ConnectWifi( dev )
@@ -803,6 +809,7 @@ class Configure( SettingWindow ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'STB was unable to save the Wifi configuration' ) )
 				dialog.doModal( )
+			self.mRunningNetwork = False
 
 
 	def LoadWifi( self ) :
@@ -924,9 +931,39 @@ class Configure( SettingWindow ) :
 		self.mCommander.Datetime_SetLocalOffset( self.mSavedLocalOffset )
 
 
-	@RunThread
 	def CheckNetworkStatus( self ) :
-		while( self.mCheckEndThread ) :
-			state = xbmc.executehttpapi( "getinternetstate()" )
-			print 'dhkim test stat = %s' % state[4:]
-			time.sleep( TIME_SEC_CHECK_NET_STATUS )
+		self.mStateNetLink = xbmc.getInfoLabel( 'System.internetstate' )
+		LOG_TRACE( 'Network State = %s' % self.mStateNetLink )
+		if self.mCtrlLeftGroup.getSelectedPosition( ) == E_NETWORK_SETTING :
+			self.SetControlLabel2String( E_Input07, self.mStateNetLink )
+
+
+	def RestartCheckNetworkTimer( self ) :
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Restart' )
+		self.StopCheckNetworkTimer( )
+		self.StartCheckNetworkTimer( )
+
+
+	def StartCheckNetworkTimer( self ) :
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Start' )	
+		self.mCheckNetworkTimer = threading.Timer( TIME_SEC_CHECK_NET_STATUS, self.AsyncCheckNetworkTimer )
+		self.mCheckNetworkTimer.start( )
+	
+
+	def StopCheckNetworkTimer( self ) :
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )	
+		if self.mCheckNetworkTimer and self.mCheckNetworkTimer.isAlive( ) :
+			self.mCheckNetworkTimer.cancel( )
+			del self.mCheckNetworkTimer
+			
+		self.mCheckNetworkTimer = None
+
+
+	def AsyncCheckNetworkTimer( self ) :	
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )	
+		if self.mCheckNetworkTimer == None :
+			LOG_WARN( 'Check Network timer expired' )
+			return
+		if self.mRunningNetwork == False :
+			self.CheckNetworkStatus( )
+		self.RestartCheckNetworkTimer( )

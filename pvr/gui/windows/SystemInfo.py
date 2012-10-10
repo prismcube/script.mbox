@@ -25,7 +25,7 @@ PROGRESS_ID_HDD_SIZE_MEDIA		=	2702
 PROGRESS_ID_HDD_SIZE_PROGRAM	=	2703
 PROGRESS_ID_HDD_SIZE_RECORD		=	2704
 
-TIME_SEC_CHECK_HDD_TEMP			=	1
+TIME_SEC_CHECK_HDD_TEMP			=	3
 
 
 class SystemInfo( SettingWindow ) :
@@ -52,7 +52,7 @@ class SystemInfo( SettingWindow ) :
 		self.mCtrlProgressRecord		= None
 		
 		self.mGroupItems 				= []
-		self.mCheckEndThread			= False
+		self.mCheckHddTempTimer			= None
 		self.mLastFocused 				= E_SUBMENU_LIST_ID
 		self.mPrevListItemID 			= 0
 
@@ -92,8 +92,7 @@ class SystemInfo( SettingWindow ) :
 		position = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.mCtrlLeftGroup.selectItem( position )
 		
-		self.mCheckEndThread = True
-		self.ShowHDDTemperature( )
+		self.StartCheckHddTempTimer( )
 		
 		self.SetListControl( )
 		self.mInitialized = True
@@ -107,14 +106,16 @@ class SystemInfo( SettingWindow ) :
 		self.CheckHiddenAction( actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			pass
+			self.mInitialized = False
+			self.StopCheckHddTempTimer( )
+			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 
 		elif actionId == Action.ACTION_PARENT_DIR :
 			self.mInitialized = False
-			self.mCheckEndThread = False
+			self.StopCheckHddTempTimer( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
@@ -138,7 +139,7 @@ class SystemInfo( SettingWindow ) :
 				self.mCheckHiddenPattern1	= False
 				self.mCheckHiddenPattern2	= False
 				self.mCheckHiddenPattern3	= False
-				self.mCheckEndThread = False
+				self.StopCheckHddTempTimer( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_HIDDEN_TEST, WinMgr.WIN_ID_NULLWINDOW )
 				return
 			self.mCheckHiddenPattern3 = True
@@ -281,23 +282,21 @@ class SystemInfo( SettingWindow ) :
 		return size
 
 
-	@RunThread
 	def ShowHDDTemperature( self ) :
 		temperature = MR_LANG( 'Unknown' )
 		device = '/dev/sda'
 		cmd = 'hddtemp %s -n -q' % device
-		while( self.mCheckEndThread ) :
-			if self.mCtrlLeftGroup.getSelectedPosition( ) == E_HDD :
-				if self.CheckExistsDisk( ) :
-					temperature = Popen( cmd, shell=True, stdout=PIPE )
-					temperature = temperature.stdout.read( ).strip( )
-					if IsNumber( temperature ) == False :
-						temperature = MR_LANG( 'Unknown' )
-					LOG_TRACE( 'HDD Temperature = %s' % temperature )
-				else :
+
+		if self.mCtrlLeftGroup.getSelectedPosition( ) == E_HDD :
+			if self.CheckExistsDisk( ) :
+				temperature = Popen( cmd, shell=True, stdout=PIPE )
+				temperature = temperature.stdout.read( ).strip( )
+				if IsNumber( temperature ) == False :
 					temperature = MR_LANG( 'Unknown' )
-				self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : %s' ) % temperature )
-			time.sleep( TIME_SEC_CHECK_HDD_TEMP )
+				LOG_TRACE( 'HDD Temperature = %s' % temperature )
+			else :
+				temperature = MR_LANG( 'Unknown' )
+			self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : %s' ) % temperature )
 
 
 	def CheckExistsDisk( self ) :
@@ -312,4 +311,35 @@ class SystemInfo( SettingWindow ) :
 		else :
 			return False
 
+
+	def RestartCheckHddTempTimer( self ) :
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Restart' )
+		self.StopCheckHddTempTimer( )
+		self.StartCheckHddTempTimer( )
+
+
+	def StartCheckHddTempTimer( self ) :
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Start' )	
+		self.mCheckHddTempTimer = threading.Timer( TIME_SEC_CHECK_HDD_TEMP, self.AsyncCheckHddTempTimer )
+		self.mCheckHddTempTimer.start( )
+	
+
+	def StopCheckHddTempTimer( self ) :
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )	
+		if self.mCheckHddTempTimer and self.mCheckHddTempTimer.isAlive( ) :
+			self.mCheckHddTempTimer.cancel( )
+			del self.mCheckHddTempTimer
+			
+		self.mCheckHddTempTimer = None
+
+
+	def AsyncCheckHddTempTimer( self ) :	
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )	
+		if self.mCheckHddTempTimer == None :
+			LOG_WARN( 'Check Hdd Temp timer expired' )
+			return
+
+		if self.mCtrlLeftGroup.getSelectedPosition( ) == E_HDD :
+			self.ShowHDDTemperature( )
+		self.RestartCheckHddTempTimer( )
 
