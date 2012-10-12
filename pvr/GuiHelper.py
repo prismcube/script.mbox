@@ -1,6 +1,7 @@
 import xbmcaddon, sys
 from ElisEnum import ElisEnum
 import pvr.Platform
+from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 
 gSettings = xbmcaddon.Addon( id="script.mbox" )
 

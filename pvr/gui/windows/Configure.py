@@ -317,6 +317,20 @@ class Configure( SettingWindow ) :
 				self.getControl( E_SETTING_DESCRIPTION ).setLabel( '' )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 
+		elif selectedId == E_FORMAT_HDD :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO FORMAT TO YOUR HDD DRIVE?' ) )
+			dialog.doModal( )
+
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				if groupId == E_Input01 :
+					self.mCommander.Format_Media_Archive( )
+				elif groupId == E_Input02 :
+					self.mCommander.Format_Record_Archive( )
+				elif groupId == E_Input03 :
+					pass
+					#self.mCommander.Make_Dedicated_HDD( )
+
 		else :
 			self.ControlSelect( )
 
@@ -350,7 +364,7 @@ class Configure( SettingWindow ) :
 
 		if selectedId == E_LANGUAGE :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), MR_LANG( WinMgr.GetInstance( ).GetCurrentLanguage( ) ), MR_LANG( 'Select the language you want the menu to be in' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), WinMgr.GetInstance( ).GetCurrentLanguage( ), MR_LANG( 'Select the language you want the menu to be in' ) )
 			self.AddEnumControl( E_SpinEx01, 'Audio Language', None, MR_LANG( 'Select the language that you wish to listen to' ) )
 			self.AddEnumControl( E_SpinEx02, 'Subtitle Language', None, MR_LANG( 'Select the language for the subtitle to be in' ) )
 			self.AddEnumControl( E_SpinEx03, 'Secondary Subtitle Language', None, MR_LANG( 'Select the language for the secondary subtitle to be in' ) )
@@ -536,14 +550,15 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FORMAT_HDD :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Disk Format Type', MR_LANG( 'File System' ), MR_LANG( 'Select a disk file system format for your hard drive' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Start Format' ), '', MR_LANG( 'Press the OK button to format your hard drive' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Media Archive Format' ), '', MR_LANG( 'Press the button to format Media section in your hard drive' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Record Archive Format' ), '', MR_LANG( 'Press the button to format Record section in your hard drive' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'HDD Format' ), '', MR_LANG( 'Press the button to format all section in your hard drive' ) )
 
-			visibleControlIds = [ E_SpinEx01, E_Input01 ]
+			visibleControlIds = [ E_Input01, E_Input02, E_Input03 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			hideControlIds = [ E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
+			hideControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_Input04, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
 
 			self.InitControl( )
