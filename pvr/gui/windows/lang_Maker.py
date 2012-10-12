@@ -904,7 +904,7 @@ def updateCSV( ) :
 
 				temp = '\"%s\",,,,,,,,,,%s\r\n'% ( stringEng[1], stringEng[0] )
 				csvString[tags].append( temp )
-				#print 'newString id[%s] name[%s]'% ( stringEng[0], stringEng[1] )
+				print 'newString id[%s] name[%s]'% ( stringEng[0], stringEng[1] )
 
 	if newString and len( newString ) > 0 :
 		wf = open( tempFile, 'w' )

@@ -330,7 +330,8 @@ class CacheMRLanguage( object ) :
 		self.mStrLanguage = None
 
 		scriptDir = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' )
-		xmlFile = '%s/pvr/gui/windows/MboxStrings.xml' %scriptDir
+		#xmlFile = '%s/pvr/gui/windows/MboxStrings.xml' %scriptDir
+		xmlFile = '%s/resources/language/English/strings.xml' %scriptDir
 		#LOG_TRACE( 'xmlFile[%s]'% xmlFile )
 		fp = open( xmlFile )
 		xml = fp.read( )
