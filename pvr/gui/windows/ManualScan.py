@@ -91,7 +91,7 @@ class ManualScan( SettingWindow ) :
 		# Satellite		
 		if groupId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
-			select = dialog.select( MR_LANG( 'Select Satellite' ), self.mFormattedList )
+			select = dialog.select( MR_LANG( 'Select Satellite' ), self.mFormattedList, False,  StringToListIndex( self.mFormattedList, self.GetControlLabel2String( E_Input01 ) ) )
 
 			if select >= 0 :
 				self.mSatelliteIndex = select
@@ -109,7 +109,7 @@ class ManualScan( SettingWindow ) :
 				for i in range( len( self.mTransponderList ) ) :			
 					formattedTransponderList.append( '%d' % self.mTransponderList[i].mFrequency + ' MHz' )
 				dialog = xbmcgui.Dialog( )
-				select = dialog.select( MR_LANG( 'Select Transponder' ), formattedTransponderList )
+				select = dialog.select( MR_LANG( 'Select Transponder' ), formattedTransponderList, False, StringToListIndex( formattedTransponderList, self.GetControlLabel2String( E_Input02 ) ) )
 
 				if select >=0 :
 					self.mTransponderIndex = select
