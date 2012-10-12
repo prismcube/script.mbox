@@ -181,7 +181,6 @@ def csvToXML():
 	rf.close()
 	df.close()
 
-
 #----read strings.xml to make forign Language with csv
 def readToXML(inFile):
 
@@ -195,6 +194,7 @@ def readToXML(inFile):
 	#input document is UTF-8 format only
 	#openFile = os.getcwd() + '/Language_Prime.csv'
 	openFile = os.getcwd() + '/Language_Elmo.csv'
+	#openFile = os.getcwd() + '/test.csv'
 	wFile1 = 'MboxStringsID.py'
 
 	langPack = ["ENGLISH","DEUTSCH","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"]
@@ -232,7 +232,7 @@ def readToXML(inFile):
 
 	wFileList = []
 	wf = []
-	for i in range(len(ret)):
+	for i in range( len(ret) ) :
 		#print i, ret[i].upper()
 		for j in range(len(langPack)):
 			if ret[i].upper() == langPack[j]:
@@ -274,13 +274,19 @@ def readToXML(inFile):
 			for csvline in csvfile:
 				# string list
 				ret = re.findall('"([^"]*)"', csvline)
-				if len(ret) < len(wFileList):			# if 'english',,,,,,,,digit then
+				if len(ret) < len(wFileList):			# if id, 'english',,,,,,,, then
 					ret = re.sub('"', '', csvline)			# copyed english
 					ret = re.split(',', ret)
 					if len(ret) == len(wFileList)+1:
 						for i in range(len(ret)-1):
 							if ret[i+1] == '':
-								ret[i+1] = 'NONE_' + ret[0]
+								#ret[i+1] = 'NONE_' + ret[0]
+								j = i + 1
+								if j >= len(wFileList) - 1 :
+									j = len(wFileList) - 1
+								ret[i+1] = '%s_'% wFileList[j][:3] + ret[0]
+								#print '----------[%s]'% ret[i+1]
+								
 
 				# str id
 				ret2= re.sub('\n', '', csvline)
@@ -302,7 +308,11 @@ def readToXML(inFile):
 				csvret2[10]= inID[0]
 				csvret[0] = inStr[0]
 				for i in range(len(wFileList)) :
-					csvret[i+1] = 'NONE_' + inStr[0]
+					#csvret[i+1] = 'NONE_' + inStr[0]
+					j = i + 1
+					if j >= len(wFileList) - 1 : 
+						j = len(wFileList) - 1
+					csvret[i+1] = '%s_'% wFileList[j][:3] + inStr[0]
 					#print '----------[%s]'% csvret[i+1]
 
 
@@ -323,13 +333,13 @@ def readToXML(inFile):
 	
 					string = '\t' + (tag1 % strid) + csvret[i] + tag2 + '\r\n'
 					wf[i].writelines( EucToUtf(string) )
-	
+
 				except Exception, e:
 					#print string
 					#print 'error i[%s] e[%s]'% (i, e)
 					pass
 
-	
+			
 			#write MboxStringsID.py in English Name
 			try:
 				strid = re.sub(',', '', csvret2[len(csvret2)-1])
@@ -369,7 +379,6 @@ def readToXML(inFile):
 				pass
 
 		sidx += 1
-
 
 	for i in range(len(wFileList)):
 		wf[i].writelines(EucToUtf('</strings>\r\n'))
@@ -435,7 +444,8 @@ def findStringInXML(soup, reqStr) :
 	return isFind
 
 gTagString = []
-gTagproperty = []
+gTagProperty = []
+gTagXmlString = []
 def parseStringInXML(xmlFile, tagName) :
 
 	soup = None
@@ -499,7 +509,7 @@ def parseProperty( elisDir, stringXML ):
 		for line in nodes :
 			wf.writelines('\t%s'% line[2])
 	else :
-		max = 3000
+		max = 5000
 
 	countTot = 0
 	countNew = 0
@@ -543,6 +553,14 @@ def parseProperty( elisDir, stringXML ):
 
 
 	wf.writelines('</property>\r\n')
+
+	#global gTagXmlString
+	if gTagXmlString :
+		wf.writelines('<xmlstrings>\r\n')
+		for line in gTagXmlString :
+			wf.writelines('\t%s'% line[2])
+		wf.writelines('</xmlstrings>\r\n')
+
 	wf.close()
 
 	wf = open('repeatWord', 'a')
@@ -705,6 +723,13 @@ def parseSource(sourceFile):
 			wf.writelines('\t%s'% line[2])
 		wf.writelines('</property>\r\n')
 
+	#global gTagXmlString
+	if gTagXmlString :
+		wf.writelines('<xmlstrings>\r\n')
+		for line in gTagXmlString :
+			wf.writelines('\t%s'% line[2])
+		wf.writelines('</xmlstrings>\r\n')
+
 	wf.close()
 
 	wf = open('repeatWord', 'w')
@@ -743,6 +768,158 @@ def copyLanguage(srcDir, langDir) :
 		shutil.rmtree('language')
 
 
+
+def Make_NewCSV( ) :
+	langPack = ["ENGLISH","DEUTSCH","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"]
+
+	mboxDir = os.path.abspath(os.getcwd() + '/../../../../script.mbox')
+	langDir = mboxDir + '/resources/language'
+	langList = os.listdir(langDir)
+
+	strFileFD = []
+	langStrings=[]
+
+	for strfile in langPack :
+		openFile = '%s/%s/strings.xml'% ( langDir, strfile.capitalize() )
+		fp = open(openFile, 'r')
+		strFileFD.append( fp )
+
+		lines = []
+		soup = BeautifulSoup(fp)
+
+		for element in soup.findAll('string') :
+			elementry = None
+			eleStr = None
+
+			eleStr = unicode(element.string).encode('utf-8')
+			try :
+				if len(eleStr) > 3 and eleStr[3] == '_' :
+					eleStr = ''
+
+				elif len(eleStr) > 3 and eleStr[len(eleStr) - 2 :] == '\r\n' :
+					#print repr(eleStr).decode('utf-8'), repr(eleStr[len(eleStr) - 2 :])
+					eleStr = eleStr[0:len(eleStr) - 2]
+
+			except Exception, e :
+				print 'except[%s] str[%s][%s]'% (e, element.string, int(element['id']) )
+				pass
+
+			elementry = [ int(element['id']), eleStr ]
+			lines.append( elementry )
+
+		langStrings.append( lines )
+
+
+	for i in range(len(langPack)) :
+		strFileFD[i].close()
+
+
+	openFile = 'test.csv'
+	fd = open( openFile, 'w' )
+	title = ''
+	for item in langPack :
+		title += '\"%s\",'% item
+
+	fd.writelines( title[:len(title)] + '\"STRING_INDEX\"\r\n' )
+
+	for i in range( len(langStrings[0]) ) :
+		csvStr = ''
+		for j in range(10) :
+			try :
+				comma= ','
+				lang = '%s'% langStrings[j][i][1]
+				if langStrings[j][i][1] != '' :
+					lang = '\"%s\"'% langStrings[j][i][1]
+
+				if j == 9 :
+					comma = ''
+
+				csvStr += lang + comma
+			except Exception, e :
+				print 'except[%s] langNo[%s] id[%s]'% (e, j, i)
+
+		csvStr = '%s,%s\r\n'% ( csvStr, langStrings[0][i][0] )
+		fd.writelines( EucToUtf(csvStr) )
+
+	fd.close( )
+
+
+def updateCSV( ) :
+	openFile = os.getcwd() + '/Language_Elmo.csv'
+	stringFile = os.getcwd() + '/MboxStrings.xml'
+	tempFile = os.getcwd() + '/test_.csv'
+
+	fp = open( stringFile, 'r' )
+	soup = BeautifulSoup(fp)
+	fp.close()
+
+	tagList = [ 'strings', 'property', 'xmlstrings' ]
+	stringXML = []
+	csvString = [[],[],[]]
+	csvHash = {}
+
+	# 1--------- 'hash mboxString.xml'
+	for tagName in tagList :
+		for node in soup.findAll(tagName) :
+			tags = []
+			for element in node.findAll('string') :
+				elementry = [ int(element['id']), element.string ]
+				tags.append( elementry )
+
+			stringXML.append( tags )
+
+
+	# 2--------- 'hash langage_Elmo.csv'
+
+	rf = open( openFile, 'r' )
+	csvOld = rf.readlines()
+	rf.close()
+
+	title = csvOld[0]
+	csvOld.pop( 0 )
+
+	for csvline in csvOld :
+		ret = re.split(',', csvline)
+		csvStr = re.findall('"([^"]*)"', csvline)
+
+		strid = int( ret[len(ret) - 1] )
+		csvHash[csvStr[0]] = strid
+
+		if strid < 5000 :
+			csvString[0].append( csvline )
+		elif strid >= 5000 and strid < 7000 :
+			csvString[1].append( csvline )
+		elif strid >= 7000 :
+			csvString[2].append( csvline )
+
+	#print csvHash.get( "When set to 'Automatic', the time will be obtained by the receiver automatically from a specific channel that you select", None )
+
+	# 3--------- 'new word to append csv'
+	newString = []
+	for tags in range( len(stringXML) ) :
+		for stringEng in stringXML[tags] :
+			if csvHash.get( stringEng[1], None ) == None :
+				newString.append( stringEng )
+
+				temp = '\"%s\",,,,,,,,,,%s\r\n'% ( stringEng[1], stringEng[0] )
+				csvString[tags].append( temp )
+
+				#print 'newString id[%s] name[%s]'% ( stringEng[0], stringEng[1] )
+
+	if newString and len( newString ) > 0 :
+		wf = open( tempFile, 'w' )
+		wf.writelines( title )
+		for tags in range( len(csvString) ) :
+			for strings in csvString[tags] :
+				wf.writelines( strings )
+
+		wf.close()
+		os.rename(tempFile, openFile)
+
+		print '\033[1;33m update newString[%s]\033[1;m'% len( newString )
+
+
+
 ########## installation
 gReservedWord = 'Min Hour 480i 480p 576i 576p 720p 1080i 1080p-25 CVBS RGB YC ms FAT FAT16 FAT32 EXT2 EXT3 EXT4 NTFS'
 gTimePattern  = '[0-9]{2}:[0-9]{2}|[0-9]*\*[0-9]'
@@ -755,24 +932,30 @@ def AutoMakeLanguage() :
 	#print elisDir
 	stringFile = mboxDir + '/pvr/gui/windows/MboxStrings.xml'
 	propertyFile = elisDir + '/lib/elisinterface/ElisProperty.py'
-	global gTagString, gTagProperty
+	global gTagString, gTagProperty, gTagXmlString
 
 	#if os.path.exists(stringFile) :
 	#	os.remove(stringFile)
 
 	###### 1. collection source
-	soup, gTagProperty = parseStringInXML('MboxStrings.xml', 'property')
+	soup, gTagProperty  = parseStringInXML('MboxStrings.xml', 'property')
+	soup, gTagXmlString = parseStringInXML('MboxStrings.xml', 'xmlstrings')
 	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'parse source')
 	findallSource(mboxDir, '[a-zA-Z0-9]\w*.py')
 	print '\nfindAll source[%s]'% gCount
-	print '\033[1;%sm[%s]%s\033[1;m'% (30, 'make language', 'made string')
-	readToXML(stringFile)
-
+	#print '\033[1;%sm[%s]%s\033[1;m'% (30, 'make language', 'made string')
+	#readToXML(stringFile)
 
 	###### 2. collection property
 	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'parse property')
 	parseProperty(elisDir, stringFile)
-	print '\033[1;%sm[%s]%s\033[1;m'% (30, 'make language', 'made string')
+	#print '\033[1;%sm[%s]%s\033[1;m'% (30, 'make language', 'made string')
+	#readToXML(stringFile)
+
+	print '\033[1;%sm[%s]%s\033[1;m'% (30, 'make language', 'update dictionary csv')
+	updateCSV( )
+
+	print '\033[1;%sm[%s]%s\033[1;m'% (30, 'make language', 'make resource/language/../strings.xml')
 	readToXML(stringFile)
 
 	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'verifying localizedString ID')
@@ -929,22 +1112,5 @@ if __name__ == "__main__":
 	#test4()
 	#test5()
 
-	#findallSource(sourceDir, '[a-zA-Z0-9]\w*.py', 'MboxStrings.xml')
-	#findallSource(propertyDir, '[a-zA-Z0-9]\w*.py', 'ElisProperty.py')
-	#print 'fname[%s] gcount[%s]'% (gName, gCount)
-
-	#soup, gTagString = parseStringInXML('MboxStrings.xml', 'strings')
-	#soup, gTagProperty = parseStringInXML('MboxStrings.xml', 'property')
-	#print type(int(nodes[0][0]))
-
-	#testDir = '/home/youn/devel/elmo_test/test/elmo-nand-image/home/root/.xbmc/addons/script.mbox'
-	#elisDir = '/home/youn/devel/elmo_test/test/elmo-nand-image/home/root/.xbmc/addons/script.module.elisinterface'
-	#findallSource(testDir, '[a-zA-Z0-9]\w*.py')
-	#parseProperty(elisDir, 'MboxStrings.xml')
-
-	#readToXML('MboxStrings.xml')
-	#copyLanguage('language', '../../../resources/language')
 	AutoMakeLanguage()
-	#soup, gTagProperty = parseStringInXML('MboxStrings.xml', 'property')
-	#parseSource('AutomaticScan.py')
 
