@@ -745,7 +745,6 @@ class DialogAddManualTimer( SettingDialog ) :
 			focusId = self.GetFocusId( )
 
 			strStartTime = self.GetControlLabel2String( E_DialogInput02 )
-			dialog = xbmcgui.Dialog( )
 
 			selectIndex = self.GetSelectedIndex( E_DialogSpinDay )
 
@@ -801,7 +800,7 @@ class DialogAddManualTimer( SettingDialog ) :
 			focusId = self.GetFocusId( )
 			
 			strEndTime = self.GetControlLabel2String( E_DialogInput03 )
-			dialog = xbmcgui.Dialog( )
+
 			selectIndex = self.GetSelectedIndex( E_DialogSpinDay )
 
 			if self.mTimer and self.mRecordingMode == E_ONCE :

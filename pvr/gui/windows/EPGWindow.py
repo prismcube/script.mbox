@@ -1018,7 +1018,7 @@ class EPGWindow( BaseWindow ) :
 		for channel in self.mChannelList :
 			channelNameList.append( '%04d %s' %( channel.mNumber, channel.mName ) )
 
-		ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList )
+		ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList, False, StringToListIndex( channelNameList, '%04d %s' % ( self.mSelectChannel.mNumber, self.mSelectChannel.mName ) ) )
 
 		if ret >= 0 :
 			self.mSelectChannel = self.mChannelList[ ret ]

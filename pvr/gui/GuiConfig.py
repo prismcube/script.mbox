@@ -325,7 +325,7 @@ def Hex2signed( s ) :
 
 
 def NumericKeyboard( aKeyType, aTitle, aString, aMaxLength=None ) :
-	dialog = xbmcgui.Dialog( )		
+	dialog = xbmcgui.Dialog( )
 	value = dialog.numeric( aKeyType, aTitle, aString )
 	if value == None or value == '' :
 		return aString

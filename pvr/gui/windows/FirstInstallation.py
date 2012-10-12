@@ -97,7 +97,7 @@ class FirstInstallation( SettingWindow ) :
 				if groupId == E_Input01 :
 					menuLanguageList = WinMgr.GetInstance( ).GetLanguageList( )
 					dialog = xbmcgui.Dialog( )
-					ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList )
+					ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList, False, StringToListIndex( menuLanguageList, self.GetControlLabel2String( E_Input01 ) ) )
 					if ret >= 0 :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Please be patience after pressing the OK button' ), MR_LANG( 'It will take some time to bring up display changes' ) )
@@ -108,7 +108,7 @@ class FirstInstallation( SettingWindow ) :
 						
 				elif groupId == E_Input02 :
 					dialog = xbmcgui.Dialog( )
-					ret = dialog.select( MR_LANG( 'Select Audio Language' ), self.mAudioLanguageList )
+					ret = dialog.select( MR_LANG( 'Select Audio Language' ), self.mAudioLanguageList, False, StringToListIndex( self.mAudioLanguageList, self.GetControlLabel2String( E_Input02 ) ) )
 					if ret >= 0 :
 						ElisPropertyEnum( 'Audio Language', self.mCommander ).SetPropIndex( ret )
 						self.SetControlLabel2String( E_Input02, self.mAudioLanguageList[ ret ] )
@@ -435,7 +435,7 @@ class FirstInstallation( SettingWindow ) :
 			channelNameList = []
 			for channel in channelList :
 				channelNameList.append( channel.mName )
-			ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList )
+			ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList, False, StringToListIndex( channelNameList, self.GetControlLabel2String( E_Input01 ) ) )
 			if ret >= 0 :
 				self.mSetupChannel = channelList[ ret ]
 				self.SetControlLabel2String( E_Input01, self.mSetupChannel.mName )

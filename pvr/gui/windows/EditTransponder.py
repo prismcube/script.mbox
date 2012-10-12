@@ -72,7 +72,7 @@ class EditTransponder( SettingWindow ) :
 		if groupId == E_Input01 :
 			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
 			dialog = xbmcgui.Dialog( )
-			select = dialog.select( MR_LANG( 'Select Satellite' ), satelliteList )
+			select = dialog.select( MR_LANG( 'Select Satellite' ), satelliteList, False, StringToListIndex( satelliteList, self.GetControlLabel2String( E_Input01 ) ) )
 
 			if select >= 0 and select != self.mSatelliteIndex :
 				self.mSatelliteIndex = select
@@ -86,7 +86,7 @@ class EditTransponder( SettingWindow ) :
 					frequencylist.append( '%d MHz' % self.mTransponderList[i].mFrequency )
 
 				dialog = xbmcgui.Dialog( )
-				select = dialog.select( MR_LANG( 'Select Frequency' ), frequencylist )
+				select = dialog.select( MR_LANG( 'Select Frequency' ), frequencylist, False, StringToListIndex( frequencylist, self.GetControlLabel2String( E_Input02 ) ) )
 
 				if select >= 0 and select != self.mTransponderIndex :
 					self.mTransponderIndex = select

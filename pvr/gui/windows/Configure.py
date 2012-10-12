@@ -198,7 +198,7 @@ class Configure( SettingWindow ) :
 			if groupId == E_Input01 :
 				menuLanguageList = WinMgr.GetInstance( ).GetLanguageList( )
 				dialog = xbmcgui.Dialog( )
-				ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList )
+				ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList, False, StringToListIndex( menuLanguageList, self.GetControlLabel2String( E_Input01 ) ) )
 				if ret >= 0 :
 					if not self.mPlatform.IsPrismCube( ) :
 						xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% self.mPlatform.GetName( ) )
@@ -848,7 +848,7 @@ class Configure( SettingWindow ) :
 			for channel in channelList :
 				channelNameList.append( channel.mName )
 
-			ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList )
+			ret = dialog.select( MR_LANG( 'Select Channel' ), channelNameList, False, StringToListIndex( channelNameList, self.GetControlLabel2String( E_Input01 ) ) )
 
 			if ret >= 0 :
 				self.mSetupChannel = channelList[ ret ]

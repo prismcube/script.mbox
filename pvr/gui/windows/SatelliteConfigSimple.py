@@ -74,8 +74,8 @@ class SatelliteConfigSimple( SettingWindow ) :
 		#Satellite
 		if groupId == E_Input01 :
 			satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
-			dialog = xbmcgui.Dialog()
-			ret = dialog.select( MR_LANG( 'Select Satellite' ), satelliteList )
+			dialog = xbmcgui.Dialog( )
+			ret = dialog.select( MR_LANG( 'Select Satellite' ), satelliteList, False, StringToListIndex( satelliteList, self.GetControlLabel2String( E_Input01 ) ) )
 
 			if ret >= 0 :
 				satellite = self.mDataCache.GetSatelliteByIndex( ret )
@@ -139,7 +139,7 @@ class SatelliteConfigSimple( SettingWindow ) :
 		elif groupId == E_Input03 :
 			if self.mTransponderList :
 				dialog = xbmcgui.Dialog( )
-				tempIndex = dialog.select( MR_LANG( 'Select Transponder' ), self.mTransponderList )
+				tempIndex = dialog.select( MR_LANG( 'Select Transponder' ), self.mTransponderList, False, StringToListIndex( self.mTransponderList, self.GetControlLabel2String( E_Input03 ) ) )
 				if tempIndex != -1 :
 					self.mSelectedTransponderIndex = tempIndex
 					self.InitConfig( )

@@ -300,6 +300,15 @@ def Strings( aStringID, aReplacements = None ) :
 		return string
 
 
+def StringToListIndex( aList, aString ) :
+	for i in range( len( aList ) ) :
+		if aList[i].lower( ) == aString.lower( ) :
+			return i
+
+	LOG_ERR( 'Can not found list item : %s' % aString )
+	return 0
+
+
 gMRStringHash = {}
 gCacheMRLanguage = None
 
