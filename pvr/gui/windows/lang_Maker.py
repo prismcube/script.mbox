@@ -894,6 +894,7 @@ def updateCSV( ) :
 
 	#print csvHash.get( "When set to 'Automatic', the time will be obtained by the receiver automatically from a specific channel that you select", None )
 
+
 	# 3--------- 'new word to append csv'
 	newString = []
 	for tags in range( len(stringXML) ) :
@@ -903,7 +904,6 @@ def updateCSV( ) :
 
 				temp = '\"%s\",,,,,,,,,,%s\r\n'% ( stringEng[1], stringEng[0] )
 				csvString[tags].append( temp )
-
 				#print 'newString id[%s] name[%s]'% ( stringEng[0], stringEng[1] )
 
 	if newString and len( newString ) > 0 :

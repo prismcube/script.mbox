@@ -568,7 +568,11 @@
 "File not found : %s",,,,,,,,,,567
 "Test scenario not available : %s",,,,,,,,,,568
 "UnKnown",,,,,,,,,,569
-"TEST03",,,,,,,,,,571
+"Run",,,,,,,,,,570
+"There is no addons",,,,,,,,,,571
+"Select Addon",,,,,,,,,,572
+"Network Link",,,,,,,,,,573
+"Show network link status",,,,,,,,,,574
 "Last ServiceType",,,,,,,,,,5001
 "TV","TV","TV","TV","TV","TV","TV","TV","TV","ТВ",5002
 "Radio","Radio","Radio","Radio","Radio","Rozhlas","Radio","Radio","Radyo","Радио",5003
@@ -889,5 +893,3 @@
 "Reset Channel List","Programmliste zurucksetzen","Reinitialiser la liste des programmes","Ripristina elenco programmi","Reponer lista de canales","Vynulovat seznam program?","Programmalijst resetten","Cofanie listy programow","Program listesini sıfırla","Сбросить список программ",5318
 "Reset Favorite Add-ons",,,,,,,,,,5319
 "Reset Configure Setting",,,,,,,,,,5320
-"TEST01, TEST %",,,,,,,,,,7001
-"TEST02, TEST %",,,,,,,,,,7002

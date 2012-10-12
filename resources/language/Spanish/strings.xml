@@ -569,7 +569,11 @@
 	<string id="567">SPA_File not found : %s</string>
 	<string id="568">SPA_Test scenario not available : %s</string>
 	<string id="569">SPA_UnKnown</string>
-	<string id="571">SPA_TEST03</string>
+	<string id="570">SPA_Run</string>
+	<string id="571">SPA_There is no addons</string>
+	<string id="572">SPA_Select Addon</string>
+	<string id="573">SPA_Network Link</string>
+	<string id="574">SPA_Show network link status</string>
 	<string id="5001">SPA_Last ServiceType</string>
 	<string id="5002">TV</string>
 	<string id="5003">Radio</string>
@@ -890,6 +894,11 @@
 	<string id="5318">Reponer lista de canales</string>
 	<string id="5319">SPA_Reset Favorite Add-ons</string>
 	<string id="5320">SPA_Reset Configure Setting</string>
-	<string id="7001">SPA_TEST01, TEST %</string>
-	<string id="7002">SPA_TEST02, TEST %</string>
+	<string id="7001">SPA_All CHANNELS</string>
+	<string id="7002">SPA_SATELLITE</string>
+	<string id="7003">SPA_FTA/CAS</string>
+	<string id="7004">SPA_FAVORITES</string>
+	<string id="7005">SPA_MODE</string>
+	<string id="7006">TV</string>
+	<string id="7007">Radio</string>
 </strings>

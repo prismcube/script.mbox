@@ -569,7 +569,11 @@
 	<string id="567">FRE_File not found : %s</string>
 	<string id="568">FRE_Test scenario not available : %s</string>
 	<string id="569">FRE_UnKnown</string>
-	<string id="571">FRE_TEST03</string>
+	<string id="570">FRE_Run</string>
+	<string id="571">FRE_There is no addons</string>
+	<string id="572">FRE_Select Addon</string>
+	<string id="573">FRE_Network Link</string>
+	<string id="574">FRE_Show network link status</string>
 	<string id="5001">FRE_Last ServiceType</string>
 	<string id="5002">TV</string>
 	<string id="5003">Radio</string>
@@ -890,6 +894,11 @@
 	<string id="5318">Reinitialiser la liste des programmes</string>
 	<string id="5319">FRE_Reset Favorite Add-ons</string>
 	<string id="5320">FRE_Reset Configure Setting</string>
-	<string id="7001">FRE_TEST01, TEST %</string>
-	<string id="7002">FRE_TEST02, TEST %</string>
+	<string id="7001">FRE_All CHANNELS</string>
+	<string id="7002">FRE_SATELLITE</string>
+	<string id="7003">FTA/CAS</string>
+	<string id="7004">FRE_FAVORITES</string>
+	<string id="7005">FRE_MODE</string>
+	<string id="7006">TV</string>
+	<string id="7007">Radio</string>
 </strings>

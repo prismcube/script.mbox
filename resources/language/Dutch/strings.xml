@@ -569,7 +569,11 @@
 	<string id="567">DUT_File not found : %s</string>
 	<string id="568">DUT_Test scenario not available : %s</string>
 	<string id="569">DUT_UnKnown</string>
-	<string id="571">DUT_TEST03</string>
+	<string id="570">DUT_Run</string>
+	<string id="571">DUT_There is no addons</string>
+	<string id="572">DUT_Select Addon</string>
+	<string id="573">DUT_Network Link</string>
+	<string id="574">DUT_Show network link status</string>
 	<string id="5001">DUT_Last ServiceType</string>
 	<string id="5002">TV</string>
 	<string id="5003">Radio</string>
@@ -890,6 +894,11 @@
 	<string id="5318">Programmalijst resetten</string>
 	<string id="5319">DUT_Reset Favorite Add-ons</string>
 	<string id="5320">DUT_Reset Configure Setting</string>
-	<string id="7001">DUT_TEST01, TEST %</string>
-	<string id="7002">DUT_TEST02, TEST %</string>
+	<string id="7001">DUT_All CHANNELS</string>
+	<string id="7002">DUT_SATELLITE</string>
+	<string id="7003">DUT_FTA/CAS</string>
+	<string id="7004">DUT_FAVORITES</string>
+	<string id="7005">DUT_MODE</string>
+	<string id="7006">TV</string>
+	<string id="7007">Radio</string>
 </strings>

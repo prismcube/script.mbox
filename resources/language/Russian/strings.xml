@@ -569,7 +569,11 @@
 	<string id="567">RUS_File not found : %s</string>
 	<string id="568">RUS_Test scenario not available : %s</string>
 	<string id="569">RUS_UnKnown</string>
-	<string id="571">RUS_TEST03</string>
+	<string id="570">RUS_Run</string>
+	<string id="571">RUS_There is no addons</string>
+	<string id="572">RUS_Select Addon</string>
+	<string id="573">RUS_Network Link</string>
+	<string id="574">RUS_Show network link status</string>
 	<string id="5001">RUS_Last ServiceType</string>
 	<string id="5002">ТВ</string>
 	<string id="5003">Радио</string>
@@ -890,6 +894,11 @@
 	<string id="5318">Сбросить список программ</string>
 	<string id="5319">RUS_Reset Favorite Add-ons</string>
 	<string id="5320">RUS_Reset Configure Setting</string>
-	<string id="7001">RUS_TEST01, TEST %</string>
-	<string id="7002">RUS_TEST02, TEST %</string>
+	<string id="7001">RUS_All CHANNELS</string>
+	<string id="7002">RUS_SATELLITE</string>
+	<string id="7003">RUS_FTA/CAS</string>
+	<string id="7004">RUS_FAVORITES</string>
+	<string id="7005">RUS_MODE</string>
+	<string id="7006">ТВ</string>
+	<string id="7007">Радио</string>
 </strings>
