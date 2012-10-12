@@ -282,7 +282,7 @@
 					<item id="5">
 						<label>Addons</label>
 						<onclick>SendClick(90500)</onclick>
-						<visible>False</visible>
+						<visible>true</visible>
 					</item>
 					<item id="6">
 						<label>Media</label>

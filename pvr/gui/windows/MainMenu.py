@@ -1,6 +1,7 @@
 from pvr.gui.WindowImport import *
 
 MAIN_GROUP_ID					= 9100
+LIST_ID_FAV_ADDON				= 9050
 
 BUTTON_ID_INSTALLATION			= 90100
 BUTTON_ID_ARCHIVE				= 90200
@@ -33,13 +34,16 @@ BUTTON_ID_CAS					= 90107
 class MainMenu( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
+		self.mCtrlFavAddonList = None
+
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.CheckMediaCenter( )
-		self.getPlayerStatus( )
+		self.GetPlayerStatus( )
+		self.GetFavAddons( )
 
 
 	def onAction( self, aAction ) :
@@ -145,6 +149,13 @@ class MainMenu( BaseWindow ) :
 		elif aControlId == BUTTON_ID_SYSTEM_INFO :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_INFO )
 
+		elif aControlId == LIST_ID_FAV_ADDON :
+			position = -1
+			position = self.mCtrlFavAddonList.getSelectedPosition( )
+			if position != -1 :
+				self.SetMediaCenter( )
+				xbmc.executebuiltin( "runaddon(%s)" % self.mFavAddonsList[ position ].getProperty( 'AddonId' ) )
+
 		elif aControlId == 20 :
 			pass
 			"""
@@ -158,9 +169,26 @@ class MainMenu( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
 
-	def getPlayerStatus( self ) :
+	def GetPlayerStatus( self ) :
 		if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 			self.mWin.setProperty( 'IsPVR', 'True' )
 		else :
 			self.mWin.setProperty( 'IsPVR', 'False' )
 
+
+	def GetFavAddons( self ) :
+		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
+			currentSkinName = xbmc.executehttpapi( "GetGUISetting(3, lookandfeel.skin)" )
+			currentSkinName = currentSkinName[4:]
+			if currentSkinName == 'skin.confluence' :
+				tmpList = xbmc.executehttpapi( "getfavourites()" )
+				self.mCtrlFavAddonList = self.getControl( LIST_ID_FAV_ADDON )
+				self.mCtrlFavAddonList.reset( )
+				if tmpList != '<li>' :
+					tmpList = tmpList[4:].split( ':' )
+					self.mFavAddonsList = []
+					for i in range( len( tmpList ) ) :
+						item = xbmcgui.ListItem(  xbmcaddon.Addon( tmpList[i] ).getAddonInfo( 'name' ) )
+						item.setProperty( 'AddonId', tmpList[i] )
+						self.mFavAddonsList.append( item )
+					self.mCtrlFavAddonList.addItems( self.mFavAddonsList )

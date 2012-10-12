@@ -13,6 +13,7 @@ E_VIEW_MODE_THUMBNAIL		= 2
 
 CONTEXT_ADD_FAVORITE		= 0
 CONTEXT_DELETE_FAVORITE		= 1
+CONTEXT_RUN_FAVORITE		= 2
 
 
 class FavoriteAddons( BaseWindow ) :
@@ -36,6 +37,10 @@ class FavoriteAddons( BaseWindow ) :
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Favorite Add-ons' ) )
 
+		if pvr.Platform.GetPlatform( ).IsPrismCube( ) == False :
+			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
+
 		self.mCtrlCommonList 	= self.getControl( LIST_ID_COMMOM_LIST )
 		self.mCtrlThumbnailList	= self.getControl( LIST_ID_COMMOM_THUMBNAIL )
 
@@ -44,6 +49,7 @@ class FavoriteAddons( BaseWindow ) :
 
 		self.mAscending = int( GetSetting( 'Addons_Sort' ) )
 
+		self.CheckMediaCenter( )
 		self.UpdateViewMode( )
 		self.UpdateAscending( )
 		self.UpdateListItem( )
@@ -58,13 +64,8 @@ class FavoriteAddons( BaseWindow ) :
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
 			self.mSelectedIndex = self.GetSelectedPosition( )
-			if self.mSelectedIndex != -1 :
-				self.mFavoriteAddonsIdList[ self.mSelectedIndex ].select( True )
+			if self.mSelectedIndex != -2 :
 				self.ShowContextMenu( )
-				self.mFavoriteAddonsIdList[ self.mSelectedIndex ].select( False )
-
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
 
 
 	def onClick( self, aControlId ) :
@@ -90,33 +91,46 @@ class FavoriteAddons( BaseWindow ) :
 		elif aControlId == RADIIOBUTTON_ID_EXTRA :
 			pass
 
+		elif aControlId == LIST_ID_COMMOM_LIST or aControlId == LIST_ID_COMMOM_THUMBNAIL :
+			self.mSelectedIndex = self.GetSelectedPosition( )
+			if self.mSelectedIndex != -1 :
+				self.SetMediaCenter( )
+				xbmc.executebuiltin( "runaddon(%s)" % self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' ) )
+
 
 	def onFocus( self, aControlId ) :
 		pass
 
 
 	def UpdateListItem( self ) :
-		tmpList = [ 'script.mbox', 'skin.confluence' ]
 		self.mFavoriteAddonsIdList = []
-		if tmpList and len( tmpList ) > 0 :
-			for i in range( len( tmpList ) ) :
-				addonName			= xbmcaddon.Addon( tmpList[i] ).getAddonInfo( 'name' )
-				addonVersion		= xbmcaddon.Addon( tmpList[i] ).getAddonInfo( 'version' )
-				addonIcon			= xbmcaddon.Addon( tmpList[i] ).getAddonInfo( 'icon' )
-				addonDescription	= xbmcaddon.Addon( tmpList[i] ).getAddonInfo( 'description' )
-				item = xbmcgui.ListItem(  addonName, addonVersion, addonIcon )
-				item.setProperty( 'Description', addonDescription )
-				self.mFavoriteAddonsIdList.append( item )
-
-			self.mFavoriteAddonsIdList.sort( self.ByName )
-			if self.mAscending == False :
-				self.mFavoriteAddonsIdList.reverse( )
-
+		tmpList = xbmc.executehttpapi( "getfavourites()" )
+		if tmpList == '<li>' :
 			self.mCtrlCommonList.reset( )
 			self.mCtrlThumbnailList.reset( )
 
-			self.mCtrlCommonList.addItems( self.mFavoriteAddonsIdList )
-			self.mCtrlThumbnailList.addItems( self.mFavoriteAddonsIdList )
+		else :
+			tmpList = tmpList[4:].split( ':' )
+			if tmpList and len( tmpList ) > 0 :
+				for i in range( len( tmpList ) ) :
+					addonName			= xbmcaddon.Addon( tmpList[i] ).getAddonInfo( 'name' )
+					addonVersion		= xbmcaddon.Addon( tmpList[i] ).getAddonInfo( 'version' )
+					addonIcon			= xbmcaddon.Addon( tmpList[i] ).getAddonInfo( 'icon' )
+					addonDescription	= xbmcaddon.Addon( tmpList[i] ).getAddonInfo( 'description' )
+					item = xbmcgui.ListItem(  addonName, addonVersion, addonIcon )
+					item.setProperty( 'AddonId', tmpList[i] )
+					item.setProperty( 'Description', addonDescription )
+					self.mFavoriteAddonsIdList.append( item )
+
+				self.mFavoriteAddonsIdList.sort( self.ByName )
+				if self.mAscending == False :
+					self.mFavoriteAddonsIdList.reverse( )
+
+				self.mCtrlCommonList.reset( )
+				self.mCtrlThumbnailList.reset( )
+
+				self.mCtrlCommonList.addItems( self.mFavoriteAddonsIdList )
+				self.mCtrlThumbnailList.addItems( self.mFavoriteAddonsIdList )
 
 
 	def UpdateViewMode( self ) :
@@ -146,36 +160,61 @@ class FavoriteAddons( BaseWindow ) :
 
 
 	def ShowContextMenu( self ) :
-		if self.mFavoriteAddonsIdList and len( self.mFavoriteAddonsIdList ) > 0 :
-			context = []
-			context.append( ContextItem( MR_LANG( 'Add favorite addon' ), CONTEXT_ADD_FAVORITE ) )
+		context = []
+		context.append( ContextItem( MR_LANG( 'Add favorite addon' ), CONTEXT_ADD_FAVORITE ) )
+		if self.mFavoriteAddonsIdList and len( self.mFavoriteAddonsIdList ) > 0 and self.mSelectedIndex != -1 :
 			context.append( ContextItem( MR_LANG( 'Delete favorite addon' ), CONTEXT_DELETE_FAVORITE ) )
-
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
-			dialog.SetProperty( context )
-			dialog.doModal( )
+			context.append( ContextItem( MR_LANG( 'Run' ), CONTEXT_RUN_FAVORITE ) )
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
+		dialog.SetProperty( context )
+		dialog.doModal( )
 			
-			contextAction = dialog.GetSelectedAction( )
-			self.DoContextAction( contextAction )
+		contextAction = dialog.GetSelectedAction( )
+		self.DoContextAction( contextAction )
 
 
 	def DoContextAction( self, aContextAction ) :
 		if aContextAction == CONTEXT_ADD_FAVORITE :
-			pass
+			tmpList = xbmc.executehttpapi( "getaddons()" )
+			if tmpList == '<li>' :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is no addons' ) )
+	 			dialog.doModal( )
+			else :
+				addonList = tmpList[4:].split( ':' )
+				dialog = xbmcgui.Dialog( )
+				ret = dialog.select( MR_LANG( 'Select Addon' ), addonList )
+				if ret >= 0 :
+					ret1 = xbmc.executehttpapi( "addfavourite(%s)" % addonList[ret] )
+					self.UpdateListItem( )
+
 		elif aContextAction == CONTEXT_DELETE_FAVORITE :
-			pass
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty(  MR_LANG( 'Delete favorite addon' ),  MR_LANG( 'Do you want to remove %s?' ) % self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' ) )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				ret = xbmc.executehttpapi( "removefavourite(%s)" % self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' ) )
+				self.UpdateListItem( )
+
+		elif aContextAction == CONTEXT_RUN_FAVORITE :
+			self.SetMediaCenter( )
+			xbmc.executebuiltin( "runaddon(%s)" % self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' ) )
+			
 		else :
 			LOG_ERR( 'Unknown Context Action' )
 
 
 	def GetSelectedPosition( self ) :
-		position  = -1 
+		position  = -1
 
-		if self.mViewMode == E_VIEW_MODE_LIST :
-			position = self.mCtrlCommonList.getSelectedPosition( )		
-		elif self.mViewMode == E_VIEW_MODE_THUMBNAIL :
-			position = self.mCtrlThumbnailList.getSelectedPosition( )				
+		if self.GetFocusId( ) == LIST_ID_COMMOM_LIST or self.GetFocusId( ) == LIST_ID_COMMOM_THUMBNAIL :
+			if self.mViewMode == E_VIEW_MODE_LIST :
+				position = self.mCtrlCommonList.getSelectedPosition( )
+			elif self.mViewMode == E_VIEW_MODE_THUMBNAIL :
+				position = self.mCtrlThumbnailList.getSelectedPosition( )
+			else :
+				position = -1
 		else :
-			position = -1
+			position = -2
 
 		return position

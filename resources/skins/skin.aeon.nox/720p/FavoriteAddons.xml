@@ -88,7 +88,6 @@
 							<font>Font_Reg22</font>
 							<aligny>center</aligny>
 							<textcolor>dcffffff</textcolor>
-							<selectedcolor>dcffffff</selectedcolor>
 							<label>$INFO[ListItem.Label]</label>
 						</control>
 						<control type="label">
@@ -100,7 +99,6 @@
 							<align>center</align>
 							<aligny>center</aligny>
 							<textcolor>dcffffff</textcolor>
-							<selectedcolor>dcffffff</selectedcolor>
 							<label>$INFO[ListItem.Label2]</label>
 						</control>
 					</itemlayout>
@@ -127,7 +125,6 @@
 							<font>Font_Reg22</font>
 							<aligny>center</aligny>
 							<textcolor>ff2e2e2e</textcolor>
-							<selectedcolor>ff2e2e2e</selectedcolor>
 							<label>$INFO[ListItem.Label]</label>
 						</control>
 						<control type="label">
@@ -139,7 +136,6 @@
 							<align>center</align>
 							<aligny>center</aligny>
 							<textcolor>ff2e2e2e</textcolor>
-							<selectedcolor>ff2e2e2e</selectedcolor>
 							<label>$INFO[ListItem.Label2]</label>
 						</control>
 					</focusedlayout>
