@@ -105,7 +105,7 @@ class DataCacheMgr( object ) :
 		self.mTimerDB = None
 		self.mRecordDB = None
 
-		self.mLockStatus = ElisEnum.E_CC_SUCCESS
+		self.mLockStatus = self.mCommander.Channel_GetStatus( )
 		self.mAVBlankStatus = False
 		self.mSkip = False
 

@@ -195,9 +195,11 @@ class ArchiveWindow( BaseWindow ) :
 				self.SetRadioScreen( self.mServiceType )
 					
 			else :
-				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the PVR or timeshift first' ) )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the PVR or timeshift first' ) )
+				dialog.doModal( )
 
-	
+
 	def onClick( self, aControlId ) :
 		LOG_TRACE( 'aControlId=%d' % aControlId )
 
@@ -611,7 +613,9 @@ class ArchiveWindow( BaseWindow ) :
 
 		status = self.mDataCache.Player_GetStatus( )
 		if status.mMode == ElisEnum.E_MODE_PVR :
-			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the PVR first' ) )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the PVR first' ) )
+			dialog.doModal( )
 			return
 	
 		try :
@@ -795,7 +799,9 @@ class ArchiveWindow( BaseWindow ) :
 				newName = kb.getText( )
 				LOG_TRACE( 'newName len=%d' %len( newName ) )
 				if len( newName ) < MININUM_KEYWORD_SIZE :
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'A filename must be at least %d characters long' ) %MININUM_KEYWORD_SIZE )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'A filename must be at least %d characters long' ) % MININUM_KEYWORD_SIZE )
+					dialog.doModal( )
 					return
 				else :
 

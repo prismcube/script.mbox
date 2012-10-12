@@ -38,7 +38,9 @@ class FavoriteAddons( BaseWindow ) :
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Favorite Add-ons' ) )
 
 		if pvr.Platform.GetPlatform( ).IsPrismCube( ) == False :
-			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+			dialog.doModal( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
 		self.mCtrlCommonList 	= self.getControl( LIST_ID_COMMOM_LIST )

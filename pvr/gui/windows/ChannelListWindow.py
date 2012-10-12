@@ -632,7 +632,9 @@ class ChannelListWindow( BaseWindow ) :
 
 				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
 					LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull)
-					xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
+					dialog.doModal( )
 
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				if aEvent.mType == ElisEnum.E_EOF_END :
@@ -2255,9 +2257,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		if aMode == FLAG_OPT_LIST :
-
 			if self.mChannelList :
-
 				if self.mEditFavorite :
 					context.append( ContextItem( '%s'% MR_LANG( 'Add to favorites' ), CONTEXT_ACTION_ADD_TO_FAV  ) )
 					context.append( ContextItem( '%s'% MR_LANG( 'Create new favorites' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
@@ -2267,10 +2267,9 @@ class ChannelListWindow( BaseWindow ) :
 					context.append( ContextItem( '%s'% MR_LANG( 'Create new favorites' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
 
 			else :
-				head =  MR_LANG( 'Error' )
-				line1 = MR_LANG( 'There is nothing in the channel list' )
-
-				xbmcgui.Dialog( ).ok( head, line1 )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is nothing in the channel list' ) )
+				dialog.doModal( )
 				return
 
 
@@ -2518,7 +2517,9 @@ class ChannelListWindow( BaseWindow ) :
 				RecordConflict( dialog.GetConflictTimer( ) )
 		else:
 			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
-			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), msg )			
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+			dialog.doModal( )	
 
 		if isOK :
 			self.mDataCache.mCacheReload = True

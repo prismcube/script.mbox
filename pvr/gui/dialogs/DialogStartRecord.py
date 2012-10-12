@@ -366,7 +366,9 @@ class DialogStartRecord( SettingDialog ) :
 						self.mIsOk = E_DIALOG_STATE_YES
 					else :
 						msg = MR_LANG( 'You were unable to change the duration' )
-						xbmcgui.Dialog( ).ok( MR_LANG('Error'), msg )
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+						dialog.SetDialogProperty( MR_LANG('Error'), msg )
+						dialog.doModal( )
 
 			else :
 				copyTimeshift = 0

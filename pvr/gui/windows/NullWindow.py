@@ -129,7 +129,9 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_SHOW_INFO :
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 				msg = MR_LANG( 'Try again after stopping all your recordings first' )
-				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), msg )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+				dialog.doModal( )
 			else :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
@@ -246,7 +248,9 @@ class NullWindow( BaseWindow ) :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_PVR :
 				msg = MR_LANG( 'Try again after stopping the PVR first' )
-				xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), msg )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+				dialog.doModal( )
 			else :
 				self.ShowRecordingStartDialog( )
 		
@@ -473,7 +477,9 @@ class NullWindow( BaseWindow ) :
 			else:
 				msg1 = MR_LANG( 'Error' )
 				msg2 = MR_LANG( 'Sorry, that PIN code does not match' )
-				xbmcgui.Dialog( ).ok( msg1, msg2 )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( msg1, msg2 )
+				dialog.doModal( )
 
 		except Exception, e:
 			LOG_TRACE( 'Error exception[%s]'% e )
@@ -500,7 +506,9 @@ class NullWindow( BaseWindow ) :
 
 		else:
 			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
-			xbmcgui.Dialog( ).ok( MR_LANG( 'Attention' ), msg )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+			dialog.doModal( )
 
 		if isOK :
 			self.mDataCache.mCacheReload = True
