@@ -569,6 +569,11 @@
 	<string id="567">File not found : %s</string>
 	<string id="568">Test scenario not available : %s</string>
 	<string id="569">UnKnown</string>
+	<string id="570">Run</string>
+	<string id="571">There is no addons</string>
+	<string id="572">Select Addon</string>
+	<string id="573">Network Link</string>
+	<string id="574">Show network link status</string>
 </strings>
 <property>
 	<string id="5001">Last ServiceType</string>
@@ -893,6 +898,11 @@
 	<string id="5320">Reset Configure Setting</string>
 </property>
 <xmlstrings>
-	<string id="7001">TEST01, TEST %</string>
-	<string id="7002">TEST02, TEST %</string>
+	<string id="7001">All CHANNELS</string>
+	<string id="7002">SATELLITE</string>
+	<string id="7003">FTA/CAS</string>
+	<string id="7004">FAVORITES</string>
+	<string id="7005">MODE</string>
+	<string id="7006">TV</string>
+	<string id="7007">Radio</string>
 </xmlstrings>

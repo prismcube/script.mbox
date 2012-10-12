@@ -786,27 +786,27 @@
 					</focusedlayout>
 					<content>
 						<item id="1">
-							<label>SCRIPT378</label>
+							<label>SCRIPT7001</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="2">
-							<label>SCRIPT379</label>
+							<label>SCRIPT7002</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="3">
-							<label>SCRIPT380</label>
+							<label>SCRIPT7003</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="4">
-							<label>SCRIPT381</label>
+							<label>SCRIPT7004</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="5">
-							<label>SCRIPT382</label>
+							<label>SCRIPT7005</label>
 							<onclick>right</onclick>
 							<visible>true</visible>
 						</item>
@@ -924,7 +924,7 @@
 								<texturenofocus>button-nofocus.png</texturenofocus>
 								<textcolor>grey3</textcolor>
 								<focusedcolor>white</focusedcolor>
-								<label>SCRIPT3002</label>
+								<label>SCRIPT7006</label>
 								<onleft>102</onleft>
 								<onright>113</onright>
 								<onup>114</onup>
@@ -946,7 +946,7 @@
 								<texturenofocus>button-nofocus.png</texturenofocus>
 								<textcolor>grey3</textcolor>
 								<focusedcolor>white</focusedcolor>
-								<label>SCRIPT3003</label>
+								<label>SCRIPT7007</label>
 								<onleft>102</onleft>
 								<onright>114</onright>
 								<onup>113</onup>

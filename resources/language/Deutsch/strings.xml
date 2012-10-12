@@ -569,7 +569,11 @@
 	<string id="567">DEU_File not found : %s</string>
 	<string id="568">DEU_Test scenario not available : %s</string>
 	<string id="569">DEU_UnKnown</string>
-	<string id="571">DEU_TEST03</string>
+	<string id="570">DEU_Run</string>
+	<string id="571">DEU_There is no addons</string>
+	<string id="572">DEU_Select Addon</string>
+	<string id="573">DEU_Network Link</string>
+	<string id="574">DEU_Show network link status</string>
 	<string id="5001">DEU_Last ServiceType</string>
 	<string id="5002">TV</string>
 	<string id="5003">Radio</string>
@@ -890,6 +894,11 @@
 	<string id="5318">Programmliste zurucksetzen</string>
 	<string id="5319">DEU_Reset Favorite Add-ons</string>
 	<string id="5320">DEU_Reset Configure Setting</string>
-	<string id="7001">DEU_TEST01, TEST %</string>
-	<string id="7002">DEU_TEST02, TEST %</string>
+	<string id="7001">DEU_All CHANNELS</string>
+	<string id="7002">DEU_SATELLITE</string>
+	<string id="7003">DEU_FTA/CAS</string>
+	<string id="7004">DEU_FAVORITES</string>
+	<string id="7005">DEU_MODE</string>
+	<string id="7006">TV</string>
+	<string id="7007">Radio</string>
 </strings>
