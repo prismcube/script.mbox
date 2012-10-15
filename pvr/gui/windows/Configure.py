@@ -324,12 +324,17 @@ class Configure( SettingWindow ) :
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				if groupId == E_Input01 :
+					LOG_TRACE( 'Format_Media_Archive Start' )
 					self.mCommander.Format_Media_Archive( )
+					LOG_TRACE( 'Format_Media_Archive Stop' )
 				elif groupId == E_Input02 :
+					LOG_TRACE( 'Format_Record_Archive Start' )
 					self.mCommander.Format_Record_Archive( )
+					LOG_TRACE( 'Format_Record_Archive Stop' )
 				elif groupId == E_Input03 :
-					pass
+					LOG_TRACE( 'Make_Dedicated_HDD Start' )
 					#self.mCommander.Make_Dedicated_HDD( )
+					LOG_TRACE( 'Make_Dedicated_HDD Stop' )
 
 		else :
 			self.ControlSelect( )
