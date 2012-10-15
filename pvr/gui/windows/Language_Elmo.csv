@@ -573,323 +573,329 @@
 "Select Addon",,,,,,,,,,572
 "Network Link",,,,,,,,,,573
 "Show network link status",,,,,,,,,,574
-"Last ServiceType",,,,,,,,,,5001
-"TV","TV","TV","TV","TV","TV","TV","TV","TV","ТВ",5002
-"Radio","Radio","Radio","Radio","Radio","Rozhlas","Radio","Radio","Radyo","Радио",5003
-"CurrentVoutResolution",,,,,,,,,,5004
-"Normal","Normal","Normale","Normale","Normal","Normalni","Normaal","zwykły","Normal","Нормально",5005
-"First","Zuerst","Tout d'abord","Prima","Primero","Nejprve","Eerst","Najpierw","Once","Вначале",5006
-"FTI",,,,,,,,,,5007
-"Serial kbd",,,,,,,,,,5008
-"Wakeup Mode",,,,,,,,,,5009
-"Wakeup From RCU","Wakeup From RCU","Wakeup From RCU","Wakeup From RCU","Wakeup From RCU","Wakeup From RCU","Wakeup From RCU","Wakeup From RCU","Wakeup From RCU","Wakeup From RCU",5010
-"Wakeup from Button","Wakeup from Button","Wakeup from Button","Wakeup from Button","Wakeup from Button","Wakeup from Button","Wakeup from Button","Wakeup from Button","Wakeup from Button","Wakeup",5011
-"Wakeup from Timer","Wakeup from Timer","Wakeup from Timer","Wakeup from Timer","Wakeup from Timer","Wakeup from Timer","Wakeup from Timer","Wakeup from Timer","Wakeup from Timer","Wakeup from Timer",5012
-"Wakeup from AC","Wakeup from AC","Wakeup from AC","Wakeup from AC","Wakeup from AC","Wakeup from AC","Wakeup from AC","Wakeup from AC","Wakeup from AC","Wakeup from AC",5013
-"Log Option",,,,,,,,,,5014
-"No Log",,,,,,,,,,5015
-"Log Serial",,,,,,,,,,5016
-"Log File",,,,,,,,,,5017
-"Video Output",,,,,,,,,,5018
-"HDMI / YUV","HDMI / YUV","HDMI/YUV","HDMI / YUV","HDMI/YUV","HDMI / YUV","HDMI / YUV","HDMI/YUV","HDMI / YUV","HDMI/YUV",5019
-"SCART","SCART","SCART","SCART","SCART","SCART","SCART","SCART","SCART","SCART",5020
-"HDMI Format",,,,,,,,,,5021
-"Show 4:3",,,,,,,,,,5022
-"Normal (Pillarbox)","Normal (Pillarbox)","normal (Pillarbox)","Normale (Pillarbox)","Normal (Pillarbox)","Normalni (Pillarbox)","Normaal (pillarbox)","normalny (pilarbox)","Normal (Pillarbox)","Нормальное изображение (Pillarbox)",5023
-"Stretched (Fullscreen)","Gestreckt (Vollbild)","allonge (plein ecran)","Allungato (visualizzazione estesa)","Estirada (pantalla completa)","Rozta?ene (cely obraz)","Gestrekt (volledig scherm)","rozci?gni?ty (pełny ekran)","Geni? ekran (Tam ekran)","Растянутое изображение (полный экран)",5024
-"Zoom (PanScan)","Aufgezoomt (Pan & Scan)","zoome (Pan & Scan)","zoomato (Pan & Scan)","Ampliada con zoom (Pan & Scan)","zv?t?eno (Pan & Scan)","Ingezoomd (Pan & Scan)","powi?kszony (pan & scan)","Buyutulmu? olarak (Pan & Scan)","Увеличенное изображение (Pan & Scan)",5025
-"Decoded PCM","Dekodiertes PCM","PCM decode","PCM decodificato","PCM decodificado","Dekodovane PCM","Gedecodeerde PCM","Zdekodowany PCM","Kod cozucu PCM","Декодированый ИКМ-сигнал",5026
-"S/PDIF Format","S/PDIF-Format","Format S/PDIF","Formato S/PDIF","Formato S/PDIF","Format S/PDIF","S/PDIF-formaat","Format S/PDIF","S/PDIF formatı","Формат S/PDIF",5027
-"TV Aspect",,,,,,,,,,5028
-"Picture 4:3",,,,,,,,,,5029
-"Letterbox","Letterbox","Letterbox","Letterbox","Letterbox","Letterbox","Letterbox","Letterbox","Letterbox","Letterbox",5030
-"Pan & Scan","Pan & Scan","Pan & Scan","Pan & Scan","Pan & Scan","Pan & Scan","Pan & Scan","pan & scan","Pan & Scan","Pan & Scan",5031
-"Picture 16:9",,,,,,,,,,5032
-"Always 16:9","Immer 16:9","Toujours 16:9","Sempre 16:9","Siempre 16:9","V?dy16:9","Altijd 16:9","Zawsze 16:9","Daima 16:9","Всегда 16:9",5033
-"Scart TV",,,,,,,,,,5034
-"Scart VCR",,,,,,,,,,5035
-"Audio Dolby",,,,,,,,,,5036
-"TV System",,,,,,,,,,5037
-"PAL","PAL","PAL","PAL","PAL","PAL","PAL","PAL","PAL","PAL",5038
-"NTSC","NTSC","NTSC","NTSC","NTSC","NTSC","NTSC","NTSC","NTSC","NTSC",5039
-"Deutsch","Deutsch","Deutsch","Deutsch","Aleman","N?m?ina","Deutsch","niemiecki","Deutsch","Немецкий",5040
-"English","English","English","English","Ingles","Angli?tina","English","angielski","English","Английский",5041
-"Francais","Francais","Francais","Francais","Frances","Francouz?tina","Francais","francuski","Francais","Французский",5042
-"Italiano","Italiano","Italiano","Italiano","Italiano","Ital?tina","Italiano","włoski","Italiano","Итальянский",5043
-"Espanol","Espanol","Espanol","Espanol","Espanol","?pan?l?tina","Espanol","hiszpa?ski","Espanol","Испанский",5044
-"Cestina","Cestina","Cestina","Cestina","Checo","?e?tina","Cestina","czeski","Cestina","Чешский",5045
-"Nederlands","Nederlands","Nederlands","Nederlands","Holandes","Nizozem?tina","Nederlands","holenderski","Nederlands","Нидерландский",5046
-"Polski","Polski","Polski","Polski","Polaco","Pol?tina","Polski","polski","Polski","Польский",5047
-"Turkce","Turkce","Turkce","Turkce","Turco","Ture?tina","Turkce","turecki","Turkce","Турецкий",5048
-"Russian","Russisch","Russe","Russo","Ruso","Ru?tina","Russisch","Rosyjski","Rusca","Русский",5049
-"Subtitle Language",,,,,,,,,,5050
-"Disable","Aus","Arret","Off","Off","Vyp","Uit","Wył.","Kapalı","Выкл",5051
-"Secondary Subtitle Language",,,,,,,,,,5052
-"Hearing Impaired",,,,,,,,,,5053
-"Deep Standby",,,,,,,,,,5054
-"Remote Addr",,,,,,,,,,5055
-"Addr1",,,,,,,,,,5056
-"Addr2",,,,,,,,,,5057
-"Addr3",,,,,,,,,,5058
-"Addr4",,,,,,,,,,5059
-"FPGATest",,,,,,,,,,5060
-"FPGATestMode",,,,,,,,,,5061
-"Number","Nummer","Numero","Numero","Numero","?islo","Nummer","numer","Numara","Номер",5062
-"ChannelChangeMode",,,,,,,,,,5063
-"Fast","Fast","Fast","Fast","Fast","Fast","Fast","Fast","Fast","Fast",5064
-"AfterPMT","AfterPMT","AfterPMT","AfterPMT","AfterPMT","AfterPMT","AfterPMT","AfterPMT","AfterPMT","AfterPMT",5065
-"ConaxParingMode",,,,,,,,,,5066
-"CI Default ForceDecrypt",,,,,,,,,,5067
-"CI ForceDecrypt Mode",,,,,,,,,,5068
-"Manual","Manuell","Manuel","Manuale","Manual","Ru?n?","Handmatig","R?cznie","Manuel","Вручную",5069
-"AlphaCrypt Multiple Decryption",,,,,,,,,,5070
-"Tuner2 Connect Type",,,,,,,,,,5071
-"Separated","Getrennt","Separe","Separato","Separado","Odd?len?","Gescheiden","Oddzielny","Ayrı","Раздельно",5072
-"Loopthrough","Durchgeschleift","Boucle","Passante","En bucle","Prod?eno","Doorgelust","Zap?tlenie","Dongulu","Циклически",5073
-"Tuner2 Signal Config",,,,,,,,,,5074
-"Same with Tuner 1","Wie Tuner 1 ","Comme tuner 1 ","Come tuner 1","Como con sintonizador 1","Jako tuner 1 ","Net als tuner 1","Jak tuner 1 ","Tuner 1’deki gibi","Как тюнер1 ",5075
-"Different from Tuner 1","Unterschied zu Tuner 1","Difference par rapport a tuner 1","Differenza dal tuner 1","Diferencia resp. sintonizador 1","Diference k tuneru 1","Verschilt van tuner 1","Ro?nica w stos. do tunera 1","Tuner 1'e gore fark","В отличие от тюнера 1",5076
-"Tuner1 Type",,,,,,,,,,5077
-"Simple LNB","Einfaches LNB","LNB simple","Simple LNB","LNB simple","Jednoduche LNB","Simpele LNB","Simple LNB","Simple LNB","Simple LNB",5078
-"DiSEqC 1.0","DiSEqC 1.0","DiSEqC 1,0","DiSEqC 1.0","DiSEqC 1,0","DiSEqC 1.0","DiSEqC 1.0","DiSEqC 1.0","DiSEqC 1.0","DiSEqC 1.0",5079
-"DiSEqC 1.1","DiSEqC 1.1","DiSEqC 1,1","DiSEqC 1.1","DiSEqC 1,1","DiSEqC 1,1","DiSEqC 1.1","DiSEqC 1.1","DiSEqC 1.1","DiSEqC 1.1",5080
-"Motorized, DiSEqC 1.2",,,,,,,,,,5081
-"Motorized, USALS",,,,,,,,,,5082
-"OneCable",,,,,,,,,,5083
-"Tuner2 Type",,,,,,,,,,5084
-"Channel Search Mode","Programmsuchlauf-Modus","mode recherche de programme","Modo ciclo di ricerca dei programmi","Modo busqueda canales","re?im vyhledavani program?","Modus voor Zoeken naar programma's","Tryb wyszukiwania programow","Program arama modu","Режим поиска программ",5085
-"free only","nur freie","uniquement en clair","solo in chiaro","solo sin codificar","jen volne","alleen vrije","tylko darmowe","Sadece ?ifresizler","только свободные",5086
-"scrambled only","nur verschlusselte","uniquement cryptes","solo criptato","solo codificados","jen kodovane","alleen gecodeerde","tylko kodowane","Sadece ?ifreliler","только кодированные",5087
-"Network Search","NIT-Suchlauf","Recherche reseau","Ricerca rete","Busqueda de red","Vyhledavani sit?","Zoeken naar netwerken","Szukaj sieci","?ebeke arama","Поиск в сети",5088
-"DVB Type","DVB-Typ","Type de DVB","Tipo DVB","Tipo DVB","Typ DVB","DVB-type","typ DVB","DVB tipi","Тип DVB",5089
-"DVB-S (SD)",,,,,,,,,,5090
-"DVB-S2 (HD)",,,,,,,,,,5091
-"FEC","Fehlerrate","Taux d'erreurs","Tasso di errore","Tasa de errores","Chybova rychlost","Foutenfrequentie","Wska?nik bł?du","Hata oranı","Частота ошибок",5092
-"QPSK 2/3",,,,,,,,,,5093
-"QPSK 3/4",,,,,,,,,,5094
-"QPSK 3/5",,,,,,,,,,5095
-"QPSK 4/5",,,,,,,,,,5096
-"QPSK 5/6",,,,,,,,,,5097
-"QPSK 8/9",,,,,,,,,,5098
-"QPSK 9/10",,,,,,,,,,5099
-"8PSK 2/3",,,,,,,,,,5100
-"8PSK 3/4",,,,,,,,,,5101
-"8PSK 3/5",,,,,,,,,,5102
-"8PSK 5/6",,,,,,,,,,5103
-"8PSK 8/9",,,,,,,,,,5104
-"8PSK 9/10",,,,,,,,,,5105
-"Polarisation","Polarisation","Polarisation","Polarizzazione","Polarizacion","Polarizace","Polarisatie","polaryzacja","Polarizasyon","Поляризация",5106
-"Summer Time","Sommerzeit","Heure d'ete","Ora legale","Hora de verano","Letni ?as","Zomertijd","Czas letni","Yaz saati","Летнее время",5107
-"Lock Mainmenu","Hauptmenu sperren","Verrouiller le menu principal","Blocca menu principale","Bloquear menu principal","blokovani hlavniho menu","Hoofdmenu blokkeren","Blokowanie menu głownego","Ana menuyu kilitle","Блокировка главного меню",5108
-"Lock Receiver","Receiver sperren","Verrouiller le recepteur","Blocca ricevitore","Bloquear el receptor","Blokovani p?ijima?e","Receiver blokkeren","Blokowanie odbiornika","Alıcıyı kilitle","Блокировка ресивера",5109
-"Age Restricted",,,,,,,,,,5110
-"Sleep Timer","Sleep Timer","Mise en veille","Sleep Timer","Sleep Timer","Sleep Timer","Sleep Timer","Sleep Timer","Uyku zamanlayıcı","Таймер ночного режима",5111
-"Functional Range","Funktionsumfang","Fonctionnalites","Funzionalita","Alcance de la funcion","Rozsah funkci","Functieomvang","Funkcje odbiornika","Fonksiyon kapsamı","Объем функций",5112
-"High","Hoch","Haut","Elevato","Alto","Vysoky","Hoog","Wysoka","Yuksek","Высокий",5113
-"Middle","Mittel","Moyen","Medio","Medio","St?edni","Gemiddeld","?rednio","Orta","Средний",5114
-"Low","Gering","Bas","Basso","reducido","Malo","Laag","Mała","Du?uk","Мало",5115
-"Channel Banner Duration","Anzeigedauer Programm-Meldung","Duree d'affichage du message transmis pour le programme","Durata di visualizzazione della segnalazione di programma","Duracion visualizacion mensaje canal","Doba zobrazeni hla?eni programu","Weergaveduur programmamelding","Czas wy?wietlania komunikatow OSD","Program mesajı gosterim suresi","Продолжительность показа сообщения о программе",5116
-"Playback Banner Duration","Anzeigedauer Wiedergabe-Meldung","Duree d'affichage du message de lecture","Durata di visualizzazione della segnalazione di riproduzione","Duracion de la visualizacion, mensaje de reproduccion","Doba zobrazeni hla?eni reprodukce","Weergaveduur weergavemelding","Czas wy?wietlania komunikatow odtwarzania","Oynatma mesajı gosterim suresi","Продолжительность показа сообщения о воспроизведении",5117
-"Display Volume",,,,,,,,,,5118
-"Front Display Brightness","Frontdisplay-Helligkeit","luminosite de l'afficheur avant","Luminosita display frontale","Luminosidad pantalla frontal","Jas p?edniho displeje","Helderheid frontdisplay","Jasno?? wy?wietlacza","On ekran parlaklı?ı","Яркость переднего дисплея",5119
-"Bright","Hell","Clair","Chiaro","Claro","Jasne","Helder","Jasno","Parlak","Светлый",5120
-"Dark","Dunkel","Sombre","Scuro","Oscuro","Tmave","Donker","Ciemno","Karanlık","Темный",5121
-"EPG Grabbing","EPG-Aktualisierung","Mise a jour EPG","Aggiornamento EPG","Actualizacion de la EPG (avance de programas)","Aktualizace EPG","EPG-actualisering","Aktualizacja EPG","EPG guncellemesi","Актуализация EPG",5122
-"tvtv",,,,,,,,,,5123
-"SI",,,,,,,,,,5124
-"Start View","Start-Bildschirm","ecran d'accueil","Schermo di avvio","Pantalla de inicio","Obrazovka p?i za?atku","Startweergave","Ekran pocz?tkowy","Ba?langıc ekranı","Начальный экран",5125
-"Current","Jetzt lauft","Emission en cours","In corso","En ejecucion","Nyni b??i","Momenteel","Aktualnie trwa","?imdi calı?ıyor","Как раз идет",5126
-"Schedule","Vorschau","Apercu","Anteprima","Vista preliminar","P?ehled","Programmaoverzicht","Podgl?d","Onizleme","Просмотр",5127
-"Pre-Rec Time",,,,,,,,,,5128
-"Post-Rec Time",,,,,,,,,,5129
-"Automatic Timeshift","Automatischer Timeshift","Enregistrement differe automatique","Differita automatica","Timeshift automatico","Automaticky Timeshift","Automatische timeshift","Automatyczny Timeshift","Otomatik zaman kaydırma","Автоматический сдвиг времени",5130
-"Timeshift Buffer Size","Timeshift-Große","taille enregistrement differe","Grandezza memoria differita","Magnitud Timeshift","Velikost Timeshift","Timeshift-grootte","Wielko?? Timeshift","Zaman kaydırma boyutu","Величина сдвига времени",5131
-"Default Rec Duration",,,,,,,,,,5132
-"Time Mode",,,,,,,,,,5133
-"Time Installation",,,,,,,,,,5134
-"OneCable Type",,,,,,,,,,5135
-"EXR ... / EXU ...","EXR ... / EXU ...","EXR ... / EXU ...","EXR ... / EXU ...","EXR ... / EXU ...","EXR ... / EXU ...","EXR ... / EXU ...","EXR ... / EXU ...","EXR ... / EXU ...","EXR ... / EXU ...",5136
-"UAS 481","UAS 481",,"UAS 481","UAS 481","UAS 481","UAS 481","UAS 481","UAS 481","UAS 481",5137
-"MDU","Kanal mit PIN sichern","Proteger le canal avec un PIN","Blocca il canale con il PIN","Proteger canal con PIN","Zaji?t?ni kanalu pomoci kodu PIN","Kanaal met pincode beveiligen","Zabezpiecz kanał kodem PIN","Kanalı PIN ile koruma","Блокировать канал кодом PIN",5138
-"Stop on Signal","Bei Signal stoppen","Arreter pour signal","Stop al segnale","Parar ante senal","P?i signalu zastavit","Stoppen bij signaal","Zatrzyma? po sygnale","Sinyal verildi?inde dur","При сигнале остановить",5139
-"Local Time Offset","Lokaler UTC-Offset","Decalage heure UTC locale","Offset UTC locale","Offset local UTC","Mistni UTC-Offset","Lokale UTC-offset instellen","Ro?n. lokaln. UTC","Yerel UTC ofseti","Локальное смещение UTC",5140
-"Motor Control Tuner1",,,,,,,,,,5141
-"DiSEqC 1.2","DiSEqC 1.2","DiSEqC 1,2","DiSEqC 1.2","DiSEqC 1,2","DiSEqC 1,2","DiSEqC 1.2","DiSEqC 1.2","DiSEqC 1.2","DiSEqC 1.2",5142
-"DiSEqC 1.3","DiSEqC 1.3","DiSEqC 1,3","DiSEqC 1.3","DiSEqC 1,3","DiSEqC 1,3","DiSEqC 1.3","DiSEqC 1.3","DiSEqC 1.3","DiSEqC 1.3",5143
-"Motor Control Tuner2",,,,,,,,,,5144
-"Band","Band","Bande","Banda","Banda","Pasmo","Band","Pasmo","Bant","Полоса частот",5145
-"Ku Band","Ku-Band","Bande Ku","Banda Ku","Banda Ku","Pasmo Ku","Ku-band","Pasmo Ku","Ku bandı","Ku-полоса",5146
-"C Band","C-Band","Bande C","Banda C","Banda C","Pasmo C","C-band","Pasmo C","C bandı","С-полоса",5147
-"Country",,,,,,,,,,5148
-"UAS 481 SCR",,,,,,,,,,5149
-"EXR EXU SCR",,,,,,,,,,5150
-"Use OneCable",,,,,,,,,,5151
-"Fan Control","Luftersteuerung","commande de ventilateur","Comando ventola","Control del ventilador","?izeni ventilatoru","Ventilatorregeling","Sterowanie wentylatorem","Fan kumandası","Управление вентилятором",5152
-"Audio Delay","Audio-Verzogerung","Temporisation audio","Ritardo audio","Retardo de audio","Zpo?d?ni zvuku","Audiovertraging","Opo?nienie audio","Otomatik geciktirme","Аудио-задержка",5153
-"Shuffle","Zufall","Hasard","Casuale","Casualidad","Nahoda","Willekeurig","Przypadek","Rasgele","Случайно",5154
-"Repeat","Wiederholen","Repeter","Ripeti","Repetir","Opakovat","Herhalen","Powtorz","Tekrarla","Повторить",5155
-"Playback Duration",,,,,,,,,,5156
-"FTP",,,,,,,,,,5157
-"4G_Limit",,,,,,,,,,5158
-"UPnP",,,,,,,,,,5159
-"RTP Packet",,,,,,,,,,5160
-"Audio Mute",,,,,,,,,,5161
-"Automatic Software Download",,,,,,,,,,5162
-"Conax New Message",,,,,,,,,,5163
-"Age Limit",,,,,,,,,,5164
-"No Limit",,,,,,,,,,5165
-"Background Theme",,,,,,,,,,5166
-"GrayScale",,,,,,,,,,5167
-"Violet",,,,,,,,,,5168
-"Autumn",,,,,,,,,,5169
-"Wine",,,,,,,,,,5170
-"Sea",,,,,,,,,,5171
-"Forest",,,,,,,,,,5172
-"Transparency",,,,,,,,,,5173
-"Zapping Mode",,,,,,,,,,5174
-"Favorite",,"Favoris",,,,,,,,5175
-"Network",,"Reseau",,,,,,,,5176
-"Cas",,,,,,,,,,5177
-"Recording List Mode",,,,,,,,,,5178
-"Folder",,,,,,,,,,5179
-"Category",,,,,,,,,,5180
-"Priority",,,,,,,,,,5181
-"Recording List Sort",,,,,,,,,,5182
-"Title",,,,,,,,,,5183
-"Antenna 5V",,,,,,,,,,5184
-"EPG Mode",,,,,,,,,,5185
-"List",,,,,,,,,,5186
-"Grid",,,,,,,,,,5187
-"Automatic Standby Decrypt",,,,,,,,,,5188
-"Use WLAN",,,,,,,,,,5189
-"FTP Transaction",,,,,,,,,,5190
-"Disabled","Aus","Arret","Off","Off","Vyp","Uit","Wył.","Kapalı","Выкл",5191
-"Enabled",,,,,,,,,,5192
-"UPNP Transaction",,,,,,,,,,5193
-"Media Browser Filter",,,,,,,,,,5194
-"All Media",,,,,,,,,,5195
-"Music",,,,,,,,,,5196
-"Photo",,,,,,,,,,5197
-"Movie",,,,,,,,,,5198
-"Auto EPG",,,,,,,,,,5199
-"EPG Grab Interval",,,,,,,,,,5200
-"Auto EPG Channel",,,,,,,,,,5201
-"Channel Number",,,,,,,,,,5202
-"Favorites",,,,,,,,,,5203
-"EPG Grid Unit",,,,,,,,,,5204
-"EPG Grab Enabled",,,,,,,,,,5205
-"Make Dedicated HDD",,,,,,,,,,5206
-"Started",,,,,,,,,,5207
-"Decided",,,,,,,,,,5208
-"Viewing Tuner Free",,,,,,,,,,5209
-"FrontDisplay Function",,,,,,,,,,5210
-"Clock",,,,,,,,,,5211
-"Dynamic SI Handling",,,,,,,,,,5212
-"Simple MP3",,,,,,,,,,5213
-"MP3 Player Screensaver",,,,,,,,,,5214
-"Channel Order Country",,,,,,,,,,5215
-"DE",,,,,,,,,,5216
-"AT",,,,,,,,,,5217
-"Viaccess Console",,,,,,,,,,5218
-"Viaccess FreeChannel Lock",,,,,,,,,,5219
-"Viaccess SChip Mode",,,,,,,,,,5220
-"Inactive",,,,,,,,,,5221
-"Session",,,,,,,,,,5222
-"Locked",,,,,,,,,,5223
-"Force 576i",,,,,,,,,,5224
-"HDCP",,,,,,,,,,5225
-"Viaccess Standby",,,,,,,,,,5226
-"Viaccess StopFreeChannels",,,,,,,,,,5227
-"Viaccess HasAlarm",,,,,,,,,,5228
-"Youtube Feed",,,,,,,,,,5229
-"Top Rated",,,,,,,,,,5230
-"Top Favorites",,,,,,,,,,5231
-"Most Viewed",,,,,,,,,,5232
-"Most Popular",,,,,,,,,,5233
-"Most Recent",,,,,,,,,,5234
-"Most Discussed",,,,,,,,,,5235
-"Most Responded",,,,,,,,,,5236
-"Recently Featured",,,,,,,,,,5237
-"Watch On Mobile",,,,,,,,,,5238
-"Youtube Region",,,,,,,,,,5239
-"Global",,,,,,,,,,5240
-"Australia",,,,,,,,,,5241
-"Brazil",,,,,,,,,,5242
-"Canada",,,,,,,,,,5243
-"Czech Republic",,,,,,,,,,5244
-"France",,,,,,,,,,5245
-"Germany",,,,,,,,,,5246
-"Great Britain",,,,,,,,,,5247
-"Holland",,,,,,,,,,5248
-"Hong Kong",,,,,,,,,,5249
-"India",,,,,,,,,,5250
-"Ireland",,,,,,,,,,5251
-"Israel",,,,,,,,,,5252
-"Italy",,,,,,,,,,5253
-"Japan",,,,,,,,,,5254
-"Mexico",,,,,,,,,,5255
-"New Zealand",,,,,,,,,,5256
-"Poland",,,,,,,,,,5257
-"Russia",,,,,,,,,,5258
-"South Korea",,,,,,,,,,5259
-"Spain",,,,,,,,,,5260
-"Sweden",,,,,,,,,,5261
-"Taiwan",,,,,,,,,,5262
-"United States",,,,,,,,,,5263
-"Youtube Time",,,,,,,,,,5264
-"All Time",,,,,,,,,,5265
-"Today",,,,,,,,,,5266
-"This Week",,,,,,,,,,5267
-"This Month",,,,,,,,,,5268
-"Youtube Category",,,,,,,,,,5269
-"Entertainment",,,,,,,,,,5270
-"Shows",,,,,,,,,,5271
-"Games",,,,,,,,,,5272
-"Film",,,,,,,,,,5273
-"News",,,,,,,,,,5274
-"Tech",,,,,,,,,,5275
-"Comedy",,,,,,,,,,5276
-"Youtube Quality",,,,,,,,,,5277
-"SQ",,,,,,,,,,5278
-"HQ",,,,,,,,,,5279
-"Media Player Jump",,,,,,,,,,5280
-"FTA Scan",,,,,,,,,,5281
-"Scan Mode",,,,,,,,,,5282
-"Individual",,,,,,,,,,5283
-"Collectif",,,,,,,,,,5284
-"Primary Polarization",,,,,,,,,,5285
-"Secondary Polarization",,,,,,,,,,5286
-"Primary FEC",,,,,,,,,,5287
-"Secondary FEC",,,,,,,,,,5288
-"Primary DVB Type",,,,,,,,,,5289
-"Secondary DVB Type",,,,,,,,,,5290
-"Canalplus BAT DVBType",,,,,,,,,,5291
-"Canalplus BAT Polarization",,,,,,,,,,5292
-"Canalplus BAT FEC",,,,,,,,,,5293
-"Record Management",,,,,,,,,,5294
-"HDMI Color Space",,,,,,,,,,5295
-"YUV",,,,,,,,,,5296
-"Download Polarization",,,,,,,,,,5297
-"Download FEC",,,,,,,,,,5298
-"Download DVB Type",,,,,,,,,,5299
-"Need SSU",,,,,,,,,,5300
-"NO",,,,,,,,,,5301
-"YES",,,,,,,,,,5302
-"Font Size",,,,,,,,,,5303
-"Power Save Mode",,,,,,,,,,5304
-"HDDRepartition",,,,,,,,,,5305
-"Disk Format Type",,,,,,,,,,5306
-"Diseqc Mode",,,,,,,,,,5307
-"1 of 4","1 von 4","1 de 4","1 di 4","1 de 4","1 ze 4","1 van 4","1 z 4",,"1 из 4",5308
-"2 of 4","2 von 4","2 de 4","2 di 4","2 de 4","2 ze 4","2 van 4","2 z 4",,"2 из 4",5309
-"3 of 4","3 von 4","3 de 4","3 di 4","3 de 4","3 ze 4","3 van 4","3 z 4",,"3 из 4",5310
-"4 of 4","4 von 4","4 de 4","4 di 4","4 de 4","4 ze 4","4 van 4","4 z 4",,"4 из 4",5311
-"Mini A",,,,,,,,,,5312
-"Mini B",,,,,,,,,,5313
-"Single Frequency",,,,,,,,,,5314
-"One Cable Action",,,,,,,,,,5315
-"Set Current Position for East Limit",,,,,,,,,,5316
-"Set Current Position for West Limit",,,,,,,,,,5317
-"Reset Channel List","Programmliste zurucksetzen","Reinitialiser la liste des programmes","Ripristina elenco programmi","Reponer lista de canales","Vynulovat seznam program?","Programmalijst resetten","Cofanie listy programow","Program listesini sıfırla","Сбросить список программ",5318
-"Reset Favorite Add-ons",,,,,,,,,,5319
-"Reset Configure Setting",,,,,,,,,,5320
+"DO YOU WANT TO FORMAT TO YOUR HDD DRIVE?",,,,,,,,,,575
+"Media Archive Format",,,,,,,,,,576
+"Press the button to format Media section in your hard drive",,,,,,,,,,577
+"Press the button to format Record section in your hard drive",,,,,,,,,,578
+"Record Archive Format",,,,,,,,,,579
+"Press the button to format all section in your hard drive",,,,,,,,,,580
+"Last ServiceType",,,,,,,,,,2001
+"TV","TV","TV","TV","TV","TV","TV","TV","TV","ТВ",2002
+"Radio","Radio","Radio","Radio","Radio","Rozhlas","Radio","Radio","Radyo","Радио",2003
+"CurrentVoutResolution",,,,,,,,,,2004
+"Normal","Normal","Normale","Normale","Normal","Normalni","Normaal","zwykły","Normal","Нормально",2005
+"First","Zuerst","Tout d'abord","Prima","Primero","Nejprve","Eerst","Najpierw","Once","Вначале",2006
+"FTI",,,,,,,,,,2007
+"Serial kbd",,,,,,,,,,2008
+"Wakeup Mode",,,,,,,,,,2009
+"Wakeup From RCU","Wakeup From RCU","Wakeup From RCU","Wakeup From RCU","Wakeup From RCU","Wakeup From RCU","Wakeup From RCU","Wakeup From RCU","Wakeup From RCU","Wakeup From RCU",2010
+"Wakeup from Button","Wakeup from Button","Wakeup from Button","Wakeup from Button","Wakeup from Button","Wakeup from Button","Wakeup from Button","Wakeup from Button","Wakeup from Button","Wakeup",2011
+"Wakeup from Timer","Wakeup from Timer","Wakeup from Timer","Wakeup from Timer","Wakeup from Timer","Wakeup from Timer","Wakeup from Timer","Wakeup from Timer","Wakeup from Timer","Wakeup from Timer",2012
+"Wakeup from AC","Wakeup from AC","Wakeup from AC","Wakeup from AC","Wakeup from AC","Wakeup from AC","Wakeup from AC","Wakeup from AC","Wakeup from AC","Wakeup from AC",2013
+"Log Option",,,,,,,,,,2014
+"No Log",,,,,,,,,,2015
+"Log Serial",,,,,,,,,,2016
+"Log File",,,,,,,,,,2017
+"Video Output",,,,,,,,,,2018
+"HDMI / YUV","HDMI / YUV","HDMI/YUV","HDMI / YUV","HDMI/YUV","HDMI / YUV","HDMI / YUV","HDMI/YUV","HDMI / YUV","HDMI/YUV",2019
+"SCART","SCART","SCART","SCART","SCART","SCART","SCART","SCART","SCART","SCART",2020
+"HDMI Format",,,,,,,,,,2021
+"Show 4:3",,,,,,,,,,2022
+"Normal (Pillarbox)","Normal (Pillarbox)","normal (Pillarbox)","Normale (Pillarbox)","Normal (Pillarbox)","Normalni (Pillarbox)","Normaal (pillarbox)","normalny (pilarbox)","Normal (Pillarbox)","Нормальное изображение (Pillarbox)",2023
+"Stretched (Fullscreen)","Gestreckt (Vollbild)","allonge (plein ecran)","Allungato (visualizzazione estesa)","Estirada (pantalla completa)","Rozta?ene (cely obraz)","Gestrekt (volledig scherm)","rozci?gni?ty (pełny ekran)","Geni? ekran (Tam ekran)","Растянутое изображение (полный экран)",2024
+"Zoom (PanScan)","Aufgezoomt (Pan & Scan)","zoome (Pan & Scan)","zoomato (Pan & Scan)","Ampliada con zoom (Pan & Scan)","zv?t?eno (Pan & Scan)","Ingezoomd (Pan & Scan)","powi?kszony (pan & scan)","Buyutulmu? olarak (Pan & Scan)","Увеличенное изображение (Pan & Scan)",2025
+"Decoded PCM","Dekodiertes PCM","PCM decode","PCM decodificato","PCM decodificado","Dekodovane PCM","Gedecodeerde PCM","Zdekodowany PCM","Kod cozucu PCM","Декодированый ИКМ-сигнал",2026
+"S/PDIF Format","S/PDIF-Format","Format S/PDIF","Formato S/PDIF","Formato S/PDIF","Format S/PDIF","S/PDIF-formaat","Format S/PDIF","S/PDIF formatı","Формат S/PDIF",2027
+"TV Aspect",,,,,,,,,,2028
+"Picture 4:3",,,,,,,,,,2029
+"Letterbox","Letterbox","Letterbox","Letterbox","Letterbox","Letterbox","Letterbox","Letterbox","Letterbox","Letterbox",2030
+"Pan & Scan","Pan & Scan","Pan & Scan","Pan & Scan","Pan & Scan","Pan & Scan","Pan & Scan","pan & scan","Pan & Scan","Pan & Scan",2031
+"Picture 16:9",,,,,,,,,,2032
+"Always 16:9","Immer 16:9","Toujours 16:9","Sempre 16:9","Siempre 16:9","V?dy16:9","Altijd 16:9","Zawsze 16:9","Daima 16:9","Всегда 16:9",2033
+"Scart TV",,,,,,,,,,2034
+"Scart VCR",,,,,,,,,,2035
+"Audio Dolby",,,,,,,,,,2036
+"TV System",,,,,,,,,,2037
+"PAL","PAL","PAL","PAL","PAL","PAL","PAL","PAL","PAL","PAL",2038
+"NTSC","NTSC","NTSC","NTSC","NTSC","NTSC","NTSC","NTSC","NTSC","NTSC",2039
+"Deutsch","Deutsch","Deutsch","Deutsch","Aleman","N?m?ina","Deutsch","niemiecki","Deutsch","Немецкий",2040
+"English","English","English","English","Ingles","Angli?tina","English","angielski","English","Английский",2041
+"Francais","Francais","Francais","Francais","Frances","Francouz?tina","Francais","francuski","Francais","Французский",2042
+"Italiano","Italiano","Italiano","Italiano","Italiano","Ital?tina","Italiano","włoski","Italiano","Итальянский",2043
+"Espanol","Espanol","Espanol","Espanol","Espanol","?pan?l?tina","Espanol","hiszpa?ski","Espanol","Испанский",2044
+"Cestina","Cestina","Cestina","Cestina","Checo","?e?tina","Cestina","czeski","Cestina","Чешский",2045
+"Nederlands","Nederlands","Nederlands","Nederlands","Holandes","Nizozem?tina","Nederlands","holenderski","Nederlands","Нидерландский",2046
+"Polski","Polski","Polski","Polski","Polaco","Pol?tina","Polski","polski","Polski","Польский",2047
+"Turkce","Turkce","Turkce","Turkce","Turco","Ture?tina","Turkce","turecki","Turkce","Турецкий",2048
+"Russian","Russisch","Russe","Russo","Ruso","Ru?tina","Russisch","Rosyjski","Rusca","Русский",2049
+"Subtitle Language",,,,,,,,,,2050
+"Disable","Aus","Arret","Off","Off","Vyp","Uit","Wył.","Kapalı","Выкл",2051
+"Secondary Subtitle Language",,,,,,,,,,2052
+"Hearing Impaired",,,,,,,,,,2053
+"Deep Standby",,,,,,,,,,2054
+"Remote Addr",,,,,,,,,,2055
+"Addr1",,,,,,,,,,2056
+"Addr2",,,,,,,,,,2057
+"Addr3",,,,,,,,,,2058
+"Addr4",,,,,,,,,,2059
+"FPGATest",,,,,,,,,,2060
+"FPGATestMode",,,,,,,,,,2061
+"Number","Nummer","Numero","Numero","Numero","?islo","Nummer","numer","Numara","Номер",2062
+"ChannelChangeMode",,,,,,,,,,2063
+"Fast","Fast","Fast","Fast","Fast","Fast","Fast","Fast","Fast","Fast",2064
+"AfterPMT","AfterPMT","AfterPMT","AfterPMT","AfterPMT","AfterPMT","AfterPMT","AfterPMT","AfterPMT","AfterPMT",2065
+"ConaxParingMode",,,,,,,,,,2066
+"CI Default ForceDecrypt",,,,,,,,,,2067
+"CI ForceDecrypt Mode",,,,,,,,,,2068
+"Manual","Manuell","Manuel","Manuale","Manual","Ru?n?","Handmatig","R?cznie","Manuel","Вручную",2069
+"AlphaCrypt Multiple Decryption",,,,,,,,,,2070
+"Tuner2 Connect Type",,,,,,,,,,2071
+"Separated","Getrennt","Separe","Separato","Separado","Odd?len?","Gescheiden","Oddzielny","Ayrı","Раздельно",2072
+"Loopthrough","Durchgeschleift","Boucle","Passante","En bucle","Prod?eno","Doorgelust","Zap?tlenie","Dongulu","Циклически",2073
+"Tuner2 Signal Config",,,,,,,,,,2074
+"Same with Tuner 1","Wie Tuner 1 ","Comme tuner 1 ","Come tuner 1","Como con sintonizador 1","Jako tuner 1 ","Net als tuner 1","Jak tuner 1 ","Tuner 1’deki gibi","Как тюнер1 ",2075
+"Different from Tuner 1","Unterschied zu Tuner 1","Difference par rapport a tuner 1","Differenza dal tuner 1","Diferencia resp. sintonizador 1","Diference k tuneru 1","Verschilt van tuner 1","Ro?nica w stos. do tunera 1","Tuner 1'e gore fark","В отличие от тюнера 1",2076
+"Tuner1 Type",,,,,,,,,,2077
+"Simple LNB","Einfaches LNB","LNB simple","Simple LNB","LNB simple","Jednoduche LNB","Simpele LNB","Simple LNB","Simple LNB","Simple LNB",2078
+"DiSEqC 1.0","DiSEqC 1.0","DiSEqC 1,0","DiSEqC 1.0","DiSEqC 1,0","DiSEqC 1.0","DiSEqC 1.0","DiSEqC 1.0","DiSEqC 1.0","DiSEqC 1.0",2079
+"DiSEqC 1.1","DiSEqC 1.1","DiSEqC 1,1","DiSEqC 1.1","DiSEqC 1,1","DiSEqC 1,1","DiSEqC 1.1","DiSEqC 1.1","DiSEqC 1.1","DiSEqC 1.1",2080
+"Motorized, DiSEqC 1.2",,,,,,,,,,2081
+"Motorized, USALS",,,,,,,,,,2082
+"OneCable",,,,,,,,,,2083
+"Tuner2 Type",,,,,,,,,,2084
+"Channel Search Mode","Programmsuchlauf-Modus","mode recherche de programme","Modo ciclo di ricerca dei programmi","Modo busqueda canales","re?im vyhledavani program?","Modus voor Zoeken naar programma's","Tryb wyszukiwania programow","Program arama modu","Режим поиска программ",2085
+"free only","nur freie","uniquement en clair","solo in chiaro","solo sin codificar","jen volne","alleen vrije","tylko darmowe","Sadece ?ifresizler","только свободные",2086
+"scrambled only","nur verschlusselte","uniquement cryptes","solo criptato","solo codificados","jen kodovane","alleen gecodeerde","tylko kodowane","Sadece ?ifreliler","только кодированные",2087
+"Network Search","NIT-Suchlauf","Recherche reseau","Ricerca rete","Busqueda de red","Vyhledavani sit?","Zoeken naar netwerken","Szukaj sieci","?ebeke arama","Поиск в сети",2088
+"DVB Type","DVB-Typ","Type de DVB","Tipo DVB","Tipo DVB","Typ DVB","DVB-type","typ DVB","DVB tipi","Тип DVB",2089
+"DVB-S (SD)",,,,,,,,,,2090
+"DVB-S2 (HD)",,,,,,,,,,2091
+"FEC","Fehlerrate","Taux d'erreurs","Tasso di errore","Tasa de errores","Chybova rychlost","Foutenfrequentie","Wska?nik bł?du","Hata oranı","Частота ошибок",2092
+"QPSK 2/3",,,,,,,,,,2093
+"QPSK 3/4",,,,,,,,,,2094
+"QPSK 3/5",,,,,,,,,,2095
+"QPSK 4/5",,,,,,,,,,2096
+"QPSK 5/6",,,,,,,,,,2097
+"QPSK 8/9",,,,,,,,,,2098
+"QPSK 9/10",,,,,,,,,,2099
+"8PSK 2/3",,,,,,,,,,2100
+"8PSK 3/4",,,,,,,,,,2101
+"8PSK 3/5",,,,,,,,,,2102
+"8PSK 5/6",,,,,,,,,,2103
+"8PSK 8/9",,,,,,,,,,2104
+"8PSK 9/10",,,,,,,,,,2105
+"Polarisation","Polarisation","Polarisation","Polarizzazione","Polarizacion","Polarizace","Polarisatie","polaryzacja","Polarizasyon","Поляризация",2106
+"Summer Time","Sommerzeit","Heure d'ete","Ora legale","Hora de verano","Letni ?as","Zomertijd","Czas letni","Yaz saati","Летнее время",2107
+"Lock Mainmenu","Hauptmenu sperren","Verrouiller le menu principal","Blocca menu principale","Bloquear menu principal","blokovani hlavniho menu","Hoofdmenu blokkeren","Blokowanie menu głownego","Ana menuyu kilitle","Блокировка главного меню",2108
+"Lock Receiver","Receiver sperren","Verrouiller le recepteur","Blocca ricevitore","Bloquear el receptor","Blokovani p?ijima?e","Receiver blokkeren","Blokowanie odbiornika","Alıcıyı kilitle","Блокировка ресивера",2109
+"Age Restricted",,,,,,,,,,2110
+"Sleep Timer","Sleep Timer","Mise en veille","Sleep Timer","Sleep Timer","Sleep Timer","Sleep Timer","Sleep Timer","Uyku zamanlayıcı","Таймер ночного режима",2111
+"Functional Range","Funktionsumfang","Fonctionnalites","Funzionalita","Alcance de la funcion","Rozsah funkci","Functieomvang","Funkcje odbiornika","Fonksiyon kapsamı","Объем функций",2112
+"High","Hoch","Haut","Elevato","Alto","Vysoky","Hoog","Wysoka","Yuksek","Высокий",2113
+"Middle","Mittel","Moyen","Medio","Medio","St?edni","Gemiddeld","?rednio","Orta","Средний",2114
+"Low","Gering","Bas","Basso","reducido","Malo","Laag","Mała","Du?uk","Мало",2115
+"Channel Banner Duration","Anzeigedauer Programm-Meldung","Duree d'affichage du message transmis pour le programme","Durata di visualizzazione della segnalazione di programma","Duracion visualizacion mensaje canal","Doba zobrazeni hla?eni programu","Weergaveduur programmamelding","Czas wy?wietlania komunikatow OSD","Program mesajı gosterim suresi","Продолжительность показа сообщения о программе",2116
+"Playback Banner Duration","Anzeigedauer Wiedergabe-Meldung","Duree d'affichage du message de lecture","Durata di visualizzazione della segnalazione di riproduzione","Duracion de la visualizacion, mensaje de reproduccion","Doba zobrazeni hla?eni reprodukce","Weergaveduur weergavemelding","Czas wy?wietlania komunikatow odtwarzania","Oynatma mesajı gosterim suresi","Продолжительность показа сообщения о воспроизведении",2117
+"Display Volume",,,,,,,,,,2118
+"Front Display Brightness","Frontdisplay-Helligkeit","luminosite de l'afficheur avant","Luminosita display frontale","Luminosidad pantalla frontal","Jas p?edniho displeje","Helderheid frontdisplay","Jasno?? wy?wietlacza","On ekran parlaklı?ı","Яркость переднего дисплея",2119
+"Bright","Hell","Clair","Chiaro","Claro","Jasne","Helder","Jasno","Parlak","Светлый",2120
+"Dark","Dunkel","Sombre","Scuro","Oscuro","Tmave","Donker","Ciemno","Karanlık","Темный",2121
+"EPG Grabbing","EPG-Aktualisierung","Mise a jour EPG","Aggiornamento EPG","Actualizacion de la EPG (avance de programas)","Aktualizace EPG","EPG-actualisering","Aktualizacja EPG","EPG guncellemesi","Актуализация EPG",2122
+"tvtv",,,,,,,,,,2123
+"SI",,,,,,,,,,2124
+"Start View","Start-Bildschirm","ecran d'accueil","Schermo di avvio","Pantalla de inicio","Obrazovka p?i za?atku","Startweergave","Ekran pocz?tkowy","Ba?langıc ekranı","Начальный экран",2125
+"Current","Jetzt lauft","Emission en cours","In corso","En ejecucion","Nyni b??i","Momenteel","Aktualnie trwa","?imdi calı?ıyor","Как раз идет",2126
+"Schedule","Vorschau","Apercu","Anteprima","Vista preliminar","P?ehled","Programmaoverzicht","Podgl?d","Onizleme","Просмотр",2127
+"Pre-Rec Time",,,,,,,,,,2128
+"Post-Rec Time",,,,,,,,,,2129
+"Automatic Timeshift","Automatischer Timeshift","Enregistrement differe automatique","Differita automatica","Timeshift automatico","Automaticky Timeshift","Automatische timeshift","Automatyczny Timeshift","Otomatik zaman kaydırma","Автоматический сдвиг времени",2130
+"Timeshift Buffer Size","Timeshift-Große","taille enregistrement differe","Grandezza memoria differita","Magnitud Timeshift","Velikost Timeshift","Timeshift-grootte","Wielko?? Timeshift","Zaman kaydırma boyutu","Величина сдвига времени",2131
+"Default Rec Duration",,,,,,,,,,2132
+"Time Mode",,,,,,,,,,2133
+"Time Installation",,,,,,,,,,2134
+"OneCable Type",,,,,,,,,,2135
+"EXR ... / EXU ...","EXR ... / EXU ...","EXR ... / EXU ...","EXR ... / EXU ...","EXR ... / EXU ...","EXR ... / EXU ...","EXR ... / EXU ...","EXR ... / EXU ...","EXR ... / EXU ...","EXR ... / EXU ...",2136
+"UAS 481","UAS 481",,"UAS 481","UAS 481","UAS 481","UAS 481","UAS 481","UAS 481","UAS 481",2137
+"MDU","Kanal mit PIN sichern","Proteger le canal avec un PIN","Blocca il canale con il PIN","Proteger canal con PIN","Zaji?t?ni kanalu pomoci kodu PIN","Kanaal met pincode beveiligen","Zabezpiecz kanał kodem PIN","Kanalı PIN ile koruma","Блокировать канал кодом PIN",2138
+"Stop on Signal","Bei Signal stoppen","Arreter pour signal","Stop al segnale","Parar ante senal","P?i signalu zastavit","Stoppen bij signaal","Zatrzyma? po sygnale","Sinyal verildi?inde dur","При сигнале остановить",2139
+"Local Time Offset","Lokaler UTC-Offset","Decalage heure UTC locale","Offset UTC locale","Offset local UTC","Mistni UTC-Offset","Lokale UTC-offset instellen","Ro?n. lokaln. UTC","Yerel UTC ofseti","Локальное смещение UTC",2140
+"Motor Control Tuner1",,,,,,,,,,2141
+"DiSEqC 1.2","DiSEqC 1.2","DiSEqC 1,2","DiSEqC 1.2","DiSEqC 1,2","DiSEqC 1,2","DiSEqC 1.2","DiSEqC 1.2","DiSEqC 1.2","DiSEqC 1.2",2142
+"DiSEqC 1.3","DiSEqC 1.3","DiSEqC 1,3","DiSEqC 1.3","DiSEqC 1,3","DiSEqC 1,3","DiSEqC 1.3","DiSEqC 1.3","DiSEqC 1.3","DiSEqC 1.3",2143
+"Motor Control Tuner2",,,,,,,,,,2144
+"Band","Band","Bande","Banda","Banda","Pasmo","Band","Pasmo","Bant","Полоса частот",2145
+"Ku Band","Ku-Band","Bande Ku","Banda Ku","Banda Ku","Pasmo Ku","Ku-band","Pasmo Ku","Ku bandı","Ku-полоса",2146
+"C Band","C-Band","Bande C","Banda C","Banda C","Pasmo C","C-band","Pasmo C","C bandı","С-полоса",2147
+"Country",,,,,,,,,,2148
+"UAS 481 SCR",,,,,,,,,,2149
+"EXR EXU SCR",,,,,,,,,,2150
+"Use OneCable",,,,,,,,,,2151
+"Fan Control","Luftersteuerung","commande de ventilateur","Comando ventola","Control del ventilador","?izeni ventilatoru","Ventilatorregeling","Sterowanie wentylatorem","Fan kumandası","Управление вентилятором",2152
+"Audio Delay","Audio-Verzogerung","Temporisation audio","Ritardo audio","Retardo de audio","Zpo?d?ni zvuku","Audiovertraging","Opo?nienie audio","Otomatik geciktirme","Аудио-задержка",2153
+"Shuffle","Zufall","Hasard","Casuale","Casualidad","Nahoda","Willekeurig","Przypadek","Rasgele","Случайно",2154
+"Repeat","Wiederholen","Repeter","Ripeti","Repetir","Opakovat","Herhalen","Powtorz","Tekrarla","Повторить",2155
+"Playback Duration",,,,,,,,,,2156
+"FTP",,,,,,,,,,2157
+"4G_Limit",,,,,,,,,,2158
+"UPnP",,,,,,,,,,2159
+"RTP Packet",,,,,,,,,,2160
+"Audio Mute",,,,,,,,,,2161
+"Automatic Software Download",,,,,,,,,,2162
+"Conax New Message",,,,,,,,,,2163
+"Age Limit",,,,,,,,,,2164
+"No Limit",,,,,,,,,,2165
+"Background Theme",,,,,,,,,,2166
+"GrayScale",,,,,,,,,,2167
+"Violet",,,,,,,,,,2168
+"Autumn",,,,,,,,,,2169
+"Wine",,,,,,,,,,2170
+"Sea",,,,,,,,,,2171
+"Forest",,,,,,,,,,2172
+"Transparency",,,,,,,,,,2173
+"Zapping Mode",,,,,,,,,,2174
+"Favorite",,"Favoris",,,,,,,,2175
+"Network",,"Reseau",,,,,,,,2176
+"Cas",,,,,,,,,,2177
+"Recording List Mode",,,,,,,,,,2178
+"Folder",,,,,,,,,,2179
+"Category",,,,,,,,,,2180
+"Priority",,,,,,,,,,2181
+"Recording List Sort",,,,,,,,,,2182
+"Title",,,,,,,,,,2183
+"Antenna 5V",,,,,,,,,,2184
+"EPG Mode",,,,,,,,,,2185
+"List",,,,,,,,,,2186
+"Grid",,,,,,,,,,2187
+"Automatic Standby Decrypt",,,,,,,,,,2188
+"Use WLAN",,,,,,,,,,2189
+"FTP Transaction",,,,,,,,,,2190
+"Disabled","Aus","Arret","Off","Off","Vyp","Uit","Wył.","Kapalı","Выкл",2191
+"Enabled",,,,,,,,,,2192
+"UPNP Transaction",,,,,,,,,,2193
+"Media Browser Filter",,,,,,,,,,2194
+"All Media",,,,,,,,,,2195
+"Music",,,,,,,,,,2196
+"Photo",,,,,,,,,,2197
+"Movie",,,,,,,,,,2198
+"Auto EPG",,,,,,,,,,2199
+"EPG Grab Interval",,,,,,,,,,2200
+"Auto EPG Channel",,,,,,,,,,2201
+"Channel Number",,,,,,,,,,2202
+"Favorites",,,,,,,,,,2203
+"EPG Grid Unit",,,,,,,,,,2204
+"EPG Grab Enabled",,,,,,,,,,2205
+"Make Dedicated HDD",,,,,,,,,,2206
+"Started",,,,,,,,,,2207
+"Decided",,,,,,,,,,2208
+"Viewing Tuner Free",,,,,,,,,,2209
+"FrontDisplay Function",,,,,,,,,,2210
+"Clock",,,,,,,,,,2211
+"Dynamic SI Handling",,,,,,,,,,2212
+"Simple MP3",,,,,,,,,,2213
+"MP3 Player Screensaver",,,,,,,,,,2214
+"Channel Order Country",,,,,,,,,,2215
+"DE",,,,,,,,,,2216
+"AT",,,,,,,,,,2217
+"Viaccess Console",,,,,,,,,,2218
+"Viaccess FreeChannel Lock",,,,,,,,,,2219
+"Viaccess SChip Mode",,,,,,,,,,2220
+"Inactive",,,,,,,,,,2221
+"Session",,,,,,,,,,2222
+"Locked",,,,,,,,,,2223
+"Force 576i",,,,,,,,,,2224
+"HDCP",,,,,,,,,,2225
+"Viaccess Standby",,,,,,,,,,2226
+"Viaccess StopFreeChannels",,,,,,,,,,2227
+"Viaccess HasAlarm",,,,,,,,,,2228
+"Youtube Feed",,,,,,,,,,2229
+"Top Rated",,,,,,,,,,2230
+"Top Favorites",,,,,,,,,,2231
+"Most Viewed",,,,,,,,,,2232
+"Most Popular",,,,,,,,,,2233
+"Most Recent",,,,,,,,,,2234
+"Most Discussed",,,,,,,,,,2235
+"Most Responded",,,,,,,,,,2236
+"Recently Featured",,,,,,,,,,2237
+"Watch On Mobile",,,,,,,,,,2238
+"Youtube Region",,,,,,,,,,2239
+"Global",,,,,,,,,,2240
+"Australia",,,,,,,,,,2241
+"Brazil",,,,,,,,,,2242
+"Canada",,,,,,,,,,2243
+"Czech Republic",,,,,,,,,,2244
+"France",,,,,,,,,,2245
+"Germany",,,,,,,,,,2246
+"Great Britain",,,,,,,,,,2247
+"Holland",,,,,,,,,,2248
+"Hong Kong",,,,,,,,,,2249
+"India",,,,,,,,,,2250
+"Ireland",,,,,,,,,,2251
+"Israel",,,,,,,,,,2252
+"Italy",,,,,,,,,,2253
+"Japan",,,,,,,,,,2254
+"Mexico",,,,,,,,,,2255
+"New Zealand",,,,,,,,,,2256
+"Poland",,,,,,,,,,2257
+"Russia",,,,,,,,,,2258
+"South Korea",,,,,,,,,,2259
+"Spain",,,,,,,,,,2260
+"Sweden",,,,,,,,,,2261
+"Taiwan",,,,,,,,,,2262
+"United States",,,,,,,,,,2263
+"Youtube Time",,,,,,,,,,2264
+"All Time",,,,,,,,,,2265
+"Today",,,,,,,,,,2266
+"This Week",,,,,,,,,,2267
+"This Month",,,,,,,,,,2268
+"Youtube Category",,,,,,,,,,2269
+"Entertainment",,,,,,,,,,2270
+"Shows",,,,,,,,,,2271
+"Games",,,,,,,,,,2272
+"Film",,,,,,,,,,2273
+"News",,,,,,,,,,2274
+"Tech",,,,,,,,,,2275
+"Comedy",,,,,,,,,,2276
+"Youtube Quality",,,,,,,,,,2277
+"SQ",,,,,,,,,,2278
+"HQ",,,,,,,,,,2279
+"Media Player Jump",,,,,,,,,,2280
+"FTA Scan",,,,,,,,,,2281
+"Scan Mode",,,,,,,,,,2282
+"Individual",,,,,,,,,,2283
+"Collectif",,,,,,,,,,2284
+"Primary Polarization",,,,,,,,,,2285
+"Secondary Polarization",,,,,,,,,,2286
+"Primary FEC",,,,,,,,,,2287
+"Secondary FEC",,,,,,,,,,2288
+"Primary DVB Type",,,,,,,,,,2289
+"Secondary DVB Type",,,,,,,,,,2290
+"Canalplus BAT DVBType",,,,,,,,,,2291
+"Canalplus BAT Polarization",,,,,,,,,,2292
+"Canalplus BAT FEC",,,,,,,,,,2293
+"Record Management",,,,,,,,,,2294
+"HDMI Color Space",,,,,,,,,,2295
+"YUV",,,,,,,,,,2296
+"Download Polarization",,,,,,,,,,2297
+"Download FEC",,,,,,,,,,2298
+"Download DVB Type",,,,,,,,,,2299
+"Need SSU",,,,,,,,,,2300
+"NO",,,,,,,,,,2301
+"YES",,,,,,,,,,2302
+"Font Size",,,,,,,,,,2303
+"Power Save Mode",,,,,,,,,,2304
+"HDDRepartition",,,,,,,,,,2305
+"Disk Format Type",,,,,,,,,,2306
+"Diseqc Mode",,,,,,,,,,2307
+"1 of 4","1 von 4","1 de 4","1 di 4","1 de 4","1 ze 4","1 van 4","1 z 4",,"1 из 4",2308
+"2 of 4","2 von 4","2 de 4","2 di 4","2 de 4","2 ze 4","2 van 4","2 z 4",,"2 из 4",2309
+"3 of 4","3 von 4","3 de 4","3 di 4","3 de 4","3 ze 4","3 van 4","3 z 4",,"3 из 4",2310
+"4 of 4","4 von 4","4 de 4","4 di 4","4 de 4","4 ze 4","4 van 4","4 z 4",,"4 из 4",2311
+"Mini A",,,,,,,,,,2312
+"Mini B",,,,,,,,,,2313
+"Single Frequency",,,,,,,,,,2314
+"One Cable Action",,,,,,,,,,2315
+"Set Current Position for East Limit",,,,,,,,,,2316
+"Set Current Position for West Limit",,,,,,,,,,2317
+"Reset Channel List","Programmliste zurucksetzen","Reinitialiser la liste des programmes","Ripristina elenco programmi","Reponer lista de canales","Vynulovat seznam program?","Programmalijst resetten","Cofanie listy programow","Program listesini sıfırla","Сбросить список программ",2318
+"Reset Favorite Add-ons",,,,,,,,,,2319
+"Reset Configure Setting",,,,,,,,,,2320
