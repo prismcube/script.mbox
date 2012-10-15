@@ -97,6 +97,9 @@ class RootWindow( BaseWindow ) :
 
 			self.mDataCache.Frontdisplay_Resolution( iconIndex )
 
+		elif aEvent.getName( ) == ElisEventPowerSave( ).getName( ) :
+			LOG_TRACE( 'power save mode' )
+
 
 	def GetRecordingInfo( self ) :
 		labelInfo = MR_LANG( 'Reloading channel list...' )

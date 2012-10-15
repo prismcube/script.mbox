@@ -186,9 +186,29 @@ class MainMenu( BaseWindow ) :
 				self.mCtrlFavAddonList.reset( )
 				if tmpList != '<li>' :
 					tmpList = tmpList[4:].split( ':' )
-					self.mFavAddonsList = []
-					for i in range( len( tmpList ) ) :
-						item = xbmcgui.ListItem(  xbmcaddon.Addon( tmpList[i] ).getAddonInfo( 'name' ) )
-						item.setProperty( 'AddonId', tmpList[i] )
-						self.mFavAddonsList.append( item )
-					self.mCtrlFavAddonList.addItems( self.mFavAddonsList )
+					tmpList = self.SyncAddonsList( tmpList )
+					if tmpList :
+						self.mFavAddonsList = []
+						for i in range( len( tmpList ) ) :
+							item = xbmcgui.ListItem(  xbmcaddon.Addon( tmpList[i] ).getAddonInfo( 'name' ) )
+							item.setProperty( 'AddonId', tmpList[i] )
+							self.mFavAddonsList.append( item )
+						self.mCtrlFavAddonList.addItems( self.mFavAddonsList )
+
+
+	def SyncAddonsList( self, aAddonList ) :
+		tmpList = xbmc.executehttpapi( "getaddons()" )
+		result = deepcopy( aAddonList )
+		if tmpList == '<li>' :
+			return None
+		else :
+			tmpList = tmpList[4:].split( ':' )
+			for i in range( len( aAddonList ) ) :
+				findaddon = False
+				for addon in tmpList :
+					if aAddonList[i] == addon :
+						findaddon = True
+				if findaddon == False :
+					del result[i]
+
+		return result

@@ -107,12 +107,12 @@ class FavoriteAddons( BaseWindow ) :
 	def UpdateListItem( self ) :
 		self.mFavoriteAddonsIdList = []
 		tmpList = xbmc.executehttpapi( "getfavourites()" )
-		if tmpList == '<li>' :
-			self.mCtrlCommonList.reset( )
-			self.mCtrlThumbnailList.reset( )
+		self.mCtrlCommonList.reset( )
+		self.mCtrlThumbnailList.reset( )
 
-		else :
+		if tmpList != '<li>' :
 			tmpList = tmpList[4:].split( ':' )
+			tmpList = self.SyncAddonsList( tmpList )
 			if tmpList and len( tmpList ) > 0 :
 				for i in range( len( tmpList ) ) :
 					addonName			= xbmcaddon.Addon( tmpList[i] ).getAddonInfo( 'name' )
@@ -127,9 +127,6 @@ class FavoriteAddons( BaseWindow ) :
 				self.mFavoriteAddonsIdList.sort( self.ByName )
 				if self.mAscending == False :
 					self.mFavoriteAddonsIdList.reverse( )
-
-				self.mCtrlCommonList.reset( )
-				self.mCtrlThumbnailList.reset( )
 
 				self.mCtrlCommonList.addItems( self.mFavoriteAddonsIdList )
 				self.mCtrlThumbnailList.addItems( self.mFavoriteAddonsIdList )
@@ -220,3 +217,21 @@ class FavoriteAddons( BaseWindow ) :
 			position = -2
 
 		return position
+
+
+	def SyncAddonsList( self, aAddonList ) :
+		tmpList = xbmc.executehttpapi( "getaddons()" )
+		result = deepcopy( aAddonList )
+		if tmpList == '<li>' :
+			return None
+		else :
+			tmpList = tmpList[4:].split( ':' )
+			for i in range( len( aAddonList ) ) :
+				findaddon = False
+				for addon in tmpList :
+					if aAddonList[i] == addon :
+						findaddon = True
+				if findaddon == False :
+					del result[i]
+
+		return result
