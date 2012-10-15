@@ -356,7 +356,7 @@ class CacheMRLanguage( object ) :
 			xmlString = Strings( strId )
 
 			try :
-				#print 'xml_string[%s] parse[%s]'% (string, xmlString)
+				#print 'xml_string[%s] id[%s] parse[%s]'% (string, strId, xmlString)
 				if xmlString == "" or xmlString == None :
 					LOG_ERR( 'Can not find string' )
 					return string

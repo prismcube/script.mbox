@@ -7,8 +7,11 @@ import os, re, shutil, time, sys
 import sgmllib, string
 from types import *
 import codecs
-
 import parser
+
+ID_NODE_STRINGS    = 0		# *.py     :    0 ~ 1999
+ID_NODE_PROPERTY   = 2000	# property : 2000 ~ 2999
+ID_NODE_XMLSTRINGS = 3000	# *.xml    : 3000 ~ 5000
 
 def EucToUtf( aSource ) :
 	if aSource == None :
@@ -509,7 +512,7 @@ def parseProperty( elisDir, stringXML ):
 		for line in nodes :
 			wf.writelines('\t%s'% line[2])
 	else :
-		max = 5000
+		max = ID_NODE_PROPERTY
 
 	countTot = 0
 	countNew = 0
@@ -769,6 +772,7 @@ def copyLanguage(srcDir, langDir) :
 
 
 
+# resource/../strings.xml to CSV
 def Make_NewCSV( ) :
 	langPack = ["ENGLISH","DEUTSCH","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"]
 
@@ -844,6 +848,7 @@ def Make_NewCSV( ) :
 	fd.close( )
 
 
+# append string to CSV by empty word
 def updateCSV( ) :
 	openFile = os.getcwd() + '/Language_Elmo.csv'
 	stringFile = os.getcwd() + '/MboxStrings.xml'
@@ -885,11 +890,11 @@ def updateCSV( ) :
 		strid = int( ret[len(ret) - 1] )
 		csvHash[csvStr[0]] = strid
 
-		if strid < 5000 :
+		if strid < ID_NODE_PROPERTY :
 			csvString[0].append( csvline )
-		elif strid >= 5000 and strid < 7000 :
+		elif strid >= ID_NODE_PROPERTY and strid < ID_NODE_XMLSTRINGS :
 			csvString[1].append( csvline )
-		elif strid >= 7000 :
+		elif strid >= ID_NODE_XMLSTRINGS :
 			csvString[2].append( csvline )
 
 	#print csvHash.get( "When set to 'Automatic', the time will be obtained by the receiver automatically from a specific channel that you select", None )
@@ -902,9 +907,9 @@ def updateCSV( ) :
 			if csvHash.get( stringEng[1], None ) == None :
 				newString.append( stringEng )
 
-				temp = '\"%s\",,,,,,,,,,%s\r\n'% ( stringEng[1], stringEng[0] )
+				temp = '\"%s\",,,,,,,,,,%s\r\n'% ( stringEng[1], len( csvString[tags] ) + 1 )
 				csvString[tags].append( temp )
-				print 'newString id[%s] name[%s]'% ( stringEng[0], stringEng[1] )
+				print 'newString id[%s] name[%s]'% ( len( csvString[tags] ) + 1, stringEng[1] )
 
 	if newString and len( newString ) > 0 :
 		wf = open( tempFile, 'w' )
@@ -917,7 +922,6 @@ def updateCSV( ) :
 		os.rename(tempFile, openFile)
 
 		print '\033[1;33m update newString[%s]\033[1;m'% len( newString )
-
 
 
 ########## installation
@@ -940,22 +944,20 @@ def AutoMakeLanguage() :
 	###### 1. collection source
 	soup, gTagProperty  = parseStringInXML('MboxStrings.xml', 'property')
 	soup, gTagXmlString = parseStringInXML('MboxStrings.xml', 'xmlstrings')
+
+	###### 1. collection mr_lang()
 	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'parse source')
 	findallSource(mboxDir, '[a-zA-Z0-9]\w*.py')
 	print '\nfindAll source[%s]'% gCount
-	#print '\033[1;%sm[%s]%s\033[1;m'% (30, 'make language', 'made string')
-	#readToXML(stringFile)
 
 	###### 2. collection property
 	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'parse property')
 	parseProperty(elisDir, stringFile)
-	#print '\033[1;%sm[%s]%s\033[1;m'% (30, 'make language', 'made string')
-	#readToXML(stringFile)
 
 	print '\033[1;%sm[%s]%s\033[1;m'% (30, 'make language', 'update dictionary csv')
 	updateCSV( )
 
-	print '\033[1;%sm[%s]%s\033[1;m'% (30, 'make language', 'make resource/language/../strings.xml')
+	print '\033[1;%sm[%s]%s\033[1;m'% (30, 'make language', 'make string --> resource/language/../strings.xml')
 	readToXML(stringFile)
 
 	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'verifying localizedString ID')
