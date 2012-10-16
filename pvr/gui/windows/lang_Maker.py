@@ -9,9 +9,19 @@ from types import *
 import codecs
 import parser
 
-ID_NODE_STRINGS    = 0		# *.py     :    0 ~ 1999
-ID_NODE_PROPERTY   = 2000	# property : 2000 ~ 2999
-ID_NODE_XMLSTRINGS = 3000	# *.xml    : 3000 ~ 5000
+ID_NODE_XMLSTRINGS  = 0		# *.xml    :    0 ~ 1999
+ID_NODE_PROPERTY    = 2000	# property : 2000 ~ 2999
+ID_NODE_MRLANG      = 3000	# *.py     : 3000 ~ 5000
+
+TAG_NAME_STRINGS    = 'strings'
+TAG_NAME_PROPERTY   = 'property'
+TAG_NAME_XMLSTRINGS = 'xmlstrings'
+
+E_FILE_CSV          = 'Language_Elmo.csv'
+E_FILE_PROPERTY     = 'ElisProperty.py'
+E_FILE_MBOX_STRING  = 'MboxStrings.xml'
+E_FILE_MBOX_STRING_ID = 'MboxStringsID.py'
+
 
 def EucToUtf( aSource ) :
 	if aSource == None :
@@ -32,8 +42,8 @@ def EucToUtf( aSource ) :
 def csvToXML():
 
 	#openFile = os.getcwd() + '/Language_Prime.csv'
-	openFile = os.getcwd() + '/Language_Elmo.csv'
-	wFile1 = 'MboxStringsID.py'
+	openFile = os.getcwd() + '/%s'% E_FILE_CSV
+	wFile1 = '%s'% E_FILE_MBOX_STRING_ID
 
 	langPack = ["ENGLISH","DEUTSCH","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"]
 	tag1 = '<string id=\"%s\">'
@@ -185,7 +195,7 @@ def csvToXML():
 	df.close()
 
 #----read strings.xml to make forign Language with csv
-def readToXML(inFile):
+def makeLanguage(inFile):
 
 	try:
 		ef = open(inFile, 'r')
@@ -196,9 +206,9 @@ def readToXML(inFile):
 
 	#input document is UTF-8 format only
 	#openFile = os.getcwd() + '/Language_Prime.csv'
-	openFile = os.getcwd() + '/Language_Elmo.csv'
+	openFile = os.getcwd() + '/%s'% E_FILE_CSV
 	#openFile = os.getcwd() + '/test.csv'
-	wFile1 = 'MboxStringsID.py'
+	wFile1 = E_FILE_MBOX_STRING_ID
 
 	langPack = ["ENGLISH","DEUTSCH","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"]
 	tag1 = '<string id=\"%s\">'
@@ -392,7 +402,7 @@ def readToXML(inFile):
 
 
 def verify_defineString():
-	dfile = 'MboxStringsID.py'
+	dfile = E_FILE_MBOX_STRING_ID
 	try:
 		ef = open(dfile, 'r')
 
@@ -446,6 +456,8 @@ def findStringInXML(soup, reqStr) :
 
 	return isFind
 
+
+gStringHash = {}
 gTagString = []
 gTagProperty = []
 gTagXmlString = []
@@ -454,6 +466,7 @@ def parseStringInXML(xmlFile, tagName) :
 	soup = None
 	lines = []
 	nodeAll = ''
+	excuteEnd = False
 
 	if os.path.exists(xmlFile) :
 		fp = open(xmlFile)
@@ -464,10 +477,22 @@ def parseStringInXML(xmlFile, tagName) :
 			for element in node.findAll('string') :
 				elementry = [ int(element['id']), repr(element.string), '%s\r\n'% repr(element) ]
 				lines.append(elementry)
+
+				if gStringHash.get( element.string, -1 ) == -1 :
+					gStringHash[element.string] = int( element['id'] )
+
+				else :
+					if tagName == TAG_NAME_XMLSTRINGS :
+						excuteEnd = True
+						print '\033[1;41mRepeat same strings id[%s] string[%s]\033[1;m'% ( int(element['id']), element.string )
 			
 			nodeAll = node
 
 		#print len(lines), lines[len(lines)-1][0]
+
+	if excuteEnd :
+		print 'correct string(s) and try again !!!'
+		sys.exit( )
 
 	return soup, lines
 
@@ -481,42 +506,14 @@ def parseProperty( elisDir, stringXML ):
 	sys.path.append(os.path.join(elisDir, 'lib', 'elisinterface'))
 	from ElisProperty import _propertyMapEnum
 
-	elementHash = {}
-	for element in re.split(' ', gReservedWord) :
-		elementHash[element] = element
+	reservedHash = {}
+	for element in re.findall('"([^"]*)"', gReservedWord) :
+		reservedHash[element] = element
 		#print element
-
-
-	wFile = 'stringsProperty.xml'
-	wf = open(wFile, 'w')
-	wf.writelines('<?xml version="1.0" encoding="utf-8"?>\r\n')
-
-	max = 0
-	lines = ''
-	soup, nodes = parseStringInXML(stringXML, 'strings')
-
-	if nodes :
-		wf.writelines('<strings>\r\n')
-
-		for line in nodes :
-			wf.writelines('\t%s'% line[2])
-
-		wf.writelines('</strings>\r\n')
-
-	wf.writelines('<property>\r\n')
-	soup, nodes = parseStringInXML(stringXML, 'property')
-	if nodes :
-		node_len = len(nodes)
-		max = nodes[node_len - 1][0]
-
-		for line in nodes :
-			wf.writelines('\t%s'% line[2])
-	else :
-		max = ID_NODE_PROPERTY
 
 	countTot = 0
 	countNew = 0
-	countContinue = max + 1
+	countContinue = ID_NODE_PROPERTY + len( gTagProperty ) + 1
 	countRepeat=0
 	repeatWord = ''
 	for prop in _propertyMapEnum :
@@ -536,15 +533,18 @@ def parseProperty( elisDir, stringXML ):
 				digitStr = re.sub(':', '', element)
 				digitStr = re.sub('\s', '', digitStr)
 
-				if elementHash.get(element) != None or ( soup and findStringInXML(soup, element) ) or \
+				#if reservedHash.get(element) != None or ( soup and findStringInXML(soup, element) ) or \
+				if gStringHash.get( element, -1 ) != -1 or reservedHash.get(element) != None or \
 					element.isdigit() or timeStr or unitStr or digitStr.isdigit() :
 					repeatWord = '%s\n%s'% (repeatWord, element)
 					countRepeat += 1
 
 				else :
-					line = '\t<string id=\"%d\">%s</string>\r\n'% (countContinue, element)
-					wf.writelines(line)
-					elementHash[element] = countContinue
+					line = '<string id=\"%d\">%s</string>\r\n'% (countContinue, element)
+					listElement = [ countContinue, element, line ]
+					gTagProperty.append( listElement )
+					gStringHash[element] = countContinue
+
 					countContinue += 1
 					countNew += 1
 
@@ -555,26 +555,13 @@ def parseProperty( elisDir, stringXML ):
 				return
 
 
-	wf.writelines('</property>\r\n')
-
-	#global gTagXmlString
-	if gTagXmlString :
-		wf.writelines('<xmlstrings>\r\n')
-		for line in gTagXmlString :
-			wf.writelines('\t%s'% line[2])
-		wf.writelines('</xmlstrings>\r\n')
-
-	wf.close()
-
 	wf = open('repeatWord', 'a')
 	wf.writelines(repeatWord)
 	wf.close()
 	#print 'repeatWord[%s]'% repeatWord
 	print 'propertyTotal[%s] New[%s] Repeat[%s]'% (countTot, countNew, countRepeat)
 	
-	os.rename(wFile, 'MboxStrings.xml')
-	
-	return wFile
+	#os.rename( wFile, E_FILE_MBOX_STRING )
 
 
 
@@ -631,33 +618,14 @@ def parseSource(sourceFile):
 	functionPattern = "MR_LANG\s*\(\s*\'[([^']|[^\\])*]*\'\s*\)"
 	stringPattern   = "'([^\\*]*)'"
 
-	elementHash = {}
-	for element in re.split(' ', gReservedWord) :
-		elementHash[element] = element
+	reservedHash = {}
+	for element in re.findall('"([^"]*)"', gReservedWord) :
+		reservedHash[element] = element
 		#print element
-
-	soup = None
-	max = 0
-	nodes = []
-	lines = ''
-	xmlFile = 'MboxStrings.xml'
-	soup, nodes = parseStringInXML(xmlFile, 'strings')
-
-	wFile = 'strings_temp.xml'
-	wf = open(wFile, 'w')
-	wf.writelines('<?xml version="1.0" encoding="utf-8"?>\r\n')
-	wf.writelines('<strings>\r\n')
-
-	if nodes :
-		node_len = len(nodes)
-		max = nodes[node_len - 1][0]
-		
-		for line in nodes :
-			wf.writelines('\t%s'% line[2])
 
 	countTot = 0
 	countNew = 0
-	countContinue = max + 1
+	countContinue = ID_NODE_MRLANG + len( gTagString ) + 1
 	countRepeat=0
 	repeatWord = ''
 
@@ -703,37 +671,20 @@ def parseSource(sourceFile):
 		if element[0] == "'" :
 			element = element[1:len(element)-1]
 
-		if elementHash.get(element) != None or ( soup and findStringInXML(soup, element) == True ) or \
+		if gStringHash.get( element, -1 ) != -1 or reservedHash.get(element) != None or \
 			element.isdigit() or timeStr or digitStr.isdigit() :
 			repeatWord = '%s\n%s'% (repeatWord, element)
 			countRepeat += 1
 
 		else :
-			line = '\t<string id=\"%d\">%s</string>\r\n'% (countContinue, element)
-			wf.writelines(line)
-			elementHash[element] = countContinue
+			line = '<string id=\"%d\">%s</string>\r\n'% (countContinue, element)
+			listElement = [ countContinue, element, line ]
+			gTagString.append( listElement )
+			gStringHash[element] = countContinue
 			countContinue += 1
 			countNew += 1
 
 		countTot += 1
-
-	wf.writelines('</strings>\r\n')
-
-	#global gTagProperty
-	if gTagProperty :
-		wf.writelines('<property>\r\n')
-		for line in gTagProperty :
-			wf.writelines('\t%s'% line[2])
-		wf.writelines('</property>\r\n')
-
-	#global gTagXmlString
-	if gTagXmlString :
-		wf.writelines('<xmlstrings>\r\n')
-		for line in gTagXmlString :
-			wf.writelines('\t%s'% line[2])
-		wf.writelines('</xmlstrings>\r\n')
-
-	wf.close()
 
 	wf = open('repeatWord', 'w')
 	wf.writelines(repeatWord)
@@ -749,8 +700,8 @@ def parseSource(sourceFile):
 		print 'MR_LANG Total[%s] \033[1;33m NewLang[%s]\033[1;m Repeat[%s]'% (countTot, countNew, countRepeat)
 		print 'gtot[%s] gnew[%s] grep[%s]'% (gAtot,gAnew,gArep)
 
-	os.rename(wFile, 'MboxStrings.xml')
-	#shutil.copyfile(wFile, 'MboxStrings.xml')
+	#os.rename( wFile, E_FILE_MBOX_STRING )
+	#shutil.copyfile( wFile, E_FILE_MBOX_STRING )
 	#time.sleep(0.01)
 
 
@@ -850,15 +801,16 @@ def Make_NewCSV( ) :
 
 # append string to CSV by empty word
 def updateCSV( ) :
-	openFile = os.getcwd() + '/Language_Elmo.csv'
-	stringFile = os.getcwd() + '/MboxStrings.xml'
+	openFile = os.getcwd() + '/%s'% E_FILE_CSV
+	stringFile = os.getcwd() + '/%s'% E_FILE_MBOX_STRING
 	tempFile = os.getcwd() + '/test_.csv'
 
 	fp = open( stringFile, 'r' )
 	soup = BeautifulSoup(fp)
 	fp.close()
 
-	tagList = [ 'strings', 'property', 'xmlstrings' ]
+	tagList = [ TAG_NAME_XMLSTRINGS, TAG_NAME_PROPERTY, TAG_NAME_STRINGS ]
+	defaultID = [ ID_NODE_XMLSTRINGS, ID_NODE_PROPERTY, ID_NODE_MRLANG ]
 	stringXML = []
 	csvString = [[],[],[]]
 	csvHash = {}
@@ -892,22 +844,21 @@ def updateCSV( ) :
 
 		if strid < ID_NODE_PROPERTY :
 			csvString[0].append( csvline )
-		elif strid >= ID_NODE_PROPERTY and strid < ID_NODE_XMLSTRINGS :
+		elif strid >= ID_NODE_PROPERTY and strid < ID_NODE_MRLANG :
 			csvString[1].append( csvline )
-		elif strid >= ID_NODE_XMLSTRINGS :
+		elif strid >= ID_NODE_MRLANG :
 			csvString[2].append( csvline )
 
 	#print csvHash.get( "When set to 'Automatic', the time will be obtained by the receiver automatically from a specific channel that you select", None )
-
 
 	# 3--------- 'new word to append csv'
 	newString = []
 	for tags in range( len(stringXML) ) :
 		for stringEng in stringXML[tags] :
-			if csvHash.get( stringEng[1], None ) == None :
+			if csvHash.get( stringEng[1], -1 ) == -1 :
 				newString.append( stringEng )
 
-				temp = '\"%s\",,,,,,,,,,%s\r\n'% ( stringEng[1], len( csvString[tags] ) + 1 )
+				temp = '\"%s\",,,,,,,,,,%s\r\n'% ( stringEng[1], defaultID[tags] + len( csvString[tags] ) + 1 )
 				csvString[tags].append( temp )
 				print 'newString id[%s] name[%s]'% ( len( csvString[tags] ) + 1, stringEng[1] )
 
@@ -924,43 +875,79 @@ def updateCSV( ) :
 		print '\033[1;33m update newString[%s]\033[1;m'% len( newString )
 
 
+def updateXML( ) :
+	wf = open(E_FILE_MBOX_STRING , 'w')
+	wf.writelines( '<?xml version="1.0" encoding="utf-8"?>\r\n' )
+
+	#1. <xmlstrings>
+	if gTagXmlString :
+		wf.writelines( '<%s>\r\n'% TAG_NAME_XMLSTRINGS )
+		for line in gTagXmlString :
+			wf.writelines( '\t%s'% line[2] )
+		wf.writelines( '</%s>\r\n'% TAG_NAME_XMLSTRINGS )
+
+	#2. <property>
+	if gTagProperty :
+		wf.writelines( '<%s>\r\n'% TAG_NAME_PROPERTY )
+		for line in gTagProperty :
+			wf.writelines( '\t%s'% line[2] )
+		wf.writelines( '</%s>\r\n'% TAG_NAME_PROPERTY )
+
+	#3. <strings>
+	if gTagString :
+		wf.writelines( '<%s>\r\n'% TAG_NAME_STRINGS )
+		for line in gTagString :
+			wf.writelines( '\t%s'% line[2] )
+		wf.writelines( '</%s>\r\n'% TAG_NAME_STRINGS )
+
+	wf.close( )
+
+
 ########## installation
-gReservedWord = 'Min Hour 480i 480p 576i 576p 720p 1080i 1080p-25 CVBS RGB YC ms FAT FAT16 FAT32 EXT2 EXT3 EXT4 NTFS'
+gReservedWord  = '"Min" "Hour" "480i" "480p" "576i" "576p" "720p" "1080i" "1080p-25" "CVBS" '
+gReservedWord += '"RGB" "YC" "ms" "FAT" "FAT16" "FAT32" "EXT2" "EXT3" "EXT4" "NTFS" '
+gReservedWord += '"EXR" "EXU" "UAS" "MDU" "HDCP" "HDMI" "YUV" "HDMI / YUV" "DVB-S (SD)" "DVB-S (HD)" '
+gReservedWord += '"PAL" "NTSC" "SCART" "DE" "AT" "SI" "FTI" "EXR EXU SCR" "EXR ... / EXU ..." "UPnP"'
 gTimePattern  = '[0-9]{2}:[0-9]{2}|[0-9]*\*[0-9]'
-gUnitPattern  = '[0-9]* Min|[0-9]* s|[0-9]* ms|[0-9]* GB|[0-9]* Sec|[0-9] Hour|[0-9] \%'
+gUnitPattern  = '[0-9] Min|[0-9] s|[0-9] ms|[0-9] GB|[0-9] Sec|[0-9] Hour|[0-9] \%'
+gUnitPattern +=	'|QPSK [0-9]\/[0-9]|8PSK [0-9]\/[0-9]|DiSEqC [0-9]\.[0-9]|UAS [0-9]*'
 
 def AutoMakeLanguage() :
 	currDir = os.getcwd()
 	mboxDir = os.path.abspath(currDir + '/../../../../script.mbox')
 	elisDir = os.path.abspath(currDir + '/../../../../script.module.elisinterface')
 	#print elisDir
-	stringFile = mboxDir + '/pvr/gui/windows/MboxStrings.xml'
-	propertyFile = elisDir + '/lib/elisinterface/ElisProperty.py'
-	global gTagString, gTagProperty, gTagXmlString
+	stringFile = mboxDir + '/pvr/gui/windows/%s'% E_FILE_MBOX_STRING
+	propertyFile = elisDir + '/lib/elisinterface/%s'% E_FILE_PROPERTY
+	global gTagString, gTagProperty, gTagXmlString, gStringHash
 
 	#if os.path.exists(stringFile) :
 	#	os.remove(stringFile)
 
 	###### 1. collection source
-	soup, gTagProperty  = parseStringInXML('MboxStrings.xml', 'property')
-	soup, gTagXmlString = parseStringInXML('MboxStrings.xml', 'xmlstrings')
+	soup, gTagXmlString = parseStringInXML(E_FILE_MBOX_STRING, TAG_NAME_XMLSTRINGS )
+	soup, gTagProperty  = parseStringInXML(E_FILE_MBOX_STRING, TAG_NAME_PROPERTY )
+	soup, gTagString    = parseStringInXML(E_FILE_MBOX_STRING, TAG_NAME_STRINGS )
 
-	###### 1. collection mr_lang()
-	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'parse source')
-	findallSource(mboxDir, '[a-zA-Z0-9]\w*.py')
-	print '\nfindAll source[%s]'% gCount
-
-	###### 2. collection property
+	###### 1. collection property
 	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'parse property')
 	parseProperty(elisDir, stringFile)
 
-	print '\033[1;%sm[%s]%s\033[1;m'% (30, 'make language', 'update dictionary csv')
+	###### 2. collection mr_lang()
+	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'parse source')
+	findallSource(mboxDir, '[a-zA-Z0-9]\w*.py')
+	print '\nfindAll *.py files[%s]'% gCount
+
+	print '\033[1;%sm[%s]%s\033[1;m'% (30, 'make language', 'update xml : %s'% E_FILE_MBOX_STRING )
+	updateXML( )
+
+	print '\033[1;%sm[%s]%s\033[1;m'% (30, 'make language', 'update csv : %s'% E_FILE_CSV )
 	updateCSV( )
 
 	print '\033[1;%sm[%s]%s\033[1;m'% (30, 'make language', 'make string --> resource/language/../strings.xml')
-	readToXML(stringFile)
+	makeLanguage(stringFile)
 
-	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'verifying localizedString ID')
+	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'verifying ID : %s'% E_FILE_MBOX_STRING_ID )
 	verify_defineString()
 
 	print '\n\033[1;%sm[%s]%s\033[1;m'% (32, 'make language', 'copy to ../resource/language')
@@ -1037,7 +1024,7 @@ def test2():
 
 def test3():
 	testDir = '/home/youn/devel/elmo_test/test/elmo-nand-image/home/root/.xbmc/addons/script.mbox'
-	xmlFile = testDir + '/pvr/gui/windows/MboxStrings.xml'
+	xmlFile = testDir + '/pvr/gui/windows/%s'% E_FILE_MBOX_STRING
 	fp = open(xmlFile)
 	soup = BeautifulSoup(fp)
 	fp.close()
@@ -1093,26 +1080,10 @@ if __name__ == "__main__":
 	gNoParseList[nameSelf] = nameSelf
 	cmd = sys.argv[1:]
 
-	"""
-	if len(cmd) >= 0 :
-		if cmd[0] == 'property.py':
-			wFile = parseProperty(cmd[1])
-			cmd[0] = wFile
-
-		print '%s to xml, with csv'% cmd[0]
-		readToXML(cmd[0])
-
+	if len(cmd) > 0 :
+		if cmd[0] == 'csv' :
+			Make_NewCSV( )
+			print 'create new csv : test.csv'
 	else :
-		print 'csv to xml'
-		csvToXML()
-
-	verify_defineString()
-	"""
-	#test()
-	#test2()
-	#test3()
-	#test4()
-	#test5()
-
-	AutoMakeLanguage()
+		AutoMakeLanguage( )
 
