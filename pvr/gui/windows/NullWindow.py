@@ -230,8 +230,8 @@ class NullWindow( BaseWindow ) :
 						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif actionId == Action.ACTION_MBOX_XBMC :
-			self.SetMediaCenter( )
 			self.Close( )
+			self.SetMediaCenter( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
 
 
