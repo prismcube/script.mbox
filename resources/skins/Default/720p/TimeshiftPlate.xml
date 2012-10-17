@@ -264,17 +264,17 @@
 					<control type="image" id="31">
 						<description>Rewind Image</description>
 						<posx>150</posx>
-						<posy>20</posy>
+						<posy>30</posy>
 						<width>20</width>
-						<height>20</height>
+						<height>15</height>
 						<texture>TSIconRewind.png</texture>
 					</control>
 					<control type="image" id="32">
 						<description>Forward Image</description>
 						<posx>210</posx>
-						<posy>20</posy>
+						<posy>30</posy>
 						<width>20</width>
-						<height>20</height>
+						<height>15</height>
 						<texture>TSIconFastForward.png</texture>
 					</control>
 					<control type="label" id="33">

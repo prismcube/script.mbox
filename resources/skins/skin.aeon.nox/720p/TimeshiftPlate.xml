@@ -264,23 +264,23 @@
 					<control type="image" id="31">
 						<description>Rewind Image</description>
 						<posx>150</posx>
-						<posy>35</posy>
+						<posy>40</posy>
 						<width>20</width>
-						<height>20</height>
+						<height>15</height>
 						<texture>TSIconRewind.png</texture>
 					</control>
 					<control type="image" id="32">
 						<description>Forward Image</description>
 						<posx>210</posx>
-						<posy>35</posy>
+						<posy>40</posy>
 						<width>20</width>
-						<height>20</height>
+						<height>15</height>
 						<texture>TSIconFastForward.png</texture>
 					</control>
 					<control type="label" id="33">
 						<description>Speed label</description>
 						<posx>175</posx>
-						<posy>34</posy>
+						<posy>32</posy>
 						<font>Font_Reg24</font>
 						<textcolor>grey</textcolor>
 						<label>$INFO[Control.GetLabel]</label>
