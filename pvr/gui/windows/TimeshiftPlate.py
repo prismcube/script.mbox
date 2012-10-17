@@ -945,6 +945,7 @@ class TimeShiftPlate( BaseWindow ) :
 	def BookMarkContext( self ) :
 		context = []
 		context.append( ContextItem( 'Add To Bookmark', CONTEXT_ACTION_ADD_TO_BOOKMARK ) )
+		#context.append( ContextItem( 'Add To AutoChapter',  CONTEXT_ACTION_ADD_AUTO_CHAPTER ) )
 		context.append( ContextItem( 'Show List',  CONTEXT_ACTION_SHOW_LIST ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
@@ -968,6 +969,36 @@ class TimeShiftPlate( BaseWindow ) :
 			dialog.doModal( )
 			#tempList = dialog.GetSelectedList( )
 			#LOG_TRACE('------------dialog list[%s]'% tempList )
+
+		elif selectAction == CONTEXT_ACTION_ADD_AUTO_CHAPTER :
+			self.AutoChapterAddBookmark( )
+
+
+	def AutoChapterAddBookmark( self ) :
+		# limit playtime under 30sec
+		mediaTime = self.mTimeshift_endTime - self.mTimeshift_staTime
+		if ( mediaTime / 1000 ) < 30 :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Can not create chapter, at least 30sec over' ) )
+ 			dialog.doModal( )
+			return
+
+		section = mediaTime / 10
+		partition = 0
+
+		for i in range( 1, 10 ) :
+			partition += section
+			lbl_timeS = TimeToString( partition, TimeFormatEnum.E_AH_MM_SS )
+			#LOG_TRACE( '------------chapter idx[%s][%s] [%s]'% ( i, partition, lbl_timeS ) )
+			ret = self.mDataCache.Player_JumpToIFrame( partition )
+			if ret :
+				self.mDataCache.Player_CreateBookmark( )
+
+			time.sleep(0.5)
+
+			#window close then stop this function
+			if not self.mEnableLocalThread :
+				break
 
 
 	def ShowRecordingInfo( self ) :
