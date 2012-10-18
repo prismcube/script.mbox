@@ -78,7 +78,7 @@ class MainMenu( BaseWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping all your recordings first' ) )
 				dialog.doModal( )
 				self.getControl( MAIN_GROUP_ID ).setVisible( True )
-			elif self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+			elif self.mDataCache.Player_GetStatus( ).mMode != ElisEnum.E_MODE_LIVE :
 				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping all your recordings first' ) )
@@ -133,10 +133,10 @@ class MainMenu( BaseWindow ) :
 				dialog.doModal( )
 				self.getControl( MAIN_GROUP_ID ).setVisible( True )
 
-			elif self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+			elif self.mDataCache.Player_GetStatus( ).mMode != ElisEnum.E_MODE_LIVE :
 				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the PVR first' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the PVR or Timeshift first' ) )
 				dialog.doModal( )
 				self.getControl( MAIN_GROUP_ID ).setVisible( True )
 
