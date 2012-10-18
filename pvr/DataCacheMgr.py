@@ -72,7 +72,7 @@ class DataCacheMgr( object ) :
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 
 		self.mZappingMode						= None
-		self.mLastZappingMode					= None#ElisIZappingMode( )
+		self.mLastZappingMode					= ElisIZappingMode( )
 		self.mChannelList						= None
 		self.mAllChannelList					= None
 		self.mCurrentChannel					= None
@@ -175,7 +175,7 @@ class DataCacheMgr( object ) :
 		#Zapping Mode
 		self.LoadZappingmode( )
 		self.LoadZappingList( )
-		self.mLastZappingMode = copy.deepcopy( self.mZappingMode )
+		#self.mLastZappingMode = copy.deepcopy( self.mZappingMode )
 
 		#SatelliteList
 		self.LoadAllSatellite( )
@@ -1599,7 +1599,7 @@ class DataCacheMgr( object ) :
 		try :
 			zappingMode = self.Zappingmode_GetCurrent( )
 			restoreZappingMode = copy.deepcopy( zappingMode )
-			zappingMode.printdebug( )
+			#zappingMode.printdebug( )
 
 			modeStr = ''
 			newZappingMode = copy.deepcopy( self.mLastZappingMode )
@@ -1610,8 +1610,8 @@ class DataCacheMgr( object ) :
 				modeStr = 'Radio'
 				newZappingMode.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
 
-			LOG_TRACE('------changed settings')
-			newZappingMode.printdebug( )
+			#LOG_TRACE('------changed settings')
+			#newZappingMode.printdebug( )
 			self.Zappingmode_SetCurrent( newZappingMode )
 			self.LoadZappingmode( )
 			self.LoadZappingList( )
