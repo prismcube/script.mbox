@@ -979,7 +979,7 @@ class TimeShiftPlate( BaseWindow ) :
 		mediaTime = self.mTimeshift_endTime - self.mTimeshift_staTime
 		if ( mediaTime / 1000 ) < 30 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Can not create chapter, at least 30sec over' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Make media length longer than 30 secs to create a chapter' ) )
  			dialog.doModal( )
 			return
 
