@@ -29,6 +29,7 @@ DIALOG_ID_INPUT_PINCODE				= 20
 DIALOG_ID_SELECT					= 21
 DIALOG_ID_BOOKMARK					= 22
 DIALOG_ID_CAS_EVENT					= 23
+DIALOG_ID_AUTO_POWER_DOWN			= 24
 
 
 gDialogMgr = None
@@ -147,6 +148,10 @@ class DialogMgr( object ) :
 			elif aDialogId == DIALOG_ID_CAS_EVENT :
 				from pvr.gui.dialogs.DialogCasEvent import DialogCasEvent
 				return DialogCasEvent( 'DialogCasEvent.xml', self.scriptDir )
+
+			elif aDialogId == DIALOG_ID_AUTO_POWER_DOWN :
+				from pvr.gui.dialogs.DialogAutoPowerDown import DialogAutoPowerDown
+				return DialogAutoPowerDown( 'DialogAutoPowerDown.xml', self.scriptDir )
 
 			else :
 				LOG_ERR( 'can not find dialog' )
