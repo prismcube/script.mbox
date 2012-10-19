@@ -183,10 +183,17 @@ class LivePlate( LivePlateWindow ) :
 			self.ChannelTune( PREV_CHANNEL )
 
 		elif id == Action.ACTION_MBOX_XBMC :
-			self.SetMediaCenter( )
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode != ElisEnum.E_MODE_LIVE :
+				msg = MR_LANG( 'Try again after stopping the Timeshift first' )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+				dialog.doModal( )
 
-			self.Close( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
+			else :				
+				self.SetMediaCenter( )
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif id == Action.ACTION_MBOX_ARCHIVE :
 			self.Close( )

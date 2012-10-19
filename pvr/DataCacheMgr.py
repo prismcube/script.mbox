@@ -175,7 +175,7 @@ class DataCacheMgr( object ) :
 		#Zapping Mode
 		self.LoadZappingmode( )
 		self.LoadZappingList( )
-
+		#self.mLastZappingMode = copy.deepcopy( self.mZappingMode )
 
 		#SatelliteList
 		self.LoadAllSatellite( )
@@ -1595,8 +1595,10 @@ class DataCacheMgr( object ) :
 
 	def ToggleTVRadio( self ) :
 		ret = True
+		restoreZappingMode = None
 		try :
 			zappingMode = self.Zappingmode_GetCurrent( )
+			restoreZappingMode = copy.deepcopy( zappingMode )
 			#zappingMode.printdebug( )
 
 			modeStr = ''
@@ -1608,6 +1610,7 @@ class DataCacheMgr( object ) :
 				modeStr = 'Radio'
 				newZappingMode.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
 
+			#LOG_TRACE('------changed settings')
 			#newZappingMode.printdebug( )
 			self.Zappingmode_SetCurrent( newZappingMode )
 			self.LoadZappingmode( )
@@ -1643,6 +1646,15 @@ class DataCacheMgr( object ) :
 		except Exception, e :
 			LOG_ERR( 'Exception [%s]'% e )
 			ret = False
+
+			#restore
+			if restoreZappingMode and restoreZappingMode.mError == 0 :
+				LOG_ERR( 'restore previos zapping mode back' )
+				restoreZappingMode.printdebug( )
+				self.Zappingmode_SetCurrent( restoreZappingMode )
+				self.LoadZappingmode( )
+				self.LoadZappingList( )
+				self.LoadChannelList( )
 
 		return ret
 

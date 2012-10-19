@@ -555,9 +555,9 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FORMAT_HDD :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddInputControl( E_Input01, MR_LANG( 'Media Archive Format' ), '', MR_LANG( 'Press the button to format Media section in your hard drive' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Record Archive Format' ), '', MR_LANG( 'Press the button to format Record section in your hard drive' ) )
-			self.AddInputControl( E_Input03, MR_LANG( 'HDD Format' ), '', MR_LANG( 'Press the button to format all section in your hard drive' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Media Archive Format' ), '', MR_LANG( 'Press the OK button to remove everything in the Media Archive' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Record Archive Format' ), '', MR_LANG( 'Press the OK button to remove everything in the Record Archive' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'HDD Format' ), '', MR_LANG( 'Press the OK button to erase your hard drive' ) )
 
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03 ]
 			self.SetVisibleControls( visibleControlIds, True )
