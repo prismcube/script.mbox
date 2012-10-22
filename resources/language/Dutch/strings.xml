@@ -965,4 +965,8 @@
 	<string id="3552">DUT_Press the OK button to erase your hard drive</string>
 	<string id="3553">DUT_Try again after stopping the Timeshift first</string>
 	<string id="3554">DUT_Try again after stopping the PVR or Timeshift first</string>
+	<string id="3555">DUT_Show Bookmark</string>
+	<string id="3556">DUT_Hide Bookmark</string>
+	<string id="3557">DUT_Add To Bookmark</string>
+	<string id="3558">DUT_Show List</string>
 </strings>

@@ -965,4 +965,8 @@
 	<string id="3552">FRE_Press the OK button to erase your hard drive</string>
 	<string id="3553">FRE_Try again after stopping the Timeshift first</string>
 	<string id="3554">FRE_Try again after stopping the PVR or Timeshift first</string>
+	<string id="3555">FRE_Show Bookmark</string>
+	<string id="3556">FRE_Hide Bookmark</string>
+	<string id="3557">FRE_Add To Bookmark</string>
+	<string id="3558">FRE_Show List</string>
 </strings>
