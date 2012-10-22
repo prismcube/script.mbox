@@ -31,8 +31,6 @@ TIME_SEC_CHECK_HDD_TEMP			=	3
 class SystemInfo( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-		leftGroupItems			= [ MR_LANG( 'Version' ), MR_LANG( 'HDD' ) ]
-	
 		self.mCtrlLeftGroup 			= None
 
 		self.mCtrlVersionProductName	= None
@@ -60,13 +58,15 @@ class SystemInfo( SettingWindow ) :
 		self.mCheckHiddenPattern2	= False
 		self.mCheckHiddenPattern3	= False
 
-		for i in range( len( leftGroupItems ) ) :
-			self.mGroupItems.append( xbmcgui.ListItem( leftGroupItems[i] ) )
-
 
 	def onInit( self )  :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
+
+		self.mGroupItems = []
+
+		self.mGroupItems.append( xbmcgui.ListItem( MR_LANG( 'Version' ) ) )
+		self.mGroupItems.append( xbmcgui.ListItem( MR_LANG( 'HDD' ) ) )
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'STB Information' ) )
 

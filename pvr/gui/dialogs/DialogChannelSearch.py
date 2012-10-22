@@ -24,12 +24,14 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mConfiguredSatelliteList = []
 		self.mLongitude = 0
 		self.mBand = 0
-		self.mSatelliteFormatedName = MR_LANG( 'Unknown' )
+		self.mSatelliteFormatedName = None
 
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
+
+		self.mSatelliteFormatedName = MR_LANG( 'Unknown' )
 
 		self.mIsFinished = False	
 		self.mTimer = None
