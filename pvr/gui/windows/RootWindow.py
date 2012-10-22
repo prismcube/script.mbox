@@ -8,8 +8,8 @@ class RootWindow( BaseWindow ) :
 		
 
 	def onInit( self ) :
-		self.mWinId = xbmcgui.getCurrentWindowId( )
-		self.mWin = xbmcgui.Window( self.mWinId )
+		#self.mWinId = xbmcgui.getCurrentWindowId( )
+		#self.mWin = xbmcgui.Window( self.mWinId )
 
 		LOG_TRACE('LAEL98 TEST self.mInitialized' )
 		print 'self.mInitialized=%s' %self.mInitialized
@@ -25,7 +25,6 @@ class RootWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).doModal( )
 			"""
-			
 
 			self.mEventBus.Register( self )
 		else :
@@ -99,25 +98,16 @@ class RootWindow( BaseWindow ) :
 			self.mDataCache.Frontdisplay_Resolution( iconIndex )
 
 		elif aEvent.getName( ) == ElisEventPowerSave( ).getName( ) :
-			LOG_TRACE( 'power save mode , self.mIsDialogOpend = %s' % self.mIsDialogOpend )
-			"""
 			if self.mIsDialogOpend == False :
-				print 'dhkim test start thread'
-				ttt = threading.Timer( 3, self.AsyncPowerSave )
-				ttt.start( )
-			"""
-				#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				#dialog.SetDialogProperty( MR_LANG( 'Warning' ), MR_LANG( 'Power down' )	)
-				#dialog.doModal( )
+				thread = threading.Timer( 1, self.AsyncPowerSave )
+				thread.start( )
 				
-
 
 	def AsyncPowerSave( self ) :
 		self.mIsDialogOpend = True
+		LOG_TRACE( 'Open Auto power down dialog' )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_AUTO_POWER_DOWN )
 		dialog.doModal( )
-		#dialog = xbmcgui.Dialog()
-		#dialog.ok( 'Warning' ,  'Power down' )
 		self.mIsDialogOpend = False
 
 

@@ -31,7 +31,6 @@ DIALOG_ID_BOOKMARK					= 22
 DIALOG_ID_CAS_EVENT					= 23
 DIALOG_ID_AUTO_POWER_DOWN			= 24
 
-
 gDialogMgr = None
 
 def GetInstance( ) :

@@ -7,13 +7,14 @@ class EditSatellite( SettingWindow ) :
 		self.mSatelliteIndex	= 0
 		self.mLongitude			= 0
 		self.mBand				= 0
-		self.mName				= MR_LANG( 'Unkown' )
+		self.mName				= None
 
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
+		self.mName = MR_LANG( 'Unkown' )
 		self.SetSettingWindowLabel( MR_LANG( 'Edit Satellite' ) )
 
 		hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]

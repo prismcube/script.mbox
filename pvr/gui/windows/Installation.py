@@ -15,12 +15,10 @@ MAIN_LIST_ID					= 9000
 class Installation( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
-
 		self.mCtrlLeftGroup = None
 
 
 	def onInit( self ) :
-
 		self.mLeftGroupItems = [
 		MR_LANG( 'First Installation' ),
 		MR_LANG( 'Antenna Setup' ),

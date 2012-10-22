@@ -965,4 +965,8 @@
 	<string id="3552">CZE_Press the OK button to erase your hard drive</string>
 	<string id="3553">CZE_Try again after stopping the Timeshift first</string>
 	<string id="3554">CZE_Try again after stopping the PVR or Timeshift first</string>
+	<string id="3555">CZE_Show Bookmark</string>
+	<string id="3556">CZE_Hide Bookmark</string>
+	<string id="3557">CZE_Add To Bookmark</string>
+	<string id="3558">CZE_Show List</string>
 </strings>

@@ -1,4 +1,4 @@
-"ENGLISH","DEUTSCH","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN","STRING_INDEX"
+"ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN","STRING_INDEX"
 "All CHANNELS",,,,,,,,,,1
 "SATELLITE",,,,,,,,,,2
 "FTA/CAS",,"FTA/CAS",,,,,,,,3
@@ -942,3 +942,7 @@
 "No Signal",,,,,,,,,,3556
 "Scrambled",,,,,,,,,,3557
 "Items - Page",,,,,,,,,,3558
+"Show Bookmark",,,,,,,,,,3559
+"Hide Bookmark",,,,,,,,,,3560
+"Add To Bookmark",,,,,,,,,,3561
+"Show List",,,,,,,,,,3562

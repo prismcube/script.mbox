@@ -45,7 +45,7 @@ def csvToXML():
 	openFile = os.getcwd() + '/%s'% E_FILE_CSV
 	wFile1 = '%s'% E_FILE_MBOX_STRING_ID
 
-	langPack = ["ENGLISH","DEUTSCH","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"]
+	langPack = ["ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"]
 	tag1 = '<string id=\"%s\">'
 	tag2 = '</string>'
 
@@ -210,7 +210,7 @@ def makeLanguage(inFile):
 	#openFile = os.getcwd() + '/test.csv'
 	wFile1 = E_FILE_MBOX_STRING_ID
 
-	langPack = ["ENGLISH","DEUTSCH","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"]
+	langPack = ["ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"]
 	tag1 = '<string id=\"%s\">'
 	tag2 = '</string>'
 
@@ -725,7 +725,7 @@ def copyLanguage(srcDir, langDir) :
 
 # resource/../strings.xml to CSV
 def Make_NewCSV( ) :
-	langPack = ["ENGLISH","DEUTSCH","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"]
+	langPack = ["ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"]
 
 	mboxDir = os.path.abspath(os.getcwd() + '/../../../../script.mbox')
 	langDir = mboxDir + '/resources/language'
@@ -960,7 +960,7 @@ def AutoMakeLanguage() :
 ########## test
 def test():
 	pattern = '"([^"]*)"'
-	wFileList = re.findall(pattern, '"ENGLISH","DEUTSCH","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"')
+	wFileList = re.findall(pattern, '"ENGLISH","GERMAN","FRENCH","ITALIAN","SPANISH","CZECH","DUTCH","POLISH","TURKISH","RUSSIAN"')
 	#line = '"4 Sec","4 Sek.","4 s","4 sec.","4 seg.","4 s","4 sec.","4 sek.","4 sn.","4 секунды",667'
 	line = '"Sports",,,,,,,"bb",,,827'
 	ret = re.findall(pattern, line)

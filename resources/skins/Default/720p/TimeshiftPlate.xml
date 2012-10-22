@@ -2,6 +2,8 @@
 	<!--defaultcontrol always="true">3705</defaultcontrol-->
 	<allowoverlay>yes</allowoverlay>
 	<backgroundcolor>0x00ffffff</backgroundcolor>		
+	<onload>SetProperty(bookmarkIconFO,StepFO.png)</onload>
+	<onload>SetProperty(bookmarkIconNF,StepNF.png)</onload>
 	<controls>
 		<control type="image">
 			<posx>0</posx>
@@ -333,8 +335,8 @@
 						<texturenofocus>TSProgressCurrentNF.png</texturenofocus>
 						<onleft>202</onleft>
 						<onright>202</onright>
-						<onup>3706</onup>
-						<ondown>3706</ondown>
+						<!--onup>3706</onup-->
+						<!--ondown>3706</ondown-->
 						<enable>substring(Window.Property(IsXpeeding),true)</enable>
 					</control>
 					<control type="label" id="203">

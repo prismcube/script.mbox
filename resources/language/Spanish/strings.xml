@@ -965,4 +965,8 @@
 	<string id="3552">SPA_Press the OK button to erase your hard drive</string>
 	<string id="3553">SPA_Try again after stopping the Timeshift first</string>
 	<string id="3554">SPA_Try again after stopping the PVR or Timeshift first</string>
+	<string id="3555">SPA_Show Bookmark</string>
+	<string id="3556">SPA_Hide Bookmark</string>
+	<string id="3557">SPA_Add To Bookmark</string>
+	<string id="3558">SPA_Show List</string>
 </strings>

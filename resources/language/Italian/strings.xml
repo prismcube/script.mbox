@@ -965,4 +965,8 @@
 	<string id="3552">ITA_Press the OK button to erase your hard drive</string>
 	<string id="3553">ITA_Try again after stopping the Timeshift first</string>
 	<string id="3554">ITA_Try again after stopping the PVR or Timeshift first</string>
+	<string id="3555">ITA_Show Bookmark</string>
+	<string id="3556">ITA_Hide Bookmark</string>
+	<string id="3557">ITA_Add To Bookmark</string>
+	<string id="3558">ITA_Show List</string>
 </strings>
