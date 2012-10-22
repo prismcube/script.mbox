@@ -30,8 +30,6 @@ DIALOG_ID_SELECT					= 21
 DIALOG_ID_BOOKMARK					= 22
 DIALOG_ID_CAS_EVENT					= 23
 
-#DIALOG_ID_TEST_DIALOG				= 30
-
 gDialogMgr = None
 
 def GetInstance( ) :
@@ -148,10 +146,6 @@ class DialogMgr( object ) :
 			elif aDialogId == DIALOG_ID_CAS_EVENT :
 				from pvr.gui.dialogs.DialogCasEvent import DialogCasEvent
 				return DialogCasEvent( 'DialogCasEvent.xml', self.scriptDir )
-
-			#elif aDialogId == DIALOG_ID_TEST_DIALOG :
-			#	from pvr.gui.dialogs.TestDialog import DialogTest
-			#	return DialogTest( 'Test.xml', self.scriptDir )
 
 			else :
 				LOG_ERR( 'can not find dialog' )
