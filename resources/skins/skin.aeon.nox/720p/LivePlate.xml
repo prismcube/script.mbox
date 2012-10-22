@@ -135,7 +135,7 @@
 					<aligny>center</aligny>
 					<font>Font_Info</font>
 					<textcolor>grey</textcolor>
-					<label>Description</label>
+					<label>SCRIPT32</label>
 					<visible>Control.HasFocus(3621)</visible>
 				</control>
 				<control type="label">
@@ -147,7 +147,7 @@
 					<aligny>center</aligny>
 					<font>Font_Info</font>
 					<textcolor>grey</textcolor>
-					<label>Teletext</label>
+					<label>SCRIPT33</label>
 					<visible>Control.HasFocus(3622)</visible>
 				</control>
 				<control type="label">
@@ -159,7 +159,7 @@
 					<aligny>center</aligny>
 					<font>Font_Info</font>
 					<textcolor>grey</textcolor>
-					<label>Subtitle</label>
+					<label>SCRIPT34</label>
 					<visible>Control.HasFocus(3623)</visible>
 				</control>
 				<control type="label">
@@ -171,7 +171,7 @@
 					<aligny>center</aligny>
 					<font>Font_Info</font>
 					<textcolor>grey</textcolor>
-					<label>Start Recording</label>
+					<label>SCRIPT35</label>
 					<visible>Control.HasFocus(3624)</visible>
 				</control>
 				<control type="label">
@@ -183,7 +183,7 @@
 					<aligny>center</aligny>
 					<font>Font_Info</font>
 					<textcolor>grey</textcolor>
-					<label>Stop Recording</label>
+					<label>SCRIPT36</label>
 					<visible>Control.HasFocus(3625)</visible>
 				</control>
 				<control type="label">
@@ -195,7 +195,7 @@
 					<aligny>center</aligny>
 					<font>Font_Info</font>
 					<textcolor>grey</textcolor>
-					<label>Mute</label>
+					<label>SCRIPT37</label>
 					<visible>Control.HasFocus(3626)</visible>
 				</control>
 				<control type="label">
@@ -207,7 +207,7 @@
 					<aligny>center</aligny>
 					<font>Font_Info</font>
 					<textcolor>grey</textcolor>
-					<label>A/V Setting</label>
+					<label>SCRIPT38</label>
 					<visible>Control.HasFocus(3627)</visible>
 				</control>
 				<control type="label">
@@ -219,7 +219,7 @@
 					<aligny>center</aligny>
 					<font>Font_Info</font>
 					<textcolor>grey</textcolor>
-					<label>Bookmark</label>
+					<label>SCRIPT39</label>
 					<visible>Control.HasFocus(3628)</visible>
 				</control>
 				<control type="label">
@@ -231,7 +231,7 @@
 					<aligny>center</aligny>
 					<font>Font_Info</font>
 					<textcolor>grey</textcolor>
-					<label>EPG Present</label>
+					<label>SCRIPT40</label>
 					<visible>Control.HasFocus(702)</visible>
 				</control>
 				<control type="label">
@@ -243,7 +243,7 @@
 					<aligny>center</aligny>
 					<font>Font_Info</font>
 					<textcolor>grey</textcolor>
-					<label>EPG Next</label>
+					<label>SCRIPT41</label>
 					<visible>Control.HasFocus(706)</visible>
 				</control>
 			</control>
@@ -432,7 +432,7 @@
 					<posy>12</posy>
 					<width>25</width>
 					<height>25</height>
-					<label>210</label>
+					<label></label>
 					<font></font>
 					<texturefocus>views/multiplex_arrowfocus2.png</texturefocus>
 					<texturenofocus>views/multiplex_arrow2.png</texturenofocus>
@@ -482,7 +482,7 @@
 					<align>right</align>
 					<width>25</width>
 					<height>25</height>
-					<label>31354</label>
+					<label></label>
 					<font></font>
 					<texturefocus>views/multiplex_arrowfocus.png</texturefocus>
 					<texturenofocus>views/multiplex_arrow.png</texturenofocus>

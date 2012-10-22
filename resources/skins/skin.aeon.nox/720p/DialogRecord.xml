@@ -38,7 +38,7 @@
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
-				<label>Record</label>
+				<label>SCRIPT23</label>
 			</control>
 
 
@@ -76,7 +76,7 @@
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
-				<label>RecordName</label>
+				<label></label>
 			</control>
 
 
@@ -151,7 +151,7 @@
 					<textcolor>grey2</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
-					<label>Duration</label>
+					<label>SCRIPT24</label>
 					<visible>!Control.HasFocus(500)</visible>
 				</control>
 				<control type="label">
@@ -163,7 +163,7 @@
 					<textcolor>white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
-					<label>Duration</label>
+					<label>SCRIPT24</label>
 					<visible>Control.HasFocus(500)</visible>
 				</control>
 				<control type="label" id="502">
@@ -204,7 +204,7 @@
 					<font>Font_Bold18</font>
 					<textcolor>grey2</textcolor>
 					<focusedcolor>white</focusedcolor>
-					<label>Start</label>
+					<label>SCRIPT25</label>
 					<align>center</align>
 					<texturenofocus border="5">dialogs/context_nofocus.png</texturenofocus>
 					<texturefocus border="5">dialogs/context_highlight.png</texturefocus>
@@ -227,7 +227,7 @@
 					<font>Font_Bold18</font>
 					<textcolor>grey2</textcolor>
 					<focusedcolor>white</focusedcolor>
-					<label>Cancel</label>
+					<label>SCRIPT26</label>
 					<align>center</align>
 					<onup>500</onup>
 					<ondown>500</ondown>

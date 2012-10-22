@@ -101,92 +101,97 @@
 					</focusedlayout>
 					<content>
 						<item id="1">
-							<label>First Installation</label>
+							<label>SCRIPT50</label>
 							<onclick>SendClick(90101)</onclick>
 							<visible>Container(9000).HasFocus(1)</visible>
 						</item>
 						<item id="2">
-							<label>Antenna Setup</label>
+							<label>SCRIPT51</label>
 							<onclick>SendClick(90102)</onclick>
 							<visible>Container(9000).HasFocus(1)</visible>
 						</item>
 						<item id="3">
-							<label>Channel Search</label>
+							<label>SCRIPT52</label>
 							<onclick>SendClick(90103)</onclick>
 							<visible>Container(9000).HasFocus(1)</visible>
 						</item>
 						<item id="4">
-							<label>Edit Satellite</label>
+							<label>SCRIPT53</label>
 							<onclick>SendClick(90104)</onclick>
 							<visible>Container(9000).HasFocus(1)</visible>
 						</item>
 						<item id="5">
-							<label>Edit Transponder</label>
+							<label>SCRIPT54</label>
 							<onclick>SendClick(90105)</onclick>
 							<visible>Container(9000).HasFocus(1)</visible>
 						</item>
 						<item id="6">
-							<label>Configure</label>
+							<label>SCRIPT55</label>
 							<onclick>SendClick(90106)</onclick>
 							<visible>Container(9000).HasFocus(1)</visible>
 						</item>
 						<item id="7">
-							<label>CAS</label>
+							<label>SCRIPT56</label>
 							<onclick>SendClick(90107)</onclick>
+							<visible>Container(9000).HasFocus(1)</visible>
+						</item>
+						<item id="8">
+							<label>SCRIPT103</label>
+							<onclick>SendClick(90108)</onclick>
 							<visible>Container(9000).HasFocus(1)</visible>
 						</item>
 
 						<item id="1">
-							<label>Weather</label>
+							<label>SCRIPT57</label>
 							<onclick>SendClick(90601)</onclick>
 							<onclick>ActivateWindow(Weather)</onclick>
 							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="2">
-							<label>Pictures</label>
+							<label>SCRIPT58</label>
 							<onclick>SendClick(90602)</onclick>
 							<onclick>ActivateWindow(Pictures)</onclick>
 							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="3">
-							<label>Music</label>
+							<label>SCRIPT59</label>
 							<onclick>SendClick(90603)</onclick>
 							<onclick>ActivateWindow(Music)</onclick>
 							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="4">
-							<label>Video</label>
+							<label>SCRIPT60</label>
 							<onclick>SendClick(90604)</onclick>
 							<onclick>ActivateWindow(Videos)</onclick>
 							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="5">
-							<label>Programs</label>
+							<label>SCRIPT61</label>
 							<onclick>SendClick(90605)</onclick>
 							<onclick>ActivateWindow(Programs,Addons,return)</onclick>
 							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="6">
-							<label>Settings</label>
+							<label>SCRIPT62</label>
 							<onclick>SendClick(90606)</onclick>
 							<onclick>ActivateWindow(Settings)</onclick>
 							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="7">
-							<label>File Manager</label>
+							<label>SCRIPT63</label>
 							<onclick>SendClick(90607)</onclick>
 							<onclick>ActivateWindow(FileManager)</onclick>
 							<visible>Container(9000).HasFocus(6)</visible>
 						</item>
 						<item id="8">
-							<label>Profiles</label>
+							<label>SCRIPT64</label>
 							<onclick>SendClick(90608)</onclick>
 							<onclick>ActivateWindow(Profiles)</onclick>
 							<!--<visible>Container(9000).HasFocus(5)</visible>-->
 							<visible>false</visible>
 						</item>
 						<item id="9">
-							<label>System Info</label>
+							<label>SCRIPT65</label>
 							<onclick>SendClick(90609)</onclick>
 							<onclick>ActivateWindow(SystemInfo)</onclick>
 							<visible>Container(9000).HasFocus(6)</visible>
@@ -260,42 +265,42 @@
 				</focusedlayout>
 				<content>
 					<item id="1">
-						<label>Install</label>
+						<label>SCRIPT73</label>
 						<onclick>SendClick(90100)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="2">
-						<label>Archive</label>
+						<label>SCRIPT43</label>
 						<onclick>SendClick(90200)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="3">
-						<label>EPG</label>
+						<label>SCRIPT44</label>
 						<onclick>SendClick(90300)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="4">
-						<label>Channel</label>
+						<label>SCRIPT74</label>
 						<onclick>SendClick(90400)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="5">
-						<label>Addons</label>
+						<label>SCRIPT75</label>
 						<onclick>SendClick(90500)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="6">
-						<label>Media</label>
+						<label>SCRIPT76</label>
 						<onclick>SendClick(90600)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="7">
-						<label>Version</label>
+						<label>SCRIPT77</label>
 						<onclick>SendClick(90700)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="8">
-						<label>Back</label>
+						<label>SCRIPT49</label>
 						<onclick>ParentDir</onclick>
 						<visible>true</visible>
 					</item>

@@ -113,7 +113,7 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Volume</label>
+						<label>SCRIPT90</label>
 						<visible>Control.HasFocus(3701)</visible>
 					</control>
 					<control type="label">
@@ -126,7 +126,7 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Record Start</label>
+						<label>SCRIPT91</label>
 						<visible>Control.HasFocus(3702)</visible>
 					</control>
 					<control type="label">
@@ -139,7 +139,7 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Record Stop</label>
+						<label>SCRIPT92</label>
 						<visible>Control.HasFocus(3703)</visible>
 					</control>
 					<control type="label">
@@ -152,7 +152,7 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Rewind</label>
+						<label>SCRIPT93</label>
 						<visible>Control.HasFocus(3704)</visible>
 					</control>
 					<control type="label">
@@ -165,7 +165,7 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Play</label>
+						<label>SCRIPT94</label>
 						<visible>Control.HasFocus(3705)</visible>
 					</control>
 					<control type="label">
@@ -178,7 +178,7 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Pause</label>
+						<label>SCRIPT95</label>
 						<visible>Control.HasFocus(3706)</visible>
 					</control>
 					<control type="label">
@@ -191,7 +191,7 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Stop</label>
+						<label>SCRIPT96</label>
 						<visible>Control.HasFocus(3707)</visible>
 					</control>
 					<control type="label">
@@ -204,7 +204,7 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Forward</label>
+						<label>SCRIPT97</label>
 						<visible>Control.HasFocus(3708)</visible>
 					</control>
 					<control type="label">
@@ -217,7 +217,7 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Jump Rewind</label>
+						<label>SCRIPT98</label>
 						<visible>Control.HasFocus(3709)</visible>
 					</control>
 					<control type="label">
@@ -230,7 +230,7 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Jump Forward</label>
+						<label>SCRIPT99</label>
 						<visible>Control.HasFocus(3710)</visible>
 					</control>
 					<control type="label">
@@ -243,7 +243,7 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>Bookmark</label>
+						<label>SCRIPT39</label>
 						<visible>Control.HasFocus(3711)</visible>
 					</control>
 
@@ -257,7 +257,7 @@
 						<scroll>false</scroll>
 						<align>right</align>
 						<aligny>center</aligny>
-						<label>TimeShift L/R</label>
+						<label>SCRIPT100</label>
 						<visible>Control.HasFocus(202)</visible>
 					</control>
 				</control>

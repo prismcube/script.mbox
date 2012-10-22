@@ -94,8 +94,7 @@
 				<width>740</width>
 				<height>30</height>
 				<font>font16caps</font>
-				<!--label>System Information</label-->
-				<label>Check your system resource at a glance</label>	
+				<label>SCRIPT87</label>	
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>

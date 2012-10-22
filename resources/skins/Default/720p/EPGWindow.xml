@@ -155,12 +155,12 @@
 						<description>Stack Toggle</description>
 						<textwidth>170</textwidth>
 						<include>DefaultButtonMediaSubCommonValues</include>
-						<label>Hide Watched</label>
+						<label>SCRIPT8</label>
 					</control>
 					<control type="button" id="202">
 						<textwidth>170</textwidth>
 						<include>DefaultButtonMediaSubCommonValues</include>
-						<label>Search</label>
+						<label>SCRIPT29</label>
 					</control>
 				</control>
 			</control>
@@ -185,7 +185,7 @@
 					<posx>0</posx>
 					<posy>0</posy>
 					<include>DefaultButtonCommonValues</include>
-					<label>VIEW:</label>
+					<label></label>
 					<onleft>9003</onleft>
 					<onright>9003</onright>
 					<onup>101</onup>
@@ -204,7 +204,7 @@
 					<radioposy>12</radioposy>
 					<textureradiofocus>HomeHasSub.png</textureradiofocus>
 					<textureradionofocus>HomeHasSub.png</textureradionofocus>
-					<label>31026</label>
+					<label>SCRIPT9</label>
 					<onleft>9003</onleft>
 					<onright>9010</onright>
 					<onup>100</onup>
@@ -272,7 +272,7 @@
 				<posy>0</posy>
 				<font>font12_title</font>
 				<textcolor>grey</textcolor>
-				<label>date</label>
+				<label></label>
 			</control>
 
 			<control type="label" id="302">
@@ -281,7 +281,7 @@
 				<posy>30</posy>
 				<font>font12_title</font>
 				<textcolor>grey</textcolor>
-				<label>200Min</label>
+				<label></label>
 			</control>
 
 			<control type="textbox" id="303">
@@ -292,7 +292,8 @@
 			 	<height>160</height>
 				<font>font12_title</font>
 				<textcolor>grey</textcolor>
-				<label>none</label>
+				<label>SCRIPT30</label>
+				<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
 			</control>
 
 			<!-- component -->
@@ -364,7 +365,7 @@
 			<scroll>false</scroll>
 			<align>right</align>
 			<aligny>center</aligny>
-			<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3500).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3500).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3500).CurrentPage]/$INFO[Container(3500).NumPages][/COLOR])</label>
+			<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3500).NumItems][/COLOR]) Items - Page ([COLOR=blue]$INFO[Container(3500).CurrentPage]/$INFO[Container(3500).NumPages][/COLOR])</label>
 			<visible>substring(Window.Property(EPGMode),channel) </visible>						
 		</control>
 
@@ -380,7 +381,7 @@
 			<scroll>false</scroll>
 			<align>right</align>
 			<aligny>center</aligny>
-			<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3510).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3510).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3510).CurrentPage]/$INFO[Container(3510).NumPages][/COLOR])</label>
+			<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3510).NumItems][/COLOR]) Items - Page ([COLOR=blue]$INFO[Container(3510).CurrentPage]/$INFO[Container(3510).NumPages][/COLOR])</label>
 			<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>						
 		</control>
 

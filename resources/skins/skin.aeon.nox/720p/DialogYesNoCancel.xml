@@ -22,7 +22,7 @@
 				<align>center</align>
 				<textcolor>abFFFFFF</textcolor>
 				<font>Font_Reg18</font>
-				<label>no</label>
+				<label>SCRIPT28</label>
 				<scroll>true</scroll>
 				<onleft>301</onleft>
 				<onright>301</onright>
@@ -40,7 +40,7 @@
 				<align>center</align>
 				<textcolor>abFFFFFF</textcolor>
 				<font>Font_Reg18</font>
-				<label>yes</label>
+				<label>SCRIPT27</label>
 				<texturefocus>-</texturefocus>
 				<texturenofocus>-</texturenofocus>
 				<scroll>true</scroll>

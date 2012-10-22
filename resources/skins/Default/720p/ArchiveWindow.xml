@@ -159,21 +159,8 @@
 						<description>Stack Toggle</description>
 						<textwidth>170</textwidth>
 						<include>DefaultButtonMediaSubCommonValues</include>
-						<label>Hide Watched</label>
+						<label>SCRIPT8</label>
 					</control>
-					<!--
-					<control type="radiobutton" id="201">
-						<description>Folder Type</description>
-						<textwidth>170</textwidth>
-						<include>DefaultButtonMediaSubCommonValues</include>
-						<label>FolderType</label>
-					</control>
-					<control type="button" id="202">
-						<textwidth>170</textwidth>
-						<include>DefaultButtonMediaSubCommonValues</include>
-						<label>Search</label>
-					</control>
-					-->
 				</control>
 			</control>
 			<include>DefaultSideBladeLeft</include>
@@ -194,7 +181,7 @@
 					<posx>0</posx>
 					<posy>0</posy>
 					<include>DefaultButtonCommonValues</include>
-					<label>VIEW:</label>
+					<label></label>
 					<onleft>9003</onleft>
 					<onright>9003</onright>
 					<onup>104</onup>
@@ -205,7 +192,7 @@
 					<posx>0</posx>
 					<posy>40</posy>
 					<include>DefaultButtonCommonValues</include>
-					<label>SORT:</label>
+					<label></label>
 					<onleft>9003</onleft>
 					<onright>102</onright>
 					<onup>100</onup>
@@ -236,7 +223,7 @@
 					<radioposy>12</radioposy>
 					<textureradiofocus>HomeHasSub.png</textureradiofocus>
 					<textureradionofocus>HomeHasSub.png</textureradionofocus>
-					<label>31026</label>
+					<label>SCRIPT9</label>
 					<onleft>9003</onleft>
 					<onright>9010</onright>
 					<onup>101</onup>
@@ -430,7 +417,7 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3400).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3400).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3400).CurrentPage]/$INFO[Container(3400).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3400).NumItems][/COLOR]) Items - Page ([COLOR=blue]$INFO[Container(3400).CurrentPage]/$INFO[Container(3400).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(ViewMode),common) </visible>
 			</control>
 
@@ -445,7 +432,7 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3410).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3410).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3410).CurrentPage]/$INFO[Container(3410).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3410).NumItems][/COLOR]) Items - Page ([COLOR=blue]$INFO[Container(3410).CurrentPage]/$INFO[Container(3410).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(ViewMode),thumbnail) </visible>
 			</control>
 
@@ -460,7 +447,7 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3420).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3420).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3420).CurrentPage]/$INFO[Container(3420).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3420).NumItems][/COLOR]) Items - Page ([COLOR=blue]$INFO[Container(3420).CurrentPage]/$INFO[Container(3420).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(ViewMode),posterwrap) </visible>
 			</control>
 
@@ -475,7 +462,7 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3430).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3430).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3430).CurrentPage]/$INFO[Container(3430).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3430).NumItems][/COLOR]) Items - Page ([COLOR=blue]$INFO[Container(3430).CurrentPage]/$INFO[Container(3430).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(ViewMode),panart) </visible>
 			</control>
 		</control>

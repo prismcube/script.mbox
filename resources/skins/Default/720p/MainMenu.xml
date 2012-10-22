@@ -97,42 +97,42 @@
 					</focusedlayout>
 					<content>
 						<item id="1">
-							<label>Installation</label>
+							<label>SCRIPT42</label>
 							<onclick>SendClick(90100)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="2">
-							<label>Archive</label>
+							<label>SCRIPT43</label>
 							<onclick>SendClick(90200)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="3">
-							<label>EPG</label>
+							<label>SCRIPT44</label>
 							<onclick>SendClick(90300)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="4">
-							<label>Channel List</label>
+							<label>SCRIPT45</label>
 							<onclick>SendClick(90400)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="5">
-							<label>Fav. Addons</label>
+							<label>SCRIPT46</label>
 							<onclick>SendClick(90500)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="6">
-							<label>Media Center</label>
+							<label>SCRIPT47</label>
 							<onclick>SendClick(90600)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="7">
-							<label>STB Info</label>
+							<label>SCRIPT48</label>
 							<onclick>SendClick(90700)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="8">
-							<label>Back</label>
+							<label>SCRIPT49</label>
 							<onclick>ParentDir</onclick>
 							<visible>true</visible>
 						</item>
@@ -173,7 +173,7 @@
 						<posx>10</posx>
 						<posy>20</posy>
 						<width>215</width>
-						<height>280</height>
+						<height>320</height>
 						<align>center</align>
 						<onleft>9000</onleft>
 						<onup>9010</onup>
@@ -188,43 +188,49 @@
 						</control>
 						<control type="button" id="90101">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>First Installation</label>
+							<label>SCRIPT50</label>
 							<onclick>-</onclick>
 							<visible>true</visible>
 						</control>
 						<control type="button" id="90102">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Antenna Setup</label>
+							<label>SCRIPT51</label>
 							<onclick>-</onclick>
 							<visible>true</visible>						
 						</control>
 						<control type="button" id="90103">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Channel Search</label>
+							<label>SCRIPT52</label>
 							<onclick>-</onclick>
 							<visible>true</visible>
 						</control>
 						<control type="button" id="90104">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Edit Satellite</label>
+							<label>SCRIPT53</label>
 							<onclick>-</onclick>
 							<visible>true</visible>
 						</control>
 						<control type="button" id="90105">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Edit Transponder</label>
+							<label>SCRIPT54</label>
 							<onclick>-</onclick>
 							<visible>true</visible>
 						</control>
 						<control type="button" id="90106">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Configuration</label>
+							<label>SCRIPT55</label>
 							<onclick>-</onclick>
 							<visible>true</visible>
 						</control>
 						<control type="button" id="90107">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>CAS</label>
+							<label>SCRIPT56</label>
+							<onclick>-</onclick>
+							<visible>true</visible>
+						</control>
+						<control type="button" id="90108">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>SCRIPT103</label>
 							<onclick>-</onclick>
 							<visible>true</visible>
 						</control>
@@ -364,63 +370,63 @@
 						</control>
 						<control type="button" id="90601">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Weather</label>
+							<label>SCRIPT57</label>
 							<onclick>ActivateWindow(Weather)</onclick>
 							<enable>substring(Window.Property(IsPVR),false)</enable>
 							<visible>true</visible>
 						</control>
 						<control type="button" id="90602">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Pictures</label>
+							<label>SCRIPT58</label>
 							<onclick>ActivateWindow(Pictures)</onclick>
 							<enable>Control.IsEnabled(90601)</enable>
 							<visible>true</visible>
 						</control>
 						<control type="button" id="90603">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Music</label>
+							<label>SCRIPT59</label>
 							<onclick>ActivateWindow(Music)</onclick>
 							<enable>Control.IsEnabled(90601)</enable>
 							<visible>true</visible>
 						</control>
 						<control type="button" id="90604">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Video</label>
+							<label>SCRIPT60</label>
 							<onclick>ActivateWindow(Videos)</onclick>
 							<visible>true</visible>
 							<enable>Control.IsEnabled(90601)</enable>
 						</control>
 						<control type="button" id="90605">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Programs</label>
+							<label>SCRIPT61</label>
 							<onclick>ActivateWindow(Programs,Addons,return)</onclick>
 							<enable>Control.IsEnabled(90601)</enable>
 							<visible>true</visible>
 						</control>
 						<control type="button" id="90606">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Settings</label>
+							<label>SCRIPT62</label>
 							<onclick>ActivateWindow(Settings)</onclick>
 							<enable>Control.IsEnabled(90601)</enable>
 							<visible>true</visible>
 						</control>
 						<control type="button" id="90607">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>File Manager</label>
+							<label>SCRIPT63</label>
 							<onclick>ActivateWindow(FileManager)</onclick>
 							<enable>Control.IsEnabled(90601)</enable>
 							<visible>true</visible>
 						</control>
 						<control type="button" id="90608">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>Profiles</label>
+							<label>SCRIPT64</label>
 							<onclick>ActivateWindow(Profiles)</onclick>
 							<enable>Control.IsEnabled(90601)</enable>
 							<visible>false</visible>
 						</control>
 						<control type="button" id="90609">
 							<include>DefaultButtonHomeSubCommonValues</include>
-							<label>System Info</label>
+							<label>SCRIPT65</label>
 							<onclick>ActivateWindow(SystemInfo)</onclick>
 							<enable>Control.IsEnabled(90601)</enable>
 							<visible>true</visible>
@@ -472,7 +478,7 @@
 					<height>35</height>
 					<font>font12</font>
 					<!--label>Installation</label-->
-					<label>Installation enables you to setup your STB - Antenna, Channel, Satellite, Transponder, CAS, etc</label>
+					<label>SCRIPT66</label>
 					<align>left</align>
 					<textcolor>white</textcolor>                
 					<shadowcolor>black</shadowcolor>	                
@@ -487,7 +493,7 @@
 					<height>35</height>
 					<font>font12</font>
 					<!--label>Go to Archive Window</label-->
-					<label>The Archive allows you to playback or delete the programs you have recorded</label>
+					<label>SCRIPT67</label>
 					<align>left</align>
 					<textcolor>white</textcolor>                
 					<shadowcolor>black</shadowcolor>
@@ -502,7 +508,7 @@
 					<height>35</height>
 					<font>font12</font>
 					<!--label>Go to EPG Window</label-->
-					<label>The EPG displays program information in time and date order and here you can record them</label>
+					<label>SCRIPT68</label>
 					<align>left</align>
 					<textcolor>white</textcolor>                
 					<shadowcolor>black</shadowcolor>
@@ -517,7 +523,7 @@
 					<height>35</height>
 					<font>font12</font>
 					<!--label>Go to Channel List</label-->
-					<label>The Channel List provides you with functions such as sorting and editing TV & Radio channel list</label>
+					<label>SCRIPT69</label>
 					<align>left</align>
 					<textcolor>white</textcolor>                
 					<shadowcolor>black</shadowcolor>
@@ -532,7 +538,7 @@
 					<height>35</height>
 					<font>font12</font>
 					<!--label>Go to Media Center</label-->
-					<label>The Media Center allows you to browse and view videos, photos, and music from your storage</label>
+					<label>SCRIPT70</label>
 					<align>left</align>
 					<textcolor>white</textcolor>                
 					<shadowcolor>black</shadowcolor>
@@ -547,7 +553,7 @@
 					<height>35</height>
 					<font>font12</font>
 					<!--label>System Information</label-->
-					<label>STB Info provides the STB status including product name and number, free disk space, etc</label>
+					<label>SCRIPT71</label>
 					<align>left</align>
 					<textcolor>white</textcolor>                
 					<shadowcolor>black</shadowcolor>
@@ -562,7 +568,7 @@
 					<height>35</height>
 					<font>font12</font>
 					<!--label>Hide</label-->
-					<label>Return to the screen after hiding the main menu</label>
+					<label>SCRIPT72</label>
 					<align>left</align>
 					<textcolor>white</textcolor>                
 					<shadowcolor>black</shadowcolor>

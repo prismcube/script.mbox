@@ -183,6 +183,85 @@
 			</control>
 		</control>
 
+ 		<control type="group">
+ 			<animation effect="slide" time="700" start="-800,0" end="0,0" tween="cubic" easing="out">WindowOpen</animation>
+			<animation effect="slide" time="700" start="0,0" end="-800,0" tween="cubic" easing="out">WindowClose</animation>
+			<!-- Item Position and Page Number for common list-->
+			<control type="label">
+				<include>Animation_CommonFade</include>
+				<posx>105</posx>
+				<posy>75r</posy>
+				<width>300</width>
+				<height>20</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<scroll>false</scroll>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3400).NumItems][/COLOR] Items)</label>
+				<visible>substring(Window.Property(ViewMode),common)</visible>						
+			</control>
+			<control type="label">
+				<include>Animation_CommonFade</include>
+				<posx>760</posx>
+				<posy>75r</posy>
+				<width>300</width>
+				<height>20</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
+				<label>Page ([COLOR=blue]$INFO[Container(3400).CurrentPage]/$INFO[Container(3400).NumPages][/COLOR])</label>
+				<visible>substring(Window.Property(ViewMode),common)</visible>						
+			</control>
+			<!-- Item Position and Page Number for thumbnail list-->
+			<control type="label">
+				<include>Animation_CommonFade</include>
+				<posx>60r</posx>
+				<posy>50r</posy>
+				<width>300</width>
+				<height>20</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
+				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3410).NumItems][/COLOR]) Items - Page ([COLOR=blue]$INFO[Container(3410).CurrentPage]/$INFO[Container(3410).NumPages][/COLOR])</label>
+				<visible>substring(Window.Property(ViewMode),thumbnail)</visible>						
+			</control>
+			<!-- Item Position and Page Number for posterwrap list-->
+			<control type="label">
+			<include>Animation_CommonFade</include>
+				<posx>60r</posx>
+				<posy>50r</posy>
+				<width>300</width>
+				<height>20</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
+				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3420).NumItems][/COLOR]) Items - Page ([COLOR=blue]$INFO[Container(3420).CurrentPage]/$INFO[Container(3420).NumPages][/COLOR])</label>
+				<visible>substring(Window.Property(ViewMode),posterwrap)</visible>						
+			</control>
+			<!-- Item Position and Page Number for panart list-->
+			<control type="label">
+				<include>Animation_CommonFade</include>
+				<posx>60r</posx>
+				<posy>50r</posy>
+				<width>300</width>
+				<height>20</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
+				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3430).NumItems][/COLOR]) Items - Page ([COLOR=blue]$INFO[Container(3430).CurrentPage]/$INFO[Container(3430).NumPages][/COLOR])</label>
+				<visible>substring(Window.Property(ViewMode),panart)</visible>						
+			</control>
+		</control>
+
 		<control type="group">
 			<posy>25</posy>
 			<control type="image">
@@ -247,11 +326,11 @@
 					<font>Font_Reg19</font>
 					<include>Animation_CommonFade</include>
 					<enable>no</enable>
-					<label>Select view type</label>
+					<label>SCRIPT10</label>
 				</control>
 				<control type="button" id="100">
 					<include>Objects_MediaMenuButtonAlt</include>
-					<label>VIEW:</label>
+					<label></label>
 				</control>
 				<control type="button" id="1112">
 					<height>26</height>
@@ -269,17 +348,17 @@
 					<font>Font_Reg19</font>
 					<include>Animation_CommonFade</include>
 					<enable>no</enable>
-					<label>Select Sort Order</label>
+					<label>SCRIPT11</label>
 				</control>
 				<control type="button" id="101">
 					<include>Objects_MediaMenuButtonAlt</include>
-					<label>SORT:</label>
+					<label></label>
 				</control>
 				<control type="togglebutton" id="102">
 					<description>Sort asc</description>
 					<include>Objects_MediaMenuButtonAlt</include>
-					<label>Order : Descending</label>
-            		<altlabel>Order : Ascending</altlabel>
+					<label>SCRIPT12</label>
+            		<altlabel>SCRIPT13</altlabel>
 					<usealttexture>substring(Window.Property(Ascending),true)</usealttexture>
 				</control>
 				<control type="button" id="1113">
@@ -298,22 +377,12 @@
 					<font>Font_Reg19</font>
 					<include>Animation_CommonFade</include>
 					<enable>no</enable>
-					<label>Misc Options</label>
+					<label>SCRIPT9</label>
 				</control>
 				<control type="radiobutton" id="200">
 					<include>Objects_MediaMenuButtonAlt</include>
-					<label>Hide Watched</label>
+					<label>SCRIPT8</label>
 				</control>
-				<!--
-				<control type="radiobutton" id="201">
-					<include>Objects_MediaMenuButtonAlt</include>
-					<label>FolderType</label>
-				</control>
-				<control type="button" id="202">
-					<include>Objects_MediaMenuButtonAlt</include>
-					<label>Search</label>
-				</control>
-				-->
 			</control>
 		</control>
 		<include>DefaultMiniTitle</include>
@@ -379,85 +448,6 @@
 						<label>$INFO[Window.Property(RecName)]</label>
 					</control>
 				</control>
-			</control>
-		</control>
-
- 		<control type="group">
- 			<animation effect="slide" time="700" start="-800,0" end="0,0" tween="cubic" easing="out">WindowOpen</animation>
-			<animation effect="slide" time="700" start="0,0" end="-800,0" tween="cubic" easing="out">WindowClose</animation>
-			<!-- Item Position and Page Number for common list-->
-			<control type="label">
-				<include>Animation_CommonFade</include>
-				<posx>105</posx>
-				<posy>75r</posy>
-				<width>300</width>
-				<height>20</height>
-				<font>font12</font>
-				<textcolor>grey</textcolor>
-				<scroll>false</scroll>
-				<align>left</align>
-				<aligny>center</aligny>
-				<label>[COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3400).NumItems][/COLOR] $LOCALIZE[31025]</label>
-				<visible>substring(Window.Property(ViewMode),common)</visible>						
-			</control>
-			<control type="label">
-				<include>Animation_CommonFade</include>
-				<posx>760</posx>
-				<posy>75r</posy>
-				<width>300</width>
-				<height>20</height>
-				<font>font12</font>
-				<textcolor>grey</textcolor>
-				<scroll>false</scroll>
-				<align>right</align>
-				<aligny>center</aligny>
-				<label>$LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3400).CurrentPage]/$INFO[Container(3400).NumPages][/COLOR])</label>
-				<visible>substring(Window.Property(ViewMode),common)</visible>						
-			</control>
-			<!-- Item Position and Page Number for thumbnail list-->
-			<control type="label">
-				<include>Animation_CommonFade</include>
-				<posx>60r</posx>
-				<posy>50r</posy>
-				<width>300</width>
-				<height>20</height>
-				<font>font12</font>
-				<textcolor>grey</textcolor>
-				<scroll>false</scroll>
-				<align>right</align>
-				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3410).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3410).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3410).CurrentPage]/$INFO[Container(3410).NumPages][/COLOR])</label>
-				<visible>substring(Window.Property(ViewMode),thumbnail)</visible>						
-			</control>
-			<!-- Item Position and Page Number for posterwrap list-->
-			<control type="label">
-			<include>Animation_CommonFade</include>
-				<posx>60r</posx>
-				<posy>50r</posy>
-				<width>300</width>
-				<height>20</height>
-				<font>font12</font>
-				<textcolor>grey</textcolor>
-				<scroll>false</scroll>
-				<align>right</align>
-				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3420).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3420).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3420).CurrentPage]/$INFO[Container(3420).NumPages][/COLOR])</label>
-				<visible>substring(Window.Property(ViewMode),posterwrap)</visible>						
-			</control>
-			<!-- Item Position and Page Number for panart list-->
-			<control type="label">
-				<include>Animation_CommonFade</include>
-				<posx>60r</posx>
-				<posy>50r</posy>
-				<width>300</width>
-				<height>20</height>
-				<font>font12</font>
-				<textcolor>grey</textcolor>
-				<scroll>false</scroll>
-				<align>right</align>
-				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3430).NumItems][/COLOR]) $LOCALIZE[31025]$INFO[Container(3430).TotalTime, - $LOCALIZE[180] ([COLOR=blue],[/COLOR])] - $LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3430).CurrentPage]/$INFO[Container(3430).NumPages][/COLOR])</label>
-				<visible>substring(Window.Property(ViewMode),panart)</visible>						
 			</control>
 		</control>
 	</controls>

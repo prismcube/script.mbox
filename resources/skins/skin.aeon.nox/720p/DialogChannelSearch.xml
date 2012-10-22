@@ -34,7 +34,7 @@
 				<textcolor>grey2</textcolor>
 				<focusedcolor>white</focusedcolor>
 				<shadowcolor>black</shadowcolor>
-				<label>Go Back</label>
+				<label>SCRIPT21</label>
 				<font>Font_Bold20</font>	
 			</control>
 			<control type="label" id="100">
@@ -44,7 +44,7 @@
 				<width>1100</width>
 				<height>40</height>
 				<font>Font_Bold22</font>
-				<label>Channel Search Progress</label>
+				<label>SCRIPT17</label>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
@@ -57,7 +57,7 @@
 				<width>500</width>
 				<height>40</height>
 				<font>Font_Bold18</font>
-				<label>TV List</label>
+				<label>SCRIPT18</label>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
@@ -70,7 +70,7 @@
 				<width>500</width>
 				<height>40</height>
 				<font>Font_Bold18</font>
-				<label>Radio List</label>
+				<label>SCRIPT19</label>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
@@ -293,7 +293,7 @@
 				<width>1000</width>
 				<height>40</height>
 				<font>Font_Bold20</font>
-				<label>Transponder Info</label>
+				<label>SCRIPT20</label>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>

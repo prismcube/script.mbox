@@ -45,7 +45,7 @@
 				<align>center</align>
 				<aligny>center</aligny>
 				<font>font13</font>
-				<label>No EPG Infomation</label>
+				<label>SCRIPT16</label>
 			</control>
 			<control type="progress" id="213">
 				<posx>40</posx>

@@ -4,6 +4,7 @@ from pvr.gui.WindowImport import *
 class RootWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
+		self.mIsDialogOpend = False
 		
 
 	def onInit( self ) :
@@ -98,7 +99,26 @@ class RootWindow( BaseWindow ) :
 			self.mDataCache.Frontdisplay_Resolution( iconIndex )
 
 		elif aEvent.getName( ) == ElisEventPowerSave( ).getName( ) :
-			LOG_TRACE( 'power save mode' )
+			LOG_TRACE( 'power save mode , self.mIsDialogOpend = %s' % self.mIsDialogOpend )
+			"""
+			if self.mIsDialogOpend == False :
+				print 'dhkim test start thread'
+				ttt = threading.Timer( 3, self.AsyncPowerSave )
+				ttt.start( )
+			"""
+				#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				#dialog.SetDialogProperty( MR_LANG( 'Warning' ), MR_LANG( 'Power down' )	)
+				#dialog.doModal( )
+				
+
+
+	def AsyncPowerSave( self ) :
+		self.mIsDialogOpend = True
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_AUTO_POWER_DOWN )
+		dialog.doModal( )
+		#dialog = xbmcgui.Dialog()
+		#dialog.ok( 'Warning' ,  'Power down' )
+		self.mIsDialogOpend = False
 
 
 	def GetRecordingInfo( self ) :
