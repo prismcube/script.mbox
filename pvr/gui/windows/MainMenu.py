@@ -104,8 +104,7 @@ class MainMenu( BaseWindow ) :
 				elif aControlId == BUTTON_ID_CAS :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONDITIONAL_ACCESS )
 				elif aControlId == BUTTON_ID_UPDATE :
-					pass
-					# Todo
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_UPDATE )
 
 		elif aControlId == BUTTON_ID_ARCHIVE :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )

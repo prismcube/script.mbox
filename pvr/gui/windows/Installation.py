@@ -97,8 +97,7 @@ class Installation( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONDITIONAL_ACCESS )
 
 		elif selectedId == MENU_ID_UPDATE :
-			pass
-			#Todo
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_UPDATE )
 
 
 	def onFocus( self, aControlId ) :
