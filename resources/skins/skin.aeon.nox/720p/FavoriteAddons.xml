@@ -433,11 +433,11 @@
 					<font>Font_Reg19</font>
 					<include>Animation_CommonFade</include>
 					<enable>no</enable>
-					<label>Select view type</label>
+					<label>SCRIPT10</label>
 				</control>
 				<control type="button" id="100">
 					<include>Objects_MediaMenuButtonAlt</include>
-					<label>VIEW:</label>
+					<label></label>
 				</control>
 				<control type="button" id="1112">
 					<height>26</height>
@@ -455,13 +455,13 @@
 					<font>Font_Reg19</font>
 					<include>Animation_CommonFade</include>
 					<enable>no</enable>
-					<label>Select Sort Order</label>
+					<label>SCRIPT11</label>
 				</control>
 				<control type="togglebutton" id="102">
 					<description>Sort asc</description>
 					<include>Objects_MediaMenuButtonAlt</include>
-					<label>Order : Descending</label>
-            		<altlabel>Order : Ascending</altlabel>
+					<label>SCRIPT12</label>
+            		<altlabel>SCRIPT13</altlabel>
 					<usealttexture>substring(Window.Property(Ascending),true)</usealttexture>
 				</control>
 				<control type="button" id="1113">
@@ -480,11 +480,11 @@
 					<font>Font_Reg19</font>
 					<include>Animation_CommonFade</include>
 					<enable>no</enable>
-					<label>Misc Options</label>
+					<label>SCRIPT9</label>
 				</control>
 				<control type="radiobutton" id="200">
 					<include>Objects_MediaMenuButtonAlt</include>
-					<label>Hide Watched</label>
+					<label>SCRIPT8</label>
 				</control>
 			</control>
 		</control>

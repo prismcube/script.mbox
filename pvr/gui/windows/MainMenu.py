@@ -29,6 +29,7 @@ BUTTON_ID_EDIT_SATELLITE		= 90104
 BUTTON_ID_EDIT_TRANSPONDER		= 90105
 BUTTON_ID_CONFIGURE				= 90106
 BUTTON_ID_CAS					= 90107
+BUTTON_ID_UPDATE				= 90108
 
 
 class MainMenu( BaseWindow ) :
@@ -71,7 +72,7 @@ class MainMenu( BaseWindow ) :
 
 	def onClick( self, aControlId ) :
 		LOG_TRACE("MainMenu onclick(): control %d" % aControlId )
-		if aControlId >= BUTTON_ID_INSTALLATION and aControlId <= BUTTON_ID_CAS :
+		if aControlId >= BUTTON_ID_INSTALLATION and aControlId <= BUTTON_ID_UPDATE :
 			if self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
 				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -102,6 +103,9 @@ class MainMenu( BaseWindow ) :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE )
 				elif aControlId == BUTTON_ID_CAS :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONDITIONAL_ACCESS )
+				elif aControlId == BUTTON_ID_UPDATE :
+					pass
+					# Todo
 
 		elif aControlId == BUTTON_ID_ARCHIVE :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )

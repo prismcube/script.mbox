@@ -144,9 +144,7 @@
 					<texturefocus>settings/listselect.png</texturefocus>
 					<alttexturenofocus>-</alttexturenofocus>
 					<alttexturefocus>settings/listselect.png</alttexturefocus>
-
 					<textcolor>selected</textcolor>
-
 					<disabledcolor>selected</disabledcolor>
 					<textoffsetx>10</textoffsetx>
 					<textoffsety>1</textoffsety>
@@ -155,16 +153,16 @@
 					<font>Font_Reg19</font>
 					<include>Animation_CommonFade</include>
 					<enable>no</enable>
-					<label>Select Action</label>
+					<label>SCRIPT89</label>
 				</control>
 				<control type="button" id="100">
 					<include>Objects_MediaMenuButtonAlt</include>
-					<label>Go Parent</label>
+					<label>SCRIPT88</label>
 				</control>
 				<control type="radiobutton" id="101">
 					<description>Extra Options</description>
 					<include>Objects_MediaMenuButtonAlt</include>
-					<label>31026</label>
+					<label>SCRIPT9</label>
 				</control>
 			</control>
 		</control>
@@ -208,7 +206,7 @@
 						<posy>0</posy>
 						<font>Font_Reg20</font>
 						<textcolor>grey</textcolor>
-						<label>date</label>
+						<label></label>
 					</control>
 
 					<control type="label" id="302">
@@ -216,7 +214,7 @@
 						<posy>30</posy>
 						<font>Font_Reg20</font>
 						<textcolor>grey</textcolor>
-						<label>200Min</label>
+						<label></label>
 					</control>
 
 					<control type="image" id="310">

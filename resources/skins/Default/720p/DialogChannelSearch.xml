@@ -47,7 +47,7 @@
 				<width>1100</width>
 				<height>40</height>
 				<font>font13_title</font>
-				<label>Channel Search Progress</label>
+				<label>SCRIPT17</label>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
@@ -60,7 +60,7 @@
 				<width>500</width>
 				<height>40</height>
 				<font>font13_title</font>
-				<label>TV List</label>
+				<label>SCRIPT18</label>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
@@ -73,7 +73,7 @@
 				<width>500</width>
 				<height>40</height>
 				<font>font13_title</font>
-				<label>Radio List</label>
+				<label>SCRIPT19</label>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
@@ -294,7 +294,7 @@
 				<width>1000</width>
 				<height>40</height>
 				<font>font13_title</font>
-				<label>Transponder Info</label>
+				<label>SCRIPT20</label>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>

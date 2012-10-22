@@ -138,7 +138,7 @@
 					<texturenofocus flipx="true" border="5,25,25,5">KeyboardCornerTopNF.png</texturenofocus>
 					<texturefocus flipx="true" border="5,35,25,5">KeyboardCornerTop.png</texturefocus>
 					<textwidth>120</textwidth>
-					<label>20181</label>
+					<label>Backspace</label>
 					<focusedcolor>black</focusedcolor>
 					<angle>270</angle>
 					<onleft>103</onleft>
@@ -260,7 +260,7 @@
 					<texturenofocus flipx="true" border="5,5,25,25">KeyboardCornerBottomNF.png</texturenofocus>
 					<texturefocus flipx="true" border="5,30,25,25">KeyboardCornerBottom.png</texturefocus>
 					<textwidth>120</textwidth>
-					<label>20177</label>
+					<label>Done</label>
 					<focusedcolor>black</focusedcolor>
 					<angle>270</angle>
 					<onleft>109</onleft>

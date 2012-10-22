@@ -7,6 +7,7 @@ MENU_ID_EDIT_SATELLITE			= 3
 MENU_ID_EDIT_TRANSPONDER		= 4
 MENU_ID_CONFIGURE				= 5
 MENU_ID_CAS						= 6
+MENU_ID_UPDATE					= 7
 
 MAIN_LIST_ID					= 9000
 
@@ -27,7 +28,8 @@ class Installation( BaseWindow ) :
 		MR_LANG( 'Edit Satellite' ),
 		MR_LANG( 'Edit Transponder' ),
 		MR_LANG( 'Configuration' ),
-		MR_LANG( 'CAS' ) ]
+		MR_LANG( 'CAS' ),
+		MR_LANG( 'Update' )]
 
 		self.mDescriptionList = [
 		MR_LANG( 'You can setup Language, Video, Audio, Antenna, Satellite, Channel, Time and Date in the First Installation' ),
@@ -36,7 +38,8 @@ class Installation( BaseWindow ) :
 		MR_LANG( 'You can add or delete a satellite here' ),
 		MR_LANG( 'Here you can add or delete transponders' ),
 		MR_LANG( 'Most of STB settings can be configured via the GUI under Configuration' ),
-		MR_LANG( 'The Conditional Access System allows you to setup Smartcard configurations' ) ]
+		MR_LANG( 'The Conditional Access System allows you to setup Smartcard configurations' ),
+		MR_LANG( 'Update' )]
 	
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
@@ -92,6 +95,10 @@ class Installation( BaseWindow ) :
 
 		elif selectedId == MENU_ID_CAS :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONDITIONAL_ACCESS )
+
+		elif selectedId == MENU_ID_UPDATE :
+			pass
+			#Todo
 
 
 	def onFocus( self, aControlId ) :

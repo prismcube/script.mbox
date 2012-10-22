@@ -62,57 +62,57 @@
 				</focusedlayout>
 				<content>
 					<item id="1">
-						<label>Weather</label>
-						<label2>Get current weather and weather forecast for thousands of cities around the world</label2>
+						<label>SCRIPT57</label>
+						<label2>SCRIPT78</label2>
 						<onclick>ActivateWindow(Weather)</onclick>
 						<icon>special://skin/backgrounds/weather.jpg</icon>
 					</item>
 					<item id="2">
-						<label>Picture</label>
-						<label2>View your pictures as a slideshow with nice transition effects</label2>
+						<label>SCRIPT58</label>
+						<label2>SCRIPT79</label2>
 						<onclick>ActivateWindow(Pictures)</onclick>
 						<icon>special://skin/backgrounds/pictures.jpg</icon>
 					</item>
 					<item id="3">
-						<label>Music</label>
-						<label2>Organize your music collection by information stored in your music file ID tag, like title, artist, album, genre and popularity</label2>
+						<label>SCRIPT59</label>
+						<label2>SCRIPT81</label2>
 						<onclick>ActivateWindow(Music)</onclick>
 						<icon>special://skin/backgrounds/music.jpg</icon>
 					</item>
 					<item id="4">
-						<label>Video</label>
-						<label2>Organize your video content by information associated with the video files</label2>	
+						<label>SCRIPT60</label>
+						<label2>SCRIPT80</label2>	
 						<onclick>ActivateWindow(Videos)</onclick>
 						<icon>special://skin/backgrounds/videos.jpg</icon>
 					</item>
 					<item id="5">
-						<label>Programs</label>
-						<label2>Add-ons are packages that add features and functions not normally included with the XBMC Media Center</label2>
+						<label>SCRIPT61</label>
+						<label2>SCRIPT82</label2>
 						<onclick>ActivateWindow(Programs,Addons,return)</onclick>
 						<icon>special://skin/backgrounds/programs.jpg</icon>
 					</item>
 					<item id="6">
-						<label>Settings</label>
-						<label2>Most of the Media Center's settings can be configured via the GUI under Settings</label2>
+						<label>SCRIPT62</label>
+						<label2>SCRIPT83</label2>
 						<onclick>ActivateWindow(Settings)</onclick>
 						<icon>special://skin/backgrounds/system.jpg</icon>
 					</item>
 					<item id="7">
-						<label>File Manager</label>
-						<label2>The File Manager lets you transfer, copy, delete and rename files and folders on your hard drive, FTP-shares, etc</label2>
+						<label>SCRIPT63</label>
+						<label2>SCRIPT84</label2>
 						<onclick>ActivateWindow(FileManager)</onclick>
 						<icon>special://skin/backgrounds/play_disc.jpg</icon>
 					</item>
 					<item id="8">
-						<label>Profiles</label>
-						<label2>Desc Profiles</label2>
+						<label>SCRIPT64</label>
+						<label2></label2>
 						<onclick>ActivateWindow(Profiles)</onclick>
 						<icon>special://skin/backgrounds/favourites.jpg</icon>
 						<visible>false</visible>
 					</item>
 					<item id="9">
-						<label>System Info</label>
-						<label2>System Info allows you to see your system status</label2>
+						<label>SCRIPT65</label>
+						<label2>SCRIPT85</label2>
 						<onclick>ActivateWindow(SystemInfo)</onclick>
 						<icon>special://skin/backgrounds/systeminfo.jpg</icon>
 					</item>
@@ -158,8 +158,7 @@
 				<width>740</width>
 				<height>30</height>
 				<font>Font_ShowcaseMainLabel2_Caps</font>
-				<!--label>Mediacenter - $INFO[Container(9000).ListItem.Label]</label-->
-				<label>entertainment hub for digital media</label>
+				<label>SCRIPT86</label>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>

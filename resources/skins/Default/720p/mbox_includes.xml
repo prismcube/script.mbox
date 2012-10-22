@@ -218,7 +218,7 @@
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
-				<label>Strength</label>
+				<label>SCRIPT101</label>
 			</control>
 			<control type="label" id="1005">
 				<description>Strength Percent</description>
@@ -230,7 +230,7 @@
 				<align>right</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
-				<label>10 %</label>
+				<label></label>
 			</control>
 			<control type="progress" id="1010">
 				<description>Scan Helper Progress</description>
@@ -251,7 +251,7 @@
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
-				<label>Quality</label>
+				<label>SCRIPT102</label>
 			</control>
 			<control type="label" id="1006">
 				<description>Quality Percent</description>
@@ -263,7 +263,7 @@
 				<align>right</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
-				<label>10 %</label>
+				<label></label>
 			</control>
 			<control type="progress" id="1011">
 				<description>Scan Helper Progress</description>

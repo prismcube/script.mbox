@@ -343,7 +343,7 @@
 						<description>Stack Toggle</description>
 						<textwidth>170</textwidth>
 						<include>DefaultButtonMediaSubCommonValues</include>
-						<label>Hide Watched</label>
+						<label>SCRIPT8</label>
 					</control>
 				</control>
 			</control>
@@ -395,7 +395,7 @@
 					<radioposy>11</radioposy>
 					<textureradiofocus>HomeHasSub.png</textureradiofocus>
 					<textureradionofocus>HomeHasSub.png</textureradionofocus>
-					<label>MISC OPTIONS</label>
+					<label>SCRIPT9</label>
 					<onleft>9003</onleft>
 					<onright>9010</onright>
 					<onup>100</onup>

@@ -92,7 +92,6 @@
 					<height>682</height>
 					<texture background="true">views/listpanel_black.png</texture>
 				</control>
-
 				<control type="image">
 					<include>Animation_CommonFade</include>
 					<posx>60</posx>
@@ -101,7 +100,6 @@
 					<height>682</height>
 					<texture>views/listpanel_back.png</texture>
 				</control>
-
 				<control type="image">
 					<posx>669</posx>
 					<posy>49</posy>
@@ -114,6 +112,66 @@
 					<include>DefaultCommonEPGView</include> <!-- Default common View id = 3500 -->
 					<include>DefaultBigEPGView</include> <!-- Default Big View id = 3510 -->			
 				</control>
+			</control>
+		</control>
+
+		<control type="group">
+ 			<animation effect="slide" time="700" start="-800,0" end="0,0" tween="cubic" easing="out">WindowOpen</animation>
+			<animation effect="slide" time="700" start="0,0" end="-800,0" tween="cubic" easing="out">WindowClose</animation>
+			<include>Animation_CommonFade</include>
+			<!-- Item Position and Page Number for common list-->
+			<control type="label">
+				<posx>105</posx>
+				<posy>75r</posy>
+				<width>300</width>
+				<height>20</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<scroll>false</scroll>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3500).NumItems][/COLOR]) Items</label>
+				<visible>substring(Window.Property(EPGMode),channel)</visible>
+			</control>
+			<control type="label">
+				<posx>760</posx>
+				<posy>75r</posy>
+				<width>300</width>
+				<height>20</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
+				<label>Page ([COLOR=blue]$INFO[Container(3500).CurrentPage]/$INFO[Container(3500).NumPages][/COLOR])</label>
+				<visible>substring(Window.Property(EPGMode),channel)</visible>			
+			</control>
+			<!-- Item Position and Page Number for big list-->
+			<control type="label">
+				<posx>105</posx>
+				<posy>75r</posy>
+				<width>300</width>
+				<height>20</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<scroll>false</scroll>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3510).NumItems][/COLOR]) Items</label>
+				<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>
+			</control>
+			<control type="label">
+				<posx>760</posx>
+				<posy>75r</posy>
+				<width>300</width>
+				<height>20</height>
+				<font>font12</font>
+				<textcolor>grey</textcolor>
+				<scroll>false</scroll>
+				<align>right</align>
+				<aligny>center</aligny>
+				<label>Page ([COLOR=blue]$INFO[Container(3510).CurrentPage]/$INFO[Container(3510).NumPages][/COLOR])</label>
+				<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>			
 			</control>
 		</control>
 
@@ -166,7 +224,6 @@
 				<onright>9003</onright>
 				<onup>9000</onup>
 				<ondown>9000</ondown>
-
 				<control type="button" id="1111">
 					<height>26</height>
 					<width>265</width>
@@ -174,9 +231,7 @@
 					<texturefocus>settings/listselect.png</texturefocus>
 					<alttexturenofocus>-</alttexturenofocus>
 					<alttexturefocus>settings/listselect.png</alttexturefocus>
-
 					<textcolor>selected</textcolor>
-
 					<disabledcolor>selected</disabledcolor>
 					<textoffsetx>10</textoffsetx>
 					<textoffsety>1</textoffsety>
@@ -185,16 +240,16 @@
 					<font>Font_Reg19</font>
 					<include>Animation_CommonFade</include>
 					<enable>no</enable>
-					<label>Select view type</label>
+					<label>SCRIPT10</label>
 				</control>
 				<control type="button" id="100">
 					<include>Objects_MediaMenuButtonAlt</include>
-					<label>VIEW:</label>
+					<label></label>
 				</control>
 				<control type="radiobutton" id="101">
 					<description>Extra Options</description>
 					<include>Objects_MediaMenuButtonAlt</include>
-					<label>31026</label>
+					<label>SCRIPT9</label>
 				</control>
 			</control>
 		</control>
@@ -230,7 +285,6 @@
 					<font>Font_Reg18</font>
 					<visible>substring(Window.Property(Signal),True)</visible>
 				</control>
-
 				<control type="label">
 					<posx>957</posx>
 					<posy>219</posy>
@@ -243,7 +297,6 @@
 					<textcolor>grey2</textcolor>
 					<visible>substring(Window.Property(Signal),False)</visible>
 				</control>
-
 				<control type="label">
 					<posx>957</posx>
 					<posy>219</posy>
@@ -256,11 +309,9 @@
 					<textcolor>grey2</textcolor>
 					<visible>substring(Window.Property(Signal),Scramble)</visible>
 				</control>
-
 				<control type="group" id="9020">
 					<posx>860</posx>
 					<posy>405</posy>
-
 					<control type="label" id="300">
 						<posx>0</posx>
 						<posy>0</posy>
@@ -268,39 +319,37 @@
 						<textcolor>grey</textcolor>
 						<label>00:00-00:00</label>
 					</control>
-
 					<control type="label" id="301">
 						<posx>150</posx>
 						<posy>0</posy>
 						<font>Font_Reg20</font>
 						<textcolor>grey</textcolor>
-						<label>date</label>
+						<label></label>
 					</control>
-
 					<control type="label" id="302">
 						<posx>0</posx>
 						<posy>30</posy>
 						<font>Font_Reg20</font>
 						<textcolor>grey</textcolor>
-						<label>200Min</label>
+						<label></label>
 					</control>
-
 					<control type="textbox" id="303">
 						<description>EPG infomation</description>			
 						<posx>0</posx>
 						<posy>60</posy>
-						<width>330</width>
-					 	<height>160</height>
+						<width>310</width>
+					 	<height>145</height>
 						<font>Font_Reg20</font>
 						<textcolor>grey</textcolor>
-						<label>none</label>
+						<label>SCRIPT30</label>
+						<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
 					</control>
 					
 					<!-- component -->
 					<control type="group">
 						<control type="grouplist">
 							<posx>0</posx>
-							<posy>230</posy>
+							<posy>215</posy>
 							<width>190</width>
 							<height>30</height>
 							<itemgap>1</itemgap>
@@ -350,70 +399,7 @@
 							</control>
 						</control>
 					</control>
-
 				</control>
-			</control>
-		</control>
-
-		<control type="group">
- 			<animation effect="slide" time="700" start="-800,0" end="0,0" tween="cubic" easing="out">WindowOpen</animation>
-			<animation effect="slide" time="700" start="0,0" end="-800,0" tween="cubic" easing="out">WindowClose</animation>
-			<include>Animation_CommonFade</include>
-			<!-- Item Position and Page Number for common list-->
-			<control type="label">
-				<posx>105</posx>
-				<posy>75r</posy>
-				<width>300</width>
-				<height>20</height>
-				<font>font12</font>
-				<textcolor>grey</textcolor>
-				<scroll>false</scroll>
-				<align>left</align>
-				<aligny>center</aligny>
-				<label>[COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3500).NumItems][/COLOR] $LOCALIZE[31025]</label>
-				<visible>substring(Window.Property(EPGMode),channel)</visible>
-			</control>
-			<control type="label">
-				<posx>760</posx>
-				<posy>75r</posy>
-				<width>300</width>
-				<height>20</height>
-				<font>font12</font>
-				<textcolor>grey</textcolor>
-				<scroll>false</scroll>
-				<align>right</align>
-				<aligny>center</aligny>
-				<label>$LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3500).CurrentPage]/$INFO[Container(3500).NumPages][/COLOR])</label>
-				<visible>substring(Window.Property(EPGMode),channel)</visible>			
-			</control>
-
-
-			<!-- Item Position and Page Number for big list-->
-			<control type="label">
-				<posx>105</posx>
-				<posy>75r</posy>
-				<width>300</width>
-				<height>20</height>
-				<font>font12</font>
-				<textcolor>grey</textcolor>
-				<scroll>false</scroll>
-				<align>left</align>
-				<aligny>center</aligny>
-				<label>[COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3510).NumItems][/COLOR] $LOCALIZE[31025]</label>
-				<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>
-			</control>
-			<control type="label">
-				<posx>760</posx>
-				<posy>75r</posy>
-				<width>300</width>
-				<height>20</height>
-				<font>font12</font>
-				<textcolor>grey</textcolor>
-				<scroll>false</scroll>
-				<align>right</align>
-				<aligny>center</aligny>
-				<label>$LOCALIZE[31024] ([COLOR=blue]$INFO[Container(3510).CurrentPage]/$INFO[Container(3510).NumPages][/COLOR])</label>
-				<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>			
 			</control>
 		</control>
 	</controls>

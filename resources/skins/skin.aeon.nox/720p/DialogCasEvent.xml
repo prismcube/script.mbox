@@ -33,7 +33,6 @@
 					<posy>150</posy>
 					<width>210</width>
 					<height>40</height>
-					<label>186</label>
 					<texturefocus border="5">-</texturefocus>
 					<texturenofocus border="5">-</texturenofocus>
 					<textcolor>grey2</textcolor>

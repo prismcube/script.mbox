@@ -6,6 +6,76 @@
 "MODE",,,,,,,,,,5
 "TV","TV","TV","TV","TV","TV","TV","TV","TV","ТВ",6
 "Radio","Radio","Radio","Radio","Radio","Rozhlas","Radio","Radio","Radyo","Радио",7
+"MISC OPTION",,,,,,,,,,8
+"Misc Option",,,,,,,,,,9
+"Select view type",,,,,,,,,,10
+"Select Sort Order",,,,,,,,,,11
+"Order : Descending",,,,,,,,,,12
+"Order : Ascending",,,,,,,,,,13
+"Select Channel List",,,,,,,,,,14
+"No EPG Infomation",,,,,,,,,,15
+"Channel Search Progress",,,,,,,,,,16
+"TV List",,,,,,,,,,17
+"Radio List",,,,,,,,,,18
+"Transponder Info",,,,,,,,,,19
+"Go Back",,,,,,,,,,20
+"OK",,,,,,,,,,21
+"Record",,,,,,,,,,22
+"Configure your STB's settings",,,,,,,,,,23
+"Description",,,,,,,,,,24
+"Teletext",,,,,,,,,,25
+"Subtitle",,,,,,,,,,26
+"Mute",,,,,,,,,,27
+"A/V Setting",,,,,,,,,,28
+"Bookmark",,,,,,,,,,29
+"EPG Present",,,,,,,,,,30
+"EPG Next",,,,,,,,,,31
+"Fav. Addons",,,,,,,,,,32
+"STB Info",,,,,,,,,,33
+"Back",,,,,,,,,,34
+"Weather",,,,,,,,,,35
+"Pictures",,,,,,,,,,36
+"Video",,,,,,,,,,37
+"Programs",,,,,,,,,,38
+"Settings",,,,,,,,,,39
+"File Manager",,,,,,,,,,40
+"Profiles",,,,,,,,,,41
+"System Info",,,,,,,,,,42
+"Installation enables you to setup your STB - Antenna, Channel, Satellite, Transponder, CAS, etc",,,,,,,,,,43
+"The Archive allows you to playback or delete the programs you have recorded",,,,,,,,,,44
+"The EPG displays program information in time and date order and here you can record them",,,,,,,,,,45
+"The Channel List provides you with functions such as sorting and editing TV & Radio channel list",,,,,,,,,,46
+"The Media Center allows you to browse and view videos, photos, and music from your storage",,,,,,,,,,47
+"STB Info provides the STB status including product name and number, free disk space, etc",,,,,,,,,,48
+"Return to the screen after hiding the main menu",,,,,,,,,,49
+"Install",,,,,,,,,,50
+"Addons",,,,,,,,,,51
+"Media",,,,,,,,,,52
+"Get current weather and weather forecast for thousands of cities around the world",,,,,,,,,,53
+"View your pictures as a slideshow with nice transition effects",,,,,,,,,,54
+"Organize your video content by information associated with the video files",,,,,,,,,,55
+"Organize your music collection by information stored in your music file ID tag, like title, artist, album, genre and popularity",,,,,,,,,,56
+"Add-ons are packages that add features and functions not normally included with the XBMC Media Center",,,,,,,,,,57
+"Most of the Media Center's settings can be configured via the GUI under Settings",,,,,,,,,,58
+"The File Manager lets you transfer, copy, delete and rename files and folders on your disk drive, FTP-shares, etc",,,,,,,,,,59
+"System Info allows you to see your system status",,,,,,,,,,60
+"entertainment hub for digital media",,,,,,,,,,61
+"Check your system resource at a glance",,,,,,,,,,62
+"Go Parent",,,,,,,,,,63
+"Select Action",,,,,,,,,,64
+"Volume",,,,,,,,,,65
+"Record Start",,,,,,,,,,66
+"Record Stop",,,,,,,,,,67
+"Rewind",,,,,,,,,,68
+"Play",,,,,,,,,,69
+"Pause",,,,,,,,,,70
+"Forward",,,,,,,,,,71
+"Jump Rewind",,,,,,,,,,72
+"Jump Forward",,,,,,,,,,73
+"TimeShift L/R",,,,,,,,,,74
+"Strength",,,,,,,,,,75
+"Quality",,,,,,,,,,76
+"Update",,,,,,,,,,77
 "Last ServiceType",,,,,,,,,,2001
 "CurrentVoutResolution",,,,,,,,,,2002
 "First Installation","Erst-Installation","premiere installation","Prima installazione","Primera instalacion","Prvni instalace","Eerste installatie","Pierwsza instalacja","?lk kurulum","Первоначальная установка",2003
@@ -861,3 +931,14 @@
 "File not found : %s",,,,,,,,,,3545
 "Test scenario not available : %s",,,,,,,,,,3546
 "UnKnown",,,,,,,,,,3547
+"Hide Watched",,,,,,,,,,3548
+"Warning",,,,,,,,,,3549
+"Make media length longer than 30 secs to create a chapter",,,,,,,,,,3550
+"Press the OK button to remove everything in the Media Archive",,,,,,,,,,3551
+"Press the OK button to remove everything in the Record Archive",,,,,,,,,,3552
+"Press the OK button to erase your hard drive",,,,,,,,,,3553
+"Try again after stopping the Timeshift first",,,,,,,,,,3554
+"Try again after stopping the PVR or Timeshift first",,,,,,,,,,3555
+"No Signal",,,,,,,,,,3556
+"Scrambled",,,,,,,,,,3557
+"Items - Page",,,,,,,,,,3558

@@ -37,7 +37,7 @@
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
-				<label>Record</label>
+				<label>SCRIPT23</label>
 			</control>
 
 
@@ -73,7 +73,7 @@
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
-				<label>RecordName</label>
+				<label></label>
 			</control>
 
 
@@ -148,7 +148,7 @@
 					<textcolor>grey2</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
-					<label>Duration</label>
+					<label>SCRIPT24</label>
 					<visible>!Control.HasFocus(500)</visible>
 				</control>
 				<control type="label">
@@ -160,7 +160,7 @@
 					<textcolor>white</textcolor>
 					<align>left</align>
 					<aligny>center</aligny>
-					<label>Duration</label>
+					<label>SCRIPT24</label>
 					<visible>Control.HasFocus(500)</visible>
 				</control>
 				<control type="label" id="502">
