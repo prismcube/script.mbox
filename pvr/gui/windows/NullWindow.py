@@ -313,6 +313,7 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MOVE_RIGHT :
 			print 'youn check ation right'
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_INFO_PLATE1 )
+			#DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TEST_DIALOG ).doModal( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			print 'youn check ation up'
