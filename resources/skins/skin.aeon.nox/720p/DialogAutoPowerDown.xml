@@ -1,0 +1,28 @@
+<window>
+	<defaultcontrol always="true">301</defaultcontrol>
+	<allowoverlay>yes</allowoverlay>
+	<include>DefaultDialogOpenEffect</include>
+	<controls>
+		<control type="group">
+			<include>DefaultDialogCloseEffect</include>
+			<include>SmallerDialogs</include>
+			<include>Dialogs_Group</include>
+			<include>Dialogs_Tablet</include>
+			<include>Dialogs_Exclam</include>
+			<control type="label" id="100">
+				<include>Dialogs_Label1</include>
+			</control>
+			<control type="label" id="200">
+				<include>Dialogs_Label3</include>
+			</control>
+			<control type="button" id="301">
+				<description>OK button</description>
+				<include>HiddenObject</include>
+				<onleft>301</onleft>
+				<onright>301</onright>
+				<onup>301</onup>
+				<ondown>301</ondown>
+			</control>
+		</control>
+	</controls>
+</window>

@@ -8,7 +8,7 @@ class DialogForceProgress( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 		self.mLimitTime 		= 10
-		self.mTitle				= MR_LANG( 'Wait' )
+		self.mTitle				= None
 		self.mEventName			= None
 		self.mFinish			= False
 		self.mGetEvent			= False
@@ -21,6 +21,8 @@ class DialogForceProgress( BaseDialog ) :
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
+
+		self.mTitle				= MR_LANG( 'Wait' )
 
 		self.mEventBus.Register( self )
 
