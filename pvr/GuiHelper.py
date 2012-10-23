@@ -2,6 +2,8 @@ import xbmcaddon, sys
 from ElisEnum import ElisEnum
 import pvr.Platform
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+from BeautifulSoup import BeautifulSoup
+import urllib
 
 gSettings = xbmcaddon.Addon( id="script.mbox" )
 
@@ -339,7 +341,7 @@ class CacheMRLanguage( object ) :
 
 		self.mDefaultCodec = sys.getdefaultencoding( )
 		print '---------mDefaultCodec[%s]'% self.mDefaultCodec
-		from BeautifulSoup import BeautifulSoup
+		#from BeautifulSoup import BeautifulSoup
 		self.mStrLanguage = BeautifulSoup( xml )
 
 		global gMRStringHash
@@ -434,4 +436,45 @@ class GuiSkinPosition( object ) :
 		self.mBottom = aBottom
 		self.mZoom	 = aZoom
 
+
+
+def GetURLpage( aUrl ) :
+	download = None
+	try :
+		#f = urllib.urlopen( url )
+		f = urllib.URLopener( ).open( aUrl )
+		if f :
+			download = f.read( )
+
+	except IOError, e :
+		LOG_ERR( 'except[%s] url[%s]'% ( e, aUrl ) )
+
+	return download
+
+
+def ParseStringInXML( xmlFile, tagName ) :
+
+	soup = None
+	lines = []
+	nodeAll = ''
+	#if os.path.exists(xmlFile) :
+	if xmlFile :
+
+		#fp = open(xmlFile)
+		#soup = BeautifulSoup(fp)
+		#fp.close()
+		
+		soup = BeautifulSoup( xmlFile )
+
+		for node in soup.findAll( 'software' ) :
+			for element in node.findAll(tagName) :
+				#elementry = [ str(element.string), '%s\r\n'% str(element) ]
+				elementry = str(element.string)
+				lines.append(elementry)
+			
+			nodeAll = node
+
+		#print len(lines), lines[len(lines)-1][0]
+
+	return soup, lines
 

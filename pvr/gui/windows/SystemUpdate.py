@@ -16,7 +16,7 @@ class SystemUpdate( SettingWindow ) :
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )
 
-		IsState = self.CheckServer( )
+		IsState = self.Provisioning( )
 		self.AddInputControl( E_Input01, MR_LANG( 'System Update' ), IsState, MR_LANG( 'System, OS, MBox Update' ) )
 
 		self.InitControl( )
@@ -104,8 +104,21 @@ class SystemUpdate( SettingWindow ) :
 			return False
 
 
-	def CheckServer( self ) :
+	def Provisioning( self ) :
 		#ToDO, received rss data
+
+		download = GetURLpage( 'http://192.168.100.142/RSS/update.xml' )
+		LOG_TRACE( '%s'% download )
+
+		soup, nodes = parseStringInXML( download, 'filename' )
+		filename = os.path.basename( nodes[0] )
+		name = os.path.splitext( filename )
+		print filename, name
+
+		soup, nodes = parseStringInXML( download, 'description' )
+		for item in nodes :
+			print item
+
 
 		ret = MR_LANG( 'No one' )
 		return ret
