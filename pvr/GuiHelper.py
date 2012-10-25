@@ -1,4 +1,4 @@
-import xbmcaddon, sys
+import xbmcaddon, sys, os, shutil
 from ElisEnum import ElisEnum
 import pvr.Platform
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
@@ -437,14 +437,34 @@ class GuiSkinPosition( object ) :
 		self.mZoom	 = aZoom
 
 
+def CreateDirectory( aPath ) :
+	print '---------'
+	if os.path.exists( aPath ) :
+		print '---------'
+		return
 
-def GetURLpage( aUrl ) :
+	print '---------'
+	os.makedirs( aPath, 0644 )
+	print '---------'
+
+
+def RemoveDirectory( aPath ) :
+	if not os.path.exists( aPath ) :
+		return
+
+	shutil.rmtree( aPath )
+
+
+def GetURLpage( aUrl, aCache = True ) :
 	download = None
 	try :
 		#f = urllib.urlopen( url )
 		f = urllib.URLopener( ).open( aUrl )
 		if f :
-			download = f.read( )
+			if not aCache :
+				download = True
+			else :
+				download = f.read( )
 
 	except IOError, e :
 		LOG_ERR( 'except[%s] url[%s]'% ( e, aUrl ) )
@@ -476,5 +496,11 @@ def ParseStringInXML( xmlFile, tagName ) :
 
 		#print len(lines), lines[len(lines)-1][0]
 
-	return soup, lines
+	if lines and len( lines ) == 1 :
+		lines = lines[0]
+
+	elif lines == [] or len( lines ) < 1 :
+		lines = None
+
+	return lines
 
