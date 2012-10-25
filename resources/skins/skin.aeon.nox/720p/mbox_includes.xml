@@ -211,24 +211,22 @@
 			<include>Animation_CommonFade</include>
 			<animation effect="fade" start="100" end="0" time="300" condition="Control.HasFocus(999)" type="conditional">Conditional</animation>
 			<animation effect="fade" start="0" end="100" time="300" condition="!Control.HasFocus(999)" type="conditional">Conditional</animation>
-			<control type="label">
+			<control type="label" id="1020">
 				<posx>950</posx>
 				<posy>230</posy>
 				<width>200</width>
 				<height>40</height>
-				<label>[I]No Signal [/I]</label>
 				<font>Font_Reg20</font>
 				<align>center</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),False)</visible>
 			</control>
-			<control type="label">
+			<control type="label" id="1021">
 				<posx>950</posx>
 				<posy>230</posy>
 				<width>200</width>
 				<height>40</height>
-				<label>[I]Scrambled [/I]</label>
 				<font>Font_Reg20</font>
 				<align>center</align>
 				<aligny>center</aligny>
@@ -241,7 +239,7 @@
 	<include name="DefaultScanHelperStatusProgress">
 		<control type="group" id="1007">
 			<visible>substring(Window.Property(ViewProgress),True)</visible>
-			<control type="label">
+			<control type="label" id="1008">
 				<description>Strength</description>
 				<posx>870</posx>
 				<posy>360</posy>
@@ -251,7 +249,6 @@
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
-				<label>Strength</label>
 			</control>
 			<control type="label" id="1005">
 				<description>Strength Percent</description>
@@ -263,7 +260,6 @@
 				<align>right</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
-				<label>0 %</label>
 			</control>
 			<control type="progress" id="1010">
 				<description>Scan Helper Progress</description>
@@ -276,7 +272,7 @@
 				<midtexture>osd/seek/progress_mid.png</midtexture>
 				<righttexture>osd/seek/progress_right.png</righttexture>
 			</control>
-			<control type="label">
+			<control type="label" id="1009">
 				<description>Quality</description>
 				<posx>870</posx>
 				<posy>420</posy>
@@ -286,7 +282,6 @@
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
-				<label>Quality</label>
 			</control>
 			<control type="label" id="1006">
 				<description>Quality Percent</description>
@@ -298,7 +293,6 @@
 				<align>right</align>
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
-				<label>0 %</label>
 			</control>
 			<control type="progress" id="1011">
 				<description>Scan Helper Progress</description>
@@ -326,26 +320,6 @@
 	</include>
 
 	<include name="DefaultDialogCloseButton">
-		<control type="button" id="6995">
-			<description>Close Window button</description>
-			<posx>455</posx>
-			<posy>36</posy>
-			<width>110</width>
-			<height>25</height>
-			<onclick>PreviousMenu</onclick>
-			<onleft>-</onleft>
-			<onright>-</onright>
-			<texturenofocus></texturenofocus>
-			<texturefocus></texturefocus>
-			<align>right</align>
-			<aligny>center</aligny>
-			<textcolor>grey2</textcolor>
-			<focusedcolor>white</focusedcolor>
-			<shadowcolor>black</shadowcolor>
-			<label>Go Back</label>
-			<font>Font_Bold18</font>
-			<visible>true</visible>
-		</control>
 		<control type="label" id="3005">
 			<description>header label</description>
 			<posx>50</posx>
@@ -394,6 +368,8 @@
 	<include name="DefaultFirstTimeInstallationButton">
 		<control type="button" id="7001">
 			<description>Prev button</description>
+			<posx>6</posx>
+			<posy>470</posy>
 			<width>30</width>
 			<height>30</height>
 			<texturenofocus border="5">views/multiplex_arrow2.png</texturenofocus>
@@ -402,8 +378,8 @@
 			<onright>7003</onright>
 		</control>
 		<control type="label" id="7005">
-			<posx>40</posx>
-			<posy>464</posy>
+			<posx>45</posx>
+			<posy>463</posy>
 			<width>200</width>
 			<height>40</height>
 			<font>Font_Reg20</font>
@@ -413,8 +389,8 @@
 			<visible>Control.IsVisible(7001) + !Control.HasFocus(7001)</visible>
 		</control>
 		<control type="label">
-			<posx>40</posx>
-			<posy>464</posy>
+			<posx>45</posx>
+			<posy>463</posy>
 			<width>200</width>
 			<height>40</height>
 			<font>Font_Reg20</font>
@@ -426,6 +402,8 @@
 		</control>
 		<control type="button" id="7003">
 			<description>Next button</description>
+			<posx>697</posx>
+			<posy>470</posy>
 			<width>30</width>
 			<height>30</height>
 			<texturenofocus border="5">views/multiplex_arrow.png</texturenofocus>
@@ -434,24 +412,24 @@
 			<onright>7001</onright>
 		</control>
 		<control type="label" id="7008">
-			<posx>638</posx>
-			<posy>464</posy>
+			<posx>690</posx>
+			<posy>463</posy>
 			<width>200</width>
 			<height>40</height>
 			<font>Font_Reg20</font>
 			<textcolor>grey2</textcolor>
-			<align>left</align>
+			<align>right</align>
 			<aligny>center</aligny>
 			<visible>Control.IsVisible(7003) + !Control.HasFocus(7003)</visible>
 		</control>
 		<control type="label">
-			<posx>638</posx>
-			<posy>464</posy>
+			<posx>690</posx>
+			<posy>463</posy>
 			<width>200</width>
 			<height>40</height>
 			<font>Font_Reg20</font>
 			<textcolor>white</textcolor>
-			<align>left</align>
+			<align>right</align>
 			<aligny>center</aligny>
 			<label>$INFO[Control.GetLabel(7008)]</label>
 			<visible>Control.IsVisible(7003) + Control.HasFocus(7003)</visible>
@@ -5349,7 +5327,6 @@
 			<control type="button" id="3626">
 				<width>75</width>
 				<height>65</height>
-				<label></label>
 				<textcolor>grey3</textcolor>
 				<texturefocus>osd/buttons/OSDAudioFO.png</texturefocus>
 				<texturenofocus>osd/buttons/OSDAudioNF.png</texturenofocus>
@@ -5447,90 +5424,6 @@
 				<texturenofocus>osd/buttons/OSDNextTrackNF.png</texturenofocus>
 				<enable>substring(Window.Property(IsXpeeding),true)</enable>
 			</control>
-		</control>
-	</include>
-	<include name="DefaultSelectDialog">
-	    <control type="image">
-	      <description>Panel</description>
-	      <posx>0</posx>
-	      <posy>20</posy>
-	      <width>881</width>
-	      <height>481</height>
-	      <texture>osd/osd_settings_back.png</texture>
-	    </control>
-	    <control type="image">
-	      <posx>50</posx>
-	      <posy>55</posy>
-	      <width>781</width>
-	      <height>40</height>
-	      <texture>osd/osd_settings_buttonnf.png</texture>
-	    </control>
-		<control type="button" id="3800">
-			<description>Cancel Window button</description>
-			<posx>709</posx>
-			<posy>50</posy>
-			<width>210</width>
-			<height>40</height>
-			<textcolor>grey2</textcolor>
-			<texturenofocus></texturenofocus>
-			<texturefocus></texturefocus>
-			<focusedcolor>white</focusedcolor>
-			<shadowcolor>black</shadowcolor>
-			<label>Go Back</label>
-			<font>Font_Bold18</font>
-			<onleft>3851</onleft>
-			<onright>3802</onright>
-			<onup>3802</onup>
-			<ondown>3850</ondown>
-		</control>
-		<control type="label" id="3801">
-			<description>header label</description>
-			<posx>80</posx>
-			<posy>50</posy>
-			<width>400</width>
-			<height>40</height>
-			<font>Font_Bold19</font>
-			<textcolor>white</textcolor>
-			<label>$LOCALIZE[13406]</label>
-			<align>left</align>
-			<aligny>center</aligny>
-		</control>
-		<control type="label" id="3803">
-			<textcolor>grey2</textcolor>
-			<label>$INFO[Control.GetLabel]</label>
-			<visible>false</visible>
-		</control>
-		<control type="label">
-			<posx>809</posx>
-			<posy>451</posy>
-			<width>210</width>
-			<height>40</height>
-			<font>Font_Reg14</font>
-			<align>right</align>
-			<aligny>center</aligny>
-			<scroll>true</scroll>
-			<textcolor>grey2</textcolor>
-			<label>$INFO[Control.GetLabel(3803)] $LOCALIZE[31025] - $LOCALIZE[31024] ($INFO[Container(3850).CurrentPage]/$INFO[Container(3850).NumPages])</label>
-			<visible>Control.IsVisible(3850)</visible>
-		</control>
-		<control type="button" id="3802">
-			<description>Close Window button</description>
-			<posx>0</posx>
-			<posy>451</posy>
-			<width>200</width>
-			<height>40</height>
-			<align>center</align>
-			<font>Font_Bold19</font>
-			<label>186</label>
-			<textcolor>grey2</textcolor>
-			<texturenofocus></texturenofocus>
-			<texturefocus></texturefocus>
-			<focusedcolor>white</focusedcolor>
-			<shadowcolor>black</shadowcolor>
-			<onleft>3851</onleft>
-			<onright>3800</onright>
-			<onup>3850</onup>
-			<ondown>3800</ondown>
 		</control>
 	</include>
 	<include name="DefaultSelectList">
@@ -5638,284 +5531,6 @@
 			<posy>90</posy>
 			<width>28</width>
 			<height>360</height>
-			<texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
-			<texturesliderbar>-</texturesliderbar>
-			<texturesliderbarfocus>-</texturesliderbarfocus>
-			<textureslidernib>views/scrollbarnub-nofocus.png</textureslidernib>
-			<textureslidernibfocus>views/scrollbarnub-focus.png</textureslidernibfocus>
-			<onleft>3802</onleft>
-			<onright>3850</onright>
-			<ondown></ondown>
-			<onup></onup>
-			<showonepage>false</showonepage>
-			<orientation>vertical</orientation>
-		</control>
-	</include>
-	<include name="DefaultBookmarkDialog">
-		<control type="image">
-			<description>Panel</description>
-			<posx>0</posx>
-			<posy>50</posy>
-			<width>601</width>
-			<height>531</height>
-			<texture>osd/osd_settings_back.png</texture>
-		</control>
-		<control type="image">
-			<posx>0</posx>
-			<posy>85</posy>
-			<width>601</width>
-			<height>40</height>
-			<texture>osd/osd_settings_buttonnf.png</texture>
-		</control>
-		<control type="button" id="3800">
-			<description>Cancel Window button</description>
-			<posx>489</posx>
-			<posy>80</posy>
-			<width>210</width>
-			<height>40</height>
-			<textcolor>grey2</textcolor>
-			<texturenofocus></texturenofocus>
-			<texturefocus></texturefocus>
-			<focusedcolor>white</focusedcolor>
-			<shadowcolor>black</shadowcolor>
-			<label>Go Back</label>
-			<font>Font_Bold18</font>
-			<onleft>3851</onleft>
-			<onright>3802</onright>
-			<onup>3802</onup>
-			<ondown>3850</ondown>
-		</control>
-		<control type="label" id="3801">
-			<description>header label</description>
-			<posx>60</posx>
-			<posy>80</posy>
-			<width>400</width>
-			<height>40</height>
-			<font>Font_Bold19</font>
-			<textcolor>grey2</textcolor>
-			<label>$LOCALIZE[13406]</label>
-			<align>left</align>
-			<aligny>center</aligny>
-		</control>
-		<control type="label" id="3805">
-			<posx>0</posx>
-			<posy>133</posy>
-			<width>600</width>
-			<height>30</height>
-			<font>Font_Bold19</font>
-			<label>$INFO[Control.GetLabel]</label>
-			<align>center</align>
-			<aligny>center</aligny>
-			<textcolor>grey2</textcolor>
-			<shadowcolor>black</shadowcolor>
-		</control>
-		<control type="label" id="3803">
-			<textcolor>grey2</textcolor>
-			<label>$INFO[Control.GetLabel]</label>
-			<visible>false</visible>
-		</control>
-		<control type="label">
-			<posx>560</posx>
-			<posy>525</posy>
-			<width>210</width>
-			<height>40</height>
-			<font>Font_Reg14</font>
-			<align>right</align>
-			<aligny>center</aligny>
-			<scroll>true</scroll>
-			<textcolor>grey2</textcolor>
-			<label>$INFO[Control.GetLabel(3803)] $LOCALIZE[31025] - $LOCALIZE[31024] ($INFO[Container(3850).CurrentPage]/$INFO[Container(3850).NumPages])</label>
-			<visible>Control.IsVisible(3850)</visible>
-		</control>
-		<control type="button" id="3802">
-			<description>ok button</description>
-			<posx>30</posx>
-			<posy>525</posy>
-			<width>100</width>
-			<height>40</height>
-			<align>center</align>
-			<font>Font_Bold19</font>
-			<label>186</label>
-			<textcolor>grey2</textcolor>
-			<texturenofocus></texturenofocus>
-			<texturefocus></texturefocus>
-			<focusedcolor>white</focusedcolor>
-			<shadowcolor>black</shadowcolor>
-			<onleft>3851</onleft>
-			<onright>3800</onright>
-			<onup>3850</onup>
-			<ondown>3800</ondown>
-		</control>
-	</include>
-	<include name="DefaultBookmarkList">
-		<control type="list" id="3850">
-			<posx>30</posx>
-			<posy>175</posy>
-			<width>581</width>
-			<height>350</height>
-			<onleft>3851</onleft>
-			<onright>3802</onright>
-			<onup>3850</onup>
-			<ondown>3850</ondown>
-			<pagecontrol>3851</pagecontrol>
-			<scrolltime>200</scrolltime>
-			<focusposition>0</focusposition>
-			<movement>2</movement>
-			<animation effect="slide" start="0,0" end="10,0" time="0" condition="!Control.IsVisible(3851)">Conditional</animation>
-			<itemlayout height="70" width="581">
-				<control type="image">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>531</width>
-					<height>70</height>
-					<texture background="true">osd/osd_settings_buttonnf.png</texture>
-				</control>
-				<!-- Thumbnail  and  Lock -->
-				<control type="image">
-					<posx>25</posx>
-					<posy>5</posy>
-					<width>112</width>
-					<height>63</height>
-					<texture>$INFO[ListItem.Property(RecIcon)]</texture>
-				</control>
-				<!-- is mark? -->
-				<control type="image">
-					<posx>20</posx>
-					<posy>10</posy>
-					<width>20</width>
-					<height>20</height>
-					<texture>OverlayWatched.png</texture>
-					<visible>substring(ListItem.Property(iMark),true)</visible>
-				</control>
-				<!-- bookmark offset-->
-				<control type="label">
-					<posx>230</posx>
-					<posy>0</posy>
-					<width>200</width>
-					<height>30</height>
-					<font>Font_Bold17</font>
-					<textcolor>grey2</textcolor>
-					<align>right</align>
-					<aligny>center</aligny>
-					<label>$INFO[ListItem.Label]</label>
-				</control>
-				<!-- Total -->
-				<control type="label">
-					<posx>315</posx>
-					<posy>0</posy>
-					<width>200</width>
-					<height>30</height>
-					<font>Font_Bold17</font>
-					<textcolor>grey2</textcolor>
-					<align>right</align>
-					<aligny>center</aligny>
-					<label>/ $INFO[ListItem.Property(RecTotal)]</label>
-				</control>
-				<control type="progress">
-					<posx>160</posx>
-					<posy>45</posy>
-					<width>340</width>
-					<height>18</height>
-					<texturebg>osd/seek/progress_back.png</texturebg>
-					<lefttexture>osd/seek/progress_left.png</lefttexture>
-					<midtexture>osd/seek/progress_mid.png</midtexture>
-					<righttexture>osd/seek/progress_right.png</righttexture>
-					<progress>percent</progress>
-					<visible>substring(ListItem.Property(iPos),true)</visible>
-				</control>
-				<control type="label">
-					<posx>360</posx>
-					<posy>0</posy>
-					<width>260</width>
-					<height>30</height>
-					<font>Font_Bold17</font>
-					<textcolor>grey2</textcolor>
-					<align>left</align>
-					<aligny>center</aligny>
-					<label>$INFO[ListItem.Property(RecDate)]</label>
-					<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
-				</control>
-			</itemlayout>
-			<focusedlayout height="70" width="581">
-				<control type="image">
-					<posx>0</posx>
-					<posy>0</posy>
-					<width>531</width>
-					<height>70</height>
-					<texture background="true">osd/osd_settings_buttonf.png</texture>
-				</control>
-				<!-- Thumbnail  and  Lock -->
-				<control type="image">
-					<posx>25</posx>
-					<posy>5</posy>
-					<width>112</width>
-					<height>63</height>
-					<texture>$INFO[ListItem.Property(RecIcon)]</texture>
-				</control>
-				<!-- is mark? -->
-				<control type="image">
-					<posx>20</posx>
-					<posy>10</posy>
-					<width>20</width>
-					<height>20</height>
-					<texture>OverlayWatched.png</texture>
-					<visible>substring(ListItem.Property(iMark),true)</visible>
-				</control>
-				<!-- bookmark offset-->
-				<control type="label">
-					<posx>230</posx>
-					<posy>0</posy>
-					<width>200</width>
-					<height>30</height>
-					<font>Font_Bold17</font>
-					<textcolor>white</textcolor>
-					<selectedcolor>selected</selectedcolor>
-					<align>right</align>
-					<aligny>center</aligny>
-					<label>$INFO[ListItem.Label]</label>
-				</control>
-				<!-- Total -->
-				<control type="label">
-					<posx>315</posx>
-					<posy>0</posy>
-					<width>200</width>
-					<height>30</height>
-					<font>Font_Bold17</font>
-					<textcolor>grey2</textcolor>
-					<align>right</align>
-					<aligny>center</aligny>
-					<label>/ $INFO[ListItem.Property(RecTotal)]</label>
-				</control>
-				<control type="progress">
-					<posx>160</posx>
-					<posy>45</posy>
-					<width>340</width>
-					<height>18</height>
-					<texturebg>osd/seek/progress_back.png</texturebg>
-					<lefttexture>osd/seek/progress_left.png</lefttexture>
-					<midtexture>osd/seek/progress_mid.png</midtexture>
-					<righttexture>osd/seek/progress_right.png</righttexture>
-					<progress>percent</progress>
-					<visible>substring(ListItem.Property(iPos),true)</visible>
-				</control>
-				<control type="label">
-					<posx>360</posx>
-					<posy>0</posy>
-					<width>260</width>
-					<height>30</height>
-					<font>Font_Bold17</font>
-					<textcolor>grey2</textcolor>
-					<align>left</align>
-					<aligny>center</aligny>
-					<label>$INFO[ListItem.Property(RecDate)]</label>
-				</control>
-			</focusedlayout>
-		</control>
-		<control type="scrollbar" id="3851">
-			<posx>20</posx>
-			<posy>180</posy>
-			<width>28</width>
-			<height>340</height>
 			<texturesliderbackground>views/scrollbarbacklist.png</texturesliderbackground>
 			<texturesliderbar>-</texturesliderbar>
 			<texturesliderbarfocus>-</texturesliderbarfocus>

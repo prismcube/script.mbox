@@ -31,8 +31,6 @@ class DialogChannelSearch( BaseDialog ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.mSatelliteFormatedName = MR_LANG( 'Unknown' )
-
 		self.mIsFinished = False	
 		self.mTimer = None
 
@@ -61,14 +59,11 @@ class DialogChannelSearch( BaseDialog ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.ScanAbort( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-
-		elif actionId == Action.ACTION_PARENT_DIR :
-			self.ScanAbort( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			pass
@@ -222,8 +217,7 @@ class DialogChannelSearch( BaseDialog ) :
 				self.mLongitude = aEvent.mCarrier.mDVBS.mSatelliteLongitude
 				self.mBand = aEvent.mCarrier.mDVBS.mSatelliteBand
 				self.mSatelliteFormatedName = self.mDataCache.GetFormattedSatelliteName( self.mLongitude , self.mBand  )
-
-			strTransponderInfo = '%s - %d Mhz - %s - %d MS/s ' %( self.mSatelliteFormatedName, aEvent.mCarrier.mDVBS.mFrequency, strPol, aEvent.mCarrier.mDVBS.mSymbolRate )
+			strTransponderInfo = '%s - %d Mhz - %s - %d MS/s ' % ( self.mSatelliteFormatedName, aEvent.mCarrier.mDVBS.mFrequency, strPol, aEvent.mCarrier.mDVBS.mSymbolRate )
 			self.mCtrlTransponderInfo.setLabel( strTransponderInfo )
 
 		elif aEvent.mCarrier.mCarrierType == ElisEnum.E_CARRIER_TYPE_DVBT :

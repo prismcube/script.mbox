@@ -41,6 +41,7 @@ class ConditionalAccess( SettingWindow ) :
 		self.InitControl( )
 		self.mInitialized = True
 		self.SetFocusControl( E_Input01 )
+		self.SetPipLabel( )
 
 		
 	def onAction( self, aAction ) :
@@ -48,17 +49,12 @@ class ConditionalAccess( SettingWindow ) :
 		self.GetFocusId( )
 		self.GlobalAction( actionId )		
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
 			self.SetVideoRestore( )
 			WinMgr.GetInstance( ).CloseWindow( )
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-				
-		elif actionId == Action.ACTION_PARENT_DIR :
-			self.ResetAllControl( )
-			self.SetVideoRestore( )
-			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT or actionId == Action.ACTION_MOVE_RIGHT :
 			pass

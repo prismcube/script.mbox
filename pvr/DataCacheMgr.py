@@ -399,6 +399,7 @@ class DataCacheMgr( object ) :
 	def GetFormattedSatelliteName( self, aLongitude, aBand ) :
 		hashKey = '%d:%d' % ( aLongitude, aBand )
 		satellite = self.mAllSatelliteListHash.get( hashKey, None )
+
 		if satellite != None :
 			dir = 'E'
 
@@ -410,7 +411,7 @@ class DataCacheMgr( object ) :
 			formattedName = '%d.%d %s %s' % ( int( tmpLongitude / 10 ), tmpLongitude % 10, dir, satellite.mName )
 			return formattedName
 
-		return MR_LANG( 'UnKnown' )
+		return MR_LANG( 'Unknown' )
 
 
 	def GetTransponderListBySatellite( self, aLongitude, aBand ) :

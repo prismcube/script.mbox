@@ -53,6 +53,7 @@ class SystemInfo( SettingWindow ) :
 		self.mCheckHddTempTimer			= None
 		self.mLastFocused 				= E_SUBMENU_LIST_ID
 		self.mPrevListItemID 			= 0
+		self.mEnableLocalThread 		= True
 
 		self.mCheckHiddenPattern1	= False
 		self.mCheckHiddenPattern2	= False
@@ -105,18 +106,13 @@ class SystemInfo( SettingWindow ) :
 		self.GlobalAction( actionId )
 		self.CheckHiddenAction( actionId )
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.mInitialized = False
 			self.StopCheckHddTempTimer( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-
-		elif actionId == Action.ACTION_PARENT_DIR :
-			self.mInitialized = False
-			self.StopCheckHddTempTimer( )
-			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == E_SUBMENU_LIST_ID and self.mCtrlLeftGroup.getSelectedPosition( ) != self.mPrevListItemID :
@@ -312,34 +308,24 @@ class SystemInfo( SettingWindow ) :
 			return False
 
 
-	def RestartCheckHddTempTimer( self ) :
-		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Restart' )
-		self.StopCheckHddTempTimer( )
-		self.StartCheckHddTempTimer( )
-
-
 	def StartCheckHddTempTimer( self ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Start' )	
-		self.mCheckHddTempTimer = threading.Timer( TIME_SEC_CHECK_HDD_TEMP, self.AsyncCheckHddTempTimer )
-		self.mCheckHddTempTimer.start( )
+		self.mEnableLocalThread = True
+		self.mCheckHddTempTimer = self.AsyncCheckHddTempTimer( )
 	
 
 	def StopCheckHddTempTimer( self ) :
-		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )	
-		if self.mCheckHddTempTimer and self.mCheckHddTempTimer.isAlive( ) :
-			self.mCheckHddTempTimer.cancel( )
-			del self.mCheckHddTempTimer
-			
-		self.mCheckHddTempTimer = None
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )
+		if self.mEnableLocalThread == True and self.mCheckHddTempTimer :
+			self.mEnableLocalThread = False				
+			self.mCheckHddTempTimer.join( )
 
 
-	def AsyncCheckHddTempTimer( self ) :	
-		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )	
-		if self.mCheckHddTempTimer == None :
-			LOG_WARN( 'Check Hdd Temp timer expired' )
-			return
-
-		if self.mCtrlLeftGroup.getSelectedPosition( ) == E_HDD :
-			self.ShowHDDTemperature( )
-		self.RestartCheckHddTempTimer( )
+	@RunThread
+	def AsyncCheckHddTempTimer( self ) :
+		while self.mEnableLocalThread :
+			if self.mCtrlLeftGroup.getSelectedPosition( ) == E_HDD :
+				self.ShowHDDTemperature( )
+			LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )
+			time.sleep( TIME_SEC_CHECK_HDD_TEMP )
 

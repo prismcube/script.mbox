@@ -54,6 +54,7 @@ class AntennaSetup( SettingWindow ) :
 		self.DisableControl( )
 		self.mInitialized = True
 		self.setDefaultControl( )
+		self.SetPipLabel( )
 		
 		
 	def onAction( self, aAction ) :
@@ -61,13 +62,7 @@ class AntennaSetup( SettingWindow ) :
 		focusId = self.getFocusId( )
 		self.GlobalAction( actionId )
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
-			pass
-			
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
-				
-		elif actionId == Action.ACTION_PARENT_DIR :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			if ConfigMgr.GetInstance( ).GetFristInstallation( ) == True :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( MR_LANG( 'Abort Installation' ), MR_LANG( 'Do you want to quit the first installation?' ) )
@@ -107,6 +102,9 @@ class AntennaSetup( SettingWindow ) :
 					return
 
 				self.CloseWindow( )
+
+		elif actionId == Action.ACTION_SELECT_ITEM :
+			pass
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )

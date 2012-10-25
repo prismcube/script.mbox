@@ -28,11 +28,7 @@ class MediaCenter( BaseWindow ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
-			xbmc.executebuiltin( 'PlayerControl(Stop)' )
-			WinMgr.GetInstance( ).CloseWindow( )
-
-		elif actionId == Action.ACTION_PARENT_DIR :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			xbmc.executebuiltin( 'PlayerControl(Stop)' )
 			WinMgr.GetInstance( ).CloseWindow( )
 

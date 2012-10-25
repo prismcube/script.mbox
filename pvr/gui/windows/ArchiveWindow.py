@@ -128,7 +128,6 @@ class ArchiveWindow( BaseWindow ) :
 		self.UpdateViewMode( )
 		
 		self.InitControl( )
-
 		self.UpdateList( )
 		self.SelectLastRecordKey( )		
 		self.UpdatePlayStatus( )
@@ -259,6 +258,7 @@ class ArchiveWindow( BaseWindow ) :
 			elif aEvent.getName( ) == ElisEventPlaybackStopped.getName( ) :
 				if self.mPlayingRecord :
 					self.UpdatePlayStopThumbnail( self.mPlayingRecord )
+					self.UpdatePlayStatus( )
 
 
 	def InitControl( self ) :
@@ -337,6 +337,13 @@ class ArchiveWindow( BaseWindow ) :
 
 	def UpdateList( self ) :
 		LOG_TRACE( 'UpdateList Start' )
+		if self.mViewMode == E_VIEW_LIST :
+			self.SetPipScreen( )
+			self.LoadNoSignalState( )
+		else :
+			self.mDataCache.Player_SetVIdeoSize( 1230, 0, 50, 50 )
+		
+		self.OpenBusyDialog( )
 		try :
 			if not self.mRecordList or self.mRecordList == None :
 				self.mRecordList = []
@@ -371,7 +378,8 @@ class ArchiveWindow( BaseWindow ) :
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
 
-		self.CheckVideoSize( )
+		self.AddListItems( )
+		self.CloseBusyDialog( )
 		LOG_TRACE( 'UpdateList END' )
 
 
@@ -452,27 +460,15 @@ class ArchiveWindow( BaseWindow ) :
 		xbmc.executebuiltin( 'container.update' )
 
 
-	def CheckVideoSize( self ) :
+	def AddListItems( self ) :
 		if self.mViewMode == E_VIEW_LIST :
-			self.SetPipScreen( )
-			self.LoadNoSignalState( )
 			self.mCtrlCommonList.addItems( self.mRecordListItems )		
-			#self.setFocusId( LIST_ID_COMMON_RECORD )
-		elif self.mViewMode == E_VIEW_THUMBNAIL :
-			self.mDataCache.Player_SetVIdeoSize( 1230, 0, 50, 50 )
-			#self.SetVideoRestore( )		
+		elif self.mViewMode == E_VIEW_THUMBNAIL :		
 			self.mCtrlThumbnailList.addItems( self.mRecordListItems )		
-			#self.setFocusId( LIST_ID_THUMBNAIL_RECORD )
-		elif self.mViewMode == E_VIEW_POSTER_WRAP :
-			self.mDataCache.Player_SetVIdeoSize( 1230, 0, 50, 50 )
-			#self.SetVideoRestore( )		
+		elif self.mViewMode == E_VIEW_POSTER_WRAP :	
 			self.mCtrlPosterwrapList.addItems( self.mRecordListItems )		
-			#self.setFocusId( LIST_ID_POSTERWRAP_RECORD )
-		elif self.mViewMode == E_VIEW_FANART :
-			self.mDataCache.Player_SetVIdeoSize( 1230, 0, 50, 50 )
-			#self.SetVideoRestore( )		
+		elif self.mViewMode == E_VIEW_FANART :	
 			self.mCtrlFanartList.addItems( self.mRecordListItems )		
-			#self.setFocusId( LIST_ID_FANART_RECORD )
 		else :
 			LOG_WARN( 'Unknown view mode' )
 
@@ -536,8 +532,9 @@ class ArchiveWindow( BaseWindow ) :
 		if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 			ret = self.mDataCache.Player_Stop( )
 			self.mLastFocusItem = -1
-			self.UpdatePlayStatus( )
 			
+			#self.UpdatePlayStopThumbnail( self.mPlayingRecord )
+
 
 	def StartRecordPlayback( self, aResume=True ) :
 		selectedPos = self.GetSelectedPosition( )

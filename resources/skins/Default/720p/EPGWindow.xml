@@ -234,7 +234,7 @@
 				<posy>-84</posy>
 				<width>120</width>
 				<height>40</height>
-				<label>[I]No Signal [/I]</label>
+				<label>[I]SCRIPT104 [/I]</label>
 				<font>font12_title</font>
 				<align>center</align>
 				<textcolor>grey2</textcolor>
@@ -245,7 +245,7 @@
 				<posy>-84</posy>
 				<width>120</width>
 				<height>40</height>
-				<label>[I]Scrambled [/I]</label>
+				<label>[I]SCRIPT105 [/I]</label>
 				<font>font12_title</font>
 				<align>center</align>
 				<textcolor>grey2</textcolor>
@@ -365,7 +365,7 @@
 			<scroll>false</scroll>
 			<align>right</align>
 			<aligny>center</aligny>
-			<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3500).NumItems][/COLOR]) Items - Page ([COLOR=blue]$INFO[Container(3500).CurrentPage]/$INFO[Container(3500).NumPages][/COLOR])</label>
+			<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3500).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(3500).CurrentPage]/$INFO[Container(3500).NumPages][/COLOR])</label>
 			<visible>substring(Window.Property(EPGMode),channel) </visible>						
 		</control>
 
@@ -381,7 +381,7 @@
 			<scroll>false</scroll>
 			<align>right</align>
 			<aligny>center</aligny>
-			<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3510).NumItems][/COLOR]) Items - Page ([COLOR=blue]$INFO[Container(3510).CurrentPage]/$INFO[Container(3510).NumPages][/COLOR])</label>
+			<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3510).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(3510).CurrentPage]/$INFO[Container(3510).NumPages][/COLOR])</label>
 			<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>						
 		</control>
 

@@ -76,6 +76,11 @@
 "Strength",,,,,,,,,,75
 "Quality",,,,,,,,,,76
 "Update",,,,,,,,,,77
+"Items",,,,,,,,,,78
+"Page",,,,,,,,,,79
+"Move Position",,,,,,,,,,80
+"Add",,,,,,,,,,81
+"TIME",,,,,,,,,,82
 "Last ServiceType",,,,,,,,,,2001
 "CurrentVoutResolution",,,,,,,,,,2002
 "First Installation","Erst-Installation","premiere installation","Prima installazione","Primera instalacion","Prvni instalace","Eerste installatie","Pierwsza instalacja","?lk kurulum","Первоначальная установка",2003
@@ -946,3 +951,8 @@
 "Hide Bookmark",,,,,,,,,,3560
 "Add To Bookmark",,,,,,,,,,3561
 "Show List",,,,,,,,,,3562
+"Automatic power down after %s sec",,,,,,,,,,3563
+"[I]No Signal [/I]",,,,,,,,,,3564
+"[I]Scrambled[/I]",,,,,,,,,,3565
+"[I]No Signal[/I] ",,,,,,,,,,3566
+"[I]Scrambled[/I] ",,,,,,,,,,3567

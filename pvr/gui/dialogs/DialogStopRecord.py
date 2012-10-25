@@ -92,16 +92,12 @@ class DialogStopRecord( BaseDialog ) :
 		
 		self.GlobalAction( actionId )
 		
-		if actionId == Action.ACTION_PREVIOUS_MENU :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.Close( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-					
-		elif actionId == Action.ACTION_PARENT_DIR :
-			self.mIsOk = E_DIALOG_STATE_CANCEL
-			self.Close( )
 		
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == BUTTON_ID_RECORD_1 :

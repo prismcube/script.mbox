@@ -166,7 +166,7 @@
 					<align>left</align>
 					<aligny>center</aligny>
 					<textcolor>ff969696</textcolor>
-					<label>$INFO[Container(3400).NumItems] Items</label>
+					<label>$INFO[Container(3400).NumItems] SCRIPT106</label>
 				</control>
 					<control type="label">
 					<posx>676</posx>
@@ -177,7 +177,7 @@
 					<align>center</align>
 					<aligny>center</aligny>
 					<textcolor>ff969696</textcolor>
-					<label>Page $INFO[Container(3400).CurrentPage]/$INFO[Container(3400).NumPages]</label>
+					<label>SCRIPT107 $INFO[Container(3400).CurrentPage]/$INFO[Container(3400).NumPages]</label>
 				</control>
 			</control>
 
