@@ -13,7 +13,6 @@ E_WINDOW_HEIGHT		= 720
 
 # BETA VERSION
 E_BETA_SOFTWARE		= True
-E_BETA_DATE			= '2012.10.25'
 
 
 ############################ Windows ############################
