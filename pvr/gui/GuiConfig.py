@@ -4,11 +4,17 @@ from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 from pvr.GuiHelper import MR_LANG
 
 
-####### HBBTV SUPPOERT #############
+# HBBTV SUPPOERT
 E_SUPPROT_HBBTV		= True
 
+# WINDOW SIZE
 E_WINDOW_WIDTH		= 1280
 E_WINDOW_HEIGHT		= 720
+
+# BETA VERSION
+E_BETA_SOFTWARE		= True
+E_BETA_DATE			= '2012.10.25'
+
 
 ############################ Windows ############################
 # Setting Window Control Ids
