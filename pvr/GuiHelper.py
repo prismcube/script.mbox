@@ -1,9 +1,10 @@
-import xbmcaddon, sys, os, shutil
+import xbmcaddon, sys, os, shutil, time
 from ElisEnum import ElisEnum
 import pvr.Platform
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 from BeautifulSoup import BeautifulSoup
 import urllib
+from subprocess import *
 
 gSettings = xbmcaddon.Addon( id="script.mbox" )
 
@@ -438,14 +439,10 @@ class GuiSkinPosition( object ) :
 
 
 def CreateDirectory( aPath ) :
-	print '---------'
 	if os.path.exists( aPath ) :
-		print '---------'
 		return
 
-	print '---------'
 	os.makedirs( aPath, 0644 )
-	print '---------'
 
 
 def RemoveDirectory( aPath ) :
@@ -453,6 +450,53 @@ def RemoveDirectory( aPath ) :
 		return
 
 	shutil.rmtree( aPath )
+
+
+def CheckMD5Sum( aSourceFile, aMd5 ) :
+	isVerify = False
+	cmd = 'md5sum %s'% aSourceFile
+
+	if not os.path.exists( aSourceFile ) :
+		LOG_TRACE( '------------file not found[%s]'% aSourceFile )
+		return isVerify
+
+	try :
+		readMd5 = os.system( cmd )
+		LOG_TRACE('md5sum[%s] sourceFile[%s]'% ( readMd5, aSourceFile ) )
+		if readMd5 == aMd5 :
+			isVerify = True
+
+	except Exception, e :
+		LOG_ERR( 'except[%s] cmd[%s]'% ( e, cmd ) )
+
+	return isVerify
+	
+
+def CopyToUSB( aSourceFile, aDestPath ) :
+	isCopy = False
+	cmd = 'unzip -o %s -d %s'% ( aSourceFile, aDestPath )
+
+	if not os.path.exists( aDestPath ) :
+		LOG_TRACE( '------------check usb[%s]'% aDestPath )
+		return isCopy
+
+	RemoveDirectory( '%s/update'% aDestPath )
+	try :
+		returnCode = os.system( cmd )
+		LOG_TRACE( '--------------unzip returnCode[%s]'% returnCode )
+		#ToDo : why return forced -1 ????
+		#if returnCode == 0 :
+		#	isCopy = True
+		isCopy = True
+
+		os.system( 'sync' )
+		time.sleep( 0.5 )
+
+	except Exception, e :
+		LOG_ERR( 'except[%s] cmd[%s]'% ( e, cmd ) )
+		isCopy = False
+
+	return isCopy
 
 
 def GetURLpage( aUrl, aCache = True ) :

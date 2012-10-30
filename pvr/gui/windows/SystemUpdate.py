@@ -1,11 +1,13 @@
 from pvr.gui.WindowImport import *
 from fileDownloader import DownloadFile
+import stat
 
 E_TYPE_PRISMCUBE = 1
 E_TYPE_ADDONS = 2
 
 E_DEFAULT_URL_PVS = 'http://192.168.100.142/RSS/update.xml'
-E_DEFAULT_DIRECTORY_DOWNLOAD = '/mnt/hdd0/program/download'
+E_DEFAULT_PATH_DOWNLOAD = '/mnt/hdd0/program/download'
+E_DEFAULT_PATH_USB_UPDATE = '/media/usb'
 
 E_CONTROL_ID_GROUP_PVS         = 49
 E_CONTROL_ID_LIST_PVS          = 50
@@ -352,7 +354,7 @@ class SystemUpdate( SettingWindow ) :
 
 		idx = self.mCtrlListPVS.getSelectedPosition( )
 		iPVS = self.mPVSList[idx]
-		LOG_TRACE('----------------download[%s]'% iPVS.mFileName )
+		LOG_TRACE('----------------download File[%s]'% iPVS.mFileName )
 
 		#ToDo : usb detected
 		self.GetDownload( iPVS )
@@ -369,49 +371,89 @@ class SystemUpdate( SettingWindow ) :
 			return
 
 
+		self.mWorkingItem = aPVS
+		self.mWorkingDownloader = None
+
+		#make tempDir, write local file
+		CreateDirectory( E_DEFAULT_PATH_DOWNLOAD )
+
+		isResume = False
+		tempFile = E_DEFAULT_PATH_DOWNLOAD + '/%s'% os.path.basename( aPVS.mFileName )
+		if os.path.exists( tempFile ) :
+			if os.stat( tempFile )[stat.ST_SIZE] == aPVS.mSize :
+				self.SetUpdate( tempFile, aPVS.mMd5 )
+				return True
+
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'Already exist download file' ), MR_LANG( 'Do you want to continue ?' ) )
+			dialog.doModal( )
+
+			ret = dialog.IsOK( )
+			if ret == E_DIALOG_STATE_CANCEL :
+				return False
+
+			elif ret == E_DIALOG_STATE_YES :
+				isResume = True
+
 		#self.mDialogProgress = None
 		self.mDialogProgress = xbmcgui.DialogProgress( )
 		self.mDialogProgress.create( aPVS.mName, MR_LANG( 'Downloading...' ) )
 
-		LOG_TRACE('-----------hold check-----------------------TTTTTTTTTTTTTTTTTTT')
-		self.mWorkingItem = aPVS
-		self.mWorkingDownloader = None
-
-
-		#make tempDir, write local file
-		CreateDirectory( E_DEFAULT_DIRECTORY_DOWNLOAD )
-		LOG_TRACE('-----------hold check-----------------------TTTTTTTTTTTTTTTTTTT')
-		tempFile = E_DEFAULT_DIRECTORY_DOWNLOAD + '/%s' + os.path.basename( aPVS.mFileName )
-		LOG_TRACE('-----------hold check-----------------------TTTTTTTTTTTTTTTTTTT')
 		self.mWorkingDownloader = DownloadFile( aPVS.mFileName, tempFile )
-		LOG_TRACE('-----------hold check-----------------------TTTTTTTTTTTTTTTTTTT')
-		if os.path.exists( tempFile ) :
+		if isResume :
 			self.mWorkingDownloader.resume( self.ShowProgress )
 		else :
 			self.mWorkingDownloader.download( self.ShowProgress )
-
-
-		LOG_TRACE('-----------hold check-----------------------TTTTTTTTTTTTTTTTTTT')
 		self.mDialogProgress.close( )
-		#RemoveDirectory( E_DEFAULT_DIRECTORY_DOWNLOAD )
+
 		self.mDialogProgress = None
 		self.mWorkingItem = None
 		self.mWorkingDownloader = None
 
+		if os.stat( tempFile )[stat.ST_SIZE] == aPVS.mSize :
+			self.SetUpdate( tempFile, aPVS.mMd5 )
 
+
+	#this function is callback
 	def ShowProgress( self, cursize = 0 ) :
-		if cursize :
-			LOG_TRACE('--------------down size[%s]'% cursize )
+		#if cursize :
+		#	LOG_TRACE('--------------down size[%s] tot[%s]'% ( cursize, self.mWorkingItem.mSize ) )
 
 		if self.mDialogProgress and self.mWorkingItem.mSize :
-			per = ( cursize / self.mWorkingItem.mSize ) * 100
-			LOG_TRACE('--------------down size[%s] per[%s] tot[%s]'% ( cursize, per, self.mWorkingItem.mSize ) )
-
-			self.mDialogProgress.update( ( cursize / self.mWorkingItem.mSize ) * 100 )
+			#per = 1.0 * cursize / self.mWorkingItem.mSize * 100
+			#LOG_TRACE('--------------down size[%s] per[%s] tot[%s]'% ( cursize, per, self.mWorkingItem.mSize ) )
+			self.mDialogProgress.update( 1.0 * cursize / self.mWorkingItem.mSize * 100 )
 
 			if self.mDialogProgress.iscanceled( ) and self.mWorkingDownloader :
 				self.mWorkingDownloader.abort( True )
 				LOG_TRACE('--------------abort')
+
+
+	def SetUpdate( self, aUpdateFile, aMd5 ) :
+		ret = CheckMD5Sum( aUpdateFile, aMd5 )
+		if not ret :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'File is corrupt, Try again download' ) )
+			dialog.doModal( )
+			return
+
+		self.OpenBusyDialog( )
+		#ret = CopyToUSB( tempFile, E_DEFAULT_PATH_USB_UPDATE )
+		ret = CopyToUSB( aUpdateFile, '/media/sdb1' )
+		self.CloseBusyDialog( )
+		if ret :
+			LOG_TRACE('--------------------')
+			RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Now reboot and follow from VFD' ) )
+			dialog.doModal( )
+			#ToDo : reboot
+
+		else :
+			LOG_TRACE('--------------------')
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Check USB' ) )
+			dialog.doModal( )
 
 
 	def Close( self ) :
