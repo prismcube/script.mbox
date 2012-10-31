@@ -110,6 +110,8 @@
 					<align>left</align>
 					<aligny>center</aligny>
 					<scroll>true</scroll>
+					<scrollspeed>150</scrollspeed>
+					<scrollsuffix>  |  </scrollsuffix>
 				</control>
 				<include>SpinEx01</include>
 				<include>SpinEx02</include>
