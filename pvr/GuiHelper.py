@@ -1,4 +1,4 @@
-import xbmcaddon, sys, os, shutil, time
+import xbmcaddon, sys, os, shutil, time, re
 from ElisEnum import ElisEnum
 import pvr.Platform
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
@@ -452,17 +452,25 @@ def RemoveDirectory( aPath ) :
 	shutil.rmtree( aPath )
 
 
+def CheckDirectory( aPath ) :
+	if not os.path.exists( aPath ) :
+		return False
+
+	return True
+
+
 def CheckMD5Sum( aSourceFile, aMd5 ) :
 	isVerify = False
-	cmd = 'md5sum %s'% aSourceFile
+	cmd = 'md5sum %s |awk \'{print $1}\''% aSourceFile
 
 	if not os.path.exists( aSourceFile ) :
 		LOG_TRACE( '------------file not found[%s]'% aSourceFile )
 		return isVerify
 
 	try :
-		readMd5 = os.system( cmd )
-		LOG_TRACE('md5sum[%s] sourceFile[%s]'% ( readMd5, aSourceFile ) )
+		p = Popen( cmd, shell=True, stdout=PIPE )
+		readMd5 = re.sub( '\n', '', p.stdout.read( ) )
+		LOG_TRACE('-------------checkMd5[%s] sourceMd5[%s]'% ( readMd5, aMd5 ) )
 		if readMd5 == aMd5 :
 			isVerify = True
 
@@ -482,6 +490,7 @@ def CopyToUSB( aSourceFile, aDestPath ) :
 
 	RemoveDirectory( '%s/update'% aDestPath )
 	try :
+		LOG_TRACE( 'execute cmd[%s]'% cmd )
 		returnCode = os.system( cmd )
 		LOG_TRACE( '--------------unzip returnCode[%s]'% returnCode )
 		#ToDo : why return forced -1 ????

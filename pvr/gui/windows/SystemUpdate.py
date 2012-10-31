@@ -7,7 +7,8 @@ E_TYPE_ADDONS = 2
 
 E_DEFAULT_URL_PVS = 'http://192.168.100.142/RSS/update.xml'
 E_DEFAULT_PATH_DOWNLOAD = '/mnt/hdd0/program/download'
-E_DEFAULT_PATH_USB_UPDATE = '/media/usb'
+#E_DEFAULT_PATH_USB_UPDATE = '/media/usb'
+E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
 
 E_CONTROL_ID_GROUP_PVS         = 49
 E_CONTROL_ID_LIST_PVS          = 50
@@ -15,6 +16,7 @@ E_CONTROL_ID_LABEL_DATE        = 100
 E_CONTROL_ID_LABEL_VERSION     = 101
 E_CONTROL_ID_LABEL_SIZE        = 102
 E_CONTROL_ID_LABEL_DESCRIPTION = 103
+E_CONTROL_ID_LABEL_PERCENT     = 110
 
 E_STRING_DATE        = MR_LANG( 'DATE' )
 E_STRING_VERSION     = MR_LANG( 'VERSION' )
@@ -56,6 +58,7 @@ class SystemUpdate( SettingWindow ) :
 		self.mCtrlLabelVersion        = self.getControl( E_CONTROL_ID_LABEL_VERSION )
 		self.mCtrlLabelSize           = self.getControl( E_CONTROL_ID_LABEL_SIZE )
 		self.mCtrlLabelDescription    = self.getControl( E_CONTROL_ID_LABEL_DESCRIPTION )
+		self.mCtrlLabelPercent        = self.getControl( E_CONTROL_ID_LABEL_PERCENT )
 
 		self.mUrlPVS = E_DEFAULT_URL_PVS
 		self.mListItems = None
@@ -141,6 +144,9 @@ class SystemUpdate( SettingWindow ) :
 		elif aCtrlID == E_SETTING_DESCRIPTION :
 			self.mCtrlLabelDescTitle.setLabel( aValue )
 
+		elif aCtrlID == E_CONTROL_ID_LABEL_PERCENT :
+			self.mCtrlLabelPercent.setLabel( aValue )
+
 		elif aCtrlID == E_CONTROL_ID_LIST_PVS :
 			if aExtra == E_TAG_SET_SELECT_POSITION :
 				self.mCtrlListPVS.selectItem( aValue )
@@ -159,6 +165,7 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def ResetLabel( self ) :
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_DATE, '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_VERSION, '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SIZE, '' )
@@ -229,39 +236,44 @@ class SystemUpdate( SettingWindow ) :
 
 		self.OpenBusyDialog( )
 
-		download = GetURLpage( self.mUrlPVS )
-		#LOG_TRACE( '[pvs]%s'% download )
+		try :
+			download = GetURLpage( self.mUrlPVS )
+			#LOG_TRACE( '[pvs]%s'% download )
 
-		if download :
-			iPVS = PVSList( )
-			iPVS.mName = MR_LANG( 'System Update' )
-			iPVS.mType = E_TYPE_PRISMCUBE
+			if download :
+				iPVS = PVSList( )
+				iPVS.mName = MR_LANG( 'System Update' )
+				iPVS.mType = E_TYPE_PRISMCUBE
 
-			iPVS.mFileName = ParseStringInXML( download, 'filename' )
-			"""
-			try :
-				iPVS.mFileName = os.path.basename( iPVS.mFileName )
-			except Exception, e :
-				LOG_ERR( 'except[%s] files[%s]'% ( e, iPVS.mFileName ) )
+				iPVS.mFileName = ParseStringInXML( download, 'filename' )
+				"""
+				try :
+					iPVS.mFileName = os.path.basename( iPVS.mFileName )
+				except Exception, e :
+					LOG_ERR( 'except[%s] files[%s]'% ( e, iPVS.mFileName ) )
 
-			LOG_TRACE('filename[%s]'% iPVS.mFileName )
-			"""
+				LOG_TRACE('filename[%s]'% iPVS.mFileName )
+				"""
 
-			iPVS.mDate    = ParseStringInXML( download, 'date' )
-			iPVS.mVersion = ParseStringInXML( download, 'version' )
-			iPVS.mSize    = int( ParseStringInXML( download, 'size' ) )
-			appURL        = ParseStringInXML( download, 'application' )
+				iPVS.mDate    = ParseStringInXML( download, 'date' )
+				iPVS.mVersion = ParseStringInXML( download, 'version' )
+				iPVS.mSize    = int( ParseStringInXML( download, 'size' ) )
+				iPVS.mMd5     = ParseStringInXML( download, 'md5' )
+				appURL        = ParseStringInXML( download, 'application' )
 
-			description = ''
-			descList = ParseStringInXML( download, 'description' )
-			LOG_TRACE( 'desc[%s]'% descList )
+				description = ''
+				descList = ParseStringInXML( download, 'description' )
+				LOG_TRACE( 'desc[%s]'% descList )
 
-			if descList and len( descList ) > 0 :
-				for item in descList :
-					description += '%s\n'% item
-			iPVS.mDescription = description
+				if descList and len( descList ) > 0 :
+					for item in descList :
+						description += '%s\n'% item
+				iPVS.mDescription = description
 
-			self.mPVSList.append( iPVS )
+				self.mPVSList.append( iPVS )
+
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
 
 		self.GetAPPList( appURL )
 		self.InitPVSList( )
@@ -357,6 +369,12 @@ class SystemUpdate( SettingWindow ) :
 		LOG_TRACE('----------------download File[%s]'% iPVS.mFileName )
 
 		#ToDo : usb detected
+		if not CheckDirectory( E_DEFAULT_PATH_USB_UPDATE ) :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'USB is not detected, Please insert USB' ) )
+			dialog.doModal( )
+			return
+
 		self.GetDownload( iPVS )
 
 		if iPVS.mType == E_TYPE_PRISMCUBE :
@@ -369,7 +387,6 @@ class SystemUpdate( SettingWindow ) :
 
 		if not isStable :
 			return
-
 
 		self.mWorkingItem = aPVS
 		self.mWorkingDownloader = None
@@ -395,7 +412,6 @@ class SystemUpdate( SettingWindow ) :
 			elif ret == E_DIALOG_STATE_YES :
 				isResume = True
 
-		#self.mDialogProgress = None
 		self.mDialogProgress = xbmcgui.DialogProgress( )
 		self.mDialogProgress.create( aPVS.mName, MR_LANG( 'Downloading...' ) )
 
@@ -430,19 +446,22 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def SetUpdate( self, aUpdateFile, aMd5 ) :
+		self.OpenBusyDialog( )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, 'Verify Checking...' )
 		ret = CheckMD5Sum( aUpdateFile, aMd5 )
 		if not ret :
+			self.CloseBusyDialog( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'File is corrupt, Try again download' ) )
 			dialog.doModal( )
 			return
 
-		self.OpenBusyDialog( )
-		#ret = CopyToUSB( tempFile, E_DEFAULT_PATH_USB_UPDATE )
-		ret = CopyToUSB( aUpdateFile, '/media/sdb1' )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, 'Image Unpacking...' )
+		ret = CopyToUSB( aUpdateFile, E_DEFAULT_PATH_USB_UPDATE )
+		#ToDO : extract file verify ??? file list check-up
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, 'Release Ready!!' )
 		self.CloseBusyDialog( )
 		if ret :
-			LOG_TRACE('--------------------')
 			RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Now reboot and follow from VFD' ) )
@@ -450,11 +469,11 @@ class SystemUpdate( SettingWindow ) :
 			#ToDo : reboot
 
 		else :
-			LOG_TRACE('--------------------')
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Check USB' ) )
 			dialog.doModal( )
 
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, '' )
 
 	def Close( self ) :
 		self.SaveAsServerAddress( )

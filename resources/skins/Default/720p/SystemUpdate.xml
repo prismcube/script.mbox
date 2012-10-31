@@ -9,6 +9,18 @@
 			<posy>110</posy>
 			<include>DefaultSettingWindowEffect</include>
 			<include>DefaultSettingMainWindow</include>
+			<control type="label" id="110">
+				<posx>500</posx>
+				<posy>62</posy>
+				<width>100</width>
+				<height>40</height>
+				<font>font13_title</font>
+				<textcolor>blue</textcolor>
+				<align>right</align>
+				<aligny>center</aligny>
+				<scroll>true</scroll>
+			</control>
+
 			<control type="group" id="49">
 				<posx>10</posx>
 				<include>DefaultWindowFade</include>
