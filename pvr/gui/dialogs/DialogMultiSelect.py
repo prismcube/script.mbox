@@ -39,16 +39,12 @@ class DialogMultiSelect( BaseDialog ) :
 		self.mIsOk = actionId
 		self.GlobalAction( actionId )		
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.mMarkList = None
 			self.Close( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-			
-		elif actionId == Action.ACTION_PARENT_DIR :
-			self.mMarkList = None
-			self.Close( )
 
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN or \
 			 actionId == Action.ACTION_PAGE_UP or actionId == Action.ACTION_PAGE_DOWN :

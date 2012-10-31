@@ -77,7 +77,7 @@ class DialogAddManualTimer( SettingDialog ) :
 		focusId = self.GetFocusId( )
 		self.GlobalAction( actionId )		
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.ResetAllControl( )
 			self.Close( )
@@ -113,11 +113,6 @@ class DialogAddManualTimer( SettingDialog ) :
 
 			elif groupId == E_DialogInput03 :
 				self.ShowEndTime( )
-				
-		elif actionId == Action.ACTION_PARENT_DIR :
-			self.mIsOk = E_DIALOG_STATE_CANCEL
-			self.ResetAllControl( )
-			self.Close( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			self.ControlUp( )

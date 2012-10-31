@@ -30,14 +30,11 @@ class DialogPopupOK( BaseDialog ) :
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.CloseDialog( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-
-		elif actionId == Action.ACTION_PARENT_DIR :
-			self.CloseDialog( )
 
 
 	def onClick( self, aControlId ) :

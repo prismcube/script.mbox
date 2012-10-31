@@ -35,19 +35,14 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 		self.mDataCache.Player_AVBlank( False )
 		self.mInitialized = True
 		self.setDefaultControl( )
+		self.SetPipLabel( )
 
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )		
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
-			pass
-
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
-
-		elif actionId == Action.ACTION_PARENT_DIR :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.OpenBusyDialog( )
 			self.ResetAllControl( )
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
@@ -55,6 +50,9 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 				self.mDataCache.Player_AVBlank( True )
 			self.CloseBusyDialog( )
 			WinMgr.GetInstance( ).CloseWindow( )
+
+		elif actionId == Action.ACTION_SELECT_ITEM :
+			pass
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )

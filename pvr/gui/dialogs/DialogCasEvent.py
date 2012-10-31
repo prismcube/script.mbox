@@ -40,16 +40,12 @@ class DialogCasEvent( BaseDialog ) :
 		actionId = aAction.getId( )
 		self.mIsOk = actionId
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.mSelectedIndex = -1
 			self.Close( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-
-		elif actionId == Action.ACTION_PARENT_DIR :
-			self.mSelectedIndex = -1
-			self.Close( )
 
 
 	def onClick( self, aControlId ) :

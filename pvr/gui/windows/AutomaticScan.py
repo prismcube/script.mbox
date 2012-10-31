@@ -28,6 +28,7 @@ class AutomaticScan( SettingWindow ) :
 			self.InitConfig( )
 			self.mInitialized = True
 			self.SetFocusControl( E_Input01 )
+			self.SetPipLabel( )
 		else :
 			self.SetVisibleControls( hideControlIds, False )
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite is available' ) )
@@ -42,15 +43,12 @@ class AutomaticScan( SettingWindow ) :
 		focusId = self.getFocusId( )
 		self.GlobalAction( actionId )
 		
-		if actionId == Action.ACTION_PREVIOUS_MENU :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
 			WinMgr.GetInstance( ).CloseWindow( )
+
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-				
-		elif actionId == Action.ACTION_PARENT_DIR :
-			self.ResetAllControl( )
-			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )

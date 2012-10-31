@@ -6,7 +6,87 @@
 		<control type="group">
 			<posx>200</posx>
 			<posy>100</posy>
-			<include>DefaultSelectDialog</include>
+			<control type="image">
+				<description>Panel</description>
+				<posx>0</posx>
+				<posy>20</posy>
+				<width>881</width>
+				<height>481</height>
+				<texture>osd/osd_settings_back.png</texture>
+			</control>
+			<control type="image">
+				<posx>50</posx>
+				<posy>55</posy>
+				<width>781</width>
+				<height>40</height>
+				<texture>osd/osd_settings_buttonnf.png</texture>
+			</control>
+			<control type="button" id="3800">
+				<description>Cancel Window button</description>
+				<posx>709</posx>
+				<posy>50</posy>
+				<width>210</width>
+				<height>40</height>
+				<textcolor>grey2</textcolor>
+				<texturenofocus></texturenofocus>
+				<texturefocus></texturefocus>
+				<focusedcolor>white</focusedcolor>
+				<shadowcolor>black</shadowcolor>
+				<label>SCRIPT21</label>
+				<font>Font_Bold18</font>
+				<onleft>3851</onleft>
+				<onright>3802</onright>
+				<onup>3802</onup>
+				<ondown>3850</ondown>
+			</control>
+			<control type="label" id="3801">
+				<description>header label</description>
+				<posx>80</posx>
+				<posy>50</posy>
+				<width>400</width>
+				<height>40</height>
+				<font>Font_Bold19</font>
+				<textcolor>white</textcolor>
+				<align>left</align>
+				<aligny>center</aligny>
+			</control>
+			<control type="label" id="3803">
+				<textcolor>grey2</textcolor>
+				<label>$INFO[Control.GetLabel]</label>
+				<visible>false</visible>
+			</control>
+			<control type="label">
+				<posx>809</posx>
+				<posy>451</posy>
+				<width>210</width>
+				<height>40</height>
+				<font>Font_Reg14</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<scroll>true</scroll>
+				<textcolor>grey2</textcolor>
+				<label>$INFO[Control.GetLabel(3803)] SCRIPT106 - SCRIPT107 ($INFO[Container(3850).CurrentPage]/$INFO[Container(3850).NumPages])</label>
+				<visible>Control.IsVisible(3850)</visible>
+			</control>
+			<control type="button" id="3802">
+				<description>Close Window button</description>
+				<posx>0</posx>
+				<posy>451</posy>
+				<width>200</width>
+				<height>40</height>
+				<align>center</align>
+				<font>Font_Bold19</font>
+				<label>SCRIPT22</label>
+				<textcolor>grey2</textcolor>
+				<texturenofocus></texturenofocus>
+				<texturefocus></texturefocus>
+				<focusedcolor>white</focusedcolor>
+				<shadowcolor>black</shadowcolor>
+				<onleft>3851</onleft>
+				<onright>3800</onright>
+				<onup>3850</onup>
+				<ondown>3800</ondown>
+			</control>
 			<include>DefaultSelectList</include>
 		</control>
 	</controls>

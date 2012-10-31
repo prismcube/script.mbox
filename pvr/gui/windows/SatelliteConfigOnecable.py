@@ -37,18 +37,14 @@ class SatelliteConfigOnecable( SettingWindow ) :
 		self.DisableControl( )
 		self.mInitialized = True
 		self.setDefaultControl( )
+		self.SetPipLabel( )
 
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )		
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
-			pass
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
-
-		elif actionId == Action.ACTION_PARENT_DIR :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			if self.mSatelliteCount > 1 :
 				for i in range( self.mSatelliteCount - 1 ) :
 					satellite = self.mTunerMgr.GetConfiguredSatellitebyIndex( i + 1 )
@@ -67,6 +63,9 @@ class SatelliteConfigOnecable( SettingWindow ) :
 
 			self.ResetAllControl( )
 			WinMgr.GetInstance( ).CloseWindow( )
+
+		elif actionId == Action.ACTION_SELECT_ITEM :
+			pass
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )

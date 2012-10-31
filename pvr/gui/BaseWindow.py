@@ -274,6 +274,11 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		xbmc.executebuiltin( command )
 
 
+	def SetPipLabel( self ) :
+		self.getControl( 1020 ).setLabel( MR_LANG( '[I]No Signal[/I] ' ) )
+		self.getControl( 1021 ).setLabel( MR_LANG( '[I]Scrambled[/I] ' ) )
+
+
 class ControlItem :
 	# Setting Window
 	E_UNDEFINE								= 0
@@ -319,11 +324,7 @@ class SettingWindow( BaseWindow ) :
 				control.addItems( ctrlItem.mListItems )
 				control.selectItem( ctrlItem.mSelecteItem )
 
-			if ctrlItem.mControlId == E_FIRST_TIME_INSTALLATION_PREV :
-				self.getControl( ctrlItem.mControlId ).setPosition( 0,  470 )
-			elif ctrlItem.mControlId == E_FIRST_TIME_INSTALLATION_NEXT :
-				self.getControl( ctrlItem.mControlId ).setPosition( 690, 470 )
-			else :
+			if ctrlItem.mControlId != E_FIRST_TIME_INSTALLATION_PREV and ctrlItem.mControlId != E_FIRST_TIME_INSTALLATION_NEXT :
 				pos += self.getControl( ctrlItem.mControlId ).getHeight( )
 				self.getControl( ctrlItem.mControlId ).setPosition( 0, pos )
 
@@ -333,7 +334,6 @@ class SettingWindow( BaseWindow ) :
 
 
 	def SetSettingWindowLabel( self, aLabel ) :
-#		self.getControl( E_SETTING_MINI_TITLE ).setLabel( aLabel )
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Installation' ) )
 		self.getControl( E_SETTING_HEADER_TITLE ).setLabel( aLabel )
 

@@ -33,6 +33,7 @@ class FirstInstallation( SettingWindow ) :
 		self.SetListControl( self.mStepNum )
 		ConfigMgr.GetInstance( ).SetFristInstallation( True )
 		self.mInitialized = True
+		self.SetPipLabel( )
 
 
 	def onAction( self, aAction ) :
@@ -41,7 +42,7 @@ class FirstInstallation( SettingWindow ) :
 
 		self.GlobalAction( actionId )
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			if self.mStepNum == E_STEP_RESULT :
 				return
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -57,20 +58,6 @@ class FirstInstallation( SettingWindow ) :
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-
-		elif actionId == Action.ACTION_PARENT_DIR :
-			if self.mStepNum == E_STEP_RESULT :
-				return
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Abort Installation' ), MR_LANG( 'Do you want to quit the first installation?' ) )
-			dialog.doModal( )
-
-			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				self.Close( )
-			elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
-				return
-			elif dialog.IsOK( ) == E_DIALOG_STATE_CANCEL :
-				return
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )

@@ -13,6 +13,7 @@ class ManualScan( SettingWindow ) :
 		self.mIsManualSetup				= 0
 		self.mConfigTransponder			= None
 		self.mHasTansponder				= False
+		self.mAvBlankStatus				= False
 
 
 	def onInit( self ) :
@@ -41,7 +42,9 @@ class ManualScan( SettingWindow ) :
 			self.mInitialized = True
 			self.SetFocusControl( E_Input01 )
 			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
+			self.mAvBlankStatus = self.mDataCache.Get_Player_AVBlank( )
 			self.mDataCache.Player_AVBlank( False )
+			self.SetPipLabel( )
 		else :
 			self.SetVisibleControls( hideControlIds, False )
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite is available' ) )
@@ -56,21 +59,16 @@ class ManualScan( SettingWindow ) :
 		focusId = self.getFocusId( )
 		self.GlobalAction( actionId )
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.OpenBusyDialog( )
 			self.ResetAllControl( )
 			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
 			self.CloseBusyDialog( )
+			if self.mAvBlankStatus :
+				self.mDataCache.Player_AVBlank( True )
 			WinMgr.GetInstance( ).CloseWindow( )
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-
-		elif actionId == Action.ACTION_PARENT_DIR :
-			self.OpenBusyDialog( )
-			self.ResetAllControl( )
-			ScanHelper.GetInstance( ).ScanHelper_Stop( self.mWin )
-			self.CloseBusyDialog( )
-			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )

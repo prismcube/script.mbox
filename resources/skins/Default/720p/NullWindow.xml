@@ -16,7 +16,7 @@
 			<posy>330</posy>
 			<width>500</width>
 			<font>font35_title</font>
-			<label>[I]No Signal [/I]</label>
+			<label>[I]SCRIPT104 [/I]</label>
 			<textcolor>grey2</textcolor>
 			<visible>substring(Window.Property(Signal),False)</visible>
 		</control>
@@ -25,7 +25,7 @@
 			<posy>330</posy>
 			<width>500</width>
 			<font>font35_title</font>
-			<label>[I]Scrambled [/I]</label>
+			<label>[I]SCRIPT105 [/I]</label>
 			<textcolor>grey2</textcolor>
 			<visible>substring(Window.Property(Signal),Scramble)</visible>
 		</control>

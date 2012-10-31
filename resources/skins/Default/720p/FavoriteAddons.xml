@@ -419,7 +419,7 @@
 			<scroll>false</scroll>
 			<align>right</align>
 			<aligny>center</aligny>
-			<label>([COLOR=blue]$INFO[Container(3400).NumItems][/COLOR]) Items - Page ([COLOR=blue]$INFO[Container(3400).CurrentPage]/$INFO[Container(3400).NumPages][/COLOR])</label>
+			<label>([COLOR=blue]$INFO[Container(3400).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(3400).CurrentPage]/$INFO[Container(3400).NumPages][/COLOR])</label>
 			<include>DefaultWindowFade</include>
 		</control>
 		<control type="label">
@@ -433,7 +433,7 @@
 			<scroll>false</scroll>
 			<align>right</align>
 			<aligny>center</aligny>
-			<label>([COLOR=blue]$INFO[Container(3500).NumItems][/COLOR]) Items - Page ([COLOR=blue]$INFO[Container(3500).CurrentPage]/$INFO[Container(3500).NumPages][/COLOR])</label>
+			<label>([COLOR=blue]$INFO[Container(3500).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(3500).CurrentPage]/$INFO[Container(3500).NumPages][/COLOR])</label>
 			<include>DefaultWindowFade</include>
 		</control>
 	</controls>

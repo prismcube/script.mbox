@@ -372,7 +372,6 @@
 						<aligny>center</aligny>
 						<font>font12</font>
 						<textcolor>white</textcolor>
-						<label>TIME $INFO[Control.GetLabel]</label>
 						<description>EPG Clock</description>
 					</control>
 				</control>

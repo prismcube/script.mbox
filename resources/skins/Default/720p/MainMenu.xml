@@ -69,6 +69,7 @@
 							<aligny>center</aligny>
 							<label>$INFO[ListItem.Label]</label>
 							<animation effect="zoom" start="65" end="65" center="380,51" time="0" condition="true">Conditional</animation>
+							<visible>Control.IsEnabled(9000)</visible>
 						</control>
 					</itemlayout>
 					<focusedlayout height="70" width="380">
@@ -84,6 +85,7 @@
 							<animation effect="zoom" start="65" end="100" center="380,51" time="200">Focus</animation>
 							<animation effect="zoom" start="100" end="65" center="380,51" time="200">UnFocus</animation>
 							<label>$INFO[ListItem.Label]</label>
+							<visible>Control.IsEnabled(9000)</visible>
 						</control>
 						<control type="image">
 							<posx>370</posx>
@@ -190,49 +192,41 @@
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT50</label>
 							<onclick>-</onclick>
-							<visible>true</visible>
 						</control>
 						<control type="button" id="90102">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT51</label>
 							<onclick>-</onclick>
-							<visible>true</visible>						
 						</control>
 						<control type="button" id="90103">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT52</label>
 							<onclick>-</onclick>
-							<visible>true</visible>
 						</control>
 						<control type="button" id="90104">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT53</label>
 							<onclick>-</onclick>
-							<visible>true</visible>
 						</control>
 						<control type="button" id="90105">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT54</label>
 							<onclick>-</onclick>
-							<visible>true</visible>
 						</control>
 						<control type="button" id="90106">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT55</label>
 							<onclick>-</onclick>
-							<visible>true</visible>
 						</control>
 						<control type="button" id="90107">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT56</label>
 							<onclick>-</onclick>
-							<visible>true</visible>
 						</control>
 						<control type="button" id="90108">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT103</label>
 							<onclick>-</onclick>
-							<visible>true</visible>
 						</control>
 					</control>
 

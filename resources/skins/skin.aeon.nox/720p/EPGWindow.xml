@@ -130,7 +130,7 @@
 				<scroll>false</scroll>
 				<align>left</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3500).NumItems][/COLOR]) Items</label>
+				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3500).NumItems][/COLOR]) SCRIPT106</label>
 				<visible>substring(Window.Property(EPGMode),channel)</visible>
 			</control>
 			<control type="label">
@@ -143,7 +143,7 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>Page ([COLOR=blue]$INFO[Container(3500).CurrentPage]/$INFO[Container(3500).NumPages][/COLOR])</label>
+				<label>SCRIPT107 ([COLOR=blue]$INFO[Container(3500).CurrentPage]/$INFO[Container(3500).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(EPGMode),channel)</visible>			
 			</control>
 			<!-- Item Position and Page Number for big list-->
@@ -157,7 +157,7 @@
 				<scroll>false</scroll>
 				<align>left</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3510).NumItems][/COLOR]) Items</label>
+				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3510).NumItems][/COLOR]) SCRIPT106</label>
 				<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>
 			</control>
 			<control type="label">
@@ -170,7 +170,7 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>Page ([COLOR=blue]$INFO[Container(3510).CurrentPage]/$INFO[Container(3510).NumPages][/COLOR])</label>
+				<label>SCRIPT107 ([COLOR=blue]$INFO[Container(3510).CurrentPage]/$INFO[Container(3510).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(EPGMode),current) | substring(Window.Property(EPGMode),following)</visible>			
 			</control>
 		</control>
@@ -290,7 +290,7 @@
 					<posy>219</posy>
 					<width>100</width>
 					<height>40</height>
-					<label>[I]No Signal [/I]</label>
+					<label>[I]SCRIPT104 [/I]</label>
 					<font>font12_title</font>
 					<align>center</align>
 					<aligny>center</aligny>
@@ -302,7 +302,7 @@
 					<posy>219</posy>
 					<width>100</width>
 					<height>40</height>
-					<label>[I]Scrambled [/I]</label>
+					<label>[I]SCRIPT105 [/I]</label>
 					<font>font12_title</font>
 					<align>center</align>
 					<aligny>center</aligny>

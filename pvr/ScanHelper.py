@@ -22,6 +22,8 @@ class ScanHelper( object ) :
 	def ScanHelper_Start( self, aWin ) :
 		self.mCommander.ScanHelper_Start( )
 		aWin.setProperty( 'ViewProgress', 'True' )
+		aWin.getControl( E_SCAN_LABEL_STRENGTH ).setLabel( MR_LANG( 'Strength' ) )
+		aWin.getControl( E_SCAN_LABEL_QUALITY ).setLabel( MR_LANG( 'Quality' ) )
 
 
 	def ScanHelper_ChangeContext( self, aWin, aSatellite, aTp ) :

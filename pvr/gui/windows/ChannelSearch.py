@@ -22,6 +22,7 @@ class ChannelSearch( SettingWindow ) :
 
 		self.InitControl( )
 		self.SetFocusControl( E_Input01 )
+		self.SetPipLabel( )
 
 		if self.mIsCloseing == False :
 			if self.CheckNoChannel( ) :
@@ -45,19 +46,14 @@ class ChannelSearch( SettingWindow ) :
 		focusId = self.getFocusId( )
 		self.GlobalAction( actionId )		
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
-			self.mIsCloseing = False
-			self.ResetAllControl( )
-			self.SetVideoRestore( )
-			WinMgr.GetInstance( ).CloseWindow( )			
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
-				
-		elif actionId == Action.ACTION_PARENT_DIR :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.mIsCloseing = False
 			self.ResetAllControl( )
 			self.SetVideoRestore( )
 			WinMgr.GetInstance( ).CloseWindow( )
+
+		elif actionId == Action.ACTION_SELECT_ITEM :
+			pass
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )

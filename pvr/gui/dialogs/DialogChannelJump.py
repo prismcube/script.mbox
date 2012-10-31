@@ -46,16 +46,12 @@ class DialogChannelJump( BaseDialog ) :
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.CloseDialog( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-
-		elif actionId == Action.ACTION_PARENT_DIR :
-			self.mIsOk = E_DIALOG_STATE_CANCEL
-			self.CloseDialog( )
 
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
 			inputString = '%d' % ( actionId - Action.REMOTE_0 )
