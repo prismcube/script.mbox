@@ -13,6 +13,7 @@ from pvr.Util import RunThread, HasPendingThreads, WaitUtileThreadsJoin
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 import pvr.NetConfig as NetConfig
 import pvr.DataCacheMgr
+import pvr.GlobalEvent
 
 
 gLauncher = None
@@ -79,6 +80,7 @@ class Launcher( object ):
 			FactoryTestMgr.GetInstance( ).Start( strFactoryPath )
 			
 		else :
+			pvr.ElisMgr.GetInstance( ).GetEventBus( ).Register( pvr.GlobalEvent.GetInstance() )		
 			pvr.gui.WindowMgr.GetInstance( ).ShowRootWindow( )
 
 
