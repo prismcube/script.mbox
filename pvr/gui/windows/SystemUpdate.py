@@ -134,10 +134,8 @@ class SystemUpdate( SettingWindow ) :
 			if self.mStepPage == E_UPDATE_STEP_HOME :
 				self.Close( )
 			else :
-				if self.mStepPage == E_UPDATE_STEP_READY :
-					self.OpenAnimation( )
-					self.DrawUpdateStep( self.mStepPage )
-
+				self.OpenAnimation( )
+				self.DrawUpdateStep( self.mStepPage )
 				self.UpdateStepPage( E_UPDATE_STEP_HOME )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
