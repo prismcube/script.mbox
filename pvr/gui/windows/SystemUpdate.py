@@ -9,14 +9,13 @@ E_CURRENT_INFO          = '/usr/share/xbmc/addons/script.mbox/resources/update.x
 E_DOWNLOAD_INFO_PVS     = '/mnt/hdd0/program/download/update.xml'
 E_DEFAULT_URL_PVS = 'http://192.168.100.142/RSS/update.xml'
 E_DEFAULT_PATH_DOWNLOAD = '/mnt/hdd0/program/download'
-#E_DEFAULT_PATH_USB_UPDATE = '/media/usb'
 E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
 
-E_CONTROL_ID_GROUP_PVS         = 9000
-E_CONTROL_ID_LABEL_DATE        = 100
-E_CONTROL_ID_LABEL_VERSION     = 101
-E_CONTROL_ID_LABEL_SIZE        = 102
-E_CONTROL_ID_LABEL_PERCENT     = 110
+E_CONTROL_ID_GROUP_PVS      = 9000
+E_CONTROL_ID_LABEL_VERSION  = 100
+E_CONTROL_ID_LABEL_DATE     = 101
+E_CONTROL_ID_LABEL_SIZE     = 102
+E_CONTROL_ID_LABEL_PERCENT  = 110
 
 E_STRING_DATE        = MR_LANG( 'DATE' )
 E_STRING_VERSION     = MR_LANG( 'VERSION' )
@@ -28,15 +27,15 @@ CONTEXT_ACTION_CHANGE_ADDRESS       = 2
 CONTEXT_ACTION_LOAD_DEFAULT_ADDRESS = 3
 
 E_UPDATE_STEP_HOME        = 0
-E_UPDATE_STEP_PROVISION   = 1
-E_UPDATE_STEP_DOWNLOAD    = 2
-E_UPDATE_STEP_CHECKFILE   = 3
-E_UPDATE_STEP_CHECKUSB    = 4
-E_UPDATE_STEP_UNPACKING   = 5
-E_UPDATE_STEP_VERIFY      = 6
-E_UPDATE_STEP_FINISH      = 7
-E_UPDATE_STEP_UPDATE_NOW  = 8
-E_UPDATE_STEP_READY       = 9
+E_UPDATE_STEP_READY       = 1
+E_UPDATE_STEP_PROVISION   = 2
+E_UPDATE_STEP_DOWNLOAD    = 3
+E_UPDATE_STEP_CHECKFILE   = 4
+E_UPDATE_STEP_CHECKUSB    = 5
+E_UPDATE_STEP_UNPACKING   = 6
+E_UPDATE_STEP_VERIFY      = 7
+E_UPDATE_STEP_FINISH      = 8
+E_UPDATE_STEP_UPDATE_NOW  = 9
 E_UPDATE_STEP_ERROR_NETWORK = 10
 
 UPDATE_STEP						=	8
@@ -78,8 +77,6 @@ class SystemUpdate( SettingWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.mCtrlLabelDescTitle      = self.getControl( E_SETTING_DESCRIPTION )
-		#self.mCtrlGroupPVS            = self.getControl( E_CONTROL_ID_GROUP_PVS )
-		#self.mCtrlListPVS             = self.getControl( E_CONTROL_ID_LIST_PVS )
 		self.mCtrlLabelDate           = self.getControl( E_CONTROL_ID_LABEL_DATE )
 		self.mCtrlLabelVersion        = self.getControl( E_CONTROL_ID_LABEL_VERSION )
 		self.mCtrlLabelSize           = self.getControl( E_CONTROL_ID_LABEL_SIZE )
@@ -95,6 +92,7 @@ class SystemUpdate( SettingWindow ) :
 		self.mLinkStatus = False
 		self.mIsDownload = True
 		self.mStepPage = E_UPDATE_STEP_HOME
+		self.mCheckEthernetThread = None
 
 		self.SetSettingWindowLabel( MR_LANG( 'Update' ) )
 
@@ -168,12 +166,9 @@ class SystemUpdate( SettingWindow ) :
 				pass
 				#toDO : show channelList update
 			else :
-				self.UpdatePropertyGUI( 'UpdateStep', 'True' )
-
 				self.UpdateHandler( )
 				self.mStepPage = E_UPDATE_STEP_READY
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, '' )
-				self.UpdatePropertyGUI( 'UpdateStep', 'False' )
 
 		elif groupId == E_Input03 :
 			self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
@@ -273,6 +268,11 @@ class SystemUpdate( SettingWindow ) :
 				self.getControl( E_UPDATE_STEP_IMAGE_BACK + i ).setVisible( False )
 				self.getControl( E_UPDATE_STEP_IMAGE + i ).setVisible( False )
 		else :
+			if aStep > E_UPDATE_STEP_READY and aStep < E_UPDATE_STEP_ERROR_NETWORK :
+				aStep = aStep - 2
+			else :
+				aStep = -1
+
 			for i in range( UPDATE_STEP ) :
 				if i == aStep :
 					self.getControl( E_UPDATE_STEP_IMAGE + i ).setVisible( True )
@@ -281,6 +281,7 @@ class SystemUpdate( SettingWindow ) :
 				self.getControl( E_UPDATE_STEP_IMAGE_BACK + i ).setVisible( True )
 
 			self.SetFocusControl( E_CONTROL_ID_GROUP_PVS )
+			LOG_TRACE('------------------drawStep[%s]'% aStep )
 
 
 	def UpdateLabelPVSInfo( self ) :
@@ -301,7 +302,7 @@ class SystemUpdate( SettingWindow ) :
 			else :
 				lblSize = '%s Mb'% ( iPVS.mSize / 1000000 )
 
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_VERSION, '%s : %s'% ( E_STRING_SIZE, lblSize ) )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SIZE, '%s : %s'% ( E_STRING_SIZE, lblSize ) )
 			self.UpdatePropertyGUI( 'DescriptionTitle', E_STRING_DESCRIPTION )
 			self.UpdatePropertyGUI( 'UpdateDescription', iPVS.mDescription )
 
@@ -479,6 +480,8 @@ class SystemUpdate( SettingWindow ) :
 		if aStep == E_UPDATE_STEP_READY :
 			self.OpenAnimation( )
 			self.DrawUpdateStep( aStep )
+		elif aStep > E_UPDATE_STEP_READY :
+			self.DrawUpdateStep( aStep )
 
 
 		if aStep == E_UPDATE_STEP_HOME :
@@ -496,8 +499,10 @@ class SystemUpdate( SettingWindow ) :
 			if self.mEnableLocalThread and self.mCheckEthernetThread :
 				self.mEnableLocalThread = False
 				self.mCheckEthernetThread.join( )
+				self.mCheckEthernetThread = None
 			self.mEnableLocalThread = False
 			self.UpdatePropertyGUI( 'CurrentDescription', '' )
+			self.UpdatePropertyGUI( 'UpdateStep', 'False' )
 
 		elif aStep == E_UPDATE_STEP_READY :
 			self.ResetAllControl( )
@@ -514,6 +519,7 @@ class SystemUpdate( SettingWindow ) :
 			self.CheckCurrentVersion( )
 
 		elif aStep == E_UPDATE_STEP_PROVISION :
+			self.UpdatePropertyGUI( 'UpdateStep', 'True' )
 			self.Provisioning( )
 
 		elif aStep == E_UPDATE_STEP_DOWNLOAD :
@@ -528,6 +534,7 @@ class SystemUpdate( SettingWindow ) :
 			if self.mEnableLocalThread and self.mCheckEthernetThread :
 				self.mEnableLocalThread = False
 				self.mCheckEthernetThread.join( )
+				self.mCheckEthernetThread = None
 			self.mEnableLocalThread = False
 
 		elif aStep == E_UPDATE_STEP_CHECKFILE :
@@ -567,6 +574,7 @@ class SystemUpdate( SettingWindow ) :
 			if not usbPath :
 				usbPath = E_DEFAULT_PATH_USB_UPDATE
 
+			time.sleep( 0.3 )
 			self.OpenBusyDialog( )
 			stepResult = CopyToUSB( tempFile, usbPath )
 			self.CloseBusyDialog( )
@@ -589,14 +597,15 @@ class SystemUpdate( SettingWindow ) :
 
 
 		elif aStep == E_UPDATE_STEP_UPDATE_NOW :
-			CopyToFile( E_DOWNLOAD_INFO_PVS, E_CURRENT_INFO )
-			RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
-
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Now reboot and follow from VFD' ) )
+			line1 = MR_LANG( 'Now reboot and follow from VFD' )
+			line2 = MR_LANG( 'Are you sure ?' )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), '%s\n%s'% ( line1, line2 ) )
 			dialog.doModal( )
 			ret = dialog.IsOK( )
-			if ret != E_DIALOG_STATE_CANCEL :
+			if ret == E_DIALOG_STATE_YES :
+				CopyToFile( E_DOWNLOAD_INFO_PVS, E_CURRENT_INFO )
+				RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
 				self.mDataCache.System_Reboot( )
 
 
@@ -607,6 +616,7 @@ class SystemUpdate( SettingWindow ) :
 			if self.mEnableLocalThread and self.mCheckEthernetThread :
 				self.mEnableLocalThread = False
 				self.mCheckEthernetThread.join( )
+				self.mCheckEthernetThread = None
 			self.mEnableLocalThread = False
 
 		return stepResult

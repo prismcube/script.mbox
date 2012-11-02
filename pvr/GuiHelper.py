@@ -544,7 +544,7 @@ def CopyToFile( aSourceFile, aDestFile ) :
 		time.sleep( 0.5 )
 
 	except Exception, e :
-		LOG_ERR( 'except[%s] source[%s] desc[%s]'% ( e, source, desc ) )
+		LOG_ERR( 'except[%s] source[%s] desc[%s]'% ( e, aSourceFile, aDestFile ) )
 		isCopy = False
 
 	return isCopy
