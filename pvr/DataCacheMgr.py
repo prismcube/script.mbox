@@ -1593,6 +1593,19 @@ class DataCacheMgr( object ) :
 		return findTimer
 
 
+	def USB_GetMountPath( self ) :
+		usbPath = ''
+		retList = self.mCommander.USB_GetMountPath( )
+		if retList and len( retList ) > 0 and retList[0].mError == 0 :
+			usbPath = retList[0].mParam
+
+		return usbPath
+
+
+	def System_Reboot( self ) :
+		return self.mCommander.System_Reboot( )
+
+
 	def ToggleTVRadio( self ) :
 		ret = True
 		restoreZappingMode = None

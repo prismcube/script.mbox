@@ -465,7 +465,7 @@ def CheckEthernet( aEthName ) :
 	try :
 		p = Popen( cmd, shell=True, stdout=PIPE )
 		status = re.sub( '\n', '', p.stdout.read( ) )
-		LOG_TRACE('-------------linkStatus[%s] sourceMd5[%s]'% status )
+		LOG_TRACE('-------------linkStatus[%s]'% status )
 
 	except Exception, e :
 		LOG_ERR( 'except[%s] cmd[%s]'% ( e, cmd ) )
@@ -507,6 +507,7 @@ def GetSTBVersion( ) :
 
 	return stbversion
 
+
 def CopyToUSB( aSourceFile, aDestPath ) :
 	isCopy = False
 	cmd = 'unzip -o %s -d %s'% ( aSourceFile, aDestPath )
@@ -530,6 +531,20 @@ def CopyToUSB( aSourceFile, aDestPath ) :
 
 	except Exception, e :
 		LOG_ERR( 'except[%s] cmd[%s]'% ( e, cmd ) )
+		isCopy = False
+
+	return isCopy
+
+
+def CopyToFile( aSourceFile, aDestFile ) :
+	isCopy = True
+	try :
+		shutil.copyfile( aSourceFile, aDestFile )
+		os.system( 'sync' )
+		time.sleep( 0.5 )
+
+	except Exception, e :
+		LOG_ERR( 'except[%s] source[%s] desc[%s]'% ( e, source, desc ) )
 		isCopy = False
 
 	return isCopy

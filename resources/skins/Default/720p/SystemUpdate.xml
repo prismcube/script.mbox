@@ -16,18 +16,10 @@
 			</animation>
 			<include>DefaultSettingWindowEffect</include>
 			<include>DefaultSettingMainWindow</include>
-			<include>DefaultSettingWindowPigScreen</include>
-			<include>DefaultFakeButton</include>
-			<control type="group" id="9000">
-				<posy>10</posy>
-				<include>Input01</include>
-				<include>Input02</include>
-			</control>
-
 			<control type="label" id="110">
 				<posx>750</posx>
 				<posy>-30</posy>
-				<width>200</width>
+				<width>250</width>
 				<height>40</height>
 				<font>font13_title</font>
 				<textcolor>blue</textcolor>
@@ -36,122 +28,29 @@
 				<scroll>true</scroll>
 			</control>
 
-			<control type="group" id="49">
+			<control type="group" id="9000">
+				<posy>10</posy>
+				<include>Input01</include>
+				<include>Input02</include>
+				<include>Input03</include>
+			</control>
+			<control type="group">
 				<posx>10</posx>
-				<posx>80</posx>
-				<include>DefaultWindowFade</include>
-				<!--visible>substring(Window.Property(PVSShow),true)</visible-->
-				<control type="list" id="50">
-					<posx>0</posx>
-					<posy>50</posy>
-					<width>800</width>
-					<height>421</height>
-					<onleft>61</onleft>
-					<onright>61</onright>
-					<onup>50</onup>
-					<ondown>50</ondown>
-					<pagecontrol>61</pagecontrol>
-					<scrolltime>200</scrolltime>
-					<focusposition>0</focusposition>
-					<movement>2</movement>
-					<itemlayout height="40" width="800">
-						<control type="image">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>700</width>
-							<height>41</height>
-							<texture border="0,2,0,2">MenuItemNF.png</texture>
-						</control>
-						<control type="label">
-							<posx>30</posx>
-							<posy>0</posy>
-							<width>660</width>
-							<height>40</height>
-							<font>font13</font>
-							<textcolor>grey3</textcolor>
-							<align>left</align>
-							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label]</label>
-							<animation effect="slide" start="0,0" end="16,0" delay="0" time="0" condition="false">conditional</animation>
-						</control>
-						<control type="label">
-							<posx>700</posx>
-							<posy>0</posy>
-							<width>200</width>
-							<height>40</height>
-							<font>font13</font>
-							<textcolor>grey2</textcolor>
-							<selectedcolor>selected</selectedcolor>
-							<align>right</align>
-							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label2]</label>
-						</control>	
-					</itemlayout>
-					<focusedlayout height="40" width="800">
-						<control type="image">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>700</width>
-							<height>41</height>
-							<texture border="0,2,0,2">MenuItemNF.png</texture>
-							<animation effect="fade" time="300">Visible</animation>
-							<animation effect="fade" time="300">Hidden</animation>
-						</control>
-						<control type="image">
-							<posx>0</posx>
-							<posy>0</posy>
-							<width>700</width>
-							<height>41</height>
-							<visible>!Control.IsVisible(600)</visible>
-							<texture border="0,2,0,2">MenuItemFO.png</texture>
-						</control>
-						<control type="label">
-							<posx>30</posx>
-							<posy>0</posy>
-							<width>660</width>
-							<height>40</height>
-							<font>font13</font>
-							<textcolor>white</textcolor>
-							<selectedcolor>selected</selectedcolor>						
-							<align>left</align>
-							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label]</label>
-						</control>
-						<control type="label">
-							<posx>700</posx>
-							<posy>0</posy>
-							<width>200</width>
-							<height>40</height>
-							<font>font13</font>
-							<textcolor>grey2</textcolor>
-							<selectedcolor>selected</selectedcolor>
-							<align>right</align>
-							<aligny>center</aligny>
-							<label>$INFO[ListItem.Label2]</label>
-						</control>
-					</focusedlayout>
-				</control>
-
-				<control type="scrollbar" id="61">
-					<posx>770</posx>
-					<posy>125</posy>
-					<width>25</width>
-					<height>521</height>
-					<include>DefaultWindowFade</include>
-					<texturesliderbackground border="0,14,0,14">ScrollBarV.png</texturesliderbackground>
-					<texturesliderbar border="0,14,0,14">ScrollBarV_bar.png</texturesliderbar>
-					<texturesliderbarfocus border="0,14,0,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
-					<textureslidernib>ScrollBarNib.png</textureslidernib>
-					<textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
-					<onleft>49</onleft>
-					<onright>49</onright>
-					<ondown>61</ondown>
-					<onup>61</onup>
-					<showonepage>false</showonepage>
-					<orientation>vertical</orientation>
+				<posy>260</posy>
+				<control type="textbox">
+					  <posx>0</posx>
+					  <posy>0</posy>
+					  <width>700</width>
+					  <height>200</height>
+					  <visible>true</visible>
+					  <colordiffuse>FFFFFFFF</colordiffuse>
+					  <font>font13</font>
+					  <textcolor>grey3</textcolor>
+					  <wrapmultiline>true</wrapmultiline>
+					  <autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
+					  <label>$INFO[Window.Property(CurrentDescription)]</label>
 				</control>
 			</control>
-
 
 			<control type="group">
 				<posx>780</posx>
@@ -206,8 +105,8 @@
 			<control type="group">
 				<posx>0</posx>
 				<posy>40</posy>
-				<visible>ControlGroup(49).IsVisible</visible>
-				<control type="button" id="7000">
+				<visible>substring(Window.Property(UpdateStep),true)</visible>
+				<!--control type="button" id="7000">
 					<description>Prev button</description>
 					<posx>5</posx>
 					<posy>470</posy>
@@ -274,7 +173,7 @@
 					<aligny>center</aligny>
 					<label>$INFO[Control.GetLabel(7006)]</label>
 					<visible>Control.IsVisible(7001) + Control.HasFocus(7001)</visible>
-				</control>
+				</control-->
 				
 				<control type="image" id="7200">
 					<posx>240</posx>
@@ -332,7 +231,7 @@
 					<height>30</height>
 					<texture border="0,1,0,1">StepNF.png</texture>
 				</control>
-				<control type="image" id="7208">
+				<!--control type="image" id="7208">
 					<posx>480</posx>
 					<posy>485</posy>
 					<width>30</width>
@@ -345,7 +244,7 @@
 					<width>30</width>
 					<height>30</height>
 					<texture border="0,1,0,1">StepNF.png</texture>
-				</control>
+				</control-->
 
 				<control type="image" id="7100">
 					<posx>240</posx>
@@ -403,7 +302,7 @@
 					<height>30</height>
 					<texture border="0,1,0,1">StepFO.png</texture>
 				</control>
-				<control type="image" id="7108">
+				<!--control type="image" id="7108">
 					<posx>480</posx>
 					<posy>485</posy>
 					<width>30</width>
@@ -416,10 +315,13 @@
 					<width>30</width>
 					<height>30</height>
 					<texture border="0,1,0,1">StepFO.png</texture>
-				</control>
+				</control-->
 			</control>
 
 		</control>
+		<include>DefaultSettingWindowPigScreen</include>
+		<include>DefaultFakeButton</include>
+
 	</controls>
 </window>
 

@@ -104,7 +104,13 @@ class MainMenu( BaseWindow ) :
 				elif aControlId == BUTTON_ID_CAS :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONDITIONAL_ACCESS )
 				elif aControlId == BUTTON_ID_UPDATE :
-					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_UPDATE )
+					if self.mPlatform.IsPrismCube( ) :
+						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_UPDATE )
+					else :
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not support Win32' ) )
+						dialog.doModal( )
+
 
 		elif aControlId == BUTTON_ID_ARCHIVE :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
