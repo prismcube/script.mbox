@@ -459,6 +459,20 @@ def CheckDirectory( aPath ) :
 	return True
 
 
+def CheckEthernet( aEthName ) :
+	status = 'down'
+	cmd = 'cat /sys/class/net/%s/operstate'% aEthName
+	try :
+		p = Popen( cmd, shell=True, stdout=PIPE )
+		status = re.sub( '\n', '', p.stdout.read( ) )
+		LOG_TRACE('-------------linkStatus[%s] sourceMd5[%s]'% status )
+
+	except Exception, e :
+		LOG_ERR( 'except[%s] cmd[%s]'% ( e, cmd ) )
+
+	return status
+
+
 def CheckMD5Sum( aSourceFile, aMd5 ) :
 	isVerify = False
 	cmd = 'md5sum %s |awk \'{print $1}\''% aSourceFile
@@ -478,7 +492,20 @@ def CheckMD5Sum( aSourceFile, aMd5 ) :
 		LOG_ERR( 'except[%s] cmd[%s]'% ( e, cmd ) )
 
 	return isVerify
-	
+
+
+def GetSTBVersion( ) :
+	stbversion = ''
+	openFile = '/etc/stbversion'
+	try :
+		fp = open( openFile, 'r' )
+		stbversion = re.sub('\n', '', fp.readline( ) )
+		fp.close( )
+
+	except Exception, e :
+		LOG_ERR( 'except[%s] cmd[%s]'% ( e, openFile ) )
+
+	return stbversion
 
 def CopyToUSB( aSourceFile, aDestPath ) :
 	isCopy = False

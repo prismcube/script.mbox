@@ -27,6 +27,30 @@ CONTEXT_ACTION_REFRESH_CONNECT      = 1
 CONTEXT_ACTION_CHANGE_ADDRESS       = 2
 CONTEXT_ACTION_LOAD_DEFAULT_ADDRESS = 3
 
+E_UPDATE_STEP_HOME        = 0
+E_UPDATE_STEP_PROVISION   = 1
+E_UPDATE_STEP_DOWNLOAD    = 2
+E_UPDATE_STEP_CHECKFILE   = 3
+E_UPDATE_STEP_CHECKUSB    = 4
+E_UPDATE_STEP_UNPACKING   = 5
+E_UPDATE_STEP_VERIFY      = 6
+E_UPDATE_STEP_FINISH      = 7
+E_UPDATE_STEP_UPDATE_NOW  = 8
+E_UPDATE_STEP_CHECK_NETWORK = 10
+
+UPDATE_STEP						=	10
+E_UPDATE_IMAGE					=	100
+E_UPDATE_TEXTBOX				= 	200
+
+E_UPDATE_PREV					=	7000
+E_UPDATE_NEXT					=	7001	
+E_UPDATE_PREV_LABEL				=	7005
+E_UPDATE_NEXT_LABEL				=	7006
+
+E_UPDATE_STEP_IMAGE				= 	7100
+E_UPDATE_STEP_IMAGE_BACK		= 	7200
+
+
 class PVSList( object ) :
 	def __init__( self ) :
 		self.mName = None
@@ -38,6 +62,7 @@ class PVSList( object ) :
 		self.mVersion = None
 		self.mId = None
 		self.mType = None
+		self.mError = 0
 
 
 class SystemUpdate( SettingWindow ) :
@@ -60,16 +85,25 @@ class SystemUpdate( SettingWindow ) :
 		self.mCtrlLabelDescription    = self.getControl( E_CONTROL_ID_LABEL_DESCRIPTION )
 		self.mCtrlLabelPercent        = self.getControl( E_CONTROL_ID_LABEL_PERCENT )
 
-		self.mUrlPVS = E_DEFAULT_URL_PVS
+		#win test only
+		if not self.mPlatform.IsPrismCube( ) :
+			global E_DEFAULT_PATH_DOWNLOAD, E_DEFAULT_PATH_USB_UPDATE
+			E_DEFAULT_PATH_DOWNLOAD   = 'd:\\temp\\test'
+			E_DEFAULT_PATH_USB_UPDATE = 'd:\\temp\\test\\usb'
+
+		#parse settings.xml
+		self.mUrlPVS = GetSetting( 'UpdateServer' )
+		if not self.mUrlPVS :
+			self.mUrlPVS = E_DEFAULT_URL_PVS
 		self.mListItems = None
 		self.mPVSList = []
+		self.mEnableLocalThread = False
+		self.mLinkStatus = False
+
 		self.SetSettingWindowLabel( MR_LANG( 'Update' ) )
 
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )
-
-		self.mUrlPVS = GetSetting( 'UpdateServer' )
-		IsState = self.Provisioning( )
 
 		if self.mIsCloseing == False :
 			if self.CheckNoChannel( ) :
@@ -87,35 +121,76 @@ class SystemUpdate( SettingWindow ) :
 
 		self.mInitialized = True
 
+		self.UpdateStepPage( E_UPDATE_STEP_HOME )
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )		
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			self.mIsCloseing = False
-			self.Close( )
+			if self.mStepPage == E_UPDATE_STEP_HOME :
+				self.Close( )
+			else :
+				self.UpdateStepPage( E_UPDATE_STEP_HOME )
+				
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 				
 		elif actionId == Action.ACTION_PARENT_DIR :
-			self.mIsCloseing = False
 			self.Close( )
 
-		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
-			self.UpdatePVSInfo( )
+		#elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
+		#	self.UpdateLabelPVSInfo( )
+		elif actionId == Action.ACTION_MOVE_LEFT :
+			self.ControlLeft( )
+
+		elif actionId == Action.ACTION_MOVE_RIGHT :
+			self.ControlRight( )				
+
+		elif actionId == Action.ACTION_MOVE_UP :
+			self.ControlUp( )
+			
+		elif actionId == Action.ACTION_MOVE_DOWN :
+			self.ControlDown( )
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
-			self.ShowContextMenu( )
+			if self.mStepPage == E_UPDATE_STEP_PROVISION :
+				self.ShowContextMenu( )
 
 
 	def onClick( self, aControlId ) :
 		if aControlId == E_CONTROL_ID_LIST_PVS :
-			self.DownloadHandler( )
+			self.UpdateHandler( )
+
+		else :
+			groupId = self.GetGroupId( aControlId )
+			if groupId == E_Input01 :
+				self.UpdateStepPage( E_UPDATE_STEP_PROVISION )
+
+			elif groupId == E_Input02 :
+				if self.mStepPage == E_UPDATE_STEP_HOME :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No supported' ) )
+					dialog.doModal( )
+
+				else :
+					self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
+
 
 
 	def onFocus( self, aControlId ) :
-		pass
+		if self.mInitialized == False :
+			return
+
+		if self.mLastFocused != aControlId :
+			self.ShowDescription( aControlId )
+			self.mLastFocused = aControlId
+
+
+	def OpenAnimation( self ) :
+		self.setFocusId( E_FAKE_BUTTON )
+		time.sleep( 0.3 )
 
 
 	def CheckNoChannel( self ) :
@@ -123,6 +198,33 @@ class SystemUpdate( SettingWindow ) :
 			return True
 		else :
 			return False
+
+
+	def Close( self ) :
+		self.mIsCloseing = False
+
+		if self.mEnableLocalThread and self.mCheckEthernetThread :
+			self.mEnableLocalThread = False
+			self.mCheckEthernetThread.join( )
+
+		self.ResetAllControl( )
+		self.SaveAsServerAddress( )
+		self.SetVideoRestore( )
+		WinMgr.GetInstance( ).CloseWindow( )
+
+
+	@RunThread
+	def CheckEthernetThread( self ) :
+		while self.mEnableLocalThread :
+			if self.mStepPage >= E_UPDATE_STEP_PROVISION and self.mStepPage <= E_UPDATE_STEP_DOWNLOAD :
+				status = CheckEthernet( 'eth0' )
+				if status == 'up' :
+					self.mLinkStatus = True
+				else :
+					self.mLinkStatus = False
+					self.UpdateStepPage( E_UPDATE_STEP_CHECK_NETWORK )
+
+			time.sleep(1)
 
 
 	@GuiLock
@@ -173,7 +275,24 @@ class SystemUpdate( SettingWindow ) :
 		self.UpdatePropertyGUI( 'UpdateDescription', '' )
 
 
-	def UpdatePVSInfo( self ) :
+	def DrawUpdateStep( self, aStep = None ) :
+		if aStep == None :
+			for i in range( UPDATE_STEP ) :
+				self.getControl( E_UPDATE_STEP_IMAGE_BACK + i ).setVisible( False )
+				self.getControl( E_UPDATE_STEP_IMAGE + i ).setVisible( False )
+		else :
+			for i in range( UPDATE_STEP ) :
+				if i == aStep :
+					self.getControl( E_UPDATE_STEP_IMAGE + i ).setVisible( True )
+				else :
+					self.getControl( E_UPDATE_STEP_IMAGE + i ).setVisible( False )
+				self.getControl( E_UPDATE_STEP_IMAGE_BACK + i ).setVisible( True )
+
+			self.SetFocusControl( E_UPDATE_NEXT )
+
+
+
+	def UpdateLabelPVSInfo( self ) :
 		if self.mPVSList == None or len(self.mPVSList) < 1 :
 			return
 
@@ -215,12 +334,18 @@ class SystemUpdate( SettingWindow ) :
 		self.mListItems = []
 		self.mCtrlListPVS.reset( )
 
-		for iPVS in self.mPVSList :
-			listItem = xbmcgui.ListItem( '%s'% iPVS.mName, '%s'% iPVS.mDate )
+		for idx in range( len( self.mPVSList ) ) :
+			iPVS = self.mPVSList[idx]
+			label2 = iPVS.mVersion
+			if iPVS.mVersion == GetSTBVersion( ) :
+				label2 = 'Updated'
+				self.mPVSList[idx].mError = -1
+
+			listItem = xbmcgui.ListItem( '%s'% iPVS.mName, '%s'% label2 )
 			self.mListItems.append( listItem )
 
 		self.UpdateControlGUI( E_CONTROL_ID_LIST_PVS, self.mListItems, E_TAG_ADD_ITEM )
-		self.UpdatePVSInfo( )
+		self.UpdateLabelPVSInfo( )
 
 
 	def Provisioning( self ) :
@@ -311,29 +436,26 @@ class SystemUpdate( SettingWindow ) :
 	def DoContextAction( self, aContextAction ) :
 		#LOG_TRACE( 'aContextAction=%d' %aContextAction )
 		if aContextAction == CONTEXT_ACTION_REFRESH_CONNECT :
-			self.Provisioning( )
+			self.UpdateStepPage( E_UPDATE_STEP_PROVISION )
 
 		elif aContextAction == CONTEXT_ACTION_CHANGE_ADDRESS :
 			self.SetChangeServerURL( )
+			label = MR_LANG( 'Change Server Address' )
+			kb = xbmc.Keyboard( self.mUrlPVS, label, False )
+			kb.doModal( )
+
+			chageUrl = ''
+			chageUrl = kb.getText( )
+			if not chageUrl :
+				return
+
+			self.mUrlPVS = chageUrl
+			self.UpdateStepPage( E_UPDATE_STEP_PROVISION )
 
 		elif aContextAction == CONTEXT_ACTION_LOAD_DEFAULT_ADDRESS :
 			self.mUrlPVS = E_DEFAULT_URL_PVS
 			SetSetting( 'UpdateServer', '%s'% E_DEFAULT_URL_PVS )
-			self.Provisioning( )
-
-
-	def SetChangeServerURL( self ) :
-		label = MR_LANG( 'Repair Server Address' )
-		kb = xbmc.Keyboard( self.mUrlPVS, label, False )
-		kb.doModal( )
-
-		repairUrl = ''
-		repairUrl = kb.getText( )
-		if not repairUrl :
-			return
-
-		self.mUrlPVS = repairUrl
-		self.Provisioning( )
+			self.UpdateStepPage( E_UPDATE_STEP_PROVISION )
 
 
 	def SaveAsServerAddress( self ) :
@@ -359,7 +481,138 @@ class SystemUpdate( SettingWindow ) :
 		SetSetting( 'UpdateServer', '%s'% self.mUrlPVS )
 
 
-	def DownloadHandler( self ) :
+	def UpdateStepPage( self, aStep, aPVS = None ) :
+		self.mStepPage = aStep
+		stepResult = True
+
+		self.OpenAnimation( )
+		if aStep != E_UPDATE_STEP_HOME and self.mWin.getProperty( 'PVSShow' ) :
+			#self.SetFocusControl( E_CONTROL_ID_LIST_PVS )
+			self.DrawUpdateStep( aStep )
+
+
+		if aStep == E_UPDATE_STEP_HOME :
+			self.UpdatePropertyGUI( 'PVSShow', 'False' )
+			self.ResetAllControl( )
+			self.AddInputControl( E_Input01, MR_LANG( 'Firmware Update' ), '', MR_LANG( 'Download STB firmware, check network live' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Software Update' ), '', MR_LANG( 'Download Software or etc, check network live' ) )
+
+			self.InitControl( )
+			self.SetFocusControl( E_Input01 )
+
+			if self.mEnableLocalThread and self.mCheckEthernetThread :
+				self.mEnableLocalThread = False
+				self.mCheckEthernetThread.join( )
+			self.mEnableLocalThread = False
+
+		elif aStep == E_UPDATE_STEP_PROVISION :
+			self.ResetAllControl( )
+			self.AddInputControl( E_Input01, MR_LANG( 'Update Check' ), '', MR_LANG( 'Check provisionning firmware from PrismCube Server, check network live' ) )
+			self.AddInputControl( E_Input02, MR_LANG( '- Apply' ),      '', MR_LANG( 'Update now, Reboot and get update stb' ) )
+
+			self.InitControl( )
+			self.SetFocusControl( E_Input01 )
+			self.SetEnableControl( E_Input02, False )
+
+			
+			self.mStepPage = E_UPDATE_STEP_PROVISION
+			self.UpdatePropertyGUI( 'PVSShow', 'True' )
+			self.SetFocusControl( E_CONTROL_ID_LIST_PVS )
+
+			self.mEnableLocalThread = True
+			self.mCheckEthernetThread = self.CheckEthernetThread( )
+
+			self.Provisioning( )
+
+		elif aStep == E_UPDATE_STEP_DOWNLOAD :
+			if aPVS :
+				stepResult = self.GetDownload( aPVS )
+			else :
+				stepResult = False
+
+			if self.mEnableLocalThread and self.mCheckEthernetThread :
+				self.mEnableLocalThread = False
+				self.mCheckEthernetThread.join( )
+			self.mEnableLocalThread = False
+
+		elif aStep == E_UPDATE_STEP_CHECKFILE :
+			if not aPVS :
+				return False
+
+			tempFile = E_DEFAULT_PATH_DOWNLOAD + '/%s'% os.path.basename( aPVS.mFileName )
+			if os.stat( tempFile )[stat.ST_SIZE] != aPVS.mSize :
+				return False
+
+			self.OpenBusyDialog( )
+			ret = CheckMD5Sum( tempFile, aPVS.mMd5 )
+			self.CloseBusyDialog( )
+			if not ret :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'File is corrupt, Try again download' ) )
+				dialog.doModal( )
+				stepResult = False
+
+
+		elif aStep == E_UPDATE_STEP_CHECKUSB :
+			if not CheckDirectory( E_DEFAULT_PATH_USB_UPDATE ) :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'USB is not detected, Please insert USB' ) )
+				dialog.doModal( )
+				stepResult = False
+
+		elif aStep == E_UPDATE_STEP_UNPACKING :
+			if not aPVS :
+				return False
+
+			tempFile = E_DEFAULT_PATH_DOWNLOAD + '/%s'% os.path.basename( aPVS.mFileName )
+			if os.stat( tempFile )[stat.ST_SIZE] != aPVS.mSize :
+				return False
+
+			self.OpenBusyDialog( )
+			stepResult = CopyToUSB( tempFile, E_DEFAULT_PATH_USB_UPDATE )
+			#ToDO : extract file verify ??? file list check-up
+			self.CloseBusyDialog( )
+
+			if not stepResult :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Check USB' ) )
+				dialog.doModal( )
+
+
+		elif aStep == E_UPDATE_STEP_VERIFY :
+			pass
+
+		elif aStep == E_UPDATE_STEP_FINISH :
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, MR_LANG( 'Update Ready!!' ) )
+			RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Update Ready' ) )
+			dialog.doModal( )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, '' )
+			self.SetEnableControl( E_Input02, False )
+
+
+		elif aStep == E_UPDATE_STEP_UPDATE_NOW :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Now reboot and follow from VFD' ) )
+			dialog.doModal( )
+			#ToDo : reboot
+
+		elif aStep == E_UPDATE_STEP_CHECK_NETWORK :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Disconnected Network' ) )
+			dialog.doModal( )
+			if self.mEnableLocalThread and self.mCheckEthernetThread :
+				self.mEnableLocalThread = False
+				self.mCheckEthernetThread.join( )
+			self.mEnableLocalThread = False
+
+
+		return stepResult
+
+		
+
+	def UpdateHandler( self ) :
 		LOG_TRACE('----------------list[%s]'% self.mPVSList )
 		if self.mPVSList == None or len( self.mPVSList ) < 1 :
 			return
@@ -368,18 +621,31 @@ class SystemUpdate( SettingWindow ) :
 		iPVS = self.mPVSList[idx]
 		LOG_TRACE('----------------download File[%s]'% iPVS.mFileName )
 
-		#ToDo : usb detected
-		if not CheckDirectory( E_DEFAULT_PATH_USB_UPDATE ) :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'USB is not detected, Please insert USB' ) )
-			dialog.doModal( )
+		if iPVS.mError != 0 :
 			return
 
-		self.GetDownload( iPVS )
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, MR_LANG( 'Downloading...' ) )
+		if not self.UpdateStepPage( E_UPDATE_STEP_DOWNLOAD, iPVS ) :
+			return
 
-		if iPVS.mType == E_TYPE_PRISMCUBE :
-			pass
-			#toDo
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, MR_LANG( 'File Checking...' ) )
+		if not self.UpdateStepPage( E_UPDATE_STEP_CHECKFILE, iPVS ) :
+			return
+
+		LOG_TRACE('----------------path down[%s] usb[%s]'% ( E_DEFAULT_PATH_DOWNLOAD, E_DEFAULT_PATH_USB_UPDATE ) )
+		if not self.UpdateStepPage( E_UPDATE_STEP_CHECKUSB ) :
+			return
+
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, MR_LANG( 'Image Unpacking...' ) )
+		if not self.UpdateStepPage( E_UPDATE_STEP_UNPACKING, iPVS ) :
+			return
+
+		#self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, MR_LANG( 'Verify Checking...' ) )
+		#if not self.UpdateStepPage( E_UPDATE_STEP_VERIFY, iPVS ) :
+		#	return
+
+		self.UpdateStepPage( E_UPDATE_STEP_FINISH )
+
 
 
 	def GetDownload( self, aPVS ) :
@@ -426,9 +692,6 @@ class SystemUpdate( SettingWindow ) :
 		self.mWorkingItem = None
 		self.mWorkingDownloader = None
 
-		if os.stat( tempFile )[stat.ST_SIZE] == aPVS.mSize :
-			self.SetUpdate( tempFile, aPVS.mMd5 )
-
 
 	#this function is callback
 	def ShowProgress( self, cursize = 0 ) :
@@ -440,45 +703,10 @@ class SystemUpdate( SettingWindow ) :
 			#LOG_TRACE('--------------down size[%s] per[%s] tot[%s]'% ( cursize, per, self.mWorkingItem.mSize ) )
 			self.mDialogProgress.update( 1.0 * cursize / self.mWorkingItem.mSize * 100 )
 
-			if self.mDialogProgress.iscanceled( ) and self.mWorkingDownloader :
+			if self.mWorkingDownloader and self.mDialogProgress.iscanceled( ) or \
+			   self.mWorkingDownloader and self.mLinkStatus != True :
 				self.mWorkingDownloader.abort( True )
 				LOG_TRACE('--------------abort')
-
-
-	def SetUpdate( self, aUpdateFile, aMd5 ) :
-		self.OpenBusyDialog( )
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, 'Verify Checking...' )
-		ret = CheckMD5Sum( aUpdateFile, aMd5 )
-		if not ret :
-			self.CloseBusyDialog( )
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'File is corrupt, Try again download' ) )
-			dialog.doModal( )
-			return
-
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, 'Image Unpacking...' )
-		ret = CopyToUSB( aUpdateFile, E_DEFAULT_PATH_USB_UPDATE )
-		#ToDO : extract file verify ??? file list check-up
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, 'Release Ready!!' )
-		self.CloseBusyDialog( )
-		if ret :
-			RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Now reboot and follow from VFD' ) )
-			dialog.doModal( )
-			#ToDo : reboot
-
-		else :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Check USB' ) )
-			dialog.doModal( )
-
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, '' )
-
-	def Close( self ) :
-		self.SaveAsServerAddress( )
-		self.SetVideoRestore( )
-		WinMgr.GetInstance( ).CloseWindow( )
 
 
 
