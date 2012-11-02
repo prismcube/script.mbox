@@ -90,7 +90,8 @@ class Platform( object ) :
 			'mockito',
 			'unittest2',
 			'unittest',
-			'beautifulsoup']
+			'beautifulsoup',
+			'filedownloader']
 
 		for lib in libs :
 			sys.path.append( os.path.join( self.GetScriptDir( ), 'libs', lib ) )
