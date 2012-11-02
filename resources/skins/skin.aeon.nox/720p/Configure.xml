@@ -81,7 +81,7 @@
 				<width>740</width>
 				<height>30</height>
 				<font>Font_ShowcaseMainLabel2_Caps</font>
-				<label>Configuration - $INFO[Container(9000).ListItem.Label]</label>
+				<label>SCRIPT55 - $INFO[Container(9000).ListItem.Label]</label>
 				<align>left</align>
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
@@ -110,6 +110,8 @@
 					<align>left</align>
 					<aligny>center</aligny>
 					<scroll>true</scroll>
+					<scrollspeed>150</scrollspeed>
+					<scrollsuffix>  |  </scrollsuffix>
 				</control>
 				<include>SpinEx01</include>
 				<include>SpinEx02</include>

@@ -32,25 +32,21 @@ class EditSatellite( SettingWindow ) :
 			self.InitConfig( )
 			self.mInitialized = True
 			self.SetFocusControl( E_Input01 )
-		
+			self.SetPipLabel( )
+
 		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		self.GlobalAction( actionId )
 		
-		if actionId == Action.ACTION_PREVIOUS_MENU :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
 			self.SetVideoRestore( )
 			WinMgr.GetInstance( ).CloseWindow( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-				
-		elif actionId == Action.ACTION_PARENT_DIR :
-			self.ResetAllControl( )
-			self.SetVideoRestore( )
-			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			pass

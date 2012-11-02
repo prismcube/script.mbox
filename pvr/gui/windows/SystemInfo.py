@@ -1,5 +1,4 @@
 from pvr.gui.WindowImport import *
-from pvr.STBVersion import *
 from subprocess import *
 import re
 
@@ -53,10 +52,13 @@ class SystemInfo( SettingWindow ) :
 		self.mCheckHddTempTimer			= None
 		self.mLastFocused 				= E_SUBMENU_LIST_ID
 		self.mPrevListItemID 			= 0
+		self.mEnableLocalThread 		= True
 
-		self.mCheckHiddenPattern1	= False
-		self.mCheckHiddenPattern2	= False
-		self.mCheckHiddenPattern3	= False
+		self.mCheckHiddenPattern1		= False
+		self.mCheckHiddenPattern2		= False
+		self.mCheckHiddenPattern3		= False
+
+		self.mLastDateFile 				= None
 
 
 	def onInit( self )  :
@@ -105,18 +107,13 @@ class SystemInfo( SettingWindow ) :
 		self.GlobalAction( actionId )
 		self.CheckHiddenAction( actionId )
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.mInitialized = False
 			self.StopCheckHddTempTimer( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-
-		elif actionId == Action.ACTION_PARENT_DIR :
-			self.mInitialized = False
-			self.StopCheckHddTempTimer( )
-			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == E_SUBMENU_LIST_ID and self.mCtrlLeftGroup.getSelectedPosition( ) != self.mPrevListItemID :
@@ -171,6 +168,8 @@ class SystemInfo( SettingWindow ) :
 		self.getControl( GROUP_ID_MAIN ).setVisible( False )
 
 		if selectedId == E_VERSION :
+			self.OpenBusyDialog( )
+
 			visibleControlIds	= [ LABEL_ID_PRODUCT_NAME, LABEL_ID_PRODUCT_NUMBER, LABEL_ID_HARDWARE_VERSION, LABEL_ID_SOFTWARE_VERSION, LABEL_ID_BOOTLOADER_VERSION ]
 			hideControlIds		= [ LABEL_ID_HDD_NAME, LABEL_ID_HDD_SIZE_MEDIA, LABEL_ID_HDD_SIZE_PROGRAM, LABEL_ID_HDD_SIZE_RECORD, LABEL_ID_HDD_TEMEPERATURE ]
 			for i in range( len( hideControlIds ) ) :
@@ -178,11 +177,13 @@ class SystemInfo( SettingWindow ) :
 			for i in range( len( visibleControlIds ) ) :
 				self.SetVisibleControl( visibleControlIds[i], True )			
 
-			self.mCtrlVersionProductName.setLabel(		MR_LANG( 'Product Name : %s' ) % PRODUCT_NAME )
-			self.mCtrlVersionProductNumber.setLabel(	MR_LANG( 'Product Number : %s' ) % PRODUCT_NUMBER )
-			self.mCtrlVersionHardware.setLabel( 		MR_LANG( 'Hardware Version : %s' ) % HARDWARE_VERSION )
-			self.mCtrlVersionSoftware.setLabel(			MR_LANG( 'Software Version : %s' ) % SOFTWARE_VERSION )
-			self.mCtrlVersionBootloader.setLabel(		MR_LANG( 'Bootloader Version : %s' ) % BOOTLOADER_VERSION )
+			self.mCtrlVersionProductName.setLabel(		MR_LANG( 'Product Name : %s' ) % self.GetProductName( ) )
+			self.mCtrlVersionProductNumber.setLabel(	MR_LANG( 'Product Number : %s' ) % self.GetProductNymber( ) )
+			self.mCtrlVersionHardware.setLabel( 		MR_LANG( 'Hardware Version : %s' ) % self.GetHardwareVersion( ) )
+			self.mCtrlVersionSoftware.setLabel(			MR_LANG( 'Software Version : %s' ) % self.GetSoftwareVersion( ) )
+			self.mCtrlVersionBootloader.setLabel(		MR_LANG( 'Bootloader Version : %s' ) % self.GetBootloaderVersion( ) )
+
+			self.CloseBusyDialog( )
 
 		elif selectedId == E_HDD :
 			self.OpenBusyDialog( )
@@ -220,6 +221,60 @@ class SystemInfo( SettingWindow ) :
 			self.CloseBusyDialog( )
 
 		self.getControl( GROUP_ID_MAIN ).setVisible( True )
+
+
+	def GetProductName( self ) :
+		return 'PRISMCUBE'
+
+
+	def GetProductNymber( self ) :
+		return '00ASV3824ASDMARUSYS322'
+
+
+	def GetHardwareVersion( self ) :
+		return '1.00'
+
+
+	def GetSoftwareVersion( self ) :
+		version = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'version' )
+		if E_BETA_SOFTWARE :
+			version = 'Beta ' + version + self.GetLastDate( )
+		return version
+
+
+	def RunningGetLastDate( self, aDirname ) :
+		flist = os.listdir( aDirname )
+		for f in flist:
+			next = os.path.join( aDirname, f )
+			if os.path.isdir( next ) :
+				self.RunningGetLastDate( next )
+			else :
+				ext = os.path.splitext( next )[-1]
+				lastdate = 0
+				if ext == '.py' or ext == '.xml' :
+					self.SetLastDate( next )
+
+
+	def SetLastDate( self, aFile ) :
+		if self.mLastDateFile == None :
+			self.mLastDateFile = aFile
+		last = int( time.strftime( '%y%m%d', time.localtime( os.stat( self.mLastDateFile ).st_mtime ) ) )
+		current = int( time.strftime( '%y%m%d', time.localtime( os.stat( aFile ).st_mtime ) ) )
+		
+		if last < current :
+			self.mLastDateFile = aFile
+
+
+	def GetLastDate( self ) :
+		if os.path.exists( xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) ) == False :
+			return ' '
+		else :
+			self.RunningGetLastDate( xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) )
+			return ' ( Date_' + time.strftime( '%y.%m.%d', time.localtime( os.stat( self.mLastDateFile ).st_mtime ) ) + ' )'
+
+
+	def GetBootloaderVersion( self ) :
+		return '1.00'
 
 
 	def GetPartitionSize( self, aName ) :
@@ -312,34 +367,24 @@ class SystemInfo( SettingWindow ) :
 			return False
 
 
-	def RestartCheckHddTempTimer( self ) :
-		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Restart' )
-		self.StopCheckHddTempTimer( )
-		self.StartCheckHddTempTimer( )
-
-
 	def StartCheckHddTempTimer( self ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Start' )	
-		self.mCheckHddTempTimer = threading.Timer( TIME_SEC_CHECK_HDD_TEMP, self.AsyncCheckHddTempTimer )
-		self.mCheckHddTempTimer.start( )
+		self.mEnableLocalThread = True
+		self.mCheckHddTempTimer = self.AsyncCheckHddTempTimer( )
 	
 
 	def StopCheckHddTempTimer( self ) :
-		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )	
-		if self.mCheckHddTempTimer and self.mCheckHddTempTimer.isAlive( ) :
-			self.mCheckHddTempTimer.cancel( )
-			del self.mCheckHddTempTimer
-			
-		self.mCheckHddTempTimer = None
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )
+		if self.mEnableLocalThread == True and self.mCheckHddTempTimer :
+			self.mEnableLocalThread = False				
+			self.mCheckHddTempTimer.join( )
 
 
-	def AsyncCheckHddTempTimer( self ) :	
-		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )	
-		if self.mCheckHddTempTimer == None :
-			LOG_WARN( 'Check Hdd Temp timer expired' )
-			return
-
-		if self.mCtrlLeftGroup.getSelectedPosition( ) == E_HDD :
-			self.ShowHDDTemperature( )
-		self.RestartCheckHddTempTimer( )
+	@RunThread
+	def AsyncCheckHddTempTimer( self ) :
+		while self.mEnableLocalThread :
+			if self.mCtrlLeftGroup.getSelectedPosition( ) == E_HDD :
+				self.ShowHDDTemperature( )
+			LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )
+			time.sleep( TIME_SEC_CHECK_HDD_TEMP )
 

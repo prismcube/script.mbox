@@ -83,7 +83,7 @@
 				<onleft>201</onleft>
 				<onright>201</onright>
 				<onup>-</onup>
-				<label>[B]Add[/B]</label>					
+				<label>[B]SCRIPT109[/B]</label>					
 			</control>
 
 			<control type="button" id="201">
@@ -101,7 +101,7 @@
 				<onleft>200</onleft>
 				<onright>200</onright>
 				<onup>-</onup>					
-				<label>[B]Cancel[/B]</label>					
+				<label>[B]SCRIPT26[/B]</label>					
 			</control>
 		</control>
 	</controls>

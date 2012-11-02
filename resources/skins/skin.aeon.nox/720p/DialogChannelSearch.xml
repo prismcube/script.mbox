@@ -177,7 +177,7 @@
 				<aligny>center</aligny>
 				<scroll>true</scroll>
 				<textcolor>grey</textcolor>
-				<label>([COLOR=blue]$INFO[Container(400).NumItems][/COLOR]) Items - Page([COLOR=blue]$INFO[Container(400).CurrentPage]/$INFO[Container(400).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Container(400).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(400).CurrentPage]/$INFO[Container(400).NumPages][/COLOR])</label>
 				<visible>Control.IsVisible(400)</visible>
 			</control>
 			
@@ -281,7 +281,7 @@
 				<aligny>center</aligny>
 				<scroll>true</scroll>
 				<textcolor>grey</textcolor>
-				<label>([COLOR=blue]$INFO[Container(402).NumItems][/COLOR]) Items - Page([COLOR=blue]$INFO[Container(402).CurrentPage]/$INFO[Container(402).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Container(402).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(402).CurrentPage]/$INFO[Container(402).NumPages][/COLOR])</label>
 				<visible>Control.IsVisible(402)</visible>
 			</control>
 

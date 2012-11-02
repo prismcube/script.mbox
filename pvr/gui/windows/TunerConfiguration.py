@@ -20,6 +20,7 @@ class TunerConfiguration( SettingWindow ) :
 		self.SetSettingWindowLabel( headerLabel )
 		self.LoadNoSignalState( )
 		self.LoadConfigedSatellite( )
+		self.SetPipLabel( )
 
 
 	def onAction( self, aAction ) :
@@ -27,15 +28,12 @@ class TunerConfiguration( SettingWindow ) :
 		focusId = self.getFocusId( )
 		self.GlobalAction( actionId )
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
-			pass
-
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
-
-		elif actionId == Action.ACTION_PARENT_DIR :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.getControl( E_MAIN_LIST_ID ).reset( )
 			WinMgr.GetInstance( ).CloseWindow( )
+
+		elif actionId == Action.ACTION_SELECT_ITEM :
+			pass			
 
 		elif actionId == Action.ACTION_MOVE_LEFT or actionId == Action.ACTION_MOVE_RIGHT :
 			pass

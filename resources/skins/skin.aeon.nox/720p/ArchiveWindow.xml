@@ -74,7 +74,7 @@
 				<posy>-90</posy>
 				<width>200</width>
 				<height>40</height>
-				<label>[I]No Signal [/I]</label>
+				<label>[I]SCRIPT104 [/I]</label>
 				<font>font12_title</font>
 				<align>center</align>
 				<aligny>center</aligny>
@@ -86,7 +86,7 @@
 				<posy>-90</posy>
 				<width>200</width>
 				<height>40</height>
-				<label>[I]Scrambled [/I]</label>
+				<label>[I]SCRIPT105 [/I]</label>
 				<font>font12_title</font>
 				<align>center</align>
 				<aligny>center</aligny>
@@ -198,7 +198,7 @@
 				<scroll>false</scroll>
 				<align>left</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3400).NumItems][/COLOR] Items)</label>
+				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3400).NumItems][/COLOR] SCRIPT106)</label>
 				<visible>substring(Window.Property(ViewMode),common)</visible>						
 			</control>
 			<control type="label">
@@ -212,7 +212,7 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>Page ([COLOR=blue]$INFO[Container(3400).CurrentPage]/$INFO[Container(3400).NumPages][/COLOR])</label>
+				<label>SCRIPT107 ([COLOR=blue]$INFO[Container(3400).CurrentPage]/$INFO[Container(3400).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(ViewMode),common)</visible>						
 			</control>
 			<!-- Item Position and Page Number for thumbnail list-->
@@ -227,7 +227,7 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3410).NumItems][/COLOR]) Items - Page ([COLOR=blue]$INFO[Container(3410).CurrentPage]/$INFO[Container(3410).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3410).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(3410).CurrentPage]/$INFO[Container(3410).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(ViewMode),thumbnail)</visible>						
 			</control>
 			<!-- Item Position and Page Number for posterwrap list-->
@@ -242,7 +242,7 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3420).NumItems][/COLOR]) Items - Page ([COLOR=blue]$INFO[Container(3420).CurrentPage]/$INFO[Container(3420).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3420).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(3420).CurrentPage]/$INFO[Container(3420).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(ViewMode),posterwrap)</visible>						
 			</control>
 			<!-- Item Position and Page Number for panart list-->
@@ -257,7 +257,7 @@
 				<scroll>false</scroll>
 				<align>right</align>
 				<aligny>center</aligny>
-				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3430).NumItems][/COLOR]) Items - Page ([COLOR=blue]$INFO[Container(3430).CurrentPage]/$INFO[Container(3430).NumPages][/COLOR])</label>
+				<label>([COLOR=blue]$INFO[Window.Property(SelectedPosition)] / $INFO[Container(3430).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(3430).CurrentPage]/$INFO[Container(3430).NumPages][/COLOR])</label>
 				<visible>substring(Window.Property(ViewMode),panart)</visible>						
 			</control>
 		</control>

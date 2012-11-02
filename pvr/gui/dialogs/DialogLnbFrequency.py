@@ -25,16 +25,12 @@ class DialogLnbFrequency( SettingDialog ) :
 		actionId = aAction.getId( )
 		self.GlobalAction( actionId )
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )
 			self.CloseDialog( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-
-		elif actionId == Action.ACTION_PARENT_DIR :
-			self.ResetAllControl( )
-			self.CloseDialog( )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.ControlLeft( )

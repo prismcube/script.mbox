@@ -168,28 +168,6 @@
 					<onup>9003</onup>
 					<ondown>9003</ondown>
 				</control>
-
-				<!--
-				<control type="radiobutton" id="101">
-					<description>Extra Options</description>
-					<hitrect x="0" y="120" w="265" h="40" />
-					<posx>0</posx>
-					<posy>40</posy>
-					<include>DefaultButtonCommonValues</include>
-					<radiowidth>18</radiowidth>
-					<radioheight>18</radioheight>
-					<radioposx>222</radioposx>
-					<radioposy>12</radioposy>
-					<textureradiofocus>HomeHasSub.png</textureradiofocus>
-					<textureradionofocus>HomeHasSub.png</textureradionofocus>
-					<label>31026</label>
-					<onleft>3500</onleft>
-					<onright>9010</onright>
-					<onup>100</onup>
-					<ondown>100</ondown>
-				</control>
-				-->
-
 			</control>
 		</control>
 

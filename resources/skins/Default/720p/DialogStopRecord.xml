@@ -185,7 +185,7 @@
 					<align>center</align>
 					<texturenofocus border="5">MenuItemNF.png</texturenofocus>
 					<texturefocus border="5">button-focus.png</texturefocus>
-					<label>[B]Cancel[/B]</label>
+					<label>[B]SCRIPT26[/B]</label>
 				</control>
 			</control>
 		</control>

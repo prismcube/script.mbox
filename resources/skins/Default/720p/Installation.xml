@@ -179,7 +179,7 @@
 				<posy>310</posy>
 				<width>200</width>
 				<height>40</height>
-				<label>[I]No Signal [/I]</label>
+				<label>[I]SCRIPT104 [/I]</label>
 				<font>font13_title</font>
 				<align>right</align>
 				<aligny>center</aligny>
@@ -191,7 +191,7 @@
 				<posy>310</posy>
 				<width>200</width>
 				<height>40</height>
-				<label>[I]Scrambled [/I]</label>
+				<label>[I]SCRIPT105 [/I]</label>
 				<font>font13_title</font>
 				<align>right</align>
 				<aligny>center</aligny>

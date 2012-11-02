@@ -126,6 +126,7 @@ class Configure( SettingWindow ) :
 		self.SetListControl( )
 		self.mInitialized = True
 		self.mPrevListItemID = -1
+		self.StartCheckNetworkTimer( )
 
 
 	def Close( self ) :
@@ -143,21 +144,18 @@ class Configure( SettingWindow ) :
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.GlobalAction( actionId )
 
-		if actionId == Action.ACTION_PREVIOUS_MENU :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.Close( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
-
-		elif actionId == Action.ACTION_PARENT_DIR :
-			self.Close( )
 
 		elif actionId == Action.ACTION_MOVE_UP :
 			if focusId == E_SUBMENU_LIST_ID and selectedId != self.mPrevListItemID :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
 				self.mVisibleParental = False
-				self.StopCheckNetworkTimer( )
+				#self.StopCheckNetworkTimer( )
 				if self.mPlatform.IsPrismCube( ) :
 					self.mUseNetworkType = GetCurrentNetworkType( )
 				self.SetListControl( )
@@ -169,7 +167,7 @@ class Configure( SettingWindow ) :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
 				self.mVisibleParental = False
-				self.StopCheckNetworkTimer( )
+				#self.StopCheckNetworkTimer( )
 				if self.mPlatform.IsPrismCube( ) :
 					self.mUseNetworkType = GetCurrentNetworkType( )
 				self.SetListControl( )
@@ -357,7 +355,7 @@ class Configure( SettingWindow ) :
 					self.mPrevListItemID =selectedId
 					self.mReLoadIp = True
 					self.mVisibleParental = False
-					self.StopCheckNetworkTimer( )
+					#self.StopCheckNetworkTimer( )
 				self.SetListControl( )
 
 
@@ -508,7 +506,6 @@ class Configure( SettingWindow ) :
 				self.getControl( E_SETUPMENU_GROUP_ID ).setVisible( True )
 
 			self.SetEnableControl( E_Input07, False )
-			self.StartCheckNetworkTimer( )
 			if self.GetGroupId( self.getFocusId( ) ) != E_SpinEx05 :
 				self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 
@@ -955,36 +952,26 @@ class Configure( SettingWindow ) :
 	def CheckNetworkStatus( self ) :
 		self.mStateNetLink = xbmc.getInfoLabel( 'System.internetstate' )
 		LOG_TRACE( 'Network State = %s' % self.mStateNetLink )
-		if self.mCtrlLeftGroup.getSelectedPosition( ) == E_NETWORK_SETTING :
-			self.SetControlLabel2String( E_Input07, self.mStateNetLink )
-
-
-	def RestartCheckNetworkTimer( self ) :
-		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Restart' )
-		self.StopCheckNetworkTimer( )
-		self.StartCheckNetworkTimer( )
+		self.SetControlLabel2String( E_Input07, self.mStateNetLink )
 
 
 	def StartCheckNetworkTimer( self ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Start' )	
-		self.mCheckNetworkTimer = threading.Timer( TIME_SEC_CHECK_NET_STATUS, self.AsyncCheckNetworkTimer )
-		self.mCheckNetworkTimer.start( )
+		self.mCheckNetworkTimer = self.AsyncCheckNetworkTimer( )
+		self.mEnableLocalThread = True
 	
 
 	def StopCheckNetworkTimer( self ) :
-		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )	
-		if self.mCheckNetworkTimer and self.mCheckNetworkTimer.isAlive( ) :
-			self.mCheckNetworkTimer.cancel( )
-			del self.mCheckNetworkTimer
-			
-		self.mCheckNetworkTimer = None
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )
+		if self.mEnableLocalThread == True and self.mCheckNetworkTimer :
+			self.mEnableLocalThread = False				
+			self.mCheckNetworkTimer.join( )
 
 
-	def AsyncCheckNetworkTimer( self ) :	
-		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )	
-		if self.mCheckNetworkTimer == None :
-			LOG_WARN( 'Check Network timer expired' )
-			return
-		if self.mRunningNetwork == False :
-			self.CheckNetworkStatus( )
-		self.RestartCheckNetworkTimer( )
+	@RunThread
+	def AsyncCheckNetworkTimer( self ) :
+		while self.mEnableLocalThread :
+			LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )	
+			if self.mRunningNetwork == False and self.mCtrlLeftGroup.getSelectedPosition( ) == E_NETWORK_SETTING :
+				self.CheckNetworkStatus( )
+			time.sleep( TIME_SEC_CHECK_NET_STATUS )
