@@ -678,7 +678,6 @@ class DataCacheMgr( object ) :
 		
 		if aTemporaryReload :
 			if SUPPORT_CHANNEL_DATABASE	== True :
-				start = time.time( )			
 				channelDB = ElisChannelDB( )
 				chList = channelDB.Channel_GetList( aType, aMode, aSort, -1, -1, -1, '', self.mSkip, self.mChannelListDBTable )
 				channelDB.Close( )
