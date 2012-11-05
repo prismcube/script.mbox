@@ -38,7 +38,7 @@ E_UPDATE_STEP_FINISH      = 8
 E_UPDATE_STEP_UPDATE_NOW  = 9
 E_UPDATE_STEP_ERROR_NETWORK = 10
 
-UPDATE_STEP						=	8
+UPDATE_STEP						=	7
 E_UPDATE_IMAGE					=	100
 E_UPDATE_TEXTBOX				= 	200
 
@@ -94,6 +94,7 @@ class SystemUpdate( SettingWindow ) :
 		self.mIsDownload = True
 		self.mStepPage = E_UPDATE_STEP_HOME
 		self.mCheckEthernetThread = None
+		self.mShowProgressThread = None
 
 		self.SetSettingWindowLabel( MR_LANG( 'Update' ) )
 
@@ -213,13 +214,22 @@ class SystemUpdate( SettingWindow ) :
 		while self.mEnableLocalThread :
 			if self.mStepPage >= E_UPDATE_STEP_PROVISION and self.mStepPage <= E_UPDATE_STEP_DOWNLOAD :
 				status = CheckEthernet( 'eth0' )
-				if status == 'up' :
+				if status != 'down' :
 					self.mLinkStatus = True
 				else :
 					self.mLinkStatus = False
 					self.UpdateStepPage( E_UPDATE_STEP_ERROR_NETWORK )
 
 			time.sleep(1)
+
+
+	@RunThread
+	def ShowProgressDialog( self, aLimitTime, aTitle, aEventName = None ) :
+		self.mShowProgressThread = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
+		self.mShowProgressThread.SetDialogProperty( aLimitTime, aTitle, aEventName )
+		self.mShowProgressThread.doModal( )
+
+		self.mShowProgressThread = None
 
 
 	@GuiLock
@@ -268,7 +278,7 @@ class SystemUpdate( SettingWindow ) :
 				self.getControl( E_UPDATE_STEP_IMAGE_BACK + i ).setVisible( False )
 				self.getControl( E_UPDATE_STEP_IMAGE + i ).setVisible( False )
 		else :
-			if aStep > E_UPDATE_STEP_READY and aStep < E_UPDATE_STEP_ERROR_NETWORK :
+			if aStep > E_UPDATE_STEP_READY and aStep < E_UPDATE_STEP_UPDATE_NOW :
 				aStep = aStep - 2
 			else :
 				aStep = -1
@@ -545,9 +555,14 @@ class SystemUpdate( SettingWindow ) :
 			if os.stat( tempFile )[stat.ST_SIZE] != self.mPVSData.mSize :
 				return False
 
+			self.ShowProgressDialog( 30, MR_LANG( 'File Checking...' ), '--' )
 			self.OpenBusyDialog( )
 			ret = CheckMD5Sum( tempFile, self.mPVSData.mMd5 )
 			self.CloseBusyDialog( )
+			if self.mShowProgressThread :
+				self.mShowProgressThread.SetResult( True )
+			time.sleep( 1 )
+
 			if not ret :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'File is corrupt, Try again download' ) )
@@ -575,9 +590,13 @@ class SystemUpdate( SettingWindow ) :
 				usbPath = E_DEFAULT_PATH_USB_UPDATE
 
 			time.sleep( 0.3 )
+			self.ShowProgressDialog( 60, MR_LANG( 'Unpacking...' ), '--' )
 			self.OpenBusyDialog( )
 			stepResult = CopyToUSB( tempFile, usbPath )
 			self.CloseBusyDialog( )
+			if self.mShowProgressThread :
+				self.mShowProgressThread.SetResult( True )
+			time.sleep( 1 )
 
 			if not stepResult :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -589,6 +608,8 @@ class SystemUpdate( SettingWindow ) :
 			pass
 
 		elif aStep == E_UPDATE_STEP_FINISH :
+			time.sleep( 0.3 )
+
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, MR_LANG( 'Update Ready' ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Update Ready' ) )

@@ -22,7 +22,7 @@ class DialogForceProgress( BaseDialog ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.mTitle				= MR_LANG( 'Wait' )
+		#self.mTitle				= MR_LANG( 'Wait' )
 
 		self.mEventBus.Register( self )
 

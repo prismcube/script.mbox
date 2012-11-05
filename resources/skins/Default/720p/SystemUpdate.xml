@@ -224,14 +224,14 @@
 					<height>30</height>
 					<texture border="0,1,0,1">StepNF.png</texture>
 				</control>
-				<control type="image" id="7207">
+				<!--control type="image" id="7207">
 					<posx>450</posx>
 					<posy>485</posy>
 					<width>30</width>
 					<height>30</height>
 					<texture border="0,1,0,1">StepNF.png</texture>
 				</control>
-				<!--control type="image" id="7208">
+				<control type="image" id="7208">
 					<posx>480</posx>
 					<posy>485</posy>
 					<width>30</width>
@@ -295,14 +295,14 @@
 					<height>30</height>
 					<texture border="0,1,0,1">StepFO.png</texture>
 				</control>
-				<control type="image" id="7107">
+				<!--control type="image" id="7107">
 					<posx>450</posx>
 					<posy>485</posy>
 					<width>30</width>
 					<height>30</height>
 					<texture border="0,1,0,1">StepFO.png</texture>
 				</control>
-				<!--control type="image" id="7108">
+				<control type="image" id="7108">
 					<posx>480</posx>
 					<posy>485</posy>
 					<width>30</width>
