@@ -375,9 +375,8 @@ class SystemInfo( SettingWindow ) :
 
 	def StopCheckHddTempTimer( self ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )
-		if self.mEnableLocalThread == True and self.mCheckHddTempTimer :
-			self.mEnableLocalThread = False				
-			self.mCheckHddTempTimer.join( )
+		self.mEnableLocalThread = False				
+		self.mCheckHddTempTimer.join( )
 
 
 	@RunThread

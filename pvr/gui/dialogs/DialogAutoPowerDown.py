@@ -5,7 +5,7 @@ E_BUTTON_OK		= 301
 E_HEADER		= 100
 E_BODY_LABEL	= 200
 
-TIME_OUT		= 20
+TIME_OUT		= 60
 
 
 class DialogAutoPowerDown( BaseDialog ) :
@@ -35,7 +35,6 @@ class DialogAutoPowerDown( BaseDialog ) :
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.Close( )
-			pass
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
@@ -61,10 +60,10 @@ class DialogAutoPowerDown( BaseDialog ) :
 	@RunThread
 	def AsyncShowTime( self ) :
 		for i in range( TIME_OUT ) :
+			time.sleep( 1 )
 			if self.mEnableLocalThread == False :
 				return
 			self.mCtrlLabel.setLabel( MR_LANG( 'Automatic power down after %s sec' ) % ( TIME_OUT - i ) )
-			time.sleep( 1 )
 
 		#self.mCommander.System_Shutdown( )
 				

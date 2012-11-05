@@ -73,21 +73,7 @@ class MainMenu( BaseWindow ) :
 	def onClick( self, aControlId ) :
 		LOG_TRACE("MainMenu onclick(): control %d" % aControlId )
 		if aControlId >= BUTTON_ID_INSTALLATION and aControlId <= BUTTON_ID_UPDATE :
-			"""
-			if self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
-				self.getControl( MAIN_GROUP_ID ).setVisible( False )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping all your recordings first' ) )
-				dialog.doModal( )
-				self.getControl( MAIN_GROUP_ID ).setVisible( True )
-			elif self.mDataCache.Player_GetStatus( ).mMode != ElisEnum.E_MODE_LIVE :
-				self.getControl( MAIN_GROUP_ID ).setVisible( False )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping all your recordings first' ) )
-				dialog.doModal( )
-				self.getControl( MAIN_GROUP_ID ).setVisible( True )
-			"""
-			if self.mWin.getProperty( 'IsPVR') == 'True' :
+			if self.mWin.getProperty( 'IsPVR' ) == 'True' :
 				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping recordings or PVR or Timeshift' ) )
@@ -117,31 +103,6 @@ class MainMenu( BaseWindow ) :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not support Win32' ) )
 						dialog.doModal( )
-					"""
-
-					#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MESSAGE_NULLWINDOW )
-					from UpdateChannel import UpdateChannel
-					ttt = UpdateChannel( )
-					ttt.Print( )
-					ttt.GetServerInfo( )
-					updatelist = ttt.GetServerInfo( )
-					print 'dhkim test line = %s' % updatelist
-					showtext = []
-					for text in updatelist :
-						showtext.append( text[0] )
-					print 'dhkim test text = %s' % showtext
-					if updatelist :
-						dialog = xbmcgui.Dialog( )
-						ret = dialog.select( MR_LANG( 'Select Package' ), showtext )
-						if ret >= 0 :
-							ttt.Update( updatelist[ret][1] )
-							ttt.Print( )
-					else :
-						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Connect server error' ) )
-						dialog.doModal( )
-					"""
-
 
 		elif aControlId == BUTTON_ID_ARCHIVE :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
@@ -166,22 +127,7 @@ class MainMenu( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FAVORITE_ADDONS )
 
 		elif aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO :
-			"""
-			if self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
-				self.getControl( MAIN_GROUP_ID ).setVisible( False )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping all your recordings first' ) )
-				dialog.doModal( )
-				self.getControl( MAIN_GROUP_ID ).setVisible( True )
-
-			elif self.mDataCache.Player_GetStatus( ).mMode != ElisEnum.E_MODE_LIVE :
-				self.getControl( MAIN_GROUP_ID ).setVisible( False )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the PVR or Timeshift first' ) )
-				dialog.doModal( )
-				self.getControl( MAIN_GROUP_ID ).setVisible( True )
-			"""
-			if self.mWin.getProperty( 'IsPVR') == 'True' :
+			if self.mWin.getProperty( 'IsPVR' ) == 'True' :
 				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping recordings or PVR or Timeshift' ) )

@@ -1181,6 +1181,7 @@ class DataCacheMgr( object ) :
 
 			self.SetSkipChannelView( False )
 			if ret :
+				self.mCommander.Channel_Save( )
 				self.SetChannelReloadStatus( True )
 
 		except Exception, e :

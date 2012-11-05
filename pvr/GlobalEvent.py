@@ -1,18 +1,7 @@
-import xbmc
-import xbmcgui
-import sys
-import time
-import os
-import shutil
-import weakref
-
 from pvr.gui.WindowImport import *
-from ElisEventBus import ElisEventBus
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-import pvr.Platform
 import pvr.DataCacheMgr
-from ElisEnum import ElisEnum
 import pvr.ElisMgr
+
 
 gGlobalEvent = None
 
@@ -41,7 +30,7 @@ class GlobalEvent( object ) :
 		return cls.__name__
 
 
-	def onEvent(self, aEvent) :
+	def onEvent( self, aEvent ) :
 		if not WinMgr.gWindowMgr :
 			return
 
@@ -64,7 +53,6 @@ class GlobalEvent( object ) :
 			else :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).setProperty( 'Signal', 'True' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_SUCCESS )
-
 
 		elif aEvent.getName( ) == ElisEventVideoIdentified( ).getName( ) :
 			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )

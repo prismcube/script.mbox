@@ -20,6 +20,13 @@ gNetworkType		= NETWORK_ETHERNET
 def SetCurrentNetworkType( aType ) :
 	global gNetworkType
 	gNetworkType = aType
+	from ElisProperty import ElisPropertyEnum
+	import pvr.ElisMgr
+	command = pvr.ElisMgr.GetInstance( ).GetCommander( )
+	if gNetworkType == NETWORK_WIRELESS :
+		ElisPropertyEnum( 'Network Type' , command ).SetProp( 1 )
+	else :
+		ElisPropertyEnum( 'Network Type' , command ).SetProp( 0 )
 
 
 def GetCurrentNetworkType( ) :

@@ -8,10 +8,7 @@ if __name__ == '__main__' :
 	sys.path.append( os.path.join( scriptDir, 'resources' ) )	
 
 	elisDir = xbmcaddon.Addon( 'script.module.elisinterface' ).getAddonInfo( 'path' )
-	sys.path.append( os.path.join( elisDir, 'lib', 'elisinterface' ) )		
-
-	updatechannelDir = xbmcaddon.Addon( 'script.module.updatechannel' ).getAddonInfo( 'path' )
-	sys.path.append( os.path.join( updatechannelDir, 'lib', 'updatechannel' ) )
+	sys.path.append( os.path.join( elisDir, 'lib', 'elisinterface' ) )
 
 #	import xbmcgui
 #	import xbmc

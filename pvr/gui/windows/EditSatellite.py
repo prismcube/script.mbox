@@ -128,6 +128,7 @@ class EditSatellite( SettingWindow ) :
 					self.mSatelliteIndex = 0
 					self.mDataCache.LoadAllSatellite( )
 					self.mDataCache.Channel_DeleteBySatellite( self.mLongitude, self.mBand )
+					self.mCommander.Channel_Save( )
 					self.mDataCache.Channel_ReLoad( )
 					self.mDataCache.LoadConfiguredSatellite( )
 					self.mDataCache.LoadConfiguredTransponder( )

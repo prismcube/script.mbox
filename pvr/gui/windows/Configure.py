@@ -963,9 +963,8 @@ class Configure( SettingWindow ) :
 
 	def StopCheckNetworkTimer( self ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )
-		if self.mEnableLocalThread == True and self.mCheckNetworkTimer :
-			self.mEnableLocalThread = False				
-			self.mCheckNetworkTimer.join( )
+		self.mEnableLocalThread = False				
+		self.mCheckNetworkTimer.join( )
 
 
 	@RunThread
