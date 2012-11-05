@@ -1,7 +1,10 @@
-import xbmcaddon, sys
+import xbmcaddon, sys, os, shutil, time, re
 from ElisEnum import ElisEnum
 import pvr.Platform
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
+from BeautifulSoup import BeautifulSoup
+import urllib
+from subprocess import *
 
 gSettings = xbmcaddon.Addon( id="script.mbox" )
 
@@ -339,7 +342,7 @@ class CacheMRLanguage( object ) :
 
 		self.mDefaultCodec = sys.getdefaultencoding( )
 		print '---------mDefaultCodec[%s]'% self.mDefaultCodec
-		from BeautifulSoup import BeautifulSoup
+		#from BeautifulSoup import BeautifulSoup
 		self.mStrLanguage = BeautifulSoup( xml )
 
 		global gMRStringHash
@@ -434,4 +437,165 @@ class GuiSkinPosition( object ) :
 		self.mBottom = aBottom
 		self.mZoom	 = aZoom
 
+
+def CreateDirectory( aPath ) :
+	if os.path.exists( aPath ) :
+		return
+
+	os.makedirs( aPath, 0644 )
+
+
+def RemoveDirectory( aPath ) :
+	if not os.path.exists( aPath ) :
+		return
+
+	shutil.rmtree( aPath )
+
+
+def CheckDirectory( aPath ) :
+	if not os.path.exists( aPath ) :
+		return False
+
+	return True
+
+
+def CheckEthernet( aEthName ) :
+	status = 'down'
+	cmd = 'cat /sys/class/net/%s/operstate'% aEthName
+	try :
+		p = Popen( cmd, shell=True, stdout=PIPE )
+		status = re.sub( '\n', '', p.stdout.read( ) )
+		LOG_TRACE('-------------linkStatus[%s]'% status )
+
+	except Exception, e :
+		LOG_ERR( 'except[%s] cmd[%s]'% ( e, cmd ) )
+
+	return status
+
+
+def CheckMD5Sum( aSourceFile, aMd5 ) :
+	isVerify = False
+	cmd = 'md5sum %s |awk \'{print $1}\''% aSourceFile
+
+	if not os.path.exists( aSourceFile ) :
+		LOG_TRACE( '------------file not found[%s]'% aSourceFile )
+		return isVerify
+
+	try :
+		p = Popen( cmd, shell=True, stdout=PIPE )
+		readMd5 = re.sub( '\n', '', p.stdout.read( ) )
+		LOG_TRACE('-------------checkMd5[%s] sourceMd5[%s]'% ( readMd5, aMd5 ) )
+		if readMd5 == aMd5 :
+			isVerify = True
+
+	except Exception, e :
+		LOG_ERR( 'except[%s] cmd[%s]'% ( e, cmd ) )
+
+	return isVerify
+
+
+def GetSTBVersion( ) :
+	stbversion = ''
+	openFile = '/etc/stbversion'
+	try :
+		fp = open( openFile, 'r' )
+		stbversion = re.sub('\n', '', fp.readline( ) )
+		fp.close( )
+
+	except Exception, e :
+		LOG_ERR( 'except[%s] cmd[%s]'% ( e, openFile ) )
+
+	return stbversion
+
+
+def CopyToUSB( aSourceFile, aDestPath ) :
+	isCopy = False
+	cmd = 'unzip -o %s -d %s'% ( aSourceFile, aDestPath )
+
+	if not os.path.exists( aDestPath ) :
+		LOG_TRACE( '------------check usb[%s]'% aDestPath )
+		return isCopy
+
+	RemoveDirectory( '%s/update'% aDestPath )
+	try :
+		LOG_TRACE( 'execute cmd[%s]'% cmd )
+		returnCode = os.system( cmd )
+		LOG_TRACE( '--------------unzip returnCode[%s]'% returnCode )
+		#ToDo : why return forced -1 ????
+		#if returnCode == 0 :
+		#	isCopy = True
+		isCopy = True
+
+		os.system( 'sync' )
+		time.sleep( 0.5 )
+
+	except Exception, e :
+		LOG_ERR( 'except[%s] cmd[%s]'% ( e, cmd ) )
+		isCopy = False
+
+	return isCopy
+
+
+def CopyToFile( aSourceFile, aDestFile ) :
+	isCopy = True
+	try :
+		shutil.copyfile( aSourceFile, aDestFile )
+		os.system( 'sync' )
+		time.sleep( 0.5 )
+
+	except Exception, e :
+		LOG_ERR( 'except[%s] source[%s] desc[%s]'% ( e, aSourceFile, aDestFile ) )
+		isCopy = False
+
+	return isCopy
+
+
+def GetURLpage( aUrl, aCache = True ) :
+	download = None
+	try :
+		#f = urllib.urlopen( url )
+		f = urllib.URLopener( ).open( aUrl )
+		if f :
+			if not aCache :
+				download = True
+			else :
+				download = f.read( )
+
+	except IOError, e :
+		LOG_ERR( 'except[%s] url[%s]'% ( e, aUrl ) )
+
+	return download
+
+
+def ParseStringInXML( xmlFile, tagName ) :
+
+	soup = None
+	lines = []
+	nodeAll = ''
+	#if os.path.exists(xmlFile) :
+	if xmlFile :
+
+		#fp = open(xmlFile)
+		#soup = BeautifulSoup(fp)
+		#fp.close()
+		
+		soup = BeautifulSoup( xmlFile )
+
+		for node in soup.findAll( 'software' ) :
+			for element in node.findAll(tagName) :
+				#elementry = [ str(element.string), '%s\r\n'% str(element) ]
+				elementry = str(element.string)
+				lines.append(elementry)
+			
+			nodeAll = node
+
+		#print len(lines), lines[len(lines)-1][0]
+
+	if lines and len( lines ) == 1 :
+		lines = lines[0]
+
+	elif lines == [] or len( lines ) < 1 :
+		lines = None
+
+	return lines
 

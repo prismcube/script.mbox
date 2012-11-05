@@ -679,7 +679,6 @@ class DataCacheMgr( object ) :
 		
 		if aTemporaryReload :
 			if SUPPORT_CHANNEL_DATABASE	== True :
-				start = time.time( )			
 				channelDB = ElisChannelDB( )
 				chList = channelDB.Channel_GetList( aType, aMode, aSort, -1, -1, -1, '', self.mSkip, self.mChannelListDBTable )
 				channelDB.Close( )
@@ -1592,6 +1591,19 @@ class DataCacheMgr( object ) :
 					break
 
 		return findTimer
+
+
+	def USB_GetMountPath( self ) :
+		usbPath = ''
+		retList = self.mCommander.USB_GetMountPath( )
+		if retList and len( retList ) > 0 and retList[0].mError == 0 :
+			usbPath = retList[0].mParam
+
+		return usbPath
+
+
+	def System_Reboot( self ) :
+		return self.mCommander.System_Reboot( )
 
 
 	def ToggleTVRadio( self ) :

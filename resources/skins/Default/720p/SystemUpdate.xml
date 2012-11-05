@@ -1,0 +1,327 @@
+<window id="3033">
+	<defaultcontrol always="false">9000</defaultcontrol>
+	<allowoverlay>no</allowoverlay>
+	<controls>
+		<include>DefaultSettingHeaderWindow</include>
+		<control type="group">
+			<posx>80</posx>
+			<posy>110</posy>
+			<animation condition="Control.HasFocus(999)" type="Conditional" reversible="false">
+				<effect type="zoom" start="100" end="80" center="640,360" easing="in" tween="back" time="300" />
+				<effect type="fade" start="100" end="0" time="300" />
+			</animation>
+			<animation condition="!Control.HasFocus(999)" type="Conditional" reversible="false">
+				<effect type="zoom" start="80" end="100" center="640,360" easing="out" tween="back" time="300" />
+				<effect type="fade" start="0" end="100" time="300" />
+			</animation>
+			<include>DefaultSettingWindowEffect</include>
+			<include>DefaultSettingMainWindow</include>
+			<control type="label" id="110">
+				<posx>750</posx>
+				<posy>-30</posy>
+				<width>250</width>
+				<height>40</height>
+				<font>font13_title</font>
+				<textcolor>blue</textcolor>
+				<align>right</align>
+				<aligny>center</aligny>
+				<scroll>true</scroll>
+			</control>
+
+			<control type="group" id="9000">
+				<posy>10</posy>
+				<include>Input01</include>
+				<include>Input02</include>
+				<include>Input03</include>
+			</control>
+			<control type="group">
+				<posx>10</posx>
+				<posy>260</posy>
+				<control type="textbox">
+					  <posx>0</posx>
+					  <posy>0</posy>
+					  <width>700</width>
+					  <height>200</height>
+					  <visible>true</visible>
+					  <colordiffuse>FFFFFFFF</colordiffuse>
+					  <font>font13</font>
+					  <textcolor>grey3</textcolor>
+					  <wrapmultiline>true</wrapmultiline>
+					  <autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
+					  <label>$INFO[Window.Property(CurrentDescription)]</label>
+				</control>
+			</control>
+
+			<control type="group">
+				<posx>780</posx>
+				<posy>260</posy>
+				<control type="label" id="100">
+					<posx>0</posx>
+					<posy>0</posy>
+					<font>font13_title</font>
+					<textcolor>grey</textcolor>
+					<align>left</align>
+					<label>$INFO[Control.GetLabel]</label>
+				</control>
+				<control type="label" id="101">
+					<posx>0</posx>
+					<posy>25</posy>
+					<font>font13_title</font>
+					<textcolor>grey</textcolor>
+					<align>left</align>
+					<label>$INFO[Control.GetLabel]</label>
+				</control>
+				<control type="label" id="102">
+					<posx>0</posx>
+					<posy>50</posy>
+					<font>font13_title</font>
+					<textcolor>grey</textcolor>
+					<align>left</align>
+					<label>$INFO[Control.GetLabel]</label>
+				</control>
+				<control type="label">
+					<posx>0</posx>
+					<posy>75</posy>
+					<font>font13_title</font>
+					<textcolor>grey</textcolor>
+					<align>left</align>
+					<label>$INFO[Window.Property(DescriptionTitle)]</label>
+				</control>
+				<control type="textbox" id="103">
+					  <posx>20</posx>
+					  <posy>100</posy>
+					  <width>300</width>
+					  <height>100</height>
+					  <visible>true</visible>
+					  <colordiffuse>FFFFFFFF</colordiffuse>
+					  <font>font12</font>
+					  <textcolor>FFFFFFFF</textcolor>
+					  <wrapmultiline>true</wrapmultiline>
+					  <autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
+					  <label>$INFO[Window.Property(UpdateDescription)]</label>
+				</control>
+			</control>
+
+			<control type="group">
+				<posx>0</posx>
+				<posy>40</posy>
+				<visible>substring(Window.Property(UpdateStep),true)</visible>
+				<!--control type="button" id="7000">
+					<description>Prev button</description>
+					<posx>5</posx>
+					<posy>470</posy>
+					<width>60</width>
+					<height>50</height>
+					<texturenofocus border="5">Arrow-left.png</texturenofocus>
+					<texturefocus border="5">Arrow-left-focus.png</texturefocus>
+					<onleft>7001</onleft>
+					<onright>7001</onright>
+				</control>
+				<control type="label" id="7005">
+					<posx>60</posx>
+					<posy>478</posy>
+					<width>200</width>
+					<height>40</height>
+					<font>font12_title</font>
+					<textcolor>grey2</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<visible>Control.IsVisible(7000) + !Control.HasFocus(7000)</visible>
+				</control>
+				<control type="label">
+					<posx>60</posx>
+					<posy>478</posy>
+					<width>200</width>
+					<height>40</height>
+					<font>font13_title</font>
+					<textcolor>white</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>$INFO[Control.GetLabel(7005)]</label>
+					<visible>Control.IsVisible(7000) + Control.HasFocus(7000)</visible>
+				</control>
+				<control type="button" id="7001">
+					<description>Next button</description>
+					<posx>670</posx>
+					<posy>470</posy>
+					<width>60</width>
+					<height>50</height>
+					<texturenofocus border="5">Arrow-right.png</texturenofocus>
+					<texturefocus border="5">Arrow-right-focus.png</texturefocus>
+					<onleft>7000</onleft>
+					<onright>7000</onright>
+				</control>
+				<control type="label" id="7006">
+					<posx>620</posx>
+					<posy>478</posy>
+					<width>200</width>
+					<height>40</height>
+					<font>font12_title</font>
+					<textcolor>grey2</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<visible>Control.IsVisible(7001) + !Control.HasFocus(7001)</visible>
+				</control>
+				<control type="label">
+					<posx>620</posx>
+					<posy>478</posy>
+					<width>200</width>
+					<height>40</height>
+					<font>font13_title</font>
+					<textcolor>white</textcolor>
+					<align>left</align>
+					<aligny>center</aligny>
+					<label>$INFO[Control.GetLabel(7006)]</label>
+					<visible>Control.IsVisible(7001) + Control.HasFocus(7001)</visible>
+				</control-->
+				
+				<control type="image" id="7200">
+					<posx>240</posx>
+					<posy>485</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture border="0,1,0,1">StepNF.png</texture>
+				</control>
+				<control type="image" id="7201">
+					<posx>270</posx>
+					<posy>485</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture border="0,1,0,1">StepNF.png</texture>
+				</control>
+				<control type="image" id="7202">
+					<posx>300</posx>
+					<posy>485</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture border="0,1,0,1">StepNF.png</texture>
+				</control>
+				<control type="image" id="7203">
+					<posx>330</posx>
+					<posy>485</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture border="0,1,0,1">StepNF.png</texture>
+				</control>
+				<control type="image" id="7204">
+					<posx>360</posx>
+					<posy>485</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture border="0,1,0,1">StepNF.png</texture>
+				</control>
+				<control type="image" id="7205">
+					<posx>390</posx>
+					<posy>485</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture border="0,1,0,1">StepNF.png</texture>
+				</control>
+				<control type="image" id="7206">
+					<posx>420</posx>
+					<posy>485</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture border="0,1,0,1">StepNF.png</texture>
+				</control>
+				<control type="image" id="7207">
+					<posx>450</posx>
+					<posy>485</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture border="0,1,0,1">StepNF.png</texture>
+				</control>
+				<!--control type="image" id="7208">
+					<posx>480</posx>
+					<posy>485</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture border="0,1,0,1">StepNF.png</texture>
+				</control>
+				<control type="image" id="7209">
+					<posx>510</posx>
+					<posy>485</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture border="0,1,0,1">StepNF.png</texture>
+				</control-->
+
+				<control type="image" id="7100">
+					<posx>240</posx>
+					<posy>485</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture border="0,1,0,1">StepFO.png</texture>
+				</control>
+				<control type="image" id="7101">
+					<posx>270</posx>
+					<posy>485</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture border="0,1,0,1">StepFO.png</texture>
+				</control>
+				<control type="image" id="7102">
+					<posx>300</posx>
+					<posy>485</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture border="0,1,0,1">StepFO.png</texture>
+				</control>
+				<control type="image" id="7103">
+					<posx>330</posx>
+					<posy>485</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture border="0,1,0,1">StepFO.png</texture>
+				</control>
+				<control type="image" id="7104">
+					<posx>360</posx>
+					<posy>485</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture border="0,1,0,1">StepFO.png</texture>
+				</control>
+				<control type="image" id="7105">
+					<posx>390</posx>
+					<posy>485</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture border="0,1,0,1">StepFO.png</texture>
+				</control>
+				<control type="image" id="7106">
+					<posx>420</posx>
+					<posy>485</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture border="0,1,0,1">StepFO.png</texture>
+				</control>
+				<control type="image" id="7107">
+					<posx>450</posx>
+					<posy>485</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture border="0,1,0,1">StepFO.png</texture>
+				</control>
+				<!--control type="image" id="7108">
+					<posx>480</posx>
+					<posy>485</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture border="0,1,0,1">StepFO.png</texture>
+				</control>
+				<control type="image" id="7109">
+					<posx>510</posx>
+					<posy>485</posy>
+					<width>30</width>
+					<height>30</height>
+					<texture border="0,1,0,1">StepFO.png</texture>
+				</control-->
+			</control>
+
+		</control>
+		<include>DefaultSettingWindowPigScreen</include>
+		<include>DefaultFakeButton</include>
+
+	</controls>
+</window>
+

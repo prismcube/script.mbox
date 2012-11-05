@@ -144,6 +144,8 @@
 				<align>left</align>
 				<aligny>center</aligny>
 				<scroll>true</scroll>
+				<scrollspeed>100</scrollspeed>
+				<scrollsuffix>  |  </scrollsuffix>
 			</control>
 			<include>DefaultScanHelperStatusProgress</include>
 		</control>
