@@ -105,10 +105,23 @@ class RootWindow( BaseWindow ) :
 
 	def AsyncPowerSave( self ) :
 		self.mIsDialogOpend = True
-		LOG_TRACE( 'Open Auto power down dialog' )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_AUTO_POWER_DOWN )
-		dialog.doModal( )
+
+		if self.mCommander.Teletext_IsShowing( ) :
+			self.mCommander.Teletext_Hide( )
+			dialog.doModal( )
+			self.mCommander.Teletext_Show( )
+		#elif self.mCommander.Subtitle_IsShowing( ) :
+		#TODO
+		else :
+			if WinMgr.GetInstance( ).mLastId == WinMgr.WIN_ID_NULLWINDOW :
+				self.mCommander.AppHBBTV_Ready( 0 )
+			dialog.doModal( )
+			if WinMgr.GetInstance( ).mLastId == WinMgr.WIN_ID_NULLWINDOW :
+				self.mCommander.AppHBBTV_Ready( 1 )
+			
 		self.mIsDialogOpend = False
+		
 
 
 	def GetRecordingInfo( self ) :

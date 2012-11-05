@@ -1136,9 +1136,9 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Channel_Delete( aIChannel )
 
 
-	def Channel_DeleteByNumber( self, aType, aNumList ) :
+	def Channel_DeleteByNumber( self, aType, aUseDB, aNumList ) :
 		#ToDo delete timer ID
-		return self.mCommander.Channel_DeleteByNumber( aType, aNumList )
+		return self.mCommander.Channel_DeleteByNumber( aType, aUseDB, aNumList )
 
 
 	def Channel_DeleteAll( self ) :
@@ -1176,7 +1176,7 @@ class DataCacheMgr( object ) :
 					chNum.mParam = tmpChannelList[idx].mNumber
 					numList.append( chNum )
 
-				ret |= self.mCommander.Channel_DeleteByNumber( mType, numList )
+				ret |= self.mCommander.Channel_DeleteByNumber( mType, 0, numList )
 				#from pvr.GuiHelper import ClassToList
 				#LOG_TRACE('delete type[%s] len[%s] channel[%s]'% ( mType, len(tmpChannelList), ClassToList('convert', numList) ) )
 

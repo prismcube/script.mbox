@@ -238,7 +238,7 @@ class SystemInfo( SettingWindow ) :
 	def GetSoftwareVersion( self ) :
 		version = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'version' )
 		if E_BETA_SOFTWARE :
-			version = 'Beta ' + version + self.GetLastDate( )
+			version = 'Beta ' + version + ' ( Modified %s )' % E_BETA_DATE
 		return version
 
 
@@ -270,7 +270,7 @@ class SystemInfo( SettingWindow ) :
 			return ' '
 		else :
 			self.RunningGetLastDate( xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) )
-			return ' ( Date_' + time.strftime( '%y.%m.%d', time.localtime( os.stat( self.mLastDateFile ).st_mtime ) ) + ' )'
+			return ' ( Last modified ' + time.strftime( '%y.%m.%d', time.localtime( os.stat( self.mLastDateFile ).st_mtime ) ) + ' )'
 
 
 	def GetBootloaderVersion( self ) :

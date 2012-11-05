@@ -2140,7 +2140,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 			if aMode == FLAG_OPT_LIST :
-				ret = self.mDataCache.Channel_DeleteByNumber( int( self.mUserMode.mServiceType ), numList )
+				ret = self.mDataCache.Channel_DeleteByNumber( int( self.mUserMode.mServiceType ), 1, numList )
 
 				#reset Tune by Next Channel
 				if ret and isRefreshCurrentChannel :

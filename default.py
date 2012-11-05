@@ -1,23 +1,25 @@
 from elementtree import ElementTree
+import os, sys, xbmcaddon, shutil
 
-if __name__ == '__main__':
-	import os, sys, xbmcaddon, shutil
-	scriptDir = xbmcaddon.Addon('script.mbox').getAddonInfo('path')
-	sys.path.append(os.path.join(scriptDir, 'pvr'))
-	sys.path.append(os.path.join(scriptDir, 'resources'))	
 
-	elisDir =  xbmcaddon.Addon('script.module.elisinterface').getAddonInfo('path')
-	print 'elisDir=%s' %elisDir
-	print 'elisDir=%s' %os.path.join(elisDir, 'lib', 'elisinterface')
-	sys.path.append(os.path.join(elisDir, 'lib', 'elisinterface'))		
+if __name__ == '__main__' :
+	scriptDir = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' )
+	sys.path.append( os.path.join( scriptDir, 'pvr' ) )
+	sys.path.append( os.path.join( scriptDir, 'resources' ) )	
+
+	elisDir = xbmcaddon.Addon( 'script.module.elisinterface' ).getAddonInfo( 'path' )
+	sys.path.append( os.path.join( elisDir, 'lib', 'elisinterface' ) )		
+
+	updatechannelDir = xbmcaddon.Addon( 'script.module.updatechannel' ).getAddonInfo( 'path' )
+	sys.path.append( os.path.join( updatechannelDir, 'lib', 'updatechannel' ) )
 
 #	import xbmcgui
 #	import xbmc
 #	loading = xbmcgui.WindowXML('loading.xml', scriptDir)
 #	loading.show()
-	print 'sys.prefix=%s' %sys.prefix
-	print 'sys.exec_prefix=%s' %sys.exec_prefix
-	print 'sys.path=%s' %sys.path
+#	print 'sys.prefix=%s' %sys.prefix
+#	print 'sys.exec_prefix=%s' %sys.exec_prefix
+#	print 'sys.path=%s' %sys.path
 
 	"""
 	sitepath = os.path.join( sys.prefix,"lib",

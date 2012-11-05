@@ -73,6 +73,7 @@ class MainMenu( BaseWindow ) :
 	def onClick( self, aControlId ) :
 		LOG_TRACE("MainMenu onclick(): control %d" % aControlId )
 		if aControlId >= BUTTON_ID_INSTALLATION and aControlId <= BUTTON_ID_UPDATE :
+			"""
 			if self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
 				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -85,7 +86,13 @@ class MainMenu( BaseWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping all your recordings first' ) )
 				dialog.doModal( )
 				self.getControl( MAIN_GROUP_ID ).setVisible( True )
-
+			"""
+			if self.mWin.getProperty( 'IsPVR') == 'True' :
+				self.getControl( MAIN_GROUP_ID ).setVisible( False )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping recordings or PVR or Timeshift' ) )
+				dialog.doModal( )
+				self.getControl( MAIN_GROUP_ID ).setVisible( True )
 			else :
 				if aControlId == BUTTON_ID_INSTALLATION :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_INSTALLATION )
@@ -104,8 +111,28 @@ class MainMenu( BaseWindow ) :
 				elif aControlId == BUTTON_ID_CAS :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONDITIONAL_ACCESS )
 				elif aControlId == BUTTON_ID_UPDATE :
-					pass
-					# Todo
+					#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MESSAGE_NULLWINDOW )
+					from UpdateChannel import UpdateChannel
+					ttt = UpdateChannel( )
+					ttt.Print( )
+					ttt.GetServerInfo( )
+					updatelist = ttt.GetServerInfo( )
+					print 'dhkim test line = %s' % updatelist
+					showtext = []
+					for text in updatelist :
+						showtext.append( text[0] )
+					print 'dhkim test text = %s' % showtext
+					if updatelist :
+						dialog = xbmcgui.Dialog( )
+						ret = dialog.select( MR_LANG( 'Select Package' ), showtext )
+						if ret >= 0 :
+							ttt.Update( updatelist[ret][1] )
+							ttt.Print( )
+					else :
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Connect server error' ) )
+						dialog.doModal( )
+					
 
 		elif aControlId == BUTTON_ID_ARCHIVE :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
@@ -130,6 +157,7 @@ class MainMenu( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FAVORITE_ADDONS )
 
 		elif aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO :
+			"""
 			if self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
 				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -143,12 +171,20 @@ class MainMenu( BaseWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the PVR or Timeshift first' ) )
 				dialog.doModal( )
 				self.getControl( MAIN_GROUP_ID ).setVisible( True )
+			"""
+			if self.mWin.getProperty( 'IsPVR') == 'True' :
+				self.getControl( MAIN_GROUP_ID ).setVisible( False )
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping recordings or PVR or Timeshift' ) )
+				dialog.doModal( )
+				self.getControl( MAIN_GROUP_ID ).setVisible( True )
 
 			else:
 				self.SetMediaCenter( )
 				if aControlId == BUTTON_ID_MEDIA_CENTER :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
-				#WinMgr.GetInstance( ).Reset( )
+				elif aControlId == BUTTON_ID_MEDIA_WEATHER :
+					xbmc.executebuiltin( "ActivateWindow(Weather)" )
 
 		elif aControlId == BUTTON_ID_SYSTEM_INFO :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_INFO )
@@ -174,7 +210,7 @@ class MainMenu( BaseWindow ) :
 
 
 	def GetPlayerStatus( self ) :
-		if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+		if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR or self.mDataCache.Record_GetRunningRecorderCount( ) > 0 or self.mDataCache.Player_GetStatus( ).mMode != ElisEnum.E_MODE_LIVE :
 			self.mWin.setProperty( 'IsPVR', 'True' )
 		else :
 			self.mWin.setProperty( 'IsPVR', 'False' )
