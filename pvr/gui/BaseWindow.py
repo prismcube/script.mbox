@@ -404,6 +404,14 @@ class SettingWindow( BaseWindow ) :
 		return False
 
 
+	def EditDescription( self, aControlId, aDescription ) :
+		count = len( self.mControlList )
+		for i in range( count ) :
+			ctrlItem = self.mControlList[i]		
+			if self.HasControlItem( ctrlItem, aControlId ) :
+				ctrlItem.mDescription = aDescription
+
+
 	def setDefaultControl( self ) :
 		if self.mControlList[0].mEnable :
 			self.setFocusId( self.mControlList[0].mControlId )
@@ -473,7 +481,7 @@ class SettingWindow( BaseWindow ) :
 		count = len( self.mControlList )
 
 		for i in range( count ) :
-			ctrlItem = self.mControlList[i]		
+			ctrlItem = self.mControlList[i]
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 					control = self.getControl( ctrlItem.mControlId + 3 )
@@ -485,9 +493,8 @@ class SettingWindow( BaseWindow ) :
 
 	def GetControlLabel2String( self, aControlId ) :
 		count = len( self.mControlList )
-
 		for i in range( count ) :
-			ctrlItem = self.mControlList[i]		
+			ctrlItem = self.mControlList[i]
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
 					return self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).getLabel2( )
@@ -497,10 +504,8 @@ class SettingWindow( BaseWindow ) :
 
 	def GetControlLabelString( self, aControlId ) :
 		count = len( self.mControlList )
-
 		for i in range( count ) :
-
-			ctrlItem = self.mControlList[i]		
+			ctrlItem = self.mControlList[i]
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
 					return self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).getLabel( )
@@ -513,7 +518,7 @@ class SettingWindow( BaseWindow ) :
 
 		for i in range( count ) :
 
-			ctrlItem = self.mControlList[i]		
+			ctrlItem = self.mControlList[i]
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
 					self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).setLabel2( aLabel )
@@ -526,7 +531,7 @@ class SettingWindow( BaseWindow ) :
 
 		for i in range( count ) :
 
-			ctrlItem = self.mControlList[i]		
+			ctrlItem = self.mControlList[i]
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_INPUT_CONTROL :
 					self.getControl( ctrlItem.mControlId + 3 ).getSelectedItem( ).setLabel( aLabel )

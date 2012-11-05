@@ -45,5 +45,3 @@ class RootWindow( BaseWindow ) :
 	def onFocus( self, aControlId ) :
 		LOG_TRACE( '' )
 
-
-

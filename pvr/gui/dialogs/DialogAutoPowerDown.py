@@ -5,7 +5,7 @@ E_BUTTON_OK		= 301
 E_HEADER		= 100
 E_BODY_LABEL	= 200
 
-TIME_OUT		= 20
+TIME_OUT		= 60
 
 
 class DialogAutoPowerDown( BaseDialog ) :
@@ -14,6 +14,7 @@ class DialogAutoPowerDown( BaseDialog ) :
 		self.mTitle		= ''
 		self.mCtrlLabel = None
 		self.mThread	= None
+		self.mEnableLocalThread = True
 
 
 	def onInit( self ) :
@@ -25,8 +26,8 @@ class DialogAutoPowerDown( BaseDialog ) :
 		self.mCtrlLabel = self.getControl( E_BODY_LABEL )
 		self.getControl( E_HEADER ).setLabel( MR_LANG( 'Warning' ) )
 		self.mCtrlLabel.setLabel( MR_LANG( 'Automatic power down after %s sec' ) % TIME_OUT )
-		self.mThread = threading.Timer( 0.3, self.AsyncShowTime )
-		self.mThread.start( )
+		self.mEnableLocalThread = True
+		self.mThread = self.AsyncShowTime( )
 
 
 	def onAction( self, aAction ) :
@@ -39,39 +40,37 @@ class DialogAutoPowerDown( BaseDialog ) :
 			pass
 
 		elif actionId == Action.ACTION_PARENT_DIR :
-			self.Close( )
+			pass
 
 
 	def onClick( self, aControlId ) :
-		if aControlId == E_BUTTON_OK :
-			self.Close( )
+		pass
 
 		
 	def onFocus( self, aControlId ) :
 		pass
 
 
-	@GuiLock
 	def onEvent( self, aEvent ) :
 		if xbmcgui.getCurrentWindowDialogId( ) == self.mWinId :
-			pass
-			#if aEvent.getName( ) == ElisEventScanAddChannel.getName( ) :
-			#	self.UpdateAddChannel( aEvent )
+			if aEvent.getName( ) == ElisEventPowerSaveEnd.getName( ) :
+				xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 
+	@RunThread
 	def AsyncShowTime( self ) :
 		for i in range( TIME_OUT ) :
-			if self.mThread == None :
+			time.sleep( 1 )
+			if self.mEnableLocalThread == False :
 				return
 			self.mCtrlLabel.setLabel( MR_LANG( 'Automatic power down after %s sec' ) % ( TIME_OUT - i ) )
-			time.sleep( 1 )
 
 		#self.mCommander.System_Shutdown( )
 				
 
 	def Close( self ) :
-		if self.mThread and self.mThread.isAlive( ) :
-			self.mThread.cancel( )
-			self.mThread = None
+		if self.mThread and self.mEnableLocalThread == True :
+			self.mEnableLocalThread = False				
+			self.mThread.join( )
 		self.mEventBus.Deregister( self )
 		self.CloseDialog( )

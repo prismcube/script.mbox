@@ -5,7 +5,6 @@ class NullWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
 		self.mAsyncShowTimer = None
-		self.mTeleTextToggle = True
 		if E_SUPPROT_HBBTV == True :
 			self.mHBBTVReady = False
 			self.mMediaPlayerStarted = False
@@ -289,12 +288,7 @@ class NullWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_MBOX_TEXT :
-			if self.mTeleTextToggle :
-				self.mTeleTextToggle = False
-				self.mDataCache.Teletext_Show( )
-			else :
-				self.mTeleTextToggle = True
-				self.mDataCache.Teletext_NotifyHide( )
+			self.mDataCache.Teletext_Show( )
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
 			pass
@@ -567,6 +561,4 @@ class NullWindow( BaseWindow ) :
 		#if iChannel :
 			#self.mDataCache.Channel_InvalidateCurrent( )
 			#self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
-			#print 're-zapping ch[%s] type[%s]'% (iChannel.mNumber, iChannel.mServiceType ) 
-		
-
+			#print 're-zapping ch[%s] type[%s]'% (iChannel.mNumber, iChannel.mServiceType )

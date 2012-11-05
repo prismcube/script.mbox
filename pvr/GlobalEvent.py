@@ -1,18 +1,7 @@
-import xbmc
-import xbmcgui
-import sys
-import time
-import os
-import shutil
-import weakref
-
 from pvr.gui.WindowImport import *
-from ElisEventBus import ElisEventBus
-from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-import pvr.Platform
 import pvr.DataCacheMgr
-from ElisEnum import ElisEnum
 import pvr.ElisMgr
+
 
 gGlobalEvent = None
 
@@ -41,7 +30,7 @@ class GlobalEvent( object ) :
 		return cls.__name__
 
 
-	def onEvent(self, aEvent) :
+	def onEvent( self, aEvent ) :
 		if not WinMgr.gWindowMgr :
 			return
 
@@ -65,7 +54,6 @@ class GlobalEvent( object ) :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).setProperty( 'Signal', 'True' )
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_SUCCESS )
 
-
 		elif aEvent.getName( ) == ElisEventVideoIdentified( ).getName( ) :
 			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
 
@@ -85,9 +73,21 @@ class GlobalEvent( object ) :
 
 	def AsyncPowerSave( self ) :
 		self.mIsDialogOpend = True
-		LOG_TRACE( 'Open Auto power down dialog' )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_AUTO_POWER_DOWN )
-		dialog.doModal( )
+
+		if self.mCommander.Teletext_IsShowing( ) :
+			self.mCommander.Teletext_Hide( )
+			dialog.doModal( )
+			self.mCommander.Teletext_Show( )
+		#elif self.mCommander.Subtitle_IsShowing( ) :
+		#TODO
+		else :
+			if WinMgr.GetInstance( ).mLastId == WinMgr.WIN_ID_NULLWINDOW :
+				self.mCommander.AppHBBTV_Ready( 0 )
+			dialog.doModal( )
+			if WinMgr.GetInstance( ).mLastId == WinMgr.WIN_ID_NULLWINDOW :
+				self.mCommander.AppHBBTV_Ready( 1 )
+			
 		self.mIsDialogOpend = False
 
 

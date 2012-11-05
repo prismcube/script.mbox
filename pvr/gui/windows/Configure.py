@@ -330,7 +330,7 @@ class Configure( SettingWindow ) :
 					LOG_TRACE( 'Format_Record_Archive Stop' )
 				elif groupId == E_Input03 :
 					LOG_TRACE( 'Make_Dedicated_HDD Start' )
-					#self.mCommander.Make_Dedicated_HDD( )
+					self.mCommander.Make_Dedicated_HDD( )
 					LOG_TRACE( 'Make_Dedicated_HDD Stop' )
 
 		else :
@@ -963,9 +963,8 @@ class Configure( SettingWindow ) :
 
 	def StopCheckNetworkTimer( self ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )
-		if self.mEnableLocalThread == True and self.mCheckNetworkTimer :
-			self.mEnableLocalThread = False				
-			self.mCheckNetworkTimer.join( )
+		self.mEnableLocalThread = False				
+		self.mCheckNetworkTimer.join( )
 
 
 	@RunThread

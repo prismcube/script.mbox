@@ -11,8 +11,12 @@ E_SUPPROT_HBBTV		= True
 E_WINDOW_WIDTH		= 1280
 E_WINDOW_HEIGHT		= 720
 
+# SERVER ADDRESS
+PRISMCUBE_SERVER	= 'http://addon.prismcube.com'
+
 # BETA VERSION
 E_BETA_SOFTWARE		= True
+E_BETA_DATE			= '2012.10.29'
 
 
 ############################ Windows ############################

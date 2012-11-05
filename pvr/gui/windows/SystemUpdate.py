@@ -42,16 +42,17 @@ UPDATE_STEP					= E_UPDATE_STEP_FINISH - E_UPDATE_STEP_PROVISION
 
 class PVSClass( object ) :
 	def __init__( self ) :
-		self.mName = None
-		self.mFileName = None
-		self.mDate = None
-		self.mDescription = []
-		self.mMd5 = None
-		self.mSize = 0
-		self.mVersion = None
-		self.mId = None
-		self.mType = None
-		self.mError = -1
+		self.mName			= None
+		self.mFileName		= None
+		self.mDate			= None
+		self.mDescription	= []
+		self.mMd5			= None
+		self.mSize			= 0
+		self.mVersion		= None
+		self.mId			= None
+		self.mType			= None
+		self.mError			= -1
+		self.mProgress		= None
 
 
 class SystemUpdate( SettingWindow ) :
@@ -153,8 +154,8 @@ class SystemUpdate( SettingWindow ) :
 		elif groupId == E_Input02 :
 			#LOG_TRACE('-----------------mStepPage[%s]'% self.mStepPage )
 			if self.mStepPage == E_UPDATE_STEP_HOME :
-				pass
-				#toDO : show channelList update
+				self.UpdateChannel( )
+
 			elif self.mStepPage == E_UPDATE_STEP_UPDATE_NOW :
 				self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
 
@@ -737,5 +738,83 @@ class SystemUpdate( SettingWindow ) :
 			LOG_ERR( 'except[%s]'% e )
 
 		self.UpdatePropertyGUI( 'CurrentDescription', lbldesc )
+
+
+	def UpdateChannel( self ) :
+		kb = xbmc.Keyboard( PRISMCUBE_SERVER, MR_LANG( 'Enter server address' ), False )			
+		kb.setHiddenInput( False )
+		kb.doModal( )
+		if kb.isConfirmed( ) :
+			updatelist = self.GetServerInfo( kb.getText( ) )
+			LOG_TRACE( 'updatelist = %s' % updatelist )
+			showtext = []
+			
+			if updatelist :
+				for text in updatelist :
+					showtext.append( text[0] )
+				LOG_TRACE( 'showtext = %s' % showtext )
+
+				dialog = xbmcgui.Dialog( )
+				ret = dialog.select( MR_LANG( 'Select Package' ), showtext )
+				if ret >= 0 :
+					self.GetChannelUpdate( kb.getText( ), updatelist[ret][1] )
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Connect server error' ) )
+				dialog.doModal( )
+
+
+	def GetServerInfo( self, aAddress ) :
+		try :
+			import urllib2
+			updatefile = urllib2.urlopen( aAddress + '/channel/package.xml' )
+			inputline = updatefile.readlines( )
+			updatefile.close( )
+			updatelist = []
+			for line in inputline :
+				updatelist.append( string.split( line ) )
+
+			return updatelist
+			
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]' % e )
+			return None
+
+
+	def GetChannelUpdate( self, aAddress, aPath ) :
+		self.ChannelUpdateProgress( MR_LANG( 'Now updating...' ), 20 )
+		ret = self.DownloadxmlFile( aAddress, aPath )
+		if ret :
+			self.mCommander.System_SetManualChannelList( '/tmp/defaultchannel.xml' )
+			self.mCommander.System_SetDefaultChannelList( )
+			self.mDataCache.LoadAllSatellite( )
+			self.mTunerMgr.SyncChannelBySatellite( )
+			self.mDataCache.Channel_ReLoad( )
+			self.mDataCache.Player_AVBlank( False )
+			self.mProgress.SetResult( True )
+			return True
+		else :
+			self.mProgress.SetResult( True )
+			return False
+
+
+	def DownloadxmlFile( self, aAddress, aPath ) :
+		try :
+			import urllib2
+			updatefile = urllib2.urlopen( aAddress + aPath )
+			output = open( '/tmp/defaultchannel.xml', 'wb' )
+			output.write( updatefile.read( ) )
+			output.close( )
+			return True
+		except Exception, e :
+			LOG_TRACE( 'Error exception[%s]' % e )
+			return False
+
+
+	@RunThread
+	def ChannelUpdateProgress( self, aString, aTime ) :
+		self.mProgress = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
+		self.mProgress.SetDialogProperty( aTime, aString )
+		self.mProgress.doModal( )
 
 
