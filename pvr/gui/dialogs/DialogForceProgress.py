@@ -10,7 +10,7 @@ class DialogForceProgress( BaseDialog ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 		self.mLimitTime 		= 10
 		self.mTitle				= None
-		self.mStepPage			= None
+		self.mStepPage			= ''
 		self.mEventName			= None
 		self.mFinish			= False
 		self.mGetEvent			= False
@@ -66,7 +66,7 @@ class DialogForceProgress( BaseDialog ) :
 				self.mGetEvent	= True
 
 
-	def SetDialogProperty( self, aLimitTime, aTitle, aEventName = None, aPage = None ) :
+	def SetDialogProperty( self, aLimitTime, aTitle, aEventName = None, aPage = '' ) :
 		self.mLimitTime = aLimitTime
 		self.mTitle		= aTitle
 		self.mEventName = aEventName
