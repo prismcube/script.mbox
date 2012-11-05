@@ -15,18 +15,6 @@
 				<texture border="20">OverlayDialogBackground.png</texture>
 			</control>
 			<control type="label" id="100">
-				<description>header label</description>
-				<posx>20</posx>
-				<posy>18</posy>
-				<width>560</width>
-				<height>30</height>
-				<font>font13_title</font>
-				<align>left</align>
-				<aligny>center</aligny>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
-			</control>
-			<control type="label" id="200">
 				<description>dialog line 1</description>
 				<posx>20</posx>
 				<posy>60</posy>
@@ -37,6 +25,31 @@
 				<haspath>true</haspath>
 				<font>font13</font>
 			</control>
+			<control type="label" id="200">
+				<description>header label</description>
+				<posx>20</posx>
+				<posy>18</posy>
+				<width>560</width>
+				<height>30</height>
+				<font>font13_title</font>
+				<align>left</align>
+				<aligny>center</aligny>
+				<textcolor>blue</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+			<control type="label" id="201">
+				<description>page</description>
+				<posx>580</posx>
+				<posy>18</posy>
+				<width>100</width>
+				<height>30</height>
+				<font>font13</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+
 			<control type="label" id="300">
 				<description>dialog line 2</description>
 				<posx>20</posx>

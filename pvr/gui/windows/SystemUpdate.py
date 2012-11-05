@@ -5,22 +5,22 @@ import stat
 E_TYPE_PRISMCUBE = 1
 E_TYPE_ADDONS = 2
 
-E_CURRENT_INFO          = '/usr/share/xbmc/addons/script.mbox/resources/update.xml'
-E_DOWNLOAD_INFO_PVS     = '/mnt/hdd0/program/download/update.xml'
-E_DEFAULT_URL_PVS = 'http://192.168.100.142/RSS/update.xml'
-E_DEFAULT_PATH_DOWNLOAD = '/mnt/hdd0/program/download'
+E_CURRENT_INFO            = '/config/update.xml'
+E_DOWNLOAD_INFO_PVS       = '/mnt/hdd0/program/download/update.xml'
+E_DEFAULT_PATH_DOWNLOAD   = '/mnt/hdd0/program/download'
 E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
+E_DEFAULT_URL_PVS         = 'http://addon.prismcube/update/prismcube/update.xml'
 
 E_CONTROL_ID_GROUP_PVS      = 9000
 E_CONTROL_ID_LABEL_VERSION  = 100
 E_CONTROL_ID_LABEL_DATE     = 101
 E_CONTROL_ID_LABEL_SIZE     = 102
-E_CONTROL_ID_LABEL_PERCENT  = 110
 
 E_STRING_DATE        = MR_LANG( 'DATE' )
 E_STRING_VERSION     = MR_LANG( 'VERSION' )
 E_STRING_SIZE        = MR_LANG( 'SIZE' )
 E_STRING_DESCRIPTION = MR_LANG( 'DESCRIPTION' )
+E_STRING_OK          = MR_LANG( 'Download' )
 
 CONTEXT_ACTION_REFRESH_CONNECT      = 1
 CONTEXT_ACTION_CHANGE_ADDRESS       = 2
@@ -38,18 +38,7 @@ E_UPDATE_STEP_FINISH      = 8
 E_UPDATE_STEP_UPDATE_NOW  = 9
 E_UPDATE_STEP_ERROR_NETWORK = 10
 
-UPDATE_STEP						=	7
-E_UPDATE_IMAGE					=	100
-E_UPDATE_TEXTBOX				= 	200
-
-E_UPDATE_PREV					=	7000
-E_UPDATE_NEXT					=	7001	
-E_UPDATE_PREV_LABEL				=	7005
-E_UPDATE_NEXT_LABEL				=	7006
-
-E_UPDATE_STEP_IMAGE				= 	7100
-E_UPDATE_STEP_IMAGE_BACK		= 	7200
-
+UPDATE_STEP					= E_UPDATE_STEP_FINISH - E_UPDATE_STEP_PROVISION
 
 class PVSClass( object ) :
 	def __init__( self ) :
@@ -80,7 +69,6 @@ class SystemUpdate( SettingWindow ) :
 		self.mCtrlLabelDate           = self.getControl( E_CONTROL_ID_LABEL_DATE )
 		self.mCtrlLabelVersion        = self.getControl( E_CONTROL_ID_LABEL_VERSION )
 		self.mCtrlLabelSize           = self.getControl( E_CONTROL_ID_LABEL_SIZE )
-		self.mCtrlLabelPercent        = self.getControl( E_CONTROL_ID_LABEL_PERCENT )
 
 		#parse settings.xml
 		self.mUrlPVS = GetSetting( 'UpdateServer' )
@@ -134,7 +122,7 @@ class SystemUpdate( SettingWindow ) :
 				self.Close( )
 			else :
 				self.OpenAnimation( )
-				self.DrawUpdateStep( self.mStepPage )
+				self.SetFocusControl( E_CONTROL_ID_GROUP_PVS )
 				self.UpdateStepPage( E_UPDATE_STEP_HOME )
 
 		elif actionId == Action.ACTION_MOVE_LEFT :
@@ -150,7 +138,7 @@ class SystemUpdate( SettingWindow ) :
 			self.ControlDown( )
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
-			if self.mStepPage == E_UPDATE_STEP_READY :
+			if self.mStepPage != E_UPDATE_STEP_HOME :
 				self.ShowContextMenu( )
 
 
@@ -163,16 +151,18 @@ class SystemUpdate( SettingWindow ) :
 				self.UpdateStepPage( E_UPDATE_STEP_PROVISION )
 
 		elif groupId == E_Input02 :
+			#LOG_TRACE('-----------------mStepPage[%s]'% self.mStepPage )
 			if self.mStepPage == E_UPDATE_STEP_HOME :
 				pass
 				#toDO : show channelList update
+			elif self.mStepPage == E_UPDATE_STEP_UPDATE_NOW :
+				self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
+
 			else :
 				self.UpdateHandler( )
-				self.mStepPage = E_UPDATE_STEP_READY
-				self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, '' )
+				if self.mStepPage < E_UPDATE_STEP_UPDATE_NOW :
+					self.mStepPage = E_UPDATE_STEP_READY
 
-		elif groupId == E_Input03 :
-			self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
 
 
 	def onFocus( self, aControlId ) :
@@ -224,12 +214,10 @@ class SystemUpdate( SettingWindow ) :
 
 
 	@RunThread
-	def ShowProgressDialog( self, aLimitTime, aTitle, aEventName = None ) :
+	def ShowProgressDialog( self, aLimitTime, aTitle, aEventName = None, aStep = None ) :
 		self.mShowProgressThread = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
-		self.mShowProgressThread.SetDialogProperty( aLimitTime, aTitle, aEventName )
+		self.mShowProgressThread.SetDialogProperty( aLimitTime, aTitle, aEventName, aStep )
 		self.mShowProgressThread.doModal( )
-
-		self.mShowProgressThread = None
 
 
 	@GuiLock
@@ -248,9 +236,6 @@ class SystemUpdate( SettingWindow ) :
 		elif aCtrlID == E_SETTING_DESCRIPTION :
 			self.mCtrlLabelDescTitle.setLabel( aValue )
 
-		elif aCtrlID == E_CONTROL_ID_LABEL_PERCENT :
-			self.mCtrlLabelPercent.setLabel( aValue )
-
 
 	def UpdatePropertyGUI( self, aPropertyID = None, aValue = None ) :
 		#LOG_TRACE( 'Enter property[%s] value[%s]'% (aPropertyID, aValue) )
@@ -260,38 +245,15 @@ class SystemUpdate( SettingWindow ) :
 		self.mWin.setProperty( aPropertyID, aValue )
 
 
-	def ResetLabel( self ) :
-		self.SetEnableControl( E_Input02, False )
-		self.SetEnableControl( E_Input03, False )
+	def ResetLabel( self, aControls = True ) :
+		if aControls :
+			self.SetEnableControl( E_Input02, False )
 
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_DATE, '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_VERSION, '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SIZE, '' )
 		self.UpdatePropertyGUI( 'DescriptionTitle', '' )
 		self.UpdatePropertyGUI( 'UpdateDescription', '' )
-
-
-	def DrawUpdateStep( self, aStep = None ) :
-		if aStep == None :
-			for i in range( UPDATE_STEP ) :
-				self.getControl( E_UPDATE_STEP_IMAGE_BACK + i ).setVisible( False )
-				self.getControl( E_UPDATE_STEP_IMAGE + i ).setVisible( False )
-		else :
-			if aStep > E_UPDATE_STEP_READY and aStep < E_UPDATE_STEP_UPDATE_NOW :
-				aStep = aStep - 2
-			else :
-				aStep = -1
-
-			for i in range( UPDATE_STEP ) :
-				if i == aStep :
-					self.getControl( E_UPDATE_STEP_IMAGE + i ).setVisible( True )
-				else :
-					self.getControl( E_UPDATE_STEP_IMAGE + i ).setVisible( False )
-				self.getControl( E_UPDATE_STEP_IMAGE_BACK + i ).setVisible( True )
-
-			self.SetFocusControl( E_CONTROL_ID_GROUP_PVS )
-			LOG_TRACE('------------------drawStep[%s]'% aStep )
 
 
 	def UpdateLabelPVSInfo( self ) :
@@ -334,7 +296,7 @@ class SystemUpdate( SettingWindow ) :
 
 		self.SetEnableControl( E_Input02, True )
 
-		label2 = self.mPVSData.mVersion
+		label2 = E_STRING_OK
 		if self.mCurrData and self.mCurrData.mError == 0 and self.mCurrData.mVersion == self.mPVSData.mVersion :
 			label2 = 'Updated'
 			self.mPVSData.mError = -1
@@ -437,11 +399,12 @@ class SystemUpdate( SettingWindow ) :
 	def DoContextAction( self, aContextAction ) :
 		#LOG_TRACE( 'aContextAction=%d' %aContextAction )
 		if aContextAction == CONTEXT_ACTION_REFRESH_CONNECT :
+			self.mPVSData = None
+			self.ResetLabel( False )
 			RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
-			self.UpdateStepPage( E_UPDATE_STEP_PROVISION )
+			self.UpdateStepPage( E_UPDATE_STEP_READY )
 
 		elif aContextAction == CONTEXT_ACTION_CHANGE_ADDRESS :
-			self.SetChangeServerURL( )
 			label = MR_LANG( 'Change Server Address' )
 			kb = xbmc.Keyboard( self.mUrlPVS, label, False )
 			kb.doModal( )
@@ -487,11 +450,15 @@ class SystemUpdate( SettingWindow ) :
 		self.mStepPage = aStep
 		stepResult = True
 
+		strStepNo = '%s/%s'% ( int( aStep ) - 1, UPDATE_STEP )
 		if aStep == E_UPDATE_STEP_READY :
 			self.OpenAnimation( )
-			self.DrawUpdateStep( aStep )
+			self.SetFocusControl( E_CONTROL_ID_GROUP_PVS )
+			LOG_TRACE('------------------updateStep[%s]'% strStepNo )
+
 		elif aStep > E_UPDATE_STEP_READY :
-			self.DrawUpdateStep( aStep )
+			self.SetFocusControl( E_CONTROL_ID_GROUP_PVS )
+			LOG_TRACE('------------------updateStep[%s]'% strStepNo )
 
 
 		if aStep == E_UPDATE_STEP_HOME :
@@ -501,7 +468,6 @@ class SystemUpdate( SettingWindow ) :
 
 			self.SetEnableControl( E_Input01, True )
 			self.SetEnableControl( E_Input02, True )
-			self.SetVisibleControl( E_Input03, False )
 
 			self.InitControl( )
 			self.SetFocusControl( E_Input01 )
@@ -511,17 +477,17 @@ class SystemUpdate( SettingWindow ) :
 				self.mCheckEthernetThread.join( )
 				self.mCheckEthernetThread = None
 			self.mEnableLocalThread = False
+
+			self.mPVSData = None
+			self.ResetLabel( False )
 			self.UpdatePropertyGUI( 'CurrentDescription', '' )
 			self.UpdatePropertyGUI( 'UpdateStep', 'False' )
 
 		elif aStep == E_UPDATE_STEP_READY :
 			self.ResetAllControl( )
 			self.AddInputControl( E_Input01, MR_LANG( 'Update Check' ), '', MR_LANG( 'Check provisionning firmware from PrismCube Server, check network live' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Firmware Update' ), 'Not Checked', MR_LANG( 'Click to download' ) )
-			self.AddInputControl( E_Input03, MR_LANG( '- Apply' ),      '', MR_LANG( 'Update now, Reboot and get update stb' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Firmware' ), 'Not Checked', MR_LANG( 'Click to download' ) )
 			self.SetEnableControl( E_Input02, False )
-			self.SetEnableControl( E_Input03, False )
-			self.SetVisibleControl( E_Input03, True )
 
 			self.InitControl( )
 			self.SetFocusControl( E_Input01 )
@@ -555,12 +521,13 @@ class SystemUpdate( SettingWindow ) :
 			if os.stat( tempFile )[stat.ST_SIZE] != self.mPVSData.mSize :
 				return False
 
-			self.ShowProgressDialog( 30, MR_LANG( 'File Checking...' ), '--' )
+			self.ShowProgressDialog( 30, MR_LANG( 'File Checking...' ), None, strStepNo )
 			self.OpenBusyDialog( )
 			ret = CheckMD5Sum( tempFile, self.mPVSData.mMd5 )
 			self.CloseBusyDialog( )
 			if self.mShowProgressThread :
 				self.mShowProgressThread.SetResult( True )
+				self.mShowProgressThread = None
 			time.sleep( 1 )
 
 			if not ret :
@@ -590,12 +557,13 @@ class SystemUpdate( SettingWindow ) :
 				usbPath = E_DEFAULT_PATH_USB_UPDATE
 
 			time.sleep( 0.3 )
-			self.ShowProgressDialog( 60, MR_LANG( 'Unpacking...' ), '--' )
+			self.ShowProgressDialog( 60, MR_LANG( 'Unpacking...' ), None, strStepNo )
 			self.OpenBusyDialog( )
 			stepResult = CopyToUSB( tempFile, usbPath )
 			self.CloseBusyDialog( )
 			if self.mShowProgressThread :
 				self.mShowProgressThread.SetResult( True )
+				self.mShowProgressThread = None
 			time.sleep( 1 )
 
 			if not stepResult :
@@ -610,14 +578,15 @@ class SystemUpdate( SettingWindow ) :
 		elif aStep == E_UPDATE_STEP_FINISH :
 			time.sleep( 0.3 )
 
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, MR_LANG( 'Update Ready' ) )
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Update Ready' ) )
-			dialog.doModal( )
-			self.SetEnableControl( E_Input03, True )
+			#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			#dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Update Ready' ) )
+			#dialog.doModal( )
 
 
 		elif aStep == E_UPDATE_STEP_UPDATE_NOW :
+			time.sleep( 0.3 )
+			self.SetControlLabel2String( E_Input02, MR_LANG( 'Update Now') )
+
 			line1 = MR_LANG( 'Now reboot and follow from VFD' )
 			line2 = MR_LANG( 'Are you sure ?' )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -650,11 +619,9 @@ class SystemUpdate( SettingWindow ) :
 
 		LOG_TRACE('----------------download File[%s]'% self.mPVSData.mFileName )
 
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, MR_LANG( 'Downloading...' ) )
 		if not self.UpdateStepPage( E_UPDATE_STEP_DOWNLOAD ) :
 			return
 
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, MR_LANG( 'File Checking...' ) )
 		if not self.UpdateStepPage( E_UPDATE_STEP_CHECKFILE ) :
 			return
 
@@ -662,15 +629,14 @@ class SystemUpdate( SettingWindow ) :
 		if not self.UpdateStepPage( E_UPDATE_STEP_CHECKUSB ) :
 			return
 
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, MR_LANG( 'Image Unpacking...' ) )
 		if not self.UpdateStepPage( E_UPDATE_STEP_UNPACKING ) :
 			return
 
-		self.UpdateControlGUI( E_CONTROL_ID_LABEL_PERCENT, MR_LANG( 'Verify Checking...' ) )
 		if not self.UpdateStepPage( E_UPDATE_STEP_VERIFY ) :
 			return
 
-		self.UpdateStepPage( E_UPDATE_STEP_FINISH )
+		#self.UpdateStepPage( E_UPDATE_STEP_FINISH )
+		self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
 
 
 	def GetDownload( self, aPVS ) :
@@ -763,7 +729,7 @@ class SystemUpdate( SettingWindow ) :
 
 			lbldesc += '%s : %s\n'% ( E_STRING_VERSION, iPVS.mVersion )
 			lbldesc += '%s : %s\n'% ( E_STRING_DATE, iPVS.mDate )
-			lbldesc += '%s\n%s\n'% ( E_STRING_DESCRIPTION, iPVS.mDescription )
+			#lbldesc += '%s\n%s\n'% ( E_STRING_DESCRIPTION, iPVS.mDescription )
 
 			self.mCurrData = iPVS
 

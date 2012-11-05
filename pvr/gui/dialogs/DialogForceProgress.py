@@ -3,12 +3,14 @@ from pvr.gui.WindowImport import *
 PROGRESS_SCAN		= 400
 LABEL_PERCENT		= 100
 LABEL_STRING		= 200
+LABEL_PAGE			= 201
 
 class DialogForceProgress( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 		self.mLimitTime 		= 10
 		self.mTitle				= None
+		self.mStepPage			= None
 		self.mEventName			= None
 		self.mFinish			= False
 		self.mGetEvent			= False
@@ -16,6 +18,7 @@ class DialogForceProgress( BaseDialog ) :
 		self.mCtrlLabelPercent	= None
 		self.mCtrlLabelString	= None
 		self.mCtrlProgress		= None
+		self.mCtrlLabelPage		= None
 
 
 	def onInit( self ) :
@@ -28,9 +31,11 @@ class DialogForceProgress( BaseDialog ) :
 
 		self.mCtrlLabelPercent	= self.getControl( LABEL_PERCENT )
 		self.mCtrlLabelString	= self.getControl( LABEL_STRING )
+		self.mCtrlLabelPage		= self.getControl( LABEL_PAGE )
 		self.mCtrlProgress		= self.getControl( PROGRESS_SCAN )
 
 		self.mCtrlLabelString.setLabel( self.mTitle	)
+		self.mCtrlLabelPage.setLabel( self.mStepPage )
 		self.mCtrlLabelPercent.setLabel( MR_LANG( 'Waiting' ) + ' - 0 %' )
 		self.DrawProgress( )
 
@@ -61,12 +66,13 @@ class DialogForceProgress( BaseDialog ) :
 				self.mGetEvent	= True
 
 
-	def SetDialogProperty( self, aLimitTime, aTitle, aEventName = None ) :
+	def SetDialogProperty( self, aLimitTime, aTitle, aEventName = None, aPage = None ) :
 		self.mLimitTime = aLimitTime
 		self.mTitle		= aTitle
 		self.mEventName = aEventName
 		self.mFinish	= False
 		self.mGetEvent	= False
+		self.mStepPage  = aPage
 
 
 	def DrawProgress( self ) :
