@@ -191,10 +191,10 @@ class SatelliteConfigDisEqC10( SettingWindow ) :
 		self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'DiSEqC 1.0 Switch' ), E_LIST_DISEQC_MODE, self.mCurrentSatellite.mDisEqcMode, MR_LANG( 'Select a DiSEqC switch you want to connect to the receiver' ) )
 		self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'DiSEqC Repeat' ), USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mDisEqcRepeat, MR_LANG( 'When set to \'On\', DiSEqC repeats its command' ) )
 		if self.mTransponderList :
-			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), self.mTransponderList[ self.mSelectedTransponderIndex ], MR_LANG( 'Select the transponder for the selected satellite' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), self.mTransponderList[ self.mSelectedTransponderIndex ], MR_LANG( 'Select the transponder for the satellite you have chosen' ) )
 			self.mHasTransponder = True
 		else :
-			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), MR_LANG( 'None' ), MR_LANG( 'Select the transponder for the selected satellite' ) )			
+			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), MR_LANG( 'None' ), MR_LANG( 'Select the transponder for the satellite you have chosen' ) )			
 			self.mHasTransponder = False
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
