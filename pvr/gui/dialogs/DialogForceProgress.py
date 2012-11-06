@@ -25,8 +25,6 @@ class DialogForceProgress( BaseDialog ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		#self.mTitle				= MR_LANG( 'Wait' )
-
 		self.mEventBus.Register( self )
 
 		self.mCtrlLabelPercent	= self.getControl( LABEL_PERCENT )
@@ -66,7 +64,7 @@ class DialogForceProgress( BaseDialog ) :
 				self.mGetEvent	= True
 
 
-	def SetDialogProperty( self, aLimitTime, aTitle, aEventName = None, aPage = None ) :
+	def SetDialogProperty( self, aLimitTime, aTitle, aEventName = None, aPage = '' ) :
 		self.mLimitTime = aLimitTime
 		self.mTitle		= aTitle
 		self.mEventName = aEventName

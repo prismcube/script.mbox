@@ -748,7 +748,6 @@ class SystemUpdate( SettingWindow ) :
 			updatelist = self.GetServerInfo( kb.getText( ) )
 			LOG_TRACE( 'updatelist = %s' % updatelist )
 			showtext = []
-			
 			if updatelist :
 				for text in updatelist :
 					showtext.append( text[0] )
@@ -757,11 +756,15 @@ class SystemUpdate( SettingWindow ) :
 				dialog = xbmcgui.Dialog( )
 				ret = dialog.select( MR_LANG( 'Select Package' ), showtext )
 				if ret >= 0 :
-					self.GetChannelUpdate( kb.getText( ), updatelist[ret][1] )
-			else :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Connect server error' ) )
-				dialog.doModal( )
+					result = self.GetChannelUpdate( kb.getText( ), updatelist[ret][1] )
+					if result == False :
+						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Update process failed' ) )
+						dialog.doModal( )
+		else :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Connect server error' ) )
+			dialog.doModal( )
 
 
 	def GetServerInfo( self, aAddress ) :

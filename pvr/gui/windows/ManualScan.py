@@ -24,11 +24,11 @@ class ManualScan( SettingWindow ) :
 		ScanHelper.GetInstance( ).ScanHelper_Start( self.mWin )
 
 		self.SetSettingWindowLabel( MR_LANG( 'Manual Scan' ) )
-		self.LoadNoSignalState( )
+		self.VisibleTuneStatus( False )
 		self.mIsManualSetup = 0
 
 		self.mSatelliteIndex = 0
-		self.mTransponderIndex = 0		
+		self.mTransponderIndex = 0
 		self.mConfiguredSatelliteList = []
 
 		self.LoadFormattedSatelliteNameList( )
