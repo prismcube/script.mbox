@@ -9,7 +9,7 @@ E_CURRENT_INFO            = '/config/update.xml'
 E_DOWNLOAD_INFO_PVS       = '/mnt/hdd0/program/download/update.xml'
 E_DEFAULT_PATH_DOWNLOAD   = '/mnt/hdd0/program/download'
 E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
-E_DEFAULT_URL_PVS         = 'http://addon.prismcube/update/prismcube/update.xml'
+E_DEFAULT_URL_PVS         = 'http://addon.prismcube.com/update/prismcube/update.xml'
 
 E_CONTROL_ID_GROUP_PVS      = 9000
 E_CONTROL_ID_LABEL_VERSION  = 100
@@ -290,20 +290,25 @@ class SystemUpdate( SettingWindow ) :
 
 	def InitPVSData( self ) :
 		if self.mPVSData == None or self.mPVSData.mError != 0 :
-			label = MR_LANG( 'No one' )			
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_DATE, label )
+			#label = MR_LANG( 'No one' )			
+			#self.UpdateControlGUI( E_CONTROL_ID_LABEL_DATE, label )
 			self.SetEnableControl( E_Input02, False )
+			self.SetControlLabel2String( E_Input02, MR_LANG( 'Not Checked') )
+			self.EditDescription( E_Input02, MR_LANG( 'Click to download' ) )
 			return 
 
 		self.SetEnableControl( E_Input02, True )
 
 		label2 = E_STRING_OK
+		descLabel = MR_LANG( 'Click to download' )
 		if self.mCurrData and self.mCurrData.mError == 0 and self.mCurrData.mVersion == self.mPVSData.mVersion :
-			label2 = 'Updated'
+			label2 = MR_LANG( 'Updated' )
+			descLabel = MR_LANG( 'Updated lastest' )
 			self.mPVSData.mError = -1
 			self.SetEnableControl( E_Input02, False )
 
 		self.SetControlLabel2String( E_Input02, '%s'% label2 )
+		self.EditDescription( E_Input02, descLabel )
 		self.UpdateLabelPVSInfo( )
 
 
@@ -365,9 +370,8 @@ class SystemUpdate( SettingWindow ) :
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
 
-		self.InitPVSData( )
-
 		self.CloseBusyDialog( )
+		self.InitPVSData( )
 
 		if not download :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -487,7 +491,7 @@ class SystemUpdate( SettingWindow ) :
 		elif aStep == E_UPDATE_STEP_READY :
 			self.ResetAllControl( )
 			self.AddInputControl( E_Input01, MR_LANG( 'Update Check' ), '', MR_LANG( 'Check provisionning firmware from PrismCube Server, check network live' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Firmware' ), 'Not Checked', MR_LANG( 'Click to download' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Firmware' ), MR_LANG( 'Not Checked' ), MR_LANG( 'Click to download' ) )
 			self.SetEnableControl( E_Input02, False )
 
 			self.InitControl( )
@@ -587,6 +591,7 @@ class SystemUpdate( SettingWindow ) :
 		elif aStep == E_UPDATE_STEP_UPDATE_NOW :
 			time.sleep( 0.3 )
 			self.SetControlLabel2String( E_Input02, MR_LANG( 'Update Now') )
+			self.EditDescription( E_Input02, MR_LANG( 'Reboot and Update, No eject USB' ) )
 
 			line1 = MR_LANG( 'Now reboot and follow from VFD' )
 			line2 = MR_LANG( 'Are you sure ?' )
@@ -644,6 +649,9 @@ class SystemUpdate( SettingWindow ) :
 		isExist = GetURLpage( aPVS.mFileName, False )
 
 		if not isExist :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Can not connect address, retry to input URL' ) )
+ 			dialog.doModal( )
 			return False
 
 		self.mWorkingItem = aPVS

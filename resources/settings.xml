@@ -11,7 +11,7 @@
 	<!-- Favorite Addons -->
 	<setting id="ADDON_VIEW_MODE" type="enum" label="ViewMode" values="0|1" default="1" />
 	<setting id="Addons_Sort" type="enum" label="SortMode" values="0|1" default="1" />
-	<setting id="UpdateServer" type="text" label="URL" value="http://192.168.100.142/RSS/update.xml" default="http://192.168.100.142/RSS/update.xml" />
+	<setting id="UpdateServer" type="text" label="URL" value="http://addon.prismcube.com/update/prismcube/update.xml" default="http://addon.prismcube.com/update/prismcube/update.xml" />
 	<!--
 	<setting id="Username" type="text" label="config" default="default" />
 	<setting id="testbool" type="bool" label="config" default="true" />
