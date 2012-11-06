@@ -81,6 +81,10 @@
 "Move Position",,,,,,,,,,80
 "Add",,,,,,,,,,81
 "TIME",,,,,,,,,,82
+"FAVORITE GROUPS",,,,,,,,,,83
+"Help",,,,,,,,,,84
+"The Help gives you assistance using PRISMCUBE RUBY",,,,,,,,,,85
+"The Fav. Addons allow you to add your XBMC addons in the sub-menu and access them easily",,,,,,,,,,86
 "Last ServiceType",,,,,,,,,,2001
 "CurrentVoutResolution",,,,,,,,,,2002
 "First Installation","Erst-Installation","premiere installation","Prima installazione","Primera instalacion","Prvni instalace","Eerste installatie","Pierwsza instalacja","?lk kurulum","Первоначальная установка",2003
@@ -956,3 +960,50 @@
 "[I]Scrambled[/I]",,,,,,,,,,3565
 "[I]No Signal[/I] ",,,,,,,,,,3566
 "[I]Scrambled[/I] ",,,,,,,,,,3567
+"Select the transponder for the satellite you have chosen",,,,,,,,,,3568
+"Try again after stopping recordings or PVR or Timeshift",,,,,,,,,,3569
+"VERSION",,,,,,,,,,3570
+"SIZE",,,,,,,,,,3571
+"DESCRIPTION",,,,,,,,,,3572
+"Download",,,,,,,,,,3573
+"System, OS, MBox Update",,,,,,,,,,3574
+"Addon Application Update",,,,,,,,,,3575
+"Not Checked",,,,,,,,,,3576
+"Click to download",,,,,,,,,,3577
+"Updated",,,,,,,,,,3578
+"Updated lastest",,,,,,,,,,3579
+"Update server address is wrong, retry to input URL",,,,,,,,,,3580
+"Firmware Update",,,,,,,,,,3581
+"Can not connect address, retry to input URL",,,,,,,,,,3582
+"Aready Updated",,,,,,,,,,3583
+"Latest version",,,,,,,,,,3584
+"Refresh",,,,,,,,,,3585
+"Change Address",,,,,,,,,,3586
+"Load Default Address",,,,,,,,,,3587
+"Change Server Address",,,,,,,,,,3588
+"Save update server URL",,,,,,,,,,3589
+"Do you want to save ?",,,,,,,,,,3590
+"Download STB firmware, check network live",,,,,,,,,,3591
+"Channel Update",,,,,,,,,,3592
+"ChannelList update",,,,,,,,,,3593
+"Check provisionning firmware from PrismCube Server, check network live",,,,,,,,,,3594
+"Update Check",,,,,,,,,,3595
+"Firmware",,,,,,,,,,3596
+"File Checking...",,,,,,,,,,3597
+"File is corrupt, Try again download",,,,,,,,,,3598
+"USB is not detected, Please insert USB",,,,,,,,,,3599
+"Unpacking...",,,,,,,,,,3600
+"Check USB",,,,,,,,,,3601
+"Update Now",,,,,,,,,,3602
+"Reboot and Update, No eject USB",,,,,,,,,,3603
+"Now reboot and follow from VFD",,,,,,,,,,3604
+"Are you sure ?",,,,,,,,,,3605
+"Disconnected Network",,,,,,,,,,3606
+"Already exist download file",,,,,,,,,,3607
+"Do you want to continue ?",,,,,,,,,,3608
+"Downloading...",,,,,,,,,,3609
+"Enter server address",,,,,,,,,,3610
+"Select Package",,,,,,,,,,3611
+"Connect server error",,,,,,,,,,3612
+"Now updating...",,,,,,,,,,3613
+"Complete",,,,,,,,,,3614
