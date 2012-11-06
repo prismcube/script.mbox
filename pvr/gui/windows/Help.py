@@ -55,7 +55,7 @@ E_HELP_CONTETNT				= 	8500
 E_MAXIMUM_TEXTBOX_NUM			=	3
 
 
-HELP_STRING = 'C:/Users/daniel/AppData/Roaming/XBMC/addons/script.mbox/resources/skins/Default/720p/Help_String.xml'
+HELP_STRING = '/usr/share/xbmc/addons/script.mbox/resources/skins/Default/720p/Help_String.xml'
 
 
 class Help( SettingWindow ) :
@@ -123,7 +123,7 @@ class Help( SettingWindow ) :
 
 	def Close( self ) :
 		self.mInitialized = False
-#		self.mStepNum = E_STEP_FEATURES
+		self.mStepNum = E_STEP_FEATURES
 		WinMgr.GetInstance( ).CloseWindow( )
 
 
