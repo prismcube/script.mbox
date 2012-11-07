@@ -143,7 +143,7 @@
 						<item id="8">
 							<label>SCRIPT49</label>
 							<label2>SCRIPT73</label2>
-							<onclick>ParentDir</onclick>
+							<onclick>SendClick(90800)</onclick>
 							<visible>true</visible>
 						</item>
 					</content>
@@ -454,6 +454,26 @@
 							<visible>false</visible>
 						</control>
 					</control>
+
+					<!-- Help -->
+					<control type="grouplist" id="9080">
+						<posx>10</posx>
+						<posy>350</posy>
+						<width>215</width>
+						<height>360</height>
+						<align>center</align>
+						<onleft>9000</onleft>
+						<onup>9080</onup>
+						<ondown>9080</ondown>
+						<itemgap>0</itemgap>
+						<visible>Container(9000).HasFocus(8)</visible>
+						<control type="button" id="90800">
+							<include>DefaultButtonHomeSubCommonValues</include>
+							<label>Help</label>
+							<onclick>-</onclick>
+							<visible>false</visible>
+						</control>
+					</control>
 				</control>
 			</control>
 			<!--Sub Script-->
@@ -481,7 +501,7 @@
 					<label>$INFO[Container(9000).ListItem.Label2]</label>
 					<align>left</align>
 					<textcolor>white</textcolor>                
-					<shadowcolor>black</shadowcolor>	                
+					<shadowcolor>black</shadowcolor>
 				</control>
 			</control>
 			<!--Date, Time Info-->
