@@ -42,17 +42,18 @@ UPDATE_STEP					= E_UPDATE_STEP_FINISH - E_UPDATE_STEP_PROVISION
 
 class PVSClass( object ) :
 	def __init__( self ) :
-		self.mName			= None
-		self.mFileName		= None
-		self.mDate			= None
-		self.mDescription	= []
-		self.mMd5			= None
-		self.mSize			= 0
-		self.mVersion		= None
-		self.mId			= None
-		self.mType			= None
-		self.mError			= -1
-		self.mProgress		= None
+		self.mName					= None
+		self.mFileName				= None
+		self.mDate					= None
+		self.mDescription			= []
+		self.mMd5					= None
+		self.mSize					= 0
+		self.mVersion				= None
+		self.mId					= None
+		self.mType					= None
+		self.mError					= -1
+		self.mProgress				= None
+		self.mChannelUpdateProgress = None
 
 
 class SystemUpdate( SettingWindow ) :
@@ -793,7 +794,7 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def GetChannelUpdate( self, aAddress, aPath ) :
-		self.ChannelUpdateProgress( MR_LANG( 'Now updating...' ), 20 )
+		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating...' ), 20 )
 		ret = self.DownloadxmlFile( aAddress, aPath )
 		if ret :
 			self.mCommander.System_SetManualChannelList( '/tmp/defaultchannel.xml' )
@@ -802,10 +803,10 @@ class SystemUpdate( SettingWindow ) :
 			self.mTunerMgr.SyncChannelBySatellite( )
 			self.mDataCache.Channel_ReLoad( )
 			self.mDataCache.Player_AVBlank( False )
-			self.mProgress.SetResult( True )
+			self.CloseProgress( )
 			return True
 		else :
-			self.mProgress.SetResult( True )
+			self.CloseProgress( )
 			return False
 
 
@@ -828,4 +829,8 @@ class SystemUpdate( SettingWindow ) :
 		self.mProgress.SetDialogProperty( aTime, aString )
 		self.mProgress.doModal( )
 
+
+	def CloseProgress( self ) :
+		self.mProgress.SetResult( True )
+		self.mChannelUpdateProgress.join( )
 

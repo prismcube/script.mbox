@@ -71,6 +71,9 @@ class Configure( SettingWindow ) :
 		self.mCheckNetworkTimer	= None
 		self.mStateNetLink		= 'Busy'
 
+		self.mEnableLocalThread = False
+		self.mProgressThread	= None
+
 
 	def onInit( self ) :
 		leftGroupItems			= [
@@ -298,20 +301,17 @@ class Configure( SettingWindow ) :
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.mDataCache.Player_AVBlank( True )
-				self.ShowProgress( MR_LANG( 'Now restoring...' ), 20 )
+				self.mProgressThread = self.ShowProgress( MR_LANG( 'Now restoring...' ), 20 )
 				self.mCommander.System_SetDefaultChannelList( )
 				self.mCommander.System_FactoryReset( )
 				self.mDataCache.LoadAllSatellite( )
-
-				self.mProgress.SetResult( True )
-				time.sleep( 2 )
-
+				self.mDataCache.Channel_ReLoad( )
 	 			from ElisProperty import ResetHash
 				ResetHash( )
-				self.mDataCache.Channel_ReLoad( )
 				self.mInitialized = False
 				self.ResetAllControl( )
 				self.getControl( E_SETTING_DESCRIPTION ).setLabel( '' )
+				self.CloseProgress( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 
 		elif selectedId == E_FORMAT_HDD :
@@ -682,12 +682,10 @@ class Configure( SettingWindow ) :
 
 
 	def ConnectEthernet( self ) :
-		self.ShowProgress( MR_LANG( 'Now connecting...' ), 15 )
+		self.mProgressThread = self.ShowProgress( MR_LANG( 'Now connecting...' ), 15 )
 		ret = self.mIpParser.SetEthernet( self.mTempNetworkType, self.mTempIpAddr, self.mTempSubNet, self.mTempGateway, self.mTempDns )
 		SetCurrentNetworkType( NETWORK_ETHERNET )
-		self.mProgress.SetResult( True )
 		if ret == False :
-			self.mProgress.SetResult( True )
 			time.sleep( 1.5 )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Network setup has failed to complete' ) )
@@ -697,7 +695,6 @@ class Configure( SettingWindow ) :
 				self.mSavedNetworkType = self.mTempNetworkType
 				self.LoadEthernetAddress( )
 				SetIpAddressProperty( self.mSavedIpAddr, self.mSavedSubNet, self.mSavedGateway, self.mSavedDns )
-				self.mProgress.SetResult( True )
 				self.SetListControl( )
 			else :
 				self.mSavedIpAddr = self.mTempIpAddr
@@ -706,7 +703,7 @@ class Configure( SettingWindow ) :
 				self.mSavedDns = self.mTempDns
 				self.mSavedNetworkType = self.mTempNetworkType
 				SetIpAddressProperty( self.mSavedIpAddr, self.mSavedSubNet, self.mSavedGateway, self.mSavedDns )
-				self.mProgress.SetResult( True )
+		self.CloseProgress( )
 
 
 	def ReLoadEthernetIp( self ) :
@@ -769,9 +766,9 @@ class Configure( SettingWindow ) :
 				dialog.doModal( )
 				self.mRunningNetwork = False
 				return
-			self.ShowProgress( MR_LANG( 'Now search...' ), 15 )
+			self.mProgressThread = self.ShowProgress( MR_LANG( 'Now search...' ), 15 )
 			apList = self.mWireless.ScanWifiAP( dev )
-			self.mProgress.SetResult( True )
+			self.CloseProgress( )
 			time.sleep( 1.5 )
 			dialog = xbmcgui.Dialog( )
 			if apList == None :
@@ -815,13 +812,13 @@ class Configure( SettingWindow ) :
 				dialog.doModal( )
 				return
 			self.mRunningNetwork = True
-			self.ShowProgress( MR_LANG( 'Now connecting...' ), 30 )
+			self.mProgressThread = self.ShowProgress( MR_LANG( 'Now connecting...' ), 30 )
 			ret1 = self.mWireless.WriteWpaSupplicant( self.mUseHiddenId, self.mHiddenSsid, self.mCurrentSsid, self.mEncryptType, self.mPassWord )
 			ret2 = self.mWireless.ConnectWifi( dev )
 			SetCurrentNetworkType( NETWORK_WIRELESS )
 			addressIp, addressMask, addressGateway, addressNameServer = GetNetworkAddress( dev )
 			SetIpAddressProperty( addressIp, addressMask, addressGateway, addressNameServer )
-			self.mProgress.SetResult( True )
+			self.CloseProgress( )
 			if ret1 == False or ret2 == False :
 				time.sleep( 1.5 )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -852,7 +849,11 @@ class Configure( SettingWindow ) :
 		self.mProgress = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
 		self.mProgress.SetDialogProperty( aTime, aString )
 		self.mProgress.doModal( )
-		return
+
+
+	def CloseProgress( self ) :
+		self.mProgress.SetResult( True )
+		self.mProgressThread.join( )
 
 
 	def TimeSetting( self, aControlId ) :
@@ -956,9 +957,10 @@ class Configure( SettingWindow ) :
 
 
 	def StartCheckNetworkTimer( self ) :
-		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Start' )	
-		self.mCheckNetworkTimer = self.AsyncCheckNetworkTimer( )
+		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Start' )
 		self.mEnableLocalThread = True
+		self.mCheckNetworkTimer = self.AsyncCheckNetworkTimer( )
+		
 	
 
 	def StopCheckNetworkTimer( self ) :

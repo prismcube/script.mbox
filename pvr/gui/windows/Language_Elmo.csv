@@ -389,6 +389,7 @@
 "Reset Favorite Add-ons",,,,,,,,,,2306
 "Reset Configure Setting",,,,,,,,,,2307
 "Symbol Rate","Symbolrate","Debit de symbole","Symbolrate","Tasa de simbolos","Symbolova rychlost","Symbolrate","Symbol rate","Sembol oranı","Частота символов",2308
+"Network Type",,,,,,,,,,2309
 "Installation",,,,,,,,,,3001
 "No Channel",,,,,,,,,,3002
 "Unknown","Unbekannt","Inconnu","Sconosciuto","Desconocido","Neznamo","Onbekend","Nieznany","Bilinmiyor","Неизвестно",3003
@@ -956,3 +957,50 @@
 "[I]Scrambled[/I]",,,,,,,,,,3565
 "[I]No Signal[/I] ",,,,,,,,,,3566
 "[I]Scrambled[/I] ",,,,,,,,,,3567
+"Try again after stopping recordings or PVR or Timeshift",,,,,,,,,,3568
+"VERSION",,,,,,,,,,3569
+"SIZE",,,,,,,,,,3570
+"DESCRIPTION",,,,,,,,,,3571
+"Download",,,,,,,,,,3572
+"System, OS, MBox Update",,,,,,,,,,3573
+"Addon Application Update",,,,,,,,,,3574
+"Not Checked",,,,,,,,,,3575
+"Click to download",,,,,,,,,,3576
+"Updated",,,,,,,,,,3577
+"Updated lastest",,,,,,,,,,3578
+"Update server address is wrong, retry to input URL",,,,,,,,,,3579
+"Firmware Update",,,,,,,,,,3580
+"Can not connect address, retry to input URL",,,,,,,,,,3581
+"Aready Updated",,,,,,,,,,3582
+"Latest version",,,,,,,,,,3583
+"Refresh",,,,,,,,,,3584
+"Change Address",,,,,,,,,,3585
+"Load Default Address",,,,,,,,,,3586
+"Change Server Address",,,,,,,,,,3587
+"Save update server URL",,,,,,,,,,3588
+"Do you want to save ?",,,,,,,,,,3589
+"Download STB firmware, check network live",,,,,,,,,,3590
+"Channel Update",,,,,,,,,,3591
+"ChannelList update",,,,,,,,,,3592
+"Check provisionning firmware from PrismCube Server, check network live",,,,,,,,,,3593
+"Update Check",,,,,,,,,,3594
+"Firmware",,,,,,,,,,3595
+"File Checking...",,,,,,,,,,3596
+"File is corrupt, Try again download",,,,,,,,,,3597
+"USB is not detected, Please insert USB",,,,,,,,,,3598
+"Unpacking...",,,,,,,,,,3599
+"Check USB",,,,,,,,,,3600
+"Update Now",,,,,,,,,,3601
+"Reboot and Update, No eject USB",,,,,,,,,,3602
+"Now reboot and follow from VFD",,,,,,,,,,3603
+"Are you sure ?",,,,,,,,,,3604
+"Disconnected Network",,,,,,,,,,3605
+"Already exist download file",,,,,,,,,,3606
+"Do you want to continue ?",,,,,,,,,,3607
+"Downloading...",,,,,,,,,,3608
+"Enter server address",,,,,,,,,,3609
+"Select Package",,,,,,,,,,3610
+"Update process failed",,,,,,,,,,3611
+"Connect server error",,,,,,,,,,3612
+"Now updating...",,,,,,,,,,3613
+"Complete",,,,,,,,,,3614

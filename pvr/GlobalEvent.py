@@ -55,7 +55,7 @@ class GlobalEvent( object ) :
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_SUCCESS )
 
 		elif aEvent.getName( ) == ElisEventVideoIdentified( ).getName( ) :
-			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+			#hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
 
 			iconIndex = ElisEnum.E_ICON_1080i
 			if aEvent.mVideoHeight <= 576 :
@@ -67,7 +67,7 @@ class GlobalEvent( object ) :
 
 		elif aEvent.getName( ) == ElisEventPowerSave( ).getName( ) :
 			if self.mIsDialogOpend == False :
-				thread = threading.Timer( 1, self.AsyncPowerSave )
+				thread = threading.Timer( 0.3, self.AsyncPowerSave )
 				thread.start( )
 				
 
