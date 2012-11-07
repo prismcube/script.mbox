@@ -317,13 +317,15 @@ class SystemUpdate( SettingWindow ) :
 			self.UpdatePropertyGUI( 'DescriptionTitle', MR_LANG( 'DESCRIPTION' ) )
 			self.UpdatePropertyGUI( 'UpdateDescription', iPVS.mDescription )
 
+			"""
 			lblDescTitle = ''
 			if iPVS.mType == E_TYPE_PRISMCUBE :
-				lblDescTitle = MR_LANG( 'System, OS, MBox Update' )
+				lblDescTitle = MR_LANG( 'Checking Last Update' )
 			elif iPVS.mType == E_TYPE_ADDONS :
 				lblDescTitle = MR_LANG( 'Addon Application Update' )
 
 			self.UpdateControlGUI( E_SETTING_DESCRIPTION, lblDescTitle )
+			"""
 				
 
 	def InitPVSData( self ) :
@@ -491,17 +493,17 @@ class SystemUpdate( SettingWindow ) :
 		if aStep == E_UPDATE_STEP_READY :
 			self.OpenAnimation( )
 			self.SetFocusControl( E_CONTROL_ID_GROUP_PVS )
-			LOG_TRACE('------------------updateStep[%s]'% strStepNo )
+			#LOG_TRACE('------------------updateStep[%s]'% strStepNo )
 
 		elif aStep > E_UPDATE_STEP_READY :
 			self.SetFocusControl( E_CONTROL_ID_GROUP_PVS )
-			LOG_TRACE('------------------updateStep[%s]'% strStepNo )
+			#LOG_TRACE('------------------updateStep[%s]'% strStepNo )
 
 
 		if aStep == E_UPDATE_STEP_HOME :
 			self.ResetAllControl( )
 			self.AddInputControl( E_Input01, MR_LANG( 'Firmware Update' ), '', MR_LANG( 'Download STB firmware, check network live' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Channel Update' ), '', MR_LANG( 'ChannelList update' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Channel Update' ), '',  MR_LANG( 'ChannelList update' ) )
 
 			self.SetEnableControl( E_Input01, True )
 			self.SetEnableControl( E_Input02, True )
@@ -522,7 +524,7 @@ class SystemUpdate( SettingWindow ) :
 
 		elif aStep == E_UPDATE_STEP_READY :
 			self.ResetAllControl( )
-			self.AddInputControl( E_Input01, MR_LANG( 'Update Check' ), '', MR_LANG( 'Check provisionning firmware from PrismCube Server, check network live' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Update Check' ), '', MR_LANG( 'Check firmware from update server' ) )
 			self.AddInputControl( E_Input02, MR_LANG( 'Firmware' ), MR_LANG( 'Not Checked' ), MR_LANG( 'Click to download' ) )
 			self.SetEnableControl( E_Input02, False )
 
