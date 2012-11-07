@@ -10,7 +10,7 @@ BUTTON_ID_CHANNEL_LIST			= 90400
 BUTTON_ID_FAVORITE_ADDONS		= 90500
 BUTTON_ID_MEDIA_CENTER			= 90600
 BUTTON_ID_SYSTEM_INFO			= 90700
-BUTTON_ID_BACK					= 90800
+BUTTON_ID_HELP					= 90800
 
 BUTTON_ID_MEDIA_WEATHER	        = 90601
 BUTTON_ID_MEDIA_PICTURES        = 90602
@@ -150,6 +150,9 @@ class MainMenu( BaseWindow ) :
 			if position != -1 :
 				self.SetMediaCenter( )
 				xbmc.executebuiltin( "runaddon(%s)" % self.mFavAddonsList[ position ].getProperty( 'AddonId' ) )
+
+		elif aControlId == BUTTON_ID_HELP :
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_HELP )
 
 		elif aControlId == 20 :
 			pass

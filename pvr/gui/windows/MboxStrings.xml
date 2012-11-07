@@ -3,7 +3,7 @@
 	<string id="1">All CHANNELS</string>
 	<string id="2">SATELLITE</string>
 	<string id="3">FTA/CAS</string>
-	<string id="4">FAVORITES</string>
+	<string id="4">FAVORITE GROUPS</string>
 	<string id="5">MODE</string>
 	<string id="6">TV</string>
 	<string id="7">Radio</string>
@@ -48,7 +48,7 @@
 	<string id="46">Fav. Addons</string>
 	<string id="47">Media Center</string>
 	<string id="48">STB Info</string>
-	<string id="49">Back</string>
+	<string id="49">Help</string>
 	<string id="50">First Installation</string>
 	<string id="51">Antenna Setup</string>
 	<string id="52">Channel Search</string>
@@ -71,7 +71,7 @@
 	<string id="69">The Channel List provides you with functions such as sorting and editing TV & Radio channel list</string>
 	<string id="70">The Media Center allows you to browse and view videos, photos, and music from your storage</string>
 	<string id="71">STB Info provides the STB status including product name and number, free disk space, etc</string>
-	<string id="72">Return to the screen after hiding the main menu</string>
+	<string id="72">The Help gives you assistance using PRISMCUBE RUBY</string>
 	<string id="73">Install</string>
 	<string id="74">Channel</string>
 	<string id="75">Addons</string>
@@ -107,6 +107,7 @@
 	<string id="107">Page</string>
 	<string id="108">Move Position</string>
 	<string id="109">Add</string>
+	<string id="110">The Fav. Addons allow you to add your XBMC addons in the sub-menu and access them easily</string>
 </xmlstrings>
 <property>
 	<string id="2001">Last ServiceType</string>
@@ -952,4 +953,52 @@
 	<string id="3539">The recording you just requested confilcts with</string>
 	<string id="3540">File not found : %s</string>
 	<string id="3541">Test scenario not available : %s</string>
+	<string id="3542">Select the transponder for the satellite you have chosen</string>
+	<string id="3543">FAVORITES</string>
+	<string id="3544">Try again after stopping recordings or PVR or Timeshift</string>
+	<string id="3545">VERSION</string>
+	<string id="3546">SIZE</string>
+	<string id="3547">DESCRIPTION</string>
+	<string id="3548">Download</string>
+	<string id="3549">System, OS, MBox Update</string>
+	<string id="3550">Addon Application Update</string>
+	<string id="3551">Not Checked</string>
+	<string id="3552">Click to download</string>
+	<string id="3553">Updated</string>
+	<string id="3554">Updated lastest</string>
+	<string id="3555">Update server address is wrong, retry to input URL</string>
+	<string id="3556">Firmware Update</string>
+	<string id="3557">Can not connect address, retry to input URL</string>
+	<string id="3558">Aready Updated</string>
+	<string id="3559">Latest version</string>
+	<string id="3560">Refresh</string>
+	<string id="3561">Change Address</string>
+	<string id="3562">Load Default Address</string>
+	<string id="3563">Change Server Address</string>
+	<string id="3564">Save update server URL</string>
+	<string id="3565">Do you want to save ?</string>
+	<string id="3566">Download STB firmware, check network live</string>
+	<string id="3567">Channel Update</string>
+	<string id="3568">ChannelList update</string>
+	<string id="3569">Check provisionning firmware from PrismCube Server, check network live</string>
+	<string id="3570">Update Check</string>
+	<string id="3571">Firmware</string>
+	<string id="3572">File Checking...</string>
+	<string id="3573">File is corrupt, Try again download</string>
+	<string id="3574">USB is not detected, Please insert USB</string>
+	<string id="3575">Unpacking...</string>
+	<string id="3576">Check USB</string>
+	<string id="3577">Update Now</string>
+	<string id="3578">Reboot and Update, No eject USB</string>
+	<string id="3579">Now reboot and follow from VFD</string>
+	<string id="3580">Are you sure ?</string>
+	<string id="3581">Disconnected Network</string>
+	<string id="3582">Already exist download file</string>
+	<string id="3583">Do you want to continue ?</string>
+	<string id="3584">Downloading...</string>
+	<string id="3585">Enter server address</string>
+	<string id="3586">Select Package</string>
+	<string id="3587">Connect server error</string>
+	<string id="3588">Now updating...</string>
+	<string id="3589">Complete</string>
 </strings>

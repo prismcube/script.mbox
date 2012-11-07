@@ -49,21 +49,22 @@ E_STRING_CHECK_DISKFULL  = 7
 E_STRING_CHECK_FINISH    = 8
 E_STRING_CHECK_CONNECT_ERROR  = 9
 E_STRING_CHECK_UNLINK_NETWORK = 10
-
+E_STRING_CHECK_CHANNEL_FAIL   = 11
 
 class PVSClass( object ) :
 	def __init__( self ) :
-		self.mName			= None
-		self.mFileName		= None
-		self.mDate			= None
-		self.mDescription	= []
-		self.mMd5			= None
-		self.mSize			= 0
-		self.mVersion		= None
-		self.mId			= None
-		self.mType			= None
-		self.mError			= -1
-		self.mProgress		= None
+		self.mName					= None
+		self.mFileName				= None
+		self.mDate					= None
+		self.mDescription			= []
+		self.mMd5					= None
+		self.mSize					= 0
+		self.mVersion				= None
+		self.mId					= None
+		self.mType					= None
+		self.mError					= -1
+		self.mProgress				= None
+		self.mChannelUpdateProgress = None
 
 
 class SystemUpdate( SettingWindow ) :
@@ -286,7 +287,9 @@ class SystemUpdate( SettingWindow ) :
 			line = MR_LANG( 'Not enough space, Check USB' )
 		elif aMsg == E_STRING_CHECK_CONNECT_ERROR :
 			line = MR_LANG( 'Connect server error' )
-		
+		elif aMsg == E_STRING_CHECK_CHANNEL_FAIL :
+			line = MR_LANG( 'Update process failed' )
+
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( title, line )
 		dialog.doModal( )
@@ -863,7 +866,6 @@ class SystemUpdate( SettingWindow ) :
 			updatelist = self.GetServerInfo( kb.getText( ) )
 			LOG_TRACE( 'updatelist = %s' % updatelist )
 			showtext = []
-			
 			if updatelist :
 				for text in updatelist :
 					showtext.append( text[0] )
@@ -872,7 +874,10 @@ class SystemUpdate( SettingWindow ) :
 				dialog = xbmcgui.Dialog( )
 				ret = dialog.select( MR_LANG( 'Select Package' ), showtext )
 				if ret >= 0 :
-					self.GetChannelUpdate( kb.getText( ), updatelist[ret][1] )
+					result = self.GetChannelUpdate( kb.getText( ), updatelist[ret][1] )
+					if result == False :
+						self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
+
 			else :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CONNECT_ERROR )
 
@@ -895,7 +900,7 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def GetChannelUpdate( self, aAddress, aPath ) :
-		self.ChannelUpdateProgress( MR_LANG( 'Now updating...' ), 20 )
+		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating...' ), 20 )
 		ret = self.DownloadxmlFile( aAddress, aPath )
 		if ret :
 			self.mCommander.System_SetManualChannelList( '/tmp/defaultchannel.xml' )
@@ -904,10 +909,10 @@ class SystemUpdate( SettingWindow ) :
 			self.mTunerMgr.SyncChannelBySatellite( )
 			self.mDataCache.Channel_ReLoad( )
 			self.mDataCache.Player_AVBlank( False )
-			self.mProgress.SetResult( True )
+			self.CloseProgress( )
 			return True
 		else :
-			self.mProgress.SetResult( True )
+			self.CloseProgress( )
 			return False
 
 
@@ -930,4 +935,8 @@ class SystemUpdate( SettingWindow ) :
 		self.mProgress.SetDialogProperty( aTime, aString )
 		self.mProgress.doModal( )
 
+
+	def CloseProgress( self ) :
+		self.mProgress.SetResult( True )
+		self.mChannelUpdateProgress.join( )
 

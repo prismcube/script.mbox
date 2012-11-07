@@ -25,7 +25,7 @@ class SatelliteConfigSimple( SettingWindow ) :
 		self.mSelectedTransponderIndex = 0
 
 		self.SetSettingWindowLabel( MR_LANG( 'Satellite Configuration' ) )
-		self.LoadNoSignalState( )
+		self.VisibleTuneStatus( False )
 
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.InitConfig( )
@@ -183,10 +183,10 @@ class SatelliteConfigSimple( SettingWindow ) :
 		self.AddUserEnumControl( E_SpinEx03, MR_LANG( '22KHz Tone Control' ), USER_ENUM_LIST_ON_OFF, self.mCurrentSatellite.mFrequencyLevel, MR_LANG( 'When set to \'On\', LNBs will be switched between Low and High band' ) )
 
 		if self.mTransponderList :
-			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), self.mTransponderList[ self.mSelectedTransponderIndex ], MR_LANG( 'Select the transponder for the selected satellite' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), self.mTransponderList[ self.mSelectedTransponderIndex ], MR_LANG( 'Select the transponder for the satellite you have chosen' ) )
 			self.mHasTransponder = True			
 		else :
-			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), MR_LANG( 'None' ), MR_LANG( 'Select the transponder for the selected satellite' ) )			
+			self.AddInputControl( E_Input03, MR_LANG( 'Transponder' ), MR_LANG( 'None' ), MR_LANG( 'Select the transponder for the satellite you have chosen' ) )			
 			self.mHasTransponder = False
 
 		if self.mSelectedIndexLnbType == ElisEnum.E_LNB_SINGLE :
