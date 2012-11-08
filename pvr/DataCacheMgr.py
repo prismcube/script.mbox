@@ -1131,8 +1131,8 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Channel_Restore( aRestore )
 
 
-	def Channel_Delete( self, aIChannel ) :
-		return self.mCommander.Channel_Delete( aIChannel )
+	def Channel_Delete( self, aUseDB, aIChannel ) :
+		return self.mCommander.Channel_Delete( aUseDB, aIChannel )
 
 
 	def Channel_DeleteByNumber( self, aType, aUseDB, aNumList ) :
