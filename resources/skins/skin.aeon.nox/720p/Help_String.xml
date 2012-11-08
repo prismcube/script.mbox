@@ -671,4 +671,72 @@
 			<height>400</height>
 		</content>
 	</page>
+
+	<page number="36" title="Media Center" location="(MAIN MENU > MEDIA CENTER or PRESS XBMC BUTTON)">
+		<content name="help/xbmc.png">
+			<type>image</type>
+			<posx>40</posx>
+			<posy>140</posy>
+			<width>600</width>
+			<height>399</height>
+		</content>
+		<content name="XBMC is an entertainment hub for digital media that can be used to play almost all popular audio and video formats from your hard drive. There are playlist and slideshow functions, a weather forecast feature and many audio visualizations.[CR][CR]- Weather[CR][CR]- Pictures[CR][CR]- Music[CR][CR]- Video[CR][CR]- Programs[CR][CR]- Settings">
+			<type>textbox</type>
+			<posx>680</posx>
+			<posy>130</posy>
+			<width>500</width>
+			<height>450</height>
+		</content>
+	</page>
+	
+	<page number="37" title="Media Center - Settings" location="(MEDIA CENTER > SETTINGS)">
+		<content name="help/settings.png">
+			<type>image</type>
+			<posx>40</posx>
+			<posy>140</posy>
+			<width>600</width>
+			<height>338</height>
+		</content>
+		<content name="Most of XBMC's global settings can be configured via the GUI under Settings. In the Settings Window, you are able to configure XBMC's options:[CR][CR]- Appearance Settings[CR][CR]- Video Settings[CR][CR]- Music Settings[CR][CR]- Pictures Settings[CR][CR]- Weather Settings[CR][CR]- Add-ons[CR][CR]- Network Settings[CR][CR]- System Settings[CR][CR]- Skin Settings">
+			<type>textbox</type>
+			<posx>680</posx>
+			<posy>130</posy>
+			<width>570</width>
+			<height>450</height>
+		</content>
+	</page>
+
+	<page number="38" title="Media Center - Addons" location="(MEDIA CENTER > SETTINGS > ADDONS > GET ADD-ONS > PRISMCUBE'S ADD-ONS)">
+		<content name="help/install addons.png">
+			<type>image</type>
+			<posx>40</posx>
+			<posy>140</posy>
+			<width>600</width>
+			<height>331</height>
+		</content>
+		<content name="Add-ons are packages that add features and functions not normally included with XBMC. XBMC allows the user to install new add-ons like YouTube, The Movie trailer, Navi-X, as well as skins from the repository installed.[CR][CR]GET ADD-ONS[CR][CR]1. Select PRISMCUBE'S ADD-ONS and press OK.[CR][CR]2. Scroll down to the category you want and press OK.[CR][CR]3. Select the add-on you want to install.[CR][CR]4. A summary dialog will be brought up allowing you see various properties of the add-on. Select INSTALL to begin automatic downloading and installing.">
+			<type>textbox</type>
+			<posx>680</posx>
+			<posy>130</posy>
+			<width>550</width>
+			<height>400</height>
+		</content>
+	</page>
+	
+	<page number="39" title="Media Center - Addons" location="(MEDIA CENTER > PICTURES or MUSIC or VIDEO or PROGRAMS)">
+		<content name="help/addons.png">
+			<type>image</type>
+			<posx>40</posx>
+			<posy>140</posy>
+			<width>600</width>
+			<height>334</height>
+		</content>
+		<content name="When the add-on has finished downloading XBMC will enable it and depending on the add-on ask if you want to start using it. Add-ons will then appear in their appropriate section as follows:[CR][CR]- Weather[CR][CR]- Pictures[CR][CR]- Music[CR][CR]- Video[CR][CR]- Programs[CR][CR]- Settings">
+			<type>textbox</type>
+			<posx>680</posx>
+			<posy>130</posy>
+			<width>500</width>
+			<height>400</height>
+		</content>
+	</page>
 </help>
