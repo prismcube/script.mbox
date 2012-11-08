@@ -451,6 +451,21 @@ class WindowMgr( object ) :
 		shutil.copyfile( mboxIncludePath, skinIncludePath )
 
 
+	def GetSkinXMLPath( self ) :
+		skinName = self.mSkinName
+		print 'skinName=%s' %skinName
+		
+		scriptDir = pvr.Platform.GetPlatform().GetScriptDir( )
+		
+		if skinName.lower() == 'default' or skinName.lower() == 'skin.confluence' :
+			skinXMLPath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'skins', 'Default', '720p')
+		
+		else : 
+			skinXMLPath = os.path.join( pvr.Platform.GetPlatform().GetScriptDir( ), 'resources', 'skins', skinName, '720p' )
+		
+		return skinXMLPath
+
+
 	def AddDefaultFont( self ) :
 		self.mSkinFontPath = xbmc.translatePath( "special://skin/fonts/" )
 		self.mScriptFontPath = os.path.join( os.getcwd() , "resources" , "fonts" )
