@@ -331,26 +331,26 @@
 					</item>
 					<item id="5">
 						<label>SCRIPT75</label>
-						<label2>SCRIPT70</label2>
+						<label2>SCRIPT110</label2>
 						<onclick>SendClick(90500)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="6">
 						<label>SCRIPT76</label>
-						<label2>SCRIPT71</label2>
+						<label2>SCRIPT70</label2>
 						<onclick>SendClick(90600)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="7">
 						<label>SCRIPT77</label>
-						<label2>SCRIPT72</label2>
+						<label2>SCRIPT71</label2>
 						<onclick>SendClick(90700)</onclick>
 						<visible>true</visible>
 					</item>
 					<item id="8">
 						<label>SCRIPT49</label>
-						<label2>SCRIPT73</label2>
-						<onclick>ParentDir</onclick>
+						<label2>SCRIPT72</label2>
+						<onclick>SendClick(90800)</onclick>
 						<visible>true</visible>
 					</item>
 				</content>
@@ -435,6 +435,11 @@
 		</control>
 		<control type="button" id="90700">
 			<label>Version</label>
+			<onclick>-</onclick>
+			<visible>false</visible>
+		</control>
+		<control type="button" id="90800">
+			<label>Help</label>
 			<onclick>-</onclick>
 			<visible>false</visible>
 		</control>

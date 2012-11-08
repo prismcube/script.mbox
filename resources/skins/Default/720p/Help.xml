@@ -1,6 +1,7 @@
 <window id="3033">
 	<defaultcontrol always="true">7001</defaultcontrol>
 	<allowoverlay>no</allowoverlay>
+	<onload>SetProperty(HelpString,Help_String.xml)</onload>	
 	<controls>
 		<control type="group">
 			<control type="group" id="9000">
@@ -76,7 +77,7 @@
 				<!-- Next & Previous Buttons -->
 				<control type="group">
 					<posx>250</posx>
-					<posy>150</posy>
+					<posy>160</posy>
 					<control type="button" id="7000">
 						<description>Prev button</description>
 						<posx>5</posx>
@@ -150,7 +151,7 @@
 				<!-- Page Number -->
 				<control type="label" id="1004">
 					<posx>598</posx>
-					<posy>635</posy>
+					<posy>645</posy>
 					<width>100</width>
 					<height>30</height>
 					<font>font12_title</font>
