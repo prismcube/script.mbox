@@ -163,7 +163,7 @@
 				<control type="group">
 					<posx>-50</posx>
 					<posy>-37</posy>
-					<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(620).HasFocus) | Control.HasFocus(702) | Control.HasFocus(706)">conditional</animation>
+					<animation effect="slide" start="-200,0" end="0,0" delay="0" time="300" condition="ControlGroup(3620).HasFocus) | Control.HasFocus(702) | Control.HasFocus(706)">conditional</animation>
 					<description>info explane</description>
 					<control type="image">
 						<posx>0</posx>

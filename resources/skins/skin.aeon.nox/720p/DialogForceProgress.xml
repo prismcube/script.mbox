@@ -6,31 +6,34 @@
 			<include>DefaultDialogCloseEffect</include>
 			<include>SmallerDialogs</include>
 			<include>Dialogs_Group</include>
-			<include>Dialogs_Tablet</include>
-			<control type="progress" id="400">
-				<include>Dialogs_Progress</include>
-			</control>
-			<include>Dialogs_HardDrive</include>
-			<control type="label" id="100">
-				<include>Dialogs_Label1</include>
-			</control>
-			<control type="label" id="200">
-				<include>Dialogs_Label2</include>
-			</control>
-			<control type="label" id="300">
-				<include>Dialogs_Label3</include>
-			</control>
-			<control type="label" id="201">
-				<description>page</description>
-				<posx>580</posx>
-				<posy>18</posy>
-				<width>100</width>
-				<height>30</height>
-				<font>Font_Reg20</font>
-				<align>right</align>
-				<aligny>center</aligny>
-				<textcolor>white</textcolor>
-				<shadowcolor>black</shadowcolor>
+			<control type="group">
+				<posy>-290</posy>
+				<include>Dialogs_Tablet</include>
+				<control type="progress" id="400">
+					<include>Dialogs_Progress</include>
+				</control>
+				<include>Dialogs_HardDrive</include>
+				<control type="label" id="100">
+					<include>Dialogs_Label1</include>
+				</control>
+				<control type="label" id="200">
+					<include>Dialogs_Label2</include>
+				</control>
+				<control type="label" id="300">
+					<include>Dialogs_Label3</include>
+				</control>
+				<control type="label" id="201">
+					<description>page</description>
+					<posx>480</posx>
+					<posy>5</posy>
+					<width>100</width>
+					<height>30</height>
+					<font>Font_Reg18</font>
+					<align>right</align>
+					<aligny>center</aligny>
+					<textcolor>grey2</textcolor>
+					<shadowcolor>black</shadowcolor>
+				</control>
 			</control>
 
 		</control>
