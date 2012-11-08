@@ -65,6 +65,10 @@ class Help( SettingWindow ) :
 		self.mPrevStepNum				= 	E_STEP_FEATURES
 		self.mRoot 					=	None
 		self.mListContent 				=	[]
+		if not self.mPlatform.IsPrismCube( ) :
+			global HELP_STRING
+			HELP_STRING = 'special://home/addons/script.mbox/resources/skins/Default/720p/Help_String.xml'
+
 		self.MakeContentList( )
 
 
