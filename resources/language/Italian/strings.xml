@@ -89,9 +89,6 @@
 	<string id="87">ITA_Check your system resource at a glance</string>
 	<string id="88">ITA_Go Parent</string>
 	<string id="89">ITA_Select Action</string>
-	<string id="90">ITA_Volume</string>
-	<string id="91">ITA_Record Start</string>
-	<string id="92">ITA_Record Stop</string>
 	<string id="93">ITA_Rewind</string>
 	<string id="94">ITA_Play</string>
 	<string id="95">ITA_Pause</string>
@@ -997,4 +994,8 @@
 	<string id="3587">ITA_Connect server error</string>
 	<string id="3588">ITA_Now updating...</string>
 	<string id="3589">ITA_Complete</string>
+	<string id="3590">ITA_Show bookmark</string>
+	<string id="3591">ITA_Hide bookmark</string>
+	<string id="3592">ITA_Add bookmark</string>
+	<string id="3593">ITA_Show bookmark list</string>
 </strings>

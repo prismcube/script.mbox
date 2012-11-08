@@ -89,9 +89,6 @@
 	<string id="87">POL_Check your system resource at a glance</string>
 	<string id="88">POL_Go Parent</string>
 	<string id="89">POL_Select Action</string>
-	<string id="90">POL_Volume</string>
-	<string id="91">POL_Record Start</string>
-	<string id="92">POL_Record Stop</string>
 	<string id="93">POL_Rewind</string>
 	<string id="94">POL_Play</string>
 	<string id="95">POL_Pause</string>
@@ -997,4 +994,8 @@
 	<string id="3587">POL_Connect server error</string>
 	<string id="3588">POL_Now updating...</string>
 	<string id="3589">POL_Complete</string>
+	<string id="3590">POL_Show bookmark</string>
+	<string id="3591">POL_Hide bookmark</string>
+	<string id="3592">POL_Add bookmark</string>
+	<string id="3593">POL_Show bookmark list</string>
 </strings>

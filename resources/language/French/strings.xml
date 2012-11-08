@@ -89,9 +89,6 @@
 	<string id="87">FRE_Check your system resource at a glance</string>
 	<string id="88">FRE_Go Parent</string>
 	<string id="89">FRE_Select Action</string>
-	<string id="90">FRE_Volume</string>
-	<string id="91">FRE_Record Start</string>
-	<string id="92">FRE_Record Stop</string>
 	<string id="93">FRE_Rewind</string>
 	<string id="94">FRE_Play</string>
 	<string id="95">FRE_Pause</string>
@@ -997,4 +994,8 @@
 	<string id="3587">FRE_Connect server error</string>
 	<string id="3588">FRE_Now updating...</string>
 	<string id="3589">FRE_Complete</string>
+	<string id="3590">FRE_Show bookmark</string>
+	<string id="3591">FRE_Hide bookmark</string>
+	<string id="3592">FRE_Add bookmark</string>
+	<string id="3593">FRE_Show bookmark list</string>
 </strings>
