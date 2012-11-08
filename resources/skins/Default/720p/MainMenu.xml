@@ -100,41 +100,49 @@
 					<content>
 						<item id="1">
 							<label>SCRIPT42</label>
+							<label2>SCRIPT66</label2>
 							<onclick>SendClick(90100)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="2">
 							<label>SCRIPT43</label>
+							<label2>SCRIPT67</label2>
 							<onclick>SendClick(90200)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="3">
 							<label>SCRIPT44</label>
+							<label2>SCRIPT68</label2>
 							<onclick>SendClick(90300)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="4">
 							<label>SCRIPT45</label>
+							<label2>SCRIPT69</label2>
 							<onclick>SendClick(90400)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="5">
 							<label>SCRIPT46</label>
+							<label2>SCRIPT110</label2>
 							<onclick>SendClick(90500)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="6">
 							<label>SCRIPT47</label>
+							<label2>SCRIPT70</label2>
 							<onclick>SendClick(90600)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="7">
 							<label>SCRIPT48</label>
+							<label2>SCRIPT71</label2>
 							<onclick>SendClick(90700)</onclick>
 							<visible>true</visible>
 						</item>
 						<item id="8">
 							<label>SCRIPT49</label>
+							<label2>SCRIPT72</label2>
 							<onclick>SendClick(90800)</onclick>
 							<visible>true</visible>
 						</item>
@@ -485,123 +493,15 @@
 				</control>
 				<control type="label">
 					<description>MainMenuDescription</description>
-					<!--posx>100</posx-->
 					<posx>70</posx>
 					<posy>6</posy>
 					<width>825</width>
 					<height>35</height>
 					<font>font12</font>
-					<!--label>Installation</label-->
-					<label>SCRIPT66</label>
-					<align>left</align>
-					<textcolor>white</textcolor>                
-					<shadowcolor>black</shadowcolor>	                
-					<visible>Container(9000).HasFocus(1)</visible>
-				</control>
-				<control type="label">
-					<description>MainMenuDescription</description>
-					<!--posx>100</posx-->
-					<posx>70</posx>
-					<posy>6</posy>
-					<width>825</width>
-					<height>35</height>
-					<font>font12</font>
-					<!--label>Go to Archive Window</label-->
-					<label>SCRIPT67</label>
+					<label>$INFO[Container(9000).ListItem.Label2]</label>
 					<align>left</align>
 					<textcolor>white</textcolor>                
 					<shadowcolor>black</shadowcolor>
-					<visible>Container(9000).HasFocus(2)</visible>
-				</control>
-				<control type="label">
-					<description>MainMenuDescription</description>
-					<!--posx>100</posx-->
-					<posx>70</posx>
-					<posy>6</posy>
-					<width>825</width>
-					<height>35</height>
-					<font>font12</font>
-					<!--label>Go to EPG Window</label-->
-					<label>SCRIPT68</label>
-					<align>left</align>
-					<textcolor>white</textcolor>                
-					<shadowcolor>black</shadowcolor>
-					<visible>Container(9000).HasFocus(3)</visible>
-				</control>
-				<control type="label">
-					<description>MainMenuDescription</description>
-					<!--posx>100</posx-->
-					<posx>70</posx>
-					<posy>6</posy>
-					<width>825</width>
-					<height>35</height>
-					<font>font12</font>
-					<!--label>Go to Channel List</label-->
-					<label>SCRIPT69</label>
-					<align>left</align>
-					<textcolor>white</textcolor>                
-					<shadowcolor>black</shadowcolor>
-					<visible>Container(9000).HasFocus(4)</visible>
-				</control>
-				<control type="label">
-					<description>MainMenuDescription</description>
-					<!--posx>100</posx-->
-					<posx>70</posx>
-					<posy>6</posy>
-					<width>825</width>
-					<height>35</height>
-					<font>font12</font>
-					<!--label>Go to Channel List</label-->
-					<label>SCRIPT110</label>
-					<align>left</align>
-					<textcolor>white</textcolor>                
-					<shadowcolor>black</shadowcolor>
-					<visible>Container(9000).HasFocus(5)</visible>
-				</control>
-				<control type="label">
-					<description>MainMenuDescription</description>
-					<!--posx>100</posx-->
-					<posx>70</posx>
-					<posy>6</posy>
-					<width>825</width>
-					<height>35</height>
-					<font>font12</font>
-					<!--label>Go to Media Center</label-->
-					<label>SCRIPT70</label>
-					<align>left</align>
-					<textcolor>white</textcolor>                
-					<shadowcolor>black</shadowcolor>
-					<visible>Container(9000).HasFocus(6)</visible>
-				</control>
-				<control type="label">
-					<description>MainMenuDescription</description>
-					<!--posx>100</posx-->
-					<posx>70</posx>
-					<posy>6</posy>
-					<width>825</width>
-					<height>35</height>
-					<font>font12</font>
-					<!--label>System Information</label-->
-					<label>SCRIPT71</label>
-					<align>left</align>
-					<textcolor>white</textcolor>                
-					<shadowcolor>black</shadowcolor>
-					<visible>Container(9000).HasFocus(7)</visible>
-				</control>
-				<control type="label">
-					<description>MainMenuDescription</description>
-					<!--posx>100</posx-->
-					<posx>70</posx>
-					<posy>6</posy>
-					<width>825</width>
-					<height>35</height>
-					<font>font12</font>
-					<!--label>Hide</label-->
-					<label>SCRIPT72</label>
-					<align>left</align>
-					<textcolor>white</textcolor>                
-					<shadowcolor>black</shadowcolor>
-					<visible>Container(9000).HasFocus(8)</visible>
 				</control>
 			</control>
 			<!--Date, Time Info-->

@@ -202,6 +202,11 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 				return False
 
 
+	def VisibleTuneStatus( self , aFlag ) :
+		self.getControl( E_SETTING_LABEL_PIP_NO_SIGNAL ).setVisible( aFlag )
+		self.getControl( E_SETTING_LABEL_PIP_SCRAMBLED ).setVisible( aFlag )
+
+
 	def UpdateVolume( self, aVolumeStep = -1 ) :
 		if self.mPlatform.IsPrismCube( ) :
 			retVolume = xbmc.executehttpapi( 'getvolume' )

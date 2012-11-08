@@ -1,4 +1,4 @@
-import xbmcaddon, sys, os, shutil, time, re
+import xbmcaddon, sys, os, shutil, time, re, stat
 from ElisEnum import ElisEnum
 import pvr.Platform
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
@@ -459,12 +459,22 @@ def CheckDirectory( aPath ) :
 	return True
 
 
+def CheckHdd( ) :
+	cmd = 'df'
+	parsing = Popen( cmd, shell=True, stdout=PIPE )
+	parsing = parsing.stdout.read( ).strip( )
+	if parsing.count( '/dev/sda' ) >= 3 :
+		return True
+
+	return False
+
+
 def CheckEthernet( aEthName ) :
 	status = 'down'
 	cmd = 'cat /sys/class/net/%s/operstate'% aEthName
 	try :
 		p = Popen( cmd, shell=True, stdout=PIPE )
-		status = re.sub( '\n', '', p.stdout.read( ) )
+		status = p.stdout.read( ).strip( )
 		LOG_TRACE('-------------linkStatus[%s]'% status )
 
 	except Exception, e :
@@ -483,7 +493,7 @@ def CheckMD5Sum( aSourceFile, aMd5 ) :
 
 	try :
 		p = Popen( cmd, shell=True, stdout=PIPE )
-		readMd5 = re.sub( '\n', '', p.stdout.read( ) )
+		readMd5 = p.stdout.read( ).strip( )
 		LOG_TRACE('-------------checkMd5[%s] sourceMd5[%s]'% ( readMd5, aMd5 ) )
 		if readMd5 == aMd5 :
 			isVerify = True
@@ -494,12 +504,83 @@ def CheckMD5Sum( aSourceFile, aMd5 ) :
 	return isVerify
 
 
+def GetDeviceSize( path ) :
+	total, used, free = 0, 0, 0
+
+	try :
+		st = os.statvfs(path)
+		free = st.f_bavail * st.f_frsize
+		total = st.f_blocks * st.f_frsize
+		used = (st.f_blocks - st.f_bfree) * st.f_frsize
+
+	except Exception, e :
+		LOG_TRACE( 'except[%s]'% e )
+		total, used, free = 0, 0, 0
+
+	#return (total, used, free)
+	return free
+
+
+def GetUnpackSize( aZipFile ) :
+	total = 0
+
+	fileList = GetUnpackFiles( aZipFile )
+	if fileList :
+		for item in fileList :
+			total += item[0]
+
+	return total
+
+
+def GetFileSize( aFile ) :
+	fsize = 0
+	try :
+		fsize = os.stat( aFile )[stat.ST_SIZE]
+	
+	except Exception, e :
+		LOG_TRACE( 'except[%s]'% e )
+		fsize = -1
+
+	return fsize
+
+
+def GetUnpackFiles( aZipFile ) :
+	tFile = '/tmp/test'
+	#cmd = "unzip -l /mnt/hdd0/program/download/update.2012.10.10.zip | awk '{print $1, $4}' > %s"% tFile
+	cmd = "unzip -l %s | awk '{print $1, $4}' > %s"% ( aZipFile, tFile )
+	fileList = []
+	try :
+		os.system( cmd )
+		os.system( 'sync' )
+		time.sleep( 0.2 )
+		f = open( tFile, 'r' )
+		ret = f.readlines()
+		f.close()
+
+		for line in ret :
+			pars = re.split(' ', line )
+			if pars[0].isdigit( ) :
+				pars[0] = int( pars[0] )
+				if pars[0] == 0 :
+					pars[0] = 4096	#directory size block
+
+				pars[1] = re.sub( '\n', '', pars[1] )
+				if pars[1] :
+					fileList.append( pars )
+
+	except Exception, e :
+		LOG_TRACE( 'except[%s]'% e )
+		return False
+
+	return fileList
+
+
 def GetSTBVersion( ) :
 	stbversion = ''
 	openFile = '/etc/stbversion'
 	try :
 		fp = open( openFile, 'r' )
-		stbversion = re.sub('\n', '', fp.readline( ) )
+		stbversion = fp.readline( ).strip( )
 		fp.close( )
 
 	except Exception, e :
@@ -508,9 +589,9 @@ def GetSTBVersion( ) :
 	return stbversion
 
 
-def CopyToUSB( aSourceFile, aDestPath ) :
+def UnpackToUSB( aZipFile, aDestPath ) :
 	isCopy = False
-	cmd = 'unzip -o %s -d %s'% ( aSourceFile, aDestPath )
+	cmd = 'unzip -o %s -d %s'% ( aZipFile, aDestPath )
 
 	if not os.path.exists( aDestPath ) :
 		LOG_TRACE( '------------check usb[%s]'% aDestPath )

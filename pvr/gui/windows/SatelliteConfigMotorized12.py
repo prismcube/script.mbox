@@ -26,7 +26,7 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 		self.mSelectedTransponderIndex = 0
 
 		self.SetSettingWindowLabel( MR_LANG( 'Satellite Configuration' ) )
-		self.LoadNoSignalState( )
+		self.VisibleTuneStatus( False )
 
 		self.mSelectedIndexLnbType = self.mCurrentSatellite.mLnbType
 		self.InitConfig( )

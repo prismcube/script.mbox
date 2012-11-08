@@ -7,20 +7,15 @@ E_TYPE_ADDONS = 2
 
 E_CURRENT_INFO            = '/config/update.xml'
 E_DOWNLOAD_INFO_PVS       = '/mnt/hdd0/program/download/update.xml'
-E_DEFAULT_PATH_DOWNLOAD   = '/mnt/hdd0/program/download'
+E_DEFAULT_PATH_HDD        = '/mnt/hdd0/program'
+E_DEFAULT_PATH_DOWNLOAD   = '%s/download'% E_DEFAULT_PATH_HDD
 E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
-E_DEFAULT_URL_PVS         = 'http://addon.prismcube.com/update/prismcube/update.xml'
+E_DEFAULT_URL_PVS         = 'http://update.prismcube.com/update/ruby/update.xml'
 
 E_CONTROL_ID_GROUP_PVS      = 9000
 E_CONTROL_ID_LABEL_VERSION  = 100
 E_CONTROL_ID_LABEL_DATE     = 101
 E_CONTROL_ID_LABEL_SIZE     = 102
-
-E_STRING_DATE        = MR_LANG( 'DATE' )
-E_STRING_VERSION     = MR_LANG( 'VERSION' )
-E_STRING_SIZE        = MR_LANG( 'SIZE' )
-E_STRING_DESCRIPTION = MR_LANG( 'DESCRIPTION' )
-E_STRING_OK          = MR_LANG( 'Download' )
 
 CONTEXT_ACTION_REFRESH_CONNECT      = 1
 CONTEXT_ACTION_CHANGE_ADDRESS       = 2
@@ -40,27 +35,44 @@ E_UPDATE_STEP_ERROR_NETWORK = 10
 
 UPDATE_STEP					= E_UPDATE_STEP_FINISH - E_UPDATE_STEP_PROVISION
 
+
+E_STRING_ATTENTION     = 0
+E_STRING_ERROR         = 1
+E_STRING_CHECK_USB       = 0
+E_STRING_CHECK_USB_SPACE = 1
+E_STRING_CHECK_USB_NOT   = 2
+E_STRING_CHECK_ADDRESS   = 3
+E_STRING_CHECK_UPDATED   = 4
+E_STRING_CHECK_CORRUPT   = 5
+E_STRING_CHECK_VERIFY    = 6
+E_STRING_CHECK_DISKFULL  = 7
+E_STRING_CHECK_FINISH    = 8
+E_STRING_CHECK_CONNECT_ERROR  = 9
+E_STRING_CHECK_UNLINK_NETWORK = 10
+E_STRING_CHECK_CHANNEL_FAIL   = 11
+
 class PVSClass( object ) :
 	def __init__( self ) :
-		self.mName			= None
-		self.mFileName		= None
-		self.mDate			= None
-		self.mDescription	= []
-		self.mMd5			= None
-		self.mSize			= 0
-		self.mVersion		= None
-		self.mId			= None
-		self.mType			= None
-		self.mError			= -1
-		self.mProgress		= None
+		self.mName					= None
+		self.mFileName				= None
+		self.mDate					= None
+		self.mDescription			= []
+		self.mMd5					= None
+		self.mSize					= 0
+		self.mVersion				= None
+		self.mId					= None
+		self.mType					= None
+		self.mError					= -1
+		self.mProgress				= None
+		self.mChannelUpdateProgress = None
 
 
 class SystemUpdate( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mIsCloseing = False
-		self.mNoChannel = False
 
+		self.mPVSData = None
+		self.mCurrData = None
 
 	def onInit( self )  :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -83,28 +95,14 @@ class SystemUpdate( SettingWindow ) :
 		self.mStepPage = E_UPDATE_STEP_HOME
 		self.mCheckEthernetThread = None
 		self.mShowProgressThread = None
+		self.testButton = []
 
 		self.SetSettingWindowLabel( MR_LANG( 'Update' ) )
 
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )
 
-		if self.mIsCloseing == False :
-			if self.CheckNoChannel( ) :
-				self.mNoChannel = True
-			else :
-				self.mNoChannel = False
-		else :
-			if self.mNoChannel == False :
-				if self.CheckNoChannel( ) :
-					self.mDataCache.Channel_TuneDefault( )
-					self.mDataCache.Player_AVBlank( False )
-					self.mNoChannel = False
-				else :
-					self.mDataCache.Player_AVBlank( True )
-
 		self.mInitialized = True
-
 		self.UpdateStepPage( E_UPDATE_STEP_HOME )
 
 
@@ -188,7 +186,6 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def Close( self ) :
-		self.mIsCloseing = False
 
 		if self.mEnableLocalThread and self.mCheckEthernetThread :
 			self.mEnableLocalThread = False
@@ -257,6 +254,47 @@ class SystemUpdate( SettingWindow ) :
 		self.UpdatePropertyGUI( 'UpdateDescription', '' )
 
 
+	def DialogPopup( self, aTitle, aMsg ) :
+		title = ''
+		line = ''
+
+		if aTitle == E_STRING_ERROR :
+			title = MR_LANG( 'Error' )
+		elif aTitle == E_STRING_ATTENTION :
+			title = MR_LANG( 'Attention' )
+		else :
+			title = aTitle
+
+		if aMsg == E_STRING_CHECK_USB :
+			line = MR_LANG( 'Check USB' )
+		elif aMsg == E_STRING_CHECK_ADDRESS :
+			line = MR_LANG( 'Can not connect address, Check Network or URL' )
+		elif aMsg == E_STRING_CHECK_UPDATED :
+			line = MR_LANG( 'Aready Updated' )
+		elif aMsg == E_STRING_CHECK_CORRUPT :
+			line = MR_LANG( 'File is corrupt, Try again download' )
+		elif aMsg == E_STRING_CHECK_USB_NOT :
+			line = MR_LANG( 'USB is not detected, Please insert USB' )
+		elif aMsg == E_STRING_CHECK_VERIFY :
+			line = MR_LANG( 'Verify Failed, try to download again' )
+		elif aMsg == E_STRING_CHECK_FINISH :
+			line = MR_LANG( 'Update Ready' )
+		elif aMsg == E_STRING_CHECK_UNLINK_NETWORK :
+			line = MR_LANG( 'Disconnected Network' )
+		elif aMsg == E_STRING_CHECK_DISKFULL :
+			line = MR_LANG( 'Disk is Full, Please remove Addons' )
+		elif aMsg == E_STRING_CHECK_USB_SPACE :
+			line = MR_LANG( 'Not enough space, Check USB' )
+		elif aMsg == E_STRING_CHECK_CONNECT_ERROR :
+			line = MR_LANG( 'Connect server error' )
+		elif aMsg == E_STRING_CHECK_CHANNEL_FAIL :
+			line = MR_LANG( 'Update process failed' )
+
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( title, line )
+		dialog.doModal( )
+
+
 	def UpdateLabelPVSInfo( self ) :
 		if self.mPVSData == None or self.mPVSData.mError != 0 :
 			return
@@ -267,25 +305,27 @@ class SystemUpdate( SettingWindow ) :
 		if iPVS.mName :
 			self.SetEnableControl( E_Input02, True )
 
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_DATE, '%s : %s'% ( E_STRING_DATE, iPVS.mDate ) )
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_VERSION, '%s : %s'% ( E_STRING_VERSION, iPVS.mVersion ) )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_DATE,    '%s : %s'% ( MR_LANG( 'DATE' ), iPVS.mDate ) )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_VERSION, '%s : %s'% ( MR_LANG( 'VERSION' ), iPVS.mVersion ) )
 			lblSize = ''
 			if iPVS.mSize < 10000000 :
 				lblSize = '%s Kb'% ( iPVS.mSize / 1000 )
 			else :
 				lblSize = '%s Mb'% ( iPVS.mSize / 1000000 )
 
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SIZE, '%s : %s'% ( E_STRING_SIZE, lblSize ) )
-			self.UpdatePropertyGUI( 'DescriptionTitle', E_STRING_DESCRIPTION )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SIZE, '%s : %s'% ( MR_LANG( 'SIZE' ), lblSize ) )
+			self.UpdatePropertyGUI( 'DescriptionTitle', MR_LANG( 'DESCRIPTION' ) )
 			self.UpdatePropertyGUI( 'UpdateDescription', iPVS.mDescription )
 
+			"""
 			lblDescTitle = ''
 			if iPVS.mType == E_TYPE_PRISMCUBE :
-				lblDescTitle = MR_LANG( 'System, OS, MBox Update' )
+				lblDescTitle = MR_LANG( 'Checking Last Update' )
 			elif iPVS.mType == E_TYPE_ADDONS :
 				lblDescTitle = MR_LANG( 'Addon Application Update' )
 
 			self.UpdateControlGUI( E_SETTING_DESCRIPTION, lblDescTitle )
+			"""
 				
 
 	def InitPVSData( self ) :
@@ -299,10 +339,10 @@ class SystemUpdate( SettingWindow ) :
 
 		self.SetEnableControl( E_Input02, True )
 
-		label2 = E_STRING_OK
+		label2    = MR_LANG( 'Download' )
 		descLabel = MR_LANG( 'Click to download' )
 		if self.mCurrData and self.mCurrData.mError == 0 and self.mCurrData.mVersion == self.mPVSData.mVersion :
-			label2 = MR_LANG( 'Updated' )
+			label2    = MR_LANG( 'Updated' )
 			descLabel = MR_LANG( 'Updated lastest' )
 			self.mPVSData.mError = -1
 			self.SetEnableControl( E_Input02, False )
@@ -318,9 +358,7 @@ class SystemUpdate( SettingWindow ) :
 		self.ResetLabel( )
 
 		if not self.mUrlPVS :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Update server address is wrong, retry to input URL' ) )
- 			dialog.doModal( )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_ADDRESS )
  			return
 
 		self.OpenBusyDialog( )
@@ -374,14 +412,10 @@ class SystemUpdate( SettingWindow ) :
 		self.InitPVSData( )
 
 		if not download :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Can not connect address, retry to input URL' ) )
- 			dialog.doModal( )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_ADDRESS )
 
 		elif self.mCurrData and self.mCurrData.mError == 0 and self.mCurrData.mVersion == self.mPVSData.mVersion :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Latest version' ), MR_LANG( 'Aready Updated' ) )
- 			dialog.doModal( )
+			self.DialogPopup( MR_LANG( 'Latest version' ), E_STRING_CHECK_UPDATED )
 
 
 	def ShowContextMenu( self ) :
@@ -459,17 +493,17 @@ class SystemUpdate( SettingWindow ) :
 		if aStep == E_UPDATE_STEP_READY :
 			self.OpenAnimation( )
 			self.SetFocusControl( E_CONTROL_ID_GROUP_PVS )
-			LOG_TRACE('------------------updateStep[%s]'% strStepNo )
+			#LOG_TRACE('------------------updateStep[%s]'% strStepNo )
 
 		elif aStep > E_UPDATE_STEP_READY :
 			self.SetFocusControl( E_CONTROL_ID_GROUP_PVS )
-			LOG_TRACE('------------------updateStep[%s]'% strStepNo )
+			#LOG_TRACE('------------------updateStep[%s]'% strStepNo )
 
 
 		if aStep == E_UPDATE_STEP_HOME :
 			self.ResetAllControl( )
 			self.AddInputControl( E_Input01, MR_LANG( 'Firmware Update' ), '', MR_LANG( 'Download STB firmware, check network live' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Channel Update' ), '', MR_LANG( 'ChannelList update' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Channel Update' ), '',  MR_LANG( 'ChannelList update' ) )
 
 			self.SetEnableControl( E_Input01, True )
 			self.SetEnableControl( E_Input02, True )
@@ -490,7 +524,7 @@ class SystemUpdate( SettingWindow ) :
 
 		elif aStep == E_UPDATE_STEP_READY :
 			self.ResetAllControl( )
-			self.AddInputControl( E_Input01, MR_LANG( 'Update Check' ), '', MR_LANG( 'Check provisionning firmware from PrismCube Server, check network live' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Update Check' ), '', MR_LANG( 'Check firmware from update server' ) )
 			self.AddInputControl( E_Input02, MR_LANG( 'Firmware' ), MR_LANG( 'Not Checked' ), MR_LANG( 'Click to download' ) )
 			self.SetEnableControl( E_Input02, False )
 
@@ -536,17 +570,14 @@ class SystemUpdate( SettingWindow ) :
 			time.sleep( 1 )
 
 			if not ret :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'File is corrupt, Try again download' ) )
-				dialog.doModal( )
+				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CORRUPT )
 				stepResult = False
 
 
 		elif aStep == E_UPDATE_STEP_CHECKUSB :
-			if not CheckDirectory( E_DEFAULT_PATH_USB_UPDATE ) :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'USB is not detected, Please insert USB' ) )
-				dialog.doModal( )
+			#if not CheckDirectory( E_DEFAULT_PATH_USB_UPDATE ) :
+			if not self.mDataCache.USB_GetMountPath( ) :
+				self.DialogPopup( E_STRING_ATTENTION, E_STRING_CHECK_USB_NOT )
 				stepResult = False
 
 		elif aStep == E_UPDATE_STEP_UNPACKING :
@@ -558,35 +589,33 @@ class SystemUpdate( SettingWindow ) :
 				return False
 
 			usbPath = self.mDataCache.USB_GetMountPath( )
-			if not usbPath :
-				usbPath = E_DEFAULT_PATH_USB_UPDATE
+			if usbPath :
+				time.sleep( 0.3 )
+				self.ShowProgressDialog( 60, MR_LANG( 'Unpacking...' ), None, strStepNo )
+				self.OpenBusyDialog( )
+				stepResult = UnpackToUSB( tempFile, usbPath )
+				self.CloseBusyDialog( )
+				if self.mShowProgressThread :
+					self.mShowProgressThread.SetResult( True )
+					self.mShowProgressThread = None
+				time.sleep( 1 )
 
-			time.sleep( 0.3 )
-			self.ShowProgressDialog( 60, MR_LANG( 'Unpacking...' ), None, strStepNo )
-			self.OpenBusyDialog( )
-			stepResult = CopyToUSB( tempFile, usbPath )
-			self.CloseBusyDialog( )
-			if self.mShowProgressThread :
-				self.mShowProgressThread.SetResult( True )
-				self.mShowProgressThread = None
-			time.sleep( 1 )
+			else :
+				stepResult = False
 
 			if not stepResult :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Check USB' ) )
-				dialog.doModal( )
+				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB )
 
 
 		elif aStep == E_UPDATE_STEP_VERIFY :
-			pass
+			tempFile = E_DEFAULT_PATH_DOWNLOAD + '/%s'% os.path.basename( self.mPVSData.mFileName )
+			if not self.VerifiedUnPack( tempFile ) :
+				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_VERIFY )
+				stepResult = False
 
 		elif aStep == E_UPDATE_STEP_FINISH :
 			time.sleep( 0.3 )
-
-			#dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			#dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Update Ready' ) )
-			#dialog.doModal( )
-
+			#self.DialogPopup( E_STRING_ATTENTION, E_STRING_CHECK_FINISH )
 
 		elif aStep == E_UPDATE_STEP_UPDATE_NOW :
 			time.sleep( 0.3 )
@@ -602,13 +631,13 @@ class SystemUpdate( SettingWindow ) :
 			if ret == E_DIALOG_STATE_YES :
 				CopyToFile( E_DOWNLOAD_INFO_PVS, E_CURRENT_INFO )
 				RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
+				RemoveDirectory( os.path.dirname( E_DOWNLOAD_INFO_PVS ) )
+				self.OpenBusyDialog( )
 				self.mDataCache.System_Reboot( )
 
 
 		elif aStep == E_UPDATE_STEP_ERROR_NETWORK :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Disconnected Network' ) )
-			dialog.doModal( )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_UNLINK_NETWORK )
 			if self.mEnableLocalThread and self.mCheckEthernetThread :
 				self.mEnableLocalThread = False
 				self.mCheckEthernetThread.join( )
@@ -619,45 +648,83 @@ class SystemUpdate( SettingWindow ) :
 
 		
 	def UpdateHandler( self ) :
-		LOG_TRACE('----------------pvs[%s]'% self.mPVSData )
+		#LOG_TRACE('----------------pvs[%s]'% self.mPVSData )
 		if self.mPVSData == None or self.mPVSData.mError != 0 :
 			return
 
-		LOG_TRACE('----------------download File[%s]'% self.mPVSData.mFileName )
-
+		#LOG_TRACE('----------------download File[%s]'% self.mPVSData.mFileName )
 		if not self.UpdateStepPage( E_UPDATE_STEP_DOWNLOAD ) :
 			return
 
 		if not self.UpdateStepPage( E_UPDATE_STEP_CHECKFILE ) :
 			return
 
-		LOG_TRACE('----------------path down[%s] usb[%s]'% ( E_DEFAULT_PATH_DOWNLOAD, E_DEFAULT_PATH_USB_UPDATE ) )
+		#LOG_TRACE('----------------path down[%s] usb[%s]'% ( E_DEFAULT_PATH_DOWNLOAD, E_DEFAULT_PATH_USB_UPDATE ) )
 		if not self.UpdateStepPage( E_UPDATE_STEP_CHECKUSB ) :
 			return
 
-		if not self.UpdateStepPage( E_UPDATE_STEP_UNPACKING ) :
-			return
+		tempFile = E_DEFAULT_PATH_DOWNLOAD + '/%s'% os.path.basename( self.mPVSData.mFileName )
+		if not self.VerifiedUnPack( tempFile, False ) :
+			if not self.UpdateStepPage( E_UPDATE_STEP_UNPACKING ) :
+				return
 
 		if not self.UpdateStepPage( E_UPDATE_STEP_VERIFY ) :
 			return
+
 
 		#self.UpdateStepPage( E_UPDATE_STEP_FINISH )
 		self.UpdateStepPage( E_UPDATE_STEP_UPDATE_NOW )
 
 
+	def CheckInitDevice( self ) :
+		sizeCheck = True
+
+		if CheckHdd( ) :
+			LOG_TRACE( 'Check HDD True' )
+			if GetDeviceSize( E_DEFAULT_PATH_HDD ) < self.mPVSData.mSize :
+				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_DISKFULL )
+				sizeCheck = False
+
+			return sizeCheck
+
+		LOG_TRACE( 'Not Exist HDD' )
+		usbPath = self.mDataCache.USB_GetMountPath( )
+		if not usbPath :
+			LOG_TRACE( 'Not Exist USB' )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_NOT )
+			return False
+
+
+		global E_DEFAULT_PATH_DOWNLOAD
+		E_DEFAULT_PATH_DOWNLOAD = '%s/stb/download'% usbPath
+
+		usbSize = GetDeviceSize( usbPath )
+		if usbSize <= self.mPVSData.mSize :
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_SPACE )
+			sizeCheck = False
+
+		LOG_TRACE( 'usbSize[%s] downSize[%s] usbPath[%s]'% ( usbSize, self.mPVSData.mSize, usbPath ) )
+		return sizeCheck
+
+
+
+	#make tempDir, write local file
 	def GetDownload( self, aPVS ) :
 		isExist = GetURLpage( aPVS.mFileName, False )
 
 		if not isExist :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Can not connect address, retry to input URL' ) )
- 			dialog.doModal( )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_ADDRESS )
 			return False
 
 		self.mWorkingItem = aPVS
 		self.mWorkingDownloader = None
 
-		#make tempDir, write local file
+
+		#check device, size free, change path for hdd or usb 
+		if not self.CheckInitDevice( ) :
+			return False
+
+		LOG_TRACE( 'download path[%s]'% E_DEFAULT_PATH_DOWNLOAD )
 		CreateDirectory( E_DEFAULT_PATH_DOWNLOAD )
 
 		isResume = False
@@ -692,6 +759,7 @@ class SystemUpdate( SettingWindow ) :
 		self.mDialogProgress = None
 		self.mWorkingItem = None
 		self.mWorkingDownloader = None
+		time.sleep( 0.3 )
 
 		return self.mIsDownload
 
@@ -710,8 +778,51 @@ class SystemUpdate( SettingWindow ) :
 			   self.mWorkingDownloader and self.mLinkStatus != True :
 				self.mWorkingDownloader.abort( True )
 				self.mIsDownload = False
-
 				LOG_TRACE( '--------------abort' )
+
+
+	def VerifiedUnPack( self, aZipFile, aShowProgress = True ) :
+		fileList = GetUnpackFiles( aZipFile )
+		if not fileList :
+			return False
+
+		usbPath = self.mDataCache.USB_GetMountPath( )
+		if not usbPath :
+			return False
+
+		self.OpenBusyDialog( )
+		if aShowProgress :
+			dialogProgress = xbmcgui.DialogProgress( )
+			dialogProgress.create( self.mPVSData.mName, MR_LANG( 'Verifying...' ) )
+
+		isVerify = True
+		totalFiles = len( fileList )
+		idx = 0
+		for item in fileList :
+			idx += 1
+			if aShowProgress :
+				dialogProgress.update( 1.0 * idx / totalFiles * 100 )
+			unpackFile = '%s/%s'% ( usbPath, item[1] )
+			unpackSize = GetFileSize( unpackFile )
+			if item[0] != unpackSize :
+				LOG_TRACE( '--------------verify err pack[%s] unPack[%s] file[%s]'% ( item[0], unpackSize, unpackFile ) )
+				isVerify = False
+				break
+
+			if aShowProgress and dialogProgress.iscanceled( ) :
+				LOG_TRACE( '--------------abort' )
+				isVerify = False
+				break
+
+			time.sleep( 0.2 )
+
+		if aShowProgress :
+			dialogProgress.close( )
+
+		self.CloseBusyDialog( )
+		time.sleep( 0.3 )
+
+		return isVerify
 
 
 	def CheckCurrentVersion( self ) :
@@ -736,14 +847,15 @@ class SystemUpdate( SettingWindow ) :
 			iPVS.mDescription = description
 			iPVS.mError = 0
 
-			lbldesc += '%s : %s\n'% ( E_STRING_VERSION, iPVS.mVersion )
-			lbldesc += '%s : %s\n'% ( E_STRING_DATE, iPVS.mDate )
-			#lbldesc += '%s\n%s\n'% ( E_STRING_DESCRIPTION, iPVS.mDescription )
+			lbldesc += '%s : %s\n'% ( MR_LANG( 'VERSION' ), iPVS.mVersion )
+			lbldesc += '%s : %s\n'% ( MR_LANG( 'DATE' ), iPVS.mDate )
+			#lbldesc += '%s\n%s\n'% ( MR_LANG( 'DESCRIPTION' ), iPVS.mDescription )
 
 			self.mCurrData = iPVS
 
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
+			lbldesc = MR_LANG( 'Unknown version' )
 
 		self.UpdatePropertyGUI( 'CurrentDescription', lbldesc )
 
@@ -756,7 +868,6 @@ class SystemUpdate( SettingWindow ) :
 			updatelist = self.GetServerInfo( kb.getText( ) )
 			LOG_TRACE( 'updatelist = %s' % updatelist )
 			showtext = []
-			
 			if updatelist :
 				for text in updatelist :
 					showtext.append( text[0] )
@@ -765,11 +876,12 @@ class SystemUpdate( SettingWindow ) :
 				dialog = xbmcgui.Dialog( )
 				ret = dialog.select( MR_LANG( 'Select Package' ), showtext )
 				if ret >= 0 :
-					self.GetChannelUpdate( kb.getText( ), updatelist[ret][1] )
+					result = self.GetChannelUpdate( kb.getText( ), updatelist[ret][1] )
+					if result == False :
+						self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )
+
 			else :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Connect server error' ) )
-				dialog.doModal( )
+				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CONNECT_ERROR )
 
 
 	def GetServerInfo( self, aAddress ) :
@@ -790,7 +902,7 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def GetChannelUpdate( self, aAddress, aPath ) :
-		self.ChannelUpdateProgress( MR_LANG( 'Now updating...' ), 20 )
+		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating...' ), 20 )
 		ret = self.DownloadxmlFile( aAddress, aPath )
 		if ret :
 			self.mCommander.System_SetManualChannelList( '/tmp/defaultchannel.xml' )
@@ -799,10 +911,10 @@ class SystemUpdate( SettingWindow ) :
 			self.mTunerMgr.SyncChannelBySatellite( )
 			self.mDataCache.Channel_ReLoad( )
 			self.mDataCache.Player_AVBlank( False )
-			self.mProgress.SetResult( True )
+			self.CloseProgress( )
 			return True
 		else :
-			self.mProgress.SetResult( True )
+			self.CloseProgress( )
 			return False
 
 
@@ -825,4 +937,8 @@ class SystemUpdate( SettingWindow ) :
 		self.mProgress.SetDialogProperty( aTime, aString )
 		self.mProgress.doModal( )
 
+
+	def CloseProgress( self ) :
+		self.mProgress.SetResult( True )
+		self.mChannelUpdateProgress.join( )
 
