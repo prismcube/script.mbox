@@ -1218,6 +1218,10 @@ class EPGWindow( BaseWindow ) :
 					if self.ShowPincodeDialog( ) == False :
 						return
 
+				else :
+					if self.mDataCache.Get_Player_AVBlank( ) :
+						self.mDataCache.Player_AVBlank( False )
+
 				self.mDataCache.Channel_SetCurrent( self.mSelectChannel.mNumber, self.mSelectChannel.mServiceType )
 				self.mCurrentChannel = self.mSelectChannel
 				self.UpdateCurrentChannel( )				
@@ -1239,6 +1243,11 @@ class EPGWindow( BaseWindow ) :
 				if channel.mLocked == True :				
 					if self.ShowPincodeDialog( ) == False :
 						return
+
+				else :
+					if self.mDataCache.Get_Player_AVBlank( ) :
+						self.mDataCache.Player_AVBlank( False )
+
 
 				self.StopEPGUpdateTimer( )					
 				self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
@@ -1344,7 +1353,10 @@ class EPGWindow( BaseWindow ) :
 
 	def ShowPincodeDialog( self ) :
 		self.mEventBus.Deregister( self )
-		
+
+		if not self.mDataCache.Get_Player_AVBlank( ) :
+			self.mDataCache.Player_AVBlank( True )
+
 		GuiLock2( True )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
 		dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
@@ -1354,6 +1366,9 @@ class EPGWindow( BaseWindow ) :
 		ret = False
 		
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			if self.mDataCache.Get_Player_AVBlank( ) :
+				self.mDataCache.Player_AVBlank( False )
+
 			ret = True
 
 		self.mEventBus.Register( self )

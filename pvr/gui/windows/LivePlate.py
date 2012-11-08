@@ -56,7 +56,7 @@ class LivePlate( LivePlateWindow ) :
 		self.mFlag_OnEvent = True
 		self.mPropertyAge = 0
 		self.mPropertyPincode = -1
-		self.mCertification = False
+		self.mPincodeConfirmed = False
 
 		self.mAutomaticHideTimer = None	
 		self.mAsyncEPGTimer = None
@@ -129,7 +129,9 @@ class LivePlate( LivePlateWindow ) :
 		if self.mAutomaticHide == True :
 			self.StartAutomaticHide( )
 
-		self.ShowPincodeDialog( )
+		if self.mPincodeConfirmed :
+			self.ShowPincodeDialog( )
+			self.mPincodeConfirmed = False
 
 
 	def onAction( self, aAction ) :
@@ -554,7 +556,8 @@ class LivePlate( LivePlateWindow ) :
 				gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
 				maxCount = 100
 				self.mEPGList = self.mDataCache.Epgevent_GetListByChannel( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil, maxCount )
-
+				#LOG_TRACE('mSid[%s] mTsid[%s] mOnid[%s] gmtFrom[%s] gmtUntil[%s]'% ( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil ) )
+				#LOG_TRACE('-------------------------------------epgList[%s]'% self.mEPGList )
 				if self.mEPGList == None or self.mEPGList[0].mError != 0 :
 					self.mFlag_OnEvent = True
 					LOG_TRACE( 'EPGList is None\nLeave [%s]'% self.mEPGList )
@@ -652,8 +655,8 @@ class LivePlate( LivePlateWindow ) :
 			#LOG_TRACE( 'repeat <<<<' )
 			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 
-			if  ( self.mLocalTime % 10 ) == 0 or self.mLoopCount == 3 :
-				if self.mFlag_ChannelChanged :
+			if ( self.mLocalTime % 10 ) == 0 or self.mLoopCount == 3 :
+				if self.mFlag_ChannelChanged or self.mEPGList == None :
 					self.GetEPGListByChannel( )
 				self.UpdateProgress( )
 
@@ -921,8 +924,8 @@ class LivePlate( LivePlateWindow ) :
 		#WinMgr.GetInstance( ).CloseWindow( )
 
 
-	def SetLastChannelCertificationPinCode( self, aCertification ) :
-		self.mCertification = aCertification
+	def SetPincodeRequest( self, aConfirm ) :
+		self.mPincodeConfirmed = aConfirm
 
 
 	def SetAutomaticHide( self, aHide=True ) :
@@ -1031,6 +1034,9 @@ class LivePlate( LivePlateWindow ) :
 			if self.mAutomaticHide == True :
 				self.StopAutomaticHide( )
 
+			if not self.mDataCache.Get_Player_AVBlank( ) :
+				self.mDataCache.Player_AVBlank( True )
+
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
 			dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
 			dialog.doModal( )
@@ -1040,12 +1046,21 @@ class LivePlate( LivePlateWindow ) :
 
 			elif dialog.GetNextAction( ) == dialog.E_TUNE_PREV_CHANNEL :
 				self.ChannelTune( PREV_CHANNEL )				
+
 			else :
+				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+					if self.mDataCache.Get_Player_AVBlank( ) :
+						self.mDataCache.Player_AVBlank( False )
+
 				LOG_TRACE( 'Has no next action' )
 				if self.mAutomaticHide == True :
 					self.RestartAutomaticHide( )
+		else :
+			if self.mDataCache.Get_Player_AVBlank( ) :
+				self.mDataCache.Player_AVBlank( False )
 
 		if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE : # Still showing 
 			self.mEventBus.Register( self )
+
 
 

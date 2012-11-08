@@ -59,7 +59,8 @@ class DialogInputPincode( BaseDialog ) :
 
 		elif actionId == Action.ACTION_PAGE_UP:
 			try :
-				if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE :
+				if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE or \
+				   WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
 					self.mNextAction =  self.E_TUNE_NEXT_CHANNEL					
 					self.CloseDialog( )
 					
@@ -68,7 +69,8 @@ class DialogInputPincode( BaseDialog ) :
 			
 		elif actionId == Action.ACTION_PAGE_DOWN :
 			try :
-				if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE :
+				if WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_LIVE_PLATE or \
+				   WinMgr.GetInstance( ).GetLastWindowID( ) == WinMgr.WIN_ID_NULLWINDOW :
 					self.mNextAction =  self.E_TUNE_PREV_CHANNEL										
 					self.CloseDialog( )
 
@@ -81,16 +83,16 @@ class DialogInputPincode( BaseDialog ) :
 			self.InputNumber( aControlId - E_START_ID_NUMBER )
 
 
+	def onFocus( self, aControlId ):
+		pass
+
+
 	def IsOK( self ) :
 		return self.mIsOk
 
 
 	def GetNextAction( self ) :
 		return self.mNextAction
-
-
-	def onFocus( self, aControlId ):
-		pass
 
 
 	def DrawKeyboard( self ):

@@ -13,6 +13,7 @@ E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
 E_DEFAULT_URL_PVS         = 'http://update.prismcube.com/update/ruby/update.xml'
 
 E_CONTROL_ID_GROUP_PVS      = 9000
+E_CONTROL_ID_LABEL_TITLE    = 99
 E_CONTROL_ID_LABEL_VERSION  = 100
 E_CONTROL_ID_LABEL_DATE     = 101
 E_CONTROL_ID_LABEL_SIZE     = 102
@@ -79,6 +80,7 @@ class SystemUpdate( SettingWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.mCtrlLabelDescTitle      = self.getControl( E_SETTING_DESCRIPTION )
+		self.mCtrlLabelTitle          = self.getControl( E_CONTROL_ID_LABEL_TITLE )
 		self.mCtrlLabelDate           = self.getControl( E_CONTROL_ID_LABEL_DATE )
 		self.mCtrlLabelVersion        = self.getControl( E_CONTROL_ID_LABEL_VERSION )
 		self.mCtrlLabelSize           = self.getControl( E_CONTROL_ID_LABEL_SIZE )
@@ -222,7 +224,10 @@ class SystemUpdate( SettingWindow ) :
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		#LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
 
-		if aCtrlID == E_CONTROL_ID_LABEL_DATE :
+		if aCtrlID == E_CONTROL_ID_LABEL_TITLE :
+			self.mCtrlLabelTitle.setLabel( aValue )
+
+		elif aCtrlID == E_CONTROL_ID_LABEL_DATE :
 			self.mCtrlLabelDate.setLabel( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_LABEL_VERSION :
@@ -247,6 +252,7 @@ class SystemUpdate( SettingWindow ) :
 		if aControls :
 			self.SetEnableControl( E_Input02, False )
 
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_TITLE, '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_DATE, '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_VERSION, '' )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SIZE, '' )
@@ -305,6 +311,7 @@ class SystemUpdate( SettingWindow ) :
 		if iPVS.mName :
 			self.SetEnableControl( E_Input02, True )
 
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_TITLE,   MR_LANG( 'UPDATE' ) )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_DATE,    '%s : %s'% ( MR_LANG( 'DATE' ), iPVS.mDate ) )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_VERSION, '%s : %s'% ( MR_LANG( 'VERSION' ), iPVS.mVersion ) )
 			lblSize = ''
@@ -326,7 +333,7 @@ class SystemUpdate( SettingWindow ) :
 
 			self.UpdateControlGUI( E_SETTING_DESCRIPTION, lblDescTitle )
 			"""
-				
+
 
 	def InitPVSData( self ) :
 		if self.mPVSData == None or self.mPVSData.mError != 0 :
@@ -629,7 +636,7 @@ class SystemUpdate( SettingWindow ) :
 			dialog.doModal( )
 			ret = dialog.IsOK( )
 			if ret == E_DIALOG_STATE_YES :
-				CopyToFile( E_DOWNLOAD_INFO_PVS, E_CURRENT_INFO )
+				#self.BackupFiles( )
 				RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
 				RemoveDirectory( os.path.dirname( E_DOWNLOAD_INFO_PVS ) )
 				self.OpenBusyDialog( )
@@ -823,6 +830,32 @@ class SystemUpdate( SettingWindow ) :
 		time.sleep( 0.3 )
 
 		return isVerify
+
+
+	def BackupFiles( self ) :
+		#ToDO :
+		CopyToFile( '/etc/network/interface', '%s/interface'% E_DEFAULT_PATH_HDD )
+		CopyToFile( '/etc/wpa_supplicant/wpa_supplicant.conf', '%s/wpa_supplicant.conf'% E_DEFAULT_PATH_HDD )
+		#CopyToFile( E_DOWNLOAD_INFO_PVS, E_CURRENT_INFO )
+
+		try :
+			wList = []		
+			wList.append( '#!/bin/sh\n' )
+			wList.append( 'if [ -f %s/interface ]; then\n'% E_DEFAULT_PATH_HDD )
+			wList.append( '\tcp -f %s/interface /etc/network/interface\n'% E_DEFAULT_PATH_HDD )
+
+			wList.append( 'if [ -f %s/wpa_supplicant.conf ]; then\n'% E_DEFAULT_PATH_HDD )
+			wList.append( '\tcp -f %s/wpa_supplicant.conf /etc/network/wpa_supplicant/wpa_supplicant.conf\n'% E_DEFAULT_PATH_HDD )
+
+			mShellFile = '%s/updateBackup.sh'% E_DEFAULT_PATH_HDD
+			f = open( mShellFile, 'w' )
+			for line in wList :
+				f.writelines( line )
+
+			f.close( )
+
+		except Exception, e :
+			LOG_TRACE( 'except[%s]'% e )
 
 
 	def CheckCurrentVersion( self ) :

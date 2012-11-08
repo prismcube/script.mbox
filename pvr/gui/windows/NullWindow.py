@@ -23,6 +23,7 @@ class NullWindow( BaseWindow ) :
 			self.mInitialized = True
 			self.mCommander.AppHBBTV_Ready( 1 )
 			self.mHBBTVReady = True
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 			xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 			return
 
@@ -156,6 +157,7 @@ class NullWindow( BaseWindow ) :
 				self.mDataCache.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )			
 				self.Close( )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif actionId == Action.ACTION_PAGE_UP :
@@ -169,6 +171,7 @@ class NullWindow( BaseWindow ) :
 				self.mDataCache.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
 				self.Close( )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 or \
@@ -195,8 +198,28 @@ class NullWindow( BaseWindow ) :
 					if iCurrentCh.mNumber != int(inputNumber) :
 						jumpChannel = self.mDataCache.Channel_GetCurr( int(inputNumber) )
 						if jumpChannel != None and jumpChannel.mError == 0 :
+							if jumpChannel.mLocked :
+								if not self.mDataCache.Get_Player_AVBlank( ) :
+									self.mDataCache.Player_AVBlank( True )
+								dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
+								dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
+								dialog.doModal( )
+
+								if dialog.GetNextAction( ) == dialog.E_TUNE_NEXT_CHANNEL :
+									xbmc.executebuiltin( 'xbmc.Action(PageUp)' )
+
+								elif dialog.GetNextAction( ) == dialog.E_TUNE_PREV_CHANNEL :
+									xbmc.executebuiltin( 'xbmc.Action(PageDown)' )
+
+								if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+									if self.mDataCache.Get_Player_AVBlank( ) :
+										self.mDataCache.Player_AVBlank( False )
+							else :
+								if self.mDataCache.Get_Player_AVBlank( ) :
+									self.mDataCache.Player_AVBlank( False )
+
 							self.mDataCache.Channel_SetCurrent( jumpChannel.mNumber, jumpChannel.mServiceType )
-						#self.mDataCache.Channel_SetCurrent( inputNumber, self.mDataCache.Zappingmode_GetCurrent( ).mServiceType )
+
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TIMESHIFT_JUMP )
