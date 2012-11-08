@@ -89,9 +89,6 @@
 	<string id="87">GER_Check your system resource at a glance</string>
 	<string id="88">GER_Go Parent</string>
 	<string id="89">GER_Select Action</string>
-	<string id="90">GER_Volume</string>
-	<string id="91">GER_Record Start</string>
-	<string id="92">GER_Record Stop</string>
 	<string id="93">GER_Rewind</string>
 	<string id="94">GER_Play</string>
 	<string id="95">GER_Pause</string>
@@ -997,4 +994,8 @@
 	<string id="3587">GER_Connect server error</string>
 	<string id="3588">GER_Now updating...</string>
 	<string id="3589">GER_Complete</string>
+	<string id="3590">GER_Show bookmark</string>
+	<string id="3591">GER_Hide bookmark</string>
+	<string id="3592">GER_Add bookmark</string>
+	<string id="3593">GER_Show bookmark list</string>
 </strings>

@@ -39,12 +39,12 @@ class ManualScan( SettingWindow ) :
 			self.LoadTransponderList( )
 			self.SetConfigTransponder( )
 			self.InitConfig( )
-			self.mInitialized = True
 			self.SetFocusControl( E_Input01 )
 			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
 			self.mAvBlankStatus = self.mDataCache.Get_Player_AVBlank( )
 			self.mDataCache.Player_AVBlank( False )
 			self.SetPipLabel( )
+			self.mInitialized = True
 		else :
 			self.SetVisibleControls( hideControlIds, False )
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite is available' ) )

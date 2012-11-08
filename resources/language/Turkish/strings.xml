@@ -89,9 +89,6 @@
 	<string id="87">TUR_Check your system resource at a glance</string>
 	<string id="88">TUR_Go Parent</string>
 	<string id="89">TUR_Select Action</string>
-	<string id="90">TUR_Volume</string>
-	<string id="91">TUR_Record Start</string>
-	<string id="92">TUR_Record Stop</string>
 	<string id="93">TUR_Rewind</string>
 	<string id="94">TUR_Play</string>
 	<string id="95">TUR_Pause</string>
@@ -997,4 +994,8 @@
 	<string id="3587">TUR_Connect server error</string>
 	<string id="3588">TUR_Now updating...</string>
 	<string id="3589">TUR_Complete</string>
+	<string id="3590">TUR_Show bookmark</string>
+	<string id="3591">TUR_Hide bookmark</string>
+	<string id="3592">TUR_Add bookmark</string>
+	<string id="3593">TUR_Show bookmark list</string>
 </strings>

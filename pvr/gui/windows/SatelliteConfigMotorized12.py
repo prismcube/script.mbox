@@ -33,9 +33,9 @@ class SatelliteConfigMotorized12( SettingWindow ) :
 		ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mCurrentSatellite, self.mDataCache.GetTransponderListByIndex( self.mCurrentSatellite.mSatelliteLongitude, self.mCurrentSatellite.mBandType, self.mSelectedTransponderIndex ) )
 		self.mAvBlankStatus = self.mDataCache.Get_Player_AVBlank( )
 		self.mDataCache.Player_AVBlank( False )
-		self.mInitialized = True
 		self.setDefaultControl( )
 		self.SetPipLabel( )
+		self.mInitialized = True
 
 
 	def onAction( self, aAction ) :

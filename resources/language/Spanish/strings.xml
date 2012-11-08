@@ -89,9 +89,6 @@
 	<string id="87">SPA_Check your system resource at a glance</string>
 	<string id="88">SPA_Go Parent</string>
 	<string id="89">SPA_Select Action</string>
-	<string id="90">SPA_Volume</string>
-	<string id="91">SPA_Record Start</string>
-	<string id="92">SPA_Record Stop</string>
 	<string id="93">SPA_Rewind</string>
 	<string id="94">SPA_Play</string>
 	<string id="95">SPA_Pause</string>
@@ -997,4 +994,8 @@
 	<string id="3587">SPA_Connect server error</string>
 	<string id="3588">SPA_Now updating...</string>
 	<string id="3589">SPA_Complete</string>
+	<string id="3590">SPA_Show bookmark</string>
+	<string id="3591">SPA_Hide bookmark</string>
+	<string id="3592">SPA_Add bookmark</string>
+	<string id="3593">SPA_Show bookmark list</string>
 </strings>

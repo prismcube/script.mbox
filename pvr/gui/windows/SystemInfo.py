@@ -97,8 +97,8 @@ class SystemInfo( SettingWindow ) :
 		self.StartCheckHddTempTimer( )
 		
 		self.SetListControl( )
-		self.mInitialized = True
 		self.mPrevListItemID = -1
+		self.mInitialized = True
 
 
 	def onAction( self, aAction ) :
@@ -108,8 +108,10 @@ class SystemInfo( SettingWindow ) :
 		self.CheckHiddenAction( actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
+			self.OpenBusyDialog( )
 			self.mInitialized = False
 			self.StopCheckHddTempTimer( )
+			self.CloseBusyDialog( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :

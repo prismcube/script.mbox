@@ -32,8 +32,8 @@ class FirstInstallation( SettingWindow ) :
 		self.LoadNoSignalState( )
 		self.SetListControl( self.mStepNum )
 		ConfigMgr.GetInstance( ).SetFristInstallation( True )
-		self.mInitialized = True
 		self.SetPipLabel( )
+		self.mInitialized = True
 
 
 	def onAction( self, aAction ) :

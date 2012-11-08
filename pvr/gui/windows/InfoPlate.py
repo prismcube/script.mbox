@@ -457,8 +457,8 @@ class InfoPlate( LivePlateWindow ) :
 
 	def BookMarkContext( self ) :
 		context = []
-		context.append( ContextItem( 'Add To Bookmark', CONTEXT_ACTION_ADD_TO_BOOKMARK ) )
-		context.append( ContextItem( 'Show List',  CONTEXT_ACTION_SHOW_LIST ) )
+		context.append( ContextItem( 'Add bookmark', CONTEXT_ACTION_ADD_TO_BOOKMARK ) )
+		context.append( ContextItem( 'Show bookmark list',  CONTEXT_ACTION_SHOW_LIST ) )
 
 		self.mEventBus.Deregister( self )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )

@@ -26,9 +26,9 @@ class AutomaticScan( SettingWindow ) :
 		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
 			self.SetVisibleControls( hideControlIds, True )
 			self.InitConfig( )
-			self.mInitialized = True
 			self.SetFocusControl( E_Input01 )
 			self.SetPipLabel( )
+			self.mInitialized = True
 		else :
 			self.SetVisibleControls( hideControlIds, False )
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite is available' ) )

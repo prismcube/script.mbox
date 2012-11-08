@@ -1,6 +1,7 @@
 from pvr.gui.WindowImport import *
 from elementtree import ElementTree
 import pvr.TunerConfigMgr as ConfigMgr
+import os
 
 E_STEP_FEATURES					=	1
 E_STEP_FRONT_PLATE				=	2
@@ -44,6 +45,7 @@ E_SETTING_PAGENUM				= 	1004
 
 E_HELP_IMAGE					=	100
 E_HELP_TEXTBOX					= 	200
+E_MAXIMUM_TEXTBOX_NUM			=	3
 
 E_HELP_PREV						=	7000
 E_HELP_NEXT						=	7001	
@@ -52,8 +54,7 @@ E_HELP_NEXT_LABEL				=	7006
 
 E_HELP_CONTETNT				= 	8500
 
-E_MAXIMUM_TEXTBOX_NUM			=	3
-
+E_GROUP_LIST_CONTROL			=	9000
 
 HELP_STRING = '/usr/share/xbmc/addons/script.mbox/resources/skins/Default/720p/Help_String.xml'
 
@@ -65,20 +66,32 @@ class Help( SettingWindow ) :
 		self.mPrevStepNum				= 	E_STEP_FEATURES
 		self.mRoot 					=	None
 		self.mListContent 				=	[]
+
 		if not self.mPlatform.IsPrismCube( ) :
 			global HELP_STRING
 			HELP_STRING = 'special://home/addons/script.mbox/resources/skins/Default/720p/Help_String.xml'
 
-		self.MakeContentList( )
-
+		self.mHelpString				=  	HELP_STRING		
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
+		self.getControl( E_GROUP_LIST_CONTROL ).setVisible( False )
+		
+		if self.mInitialized == False :
+			helpString = self.getProperty( 'HelpString' )
+			
+			if helpString :
+				self.mHelpString =  os.path.join( WinMgr.GetInstance( ).GetSkinXMLPath(),  helpString )
+
+			self.MakeContentList( )
+			self.mInitialized = True
+			LOG_TRACE('HELP STRING=%s' %self.mHelpString )
+
 		self.SetListControl( self.mStepNum )
-		self.mInitialized = True	
+		self.getControl( E_GROUP_LIST_CONTROL ).setVisible( True )
 
-
+		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
@@ -103,7 +116,7 @@ class Help( SettingWindow ) :
 
 	def onClick( self, aControlId ) :		
 		if aControlId == E_HELP_NEXT :
-			if self.mStepNum == E_STEP_DELETING_FAV :
+			if self.mStepNum == TOTAL_STEPS :
 				self.Close( )
 			else :
 				self.OpenAnimation( )
@@ -126,7 +139,6 @@ class Help( SettingWindow ) :
 
 
 	def Close( self ) :
-		self.mInitialized = False
 		self.mStepNum = E_STEP_FEATURES
 		WinMgr.GetInstance( ).CloseWindow( )
 
@@ -153,7 +165,7 @@ class Help( SettingWindow ) :
 		return
 
 	def MakeContentList ( self ) :
-		tree = ElementTree.parse( HELP_STRING )
+		tree = ElementTree.parse( self.mHelpString )
 		self.mRoot = tree.getroot( )
 
 		for page in self.mRoot.findall( 'page' ):
@@ -198,7 +210,7 @@ class Help( SettingWindow ) :
 			self.SetVisibleControl( E_HELP_PREV, False )
 			self.getControl( E_HELP_NEXT_LABEL ).setLabel( MR_LANG( 'Next' ) )
 
-		elif self.mStepNum == E_STEP_DELETING_FAV :
+		elif self.mStepNum == TOTAL_STEPS :
 			self.getControl( E_HELP_PREV_LABEL ).setLabel( MR_LANG( 'Previous' ) )
 			self.getControl( E_HELP_NEXT_LABEL ).setLabel( MR_LANG( 'Finish' ) )
 

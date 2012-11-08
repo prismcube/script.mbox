@@ -29,9 +29,9 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 			self.mLoadConfig = False
 
 		self.InitConfig( )
-		self.mInitialized = True
 		self.setDefaultControl( )
 		self.SetPipLabel( )
+		self.mInitialized = True
 
 
 	def onAction( self, aAction ) :
