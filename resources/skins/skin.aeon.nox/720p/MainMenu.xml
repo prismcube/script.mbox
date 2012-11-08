@@ -301,7 +301,7 @@
 					</item>
 					<item id="8">
 						<label>SCRIPT49</label>
-						<onclick>ParentDir</onclick>
+						<onclick>SendClick(90800)</onclick>
 						<visible>true</visible>
 					</item>
 				</content>
@@ -386,6 +386,11 @@
 		</control>
 		<control type="button" id="90700">
 			<label>Version</label>
+			<onclick>-</onclick>
+			<visible>false</visible>
+		</control>
+		<control type="button" id="90800">
+			<label>Help</label>
 			<onclick>-</onclick>
 			<visible>false</visible>
 		</control>
