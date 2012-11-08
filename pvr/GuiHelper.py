@@ -393,51 +393,6 @@ def GetInstanceSkinPosition( ):
 	return gSkinPosition
 
 
-class GuiSkinPosition( object ) :
-	def __init__( self ) :
-		self.mLeft	 = 0
-		self.mTop	 = 0
-		self.mRight	 = 0
-		self.mBottom = 0
-		self.mZoom	 = 0
-
-
-	def GetPipPosition( self, aX, aY, aWidth, aHeight ) :
-		from pvr.gui.GuiConfig import E_WINDOW_HEIGHT, E_WINDOW_WIDTH
-		if self.mZoom != 0 :
-			w = aWidth  / float( 100 ) * ( 100 + self.mZoom )
-			h = aHeight / float( 100 ) * ( 100 + self.mZoom )
-			y = ( ( E_WINDOW_HEIGHT - ( E_WINDOW_HEIGHT / float( 100 ) * ( 100 + self.mZoom ) ) ) / float( 2 ) ) + ( ( aY / float( 100 ) ) * ( 100 + self.mZoom ) )
-			x = ( ( E_WINDOW_WIDTH  - ( E_WINDOW_WIDTH  / float( 100 ) * ( 100 + self.mZoom ) ) ) / float( 2 ) ) + ( ( aX / float( 100 ) ) * ( 100 + self.mZoom ) )
-		else :
-			x = aX
-			y = aY
-			w = aWidth
-			h = aHeight
-
-		x = x * ( E_WINDOW_WIDTH  - ( self.mLeft + ( E_WINDOW_WIDTH  -  self.mRight ) ) ) / float( E_WINDOW_WIDTH )
-		y = y * ( E_WINDOW_HEIGHT - ( self.mTop  + ( E_WINDOW_HEIGHT - self.mBottom ) ) ) / float( E_WINDOW_HEIGHT )
-		w = w * ( E_WINDOW_WIDTH  - ( self.mLeft + ( E_WINDOW_WIDTH  -  self.mRight ) ) ) / float( E_WINDOW_WIDTH )
-		h = h * ( E_WINDOW_HEIGHT - ( self.mTop  + ( E_WINDOW_HEIGHT - self.mBottom ) ) ) / float( E_WINDOW_HEIGHT )
-
-		x = x + self.mLeft
-		y = y + self.mTop
-
-		x = round( x )
-		y = round( y )
-		w = round( w )
-		h = round( h )
-		return int( x ), int( y ), int( w ), int( h )
-
-
-	def SetPosition( self, aLeft, aTop, aRight, aBottom, aZoom ) :
-		self.mLeft	 = aLeft
-		self.mTop	 = aTop
-		self.mRight	 = aRight
-		self.mBottom = aBottom
-		self.mZoom	 = aZoom
-
-
 def CreateDirectory( aPath ) :
 	if os.path.exists( aPath ) :
 		return
@@ -598,4 +553,49 @@ def ParseStringInXML( xmlFile, tagName ) :
 		lines = None
 
 	return lines
+
+
+class GuiSkinPosition( object ) :
+	def __init__( self ) :
+		self.mLeft	 = 0
+		self.mTop	 = 0
+		self.mRight	 = 0
+		self.mBottom = 0
+		self.mZoom	 = 0
+
+
+	def GetPipPosition( self, aX, aY, aWidth, aHeight ) :
+		from pvr.gui.GuiConfig import E_WINDOW_HEIGHT, E_WINDOW_WIDTH
+		if self.mZoom != 0 :
+			w = aWidth  / float( 100 ) * ( 100 + self.mZoom )
+			h = aHeight / float( 100 ) * ( 100 + self.mZoom )
+			y = ( ( E_WINDOW_HEIGHT - ( E_WINDOW_HEIGHT / float( 100 ) * ( 100 + self.mZoom ) ) ) / float( 2 ) ) + ( ( aY / float( 100 ) ) * ( 100 + self.mZoom ) )
+			x = ( ( E_WINDOW_WIDTH  - ( E_WINDOW_WIDTH  / float( 100 ) * ( 100 + self.mZoom ) ) ) / float( 2 ) ) + ( ( aX / float( 100 ) ) * ( 100 + self.mZoom ) )
+		else :
+			x = aX
+			y = aY
+			w = aWidth
+			h = aHeight
+
+		x = x * ( E_WINDOW_WIDTH  - ( self.mLeft + ( E_WINDOW_WIDTH  -  self.mRight ) ) ) / float( E_WINDOW_WIDTH )
+		y = y * ( E_WINDOW_HEIGHT - ( self.mTop  + ( E_WINDOW_HEIGHT - self.mBottom ) ) ) / float( E_WINDOW_HEIGHT )
+		w = w * ( E_WINDOW_WIDTH  - ( self.mLeft + ( E_WINDOW_WIDTH  -  self.mRight ) ) ) / float( E_WINDOW_WIDTH )
+		h = h * ( E_WINDOW_HEIGHT - ( self.mTop  + ( E_WINDOW_HEIGHT - self.mBottom ) ) ) / float( E_WINDOW_HEIGHT )
+
+		x = x + self.mLeft
+		y = y + self.mTop
+
+		x = round( x )
+		y = round( y )
+		w = round( w )
+		h = round( h )
+		return int( x ), int( y ), int( w ), int( h )
+
+
+	def SetPosition( self, aLeft, aTop, aRight, aBottom, aZoom ) :
+		self.mLeft	 = aLeft
+		self.mTop	 = aTop
+		self.mRight	 = aRight
+		self.mBottom = aBottom
+		self.mZoom	 = aZoom
 

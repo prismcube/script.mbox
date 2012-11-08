@@ -133,11 +133,12 @@ class Configure( SettingWindow ) :
 
 
 	def Close( self ) :
+		self.OpenBusyDialog( )
 		self.StopCheckNetworkTimer( )
 		self.mInitialized = False
 		self.ResetAllControl( )
 		self.getControl( E_SETTING_DESCRIPTION ).setLabel( '' )
-		self.SetVideoRestore( )
+		self.CloseBusyDialog( )
 		WinMgr.GetInstance( ).CloseWindow( )
 
 
