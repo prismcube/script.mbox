@@ -265,12 +265,10 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def OpenBusyDialog( self ) :
-		#self.setProperty( 'BusyDialogBackground', 'True' )
 		xbmc.executebuiltin( "ActivateWindow(busydialog)" )
 
 
 	def CloseBusyDialog( self ) :
-		#self.setProperty( 'BusyDialogBackground', 'False' )
 		xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 
 
@@ -280,8 +278,8 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def SetPipLabel( self ) :
-		self.getControl( 1020 ).setLabel( MR_LANG( '[I]No Signal[/I] ' ) )
-		self.getControl( 1021 ).setLabel( MR_LANG( '[I]Scrambled[/I] ' ) )
+		self.getControl( E_SETTING_LABEL_PIP_NO_SIGNAL ).setLabel( MR_LANG( '[I]No Signal[/I] ' ) )
+		self.getControl( E_SETTING_LABEL_PIP_SCRAMBLED ).setLabel( MR_LANG( '[I]Scrambled[/I] ' ) )
 
 
 class ControlItem :

@@ -865,7 +865,9 @@ class SystemUpdate( SettingWindow ) :
 		kb.setHiddenInput( False )
 		kb.doModal( )
 		if kb.isConfirmed( ) :
+			self.OpenBusyDialog( )
 			updatelist = self.GetServerInfo( kb.getText( ) )
+			self.CloseBusyDialog( )
 			LOG_TRACE( 'updatelist = %s' % updatelist )
 			showtext = []
 			if updatelist :

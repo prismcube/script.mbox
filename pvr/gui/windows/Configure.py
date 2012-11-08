@@ -316,29 +316,33 @@ class Configure( SettingWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 
 		elif selectedId == E_FORMAT_HDD :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO FORMAT TO YOUR HDD DRIVE?' ) )
-			dialog.doModal( )
-
-			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			if CheckHdd( ) :
 				if groupId == E_Input01 :
-					LOG_TRACE( 'Format_Media_Archive Start' )
-					self.OpenBusyDialog( )
-					self.mCommander.Format_Media_Archive( )
-					self.CloseBusyDialog( )
-					LOG_TRACE( 'Format_Media_Archive Stop' )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO FORMAT TO YOUR HDD DRIVE?' ) )
+					dialog.doModal( )
+					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+						self.mProgressThread = self.ShowProgress( MR_LANG( 'Format HDD drive...' ), 50 )
+						self.mCommander.Format_Media_Archive( )
+						self.CloseProgress( )
 				elif groupId == E_Input02 :
-					LOG_TRACE( 'Format_Record_Archive Start' )
-					self.OpenBusyDialog( )
-					self.mCommander.Format_Record_Archive( )
-					LOG_TRACE( 'Format_Record_Archive Stop' )
-					self.CloseBusyDialog( )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO FORMAT TO YOUR HDD DRIVE?' ) )
+					dialog.doModal( )
+					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+						self.mProgressThread = self.ShowProgress( MR_LANG( 'Format HDD drive...' ), 50 )
+						self.mCommander.Format_Record_Archive( )
+						self.CloseProgress( )
 				elif groupId == E_Input03 :
-					LOG_TRACE( 'Make_Dedicated_HDD Start' )
-					self.OpenBusyDialog( )
-					self.mCommander.Make_Dedicated_HDD( )
-					LOG_TRACE( 'Make_Dedicated_HDD Stop' )
-					self.CloseBusyDialog( )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO FORMAT TO YOUR HDD DRIVE?' ) )
+					dialog.doModal( )
+					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+						self.DedicatedFormat( )
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Can not found harddisk drive' ) )
+	 			dialog.doModal( )
 
 		else :
 			self.ControlSelect( )
@@ -983,3 +987,56 @@ class Configure( SettingWindow ) :
 			if self.mRunningNetwork == False and self.mCtrlLeftGroup.getSelectedPosition( ) == E_NETWORK_SETTING :
 				self.CheckNetworkStatus( )
 			time.sleep( TIME_SEC_CHECK_NET_STATUS )
+
+
+	def DedicatedFormat( self ) :
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO BACKUP USER DATA?' ) )
+		dialog.doModal( )
+		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			if CheckDirectory( '/mnt/hdd0/program/.xbmc/userdata' ) :
+				self.BackupAndFormat( )
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Can not found backup data' ) )
+				dialog.doModal( )
+		else :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'ARE YOU SURE?' ) )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				self.OpenBusyDialog( )
+				self.mCommander.Make_Dedicated_HDD( )
+
+
+	def BackupAndFormat( self ) :
+		usbpath = self.mDataCache.USB_GetMountPath( )
+		if usbpath :
+			backupsize = GetDirectorySize( '/mnt/hdd0/program/.xbmc/userdata' )
+			usbfreesize = GetDeviceSize( usbpath )
+			if backupsize > usbfreesize :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space, Check USB' ) )
+				dialog.doModal( )
+			else :
+				self.CopyBackupData( usbpath )
+		else :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'USB is not detected, Please insert USB' ) )
+			dialog.doModal( )
+
+
+	def CopyBackupData( self, aUsbpath ) :
+		self.mProgressThread = self.ShowProgress( MR_LANG( 'Now backup user data...' ), 30 )
+		if CopyToDirectory( '/mnt/hdd0/program/.xbmc/userdata', aUsbpath + '/userdata' ) :
+			self.CloseProgress( )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'Backup data success. press ok button to format HDD drive...' ) )
+			dialog.doModal( )
+			self.OpenBusyDialog( )
+			self.mCommander.Make_Dedicated_HDD( )
+		else :
+			self.CloseProgress( )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Backup data fail' ) )
+			dialog.doModal( )
