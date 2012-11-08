@@ -11,7 +11,7 @@
 		<content name="- Twin Tuner HD PVR Satellite Receiver[CR][CR]- Timeshift record and playback functions[CR][CR]- Record 2 different channels at the same time[CR][CR]- HDMI output (1080i, 720p, 576p)[CR][CR]- DiSEqC 1.0, 1.1, 1.2, 1.3 (USALS) Compatible[CR][CR]- Dolby Digital audio output (S/PDIF)[CR][CR]- Extended EPG and program reservation on EPG[CR][CR]- Open source media player XBMC with favorite addons[CR][CR]- Multilingual OSD menu[CR][CR]- Ethernet integrated[CR][CR]- Software update Over The Internet (OTI)[CR][CR]- Now available in Black, Silver, Red and Orange">
 			<type>textbox</type>
 			<posx>740</posx>
-			<posy>140</posy>
+			<posy>115</posy>
 			<width>600</width>
 			<height>500</height>
 		</content>
@@ -21,21 +21,21 @@
 		<content name="help/front.png">
 			<type>image</type>
 			<posx>250</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>750</width>
 			<height>232</height>
 		</content>
 		<content name="[B]1. STANDBY LED BUTTON[/B][CR]Switches between operation and standby mode.[CR][CR][B]2. FRONT DISPLAY[/B][CR]Shows the channel name in operation mode and displays the current time in standby mode.[CR][CR][B]3. SMARTCARD SLOT[/B][CR]Pull the upper-right edge of the front panel to open the flap. Insert your smartcard into the front slot to watch pay services.">
 			<type>textbox</type>
 			<posx>130</posx>
-			<posy>400</posy>
+			<posy>390</posy>
 			<width>530</width>
 			<height>350</height>
 		</content>
 		<content name="[B]Note:[/B] If the receiver does not respond for some reason, press STANDBY button for 5 second then the system will automatically reboot.">
 			<type>textbox</type>
 			<posx>700</posx>
-			<posy>400</posy>
+			<posy>390</posy>
 			<width>490</width>
 			<height>250</height>
 		</content>
@@ -45,21 +45,21 @@
 		<content name="help/rear.png">
 			<type>image</type>
 			<posx>250</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>750</width>
 			<height>178</height>
 		</content>
 		<content name="[B]1. LNB 1 IN, LNB 2 IN[/B][CR]Connects a satellite antenna cable.[CR][CR][B]2. VIDEO, AUDIO[/B][CR]Connects to the TV or VCR using an RCA cable.[CR][CR][B]3. S/PDIF[/B][CR]Connects to the audio system using an S/PDIF cable.[CR][CR][B]4. RS-232C[/B][CR]Connects to PC.">
 			<type>textbox</type>
 			<posx>170</posx>
-			<posy>380</posy>
+			<posy>370</posy>
 			<width>480</width>
 			<height>250</height>
 		</content>
 		<content name="[B]5. HDMI[/B][CR]Connects to the TV using an HDMI cable.[CR][CR][B]6. ETHERNET[/B][CR]Local area network port.[CR][CR][B]7. USB HOST[/B][CR]Connects to the USB memory or external HDD.[CR][CR][B]8. AC MAINS[/B][CR]Connects to a plug in the AC mains power cord.">
 			<type>textbox</type>
 			<posx>690</posx>
-			<posy>380</posy>
+			<posy>370</posy>
 			<width>480</width>
 			<height>250</height>
 		</content>
@@ -76,7 +76,7 @@
 		<content name="[B]1. TV POWER:[/B] Turns your TV on/off.[CR][CR][B]2. STANDBY:[/B] Switches between operation and standby.[CR][CR][B]3. COLOR:[/B] Selects the color keys for interactive applications.[CR][CR][B]4. SOURCE:[/B] Controls the outputs of TV.[CR][CR][B]5. XBMC:[/B] Displays the XBMC Media Center.[CR][CR][B]6. TV/RADIO:[/B] Switches between TV and Radio modes.[CR][CR][B]7. RECORD:[/B] Records programme.[CR][CR][B]8. STOP:[/B] Stops a recording or goes to the LIVE programme.[CR][CR][B]9. PLAY/PAUSE:[/B] Play/Pause the live programme or recording.[CR][CR][B]10. FAST REWIND:[/B] Rewinds at high speed.[CR]Each time you press this button the rewind speed is increased.[CR][CR][B]11. FAST FORWARD:[/B] Fasts forward at high speed.[CR]Each time you press this button the fast forward speed is increased.[CR][CR][B]12. Archive:[/B] Displays the Archive window.">
 			<type>textbox</type>
 			<posx>640</posx>
-			<posy>110</posy>
+			<posy>90</posy>
 			<width>600</width>
 			<height>600</height>
 		</content>
@@ -93,7 +93,7 @@
 		<content name="[B]13. EPG:[/B] Displays the EPG window.[CR][CR][B]14. ARROW BUTTONS:[/B] Navigates through the menu options.[CR][CR][B]15. OK:[/B] Selects a menu or confirms the selected operation.[CR]Displays the channel list in live mode.[CR][CR][B]16. BACK:[/B] Moves one step back from the current menu.[CR][CR][B]17. MENU:[/B] Displays the main menu.[CR][CR][B]18. VOL+/VOL:[/B] Adjusts the audio volume.[CR][CR][B]19. i (Information):[/B] Displays the channel and programme information.[CR][CR][B]20. P+/P-:[/B] Changes the channel.[CR][CR][B]21. MUTE:[/B] Mutes and demutes the audio.[CR][CR][B]22. TELETEXT:[/B] Switches between the Teletext and TV modes.[CR][CR][B]23. SUBTITLE:[/B] Displays the subtitle option.[CR][CR][B]24. NUM LOCK:[/B] Enables NUMBERIC (0-9) buttons to enter a TV/Radio channel number.">
 			<type>textbox</type>
 			<posx>640</posx>
-			<posy>110</posy>
+			<posy>90</posy>
 			<width>600</width>
 			<height>600</height>
 		</content>
@@ -103,29 +103,29 @@
 		<content name="help/connecting.png">
 			<type>image</type>
 			<posx>420</posx>
-			<posy>120</posy>
+			<posy>110</posy>
 			<width>430</width>
 			<height>208</height>
 		</content>
 		<content name="Select the most appropriate way of connecting antenna depending on the equipment you have.">
 			<type>textbox</type>
-			<posx>130</posx>
-			<posy>360</posy>
+			<posx>120</posx>
+			<posy>350</posy>
 			<width>900</width>
 			<height>200</height>
 		</content>
 		<content name="[B]1. SINGLE CABLE USING LOOP THROUGH[/B][CR]a) Connect the antenna cable to LNB 1 IN.[CR]b) Set as LOOP THROUGH in the Antenna Satellite and Setup.[CR][CR][B]2. TWO SEPARATE SATELLITE CABLES[/B][CR]Connect the two antenna cables providing different broadcasting signals to your receiver. You can configure LNB 1 IN and LNB 2 IN independently.[CR][CR]">
 			<type>textbox</type>
-			<posx>130</posx>
-			<posy>410</posy>
-			<width>500</width>
+			<posx>120</posx>
+			<posy>400</posy>
+			<width>520</width>
 			<height>300</height>
 		</content>
 		<content name="[B]Note:[/B] To make best use of all PVR features PRISMCUBE RUBY provides, connecting with two cables from the same satellite dish is strongly recommended. This will allow you to view and record different channels and record two channels at the same time. The second channel you can view will be limited while recording a live programme if connecting with a single cable using loop through.">
 			<type>textbox</type>
-			<posx>660</posx>
-			<posy>410</posy>
-			<width>500</width>
+			<posx>670</posx>
+			<posy>400</posy>
+			<width>520</width>
 			<height>300</height>
 		</content>
 	</page>
@@ -152,7 +152,7 @@
 			<width>650</width>
 			<height>300</height>
 		</content>
-		<content name="[B]4. FUNCTION BUTTONS[/B][CR][CR]- Description[CR]- Teletext[CR]- Subtitle[CR]- Start Recording[CR]- Stop Recording[CR]- Mute[CR]- A/V Setting">
+		<content name="[B]4. FUNCTION BUTTONS[/B][CR]- Description[CR]- Teletext[CR]- Subtitle[CR]- Start Recording[CR]- Stop Recording[CR]- Mute[CR]- A/V Setting">
 			<type>textbox</type>
 			<posx>880</posx>
 			<posy>380</posy>
@@ -182,16 +182,16 @@
 		<content name="help/simple.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>500</width>
 			<height>190</height>
 		</content>
 		<content name="Simple LNB is used when only one satellite is connected.[CR][CR][B]- Satellite:[/B] Select the satellite you want to configure.[CR][CR][B]- LNB Type:[/B] Select a frequency range sent by the receiver to the LNB.[CR][CR][B]- LNB Frequency:[/B] Select the LNB frequency to the LNB you are using.[CR][CR][B]- 22KHz Tone Control:[/B] When set to on, LNBs will be switched between Low and High band.[CR][CR][B]- Transponder:[/B] Select the transponder for the satellite you have chosen.">
 			<type>textbox</type>
 			<posx>600</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>620</width>
-			<height>250</height>
+			<height>400</height>
 		</content>
 	</page>
 	
@@ -199,14 +199,14 @@
 		<content name="help/dis1.0.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>500</width>
 			<height>245</height>
 		</content>
 		<content name="DiSEqC 1.0 allows multiple antennas to be connected to the STB simultaneously.[CR]With DiSEqC 1.0 it is possible to connect up to 4 satellites.[CR][CR][B]- Satellite:[/B] Select the satellite you want to configure.[CR][CR][B]- LNB Type:[/B] Select a frequency range sent by the receiver to the LNB.[CR][CR][B]- LNB Frequency:[/B] Select the LNB frequency to the LNB you are using.[CR][CR][B]- 22KHz Tone Control:[/B] When set to on, LNBs will be switched between Low and High band.[CR][CR][B]- DiSEqC 1.0 Switch:[/B] Select a DiSEqC switch you want to connect to the receiver.[CR][CR][B]- DiSEqC Repeat:[/B] When set to on, DiSEqC repeats its command.[CR][CR][B]- Transponder:[/B] Select the transponder for the satellite you have chosen.">
 			<type>textbox</type>
 			<posx>580</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>670</width>
 			<height>600</height>
 		</content>
@@ -216,14 +216,14 @@
 		<content name="help/dis1.1.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>500</width>
 			<height>282</height>
 		</content>
 		<content name="DiSEqc 1.1 allows you to connect up to 64 difference satellites.[CR][CR][B]- Satellite:[/B] Select the satellite you want to configure.[CR][CR][B]- LNB Type:[/B] Select a frequency range sent by the receiver to the LNB.[CR][CR][B]- LNB Frequency:[/B] Select the LNB frequency to the LNB you are using.[CR][CR][B]- 22KHz Tone Control:[/B] When set to on, LNBs will be switched between Low and High band.[CR][CR][B]- Committed Switch:[/B] Select a committed switch you want to connect to the receiver.[CR][CR][B]- Uncommitted Switch:[/B] Select an uncommitted switch you want to connect to the receiver.[CR][CR][B]- DiSEqC Repeat:[/B] When set to on, DiSEqC repeats its command.[CR][CR][B]- Transponder:[/B] Select the transponder for the satellite you have chosen.">
 			<type>textbox</type>
 			<posx>580</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>660</width>
 			<height>600</height>
 		</content>
@@ -233,14 +233,14 @@
 		<content name="help/dis1.2.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>500</width>
 			<height>303</height>
 		</content>
 		<content name="Set the position of your desired satellites if you have a motorized antenna.[CR]You can control the antenna in DiSEqC 1.2 mode.[CR][CR][B]- Satellite:[/B] Select the satellite you want to configure.[CR][CR][B]- LNB Type:[/B] Select a frequency range sent by the receiver to the LNB.[CR][CR][B]- LNB Frequency:[/B] Select the LNB frequency to the LNB you are using.[CR][CR][B]- 22KHz Tone Control:[/B] When set to on, LNBs will be switched between Low and High band.[CR][CR][B]- Transponder:[/B] Select the transponder for the satellite you have chosen.[CR][CR][B]- Rotate Antenna:[/B] You can control the movements of the motorized antenna here.[CR][CR][B]- Rotation Limits:[/B] Set the East and West limit of the DiSEqC motor, in order to protect from damage due to obstacles.[CR][CR][B]- Store Position and Exit:[/B] Save satellite positions and exit.">
 			<type>textbox</type>
 			<posx>580</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>660</width>
 			<height>600</height>
 		</content>
@@ -250,14 +250,14 @@
 		<content name="help/usals.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>500</width>
 			<height>220</height>
 		</content>
 		<content name="USALS is used when you have a motorized antenna. You can set the motor antenna for efficient channel search.[CR][CR][B]- My Longitude Direction:[/B] Set the longitude direction for your area.[CR][CR][B]- My Longitude Angle:[/B] Enter the longitude angle for your location.[CR][CR][B]- My Latitude Direction:[/B] Set the latitude direction for your area.[CR][CR][B]- My Latitude Angle:[/B] Enter the latitude angle for your location.[CR][CR][B]- Reference Position to Null:[/B] Rotates the motor to 0 as a reference point.[CR][CR][B]- Edit Satellite:[/B] Here you can setup satellites for Motorized USALS.">
 			<type>textbox</type>
 			<posx>580</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>670</width>
 			<height>400</height>
 		</content>
@@ -267,16 +267,16 @@
 		<content name="help/onecable.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>500</width>
 			<height>174</height>
 		</content>
 		<content name="OneCable System enables the delivery of broadcast programming over a single cable to multiple users eliminating numerous cables.[CR][CR][B]- MDU:[/B] When set to on, multiple TVs within the same storied building with a single or two dish antennas will receive Direct-to-Home service.[CR][CR][B]- Tuner 1 PIN Code:[/B] Enter your PIN code for Tuner 1.[CR][CR][B]- Tuner 1 SCR:[/B] Select number of Single Cable Routers for Tuner 1.[CR][CR][B]- Tuner 1 Frequency:[/B] Select the frequency for Tuner 1.">
 			<type>textbox</type>
 			<posx>580</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>650</width>
-			<height>250</height>
+			<height>400</height>
 		</content>
 	</page>
 	
@@ -284,14 +284,14 @@
 		<content name="help/autoscan.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>500</width>
 			<height>176</height>
 		</content>
 		<content name="Automatic Scan is for general users and the easiest way to search channels.[CR][CR][B]- Satellite:[/B] Select all or a satellite that you want to specifically search.[CR][CR][B]- Network Search:[/B] Off is used when searching only the factory default transponders. On is when searching the factory default transponders and additional transponders that are not stored in the factory default transponders.[CR]It takes a while to finish an automatic channel search using network search.[CR][CR][B]- Search Type:[/B] Select free and scrambled, free only or scrambled only.[CR][CR][B]- Start Search:[/B] Select Start Search and press OK. Searching progress will be displayed.">
 			<type>textbox</type>
 			<posx>580</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>650</width>
 			<height>400</height>
 		</content>
@@ -301,14 +301,14 @@
 		<content name="help/manscan.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>500</width>
 			<height>318</height>
 		</content>
 		<content name="Manual Scan is more appropriate if you know which satellites you want to search and their parameters.[CR][CR][B]- Satellite:[/B] Select a satellite you wish to search channels from.[CR][CR][B]- Transponder Frequency:[/B] Select the transponder frequency for the selected satellite.[CR][CR][B]- DVB Type:[/B] Select the Digital Video Broadcasting type for the selected satellite.[CR][CR][B]- FEC:[/B] Select type and extent of the Forward Error Correction in the data stream.[CR][CR][B]- Polarization:[/B] Set the orientation of the electromagnetic waves received from the satellite.[CR][CR][B]- Symbol Rate:[/B] Set the amount of data, which is transferred per second in the data stream.[CR][CR][B]- Network Search:[/B] When set to off only the factory default transponders will be searched.[CR][CR][B]- Search Type:[/B] Select the type of channels you want to search for.">
 			<type>textbox</type>
 			<posx>600</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>600</width>
 			<height>600</height>
 		</content>
@@ -318,21 +318,21 @@
 		<content name="help/timeshift.png">
 			<type>image</type>
 			<posx>200</posx>
-			<posy>160</posy>
+			<posy>150</posy>
 			<width>900</width>
 			<height>103</height>
 		</content>
 		<content name="Now with PRISMCUBE RUBY never miss your favorite LIVE Sports or Movie scene by pressing just one button.">
 			<type>textbox</type>
-			<posx>180</posx>
-			<posy>320</posy>
+			<posx>190</posx>
+			<posy>300</posy>
 			<width>1100</width>
 			<height>200</height>
 		</content>
 		<content name="1. Press PAUSE, to start Timeshift recording.[CR][CR]2. Play bar appears and displays the timeshifted time.[CR][CR]3. Press PAUSE/PLAY to start Timeshift mode.[CR][CR][B]Note:[/B] Automatic Timeshift (Main Menu > Installation > Configuration > Recording Option)[CR][CR]- If Automatic Timeshift is on, Timeshift is activated whenever you change channel.[CR][CR]- If off, Timeshift does not activate automatically.">
 			<type>textbox</type>
-			<posx>180</posx>
-			<posy>370</posy>
+			<posx>190</posx>
+			<posy>350</posy>
 			<width>800</width>
 			<height>300</height>
 		</content>
@@ -342,14 +342,14 @@
 		<content name="help/start recording.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>500</width>
 			<height>285</height>
 		</content>
 		<content name="[B]START RECORDING[/B][CR][CR]1. Set the Start time by selecting recording mode.[CR][CR]2. Set the End time of recording by keypad.[CR][CR]3. Select Start and press OK.[CR][CR]4. Recording starts and you can see REC icon on the INFO plate.[CR][CR]5. To stop recording, press STOP button.[CR][CR]6. Select the programme you want to stop recording and press OK.[CR][CR][B]Note:[/B] PRISMCUBE RUBY is a twin tuner PVR. It is possible to record two different channels simultaneously while time-shifting one additional channel.">
 			<type>textbox</type>
 			<posx>580</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>650</width>
 			<height>400</height>
 		</content>
@@ -359,14 +359,14 @@
 		<content name="help/archive.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>500</width>
 			<height>250</height>
 		</content>
 		<content name="PRISMCUBE RUBY provides a very easy to use Archive menu.[CR][CR]1. Select the programme that you want to play and press OK.[CR][CR]2. You can check if the selected recording is the one that you are looking for, through the PIG (Picture In Graphic).[CR][CR]3. Press OK to play the selected recording in the full screen.[CR][CR]4. Press i button to display context menu. You can playback from the last point, play from beginning, delete, lock and rename the media file in the menu.">
 			<type>textbox</type>
 			<posx>580</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>650</width>
 			<height>400</height>
 		</content>
@@ -394,7 +394,7 @@
 			<width>600</width>
 			<height>400</height>
 		</content>
-		<content name="[B]2. PRESENT PLAYBACK POINT[/B][CR][CR]- Shows the current playing point on the Playback Progress Bar.[B][CR][CR]3. FUNCTION BUTTONS[/B][CR][CR]- Bookmark[CR]- Mute[CR]- Fast Rewind[CR]- Pause/Play[CR]- Stop[CR]- Fast Forward[CR]- Jump Rewind[CR]- Jump Forward">
+		<content name="[B]2. PRESENT PLAYBACK POINT[/B][CR][CR]- Shows the current playing point on the Playback Progress Bar.[B][CR][CR]3. FUNCTION BUTTONS[/B][CR]- Bookmark[CR]- Mute[CR]- Fast Rewind[CR]- Pause/Play[CR]- Stop[CR]- Fast Forward[CR]- Jump Rewind[CR]- Jump Forward">
 			<type>textbox</type>
 			<posx>710</posx>
 			<posy>305</posy>
@@ -407,23 +407,23 @@
 		<content name="help/bookmark.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>500</width>
 			<height>270</height>
 		</content>
 		<content name="[B]CREATION/DELETION OF BOOKMARKS[/B][CR][CR]1. Press BOOKMARK button on the PVR plate and select ADD TO BOOKMARK button to create Bookmarks. A thumbnail image at the point that you press BOOKMARK button will be saved.[CR][CR]2. To see the bookmarks that you created, press SHOW LIST button on the Bookmark menu.[CR][CR]3. Navigate the bookmarks by UP/DOWN button.[CR][CR]4. Press i button to display the context menu and select DELETE button to remove the selected bookmark.[CR][CR]5. Select one of the bookmarks that you want to check and press OK to jump to the bookmark point.">
 			<type>textbox</type>
 			<posx>580</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>600</width>
-			<height>250</height>
+			<height>300</height>
 		</content>
 		<content name="[B]AUTO CHAPTERING[/B][CR][CR]1. Press AUTO CHAPTERING button in the BOOKMARK context menu to create an automatic bookmark list. Regardless of the length of the recording, 10 bookmarks are to be created.[CR][CR]2. Move up or down the list by UP/DOWN button and select the bookmark that you want to check by pressing OK button.">
 			<type>textbox</type>
 			<posx>580</posx>
-			<posy>410</posy>
+			<posy>440</posy>
 			<width>600</width>
-			<height>250</height>
+			<height>300</height>
 		</content>
 	</page>
 		
@@ -431,16 +431,16 @@
 		<content name="help/epg.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>500</width>
 			<height>384</height>
 		</content>
 		<content name="The Programme Guide displays the programme information of channels, in time and date order. It allows the viewer to take advantage of features such as programme summaries, search by subject or channel, immediate access to the selected programme and one-touch recording of programmes.[CR][CR]In the EPG context menu you can do the followings :[CR][CR][B]- ADD TIMER:[/B] Schedules timer using EPG.[CR][CR][B]- ADD MANUAL TIMER:[/B] Reserves timer manually.[CR][CR][B]- DELETE ALL TIMERS:[/B] Removes all the timers you added.[CR][CR][B]- SHOW ALL TIMERS:[/B] Displays all the timers in the list.[CR][CR][B]- SEARCH:[/B] Find EPG information via keyword search.[CR][CR][B]- EXTEND INFORMATION:[/B] Shows detailed information of programme.">
 			<type>textbox</type>
 			<posx>580</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>630</width>
-			<height>400</height>
+			<height>450</height>
 		</content>
 	</page>
 	
@@ -448,16 +448,16 @@
 		<content name="help/current.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>500</width>
 			<height>237</height>
 		</content>
 		<content name="Probably you have several hundred channels stored in the channel list.[CR]PRISMCUBE provides three view modes to help you sort your channel list.[CR][CR][B]1. CURRENT:[/B] It displays the programme events of channels in the current time.[CR][CR][B]2. FOLLOWING:[/B] This mode shows the next programme events of channels.[CR][CR][B]3. CHANNELS:[/B] This mode shows programme events of the selected channel in time order.">
 			<type>textbox</type>
 			<posx>580</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>650</width>
-			<height>400</height>
+			<height>450</height>
 		</content>
 	</page>
 	
@@ -465,16 +465,16 @@
 		<content name="help/addtimer.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>500</width>
 			<height>251</height>
 		</content>
 		<content name="Supposing that a hard disk drive is connected to your PRISMCUBE, you can schedule recording by using EPG.[CR][CR]1. Select the channel and programme that you want to record.[CR][CR]2. Press REC button and Add Timer menu appears.[CR][CR]3. Select ADD and press OK. Timer recording icon appear on the selected programme.">
 			<type>textbox</type>
 			<posx>580</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>650</width>
-			<height>250</height>
+			<height>450</height>
 		</content>
 	</page>
 
@@ -482,14 +482,14 @@
 		<content name="help/addmanualtimer.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>500</width>
 			<height>252</height>
 		</content>
 		<content name="[B]ADD MANUAL TIMER[/B][CR][CR]1. Select the programme that you want to record.[CR][CR]2. Press REC button and Add Manual Timer menu appears.[CR][CR]3. There are three timer modes: Once/Daily/Weekly.[CR][CR]4. Set the Start Date to a desired, on which the timer recording turn on.[CR][CR]5. Set the Start Time and End Time to a desired time, in which the timer recording turn on and off.[CR][CR]6. Select CONFIRM button and press OK.">
 			<type>textbox</type>
 			<posx>600</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>600</width>
 			<height>400</height>
 		</content>
@@ -499,16 +499,16 @@
 		<content name="help/timer list.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>500</width>
 			<height>265</height>
 		</content>
 		<content name="Timer List shows the reserved recording events. You can check the list of recordings that are scheduled.[CR][CR][B]EDIT TIMER LIST[/B][CR][CR]1. Select the recording timer that you want to edit.[CR][CR]2. Press i button and Timer Option menu appears.[CR][CR]3. Select EDIT TIMER and press OK.[CR][CR]4. Here you can change Start and End time of timer.[CR][CR][B]DELETE TIMER LIST[/B][CR][CR]1. Select the recording timer that you want to delete.[CR][CR]2. Press i button and select to Delete Timer and press OK.">
 			<type>textbox</type>
 			<posx>600</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>650</width>
-			<height>250</height>
+			<height>400</height>
 		</content>
 	</page>
 	
@@ -516,14 +516,14 @@
 		<content name="help/deleting channels.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>600</width>
 			<height>312</height>
 		</content>
 		<content name="Edit Channel List enables you to delete, move, select, rename or lock/unlock the channels in the channel list conveniently.[CR][CR][B]DELETING CHANNELS[/B][CR][CR]1. Press i button and select EDIT CHANNELS.[CR][CR]2. Select a channel that you want to erase and press OK button.[CR][CR]3. Press i button and select Delete and press OK to erase the selected channels.[CR][CR]4. Press i button and select Save and Exit. A message asking for confirmation will appear. Press YES to save.">
 			<type>textbox</type>
 			<posx>680</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>570</width>
 			<height>500</height>
 		</content>
@@ -533,16 +533,16 @@
 		<content name="help/moving channels.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>600</width>
 			<height>309</height>
 		</content>
 		<content name="[B]MOVING CHANNELS[/B][CR][CR]1. Select a channel that you want to move and press i button.[CR][CR]2. Press i button and select MOVE and press OK to move the selected channels.[CR][CR]3. You can move the selected channels by using UP/DOWN button. Press OK to confirm.">
 			<type>textbox</type>
 			<posx>680</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>570</width>
-			<height>250</height>
+			<height>400</height>
 		</content>
 	</page>
 	
@@ -550,16 +550,16 @@
 		<content name="help/locking channels.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>600</width>
 			<height>309</height>
 		</content>
 		<content name="[B]LOCKING/UNLOCKING CHANNELS[/B][CR][CR]1. Select a channel that you want to lock and press i button.[CR][CR]2. Select LOCK and press the OK button.[CR][CR]3. Enter the PIN code. The default password is 0000. Lock icon will appear on the left side of the locked channel. In the same way, you can unlock the locked channel.[CR][CR]Note: To watch locked channels, you must enter the password using the NUMERIC (0-9) buttons.">
 			<type>textbox</type>
 			<posx>680</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>570</width>
-			<height>250</height>
+			<height>400</height>
 		</content>
 	</page>
 	
@@ -567,16 +567,16 @@
 		<content name="help/skipping channels.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>600</width>
 			<height>310</height>
 		</content>
 		<content name="You can temporarily skip channels from the Channel List.[CR][CR][B]SKIPPING CHANNELS[/B][CR][CR]1. Select a channel that you want to skip and press i button.[CR][CR]2. Select SKIP and press OK.[CR][CR]3. In the same way, you can unskip the skipped channel.[CR][CR]Note: The skipped channel will not be displayed in the Channel List. It is displayed only in the Edit Channel List menu.">
 			<type>textbox</type>
 			<posx>680</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>550</width>
-			<height>250</height>
+			<height>400</height>
 		</content>
 	</page>
 	
@@ -584,16 +584,16 @@
 		<content name="help/creating new.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>600</width>
 			<height>310</height>
 		</content>
 		<content name="The entire channels in the Channel List are often too many to navigate. Sort the channels that you watch more often in a favorite channel group.[CR][CR]1. Select CREATE NEW FAVORITES and Press OK.[CR][CR]2. Enter a name for the favorite channel group, and press OK.[CR][CR]Note: You can switch between TV and radio by simply pressing the TV/RADIO button, and create a favorite channel group in both TV and Radio channels.">
 			<type>textbox</type>
 			<posx>680</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>570</width>
-			<height>250</height>
+			<height>400</height>
 		</content>
 	</page>
 
@@ -601,23 +601,23 @@
 		<content name="help/adding channels.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>600</width>
 			<height>310</height>
 		</content>
 		<content name="[B]ADDING CHANNELS TO FAVORITE GROUP[/B][CR][CR]1. Select channels that you want to add to a favorite group and press i button.[CR][CR]2. Select ADD CHANNELS TO FAVORITES and press OK to move the selected channel.[CR][CR]3. You can check if the selected channel is correctly grouped into the selected favorite channel list by pressing LEFT button and select FAVORITES.">
 			<type>textbox</type>
 			<posx>680</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>570</width>
-			<height>250</height>
+			<height>400</height>
 		</content>
 		<content name="[B]SELECTING FAVORITE GROUP[/B][CR][CR]1. Press LEFT button and select FAVORITES.[CR][CR]2. Select a group from the list of available favorite groups.">
 			<type>textbox</type>
 			<posx>680</posx>
-			<posy>370</posy>
+			<posy>380</posy>
 			<width>600</width>
-			<height>250</height>
+			<height>400</height>
 		</content>
 	</page>
 	
@@ -625,16 +625,16 @@
 		<content name="help/removing channels.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>500</width>
 			<height>281</height>
 		</content>
 		<content name="[B]REMOVING CHANNELS FROM FAVORITE GROUP[/B][CR][CR]1. Press LEFT button on the remote control unit and select FAVORITE.[CR][CR]2. Select a group you want to remove channels from.[CR][CR]3. Select a channel that you want to erase and press OK button.[CR][CR]4. Press i button and select DELETE to remove all the channels you have selected.">
 			<type>textbox</type>
 			<posx>560</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>690</width>
-			<height>250</height>
+			<height>400</height>
 		</content>
 	</page>
 	
@@ -642,16 +642,16 @@
 		<content name="help/rename.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>600</width>
 			<height>309</height>
 		</content>
 		<content name="[B]RENAMING FAVORITE GROUPS[/B][CR][CR]1. Press i button and select EDIT CHANNELS.[CR][CR]2. Press i button again and select RENAME FAVORITE GROUP.[CR][CR]3. Select the favorite group that you want to rename and press OK.[CR][CR]4. Enter a new name by using the keypad dialog.[CR][CR]5. Press DONE to confirm.">
 			<type>textbox</type>
 			<posx>680</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>600</width>
-			<height>250</height>
+			<height>400</height>
 		</content>
 	</page>
 	
@@ -659,16 +659,16 @@
 		<content name="help/delete fav.png">
 			<type>image</type>
 			<posx>40</posx>
-			<posy>140</posy>
+			<posy>130</posy>
 			<width>600</width>
 			<height>308</height>
 		</content>
 		<content name="You can delete favorite channel groups.[CR][CR][B]DELETING FAVORITE GROUPS[/B][CR][CR]1. Display Channel List Context menu by pressing i button.[CR][CR]2. Select EDIT CHANNELS and press OK.[CR][CR]3. Press i button and select DELETE FAVORITES.[CR][CR]4. Select the favorite group that you want to delete.[CR][CR]5. Press OK to confirm.">
 			<type>textbox</type>
 			<posx>680</posx>
-			<posy>130</posy>
+			<posy>120</posy>
 			<width>570</width>
-			<height>250</height>
+			<height>400</height>
 		</content>
 	</page>
 
@@ -739,5 +739,4 @@
 			<height>400</height>
 		</content>
 	</page>
-	
 </help>

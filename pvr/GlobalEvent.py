@@ -3,6 +3,7 @@ import pvr.DataCacheMgr
 import pvr.ElisMgr
 
 
+AUTOPOWERDOWN_EXCEPTWINDOW = [ WinMgr.WIN_ID_SYSTEM_UPDATE, WinMgr.WIN_ID_FIRST_INSTALLATION ]
 gGlobalEvent = None
 
 
@@ -66,10 +67,13 @@ class GlobalEvent( object ) :
 			self.mDataCache.Frontdisplay_Resolution( iconIndex )
 
 		elif aEvent.getName( ) == ElisEventPowerSave( ).getName( ) :
-			if self.mIsDialogOpend == False :
-				thread = threading.Timer( 0.3, self.AsyncPowerSave )
-				thread.start( )
-				
+			if WinMgr.GetInstance( ).mLastId not in AUTOPOWERDOWN_EXCEPTWINDOW :
+				if self.mIsDialogOpend == False :
+					thread = threading.Timer( 0.3, self.AsyncPowerSave )
+					thread.start( )
+			else :
+				LOG_TRACE( 'Skip auto power down : %s' ) % WinMgr.GetInstance( ).mLastId
+
 
 	def AsyncPowerSave( self ) :
 		self.mIsDialogOpend = True

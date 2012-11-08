@@ -586,6 +586,30 @@ def CopyToFile( aSourceFile, aDestFile ) :
 	return isCopy
 
 
+def CopyToDirectory( aSourceDirectory, aDestPath ) :
+	isCopy = True
+	try :
+		shutil.copytree( aSourceDirectory, aDestPath )
+		os.system( 'sync' )
+		time.sleep( 0.5 )
+
+	except Exception, e :
+		LOG_ERR( 'except[%s] source[%s] desc[%s]'% ( e, aSourceDirectory, aDestPath ) )
+		isCopy = False
+
+	return isCopy
+
+
+def GetDirectorySize( aPath ) :
+	dir_size = 0
+	for ( path, dirs, files ) in os.walk( aPath ) :
+		for file in files :
+			filename = os.path.join( path, file )
+			dir_size += os.path.getsize( filename )
+
+	return dir_size 
+
+
 def GetURLpage( aUrl, aCache = True ) :
 	download = None
 	try :
