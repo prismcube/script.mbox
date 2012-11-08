@@ -369,7 +369,10 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def LoadInit( self ):
-		self.ShowRecordingInfo( )
+		recInfo1, recInfo2 = self.ShowRecordingInfo( )
+		if self.mRecCount :
+			self.mRecChannel1 = deepcopy( recInfo1 )
+			self.mRecChannel2 = deepcopy( recInfo2 )
 
 		#aleady cache load
 		self.mChannelList = self.mDataCache.Channel_GetList( )
