@@ -22,9 +22,9 @@ class SatelliteConfigMotorizedUsals( SettingWindow ) :
 		self.GetLongitude( )
 		self.GetLatitude( )
 		self.InitConfig( )
-		self.mInitialized = True
 		self.setDefaultControl( )
 		self.SetPipLabel( )
+		self.mInitialized = True
 
 
 	def onAction( self, aAction ) :

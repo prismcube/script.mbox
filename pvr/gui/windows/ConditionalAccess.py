@@ -39,9 +39,9 @@ class ConditionalAccess( SettingWindow ) :
 		self.AddInputControl( E_Input05, MR_LANG( 'Operator Message' ), '', MR_LANG( 'View operator message' ) )
 		
 		self.InitControl( )
-		self.mInitialized = True
 		self.SetFocusControl( E_Input01 )
 		self.SetPipLabel( )
+		self.mInitialized = True
 
 		
 	def onAction( self, aAction ) :

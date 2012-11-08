@@ -35,9 +35,9 @@ class SatelliteConfigOnecable( SettingWindow ) :
 		self.InitControl( )
 		self.getControl( E_SpinEx01 + 3 ).selectItem( self.mSatelliteCount - 1 )
 		self.DisableControl( )
-		self.mInitialized = True
 		self.setDefaultControl( )
 		self.SetPipLabel( )
+		self.mInitialized = True
 
 
 	def onAction( self, aAction ) :

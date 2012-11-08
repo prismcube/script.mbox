@@ -102,8 +102,8 @@ class SystemUpdate( SettingWindow ) :
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )
 
-		self.mInitialized = True
 		self.UpdateStepPage( E_UPDATE_STEP_HOME )
+		self.mInitialized = True
 
 
 	def onAction( self, aAction ) :

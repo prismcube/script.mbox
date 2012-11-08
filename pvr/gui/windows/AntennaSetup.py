@@ -52,9 +52,9 @@ class AntennaSetup( SettingWindow ) :
 		self.InitControl( )
 		time.sleep( 0.2 )
 		self.DisableControl( )
-		self.mInitialized = True
 		self.setDefaultControl( )
 		self.SetPipLabel( )
+		self.mInitialized = True
 		
 		
 	def onAction( self, aAction ) :

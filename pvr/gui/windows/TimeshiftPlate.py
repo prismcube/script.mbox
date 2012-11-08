@@ -116,7 +116,6 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mUserMoveTimeBack = 0
 		self.mFlagUserMove = False
 		self.mAccelator = 0
-		self.mInitialized = True
 		self.mRepeatTimeout = 1
 		self.mAsyncShiftTimer = None
 		self.mAutomaticHideTimer = None
@@ -170,6 +169,8 @@ class TimeShiftPlate( BaseWindow ) :
 
 		if self.mAutomaticHide == True :
 			self.StartAutomaticHide( )
+
+		self.mInitialized = True
 
 
 	def onAction( self, aAction ) :

@@ -97,8 +97,8 @@ class SystemInfo( SettingWindow ) :
 		self.StartCheckHddTempTimer( )
 		
 		self.SetListControl( )
-		self.mInitialized = True
 		self.mPrevListItemID = -1
+		self.mInitialized = True
 
 
 	def onAction( self, aAction ) :

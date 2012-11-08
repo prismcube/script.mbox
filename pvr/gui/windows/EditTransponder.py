@@ -30,9 +30,9 @@ class EditTransponder( SettingWindow ) :
 			self.SetPipScreen( )
 			self.LoadNoSignalState( )
 			self.InitConfig( )
-			self.mInitialized = True
 			self.SetFocusControl( E_Input01 )
 			self.SetPipLabel( )
+			self.mInitialized = True
 		
 
 	def onAction( self, aAction ) :

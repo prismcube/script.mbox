@@ -127,9 +127,9 @@ class Configure( SettingWindow ) :
 		self.mReLoadIp = False
 
 		self.SetListControl( )
-		self.mInitialized = True
 		self.mPrevListItemID = -1
 		self.StartCheckNetworkTimer( )
+		self.mInitialized = True
 
 
 	def Close( self ) :
@@ -323,16 +323,22 @@ class Configure( SettingWindow ) :
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				if groupId == E_Input01 :
 					LOG_TRACE( 'Format_Media_Archive Start' )
+					self.OpenBusyDialog( )
 					self.mCommander.Format_Media_Archive( )
+					self.CloseBusyDialog( )
 					LOG_TRACE( 'Format_Media_Archive Stop' )
 				elif groupId == E_Input02 :
 					LOG_TRACE( 'Format_Record_Archive Start' )
+					self.OpenBusyDialog( )
 					self.mCommander.Format_Record_Archive( )
 					LOG_TRACE( 'Format_Record_Archive Stop' )
+					self.CloseBusyDialog( )
 				elif groupId == E_Input03 :
 					LOG_TRACE( 'Make_Dedicated_HDD Start' )
+					self.OpenBusyDialog( )
 					self.mCommander.Make_Dedicated_HDD( )
 					LOG_TRACE( 'Make_Dedicated_HDD Stop' )
+					self.CloseBusyDialog( )
 
 		else :
 			self.ControlSelect( )
