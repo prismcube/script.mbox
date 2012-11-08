@@ -20,6 +20,19 @@
 			<control type="label" id="300">
 				<include>Dialogs_Label3</include>
 			</control>
+			<control type="label" id="201">
+				<description>page</description>
+				<posx>580</posx>
+				<posy>18</posy>
+				<width>100</width>
+				<height>30</height>
+				<font>Font_Reg20</font>
+				<align>right</align>
+				<aligny>center</aligny>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+			</control>
+
 		</control>
 	</controls>
 </window>

@@ -20,7 +20,6 @@
 				<posy>10</posy>
 				<include>Input01</include>
 				<include>Input02</include>
-				<include>Input03</include>
 			</control>
 			<control type="group">
 				<posx>780</posx>
