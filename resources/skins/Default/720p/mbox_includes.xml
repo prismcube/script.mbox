@@ -190,7 +190,6 @@
 				<aligny>center</aligny>
 				<textcolor>grey2</textcolor>
 				<visible>substring(Window.Property(Signal),False)</visible>
-				
 			</control>
 			<control type="label" id="1021">
 				<posx>930</posx>

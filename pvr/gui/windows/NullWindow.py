@@ -97,8 +97,11 @@ class NullWindow( BaseWindow ) :
 	 			dialog.doModal( )
 	 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 	 				tempval = dialog.GetString( )
-	 				if tempval == '' :
-	 					return
+	 				if len( tempval ) != 4 :
+	 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'The PIN code must be 4-digit long' ) )
+			 			dialog.doModal( )
+			 			return
 					if int( tempval ) == ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( ) :
 						self.Close( )
 						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
@@ -106,10 +109,9 @@ class NullWindow( BaseWindow ) :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Sorry, that PIN code does not match' ) )
 			 			dialog.doModal( )
-			 	return
-
-			self.Close( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
+			else :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 			
 		elif actionId == Action.ACTION_PARENT_DIR :
 			status = self.mDataCache.Player_GetStatus( )		

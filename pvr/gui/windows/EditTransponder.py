@@ -219,6 +219,7 @@ class EditTransponder( SettingWindow ) :
 		self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), satellitename, MR_LANG( 'Select a satellite you want to change settings' ) )
 
 		self.mTransponderList = self.mDataCache.GetTransponderListBySatellite( self.mLongitude, self.mBand )
+		self.mTransponderList.sort( self.ByFrequency )
 
 		if self.mTransponderList and self.mTransponderList[0].mError == 0 :
 			self.AddInputControl( E_Input02, MR_LANG( 'Frequency' ), '%d MHz' % self.mTransponderList[self.mTransponderIndex].mFrequency, MR_LANG( 'Select the frequency of the data stream, in which the channel is encoded' ) )
@@ -250,3 +251,7 @@ class EditTransponder( SettingWindow ) :
 		satellite = self.mDataCache.GetSatelliteByIndex( aIndex )
 		self.mLongitude = satellite.mLongitude
 		self.mBand		= satellite.mBand
+
+
+	def ByFrequency( self, aArg1, aArg2 ) :
+		return cmp( aArg1.mFrequency, aArg2.mFrequency )

@@ -215,7 +215,6 @@ class Configure( SettingWindow ) :
 			else :
 				self.DisableControl( E_LANGUAGE )
 				self.ControlSelect( )
-			return
 
 		elif selectedId == E_NETWORK_SETTING :
 			if not self.mPlatform.IsPrismCube( ) :
@@ -236,7 +235,6 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_TIME_SETTING :
 			self.TimeSetting( groupId )
-			return
 
 		elif selectedId == E_PARENTAL and self.mVisibleParental == False and groupId == E_Input01 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -244,8 +242,11 @@ class Configure( SettingWindow ) :
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				tempval = dialog.GetString( )
-				if tempval == '' :
-					return
+				if len( tempval ) != 4 :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'The PIN code must be 4-digit long' ) )
+		 			dialog.doModal( )
+		 			return
 				if int( tempval ) == ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( ) :
 					self.mVisibleParental = True
 					self.DisableControl( E_PARENTAL )
@@ -253,7 +254,6 @@ class Configure( SettingWindow ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Sorry, that\'s an incorrect PIN code' ) )					
 		 			dialog.doModal( )
-			return
 
 		elif selectedId == E_PARENTAL and groupId == E_Input02 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -262,7 +262,7 @@ class Configure( SettingWindow ) :
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				newpin = dialog.GetString( )
-				if newpin == '' or len( newpin ) != 4 :
+				if len( newpin ) != 4 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'The PIN code must be 4-digit long' ) )
 		 			dialog.doModal( )
@@ -276,9 +276,9 @@ class Configure( SettingWindow ) :
 
  			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
  				confirm = dialog.GetString( )
- 				if confirm == '' :
+ 				if len( confirm ) != 4 :
  					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Sorry, that PIN code does not match' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'The PIN code must be 4-digit long' ) )
 		 			dialog.doModal( )
  					return
 				if int( newpin ) != int( confirm ) :
