@@ -322,18 +322,11 @@
 			<width>900</width>
 			<height>103</height>
 		</content>
-		<content name="Now with PRISMCUBE RUBY never miss your favorite LIVE Sports or Movie scene by pressing just one button.">
+		<content name="Now with PRISMCUBE RUBY never miss your favorite LIVE Sports or Movie scene by pressing just one button.[CR][CR]1. Press PAUSE, to start Timeshift recording.[CR][CR]2. Play bar appears and displays the timeshifted time.[CR][CR]3. Press PAUSE/PLAY to start Timeshift mode.[CR][CR][B]Note:[/B] Automatic Timeshift (Main Menu > Installation > Configuration > Recording Option)[CR][CR]- If Automatic Timeshift is on, Timeshift is activated whenever you change channel.[CR][CR]- If off, Timeshift does not activate automatically.">
 			<type>textbox</type>
 			<posx>190</posx>
 			<posy>300</posy>
 			<width>1100</width>
-			<height>200</height>
-		</content>
-		<content name="1. Press PAUSE, to start Timeshift recording.[CR][CR]2. Play bar appears and displays the timeshifted time.[CR][CR]3. Press PAUSE/PLAY to start Timeshift mode.[CR][CR][B]Note:[/B] Automatic Timeshift (Main Menu > Installation > Configuration > Recording Option)[CR][CR]- If Automatic Timeshift is on, Timeshift is activated whenever you change channel.[CR][CR]- If off, Timeshift does not activate automatically.">
-			<type>textbox</type>
-			<posx>190</posx>
-			<posy>350</posy>
-			<width>800</width>
 			<height>300</height>
 		</content>
 	</page>
@@ -411,19 +404,12 @@
 			<width>500</width>
 			<height>270</height>
 		</content>
-		<content name="[B]CREATION/DELETION OF BOOKMARKS[/B][CR][CR]1. Press BOOKMARK button on the PVR plate and select ADD TO BOOKMARK button to create Bookmarks. A thumbnail image at the point that you press BOOKMARK button will be saved.[CR][CR]2. To see the bookmarks that you created, press SHOW LIST button on the Bookmark menu.[CR][CR]3. Navigate the bookmarks by UP/DOWN button.[CR][CR]4. Press i button to display the context menu and select DELETE button to remove the selected bookmark.[CR][CR]5. Select one of the bookmarks that you want to check and press OK to jump to the bookmark point.">
+		<content name="[B]CREATION/DELETION OF BOOKMARKS[/B][CR][CR]1. Press BOOKMARK button on the PVR plate and select ADD TO BOOKMARK button to create Bookmarks. A thumbnail image at the point that you press BOOKMARK button will be saved.[CR][CR]2. To see the bookmarks that you created, press SHOW LIST button on the Bookmark menu.[CR][CR]3. Navigate the bookmarks by UP/DOWN button.[CR][CR]4. Press i button to display the context menu and select DELETE button to remove the selected bookmark.[CR][CR]5. Select one of the bookmarks that you want to check and press OK to jump to the bookmark point.[CR][CR][B]AUTO CHAPTERING[/B][CR][CR]1. Press AUTO CHAPTERING button in the BOOKMARK context menu to create an automatic bookmark list. Regardless of the length of the recording, 10 bookmarks are to be created.[CR][CR]2. Move up or down the list by UP/DOWN button and select the bookmark that you want to check by pressing OK button.">
 			<type>textbox</type>
 			<posx>580</posx>
-			<posy>120</posy>
+			<posy>115</posy>
 			<width>600</width>
-			<height>300</height>
-		</content>
-		<content name="[B]AUTO CHAPTERING[/B][CR][CR]1. Press AUTO CHAPTERING button in the BOOKMARK context menu to create an automatic bookmark list. Regardless of the length of the recording, 10 bookmarks are to be created.[CR][CR]2. Move up or down the list by UP/DOWN button and select the bookmark that you want to check by pressing OK button.">
-			<type>textbox</type>
-			<posx>580</posx>
-			<posy>440</posy>
-			<width>600</width>
-			<height>300</height>
+			<height>650</height>
 		</content>
 	</page>
 		
@@ -605,19 +591,12 @@
 			<width>600</width>
 			<height>310</height>
 		</content>
-		<content name="[B]ADDING CHANNELS TO FAVORITE GROUP[/B][CR][CR]1. Select channels that you want to add to a favorite group and press i button.[CR][CR]2. Select ADD CHANNELS TO FAVORITES and press OK to move the selected channel.[CR][CR]3. You can check if the selected channel is correctly grouped into the selected favorite channel list by pressing LEFT button and select FAVORITES.">
+		<content name="[B]ADDING CHANNELS TO FAVORITE GROUP[/B][CR][CR]1. Select channels that you want to add to a favorite group and press i button.[CR][CR]2. Select ADD CHANNELS TO FAVORITES and press OK to move the selected channel.[CR][CR]3. You can check if the selected channel is correctly grouped into the selected favorite channel list by pressing LEFT button and select FAVORITES.[CR][CR][B]SELECTING FAVORITE GROUP[/B][CR][CR]1. Press LEFT button and select FAVORITES.[CR][CR]2. Select a group from the list of available favorite groups.">
 			<type>textbox</type>
 			<posx>680</posx>
 			<posy>120</posy>
 			<width>570</width>
-			<height>400</height>
-		</content>
-		<content name="[B]SELECTING FAVORITE GROUP[/B][CR][CR]1. Press LEFT button and select FAVORITES.[CR][CR]2. Select a group from the list of available favorite groups.">
-			<type>textbox</type>
-			<posx>680</posx>
-			<posy>380</posy>
-			<width>600</width>
-			<height>400</height>
+			<height>650</height>
 		</content>
 	</page>
 	
