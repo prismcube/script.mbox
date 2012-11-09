@@ -694,10 +694,10 @@ class Configure( SettingWindow ) :
 
 	def ConnectEthernet( self ) :
 		self.mProgressThread = self.ShowProgress( MR_LANG( 'Now connecting...' ), 15 )
-		ret = self.mIpParser.SetEthernet( self.mTempNetworkType, self.mTempIpAddr, self.mTempSubNet, self.mTempGateway, self.mTempDns )
+		ret = self.mIpParser.SetEthernet( self.mTempNetworkType, self.mTempIpAddr.strip( ), self.mTempSubNet.strip( ), self.mTempGateway.strip( ), self.mTempDns.strip( ) )
 		SetCurrentNetworkType( NETWORK_ETHERNET )
 		if ret == False :
-			time.sleep( 1.5 )
+			time.sleep( 0.5 )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Network setup has failed to complete' ) )
  			dialog.doModal( )
@@ -771,16 +771,16 @@ class Configure( SettingWindow ) :
 			self.mRunningNetwork = True
 			dev = self.mWireless.GetWifidevice( )
 			if dev == None :
-				time.sleep( 1.5 )
+				time.sleep( 0.5 )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Devices not found' ) )
 				dialog.doModal( )
 				self.mRunningNetwork = False
 				return
-			self.mProgressThread = self.ShowProgress( MR_LANG( 'Now search...' ), 15 )
+			self.mProgressThread = self.ShowProgress( MR_LANG( 'Now search...' ), 20 )
 			apList = self.mWireless.ScanWifiAP( dev )
 			self.CloseProgress( )
-			time.sleep( 1.5 )
+			time.sleep( 0.5 )
 			dialog = xbmcgui.Dialog( )
 			if apList == None :
 				ret = dialog.select( MR_LANG( 'Select AP' ), [ MR_LANG( 'No AP list' ) ] )
@@ -831,7 +831,7 @@ class Configure( SettingWindow ) :
 			SetIpAddressProperty( addressIp, addressMask, addressGateway, addressNameServer )
 			self.CloseProgress( )
 			if ret1 == False or ret2 == False :
-				time.sleep( 1.5 )
+				time.sleep( 0.5 )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'STB was unable to save the Wifi configuration' ) )
 				dialog.doModal( )
