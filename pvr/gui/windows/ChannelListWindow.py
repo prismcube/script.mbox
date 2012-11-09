@@ -93,7 +93,6 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.mPropertyAge = 0
 		self.mPropertyPincode = -1
-		self.mPincodeEnter = FLAG_MASK_NONE
 		self.mViewMode = WinMgr.WIN_ID_CHANNEL_LIST_WINDOW
 
 
@@ -180,7 +179,6 @@ class ChannelListWindow( BaseWindow ) :
 		self.mItemHeight = int( self.getProperty( 'ItemHeight' ) )
 
 		self.mPropertyAge = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
-		self.mPropertyPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
 		if self.mDataCache.mCacheReload :
 			self.mListItems = None
 			self.mDataCache.mCacheReload = False
@@ -645,13 +643,17 @@ class ChannelListWindow( BaseWindow ) :
 					xbmc.executebuiltin( 'xbmc.Action(stop)' )
 
 			elif aEvent.getName( ) == ElisEventChannelChangeResult.getName( ) :
+				pass
+				"""
 				ch = self.mDataCache.Channel_GetCurrent( )
 				isLimit = False
 				if self.mNavEpg :
 					isLimit = AgeLimit( self.mPropertyAge, self.mNavEpg.mAgeRating )
 
 				if ch.mLocked or isLimit :
-					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mPropertyPincode )
+					pass
+					#ToDO : pincode question
+				"""
 
 		else:
 			LOG_TRACE( 'channellist winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
@@ -666,13 +668,6 @@ class ChannelListWindow( BaseWindow ) :
 			iChannel = self.mChannelListHash.get( int(aJumpNumber), None ) 
 			if iChannel == None :
 				return
-				"""
-				if self.mFlag_ModeChanged :
-					iChannel = self.mChannelList[0]
-				else :
-					return
-				"""
-
 			#LOG_TRACE( 'JumpChannel: num[%s] Name[%s] type[%s] aNum[%s]'% (iChannel.mNumber, iChannel.mName, iChannel.mServiceType, aJumpNumber) )
 
 			#detected to jump focus
@@ -694,7 +689,6 @@ class ChannelListWindow( BaseWindow ) :
 
 			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, chindex, E_TAG_SET_SELECT_POSITION )
 
-
 		else:
 			if self.mChannelList == None:
 				label = MR_LANG( 'No Channels' )
@@ -713,8 +707,8 @@ class ChannelListWindow( BaseWindow ) :
 				isBlank = False
 			self.mDataCache.Player_VideoBlank( isBlank )
 
+
 		ret = self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType, self.mChannelListHash )
-		#LOG_TRACE( 'MASK[%s] ret[%s]'% ( self.mPincodeEnter, ret ) )
 		if ret :
 			oldChannel = self.mDataCache.Channel_GetOldChannel( )
 			#LOG_TRACE( 'oldch: num[%s] type[%s] name[%s] re[%s]'% ( oldChannel.mNumber, oldChannel.mServiceType, oldChannel.mName, self.mRefreshCurrentChannel ) )
@@ -730,12 +724,26 @@ class ChannelListWindow( BaseWindow ) :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )				
 					return
 
-				LOG_TRACE( 'go out Cancel' )
+				LOG_TRACE( 'no exit by Cancel' )
 
-		#ch = None
-		#ch = self.mDataCache.Channel_GetCurrent( )
-		#LOG_TRACE( 'getCurrent num[%s] name[%s]'% ( ch.mNumber, ch.mName ) )
-		#if ch :
+			else :
+				if iChannel.mLocked :
+					if not self.mDataCache.Get_Player_AVBlank( ) :
+						self.mDataCache.Player_AVBlank( True )
+
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
+					dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
+					dialog.doModal( )
+					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+						if self.mDataCache.Get_Player_AVBlank( ) :
+							self.mDataCache.Player_AVBlank( False )
+
+				else :
+					if self.mDataCache.Get_Player_AVBlank( ) :
+						self.mDataCache.Player_AVBlank( False )
+
+
+		#refresh info
 		if iChannel :
 			self.mNavChannel = iChannel
 			self.mCurrentChannel = iChannel.mNumber
@@ -1458,7 +1466,6 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.mCtrlProgress.setPercent( 0 )
 		self.mCtrlProgress.setVisible( False )
-		self.mPincodeEnter = FLAG_MASK_NONE
 
 		self.mCtrlLabelSelectItem.setLabel( str( '%s'% ( self.mCtrlListCHList.getSelectedPosition( ) + 1 ) ) )
 		self.mCtrlLabelEPGName.setLabel( '' )
@@ -1628,7 +1635,6 @@ class ChannelListWindow( BaseWindow ) :
 
 			#update lock-icon visible
 			if self.mNavChannel.mLocked :
-				#self.mPincodeEnter |= FLAG_MASK_ADD
 				self.UpdateControlGUI( E_CONTROL_ID_GROUP_LOCKED_INFO, True )
 
 
@@ -1653,7 +1659,7 @@ class ChannelListWindow( BaseWindow ) :
 			#is cas?
 			if self.mNavChannel.mIsCA == True:
 				#scrambled
-				self.mPincodeEnter |= FLAG_MASK_ADD
+				#ToDO : pincode
 			"""
 
 
@@ -1680,7 +1686,7 @@ class ChannelListWindow( BaseWindow ) :
 				#is Age? agerating check
 				isLimit = AgeLimit( self.mPropertyAge, self.mNavEpg.mAgeRating )
 				if isLimit == True :
-					self.mPincodeEnter |= FLAG_MASK_ADD
+					#ToDO : popup
 					LOG_TRACE( 'AgeLimit[%s]'% isLimit )
 				"""
 

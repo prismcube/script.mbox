@@ -393,8 +393,6 @@ class NullWindow( BaseWindow ) :
 				if ch.mLocked :
 					LOG_TRACE( 'LAEL98 CHECK PINCODE' )				
 					CheckPincode( )
-					LOG_TRACE( 'LAEL98 CHECK PINCODE' )					
-					#self.PincodeDialogLimit( self.mDataCache.mPropertyPincode )
 				"""
 
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
@@ -474,43 +472,6 @@ class NullWindow( BaseWindow ) :
 				pass 
 				#LOG_TRACE( 'NullWindow winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( )) )
 
-
-	def PincodeDialogLimit( self, aPincode ) :
-		isUnlock = False
-		try :
-			self.mDataCache.Player_AVBlank( True )
-			msg = MR_LANG( 'Enter your PIN code' )
-			inputPin = ''
-
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-			dialog.SetDialogProperty( msg, '', 4, True )
-			dialog.doModal( )
-
-			reply = dialog.IsOK( )
-			if reply == E_DIALOG_STATE_YES :
-				inputPin = dialog.GetString( )
-
-			elif reply == E_DIALOG_STATE_CANCEL :
-				return isUnlock
-
-			if inputPin == None or inputPin == '' :
-				inputPin = ''
-
-			if inputPin == str('%s'% aPincode ) :
-				isUnlock = True
-				self.mDataCache.Player_AVBlank( False )
-
-			else:
-				msg1 = MR_LANG( 'Error' )
-				msg2 = MR_LANG( 'Sorry, that PIN code does not match' )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( msg1, msg2 )
-				dialog.doModal( )
-
-		except Exception, e:
-			LOG_TRACE( 'Error exception[%s]'% e )
-
-		return isUnlock
 
 
 	def ShowRecordingStartDialog( self ) :

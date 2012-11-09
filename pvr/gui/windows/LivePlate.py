@@ -314,10 +314,6 @@ class LivePlate( LivePlateWindow ) :
 
 				self.UpdateChannelAndEPG( self.mCurrentEPG )
 
-				#if self.mCurrentChannel.mLocked :
-				#	WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_NULLWINDOW ).PincodeDialogLimit( self.mPropertyPincode )
-
-
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
