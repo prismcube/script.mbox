@@ -694,7 +694,7 @@ class Configure( SettingWindow ) :
 
 	def ConnectEthernet( self ) :
 		self.mProgressThread = self.ShowProgress( MR_LANG( 'Now connecting...' ), 15 )
-		ret = self.mIpParser.SetEthernet( self.mTempNetworkType, self.mTempIpAddr, self.mTempSubNet, self.mTempGateway, self.mTempDns )
+		ret = self.mIpParser.SetEthernet( self.mTempNetworkType, self.mTempIpAddr.strip( ), self.mTempSubNet.strip( ), self.mTempGateway.strip( ), self.mTempDns.strip( ) )
 		SetCurrentNetworkType( NETWORK_ETHERNET )
 		if ret == False :
 			time.sleep( 1.5 )
