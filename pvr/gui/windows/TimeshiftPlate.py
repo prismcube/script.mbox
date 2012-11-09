@@ -1024,12 +1024,13 @@ class TimeShiftPlate( BaseWindow ) :
 
 	def BookMarkContext( self ) :
 		context = []
-		lblBookmark = MR_LANG( 'Show bookmark' )
-		if not self.mIsShowBookmark :
-			lblBookmark = MR_LANG( 'Hide bookmark' )
+		#lblBookmark = MR_LANG( 'Show bookmark' )
+		#if not self.mIsShowBookmark :
+		#	lblBookmark = MR_LANG( 'Hide bookmark' )
+
 		context.append( ContextItem( MR_LANG( 'Add bookmark' ), CONTEXT_ACTION_ADD_TO_BOOKMARK ) )
-		#context.append( ContextItem( MR_LANG( 'Add To AutoChapter' ), CONTEXT_ACTION_ADD_AUTO_CHAPTER ) )
-		context.append( ContextItem( lblBookmark, CONTEXT_ACTION_SHOW_BOOKMARK ) )
+		context.append( ContextItem( MR_LANG( 'Add To AutoChapter' ), CONTEXT_ACTION_ADD_AUTO_CHAPTER ) )
+		#context.append( ContextItem( lblBookmark, CONTEXT_ACTION_SHOW_BOOKMARK ) )
 		context.append( ContextItem( MR_LANG( 'Show bookmark list' ), CONTEXT_ACTION_SHOW_LIST ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
