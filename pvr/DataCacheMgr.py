@@ -1641,11 +1641,19 @@ class DataCacheMgr( object ) :
 			self.LoadChannelList( )
 
 			if self.mChannelList == None or len( self.mChannelList ) < 1 :
+				LOG_TRACE('Can not change[%s] 1:TV, 2:Radio, channel is None'% self.Zappingmode_GetCurrent( ).mServiceType )
 				self.Zappingmode_SetCurrent( zappingMode )
 				self.LoadZappingmode( )
 				self.LoadZappingList( )
 				self.LoadChannelList( )
-				LOG_TRACE('Can not change [%s], channel is None'% modeStr )
+				isMode = self.Zappingmode_GetCurrent( )
+				LOG_TRACE('Reload Changed[%s] 1:TV, 2:Radio'% isMode.mServiceType )
+				if isMode.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
+					self.Player_VideoBlank( False )
+
+				iCurrentCh = self.Channel_GetCurrent( )
+				self.Channel_InvalidateCurrent( )
+				self.Channel_SetCurrentSync( iCurrentCh.mNumber, iCurrentCh.mServiceType )
 				return False
 
 			self.mLastZappingMode = copy.deepcopy( zappingMode )

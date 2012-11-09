@@ -660,6 +660,10 @@ def ParseStringInXML( xmlFile, tagName ) :
 	return lines
 
 
+def ParseStringInPattern( aToken, aData ) :
+	return re.split( aToken, aData.strip( ) )
+
+
 class GuiSkinPosition( object ) :
 	def __init__( self ) :
 		self.mLeft	 = 0

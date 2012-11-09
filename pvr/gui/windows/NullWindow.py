@@ -267,8 +267,14 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
-				self.SetRadioScreen( )
-				self.mDataCache.ToggleTVRadio( )
+				ret = self.mDataCache.ToggleTVRadio( )
+				if ret :
+					self.SetRadioScreen( )
+				else :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Can not changed, Channel is None' ) )
+					dialog.doModal( )
+
 				self.Close( )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )

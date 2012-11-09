@@ -168,18 +168,21 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def SetRadioScreen( self, aType = -1 ) :
-		tvradio = 'False'
+		radio = 'False'
 		state = False
 		if aType == -1 :
 			aType = self.mDataCache.Zappingmode_GetCurrent( ).mServiceType
 
 		if aType == ElisEnum.E_SERVICE_TYPE_RADIO :
-			tvradio = 'True'
+			radio = 'True'
 			state = True
+		else :
+			self.mDataCache.Player_VideoBlank( False )
 
-		self.setProperty( 'TVRadio', tvradio )
-		#self.mDataCache.Player_VideoBlank( state )
-		return tvradio
+		self.setProperty( 'TVRadio', radio )
+
+		return radio
+
 
 	def SetVideoRestore( self ) :
 		self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )

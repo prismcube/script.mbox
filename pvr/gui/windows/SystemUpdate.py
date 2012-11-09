@@ -6,6 +6,7 @@ E_TYPE_PRISMCUBE = 1
 E_TYPE_ADDONS = 2
 
 E_CURRENT_INFO            = '/config/update.xml'
+#E_CURRENT_INFO            = '/config/update.flag'
 E_DOWNLOAD_INFO_PVS       = '/mnt/hdd0/program/download/update.xml'
 E_DEFAULT_PATH_HDD        = '/mnt/hdd0/program'
 E_DEFAULT_PATH_DOWNLOAD   = '%s/download'% E_DEFAULT_PATH_HDD
@@ -636,7 +637,7 @@ class SystemUpdate( SettingWindow ) :
 			dialog.doModal( )
 			ret = dialog.IsOK( )
 			if ret == E_DIALOG_STATE_YES :
-				#self.BackupFiles( )
+				self.CheckItems( )
 				RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
 				RemoveDirectory( os.path.dirname( E_DOWNLOAD_INFO_PVS ) )
 				self.OpenBusyDialog( )
@@ -832,11 +833,55 @@ class SystemUpdate( SettingWindow ) :
 		return isVerify
 
 
-	def BackupFiles( self ) :
+	def CheckItems( self ) :
+		#check recording
+		runningTimerList = self.mDataCache.Timer_GetRunningTimers( )
+		#LOG_TRACE( 'runningTimerList[%s]'% runningTimerList )
+		if runningTimerList :
+			for timer in runningTimerList :
+				self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
+
+		CopyToFile( E_DOWNLOAD_INFO_PVS, E_CURRENT_INFO )
+		return
+
+		#ToDo 
+		#backup settings
+		try :
+			from pvr.IpParser import *
+
+			fd = open( E_CURRENT_INFO, 'w' )
+
+			updateVersion = ''
+			updateDate = ''
+			if self.mPVSData :
+				updateVersion = self.mPVSData.mVersion
+				updateDate = self.mPVSData.mDate
+
+			fd.writefiles( 'Version=%s\n'% updateVersion )
+			fd.writefiles( 'Date=%s\n'% updateDate )
+
+			nType = GetCurrentNetworkType( )
+			fd.writefiles( 'NetworkType=%s\n'% nType )
+			command = pvr.ElisMgr.GetInstance( ).GetCommander( )
+			if nType == NETWORK_ETHERNET :
+				fd.writefiles( 'ipaddr=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'IpAddress' , command ).GetProp( ) ) ) )
+				fd.writefiles( 'subnet=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'SubNet' , command ).GetProp( ) ) ) )
+				fd.writefiles( 'gateway=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'Gateway' , command ).GetProp( ) ) ) )
+				fd.writefiles( 'dns=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'DNS' , command ).GetProp( ) ) ) )
+			else :
+				pass
+				#WirelessParser.GetWifidevice( )
+			fd.close( )
+
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
+
+		return
+
+		"""
 		#ToDO :
 		CopyToFile( '/etc/network/interface', '%s/interface'% E_DEFAULT_PATH_HDD )
 		CopyToFile( '/etc/wpa_supplicant/wpa_supplicant.conf', '%s/wpa_supplicant.conf'% E_DEFAULT_PATH_HDD )
-		#CopyToFile( E_DOWNLOAD_INFO_PVS, E_CURRENT_INFO )
 
 		try :
 			wList = []		
@@ -856,7 +901,7 @@ class SystemUpdate( SettingWindow ) :
 
 		except Exception, e :
 			LOG_TRACE( 'except[%s]'% e )
-
+		"""
 
 	def CheckCurrentVersion( self ) :
 		lbldesc = ''
@@ -865,6 +910,19 @@ class SystemUpdate( SettingWindow ) :
 			currInfo = f.read( )
 			f.close( )
 
+			"""
+			iPVS = PVSClass( )
+			for line in currInfo :
+				value = ParseStringInPattern( '=', line )
+				if not value or len( value ) < 2 :
+					continue
+
+				if value[0] == 'Version' :
+					iPVS.mVersion = value[1]
+				elif value[0] == 'Date' :
+					iPVS.mDate = value[1]
+
+			"""
 			iPVS = PVSClass( )
 			iPVS.mVersion = ParseStringInXML( currInfo, 'version' )
 			iPVS.mDate    = ParseStringInXML( currInfo, 'date' )
@@ -886,11 +944,13 @@ class SystemUpdate( SettingWindow ) :
 
 			self.mCurrData = iPVS
 
+
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
 			lbldesc = MR_LANG( 'Unknown version' )
 
 		self.UpdatePropertyGUI( 'CurrentDescription', lbldesc )
+
 
 
 	def UpdateChannel( self ) :
