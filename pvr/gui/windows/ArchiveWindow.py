@@ -929,6 +929,11 @@ class ArchiveWindow( BaseWindow ) :
 		
 		if pincodeDialog.IsOK( ) == E_DIALOG_STATE_YES :
 			inputPincode = int( pincodeDialog.GetString( ) )
+			if len( pincodeDialog.GetString( ) ) != 4 :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'The PIN code must be 4-digit long' ) )
+	 			dialog.doModal( )
+	 			return False
 			LOG_TRACE( 'Input pincode=%d savedPincode=%d' %( savedPincode, inputPincode) )
 			if inputPincode == savedPincode :
 				return True

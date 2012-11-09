@@ -34,8 +34,8 @@ class FirstInstallation( SettingWindow ) :
 		self.SetListControl( self.mStepNum )
 		ConfigMgr.GetInstance( ).SetFristInstallation( True )
 		self.SetPipLabel( )
-		self.mInitialized = True
 		self.mLastFocused = self.getFocusId( )
+		self.mInitialized = True
 
 
 	def onAction( self, aAction ) :
