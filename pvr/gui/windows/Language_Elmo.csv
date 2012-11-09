@@ -393,6 +393,7 @@
 "Reset Favorite Add-ons",,,,,,,,,,2306
 "Reset Configure Setting",,,,,,,,,,2307
 "Symbol Rate","Symbolrate","Debit de symbole","Symbolrate","Tasa de simbolos","Symbolova rychlost","Symbolrate","Symbol rate","Sembol oranı","Частота символов",2308
+"Network Type",,,,,,,,,,2309
 "Installation",,,,,,,,,,3001
 "No Channel",,,,,,,,,,3002
 "Unknown","Unbekannt","Inconnu","Sconosciuto","Desconocido","Neznamo","Onbekend","Nieznany","Bilinmiyor","Неизвестно",3003
@@ -1011,3 +1012,22 @@
 "Hide bookmark",,,,,,,,,,3616
 "Add bookmark",,,,,,,,,,3617
 "Show bookmark list",,,,,,,,,,3618
+"Can not connect address, Check Network or URL",,,,,,,,,,3619
+"Verify Failed, try to download again",,,,,,,,,,3620
+"Update Ready",,,,,,,,,,3621
+"Disk is Full, Please remove Addons",,,,,,,,,,3622
+"Not enough space, Check USB",,,,,,,,,,3623
+"Update process failed",,,,,,,,,,3624
+"Check firmware from update server",,,,,,,,,,3625
+"Verifying...",,,,,,,,,,3626
+"Unknown version",,,,,,,,,,3627
+"Format HDD drive...",,,,,,,,,,3628
+"Can not found harddisk drive",,,,,,,,,,3629
+"ERROR",,,,,,,,,,3630
+"DO YOU WANT TO BACKUP USER DATA?",,,,,,,,,,3631
+"Can not found backup data",,,,,,,,,,3632
+"ARE YOU SURE?",,,,,,,,,,3633
+"Now backup user data...",,,,,,,,,,3634
+"Backup data success. press ok button to format HDD drive...",,,,,,,,,,3635
+"Backup data fail",,,,,,,,,,3636
+"UPDATE",,,,,,,,,,3637
