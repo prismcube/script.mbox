@@ -311,6 +311,7 @@ class Configure( SettingWindow ) :
 				ResetHash( )
 				self.mInitialized = False
 				self.ResetAllControl( )
+				self.StopCheckNetworkTimer( )
 				self.getControl( E_SETTING_DESCRIPTION ).setLabel( '' )
 				self.CloseProgress( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
