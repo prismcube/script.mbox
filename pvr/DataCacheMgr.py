@@ -106,7 +106,7 @@ class DataCacheMgr( object ) :
 		self.mRecordDB = None
 
 		self.mLockStatus = self.mCommander.Channel_GetStatus( )
-		self.mAVBlankStatus = False
+		self.mAVBlankStatus = self.mCommander.Channel_GetInitialBlank( )
 		self.mSkip = False
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
@@ -1289,6 +1289,13 @@ class DataCacheMgr( object ) :
 		return self.mAVBlankStatus
 
 
+	def CheckCurrentChannelByAVBlank( self, aBlank ) :
+		channel = self.Channel_GetCurrent( )
+		if channel and channel.mLocked :
+			if aBlank != self.Get_Player_AVBlank( ) :
+				self.Player_AVBlank( aBlank )
+
+
 	def Player_SetMute( self, aMute ) :
 		return self.mCommander.Player_SetMute( aMute )
 
@@ -1312,6 +1319,7 @@ class DataCacheMgr( object ) :
 	def Player_Stop( self ) :
 		ret = self.mCommander.Player_Stop( )
 		self.Frontdisplay_PlayPause( False )
+		self.CheckCurrentChannelByAVBlank( True )
 		return ret
 
 
@@ -1332,6 +1340,7 @@ class DataCacheMgr( object ) :
 
 
 	def Player_StartInternalRecordPlayback( self, aRecordKey, aServiceType, aOffsetMS, aSpeed ) :
+		self.CheckCurrentChannelByAVBlank( False )
 		ret = self.mCommander.Player_StartInternalRecordPlayback( aRecordKey, aServiceType, aOffsetMS, aSpeed )
 		self.Frontdisplay_PlayPause( )
 		return ret
