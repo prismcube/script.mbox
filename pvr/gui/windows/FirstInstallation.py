@@ -12,6 +12,7 @@ class FirstInstallation( SettingWindow ) :
 		self.mConfiguredSatelliteList 	=	[]
 		self.mFormattedList				=	[]
 		self.mSatelliteIndex			=	0
+		self.mLastFocused				=	-1
 
 		self.mDate				= 0
 		self.mTime				= 0
@@ -34,6 +35,7 @@ class FirstInstallation( SettingWindow ) :
 		ConfigMgr.GetInstance( ).SetFristInstallation( True )
 		self.SetPipLabel( )
 		self.mInitialized = True
+		self.mLastFocused = self.getFocusId( )
 
 
 	def onAction( self, aAction ) :
@@ -90,7 +92,7 @@ class FirstInstallation( SettingWindow ) :
 						dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Please be patience after pressing the OK button' ), MR_LANG( 'It will take some time to bring up display changes' ) )
 						dialog.doModal( )
 						self.mInitialized = False
-						self.mLastFocused = -1
+						self.OpenBusyDialog( )
 						WinMgr.GetInstance( ).SetCurrentLanguage( menuLanguageList[ ret ] )
 						
 				elif groupId == E_Input02 :
@@ -136,14 +138,11 @@ class FirstInstallation( SettingWindow ) :
 
 	def Close( self ) :
 		self.OpenBusyDialog( )
-		self.mLastFocused = -1
 		self.ResetAllControl( )
 		self.mStepNum = E_STEP_SELECT_LANGUAGE
 		ConfigMgr.GetInstance( ).SetFristInstallation( False )
 		self.mTunerMgr.SyncChannelBySatellite( )
 		self.mDataCache.Channel_ReLoad( )
-		#TODO : Channel_TuneDefault -> parent window is configure
-		#self.mDataCache.Channel_TuneDefault( )
 		self.mDataCache.Player_AVBlank( False )
 		self.CloseBusyDialog( )
 		self.SetVideoRestore( )

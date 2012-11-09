@@ -127,7 +127,7 @@ class Configure( SettingWindow ) :
 		self.mReLoadIp = False
 
 		self.SetListControl( )
-		self.mPrevListItemID = -1
+		self.mPrevListItemID = self.mCtrlLeftGroup.getSelectedPosition( )
 		self.StartCheckNetworkTimer( )
 		self.mInitialized = True
 
@@ -159,7 +159,6 @@ class Configure( SettingWindow ) :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
 				self.mVisibleParental = False
-				#self.StopCheckNetworkTimer( )
 				if self.mPlatform.IsPrismCube( ) :
 					self.mUseNetworkType = GetCurrentNetworkType( )
 				self.SetListControl( )
@@ -171,7 +170,6 @@ class Configure( SettingWindow ) :
 				self.mPrevListItemID = selectedId
 				self.mReLoadIp = True
 				self.mVisibleParental = False
-				#self.StopCheckNetworkTimer( )
 				if self.mPlatform.IsPrismCube( ) :
 					self.mUseNetworkType = GetCurrentNetworkType( )
 				self.SetListControl( )
@@ -211,7 +209,8 @@ class Configure( SettingWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Please be patience after pressing the OK button' ), MR_LANG( 'It will take some time to bring up display changes' ) )
 					dialog.doModal( )
 					self.mInitialized = False
-					self.mLastFocused = -1
+					self.OpenBusyDialog( )
+					self.StopCheckNetworkTimer( )
 					WinMgr.GetInstance( ).SetCurrentLanguage( menuLanguageList[ ret ] )
 			else :
 				self.DisableControl( E_LANGUAGE )
@@ -367,7 +366,6 @@ class Configure( SettingWindow ) :
 					self.mPrevListItemID =selectedId
 					self.mReLoadIp = True
 					self.mVisibleParental = False
-					#self.StopCheckNetworkTimer( )
 				self.SetListControl( )
 
 
