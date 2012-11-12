@@ -453,7 +453,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def SetModeChanged( self, aType = FLAG_MODE_TV ) :
-		if self.mUserMode.mServiceType != aType :
+		if self.mUserMode.mServiceType != aType and self.mDataCache.Channel_GetCount( aType ) > 0 :
 			tmpUserMode = deepcopy( self.mUserMode )
 			self.mUserMode = deepcopy( self.mLastMode )
 			tmpUserSlidePos = deepcopy( self.mUserSlidePos )
@@ -489,7 +489,12 @@ class ChannelListWindow( BaseWindow ) :
 			self.ResetLabel( )
 			#self.Epgevent_GetCurrent( )
 
-		if aType == FLAG_MODE_TV :
+		else :
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Can not changed, Channel is None' ) )
+			dialog.doModal( )
+
+		if self.mUserMode.mServiceType == FLAG_MODE_TV :
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_TV,   True, E_TAG_SELECT )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIO_SERVICETYPE_RADIO,False, E_TAG_SELECT )
 		else :
