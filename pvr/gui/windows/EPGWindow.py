@@ -167,10 +167,16 @@ class EPGWindow( BaseWindow ) :
 			self.StopEPGUpdateTimer( )
 
 			GuiLock2( True )
-			self.ToggleTVRadio( )
-			self.SetRadioScreen( self.mServiceType )
+			ret = self.ToggleTVRadio( )
 			GuiLock2( False )			
-			
+
+			if ret :
+				self.SetRadioScreen( self.mServiceType )
+			else :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Can not changed, Channel is None' ) )
+				dialog.doModal( )
+
 			self.StartEPGUpdateTimer( )
 			self.mEventBus.Register( self )			
 			

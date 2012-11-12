@@ -1635,14 +1635,16 @@ class DataCacheMgr( object ) :
 
 			#LOG_TRACE('------changed settings')
 			#newZappingMode.printdebug( )
-			self.Zappingmode_SetCurrent( newZappingMode )
+			isSetMod = self.Zappingmode_SetCurrent( newZappingMode )
 			self.LoadZappingmode( )
 			self.LoadZappingList( )
 			self.LoadChannelList( )
 
-			if self.mChannelList == None or len( self.mChannelList ) < 1 :
-				LOG_TRACE('Can not change[%s] 1:TV, 2:Radio, channel is None'% self.Zappingmode_GetCurrent( ).mServiceType )
-				self.Zappingmode_SetCurrent( zappingMode )
+			if not isSetMod or self.mChannelList == None or len( self.mChannelList ) < 1 :
+				tempSetMod = self.Zappingmode_GetCurrent( )
+				LOG_TRACE('Can not change[%s] 1:TV, 2:Radio, channel is None'% tempSetMod.mServiceType )
+				if zappingMode.mServiceType != tempSetMod.mServiceType :
+					self.Zappingmode_SetCurrent( zappingMode )
 				self.LoadZappingmode( )
 				self.LoadZappingList( )
 				self.LoadChannelList( )
@@ -1650,9 +1652,11 @@ class DataCacheMgr( object ) :
 				LOG_TRACE('Reload Changed[%s] 1:TV, 2:Radio'% isMode.mServiceType )
 				if isMode.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
 					self.Player_VideoBlank( False )
+				if self.Get_Player_AVBlank( ) :
+					self.Player_AVBlank( False )
 
 				iCurrentCh = self.Channel_GetCurrent( )
-				self.Channel_InvalidateCurrent( )
+				#self.Channel_InvalidateCurrent( )
 				self.Channel_SetCurrentSync( iCurrentCh.mNumber, iCurrentCh.mServiceType )
 				return False
 
