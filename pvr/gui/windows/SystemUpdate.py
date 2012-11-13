@@ -1,12 +1,12 @@
 from pvr.gui.WindowImport import *
 from fileDownloader import DownloadFile
+from copy import deepcopy
 import stat
 
 E_TYPE_PRISMCUBE = 1
 E_TYPE_ADDONS = 2
 
-E_CURRENT_INFO            = '/config/update.xml'
-#E_CURRENT_INFO            = '/config/update.flag'
+E_CURRENT_INFO            = '/config/update.flag'
 E_DOWNLOAD_INFO_PVS       = '/mnt/hdd0/program/download/update.xml'
 E_DEFAULT_PATH_HDD        = '/mnt/hdd0/program'
 E_DEFAULT_PATH_DOWNLOAD   = '%s/download'% E_DEFAULT_PATH_HDD
@@ -22,6 +22,7 @@ E_CONTROL_ID_LABEL_SIZE     = 102
 CONTEXT_ACTION_REFRESH_CONNECT      = 1
 CONTEXT_ACTION_CHANGE_ADDRESS       = 2
 CONTEXT_ACTION_LOAD_DEFAULT_ADDRESS = 3
+CONTEXT_ACTION_LOAD_OLD_VERSION     = 4
 
 E_UPDATE_STEP_HOME        = 0
 E_UPDATE_STEP_READY       = 1
@@ -52,6 +53,7 @@ E_STRING_CHECK_FINISH    = 8
 E_STRING_CHECK_CONNECT_ERROR  = 9
 E_STRING_CHECK_UNLINK_NETWORK = 10
 E_STRING_CHECK_CHANNEL_FAIL   = 11
+E_STRING_CHECK_NOT_OLDVERSION = 12
 
 class PVSClass( object ) :
 	def __init__( self ) :
@@ -61,7 +63,7 @@ class PVSClass( object ) :
 		self.mDescription			= []
 		self.mMd5					= None
 		self.mSize					= 0
-		self.mVersion				= None
+		self.mVersion				= 0
 		self.mId					= None
 		self.mType					= None
 		self.mError					= -1
@@ -92,13 +94,14 @@ class SystemUpdate( SettingWindow ) :
 			self.mUrlPVS = E_DEFAULT_URL_PVS
 		self.mPVSData = None
 		self.mCurrData = None
+		self.mPVSList = []
+		self.mIndexLastVersion = 0
 		self.mEnableLocalThread = False
 		self.mLinkStatus = False
 		self.mIsDownload = True
 		self.mStepPage = E_UPDATE_STEP_HOME
 		self.mCheckEthernetThread = None
 		self.mShowProgressThread = None
-		self.testButton = []
 
 		self.SetSettingWindowLabel( MR_LANG( 'Update' ) )#
 
@@ -295,7 +298,9 @@ class SystemUpdate( SettingWindow ) :
 		elif aMsg == E_STRING_CHECK_CONNECT_ERROR :
 			line = MR_LANG( 'Cannot connect to server' )#
 		elif aMsg == E_STRING_CHECK_CHANNEL_FAIL :
-			line = MR_LANG( 'Update process failed' )#
+			line = MR_LANG( 'Update process failed' )
+		elif aMsg == E_STRING_CHECK_NOT_OLDVERSION :
+			line = MR_LANG( 'Not found exist old version' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( title, line )
@@ -351,7 +356,7 @@ class SystemUpdate( SettingWindow ) :
 		descLabel = MR_LANG( 'Press OK button to start downloading firmware' )
 		if self.mCurrData and self.mCurrData.mError == 0 and self.mCurrData.mVersion == self.mPVSData.mVersion :
 			label2    = MR_LANG( 'Updated' )
-			descLabel = MR_LANG( 'Updated lastest' )
+			descLabel = MR_LANG( 'Already Updated' )
 			self.mPVSData.mError = -1
 			self.SetEnableControl( E_Input02, False )
 
@@ -376,37 +381,66 @@ class SystemUpdate( SettingWindow ) :
 			#LOG_TRACE( '[pvs]%s'% download )
 
 			if download :
+				tagNames = ['filename', 'date', 'version', 'size', 'md5', 'description']
+
+				"""
 				iPVS = PVSClass( )
 				iPVS.mName = MR_LANG( 'Download Firmware' )
 				iPVS.mType = E_TYPE_PRISMCUBE
 
 				iPVS.mFileName = ParseStringInXML( download, 'filename' )
-				"""
-				try :
-					iPVS.mFileName = os.path.basename( iPVS.mFileName )
-				except Exception, e :
-					LOG_ERR( 'except[%s] files[%s]'% ( e, iPVS.mFileName ) )
-
-				LOG_TRACE('filename[%s]'% iPVS.mFileName )
-				"""
-
 				iPVS.mDate    = ParseStringInXML( download, 'date' )
 				iPVS.mVersion = int (ParseStringInXML( download, 'version' ) )
 				iPVS.mSize    = int( ParseStringInXML( download, 'size' ) )
 				iPVS.mMd5     = ParseStringInXML( download, 'md5' )
-				appURL        = ParseStringInXML( download, 'application' )
+				#appURL        = ParseStringInXML( download, 'application' )
 
 				description = ''
 				descList = ParseStringInXML( download, 'description' )
 				LOG_TRACE( 'desc[%s]'% descList )
-
 				if descList and len( descList ) > 0 :
 					for item in descList :
 						description += '%s\n'% item
 				iPVS.mDescription = description
 				iPVS.mError = 0
+				"""
+				self.mPVSList = []
+				retList = ParseStringInXML( download, tagNames )
+				for pvsData in retList :
+					iPVS = PVSClass( )
+					if pvsData[0] :
+						iPVS.mFileName = pvsData[0]
+					if pvsData[1] :
+						iPVS.mDate = pvsData[1]
+					if pvsData[2] :
+						iPVS.mVersion = int( pvsData[2] )
+					if pvsData[3] :
+						iPVS.mSize = int( pvsData[3] )
+					if pvsData[4] :
+						iPVS.mMd5 = pvsData[4]
+					if pvsData[5] :
+						description = ''
+						for item in pvsData[5] :
+							description += '%s\n'% item
+						iPVS.mDescription = description
 
-				self.mPVSData = iPVS
+					iPVS.mName = MR_LANG( 'Firmware Update' )
+					iPVS.mType = E_TYPE_ADDONS
+					iPVS.mError = 0
+					self.mPVSList.append( iPVS )
+
+				#Check Lastest version
+				self.mPVSData = None
+				if self.mPVSList and len( self.mPVSList ) > 0 :
+					verList = []
+					for item in self.mPVSList :
+						verList.append( item.mVersion )
+					maxIdx = verList.index( max( verList ) )
+					self.mPVSData = deepcopy( self.mPVSList[maxIdx] )
+					self.mPVSData.mType = E_TYPE_PRISMCUBE
+
+					#self.mPVSList.pop( maxIdx )
+					self.mIndexLastVersion = maxIdx
 
 				CreateDirectory( E_DEFAULT_PATH_DOWNLOAD )
 				f = open( E_DOWNLOAD_INFO_PVS, 'w' )
@@ -431,6 +465,8 @@ class SystemUpdate( SettingWindow ) :
 		context.append( ContextItem( MR_LANG( 'Refresh' ),              CONTEXT_ACTION_REFRESH_CONNECT ) )
 		context.append( ContextItem( MR_LANG( 'Change server address' ),       CONTEXT_ACTION_CHANGE_ADDRESS ) )
 		context.append( ContextItem( MR_LANG( 'Load default address' ), CONTEXT_ACTION_LOAD_DEFAULT_ADDRESS ) )
+		if os.path.isfile( E_DOWNLOAD_INFO_PVS ) :
+			context.append( ContextItem( MR_LANG( 'Select OLD Version' ), CONTEXT_ACTION_LOAD_OLD_VERSION ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
@@ -469,6 +505,9 @@ class SystemUpdate( SettingWindow ) :
 			SetSetting( 'UpdateServer', '%s'% E_DEFAULT_URL_PVS )
 			self.UpdateStepPage( E_UPDATE_STEP_PROVISION )
 
+		elif aContextAction == CONTEXT_ACTION_LOAD_OLD_VERSION :
+			self.ShowOldVersion( )
+
 
 	def SaveAsServerAddress( self ) :
 		if E_DEFAULT_URL_PVS == self.mUrlPVS :
@@ -491,6 +530,31 @@ class SystemUpdate( SettingWindow ) :
 			return
 
 		SetSetting( 'UpdateServer', '%s'% self.mUrlPVS )
+
+
+	def ShowOldVersion( self ) :
+		if self.mPVSList and len( self.mPVSList ) > 0 :
+
+			verList = []
+			for item in self.mPVSList :
+				label = 'V%s\t%s'% ( item.mVersion, item.mDate )
+				verList.append( label )
+
+			dialog = xbmcgui.Dialog( )
+			select =  dialog.select( MR_LANG( 'OLD Versions' ), verList, False, self.mIndexLastVersion )
+
+			if select < 0 :
+				return
+
+			self.mPVSData = None
+			self.mPVSData = deepcopy( self.mPVSList[select] )
+			if select == self.mIndexLastVersion :
+				self.mPVSData.mType = E_TYPE_PRISMCUBE
+
+			self.InitPVSData( )
+
+		else :
+			self.DialogPopup( E_STRING_ATTENTION, E_STRING_CHECK_NOT_OLDVERSION )
 
 
 	def UpdateStepPage( self, aStep ) :
@@ -715,7 +779,6 @@ class SystemUpdate( SettingWindow ) :
 		return sizeCheck
 
 
-
 	#make tempDir, write local file
 	def GetDownload( self, aPVS ) :
 		isExist = GetURLpage( aPVS.mFileName, False )
@@ -841,8 +904,8 @@ class SystemUpdate( SettingWindow ) :
 			for timer in runningTimerList :
 				self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
 
-		CopyToFile( E_DOWNLOAD_INFO_PVS, E_CURRENT_INFO )
-		return
+		#CopyToFile( E_DOWNLOAD_INFO_PVS, E_CURRENT_INFO )
+		#return
 
 		#ToDo 
 		#backup settings
@@ -857,17 +920,17 @@ class SystemUpdate( SettingWindow ) :
 				updateVersion = self.mPVSData.mVersion
 				updateDate = self.mPVSData.mDate
 
-			fd.writefiles( 'Version=%s\n'% updateVersion )
-			fd.writefiles( 'Date=%s\n'% updateDate )
+			fd.writelines( 'Version=%s\n'% updateVersion )
+			fd.writelines( 'Date=%s\n'% updateDate )
 
 			nType = GetCurrentNetworkType( )
-			fd.writefiles( 'NetworkType=%s\n'% nType )
+			fd.writelines( 'NetworkType=%s\n'% nType )
 			command = pvr.ElisMgr.GetInstance( ).GetCommander( )
 			if nType == NETWORK_ETHERNET :
-				fd.writefiles( 'ipaddr=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'IpAddress' , command ).GetProp( ) ) ) )
-				fd.writefiles( 'subnet=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'SubNet' , command ).GetProp( ) ) ) )
-				fd.writefiles( 'gateway=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'Gateway' , command ).GetProp( ) ) ) )
-				fd.writefiles( 'dns=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'DNS' , command ).GetProp( ) ) ) )
+				fd.writelines( 'ipaddr=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'IpAddress' , command ).GetProp( ) ) ) )
+				fd.writelines( 'subnet=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'SubNet' , command ).GetProp( ) ) ) )
+				fd.writelines( 'gateway=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'Gateway' , command ).GetProp( ) ) ) )
+				fd.writelines( 'dns=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'DNS' , command ).GetProp( ) ) ) )
 			else :
 				pass
 				#WirelessParser.GetWifidevice( )
@@ -878,64 +941,27 @@ class SystemUpdate( SettingWindow ) :
 
 		return
 
-		"""
-		#ToDO :
-		CopyToFile( '/etc/network/interface', '%s/interface'% E_DEFAULT_PATH_HDD )
-		CopyToFile( '/etc/wpa_supplicant/wpa_supplicant.conf', '%s/wpa_supplicant.conf'% E_DEFAULT_PATH_HDD )
-
-		try :
-			wList = []		
-			wList.append( '#!/bin/sh\n' )
-			wList.append( 'if [ -f %s/interface ]; then\n'% E_DEFAULT_PATH_HDD )
-			wList.append( '\tcp -f %s/interface /etc/network/interface\n'% E_DEFAULT_PATH_HDD )
-
-			wList.append( 'if [ -f %s/wpa_supplicant.conf ]; then\n'% E_DEFAULT_PATH_HDD )
-			wList.append( '\tcp -f %s/wpa_supplicant.conf /etc/network/wpa_supplicant/wpa_supplicant.conf\n'% E_DEFAULT_PATH_HDD )
-
-			mShellFile = '%s/updateBackup.sh'% E_DEFAULT_PATH_HDD
-			f = open( mShellFile, 'w' )
-			for line in wList :
-				f.writelines( line )
-
-			f.close( )
-
-		except Exception, e :
-			LOG_TRACE( 'except[%s]'% e )
-		"""
 
 	def CheckCurrentVersion( self ) :
 		lbldesc = ''
 		try :
 			f = open( E_CURRENT_INFO, 'r' )
-			currInfo = f.read( )
+			currInfo = f.readlines( )
 			f.close( )
 
-			"""
+
 			iPVS = PVSClass( )
 			for line in currInfo :
 				value = ParseStringInPattern( '=', line )
+				#LOG_TRACE('-----------split[%s]'% value )
 				if not value or len( value ) < 2 :
 					continue
 
 				if value[0] == 'Version' :
-					iPVS.mVersion = value[1]
+					iPVS.mVersion = int( value[1] )
 				elif value[0] == 'Date' :
 					iPVS.mDate = value[1]
 
-			"""
-			iPVS = PVSClass( )
-			iPVS.mVersion = ParseStringInXML( currInfo, 'version' )
-			iPVS.mDate    = ParseStringInXML( currInfo, 'date' )
-
-			description = ''
-			descList = ParseStringInXML( currInfo, 'description' )
-			LOG_TRACE( 'desc[%s]'% descList )
-
-			if descList and len( descList ) > 0 :
-				for item in descList :
-					description += '  %s\n'% item
-
-			iPVS.mDescription = description
 			iPVS.mError = 0
 
 			lbldesc += '%s : %s\n'% ( MR_LANG( 'VERSION' ), iPVS.mVersion )#
