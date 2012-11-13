@@ -134,7 +134,8 @@ class Help( SettingWindow ) :
 			else :
 				self.setFocusId( aControlId )
 			
-			self.SetListControl( self.mPrevStepNum )
+			if self.mPrevStepNum > 0 :
+				self.SetListControl( self.mPrevStepNum )
 
 
 	def onFocus( self, aControlId ) :

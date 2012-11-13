@@ -16,7 +16,7 @@ PRISMCUBE_SERVER	= 'http://addon.prismcube.com'
 
 # BETA VERSION
 E_BETA_SOFTWARE		= True
-E_BETA_DATE			= '2012.10.29'
+E_BETA_DATE			= '2012.11.13'
 
 
 ############################ Windows ############################

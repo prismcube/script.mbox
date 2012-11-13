@@ -105,7 +105,7 @@ class SystemUpdate( SettingWindow ) :
 		self.mCheckEthernetThread = None
 		self.mShowProgressThread = None
 
-		self.SetSettingWindowLabel( MR_LANG( 'Update' ) )#
+		self.SetSettingWindowLabel( MR_LANG( 'Update' ) )
 
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )
@@ -278,35 +278,35 @@ class SystemUpdate( SettingWindow ) :
 			title = aTitle
 
 		if aMsg == E_STRING_CHECK_USB :
-			line = MR_LANG( 'Check USB device' )#
+			line = MR_LANG( 'Check your USB device' )
 		elif aMsg == E_STRING_CHECK_ADDRESS :
-			line = MR_LANG( 'Cannot connect to server' )#
+			line = MR_LANG( 'Cannot connect to server' )
 		elif aMsg == E_STRING_CHECK_UPDATED :
-			line = MR_LANG( 'Already updated to the latest version' )#
+			line = MR_LANG( 'Already updated to the latest version' )
 		elif aMsg == E_STRING_CHECK_CORRUPT :
-			line = MR_LANG( 'File is corrupted, try downloading it again' )#
+			line = MR_LANG( 'File is corrupted, try downloading it again' )
 		elif aMsg == E_STRING_CHECK_USB_NOT :
-			line = MR_LANG( 'Please insert a USB flash drive and press OK' )#
+			line = MR_LANG( 'Please insert a USB flash drive and press OK' )
 		elif aMsg == E_STRING_CHECK_VERIFY :
-			line = MR_LANG( 'Verifying file failed, try downloading it again' )#
+			line = MR_LANG( 'File verification failed, try downloading it again' )
 		elif aMsg == E_STRING_CHECK_FINISH :
 			line = MR_LANG( 'Ready to update' )
 		elif aMsg == E_STRING_CHECK_UNLINK_NETWORK :
-			line = MR_LANG( 'Network is disconnected' )#
+			line = MR_LANG( 'Network is disconnected' )
 		elif aMsg == E_STRING_CHECK_DISKFULL :
-			line = MR_LANG( 'Insufficient disk space' )#
+			line = MR_LANG( 'Insufficient disk space' )
 		elif aMsg == E_STRING_CHECK_USB_SPACE :
-			line = MR_LANG( 'Not enough space on USB flash drive' )#
+			line = MR_LANG( 'Not enough space on USB flash drive' )
 		elif aMsg == E_STRING_CHECK_CONNECT_ERROR :
-			line = MR_LANG( 'Cannot connect to server' )#
+			line = MR_LANG( 'Cannot connect to server' )
 		elif aMsg == E_STRING_CHECK_CHANNEL_FAIL :
 			line = MR_LANG( 'Update process failed' )
 		elif aMsg == E_STRING_CHECK_NOT_OLDVERSION :
-			line = MR_LANG( 'Not found exist old version' )
+			line = MR_LANG( 'Cannot find previous versions' )
 		elif aMsg == E_STRING_CHECK_FAILED :
-			line = MR_LANG( 'Check Failed, Try to again' )
+			line = MR_LANG( 'Cannot get the latest firmware, please try again' )
 		elif aMsg == E_STRING_CHECK_HAVE_NONE :
-			line = MR_LANG( 'Update None' )
+			line = MR_LANG( 'No released firmware available' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( title, line )
@@ -351,18 +351,18 @@ class SystemUpdate( SettingWindow ) :
 		isInit = True
 		if not self.mPVSData or self.mPVSData.mError != 0 :
 			self.SetEnableControl( E_Input02, False )
-			self.SetControlLabel2String( E_Input02, MR_LANG( 'Not Checked') )
-			self.EditDescription( E_Input02, MR_LANG( 'Click to download' ) )
+			self.SetControlLabel2String( E_Input02, MR_LANG( '1. Get the latest version') )
+			self.EditDescription( E_Input02, MR_LANG( 'Press OK button to get the latest firmware version available' ) )
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_FAILED )
 			return False
 
 		self.SetEnableControl( E_Input02, True )
 
-		label2    = MR_LANG( '2. Download Firmware' )
-		descLabel = MR_LANG( 'Press OK button to start downloading firmware' )
+		label2    = MR_LANG( '2. Download firmware' )
+		descLabel = MR_LANG( 'Press OK button to start firmware downloading' )
 		if self.mCurrData and self.mCurrData.mError == 0 and self.mCurrData.mVersion == self.mPVSData.mVersion :
-			label2    = MR_LANG( 'Updated' )
-			descLabel = MR_LANG( 'Already Updated' )
+			label2    = MR_LANG( '3. Firmware updated' )
+			descLabel = MR_LANG( 'Already updated to that version' )
 			self.mPVSData.mError = -1
 			self.SetEnableControl( E_Input02, False )
 			self.SetFocusControl( E_Input01 )
@@ -415,7 +415,7 @@ class SystemUpdate( SettingWindow ) :
 								description += '%s\n'% item
 							iPVS.mDescription = description
 
-						iPVS.mName = MR_LANG( 'Firmware Update' )
+						iPVS.mName = MR_LANG( 'Downloading firmware' )
 						iPVS.mType = E_TYPE_ADDONS
 						iPVS.mError = 0
 						mPVSList.append( iPVS )
@@ -445,8 +445,8 @@ class SystemUpdate( SettingWindow ) :
 
 		if not download :
 			self.SetEnableControl( E_Input02, False )
-			self.SetControlLabel2String( E_Input02, MR_LANG( 'Not Checked') )
-			self.EditDescription( E_Input02, MR_LANG( 'Click to download' ) )
+			self.SetControlLabel2String( E_Input02, MR_LANG( '1. Get the latest firmware') )
+			self.EditDescription( E_Input02, MR_LANG( 'Press OK button to get the latest firmware version available' ) )
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_ADDRESS )
 			return
 
@@ -460,7 +460,7 @@ class SystemUpdate( SettingWindow ) :
 				self.DialogPopup( MR_LANG( 'Firmware Version' ), E_STRING_CHECK_UPDATED )
 
 		else :
-			self.DialogPopup( MR_LANG( 'Update Checked' ), E_STRING_CHECK_HAVE_NONE )
+			self.DialogPopup( MR_LANG( 'Firmware Update' ), E_STRING_CHECK_HAVE_NONE )
 
 		self.ControlDown( )
 
@@ -469,9 +469,9 @@ class SystemUpdate( SettingWindow ) :
 		context = []
 		context.append( ContextItem( MR_LANG( 'Refresh' ),              CONTEXT_ACTION_REFRESH_CONNECT ) )
 		context.append( ContextItem( MR_LANG( 'Change server address' ),       CONTEXT_ACTION_CHANGE_ADDRESS ) )
-		context.append( ContextItem( MR_LANG( 'Load default address' ), CONTEXT_ACTION_LOAD_DEFAULT_ADDRESS ) )
+		context.append( ContextItem( MR_LANG( 'Load default server' ), CONTEXT_ACTION_LOAD_DEFAULT_ADDRESS ) )
 		if os.path.isfile( E_DOWNLOAD_INFO_PVS ) :
-			context.append( ContextItem( MR_LANG( 'Select OLD Version' ), CONTEXT_ACTION_LOAD_OLD_VERSION ) )
+			context.append( ContextItem( MR_LANG( 'Get previous version' ), CONTEXT_ACTION_LOAD_OLD_VERSION ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
@@ -500,7 +500,7 @@ class SystemUpdate( SettingWindow ) :
 			self.UpdateStepPage( E_UPDATE_STEP_READY )
 
 		elif aContextAction == CONTEXT_ACTION_CHANGE_ADDRESS :
-			label = MR_LANG( 'Change server address' )#
+			label = MR_LANG( 'Change server address' )
 			kb = xbmc.Keyboard( self.mUrlPVS, label, False )
 			kb.doModal( )
 
@@ -530,7 +530,7 @@ class SystemUpdate( SettingWindow ) :
 			return
 
 		title = MR_LANG( 'Save update server URL' )
-		line1 = MR_LANG( 'Do you want to save ?' )
+		line1 = MR_LANG( 'Do you want to save the server URL?' )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 		dialog.SetDialogProperty( title, '%s\n%s'% ( line1, self.mUrlPVS ) )
 		dialog.doModal( )
@@ -562,7 +562,7 @@ class SystemUpdate( SettingWindow ) :
 				verList.append( label )
 
 			dialog = xbmcgui.Dialog( )
-			select =  dialog.select( MR_LANG( 'OLD Versions' ), verList, False, self.mIndexLastVersion )
+			select =  dialog.select( MR_LANG( 'Previous Firmware Versions' ), verList, False, self.mIndexLastVersion )
 
 			if select < 0 :
 				return
@@ -600,8 +600,8 @@ class SystemUpdate( SettingWindow ) :
 
 		if aStep == E_UPDATE_STEP_HOME :
 			self.ResetAllControl( )
-			self.AddInputControl( E_Input01, MR_LANG( 'Update Firmware' ), '', MR_LANG( 'Download System firmware for PRISMCUBE RUBY over the internet' ) )#
-			self.AddInputControl( E_Input02, MR_LANG( 'Update Channel List' ), '',  MR_LANG( 'Download Channel List package for PRISMCUBE RUBY over the internet' ) )#
+			self.AddInputControl( E_Input01, MR_LANG( 'Update Firmware' ), '', MR_LANG( 'Download System firmware for PRISMCUBE RUBY over the internet' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Update Channel List' ), '',  MR_LANG( 'Download Channel List package for PRISMCUBE RUBY over the internet' ) )
 
 			self.SetEnableControl( E_Input01, True )
 			self.SetEnableControl( E_Input02, True )
@@ -622,8 +622,8 @@ class SystemUpdate( SettingWindow ) :
 
 		elif aStep == E_UPDATE_STEP_READY :
 			self.ResetAllControl( )
-			self.AddInputControl( E_Input01, MR_LANG( 'Check Firmware Version' ), '', MR_LANG( 'Check the latest firmware available on the server' ) )#
-			self.AddInputControl( E_Input02, MR_LANG( 'Firmware' ), MR_LANG( 'Not Checked' ), MR_LANG( 'Press the OK button to start downloading' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Get the Latest Firmware' ), '', MR_LANG( 'Check the latest firmware available on the server' ) )
+			self.AddInputControl( E_Input02, MR_LANG( '3 Easy Steps to Follow' ), MR_LANG( '1. Get the latest firmware' ), MR_LANG( 'Press OK button to get the latest firmware version available' ) )
 			self.SetEnableControl( E_Input02, False )
 
 			self.InitControl( )
@@ -659,7 +659,7 @@ class SystemUpdate( SettingWindow ) :
 			if os.stat( tempFile )[stat.ST_SIZE] != self.mPVSData.mSize :
 				return False
 
-			self.ShowProgressDialog( 30, MR_LANG( 'Verifying downloaded file...' ), None, strStepNo )#
+			self.ShowProgressDialog( 30, MR_LANG( 'Verifying downloaded file...' ), None, strStepNo )
 			self.OpenBusyDialog( )
 			ret = CheckMD5Sum( tempFile, self.mPVSData.mMd5 )
 			self.CloseBusyDialog( )
@@ -690,7 +690,7 @@ class SystemUpdate( SettingWindow ) :
 			usbPath = self.mDataCache.USB_GetMountPath( )
 			if usbPath :
 				time.sleep( 0.3 )
-				self.ShowProgressDialog( 60, MR_LANG( 'Unpacking zip file to USB flash drive...' ), None, strStepNo )#
+				self.ShowProgressDialog( 60, MR_LANG( 'Unpacking zip file to USB flash drive...' ), None, strStepNo )
 				self.OpenBusyDialog( )
 				stepResult = UnpackToUSB( tempFile, usbPath )
 				self.CloseBusyDialog( )
@@ -718,13 +718,13 @@ class SystemUpdate( SettingWindow ) :
 
 		elif aStep == E_UPDATE_STEP_UPDATE_NOW :
 			time.sleep( 0.3 )
-			self.SetControlLabel2String( E_Input02, MR_LANG( '3. Update Firmware Now') )#
-			self.EditDescription( E_Input02, MR_LANG( 'Follow the instructions on front panel display after rebooting' ) )#
+			self.SetControlLabel2String( E_Input02, MR_LANG( '3. Restart system and update firmware' ) )
+			self.EditDescription( E_Input02, MR_LANG( 'Follow the instructions on front panel display after rebooting' ) )
 
-			line1 = MR_LANG( 'System will reboot now' )#
-			line2 = MR_LANG( 'Do not remove USB flash drive while updating firmware' )#
+			line1 = MR_LANG( 'DO NOT REMOVE USB WHILE UPDATING' )
+			line2 = MR_LANG( 'PRESS YES TO REBOOT SYSTEM NOW' )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), '%s\n%s'% ( line1, line2 ) )
+			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), '%s\n%s'% ( line1, line2 ) )
 			dialog.doModal( )
 			ret = dialog.IsOK( )
 			if ret == E_DIALOG_STATE_YES :
@@ -833,7 +833,7 @@ class SystemUpdate( SettingWindow ) :
 				return True
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Already exist download file' ), MR_LANG( 'Do you want to continue ?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Resume Download' ), MR_LANG( 'Do you want to resume download?' ) )
 			dialog.doModal( )
 
 			ret = dialog.IsOK( )
@@ -844,7 +844,7 @@ class SystemUpdate( SettingWindow ) :
 				isResume = True
 
 		self.mDialogProgress = xbmcgui.DialogProgress( )
-		self.mDialogProgress.create( aPVS.mName, MR_LANG( 'Downloading...' ) )#
+		self.mDialogProgress.create( aPVS.mName, MR_LANG( 'Waiting...' ) )
 
 		self.mWorkingDownloader = DownloadFile( aPVS.mFileName, tempFile )
 		if isResume :
@@ -891,7 +891,7 @@ class SystemUpdate( SettingWindow ) :
 		self.OpenBusyDialog( )
 		if aShowProgress :
 			dialogProgress = xbmcgui.DialogProgress( )
-			dialogProgress.create( self.mPVSData.mName, MR_LANG( 'Verifying...' ) )#
+			dialogProgress.create( self.mPVSData.mName, MR_LANG( 'Verifying...' ) )
 
 		isVerify = True
 		totalFiles = len( fileList )
@@ -1026,8 +1026,8 @@ class SystemUpdate( SettingWindow ) :
 
 			iPVS.mError = 0
 
-			lbldesc += '%s : %s\n'% ( MR_LANG( 'VERSION' ), iPVS.mVersion )#
-			lbldesc += '%s : %s\n'% ( MR_LANG( 'DATE' ), iPVS.mDate )#
+			lbldesc += '%s : %s\n'% ( MR_LANG( 'VERSION' ), iPVS.mVersion )
+			lbldesc += '%s : %s\n'% ( MR_LANG( 'DATE' ), iPVS.mDate )
 			#lbldesc += '%s\n%s\n'% ( MR_LANG( 'DESCRIPTION' ), iPVS.mDescription )
 
 			self.mCurrData = iPVS
@@ -1045,7 +1045,7 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def UpdateChannel( self ) :
-		kb = xbmc.Keyboard( PRISMCUBE_SERVER, MR_LANG( 'Enter server address' ), False )#	
+		kb = xbmc.Keyboard( PRISMCUBE_SERVER, MR_LANG( 'Enter server address' ), False )
 		kb.setHiddenInput( False )
 		kb.doModal( )
 		if kb.isConfirmed( ) :
@@ -1060,7 +1060,7 @@ class SystemUpdate( SettingWindow ) :
 				LOG_TRACE( 'showtext = %s' % showtext )
 
 				dialog = xbmcgui.Dialog( )
-				ret = dialog.select( MR_LANG( 'Select Channel Package' ), showtext )#
+				ret = dialog.select( MR_LANG( 'Select Channel Package' ), showtext )
 				if ret >= 0 :
 					result = self.GetChannelUpdate( kb.getText( ), updatelist[ret][1] )
 					if result == False :
@@ -1088,7 +1088,7 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def GetChannelUpdate( self, aAddress, aPath ) :
-		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating...' ), 20 )#
+		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating your channel list...' ), 20 )
 		ret = self.DownloadxmlFile( aAddress, aPath )
 		if ret :
 			self.mCommander.System_SetManualChannelList( '/tmp/defaultchannel.xml' )
