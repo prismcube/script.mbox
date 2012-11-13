@@ -634,7 +634,6 @@ class SystemUpdate( SettingWindow ) :
 		elif aStep == E_UPDATE_STEP_PROVISION :
 			self.UpdatePropertyGUI( 'UpdateStep', 'True' )
 			self.Provisioning( )
-			self.CheckItems( )
 
 		elif aStep == E_UPDATE_STEP_DOWNLOAD :
 			self.mEnableLocalThread = True
