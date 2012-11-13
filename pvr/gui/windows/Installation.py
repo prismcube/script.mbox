@@ -37,7 +37,7 @@ class Installation( BaseWindow ) :
 		MR_LANG( 'Here you can add or delete transponders' ),
 		MR_LANG( 'Most of STB settings can be configured via the GUI under Configuration' ),
 		MR_LANG( 'The Conditional Access System allows you to setup Smartcard configurations' ),
-		MR_LANG( 'Update' )]
+		MR_LANG( 'You can update the firmware of the digital receiver to the latest version, provided by the manufacturer' )]
 	
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
