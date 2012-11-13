@@ -296,7 +296,7 @@ def send(aMsg = None):
 	VKey = KeyCode()
 
 	#testScene = [VKey.VKEY_MENU, VKey.VKEY_BACK]
-	testScene = test3()
+	testScene = test4()
 	loop = 0
 
 	testTime = 0
