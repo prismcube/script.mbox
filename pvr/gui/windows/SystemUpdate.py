@@ -462,6 +462,7 @@ class SystemUpdate( SettingWindow ) :
 		else :
 			self.DialogPopup( MR_LANG( 'Update Checked' ), E_STRING_CHECK_HAVE_NONE )
 
+		self.ControlDown( )
 
 
 	def ShowContextMenu( self ) :
@@ -576,6 +577,7 @@ class SystemUpdate( SettingWindow ) :
 			usbPath = self.mDataCache.USB_GetMountPath( )
 			if ret and usbPath :
 				RemoveDirectory( '%s/update'% usbPath )
+				self.SetFocusControl( E_Input02 )
 
 		else :
 			self.DialogPopup( E_STRING_ATTENTION, E_STRING_CHECK_NOT_OLDVERSION )
@@ -632,6 +634,7 @@ class SystemUpdate( SettingWindow ) :
 		elif aStep == E_UPDATE_STEP_PROVISION :
 			self.UpdatePropertyGUI( 'UpdateStep', 'True' )
 			self.Provisioning( )
+			self.CheckItems( )
 
 		elif aStep == E_UPDATE_STEP_DOWNLOAD :
 			self.mEnableLocalThread = True
@@ -938,27 +941,58 @@ class SystemUpdate( SettingWindow ) :
 
 			fd = open( E_CURRENT_INFO, 'w' )
 
-			updateVersion = ''
-			updateDate = ''
-			if self.mPVSData :
-				updateVersion = self.mPVSData.mVersion
-				updateDate = self.mPVSData.mDate
+			if fd :
+				updateVersion = ''
+				updateDate = ''
+				if self.mPVSData :
+					updateVersion = self.mPVSData.mVersion
+					updateDate = self.mPVSData.mDate
 
-			fd.writelines( 'Version=%s\n'% updateVersion )
-			fd.writelines( 'Date=%s\n'% updateDate )
+				fd.writelines( 'Version=%s\n'% updateVersion )
+				fd.writelines( 'Date=%s\n'% updateDate )
 
-			nType = GetCurrentNetworkType( )
-			fd.writelines( 'NetworkType=%s\n'% nType )
-			command = pvr.ElisMgr.GetInstance( ).GetCommander( )
-			if nType == NETWORK_ETHERNET :
-				fd.writelines( 'ipaddr=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'IpAddress' , command ).GetProp( ) ) ) )
-				fd.writelines( 'subnet=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'SubNet' , command ).GetProp( ) ) ) )
-				fd.writelines( 'gateway=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'Gateway' , command ).GetProp( ) ) ) )
-				fd.writelines( 'dns=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'DNS' , command ).GetProp( ) ) ) )
-			else :
-				pass
-				#WirelessParser.GetWifidevice( )
-			fd.close( )
+				fd.close( )
+
+
+			backupDir = '/config/backup'
+			CreateDirectory( backupDir )
+			
+			fd = open( '%s/network.conf'% backupDir, 'w' )
+			if fd :
+				nType = GetCurrentNetworkType( )
+				fd.writelines( 'NetworkType=%s\n'% nType )
+				command = pvr.ElisMgr.GetInstance( ).GetCommander( )
+				if nType == NETWORK_ETHERNET :
+					fd.writelines( 'ipaddr=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'IpAddress' , command ).GetProp( ) ) ) )
+					fd.writelines( 'subnet=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'SubNet' , command ).GetProp( ) ) ) )
+					fd.writelines( 'gateway=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'Gateway' , command ).GetProp( ) ) ) )
+					fd.writelines( 'dns=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'DNS' , command ).GetProp( ) ) ) )
+				else :
+					rd = open( FILE_WPA_SUPPLICANT, 'r' )
+					wifiData = rd.readlines( )
+					rd.close( )
+					if wifiData :
+						for line in wifiData :
+							value = ParseStringInPattern( '=', line )
+							#LOG_TRACE('-----------split[%s]'% value )
+							if not value or len( value ) < 2 :
+								continue
+
+							if not value[0] :
+								continue
+
+							if value[0][0] == '#' or ( value[1] and value[1][0] ) == '{' : 
+								continue
+
+							fd.writelines( '%s=%s\n'% ( value[0], value[1] ) )
+
+				fd.close( )
+
+
+			mboxDir = str( xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) )
+			backupFileList = [ '%s/resources/settings.xml'% mboxDir ]
+			LOG_TRACE( 'mboxDir[%s]'% mboxDir )
+			CopyToFile( backupFileList[0], '%s/%s'% ( backupDir, os.path.basename( backupFileList[0] ) ) )
 
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
@@ -982,7 +1016,11 @@ class SystemUpdate( SettingWindow ) :
 					continue
 
 				if value[0] == 'Version' :
-					iPVS.mVersion = int( value[1] )
+					if value[1].isdigit( ) :
+						iPVS.mVersion = int( value[1] )
+					else :
+						iPVS.mVersion = value[1]
+
 				elif value[0] == 'Date' :
 					iPVS.mDate = value[1]
 
@@ -997,6 +1035,9 @@ class SystemUpdate( SettingWindow ) :
 
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
+			lbldesc = MR_LANG( 'Unknown version' )
+
+		if self.mCurrData and not self.mCurrData.mVersion :
 			lbldesc = MR_LANG( 'Unknown version' )
 
 		self.UpdatePropertyGUI( 'CurrentDescription', lbldesc )
