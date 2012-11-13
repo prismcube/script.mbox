@@ -344,6 +344,9 @@ class Configure( SettingWindow ) :
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Cannot find HDD drive' ) )
 	 			dialog.doModal( )
 
+	 	elif selectedId == E_ETC and groupId == E_SpinEx02 :
+	 		self.mCommander.Power_Save_Mode( )
+
 		else :
 			self.ControlSelect( )
 
