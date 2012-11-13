@@ -319,7 +319,7 @@ class Configure( SettingWindow ) :
 			if CheckHdd( ) :
 				if groupId == E_Input01 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO FORMAT YOUR HDD DRIVE?' ) )
+					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO DELETE ALL MEDIA FILES?' ) )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 						self.mProgressThread = self.ShowProgress( MR_LANG( 'Formating HDD drive...' ), 50 )
@@ -327,7 +327,7 @@ class Configure( SettingWindow ) :
 						self.CloseProgress( )
 				elif groupId == E_Input02 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO FORMAT YOUR HDD DRIVE?' ) )
+					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO DELETE ALL RECORDINGS?' ) )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 						self.mProgressThread = self.ShowProgress( MR_LANG( 'Formating HDD drive...' ), 50 )
@@ -564,9 +564,9 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FORMAT_HDD :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddInputControl( E_Input01, MR_LANG( 'Media Archive Format' ), '', MR_LANG( 'Press the OK button to remove everything in the Media Archive' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Record Archive Format' ), '', MR_LANG( 'Press the OK button to remove everything in the Record Archive' ) )
-			self.AddInputControl( E_Input03, MR_LANG( 'HDD Format' ), '', MR_LANG( 'Press the OK button to erase your hard drive' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Format Media Archive' ), '', MR_LANG( 'Press the OK button to remove everything in the Media Archive' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Format Record Archive' ), '', MR_LANG( 'Press the OK button to remove everything in the Record Archive' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'Format HDD' ), '', MR_LANG( 'Press the OK button to erase your hard drive' ) )
 
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03 ]
 			self.SetVisibleControls( visibleControlIds, True )
