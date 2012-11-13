@@ -54,6 +54,8 @@ E_STRING_CHECK_CONNECT_ERROR  = 9
 E_STRING_CHECK_UNLINK_NETWORK = 10
 E_STRING_CHECK_CHANNEL_FAIL   = 11
 E_STRING_CHECK_NOT_OLDVERSION = 12
+E_STRING_CHECK_FAILED    = 13
+E_STRING_CHECK_HAVE_NONE = 14
 
 class PVSClass( object ) :
 	def __init__( self ) :
@@ -67,16 +69,16 @@ class PVSClass( object ) :
 		self.mId					= None
 		self.mType					= None
 		self.mError					= -1
-		self.mProgress				= None
-		self.mChannelUpdateProgress = None
 
 
 class SystemUpdate( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
 
-		self.mPVSData = None
-		self.mCurrData = None
+		self.mPVSData               = None
+		self.mCurrData              = None
+		self.mProgress				= None
+		self.mChannelUpdateProgress = None
 
 	def onInit( self )  :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -301,6 +303,10 @@ class SystemUpdate( SettingWindow ) :
 			line = MR_LANG( 'Update process failed' )
 		elif aMsg == E_STRING_CHECK_NOT_OLDVERSION :
 			line = MR_LANG( 'Not found exist old version' )
+		elif aMsg == E_STRING_CHECK_FAILED :
+			line = MR_LANG( 'Check Failed, Try to again' )
+		elif aMsg == E_STRING_CHECK_HAVE_NONE :
+			line = MR_LANG( 'Update None' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 		dialog.SetDialogProperty( title, line )
@@ -342,13 +348,13 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def InitPVSData( self ) :
-		if self.mPVSData == None or self.mPVSData.mError != 0 :
-			#label = MR_LANG( 'No one' )			
-			#self.UpdateControlGUI( E_CONTROL_ID_LABEL_DATE, label )
+		isInit = True
+		if not self.mPVSData or self.mPVSData.mError != 0 :
 			self.SetEnableControl( E_Input02, False )
 			self.SetControlLabel2String( E_Input02, MR_LANG( 'Not Checked') )
 			self.EditDescription( E_Input02, MR_LANG( 'Click to download' ) )
-			return 
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_FAILED )
+			return False
 
 		self.SetEnableControl( E_Input02, True )
 
@@ -359,15 +365,21 @@ class SystemUpdate( SettingWindow ) :
 			descLabel = MR_LANG( 'Already Updated' )
 			self.mPVSData.mError = -1
 			self.SetEnableControl( E_Input02, False )
+			self.SetFocusControl( E_Input01 )
+			self.ResetLabel( )
+			isInit = False
 
 		self.SetControlLabel2String( E_Input02, '%s'% label2 )
 		self.EditDescription( E_Input02, descLabel )
 		self.UpdateLabelPVSInfo( )
 
+		return isInit
+
 
 	def Provisioning( self ) :
 		appURL = None
 		self.mPVSData = None
+		self.mPVSList = []
 		self.ResetLabel( )
 
 		if not self.mUrlPVS :
@@ -381,66 +393,43 @@ class SystemUpdate( SettingWindow ) :
 			#LOG_TRACE( '[pvs]%s'% download )
 
 			if download :
+				mPVSList = []
 				tagNames = ['filename', 'date', 'version', 'size', 'md5', 'description']
-
-				"""
-				iPVS = PVSClass( )
-				iPVS.mName = MR_LANG( 'Download Firmware' )
-				iPVS.mType = E_TYPE_PRISMCUBE
-
-				iPVS.mFileName = ParseStringInXML( download, 'filename' )
-				iPVS.mDate    = ParseStringInXML( download, 'date' )
-				iPVS.mVersion = int (ParseStringInXML( download, 'version' ) )
-				iPVS.mSize    = int( ParseStringInXML( download, 'size' ) )
-				iPVS.mMd5     = ParseStringInXML( download, 'md5' )
-				#appURL        = ParseStringInXML( download, 'application' )
-
-				description = ''
-				descList = ParseStringInXML( download, 'description' )
-				LOG_TRACE( 'desc[%s]'% descList )
-				if descList and len( descList ) > 0 :
-					for item in descList :
-						description += '%s\n'% item
-				iPVS.mDescription = description
-				iPVS.mError = 0
-				"""
-				self.mPVSList = []
 				retList = ParseStringInXML( download, tagNames )
-				for pvsData in retList :
-					iPVS = PVSClass( )
-					if pvsData[0] :
-						iPVS.mFileName = pvsData[0]
-					if pvsData[1] :
-						iPVS.mDate = pvsData[1]
-					if pvsData[2] :
-						iPVS.mVersion = int( pvsData[2] )
-					if pvsData[3] :
-						iPVS.mSize = int( pvsData[3] )
-					if pvsData[4] :
-						iPVS.mMd5 = pvsData[4]
-					if pvsData[5] :
-						description = ''
-						for item in pvsData[5] :
-							description += '%s\n'% item
-						iPVS.mDescription = description
+				if retList and len( retList ) > 0 :
+					for pvsData in retList :
+						iPVS = PVSClass( )
+						if pvsData[0] :
+							iPVS.mFileName = pvsData[0]
+						if pvsData[1] :
+							iPVS.mDate     = pvsData[1]
+						if pvsData[2] :
+							iPVS.mVersion  = int( pvsData[2] )
+						if pvsData[3] :
+							iPVS.mSize     = int( pvsData[3] )
+						if pvsData[4] :
+							iPVS.mMd5      = pvsData[4]
+						if pvsData[5] :
+							description = ''
+							for item in pvsData[5] :
+								description += '%s\n'% item
+							iPVS.mDescription = description
 
-					iPVS.mName = MR_LANG( 'Firmware Update' )
-					iPVS.mType = E_TYPE_ADDONS
-					iPVS.mError = 0
-					self.mPVSList.append( iPVS )
+						iPVS.mName = MR_LANG( 'Firmware Update' )
+						iPVS.mType = E_TYPE_ADDONS
+						iPVS.mError = 0
+						mPVSList.append( iPVS )
 
-				#Check Lastest version
-				self.mPVSData = None
-				if self.mPVSList and len( self.mPVSList ) > 0 :
-					verList = []
-					for item in self.mPVSList :
-						verList.append( item.mVersion )
-					maxIdx = verList.index( max( verList ) )
-					self.mPVSData = deepcopy( self.mPVSList[maxIdx] )
-					self.mPVSData.mType = E_TYPE_PRISMCUBE
+					#Check Lastest version
+					if mPVSList and len( mPVSList ) > 0 :
+						self.mPVSList = sorted( mPVSList, key=lambda pvslist: pvslist.mVersion, reverse=True )
+						self.mPVSData = deepcopy( self.mPVSList[0] )
+						self.mPVSData.mType = E_TYPE_PRISMCUBE
 
-					#self.mPVSList.pop( maxIdx )
-					self.mIndexLastVersion = maxIdx
+						#self.mPVSList.pop( 0 )
+
+				else :
+					self.mPVSData = deepcopy( self.mCurrData )
 
 				CreateDirectory( E_DEFAULT_PATH_DOWNLOAD )
 				f = open( E_DOWNLOAD_INFO_PVS, 'w' )
@@ -449,15 +438,30 @@ class SystemUpdate( SettingWindow ) :
 
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
+			self.mPVSData = None
+			self.mPVSList = []
 
 		self.CloseBusyDialog( )
-		self.InitPVSData( )
 
 		if not download :
+			self.SetEnableControl( E_Input02, False )
+			self.SetControlLabel2String( E_Input02, MR_LANG( 'Not Checked') )
+			self.EditDescription( E_Input02, MR_LANG( 'Click to download' ) )
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_ADDRESS )
+			return
 
-		elif self.mCurrData and self.mCurrData.mError == 0 and self.mCurrData.mVersion == self.mPVSData.mVersion :
-			self.DialogPopup( MR_LANG( 'Firmware Version' ), E_STRING_CHECK_UPDATED )
+
+		self.InitPVSData( )
+
+		if self.mPVSList and len( self.mPVSList ) > 0 :
+			if self.mCurrData and self.mCurrData.mError == 0 and \
+			   self.mPVSData and self.mPVSData.mError == 0 and \
+			   self.mCurrData.mVersion == self.mPVSData.mVersion :
+				self.DialogPopup( MR_LANG( 'Firmware Version' ), E_STRING_CHECK_UPDATED )
+
+		else :
+			self.DialogPopup( MR_LANG( 'Update Checked' ), E_STRING_CHECK_HAVE_NONE )
+
 
 
 	def ShowContextMenu( self ) :
@@ -484,7 +488,14 @@ class SystemUpdate( SettingWindow ) :
 		if aContextAction == CONTEXT_ACTION_REFRESH_CONNECT :
 			self.mPVSData = None
 			self.ResetLabel( False )
-			RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
+			try :
+				RemoveDirectory( E_DEFAULT_PATH_DOWNLOAD )
+				usbPath = self.mDataCache.USB_GetMountPath( )
+				if usbPath :
+					RemoveDirectory( '%s/update'% usbPath )
+			except Exception, e :
+				LOG_ERR( 'except[%s]'% e )
+
 			self.UpdateStepPage( E_UPDATE_STEP_READY )
 
 		elif aContextAction == CONTEXT_ACTION_CHANGE_ADDRESS :
@@ -536,8 +547,17 @@ class SystemUpdate( SettingWindow ) :
 		if self.mPVSList and len( self.mPVSList ) > 0 :
 
 			verList = []
+			idx = -1
+			self.mIndexLastVersion = 0
 			for item in self.mPVSList :
-				label = 'V%s\t%s'% ( item.mVersion, item.mDate )
+				idx  += 1
+				label = 'V%04d  %s'% ( item.mVersion, item.mDate )
+
+				if self.mCurrData and self.mCurrData.mError == 0 and \
+				   self.mCurrData.mVersion == self.mPVSList[idx].mVersion :
+					self.mIndexLastVersion = idx
+					label = '[COLOR grey3]V%04d  %s[/COLOR]'% ( item.mVersion, item.mDate )
+
 				verList.append( label )
 
 			dialog = xbmcgui.Dialog( )
@@ -548,10 +568,14 @@ class SystemUpdate( SettingWindow ) :
 
 			self.mPVSData = None
 			self.mPVSData = deepcopy( self.mPVSList[select] )
-			if select == self.mIndexLastVersion :
+			if select == 0 : #lastest version
 				self.mPVSData.mType = E_TYPE_PRISMCUBE
 
-			self.InitPVSData( )
+			ret = self.InitPVSData( )
+			self.mStepPage = E_UPDATE_STEP_READY
+			usbPath = self.mDataCache.USB_GetMountPath( )
+			if ret and usbPath :
+				RemoveDirectory( '%s/update'% usbPath )
 
 		else :
 			self.DialogPopup( E_STRING_ATTENTION, E_STRING_CHECK_NOT_OLDVERSION )

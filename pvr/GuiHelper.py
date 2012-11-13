@@ -627,11 +627,9 @@ def GetURLpage( aUrl, aCache = True ) :
 	return download
 
 
-def ParseStringInXML( xmlFile, tagName ) :
-
+def ParseStringInXML( xmlFile, tagNames ) :
 	soup = None
-	lines = []
-	nodeAll = ''
+	lists = []
 	#if os.path.exists(xmlFile) :
 	if xmlFile :
 
@@ -640,24 +638,32 @@ def ParseStringInXML( xmlFile, tagName ) :
 		#fp.close()
 		
 		soup = BeautifulSoup( xmlFile )
-
 		for node in soup.findAll( 'software' ) :
-			for element in node.findAll(tagName) :
-				#elementry = [ str(element.string), '%s\r\n'% str(element) ]
-				elementry = str(element.string)
-				lines.append(elementry)
-			
-			nodeAll = node
+			lines = []
+			for tagName in tagNames :
+				if node.findAll( tagName ) :
+					descList = []
+					for element in node.findAll( tagName ) :
+						#elementry = [ str(element.string), '%s\r\n'% str(element) ]
+						elementry = str( element.string )
+						if tagName == 'description' :
+							descList.append( elementry )
+						else :
+							lines.append( elementry )
 
-		#print len(lines), lines[len(lines)-1][0]
+					if descList and len( descList ) :
+						lines.append( descList )
 
-	if lines and len( lines ) == 1 :
-		lines = lines[0]
+				else :
+					lines.append('')
 
-	elif lines == [] or len( lines ) < 1 :
-		lines = None
+			if lines :
+				lists.append( lines )
 
-	return lines
+	if lists == [] or len( lists ) < 1 :
+		lists = None
+
+	return lists
 
 
 def ParseStringInPattern( aToken, aData ) :
