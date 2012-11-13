@@ -628,7 +628,6 @@ def GetURLpage( aUrl, aCache = True ) :
 
 
 def ParseStringInXML( xmlFile, tagNames ) :
-
 	soup = None
 	lists = []
 	#if os.path.exists(xmlFile) :
@@ -637,8 +636,7 @@ def ParseStringInXML( xmlFile, tagNames ) :
 		#fp = open(xmlFile)
 		#soup = BeautifulSoup(fp)
 		#fp.close()
-
-		lists = []
+		
 		soup = BeautifulSoup( xmlFile )
 		for node in soup.findAll( 'software' ) :
 			lines = []
@@ -658,19 +656,10 @@ def ParseStringInXML( xmlFile, tagNames ) :
 
 				else :
 					lines.append('')
-			lists.append( lines )
 
-		#print len(lines), lines[len(lines)-1][0]
+			if lines :
+				lists.append( lines )
 
-	"""
-	if lines and len( lines ) == 1 :
-		lines = lines[0]
-
-	elif lines == [] or len( lines ) < 1 :
-		lines = None
-
-	return lines
-	"""
 	if lists == [] or len( lists ) < 1 :
 		lists = None
 
