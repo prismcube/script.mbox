@@ -319,29 +319,29 @@ class Configure( SettingWindow ) :
 			if CheckHdd( ) :
 				if groupId == E_Input01 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO FORMAT TO YOUR HDD DRIVE?' ) )
+					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO FORMAT YOUR HDD DRIVE?' ) )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-						self.mProgressThread = self.ShowProgress( MR_LANG( 'Format HDD drive...' ), 50 )
+						self.mProgressThread = self.ShowProgress( MR_LANG( 'Formating HDD drive...' ), 50 )
 						self.mCommander.Format_Media_Archive( )
 						self.CloseProgress( )
 				elif groupId == E_Input02 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO FORMAT TO YOUR HDD DRIVE?' ) )
+					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO FORMAT YOUR HDD DRIVE?' ) )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-						self.mProgressThread = self.ShowProgress( MR_LANG( 'Format HDD drive...' ), 50 )
+						self.mProgressThread = self.ShowProgress( MR_LANG( 'Formating HDD drive...' ), 50 )
 						self.mCommander.Format_Record_Archive( )
 						self.CloseProgress( )
 				elif groupId == E_Input03 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO FORMAT TO YOUR HDD DRIVE?' ) )
+					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO FORMAT YOUR HDD DRIVE?' ) )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 						self.DedicatedFormat( )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'ERROR' ), MR_LANG( 'Can not found harddisk drive' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Cannot find HDD drive' ) )
 	 			dialog.doModal( )
 
 		else :
@@ -776,7 +776,7 @@ class Configure( SettingWindow ) :
 				dialog.doModal( )
 				self.mRunningNetwork = False
 				return
-			self.mProgressThread = self.ShowProgress( MR_LANG( 'Now search...' ), 20 )
+			self.mProgressThread = self.ShowProgress( MR_LANG( 'Now searching...' ), 20 )
 			apList = self.mWireless.ScanWifiAP( dev )
 			self.CloseProgress( )
 			time.sleep( 0.5 )
@@ -990,14 +990,14 @@ class Configure( SettingWindow ) :
 
 	def DedicatedFormat( self ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO BACKUP USER DATA?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO BACKUP YOUR USER DATA?' ) )
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			if CheckDirectory( '/mnt/hdd0/program/.xbmc/userdata' ) :
 				self.BackupAndFormat( )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Can not found backup data' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Cannot find backup data' ) )
 				dialog.doModal( )
 		else :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -1015,27 +1015,27 @@ class Configure( SettingWindow ) :
 			usbfreesize = GetDeviceSize( usbpath )
 			if backupsize > usbfreesize :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space, Check USB' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB flash drive' ) )
 				dialog.doModal( )
 			else :
 				self.CopyBackupData( usbpath )
 		else :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'USB is not detected, Please insert USB' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please insert a USB flash drive' ) )
 			dialog.doModal( )
 
 
 	def CopyBackupData( self, aUsbpath ) :
-		self.mProgressThread = self.ShowProgress( MR_LANG( 'Now backup user data...' ), 30 )
+		self.mProgressThread = self.ShowProgress( MR_LANG( 'Now backuping your user data...' ), 30 )
 		if CopyToDirectory( '/mnt/hdd0/program/.xbmc/userdata', aUsbpath + '/userdata' ) :
 			self.CloseProgress( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'Backup data success. press ok button to format HDD drive...' ) )
+			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'PRESS OK BUTTON TO FORMAT HDD DRIVE' ) )
 			dialog.doModal( )
 			self.OpenBusyDialog( )
 			self.mCommander.Make_Dedicated_HDD( )
 		else :
 			self.CloseProgress( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Backup data fail' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Data backup failed' ) )
 			dialog.doModal( )

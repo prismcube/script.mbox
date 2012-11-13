@@ -248,7 +248,7 @@ class LivePlate( LivePlateWindow ) :
 					self.ChannelTune( INIT_CHANNEL )
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Can not changed, Channel is None' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV/Radio channel is available' ) )
 					dialog.doModal( )
 
 
