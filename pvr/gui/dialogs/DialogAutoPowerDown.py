@@ -65,7 +65,7 @@ class DialogAutoPowerDown( BaseDialog ) :
 				return
 			self.mCtrlLabel.setLabel( MR_LANG( 'Automatic power down after %s sec' ) % ( TIME_OUT - i ) )
 
-		#self.mCommander.System_Shutdown( )
+		self.mCommander.System_Shutdown( )
 				
 
 	def Close( self ) :

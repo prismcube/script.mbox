@@ -322,7 +322,7 @@ class Configure( SettingWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO FORMAT YOUR HDD DRIVE?' ) )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-						self.mProgressThread = self.ShowProgress( MR_LANG( 'Formating HDD drive...' ), 50 )
+						self.mProgressThread = self.ShowProgress( MR_LANG( 'Formating HDD drive...' ), 120 )
 						self.mCommander.Format_Media_Archive( )
 						self.CloseProgress( )
 				elif groupId == E_Input02 :
@@ -330,7 +330,7 @@ class Configure( SettingWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO FORMAT YOUR HDD DRIVE?' ) )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-						self.mProgressThread = self.ShowProgress( MR_LANG( 'Formating HDD drive...' ), 50 )
+						self.mProgressThread = self.ShowProgress( MR_LANG( 'Formating HDD drive...' ), 60 )
 						self.mCommander.Format_Record_Archive( )
 						self.CloseProgress( )
 				elif groupId == E_Input03 :
@@ -345,6 +345,7 @@ class Configure( SettingWindow ) :
 	 			dialog.doModal( )
 
 	 	elif selectedId == E_ETC and groupId == E_SpinEx02 :
+	 		self.ControlSelect( )
 	 		self.mCommander.Power_Save_Mode( )
 
 		else :
@@ -993,10 +994,10 @@ class Configure( SettingWindow ) :
 
 	def DedicatedFormat( self ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO BACKUP YOUR USER DATA?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO BACKUP YOUR ADDON AND USER DATA?' ) )
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-			if CheckDirectory( '/mnt/hdd0/program/.xbmc/userdata' ) :
+			if CheckDirectory( '/mnt/hdd0/program/.xbmc/userdata' ) and CheckDirectory( '/mnt/hdd0/program/.xbmc/addons' ) :
 				self.BackupAndFormat( )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -1007,16 +1008,16 @@ class Configure( SettingWindow ) :
 			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'ARE YOU SURE?' ) )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				self.OpenBusyDialog( )
-				self.mCommander.Make_Dedicated_HDD( )
+				self.MakeDedicate( )
 
 
 	def BackupAndFormat( self ) :
 		usbpath = self.mDataCache.USB_GetMountPath( )
 		if usbpath :
-			backupsize = GetDirectorySize( '/mnt/hdd0/program/.xbmc/userdata' )
+			size_addons = GetDirectorySize( '/mnt/hdd0/program/.xbmc/addons' )
+			size_udata = GetDirectorySize( '/mnt/hdd0/program/.xbmc/userdata' )
 			usbfreesize = GetDeviceSize( usbpath )
-			if backupsize > usbfreesize :
+			if ( size_addons + size_udata ) > usbfreesize :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not enough space on USB flash drive' ) )
 				dialog.doModal( )
@@ -1030,15 +1031,30 @@ class Configure( SettingWindow ) :
 
 	def CopyBackupData( self, aUsbpath ) :
 		self.mProgressThread = self.ShowProgress( MR_LANG( 'Now backuping your user data...' ), 30 )
-		if CopyToDirectory( '/mnt/hdd0/program/.xbmc/userdata', aUsbpath + '/userdata' ) :
+		ret_udata = CopyToDirectory( '/mnt/hdd0/program/.xbmc/userdata', aUsbpath + '/userdata' )
+		ret_addons = CopyToDirectory( '/mnt/hdd0/program/.xbmc/addons', aUsbpath + '/addons' )
+		if ret_udata and ret_addons :
 			self.CloseProgress( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'PRESS OK BUTTON TO FORMAT HDD DRIVE' ) )
 			dialog.doModal( )
-			self.OpenBusyDialog( )
-			self.mCommander.Make_Dedicated_HDD( )
+			self.MakeDedicate( )
 		else :
 			self.CloseProgress( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Data backup failed' ) )
 			dialog.doModal( )
+
+
+	def MakeDedicate( self ) :
+		mediasize = 100
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
+		dialog.SetDialogProperty( MR_LANG( 'Input Media Partition Size' ), '%s' % mediasize , 3 )
+		dialog.doModal( )
+		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+			mediasize = dialog.GetString( )
+		self.OpenBusyDialog( )
+		ElisPropertyInt( 'MediaRepartitionSize', self.mCommander ).SetProp( int( mediasize ) * 1024 )
+		ElisPropertyEnum( 'HDDRepartition', self.mCommander ).SetProp( 1 )
+		self.mDataCache.Player_AVBlank( True )
+		self.mCommander.Make_Dedicated_HDD( )
