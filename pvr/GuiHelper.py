@@ -667,6 +667,7 @@ def ParseStringInXML( xmlFile, tagNames ) :
 
 
 def ParseStringInPattern( aToken, aData ) :
+	aData = re.sub( ' ', '', aData )
 	return re.split( aToken, aData.strip( ) )
 
 
