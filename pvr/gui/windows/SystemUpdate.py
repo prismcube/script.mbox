@@ -351,18 +351,18 @@ class SystemUpdate( SettingWindow ) :
 		isInit = True
 		if not self.mPVSData or self.mPVSData.mError != 0 :
 			self.SetEnableControl( E_Input02, False )
-			self.SetControlLabel2String( E_Input02, MR_LANG( '1. Get the latest version') )
-			self.EditDescription( E_Input02, MR_LANG( 'Press OK button to get the latest firmware version available' ) )
+			self.SetControlLabel2String( E_Input02, MR_LANG( 'Not Attempted') )
+			self.EditDescription( E_Input02, MR_LANG( 'Please check firmware version first' ) )
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_FAILED )
 			return False
 
 		self.SetEnableControl( E_Input02, True )
 
-		label2    = MR_LANG( '2. Download firmware' )
-		descLabel = MR_LANG( 'Press OK button to start firmware downloading' )
+		label2    = MR_LANG( 'Download' )
+		descLabel = MR_LANG( 'Press OK button to download the firmware shown below' )
 		if self.mCurrData and self.mCurrData.mError == 0 and self.mCurrData.mVersion == self.mPVSData.mVersion :
-			label2    = MR_LANG( '3. Firmware updated' )
-			descLabel = MR_LANG( 'Already updated to that version' )
+			label2    = MR_LANG( 'Your system is up-to-date' )
+			descLabel = MR_LANG( 'Already updated to the latest version' )
 			self.mPVSData.mError = -1
 			self.SetEnableControl( E_Input02, False )
 			self.SetFocusControl( E_Input01 )
@@ -445,8 +445,8 @@ class SystemUpdate( SettingWindow ) :
 
 		if not download :
 			self.SetEnableControl( E_Input02, False )
-			self.SetControlLabel2String( E_Input02, MR_LANG( '1. Get the latest firmware') )
-			self.EditDescription( E_Input02, MR_LANG( 'Press OK button to get the latest firmware version available' ) )
+			self.SetControlLabel2String( E_Input02, MR_LANG( 'Not Attempted') )
+			self.EditDescription( E_Input02, MR_LANG( 'Please check firmware version first' ) )
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_ADDRESS )
 			return
 
@@ -467,11 +467,11 @@ class SystemUpdate( SettingWindow ) :
 
 	def ShowContextMenu( self ) :
 		context = []
-		context.append( ContextItem( MR_LANG( 'Refresh' ),              CONTEXT_ACTION_REFRESH_CONNECT ) )
-		context.append( ContextItem( MR_LANG( 'Change server address' ),       CONTEXT_ACTION_CHANGE_ADDRESS ) )
-		context.append( ContextItem( MR_LANG( 'Load default server' ), CONTEXT_ACTION_LOAD_DEFAULT_ADDRESS ) )
+		context.append( ContextItem( MR_LANG( 'Refresh settings' ),               CONTEXT_ACTION_REFRESH_CONNECT ) )
+		context.append( ContextItem( MR_LANG( 'Change server URL' ),            CONTEXT_ACTION_CHANGE_ADDRESS ) )
+		context.append( ContextItem( MR_LANG( 'Reset to default server URL' ), CONTEXT_ACTION_LOAD_DEFAULT_ADDRESS ) )
 		if os.path.isfile( E_DOWNLOAD_INFO_PVS ) :
-			context.append( ContextItem( MR_LANG( 'Get previous version' ), CONTEXT_ACTION_LOAD_OLD_VERSION ) )
+			context.append( ContextItem( MR_LANG( 'Get previous versions' ),  CONTEXT_ACTION_LOAD_OLD_VERSION ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
@@ -530,7 +530,7 @@ class SystemUpdate( SettingWindow ) :
 			return
 
 		title = MR_LANG( 'Save update server URL' )
-		line1 = MR_LANG( 'Do you want to save the server URL?' )
+		line1 = MR_LANG( 'Do you want to save new server URL?' )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 		dialog.SetDialogProperty( title, '%s\n%s'% ( line1, self.mUrlPVS ) )
 		dialog.doModal( )
@@ -622,8 +622,9 @@ class SystemUpdate( SettingWindow ) :
 
 		elif aStep == E_UPDATE_STEP_READY :
 			self.ResetAllControl( )
-			self.AddInputControl( E_Input01, MR_LANG( 'Get the Latest Firmware' ), '', MR_LANG( 'Check the latest firmware available on the server' ) )
-			self.AddInputControl( E_Input02, MR_LANG( '3 Easy Steps to Follow' ), MR_LANG( '1. Get the latest firmware' ), MR_LANG( 'Press OK button to get the latest firmware version available' ) )
+			self.SetSettingWindowLabel( MR_LANG( 'Update Firmware' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Check Firmware Version' ), '', MR_LANG( 'Check the latest firmware released on the update server' ) ) 
+			self.AddInputControl( E_Input02, MR_LANG( '' ), MR_LANG( 'Not Attempted' ), MR_LANG( 'Please check firmware version first' ) )
 			self.SetEnableControl( E_Input02, False )
 
 			self.InitControl( )
@@ -658,7 +659,7 @@ class SystemUpdate( SettingWindow ) :
 			if os.stat( tempFile )[stat.ST_SIZE] != self.mPVSData.mSize :
 				return False
 
-			self.ShowProgressDialog( 30, MR_LANG( 'Verifying downloaded file...' ), None, strStepNo )
+			self.ShowProgressDialog( 30, MR_LANG( 'Checking files checksum...' ), None, strStepNo )
 			self.OpenBusyDialog( )
 			ret = CheckMD5Sum( tempFile, self.mPVSData.mMd5 )
 			self.CloseBusyDialog( )
@@ -689,7 +690,7 @@ class SystemUpdate( SettingWindow ) :
 			usbPath = self.mDataCache.USB_GetMountPath( )
 			if usbPath :
 				time.sleep( 0.3 )
-				self.ShowProgressDialog( 60, MR_LANG( 'Unpacking zip file to USB flash drive...' ), None, strStepNo )
+				self.ShowProgressDialog( 60, MR_LANG( 'Copying files to USB drive...' ), None, strStepNo )
 				self.OpenBusyDialog( )
 				stepResult = UnpackToUSB( tempFile, usbPath )
 				self.CloseBusyDialog( )
@@ -717,10 +718,10 @@ class SystemUpdate( SettingWindow ) :
 
 		elif aStep == E_UPDATE_STEP_UPDATE_NOW :
 			time.sleep( 0.3 )
-			self.SetControlLabel2String( E_Input02, MR_LANG( '3. Restart system and update firmware' ) )
-			self.EditDescription( E_Input02, MR_LANG( 'Follow the instructions on front panel display after rebooting' ) )
+			self.SetControlLabel2String( E_Input02, MR_LANG( 'Update' ) )
+			self.EditDescription( E_Input02, MR_LANG( 'Follow the instructions on front panel display during the updating process' ) )
 
-			line1 = MR_LANG( 'DO NOT REMOVE USB WHILE UPDATING' )
+			line1 = MR_LANG( 'DO NOT REMOVE YOUR USB DURING THE UPGRADING' )
 			line2 = MR_LANG( 'PRESS YES TO REBOOT SYSTEM NOW' )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), '%s\n%s'% ( line1, line2 ) )
@@ -1048,7 +1049,7 @@ class SystemUpdate( SettingWindow ) :
 
 			iPVS.mError = 0
 
-			lbldesc += '%s : %s\n'% ( MR_LANG( 'VERSION' ), iPVS.mVersion )
+			lbldesc += '%s : %s\n'% ( MR_LANG( 'CURRENT VER.' ), iPVS.mVersion )
 			lbldesc += '%s : %s\n'% ( MR_LANG( 'DATE' ), iPVS.mDate )
 			#lbldesc += '%s\n%s\n'% ( MR_LANG( 'DESCRIPTION' ), iPVS.mDescription )
 
