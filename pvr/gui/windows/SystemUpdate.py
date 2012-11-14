@@ -264,6 +264,7 @@ class SystemUpdate( SettingWindow ) :
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SIZE, '' )
 		self.UpdatePropertyGUI( 'DescriptionTitle', '' )
 		self.UpdatePropertyGUI( 'UpdateDescription', '' )
+		self.UpdatePropertyGUI( 'VersionInfo', E_TAG_FALSE )
 
 
 	def DialogPopup( self, aTitle, aMsg ) :
@@ -335,6 +336,7 @@ class SystemUpdate( SettingWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SIZE, '%s : %s'% ( MR_LANG( 'SIZE' ), lblSize ) )
 			self.UpdatePropertyGUI( 'DescriptionTitle', MR_LANG( 'DESCRIPTION' ) )
 			self.UpdatePropertyGUI( 'UpdateDescription', iPVS.mDescription )
+			self.UpdatePropertyGUI( 'VersionInfo', E_TAG_TRUE )
 
 			"""
 			lblDescTitle = ''
@@ -467,11 +469,11 @@ class SystemUpdate( SettingWindow ) :
 
 	def ShowContextMenu( self ) :
 		context = []
-		context.append( ContextItem( MR_LANG( 'Refresh settings' ),               CONTEXT_ACTION_REFRESH_CONNECT ) )
-		context.append( ContextItem( MR_LANG( 'Change server URL' ),            CONTEXT_ACTION_CHANGE_ADDRESS ) )
+		context.append( ContextItem( MR_LANG( 'Refresh settings' ),            CONTEXT_ACTION_REFRESH_CONNECT ) )
+		context.append( ContextItem( MR_LANG( 'Change server URL' ),           CONTEXT_ACTION_CHANGE_ADDRESS ) )
 		context.append( ContextItem( MR_LANG( 'Reset to default server URL' ), CONTEXT_ACTION_LOAD_DEFAULT_ADDRESS ) )
 		if os.path.isfile( E_DOWNLOAD_INFO_PVS ) :
-			context.append( ContextItem( MR_LANG( 'Get previous versions' ),  CONTEXT_ACTION_LOAD_OLD_VERSION ) )
+			context.append( ContextItem( MR_LANG( 'Get previous versions' ),   CONTEXT_ACTION_LOAD_OLD_VERSION ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
@@ -599,6 +601,7 @@ class SystemUpdate( SettingWindow ) :
 
 
 		if aStep == E_UPDATE_STEP_HOME :
+			self.SetSettingWindowLabel( MR_LANG( 'Update' ) )
 			self.ResetAllControl( )
 			self.AddInputControl( E_Input01, MR_LANG( 'Update Firmware' ), '', MR_LANG( 'Download System firmware for PRISMCUBE RUBY over the internet' ) )
 			self.AddInputControl( E_Input02, MR_LANG( 'Update Channel List' ), '',  MR_LANG( 'Download Channel List package for PRISMCUBE RUBY over the internet' ) )
@@ -618,22 +621,22 @@ class SystemUpdate( SettingWindow ) :
 			self.mPVSData = None
 			self.ResetLabel( False )
 			self.UpdatePropertyGUI( 'CurrentDescription', '' )
-			self.UpdatePropertyGUI( 'UpdateStep', 'False' )
+			self.UpdatePropertyGUI( 'ShowInfoLabel', E_TAG_FALSE )
 
 		elif aStep == E_UPDATE_STEP_READY :
-			self.ResetAllControl( )
 			self.SetSettingWindowLabel( MR_LANG( 'Update Firmware' ) )
+			self.ResetAllControl( )
 			self.AddInputControl( E_Input01, MR_LANG( 'Check Firmware Version' ), '', MR_LANG( 'Check the latest firmware released on the update server' ) ) 
 			self.AddInputControl( E_Input02, MR_LANG( '' ), MR_LANG( 'Not Attempted' ), MR_LANG( 'Please check firmware version first' ) )
 			self.SetEnableControl( E_Input02, False )
 
 			self.InitControl( )
 			self.SetFocusControl( E_Input01 )
+			self.UpdatePropertyGUI( 'ShowInfoLabel', E_TAG_TRUE )
 
 			self.CheckCurrentVersion( )
 
 		elif aStep == E_UPDATE_STEP_PROVISION :
-			self.UpdatePropertyGUI( 'UpdateStep', 'True' )
 			self.Provisioning( )
 
 		elif aStep == E_UPDATE_STEP_DOWNLOAD :
