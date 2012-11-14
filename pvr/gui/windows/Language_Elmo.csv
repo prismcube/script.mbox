@@ -85,6 +85,8 @@
 "Help",,,,,,,,,,84
 "The Help gives you assistance using PRISMCUBE RUBY",,,,,,,,,,85
 "The Fav. Addons allow you to add your XBMC addons in the sub-menu and access them easily",,,,,,,,,,86
+"To see all the other funtions such as Get previous firmware versions, press i button",,,,,,,,,,87
+"To see all the other funtions, press i button",,,,,,,,,,88
 "Last ServiceType",,,,,,,,,,2001
 "CurrentVoutResolution",,,,,,,,,,2002
 "First Installation","Erst-Installation","premiere installation","Prima installazione","Primera instalacion","Prvni instalace","Eerste installatie","Pierwsza instalacja","?lk kurulum","Первоначальная установка",2003
@@ -1125,3 +1127,7 @@
 "Follow the instructions on front panel display during the updating process",,,,,,,,,,3729
 "DO NOT REMOVE YOUR USB DURING THE UPGRADING",,,,,,,,,,3730
 "CURRENT VER.",,,,,,,,,,3731
+"DO YOU WANT TO BACKUP YOUR ADDON AND USER DATA?",,,,,,,,,,3732
+"Input Media Partition Size",,,,,,,,,,3733
+"None",,,,,,,,,,3734
+"None",,,,,,,,,,3735
