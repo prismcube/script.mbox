@@ -33,10 +33,11 @@
 					<control type="label">
 						<posx>20</posx>
 						<posy>6</posy>
-						<width>190</width>
+						<width>180</width>
 						<height>58</height>
 						<font>Font_Bold22</font>
 						<textcolor>FFf5f5f5</textcolor>
+						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<scroll>true</scroll>
@@ -53,10 +54,11 @@
 					<control type="label">
 						<posx>20</posx>
 						<posy>6</posy>
-						<width>190</width>
+						<width>180</width>
 						<height>58</height>
 						<font>Font_Bold22</font>
 						<textcolor>FF262728</textcolor>
+						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<scroll>true</scroll>

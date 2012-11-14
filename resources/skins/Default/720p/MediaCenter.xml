@@ -110,7 +110,7 @@
 						<label>SCRIPT62</label>
 						<label2>SCRIPT83</label2>
 						<onclick>ActivateWindow(Settings)</onclick>
-						<icon>special://skin/backgrounds/settings.jpg</icon>
+						<icon>special://skin/backgrounds/system.jpg</icon>
 					</item>
 					<item id="7">
 						<label>SCRIPT63</label>
@@ -129,7 +129,7 @@
 						<label>SCRIPT65</label>
 						<label2>SCRIPT85</label2>
 						<onclick>ActivateWindow(SystemInfo)</onclick>
-						<icon>special://skin/backgrounds/system.jpg</icon>
+						<icon>special://skin/backgrounds/skinsetting.jpg</icon>
 					</item>
 				</content>
 			</control>
