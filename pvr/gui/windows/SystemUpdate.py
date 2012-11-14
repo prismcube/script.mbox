@@ -930,11 +930,8 @@ class SystemUpdate( SettingWindow ) :
 			for timer in runningTimerList :
 				self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
 
-		#CopyToFile( E_DOWNLOAD_INFO_PVS, E_CURRENT_INFO )
-		#return
 
-		#ToDo 
-		#backup settings
+		LOG_TRACE('1. update version ------' )
 		try :
 			from pvr.IpParser import *
 
@@ -952,10 +949,15 @@ class SystemUpdate( SettingWindow ) :
 
 				fd.close( )
 
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
 
-			backupDir = '/config/backup'
+		LOG_TRACE('2. network settings ------' )
+		backupDir = '/config/backup'
+		try :
+			RemoveDirectory( backupDir )
 			CreateDirectory( backupDir )
-			
+
 			fd = open( '%s/network.conf'% backupDir, 'w' )
 			if fd :
 				nType = GetCurrentNetworkType( )
@@ -987,11 +989,32 @@ class SystemUpdate( SettingWindow ) :
 
 				fd.close( )
 
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
 
-			mboxDir = str( xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) )
-			backupFileList = [ '%s/resources/settings.xml'% mboxDir ]
-			LOG_TRACE( 'mboxDir[%s]'% mboxDir )
+		LOG_TRACE('3. user settings ------' )
+		mboxDir = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' )
+		backupFileList = [  '%s/resources/settings.xml'% mboxDir,
+							'%s/.xbmc/userdata/guisettings.xml'% E_DEFAULT_PATH_HDD 
+						 ]
+		#LOG_TRACE( 'mboxDir[%s]'% mboxDir )
+		try :
 			CopyToFile( backupFileList[0], '%s/%s'% ( backupDir, os.path.basename( backupFileList[0] ) ) )
+			if not CheckHdd( ) :
+				CopyToFile( backupFileList[1], '%s/%s'% ( backupDir, os.path.basename( backupFileList[1] ) ) )
+
+		except Exception, e :
+			LOG_ERR( 'except[%s]'% e )
+
+		LOG_TRACE('4. make run script ------' )
+		try :
+			fd = open( backupDir, 'w' )
+			if fd :
+				fd.writelines( '#!/bin/sh' )
+				fd.writelines( 'cp -f %s/%s %s\n'% ( backupDir, os.path.basename( backupFileList[0] ), backupFileList[0] ) )
+				fd.writelines( 'cp -f %s/%s %s\n'% ( backupDir, os.path.basename( backupFileList[1] ), backupFileList[1] ) )
+			
+				fd.close( )
 
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
