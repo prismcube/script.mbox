@@ -149,6 +149,7 @@ class DataCacheMgr( object ) :
 
 		self.mRecordingCount = 0
 
+		#pvr.BackupSettings.BackupSettings( )
 		self.Load( )
 
 

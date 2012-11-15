@@ -2092,10 +2092,22 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		if aContextAction == CONTEXT_ACTION_LOCK :
-			ret = self.mDataCache.Channel_LockByNumber( True, int(self.mUserMode.mServiceType), numList )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
+			dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				ret = self.mDataCache.Channel_LockByNumber( True, int(self.mUserMode.mServiceType), numList )
+			else :
+				return
 
 		elif aContextAction == CONTEXT_ACTION_UNLOCK :
-			ret = self.mDataCache.Channel_LockByNumber( False, int(self.mUserMode.mServiceType), numList )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
+			dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				ret = self.mDataCache.Channel_LockByNumber( False, int(self.mUserMode.mServiceType), numList )
+			else :
+				return
 
 		elif aContextAction == CONTEXT_ACTION_SKIP :
 			ret = self.mDataCache.Channel_SkipByNumber( True, int(self.mUserMode.mServiceType), numList )

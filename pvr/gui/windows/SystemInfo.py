@@ -198,24 +198,24 @@ class SystemInfo( SettingWindow ) :
 				self.SetVisibleControl( visibleControlIds[i], True )
 
 			if self.CheckExistsDisk( ) :
-				self.mCtrlHDDName.setLabel(	MR_LANG( 'Name & Total Size : %s ( %s )' ) % ( self.GetHDDName( ), self.GetTotalSize( ) ) )
+				self.mCtrlHDDName.setLabel(	MR_LANG( 'Name and Total Size : %s ( %s )' ) % ( self.GetHDDName( ), self.GetTotalSize( ) ) )
 
 				total_size, used_size, percent = self.GetPartitionSize( 'sda5' )
 				self.mCtrlProgressMedia.setPercent( percent )
-				self.mCtrlHDDSizeMedia.setLabel( MR_LANG( 'Media Usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )
+				self.mCtrlHDDSizeMedia.setLabel( MR_LANG( 'Media Partition Usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )
 
 				total_size, used_size, percent = self.GetPartitionSize( 'sda3' )
 				self.mCtrlProgressProgram.setPercent( percent )
-				self.mCtrlHDDSizeProgram.setLabel( MR_LANG( 'Program Usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )
+				self.mCtrlHDDSizeProgram.setLabel( MR_LANG( 'Program Partition Usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )
 				
 				total_size, used_size, percent = self.GetRecordFreeSize( )
 				self.mCtrlProgressRecord.setPercent( percent )
-				self.mCtrlHDDSizeRecord.setLabel( MR_LANG( 'Recording Usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )
+				self.mCtrlHDDSizeRecord.setLabel( MR_LANG( 'Recording Partition Usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )
 			else :
-				self.mCtrlHDDName.setLabel( MR_LANG( 'Name & Total Size : Unknown' ) )
-				self.mCtrlHDDSizeMedia.setLabel( MR_LANG( 'Media Usage : Unknown' ) )
-				self.mCtrlHDDSizeProgram.setLabel( MR_LANG( 'Program Usage : Unknown' ) )
-				self.mCtrlHDDSizeRecord.setLabel( MR_LANG( 'Recording Usage : Unknown' ) )
+				self.mCtrlHDDName.setLabel( MR_LANG( 'Name and Total Size : Unknown' ) )
+				self.mCtrlHDDSizeMedia.setLabel( MR_LANG( 'Media Partition Usage : Unknown' ) )
+				self.mCtrlHDDSizeProgram.setLabel( MR_LANG( 'Program Partition Usage : Unknown' ) )
+				self.mCtrlHDDSizeRecord.setLabel( MR_LANG( 'Recording Partition Usage : Unknown' ) )
 				self.mCtrlProgressMedia.setPercent( 0 )
 				self.mCtrlProgressProgram.setPercent( 0 )
 				self.mCtrlProgressRecord.setPercent( 0 )
@@ -226,7 +226,7 @@ class SystemInfo( SettingWindow ) :
 
 
 	def GetProductName( self ) :
-		return 'PRISMCUBE'
+		return 'PRISMCUBE RUBY'
 
 
 	def GetProductNymber( self ) :

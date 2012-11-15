@@ -540,7 +540,7 @@ class Configure( SettingWindow ) :
 					channelName = MR_LANG( 'None' )
 					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
 
-			self.AddEnumControl( E_SpinEx01, 'Time Mode', MR_LANG( 'Time & Date' ), MR_LANG( 'When set to \'Automatic\', the time and date will be obtained automatically from the channel that you select' ) )
+			self.AddEnumControl( E_SpinEx01, 'Time Mode', MR_LANG( 'Time and Date' ), MR_LANG( 'When set to \'Automatic\', the time and date will be obtained automatically from the channel that you select' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Channel' ), channelName, MR_LANG( 'Select a channel you want to set your time and date by' ) )
 			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
 			self.AddInputControl( E_Input02, MR_LANG( 'Date' ), self.mDate, MR_LANG( 'Enter today\'s date' ) )

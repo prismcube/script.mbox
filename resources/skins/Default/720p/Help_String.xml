@@ -8,7 +8,7 @@
 			<width>580</width>
 			<height>270</height>
 		</content>
-		<content name="- Twin Tuner HD PVR Satellite Receiver[CR][CR]- Timeshift record and playback functions[CR][CR]- Record 2 different channels at the same time[CR][CR]- HDMI output (1080i, 720p, 576p)[CR][CR]- DiSEqC 1.0, 1.1, 1.2, 1.3 (USALS) Compatible[CR][CR]- Dolby Digital audio output (S/PDIF)[CR][CR]- Extended EPG and program reservation on EPG[CR][CR]- Open source media player XBMC with favorite addons[CR][CR]- Multilingual OSD menu[CR][CR]- Ethernet integrated[CR][CR]- Software update Over The Internet (OTI)[CR][CR]- Now available in Black, Silver, Red and Orange">
+		<content name="- Twin Tuner HD PVR Satellite Receiver[CR][CR]- Timeshift record and playback functions[CR][CR]- Record 2 different channels at the same time[CR][CR]- HDMI output (1080i, 720p, 576p)[CR][CR]- DiSEqC 1.0, 1.1, 1.2, USALS Compatible[CR][CR]- Dolby Digital audio output (S/PDIF)[CR][CR]- Extended EPG and program reservation on EPG[CR][CR]- Open source media player XBMC with favorite addons[CR][CR]- Multilingual OSD menu[CR][CR]- Ethernet integrated[CR][CR]- Software update Over The Internet (OTI)[CR][CR]- Now available in Black, Silver, Red and Orange">
 			<type>textbox</type>
 			<posx>740</posx>
 			<posy>140</posy>
@@ -659,12 +659,12 @@
 			<width>600</width>
 			<height>399</height>
 		</content>
-		<content name="XBMC is an entertainment hub for digital media that can be used to play almost all popular audio and video formats from your hard drive. There are playlist and slideshow functions, a weather forecast feature and many audio visualizations.[CR][CR]- Weather[CR][CR]- Pictures[CR][CR]- Music[CR][CR]- Video[CR][CR]- Programs[CR][CR]- Settings">
+		<content name="XBMC is an entertainment hub for digital media that can be used to play almost all popular audio and video formats from your hard drive.[CR][CR]- Weather: Get weather forecast for cities around the world.[CR][CR]- Pictures: XBMC handles all common digital picture/image formats with the options of panning/zooming and slideshow.[CR][CR]- Music: For music playback, XBMC handles a very large variety of audio file-formats, and it also supports most different tagging standards.[CR][CR]- Video: XBMC can take advantage of a broadband Internet connection if available to stream Internet-video-streams like YouTube, Hulu and Netflix.[CR][CR]- Programs: Add-ons are packages that add features and functions not normally included with the XBMC Media Center.[CR][CR]- Settings: Most of the Media Center's settings can be configured via the GUI under Settings.[CR][CR]- File Manager: The File Manager lets you transfer, copy, delete, and rename files and folders on your disk drive, FTP-shares, etc.[CR][CR]- System Info: Systems Info allows you to see your system status.">
 			<type>textbox</type>
 			<posx>680</posx>
 			<posy>130</posy>
-			<width>500</width>
-			<height>450</height>
+			<width>560</width>
+			<height>550</height>
 		</content>
 	</page>
 	
@@ -676,7 +676,7 @@
 			<width>600</width>
 			<height>338</height>
 		</content>
-		<content name="Most of XBMC's global settings can be configured via the GUI under Settings. In the Settings Window, you are able to configure XBMC's options:[CR][CR]- Appearance Settings[CR][CR]- Video Settings[CR][CR]- Music Settings[CR][CR]- Pictures Settings[CR][CR]- Weather Settings[CR][CR]- Add-ons[CR][CR]- Network Settings[CR][CR]- System Settings[CR][CR]- Skin Settings">
+		<content name="Most of XBMC's global settings can be configured via the GUI under Settings. In the Settings Window, you are able to configure XBMC's options:[CR][CR]- Appearance Settings: Skin, International, File lists[CR][CR]- Video Settings: Library, Playback, File lists, Subtitles, DVDs, Scrapers[CR][CR]- Music Settings: Library, Playback, File lists, Song submission, Audio CDs, Karaoke[CR][CR]- Pictures Settings: File lists, Slideshow[CR][CR]- Weather Setting: General[CR][CR]- Add-ons Settings: Enabled Add-ons, Get Add-ons, Install from zip file [CR][CR]- Network Settings: Services, SMB client, Internet access[CR][CR]- System Settings: Video output, Audio output, Input devices, Debugging[CR][CR]- Skin Settings: General , Home window, Background, Add-on">
 			<type>textbox</type>
 			<posx>680</posx>
 			<posy>130</posy>
@@ -710,7 +710,7 @@
 			<width>600</width>
 			<height>334</height>
 		</content>
-		<content name="When the add-on has finished downloading XBMC will enable it and depending on the add-on ask if you want to start using it. Add-ons will then appear in their appropriate section as follows:[CR][CR]- Weather[CR][CR]- Pictures[CR][CR]- Music[CR][CR]- Video[CR][CR]- Programs[CR][CR]- Settings">
+		<content name="When the add-on has finished downloading XBMC will enable it and depending on the add-on ask if you want to start using it. Add-ons will then appear in their appropriate section.[CR][CR](e.g. skins in the appearance section of settings, YouTube in the video section of settings, etc)">
 			<type>textbox</type>
 			<posx>680</posx>
 			<posy>130</posy>
