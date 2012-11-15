@@ -83,7 +83,11 @@ class HiddenTest( BaseWindow ) :
 			for node in item :
 				LOG_TRACE( 'TEST MGR root node  = %s' % node )
 				scenario.AddChild( self.MakeChild( node ) )
-			pvr.HiddenTestMgr.StartTest( scenario )
+			if ConnectSocket( ) :
+				self.mDataCache.SetRunningHiddenTest( True )
+				pvr.HiddenTestMgr.StartTest( scenario )
+			else :
+				LOG_TRACE( 'Socket connect error' )
 
 
 	def MakeChild( self, aNode ) :
