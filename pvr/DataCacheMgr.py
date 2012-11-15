@@ -4,6 +4,7 @@ from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 import pvr.Platform
+import pvr.BackupSettings
 
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
@@ -149,7 +150,7 @@ class DataCacheMgr( object ) :
 
 		self.mRecordingCount = 0
 
-		#pvr.BackupSettings.BackupSettings( )
+		pvr.BackupSettings.BackupSettings( )
 		self.Load( )
 
 
