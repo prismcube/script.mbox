@@ -170,7 +170,7 @@ class FirstInstallation( SettingWindow ) :
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Language Setup' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), MR_LANG( WinMgr.GetInstance( ).GetCurrentLanguage( ) ), MR_LANG( 'Select the language you want the menu to be in' ) )
 			self.AddInputControl( E_Input02, MR_LANG( 'Audio Language' ), self.mAudioLanguageList[ ElisPropertyEnum( 'Audio Language', self.mCommander ).GetPropIndex( ) ], MR_LANG( 'Select the language that you wish to listen to' ) )
-			self.AddNextButton( MR_LANG( 'Go to Video & Audio Setup' ) )
+			self.AddNextButton( MR_LANG( 'Go to Video and Audio Setup' ) )
 			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_Input01, E_Input02 ]
@@ -186,11 +186,11 @@ class FirstInstallation( SettingWindow ) :
 
 		elif self.mStepNum == E_STEP_VIDEO_AUDIO :
 			self.mPrevStepNum = E_STEP_SELECT_LANGUAGE
-			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Video & Audio Setup' ) )
+			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Video and Audio Setup' ) )
 			self.AddEnumControl( E_SpinEx01, 'Show 4:3', MR_LANG( 'TV Screen Format' ), MR_LANG( 'Select the display format for TV screen' ) )
 			self.AddEnumControl( E_SpinEx02, 'Audio Dolby', MR_LANG('Dolby Audio'), MR_LANG( 'When set to \'On\', Dolby Digital audio will be selected automatically when broadcast' ) )
 			self.AddEnumControl( E_SpinEx03, 'HDMI Format', None, MR_LANG( 'Select the display\'s HDMI resolution' ) )
-			self.AddPrevNextButton( MR_LANG( 'Go to Antenna & Satellite Setup' ), MR_LANG( 'Go back to Language Setup' ) )
+			self.AddPrevNextButton( MR_LANG( 'Go to Antenna and Satellite Setup' ), MR_LANG( 'Go back to Language Setup' ) )
 			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
@@ -212,7 +212,7 @@ class FirstInstallation( SettingWindow ) :
 			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select the satellite you wish to search from' ) )
 			self.AddEnumControl( E_SpinEx02, 'Network Search', None, MR_LANG( 'When set to \'On\', new channels are searched from existing transponders and the additional transponders stored by transponder network however if you set this option to \'Off\', only the transponder you selected will be searched' ) )
 			self.AddEnumControl( E_SpinEx03, 'Channel Search Mode', MR_LANG( 'Search Mode' ), MR_LANG( 'Select the type of channel you want to search for' ) )
-			self.AddPrevNextButton( MR_LANG( 'Go to Time & Date Setup' ), MR_LANG( 'Go back to Antenna & Satellite Setup' ) )
+			self.AddPrevNextButton( MR_LANG( 'Go to Time and Date Setup' ), MR_LANG( 'Go back to Antenna and Satellite Setup' ) )
 			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01 ]
@@ -230,7 +230,7 @@ class FirstInstallation( SettingWindow ) :
 
 		elif self.mStepNum == E_STEP_DATE_TIME :
 			self.mPrevStepNum = E_STEP_CHANNEL_SEARCH_CONFIG
-			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Time & Date Setup' ) )
+			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Time and Date Setup' ) )
 
 			setupChannelNumber = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
 			self.mSetupChannel = self.mDataCache.Channel_GetByNumber( setupChannelNumber )
@@ -247,7 +247,7 @@ class FirstInstallation( SettingWindow ) :
 					channelName = MR_LANG( 'None' )
 					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
 
-			self.AddEnumControl( E_SpinEx01, 'Time Mode', MR_LANG( 'Time & Date' ), MR_LANG( 'When set to \'Automatic\', the time will be obtained by the receiver automatically from a specific channel that you select') )
+			self.AddEnumControl( E_SpinEx01, 'Time Mode', MR_LANG( 'Time and Date' ), MR_LANG( 'When set to \'Automatic\', the time will be obtained by the receiver automatically from a specific channel that you select') )
 			self.AddInputControl( E_Input01, MR_LANG( 'Channel' ), channelName, MR_LANG( 'Select a channel you want to set your time and date by' ) )
 			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
 			self.AddInputControl( E_Input02, MR_LANG( 'Date' ), self.mDate, MR_LANG( 'Enter today\'s date' ) )
@@ -288,7 +288,7 @@ class FirstInstallation( SettingWindow ) :
 				cntRadio = 0
 			self.AddInputControl( E_Input04, MR_LANG( 'Number of your TV Channels' ), '%d' % cntChannel )
 			self.AddInputControl( E_Input05, MR_LANG( 'Number of your Radio Channels' ), '%d' % cntRadio )
-			self.AddPrevNextButton( MR_LANG( 'Return to the Installation page' ), MR_LANG( 'Go back to Time & Date Setup' ) )
+			self.AddPrevNextButton( MR_LANG( 'Return to the Installation page' ), MR_LANG( 'Go back to Time and Date Setup' ) )
 			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]

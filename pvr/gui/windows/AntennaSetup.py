@@ -14,7 +14,7 @@ class AntennaSetup( SettingWindow ) :
 
 		self.getControl( E_SUBMENU_LIST_ID ).setVisible( False )
 
-		self.SetSettingWindowLabel( MR_LANG( 'Antenna & Satellite Setup' ) )
+		self.SetSettingWindowLabel( MR_LANG( 'Antenna and Satellite Setup' ) )
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )
 
@@ -45,7 +45,7 @@ class AntennaSetup( SettingWindow ) :
 		self.AddInputControl( E_Input02, MR_LANG( ' - Tuner 2 Configuration' ), '', MR_LANG( 'You can add, delete or configure satellites here' ) )
 
 		if ConfigMgr.GetInstance().GetFristInstallation( ) == True :
-			self.AddPrevNextButton( MR_LANG( 'Go to Channel Search Setup' ), MR_LANG( 'Go back to Video & Audio Setup' ) )
+			self.AddPrevNextButton( MR_LANG( 'Go to Channel Search Setup' ), MR_LANG( 'Go back to Video and Audio Setup' ) )
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( MR_LANG( 'Next' ) )
 			self.getControl( E_FIRST_TIME_INSTALLATION_PREV_LABEL ).setLabel( MR_LANG( 'Previous' ) )
 		self.setVisibleButton( )

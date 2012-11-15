@@ -87,6 +87,16 @@
 "The Fav. Addons allow you to add your XBMC addons in the sub-menu and access them easily",,,,,,,,,,86
 "To see all the other funtions such as Get previous firmware versions, press i button",,,,,,,,,,87
 "To see all the other funtions, press i button",,,,,,,,,,88
+"Installation enables you to configure settings - Antenna, Channel, Transponder, CAS, etc",,,,,,,,,,89
+"The Archive allows you to playback or delete recordings",,,,,,,,,,90
+"The EPG displays the programme information of each channel, in time and date order",,,,,,,,,,91
+"The Channel List provides you with functions such as sorting and editing TV/Radio channel list",,,,,,,,,,92
+"To see all the other menus, press i button",,,,,,,,,,93
+"The Media Center lets you browse and view videos, photos, and music from your storage",,,,,,,,,,94
+"Learn how to get the most out of PRISMCUBE RUBY",,,,,,,,,,95
+"Fav. Addons provides a convenient way to access to your XBMC addons",,,,,,,,,,96
+"Check your PRISMCUBE RUBY information at a glance",,,,,,,,,,97
+"Check your PRISMCUBE RUBY info at a glance",,,,,,,,,,98
 "Last ServiceType",,,,,,,,,,2001
 "CurrentVoutResolution",,,,,,,,,,2002
 "First Installation","Erst-Installation","premiere installation","Prima installazione","Primera instalacion","Prvni instalace","Eerste installatie","Pierwsza instalacja","?lk kurulum","Первоначальная установка",2003
@@ -396,6 +406,7 @@
 "Reset Configure Setting",,,,,,,,,,2307
 "Symbol Rate","Symbolrate","Debit de symbole","Symbolrate","Tasa de simbolos","Symbolova rychlost","Symbolrate","Symbol rate","Sembol oranı","Частота символов",2308
 "Network Type",,,,,,,,,,2309
+"free and scrambled",,,,,,,,,,2310
 "Installation",,,,,,,,,,3001
 "No Channel",,,,,,,,,,3002
 "Unknown","Unbekannt","Inconnu","Sconosciuto","Desconocido","Neznamo","Onbekend","Nieznany","Bilinmiyor","Неизвестно",3003
@@ -1131,3 +1142,53 @@
 "Input Media Partition Size",,,,,,,,,,3733
 "None",,,,,,,,,,3734
 "None",,,,,,,,,,3735
+"None",,,,,,,,,,3736
+"None",,,,,,,,,,3737
+"None",,,,,,,,,,3738
+"None",,,,,,,,,,3739
+"Get the latest updates on your PRISMCUBE RUBY",,,,,,,,,,3740
+"None",,,,,,,,,,3741
+"None",,,,,,,,,,3742
+"None",,,,,,,,,,3743
+"None",,,,,,,,,,3744
+"None",,,,,,,,,,3745
+"None",,,,,,,,,,3746
+"None",,,,,,,,,,3747
+"None",,,,,,,,,,3748
+"None",,,,,,,,,,3749
+"None",,,,,,,,,,3750
+"None",,,,,,,,,,3751
+"None",,,,,,,,,,3752
+"None",,,,,,,,,,3753
+"None",,,,,,,,,,3754
+"None",,,,,,,,,,3755
+"Time and Date",,,,,,,,,,3756
+"Name and Total Size : %s ( %s )",,,,,,,,,,3757
+"Media Partition Usage : %s%% ( %s / %s )",,,,,,,,,,3758
+"Program Partition Usage : %s%% ( %s / %s )",,,,,,,,,,3759
+"Recording Partition Usage : %s%% ( %s / %s )",,,,,,,,,,3760
+"Name and Total Size : Unknown",,,,,,,,,,3761
+"Media Partition Usage : Unknown",,,,,,,,,,3762
+"Program Partition Usage : Unknown",,,,,,,,,,3763
+"Recording Partition Usage : Unknown",,,,,,,,,,3764
+"Go to Video and Audio Setup",,,,,,,,,,3765
+"Video and Audio Setup",,,,,,,,,,3766
+"Go to Antenna and Satellite Setup",,,,,,,,,,3767
+"Go back to Antenna and Satellite Setup",,,,,,,,,,3768
+"Go to Time and Date Setup",,,,,,,,,,3769
+"Time and Date Setup",,,,,,,,,,3770
+"Go back to Time and Date Setup",,,,,,,,,,3771
+"Search TV and Radio channels without entering any satellite information",,,,,,,,,,3772
+"None",,,,,,,,,,3773
+"None",,,,,,,,,,3774
+"None",,,,,,,,,,3775
+"None",,,,,,,,,,3776
+"None",,,,,,,,,,3777
+"None",,,,,,,,,,3778
+"Antenna and Satellite Setup",,,,,,,,,,3779
+"Go back to Video and Audio Setup",,,,,,,,,,3780
+"None",,,,,,,,,,3781
+"None",,,,,,,,,,3782
+"None",,,,,,,,,,3783
+"None",,,,,,,,,,3784
+"None",,,,,,,,,,3785
