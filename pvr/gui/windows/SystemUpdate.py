@@ -957,12 +957,11 @@ class SystemUpdate( SettingWindow ) :
 			LOG_ERR( 'except[%s]'% e )
 
 		LOG_TRACE('2. network settings ------' )
-		backupDir = '/config/backup'
 		try :
-			RemoveDirectory( backupDir )
-			CreateDirectory( backupDir )
+			RemoveDirectory( E_DEFAULT_BACKUP_PATH )
+			CreateDirectory( E_DEFAULT_BACKUP_PATH )
 
-			fd = open( '%s/network.conf'% backupDir, 'w' )
+			fd = open( '%s/network.conf'% E_DEFAULT_BACKUP_PATH, 'w' )
 			if fd :
 				nType = GetCurrentNetworkType( )
 				fd.writelines( 'NetworkType=%s\n'% nType )
@@ -1003,22 +1002,25 @@ class SystemUpdate( SettingWindow ) :
 						 ]
 		#LOG_TRACE( 'mboxDir[%s]'% mboxDir )
 		try :
-			CopyToFile( backupFileList[0], '%s/%s'% ( backupDir, os.path.basename( backupFileList[0] ) ) )
+			CopyToFile( backupFileList[0], '%s/%s'% ( E_DEFAULT_BACKUP_PATH, os.path.basename( backupFileList[0] ) ) )
 			if not CheckHdd( ) :
-				CopyToFile( backupFileList[1], '%s/%s'% ( backupDir, os.path.basename( backupFileList[1] ) ) )
+				CopyToFile( backupFileList[1], '%s/%s'% ( E_DEFAULT_BACKUP_PATH, os.path.basename( backupFileList[1] ) ) )
 
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
 
 		LOG_TRACE('4. make run script ------' )
 		try :
-			fd = open( backupDir, 'w' )
+			scriptFile = '%s/backup.sh'% E_DEFAULT_BACKUP_PATH
+			fd = open( scriptFile, 'w' )
 			if fd :
-				fd.writelines( '#!/bin/sh' )
-				fd.writelines( 'cp -f %s/%s %s\n'% ( backupDir, os.path.basename( backupFileList[0] ), backupFileList[0] ) )
-				fd.writelines( 'cp -f %s/%s %s\n'% ( backupDir, os.path.basename( backupFileList[1] ), backupFileList[1] ) )
-			
+				fd.writelines( '#!/bin/sh\n' )
+				fd.writelines( 'cp -f %s/%s %s\n'% ( E_DEFAULT_BACKUP_PATH, os.path.basename( backupFileList[0] ), backupFileList[0] ) )
+				if not CheckHdd( ) :
+					fd.writelines( 'cp -f %s/%s %s\n'% ( E_DEFAULT_BACKUP_PATH, os.path.basename( backupFileList[1] ), backupFileList[1] ) )
 				fd.close( )
+
+				os.chmod( scriptFile, 0755 )
 
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
