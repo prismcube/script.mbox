@@ -401,6 +401,9 @@
 	<string id="2293">TUR_Network Type</string>
 	<string id="2294">TUR_Ethernet</string>
 	<string id="2295">TUR_Wireless</string>
+	<string id="2296">TUR_Picture 4:3</string>
+	<string id="2297">Letterbox</string>
+	<string id="2298">TUR_Pan and Scan</string>
 	<string id="3001">TUR_[I]No Signal[/I] </string>
 	<string id="3002">TUR_[I]Scrambled[/I] </string>
 	<string id="3003">TUR_No Channel</string>
@@ -1010,4 +1013,11 @@
 	<string id="3607">TUR_File not found : %s</string>
 	<string id="3608">TUR_Test scenario not available : %s</string>
 	<string id="3609">TUR_Complete</string>
+	<string id="3610">TUR_Format Media Partition</string>
+	<string id="3611">TUR_Press the OK button to remove everything in the Media partition</string>
+	<string id="3612">TUR_Format Recording Partition</string>
+	<string id="3613">TUR_Press the OK button to remove everything in the Recording partition</string>
+	<string id="3614">TUR_BACKUP ADDONS AND USER DATA BEFORE FORMATING?</string>
+	<string id="3615">TUR_Enter the size of the media partition in GB</string>
+	<string id="3616">TUR_</string>
 </strings>

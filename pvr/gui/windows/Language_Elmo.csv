@@ -407,6 +407,7 @@
 "Symbol Rate","Symbolrate","Debit de symbole","Symbolrate","Tasa de simbolos","Symbolova rychlost","Symbolrate","Symbol rate","Sembol oranı","Частота символов",2308
 "Network Type",,,,,,,,,,2309
 "free and scrambled",,,,,,,,,,2310
+"Pan and Scan",,,,,,,,,,2311
 "Installation",,,,,,,,,,3001
 "No Channel",,,,,,,,,,3002
 "Unknown","Unbekannt","Inconnu","Sconosciuto","Desconocido","Neznamo","Onbekend","Nieznany","Bilinmiyor","Неизвестно",3003
@@ -1192,3 +1193,11 @@
 "None",,,,,,,,,,3783
 "None",,,,,,,,,,3784
 "None",,,,,,,,,,3785
+"None",,,,,,,,,,3786
+"Format Media Partition",,,,,,,,,,3787
+"Press the OK button to remove everything in the Media partition",,,,,,,,,,3788
+"Format Recording Partition",,,,,,,,,,3789
+"Press the OK button to remove everything in the Recording partition",,,,,,,,,,3790
+"BACKUP ADDONS AND USER DATA BEFORE FORMATING?",,,,,,,,,,3791
+"Enter the size of the media partition in GB",,,,,,,,,,3792
+"None",,,,,,,,,,3793

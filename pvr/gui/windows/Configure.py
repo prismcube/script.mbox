@@ -565,8 +565,8 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FORMAT_HDD :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddInputControl( E_Input01, MR_LANG( 'Format Media Archive' ), '', MR_LANG( 'Press the OK button to remove everything in the Media Archive' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Format Record Archive' ), '', MR_LANG( 'Press the OK button to remove everything in the Record Archive' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Format Media Partition' ), '', MR_LANG( 'Press the OK button to remove everything in the Media partition' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Format Recording Partition' ), '', MR_LANG( 'Press the OK button to remove everything in the Recording partition' ) )
 			self.AddInputControl( E_Input03, MR_LANG( 'Format HDD' ), '', MR_LANG( 'Press the OK button to erase your hard drive' ) )
 
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03 ]
@@ -994,7 +994,7 @@ class Configure( SettingWindow ) :
 
 	def DedicatedFormat( self ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO BACKUP YOUR ADDON AND USER DATA?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'BACKUP ADDONS AND USER DATA BEFORE FORMATING?' ) )
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			if CheckDirectory( '/mnt/hdd0/program/.xbmc/userdata' ) and CheckDirectory( '/mnt/hdd0/program/.xbmc/addons' ) :
@@ -1049,7 +1049,7 @@ class Configure( SettingWindow ) :
 	def MakeDedicate( self ) :
 		mediasize = 100
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
-		dialog.SetDialogProperty( MR_LANG( 'Input Media Partition Size' ), '%s' % mediasize , 3 )
+		dialog.SetDialogProperty( MR_LANG( 'Enter the size of the media partition in GB' ), '%s' % mediasize , 3 )
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			mediasize = dialog.GetString( )

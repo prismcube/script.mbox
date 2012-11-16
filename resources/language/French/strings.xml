@@ -401,6 +401,9 @@
 	<string id="2293">FRE_Network Type</string>
 	<string id="2294">FRE_Ethernet</string>
 	<string id="2295">FRE_Wireless</string>
+	<string id="2296">FRE_Picture 4:3</string>
+	<string id="2297">Letterbox</string>
+	<string id="2298">FRE_Pan and Scan</string>
 	<string id="3001">FRE_[I]No Signal[/I] </string>
 	<string id="3002">FRE_[I]Scrambled[/I] </string>
 	<string id="3003">FRE_No Channel</string>
@@ -1010,4 +1013,11 @@
 	<string id="3607">FRE_File not found : %s</string>
 	<string id="3608">FRE_Test scenario not available : %s</string>
 	<string id="3609">FRE_Complete</string>
+	<string id="3610">FRE_Format Media Partition</string>
+	<string id="3611">FRE_Press the OK button to remove everything in the Media partition</string>
+	<string id="3612">FRE_Format Recording Partition</string>
+	<string id="3613">FRE_Press the OK button to remove everything in the Recording partition</string>
+	<string id="3614">FRE_BACKUP ADDONS AND USER DATA BEFORE FORMATING?</string>
+	<string id="3615">FRE_Enter the size of the media partition in GB</string>
+	<string id="3616">FRE_</string>
 </strings>

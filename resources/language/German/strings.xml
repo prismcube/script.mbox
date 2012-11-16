@@ -401,6 +401,9 @@
 	<string id="2293">GER_Network Type</string>
 	<string id="2294">GER_Ethernet</string>
 	<string id="2295">GER_Wireless</string>
+	<string id="2296">GER_Picture 4:3</string>
+	<string id="2297">Letterbox</string>
+	<string id="2298">GER_Pan and Scan</string>
 	<string id="3001">GER_[I]No Signal[/I] </string>
 	<string id="3002">GER_[I]Scrambled[/I] </string>
 	<string id="3003">GER_No Channel</string>
@@ -1010,4 +1013,11 @@
 	<string id="3607">GER_File not found : %s</string>
 	<string id="3608">GER_Test scenario not available : %s</string>
 	<string id="3609">GER_Complete</string>
+	<string id="3610">GER_Format Media Partition</string>
+	<string id="3611">GER_Press the OK button to remove everything in the Media partition</string>
+	<string id="3612">GER_Format Recording Partition</string>
+	<string id="3613">GER_Press the OK button to remove everything in the Recording partition</string>
+	<string id="3614">GER_BACKUP ADDONS AND USER DATA BEFORE FORMATING?</string>
+	<string id="3615">GER_Enter the size of the media partition in GB</string>
+	<string id="3616">GER_</string>
 </strings>
