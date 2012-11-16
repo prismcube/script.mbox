@@ -49,6 +49,8 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 
 
 	def GlobalAction( self, aActionId ) :
+		if self.mDataCache.GetRunningHiddenTest( ) and aActionId == Action.ACTION_STOP :
+			self.mDataCache.SetRunningHiddenTest( False )
 	
 		if aActionId == Action.ACTION_MUTE:
 			self.UpdateVolume( 0 )

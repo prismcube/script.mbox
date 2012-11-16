@@ -1115,7 +1115,7 @@ class SystemUpdate( SettingWindow ) :
 
 
 	def GetChannelUpdate( self, aAddress, aPath ) :
-		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating your channel list...' ), 20 )
+		self.mChannelUpdateProgress = self.ChannelUpdateProgress( MR_LANG( 'Now updating your channel list...' ), 30 )
 		ret = self.DownloadxmlFile( aAddress, aPath )
 		if ret :
 			self.mCommander.System_SetManualChannelList( '/tmp/defaultchannel.xml' )
