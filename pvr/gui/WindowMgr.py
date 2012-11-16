@@ -350,11 +350,8 @@ class WindowMgr( object ) :
 				LOG_TRACE( '----------------------- reload for platform[%s]'% pvr.Platform.GetPlatform( ).GetName( ) )
 				return True
 
-			LOG_TRACE( '----------------- Reset -------------- #0' )		
-			self.CopyIncludeFile( )
-			LOG_TRACE( '----------------- Reset -------------- #1' )		
+			self.CopyIncludeFile( )		
 			self.AddDefaultFont( )
-			LOG_TRACE( '----------------- Reset -------------- #3' )
 
 			return True
 
@@ -381,14 +378,11 @@ class WindowMgr( object ) :
 			return
 	
 		if E_ADD_XBMC_HTTP_FUNCTION == True :
-			from pvr.GuiHelper import GetInstanceSkinPosition
-	 		LOG_TRACE( '--------------')		
+			from pvr.GuiHelper import GetInstanceSkinPosition		
 			strResolution = xbmc.executehttpapi( "getresolution( )" )
-			LOG_TRACE( '--------------#2')
-			LOG_TRACE( 'strResolution=%s' %strResolution )
+			LOG_TRACE( 'resolution = %s' % strResolution )
 			resInfo = strResolution[4:].split( ':' )
-			LOG_TRACE( 'resInfo=%s' %resInfo )
-			#default width=1280 height=720 fixelRate=1.000000 left=0 topt=0 right=1280 bottom=720 zoom=0
+			LOG_TRACE( 'resInfo = %s' % resInfo )
 			width = int( resInfo[0] )
 			height = int( resInfo[1] )
 			fixelRate=  float( resInfo[2] )
@@ -409,23 +403,21 @@ class WindowMgr( object ) :
 
 			try :
 				from pvr.GuiHelper import GetInstanceSkinPosition
-				from BeautifulSoup import BeautifulSoup
 				userDatePath	= pvr.Platform.GetPlatform( ).GetUserDataDir( ) + 'guisettings.xml'
-				fp				= open( userDatePath )			
-				xml				= fp.read( )
-				resolutionInfo	= BeautifulSoup( xml )
-				resolution		= resolutionInfo.findAll( 'resolution' )
-				left			= int( resolution[1].find( 'left' ).string )
-				top				= int( resolution[1].find( 'top' ).string )
-				right			= int( resolution[1].find( 'right' ).string )
-				bottom			= int( resolution[1].find( 'bottom' ).string )
-				zoom			= int( resolutionInfo.find( 'skinzoom' ).string )
+
+				resolutionInfo	= ElementTree.parse( userDatePath )
+				root 			= resolutionInfo.getroot( )
+				resolution		= root.find( 'resolutions' )
+				
+				left			= int( resolution.getchildren( )[1].find( 'overscan' ).find( 'left' ).text )
+				top				= int( resolution.getchildren( )[1].find( 'overscan' ).find( 'top' ).text )
+				right			= int( resolution.getchildren( )[1].find( 'overscan' ).find( 'right' ).text )
+				bottom			= int( resolution.getchildren( )[1].find( 'overscan' ).find( 'bottom' ).text )
+				zoom			= int( root.find( 'lookandfeel' ).find( 'skinzoom' ).text )
+
 				pvr.GuiHelper.GetInstanceSkinPosition( ).SetPosition( left, top, right, bottom, zoom )
-				fp.close( )
 
 			except Exception, e :
-				if fp.closed == False :
-					fp.close( )
 				LOG_ERR( 'Error exception[%s]' % e )
 
 

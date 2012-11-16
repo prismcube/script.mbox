@@ -2,7 +2,7 @@ import xbmcaddon, sys, os, shutil, time, re, stat
 from ElisEnum import ElisEnum
 import pvr.Platform
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
-from BeautifulSoup import BeautifulSoup
+from elementtree import ElementTree
 import urllib
 from subprocess import *
 
@@ -336,18 +336,15 @@ class CacheMRLanguage( object ) :
 		#xmlFile = '%s/pvr/gui/windows/MboxStrings.xml' %scriptDir
 		xmlFile = '%s/resources/language/English/strings.xml' %scriptDir
 		#LOG_TRACE( 'xmlFile[%s]'% xmlFile )
-		fp = open( xmlFile )
-		xml = fp.read( )
-		fp.close( )
 
 		self.mDefaultCodec = sys.getdefaultencoding( )
 		print '---------mDefaultCodec[%s]'% self.mDefaultCodec
-		#from BeautifulSoup import BeautifulSoup
-		self.mStrLanguage = BeautifulSoup( xml )
 
+		parseTree = ElementTree.parse( xmlFile )
+		treeRoot = parseTree.getroot( )
 		global gMRStringHash
-		for node in self.mStrLanguage.findAll( 'string' ) :
-			gMRStringHash[ node.string ] = int( node['id'] )
+		for node in treeRoot.findall( 'string' ) :
+			gMRStringHash[ node.text ] = int( node.get( 'id' ) )
 
 		#LOG_ERR('============cache Language'!
 
@@ -610,42 +607,46 @@ def GetDirectorySize( aPath ) :
 	return dir_size 
 
 
-def GetURLpage( aUrl, aCache = True ) :
-	download = None
+def GetURLpage( aUrl, aWriteFileName = None, aCache = True ) :
+	isExist = False
 	try :
 		#f = urllib.urlopen( url )
 		f = urllib.URLopener( ).open( aUrl )
 		if f :
-			if not aCache :
-				download = True
-			else :
-				download = f.read( )
+			isExist = True
+			if aCache and aWriteFileName :
+				try :
+					fd = open( aWriteFileName, 'w' )
+					fd.write( f.read( ) )
+					fd.close( )
+				except Exception, e :
+					LOG_ERR( 'except[%s] writeError writefile[%s]'% ( e, aWriteFileName ) )
+					isExist = False
+
+			f.close( )
 
 	except IOError, e :
 		LOG_ERR( 'except[%s] url[%s]'% ( e, aUrl ) )
 
-	return download
+	return isExist
 
 
 def ParseStringInXML( xmlFile, tagNames ) :
-	soup = None
 	lists = []
 	#if os.path.exists(xmlFile) :
 	if xmlFile :
 
-		#fp = open(xmlFile)
-		#soup = BeautifulSoup(fp)
-		#fp.close()
-		
-		soup = BeautifulSoup( xmlFile )
-		for node in soup.findAll( 'software' ) :
+		parseTree = ElementTree.parse( xmlFile )
+		treeRoot = parseTree.getroot( )
+
+		for node in treeRoot.findall( 'software' ) :
 			lines = []
 			for tagName in tagNames :
-				if node.findAll( tagName ) :
+				if node.findall( tagName ) :
 					descList = []
-					for element in node.findAll( tagName ) :
-						#elementry = [ str(element.string), '%s\r\n'% str(element) ]
-						elementry = str( element.string )
+					for element in node.findall( tagName ) :
+						#elementry = [ str(element.text), '%s\r\n'% str(element) ]
+						elementry = str( element.text )
 						if tagName == 'description' :
 							descList.append( elementry )
 						else :
@@ -657,6 +658,7 @@ def ParseStringInXML( xmlFile, tagNames ) :
 				else :
 					lines.append('')
 
+			LOG_TRACE( 'parse[%s]'% lines )
 			if lines :
 				lists.append( lines )
 

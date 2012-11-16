@@ -138,6 +138,9 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def GlobalAction( self, aActionId ) :
+		if self.mDataCache.GetRunningHiddenTest( ) and aActionId == Action.ACTION_STOP :
+			self.mDataCache.SetRunningHiddenTest( False )
+	
 		if aActionId == Action.ACTION_MUTE :
 			self.UpdateVolume( 0 )
 
@@ -150,6 +153,8 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		elif aActionId == Action.ACTION_RELOAD_SKIN :
 			import pvr.gui.WindowMgr as WinMgr
 			WinMgr.GetInstance( ).ReloadWindow( WinMgr.GetInstance( ).mLastId, WinMgr.WIN_ID_NULLWINDOW )
+
+		
 
 
 	def SetPipScreen( self ) :

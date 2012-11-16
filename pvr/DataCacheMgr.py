@@ -4,6 +4,7 @@ from ElisEventClass import *
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 import pvr.Platform
+import pvr.BackupSettings
 
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
@@ -105,9 +106,10 @@ class DataCacheMgr( object ) :
 		self.mTimerDB = None
 		self.mRecordDB = None
 
-		self.mLockStatus = self.mCommander.Channel_GetStatus( )
-		self.mAVBlankStatus = self.mCommander.Channel_GetInitialBlank( )
-		self.mSkip = False
+		self.mLockStatus 						= self.mCommander.Channel_GetStatus( )
+		self.mAVBlankStatus 					= self.mCommander.Channel_GetInitialBlank( )
+		self.mSkip 								= False
+		self.mIsRunningHiddentest 				= False
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
@@ -149,7 +151,7 @@ class DataCacheMgr( object ) :
 
 		self.mRecordingCount = 0
 
-		#pvr.BackupSettings.BackupSettings( )
+		pvr.BackupSettings.BackupSettings( )
 		self.Load( )
 
 
@@ -1702,4 +1704,11 @@ class DataCacheMgr( object ) :
 	def GetLockedState( self ) :
 		return self.mLockStatus
 
+
+	def SetRunningHiddenTest( self, aFlag ) :
+		self.mIsRunningHiddentest = aFlag
+
+
+	def GetRunningHiddenTest( self ) :
+		return self.mIsRunningHiddentest
 

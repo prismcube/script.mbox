@@ -1,31 +1,30 @@
-from pvr.gui.WindowImport import *
+from pvr.gui.GuiConfig import *
+from pvr.GuiHelper import *
 import pvr.ElisMgr
 
-"""
-def GetInstance( ) :
-	global gGlobalEvent
-	if not gGlobalEvent :
-		print 'Create instance'
-		gGlobalEvent = GlobalEvent( )
-	else :
-		pass
-
-	return gGlobalEvent
-"""
 
 class BackupSettings( object ) :
 	def __init__( self ) :
-		#self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 
-		#ToDO : network backup, /config/backup/network
-		#ToDO : delete directory backup, /config/backup
-
-		self.CheckBackup( )
+		LOG_TRACE( '------------------------------check backup' )
+		if CheckDirectory( E_DEFAULT_BACKUP_PATH ) :
+			self.CheckBackup( )
+			RemoveDirectory( E_DEFAULT_BACKUP_PATH )
 
 
 	def CheckBackup( self ) :
+		LOG_TRACE( 'backup checked' )
 		pass
+
+		if CheckDirectory( '%s/%s'% ( E_DEFAULT_BACKUP_PATH, 'network.conf' ) ) :
+			self.SetNetwork( )
+
+
+	def SetNetwork( self ) :
+		pass
+		#ToDO : network backup, /config/backup/network
+		#ToDO : network restart
 
 
 
