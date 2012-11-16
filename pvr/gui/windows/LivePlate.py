@@ -251,6 +251,9 @@ class LivePlate( LivePlateWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV/Radio channel is available' ) )
 					dialog.doModal( )
 
+		elif id == Action.ACTION_MBOX_TEXT :
+			self.ShowDialog( E_CONTROL_ID_BUTTON_TELETEXT )
+
 
 	def onClick( self, aControlId ) :
 		if aControlId == E_CONTROL_ID_BUTTON_MUTE :
@@ -770,6 +773,10 @@ class LivePlate( LivePlateWindow ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
+				return
+
+			self.RestartAutomaticHide( )
+			self.mDataCache.Teletext_Show( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
 			if not self.mPlatform.IsPrismCube( ) :
