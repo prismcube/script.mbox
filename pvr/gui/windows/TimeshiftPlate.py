@@ -1100,6 +1100,9 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.StopAutomaticHide( )
 
+		self.OpenBusyDialog( )
+		restoreCurrent = self.mTimeshift_playTime
+
 		section = mediaTime / 10
 		partition = 0
 		for i in range( 1, 10 ) :
@@ -1115,6 +1118,10 @@ class TimeShiftPlate( BaseWindow ) :
 			#window close then stop this function
 			if not self.mEnableLocalThread :
 				break
+
+		self.mDataCache.Player_JumpToIFrame( restoreCurrent )
+		LOG_TRACE( '---------restoreCurrent[%s]'% TimeToString( restoreCurrent, TimeFormatEnum.E_AH_MM_SS ) )
+		self.CloseBusyDialog( )
 
 		self.RestartAutomaticHide( )
 
