@@ -401,6 +401,9 @@
 	<string id="2293">ITA_Network Type</string>
 	<string id="2294">ITA_Ethernet</string>
 	<string id="2295">ITA_Wireless</string>
+	<string id="2296">ITA_Picture 4:3</string>
+	<string id="2297">Letterbox</string>
+	<string id="2298">ITA_Pan and Scan</string>
 	<string id="3001">ITA_[I]No Signal[/I] </string>
 	<string id="3002">ITA_[I]Scrambled[/I] </string>
 	<string id="3003">ITA_No Channel</string>
@@ -1010,4 +1013,11 @@
 	<string id="3607">ITA_File not found : %s</string>
 	<string id="3608">ITA_Test scenario not available : %s</string>
 	<string id="3609">ITA_Complete</string>
+	<string id="3610">ITA_Format Media Partition</string>
+	<string id="3611">ITA_Press the OK button to remove everything in the Media partition</string>
+	<string id="3612">ITA_Format Recording Partition</string>
+	<string id="3613">ITA_Press the OK button to remove everything in the Recording partition</string>
+	<string id="3614">ITA_BACKUP ADDONS AND USER DATA BEFORE FORMATING?</string>
+	<string id="3615">ITA_Enter the size of the media partition in GB</string>
+	<string id="3616">ITA_</string>
 </strings>

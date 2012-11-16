@@ -401,6 +401,9 @@
 	<string id="2293">CZE_Network Type</string>
 	<string id="2294">CZE_Ethernet</string>
 	<string id="2295">CZE_Wireless</string>
+	<string id="2296">CZE_Picture 4:3</string>
+	<string id="2297">Letterbox</string>
+	<string id="2298">CZE_Pan and Scan</string>
 	<string id="3001">CZE_[I]No Signal[/I] </string>
 	<string id="3002">CZE_[I]Scrambled[/I] </string>
 	<string id="3003">CZE_No Channel</string>
@@ -1010,4 +1013,11 @@
 	<string id="3607">CZE_File not found : %s</string>
 	<string id="3608">CZE_Test scenario not available : %s</string>
 	<string id="3609">CZE_Complete</string>
+	<string id="3610">CZE_Format Media Partition</string>
+	<string id="3611">CZE_Press the OK button to remove everything in the Media partition</string>
+	<string id="3612">CZE_Format Recording Partition</string>
+	<string id="3613">CZE_Press the OK button to remove everything in the Recording partition</string>
+	<string id="3614">CZE_BACKUP ADDONS AND USER DATA BEFORE FORMATING?</string>
+	<string id="3615">CZE_Enter the size of the media partition in GB</string>
+	<string id="3616">CZE_</string>
 </strings>
