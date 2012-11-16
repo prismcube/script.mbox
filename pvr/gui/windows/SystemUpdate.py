@@ -380,6 +380,7 @@ class SystemUpdate( SettingWindow ) :
 
 	def Provisioning( self ) :
 		appURL = None
+		isDownload = False
 		self.mPVSData = None
 		self.mPVSList = []
 		self.ResetLabel( )
@@ -391,13 +392,14 @@ class SystemUpdate( SettingWindow ) :
 		self.OpenBusyDialog( )
 
 		try :
-			download = GetURLpage( self.mUrlPVS )
-			#LOG_TRACE( '[pvs]%s'% download )
+			CreateDirectory( E_DEFAULT_PATH_DOWNLOAD )
+			isDownload = GetURLpage( self.mUrlPVS, E_DOWNLOAD_INFO_PVS )
+			#LOG_TRACE( '[pvs]%s'% isDownload )
 
-			if download :
+			if isDownload :
 				mPVSList = []
 				tagNames = ['filename', 'date', 'version', 'size', 'md5', 'description']
-				retList = ParseStringInXML( download, tagNames )
+				retList = ParseStringInXML( E_DOWNLOAD_INFO_PVS, tagNames )
 				if retList and len( retList ) > 0 :
 					for pvsData in retList :
 						iPVS = PVSClass( )
@@ -433,19 +435,16 @@ class SystemUpdate( SettingWindow ) :
 				else :
 					self.mPVSData = deepcopy( self.mCurrData )
 
-				CreateDirectory( E_DEFAULT_PATH_DOWNLOAD )
-				f = open( E_DOWNLOAD_INFO_PVS, 'w' )
-				f.write( download )
-				f.close( )
 
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
 			self.mPVSData = None
 			self.mPVSList = []
+			isDownload = False
 
 		self.CloseBusyDialog( )
 
-		if not download :
+		if not isDownload :
 			self.SetEnableControl( E_Input02, False )
 			self.SetControlLabel2String( E_Input02, MR_LANG( 'Not Attempted') )
 			self.EditDescription( E_Input02, MR_LANG( 'Please check firmware version first' ) )
@@ -811,10 +810,10 @@ class SystemUpdate( SettingWindow ) :
 
 	#make tempDir, write local file
 	def GetDownload( self, aPVS ) :
-		isExist = GetURLpage( aPVS.mFileName, False )
+		isExist = GetURLpage( aPVS.mFileName, None, False )
 
 		if not isExist :
-			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_ADDRESS )
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HAVE_NONE )
 			return False
 
 		self.mWorkingItem = aPVS
