@@ -119,13 +119,13 @@
 						<texture>aeon.nox/OSDInfoNF.png</texture>
 					</control>
 					<control type="label">
-						<posx>40</posx>
+						<posx>43</posx>
 						<posy>15</posy>
 						<font>Font_Reg17</font>
 						<textcolor>grey3</textcolor>
 						<align>left</align>
 						<width>700</width>
-						<label>More Info 'i'Key</label>
+						<label>SCRIPT90</label>
 					</control>
 				</control>
 			</control>
