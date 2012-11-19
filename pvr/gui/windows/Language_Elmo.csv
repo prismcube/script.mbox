@@ -97,6 +97,7 @@
 "Fav. Addons provides a convenient way to access to your XBMC addons",,,,,,,,,,96
 "Check your PRISMCUBE RUBY information at a glance",,,,,,,,,,97
 "Check your PRISMCUBE RUBY info at a glance",,,,,,,,,,98
+"Jump",,,,,,,,,,99
 "Last ServiceType",,,,,,,,,,2001
 "CurrentVoutResolution",,,,,,,,,,2002
 "First Installation","Erst-Installation","premiere installation","Prima installazione","Primera instalacion","Prvni instalace","Eerste installatie","Pierwsza instalacja","?lk kurulum","Первоначальная установка",2003
@@ -1201,3 +1202,6 @@
 "BACKUP ADDONS AND USER DATA BEFORE FORMATING?",,,,,,,,,,3791
 "Enter the size of the media partition in GB",,,,,,,,,,3792
 "None",,,,,,,,,,3793
+"No HDD",,,,,,,,,,3794
+"None",,,,,,,,,,3795
+"None",,,,,,,,,,3796
