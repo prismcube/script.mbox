@@ -151,7 +151,6 @@ class TimeShiftPlate( BaseWindow ) :
 				self.onClick( E_CONTROL_ID_BUTTON_FORWARD )
 
 			elif self.mPrekey == Action.ACTION_PAUSE or self.mPrekey == Action.ACTION_PLAYER_PLAY :
-				self.mWin.setProperty( 'IsXpeeding', 'False' )
 				if self.mSpeed == 100 :
 					self.onClick( E_CONTROL_ID_BUTTON_PAUSE )
 				else :
@@ -317,7 +316,6 @@ class TimeShiftPlate( BaseWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif id == Action.ACTION_PLAYER_PLAY :
-			self.mWin.setProperty( 'IsXpeeding', 'False' )
 			if self.mIsPlay == FLAG_PAUSE :
 				self.onClick( E_CONTROL_ID_BUTTON_PAUSE )
 			else :
@@ -492,11 +490,6 @@ class TimeShiftPlate( BaseWindow ) :
 			# toggle
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, False )
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
-			self.mWin.setProperty( 'IsXpeeding', 'True' )
-
-			#blocking release
-			if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
-				self.SetBlockingButtonEnable( True )
 
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_PAUSE :
@@ -516,11 +509,6 @@ class TimeShiftPlate( BaseWindow ) :
 				# toggle
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
-				self.mWin.setProperty( 'IsXpeeding', 'True' )
-
-				#blocking
-				if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
-					self.SetBlockingButtonEnable( False )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_STOP :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
@@ -629,13 +617,6 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_REWIND, visible, E_CONTROL_VISIBLE )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_FORWARD , visible, E_CONTROL_VISIBLE )
-
-
-	def SetBlockingButtonEnable( self, aValue ) :
-		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_REWIND, aValue, E_CONTROL_ENABLE )
-		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_FORWARD, aValue, E_CONTROL_ENABLE )
-		strValue = '%s'% aValue
-		self.mWin.setProperty( 'IsXpeeding', strValue )
 
 
 	@GuiLock
@@ -919,13 +900,11 @@ class TimeShiftPlate( BaseWindow ) :
 		if ret == 100 :
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, False )
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
-			self.mWin.setProperty( 'IsXpeeding', 'True' )
 			#LOG_TRACE( '-------Play----------------------speed[%s]'% ret)
 
 		else :
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )			
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
-			self.mWin.setProperty( 'IsXpeeding', 'False' )
 			#LOG_TRACE( '-------Pause----------------------speed[%s]'% ret)
 
 		return ret

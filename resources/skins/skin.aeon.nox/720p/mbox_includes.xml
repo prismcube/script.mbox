@@ -5337,6 +5337,7 @@
 				<height>75</height>
 				<texturefocus>osd/buttons/OSDRewindFO.png</texturefocus>
 				<texturenofocus>osd/buttons/OSDRewindNF.png</texturenofocus>
+				<enable>!Control.IsVisible(3705)</enable>
 			</control>
 			<control type="button" id="3705">
 				<width>85</width>
@@ -5362,20 +5363,21 @@
 				<height>75</height>
 				<texturefocus>osd/buttons/OSDForwardFO.png</texturefocus>
 				<texturenofocus>osd/buttons/OSDForwardNF.png</texturenofocus>
+				<enable>!Control.IsVisible(3705)</enable>
 			</control>
 			<control type="button" id="3709">
 				<width>85</width>
 				<height>75</height>
 				<texturefocus>osd/buttons/OSDPrevTrackFO.png</texturefocus>
 				<texturenofocus>osd/buttons/OSDPrevTrackNF.png</texturenofocus>
-				<enable>substring(Window.Property(IsXpeeding),true)</enable>
+				<enable>!Control.IsVisible(3705)</enable>
 			</control>
 			<control type="button" id="3710">
 				<width>85</width>
 				<height>75</height>
 				<texturefocus>osd/buttons/OSDNextTrackFO.png</texturefocus>
 				<texturenofocus>osd/buttons/OSDNextTrackNF.png</texturenofocus>
-				<enable>substring(Window.Property(IsXpeeding),true)</enable>
+				<enable>!Control.IsVisible(3705)</enable>
 			</control>
 		</control>
 	</include>

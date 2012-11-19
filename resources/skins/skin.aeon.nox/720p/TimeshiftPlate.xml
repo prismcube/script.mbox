@@ -335,7 +335,7 @@
 						<onright>202</onright>
 						<!--onup>3706</onup-->
 						<!--ondown>3706</ondown-->
-						<enable>substring(Window.Property(IsXpeeding),true)</enable>
+						<enable>!Control.IsVisible(3705)</enable>
 					</control>
 					<control type="label" id="203">
 						<description>mode</description>
