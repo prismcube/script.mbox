@@ -777,7 +777,7 @@ class LivePlate( LivePlateWindow ) :
 
 			if not self.mDataCache.Teletext_Show( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No data teletext' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No teletext available' ) )
 				dialog.doModal( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
