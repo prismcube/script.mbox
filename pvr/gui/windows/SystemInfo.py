@@ -199,7 +199,6 @@ class SystemInfo( SettingWindow ) :
 
 			if self.CheckExistsDisk( ) :
 				self.mCtrlHDDName.setLabel(	MR_LANG( 'Name and Total Size : %s ( %s )' ) % ( self.GetHDDName( ), self.GetTotalSize( ) ) )
-
 				total_size, used_size, percent = self.GetPartitionSize( 'sda5' )
 				self.mCtrlProgressMedia.setPercent( percent )
 				self.mCtrlHDDSizeMedia.setLabel( MR_LANG( 'Media Partition Usage : %s%% ( %s / %s )' ) % ( percent, used_size, total_size ) )
@@ -320,12 +319,23 @@ class SystemInfo( SettingWindow ) :
 
 
 	def GetHDDName( self ) :
-		name = MR_LANG( 'Unknown' )
-		device = '/dev/sda'
-		cmd = "hddtemp %s -D | awk '/Model:/ {print $2,$3}'" % device
-		name = Popen( cmd, shell=True, stdout=PIPE )
-		name = name.stdout.read( ).strip( )
-		return name
+		model = MR_LANG( 'Unknown' )
+		try :
+			if os.path.exists( '/sys/block/sda/device/model' ) :
+				openFile = open( '/sys/block/sda/device/model', 'r' )
+				inputline = openFile.readlines( )
+				model = inputline[0]
+				model = model.strip( )
+			else :
+				device = '/dev/sda'
+				cmd = "hddtemp %s -D | awk '/Model:/ {print $2}'" % device
+				model = Popen( cmd, shell=True, stdout=PIPE )
+				model = model.stdout.read( ).strip( )
+			return model
+
+		except Exception, e :
+			LOG_ERR( 'Error exception[%s]' % e )
+			return model
 
 
 	def GetTotalSize( self ) :
