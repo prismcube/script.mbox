@@ -775,8 +775,10 @@ class LivePlate( LivePlateWindow ) :
 				dialog.doModal( )
 				return
 
-			self.RestartAutomaticHide( )
-			self.mDataCache.Teletext_Show( )
+			if not self.mDataCache.Teletext_Show( ) :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No data teletext' ) )
+				dialog.doModal( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
 			if not self.mPlatform.IsPrismCube( ) :
@@ -798,6 +800,8 @@ class LivePlate( LivePlateWindow ) :
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SETTING_FORMAT :
 			self.SetAudioVideoContext( )
+
+		self.RestartAutomaticHide( )
 
 
 	def ShowRecordingStartDialog( self ) :

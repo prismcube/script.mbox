@@ -318,7 +318,10 @@ class NullWindow( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_MBOX_TEXT :
-			self.mDataCache.Teletext_Show( )
+			if not self.mDataCache.Teletext_Show( ) :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No data teletext' ) )
+				dialog.doModal( )
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
 			pass
