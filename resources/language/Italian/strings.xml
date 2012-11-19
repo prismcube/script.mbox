@@ -1013,4 +1013,5 @@
 	<string id="3607">ITA_File not found : %s</string>
 	<string id="3608">ITA_Test scenario not available : %s</string>
 	<string id="3609">ITA_Complete</string>
+	<string id="3610">ITA_</string>
 </strings>

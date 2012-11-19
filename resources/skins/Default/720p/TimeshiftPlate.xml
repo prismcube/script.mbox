@@ -126,7 +126,7 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>SCRIPT35</label>
+						<label>SCRIPT23</label>
 						<visible>Control.HasFocus(3702)</visible>
 					</control>
 					<control type="label">
@@ -139,7 +139,7 @@
 						<scroll>false</scroll>
 						<align>left</align>
 						<aligny>center</aligny>
-						<label>SCRIPT23</label>
+						<label>SCRIPT36</label>
 						<visible>Control.HasFocus(3703)</visible>
 					</control>
 					<control type="label">

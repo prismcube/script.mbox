@@ -1013,4 +1013,5 @@
 	<string id="3607">POL_File not found : %s</string>
 	<string id="3608">POL_Test scenario not available : %s</string>
 	<string id="3609">POL_Complete</string>
+	<string id="3610">POL_</string>
 </strings>

@@ -1013,4 +1013,5 @@
 	<string id="3607">DUT_File not found : %s</string>
 	<string id="3608">DUT_Test scenario not available : %s</string>
 	<string id="3609">DUT_Complete</string>
+	<string id="3610">DUT_</string>
 </strings>
