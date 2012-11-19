@@ -146,6 +146,8 @@ class FirstInstallation( SettingWindow ) :
 		self.mDataCache.Player_AVBlank( False )
 		self.CloseBusyDialog( )
 		self.SetVideoRestore( )
+		if self.mStepNum == E_STEP_RESULT :
+			self.mDataCache.Channel_TuneDefault( )
 		WinMgr.GetInstance( ).CloseWindow( )
 
 
@@ -489,4 +491,3 @@ class FirstInstallation( SettingWindow ) :
 				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )
 				self.SetListControl( E_STEP_RESULT )
-

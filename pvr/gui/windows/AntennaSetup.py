@@ -70,15 +70,13 @@ class AntennaSetup( SettingWindow ) :
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 					self.OpenBusyDialog( )
-					if self.CompareConfigurationSatellite( ) == False or self.CompareConfigurationProperty( ) == False :
+					if self.CompareCurrentConfiguredState( ) == False or self.CompareConfigurationProperty( ) == False :
 						self.CancelConfiguration( )
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).mStepNum = E_STEP_SELECT_LANGUAGE
 					self.SetParentID( WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).GetParentID( ) )
 					ConfigMgr.GetInstance( ).SetFristInstallation( False )
 					self.mTunerMgr.SyncChannelBySatellite( )
 					self.mDataCache.Channel_ReLoad( )
-					#TODO : Channel_TuneDefault -> parent window is configure
-					#self.mDataCache.Channel_TuneDefault( )
 					self.mDataCache.Player_AVBlank( False )
 					self.CloseWindow( )
 
@@ -96,7 +94,7 @@ class AntennaSetup( SettingWindow ) :
 					
 				elif dialog.IsOK( ) == E_DIALOG_STATE_NO :
 					self.OpenBusyDialog( )
-					if self.CompareConfigurationSatellite( ) == False or self.CompareConfigurationProperty( ) == False :
+					if self.CompareCurrentConfiguredState( ) == False or self.CompareConfigurationProperty( ) == False :
 						self.CancelConfiguration( )
 				else :
 					return
@@ -137,7 +135,7 @@ class AntennaSetup( SettingWindow ) :
 
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT or aControlId == E_FIRST_TIME_INSTALLATION_PREV :
 			self.OpenBusyDialog( )
-			if self.CompareConfigurationSatellite( ) == False or self.CompareConfigurationProperty( ) == False :
+			if self.CompareCurrentConfiguredState( ) == False or self.CompareConfigurationProperty( ) == False :
 				self.SaveConfiguration( )
 			self.ResetAllControl( )
 			if aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
@@ -271,37 +269,6 @@ class AntennaSetup( SettingWindow ) :
 			self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
 
 
-	def CompareConfigurationSatellite( self ) :
-		configuredList1		= self.mTunerMgr.GetConfiguredSatelliteListbyTunerIndex( E_TUNER_1 )
-		oriconfiguredList1	= self.mTunerMgr.GetOriginalConfiguredListByTunerNumber( E_TUNER_1 )
-		configuredList2		= self.mTunerMgr.GetConfiguredSatelliteListbyTunerIndex( E_TUNER_2 )
-		oriconfiguredList2	= self.mTunerMgr.GetOriginalConfiguredListByTunerNumber( E_TUNER_2 )
-		if oriconfiguredList1 == None or oriconfiguredList2 == None :
-			return False
-
-		if self.mTunerMgr.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
-			if len( configuredList1 ) != len( oriconfiguredList1 ) :
-				return False
-		else :
-			if len( configuredList1 ) != len( oriconfiguredList1 ) :
-				return False
-			if len( configuredList2 ) != len( oriconfiguredList2 ) :
-				return False
-			
-		if self.mTunerMgr.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
-			for i in range( len( configuredList1 ) ) :
-				if configuredList1[i].__dict__ != oriconfiguredList1[i].__dict__ :
-					return False
-		else :
-			for i in range( len( configuredList1 ) ) :
-				if configuredList1[i].__dict__ != oriconfiguredList1[i].__dict__ :
-					return False
-			for i in range( len( configuredList2 ) ) :
-				if configuredList2[i].__dict__ != oriconfiguredList2[i].__dict__ :
-					return False
-		return True
-
-
 	def CompareCurrentConfiguredState( self ) :
 		configuredList1		= self.mTunerMgr.GetConfiguredSatelliteListbyTunerIndex( E_TUNER_1 )	
 		currentconfiguredList1	= self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_1 )
@@ -322,8 +289,6 @@ class AntennaSetup( SettingWindow ) :
 		if self.mTunerMgr.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
 			for i in range( len( configuredList1 ) ) :
 				if configuredList1[i].__dict__ != currentconfiguredList1[i].__dict__ :
-					configuredList1[i].printdebug( )
-					currentconfiguredList1[i].printdebug( )
 					return False
 		else :
 			for i in range( len( configuredList1 ) ) :
