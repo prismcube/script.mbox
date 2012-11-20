@@ -1,0 +1,25 @@
+<scenarios>
+	<scenario>
+		<name>INFO PLATE TEST</name>
+		<loop repeat="100000">
+			<sendkey>VKEY_INFO</sendkey>
+			<sleep>7</sleep>
+		</loop>
+	</scenario>
+	<scenario>
+		<name>ZAPPING TEST</name>
+		<loop repeat="50000">
+			<sendkey>VKEY_PROG_DOWN</sendkey>
+			<sleep>5</sleep>
+		</loop>
+	</scenario>
+	<scenario>
+		<name>EPG WINDOW Test</name>
+		<loop repeat="50000">
+			<sendkey>VKEY_EPG</sendkey>
+			<sleep>8</sleep>
+			<sendkey>VKEY_BACK</sendkey>
+			<sleep>6</sleep>
+		</loop>
+	</scenario>
+</scenarios>

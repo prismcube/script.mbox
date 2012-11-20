@@ -1,8 +1,9 @@
 from pvr.gui.WindowImport import *
 from pvr.HiddenTestMgr import *
+import xbmcaddon
 
 
-FILE_NAME_TEST	=	'/home/root/elmo_test.xml'
+FILE_NAME_TEST = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/elmo_test.xml'
 
 
 class HiddenTest( BaseWindow ) :
