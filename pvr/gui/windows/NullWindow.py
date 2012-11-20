@@ -320,7 +320,7 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_TEXT :
 			if not self.mDataCache.Teletext_Show( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No data teletext' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No teletext available' ) )
 				dialog.doModal( )
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
