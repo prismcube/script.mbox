@@ -522,7 +522,7 @@
 	<string id="3116">ITA_Add favorite addon</string>
 	<string id="3117">ITA_Delete favorite addon</string>
 	<string id="3118">ITA_Run</string>
-	<string id="3119">ITA_There is no addons</string>
+	<string id="3119">ITA_No addons installed</string>
 	<string id="3120">ITA_Select Addon</string>
 	<string id="3121">ITA_Do you want to remove %s?</string>
 	<string id="3122">Configurazione satellite</string>
@@ -795,7 +795,7 @@
 	<string id="3389">ITA_Edit channels</string>
 	<string id="3390">ITA_Delete all channels</string>
 	<string id="3391">ITA_Try again after stopping the Timeshift first</string>
-	<string id="3392">ITA_No teletext available</string>
+	<string id="3392">ITA_No teletext is available</string>
 	<string id="3393">ITA_Tuner %s Config : Motorized, Usals</string>
 	<string id="3394">ITA_Latitude Degree</string>
 	<string id="3395">ITA_My Longitude Direction</string>
@@ -1010,8 +1010,9 @@
 	<string id="3604">ITA_Quality</string>
 	<string id="3605">ITA_No EPG Information is available</string>
 	<string id="3606">ITA_The recording you just requested confilcts with</string>
-	<string id="3607">ITA_Reloading channel list...</string>
-	<string id="3608">ITA_File not found : %s</string>
-	<string id="3609">ITA_Test scenario not available : %s</string>
-	<string id="3610">ITA_Complete</string>
+	<string id="3607">ITA_Hard disk drive not detected</string>
+	<string id="3608">ITA_Reloading channel list...</string>
+	<string id="3609">ITA_File not found : %s</string>
+	<string id="3610">ITA_Test scenario not available : %s</string>
+	<string id="3611">ITA_Complete</string>
 </strings>

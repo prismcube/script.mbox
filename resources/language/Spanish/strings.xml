@@ -522,7 +522,7 @@
 	<string id="3116">SPA_Add favorite addon</string>
 	<string id="3117">SPA_Delete favorite addon</string>
 	<string id="3118">SPA_Run</string>
-	<string id="3119">SPA_There is no addons</string>
+	<string id="3119">SPA_No addons installed</string>
 	<string id="3120">SPA_Select Addon</string>
 	<string id="3121">SPA_Do you want to remove %s?</string>
 	<string id="3122">Configuracion satelites</string>
@@ -795,7 +795,7 @@
 	<string id="3389">SPA_Edit channels</string>
 	<string id="3390">SPA_Delete all channels</string>
 	<string id="3391">SPA_Try again after stopping the Timeshift first</string>
-	<string id="3392">SPA_No teletext available</string>
+	<string id="3392">SPA_No teletext is available</string>
 	<string id="3393">SPA_Tuner %s Config : Motorized, Usals</string>
 	<string id="3394">SPA_Latitude Degree</string>
 	<string id="3395">SPA_My Longitude Direction</string>
@@ -1010,8 +1010,9 @@
 	<string id="3604">SPA_Quality</string>
 	<string id="3605">SPA_No EPG Information is available</string>
 	<string id="3606">SPA_The recording you just requested confilcts with</string>
-	<string id="3607">SPA_Reloading channel list...</string>
-	<string id="3608">SPA_File not found : %s</string>
-	<string id="3609">SPA_Test scenario not available : %s</string>
-	<string id="3610">SPA_Complete</string>
+	<string id="3607">SPA_Hard disk drive not detected</string>
+	<string id="3608">SPA_Reloading channel list...</string>
+	<string id="3609">SPA_File not found : %s</string>
+	<string id="3610">SPA_Test scenario not available : %s</string>
+	<string id="3611">SPA_Complete</string>
 </strings>

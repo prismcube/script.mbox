@@ -522,7 +522,7 @@
 	<string id="3116">DUT_Add favorite addon</string>
 	<string id="3117">DUT_Delete favorite addon</string>
 	<string id="3118">DUT_Run</string>
-	<string id="3119">DUT_There is no addons</string>
+	<string id="3119">DUT_No addons installed</string>
 	<string id="3120">DUT_Select Addon</string>
 	<string id="3121">DUT_Do you want to remove %s?</string>
 	<string id="3122">Satellietconfiguratie</string>
@@ -795,7 +795,7 @@
 	<string id="3389">DUT_Edit channels</string>
 	<string id="3390">DUT_Delete all channels</string>
 	<string id="3391">DUT_Try again after stopping the Timeshift first</string>
-	<string id="3392">DUT_No teletext available</string>
+	<string id="3392">DUT_No teletext is available</string>
 	<string id="3393">DUT_Tuner %s Config : Motorized, Usals</string>
 	<string id="3394">DUT_Latitude Degree</string>
 	<string id="3395">DUT_My Longitude Direction</string>
@@ -1010,8 +1010,9 @@
 	<string id="3604">DUT_Quality</string>
 	<string id="3605">DUT_No EPG Information is available</string>
 	<string id="3606">DUT_The recording you just requested confilcts with</string>
-	<string id="3607">DUT_Reloading channel list...</string>
-	<string id="3608">DUT_File not found : %s</string>
-	<string id="3609">DUT_Test scenario not available : %s</string>
-	<string id="3610">DUT_Complete</string>
+	<string id="3607">DUT_Hard disk drive not detected</string>
+	<string id="3608">DUT_Reloading channel list...</string>
+	<string id="3609">DUT_File not found : %s</string>
+	<string id="3610">DUT_Test scenario not available : %s</string>
+	<string id="3611">DUT_Complete</string>
 </strings>
