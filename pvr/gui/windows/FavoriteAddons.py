@@ -177,7 +177,7 @@ class FavoriteAddons( BaseWindow ) :
 			tmpList = xbmc.executehttpapi( "getaddons()" )
 			if tmpList == '<li>' :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is no addons' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No addons installed' ) )
 	 			dialog.doModal( )
 			else :
 				addonList = tmpList[4:].split( ':' )

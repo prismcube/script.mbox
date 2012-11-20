@@ -522,7 +522,7 @@
 	<string id="3116">FRE_Add favorite addon</string>
 	<string id="3117">FRE_Delete favorite addon</string>
 	<string id="3118">FRE_Run</string>
-	<string id="3119">FRE_There is no addons</string>
+	<string id="3119">FRE_No addons installed</string>
 	<string id="3120">FRE_Select Addon</string>
 	<string id="3121">FRE_Do you want to remove %s?</string>
 	<string id="3122">Configuration des satellites</string>
@@ -795,7 +795,7 @@
 	<string id="3389">FRE_Edit channels</string>
 	<string id="3390">FRE_Delete all channels</string>
 	<string id="3391">FRE_Try again after stopping the Timeshift first</string>
-	<string id="3392">FRE_No teletext available</string>
+	<string id="3392">FRE_No teletext is available</string>
 	<string id="3393">FRE_Tuner %s Config : Motorized, Usals</string>
 	<string id="3394">FRE_Latitude Degree</string>
 	<string id="3395">FRE_My Longitude Direction</string>
@@ -1010,8 +1010,9 @@
 	<string id="3604">FRE_Quality</string>
 	<string id="3605">FRE_No EPG Information is available</string>
 	<string id="3606">FRE_The recording you just requested confilcts with</string>
-	<string id="3607">FRE_Reloading channel list...</string>
-	<string id="3608">FRE_File not found : %s</string>
-	<string id="3609">FRE_Test scenario not available : %s</string>
-	<string id="3610">FRE_Complete</string>
+	<string id="3607">FRE_Hard disk drive not detected</string>
+	<string id="3608">FRE_Reloading channel list...</string>
+	<string id="3609">FRE_File not found : %s</string>
+	<string id="3610">FRE_Test scenario not available : %s</string>
+	<string id="3611">FRE_Complete</string>
 </strings>

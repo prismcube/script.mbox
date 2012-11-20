@@ -526,7 +526,7 @@
 	<string id="3116">Add favorite addon</string>
 	<string id="3117">Delete favorite addon</string>
 	<string id="3118">Run</string>
-	<string id="3119">There is no addons</string>
+	<string id="3119">No addons installed</string>
 	<string id="3120">Select Addon</string>
 	<string id="3121">Do you want to remove %s?</string>
 	<string id="3122">Satellite Configuration</string>
@@ -799,7 +799,7 @@
 	<string id="3389">Edit channels</string>
 	<string id="3390">Delete all channels</string>
 	<string id="3391">Try again after stopping the Timeshift first</string>
-	<string id="3392">No teletext available</string>
+	<string id="3392">No teletext is available</string>
 	<string id="3393">Tuner %s Config : Motorized, Usals</string>
 	<string id="3394">Latitude Degree</string>
 	<string id="3395">My Longitude Direction</string>
@@ -1014,8 +1014,9 @@
 	<string id="3604">Quality</string>
 	<string id="3605">No EPG Information is available</string>
 	<string id="3606">The recording you just requested confilcts with</string>
-	<string id="3607">Reloading channel list...</string>
-	<string id="3608">File not found : %s</string>
-	<string id="3609">Test scenario not available : %s</string>
-	<string id="3610">Complete</string>
+	<string id="3607">Hard disk drive not detected</string>
+	<string id="3608">Reloading channel list...</string>
+	<string id="3609">File not found : %s</string>
+	<string id="3610">Test scenario not available : %s</string>
+	<string id="3611">Complete</string>
 </strings>
