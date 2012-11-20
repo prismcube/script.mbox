@@ -64,6 +64,9 @@ class MainMenu( BaseWindow ) :
 			self.onClick( BUTTON_ID_MEDIA_CENTER )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
+			from pvr.GuiHelper import HasAvailableRecordingHDD
+			if HasAvailableRecordingHDD( ) == False :
+				return	
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
 		elif actionId == Action.ACTION_SHOW_INFO :
@@ -105,6 +108,9 @@ class MainMenu( BaseWindow ) :
 						dialog.doModal( )
 
 		elif aControlId == BUTTON_ID_ARCHIVE :
+			from pvr.GuiHelper import HasAvailableRecordingHDD
+			if HasAvailableRecordingHDD( ) == False :
+				return
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
 		elif aControlId == BUTTON_ID_EPG :

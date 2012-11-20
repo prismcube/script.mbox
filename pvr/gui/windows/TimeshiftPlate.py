@@ -337,6 +337,10 @@ class TimeShiftPlate( BaseWindow ) :
 			self.onClick( E_CONTROL_ID_BUTTON_FORWARD )
 
 		elif id == Action.ACTION_MBOX_RECORD :
+			from pvr.GuiHelper import HasAvailableRecordingHDD
+			if HasAvailableRecordingHDD( ) == False :
+				return
+				
 			if self.mMode == ElisEnum.E_MODE_PVR :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the PVR first' ) )
@@ -345,6 +349,10 @@ class TimeShiftPlate( BaseWindow ) :
 				self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
 
 		elif id == Action.ACTION_MBOX_ARCHIVE :
+			from pvr.GuiHelper import HasAvailableRecordingHDD
+			if HasAvailableRecordingHDD( ) == False :
+				return
+				
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
@@ -385,7 +393,11 @@ class TimeShiftPlate( BaseWindow ) :
 			self.GlobalAction( Action.ACTION_MUTE )
 			self.StopAutomaticHide( )
 		
-		elif aControlId == E_CONTROL_ID_BUTTON_START_RECORDING :
+		elif aControlId == E_CONTROL_ID_BUTTON_START_RECORDING :	
+			from pvr.GuiHelper import HasAvailableRecordingHDD
+			if HasAvailableRecordingHDD( ) == False :
+				return
+				
 			runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 
 			isOK = False

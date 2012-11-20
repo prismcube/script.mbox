@@ -421,6 +421,17 @@ def CheckHdd( ) :
 	return False
 
 
+def	HasAvailableRecordingHDD( ) :
+	import pvr.gui.DialogMgr as DiaMgr
+	if CheckHdd( ) == False :
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Hard disk drive not detected' ) )
+		dialog.doModal( )
+		return False
+
+	return True
+
+
 def CheckEthernet( aEthName ) :
 	status = 'down'
 	cmd = 'cat /sys/class/net/%s/operstate'% aEthName
