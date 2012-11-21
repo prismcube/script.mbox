@@ -11,7 +11,8 @@ E_DOWNLOAD_INFO_PVS       = '/mnt/hdd0/program/download/update.xml'
 E_DEFAULT_PATH_HDD        = '/mnt/hdd0/program'
 E_DEFAULT_PATH_DOWNLOAD   = '%s/download'% E_DEFAULT_PATH_HDD
 E_DEFAULT_PATH_USB_UPDATE = '/media/sdb1'
-E_DEFAULT_URL_PVS         = 'http://update.prismcube.com/update/ruby/update.xml'
+E_DEFAULT_URL_PVS         = 'http://update.prismcube.com/update.html?product=ruby'
+E_DEFAULT_URL_REQUEST_FW  = 'http://update.prismcube.com/download.html?key='
 
 E_CONTROL_ID_GROUP_PVS      = 9000
 E_CONTROL_ID_LABEL_TITLE    = 99
@@ -20,9 +21,7 @@ E_CONTROL_ID_LABEL_DATE     = 101
 E_CONTROL_ID_LABEL_SIZE     = 102
 
 CONTEXT_ACTION_REFRESH_CONNECT      = 1
-CONTEXT_ACTION_CHANGE_ADDRESS       = 2
-CONTEXT_ACTION_LOAD_DEFAULT_ADDRESS = 3
-CONTEXT_ACTION_LOAD_OLD_VERSION     = 4
+CONTEXT_ACTION_LOAD_OLD_VERSION     = 2
 
 E_UPDATE_STEP_HOME        = 0
 E_UPDATE_STEP_READY       = 1
@@ -59,12 +58,14 @@ E_STRING_CHECK_HAVE_NONE = 14
 
 class PVSClass( object ) :
 	def __init__( self ) :
+		self.mKey					= None
 		self.mName					= None
 		self.mFileName				= None
 		self.mDate					= None
 		self.mDescription			= []
 		self.mMd5					= None
-		self.mSize					= 0
+		self.mSize					= 0		#zipSize
+		self.mUnpackSize			= 0		#fullSize
 		self.mVersion				= 0
 		self.mId					= None
 		self.mType					= None
@@ -91,9 +92,6 @@ class SystemUpdate( SettingWindow ) :
 		self.mCtrlLabelSize           = self.getControl( E_CONTROL_ID_LABEL_SIZE )
 
 		#parse settings.xml
-		self.mUrlPVS = GetSetting( 'UpdateServer' )
-		if not self.mUrlPVS :
-			self.mUrlPVS = E_DEFAULT_URL_PVS
 		self.mPVSData = None
 		self.mCurrData = None
 		self.mPVSList = []
@@ -200,7 +198,6 @@ class SystemUpdate( SettingWindow ) :
 			self.mCheckEthernetThread.join( )
 
 		self.ResetAllControl( )
-		self.SaveAsServerAddress( )
 		self.SetVideoRestore( )
 		WinMgr.GetInstance( ).CloseWindow( )
 
@@ -385,62 +382,62 @@ class SystemUpdate( SettingWindow ) :
 		self.mPVSList = []
 		self.ResetLabel( )
 
-		if not self.mUrlPVS :
-			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_ADDRESS )
- 			return
-
 		self.OpenBusyDialog( )
+		#try :
+		CreateDirectory( E_DEFAULT_PATH_DOWNLOAD )
+		isDownload = GetURLpage( E_DEFAULT_URL_PVS, E_DOWNLOAD_INFO_PVS )
+		#LOG_TRACE( '[pvs]%s'% isDownload )
 
-		try :
-			CreateDirectory( E_DEFAULT_PATH_DOWNLOAD )
-			isDownload = GetURLpage( self.mUrlPVS, E_DOWNLOAD_INFO_PVS )
-			#LOG_TRACE( '[pvs]%s'% isDownload )
+		if isDownload :
+			mPVSList = []
+			tagNames = ['key', 'filename', 'date', 'version', 'zipsize', 'size', 'md5', 'description']
+			retList = ParseStringInXML( E_DOWNLOAD_INFO_PVS, tagNames )
+			if retList and len( retList ) > 0 :
+				for pvsData in retList :
+					iPVS = PVSClass( )
+					if pvsData[0] :
+						iPVS.mKey      = pvsData[0]
+					if pvsData[1] :
+						iPVS.mFileName = pvsData[1]
+					if pvsData[2] :
+						iPVS.mDate     = pvsData[2]
+					if pvsData[3] :
+						iPVS.mVersion  = int( pvsData[3] )
+					if pvsData[4] :
+						iPVS.mSize     = int( pvsData[4] )
+					if pvsData[5] :
+						iPVS.mUnpackSize = int( pvsData[5] )
+					if pvsData[6] :
+						iPVS.mMd5      = pvsData[6]
+					if pvsData[7] :
+						description = ''
+						for item in pvsData[7] :
+							description += '%s\n'% item
+						iPVS.mDescription = description
 
-			if isDownload :
-				mPVSList = []
-				tagNames = ['filename', 'date', 'version', 'size', 'md5', 'description']
-				retList = ParseStringInXML( E_DOWNLOAD_INFO_PVS, tagNames )
-				if retList and len( retList ) > 0 :
-					for pvsData in retList :
-						iPVS = PVSClass( )
-						if pvsData[0] :
-							iPVS.mFileName = pvsData[0]
-						if pvsData[1] :
-							iPVS.mDate     = pvsData[1]
-						if pvsData[2] :
-							iPVS.mVersion  = int( pvsData[2] )
-						if pvsData[3] :
-							iPVS.mSize     = int( pvsData[3] )
-						if pvsData[4] :
-							iPVS.mMd5      = pvsData[4]
-						if pvsData[5] :
-							description = ''
-							for item in pvsData[5] :
-								description += '%s\n'% item
-							iPVS.mDescription = description
+					iPVS.mName = MR_LANG( 'Downloading firmware' )
+					iPVS.mType = E_TYPE_ADDONS
+					iPVS.mError = 0
+					mPVSList.append( iPVS )
 
-						iPVS.mName = MR_LANG( 'Downloading firmware' )
-						iPVS.mType = E_TYPE_ADDONS
-						iPVS.mError = 0
-						mPVSList.append( iPVS )
+				#Check Lastest version
+				if mPVSList and len( mPVSList ) > 0 :
+					self.mPVSList = sorted( mPVSList, key=lambda pvslist: pvslist.mVersion, reverse=True )
+					self.mPVSData = deepcopy( self.mPVSList[0] )
+					self.mPVSData.mType = E_TYPE_PRISMCUBE
 
-					#Check Lastest version
-					if mPVSList and len( mPVSList ) > 0 :
-						self.mPVSList = sorted( mPVSList, key=lambda pvslist: pvslist.mVersion, reverse=True )
-						self.mPVSData = deepcopy( self.mPVSList[0] )
-						self.mPVSData.mType = E_TYPE_PRISMCUBE
+					#self.mPVSList.pop( 0 )
 
-						#self.mPVSList.pop( 0 )
+			else :
+				self.mPVSData = deepcopy( self.mCurrData )
 
-				else :
-					self.mPVSData = deepcopy( self.mCurrData )
-
-
+		"""
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
 			self.mPVSData = None
 			self.mPVSList = []
 			isDownload = False
+		"""
 
 		self.CloseBusyDialog( )
 
@@ -469,8 +466,6 @@ class SystemUpdate( SettingWindow ) :
 	def ShowContextMenu( self ) :
 		context = []
 		context.append( ContextItem( MR_LANG( 'Refresh settings' ),            CONTEXT_ACTION_REFRESH_CONNECT ) )
-		context.append( ContextItem( MR_LANG( 'Change server URL' ),           CONTEXT_ACTION_CHANGE_ADDRESS ) )
-		context.append( ContextItem( MR_LANG( 'Reset to default server URL' ), CONTEXT_ACTION_LOAD_DEFAULT_ADDRESS ) )
 		if os.path.isfile( E_DOWNLOAD_INFO_PVS ) :
 			context.append( ContextItem( MR_LANG( 'Get previous versions' ),   CONTEXT_ACTION_LOAD_OLD_VERSION ) )
 
@@ -500,49 +495,8 @@ class SystemUpdate( SettingWindow ) :
 
 			self.UpdateStepPage( E_UPDATE_STEP_READY )
 
-		elif aContextAction == CONTEXT_ACTION_CHANGE_ADDRESS :
-			label = MR_LANG( 'Change server address' )
-			kb = xbmc.Keyboard( self.mUrlPVS, label, False )
-			kb.doModal( )
-
-			chageUrl = ''
-			chageUrl = kb.getText( )
-			if not chageUrl :
-				return
-
-			self.mUrlPVS = chageUrl
-			#self.UpdateStepPage( E_UPDATE_STEP_PROVISION )
-
-		elif aContextAction == CONTEXT_ACTION_LOAD_DEFAULT_ADDRESS :
-			self.mUrlPVS = E_DEFAULT_URL_PVS
-			SetSetting( 'UpdateServer', '%s'% E_DEFAULT_URL_PVS )
-			self.UpdateStepPage( E_UPDATE_STEP_PROVISION )
-
 		elif aContextAction == CONTEXT_ACTION_LOAD_OLD_VERSION :
 			self.ShowOldVersion( )
-
-
-	def SaveAsServerAddress( self ) :
-		if E_DEFAULT_URL_PVS == self.mUrlPVS :
-			return
-
-		loadURL = GetSetting( 'UpdateServer' )
-		if loadURL == self.mUrlPVS :
-			return
-
-		title = MR_LANG( 'Save update server URL' )
-		line1 = MR_LANG( 'Do you want to save new server URL?' )
-		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( title, '%s\n%s'% ( line1, self.mUrlPVS ) )
-		dialog.doModal( )
-
-		answer = dialog.IsOK( )
-
-		#answer is yes
-		if answer != E_DIALOG_STATE_YES :
-			return
-
-		SetSetting( 'UpdateServer', '%s'% self.mUrlPVS )
 
 
 	def ShowOldVersion( self ) :
@@ -649,7 +603,7 @@ class SystemUpdate( SettingWindow ) :
 
 			if self.mEnableLocalThread and self.mCheckEthernetThread :
 				self.mEnableLocalThread = False
-				self.mCheckEthernetThread.join( )
+				#self.mCheckEthernetThread.join( )
 				self.mCheckEthernetThread = None
 			self.mEnableLocalThread = False
 
@@ -657,7 +611,7 @@ class SystemUpdate( SettingWindow ) :
 			if self.mPVSData == None or self.mPVSData.mError != 0 :
 				return False
 
-			tempFile = E_DEFAULT_PATH_DOWNLOAD + '/%s'% os.path.basename( self.mPVSData.mFileName )
+			tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
 			if os.stat( tempFile )[stat.ST_SIZE] != self.mPVSData.mSize :
 				return False
 
@@ -685,7 +639,7 @@ class SystemUpdate( SettingWindow ) :
 			if self.mPVSData == None or self.mPVSData.mError != 0 :
 				return False
 
-			tempFile = E_DEFAULT_PATH_DOWNLOAD + '/%s'% os.path.basename( self.mPVSData.mFileName )
+			tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
 			if os.stat( tempFile )[stat.ST_SIZE] != self.mPVSData.mSize :
 				return False
 
@@ -694,7 +648,7 @@ class SystemUpdate( SettingWindow ) :
 				time.sleep( 0.3 )
 				self.ShowProgressDialog( 60, MR_LANG( 'Copying files to USB drive...' ), None, strStepNo )
 				self.OpenBusyDialog( )
-				stepResult = UnpackToUSB( tempFile, usbPath )
+				stepResult = UnpackToUSB( tempFile, usbPath, self.mPVSData.mUnpackSize )
 				self.CloseBusyDialog( )
 				if self.mShowProgressThread :
 					self.mShowProgressThread.SetResult( True )
@@ -704,12 +658,17 @@ class SystemUpdate( SettingWindow ) :
 			else :
 				stepResult = False
 
-			if not stepResult :
-				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB )
+			if stepResult != True :
+				if stepResult == -1 :
+					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_SPACE )
+				else :
+					self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB )
+
+				stepResult = False
 
 
 		elif aStep == E_UPDATE_STEP_VERIFY :
-			tempFile = E_DEFAULT_PATH_DOWNLOAD + '/%s'% os.path.basename( self.mPVSData.mFileName )
+			tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
 			if not self.VerifiedUnPack( tempFile ) :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_VERIFY )
 				stepResult = False
@@ -741,7 +700,6 @@ class SystemUpdate( SettingWindow ) :
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_UNLINK_NETWORK )
 			if self.mEnableLocalThread and self.mCheckEthernetThread :
 				self.mEnableLocalThread = False
-				self.mCheckEthernetThread.join( )
 				self.mCheckEthernetThread = None
 			self.mEnableLocalThread = False
 
@@ -764,7 +722,7 @@ class SystemUpdate( SettingWindow ) :
 		if not self.UpdateStepPage( E_UPDATE_STEP_CHECKUSB ) :
 			return
 
-		tempFile = E_DEFAULT_PATH_DOWNLOAD + '/%s'% os.path.basename( self.mPVSData.mFileName )
+		tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, self.mPVSData.mFileName )
 		if not self.VerifiedUnPack( tempFile, False ) :
 			if not self.UpdateStepPage( E_UPDATE_STEP_UNPACKING ) :
 				return
@@ -800,25 +758,36 @@ class SystemUpdate( SettingWindow ) :
 		E_DEFAULT_PATH_DOWNLOAD = '%s/stb/download'% usbPath
 
 		usbSize = GetDeviceSize( usbPath )
-		if usbSize <= self.mPVSData.mSize :
+		if usbSize <= ( self.mPVSData.mSize + self.mPVSData.mUnpackSize ) :
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_USB_SPACE )
 			sizeCheck = False
 
-		LOG_TRACE( 'usbSize[%s] downSize[%s] usbPath[%s]'% ( usbSize, self.mPVSData.mSize, usbPath ) )
+		LOG_TRACE( 'usbSize[%s] downSize[%s] unzip[%s] usbPath[%s]'% ( usbSize, self.mPVSData.mSize, self.mPVSData.mUnpackSize, usbPath ) )
 		return sizeCheck
 
 
 	#make tempDir, write local file
 	def GetDownload( self, aPVS ) :
-		isExist = GetURLpage( aPVS.mFileName, None, False )
+		request = '%s%s'% ( E_DEFAULT_URL_REQUEST_FW, aPVS.mKey )
+		isExist = GetURLpage( request, '/tmp/fwUrl' )
+		#LOG_TRACE('-------------request[%s] ret[%s]'% ( request, isExist ) )
 
-		if not isExist :
+		if isExist == False :
+			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HAVE_NONE )
+			return False
+
+		tagNames = ['url']
+		retList = ParseStringInXML( '/tmp/fwUrl', tagNames, 'urlinfo' )
+		#LOG_TRACE('------------ret urlinfo[%s]'% retList )
+		if retList and len( retList ) > 0 :
+			reqFile = retList[0][0]
+
+		else :
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_HAVE_NONE )
 			return False
 
 		self.mWorkingItem = aPVS
 		self.mWorkingDownloader = None
-
 
 		#check device, size free, change path for hdd or usb 
 		if not self.CheckInitDevice( ) :
@@ -829,7 +798,7 @@ class SystemUpdate( SettingWindow ) :
 
 		isResume = False
 		self.mIsDownload = True
-		tempFile = E_DEFAULT_PATH_DOWNLOAD + '/%s'% os.path.basename( aPVS.mFileName )
+		tempFile = '%s/%s'% ( E_DEFAULT_PATH_DOWNLOAD, aPVS.mFileName )
 		if os.path.exists( tempFile ) :
 			if os.stat( tempFile )[stat.ST_SIZE] == aPVS.mSize :
 				return True
@@ -848,7 +817,9 @@ class SystemUpdate( SettingWindow ) :
 		self.mDialogProgress = xbmcgui.DialogProgress( )
 		self.mDialogProgress.create( aPVS.mName, MR_LANG( 'Waiting...' ) )
 
-		self.mWorkingDownloader = DownloadFile( aPVS.mFileName, tempFile )
+		LOG_TRACE( '--------------reqFile[%s]'% reqFile )
+
+		self.mWorkingDownloader = DownloadFile( reqFile, tempFile )
 		if isResume :
 			self.mWorkingDownloader.resume( self.ShowProgress )
 		else :
