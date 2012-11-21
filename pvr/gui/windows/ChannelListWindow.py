@@ -448,7 +448,8 @@ class ChannelListWindow( BaseWindow ) :
 			isBackup = self.mDataCache.Channel_Backup( )
 			isDelete = self.mDataCache.Channel_DeleteAll( )
 			if isDelete :
-				self.mDataCache.Player_AVBlank( True )
+				if not self.mDataCache.Get_Player_AVBlank( ) :
+					self.mDataCache.Player_AVBlank( True )
 				self.mDataCache.Channel_InvalidateCurrent( )
 				self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
 				self.mFlag_DeleteAll = True
@@ -1155,14 +1156,16 @@ class ChannelListWindow( BaseWindow ) :
 					#LOG_TRACE ( '===================== save no: cache re-load' )
 
 					iChannel = self.mDataCache.Channel_GetCurrent( )
-					if iChannel.mNumber != self.mCurrentChannel or iChannel.mServiceType != self.mUserMode.mServiceType :
-						self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
+					if iChannel and iChannel.mError == 0 :
+						if iChannel.mNumber != self.mCurrentChannel or iChannel.mServiceType != self.mUserMode.mServiceType :
+							self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
 
-					if iChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_TV or self.mFlag_DeleteAll == True :
-						self.mDataCache.Player_AVBlank( False )
+						if iChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_TV or self.mFlag_DeleteAll == True :
+							if self.mDataCache.Get_Player_AVBlank( ) :
+								self.mDataCache.Player_AVBlank( False )
 
-					elif iChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
-						self.mDataCache.Player_AVBlank( True )
+						#elif iChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
+						#	self.mDataCache.Player_AVBlank( True )
 						
 
 			except Exception, e :
@@ -2237,6 +2240,13 @@ class ChannelListWindow( BaseWindow ) :
 			return
 
 		elif aContextAction == CONTEXT_ACTION_MENU_DELETEALL :
+			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+			if isRunRec > 0 :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping all your recordings first' ) )
+	 			dialog.doModal( )
+	 			return
+
 			if self.mFlag_DeleteAll :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is nothing in the channel list' ) )				
@@ -2244,7 +2254,6 @@ class ChannelListWindow( BaseWindow ) :
 
 	 		else :
 				ret = self.SetDeleteAll( )
-
 				if ret == E_DIALOG_STATE_YES :
 					self.mChannelList = None
 					self.mNavEpg = None

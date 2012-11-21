@@ -103,6 +103,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		#test
 		self.mCtrlLblTest          = self.getControl( 35 )
+		#self.mCtrlBookMarkList = self.getControl( 500 )
 
 		self.mFlag_OnEvent = True
 		self.mTimeshift_staTime = 0.0
@@ -120,9 +121,10 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mAsyncShiftTimer = None
 		self.mAutomaticHideTimer = None
 		self.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
-		self.mIsShowBookmark = True
 		self.mBookmarkButton = []
 		self.mBookmarkIdx = 0
+		self.mThumbnailList = []
+		self.mBookmarkList = []
 
 		self.SetRadioScreen( )
 		self.ShowRecordingInfo( )
@@ -144,6 +146,35 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mEventBus.Register( self )
 
 		if self.mPrekey :
+			defaultFocus = E_CONTROL_ID_BUTTON_PLAY
+			if self.mPrekey == Action.ACTION_MBOX_REWIND :
+				self.TimeshiftAction( E_CONTROL_ID_BUTTON_REWIND )
+				defaultFocus = E_CONTROL_ID_BUTTON_REWIND
+
+			elif self.mPrekey == Action.ACTION_MBOX_FF :
+				self.TimeshiftAction( E_CONTROL_ID_BUTTON_FORWARD )
+				defaultFocus = E_CONTROL_ID_BUTTON_FORWARD
+
+			elif self.mPrekey == Action.ACTION_PAUSE or self.mPrekey == Action.ACTION_PLAYER_PLAY :
+				if self.mSpeed == 100 :
+					self.TimeshiftAction( E_CONTROL_ID_BUTTON_PAUSE )
+				else :
+					self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
+					defaultFocus = E_CONTROL_ID_BUTTON_PAUSE
+
+			time.sleep( 0.02 )
+			self.setFocusId( defaultFocus )
+			self.mPrekey = None
+
+		else :
+			defaultFocus = E_CONTROL_ID_BUTTON_PLAY
+			if self.mSpeed == 100 :
+				defaultFocus = E_CONTROL_ID_BUTTON_PAUSE
+
+			self.setFocusId( defaultFocus )
+
+		"""
+		if self.mPrekey :
 			if self.mPrekey == Action.ACTION_MBOX_REWIND :
 				self.onClick( E_CONTROL_ID_BUTTON_REWIND )
 
@@ -164,7 +195,7 @@ class TimeShiftPlate( BaseWindow ) :
 				defaultFocus = E_CONTROL_ID_BUTTON_PAUSE
 
 			self.setFocusId( defaultFocus )
-
+		"""
 
 		if self.mAutomaticHide == True :
 			self.StartAutomaticHide( )
@@ -190,53 +221,6 @@ class TimeShiftPlate( BaseWindow ) :
 		elif id == Action.ACTION_SELECT_ITEM :
 			pass
 
-		elif id == Action.ACTION_MOVE_UP :
-			self.GetFocusId( )
-			nextFocus = -1
-			if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 and \
-			   self.mFocusId >= self.mBookmarkButton[0].getId( ) and \
-			   self.mFocusId <= self.mBookmarkButton[len(self.mBookmarkButton)-1].getId( ) :
-
-				nextFocus = E_CONTROL_ID_BUTTON_PLAY
-				if self.mSpeed == 100 :
-					nextFocus = E_CONTROL_ID_BUTTON_PAUSE
-
-			elif self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
-				if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 and self.mSpeed == 100 :
-					self.mBookmarkIdx = 0
-					nextFocus = self.mBookmarkButton[0].getId( )
-					self.StopAutomaticHide( )
-				else :
-					nextFocus = E_CONTROL_ID_BUTTON_PLAY
-					if self.mSpeed == 100 :
-						nextFocus = E_CONTROL_ID_BUTTON_PAUSE
-
-			if nextFocus != -1 :
-				self.setFocusId( nextFocus )
-
-		elif id == Action.ACTION_MOVE_DOWN :
-			self.GetFocusId( )
-			nextFocus = -1
-			if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 and \
-			   self.mFocusId >= self.mBookmarkButton[0].getId( ) and \
-			   self.mFocusId <= self.mBookmarkButton[len(self.mBookmarkButton)-1].getId( ) :
-
-				nextFocus = E_CONTROL_ID_BUTTON_CURRENT
-				if self.mSpeed != 100 :
-					nextFocus = E_CONTROL_ID_BUTTON_PLAY
-
-			elif self.mFocusId >= E_CONTROL_ID_BUTTON_VOLUME and self.mFocusId <= E_CONTROL_ID_BUTTON_BOOKMARK :
-				if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 and self.mSpeed == 100 :
-					self.mBookmarkIdx = 0
-					nextFocus = self.mBookmarkButton[0].getId( )
-					self.StopAutomaticHide( )
-				else :
-					nextFocus = E_CONTROL_ID_BUTTON_CURRENT
-					if self.mSpeed != 100 :
-						nextFocus = E_CONTROL_ID_BUTTON_PLAY
-
-			if nextFocus != -1 :
-				self.setFocusId( nextFocus )
 
 		elif id == Action.ACTION_MOVE_LEFT :
 			self.GetFocusId( )
@@ -248,6 +232,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.RestartAsyncMove( )
 				#LOG_TRACE('left moveTime[%s]'% self.mUserMoveTime )
 
+			"""
 			elif self.mBookmarkButton and len( self.mBookmarkButton ) > 0 and \
 				 self.mFocusId >= self.mBookmarkButton[0].getId( ) and \
 				 self.mFocusId <= self.mBookmarkButton[len(self.mBookmarkButton)-1].getId( ) :
@@ -260,6 +245,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 			else :
 				self.RestartAutomaticHide( )
+			"""
 
 		elif id == Action.ACTION_MOVE_RIGHT :
 			self.GetFocusId( )
@@ -270,7 +256,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.StopAutomaticHide( )
 				self.RestartAsyncMove( )
 				#LOG_TRACE('right moveTime[%s]'% self.mUserMoveTime )
-
+			"""
 			elif self.mBookmarkButton and len( self.mBookmarkButton ) > 0 and \
 				 self.mFocusId >= self.mBookmarkButton[0].getId( ) and \
 				 self.mFocusId <= self.mBookmarkButton[len(self.mBookmarkButton)-1].getId( ) :
@@ -283,6 +269,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 			else :
 				self.RestartAutomaticHide( )
+			"""
 
 		elif id == Action.ACTION_PAGE_DOWN :
 			if self.mMode == ElisEnum.E_MODE_PVR :
@@ -360,6 +347,59 @@ class TimeShiftPlate( BaseWindow ) :
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
+
+		"""
+		elif id == Action.ACTION_MOVE_UP :
+			self.GetFocusId( )
+			nextFocus = -1
+			if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 and \
+			   self.mFocusId >= self.mBookmarkButton[0].getId( ) and \
+			   self.mFocusId <= self.mBookmarkButton[len(self.mBookmarkButton)-1].getId( ) :
+
+				nextFocus = E_CONTROL_ID_BUTTON_PLAY
+				if self.mSpeed == 100 :
+					nextFocus = E_CONTROL_ID_BUTTON_PAUSE
+
+			elif self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
+				if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 and self.mSpeed == 100 :
+					self.mBookmarkIdx = 0
+					nextFocus = self.mBookmarkButton[0].getId( )
+					self.StopAutomaticHide( )
+				else :
+					nextFocus = E_CONTROL_ID_BUTTON_PLAY
+					if self.mSpeed == 100 :
+						nextFocus = E_CONTROL_ID_BUTTON_PAUSE
+
+			if nextFocus != -1 :
+				self.setFocusId( nextFocus )
+
+		elif id == Action.ACTION_MOVE_DOWN :
+			self.GetFocusId( )
+			nextFocus = -1
+			if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 and \
+			   self.mFocusId >= self.mBookmarkButton[0].getId( ) and \
+			   self.mFocusId <= self.mBookmarkButton[len(self.mBookmarkButton)-1].getId( ) :
+
+				nextFocus = E_CONTROL_ID_BUTTON_CURRENT
+				if self.mSpeed != 100 :
+					nextFocus = E_CONTROL_ID_BUTTON_PLAY
+
+			elif self.mFocusId >= E_CONTROL_ID_BUTTON_VOLUME and self.mFocusId <= E_CONTROL_ID_BUTTON_BOOKMARK :
+				if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 and self.mSpeed == 100 :
+					self.mBookmarkIdx = 0
+					nextFocus = self.mBookmarkButton[0].getId( )
+					self.StopAutomaticHide( )
+				else :
+					nextFocus = E_CONTROL_ID_BUTTON_CURRENT
+					if self.mSpeed != 100 :
+						nextFocus = E_CONTROL_ID_BUTTON_PLAY
+
+			if nextFocus != -1 :
+				self.setFocusId( nextFocus )
+		"""
+
+
+
 		"""
 		#test
 		elif id == 104 : #scroll up
@@ -426,11 +466,15 @@ class TimeShiftPlate( BaseWindow ) :
 			self.ShowDialog( aControlId )
 			#self.RestartAutomaticHide( )
 
+		elif aControlId == 500 :
+			self.DoContextAction( CONTEXT_ACTION_RESUME_FROM )
+
+		"""
 		elif self.mBookmarkButton and len( self.mBookmarkButton ) > 0 and \
 			 aControlId >= self.mBookmarkButton[0].getId( ) and \
 			 aControlId <= self.mBookmarkButton[len(self.mBookmarkButton)-1].getId( ) :
 			self.DoContextAction( CONTEXT_ACTION_RESUME_FROM )
-
+		"""
 
 	def onFocus( self, aControlId ):
 		#LOG_TRACE( 'control %d' % controlId )
@@ -1015,13 +1059,8 @@ class TimeShiftPlate( BaseWindow ) :
 
 	def BookMarkContext( self ) :
 		context = []
-		#lblBookmark = MR_LANG( 'Show bookmark' )
-		#if not self.mIsShowBookmark :
-		#	lblBookmark = MR_LANG( 'Hide bookmark' )
-
 		context.append( ContextItem( MR_LANG( 'Add bookmark' ), CONTEXT_ACTION_ADD_TO_BOOKMARK ) )
 		context.append( ContextItem( MR_LANG( 'Add To AutoChapter' ), CONTEXT_ACTION_ADD_AUTO_CHAPTER ) )
-		#context.append( ContextItem( lblBookmark, CONTEXT_ACTION_SHOW_BOOKMARK ) )
 		context.append( ContextItem( MR_LANG( 'Show bookmark list' ), CONTEXT_ACTION_SHOW_LIST ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
@@ -1040,6 +1079,7 @@ class TimeShiftPlate( BaseWindow ) :
 	def DoContextAction( self, aSelectAction ) :
 		if aSelectAction == CONTEXT_ACTION_ADD_TO_BOOKMARK :
 			self.mDataCache.Player_CreateBookmark( )
+			#self.InitShowThumnail( )
 			self.RestartAutomaticHide( )
 
 		elif aSelectAction == CONTEXT_ACTION_SHOW_LIST :
@@ -1054,27 +1094,21 @@ class TimeShiftPlate( BaseWindow ) :
 
 		elif aSelectAction == CONTEXT_ACTION_ADD_AUTO_CHAPTER :
 			self.AutoChapterAddBookmark( )
-
-		elif aSelectAction == CONTEXT_ACTION_SHOW_BOOKMARK :
-			self.ShowBookmark( )
+			#self.InitShowThumnail( )
 
 		elif aSelectAction == CONTEXT_ACTION_RESUME_FROM :
 			self.StartBookmarkPlayback( )
 
 
 	def StartBookmarkPlayback( self ) :
-		playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
-		if playingRecord == None or playingRecord.mError != 0 :
-			return
-
-		mBookmarkList = self.mDataCache.Player_GetBookmarkList( playingRecord.mRecordKey )
-		if mBookmarkList == None or len( mBookmarkList ) < 1 or mBookmarkList[0].mError != 0 :
+		if self.mBookmarkList == None or len( self.mBookmarkList ) < 1 or self.mBookmarkList[0].mError != 0 :
 			return 
 
-		LOG_TRACE( 'bookmark count[%s]'% mBookmarkList )
-
-		playOffset = mBookmarkList[self.mBookmarkIdx].mTimeMs
-		LOG_TRACE('bookmark idx[%s] key[%s] pos[%s]'% ( self.mBookmarkIdx, playingRecord.mRecordKey, TimeToString( playOffset / 1000, TimeFormatEnum.E_AH_MM_SS ) ) )
+		#playOffset = self.mBookmarkList[self.mBookmarkIdx].mTimeMs
+		#LOG_TRACE('bookmark idx[%s] pos[%s]'% ( self.mBookmarkIdx, TimeToString( playOffset / 1000, TimeFormatEnum.E_AH_MM_SS ) ) )
+		idx = self.mCtrlBookMarkList.getSelectedPosition( )
+		playOffset = self.mBookmarkList[idx]
+		LOG_TRACE('bookmark idx[%s] pos[%s]'% ( idx, TimeToString( playOffset / 1000, TimeFormatEnum.E_AH_MM_SS ) ) )
 
 		#self.mDataCache.Player_StartInternalRecordPlayback( playingRecord.mRecordKey, playingRecord.mServiceType, playOffset, 100 )
 		self.mDataCache.Player_JumpToIFrame( playOffset )
@@ -1118,57 +1152,46 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def ShowBookmark( self ) :
-		if self.mIsShowBookmark :
-			self.StopAutomaticHide( )
+		self.StopAutomaticHide( )
 
-			playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
-			if playingRecord == None or playingRecord.mError != 0 :
-				return
+		"""
+		if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 :
+			for i in range( len( self.mBookmarkButton ) ) :
+				self.removeControl( self.mBookmarkButton[i] )
 
-			mBookmarkList = self.mDataCache.Player_GetBookmarkList( playingRecord.mRecordKey )
-			if mBookmarkList == None or len( mBookmarkList ) < 1 or mBookmarkList[0].mError != 0 :
-				return 
+		self.mBookmarkButton = []
+		self.mBookmarkIdx = 0
 
-			LOG_TRACE( 'bookmark count[%s]'% mBookmarkList )
+		LOG_TRACE('erased Init. bookmarkButton[%s]'% self.mBookmarkButton )
 
-			self.mIsShowBookmark = False
+		if len( self.mThumbnailList ) < 1 :
+			return
 
-			imageFO = self.getProperty( 'bookmarkIconFO' )
-			imageNF = self.getProperty( 'bookmarkIconNF' )
+		defaultPos = 0
+		for i in range( len( self.mBookmarkList ) ) :
+			posx = defaultPos + i * 120
+			button = xbmcgui.ControlButton( posx, 480, 120, 100, '', '', self.mThumbnailList[i] )
+			self.addControl( button )
+			LOG_TRACE('--------button id[%s] posx[%s] timeMs[%s]'% ( button.getId( ), posx, self.mBookmarkList[i].mTimeMs ) )
 
-			mediaTime = self.mTimeshift_endTime - self.mTimeshift_staTime
-			self.mBookmarkButton = []
-			defaultPos = 130
-			LOG_TRACE('--------mediaTime[%s] image[%s][%s]'% ( mediaTime, imageFO, imageNF ) )
-			for i in range( len(mBookmarkList) ) :
+			self.mBookmarkButton.append( button )
+		"""
 
-				bookmarkTime = mBookmarkList[i].mTimeMs
+		self.mCtrlBookMarkList.reset( )
+		if len( self.mBookmarkList ) < 1 :
+			self.UpdatePropertyGUI( 'BookMarkShow', 'False' )
+			return
 
-				if mediaTime > 0 and bookmarkTime >= 0 :
-					bookmarkidx = ( bookmarkTime / float(mediaTime) )  * 100.0
-					if bookmarkidx > 100 :
-						bookmarkidx = 100
-					elif bookmarkidx < 0 :
-						bookmarkidx = 0
+		listItems = []
+		for i in range( len( self.mBookmarkList ) ) :
+			lblOffset = TimeToString( self.mBookmarkList[i].mTimeMs / 1000, TimeFormatEnum.E_AH_MM_SS )
+			listItem = xbmcgui.ListItem( '%s'% lblOffset )
+			listItem.setProperty( 'BookMarkThumb', '%s'% self.mThumbnailList[i] )
 
-					posx = defaultPos + int( bookmarkidx * self.mProgressbarWidth / 100 )
-					button = xbmcgui.ControlButton( posx, 640, 40, 40, '', imageFO, imageNF )
-					self.addControl( button )
-					LOG_TRACE('--------button id[%s] posx[%s] timeMs[%s]'% ( button.getId( ), posx, bookmarkTime ) )
+			listItems.append( listItem )
+		self.mCtrlBookMarkList.addItems( listItems )
 
-					self.mBookmarkButton.append( button )
-
-		else :
-			self.mIsShowBookmark = True
-			if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 :
-				for i in range( len( self.mBookmarkButton ) ) :
-					self.removeControl( self.mBookmarkButton[i] )
-
-			self.mBookmarkButton = []
-			self.mBookmarkIdx = 0
-
-			LOG_TRACE('erased. bookmarkButton[%s]'% self.mBookmarkButton )
-			self.RestartAutomaticHide( )
+		self.UpdatePropertyGUI( 'BookMarkShow', 'True' )
 
 
 	def ShowRecordingInfo( self ) :
@@ -1248,15 +1271,69 @@ class TimeShiftPlate( BaseWindow ) :
 			time.sleep( 1 )
 
 
+	def InitShowThumnail( self ) :
+		#ToDO
+		if self.mMode != ElisEnum.E_MODE_PVR :
+			return
+
+		playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
+		LOG_TRACE('--------record[%s]'% playingRecord.mRecordKey )
+		if playingRecord == None or playingRecord.mError != 0 :
+			return
+
+		mBookmarkList = self.mDataCache.Player_GetBookmarkList( playingRecord.mRecordKey )
+		LOG_TRACE('--------len[%s] [%s]'% ( len( mBookmarkList ), mBookmarkList[0].mError ) )
+		if mBookmarkList == None or len( mBookmarkList ) < 1 or mBookmarkList[0].mError != 0 :
+			return 
+
+		for item in mBookmarkList :
+			LOG_TRACE('timeMs[%s]'% item.mTimeMs )
+
+		self.mThumbnailList = []
+		thumbnaillist = []
+		thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/bookmark/%d'% playingRecord.mRecordKey, 'record_bookmark_%d_*.jpg' % playingRecord.mRecordKey ) )
+
+		LOG_TRACE('len[%s] list[%s]'% ( len(thumbnaillist), thumbnaillist ) )
+		thumbnailHash = {}
+		if thumbnaillist and len( thumbnaillist ) > 0 :
+			for mfile in thumbnaillist :
+				try :
+					thumbnailHash[int( os.path.basename(mfile).split('_')[3] )] = mfile
+				except Exception, ex :
+					LOG_ERR( 'Exception %s'% ex )
+					continue
+
+		LOG_TRACE('len[%s] hash[%s]'% ( len(thumbnailHash), thumbnailHash ) )
+		thumCount = len( mBookmarkList ) - 1
+		self.mThumbnailList = []
+		self.mBookmarkList = []
+		oldidx = -1
+		for num in range( 10 ) :
+			idx = thumCount * num / 10
+			if idx == oldidx :
+				continue
+			LOG_TRACE(' idx[%s] num[%s] max[%s]'% (idx, num, thumCount ) )
+			oldidx = idx
+			mfile = thumbnailHash.get( mBookmarkList[idx].mTimeMs, None )
+			if mfile :
+				self.mThumbnailList.append( mfile )
+				self.mBookmarkList.append( mBookmarkList[idx] )
+
+		LOG_TRACE(' len[%s] bookmarkFile[%s]'% ( len(self.mThumbnailList), self.mThumbnailList ) )
+		self.ShowBookmark( )
+
+
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
 		self.mEnableLocalThread = False
 		#self.PlayProgressThread( ).join( )
 
+		"""
 		if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 :
 			for i in range( len( self.mBookmarkButton ) ) :
 				LOG_TRACE('mBookmarkButton[%s] [%s]'% ( i, self.mBookmarkButton[i] ) )
 				self.removeControl( self.mBookmarkButton[i] )
+		"""
 
 		self.StopAsyncMove( )
 		self.StopAutomaticHide( )
