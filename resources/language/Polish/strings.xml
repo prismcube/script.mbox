@@ -522,7 +522,7 @@
 	<string id="3116">POL_Add favorite addon</string>
 	<string id="3117">POL_Delete favorite addon</string>
 	<string id="3118">POL_Run</string>
-	<string id="3119">POL_There is no addons</string>
+	<string id="3119">POL_No addons installed</string>
 	<string id="3120">POL_Select Addon</string>
 	<string id="3121">POL_Do you want to remove %s?</string>
 	<string id="3122">Konfiguracja satelity</string>
@@ -795,7 +795,7 @@
 	<string id="3389">POL_Edit channels</string>
 	<string id="3390">POL_Delete all channels</string>
 	<string id="3391">POL_Try again after stopping the Timeshift first</string>
-	<string id="3392">POL_No teletext available</string>
+	<string id="3392">POL_No teletext is available</string>
 	<string id="3393">POL_Tuner %s Config : Motorized, Usals</string>
 	<string id="3394">POL_Latitude Degree</string>
 	<string id="3395">POL_My Longitude Direction</string>
@@ -1010,8 +1010,9 @@
 	<string id="3604">POL_Quality</string>
 	<string id="3605">POL_No EPG Information is available</string>
 	<string id="3606">POL_The recording you just requested confilcts with</string>
-	<string id="3607">POL_Reloading channel list...</string>
-	<string id="3608">POL_File not found : %s</string>
-	<string id="3609">POL_Test scenario not available : %s</string>
-	<string id="3610">POL_Complete</string>
+	<string id="3607">POL_Hard disk drive not detected</string>
+	<string id="3608">POL_Reloading channel list...</string>
+	<string id="3609">POL_File not found : %s</string>
+	<string id="3610">POL_Test scenario not available : %s</string>
+	<string id="3611">POL_Complete</string>
 </strings>

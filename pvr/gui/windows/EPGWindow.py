@@ -805,6 +805,11 @@ class EPGWindow( BaseWindow ) :
 
 	def ShowEPGTimer( self, aEPG ) :
 		LOG_TRACE( 'ShowEPGTimer' )
+
+		from pvr.GuiHelper import HasAvailableRecordingHDD
+		if HasAvailableRecordingHDD( ) == False :
+			return
+			
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ADD_TIMER )
 		dialog.SetEPG( aEPG )
 		dialog.doModal( )
@@ -828,6 +833,11 @@ class EPGWindow( BaseWindow ) :
 		
 
 	def ShowEditTimer( self ) :
+
+		from pvr.GuiHelper import HasAvailableRecordingHDD
+		if HasAvailableRecordingHDD( ) == False :
+			return
+			
 		selectedEPG = self.GetSelectedEPG( )
 
 		timer = None
@@ -858,6 +868,10 @@ class EPGWindow( BaseWindow ) :
 	 			dialog.doModal( )
 				return
 		"""
+
+		from pvr.GuiHelper import HasAvailableRecordingHDD
+		if HasAvailableRecordingHDD( ) == False :
+			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
 

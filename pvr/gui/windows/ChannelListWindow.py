@@ -282,6 +282,10 @@ class ChannelListWindow( BaseWindow ) :
 					self.ShowRecordingStopDialog( )
 
 		elif id == Action.ACTION_MBOX_ARCHIVE :
+			from pvr.GuiHelper import HasAvailableRecordingHDD
+			if HasAvailableRecordingHDD( ) == False :
+				return
+				
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 				self.SetGoBackWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
@@ -2537,6 +2541,10 @@ class ChannelListWindow( BaseWindow ) :
 
 	def ShowRecordingStartDialog( self ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
+
+		from pvr.GuiHelper import HasAvailableRecordingHDD
+		if HasAvailableRecordingHDD( ) == False :
+			return
 
 		isOK = False
 		if runningCount < 2 :

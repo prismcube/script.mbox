@@ -198,6 +198,10 @@ class LivePlate( LivePlateWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif id == Action.ACTION_MBOX_ARCHIVE :
+			from pvr.GuiHelper import HasAvailableRecordingHDD
+			if HasAvailableRecordingHDD( ) == False :
+				return
+				
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
@@ -219,6 +223,10 @@ class LivePlate( LivePlateWindow ) :
 		elif id == Action.ACTION_PAUSE or id == Action.ACTION_PLAYER_PLAY :
 			if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
 				return -1
+
+			from pvr.GuiHelper import HasAvailableRecordingHDD
+			if HasAvailableRecordingHDD( ) == False :
+				return
 
 			self.Close( )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = id
@@ -777,7 +785,7 @@ class LivePlate( LivePlateWindow ) :
 
 			if not self.mDataCache.Teletext_Show( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No teletext available' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No teletext is available' ) )
 				dialog.doModal( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
@@ -807,6 +815,10 @@ class LivePlate( LivePlateWindow ) :
 	def ShowRecordingStartDialog( self ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		#LOG_TRACE( 'runningCount[%s]' %runningCount)
+
+		from pvr.GuiHelper import HasAvailableRecordingHDD
+		if HasAvailableRecordingHDD( ) == False :
+			return
 
 		isOK = False
 		if runningCount < 2 :

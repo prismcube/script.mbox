@@ -137,16 +137,28 @@ class InfoPlate( LivePlateWindow ) :
 			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif id == Action.ACTION_PAUSE or id == Action.ACTION_PLAYER_PLAY :
+			from pvr.GuiHelper import HasAvailableRecordingHDD
+			if HasAvailableRecordingHDD( ) == False :
+				return
+				
 			self.Close( )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = id
 			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif id == Action.ACTION_MBOX_REWIND :
+			from pvr.GuiHelper import HasAvailableRecordingHDD
+			if HasAvailableRecordingHDD( ) == False :
+				return
+				
 			self.Close( )
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = id
 			WinMgr.GetInstance( ).CloseWindow( )
 
 		elif id == Action.ACTION_MBOX_FF :
+			from pvr.GuiHelper import HasAvailableRecordingHDD
+			if HasAvailableRecordingHDD( ) == False :
+				return
+				
 			self.Close( )			
 			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = id
 			WinMgr.GetInstance( ).CloseWindow( )

@@ -522,7 +522,7 @@
 	<string id="3116">CZE_Add favorite addon</string>
 	<string id="3117">CZE_Delete favorite addon</string>
 	<string id="3118">CZE_Run</string>
-	<string id="3119">CZE_There is no addons</string>
+	<string id="3119">CZE_No addons installed</string>
 	<string id="3120">CZE_Select Addon</string>
 	<string id="3121">CZE_Do you want to remove %s?</string>
 	<string id="3122">Konfigurace satelit?</string>
@@ -795,7 +795,7 @@
 	<string id="3389">CZE_Edit channels</string>
 	<string id="3390">CZE_Delete all channels</string>
 	<string id="3391">CZE_Try again after stopping the Timeshift first</string>
-	<string id="3392">CZE_No teletext available</string>
+	<string id="3392">CZE_No teletext is available</string>
 	<string id="3393">CZE_Tuner %s Config : Motorized, Usals</string>
 	<string id="3394">CZE_Latitude Degree</string>
 	<string id="3395">CZE_My Longitude Direction</string>
@@ -1010,8 +1010,9 @@
 	<string id="3604">CZE_Quality</string>
 	<string id="3605">CZE_No EPG Information is available</string>
 	<string id="3606">CZE_The recording you just requested confilcts with</string>
-	<string id="3607">CZE_Reloading channel list...</string>
-	<string id="3608">CZE_File not found : %s</string>
-	<string id="3609">CZE_Test scenario not available : %s</string>
-	<string id="3610">CZE_Complete</string>
+	<string id="3607">CZE_Hard disk drive not detected</string>
+	<string id="3608">CZE_Reloading channel list...</string>
+	<string id="3609">CZE_File not found : %s</string>
+	<string id="3610">CZE_Test scenario not available : %s</string>
+	<string id="3611">CZE_Complete</string>
 </strings>
