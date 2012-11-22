@@ -93,7 +93,7 @@
 							<width>18</width>
 							<height>18</height>
 							<texture>HomeHasSub.png</texture>
-							<visible>Container(9000).HasFocus(1) | Container(9000).HasFocus(5) | Container(9000).HasFocus(6) + substring(Window.Property(IsPVR),False)</visible>
+							<visible>Container(9000).HasFocus(1) + substring(Window.Property(IsPVR),False) | Container(9000).HasFocus(5) | Container(9000).HasFocus(6) </visible>
 							<animation effect="fade" start="0" end="100" time="200" delay="200">Visible</animation>
 						</control>
 					</focusedlayout>
@@ -374,21 +374,18 @@
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT57</label>
 							<onclick>ActivateWindow(Weather)</onclick>
-							<enable>substring(Window.Property(IsPVR),False)</enable>
 							<visible>true</visible>
 						</control>
 						<control type="button" id="90602">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT58</label>
 							<onclick>ActivateWindow(Pictures)</onclick>
-							<enable>Control.IsEnabled(90601)</enable>
 							<visible>true</visible>
 						</control>
 						<control type="button" id="90603">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT59</label>
 							<onclick>ActivateWindow(Music)</onclick>
-							<enable>Control.IsEnabled(90601)</enable>
 							<visible>true</visible>
 						</control>
 						<control type="button" id="90604">
@@ -396,41 +393,35 @@
 							<label>SCRIPT60</label>
 							<onclick>ActivateWindow(Videos)</onclick>
 							<visible>true</visible>
-							<enable>Control.IsEnabled(90601)</enable>
 						</control>
 						<control type="button" id="90605">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT61</label>
 							<onclick>ActivateWindow(Programs,Addons,return)</onclick>
-							<enable>Control.IsEnabled(90601)</enable>
 							<visible>true</visible>
 						</control>
 						<control type="button" id="90606">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT62</label>
 							<onclick>ActivateWindow(Settings)</onclick>
-							<enable>Control.IsEnabled(90601)</enable>
 							<visible>true</visible>
 						</control>
 						<control type="button" id="90607">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT63</label>
 							<onclick>ActivateWindow(FileManager)</onclick>
-							<enable>Control.IsEnabled(90601)</enable>
 							<visible>true</visible>
 						</control>
 						<control type="button" id="90608">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT64</label>
 							<onclick>ActivateWindow(Profiles)</onclick>
-							<enable>Control.IsEnabled(90601)</enable>
 							<visible>false</visible>
 						</control>
 						<control type="button" id="90609">
 							<include>DefaultButtonHomeSubCommonValues</include>
 							<label>SCRIPT65</label>
 							<onclick>ActivateWindow(SystemInfo)</onclick>
-							<enable>Control.IsEnabled(90601)</enable>
 							<visible>true</visible>
 						</control>
 					</control>
