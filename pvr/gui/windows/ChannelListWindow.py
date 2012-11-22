@@ -2252,12 +2252,8 @@ class ChannelListWindow( BaseWindow ) :
 	 			dialog.doModal( )
 
 	 		else :
-<<<<<<< HEAD
-				ret = self.SetDeleteAll( )
-=======
 				ret = self.DoDeleteAll( )
 
->>>>>>> Elmo_NewChannelList
 				if ret == E_DIALOG_STATE_YES :
 					self.mChannelList = None
 					self.mNavEpg = None
