@@ -40,7 +40,7 @@
 					<width>1200</width>
 					<height>620</height>
 					<texture border="20">ContentPanel.png</texture>
-					<visible>!Control.IsVisible(600)</visible>
+					<visible>!substring(Window(13000).Property(isEdit),true)</visible>
 				</control>
 			</control>
 			<control type="group">
@@ -52,7 +52,7 @@
 					<width>1200</width>
 					<height>620</height>
 					<texture border="20">ContentPanelRED.png</texture>
-					<visible>Control.IsVisible(600)</visible>
+					<visible>substring(Window(13000).Property(isEdit),true)</visible>
 				</control>
 			</control>
 		</control>
@@ -83,16 +83,16 @@
 			<visible>!Control.IsVisible(8800)</visible>
 		</control>
 
-		<control type="group" id="600">
+		<!--control type="group" id="600">
 			<include>Animation_CommonFade</include>
 			<visible>substring(Window.Property(isEdit),true)</visible>
-		</control>
+		</control-->
 		<control type="label" id="601">
 			<posx>30</posx>
 			<posy>30</posy>
 			<font>font12</font>
 			<textcolor>grey</textcolor>
-			<visible>substring(Window.Property(isMove),true)</visible>
+			<visible>substring(Window(13000).Property(isMove),true)</visible>
 		</control>
 
 <!-- middle left -->
@@ -209,7 +209,7 @@
 						<posy>0</posy>
 						<width>700</width>
 						<height>41</height>
-						<visible>!Control.IsVisible(600)</visible>
+						<visible>!substring(Window(13000).Property(isEdit),true)</visible>
 						<texture border="0,2,0,2">MenuItemFO.png</texture>
 					</control>
 					<control type="image">
@@ -217,7 +217,7 @@
 						<posy>0</posy>
 						<width>700</width>
 						<height>41</height>
-						<visible>Control.IsVisible(600) + !Control.IsVisible(601)</visible>
+						<visible>substring(Window(13000).Property(isEdit),true) + !substring(Window(13000).Property(isMove),true)</visible>
 						<texture border="0,2,0,2">MenuItemFO_edit.png</texture>
 					</control>
 					<!--control type="image">
@@ -291,7 +291,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-						<visible>Control.IsVisible(601)</visible>
+						<visible>substring(Window(13000).Property(isMove),true)</visible>
 					</control>
 					<control type="label">
 						<posx>30</posx>
@@ -304,7 +304,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
-						<visible>!Control.IsVisible(601)</visible>
+						<visible>!substring(Window(13000).Property(isMove),true)</visible>
 					</control>
 					<control type="label">
 						<posx>600</posx>
@@ -580,7 +580,7 @@
 				<align>right</align>
 				<aligny>center</aligny>
 				<label>([COLOR=blue]$INFO[Control.GetLabel(401)] / $INFO[Container(50).NumItems][/COLOR]) SCRIPT106 - SCRIPT107 ([COLOR=blue]$INFO[Container(50).CurrentPage]/$INFO[Container(50).NumPages][/COLOR])</label>
-				<visible>!Control.IsVisible(601)</visible>
+				<visible>!substring(Window(13000).Property(isMove),true)</visible>
 			</control>
 			<control type="label">
 				<posx>40r</posx>
@@ -593,7 +593,7 @@
 				<align>right</align>
 				<aligny>center</aligny>
 				<label>([COLOR=blue]$INFO[Control.GetLabel(401)][/COLOR])SCRIPT108</label>
-				<visible>Control.IsVisible(601)</visible>
+				<visible>substring(Window(13000).Property(isMove),true)</visible>
 			</control>
 		</control>
 
