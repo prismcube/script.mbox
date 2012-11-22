@@ -197,8 +197,9 @@ class Configure( SettingWindow ) :
 			if groupId == E_Input01 :
 				menuLanguageList = WinMgr.GetInstance( ).GetLanguageList( )
 				dialog = xbmcgui.Dialog( )
-				ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList, False, StringToListIndex( menuLanguageList, self.GetControlLabel2String( E_Input01 ) ) )
-				if ret >= 0 :
+				currentindex = StringToListIndex( menuLanguageList, self.GetControlLabel2String( E_Input01 ) )
+				ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList, False, currentindex )
+				if ret >= 0 and currentindex != ret :
 					if not self.mPlatform.IsPrismCube( ) :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )

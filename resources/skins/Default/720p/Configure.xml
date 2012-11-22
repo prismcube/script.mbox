@@ -50,7 +50,7 @@
 					<control type="label">
 						<posx>250</posx>
 						<posy>15</posy>
-						<width>380</width>
+						<width>240</width>
 						<height>25</height>
 						<font>font13_title</font>
 						<textcolor>grey3</textcolor>
@@ -71,7 +71,7 @@
 					<control type="label">
 						<posx>250</posx>
 						<posy>15</posy>
-						<width>380</width>
+						<width>240</width>
 						<height>25</height>
 						<font>font13_title</font>
 						<textcolor>white</textcolor>

@@ -31,12 +31,13 @@
 				<scrolltime>300</scrolltime>
 				<itemlayout height="54" width="260">
 					<control type="label">
-						<posx>35</posx>
+						<posx>200</posx>
 						<posy>6</posy>
 						<width>190</width>
 						<height>58</height>
 						<font>Font_Bold22</font>
 						<textcolor>FFf5f5f5</textcolor>
+						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<scroll>true</scroll>
@@ -51,12 +52,13 @@
 						<texture border="5">views/listpanel_selectbar.png</texture>
 					</control>
 					<control type="label">
-						<posx>35</posx>
+						<posx>200</posx>
 						<posy>6</posy>
 						<width>190</width>
 						<height>58</height>
 						<font>Font_Bold22</font>
 						<textcolor>FF262728</textcolor>
+						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 						<scroll>true</scroll>

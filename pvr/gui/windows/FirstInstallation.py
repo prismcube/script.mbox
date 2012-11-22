@@ -86,8 +86,15 @@ class FirstInstallation( SettingWindow ) :
 				if groupId == E_Input01 :
 					menuLanguageList = WinMgr.GetInstance( ).GetLanguageList( )
 					dialog = xbmcgui.Dialog( )
-					ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList, False, StringToListIndex( menuLanguageList, self.GetControlLabel2String( E_Input01 ) ) )
-					if ret >= 0 :
+					currentindex = StringToListIndex( menuLanguageList, self.GetControlLabel2String( E_Input01 ) )
+					ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList, False, currentindex )
+					if ret >= 0 and currentindex != ret :
+						if not self.mPlatform.IsPrismCube( ) :
+							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+							dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+							dialog.doModal( )
+							return
+
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Please be patience after pressing the OK button' ), MR_LANG( 'It will take some time to bring up display changes' ) )
 						dialog.doModal( )
@@ -101,7 +108,6 @@ class FirstInstallation( SettingWindow ) :
 					if ret >= 0 :
 						ElisPropertyEnum( 'Audio Language', self.mCommander ).SetPropIndex( ret )
 						self.SetControlLabel2String( E_Input02, self.mAudioLanguageList[ ret ] )
-			return
 
 		elif self.mStepNum == E_STEP_VIDEO_AUDIO :
 			if groupId == E_FIRST_TIME_INSTALLATION_NEXT :
