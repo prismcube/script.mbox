@@ -465,7 +465,7 @@ class SystemUpdate( SettingWindow ) :
 
 	def ShowContextMenu( self ) :
 		context = []
-		context.append( ContextItem( MR_LANG( 'Refresh settings' ),            CONTEXT_ACTION_REFRESH_CONNECT ) )
+		context.append( ContextItem( MR_LANG( 'Refresh firmware update' ),            CONTEXT_ACTION_REFRESH_CONNECT ) )
 		if os.path.isfile( E_DOWNLOAD_INFO_PVS ) :
 			context.append( ContextItem( MR_LANG( 'Get previous versions' ),   CONTEXT_ACTION_LOAD_OLD_VERSION ) )
 

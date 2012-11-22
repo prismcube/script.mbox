@@ -5322,7 +5322,7 @@
 			<orientation>horizontal</orientation>
 			<usecontrolcoords>false</usecontrolcoords>
 			<visible>true</visible>
-			<!--onup>202</onup-->
+			<onup>500</onup>
 			<!--ondown>202</ondown-->
 			<onleft></onleft>
 			<onright></onright>
