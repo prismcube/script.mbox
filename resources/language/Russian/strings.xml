@@ -65,8 +65,8 @@
 	<string id="63">RUS_File Manager</string>
 	<string id="64">RUS_Profiles</string>
 	<string id="65">RUS_System Info</string>
-	<string id="66">RUS_Installation enables you to configure settings - Antenna, Channel, Transponder, CAS, etc</string>
-	<string id="67">RUS_The Archive allows you to playback or delete recordings</string>
+	<string id="66">RUS_Installation allows you to setup your PRISMCUBE RUBY - Antenna, Transponder, CAS, etc</string>
+	<string id="67">RUS_The Archive allows playback of previously recorded programmes</string>
 	<string id="68">RUS_The EPG displays the programme information of each channel, in time and date order</string>
 	<string id="69">RUS_The Channel List provides you with functions such as sorting and editing TV/Radio channel list</string>
 	<string id="70">RUS_The Media Center lets you browse and view videos, photos, and music from your storage</string>
@@ -1015,4 +1015,26 @@
 	<string id="3609">RUS_File not found : %s</string>
 	<string id="3610">RUS_Test scenario not available : %s</string>
 	<string id="3611">RUS_Complete</string>
+	<string id="3612">RUS_</string>
+	<string id="3613">RUS_Try again after stopping recordings, PVR or Timeshift</string>
+	<string id="3614">RUS_</string>
+	<string id="3615">RUS_</string>
+	<string id="3616">RUS_</string>
+	<string id="3617">RUS_</string>
+	<string id="3618">RUS_</string>
+	<string id="3619">RUS_</string>
+	<string id="3620">RUS_Add to favorite group</string>
+	<string id="3621">RUS_Create favorite group</string>
+	<string id="3622">RUS_Rename favorite group</string>
+	<string id="3623">RUS_Delete favorite group</string>
+	<string id="3624">RUS_Add to this group</string>
+	<string id="3625">RUS_Remove from this group</string>
+	<string id="3626">RUS_Select a favorite group you want to add</string>
+	<string id="3627">RUS_Select a favorite group you want to rename</string>
+	<string id="3628">RUS_Select a favorite group you want to remove</string>
+	<string id="3629">RUS_Delete Favorite Group</string>
+	<string id="3630">RUS_Enter name for new favorite group</string>
+	<string id="3631">RUS_Enter new name for this favorite group</string>
+	<string id="3632">RUS_Refresh firmware update</string>
+	<string id="3633">RUS_</string>
 </strings>
