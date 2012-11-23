@@ -11,7 +11,7 @@
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>1100</width>
-				<height>500</height>
+				<height>530</height>
 				<texture border="20">osd/osd_settings_back.png</texture>
 			</control>
 
@@ -33,7 +33,7 @@
 				  <posx>80</posx>
 				  <posy>135</posy>
 				  <width>950</width>
-				  <height>350</height>
+				  <height>360</height>
 				  <visible>true</visible>
 				  <colordiffuse>FFFFFFFF</colordiffuse>
 				  <font>font13</font>

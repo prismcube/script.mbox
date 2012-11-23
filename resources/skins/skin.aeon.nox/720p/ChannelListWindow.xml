@@ -57,16 +57,16 @@
 			<visible>!Control.IsVisible(8800)</visible>
 		</control>
 
-		<control type="group" id="600">
+		<!--control type="group" id="600">
 			<include>Animation_CommonFade</include>
 			<visible>substring(Window.Property(isEdit),true)</visible>
-		</control>
+		</control-->
 		<control type="label" id="601">
 			<posx>30</posx>
 			<posy>30</posy>
 			<font>font12</font>
 			<textcolor>grey</textcolor>
-			<visible>substring(Window.Property(isMove),true)</visible>
+			<visible>substring(Window(13000).Property(isMove),true)</visible>
 		</control>
 
 		<!-- Left Big Box -->
@@ -90,7 +90,7 @@
 					<width>759</width>
 					<height>682</height>
 					<texture background="true">views/listpanel_black.png</texture>
-					<visible>!Control.IsVisible(600)</visible>
+					<visible>!substring(Window(13000).Property(isEdit),true)</visible>
 				</control>
 				<control type="image">
 					<include>Animation_CommonFade</include>
@@ -99,7 +99,7 @@
 					<width>759</width>
 					<height>682</height>
 					<texture>views/listpanel_back.png</texture>
-					<visible>!Control.IsVisible(600)</visible>
+					<visible>!substring(Window(13000).Property(isEdit),true)</visible>
 				</control>
 				<control type="image">
 					<include>Animation_CommonFade</include>
@@ -108,7 +108,7 @@
 					<width>759</width>
 					<height>682</height>
 					<texture>listpanel_backRed.png</texture>
-					<visible>Control.IsVisible(600)</visible>
+					<visible>substring(Window(13000).Property(isEdit),true)</visible>
 				</control>
 
 				<control type="image">
@@ -223,7 +223,7 @@
 								<posy>-4</posy>
 								<width>743</width>
 								<height>47</height>
-								<visible>!Control.IsVisible(600)</visible>
+								<visible>!substring(Window(13000).Property(isEdit),true)</visible>
 								<texture background="true">views/listpanel_selectbar.png</texture>
 								<animation effect="fade" start="100" end="50" time="100" condition="!Control.HasFocus(50)">Conditional</animation>
 							</control>
@@ -232,7 +232,7 @@
 								<posy>-4</posy>
 								<width>743</width>
 								<height>47</height>
-								<visible>Control.IsVisible(600) + !Control.IsVisible(601)</visible>
+								<visible>substring(Window(13000).Property(isEdit),true) + !substring(Window(13000).Property(isMove),true)</visible>
 								<texture>listpanel_selectbar.png</texture>
 							</control>
 							<!--control type="image">
@@ -306,7 +306,7 @@
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>
-								<visible>Control.IsVisible(601)</visible>
+								<visible>substring(Window(13000).Property(isMove),true)</visible>
 							</control>
 							<control type="label">
 								<posx>40</posx>
@@ -318,7 +318,7 @@
 								<align>left</align>
 								<aligny>center</aligny>
 								<label>$INFO[ListItem.Label]</label>
-								<visible>!Control.IsVisible(601)</visible>
+								<visible>!substring(Window(13000).Property(isMove),true)</visible>
 							</control>
 							<control type="label">
 								<posx>600</posx>
@@ -419,7 +419,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>[COLOR=blue]$INFO[Control.GetLabel(401)][/COLOR] SCRIPT108</label>
-						<visible>Control.IsVisible(601)</visible>
+						<visible>substring(Window(13000).Property(isMove),true)</visible>
 					</control>
 					<control type="label">
 						<posx>105</posx>
@@ -432,7 +432,7 @@
 						<align>left</align>
 						<aligny>center</aligny>
 						<label>[COLOR=blue]$INFO[Control.GetLabel(401)] / $INFO[Container(50).NumItems][/COLOR] SCRIPT106</label>
-						<visible>!Control.IsVisible(601)</visible>
+						<visible>!substring(Window(13000).Property(isMove),true)</visible>
 					</control>
 					<control type="label">
 						<posx>760</posx>
@@ -445,7 +445,7 @@
 						<align>right</align>
 						<aligny>center</aligny>
 						<label>SCRIPT107 ([COLOR=blue]$INFO[Container(50).CurrentPage]/$INFO[Container(50).NumPages][/COLOR])</label>
-						<visible>!Control.IsVisible(601)</visible>
+						<visible>!substring(Window(13000).Property(isMove),true)</visible>
 					</control>
 				</control>
 			</control>

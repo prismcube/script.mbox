@@ -43,12 +43,13 @@
 				<scrolltime>300</scrolltime>
 				<itemlayout height="60" width="260">
 					<control type="label">
-						<posx>20</posx>
+						<posx>205</posx>
 						<posy>6</posy>
-						<width>216</width>
+						<width>190</width>
 						<height>58</height>
 						<font>Font_Bold22</font>
 						<textcolor>FFf5f5f5</textcolor>
+						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 					</control>
@@ -63,12 +64,13 @@
 						<animation effect="fade" start="100" end="30" time="100" condition="!Control.HasFocus(9000)">Conditional</animation>
 					</control>
 					<control type="label">
-						<posx>20</posx>
+						<posx>205</posx>
 						<posy>6</posy>
-						<width>216</width>
+						<width>190</width>
 						<height>58</height>
 						<font>Font_Bold22</font>
 						<textcolor>FF262728</textcolor>
+						<align>right</align>
 						<aligny>center</aligny>
 						<label>$INFO[ListItem.Label]</label>
 					</control>

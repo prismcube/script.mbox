@@ -1,6 +1,7 @@
 from pvr.gui.WindowImport import *
 import sys, inspect, time
 
+
 class NullWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
@@ -28,6 +29,7 @@ class NullWindow( BaseWindow ) :
 			return
 
 		self.mEventBus.Register( self )
+		self.LoadNoSignalState( )
 
 		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 			if ( self.getProperty( 'TVRadio' ) == 'True' and self.SetRadioScreen( ) == 'False' and \
@@ -35,14 +37,6 @@ class NullWindow( BaseWindow ) :
 			   ( self.getProperty( 'TVRadio' ) != self.SetRadioScreen( ) and \
 			   self.mDataCache.Zappingmode_GetCurrent( ).mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-
-			"""
-			#ToDO : xbmc problem gui hold
-			#if self.LoadNoSignalState( self.getProperty( 'Signal' ) ) == False :
-			#	WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-			"""
-
-		
 
 		if E_SUPPROT_HBBTV == True :
 			status = self.mDataCache.Player_GetStatus( )
@@ -69,7 +63,6 @@ class NullWindow( BaseWindow ) :
 					LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'%( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 					self.mForceSetCurrent = True
 
-
 		"""
 		currentStack = inspect.stack( )
 		LOG_TRACE( '+++++getrecursionlimit[%s] currentStack[%s]'% (sys.getrecursionlimit( ), len(currentStack)) )
@@ -82,7 +75,6 @@ class NullWindow( BaseWindow ) :
 		lblTest  = '%02d:%s'% ( (lastTime - startTime)/3600, time.strftime('%M:%S', time.gmtime(lastTime - startTime) ) )
 		LOG_TRACE( 'startTime[%s] lastTime[%s] TestTime[%s]'% (lblStart, lblLast, lblTest) )
 		"""
-
 
 
 	def onAction( self, aAction ) :
