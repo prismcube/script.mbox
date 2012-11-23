@@ -65,8 +65,8 @@
 	<string id="63">SPA_File Manager</string>
 	<string id="64">SPA_Profiles</string>
 	<string id="65">SPA_System Info</string>
-	<string id="66">SPA_Installation enables you to configure settings - Antenna, Channel, Transponder, CAS, etc</string>
-	<string id="67">SPA_The Archive allows you to playback or delete recordings</string>
+	<string id="66">SPA_Installation allows you to setup your PRISMCUBE RUBY - Antenna, Transponder, CAS, etc</string>
+	<string id="67">SPA_The Archive allows playback of previously recorded programmes</string>
 	<string id="68">SPA_The EPG displays the programme information of each channel, in time and date order</string>
 	<string id="69">SPA_The Channel List provides you with functions such as sorting and editing TV/Radio channel list</string>
 	<string id="70">SPA_The Media Center lets you browse and view videos, photos, and music from your storage</string>
@@ -1015,4 +1015,26 @@
 	<string id="3609">SPA_File not found : %s</string>
 	<string id="3610">SPA_Test scenario not available : %s</string>
 	<string id="3611">SPA_Complete</string>
+	<string id="3612">SPA_</string>
+	<string id="3613">SPA_Try again after stopping recordings, PVR or Timeshift</string>
+	<string id="3614">SPA_</string>
+	<string id="3615">SPA_</string>
+	<string id="3616">SPA_</string>
+	<string id="3617">SPA_</string>
+	<string id="3618">SPA_</string>
+	<string id="3619">SPA_</string>
+	<string id="3620">SPA_Add to favorite group</string>
+	<string id="3621">SPA_Create favorite group</string>
+	<string id="3622">SPA_Rename favorite group</string>
+	<string id="3623">SPA_Delete favorite group</string>
+	<string id="3624">SPA_Add to this group</string>
+	<string id="3625">SPA_Remove from this group</string>
+	<string id="3626">SPA_Select a favorite group you want to add</string>
+	<string id="3627">SPA_Select a favorite group you want to rename</string>
+	<string id="3628">SPA_Select a favorite group you want to remove</string>
+	<string id="3629">SPA_Delete Favorite Group</string>
+	<string id="3630">SPA_Enter name for new favorite group</string>
+	<string id="3631">SPA_Enter new name for this favorite group</string>
+	<string id="3632">SPA_Refresh firmware update</string>
+	<string id="3633">SPA_</string>
 </strings>
