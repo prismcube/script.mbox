@@ -197,37 +197,37 @@ def EnumToString( aType, aValue ) :
 	ret = ''
 	if aType == 'type' :
 		if aValue == ElisEnum.E_SERVICE_TYPE_TV :
-			ret = 'tv'
+			ret = MR_LANG( 'tv' )
 		elif aValue == ElisEnum.E_SERVICE_TYPE_RADIO :
-			ret = 'radio'
+			ret = MR_LANG( 'radio' )
 		elif aValue == ElisEnum.E_SERVICE_TYPE_DATA :
-			ret = 'data'
+			ret = MR_LANG( 'data' )
 		elif aValue == ElisEnum.E_SERVICE_TYPE_INVALID :
-			ret = 'type_invalid'
+			ret = MR_LANG( 'type_invalid' )
 
 	elif aType == 'mode' :
 		if aValue == ElisEnum.E_MODE_ALL :
-			ret = 'ALL Channels'
+			ret = MR_LANG( 'ALL Channels' )
 		elif aValue == ElisEnum.E_MODE_FAVORITE :
-			ret = 'favorite'
+			ret = MR_LANG( 'favorite' )
 		elif aValue == ElisEnum.E_MODE_NETWORK :
-			ret = 'network'
+			ret = MR_LANG( 'network' )
 		elif aValue == ElisEnum.E_MODE_SATELLITE :
-			ret = 'satellite'
+			ret = MR_LANG( 'satellite' )
 		elif aValue == ElisEnum.E_MODE_CAS :
-			ret = 'fta/cas'
+			ret = MR_LANG( 'fta/cas' )
 
 	elif aType == 'sort' :
 		if aValue == ElisEnum.E_SORT_BY_DEFAULT :
-			ret = 'default'
+			ret = MR_LANG( 'default' )
 		elif aValue == ElisEnum.E_SORT_BY_ALPHABET :
-			ret = 'alphabet'
+			ret = MR_LANG( 'alphabet' )
 		elif aValue == ElisEnum.E_SORT_BY_CARRIER :
-			ret = 'carrier'
+			ret = MR_LANG( 'carrier' )
 		elif aValue == ElisEnum.E_SORT_BY_NUMBER :
-			ret = 'number'
+			ret = MR_LANG( 'number' )
 		elif aValue == ElisEnum.E_SORT_BY_HD :
-			ret = 'hd'
+			ret = MR_LANG( 'hd' )
 
 	elif aType == 'Polarization' :
 		if aValue == ElisEnum.E_LNB_HORIZONTAL :

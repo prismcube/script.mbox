@@ -329,9 +329,19 @@
 			<control type="label" id="21">
 				<posx>150</posx>
 				<posy>100</posy>
-				<width>200</width>
+				<width>400</width>
 				<height>28</height>
 				<font>font12</font>
+				<textcolor>blue</textcolor>
+				<label>$INFO[ListItem.Label]</label>
+			</control>
+			<control type="label" id="22">
+				<posx>1200</posx>
+				<posy>50</posy>
+				<width>200</width>
+				<height>28</height>
+				<font>font10</font>
+				<align>right</align>
 				<textcolor>blue</textcolor>
 				<label>$INFO[ListItem.Label]</label>
 			</control>
@@ -662,6 +672,27 @@
 					<aspectratio>keep</aspectratio>
 					<texture>Confluence_Logo.png</texture>
 				</control>
+				<!--control type="button" id="103">
+					<description>Sort by button</description>
+					<posx>0</posx>
+					<posy>110</posy>
+					<include>DefaultButtonCommonValue</include>
+					<onleft>49</onleft>
+					<onright>9001</onright>
+					<onup>102</onup>
+					<ondown>102</ondown>
+					<label>SORT :</label>
+				</control>
+				<control type="togglebutton" id="104">
+					<description>Sort asc</description>
+					<posx>220</posx>
+					<posy>123</posy>
+					<onleft>101</onleft>
+					<onright>9001</onright>
+					<onup>102</onup>
+					<ondown>102</ondown>
+					<usealttexture>substring(Window.Property(Ascending),true)</usealttexture>
+				</control-->
 				<control type="list" id="102">
 					<posx>0</posx>
 					<posy>110</posy>
