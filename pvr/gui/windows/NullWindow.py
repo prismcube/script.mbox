@@ -22,11 +22,15 @@ class NullWindow( BaseWindow ) :
 
 		if self.mInitialized == False :
 			self.mInitialized = True
-			self.mCommander.AppHBBTV_Ready( 1 )
-			self.mHBBTVReady = True
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
-			xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
-			return
+			if self.mDataCache.GetFristInstallation( ) :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
+				return
+			else :
+				self.mCommander.AppHBBTV_Ready( 1 )
+				self.mHBBTVReady = True
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
+				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
+				return
 
 		self.mEventBus.Register( self )
 		self.LoadNoSignalState( )

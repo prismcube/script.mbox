@@ -52,17 +52,16 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 		if self.mDataCache.GetRunningHiddenTest( ) and aActionId == Action.ACTION_STOP :
 			self.mDataCache.SetRunningHiddenTest( False )
 	
-		if aActionId == Action.ACTION_MUTE:
+		if aActionId == Action.ACTION_MUTE :
 			self.UpdateVolume( 0 )
 
-		elif aActionId == Action.ACTION_VOLUME_UP:
+		elif aActionId == Action.ACTION_VOLUME_UP :
 			self.UpdateVolume( VOLUME_STEP )
 
-		elif aActionId == Action.ACTION_VOLUME_DOWN:
+		elif aActionId == Action.ACTION_VOLUME_DOWN :
 			self.UpdateVolume( -VOLUME_STEP )		
 
 
-	@GuiLock
 	def UpdateVolume( self, aVolumeStep = -1 ) :
 		if self.mPlatform.IsPrismCube( ) :
 			retVolume = xbmc.executehttpapi( 'getvolume' )

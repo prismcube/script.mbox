@@ -40,6 +40,23 @@ class ChannelSearch( SettingWindow ) :
 		
 		self.mInitialized = True
 
+		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
+			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No satellite data is available' ) )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No satellite data is available\nPlease factory reset your STB' )	)
+			dialog.doModal( )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Do you want to go to configuration?' ) )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				self.mIsCloseing = True
+				self.ResetAllControl( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE, WinMgr.WIN_ID_MAINMENU )
+			else :
+				self.mIsCloseing = True
+				self.ResetAllControl( )
+				WinMgr.GetInstance( ).CloseWindow( )
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )

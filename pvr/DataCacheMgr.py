@@ -1712,3 +1712,17 @@ class DataCacheMgr( object ) :
 	def GetRunningHiddenTest( self ) :
 		return self.mIsRunningHiddentest
 
+
+	def SetFristInstallation( self, aFlag ) :
+		if aFlag :
+			ElisPropertyEnum( 'First Installation', self.mCommander ).SetProp( 0x2b )
+		else :
+			ElisPropertyEnum( 'First Installation', self.mCommander ).SetProp( 0 )
+
+
+	def GetFristInstallation( self ) :
+		if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0 :
+			return False
+		else :
+			return True
+

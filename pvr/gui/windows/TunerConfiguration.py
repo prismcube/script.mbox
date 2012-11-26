@@ -54,6 +54,10 @@ class TunerConfiguration( SettingWindow ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty(  MR_LANG( 'Attention' ),  MR_LANG( 'You can only have 4 satellites for DiSEqC 1.0' ) )
 		 			dialog.doModal( )
+		 		elif self.mTunerMgr.GetCurrentTunerType( ) == E_SIMPLE_LNB and self.mConfiguredCount > 0 :
+		 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty(  MR_LANG( 'Attention' ),  MR_LANG( 'You can only have 1 satellites for Simple LNB' ) )
+		 			dialog.doModal( )
 				else :
 					dialog = xbmcgui.Dialog( )
 					satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
@@ -61,7 +65,7 @@ class TunerConfiguration( SettingWindow ) :
 
 					if ret >= 0 :
 						self.OpenBusyDialog( )
-						if self.CheckSameSatellite( ret ) :
+						if self.mTunerMgr.CheckSameSatellite( ret ) :
 							self.mTunerMgr.AddConfiguredSatellite( ret )
 							self.AfterAction( )
 					 	else :
@@ -108,7 +112,7 @@ class TunerConfiguration( SettingWindow ) :
 					elif tunertype == E_MOTORIZE_1_2 :
 						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_MOTORIZED_12 )
 
-					elif tunertype == E_MOTORIZE_USALS :
+					elif tunertype == E_MOTORIZE_USALS or tunertype == E_SIMPLE_LNB :
 						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_SIMPLE )
 
 				else :
@@ -126,11 +130,12 @@ class TunerConfiguration( SettingWindow ) :
 		configuredList = self.mTunerMgr.GetConfiguredSatelliteList( )
 		self.mConfiguredCount = 0
 
-		for config in configuredList :
-			if config.mIsConfigUsed == 1 :
-				self.mConfiguredCount = self.mConfiguredCount + 1
-				satelliteName = self.mDataCache.GetFormattedSatelliteName( config.mSatelliteLongitude, config.mBandType )
-				self.mListItems.append( xbmcgui.ListItem( '%s' % satelliteName, MR_LANG( 'Press the OK button to setup %s' ) % satelliteName ) )
+		if len( configuredList ) > 0 :
+			for config in configuredList :
+				if config.mIsConfigUsed == 1 :
+					self.mConfiguredCount = self.mConfiguredCount + 1
+					satelliteName = self.mDataCache.GetFormattedSatelliteName( config.mSatelliteLongitude, config.mBandType )
+					self.mListItems.append( xbmcgui.ListItem( '%s' % satelliteName, MR_LANG( 'Press the OK button to setup %s' ) % satelliteName ) )
 
 		self.mListItems.append( xbmcgui.ListItem( MR_LANG( 'Add Satellite' ), MR_LANG( 'Add a new satellite to your satellite list' ) ) )
 		self.mListItems.append( xbmcgui.ListItem( MR_LANG( 'Delete Satellite' ), MR_LANG( 'Delete a satellite from your list' ) ) )
@@ -151,12 +156,3 @@ class TunerConfiguration( SettingWindow ) :
 		if iChannel :
 			self.mDataCache.Channel_InvalidateCurrent( )
 			self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
-
-
-	def CheckSameSatellite( self, aIndex ) :
-		ConfiguredSatelliteList = self.mTunerMgr.GetConfiguredSatelliteList( )
-		AllSatelliteList = self.mDataCache.GetAllSatelliteList( )
-		for satellite in ConfiguredSatelliteList :
-			if satellite.mSatelliteLongitude == AllSatelliteList[aIndex].mLongitude and satellite.mBandType == AllSatelliteList[aIndex].mBand :
-				return False
-		return True

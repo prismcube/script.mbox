@@ -20,11 +20,17 @@ class EditTransponder( SettingWindow ) :
 		hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05, E_Input06, E_Input07 ]
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
 			self.SetVisibleControls( hideControlIds, False )
-			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite is available' ) )
+			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No satellite data is available' ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please reset your STB' ), MR_LANG( 'No satellite infomation is available' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No satellite data is available\nPlease factory reset your STB' )	)
 			dialog.doModal( )
-			WinMgr.GetInstance( ).CloseWindow( )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Do you want to go to configuration?' ) )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE, WinMgr.WIN_ID_MAINMENU )
+			else :
+				WinMgr.GetInstance( ).CloseWindow( )
 		else :
 			self.SetVisibleControls( hideControlIds, True )
 			self.SetPipScreen( )

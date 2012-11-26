@@ -5,7 +5,6 @@ import pvr.TunerConfigMgr as ConfigMgr
 class AntennaSetup( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
-		self.mOriginalMixConfiguredSatellite = []
 
 
 	def onInit( self ) :
@@ -18,24 +17,10 @@ class AntennaSetup( SettingWindow ) :
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )
 
-		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
-			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please reset your STB\nNo satellite information is available' )	)
-			dialog.doModal( )
-			WinMgr.GetInstance( ).CloseWindow( )
-
-		if ConfigMgr.GetInstance( ).GetFristInstallation( ) == True :
+		if self.mDataCache.GetFristInstallation( ) == True :
 			self.DrawFirstTimeInstallationStep( E_STEP_ANTENNA )
 		else :
 			self.DrawFirstTimeInstallationStep( None )
-
-		self.getControl( E_SUBMENU_LIST_ID ).setVisible( True )
-		
-		if self.mTunerMgr.GetNeedLoad( ) == True : 
-			self.mTunerMgr.LoadOriginalTunerConfig( )
-			self.mTunerMgr.Load( )
-			self.mOriginalMixConfiguredSatellite = deepcopy( self.mDataCache.Satellite_GetConfiguredList( ) )
-			self.mTunerMgr.SetNeedLoad( False )
 
 		self.AddEnumControl( E_SpinEx01, 'Tuner2 Connect Type', MR_LANG( 'Tuner 2 Connection' ), MR_LANG( 'When set to \'Separated\', the Tuner 2 receives its own signal input however it will receive only the channel level currently being received by the Tuner 1 when this is set to \'Loopthrough\'' ) )
 		self.AddEnumControl( E_SpinEx02, 'Tuner2 Signal Config', MR_LANG( 'Tuner 2 Signal' ), MR_LANG( 'When set to \'Same with Tuner 1\', both tuners are connected to the same signal source' ) )
@@ -44,10 +29,13 @@ class AntennaSetup( SettingWindow ) :
 		self.AddEnumControl( E_SpinEx04, 'Tuner2 Type', None, MR_LANG( 'Select a control method for Tuner 2' ) )
 		self.AddInputControl( E_Input02, MR_LANG( ' - Tuner 2 Configuration' ), '', MR_LANG( 'You can add, delete or configure satellites here' ) )
 
-		if ConfigMgr.GetInstance().GetFristInstallation( ) == True :
+		if self.mDataCache.GetFristInstallation( ) == True :
 			self.AddPrevNextButton( MR_LANG( 'Go to Channel Search Setup' ), MR_LANG( 'Go back to Video and Audio Setup' ) )
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( MR_LANG( 'Next' ) )
 			self.getControl( E_FIRST_TIME_INSTALLATION_PREV_LABEL ).setLabel( MR_LANG( 'Previous' ) )
+
+		self.getControl( E_SUBMENU_LIST_ID ).setVisible( True )
+
 		self.setVisibleButton( )
 		self.InitControl( )
 		time.sleep( 0.2 )
@@ -55,7 +43,29 @@ class AntennaSetup( SettingWindow ) :
 		self.setDefaultControl( )
 		self.SetPipLabel( )
 		self.mInitialized = True
-		
+
+		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
+			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No satellite data is available' ) )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No satellite data is available\nPlease factory reset your STB' )	)
+			dialog.doModal( )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Do you want to go to configuration?' ) )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				self.ResetAllControl( )
+				self.SetVideoRestore( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE, WinMgr.WIN_ID_MAINMENU )
+			else :
+				self.ResetAllControl( )
+				self.SetVideoRestore( )
+				WinMgr.GetInstance( ).CloseWindow( )
+		else :
+			if self.mTunerMgr.GetNeedLoad( ) == True : 
+				self.mTunerMgr.LoadOriginalTunerConfig( )
+				self.mTunerMgr.Load( )
+				self.mTunerMgr.SetNeedLoad( False )
+
 		
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -63,7 +73,7 @@ class AntennaSetup( SettingWindow ) :
 		self.GlobalAction( actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			if ConfigMgr.GetInstance( ).GetFristInstallation( ) == True :
+			if self.mDataCache.GetFristInstallation( ) == True :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty( MR_LANG( 'Abort Installation' ), MR_LANG( 'Do you want to quit the first installation?' ) )
 				dialog.doModal( )
@@ -74,7 +84,7 @@ class AntennaSetup( SettingWindow ) :
 						self.CancelConfiguration( )
 					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).mStepNum = E_STEP_SELECT_LANGUAGE
 					self.SetParentID( WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_FIRST_INSTALLATION ).GetParentID( ) )
-					ConfigMgr.GetInstance( ).SetFristInstallation( False )
+					self.mDataCache.SetFristInstallation( False )
 					self.mTunerMgr.SyncChannelBySatellite( )
 					self.mDataCache.Channel_ReLoad( )
 					self.mDataCache.Player_AVBlank( False )
@@ -164,16 +174,18 @@ class AntennaSetup( SettingWindow ) :
 			self.mTunerMgr.SetCurrentTunerNumber( E_TUNER_2 )
 			configcontrol = E_SpinEx04
 
-		self.AddDefaultSatellite( )
 		if self.CompareCurrentConfiguredState( ) == False or self.CompareConfigurationProperty( ) == False :
 			self.OpenBusyDialog( )
 			self.SaveConfiguration( )
 			self.CloseBusyDialog( )
 
 		if self.GetSelectedIndex( configcontrol ) == E_SIMPLE_LNB :
-			self.mTunerMgr.SetCurrentConfigIndex( 0 )
 			self.ResetAllControl( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_SIMPLE )
+			if len( self.mTunerMgr.GetConfiguredSatelliteList( ) ) == 0 :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TUNER_CONFIGURATION )
+			else :
+				self.mTunerMgr.SetCurrentConfigIndex( 0 )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_SIMPLE )
 		
 		elif self.GetSelectedIndex( configcontrol ) == E_MOTORIZE_USALS :
 			self.ResetAllControl( )
@@ -246,18 +258,12 @@ class AntennaSetup( SettingWindow ) :
 
 
 	def setVisibleButton( self ) :
-		if ConfigMgr.GetInstance( ).GetFristInstallation( ) == True :
+		if self.mDataCache.GetFristInstallation( ) == True :
 			self.SetVisibleControl( E_FIRST_TIME_INSTALLATION_NEXT, True )
 			self.SetVisibleControl( E_FIRST_TIME_INSTALLATION_PREV, True )
 		else :
 			self.SetVisibleControl( E_FIRST_TIME_INSTALLATION_NEXT, False )
 			self.SetVisibleControl( E_FIRST_TIME_INSTALLATION_PREV, False )
-
-
-	def AddDefaultSatellite( self ) :
-		configuredList = self.mTunerMgr.GetConfiguredSatelliteList( )
-		if len( configuredList ) == 0 :
-			configuredList.append( self.mTunerMgr.GetDefaultConfig( ) )
 
 
 	def ReTune( self ) :
@@ -274,15 +280,12 @@ class AntennaSetup( SettingWindow ) :
 		currentconfiguredList1	= self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_1 )
 		configuredList2		= self.mTunerMgr.GetConfiguredSatelliteListbyTunerIndex( E_TUNER_2 ) 
 		currentconfiguredList2	= self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_2 )
-		if currentconfiguredList1 == None or currentconfiguredList2 == None :
+		if currentconfiguredList1 == None or currentconfiguredList2 == None or len( configuredList1 ) == 0 or len( configuredList1 ) == 0 :
 			return False
 
+		if len( configuredList1 ) != len( currentconfiguredList1 ) :
+			return False
 		if self.mTunerMgr.GetCurrentTunerConfigType( ) == E_SAMEWITH_TUNER :
-			if len( configuredList1 ) != len( currentconfiguredList1 ) :
-				return False
-		else :
-			if len( configuredList1 ) != len( currentconfiguredList1 ) :
-				return False
 			if len( configuredList2 ) != len( currentconfiguredList2 ) :
 				return False
 			
