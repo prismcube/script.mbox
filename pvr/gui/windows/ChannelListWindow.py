@@ -5,6 +5,7 @@ E_CONTROL_ID_LABEL_CHANNEL_SORT			= 22
 E_CONTROL_ID_GROUP_MAINMENU 			= 100
 E_CONTROL_ID_BUTTON_MAINMENU 			= 101
 E_CONTROL_ID_LIST_MAINMENU				= 102
+E_CONTROL_ID_BUTTON_SORTING				= 103
 E_CONTROL_ID_GROUP_SUBMENU				= 9001
 E_CONTROL_ID_LIST_SUBMENU				= 112
 E_CONTROL_ID_RADIOBUTTON_TV				= 113
@@ -50,7 +51,7 @@ E_SLIDE_MENU_ALLCHANNEL = 0
 E_SLIDE_MENU_SATELLITE  = 1
 E_SLIDE_MENU_FTACAS     = 2
 E_SLIDE_MENU_FAVORITE   = 3
-E_SLIDE_MENU_BACK       = 5
+E_SLIDE_MENU_MODE       = 4
 
 E_CONTROL_FOCUSED       = 9991
 E_SLIDE_CLOSE           = 9999
@@ -211,6 +212,7 @@ class ChannelListWindow( BaseWindow ) :
 
 	def onAction( self, aAction ) :
 		id = aAction.getId( )
+		LOG_TRACE('-------------------actionID[%s]'% id )
 
 		self.GlobalAction( id )
 
@@ -259,6 +261,15 @@ class ChannelListWindow( BaseWindow ) :
 			elif self.mFocusId == E_CONTROL_ID_LIST_MAINMENU :
 				position = self.mCtrlListMainmenu.getSelectedPosition( )
 				self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
+				return
+				"""
+				if position == 4 and id == Action.ACTION_MOVE_DOWN or \
+				   position == E_SLIDE_MENU_ALLCHANNEL and id == Action.ACTION_MOVE_UP :
+					self.setFocusId( E_CONTROL_ID_BUTTON_SORTING )
+
+				else :
+					self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
+				"""
 
 
 		elif id == Action.ACTION_CONTEXT_MENU :
