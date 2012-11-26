@@ -104,7 +104,6 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mWin = None
 		self.mWinId = 0
 		self.mClosed = False
-		self.mStartMediaCenter = False
 
 		self.mFocusId = -1
 		self.mLastFocused = -1
@@ -181,11 +180,8 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		if aType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			radio = 'True'
 			state = True
-		else :
-			self.mDataCache.Player_VideoBlank( False )
 
 		self.setProperty( 'TVRadio', radio )
-
 		return radio
 
 
@@ -243,24 +239,22 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def SetMediaCenter( self ) :
-		self.mStartMediaCenter = True
+		self.mDataCache.SetMediaCenter( True )
 		self.mCommander.AppMediaPlayer_Control( 1 )
 
 
 	def CheckMediaCenter( self ) :
-		if self.mStartMediaCenter == True :
+		if self.mDataCache.GetMediaCenter( ) == True :
 			self.mCommander.AppMediaPlayer_Control( 0 )
-
-			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
-			self.UpdateVolume( )
-
-			self.mStartMediaCenter = False
 			#current channel re-zapping
+			self.UpdateVolume( )
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if iChannel :
 				self.mDataCache.Channel_InvalidateCurrent( )
 				self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
 
+			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
+			self.mDataCache.SetMediaCenter( False )
 
 		#do not execute only nullwindow 
 		if self.GetName( ) != 'NullWindow' :

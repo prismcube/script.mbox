@@ -110,6 +110,7 @@ class DataCacheMgr( object ) :
 		self.mAVBlankStatus 					= self.mCommander.Channel_GetInitialBlank( )
 		self.mSkip 								= False
 		self.mIsRunningHiddentest 				= False
+		self.mStartMediaCenter					= False
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
@@ -1725,4 +1726,13 @@ class DataCacheMgr( object ) :
 			return False
 		else :
 			return True
+
+	
+	def SetMediaCenter( self, aValue = False ) :
+		self.mStartMediaCenter = aValue
+
+
+	def GetMediaCenter( self ) :
+		return self.mStartMediaCenter
+
 
