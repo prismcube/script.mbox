@@ -98,6 +98,12 @@
 "Check your PRISMCUBE RUBY information at a glance",,,,,,,,,,97
 "Check your PRISMCUBE RUBY info at a glance",,,,,,,,,,98
 "Jump",,,,,,,,,,99
+"Installation allows you to setup your PRISMCUBE RUBY",,,,,,,,,,100
+"Installation allows you to setup your PRISMCUBE RUBY - Antenna, Channel Search, Satellite, Transponder, etc",,,,,,,,,,101
+"Installation allows you to setup your PRISMCUBE RUBY - Antenna, Channel Search, etc",,,,,,,,,,102
+"Installation allows you to setup your PRISMCUBE RUBY - Antenna, Transponder, CAS, etc",,,,,,,,,,103
+"The Archive allows playback of previously recorded content",,,,,,,,,,104
+"The Archive allows playback of previously recorded programmes",,,,,,,,,,105
 "Last ServiceType",,,,,,,,,,2001
 "CurrentVoutResolution",,,,,,,,,,2002
 "First Installation","Erst-Installation","premiere installation","Prima installazione","Primera instalacion","Prvni instalace","Eerste installatie","Pierwsza instalacja","?lk kurulum","Первоначальная установка",2003
@@ -1213,3 +1219,61 @@
 "No teletext is available",,,,,,,,,,3802
 "None",,,,,,,,,,3803
 "Hard disk drive not detected",,,,,,,,,,3804
+"None",,,,,,,,,,3805
+"None",,,,,,,,,,3806
+"None",,,,,,,,,,3807
+"None",,,,,,,,,,3808
+"Try again after stopping recordings, PVR or Timeshift",,,,,,,,,,3809
+"None",,,,,,,,,,3810
+"None",,,,,,,,,,3811
+"None",,,,,,,,,,3812
+"None",,,,,,,,,,3813
+"None",,,,,,,,,,3814
+"None",,,,,,,,,,3815
+"None",,,,,,,,,,3816
+"None",,,,,,,,,,3817
+"None",,,,,,,,,,3818
+"None",,,,,,,,,,3819
+"None",,,,,,,,,,3820
+"None",,,,,,,,,,3821
+"None",,,,,,,,,,3822
+"None",,,,,,,,,,3823
+"None",,,,,,,,,,3824
+"None",,,,,,,,,,3825
+"None",,,,,,,,,,3826
+"None",,,,,,,,,,3827
+"None",,,,,,,,,,3828
+"None",,,,,,,,,,3829
+"None",,,,,,,,,,3830
+"None",,,,,,,,,,3831
+"None",,,,,,,,,,3832
+"None",,,,,,,,,,3833
+"None",,,,,,,,,,3834
+"None",,,,,,,,,,3835
+"None",,,,,,,,,,3836
+"None",,,,,,,,,,3837
+"None",,,,,,,,,,3838
+"None",,,,,,,,,,3839
+"None",,,,,,,,,,3840
+"None",,,,,,,,,,3841
+"None",,,,,,,,,,3842
+"None",,,,,,,,,,3843
+"None",,,,,,,,,,3844
+"None",,,,,,,,,,3845
+"None",,,,,,,,,,3846
+"None",,,,,,,,,,3847
+"None",,,,,,,,,,3848
+"Add to favorite group",,,,,,,,,,3849
+"Create favorite group",,,,,,,,,,3850
+"Rename favorite group",,,,,,,,,,3851
+"Delete favorite group",,,,,,,,,,3852
+"Add to this group",,,,,,,,,,3853
+"Remove from this group",,,,,,,,,,3854
+"Select a favorite group you want to add",,,,,,,,,,3855
+"Select a favorite group you want to rename",,,,,,,,,,3856
+"Select a favorite group you want to remove",,,,,,,,,,3857
+"Delete Favorite Group",,,,,,,,,,3858
+"Enter name for new favorite group",,,,,,,,,,3859
+"Enter new name for this favorite group",,,,,,,,,,3860
+"Refresh firmware update",,,,,,,,,,3861
+"None",,,,,,,,,,3862

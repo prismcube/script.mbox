@@ -145,6 +145,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.WaitToBuffering( )
 		self.mEventBus.Register( self )
 
+		"""
 		if self.mPrekey :
 			defaultFocus = E_CONTROL_ID_BUTTON_PLAY
 			if self.mPrekey == Action.ACTION_MBOX_REWIND :
@@ -182,6 +183,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.onClick( E_CONTROL_ID_BUTTON_FORWARD )
 
 			elif self.mPrekey == Action.ACTION_PAUSE or self.mPrekey == Action.ACTION_PLAYER_PLAY :
+				self.mWin.setProperty( 'IsXpeeding', 'False' )
 				if self.mSpeed == 100 :
 					self.onClick( E_CONTROL_ID_BUTTON_PAUSE )
 				else :
@@ -195,7 +197,7 @@ class TimeShiftPlate( BaseWindow ) :
 				defaultFocus = E_CONTROL_ID_BUTTON_PAUSE
 
 			self.setFocusId( defaultFocus )
-		"""
+
 
 		if self.mAutomaticHide == True :
 			self.StartAutomaticHide( )
@@ -232,20 +234,9 @@ class TimeShiftPlate( BaseWindow ) :
 				self.RestartAsyncMove( )
 				#LOG_TRACE('left moveTime[%s]'% self.mUserMoveTime )
 
-			"""
-			elif self.mBookmarkButton and len( self.mBookmarkButton ) > 0 and \
-				 self.mFocusId >= self.mBookmarkButton[0].getId( ) and \
-				 self.mFocusId <= self.mBookmarkButton[len(self.mBookmarkButton)-1].getId( ) :
-
-				self.mBookmarkIdx -= 1
-				if self.mBookmarkIdx < 0 :
-					self.mBookmarkIdx = len(self.mBookmarkButton) - 1
-
-				self.setFocusId( self.mBookmarkButton[self.mBookmarkIdx].getId( ) )
-
 			else :
 				self.RestartAutomaticHide( )
-			"""
+
 
 		elif id == Action.ACTION_MOVE_RIGHT :
 			self.GetFocusId( )
@@ -256,19 +247,37 @@ class TimeShiftPlate( BaseWindow ) :
 				self.StopAutomaticHide( )
 				self.RestartAsyncMove( )
 				#LOG_TRACE('right moveTime[%s]'% self.mUserMoveTime )
-			"""
-			elif self.mBookmarkButton and len( self.mBookmarkButton ) > 0 and \
-				 self.mFocusId >= self.mBookmarkButton[0].getId( ) and \
-				 self.mFocusId <= self.mBookmarkButton[len(self.mBookmarkButton)-1].getId( ) :
-
-				self.mBookmarkIdx += 1
-				if self.mBookmarkIdx >= len( self.mBookmarkButton ) :
-					self.mBookmarkIdx = 0
-				
-				self.setFocusId( self.mBookmarkButton[self.mBookmarkIdx].getId( ) )
 
 			else :
 				self.RestartAutomaticHide( )
+
+
+		elif id == Action.ACTION_MOVE_UP :
+			pass
+			"""
+			self.GetFocusId( )
+			nextFocus = -1
+			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
+				nextFocus = E_CONTROL_ID_BUTTON_PLAY
+				if self.mSpeed == 100 :
+					nextFocus = E_CONTROL_ID_BUTTON_PAUSE
+
+			if nextFocus != -1 :
+				self.setFocusId( nextFocus )
+			"""
+
+		elif id == Action.ACTION_MOVE_DOWN :
+			pass
+			"""
+			self.GetFocusId( )
+			nextFocus = -1
+			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
+				nextFocus = E_CONTROL_ID_BUTTON_PLAY
+				if self.mSpeed == 100 :
+					nextFocus = E_CONTROL_ID_BUTTON_PAUSE
+
+			if nextFocus != -1 :
+				self.setFocusId( nextFocus )
 			"""
 
 		elif id == Action.ACTION_PAGE_DOWN :
@@ -303,7 +312,8 @@ class TimeShiftPlate( BaseWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif id == Action.ACTION_PLAYER_PLAY :
-			if self.mIsPlay == FLAG_PAUSE :
+			self.mWin.setProperty( 'IsXpeeding', 'False' )
+			if self.mSpeed == 100 :
 				self.onClick( E_CONTROL_ID_BUTTON_PAUSE )
 			else :
 				self.onClick( E_CONTROL_ID_BUTTON_PLAY )
@@ -349,6 +359,54 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 		"""
+		elif id == Action.ACTION_MOVE_LEFT :
+			self.GetFocusId( )
+			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
+				self.mUserMoveTimeBack = self.mUserMoveTime
+				self.mUserMoveTime = -10
+				self.mFlagUserMove = True
+				self.StopAutomaticHide( )
+				self.RestartAsyncMove( )
+				#LOG_TRACE('left moveTime[%s]'% self.mUserMoveTime )
+
+
+			elif self.mBookmarkButton and len( self.mBookmarkButton ) > 0 and \
+				 self.mFocusId >= self.mBookmarkButton[0].getId( ) and \
+				 self.mFocusId <= self.mBookmarkButton[len(self.mBookmarkButton)-1].getId( ) :
+
+				self.mBookmarkIdx -= 1
+				if self.mBookmarkIdx < 0 :
+					self.mBookmarkIdx = len(self.mBookmarkButton) - 1
+
+				self.setFocusId( self.mBookmarkButton[self.mBookmarkIdx].getId( ) )
+
+			else :
+				self.RestartAutomaticHide( )
+
+
+		elif id == Action.ACTION_MOVE_RIGHT :
+			self.GetFocusId( )
+			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
+				self.mUserMoveTimeBack = self.mUserMoveTime
+				self.mUserMoveTime = 10
+				self.mFlagUserMove = True
+				self.StopAutomaticHide( )
+				self.RestartAsyncMove( )
+				#LOG_TRACE('right moveTime[%s]'% self.mUserMoveTime )
+
+			elif self.mBookmarkButton and len( self.mBookmarkButton ) > 0 and \
+				 self.mFocusId >= self.mBookmarkButton[0].getId( ) and \
+				 self.mFocusId <= self.mBookmarkButton[len(self.mBookmarkButton)-1].getId( ) :
+
+				self.mBookmarkIdx += 1
+				if self.mBookmarkIdx >= len( self.mBookmarkButton ) :
+					self.mBookmarkIdx = 0
+				
+				self.setFocusId( self.mBookmarkButton[self.mBookmarkIdx].getId( ) )
+
+			else :
+				self.RestartAutomaticHide( )
+
 		elif id == Action.ACTION_MOVE_UP :
 			self.GetFocusId( )
 			nextFocus = -1
@@ -414,17 +472,14 @@ class TimeShiftPlate( BaseWindow ) :
 
 	def onClick( self, aControlId ):
 		if aControlId >= E_CONTROL_ID_BUTTON_REWIND and aControlId <= E_CONTROL_ID_BUTTON_JUMP_FF :
-			if aControlId == E_CONTROL_ID_BUTTON_PLAY :
-				self.RestartAutomaticHide( )
-			else :
-				self.StopAutomaticHide( )
-
+			self.StopAutomaticHide( )
 			self.TimeshiftAction( aControlId )
+
 			if aControlId == E_CONTROL_ID_BUTTON_PLAY or aControlId == E_CONTROL_ID_BUTTON_PAUSE :
 				aControlId = E_CONTROL_ID_BUTTON_PLAY
 				if self.mIsPlay == FLAG_PAUSE :
-					time.sleep( 0.02 )
 					aControlId = E_CONTROL_ID_BUTTON_PAUSE
+					self.RestartAutomaticHide( )
 
 			self.setFocusId( aControlId )
 			LOG_TRACE('----------focus[%s]'% aControlId )
@@ -522,8 +577,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		if aFocusId == E_CONTROL_ID_BUTTON_PLAY :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
-				#ret = self.mDataCache.Player_StartTimeshiftPlayback( ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE, 0 )
-				ret = self.mDataCache.Player_Resume( )
+				ret = self.mDataCache.Player_StartTimeshiftPlayback( ElisEnum.E_PLAYER_TIMESHIFT_START_PAUSE, 0 )
 
 			elif self.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				ret = self.mDataCache.Player_Resume( )
@@ -546,7 +600,11 @@ class TimeShiftPlate( BaseWindow ) :
 			# toggle
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, False )
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
+			self.mWin.setProperty( 'IsXpeeding', 'True' )
 
+			#blocking release
+			if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
+				self.SetBlockingButtonEnable( True )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_PAUSE :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
@@ -565,9 +623,15 @@ class TimeShiftPlate( BaseWindow ) :
 				# toggle
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
+				self.mWin.setProperty( 'IsXpeeding', 'True' )
+
+				#blocking
+				if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
+					self.SetBlockingButtonEnable( False )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_STOP :
 			if self.mMode == ElisEnum.E_MODE_LIVE :
+				self.mIsPlay = FLAG_STOP
 				ret = self.mDataCache.Player_Stop( )
 				self.Close( )
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
@@ -673,6 +737,13 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_REWIND, visible, E_CONTROL_VISIBLE )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_FORWARD , visible, E_CONTROL_VISIBLE )
+
+
+	def SetBlockingButtonEnable( self, aValue ) :
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_REWIND, aValue, E_CONTROL_ENABLE )
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_FORWARD, aValue, E_CONTROL_ENABLE )
+		strValue = '%s'% aValue
+		self.mWin.setProperty( 'IsXpeeding', strValue )
 
 
 	@GuiLock
@@ -956,11 +1027,13 @@ class TimeShiftPlate( BaseWindow ) :
 		if ret == 100 :
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, False )
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, True )
+			self.mWin.setProperty( 'IsXpeeding', 'True' )
 			#LOG_TRACE( '-------Play----------------------speed[%s]'% ret)
 
 		else :
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PLAY, True )			
 			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_PAUSE, False )
+			self.mWin.setProperty( 'IsXpeeding', 'False' )
 			#LOG_TRACE( '-------Pause----------------------speed[%s]'% ret)
 
 		return ret

@@ -18,9 +18,9 @@
 	</page>
 	
 	<page number="2" title="Front Panel" location="">
-		<content name="help/D_front.png">
+		<content name="help/front.png">
 			<type>image</type>
-			<posx>250</posx>
+			<posx>240</posx>
 			<posy>120</posy>
 			<width>785</width>
 			<height>243</height>
@@ -44,21 +44,21 @@
 	<page number="3" title="Rear Panel" location="">
 		<content name="help/rear.png">
 			<type>image</type>
-			<posx>250</posx>
+			<posx>240</posx>
 			<posy>140</posy>
-			<width>750</width>
-			<height>178</height>
+			<width>780</width>
+			<height>177</height>
 		</content>
 		<content name="[B]1. LNB 1 IN, LNB 2 IN[/B][CR]Connects a satellite antenna cable.[CR][CR][B]2. VIDEO, AUDIO[/B][CR]Connects to the TV or VCR using an RCA cable.[CR][CR][B]3. S/PDIF[/B][CR]Connects to the audio system using an S/PDIF cable.[CR][CR][B]4. RS-232C[/B][CR]Connects to PC.">
 			<type>textbox</type>
-			<posx>170</posx>
+			<posx>190</posx>
 			<posy>380</posy>
 			<width>480</width>
 			<height>250</height>
 		</content>
 		<content name="[B]5. HDMI[/B][CR]Connects to the TV using an HDMI cable.[CR][CR][B]6. ETHERNET[/B][CR]Local area network port.[CR][CR][B]7. USB HOST[/B][CR]Connects to the USB memory or external HDD.[CR][CR][B]8. AC MAINS[/B][CR]Connects to a plug in the AC mains power cord.">
 			<type>textbox</type>
-			<posx>690</posx>
+			<posx>700</posx>
 			<posy>380</posy>
 			<width>480</width>
 			<height>250</height>
@@ -66,10 +66,10 @@
 	</page>
 
 	<page number="4" title="Remote Control" location="">
-		<content name="help/D_remote 1.png">
+		<content name="help/remote1.png">
 			<type>image</type>
-			<posx>200</posx>
-			<posy>110</posy>
+			<posx>160</posx>
+			<posy>105</posy>
 			<width>330</width>
 			<height>500</height>
 		</content>
@@ -83,10 +83,10 @@
 	</page>
 	
 	<page number="5" title="Remote control" location="">
-		<content name="help/D_remote 2.png">
+		<content name="help/remote2.png">
 			<type>image</type>
-			<posx>200</posx>
-			<posy>110</posy>
+			<posx>160</posx>
+			<posy>105</posy>
 			<width>330</width>
 			<height>500</height>
 		</content>
@@ -102,10 +102,10 @@
 	<page number="6" title="Connecting Your STB - Antenna Connection" location="">
 		<content name="help/connecting.png">
 			<type>image</type>
-			<posx>420</posx>
-			<posy>120</posy>
-			<width>430</width>
-			<height>208</height>
+			<posx>240</posx>
+			<posy>140</posy>
+			<width>770</width>
+			<height>181</height>
 		</content>
 		<content name="Select the most appropriate way of connecting antenna depending on the equipment you have.">
 			<type>textbox</type>
@@ -131,7 +131,7 @@
 	</page>
 	
 	<page number="7" title="Info Plate" location="(LIVE MODE > PRESS I BUTTON)">
-		<content name="help/infoplate.png">
+		<content name="help/info-plate.png">
 			<type>image</type>
 			<posx>210</posx>
 			<posy>170</posy>
@@ -162,7 +162,7 @@
 	</page>
 	
 	<page number="8" title="First Installation" location="(MAIN MENU > INSTALLATION > FIRST INSTALLATION)">
-		<content name="help/first installation.png">
+		<content name="help/first-installation.png">
 			<type>image</type>
 			<posx>40</posx>
 			<posy>130</posy>
@@ -281,7 +281,7 @@
 	</page>
 	
 	<page number="15" title="Channel Search - Automatic Scan" location="MAIN MENU > INSTALLATION > CHANNEL SEARCH > AUTOMATIC SCAN)">
-		<content name="help/autoscan.png">
+		<content name="help/auto-scan.png">
 			<type>image</type>
 			<posx>40</posx>
 			<posy>130</posy>
@@ -298,7 +298,7 @@
 	</page>
 	
 	<page number="16" title="Channel Search - Manual Scan" location="(MAIN MENU > INSTALLATION > CHANNEL SEARCH > MANUAL SCAN)">
-		<content name="help/manscan.png">
+		<content name="help/manual-scan.png">
 			<type>image</type>
 			<posx>40</posx>
 			<posy>130</posy>
@@ -332,7 +332,7 @@
 	</page>
 	
 	<page number="18" title="Instant Recording" location="(LIVE MODE > PRESS REC BUTTON)">
-		<content name="help/start recording.png">
+		<content name="help/start-recording.png">
 			<type>image</type>
 			<posx>40</posx>
 			<posy>130</posy>
@@ -448,7 +448,7 @@
 	</page>
 	
 	<page number="24" title="EPG - Timer Recording Using EPG" location="(PRESS I BUTTON > ADD TIMER)">
-		<content name="help/addtimer.png">
+		<content name="help/add-timer.png">
 			<type>image</type>
 			<posx>40</posx>
 			<posy>130</posy>
@@ -465,7 +465,7 @@
 	</page>
 
 	<page number="25" title="EPG - Manual Timer" location="(PRESS I BUTTON > ADD MANUAL TIMER)">
-		<content name="help/addmanualtimer.png">
+		<content name="help/add-manual-timer.png">
 			<type>image</type>
 			<posx>40</posx>
 			<posy>130</posy>
@@ -482,7 +482,7 @@
 	</page>
 
 	<page number="26" title="EPG - Edit Timer" location="(PRESS I BUTTON > SHOW ALL TIMERS)">
-		<content name="help/timer list.png">
+		<content name="help/timer-list.png">
 			<type>image</type>
 			<posx>40</posx>
 			<posy>130</posy>
@@ -499,7 +499,7 @@
 	</page>
 	
 	<page number="27" title="Channel List - Edit Channel List" location="(MAIN MENU > CHANNEL LIST > PRESS I BUTTON > EDIT CHANNELS)">
-		<content name="help/deleting channels.png">
+		<content name="help/deleting-channels.png">
 			<type>image</type>
 			<posx>40</posx>
 			<posy>130</posy>
@@ -516,7 +516,7 @@
 	</page>
 	
 	<page number="28" title="Channel List - Moving Channels" location="(PRESS I BUTTON > MOVE)">
-		<content name="help/moving channels.png">
+		<content name="help/moving-channels.png">
 			<type>image</type>
 			<posx>40</posx>
 			<posy>130</posy>
@@ -533,7 +533,7 @@
 	</page>
 	
 	<page number="29" title="Channel List - Locking/Unlocking Channels" location="(PRESS I BUTTON > LOCK/UNLOCK)">
-		<content name="help/locking channels.png">
+		<content name="help/locking-channels.png">
 			<type>image</type>
 			<posx>40</posx>
 			<posy>130</posy>
@@ -550,7 +550,7 @@
 	</page>
 	
 	<page number="30" title="Channel List - Skipping/Unskipping Channels" location="(PRESS I BUTTON > SKIP/UNSKIP)">
-		<content name="help/skipping channels.png">
+		<content name="help/skipping-channels.png">
 			<type>image</type>
 			<posx>40</posx>
 			<posy>130</posy>
@@ -567,7 +567,7 @@
 	</page>
 	
 	<page number="31" title="Channel List - Creating New Favorite Group" location="(PRESS I BUTTON > CREATE NEW FAVORITE GROUP)">
-		<content name="help/creating new.png">
+		<content name="help/creating-new-fav.png">
 			<type>image</type>
 			<posx>40</posx>
 			<posy>130</posy>
@@ -584,7 +584,7 @@
 	</page>
 
 	<page number="32" title="Channel List - Adding Channels to Favorite Group" location="(PRESS I BUTTON > ADD TO FAVORITE GROUP)">
-		<content name="help/adding channels.png">
+		<content name="help/adding-channels.png">
 			<type>image</type>
 			<posx>40</posx>
 			<posy>130</posy>
@@ -601,7 +601,7 @@
 	</page>
 	
 	<page number="33" title="Channel List - Removing Channels from Favorite Group" location="(PRESS LEFT BUTTON > SELECT FAVORITE GROUP > DELETE)">
-		<content name="help/removing channels.png">
+		<content name="help/removing-channels.png">
 			<type>image</type>
 			<posx>40</posx>
 			<posy>140</posy>
@@ -635,7 +635,7 @@
 	</page>
 	
 	<page number="35" title="Channel List - Deleting Favorite Group" location="(PRESS I BUTTON > DELETE FAVORITE GROUP)">
-		<content name="help/delete fav.png">
+		<content name="help/delete-fav.png">
 			<type>image</type>
 			<posx>40</posx>
 			<posy>130</posy>
@@ -686,7 +686,7 @@
 	</page>
 
 	<page number="38" title="Media Center - Addons" location="(MEDIA CENTER > SETTINGS > ADDONS > GET ADD-ONS > PRISMCUBE'S ADD-ONS)">
-		<content name="help/install addons.png">
+		<content name="help/install-addons.png">
 			<type>image</type>
 			<posx>40</posx>
 			<posy>140</posy>

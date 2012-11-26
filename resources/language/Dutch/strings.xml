@@ -65,8 +65,8 @@
 	<string id="63">DUT_File Manager</string>
 	<string id="64">DUT_Profiles</string>
 	<string id="65">DUT_System Info</string>
-	<string id="66">DUT_Installation enables you to configure settings - Antenna, Channel, Transponder, CAS, etc</string>
-	<string id="67">DUT_The Archive allows you to playback or delete recordings</string>
+	<string id="66">DUT_Installation allows you to setup your PRISMCUBE RUBY - Antenna, Transponder, CAS, etc</string>
+	<string id="67">DUT_The Archive allows playback of previously recorded programmes</string>
 	<string id="68">DUT_The EPG displays the programme information of each channel, in time and date order</string>
 	<string id="69">DUT_The Channel List provides you with functions such as sorting and editing TV/Radio channel list</string>
 	<string id="70">DUT_The Media Center lets you browse and view videos, photos, and music from your storage</string>
@@ -1015,4 +1015,26 @@
 	<string id="3609">DUT_File not found : %s</string>
 	<string id="3610">DUT_Test scenario not available : %s</string>
 	<string id="3611">DUT_Complete</string>
+	<string id="3612">DUT_</string>
+	<string id="3613">DUT_Try again after stopping recordings, PVR or Timeshift</string>
+	<string id="3614">DUT_</string>
+	<string id="3615">DUT_</string>
+	<string id="3616">DUT_</string>
+	<string id="3617">DUT_</string>
+	<string id="3618">DUT_</string>
+	<string id="3619">DUT_</string>
+	<string id="3620">DUT_Add to favorite group</string>
+	<string id="3621">DUT_Create favorite group</string>
+	<string id="3622">DUT_Rename favorite group</string>
+	<string id="3623">DUT_Delete favorite group</string>
+	<string id="3624">DUT_Add to this group</string>
+	<string id="3625">DUT_Remove from this group</string>
+	<string id="3626">DUT_Select a favorite group you want to add</string>
+	<string id="3627">DUT_Select a favorite group you want to rename</string>
+	<string id="3628">DUT_Select a favorite group you want to remove</string>
+	<string id="3629">DUT_Delete Favorite Group</string>
+	<string id="3630">DUT_Enter name for new favorite group</string>
+	<string id="3631">DUT_Enter new name for this favorite group</string>
+	<string id="3632">DUT_Refresh firmware update</string>
+	<string id="3633">DUT_</string>
 </strings>

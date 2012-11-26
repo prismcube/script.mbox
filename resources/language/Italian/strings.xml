@@ -65,8 +65,8 @@
 	<string id="63">ITA_File Manager</string>
 	<string id="64">ITA_Profiles</string>
 	<string id="65">ITA_System Info</string>
-	<string id="66">ITA_Installation enables you to configure settings - Antenna, Channel, Transponder, CAS, etc</string>
-	<string id="67">ITA_The Archive allows you to playback or delete recordings</string>
+	<string id="66">ITA_Installation allows you to setup your PRISMCUBE RUBY - Antenna, Transponder, CAS, etc</string>
+	<string id="67">ITA_The Archive allows playback of previously recorded programmes</string>
 	<string id="68">ITA_The EPG displays the programme information of each channel, in time and date order</string>
 	<string id="69">ITA_The Channel List provides you with functions such as sorting and editing TV/Radio channel list</string>
 	<string id="70">ITA_The Media Center lets you browse and view videos, photos, and music from your storage</string>
@@ -1015,4 +1015,26 @@
 	<string id="3609">ITA_File not found : %s</string>
 	<string id="3610">ITA_Test scenario not available : %s</string>
 	<string id="3611">ITA_Complete</string>
+	<string id="3612">ITA_</string>
+	<string id="3613">ITA_Try again after stopping recordings, PVR or Timeshift</string>
+	<string id="3614">ITA_</string>
+	<string id="3615">ITA_</string>
+	<string id="3616">ITA_</string>
+	<string id="3617">ITA_</string>
+	<string id="3618">ITA_</string>
+	<string id="3619">ITA_</string>
+	<string id="3620">ITA_Add to favorite group</string>
+	<string id="3621">ITA_Create favorite group</string>
+	<string id="3622">ITA_Rename favorite group</string>
+	<string id="3623">ITA_Delete favorite group</string>
+	<string id="3624">ITA_Add to this group</string>
+	<string id="3625">ITA_Remove from this group</string>
+	<string id="3626">ITA_Select a favorite group you want to add</string>
+	<string id="3627">ITA_Select a favorite group you want to rename</string>
+	<string id="3628">ITA_Select a favorite group you want to remove</string>
+	<string id="3629">ITA_Delete Favorite Group</string>
+	<string id="3630">ITA_Enter name for new favorite group</string>
+	<string id="3631">ITA_Enter new name for this favorite group</string>
+	<string id="3632">ITA_Refresh firmware update</string>
+	<string id="3633">ITA_</string>
 </strings>

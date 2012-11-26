@@ -65,8 +65,8 @@
 	<string id="63">TUR_File Manager</string>
 	<string id="64">TUR_Profiles</string>
 	<string id="65">TUR_System Info</string>
-	<string id="66">TUR_Installation enables you to configure settings - Antenna, Channel, Transponder, CAS, etc</string>
-	<string id="67">TUR_The Archive allows you to playback or delete recordings</string>
+	<string id="66">TUR_Installation allows you to setup your PRISMCUBE RUBY - Antenna, Transponder, CAS, etc</string>
+	<string id="67">TUR_The Archive allows playback of previously recorded programmes</string>
 	<string id="68">TUR_The EPG displays the programme information of each channel, in time and date order</string>
 	<string id="69">TUR_The Channel List provides you with functions such as sorting and editing TV/Radio channel list</string>
 	<string id="70">TUR_The Media Center lets you browse and view videos, photos, and music from your storage</string>
@@ -1015,4 +1015,26 @@
 	<string id="3609">TUR_File not found : %s</string>
 	<string id="3610">TUR_Test scenario not available : %s</string>
 	<string id="3611">TUR_Complete</string>
+	<string id="3612">TUR_</string>
+	<string id="3613">TUR_Try again after stopping recordings, PVR or Timeshift</string>
+	<string id="3614">TUR_</string>
+	<string id="3615">TUR_</string>
+	<string id="3616">TUR_</string>
+	<string id="3617">TUR_</string>
+	<string id="3618">TUR_</string>
+	<string id="3619">TUR_</string>
+	<string id="3620">TUR_Add to favorite group</string>
+	<string id="3621">TUR_Create favorite group</string>
+	<string id="3622">TUR_Rename favorite group</string>
+	<string id="3623">TUR_Delete favorite group</string>
+	<string id="3624">TUR_Add to this group</string>
+	<string id="3625">TUR_Remove from this group</string>
+	<string id="3626">TUR_Select a favorite group you want to add</string>
+	<string id="3627">TUR_Select a favorite group you want to rename</string>
+	<string id="3628">TUR_Select a favorite group you want to remove</string>
+	<string id="3629">TUR_Delete Favorite Group</string>
+	<string id="3630">TUR_Enter name for new favorite group</string>
+	<string id="3631">TUR_Enter new name for this favorite group</string>
+	<string id="3632">TUR_Refresh firmware update</string>
+	<string id="3633">TUR_</string>
 </strings>

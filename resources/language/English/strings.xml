@@ -65,8 +65,8 @@
 	<string id="63">File Manager</string>
 	<string id="64">Profiles</string>
 	<string id="65">System Info</string>
-	<string id="66">Installation enables you to configure settings - Antenna, Channel, Transponder, CAS, etc</string>
-	<string id="67">The Archive allows you to playback or delete recordings</string>
+	<string id="66">Installation allows you to setup your PRISMCUBE RUBY - Antenna, Transponder, CAS, etc</string>
+	<string id="67">The Archive allows playback of previously recorded programmes</string>
 	<string id="68">The EPG displays the programme information of each channel, in time and date order</string>
 	<string id="69">The Channel List provides you with functions such as sorting and editing TV/Radio channel list</string>
 	<string id="70">The Media Center lets you browse and view videos, photos, and music from your storage</string>
@@ -1015,4 +1015,26 @@
 	<string id="3609">File not found : %s</string>
 	<string id="3610">Test scenario not available : %s</string>
 	<string id="3611">Complete</string>
+	<string id="3612"></string>
+	<string id="3613">Try again after stopping recordings, PVR or Timeshift</string>
+	<string id="3614"></string>
+	<string id="3615"></string>
+	<string id="3616"></string>
+	<string id="3617"></string>
+	<string id="3618"></string>
+	<string id="3619"></string>
+	<string id="3620">Add to favorite group</string>
+	<string id="3621">Create favorite group</string>
+	<string id="3622">Rename favorite group</string>
+	<string id="3623">Delete favorite group</string>
+	<string id="3624">Add to this group</string>
+	<string id="3625">Remove from this group</string>
+	<string id="3626">Select a favorite group you want to add</string>
+	<string id="3627">Select a favorite group you want to rename</string>
+	<string id="3628">Select a favorite group you want to remove</string>
+	<string id="3629">Delete Favorite Group</string>
+	<string id="3630">Enter name for new favorite group</string>
+	<string id="3631">Enter new name for this favorite group</string>
+	<string id="3632">Refresh firmware update</string>
+	<string id="3633"></string>
 </strings>
