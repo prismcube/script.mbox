@@ -436,13 +436,30 @@ class ChannelListWindow( BaseWindow ) :
 
 		#answer is yes
 		if ret == E_DIALOG_STATE_YES :
-			isBackup = self.mDataCache.Channel_Backup( )
-			isDelete = self.mDataCache.Channel_DeleteAll( )
-			if isDelete :
-				self.mDataCache.Player_AVBlank( True )
-				self.mDataCache.Channel_InvalidateCurrent( )
-				self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
-				self.mFlag_DeleteAll = True
+			if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
+				self.LoadFavoriteGroupList( )
+				favName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
+				LOG_TRACE( '------------------favName[%s]'% favName )
+				if favName :
+					iChannelList = self.mDataCache.Channel_GetListByFavorite( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, favName )
+					if iChannelList and len( iChannelList ) > 0 :
+						numList = []
+						for iChannel in iChannelList :
+							chNum = ElisEInteger( )
+							chNum.mParam = iChannel.mNumber
+							numList.append( chNum )
+						self.mDataCache.Channel_Backup( )
+						self.mIsSave = FLAG_MASK_ADD
+						self.mDataCache.Favoritegroup_RemoveChannelByNumber( favName, self.mUserMode.mServiceType, numList )
+
+			else :
+				isBackup = self.mDataCache.Channel_Backup( )
+				isDelete = self.mDataCache.Channel_DeleteAll( )
+				if isDelete :
+					self.mDataCache.Player_AVBlank( True )
+					self.mDataCache.Channel_InvalidateCurrent( )
+					self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
+					self.mFlag_DeleteAll = True
 
 		return ret
 
@@ -747,7 +764,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCurrentPosition = self.mCtrlListCHList.getSelectedPosition( )
 			pos = self.mCurrentPosition + 1
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, str( '%s'% pos ) )
-			#LOG_TRACE( 'chinfo: num[%s] type[%s] name[%s] pos[%s]'% (iChannel.mNumber, iChannel.mServiceType, iChannel.mName, pos) )
+			LOG_TRACE( 'chinfo: num[%s] type[%s] name[%s] pos[%s]'% (iChannel.mNumber, iChannel.mServiceType, iChannel.mName, pos) )
 
 			self.ResetLabel( )
 			self.UpdateChannelAndEPG( )
@@ -765,8 +782,8 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def SubMenuAction( self, aAction = E_SLIDE_ACTION_MAIN, aMenuIndex = 0, aForce = None ) :
-		if self.mFlag_DeleteAll :
-			return
+		#if self.mFlag_DeleteAll :
+		#	return
 
 		retPass = False
 
@@ -1036,6 +1053,9 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mFlag_DeleteAll :
 			changed = True
 
+		if self.mIsSave :
+			changed = True
+
 		#is change?
 		if changed :
 			try :
@@ -1123,7 +1143,7 @@ class ChannelListWindow( BaseWindow ) :
 				elif answer == E_DIALOG_STATE_NO :
 					#zapping changed then will re-paint list items for cache
 					self.mListItems = None
-					if self.mFlag_DeleteAll : 
+					if self.mFlag_DeleteAll or self.mIsSave : 
 						#restore backup zapping
 						isRestore = self.mDataCache.Channel_Restore( True )
 						self.mDataCache.Channel_Save( )
@@ -1142,10 +1162,12 @@ class ChannelListWindow( BaseWindow ) :
 						self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
 
 					if iChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_TV or self.mFlag_DeleteAll == True :
-						self.mDataCache.Player_AVBlank( False )
+						if self.mDataCache.Get_Player_AVBlank( ) :
+							self.mDataCache.Player_AVBlank( False )
 
 					elif iChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
-						self.mDataCache.Player_AVBlank( True )
+						if not self.mDataCache.Get_Player_AVBlank( ) :
+							self.mDataCache.Player_AVBlank( True )
 						
 
 			except Exception, e :
@@ -1215,7 +1237,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.UpdateControlGUI( E_CONTROL_ID_RADIOBUTTON_RADIO, False, E_TAG_ENABLE )
 			self.UpdatePropertyGUI( E_XML_PROPERTY_EDITINFO, E_TAG_TRUE )
 			
-
+		"""
 		if self.mFlag_DeleteAll :
 			self.mUserMode.mMode        = ElisEnum.E_MODE_ALL
 			self.mUserMode.mSortingMode = ElisEnum.E_SORT_BY_DEFAULT
@@ -1227,7 +1249,7 @@ class ChannelListWindow( BaseWindow ) :
 			self.mCtrlListSubmenu.addItems( testlistItems )
 
 			return
-
+		"""
 		#main/sub menu init
 		self.mCtrlListMainmenu.reset( )
 		self.mCtrlListSubmenu.reset( )
@@ -1404,10 +1426,14 @@ class ChannelListWindow( BaseWindow ) :
 					listItem.setProperty( E_XML_PROPERTY_CAS,  E_TAG_TRUE )
 				if self.mRecCount :
 					if self.mRecordInfo1 :
-						if iChannel.mSid == self.mRecordInfo1.mServiceId :
+						if iChannel.mSid == self.mRecordInfo1.mServiceId and \
+						   iChannel.mName == self.mRecordInfo1.mChannelName and \
+						   iChannel.mNumber == self.mRecordInfo1.mChannelNo :
 							listItem.setProperty( E_XML_PROPERTY_RECORDING, E_TAG_TRUE )
 					if self.mRecordInfo2 :
-						if iChannel.mSid == self.mRecordInfo2.mServiceId : 
+						if iChannel.mSid == self.mRecordInfo2.mServiceId and \
+						   iChannel.mName == self.mRecordInfo2.mChannelName and \
+						   iChannel.mNumber == self.mRecordInfo2.mChannelNo :
 							listItem.setProperty( E_XML_PROPERTY_RECORDING, E_TAG_TRUE )
 
 				if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW and iChannel.mSkipped == True : 
@@ -2214,9 +2240,20 @@ class ChannelListWindow( BaseWindow ) :
 			return
 
 		elif aContextAction == CONTEXT_ACTION_MENU_DELETEALL :
-			if self.mFlag_DeleteAll :
+			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+			isNotAvail = 0
+			lblLine = ''
+			if isRunRec > 0 :
+				isNotAvail = 1
+				lblLine = MR_LANG( 'Try again after stopping all your recordings first' )
+
+			elif self.mFlag_DeleteAll :
+				isNotAvail = 1
+				lblLine = MR_LANG( 'There is nothing in the channel list' )
+
+			if isNotAvail :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is nothing in the channel list' ) )				
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), lblLine )
 	 			dialog.doModal( )
 
 	 		else :
@@ -2513,10 +2550,10 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def ShowRecordingStartDialog( self ) :
-		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
+		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 
 		isOK = False
-		if runningCount < 2 :
+		if isRunRec < 2 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_START_RECORD )
 			dialog.doModal( )
 
