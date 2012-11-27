@@ -35,13 +35,6 @@ class NullWindow( BaseWindow ) :
 		self.mEventBus.Register( self )
 		self.LoadNoSignalState( )
 
-		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
-			if ( self.getProperty( 'TVRadio' ) == 'True' and self.SetRadioScreen( ) == 'False' and \
-			   self.mDataCache.Zappingmode_GetCurrent( ).mServiceType == ElisEnum.E_SERVICE_TYPE_TV ) or \
-			   ( self.getProperty( 'TVRadio' ) != self.SetRadioScreen( ) and \
-			   self.mDataCache.Zappingmode_GetCurrent( ).mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO ) :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-
 		if E_SUPPROT_HBBTV == True :
 			status = self.mDataCache.Player_GetStatus( )
 			LOG_ERR('self.mDataCache.Player_GetStatus( ) = %d'% status.mMode )
@@ -269,15 +262,13 @@ class NullWindow( BaseWindow ) :
 			if status.mMode == ElisEnum.E_MODE_LIVE :
 				ret = self.mDataCache.ToggleTVRadio( )
 				if ret :
-					self.SetRadioScreen( )
+					self.Close( )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV/Radio channel is available' ) )
 					dialog.doModal( )
-
-				self.Close( )
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif actionId == Action.ACTION_MBOX_RECORD :
 			status = self.mDataCache.Player_GetStatus( )

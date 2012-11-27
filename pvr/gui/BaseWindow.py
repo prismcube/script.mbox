@@ -194,6 +194,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 			state = True
 
 		self.setProperty( 'TVRadio', radio )
+		#LOG_TRACE('--------------radio--property[%s] type[%s]'% ( radio, aType ) )
 		return radio
 
 
@@ -268,9 +269,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
 			self.mDataCache.SetMediaCenter( False )
 
-		#do not execute only nullwindow 
-		if self.GetName( ) != 'NullWindow' :
-			self.SetRadioScreen( )
+		self.SetRadioScreen( )
 
 
 	def OpenBusyDialog( self ) :
