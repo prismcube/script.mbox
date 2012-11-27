@@ -22,11 +22,13 @@ class MediaCenter( BaseWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Media Center' ) )
+		#LOG_TRACE( '--------------flag[%s]'% self.mDataCache.GetMediaCenter( ) )
 
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-		self.GlobalAction( actionId )
+		if self.GlobalAction( actionId ) :
+			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			xbmc.executebuiltin( 'PlayerControl(Stop)' )

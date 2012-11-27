@@ -135,16 +135,18 @@ class LivePlate( LivePlateWindow ) :
 
 
 	def onAction( self, aAction ) :
-		id = aAction.getId( )
-		self.GlobalAction( id )
-		if id >= Action.REMOTE_0 and id <= Action.REMOTE_9 :
-			self.SetTuneByNumber( id-Action.REMOTE_0 )
+		actionId = aAction.getId( )
+		if self.GlobalAction( actionId ) :
+			return
 
-		elif id >= Action.ACTION_JUMP_SMS2 and id <= Action.ACTION_JUMP_SMS9 :
-			rKey = id - (Action.ACTION_JUMP_SMS2 - 2)
+		if actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
+			self.SetTuneByNumber( int( actionId ) - Action.REMOTE_0 )
+
+		elif actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 :
+			rKey = actionId - ( Action.ACTION_JUMP_SMS2 - 2 )
 			self.SetTuneByNumber( rKey )
 
-		elif id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR :
+		elif actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.Close( )
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
@@ -153,16 +155,16 @@ class LivePlate( LivePlateWindow ) :
 			else :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
-		elif id == Action.ACTION_SELECT_ITEM :
+		elif actionId == Action.ACTION_SELECT_ITEM :
 			self.StopAutomaticHide( )
 			self.SetAutomaticHide( False )
 
-		elif id == Action.ACTION_CONTEXT_MENU :
+		elif actionId == Action.ACTION_CONTEXT_MENU :
 			self.StopAutomaticHide( )
 			self.SetAutomaticHide( False )
 			self.onClick( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO )
 
-		elif id == Action.ACTION_MOVE_LEFT :
+		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.StopAutomaticHide( )
 			self.SetAutomaticHide( False )
 		
@@ -170,7 +172,7 @@ class LivePlate( LivePlateWindow ) :
 			if self.mFocusId == E_CONTROL_ID_BUTTON_PREV_EPG :			
 				self.EPGNavigation( PREV_EPG )
 
-		elif id == Action.ACTION_MOVE_RIGHT :
+		elif actionId == Action.ACTION_MOVE_RIGHT :
 			self.StopAutomaticHide( )
 			self.SetAutomaticHide( False )
 		
@@ -178,13 +180,13 @@ class LivePlate( LivePlateWindow ) :
 			if self.mFocusId == E_CONTROL_ID_BUTTON_NEXT_EPG:
 				self.EPGNavigation( NEXT_EPG )
 
-		elif id == Action.ACTION_PAGE_UP :
+		elif actionId == Action.ACTION_PAGE_UP :
 			self.ChannelTune( NEXT_CHANNEL )
 
-		elif id == Action.ACTION_PAGE_DOWN :
+		elif actionId == Action.ACTION_PAGE_DOWN :
 			self.ChannelTune( PREV_CHANNEL )
 
-		elif id == Action.ACTION_MBOX_XBMC :
+		elif actionId == Action.ACTION_MBOX_XBMC :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode != ElisEnum.E_MODE_LIVE :
 				msg = MR_LANG( 'Try again after stopping the Timeshift first' )
@@ -197,7 +199,7 @@ class LivePlate( LivePlateWindow ) :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
 
-		elif id == Action.ACTION_MBOX_ARCHIVE :
+		elif actionId == Action.ACTION_MBOX_ARCHIVE :
 			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return
@@ -205,14 +207,14 @@ class LivePlate( LivePlateWindow ) :
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
-		elif id == Action.ACTION_SHOW_INFO :
+		elif actionId == Action.ACTION_SHOW_INFO :
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
-		elif id == Action.ACTION_MBOX_RECORD :
+		elif actionId == Action.ACTION_MBOX_RECORD :
 			self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
 
-		elif id == Action.ACTION_STOP :
+		elif actionId == Action.ACTION_STOP :
 			status = None
 			status = self.mDataCache.Player_GetStatus( )
 			if status and status.mError == 0 and status.mMode :
@@ -220,7 +222,7 @@ class LivePlate( LivePlateWindow ) :
 			else :
 				self.onClick( E_CONTROL_ID_BUTTON_STOP_RECORDING )
 
-		elif id == Action.ACTION_PAUSE or id == Action.ACTION_PLAYER_PLAY :
+		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
 			if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
 				return -1
 
@@ -229,24 +231,24 @@ class LivePlate( LivePlateWindow ) :
 				return
 
 			self.Close( )
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = id
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
-		elif id == Action.ACTION_MBOX_REWIND :
+		elif actionId == Action.ACTION_MBOX_REWIND :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
 				self.Close( )
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = id
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
-		elif id == Action.ACTION_MBOX_FF :
-			status = self.mDataCache.Player_GetStatus( )		
+		elif actionId == Action.ACTION_MBOX_FF :
+			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_TIMESHIFT :
-				self.Close( )			
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = id
+				self.Close( )
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
-		elif id == Action.ACTION_MBOX_TVRADIO :
+		elif actionId == Action.ACTION_MBOX_TVRADIO :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
 				ret = self.mDataCache.ToggleTVRadio( )
@@ -259,7 +261,7 @@ class LivePlate( LivePlateWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV/Radio channel is available' ) )
 					dialog.doModal( )
 
-		elif id == Action.ACTION_MBOX_TEXT :
+		elif actionId == Action.ACTION_MBOX_TEXT :
 			self.ShowDialog( E_CONTROL_ID_BUTTON_TELETEXT )
 
 

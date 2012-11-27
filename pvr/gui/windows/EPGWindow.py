@@ -112,10 +112,9 @@ class EPGWindow( BaseWindow ) :
 	def onAction( self, aAction ) :
 		self.GetFocusId()
 		actionId = aAction.getId( )
-		self.GlobalAction( actionId )
+		if self.GlobalAction( actionId ) :
+			return
 
-		
-		#LOG_TRACE('onAction=%d' %actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR or actionId == Action.ACTION_SHOW_INFO:
 			self.Close( )

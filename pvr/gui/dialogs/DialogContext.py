@@ -62,6 +62,8 @@ class DialogContext( BaseDialog ) :
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		self.mIsOk = actionId
+		if self.GlobalAction( actionId ) :
+			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.mSelectedIndex = -1

@@ -59,7 +59,8 @@ class FavoriteAddons( BaseWindow ) :
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-		self.GlobalAction( actionId )
+		if self.GlobalAction( actionId ) :
+			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )

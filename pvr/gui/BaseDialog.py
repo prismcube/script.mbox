@@ -49,17 +49,30 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 
 
 	def GlobalAction( self, aActionId ) :
+		mExecute = False
 		if self.mDataCache.GetRunningHiddenTest( ) and aActionId == Action.ACTION_STOP :
 			self.mDataCache.SetRunningHiddenTest( False )
+
+		if self.mDataCache.GetMediaCenter( ) :
+			if aActionId == Action.ACTION_PREVIOUS_MENU or aActionId == Action.ACTION_PARENT_DIR :
+				#blocking action key during Channel_SetCurrentSync()
+				mExecute = False
+			else :
+				mExecute = True
 	
 		if aActionId == Action.ACTION_MUTE :
 			self.UpdateVolume( 0 )
+			mExecute = True
 
 		elif aActionId == Action.ACTION_VOLUME_UP :
 			self.UpdateVolume( VOLUME_STEP )
+			mExecute = True
 
 		elif aActionId == Action.ACTION_VOLUME_DOWN :
 			self.UpdateVolume( -VOLUME_STEP )		
+			mExecute = True
+
+		return mExecute
 
 
 	def UpdateVolume( self, aVolumeStep = -1 ) :

@@ -78,7 +78,8 @@ class TimerWindow( BaseWindow ) :
 	def onAction( self, aAction ) :
 		self.GetFocusId( )
 		actionId = aAction.getId( )
-		self.GlobalAction( actionId )
+		if self.GlobalAction( actionId ) :
+			return
 
 		#LOG_TRACE('onAction=%d' %actionId )
 

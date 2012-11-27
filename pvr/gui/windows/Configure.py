@@ -146,7 +146,8 @@ class Configure( SettingWindow ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
 		selectedId = self.mCtrlLeftGroup.getSelectedPosition( )
-		self.GlobalAction( actionId )
+		if self.GlobalAction( actionId ) :
+			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.Close( )

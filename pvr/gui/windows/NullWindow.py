@@ -83,9 +83,11 @@ class NullWindow( BaseWindow ) :
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-		self.GlobalAction( actionId )
-		LOG_ERR( 'ACTION_TEST actionID=%d'% actionId )
+		if self.GlobalAction( actionId ) :
+			return
 
+
+		LOG_ERR( 'ACTION_TEST actionID=%d'% actionId )
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_MOVE_LEFT :
 			if ElisPropertyEnum( 'Lock Mainmenu', self.mCommander ).GetProp( ) == 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -176,7 +178,7 @@ class NullWindow( BaseWindow ) :
 
 			aKey = actionId - (Action.ACTION_JUMP_SMS2 - 2)
 			if actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
-				aKey = actionId - Action.REMOTE_0
+				aKey = int( actionId ) - Action.REMOTE_0
 
 			if aKey == 0 :
 				return -1

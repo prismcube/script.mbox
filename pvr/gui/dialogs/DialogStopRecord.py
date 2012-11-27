@@ -87,10 +87,8 @@ class DialogStopRecord( BaseDialog ) :
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
-		LOG_TRACE( 'action=%d' %actionId )
-		LOG_TRACE( 'focusId=%d' %focusId )
-		
-		self.GlobalAction( actionId )
+		if self.GlobalAction( actionId ) :
+			return
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.mIsOk = E_DIALOG_STATE_CANCEL

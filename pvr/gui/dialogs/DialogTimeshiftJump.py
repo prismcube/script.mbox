@@ -44,6 +44,8 @@ class DialogTimeshiftJump( BaseDialog ) :
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
+		if self.GlobalAction( actionId ) :
+			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
@@ -57,7 +59,7 @@ class DialogTimeshiftJump( BaseDialog ) :
 			self.CloseDialog( )
 
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
-			inputString = '%d' % ( actionId - Action.REMOTE_0 )
+			inputString = '%d' % ( int( actionId ) - Action.REMOTE_0 )
 			self.mMoveToNumber += inputString
 			self.mMoveToNumber = '%d' % int( self.mMoveToNumber )
 			if int( self.mMoveToNumber ) > self.mMaxMoveNum :

@@ -206,25 +206,26 @@ class TimeShiftPlate( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
-		id = aAction.getId( )
-		self.GlobalAction( id )
-		
-		if id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR :
+		actionId = aAction.getId( )
+		if self.GlobalAction( actionId ) :
+			return
+
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
 
-		elif id >= Action.REMOTE_0 and id <= Action.REMOTE_9 :
-			self.MoveToSeekFrame( id-Action.REMOTE_0 )
+		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
+			self.MoveToSeekFrame( int( actionId ) - Action.REMOTE_0 )
 
-		elif id >= Action.ACTION_JUMP_SMS2 and id <= Action.ACTION_JUMP_SMS9 :
-			rKey = id - ( Action.ACTION_JUMP_SMS2 - 2 )
+		elif actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 :
+			rKey = actionId - ( Action.ACTION_JUMP_SMS2 - 2 )
 			self.MoveToSeekFrame( rKey )
 
-		elif id == Action.ACTION_SELECT_ITEM :
+		elif actionId == Action.ACTION_SELECT_ITEM :
 			pass
 
 
-		elif id == Action.ACTION_MOVE_LEFT :
+		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.GetFocusId( )
 			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
 				self.mUserMoveTimeBack = self.mUserMoveTime
@@ -238,7 +239,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.RestartAutomaticHide( )
 
 
-		elif id == Action.ACTION_MOVE_RIGHT :
+		elif actionId == Action.ACTION_MOVE_RIGHT :
 			self.GetFocusId( )
 			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
 				self.mUserMoveTimeBack = self.mUserMoveTime
@@ -252,7 +253,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.RestartAutomaticHide( )
 
 
-		elif id == Action.ACTION_MOVE_UP :
+		elif actionId == Action.ACTION_MOVE_UP :
 			pass
 			"""
 			self.GetFocusId( )
@@ -266,7 +267,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.setFocusId( nextFocus )
 			"""
 
-		elif id == Action.ACTION_MOVE_DOWN :
+		elif actionId == Action.ACTION_MOVE_DOWN :
 			pass
 			"""
 			self.GetFocusId( )
@@ -280,7 +281,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.setFocusId( nextFocus )
 			"""
 
-		elif id == Action.ACTION_PAGE_DOWN :
+		elif actionId == Action.ACTION_PAGE_DOWN :
 			if self.mMode == ElisEnum.E_MODE_PVR :
 				#LOG_TRACE('Archive playing now')
 				return -1
@@ -292,7 +293,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.onClick( E_CONTROL_ID_BUTTON_STOP )
 				
 			
-		elif id == Action.ACTION_PAGE_UP :
+		elif actionId == Action.ACTION_PAGE_UP :
 			if self.mMode == ElisEnum.E_MODE_PVR :
 				#LOG_TRACE('Archive playing now')
 				return -1
@@ -303,7 +304,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mDataCache.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
 				self.onClick( E_CONTROL_ID_BUTTON_STOP )
 
-		elif id == Action.ACTION_CONTEXT_MENU :
+		elif actionId == Action.ACTION_CONTEXT_MENU :
 			if self.mMode == ElisEnum.E_MODE_PVR :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_INFO_PLATE )
@@ -311,29 +312,29 @@ class TimeShiftPlate( BaseWindow ) :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
-		elif id == Action.ACTION_PLAYER_PLAY :
+		elif actionId == Action.ACTION_PLAYER_PLAY :
 			self.mWin.setProperty( 'IsXpeeding', 'False' )
 			if self.mSpeed == 100 :
 				self.onClick( E_CONTROL_ID_BUTTON_PAUSE )
 			else :
 				self.onClick( E_CONTROL_ID_BUTTON_PLAY )
 
-		elif id == Action.ACTION_STOP :
+		elif actionId == Action.ACTION_STOP :
 			self.onClick( E_CONTROL_ID_BUTTON_STOP )
 
-		elif id == Action.ACTION_MBOX_REWIND :
+		elif actionId == Action.ACTION_MBOX_REWIND :
 			if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO or self.mSpeed == 0 :
 				return
 
 			self.onClick( E_CONTROL_ID_BUTTON_REWIND )
 
-		elif id == Action.ACTION_MBOX_FF : #no service
+		elif actionId == Action.ACTION_MBOX_FF : #no service
 			if self.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO or self.mSpeed == 0 :
 				return
 
 			self.onClick( E_CONTROL_ID_BUTTON_FORWARD )
 
-		elif id == Action.ACTION_MBOX_RECORD :
+		elif actionId == Action.ACTION_MBOX_RECORD :
 			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return
@@ -345,7 +346,7 @@ class TimeShiftPlate( BaseWindow ) :
 			else :
 				self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
 
-		elif id == Action.ACTION_MBOX_ARCHIVE :
+		elif actionId == Action.ACTION_MBOX_ARCHIVE :
 			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return
@@ -353,13 +354,13 @@ class TimeShiftPlate( BaseWindow ) :
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
-		elif id == Action.ACTION_SHOW_INFO :
+		elif actionId == Action.ACTION_SHOW_INFO :
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 
 		"""
-		elif id == Action.ACTION_MOVE_LEFT :
+		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.GetFocusId( )
 			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
 				self.mUserMoveTimeBack = self.mUserMoveTime
@@ -384,7 +385,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.RestartAutomaticHide( )
 
 
-		elif id == Action.ACTION_MOVE_RIGHT :
+		elif actionId == Action.ACTION_MOVE_RIGHT :
 			self.GetFocusId( )
 			if self.mFocusId == E_CONTROL_ID_BUTTON_CURRENT :
 				self.mUserMoveTimeBack = self.mUserMoveTime
@@ -407,7 +408,7 @@ class TimeShiftPlate( BaseWindow ) :
 			else :
 				self.RestartAutomaticHide( )
 
-		elif id == Action.ACTION_MOVE_UP :
+		elif actionId == Action.ACTION_MOVE_UP :
 			self.GetFocusId( )
 			nextFocus = -1
 			if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 and \
@@ -431,7 +432,7 @@ class TimeShiftPlate( BaseWindow ) :
 			if nextFocus != -1 :
 				self.setFocusId( nextFocus )
 
-		elif id == Action.ACTION_MOVE_DOWN :
+		elif actionId == Action.ACTION_MOVE_DOWN :
 			self.GetFocusId( )
 			nextFocus = -1
 			if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 and \
@@ -460,11 +461,11 @@ class TimeShiftPlate( BaseWindow ) :
 
 		"""
 		#test
-		elif id == 104 : #scroll up
+		elif actionId == 104 : #scroll up
 			self.ShowRecordingInfo( )
 			#self.UpdatePropertyGUI( E_XML_PROPERTY_RECORDING1, 'True' )
 
-		elif id == 105 :
+		elif actionId == 105 :
 			#self.UpdatePropertyGUI( E_XML_PROPERTY_RECORDING2, 'False' )
 			pass
 		"""
@@ -486,6 +487,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		elif aControlId == E_CONTROL_ID_BUTTON_VOLUME :
 			self.GlobalAction( Action.ACTION_MUTE )
+			#xbmc.executebuiltin('xbmc.Action(mute)')
 			self.StopAutomaticHide( )
 		
 		elif aControlId == E_CONTROL_ID_BUTTON_START_RECORDING :	

@@ -137,23 +137,35 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def GlobalAction( self, aActionId ) :
+		mExecute = False
 		if self.mDataCache.GetRunningHiddenTest( ) and aActionId == Action.ACTION_STOP :
 			self.mDataCache.SetRunningHiddenTest( False )
-	
+
+		if self.mDataCache.GetMediaCenter( ) :
+			if aActionId == Action.ACTION_PREVIOUS_MENU or aActionId == Action.ACTION_PARENT_DIR :
+				#blocking action key during Channel_SetCurrentSync()
+				mExecute = False
+			else :
+				mExecute = True
+
 		if aActionId == Action.ACTION_MUTE :
 			self.UpdateVolume( 0 )
+			mExecute = True
 
 		elif aActionId == Action.ACTION_VOLUME_UP :
 			self.UpdateVolume( VOLUME_STEP )
+			mExecute = True
 
 		elif aActionId == Action.ACTION_VOLUME_DOWN :
 			self.UpdateVolume( -VOLUME_STEP )
+			mExecute = True
 
 		elif aActionId == Action.ACTION_RELOAD_SKIN :
 			import pvr.gui.WindowMgr as WinMgr
 			WinMgr.GetInstance( ).ReloadWindow( WinMgr.GetInstance( ).mLastId, WinMgr.WIN_ID_NULLWINDOW )
+			mExecute = True
 
-		
+		return mExecute
 
 
 	def SetPipScreen( self ) :
@@ -247,12 +259,12 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		if self.mDataCache.GetMediaCenter( ) == True :
 			self.mCommander.AppMediaPlayer_Control( 0 )
 			#current channel re-zapping
-			self.UpdateVolume( )
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if iChannel :
 				self.mDataCache.Channel_InvalidateCurrent( )
 				self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
 
+			self.UpdateVolume( )
 			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
 			self.mDataCache.SetMediaCenter( False )
 

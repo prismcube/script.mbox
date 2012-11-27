@@ -29,7 +29,8 @@ class DialogAddTimer( BaseDialog ) :
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.GetFocusId( )
-		self.GlobalAction( actionId )		
+		if self.GlobalAction( actionId ) :
+			return
 
 		LOG_TRACE( 'actionId=%d' %actionId )
 			

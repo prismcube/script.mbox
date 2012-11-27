@@ -26,7 +26,8 @@ class TunerConfiguration( SettingWindow ) :
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
-		self.GlobalAction( actionId )
+		if self.GlobalAction( actionId ) :
+			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.getControl( E_MAIN_LIST_ID ).reset( )

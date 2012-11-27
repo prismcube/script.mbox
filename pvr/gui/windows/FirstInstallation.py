@@ -58,8 +58,9 @@ class FirstInstallation( SettingWindow ) :
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
+		if self.GlobalAction( actionId ) :
+			return
 
-		self.GlobalAction( actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			if self.mStepNum == E_STEP_RESULT :
