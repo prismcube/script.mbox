@@ -750,7 +750,8 @@
 					<textwidth>215</textwidth>
 					<aligny>center</aligny>
 					<font>Font_Reg19</font>
-					<texturefocus border="5">button-focus.png</texturefocus>
+					<textcolor>grey3</textcolor>
+					<texturefocus>settings/listselect.png</texturefocus>
 					<texturenofocus>-</texturenofocus>
 					<pulseonselect>false</pulseonselect>
 					<onleft>49</onleft>
@@ -760,7 +761,7 @@
 				</control>
 				<control type="list" id="102">
 					<posx>0</posx>
-					<posy>110</posy>
+					<posy>150</posy>
 					<width>260</width>
 					<height>600</height>
 					<onleft>49</onleft>

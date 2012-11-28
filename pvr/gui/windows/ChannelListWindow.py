@@ -813,14 +813,11 @@ class ChannelListWindow( BaseWindow ) :
 		#	return
 
 		retPass = False
-		zappingName = ''
 
 		if aAction == E_SLIDE_ACTION_MAIN:
 			testlistItems = []
 
 			if aMenuIndex == E_SLIDE_MENU_ALLCHANNEL :
-				#for itemList in range( len( self.mListAllChannel ) ) :
-				#	testlistItems.append( xbmcgui.ListItem(self.mListAllChannel[itemList]) )
 				testlistItems.append( xbmcgui.ListItem( '' ) )
 
 			elif aMenuIndex == E_SLIDE_MENU_SATELLITE :
@@ -854,11 +851,11 @@ class ChannelListWindow( BaseWindow ) :
 				if aMenuIndex == self.mUserSlidePos.mMain :
 					self.mCtrlListSubmenu.selectItem( self.mUserSlidePos.mSub )
 
-			return
 
 		elif aAction == E_SLIDE_ACTION_SUB :
 			idxMain = self.mCtrlListMainmenu.getSelectedPosition( )
 			idxSub  = self.mCtrlListSubmenu.getSelectedPosition( )
+			zappingName = ''
 			if aForce == None and self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 				if self.mUserSlidePos.mMain == idxMain and \
 				   self.mUserSlidePos.mSub == idxSub :
@@ -888,16 +885,6 @@ class ChannelListWindow( BaseWindow ) :
 
 
 			if idxMain == E_SLIDE_MENU_ALLCHANNEL :
-				"""
-				if idxSub == 0 :
-					sortingMode = ElisEnum.E_SORT_BY_NUMBER
-				elif idxSub == 1 :
-					sortingMode = ElisEnum.E_SORT_BY_ALPHABET
-				elif idxSub == 2 :
-					sortingMode = ElisEnum.E_SORT_BY_HD
-
-				self.mUserMode.mSortingMode = sortingMode
-				"""
 				self.mUserMode.mMode = ElisEnum.E_MODE_ALL
 				retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, '' )
 				LOG_TRACE('All Channel ret[%s] idx[%s,%s]'% ( retPass, idxMain, idxSub ) )
@@ -1280,7 +1267,6 @@ class ChannelListWindow( BaseWindow ) :
 	def InitSlideMenuHeader( self, aInitLoad = FLAG_SLIDE_INIT ) :
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 			#opt btn blind
-			#self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, False )
 			self.UpdateControlGUI( E_SETTING_MINI_TITLE, MR_LANG( 'Channel List' ) )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIOBUTTON_TV, True, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIOBUTTON_RADIO, True, E_TAG_ENABLE )
@@ -1289,61 +1275,14 @@ class ChannelListWindow( BaseWindow ) :
 
 		else :
 			#opt btn visible
-			#self.UpdateControlGUI( E_CONTROL_ID_GROUP_OPT, True )
 			self.UpdateControlGUI( E_SETTING_MINI_TITLE, MR_LANG( 'Edit Channel List' ) )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIOBUTTON_TV, False, E_TAG_ENABLE )
 			self.UpdateControlGUI( E_CONTROL_ID_RADIOBUTTON_RADIO, False, E_TAG_ENABLE )
 			self.UpdatePropertyGUI( E_XML_PROPERTY_EDITINFO, E_TAG_TRUE )
 			
-		"""
-		if self.mFlag_DeleteAll :
-			self.mUserMode.mMode        = ElisEnum.E_MODE_ALL
-			self.mUserMode.mSortingMode = ElisEnum.E_SORT_BY_DEFAULT
-			self.mUserMode.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
-
-			self.mCtrlListSubmenu.reset( )
-			testlistItems = []
-			testlistItems.append(xbmcgui.ListItem( MR_LANG( 'None' ) ) )
-			self.mCtrlListSubmenu.addItems( testlistItems )
-
-			return
-		"""
 		#main/sub menu init
 		self.mCtrlListMainmenu.reset( )
 		self.mCtrlListSubmenu.reset( )
-
-		"""
-		#get last zapping mode
-		if aInitLoad == FLAG_ZAPPING_LOAD :
-			try:
-				if self.mFlag_EditChanged :
-					zappingMode = self.mDataCache.Zappingmode_GetCurrent( FLAG_ZAPPING_CHANGE )
-				else :
-					zappingMode = self.mDataCache.Zappingmode_GetCurrent( )
-
-				if zappingMode != None and zappingMode.mError == 0 :
-					self.mUserMode.mMode            = zappingMode.mMode
-					self.mUserMode.mSortingMode    = zappingMode.mSortingMode
-					self.mUserMode.mServiceType = zappingMode.mServiceType
-					self.mUserMode    = zappingMode
-				else :
-					#set default
-					self.mUserMode.mMode            = ElisEnum.E_MODE_ALL
-					self.mUserMode.mSortingMode    = ElisEnum.E_SORT_BY_DEFAULT
-					self.mUserMode.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
-					zappingMode                  = ElisIZappingMode( )
-					self.mUserMode    = zappingMode
-					LOG_TRACE( 'Fail GetCurrent!!! [set default ZappingMode]' )
-
-			except Exception, e:
-				#set default
-				self.mUserMode.mMode            = ElisEnum.E_MODE_ALL
-				self.mUserMode.mSortingMode    = ElisEnum.E_SORT_BY_DEFAULT
-				self.mUserMode.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
-				zappingMode                  = ElisIZappingMode( )
-				self.mUserMode    = zappingMode
-				LOG_TRACE( 'Error exception[%s] [set default ZappingMode]'% e )
-		"""
 
 		list_Mainmenu = []
 		list_Mainmenu.append( MR_LANG( 'All CHANNELS' ) )
@@ -1358,13 +1297,6 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.mCtrlListMainmenu.addItems( testlistItems )
 
-		"""
-		#sort list, This is fixed
-		self.mListAllChannel = []
-		self.mListAllChannel.append( 'SORT BY NUMBER' )
-		self.mListAllChannel.append( 'SORT BY ALPHABET' )
-		self.mListAllChannel.append( 'SORT BY HD/SD' )
-		"""
 		try :
 			if self.mFlag_EditChanged :
 				#satellite list
@@ -1634,9 +1566,6 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aCtrlID == E_CONTROL_ID_GROUP_LOCKED_INFO :
 			self.mCtrlLabelLockedInfo.setVisible( aValue )
-
-		#elif aCtrlID == E_CONTROL_ID_GROUP_OPT :
-		#	self.mCtrlGroupOpt.setVisible( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_LABEL_CHANNEL_PATH :
 			self.mCtrlLabelChannelPath.setLabel( aValue )
