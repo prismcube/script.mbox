@@ -348,7 +348,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		elif aControlId == E_CONTROL_ID_BUTTON_SORTING :
-			self.SubMenuAction( E_SLIDE_ACTION_SORT )
+			self.SubMenuAction( E_SLIDE_ACTION_SUB, E_SLIDE_ACTION_SORT, True )
 
 
 		elif aControlId == E_CONTROL_ID_BUTTON_MAINMENU or aControlId == E_CONTROL_ID_LIST_MAINMENU :
@@ -865,6 +865,27 @@ class ChannelListWindow( BaseWindow ) :
 					LOG_TRACE( 'aready select!!!' )
 					return
 
+			if aMenuIndex == E_SLIDE_ACTION_SORT :
+				LOG_TRACE('----------------------------sorting' )
+				nextMode = ElisEnum.E_SORT_BY_NUMBER
+				lblMode  = MR_LANG( 'number' )
+				if self.mUserMode.mSortingMode == ElisEnum.E_SORT_BY_NUMBER :
+					nextMode = ElisEnum.E_SORT_BY_ALPHABET
+					lblMode  = MR_LANG( 'alphabet' )
+				elif self.mUserMode.mSortingMode == ElisEnum.E_SORT_BY_ALPHABET :
+					nextMode = ElisEnum.E_SORT_BY_HD
+					lblMode  = 'hd'
+
+				idxMain = self.mUserSlidePos.mMain
+				idxSub  = self.mUserSlidePos.mSub
+
+				LOG_TRACE('----nextSort[%s] user: type[%s] mode[%s] sort[%s]'% (nextMode,self.mUserMode.mServiceType, self.mUserMode.mMode,self.mUserMode.mSortingMode) )
+				self.mUserMode.mSortingMode = nextMode
+				#retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, nextMode, 0, 0, 0, '' )
+
+				label = '%s : %s'% ( MR_LANG( 'sort' ).upper(), lblMode.upper() )
+				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING, label )
+
 
 			if idxMain == E_SLIDE_MENU_ALLCHANNEL :
 				"""
@@ -933,54 +954,27 @@ class ChannelListWindow( BaseWindow ) :
 				#do not refresh UI
 				return
 
+			#channel list update
+			self.mMarkList = []
+			self.mListItems = None
+			self.mCtrlListCHList.reset( )
+			self.UpdateChannelList( )
+
 			#path tree, Mainmenu/Submanu
 			self.mUserSlidePos.mMain = idxMain
 			self.mUserSlidePos.mSub  = idxSub
 
+			lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode ).upper( )
+			if zappingName :
+				lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
 
-		elif aAction == E_SLIDE_ACTION_SORT :
-			LOG_TRACE('----------------------------sorting' )
-			nextMode = ElisEnum.E_SORT_BY_NUMBER
-			lblMode  = MR_LANG( 'number' )
-			if self.mUserMode.mSortingMode == ElisEnum.E_SORT_BY_NUMBER :
-				nextMode = ElisEnum.E_SORT_BY_ALPHABET
-				lblMode  = MR_LANG( 'alphabet' )
-			elif self.mUserMode.mSortingMode == ElisEnum.E_SORT_BY_ALPHABET :
-				nextMode = ElisEnum.E_SORT_BY_HD
-				lblMode  = 'hd'
+			lblChannelSort = MR_LANG( 'Sorted by %s' )% EnumToString( 'sort', self.mUserMode.mSortingMode )
 
-			self.mUserMode.mSortingMode = nextMode
-			retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, nextMode, 0, 0, 0, '' )
+			self.mCtrlLabelChannelPath.setLabel( lblChannelPath )
+			self.mCtrlLabelChannelSort.setLabel( lblChannelSort )
 
-			if retPass == False :
-				return
-
-			if self.mMoveFlag :
-				#do not refresh UI
-				return
-
-			label = '%s : %s'% ( MR_LANG( 'sort' ).upper(), lblMode.upper() )
-			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING, label )
-
-
-	
-		#channel list update
-		self.mMarkList = []
-		self.mListItems = None
-		self.mCtrlListCHList.reset( )
-		self.UpdateChannelList( )
-
-		lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode ).upper( )
-		if zappingName :
-			lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
-
-		lblChannelSort = MR_LANG( 'Sorted by %s' )% EnumToString( 'sort', self.mUserMode.mSortingMode )
-
-		self.mCtrlLabelChannelPath.setLabel( lblChannelPath )
-		self.mCtrlLabelChannelSort.setLabel( lblChannelSort )
-
-		#current zapping backup
-		#self.mDataCache.Channel_Backup( )
+			#current zapping backup
+			#self.mDataCache.Channel_Backup( )
 
 
 	def GetChannelList( self, aType, aMode, aSort, aLongitude, aBand, aCAid, aFavName ):
