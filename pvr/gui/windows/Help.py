@@ -1,7 +1,6 @@
 from pvr.gui.WindowImport import *
 from elementtree import ElementTree
-import pvr.TunerConfigMgr as ConfigMgr
-import os
+
 
 E_STEP_FEATURES					=	1
 E_STEP_FRONT_PLATE				=	2
@@ -23,23 +22,23 @@ E_STEP_TIMESHIFT				=	17
 E_STEP_RECORDING				=	18
 E_STEP_ARCHIVE					=	19
 E_STEP_PVR						=	20
-E_STEP_BOOKMARK				=	21
+E_STEP_BOOKMARK					=	21
 E_STEP_EPG						=	22
 E_STEP_VIEW_MODE				=	23
 E_STEP_EPG_TIMER				=	24
-E_STEP_MANUAL_TIMER			=	25
+E_STEP_MANUAL_TIMER				=	25
 E_STEP_EDIT_TIMER				=	26
 E_STEP_EDIT_CHANNEL_LIST		=	27
 E_STEP_MOVING_CHANNELS			=	28
-E_STEP_LOCKING_CHANNELS		=	29
+E_STEP_LOCKING_CHANNELS			=	29
 E_STEP_SKIPPING_CHANNELS		=	30
 E_STEP_CREATING_FAV				=	31
 E_STEP_ADDING_CHANNELS			=	32
 E_STEP_REMOVING_CHANNELS		=	33
-E_STEP_RENAMING_FAV			=	34
+E_STEP_RENAMING_FAV				=	34
 E_STEP_DELETING_FAV				=	35
 E_STEP_MEDIACENTER	 			=	36
-E_STEP_MEDIACENTER_SETTINGS	=	37
+E_STEP_MEDIACENTER_SETTINGS		=	37
 E_STEP_INSTALL_ADDONS			=	38
 E_STEP_ADDONS					=	39
 	
@@ -56,7 +55,7 @@ E_HELP_NEXT						=	7001
 E_HELP_PREV_LABEL				=	7005
 E_HELP_NEXT_LABEL				=	7006
 
-E_HELP_CONTETNT				= 	8500
+E_HELP_CONTETNT					= 	8500
 
 E_GROUP_LIST_CONTROL			=	9000
 
@@ -67,15 +66,16 @@ class Help( SettingWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		SettingWindow.__init__( self, *args, **kwargs )
 		self.mStepNum				= 	E_STEP_FEATURES
-		self.mPrevStepNum				= 	E_STEP_FEATURES
+		self.mPrevStepNum			= 	E_STEP_FEATURES
 		self.mRoot 					=	None
-		self.mListContent 				=	[]
+		self.mListContent 			=	[]
 
 		if not self.mPlatform.IsPrismCube( ) :
 			global HELP_STRING
 			HELP_STRING = 'special://home/addons/script.mbox/resources/skins/Default/720p/Help_String.xml'
 
 		self.mHelpString				=  	HELP_STRING		
+
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -99,23 +99,11 @@ class Help( SettingWindow ) :
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
+		if self.GlobalAction( actionId ) :
+			return
 
-		self.GlobalAction( actionId )
-
-		if actionId == Action.ACTION_PREVIOUS_MENU :
+		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.Close( )
-
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
-
-		elif actionId == Action.ACTION_PARENT_DIR :
-			self.Close( )
-
-		elif actionId == Action.ACTION_MOVE_LEFT :
-			self.ControlLeft( )
-
-		elif actionId == Action.ACTION_MOVE_RIGHT :
-			self.ControlRight( )
 
 
 	def onClick( self, aControlId ) :		
@@ -124,7 +112,7 @@ class Help( SettingWindow ) :
 				self.Close( )
 			else :
 				self.OpenAnimation( )
-				self.SetListControl( self.mStepNum +1)
+				self.SetListControl( self.mStepNum +1 )
 				self.setFocusId( aControlId )	
 
 		if aControlId == E_HELP_PREV :
@@ -166,19 +154,18 @@ class Help( SettingWindow ) :
 		self.getControl( E_HELP_CONTETNT ).setVisible( True )
 		self.AddPrevNextButton( )
 		self.SetPrevNextButtonLabel( )
-		
-		return
+
 
 	def MakeContentList ( self ) :
 		tree = ElementTree.parse( self.mHelpString )
 		self.mRoot = tree.getroot( )
 
-		for page in self.mRoot.findall( 'page' ):
-			for content in page.findall( 'content' ):
+		for page in self.mRoot.findall( 'page' ) :
+			for content in page.findall( 'content' ) :
 				self.mListContent.append( PageContent ( page.get( 'number' ), page.get( 'title' ), page.get( 'location' ), content.find( 'type' ).text, content.get( 'name' ), int( content.find( 'posx' ).text ), int( content.find( 'posy' ).text ), int( content.find( 'width' ).text ), int( content.find( 'height' ).text ) ) )
 
 
-	def DrawContents ( self, aList, aStep) :
+	def DrawContents ( self, aList, aStep ) :
 		contentcount = 0
 		self.SetTextboxInvisible( E_MAXIMUM_TEXTBOX_NUM )
 		
@@ -247,4 +234,3 @@ class PageContent :
 		self.mWidth = aWidth
 		self.mHeight = aHeight
 
-	

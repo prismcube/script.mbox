@@ -71,8 +71,7 @@
 				<texturefocus>-</texturefocus>
 				<texturenofocus>-</texturenofocus>
 				<onfocus>SetFocus(9010)</onfocus>
-				<!--<visible>[ Container(9000).HasFocus(1) | Container(9000).HasFocus(7) ] | [ Container(9000).HasFocus(5) + substring(Window.Property(IsPVR),false) ]</visible>-->
-				<visible>[ Container(9000).HasFocus(1) ] | [ Container(9000).HasFocus(6) + substring(Window.Property(IsPVR),false) ]</visible>
+				<visible>[ Container(9000).HasFocus(1) + substring(Window.Property(IsPVR),false) ] | [ Container(9000).HasFocus(6) ]</visible>
 			</control>
 			<control type="button" id="330">
 				<description>INVISIBLE button: No Submenu</description>

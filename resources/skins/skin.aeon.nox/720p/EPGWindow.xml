@@ -36,8 +36,8 @@
 		<!-- Channel Name on TOP side -->
 		<control type="label" id="400">
 			<description>Channel Name</description>					
-			<posx>105</posx>
-			<posy>10</posy>
+			<posx>360</posx>
+			<posy>8</posy>
 			<width>600</width>
 			<height>40</height>
 			<font>Font_Reg20</font>
@@ -45,7 +45,28 @@
 			<align>left</align>
 			<aligny>center</aligny>
 			<label></label>
-			<visible>substring(Window.Property(EPGMode),channel)</visible>			
+			<visible>substring(Window.Property(EPGMode),channel)</visible>		
+			<include>Animation_CommonFade</include>
+		</control>
+
+		<control type="image">
+			<posx>100</posx>
+			<posy>20</posy>
+			<width>23</width>
+			<height>20</height>
+			<texture>TSIconRewind.png</texture>
+			<visible>substring(Window.Property(EPGMode),channel)</visible>
+			<include>Animation_CommonFade</include>
+		</control>
+		
+		<control type="image">
+			<posx>745</posx>
+			<posy>20</posy>
+			<width>23</width>
+			<height>20</height>
+			<texture>TSIconFastForward.png</texture>
+			<visible>substring(Window.Property(EPGMode),channel)</visible>
+			<include>Animation_CommonFade</include>
 		</control>
 
 		<!-- PIP -->

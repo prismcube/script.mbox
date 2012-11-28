@@ -94,69 +94,83 @@ class InfoPlate( LivePlateWindow ) :
 
 
 	def onAction( self, aAction ) :
-		id = aAction.getId( )
-		self.GlobalAction( id )
-		if id >= Action.REMOTE_0 and id <= Action.REMOTE_9 :
-			self.MoveToSeekFrame( id-Action.REMOTE_0 )
+		actionId = aAction.getId( )
+		if self.GlobalAction( actionId ) :
+			return
 
-		elif id >= Action.ACTION_JUMP_SMS2 and id <= Action.ACTION_JUMP_SMS9 :
-			rKey = id - (Action.ACTION_JUMP_SMS2 - 2)
+		if actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
+			self.MoveToSeekFrame( int( actionId ) - Action.REMOTE_0 )
+
+		elif actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 :
+			rKey = actionId - (Action.ACTION_JUMP_SMS2 - 2)
 			self.MoveToSeekFrame( rKey )
 
-		elif id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR :
+		elif actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.Close( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
-		elif id == Action.ACTION_SELECT_ITEM :
+		elif actionId == Action.ACTION_SELECT_ITEM :
 			self.StopAutomaticHide( )
 			self.SetAutomaticHide( False )
 
-		elif id == Action.ACTION_CONTEXT_MENU :
+		elif actionId == Action.ACTION_CONTEXT_MENU :
 			self.StopAutomaticHide( )
 			self.SetAutomaticHide( False )
 			self.onClick( E_CONTROL_ID_BUTTON_DESCRIPTION_INFO )
 
-		elif id == Action.ACTION_MOVE_LEFT :
+		elif actionId == Action.ACTION_MOVE_LEFT :
 			pass
 
-		elif id == Action.ACTION_MOVE_RIGHT :
+		elif actionId == Action.ACTION_MOVE_RIGHT :
 			pass
 
-		elif id == Action.ACTION_STOP :
+		elif actionId == Action.ACTION_STOP :
 			ret = self.mDataCache.Player_Stop( )
 			if ret :
 				self.Close( )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
-		elif id == Action.ACTION_MBOX_ARCHIVE :
+		elif actionId == Action.ACTION_MBOX_ARCHIVE :
 			self.Close( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
-		elif id == Action.ACTION_SHOW_INFO :
+		elif actionId == Action.ACTION_SHOW_INFO :
 			self.Close( )
 			WinMgr.GetInstance( ).CloseWindow( )
 
-		elif id == Action.ACTION_PAUSE or id == Action.ACTION_PLAYER_PLAY :
+		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
+			from pvr.GuiHelper import HasAvailableRecordingHDD
+			if HasAvailableRecordingHDD( ) == False :
+				return
+				
 			self.Close( )
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = id
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
 			WinMgr.GetInstance( ).CloseWindow( )
 
-		elif id == Action.ACTION_MBOX_REWIND :
+		elif actionId == Action.ACTION_MBOX_REWIND :
+			from pvr.GuiHelper import HasAvailableRecordingHDD
+			if HasAvailableRecordingHDD( ) == False :
+				return
+				
 			self.Close( )
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = id
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
 			WinMgr.GetInstance( ).CloseWindow( )
 
-		elif id == Action.ACTION_MBOX_FF :
+		elif actionId == Action.ACTION_MBOX_FF :
+			from pvr.GuiHelper import HasAvailableRecordingHDD
+			if HasAvailableRecordingHDD( ) == False :
+				return
+				
 			self.Close( )			
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = id
+			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE ).mPrekey = actionId
 			WinMgr.GetInstance( ).CloseWindow( )
 
-		elif id == Action.ACTION_MBOX_TVRADIO :
+		elif actionId == Action.ACTION_MBOX_TVRADIO :
 			pass
 			#ToDo warning msg
 
 		#test
-		elif id == 13: #'x'
+		elif actionId == 13: #'x'
 			LOG_TRACE( 'cwd[%s]'% xbmc.getLanguage( ) )
 
 

@@ -20,9 +20,6 @@ class ManualScan( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
-		self.mEventBus.Register( self )
-		ScanHelper.GetInstance( ).ScanHelper_Start( self.mWin )
-
 		self.SetSettingWindowLabel( MR_LANG( 'Manual Scan' ) )
 		self.VisibleTuneStatus( False )
 		self.mIsManualSetup = 0
@@ -35,11 +32,13 @@ class ManualScan( SettingWindow ) :
 
 		hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04, E_SpinEx05, E_SpinEx06 ]
 		if len( self.mConfiguredSatelliteList ) > 0 :
+			self.mEventBus.Register( self )
 			self.SetVisibleControls( hideControlIds, True )
 			self.LoadTransponderList( )
 			self.SetConfigTransponder( )
 			self.InitConfig( )
 			self.SetFocusControl( E_Input01 )
+			ScanHelper.GetInstance( ).ScanHelper_Start( self.mWin )
 			ScanHelper.GetInstance( ).ScanHelper_ChangeContext( self.mWin, self.mConfiguredSatelliteList[ self.mSatelliteIndex ], self.mConfigTransponder )
 			self.mAvBlankStatus = self.mDataCache.Get_Player_AVBlank( )
 			self.mDataCache.Player_AVBlank( False )
@@ -51,13 +50,20 @@ class ManualScan( SettingWindow ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is no configured satellite in the list' ) )
  			dialog.doModal( )
-			WinMgr.GetInstance( ).CloseWindow( )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Do you want to go to antenna setup?' ) )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP, WinMgr.WIN_ID_MAINMENU )
+			else :
+				WinMgr.GetInstance( ).CloseWindow( )
 
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
-		self.GlobalAction( actionId )
+		if self.GlobalAction( actionId ) :
+			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.OpenBusyDialog( )

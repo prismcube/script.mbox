@@ -421,6 +421,17 @@ def CheckHdd( ) :
 	return False
 
 
+def	HasAvailableRecordingHDD( ) :
+	import pvr.gui.DialogMgr as DiaMgr
+	if CheckHdd( ) == False :
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Hard disk drive not detected' ) )
+		dialog.doModal( )
+		return False
+
+	return True
+
+
 def CheckEthernet( aEthName ) :
 	status = 'down'
 	cmd = 'cat /sys/class/net/%s/operstate'% aEthName
@@ -541,15 +552,19 @@ def GetSTBVersion( ) :
 	return stbversion
 
 
-def UnpackToUSB( aZipFile, aDestPath ) :
+def UnpackToUSB( aZipFile, aUsbPath, aUnpackSize = 0 ) :
 	isCopy = False
-	cmd = 'unzip -o %s -d %s'% ( aZipFile, aDestPath )
+	cmd = 'unzip -o %s -d %s'% ( aZipFile, aUsbPath )
 
-	if not os.path.exists( aDestPath ) :
-		LOG_TRACE( '------------check usb[%s]'% aDestPath )
+	if not os.path.exists( aUsbPath ) :
+		LOG_TRACE( '------------check usb[%s]'% aUsbPath )
 		return isCopy
 
-	RemoveDirectory( '%s/update'% aDestPath )
+	RemoveDirectory( '%s/update'% aUsbPath )
+	usbSize = GetDeviceSize( aUsbPath )
+	if usbSize <= aUnpackSize :
+		return -1
+
 	try :
 		LOG_TRACE( 'execute cmd[%s]'% cmd )
 		returnCode = os.system( cmd )
@@ -607,14 +622,14 @@ def GetDirectorySize( aPath ) :
 	return dir_size 
 
 
-def GetURLpage( aUrl, aWriteFileName = None, aCache = True ) :
+def GetURLpage( aUrl, aWriteFileName = None ) :
 	isExist = False
 	try :
 		#f = urllib.urlopen( url )
 		f = urllib.URLopener( ).open( aUrl )
 		if f :
 			isExist = True
-			if aCache and aWriteFileName :
+			if aWriteFileName :
 				try :
 					fd = open( aWriteFileName, 'w' )
 					fd.write( f.read( ) )
@@ -631,15 +646,14 @@ def GetURLpage( aUrl, aWriteFileName = None, aCache = True ) :
 	return isExist
 
 
-def ParseStringInXML( xmlFile, tagNames ) :
+def ParseStringInXML( xmlFile, tagNames, aRootName = 'software' ) :
 	lists = []
 	#if os.path.exists(xmlFile) :
 	if xmlFile :
-
 		parseTree = ElementTree.parse( xmlFile )
 		treeRoot = parseTree.getroot( )
 
-		for node in treeRoot.findall( 'software' ) :
+		for node in treeRoot.findall( aRootName ) :
 			lines = []
 			for tagName in tagNames :
 				if node.findall( tagName ) :

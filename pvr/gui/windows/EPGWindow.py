@@ -112,10 +112,9 @@ class EPGWindow( BaseWindow ) :
 	def onAction( self, aAction ) :
 		self.GetFocusId()
 		actionId = aAction.getId( )
-		self.GlobalAction( actionId )
+		if self.GlobalAction( actionId ) :
+			return
 
-		
-		#LOG_TRACE('onAction=%d' %actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR or actionId == Action.ACTION_SHOW_INFO:
 			self.Close( )
@@ -805,6 +804,11 @@ class EPGWindow( BaseWindow ) :
 
 	def ShowEPGTimer( self, aEPG ) :
 		LOG_TRACE( 'ShowEPGTimer' )
+
+		from pvr.GuiHelper import HasAvailableRecordingHDD
+		if HasAvailableRecordingHDD( ) == False :
+			return
+			
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ADD_TIMER )
 		dialog.SetEPG( aEPG )
 		dialog.doModal( )
@@ -828,6 +832,11 @@ class EPGWindow( BaseWindow ) :
 		
 
 	def ShowEditTimer( self ) :
+
+		from pvr.GuiHelper import HasAvailableRecordingHDD
+		if HasAvailableRecordingHDD( ) == False :
+			return
+			
 		selectedEPG = self.GetSelectedEPG( )
 
 		timer = None
@@ -858,6 +867,10 @@ class EPGWindow( BaseWindow ) :
 	 			dialog.doModal( )
 				return
 		"""
+
+		from pvr.GuiHelper import HasAvailableRecordingHDD
+		if HasAvailableRecordingHDD( ) == False :
+			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_ADD_MANUAL_TIMER )
 

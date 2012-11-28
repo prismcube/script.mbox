@@ -1,6 +1,7 @@
 from pvr.gui.WindowImport import *
 import sys, inspect, time
 
+
 class NullWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
@@ -21,28 +22,18 @@ class NullWindow( BaseWindow ) :
 
 		if self.mInitialized == False :
 			self.mInitialized = True
-			self.mCommander.AppHBBTV_Ready( 1 )
-			self.mHBBTVReady = True
-			WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
-			xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
-			return
+			if self.mDataCache.GetFristInstallation( ) :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
+				return
+			else :
+				self.mCommander.AppHBBTV_Ready( 1 )
+				self.mHBBTVReady = True
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
+				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
+				return
 
 		self.mEventBus.Register( self )
-
-		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
-			if ( self.getProperty( 'TVRadio' ) == 'True' and self.SetRadioScreen( ) == 'False' and \
-			   self.mDataCache.Zappingmode_GetCurrent( ).mServiceType == ElisEnum.E_SERVICE_TYPE_TV ) or \
-			   ( self.getProperty( 'TVRadio' ) != self.SetRadioScreen( ) and \
-			   self.mDataCache.Zappingmode_GetCurrent( ).mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO ) :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-
-			"""
-			#ToDO : xbmc problem gui hold
-			#if self.LoadNoSignalState( self.getProperty( 'Signal' ) ) == False :
-			#	WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-			"""
-
-		
+		self.LoadNoSignalState( )
 
 		if E_SUPPROT_HBBTV == True :
 			status = self.mDataCache.Player_GetStatus( )
@@ -69,7 +60,6 @@ class NullWindow( BaseWindow ) :
 					LOG_ERR('self.mHBBTVReady = %s, self.mMediaPlayerStarted =%s'%( self.mHBBTVReady, self.mMediaPlayerStarted ) )
 					self.mForceSetCurrent = True
 
-
 		"""
 		currentStack = inspect.stack( )
 		LOG_TRACE( '+++++getrecursionlimit[%s] currentStack[%s]'% (sys.getrecursionlimit( ), len(currentStack)) )
@@ -84,12 +74,13 @@ class NullWindow( BaseWindow ) :
 		"""
 
 
-
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-		self.GlobalAction( actionId )
-		LOG_ERR( 'ACTION_TEST actionID=%d'% actionId )
+		if self.GlobalAction( actionId ) :
+			return
 
+
+		LOG_ERR( 'ACTION_TEST actionID=%d'% actionId )
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_MOVE_LEFT :
 			if ElisPropertyEnum( 'Lock Mainmenu', self.mCommander ).GetProp( ) == 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -180,7 +171,7 @@ class NullWindow( BaseWindow ) :
 
 			aKey = actionId - (Action.ACTION_JUMP_SMS2 - 2)
 			if actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
-				aKey = actionId - Action.REMOTE_0
+				aKey = int( actionId ) - Action.REMOTE_0
 
 			if aKey == 0 :
 				return -1
@@ -271,15 +262,13 @@ class NullWindow( BaseWindow ) :
 			if status.mMode == ElisEnum.E_MODE_LIVE :
 				ret = self.mDataCache.ToggleTVRadio( )
 				if ret :
-					self.SetRadioScreen( )
+					self.Close( )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV/Radio channel is available' ) )
 					dialog.doModal( )
-
-				self.Close( )
-				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif actionId == Action.ACTION_MBOX_RECORD :
 			status = self.mDataCache.Player_GetStatus( )
@@ -292,6 +281,10 @@ class NullWindow( BaseWindow ) :
 				self.ShowRecordingStartDialog( )
 		
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
+			from pvr.GuiHelper import HasAvailableRecordingHDD
+			if HasAvailableRecordingHDD( ) == False :
+				return
+				
 			if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
 				return -1
 
@@ -314,11 +307,18 @@ class NullWindow( BaseWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
+			from pvr.GuiHelper import HasAvailableRecordingHDD
+			if HasAvailableRecordingHDD( ) == False :
+				return
+				
 			self.Close( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_MBOX_TEXT :
-			self.mDataCache.Teletext_Show( )
+			if not self.mDataCache.Teletext_Show( ) :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No teletext is available' ) )
+				dialog.doModal( )
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
 			pass
@@ -484,6 +484,10 @@ class NullWindow( BaseWindow ) :
 	def ShowRecordingStartDialog( self ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		#LOG_TRACE( 'runningCount[%s]' %runningCount)
+		
+		from pvr.GuiHelper import HasAvailableRecordingHDD
+		if HasAvailableRecordingHDD( ) == False :
+			return
 
 		isOK = False
 		if runningCount < 2 :

@@ -14,8 +14,7 @@ class AutomaticScan( SettingWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
 		self.SetSettingWindowLabel( 'Automatic Scan' )
-		self.LoadNoSignalState( )
-
+		
 		self.mSatelliteIndex = 0
 		self.mFormattedList = None
 		self.mConfiguredSatelliteList = None		
@@ -24,6 +23,7 @@ class AutomaticScan( SettingWindow ) :
 
 		hideControlIds = [ E_Input01, E_Input02, E_SpinEx01, E_SpinEx02 ]
 		if self.mConfiguredSatelliteList and self.mConfiguredSatelliteList[0].mError == 0 :
+			self.LoadNoSignalState( )
 			self.SetVisibleControls( hideControlIds, True )
 			self.InitConfig( )
 			self.SetFocusControl( E_Input01 )
@@ -35,13 +35,20 @@ class AutomaticScan( SettingWindow ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is no configured satellite in the list' ) )
 			dialog.doModal( )
-			WinMgr.GetInstance( ).CloseWindow( )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Do you want to go to antenna setup?' ) )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP, WinMgr.WIN_ID_MAINMENU )
+			else :
+				WinMgr.GetInstance( ).CloseWindow( )
 
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
-		self.GlobalAction( actionId )
+		if self.GlobalAction( actionId ) :
+			return
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )

@@ -521,7 +521,6 @@ class WirelessParser :
 			return ENCRYPT_TYPE_WPA
 
 
-
 	def WriteWpaSupplicant( self, aUseHiddenId, aHiddenSsid, aCurrentSsid, aEncryptType, aPassWord ) :
 		try :
 			openFile = open( FILE_WPA_SUPPLICANT, 'w' )

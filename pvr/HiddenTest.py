@@ -1,8 +1,9 @@
 from pvr.gui.WindowImport import *
 from pvr.HiddenTestMgr import *
+import xbmcaddon
 
 
-FILE_NAME_TEST	=	'/home/root/elmo_test.xml'
+FILE_NAME_TEST = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/elmo_test.xml'
 
 
 class HiddenTest( BaseWindow ) :
@@ -116,6 +117,7 @@ class HiddenTest( BaseWindow ) :
 		self.OpenBusyDialog( )
 		from ElisProperty import GetPropertyTable
 		table = GetPropertyTable( )
+		errcnt = 0
 		for prop in table :
 			target = self.mCommander.Property_GetValue( prop[0] )
 			if len( target ) != ( len( prop ) - 1 ) :
@@ -134,19 +136,18 @@ class HiddenTest( BaseWindow ) :
 				print 'mString = %s' % target[i].mString
 
 				if prop[i+1][0] != target[i].mValue :
-					self.CloseBusyDialog( )
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), 'Property value is different', 'Name = %s' % prop[0], 'prop = %s, target = %s' % ( prop[i+1][0], target[i].mValue ) )
 					dialog.doModal( )
-					return
+					errcnt = errcnt + 1
+					
 				if prop[i+1][1] != target[i].mString :
-					self.CloseBusyDialog( )
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), 'Property string is different', 'Name = %s' % prop[0], 'prop = %s, target = %s' % ( prop[i+1][1], target[i].mString ) )	
 					dialog.doModal( )
-					return
+					errcnt = errcnt + 1
 
 		self.CloseBusyDialog( )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		dialog.SetDialogProperty( MR_LANG( 'Complete' ), 'Property check success' )
+		dialog.SetDialogProperty( 'Complete', 'Property check finished', 'error cnt = %s' % errcnt )
 		dialog.doModal( )

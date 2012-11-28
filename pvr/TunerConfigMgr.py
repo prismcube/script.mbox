@@ -101,7 +101,7 @@ class TunerConfigMgr( object ) :
 
 	def GetConfiguredSatellitebyIndex( self, aSatelliteIndex ) :
 		configuredsatellitelist = self.GetConfiguredSatelliteList( )
-		if configuredsatellitelist :
+		if len( configuredsatellitelist ) > 0 :
 			return configuredsatellitelist[ aSatelliteIndex ]
 		else :
 			return None
@@ -145,20 +145,13 @@ class TunerConfigMgr( object ) :
 
 		tmpTuner1ConfiguredList = deepcopy( self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_1 ) )
 		tmpTuner2ConfiguredList = deepcopy( self.mDataCache.GetConfiguredSatelliteListByTunerIndex( E_TUNER_2 ) )
-
 		if tmpTuner1ConfiguredList == None :
 			tmpTuner1ConfiguredList = []
-			tmpTuner1ConfiguredList.append( self.GetDefaultConfig( ) )
-			self.mOrgConfiguredList1 = None
-		else :
-			self.mOrgConfiguredList1 = deepcopy( tmpTuner1ConfiguredList )
-
 		if tmpTuner2ConfiguredList == None :
 			tmpTuner2ConfiguredList = []
-			tmpTuner2ConfiguredList.append( self.GetDefaultConfig( ) )
-			self.mOrgConfiguredList2 = None
-		else :
-			self.mOrgConfiguredList2 = deepcopy( tmpTuner2ConfiguredList )
+
+		self.mOrgConfiguredList1 = deepcopy( tmpTuner1ConfiguredList )
+		self.mOrgConfiguredList2 = deepcopy( tmpTuner2ConfiguredList )
 
 		self.mDiseqc10List1			= deepcopy( tmpTuner1ConfiguredList )
 		self.SatelliteSetFlag( self.mDiseqc10List1, E_TUNER_1, E_DISEQC_1_0 )
@@ -184,8 +177,12 @@ class TunerConfigMgr( object ) :
 			self.mOneCableList2 = self.mOneCableList2[0:2]
 		self.SatelliteSetFlag( self.mOneCableList1, E_TUNER_1, E_ONE_CABLE )
 		self.SatelliteSetFlag( self.mOneCableList2, E_TUNER_2, E_ONE_CABLE )
-		self.mSimpleLnbList1 = [ tmpTuner1ConfiguredList[0] ]
-		self.mSimpleLnbList2 = [ tmpTuner2ConfiguredList[0] ]
+		self.mSimpleLnbList1 = []
+		self.mSimpleLnbList2 = []
+		if len( tmpTuner1ConfiguredList ) > 0 :	
+			self.mSimpleLnbList1 = [ tmpTuner1ConfiguredList[0] ]
+		if len( tmpTuner2ConfiguredList ) > 0 :	
+			self.mSimpleLnbList2 = [ tmpTuner2ConfiguredList[0] ]
 		self.SatelliteSetFlag( self.mSimpleLnbList1, E_TUNER_1, E_SIMPLE_LNB )
 		self.SatelliteSetFlag( self.mSimpleLnbList2, E_TUNER_2, E_SIMPLE_LNB )
 
@@ -197,7 +194,7 @@ class TunerConfigMgr( object ) :
 		tuner1ConfiguredList = self.GetCurrentSatelliteList( E_TUNER_1 )
 		tuner2ConfiguredList = self.GetCurrentSatelliteList( E_TUNER_2 )
 
-		if tuner1ConfiguredList :
+		if len( tuner1ConfiguredList ) > 0 :
 			self.SatelliteSetFlag( tuner1ConfiguredList, E_TUNER_1, self.GetTunerTypeByTunerIndex( E_TUNER_1 ) )
 			"""
 			for st in tuner1ConfiguredList :
@@ -210,16 +207,16 @@ class TunerConfigMgr( object ) :
 				for i in range( len( tuner2ConfiguredList ) ) :
 					tuner2ConfiguredList[i].mTunerIndex = E_TUNER_2
 		else :
-			if tuner2ConfiguredList :
+			if len( tuner2ConfiguredList ) > 0 :
 				self.SatelliteSetFlag( tuner2ConfiguredList, E_TUNER_2, self.GetTunerTypeByTunerIndex( E_TUNER_2 ) )
 				"""
 				for st in tuner2ConfiguredList :
 					st.printdebug( )
 				"""
-
-		if tuner1ConfiguredList :
+				
+		if len( tuner1ConfiguredList ) > 0 :
 			self.mCommander.Satelliteconfig_SaveList( tuner1ConfiguredList )
-		if tuner2ConfiguredList :
+		if len( tuner2ConfiguredList ) > 0 :
 			self.mCommander.Satelliteconfig_SaveList( tuner2ConfiguredList )
 
 
@@ -241,14 +238,14 @@ class TunerConfigMgr( object ) :
 		ElisPropertyInt( 'MyLatitude', self.mCommander ).SetProp( self.mOriginalTunerConfig[12] )
 
 		self.mCommander.Satelliteconfig_DeleteAll( ) 
-		if self.mOrgConfiguredList1 :
+		if len( self.mOrgConfiguredList1 ) > 0 :
 			self.mCommander.Satelliteconfig_SaveList( self.mOrgConfiguredList1 )
-		if self.mOrgConfiguredList2 :
+		if len( self.mOrgConfiguredList2 ) > 0 :
 			self.mCommander.Satelliteconfig_SaveList( self.mOrgConfiguredList2 )
 
 
 	def SatelliteSetFlag( self, aSatelliteList, aTunerNumber, aTunerType ) :
-		if aSatelliteList :
+		if len( aSatelliteList ) > 0 :
 			for i in range( len( aSatelliteList ) ) :
 				aSatelliteList[i].mTunerIndex = aTunerNumber
 				aSatelliteList[i].mSlotNumber = i
@@ -387,20 +384,21 @@ class TunerConfigMgr( object ) :
 		return self.mNeedLoad
 
 
-	def SetFristInstallation( self, aEnable ) :
-		self.mFirstInstallation = aEnable
-
-
-	def GetFristInstallation( self ) :
-		return self.mFirstInstallation
-
-
 	def SetOnecableSatelliteCount( self, aCount ) :
 		self.mOnecableSatelliteCount = aCount
 
 
 	def GetOneCableSatelliteCount( self ) :
 		return self.mOnecableSatelliteCount
+
+
+	def CheckSameSatellite( self, aIndex ) :
+		ConfiguredSatelliteList = self.GetConfiguredSatelliteList( )
+		if len( ConfiguredSatelliteList ) > 0 :
+			for satellite in ConfiguredSatelliteList :
+				if satellite.mSatelliteLongitude == self.mAllSatelliteList[aIndex].mLongitude and satellite.mBandType == self.mAllSatelliteList[aIndex].mBand :
+					return False
+		return True
 
 
 	def SyncChannelBySatellite( self ) :

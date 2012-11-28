@@ -104,7 +104,6 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mWin = None
 		self.mWinId = 0
 		self.mClosed = False
-		self.mStartMediaCenter = False
 
 		self.mFocusId = -1
 		self.mLastFocused = -1
@@ -138,23 +137,35 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def GlobalAction( self, aActionId ) :
+		mExecute = False
 		if self.mDataCache.GetRunningHiddenTest( ) and aActionId == Action.ACTION_STOP :
 			self.mDataCache.SetRunningHiddenTest( False )
-	
+
+		if self.mDataCache.GetMediaCenter( ) :
+			if aActionId == Action.ACTION_PREVIOUS_MENU or aActionId == Action.ACTION_PARENT_DIR :
+				#blocking action key during Channel_SetCurrentSync()
+				mExecute = False
+			else :
+				mExecute = True
+
 		if aActionId == Action.ACTION_MUTE :
 			self.UpdateVolume( 0 )
+			mExecute = True
 
 		elif aActionId == Action.ACTION_VOLUME_UP :
 			self.UpdateVolume( VOLUME_STEP )
+			mExecute = True
 
 		elif aActionId == Action.ACTION_VOLUME_DOWN :
 			self.UpdateVolume( -VOLUME_STEP )
+			mExecute = True
 
 		elif aActionId == Action.ACTION_RELOAD_SKIN :
 			import pvr.gui.WindowMgr as WinMgr
 			WinMgr.GetInstance( ).ReloadWindow( WinMgr.GetInstance( ).mLastId, WinMgr.WIN_ID_NULLWINDOW )
+			mExecute = True
 
-		
+		return mExecute
 
 
 	def SetPipScreen( self ) :
@@ -181,11 +192,9 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		if aType == ElisEnum.E_SERVICE_TYPE_RADIO :
 			radio = 'True'
 			state = True
-		else :
-			self.mDataCache.Player_VideoBlank( False )
 
 		self.setProperty( 'TVRadio', radio )
-
+		#LOG_TRACE('--------------radio--property[%s] type[%s]'% ( radio, aType ) )
 		return radio
 
 
@@ -193,7 +202,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mCommander.Player_SetVIdeoSize( 0, 0, 1280, 720 )
 
 
-	def LoadNoSignalState( self, aProperty = None ) :
+	def LoadNoSignalState( self ) :
 		if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
 			self.setProperty( 'Signal', 'Scramble' )
 			state = 'Scramble'
@@ -203,11 +212,6 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		else :
 			self.setProperty( 'Signal', 'True' )
 			state = 'True'
-		if aProperty != None :
-			if aProperty == state :
-				return True
-			else :
-				return False
 
 
 	def VisibleTuneStatus( self , aFlag ) :
@@ -248,28 +252,24 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def SetMediaCenter( self ) :
-		self.mStartMediaCenter = True
+		self.mDataCache.SetMediaCenter( True )
 		self.mCommander.AppMediaPlayer_Control( 1 )
 
 
 	def CheckMediaCenter( self ) :
-		if self.mStartMediaCenter == True :
+		if self.mDataCache.GetMediaCenter( ) == True :
 			self.mCommander.AppMediaPlayer_Control( 0 )
-
-			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
-			self.UpdateVolume( )
-
-			self.mStartMediaCenter = False
 			#current channel re-zapping
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if iChannel :
 				self.mDataCache.Channel_InvalidateCurrent( )
 				self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
 
+			self.UpdateVolume( )
+			pvr.gui.WindowMgr.GetInstance( ).CheckGUISettings( )
+			self.mDataCache.SetMediaCenter( False )
 
-		#do not execute only nullwindow 
-		if self.GetName( ) != 'NullWindow' :
-			self.SetRadioScreen( )
+		self.SetRadioScreen( )
 
 
 	def OpenBusyDialog( self ) :

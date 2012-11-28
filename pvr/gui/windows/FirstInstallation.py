@@ -32,17 +32,35 @@ class FirstInstallation( SettingWindow ) :
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )
 		self.SetListControl( self.mStepNum )
-		ConfigMgr.GetInstance( ).SetFristInstallation( True )
 		self.SetPipLabel( )
 		self.mLastFocused = self.getFocusId( )
 		self.mInitialized = True
+		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
+			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No satellite data is available' ) )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No satellite data is available\nPlease factory reset your STB' )	)
+			dialog.doModal( )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Do you want to go to configuration?' ) )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				self.ResetAllControl( )
+				self.SetVideoRestore( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE, WinMgr.WIN_ID_MAINMENU )
+			else :
+				self.ResetAllControl( )
+				self.SetVideoRestore( )
+				WinMgr.GetInstance( ).CloseWindow( )
+
+		self.mDataCache.SetFristInstallation( True )
 
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
+		if self.GlobalAction( actionId ) :
+			return
 
-		self.GlobalAction( actionId )
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			if self.mStepNum == E_STEP_RESULT :
@@ -86,8 +104,15 @@ class FirstInstallation( SettingWindow ) :
 				if groupId == E_Input01 :
 					menuLanguageList = WinMgr.GetInstance( ).GetLanguageList( )
 					dialog = xbmcgui.Dialog( )
-					ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList, False, StringToListIndex( menuLanguageList, self.GetControlLabel2String( E_Input01 ) ) )
-					if ret >= 0 :
+					currentindex = StringToListIndex( menuLanguageList, self.GetControlLabel2String( E_Input01 ) )
+					ret = dialog.select( MR_LANG( 'Select Menu Language' ), menuLanguageList, False, currentindex )
+					if ret >= 0 and currentindex != ret :
+						if not self.mPlatform.IsPrismCube( ) :
+							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+							dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+							dialog.doModal( )
+							return
+
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Please be patience after pressing the OK button' ), MR_LANG( 'It will take some time to bring up display changes' ) )
 						dialog.doModal( )
@@ -101,7 +126,6 @@ class FirstInstallation( SettingWindow ) :
 					if ret >= 0 :
 						ElisPropertyEnum( 'Audio Language', self.mCommander ).SetPropIndex( ret )
 						self.SetControlLabel2String( E_Input02, self.mAudioLanguageList[ ret ] )
-			return
 
 		elif self.mStepNum == E_STEP_VIDEO_AUDIO :
 			if groupId == E_FIRST_TIME_INSTALLATION_NEXT :
@@ -140,12 +164,14 @@ class FirstInstallation( SettingWindow ) :
 		self.OpenBusyDialog( )
 		self.ResetAllControl( )
 		self.mStepNum = E_STEP_SELECT_LANGUAGE
-		ConfigMgr.GetInstance( ).SetFristInstallation( False )
+		self.mDataCache.SetFristInstallation( False )
 		self.mTunerMgr.SyncChannelBySatellite( )
 		self.mDataCache.Channel_ReLoad( )
 		self.mDataCache.Player_AVBlank( False )
 		self.CloseBusyDialog( )
 		self.SetVideoRestore( )
+		if self.mStepNum == E_STEP_RESULT :
+			self.mDataCache.Channel_TuneDefault( )
 		WinMgr.GetInstance( ).CloseWindow( )
 
 
@@ -489,4 +515,3 @@ class FirstInstallation( SettingWindow ) :
 				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )
 				self.SetListControl( E_STEP_RESULT )
-

@@ -42,7 +42,8 @@ class SatelliteConfigOnecable( SettingWindow ) :
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-		self.GlobalAction( actionId )		
+		if self.GlobalAction( actionId ) :
+			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			if self.mSatelliteCount > 1 :
@@ -84,19 +85,62 @@ class SatelliteConfigOnecable( SettingWindow ) :
 		groupId = self.GetGroupId( aControlId )
 
 		if groupId == E_Input01 :
-			self.ResetAllControl( )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_ONECABLE_2 )
+			if len( self.mTunerMgr.GetConfiguredSatelliteList( ) ) == 0 :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is no configured satellite in the list' ) )
+	 			dialog.doModal( )
+			else :
+				self.ResetAllControl( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_ONECABLE_2 )
 		
 		elif groupId == E_SpinEx01 :
 			self.DisableControl( )
 
 		else :
 			position = self.GetControlIdToListIndex( groupId ) - 2
-			self.mTunerMgr.SetCurrentConfigIndex( position )
-			self.ResetAllControl( )
-			if self.mSatelliteNamelist[position] == MR_LANG( 'None' ) :
-				self.mTunerMgr.AddConfiguredSatellite( 0 )
-			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_SIMPLE )
+			if position == 0 :
+				if self.mSatelliteNamelist[0] == MR_LANG( 'None' ) :
+					self.AddNewSatellite( 0 )
+				else :
+					self.mTunerMgr.SetCurrentConfigIndex( 0 )
+					self.ResetAllControl( )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_SIMPLE )
+			else :
+				if self.mSatelliteNamelist[0] == MR_LANG( 'None' ) :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You have you config satellite 1 first' ) )
+		 			dialog.doModal( )
+		 			return
+		 		if self.mSatelliteNamelist[1] == MR_LANG( 'None' ) :
+					self.AddNewSatellite( 1 )
+				else :
+					self.mTunerMgr.SetCurrentConfigIndex( 1 )
+					self.ResetAllControl( )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_SIMPLE )
+		 			
+
+	def AddNewSatellite( self, aPosition ) :
+		dialog = xbmcgui.Dialog( )
+		satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
+		ret = dialog.select(  MR_LANG( 'Add Satellite' ), satelliteList )
+		if ret >= 0 :
+			self.OpenBusyDialog( )
+			if self.mTunerMgr.CheckSameSatellite( ret ) :
+				self.mTunerMgr.AddConfiguredSatellite( ret )
+				self.mTunerMgr.SatelliteConfigSaveList( )
+				self.ReTune( )
+				self.mDataCache.LoadConfiguredSatellite( )
+				self.mDataCache.LoadConfiguredTransponder( )
+				self.LoadConfigedSatellite( )
+				self.CloseBusyDialog( )
+				self.mTunerMgr.SetCurrentConfigIndex( aPosition )
+				self.ResetAllControl( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_SIMPLE )
+		 	else :
+		 		self.CloseBusyDialog( )
+		 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Same satellite already configured' ) )
+	 			dialog.doModal( )
 
 
 	def onFocus( self, aControlId ) :
@@ -130,4 +174,11 @@ class SatelliteConfigOnecable( SettingWindow ) :
 				self.mSatelliteNamelist.append( self.mDataCache.GetFormattedSatelliteName( configuredList[i].mSatelliteLongitude, configuredList[i].mBandType ) )
 			else :
 				self.mSatelliteNamelist.append( MR_LANG( 'None' ) )
+
+
+	def ReTune( self ) :
+		iChannel = self.mDataCache.Channel_GetCurrent( )
+		if iChannel :
+			self.mDataCache.Channel_InvalidateCurrent( )
+			self.mDataCache.Channel_SetCurrentSync( iChannel.mNumber, iChannel.mServiceType )
 

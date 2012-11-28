@@ -48,9 +48,9 @@
 		</control>
 
 		<control type="label" id="400">
-			<include>DefaultWindowFade</include>				
-			<description>Channel Name</description>					
-			<posx>115</posx>
+			<include>DefaultWindowFade</include>	
+			<description>Channel Name</description>	
+			<posx>340</posx>
 			<posy>62</posy>
 			<width>600</width>
 			<height>40</height>
@@ -59,6 +59,26 @@
 			<align>left</align>
 			<aligny>center</aligny>
 			<label></label>
+			<visible>substring(Window.Property(EPGMode),channel)</visible>
+		</control>
+
+		<control type="image">
+			<include>DefaultWindowFade</include>	
+			<posx>120</posx>
+			<posy>73</posy>
+			<width>23</width>
+			<height>20</height>
+			<texture>TSIconRewind.png</texture>
+			<visible>substring(Window.Property(EPGMode),channel)</visible>
+		</control>
+		
+		<control type="image">
+			<include>DefaultWindowFade</include>
+			<posx>750</posx>
+			<posy>73</posy>
+			<width>23</width>
+			<height>20</height>
+			<texture>TSIconFastForward.png</texture>
 			<visible>substring(Window.Property(EPGMode),channel)</visible>
 		</control>
 

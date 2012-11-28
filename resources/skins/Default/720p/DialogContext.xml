@@ -57,7 +57,7 @@
 				<posx>34</posx>
 				<posy>0</posy>
 				<width>297</width>
-				<height>380</height>						<!--Change ProPerty ItemHeight * 10 -->
+				<height>456</height>						<!--Change ProPerty ItemHeight * MAX_ITEM(12) -->
 				<onup>102</onup>
 				<ondown>102</ondown>
 				<onleft>103</onleft>

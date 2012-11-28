@@ -38,7 +38,8 @@ class DialogInputPincode( BaseDialog ) :
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-		self.GlobalAction( actionId )
+		if self.GlobalAction( actionId ) :
+			return
 
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
@@ -49,7 +50,7 @@ class DialogInputPincode( BaseDialog ) :
 			pass
 				
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :		# number
-			self.InputNumber( actionId - Action.REMOTE_0 )
+			self.InputNumber( int( actionId ) - Action.REMOTE_0 )
 
 		elif actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 :
 			self.InputNumber( actionId + 2 - Action.ACTION_JUMP_SMS2 )

@@ -210,28 +210,27 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def onAction( self, aAction ) :
-		id = aAction.getId( )
-		LOG_TRACE('-------------------actionID[%s]'% id )
+		actionId = aAction.getId( )
+		if self.GlobalAction( actionId ) :
+			return
 
-		self.GlobalAction( id )
+		if actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
+			self.TuneByNumber( int( actionId ) - Action.REMOTE_0 )
 
-		if id >= Action.REMOTE_0 and id <= Action.REMOTE_9 :
-			self.TuneByNumber( id-Action.REMOTE_0 )
-
-		elif id >= Action.ACTION_JUMP_SMS2 and id <= Action.ACTION_JUMP_SMS9 :
-			rKey = id - (Action.ACTION_JUMP_SMS2 - 2)
+		elif actionId >= Action.ACTION_JUMP_SMS2 and actionId <= Action.ACTION_JUMP_SMS9 :
+			rKey = actionId - ( Action.ACTION_JUMP_SMS2 - 2 )
 			self.TuneByNumber( rKey )
 
-		elif id == Action.ACTION_PREVIOUS_MENU or id == Action.ACTION_PARENT_DIR :
+		elif actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			#LOG_TRACE( 'goto previous menu' )
 			if self.mMoveFlag :
-				self.SetMoveMode( FLAG_OPT_MOVE_OK, id )
+				self.SetMoveMode( FLAG_OPT_MOVE_OK, actionId )
 			else :
 				self.GoToPreviousWindow( )
 
-		elif id == Action.ACTION_SELECT_ITEM :
+		elif actionId == Action.ACTION_SELECT_ITEM :
 			self.GetFocusId( )
-			#LOG_TRACE( 'item select, action ID[%s]'% id )
+			#LOG_TRACE( 'item select, action ID[%s]'% actionId )
 
 			if self.mFocusId == E_CONTROL_ID_LIST_MAINMENU :
 				position = self.mCtrlListMainmenu.getSelectedPosition( )
@@ -242,21 +241,21 @@ class ChannelListWindow( BaseWindow ) :
 				else :
 					self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
 
-		elif id == Action.ACTION_MOVE_RIGHT :
+		elif actionId == Action.ACTION_MOVE_RIGHT :
 			pass
 
-		elif id == Action.ACTION_MOVE_LEFT :
+		elif actionId == Action.ACTION_MOVE_LEFT :
 			self.GetFocusId( )
 			if self.mFocusId == E_CONTROL_ID_LIST_CHANNEL_LIST :
 				self.SetSlideMenuHeader( FLAG_SLIDE_OPEN )
 				self.mSlideOpenFlag = True
 
-		elif id == Action.ACTION_MOVE_UP or id == Action.ACTION_MOVE_DOWN or \
-			 id == Action.ACTION_PAGE_UP or id == Action.ACTION_PAGE_DOWN :
+		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN or \
+			 actionId == Action.ACTION_PAGE_UP or actionId == Action.ACTION_PAGE_DOWN :
 			self.GetFocusId( )
 			if self.mFocusId == E_CONTROL_ID_LIST_CHANNEL_LIST or self.mFocusId == E_CONTROL_ID_SCROLLBAR :
 				if self.mMoveFlag :
-					self.SetMoveMode( FLAG_OPT_MOVE_UPDOWN, id )
+					self.SetMoveMode( FLAG_OPT_MOVE_UPDOWN, actionId )
 					return
 
 				else :
@@ -270,11 +269,11 @@ class ChannelListWindow( BaseWindow ) :
 				self.setFocusId( E_CONTROL_ID_BUTTON_SORTING )
 
 
-		elif id == Action.ACTION_CONTEXT_MENU :
+		elif actionId == Action.ACTION_CONTEXT_MENU :
 			self.ShowContextMenu( )
 
 
-		elif id == Action.ACTION_STOP :
+		elif actionId == Action.ACTION_STOP :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 
 				status = self.mDataCache.Player_GetStatus( )
@@ -292,26 +291,30 @@ class ChannelListWindow( BaseWindow ) :
 				else :
 					self.ShowRecordingStopDialog( )
 
-		elif id == Action.ACTION_MBOX_ARCHIVE :
+		elif actionId == Action.ACTION_MBOX_ARCHIVE :
+			from pvr.GuiHelper import HasAvailableRecordingHDD
+			if HasAvailableRecordingHDD( ) == False :
+				return
+				
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 				self.GoToPreviousWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
-		elif id == Action.ACTION_SHOW_INFO :
+		elif actionId == Action.ACTION_SHOW_INFO :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 				self.GoToPreviousWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
-		elif id == Action.ACTION_MBOX_RECORD :
+		elif actionId == Action.ACTION_MBOX_RECORD :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
-				if self.mChannelList or len(self.mChannelList) > 0 :
+				if self.mChannelList or len( self.mChannelList ) > 0 :
 					self.ShowRecordingStartDialog( )
 
-		elif id == Action.ACTION_MBOX_TVRADIO :
+		elif actionId == Action.ACTION_MBOX_TVRADIO :
 			if self.mUserMode.mServiceType == FLAG_MODE_TV :
 				self.DoModeChange( FLAG_MODE_RADIO )
 			else :
 				self.DoModeChange( FLAG_MODE_TV )
 
-		elif id == 13: #'x'
+		elif actionId == 13: #'x'
 			#this is test
 			LOG_TRACE( 'language[%s]'% xbmc.getLanguage( ) )
 
@@ -1218,16 +1221,17 @@ class ChannelListWindow( BaseWindow ) :
 					#LOG_TRACE ( '===================== save no: cache re-load' )
 
 					iChannel = self.mDataCache.Channel_GetCurrent( )
-					if iChannel.mNumber != self.mCurrentChannel or iChannel.mServiceType != self.mUserMode.mServiceType :
-						self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
+					if iChannel and iChannel.mError == 0 :
+						if iChannel.mNumber != self.mCurrentChannel or iChannel.mServiceType != self.mUserMode.mServiceType :
+							self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType )
 
-					if iChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_TV or self.mFlag_DeleteAll == True :
-						if self.mDataCache.Get_Player_AVBlank( ) :
-							self.mDataCache.Player_AVBlank( False )
+						if iChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_TV or self.mFlag_DeleteAll == True :
+							if self.mDataCache.Get_Player_AVBlank( ) :
+								self.mDataCache.Player_AVBlank( False )
 
-					elif iChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
-						if not self.mDataCache.Get_Player_AVBlank( ) :
-							self.mDataCache.Player_AVBlank( True )
+						elif iChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_RADIO :
+							if not self.mDataCache.Get_Player_AVBlank( ) :
+								self.mDataCache.Player_AVBlank( True )
 						
 
 			except Exception, e :
@@ -2625,6 +2629,10 @@ class ChannelListWindow( BaseWindow ) :
 
 	def ShowRecordingStartDialog( self ) :
 		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
+
+		from pvr.GuiHelper import HasAvailableRecordingHDD
+		if HasAvailableRecordingHDD( ) == False :
+			return
 
 		isOK = False
 		if isRunRec < 2 :

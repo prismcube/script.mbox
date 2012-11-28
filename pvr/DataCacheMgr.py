@@ -110,6 +110,7 @@ class DataCacheMgr( object ) :
 		self.mAVBlankStatus 					= self.mCommander.Channel_GetInitialBlank( )
 		self.mSkip 								= False
 		self.mIsRunningHiddentest 				= False
+		self.mStartMediaCenter					= False
 
 		if SUPPORT_CHANNEL_DATABASE	 == True :
 			self.mChannelDB = ElisChannelDB( )
@@ -1636,32 +1637,18 @@ class DataCacheMgr( object ) :
 				modeStr = 'Radio'
 				newZappingMode.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
 
+			checkCount = self.Channel_GetCount( newZappingMode.mServiceType )
+			#LOG_TRACE( '-------------check type[%s] count[%s]'% ( newZappingMode.mServiceType, checkCount ) )
+			if checkCount < 1 :
+				LOG_TRACE('Can not change. currType[%s] failType[%s] 1:TV, 2:Radio, channel is None'% ( zappingMode.mServiceType, newZappingMode.mServiceType ) )
+				return False
+
 			#LOG_TRACE('------changed settings')
 			#newZappingMode.printdebug( )
 			isSetMod = self.Zappingmode_SetCurrent( newZappingMode )
 			self.LoadZappingmode( )
 			self.LoadZappingList( )
 			self.LoadChannelList( )
-
-			if not isSetMod or self.mChannelList == None or len( self.mChannelList ) < 1 :
-				tempSetMod = self.Zappingmode_GetCurrent( )
-				LOG_TRACE('Can not change[%s] 1:TV, 2:Radio, channel is None'% tempSetMod.mServiceType )
-				if zappingMode.mServiceType != tempSetMod.mServiceType :
-					self.Zappingmode_SetCurrent( zappingMode )
-				self.LoadZappingmode( )
-				self.LoadZappingList( )
-				self.LoadChannelList( )
-				isMode = self.Zappingmode_GetCurrent( )
-				LOG_TRACE('Reload Changed[%s] 1:TV, 2:Radio'% isMode.mServiceType )
-				if isMode.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
-					self.Player_VideoBlank( False )
-				if self.Get_Player_AVBlank( ) :
-					self.Player_AVBlank( False )
-
-				iCurrentCh = self.Channel_GetCurrent( )
-				#self.Channel_InvalidateCurrent( )
-				self.Channel_SetCurrentSync( iCurrentCh.mNumber, iCurrentCh.mServiceType )
-				return False
 
 			self.mLastZappingMode = copy.deepcopy( zappingMode )
 			zappingMode = self.Zappingmode_GetCurrent( )
@@ -1711,4 +1698,27 @@ class DataCacheMgr( object ) :
 
 	def GetRunningHiddenTest( self ) :
 		return self.mIsRunningHiddentest
+
+
+	def SetFristInstallation( self, aFlag ) :
+		if aFlag :
+			ElisPropertyEnum( 'First Installation', self.mCommander ).SetProp( 0x2b )
+		else :
+			ElisPropertyEnum( 'First Installation', self.mCommander ).SetProp( 0 )
+
+
+	def GetFristInstallation( self ) :
+		if ElisPropertyEnum( 'First Installation', self.mCommander ).GetProp( ) == 0 :
+			return False
+		else :
+			return True
+
+	
+	def SetMediaCenter( self, aValue = False ) :
+		self.mStartMediaCenter = aValue
+
+
+	def GetMediaCenter( self ) :
+		return self.mStartMediaCenter
+
 

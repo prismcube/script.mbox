@@ -49,7 +49,8 @@ class MainMenu( BaseWindow ) :
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
-		self.GlobalAction( actionId )
+		if self.GlobalAction( actionId ) :
+			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
@@ -64,6 +65,9 @@ class MainMenu( BaseWindow ) :
 			self.onClick( BUTTON_ID_MEDIA_CENTER )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
+			from pvr.GuiHelper import HasAvailableRecordingHDD
+			if HasAvailableRecordingHDD( ) == False :
+				return	
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
 		elif actionId == Action.ACTION_SHOW_INFO :
@@ -76,7 +80,7 @@ class MainMenu( BaseWindow ) :
 			if self.mWin.getProperty( 'IsPVR' ) == 'True' :
 				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping recordings or PVR or Timeshift' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping recordings, PVR or Timeshift' ) )
 				dialog.doModal( )
 				self.getControl( MAIN_GROUP_ID ).setVisible( True )
 			else :
@@ -105,6 +109,9 @@ class MainMenu( BaseWindow ) :
 						dialog.doModal( )
 
 		elif aControlId == BUTTON_ID_ARCHIVE :
+			from pvr.GuiHelper import HasAvailableRecordingHDD
+			if HasAvailableRecordingHDD( ) == False :
+				return
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
 		elif aControlId == BUTTON_ID_EPG :
@@ -127,19 +134,9 @@ class MainMenu( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FAVORITE_ADDONS )
 
 		elif aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO :
-			if self.mWin.getProperty( 'IsPVR' ) == 'True' :
-				self.getControl( MAIN_GROUP_ID ).setVisible( False )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping recordings or PVR or Timeshift' ) )
-				dialog.doModal( )
-				self.getControl( MAIN_GROUP_ID ).setVisible( True )
-
-			else:
-				self.SetMediaCenter( )
-				if aControlId == BUTTON_ID_MEDIA_CENTER :
-					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
-				elif aControlId == BUTTON_ID_MEDIA_WEATHER :
-					xbmc.executebuiltin( "ActivateWindow(Weather)" )
+			self.SetMediaCenter( )
+			if aControlId == BUTTON_ID_MEDIA_CENTER :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
 
 		elif aControlId == BUTTON_ID_SYSTEM_INFO :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_INFO )

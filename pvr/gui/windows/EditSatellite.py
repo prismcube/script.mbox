@@ -20,11 +20,17 @@ class EditSatellite( SettingWindow ) :
 		hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
 			self.SetVisibleControls( hideControlIds, False )
-			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite is available' ) )
+			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No satellite data is available' ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please reset your STB' ), MR_LANG( 'No satellite infomation is available' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No satellite data is available\nPlease factory reset your STB' )	)
 			dialog.doModal( )
-			WinMgr.GetInstance( ).CloseWindow( )
+			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Do you want to go to configuration?' ) )
+			dialog.doModal( )
+			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE, WinMgr.WIN_ID_MAINMENU )
+			else :
+				WinMgr.GetInstance( ).CloseWindow( )
 		else :
 			self.SetVisibleControls( hideControlIds, True )
 			self.SetPipScreen( )
@@ -38,7 +44,8 @@ class EditSatellite( SettingWindow ) :
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.getFocusId( )
-		self.GlobalAction( actionId )
+		if self.GlobalAction( actionId ) :
+			return
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.ResetAllControl( )

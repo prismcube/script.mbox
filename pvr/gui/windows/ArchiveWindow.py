@@ -138,7 +138,8 @@ class ArchiveWindow( BaseWindow ) :
 	def onAction( self, aAction ) :
 		focusId = self.GetFocusId( )
 		actionId = aAction.getId( )
-		self.GlobalAction( actionId )
+		if self.GlobalAction( actionId ) :
+			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR or actionId == Action.ACTION_MBOX_ARCHIVE  :
 			if self.mMarkMode :

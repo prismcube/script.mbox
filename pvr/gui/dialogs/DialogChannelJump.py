@@ -45,6 +45,8 @@ class DialogChannelJump( BaseDialog ) :
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
+		if self.GlobalAction( actionId ) :
+			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
@@ -54,7 +56,7 @@ class DialogChannelJump( BaseDialog ) :
 			pass
 
 		elif actionId >= Action.REMOTE_0 and actionId <= Action.REMOTE_9 :
-			inputString = '%d' % ( actionId - Action.REMOTE_0 )
+			inputString = '%d' % ( int( actionId ) - Action.REMOTE_0 )
 			self.mChannelNumber += inputString
 			self.mChannelNumber = '%d' % int( self.mChannelNumber )
 			if int( self.mChannelNumber ) > self.mMaxChannelNum :
