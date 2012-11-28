@@ -676,7 +676,7 @@
 					<texture background="true">views/listpanel_black.png</texture>
 					<animation effect="rotate" center="auto" start="0" end="-90" time="100" condition="true">Conditional</animation>
                     <animation effect="slide" end="0,-10" time="300" easing="in" tween="cubic" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
-					<animation effect="slide" end="0,400" time="300" easing="in" tween="cubic" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(6)">Conditional</animation>
+					<animation effect="slide" end="0,400" time="300" easing="in" tween="cubic" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(1)">Conditional</animation>
                 </control>
                 <control type="image">
 					<posx>-290</posx>
@@ -686,7 +686,7 @@
 					<texture background="true">views/listpanel_back_noreflect.png</texture>
     				<animation effect="rotate" center="auto" start="0" end="-90" time="100" condition="true">Conditional</animation>
 	                <animation effect="slide" end="0,-10" time="300" easing="in" tween="cubic" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
-					<animation effect="slide" end="0,400" time="300" easing="in" tween="cubic" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(6)">Conditional</animation>
+					<animation effect="slide" end="0,400" time="300" easing="in" tween="cubic" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(1)">Conditional</animation>
                 </control>
 			</control>
 			<!-- 1'st slide -->
@@ -740,6 +740,24 @@
 					<font>Font_Reg19</font>
 					<label>SCRIPT15</label>
 				</control>
+				<control type="button" id="103">
+					<description>Sort by button</description>
+					<posx>0</posx>
+					<posy>115</posy>
+					<height>40</height>
+					<width>250</width>
+					<textoffsetx>10</textoffsetx>
+					<textwidth>215</textwidth>
+					<aligny>center</aligny>
+					<font>Font_Reg19</font>
+					<texturefocus border="5">button-focus.png</texturefocus>
+					<texturenofocus>-</texturenofocus>
+					<pulseonselect>false</pulseonselect>
+					<onleft>49</onleft>
+					<onright></onright>
+					<onup>Control.SetFocus(102,4)</onup>
+					<ondown>Control.SetFocus(102,0)</ondown>
+				</control>
 				<control type="list" id="102">
 					<posx>0</posx>
 					<posy>110</posy>
@@ -747,8 +765,8 @@
 					<height>600</height>
 					<onleft>49</onleft>
 					<onright>9001</onright>
-					<onup>102</onup>
-					<ondown>102</ondown>
+					<onup></onup>
+					<ondown></ondown>
 					<scrolltime>300</scrolltime>
 					<textcolor>grey3</textcolor>
 					<movement>10</movement>
@@ -791,7 +809,7 @@
 							<width>18</width>
 							<height>18</height>
 							<texture>aeon.nox/HomeHasSub.png</texture>
-							<visible>Container(102).HasFocus(1) | Container(102).HasFocus(2) | Container(102).HasFocus(3) | Container(102).HasFocus(4) | Container(102).HasFocus(5)</visible>
+							<visible>Container(102).HasFocus(2) | Container(102).HasFocus(3) | Container(102).HasFocus(4) | Container(102).HasFocus(5)</visible>
 						</control>
 					</focusedlayout>
 					<content>
@@ -842,7 +860,7 @@
 						<ondown>112</ondown>
 						<pagecontrol>203</pagecontrol>
 						<scrolltime>200</scrolltime>
-						<visible>![Container(102).HasFocus(5) | Container(102).HasFocus(6)]</visible>
+						<visible>![Container(102).HasFocus(1) | Container(102).HasFocus(5)]</visible>
 						<animation effect="fade" start="0" end="100" time="300">Visible</animation>
 						<itemlayout height="40" width="190">
 							<control type="image">

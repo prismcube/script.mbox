@@ -47,6 +47,7 @@ E_MODE_CHANNEL_LIST = 1
 #slide index
 E_SLIDE_ACTION_MAIN     = 0
 E_SLIDE_ACTION_SUB      = 1
+E_SLIDE_ACTION_SORT     = 2
 E_SLIDE_MENU_ALLCHANNEL = 0
 E_SLIDE_MENU_SATELLITE  = 1
 E_SLIDE_MENU_FTACAS     = 2
@@ -112,17 +113,15 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlLabelChannelSort       = self.getControl( E_CONTROL_ID_LABEL_CHANNEL_SORT )
 
 		#main menu
-		self.mCtrlGroupMainmenu          = self.getControl( E_CONTROL_ID_GROUP_MAINMENU )
-		self.mCtrlButtonMainMenu         = self.getControl( E_CONTROL_ID_BUTTON_MAINMENU )
 		self.mCtrlListMainmenu           = self.getControl( E_CONTROL_ID_LIST_MAINMENU )
+		self.mCtrlButtonSorting          = self.getControl( E_CONTROL_ID_BUTTON_SORTING )
 
 		#sub menu list
-		self.mCtrlGroupSubmenu           = self.getControl( E_CONTROL_ID_GROUP_SUBMENU )
 		self.mCtrlListSubmenu            = self.getControl( E_CONTROL_ID_LIST_SUBMENU )
 
 		#sub menu btn
-		self.mCtrlRadioButtonTV     = self.getControl( E_CONTROL_ID_RADIOBUTTON_TV )
-		self.mCtrlRadioButtonRadio  = self.getControl( E_CONTROL_ID_RADIOBUTTON_RADIO )
+		self.mCtrlRadioButtonTV          = self.getControl( E_CONTROL_ID_RADIOBUTTON_TV )
+		self.mCtrlRadioButtonRadio       = self.getControl( E_CONTROL_ID_RADIOBUTTON_RADIO )
 
 		#ch list
 		self.mCtrlGroupCHList            = self.getControl( E_CONTROL_ID_GROUP_CHANNEL_LIST )
@@ -236,7 +235,12 @@ class ChannelListWindow( BaseWindow ) :
 
 			if self.mFocusId == E_CONTROL_ID_LIST_MAINMENU :
 				position = self.mCtrlListMainmenu.getSelectedPosition( )
-				self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
+				if position == E_SLIDE_MENU_ALLCHANNEL :
+					self.SubMenuAction( E_SLIDE_ACTION_SUB )
+					self.UpdateControlGUI( E_SLIDE_CLOSE )
+
+				else :
+					self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
 
 		elif id == Action.ACTION_MOVE_RIGHT :
 			pass
@@ -261,15 +265,9 @@ class ChannelListWindow( BaseWindow ) :
 			elif self.mFocusId == E_CONTROL_ID_LIST_MAINMENU :
 				position = self.mCtrlListMainmenu.getSelectedPosition( )
 				self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
-				return
-				"""
-				if position == 4 and id == Action.ACTION_MOVE_DOWN or \
-				   position == E_SLIDE_MENU_ALLCHANNEL and id == Action.ACTION_MOVE_UP :
-					self.setFocusId( E_CONTROL_ID_BUTTON_SORTING )
 
-				else :
-					self.SubMenuAction( E_SLIDE_ACTION_MAIN, position )
-				"""
+			elif self.mFocusId == E_CONTROL_ID_BUTTON_MAINMENU :
+				self.setFocusId( E_CONTROL_ID_BUTTON_SORTING )
 
 
 		elif id == Action.ACTION_CONTEXT_MENU :
@@ -319,7 +317,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def onClick(self, aControlId):
-		#LOG_TRACE( 'onclick focusID[%d]'% aControlId )
+		LOG_TRACE( 'onclick focusID[%d]'% aControlId )
 
 		if aControlId == E_CONTROL_ID_LIST_CHANNEL_LIST :
 			if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
@@ -345,9 +343,24 @@ class ChannelListWindow( BaseWindow ) :
 				if self.mChannelList :
 					self.TuneChannel( )
 
+
+		elif aControlId == E_CONTROL_ID_BUTTON_SORTING :
+			self.SubMenuAction( E_SLIDE_ACTION_SORT )
+
+
 		elif aControlId == E_CONTROL_ID_BUTTON_MAINMENU or aControlId == E_CONTROL_ID_LIST_MAINMENU :
 			#slide main view
+			LOG_TRACE('-----------hidden button[%s]'% aControlId )
 			pass
+
+		elif aControlId == E_CONTROL_ID_LIST_MAINMENU :
+			position = self.mCtrlListMainmenu.getSelectedPosition( )
+			LOG_TRACE('-----------------main idx[%s]'% position )
+			if position == E_SLIDE_MENU_ALLCHANNEL :
+				LOG_TRACE('-----------------click AllChannel' )
+				#list action
+				self.SubMenuAction( E_SLIDE_ACTION_SUB )
+				self.UpdateControlGUI( E_SLIDE_CLOSE )
 
 		elif aControlId == E_CONTROL_ID_LIST_SUBMENU :
 			#list action
@@ -797,12 +810,15 @@ class ChannelListWindow( BaseWindow ) :
 		#	return
 
 		retPass = False
+		zappingName = ''
 
 		if aAction == E_SLIDE_ACTION_MAIN:
 			testlistItems = []
+
 			if aMenuIndex == E_SLIDE_MENU_ALLCHANNEL :
-				for itemList in range( len( self.mListAllChannel ) ) :
-					testlistItems.append( xbmcgui.ListItem(self.mListAllChannel[itemList]) )
+				#for itemList in range( len( self.mListAllChannel ) ) :
+				#	testlistItems.append( xbmcgui.ListItem(self.mListAllChannel[itemList]) )
+				testlistItems.append( xbmcgui.ListItem( '' ) )
 
 			elif aMenuIndex == E_SLIDE_MENU_SATELLITE :
 				if self.mListSatellite :
@@ -835,6 +851,8 @@ class ChannelListWindow( BaseWindow ) :
 				if aMenuIndex == self.mUserSlidePos.mMain :
 					self.mCtrlListSubmenu.selectItem( self.mUserSlidePos.mSub )
 
+			return
+
 		elif aAction == E_SLIDE_ACTION_SUB :
 			idxMain = self.mCtrlListMainmenu.getSelectedPosition( )
 			idxSub  = self.mCtrlListSubmenu.getSelectedPosition( )
@@ -844,8 +862,9 @@ class ChannelListWindow( BaseWindow ) :
 					LOG_TRACE( 'aready select!!!' )
 					return
 
-			zappingName = ''
+
 			if idxMain == E_SLIDE_MENU_ALLCHANNEL :
+				"""
 				if idxSub == 0 :
 					sortingMode = ElisEnum.E_SORT_BY_NUMBER
 				elif idxSub == 1 :
@@ -854,8 +873,10 @@ class ChannelListWindow( BaseWindow ) :
 					sortingMode = ElisEnum.E_SORT_BY_HD
 
 				self.mUserMode.mSortingMode = sortingMode
+				"""
 				self.mUserMode.mMode = ElisEnum.E_MODE_ALL
-				retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, sortingMode, 0, 0, 0, '' )
+				retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, '' )
+				LOG_TRACE('All Channel ret[%s] idx[%s,%s]'% ( retPass, idxMain, idxSub ) )
 
 			elif idxMain == E_SLIDE_MENU_SATELLITE :
 				if self.mListSatellite :
@@ -901,34 +922,62 @@ class ChannelListWindow( BaseWindow ) :
 					retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, item.mGroupName )
 					#LOG_TRACE( 'cmd[channel_GetListByFavorite] idx_Favorite[%s] list_Favorite[%s]'% ( idxSub, item.mGroupName ) )
 
+
 			if retPass == False :
 				return
 
 			if self.mMoveFlag :
 				#do not refresh UI
 				return
-			
-			#channel list update
-			self.mMarkList = []
-			self.mListItems = None
-			self.mCtrlListCHList.reset( )
-			self.UpdateChannelList( )
 
 			#path tree, Mainmenu/Submanu
 			self.mUserSlidePos.mMain = idxMain
 			self.mUserSlidePos.mSub  = idxSub
 
-			lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode ).upper( )
-			if zappingName :
-				lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
 
-			lblChannelSort = MR_LANG( 'Sorted by %s' )% EnumToString( 'sort', self.mUserMode.mSortingMode )
+		elif aAction == E_SLIDE_ACTION_SORT :
+			LOG_TRACE('----------------------------sorting' )
+			nextMode = ElisEnum.E_SORT_BY_NUMBER
+			lblMode  = MR_LANG( 'number' )
+			if self.mUserMode.mSortingMode == ElisEnum.E_SORT_BY_NUMBER :
+				nextMode = ElisEnum.E_SORT_BY_ALPHABET
+				lblMode  = MR_LANG( 'alphabet' )
+			elif self.mUserMode.mSortingMode == ElisEnum.E_SORT_BY_ALPHABET :
+				nextMode = ElisEnum.E_SORT_BY_HD
+				lblMode  = 'hd'
 
-			self.mCtrlLabelChannelPath.setLabel( lblChannelPath )
-			self.mCtrlLabelChannelSort.setLabel( lblChannelSort )
+			self.mUserMode.mSortingMode = nextMode
+			retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, nextMode, 0, 0, 0, '' )
 
-			#current zapping backup
-			#self.mDataCache.Channel_Backup( )
+			if retPass == False :
+				return
+
+			if self.mMoveFlag :
+				#do not refresh UI
+				return
+
+			label = '%s : %s'% ( MR_LANG( 'sort' ).upper(), lblMode.upper() )
+			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING, label )
+
+
+	
+		#channel list update
+		self.mMarkList = []
+		self.mListItems = None
+		self.mCtrlListCHList.reset( )
+		self.UpdateChannelList( )
+
+		lblChannelPath = EnumToString( 'mode', self.mUserMode.mMode ).upper( )
+		if zappingName :
+			lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
+
+		lblChannelSort = MR_LANG( 'Sorted by %s' )% EnumToString( 'sort', self.mUserMode.mSortingMode )
+
+		self.mCtrlLabelChannelPath.setLabel( lblChannelPath )
+		self.mCtrlLabelChannelSort.setLabel( lblChannelSort )
+
+		#current zapping backup
+		#self.mDataCache.Channel_Backup( )
 
 
 	def GetChannelList( self, aType, aMode, aSort, aLongitude, aBand, aCAid, aFavName ):
@@ -1311,13 +1360,13 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.mCtrlListMainmenu.addItems( testlistItems )
 
-
+		"""
 		#sort list, This is fixed
 		self.mListAllChannel = []
 		self.mListAllChannel.append( 'SORT BY NUMBER' )
 		self.mListAllChannel.append( 'SORT BY ALPHABET' )
 		self.mListAllChannel.append( 'SORT BY HD/SD' )
-
+		"""
 		try :
 			if self.mFlag_EditChanged :
 				#satellite list
@@ -1339,11 +1388,21 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		testlistItems = []
-		if self.mUserMode.mMode == ElisEnum.E_MODE_ALL :
-			for item in range( len( self.mListAllChannel ) ) :
-				testlistItems.append( xbmcgui.ListItem( self.mListAllChannel[item] ) )
 
-		elif self.mUserMode.mMode == ElisEnum.E_MODE_SATELLITE :
+		if self.mUserMode.mMode == ElisEnum.E_MODE_ALL :
+			#for item in range( len( self.mListAllChannel ) ) :
+			#	testlistItems.append( xbmcgui.ListItem( self.mListAllChannel[item] ) )
+			testlistItems.append( xbmcgui.ListItem( '' ) )
+			lblMode  = MR_LANG( 'number' )
+			if self.mUserMode.mSortingMode == ElisEnum.E_SORT_BY_ALPHABET :
+				lblMode  = MR_LANG( 'alphabet' )
+			elif self.mUserMode.mSortingMode == ElisEnum.E_SORT_BY_HD :
+				lblMode  = 'hd'
+
+			label = '%s : %s'% ( MR_LANG( 'sort' ).upper(), lblMode.upper() )
+			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING, label )
+
+		if self.mUserMode.mMode == ElisEnum.E_MODE_SATELLITE :
 			if self.mListSatellite :
 				for item in self.mListSatellite:
 					ret = GetSelectedLongitudeString( item.mLongitude, item.mName )
@@ -1376,6 +1435,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_PATH, lblChannelPath )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_SORT, lblChannelSort )
+
 
 		"""
 		label1 = EnumToString( 'mode', self.mUserMode.mMode )
@@ -1585,6 +1645,9 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aCtrlID == E_CONTROL_ID_LABEL_CHANNEL_SORT :
 			self.mCtrlLabelChannelSort.setLabel( aValue )
+
+		elif aCtrlID == E_CONTROL_ID_BUTTON_SORTING :
+			self.mCtrlButtonSorting.setLabel( aValue )
 
 		elif aCtrlID == E_CONTROL_ID_RADIOBUTTON_TV :
 			if aExtra == E_TAG_SELECT :
@@ -2311,10 +2374,10 @@ class ChannelListWindow( BaseWindow ) :
 
 		if aMode == FLAG_OPT_LIST :
 			if self.mChannelList :
+				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
+				context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )
+
 				if self.mFavoriteGroupList :
-					context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
-					context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )
-				
 					context.append( ContextItem( '%s'% MR_LANG( 'Add to favorite group' ), CONTEXT_ACTION_ADD_TO_FAV  ) )
 					context.append( ContextItem( '%s'% MR_LANG( 'Create favorite group' ), CONTEXT_ACTION_CREATE_GROUP_FAV  ) )
 					context.append( ContextItem( '%s'% MR_LANG( 'Rename favorite group' ), CONTEXT_ACTION_RENAME_FAV ) )

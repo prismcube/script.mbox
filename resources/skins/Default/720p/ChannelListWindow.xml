@@ -623,7 +623,7 @@
                     <height>720</height>
                     <texture>MediaBladeSub_Part1.png</texture>
                     <animation effect="slide" start="-250,0" end="250,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
-					<animation effect="slide" start="0,0" end="-250,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(6)">Conditional</animation>
+					<animation effect="slide" start="0,0" end="-250,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(1)">Conditional</animation>
                 </control>
                 <control type="image">
                     <posx>-12</posx>
@@ -632,7 +632,7 @@
                     <height>720</height>
                     <texture>MediaBladeSub_Part2.png</texture>
                     <animation effect="slide" start="-262,0" end="262,0" time="300" tween="quadratic" easing="out" condition="Control.HasFocus(101) | Control.HasFocus(102) | ControlGroup(9001).HasFocus">Conditional</animation>
-					<animation effect="slide" start="0,0" end="-262,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(6)">Conditional</animation>
+					<animation effect="slide" start="0,0" end="-262,0" time="300" tween="quadratic" easing="out" condition="ControlGroup(49).HasFocus | Container(102).HasFocus(1)">Conditional</animation>
                 </control>
 			</control>
 
@@ -659,7 +659,6 @@
 				<visible>true</visible>
 			</control>
 			<include>DefaultSideBladeLeft</include>
-
 			<control type="group" id="110">
 				<posx>-250</posx>
 				<posy>0</posy>
@@ -675,7 +674,7 @@
 				<control type="button" id="103">
 					<description>Sort by button</description>
 					<posx>0</posx>
-					<posy>110</posy>
+					<posy>115</posy>
 					<height>40</height>
 					<width>250</width>
 					<textoffsetx>10</textoffsetx>
@@ -687,19 +686,8 @@
 					<pulseonselect>false</pulseonselect>
 					<onleft>49</onleft>
 					<onright></onright>
-					<onup>102</onup>
-					<ondown>102</ondown>
-					<label>SORT :</label>
-				</control>
-				<control type="togglebutton" id="104">
-					<description>Sort asc</description>
-					<posx>220</posx>
-					<posy>123</posy>
-					<onleft>49</onleft>
-					<onright></onright>
-					<onup>102</onup>
-					<ondown>102</ondown>
-					<usealttexture>substring(Window.Property(Ascending),true)</usealttexture>
+					<onup>Control.SetFocus(102,4)</onup>
+					<ondown>Control.SetFocus(102,0)</ondown>
 				</control>
 				<control type="list" id="102">
 					<posx>0</posx>
@@ -752,7 +740,7 @@
 							<width>18</width>
 							<height>18</height>
 							<texture>HomeHasSub.png</texture>
-							<visible>Container(102).HasFocus(1) | Container(102).HasFocus(2) | Container(102).HasFocus(3) | Container(102).HasFocus(4) | Container(102).HasFocus(5)</visible>
+							<visible>Container(102).HasFocus(2) | Container(102).HasFocus(3) | Container(102).HasFocus(4) | Container(102).HasFocus(5)</visible>
 						</control>
 					</focusedlayout>
 					<content>
@@ -803,7 +791,7 @@
 						<ondown>112</ondown>
 						<pagecontrol>203</pagecontrol>
 						<scrolltime>200</scrolltime>
-						<visible>![Container(102).HasFocus(5) | Container(102).HasFocus(6)]</visible>
+						<visible>![Container(102).HasFocus(1) | Container(102).HasFocus(5)]</visible>
 						<animation effect="fade" start="0" end="100" time="500">Visible</animation>
 						<itemlayout height="40" width="230">
 							<control type="image">
