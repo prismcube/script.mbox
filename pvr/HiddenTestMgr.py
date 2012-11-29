@@ -1,4 +1,4 @@
-import xbmc, xbmcgui, time, socket, struct
+import xbmc, xbmcgui, time, socket, struct, random
 import pvr.DataCacheMgr
 from pvr.Util import TimeToString, TimeFormatEnum, RunThread
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
