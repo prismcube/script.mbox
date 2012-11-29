@@ -421,7 +421,7 @@ class LivePlate( LivePlateWindow ) :
 
 		elif aDir == INIT_CHANNEL :
 			currNumber = ''
-			currName = MR_LANG('No Channel')
+			currName = MR_LANG('No Channels')
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if iChannel == None or iChannel.mError != 0 :
 				self.mCurrentChannel = None

@@ -144,7 +144,7 @@ class EPGWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_CONTEXT_MENU:
 			if self.mChannelList == None or len( self.mChannelList ) <= 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channel was available' ) )			
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channel is available' ) )			
 	 			dialog.doModal( )
 				return
 		
@@ -424,11 +424,11 @@ class EPGWindow( BaseWindow ) :
 
 	def UpdateSelectedChannel( self ) :
 		if self.mChannelList == None or len( self.mChannelList ) <= 0 :
-			self.mCtrlEPGChannelLabel.setLabel( MR_LANG( 'No Channel' ) )		
+			self.mCtrlEPGChannelLabel.setLabel( MR_LANG( 'No Channels' ) )		
 		elif self.mSelectChannel :
 			self.mCtrlEPGChannelLabel.setLabel( '%04d %s' %( self.mSelectChannel.mNumber, self.mSelectChannel.mName ) )
 		else:
-			self.mCtrlEPGChannelLabel.setLabel( MR_LANG( 'No Channel' ) )
+			self.mCtrlEPGChannelLabel.setLabel( MR_LANG( 'No Channels' ) )
 
 
 	def UpdateCurrentChannel( self ) :

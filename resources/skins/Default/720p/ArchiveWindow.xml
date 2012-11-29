@@ -240,8 +240,9 @@
 				<posy>0</posy>
 				<width>352</width>
 				<height>18</height>
-				<align>center</align>
-				<font>font12</font>
+				<!--align>center</align-->
+				<align>left</align>
+				<font>font12_title</font>
 				<visible>substring(Window.Property(ViewMode),common) + substring(Window.Property(Signal),True)</visible>
 			</control>
 			<control type="progress" id="402">

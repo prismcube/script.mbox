@@ -108,7 +108,7 @@ class SatelliteConfigOnecable( SettingWindow ) :
 			else :
 				if self.mSatelliteNamelist[0] == MR_LANG( 'None' ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You have you config satellite 1 first' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Select a satellite for satellite 1 first' ) )
 		 			dialog.doModal( )
 		 			return
 		 		if self.mSatelliteNamelist[1] == MR_LANG( 'None' ) :
@@ -122,7 +122,7 @@ class SatelliteConfigOnecable( SettingWindow ) :
 	def AddNewSatellite( self, aPosition ) :
 		dialog = xbmcgui.Dialog( )
 		satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
-		ret = dialog.select(  MR_LANG( 'Add Satellite' ), satelliteList )
+		ret = dialog.select(  MR_LANG( 'Select Satellite' ), satelliteList )
 		if ret >= 0 :
 			self.OpenBusyDialog( )
 			if self.mTunerMgr.CheckSameSatellite( ret ) :

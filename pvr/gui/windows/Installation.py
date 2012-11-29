@@ -30,7 +30,7 @@ class Installation( BaseWindow ) :
 		MR_LANG( 'Update' )]
 
 		self.mDescriptionList = [
-		MR_LANG( 'You can setup Language, Video, Audio, Antenna, Satellite, Channel, Time and Date in the First Installation' ),
+		MR_LANG( 'Follow five simple steps for getting your PRISMCUBE RUBY ready for use' ),
 		MR_LANG( 'Antenna Setup enables you to configure Tuner 1 and Tuner 2' ),
 		MR_LANG( 'Channel Search menu allows you to scan channels automatically or manually' ),
 		MR_LANG( 'You can add or delete a satellite here' ),

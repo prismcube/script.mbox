@@ -104,6 +104,10 @@
 "Installation allows you to setup your PRISMCUBE RUBY - Antenna, Transponder, CAS, etc",,,,,,,,,,103
 "The Archive allows playback of previously recorded content",,,,,,,,,,104
 "The Archive allows playback of previously recorded programmes",,,,,,,,,,105
+"Change your digital satellite receiver settings",,,,,,,,,,106
+"The EPG displays the programme information of each channel in time and date order",,,,,,,,,,107
+"The Channel List provides you with TV/Radio channels sorting, grouping and editing",,,,,,,,,,108
+"STB Info displays device information including system versions, free disk space, etc",,,,,,,,,,109
 "Last ServiceType",,,,,,,,,,2001
 "CurrentVoutResolution",,,,,,,,,,2002
 "First Installation","Erst-Installation","premiere installation","Prima installazione","Primera instalacion","Prvni instalace","Eerste installatie","Pierwsza instalacja","?lk kurulum","Первоначальная установка",2003
@@ -1277,3 +1281,50 @@
 "Enter new name for this favorite group",,,,,,,,,,3860
 "Refresh firmware update",,,,,,,,,,3861
 "None",,,,,,,,,,3862
+"None",,,,,,,,,,3863
+"None",,,,,,,,,,3864
+"None",,,,,,,,,,3865
+"None",,,,,,,,,,3866
+"None",,,,,,,,,,3867
+"None",,,,,,,,,,3868
+"None",,,,,,,,,,3869
+"None",,,,,,,,,,3870
+"None",,,,,,,,,,3871
+"Follow five simple steps for getting your PRISMCUBE RUBY ready for use",,,,,,,,,,3872
+"Do you want to go to antenna setup?",,,,,,,,,,3873
+"No satellite data is available",,,,,,,,,,3874
+"No satellite data is available\nPlease factory reset your STB",,,,,,,,,,3875
+"Do you want to go to configuration?",,,,,,,,,,3876
+"number",,,,,,,,,,3877
+"alphabet",,,,,,,,,,3878
+"sort",,,,,,,,,,3879
+"Sorted by %s",,,,,,,,,,3880
+"You can only have 1 satellites for Simple LNB",,,,,,,,,,3881
+"No channel is available",,,,,,,,,,3882
+"None",,,,,,,,,,3883
+"You have you config satellite 1 first",,,,,,,,,,3884
+"tv",,,,,,,,,,3885
+"radio",,,,,,,,,,3886
+"data",,,,,,,,,,3887
+"type_invalid",,,,,,,,,,3888
+"ALL Channels",,,,,,,,,,3889
+"favorite",,,,,,,,,,3890
+"network",,,,,,,,,,3891
+"satellite",,,,,,,,,,3892
+"fta/cas",,,,,,,,,,3893
+"default",,,,,,,,,,3894
+"carrier",,,,,,,,,,3895
+"hd",,,,,,,,,,3896
+"None",,,,,,,,,,3897
+"None",,,,,,,,,,3898
+"None",,,,,,,,,,3899
+"None",,,,,,,,,,3900
+"None",,,,,,,,,,3901
+"None",,,,,,,,,,3902
+"None",,,,,,,,,,3903
+"None",,,,,,,,,,3904
+"None",,,,,,,,,,3905
+"None",,,,,,,,,,3906
+"None",,,,,,,,,,3907
+"Select a satellite for satellite 1 first",,,,,,,,,,3908
+"None",,,,,,,,,,3909
