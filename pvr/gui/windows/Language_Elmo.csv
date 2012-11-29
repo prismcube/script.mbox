@@ -1328,3 +1328,10 @@
 "None",,,,,,,,,,3907
 "Select a satellite for satellite 1 first",,,,,,,,,,3908
 "None",,,,,,,,,,3909
+"Select cable connection type and configure the DiSEqC settings of Tuner 1 or Tuner 2",,,,,,,,,,3910
+"Perform a quick and easy automatic channel scan otherwise search channels manually",,,,,,,,,,3911
+"Add, edit, select and delete satellites",,,,,,,,,,3912
+"Here you can add, delete and edit transponders",,,,,,,,,,3913
+"Configure the general settings of PRISMCUBE RUBY",,,,,,,,,,3914
+"Setup Smartcard or CI-Module configuration for watching pay channels",,,,,,,,,,3915
+"None",,,,,,,,,,3916

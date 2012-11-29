@@ -31,12 +31,12 @@ class Installation( BaseWindow ) :
 
 		self.mDescriptionList = [
 		MR_LANG( 'Follow five simple steps for getting your PRISMCUBE RUBY ready for use' ),
-		MR_LANG( 'Antenna Setup enables you to configure Tuner 1 and Tuner 2' ),
-		MR_LANG( 'Channel Search menu allows you to scan channels automatically or manually' ),
-		MR_LANG( 'You can add or delete a satellite here' ),
-		MR_LANG( 'Here you can add or delete transponders' ),
-		MR_LANG( 'Most of STB settings can be configured via the GUI under Configuration' ),
-		MR_LANG( 'The Conditional Access System allows you to setup Smartcard configurations' ),
+		MR_LANG( 'Select cable connection type and configure the DiSEqC settings of Tuner 1 or Tuner 2' ),
+		MR_LANG( 'Perform a quick and easy automatic channel scan otherwise search channels manually' ),
+		MR_LANG( 'Add, edit, select and delete satellites' ),
+		MR_LANG( 'Here you can add, delete and edit transponders' ),
+		MR_LANG( 'Configure the general settings of PRISMCUBE RUBY' ),
+		MR_LANG( 'Setup Smartcard or CI-Module configuration for watching pay channels' ),
 		MR_LANG( 'Get the latest updates on your PRISMCUBE RUBY' )]
 	
 		self.mWinId = xbmcgui.getCurrentWindowId( )
