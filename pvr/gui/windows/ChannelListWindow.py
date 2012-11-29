@@ -1716,10 +1716,10 @@ class ChannelListWindow( BaseWindow ) :
 		loop = 0
 		while self.mEnableProgressThread :
 			#LOG_TRACE( 'repeat <<<<' )
-			if  ( loop % 10 ) == 0 :
+			if  ( loop % 200 ) == 0 :
 				self.UpdateProgress( )
-
-			time.sleep( 1 )
+			
+			time.sleep( 0.05 )
 			loop += 1
 
 

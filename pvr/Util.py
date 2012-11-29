@@ -44,11 +44,12 @@ def MakeDir( dir ) :
 
 
 gGuiLock = False
-gMutex = threading.RLock()
+gMutex = threading.RLock( )
+
 @decorator
 def GuiLock( func, *args, **kw ) :
 	try :
-		gMutex.acquire()
+		gMutex.acquire( )
 		result = func( *args, **kw )
 
 	finally :
@@ -59,7 +60,7 @@ def GuiLock( func, *args, **kw ) :
 
 def GuiLock2( aEnable ) :
 	if aEnable :
-		gMutex.acquire()
+		gMutex.acquire( )
 	else :
 		gMutex.release( )
 

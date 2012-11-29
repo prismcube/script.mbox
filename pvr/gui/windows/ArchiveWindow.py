@@ -57,6 +57,9 @@ class ArchiveWindow( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
+		import threading
+		self.mMutex = threading.Lock( )
+
 		status = self.mDataCache.Player_GetStatus( )
 		
 		if status.mMode == ElisEnum.E_MODE_PVR :
@@ -404,7 +407,6 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def UpdatePlayStopThumbnail( self, aRecordInfo, aPrevRecordInfo=None ) :
-
 		listindex = 0
 
 		if aPrevRecordInfo :
@@ -1027,21 +1029,21 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def UpdatePlayStatus( self ) :
+		self.mMutex.acquire( )
 		status = self.mDataCache.Player_GetStatus( )
-
 		#Playing Name
 		if status.mMode == ElisEnum.E_MODE_PVR :
 			if self.mPlayingRecord :
 				self.mCtrlPlayName.setLabel( self.mPlayingRecord.mRecordName )
 				
 				if self.mEnableThread == True and self.mPlayProgressThread :
-					self.mEnableThread = False				
+					self.mEnableThread = False
 					self.mPlayProgressThread.join( )
 				
 				self.mEnableThread = True
 				self.mPlayProgressThread = self.PlayProgressThread( )
-				
 			else :
+
 				if self.mEnableThread == True and self.mPlayProgressThread :
 					self.mEnableThread = False
 					self.mPlayProgressThread.join( )
@@ -1053,7 +1055,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.mPlayingRecord = None
 			self.mWin.setProperty( 'PvrPlay', 'False' )
 			if self.mEnableThread == True and self.mPlayProgressThread :
-				self.mEnableThread = False			
+				self.mEnableThread = False
 				self.mPlayProgressThread.join( )
 
 			self.mCtrlPlayProgress.setPercent( 0 )			
@@ -1065,17 +1067,20 @@ class ArchiveWindow( BaseWindow ) :
 
 		self.mCtrlPlayStart.setLabel( '' )
 		self.mCtrlPlayEnd.setLabel( '' )
+		self.mMutex.release( )
 
 
 	@RunThread
 	def PlayProgressThread( self ) :
-		self.mCtrlPlayProgress.setPercent( 0 ) 	
+		self.mCtrlPlayProgress.setPercent( 0 ) 
+		cnt = 0
 		while self.mEnableThread :
-			time.sleep(1)
-			self.UpdatePlayProgress( )
+			time.sleep( 0.01 )
+			if ( cnt % 50 ) == 0 :
+				self.UpdatePlayProgress( )
+			cnt = cnt + 1
 
 
-	@GuiLock
 	def UpdatePlayProgress( self ) :
 		status = self.mDataCache.Player_GetStatus( )
 		if status == None or status.mError != 0 :
@@ -1093,7 +1098,8 @@ class ArchiveWindow( BaseWindow ) :
 		self.mCtrlPlayProgress.setPercent( self.mPlayPerent )
 		self.mCtrlPlayStart.setLabel( '%s' %(TimeToString( int( status.mPlayTimeInMs / 1000 ), TimeFormatEnum.E_HH_MM_SS ) ) )
 		self.mCtrlPlayEnd.setLabel( '%s' %(TimeToString( int( status.mEndTimeInMs / 1000 ), TimeFormatEnum.E_HH_MM_SS ) ) )
-		
+
 
 	def GetPlayingRecord( self ) :
 		return self.mPlayingRecord
+

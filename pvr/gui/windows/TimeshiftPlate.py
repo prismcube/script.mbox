@@ -141,7 +141,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		#run thread
 		self.mEnableLocalThread = True
-		self.PlayProgressThread( )
+		self.mThreadProgress = self.PlayProgressThread( )
 		self.WaitToBuffering( )
 		self.mEventBus.Register( self )
 
@@ -1064,20 +1064,24 @@ class TimeShiftPlate( BaseWindow ) :
 
 	@RunThread
 	def PlayProgressThread( self ) :
-		loop = 0
+		count = 0
 		while self.mEnableLocalThread :
-			#LOG_TRACE( 'repeat <<<<' )
+			if int( self.mRepeatTimeout / 0.02 ) == count :
+				LOG_TRACE( 'repeat <<<<' )
 
-			#update localTime
-			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
-			lbl_localTime = TimeToString( self.mLocalTime, TimeFormatEnum.E_AW_HH_MM )
-			self.UpdateControlGUI( E_CONTROL_ID_EVENT_CLOCK, lbl_localTime )
+				#update localTime
+				self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
+				lbl_localTime = TimeToString( self.mLocalTime, TimeFormatEnum.E_AW_HH_MM )
+				self.UpdateControlGUI( E_CONTROL_ID_EVENT_CLOCK, lbl_localTime )
 
-			if self.mIsPlay != FLAG_STOP :
-				self.InitTimeShift( )
-				self.UpdateProgress( loop )
+				if self.mIsPlay != FLAG_STOP :
+					self.InitTimeShift( )
+					self.UpdateProgress( )
+				count = 0
 
-			time.sleep(self.mRepeatTimeout)
+			#time.sleep( self.mRepeatTimeout )
+			time.sleep( 0.02 )
+			count = count + 1
 			
 
 	def UpdateProgress( self, loop = 0 ):
@@ -1401,7 +1405,8 @@ class TimeShiftPlate( BaseWindow ) :
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
 		self.mEnableLocalThread = False
-		#self.PlayProgressThread( ).join( )
+		if self.mThreadProgress :
+			self.mThreadProgress.join( )
 
 		"""
 		if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 :
