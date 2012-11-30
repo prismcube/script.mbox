@@ -114,11 +114,30 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mParentID = -1
 		self.mPlatform = pvr.Platform.GetPlatform( )
+		self.mLock = None
 
 
 	@classmethod
 	def GetName( cls ):
 		return cls.__name__
+
+
+	def InitLock( self ) :
+		if self.mLock == None :
+			self.mLock = threading.Lock( )
+		else :
+			print 'ERROR : Already lock objcet is created'
+			
+
+	def SetLock( self, aEnable ) :
+		if self.mLock == None :
+			print 'ERROR : lock objcet is not created'
+			self.InitLock( )
+	
+		if aEnable :
+			self.mLock.acquire( )
+		else :
+			self.mLock.release( )
 
 
 	def SetParentID( self, aWindowID ) :
@@ -130,9 +149,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def GetFocusId( self ) :
-		GuiLock2( True )
 		self.mFocusId = self.getFocusId( )
-		GuiLock2( False )
 		return self.mFocusId
 
 
