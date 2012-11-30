@@ -662,10 +662,12 @@ class ChannelListWindow( BaseWindow ) :
 
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
-				self.LoadRecordingInfo( )
 
+				oldRecInfo1 = deepcopy( self.mRecordInfo1 )
+				oldRecInfo2 = deepcopy( self.mRecordInfo2 )
+				self.LoadRecordingInfo( )
 				if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW and self.mChannelList and len( self.mChannelList ) > 0 :
-					self.UpdateRecordInfo( )
+					self.UpdateRecordInfo( oldRecInfo1, oldRecInfo2 )
 
 				else :
 					self.ReloadChannelList( )
@@ -2622,19 +2624,19 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-	def UpdateRecordInfo( self ) :
+	def UpdateRecordInfo( self, aOldRecInfo1, aOldRecInfo2 ) :
 		try :
 			iChannel = None
 
-			if self.mRecordInfo1 :
-				iChannel = self.mDataCache.Channel_GetByOne( self.mRecordInfo1.mServiceId )
+			if aOldRecInfo1 :
+				iChannel = self.mDataCache.Channel_GetByOne( aOldRecInfo1.mServiceId )
 				LOG_TRACE('num[%s] name[%s]'% (iChannel.mNumber, iChannel.mName) )
 				if iChannel : 
 					pos = int( iChannel.mNumber ) - 1
 					self.mCtrlListCHList.getListItem( pos ).setProperty( E_XML_PROPERTY_RECORDING, E_TAG_FALSE )
 
-			if self.mRecordInfo2 :
-				iChannel = self.mDataCache.Channel_GetByOne( self.mRecordInfo2.mServiceId )
+			if aOldRecInfo2 :
+				iChannel = self.mDataCache.Channel_GetByOne( aOldRecInfo2.mServiceId )
 				if iChannel : 
 					pos = int( iChannel.mNumber ) - 1
 					self.mCtrlListCHList.getListItem( pos ).setProperty( E_XML_PROPERTY_RECORDING, E_TAG_FALSE )
