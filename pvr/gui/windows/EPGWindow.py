@@ -151,9 +151,8 @@ class EPGWindow( BaseWindow ) :
 			self.mEventBus.Deregister( self )
 			self.StopEPGUpdateTimer( )
 
-			GuiLock2( True )
 			contextAction = self.ShowContextMenu( )
-			GuiLock2( False )
+
 			if contextAction == CONTEXT_SHOW_ALL_TIMERS :
 				self.DoContextAction( contextAction ) 
 			else :
@@ -1376,11 +1375,9 @@ class EPGWindow( BaseWindow ) :
 		if not self.mDataCache.Get_Player_AVBlank( ) :
 			self.mDataCache.Player_AVBlank( True )
 
-		GuiLock2( True )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_INPUT_PINCODE )
 		dialog.SetTitleLabel( MR_LANG( 'Enter your PIN code' ) )
 		dialog.doModal( )
-		GuiLock2( False )
 
 		ret = False
 		
