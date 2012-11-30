@@ -297,11 +297,9 @@ class TimerWindow( BaseWindow ) :
 			context.append( ContextItem( MR_LANG( 'Delete Timer' ), CONTEXT_DELETE_TIMER ) )
 			context.append( ContextItem( MR_LANG( 'Delete All Timers' ), CONTEXT_DELETE_ALL_TIMERS ) )			
 
-		GuiLock2( True )
 		dialog = DiaMgr.GetInstance().GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
 		dialog.doModal( )
-		GuiLock2( False )
 		
 		contextAction = dialog.GetSelectedAction( )
 		self.DoContextAction( contextAction ) 
