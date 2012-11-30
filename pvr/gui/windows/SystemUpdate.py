@@ -205,16 +205,19 @@ class SystemUpdate( SettingWindow ) :
 
 	@RunThread
 	def CheckEthernetThread( self ) :
+		count = 0
 		while self.mEnableLocalThread :
-			if self.mStepPage >= E_UPDATE_STEP_PROVISION and self.mStepPage <= E_UPDATE_STEP_DOWNLOAD :
-				status = CheckEthernet( 'eth0' )
-				if status != 'down' :
-					self.mLinkStatus = True
-				else :
-					self.mLinkStatus = False
-					self.UpdateStepPage( E_UPDATE_STEP_ERROR_NETWORK )
+			if ( count % 20 ) == 0 :
+				if self.mStepPage >= E_UPDATE_STEP_PROVISION and self.mStepPage <= E_UPDATE_STEP_DOWNLOAD :
+					status = CheckEthernet( 'eth0' )
+					if status != 'down' :
+						self.mLinkStatus = True
+					else :
+						self.mLinkStatus = False
+						self.UpdateStepPage( E_UPDATE_STEP_ERROR_NETWORK )
 
-			time.sleep(1)
+			time.sleep( 0.05 )
+			count = count + 1
 
 
 	@RunThread

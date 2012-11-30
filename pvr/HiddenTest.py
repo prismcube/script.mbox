@@ -52,6 +52,7 @@ class HiddenTest( BaseWindow ) :
 		
 		context = []
 		context.append( ContextItem( 'PROPRTY CHECK', 9999 ) )
+		context.append( ContextItem( 'ALL Navigation', 8888 ) )
 		menuCount = 0
 
 		for scenario in self.mRoot.findall( 'scenario' ) :
@@ -78,6 +79,13 @@ class HiddenTest( BaseWindow ) :
 		elif aContextAction == 9999 :
 			self.CheckProperty( )
 			WinMgr.GetInstance( ).CloseWindow( )
+		elif aContextAction == 8888 :
+			#if ConnectSocket( ) :
+			self.mDataCache.SetRunningHiddenTest( True )
+			scenario = AllNavigation( )
+			pvr.HiddenTestMgr.StartTest2( scenario )
+			WinMgr.GetInstance( ).CloseWindow( )
+
 		else :
 			scenario = TestScenario( 'scenario', 'scenario' )
 			item = self.mRoot.getchildren( )[ aContextAction ]

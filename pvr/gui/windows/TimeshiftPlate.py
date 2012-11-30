@@ -141,40 +141,10 @@ class TimeShiftPlate( BaseWindow ) :
 
 		#run thread
 		self.mEnableLocalThread = True
-		self.PlayProgressThread( )
+		self.mThreadProgress = self.PlayProgressThread( )
 		self.WaitToBuffering( )
 		self.mEventBus.Register( self )
 
-		"""
-		if self.mPrekey :
-			defaultFocus = E_CONTROL_ID_BUTTON_PLAY
-			if self.mPrekey == Action.ACTION_MBOX_REWIND :
-				self.TimeshiftAction( E_CONTROL_ID_BUTTON_REWIND )
-				defaultFocus = E_CONTROL_ID_BUTTON_REWIND
-
-			elif self.mPrekey == Action.ACTION_MBOX_FF :
-				self.TimeshiftAction( E_CONTROL_ID_BUTTON_FORWARD )
-				defaultFocus = E_CONTROL_ID_BUTTON_FORWARD
-
-			elif self.mPrekey == Action.ACTION_PAUSE or self.mPrekey == Action.ACTION_PLAYER_PLAY :
-				if self.mSpeed == 100 :
-					self.TimeshiftAction( E_CONTROL_ID_BUTTON_PAUSE )
-				else :
-					self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
-					defaultFocus = E_CONTROL_ID_BUTTON_PAUSE
-
-			time.sleep( 0.02 )
-			self.setFocusId( defaultFocus )
-			self.mPrekey = None
-
-		else :
-			defaultFocus = E_CONTROL_ID_BUTTON_PLAY
-			if self.mSpeed == 100 :
-				defaultFocus = E_CONTROL_ID_BUTTON_PAUSE
-
-			self.setFocusId( defaultFocus )
-
-		"""
 		if self.mPrekey :
 			if self.mPrekey == Action.ACTION_MBOX_REWIND :
 				self.onClick( E_CONTROL_ID_BUTTON_REWIND )
@@ -1064,20 +1034,24 @@ class TimeShiftPlate( BaseWindow ) :
 
 	@RunThread
 	def PlayProgressThread( self ) :
-		loop = 0
+		count = 0
 		while self.mEnableLocalThread :
-			#LOG_TRACE( 'repeat <<<<' )
+			if int( self.mRepeatTimeout / 0.02 ) == count :
+				LOG_TRACE( 'repeat <<<<' )
 
-			#update localTime
-			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
-			lbl_localTime = TimeToString( self.mLocalTime, TimeFormatEnum.E_AW_HH_MM )
-			self.UpdateControlGUI( E_CONTROL_ID_EVENT_CLOCK, lbl_localTime )
+				#update localTime
+				self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
+				lbl_localTime = TimeToString( self.mLocalTime, TimeFormatEnum.E_AW_HH_MM )
+				self.UpdateControlGUI( E_CONTROL_ID_EVENT_CLOCK, lbl_localTime )
 
-			if self.mIsPlay != FLAG_STOP :
-				self.InitTimeShift( )
-				self.UpdateProgress( loop )
+				if self.mIsPlay != FLAG_STOP :
+					self.InitTimeShift( )
+					self.UpdateProgress( )
+				count = 0
 
-			time.sleep(self.mRepeatTimeout)
+			#time.sleep( self.mRepeatTimeout )
+			time.sleep( 0.02 )
+			count = count + 1
 			
 
 	def UpdateProgress( self, loop = 0 ):
@@ -1401,7 +1375,8 @@ class TimeShiftPlate( BaseWindow ) :
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
 		self.mEnableLocalThread = False
-		#self.PlayProgressThread( ).join( )
+		if self.mThreadProgress :
+			self.mThreadProgress.join( )
 
 		"""
 		if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 :

@@ -47,7 +47,7 @@ E_MODE_CHANNEL_LIST = 1
 #slide index
 E_SLIDE_ACTION_MAIN     = 0
 E_SLIDE_ACTION_SUB      = 1
-E_SLIDE_ACTION_SORT     = 2
+E_SLIDE_ACTION_SORT     = 99
 E_SLIDE_MENU_ALLCHANNEL = 0
 E_SLIDE_MENU_SATELLITE  = 1
 E_SLIDE_MENU_FTACAS     = 2
@@ -1431,11 +1431,13 @@ class ChannelListWindow( BaseWindow ) :
 						   iChannel.mName == self.mRecordInfo1.mChannelName and \
 						   iChannel.mNumber == self.mRecordInfo1.mChannelNo :
 							listItem.setProperty( E_XML_PROPERTY_RECORDING, E_TAG_TRUE )
+							LOG_TRACE('----------match rec[%s %s]'% ( iChannel.mNumber, iChannel.mName ) )
 					if self.mRecordInfo2 :
 						if iChannel.mSid == self.mRecordInfo2.mServiceId and \
 						   iChannel.mName == self.mRecordInfo2.mChannelName and \
 						   iChannel.mNumber == self.mRecordInfo2.mChannelNo :
 							listItem.setProperty( E_XML_PROPERTY_RECORDING, E_TAG_TRUE )
+							LOG_TRACE('----------match rec[%s %s]'% ( iChannel.mNumber, iChannel.mName ) )
 
 				if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW and iChannel.mSkipped == True : 
 					listItem.setProperty( E_XML_PROPERTY_SKIP, E_TAG_TRUE )
@@ -1716,10 +1718,10 @@ class ChannelListWindow( BaseWindow ) :
 		loop = 0
 		while self.mEnableProgressThread :
 			#LOG_TRACE( 'repeat <<<<' )
-			if  ( loop % 10 ) == 0 :
+			if  ( loop % 200 ) == 0 :
 				self.UpdateProgress( )
-
-			time.sleep( 1 )
+			
+			time.sleep( 0.05 )
 			loop += 1
 
 
@@ -2089,8 +2091,14 @@ class ChannelListWindow( BaseWindow ) :
 
 				#check rec item
 				if self.mRecCount :
-					if self.mRecordInfo1 and self.mRecordInfo1.mServiceId == self.mChannelList[idx].mSid or \
-					   self.mRecordInfo2 and self.mRecordInfo2.mServiceId == self.mChannelList[idx].mSid :
+					if self.mRecordInfo1 and \
+					   ( self.mRecordInfo1.mServiceId == self.mChannelList[idx].mSid and \
+					   self.mRecordInfo1.mChannelName == self.mChannelList[idx].mName and \
+					   self.mRecordInfo1.mChannelNo == self.mChannelList[idx].mNumber ) or \
+					   self.mRecordInfo2 and \
+					   ( self.mRecordInfo2.mServiceId == self.mChannelList[idx].mSid and \
+					   self.mRecordInfo2.mChannelName == self.mChannelList[idx].mName and \
+					   self.mRecordInfo2.mChannelNo == self.mChannelList[idx].mNumber ) :
 						isIncludeRec = True
 				LOG_TRACE('mRecCount[%s] rec1[%s] rec2[%s] isRec[%s]'% (self.mRecCount, self.mRecordInfo1, self.mRecordInfo2, isIncludeRec) )
 
@@ -2596,6 +2604,9 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def LoadRecordingInfo( self ) :
+		self.mRecordInfo1 = None
+		self.mRecordInfo2 = None
+
 		try:
 			self.mRecCount = self.mDataCache.Record_GetRunningRecorderCount( )
 			#LOG_TRACE( 'isRunRecCount[%s]'% isRunRec)

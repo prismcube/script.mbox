@@ -138,7 +138,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 	def GlobalAction( self, aActionId ) :
 		mExecute = False
-		if self.mDataCache.GetRunningHiddenTest( ) and aActionId == Action.ACTION_STOP :
+		if self.mDataCache.GetRunningHiddenTest( ) and aActionId == Action.ACTION_MBOX_FF :
 			self.mDataCache.SetRunningHiddenTest( False )
 
 		if self.mDataCache.GetMediaCenter( ) :

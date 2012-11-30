@@ -22,4 +22,14 @@
 			<sleep>6</sleep>
 		</loop>
 	</scenario>
+	<scenario>
+		<name>TIMESHIFT TEST</name>
+		<sleep>5</sleep>
+		<loop repeat="50000">
+			<sendkey>VKEY_PLAY</sendkey>
+			<sleep>1</sleep>
+			<sendkey>VKEY_STOP</sendkey>
+			<sleep>1</sleep>
+		</loop>
+	</scenario>
 </scenarios>
