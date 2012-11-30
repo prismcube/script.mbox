@@ -652,11 +652,9 @@ class ArchiveWindow( BaseWindow ) :
 			else :
 				return
 				
-			GuiLock2( True )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 			dialog.SetProperty( context )
 			dialog.doModal( )
-			GuiLock2( False )
 			
 			contextAction = dialog.GetSelectedAction( )
 			self.DoContextAction( contextAction ) 
@@ -923,12 +921,10 @@ class ArchiveWindow( BaseWindow ) :
 
 	def CheckPincode( self ) :
 		savedPincode = ElisPropertyInt( 'PinCode', self.mCommander ).GetProp( )
-		GuiLock2( True )
 		pincodeDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
 #		pincodeDialog.SetDialogProperty( 'Input Pincode', '', 4, True )
 		pincodeDialog.SetDialogProperty( MR_LANG( 'Enter your PIN code' ), '', 4, True )
 		pincodeDialog.doModal( )
-		GuiLock2( False )
 		
 		if pincodeDialog.IsOK( ) == E_DIALOG_STATE_YES :
 			inputPincode = int( pincodeDialog.GetString( ) )
