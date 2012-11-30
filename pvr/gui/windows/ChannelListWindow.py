@@ -619,7 +619,6 @@ class ChannelListWindow( BaseWindow ) :
 					self.UpdateChannelAndEPG( )
 
 
-	@GuiLock
 	def onEvent(self, aEvent):
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
 			#LOG_TRACE( 'Receive Event[%s]'% aEvent.getName( ) )
@@ -865,31 +864,27 @@ class ChannelListWindow( BaseWindow ) :
 					return
 
 			if aMenuIndex == E_SLIDE_ACTION_SORT :
-				LOG_TRACE('----------------------------sorting' )
-				nextMode = ElisEnum.E_SORT_BY_NUMBER
-				lblMode  = MR_LANG( 'number' )
+				nextSort = ElisEnum.E_SORT_BY_NUMBER
 				if self.mUserMode.mSortingMode == ElisEnum.E_SORT_BY_NUMBER :
-					nextMode = ElisEnum.E_SORT_BY_ALPHABET
-					lblMode  = MR_LANG( 'alphabet' )
+					nextSort = ElisEnum.E_SORT_BY_ALPHABET
 				elif self.mUserMode.mSortingMode == ElisEnum.E_SORT_BY_ALPHABET :
-					nextMode = ElisEnum.E_SORT_BY_HD
-					lblMode  = 'hd'
+					nextSort = ElisEnum.E_SORT_BY_HD
 
 				idxMain = self.mUserSlidePos.mMain
 				idxSub  = self.mUserSlidePos.mSub
 
-				LOG_TRACE('----nextSort[%s] user: type[%s] mode[%s] sort[%s]'% (nextMode,self.mUserMode.mServiceType, self.mUserMode.mMode,self.mUserMode.mSortingMode) )
-				self.mUserMode.mSortingMode = nextMode
-				#retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, nextMode, 0, 0, 0, '' )
+				lblSort = EnumToString( 'sort', nextSort )
+				self.mUserMode.mSortingMode = nextSort
+				#LOG_TRACE('----nextSort[%s] user: type[%s] mode[%s] sort[%s]'% (nextSort,self.mUserMode.mServiceType, self.mUserMode.mMode,self.mUserMode.mSortingMode) )
 
-				label = '%s : %s'% ( MR_LANG( 'sort' ).upper(), lblMode.upper() )
+				label = '%s : %s'% ( MR_LANG( 'sort' ).upper(), lblSort.upper() )
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING, label )
 
 
 			if idxMain == E_SLIDE_MENU_ALLCHANNEL :
 				self.mUserMode.mMode = ElisEnum.E_MODE_ALL
 				retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, '' )
-				LOG_TRACE('All Channel ret[%s] idx[%s,%s]'% ( retPass, idxMain, idxSub ) )
+				#LOG_TRACE('All Channel ret[%s] idx[%s,%s]'% ( retPass, idxMain, idxSub ) )
 
 			elif idxMain == E_SLIDE_MENU_SATELLITE :
 				if self.mListSatellite :
@@ -1325,14 +1320,6 @@ class ChannelListWindow( BaseWindow ) :
 			#for item in range( len( self.mListAllChannel ) ) :
 			#	testlistItems.append( xbmcgui.ListItem( self.mListAllChannel[item] ) )
 			testlistItems.append( xbmcgui.ListItem( '' ) )
-			lblMode  = MR_LANG( 'number' )
-			if self.mUserMode.mSortingMode == ElisEnum.E_SORT_BY_ALPHABET :
-				lblMode  = MR_LANG( 'alphabet' )
-			elif self.mUserMode.mSortingMode == ElisEnum.E_SORT_BY_HD :
-				lblMode  = 'hd'
-
-			label = '%s : %s'% ( MR_LANG( 'sort' ).upper(), lblMode.upper() )
-			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING, label )
 
 		if self.mUserMode.mMode == ElisEnum.E_MODE_SATELLITE :
 			if self.mListSatellite :
@@ -1363,11 +1350,13 @@ class ChannelListWindow( BaseWindow ) :
 		if zappingName :
 			lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
 
-		lblChannelSort = MR_LANG( 'Sorted by %s' )% EnumToString( 'sort', self.mUserMode.mSortingMode )
+		lblSort = EnumToString( 'sort', self.mUserMode.mSortingMode )
+		lblChannelSort = MR_LANG( 'Sorted by %s' )% lblSort
+		lblButtonSort = '%s : %s'% ( MR_LANG( 'sort' ).upper(), lblSort.upper() )
 
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_PATH, lblChannelPath )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_SORT, lblChannelSort )
-
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING,     lblButtonSort )
 
 		"""
 		label1 = EnumToString( 'mode', self.mUserMode.mMode )
@@ -1549,7 +1538,6 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-	@GuiLock
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		#LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
 
