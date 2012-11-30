@@ -145,36 +145,6 @@ class TimeShiftPlate( BaseWindow ) :
 		self.WaitToBuffering( )
 		self.mEventBus.Register( self )
 
-		"""
-		if self.mPrekey :
-			defaultFocus = E_CONTROL_ID_BUTTON_PLAY
-			if self.mPrekey == Action.ACTION_MBOX_REWIND :
-				self.TimeshiftAction( E_CONTROL_ID_BUTTON_REWIND )
-				defaultFocus = E_CONTROL_ID_BUTTON_REWIND
-
-			elif self.mPrekey == Action.ACTION_MBOX_FF :
-				self.TimeshiftAction( E_CONTROL_ID_BUTTON_FORWARD )
-				defaultFocus = E_CONTROL_ID_BUTTON_FORWARD
-
-			elif self.mPrekey == Action.ACTION_PAUSE or self.mPrekey == Action.ACTION_PLAYER_PLAY :
-				if self.mSpeed == 100 :
-					self.TimeshiftAction( E_CONTROL_ID_BUTTON_PAUSE )
-				else :
-					self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
-					defaultFocus = E_CONTROL_ID_BUTTON_PAUSE
-
-			time.sleep( 0.02 )
-			self.setFocusId( defaultFocus )
-			self.mPrekey = None
-
-		else :
-			defaultFocus = E_CONTROL_ID_BUTTON_PLAY
-			if self.mSpeed == 100 :
-				defaultFocus = E_CONTROL_ID_BUTTON_PAUSE
-
-			self.setFocusId( defaultFocus )
-
-		"""
 		if self.mPrekey :
 			if self.mPrekey == Action.ACTION_MBOX_REWIND :
 				self.onClick( E_CONTROL_ID_BUTTON_REWIND )
