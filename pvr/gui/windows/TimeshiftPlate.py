@@ -1036,7 +1036,7 @@ class TimeShiftPlate( BaseWindow ) :
 	def PlayProgressThread( self ) :
 		count = 0
 		while self.mEnableLocalThread :
-			if int( self.mRepeatTimeout / 0.02 ) == count :
+			if int( self.mRepeatTimeout / 0.02 ) >= count :
 				LOG_TRACE( 'repeat <<<<' )
 
 				#update localTime
