@@ -160,7 +160,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 			self.UpdateVolume( -VOLUME_STEP )
 			mExecute = True
 
-		elif aActionId == Action.ACTION_RELOAD_SKIN :
+		elif E_SUPPORT_USE_KEY_Q and aActionId == Action.ACTION_RELOAD_SKIN :
 			import pvr.gui.WindowMgr as WinMgr
 			WinMgr.GetInstance( ).ReloadWindow( WinMgr.GetInstance( ).mLastId, WinMgr.WIN_ID_NULLWINDOW )
 			mExecute = True
