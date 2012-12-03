@@ -860,7 +860,7 @@ class ChannelListWindow( BaseWindow ) :
 			if aForce == None and self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 				if self.mUserSlidePos.mMain == idxMain and \
 				   self.mUserSlidePos.mSub == idxSub :
-					LOG_TRACE( 'aready select!!!' )
+					LOG_TRACE( 'already selected!!!' )
 					return
 
 			if aMenuIndex == E_SLIDE_ACTION_SORT :
