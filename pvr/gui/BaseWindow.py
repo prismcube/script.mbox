@@ -117,6 +117,11 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mLock = None
 
 
+	def __del__( self ) :
+		self.ClearLock( )
+		xbmcgui.WindowXML.__del__( self )
+
+
 	@classmethod
 	def GetName( cls ):
 		return cls.__name__
@@ -129,14 +134,22 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 			print 'ERROR : Already lock objcet is created'
 			
 
+	def ClearLock( self ) :
+		if self.mLock :
+			del self.mLock
+			self.mLock = None
+
+
 	def SetLock( self, aEnable ) :
 		if self.mLock == None :
 			print 'ERROR : lock objcet is not created'
 			self.InitLock( )
 	
 		if aEnable :
+			print 'SetLock True'
 			self.mLock.acquire( )
 		else :
+			print 'SetLock False'		
 			self.mLock.release( )
 
 

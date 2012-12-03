@@ -24,7 +24,7 @@
 	</scenario>
 	<scenario>
 		<name>TIMESHIFT TEST</name>
-		<sleep>5</sleep>
+		<sleep>1</sleep>
 		<loop repeat="50000">
 			<sendkey>VKEY_PLAY</sendkey>
 			<sleep>1</sleep>
