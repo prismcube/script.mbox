@@ -114,11 +114,43 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mParentID = -1
 		self.mPlatform = pvr.Platform.GetPlatform( )
+		self.mLock = None
+
+
+	def __del__( self ) :
+		self.ClearLock( )
+		xbmcgui.WindowXML.__del__( self )
 
 
 	@classmethod
 	def GetName( cls ):
 		return cls.__name__
+
+
+	def InitLock( self ) :
+		if self.mLock == None :
+			self.mLock = threading.Lock( )
+		else :
+			print 'ERROR : Already lock objcet is created'
+			
+
+	def ClearLock( self ) :
+		if self.mLock :
+			del self.mLock
+			self.mLock = None
+
+
+	def SetLock( self, aEnable ) :
+		if self.mLock == None :
+			print 'ERROR : lock objcet is not created'
+			self.InitLock( )
+	
+		if aEnable :
+			print 'SetLock True'
+			self.mLock.acquire( )
+		else :
+			print 'SetLock False'		
+			self.mLock.release( )
 
 
 	def SetParentID( self, aWindowID ) :
@@ -130,15 +162,13 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def GetFocusId( self ) :
-		GuiLock2( True )
 		self.mFocusId = self.getFocusId( )
-		GuiLock2( False )
 		return self.mFocusId
 
 
 	def GlobalAction( self, aActionId ) :
 		mExecute = False
-		if self.mDataCache.GetRunningHiddenTest( ) and aActionId == Action.ACTION_STOP :
+		if self.mDataCache.GetRunningHiddenTest( ) and aActionId == Action.ACTION_MBOX_FF :
 			self.mDataCache.SetRunningHiddenTest( False )
 
 		if self.mDataCache.GetMediaCenter( ) :
@@ -160,7 +190,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 			self.UpdateVolume( -VOLUME_STEP )
 			mExecute = True
 
-		elif aActionId == Action.ACTION_RELOAD_SKIN :
+		elif E_SUPPORT_USE_KEY_Q and aActionId == Action.ACTION_RELOAD_SKIN :
 			import pvr.gui.WindowMgr as WinMgr
 			WinMgr.GetInstance( ).ReloadWindow( WinMgr.GetInstance( ).mLastId, WinMgr.WIN_ID_NULLWINDOW )
 			mExecute = True

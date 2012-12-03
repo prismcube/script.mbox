@@ -187,15 +187,15 @@ class DialogStopRecord( BaseDialog ) :
 	@RunThread
 	def RecordingProgressThread( self ) :
 		loop = 0
-
 		while self.mEnableThread :
-			if  ( loop % 10 ) == 0 :
+			if  ( loop % 200 ) == 0 :
 				self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 
-			self.UpdateProgress( )
+			if  ( loop % 20 ) == 0 :
+				self.UpdateProgress( )
+				self.mLocalTime += 1
 
-			time.sleep( 1 )
-			self.mLocalTime += 1			
+			time.sleep( 0.05 )
 			loop += 1
 
 

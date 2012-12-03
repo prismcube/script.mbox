@@ -14,7 +14,10 @@ from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 import pvr.NetConfig as NetConfig
 import pvr.DataCacheMgr
 import pvr.GlobalEvent
+import pvr.gui.GuiConfig as GuiConfig
 
+import webinterface
+import thread
 
 gLauncher = None
 
@@ -38,6 +41,9 @@ class Launcher( object ):
 				self.InitElisMgr( )
 				self.DoElisTest( )
 				self.InitCacheMgr( )
+				if GuiConfig.E_SUPPROT_WEBINTERFACE == True :
+					self.StartWebInterface( )
+					
 				self.InitWindowMgr( )
 				self.WaitShutdown( )
 			except Exception, ex:
@@ -65,6 +71,13 @@ class Launcher( object ):
 
 	def InitCacheMgr( self ) :
 		pvr.DataCacheMgr.GetInstance( )
+
+
+	def StartWebInterface( self ) :
+		if GuiConfig.E_SUPPROT_WEBINTERFACE == True :
+			LOG_TRACE( 'Start Webinterface' )
+			thread.start_new_thread( webinterface.index, () )
+			thread.start_new_thread( webinterface.streamIndex, () )
 
 
 	def InitWindowMgr( self ):

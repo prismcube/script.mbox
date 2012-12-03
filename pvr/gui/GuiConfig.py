@@ -5,7 +5,8 @@ from pvr.GuiHelper import MR_LANG
 
 
 # HBBTV SUPPOERT
-E_SUPPROT_HBBTV		= True
+E_SUPPROT_HBBTV				= True
+E_SUPPROT_WEBINTERFACE		= True
 
 # WINDOW SIZE
 E_WINDOW_WIDTH		= 1280
@@ -18,6 +19,8 @@ PRISMCUBE_SERVER	= 'http://addon.prismcube.com'
 E_BETA_SOFTWARE		= True
 E_BETA_DATE			= '2012.11.20.QM'
 
+# SUPPORT : SKIN RELOAD 'Q' KEY
+E_SUPPORT_USE_KEY_Q = False
 
 ############################ Windows ############################
 # Setting Window Control Ids
@@ -288,6 +291,7 @@ CONTEXT_ACTION_VIDEO_SETTING 	= 41
 CONTEXT_ACTION_AUDIO_SETTING 	= 42
 
 E_DEFAULT_BACKUP_PATH = '/config/backupSettings'
+
 
 ############################ Global Function For GUI ############################
 

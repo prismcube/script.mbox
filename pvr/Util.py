@@ -7,6 +7,7 @@ from threading import Thread
 from decorator import decorator
 from odict import odict
 from ElisEnum import ElisEnum
+import threading
 
 gThreads = odict( )
 
@@ -43,37 +44,25 @@ def MakeDir( dir ) :
 
 
 gGuiLock = False
-
+gMutex = threading.RLock( )
 
 @decorator
 def GuiLock( func, *args, **kw ) :
-	global gGuiLock
-	if gGuiLock : # prevent nested locks / double lock
-		return func( *args, **kw )    
-	else :
-		try :
-			gGuiLock = True
-			xbmcgui.lock( )
-			result = func( *args, **kw )
+	try :
+		gMutex.acquire( )
+		result = func( *args, **kw )
 
-		finally :
-			xbmcgui.unlock( )
-			gGuiLock = False
-		return result
+	finally :
+		gMutex.release( )
+
+	return result
 
 
 def GuiLock2( aEnable ) :
-	global gGuiLock
-	if gGuiLock : # prevent nested locks / double lock
-		return
-	else:
-		try :
-			gGuiLock = aEnable
-			xbmcgui.lock( )
-		finally :
-			xbmcgui.unlock( )
-			gGuiLock = aEnable
-		return
+	if aEnable :
+		gMutex.acquire( )
+	else :
+		gMutex.release( )
 
 
 @decorator

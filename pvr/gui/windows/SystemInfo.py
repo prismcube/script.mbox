@@ -24,7 +24,7 @@ PROGRESS_ID_HDD_SIZE_MEDIA		=	2702
 PROGRESS_ID_HDD_SIZE_PROGRAM	=	2703
 PROGRESS_ID_HDD_SIZE_RECORD		=	2704
 
-TIME_SEC_CHECK_HDD_TEMP			=	3
+TIME_SEC_CHECK_HDD_TEMP			=	0.05
 
 
 class SystemInfo( SettingWindow ) :
@@ -394,9 +394,11 @@ class SystemInfo( SettingWindow ) :
 
 	@RunThread
 	def AsyncCheckHddTempTimer( self ) :
+		count = 0
 		while self.mEnableLocalThread :
 			if self.mCtrlLeftGroup.getSelectedPosition( ) == E_HDD :
-				self.ShowHDDTemperature( )
-			LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )
+				if ( count % 60 ) == 0 :	# 3 secs
+					self.ShowHDDTemperature( )
+			count = count + 1
 			time.sleep( TIME_SEC_CHECK_HDD_TEMP )
 

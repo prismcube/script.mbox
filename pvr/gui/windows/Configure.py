@@ -17,7 +17,7 @@ E_ETC					= 9
 E_ETHERNET				= 100
 E_WIFI					= 101
 
-TIME_SEC_CHECK_NET_STATUS = 3
+TIME_SEC_CHECK_NET_STATUS = 0.05
 
 
 class Configure( SettingWindow ) :
@@ -991,10 +991,12 @@ class Configure( SettingWindow ) :
 
 	@RunThread
 	def AsyncCheckNetworkTimer( self ) :
+		count = 0
 		while self.mEnableLocalThread :
-			LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Async' )	
 			if self.mRunningNetwork == False and self.mCtrlLeftGroup.getSelectedPosition( ) == E_NETWORK_SETTING :
-				self.CheckNetworkStatus( )
+				if ( count % 60 ) == 0 :
+					self.CheckNetworkStatus( )
+			count = count + 1
 			time.sleep( TIME_SEC_CHECK_NET_STATUS )
 
 

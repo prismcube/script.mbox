@@ -68,12 +68,19 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mAutomaticHideTimer = None	
 		self.mAutomaticHide = True
 
+		self.mStartTimeShowed = False
+
 		self.mPrekey = None
+
+		self.InitLock( )
+
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 		LOG_TRACE( 'winID[%d]'% self.mWinId )
+
+		self.mStartTimeShowed = False
 
 		self.mCtrlImgRec1           = self.getControl( E_CONTROL_ID_IMAGE_RECORDING1 )
 		self.mCtrlLblRec1           = self.getControl( E_CONTROL_ID_LABEL_RECORDING1 )
@@ -126,6 +133,8 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mThumbnailList = []
 		self.mBookmarkList = []
 
+		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
+
 		self.SetRadioScreen( )
 		self.ShowRecordingInfo( )
 		self.mTimeShiftExcuteTime = self.mDataCache.Datetime_GetLocalTime( )
@@ -139,42 +148,6 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.GetNextSpeed( E_ONINIT )
 
-		#run thread
-		self.mEnableLocalThread = True
-		self.PlayProgressThread( )
-		self.WaitToBuffering( )
-		self.mEventBus.Register( self )
-
-		"""
-		if self.mPrekey :
-			defaultFocus = E_CONTROL_ID_BUTTON_PLAY
-			if self.mPrekey == Action.ACTION_MBOX_REWIND :
-				self.TimeshiftAction( E_CONTROL_ID_BUTTON_REWIND )
-				defaultFocus = E_CONTROL_ID_BUTTON_REWIND
-
-			elif self.mPrekey == Action.ACTION_MBOX_FF :
-				self.TimeshiftAction( E_CONTROL_ID_BUTTON_FORWARD )
-				defaultFocus = E_CONTROL_ID_BUTTON_FORWARD
-
-			elif self.mPrekey == Action.ACTION_PAUSE or self.mPrekey == Action.ACTION_PLAYER_PLAY :
-				if self.mSpeed == 100 :
-					self.TimeshiftAction( E_CONTROL_ID_BUTTON_PAUSE )
-				else :
-					self.TimeshiftAction( E_CONTROL_ID_BUTTON_PLAY )
-					defaultFocus = E_CONTROL_ID_BUTTON_PAUSE
-
-			time.sleep( 0.02 )
-			self.setFocusId( defaultFocus )
-			self.mPrekey = None
-
-		else :
-			defaultFocus = E_CONTROL_ID_BUTTON_PLAY
-			if self.mSpeed == 100 :
-				defaultFocus = E_CONTROL_ID_BUTTON_PAUSE
-
-			self.setFocusId( defaultFocus )
-
-		"""
 		if self.mPrekey :
 			if self.mPrekey == Action.ACTION_MBOX_REWIND :
 				self.onClick( E_CONTROL_ID_BUTTON_REWIND )
@@ -198,6 +171,12 @@ class TimeShiftPlate( BaseWindow ) :
 
 			self.setFocusId( defaultFocus )
 
+		#run thread
+		self.mEventBus.Register( self )
+
+		self.mEnableLocalThread = True
+		self.mThreadProgress = self.PlayProgressThread( )
+		self.WaitToBuffering( )
 
 		if self.mAutomaticHide == True :
 			self.StartAutomaticHide( )
@@ -538,7 +517,6 @@ class TimeShiftPlate( BaseWindow ) :
 		pass
 
 
-	@GuiLock
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
@@ -729,7 +707,6 @@ class TimeShiftPlate( BaseWindow ) :
 		self.UpdateControlGUI( E_CONTROL_ID_IMAGE_FORWARD,    False )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,     '', E_CONTROL_LABEL )
 		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT,      0, E_CONTROL_POSY )
-		self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
 
 		visible = True
 		zappingMode = self.mDataCache.Zappingmode_GetCurrent( )
@@ -748,7 +725,6 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mWin.setProperty( 'IsXpeeding', strValue )
 
 
-	@GuiLock
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		#LOG_TRACE( 'Enter control[%s] value[%s] extra[%s]'% (aCtrlID, aValue, aExtra) )
 
@@ -859,6 +835,8 @@ class TimeShiftPlate( BaseWindow ) :
 			lbl_timeP = ''
 			lbl_timeE = ''
 
+			self.SetLock( True )
+
 			self.mIsTimeshiftPending = status.mIsTimeshiftPending
 
 			#play mode
@@ -907,12 +885,14 @@ class TimeShiftPlate( BaseWindow ) :
 			if status.mMode == ElisEnum.E_MODE_PVR :
 				timeFormat = TimeFormatEnum.E_AH_MM_SS
 
+			self.SetLock( False )
+			
 			lbl_timeS = TimeToString( tempStartTime  , TimeFormatEnum.E_HH_MM_SS )
 			lbl_timeP = TimeToString( tempCurrentTime, timeFormat )
 			lbl_timeE = TimeToString( tempEndTime    , timeFormat )
 
 			if lbl_timeS != '' :
-				if self.mInitialized :
+				if self.mStartTimeShowed == False :
 					self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_START_TIME, lbl_timeS )
 			if lbl_timeP != '' :
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_CURRENT, lbl_timeP, E_CONTROL_LABEL )
@@ -920,7 +900,7 @@ class TimeShiftPlate( BaseWindow ) :
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_TS_END_TIME, lbl_timeE )
 
 			if tempStartTime > 0 :
-				self.mInitialized = False
+				self.mStartTimeShowed = True
 
 			self.GetNextSpeed( E_ONINIT )
 
@@ -1064,20 +1044,24 @@ class TimeShiftPlate( BaseWindow ) :
 
 	@RunThread
 	def PlayProgressThread( self ) :
-		loop = 0
+		count = 0
 		while self.mEnableLocalThread :
-			#LOG_TRACE( 'repeat <<<<' )
+			if int( self.mRepeatTimeout / 0.02 ) >= count :
+				LOG_TRACE( 'repeat <<<<' )
 
-			#update localTime
-			self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
-			lbl_localTime = TimeToString( self.mLocalTime, TimeFormatEnum.E_AW_HH_MM )
-			self.UpdateControlGUI( E_CONTROL_ID_EVENT_CLOCK, lbl_localTime )
+				#update localTime
+				self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
+				lbl_localTime = TimeToString( self.mLocalTime, TimeFormatEnum.E_AW_HH_MM )
+				self.UpdateControlGUI( E_CONTROL_ID_EVENT_CLOCK, lbl_localTime )
 
-			if self.mIsPlay != FLAG_STOP :
-				self.InitTimeShift( )
-				self.UpdateProgress( loop )
+				if self.mIsPlay != FLAG_STOP :
+					self.InitTimeShift( )
+					self.UpdateProgress( )
+				count = 0
 
-			time.sleep(self.mRepeatTimeout)
+			#time.sleep( self.mRepeatTimeout )
+			time.sleep( 0.02 )
+			count = count + 1
 			
 
 	def UpdateProgress( self, loop = 0 ):
@@ -1401,7 +1385,8 @@ class TimeShiftPlate( BaseWindow ) :
 	def Close( self ) :
 		self.mEventBus.Deregister( self )
 		self.mEnableLocalThread = False
-		#self.PlayProgressThread( ).join( )
+		if self.mThreadProgress :
+			self.mThreadProgress.join( )
 
 		"""
 		if self.mBookmarkButton and len( self.mBookmarkButton ) > 0 :

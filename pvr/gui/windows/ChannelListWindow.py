@@ -47,7 +47,7 @@ E_MODE_CHANNEL_LIST = 1
 #slide index
 E_SLIDE_ACTION_MAIN     = 0
 E_SLIDE_ACTION_SUB      = 1
-E_SLIDE_ACTION_SORT     = 2
+E_SLIDE_ACTION_SORT     = 99
 E_SLIDE_MENU_ALLCHANNEL = 0
 E_SLIDE_MENU_SATELLITE  = 1
 E_SLIDE_MENU_FTACAS     = 2
@@ -619,7 +619,6 @@ class ChannelListWindow( BaseWindow ) :
 					self.UpdateChannelAndEPG( )
 
 
-	@GuiLock
 	def onEvent(self, aEvent):
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
 			#LOG_TRACE( 'Receive Event[%s]'% aEvent.getName( ) )
@@ -662,10 +661,12 @@ class ChannelListWindow( BaseWindow ) :
 
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
-				self.LoadRecordingInfo( )
 
+				oldRecInfo1 = deepcopy( self.mRecordInfo1 )
+				oldRecInfo2 = deepcopy( self.mRecordInfo2 )
+				self.LoadRecordingInfo( )
 				if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW and self.mChannelList and len( self.mChannelList ) > 0 :
-					self.UpdateRecordInfo( )
+					self.UpdateRecordInfo( oldRecInfo1, oldRecInfo2 )
 
 				else :
 					self.ReloadChannelList( )
@@ -863,31 +864,27 @@ class ChannelListWindow( BaseWindow ) :
 					return
 
 			if aMenuIndex == E_SLIDE_ACTION_SORT :
-				LOG_TRACE('----------------------------sorting' )
-				nextMode = ElisEnum.E_SORT_BY_NUMBER
-				lblMode  = MR_LANG( 'number' )
+				nextSort = ElisEnum.E_SORT_BY_NUMBER
 				if self.mUserMode.mSortingMode == ElisEnum.E_SORT_BY_NUMBER :
-					nextMode = ElisEnum.E_SORT_BY_ALPHABET
-					lblMode  = MR_LANG( 'alphabet' )
+					nextSort = ElisEnum.E_SORT_BY_ALPHABET
 				elif self.mUserMode.mSortingMode == ElisEnum.E_SORT_BY_ALPHABET :
-					nextMode = ElisEnum.E_SORT_BY_HD
-					lblMode  = 'hd'
+					nextSort = ElisEnum.E_SORT_BY_HD
 
 				idxMain = self.mUserSlidePos.mMain
 				idxSub  = self.mUserSlidePos.mSub
 
-				LOG_TRACE('----nextSort[%s] user: type[%s] mode[%s] sort[%s]'% (nextMode,self.mUserMode.mServiceType, self.mUserMode.mMode,self.mUserMode.mSortingMode) )
-				self.mUserMode.mSortingMode = nextMode
-				#retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, nextMode, 0, 0, 0, '' )
+				lblSort = EnumToString( 'sort', nextSort )
+				self.mUserMode.mSortingMode = nextSort
+				#LOG_TRACE('----nextSort[%s] user: type[%s] mode[%s] sort[%s]'% (nextSort,self.mUserMode.mServiceType, self.mUserMode.mMode,self.mUserMode.mSortingMode) )
 
-				label = '%s : %s'% ( MR_LANG( 'sort' ).upper(), lblMode.upper() )
+				label = '%s : %s'% ( MR_LANG( 'sort' ).upper(), lblSort.upper() )
 				self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING, label )
 
 
 			if idxMain == E_SLIDE_MENU_ALLCHANNEL :
 				self.mUserMode.mMode = ElisEnum.E_MODE_ALL
 				retPass = self.GetChannelList( self.mUserMode.mServiceType, self.mUserMode.mMode, self.mUserMode.mSortingMode, 0, 0, 0, '' )
-				LOG_TRACE('All Channel ret[%s] idx[%s,%s]'% ( retPass, idxMain, idxSub ) )
+				#LOG_TRACE('All Channel ret[%s] idx[%s,%s]'% ( retPass, idxMain, idxSub ) )
 
 			elif idxMain == E_SLIDE_MENU_SATELLITE :
 				if self.mListSatellite :
@@ -1323,14 +1320,6 @@ class ChannelListWindow( BaseWindow ) :
 			#for item in range( len( self.mListAllChannel ) ) :
 			#	testlistItems.append( xbmcgui.ListItem( self.mListAllChannel[item] ) )
 			testlistItems.append( xbmcgui.ListItem( '' ) )
-			lblMode  = MR_LANG( 'number' )
-			if self.mUserMode.mSortingMode == ElisEnum.E_SORT_BY_ALPHABET :
-				lblMode  = MR_LANG( 'alphabet' )
-			elif self.mUserMode.mSortingMode == ElisEnum.E_SORT_BY_HD :
-				lblMode  = 'hd'
-
-			label = '%s : %s'% ( MR_LANG( 'sort' ).upper(), lblMode.upper() )
-			self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING, label )
 
 		if self.mUserMode.mMode == ElisEnum.E_MODE_SATELLITE :
 			if self.mListSatellite :
@@ -1361,11 +1350,13 @@ class ChannelListWindow( BaseWindow ) :
 		if zappingName :
 			lblChannelPath = '%s > %s'% ( lblChannelPath, zappingName )
 
-		lblChannelSort = MR_LANG( 'Sorted by %s' )% EnumToString( 'sort', self.mUserMode.mSortingMode )
+		lblSort = EnumToString( 'sort', self.mUserMode.mSortingMode )
+		lblChannelSort = MR_LANG( 'Sorted by %s' )% lblSort
+		lblButtonSort = '%s : %s'% ( MR_LANG( 'sort' ).upper(), lblSort.upper() )
 
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_PATH, lblChannelPath )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_SORT, lblChannelSort )
-
+		self.UpdateControlGUI( E_CONTROL_ID_BUTTON_SORTING,     lblButtonSort )
 
 		"""
 		label1 = EnumToString( 'mode', self.mUserMode.mMode )
@@ -1431,11 +1422,13 @@ class ChannelListWindow( BaseWindow ) :
 						   iChannel.mName == self.mRecordInfo1.mChannelName and \
 						   iChannel.mNumber == self.mRecordInfo1.mChannelNo :
 							listItem.setProperty( E_XML_PROPERTY_RECORDING, E_TAG_TRUE )
+							LOG_TRACE('----------match rec[%s %s]'% ( iChannel.mNumber, iChannel.mName ) )
 					if self.mRecordInfo2 :
 						if iChannel.mSid == self.mRecordInfo2.mServiceId and \
 						   iChannel.mName == self.mRecordInfo2.mChannelName and \
 						   iChannel.mNumber == self.mRecordInfo2.mChannelNo :
 							listItem.setProperty( E_XML_PROPERTY_RECORDING, E_TAG_TRUE )
+							LOG_TRACE('----------match rec[%s %s]'% ( iChannel.mNumber, iChannel.mName ) )
 
 				if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW and iChannel.mSkipped == True : 
 					listItem.setProperty( E_XML_PROPERTY_SKIP, E_TAG_TRUE )
@@ -1545,7 +1538,6 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-	@GuiLock
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		#LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
 
@@ -1716,10 +1708,10 @@ class ChannelListWindow( BaseWindow ) :
 		loop = 0
 		while self.mEnableProgressThread :
 			#LOG_TRACE( 'repeat <<<<' )
-			if  ( loop % 10 ) == 0 :
+			if  ( loop % 200 ) == 0 :
 				self.UpdateProgress( )
-
-			time.sleep( 1 )
+			
+			time.sleep( 0.05 )
 			loop += 1
 
 
@@ -2089,8 +2081,14 @@ class ChannelListWindow( BaseWindow ) :
 
 				#check rec item
 				if self.mRecCount :
-					if self.mRecordInfo1 and self.mRecordInfo1.mServiceId == self.mChannelList[idx].mSid or \
-					   self.mRecordInfo2 and self.mRecordInfo2.mServiceId == self.mChannelList[idx].mSid :
+					if self.mRecordInfo1 and \
+					   ( self.mRecordInfo1.mServiceId == self.mChannelList[idx].mSid and \
+					   self.mRecordInfo1.mChannelName == self.mChannelList[idx].mName and \
+					   self.mRecordInfo1.mChannelNo == self.mChannelList[idx].mNumber ) or \
+					   self.mRecordInfo2 and \
+					   ( self.mRecordInfo2.mServiceId == self.mChannelList[idx].mSid and \
+					   self.mRecordInfo2.mChannelName == self.mChannelList[idx].mName and \
+					   self.mRecordInfo2.mChannelNo == self.mChannelList[idx].mNumber ) :
 						isIncludeRec = True
 				LOG_TRACE('mRecCount[%s] rec1[%s] rec2[%s] isRec[%s]'% (self.mRecCount, self.mRecordInfo1, self.mRecordInfo2, isIncludeRec) )
 
@@ -2596,6 +2594,9 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def LoadRecordingInfo( self ) :
+		self.mRecordInfo1 = None
+		self.mRecordInfo2 = None
+
 		try:
 			self.mRecCount = self.mDataCache.Record_GetRunningRecorderCount( )
 			#LOG_TRACE( 'isRunRecCount[%s]'% isRunRec)
@@ -2611,19 +2612,19 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-	def UpdateRecordInfo( self ) :
+	def UpdateRecordInfo( self, aOldRecInfo1, aOldRecInfo2 ) :
 		try :
 			iChannel = None
 
-			if self.mRecordInfo1 :
-				iChannel = self.mDataCache.Channel_GetByOne( self.mRecordInfo1.mServiceId )
+			if aOldRecInfo1 :
+				iChannel = self.mDataCache.Channel_GetByOne( aOldRecInfo1.mServiceId )
 				LOG_TRACE('num[%s] name[%s]'% (iChannel.mNumber, iChannel.mName) )
 				if iChannel : 
 					pos = int( iChannel.mNumber ) - 1
 					self.mCtrlListCHList.getListItem( pos ).setProperty( E_XML_PROPERTY_RECORDING, E_TAG_FALSE )
 
-			if self.mRecordInfo2 :
-				iChannel = self.mDataCache.Channel_GetByOne( self.mRecordInfo2.mServiceId )
+			if aOldRecInfo2 :
+				iChannel = self.mDataCache.Channel_GetByOne( aOldRecInfo2.mServiceId )
 				if iChannel : 
 					pos = int( iChannel.mNumber ) - 1
 					self.mCtrlListCHList.getListItem( pos ).setProperty( E_XML_PROPERTY_RECORDING, E_TAG_FALSE )
