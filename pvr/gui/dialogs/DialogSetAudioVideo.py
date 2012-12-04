@@ -75,7 +75,6 @@ class DialogSetAudioVideo( SettingDialog ) :
 		pass
 
 
-	@GuiLock
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowDialogId( ) :
 

@@ -131,15 +131,11 @@ class EPGWindow( BaseWindow ) :
 
 		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
 			if self.mFocusId == LIST_ID_COMMON_EPG or self.mFocusId == LIST_ID_BIG_EPG or self.mFocusId == SCROLL_ID_COMMON_EPG or self.mFocusId == SCROLL_ID_BIG_EPG:
-				GuiLock2( True )			
 				self.UpdateEPGInfomation( )
-				GuiLock2( False )				
 
 		elif actionId == Action.ACTION_PAGE_UP  or actionId == Action.ACTION_PAGE_DOWN :
 			if self.mFocusId == LIST_ID_COMMON_EPG or self.mFocusId == LIST_ID_BIG_EPG or self.mFocusId == SCROLL_ID_COMMON_EPG or self.mFocusId == SCROLL_ID_BIG_EPG:
-				GuiLock2( True )			
 				self.UpdateEPGInfomation( )
-				GuiLock2( False )				
 
 		elif actionId == Action.ACTION_CONTEXT_MENU:
 			if self.mChannelList == None or len( self.mChannelList ) <= 0 :
@@ -163,10 +159,7 @@ class EPGWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
 			self.mEventBus.Deregister( self )
 			self.StopEPGUpdateTimer( )
-
-			GuiLock2( True )
 			ret = self.ToggleTVRadio( )
-			GuiLock2( False )			
 
 			if ret :
 				self.SetRadioScreen( self.mServiceType )
@@ -181,10 +174,7 @@ class EPGWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_RECORD :
 			self.mEventBus.Deregister( self )
 			self.StopEPGUpdateTimer( )
-
-			GuiLock2( True )			
 			self.RecordByHotKey( )
-			GuiLock2( False )			
 
 			self.StartEPGUpdateTimer( )
 			self.mEventBus.Register( self )			
@@ -192,10 +182,7 @@ class EPGWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_STOP :
 			self.mEventBus.Deregister( self )
 			self.StopEPGUpdateTimer( )
-
-			GuiLock2( True )
 			self.StopByHotKey( )
-			GuiLock2( False )
 			
 			self.StartEPGUpdateTimer( )
 			self.mEventBus.Register( self )			
@@ -213,9 +200,7 @@ class EPGWindow( BaseWindow ) :
 		if aControlId == BUTTON_ID_EPG_MODE :
 			self.mEventBus.Deregister( self )
 			self.StopEPGUpdateTimer( )
-
-			GuiLock2( True )			
-		
+	
 			#self.mLock.acquire( )
 
 			self.mEPGMode += 1
@@ -231,8 +216,6 @@ class EPGWindow( BaseWindow ) :
 			self.UpdateAllEPGList( )
 			#self.mLock.release( )
 
-			GuiLock2( False )			
-
 			self.mEventBus.Register( self )
 			self.StartEPGUpdateTimer( )
 		
@@ -247,7 +230,6 @@ class EPGWindow( BaseWindow ) :
 		pass
 
 
-	@GuiLock
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
 			if aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
@@ -484,7 +466,10 @@ class EPGWindow( BaseWindow ) :
 		LOG_TRACE( '------------------------> Start Update----------' )
 		#self.mLock.acquire( )	
 		if aUpdateOnly == False :
+			self.mLock.acquire( )	
 			self.mListItems = []
+			self.mLock.release( )
+
 		self.LoadTimerList( )
 
 		if self.mEPGMode == E_VIEW_CHANNEL :
@@ -702,7 +687,7 @@ class EPGWindow( BaseWindow ) :
 		pass
 
 
-	@GuiLock
+	@SetLock
 	def UpdateLocalTime( self ) :
 		pass
 
@@ -1154,7 +1139,7 @@ class EPGWindow( BaseWindow ) :
 						
 				else :
 					if timer.mFromEPG :
-						if  timer.mEventId > 0  and aEPG.mEventId == timer.mEventId and aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid :
+						if  timer.mEventId > 0  and ( aEPG.mEventId == timer.mEventId ) and ( aEPG.mSid == timer.mSid ) and ( aEPG.mTsid  == timer.mTsid ) and ( aEPG.mOnid == timer.mOnid ) and ( aEPG.mNid== timer.mNid ) :
 							LOG_TRACE( '------------------- find by event id -------------------------' )
 							return timer
 

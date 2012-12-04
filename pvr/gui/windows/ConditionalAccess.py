@@ -94,7 +94,6 @@ class ConditionalAccess( SettingWindow ) :
 			self.mLastFocused = aControlId
 
 
-	@GuiLock
 	def onEvent( self, aEvent ) :
 		if xbmcgui.getCurrentWindowId( ) == self.mWinId :
 			if aEvent.getName( ) == ElisEventCIMMIShowMenu.getName( ) :

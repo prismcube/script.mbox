@@ -186,7 +186,6 @@ class DialogChannelSearch( BaseDialog ) :
 			self.mDataCache.Channel_ReLoad( )
 
 
-	@GuiLock
 	def onEvent( self, aEvent ) :
 		if xbmcgui.getCurrentWindowDialogId( ) == self.mWinId :
 
@@ -197,6 +196,7 @@ class DialogChannelSearch( BaseDialog ) :
 				self.UpdateScanProgress( aEvent )
 
 
+	@SetLock
 	def UpdateScanProgress( self, aEvent ) :
 		percent = 0
 		
@@ -232,7 +232,7 @@ class DialogChannelSearch( BaseDialog ) :
 			self.mTimer = threading.Timer( 0.5, self.ShowResult )
 			self.mTimer.start( )
 
-
+	@SetLock
 	def UpdateAddChannel( self, aEvent ) :
 		if aEvent.mIChannel.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
 			self.mNewTVChannelList.append( aEvent.mIChannel )

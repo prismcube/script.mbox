@@ -133,7 +133,6 @@ class DialogNormalNumeric( BaseDialog ) :
 			self.getControl( E_START_ID_NUMBER + i ).setLabel( '%d' % i )
 
 
-	@GuiLock
 	def SetInputLabel( self ) :
 		if self.mCheckFirstInput == False :
 			self.mCheckFirstInput = True

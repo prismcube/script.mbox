@@ -93,7 +93,6 @@ class DialogContext( BaseDialog ) :
 		pass
 
 
-	@GuiLock
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowDialogId( ) :
 

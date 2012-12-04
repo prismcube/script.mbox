@@ -384,7 +384,6 @@ class NullWindow( BaseWindow ) :
 		#self.mLastFocusId = aControlId
 
 
-	@GuiLock
 	def onEvent(self, aEvent):
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
 			#LOG_TRACE( 'NullWindow winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( )) )

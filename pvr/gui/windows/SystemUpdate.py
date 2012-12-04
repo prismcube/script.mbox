@@ -227,7 +227,6 @@ class SystemUpdate( SettingWindow ) :
 		self.mShowProgressThread.doModal( )
 
 
-	@GuiLock
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		#LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
 

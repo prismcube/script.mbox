@@ -57,9 +57,6 @@ class ArchiveWindow( BaseWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		import threading
-		self.mMutex = threading.Lock( )
-
 		status = self.mDataCache.Player_GetStatus( )
 		
 		if status.mMode == ElisEnum.E_MODE_PVR :
@@ -252,8 +249,6 @@ class ArchiveWindow( BaseWindow ) :
 		if self.mInitialized == False :
 			return
 
-
-	@GuiLock
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
@@ -497,7 +492,6 @@ class ArchiveWindow( BaseWindow ) :
 		pass
 
 
-	@GuiLock
 	def UpdateLocalTime( self ) :
 		pass
 
@@ -561,8 +555,9 @@ class ArchiveWindow( BaseWindow ) :
 					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, playOffset, 100 )
 				else :
 					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
-
+				SetLock2( True )
 				self.mPlayingRecord = recInfo
+				SetLock2( False )				
 				self.mWin.setProperty( 'PvrPlay', 'True' )
 				self.UpdatePlayStatus( )
 
@@ -945,8 +940,10 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def Close( self ) :
-		self.mEventBus.Deregister( self )	
+		self.mEventBus.Deregister( self )
+		SetLock2( True )
 		self.mEnableThread = False
+		SetLock2( False )
 		if self.mPlayProgressThread :
 			self.mPlayProgressThread.join( )
 
@@ -1024,8 +1021,8 @@ class ArchiveWindow( BaseWindow ) :
 		self.UpdateArchiveInfomation( )
 
 
+	@SetLock
 	def UpdatePlayStatus( self ) :
-		self.mMutex.acquire( )
 		status = self.mDataCache.Player_GetStatus( )
 		#Playing Name
 		if status.mMode == ElisEnum.E_MODE_PVR :
@@ -1063,7 +1060,6 @@ class ArchiveWindow( BaseWindow ) :
 
 		self.mCtrlPlayStart.setLabel( '' )
 		self.mCtrlPlayEnd.setLabel( '' )
-		self.mMutex.release( )
 
 
 	@RunThread

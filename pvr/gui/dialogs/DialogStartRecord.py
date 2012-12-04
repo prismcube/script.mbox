@@ -117,7 +117,6 @@ class DialogStartRecord( SettingDialog ) :
 		pass
 
 
-	@GuiLock	
 	def onEvent( self, aEvent ) :
 		pass
 
@@ -423,59 +422,6 @@ class DialogStartRecord( SettingDialog ) :
 
 		self.Close( )
 
-
-	"""
-	@RunThread
-	def RecordingProgressThread( self ) :
-		loop = 0
-
-		while self.mEnableThread :
-			if ( loop % 10 ) == 0 :
-				LOG_ERR( 'loop=%d' % loop )
-				self.mLocalTime = self.mDataCache.Datetime_GetLocalTime( )
-
-			self.UpdateProgress( )
-
-			time.sleep( 1 )
-			self.mLocalTime += 1
-			loop += 1
-
-	@GuiLock	
-	def UpdateProgress( self ) :
-		if self.mTimer :
-			if self.mTimer.mTimerType == ElisEnum.E_ITIMER_WEEKLY :
-				LOG_TRACE( 'ToDO : weely timer is running' )
-				startTime = self.mTimer.mStartTime
-				endTime = startTime + self.mTimer.mDuration
-			else :
-				startTime = self.mTimer.mStartTime
-				endTime = startTime + self.mTimer.mDuration
-
-		else :
-			startTime = self.mOTRInfo.mEventStartTime
-			endTime = self.mOTRInfo.mEventEndTime
-
-		duration = endTime - startTime
-		passDuration = self.mLocalTime - startTime
-
-		if endTime < self.mLocalTime : #Already past
-			self.mCtrlProgress.setPercent( 100 )
-			return
-		elif self.mLocalTime < startTime :
-			passDuration = 0
-
-		if passDuration < 0 :
-			passDuration = 0
-
-		if duration > 0 :
-			percent = passDuration * 100 / duration
-		else :
-			percent = 0
-
-		LOG_TRACE( 'percent=%d' %percent )
-		
-		self.mCtrlProgress.setPercent( percent )
-	"""
 
 
 

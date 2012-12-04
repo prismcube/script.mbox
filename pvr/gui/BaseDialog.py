@@ -3,7 +3,7 @@ from pvr.gui.BaseWindow import Property
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 from pvr.gui.BaseWindow import Action
-from pvr.Util import RunThread, GuiLock, GuiLock2
+from pvr.Util import RunThread, SetLock, SetLock2
 import pvr.Platform 
 
 
@@ -42,9 +42,7 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 
 
 	def GetFocusId( self ):
-		GuiLock2( True )
 		self.mFocusId = self.getFocusId( )
-		GuiLock2( False )
 		return self.mFocusId
 
 

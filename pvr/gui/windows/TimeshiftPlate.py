@@ -72,8 +72,6 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.mPrekey = None
 
-		self.InitLock( )
-
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -820,6 +818,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mWin.setProperty( aPropertyID, aValue )
 
 
+	@SetLock
 	def InitTimeShift( self, loop = 0 ) :
 		status = None
 		status = self.mDataCache.Player_GetStatus( )
@@ -834,8 +833,6 @@ class TimeShiftPlate( BaseWindow ) :
 			lbl_timeS = ''
 			lbl_timeP = ''
 			lbl_timeE = ''
-
-			self.SetLock( True )
 
 			self.mIsTimeshiftPending = status.mIsTimeshiftPending
 
@@ -885,8 +882,7 @@ class TimeShiftPlate( BaseWindow ) :
 			if status.mMode == ElisEnum.E_MODE_PVR :
 				timeFormat = TimeFormatEnum.E_AH_MM_SS
 
-			self.SetLock( False )
-			
+		
 			lbl_timeS = TimeToString( tempStartTime  , TimeFormatEnum.E_HH_MM_SS )
 			lbl_timeP = TimeToString( tempCurrentTime, timeFormat )
 			lbl_timeE = TimeToString( tempEndTime    , timeFormat )

@@ -126,7 +126,6 @@ class TimerWindow( BaseWindow ) :
 		pass
 
 
-	@GuiLock
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
 			if aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
@@ -163,6 +162,7 @@ class TimerWindow( BaseWindow ) :
 			LOG_TRACE( 'self.mTimerList len=%d' %len( self.mTimerList ) )
 
 
+	@SetLock
 	def UpdateList( self, aUpdateOnly=False ) :
 		self.mListItems = []
 		self.LoadTimerList( )
@@ -282,7 +282,6 @@ class TimerWindow( BaseWindow ) :
 		pass
 
 
-	@GuiLock
 	def UpdateLocalTime( self ) :
 		pass
 

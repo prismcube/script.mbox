@@ -158,7 +158,6 @@ class DialogAddManualTimer( SettingDialog ) :
 		pass
 
 
-	@GuiLock	
 	def onEvent( self, aEvent ) :
 		pass
 		"""
