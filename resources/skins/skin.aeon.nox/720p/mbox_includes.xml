@@ -4382,15 +4382,6 @@
 	<include name="DefaultThumbnailArchiveView">
 		<control type="group">
 			<visible>substring(Window.Property(ViewMode),thumbnail)</visible>
-			<!--
-			<control type="image">
-				<posx>115</posx>
-				<posy>69</posy>
-				<width>1051</width>
-				<height>516</height>
-				<texture background="true">wall/wall_squares.png</texture>
-			</control>
-			-->
 			<control type="image">
 				<posx>0</posx>
 				<posy>0</posy>
@@ -4449,6 +4440,14 @@
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 					<control type="image">
+						<posx>67</posx>
+						<posy>25</posy>
+						<width>64</width>
+						<height>64</height>
+						<texture>OSDPlayNF.png</texture>
+						<visible>substring(ListItem.Property(Playing),True)</visible>
+					</control>
+					<control type="image">
 						<posx>3</posx>
 						<posy>3</posy>
 						<width>192</width>
@@ -4480,6 +4479,16 @@
 						<animation reversible="true" effect="zoom" start="2,0,32,32" end="-46,-27,50,50" time="300">focus</animation>
 						<animation reversible="true" effect="zoom" end="2,0,32,32" start="-46,-27,50,50" time="300">unfocus</animation>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
+					</control>
+					<control type="image">
+						<posx>67</posx>
+						<posy>25</posy>
+						<width>64</width>
+						<height>64</height>
+						<texture>OSDPlayFO.png</texture>
+						<animation reversible="true" effect="zoom" start="67,25,64,64" end="19,-2,160,118" time="300">focus</animation>
+						<animation reversible="true" effect="zoom" end="67,25,64,64" start="19,-2,160,118" time="300">unfocus</animation>
+						<visible>substring(ListItem.Property(Playing),True)</visible>
 					</control>
 				</focusedlayout>
 			</control>
@@ -4579,6 +4588,14 @@
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 					<control type="image">
+						<posx>62</posx>
+						<posy>266</posy>
+						<width>84</width>
+						<height>84</height>
+						<texture>OSDPlayNF.png</texture>
+						<visible>substring(ListItem.Property(Playing),True)</visible>
+					</control>
+					<control type="image">
 						<posx>4</posx>
 						<posy>254</posy>
 						<width>200</width>
@@ -4611,6 +4628,16 @@
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 						<animation reversible="true" effect="zoom" start="3,256,26,26" end="-69,126,40,40" time="300">focus</animation>
 						<animation reversible="true" effect="zoom" end="3,256,26,26" start="-69,126,40,40" time="300">unfocus</animation>
+					</control>
+					<control type="image">
+						<posx>62</posx>
+						<posy>266</posy>
+						<width>84</width>
+						<height>84</height>
+						<texture>OSDPlayFO.png</texture>
+						<animation reversible="true" effect="zoom" start="62,266,84,84" end="-10,136,228,165" time="300">focus</animation>
+						<animation reversible="true" effect="zoom" end="62,266,84,84" start="-10,136,228,165" time="300">unfocus</animation>
+						<visible>substring(ListItem.Property(Playing),True)</visible>
 					</control>
 				</focusedlayout>
 			</control>
@@ -4715,6 +4742,14 @@
 						<visible>substring(ListItem.Property(Marked),True)</visible>
 					</control>
 					<control type="image">
+						<posx>40</posx>
+						<posy>108</posy>
+						<width>64</width>
+						<height>64</height>
+						<texture>OSDPlayNF.png</texture>
+						<visible>substring(ListItem.Property(Playing),True)</visible>
+					</control>
+					<control type="image">
 						<posx>4</posx>
 						<posy>104</posy>
 						<width>136</width>
@@ -4748,6 +4783,16 @@
 						<animation reversible="true" effect="zoom" start="5,105,22,22" end="-27,45,32,32" time="300">focus</animation>
 						<animation reversible="true" effect="zoom" end="5,105,22,22" start="-27,45,32,32" time="300">unfocus</animation>
 						<visible>substring(ListItem.Property(Marked),True)</visible>
+					</control>
+					<control type="image">
+						<posx>40</posx>
+						<posy>108</posy>
+						<width>64</width>
+						<height>64</height>
+						<texture>OSDPlayFO.png</texture>
+						<animation reversible="true" effect="zoom" start="40,108,64,64" end="8,48,128,100" time="300">focus</animation>
+						<animation reversible="true" effect="zoom" end="40,108,64,64" start="8,48,128,100" time="300">unfocus</animation>
+						<visible>substring(ListItem.Property(Playing),True)</visible>
 					</control>
 				</focusedlayout>
 			</control>
