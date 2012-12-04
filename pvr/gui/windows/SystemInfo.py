@@ -364,7 +364,7 @@ class SystemInfo( SettingWindow ) :
 				LOG_TRACE( 'HDD Temperature = %s' % temperature )
 			else :
 				temperature = MR_LANG( 'Unknown' )
-			self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : %s' ) % temperature )
+			self.mCtrlHDDTemperature.setLabel( MR_LANG( 'Temperature : %s degree celsius' ) % temperature )
 
 
 	def CheckExistsDisk( self ) :
