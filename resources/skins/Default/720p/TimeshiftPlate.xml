@@ -338,7 +338,7 @@
 					</control>
 					<control type="image" id="32">
 						<description>Forward Image</description>
-						<posx>210</posx>
+						<posx>215</posx>
 						<posy>30</posy>
 						<width>20</width>
 						<height>15</height>

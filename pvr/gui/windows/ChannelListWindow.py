@@ -608,6 +608,11 @@ class ChannelListWindow( BaseWindow ) :
 					self.mDataCache.SetSkipChannelView( False )
 					self.mUserMode = deepcopy( self.mPrevMode )
 					self.mUserSlidePos = deepcopy( self.mPrevSlidePos )
+					self.mCtrlListMainmenu.selectItem( self.mPrevSlidePos.mMain )
+					time.sleep( 0.02 )
+					self.mCtrlListSubmenu.selectItem( self.mPrevSlidePos.mSub )
+					time.sleep( 0.02 )
+
 					self.ReloadChannelList( )
 
 					#initialize get epg event
@@ -860,7 +865,7 @@ class ChannelListWindow( BaseWindow ) :
 			if aForce == None and self.mViewMode == WinMgr.WIN_ID_CHANNEL_LIST_WINDOW :
 				if self.mUserSlidePos.mMain == idxMain and \
 				   self.mUserSlidePos.mSub == idxSub :
-					LOG_TRACE( 'aready select!!!' )
+					LOG_TRACE( 'already selected!!!' )
 					return
 
 			if aMenuIndex == E_SLIDE_ACTION_SORT :
@@ -2290,7 +2295,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		#default context item
 		context = []
-		if self.mChannelList :
+		if self.mChannelList and len( self.mChannelList ) > 0 :
 			context.append( ContextItem( MR_LANG( 'Lock' ),   CONTEXT_ACTION_LOCK ) )
 			context.append( ContextItem( MR_LANG( 'Unlock' ), CONTEXT_ACTION_UNLOCK ) )
 			context.append( ContextItem( MR_LANG( 'Skip' ),   CONTEXT_ACTION_SKIP ) )
@@ -2298,7 +2303,7 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		if aMode == FLAG_OPT_LIST :
-			if self.mChannelList :
+			if self.mChannelList and len( self.mChannelList ) > 0 :
 				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
 				context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )
 
@@ -2318,9 +2323,10 @@ class ChannelListWindow( BaseWindow ) :
 
 
 		elif aMode == FLAG_OPT_GROUP :
-			context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )
-			
-			if not self.mChannelList :
+			if self.mChannelList and len( self.mChannelList ) > 0 :
+				context.append( ContextItem( MR_LANG( 'Delete' ), CONTEXT_ACTION_DELETE ) )
+				context.append( ContextItem( MR_LANG( 'Move' ),   CONTEXT_ACTION_MOVE ) )
+			else :
 				context = []
 
 			context.append( ContextItem( '%s'% MR_LANG( 'Add to this group' ), CONTEXT_ACTION_ADD_TO_CHANNEL ) )

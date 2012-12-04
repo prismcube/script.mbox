@@ -202,7 +202,6 @@ class InfoPlate( LivePlateWindow ) :
 		self.UpdateChannelAndEPG( )
 
 
-	@SetLock
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
 
@@ -386,7 +385,6 @@ class InfoPlate( LivePlateWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,      'False' )
 
 
-	@SetLock
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		#LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
 		if aCtrlID == E_CONTROL_ID_LABEL_CHANNEL_NUMBER :
