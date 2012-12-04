@@ -1139,7 +1139,7 @@ class EPGWindow( BaseWindow ) :
 						
 				else :
 					if timer.mFromEPG :
-						if  timer.mEventId > 0  and ( aEPG.mEventId == timer.mEventId ) and ( aEPG.mSid == timer.mSid ) and ( aEPG.mTsid  == timer.mTsid ) and ( aEPG.mOnid == timer.mOnid ) and ( aEPG.mNid== timer.mNid ) :
+						if  timer.mEventId > 0  and ( aEPG.mEventId == timer.mEventId ) and ( aEPG.mSid == timer.mSid ) and ( aEPG.mTsid  == timer.mTsid ) and ( aEPG.mOnid == timer.mOnid ) :
 							LOG_TRACE( '------------------- find by event id -------------------------' )
 							return timer
 
