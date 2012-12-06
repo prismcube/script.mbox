@@ -337,6 +337,7 @@ class LivePlate( LivePlateWindow ) :
 
 	def onEvent(self, aEvent):
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
+			#LOG_TRACE( '---------CHECK onEVENT winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( )) )
 			channel = self.mCurrentChannel
 			if self.mFlag_OnEvent != True :
 				#LOG_TRACE('ignore event, mFlag_OnEvent[%s]'% self.mFlag_OnEvent)
@@ -364,14 +365,13 @@ class LivePlate( LivePlateWindow ) :
 			#	self.Epgevent_GetCurrent( channel.mSid, channel.mTsid, channel.mOnid )
 			#	LOG_TRACE('----------------------------receive epg')
 
-			elif aEvent.getName( ) == ElisEventTuningStatus.getName( ) :
-				LOG_TRACE('TunerNo[%s] locked[%s] quality[%s] strength[%s] frequency[%s]'% ( \
-						aEvent.mTunerNo, aEvent.mIsLocked, aEvent.mSignalQuality, aEvent.mSignalStrength, aEvent.mFrequency ) )
-				#ToDo
-				#xbmcgui.Dialog( ).ok( MR_LANG('Infomation'), MR_LANG('No Signal') )
-
 			elif aEvent.getName( ) == ElisEventChannelChangeResult.getName( ) :
 				pass
+
+			elif aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
+				if aEvent.mType == ElisEnum.E_EOF_END :
+					LOG_TRACE( '---------CHECK onEVENT[%s] stop'% aEvent.getName( ) )
+					xbmc.executebuiltin('xbmc.Action(stop)')
 
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
@@ -382,6 +382,17 @@ class LivePlate( LivePlateWindow ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
 					dialog.doModal( )
+
+			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
+				self.mJumpNumber = aEvent.mChannelNo
+				self.ChannelTune( CURR_CHANNEL )
+				LOG_TRACE('event[%s] tune[%s] type[%s]'% ( aEvent.getName( ), aEvent.mChannelNo, aEvent.mServiceType ) )
+
+			#elif aEvent.getName( ) == ElisEventTuningStatus.getName( ) :
+			#	LOG_TRACE('TunerNo[%s] locked[%s] quality[%s] strength[%s] frequency[%s]'% ( \
+			#			aEvent.mTunerNo, aEvent.mIsLocked, aEvent.mSignalQuality, aEvent.mSignalStrength, aEvent.mFrequency ) )
+				#ToDo
+				#xbmcgui.Dialog( ).ok( MR_LANG('Infomation'), MR_LANG('No Signal') )
 
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )

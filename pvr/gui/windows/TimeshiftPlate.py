@@ -517,6 +517,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
+			#LOG_TRACE( '---------CHECK onEVENT winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( )) )
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				LOG_TRACE( 'ElisEventPlaybackEOF mType[%d]'% ( aEvent.mType ) )
 

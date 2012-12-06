@@ -42,6 +42,13 @@ class GlobalEvent( object ) :
 			 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
 			self.mDataCache.ReLoadChannelListByRecording( )
 
+		elif aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
+			if aEvent.mType == ElisEnum.E_EOF_END :
+				if WinMgr.GetInstance( ).mLastId != WinMgr.WIN_ID_NULLWINDOW and \
+				   WinMgr.GetInstance( ).mLastId != WinMgr.WIN_ID_TIMESHIFT_PLATE :
+					LOG_TRACE( '---------CHECK onEVENT[%s] stop'% aEvent.getName( ) )
+					self.mDataCache.Player_Stop( )
+
 		elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
 			if aEvent.mStatus == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.GetInstance( ).mLastId ).setProperty( 'Signal', 'Scramble' )
@@ -73,6 +80,11 @@ class GlobalEvent( object ) :
 					thread.start( )
 			else :
 				LOG_TRACE( 'Skip auto power down : %s' ) % WinMgr.GetInstance( ).mLastId
+
+		elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
+			self.mDataCache.Player_AVBlank( False )
+			self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType )
+			LOG_TRACE('event[%s] tune[%s] type[%s]'% ( aEvent.getName( ), aEvent.mChannelNo, aEvent.mServiceType ) )
 
 
 	def AsyncPowerSave( self ) :

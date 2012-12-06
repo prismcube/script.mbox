@@ -684,10 +684,14 @@ class ChannelListWindow( BaseWindow ) :
 					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
 					dialog.doModal( )
 
-			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
+			elif aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				if aEvent.mType == ElisEnum.E_EOF_END :
 					#LOG_TRACE( 'EventRecv EOF_STOP' )
 					xbmc.executebuiltin( 'xbmc.Action(stop)' )
+
+
+			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
+				self.UpdateChannelList( )
 
 			elif aEvent.getName( ) == ElisEventChannelChangeResult.getName( ) :
 				pass
@@ -1440,7 +1444,7 @@ class ChannelListWindow( BaseWindow ) :
 
 				self.mListItems.append( listItem )
 
-		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
+			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
 
 		#get last channel
 		iChannel = None
@@ -1469,6 +1473,7 @@ class ChannelListWindow( BaseWindow ) :
 		label = '%s - %s'% ( EnumToString( 'tv', self.mNavChannel.mServiceType ).upper( ), self.mNavChannel.mName )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, '%s'% ( iChannelIdx + 1 ) )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
+		#LOG_TRACE('-----------curr[%s]'% (iChannelIdx + 1) )
 
 		#endtime = time.time( )
 		#print '==================== TEST TIME[LIST] END[%s] loading[%s]'% (endtime, endtime-starttime )
