@@ -22,6 +22,7 @@ class GlobalEvent( object ) :
 	def __init__( self ) :
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mIsDialogOpend	= False
+		self.mIsHddFullDialogOpened = False
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.SendLocalOffsetToXBMC( )		
 
@@ -41,12 +42,18 @@ class GlobalEvent( object ) :
 		elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 			 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
 			self.mDataCache.ReLoadChannelListByRecording( )
+			if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
+				if self.mIsHddFullDialogOpened == False :
+					thread = threading.Timer( 0.3, self.AsyncHddFull )
+					thread.start( )
+				else :
+					LOG_TRACE( 'Already opened, hddfull' )
 
 		elif aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 			if aEvent.mType == ElisEnum.E_EOF_END :
 				if WinMgr.GetInstance( ).mLastId != WinMgr.WIN_ID_NULLWINDOW and \
 				   WinMgr.GetInstance( ).mLastId != WinMgr.WIN_ID_TIMESHIFT_PLATE :
-					LOG_TRACE( '---------CHECK onEVENT[%s] stop'% aEvent.getName( ) )
+					LOG_TRACE( 'CHECK onEVENT[%s] stop'% aEvent.getName( ) )
 					self.mDataCache.Player_Stop( )
 
 		elif aEvent.getName( ) == ElisEventChannelChangeStatus( ).getName( ) :
@@ -85,6 +92,15 @@ class GlobalEvent( object ) :
 			self.mDataCache.Player_AVBlank( False )
 			self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType )
 			LOG_TRACE('event[%s] tune[%s] type[%s]'% ( aEvent.getName( ), aEvent.mChannelNo, aEvent.mServiceType ) )
+
+
+	def AsyncHddFull( self ):
+		self.mIsHddFullDialogOpened = True
+		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+		dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
+		dialog.doModal( )
+
+		self.mIsHddFullDialogOpened = False
 
 
 	def AsyncPowerSave( self ) :

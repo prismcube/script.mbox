@@ -377,12 +377,6 @@ class LivePlate( LivePlateWindow ) :
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
  				self.ShowRecordingInfo( )
 
-				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
-					#LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull )
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
-					dialog.doModal( )
-
 			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
 				self.mJumpNumber = aEvent.mChannelNo
 				self.ChannelTune( CURR_CHANNEL )
