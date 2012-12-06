@@ -1225,6 +1225,8 @@ class EPGWindow( BaseWindow ) :
 					if self.mDataCache.Get_Player_AVBlank( ) :
 						self.mDataCache.Player_AVBlank( False )
 
+				if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+					self.mDataCache.Player_Stop( )
 				self.mDataCache.Channel_SetCurrent( self.mSelectChannel.mNumber, self.mSelectChannel.mServiceType )
 				self.mCurrentChannel = self.mSelectChannel
 				self.UpdateCurrentChannel( )				
@@ -1251,8 +1253,9 @@ class EPGWindow( BaseWindow ) :
 					if self.mDataCache.Get_Player_AVBlank( ) :
 						self.mDataCache.Player_AVBlank( False )
 
-
-				self.StopEPGUpdateTimer( )					
+				self.StopEPGUpdateTimer( )
+				if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+					self.mDataCache.Player_Stop( )
 				self.mDataCache.Channel_SetCurrent( channel.mNumber, channel.mServiceType )
 				self.mCurrentChannel = self.mDataCache.Channel_GetCurrent( )
 				self.UpdateCurrentChannel( )

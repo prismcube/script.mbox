@@ -390,6 +390,14 @@ class FirstInstallation( SettingWindow ) :
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
 			if self.mIsChannelSearch == True :
 				if self.mConfiguredSatelliteList :
+					channelList = self.mDataCache.Channel_GetList( )
+					if channelList and channelList[0].mError == 0 :
+						ret = self.mDataCache.Channel_DeleteAll( )
+						if ret :
+							self.mDataCache.Player_AVBlank( True )
+							self.mDataCache.Channel_InvalidateCurrent( )
+							self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
+
 					if self.mSatelliteIndex == 0 :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 						dialog.SetConfiguredSatellite( self.mConfiguredSatelliteList )
@@ -515,3 +523,4 @@ class FirstInstallation( SettingWindow ) :
 				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )
 				self.SetListControl( E_STEP_RESULT )
+

@@ -19,6 +19,11 @@ class NullWindow( BaseWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.CheckMediaCenter( )
+		status = self.mDataCache.Player_GetStatus( )
+		if status.mMode == ElisEnum.E_MODE_LIVE :
+			self.mWin.setProperty( 'PvrPlay', 'False' )
+		else :
+			self.mWin.setProperty( 'PvrPlay', 'True' )
 
 		if self.mInitialized == False :
 			self.mInitialized = True
@@ -36,7 +41,6 @@ class NullWindow( BaseWindow ) :
 		self.LoadNoSignalState( )
 
 		if E_SUPPROT_HBBTV == True :
-			status = self.mDataCache.Player_GetStatus( )
 			LOG_ERR('self.mDataCache.Player_GetStatus( ) = %d'% status.mMode )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
 				if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL or \

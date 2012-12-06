@@ -18,7 +18,7 @@
 			<font>font35_title</font>
 			<label>[I]SCRIPT104 [/I]</label>
 			<textcolor>grey2</textcolor>
-			<visible>substring(Window.Property(Signal),False)</visible>
+			<visible>substring(Window.Property(Signal),False) + substring(Window.Property(PvrPlay),False)</visible>
 		</control>
 		<control type="label">
 			<posx>550</posx>
@@ -27,7 +27,7 @@
 			<font>font35_title</font>
 			<label>[I]SCRIPT105 [/I]</label>
 			<textcolor>grey2</textcolor>
-			<visible>substring(Window.Property(Signal),Scramble)</visible>
+			<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 		</control>
 	</controls>
 </window>

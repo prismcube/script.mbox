@@ -1,6 +1,7 @@
 <window id="3023">
 	<defaultcontrol always="true">9003</defaultcontrol>
-	<allowoverlay>no</allowoverlay>
+	<allowoverlay>yes</allowoverlay>
+	<backgroundcolor>0x00ffffff</backgroundcolor>
 	<controls>
 		<control type="image">
 			<posx>0</posx>
@@ -9,6 +10,7 @@
 			<height>720</height>
 			<texture background="true">backgrounds/videos.jpg</texture>
 			<include>DefaultWindowFade</include>
+			<visible>substring(Window.Property(ViewMode),common)</visible>
 		</control>
 		<control type="group">
 			<include>DefaultWindowFade</include>
@@ -18,7 +20,7 @@
 				<width>1280</width>
 				<height>720</height>
 				<texture border="20">black-back.png</texture>
-				<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)</visible>
+				<visible>substring(Window.Property(ViewMode),common)</visible>
 			</control>
 			<control type="image">
 				<posx>0</posx>
@@ -26,10 +28,10 @@
 				<width>1280</width>
 				<height>128</height>
 				<texture>floor.png</texture>
-				<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)</visible>
+				<visible>substring(Window.Property(ViewMode),common)</visible>
 			</control>
 			<control type="group">
-				<visible>substring(Window.Property(ViewMode),common) | substring(Window.Property(ViewMode),thumbnail)</visible>
+				<visible>substring(Window.Property(ViewMode),common)</visible>
 				<control type="image">
 					<posx>40</posx>
 					<posy>40</posy>
@@ -51,16 +53,8 @@
 				<posy>0</posy>
 				<width>1280</width>
 				<height>720</height>
-				<texture border="20">ContentPanel2.png</texture>
-				<visible>substring(Window.Property(ViewMode),posterwrap)</visible>
-			</control>
-			<control type="image">
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>1280</width>
-				<height>900</height>
-				<texture border="20">ContentPanel2.png</texture>
-				<visible>substring(Window.Property(ViewMode),panart)</visible>
+				<texture border="20">ArchiveShadowBack.png</texture>
+				<visible>substring(Window.Property(ViewMode),posterwrap) | substring(Window.Property(ViewMode),panart) | substring(Window.Property(ViewMode),thumbnail)</visible>
 			</control>
 		</control>
 		
