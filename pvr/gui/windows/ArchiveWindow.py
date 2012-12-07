@@ -67,16 +67,9 @@ class ArchiveWindow( BaseWindow ) :
 		if self.mPlayingRecord :
 			self.mEventBus.Register( self )
 			self.mSelectRecordKey = self.mPlayingRecord.mRecordKey
-			if status.mMode == ElisEnum.E_MODE_PVR :
-				self.UpdatePlayStopThumbnail( self.mSelectRecordKey, True )
-			else :
-				self.UpdatePlayStopThumbnail( self.mSelectRecordKey, False )
+			self.UpdateList( )
 			self.SelectLastRecordKey( )
 			self.UpdatePlayStatus( )
-
-			if self.mViewMode == E_VIEW_LIST :
-				self.SetPipScreen( )
-				self.LoadNoSignalState( )
 			return
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Archive' ) )
@@ -345,7 +338,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.SetPipScreen( )
 			self.LoadNoSignalState( )
 		else :
-			self.mDataCache.Player_SetVIdeoSize( 1230, 0, 50, 50 )
+			self.mDataCache.Player_SetVIdeoSize( 0, 0, 1280, 720 )
 		self.OpenBusyDialog( )
 
 		try :
@@ -409,6 +402,7 @@ class ArchiveWindow( BaseWindow ) :
 		self.mRecordListItems.append( recItem )
 
 
+	@SetLock
 	def UpdatePlayStopThumbnail( self, aRecordKey, aIsStartEvent ) :
 		listindex = 0
 
@@ -542,10 +536,6 @@ class ArchiveWindow( BaseWindow ) :
 
 			self.RestoreLastRecordKey( )
 			self.mLastFocusItem = selectedPos
-			if self.mViewMode != E_VIEW_LIST :
-				self.Close( )
-				self.SetVideoRestore( )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 
 
 	def GetSelectedPosition( self ) :

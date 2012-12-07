@@ -4325,7 +4325,7 @@
 			<visible>substring(Window.Property(ViewMode),thumbnail)</visible>
 			<control type="panel" id="3410">
 				<posx>90</posx>
-				<posy>80</posy>
+				<posy>110</posy>
 				<width>1080</width>
 				<height>550</height>
 				<onleft>100</onleft>
@@ -4354,6 +4354,7 @@
 						<height>25</height>
 						<font>font13</font>
 						<textcolor>grey2</textcolor>
+						<shadowcolor>black</shadowcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -4367,6 +4368,7 @@
 						<height>25</height>
 						<font>font12</font>
 						<textcolor>grey2</textcolor>
+						<shadowcolor>black</shadowcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -4380,6 +4382,7 @@
 						<height>25</height>
 						<font>font12</font>
 						<textcolor>grey2</textcolor>
+						<shadowcolor>black</shadowcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -4402,6 +4405,15 @@
 						<texture>OSDPlayNF.png</texture>
 						<visible>substring(ListItem.Property(Playing),True)</visible>
 					</control>
+					<control type="image">
+						<posx>1</posx>
+						<posy>0</posy>
+						<width>256</width>
+						<height>144</height>
+						<aspectratio>stretch</aspectratio>
+						<texture>black-back.png</texture>
+						<colordiffuse>AAFFFFFF</colordiffuse>
+					</control>
 				</itemlayout>
 				<focusedlayout height="275" width="256">
 					<control type="image">
@@ -4422,6 +4434,7 @@
 						<height>25</height>
 						<font>font13</font>
 						<textcolor>white</textcolor>
+						<shadowcolor>black</shadowcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -4434,7 +4447,8 @@
 						<width>250</width>
 						<height>25</height>
 						<font>font12</font>
-						<textcolor>grey2</textcolor>
+						<textcolor>white</textcolor>
+						<shadowcolor>black</shadowcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -4447,7 +4461,8 @@
 						<width>250</width>
 						<height>25</height>
 						<font>font12</font>
-						<textcolor>grey2</textcolor>
+						<textcolor>white</textcolor>
+						<shadowcolor>black</shadowcolor>
 						<selectedcolor>selected</selectedcolor>
 						<align>center</align>
 						<aligny>center</aligny>
@@ -4496,6 +4511,7 @@
 			<visible>substring(Window.Property(ViewMode),posterwrap)</visible>
 			<posx>0</posx>
 			<posy>80</posy>
+			<!--
 			<control type="image">
 				<posx>240</posx>
 				<posy>420</posy>
@@ -4504,6 +4520,7 @@
 				<aspectratio>stretch</aspectratio>
 				<texture>GlassTitleBar.png</texture>
 			</control>
+			-->
 			<control type="wraplist" id="3420">
 				<visible>true</visible>							
 				<posx>-100</posx>
@@ -4588,8 +4605,8 @@
 						<height>84</height>
 						<texture>OSDPlayFO.png</texture>
 						<visible>substring(ListItem.Property(Playing),True)</visible>
-						<animation reversible="true" effect="zoom" start="62,266,84,84" end="-10,136,228,165" time="300">focus</animation>
-						<animation reversible="true" effect="zoom" end="62,266,84,84" start="-10,136,228,165" time="300">unfocus</animation>
+						<animation reversible="true" effect="zoom" start="62,266,84,84" end="54,168,100,100" time="300">focus</animation>
+						<animation reversible="true" effect="zoom" end="62,266,84,84" start="54,168,100,100" time="300">unfocus</animation>
 					</control>
 				</focusedlayout>
 			</control>
@@ -4742,8 +4759,8 @@
 						<height>64</height>
 						<texture>OSDPlayFO.png</texture>
 						<visible>substring(ListItem.Property(Playing),True)</visible>
-						<animation reversible="true" effect="zoom" start="40,108,64,64" end="8,48,128,100" time="300">focus</animation>
-						<animation reversible="true" effect="zoom" end="40,108,64,64" start="8,48,128,100" time="300">unfocus</animation>
+						<animation reversible="true" effect="zoom" start="40,108,64,64" end="22,48,100,100" time="300">focus</animation>
+						<animation reversible="true" effect="zoom" end="40,108,64,64" start="22,48,100,100" time="300">unfocus</animation>
 					</control>
 				</focusedlayout>
 			</control>

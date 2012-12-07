@@ -517,6 +517,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
+			#LOG_TRACE( '---------CHECK onEVENT winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( )) )
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				LOG_TRACE( 'ElisEventPlaybackEOF mType[%d]'% ( aEvent.mType ) )
 
@@ -540,12 +541,6 @@ class TimeShiftPlate( BaseWindow ) :
 				self.ShowRecordingInfo( )
 				self.mDataCache.mCacheReload = True
 
-				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
-					LOG_TRACE('----------hddfull[%s]'% aEvent.mHDDFull)
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
-					dialog.doModal( )
-					
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
 

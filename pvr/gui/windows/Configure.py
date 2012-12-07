@@ -319,7 +319,11 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FORMAT_HDD :
 			if CheckHdd( ) :
-				if groupId == E_Input01 :
+				if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping your playback' ) )
+					dialog.doModal( )
+				elif groupId == E_Input01 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO DELETE ALL MEDIA FILES?' ) )
 					dialog.doModal( )
@@ -534,7 +538,7 @@ class Configure( SettingWindow ) :
 				channelName = self.mSetupChannel.mName
 			else :
 				channelList = self.mDataCache.Channel_GetList( )
-				if channelList :
+				if channelList and channelList[0].mError == 0 :
 					self.mSetupChannel = channelList[0]
 					channelName = self.mSetupChannel.mName
 				else :
