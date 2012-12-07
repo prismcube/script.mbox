@@ -189,7 +189,7 @@ E_LIST_MY_LATITUDE  = [ MR_LANG( 'North' ), MR_LANG( 'South' ) ]
 
 G_DIALOG_HEADER_LABEL_ID			= 3005
 
-# Settinf Dialog Control Ids
+# Setting Dialog Control Ids
 E_DialogSpinEx01	= 6110
 E_DialogSpinEx02	= 6120
 E_DialogSpinEx03	= 6130
@@ -237,7 +237,7 @@ E_DIALOG_STATE_NO		= 2
 E_DIALOG_STATE_CANCEL	= 3
 E_DIALOG_STATE_ERROR	= 4
 
-# Channel List enum
+# Channel List Enum
 E_TAG_ENABLE  				= 'enable'
 E_TAG_VISIBLE 				= 'visible'
 E_TAG_SELECT  				= 'select'
