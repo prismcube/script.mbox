@@ -42,7 +42,7 @@ E_Input05			= 2500
 E_Input06			= 2600
 E_Input07			= 2700
 
-# info plate buttons
+# Info Plate Buttons
 E_CTRL_GROUP_INFO = 3620
 E_CTRL_BTN_INFO_MAX = 8
 E_CONTROL_ID_BUTTON_DESCRIPTION_INFO 	= 3621
@@ -66,7 +66,7 @@ E_SETTING_PIP_SCREEN_IMAGE	=	8899
 
 E_FAKE_BUTTON				=	999
 
-# FirstTimeInstallation Button Ids
+# First Time Installation Button Ids
 E_STEP_SELECT_LANGUAGE			=	0
 E_STEP_VIDEO_AUDIO				=	1
 E_STEP_ANTENNA					=	2
@@ -93,7 +93,7 @@ E_SCAN_LABEL_QUALITY			= 1009
 E_SCAN_HELPER_LABEL_QUALITY		= 1006
 E_SCAN_HELPER_PROGRESS_QUALITY	= 1011
 
-#Setting Window No Sigal
+# Setting Window No Signal
 E_SETTING_LABEL_PIP_NO_SIGNAL	= 1020
 E_SETTING_LABEL_PIP_SCRAMBLED	= 1021
 
@@ -121,7 +121,7 @@ E_TUNER_MAX						= 2
 # ONECABLECOUNT
 MAX_SATELLITE_CNT_ONECABLE		= 2
 
-#RECORD
+# RECORD
 E_MAX_RECORD_COUNT				= 2
 
 # Volume
@@ -132,11 +132,15 @@ MAX_VOLUME						= 100
 TIME_AUTOMATIC					= 0
 TIME_MANUAL						= 1
 
+# Summer Time
+SUMMER_TIME_AUTOMATIC			= 0
+SUMMER_TIME_OFF				= 1
+
 # Network Mode
 NET_DHCP						= 0
 NET_STATIC						= 1
 
-# Wifi Encript Type
+# Wifi Encription Type
 ENCRYPT_OPEN					= 0
 ENCRYPT_TYPE_WEP				= 1
 ENCRYPT_TYPE_WPA				= 2
@@ -149,7 +153,7 @@ USE_HIDDEN_SSID					= 1
 NETWORK_ETHERNET				= 0
 NETWORK_WIRELESS				= 1
 
-# db table
+# DB table
 E_SYNCHRONIZED  				= 0
 E_ASYNCHRONIZED 				= 1
 E_TABLE_ALLCHANNEL 				= 0
@@ -211,7 +215,7 @@ E_SETTING_DIALOG_BACKGROUND_IMAGE_ID 	= 9001
 E_SETTING_DIALOG_DEFAULT_GOURP_ID		= 9000
 E_SETTING_DIALOG_MAIN_GOURP_ID			= 8000
 
-# Transponder dialog type
+# Transponder dialog Type
 E_MODE_ADD_NEW_TRANSPODER	= 0
 E_MODE_EDIT_TRANSPODER		= 1
 
@@ -227,13 +231,13 @@ E_INPUT_KEYBOARD_TYPE_HIDE		= True
 E_INPUT_MAX						= 9999
 E_INDEX_JUMP_MAX				= 100
 
-# Dialog Satatus
+# Dialog Status
 E_DIALOG_STATE_YES		= 1
 E_DIALOG_STATE_NO		= 2
 E_DIALOG_STATE_CANCEL	= 3
 E_DIALOG_STATE_ERROR	= 4
 
-#channel List enum
+# Channel List enum
 E_TAG_ENABLE  				= 'enable'
 E_TAG_VISIBLE 				= 'visible'
 E_TAG_SELECT  				= 'select'
@@ -247,7 +251,7 @@ E_TAG_COLOR_END   			= '[/COLOR]'
 E_TAG_SET_SELECT_POSITION 	= 'selectItem'
 E_TAG_GET_SELECT_POSITION 	= 'getItem'
 
-#xml property name
+# XML Property Name
 E_XML_PROPERTY_SUBTITLE   = 'HasSubtitle'
 E_XML_PROPERTY_DOLBY      = 'HasDolby'
 E_XML_PROPERTY_HD         = 'HasHD'
@@ -264,7 +268,7 @@ E_XML_PROPERTY_RADIO      = 'ServiceTypeRadio'
 E_XML_PROPERTY_RECORDING1 = 'ViewRecord1'
 E_XML_PROPERTY_RECORDING2 = 'ViewRecord2'
 
-#context action
+# Context Action
 CONTEXT_ACTION_LOCK				= 1 
 CONTEXT_ACTION_UNLOCK			= 2
 CONTEXT_ACTION_SKIP				= 3
