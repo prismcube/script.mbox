@@ -506,7 +506,7 @@
 			<width>550</width>
 			<height>286</height>
 		</content>
-		<content name="Edit Channel List enables you to delete, move, select, rename or lock/unlock the channels in the channel list conveniently.[CR][CR][B]DELETING CHANNELS[/B][CR][CR]1. Press i button and select EDIT CHANNELS.[CR][CR]2. Select a channel that you want to erase and press OK button.[CR][CR]3. Press i button and select Delete and press OK to erase the selected channels.[CR][CR]4. Press i button and select Save and Exit. A message asking for confirmation will appear. Press YES to save.">
+		<content name="Edit Channel List enables you to delete, move, select, rename or lock the channels conveniently.[CR][CR][B]DELETING CHANNELS[/B][CR][CR]1. Press i button and select EDIT CHANNELS.[CR][CR]2. Select a channel that you want to erase and press OK button.[CR][CR]3. Press i button and select Delete and press OK to erase the selected channels.[CR][CR]4. Press i button and select Save and Exit. A message asking for confirmation will appear. Press YES to save.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>114</posy>

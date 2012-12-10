@@ -47,15 +47,15 @@
 					<effect type="fade" start="0" end="100" time="400" />
 				</animation>
 				<control type="image" id="98">
-					<posx>-20</posx>
+					<posx>-10</posx>
 					<posy>-10</posy>
-					<width>750</width>
+					<width>745</width>
 					<height>380</height>
 					<texture>DialogBack.png</texture>
 					<visible>substring(Window.Property(VersionInfo),true)</visible>
 				</control>
 				<control type="label" id="99">
-					<posx>0</posx>
+					<posx>5</posx>
 					<posy>0</posy>
 					<font>font13_title</font>
 					<textcolor>grey3</textcolor>
@@ -63,32 +63,32 @@
 					<label>$INFO[Control.GetLabel]</label>
 				</control>
 				<control type="label" id="100">
-					<posx>0</posx>
-					<posy>25</posy>
+					<posx>5</posx>
+					<posy>35</posy>
 					<font>font13_title</font>
 					<textcolor>grey3</textcolor>
 					<align>left</align>
 					<label>$INFO[Control.GetLabel]</label>
 				</control>
 				<control type="label" id="101">
-					<posx>0</posx>
-					<posy>50</posy>
+					<posx>5</posx>
+					<posy>60</posy>
 					<font>font13_title</font>
 					<textcolor>grey3</textcolor>
 					<align>left</align>
 					<label>$INFO[Control.GetLabel]</label>
 				</control>
 				<control type="label" id="102">
-					<posx>0</posx>
-					<posy>75</posy>
+					<posx>5</posx>
+					<posy>85</posy>
 					<font>font13_title</font>
 					<textcolor>grey3</textcolor>
 					<align>left</align>
 					<label>$INFO[Control.GetLabel]</label>
 				</control>
 				<control type="label">
-					<posx>0</posx>
-					<posy>100</posy>
+					<posx>5</posx>
+					<posy>110</posy>
 					<font>font13_title</font>
 					<textcolor>grey3</textcolor>
 					<align>left</align>
@@ -96,7 +96,7 @@
 				</control>
 				<control type="textbox" id="103">
 					  <posx>20</posx>
-					  <posy>125</posy>
+					  <posy>135</posy>
 					  <width>680</width>
 					  <height>220</height>
 					  <visible>true</visible>
