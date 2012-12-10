@@ -12,6 +12,7 @@ from inspect import currentframe
 from elementtree import ElementTree
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 import pvr.Platform
+import pvr.DataCacheMgr
 
 WIN_ID_ROOTWINDOW 					= 0
 WIN_ID_NULLWINDOW 					= 1
@@ -352,6 +353,7 @@ class WindowMgr( object ) :
 
 			self.CopyIncludeFile( )		
 			self.AddDefaultFont( )
+			pvr.DataCacheMgr.GetInstance( ).SetChannelReloadStatus( True )
 
 			return True
 
