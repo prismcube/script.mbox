@@ -196,7 +196,7 @@ class FirstInstallation( SettingWindow ) :
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Language Setup' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), MR_LANG( WinMgr.GetInstance( ).GetCurrentLanguage( ) ), MR_LANG( 'Select the language you want the menu to be in' ) )
 			self.AddInputControl( E_Input02, MR_LANG( 'Audio Language' ), self.mAudioLanguageList[ ElisPropertyEnum( 'Audio Language', self.mCommander ).GetPropIndex( ) ], MR_LANG( 'Select the language that you wish to listen to' ) )
-			self.AddNextButton( MR_LANG( 'Go to Video and Audio Setup' ) )
+			self.AddNextButton( MR_LANG( 'Go to the Video and Audio Setup page' ) )
 			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_Input01, E_Input02 ]
@@ -216,7 +216,7 @@ class FirstInstallation( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx01, 'Show 4:3', MR_LANG( 'TV Screen Format' ), MR_LANG( 'Select the display format for TV screen' ) )
 			self.AddEnumControl( E_SpinEx02, 'Audio Dolby', MR_LANG('Dolby Audio'), MR_LANG( 'When set to \'On\', Dolby Digital audio will be selected automatically when broadcast' ) )
 			self.AddEnumControl( E_SpinEx03, 'HDMI Format', None, MR_LANG( 'Select the display\'s HDMI resolution' ) )
-			self.AddPrevNextButton( MR_LANG( 'Go to Antenna and Satellite Setup' ), MR_LANG( 'Go back to Language Setup' ) )
+			self.AddPrevNextButton( MR_LANG( 'Go to the Antenna and Satellite Setup page' ), MR_LANG( 'Go back to the Language Setup page' ) )
 			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
@@ -238,7 +238,7 @@ class FirstInstallation( SettingWindow ) :
 			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select the satellite you wish to search from' ) )
 			self.AddEnumControl( E_SpinEx02, 'Network Search', None, MR_LANG( 'When set to \'On\', new channels are searched from existing transponders and the additional transponders stored by transponder network however if you set this option to \'Off\', only the transponder you selected will be searched' ) )
 			self.AddEnumControl( E_SpinEx03, 'Channel Search Mode', MR_LANG( 'Search Mode' ), MR_LANG( 'Select the type of channel you want to search for' ) )
-			self.AddPrevNextButton( MR_LANG( 'Go to Time and Date Setup' ), MR_LANG( 'Go back to Antenna and Satellite Setup' ) )
+			self.AddPrevNextButton( MR_LANG( 'Go to the Time and Date Setup page' ), MR_LANG( 'Go back to the Antenna and Satellite Setup page' ) )
 			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01 ]
@@ -282,7 +282,7 @@ class FirstInstallation( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx02, 'Local Time Offset', None, MR_LANG( 'Set the time zone that will be the basis for the date and time display' ) )
 			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, MR_LANG( 'When set to \'Automatic\', the system automatically change over to and from summer and winter time' ) )
 			self.AddInputControl( E_Input04, MR_LANG( 'Apply' ), '', MR_LANG( 'Press the OK button to save time settings' ) )
-			self.AddPrevNextButton( MR_LANG( 'Go to Summary of First Installation' ), MR_LANG( 'Go back to Channel Search Setup' ) )
+			self.AddPrevNextButton( MR_LANG( 'Go to the Summary of First Installation page' ), MR_LANG( 'Go back to the Channel Search Setup page' ) )
 			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03, E_Input04 ]
@@ -314,7 +314,7 @@ class FirstInstallation( SettingWindow ) :
 				cntRadio = 0
 			self.AddInputControl( E_Input04, MR_LANG( 'Number of your TV Channels' ), '%d' % cntChannel )
 			self.AddInputControl( E_Input05, MR_LANG( 'Number of your Radio Channels' ), '%d' % cntRadio )
-			self.AddPrevNextButton( MR_LANG( 'Return to the Installation page' ), MR_LANG( 'Go back to Time and Date Setup' ) )
+			self.AddPrevNextButton( MR_LANG( 'Return to the Installation page' ), MR_LANG( 'Go back to the Time and Date Setup page' ) )
 			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
@@ -362,10 +362,21 @@ class FirstInstallation( SettingWindow ) :
 					self.SetEnableControl( E_Input02, False )
 					self.SetEnableControl( E_Input03, False )
 					self.SetEnableControl( E_Input01, True )
+					self.SetEnableControl( E_SpinEx02, True )
+					self.SetEnableControl( E_SpinEx03, True )
 				else :
+					control = self.getControl( E_SpinEx02 + 3 )
+					control1 = self.getControl( E_SpinEx03 + 3 )
+					time.sleep( 0.02 )
+					control.selectItem( ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetIndexByProp( 0 ) )
+					control1.selectItem( SUMMER_TIME_OFF )
+					
 					self.SetEnableControl( E_Input01, False )
 					self.SetEnableControl( E_Input02, True )
-					self.SetEnableControl( E_Input03, True )
+					self.SetEnableControl( E_Input03, True )					
+					self.SetEnableControl( E_SpinEx02, False )
+					self.SetEnableControl( E_SpinEx03, False )
+
 
 
 	def LoadFormattedSatelliteNameList( self ) :
@@ -390,6 +401,14 @@ class FirstInstallation( SettingWindow ) :
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :
 			if self.mIsChannelSearch == True :
 				if self.mConfiguredSatelliteList :
+					channelList = self.mDataCache.Channel_GetList( )
+					if channelList and channelList[0].mError == 0 :
+						ret = self.mDataCache.Channel_DeleteAll( )
+						if ret :
+							self.mDataCache.Player_AVBlank( True )
+							self.mDataCache.Channel_InvalidateCurrent( )
+							self.mDataCache.Frontdisplay_SetMessage( 'NoChannel' )
+
 					if self.mSatelliteIndex == 0 :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 						dialog.SetConfiguredSatellite( self.mConfiguredSatelliteList )
@@ -503,7 +522,8 @@ class FirstInstallation( SettingWindow ) :
 				sumtime = self.mDate + '.' + self.mTime
 				t = time.strptime( sumtime, '%d.%m.%Y.%H:%M' )
 				ret = self.mCommander.Datetime_SetSystemUTCTime( int( time.mktime( t ) ) )
-				self.mDataCache.LoadTime( )
+				globalEvent = pvr.GlobalEvent.GetInstance()
+				globalEvent.SendLocalOffsetToXBMC()
 
 			self.CloseBusyDialog( )
 			if mode == TIME_AUTOMATIC and dialog.GetResult( ) == False :
@@ -515,3 +535,4 @@ class FirstInstallation( SettingWindow ) :
 				self.setFocusId( E_FAKE_BUTTON )
 				time.sleep( 0.3 )
 				self.SetListControl( E_STEP_RESULT )
+

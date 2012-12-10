@@ -169,6 +169,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mMoveFlag = False
 		self.mMoveItem = []
 		self.mItemCount = 0
+		self.mIsPVR = False
 
 		self.mEventBus.Register( self )
 		self.SetPipScreen( )
@@ -398,9 +399,8 @@ class ChannelListWindow( BaseWindow ) :
 		#aleady cache load
 		self.mChannelList = self.mDataCache.Channel_GetList( )
 		self.LoadChannelListHash( )
-
+		label = ''
 		try :
-			label = ''
 			#first get is used cache, reason by fast load
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 
@@ -412,8 +412,10 @@ class ChannelListWindow( BaseWindow ) :
 					label = 'TIMESHIFT - P%04d.%s' %(iChannel.mNumber, iChannel.mName )
 
 			elif status.mMode == ElisEnum.E_MODE_PVR :
-				#ToDO : youn			
-				pass
+				playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
+				if playingRecord and playingRecord.mError == 0 :
+					self.mIsPVR = True
+					label = 'PVR - P%04d.%s' %( playingRecord.mChannelNo, playingRecord.mRecordName )
 
 			else :
 				#Live
@@ -421,17 +423,16 @@ class ChannelListWindow( BaseWindow ) :
 					self.mNavChannel = iChannel
 					self.mCurrentChannel = iChannel.mNumber
 
-					label = '%s - %s'% ( EnumToString( 'tv', iChannel.mServiceType ).upper(), iChannel.mName )
+					label = '%s - %s'% ( EnumToString( 'type', iChannel.mServiceType ).upper(), iChannel.mName )
 
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
-		self.UpdateChannelList( )
-
 		#clear label
 		self.ResetLabel( )
+		self.UpdateChannelList( )
 
 		#initialize get epg event
 		#self.Epgevent_GetCurrent( )
@@ -446,7 +447,7 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 		self.UpdateChannelAndEPG( )
-
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 
 	def DoDeleteAll( self ) :
 		ret = E_DIALOG_STATE_NO
@@ -606,8 +607,11 @@ class ChannelListWindow( BaseWindow ) :
 					self.mDataCache.SetChangeDBTableChannel( getTable )
 
 					self.mDataCache.SetSkipChannelView( False )
+					LOG_TRACE( 'slidePos: user[%s,%s] prev[%s,%s]'% (self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, self.mPrevSlidePos.mMain, self.mPrevSlidePos.mSub ) )
+					LOG_TRACE( 'mode: user[%s,%s] prev[%s,%s]'% (self.mUserMode.mServiceType, self.mUserMode.mSortingMode, self.mPrevMode.mServiceType, self.mPrevMode.mSortingMode ) )
 					self.mUserMode = deepcopy( self.mPrevMode )
 					self.mUserSlidePos = deepcopy( self.mPrevSlidePos )
+					self.SubMenuAction( E_SLIDE_ACTION_MAIN, self.mPrevSlidePos.mMain, True )
 					self.mCtrlListMainmenu.selectItem( self.mPrevSlidePos.mMain )
 					time.sleep( 0.02 )
 					self.mCtrlListSubmenu.selectItem( self.mPrevSlidePos.mSub )
@@ -678,16 +682,14 @@ class ChannelListWindow( BaseWindow ) :
 					self.mFlag_EditChanged = False
 					self.mMoveFlag = False
 
-				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
-					LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull)
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
-					dialog.doModal( )
-
-			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
+			elif aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				if aEvent.mType == ElisEnum.E_EOF_END :
 					#LOG_TRACE( 'EventRecv EOF_STOP' )
 					xbmc.executebuiltin( 'xbmc.Action(stop)' )
+
+
+			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
+				self.UpdateChannelList( )
 
 			elif aEvent.getName( ) == ElisEventChannelChangeResult.getName( ) :
 				pass
@@ -754,6 +756,9 @@ class ChannelListWindow( BaseWindow ) :
 				isBlank = False
 			self.mDataCache.Player_VideoBlank( isBlank )
 
+		if self.mIsPVR :
+			self.mIsPVR = False
+			self.mDataCache.Player_Stop( )
 
 		ret = self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType, self.mChannelListHash )
 		if ret :
@@ -1085,15 +1090,18 @@ class ChannelListWindow( BaseWindow ) :
 		#self.mUserMode.printdebug()
 		
 		changed = False
+		saveNoAsk = False
 		answer = E_DIALOG_STATE_NO
 
 		if self.mLoadSlidePos.mMain != self.mUserSlidePos.mMain or \
 		   self.mLoadSlidePos.mSub != self.mUserSlidePos.mSub :
+			saveNoAsk = True
 			changed = True
 
 		if self.mLoadMode.mMode != self.mUserMode.mMode or \
 		   self.mLoadMode.mSortingMode != self.mUserMode.mSortingMode or \
 		   self.mLoadMode.mServiceType != self.mUserMode.mServiceType :
+			saveNoAsk = True
 			changed = True
 
 		if self.mFlag_DeleteAll :
@@ -1105,19 +1113,23 @@ class ChannelListWindow( BaseWindow ) :
 		#is change?
 		if changed :
 			try :
-				#ask save question
-				label1 = EnumToString( 'mode', self.mUserMode.mMode )
-				label2 = self.mCtrlListSubmenu.getSelectedItem( ).getLabel( )
+				if saveNoAsk :
+					answer = E_DIALOG_STATE_YES
 
-				head = MR_LANG( 'Save Zapping Mode' )
-				line1 = MR_LANG( 'Do you want to save the channel list?' )
-				line2 = '- %s / %s'% ( label1.lower( ), label2.lower( ) )
+				else :
+					#ask save question
+					label1 = EnumToString( 'mode', self.mUserMode.mMode )
+					label2 = self.mCtrlListSubmenu.getSelectedItem( ).getLabel( )
 
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( head, str( '%s\n\n%s' % ( line1, line2 ) ) )
-				dialog.doModal( )
+					head = MR_LANG( 'Save Zapping Mode' )
+					line1 = MR_LANG( 'Do you want to save the channel list?' )
+					line2 = '- %s / %s'% ( label1.lower( ), label2.lower( ) )
 
-				answer = dialog.IsOK( )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+					dialog.SetDialogProperty( head, str( '%s\n\n%s' % ( line1, line2 ) ) )
+					dialog.doModal( )
+
+					answer = dialog.IsOK( )
 
 				#answer is yes
 				if answer == E_DIALOG_STATE_YES :
@@ -1440,7 +1452,7 @@ class ChannelListWindow( BaseWindow ) :
 
 				self.mListItems.append( listItem )
 
-		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
+			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
 
 		#get last channel
 		iChannel = None
@@ -1466,9 +1478,10 @@ class ChannelListWindow( BaseWindow ) :
 
 		#select item idx, print GUI of 'current / total'
 		self.mCurrentPosition = iChannelIdx
-		label = '%s - %s'% ( EnumToString( 'tv', self.mNavChannel.mServiceType ).upper( ), self.mNavChannel.mName )
+		label = '%s - %s'% ( EnumToString( 'type', self.mNavChannel.mServiceType ).upper( ), self.mNavChannel.mName )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, '%s'% ( iChannelIdx + 1 ) )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
+		#LOG_TRACE('-----------curr[%s]'% (iChannelIdx + 1) )
 
 		#endtime = time.time( )
 		#print '==================== TEST TIME[LIST] END[%s] loading[%s]'% (endtime, endtime-starttime )
@@ -1628,7 +1641,7 @@ class ChannelListWindow( BaseWindow ) :
 			#update channel name
 			if self.mIsTune == True :
 				#strType = self.UpdateServiceType( self.mNavChannel.mServiceType )
-				label = '%s - %s'% ( EnumToString( 'tv', self.mNavChannel.mServiceType ).upper(), self.mNavChannel.mName )
+				label = '%s - %s'% ( EnumToString( 'type', self.mNavChannel.mServiceType ).upper(), self.mNavChannel.mName )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 
 			#update longitude info
@@ -2657,10 +2670,14 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlListCHList.reset( )
 		self.InitSlideMenuHeader( aInit )
 		mainIdx = self.mUserSlidePos.mMain
-		subIdx = self.mUserSlidePos.mSub
+		subIdx  = self.mUserSlidePos.mSub
 		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
 			mainIdx = E_SLIDE_MENU_ALLCHANNEL
 			subIdx = 0
+			self.mCtrlListMainmenu.selectItem( mainIdx )
+			time.sleep( 0.02 )
+			self.mCtrlListSubmenu.selectItem( subIdx )
+			time.sleep( 0.02 )
 
 		self.RefreshSlideMenu( mainIdx, subIdx, True )
 		self.UpdateChannelList( )

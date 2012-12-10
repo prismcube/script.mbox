@@ -328,7 +328,7 @@
 			<include>DefaultWindowFade</include>
 			<control type="label" id="21">
 				<posx>150</posx>
-				<posy>100</posy>
+				<posy>102</posy>
 				<width>400</width>
 				<height>28</height>
 				<font>font12</font>
@@ -336,11 +336,11 @@
 				<label>$INFO[ListItem.Label]</label>
 			</control>
 			<control type="label" id="22">
-				<posx>1200</posx>
-				<posy>50</posy>
+				<posx>770</posx>
+				<posy>105</posy>
 				<width>200</width>
 				<height>28</height>
-				<font>font10</font>
+				<font>font12</font>
 				<align>right</align>
 				<textcolor>blue</textcolor>
 				<label>$INFO[ListItem.Label]</label>

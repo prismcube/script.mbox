@@ -1297,6 +1297,10 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Player_AVBlank( aBlank, aForce )
 
 
+	def Channel_GetInitialBlank( self ) :
+		return self.mCommander.Channel_GetInitialBlank( )
+
+
 	def Get_Player_AVBlank( self ) :
 		return self.mAVBlankStatus
 

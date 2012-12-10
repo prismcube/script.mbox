@@ -230,12 +230,6 @@ class InfoPlate( LivePlateWindow ) :
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
  				self.ShowRecordingInfo( )
 
-				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
-					#LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull )
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
-					dialog.doModal( )
-
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
 
@@ -266,53 +260,6 @@ class InfoPlate( LivePlateWindow ) :
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_STARTTIME, label )
 				label = TimeToString( rec.mStartTime + rec.mDuration, TimeFormatEnum.E_HH_MM )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_EPG_ENDTIME,   label )
-
-				#component
-				"""
-				setPropertyData  = 'False'
-				setPropertyDolby = 'False'
-				setPropertyHD    = 'False'
-				bitCount = rec.mContentTag
-				#LOG_TRACE('component bitCount[%s]'% bitCount)
-
-				if bitCount == ElisEnum.E_HasDolbyDigital + ElisEnum.E_HasHDVideo :
-					setPropertyData  = 'False'
-					setPropertyDolby = 'True'
-					setPropertyHD    = 'True'
-
-				elif bitCount == ElisEnum.E_HasHDVideo :
-					setPropertyData  = 'False'
-					setPropertyDolby = 'False'
-					setPropertyHD    = 'True'
-
-				elif bitCount == ElisEnum.E_HasDolbyDigital :
-					setPropertyData  = 'False'
-					setPropertyDolby = 'True'
-					setPropertyHD    = 'False'
-
-				elif bitCount == ElisEnum.E_HasSubtitles :
-					setPropertyData  = 'True'
-					setPropertyDolby = 'False'
-					setPropertyHD    = 'False'
-
-				elif bitCount == ElisEnum.E_HasSubtitles + ElisEnum.E_HasDolbyDigital + ElisEnum.E_HasHDVideo :
-					setPropertyData  = 'True'
-					setPropertyDolby = 'True'
-					setPropertyHD    = 'True'
-
-				elif bitCount == ElisEnum.E_HasSubtitles + ElisEnum.E_HasDolbyDigital :
-					setPropertyData  = 'True'
-					setPropertyDolby = 'True'
-					setPropertyHD    = 'False'
-
-				elif bitCount == ElisEnum.E_HasSubtitles + ElisEnum.E_HasHDVideo :
-					setPropertyData  = 'True'
-					setPropertyDolby = 'False'
-					setPropertyHD    = 'True'
-				self.UpdatePropertyGUI( E_XML_PROPERTY_SUBTITLE,  setPropertyData )
-				self.UpdatePropertyGUI( E_XML_PROPERTY_DOLBY, setPropertyDolby )
-				self.UpdatePropertyGUI( E_XML_PROPERTY_HD,    setPropertyHD )
-				"""
 
 			except Exception, e:
 				LOG_TRACE( 'Error exception[%s]'% e )
