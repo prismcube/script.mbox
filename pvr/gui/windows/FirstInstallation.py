@@ -365,18 +365,17 @@ class FirstInstallation( SettingWindow ) :
 					self.SetEnableControl( E_SpinEx02, True )
 					self.SetEnableControl( E_SpinEx03, True )
 				else :
-					control = self.getControl( E_SpinEx02 + 3 )
-					control1 = self.getControl( E_SpinEx03 + 3 )
+					localTimeOffsetControl = self.getControl( E_SpinEx02 + 3 )
+					summerTimeControl = self.getControl( E_SpinEx03 + 3 )
 					time.sleep( 0.02 )
-					control.selectItem( ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetIndexByProp( 0 ) )
-					control1.selectItem( SUMMER_TIME_OFF )
+					localTimeOffsetControl.selectItem( ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetIndexByProp( 0 ) )
+					summerTimeControl.selectItem( SUMMER_TIME_OFF )
 					
 					self.SetEnableControl( E_Input01, False )
 					self.SetEnableControl( E_Input02, True )
 					self.SetEnableControl( E_Input03, True )					
 					self.SetEnableControl( E_SpinEx02, False )
 					self.SetEnableControl( E_SpinEx03, False )
-
 
 
 	def LoadFormattedSatelliteNameList( self ) :
