@@ -578,7 +578,7 @@ class Configure( SettingWindow ) :
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03 ]
 			self.SetVisibleControls( visibleControlIds, True )
 
-			if CheckHdd () :
+			if CheckHdd( ) :
 				self.SetEnableControls( visibleControlIds, True )
 			else :
 				self.SetEnableControls( visibleControlIds, False )
@@ -684,7 +684,7 @@ class Configure( SettingWindow ) :
 					
 					self.SetEnableControl( E_Input01, False )
 					self.SetEnableControl( E_Input02, True )
-					self.SetEnableControl( E_Input03, True )					
+					self.SetEnableControl( E_Input03, True )
 					self.SetEnableControl( E_SpinEx02, False )
 					self.SetEnableControl( E_SpinEx03, False )
 					
@@ -937,7 +937,7 @@ class Configure( SettingWindow ) :
 				if dialog.GetResult( ) == False :
 					self.ReLoadTimeSet( )
 
-				self.mDataCache.LoadTime( )			
+				self.mDataCache.LoadTime( )
 				self.SetListControl( )
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 0 )
 				self.mDataCache.Channel_SetCurrent( oriChannel.mNumber, oriChannel.mServiceType ) # Todo After : using ServiceType to different way
@@ -946,8 +946,8 @@ class Configure( SettingWindow ) :
 				sumtime = self.mDate + '.' + self.mTime
 				t = time.strptime( sumtime, '%d.%m.%Y.%H:%M' )
 				ret = self.mCommander.Datetime_SetSystemUTCTime( int( time.mktime( t ) ) )
-				globalEvent = pvr.GlobalEvent.GetInstance()
-				globalEvent.SendLocalOffsetToXBMC()
+				globalEvent = pvr.GlobalEvent.GetInstance( )
+				globalEvent.SendLocalOffsetToXBMC( )
 
 			
 			self.CloseBusyDialog( )
@@ -998,7 +998,6 @@ class Configure( SettingWindow ) :
 		self.mCheckNetworkTimer = self.AsyncCheckNetworkTimer( )
 		
 	
-
 	def StopCheckNetworkTimer( self ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )
 		self.mEnableLocalThread = False				
@@ -1082,3 +1081,4 @@ class Configure( SettingWindow ) :
 		ElisPropertyEnum( 'HDDRepartition', self.mCommander ).SetProp( 1 )
 		self.mDataCache.Player_AVBlank( True )
 		self.mCommander.Make_Dedicated_HDD( )
+

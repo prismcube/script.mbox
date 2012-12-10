@@ -76,10 +76,10 @@ class MainMenu( BaseWindow ) :
 	def onClick( self, aControlId ) :
 		LOG_TRACE("MainMenu onclick(): control %d" % aControlId )
 		if aControlId >= BUTTON_ID_INSTALLATION and aControlId <= BUTTON_ID_UPDATE :
-			if self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
+			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR or self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
 				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping all your recordings first' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping recordings, PVR or Timeshift' ) )
 				dialog.doModal( )
 				self.getControl( MAIN_GROUP_ID ).setVisible( True )
 			else :
@@ -101,14 +101,7 @@ class MainMenu( BaseWindow ) :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONDITIONAL_ACCESS )
 				elif aControlId == BUTTON_ID_UPDATE :
 					if self.mPlatform.IsPrismCube( ) :
-						if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
-							self.getControl( MAIN_GROUP_ID ).setVisible( False )
-							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-							dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping your playback' ) )
-							dialog.doModal( )
-							self.getControl( MAIN_GROUP_ID ).setVisible( True )
-						else :
-							WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_UPDATE )
+						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_UPDATE )
 					else :
 						self.getControl( MAIN_GROUP_ID ).setVisible( False )
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -162,14 +155,6 @@ class MainMenu( BaseWindow ) :
 	def onFocus( self, aControlId ) :
 		if aControlId == E_FAKE_BUTTON :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-
-	"""
-	def GetPlayerStatus( self ) :
-		if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR or self.mDataCache.Record_GetRunningRecorderCount( ) > 0 or self.mDataCache.Player_GetStatus( ).mMode != ElisEnum.E_MODE_LIVE :
-			self.mWin.setProperty( 'IsPVR', 'True' )
-		else :
-			self.mWin.setProperty( 'IsPVR', 'False' )
-	"""
 
 
 	def GetFavAddons( self ) :

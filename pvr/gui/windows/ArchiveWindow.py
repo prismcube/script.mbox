@@ -435,13 +435,13 @@ class ArchiveWindow( BaseWindow ) :
 
 	def AddListItems( self ) :
 		if self.mViewMode == E_VIEW_LIST :
-			self.mCtrlCommonList.addItems( self.mRecordListItems )		
-		elif self.mViewMode == E_VIEW_THUMBNAIL :		
-			self.mCtrlThumbnailList.addItems( self.mRecordListItems )		
-		elif self.mViewMode == E_VIEW_POSTER_WRAP :	
-			self.mCtrlPosterwrapList.addItems( self.mRecordListItems )		
-		elif self.mViewMode == E_VIEW_FANART :	
-			self.mCtrlFanartList.addItems( self.mRecordListItems )		
+			self.mCtrlCommonList.addItems( self.mRecordListItems )
+		elif self.mViewMode == E_VIEW_THUMBNAIL :
+			self.mCtrlThumbnailList.addItems( self.mRecordListItems )
+		elif self.mViewMode == E_VIEW_POSTER_WRAP :
+			self.mCtrlPosterwrapList.addItems( self.mRecordListItems )
+		elif self.mViewMode == E_VIEW_FANART :
+			self.mCtrlFanartList.addItems( self.mRecordListItems )
 		else :
 			LOG_WARN( 'Unknown view mode' )
 

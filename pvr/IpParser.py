@@ -350,7 +350,7 @@ class IpParser :
 			self.SetEthernetNameServer( aType, aNameAddress )
 			os.system( COMMAND_COPY_INTERFACES )
 			wifi = WirelessParser( )
-			os.system( 'ifdown %s' %  wifi.GetWifidevice( ) )
+			os.system( 'ifdown %s' % wifi.GetWifidevice( ) )
 			os.system( 'ifdown %s' % gEthernetDevName )
 			
 			time.sleep( 1 )
@@ -542,7 +542,7 @@ class WirelessParser :
 					words += aPassWord + "\n"
 				else:
 					words += "\"" + aPassWord + "\"\n"
-				words += "auth_alg=SHARED\n"
+				words += "\tauth_alg=SHARED\n"
 			elif aEncryptType == ENCRYPT_TYPE_WPA :
 				words += "\tkey_mgmt=WPA-PSK\n"
 				words += "\tpsk=\"" + aPassWord + "\"\n"
