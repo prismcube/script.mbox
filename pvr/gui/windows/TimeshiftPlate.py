@@ -267,7 +267,14 @@ class TimeShiftPlate( BaseWindow ) :
 			prevChannel = self.mDataCache.Channel_GetPrev( self.mDataCache.Channel_GetCurrent( ) )
 			if prevChannel :
 				self.mDataCache.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )			
-				self.onClick( E_CONTROL_ID_BUTTON_STOP )
+				nextWindow = WinMgr.WIN_ID_LIVE_PLATE
+				if self.mMode == ElisEnum.E_MODE_PVR :
+					nextWindow = WinMgr.WIN_ID_ARCHIVE_WINDOW
+				else :
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( nextWindow, WinMgr.WIN_ID_NULLWINDOW )
 				
 			
 		elif actionId == Action.ACTION_PAGE_UP :
@@ -279,7 +286,15 @@ class TimeShiftPlate( BaseWindow ) :
 			nextChannel = self.mDataCache.Channel_GetNext( self.mDataCache.Channel_GetCurrent( ) )
 			if nextChannel :
 				self.mDataCache.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
-				self.onClick( E_CONTROL_ID_BUTTON_STOP )
+				nextWindow = WinMgr.WIN_ID_LIVE_PLATE
+				if self.mMode == ElisEnum.E_MODE_PVR :
+					nextWindow = WinMgr.WIN_ID_ARCHIVE_WINDOW
+				else :
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( nextWindow, WinMgr.WIN_ID_NULLWINDOW )
+
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
 			if self.mMode == ElisEnum.E_MODE_PVR :
