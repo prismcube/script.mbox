@@ -1654,7 +1654,7 @@ class ChannelListWindow( BaseWindow ) :
 			aListControl.selectItem( aIdx )
 			if aIdx == aListControl.getSelectedPosition( ) :
 				break
-			time.sleep( 0.001 )
+			time.sleep( 0.01 )
 
 		#LOG_TRACE('-----------control[%s] idx setItem time[%s]'% ( aListControl.getId( ), ( time.time() - startTime ) ) )
 
