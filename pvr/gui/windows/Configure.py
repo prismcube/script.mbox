@@ -578,7 +578,7 @@ class Configure( SettingWindow ) :
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03 ]
 			self.SetVisibleControls( visibleControlIds, True )
 
-			if CheckHdd () :
+			if CheckHdd( ) :
 				self.SetEnableControls( visibleControlIds, True )
 			else :
 				self.SetEnableControls( visibleControlIds, False )
@@ -986,7 +986,6 @@ class Configure( SettingWindow ) :
 		self.mCheckNetworkTimer = self.AsyncCheckNetworkTimer( )
 		
 	
-
 	def StopCheckNetworkTimer( self ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )
 		self.mEnableLocalThread = False				
@@ -1070,3 +1069,4 @@ class Configure( SettingWindow ) :
 		ElisPropertyEnum( 'HDDRepartition', self.mCommander ).SetProp( 1 )
 		self.mDataCache.Player_AVBlank( True )
 		self.mCommander.Make_Dedicated_HDD( )
+
