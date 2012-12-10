@@ -324,7 +324,7 @@ class SystemUpdate( SettingWindow ) :
 		if iPVS.mName :
 			self.SetEnableControl( E_Input02, True )
 
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_TITLE,   MR_LANG( 'FIRMWARE INFORMATION' ) )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_TITLE,   MR_LANG( 'Firmware Information' ) )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_DATE,    '%s : %s'% ( MR_LANG( 'Date' ), iPVS.mDate ) )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_VERSION, '%s : %s'% ( MR_LANG( 'Version' ), iPVS.mVersion ) )
 			lblSize = ''
