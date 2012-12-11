@@ -862,12 +862,17 @@ class EPGWindow( BaseWindow ) :
 		if aTimer :
 			dialog.SetTimer( aTimer, self.IsRunningTimer( aTimer ) )
 
+		"""
 		if aEPG :
 			dialog.SetEPG( aEPG )
+		"""
 
+		dialog.SetEPG( None )
+			
 		channel = None
 		if self.mEPGMode == E_VIEW_CHANNEL  :
-			channel = self.mDataCache.Channel_GetCurrent( )
+			#channel = self.mDataCache.Channel_GetCurrent( )
+			channel = self.mSelectChannel
 		else :
 			selectedPos = self.mCtrlBigList.getSelectedPosition( )
 			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
@@ -1406,6 +1411,8 @@ class EPGWindow( BaseWindow ) :
 		self.mEventBus.Deregister( self )
 		self.StopEPGUpdateTimer( )
 
+		nextChannel = None
+
 		try :			
 			nextChannel = self.mChannelList[ index ]
 		except Exception, ex :
@@ -1442,21 +1449,23 @@ class EPGWindow( BaseWindow ) :
 		LOG_TRACE( 'Select Channel count=%d' %count )
 		
 		if index < 0 or index >= count : 
-			index = 0
+			index = count - 1 
 
 		LOG_TRACE( 'Select Channel index=%d' %index )
 		
 		self.mEventBus.Deregister( self )
 		self.StopEPGUpdateTimer( )
 
+		prevChannel = None
+
 		try :			
-			nextChannel = self.mChannelList[ index ]
+			prevChannel = self.mChannelList[ index ]
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
-			nextChannel = self.mChannelList[ 0 ]
+			prevChannel = self.mChannelList[ 0 ]
 			
-		if nextChannel :
-			self.mSelectChannel = nextChannel
+		if prevChannel :
+			self.mSelectChannel = prevChannel
 			LOG_TRACE( 'Select Channel Number=%d' %self.mSelectChannel.mNumber )
 			self.UpdateAllEPGList( )
 		else: 
