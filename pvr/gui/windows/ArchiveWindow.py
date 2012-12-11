@@ -45,20 +45,17 @@ MININUM_KEYWORD_SIZE			= 3
 class ArchiveWindow( BaseWindow ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseWindow.__init__( self, *args, **kwargs )
-		self.mSelectRecordKey = -1
-		self.mExitByPlay = False
-		self.mPlayingRecord = None
-		self.mPlayProgressThread = None
-		self.mEnableThread = False
-		self.mViewMode = E_VIEW_LIST
+		self.mSelectRecordKey		= -1
+		self.mExitByPlay			= False
+		self.mPlayingRecord			= None
+		self.mPlayProgressThread	= None
+		self.mEnableThread			= False
+		self.mViewMode				= E_VIEW_LIST
 
 	
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
-
-		import threading
-		self.mMutex = threading.Lock( )
 
 		status = self.mDataCache.Player_GetStatus( )
 		
@@ -70,13 +67,9 @@ class ArchiveWindow( BaseWindow ) :
 		if self.mPlayingRecord :
 			self.mEventBus.Register( self )
 			self.mSelectRecordKey = self.mPlayingRecord.mRecordKey
-			self.UpdatePlayStopThumbnail( self.mPlayingRecord )			
+			self.UpdateList( )
 			self.SelectLastRecordKey( )
 			self.UpdatePlayStatus( )
-
-			if self.mViewMode == E_VIEW_LIST :
-				self.SetPipScreen( )
-				self.LoadNoSignalState( )
 			return
 
 		self.getControl( E_SETTING_MINI_TITLE ).setLabel( MR_LANG( 'Archive' ) )
@@ -100,7 +93,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.mCtrlSortMode = self.getControl( BUTTON_ID_SORT_MODE )
 
 			self.mAscending = []
-			self.mAscending = [False,False,False,False,False]
+			self.mAscending = [ False, False, False, False, False ]
 
 			self.mAscending[E_SORT_DATE] = False
 			self.mAscending[E_SORT_CHANNEL] = True
@@ -121,7 +114,7 @@ class ArchiveWindow( BaseWindow ) :
 			self.mCtrlPlayProgress.setPercent( self.mPlayPerent ) 			
 
 		except Exception, ex :
-			LOG_ERR( "Exception %s" %ex )
+			LOG_ERR( "Exception %s" % ex )
 
 		self.mEventBus.Register( self )
 
@@ -212,7 +205,7 @@ class ArchiveWindow( BaseWindow ) :
 			if self.mViewMode >= E_VIEW_END :
 				self.mViewMode = 0 
 
-			SetSetting( 'VIEW_MODE','%d' %self.mViewMode )
+			SetSetting( 'VIEW_MODE', '%d' % self.mViewMode )
 			self.UpdateViewMode( )
 			self.InitControl( )
 			self.UpdateList( )
@@ -224,7 +217,7 @@ class ArchiveWindow( BaseWindow ) :
 			if self.mSortMode >= E_SORT_END :
 				self.mSortMode = 0 
 				
-			SetSetting( 'SORT_MODE','%d' %self.mSortMode ) 								
+			SetSetting( 'SORT_MODE', '%d' % self.mSortMode ) 								
 			self.UpdateSortMode( )
 			self.InitControl( )			
 			self.UpdateAscending( )
@@ -234,7 +227,7 @@ class ArchiveWindow( BaseWindow ) :
 		elif aControlId == TOGGLEBUTTON_ID_ASC :
 			self.RestoreLastRecordKey( )
 			LOG_TRACE( 'Mode=%d' % self.mSortMode )
-			LOG_TRACE( 'mAscending=%d' %self.mAscending[self.mSortMode] )
+			LOG_TRACE( 'mAscending=%d' % self.mAscending[self.mSortMode] )
 			if self.mAscending[self.mSortMode] == True :
 				self.mAscending[self.mSortMode] = False
 			else :
@@ -253,15 +246,16 @@ class ArchiveWindow( BaseWindow ) :
 			return
 
 
-	@GuiLock
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				if aEvent.mType == ElisEnum.E_EOF_END :
 					xbmc.executebuiltin( 'xbmc.Action(stop)' )
+			elif aEvent.getName( ) == ElisEventPlaybackStarted.getName( ) :
+				self.UpdatePlayStopThumbnail( aEvent.mKey, True )
 			elif aEvent.getName( ) == ElisEventPlaybackStopped.getName( ) :
 				if self.mPlayingRecord :
-					self.UpdatePlayStopThumbnail( self.mPlayingRecord )
+					self.UpdatePlayStopThumbnail( aEvent.mKey, False )
 					self.UpdatePlayStatus( )
 
 
@@ -291,7 +285,7 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def UpdateViewMode( self ) :
-		LOG_TRACE( '--------------------- self.mViewMode=%d' %self.mViewMode)
+		LOG_TRACE( '--------------------- self.mViewMode=%d' % self.mViewMode)
 		if self.mViewMode == E_VIEW_LIST :
 			self.mWin.setProperty( 'ViewMode', 'common' )
 		elif self.mViewMode == E_VIEW_THUMBNAIL :			
@@ -310,7 +304,7 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def UpdateAscending( self ) :
-		LOG_TRACE( '--------------------- %d' %self.mAscending[self.mSortMode] )	
+		LOG_TRACE( '--------------------- %d' % self.mAscending[self.mSortMode] )	
 		if self.mAscending[self.mSortMode] == True :
 			self.mWin.setProperty( 'Ascending', 'true' )
 		else :
@@ -324,7 +318,6 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def Load( self ) :
-
 		self.mMarkMode = False
 
 		LOG_TRACE( '----------------------------------->' )
@@ -336,7 +329,7 @@ class ArchiveWindow( BaseWindow ) :
 				self.mRecordCount = len( self.mRecordList  )
 
 		except Exception, ex :
-			LOG_ERR( "Exception %s" %ex )
+			LOG_ERR( "Exception %s" % ex )
 
 
 	def UpdateList( self ) :
@@ -345,9 +338,9 @@ class ArchiveWindow( BaseWindow ) :
 			self.SetPipScreen( )
 			self.LoadNoSignalState( )
 		else :
-			self.mDataCache.Player_SetVIdeoSize( 1230, 0, 50, 50 )
-		
+			self.mDataCache.Player_SetVIdeoSize( 0, 0, 1280, 720 )
 		self.OpenBusyDialog( )
+
 		try :
 			if not self.mRecordList or self.mRecordList == None :
 				self.mRecordList = []
@@ -356,10 +349,8 @@ class ArchiveWindow( BaseWindow ) :
 				self.mRecordList.sort( self.ByDate )
 			elif self.mSortMode == E_SORT_CHANNEL :
 				self.mRecordList.sort( self.ByChannel )
-
 			elif self.mSortMode == E_SORT_TITLE :
 				self.mRecordList.sort( self.ByTitle )
-
 			elif self.mSortMode == E_SORT_DURATION :
 				self.mRecordList.sort( self.ByDuration )
 			else :
@@ -379,8 +370,12 @@ class ArchiveWindow( BaseWindow ) :
 			for i in range( len( self.mRecordList ) ) :
 				self.UpdateListItem( self.mRecordList[i] )
 
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode == ElisEnum.E_MODE_PVR :
+				self.UpdatePlayStopThumbnail( self.mPlayingRecord.mRecordKey, True )
+
 		except Exception, ex :
-			LOG_ERR( "Exception %s" %ex )
+			LOG_ERR( "Exception %s" % ex )
 
 		self.AddListItems( )
 		self.CloseBusyDialog( )
@@ -403,40 +398,16 @@ class ArchiveWindow( BaseWindow ) :
 				recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
 
 		recItem.setProperty( 'Marked', 'False' )
+		recItem.setProperty( 'Playing', 'False' )
 		self.mRecordListItems.append( recItem )
 
 
-	def UpdatePlayStopThumbnail( self, aRecordInfo, aPrevRecordInfo=None ) :
-		listindex = 0
-
-		if aPrevRecordInfo :
-			for recInfo in self.mRecordList :
-				if recInfo.mRecordKey == aPrevRecordInfo.mRecordKey :
-					break
-				listindex = listindex + 1
-
-			recItem = self.mRecordListItems[ listindex ]				
-
-			if recInfo.mLocked :
-				recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
-			else :
-				thumbnaillist = []
-				thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % aPrevRecordInfo.mRecordKey ) )
-				if len( thumbnaillist ) > 0 :
-					recItem.setProperty( 'RecIcon', thumbnaillist[0] )
-				else :
-					recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
-
-			recItem.setProperty( 'Playing', 'False' )
-
-		if aRecordInfo == None :
-			LOG_ERR( 'Has no playing record')
-			return
-
+	@SetLock
+	def UpdatePlayStopThumbnail( self, aRecordKey, aIsStartEvent ) :
 		listindex = 0
 
 		for recInfo in self.mRecordList :
-			if recInfo.mRecordKey == aRecordInfo.mRecordKey :
+			if recInfo.mRecordKey == aRecordKey :
 				break
 			listindex = listindex + 1
 
@@ -448,30 +419,29 @@ class ArchiveWindow( BaseWindow ) :
 			recItem.setProperty( 'RecIcon', 'IconNotAvailable.png' )
 		else :
 			thumbnaillist = []
-			thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % aRecordInfo.mRecordKey ) )
+			thumbnaillist = glob.glob( os.path.join( '/mnt/hdd0/pvr/thumbnail', 'record_thumbnail_%d_*.jpg' % aRecordKey ) )
 			if len( thumbnaillist ) > 0 :
 				recItem.setProperty( 'RecIcon', thumbnaillist[0] )
 			else :
 				recItem.setProperty( 'RecIcon', 'RecIconSample.png' )
 
-		if status.mMode == ElisEnum.E_MODE_PVR :
+		if aIsStartEvent :
 			recItem.setProperty( 'Playing', 'True' )
 		else :
 			recItem.setProperty( 'Playing', 'False' )
-
 
 		xbmc.executebuiltin( 'container.update' )
 
 
 	def AddListItems( self ) :
 		if self.mViewMode == E_VIEW_LIST :
-			self.mCtrlCommonList.addItems( self.mRecordListItems )		
-		elif self.mViewMode == E_VIEW_THUMBNAIL :		
-			self.mCtrlThumbnailList.addItems( self.mRecordListItems )		
-		elif self.mViewMode == E_VIEW_POSTER_WRAP :	
-			self.mCtrlPosterwrapList.addItems( self.mRecordListItems )		
-		elif self.mViewMode == E_VIEW_FANART :	
-			self.mCtrlFanartList.addItems( self.mRecordListItems )		
+			self.mCtrlCommonList.addItems( self.mRecordListItems )
+		elif self.mViewMode == E_VIEW_THUMBNAIL :
+			self.mCtrlThumbnailList.addItems( self.mRecordListItems )
+		elif self.mViewMode == E_VIEW_POSTER_WRAP :
+			self.mCtrlPosterwrapList.addItems( self.mRecordListItems )
+		elif self.mViewMode == E_VIEW_FANART :
+			self.mCtrlFanartList.addItems( self.mRecordListItems )
 		else :
 			LOG_WARN( 'Unknown view mode' )
 
@@ -497,7 +467,6 @@ class ArchiveWindow( BaseWindow ) :
 		pass
 
 
-	@GuiLock
 	def UpdateLocalTime( self ) :
 		pass
 
@@ -535,8 +504,6 @@ class ArchiveWindow( BaseWindow ) :
 		if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
 			ret = self.mDataCache.Player_Stop( )
 			self.mLastFocusItem = -1
-			
-			#self.UpdatePlayStopThumbnail( self.mPlayingRecord )
 
 
 	def StartRecordPlayback( self, aResume=True ) :
@@ -550,7 +517,7 @@ class ArchiveWindow( BaseWindow ) :
 			if selectedPos >= 0 and selectedPos < len( self.mRecordList ) :
 				recInfo = self.mRecordList[selectedPos]
 				if recInfo.mLocked == True :
-					if self.CheckPincode() == False :
+					if self.CheckPincode( ) == False :
 						return False
 
 				if aResume == True :
@@ -561,18 +528,14 @@ class ArchiveWindow( BaseWindow ) :
 					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, playOffset, 100 )
 				else :
 					self.mDataCache.Player_StartInternalRecordPlayback( recInfo.mRecordKey, self.mServiceType, 0, 100 )
-
+				SetLock2( True )
 				self.mPlayingRecord = recInfo
+				SetLock2( False )				
 				self.mWin.setProperty( 'PvrPlay', 'True' )
 				self.UpdatePlayStatus( )
 
 			self.RestoreLastRecordKey( )
-			self.UpdatePlayStopThumbnail( self.mPlayingRecord, currentPlayingRecord )
 			self.mLastFocusItem = selectedPos
-			if self.mViewMode != E_VIEW_LIST :
-				self.Close( )
-				self.SetVideoRestore( )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 
 
 	def GetSelectedPosition( self ) :
@@ -610,7 +573,6 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def ShowContextMenu( self ) :
-
 		status = self.mDataCache.Player_GetStatus( )
 		if status.mMode == ElisEnum.E_MODE_PVR :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -673,10 +635,10 @@ class ArchiveWindow( BaseWindow ) :
 			self.StartRecordPlayback( False )
 
 		elif aContextAction == CONTEXT_DELETE :
-			self.ShowDeleteConfirm()
+			self.ShowDeleteConfirm( )
 
 		elif aContextAction == CONTEXT_DELETE_ALL :
-			self.ShowDeleteAllConfirm()
+			self.ShowDeleteAllConfirm( )
 
 		elif aContextAction == CONTEXT_LOCK :
 			self.DoLockUnlock( True )
@@ -787,7 +749,7 @@ class ArchiveWindow( BaseWindow ) :
 	def ShowRenameDialog( self ) :
 		selectedPos = self.GetSelectedPosition( )	
 		if self.mRecordList[ selectedPos ].mLocked == True :
-			if self.CheckPincode() == False :
+			if self.CheckPincode( ) == False :
 				return False
 		
 		try :
@@ -816,7 +778,6 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def DoDelete( self, aDeleteList ) :
-
 		if len( aDeleteList ) > 0 :
 			self.OpenBusyDialog( )
 
@@ -945,8 +906,10 @@ class ArchiveWindow( BaseWindow ) :
 
 
 	def Close( self ) :
-		self.mEventBus.Deregister( self )	
+		self.mEventBus.Deregister( self )
+		SetLock2( True )
 		self.mEnableThread = False
+		SetLock2( False )
 		if self.mPlayProgressThread :
 			self.mPlayProgressThread.join( )
 
@@ -1024,8 +987,8 @@ class ArchiveWindow( BaseWindow ) :
 		self.UpdateArchiveInfomation( )
 
 
+	@SetLock
 	def UpdatePlayStatus( self ) :
-		self.mMutex.acquire( )
 		status = self.mDataCache.Player_GetStatus( )
 		#Playing Name
 		if status.mMode == ElisEnum.E_MODE_PVR :
@@ -1063,7 +1026,6 @@ class ArchiveWindow( BaseWindow ) :
 
 		self.mCtrlPlayStart.setLabel( '' )
 		self.mCtrlPlayEnd.setLabel( '' )
-		self.mMutex.release( )
 
 
 	@RunThread

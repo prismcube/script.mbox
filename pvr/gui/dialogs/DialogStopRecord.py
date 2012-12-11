@@ -144,7 +144,6 @@ class DialogStopRecord( BaseDialog ) :
 		pass
 
 
-	@GuiLock	
 	def onEvent( self, aEvent ) :
 		if xbmcgui.getCurrentWindowDialogId() == self.mWinId :
 			if aEvent.getName() == ElisEventRecordingStarted.getName( ) or \

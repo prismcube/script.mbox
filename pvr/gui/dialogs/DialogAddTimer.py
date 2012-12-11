@@ -73,7 +73,6 @@ class DialogAddTimer( BaseDialog ) :
 		pass
 
 
-	@GuiLock	
 	def onEvent( self, aEvent ) :
 		pass
 		"""

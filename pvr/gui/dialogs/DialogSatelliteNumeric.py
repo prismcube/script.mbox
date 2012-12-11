@@ -148,10 +148,14 @@ class DialogSatelliteNumeric( BaseDialog ) :
 			return
 
 		if self.mCursor == 0 and value < 2 :
+			if self.mInput2 > 7 and value != 0 :
+				return
 			self.mInput1 = value
 			self.NextCursor( )
 
-		elif self.mCursor == 1 and value < 8 :
+		elif self.mCursor == 1 :
+			if self.mInput1 == 1 and value > 7 :
+				return
 			self.mInput2 = value
 			self.NextCursor( )
 
@@ -190,14 +194,14 @@ class DialogSatelliteNumeric( BaseDialog ) :
 
 	def NextCursor( self ) :
 		if self.mCursor == 3 :
-				self.mCursor = 0
+			self.mCursor = 0
 		else :
 			self.mCursor = self.mCursor + 1
 
 
 	def PrevCursor( self ) :
 		if self.mCursor == 0 :
-				self.mCursor = 3
+			self.mCursor = 3
 		else :
 			self.mCursor = self.mCursor - 1
 

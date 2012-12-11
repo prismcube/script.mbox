@@ -76,7 +76,6 @@ class DialogMultiSelect( BaseDialog ) :
 
 
 
-	@GuiLock
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowDialogId( ) :
 			if aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \

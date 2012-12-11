@@ -89,16 +89,16 @@ class Configure( SettingWindow ) :
 		MR_LANG( 'Miscellaneous' ) ]
 		
 		self.mDescriptionList	= [
-		MR_LANG( 'Set the STB language preferences' ),
+		MR_LANG( 'Change your PRISMCUBE RUBY language preferences' ),
 		MR_LANG( 'Set limits on your kids\' STB use' ),
 		MR_LANG( 'Adjust settings for recording in STB' ),
 		MR_LANG( 'Set the system\'s digital audio output settings' ),
-		MR_LANG( 'Set the output settings for TVs that support HDMI cable' ),
-		MR_LANG( 'Set up or change network connections including wireless' ),
+		MR_LANG( 'Setup the output settings for TVs that support HDMI cable' ),
+		MR_LANG( 'Configure internet connection settings' ),
 		MR_LANG( 'Adjust settings related to the system\'s date and time' ),
 		MR_LANG( 'Delete eveything off your hard drive' ),
-		MR_LANG( 'Restore the system software to its default settings' ),
-		MR_LANG( 'Adjust additional settings for STB including fan speed control' ) ]
+		MR_LANG( 'Restore your system to factory settings' ),
+		MR_LANG( 'Change additional settings for PRISMCUBE RUBY' ) ]
 
 		self.mGroupItems 		= []
 		for i in range( len( leftGroupItems ) ) :
@@ -319,7 +319,11 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FORMAT_HDD :
 			if CheckHdd( ) :
-				if groupId == E_Input01 :
+				if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping your playback' ) )
+					dialog.doModal( )
+				elif groupId == E_Input01 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO DELETE ALL MEDIA FILES?' ) )
 					dialog.doModal( )
@@ -534,14 +538,14 @@ class Configure( SettingWindow ) :
 				channelName = self.mSetupChannel.mName
 			else :
 				channelList = self.mDataCache.Channel_GetList( )
-				if channelList :
+				if channelList and channelList[0].mError == 0 :
 					self.mSetupChannel = channelList[0]
 					channelName = self.mSetupChannel.mName
 				else :
 					self.mHasChannel = False
 					channelName = MR_LANG( 'None' )
 					ElisPropertyEnum( 'Time Mode', self.mCommander ).SetProp( TIME_MANUAL )
-
+				
 			self.AddEnumControl( E_SpinEx01, 'Time Mode', MR_LANG( 'Time and Date' ), MR_LANG( 'When set to \'Automatic\', the time and date will be obtained automatically from the channel that you select' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Channel' ), channelName, MR_LANG( 'Select a channel you want to set your time and date by' ) )
 			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
@@ -554,7 +558,7 @@ class Configure( SettingWindow ) :
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03, E_Input04 ]
 			self.SetVisibleControls( visibleControlIds, True )
-			self.SetEnableControls( visibleControlIds, True )
+			self.SetEnableControls( visibleControlIds, True )				
 
 			hideControlIds = [ E_SpinEx04, E_SpinEx05, E_Input05, E_Input06, E_Input07 ]
 			self.SetVisibleControls( hideControlIds, False )
@@ -574,7 +578,7 @@ class Configure( SettingWindow ) :
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03 ]
 			self.SetVisibleControls( visibleControlIds, True )
 
-			if CheckHdd () :
+			if CheckHdd( ) :
 				self.SetEnableControls( visibleControlIds, True )
 			else :
 				self.SetEnableControls( visibleControlIds, False )
@@ -669,12 +673,22 @@ class Configure( SettingWindow ) :
 					self.SetEnableControl( E_Input02, False )
 					self.SetEnableControl( E_Input03, False )
 					self.SetEnableControl( E_Input01, True )
+					self.SetEnableControl( E_SpinEx02, True )
+					self.SetEnableControl( E_SpinEx03, True )
 				else :
+					localTimeOffsetControl = self.getControl( E_SpinEx02 + 3 )
+					summerTimeControl = self.getControl( E_SpinEx03 + 3 )
+					time.sleep( 0.02 )
+					localTimeOffsetControl.selectItem( ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetIndexByProp( 0 ) )
+					summerTimeControl.selectItem( SUMMER_TIME_OFF )
+					
 					self.SetEnableControl( E_Input01, False )
 					self.SetEnableControl( E_Input02, True )
 					self.SetEnableControl( E_Input03, True )
-
-
+					self.SetEnableControl( E_SpinEx02, False )
+					self.SetEnableControl( E_SpinEx03, False )
+					
+					
 	def LoadEhternetInformation( self ) :
 		self.LoadEthernetType( )
 		self.LoadEthernetAddress( )
@@ -932,8 +946,10 @@ class Configure( SettingWindow ) :
 				sumtime = self.mDate + '.' + self.mTime
 				t = time.strptime( sumtime, '%d.%m.%Y.%H:%M' )
 				ret = self.mCommander.Datetime_SetSystemUTCTime( int( time.mktime( t ) ) )
-				self.mDataCache.LoadTime( )
+				globalEvent = pvr.GlobalEvent.GetInstance( )
+				globalEvent.SendLocalOffsetToXBMC( )
 
+			
 			self.CloseBusyDialog( )
 			if mode == TIME_AUTOMATIC and dialog.GetResult( ) == False :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
@@ -982,7 +998,6 @@ class Configure( SettingWindow ) :
 		self.mCheckNetworkTimer = self.AsyncCheckNetworkTimer( )
 		
 	
-
 	def StopCheckNetworkTimer( self ) :
 		LOG_TRACE( '++++++++++++++++++++++++++++++++++++ Stop' )
 		self.mEnableLocalThread = False				
@@ -1066,3 +1081,4 @@ class Configure( SettingWindow ) :
 		ElisPropertyEnum( 'HDDRepartition', self.mCommander ).SetProp( 1 )
 		self.mDataCache.Player_AVBlank( True )
 		self.mCommander.Make_Dedicated_HDD( )
+

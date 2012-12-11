@@ -19,6 +19,11 @@ class NullWindow( BaseWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.CheckMediaCenter( )
+		status = self.mDataCache.Player_GetStatus( )
+		if status.mMode == ElisEnum.E_MODE_LIVE :
+			self.mWin.setProperty( 'PvrPlay', 'False' )
+		else :
+			self.mWin.setProperty( 'PvrPlay', 'True' )
 
 		if self.mInitialized == False :
 			self.mInitialized = True
@@ -36,7 +41,6 @@ class NullWindow( BaseWindow ) :
 		self.LoadNoSignalState( )
 
 		if E_SUPPROT_HBBTV == True :
-			status = self.mDataCache.Player_GetStatus( )
 			LOG_ERR('self.mDataCache.Player_GetStatus( ) = %d'% status.mMode )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
 				if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_SCRAMBLED_CHANNEL or \
@@ -225,23 +229,21 @@ class NullWindow( BaseWindow ) :
 					if move :
 						ret = self.mDataCache.Player_JumpToIFrame( int( move ) )
 
-
 		elif actionId == Action.ACTION_STOP :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE:
 				self.ShowRecordingStopDialog( )			
 
 			else :
-				ret = self.mDataCache.Player_Stop( )
-				if ret :
-					if status.mMode == ElisEnum.E_MODE_PVR :
-						self.Close( )
-						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
+				self.mDataCache.Player_Stop( )
+				if status.mMode == ElisEnum.E_MODE_PVR :
+					self.Close( )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
 
-					elif status.mMode == ElisEnum.E_MODE_TIMESHIFT :
-						self.Close( )
-						WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
-						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+				elif status.mMode == ElisEnum.E_MODE_TIMESHIFT :
+					self.Close( )
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
 
 		elif actionId == Action.ACTION_MBOX_XBMC :
 			status = self.mDataCache.Player_GetStatus( )
@@ -384,13 +386,12 @@ class NullWindow( BaseWindow ) :
 		#self.mLastFocusId = aControlId
 
 
-	@GuiLock
 	def onEvent(self, aEvent):
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
-			#LOG_TRACE( 'NullWindow winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( )) )
+			#LOG_TRACE( '---------CHECK onEVENT winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( )) )
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				if aEvent.mType == ElisEnum.E_EOF_END :
-					#LOG_TRACE( 'EventRecv EOF_STOP' )
+					LOG_TRACE( '---------CHECK onEVENT[%s] stop'% aEvent.getName( ) )
 					xbmc.executebuiltin('xbmc.Action(stop)')
 
 			elif aEvent.getName( ) == ElisEventChannelChangeResult.getName( ) :
@@ -405,6 +406,10 @@ class NullWindow( BaseWindow ) :
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
 				self.mDataCache.mCacheReload = True
+				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
+
+			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
+				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
 
 			elif E_SUPPROT_HBBTV == True :

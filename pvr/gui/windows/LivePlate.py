@@ -335,9 +335,9 @@ class LivePlate( LivePlateWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-	@GuiLock
 	def onEvent(self, aEvent):
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
+			#LOG_TRACE( '---------CHECK onEVENT winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( )) )
 			channel = self.mCurrentChannel
 			if self.mFlag_OnEvent != True :
 				#LOG_TRACE('ignore event, mFlag_OnEvent[%s]'% self.mFlag_OnEvent)
@@ -365,24 +365,28 @@ class LivePlate( LivePlateWindow ) :
 			#	self.Epgevent_GetCurrent( channel.mSid, channel.mTsid, channel.mOnid )
 			#	LOG_TRACE('----------------------------receive epg')
 
-			elif aEvent.getName( ) == ElisEventTuningStatus.getName( ) :
-				LOG_TRACE('TunerNo[%s] locked[%s] quality[%s] strength[%s] frequency[%s]'% ( \
-						aEvent.mTunerNo, aEvent.mIsLocked, aEvent.mSignalQuality, aEvent.mSignalStrength, aEvent.mFrequency ) )
-				#ToDo
-				#xbmcgui.Dialog( ).ok( MR_LANG('Infomation'), MR_LANG('No Signal') )
-
 			elif aEvent.getName( ) == ElisEventChannelChangeResult.getName( ) :
 				pass
+
+			elif aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
+				if aEvent.mType == ElisEnum.E_EOF_END :
+					LOG_TRACE( '---------CHECK onEVENT[%s] stop'% aEvent.getName( ) )
+					xbmc.executebuiltin('xbmc.Action(stop)')
 
 			elif aEvent.getName( ) == ElisEventRecordingStarted.getName( ) or \
 				 aEvent.getName( ) == ElisEventRecordingStopped.getName( ) :
  				self.ShowRecordingInfo( )
 
-				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
-					#LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull )
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
-					dialog.doModal( )
+			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
+				self.mJumpNumber = aEvent.mChannelNo
+				self.ChannelTune( CURR_CHANNEL )
+				LOG_TRACE('event[%s] tune[%s] type[%s]'% ( aEvent.getName( ), aEvent.mChannelNo, aEvent.mServiceType ) )
+
+			#elif aEvent.getName( ) == ElisEventTuningStatus.getName( ) :
+			#	LOG_TRACE('TunerNo[%s] locked[%s] quality[%s] strength[%s] frequency[%s]'% ( \
+			#			aEvent.mTunerNo, aEvent.mIsLocked, aEvent.mSignalQuality, aEvent.mSignalStrength, aEvent.mFrequency ) )
+				#ToDo
+				#xbmcgui.Dialog( ).ok( MR_LANG('Infomation'), MR_LANG('No Signal') )
 
 		else:
 			LOG_TRACE( 'LivePlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
@@ -394,9 +398,12 @@ class LivePlate( LivePlateWindow ) :
 			if prevChannel == None or prevChannel.mError != 0 :
 				return -1
 
+			SetLock2(True)
 			self.mFakeChannel = prevChannel
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ( '%s'% self.mFakeChannel.mNumber ) )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
+			SetLock2(False)
+			
 			self.RestartAsyncTune( )
 
 		elif aDir == NEXT_CHANNEL :
@@ -404,19 +411,25 @@ class LivePlate( LivePlateWindow ) :
 			if nextChannel == None or nextChannel.mError != 0 :
 				return -1
 
+			SetLock2(True)
 			self.mFakeChannel = nextChannel
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ( '%s'% self.mFakeChannel.mNumber ) )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
+			SetLock2(False)
+
 			self.RestartAsyncTune( )
 
 		elif aDir == CURR_CHANNEL :
 			jumpChannel = self.mDataCache.Channel_GetCurr( self.mJumpNumber )
 			if jumpChannel == None or jumpChannel.mError != 0 :
 				return -1
-
+				
+			SetLock2(True)
 			self.mFakeChannel = jumpChannel
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, ( '%s'% self.mFakeChannel.mNumber ) )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, self.mFakeChannel.mName )
+			SetLock2(False)
+			
 			self.RestartAsyncTune( )
 
 		elif aDir == INIT_CHANNEL :
@@ -424,17 +437,21 @@ class LivePlate( LivePlateWindow ) :
 			currName = MR_LANG('No Channels')
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if iChannel == None or iChannel.mError != 0 :
+				SetLock2(True)
 				self.mCurrentChannel = None
 				self.mFakeChannel =	None
 				self.mLastChannel =	None
 				self.mCurrentEPG = None
+				SetLock2(False)				
 
 			else :
+				SetLock2(True)			
 				self.mCurrentChannel = iChannel
 				self.mFakeChannel    = iChannel
 				self.mLastChannel    = iChannel
 				currNumber = '%s'% self.mFakeChannel.mNumber
 				currName = self.mFakeChannel.mName
+				SetLock2(False)
 
 			self.InitControlGUI( )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NUMBER, currNumber )
@@ -450,10 +467,10 @@ class LivePlate( LivePlateWindow ) :
 			iEPG = self.mEPGList[self.mEPGListIdx]
 			if iEPG :
 				self.InitControlGUI( )
-				GuiLock2(True)
+				SetLock2(True)
 				self.mCurrentEPG = iEPG
 				self.mFlag_OnEvent = False
-				GuiLock2(False)
+				SetLock2(False)
 
 				self.UpdateChannelAndEPG( iEPG )
 
@@ -479,6 +496,7 @@ class LivePlate( LivePlateWindow ) :
 			self.EPGListMoveToIndex( )
 
 
+	@SetLock
 	def Epgevent_GetCurrent( self, aSid, aTsid, aOnid ) :
 		iEPG = None
 		#iEPG = self.mDataCache.Epgevent_GetCurrent( aSid, aTsid, aOnid )
@@ -735,7 +753,6 @@ class LivePlate( LivePlateWindow ) :
 		self.UpdatePropertyGUI( E_XML_PROPERTY_HD,      'False' )
 
 
-	@GuiLock
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		#LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
 		if aCtrlID == E_CONTROL_ID_LABEL_CHANNEL_NUMBER :
@@ -1010,6 +1027,7 @@ class LivePlate( LivePlateWindow ) :
 		self.mAsyncTuneTimer  = None
 
 
+	@SetLock
 	def AsyncTuneChannel( self ) :
 		try :
 			ret = self.mDataCache.Channel_SetCurrent( self.mFakeChannel.mNumber, self.mFakeChannel.mServiceType )

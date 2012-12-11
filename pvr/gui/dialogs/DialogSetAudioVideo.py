@@ -1,6 +1,8 @@
 from pvr.gui.WindowImport import *
 
+
 MAIN_GROUP_ID = 8000
+
 
 class DialogSetAudioVideo( SettingDialog ) :
 	def __init__( self, *args, **kwargs ) :
@@ -14,7 +16,6 @@ class DialogSetAudioVideo( SettingDialog ) :
 		self.mDialogTitle = ''
 		self.mAudioTrack = []
 		self.mMode = CONTEXT_ACTION_VIDEO_SETTING
-		self.mAsyncSetTimer = None
 
 
 	def onInit( self ) :
@@ -25,8 +26,8 @@ class DialogSetAudioVideo( SettingDialog ) :
 		self.SetHeaderLabel( self.mDialogTitle )
 		self.DrawItem( )
 		self.mIsOk = False
-
 		self.mEventBus.Register( self )
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -63,29 +64,22 @@ class DialogSetAudioVideo( SettingDialog ) :
 
 
 	def onClick( self, aControlId ) :
-		self.mSelectIdx = id = self.GetGroupId( aControlId )
-		#LOG_TRACE( 'control[%s] getGroup[%s]'% ( aControlId, id ) )
-		#if id >= E_DialogSpinEx01 and id <= E_DialogSpinEx04 :
-			#self.RestartAsyncSet( )
-
-		self.RestartAsyncSet( )
+		self.mSelectIdx = self.GetGroupId( aControlId )
+		if self.mSelectIdx != -1 :
+			self.ControlSelect( )
 
 
 	def onFocus( self, aControlId ):
 		pass
 
 
-	@GuiLock
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowDialogId( ) :
-
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				LOG_TRACE( 'ExtendDialog ElisEventPlaybackEOF mType[%d]'% ( aEvent.mType ) )
-
 				if aEvent.mType == ElisEnum.E_EOF_START :
 					self.mIsOk = Action.ACTION_PLAYER_PLAY
 					xbmc.executebuiltin('xbmc.Action(play)')
-
 				elif aEvent.mType == ElisEnum.E_EOF_END :
 					LOG_TRACE( 'EventRecv EOF_END' )
 					xbmc.executebuiltin('xbmc.Action(stop)')
@@ -106,14 +100,12 @@ class DialogSetAudioVideo( SettingDialog ) :
 			self.SetEnableControls( visibleControlIds, True )
 
 		elif self.mMode == CONTEXT_ACTION_AUDIO_SETTING :
-			#LOG_TRACE('list audio[%s]'% self.mAudioTrack)
 			self.AddUserEnumControl( E_DialogSpinEx01, MR_LANG( 'Audio HDMI' ), self.mAudioTrack, 0 )
 
 			visibleControlIds = [ E_DialogSpinEx01 ]
 			self.SetVisibleControls( visibleControlIds, True )
 			self.SetEnableControls( visibleControlIds, True )
 
-			#unused visible false
 			hideControlIds = [ E_DialogSpinEx02, E_DialogSpinEx03, E_DialogSpinEx04 ]
 			self.SetVisibleControls( hideControlIds, False )
 
@@ -128,7 +120,6 @@ class DialogSetAudioVideo( SettingDialog ) :
 
 
 	def GetValue( self, aFlag ) :
-		#LOG_TRACE('SelectIdx[%s] SelectName[%s] isOk[%s]' % ( self.mSelectIdx, self.mSelectName, self.mIsOk ) )
 		return self.mSelectIdx, self.mSelectName, self.mIsOk
 
 
@@ -167,28 +158,6 @@ class DialogSetAudioVideo( SettingDialog ) :
 				if iTrack :
 					label = '%s-%s'% (iTrack.mName, iTrack.mLang)
 					self.mAudioTrack.append( label )
-
-
-	def RestartAsyncSet( self ) :
-		self.StopAsyncSet( )
-		self.StartAsyncSet( )
-
-
-	def StartAsyncSet( self ) :
-		self.mAsyncSetTimer = threading.Timer( 3, self.AsyncSetProperty ) 				
-		self.mAsyncSetTimer.start( )
-
-
-	def StopAsyncSet( self ) :
-		if self.mAsyncSetTimer and self.mAsyncSetTimer.isAlive( ) :
-			self.mAsyncSetTimer.cancel( )
-			del self.mAsyncSetTimer
-
-		self.mAsyncSetTimer  = None
-
-
-	def AsyncSetProperty( self ) :
-		self.SetProperty( )
 
 
 	def Close( self ) :

@@ -169,6 +169,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.mMoveFlag = False
 		self.mMoveItem = []
 		self.mItemCount = 0
+		self.mIsPVR = False
 
 		self.mEventBus.Register( self )
 		self.SetPipScreen( )
@@ -398,9 +399,8 @@ class ChannelListWindow( BaseWindow ) :
 		#aleady cache load
 		self.mChannelList = self.mDataCache.Channel_GetList( )
 		self.LoadChannelListHash( )
-
+		label = ''
 		try :
-			label = ''
 			#first get is used cache, reason by fast load
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 
@@ -412,8 +412,10 @@ class ChannelListWindow( BaseWindow ) :
 					label = 'TIMESHIFT - P%04d.%s' %(iChannel.mNumber, iChannel.mName )
 
 			elif status.mMode == ElisEnum.E_MODE_PVR :
-				#ToDO : youn			
-				pass
+				playingRecord = WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW ).GetPlayingRecord( )
+				if playingRecord and playingRecord.mError == 0 :
+					self.mIsPVR = True
+					label = 'PVR - P%04d.%s' %( playingRecord.mChannelNo, playingRecord.mRecordName )
 
 			else :
 				#Live
@@ -421,17 +423,16 @@ class ChannelListWindow( BaseWindow ) :
 					self.mNavChannel = iChannel
 					self.mCurrentChannel = iChannel.mNumber
 
-					label = '%s - %s'% ( EnumToString( 'tv', iChannel.mServiceType ).upper(), iChannel.mName )
+					label = '%s - %s'% ( EnumToString( 'type', iChannel.mServiceType ).upper(), iChannel.mName )
 
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
-		self.UpdateChannelList( )
-
 		#clear label
 		self.ResetLabel( )
+		self.UpdateChannelList( )
 
 		#initialize get epg event
 		#self.Epgevent_GetCurrent( )
@@ -446,7 +447,7 @@ class ChannelListWindow( BaseWindow ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 		self.UpdateChannelAndEPG( )
-
+		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 
 	def DoDeleteAll( self ) :
 		ret = E_DIALOG_STATE_NO
@@ -554,7 +555,20 @@ class ChannelListWindow( BaseWindow ) :
 				self.mDataCache.SetSkipChannelView( True )
 				self.mPrevMode = deepcopy( self.mUserMode )
 				self.mPrevSlidePos = deepcopy( self.mUserSlidePos )
-				self.ReloadChannelList( )
+				self.mUserMode.mMode = ElisEnum.E_MODE_ALL
+				self.mUserMode.mSortingMode = ElisEnum.E_SORT_BY_NUMBER
+				self.mUserSlidePos.mMain = E_SLIDE_MENU_ALLCHANNEL
+				self.mUserSlidePos.mSub  = 0
+
+				self.UpdateControlListSelectItem( self.mCtrlListMainmenu, self.mUserSlidePos.mMain )
+				self.UpdateControlListSelectItem( self.mCtrlListSubmenu, self.mUserSlidePos.mSub )
+				#LOG_TRACE( 'IN: slide[%s,%s]--get[%s, %s]--------1'% (self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, self.mCtrlListMainmenu.getSelectedPosition( ), self.mCtrlListSubmenu.getSelectedPosition( ) ) )
+
+				self.mListItems = None
+				self.mCtrlListCHList.reset( )
+				self.InitSlideMenuHeader( FLAG_SLIDE_OPEN )
+				self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True )
+				self.UpdateControlGUI( E_SLIDE_CLOSE )
 
 				#clear label
 				self.ResetLabel( )
@@ -605,15 +619,22 @@ class ChannelListWindow( BaseWindow ) :
 						getTable = E_TABLE_ZAPPING
 					self.mDataCache.SetChangeDBTableChannel( getTable )
 
+					#LOG_TRACE( 'slidePos: user[%s,%s] prev[%s,%s]'% (self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, self.mPrevSlidePos.mMain, self.mPrevSlidePos.mSub ) )
+					#LOG_TRACE( 'mode: user[%s,%s] prev[%s,%s]'% (self.mUserMode.mServiceType, self.mUserMode.mSortingMode, self.mPrevMode.mServiceType, self.mPrevMode.mSortingMode ) )
 					self.mDataCache.SetSkipChannelView( False )
 					self.mUserMode = deepcopy( self.mPrevMode )
 					self.mUserSlidePos = deepcopy( self.mPrevSlidePos )
-					self.mCtrlListMainmenu.selectItem( self.mPrevSlidePos.mMain )
-					time.sleep( 0.02 )
-					self.mCtrlListSubmenu.selectItem( self.mPrevSlidePos.mSub )
-					time.sleep( 0.02 )
+					self.SubMenuAction( E_SLIDE_ACTION_MAIN, self.mUserSlidePos.mMain )
 
-					self.ReloadChannelList( )
+					self.UpdateControlListSelectItem( self.mCtrlListMainmenu, self.mUserSlidePos.mMain )
+					self.UpdateControlListSelectItem( self.mCtrlListSubmenu, self.mUserSlidePos.mSub )
+					#LOG_TRACE( 'OUT: slide[%s,%s]--get[%s, %s]--------1'% (self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, self.mCtrlListMainmenu.getSelectedPosition( ), self.mCtrlListSubmenu.getSelectedPosition( ) ) )
+
+					self.mListItems = None
+					self.mCtrlListCHList.reset( )
+					self.InitSlideMenuHeader( FLAG_SLIDE_OPEN )
+					self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True )
+					self.UpdateControlGUI( E_SLIDE_CLOSE )
 
 					#initialize get epg event
 					self.mIsTune = False
@@ -678,16 +699,14 @@ class ChannelListWindow( BaseWindow ) :
 					self.mFlag_EditChanged = False
 					self.mMoveFlag = False
 
-				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
-					LOG_TRACE( '----------hddfull[%s]'% aEvent.mHDDFull)
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
-					dialog.doModal( )
-
-			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
+			elif aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				if aEvent.mType == ElisEnum.E_EOF_END :
 					#LOG_TRACE( 'EventRecv EOF_STOP' )
 					xbmc.executebuiltin( 'xbmc.Action(stop)' )
+
+
+			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
+				self.UpdateChannelList( )
 
 			elif aEvent.getName( ) == ElisEventChannelChangeResult.getName( ) :
 				pass
@@ -754,6 +773,9 @@ class ChannelListWindow( BaseWindow ) :
 				isBlank = False
 			self.mDataCache.Player_VideoBlank( isBlank )
 
+		if self.mIsPVR :
+			self.mIsPVR = False
+			self.mDataCache.Player_Stop( )
 
 		ret = self.mDataCache.Channel_SetCurrent( iChannel.mNumber, iChannel.mServiceType, self.mChannelListHash )
 		if ret :
@@ -804,13 +826,9 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def RefreshSlideMenu( self, aMainIndex = E_SLIDE_MENU_ALLCHANNEL, aSubIndex = 0, aForce = None ) :
-		self.mCtrlListMainmenu.selectItem( aMainIndex )
-		time.sleep( 0.02 )
+		self.UpdateControlListSelectItem( self.mCtrlListMainmenu, aMainIndex )
+		self.UpdateControlListSelectItem( self.mCtrlListSubmenu, aSubIndex )
 		self.SubMenuAction( E_SLIDE_ACTION_MAIN, aMainIndex )
-
-		#self.mCtrlListSubmenu.selectItem( 0 )
-		self.mCtrlListSubmenu.selectItem( aSubIndex )
-		time.sleep( 0.02 )
 		self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, aForce )
 
 
@@ -1058,8 +1076,9 @@ class ChannelListWindow( BaseWindow ) :
 			idx1 = self.mUserSlidePos.mMain
 			idx2 = self.mUserSlidePos.mSub
 
-		self.mCtrlListMainmenu.selectItem( idx1 )
-		self.mCtrlListSubmenu.selectItem( idx2 )
+
+		self.UpdateControlListSelectItem( self.mCtrlListMainmenu, idx1 )
+		self.UpdateControlListSelectItem( self.mCtrlListSubmenu, idx2 )
 		self.SubMenuAction( E_SLIDE_ACTION_MAIN, idx1 )
 		#self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_LIST_SUBMENU )
 
@@ -1085,15 +1104,18 @@ class ChannelListWindow( BaseWindow ) :
 		#self.mUserMode.printdebug()
 		
 		changed = False
+		saveNoAsk = False
 		answer = E_DIALOG_STATE_NO
 
 		if self.mLoadSlidePos.mMain != self.mUserSlidePos.mMain or \
 		   self.mLoadSlidePos.mSub != self.mUserSlidePos.mSub :
+			saveNoAsk = True
 			changed = True
 
 		if self.mLoadMode.mMode != self.mUserMode.mMode or \
 		   self.mLoadMode.mSortingMode != self.mUserMode.mSortingMode or \
 		   self.mLoadMode.mServiceType != self.mUserMode.mServiceType :
+			saveNoAsk = True
 			changed = True
 
 		if self.mFlag_DeleteAll :
@@ -1105,19 +1127,23 @@ class ChannelListWindow( BaseWindow ) :
 		#is change?
 		if changed :
 			try :
-				#ask save question
-				label1 = EnumToString( 'mode', self.mUserMode.mMode )
-				label2 = self.mCtrlListSubmenu.getSelectedItem( ).getLabel( )
+				if saveNoAsk :
+					answer = E_DIALOG_STATE_YES
 
-				head = MR_LANG( 'Save Zapping Mode' )
-				line1 = MR_LANG( 'Do you want to save the channel list?' )
-				line2 = '- %s / %s'% ( label1.lower( ), label2.lower( ) )
+				else :
+					#ask save question
+					label1 = EnumToString( 'mode', self.mUserMode.mMode )
+					label2 = self.mCtrlListSubmenu.getSelectedItem( ).getLabel( )
 
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( head, str( '%s\n\n%s' % ( line1, line2 ) ) )
-				dialog.doModal( )
+					head = MR_LANG( 'Save Zapping Mode' )
+					line1 = MR_LANG( 'Do you want to save the channel list?' )
+					line2 = '- %s / %s'% ( label1.lower( ), label2.lower( ) )
 
-				answer = dialog.IsOK( )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
+					dialog.SetDialogProperty( head, str( '%s\n\n%s' % ( line1, line2 ) ) )
+					dialog.doModal( )
+
+					answer = dialog.IsOK( )
 
 				#answer is yes
 				if answer == E_DIALOG_STATE_YES :
@@ -1440,7 +1466,7 @@ class ChannelListWindow( BaseWindow ) :
 
 				self.mListItems.append( listItem )
 
-		self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
+			self.UpdateControlGUI( E_CONTROL_ID_LIST_CHANNEL_LIST, self.mListItems, E_TAG_ADD_ITEM )
 
 		#get last channel
 		iChannel = None
@@ -1466,9 +1492,10 @@ class ChannelListWindow( BaseWindow ) :
 
 		#select item idx, print GUI of 'current / total'
 		self.mCurrentPosition = iChannelIdx
-		label = '%s - %s'% ( EnumToString( 'tv', self.mNavChannel.mServiceType ).upper( ), self.mNavChannel.mName )
+		label = '%s - %s'% ( EnumToString( 'type', self.mNavChannel.mServiceType ).upper( ), self.mNavChannel.mName )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, '%s'% ( iChannelIdx + 1 ) )
 		self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
+		#LOG_TRACE('-----------curr[%s]'% (iChannelIdx + 1) )
 
 		#endtime = time.time( )
 		#print '==================== TEST TIME[LIST] END[%s] loading[%s]'% (endtime, endtime-starttime )
@@ -1590,7 +1617,8 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aCtrlID == E_CONTROL_ID_LIST_CHANNEL_LIST :
 			if aExtra == E_TAG_SET_SELECT_POSITION :
-				self.mCtrlListCHList.selectItem( aValue )
+				self.UpdateControlListSelectItem( self.mCtrlListCHList, aValue )
+				#self.mCtrlListCHList.selectItem( aValue )
 			elif aExtra == E_TAG_ENABLE :
 				self.mCtrlListCHList.setEnabled( aValue )
 			elif aExtra == E_TAG_ADD_ITEM :
@@ -1620,6 +1648,20 @@ class ChannelListWindow( BaseWindow ) :
 			self.mWin.setProperty( aPropertyID, aValue )
 
 
+	def UpdateControlListSelectItem( self, aListControl, aIdx = 0 ) :
+		startTime = time.time()
+		loopTime = 0.0
+		sleepTime = 0.01
+		while loopTime < 1.5 :
+			aListControl.selectItem( aIdx )
+			if aIdx == aListControl.getSelectedPosition( ) :
+				break
+			time.sleep( sleepTime )
+			loopTime += sleepTime
+
+		#LOG_TRACE('-----------control[%s] idx setItem time[%s]'% ( aListControl.getId( ), ( time.time() - startTime ) ) )
+
+
 	def UpdateChannelAndEPG( self ) :
 		if self.mChannelList == None or len(self.mChannelList) < 1 :
 			return
@@ -1628,7 +1670,7 @@ class ChannelListWindow( BaseWindow ) :
 			#update channel name
 			if self.mIsTune == True :
 				#strType = self.UpdateServiceType( self.mNavChannel.mServiceType )
-				label = '%s - %s'% ( EnumToString( 'tv', self.mNavChannel.mServiceType ).upper(), self.mNavChannel.mName )
+				label = '%s - %s'% ( EnumToString( 'type', self.mNavChannel.mServiceType ).upper(), self.mNavChannel.mName )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 
 			#update longitude info
@@ -2443,7 +2485,7 @@ class ChannelListWindow( BaseWindow ) :
 			selectedAction == CONTEXT_ACTION_DELETE_FAV :
 
 			self.LoadFavoriteGroupList( )
-			#self.mCtrlListMainmenu.selectItem( E_SLIDE_MENU_FAVORITE )
+			#self.UpdateControlListSelectItem( self.mCtrlListMainmenu, E_SLIDE_MENU_FAVORITE )
 			if self.mCtrlListMainmenu.getSelectedPosition( ) == E_SLIDE_MENU_FAVORITE :
 				self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE, True )
 			else :
@@ -2657,13 +2699,8 @@ class ChannelListWindow( BaseWindow ) :
 		self.mCtrlListCHList.reset( )
 		self.InitSlideMenuHeader( aInit )
 		mainIdx = self.mUserSlidePos.mMain
-		subIdx = self.mUserSlidePos.mSub
-		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
-			mainIdx = E_SLIDE_MENU_ALLCHANNEL
-			subIdx = 0
-
+		subIdx  = self.mUserSlidePos.mSub
 		self.RefreshSlideMenu( mainIdx, subIdx, True )
-		self.UpdateChannelList( )
 		self.UpdateControlGUI( E_SLIDE_CLOSE )
 
 

@@ -93,7 +93,7 @@
 							<width>18</width>
 							<height>18</height>
 							<texture>HomeHasSub.png</texture>
-							<visible>Container(9000).HasFocus(1) + substring(Window.Property(IsPVR),False) | Container(9000).HasFocus(5) | Container(9000).HasFocus(6) </visible>
+							<visible>Container(9000).HasFocus(1) | Container(9000).HasFocus(5) | Container(9000).HasFocus(6) </visible>
 							<animation effect="fade" start="0" end="100" time="200" delay="200">Visible</animation>
 						</control>
 					</focusedlayout>

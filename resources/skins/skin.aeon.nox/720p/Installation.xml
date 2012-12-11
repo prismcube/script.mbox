@@ -93,7 +93,7 @@
 				<description>header label</description>
 				<posx>370</posx>
 				<posy>60</posy>
-				<width>740</width>
+				<width>760</width>
 				<height>30</height>
 				<font>Font_ShowcaseMainLabel2_Caps</font>
 				<label>SCRIPT31</label>

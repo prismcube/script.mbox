@@ -3,7 +3,7 @@ from pvr.gui.BaseWindow import Property
 from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 from pvr.gui.BaseWindow import Action
-from pvr.Util import RunThread, GuiLock, GuiLock2
+from pvr.Util import RunThread, SetLock, SetLock2
 import pvr.Platform 
 
 
@@ -42,9 +42,7 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 
 
 	def GetFocusId( self ):
-		GuiLock2( True )
 		self.mFocusId = self.getFocusId( )
-		GuiLock2( False )
 		return self.mFocusId
 
 
@@ -150,7 +148,7 @@ class SettingDialog( BaseDialog ) :
 		self.getControl( E_SETTING_DIALOG_MAIN_GOURP_ID ).setVisible( False )
 		for ctrlItem in self.mControlList :
 			if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL :
-				selectedItem = ctrlItem.mProperty.GetPropIndex()
+				selectedItem = ctrlItem.mProperty.GetPropIndex( )
 				control = self.getControl( ctrlItem.mControlId + 3 )
 				control.addItems( ctrlItem.mListItems )
 				control.selectItem( selectedItem )
@@ -524,7 +522,6 @@ class SettingDialog( BaseDialog ) :
 
 	def ControlUp( self ) :	
 		self.GetFocusId( )
-
 		groupId = self.GetGroupId( self.mFocusId )
 		prevId = self.GetPrevId( groupId )
 
@@ -537,7 +534,6 @@ class SettingDialog( BaseDialog ) :
 
 	def ControlDown( self ) :
 		self.GetFocusId( )
-
 		groupId = self.GetGroupId( self.mFocusId )
 		nextId = self.GetNextId( groupId )
 
@@ -576,7 +572,6 @@ class SettingDialog( BaseDialog ) :
 
 	def SelectPosition( self, aControlId, aPosition ) :
 		count = len( self.mControlList )
-
 		for i in range( count ) :
 			ctrlItem = self.mControlList[i]		
 			if self.HasControlItem( ctrlItem, aControlId ) :
@@ -604,16 +599,12 @@ class SettingDialog( BaseDialog ) :
 
 
 	def GetListItems( self, aControlId ) :
-
 		count = len( self.mControlList )
-
 		for i in range( count ) :
-
 			ctrlItem = self.mControlList[i]
 			if self.HasControlItem( ctrlItem, aControlId ) :
 				if ctrlItem.mControlType == ctrlItem.E_SETTING_ENUM_CONTROL or ctrlItem.mControlType == ctrlItem.E_SETTING_USER_ENUM_CONTROL :
 					return ctrlItem.mListItems
 				elif ctrlItem.mControlType == ctrlItem.E_SETTING_LIST_CONTROL :
-					return ctrlItem.mListItems				
-
+					return ctrlItem.mListItems
 

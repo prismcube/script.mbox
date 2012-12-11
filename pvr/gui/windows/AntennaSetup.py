@@ -30,7 +30,7 @@ class AntennaSetup( SettingWindow ) :
 		self.AddInputControl( E_Input02, MR_LANG( ' - Tuner 2 Configuration' ), '', MR_LANG( 'You can add, delete or configure satellites here' ) )
 
 		if self.mDataCache.GetFristInstallation( ) == True :
-			self.AddPrevNextButton( MR_LANG( 'Go to Channel Search Setup' ), MR_LANG( 'Go back to Video and Audio Setup' ) )
+			self.AddPrevNextButton( MR_LANG( 'Go to the Channel Search Setup page' ), MR_LANG( 'Go back to the Video and Audio Setup page' ) )
 			self.getControl( E_FIRST_TIME_INSTALLATION_NEXT_LABEL ).setLabel( MR_LANG( 'Next' ) )
 			self.getControl( E_FIRST_TIME_INSTALLATION_PREV_LABEL ).setLabel( MR_LANG( 'Previous' ) )
 

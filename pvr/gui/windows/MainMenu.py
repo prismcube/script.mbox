@@ -43,7 +43,6 @@ class MainMenu( BaseWindow ) :
 		self.mWin = xbmcgui.Window( self.mWinId )
 
 		self.CheckMediaCenter( )
-		self.GetPlayerStatus( )
 		self.GetFavAddons( )
 
 
@@ -77,7 +76,7 @@ class MainMenu( BaseWindow ) :
 	def onClick( self, aControlId ) :
 		LOG_TRACE("MainMenu onclick(): control %d" % aControlId )
 		if aControlId >= BUTTON_ID_INSTALLATION and aControlId <= BUTTON_ID_UPDATE :
-			if self.mWin.getProperty( 'IsPVR' ) == 'True' :
+			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR or self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
 				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping recordings, PVR or Timeshift' ) )
@@ -104,9 +103,13 @@ class MainMenu( BaseWindow ) :
 					if self.mPlatform.IsPrismCube( ) :
 						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_UPDATE )
 					else :
+						self.getControl( MAIN_GROUP_ID ).setVisible( False )
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not support Win32' ) )
 						dialog.doModal( )
+						self.getControl( MAIN_GROUP_ID ).setVisible( True )
+					
+						
 
 		elif aControlId == BUTTON_ID_ARCHIVE :
 			from pvr.GuiHelper import HasAvailableRecordingHDD
@@ -115,20 +118,10 @@ class MainMenu( BaseWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW )
 
 		elif aControlId == BUTTON_ID_EPG :
-			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping all your recordings first' ) )
-				dialog.doModal( )
-			else :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_EPG_WINDOW )
 
 		elif aControlId == BUTTON_ID_CHANNEL_LIST : #Channel List
-			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping all your recordings first' ) )
-				dialog.doModal( )
-			else :
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CHANNEL_LIST_WINDOW )
 
 		elif aControlId == BUTTON_ID_FAVORITE_ADDONS :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FAVORITE_ADDONS )
@@ -162,13 +155,6 @@ class MainMenu( BaseWindow ) :
 	def onFocus( self, aControlId ) :
 		if aControlId == E_FAKE_BUTTON :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW )
-
-
-	def GetPlayerStatus( self ) :
-		if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR or self.mDataCache.Record_GetRunningRecorderCount( ) > 0 or self.mDataCache.Player_GetStatus( ).mMode != ElisEnum.E_MODE_LIVE :
-			self.mWin.setProperty( 'IsPVR', 'True' )
-		else :
-			self.mWin.setProperty( 'IsPVR', 'False' )
 
 
 	def GetFavAddons( self ) :

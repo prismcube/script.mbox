@@ -227,7 +227,6 @@ class SystemUpdate( SettingWindow ) :
 		self.mShowProgressThread.doModal( )
 
 
-	@GuiLock
 	def UpdateControlGUI( self, aCtrlID = None, aValue = None, aExtra = None ) :
 		#LOG_TRACE( 'Enter control[%s] value[%s]'% (aCtrlID, aValue) )
 
@@ -325,17 +324,17 @@ class SystemUpdate( SettingWindow ) :
 		if iPVS.mName :
 			self.SetEnableControl( E_Input02, True )
 
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_TITLE,   MR_LANG( 'UPDATE' ) )
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_DATE,    '%s : %s'% ( MR_LANG( 'DATE' ), iPVS.mDate ) )
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_VERSION, '%s : %s'% ( MR_LANG( 'VERSION' ), iPVS.mVersion ) )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_TITLE,   MR_LANG( 'Firmware Information' ) )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_DATE,    '%s : %s'% ( MR_LANG( 'Date' ), iPVS.mDate ) )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_VERSION, '%s : %s'% ( MR_LANG( 'Version' ), iPVS.mVersion ) )
 			lblSize = ''
 			if iPVS.mSize < 10000000 :
-				lblSize = '%s Kb'% ( iPVS.mSize / 1000 )
+				lblSize = '%s KB'% ( iPVS.mSize / 1000 )
 			else :
-				lblSize = '%s Mb'% ( iPVS.mSize / 1000000 )
+				lblSize = '%s MB'% ( iPVS.mSize / 1000000 )
 
-			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SIZE, '%s : %s'% ( MR_LANG( 'SIZE' ), lblSize ) )
-			self.UpdatePropertyGUI( 'DescriptionTitle', MR_LANG( 'DESCRIPTION' ) )
+			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SIZE, '%s : %s'% ( MR_LANG( 'Size' ), lblSize ) )
+			self.UpdatePropertyGUI( 'DescriptionTitle', MR_LANG( 'Description' ) )
 			self.UpdatePropertyGUI( 'UpdateDescription', iPVS.mDescription )
 			self.UpdatePropertyGUI( 'VersionInfo', E_TAG_TRUE )
 
@@ -560,8 +559,8 @@ class SystemUpdate( SettingWindow ) :
 		if aStep == E_UPDATE_STEP_HOME :
 			self.SetSettingWindowLabel( MR_LANG( 'Update' ) )
 			self.ResetAllControl( )
-			self.AddInputControl( E_Input01, MR_LANG( 'Update Firmware' ), '', MR_LANG( 'Download System firmware for PRISMCUBE RUBY over the internet' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Update Channel List' ), '',  MR_LANG( 'Download Channel List package for PRISMCUBE RUBY over the internet' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Update Firmware' ), '', MR_LANG( 'Download the latest firmware for your PRISMCUBE RUBY' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Update Channel List' ), '',  MR_LANG( 'Download a pre-configured channel list over the internet' ) )
 
 			self.SetEnableControl( E_Input01, True )
 			self.SetEnableControl( E_Input02, True )

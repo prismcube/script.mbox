@@ -72,8 +72,6 @@ class TimeShiftPlate( BaseWindow ) :
 
 		self.mPrekey = None
 
-		self.InitLock( )
-
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
@@ -269,7 +267,14 @@ class TimeShiftPlate( BaseWindow ) :
 			prevChannel = self.mDataCache.Channel_GetPrev( self.mDataCache.Channel_GetCurrent( ) )
 			if prevChannel :
 				self.mDataCache.Channel_SetCurrent( prevChannel.mNumber, prevChannel.mServiceType )			
-				self.onClick( E_CONTROL_ID_BUTTON_STOP )
+				nextWindow = WinMgr.WIN_ID_LIVE_PLATE
+				if self.mMode == ElisEnum.E_MODE_PVR :
+					nextWindow = WinMgr.WIN_ID_ARCHIVE_WINDOW
+				else :
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( nextWindow, WinMgr.WIN_ID_NULLWINDOW )
 				
 			
 		elif actionId == Action.ACTION_PAGE_UP :
@@ -281,7 +286,15 @@ class TimeShiftPlate( BaseWindow ) :
 			nextChannel = self.mDataCache.Channel_GetNext( self.mDataCache.Channel_GetCurrent( ) )
 			if nextChannel :
 				self.mDataCache.Channel_SetCurrent( nextChannel.mNumber, nextChannel.mServiceType )
-				self.onClick( E_CONTROL_ID_BUTTON_STOP )
+				nextWindow = WinMgr.WIN_ID_LIVE_PLATE
+				if self.mMode == ElisEnum.E_MODE_PVR :
+					nextWindow = WinMgr.WIN_ID_ARCHIVE_WINDOW
+				else :
+					WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetAutomaticHide( True )
+
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( nextWindow, WinMgr.WIN_ID_NULLWINDOW )
+
 
 		elif actionId == Action.ACTION_CONTEXT_MENU :
 			if self.mMode == ElisEnum.E_MODE_PVR :
@@ -519,6 +532,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 	def onEvent( self, aEvent ) :
 		if self.mWinId == xbmcgui.getCurrentWindowId( ) :
+			#LOG_TRACE( '---------CHECK onEVENT winID[%d] this winID[%d]'% (self.mWinId, xbmcgui.getCurrentWindowId( )) )
 			if aEvent.getName( ) == ElisEventPlaybackEOF.getName( ) :
 				LOG_TRACE( 'ElisEventPlaybackEOF mType[%d]'% ( aEvent.mType ) )
 
@@ -542,12 +556,6 @@ class TimeShiftPlate( BaseWindow ) :
 				self.ShowRecordingInfo( )
 				self.mDataCache.mCacheReload = True
 
-				if aEvent.getName( ) == ElisEventRecordingStopped.getName( ) and aEvent.mHDDFull :
-					LOG_TRACE('----------hddfull[%s]'% aEvent.mHDDFull)
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
-					dialog.doModal( )
-					
 		else:
 			LOG_TRACE( 'TimeshiftPlate winID[%d] this winID[%d]'% ( self.mWinId, xbmcgui.getCurrentWindowId( ) ) )
 
@@ -820,6 +828,7 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mWin.setProperty( aPropertyID, aValue )
 
 
+	@SetLock
 	def InitTimeShift( self, loop = 0 ) :
 		status = None
 		status = self.mDataCache.Player_GetStatus( )
@@ -834,8 +843,6 @@ class TimeShiftPlate( BaseWindow ) :
 			lbl_timeS = ''
 			lbl_timeP = ''
 			lbl_timeE = ''
-
-			self.SetLock( True )
 
 			self.mIsTimeshiftPending = status.mIsTimeshiftPending
 
@@ -885,8 +892,7 @@ class TimeShiftPlate( BaseWindow ) :
 			if status.mMode == ElisEnum.E_MODE_PVR :
 				timeFormat = TimeFormatEnum.E_AH_MM_SS
 
-			self.SetLock( False )
-			
+		
 			lbl_timeS = TimeToString( tempStartTime  , TimeFormatEnum.E_HH_MM_SS )
 			lbl_timeP = TimeToString( tempCurrentTime, timeFormat )
 			lbl_timeE = TimeToString( tempEndTime    , timeFormat )
