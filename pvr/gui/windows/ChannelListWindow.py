@@ -455,6 +455,8 @@ class ChannelListWindow( BaseWindow ) :
 		#ask save question
 		head =  MR_LANG( 'WARNING' )
 		line1 = MR_LANG( 'DO YOU REALLY WANT TO REMOVE\nALL YOUR CHANNELS?' )
+		if self.mUserMode.mMode == ElisEnum.E_MODE_FAVORITE :
+			line1 = MR_LANG( 'DO YOU REALLY WANT TO REMOVE\nFAVORITE YOUR CHANNELS?' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 		dialog.SetDialogProperty( head, line1 )
