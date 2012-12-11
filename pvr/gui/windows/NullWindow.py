@@ -248,15 +248,11 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_XBMC :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode != ElisEnum.E_MODE_LIVE :
-				msg = MR_LANG( 'Try again after stopping the PVR or Timeshift first' )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
-				dialog.doModal( )
+				self.mDataCache.Player_Stop( )
 
-			else :
-				self.Close( )
-				self.SetMediaCenter( )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
+			self.Close( )
+			self.SetMediaCenter( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
 
 
 		elif actionId == Action.ACTION_MBOX_TVRADIO :

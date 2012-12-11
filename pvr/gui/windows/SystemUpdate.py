@@ -531,7 +531,7 @@ class SystemUpdate( SettingWindow ) :
 				if self.mCurrData and self.mCurrData.mError == 0 and \
 				   self.mCurrData.mVersion == self.mPVSList[idx].mVersion :
 					self.mIndexLastVersion = idx
-					label = '[COLOR grey3]V%s\t%s[/COLOR]'% ( item.mVersion, item.mDate )
+					label = '[COLOR grey3]V%s  %s[/COLOR]'% ( item.mVersion, item.mDate )
 
 				verList.append( label )
 
