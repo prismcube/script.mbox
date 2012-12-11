@@ -2295,7 +2295,7 @@ class ChannelListWindow( BaseWindow ) :
 				isNotAvail = 1
 				lblLine = MR_LANG( 'Try again after stopping all your recordings first' )
 
-			elif self.mFlag_DeleteAll :
+			elif self.mFlag_DeleteAll or not self.mChannelList or len( self.mChannelList ) < 1:
 				isNotAvail = 1
 				lblLine = MR_LANG( 'There is nothing in the channel list' )
 
