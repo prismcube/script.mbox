@@ -92,7 +92,7 @@ class EPGWindow( BaseWindow ) :
 		if self.mChannelList == None :
 			LOG_WARN( 'No Channel List' )
 		else:
-			LOG_TRACE( "ChannelList=%d" %len( self.mChannelList ) )
+			LOG_TRACE( 'ChannelList=%d' %len( self.mChannelList ) )
 		
 		self.mSelectChannel = self.mCurrentChannel
 		self.mLocalOffset = self.mDataCache.Datetime_GetLocalOffset( )
@@ -141,7 +141,7 @@ class EPGWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_CONTEXT_MENU:
 			if self.mChannelList == None or len( self.mChannelList ) <= 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channel is available' ) )			
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No channels available' ) )			
 	 			dialog.doModal( )
 				return
 		
@@ -166,7 +166,7 @@ class EPGWindow( BaseWindow ) :
 				self.SetRadioScreen( self.mServiceType )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV/Radio channel is available' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV and radio channels available' ) )
 				dialog.doModal( )
 
 			self.StartEPGUpdateTimer( )
@@ -406,11 +406,11 @@ class EPGWindow( BaseWindow ) :
 
 	def UpdateSelectedChannel( self ) :
 		if self.mChannelList == None or len( self.mChannelList ) <= 0 :
-			self.mCtrlEPGChannelLabel.setLabel( MR_LANG( 'No Channels' ) )		
+			self.mCtrlEPGChannelLabel.setLabel( MR_LANG( 'No Channel' ) )		
 		elif self.mSelectChannel :
 			self.mCtrlEPGChannelLabel.setLabel( '%04d %s' %( self.mSelectChannel.mNumber, self.mSelectChannel.mName ) )
 		else:
-			self.mCtrlEPGChannelLabel.setLabel( MR_LANG( 'No Channels' ) )
+			self.mCtrlEPGChannelLabel.setLabel( MR_LANG( 'No Channel' ) )
 
 
 	def UpdateCurrentChannel( self ) :
@@ -879,7 +879,7 @@ class EPGWindow( BaseWindow ) :
 			if selectedPos >= 0 and self.mChannelList and selectedPos < len( self.mChannelList ) :
 				channel = self.mChannelList[ selectedPos ]
 			else :
-				LOG_ERR( 'Can not find channel' )
+				LOG_ERR( 'Cannot find the channel' )
 				return
 	
 		dialog.SetChannel( channel )			
@@ -923,7 +923,7 @@ class EPGWindow( BaseWindow ) :
 
 		if timer :		
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Delete Timer' ), MR_LANG( 'Do you want to remove the timer?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Delete timer' ), MR_LANG( 'Are you sure you want to remove this timer?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -940,7 +940,7 @@ class EPGWindow( BaseWindow ) :
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO REMOVE ALL YOUR TIMERS?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Delete all timers' ), MR_LANG( 'Are you sure you want to remove all your timers?' ) )
 		dialog.doModal( )
 
 		self.OpenBusyDialog( )
@@ -972,7 +972,7 @@ class EPGWindow( BaseWindow ) :
 				LOG_TRACE( 'keyword len=%d' %len( keyword ) )
 				if len( keyword ) < MININUM_KEYWORD_SIZE :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'A search keyword must be at least %d characters long' ) % MININUM_KEYWORD_SIZE )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'A search keyword must be at least %d characters long' ) % MININUM_KEYWORD_SIZE )
 					dialog.doModal( )
 					return
 					
@@ -994,12 +994,12 @@ class EPGWindow( BaseWindow ) :
 
 				if len( searchList ) <= 0 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Search Result' ), MR_LANG( 'No matched result found' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Search result' ), MR_LANG( 'No matched result found' ) )
 					dialog.doModal( )
 		 			return
 		 		else :
 					dialog = xbmcgui.Dialog( )
-		 			select = dialog.select( 'Select Event', searchList )
+		 			select = dialog.select( MR_LANG( 'Select Event' ), searchList )
 
 					if select >= 0 and select < len( searchList ) :
 						LOG_TRACE( 'selectIndex=%d' %indexList[ select ] )
@@ -1056,7 +1056,7 @@ class EPGWindow( BaseWindow ) :
 		if self.mEPGMode == E_VIEW_CHANNEL :
 			selectedPos = self.mCtrlList.getSelectedPosition( )
 			if self.mEPGList == None:
-				LOG_WARN( 'Has no epglist' )
+				LOG_WARN( 'Has no EPG list' )
 			if self.mEPGList and selectedPos >= 0 and self.mEPGList  and selectedPos < len( self.mEPGList ) :
 				selectedEPG = self.mEPGList[ selectedPos ]
 
@@ -1146,13 +1146,13 @@ class EPGWindow( BaseWindow ) :
 				else :
 					if timer.mFromEPG :
 						if  timer.mEventId > 0  and ( aEPG.mEventId == timer.mEventId ) and ( aEPG.mSid == timer.mSid ) and ( aEPG.mTsid  == timer.mTsid ) and ( aEPG.mOnid == timer.mOnid ) :
-							LOG_TRACE( '------------------- find by event id -------------------------' )
+							LOG_TRACE( '------------------- found by event id -------------------------' )
 							return timer
 
 					else :
 						if aEPG.mSid == timer.mSid and aEPG.mTsid == timer.mTsid and aEPG.mOnid == timer.mOnid :
 							if self.HasOverlapped( startTime, endTime, timer.mStartTime, timer.mStartTime + timer.mDuration ) == True :
-								LOG_TRACE( '------------------- find by manual timer-------------------------' )
+								LOG_TRACE( '------------------- found by manual timer-------------------------' )
 								return timer
 						
 		except Exception, ex :
@@ -1194,7 +1194,7 @@ class EPGWindow( BaseWindow ) :
 			weeklyStartTime = dateLeft*24*3600 + aTimer.mStartTime + weeklyTimer.mStartTime - secondsNow
 
 			if self.HasOverlapped( aStartTime, aEndTime, weeklyStartTime, weeklyStartTime + weeklyTimer.mDuration ) == True :
-				LOG_TRACE( '------------------- find by weekly timer -------------------------' )
+				LOG_TRACE( '------------------- found by weekly timer -------------------------' )
 				return True
 
 		return False
@@ -1425,7 +1425,7 @@ class EPGWindow( BaseWindow ) :
 			LOG_TRACE( 'Select Channel Number=%d' %self.mSelectChannel.mNumber )
 			self.UpdateAllEPGList( )
 		else: 
-			LOG_ERR( 'can not find next channel' )
+			LOG_ERR( 'Cannot find next channel' )
 
 		self.mEventBus.Register( self )
 		self.StartEPGUpdateTimer( 3 )
@@ -1470,7 +1470,7 @@ class EPGWindow( BaseWindow ) :
 			LOG_TRACE( 'Select Channel Number=%d' %self.mSelectChannel.mNumber )
 			self.UpdateAllEPGList( )
 		else: 
-			LOG_ERR( 'can not find next channel' )
+			LOG_ERR( 'Cannot find next channel' )
 
 		self.mEventBus.Register( self )
 		self.StartEPGUpdateTimer( 3 )

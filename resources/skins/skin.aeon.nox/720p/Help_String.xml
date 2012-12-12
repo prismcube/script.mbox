@@ -8,7 +8,7 @@
 			<width>580</width>
 			<height>270</height>
 		</content>
-		<content name="- Twin Tuner HD PVR Satellite Receiver[CR][CR]- Timeshift record and playback functions[CR][CR]- Record 2 different channels at the same time[CR][CR]- HDMI output (1080i, 720p, 576p)[CR][CR]- DiSEqC 1.0, 1.1, 1.2, 1.3 (USALS) compatible[CR][CR]- Dolby Digital audio output (S/PDIF)[CR][CR]- Extended EPG and program reservation on EPG[CR][CR]- Open source media player XBMC with favorite addons[CR][CR]- Multilingual OSD menu[CR][CR]- Ethernet integrated[CR][CR]- Software update Over The Internet (OTI)[CR][CR]- Available in various external colors">
+		<content name="- Twin Tuner HD PVR Satellite Receiver[CR][CR]- Timeshift record and playback functions[CR][CR]- Record 2 different channels at the same time[CR][CR]- HDMI output (1080i, 720p, 576p)[CR][CR]- DiSEqC 1.0, 1.1, 1.2, 1.3 (USALS) compatible[CR][CR]- Dolby Digital audio output (S/PDIF)[CR][CR]- Extended EPG and program reservation on EPG[CR][CR]- Open source media player XBMC with favorite add-ons[CR][CR]- Multilingual OSD menu[CR][CR]- Ethernet integrated[CR][CR]- Software update Over The Internet (OTI)[CR][CR]- Available in various external colors">
 			<type>textbox</type>
 			<posx>740</posx>
 			<posy>115</posy>
@@ -685,7 +685,7 @@
 		</content>
 	</page>
 
-	<page number="38" title="Media Center - Addons" location="(MEDIA CENTER > SETTINGS > ADDONS > GET ADD-ONS > PRISMCUBE'S ADD-ONS)">
+	<page number="38" title="Media Center - Add-ons" location="(MEDIA CENTER > SETTINGS > ADDONS > GET ADD-ONS > PRISMCUBE'S ADD-ONS)">
 		<content name="help/install-addons.png">
 			<type>image</type>
 			<posx>40</posx>
@@ -702,7 +702,7 @@
 		</content>
 	</page>
 	
-	<page number="39" title="Media Center - Addons" location="(MEDIA CENTER > PICTURES or MUSIC or VIDEO or PROGRAMS)">
+	<page number="39" title="Media Center - Add-ons" location="(MEDIA CENTER > PICTURES or MUSIC or VIDEO or PROGRAMS)">
 		<content name="help/addons.png">
 			<type>image</type>
 			<posx>40</posx>

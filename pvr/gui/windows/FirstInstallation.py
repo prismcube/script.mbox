@@ -36,12 +36,12 @@ class FirstInstallation( SettingWindow ) :
 		self.mLastFocused = self.getFocusId( )
 		self.mInitialized = True
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
-			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No satellite data is available' ) )
+			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No satellite data available' ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No satellite data is available\nPlease factory reset your STB' )	)
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please reset your device to factory settings' ) )
 			dialog.doModal( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Do you want to go to configuration?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Go to the configuration menu now?' ), MR_LANG( 'When you perform a factory reset,\nall your settings revert to factory defaults' ) )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.ResetAllControl( )
@@ -66,7 +66,7 @@ class FirstInstallation( SettingWindow ) :
 			if self.mStepNum == E_STEP_RESULT :
 				return
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Abort Installation' ), MR_LANG( 'Do you want to quit the first installation?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Exit Installation' ), MR_LANG( 'Are you sure you want to quit the first installation?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -109,12 +109,12 @@ class FirstInstallation( SettingWindow ) :
 					if ret >= 0 and currentindex != ret :
 						if not self.mPlatform.IsPrismCube( ) :
 							dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-							dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+							dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
 							dialog.doModal( )
 							return
 
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Please be patience after pressing the OK button' ), MR_LANG( 'It will take some time to bring up display changes' ) )
+						dialog.SetDialogProperty( MR_LANG( 'Change language' ), MR_LANG( 'It may take several minutes to complete' ), MR_LANG( 'please wait after pressing the OK button' ) )
 						dialog.doModal( )
 						self.mInitialized = False
 						self.OpenBusyDialog( )
@@ -194,7 +194,7 @@ class FirstInstallation( SettingWindow ) :
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Language Setup' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), MR_LANG( WinMgr.GetInstance( ).GetCurrentLanguage( ) ), MR_LANG( 'Select the language you want the menu to be in' ) )
 			self.AddInputControl( E_Input02, MR_LANG( 'Audio Language' ), self.mAudioLanguageList[ ElisPropertyEnum( 'Audio Language', self.mCommander ).GetPropIndex( ) ], MR_LANG( 'Select the language that you wish to listen to' ) )
-			self.AddNextButton( MR_LANG( 'Go to the Video and Audio Setup page' ) )
+			self.AddNextButton( MR_LANG( 'Go to the video and audio setup page' ) )
 			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_Input01, E_Input02 ]
@@ -214,7 +214,7 @@ class FirstInstallation( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx01, 'Show 4:3', MR_LANG( 'TV Screen Format' ), MR_LANG( 'Select the display format for TV screen' ) )
 			self.AddEnumControl( E_SpinEx02, 'Audio Dolby', MR_LANG('Dolby Audio'), MR_LANG( 'When set to \'On\', Dolby Digital audio will be selected automatically when broadcast' ) )
 			self.AddEnumControl( E_SpinEx03, 'HDMI Format', None, MR_LANG( 'Select the display\'s HDMI resolution' ) )
-			self.AddPrevNextButton( MR_LANG( 'Go to the Antenna and Satellite Setup page' ), MR_LANG( 'Go back to the Language Setup page' ) )
+			self.AddPrevNextButton( MR_LANG( 'Go to the antenna and satellite setup page' ), MR_LANG( 'Go back to the language setup page' ) )
 			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03 ]
@@ -232,11 +232,11 @@ class FirstInstallation( SettingWindow ) :
 			self.mPrevStepNum = E_STEP_VIDEO_AUDIO
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Channel Search Setup' ) )
 			self.LoadFormattedSatelliteNameList( )
-			self.AddUserEnumControl( E_SpinEx01, 'Channel Search', USER_ENUM_LIST_YES_NO, self.mIsChannelSearch, MR_LANG( 'Do you want to perform a channel search in the First Installation?' ) )
+			self.AddUserEnumControl( E_SpinEx01, 'Channel Search', USER_ENUM_LIST_YES_NO, self.mIsChannelSearch, MR_LANG( 'Do you want to perform a channel search in the first installation?' ) )
 			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[ self.mSatelliteIndex ], MR_LANG( 'Select the satellite you wish to search from' ) )
 			self.AddEnumControl( E_SpinEx02, 'Network Search', None, MR_LANG( 'When set to \'On\', new channels are searched from existing transponders and the additional transponders stored by transponder network however if you set this option to \'Off\', only the transponder you selected will be searched' ) )
 			self.AddEnumControl( E_SpinEx03, 'Channel Search Mode', MR_LANG( 'Search Mode' ), MR_LANG( 'Select the type of channel you want to search for' ) )
-			self.AddPrevNextButton( MR_LANG( 'Go to the Time and Date Setup page' ), MR_LANG( 'Go back to the Antenna and Satellite Setup page' ) )
+			self.AddPrevNextButton( MR_LANG( 'Go to the time and date setup page' ), MR_LANG( 'Go back to the antenna and satellite setup page' ) )
 			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01 ]
@@ -280,7 +280,7 @@ class FirstInstallation( SettingWindow ) :
 			self.AddEnumControl( E_SpinEx02, 'Local Time Offset', None, MR_LANG( 'Set the time zone that will be the basis for the date and time display' ) )
 			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, MR_LANG( 'When set to \'Automatic\', the system automatically change over to and from summer and winter time' ) )
 			self.AddInputControl( E_Input04, MR_LANG( 'Apply' ), '', MR_LANG( 'Press the OK button to save time settings' ) )
-			self.AddPrevNextButton( MR_LANG( 'Go to the Summary of First Installation page' ), MR_LANG( 'Go back to the Channel Search Setup page' ) )
+			self.AddPrevNextButton( MR_LANG( 'Go to the summary of first installation page' ), MR_LANG( 'Go back to the channel search setup page' ) )
 			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03, E_Input04 ]
@@ -312,7 +312,7 @@ class FirstInstallation( SettingWindow ) :
 				cntRadio = 0
 			self.AddInputControl( E_Input04, MR_LANG( 'Number of your TV Channels' ), '%d' % cntChannel )
 			self.AddInputControl( E_Input05, MR_LANG( 'Number of your Radio Channels' ), '%d' % cntRadio )
-			self.AddPrevNextButton( MR_LANG( 'Return to the Installation page' ), MR_LANG( 'Go back to the Time and Date Setup page' ) )
+			self.AddPrevNextButton( MR_LANG( 'Exit the first installation' ), MR_LANG( 'Go back to the time and date setup page' ) )
 			self.SetPrevNextButtonLabel( )
 
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
@@ -431,7 +431,7 @@ class FirstInstallation( SettingWindow ) :
 						
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is no configured satellite in the list' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No configured satellite available' ) )
 					dialog.doModal( )
 
 				self.setFocusId( E_FAKE_BUTTON )
@@ -525,7 +525,7 @@ class FirstInstallation( SettingWindow ) :
 			self.CloseBusyDialog( )
 			if mode == TIME_AUTOMATIC and dialog.GetResult( ) == False :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Automatic time setup has failed because' ), MR_LANG( 'no time info was given by the channel you selected' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No time info was given by the channel you selected' ) )
 				dialog.doModal( )
 
 		elif aControlId == E_FIRST_TIME_INSTALLATION_NEXT :

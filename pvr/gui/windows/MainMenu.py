@@ -109,7 +109,6 @@ class MainMenu( BaseWindow ) :
 						dialog.doModal( )
 						self.getControl( MAIN_GROUP_ID ).setVisible( True )
 					
-						
 
 		elif aControlId == BUTTON_ID_ARCHIVE :
 			from pvr.GuiHelper import HasAvailableRecordingHDD
@@ -128,6 +127,9 @@ class MainMenu( BaseWindow ) :
 
 		elif aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO :
 			self.SetMediaCenter( )
+			if self.mDataCache.Player_GetStatus( ).mMode != ElisEnum.E_MODE_LIVE :
+				self.mDataCache.Player_Stop( )
+
 			if aControlId == BUTTON_ID_MEDIA_CENTER :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
 

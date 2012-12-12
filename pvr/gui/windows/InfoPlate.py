@@ -374,7 +374,7 @@ class InfoPlate( LivePlateWindow ) :
 		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
 			if not self.mPlatform.IsPrismCube( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
 				return
 
@@ -383,14 +383,14 @@ class InfoPlate( LivePlateWindow ) :
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
 			if not self.mPlatform.IsPrismCube( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
 				return
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_BOOKMARK :
 			if not self.mPlatform.IsPrismCube( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
 				return
 
@@ -416,8 +416,8 @@ class InfoPlate( LivePlateWindow ) :
 
 	def BookMarkContext( self ) :
 		context = []
-		context.append( ContextItem( 'Add bookmark', CONTEXT_ACTION_ADD_TO_BOOKMARK ) )
-		context.append( ContextItem( 'Show bookmark list',  CONTEXT_ACTION_SHOW_LIST ) )
+		context.append( ContextItem( 'Create bookmark', CONTEXT_ACTION_ADD_TO_BOOKMARK ) )
+		context.append( ContextItem( 'Show all bookmarks',  CONTEXT_ACTION_SHOW_LIST ) )
 
 		self.mEventBus.Deregister( self )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
@@ -444,8 +444,8 @@ class InfoPlate( LivePlateWindow ) :
 
 	def AudioVideoContext( self ) :
 		context = []
-		context.append( ContextItem( 'Video Format', CONTEXT_ACTION_VIDEO_SETTING ) )
-		context.append( ContextItem( 'Audio Track',  CONTEXT_ACTION_AUDIO_SETTING ) )
+		context.append( ContextItem( 'Video format', CONTEXT_ACTION_VIDEO_SETTING ) )
+		context.append( ContextItem( 'Audio track',  CONTEXT_ACTION_AUDIO_SETTING ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )

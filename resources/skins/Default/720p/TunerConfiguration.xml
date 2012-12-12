@@ -56,7 +56,7 @@
 					<control type="label" id="1003">
 					<posx>60</posx>
 					<posy>62</posy>
-					<width>600</width>
+					<width>700</width>
 					<height>40</height>
 					<font>font13_title</font>
 					<textcolor>blue</textcolor>

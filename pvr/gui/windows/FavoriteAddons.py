@@ -39,7 +39,7 @@ class FavoriteAddons( BaseWindow ) :
 
 		if pvr.Platform.GetPlatform( ).IsPrismCube( ) == False :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
 			dialog.doModal( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MAINMENU )
 
@@ -162,9 +162,9 @@ class FavoriteAddons( BaseWindow ) :
 
 	def ShowContextMenu( self ) :
 		context = []
-		context.append( ContextItem( MR_LANG( 'Add favorite add-on' ), CONTEXT_ADD_FAVORITE ) )
+		context.append( ContextItem( MR_LANG( 'Add to favorite add-on' ), CONTEXT_ADD_FAVORITE ) )
 		if self.mFavoriteAddonsIdList and len( self.mFavoriteAddonsIdList ) > 0 and self.mSelectedIndex != -1 :
-			context.append( ContextItem( MR_LANG( 'Delete favorite add-on' ), CONTEXT_DELETE_FAVORITE ) )
+			context.append( ContextItem( MR_LANG( 'Remove' ), CONTEXT_DELETE_FAVORITE ) )
 			context.append( ContextItem( MR_LANG( 'Run' ), CONTEXT_RUN_FAVORITE ) )
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
@@ -179,19 +179,19 @@ class FavoriteAddons( BaseWindow ) :
 			tmpList = xbmc.executehttpapi( "getaddons()" )
 			if tmpList == '<li>' :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No add-ons installed' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No XBMC add-ons installed' ) )
 	 			dialog.doModal( )
 			else :
 				addonList = tmpList[4:].split( ':' )
 				dialog = xbmcgui.Dialog( )
-				ret = dialog.select( MR_LANG( 'Select Add-on' ), addonList )
+				ret = dialog.select( MR_LANG( 'Select add-on' ), addonList )
 				if ret >= 0 :
 					ret1 = xbmc.executehttpapi( "addfavourite(%s)" % addonList[ret] )
 					self.UpdateListItem( )
 
 		elif aContextAction == CONTEXT_DELETE_FAVORITE :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty(  MR_LANG( 'Delete favorite add-on' ),  MR_LANG( 'Do you want to remove %s?' ) % self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Remove add-on' ),  MR_LANG( 'Are you sure you want to remove\n%s?' ) % self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' ) )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				ret = xbmc.executehttpapi( "removefavourite(%s)" % self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' ) )

@@ -138,6 +138,11 @@
 "Browse and view your multimedia files in one place",,,,,,,,,,137
 "Setup your Digital Satellite Receiver including Antenna, Channel Search, Update, etc",,,,,,,,,,138
 "Manage and view your multimedia content in one place",,,,,,,,,,139
+"Setup your digital satellite receiver including antenna, channel search, update, etc",,,,,,,,,,140
+"Edit TV/radio channel list and sort them in the numerical or alphabetic order",,,,,,,,,,141
+"Fav. Add-ons",,,,,,,,,,142
+"Add-ons",,,,,,,,,,143
+"Access your favorite XBMC add-ons in a convenient way",,,,,,,,,,144
 "Last ServiceType",,,,,,,,,,2001
 "CurrentVoutResolution",,,,,,,,,,2002
 "First Installation","Erst-Installation","premiere installation","Prima installazione","Primera instalacion","Prvni instalace","Eerste installatie","Pierwsza instalacja","?lk kurulum","Первоначальная установка",2003
@@ -1908,3 +1913,1163 @@
 "Try again after stopping your playback",,,,,,,,,,4457
 "Firmware Information",,,,,,,,,,4458
 "None",,,,,,,,,,4459
+"None",,,,,,,,,,4460
+"None",,,,,,,,,,4461
+"None",,,,,,,,,,4462
+"None",,,,,,,,,,4463
+"None",,,,,,,,,,4464
+"None",,,,,,,,,,4465
+"None",,,,,,,,,,4466
+"None",,,,,,,,,,4467
+"None",,,,,,,,,,4468
+"None",,,,,,,,,,4469
+"None",,,,,,,,,,4470
+"None",,,,,,,,,,4471
+"None",,,,,,,,,,4472
+"None",,,,,,,,,,4473
+"Create a bookmark",,,,,,,,,,4474
+"Create chapters automatically",,,,,,,,,,4475
+"Show all bookmarks",,,,,,,,,,4476
+"None",,,,,,,,,,4477
+"None",,,,,,,,,,4478
+"None",,,,,,,,,,4479
+"None",,,,,,,,,,4480
+"None",,,,,,,,,,4481
+"None",,,,,,,,,,4482
+"None",,,,,,,,,,4483
+"None",,,,,,,,,,4484
+"None",,,,,,,,,,4485
+"None",,,,,,,,,,4486
+"None",,,,,,,,,,4487
+"None",,,,,,,,,,4488
+"None",,,,,,,,,,4489
+"None",,,,,,,,,,4490
+"None",,,,,,,,,,4491
+"None",,,,,,,,,,4492
+"Add chapters automatically",,,,,,,,,,4493
+"None",,,,,,,,,,4494
+"None",,,,,,,,,,4495
+"None",,,,,,,,,,4496
+"None",,,,,,,,,,4497
+"None",,,,,,,,,,4498
+"None",,,,,,,,,,4499
+"None",,,,,,,,,,4500
+"None",,,,,,,,,,4501
+"None",,,,,,,,,,4502
+"None",,,,,,,,,,4503
+"None",,,,,,,,,,4504
+"None",,,,,,,,,,4505
+"None",,,,,,,,,,4506
+"None",,,,,,,,,,4507
+"None",,,,,,,,,,4508
+"None",,,,,,,,,,4509
+"None",,,,,,,,,,4510
+"Delete All Bookmarks",,,,,,,,,,4511
+"delete all your bookmarks?",,,,,,,,,,4512
+"None",,,,,,,,,,4513
+"None",,,,,,,,,,4514
+"None",,,,,,,,,,4515
+"None",,,,,,,,,,4516
+"None",,,,,,,,,,4517
+"None",,,,,,,,,,4518
+"None",,,,,,,,,,4519
+"None",,,,,,,,,,4520
+"None",,,,,,,,,,4521
+"None",,,,,,,,,,4522
+"None",,,,,,,,,,4523
+"None",,,,,,,,,,4524
+"None",,,,,,,,,,4525
+"None",,,,,,,,,,4526
+"None",,,,,,,,,,4527
+"None",,,,,,,,,,4528
+"None",,,,,,,,,,4529
+"None",,,,,,,,,,4530
+"Delete all bookmarks",,,,,,,,,,4531
+"Do you want to remove all your bookmarks?",,,,,,,,,,4532
+"Are you sure you want to quit the first installation?",,,,,,,,,,4533
+"Exit installation",,,,,,,,,,4534
+"None",,,,,,,,,,4535
+"None",,,,,,,,,,4536
+"None",,,,,,,,,,4537
+"None",,,,,,,,,,4538
+"None",,,,,,,,,,4539
+"None",,,,,,,,,,4540
+"None",,,,,,,,,,4541
+"None",,,,,,,,,,4542
+"None",,,,,,,,,,4543
+"None",,,,,,,,,,4544
+"None",,,,,,,,,,4545
+"None",,,,,,,,,,4546
+"None",,,,,,,,,,4547
+"None",,,,,,,,,,4548
+"None",,,,,,,,,,4549
+"None",,,,,,,,,,4550
+"None",,,,,,,,,,4551
+"None",,,,,,,,,,4552
+"None",,,,,,,,,,4553
+"No satellite data available",,,,,,,,,,4554
+"Please reset your device to factory settings",,,,,,,,,,4555
+"Do you want to go to the configuration menu now?",,,,,,,,,,4556
+"None",,,,,,,,,,4557
+"None",,,,,,,,,,4558
+"None",,,,,,,,,,4559
+"None",,,,,,,,,,4560
+"None",,,,,,,,,,4561
+"None",,,,,,,,,,4562
+"None",,,,,,,,,,4563
+"None",,,,,,,,,,4564
+"None",,,,,,,,,,4565
+"None",,,,,,,,,,4566
+"None",,,,,,,,,,4567
+"None",,,,,,,,,,4568
+"None",,,,,,,,,,4569
+"None",,,,,,,,,,4570
+"None",,,,,,,,,,4571
+"None",,,,,,,,,,4572
+"None",,,,,,,,,,4573
+"None",,,,,,,,,,4574
+"None",,,,,,,,,,4575
+"None",,,,,,,,,,4576
+"Try again after stopping playback and timeshift first",,,,,,,,,,4577
+"Try again after stopping playback first",,,,,,,,,,4578
+"Are you sure you want to delete the selected file(s)?",,,,,,,,,,4579
+"When set to 'Separated', the tuner 2 receives its own signal input however it will receive only the channel level currently being received by the tuner 1 when this is set to 'Loopthrough'",,,,,,,,,,4580
+"Select a control method for tuner 1",,,,,,,,,,4581
+"Select a control method for tuner 2",,,,,,,,,,4582
+"Go back to the video and audio setup page",,,,,,,,,,4583
+"Go to the channel search setup page",,,,,,,,,,4584
+"Select menu language",,,,,,,,,,4585
+"Change language",,,,,,,,,,4586
+"Loading language files take some time",,,,,,,,,,4587
+"please be patience after pressing the OK button",,,,,,,,,,4588
+"Select audio language",,,,,,,,,,4589
+"Go to the video and audio setup page",,,,,,,,,,4590
+"Go back to the language setup page",,,,,,,,,,4591
+"Go to the antenna and satellite setup page",,,,,,,,,,4592
+"Do you want to perform a channel search in the first installation?",,,,,,,,,,4593
+"Go back to the antenna and satellite setup page",,,,,,,,,,4594
+"Go to the time and date setup page",,,,,,,,,,4595
+"Go back to the channel search setup page",,,,,,,,,,4596
+"Go to the summary of first installation page",,,,,,,,,,4597
+"Go back to the time and date setup page",,,,,,,,,,4598
+"Return to the installation page",,,,,,,,,,4599
+"Select satellite",,,,,,,,,,4600
+"No configured satellite in the list",,,,,,,,,,4601
+"No time info was given by the channel you selected",,,,,,,,,,4602
+"None",,,,,,,,,,4603
+"None",,,,,,,,,,4604
+"None",,,,,,,,,,4605
+"None",,,,,,,,,,4606
+"None",,,,,,,,,,4607
+"None",,,,,,,,,,4608
+"None",,,,,,,,,,4609
+"None",,,,,,,,,,4610
+"None",,,,,,,,,,4611
+"None",,,,,,,,,,4612
+"None",,,,,,,,,,4613
+"None",,,,,,,,,,4614
+"None",,,,,,,,,,4615
+"None",,,,,,,,,,4616
+"None",,,,,,,,,,4617
+"None",,,,,,,,,,4618
+"None",,,,,,,,,,4619
+"None",,,,,,,,,,4620
+"None",,,,,,,,,,4621
+"None",,,,,,,,,,4622
+"None",,,,,,,,,,4623
+"Are you sure you want to stop the channel scan?",,,,,,,,,,4624
+"Exit channel search",,,,,,,,,,4625
+"ARE YOU SURE YOU WANT TO REMOVE ALL YOUR FILES?",,,,,,,,,,4626
+"It may take several minutes to complete",,,,,,,,,,4627
+"please wait after pressing the OK button",,,,,,,,,,4628
+"Exit the first installation",,,,,,,,,,4629
+"None",,,,,,,,,,4630
+"None",,,,,,,,,,4631
+"None",,,,,,,,,,4632
+"None",,,,,,,,,,4633
+"None",,,,,,,,,,4634
+"None",,,,,,,,,,4635
+"None",,,,,,,,,,4636
+"None",,,,,,,,,,4637
+"None",,,,,,,,,,4638
+"None",,,,,,,,,,4639
+"None",,,,,,,,,,4640
+"None",,,,,,,,,,4641
+"None",,,,,,,,,,4642
+"None",,,,,,,,,,4643
+"None",,,,,,,,,,4644
+"None",,,,,,,,,,4645
+"None",,,,,,,,,,4646
+"None",,,,,,,,,,4647
+"None",,,,,,,,,,4648
+"None",,,,,,,,,,4649
+"None",,,,,,,,,,4650
+"None",,,,,,,,,,4651
+"Formating HDD...",,,,,,,,,,4652
+"ARE YOU SURE YOU WANT TO FORMAT YOUR HDD?",,,,,,,,,,4653
+"Cannot find hard drive",,,,,,,,,,4654
+"Select ethernet or wireless for your network connection",,,,,,,,,,4655
+"Press the OK button to remove everything in the media partition",,,,,,,,,,4656
+"Press the OK button to remove everything in the recording partition",,,,,,,,,,4657
+"Unable to save the Wifi configuration",,,,,,,,,,4658
+"Setting time...",,,,,,,,,,4659
+"PRESS OK BUTTON TO FORMAT HARD DRIVE",,,,,,,,,,4660
+"None",,,,,,,,,,4661
+"No configured satellite available",,,,,,,,,,4662
+"Do you want to go to the antenna setup page now?",,,,,,,,,,4663
+"Format Hard Drive",,,,,,,,,,4664
+"Press the OK button to erase your hard disk drive",,,,,,,,,,4665
+"Do you want to backup your addons and userdata?",,,,,,,,,,4666
+"Delete recorded programmes",,,,,,,,,,4667
+"ARE YOU SURE YOU WANT TO REMOVE\nALL YOUR FILES?",,,,,,,,,,4668
+"ARE YOU SURE YOU WANT TO REMOVE\nALL YOUR CHANNELS?",,,,,,,,,,4669
+"No TV/Radio channel available",,,,,,,,,,4670
+"Save zapping mode",,,,,,,,,,4671
+"Do you want to save the current channel mode?",,,,,,,,,,4672
+"Save changes",,,,,,,,,,4673
+"Add channels to favorite group",,,,,,,,,,4674
+"Add channels to this group",,,,,,,,,,4675
+"Are you sure you want to remove %s?",,,,,,,,,,4676
+"Same satellite already in the list",,,,,,,,,,4677
+"There is no satellite in the list",,,,,,,,,,4678
+"Automatic scan",,,,,,,,,,4679
+"Manual scan",,,,,,,,,,4680
+"None",,,,,,,,,,4681
+"None",,,,,,,,,,4682
+"None",,,,,,,,,,4683
+"None",,,,,,,,,,4684
+"None",,,,,,,,,,4685
+"None",,,,,,,,,,4686
+"None",,,,,,,,,,4687
+"None",,,,,,,,,,4688
+"None",,,,,,,,,,4689
+"Delete recorded programme",,,,,,,,,,4690
+"ARE YOU SURE YOU WANT TO DELETE\nALL YOUR TV AND RADIO CHANNELS?",,,,,,,,,,4691
+"None",,,,,,,,,,4692
+"None",,,,,,,,,,4693
+"None",,,,,,,,,,4694
+"None",,,,,,,,,,4695
+"None",,,,,,,,,,4696
+"No TV and radio channels available",,,,,,,,,,4697
+"ARE YOU SURE YOU WANT TO DELETE\nCURRENTLY RECORDING OR RESERVED CHANNELS, TOO?",,,,,,,,,,4698
+"None",,,,,,,,,,4699
+"None",,,,,,,,,,4700
+"None",,,,,,,,,,4701
+"None",,,,,,,,,,4702
+"None",,,,,,,,,,4703
+"None",,,,,,,,,,4704
+"ARE YOU SURE YOU WANT TO DELETE\nCURRENTLY RECORDING OR RESERVED CHANNEL(S)?",,,,,,,,,,4705
+"None",,,,,,,,,,4706
+"None",,,,,,,,,,4707
+"None",,,,,,,,,,4708
+"None",,,,,,,,,,4709
+"None",,,,,,,,,,4710
+"None",,,,,,,,,,4711
+"None",,,,,,,,,,4712
+"Create bookmark",,,,,,,,,,4713
+"Set limits on your kids' digital satellite receiver use",,,,,,,,,,4714
+"Adjust general recording settings",,,,,,,,,,4715
+"ARE YOU SURE YOU WANT TO RESET\nYOUR PRISMCUBE RUBY?",,,,,,,,,,4716
+"Your channel list is empty",,,,,,,,,,4717
+"Select channels you want to add to this group",,,,,,,,,,4718
+"Select a fav group you want to add channels to",,,,,,,,,,4719
+"Select a fav group you want to rename",,,,,,,,,,4720
+"Select a fav group you want to remove",,,,,,,,,,4721
+"None",,,,,,,,,,4722
+"None",,,,,,,,,,4723
+"None",,,,,,,,,,4724
+"None",,,,,,,,,,4725
+"None",,,,,,,,,,4726
+"None",,,,,,,,,,4727
+"None",,,,,,,,,,4728
+"None",,,,,,,,,,4729
+"Select transponder",,,,,,,,,,4730
+"Rotation limits",,,,,,,,,,4731
+"ARE YOU SURE YOU WANT TO DELETE\nALL MEDIA FILES?",,,,,,,,,,4732
+"ARE YOU SURE YOU WANT TO DELETE\nALL RECORDINGS?",,,,,,,,,,4733
+"ARE YOU SURE YOU WANT TO FORMAT\nYOUR HDD?",,,,,,,,,,4734
+"Cannot find a hard drive",,,,,,,,,,4735
+"Device not found",,,,,,,,,,4736
+"AP or device not found",,,,,,,,,,4737
+"Back to previous page",,,,,,,,,,4738
+"Are you sure you want to delete this timer?",,,,,,,,,,4739
+"ARE YOU SURE YOU WANT TO DELETE\nALL YOUR TIMERS?",,,,,,,,,,4740
+"Try again after stopping the timeshift first",,,,,,,,,,4741
+"Longitude degree",,,,,,,,,,4742
+"Latitude degree",,,,,,,,,,4743
+"Add satellite",,,,,,,,,,4744
+"None",,,,,,,,,,4745
+"Do you want to go to antenna setup page now?",,,,,,,,,,4746
+"No EPG information available",,,,,,,,,,4747
+"None",,,,,,,,,,4748
+"None",,,,,,,,,,4749
+"None",,,,,,,,,,4750
+"None",,,,,,,,,,4751
+"None",,,,,,,,,,4752
+"None",,,,,,,,,,4753
+"None",,,,,,,,,,4754
+"None",,,,,,,,,,4755
+"Select add-on",,,,,,,,,,4756
+"None",,,,,,,,,,4757
+"None",,,,,,,,,,4758
+"None",,,,,,,,,,4759
+"None",,,,,,,,,,4760
+"None",,,,,,,,,,4761
+"None",,,,,,,,,,4762
+"None",,,,,,,,,,4763
+"None",,,,,,,,,,4764
+"None",,,,,,,,,,4765
+"None",,,,,,,,,,4766
+"Are you sure you want to remove\n%s?",,,,,,,,,,4767
+"None",,,,,,,,,,4768
+"None",,,,,,,,,,4769
+"None",,,,,,,,,,4770
+"None",,,,,,,,,,4771
+"None",,,,,,,,,,4772
+"None",,,,,,,,,,4773
+"None",,,,,,,,,,4774
+"None",,,,,,,,,,4775
+"None",,,,,,,,,,4776
+"None",,,,,,,,,,4777
+"None",,,,,,,,,,4778
+"Are you sure you want to delete\nthe selected file(s)?",,,,,,,,,,4779
+"None",,,,,,,,,,4780
+"None",,,,,,,,,,4781
+"None",,,,,,,,,,4782
+"None",,,,,,,,,,4783
+"None",,,,,,,,,,4784
+"None",,,,,,,,,,4785
+"None",,,,,,,,,,4786
+"None",,,,,,,,,,4787
+"None",,,,,,,,,,4788
+"None",,,,,,,,,,4789
+"None",,,,,,,,,,4790
+"None",,,,,,,,,,4791
+"Delete these files?",,,,,,,,,,4792
+"Deleting files cannot be undone!",,,,,,,,,,4793
+"None",,,,,,,,,,4794
+"None",,,,,,,,,,4795
+"None",,,,,,,,,,4796
+"None",,,,,,,,,,4797
+"None",,,,,,,,,,4798
+"None",,,,,,,,,,4799
+"None",,,,,,,,,,4800
+"None",,,,,,,,,,4801
+"None",,,,,,,,,,4802
+"None",,,,,,,,,,4803
+"None",,,,,,,,,,4804
+"None",,,,,,,,,,4805
+"None",,,,,,,,,,4806
+"Remove all your files?",,,,,,,,,,4807
+"Add to this favorite group",,,,,,,,,,4808
+"None",,,,,,,,,,4809
+"None",,,,,,,,,,4810
+"None",,,,,,,,,,4811
+"None",,,,,,,,,,4812
+"None",,,,,,,,,,4813
+"None",,,,,,,,,,4814
+"None",,,,,,,,,,4815
+"None",,,,,,,,,,4816
+"None",,,,,,,,,,4817
+"None",,,,,,,,,,4818
+"None",,,,,,,,,,4819
+"None",,,,,,,,,,4820
+"None",,,,,,,,,,4821
+"None",,,,,,,,,,4822
+"Make sure that the antenna setting in the installation is correct",,,,,,,,,,4823
+"None",,,,,,,,,,4824
+"None",,,,,,,,,,4825
+"None",,,,,,,,,,4826
+"None",,,,,,,,,,4827
+"None",,,,,,,,,,4828
+"None",,,,,,,,,,4829
+"None",,,,,,,,,,4830
+"None",,,,,,,,,,4831
+"None",,,,,,,,,,4832
+"None",,,,,,,,,,4833
+"None",,,,,,,,,,4834
+"None",,,,,,,,,,4835
+"None",,,,,,,,,,4836
+"None",,,,,,,,,,4837
+"None",,,,,,,,,,4838
+"Make sure that the antenna setting\nin the installation is correct",,,,,,,,,,4839
+"None",,,,,,,,,,4840
+"None",,,,,,,,,,4841
+"None",,,,,,,,,,4842
+"None",,,,,,,,,,4843
+"None",,,,,,,,,,4844
+"None",,,,,,,,,,4845
+"None",,,,,,,,,,4846
+"None",,,,,,,,,,4847
+"None",,,,,,,,,,4848
+"None",,,,,,,,,,4849
+"None",,,,,,,,,,4850
+"None",,,,,,,,,,4851
+"None",,,,,,,,,,4852
+"None",,,,,,,,,,4853
+"None",,,,,,,,,,4854
+"None",,,,,,,,,,4855
+"Make sure that the antenna setting is correct",,,,,,,,,,4856
+"None",,,,,,,,,,4857
+"None",,,,,,,,,,4858
+"None",,,,,,,,,,4859
+"None",,,,,,,,,,4860
+"None",,,,,,,,,,4861
+"None",,,,,,,,,,4862
+"None",,,,,,,,,,4863
+"None",,,,,,,,,,4864
+"None",,,,,,,,,,4865
+"None",,,,,,,,,,4866
+"None",,,,,,,,,,4867
+"None",,,,,,,,,,4868
+"None",,,,,,,,,,4869
+"None",,,,,,,,,,4870
+"None",,,,,,,,,,4871
+"None",,,,,,,,,,4872
+"None",,,,,,,,,,4873
+"Add satellites and set LNB parameters",,,,,,,,,,4874
+"Go to the antenna setup page now?",,,,,,,,,,4875
+"None",,,,,,,,,,4876
+"None",,,,,,,,,,4877
+"None",,,,,,,,,,4878
+"None",,,,,,,,,,4879
+"None",,,,,,,,,,4880
+"None",,,,,,,,,,4881
+"None",,,,,,,,,,4882
+"None",,,,,,,,,,4883
+"None",,,,,,,,,,4884
+"None",,,,,,,,,,4885
+"None",,,,,,,,,,4886
+"None",,,,,,,,,,4887
+"None",,,,,,,,,,4888
+"None",,,,,,,,,,4889
+"None",,,,,,,,,,4890
+"None",,,,,,,,,,4891
+"None",,,,,,,,,,4892
+"None",,,,,,,,,,4893
+"Delete all channels?",,,,,,,,,,4894
+"All your TV and raido channels will be removed",,,,,,,,,,4895
+"None",,,,,,,,,,4896
+"None",,,,,,,,,,4897
+"None",,,,,,,,,,4898
+"None",,,,,,,,,,4899
+"None",,,,,,,,,,4900
+"None",,,,,,,,,,4901
+"None",,,,,,,,,,4902
+"None",,,,,,,,,,4903
+"None",,,,,,,,,,4904
+"None",,,,,,,,,,4905
+"None",,,,,,,,,,4906
+"None",,,,,,,,,,4907
+"None",,,,,,,,,,4908
+"None",,,,,,,,,,4909
+"None",,,,,,,,,,4910
+"None",,,,,,,,,,4911
+"None",,,,,,,,,,4912
+"None",,,,,,,,,,4913
+"None",,,,,,,,,,4914
+"All your TV and radio channels will be removed",,,,,,,,,,4915
+"None",,,,,,,,,,4916
+"None",,,,,,,,,,4917
+"None",,,,,,,,,,4918
+"None",,,,,,,,,,4919
+"None",,,,,,,,,,4920
+"None",,,,,,,,,,4921
+"None",,,,,,,,,,4922
+"None",,,,,,,,,,4923
+"None",,,,,,,,,,4924
+"None",,,,,,,,,,4925
+"None",,,,,,,,,,4926
+"None",,,,,,,,,,4927
+"None",,,,,,,,,,4928
+"None",,,,,,,,,,4929
+"None",,,,,,,,,,4930
+"None",,,,,,,,,,4931
+"None",,,,,,,,,,4932
+"None",,,,,,,,,,4933
+"None",,,,,,,,,,4934
+"None",,,,,,,,,,4935
+"Are you sure you want to remove\nall your TV and radio channels?",,,,,,,,,,4936
+"None",,,,,,,,,,4937
+"None",,,,,,,,,,4938
+"None",,,,,,,,,,4939
+"None",,,,,,,,,,4940
+"None",,,,,,,,,,4941
+"None",,,,,,,,,,4942
+"None",,,,,,,,,,4943
+"None",,,,,,,,,,4944
+"None",,,,,,,,,,4945
+"None",,,,,,,,,,4946
+"None",,,,,,,,,,4947
+"None",,,,,,,,,,4948
+"None",,,,,,,,,,4949
+"None",,,,,,,,,,4950
+"None",,,,,,,,,,4951
+"None",,,,,,,,,,4952
+"None",,,,,,,,,,4953
+"None",,,,,,,,,,4954
+"None",,,,,,,,,,4955
+"None",,,,,,,,,,4956
+"None",,,,,,,,,,4957
+"Are you sure you want to delete\nthe channels that currently recording or reserved?",,,,,,,,,,4958
+"Delete channels",,,,,,,,,,4959
+"None",,,,,,,,,,4960
+"None",,,,,,,,,,4961
+"None",,,,,,,,,,4962
+"None",,,,,,,,,,4963
+"None",,,,,,,,,,4964
+"None",,,,,,,,,,4965
+"None",,,,,,,,,,4966
+"None",,,,,,,,,,4967
+"None",,,,,,,,,,4968
+"None",,,,,,,,,,4969
+"None",,,,,,,,,,4970
+"None",,,,,,,,,,4971
+"None",,,,,,,,,,4972
+"None",,,,,,,,,,4973
+"None",,,,,,,,,,4974
+"None",,,,,,,,,,4975
+"None",,,,,,,,,,4976
+"None",,,,,,,,,,4977
+"None",,,,,,,,,,4978
+"None",,,,,,,,,,4979
+"None",,,,,,,,,,4980
+"None",,,,,,,,,,4981
+"Are you sure you want to delete the channels\nthat currently recording or reserved?",,,,,,,,,,4982
+"None",,,,,,,,,,4983
+"None",,,,,,,,,,4984
+"None",,,,,,,,,,4985
+"None",,,,,,,,,,4986
+"None",,,,,,,,,,4987
+"None",,,,,,,,,,4988
+"None",,,,,,,,,,4989
+"None",,,,,,,,,,4990
+"None",,,,,,,,,,4991
+"None",,,,,,,,,,4992
+"None",,,,,,,,,,4993
+"None",,,,,,,,,,4994
+"None",,,,,,,,,,4995
+"None",,,,,,,,,,4996
+"None",,,,,,,,,,4997
+"None",,,,,,,,,,4998
+"None",,,,,,,,,,4999
+"None",,,,,,,,,,5000
+"None",,,,,,,,,,5001
+"None",,,,,,,,,,5002
+"None",,,,,,,,,,5003
+"None",,,,,,,,,,5004
+"None",,,,,,,,,,5005
+"Channel search failed to complete",,,,,,,,,,5006
+"Automatic power down",,,,,,,,,,5007
+"Start automatic power down after %s sec",,,,,,,,,,5008
+"Go to the configuration menu now?",,,,,,,,,,5009
+"When you perform a factory reset,\nall your settings revert to factory defaults",,,,,,,,,,5010
+"Are you sure you want to delete the channels\nincluding currently recording or reserved?",,,,,,,,,,5011
+"None",,,,,,,,,,5012
+"Try again after stopping playback or timeshift first",,,,,,,,,,5013
+"No TV and radio channel available",,,,,,,,,,5014
+"None",,,,,,,,,,5015
+"None",,,,,,,,,,5016
+"None",,,,,,,,,,5017
+"None",,,,,,,,,,5018
+"None",,,,,,,,,,5019
+"None",,,,,,,,,,5020
+"None",,,,,,,,,,5021
+"None",,,,,,,,,,5022
+"None",,,,,,,,,,5023
+"None",,,,,,,,,,5024
+"None",,,,,,,,,,5025
+"None",,,,,,,,,,5026
+"None",,,,,,,,,,5027
+"None",,,,,,,,,,5028
+"None",,,,,,,,,,5029
+"None",,,,,,,,,,5030
+"None",,,,,,,,,,5031
+"None",,,,,,,,,,5032
+"None",,,,,,,,,,5033
+"None",,,,,,,,,,5034
+"None",,,,,,,,,,5035
+"None",,,,,,,,,,5036
+"None",,,,,,,,,,5037
+"Start automatic power down",,,,,,,,,,5038
+"All data will be wiped out from the device",,,,,,,,,,5039
+"Performing a factory reset?",,,,,,,,,,5040
+"All data in the media partition will be wiped out",,,,,,,,,,5041
+"Format media partition?",,,,,,,,,,5042
+"All data in the recording partition will be wiped out",,,,,,,,,,5043
+"Format recording partition?",,,,,,,,,,5044
+"Everything on your hard drive will be erased",,,,,,,,,,5045
+"Format hard disk drive",,,,,,,,,,5046
+"When set to 'On', your PRISMCUBE RUBY automatically start a timeshift recording when a different channel is selected",,,,,,,,,,5047
+"Search Access Points around your device",,,,,,,,,,5048
+"Go to first installation after restoring system to the factory default",,,,,,,,,,5049
+"Unable to save the WiFi configuration",,,,,,,,,,5050
+"Backup your data?",,,,,,,,,,5051
+"Your addons and userdata will be copied to a safe place",,,,,,,,,,5052
+"Are you sure you do not want to backup your data?",,,,,,,,,,5053
+"Format HDD without making a backup?",,,,,,,,,,5054
+"Now backing up your user data...",,,,,,,,,,5055
+"Start formatting HDD",,,,,,,,,,5056
+"None",,,,,,,,,,5057
+"None",,,,,,,,,,5058
+"None",,,,,,,,,,5059
+"None",,,,,,,,,,5060
+"None",,,,,,,,,,5061
+"None",,,,,,,,,,5062
+"None",,,,,,,,,,5063
+"None",,,,,,,,,,5064
+"None",,,,,,,,,,5065
+"None",,,,,,,,,,5066
+"None",,,,,,,,,,5067
+"None",,,,,,,,,,5068
+"None",,,,,,,,,,5069
+"None",,,,,,,,,,5070
+"None",,,,,,,,,,5071
+"None",,,,,,,,,,5072
+"None",,,,,,,,,,5073
+"None",,,,,,,,,,5074
+"None",,,,,,,,,,5075
+"None",,,,,,,,,,5076
+"None",,,,,,,,,,5077
+"None",,,,,,,,,,5078
+"None",,,,,,,,,,5079
+"None",,,,,,,,,,5080
+"None",,,,,,,,,,5081
+"TV channels : %d \nRadio channels : %d",,,,,,,,,,5082
+"Channel search result",,,,,,,,,,5083
+"All your bookmarks will be removed",,,,,,,,,,5084
+"Delete all bookmarks?",,,,,,,,,,5085
+"Start recording",,,,,,,,,,5086
+"Unable to change the duration",,,,,,,,,,5087
+"Set transponder",,,,,,,,,,5088
+"Stop recording",,,,,,,,,,5089
+"LNB frequency",,,,,,,,,,5090
+"Low frequency",,,,,,,,,,5091
+"High frequency",,,,,,,,,,5092
+"Switch frequency",,,,,,,,,,5093
+"No XBMC add-ons installed",,,,,,,,,,5094
+"Delete favorite add-on?",,,,,,,,,,5095
+"Are you sure you want to remove all your timers?",,,,,,,,,,5096
+"Select frequency",,,,,,,,,,5097
+"No transponder info available",,,,,,,,,,5098
+"Unable to add the transponder",,,,,,,,,,5099
+"Unable to edit the transponder",,,,,,,,,,5100
+"Delete transponder?",,,,,,,,,,5101
+"The transponder will be removed from the list",,,,,,,,,,5102
+"Unable to delete the transponder",,,,,,,,,,5103
+"No channels available",,,,,,,,,,5104
+"Are you sure you want to remove this timer?",,,,,,,,,,5105
+"Search result",,,,,,,,,,5106
+"Select event",,,,,,,,,,5107
+"Not attempted",,,,,,,,,,5108
+"Previous firmware versions",,,,,,,,,,5109
+"None",,,,,,,,,,5110
+"Continue broken or interrupted downloads?",,,,,,,,,,5111
+"Resume download",,,,,,,,,,5112
+"Select channel package",,,,,,,,,,5113
+"None",,,,,,,,,,5114
+"None",,,,,,,,,,5115
+"None",,,,,,,,,,5116
+"None",,,,,,,,,,5117
+"None",,,,,,,,,,5118
+"None",,,,,,,,,,5119
+"None",,,,,,,,,,5120
+"None",,,,,,,,,,5121
+"None",,,,,,,,,,5122
+"None",,,,,,,,,,5123
+"None",,,,,,,,,,5124
+"None",,,,,,,,,,5125
+"None",,,,,,,,,,5126
+"None",,,,,,,,,,5127
+"None",,,,,,,,,,5128
+"None",,,,,,,,,,5129
+"None",,,,,,,,,,5130
+"None",,,,,,,,,,5131
+"None",,,,,,,,,,5132
+"None",,,,,,,,,,5133
+"None",,,,,,,,,,5134
+"None",,,,,,,,,,5135
+"None",,,,,,,,,,5136
+"None",,,,,,,,,,5137
+"None",,,,,,,,,,5138
+"Are you sure you want to remove\nall your bookmarks?",,,,,,,,,,5139
+"All your settings will be restored to factory default",,,,,,,,,,5140
+"Backup data before formatting HDD?",,,,,,,,,,5141
+"Your userdata and XBMC add-ons will be backuped",,,,,,,,,,5142
+"Are you sure you want to start formatting HDD now?",,,,,,,,,,5143
+"Format HDD without making a backup",,,,,,,,,,5144
+"Are you sure you want to remove\nthis transponder?",,,,,,,,,,5145
+"Delete transponder",,,,,,,,,,5146
+"Save current channel mode",,,,,,,,,,5147
+"Save result",,,,,,,,,,5148
+"Unable to add a new satellite in the list",,,,,,,,,,5149
+"Are you sure you want to remove\nthis satellite?",,,,,,,,,,5150
+"Unable to remove the satellite from the list",,,,,,,,,,5151
+"None",,,,,,,,,,5152
+"Resume downloads",,,,,,,,,,5153
+"None",,,,,,,,,,5154
+"None",,,,,,,,,,5155
+"None",,,,,,,,,,5156
+"None",,,,,,,,,,5157
+"None",,,,,,,,,,5158
+"None",,,,,,,,,,5159
+"None",,,,,,,,,,5160
+"None",,,,,,,,,,5161
+"None",,,,,,,,,,5162
+"None",,,,,,,,,,5163
+"None",,,,,,,,,,5164
+"None",,,,,,,,,,5165
+"None",,,,,,,,,,5166
+"None",,,,,,,,,,5167
+"None",,,,,,,,,,5168
+"None",,,,,,,,,,5169
+"None",,,,,,,,,,5170
+"None",,,,,,,,,,5171
+"None",,,,,,,,,,5172
+"None",,,,,,,,,,5173
+"None",,,,,,,,,,5174
+"None",,,,,,,,,,5175
+"None",,,,,,,,,,5176
+"None",,,,,,,,,,5177
+"None",,,,,,,,,,5178
+"None",,,,,,,,,,5179
+"Make media length longer than 30 secs\nto create a chapter",,,,,,,,,,5180
+"Format hard disk drive?",,,,,,,,,,5181
+"Backup data?",,,,,,,,,,5182
+"Formatting HDD cannot be undone!",,,,,,,,,,5183
+"Start formatting HDD without making a backup?",,,,,,,,,,5184
+"Press OK button to format your HDD now",,,,,,,,,,5185
+"Start formatting HDD?",,,,,,,,,,5186
+"Same name of satellite already exists",,,,,,,,,,5187
+"None",,,,,,,,,,5188
+"Select a satellite name for satellite 1 first",,,,,,,,,,5189
+"Do you want to backup your add-ons and userdata?",,,,,,,,,,5190
+"None",,,,,,,,,,5191
+"None",,,,,,,,,,5192
+"None",,,,,,,,,,5193
+"None",,,,,,,,,,5194
+"None",,,,,,,,,,5195
+"None",,,,,,,,,,5196
+"None",,,,,,,,,,5197
+"None",,,,,,,,,,5198
+"None",,,,,,,,,,5199
+"None",,,,,,,,,,5200
+"None",,,,,,,,,,5201
+"None",,,,,,,,,,5202
+"None",,,,,,,,,,5203
+"None",,,,,,,,,,5204
+"None",,,,,,,,,,5205
+"None",,,,,,,,,,5206
+"None",,,,,,,,,,5207
+"None",,,,,,,,,,5208
+"None",,,,,,,,,,5209
+"None",,,,,,,,,,5210
+"None",,,,,,,,,,5211
+"None",,,,,,,,,,5212
+"None",,,,,,,,,,5213
+"None",,,,,,,,,,5214
+"None",,,,,,,,,,5215
+"None",,,,,,,,,,5216
+"None",,,,,,,,,,5217
+"None",,,,,,,,,,5218
+"None",,,,,,,,,,5219
+"None",,,,,,,,,,5220
+"None",,,,,,,,,,5221
+"None",,,,,,,,,,5222
+"None",,,,,,,,,,5223
+"None",,,,,,,,,,5224
+"None",,,,,,,,,,5225
+"None",,,,,,,,,,5226
+"None",,,,,,,,,,5227
+"None",,,,,,,,,,5228
+"None",,,,,,,,,,5229
+"None",,,,,,,,,,5230
+"None",,,,,,,,,,5231
+"None",,,,,,,,,,5232
+"None",,,,,,,,,,5233
+"None",,,,,,,,,,5234
+"None",,,,,,,,,,5235
+"None",,,,,,,,,,5236
+"None",,,,,,,,,,5237
+"None",,,,,,,,,,5238
+"None",,,,,,,,,,5239
+"None",,,,,,,,,,5240
+"None",,,,,,,,,,5241
+"None",,,,,,,,,,5242
+"None",,,,,,,,,,5243
+"None",,,,,,,,,,5244
+"None",,,,,,,,,,5245
+"None",,,,,,,,,,5246
+"None",,,,,,,,,,5247
+"None",,,,,,,,,,5248
+"None",,,,,,,,,,5249
+"None",,,,,,,,,,5250
+"None",,,,,,,,,,5251
+"None",,,,,,,,,,5252
+"None",,,,,,,,,,5253
+"None",,,,,,,,,,5254
+"None",,,,,,,,,,5255
+"None",,,,,,,,,,5256
+"None",,,,,,,,,,5257
+"None",,,,,,,,,,5258
+"None",,,,,,,,,,5259
+"None",,,,,,,,,,5260
+"None",,,,,,,,,,5261
+"None",,,,,,,,,,5262
+"None",,,,,,,,,,5263
+"None",,,,,,,,,,5264
+"None",,,,,,,,,,5265
+"None",,,,,,,,,,5266
+"None",,,,,,,,,,5267
+"None",,,,,,,,,,5268
+"None",,,,,,,,,,5269
+"None",,,,,,,,,,5270
+"None",,,,,,,,,,5271
+"None",,,,,,,,,,5272
+"None",,,,,,,,,,5273
+"None",,,,,,,,,,5274
+"None",,,,,,,,,,5275
+"None",,,,,,,,,,5276
+"Rename Timer",,,,,,,,,,5277
+"Unable to edit the timer",,,,,,,,,,5278
+"Automatic Power Down",,,,,,,,,,5279
+"Formatting media partition cannot be undone!",,,,,,,,,,5280
+"Formatting recording partition cannot be undone!",,,,,,,,,,5281
+"Set the time for switching into standby mode when not being used",,,,,,,,,,5282
+"Network setup failed to complete",,,,,,,,,,5283
+"Save Result",,,,,,,,,,5284
+"Delete Channels",,,,,,,,,,5285
+"Unable to change satellite name",,,,,,,,,,5286
+"Select Event",,,,,,,,,,5287
+"None",,,,,,,,,,5288
+"None",,,,,,,,,,5289
+"None",,,,,,,,,,5290
+"None",,,,,,,,,,5291
+"None",,,,,,,,,,5292
+"None",,,,,,,,,,5293
+"None",,,,,,,,,,5294
+"None",,,,,,,,,,5295
+"None",,,,,,,,,,5296
+"None",,,,,,,,,,5297
+"None",,,,,,,,,,5298
+"None",,,,,,,,,,5299
+"None",,,,,,,,,,5300
+"None",,,,,,,,,,5301
+"None",,,,,,,,,,5302
+"None",,,,,,,,,,5303
+"None",,,,,,,,,,5304
+"None",,,,,,,,,,5305
+"None",,,,,,,,,,5306
+"None",,,,,,,,,,5307
+"None",,,,,,,,,,5308
+"None",,,,,,,,,,5309
+"None",,,,,,,,,,5310
+"None",,,,,,,,,,5311
+"None",,,,,,,,,,5312
+"None",,,,,,,,,,5313
+"None",,,,,,,,,,5314
+"None",,,,,,,,,,5315
+"None",,,,,,,,,,5316
+"None",,,,,,,,,,5317
+"None",,,,,,,,,,5318
+"Add add-on",,,,,,,,,,5319
+"Delete add-on",,,,,,,,,,5320
+"Are you sure you want to delete\nthe recorded file?",,,,,,,,,,5321
+"Delete file",,,,,,,,,,5322
+"Are you sure you want to delete\nall your recorded files?",,,,,,,,,,5323
+"Delete all your files",,,,,,,,,,5324
+"Exit Installation",,,,,,,,,,5325
+"None",,,,,,,,,,5326
+"None",,,,,,,,,,5327
+"None",,,,,,,,,,5328
+"None",,,,,,,,,,5329
+"None",,,,,,,,,,5330
+"None",,,,,,,,,,5331
+"None",,,,,,,,,,5332
+"None",,,,,,,,,,5333
+"None",,,,,,,,,,5334
+"None",,,,,,,,,,5335
+"None",,,,,,,,,,5336
+"None",,,,,,,,,,5337
+"None",,,,,,,,,,5338
+"None",,,,,,,,,,5339
+"None",,,,,,,,,,5340
+"None",,,,,,,,,,5341
+"None",,,,,,,,,,5342
+"None",,,,,,,,,,5343
+"None",,,,,,,,,,5344
+"None",,,,,,,,,,5345
+"None",,,,,,,,,,5346
+"None",,,,,,,,,,5347
+"None",,,,,,,,,,5348
+"None",,,,,,,,,,5349
+"None",,,,,,,,,,5350
+"None",,,,,,,,,,5351
+"None",,,,,,,,,,5352
+"None",,,,,,,,,,5353
+"None",,,,,,,,,,5354
+"None",,,,,,,,,,5355
+"None",,,,,,,,,,5356
+"None",,,,,,,,,,5357
+"Are you sure you want to delete\nthis file?",,,,,,,,,,5358
+"None",,,,,,,,,,5359
+"None",,,,,,,,,,5360
+"None",,,,,,,,,,5361
+"None",,,,,,,,,,5362
+"None",,,,,,,,,,5363
+"None",,,,,,,,,,5364
+"None",,,,,,,,,,5365
+"None",,,,,,,,,,5366
+"None",,,,,,,,,,5367
+"None",,,,,,,,,,5368
+"None",,,,,,,,,,5369
+"None",,,,,,,,,,5370
+"None",,,,,,,,,,5371
+"None",,,,,,,,,,5372
+"None",,,,,,,,,,5373
+"None",,,,,,,,,,5374
+"None",,,,,,,,,,5375
+"None",,,,,,,,,,5376
+"None",,,,,,,,,,5377
+"None",,,,,,,,,,5378
+"None",,,,,,,,,,5379
+"None",,,,,,,,,,5380
+"None",,,,,,,,,,5381
+"None",,,,,,,,,,5382
+"None",,,,,,,,,,5383
+"None",,,,,,,,,,5384
+"None",,,,,,,,,,5385
+"None",,,,,,,,,,5386
+"None",,,,,,,,,,5387
+"None",,,,,,,,,,5388
+"None",,,,,,,,,,5389
+"None",,,,,,,,,,5390
+"None",,,,,,,,,,5391
+"Are you sure you want to delete this file?",,,,,,,,,,5392
+"None",,,,,,,,,,5393
+"None",,,,,,,,,,5394
+"None",,,,,,,,,,5395
+"None",,,,,,,,,,5396
+"None",,,,,,,,,,5397
+"None",,,,,,,,,,5398
+"None",,,,,,,,,,5399
+"None",,,,,,,,,,5400
+"None",,,,,,,,,,5401
+"None",,,,,,,,,,5402
+"None",,,,,,,,,,5403
+"None",,,,,,,,,,5404
+"None",,,,,,,,,,5405
+"None",,,,,,,,,,5406
+"None",,,,,,,,,,5407
+"None",,,,,,,,,,5408
+"None",,,,,,,,,,5409
+"None",,,,,,,,,,5410
+"None",,,,,,,,,,5411
+"None",,,,,,,,,,5412
+"None",,,,,,,,,,5413
+"None",,,,,,,,,,5414
+"None",,,,,,,,,,5415
+"None",,,,,,,,,,5416
+"None",,,,,,,,,,5417
+"None",,,,,,,,,,5418
+"None",,,,,,,,,,5419
+"None",,,,,,,,,,5420
+"None",,,,,,,,,,5421
+"None",,,,,,,,,,5422
+"None",,,,,,,,,,5423
+"None",,,,,,,,,,5424
+"None",,,,,,,,,,5425
+"None",,,,,,,,,,5426
+"None",,,,,,,,,,5427
+"None",,,,,,,,,,5428
+"None",,,,,,,,,,5429
+"None",,,,,,,,,,5430
+"None",,,,,,,,,,5431
+"None",,,,,,,,,,5432
+"None",,,,,,,,,,5433
+"None",,,,,,,,,,5434
+"None",,,,,,,,,,5435
+"None",,,,,,,,,,5436
+"None",,,,,,,,,,5437
+"None",,,,,,,,,,5438
+"None",,,,,,,,,,5439
+"None",,,,,,,,,,5440
+"None",,,,,,,,,,5441
+"None",,,,,,,,,,5442
+"None",,,,,,,,,,5443
+"None",,,,,,,,,,5444
+"None",,,,,,,,,,5445
+"None",,,,,,,,,,5446
+"None",,,,,,,,,,5447
+"None",,,,,,,,,,5448
+"None",,,,,,,,,,5449
+"None",,,,,,,,,,5450
+"None",,,,,,,,,,5451
+"None",,,,,,,,,,5452
+"None",,,,,,,,,,5453
+"None",,,,,,,,,,5454
+"None",,,,,,,,,,5455
+"None",,,,,,,,,,5456
+"None",,,,,,,,,,5457
+"None",,,,,,,,,,5458
+"None",,,,,,,,,,5459
+"None",,,,,,,,,,5460
+"None",,,,,,,,,,5461
+"None",,,,,,,,,,5462
+"None",,,,,,,,,,5463
+"None",,,,,,,,,,5464
+"None",,,,,,,,,,5465
+"None",,,,,,,,,,5466
+"None",,,,,,,,,,5467
+"None",,,,,,,,,,5468
+"None",,,,,,,,,,5469
+"None",,,,,,,,,,5470
+"None",,,,,,,,,,5471
+"None",,,,,,,,,,5472
+"None",,,,,,,,,,5473
+"None",,,,,,,,,,5474
+"None",,,,,,,,,,5475
+"None",,,,,,,,,,5476
+"None",,,,,,,,,,5477
+"None",,,,,,,,,,5478
+"None",,,,,,,,,,5479
+"None",,,,,,,,,,5480
+"None",,,,,,,,,,5481
+"None",,,,,,,,,,5482
+"None",,,,,,,,,,5483
+"None",,,,,,,,,,5484
+"None",,,,,,,,,,5485
+"None",,,,,,,,,,5486
+"None",,,,,,,,,,5487
+"None",,,,,,,,,,5488
+"None",,,,,,,,,,5489
+"None",,,,,,,,,,5490
+"None",,,,,,,,,,5491
+"None",,,,,,,,,,5492
+"None",,,,,,,,,,5493
+"None",,,,,,,,,,5494
+"None",,,,,,,,,,5495
+"None",,,,,,,,,,5496
+"None",,,,,,,,,,5497
+"Are you sure you want to remove\nall channels from this favorite group?",,,,,,,,,,5498
+"None",,,,,,,,,,5499
+"None",,,,,,,,,,5500
+"None",,,,,,,,,,5501
+"None",,,,,,,,,,5502
+"None",,,,,,,,,,5503
+"None",,,,,,,,,,5504
+"None",,,,,,,,,,5505
+"None",,,,,,,,,,5506
+"None",,,,,,,,,,5507
+"None",,,,,,,,,,5508
+"None",,,,,,,,,,5509
+"None",,,,,,,,,,5510
+"None",,,,,,,,,,5511
+"None",,,,,,,,,,5512
+"None",,,,,,,,,,5513
+"None",,,,,,,,,,5514
+"None",,,,,,,,,,5515
+"None",,,,,,,,,,5516
+"None",,,,,,,,,,5517
+"None",,,,,,,,,,5518
+"None",,,,,,,,,,5519
+"None",,,,,,,,,,5520
+"None",,,,,,,,,,5521
+"None",,,,,,,,,,5522
+"None",,,,,,,,,,5523
+"None",,,,,,,,,,5524
+"None",,,,,,,,,,5525
+"None",,,,,,,,,,5526
+"None",,,,,,,,,,5527
+"None",,,,,,,,,,5528
+"None",,,,,,,,,,5529
+"None",,,,,,,,,,5530
+"None",,,,,,,,,,5531
+"None",,,,,,,,,,5532
+"None",,,,,,,,,,5533
+"None",,,,,,,,,,5534
+"None",,,,,,,,,,5535
+"None",,,,,,,,,,5536
+"None",,,,,,,,,,5537
+"None",,,,,,,,,,5538
+"None",,,,,,,,,,5539
+"None",,,,,,,,,,5540
+"None",,,,,,,,,,5541
+"None",,,,,,,,,,5542
+"None",,,,,,,,,,5543
+"None",,,,,,,,,,5544
+"None",,,,,,,,,,5545
+"None",,,,,,,,,,5546
+"None",,,,,,,,,,5547
+"None",,,,,,,,,,5548
+"None",,,,,,,,,,5549
+"None",,,,,,,,,,5550
+"None",,,,,,,,,,5551
+"None",,,,,,,,,,5552
+"None",,,,,,,,,,5553
+"None",,,,,,,,,,5554
+"None",,,,,,,,,,5555
+"None",,,,,,,,,,5556
+"None",,,,,,,,,,5557
+"None",,,,,,,,,,5558
+"None",,,,,,,,,,5559
+"None",,,,,,,,,,5560
+"None",,,,,,,,,,5561
+"None",,,,,,,,,,5562
+"None",,,,,,,,,,5563
+"None",,,,,,,,,,5564
+"None",,,,,,,,,,5565
+"None",,,,,,,,,,5566
+"None",,,,,,,,,,5567
+"None",,,,,,,,,,5568
+"None",,,,,,,,,,5569
+"None",,,,,,,,,,5570
+"None",,,,,,,,,,5571
+"None",,,,,,,,,,5572
+"None",,,,,,,,,,5573
+"All settings will be restored to factory default",,,,,,,,,,5574
+"Your user data and XBMC add-ons will be backuped",,,,,,,,,,5575
+"Start formatting without making a backup?",,,,,,,,,,5576
+"None",,,,,,,,,,5577
+"None",,,,,,,,,,5578
+"None",,,,,,,,,,5579
+"None",,,,,,,,,,5580
+"None",,,,,,,,,,5581
+"None",,,,,,,,,,5582
+"None",,,,,,,,,,5583
+"None",,,,,,,,,,5584
+"None",,,,,,,,,,5585
+"None",,,,,,,,,,5586
+"None",,,,,,,,,,5587
+"None",,,,,,,,,,5588
+"None",,,,,,,,,,5589
+"None",,,,,,,,,,5590
+"None",,,,,,,,,,5591
+"None",,,,,,,,,,5592
+"None",,,,,,,,,,5593
+"None",,,,,,,,,,5594
+"None",,,,,,,,,,5595
+"None",,,,,,,,,,5596
+"None",,,,,,,,,,5597
+"None",,,,,,,,,,5598
+"None",,,,,,,,,,5599
+"None",,,,,,,,,,5600
+"None",,,,,,,,,,5601
+"None",,,,,,,,,,5602
+"None",,,,,,,,,,5603
+"None",,,,,,,,,,5604
+"None",,,,,,,,,,5605
+"None",,,,,,,,,,5606
+"None",,,,,,,,,,5607
+"None",,,,,,,,,,5608
+"None",,,,,,,,,,5609
+"None",,,,,,,,,,5610
+"None",,,,,,,,,,5611
+"None",,,,,,,,,,5612
+"None",,,,,,,,,,5613
+"None",,,,,,,,,,5614
+"None",,,,,,,,,,5615
+"Add to favorite add-on",,,,,,,,,,5616
+"Remove from favorite add-on",,,,,,,,,,5617
+"Remove add-on",,,,,,,,,,5618
+"None",,,,,,,,,,5619

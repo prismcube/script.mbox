@@ -63,7 +63,7 @@ def csvToXML():
 		rf = open(openFile, 'r')
 
 	except Exception, e:
-		print 'can not open file[%s]'% openFile
+		print 'Cannot open file[%s]'% openFile
 		return
 
 	df = open(wFile1, 'w')
@@ -201,7 +201,7 @@ def makeLanguage(inFile):
 		ef = open(inFile, 'r')
 
 	except Exception, e:
-		print 'can not open file[%s]'% inFile
+		print 'Cannot open file[%s]'% inFile
 		return
 
 	#input document is UTF-8 format only
@@ -227,7 +227,7 @@ def makeLanguage(inFile):
 		rf = open(openFile, 'r')
 		df = open(wFile1, 'w')
 	except Exception, e:
-		print 'can not open file[%s]'% openFile
+		print 'Cannot open file[%s]'% openFile
 		return
 
 
@@ -407,7 +407,7 @@ def verify_defineString():
 		ef = open(dfile, 'r')
 
 	except Exception, e:
-		print 'can not open file[%s]'% dfile
+		print 'Cannot open file[%s]'% dfile
 		return
 
 	lines = ef.readlines()
@@ -500,7 +500,7 @@ def parseStringInXML(xmlFile, tagName) :
 def parseProperty( elisDir, stringXML ):
 
 	if not elisDir :
-		print 'Can not find source directory!\n'
+		print 'Cannot find source directory!\n'
 		return -1
 
 	sys.path.append(os.path.join(elisDir, 'lib', 'elisinterface'))
@@ -608,7 +608,7 @@ gArep = 0
 default_keywords = ['MR_LANG']
 def parseSource(sourceFile):
 	if not sourceFile or os.path.splitext(sourceFile)[1] != '.py':
-		print 'Can not read source file[%s]\n'% sourceFile
+		print 'Cannot read source file[%s]\n'% sourceFile
 		return -1
 
 	rFile = open(sourceFile, 'rb')
@@ -709,7 +709,7 @@ def parseSource(sourceFile):
 from subprocess import *
 def copyLanguage(srcDir, langDir) :
 	if not os.path.exists(srcDir) :
-		print 'Can not copy, srcDir[%s] is not exist'% srcDir
+		print 'Cannot copy, srcDir[%s] is not exist'% srcDir
 		return -1
 
 	#shutil.copytree('language', langDir)
@@ -849,7 +849,7 @@ def updateCSV( ) :
 		elif strid >= ID_NODE_MRLANG :
 			csvString[2].append( csvline )
 
-	#print csvHash.get( "When set to 'Automatic', the time will be obtained by the receiver automatically from a specific channel that you select", None )
+			#print csvHash.get( "When set to 'Automatic', the time will be obtained by the receiver automatically from a specific channel that you select", None )
 
 	# 3--------- 'new word to append csv'
 	newString = []

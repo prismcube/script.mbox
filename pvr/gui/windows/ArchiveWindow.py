@@ -193,7 +193,7 @@ class ArchiveWindow( BaseWindow ) :
 					
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the PVR or timeshift first' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping playback and timeshift first' ) )
 				dialog.doModal( )
 
 
@@ -577,7 +577,7 @@ class ArchiveWindow( BaseWindow ) :
 		status = self.mDataCache.Player_GetStatus( )
 		if status.mMode == ElisEnum.E_MODE_PVR :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the PVR first' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping playback first' ) )
 			dialog.doModal( )
 			return
 	
@@ -682,7 +682,7 @@ class ArchiveWindow( BaseWindow ) :
 					break
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Delete Record' ), MR_LANG( 'Do you want to delete the selected file(s)?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Delete file' ), MR_LANG( 'Are you sure you want to delete this file?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -716,7 +716,7 @@ class ArchiveWindow( BaseWindow ) :
 			return
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO REMOVE ALL YOUR FILES?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Delete all your files' ), MR_LANG( 'Are you sure you want to delete\nall your recorded files?' ) )
 		dialog.doModal( )
 
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -761,7 +761,7 @@ class ArchiveWindow( BaseWindow ) :
 				LOG_TRACE( 'newName len=%d' %len( newName ) )
 				if len( newName ) < MININUM_KEYWORD_SIZE :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'A filename must be at least %d characters long' ) % MININUM_KEYWORD_SIZE )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'A filename must be at least %d characters long' ) % MININUM_KEYWORD_SIZE )
 					dialog.doModal( )
 					return
 				else :

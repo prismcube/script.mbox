@@ -53,16 +53,16 @@ class TunerConfiguration( SettingWindow ) :
 			if self.mConfiguredCount == position :
 				if self.mTunerMgr.GetCurrentTunerType( ) == E_DISEQC_1_0 and self.mConfiguredCount > 3 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty(  MR_LANG( 'Attention' ),  MR_LANG( 'You can only have 4 satellites for DiSEqC 1.0' ) )
+					dialog.SetDialogProperty(  MR_LANG( 'Error' ),  MR_LANG( 'You can only have 4 satellites for DiSEqC 1.0' ) )
 		 			dialog.doModal( )
 		 		elif self.mTunerMgr.GetCurrentTunerType( ) == E_SIMPLE_LNB and self.mConfiguredCount > 0 :
 		 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty(  MR_LANG( 'Attention' ),  MR_LANG( 'You can only have 1 satellites for Simple LNB' ) )
+					dialog.SetDialogProperty(  MR_LANG( 'Error' ),  MR_LANG( 'You can only have 1 satellites for Simple LNB' ) )
 		 			dialog.doModal( )
 				else :
 					dialog = xbmcgui.Dialog( )
 					satelliteList = self.mDataCache.GetFormattedSatelliteNameList( )
-	 				ret = dialog.select(  MR_LANG( 'Add Satellite' ), satelliteList )
+	 				ret = dialog.select(  MR_LANG( 'Add satellite' ), satelliteList )
 
 					if ret >= 0 :
 						self.OpenBusyDialog( )
@@ -72,13 +72,13 @@ class TunerConfiguration( SettingWindow ) :
 					 	else :
 					 		self.CloseBusyDialog( )
 					 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-							dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Same satellite already configured' ) )
+							dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Same name of satellite already exists' ) )
 				 			dialog.doModal( )
 
 	 		elif self.mConfiguredCount + 1 == position :
 	 			if self.mConfiguredCount <= 0 :
 	 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty(  MR_LANG( 'Error' ),  MR_LANG( 'There is no satellite left in the list' ) )
+					dialog.SetDialogProperty(  MR_LANG( 'Error' ),  MR_LANG( 'No configured satellite available' ) )
 		 			dialog.doModal( )
 	 			else :
 					dialog = xbmcgui.Dialog( )
@@ -86,11 +86,11 @@ class TunerConfiguration( SettingWindow ) :
 					for i in range( len( self.mListItems ) ) :
 						satelliteList.append( self.mListItems[i].getLabel( ) )
 						
-		 			ret = dialog.select(  MR_LANG( 'Delete Satellite' ), satelliteList[ 0 : self.mConfiguredCount ] )
+		 			ret = dialog.select(  MR_LANG( 'Delete satellite' ), satelliteList[ 0 : self.mConfiguredCount ] )
  
 		 			if ret >= 0 :
 		 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-						dialog.SetDialogProperty(  MR_LANG( 'Delete Satellite' ),  MR_LANG( 'Do you want to remove %s?' ) % satelliteList[ ret ] )						
+						dialog.SetDialogProperty(  MR_LANG( 'Delete satellite' ),  MR_LANG( 'Are you sure you want to remove\n%s?' ) % satelliteList[ ret ] )						
 						dialog.doModal( )
 
 						if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -117,7 +117,7 @@ class TunerConfiguration( SettingWindow ) :
 						WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIG_SIMPLE )
 
 				else :
-					LOG_ERR( 'ERR : Can not find configured satellite' )
+					LOG_ERR( 'ERR : Cannot find configured satellite' )
 
 
 	def onFocus( self, aControlId ) :
