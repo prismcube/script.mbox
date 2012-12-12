@@ -105,7 +105,8 @@ class EPGWindow( BaseWindow ) :
 		self.mEventBus.Register( self )
 
 		self.StartEPGUpdateTimer( )
-		
+
+		self.SetFocusList( self.mEPGMode )
 		self.mInitialized = True
 
 
@@ -1507,4 +1508,12 @@ class EPGWindow( BaseWindow ) :
 		LOG_TRACE( 'Percent=%d' %percent )
 		return percent
 
+
+	def SetFocusList( self, aMode ) :
+		if aMode == E_VIEW_CHANNEL :
+			self.setFocusId( LIST_ID_COMMON_EPG )
+		elif aMode == E_VIEW_CURRENT or aMode == E_VIEW_FOLLOWING :
+			self.setFocusId( LIST_ID_BIG_EPG )
+		else :
+			LOG_ERR( 'SetFocusList fail' )
 	

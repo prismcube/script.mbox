@@ -307,7 +307,6 @@ class Configure( SettingWindow ) :
 				self.mCommander.System_SetDefaultChannelList( )
 				self.mCommander.System_FactoryReset( )
 				self.mDataCache.LoadAllSatellite( )
-				self.mDataCache.Channel_ReLoad( )
 	 			from ElisProperty import ResetHash
 				ResetHash( )
 				self.mInitialized = False

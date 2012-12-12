@@ -128,6 +128,7 @@ class ArchiveWindow( BaseWindow ) :
 		self.SelectLastRecordKey( )		
 		self.UpdatePlayStatus( )
 
+		self.SetFocusList( self.mViewMode )
 		self.mInitialized = True
 
 
@@ -1060,4 +1061,17 @@ class ArchiveWindow( BaseWindow ) :
 
 	def GetPlayingRecord( self ) :
 		return self.mPlayingRecord
+
+
+	def SetFocusList( self, aMode ) :
+		if aMode == E_VIEW_LIST :
+			self.setFocusId( LIST_ID_COMMON_RECORD )
+		elif aMode == E_VIEW_THUMBNAIL :
+			self.setFocusId( LIST_ID_THUMBNAIL_RECORD )
+		elif aMode == E_VIEW_POSTER_WRAP :
+			self.setFocusId( LIST_ID_POSTERWRAP_RECORD )
+		elif aMode == E_VIEW_FANART :
+			self.setFocusId( LIST_ID_FANART_RECORD )
+		else :
+			LOG_ERR( 'SetFocusList fail' )
 
