@@ -1142,7 +1142,7 @@ class ChannelListWindow( BaseWindow ) :
 					#line2 = '- %s / %s'% ( label1.lower( ), label2.lower( ) )
 
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-					dialog.SetDialogProperty( MR_LANG( 'Save Result' ), MR_LANG( 'Do you want to save changes?' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Save Result' ), MR_LANG( 'Do you want to save changes before exit?' ) )
 					dialog.doModal( )
 
 					answer = dialog.IsOK( )

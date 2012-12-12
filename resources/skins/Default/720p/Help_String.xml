@@ -702,7 +702,7 @@
 		</content>
 	</page>
 	
-	<page number="39" title="Media Center - Add-ons" location="(MEDIA CENTER > PICTURES or MUSIC or VIDEO or PROGRAMS)">
+	<page number="39" title="Media Center - Add-ons" location="(MEDIA CENTER > PICTURES, MUSIC, VIDEO or PROGRAMS)">
 		<content name="help/addons.png">
 			<type>image</type>
 			<posx>40</posx>

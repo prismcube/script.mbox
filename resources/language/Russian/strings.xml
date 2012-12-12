@@ -1246,4 +1246,18 @@
 	<string id="3840">RUS_Remove from favorite add-on</string>
 	<string id="3841">RUS_Remove add-on</string>
 	<string id="3842">RUS_</string>
+	<string id="3843">RUS_Remove</string>
+	<string id="3844">RUS_A search keyword must be\nat least %d characters long</string>
+	<string id="3845">RUS_</string>
+	<string id="3846">RUS_A search keyword must be at least\n%d characters long</string>
+	<string id="3847">RUS_</string>
+	<string id="3848">RUS_A keyword must be at least %d characters long</string>
+	<string id="3849">RUS_</string>
+	<string id="3850">RUS_Search TV and radio channels without entering any satellite information</string>
+	<string id="3851">RUS_</string>
+	<string id="3852">RUS_No time info was given by the channel</string>
+	<string id="3853">RUS_</string>
+	<string id="3854">RUS_No time info was given by that channel</string>
+	<string id="3855">RUS_</string>
+	<string id="3856">RUS_</string>
 </strings>

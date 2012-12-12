@@ -1246,4 +1246,18 @@
 	<string id="3840">ITA_Remove from favorite add-on</string>
 	<string id="3841">ITA_Remove add-on</string>
 	<string id="3842">ITA_</string>
+	<string id="3843">ITA_Remove</string>
+	<string id="3844">ITA_A search keyword must be\nat least %d characters long</string>
+	<string id="3845">ITA_</string>
+	<string id="3846">ITA_A search keyword must be at least\n%d characters long</string>
+	<string id="3847">ITA_</string>
+	<string id="3848">ITA_A keyword must be at least %d characters long</string>
+	<string id="3849">ITA_</string>
+	<string id="3850">ITA_Search TV and radio channels without entering any satellite information</string>
+	<string id="3851">ITA_</string>
+	<string id="3852">ITA_No time info was given by the channel</string>
+	<string id="3853">ITA_</string>
+	<string id="3854">ITA_No time info was given by that channel</string>
+	<string id="3855">ITA_</string>
+	<string id="3856">ITA_</string>
 </strings>
