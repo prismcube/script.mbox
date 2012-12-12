@@ -183,7 +183,9 @@ class DialogChannelSearch( BaseDialog ) :
 			if self.mScanMode == E_SCAN_SATELLITE :
 				self.ReTune( )
 			self.CloseDialog( )
-			self.mDataCache.Channel_ReLoad( )
+			self.mDataCache.LoadChannelList( )
+			self.mDataCache.Channel_GetAllChannels( self.mZappingMode.mServiceType, False )
+			self.mDataCache.SetChannelReloadStatus( True )
 
 
 	def onEvent( self, aEvent ) :
@@ -231,6 +233,7 @@ class DialogChannelSearch( BaseDialog ) :
 			self.mCtrlProgress.setPercent( 100 )
 			self.mTimer = threading.Timer( 0.5, self.ShowResult )
 			self.mTimer.start( )
+
 
 	@SetLock
 	def UpdateAddChannel( self, aEvent ) :

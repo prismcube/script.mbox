@@ -55,6 +55,7 @@ class FavoriteAddons( BaseWindow ) :
 		self.UpdateViewMode( )
 		self.UpdateAscending( )
 		self.UpdateListItem( )
+		self.SetFocusList( self.mViewMode )
 
 
 	def onAction( self, aAction ) :
@@ -236,3 +237,13 @@ class FavoriteAddons( BaseWindow ) :
 					del result[i]
 
 		return result
+
+
+	def SetFocusList( self, aMode ) :
+		if aMode == E_VIEW_MODE_LIST :
+			self.setFocusId( LIST_ID_COMMOM_LIST )
+		elif aMode == E_VIEW_MODE_THUMBNAIL :
+			self.setFocusId( LIST_ID_COMMOM_THUMBNAIL )
+		else :
+			LOG_ERR( 'SetFocusList fail' )
+		
