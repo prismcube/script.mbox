@@ -555,7 +555,20 @@ class ChannelListWindow( BaseWindow ) :
 				self.mDataCache.SetSkipChannelView( True )
 				self.mPrevMode = deepcopy( self.mUserMode )
 				self.mPrevSlidePos = deepcopy( self.mUserSlidePos )
-				self.ReloadChannelList( )
+				self.mUserMode.mMode = ElisEnum.E_MODE_ALL
+				self.mUserMode.mSortingMode = ElisEnum.E_SORT_BY_NUMBER
+				self.mUserSlidePos.mMain = E_SLIDE_MENU_ALLCHANNEL
+				self.mUserSlidePos.mSub  = 0
+
+				self.UpdateControlListSelectItem( self.mCtrlListMainmenu, self.mUserSlidePos.mMain )
+				self.UpdateControlListSelectItem( self.mCtrlListSubmenu, self.mUserSlidePos.mSub )
+				#LOG_TRACE( 'IN: slide[%s,%s]--get[%s, %s]--------1'% (self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, self.mCtrlListMainmenu.getSelectedPosition( ), self.mCtrlListSubmenu.getSelectedPosition( ) ) )
+
+				self.mListItems = None
+				self.mCtrlListCHList.reset( )
+				self.InitSlideMenuHeader( FLAG_SLIDE_OPEN )
+				self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True )
+				self.UpdateControlGUI( E_SLIDE_CLOSE )
 
 				#clear label
 				self.ResetLabel( )
@@ -606,18 +619,22 @@ class ChannelListWindow( BaseWindow ) :
 						getTable = E_TABLE_ZAPPING
 					self.mDataCache.SetChangeDBTableChannel( getTable )
 
+					#LOG_TRACE( 'slidePos: user[%s,%s] prev[%s,%s]'% (self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, self.mPrevSlidePos.mMain, self.mPrevSlidePos.mSub ) )
+					#LOG_TRACE( 'mode: user[%s,%s] prev[%s,%s]'% (self.mUserMode.mServiceType, self.mUserMode.mSortingMode, self.mPrevMode.mServiceType, self.mPrevMode.mSortingMode ) )
 					self.mDataCache.SetSkipChannelView( False )
-					LOG_TRACE( 'slidePos: user[%s,%s] prev[%s,%s]'% (self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, self.mPrevSlidePos.mMain, self.mPrevSlidePos.mSub ) )
-					LOG_TRACE( 'mode: user[%s,%s] prev[%s,%s]'% (self.mUserMode.mServiceType, self.mUserMode.mSortingMode, self.mPrevMode.mServiceType, self.mPrevMode.mSortingMode ) )
 					self.mUserMode = deepcopy( self.mPrevMode )
 					self.mUserSlidePos = deepcopy( self.mPrevSlidePos )
-					self.SubMenuAction( E_SLIDE_ACTION_MAIN, self.mPrevSlidePos.mMain, True )
-					self.mCtrlListMainmenu.selectItem( self.mPrevSlidePos.mMain )
-					time.sleep( 0.02 )
-					self.mCtrlListSubmenu.selectItem( self.mPrevSlidePos.mSub )
-					time.sleep( 0.02 )
+					self.SubMenuAction( E_SLIDE_ACTION_MAIN, self.mUserSlidePos.mMain )
 
-					self.ReloadChannelList( )
+					self.UpdateControlListSelectItem( self.mCtrlListMainmenu, self.mUserSlidePos.mMain )
+					self.UpdateControlListSelectItem( self.mCtrlListSubmenu, self.mUserSlidePos.mSub )
+					#LOG_TRACE( 'OUT: slide[%s,%s]--get[%s, %s]--------1'% (self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, self.mCtrlListMainmenu.getSelectedPosition( ), self.mCtrlListSubmenu.getSelectedPosition( ) ) )
+
+					self.mListItems = None
+					self.mCtrlListCHList.reset( )
+					self.InitSlideMenuHeader( FLAG_SLIDE_OPEN )
+					self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, True )
+					self.UpdateControlGUI( E_SLIDE_CLOSE )
 
 					#initialize get epg event
 					self.mIsTune = False
@@ -809,13 +826,9 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def RefreshSlideMenu( self, aMainIndex = E_SLIDE_MENU_ALLCHANNEL, aSubIndex = 0, aForce = None ) :
-		self.mCtrlListMainmenu.selectItem( aMainIndex )
-		time.sleep( 0.02 )
+		self.UpdateControlListSelectItem( self.mCtrlListMainmenu, aMainIndex )
+		self.UpdateControlListSelectItem( self.mCtrlListSubmenu, aSubIndex )
 		self.SubMenuAction( E_SLIDE_ACTION_MAIN, aMainIndex )
-
-		#self.mCtrlListSubmenu.selectItem( 0 )
-		self.mCtrlListSubmenu.selectItem( aSubIndex )
-		time.sleep( 0.02 )
 		self.SubMenuAction( E_SLIDE_ACTION_SUB, 0, aForce )
 
 
@@ -1063,8 +1076,9 @@ class ChannelListWindow( BaseWindow ) :
 			idx1 = self.mUserSlidePos.mMain
 			idx2 = self.mUserSlidePos.mSub
 
-		self.mCtrlListMainmenu.selectItem( idx1 )
-		self.mCtrlListSubmenu.selectItem( idx2 )
+
+		self.UpdateControlListSelectItem( self.mCtrlListMainmenu, idx1 )
+		self.UpdateControlListSelectItem( self.mCtrlListSubmenu, idx2 )
 		self.SubMenuAction( E_SLIDE_ACTION_MAIN, idx1 )
 		#self.UpdateControlGUI( E_CONTROL_FOCUSED, E_CONTROL_ID_LIST_SUBMENU )
 
@@ -1603,7 +1617,8 @@ class ChannelListWindow( BaseWindow ) :
 
 		elif aCtrlID == E_CONTROL_ID_LIST_CHANNEL_LIST :
 			if aExtra == E_TAG_SET_SELECT_POSITION :
-				self.mCtrlListCHList.selectItem( aValue )
+				self.UpdateControlListSelectItem( self.mCtrlListCHList, aValue )
+				#self.mCtrlListCHList.selectItem( aValue )
 			elif aExtra == E_TAG_ENABLE :
 				self.mCtrlListCHList.setEnabled( aValue )
 			elif aExtra == E_TAG_ADD_ITEM :
@@ -1631,6 +1646,20 @@ class ChannelListWindow( BaseWindow ) :
 			
 		else :
 			self.mWin.setProperty( aPropertyID, aValue )
+
+
+	def UpdateControlListSelectItem( self, aListControl, aIdx = 0 ) :
+		startTime = time.time()
+		loopTime = 0.0
+		sleepTime = 0.01
+		while loopTime < 1.5 :
+			aListControl.selectItem( aIdx )
+			if aIdx == aListControl.getSelectedPosition( ) :
+				break
+			time.sleep( sleepTime )
+			loopTime += sleepTime
+
+		#LOG_TRACE('-----------control[%s] idx setItem time[%s]'% ( aListControl.getId( ), ( time.time() - startTime ) ) )
 
 
 	def UpdateChannelAndEPG( self ) :
@@ -2459,7 +2488,7 @@ class ChannelListWindow( BaseWindow ) :
 			selectedAction == CONTEXT_ACTION_DELETE_FAV :
 
 			self.LoadFavoriteGroupList( )
-			#self.mCtrlListMainmenu.selectItem( E_SLIDE_MENU_FAVORITE )
+			#self.UpdateControlListSelectItem( self.mCtrlListMainmenu, E_SLIDE_MENU_FAVORITE )
 			if self.mCtrlListMainmenu.getSelectedPosition( ) == E_SLIDE_MENU_FAVORITE :
 				self.SubMenuAction( E_SLIDE_ACTION_MAIN, E_SLIDE_MENU_FAVORITE, True )
 			else :
@@ -2674,16 +2703,7 @@ class ChannelListWindow( BaseWindow ) :
 		self.InitSlideMenuHeader( aInit )
 		mainIdx = self.mUserSlidePos.mMain
 		subIdx  = self.mUserSlidePos.mSub
-		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
-			mainIdx = E_SLIDE_MENU_ALLCHANNEL
-			subIdx = 0
-			self.mCtrlListMainmenu.selectItem( mainIdx )
-			time.sleep( 0.02 )
-			self.mCtrlListSubmenu.selectItem( subIdx )
-			time.sleep( 0.02 )
-
 		self.RefreshSlideMenu( mainIdx, subIdx, True )
-		self.UpdateChannelList( )
 		self.UpdateControlGUI( E_SLIDE_CLOSE )
 
 

@@ -93,12 +93,7 @@ class Installation( BaseWindow ) :
 
 		elif selectedId == MENU_ID_UPDATE :
 			if self.mPlatform.IsPrismCube( ) :
-				if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR :
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping your playback' ) )
-					dialog.doModal( )
-				else :
-					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_UPDATE )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_SYSTEM_UPDATE )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Not support Win32' ) )

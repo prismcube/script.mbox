@@ -90,6 +90,7 @@ class Platform( object ) :
 			'mockito',
 			'unittest2',
 			'unittest',
+			'distutils',
 			'filedownloader']
 
 		for lib in libs :

@@ -1,12 +1,13 @@
 from pvr.gui.WindowImport import *
 from fileDownloader import DownloadFile
+from version import LooseVersion
 from copy import deepcopy
 import stat
 
 E_TYPE_PRISMCUBE = 1
 E_TYPE_ADDONS = 2
 
-E_CURRENT_INFO            = '/config/update.flag'
+E_CURRENT_INFO            = '/etc/release.info'
 E_DOWNLOAD_INFO_PVS       = '/mnt/hdd0/program/download/update.xml'
 E_DEFAULT_PATH_HDD        = '/mnt/hdd0/program'
 E_DEFAULT_PATH_DOWNLOAD   = '%s/download'% E_DEFAULT_PATH_HDD
@@ -378,6 +379,18 @@ class SystemUpdate( SettingWindow ) :
 		return isInit
 
 
+	def GetParseVersion( self, aVersion = None ) :
+		versions = ''
+		count = 0
+		for num in aVersion.split('.') :
+			if count == 3 :
+				versions += '.'
+			versions += num
+			count += 1
+
+		return versions
+
+
 	def Provisioning( self ) :
 		appURL = None
 		isDownload = False
@@ -405,7 +418,8 @@ class SystemUpdate( SettingWindow ) :
 					if pvsData[2] :
 						iPVS.mDate     = pvsData[2]
 					if pvsData[3] :
-						iPVS.mVersion  = int( pvsData[3] )
+						iPVS.mVersion  = pvsData[3]
+						#iPVS.mVersion  = self.GetParseVersion( pvsData[3] )
 					if pvsData[4] :
 						iPVS.mSize     = int( pvsData[4] )
 					if pvsData[5] :
@@ -425,7 +439,9 @@ class SystemUpdate( SettingWindow ) :
 
 				#Check Lastest version
 				if mPVSList and len( mPVSList ) > 0 :
-					self.mPVSList = sorted( mPVSList, key=lambda pvslist: pvslist.mVersion, reverse=True )
+					#self.mPVSList = sorted( mPVSList, key=lambda pvslist: pvslist.mVersion, reverse=True )
+					self.mPVSList = sorted( mPVSList, key=lambda pvslist: LooseVersion(pvslist.mVersion), reverse=True )
+
 					self.mPVSData = deepcopy( self.mPVSList[0] )
 					self.mPVSData.mType = E_TYPE_PRISMCUBE
 
@@ -468,9 +484,9 @@ class SystemUpdate( SettingWindow ) :
 
 	def ShowContextMenu( self ) :
 		context = []
-		context.append( ContextItem( MR_LANG( 'Refresh firmware update' ),            CONTEXT_ACTION_REFRESH_CONNECT ) )
+		context.append( ContextItem( MR_LANG( 'Refresh firmware update' ), CONTEXT_ACTION_REFRESH_CONNECT ) )
 		if os.path.isfile( E_DOWNLOAD_INFO_PVS ) :
-			context.append( ContextItem( MR_LANG( 'Get previous versions' ),   CONTEXT_ACTION_LOAD_OLD_VERSION ) )
+			context.append( ContextItem( MR_LANG( 'Get previous versions' ), CONTEXT_ACTION_LOAD_OLD_VERSION ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
@@ -510,12 +526,12 @@ class SystemUpdate( SettingWindow ) :
 			self.mIndexLastVersion = 0
 			for item in self.mPVSList :
 				idx  += 1
-				label = 'V%04d  %s'% ( item.mVersion, item.mDate )
+				label = 'V%s  %s'% ( item.mVersion, item.mDate )
 
 				if self.mCurrData and self.mCurrData.mError == 0 and \
 				   self.mCurrData.mVersion == self.mPVSList[idx].mVersion :
 					self.mIndexLastVersion = idx
-					label = '[COLOR grey3]V%04d  %s[/COLOR]'% ( item.mVersion, item.mDate )
+					label = '[COLOR grey3]V%s\t%s[/COLOR]'% ( item.mVersion, item.mDate )
 
 				verList.append( label )
 
@@ -907,7 +923,7 @@ class SystemUpdate( SettingWindow ) :
 			for timer in runningTimerList :
 				self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
 
-
+		"""
 		LOG_TRACE('1. update version ------' )
 		try :
 			from pvr.IpParser import *
@@ -928,6 +944,8 @@ class SystemUpdate( SettingWindow ) :
 
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
+		"""
+
 
 		LOG_TRACE('2. network settings ------' )
 		try :
@@ -1016,13 +1034,14 @@ class SystemUpdate( SettingWindow ) :
 				if not value or len( value ) < 2 :
 					continue
 
-				if value[0] == 'Version' :
+				if value[0].lower() == 'version' :
 					if value[1].isdigit( ) :
-						iPVS.mVersion = int( value[1] )
+						#iPVS.mVersion = self.GetParseVersion( value[1] )
+						iPVS.mVersion = value[1]
 					else :
 						iPVS.mVersion = value[1]
 
-				elif value[0] == 'Date' :
+				elif value[0].lower() == 'date' :
 					iPVS.mDate = value[1]
 
 			iPVS.mError = 0

@@ -521,8 +521,8 @@ class FirstInstallation( SettingWindow ) :
 				sumtime = self.mDate + '.' + self.mTime
 				t = time.strptime( sumtime, '%d.%m.%Y.%H:%M' )
 				ret = self.mCommander.Datetime_SetSystemUTCTime( int( time.mktime( t ) ) )
-				globalEvent = pvr.GlobalEvent.GetInstance()
-				globalEvent.SendLocalOffsetToXBMC()
+				globalEvent = pvr.GlobalEvent.GetInstance( )
+				globalEvent.SendLocalOffsetToXBMC( )
 
 			self.CloseBusyDialog( )
 			if mode == TIME_AUTOMATIC and dialog.GetResult( ) == False :
