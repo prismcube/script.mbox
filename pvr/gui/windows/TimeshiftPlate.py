@@ -170,7 +170,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 			self.UpdateSetFocus( defaultFocus )
 
-		self.InitShowThumnail( )
+		self.InitBookmarkThumnail( )
 
 		#run thread
 		self.mEventBus.Register( self )
@@ -961,8 +961,9 @@ class TimeShiftPlate( BaseWindow ) :
 				self.UpdateControlGUI( E_CONTROL_ID_EVENT_CLOCK, lbl_localTime )
 
 				if self.mIsPlay != FLAG_STOP :
-					self.InitTimeShift( )
-					self.UpdateProgress( )
+					if not self.mFlagUserMove :
+						self.InitTimeShift( )
+						self.UpdateProgress( )
 				count = 0
 
 			#time.sleep( self.mRepeatTimeout )
@@ -970,15 +971,14 @@ class TimeShiftPlate( BaseWindow ) :
 			count = count + 1
 			
 
-	def UpdateProgress( self, loop = 0 ):
+	def UpdateProgress( self, aUserMoving = 0 ):
 		try :
 			lbl_timeE = ''
 			lbl_timeP = ''
-			curTime = 0
 
 			#calculate current position
 			totTime = self.mTimeshift_endTime - self.mTimeshift_staTime
-			curTime = self.mTimeshift_curTime - self.mTimeshift_staTime
+			curTime = self.mTimeshift_curTime - self.mTimeshift_staTime + aUserMoving
 
 			if totTime > 0 and curTime >= 0 :
 				self.mProgress_idx = (curTime / float(totTime))  * 100.0
@@ -1044,7 +1044,7 @@ class TimeShiftPlate( BaseWindow ) :
 	def DoContextAction( self, aSelectAction ) :
 		if aSelectAction == CONTEXT_ACTION_ADD_TO_BOOKMARK :
 			self.mDataCache.Player_CreateBookmark( )
-			self.InitShowThumnail( )
+			self.InitBookmarkThumnail( )
 			self.RestartAutomaticHide( )
 
 		elif aSelectAction == CONTEXT_ACTION_SHOW_LIST :
@@ -1059,7 +1059,7 @@ class TimeShiftPlate( BaseWindow ) :
 
 		elif aSelectAction == CONTEXT_ACTION_ADD_AUTO_CHAPTER :
 			self.AutoChapterAddBookmark( )
-			self.InitShowThumnail( )
+			self.InitBookmarkThumnail( )
 
 		elif aSelectAction == CONTEXT_ACTION_RESUME_FROM :
 			self.StartBookmarkPlayback( )
@@ -1218,7 +1218,7 @@ class TimeShiftPlate( BaseWindow ) :
 			time.sleep( 1 )
 
 
-	def InitShowThumnail( self ) :
+	def InitBookmarkThumnail( self ) :
 		#ToDO
 		if self.mMode != ElisEnum.E_MODE_PVR :
 			self.UpdatePropertyGUI( 'BookMarkShow', 'False' )
@@ -1337,8 +1337,10 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mAsyncShiftTimer = threading.Timer( 0.5, self.AsyncUpdateCurrentMove ) 				
 		self.mAsyncShiftTimer.start( )
 
-		self.mFlagUserMove = False
+		self.mFlagUserMove = True
 		self.mAccelator += 1
+		mUserMoveTime = self.mUserMoveTime * self.mAccelator * 1000
+		self.UpdateProgress( mUserMoveTime )
 
 
 	def StopAsyncMove( self ) :
@@ -1352,10 +1354,11 @@ class TimeShiftPlate( BaseWindow ) :
 	#TODO : must be need timeout schedule
 	def AsyncUpdateCurrentMove( self ) :
 		try :
-			if self.mFlagUserMove != True :
+			if self.mFlagUserMove :
 				#if self.mAccelator > 2 :
 					#self.mUserMoveTime = int( self.mUserMoveTime * ( 1.5 ** self.mAccelator) / 10000 )
 
+				self.InitTimeShift( )
 				self.mUserMoveTime = self.mUserMoveTime * self.mAccelator
 				frameJump = self.mTimeshift_playTime + ( self.mUserMoveTime * 1000 )
 				if frameJump > self.mTimeshift_endTime :
@@ -1369,7 +1372,6 @@ class TimeShiftPlate( BaseWindow ) :
 				self.mFlagUserMove = False
 				self.mAccelator = 0
 				self.mUserMoveTime = 0
-				self.InitTimeShift( )
 
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )
