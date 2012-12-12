@@ -1234,4 +1234,16 @@
 	<string id="3828">FRE_</string>
 	<string id="3829">FRE_</string>
 	<string id="3830">FRE_</string>
+	<string id="3831">FRE_Are you sure you want to remove\nall channels from this favorite group?</string>
+	<string id="3832">FRE_Try again after stopping recordings, PVR or Timeshift</string>
+	<string id="3833">FRE_</string>
+	<string id="3834">FRE_</string>
+	<string id="3835">FRE_All settings will be restored to factory default</string>
+	<string id="3836">FRE_Your user data and XBMC add-ons will be backuped</string>
+	<string id="3837">FRE_Start formatting without making a backup?</string>
+	<string id="3838">FRE_</string>
+	<string id="3839">FRE_Add to favorite add-on</string>
+	<string id="3840">FRE_Remove from favorite add-on</string>
+	<string id="3841">FRE_Remove add-on</string>
+	<string id="3842">FRE_</string>
 </strings>

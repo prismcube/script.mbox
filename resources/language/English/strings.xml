@@ -1234,4 +1234,16 @@
 	<string id="3828"></string>
 	<string id="3829"></string>
 	<string id="3830"></string>
+	<string id="3831">Are you sure you want to remove\nall channels from this favorite group?</string>
+	<string id="3832">Try again after stopping recordings, PVR or Timeshift</string>
+	<string id="3833"></string>
+	<string id="3834"></string>
+	<string id="3835">All settings will be restored to factory default</string>
+	<string id="3836">Your user data and XBMC add-ons will be backuped</string>
+	<string id="3837">Start formatting without making a backup?</string>
+	<string id="3838"></string>
+	<string id="3839">Add to favorite add-on</string>
+	<string id="3840">Remove from favorite add-on</string>
+	<string id="3841">Remove add-on</string>
+	<string id="3842"></string>
 </strings>

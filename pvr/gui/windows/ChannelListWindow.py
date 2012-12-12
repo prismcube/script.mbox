@@ -1134,15 +1134,15 @@ class ChannelListWindow( BaseWindow ) :
 
 				else :
 					#ask save question
-					label1 = EnumToString( 'mode', self.mUserMode.mMode )
-					label2 = self.mCtrlListSubmenu.getSelectedItem( ).getLabel( )
+					#label1 = EnumToString( 'mode', self.mUserMode.mMode )
+					#label2 = self.mCtrlListSubmenu.getSelectedItem( ).getLabel( )
 
-					head = MR_LANG( 'Save Result' )
-					line1 = MR_LANG( 'Do you want to save changes?' )
-					line2 = '- %s / %s'% ( label1.lower( ), label2.lower( ) )
+					#head = 
+					#line1 = MR_LANG( 'Do you want to save changes?' )
+					#line2 = '- %s / %s'% ( label1.lower( ), label2.lower( ) )
 
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-					dialog.SetDialogProperty( head, str( '%s\n\n%s' % ( line1, line2 ) ) )
+					dialog.SetDialogProperty( MR_LANG( 'Save Result' ), MR_LANG( 'Do you want to save changes?' ) )
 					dialog.doModal( )
 
 					answer = dialog.IsOK( )

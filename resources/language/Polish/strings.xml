@@ -1234,4 +1234,16 @@
 	<string id="3828">POL_</string>
 	<string id="3829">POL_</string>
 	<string id="3830">POL_</string>
+	<string id="3831">POL_Are you sure you want to remove\nall channels from this favorite group?</string>
+	<string id="3832">POL_Try again after stopping recordings, PVR or Timeshift</string>
+	<string id="3833">POL_</string>
+	<string id="3834">POL_</string>
+	<string id="3835">POL_All settings will be restored to factory default</string>
+	<string id="3836">POL_Your user data and XBMC add-ons will be backuped</string>
+	<string id="3837">POL_Start formatting without making a backup?</string>
+	<string id="3838">POL_</string>
+	<string id="3839">POL_Add to favorite add-on</string>
+	<string id="3840">POL_Remove from favorite add-on</string>
+	<string id="3841">POL_Remove add-on</string>
+	<string id="3842">POL_</string>
 </strings>

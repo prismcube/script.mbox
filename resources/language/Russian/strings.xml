@@ -1234,4 +1234,16 @@
 	<string id="3828">RUS_</string>
 	<string id="3829">RUS_</string>
 	<string id="3830">RUS_</string>
+	<string id="3831">RUS_Are you sure you want to remove\nall channels from this favorite group?</string>
+	<string id="3832">RUS_Try again after stopping recordings, PVR or Timeshift</string>
+	<string id="3833">RUS_</string>
+	<string id="3834">RUS_</string>
+	<string id="3835">RUS_All settings will be restored to factory default</string>
+	<string id="3836">RUS_Your user data and XBMC add-ons will be backuped</string>
+	<string id="3837">RUS_Start formatting without making a backup?</string>
+	<string id="3838">RUS_</string>
+	<string id="3839">RUS_Add to favorite add-on</string>
+	<string id="3840">RUS_Remove from favorite add-on</string>
+	<string id="3841">RUS_Remove add-on</string>
+	<string id="3842">RUS_</string>
 </strings>

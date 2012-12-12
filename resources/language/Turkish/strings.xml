@@ -1234,4 +1234,16 @@
 	<string id="3828">TUR_</string>
 	<string id="3829">TUR_</string>
 	<string id="3830">TUR_</string>
+	<string id="3831">TUR_Are you sure you want to remove\nall channels from this favorite group?</string>
+	<string id="3832">TUR_Try again after stopping recordings, PVR or Timeshift</string>
+	<string id="3833">TUR_</string>
+	<string id="3834">TUR_</string>
+	<string id="3835">TUR_All settings will be restored to factory default</string>
+	<string id="3836">TUR_Your user data and XBMC add-ons will be backuped</string>
+	<string id="3837">TUR_Start formatting without making a backup?</string>
+	<string id="3838">TUR_</string>
+	<string id="3839">TUR_Add to favorite add-on</string>
+	<string id="3840">TUR_Remove from favorite add-on</string>
+	<string id="3841">TUR_Remove add-on</string>
+	<string id="3842">TUR_</string>
 </strings>

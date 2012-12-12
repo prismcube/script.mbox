@@ -599,7 +599,7 @@ class SystemUpdate( SettingWindow ) :
 			self.SetSettingWindowLabel( MR_LANG( 'Update Firmware' ) )
 			self.ResetAllControl( )
 			self.AddInputControl( E_Input01, MR_LANG( 'Check Firmware Version' ), '', MR_LANG( 'Check the latest firmware released on the update server' ) ) 
-			self.AddInputControl( E_Input02, MR_LANG( '' ), MR_LANG( 'Not Attempted' ), MR_LANG( 'Please check firmware version first' ) )
+			self.AddInputControl( E_Input02, MR_LANG( '' ), MR_LANG( 'Not attempted' ), MR_LANG( 'Please check firmware version first' ) )
 			self.SetEnableControl( E_Input02, False )
 
 			self.InitControl( )

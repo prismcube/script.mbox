@@ -298,7 +298,7 @@ class Configure( SettingWindow ) :
 
  		elif selectedId == E_FACTORY_RESET and groupId == E_Input01 :
 	 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Performing a factory reset?' ), MR_LANG( 'All your settings will be restored to factory default' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Performing a factory reset?' ), MR_LANG( 'All settings will be restored to factory default' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -1017,7 +1017,7 @@ class Configure( SettingWindow ) :
 
 	def DedicatedFormat( self ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Backup data?' ), MR_LANG( 'Your userdata and XBMC add-ons will be backuped' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Backup data?' ), MR_LANG( 'Your user data and XBMC add-ons will be backuped' ) )
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			if CheckDirectory( '/mnt/hdd0/program/.xbmc/userdata' ) and CheckDirectory( '/mnt/hdd0/program/.xbmc/addons' ) :
@@ -1028,7 +1028,7 @@ class Configure( SettingWindow ) :
 				dialog.doModal( )
 		else :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Start formatting HDD without making a backup?' ), MR_LANG( 'Formatting HDD cannot be undone!' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Start formatting without making a backup?' ), MR_LANG( 'Formatting HDD cannot be undone!' ) )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.MakeDedicate( )

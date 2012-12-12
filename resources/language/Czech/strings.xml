@@ -1234,4 +1234,16 @@
 	<string id="3828">CZE_</string>
 	<string id="3829">CZE_</string>
 	<string id="3830">CZE_</string>
+	<string id="3831">CZE_Are you sure you want to remove\nall channels from this favorite group?</string>
+	<string id="3832">CZE_Try again after stopping recordings, PVR or Timeshift</string>
+	<string id="3833">CZE_</string>
+	<string id="3834">CZE_</string>
+	<string id="3835">CZE_All settings will be restored to factory default</string>
+	<string id="3836">CZE_Your user data and XBMC add-ons will be backuped</string>
+	<string id="3837">CZE_Start formatting without making a backup?</string>
+	<string id="3838">CZE_</string>
+	<string id="3839">CZE_Add to favorite add-on</string>
+	<string id="3840">CZE_Remove from favorite add-on</string>
+	<string id="3841">CZE_Remove add-on</string>
+	<string id="3842">CZE_</string>
 </strings>

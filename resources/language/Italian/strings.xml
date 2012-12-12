@@ -1234,4 +1234,16 @@
 	<string id="3828">ITA_</string>
 	<string id="3829">ITA_</string>
 	<string id="3830">ITA_</string>
+	<string id="3831">ITA_Are you sure you want to remove\nall channels from this favorite group?</string>
+	<string id="3832">ITA_Try again after stopping recordings, PVR or Timeshift</string>
+	<string id="3833">ITA_</string>
+	<string id="3834">ITA_</string>
+	<string id="3835">ITA_All settings will be restored to factory default</string>
+	<string id="3836">ITA_Your user data and XBMC add-ons will be backuped</string>
+	<string id="3837">ITA_Start formatting without making a backup?</string>
+	<string id="3838">ITA_</string>
+	<string id="3839">ITA_Add to favorite add-on</string>
+	<string id="3840">ITA_Remove from favorite add-on</string>
+	<string id="3841">ITA_Remove add-on</string>
+	<string id="3842">ITA_</string>
 </strings>

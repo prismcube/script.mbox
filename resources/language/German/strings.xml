@@ -1234,4 +1234,16 @@
 	<string id="3828">GER_</string>
 	<string id="3829">GER_</string>
 	<string id="3830">GER_</string>
+	<string id="3831">GER_Are you sure you want to remove\nall channels from this favorite group?</string>
+	<string id="3832">GER_Try again after stopping recordings, PVR or Timeshift</string>
+	<string id="3833">GER_</string>
+	<string id="3834">GER_</string>
+	<string id="3835">GER_All settings will be restored to factory default</string>
+	<string id="3836">GER_Your user data and XBMC add-ons will be backuped</string>
+	<string id="3837">GER_Start formatting without making a backup?</string>
+	<string id="3838">GER_</string>
+	<string id="3839">GER_Add to favorite add-on</string>
+	<string id="3840">GER_Remove from favorite add-on</string>
+	<string id="3841">GER_Remove add-on</string>
+	<string id="3842">GER_</string>
 </strings>
