@@ -52,7 +52,7 @@ class DialogChannelSearch( BaseDialog ) :
 		self.DrawItem( )
 
 		self.AbortDialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		self.AbortDialog.SetDialogProperty( MR_LANG( 'Abort Channel Search' ), MR_LANG( 'Do you want to stop the channel scan?' ) )
+		self.AbortDialog.SetDialogProperty( MR_LANG( 'Exit channel search' ), MR_LANG( 'Are you sure you want to stop the channel scan?' ) )
 
 
 	def onAction( self, aAction ) :
@@ -148,7 +148,7 @@ class DialogChannelSearch( BaseDialog ) :
 				self.CloseDialog( )
 				self.mDataCache.Channel_ReLoad( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Channel search has failed to complete' ) )				
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Channel search failed to complete' ) )				
 				dialog.doModal( )
 
 		elif self.mScanMode == E_SCAN_TRANSPONDER :
@@ -158,7 +158,7 @@ class DialogChannelSearch( BaseDialog ) :
 				self.CloseDialog( )
 				self.mDataCache.Channel_ReLoad( )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Channel search has failed to complete' ) )				
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Channel search failed to complete' ) )				
 				dialog.doModal( )
 		else :
 			self.mIsFinished = True
@@ -246,7 +246,7 @@ class DialogChannelSearch( BaseDialog ) :
 	def ShowResult( self ) :
 		tvCount = len( self.mTvListItems )
 		radioCount = len( self.mRadioListItems )
-		searchResult = MR_LANG( 'TV Channels : %d \nRadio Channels : %d' ) %( tvCount, radioCount )
+		searchResult = MR_LANG( 'TV channels : %d \nRadio channels : %d' ) %( tvCount, radioCount )
 
 		try :
 			self.AbortDialog.close( )

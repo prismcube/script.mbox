@@ -298,10 +298,10 @@
 						</control>
 					</control>
 
-					<!-- Favorite Addons -->
+					<!-- Favorite Add-ons -->
 					<control type="button" id="90500">
 						<include>DefaultButtonHomeSubCommonValues</include>
-						<label>Favorite Addons</label>
+						<label>Favorite Add-ons</label>
 						<onclick>-</onclick>
 						<visible>false</visible>
 					</control>

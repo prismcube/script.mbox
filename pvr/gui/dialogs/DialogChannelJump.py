@@ -183,7 +183,7 @@ class DialogChannelJump( BaseDialog ) :
 				endTime   = startTime + self.mFakeEPG.mDuration
 				pastDuration = endTime - mLocalTime
 
-				if mLocalTime > endTime: #Already past
+				if mLocalTime > endTime: #Already passed
 					self.SetPogress( 100 )
 					return
 

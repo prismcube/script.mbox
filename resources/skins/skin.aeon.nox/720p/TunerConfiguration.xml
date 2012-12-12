@@ -30,7 +30,7 @@
 					<control type="label" id="1003">
 					<posx>60</posx>
 					<posy>110</posy>
-					<width>600</width>
+					<width>680</width>
 					<height>40</height>
 					<font>Font_Bold20</font>
 					<textcolor>blue</textcolor>

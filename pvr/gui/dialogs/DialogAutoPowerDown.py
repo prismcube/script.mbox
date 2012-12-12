@@ -24,8 +24,8 @@ class DialogAutoPowerDown( BaseDialog ) :
 		self.mEventBus.Register( self )
 
 		self.mCtrlLabel = self.getControl( E_BODY_LABEL )
-		self.getControl( E_HEADER ).setLabel( MR_LANG( 'Attention' ) )
-		self.mCtrlLabel.setLabel( MR_LANG( 'Automatic power down after %s sec' ) % TIME_OUT )
+		self.getControl( E_HEADER ).setLabel( MR_LANG( 'Automatic Power Down' ) )
+		self.mCtrlLabel.setLabel( MR_LANG( 'Start automatic power down after %s sec' ) % TIME_OUT )
 		self.mEnableLocalThread = True
 		self.mThread = self.AsyncShowTime( )
 
@@ -65,7 +65,7 @@ class DialogAutoPowerDown( BaseDialog ) :
 			time.sleep( 1 )
 			if self.mEnableLocalThread == False :
 				return
-			self.mCtrlLabel.setLabel( MR_LANG( 'Automatic power down after %s sec' ) % ( TIME_OUT - i ) )
+			self.mCtrlLabel.setLabel( MR_LANG( 'Start automatic power down after %s sec' ) % ( TIME_OUT - i ) )
 
 		self.mCommander.System_Shutdown( )
 				
