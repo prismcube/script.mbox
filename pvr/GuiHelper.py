@@ -29,9 +29,7 @@ def RecordConflict( aInfo ) :
 	
 	try :		
 		if aInfo[0].mError == -1 :
-#			label[0] = MR_LANG( 'Error EPG' )
-			label[0] = MR_LANG( 'No EPG Information is available' )
-#			label[1] = MR_LANG( 'Can not found EPG Information' )
+			label[0] = MR_LANG( 'No EPG information available' )
 		else :
 			conflictNum = len( aInfo ) - 1
 			if conflictNum > 2 :
@@ -52,7 +50,7 @@ def RecordConflict( aInfo ) :
 		print "Exception %s" %ex
 					
 	dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-	dialog.SetDialogProperty( MR_LANG( 'Attention' ), label[0], label[1], label[2] )
+	dialog.SetDialogProperty( MR_LANG( 'Error' ), label[0], label[1], label[2] )
 	dialog.doModal( )
 
 
@@ -309,7 +307,7 @@ def StringToListIndex( aList, aString ) :
 		if aList[i].lower( ) == aString.lower( ) :
 			return i
 
-	LOG_ERR( 'Can not found list item : %s' % aString )
+	LOG_ERR( 'Cannot found list item : %s' % aString )
 	return 0
 
 
@@ -358,7 +356,7 @@ class CacheMRLanguage( object ) :
 			try :
 				#print 'xml_string[%s] id[%s] parse[%s]'% (string, strId, xmlString)
 				if xmlString == "" or xmlString == None :
-					LOG_ERR( 'Can not find string' )
+					LOG_ERR( 'Cannot find string' )
 					return string
 
 				string = xmlString
@@ -425,7 +423,7 @@ def	HasAvailableRecordingHDD( ) :
 	import pvr.gui.DialogMgr as DiaMgr
 	if CheckHdd( ) == False :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Hard disk drive not detected' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Hard disk drive not detected' ) )
 		dialog.doModal( )
 		return False
 

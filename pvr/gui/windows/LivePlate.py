@@ -189,7 +189,7 @@ class LivePlate( LivePlateWindow ) :
 		elif actionId == Action.ACTION_MBOX_XBMC :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode != ElisEnum.E_MODE_LIVE :
-				msg = MR_LANG( 'Try again after stopping the Timeshift first' )
+				msg = MR_LANG( 'Try again after stopping the timeshift first' )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
 				dialog.doModal( )
@@ -258,7 +258,7 @@ class LivePlate( LivePlateWindow ) :
 					self.ChannelTune( INIT_CHANNEL )
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV/Radio channel is available' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV and radio channels available' ) )
 					dialog.doModal( )
 
 		elif actionId == Action.ACTION_MBOX_TEXT :
@@ -434,7 +434,7 @@ class LivePlate( LivePlateWindow ) :
 
 		elif aDir == INIT_CHANNEL :
 			currNumber = ''
-			currName = MR_LANG('No Channels')
+			currName = MR_LANG( 'No Channel' )
 			iChannel = self.mDataCache.Channel_GetCurrent( )
 			if iChannel == None or iChannel.mError != 0 :
 				SetLock2(True)
@@ -565,7 +565,7 @@ class LivePlate( LivePlateWindow ) :
 
 			if self.mCurrentEPG == None or self.mCurrentEPG.mError != 0 :
 				if not channel :
-					#LOG_TRACE('No Channels')
+					#LOG_TRACE( 'No Channel' )
 					return
 
 				iEPG = None
@@ -798,19 +798,19 @@ class LivePlate( LivePlateWindow ) :
 		if aFocusId == E_CONTROL_ID_BUTTON_TELETEXT :
 			if not self.mPlatform.IsPrismCube( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
 				return
 
 			if not self.mDataCache.Teletext_Show( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No teletext is available' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No teletext available' ) )
 				dialog.doModal( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
 			if not self.mPlatform.IsPrismCube( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
 				dialog.doModal( )
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_DESCRIPTION_INFO :
@@ -854,7 +854,7 @@ class LivePlate( LivePlateWindow ) :
 
 		else :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'You have reached the maximum number of\nrecordings allowed' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You have reached the maximum number of\nrecordings allowed' ) )
 			dialog.doModal( )
 
 		if isOK :
@@ -880,8 +880,8 @@ class LivePlate( LivePlateWindow ) :
 
 	def SetAudioVideoContext( self ) :
 		context = []
-		context.append( ContextItem( 'Video Format', CONTEXT_ACTION_VIDEO_SETTING ) )
-		context.append( ContextItem( 'Audio Track',  CONTEXT_ACTION_AUDIO_SETTING ) )
+		context.append( ContextItem( 'Video format', CONTEXT_ACTION_VIDEO_SETTING ) )
+		context.append( ContextItem( 'Audio track',  CONTEXT_ACTION_AUDIO_SETTING ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
@@ -1042,7 +1042,7 @@ class LivePlate( LivePlateWindow ) :
 				self.ShowPincodeDialog( )
 
 			else :
-				LOG_ERR('Tune Fail')
+				LOG_ERR('Tune failed')
 			
 		except Exception, e :
 			LOG_TRACE( 'Error exception[%s]'% e )

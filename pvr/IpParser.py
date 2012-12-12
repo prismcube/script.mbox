@@ -456,7 +456,7 @@ class WirelessParser :
 		elif self.key_mgmt == "WPA-PSK" :
 			self.mEncryptType = ENCRYPT_TYPE_WPA
 		else :
-			LOG_ERR( 'GetEncryptType Fail!!' )
+			LOG_ERR( 'GetEncryptType failed!!' )
 
 		return self.mEncryptType
 

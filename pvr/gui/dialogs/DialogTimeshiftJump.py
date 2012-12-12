@@ -142,7 +142,6 @@ class DialogTimeshiftJump( BaseDialog ) :
 			lbl_timeP = TimeToString( ( self.mJumpIFrame / 1000.0 ), TimeFormatEnum.E_HH_MM_SS )
 			#LOG_TRACE('move time[%s] iframe[%s] progress[%s]'% (lbl_timeP, self.mJumpIFrame, self.mMoveToNumber) )
 		else :
-#			lbl_timeP = MR_LANG( 'Move Fail' )
 			lbl_timeP = MR_LANG( 'Move failed' )			
 
 		self.SetLabelMoveToTime( lbl_timeP )

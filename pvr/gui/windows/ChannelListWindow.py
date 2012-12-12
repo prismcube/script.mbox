@@ -453,8 +453,8 @@ class ChannelListWindow( BaseWindow ) :
 		ret = E_DIALOG_STATE_NO
 
 		#ask save question
-		head =  MR_LANG( 'WARNING' )
-		line1 = MR_LANG( 'DO YOU REALLY WANT TO REMOVE\nALL YOUR CHANNELS?' )
+		head =  MR_LANG( 'Delete all channels' )
+		line1 = MR_LANG( 'Are you sure you want to remove\nall your TV and radio channels?' )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 		dialog.SetDialogProperty( head, line1 )
@@ -531,7 +531,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		else :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV/Radio channel is available' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV and radio channels available' ) )
 			dialog.doModal( )
 
 		if self.mUserMode.mServiceType == FLAG_MODE_TV :
@@ -740,7 +740,7 @@ class ChannelListWindow( BaseWindow ) :
 
 		else:
 			if self.mChannelList == None:
-				label = MR_LANG( 'No Channels' )
+				label = MR_LANG( 'No Channel' )
 				self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 				return 
 
@@ -776,7 +776,7 @@ class ChannelListWindow( BaseWindow ) :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )				
 					return
 
-				LOG_TRACE( 'no exit by Cancel' )
+				LOG_TRACE( 'No exit by pressing cancel button' )
 
 			else :
 				if iChannel.mLocked :
@@ -1121,8 +1121,8 @@ class ChannelListWindow( BaseWindow ) :
 					label1 = EnumToString( 'mode', self.mUserMode.mMode )
 					label2 = self.mCtrlListSubmenu.getSelectedItem( ).getLabel( )
 
-					head = MR_LANG( 'Save Zapping Mode' )
-					line1 = MR_LANG( 'Do you want to save the channel list?' )
+					head = MR_LANG( 'Save Result' )
+					line1 = MR_LANG( 'Do you want to save changes?' )
 					line2 = '- %s / %s'% ( label1.lower( ), label2.lower( ) )
 
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -1131,7 +1131,7 @@ class ChannelListWindow( BaseWindow ) :
 
 					answer = dialog.IsOK( )
 
-				#answer is yes
+				#if answer is yes
 				if answer == E_DIALOG_STATE_YES :
 					#re-configuration class
 					self.mLoadMode.reset( )
@@ -1242,7 +1242,7 @@ class ChannelListWindow( BaseWindow ) :
 		#is change?
 		if self.mIsSave :
 			#ask save question
-			head = MR_LANG( 'Save Changes' )
+			head = MR_LANG( 'Save Result' )
 			line1 = MR_LANG( 'Do you want to save changes?' )
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
@@ -1414,7 +1414,7 @@ class ChannelListWindow( BaseWindow ) :
 		if self.mChannelList == None :
 			self.mListItems = None
 			self.mCtrlListCHList.reset( )
-			label = MR_LANG( 'No Channels' )			
+			label = MR_LANG( 'No Channel' )			
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_CHANNEL_NAME, label )
 			self.UpdateControlGUI( E_CONTROL_ID_LABEL_SELECT_NUMBER, '0' )
 			return 
@@ -1513,7 +1513,7 @@ class ChannelListWindow( BaseWindow ) :
 		try :
 			if self.mIsTune == True :
 				if not self.mNavChannel :
-					LOG_TRACE( 'No Channels' )
+					LOG_TRACE( 'No Channel' )
 					return
 
 				sid  = self.mNavChannel.mSid
@@ -1782,7 +1782,7 @@ class ChannelListWindow( BaseWindow ) :
 			for item in self.mMoveList :
 				if iChannel.mNumber == item.mNumber : 
 					listItem = xbmcgui.ListItem( '[COLOR white]%04d %s[/COLOR]'% ( iChannel.mNumber, iChannel.mName ), 'MOVE' )
-					listItem.setProperty(E_XML_PROPERTY_MARK, E_TAG_TRUE)
+					listItem.setProperty( E_XML_PROPERTY_MARK, E_TAG_TRUE )
 					#LOG_TRACE( 'move idx[%s] [%04d %s]'% ( i, iChannel.mNumber, iChannel.mName ) )
 					isFind = True
 					break
@@ -1958,7 +1958,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			# barrier blocking
 			if moveidx < 0 or moveidx > len( self.mNewChannelList ) - 1 :
-				LOG_TRACE( 'list limit, do not MOVE!! moveidx[%s]'% moveidx)
+				LOG_TRACE( 'List limit, DO NOT move!! moveidx[%s]'% moveidx)
 				return
 
 			#pop moveList
@@ -2062,7 +2062,7 @@ class ChannelListWindow( BaseWindow ) :
 				numList.append( chNum )
 
 			if not numList or len( numList ) < 1 :
-				LOG_TRACE( 'select Fail!!!' )
+				LOG_TRACE( 'Selection failed!!!' )
 				return
 
 			ret = self.mDataCache.Favoritegroup_AddChannelByNumber( aGroupName, self.mUserMode.mServiceType, numList )
@@ -2111,7 +2111,7 @@ class ChannelListWindow( BaseWindow ) :
 				LOG_TRACE('mRecCount[%s] rec1[%s] rec2[%s] isRec[%s]'% (self.mRecCount, self.mRecordInfo1, self.mRecordInfo2, isIncludeRec) )
 
 			if not numList or len( numList ) < 1 :
-				LOG_TRACE( 'MarkList Fail!!!' )
+				LOG_TRACE( 'MarkList failed!!!' )
 				return
 
 
@@ -2161,9 +2161,9 @@ class ChannelListWindow( BaseWindow ) :
 
 			LOG_TRACE('isRec[%s] isTimer[%s]'% (isIncludeRec, isIncludeTimer) )
 			if isIncludeRec or isIncludeTimer :
-				msg = MR_LANG( 'DO YOU WANT TO DELETE THE CHANNEL(S)\nTHAT IS CURRENTLY RECORDING OR RESERVED?' )
+				msg = MR_LANG( 'Are you sure you want to delete the channels\nincluding currently recording or reserved?' )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'WARNING' ), msg )
+				dialog.SetDialogProperty( MR_LANG( 'Delete channels' ), msg )
 				dialog.doModal( )
 
 				answer = dialog.IsOK( )
@@ -2259,18 +2259,21 @@ class ChannelListWindow( BaseWindow ) :
 		elif aContextAction == CONTEXT_ACTION_MENU_DELETEALL :
 			isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 			isNotAvail = 0
+			aTitle = ''
 			lblLine = ''
 			if isRunRec > 0 :
 				isNotAvail = 1
+				aTitle = MR_LANG( 'Attention' )
 				lblLine = MR_LANG( 'Try again after stopping all your recordings first' )
 
 			elif self.mFlag_DeleteAll :
 				isNotAvail = 1
-				lblLine = MR_LANG( 'There is nothing in the channel list' )
+				aTitle = MR_LANG( 'Error' )
+				lblLine = MR_LANG( 'Your channel list is empty' )
 
 			if isNotAvail :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), lblLine )
+				dialog.SetDialogProperty( aTitle, lblLine )
 	 			dialog.doModal( )
 
 	 		else :
@@ -2330,7 +2333,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is nothing in the channel list' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Your channel list is empty' ) )
 				dialog.doModal( )
 				return
 
@@ -2342,7 +2345,7 @@ class ChannelListWindow( BaseWindow ) :
 			else :
 				context = []
 
-			context.append( ContextItem( '%s'% MR_LANG( 'Add to this group' ), CONTEXT_ACTION_ADD_TO_CHANNEL ) )
+			context.append( ContextItem( '%s'% MR_LANG( 'Add to this favorite group' ), CONTEXT_ACTION_ADD_TO_CHANNEL ) )
 			if not self.mChannelList :
 				context.append( ContextItem( MR_LANG( 'Remove from this group' ), CONTEXT_ACTION_DELETE ) )	
 			context.append( ContextItem( '%s'% MR_LANG( 'Rename favorite group' ), CONTEXT_ACTION_RENAME_FAV ) )
@@ -2376,14 +2379,14 @@ class ChannelListWindow( BaseWindow ) :
 		if selectedAction == CONTEXT_ACTION_ADD_TO_CHANNEL :
 			channelList = self.AddFavoriteChannels( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_SELECT )
-			dialog.SetDefaultProperty( MR_LANG( 'Select a channel(s) you want to add' ), channelList, E_MODE_CHANNEL_LIST )
+			dialog.SetDefaultProperty( MR_LANG( 'Select channels you want to add to this group' ), channelList, E_MODE_CHANNEL_LIST )
 			dialog.doModal( )
 			groupName = self.mFavoriteGroupList[self.mUserSlidePos.mSub]
 			self.mMarkList = dialog.GetSelectedList( )
 			#LOG_TRACE('-------add group[%s]-----dialog list[%s]'% ( groupName, self.mMarkList ) )
 
 			if self.mMarkList == None or len( self.mMarkList ) < 1 :
-				LOG_TRACE( 'CANCEL by context dialog' )
+				LOG_TRACE( 'Cancelled by context dialog' )
 				return
 
 
@@ -2392,9 +2395,9 @@ class ChannelListWindow( BaseWindow ) :
 		   selectedAction == CONTEXT_ACTION_RENAME_FAV or \
 		   selectedAction == CONTEXT_ACTION_DELETE_FAV :
  			title = ''
- 			if selectedAction == CONTEXT_ACTION_ADD_TO_FAV :   title = MR_LANG( 'Select a favorite group you want to add' )
- 			elif selectedAction == CONTEXT_ACTION_RENAME_FAV : title = MR_LANG( 'Select a favorite group you want to rename' )
- 			elif selectedAction == CONTEXT_ACTION_DELETE_FAV : title = MR_LANG( 'Select a favorite group you want to remove' )
+ 			if selectedAction == CONTEXT_ACTION_ADD_TO_FAV :   title = MR_LANG( 'Select a fav group you want to add channels to' )
+ 			elif selectedAction == CONTEXT_ACTION_RENAME_FAV : title = MR_LANG( 'Select a fav group you want to rename' )
+ 			elif selectedAction == CONTEXT_ACTION_DELETE_FAV : title = MR_LANG( 'Select a fav group you want to remove' )
 
  			grpIdx = xbmcgui.Dialog( ).select( title, self.mFavoriteGroupList )
  			groupName = self.mFavoriteGroupList[grpIdx]
@@ -2406,7 +2409,7 @@ class ChannelListWindow( BaseWindow ) :
 
 			if selectedAction == CONTEXT_ACTION_DELETE_FAV :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-				dialog.SetDialogProperty( MR_LANG( 'Delete Favorite Group' ), MR_LANG( 'Do you want to remove %s?' ) % groupName )
+				dialog.SetDialogProperty( MR_LANG( 'Delete favorite group' ), MR_LANG( 'Are you sure you want to remove\n%s?' ) % groupName )
 				dialog.doModal( )
 
 				answer = dialog.IsOK( )
@@ -2589,7 +2592,7 @@ class ChannelListWindow( BaseWindow ) :
 		else:
 			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), msg )
 			dialog.doModal( )	
 
 		if isOK :

@@ -50,7 +50,6 @@ class DialogAddManualTimer( SettingDialog ) :
 		self.mWin = xbmcgui.Window( self.mWinId  )
 
 		if self.mTimer :
-#			self.SetHeaderLabel( 'Edit Recording' )		
 			self.SetHeaderLabel( MR_LANG( 'Edit Timer' ) )
 		else :
 			self.SetHeaderLabel( MR_LANG( 'Add Manual Timer' ) )
@@ -579,7 +578,7 @@ class DialogAddManualTimer( SettingDialog ) :
 					ret = self.mDataCache.Timer_EditRunningTimer( self.mTimer.mTimerId, endTime )
 					LOG_TRACE( 'RET=%s' %ret )
 					if ret == False :
-						self.mErrorMessage = MR_LANG( 'You were unable to edit timer' )
+						self.mErrorMessage = MR_LANG( 'Unable to edit the timer' )
 						self.mConflictTimer = None
 					return ret
 					"""
@@ -620,7 +619,7 @@ class DialogAddManualTimer( SettingDialog ) :
 
 						if ret[0].mParam == -1 or ret[0].mError == -1 :
 							self.mConflictTimer = ret
-							self.mErrorMessage = MR_LANG( 'Attention' )
+							self.mErrorMessage = MR_LANG( 'Error' )
 							return False
 						else :
 							self.mConflictTimer = None
@@ -629,20 +628,20 @@ class DialogAddManualTimer( SettingDialog ) :
 						count = len( self.mUsedWeeklyList )
 						for i in range( count ) :
 							weeklyTimer = self.FindWeeklyTimerByDate( self.mUsedWeeklyList[i].mDate )
-							LOG_TRACE( 'EditWeekly i=%d' %i )
+							LOG_TRACE( 'Edit Weekly i=%d' %i )
 							if weeklyTimer == None :
 								if self.mUsedWeeklyList[i].mUsed == True : #Add New WeeklyTimer
-									LOG_TRACE( 'EditWeekly Add New' )
+									LOG_TRACE( 'Edit Weekly Add New' )
 									ret = self.mDataCache.Timer_AddOneWeeklyTimer( self.mTimer.mTimerId, self.mUsedWeeklyList[i].mDate, self.mUsedWeeklyList[i].mStartTime, self.mUsedWeeklyList[i].mDuration )
 									LOG_TRACE( 'ret=%s' %ret )									
 							else :
 								if self.mUsedWeeklyList[i].mUsed == False : #Delete WeeklyTimer
-									LOG_TRACE( 'EditWeekly Delete' )								
+									LOG_TRACE( 'Edit Weekly Delete' )								
 									ret = self.mDataCache.Timer_DeleteOneWeeklyTimer( self.mTimer.mTimerId, weeklyTimer.mDate, \
 									weeklyTimer.mStartTime, weeklyTimer.mDuration )
 									LOG_TRACE( 'ret=%s' %ret )
 								else : #Change Timer
-									LOG_TRACE( 'EditWeekly Change' )								
+									LOG_TRACE( 'Edit Weekly Change' )								
 									ret = self.mDataCache.Timer_EditOneWeeklyTimer( self.mTimer.mTimerId, weeklyTimer.mDate, \
 									weeklyTimer.mStartTime, weeklyTimer.mDuration, self.mUsedWeeklyList[i].mStartTime, self.mUsedWeeklyList[i].mDuration )
 									LOG_TRACE( 'ret=%s' %ret )
@@ -669,7 +668,7 @@ class DialogAddManualTimer( SettingDialog ) :
 
 				if ret[0].mParam == -1 or ret[0].mError == -1 :
 					self.mConflictTimer = ret
-					self.mErrorMessage = MR_LANG( 'Attention' )
+					self.mErrorMessage = MR_LANG( 'Error' )
 					return False
 				else :
 					self.mConflictTimer = None
@@ -721,7 +720,7 @@ class DialogAddManualTimer( SettingDialog ) :
 
 				if ret and ( ret[0].mParam == -1 or ret[0].mError == -1 ) :
 					self.mConflictTimer = ret
-					self.mErrorMessage = MR_LANG( 'Attention' )
+					self.mErrorMessage = MR_LANG( 'Error' )
 					return False
 				else :
 					self.mConflictTimer = None

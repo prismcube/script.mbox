@@ -97,7 +97,7 @@ class GlobalEvent( object ) :
 	def AsyncHddFull( self ):
 		self.mIsHddFullDialogOpened = True
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-		dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Recording stopped due to insufficient disk space' ) )
 		dialog.doModal( )
 
 		self.mIsHddFullDialogOpened = False

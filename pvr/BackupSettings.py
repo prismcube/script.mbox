@@ -7,14 +7,14 @@ class BackupSettings( object ) :
 	def __init__( self ) :
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 
-		LOG_TRACE( '------------------------------check backup' )
+		LOG_TRACE( '------------------------------Check Backup' )
 		if CheckDirectory( E_DEFAULT_BACKUP_PATH ) :
 			self.CheckBackup( )
 			RemoveDirectory( E_DEFAULT_BACKUP_PATH )
 
 
 	def CheckBackup( self ) :
-		LOG_TRACE( 'backup checked' )
+		LOG_TRACE( 'Backup Checked' )
 		pass
 
 		if CheckDirectory( '%s/%s'% ( E_DEFAULT_BACKUP_PATH, 'network.conf' ) ) :
