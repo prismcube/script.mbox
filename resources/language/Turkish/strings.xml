@@ -1260,4 +1260,12 @@
 	<string id="3854">TUR_No time info was given by that channel</string>
 	<string id="3855">TUR_</string>
 	<string id="3856">TUR_</string>
+	<string id="3857">TUR_Try again after stopping playback, recordings and timeshift</string>
+	<string id="3858">TUR_</string>
+	<string id="3859">TUR_Try again after stopping playback, recordings\nand timeshift</string>
+	<string id="3860">TUR_</string>
+	<string id="3861">TUR_Select cable connection type and configure the DiSEqC settings of tuner 1 or tuner 2</string>
+	<string id="3862">TUR_When set to 'On', LNBs will be switched between low and high band</string>
+	<string id="3863">TUR_Set RGB or YUV for HDMI color space</string>
+	<string id="3864">TUR_</string>
 </strings>

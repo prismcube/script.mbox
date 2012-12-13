@@ -1260,4 +1260,12 @@
 	<string id="3854">DUT_No time info was given by that channel</string>
 	<string id="3855">DUT_</string>
 	<string id="3856">DUT_</string>
+	<string id="3857">DUT_Try again after stopping playback, recordings and timeshift</string>
+	<string id="3858">DUT_</string>
+	<string id="3859">DUT_Try again after stopping playback, recordings\nand timeshift</string>
+	<string id="3860">DUT_</string>
+	<string id="3861">DUT_Select cable connection type and configure the DiSEqC settings of tuner 1 or tuner 2</string>
+	<string id="3862">DUT_When set to 'On', LNBs will be switched between low and high band</string>
+	<string id="3863">DUT_Set RGB or YUV for HDMI color space</string>
+	<string id="3864">DUT_</string>
 </strings>

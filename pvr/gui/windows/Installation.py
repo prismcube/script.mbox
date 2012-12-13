@@ -31,7 +31,7 @@ class Installation( BaseWindow ) :
 
 		self.mDescriptionList = [
 		MR_LANG( 'Follow five simple steps for getting your PRISMCUBE RUBY ready for use' ),
-		MR_LANG( 'Select cable connection type and configure the DiSEqC settings of Tuner 1 or Tuner 2' ),
+		MR_LANG( 'Select cable connection type and configure the DiSEqC settings of tuner 1 or tuner 2' ),
 		MR_LANG( 'Perform a quick and easy automatic channel scan or search channels manually' ),
 		MR_LANG( 'Add, delete or rename satellites' ),
 		MR_LANG( 'Add new transponders or edit the transponders already exist' ),

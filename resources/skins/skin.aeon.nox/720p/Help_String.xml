@@ -186,7 +186,7 @@
 			<width>550</width>
 			<height>292</height>
 		</content>
-		<content name="Simple LNB is used when only one satellite is connected.[CR][CR][B]- Satellite:[/B] Select the satellite you want to configure.[CR][CR][B]- LNB Type:[/B] Select a frequency range sent by the receiver to the LNB.[CR][CR][B]- LNB Frequency:[/B] Select the LNB frequency to the LNB you are using.[CR][CR][B]- 22KHz Tone Control:[/B] When set to on, LNBs will be switched between Low and High band.[CR][CR][B]- Transponder:[/B] Select the transponder for the satellite you have chosen.">
+		<content name="Simple LNB is used when only one satellite is connected.[CR][CR][B]- Satellite:[/B] Select the satellite you want to configure.[CR][CR][B]- LNB Type:[/B] Select a frequency range sent by the receiver to the LNB.[CR][CR][B]- LNB Frequency:[/B] Select the LNB frequency to the LNB you are using.[CR][CR][B]- 22KHz Tone Control:[/B] When set to on, LNBs will be switched between low and high band.[CR][CR][B]- Transponder:[/B] Select the transponder for the satellite you have chosen.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>114</posy>
@@ -203,7 +203,7 @@
 			<width>550</width>
 			<height>293</height>
 		</content>
-		<content name="DiSEqC 1.0 allows multiple antennas to be connected to the STB simultaneously.[CR]With DiSEqC 1.0 it is possible to connect up to 4 satellites.[CR][CR][B]- Satellite:[/B] Select the satellite you want to configure.[CR][CR][B]- LNB Type:[/B] Select a frequency range sent by the receiver to the LNB.[CR][CR][B]- LNB Frequency:[/B] Select the LNB frequency to the LNB you are using.[CR][CR][B]- 22KHz Tone Control:[/B] When set to on, LNBs will be switched between Low and High band.[CR][CR][B]- DiSEqC 1.0 Switch:[/B] Select a DiSEqC switch you want to connect to the receiver.[CR][CR][B]- DiSEqC Repeat:[/B] When set to on, DiSEqC repeats its command.[CR][CR][B]- Transponder:[/B] Select the transponder for the satellite you have chosen.">
+		<content name="DiSEqC 1.0 allows multiple antennas to be connected to the STB simultaneously.[CR]With DiSEqC 1.0 it is possible to connect up to 4 satellites.[CR][CR][B]- Satellite:[/B] Select the satellite you want to configure.[CR][CR][B]- LNB Type:[/B] Select a frequency range sent by the receiver to the LNB.[CR][CR][B]- LNB Frequency:[/B] Select the LNB frequency to the LNB you are using.[CR][CR][B]- 22KHz Tone Control:[/B] When set to on, LNBs will be switched between low and high band.[CR][CR][B]- DiSEqC 1.0 Switch:[/B] Select a DiSEqC switch you want to connect to the receiver.[CR][CR][B]- DiSEqC Repeat:[/B] When set to on, DiSEqC repeats its command.[CR][CR][B]- Transponder:[/B] Select the transponder for the satellite you have chosen.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>114</posy>
@@ -220,7 +220,7 @@
 			<width>550</width>
 			<height>291</height>
 		</content>
-		<content name="DiSEqc 1.1 allows you to connect up to 64 difference satellites.[CR][CR][B]- Satellite:[/B] Select the satellite you want to configure.[CR][CR][B]- LNB Type:[/B] Select a frequency range sent by the receiver to the LNB.[CR][CR][B]- LNB Frequency:[/B] Select the LNB frequency to the LNB you are using.[CR][CR][B]- 22KHz Tone Control:[/B] When set to on, LNBs will be switched between Low and High band.[CR][CR][B]- Committed Switch:[/B] Select a committed switch you want to connect to the receiver.[CR][CR][B]- Uncommitted Switch:[/B] Select an uncommitted switch you want to connect to the receiver.[CR][CR][B]- DiSEqC Repeat:[/B] When set to on, DiSEqC repeats its command.[CR][CR][B]- Transponder:[/B] Select the transponder for the satellite you have chosen.">
+		<content name="DiSEqc 1.1 allows you to connect up to 64 difference satellites.[CR][CR][B]- Satellite:[/B] Select the satellite you want to configure.[CR][CR][B]- LNB Type:[/B] Select a frequency range sent by the receiver to the LNB.[CR][CR][B]- LNB Frequency:[/B] Select the LNB frequency to the LNB you are using.[CR][CR][B]- 22KHz Tone Control:[/B] When set to on, LNBs will be switched between low and high band.[CR][CR][B]- Committed Switch:[/B] Select a committed switch you want to connect to the receiver.[CR][CR][B]- Uncommitted Switch:[/B] Select an uncommitted switch you want to connect to the receiver.[CR][CR][B]- DiSEqC Repeat:[/B] When set to on, DiSEqC repeats its command.[CR][CR][B]- Transponder:[/B] Select the transponder for the satellite you have chosen.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>114</posy>
@@ -237,7 +237,7 @@
 			<width>550</width>
 			<height>292</height>
 		</content>
-		<content name="Set the position of your desired satellites if you have a motorized antenna.[CR]You can control the antenna in DiSEqC 1.2 mode.[CR][CR][B]- Satellite:[/B] Select the satellite you want to configure.[CR][CR][B]- LNB Type:[/B] Select a frequency range sent by the receiver to the LNB.[CR][CR][B]- LNB Frequency:[/B] Select the LNB frequency to the LNB you are using.[CR][CR][B]- 22KHz Tone Control:[/B] When set to on, LNBs will be switched between Low and High band.[CR][CR][B]- Transponder:[/B] Select the transponder for the satellite you have chosen.[CR][CR][B]- Rotate Antenna:[/B] You can control the movements of the motorized antenna here.[CR][CR][B]- Rotation Limits:[/B] Set the East and West limit of the DiSEqC motor, in order to protect from damage due to obstacles.[CR][CR][B]- Store Position and Exit:[/B] Save satellite positions and exit.">
+		<content name="Set the position of your desired satellites if you have a motorized antenna.[CR]You can control the antenna in DiSEqC 1.2 mode.[CR][CR][B]- Satellite:[/B] Select the satellite you want to configure.[CR][CR][B]- LNB Type:[/B] Select a frequency range sent by the receiver to the LNB.[CR][CR][B]- LNB Frequency:[/B] Select the LNB frequency to the LNB you are using.[CR][CR][B]- 22KHz Tone Control:[/B] When set to on, LNBs will be switched between low and high band.[CR][CR][B]- Transponder:[/B] Select the transponder for the satellite you have chosen.[CR][CR][B]- Rotate Antenna:[/B] You can control the movements of the motorized antenna here.[CR][CR][B]- Rotation Limits:[/B] Set the East and West limit of the DiSEqC motor, in order to protect from damage due to obstacles.[CR][CR][B]- Store Position and Exit:[/B] Save satellite positions and exit.">
 			<type>textbox</type>
 			<posx>630</posx>
 			<posy>114</posy>

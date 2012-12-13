@@ -1260,4 +1260,12 @@
 	<string id="3854">FRE_No time info was given by that channel</string>
 	<string id="3855">FRE_</string>
 	<string id="3856">FRE_</string>
+	<string id="3857">FRE_Try again after stopping playback, recordings and timeshift</string>
+	<string id="3858">FRE_</string>
+	<string id="3859">FRE_Try again after stopping playback, recordings\nand timeshift</string>
+	<string id="3860">FRE_</string>
+	<string id="3861">FRE_Select cable connection type and configure the DiSEqC settings of tuner 1 or tuner 2</string>
+	<string id="3862">FRE_When set to 'On', LNBs will be switched between low and high band</string>
+	<string id="3863">FRE_Set RGB or YUV for HDMI color space</string>
+	<string id="3864">FRE_</string>
 </strings>
