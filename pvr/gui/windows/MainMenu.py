@@ -174,10 +174,10 @@ class MainMenu( BaseWindow ) :
 
 	def GetFavAddons( self ) :
 		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
-			currentSkinName = xbmc.executehttpapi( "GetGUISetting(3, lookandfeel.skin)" )
+			currentSkinName = 'Default' #xbmc.executehttpapi( "GetGUISetting(3, lookandfeel.skin)" )
 			currentSkinName = currentSkinName[4:]
 			if currentSkinName == 'skin.confluence' :
-				tmpList = xbmc.executehttpapi( "getfavourites()" )
+				tmpList = 'Default' #xbmc.executehttpapi( "getfavourites()" )
 				self.mCtrlFavAddonList = self.getControl( LIST_ID_FAV_ADDON )
 				self.mCtrlFavAddonList.reset( )
 				if tmpList != '<li>' :
@@ -193,8 +193,9 @@ class MainMenu( BaseWindow ) :
 
 
 	def SyncAddonsList( self, aAddonList ) :
-		tmpList = xbmc.executehttpapi( "getaddons()" )
+		#tmpList = xbmc.executehttpapi( "getaddons()" )
 		result = deepcopy( aAddonList )
+		return result
 		if tmpList == '<li>' :
 			return None
 		else :

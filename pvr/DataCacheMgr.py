@@ -214,6 +214,7 @@ class DataCacheMgr( object ) :
 
 
 	def LoadVolumeToSetGUI( self ) :
+		return
 		lastVolume = self.mCommander.Player_GetVolume( )
 		lastMute = self.mCommander.Player_GetMute( )
 		LOG_TRACE( 'last volume[%s] mute[%s]'% ( lastVolume, lastMute) )

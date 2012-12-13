@@ -74,6 +74,7 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 
 
 	def UpdateVolume( self, aVolumeStep = -1 ) :
+		return 
 		if self.mPlatform.IsPrismCube( ) :
 			retVolume = xbmc.executehttpapi( 'getvolume' )
 			volume = int( retVolume[4:] )

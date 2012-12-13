@@ -19,7 +19,8 @@ class Action(object) :
 	ACTION_PAGE_DOWN			= 6		#PageDown --> Channel Down
 	ACTION_SELECT_ITEM			= 7		# OK
 	ACTION_HIGHLIGHT_ITEM		= 8	
-	ACTION_PARENT_DIR			= 9		#Back
+	#ACTION_PARENT_DIR			= 9		#Back
+	ACTION_PARENT_DIR			= 92		#Back //for Frodo
 	ACTION_PREVIOUS_MENU		= 10 	#ESC
 	ACTION_SHOW_INFO			= 11	# i(epg)
 	ACTION_PAUSE				= 12	#space
@@ -218,6 +219,7 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def UpdateVolume( self, aVolumeStep = -1 ) :
+		return
 		if self.mPlatform.IsPrismCube( ) :
 			retVolume = xbmc.executehttpapi( 'getvolume' )
 			volume = int( retVolume[4:] )

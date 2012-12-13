@@ -79,7 +79,7 @@ class WindowMgr( object ) :
 		print 'scriptDir= %s' %self.mScriptDir
 
 		self.mDefaultLanguage = xbmc.getLanguage( )
-		currentSkinName = xbmc.executehttpapi( "GetGUISetting(3, lookandfeel.skin)" )
+		currentSkinName = 'Default' #xbmc.executehttpapi( "GetGUISetting(3, lookandfeel.skin)" )
 		self.mSkinName = currentSkinName[4:]
 
 		self.mLastId			= -1
@@ -359,7 +359,7 @@ class WindowMgr( object ) :
 			
 
 	def CheckSkinChange( self ) :
-		currentSkinName = xbmc.executehttpapi( "GetGUISetting(3, lookandfeel.skin)" )
+		currentSkinName = 'Default' #xbmc.executehttpapi( "GetGUISetting(3, lookandfeel.skin)" )
 		print 'skin name=%s : %s' %( self.mSkinName, currentSkinName[4:] )
 
 		if self.mSkinName != currentSkinName[4:] :
@@ -379,6 +379,8 @@ class WindowMgr( object ) :
 	
 		if E_ADD_XBMC_HTTP_FUNCTION == True :
 			from pvr.GuiHelper import GetInstanceSkinPosition		
+			pvr.GuiHelper.GetInstanceSkinPosition( ).SetPosition( 0, 0, 1280, 720, 100 )
+			return
 			strResolution = xbmc.executehttpapi( "getresolution( )" )
 			LOG_TRACE( 'resolution = %s' % strResolution )
 			resInfo = strResolution[4:].split( ':' )
@@ -398,7 +400,7 @@ class WindowMgr( object ) :
 			
 			LOG_TRACE( 'zoom=%d' %skinzoom )
 
-			pvr.GuiHelper.GetInstanceSkinPosition( ).SetPosition( left, top, right, bottom, skinzoom )
+			#pvr.GuiHelper.GetInstanceSkinPosition( ).SetPosition( left, top, right, bottom, skinzoom )
 		else :		
 
 			try :
@@ -563,6 +565,7 @@ class WindowMgr( object ) :
 
 
 	def GetCurrentLanguage( self ) :
+		return 'english'
 		currentLanguage = xbmc.executehttpapi( "GetGUISetting(3, locale.language)" )
 		LOG_TRACE( "Get currentLanguage = %s" % currentLanguage[4:] )
 		return currentLanguage[4:]
