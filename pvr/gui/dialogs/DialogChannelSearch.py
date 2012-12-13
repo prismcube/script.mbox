@@ -184,7 +184,9 @@ class DialogChannelSearch( BaseDialog ) :
 				self.ReTune( )
 			self.CloseDialog( )
 			self.mDataCache.LoadChannelList( )
-			self.mDataCache.Channel_GetAllChannels( self.mZappingMode.mServiceType, False )
+			iZapping = self.mDataCache.Zappingmode_GetCurrent( )
+			if iZapping and iZapping.mError == 0 :
+				self.mDataCache.Channel_GetAllChannels( iZapping.mServiceType, False )
 			self.mDataCache.SetChannelReloadStatus( True )
 
 
