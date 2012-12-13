@@ -354,7 +354,7 @@ class SystemUpdate( SettingWindow ) :
 		isInit = True
 		if not self.mPVSData or self.mPVSData.mError != 0 :
 			self.SetEnableControl( E_Input02, False )
-			self.SetControlLabel2String( E_Input02, MR_LANG( 'Not Attempted') )
+			self.SetControlLabel2String( E_Input02, MR_LANG( 'Not attempted') )
 			self.EditDescription( E_Input02, MR_LANG( 'Please check firmware version first' ) )
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_FAILED )
 			return False
@@ -462,7 +462,7 @@ class SystemUpdate( SettingWindow ) :
 
 		if not isDownload :
 			self.SetEnableControl( E_Input02, False )
-			self.SetControlLabel2String( E_Input02, MR_LANG( 'Not Attempted') )
+			self.SetControlLabel2String( E_Input02, MR_LANG( 'Not attempted') )
 			self.EditDescription( E_Input02, MR_LANG( 'Please check firmware version first' ) )
 			self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_ADDRESS )
 			return
@@ -536,7 +536,7 @@ class SystemUpdate( SettingWindow ) :
 				verList.append( label )
 
 			dialog = xbmcgui.Dialog( )
-			select =  dialog.select( MR_LANG( 'Previous Firmware Versions' ), verList, False, self.mIndexLastVersion )
+			select =  dialog.select( MR_LANG( 'Previous firmware versions' ), verList, False, self.mIndexLastVersion )
 
 			if select < 0 :
 				return
@@ -599,7 +599,7 @@ class SystemUpdate( SettingWindow ) :
 			self.SetSettingWindowLabel( MR_LANG( 'Update Firmware' ) )
 			self.ResetAllControl( )
 			self.AddInputControl( E_Input01, MR_LANG( 'Check Firmware Version' ), '', MR_LANG( 'Check the latest firmware released on the update server' ) ) 
-			self.AddInputControl( E_Input02, MR_LANG( '' ), MR_LANG( 'Not Attempted' ), MR_LANG( 'Please check firmware version first' ) )
+			self.AddInputControl( E_Input02, MR_LANG( '' ), MR_LANG( 'Not attempted' ), MR_LANG( 'Please check firmware version first' ) )
 			self.SetEnableControl( E_Input02, False )
 
 			self.InitControl( )
@@ -823,7 +823,7 @@ class SystemUpdate( SettingWindow ) :
 				return True
 
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Resume Download' ), MR_LANG( 'Do you want to resume download?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Resume downloads' ), MR_LANG( 'Continue broken or interrupted downloads?' ) )
 			dialog.doModal( )
 
 			ret = dialog.IsOK( )

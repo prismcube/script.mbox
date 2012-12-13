@@ -14,18 +14,18 @@ class EditSatellite( SettingWindow ) :
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.mName = MR_LANG( 'Unkown' )
+		self.mName = MR_LANG( 'Unknown' )
 		self.SetSettingWindowLabel( MR_LANG( 'Edit Satellite' ) )
 
 		hideControlIds = [ E_Input01, E_Input02, E_Input03, E_Input04, E_Input05 ]
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
 			self.SetVisibleControls( hideControlIds, False )
-			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No satellite data is available' ) )
+			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No satellite data available' ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No satellite data is available\nPlease factory reset your STB' )	)
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please reset your device to factory settings' ) )
 			dialog.doModal( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Do you want to go to configuration?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Go to the configuration menu now?' ), MR_LANG( 'When you perform a factory reset,\nall your settings revert to factory defaults' ) )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_CONFIGURE, WinMgr.WIN_ID_MAINMENU )
@@ -95,7 +95,7 @@ class EditSatellite( SettingWindow ) :
 		 		else :
 		 			self.CloseBusyDialog( )
 		 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You were unable to change satellite name' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Unable to change satellite name' ) )
 		 			dialog.doModal( )
  				
 		# Add New Satellite
@@ -115,17 +115,17 @@ class EditSatellite( SettingWindow ) :
 			 		else :
 			 			self.CloseBusyDialog( )
 			 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You were unable to add a new satellite in the list' ) )
+						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Unable to add a new satellite in the list' ) )
 			 			dialog.doModal( )
 			 	else :
 			 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'The satellite already exists in the list' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Same name of satellite already exists' ) )
 		 			dialog.doModal( )
 				 
 		# Delete Satellite
 		elif groupId == E_Input05 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Delete satellite' ), MR_LANG( 'Do you want to remove this satellite?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Delete satellite' ), MR_LANG( 'Are you sure you want to remove\nthis satellite?' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -135,7 +135,6 @@ class EditSatellite( SettingWindow ) :
 					self.mSatelliteIndex = 0
 					self.mDataCache.LoadAllSatellite( )
 					self.mDataCache.Channel_DeleteBySatellite( self.mLongitude, self.mBand )
-					self.mCommander.Channel_Save( )
 					self.mDataCache.Channel_ReLoad( )
 					self.mDataCache.LoadConfiguredSatellite( )
 					self.mDataCache.LoadConfiguredTransponder( )
@@ -144,7 +143,7 @@ class EditSatellite( SettingWindow ) :
 		 		else :
 		 			self.CloseBusyDialog( )
 		 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You were unable to remove the satellite from the list' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Unable to remove the satellite from the list' ) )
 		 			dialog.doModal( )
 
 

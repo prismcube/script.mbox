@@ -254,7 +254,6 @@ class NullWindow( BaseWindow ) :
 			self.SetMediaCenter( )
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
 
-
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
@@ -265,13 +264,13 @@ class NullWindow( BaseWindow ) :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV/Radio channel is available' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV and radio channel available' ) )
 					dialog.doModal( )
 
 		elif actionId == Action.ACTION_MBOX_RECORD :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_PVR :
-				msg = MR_LANG( 'Try again after stopping the PVR first' )
+				msg = MR_LANG( 'Try again after stopping playback first' )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
 				dialog.doModal( )
@@ -315,7 +314,7 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_TEXT :
 			if not self.mDataCache.Teletext_Show( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No teletext is available' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No teletext available' ) )
 				dialog.doModal( )
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
@@ -506,7 +505,7 @@ class NullWindow( BaseWindow ) :
 		else:
 			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), msg )
 			dialog.doModal( )
 
 		if isOK :

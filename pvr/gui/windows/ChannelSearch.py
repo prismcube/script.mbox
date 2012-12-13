@@ -17,8 +17,8 @@ class ChannelSearch( SettingWindow ) :
 		self.SetPipScreen( )
 		self.LoadNoSignalState( )
 
-		self.AddInputControl( E_Input01, MR_LANG( 'Automatic Scan' ), '', MR_LANG( 'Search TV and Radio channels without entering any satellite information' ) )
-		self.AddInputControl( E_Input02, MR_LANG( 'Manual Scan' ), '', MR_LANG( 'Scan channels on specific transponder by setting frequency, symbol rate, polarization, etc' ) )
+		self.AddInputControl( E_Input01, MR_LANG( 'Automatic scan' ), '', MR_LANG( 'Search TV and radio channels without entering any satellite information' ) )
+		self.AddInputControl( E_Input02, MR_LANG( 'Manual scan' ), '', MR_LANG( 'Scan channels on specific transponder by setting frequency, symbol rate, polarization, etc' ) )
 
 		self.InitControl( )
 		self.SetFocusControl( E_Input01 )
@@ -41,12 +41,12 @@ class ChannelSearch( SettingWindow ) :
 		self.mInitialized = True
 
 		if self.mDataCache.GetEmptySatelliteInfo( ) == True :
-			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No satellite data is available' ) )
+			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No satellite data available' ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No satellite data is available\nPlease factory reset your STB' )	)
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Please reset your device to factory settings' ) )
 			dialog.doModal( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Do you want to go to configuration?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Go to the configuration menu now?' ), MR_LANG( 'When you perform a factory reset,\nall your settings revert to factory defaults' ) )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.mIsCloseing = True

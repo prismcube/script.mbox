@@ -18,7 +18,7 @@ class DialogAddNewSatellite( SettingDialog ) :
 
 	def onInit( self ) :
 		self.mLongitude = 0
-		self.SetHeaderLabel( MR_LANG( 'Add Satellite' ) )
+		self.SetHeaderLabel( MR_LANG( 'Add satellite' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Confirm' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, MR_LANG( 'Cancel' ) )
 		self.DrawItem( )

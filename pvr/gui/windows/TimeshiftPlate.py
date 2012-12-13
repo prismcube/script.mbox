@@ -325,7 +325,7 @@ class TimeShiftPlate( BaseWindow ) :
 				
 			if self.mMode == ElisEnum.E_MODE_PVR :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping the PVR first' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping playback first' ) )
 				dialog.doModal( )
 			else :
 				self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
@@ -384,7 +384,7 @@ class TimeShiftPlate( BaseWindow ) :
 					
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'You have reached the maximum number of\nrecordings allowed' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'You have reached the maximum number of\nrecordings allowed' ) )
 				dialog.doModal( )
 
 			if isOK :
@@ -993,7 +993,7 @@ class TimeShiftPlate( BaseWindow ) :
 		if aFocusId == E_CONTROL_ID_BUTTON_BOOKMARK :
 			if not self.mPlatform.IsPrismCube( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' )% self.mPlatform.GetName( ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' )% self.mPlatform.GetName( ) )
 				dialog.doModal( )
 				self.RestartAutomaticHide( )
 				return
@@ -1012,9 +1012,9 @@ class TimeShiftPlate( BaseWindow ) :
 
 	def BookMarkContext( self ) :
 		context = []
-		context.append( ContextItem( MR_LANG( 'Add bookmark' ), CONTEXT_ACTION_ADD_TO_BOOKMARK ) )
-		context.append( ContextItem( MR_LANG( 'Add To AutoChapter' ), CONTEXT_ACTION_ADD_AUTO_CHAPTER ) )
-		context.append( ContextItem( MR_LANG( 'Show bookmark list' ), CONTEXT_ACTION_SHOW_LIST ) )
+		context.append( ContextItem( MR_LANG( 'Create bookmark' ), CONTEXT_ACTION_ADD_TO_BOOKMARK ) )
+		context.append( ContextItem( MR_LANG( 'Add chapters automatically' ), CONTEXT_ACTION_ADD_AUTO_CHAPTER ) )
+		context.append( ContextItem( MR_LANG( 'Show all bookmarks' ), CONTEXT_ACTION_SHOW_LIST ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
 		dialog.SetProperty( context )
@@ -1081,7 +1081,7 @@ class TimeShiftPlate( BaseWindow ) :
 		mediaTime = self.mTimeshift_endTime - self.mTimeshift_staTime
 		if ( mediaTime / 1000 ) < 30 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Make media length longer than 30 secs to create a chapter' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Make media length longer than 30 secs\nto create a chapter' ) )###daniel
  			dialog.doModal( )
 			return
 

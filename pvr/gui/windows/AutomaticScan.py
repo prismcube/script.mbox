@@ -31,12 +31,12 @@ class AutomaticScan( SettingWindow ) :
 			self.mInitialized = True
 		else :
 			self.SetVisibleControls( hideControlIds, False )
-			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite is available' ) )
+			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite available' ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is no configured satellite in the list' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Make sure that the antenna setting is correct' ) )
 			dialog.doModal( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Do you want to go to antenna setup?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Go to the antenna setup page now?' ), MR_LANG( 'Add satellites and set LNB parameters' ) )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP, WinMgr.WIN_ID_MAINMENU )
@@ -116,7 +116,7 @@ class AutomaticScan( SettingWindow ) :
 		if count <= 1 :
 			hideControlIds = [ E_Input01, E_SpinEx01, E_SpinEx02, E_Input02 ]
 			self.SetVisibleControls( hideControlIds, False )
-			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite is available' ) )
+			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite available' ) )
 		else :
 			self.AddInputControl( E_Input01, MR_LANG( 'Satellite' ), self.mFormattedList[self.mSatelliteIndex], MR_LANG( 'Select satellites you wish to search from' ) )
 			self.AddEnumControl( E_SpinEx01, 'Network Search', None, MR_LANG( 'When set to \'On\', new channels are searched from existing transponders and the additional transponders that stored by transponder network however if you set this option to \'Off\', only the transponder you selected will be searched' ) )

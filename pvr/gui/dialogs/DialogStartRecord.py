@@ -350,7 +350,7 @@ class DialogStartRecord( SettingDialog ) :
 				self.mIsOk = E_DIALOG_STATE_CANCEL
 				if self.mDurationChanged == True :
 					if self.mTimer.mTimerType == ElisEnum.E_ITIMER_WEEKLY :
-						LOG_TRACE( 'ToDO : weely timer is running' )
+						LOG_TRACE( 'ToDO : Weekly timer is running' )
 						endTime = self.mTimer.mStartTime + self.mTimer.mDuration						
 					else :
 						endTime = self.mTimer.mStartTime + self.mTimer.mDuration
@@ -359,7 +359,7 @@ class DialogStartRecord( SettingDialog ) :
 					if self.mDataCache.Timer_EditRunningTimer( self.mTimer.mTimerId, endTime ) == True :
 						self.mIsOk = E_DIALOG_STATE_YES
 					else :
-						msg = MR_LANG( 'You were unable to change the duration' )
+						msg = MR_LANG( 'Unable to change the duration' )
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG('Error'), msg )
 						dialog.doModal( )
@@ -404,7 +404,7 @@ class DialogStartRecord( SettingDialog ) :
 				LOG_TRACE( 'expectedDuration=%d' %expectedDuration )
 
 				if expectedDuration < 0:
-					LOG_ERR( 'Error : Alread Passed' )
+					LOG_ERR( 'Error : Already Passed' )
 					expectedDuration = 0
 
 				ret = self.mDataCache.Timer_AddOTRTimer( False, expectedDuration, copyTimeshift, self.mOTRInfo.mEventName, True, 0, 0,  0, 0 )
