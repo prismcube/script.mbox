@@ -87,7 +87,7 @@ class SatelliteConfigOnecable( SettingWindow ) :
 		if groupId == E_Input01 :
 			if len( self.mTunerMgr.GetConfiguredSatelliteList( ) ) == 0 :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is no configured satellite in the list' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No configured satellite available' ) )
 	 			dialog.doModal( )
 			else :
 				self.ResetAllControl( )
@@ -108,7 +108,7 @@ class SatelliteConfigOnecable( SettingWindow ) :
 			else :
 				if self.mSatelliteNamelist[0] == MR_LANG( 'None' ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Select a satellite for satellite 1 first' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Select a satellite name for satellite 1 first' ) )
 		 			dialog.doModal( )
 		 			return
 		 		if self.mSatelliteNamelist[1] == MR_LANG( 'None' ) :
@@ -139,7 +139,7 @@ class SatelliteConfigOnecable( SettingWindow ) :
 		 	else :
 		 		self.CloseBusyDialog( )
 		 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Same satellite already configured' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Same name of satellite already exists' ) )
 	 			dialog.doModal( )
 
 

@@ -153,7 +153,7 @@ class DialogMgr( object ) :
 				return DialogAutoPowerDown( 'DialogAutoPowerDown.xml', self.scriptDir )
 
 			else :
-				LOG_ERR( 'can not find dialog' )
+				LOG_ERR( 'Cannot find dialog' )
 
 		except Exception, ex :
 			LOG_ERR( '-----------------------> except[%s]' %ex )

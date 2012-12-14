@@ -148,7 +148,7 @@ class WindowMgr( object ) :
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
-			self.mLastId = 0
+			self.mLastId = WIN_ID_NULLWINDOW
 
 
 	def CloseWindow( self ) :
@@ -171,8 +171,8 @@ class WindowMgr( object ) :
 
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
-			self.mLastId = 0
-		
+			self.mLastId = WIN_ID_NULLWINDOW
+
 
 	def RootWindow( self ) :
 		from pvr.gui.windows.RootWindow import RootWindow

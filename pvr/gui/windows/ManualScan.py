@@ -46,12 +46,12 @@ class ManualScan( SettingWindow ) :
 			self.mInitialized = True
 		else :
 			self.SetVisibleControls( hideControlIds, False )
-			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite is available' ) )
+			self.getControl( E_SETTING_DESCRIPTION ).setLabel( MR_LANG( 'No configured satellite available' ) )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'There is no configured satellite in the list' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Make sure that the antenna setting is correct' ) )
  			dialog.doModal( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Do you want to go to antenna setup?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Go to the antenna setup page now?' ), MR_LANG( 'Add satellites and set LNB parameters' ) )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ANTENNA_SETUP, WinMgr.WIN_ID_MAINMENU )
@@ -170,12 +170,7 @@ class ManualScan( SettingWindow ) :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_SEARCH )
 			dialog.SetTransponder( config.mSatelliteLongitude, config.mBandType, transponderList )
 			dialog.doModal( )
-			
-			self.OpenBusyDialog( )
-			zappingMode = self.mDataCache.Zappingmode_GetCurrent( True )		
-			self.mDataCache.Channel_GetAllChannels( zappingMode.mServiceType, False )
-			self.CloseBusyDialog( )				
-			
+
 			ScanHelper.GetInstance( ).ScanHelper_Start( self.mWin )
 
 		# Manual Setup

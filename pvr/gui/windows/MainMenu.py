@@ -79,7 +79,7 @@ class MainMenu( BaseWindow ) :
 			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_PVR or self.mDataCache.Record_GetRunningRecorderCount( ) > 0 :
 				self.getControl( MAIN_GROUP_ID ).setVisible( False )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping recordings, PVR or Timeshift' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'Try again after stopping playback, recordings\nand timeshift' ) )
 				dialog.doModal( )
 				self.getControl( MAIN_GROUP_ID ).setVisible( True )
 			else :
@@ -109,7 +109,6 @@ class MainMenu( BaseWindow ) :
 						dialog.doModal( )
 						self.getControl( MAIN_GROUP_ID ).setVisible( True )
 					
-						
 
 		elif aControlId == BUTTON_ID_ARCHIVE :
 			from pvr.GuiHelper import HasAvailableRecordingHDD
@@ -128,6 +127,9 @@ class MainMenu( BaseWindow ) :
 
 		elif aControlId >= BUTTON_ID_MEDIA_CENTER and aControlId <= BUTTON_ID_MEDIA_SYS_INFO :
 			self.SetMediaCenter( )
+			if self.mDataCache.Player_GetStatus( ).mMode != ElisEnum.E_MODE_LIVE :
+				self.mDataCache.Player_Stop( )
+
 			if aControlId == BUTTON_ID_MEDIA_CENTER :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER )
 

@@ -180,7 +180,7 @@ class DialogStopRecord( BaseDialog ) :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.Close( )
 		else :
-			LOG_ERR( 'Can not find control' )
+			LOG_ERR( 'Cannot find control' )
 
 
 	@RunThread

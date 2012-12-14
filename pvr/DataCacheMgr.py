@@ -1565,6 +1565,10 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Teletext_NotifyHide( )
 
 
+	def Teletext_IsShowing( self ) :
+		return self.mCommander.Teletext_IsShowing( )
+
+
 	def Frontdisplay_SetMessage( self, aName ) :
 		self.mCommander.Frontdisplay_SetMessage( aName )
 
@@ -1652,7 +1656,7 @@ class DataCacheMgr( object ) :
 			checkCount = self.Channel_GetCount( newZappingMode.mServiceType )
 			#LOG_TRACE( '-------------check type[%s] count[%s]'% ( newZappingMode.mServiceType, checkCount ) )
 			if checkCount < 1 :
-				LOG_TRACE('Can not change. currType[%s] failType[%s] 1:TV, 2:Radio, channel is None'% ( zappingMode.mServiceType, newZappingMode.mServiceType ) )
+				LOG_TRACE('Cannot change. currType[%s] failType[%s] 1:TV, 2:Radio, channel is None'% ( zappingMode.mServiceType, newZappingMode.mServiceType ) )
 				return False
 
 			#LOG_TRACE('------changed settings')
@@ -1686,7 +1690,7 @@ class DataCacheMgr( object ) :
 
 			#restore
 			if restoreZappingMode and restoreZappingMode.mError == 0 :
-				LOG_ERR( 'restore previos zapping mode back' )
+				LOG_ERR( 'Restore previos zapping mode back' )
 				restoreZappingMode.printdebug( )
 				self.Zappingmode_SetCurrent( restoreZappingMode )
 				self.LoadZappingmode( )

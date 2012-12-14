@@ -30,7 +30,7 @@ def WaitUtileThreadsJoin( timeout=None ) :
 	for threadName, worker in gThreads.items( ) :
 		if worker :
 			if worker.isAlive( ) :
-				print 'wait until %s to join' % threadName
+				print 'Wait until %s to join' % threadName
 				worker.join( timeout )
 				if worker.isAlive( ):
 					print 'Thread %s still alive after timeout' %threadName

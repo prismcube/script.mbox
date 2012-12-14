@@ -35,7 +35,8 @@ class DialogBookmark( BaseDialog ) :
 		self.mThumbnailHash = {}
 		self.mMarkMode = False
 		self.mCtrlList = self.getControl( E_CONTROL_ID_LIST )
-		self.mCtrlPos =  self.getControl( DIALOG_LABEL_POS_ID )
+		self.mCtrlPos  = self.getControl( DIALOG_LABEL_POS_ID )
+		self.mIsDelete = False
 
 		self.InitList( )
 		self.mEventBus.Register( self )
@@ -251,6 +252,7 @@ class DialogBookmark( BaseDialog ) :
 			self.mMarkList.append( selectedPos )
 
 		for idx in self.mMarkList :
+			self.mIsDelete = True
 			playOffset = self.mBookmarkList[idx].mOffset
 			ret = self.mDataCache.Player_DeleteBookmark( self.mRecordInfo.mRecordKey, playOffset )
 			LOG_TRACE( 'bookmark delete[%s %s %s %s] ret[%s]'% (self.mRecordInfo.mRecordKey, idx, playOffset,self.mBookmarkList[selectedPos].mTimeMs,ret ) )
@@ -260,7 +262,7 @@ class DialogBookmark( BaseDialog ) :
 
 	def ShowDeleteAllConfirm( self ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'Delete Bookmark' ), MR_LANG( 'Do you want to delete the selected file(s)?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Delete all bookmarks' ), MR_LANG( 'Are you sure you want to remove\nall your bookmarks?' ) )
 		dialog.doModal( )
 
 		if dialog.IsOK( ) != E_DIALOG_STATE_YES :
@@ -340,6 +342,10 @@ class DialogBookmark( BaseDialog ) :
 
 	def GetCloseStatus( self ) :
 		return self.mIsOk
+
+
+	def IsDeleteBookmark( self ) :
+		return self.mIsDelete
 
 
 	def Close( self ) :

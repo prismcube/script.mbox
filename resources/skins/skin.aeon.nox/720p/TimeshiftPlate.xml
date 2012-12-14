@@ -27,6 +27,76 @@
 				</control>
 			</control>
 
+<!-- bookmark thumnail-->
+		<control type="group">
+			<posx>0</posx>
+			<posy>490</posy>
+			<animation effect="fade" start="0" end="100" time="400" condition="ControlGroup(501).IsVisible">Conditional</animation>
+			<animation effect="fade" start="100" end="0" time="400" condition="!ControlGroup(501).IsVisible">Conditional</animation>
+			<control type="group" id="501">
+				<visible>substring(Window.Property(BookMarkShow),true)</visible>
+				<control type="list" id="500">
+					<width>1320</width>
+					<height>100</height>
+					<onleft>500</onleft>
+					<onright>500</onright>
+					<onup>500</onup>
+					<ondown>3750</ondown>
+					<scrolltime>300</scrolltime>
+					<focusposition>3</focusposition>
+					<orientation>horizontal</orientation>
+					<preloaditems>4</preloaditems>
+					<itemlayout height="81" width="130">
+						<control type="image">
+							<posx>0</posx>
+							<posy>15</posy>
+							<width>130</width>
+							<height>85</height>
+							<aspectratio>stretch</aspectratio>
+							<bordertexture border="5">thumbs/bordershadow.png</bordertexture>
+							<bordersize>4</bordersize>
+							<texture>$INFO[ListItem.Property(BookMarkThumb)]</texture>
+						</control>
+						<control type="label">
+							<posx>65</posx>
+							<posy>50</posy>
+							<width>80</width>
+							<height>22</height>
+							<align>center</align>
+							<aligny>center</aligny>
+							<font>Font_Reg18</font>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</itemlayout>
+					<focusedlayout height="81" width="130">
+						<control type="image">
+							<posx>0</posx>
+							<posy>15</posy>
+							<width>130</width>
+							<height>85</height>
+							<aspectratio>stretch</aspectratio>
+							<bordertexture border="5">thumbs/bordershadow2.png</bordertexture>
+							<bordersize>8</bordersize>
+							<texture>$INFO[ListItem.Property(BookMarkThumb)]</texture>
+							<animation reversible="false" effect="zoom" start="0,100,144,-81" end="-32,40,208,100" time="200">focus</animation>
+							<!--animation reversible="false" effect="zoom" end="0,100,144,81" start="-32,40,208,100" time="200">unfocus</animation-->
+						</control>
+						<control type="label">
+							<posx>65</posx>
+							<posy>50</posy>
+							<width>100</width>
+							<height>22</height>
+							<align>center</align>
+							<aligny>center</aligny>
+							<font>Font_Reg22</font>
+							<textcolor>blue</textcolor>
+							<label>$INFO[ListItem.Label]</label>
+						</control>
+					</focusedlayout>
+				</control>
+			</control>
+		</control>
+
 <!-- Rec info -->
 			<control type="group">
 				<posx>300r</posx>

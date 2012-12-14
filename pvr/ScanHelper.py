@@ -35,7 +35,7 @@ class ScanHelper( object ) :
 			satellitetemp.append( aSatellite )
 			self.mCommander.ScanHelper_ChangeContext( transpondertemp, satellitetemp )
 		else :
-			LOG_ERR( 'ScanHelper_ChangeContext : Satellite or Tp is None' )
+			LOG_ERR( 'ScanHelper_ChangeContext : Satellite or TP is None' )
 
 
 	def ScanHelper_ChangeContextByCarrier( self, aWin, aTp ) :
@@ -45,7 +45,7 @@ class ScanHelper( object ) :
 			transpondertemp.append( aTp )
 			self.mCommander.ScanHelper_ChangeContextByCarrier( transpondertemp )
 		else :
-			LOG_ERR( 'ScanHelper_ChangeContextByCarrier : Tp is None' )
+			LOG_ERR( 'ScanHelper_ChangeContextByCarrier : TP is None' )
 
 
 	def ScanHelper_Stop( self, aWin, aReturn=True ) :

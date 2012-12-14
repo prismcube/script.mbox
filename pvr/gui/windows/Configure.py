@@ -90,8 +90,8 @@ class Configure( SettingWindow ) :
 		
 		self.mDescriptionList	= [
 		MR_LANG( 'Change your PRISMCUBE RUBY language preferences' ),
-		MR_LANG( 'Set limits on your kids\' STB use' ),
-		MR_LANG( 'Adjust settings for recording in STB' ),
+		MR_LANG( 'Set limits on your kids\' digital satellite receiver use' ),
+		MR_LANG( 'Adjust general recording settings' ),
 		MR_LANG( 'Set the system\'s digital audio output settings' ),
 		MR_LANG( 'Setup the output settings for TVs that support HDMI cable' ),
 		MR_LANG( 'Configure internet connection settings' ),
@@ -203,12 +203,12 @@ class Configure( SettingWindow ) :
 				if ret >= 0 and currentindex != ret :
 					if not self.mPlatform.IsPrismCube( ) :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
+						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No support %s' ) % self.mPlatform.GetName( ) )
 						dialog.doModal( )
 						return
 
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'Please be patience after pressing the OK button' ), MR_LANG( 'It will take some time to bring up display changes' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Change Language' ), MR_LANG( 'It may take several minutes to complete' ), MR_LANG( 'please wait after pressing the OK button' ) )
 					dialog.doModal( )
 					self.mInitialized = False
 					self.OpenBusyDialog( )
@@ -298,7 +298,7 @@ class Configure( SettingWindow ) :
 
  		elif selectedId == E_FACTORY_RESET and groupId == E_Input01 :
 	 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO RESET TO FACTORY SETTINGS?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Performing a factory reset?' ), MR_LANG( 'All settings will be restored to factory default' ) )
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
@@ -307,7 +307,6 @@ class Configure( SettingWindow ) :
 				self.mCommander.System_SetDefaultChannelList( )
 				self.mCommander.System_FactoryReset( )
 				self.mDataCache.LoadAllSatellite( )
-				self.mDataCache.Channel_ReLoad( )
 	 			from ElisProperty import ResetHash
 				ResetHash( )
 				self.mInitialized = False
@@ -325,29 +324,29 @@ class Configure( SettingWindow ) :
 					dialog.doModal( )
 				elif groupId == E_Input01 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO DELETE ALL MEDIA FILES?' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Format media partition?' ), MR_LANG( 'Formatting media partition cannot be undone!' ) )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-						self.mProgressThread = self.ShowProgress( MR_LANG( 'Formating HDD drive...' ), 120 )
+						self.mProgressThread = self.ShowProgress( MR_LANG( 'Formating HDD...' ), 120 )
 						self.mCommander.Format_Media_Archive( )
 						self.CloseProgress( )
 				elif groupId == E_Input02 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO DELETE ALL RECORDINGS?' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Format recording partition?' ), MR_LANG( 'Formatting recording partition cannot be undone!' ) )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-						self.mProgressThread = self.ShowProgress( MR_LANG( 'Formating HDD drive...' ), 60 )
+						self.mProgressThread = self.ShowProgress( MR_LANG( 'Formating HDD...' ), 60 )
 						self.mCommander.Format_Record_Archive( )
 						self.CloseProgress( )
 				elif groupId == E_Input03 :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-					dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'DO YOU WANT TO FORMAT YOUR HDD DRIVE?' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Format hard disk drive?' ), MR_LANG( 'Everything on your hard drive will be erased' ) )
 					dialog.doModal( )
 					if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 						self.DedicatedFormat( )
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Cannot find HDD drive' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Cannot find a hard drive' ) )
 	 			dialog.doModal( )
 
 	 	elif selectedId == E_ETC and groupId == E_SpinEx02 :
@@ -427,7 +426,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_RECORDING_OPTION :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddEnumControl( E_SpinEx01, 'Automatic Timeshift', None, MR_LANG( 'When set to \'On\', the STB automatically start a timeshift recording when a different channel is selected' ) )
+			self.AddEnumControl( E_SpinEx01, 'Automatic Timeshift', None, MR_LANG( 'When set to \'On\', your PRISMCUBE RUBY automatically start a timeshift recording when a different channel is selected' ) )
 			self.AddEnumControl( E_SpinEx02, 'Timeshift Buffer Size', None, MR_LANG( 'Select the preferred size of timeshift buffer' ) )
 			self.AddEnumControl( E_SpinEx03, 'Default Rec Duration', None, MR_LANG( 'Select recording duration for a channel that has no EPG info' ) )
 			self.AddEnumControl( E_SpinEx04, 'Pre-Rec Time', None, MR_LANG( 'Set the pre-recording time for a EPG channel' ) )
@@ -465,7 +464,7 @@ class Configure( SettingWindow ) :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddEnumControl( E_SpinEx01, 'HDMI Format', None, MR_LANG( 'Set the display\'s HDMI resolution' ) )
 			self.AddEnumControl( E_SpinEx02, 'Show 4:3', MR_LANG( 'TV Screen Format' ), MR_LANG( 'Select the display format for TV screen' ) )
-			self.AddEnumControl( E_SpinEx03, 'HDMI Color Space', None, MR_LANG( 'Set RGB or YUV for HDMI Color Space' ) )
+			self.AddEnumControl( E_SpinEx03, 'HDMI Color Space', None, MR_LANG( 'Set RGB or YUV for HDMI color space' ) )
 			self.AddEnumControl( E_SpinEx04, 'TV System', None, MR_LANG( 'Set your TV system format' ) )
 			
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_SpinEx04 ]
@@ -480,10 +479,10 @@ class Configure( SettingWindow ) :
 			return
 
 		elif selectedId == E_NETWORK_SETTING :
-			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select Ethernet or Wireless for your network connection' ) )
+			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Network Connection' ), USER_ENUM_LIST_NETWORK_TYPE, self.mUseNetworkType, MR_LANG( 'Select ethernet or wireless for your network connection' ) )
 			self.AddInputControl( E_Input07, MR_LANG( 'Network Link' ), self.mStateNetLink, MR_LANG( 'Show network link status' ) )
 			if self.mUseNetworkType == NETWORK_WIRELESS :
-				self.AddInputControl( E_Input01, MR_LANG( 'Search AP' ), self.mCurrentSsid, MR_LANG( 'Search Access Points around your STB' ) )
+				self.AddInputControl( E_Input01, MR_LANG( 'Search AP' ), self.mCurrentSsid, MR_LANG( 'Search Access Points around your device' ) )
 				self.AddUserEnumControl( E_SpinEx01, MR_LANG( 'Hidden SSID' ), USER_ENUM_LIST_ON_OFF, self.mUseHiddenId, MR_LANG( 'Enable hidden Subsystem Identification (SSID)' ) )
 				self.AddInputControl( E_Input02, MR_LANG( ' - Set Hidden SSID' ), self.mHiddenSsid, MR_LANG( 'Enter the hidden SSID you wish to use' ) )
 				self.AddInputControl( E_Input03, MR_LANG( 'Set Encryption Key' ), StringToHidden( self.mPassWord ), MR_LANG( 'Enter the encryption key for wireless connection' ) )
@@ -571,9 +570,9 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FORMAT_HDD :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddInputControl( E_Input01, MR_LANG( 'Format Media Partition' ), '', MR_LANG( 'Press the OK button to remove everything in the Media partition' ) )
-			self.AddInputControl( E_Input02, MR_LANG( 'Format Recording Partition' ), '', MR_LANG( 'Press the OK button to remove everything in the Recording partition' ) )
-			self.AddInputControl( E_Input03, MR_LANG( 'Format HDD' ), '', MR_LANG( 'Press the OK button to erase your hard drive' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Format Media Partition' ), '', MR_LANG( 'Press the OK button to remove everything in the media partition' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Format Recording Partition' ), '', MR_LANG( 'Press the OK button to remove everything in the recording partition' ) )
+			self.AddInputControl( E_Input03, MR_LANG( 'Format Hard Drive' ), '', MR_LANG( 'Press the OK button to erase your hard disk drive' ) )
 
 			visibleControlIds = [ E_Input01, E_Input02, E_Input03 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -592,7 +591,7 @@ class Configure( SettingWindow ) :
 
 		elif selectedId == E_FACTORY_RESET :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddInputControl( E_Input01, MR_LANG( 'Start Factory Reset'), '', MR_LANG( 'Go to First Installation after restoring system to the factory default' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Start Factory Reset'), '', MR_LANG( 'Go to first installation after restoring system to the factory default' ) )###daniel
 
 			visibleControlIds = [ E_Input01 ]
 			self.SetVisibleControls( visibleControlIds, True )
@@ -608,7 +607,7 @@ class Configure( SettingWindow ) :
 		elif selectedId == E_ETC :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
 			self.AddEnumControl( E_SpinEx01, 'Deep Standby', None, MR_LANG( 'When set to \'On\', the system switches to deep standby mode when you press the \'Power\' button to help reduce the amount of electricity used' ) )
-			self.AddEnumControl( E_SpinEx02, 'Power Save Mode', None, MR_LANG( 'Set the time for swithcing into standby mode when not being used' ) )
+			self.AddEnumControl( E_SpinEx02, 'Power Save Mode', None, MR_LANG( 'Set the time for switching into standby mode when not being used' ) )
 			self.AddEnumControl( E_SpinEx03, 'Fan Control', None, MR_LANG( 'Adjust the fan speed level for your system' ) )
 			self.AddEnumControl( E_SpinEx04, 'Channel Banner Duration', MR_LANG( 'Channel Banner Time' ), MR_LANG( 'Set the time for the channel info to be displayed when zapping' ) )		#	Erase channel list yes/no
 			self.AddEnumControl( E_SpinEx05, 'Playback Banner Duration', MR_LANG( 'Playback Banner Time' ), MR_LANG( 'Set the time for the playback info to be displayed on the screen' ) )	#	Erase custom menu yes/no
@@ -625,7 +624,7 @@ class Configure( SettingWindow ) :
 			return
 
 		else :
-			LOG_ERR( 'Can not find selected ID' )
+			LOG_ERR( 'Cannot find selected ID' )
 
 
 	def DisableControl( self, aSelectedItem ) :
@@ -702,7 +701,7 @@ class Configure( SettingWindow ) :
 		else :
 			self.mSavedNetworkType	= NET_DHCP
 			self.mTempNetworkType	= NET_DHCP
-			LOG_ERR( 'Can not read network type( dhcp/static )' )
+			LOG_ERR( 'Cannot read network type( dhcp/static )' )
 
 
 	def LoadEthernetAddress( self ) :
@@ -722,7 +721,7 @@ class Configure( SettingWindow ) :
 		if ret == False :
 			time.sleep( 0.5 )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Network setup has failed to complete' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Network setup failed to complete' ) )
  			dialog.doModal( )
 		else :
 			if self.mTempNetworkType == NET_DHCP :
@@ -796,7 +795,7 @@ class Configure( SettingWindow ) :
 			if dev == None :
 				time.sleep( 0.5 )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Devices not found' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Device not found' ) )
 				dialog.doModal( )
 				self.mRunningNetwork = False
 				return
@@ -832,7 +831,7 @@ class Configure( SettingWindow ) :
 			dev = self.mWireless.GetWifidevice( )
 			if apList == None or dev == None :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'AP or devices not found' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'AP or device not found' ) )
 				dialog.doModal( )
 				return
 			if self.mEncryptType == ENCRYPT_TYPE_WPA and ( len( self.mPassWord ) < 8 or len( self.mPassWord ) > 64 ) :
@@ -856,7 +855,7 @@ class Configure( SettingWindow ) :
 			if ret1 == False or ret2 == False :
 				time.sleep( 0.5 )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'STB was unable to save the Wifi configuration' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Unable to save the WiFi configuration' ) )
 				dialog.doModal( )
 			self.mRunningNetwork = False
 
@@ -867,7 +866,7 @@ class Configure( SettingWindow ) :
 			self.mEncryptType		= self.mWireless.GetEncryptType( )
 			self.mPassWord 			= self.mWireless.GetPassword( )
 		else :
-			LOG_ERR( 'Load Wpa Supplicant Fail' )
+			LOG_ERR( 'Load WPA Supplicant failed' )
 
 
 	def ShowIpInputDialog( self, aIpAddr ) :
@@ -931,7 +930,7 @@ class Configure( SettingWindow ) :
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
-				dialog.SetDialogProperty( 14, MR_LANG( 'Setting Time...' ), ElisEventTimeReceived.getName( ) )
+				dialog.SetDialogProperty( 14, MR_LANG( 'Setting time...' ), ElisEventTimeReceived.getName( ) )
 				dialog.doModal( )
 				self.OpenBusyDialog( )
 				if dialog.GetResult( ) == False :
@@ -953,7 +952,7 @@ class Configure( SettingWindow ) :
 			self.CloseBusyDialog( )
 			if mode == TIME_AUTOMATIC and dialog.GetResult( ) == False :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Automatic time setup has failed because' ), MR_LANG( 'no time info was given by the channel you selected' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No time info was given by that channel' ) )
 				dialog.doModal( )
 
 			if mute == False :
@@ -1017,7 +1016,7 @@ class Configure( SettingWindow ) :
 
 	def DedicatedFormat( self ) :
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-		dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'BACKUP ADDONS AND USER DATA BEFORE FORMATING?' ) )
+		dialog.SetDialogProperty( MR_LANG( 'Backup data?' ), MR_LANG( 'Your user data and XBMC add-ons will be backuped' ) )
 		dialog.doModal( )
 		if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 			if CheckDirectory( '/mnt/hdd0/program/.xbmc/userdata' ) and CheckDirectory( '/mnt/hdd0/program/.xbmc/addons' ) :
@@ -1028,7 +1027,7 @@ class Configure( SettingWindow ) :
 				dialog.doModal( )
 		else :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
-			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'ARE YOU SURE?' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Start formatting without making a backup?' ), MR_LANG( 'Formatting HDD cannot be undone!' ) )
 			dialog.doModal( )
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.MakeDedicate( )
@@ -1053,13 +1052,13 @@ class Configure( SettingWindow ) :
 
 
 	def CopyBackupData( self, aUsbpath ) :
-		self.mProgressThread = self.ShowProgress( MR_LANG( 'Now backuping your user data...' ), 30 )
+		self.mProgressThread = self.ShowProgress( MR_LANG( 'Now backing up your user data...' ), 30 )
 		ret_udata = CopyToDirectory( '/mnt/hdd0/program/.xbmc/userdata', aUsbpath + '/userdata' )
 		ret_addons = CopyToDirectory( '/mnt/hdd0/program/.xbmc/addons', aUsbpath + '/addons' )
 		if ret_udata and ret_addons :
 			self.CloseProgress( )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'WARNING' ), MR_LANG( 'PRESS OK BUTTON TO FORMAT HDD DRIVE' ) )
+			dialog.SetDialogProperty( MR_LANG( 'Start formatting HDD?' ), MR_LANG( 'Press OK button to format your HDD now' ) )
 			dialog.doModal( )
 			self.MakeDedicate( )
 		else :

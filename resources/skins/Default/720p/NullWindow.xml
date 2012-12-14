@@ -29,5 +29,13 @@
 			<textcolor>grey2</textcolor>
 			<visible>substring(Window.Property(Signal),Scramble) + substring(Window.Property(PvrPlay),False)</visible>
 		</control>
+		<control type="image">
+			<posx>30r</posx>
+			<posy>0</posy>
+			<width>30</width>
+			<height>30</height>
+			<texture>IconNotAvailable.png</texture>
+			<visible>substring(Window.Property(NotAvail),true)</visible>
+		</control>
 	</controls>
 </window>

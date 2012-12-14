@@ -236,6 +236,10 @@ class NullWindow( BaseWindow ) :
 
 			else :
 				self.mDataCache.Player_Stop( )
+				if self.mDataCache.Teletext_IsShowing( ) :
+					LOG_TRACE( '----------Teletext_IsShowing...No Changed window' )
+					return
+
 				if status.mMode == ElisEnum.E_MODE_PVR :
 					self.Close( )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
@@ -248,16 +252,11 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_XBMC :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode != ElisEnum.E_MODE_LIVE :
-				msg = MR_LANG( 'Try again after stopping the PVR or Timeshift first' )
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
-				dialog.doModal( )
+				self.mDataCache.Player_Stop( )
 
-			else :
-				self.Close( )
-				self.SetMediaCenter( )
-				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
-
+			self.Close( )
+			self.SetMediaCenter( )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
 			status = self.mDataCache.Player_GetStatus( )
@@ -269,13 +268,13 @@ class NullWindow( BaseWindow ) :
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
 				else :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV/Radio channel is available' ) )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV and radio channel available' ) )
 					dialog.doModal( )
 
 		elif actionId == Action.ACTION_MBOX_RECORD :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_PVR :
-				msg = MR_LANG( 'Try again after stopping the PVR first' )
+				msg = MR_LANG( 'Try again after stopping playback first' )
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 				dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
 				dialog.doModal( )
@@ -319,7 +318,7 @@ class NullWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_TEXT :
 			if not self.mDataCache.Teletext_Show( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Attention' ), MR_LANG( 'No teletext is available' ) )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No teletext available' ) )
 				dialog.doModal( )
 
 		elif actionId == Action.ACTION_MBOX_SUBTITLE :
@@ -330,6 +329,7 @@ class NullWindow( BaseWindow ) :
 			pass
 
 		else :
+			self.NotAvailAction( )
 			LOG_TRACE( 'unknown key[%s]'% actionId )
 
 
@@ -411,6 +411,15 @@ class NullWindow( BaseWindow ) :
 			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
+
+			elif aEvent.getName( ) == ElisEventTTXClosed.getName( ) :
+				if E_SUPPROT_HBBTV :
+					LOG_TRACE('----------HBB Tv Ready')
+					self.mCommander.AppHBBTV_Ready( 0 )
+					self.mHBBTVReady = False
+
+				self.mDataCache.LoadVolumeToSetGUI( )
+				LOG_TRACE( '----------ElisEventTTXClosed' )
 
 			elif E_SUPPROT_HBBTV == True :
 				if aEvent.getName( ) == ElisEventExternalMediaPlayerStart.getName( ) :
@@ -510,7 +519,7 @@ class NullWindow( BaseWindow ) :
 		else:
 			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-			dialog.SetDialogProperty( MR_LANG( 'Attention' ), msg )
+			dialog.SetDialogProperty( MR_LANG( 'Error' ), msg )
 			dialog.doModal( )
 
 		if isOK :
