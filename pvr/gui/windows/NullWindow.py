@@ -236,6 +236,10 @@ class NullWindow( BaseWindow ) :
 
 			else :
 				self.mDataCache.Player_Stop( )
+				if self.mDataCache.Teletext_IsShowing( ) :
+					LOG_TRACE( '----------Teletext_IsShowing...No Changed window' )
+					return
+
 				if status.mMode == ElisEnum.E_MODE_PVR :
 					self.Close( )
 					WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_ARCHIVE_WINDOW, WinMgr.WIN_ID_NULLWINDOW )
@@ -325,6 +329,7 @@ class NullWindow( BaseWindow ) :
 			pass
 
 		else :
+			self.NotAvailAction( )
 			LOG_TRACE( 'unknown key[%s]'% actionId )
 
 
@@ -406,6 +411,15 @@ class NullWindow( BaseWindow ) :
 			elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
 				WinMgr.GetInstance( ).GetWindow( WinMgr.WIN_ID_LIVE_PLATE ).SetPincodeRequest( True )
 				xbmc.executebuiltin( 'xbmc.Action(contextmenu)' )
+
+			elif aEvent.getName( ) == ElisEventTTXClosed.getName( ) :
+				if E_SUPPROT_HBBTV :
+					LOG_TRACE('----------HBB Tv Ready')
+					self.mCommander.AppHBBTV_Ready( 0 )
+					self.mHBBTVReady = False
+
+				self.mDataCache.LoadVolumeToSetGUI( )
+				LOG_TRACE( '----------ElisEventTTXClosed' )
 
 			elif E_SUPPROT_HBBTV == True :
 				if aEvent.getName( ) == ElisEventExternalMediaPlayerStart.getName( ) :

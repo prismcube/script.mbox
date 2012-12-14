@@ -361,7 +361,7 @@ class TimeShiftPlate( BaseWindow ) :
 			self.GlobalAction( Action.ACTION_MUTE )
 			#xbmc.executebuiltin('xbmc.Action(mute)')
 			self.StopAutomaticHide( )
-		
+
 		elif aControlId == E_CONTROL_ID_BUTTON_START_RECORDING :	
 			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
@@ -700,20 +700,6 @@ class TimeShiftPlate( BaseWindow ) :
 			return
 
 		self.mWin.setProperty( aPropertyID, aValue )
-
-
-	def UpdateSetFocus( self, aControlId = E_CONTROL_ID_BUTTON_PLAY ) :
-		startTime = time.time()
-		loopTime = 0.0
-		sleepTime = 0.01
-		while loopTime < 1.5 :
-			self.setFocusId( aControlId )
-			if aControlId == self.getFocusId( ) :
-				break
-			time.sleep( sleepTime )
-			loopTime += sleepTime
-
-		#LOG_TRACE('-----------control[%s] setFocus time[%s]'% ( aControlId, ( time.time() - startTime ) ) )
 
 
 	@SetLock

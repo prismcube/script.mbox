@@ -378,7 +378,14 @@ class InfoPlate( LivePlateWindow ) :
 				dialog.doModal( )
 				return
 
-			self.GlobalAction( Action.ACTION_MUTE )
+			if not self.mDataCache.Teletext_Show( ) :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No teletext available' ) )
+				dialog.doModal( )
+			else :
+				self.Close( )
+				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_NULLWINDOW )
+				return
 
 		elif aFocusId == E_CONTROL_ID_BUTTON_SUBTITLE :
 			if not self.mPlatform.IsPrismCube( ) :

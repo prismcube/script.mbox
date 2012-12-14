@@ -249,6 +249,34 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 			self.mCommander.Player_SetVolume( volume )
 
 
+	def UpdateControlListSelectItem( self, aListControl, aIdx = 0 ) :
+		startTime = time.time()
+		loopTime = 0.0
+		sleepTime = 0.01
+		while loopTime < 1.5 :
+			aListControl.selectItem( aIdx )
+			if aIdx == aListControl.getSelectedPosition( ) :
+				break
+			time.sleep( sleepTime )
+			loopTime += sleepTime
+
+		#LOG_TRACE('-----------control[%s] idx setItem time[%s]'% ( aListControl.getId( ), ( time.time() - startTime ) ) )
+
+
+	def UpdateSetFocus( self, aControlId ) :
+		startTime = time.time()
+		loopTime = 0.0
+		sleepTime = 0.01
+		while loopTime < 1.5 :
+			self.setFocusId( aControlId )
+			if aControlId == self.getFocusId( ) :
+				break
+			time.sleep( sleepTime )
+			loopTime += sleepTime
+
+		#LOG_TRACE('-----------control[%s] setFocus time[%s]'% ( aControlId, ( time.time() - startTime ) ) )
+
+
 	def SetMediaCenter( self ) :
 		self.mDataCache.SetMediaCenter( True )
 		self.mCommander.AppMediaPlayer_Control( 1 )
@@ -278,9 +306,15 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 		xbmc.executebuiltin( "Dialog.Close(busydialog)" )
 
 
-	def AlarmDialog( self, aMsg1, aMsg2 ) :
-		command = 'Notification(%s,%s,2000)'% ( aMsg1, aMsg2 )
+	def NotificationDialog( self, aMsg1, aMsg2, aTimeMs = 2000, aImage = '' ) :
+		command = 'Notification(%s,%s,%s,%s)'% ( aMsg1, aMsg2, aTimeMs, aImage )
 		xbmc.executebuiltin( command )
+
+
+	def NotAvailAction( self ) :
+		self.setProperty( 'NotAvail', 'True' )
+		time.sleep( 0.5 )
+		self.setProperty( 'NotAvail', 'False' )
 
 
 	def SetPipLabel( self ) :

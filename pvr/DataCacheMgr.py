@@ -1565,6 +1565,10 @@ class DataCacheMgr( object ) :
 		return self.mCommander.Teletext_NotifyHide( )
 
 
+	def Teletext_IsShowing( self ) :
+		return self.mCommander.Teletext_IsShowing( )
+
+
 	def Frontdisplay_SetMessage( self, aName ) :
 		self.mCommander.Frontdisplay_SetMessage( aName )
 

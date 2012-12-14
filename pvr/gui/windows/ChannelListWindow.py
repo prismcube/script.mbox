@@ -495,6 +495,10 @@ class ChannelListWindow( BaseWindow ) :
 
 
 	def DoModeChange( self, aType = FLAG_MODE_TV ) :
+		if self.mViewMode == WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW :
+			LOG_TRACE( 'Editing now...' )
+			return
+
 		if self.mUserMode.mServiceType != aType and self.mDataCache.Channel_GetCount( aType ) > 0 :
 			tmpUserMode = deepcopy( self.mUserMode )
 			self.mUserMode = deepcopy( self.mLastMode )
@@ -507,15 +511,15 @@ class ChannelListWindow( BaseWindow ) :
 			aMode = self.mUserMode.mMode
 			aSort = self.mUserMode.mSortingMode
 
+			self.ResetLabel( )
+			self.mCtrlListCHList.reset( )
 			self.InitSlideMenuHeader( FLAG_SLIDE_OPEN )
 			self.RefreshSlideMenu( self.mUserSlidePos.mMain, self.mUserSlidePos.mSub, True )
+			#self.UpdateChannelList( )
 
-			self.mCtrlListCHList.reset( )
-			self.UpdateChannelList( )
 			self.mFlag_EditChanged = False
 			self.mLastMode = deepcopy( tmpUserMode )
 			self.mLastSlidePos = deepcopy( tmpUserSlidePos )
-
 
 			self.SetRadioScreen( aType )
 			propertyName = 'Last TV Number'
@@ -527,14 +531,12 @@ class ChannelListWindow( BaseWindow ) :
 
 			#initialize get epg event
 			self.mFlag_ModeChanged = False
-			#self.mIsTune = False
-			self.ResetLabel( )
-			#self.Epgevent_GetCurrent( )
 
 		else :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 			dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV and radio channels available' ) )
 			dialog.doModal( )
+
 
 		if self.mUserMode.mServiceType == FLAG_MODE_TV :
 			self.UpdateControlGUI( E_CONTROL_ID_RADIOBUTTON_TV,   True, E_TAG_SELECT )
@@ -1318,7 +1320,7 @@ class ChannelListWindow( BaseWindow ) :
 		list_Mainmenu.append( MR_LANG( 'All CHANNELS' ) )
 		list_Mainmenu.append( MR_LANG( 'SATELLITE' )    )
 		list_Mainmenu.append( MR_LANG( 'FTA/CAS' )      )
-		list_Mainmenu.append( MR_LANG( 'FAVORITES' )     )
+		list_Mainmenu.append( MR_LANG( 'FAVORITES' )    )
 		list_Mainmenu.append( MR_LANG( 'MODE' ) )
 		#list_Mainmenu.append( MR_LANG( 'Back' ) )
 		testlistItems = []
@@ -1326,6 +1328,7 @@ class ChannelListWindow( BaseWindow ) :
 			testlistItems.append( xbmcgui.ListItem(list_Mainmenu[item]) )
 
 		self.mCtrlListMainmenu.addItems( testlistItems )
+
 
 		try :
 			if self.mFlag_EditChanged :
@@ -1651,20 +1654,6 @@ class ChannelListWindow( BaseWindow ) :
 			
 		else :
 			self.mWin.setProperty( aPropertyID, aValue )
-
-
-	def UpdateControlListSelectItem( self, aListControl, aIdx = 0 ) :
-		startTime = time.time()
-		loopTime = 0.0
-		sleepTime = 0.01
-		while loopTime < 1.5 :
-			aListControl.selectItem( aIdx )
-			if aIdx == aListControl.getSelectedPosition( ) :
-				break
-			time.sleep( sleepTime )
-			loopTime += sleepTime
-
-		#LOG_TRACE('-----------control[%s] idx setItem time[%s]'% ( aListControl.getId( ), ( time.time() - startTime ) ) )
 
 
 	def UpdateChannelAndEPG( self ) :
