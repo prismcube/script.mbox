@@ -313,8 +313,21 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 	def NotAvailAction( self ) :
 		self.setProperty( 'NotAvail', 'True' )
-		time.sleep( 0.5 )
-		self.setProperty( 'NotAvail', 'False' )
+		loopTime = 0.01
+		sleepTime = 0.2
+		while loopTime < 0.5 :
+			if loopTime > sleepTime :
+				#LOG_TRACE( '-------loopTime[%s]'% loopTime )
+				self.setProperty( 'NotAvail', 'False' )
+				if self.getProperty( 'NotAvail' ) == 'False' :
+					break
+
+			time.sleep( 0.05 )
+			loopTime += 0.05
+
+		if self.getProperty( 'NotAvail' ) != 'False' :
+			self.setProperty( 'NotAvail', 'False' )
+			LOG_TRACE( '-------confirm again : setProperty False' )
 
 
 	def SetPipLabel( self ) :
