@@ -52,27 +52,27 @@
 				<control type="group" id="8500">
 					<control type="image" id="100">
 						<texture border="20">$INFO[Window.Property(imagepath)]</texture>
-						<visible>Control(8500).IsVisible()</visible>
+						<visible>Control.IsVisible(8500)</visible>
 					</control>
 					<control type="textbox" id="200">
 						<font>font12</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(label)]</label>
-						<visible>Control(8500).IsVisible()</visible>
+						<visible>Control.IsVisible(8500)</visible>
 						<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
 					</control>
 					<control type="textbox" id="201">
 						<font>font12</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(label1)]</label>
-						<visible>Control(8500).IsVisible()</visible>
+						<visible>Control.IsVisible(8500)</visible>
 						<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>
 					</control>
 					<control type="textbox" id="202">
 						<font>font12</font>
 						<textcolor>white</textcolor>
 						<label>$INFO[Window.Property(label2)]</label>
-						<visible>Control(8500).IsVisible()</visible>
+						<visible>Control.IsVisible(8500)</visible>
 						<autoscroll delay="3000" time="1000" repeat="10000">true</autoscroll>						
 					</control>
 				</control>

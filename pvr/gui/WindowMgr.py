@@ -79,8 +79,8 @@ class WindowMgr( object ) :
 		print 'scriptDir= %s' %self.mScriptDir
 
 		self.mDefaultLanguage = xbmc.getLanguage( )
-		currentSkinName = 'Default' #xbmc.executehttpapi( "GetGUISetting(3, lookandfeel.skin)" )
-		self.mSkinName = currentSkinName[4:]
+		#currentSkinName = 'Default' #xbmc.executehttpapi( "GetGUISetting(3, lookandfeel.skin)" )
+		self.mSkinName = 'Default' #currentSkinName[4:]
 
 		self.mLastId			= -1
 		self.mSkinFontPath		= []

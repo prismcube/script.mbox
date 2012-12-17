@@ -173,10 +173,11 @@ class MainMenu( BaseWindow ) :
 
 
 	def GetFavAddons( self ) :
+		return
 		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 			currentSkinName = 'Default' #xbmc.executehttpapi( "GetGUISetting(3, lookandfeel.skin)" )
 			currentSkinName = currentSkinName[4:]
-			if currentSkinName == 'skin.confluence' :
+			if currentSkinName == 'skin.confluence' or currentSkinName == 'Default' :
 				tmpList = 'Default' #xbmc.executehttpapi( "getfavourites()" )
 				self.mCtrlFavAddonList = self.getControl( LIST_ID_FAV_ADDON )
 				self.mCtrlFavAddonList.reset( )
