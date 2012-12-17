@@ -1261,11 +1261,11 @@ class DataCacheMgr( object ) :
 						aCurrentChannel = iChannel
 						break
 
-		LOG_TRACE( '-----found ch[%s]'% isCurrentChannelDelete )
+		#LOG_TRACE( '-----found ch[%s]'% isCurrentChannelDelete )
 		if not isCurrentChannelDelete :
 			if aCurrentChannel and aCurrentChannel.mError == 0 :
 				self.Channel_SetCurrent( aCurrentChannel.mNumber, aCurrentChannel.mServiceType )
-				LOG_TRACE( '-------------1 tune[%s %s]'% ( aCurrentChannel.mNumber, aCurrentChannel.mName ) )
+				#LOG_TRACE( '-------------1 tune[%s %s]'% ( aCurrentChannel.mNumber, aCurrentChannel.mName ) )
 				return
 
 			else :
@@ -1275,7 +1275,7 @@ class DataCacheMgr( object ) :
 			channelList = self.Channel_GetList( )
 			if channelList and len( channelList ) > 0 :
 				self.Channel_SetCurrent( channelList[0].mNumber, channelList[0].mServiceType )
-				LOG_TRACE( '-------------2 tune[%s %s]'% ( channelList[0].mNumber, channelList[0].mName ) )
+				#LOG_TRACE( '-------------2 tune[%s %s]'% ( channelList[0].mNumber, channelList[0].mName ) )
 
 
 	def Channel_InvalidateCurrent( self ) :
