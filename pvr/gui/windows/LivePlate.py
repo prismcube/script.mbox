@@ -196,7 +196,6 @@ class LivePlate( LivePlateWindow ) :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_MEDIACENTER, WinMgr.WIN_ID_LIVE_PLATE )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
-			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return
 				
@@ -222,7 +221,6 @@ class LivePlate( LivePlateWindow ) :
 			if self.mDataCache.GetLockedState( ) == ElisEnum.E_CC_FAILED_NO_SIGNAL :
 				return -1
 
-			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return
 
@@ -835,7 +833,6 @@ class LivePlate( LivePlateWindow ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		#LOG_TRACE( 'runningCount[%s]' %runningCount)
 
-		from pvr.GuiHelper import HasAvailableRecordingHDD
 		if HasAvailableRecordingHDD( ) == False :
 			return
 
@@ -849,7 +846,6 @@ class LivePlate( LivePlateWindow ) :
 				isOK = True
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
-				from pvr.GuiHelper import RecordConflict
 				RecordConflict( dialog.GetConflictTimer( ) )
 
 		else :

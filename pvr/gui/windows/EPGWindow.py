@@ -790,7 +790,6 @@ class EPGWindow( BaseWindow ) :
 	def ShowEPGTimer( self, aEPG ) :
 		LOG_TRACE( 'ShowEPGTimer' )
 
-		from pvr.GuiHelper import HasAvailableRecordingHDD
 		if HasAvailableRecordingHDD( ) == False :
 			return
 			
@@ -803,7 +802,6 @@ class EPGWindow( BaseWindow ) :
 				ret = self.mDataCache.Timer_AddEPGTimer( True, 0, aEPG )
 				LOG_ERR( 'Conflict ret=%s' %ret )
 				if ret[0].mParam == -1 or ret[0].mError == -1 :
-					from pvr.GuiHelper import RecordConflict
 					RecordConflict( ret )
 					return
 
@@ -817,8 +815,6 @@ class EPGWindow( BaseWindow ) :
 		
 
 	def ShowEditTimer( self ) :
-
-		from pvr.GuiHelper import HasAvailableRecordingHDD
 		if HasAvailableRecordingHDD( ) == False :
 			return
 			
@@ -853,7 +849,6 @@ class EPGWindow( BaseWindow ) :
 				return
 		"""
 
-		from pvr.GuiHelper import HasAvailableRecordingHDD
 		if HasAvailableRecordingHDD( ) == False :
 			return
 
@@ -892,7 +887,6 @@ class EPGWindow( BaseWindow ) :
 				infoDialog.SetDialogProperty( MR_LANG( 'Error' ), dialog.GetErrorMessage( ) )
 				infoDialog.doModal( )
 			else :
-				from pvr.GuiHelper import RecordConflict
 				RecordConflict( dialog.GetConflictTimer( ) )
 			return
 

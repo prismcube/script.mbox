@@ -358,7 +358,6 @@ class TimerWindow( BaseWindow ) :
 							infoDialog.SetDialogProperty( MR_LANG( 'Error' ), dialog.GetErrorMessage( ) )
 							infoDialog.doModal( )
 						else :
-							from pvr.GuiHelper import RecordConflict
 							RecordConflict( dialog.GetConflictTimer( ) )
 
 			else :
@@ -379,7 +378,6 @@ class TimerWindow( BaseWindow ) :
 							infoDialog.SetDialogProperty( MR_LANG( 'Error' ), dialog.GetErrorMessage( ) )
 							infoDialog.doModal( )
 						else :
-							from pvr.GuiHelper import RecordConflict
 							RecordConflict( dialog.GetConflictTimer( ) )
 
 			self.UpdateList( )
