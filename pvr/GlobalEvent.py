@@ -70,15 +70,15 @@ class GlobalEvent( object ) :
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_SUCCESS )
 
 		elif aEvent.getName( ) == ElisEventVideoIdentified( ).getName( ) :
-			#hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+			if hdmiFormat == 'Automatic' :
+				iconIndex = ElisEnum.E_ICON_1080i
+				if aEvent.mVideoHeight <= 576 :
+					iconIndex = -1
+				elif aEvent.mVideoHeight <= 720 :
+					iconIndex = ElisEnum.E_ICON_720p
 
-			iconIndex = ElisEnum.E_ICON_1080i
-			if aEvent.mVideoHeight <= 576 :
-				iconIndex = -1
-			elif aEvent.mVideoHeight <= 720 :
-				iconIndex = ElisEnum.E_ICON_720p
-
-			self.mDataCache.Frontdisplay_Resolution( iconIndex )
+				self.mDataCache.Frontdisplay_Resolution( iconIndex )
 
 		elif aEvent.getName( ) == ElisEventPowerSave( ).getName( ) :
 			if WinMgr.GetInstance( ).mLastId not in AUTOPOWERDOWN_EXCEPTWINDOW :
