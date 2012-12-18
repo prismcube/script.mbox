@@ -188,6 +188,7 @@ class ArchiveWindow( BaseWindow ) :
 					self.Flush( )
 					self.Load( )
 					self.UpdateList( )
+					self.UpdatePlayStatus( )
 					self.SetRadioScreen( )
 
 				else :
