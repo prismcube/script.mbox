@@ -923,10 +923,11 @@ class SystemUpdate( SettingWindow ) :
 			for timer in runningTimerList :
 				self.mDataCache.Timer_DeleteTimer( timer.mTimerId )
 
+
+		from pvr.IpParser import *
 		"""
 		LOG_TRACE('1. update version ------' )
 		try :
-			from pvr.IpParser import *
 
 			fd = open( E_CURRENT_INFO, 'w' )
 
@@ -958,11 +959,20 @@ class SystemUpdate( SettingWindow ) :
 				fd.writelines( 'NetworkType=%s\n'% nType )
 				command = pvr.ElisMgr.GetInstance( ).GetCommander( )
 				if nType == NETWORK_ETHERNET :
+					ipInfo = IpParser( )
+					ipInfo.LoadEthernetType( )
+					ethType = 'dhcp'
+					if ipInfo.GetEthernetType( ) :
+						ethType = 'static'
+					fd.writelines( 'ethtype=%s\n'% ethType )
 					fd.writelines( 'ipaddr=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'IpAddress' , command ).GetProp( ) ) ) )
 					fd.writelines( 'subnet=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'SubNet' , command ).GetProp( ) ) ) )
 					fd.writelines( 'gateway=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'Gateway' , command ).GetProp( ) ) ) )
 					fd.writelines( 'dns=%s.%s.%s.%s\n'% ( MakeHexToIpAddr( ElisPropertyInt( 'DNS' , command ).GetProp( ) ) ) )
 				else :
+					wifiInfo = WirelessParser( )
+					wifiInfo.LoadWpaSupplicant( )
+					fd.writelines( 'devname=%s\n'% wifiInfo.GetWifidevice( ) )
 					rd = open( FILE_WPA_SUPPLICANT, 'r' )
 					wifiData = rd.readlines( )
 					rd.close( )

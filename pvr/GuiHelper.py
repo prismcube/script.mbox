@@ -399,14 +399,26 @@ def RemoveDirectory( aPath ) :
 	if not os.path.exists( aPath ) :
 		return
 
-	shutil.rmtree( aPath )
+	ret = False
+	try :
+		mode = os.stat( aPath ).st_mode
+		if stat.S_ISDIR( mode ) :
+			shutil.rmtree( aPath )
+			ret = True
+		elif stat.S_ISREG( mode ) :
+			os.unlink( aPath )
+			ret = True
+		else :
+			LOG_TRACE( 'Can not remove, non type file[%s]'% aPath )
+
+	except Exception, e :
+		LOG_ERR( 'except[%s]'% e )
+
+	return ret
 
 
 def CheckDirectory( aPath ) :
-	if not os.path.exists( aPath ) :
-		return False
-
-	return True
+	return os.path.exists( aPath )
 
 
 def CheckHdd( ) :
