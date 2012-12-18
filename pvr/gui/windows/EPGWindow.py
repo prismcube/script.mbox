@@ -160,14 +160,17 @@ class EPGWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
 			self.mEventBus.Deregister( self )
 			self.StopEPGUpdateTimer( )
-			ret = self.ToggleTVRadio( )
 
-			if ret :
-				self.SetRadioScreen( self.mServiceType )
-			else :
-				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV and radio channels available' ) )
-				dialog.doModal( )
+			status = self.mDataCache.Player_GetStatus( )
+			if status.mMode == ElisEnum.E_MODE_LIVE :
+				ret = self.ToggleTVRadio( )
+				if ret :
+					self.SetRadioScreen( self.mServiceType )
+
+				else :
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV and radio channels available' ) )
+					dialog.doModal( )
 
 			self.StartEPGUpdateTimer( )
 			self.mEventBus.Register( self )			
@@ -1298,11 +1301,11 @@ class EPGWindow( BaseWindow ) :
 
 
 	def ToggleTVRadio( self ) :
-		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
-			self.mServiceType = ElisEnum.E_SERVICE_TYPE_RADIO
-		else :
-			self.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
+		if not self.mDataCache.ToggleTVRadio( ) :
+			return False
 
+		self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( )
+		self.mServiceType = self.mCurrentMode.mServiceType
 		self.mChannelList = self.mDataCache.Channel_GetAllChannels( self.mServiceType )
 
 		if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
@@ -1320,7 +1323,10 @@ class EPGWindow( BaseWindow ) :
 		self.mCurrentChannel.printdebug()
 		self.mSelectChannel = self.mCurrentChannel			
 
+		self.UpdateCurrentChannel( )
 		self.UpdateAllEPGList( )
+
+		return True
 
 
 	def RecordByHotKey( self ) :
