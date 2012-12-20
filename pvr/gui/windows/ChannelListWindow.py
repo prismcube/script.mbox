@@ -293,7 +293,6 @@ class ChannelListWindow( BaseWindow ) :
 					self.ShowRecordingStopDialog( )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
-			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return
 				
@@ -2596,7 +2595,6 @@ class ChannelListWindow( BaseWindow ) :
 	def ShowRecordingStartDialog( self ) :
 		isRunRec = self.mDataCache.Record_GetRunningRecorderCount( )
 
-		from pvr.GuiHelper import HasAvailableRecordingHDD
 		if HasAvailableRecordingHDD( ) == False :
 			return
 
@@ -2610,8 +2608,8 @@ class ChannelListWindow( BaseWindow ) :
 				isOK = True
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
-				from pvr.GuiHelper import RecordConflict
 				RecordConflict( dialog.GetConflictTimer( ) )
+
 		else:
 			msg = MR_LANG( 'You have reached the maximum number of\nrecordings allowed' )
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )

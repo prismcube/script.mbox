@@ -284,14 +284,17 @@ class SystemInfo( SettingWindow ) :
 		used_size = MR_LANG( 'Unknown' )
 		percent = MR_LANG( 'Unknown' )
 		cmd = "df -h | awk '/%s/ {print $2}'" % aName
-		total_size = Popen( cmd, shell=True, stdout=PIPE )
-		total_size = total_size.stdout.read( ).strip( )
+		p = Popen( cmd, shell=True, stdout=PIPE )
+		total_size = p.stdout.read( ).strip( )
+		p.stdout.close( )
 		cmd = "df -h | awk '/%s/ {print $3}'" % aName
-		used_size = Popen( cmd, shell=True, stdout=PIPE )
-		used_size = used_size.stdout.read( ).strip( )
+		p = Popen( cmd, shell=True, stdout=PIPE )
+		used_size = p.stdout.read( ).strip( )
+		p.stdout.close( )
 		cmd = "df -h | awk '/%s/ {print $5}'" % aName
-		percent = Popen( cmd, shell=True, stdout=PIPE )
-		percent = percent.stdout.read( ).strip( )
+		p = Popen( cmd, shell=True, stdout=PIPE )
+		percent = p.stdout.read( ).strip( )
+		p.stdout.close( )
 		percent = int( re.sub( '%', '', percent ) )
 
 		return total_size, used_size, percent
@@ -330,8 +333,10 @@ class SystemInfo( SettingWindow ) :
 			else :
 				device = '/dev/sda'
 				cmd = "hddtemp %s -D | awk '/Model:/ {print $2}'" % device
-				model = Popen( cmd, shell=True, stdout=PIPE )
-				model = model.stdout.read( ).strip( )
+				p = Popen( cmd, shell=True, stdout=PIPE )
+				model = p.stdout.read( ).strip( )
+				p.stdout.close( )
+
 			return model
 
 		except Exception, e :
@@ -344,8 +349,9 @@ class SystemInfo( SettingWindow ) :
 		unit = ''
 		device = '/dev/sda'
 		cmd = "fdisk -ul %s | awk '/Disk/ {print $3,$4}'" % device
-		size = Popen( cmd, shell=True, stdout=PIPE )
-		size = size.stdout.read( ).strip( )
+		p = Popen( cmd, shell=True, stdout=PIPE )
+		size = p.stdout.read( ).strip( )
+		p.stdout.close( )
 		size = re.sub( ',', '', size )
 		return size
 
@@ -357,8 +363,9 @@ class SystemInfo( SettingWindow ) :
 
 		if self.mCtrlLeftGroup.getSelectedPosition( ) == E_HDD :
 			if self.CheckExistsDisk( ) :
-				temperature = Popen( cmd, shell=True, stdout=PIPE )
-				temperature = temperature.stdout.read( ).strip( )
+				p = Popen( cmd, shell=True, stdout=PIPE )
+				temperature = p.stdout.read( ).strip( )
+				p.stdout.close( )
 				if IsNumber( temperature ) == False :
 					temperature = MR_LANG( 'Unknown' )
 				LOG_TRACE( 'HDD Temperature = %s' % temperature )
@@ -372,8 +379,9 @@ class SystemInfo( SettingWindow ) :
 			return False
 
 		cmd = 'df'
-		parsing = Popen( cmd, shell=True, stdout=PIPE )
-		parsing = parsing.stdout.read( ).strip( )
+		p = Popen( cmd, shell=True, stdout=PIPE )
+		parsing = p.stdout.read( ).strip( )
+		p.stdout.close( )
 		if parsing.count( '/dev/sda' ) >= 3 :
 			return True
 		else :

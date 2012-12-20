@@ -70,15 +70,15 @@ class GlobalEvent( object ) :
 				self.mDataCache.SetLockedState( ElisEnum.E_CC_SUCCESS )
 
 		elif aEvent.getName( ) == ElisEventVideoIdentified( ).getName( ) :
-			#hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+			if hdmiFormat == 'Automatic' :
+				iconIndex = ElisEnum.E_ICON_1080i
+				if aEvent.mVideoHeight <= 576 :
+					iconIndex = -1
+				elif aEvent.mVideoHeight <= 720 :
+					iconIndex = ElisEnum.E_ICON_720p
 
-			iconIndex = ElisEnum.E_ICON_1080i
-			if aEvent.mVideoHeight <= 576 :
-				iconIndex = -1
-			elif aEvent.mVideoHeight <= 720 :
-				iconIndex = ElisEnum.E_ICON_720p
-
-			self.mDataCache.Frontdisplay_Resolution( iconIndex )
+				self.mDataCache.Frontdisplay_Resolution( iconIndex )
 
 		elif aEvent.getName( ) == ElisEventPowerSave( ).getName( ) :
 			if WinMgr.GetInstance( ).mLastId not in AUTOPOWERDOWN_EXCEPTWINDOW :
@@ -89,6 +89,8 @@ class GlobalEvent( object ) :
 				LOG_TRACE( 'Skip auto power down : %s' ) % WinMgr.GetInstance( ).mLastId
 
 		elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
+			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_TIMESHIFT :
+				self.mDataCache.Player_Stop( )
 			self.mDataCache.Player_AVBlank( False )
 			self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType )
 			LOG_TRACE('event[%s] tune[%s] type[%s]'% ( aEvent.getName( ), aEvent.mChannelNo, aEvent.mServiceType ) )

@@ -282,7 +282,6 @@ class NullWindow( BaseWindow ) :
 				self.ShowRecordingStartDialog( )
 		
 		elif actionId == Action.ACTION_PAUSE or actionId == Action.ACTION_PLAYER_PLAY :
-			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return
 				
@@ -308,7 +307,6 @@ class NullWindow( BaseWindow ) :
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_TIMESHIFT_PLATE )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
-			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return
 				
@@ -418,6 +416,7 @@ class NullWindow( BaseWindow ) :
 					self.mCommander.AppHBBTV_Ready( 0 )
 					self.mHBBTVReady = False
 
+				self.mDataCache.Teletext_NotifyHide( )
 				self.mDataCache.LoadVolumeToSetGUI( )
 				LOG_TRACE( '----------ElisEventTTXClosed' )
 
@@ -499,7 +498,6 @@ class NullWindow( BaseWindow ) :
 		runningCount = self.mDataCache.Record_GetRunningRecorderCount( )
 		#LOG_TRACE( 'runningCount[%s]' %runningCount)
 		
-		from pvr.GuiHelper import HasAvailableRecordingHDD
 		if HasAvailableRecordingHDD( ) == False :
 			return
 
@@ -513,7 +511,6 @@ class NullWindow( BaseWindow ) :
 				isOK = True
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
-				from pvr.GuiHelper import RecordConflict
 				RecordConflict( dialog.GetConflictTimer( ) )
 
 		else:

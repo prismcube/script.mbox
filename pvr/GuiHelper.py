@@ -399,20 +399,33 @@ def RemoveDirectory( aPath ) :
 	if not os.path.exists( aPath ) :
 		return
 
-	shutil.rmtree( aPath )
+	ret = False
+	try :
+		mode = os.stat( aPath ).st_mode
+		if stat.S_ISDIR( mode ) :
+			shutil.rmtree( aPath )
+			ret = True
+		elif stat.S_ISREG( mode ) :
+			os.unlink( aPath )
+			ret = True
+		else :
+			LOG_TRACE( 'Can not remove, non type file[%s]'% aPath )
+
+	except Exception, e :
+		LOG_ERR( 'except[%s]'% e )
+
+	return ret
 
 
 def CheckDirectory( aPath ) :
-	if not os.path.exists( aPath ) :
-		return False
-
-	return True
+	return os.path.exists( aPath )
 
 
 def CheckHdd( ) :
 	cmd = 'df'
-	parsing = Popen( cmd, shell=True, stdout=PIPE )
-	parsing = parsing.stdout.read( ).strip( )
+	p = Popen( cmd, shell=True, stdout=PIPE )
+	parsing = p.stdout.read( ).strip( )
+	p.stdout.close( )
 	if parsing.count( '/dev/sda' ) >= 3 :
 		return True
 
@@ -436,6 +449,7 @@ def CheckEthernet( aEthName ) :
 	try :
 		p = Popen( cmd, shell=True, stdout=PIPE )
 		status = p.stdout.read( ).strip( )
+		p.stdout.close( )
 		LOG_TRACE('-------------linkStatus[%s]'% status )
 
 	except Exception, e :
@@ -455,6 +469,7 @@ def CheckMD5Sum( aSourceFile, aMd5 ) :
 	try :
 		p = Popen( cmd, shell=True, stdout=PIPE )
 		readMd5 = p.stdout.read( ).strip( )
+		p.stdout.close( )
 		LOG_TRACE('-------------checkMd5[%s] sourceMd5[%s]'% ( readMd5, aMd5 ) )
 		if readMd5 == aMd5 :
 			isVerify = True

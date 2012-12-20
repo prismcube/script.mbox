@@ -182,14 +182,19 @@ class ArchiveWindow( BaseWindow ) :
 		elif actionId == Action.ACTION_MBOX_TVRADIO :
 			status = self.mDataCache.Player_GetStatus( )
 			if status.mMode == ElisEnum.E_MODE_LIVE :
-				if self.mServiceType == ElisEnum.E_SERVICE_TYPE_TV :
-					self.mServiceType = ElisEnum.E_SERVICE_TYPE_RADIO
+				ret = self.mDataCache.ToggleTVRadio( )
+				if ret :
+					self.mServiceType =  self.mCurrentMode = self.mDataCache.Zappingmode_GetCurrent( ).mServiceType
+					self.Flush( )
+					self.Load( )
+					self.UpdateList( )
+					self.UpdatePlayStatus( )
+					self.SetRadioScreen( )
+
 				else :
-					self.mServiceType = ElisEnum.E_SERVICE_TYPE_TV
-				self.Flush( )
-				self.Load( )
-				self.UpdateList( )
-				self.SetRadioScreen( self.mServiceType )
+					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No TV and radio channel available' ) )
+					dialog.doModal( )
 					
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )

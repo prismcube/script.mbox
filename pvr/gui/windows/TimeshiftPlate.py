@@ -319,7 +319,6 @@ class TimeShiftPlate( BaseWindow ) :
 			self.onClick( E_CONTROL_ID_BUTTON_FORWARD )
 
 		elif actionId == Action.ACTION_MBOX_RECORD :
-			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return
 				
@@ -331,7 +330,6 @@ class TimeShiftPlate( BaseWindow ) :
 				self.onClick( E_CONTROL_ID_BUTTON_START_RECORDING )
 
 		elif actionId == Action.ACTION_MBOX_ARCHIVE :
-			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return
 				
@@ -363,7 +361,6 @@ class TimeShiftPlate( BaseWindow ) :
 			self.StopAutomaticHide( )
 
 		elif aControlId == E_CONTROL_ID_BUTTON_START_RECORDING :	
-			from pvr.GuiHelper import HasAvailableRecordingHDD
 			if HasAvailableRecordingHDD( ) == False :
 				return
 				
@@ -379,7 +376,6 @@ class TimeShiftPlate( BaseWindow ) :
 					isOK = True
 
 				if dialog.IsOK( ) == E_DIALOG_STATE_ERROR and dialog.GetConflictTimer( ) :
-					from pvr.GuiHelper import RecordConflict
 					RecordConflict( dialog.GetConflictTimer( ) )
 					
 			else :
