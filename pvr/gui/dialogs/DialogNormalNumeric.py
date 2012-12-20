@@ -44,7 +44,8 @@ class DialogNormalNumeric( BaseDialog ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			self.mInputLabel = self.mOriginalString
+			if self.mIsOk != E_DIALOG_STATE_YES :
+				self.mInputLabel = self.mOriginalString
 			self.CloseDialog( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -101,7 +102,7 @@ class DialogNormalNumeric( BaseDialog ) :
 
 		elif focusId == E_BUTTON_DONE :
 			self.mIsOk = E_DIALOG_STATE_YES
-			self.CloseDialog( )
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 
 	def onFocus( self, aControlId ) :

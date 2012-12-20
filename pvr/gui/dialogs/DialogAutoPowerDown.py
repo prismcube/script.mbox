@@ -1,7 +1,6 @@
 from pvr.gui.WindowImport import *
 
 
-E_BUTTON_OK		= 301
 E_HEADER		= 100
 E_BODY_LABEL	= 200
 

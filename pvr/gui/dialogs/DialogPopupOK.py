@@ -41,7 +41,7 @@ class DialogPopupOK( BaseDialog ) :
 
 	def onClick( self, aControlId ) :
 		if aControlId == E_BUTTON_OK :
-			self.CloseDialog( )
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 
 	def onFocus( self, aControlId ) :

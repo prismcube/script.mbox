@@ -124,6 +124,7 @@ class EditTransponder( SettingWindow ) :
 					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Unable to add the transponder' ) )
 					dialog.doModal( )
+					self.CloseBusyDialog( )
 					return
 				self.mTransponderIndex = 0
 				self.mDataCache.LoadConfiguredTransponder( )
@@ -148,6 +149,7 @@ class EditTransponder( SettingWindow ) :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Unable to edit the transponder' ) )
 						dialog.doModal( )
+						self.CloseBusyDialog( )
 						return
 
 					# ADD
@@ -168,6 +170,7 @@ class EditTransponder( SettingWindow ) :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Unable to edit the transponder' ) )
 						dialog.doModal( )
+						self.CloseBusyDialog( )
 						return
 					self.mTransponderIndex = 0
 					self.mDataCache.LoadConfiguredTransponder( )
@@ -197,6 +200,7 @@ class EditTransponder( SettingWindow ) :
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
 						dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'Unable to delete the transponder' ) )
 						dialog.doModal( )
+						self.CloseBusyDialog( )
 						return
 					self.mTransponderIndex = 0
 					self.mDataCache.LoadConfiguredTransponder( )			 		

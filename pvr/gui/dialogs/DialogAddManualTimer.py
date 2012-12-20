@@ -43,6 +43,7 @@ class DialogAddManualTimer( SettingDialog ) :
 		self.mWekklyEnd = 0
 		self.mConflictTimer = None
 		self.mIsRunningTimer = False
+		self.mIsOk = E_DIALOG_STATE_CANCEL
 
 
 	def onInit( self ) :
@@ -62,13 +63,11 @@ class DialogAddManualTimer( SettingDialog ) :
 			self.mRecordName = self.mChannel.mName
 
 		self.Reload( )
-
-		self.mIsOk = E_DIALOG_STATE_CANCEL
-
 		self.DrawItem( )
 
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_OK_ID, MR_LANG( 'Confirm' ) )
 		self.SetButtonLabel( E_SETTING_DIALOG_BUTTON_CANCEL_ID, MR_LANG( 'Cancel' ) )
+		self.mIsOk = E_DIALOG_STATE_CANCEL
 		
 
 	def onAction( self, aAction ) :
@@ -78,9 +77,8 @@ class DialogAddManualTimer( SettingDialog ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.ResetAllControl( )
-			self.Close( )
+			self.CloseDialog( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
 			groupId = self.GetGroupId( focusId )
@@ -136,34 +134,24 @@ class DialogAddManualTimer( SettingDialog ) :
 			LOG_WARN( 'Unknown Action' )
 
 
-	def onClick( self, aControlId ) :
-
-		groupId = self.GetGroupId( aControlId )
-
-		if groupId == E_SETTING_DIALOG_BUTTON_OK_ID :			
-			if self.DoAddTimer() == False :
-				self.mIsOk = E_DIALOG_STATE_ERROR
-			
-			self.ResetAllControl( )
-			self.Close( )
-
-		elif groupId == E_SETTING_DIALOG_BUTTON_CANCEL_ID :
-			self.mIsOk = E_DIALOG_STATE_NO
-			self.ResetAllControl( )
-			self.Close( )
-
-
 	def onFocus( self, aControlId ) :
 		pass
 
 
-	def onEvent( self, aEvent ) :
-		pass
-		"""
-		if xbmcgui.getCurrentWindowDialogId( ) == self.winId :
-			print 'Do Event'
-			pass
-		"""
+	def onClick( self, aControlId ) :
+		groupId = self.GetGroupId( aControlId )
+		if groupId == E_SETTING_DIALOG_BUTTON_OK_ID :			
+			if self.DoAddTimer( ) == False :
+				self.mIsOk = E_DIALOG_STATE_ERROR
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+
+		elif groupId == E_SETTING_DIALOG_BUTTON_CANCEL_ID :
+			self.mIsOk = E_DIALOG_STATE_NO
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+
+		elif groupId == E_SETTING_DIALOG_BUTTON_CLOSE :
+			self.mIsOk = E_DIALOG_STATE_CANCEL
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 
 	def GetErrorMessage( self ) :
@@ -189,11 +177,6 @@ class DialogAddManualTimer( SettingDialog ) :
 
 	def GetConflictTimer( self ) :
 		return self.mConflictTimer
-
-
-	def Close( self ) :
-		#self.mEventBus.Deregister( self )
-		self.CloseDialog( )
 
 
 	def Reload ( self ) :

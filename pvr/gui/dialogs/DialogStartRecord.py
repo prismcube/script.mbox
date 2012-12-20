@@ -57,6 +57,7 @@ class DialogStartRecord( SettingDialog ) :
 		self.mConflictTimer = None		
 
 		self.getControl( E_GROUP_LIST_CONTROL ).setVisible( True )
+		self.mIsOk = E_DIALOG_STATE_CANCEL
 
 
 	def onAction( self, aAction ) :
@@ -66,7 +67,6 @@ class DialogStartRecord( SettingDialog ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.ResetAllControl( )
 			self.Close( )
 
@@ -110,7 +110,9 @@ class DialogStartRecord( SettingDialog ) :
 
 
 	def onClick( self, aControlId ) :
-		focusId = self.getFocusId( )
+		focusId = self.GetFocusId( )
+		if focusId == E_SETTING_DIALOG_BUTTON_CLOSE :
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 
 	def onFocus( self, aControlId ) :
@@ -420,7 +422,7 @@ class DialogStartRecord( SettingDialog ) :
 		except Exception, ex :
 			LOG_ERR( "Exception %s" %ex )
 
-		self.Close( )
+		xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 
 

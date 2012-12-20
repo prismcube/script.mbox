@@ -12,15 +12,15 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 		xbmcgui.WindowXMLDialog.__init__( self, *args, **kwargs )
 		self.mWin = None
 		self.mWinId = 0
-		
+
 		self.mLastFocused = -1
 		self.mInitialized = False
-		
+
 		self.mCommander = pvr.ElisMgr.GetInstance( ).GetCommander( )
 		self.mEventBus = pvr.ElisMgr.GetInstance( ).GetEventBus( )
 		self.mDataCache = pvr.DataCacheMgr.GetInstance( )
 		self.mPlatform = pvr.Platform.GetPlatform( )
-		
+
 
 	@classmethod
 	def GetName( cls ) :
@@ -57,7 +57,7 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 				mExecute = False
 			else :
 				mExecute = True
-	
+
 		if aActionId == Action.ACTION_MUTE :
 			self.UpdateVolume( 0 )
 			mExecute = True

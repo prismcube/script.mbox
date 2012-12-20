@@ -51,13 +51,11 @@ class DialogLnbFrequency( SettingDialog ) :
 
 		if groupId == E_SETTING_DIALOG_BUTTON_OK_ID :
 			self.mIsOk = E_DIALOG_STATE_YES
-			self.ResetAllControl( )
-			self.CloseDialog( )
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 		elif groupId == E_SETTING_DIALOG_BUTTON_CANCEL_ID :
 			self.mIsOk = E_DIALOG_STATE_NO
-			self.ResetAllControl( )
-			self.CloseDialog( )
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 		elif groupId == E_DialogInput01 :
 			dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_NUMERIC_KEYBOARD )
@@ -82,6 +80,9 @@ class DialogLnbFrequency( SettingDialog ) :
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
 				self.mThreshFreq = dialog.GetString( )
 				self.DrawItem( )
+
+		else :
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 
 	def IsOK( self ) :

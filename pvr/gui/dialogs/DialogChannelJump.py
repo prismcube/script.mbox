@@ -1,9 +1,11 @@
 from pvr.gui.WindowImport import *
 
+
 E_CHANNEL_NUM_ID	= 210
 E_CHANNEL_NAME_ID	= 211
 E_EPG_NAME_ID		= 212
 E_PROGRESS_ID		= 213
+
 
 class DialogChannelJump( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
@@ -41,6 +43,7 @@ class DialogChannelJump( BaseDialog ) :
 		self.SetLabelChannelNumber( )
 		self.SetLabelChannelName( )
 		self.SearchChannel( )
+		self.mIsOk = E_DIALOG_STATE_CANCEL
 
 
 	def onAction( self, aAction ) :
@@ -49,7 +52,6 @@ class DialogChannelJump( BaseDialog ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.CloseDialog( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -85,8 +87,7 @@ class DialogChannelJump( BaseDialog ) :
 
 
 	def onClick( self, aControlId ) :
-		if aControlId == E_BUTTON_OK :
-			self.CloseDialog( )
+		pass
 
 
 	def onFocus( self, aControlId ) :
@@ -117,7 +118,7 @@ class DialogChannelJump( BaseDialog ) :
 		self.mCtrlProgress.setPercent( aPercent )
 
 
-	def Channel_GetByNumberFromChannelListWindow( self, aNumber ):
+	def Channel_GetByNumberFromChannelListWindow( self, aNumber ) :
 		LOG_TRACE('hash len[%s] get[%s]'% (len(self.mChannelListHash), aNumber) )
 		if self.mChannelListHash == None :
 			return None
@@ -151,7 +152,7 @@ class DialogChannelJump( BaseDialog ) :
 		self.RestartAsyncTune( )
 
 
-	def GetEPGInfo( self, aChannel ):
+	def GetEPGInfo( self, aChannel ) :
 		sid  = aChannel.mSid
 		tsid = aChannel.mTsid
 		onid = aChannel.mOnid
@@ -174,7 +175,7 @@ class DialogChannelJump( BaseDialog ) :
 			self.GetEPGProgress( )
 
 
-	def GetEPGProgress( self ):
+	def GetEPGProgress( self ) :
 		try:
 			mLocalTime = self.mDataCache.Datetime_GetGMTTime( )
 
@@ -207,7 +208,7 @@ class DialogChannelJump( BaseDialog ) :
 			LOG_TRACE( 'Error exception[%s]'% e )
 
 
-	def GetChannelLast( self ):
+	def GetChannelLast( self ) :
 		return self.mChannelNumber
 
 
@@ -222,7 +223,7 @@ class DialogChannelJump( BaseDialog ) :
 
 	def StartAsyncTune( self ) :
 		self.mAsyncTuneTimer = threading.Timer( 1.2, self.AsyncTuneChannel )
-		self.mAsyncTuneTimer.start()
+		self.mAsyncTuneTimer.start( )
 
 
 	def StopAsyncTune( self ) :
@@ -236,5 +237,4 @@ class DialogChannelJump( BaseDialog ) :
 	def AsyncTuneChannel( self ) :
 		if self.mFlagFind :
 			self.mIsOk = E_DIALOG_STATE_YES
-			self.CloseDialog( )
-
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )

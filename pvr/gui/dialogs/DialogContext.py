@@ -58,6 +58,8 @@ class DialogContext( BaseDialog ) :
 		start_y = E_WINDOW_HEIGHT / 2 - middley_height / 2
 		self.getControl( DIALOG_MAIN_GROUP_ID ).setPosition( start_x, start_y )
 
+		self.mSelectedIndex = -1
+
 
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
@@ -66,7 +68,6 @@ class DialogContext( BaseDialog ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			self.mSelectedIndex = -1
 			self.Close( )
 
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -80,13 +81,9 @@ class DialogContext( BaseDialog ) :
 
 
 	def onClick( self, aControlId ) :
-		if aControlId == DIALOG_BUTTON_CLOSE_ID :
-			self.Close( )
-			self.mSelectedIndex = -1
-			return
-
-		self.mSelectedIndex = self.mCtrlList.getSelectedPosition( )
-		self.Close( )		
+		if aControlId != DIALOG_BUTTON_CLOSE_ID :
+			self.mSelectedIndex = self.mCtrlList.getSelectedPosition( )
+		xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 
 	def onFocus( self, aControlId ) :

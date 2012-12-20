@@ -40,10 +40,8 @@ class DialogInputPincode( BaseDialog ) :
 		actionId = aAction.getId( )
 		if self.GlobalAction( actionId ) :
 			return
-
 		
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.CloseDialog( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -127,7 +125,7 @@ class DialogInputPincode( BaseDialog ) :
 				LOG_TRACE( 'pinValue = %d : %d' %( savedPincode, int( self.mInputNumber ) ) )
 				if savedPincode == int( self.mInputNumber ) :
 					self.mIsOk = E_DIALOG_STATE_YES
-					self.CloseDialog( )
+					xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 				else : #Wrong PinCode
 					self.mInputNumber = ''
 					self.mCtrlInputLabel.setLabel( self.mInputNumber )					

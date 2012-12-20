@@ -299,7 +299,6 @@
 			<posy>13</posy>
 			<width>64</width>
 			<height>32</height>
-			<onclick>PreviousMenu</onclick>
 			<texturefocus>DialogCloseButton-focus.png</texturefocus>
 			<texturenofocus>DialogCloseButton.png</texturenofocus>
 			<onleft>6997</onleft>

@@ -23,14 +23,15 @@
 					<posy>36</posy>
 					<width>110</width>
 					<height>25</height>
-					<onclick>PreviousMenu</onclick>
-					<align>right</align>
+					<align>center</align>
 					<aligny>center</aligny>
 					<textcolor>grey2</textcolor>
 					<focusedcolor>white</focusedcolor>
 					<shadowcolor>black</shadowcolor>
 					<label>SCRIPT21</label>
 					<font>Font_Bold18</font>
+					<onleft>200</onleft>
+					<onright>202</onright>
 				</control>
 				<include>DefaultDialogCloseButton</include>
 			</control>
@@ -95,13 +96,12 @@
 				<texturenofocus border="5">dialogs/context_nofocus.png</texturenofocus>
 				<texturefocus border="5">dialogs/context_highlight.png</texturefocus>
 				<animation effect="fade" start="100" end="70">Focus</animation>
-				<onleft>201</onleft>
-				<onright>201</onright>
-				<onup>-</onup>
+				<onleft>202</onleft>
+				<onright>202</onright>
 				<label>[B]SCRIPT109[/B]</label>					
 			</control>
 
-			<control type="button" id="201">
+			<control type="button" id="202">
 				<description>Cancel button</description>
 				<posx>305</posx>
 				<posy>270</posy>				
@@ -116,7 +116,6 @@
 				<animation effect="fade" start="100" end="70">Focus</animation>
 				<onleft>200</onleft>
 				<onright>200</onright>
-				<onup>-</onup>					
 				<label>[B]SCRIPT26[/B]</label>					
 			</control>
 		</control>

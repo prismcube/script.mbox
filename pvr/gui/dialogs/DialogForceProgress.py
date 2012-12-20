@@ -103,7 +103,7 @@ class DialogForceProgress( BaseDialog ) :
 		self.mCtrlProgress.setPercent( 100 )
 		self.mEventBus.Deregister( self )
 		time.sleep( 1 )
-		self.CloseDialog( )
+		xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 
 	def GetResult( self ) :

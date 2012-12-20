@@ -6,24 +6,25 @@ E_LABEL_RECORD_NAME			= 101
 E_LABEL_EPG_START_TIME		= 102
 E_LABEL_EPG_END_TIME		= 103
 E_BUTTON_ADD				= 200
-E_BUTTON_CANCEL				= 201
-
+E_BUTTON_CANCEL				= 202
 
 
 class DialogAddTimer( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 		self.mEPG = None
+		self.mIsOk = E_DIALOG_STATE_CANCEL
+
 
 	def onInit( self ) :
 		self.mWinId = xbmcgui.getCurrentWindowDialogId( )
-		self.mWin = xbmcgui.Window( self.mWinId  )
+		self.mWin = xbmcgui.Window( self.mWinId )
 
-		self.SetHeaderLabel( MR_LANG( 'Add Timer' ) )		
-		self.mIsOk = E_DIALOG_STATE_CANCEL		
+		self.SetHeaderLabel( MR_LANG( 'Add Timer' ) )
 
 		self.Reload( )
 		self.mEventBus.Register( self )
+		self.mIsOk = E_DIALOG_STATE_CANCEL
 		
 
 	def onAction( self, aAction ) :
@@ -35,38 +36,29 @@ class DialogAddTimer( BaseDialog ) :
 		LOG_TRACE( 'actionId=%d' %actionId )
 			
 		if actionId == Action.ACTION_PREVIOUS_MENU or actionId == Action.ACTION_PARENT_DIR :
-			self.mIsOk = E_DIALOG_STATE_CANCEL
 			self.Close( )
 
-		elif actionId == Action.ACTION_SELECT_ITEM :
-			pass
-
-		elif actionId == Action.ACTION_MOVE_UP :
-			pass
-	
-		elif actionId == Action.ACTION_MOVE_DOWN :
-			pass
-
-		elif actionId == Action.ACTION_MOVE_LEFT :
-			pass
-				
-		elif actionId == Action.ACTION_MOVE_RIGHT :
-			pass
-		else :
-			LOG_WARN( 'Unknown Action' )
+		elif actionId == Action.ACTION_MOVE_UP or actionId == Action.ACTION_MOVE_DOWN :
+			if focusId == E_SETTING_DIALOG_BUTTON_CLOSE :
+				self.setFocusId( E_BUTTON_ADD )
+			elif focusId == E_BUTTON_ADD or focusId == E_BUTTON_CANCEL :
+				self.setFocusId( E_SETTING_DIALOG_BUTTON_CLOSE )
+			
+		#elif actionId == Action.ACTION_MOVE_DOWN :
+		#	if focusId == E_SETTING_DIALOG_BUTTON_CLOSE :
+		#		self.setFocusId( E_BUTTON_ADD )
 
 
-	def onClick( self, aControlId ):
+	def onClick( self, aControlId ) :
 		focusId = self.getFocusId( )
 
-		LOG_TRACE( 'DialogRecord focusId=%d' %focusId )
 		if focusId == E_BUTTON_ADD :
 			self.mIsOk = E_DIALOG_STATE_YES
-			self.Close( )
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
-		elif focusId == E_BUTTON_CANCEL :
+		elif focusId == E_BUTTON_CANCEL or focusId == E_SETTING_DIALOG_BUTTON_CLOSE :
 			self.mIsOk = E_DIALOG_STATE_CANCEL
-			self.Close( )
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 
 	def onFocus( self, aControlId ) :

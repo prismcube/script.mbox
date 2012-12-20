@@ -63,14 +63,15 @@ class DialogSetAudioVideo( SettingDialog ) :
 			self.Close( )
 
 
-	def onClick( self, aControlId ) :
-		self.mSelectIdx = self.GetGroupId( aControlId )
-		if self.mSelectIdx != -1 :
-			self.ControlSelect( )
-
-
-	def onFocus( self, aControlId ):
+	def onFocus( self, aControlId ) :
 		pass
+
+
+	def onClick( self, aControlId ) :
+		if aControlId == E_SETTING_DIALOG_BUTTON_CLOSE :
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+		else :
+			self.ControlSelect( )
 
 
 	def onEvent( self, aEvent ) :

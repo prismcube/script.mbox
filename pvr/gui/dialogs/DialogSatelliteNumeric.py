@@ -76,7 +76,7 @@ class DialogSatelliteNumeric( BaseDialog ) :
 			
 		elif aControlId == E_BUTTON_DONE :
 			self.mIsOk = E_DIALOG_STATE_YES
-			self.CloseDialog( )
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 		self.SetInputLabel( )
 

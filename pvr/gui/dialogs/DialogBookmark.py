@@ -49,7 +49,6 @@ class DialogBookmark( BaseDialog ) :
 			return
 
 		if actionId == Action.ACTION_PREVIOUS_MENU :
-			self.mMarkList = None
 			self.Close( )
 			
 		elif actionId == Action.ACTION_SELECT_ITEM :
@@ -81,18 +80,18 @@ class DialogBookmark( BaseDialog ) :
 	def onClick( self, aControlId ) :
 		if aControlId == DIALOG_BUTTON_CLOSE_ID :
 			self.mMarkList = None
-			self.Close( )
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 		elif aControlId == E_CONTROL_ID_LIST :
 			if self.mMarkMode == True :
 				self.DoMarkToggle( )
 			else :
 				self.StartBookmarkPlayback( )
-				self.Close( )
+				xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
 
 		elif aControlId == DIALOG_BUTTON_OK_ID :
 			self.StartBookmarkPlayback( )
-			self.Close( )		
+			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )	
 
 
 	def onFocus( self, aControlId ) :
