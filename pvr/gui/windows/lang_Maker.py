@@ -716,7 +716,7 @@ def copyLanguage(srcDir, langDir) :
 	cmd = 'cp -rf %s/* %s/'% (srcDir, langDir)
 	p = Popen(cmd, shell=True, stdout=PIPE)
 	result = p.stdout.read()
-
+	p.stdout.close()
 	if p.returncode == None and result == '':
 		print 'copy to language Done.'
 		shutil.rmtree('language')

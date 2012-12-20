@@ -14,6 +14,7 @@ gPlatform = None
 try :
 	getPlatformName = Popen( "awk '/Hardware/ {print $3,$4}' /proc/cpuinfo", shell=True, stdout=PIPE )
 	gPlatformName = getPlatformName.stdout.read( ).strip( )
+	getPlatformName.stdout.close( )
 except Exception, e :
 	print 'except[%s]'% e
 	gPlatformName = sys.platform

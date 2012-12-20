@@ -423,8 +423,9 @@ def CheckDirectory( aPath ) :
 
 def CheckHdd( ) :
 	cmd = 'df'
-	parsing = Popen( cmd, shell=True, stdout=PIPE )
-	parsing = parsing.stdout.read( ).strip( )
+	p = Popen( cmd, shell=True, stdout=PIPE )
+	parsing = p.stdout.read( ).strip( )
+	p.stdout.close( )
 	if parsing.count( '/dev/sda' ) >= 3 :
 		return True
 
@@ -448,6 +449,7 @@ def CheckEthernet( aEthName ) :
 	try :
 		p = Popen( cmd, shell=True, stdout=PIPE )
 		status = p.stdout.read( ).strip( )
+		p.stdout.close( )
 		LOG_TRACE('-------------linkStatus[%s]'% status )
 
 	except Exception, e :
@@ -467,6 +469,7 @@ def CheckMD5Sum( aSourceFile, aMd5 ) :
 	try :
 		p = Popen( cmd, shell=True, stdout=PIPE )
 		readMd5 = p.stdout.read( ).strip( )
+		p.stdout.close( )
 		LOG_TRACE('-------------checkMd5[%s] sourceMd5[%s]'% ( readMd5, aMd5 ) )
 		if readMd5 == aMd5 :
 			isVerify = True
