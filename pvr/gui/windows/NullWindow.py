@@ -416,6 +416,7 @@ class NullWindow( BaseWindow ) :
 					self.mCommander.AppHBBTV_Ready( 0 )
 					self.mHBBTVReady = False
 
+				self.mDataCache.Teletext_NotifyHide( )
 				self.mDataCache.LoadVolumeToSetGUI( )
 				LOG_TRACE( '----------ElisEventTTXClosed' )
 
