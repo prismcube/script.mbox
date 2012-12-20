@@ -3,6 +3,9 @@ from copy import deepcopy
 from util.Logger import LOG_TRACE, LOG_WARN, LOG_ERR
 from pvr.GuiHelper import MR_LANG
 
+E_ADD_XBMC_HTTP_FUNCTION			=  False #True
+E_ADD_XBMC_JSONRPC_FUNCTION			= True
+E_ADD_XBMC_ADDON_API				= True
 
 # HBBTV SUPPOERT
 E_SUPPROT_HBBTV				= True
