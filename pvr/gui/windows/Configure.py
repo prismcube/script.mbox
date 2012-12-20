@@ -218,6 +218,20 @@ class Configure( SettingWindow ) :
 				self.DisableControl( E_LANGUAGE )
 				self.ControlSelect( )
 
+		elif selectedId == E_HDMI_SETTING and groupId == E_SpinEx01 :
+			self.ControlSelect( )
+			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
+			if hdmiFormat == 'Automatic' :
+				return
+
+			iconIndex = ElisEnum.E_ICON_1080i
+			if hdmiFormat == '720p' :
+				iconIndex = ElisEnum.E_ICON_720p
+			elif hdmiFormat == '576p' :
+				iconIndex = -1
+
+			self.mDataCache.Frontdisplay_Resolution( iconIndex )
+
 		elif selectedId == E_NETWORK_SETTING :
 			if not self.mPlatform.IsPrismCube( ) :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
