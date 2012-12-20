@@ -89,6 +89,8 @@ class GlobalEvent( object ) :
 				LOG_TRACE( 'Skip auto power down : %s' ) % WinMgr.GetInstance( ).mLastId
 
 		elif aEvent.getName( ) == ElisEventChannelChangedByRecord.getName( ) :
+			if self.mDataCache.Player_GetStatus( ).mMode == ElisEnum.E_MODE_TIMESHIFT :
+				self.mDataCache.Player_Stop( )
 			self.mDataCache.Player_AVBlank( False )
 			self.mDataCache.Channel_SetCurrent( aEvent.mChannelNo, aEvent.mServiceType )
 			LOG_TRACE('event[%s] tune[%s] type[%s]'% ( aEvent.getName( ), aEvent.mChannelNo, aEvent.mServiceType ) )

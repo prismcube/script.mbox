@@ -166,6 +166,9 @@ class InfoPlate( LivePlateWindow ) :
 			pass
 			#ToDo warning msg
 
+		elif actionId == Action.ACTION_MBOX_TEXT :
+			self.ShowDialog( E_CONTROL_ID_BUTTON_TELETEXT )
+
 		#test
 		elif actionId == 13: #'x'
 			LOG_TRACE( 'cwd[%s]'% xbmc.getLanguage( ) )
