@@ -1268,4 +1268,9 @@
 	<string id="3862">TUR_When set to 'On', LNBs will be switched between low and high band</string>
 	<string id="3863">TUR_Set RGB or YUV for HDMI color space</string>
 	<string id="3864">TUR_</string>
+	<string id="3865">TUR_Downloading server information</string>
+	<string id="3866">TUR_Channel list update is ficished successfully</string>
+	<string id="3867">TUR_Update finished</string>
+	<string id="3868">TUR_Now updating your channel list</string>
+	<string id="3869">TUR_Updating channel list is finished successfully</string>
 </strings>

@@ -1103,7 +1103,7 @@ class SystemUpdate( SettingWindow ) :
 			result = self.GetChannelUpdate( makelist[ret][0] )
 			if result :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-				dialog.SetDialogProperty( MR_LANG('Update finished'), MR_LANG('Channel list update is ficished successfully') )
+				dialog.SetDialogProperty( MR_LANG('Update finished'), MR_LANG('Updating channel list is finished successfully') )
 				dialog.doModal( )
 			else :
 				self.DialogPopup( E_STRING_ERROR, E_STRING_CHECK_CHANNEL_FAIL )

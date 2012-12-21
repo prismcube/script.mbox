@@ -1268,4 +1268,9 @@
 	<string id="3862">SPA_When set to 'On', LNBs will be switched between low and high band</string>
 	<string id="3863">SPA_Set RGB or YUV for HDMI color space</string>
 	<string id="3864">SPA_</string>
+	<string id="3865">SPA_Downloading server information</string>
+	<string id="3866">SPA_Channel list update is ficished successfully</string>
+	<string id="3867">SPA_Update finished</string>
+	<string id="3868">SPA_Now updating your channel list</string>
+	<string id="3869">SPA_Updating channel list is finished successfully</string>
 </strings>

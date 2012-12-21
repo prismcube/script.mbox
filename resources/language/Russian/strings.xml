@@ -1268,4 +1268,9 @@
 	<string id="3862">RUS_When set to 'On', LNBs will be switched between low and high band</string>
 	<string id="3863">RUS_Set RGB or YUV for HDMI color space</string>
 	<string id="3864">RUS_</string>
+	<string id="3865">RUS_Downloading server information</string>
+	<string id="3866">RUS_Channel list update is ficished successfully</string>
+	<string id="3867">RUS_Update finished</string>
+	<string id="3868">RUS_Now updating your channel list</string>
+	<string id="3869">RUS_Updating channel list is finished successfully</string>
 </strings>

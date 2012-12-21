@@ -1268,4 +1268,9 @@
 	<string id="3862">When set to 'On', LNBs will be switched between low and high band</string>
 	<string id="3863">Set RGB or YUV for HDMI color space</string>
 	<string id="3864"></string>
+	<string id="3865">Downloading server information</string>
+	<string id="3866">Channel list update is ficished successfully</string>
+	<string id="3867">Update finished</string>
+	<string id="3868">Now updating your channel list</string>
+	<string id="3869">Updating channel list is finished successfully</string>
 </strings>
