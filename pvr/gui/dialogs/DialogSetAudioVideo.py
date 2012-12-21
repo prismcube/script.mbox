@@ -75,21 +75,12 @@ class DialogSetAudioVideo( SettingDialog ) :
 			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
 			if hdmiFormat == 'Automatic' :
 				return
-
 			iconIndex = ElisEnum.E_ICON_1080i
 			if hdmiFormat == '720p' :
 				iconIndex = ElisEnum.E_ICON_720p
 			elif hdmiFormat == '576p' :
 				iconIndex = -1
-
 			self.mDataCache.Frontdisplay_Resolution( iconIndex )
-
-
-	def onClick( self, aControlId ) :
-		if aControlId == E_SETTING_DIALOG_BUTTON_CLOSE :
-			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
-		else :
-			self.ControlSelect( )
 
 
 	def onEvent( self, aEvent ) :

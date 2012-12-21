@@ -223,13 +223,11 @@ class Configure( SettingWindow ) :
 			hdmiFormat = ElisPropertyEnum( 'HDMI Format', self.mCommander ).GetPropString( )
 			if hdmiFormat == 'Automatic' :
 				return
-
 			iconIndex = ElisEnum.E_ICON_1080i
 			if hdmiFormat == '720p' :
 				iconIndex = ElisEnum.E_ICON_720p
 			elif hdmiFormat == '576p' :
 				iconIndex = -1
-
 			self.mDataCache.Frontdisplay_Resolution( iconIndex )
 
 		elif selectedId == E_NETWORK_SETTING :
