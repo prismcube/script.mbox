@@ -76,7 +76,10 @@ class BackupSettings( object ) :
 				LOG_TRACE( '%s=%s\n'% ( value[0], value[1] ) )
 
 				if value[0] == 'NetworkType' :
-					iNet.mType = value[1]
+					if value[1].isdigit( ) :
+						iNet.mType = int( value[1] )
+					else :
+						iNet.mType = value[1]
 				elif value[0] == 'ethtype' :
 					ethType = NET_DHCP
 					if value[1] == 'static' :
@@ -125,9 +128,10 @@ class BackupSettings( object ) :
 			return
 
 		SetCurrentNetworkType( iNet.mType )
-		if iNet.mType == NETWORK_ETHERNET :
+		if iNet.mType == NETWORK_ETHERNET or iNet.mType == '0' :
 			SetIpAddressProperty( iNet.mIpaddr, iNet.mSubnet, iNet.mGwaddr, iNet.mDns )
-			ret = SetEthernet( iNet.mEthType, iNet.mIpaddr, iNet.mSubnet, iNet.mGwaddr, iNet.mDns )
+			ipInfo = IpParser( )
+			ret = ipInfo.SetEthernet( iNet.mEthType, iNet.mIpaddr, iNet.mSubnet, iNet.mGwaddr, iNet.mDns )
 			LOG_TRACE( 'setting done[%s]'% ret )
 
 		else :
