@@ -595,7 +595,7 @@ class InfoPlate( LivePlateWindow ) :
 			return -1
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TIMESHIFT_JUMP )
-		dialog.SetDialogProperty( str( aKey ), E_INDEX_JUMP_MAX, None )
+		dialog.SetDialogProperty( str( aKey ) )
 		dialog.doModal( )
 
 		isOK = dialog.IsOK( )

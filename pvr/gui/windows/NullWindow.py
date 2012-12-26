@@ -184,7 +184,7 @@ class NullWindow( BaseWindow ) :
 			if status.mMode == ElisEnum.E_MODE_LIVE :
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
-				dialog.SetDialogProperty( str( aKey ), E_INPUT_MAX, None )
+				dialog.SetDialogProperty( str( aKey ) )
 				dialog.doModal( )
 
 				isOK = dialog.IsOK( )
@@ -219,7 +219,7 @@ class NullWindow( BaseWindow ) :
 
 			else :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TIMESHIFT_JUMP )
-				dialog.SetDialogProperty( str( aKey ), E_INDEX_JUMP_MAX, None )
+				dialog.SetDialogProperty( str( aKey ) )
 				dialog.doModal( )
 
 				isOK = dialog.IsOK( )

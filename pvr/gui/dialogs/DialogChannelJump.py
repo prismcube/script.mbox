@@ -11,8 +11,6 @@ class DialogChannelJump( BaseDialog ) :
 	def __init__( self, *args, **kwargs ) :
 		BaseDialog.__init__( self, *args, **kwargs )
 		self.mChannelNumber		= ''
-		#self.mChannelName		= 'No channel'
-		#self.mEPGName			= ''
 		self.mCtrlChannelNum	= None
 		self.mCtrlChannelName	= None
 		self.mCtrlEPGName		= None
@@ -94,7 +92,7 @@ class DialogChannelJump( BaseDialog ) :
 		pass
 
 
-	def SetDialogProperty( self, aChannelFirstNum, aMaxChannelNum, aChannelListHash, aIsChannelListWindow = False ) :
+	def SetDialogProperty( self, aChannelFirstNum, aChannelListHash = None, aIsChannelListWindow = False, aMaxChannelNum = E_INPUT_MAX ) :
 		self.mChannelNumber	= aChannelFirstNum
 		self.mMaxChannelNum = aMaxChannelNum
 		self.mChannelListHash = aChannelListHash
@@ -114,13 +112,13 @@ class DialogChannelJump( BaseDialog ) :
 		self.mCtrlEPGName.setLabel( aEPGName )
 
 
-	def SetPogress( self, aPercent=0 ) :
+	def SetPogress( self, aPercent = 0 ) :
 		self.mCtrlProgress.setPercent( aPercent )
 
 
 	def Channel_GetByNumberFromChannelListWindow( self, aNumber ) :
-		LOG_TRACE('hash len[%s] get[%s]'% (len(self.mChannelListHash), aNumber) )
-		if self.mChannelListHash == None :
+		LOG_TRACE('hash len[%s] get[%s]'% ( len( self.mChannelListHash ), aNumber ) )
+		if not self.mChannelListHash :
 			return None
 
 		iChannel = self.mChannelListHash.get( aNumber, None )
@@ -196,7 +194,6 @@ class DialogChannelJump( BaseDialog ) :
 					pastDuration = 0
 
 				if self.mFakeEPG.mDuration > 0 :
-					#percent = pastDuration * 100 / self.mFakeEPG.mDuration
 					percent = 100 - ( pastDuration * 100.0 / self.mFakeEPG.mDuration )
 				else :
 					percent = 0
@@ -238,3 +235,5 @@ class DialogChannelJump( BaseDialog ) :
 		if self.mFlagFind :
 			self.mIsOk = E_DIALOG_STATE_YES
 			xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+
+

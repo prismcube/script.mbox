@@ -18,7 +18,6 @@ class DialogTimeshiftJump( BaseDialog ) :
 		BaseDialog.__init__( self, *args, **kwargs )	
 		self.mMoveToNumber		= ''
 		self.mAsyncMoveTimer    = None
-		self.mTestTime          = 0
 
 		self.mMaxMoveNum		= E_INDEX_JUMP_MAX
 		self.mIsOk              = E_DIALOG_STATE_CANCEL
@@ -94,12 +93,9 @@ class DialogTimeshiftJump( BaseDialog ) :
 		pass
 
 		
-	def SetDialogProperty( self, aMoveToFirstNum, aMoveToMax, aTestTime = None ) :
+	def SetDialogProperty( self, aMoveToFirstNum, aMoveToMax = E_INDEX_JUMP_MAX ) :
 		self.mMoveToNumber	= aMoveToFirstNum
 		self.mMaxMoveNum = aMoveToMax
-
-		if aTestTime:
-			self.mTestTime = aTestTime
 
 
 	def SetLabelMoveToNumber( self ) :
@@ -127,10 +123,10 @@ class DialogTimeshiftJump( BaseDialog ) :
 			return -1
 
 		#calculate current position
-		moveTime = (status.mEndTimeInMs - status.mStartTimeInMs) * ( int( self.mMoveToNumber ) / 100.0)
+		moveTime = ( status.mEndTimeInMs - status.mStartTimeInMs ) * ( int( self.mMoveToNumber ) / 100.0 )
 		self.mJumpIFrame = status.mStartTimeInMs + moveTime
 
-		if self.mJumpIFrame > status.mEndTimeInMs:
+		if self.mJumpIFrame > status.mEndTimeInMs :
 			self.mJumpIFrame = 0
 
 		elif self.mJumpIFrame < status.mStartTimeInMs :

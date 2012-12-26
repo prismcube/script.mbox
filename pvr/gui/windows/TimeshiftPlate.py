@@ -1371,7 +1371,6 @@ class TimeShiftPlate( BaseWindow ) :
 		self.mAsyncShiftTimer  = None
 
 
-	#TODO : must be need timeout schedule
 	def AsyncUpdateCurrentMove( self ) :
 		try :
 			if self.mFlagUserMove :
@@ -1392,10 +1391,11 @@ class TimeShiftPlate( BaseWindow ) :
 		if aKey == 0 :
 			return -1
 
+		self.StopAutomaticHide( )
 		self.mFlag_OnEvent = False
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_TIMESHIFT_JUMP )
-		dialog.SetDialogProperty( str( aKey ), E_INDEX_JUMP_MAX, None )
+		dialog.SetDialogProperty( str( aKey ) )
 		dialog.doModal( )
 
 		self.mFlag_OnEvent = True
@@ -1407,5 +1407,5 @@ class TimeShiftPlate( BaseWindow ) :
 			if move :
 				ret = self.mDataCache.Player_JumpToIFrame( int( move ) )
 
-
+		self.RestartAutomaticHide( )
 

@@ -1048,10 +1048,11 @@ class LivePlate( LivePlateWindow ) :
 		if aKey == 0 :
 			return -1
 
+		self.StopAutomaticHide( )
 		self.mFlag_OnEvent = False
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CHANNEL_JUMP )
-		dialog.SetDialogProperty( str( aKey ), E_INPUT_MAX, None )
+		dialog.SetDialogProperty( str( aKey ) )
 		dialog.doModal( )
 
 		self.mFlag_OnEvent = True
@@ -1064,6 +1065,8 @@ class LivePlate( LivePlateWindow ) :
 			if self.mCurrentChannel.mNumber != int( inputNumber ) :
 				self.mJumpNumber = int( inputNumber )
 				self.ChannelTune( CURR_CHANNEL )
+
+		self.RestartAutomaticHide( )
 
 
 	def ShowPincodeDialog( self ) :
