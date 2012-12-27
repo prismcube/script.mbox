@@ -1356,6 +1356,11 @@ class DataCacheMgr( object ) :
 		self.CheckCurrentChannelByAVBlank( False )
 		ret = self.mCommander.Player_Stop( )
 		self.Frontdisplay_PlayPause( False )
+
+		channel = self.Channel_GetCurrent( )
+		if channel and channel.mError == 0 :
+			self.Frontdisplay_SetMessage( channel.mName )
+
 		return ret
 
 
@@ -1379,6 +1384,10 @@ class DataCacheMgr( object ) :
 		ret = self.mCommander.Player_StartInternalRecordPlayback( aRecordKey, aServiceType, aOffsetMS, aSpeed )
 		self.CheckCurrentChannelByAVBlank( True )
 		self.Frontdisplay_PlayPause( )
+		recInfo = self.Record_GetRecordInfoByKey( aRecordKey )
+		if recInfo and recInfo.mError == 0 :
+			self.Frontdisplay_SetMessage( recInfo.mChannelName )
+
 		return ret
 
 
