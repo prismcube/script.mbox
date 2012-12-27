@@ -1,5 +1,6 @@
 from pvr.gui.WindowImport import *
 import sys, inspect, time
+import gc
 
 
 class NullWindow( BaseWindow ) :
@@ -15,6 +16,10 @@ class NullWindow( BaseWindow ) :
 
 
 	def onInit( self ) :
+		collected = gc.collect()
+		#print "Garbage collection thresholds: %d\n" % gc.get_threshold()
+		print "Garbage collector: collected %d objects." % (collected)
+		
 		self.mWinId = xbmcgui.getCurrentWindowId( )
 		self.mWin = xbmcgui.Window( self.mWinId )
 

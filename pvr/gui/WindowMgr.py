@@ -6,7 +6,7 @@ import os
 import shutil
 import weakref
 
-
+from pvr.gui.GuiConfig import *
 from gui.BaseWindow import BaseWindow
 from inspect import currentframe
 from elementtree import ElementTree
@@ -58,8 +58,12 @@ WIN_ID_TIMESHIFT_INFO_PLATE2		= 103
 
 gWindowMgr = None
 
-E_ADD_XBMC_HTTP_FUNCTION			= True
-
+import sys
+import os
+if sys.version_info < (2, 7):
+    import simplejson
+else:
+    import json as simplejson
 
 def GetInstance( ) :
 	global gWindowMgr
@@ -80,9 +84,27 @@ class WindowMgr( object ) :
 		print 'scriptDir= %s' %self.mScriptDir
 
 		self.mDefaultLanguage = xbmc.getLanguage( )
-		currentSkinName = xbmc.executehttpapi( "GetGUISetting(3, lookandfeel.skin)" )
-		self.mSkinName = currentSkinName[4:]
-
+		self.mSkinName = 'Default'
+		if E_ADD_XBMC_HTTP_FUNCTION == True :
+			currentSkinName = xbmc.executehttpapi( "GetGUISetting(3, lookandfeel.skin)" )
+			self.mSkinName = currentSkinName[4:]
+		elif E_ADD_XBMC_JSONRPC_FUNCTION == True :
+			print 'E_ADD_XBMC_JSONRPC_FUNCTION : lookandfeel.skin '
+			json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "GUI.GetProperties", "params": {"properties": ["skin"]}, "id": 1}')
+			json_response = unicode(json_query, 'utf-8', errors='ignore')
+			jsonobject = simplejson.loads(json_response)
+			if jsonobject.has_key('result') and jsonobject['result'] != None and jsonobject['result'].has_key('skin'):
+				print 'result has key with skin = %s' % jsonobject['result']['skin']
+				total = str( len( jsonobject['result']['skin'] ) )
+				print 'total skin result = %s' % total
+				item = jsonobject['result']['skin']
+				if item.has_key('id' ):
+					self.mSkinName = item['id']
+					print 'skinId = %s' % self.mSkinName
+				if item.has_key('name') :
+					skinName = item['name']
+					print 'skinName = %s' % skinName
+		
 		self.mLastId			= -1
 		self.mSkinFontPath		= []
 		self.mScriptFontPath	= []
@@ -361,13 +383,30 @@ class WindowMgr( object ) :
 			
 
 	def CheckSkinChange( self ) :
-		currentSkinName = xbmc.executehttpapi( "GetGUISetting(3, lookandfeel.skin)" )
-		print 'skin name=%s : %s' %( self.mSkinName, currentSkinName[4:] )
-
-		if self.mSkinName != currentSkinName[4:] :
-			LOG_TRACE( 'change skin name' )
-			self.mSkinName = currentSkinName[4:]
-			return True
+		self.mSkinName = 'Default'
+		if E_ADD_XBMC_HTTP_FUNCTION == True :
+			currentSkinName = xbmc.executehttpapi( "GetGUISetting(3, lookandfeel.skin)" )
+			if self.mSkinName != currentSkinName[4:] :
+				LOG_TRACE( 'change skin name' )
+				self.mSkinName = currentSkinName[4:]
+				return True
+		elif E_ADD_XBMC_JSONRPC_FUNCTION == True :
+			print 'E_ADD_XBMC_JSONRPC_FUNCTION : lookandfeel.skin '
+			json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "GUI.GetProperties", "params": {"properties": ["skin"]}, "id": 1}')
+			json_response = unicode(json_query, 'utf-8', errors='ignore')
+			jsonobject = simplejson.loads(json_response)
+			if jsonobject.has_key('result') and jsonobject['result'] != None and jsonobject['result'].has_key('skin'):
+				print 'result has key with skin = %s' % jsonobject['result']['skin']
+				total = str( len( jsonobject['result']['skin'] ) )
+				print 'total skin result = %s' % total
+				item = jsonobject['result']['skin']
+				if item.has_key('id' ):
+					self.mSkinName = item['id']
+					print 'skinId = %s' % self.mSkinName
+				if item.has_key('name') :
+					skinName = item['name']
+					print 'skinName = %s' % skinName
+					return True
 		return False
 
 
@@ -381,6 +420,7 @@ class WindowMgr( object ) :
 	
 		if E_ADD_XBMC_HTTP_FUNCTION == True :
 			from pvr.GuiHelper import GetInstanceSkinPosition		
+			#pvr.GuiHelper.GetInstanceSkinPosition( ).SetPosition( 0, 0, 1280, 720, 100 )
 			strResolution = xbmc.executehttpapi( "getresolution( )" )
 			LOG_TRACE( 'resolution = %s' % strResolution )
 			resInfo = strResolution[4:].split( ':' )
@@ -401,6 +441,52 @@ class WindowMgr( object ) :
 			LOG_TRACE( 'zoom=%d' %skinzoom )
 
 			pvr.GuiHelper.GetInstanceSkinPosition( ).SetPosition( left, top, right, bottom, skinzoom )
+		elif E_ADD_XBMC_JSONRPC_FUNCTION == True :
+			print 'E_ADD_XBMC_JSONRPC_FUNCTION : getresolution '
+			left =0
+			top = 0
+			right = 1280
+			bottom = 720
+			json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "GUI.GetProperties", "params": {"properties": ["resolution"]}, "id": 1}')
+			json_response = unicode(json_query, 'utf-8', errors='ignore')
+			jsonobject = simplejson.loads(json_response)
+			if jsonobject.has_key('result') and jsonobject['result'] != None and jsonobject['result'].has_key('resolution'):
+				print 'result has key with skin resolution = %s' % jsonobject['result']['resolution']
+				total = str( len( jsonobject['result']['resolution'] ) )
+				print 'total skin result = %s' % total
+				item = jsonobject['result']['resolution']
+				if item.has_key('left' ):
+					left = item['left']
+					print 'left = %s' % left
+				if item.has_key('top') :
+					top = item['top']
+					print 'top = %s' % top
+				if item.has_key('right') :
+					right = item['right']
+					print 'right = %s' % right
+				if item.has_key('bottom') :
+					bottom = item['bottom']
+					print 'bottom = %s' % bottom
+			print 'E_ADD_XBMC_JSONRPC_FUNCTION : skinzoom '
+			zoom = 100
+			json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "GUI.GetProperties", "params": {"properties": ["skinzoom"]}, "id": 1}')
+			json_response = unicode(json_query, 'utf-8', errors='ignore')
+			jsonobject = simplejson.loads(json_response)
+			if jsonobject.has_key('result') and jsonobject['result'] != None and jsonobject['result'].has_key('skinzoom'):
+				print 'result has key with skin skinzoom = %s' % jsonobject['result']['skinzoom']
+				total = str( len( jsonobject['result']['skinzoom'] ) )
+				print 'total skin result = %s' % total
+				item = jsonobject['result']['skinzoom']
+				if item.has_key('zoom' ):
+					zoom = int( item['zoom'] )
+					print 'zoom = %s' % zoom
+			
+			skinzoom = zoom
+			
+			LOG_TRACE( 'zoom=%d' %skinzoom )
+
+			pvr.GuiHelper.GetInstanceSkinPosition( ).SetPosition( left, top, right, bottom, skinzoom )
+
 		else :		
 
 			try :
@@ -565,11 +651,18 @@ class WindowMgr( object ) :
 
 
 	def GetCurrentLanguage( self ) :
-		currentLanguage = xbmc.executehttpapi( "GetGUISetting(3, locale.language)" )
-		LOG_TRACE( "Get currentLanguage = %s" % currentLanguage[4:] )
-		return currentLanguage[4:]
+		#return 'english'
+		if  E_ADD_XBMC_HTTP_FUNCTION == True :
+			currentLanguage = xbmc.executehttpapi( "GetGUISetting(3, locale.language)" )
+			LOG_TRACE( "Get currentLanguage = %s" % currentLanguage[4:] )
+			return currentLanguage[4:]
+		else :
+			currentLanguage = xbmc.getLanguage()
+			print 'Current Language = %s ' % currentLanguage
+			return currentLanguage
 
 
 	def SetCurrentLanguage( self, aLanguage ) :		
-		xbmc.executebuiltin( "Custom.SetLanguage(%s)" % aLanguage )
+		#xbmc.executebuiltin( "Custom.SetLanguage(%s)" % aLanguage )
+		xbmc.setLanguage( aLanguage )
 		

@@ -63,6 +63,7 @@ class DialogStartRecord( SettingDialog ) :
 	def onAction( self, aAction ) :
 		actionId = aAction.getId( )
 		focusId = self.GetFocusId( )
+		print ' actionID= %d, focusId = %d ' % (actionId,focusId )
 		if self.GlobalAction( actionId ) :
 			return
 

@@ -178,9 +178,9 @@ class ChannelListWindow( BaseWindow ) :
 		self.mItemHeight = int( self.getProperty( 'ItemHeight' ) )
 
 		self.mAgeLimit = ElisPropertyEnum( 'Age Limit', self.mCommander ).GetProp( )
-		if self.mDataCache.mCacheReload :
-			self.mListItems = None
-			self.mDataCache.mCacheReload = False
+		#if self.mDataCache.mCacheReload :
+		self.mListItems = None
+		self.mDataCache.mCacheReload = False
 
 		#initialize get cache
 		zappingmode = None
