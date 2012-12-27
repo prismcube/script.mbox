@@ -183,7 +183,6 @@ class SystemInfo( SettingWindow ) :
 			self.mCtrlVersionProductName.setLabel(		MR_LANG( 'Product Name : %s' ) % self.GetProductName( ) )
 			self.mCtrlVersionProductNumber.setLabel(	MR_LANG( 'Product Number : %s' ) % self.GetProductNymber( ) )
 			self.mCtrlVersionHardware.setLabel( 		MR_LANG( 'Hardware Version : %s' ) % self.GetHardwareVersion( ) )
-			#self.mCtrlVersionSoftware.setLabel(			MR_LANG( 'Software Version : %s' ) % self.GetSoftwareVersion( ) )
 			self.mCtrlVersionSoftware.setLabel(			MR_LANG( 'Release Version : %s' ) % self.GetReleaseVersion( ) )
 			self.mCtrlVersionBootloader.setLabel(		MR_LANG( 'Bootloader Version : %s' ) % self.GetBootloaderVersion( ) )
 
@@ -236,13 +235,6 @@ class SystemInfo( SettingWindow ) :
 
 	def GetHardwareVersion( self ) :
 		return '1.00'
-
-
-	def GetSoftwareVersion( self ) :
-		version = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'version' )
-		if E_BETA_SOFTWARE :
-			version = 'Beta ' + version + ' ( Modified %s )' % E_BETA_DATE
-		return version
 
 
 	def GetReleaseVersion( self ) :
