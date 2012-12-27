@@ -5,6 +5,7 @@ import pvr.ElisMgr
 from pvr.gui.BaseWindow import Action
 from pvr.Util import RunThread, SetLock, SetLock2
 import pvr.Platform 
+from pvr.XBMCInterface import XBMC_GetVolume
 
 import sys
 import os
@@ -80,20 +81,9 @@ class BaseDialog( xbmcgui.WindowXMLDialog, Property ) :
 
 
 	def UpdateVolume( self, aVolumeStep = -1 ) :
+		volume = 0
 		if self.mPlatform.IsPrismCube( ) :
-			if E_ADD_XBMC_HTTP_FUNCTION == True :
-				retVolume = xbmc.executehttpapi( 'getvolume' )
-				volume = int( retVolume[4:] )
-			elif E_ADD_XBMC_JSONRPC_FUNCTION == True :
-				print 'E_ADD_XBMC_JSONRPC_FUNCTION : getvolume '
-				json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Application.GetProperties", "params": {"properties": ["volume"]}, "id": 1}')
-				json_response = unicode(json_query, 'utf-8', errors='ignore')
-				jsonobject = simplejson.loads(json_response)
-				volume = 0
-				if jsonobject.has_key('result') and jsonobject['result'] != None and jsonobject['result'].has_key('volume'):
-					print 'result has key with volume'
-					volume = int( jsonobject['result']['volume'] )
-				print 'currentvolume = %d' % (volume)
+			volume =  XBMC_GetVolume( )
 
 		else :
 			volume = self.mCommander.Player_GetVolume( )

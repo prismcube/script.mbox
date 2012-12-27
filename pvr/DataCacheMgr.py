@@ -5,6 +5,7 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 import pvr.Platform
 import pvr.BackupSettings
+from pvr.XBMCInterface import XBMC_SetVolume
 
 from pvr.gui.GuiConfig import *
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
@@ -226,21 +227,7 @@ class DataCacheMgr( object ) :
 		lastMute = self.mCommander.Player_GetMute( )
 		LOG_TRACE( 'last volume[%s] mute[%s]'% ( lastVolume, lastMute) )
 
-		if E_ADD_XBMC_HTTP_FUNCTION == True :
-			volumeString = 'setvolume(%s)'% lastVolume
-			xbmc.executehttpapi( volumeString )
-			#LOG_TRACE('set sync lastVolume[%s]'% lastVolume )
-
-			if lastMute or lastVolume <= 0 :
-				volumeString = 'Mute'
-				xbmc.executehttpapi( volumeString )
-		else : # E_ADD_XBMC_JSONRPC_FUNCTION
-			print 'E_ADD_XBMC_JSONRPC_FUNCTION: SetVolume %d ' % lastVolume
-			setvolume_query = '{"jsonrpc": "2.0", "method": "Application.SetVolume", "params": { "value": "' + str(lastVolume) + '"}, "id": 1}'
-			#setvolume_query = '{"jsonrpc": 2.0", "method": "Application.SetVolume", "params": { "value": "13"}, "id": 1}'
-			xbmc.executeJSONRPC ( setvolume_query )
-			
-		
+		XBMC_SetVolume( lastVolume, lastMute )
 
 
 	def LoadTime( self ) :

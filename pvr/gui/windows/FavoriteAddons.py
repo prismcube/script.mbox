@@ -125,79 +125,30 @@ class FavoriteAddons( BaseWindow ) :
 
 	def UpdateListItem( self ) :
 		self.mFavoriteAddonsIdList = []
-		if E_ADD_XBMC_HTTP_FUNCTION == True :
-			tmpList = xbmc.executehttpapi( "getfavourites()" )
-			self.mCtrlCommonList.reset( )
-			self.mCtrlThumbnailList.reset( )
 
-			if tmpList != '<li>' :
-				tmpList = tmpList[4:].split( ':' )
-				tmpList = self.SyncAddonsList( tmpList )
-				if tmpList and len( tmpList ) > 0 :
-					for i in range( len( tmpList ) ) :
-						addonName			= xbmcaddon.Addon( tmpList[i] ).getAddonInfo( 'name' )
-						addonVersion		= xbmcaddon.Addon( tmpList[i] ).getAddonInfo( 'version' )
-						addonIcon			= xbmcaddon.Addon( tmpList[i] ).getAddonInfo( 'icon' )
-						addonDescription	= xbmcaddon.Addon( tmpList[i] ).getAddonInfo( 'description' )
-						item = xbmcgui.ListItem(  addonName, addonVersion, addonIcon )
-						item.setProperty( 'AddonId', tmpList[i] )
-						item.setProperty( 'Description', addonDescription )
-						self.mFavoriteAddonsIdList.append( item )
+		favoriteList = XBMC_GetFavAddons( )
+		self.SyncAddonsList( favoriteList )
+		self.mCtrlCommonList.reset( )
+		self.mCtrlThumbnailList.reset( )
 
-					self.mFavoriteAddonsIdList.sort( self.ByName )
-					if self.mAscending == False :
-						self.mFavoriteAddonsIdList.reverse( )
+		if len( favoriteList ) > 0 :
+			for i in range( len( favoriteList ) ) :
+				addonName			= xbmcaddon.Addon( favoriteList[i] ).getAddonInfo( 'name' )
+				addonVersion		= xbmcaddon.Addon( favoriteList[i] ).getAddonInfo( 'version' )
+				addonIcon			= xbmcaddon.Addon( favoriteList[i] ).getAddonInfo( 'icon' )
+				addonDescription	= xbmcaddon.Addon( favoriteList[i] ).getAddonInfo( 'description' )
+				item = xbmcgui.ListItem(  addonName, addonVersion, addonIcon )
+				item.setProperty( 'AddonId', favoriteList[i] )
+				item.setProperty( 'Description', addonDescription )
+				self.mFavoriteAddonsIdList.append( item )
 
-					self.mCtrlCommonList.addItems( self.mFavoriteAddonsIdList )
-					self.mCtrlThumbnailList.addItems( self.mFavoriteAddonsIdList )
-		elif E_ADD_XBMC_JSONRPC_FUNCTION == True :
-			json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Addons.GetAddonFavourites", "params": {"properties": ["name", "author", "summary", "version", "fanart", "thumbnail","description"]}, "id": 1}')
-			json_response = unicode(json_query, 'utf-8', errors='ignore')
-			jsonobject = simplejson.loads(json_response)
-			if jsonobject.has_key('result') and jsonobject['result'] != None and jsonobject['result'].has_key('addons'):
-				total = str( len( jsonobject['result']['addons'] ) )
-				# find plugins and scripts
-				addonlist = []
-				for item in jsonobject['result']['addons']:
-					if item['type'] == 'xbmc.python.script' or item['type'] == 'xbmc.python.pluginsource':
-						addonlist.append(item)
-				# randomize the list
-				#random.shuffle(addonlist)
-				count = 0
-				for item in addonlist:
-					count += 1
-					print "RandomAddon.%d.Name" % ( count ), item['name'] 
-					print "RandomAddon.%d.Author" % ( count ), item['author'] 
-					print "RandomAddon.%d.Summary" % ( count ), item['summary'] 
-					print "RandomAddon.%d.Version" % ( count ), item['version'] 
-					print "RandomAddon.%d.Path" % ( count ), item['addonid'] 
-					print "RandomAddon.%d.Fanart" % ( count ), item['fanart'] 
-					print "RandomAddon.%d.Thumb" % ( count ), item['thumbnail'] 
-					print "RandomAddon.%d.Type" % ( count ), item['type']
-					print "RandomAddon.%d.Description" % ( count ), item['description']
-					print "RandomAddon.Count" , total 
-					# stop if we've reached the number of items we need
-					addonName			= item['name']
-					addonVersion		= item['version']
-					addonId 			= item['addonid']
-					addonIcon			= xbmcaddon.Addon( addonId ).getAddonInfo( 'icon' )
-					addonDescription	= item['description']
-					listitem = xbmcgui.ListItem(  addonName, addonVersion, addonIcon )
-					listitem.setProperty( 'AddonId', addonId )
-					listitem.setProperty( 'Description', addonDescription )
-					self.mFavoriteAddonsIdList.append( listitem )
-					#if count == self.LIMIT:
-					#	break
-				if count > 0 :
-					self.mFavoriteAddonsIdList.sort( self.ByName )
-					if self.mAscending == False :
-						self.mFavoriteAddonsIdList.reverse( )
+			self.mFavoriteAddonsIdList.sort( self.ByName )
+			if self.mAscending == False :
+				self.mFavoriteAddonsIdList.reverse( )
 
-					self.mCtrlCommonList.addItems( self.mFavoriteAddonsIdList )
-					self.mCtrlThumbnailList.addItems( self.mFavoriteAddonsIdList )
+			self.mCtrlCommonList.addItems( self.mFavoriteAddonsIdList )
+			self.mCtrlThumbnailList.addItems( self.mFavoriteAddonsIdList )
 
-		else :
-			pass
 
 
 	def UpdateViewMode( self ) :
@@ -242,74 +193,29 @@ class FavoriteAddons( BaseWindow ) :
 
 	def DoContextAction( self, aContextAction ) :
 		if aContextAction == CONTEXT_ADD_FAVORITE :
-			if E_ADD_XBMC_HTTP_FUNCTION == True :
-				tmpList = xbmc.executehttpapi( "getaddons()" )
-				if tmpList == '<li>' :
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No add-ons installed' ) )
-		 			dialog.doModal( )
-				else :
-					addonList = tmpList[4:].split( ':' )
-					dialog = xbmcgui.Dialog( )
-					ret = dialog.select( MR_LANG( 'Select Add-on' ), addonList )
-					if ret >= 0 :
-						ret1 = xbmc.executehttpapi( "addfavourite(%s)" % addonList[ret] )
-						self.UpdateListItem( )
-			elif E_ADD_XBMC_JSONRPC_FUNCTION == True :
-				json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Addons.GetAddons", "params": {"properties": ["name", "author", "summary", "version", "fanart", "thumbnail","description"]}, "id": 1}')
-				json_response = unicode(json_query, 'utf-8', errors='ignore')
-				jsonobject = simplejson.loads(json_response)
-				addonList = []
-				count = 0				
-				if jsonobject.has_key('result') and jsonobject['result'] != None and jsonobject['result'].has_key('addons'):
-					total = str( len( jsonobject['result']['addons'] ) )
-					# find plugins and scripts
-					for item in jsonobject['result']['addons']:
-						if item['type'] == 'xbmc.python.script' or item['type'] == 'xbmc.python.pluginsource':
-							print "Addon Id = %s" % item['addonid']
-							addonList.append(item['addonid'])
-							count += 1
-				if count == 0 :
-					dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-					dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No add-ons installed' ) )
-		 			dialog.doModal( )
-				else :
-					dialog = xbmcgui.Dialog( )
-					ret = dialog.select( MR_LANG( 'Select Add-on' ), addonList )
-					if ret >= 0 :
-						addAddonFavString = '{"jsonrpc": "2.0", "method": "Addons.SetAddonFavourite", "params": {"addonid":"'+addonList[ret]+'"}, "id": 1}'
-						json_query = xbmc.executeJSONRPC( addAddonFavString)
-						json_response = unicode(json_query, 'utf-8', errors='ignore')
-						jsonobject = simplejson.loads(json_response)
-						self.UpdateListItem( )
+			addonList = XBMC_GetAddons( )
+			if len( addonList ) <= 0  :
+				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
+				dialog.SetDialogProperty( MR_LANG( 'Error' ), MR_LANG( 'No add-ons installed' ) )
+	 			dialog.doModal( )
 			else :
-				pass
+				dialog = xbmcgui.Dialog( )
+				ret = dialog.select( MR_LANG( 'Select Add-on' ), addonList )
+				if ret >= 0 :
+					XBMC_AddFavAddon( addonList[ret] )
+					self.UpdateListItem( )
 
 		elif aContextAction == CONTEXT_DELETE_FAVORITE :
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_YES_NO_CANCEL )
 				dialog.SetDialogProperty(  MR_LANG( 'Delete favorite add-on' ),  MR_LANG( 'Do you want to remove %s?' ) % self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' ) )
 				dialog.doModal( )
 				if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-					if E_ADD_XBMC_HTTP_FUNCTION == True :
-						ret = xbmc.executehttpapi( "removefavourite(%s)" % self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' ) )
-					elif E_ADD_XBMC_JSONRPC_FUNCTION == True :
-						removeAddonFavString = '{"jsonrpc": "2.0", "method": "Addons.RemoveAddonFavourite", "params": {"addonid":"'+self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' )+'"}, "id": 1}'
-						json_query = xbmc.executeJSONRPC( removeAddonFavString)
-						json_response = unicode(json_query, 'utf-8', errors='ignore')
-						jsonobject = simplejson.loads(json_response)
+					XBMC_RemoveFavAddon( self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' ) )
 					self.UpdateListItem( )
 
 		elif aContextAction == CONTEXT_RUN_FAVORITE :
 			self.SetMediaCenter( )
-			if E_ADD_XBMC_HTTP_FUNCTION == True:
-				xbmc.executebuiltin( "runaddon(%s)" % self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' ) )
-			elif E_ADD_XBMC_JSONRPC_FUNCTION == True :
-				runAddonFavString = '{"jsonrpc": "2.0", "method": "Addons.ExecuteAddon", "params": {"addonid":"'+self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' )+'"}, "id": 1}'
-				json_query = xbmc.executeJSONRPC( runAddonFavString )
-				json_response = unicode(json_query, 'utf-8', errors='ignore')
-				jsonobject = simplejson.loads(json_response)
-			else :
-				pass
+			XBMC_RunAddon( self.mFavoriteAddonsIdList[ self.mSelectedIndex ].getProperty( 'AddonId' ) )			
 			
 		else :
 			LOG_ERR( 'Unknown Context Action' )
@@ -331,22 +237,19 @@ class FavoriteAddons( BaseWindow ) :
 		return position
 
 
-	def SyncAddonsList( self, aAddonList ) :
-		tmpList = xbmc.executehttpapi( "getaddons()" )
-		result = deepcopy( aAddonList )
-		if tmpList == '<li>' :
-			return None
-		else :
-			tmpList = tmpList[4:].split( ':' )
-			for i in range( len( aAddonList ) ) :
-				findaddon = False
-				for addon in tmpList :
-					if aAddonList[i] == addon :
-						findaddon = True
-				if findaddon == False :
-					del result[i]
 
-		return result
+	def SyncAddonsList( self, aAddonList ) :
+		addonList = XBMC_GetAddons( )
+		total = len( aAddonList )
+		for i in range( total ) :
+			findaddon = False
+			reversIndex = total - i - 1
+			LOG_TRACE( 'reversindex=%d' %reversIndex )
+			for addon in addonList :
+				if aAddonList[reversIndex] == addon :
+					findaddon = True
+			if findaddon == False :
+				del aAddonList[reversIndex]
 
 
 	def SetFocusList( self, aMode ) :

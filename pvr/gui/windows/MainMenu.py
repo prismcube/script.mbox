@@ -148,7 +148,7 @@ class MainMenu( BaseWindow ) :
 			position = self.mCtrlFavAddonList.getSelectedPosition( )
 			if position != -1 :
 				self.SetMediaCenter( )
-				xbmc.executebuiltin( "runaddon(%s)" % self.mFavAddonsList[ position ].getProperty( 'AddonId' ) )
+				XBMC_RunAddon( self.mFavAddonsList[ position ].getProperty( 'AddonId' ) )
 
 		elif aControlId == BUTTON_ID_HELP :
 			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_HELP )
@@ -168,80 +168,33 @@ class MainMenu( BaseWindow ) :
 
 	def GetFavAddons( self ) :
 		if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
-			if E_ADD_XBMC_HTTP_FUNCTION == True :
-				currentSkinName = xbmc.executehttpapi( "GetGUISetting(3, lookandfeel.skin)" )
-				currentSkinName = currentSkinName[4:]
-				if currentSkinName == 'skin.confluence' or currentSkinName == 'Default' :
-					tmpList = xbmc.executehttpapi( "getfavourites()" )
-					self.mCtrlFavAddonList = self.getControl( LIST_ID_FAV_ADDON )
-					self.mCtrlFavAddonList.reset( )
-					if tmpList != '<li>' :
-						tmpList = tmpList[4:].split( ':' )
-						tmpList = self.SyncAddonsList( tmpList )
-						if tmpList :
-							self.mFavAddonsList = []
-							for i in range( len( tmpList ) ) :
-								item = xbmcgui.ListItem(  xbmcaddon.Addon( tmpList[i] ).getAddonInfo( 'name' ) )
-								item.setProperty( 'AddonId', tmpList[i] )
-								self.mFavAddonsList.append( item )
-							self.mCtrlFavAddonList.addItems( self.mFavAddonsList )
-			elif E_ADD_XBMC_JSONRPC_FUNCTION == True :
-				print 'E_ADD_XBMC_JSONRPC_FUNCTION : lookandfeel.skin '
-				json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "GUI.GetProperties", "params": {"properties": ["skin"]}, "id": 1}')
-				json_response = unicode(json_query, 'utf-8', errors='ignore')
-				jsonobject = simplejson.loads(json_response)
-				currentSkinName = None
-				if jsonobject.has_key('result') and jsonobject['result'] != None and jsonobject['result'].has_key('skin'):
-					print 'result has key with skin = %s' % jsonobject['result']['skin']
-					total = str( len( jsonobject['result']['skin'] ) )
-					print 'total skin result = %s' % total
-					item = jsonobject['result']['skin']
-					if item.has_key('id' ):
-						currentSkinName = item['id']
-						print 'skinId = %s' % currentSkinName
-					if item.has_key('name') :
-						skinName = item['name']
-						print 'skinName = %s' % skinName
-				if currentSkinName == 'skin.confluence' or currentSkinName == 'Default' :
-					json_query = xbmc.executeJSONRPC('{"jsonrpc": "2.0", "method": "Addons.GetAddonFavourites", "params": {"properties": ["name", "author", "summary", "version", "fanart", "thumbnail","description"]}, "id": 1}')
-					json_response = unicode(json_query, 'utf-8', errors='ignore')
-					jsonobject = simplejson.loads(json_response)
-					count = 0
-					if jsonobject.has_key('result') and jsonobject['result'] != None and jsonobject['result'].has_key('addons'):
-						total = str( len( jsonobject['result']['addons'] ) )
-						# find plugins and scripts
-						addonlist = []
-						for item in jsonobject['result']['addons']:
-							if item['type'] == 'xbmc.python.script' or item['type'] == 'xbmc.python.pluginsource':
-								addonlist.append(item)
-								count += 1
-					
-					self.mCtrlFavAddonList = self.getControl( LIST_ID_FAV_ADDON )
-					self.mCtrlFavAddonList.reset( )
-					
-					if count > 0 :
-						self.mFavAddonsList = []
-						for item in addonlist :
-							listitem = xbmcgui.ListItem( item['name'] )
-							listitem.setProperty( 'AddonId', item['addonid'] )
-							self.mFavAddonsList.append( listitem )
-						self.mCtrlFavAddonList.addItems( self.mFavAddonsList )
+
+			currentSkinName = XBMC_GetCurrentSkinName( )
+			if currentSkinName == 'skin.confluence' or currentSkinName == 'Default' :
+				favoriteList = XBMC_GetFavAddons( )
+				self.SyncAddonsList( favoriteList )
+				self.mCtrlFavAddonList = self.getControl( LIST_ID_FAV_ADDON )
+				self.mCtrlFavAddonList.reset( )
+				if len( favoriteList ) > 0 :
+					self.mFavAddonsList = []
+					for i in range( len( favoriteList ) ) :
+						item = xbmcgui.ListItem(  xbmcaddon.Addon( favoriteList[i] ).getAddonInfo( 'name' ) )
+						item.setProperty( 'AddonId', favoriteList[i] )
+						self.mFavAddonsList.append( item )
+					self.mCtrlFavAddonList.addItems( self.mFavAddonsList )
 						
 
 	def SyncAddonsList( self, aAddonList ) :
-		#tmpList = xbmc.executehttpapi( "getaddons()" )
-		result = deepcopy( aAddonList )
-		return result
-		if tmpList == '<li>' :
-			return None
-		else :
-			tmpList = tmpList[4:].split( ':' )
-			for i in range( len( aAddonList ) ) :
-				findaddon = False
-				for addon in tmpList :
-					if aAddonList[i] == addon :
-						findaddon = True
-				if findaddon == False :
-					del result[i]
+		addonList = XBMC_GetAddons( )
+		total = len( aAddonList )
+		for i in range( total ) :
+			findaddon = False
+			reversIndex = total - i - 1
+			LOG_TRACE( 'reversindex=%d' %reversIndex )
+			for addon in addonList :
+				if aAddonList[reversIndex] == addon :
+					findaddon = True
+			if findaddon == False :
+				del aAddonList[reversIndex]
 
-		return result
+

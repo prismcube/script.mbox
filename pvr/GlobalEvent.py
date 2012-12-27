@@ -152,13 +152,6 @@ class GlobalEvent( object ) :
 	def SendLocalOffsetToXBMC( self ) :
 		LOG_TRACE( '--------------' )
 		self.mDataCache.LoadTime( )
-		
-		if E_ADD_XBMC_HTTP_FUNCTION == True :
-			localOffset = self.mDataCache.Datetime_GetLocalOffset( )
-			xbmc.executehttpapi( 'setlocaloffset(%d)' %localOffset )
-		elif E_ADD_XBMC_ADDON_API == True :			
-			localOffset = self.mDataCache.Datetime_GetLocalOffset( )
-			print 'E_ADD_XBMC_ADDON_API : setlocal offset = %s ' % localOffset
-			xbmc.setLocalOffset( localOffset )
-		LOG_TRACE( '--------------' )
+		localOffset = self.mDataCache.Datetime_GetLocalOffset( )		
+		XBMC_SetLocalOffset( localOffset )
 

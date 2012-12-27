@@ -118,7 +118,7 @@ class FirstInstallation( SettingWindow ) :
 						dialog.doModal( )
 						self.mInitialized = False
 						self.OpenBusyDialog( )
-						WinMgr.GetInstance( ).SetCurrentLanguage( menuLanguageList[ ret ] )
+						XBMC_SetCurrentLanguage( menuLanguageList[ ret ] )
 						
 				elif groupId == E_Input02 :
 					dialog = xbmcgui.Dialog( )
@@ -192,7 +192,7 @@ class FirstInstallation( SettingWindow ) :
 		if self.mStepNum == E_STEP_SELECT_LANGUAGE :
 			self.mPrevStepNum = E_STEP_SELECT_LANGUAGE
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Language Setup' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), MR_LANG( WinMgr.GetInstance( ).GetCurrentLanguage( ) ), MR_LANG( 'Select the language you want the menu to be in' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), MR_LANG( XBMC_GetCurrentLanguage( ) ), MR_LANG( 'Select the language you want the menu to be in' ) )
 			self.AddInputControl( E_Input02, MR_LANG( 'Audio Language' ), self.mAudioLanguageList[ ElisPropertyEnum( 'Audio Language', self.mCommander ).GetPropIndex( ) ], MR_LANG( 'Select the language that you wish to listen to' ) )
 			self.AddNextButton( MR_LANG( 'Go to the video and audio setup page' ) )
 			self.SetPrevNextButtonLabel( )
@@ -299,7 +299,7 @@ class FirstInstallation( SettingWindow ) :
 		elif self.mStepNum == E_STEP_RESULT :
 			self.mPrevStepNum = E_STEP_DATE_TIME
 			self.getControl( E_SETTING_HEADER_TITLE ).setLabel( MR_LANG( 'Summary of First Installation' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), MR_LANG( WinMgr.GetInstance( ).GetCurrentLanguage( ) ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), MR_LANG( XBMC_GetCurrentLanguage( ) ) )
 			self.mDate = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_DD_MM_YYYY )
 			self.AddInputControl( E_Input02, MR_LANG( 'Date' ), self.mDate )
 			self.mTime = TimeToString( self.mDataCache.Datetime_GetLocalTime( ), TimeFormatEnum.E_HH_MM )
