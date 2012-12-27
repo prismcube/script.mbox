@@ -213,7 +213,7 @@ class Configure( SettingWindow ) :
 					self.mInitialized = False
 					self.OpenBusyDialog( )
 					self.StopCheckNetworkTimer( )
-					WinMgr.GetInstance( ).SetCurrentLanguage( menuLanguageList[ ret ] )
+					XBMC_SetCurrentLanguage( menuLanguageList[ ret ] )
 			else :
 				self.DisableControl( E_LANGUAGE )
 				self.ControlSelect( )
@@ -397,7 +397,7 @@ class Configure( SettingWindow ) :
 
 		if selectedId == E_LANGUAGE :
 			self.getControl( E_SETTING_DESCRIPTION ).setLabel( self.mDescriptionList[ selectedId ] )
-			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), WinMgr.GetInstance( ).GetCurrentLanguage( ), MR_LANG( 'Select the language you want the menu to be in' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Menu Language' ), XBMC_GetCurrentLanguage( ), MR_LANG( 'Select the language you want the menu to be in' ) )
 			self.AddEnumControl( E_SpinEx01, 'Audio Language', None, MR_LANG( 'Select the language that you wish to listen to' ) )
 			self.AddEnumControl( E_SpinEx02, 'Subtitle Language', None, MR_LANG( 'Select the language for the subtitle to be in' ) )
 			self.AddEnumControl( E_SpinEx03, 'Secondary Subtitle Language', None, MR_LANG( 'Select the language for the secondary subtitle to be in' ) )

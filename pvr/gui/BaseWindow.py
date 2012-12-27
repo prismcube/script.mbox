@@ -7,7 +7,14 @@ import pvr.DataCacheMgr
 import pvr.TunerConfigMgr 
 from pvr.Util import RunThread, SetLock, SetLock2 
 import pvr.Platform
+from pvr.XBMCInterface import XBMC_GetVolume
 
+import sys
+import os
+if sys.version_info < (2, 7):
+    import simplejson
+else:
+    import json as simplejson
 
 class Action(object) :
 	ACTION_NONE					= 0
@@ -19,7 +26,12 @@ class Action(object) :
 	ACTION_PAGE_DOWN			= 6		#PageDown --> Channel Down
 	ACTION_SELECT_ITEM			= 7		# OK
 	ACTION_HIGHLIGHT_ITEM		= 8	
-	ACTION_PARENT_DIR			= 9		#Back
+	if pvr.Platform.GetPlatform( ).GetXBMCVersion( ) < 12.0 :
+		ACTION_PARENT_DIR		= 9		#Back	
+	else :
+		ACTION_PARENT_DIR		= 92		#Back 	
+
+
 	ACTION_PREVIOUS_MENU		= 10 	#ESC
 	ACTION_SHOW_INFO			= 11	# i(epg)
 	ACTION_PAUSE				= 12	#space
@@ -218,10 +230,9 @@ class BaseWindow( xbmcgui.WindowXML, Property ) :
 
 
 	def UpdateVolume( self, aVolumeStep = -1 ) :
+		volume = 0
 		if self.mPlatform.IsPrismCube( ) :
-			retVolume = xbmc.executehttpapi( 'getvolume' )
-			volume = int( retVolume[4:] )
-
+			volume =  XBMC_GetVolume( )		
 		else :
 			volume = self.mCommander.Player_GetVolume( )
 			if aVolumeStep != -1 :

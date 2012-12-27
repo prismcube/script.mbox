@@ -56,20 +56,23 @@ class Platform( object ) :
 		MakeDir( self.GetScriptDataDir( ) )
 		MakeDir( self.GetCacheDir( ) )
 
-
-	def GetMediaPath( self ) :
-		version = 0.0
+		self.mXBMCVersion = 0.0
 		vs = xbmc.getInfoLabel( 'System.BuildVersion' )
 		try : 
 			# sample input: '10.1 Git:Unknown'
-			version = float( vs.split( )[0] )
+			self.mXBMCVersion = float( vs.split( )[0] )
 		except ValueError :
 			try :
 				# sample input: 'PRE-11.0 Git:Unknown'
-				version = float( vs.split( )[0].split( '-' )[1] )
+				self.mXBMCVersion = float( vs.split( )[0].split( '-' )[1] )
 			except ValueError :
 				print 'Cannot determine version of XBMC from build version: %s. Returning %s' % ( vs, version )
-		return version
+
+		print 'xbmc version=%s' %self.mXBMCVersion
+
+
+	def GetXBMCVersion( self ) :
+		return self.mXBMCVersion
 
 
 	def AddLibsToSysPath( self ) :
