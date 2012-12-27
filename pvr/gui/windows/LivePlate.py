@@ -580,13 +580,15 @@ class LivePlate( LivePlateWindow ) :
 				gmtFrom  = self.mDataCache.Datetime_GetLocalTime( )
 				gmtUntil = gmtFrom + ( 3600 * 24 * 7 )
 				maxCount = 100
-				self.mEPGList = self.mDataCache.Epgevent_GetListByChannel( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil, maxCount )
+				#self.mEPGList = self.mDataCache.Epgevent_GetListByChannel( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil, maxCount )
+				self.mEPGList = self.mCommander.Epgevent_GetList( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil, maxCount )
 				#LOG_TRACE('mSid[%s] mTsid[%s] mOnid[%s] gmtFrom[%s] gmtUntil[%s]'% ( channel.mSid, channel.mTsid, channel.mOnid, gmtFrom, gmtUntil ) )
-				#LOG_TRACE('-------------------------------------epgList[%s]'% self.mEPGList )
 				if self.mEPGList == None or self.mEPGList[0].mError != 0 :
 					self.mFlag_OnEvent = True
 					LOG_TRACE( 'EPGList is None\nLeave [%s]'% self.mEPGList )
 					return -1
+
+				#LOG_TRACE('-------------------------------------epgList len[%s]'% len( self.mEPGList ) )
 
 				self.mFlag_ChannelChanged = False
 

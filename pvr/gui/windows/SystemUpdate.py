@@ -1013,7 +1013,7 @@ class SystemUpdate( SettingWindow ) :
 
 		LOG_TRACE('4. make run script ------' )
 		try :
-			scriptFile = '%s/backup.sh'% E_DEFAULT_BACKUP_PATH
+			scriptFile = '%s.sh'% E_DEFAULT_BACKUP_PATH
 			fd = open( scriptFile, 'w' )
 			if fd :
 				fd.writelines( '#!/bin/sh\n' )

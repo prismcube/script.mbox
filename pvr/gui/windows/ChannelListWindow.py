@@ -1562,11 +1562,11 @@ class ChannelListWindow( BaseWindow ) :
 					tsid = iChannel.mTsid
 					onid = iChannel.mOnid
 					iEPG = None
-					iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
+					#iEPG = self.mDataCache.Epgevent_GetCurrent( sid, tsid, onid )
 					#iEPGList = self.mDataCache.Epgevent_GetCurrentByChannelFromEpgCF( sid, tsid, onid )
-					#iEPG = self.mCommander.Epgevent_GetList( sid, tsid, onid, 0, 0, 1 )
-					#if iEPG :
-					#	iEPG = iEPG[0]
+					iEPG = self.mCommander.Epgevent_GetList( sid, tsid, onid, 0, 0, 1 )
+					if iEPG :
+						iEPG = iEPG[0]
 					LOG_TRACE( '----chNum[%s] chName[%s] sid[%s] tsid[%s] onid[%s] epg[%s] gmtTime[%s]'% (iChannel.mNumber, iChannel.mName, sid, tsid, onid, iEPG, self.mDataCache.Datetime_GetGMTTime( ) ) )
 					if iEPG == None or iEPG.mError != 0 :
 						self.mNavEpg = 0
