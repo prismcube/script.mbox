@@ -183,7 +183,8 @@ class SystemInfo( SettingWindow ) :
 			self.mCtrlVersionProductName.setLabel(		MR_LANG( 'Product Name : %s' ) % self.GetProductName( ) )
 			self.mCtrlVersionProductNumber.setLabel(	MR_LANG( 'Product Number : %s' ) % self.GetProductNymber( ) )
 			self.mCtrlVersionHardware.setLabel( 		MR_LANG( 'Hardware Version : %s' ) % self.GetHardwareVersion( ) )
-			self.mCtrlVersionSoftware.setLabel(			MR_LANG( 'Software Version : %s' ) % self.GetSoftwareVersion( ) )
+			#self.mCtrlVersionSoftware.setLabel(			MR_LANG( 'Software Version : %s' ) % self.GetSoftwareVersion( ) )
+			self.mCtrlVersionSoftware.setLabel(			MR_LANG( 'Release Version : %s' ) % self.GetReleaseVersion( ) )
 			self.mCtrlVersionBootloader.setLabel(		MR_LANG( 'Bootloader Version : %s' ) % self.GetBootloaderVersion( ) )
 
 			self.CloseBusyDialog( )
@@ -242,6 +243,18 @@ class SystemInfo( SettingWindow ) :
 		if E_BETA_SOFTWARE :
 			version = 'Beta ' + version + ' ( Modified %s )' % E_BETA_DATE
 		return version
+
+
+	def GetReleaseVersion( self ) :
+		ret = GetCurrentVersion( )
+		if not ret[0] :
+			ret[0] = MR_LANG( 'Unknown' )
+			return ret[0]
+		if not ret[1] :
+			ret[1] = MR_LANG( 'Unknown' )
+
+		retInfo = ret[0] + ' ( %s )' % ret[1]
+		return retInfo
 
 
 	def RunningGetLastDate( self, aDirname ) :
