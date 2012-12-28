@@ -133,24 +133,24 @@ class SatelliteConfigOnecable2( SettingWindow ) :
 		self.ResetAllControl( )
 		tunertype = self.mTunerMgr.GetCurrentTunerConnectionType( )
 		if tunertype == E_TUNER_SEPARATED :
-			self.AddEnumControl( E_SpinEx01, 'MDU', None, MR_LANG( 'When set to \'On\', multiple TVs within the same storied building with a single or two dish antennas will receive Direct-to-Home service' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Tuner %d PIN Code' ) % ( self.mTunerIndex + 1 ), '%03d' % self.mTempTunerPin[self.mTunerIndex], MR_LANG( 'Enter your PIN code for Tuner %d' ) % ( self.mTunerIndex + 1 ) )
-			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Tuner %d SCR' ) % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[self.mTunerIndex], MR_LANG( 'Select number of Single Cable Routers for Tuner %d' ) % ( self.mTunerIndex + 1 ) )
-			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner %d Frequency' ) % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[self.mTunerIndex] ), MR_LANG( 'Select the frequency for Tuner %d' ) % ( self.mTunerIndex + 1 ) )
+			self.AddEnumControl( E_SpinEx01, 'MDU', None, MR_LANG( 'When set to \'On\', your OneCable system allows the transmission frequency to be protected by entering a PIN code' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Tuner %d PIN Code' ) % ( self.mTunerIndex + 1 ), '%03d' % self.mTempTunerPin[self.mTunerIndex], MR_LANG( 'Enter a PIN code for tuner %d' ) % ( self.mTunerIndex + 1 ) )
+			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Tuner %d SCR' ) % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[self.mTunerIndex], MR_LANG( 'Select an available transmission channel from SCR 0 to SCR 7 for tuner %d' ) % ( self.mTunerIndex + 1 ) )
+			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner %d Frequency' ) % ( self.mTunerIndex + 1 ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[self.mTunerIndex] ), MR_LANG( 'Select a frequency for tuner %d' ) % ( self.mTunerIndex + 1 ) )
 
 			disableControls = [ E_Input02, E_SpinEx04, E_SpinEx05 ]
 			self.SetVisibleControls( disableControls, False )
 			self.SetEnableControls( disableControls, False )
 
 		elif tunertype == E_TUNER_LOOPTHROUGH :
-			self.AddEnumControl( E_SpinEx01, 'MDU', None, MR_LANG( 'When set to \'On\', multiple TVs within the same storied building with a single or two dish antennas will receive Direct-to-Home service' ) )
-			self.AddInputControl( E_Input01, MR_LANG( 'Tuner 1 PIN Code' ), '%03d' % self.mTempTunerPin[0], MR_LANG( 'Enter your PIN code for Tuner 1' ) )
-			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Tuner 1 SCR' ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[0], MR_LANG( 'Select number of Single Cable Routers for Tuner 1' ) )
-			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner 1 Frequency' ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[0] ), MR_LANG( 'Select the frequency for Tuner 1' ) )
+			self.AddEnumControl( E_SpinEx01, 'MDU', None, MR_LANG( 'When set to \'On\', your OneCable system allows the transmission frequency to be protected by entering a PIN code' ) )
+			self.AddInputControl( E_Input01, MR_LANG( 'Tuner 1 PIN Code' ), '%03d' % self.mTempTunerPin[0], MR_LANG( 'Enter a PIN code for tuner 1' ) )
+			self.AddUserEnumControl( E_SpinEx02, MR_LANG( 'Tuner 1 SCR' ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[0], MR_LANG( 'Select an available transmission channel from SCR 0 to SCR 7 for tuner 1' ) )
+			self.AddUserEnumControl( E_SpinEx03, MR_LANG( 'Tuner 1 Frequency' ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[0] ), MR_LANG( 'Select a frequency for tuner 1' ) )
 
-			self.AddInputControl( E_Input02, MR_LANG( 'Tuner 2 PIN Code' ), '%03d' % self.mTempTunerPin[1], MR_LANG( 'Enter your PIN code for Tuner 2' ) )			
-			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Tuner 2 SCR' ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[1], MR_LANG( 'Select number of Single Cable Routers for Tuner 2' ) )			
-			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Tuner 2 Frequency' ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[1] ), MR_LANG( 'Select the frequency for Tuner 2' ) )
+			self.AddInputControl( E_Input02, MR_LANG( 'Tuner 2 PIN Code' ), '%03d' % self.mTempTunerPin[1], MR_LANG( 'Enter a PIN code for tuner 2' ) )			
+			self.AddUserEnumControl( E_SpinEx04, MR_LANG( 'Tuner 2 SCR' ), E_LIST_ONE_CABLE_SCR, self.mTempTunerScr[1], MR_LANG( 'Select an available transmission channel from SCR 0 to SCR 7 for tuner 2' ) )			
+			self.AddUserEnumControl( E_SpinEx05, MR_LANG( 'Tuner 2 Frequency' ), E_LIST_ONE_CABLE_TUNER_FREQUENCY, getOneCableTunerFrequencyIndex( '%d' % self.mTempTunerFreq[1] ), MR_LANG( 'Select a frequency for tuner 2' ) )
 
 			disableControls = [ E_Input02, E_SpinEx04, E_SpinEx05 ]
 			self.SetVisibleControls( disableControls, True )

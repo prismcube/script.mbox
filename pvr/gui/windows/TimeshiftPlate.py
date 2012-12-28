@@ -994,8 +994,8 @@ class TimeShiftPlate( BaseWindow ) :
 
 	def BookMarkContext( self ) :
 		context = []
-		context.append( ContextItem( MR_LANG( 'Create bookmark' ), CONTEXT_ACTION_ADD_TO_BOOKMARK ) )
-		context.append( ContextItem( MR_LANG( 'Add chapters automatically' ), CONTEXT_ACTION_ADD_AUTO_CHAPTER ) )
+		context.append( ContextItem( MR_LANG( 'Add bookmark' ), CONTEXT_ACTION_ADD_TO_BOOKMARK ) )
+		context.append( ContextItem( MR_LANG( 'Start auto-chaptering' ), CONTEXT_ACTION_ADD_AUTO_CHAPTER ) )
 		context.append( ContextItem( MR_LANG( 'Show all bookmarks' ), CONTEXT_ACTION_SHOW_LIST ) )
 
 		dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_CONTEXT )
