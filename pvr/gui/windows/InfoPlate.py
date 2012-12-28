@@ -423,7 +423,7 @@ class InfoPlate( LivePlateWindow ) :
 
 	def BookMarkContext( self ) :
 		context = []
-		context.append( ContextItem( 'Create bookmark', CONTEXT_ACTION_ADD_TO_BOOKMARK ) )
+		context.append( ContextItem( 'Add bookmark', CONTEXT_ACTION_ADD_TO_BOOKMARK ) )
 		context.append( ContextItem( 'Show all bookmarks',  CONTEXT_ACTION_SHOW_LIST ) )
 
 		self.mEventBus.Deregister( self )
