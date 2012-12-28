@@ -565,6 +565,20 @@ def GetSTBVersion( ) :
 	return stbversion
 
 
+def GetCurrentVersion( ) :
+	parse = ['Version', 'Date']
+	retInfo = []
+	for ele in parse :
+		cmd = 'cat /etc/release.info | awk -F= \'/%s/ {print $2}\''% ele
+		p = Popen( cmd, shell=True, stdout=PIPE )
+		ret = p.stdout.read().strip()
+		p.stdout.close()
+		retInfo.append( ret )
+		#print 'ret[%s]'% ret
+
+	return retInfo
+
+
 def UnpackToUSB( aZipFile, aUsbPath, aUnpackSize = 0 ) :
 	isCopy = False
 	cmd = 'unzip -o %s -d %s'% ( aZipFile, aUsbPath )

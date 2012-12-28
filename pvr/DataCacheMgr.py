@@ -5,15 +5,23 @@ from ElisProperty import ElisPropertyEnum, ElisPropertyInt
 import pvr.ElisMgr
 import pvr.Platform
 import pvr.BackupSettings
+from pvr.XBMCInterface import XBMC_SetVolume
 
+from pvr.gui.GuiConfig import *
 if pvr.Platform.GetPlatform( ).IsPrismCube( ) :
 	gFlagUseDB = True
 	from pvr.IpParser import *
 
 else :
-	from pvr.gui.GuiConfig import *
 	gFlagUseDB = False
 
+
+import sys
+import os
+if sys.version_info < (2, 7):
+    import simplejson
+else:
+    import json as simplejson
 
 print 'mBox----------------use db[%s] platform[%s]' %( gFlagUseDB, pvr.Platform.GetPlatform( ).GetName( ) )
 
@@ -219,13 +227,7 @@ class DataCacheMgr( object ) :
 		lastMute = self.mCommander.Player_GetMute( )
 		LOG_TRACE( 'last volume[%s] mute[%s]'% ( lastVolume, lastMute) )
 
-		volumeString = 'setvolume(%s)'% lastVolume
-		xbmc.executehttpapi( volumeString )
-		#LOG_TRACE('set sync lastVolume[%s]'% lastVolume )
-
-		if lastMute or lastVolume <= 0 :
-			volumeString = 'Mute'
-			xbmc.executehttpapi( volumeString )
+		XBMC_SetVolume( lastVolume, lastMute )
 
 
 	def LoadTime( self ) :

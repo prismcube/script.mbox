@@ -7,3 +7,4 @@ from pvr.Util import RunThread, SetLock, SetLock2, TimeToString, TimeFormatEnum
 from pvr.GuiHelper import *
 from pvr.gui.GuiConfig import *
 from ElisEventClass import *
+from pvr.XBMCInterface import *

@@ -635,13 +635,15 @@ class SystemUpdate( SettingWindow ) :
 			if os.stat( tempFile )[stat.ST_SIZE] != self.mPVSData.mSize :
 				return False
 
-			self.ShowProgressDialog( 30, MR_LANG( 'Checking files checksum...' ), None, strStepNo )
+			threadDialog = self.ShowProgressDialog( 30, MR_LANG( 'Checking files checksum...' ), None, strStepNo )
 			self.OpenBusyDialog( )
 			ret = CheckMD5Sum( tempFile, self.mPVSData.mMd5 )
 			self.CloseBusyDialog( )
 			if self.mShowProgressThread :
 				self.mShowProgressThread.SetResult( True )
 				self.mShowProgressThread = None
+			if threadDialog :
+				threadDialog.join( )
 			time.sleep( 1 )
 
 			if not ret :
@@ -1033,28 +1035,15 @@ class SystemUpdate( SettingWindow ) :
 	def CheckCurrentVersion( self ) :
 		lbldesc = ''
 		try :
-			f = open( E_CURRENT_INFO, 'r' )
-			currInfo = f.readlines( )
-			f.close( )
-
-
 			iPVS = PVSClass( )
-			for line in currInfo :
-				value = ParseStringInPattern( '=', line )
-				#LOG_TRACE('-----------split[%s]'% value )
-				if not value or len( value ) < 2 :
-					continue
-
-				if value[0].lower() == 'version' :
-					if value[1].isdigit( ) :
-						#iPVS.mVersion = self.GetParseVersion( value[1] )
-						iPVS.mVersion = value[1]
-					else :
-						iPVS.mVersion = value[1]
-
-				elif value[0].lower() == 'date' :
-					iPVS.mDate = value[1]
-
+			ret = GetCurrentVersion( )
+			if not ret[0] :
+				ret[0] = MR_LANG( 'Unknown' )
+			if not ret[1] :
+				ret[1] = MR_LANG( 'Unknown' )
+			
+			iPVS.mVersion = ret[0]
+			iPVS.mDate = ret[1]
 			iPVS.mError = 0
 
 			lbldesc += '%s : %s\n'% ( MR_LANG( 'CURRENT VER.' ), iPVS.mVersion )
@@ -1062,7 +1051,6 @@ class SystemUpdate( SettingWindow ) :
 			#lbldesc += '%s\n%s\n'% ( MR_LANG( 'DESCRIPTION' ), iPVS.mDescription )
 
 			self.mCurrData = iPVS
-
 
 		except Exception, e :
 			LOG_ERR( 'except[%s]'% e )
@@ -1072,7 +1060,6 @@ class SystemUpdate( SettingWindow ) :
 			lbldesc = MR_LANG( 'Unknown version' )
 
 		self.UpdatePropertyGUI( 'CurrentDescription', lbldesc )
-
 
 
 	def UpdateChannel( self ) :
