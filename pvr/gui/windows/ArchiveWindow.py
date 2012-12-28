@@ -394,7 +394,7 @@ class ArchiveWindow( BaseWindow ) :
 			thumbIcon = 'DefaultAudioNF.png'
 			playOffset = self.mDataCache.RecordItem_GetCurrentPosByKey( aRecordInfo.mRecordKey )
 			if playOffset :
-				thumbIcon = 'DefaultAudio.png'
+				thumbIcon = 'DefaultAudioFO.png'
 
 		channelName = 'P%04d.%s' % ( aRecordInfo.mChannelNo, aRecordInfo.mChannelName )
 		recItem = xbmcgui.ListItem( channelName, aRecordInfo.mRecordName )
@@ -423,7 +423,7 @@ class ArchiveWindow( BaseWindow ) :
 			thumbIcon = 'DefaultAudioNF.png'
 			playOffset = self.mDataCache.RecordItem_GetCurrentPosByKey( aRecordKey )
 			if playOffset :
-				thumbIcon = 'DefaultAudio.png'
+				thumbIcon = 'DefaultAudioFO.png'
 
 		listindex = 0
 
