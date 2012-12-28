@@ -11,7 +11,16 @@
 			<height>720</height>
 			<texture>special://skin/backgrounds/curtains.jpg</texture>
 			<include>DefaultSettingWindowEffect</include>
-			<visible>substring(Window.Property(ViewMode),common)</visible>
+			<visible>substring(Window.Property(ViewMode),common) + !Control.IsVisible(8800)</visible>
+		</control>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1280</width>
+			<height>720</height>
+			<texture>special://skin/backgrounds/music.jpg</texture>
+			<include>DefaultSettingWindowEffect</include>
+			<visible>substring(Window.Property(ViewMode),common) + Control.IsVisible(8800)</visible>
 		</control>
 
 		<!-- Bottom Gradation Image -->
@@ -168,7 +177,7 @@
 					<width>759</width>
 					<height>682</height>
 					<texture background="true">views/listpanel_black.png</texture>
-					<visible>substring(Window.Property(ViewMode),common)</visible>
+					<visible>substring(Window.Property(ViewMode),common) + !Control.IsVisible(8800)</visible>
 				</control>
 				<control type="image">
 					<include>Animation_CommonFade</include>
@@ -415,6 +424,7 @@
 					<width>360</width>
 					<height>315</height>
 					<texture background="true">views/listpanel_black.png</texture>
+					<visible>!Control.IsVisible(8800)</visible>
 				</control>
 				<control type="image">
 					<posx>830</posx>
