@@ -111,7 +111,7 @@ class FirstInstallation( FTIWindow ) :
 							return
 
 						dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_POPUP_OK )
-						dialog.SetDialogProperty( MR_LANG( 'Change language' ), MR_LANG( 'It may take several minutes to complete' ), MR_LANG( 'please wait after pressing the OK button' ) )
+						dialog.SetDialogProperty( MR_LANG( 'Change language' ), MR_LANG( 'It may take several minutes to complete' ), MR_LANG( 'please wait after pressing OK button' ) )
 						dialog.doModal( )
 						self.mInitialized = False
 						self.OpenBusyDialog( )
@@ -305,7 +305,7 @@ class FirstInstallation( FTIWindow ) :
 			self.AddInputControl( E_Input03, MR_LANG( 'Time' ), self.mTime, MR_LANG( 'Enter the local time' ) )
 			self.AddEnumControl( E_SpinEx02, 'Local Time Offset', None, MR_LANG( 'Set the time zone that will be the basis for the date and time display' ) )
 			self.AddEnumControl( E_SpinEx03, 'Summer Time', None, MR_LANG( 'When set to \'Automatic\', the system automatically change over to and from summer and winter time' ) )
-			self.AddInputControl( E_Input04, MR_LANG( 'Apply' ), '', MR_LANG( 'Press the OK button to save time settings' ) )
+			self.AddInputControl( E_Input04, MR_LANG( 'Apply' ), '', MR_LANG( 'Press OK button to save time settings' ) )
 			self.AddPrevNextButton( MR_LANG( 'Go to the summary of first installation page' ), MR_LANG( 'Go back to the channel search setup page' ) )
 
 			visibleControlIds = [ E_SpinEx01, E_SpinEx02, E_SpinEx03, E_Input01, E_Input02, E_Input03, E_Input04 ]
@@ -515,7 +515,7 @@ class FirstInstallation( FTIWindow ) :
 		elif aControlId == E_Input04 :
 			oriSetupChannel = ElisPropertyInt( 'Time Setup Channel Number', self.mCommander ).GetProp( )
 			oriTimeMode = ElisPropertyEnum( 'Time Mode', self.mCommander ).GetProp( )
-			oriLocalTimeOffset = ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetProp( )
+			oriLocalTimeOffset = ElisPropertyEnum( 'Local Time Offset', self.mCommander ).GetProp( )	
 			oriSummerTime = ElisPropertyEnum( 'Summer Time', self.mCommander ).GetProp( )
 			oriChannel = self.mDataCache.Channel_GetCurrent( )
 
@@ -533,7 +533,7 @@ class FirstInstallation( FTIWindow ) :
 				ElisPropertyEnum( 'Time Installation', self.mCommander ).SetProp( 1 )
 
 				dialog = DiaMgr.GetInstance( ).GetDialog( DiaMgr.DIALOG_ID_FORCE_PROGRESS )
-				dialog.SetDialogProperty( 10, MR_LANG( 'Setting Time...' ), ElisEventTimeReceived.getName( ) )
+				dialog.SetDialogProperty( 20, MR_LANG( 'Setting Time...' ), ElisEventTimeReceived.getName( ) )
 				dialog.doModal( )
 				self.OpenBusyDialog( )
 				if dialog.GetResult( ) == False :

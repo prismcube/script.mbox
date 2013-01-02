@@ -244,11 +244,11 @@ class ManualScan( SettingWindow ) :
 			self.SetProp( E_SpinEx02, 1 )
 
 		# FEC
-		self.AddEnumControl( E_SpinEx03, 'FEC', MR_LANG( ' - FEC' ), MR_LANG( 'Select type and extent of the Foward Error Correction in the data stream' ) )
+		self.AddEnumControl( E_SpinEx03, 'FEC', MR_LANG( ' - FEC' ), MR_LANG( 'Select the error control mode of data transmission for the selected satellite' ) )
 		self.SetProp( E_SpinEx03, self.mConfigTransponder.mFECMode )
 
 		# POL
-		self.AddEnumControl( E_SpinEx04, 'Polarisation', MR_LANG( ' - Polarization' ), MR_LANG( 'Set the orientation of the electromagnetic waves received from the satellite' ) )
+		self.AddEnumControl( E_SpinEx04, 'Polarisation', MR_LANG( ' - Polarization' ), MR_LANG( 'Select the direction of the electrical and magnetic fields of signals for the satellite above' ) )
 		self.SetProp( E_SpinEx04, self.mConfigTransponder.mPolarization )
 
 		# Symbolrate
@@ -256,7 +256,7 @@ class ManualScan( SettingWindow ) :
 		
 		self.AddEnumControl( E_SpinEx05, 'Network Search', None, MR_LANG( 'When set to \'Off\', only the factory default transponders of the satellites you previously selected will be scanned for new channels. If you set to \'On\', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels' ) )
 		self.AddEnumControl( E_SpinEx06, 'Channel Search Mode', MR_LANG( 'Search Type' ), MR_LANG( 'Select whether you wish to scan free and scrambled, free only or scrambled only' ) )
-		self.AddInputControl( E_Input04, MR_LANG( 'Start Search' ), '', MR_LANG( 'Press the OK button to start a channel search' ) )
+		self.AddInputControl( E_Input04, MR_LANG( 'Start Search' ), '', MR_LANG( 'Press OK button to start a channel search' ) )
 
 		self.InitControl( )
 		self.DisableControl( )

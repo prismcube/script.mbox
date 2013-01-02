@@ -171,10 +171,12 @@ class TunerConfiguration( FTIWindow ) :
 				if config.mIsConfigUsed == 1 :
 					self.mConfiguredCount = self.mConfiguredCount + 1
 					satelliteName = self.mDataCache.GetFormattedSatelliteName( config.mSatelliteLongitude, config.mBandType )
+
 					if self.GetFristInstallation( ) :
 						description = MR_LANG( 'Press the Next button to setup satellite' )
 					else :
-						description = MR_LANG( 'Press the OK button to setup %s' ) % satelliteName
+						description = MR_LANG( 'Press OK button to setup %s' ) % satelliteName
+
 					self.mListItems.append( xbmcgui.ListItem( '%s' % satelliteName, description ) )
 
 		self.mListItems.append( xbmcgui.ListItem( MR_LANG( 'Add Satellite' ), MR_LANG( 'Add a new satellite to your satellite list' ) ) )

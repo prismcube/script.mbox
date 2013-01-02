@@ -3633,3 +3633,185 @@
 "None",,,,,,,,,,6177
 "None",,,,,,,,,,6178
 "Updating channel list is finished successfully",,,,,,,,,,6179
+"None",,,,,,,,,,6180
+"None",,,,,,,,,,6181
+"None",,,,,,,,,,6182
+"None",,,,,,,,,,6183
+"None",,,,,,,,,,6184
+"None",,,,,,,,,,6185
+"None",,,,,,,,,,6186
+"None",,,,,,,,,,6187
+"None",,,,,,,,,,6188
+"None",,,,,,,,,,6189
+"None",,,,,,,,,,6190
+"None",,,,,,,,,,6191
+"None",,,,,,,,,,6192
+"None",,,,,,,,,,6193
+"None",,,,,,,,,,6194
+"None",,,,,,,,,,6195
+"None",,,,,,,,,,6196
+"None",,,,,,,,,,6197
+"None",,,,,,,,,,6198
+"None",,,,,,,,,,6199
+"None",,,,,,,,,,6200
+"None",,,,,,,,,,6201
+"None",,,,,,,,,,6202
+"None",,,,,,,,,,6203
+"None",,,,,,,,,,6204
+"None",,,,,,,,,,6205
+"None",,,,,,,,,,6206
+"None",,,,,,,,,,6207
+"None",,,,,,,,,,6208
+"None",,,,,,,,,,6209
+"None",,,,,,,,,,6210
+"None",,,,,,,,,,6211
+"None",,,,,,,,,,6212
+"None",,,,,,,,,,6213
+"None",,,,,,,,,,6214
+"None",,,,,,,,,,6215
+"None",,,,,,,,,,6216
+"None",,,,,,,,,,6217
+"None",,,,,,,,,,6218
+"None",,,,,,,,,,6219
+"None",,,,,,,,,,6220
+"None",,,,,,,,,,6221
+"None",,,,,,,,,,6222
+"None",,,,,,,,,,6223
+"None",,,,,,,,,,6224
+"None",,,,,,,,,,6225
+"None",,,,,,,,,,6226
+"None",,,,,,,,,,6227
+"None",,,,,,,,,,6228
+"Select the desired satellite whose signal is to be received by the tuner",,,,,,,,,,6229
+"Select the LNB type used in your digital satellite system",,,,,,,,,,6230
+"Set one of the pre-defined transponder frequency and symbol rate to get the best signal strength and quality in order to confirm that your settings are correct",,,,,,,,,,6231
+"Press OK button to apply the rotation limits for the motor",,,,,,,,,,6232
+"Start auto-chaptering",,,,,,,,,,6233
+"Select the satellite on which the transponder you wish to scan is located",,,,,,,,,,6234
+"When set to 'Off', only the factory default transponders of the satellites you previously selected will be scanned for new channels. If you set to 'On', both the existing transponders and additional transponders that have not yet been stored to be located are scanned for new channels",,,,,,,,,,6235
+"Select whether you wish to scan free and scrambled, free only or scrambled only",,,,,,,,,,6236
+"Press OK button to start a channel search",,,,,,,,,,6237
+"Press OK button to connect to the AP you have chosen",,,,,,,,,,6238
+"Press OK button to save the IP address settings",,,,,,,,,,6239
+"Press OK button to save time settings",,,,,,,,,,6240
+"Press OK button to remove everything in the media partition",,,,,,,,,,6241
+"Press OK button to remove everything in the recording partition",,,,,,,,,,6242
+"Press OK button to erase your hard disk drive",,,,,,,,,,6243
+"When set to 'On', the system switches to deep standby mode if you press 'Standby' button to help reduce the amount of electricity used",,,,,,,,,,6244
+"Release Version : %s",,,,,,,,,,6245
+"Press OK button to setup %s",,,,,,,,,,6246
+"Select the DiSEqC switch which your satellite is connected to",,,,,,,,,,6247
+"When set to 'On', your OneCable system allows the transmission frequency to be protected by entering a PIN code",,,,,,,,,,6248
+"Enter a PIN code for tuner %d",,,,,,,,,,6249
+"Select an available transmission channel from SCR 0 to SCR 7 for tuner %d",,,,,,,,,,6250
+"Select a frequency for tuner %d",,,,,,,,,,6251
+"Enter a PIN code for tuner 1",,,,,,,,,,6252
+"Select an available transmission channel from SCR 0 to SCR 7 for tuner 1",,,,,,,,,,6253
+"Select a frequency for tuner 1",,,,,,,,,,6254
+"Enter a PIN code for tuner 2",,,,,,,,,,6255
+"Select an available transmission channel from SCR 0 to SCR 7 for tuner 2",,,,,,,,,,6256
+"Select a frequency for tuner 2",,,,,,,,,,6257
+"Select the committed switch number",,,,,,,,,,6258
+"Select the uncommitted switch number",,,,,,,,,,6259
+"Set the amount of data, that is transmitted per second in the data stream",,,,,,,,,,6260
+"None",,,,,,,,,,6261
+"None",,,,,,,,,,6262
+"None",,,,,,,,,,6263
+"None",,,,,,,,,,6264
+"None",,,,,,,,,,6265
+"None",,,,,,,,,,6266
+"None",,,,,,,,,,6267
+"None",,,,,,,,,,6268
+"None",,,,,,,,,,6269
+"None",,,,,,,,,,6270
+"None",,,,,,,,,,6271
+"None",,,,,,,,,,6272
+"None",,,,,,,,,,6273
+"None",,,,,,,,,,6274
+"None",,,,,,,,,,6275
+"None",,,,,,,,,,6276
+"None",,,,,,,,,,6277
+"None",,,,,,,,,,6278
+"None",,,,,,,,,,6279
+"None",,,,,,,,,,6280
+"None",,,,,,,,,,6281
+"None",,,,,,,,,,6282
+"None",,,,,,,,,,6283
+"None",,,,,,,,,,6284
+"None",,,,,,,,,,6285
+"None",,,,,,,,,,6286
+"None",,,,,,,,,,6287
+"None",,,,,,,,,,6288
+"None",,,,,,,,,,6289
+"None",,,,,,,,,,6290
+"None",,,,,,,,,,6291
+"None",,,,,,,,,,6292
+"None",,,,,,,,,,6293
+"None",,,,,,,,,,6294
+"None",,,,,,,,,,6295
+"None",,,,,,,,,,6296
+"None",,,,,,,,,,6297
+"None",,,,,,,,,,6298
+"None",,,,,,,,,,6299
+"None",,,,,,,,,,6300
+"None",,,,,,,,,,6301
+"None",,,,,,,,,,6302
+"None",,,,,,,,,,6303
+"None",,,,,,,,,,6304
+"None",,,,,,,,,,6305
+"None",,,,,,,,,,6306
+"None",,,,,,,,,,6307
+"None",,,,,,,,,,6308
+"None",,,,,,,,,,6309
+"please wait after pressing OK button",,,,,,,,,,6310
+"None",,,,,,,,,,6311
+"None",,,,,,,,,,6312
+"None",,,,,,,,,,6313
+"None",,,,,,,,,,6314
+"None",,,,,,,,,,6315
+"None",,,,,,,,,,6316
+"None",,,,,,,,,,6317
+"None",,,,,,,,,,6318
+"None",,,,,,,,,,6319
+"None",,,,,,,,,,6320
+"None",,,,,,,,,,6321
+"None",,,,,,,,,,6322
+"None",,,,,,,,,,6323
+"None",,,,,,,,,,6324
+"None",,,,,,,,,,6325
+"None",,,,,,,,,,6326
+"None",,,,,,,,,,6327
+"None",,,,,,,,,,6328
+"None",,,,,,,,,,6329
+"None",,,,,,,,,,6330
+"None",,,,,,,,,,6331
+"None",,,,,,,,,,6332
+"None",,,,,,,,,,6333
+"None",,,,,,,,,,6334
+"None",,,,,,,,,,6335
+"None",,,,,,,,,,6336
+"None",,,,,,,,,,6337
+"None",,,,,,,,,,6338
+"None",,,,,,,,,,6339
+"None",,,,,,,,,,6340
+"None",,,,,,,,,,6341
+"None",,,,,,,,,,6342
+"None",,,,,,,,,,6343
+"None",,,,,,,,,,6344
+"None",,,,,,,,,,6345
+"None",,,,,,,,,,6346
+"None",,,,,,,,,,6347
+"None",,,,,,,,,,6348
+"None",,,,,,,,,,6349
+"None",,,,,,,,,,6350
+"None",,,,,,,,,,6351
+"None",,,,,,,,,,6352
+"None",,,,,,,,,,6353
+"None",,,,,,,,,,6354
+"None",,,,,,,,,,6355
+"None",,,,,,,,,,6356
+"None",,,,,,,,,,6357
+"None",,,,,,,,,,6358
+"None",,,,,,,,,,6359
+"Select the error control mode of data transmission for the selected satellite",,,,,,,,,,6360
+"Select the direction of the electrical and magnetic fields of signals for the satellite above",,,,,,,,,,6361
