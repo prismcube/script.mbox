@@ -245,12 +245,7 @@ import pvr.gui.WindowMgr as WinMgr
 gDenyWinid = [ 
 	WinMgr.WIN_ID_ROOTWINDOW, 
 	WinMgr.WIN_ID_NULLWINDOW, 
-	WinMgr.WIN_ID_ANTENNA_SETUP, 
-	WinMgr.WIN_ID_CHANNEL_SEARCH, 
-	WinMgr.WIN_ID_FIRST_INSTALLATION, 
-	WinMgr.WIN_ID_CONFIG_ONECABLE_2, 
-	WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW, 
-	WinMgr.WIN_ID_HIDDEN_TEST,
+	WinMgr.WIN_ID_ANTENNA_SETUP,
 	WinMgr.WIN_ID_TUNER_CONFIGURATION,
 	WinMgr.WIN_ID_CONFIG_SIMPLE,
 	WinMgr.WIN_ID_CONFIG_MOTORIZED_12,
@@ -259,7 +254,33 @@ gDenyWinid = [
 	WinMgr.WIN_ID_CONFIG_ONECABLE_2,
 	WinMgr.WIN_ID_CONFIG_DISEQC_10,
 	WinMgr.WIN_ID_CONFIG_DISEQC_11,
-	11 ]
+	11,
+	WinMgr.WIN_ID_CONFIG_ONECABLE_2, 
+	WinMgr.WIN_ID_CHANNEL_SEARCH, 
+	WinMgr.WIN_ID_AUTOMATIC_SCAN,
+	WinMgr.WIN_ID_MANUAL_SCAN,
+	WinMgr.WIN_ID_CHANNEL_EDIT_WINDOW, 
+	WinMgr.WIN_ID_FIRST_INSTALLATION, 
+	WinMgr.WIN_ID_HIDDEN_TEST
+	]
+
+
+gTestWinid = [ 
+	WinMgr.WIN_ID_MAINMENU,
+	WinMgr.WIN_ID_CHANNEL_LIST_WINDOW,
+	WinMgr.WIN_ID_LIVE_PLATE,
+	WinMgr.WIN_ID_CONFIGURE,
+	WinMgr.WIN_ID_ARCHIVE_WINDOW,
+	WinMgr.WIN_ID_SYSTEM_INFO,
+	WinMgr.WIN_ID_MEDIACENTER,
+	WinMgr.WIN_ID_EPG_WINDOW,
+	WinMgr.WIN_ID_HELP
+	]
+
+	#WinMgr.WIN_ID_TIMESHIFT_PLATE,
+	#WinMgr.WIN_ID_INFO_PLATE,
+	#WinMgr.WIN_ID_FAVORITE_ADDONS,
+	#WinMgr.WIN_ID_SYSTEM_UPDATE,
 
 class AllNavigation( object ) :
 	def __init__( self, *args, **kwargs ) :
@@ -271,45 +292,52 @@ class AllNavigation( object ) :
 	def StartTestAll( self ) :
 		testCount = 0
 		testTime = 0
-		testSleep = 2
+		testSleep = 5
+		time.sleep( testSleep )
 		while self.mDataCache.GetRunningHiddenTest( ) :
-			time.sleep(testSleep)
-			testTime += testSleep
-			testCount += 1
-			self.PrintLog( testCount, testTime )
+			for winid in gTestWinid :
+				if not self.mDataCache.GetRunningHiddenTest( ) :
+					break
 
-			winid = random.randint( 2, 34 )
-			LOG_TRACE( '---------show winId[%s]'% winid )
-			if self.CheckWindow( winid ) :
-				LOG_TRACE('---no test window[%s]'% winid )
-				continue
+				if self.CheckWindow( testSleep ) :
+					continue
 
-			WinMgr.GetInstance( ).ShowWindow( winid, WinMgr.WIN_ID_NULLWINDOW )
-			while WinMgr.GetInstance( ).GetLastWindowID( ) > WinMgr.WIN_ID_NULLWINDOW :
-				#msg = struct.pack( '3i', *[ 1, KeyCode[ 'VKEY_BACK' ], 0 ] )
-				#sock.send( msg )
-				xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+				WinMgr.GetInstance( ).ShowWindow( winid )
+				time.sleep( testSleep )
+				#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_NULLWINDOW, WinMgr.WIN_ID_MAINMENU )
+				#xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+				msg = struct.pack( '3i', *[ 1, KeyCode[ 'VKEY_BACK' ], 0 ] )
+				sock.send( msg )
+				time.sleep( testSleep )
 
 				testTime += testSleep
-				time.sleep(testSleep)
+				testCount += 1
 				self.PrintLog( testCount, testTime )
 
-		WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
+		#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
+		self.CloseTestProgram( )
+
 
 	def PrintLog( self, testCount, testTime ) :
 		testTime = '%02d:%s'% ( testTime / 3600, time.strftime('%M:%S', time.gmtime(testTime) ) )
-		currT = time.strftime('%M:%S', time.gmtime(time.time()) )
-		currS = time.strftime('%M:%S', time.gmtime(self.mStartTime) )
+		currT = time.strftime('%H:%M', time.gmtime(time.time()) )
+		currS = time.strftime('%H:%M', time.gmtime(self.mStartTime) )
 		LOG_TRACE( '--------- Count[%s] TestTime[%s] curr[%s] start[%s]'% ( testCount, testTime, currT, currS ) )
 
 
-	def CheckWindow( self, aWinid ) :
+	def CheckWindow( self, aSleep ) :
 		ret = False
-		for win in gDenyWinid :
-			if win == aWinid :
-				ret = True
-				break
+		#LOG_TRACE('-----------activate win[%s]'% xbmcgui.getCurrentWindowId( ) )
+		if xbmcgui.getCurrentWindowId( ) <= 13000 :
+			LOG_TRACE('---Reset NullWindow (lastid[%s])'% winid )
+			WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE )
+			time.sleep( aSleep )
+			ret = True
 
 		return ret
+
+
+	def CloseTestProgram( self ) :
+		sock.close( )
 
 
