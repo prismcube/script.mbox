@@ -169,6 +169,7 @@ class FirstInstallation( FTIWindow ) :
 		self.OpenBusyDialog( )
 		if self.GetFTIStep( ) == E_STEP_ANTENNA :
 			self.mTunerMgr.SaveConfiguration( )
+			self.mDataCache.Channel_ReTune( )
 		self.SetFTIStep( E_STEP_SELECT_LANGUAGE )
 		self.SetFristInstallation( False )
 		self.mTunerMgr.SetNeedLoad( True )
@@ -494,7 +495,7 @@ class FirstInstallation( FTIWindow ) :
 
 		elif aControlId == E_Input01 :
 			dialog = xbmcgui.Dialog( )
-			channelList = self.mDataCache.Channel_GetList( True )
+			channelList = self.mDataCache.Channel_GetList( )
 			channelNameList = []
 			for channel in channelList :
 				channelNameList.append( channel.mName )

@@ -314,12 +314,16 @@ class Configure( SettingWindow ) :
 			dialog.doModal( )
 
 			if dialog.IsOK( ) == E_DIALOG_STATE_YES :
-				self.mDataCache.Player_AVBlank( True )
 				self.mProgressThread = self.ShowProgress( MR_LANG( 'Now restoring...' ), 20 )
 				self.mCommander.System_SetDefaultChannelList( )
 				self.mCommander.System_FactoryReset( )
 				self.mDataCache.LoadAllSatellite( )
 				self.mDataCache.LoadConfiguredTransponder( )
+				self.mDataCache.LoadChannelList( )
+				iZapping = self.mDataCache.Zappingmode_GetCurrent( )
+				if iZapping and iZapping.mError == 0 :
+					self.mDataCache.Channel_GetAllChannels( iZapping.mServiceType, False )
+				self.mDataCache.SetChannelReloadStatus( True )
 	 			from ElisProperty import ResetHash
 				ResetHash( )
 				self.mInitialized = False
@@ -328,7 +332,9 @@ class Configure( SettingWindow ) :
 				self.getControl( E_SETTING_DESCRIPTION ).setLabel( '' )
 				self.CloseProgress( )
 				if self.mCommander.Player_GetMute( ) :
+					xbmc.executebuiltin( 'xbmc.Action(volumeup)' )
 					self.mCommander.Player_SetMute( False )
+				self.mDataCache.Player_AVBlank( True )
 				WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_FIRST_INSTALLATION, WinMgr.WIN_ID_MAINMENU )
 
 		elif selectedId == E_FORMAT_HDD :
