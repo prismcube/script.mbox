@@ -1208,8 +1208,9 @@ class DataCacheMgr( object ) :
 	def Channel_TuneDefault( self, aCurrentChannel = None ) :
 		isCurrentChannelDelete = True
 		if aCurrentChannel and aCurrentChannel.mError == 0 :
-			if self.Channel_GetCount( ) :
-				for iChannel in self.Channel_GetList( ) :
+			iChannelList = self.Channel_GetList( )
+			if self.Channel_GetCount( ) and iChannelList and len( iChannelList ) > 0 :
+				for iChannel in iChannelList :
 					if aCurrentChannel.mSid == iChannel.mSid and \
 					   aCurrentChannel.mTsid == iChannel.mTsid and \
 					   aCurrentChannel.mOnid == iChannel.mOnid :
