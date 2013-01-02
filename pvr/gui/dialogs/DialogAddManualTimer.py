@@ -327,17 +327,19 @@ class DialogAddManualTimer( SettingDialog ) :
 
 					self.SelectPosition( E_DialogSpinEx02, 0 )						
 					self.SetVisibleControl( E_DialogSpinDay, False )
+					self.SetEnableControl( E_DialogSpinDay, False )
 					#self.SetVisibleControl( E_DialogSpinEx02, True )
 					self.SetListControlItemLabel( E_DialogSpinEx02, TimeToString( startTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
-					self.SetEnableControl( E_DialogSpinEx02, False )
 					
 					self.SetControlLabel2String( E_DialogInput02, TimeToString( startTime, TimeFormatEnum.E_HH_MM ) )
 					self.SetControlLabel2String( E_DialogInput03, TimeToString( endTime, TimeFormatEnum.E_HH_MM) )
 
 					if self.mIsRunningTimer == True :
+						self.SetEnableControl( E_DialogSpinEx02, False )					
 						self.SetEnableControl( E_DialogInput02, False )
 						self.SetFocus( E_DialogInput03 )
 					else :
+						self.SetEnableControl( E_DialogSpinEx02, True )					
 						self.SetFocus( E_DialogInput02 )
 
 				else :
@@ -490,21 +492,37 @@ class DialogAddManualTimer( SettingDialog ) :
 
 	def ChangeStartDay( self, aIsNext ) :
 
-		days = int( self.mDataCache.Datetime_GetLocalTime( )/ONE_DAY_SECONDS )
-		currentWeeekyStart = days * ONE_DAY_SECONDS
+		if self.mTimer and self.mRecordingMode == E_ONCE :
 
-		if aIsNext == True :
-			newWeekyStart = self.mWeeklyStart + ONE_DAY_SECONDS
+			if aIsNext == True :
+				newStart = self.mTimer.mStartTime + ONE_DAY_SECONDS
+			else :
+				newStart = self.mTimer.mStartTime - ONE_DAY_SECONDS		
+
+			if newStart < self.mDataCache.Datetime_GetLocalTime( ) :
+				newStart = self.mTimer.mStartTime
+
+			self.mTimer.mStartTime = newStart
+
+			LOG_TRACE( 'New StartTime =%s' %TimeToString( self.mTimer.mStartTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
+			self.SetListControlItemLabel( E_DialogSpinEx02, TimeToString( self.mTimer.mStartTime, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
+
 		else :
-			newWeekyStart = self.mWeeklyStart - ONE_DAY_SECONDS		
+			days = int( self.mDataCache.Datetime_GetLocalTime( )/ONE_DAY_SECONDS )
+			currentWeeekyStart = days * ONE_DAY_SECONDS
 
-		if newWeekyStart < currentWeeekyStart :
-			self.mWeeklyStart = currentWeeekyStart
-		else :
-			self.mWeeklyStart = newWeekyStart
+			if aIsNext == True :
+				newWeekyStart = self.mWeeklyStart + ONE_DAY_SECONDS
+			else :
+				newWeekyStart = self.mWeeklyStart - ONE_DAY_SECONDS		
 
-		LOG_TRACE( 'New StartTime =%s' %TimeToString( self.mWeeklyStart, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
-		self.SetListControlItemLabel( E_DialogSpinEx02, TimeToString( self.mWeeklyStart, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
+			if newWeekyStart < currentWeeekyStart :
+				self.mWeeklyStart = currentWeeekyStart
+			else :
+				self.mWeeklyStart = newWeekyStart
+
+			LOG_TRACE( 'New StartTime =%s' %TimeToString( self.mWeeklyStart, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
+			self.SetListControlItemLabel( E_DialogSpinEx02, TimeToString( self.mWeeklyStart, TimeFormatEnum.E_AW_DD_MM_YYYY ) )
 
 
 	def ShowRecordName( self ) :
