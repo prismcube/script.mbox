@@ -1,6 +1,6 @@
 from pvr.gui.WindowImport import *
 from pvr.HiddenTestMgr import *
-import xbmcaddon
+import xbmc, xbmcaddon
 
 
 FILE_NAME_TEST = xbmcaddon.Addon( 'script.mbox' ).getAddonInfo( 'path' ) + '/elmo_test.xml'
@@ -52,7 +52,7 @@ class HiddenTest( BaseWindow ) :
 		
 		context = []
 		context.append( ContextItem( 'PROPRTY CHECK', 9999 ) )
-		context.append( ContextItem( 'ALL Navigation', 8888 ) )
+		#context.append( ContextItem( 'ALL Navigation', 8888 ) )
 		menuCount = 0
 
 		for scenario in self.mRoot.findall( 'scenario' ) :
@@ -80,11 +80,16 @@ class HiddenTest( BaseWindow ) :
 			self.CheckProperty( )
 			WinMgr.GetInstance( ).CloseWindow( )
 		elif aContextAction == 8888 :
-			#if ConnectSocket( ) :
-			self.mDataCache.SetRunningHiddenTest( True )
-			scenario = AllNavigation( )
-			pvr.HiddenTestMgr.StartTest2( scenario )
-			WinMgr.GetInstance( ).CloseWindow( )
+			#xbmc.executebuiltin( 'xbmc.Action(previousmenu)' )
+			#WinMgr.GetInstance( ).ShowWindow( WinMgr.WIN_ID_LIVE_PLATE, WinMgr.WIN_ID_NULLWINDOW )
+			if ConnectSocket( ) :
+				self.mDataCache.SetRunningHiddenTest( True )
+				scenario = AllNavigation( )
+				pvr.HiddenTestMgr.StartTest2( scenario )
+			else :
+				LOG_TRACE( 'Socket connect error' )
+
+			#WinMgr.GetInstance( ).CloseWindow( )
 
 		else :
 			scenario = TestScenario( 'scenario', 'scenario' )
